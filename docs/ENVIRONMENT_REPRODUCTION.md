@@ -112,6 +112,15 @@ TB128 run and the restarted TB64 run. This confirms that the restart reproduced
 the same optimization trajectory and that inference batch size did not alter
 the six reported retrieval results; checkpoint or metric splicing was not used.
 
+The two-epoch gate did not guarantee all later evaluations would remain below
+300 seconds. Epoch-7 and epoch-9 `ori` passes took 329.741s and 327.717s. The
+frozen epoch-10 summary therefore correctly reports
+`evaluation_latency_within_limit=false` and `valid=false`; the limit is not
+retuned post hoc. Because both passes completed, subsequent MoE/joint passes
+continued normally, and fatal/nonfinite checks stayed clean, R012 continues as
+a calibration run with a systems WARN rather than being misreported as a fully
+valid latency run.
+
 This B32/K4 result is a hardware-matched implementation-base calibration, not
 an exact reproduction of the paper's B64/K8 optimization protocol. All
 TriFusion ablations use the same B32/K4 identity sampling so comparisons remain
@@ -125,6 +134,11 @@ also preserve `DeMo_50.pth`, which is saved before epoch-50 evaluation and is
 the pre-registered fixed-epoch matched baseline. See
 `docs/BASELINE_PROTOCOL_AUDIT_2026-08-31.md` for source lines, hashes and the
 binding paper-reporting policy.
+
+The first periodic checkpoint is `DeMo_10.pth`, SHA-256
+`b2ab79f056d73d6b827c52fd27ec0607aeae1a10cd756db5c0cc62f3ab4631c0`.
+Its filesystem timestamp is before the epoch-10 evaluation-start log entry; the
+read-only receipt is versioned under `evidence/`.
 
 R012 began before the launcher gained its commit/dirty and GPU-occupancy
 fail-closed checks. The versioned

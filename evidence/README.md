@@ -37,6 +37,15 @@ were added to the launcher. Its live provenance receipt therefore sets
 and clean frozen DeMo checkout at observation time without pretending the later
 guards ran at launch.
 
+At epoch 10, `DeMo_10.pth` was written before that epoch's test evaluation. Its
+receipt binds SHA-256 `b2ab79f056d73d6b827c52fd27ec0607aeae1a10cd756db5c0cc62f3ab4631c0`
+and the train/save/eval ordering. The accompanying epoch-10 summary contains 30
+complete evaluation records and both checkpoint hashes. It deliberately has
+`valid=false`: epoch-7 and epoch-9 `ori` evaluation latencies were 329.741s and
+327.717s, exceeding the pre-registered 300s systems limit. Fatal/nonfinite,
+record-completeness and uniqueness checks still pass. The threshold was not
+raised after seeing the breach.
+
 The MDReID metric JSON predates the strengthened audit-gate fields. Its numeric
 checkpoint result, exact official commit and referenced dataset-audit bytes are
 retained as valid historical evidence; the patched driver must be rerun after

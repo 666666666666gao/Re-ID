@@ -30,6 +30,11 @@ evaluation block. Because R012's 50-epoch schedule and seed were frozen before
 launch, `DeMo_50.pth` will be the primary fixed-epoch matched baseline. We will
 report it separately from the official-protocol test-best checkpoint.
 
+This ordering has now been observed at epoch 10: `DeMo_10.pth` was closed at
+04:42:09.475 local time and the epoch-10 test evaluation began at 04:42:09.479.
+The checkpoint receipt records its byte size and SHA-256 independently of the
+subsequent test metrics.
+
 ## Binding reporting policy
 
 1. **Official reproduction column:** report the best joint test result and mark
