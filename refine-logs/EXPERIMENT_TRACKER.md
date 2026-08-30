@@ -14,14 +14,15 @@
 | R009 | M0 | RGBNT100 完整性 | audit | all | triplets/JPEG | MUST | DONE | 17,250 triplets；70,715 JPEG |
 | R010 | M1 | 强 checkpoint parity | MDReID | RGBNT201 test | mAP/R1/R5/R10 | MUST | DONE | 82.0868/85.1675/90.3110/92.5837 |
 | R011 | M1 | DeMo tiny overfit | DeMo | tiny train | loss/R1 | MUST | TODO | GPU 释放后补 |
-| R012 | M1 | DeMo 50 epoch | fixed seed42 B32/K4/TB64 | RGBNT201 | mAP/R1/checkpoint | MUST | RUNNING | epoch20 闭合：joint 75.8/79.3；test-selected best epoch17 77.0/79.3，仅校准 |
+| R012 | M1 | DeMo 50 epoch | fixed seed42 B32/K4/TB64 | RGBNT201 | mAP/R1/checkpoint | MUST | RUNNING | epoch30 闭合：joint 76.3/81.5；test-selected mAP best epoch17 77.0/79.3，仅校准 |
 | R013 | M1 | DeMo 协议偏差 | fixed vs test-selected | RGBNT201 | delta/provenance | MUST | RUNNING | 公平结果固定 DeMo_50.pth |
 | R014 | M1 | 系统门 | B32 + eval latency | RGBNT201 | VRAM/latency | MUST | WARN | 8-step 6,894 MiB；历史 ori >300s |
 | R015 | M1 | train-only dev | 141-fit/30-dev | train_171 only | overlap/positives | MUST | DONE | test overlap=0；825/825 valid |
-| R016 | M1 | 证据包 | 20 versioned JSONs | all | SHA/protocol | MUST | DONE | SHA256SUMS pass |
+| R016 | M1 | 证据包 | 21 versioned JSONs | all | SHA/protocol | MUST | DONE | SHA256SUMS pass |
 | R017 | M1 | MDReID 强化驱动复验 | hardened driver | RGBNT201 | parity/full audit | MUST | WAITING | 等 R012 释放 GPU |
 | R018 | M1 | epoch10 receipt | DeMo_10.pth | RGBNT201 | ordering/hash | MUST | DONE | SHA b2ab79f0…31c0 |
 | R018A | M1 | epoch20 receipt | DeMo_20.pth | RGBNT201 | ordering/hash/metrics | MUST | DONE | SHA 5d61a4cf…e7b2；非 test 选点 |
+| R018B | M1 | epoch30 receipt | DeMo_30.pth | RGBNT201 | ordering/hash/metrics | MUST | DONE | SHA d5e375fa…4ce5；非 test 选点 |
 | R019 | M1 | summarizer fail-closed | live+synthetic | logs | coverage/latency | MUST | DONE | partial/gap/duplicate/overflow 全拒绝 |
 | R020 | M2 | CNN standalone | TriFusion CNN | 141-fit/dev | mAP/R1 | MUST | WAITING | 等接缝同意；完整专家 |
 | R021 | M2 | Transformer standalone | CLIP Transformer | 141-fit/dev | mAP/R1 | MUST | WAITING | 等接缝同意 |

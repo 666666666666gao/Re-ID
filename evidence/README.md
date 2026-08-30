@@ -54,6 +54,14 @@ milestone, not a model selected on test. The pre-registered fair endpoint
 remains `DeMo_50.pth`; epoch-17 `DeMobest.pth` is labeled only as
 released-protocol calibration.
 
+At epoch 30, `DeMo_30.pth` was again saved after training and before the
+epoch's test evaluation. Its receipt binds SHA-256
+`d5e375fa2c4bab08f753fc7b0a17b698537db2398250770b130aceac1b274ce5`,
+the 30-epoch/90-evaluation fail-closed summary state, and all three feature-mode
+metrics. The joint result is 76.3% mAP / 81.5% Rank-1. This remains a fixed
+implementation milestone, not a test-selected or SOTA result; the fair
+endpoint is still `DeMo_50.pth`.
+
 The summarizer fail-closed receipt binds the corrected source SHA and freezes
 the epoch-12 34/35/36-record live boundary together with seven one-off public
 CLI contract probes. Empty, gapped, out-of-range, duplicate and partial logs
