@@ -69,3 +69,4 @@
 | 2026-08-31 05:00 | /monitor-experiment | docs/ENVIRONMENT_REPRODUCTION.md | research | 记录epoch12的34→35→36条评估边界验证，并保持正式300s延迟失败不变 |
 | 2026-08-31 05:06 | /implement | evidence/demo_summarizer_fail_closed_verification_20260831.json | research | SHA绑定epoch12实时边界及空/断档/越界/重复/partial/complete七项CLI合同探针 |
 | 2026-08-31 05:06 | /experiment-plan | refine-logs/EXPERIMENT_TRACKER.md | implementation | 登记R019 fail-closed汇总门并将版本化证据包更新为19项 |
+| 2026-08-31 05:21 | /codebase-design | docs/IMPLEMENTATION_BLUEPRINT_V1.md | implementation | 将冻结方法落成三完整专家、统一可靠性、双层同步中继、方向教学、512维融合、消融开关与8 GiB资源门禁 |
