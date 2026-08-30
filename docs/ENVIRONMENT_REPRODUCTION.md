@@ -96,6 +96,27 @@ python tools/summarize_demo_run.py \
   --expected-epochs 50 --require-complete --hash-checkpoints
 ```
 
+Live summaries fail closed unless at least one training epoch is complete, the
+completed epoch indices form a contiguous `1..latest` prefix within
+`--expected-epochs`, and the observed evaluation keys exactly equal that prefix
+crossed with `{ori, moe, joint}`. This prevents a truncated log or a
+just-finished training epoch from being reported valid while epochs or
+evaluation passes are missing.
+The boundary was exercised on epoch 12: before the fix, 34 records (only the
+epoch-12 `ori` pass present) incorrectly returned `valid=true`; after the fix, a
+35-record partial snapshot returned false, and the fully closed 36-record
+snapshot restored the coverage check to true. A 10,000-second limit was used
+only to isolate this coverage behavior. Under the unchanged registered
+300-second limit, the closed snapshot remains `valid=false` because the latency
+gate still fails.
+
+One-off public-CLI contract probes also cover an empty log, a `1,3` epoch gap,
+an epoch beyond the configured bound, duplicate train/evaluation records, a
+partial mode set and one complete epoch. Every malformed or partial case exits
+1; the complete case exits 0. The immutable result receipt is versioned under
+`evidence/`; a persistent regression-test seam remains gated on the user's TDD
+seam agreement.
+
 The TB64 run passed the pre-registered live gate after two fully evaluated
 epochs. All six `(epoch, feature-mode)` records were complete, losses and
 metrics were finite, no fatal log pattern was present, and the largest single

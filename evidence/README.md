@@ -46,6 +46,14 @@ complete evaluation records and both checkpoint hashes. It deliberately has
 record-completeness and uniqueness checks still pass. The threshold was not
 raised after seeing the breach.
 
+The summarizer fail-closed receipt binds the corrected source SHA and freezes
+the epoch-12 34/35/36-record live boundary together with seven one-off public
+CLI contract probes. Empty, gapped, out-of-range, duplicate and partial logs
+all exit nonzero; a complete contiguous epoch exits zero under the diagnostic
+latency limit. Under the registered 300-second limit, the complete live
+snapshot remains invalid because its latency breach is preserved. No
+persistent regression test is claimed before the TDD seam agreement.
+
 The MDReID metric JSON predates the strengthened audit-gate fields. Its numeric
 checkpoint result, exact official commit and referenced dataset-audit bytes are
 retained as valid historical evidence; the patched driver must be rerun after

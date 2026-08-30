@@ -65,3 +65,7 @@
 | 2026-08-31 04:42 | /monitor-experiment | evidence/demo_rgbnt201_epoch10_checkpoint_receipt_20260831.json | research | 冻结 test 评估前保存的 DeMo epoch10 checkpoint 大小、SHA 与时序证据 |
 | 2026-08-31 04:46 | /monitor-experiment | evidence/demo_rgbnt201_seed42_b32k4_tb64_epoch10_snapshot_20260831.json | research | 10 epoch/30评估/双checkpoint哈希快照；如实保留 ori latency>300s 导致 valid=false |
 | 2026-08-31 04:46 | /monitor-experiment | refine-logs/EXPERIMENT_TRACKER_20260831_044637.md | research | 冻结 epoch10 指标、固定checkpoint与系统延迟 WARN 的不可变实验追踪器快照 |
+| 2026-08-31 05:00 | /implement | tools/summarize_demo_run.py | implementation | 实时汇总新增已训练epoch×三模式精确覆盖门，部分评估一律fail-closed |
+| 2026-08-31 05:00 | /monitor-experiment | docs/ENVIRONMENT_REPRODUCTION.md | research | 记录epoch12的34→35→36条评估边界验证，并保持正式300s延迟失败不变 |
+| 2026-08-31 05:06 | /implement | evidence/demo_summarizer_fail_closed_verification_20260831.json | research | SHA绑定epoch12实时边界及空/断档/越界/重复/partial/complete七项CLI合同探针 |
+| 2026-08-31 05:06 | /experiment-plan | refine-logs/EXPERIMENT_TRACKER.md | implementation | 登记R019 fail-closed汇总门并将版本化证据包更新为19项 |

@@ -1,0 +1,128 @@
+{
+  "artifact": "DeMo live summarizer fail-closed verification",
+  "fixed_point": "21a5ac9983eac04f8262578377acaefb6dd51406",
+  "production_protocol": {
+    "expected_epochs": 50,
+    "feature_modes": [
+      "ori",
+      "moe",
+      "joint"
+    ],
+    "max_eval_seconds": 300.0
+  },
+  "real_live_boundary": {
+    "diagnostic_latency_limit_seconds": 10000.0,
+    "diagnostic_limit_purpose": "isolate evaluation-coverage behavior without changing the registered 300-second protocol",
+    "post_fix_closed_diagnostic": {
+      "coverage": true,
+      "evaluation_records": 36,
+      "exit_code": 0,
+      "latency": true,
+      "trained_epochs": 12,
+      "valid": true
+    },
+    "post_fix_closed_registered_limit": {
+      "coverage": true,
+      "evaluation_records": 36,
+      "exit_code": 1,
+      "latency": false,
+      "trained_epochs": 12,
+      "valid": false
+    },
+    "post_fix_partial": {
+      "coverage": false,
+      "evaluation_records": 35,
+      "exit_code": 1,
+      "latency": true,
+      "present_epoch12_modes": [
+        "ori",
+        "moe"
+      ],
+      "trained_epochs": 12,
+      "valid": false
+    },
+    "pre_fix_partial": {
+      "coverage_check_present": false,
+      "evaluation_records": 34,
+      "exit_code": 0,
+      "latency": true,
+      "present_epoch12_modes": [
+        "ori"
+      ],
+      "trained_epochs": 12,
+      "valid": true
+    }
+  },
+  "source": {
+    "path": "tools/summarize_demo_run.py",
+    "sha256": "eebaec95e19c8e019e2cd0719e38ef82fb3af72280efbb2362e32e2f5b26d483"
+  },
+  "synthetic_public_cli_cases": [
+    {
+      "case": "empty",
+      "coverage": true,
+      "evaluation_records": 0,
+      "exit_code": 1,
+      "has_completed_training_epoch": false,
+      "prefix": true,
+      "valid": false
+    },
+    {
+      "case": "gap_1_3",
+      "coverage": false,
+      "evaluation_records": 6,
+      "exit_code": 1,
+      "has_completed_training_epoch": true,
+      "prefix": false,
+      "valid": false
+    },
+    {
+      "case": "beyond_expected",
+      "coverage": true,
+      "evaluation_records": 12,
+      "exit_code": 1,
+      "has_completed_training_epoch": true,
+      "prefix": false,
+      "valid": false
+    },
+    {
+      "case": "duplicate_train",
+      "coverage": true,
+      "evaluation_records": 3,
+      "exit_code": 1,
+      "prefix": true,
+      "unique_train": false,
+      "valid": false
+    },
+    {
+      "case": "duplicate_eval",
+      "coverage": false,
+      "evaluation_records": 6,
+      "exit_code": 1,
+      "prefix": true,
+      "unique_train": true,
+      "valid": false
+    },
+    {
+      "case": "partial_modes",
+      "coverage": false,
+      "evaluation_records": 2,
+      "exit_code": 1,
+      "prefix": true,
+      "valid": false
+    },
+    {
+      "case": "complete_epoch",
+      "coverage": true,
+      "evaluation_records": 3,
+      "exit_code": 0,
+      "has_completed_training_epoch": true,
+      "prefix": true,
+      "valid": true
+    }
+  ],
+  "test_seam_note": "No persistent regression test was added because the TDD seam agreement is pending; this receipt freezes one-off public-CLI probes.",
+  "verified_at_local": "2026-08-31T05:06:19+08:00",
+  "sota_evidence": false,
+  "valid": true
+}

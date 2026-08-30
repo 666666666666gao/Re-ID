@@ -18,9 +18,10 @@
 | R013 | M1 | 基线偏差诊断 | MDReID/DeMo protocol audit | RGBNT201 | delta vs paper | MUST | RUNNING | 已确认上游每轮读取 test 且按 joint test mAP 写 `DeMobest.pth`；最终双报 test-selected released best 与预注册固定 `DeMo_50.pth`，待 R012 终态计算偏差 |
 | R014 | M1 | 训练安全门 | DeMo real-data AMP capacity + eval latency | RGBNT201 | grads/VRAM/eval latency | MUST | WARN | B32/K4 8 steps 322/322 finite grads；TB128 排除；TB64 两轮早期门通过，但 epoch7/9 ori=329.741/327.717s 超预注册300s；阈值不后改，进程无死锁继续校准 |
 | R015 | M1 | 无测试泄漏开发协议 | hash-pre-registered 141-fit/30-dev | RGBNT201 train_171 only | cross-camera positives/overlap | MUST | DONE | 30/30 dev IDs 跨 camera；825/825 queries 有正样本；test overlap=0 |
-| R016 | M0 | 证据封装 | versioned JSON evidence bundle | data/env/baselines | SHA-256/protocol/claims | MUST | DONE | `evidence/SHA256SUMS` 全量绑定 18 个证据；R012 receipt 明确 `launch_attestation=false`，epoch10 summary 保留 latency gate 失败，protocol audit 明确 test-selected best 非公平选点证据 |
+| R016 | M0 | 证据封装 | versioned JSON evidence bundle | data/env/baselines | SHA-256/protocol/claims | MUST | DONE | `evidence/SHA256SUMS` 全量绑定 19 个证据；R012 receipt 明确 `launch_attestation=false`，epoch10 summary 保留 latency gate 失败，summarizer receipt 冻结fail-closed边界，protocol audit明确test-selected best非公平选点 |
 | R017 | M1 | 强化后驱动器复验 | patched MDReID reproduction driver | RGBNT201 | clean commit/full audit/parity | MUST | WAITING | 历史数值证据仍为 82.0868/85.1675；待 R012 释放 GPU 后重跑，绑定 triplet/camera 与 clean-commit 新门 |
 | R018 | M1 | 固定周期 checkpoint | DeMo epoch 10 receipt | RGBNT201 train_171 | ordering/hash/bytes | MUST | DONE | `DeMo_10.pth` 在 test eval 前保存；395,426,032 bytes；SHA=`b2ab79f0...31c0`；仅固定epoch里程碑，不是最终/SOTA证据 |
+| R019 | M1 | 实时汇总完整性 | DeMo partial/corrupt-log fail-closed gate | RGBNT201 live+synthetic | exit/prefix/coverage/latency | MUST | DONE | epoch12旧版34条误报valid；修复后35条partial exit1、36条闭合coverage=true；空日志、1/3断档、越界、重复均拒绝；正式300s延迟仍失败，未改协议 |
 | R020 | M2 | 单分支 | CNN-only | RGBNT201 | mAP/R1 | MUST | TODO | matched width |
 | R021 | M2 | 单分支 | Transformer-only | RGBNT201 | mAP/R1 | MUST | TODO | DeMo-compatible tokens |
 | R022 | M2 | 单分支 | Mamba-only | RGBNT201 | mAP/R1 | MUST | TODO | bidirectional multi-axis scan |

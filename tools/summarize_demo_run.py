@@ -24,6 +24,7 @@ FATAL_PATTERNS = (
     "CUDA out of memory",
     "RuntimeError:",
 )
+FEATURE_MODES = ("ori", "moe", "joint")
 
 
 def sha256(path: Path) -> str:
@@ -124,7 +125,7 @@ def main() -> int:
 
     by_mode = {
         name: [record for record in evaluations if record["mode"] == name]
-        for name in ("ori", "moe", "joint")
+        for name in FEATURE_MODES
     }
     best_by_mode = {
         name: max(records, key=lambda record: record["mAP_percent"])
@@ -138,6 +139,16 @@ def main() -> int:
     ]
     expected_epoch_set = set(range(1, args.expected_epochs + 1))
     trained_epoch_set = {record["epoch"] for record in train_epochs}
+    latest_epoch = max(trained_epoch_set) if trained_epoch_set else 0
+    expected_live_epoch_set = set(range(1, latest_epoch + 1))
+    expected_evaluation_keys = {
+        (epoch, mode)
+        for epoch in expected_live_epoch_set
+        for mode in FEATURE_MODES
+    }
+    observed_evaluation_keys = [
+        (record["epoch"], record["mode"]) for record in evaluations
+    ]
     complete = trained_epoch_set == expected_epoch_set and all(
         {record["epoch"] for record in records} == expected_epoch_set
         for records in by_mode.values()
@@ -152,7 +163,16 @@ def main() -> int:
     checks = {
         "no_fatal_log_pattern": not fatal_hits,
         "no_nonfinite_metric_or_loss": not nonfinite_hits,
+        "has_completed_training_epoch": bool(trained_epoch_set),
         "epochs_are_unique": len(train_epochs) == len(trained_epoch_set),
+        "trained_epochs_form_expected_prefix": (
+            trained_epoch_set == expected_live_epoch_set
+            and trained_epoch_set <= expected_epoch_set
+        ),
+        "evaluation_records_cover_trained_epochs_exactly": (
+            len(observed_evaluation_keys) == len(expected_evaluation_keys)
+            and set(observed_evaluation_keys) == expected_evaluation_keys
+        ),
         "evaluation_records_complete": all(
             all(
                 key in record
@@ -187,10 +207,10 @@ def main() -> int:
             "num_instances": args.num_instances,
             "expected_epochs": args.expected_epochs,
             "max_eval_seconds": args.max_eval_seconds,
-            "feature_modes": ["ori", "moe", "joint"],
+            "feature_modes": list(FEATURE_MODES),
         },
         "epochs_completed": len(trained_epoch_set),
-        "latest_epoch": max(trained_epoch_set) if trained_epoch_set else 0,
+        "latest_epoch": latest_epoch,
         "train_epochs": train_epochs,
         "evaluations": evaluations,
         "best_by_mode": best_by_mode,
