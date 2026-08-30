@@ -42,7 +42,7 @@
 - Compared systems：MDReID 官方 RGBNT201 checkpoint；DeMo 官方配置在现代 CUDA/PyTorch 下的兼容训练与评估。
 - Metrics：mAP、Rank-1/5/10；样本数、身份数、三模态配对；参数量、FLOPs。
 - Setup details：CLIP ViT-B/16；50 epochs；Adam；LR 3.5e-4；AMP。DeMo 本机校准固定 B32/K4（每批 8 个身份）和 test batch 64，不使用梯度累积虚构 B64：batch-hard/身份采样损失只观察单个微批次，跨微批累积并不等价于官方身份组成。MDReID 官方 checkpoint 继续作为高指标数值锚点。
-- Success criterion：数据审计全通过；evaluator 小样本手算回归通过；MDReID 官方 checkpoint 与报告数值差不超过 0.3 pp；DeMo 官方配置训练结果与 79.0/82.3 的报告值偏差若超过 0.5 pp，先诊断后再进入主模型结论。
+- Success criterion：数据审计全通过；evaluator 小样本手算回归通过；MDReID 官方 checkpoint 与报告数值差不超过 0.3 pp；DeMo 同时报告 released-protocol 的 test-selected best 与预注册固定 `DeMo_50.pth`，后者作为无 test 选点的 matched baseline。与 79.0/82.3 报告值偏差若超过 0.5 pp，先诊断后再进入主模型结论。
 - Failure interpretation：环境、预训练权重、数据版本、随机性或 evaluator 不同；不得把不一致基线当作弱对手。
 - Table / figure target：实现细节与复现表。
 - Priority：MUST-RUN。
@@ -54,7 +54,7 @@
 - Dataset / split / task：先 RGBNT201；通过门后扩展 MSVR310、RGBNT100。
 - Compared systems：MDReID、DeMo；CNN-only；Transformer-only；Mamba-only；三分支平均；三分支 concat+MLP；完整 TriFusion。
 - Metrics：mAP、Rank-1/5/10；三种子均值±标准差；参数量、训练/激活 FLOPs、吞吐、峰值显存。
-- Setup details：相同输入尺寸、数据增强、预训练资源和 evaluator；不使用 reranking、TTT、文本或测试标签；主表固定种子 42/3407/9199。
+- Setup details：相同输入尺寸、数据增强、预训练资源和 evaluator；不使用 reranking、TTT、文本或测试标签进行选择；主表固定种子 42/3407/9199。TriFusion 只在冻结 train-only dev 协议上选结构/checkpoint，晋级后用全部171个训练身份重训并只做一次官方 test；DeMo test-selected released result 单独标注，不冒充无泄漏选择。
 - Success criterion：至少一个主数据集严格超过同资源、同协议赛道的公开最好结果；RGBNT201 静态 CLIP-B/16、256×128 赛道目标为同时超过 RoDI-CLIP 的 84.1 mAP / 87.2 Rank-1。RoDI-DINOv3 85.3/87.9、PMKD-DINOv2 84.7/88.9 和 ProxyTTT 85.0/88.5 分属更强预训练、多阶段蒸馏和测试时训练赛道，只作分轨上限，不能混合作公平 SOTA 声明。
 - Failure interpretation：若仅 ensemble 有益而各分支不改善，C1 不成立；若只在一个小数据集涨，需限制泛化主张。
 - Table / figure target：主表 Table 1、架构图 Figure 2。

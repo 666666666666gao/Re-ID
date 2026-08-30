@@ -15,10 +15,10 @@
 | R010 | M1 | 公开 checkpoint 复现 | MDReID | RGBNT201 | mAP/R1/R5/R10 | MUST | DONE | 82.0868/85.1675/90.3110/92.5837；严格载入；parity=true |
 | R011 | M1 | 实现底座 quick overfit | DeMo | tiny train subset | loss/Rank-1 | MUST | TODO | 先证明现代环境可学习 |
 | R012 | M1 | 实现底座完整复现 | DeMo | RGBNT201 | mAP/R1/R5/R10 | MUST | RUNNING | seed42；B32/K4/TB64；已完成 6 个完整三模式评估 epoch，epoch 7 正在训练；当前最好 joint 为 epoch 4 的 68.1 mAP / 70.1 R1；无 fatal/nonfinite；保留 ori 评估分页及 86–89°C、SW thermal slowdown 风险；50 epoch 继续运行 |
-| R013 | M1 | 基线偏差诊断 | MDReID/DeMo protocol audit | RGBNT201 | delta vs paper | MUST | WAITING | MDReID 已对齐；待 R012 50 epoch 终态 |
+| R013 | M1 | 基线偏差诊断 | MDReID/DeMo protocol audit | RGBNT201 | delta vs paper | MUST | RUNNING | 已确认上游每轮读取 test 且按 joint test mAP 写 `DeMobest.pth`；最终双报 test-selected released best 与预注册固定 `DeMo_50.pth`，待 R012 终态计算偏差 |
 | R014 | M1 | 训练安全门 | DeMo real-data AMP capacity + eval latency | RGBNT201 | grads/VRAM/eval latency | MUST | DONE | B32/K4 8 steps 322/322 finite grads；TB128 排除；TB64 两轮完整评估 valid=true |
 | R015 | M1 | 无测试泄漏开发协议 | hash-pre-registered 141-fit/30-dev | RGBNT201 train_171 only | cross-camera positives/overlap | MUST | DONE | 30/30 dev IDs 跨 camera；825/825 queries 有正样本；test overlap=0 |
-| R016 | M0 | 证据封装 | versioned JSON evidence bundle | data/env/baselines | SHA-256/protocol/claims | MUST | DONE | `evidence/SHA256SUMS` 全量绑定 15 个基础证据；当前 R012 receipt 明确 `launch_attestation=false`，live gate 非最终精度/SOTA 证据 |
+| R016 | M0 | 证据封装 | versioned JSON evidence bundle | data/env/baselines | SHA-256/protocol/claims | MUST | DONE | `evidence/SHA256SUMS` 全量绑定 16 个基础证据；当前 R012 receipt 明确 `launch_attestation=false`，protocol audit 明确 test-selected best 非公平选点证据 |
 | R017 | M1 | 强化后驱动器复验 | patched MDReID reproduction driver | RGBNT201 | clean commit/full audit/parity | MUST | WAITING | 历史数值证据仍为 82.0868/85.1675；待 R012 释放 GPU 后重跑，绑定 triplet/camera 与 clean-commit 新门 |
 | R020 | M2 | 单分支 | CNN-only | RGBNT201 | mAP/R1 | MUST | TODO | matched width |
 | R021 | M2 | 单分支 | Transformer-only | RGBNT201 | mAP/R1 | MUST | TODO | DeMo-compatible tokens |

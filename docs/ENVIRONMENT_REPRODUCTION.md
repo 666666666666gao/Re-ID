@@ -118,6 +118,14 @@ TriFusion ablations use the same B32/K4 identity sampling so comparisons remain
 matched. The separately reproduced MDReID public checkpoint above remains the
 primary high-metric baseline.
 
+The released RGBNT201 dataset class points both query and gallery at `test`, and
+the training loop evaluates it every epoch before selecting `DeMobest.pth` by
+joint mAP. Accordingly, `DeMobest.pth` is explicitly test-selected. R012 will
+also preserve `DeMo_50.pth`, which is saved before epoch-50 evaluation and is
+the pre-registered fixed-epoch matched baseline. See
+`docs/BASELINE_PROTOCOL_AUDIT_2026-08-31.md` for source lines, hashes and the
+binding paper-reporting policy.
+
 R012 began before the launcher gained its commit/dirty and GPU-occupancy
 fail-closed checks. The versioned
 `evidence/demo_rgbnt201_seed42_b32k4_tb64_live_provenance_20260831.json`

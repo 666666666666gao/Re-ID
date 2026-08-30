@@ -61,3 +61,4 @@
 | 2026-08-31 04:07 | /research | docs/RESEARCH_AUDIT_2026-08-31.md | research | 补核 NEXT、STMI、CoT-ReID、PRISM 的精确指标、测试资源、协议与工件可复现性 |
 | 2026-08-31 04:16 | /implement | evidence/ | implementation | 将数据、环境、MDReID parity 与 DeMo 系统门禁 JSON 按 SHA-256 原样纳入版本化证据包 |
 | 2026-08-31 04:25 | /implement | tools/capture_demo_live_provenance.py | implementation | 对早于新启动门的 R012 生成明确非 launch-attestation 的受限进程/源码 provenance receipt |
+| 2026-08-31 04:33 | /implement | docs/BASELINE_PROTOCOL_AUDIT_2026-08-31.md | research | 固化 DeMo 每轮读取 test、按 test mAP 选 best 的源码证据及 fixed-epoch 双报告策略 |

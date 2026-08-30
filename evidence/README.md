@@ -21,7 +21,9 @@ sha256sum -c evidence/SHA256SUMS
   parity at 82.0868% mAP / 85.1675% Rank-1.
 - DeMo implementation base: synthetic and real-data training gates, the
   excluded TB128 paging-pressure run, the accepted TB64 live gate, and a
-  bounded post-launch provenance observation of the current process.
+  bounded post-launch provenance observation of the current process. The
+  protocol audit additionally binds the source-level fact that released
+  `DeMobest.pth` is selected on test mAP.
 
 The `demo_rgbnt201_seed42_b32k4_tb64_gate2_20260831.json` snapshot is only an
 interim systems gate. It contains two fully completed three-mode evaluation

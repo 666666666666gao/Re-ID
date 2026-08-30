@@ -1,0 +1,44 @@
+{
+  "audit": "DeMo RGBNT201 checkpoint-selection protocol",
+  "baseline_commit": "b4f323a430b32e3a1637c3e7acb25868cb52e9cd",
+  "baseline_tracked_tree_clean": true,
+  "facts": {
+    "best_checkpoint_selected_on_joint_test_map": {
+      "lines": [132, 138],
+      "path": "engine/processor.py",
+      "verified": true
+    },
+    "periodic_checkpoint_saved_before_epoch_evaluation": {
+      "lines": [111, 120],
+      "path": "engine/processor.py",
+      "verified": true
+    },
+    "query_and_gallery_both_use_test": {
+      "lines": [27, 28],
+      "path": "data/datasets/RGBNT201.py",
+      "verified": true
+    },
+    "test_loader_is_query_plus_gallery": {
+      "lines": [249, 259],
+      "path": "data/datasets/make_dataloader.py",
+      "verified": true
+    },
+    "test_metrics_evaluated_each_epoch_in_released_configuration": {
+      "lines": [120, 131],
+      "path": "engine/processor.py",
+      "verified": true
+    }
+  },
+  "reporting_policy": {
+    "DeMobest.pth": "test-selected released-protocol calibration only",
+    "DeMo_50.pth": "pre-registered fixed-epoch matched baseline",
+    "TriFusion": "select on frozen train-only dev protocol; final official test once"
+  },
+  "source_sha256": {
+    "configs/RGBNT201/DeMo.yml": "bfee0de623885a38cce974c1c5d74abf47c54e14852cc266b8f69c70a858c51d",
+    "data/datasets/RGBNT201.py": "1a3dda88f26efc2891322e2726c4f3591bfd0c040cdf5c717d0aabc55f349272",
+    "data/datasets/make_dataloader.py": "2061c8131ab76771fdbf53b36faf3e3b6cf6493002c7fa84304ff589d63dd3d8",
+    "engine/processor.py": "02c3b1187b3974bd0ab3d119b6dd361df41f8ab73831af43544f08262a13aae8"
+  },
+  "verified": true
+}
