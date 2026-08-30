@@ -1,0 +1,71 @@
+{
+  "baseline": {
+    "commit": "b4f323a430b32e3a1637c3e7acb25868cb52e9cd",
+    "config": "/root/mmreid-trifusion/baselines/DeMo/configs/RGBNT201/DeMo.yml",
+    "config_sha256": "bfee0de623885a38cce974c1c5d74abf47c54e14852cc266b8f69c70a858c51d",
+    "expected_commit": "b4f323a430b32e3a1637c3e7acb25868cb52e9cd",
+    "root": "/root/mmreid-trifusion/baselines/DeMo",
+    "tracked_status": "",
+    "train_entry": "/root/mmreid-trifusion/baselines/DeMo/tools/train.py",
+    "train_entry_sha256": "75fffcd932698648e81cbdde5d7cdf791d3fcea76582a5ed0a84ee649ab40066"
+  },
+  "checks": {
+    "baseline_commit_is_frozen": true,
+    "baseline_tracked_tree_clean_at_observation": true,
+    "checkpoint_present": true,
+    "effective_overrides_present_in_driver_log": true,
+    "process_command_exact": true,
+    "process_cwd_is_frozen_checkout": true
+  },
+  "inputs": {
+    "clip_weight": "/root/mmreid-trifusion/pretrained/ViT-B-16.pt",
+    "clip_weight_sha256": "5806e77cd80f8b59890b7e101eabd078d9fb84e6937f9e85e4ecb61988df416f",
+    "dataset_audit": "/root/mmreid-trifusion/artifacts/rgbnt201_audit_20260831.json",
+    "dataset_audit_sha256": "ec36309921a3dd7c12d46bb60a83406440ba316f171e419a67ad2cc83bf24318"
+  },
+  "launch_attestation": false,
+  "limitations": [
+    "The process started before the launcher commit/GPU guards were added.",
+    "This receipt verifies the live command, effective logged overrides, and exact clean upstream checkout at observation time; it does not claim those later guards executed at launch.",
+    "Mutable log and checkpoint hashes bind only the bytes present at observation time."
+  ],
+  "mutable_run_snapshot": {
+    "checkpoint": "/root/mmreid-trifusion/runs/demo_rgbnt201_seed42_b32k4_tb64/DeMobest.pth",
+    "checkpoint_bytes": 395427029,
+    "checkpoint_sha256": "bd6d8efad97fe033edd931caeb48bac0692ef275e86b3857f7ab2d7d188ccafa",
+    "driver_stdout_sha256": "ce3681119a792ebdc22ea40fe8aee49a434aed791fac41766118fd50c1054ef8",
+    "run_dir": "/root/mmreid-trifusion/runs/demo_rgbnt201_seed42_b32k4_tb64",
+    "train_log_sha256": "4fbed25675e21a813b4902cd1831d1b3fa4df65e29ea74e46de32313b8116315"
+  },
+  "observed_at_utc": "2026-08-30T20:26:00.804882+00:00",
+  "process": {
+    "command": [
+      "/root/miniconda3/envs/tri_reid/bin/python",
+      "tools/run_demo_baseline.py",
+      "--output-dir",
+      "/root/mmreid-trifusion/runs/demo_rgbnt201_seed42_b32k4_tb64",
+      "--max-epochs",
+      "50",
+      "--eval-period",
+      "1",
+      "--checkpoint-period",
+      "10",
+      "--batch-size",
+      "32",
+      "--test-batch-size",
+      "64",
+      "--num-instances",
+      "4",
+      "--workers",
+      "4",
+      "--seed",
+      "42"
+    ],
+    "cwd": "/root/mmreid-trifusion/baselines/DeMo",
+    "executable": "/root/miniconda3/envs/tri_reid/bin/python3.10",
+    "pid": 261435,
+    "started_local": "Mon Aug 31 03:48:11 2026"
+  },
+  "scope": "post_launch_live_observation",
+  "valid": true
+}

@@ -1,0 +1,52 @@
+{
+  "valid": true,
+  "classification": "partial_negative_systems_run",
+  "included_in_final_metrics": false,
+  "baseline": "DeMo",
+  "dataset": "RGBNT201",
+  "train_profile": "B32/K4 seed42",
+  "test_batch_size": 128,
+  "run_dir": "/root/mmreid-trifusion/runs/demo_rgbnt201_seed42_b32k4",
+  "observations": {
+    "epoch1_train_seconds_per_batch": 0.617,
+    "epoch1_ori_eval_seconds": 29.576,
+    "epoch1_best_joint_mAP_percent": 63.5,
+    "epoch1_best_joint_rank1_percent": 65.8,
+    "epoch2_train_seconds_per_batch": 0.755,
+    "epoch2_ori_eval_seconds": 857.004,
+    "epoch2_moe_eval_seconds": 24.683,
+    "epoch2_joint_eval_seconds": 26.071,
+    "observed_cuda_memory_mib": 7885,
+    "gpu_total_memory_mib": 8188,
+    "epoch3_training_completed": true,
+    "epoch3_evaluation_completed": false
+  },
+  "decision": {
+    "action": "terminate and restart from initialization with TEST.IMS_PER_BATCH=64",
+    "reason": "TB128 caused a 28.98x epoch-to-epoch ori-evaluation latency spike at the 8 GB memory boundary",
+    "checkpoint_or_optimizer_state_resumed": false,
+    "partial_metrics_promoted": false
+  },
+  "files": [
+    {
+      "name": "train_log.txt",
+      "bytes": 12501,
+      "sha256": "b763fd397bbce94a6375ea4392a1c87d01994758483541317c89947b6f7fdeb4"
+    },
+    {
+      "name": "driver.stdout.log",
+      "bytes": 13703,
+      "sha256": "a0d4b67007825248b8f0e19e43208875c0bdb297c4162472b14680a6e21ca5f9"
+    },
+    {
+      "name": "driver.stderr.log",
+      "bytes": 1308,
+      "sha256": "e371733607a76bc79fd9fcd720fcaabd156d2042bd4e1d94ff38f9123e5d2150"
+    },
+    {
+      "name": "DeMobest.pth",
+      "bytes": 395427029,
+      "sha256": "b9e437b0384e7ad48786d499568911f9502e0cdffbe551a3212ebe97fc8a6cd4"
+    }
+  ]
+}

@@ -1,0 +1,157 @@
+# WSL2 environment and baseline reproduction
+
+## Verified local stack
+
+- WSL2 Ubuntu 20.04, glibc 2.31
+- NVIDIA GeForce RTX 4060 Laptop GPU, compute capability 8.9
+- Python 3.10.14
+- PyTorch 2.5.1+cu121 / torchvision 0.20.1+cu121
+- causal-conv1d 1.6.0 and mamba-ssm 2.2.6.post3, compiled for SM89
+- Transformers 4.45.2
+
+The upstream prebuilt Mamba wheels require a newer glibc than Ubuntu 20.04. The
+environment therefore pins the official source commits and applies auditable
+SM89-only build patches. Transformers is fixed to 4.45.2 because Mamba 2.2.6's
+generation imports are incompatible with Transformers 5.x.
+
+## Recreate the environment
+
+Run from this repository so the relative pip lock resolves correctly:
+
+```bash
+cd /root/mmreid-trifusion/TriFusion-ReID
+/root/miniconda3/bin/conda env create -f environment.yml
+/root/miniconda3/bin/conda activate tri_reid
+bash scripts/build_mamba_sm89.sh
+```
+
+The build script verifies these upstream commits before applying patches:
+
+- causal-conv1d v1.6.0: `da6dbaa9fd5a919967f14d3fd031da1288ad5025`
+- mamba-ssm v2.2.6.post3: `10b5d6358f27966f6a40e4bf0baa17a460688128`
+
+It finishes by running a real CUDA forward/backward smoke and writes
+`/root/mmreid-trifusion/artifacts/mamba_cuda_smoke_20260831.json`.
+
+## Reproduce the measurable baseline
+
+```bash
+conda activate tri_reid
+CUDA_VISIBLE_DEVICES=0 python tools/reproduce_mdreid.py
+```
+
+The official MDReID `test_net.py` hard-codes an author checkpoint and calls an
+undefined visualization function. Its `engine/processor.py` also contains an
+invalid UTF-8 byte under Python 3.10. `tools/reproduce_mdreid.py` leaves the
+upstream checkout untouched, strictly loads the official checkpoint, and calls
+the repository's own `R1_mAP_eval` implementation directly.
+
+Verified RGBNT201 result, without reranking:
+
+- mAP: 82.0868%
+- Rank-1: 85.1675%
+- Rank-5: 90.3110%
+- Rank-10: 92.5837%
+
+These values reproduce the public 82.1% mAP / 85.2% Rank-1 after rounding. The
+full protocol, hashes, runtime and strict-load result are stored in
+`/root/mmreid-trifusion/artifacts/mdreid_rgbnt201_eval_20260831.json`.
+That metric artifact predates the later fail-closed triplet/camera audit and
+clean-commit checks. The underlying audit bytes and official commit were
+correct; rerun the patched driver once R012 releases the GPU to bind the new
+report schema before treating the current source revision as reproduced.
+
+## Reproduce the DeMo implementation base
+
+DeMo's released CLIP loader hard-codes an unavailable author-machine path.
+`tools/run_demo_baseline.py` injects the verified local CLIP archive at runtime
+and otherwise runs the upstream checkout at commit
+`b4f323a430b32e3a1637c3e7acb25868cb52e9cd` unchanged.
+
+The released RGBNT201 configuration uses B64/K8 and was designed for a GPU with
+substantially more memory. A real-data capacity probe on this 8 GB RTX 4060
+established B32/K4 as the largest safe profile with eight identities per batch:
+eight official-loss AMP steps pass, the final two have finite gradients for all
+322 trainable parameter tensors, and peak allocated memory is 6894.18 MiB. The
+evidence is in `artifacts/demo_real_step_probe_b32_20260831.json`.
+
+The released test batch of 128 reached 7885 MiB and produced an 857-second
+epoch-2 evaluation stall after a normal 30-second epoch-1 pass. That partial run
+is retained as a negative systems result and is not spliced into a later run.
+The fixed local profile therefore uses `TEST.IMS_PER_BATCH=64`; it changes only
+inference batching, not features, distances, query/gallery order or metrics.
+
+Run the fixed 50-epoch profile with:
+
+```bash
+cd /root/mmreid-trifusion/TriFusion-ReID
+bash scripts/run_demo_rgbnt201_seed42.sh
+```
+
+Summarize a completed run, including all checkpoint hashes, with:
+
+```bash
+python tools/summarize_demo_run.py \
+  /root/mmreid-trifusion/runs/demo_rgbnt201_seed42_b32k4_tb64 \
+  --expected-epochs 50 --require-complete --hash-checkpoints
+```
+
+The TB64 run passed the pre-registered live gate after two fully evaluated
+epochs. All six `(epoch, feature-mode)` records were complete, losses and
+metrics were finite, no fatal log pattern was present, and the largest single
+evaluation was 224.226 seconds, below the 300-second limit. The epoch-2 `ori`
+pass temporarily occupied 7919/8188 MiB framebuffer memory and nearly all BAR1,
+so the gate records a paging-pressure warning even though the process remained
+at 100% GPU utilization and completed. The immutable live-gate snapshot is
+`/root/mmreid-trifusion/artifacts/demo_rgbnt201_seed42_b32k4_tb64_gate2_20260831.json`
+(SHA-256 `c7a7738c8e59d61b064092d5f6c59f7f1db8302ff599b04cb9fe5c4b0a092d40`).
+This snapshot is a systems gate, not the final 50-epoch accuracy result.
+After removing timestamps, the 52 logged training-loss and retrieval-metric
+records from epochs 1--2 are byte-for-byte identical between the excluded
+TB128 run and the restarted TB64 run. This confirms that the restart reproduced
+the same optimization trajectory and that inference batch size did not alter
+the six reported retrieval results; checkpoint or metric splicing was not used.
+
+This B32/K4 result is a hardware-matched implementation-base calibration, not
+an exact reproduction of the paper's B64/K8 optimization protocol. All
+TriFusion ablations use the same B32/K4 identity sampling so comparisons remain
+matched. The separately reproduced MDReID public checkpoint above remains the
+primary high-metric baseline.
+
+R012 began before the launcher gained its commit/dirty and GPU-occupancy
+fail-closed checks. The versioned
+`evidence/demo_rgbnt201_seed42_b32k4_tb64_live_provenance_20260831.json`
+receipt explicitly has `launch_attestation=false`; it binds the exact live
+command, logged effective B32/K4/TB64 overrides, and the clean frozen DeMo
+checkout observed during the run. It must not be described as proof that the
+later guards executed at launch.
+
+## Train-only development protocol
+
+Do not treat the provided `train_171 - train_141` identity difference as a
+retrieval dev set: 20 of its 30 identities have only one camera and therefore
+have no valid positive after the official same-pid/same-camera exclusion.
+Generate the frozen cross-camera protocol with:
+
+```bash
+python tools/build_rgbnt201_dev_protocol.py
+```
+
+The deterministic hash rule selects 30 of the 51 multi-camera training
+identities, leaves 141 identities for fitting, and gives all 825 dev queries a
+valid cross-camera positive. It is derived only from `train_171` metadata and
+has zero test-identity overlap. Final promoted configurations are retrained on
+all 171 training identities.
+
+## Verify the versioned evidence
+
+Key JSON outputs are mirrored byte-for-byte under `evidence/`, with the runtime
+copies under `/root/mmreid-trifusion/artifacts` remaining canonical. Verify the
+repository bundle with:
+
+```bash
+sha256sum -c evidence/SHA256SUMS
+```
+
+The bundle is intentionally limited to data, environment and baseline gates.
+It contains no final TriFusion result and cannot by itself support a SOTA claim.

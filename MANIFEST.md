@@ -1,0 +1,63 @@
+# Research Output Manifest
+
+> Auto-maintained by ARIS skills. Tracks all generated artifacts across the research lifecycle.
+
+| Timestamp | Skill | File | Stage | Description |
+|-----------|-------|------|-------|-------------|
+| 2026-08-31 02:16 | /run-experiment | AGENTS.md | implementation | WSL2、GPU、conda、数据与公平性约束 |
+| 2026-08-31 02:19 | /run-experiment | tools/audit_rgbnt201.py | implementation | RGBNT201 身份、模态配对与 JPEG 完整性审计工具 |
+| 2026-08-31 02:20 | /run-experiment | ../artifacts/rgbnt201_audit_20260831.json | implementation | RGBNT201 数据审计结果，全部通过 |
+| 2026-08-31 02:21 | /experiment-plan | refine-logs/EXPERIMENT_PLAN_20260831_022125.md | implementation | claim-driven 论文实验计划的永久版本 |
+| 2026-08-31 02:21 | /experiment-plan | refine-logs/EXPERIMENT_PLAN.md | implementation | 实验计划 latest copy |
+| 2026-08-31 02:21 | /experiment-plan | refine-logs/EXPERIMENT_TRACKER_20260831_022125.md | implementation | 可执行实验追踪器的永久版本 |
+| 2026-08-31 02:21 | /experiment-plan | refine-logs/EXPERIMENT_TRACKER.md | implementation | 实验追踪器 latest copy |
+| 2026-08-31 02:27 | /run-experiment | tools/audit_msvr310.py | implementation | MSVR310 身份划分、配对与 JPEG 完整性审计工具 |
+| 2026-08-31 02:28 | /run-experiment | ../artifacts/msvr310_audit_20260831.json | implementation | MSVR310 数据审计结果，全部通过 |
+| 2026-08-31 02:30 | /research | docs/RESEARCH_AUDIT_2026-08-31.md | research | 新颖性碰撞、RGBNT201 协议、公开工件和分轨 SOTA 审计 |
+| 2026-08-31 02:32 | /experiment-plan | refine-logs/EXPERIMENT_PLAN_20260831_023224.md | implementation | 主源查新后冻结的 claim-driven 实验计划永久版本 |
+| 2026-08-31 02:32 | /experiment-plan | refine-logs/EXPERIMENT_PLAN.md | implementation | 主源查新后实验计划 latest copy |
+| 2026-08-31 02:32 | /experiment-plan | refine-logs/EXPERIMENT_TRACKER_20260831_023224.md | implementation | 新基线与数据状态同步后的追踪器永久版本 |
+| 2026-08-31 02:32 | /experiment-plan | refine-logs/EXPERIMENT_TRACKER.md | implementation | 新基线与数据状态同步后的追踪器 latest copy |
+| 2026-08-31 02:35 | /run-experiment | ../artifacts/environment_smoke_20260831.json | implementation | tri_reid 的 PyTorch/CUDA/CuDNN 与真实 GPU 前反向 smoke 结果 |
+| 2026-08-31 02:51 | /run-experiment | ../artifacts/mdreid_rgbnt201_loader_smoke_20260831.json | implementation | MDReID 官方 RGBNT201 loader 单批三模态接口 smoke 结果 |
+| 2026-08-31 03:01 | /run-experiment | tools/audit_rgbnt100.py | implementation | RGBNT100 原始三谱、官方 composite 划分与全量 JPEG 审计工具 |
+| 2026-08-31 03:02 | /run-experiment | ../artifacts/rgbnt100_audit_20260831.json | implementation | RGBNT100 17,250 triplets、50/50 身份划分与 70,715 JPEG 全部通过 |
+| 2026-08-31 03:05 | /run-experiment | environment.yml | implementation | WSL2 tri_reid conda/CUDA 环境入口 |
+| 2026-08-31 03:05 | /run-experiment | requirements-lock.txt | implementation | 复现实验的完整 pip 版本锁 |
+| 2026-08-31 03:05 | /run-experiment | scripts/build_mamba_sm89.sh | implementation | 固定官方提交、应用 SM89 patches、源码编译并烟测 Mamba |
+| 2026-08-31 03:06 | /run-experiment | tools/smoke_mamba.py | implementation | Mamba CUDA 前向、反向与全参数梯度门禁 |
+| 2026-08-31 03:07 | /run-experiment | ../artifacts/mamba_cuda_smoke_20260831.json | implementation | Mamba 2.2.6.post3 / causal-conv1d 1.6.0 的 SM89 有效烟测 |
+| 2026-08-31 03:08 | /run-experiment | tools/reproduce_mdreid.py | implementation | 绕开上游损坏入口、严格复现 MDReID checkpoint 的独立驱动器 |
+| 2026-08-31 03:09 | /run-experiment | ../artifacts/mdreid_rgbnt201_eval_20260831.json | implementation | MDReID 本机同协议 82.0868 mAP / 85.1675 R1 parity 证据 |
+| 2026-08-31 03:09 | /run-experiment | ../artifacts/download_manifest_20260831.json | implementation | 数据、权重、审计、源码提交与下载哈希总清单 |
+| 2026-08-31 03:09 | /run-experiment | docs/ENVIRONMENT_REPRODUCTION.md | implementation | 环境重建、兼容性决策与基线复现说明 |
+| 2026-08-31 03:09 | /experiment-plan | refine-logs/EXPERIMENT_TRACKER_20260831_030917.md | implementation | 数据、环境、Mamba 与 MDReID parity 完成后的追踪器永久版本 |
+| 2026-08-31 03:14 | /experiment-plan | docs/METHOD_SPEC_V1.md | research | HFER、URGC、RDPT 的公式、软件契约、证伪门和完整消融矩阵 |
+| 2026-08-31 03:14 | /tdd | docs/TDD_SEAMS.md | implementation | 核心三分支实现前待用户确认的公共测试接缝 |
+| 2026-08-31 03:15 | /experiment-plan | refine-logs/EXPERIMENT_PLAN_20260831_031302.md | implementation | 数据、环境、baseline parity 与方法冻结状态同步后的永久实验计划 |
+| 2026-08-31 03:18 | /run-experiment | tools/smoke_demo.py | implementation | 不修改上游仓库的 DeMo 三谱完整训练图前反向诊断器 |
+| 2026-08-31 03:19 | /run-experiment | ../artifacts/demo_train_smoke_20260831.json | implementation | DeMo 完整训练图 loss、322/322 参数梯度与 1184.57 MiB 显存证据 |
+| 2026-08-31 03:22 | /run-experiment | tools/probe_demo_train_step.py | implementation | 真实 RGBNT201、官方身份采样/损失/AMP 的单优化步容量探针 |
+| 2026-08-31 03:24 | /run-experiment | tools/run_demo_baseline.py | implementation | 保持上游模型不变、显式覆盖 CLIP/数据路径的 DeMo 可复现训练入口 |
+| 2026-08-31 03:26 | /run-experiment | scripts/run_demo_rgbnt201_seed42.sh | implementation | RGBNT201 DeMo seed42、B32/K4、50 epoch 的固定复现命令 |
+| 2026-08-31 03:27 | /run-experiment | tools/summarize_demo_run.py | implementation | 解析 DeMo 逐 epoch 三模式指标、异常与 checkpoint 的 JSON 审计器 |
+| 2026-08-31 03:28 | /run-experiment | ../artifacts/demo_real_step_probe_b32_20260831.json | implementation | RGBNT201 B32/K4 官方损失 8 步 AMP 稳定性与 6894.18 MiB 容量证据 |
+| 2026-08-31 03:28 | /run-experiment | ../artifacts/demo_rgbnt201_sanity_seed42_summary.json | implementation | DeMo 1-epoch 训练、三模式评估、保存和 checkpoint 哈希闭环证据 |
+| 2026-08-31 03:28 | /run-experiment | ../runs/demo_rgbnt201_seed42_b32k4/ | implementation | R012 50-epoch DeMo seed42 正式复现运行目录（进行中） |
+| 2026-08-31 03:28 | /experiment-plan | refine-logs/EXPERIMENT_TRACKER_20260831_032800.md | implementation | R012 正式运行启动后的追踪器永久版本 |
+| 2026-08-31 03:31 | /experiment-plan | tools/build_rgbnt201_dev_protocol.py | implementation | 基于 train_171 跨摄像头元数据和固定哈希盐构建无测试泄漏 dev 协议 |
+| 2026-08-31 03:32 | /experiment-plan | protocols/rgbnt201_dev_v1.json | research | 141-fit/30-dev 身份、官方过滤与完整审计的冻结协议 |
+| 2026-08-31 03:32 | /experiment-plan | protocols/rgbnt201_train_ids_v1.txt | research | 哈希预注册协议的 141 个训练身份列表 |
+| 2026-08-31 03:32 | /experiment-plan | protocols/rgbnt201_dev_ids_v1.txt | research | 全部具有跨摄像头正样本的 30 个开发身份列表 |
+| 2026-08-31 03:32 | /experiment-plan | ../artifacts/rgbnt201_dev_protocol_v1_audit.json | research | 零测试泄漏、零身份交叠、825/825 有效 query/gallery 的协议证据 |
+| 2026-08-31 03:48 | /run-experiment | tools/run_demo_baseline.py | implementation | 增加独立测试批量参数，规避 8 GB GPU 上 B128 评估分页停顿 |
+| 2026-08-31 03:49 | /run-experiment | ../artifacts/demo_rgbnt201_tb128_stall_audit_20260831.json | research | TB128 epoch2 评估 857s 停顿、终止与不晋级决定的哈希审计 |
+| 2026-08-31 03:48 | /run-experiment | ../runs/demo_rgbnt201_seed42_b32k4_tb64/ | implementation | R012 从初始化启动的 DeMo seed42、B32/K4/TB64、50-epoch 正式运行目录 |
+| 2026-08-31 03:59 | /monitor-experiment | ../artifacts/demo_rgbnt201_seed42_b32k4_tb64_gate2_20260831.json | research | 连续两轮三模式评估有效、最大 224.226s<300s 的 TB64 实时门禁快照 |
+| 2026-08-31 03:59 | /monitor-experiment | docs/ENVIRONMENT_REPRODUCTION.md | implementation | 增补 TB64 两轮门禁、BAR1/显存压力警告与非终态声明 |
+| 2026-08-31 03:59 | /experiment-plan | refine-logs/EXPERIMENT_TRACKER_20260831_035900.md | implementation | RGBNT100、dev 协议、TB128 负结果与 TB64 两轮门禁同步后的只读追踪器 |
+| 2026-08-31 03:59 | /experiment-plan | refine-logs/EXPERIMENT_TRACKER.md | implementation | 同步后的实验追踪器 latest copy |
+| 2026-08-31 04:03 | /research | docs/SOURCE_INTAKE_2026-08-31.md | research | 原始调研文件的哈希、需求提炼、用户三分支覆盖决策与项目工件映射 |
+| 2026-08-31 04:07 | /research | docs/RESEARCH_AUDIT_2026-08-31.md | research | 补核 NEXT、STMI、CoT-ReID、PRISM 的精确指标、测试资源、协议与工件可复现性 |
+| 2026-08-31 04:16 | /implement | evidence/ | implementation | 将数据、环境、MDReID parity 与 DeMo 系统门禁 JSON 按 SHA-256 原样纳入版本化证据包 |
+| 2026-08-31 04:25 | /implement | tools/capture_demo_live_provenance.py | implementation | 对早于新启动门的 R012 生成明确非 launch-attestation 的受限进程/源码 provenance receipt |

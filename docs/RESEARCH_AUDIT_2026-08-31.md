@@ -1,0 +1,136 @@
+# TriFusion-ReID 研究审计：新颖性、RGBNT201 协议与可复现目标
+
+> 审计日期：2026-08-31
+> 范围：RGB–NIR–TIR 多模态目标 ReID；只采用论文官网、作者官方项目页和官方 GitHub 仓库。本文没有下载数据集或运行训练，因此“可复现”仅表示公开工件足够启动复现，不表示本文已复现其指标。
+
+## 结论摘要
+
+截至审计日，在聚焦的主源检索范围内，**没有发现一个已公开的 RGB–NIR–TIR ReID 方法同时包含**：
+
+1. 三个完整的 CNN / Transformer / Mamba 异构架构专家；
+2. 多深度、双向、阶段式跨架构信息交换；
+3. 显式可靠性同时控制消息交换和最终融合；
+4. 依据校准置信度逐样本选择教学方向、且允许拒绝教学的互蒸馏。
+
+这是有边界的否定性检索结论，不是“全球不存在”的证明，也不足以直接使用“首个”。三分支、渐进融合、CNN–Transformer 深层互联、Mamba 跨模态建模、不确定性感知融合、困难样本蒸馏和互蒸馏都已有直接先例。可辩护的新颖性应限定为：**由同一个校准可靠性后验统一调控三类异构专家之间的阶段式通信、融合与方向选择式同伴蒸馏**。
+
+## 1. RGBNT201 协议必须先冻结
+
+RGBNT201 原论文使用 201 个身份和 4 个非重叠视角，共 4,787 组三模态记录；141/30/30 个身份用于训练/验证/测试；测试时每个身份随机选 10 条记录作为 probe，全部测试记录作为 gallery。该定义见 [PFNet / RGBNT201 原始论文的 Dataset Description](https://ojs.aaai.org/index.php/AAAI/article/download/16467/16274)。
+
+当前 DeMo 系公开代码采用了不同的事实标准：
+
+- `train_171` 合并原训练与验证身份；
+- 整个 `test` 同时作为 query 和 gallery；
+- 排除与 query 同身份且同 camera 的 gallery 样本；
+- 通常报告 mAP、Rank-1、Rank-5、Rank-10，不使用 reranking。
+
+这一行为可直接从 [DeMo 的 RGBNT201 loader](https://github.com/924973292/DeMo/blob/b4f323a430b32e3a1637c3e7acb25868cb52e9cd/data/datasets/RGBNT201.py)、[DeMo evaluator](https://github.com/924973292/DeMo/blob/b4f323a430b32e3a1637c3e7acb25868cb52e9cd/utils/metrics.py)、[MFRNet loader](https://github.com/stone96123/MFRNet/blob/ec54a1302321cda4b5fad9ca1c0878dabf0b46b6/data/datasets/RGBNT201.py)、[MDReID loader](https://github.com/stone96123/MDReID/blob/3525ac2da1a2a90a5a160c930fac674b4f226f6c/data/datasets/RGBNT201.py)、[CoT-ReID loader](https://github.com/Gaoya615/CoT-ReID/blob/db215273d6ee68b9c324fdf36e3d6800370fa21e/data/datasets/RGBNT201_Text_cot.py)、[PRISM loader](https://github.com/zw-absin/PRISM/blob/0067f6d895c522afa2c4f30515b33bc4300fe680/data/datasets/RGBNT201.py) 和 [STMI loader](https://github.com/young6man/STMI/blob/27a74bb90ad46a6d9feab67a6a26753e11a8ad36/data/datasets/RGBNT201_Text.py) 核实。
+
+因此，原论文的“随机 300 probe”结果不能与现代 `train_171 + full-test query/gallery` 结果直接混排。后续实验应保存数据文件清单及哈希、身份划分、camera 解析规则、过滤规则和随机种子。下文的目标值仅讨论现代协议谱系；对没有发布代码的 RoDI、PMKD、NEXT，只能核对论文表述，不能独立审计其实际 loader。尤其是 NEXT v5 的数据集段落仍写 141/30/30 身份划分，而其[官方训练 caption JSON](https://github.com/lsh-ahu/NEXT-ReID/blob/b86b8fd253f3c872f366a88e46282a23a6a84db7/Annotation_Text/NEXT/201/train_RGB.json)实际覆盖 171 个身份（3,951 个文件名），测试 JSON 覆盖 30 个身份（836 个文件名）；没有 loader/evaluator 时仍无法确认 query/gallery 构造。
+
+## 2. 可复现高基线与同协议目标
+
+以下指标均为 RGBNT201 的 `mAP / Rank-1`。工件状态按 2026-08-31 的官方仓库 HEAD 固定；“工件可用”不代表本审计已运行 checkpoint。
+
+### 2.1 静态纯视觉、CLIP-B/16、256×128
+
+| 方法 | 报告指标 | 额外资源与推理 | 官方工件状态 | 审计判断 |
+|---|---:|---|---|---|
+| DeMo-CLIP | 79.0 / 82.3 | 无文本、掩码、TTT、rerank | [论文 Table 1](https://ojs.aaai.org/index.php/AAAI/article/download/32878/35033)；[代码和配置](https://github.com/924973292/DeMo/tree/b4f323a430b32e3a1637c3e7acb25868cb52e9cd)，未见训练后 checkpoint | 适合作为现有工程实现基线，但不是最高的公开可测基线 |
+| MFRNet | 80.7 / 83.6 | 无额外标注、TTT、rerank | [ICML 2025 论文](https://proceedings.mlr.press/v267/feng25i.html)；[代码、配置和 RGBNT201 checkpoint](https://github.com/stone96123/MFRNet/tree/ec54a1302321cda4b5fad9ca1c0878dabf0b46b6) | 可执行的强静态比较器 |
+| MDReID | 82.1 / 85.2 | 无文本、掩码、TTT、rerank | [NeurIPS 2025 论文](https://papers.neurips.cc/paper_files/paper/2025/file/3cbe9fcdccb2399bcd6e6d01cbcae1fd-Paper-Conference.pdf)；[代码、配置和 checkpoint](https://github.com/stone96123/MDReID/tree/3525ac2da1a2a90a5a160c930fac674b4f226f6c) | 本次核查中指标最高的 checkpointed 静态 CLIP 基线；另含 any-to-any 模态任务 |
+| UGG-ReID | 81.2 / 86.8 | 不确定性图和 MoE；无 TTT/rerank | [NeurIPS 2025 论文](https://proceedings.neurips.cc/paper_files/paper/2025/file/735c847a07bf6dd4486ca1ace242a88c-Paper-Conference.pdf)；[代码和配置](https://github.com/wanxixi11/UGG-ReID/tree/eaf1e8e50d04f34ee3e471440f70d335cc67b2c1)，未见 checkpoint | 静态可靠性融合的重要对照；需自行训练 |
+| RoDI-CLIP | **84.1 / 87.2** | 静态纯视觉推理；无 TTT/rerank | [CVPR 2026 Findings 论文](https://openaccess.thecvf.com/content/CVPR2026F/html/Li_Rolling_and_Denoising_Rethinking_Dynamic_Modal_Fusion_for_Multi-Modal_Object_CVPRF_2026_paper.html)；[仓库](https://github.com/lsh-ahu/RoDI/tree/2f38911c49d42d4ca259d440a851b8d77dddccbe) 仅 README/assets | 静态 CLIP 论文报告上限，当前不可独立复现 |
+
+### 2.2 静态更强预训练、多阶段 KD 与 TTT
+
+| 赛道 | 方法 | 报告指标 | 资源与推理条件 | 官方工件状态 |
+|---|---|---:|---|---|
+| 静态、更强预训练 | RoDI-DINOv3 | **85.3 / 87.9** | distilled DINOv3 ViT-B/16，224×224；静态纯视觉 | 同 RoDI 论文；仓库无代码、配置或权重 |
+| 多阶段 KD | PMKD-DINOv2 | 84.7 / **88.9** | DINOv2；两阶段 source→target 多模型 KD；最终仅静态学生推理 | [AAAI 2026 论文 Table 1](https://ojs.aaai.org/index.php/AAAI/article/download/38338/42300)；[仓库](https://github.com/moonaricc/PMKD/tree/0f597faad5b1432ce37b8be52e9bfac80b259f1f) 仅占位 README |
+| Proxy 方法、关闭 TTT | ProxyTTT w/o TTT | 82.3 / 84.7 | CLIP ViT-B/16，256×128；静态推理 | [AAAI 2026 论文 Table 1](https://ojs.aaai.org/index.php/AAAI/article/download/38337/42299)；[代码和配置](https://github.com/liuzhaojun-zwd/ProxyTTT/tree/92fb0fa33d74813566e06820e56e8d8f48ca1205) |
+| TTT | ProxyTTT | 85.0 / 88.5 | 无标签测试域图像、代理伪标签、熵筛选和 2 个 TTT epoch 的梯度更新；无 rerank | 同上；官方仓库发布 RGBNT201 checkpoint |
+
+复核结果：RoDI、PMKD、ProxyTTT 的既有数字无需更正。RoDI 的 85.3 / 87.9 是 DINOv3 静态纯视觉结果；PMKD 的 84.7 / 88.9 是 DINOv2 多阶段蒸馏后最终学生结果；ProxyTTT 的 85.0 / 88.5 明确包含 PESA 测试时更新，关闭 TTT 后为 82.3 / 84.7。
+
+### 2.3 额外语义资源赛道
+
+这些方法在训练或测试中使用样本级文本、分割/关键点掩码，不能与上面的纯视觉静态赛道无条件混排。
+
+| 方法 | 报告指标 | 骨干与输入 | 额外资源及其使用阶段 | 官方代码、权重与协议状态 |
+|---|---:|---|---|---|
+| PRISM | 80.5 / 84.0 | CLIP ViT-B/16，256×128 | RGBNT201 主配置使用离线 OpenPifPaf 关键点衍生前景 mask；车辆数据使用 SAM2；测试也读取 mask；无 TTT/rerank | [论文 Table I、§IV-A](https://arxiv.org/abs/2607.23451)；[代码、配置、预计算 mask 数据入口和 RGBNT201 权重](https://github.com/zw-absin/PRISM/tree/0067f6d895c522afa2c4f30515b33bc4300fe680) 已发布；loader 可核实为现代协议 |
+| STMI | 81.2 / 83.4 | CLIP 视觉/文本编码器，256×128 | 每个 triplet 使用 GPT-4o 生成一条描述，并用 SAM2 生成一个 mask；文本与 mask 在测试 forward 中仍被读取；无 TTT/rerank | [AAAI 2026 正式论文 Table 1、Experiments](https://ojs.aaai.org/index.php/AAAI/article/download/38125/42087)；[代码和配置](https://github.com/young6man/STMI/tree/27a74bb90ad46a6d9feab67a6a26753e11a8ad36) 已发布，但 README 的 Annotations/Masks 链接为空，未见 checkpoint；loader 可核实为现代协议；论文写学习率 3.5e-6，当前 RGBNT201 配置为 3.5e-4 |
+| NEXT | 82.4 / **86.6** | CLIP-B/16，256×128 | GPT-4o 与 Qwen-VL 生成带置信度属性，DeepSeek-V3 合成每模态 caption；论文效率表明确测试使用 CLIP 文本编码器；无 TTT；其 `w/o Text` 消融为 79.2 / 85.5 | [arXiv v5 Table II、Table VIII](https://arxiv.org/abs/2505.20001)；[官方仓库](https://github.com/lsh-ahu/NEXT-ReID/tree/b86b8fd253f3c872f366a88e46282a23a6a84db7) 已发布 RGBNT201 caption JSON，但 README 注明模型代码仍待整理；未见模型源码、配置或权重，协议实现不可审计 |
+| CoT-ReID | **83.3** / 86.1 | DINOv3-B 视觉骨干 + 冻结 CLIP 文本编码器，256×128 | API Qwen-VL 为训练集和测试集每个模态生成描述与推理链；测试时官方代码拼接图像和文本特征；无 TTT/rerank | [CVPR 2026 Table 2、§4.1–4.2](https://openaccess.thecvf.com/content/CVPR2026/html/Gao_Chain-of-Thought_Guided_Multi-Modal_Object_Re-Identification_CVPR_2026_paper.html)；[源代码和配置](https://github.com/Gaoya615/CoT-ReID/tree/db215273d6ee68b9c324fdf36e3d6800370fa21e) 已发布，但官方 README 明确不分发 CoT 文本、预训练权重或 checkpoint，且无锁定环境；论文写 120 epochs，当前 RGBNT201 配置为 60 epochs |
+
+[IDEA](https://openaccess.thecvf.com/content/CVPR2025/papers/Wang_IDEA_Inverted_Text_with_Cooperative_Deformable_Aggregation_for_Multi-modal_Object_CVPR_2025_paper.pdf) 同样使用视觉语言模型生成文本，属于额外语义资源对照。上述方法及纯视觉方法均未报告 RGBNT201 的 mINP。
+
+基于现有 DeMo 工程继续开发时，建议把 DeMo 作为实现基线，同时加入 MFRNet 和 MDReID 的公开 checkpoint 作为可测锚点；RoDI、PMKD、NEXT 只能作为“论文报告上限”。PRISM 的工件最完整，但其结果依赖预计算 mask；CoT-ReID 和 STMI 有代码却缺关键文本/掩码或 checkpoint，不能称为端到端已封装复现。
+
+可审计的目标应分轨表达：
+
+- 静态纯视觉 CLIP-B/16、256×128：RoDI-CLIP 84.1 / 87.2；
+- 静态纯视觉、更强外部预训练：RoDI-DINOv3 85.3 / 87.9；
+- 多阶段 DINOv2 蒸馏：PMKD 84.7 / 88.9；
+- 测试时训练：ProxyTTT 85.0 / 88.5；
+- 额外语义资源：分别注明“mask-only PRISM 80.5 / 84.0”“GPT-4o text + SAM2 mask STMI 81.2 / 83.4”“MLLM/LLM captions + CLIP NEXT 82.4 / 86.6”“Qwen-VL CoT text + DINOv3 CoT-ReID 83.3 / 86.1”，不把它们压成一个无条件榜单。
+
+在相同协议、预训练、输入、额外标注、reranking 和推理更新条件下真正超过对应目标前，只能写“目标达到 SOTA”，不能写“已达到 SOTA”。
+
+## 3. 新颖性碰撞矩阵
+
+| 最接近主源 | 已公开内容 | 与目标方案仍可区分的边界 |
+|---|---|---|
+| [PFNet / RGBNT201，AAAI 2021](https://ojs.aaai.org/index.php/AAAI/article/view/16467) | RGB/NIR/TIR 三个模态分支；由局部到全局、由单模态到成对/多模态的渐进融合 | 已否定“三支”和“渐进融合”本身的新颖性；目标三支必须是架构专家，而不是把 CNN/Transformer/Mamba 分别绑定到三个传感器 |
+| [IEEE: Interact, Embed, and EnlargE，AAAI 2022](https://ojs.aaai.org/index.php/AAAI/article/view/20165) | 在特征提取过程中进行跨模态分支交互 | “在中间层交换信息”不是新贡献，必须说明跨架构尺度对齐、双向路径和私有特征保留机制 |
+| [FusionReID](https://arxiv.org/abs/2412.17239) / [官方代码](https://github.com/924973292/FusionReID) | 普通 RGB ReID 中 CNN–Transformer 并行分支和多层异构传输 | “CNN+Transformer 深层协同”已有先例；其不含 RGBNT 三模态或独立 Mamba 专家 |
+| [MambaPro，AAAI 2025](https://ojs.aaai.org/index.php/AAAI/article/download/32879/35034) / [官方代码](https://github.com/924973292/MambaPro) | 三个 Transformer 模态流、层间 Synergistic Residual Prompt、最终 Mamba Aggregation | 已覆盖 Transformer+Mamba 和深层跨模态协同；Mamba 是聚合器而非完整专家，无 CNN、可靠性门控或 KD |
+| [PRISM，arXiv 2026](https://arxiv.org/abs/2607.23451) / [官方代码](https://github.com/zw-absin/PRISM) | Prompt-S6/Mamba 跨模态建模，以及“模态内→成对模态间→三模态”的阶段式融合；使用离线语义掩码 | 已占据 Mamba+三阶段融合；其阶段是模态维，不是 CNN/Transformer/Mamba 架构维，也没有教师/学生互蒸馏 |
+| [NEXT，arXiv v5](https://arxiv.org/abs/2505.20001) / [官方仓库](https://github.com/lsh-ahu/NEXT-ReID) | 文本调制语义专家、跨模态共享结构专家和统一多粒度聚合；caption 在推理时参与路由/表示 | “多粒度专家+文本调制路由”已有直接先例；目标需证明路由来自视觉可靠性而非外部 caption，并证明 CNN/Transformer/Mamba 专家各自保留独特能力 |
+| [STMI，AAAI 2026](https://ojs.aaai.org/index.php/AAAI/article/view/38125) / [官方代码](https://github.com/young6man/STMI) | GPT-4o 文本与 SAM2 mask 引导 token 调制、token 重分配和跨模态超图高阶交互 | “语义先验控制 token”和“跨模态高阶关系”已有先例；其没有三类异构架构专家、可靠性统一控制或选择式互蒸馏 |
+| [CoT-ReID，CVPR 2026](https://openaccess.thecvf.com/content/CVPR2026/html/Gao_Chain-of-Thought_Guided_Multi-Modal_Object_Re-Identification_CVPR_2026_paper.html) / [官方代码](https://github.com/Gaoya615/CoT-ReID) | Qwen-VL 推理文本在早期特征、跨模态一致性和最终图文特征层全流程参与 | “辅助信息贯穿多层协同”不是纯结构创新；其依赖测试样本级文本，不能作为纯视觉异构专家方法的等资源先例 |
+| [UGG-ReID，NeurIPS 2025](https://proceedings.neurips.cc/paper_files/paper/2025/file/735c847a07bf6dd4486ca1ace242a88c-Paper-Conference.pdf) | 局部与样本级 aleatoric uncertainty、低不确定性专家路由和不确定性引导融合 | “可靠性/不确定性感知融合”已被直接覆盖；可区分点必须是同一校准后验同时控制交换、融合和蒸馏 |
+| [RoDI，CVPR Findings 2026](https://openaccess.thecvf.com/content/CVPR2026F/html/Li_Rolling_and_Denoising_Rethinking_Dynamic_Modal_Fusion_for_Multi-Modal_Object_CVPRF_2026_paper.html) | evidence/belief/uncertainty 衡量、模态滚动、按高 belief token 进行局部去噪；三路共享类型 ViT 编码器 | 可靠性驱动动态融合和去噪已有强先例；其不是 CNN/Transformer/Mamba 三个异构专家，也无置信度选择互蒸馏 |
+| [PMKD，AAAI 2026](https://ojs.aaai.org/index.php/AAAI/article/view/38338) | 两阶段渐进 KD；困难样本挖掘自适应调节蒸馏强度；最终仅学生推理 | “渐进 KD”和“难度自适应 KD”已有先例；PMKD 是冻结 source→target 的顺序单向迁移，并刻意用同构 source/target 降低能力漂移，不是在线对等异构互教 |
+| [DAKD，Knowledge-Based Systems 2025](https://www.sciencedirect.com/science/article/pii/S0950705125015643) 与 [MDPR](https://arxiv.org/abs/2401.06430) / [代码](https://github.com/KuilongCui/MDPR) | 前者在可见光–红外 ReID 中进行 confidence-based selective masking；后者在普通 ReID 中双分支互蒸馏 | “置信度选择”和“互蒸馏”分别已有先例；目标必须定义逐样本教师方向、校准、stop-gradient 和双方不可靠时的拒绝规则 |
+| [CTMambaFuse，Infrared Physics & Technology 2026](https://www.sciencedirect.com/science/article/pii/S1350449526002185) | 红外–可见图像融合中组合 CNN、Transformer 和 Vision Mamba | 不属于 ReID，但足以否定跨任务的宽泛“首次组合三种架构”表述 |
+
+## 4. 三个可支撑论文、但必须按窄边界验证的创新点
+
+### C1. 全模态异构三专家与分阶段双向交换
+
+CNN、Transformer、Mamba 都应接收全部 RGB/NIR/TIR 输入或同一组对齐的多模态 token，而不是一类网络绑定一种传感器。在匹配深度重复执行尺度对齐后的双向消息传递，同时保留每个专家的私有残差通道。这样才能把“架构归纳偏置互补”与“模态互补”解耦，并与 PFNet 的模态渐进融合、FusionReID 的双架构互联、MambaPro/PRISM 的聚合式 Mamba 区分。
+
+必要对照：无交换、只末端融合、单向交换、一次交换、同构三分支、随机架构分配，以及严格等参数/等 FLOPs 的单骨干和 ensemble。
+
+### C2. 一个校准可靠性后验统一控制通信与融合
+
+学习 `r(sample, modality, expert)`，让同一后验同时决定跨分支消息通过量、最终融合权重，以及噪声/缺失模态时的抑制强度。可靠性需要校准，不能只是换名的 attention gate；应在遮挡、模糊、热噪声、NIR 过曝和缺失模态压力测试下报告 ECE/Brier、检索指标与可靠性排序一致性。
+
+必要对照：普通 softmax gate、UGG 式不确定性路由、RoDI 式 evidence/belief、只控制融合、只控制交换，以及等容量门控网络。
+
+### C3. 置信度选择、可拒绝的方向式异构同伴蒸馏
+
+对每个样本动态选择当前更可靠专家为临时教师，只对可靠性差距超过阈值的边执行 stop-gradient 蒸馏；没有专家可靠时拒绝蒸馏。蒸馏对象可包括身份 logits、度量结构和跨模态一致性，但必须防止所有分支坍缩为同一表示，并保留架构专长。
+
+必要对照：无 KD、固定教师、PMKD 式单向两阶段 KD、无条件对称 mutual KD、hardness-only 加权、没有拒绝机制，以及方向选择但打乱置信度。还应报告分支间表征相似度和每个分支的独立检索性能，证明“互相促进”而非仅仅增大 ensemble 容量。
+
+三点可以组成一条统一论证链：**可靠性估计 → 可靠消息交换与融合 → 可靠方向的知识迁移**。若三种机制各自使用无关分数，整体贡献会更像模块堆叠，难以与上述先例拉开距离。
+
+## 5. 论文结果门槛与复现清单
+
+在使用“SOTA”措辞前，至少满足：
+
+- 固定现代 RGBNT201 协议：`train_171`、全 `test` query/gallery、同身份同 camera 排除；
+- 明确 CLIP、DINOv2 或 DINOv3 的具体权重版本，输入分辨率和预训练来源；
+- 明确是否使用额外文本、语义掩码、教师模型、生成模型、reranking 或测试时更新；
+- 对完整模型和每个创新点至少运行 3 个独立种子，报告均值、标准差和最佳值；
+- 提供等参数/等 FLOPs、相同预训练和相同训练预算的公平控制；
+- 发布 split/file manifest、配置、环境锁、checkpoint、日志和一次端到端评估命令；
+- 将静态、额外语义资源、多阶段 KD 和 TTT 分成不同赛道，不跨赛道宣称公平优越。
+
+## 检索边界
+
+检索覆盖 RGBNT201、multi-modal/multi-spectral object ReID、CNN–Transformer ReID、Mamba ReID、uncertainty/reliability fusion、progressive/selective/mutual knowledge distillation，并追踪 AAAI、CVF、NeurIPS、PMLR、期刊官网、arXiv 作者稿及官方 GitHub。2026-08-31 的补充复核逐项检查了 CoT-ReID 的 CVF 正式论文、NEXT arXiv v5、STMI 的 AAAI 正式论文、PRISM arXiv v1，以及四者官方仓库的源码树、配置、数据资源和 release 状态；仓库状态固定到本文链接中的 commit。由于否定性结论无法由有限检索证明，投稿前仍应对 2026-08-31 之后的论文、在线优先期刊和新增代码发布做一次更新审计。

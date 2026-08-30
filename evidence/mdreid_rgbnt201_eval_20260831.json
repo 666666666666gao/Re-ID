@@ -1,0 +1,74 @@
+{
+  "baseline": "MDReID",
+  "baseline_commit": "3525ac2da1a2a90a5a160c930fac674b4f226f6c",
+  "dataset": "RGBNT201",
+  "features": {
+    "dimension": 3072,
+    "gallery_shape": [
+      836,
+      3072
+    ],
+    "query_shape": [
+      836,
+      3072
+    ]
+  },
+  "inputs": {
+    "checkpoint": "/root/mmreid-trifusion/checkpoints/MDReID/RGBNT201_MDReIDbest.pth",
+    "checkpoint_sha256": "b10799b1173bf2057d67cd5cf95cb0a82099a9203d6d89aeefaf54f1d8cac5a9",
+    "clip_weight": "/root/mmreid-trifusion/pretrained/ViT-B-16.pt",
+    "clip_weight_sha256": "5806e77cd80f8b59890b7e101eabd078d9fb84e6937f9e85e4ecb61988df416f",
+    "config": "/root/mmreid-trifusion/baselines/MDReID/configs/RGBNT201/MDReID.yml",
+    "config_sha256": "a92400663d075cc4fba8a245d1ba829b21733b2c8c3e38c45a45b16a4bf75e80",
+    "dataset_audit": "/root/mmreid-trifusion/artifacts/rgbnt201_audit_20260831.json",
+    "dataset_audit_sha256": "031dc8e66e4f0dbea459581b5fcd69514a74df2e44f0effa98df18fcfa53f12f"
+  },
+  "metrics": {
+    "mAP": 0.8208678912038654,
+    "rank1": 0.8516746163368225,
+    "rank10": 0.9258373379707336,
+    "rank5": 0.9031100273132324
+  },
+  "protocol": {
+    "distance": "Euclidean after L2 normalization",
+    "exclusion": "same identity and same camera",
+    "gallery": "full test split",
+    "num_gallery": 836,
+    "num_query": 836,
+    "query": "full test split",
+    "reranking": false
+  },
+  "reported_anchor": {
+    "absolute_tolerance": 0.0005,
+    "checks": {
+      "map_matches_reported_rounding": true,
+      "rank1_matches_reported_rounding": true
+    },
+    "mAP": 0.821,
+    "rank1": 0.852
+  },
+  "runtime": {
+    "batch_size": 16,
+    "compute_capability": [
+      8,
+      9
+    ],
+    "cuda_peak_mib": 655.14111328125,
+    "device": "NVIDIA GeForce RTX 4060 Laptop GPU",
+    "elapsed_seconds": 26.374973992991727,
+    "glibc": [
+      "glibc",
+      "2.31"
+    ],
+    "python": "3.10.14",
+    "seed": 1555,
+    "torch": "2.5.1+cu121",
+    "torch_cuda": "12.1",
+    "workers": 0
+  },
+  "strict_checkpoint_load": {
+    "missing_keys": [],
+    "unexpected_keys": []
+  },
+  "valid": true
+}
