@@ -46,6 +46,14 @@ complete evaluation records and both checkpoint hashes. It deliberately has
 record-completeness and uniqueness checks still pass. The threshold was not
 raised after seeing the breach.
 
+At epoch 20, `DeMo_20.pth` was likewise saved after the training epoch closed
+and before that epoch's test evaluation began. Its receipt binds SHA-256
+`5d61a4cfc8d1796f6e9dccc0341dee8f9da5fa43b61a85b2e7a45364bc8e7b2e`
+and records the three feature-mode metrics. It is a fixed implementation
+milestone, not a model selected on test. The pre-registered fair endpoint
+remains `DeMo_50.pth`; epoch-17 `DeMobest.pth` is labeled only as
+released-protocol calibration.
+
 The summarizer fail-closed receipt binds the corrected source SHA and freezes
 the epoch-12 34/35/36-record live boundary together with seven one-off public
 CLI contract probes. Empty, gapped, out-of-range, duplicate and partial logs

@@ -97,6 +97,33 @@ RGBNT201 原论文使用 201 个身份和 4 个非重叠视角，共 4,787 组�
 | [DAKD，Knowledge-Based Systems 2025](https://www.sciencedirect.com/science/article/pii/S0950705125015643) 与 [MDPR](https://arxiv.org/abs/2401.06430) / [代码](https://github.com/KuilongCui/MDPR) | 前者在可见光–红外 ReID 中进行 confidence-based selective masking；后者在普通 ReID 中双分支互蒸馏 | “置信度选择”和“互蒸馏”分别已有先例；目标必须定义逐样本教师方向、校准、stop-gradient 和双方不可靠时的拒绝规则 |
 | [CTMambaFuse，Infrared Physics & Technology 2026](https://www.sciencedirect.com/science/article/pii/S1350449526002185) | 红外–可见图像融合中组合 CNN、Transformer 和 Vision Mamba | 不属于 ReID，但足以否定跨任务的宽泛“首次组合三种架构”表述 |
 
+### 3.1 最近六个月补充碰撞与独立复核
+
+2026-08-31 的第二轮查新进一步找到四组会改变方案定位的主源：
+
+- [MRUF](https://arxiv.org/abs/2607.10599) 已用 leave-one-out error
+  increase 监督模态路由，并用逐模态不确定性校准融合；
+- [TIER-MoE](https://arxiv.org/abs/2607.27289) 已用 out-of-fold prediction
+  学习条件模态风险，再结合 expert-subspace compatibility 路由；
+- [TMUR](https://arxiv.org/abs/2604.09288) 指出独立分支 evidence 数值没有
+  可比性保证，统一 global router 也仍需要共同目标与校准约束；
+- [TIGER](https://arxiv.org/abs/2606.15765) 已用排除异构视觉专家后的预测
+  变化做 counterfactual routing alignment。
+
+蒸馏侧，[Adaptive Teacher Modality Selection](https://www.sciencedirect.com/science/article/pii/S1568494626004497)
+已按模态贡献动态选择强教师，[CoReTrack](https://www.sciencedirect.com/science/article/pii/S0957417426009942)
+已把可靠性先验与非对称教师调控蒸馏结合。因此，head-level LOO、global
+router、causal expert exclusion、动态教师和 rejectable KD 都不能单独写成
+首次贡献。
+
+独立 GPT-5.5 xhigh 对抗式复核给出 HFER 5.0/10、原 URGC 4.0/10、RDPT
+3.0/10、统一系统 5.5/10，判定 **PROCEED WITH CAUTION**。随后三次实现
+就绪性复核经历 **REVISE → REVISE → PASS**。完整结构化结论见
+[NOVELTY_CHECK_2026-08-31.md](NOVELTY_CHECK_2026-08-31.md)。据此，v1.1
+将 RDPT 降为候选辅助，把可靠性目标改为身份外折、冻结生成器上的真实
+完整网络干预，并把“共同尺度学习”和“同一后验跨位置控制”作为一个统一
+可靠性贡献的两部分。最终 PASS 只确认规范可实现，不证明论文主张。
+
 ## 4. 三个可支撑论文、但必须按窄边界验证的创新点
 
 ### C1. 全模态异构三专家与分阶段双向交换
@@ -105,19 +132,42 @@ CNN、Transformer、Mamba 都应接收全部 RGB/NIR/TIR 输入或同一组对�
 
 必要对照：无交换、只末端融合、单向交换、一次交换、同构三分支、随机架构分配，以及严格等参数/等 FLOPs 的单骨干和 ensemble。
 
-### C2. 一个校准可靠性后验统一控制通信与融合
+### C2. 身份外折、实际干预的共同尺度可靠性学习
 
-学习 `r(sample, modality, expert)`，让同一后验同时决定跨分支消息通过量、最终融合权重，以及噪声/缺失模态时的抑制强度。可靠性需要校准，不能只是换名的 attention gate；应在遮挡、模糊、热噪声、NIR 过曝和缺失模态压力测试下报告 ECE/Brier、检索指标与可靠性排序一致性。
+候选 CIRC 先训练三个 HFER-uniform 外折 target generator；每个生成器只为
+未参与其训练的身份产生 expert×modality target。冻结生成器后，对九项
+贡献全量执行 total/direct/relay 移除并完整重跑；relay edge 只按冻结哈希
+每个 query-condition、每 stage 抽一条作 audit-only。以跨相机固定 reference
+bank 上正确 ID margin 的逐条件 helpful-vs-not-helpful 结果监督一个共享
+输出、共享温度/证据质量的 global Beta router。neutral/harmful 仅作有符号
+审计；cheap head-only LOO 只能作为与完整干预验证过的辅助量。
 
-必要对照：普通 softmax gate、UGG 式不确定性路由、RoDI 式 evidence/belief、只控制融合、只控制交换，以及等容量门控网络。
+必要对照：普通 softmax、端到端 observational target、head-only LOO、
+九个独立 evidence heads、TMUR-style global non-evidential router、TIGER
+式 expert exclusion、shuffled target、expert permutation、身份/相机泄漏
+探针、等容量 context-free floor，以及逐条件/相机/身份频率分组
+BCE/Brier/ECE、过度离散、经验 concentration coverage 和 cluster effective
+sample size。默认控制只使用 posterior mean \(r\)；\((1-u)\) 只有 coverage
+过门后才可晋级。
 
-### C3. 置信度选择、可拒绝的方向式异构同伴蒸馏
+### C3. 同一个干预校准后验贯穿中继、融合与退化控制
 
-对每个样本动态选择当前更可靠专家为临时教师，只对可靠性差距超过阈值的边执行 stop-gradient 蒸馏；没有专家可靠时拒绝蒸馏。蒸馏对象可包括身份 logits、度量结构和跨模态一致性，但必须防止所有分支坍缩为同一表示，并保留架构专长。
+URGC 让同一 CIRC 后验决定 HFER 消息通过量、最终 expert×modality
+融合权重，以及缺失/退化抑制。这里可检验的贡献是“同一可信信号形成控制
+闭环”，不是 Beta gate 或 dynamic fusion 本身。
 
-必要对照：无 KD、固定教师、PMKD 式单向两阶段 KD、无条件对称 mutual KD、hardness-only 加权、没有拒绝机制，以及方向选择但打乱置信度。还应报告分支间表征相似度和每个分支的独立检索性能，证明“互相促进”而非仅仅增大 ensemble 容量。
+必要对照：同一路由器处处复用、relay-only、fusion-only、三个独立的
+等容量路由器、UGG/RoDI 风格门控、缺失/低质量分离评估，以及 fused 和
+三个独立分支的检索变化。若三个独立路由器不差于单一后验，统一控制主张
+必须删除。
 
-三点可以组成一条统一论证链：**可靠性估计 → 可靠消息交换与融合 → 可靠方向的知识迁移**。若三种机制各自使用无关分数，整体贡献会更像模块堆叠，难以与上述先例拉开距离。
+RDPT 保留为训练辅助候选，不再预先列为主创新。只有其显著超过 symmetric
+KL、固定教师、HeteroAKD/MST-Distill 风格自适应迁移和 wrong-payload
+对照，并在不造成 CKA 坍缩的前提下改善弱分支，才允许晋升。
+
+三点组成的统一论证链改为：**完整异构专家的深层互促 → 外折实际干预的
+可靠性学习 → 同一可靠性后验的跨位置控制**。C2 与 C3 是一个统一可靠性
+贡献的“如何学”和“如何用”，论文中不得伪装成两个互不相关的首次机制。
 
 ## 5. 论文结果门槛与复现清单
 

@@ -70,3 +70,18 @@
 | 2026-08-31 05:06 | /implement | evidence/demo_summarizer_fail_closed_verification_20260831.json | research | SHA绑定epoch12实时边界及空/断档/越界/重复/partial/complete七项CLI合同探针 |
 | 2026-08-31 05:06 | /experiment-plan | refine-logs/EXPERIMENT_TRACKER.md | implementation | 登记R019 fail-closed汇总门并将版本化证据包更新为19项 |
 | 2026-08-31 05:21 | /codebase-design | docs/IMPLEMENTATION_BLUEPRINT_V1.md | implementation | 将冻结方法落成三完整专家、统一可靠性、双层同步中继、方向教学、512维融合、消融开关与8 GiB资源门禁 |
+| 2026-08-31 05:38 | /novelty-check | docs/NOVELTY_CHECK_2026-08-31.md | idea-discovery | 最近六个月主源撞车、独立 GPT-5.5 xhigh 复核、评分与 PROCEED WITH CAUTION 决策 |
+| 2026-08-31 05:45 | /novelty-check | docs/RESEARCH_AUDIT_2026-08-31.md | idea-discovery | 增补 MRUF、TIER-MoE、TMUR、TIGER 与动态教师近邻，并收紧论文定位 |
+| 2026-08-31 05:45 | /experiment-plan | docs/METHOD_SPEC_V1.md | implementation | v1.1：HFER、身份外折完整干预 CIRC、同后验 URGC 与 RDPT 辅助晋升门 |
+| 2026-08-31 05:45 | /experiment-plan | docs/IMPLEMENTATION_BLUEPRINT_V1.md | implementation | v1.1：global joint router、离线 target builder、统一控制消融与8 GiB串行干预设计 |
+| 2026-08-31 05:46 | /tdd | docs/TDD_SEAMS.md | implementation | 同步 CIRC target-cache 可复现接缝；核心实现继续等待精确接缝同意 |
+| 2026-08-31 05:47 | /experiment-plan | refine-logs/EXPERIMENT_PLAN_20260831_054739.md | implementation | v1.1 claim-driven 实验计划永久版本 |
+| 2026-08-31 05:47 | /experiment-plan | refine-logs/EXPERIMENT_PLAN.md | implementation | v1.1 实验计划 latest copy |
+| 2026-08-31 05:47 | /experiment-plan | refine-logs/EXPERIMENT_TRACKER_20260831_054739.md | implementation | CIRC/URGC 因果、校准、容量和正式种子执行追踪永久版本 |
+| 2026-08-31 05:47 | /experiment-plan | refine-logs/EXPERIMENT_TRACKER.md | implementation | v1.1 实验追踪器 latest copy |
+| 2026-08-31 06:03 | /monitor-experiment | evidence/demo_rgbnt201_epoch20_checkpoint_receipt_20260831.json | research | epoch20 固定 checkpoint 的保存时序、SHA、三模式指标与非 test 选点边界 |
+| 2026-08-31 06:03 | /experiment-plan | refine-logs/EXPERIMENT_TRACKER.md | implementation | 同步 epoch20 里程碑与 CIRC 第二轮实现就绪性审查门 |
+| 2026-08-31 06:14 | /novelty-check | docs/NOVELTY_CHECK_2026-08-31.md | idea-discovery | 四轮独立复核闭环为 PROCEED WITH CAUTION / 最终 implementation-readiness PASS |
+| 2026-08-31 06:14 | /experiment-plan | docs/METHOD_SPEC_V1.md | implementation | 闭合 all-171、共享 Beta、helpful 语义、sampled-edge 成本及全套校准门 |
+| 2026-08-31 06:14 | /experiment-plan | docs/IMPLEMENTATION_BLUEPRINT_V1.md | implementation | 与最终 PASS 规范同步的测试先行实现蓝图，继续等待精确接缝同意 |
+| 2026-08-31 06:14 | /experiment-plan | refine-logs/EXPERIMENT_PLAN.md | implementation | 最终 reviewer PASS 后的 latest 计划；时间戳副本保持逐字节一致 |

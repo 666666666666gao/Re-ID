@@ -1,11 +1,12 @@
-# TriFusion-ReID implementation blueprint v1
+# TriFusion-ReID implementation blueprint v1.1
 
-Status: implementation-ready design, not an implementation. This document
-makes no SOTA claim. The public seams in TDD_SEAMS.md are still awaiting the user's exact
-reply 接缝同意. Until then, this document may be refined, but no core model or
-core-model test file is added.
+Status: independently reviewed implementation-ready design, not an
+implementation. This document makes no SOTA claim. The public seams in
+TDD_SEAMS.md are still awaiting the user's exact reply 接缝同意. Until then,
+this document may be refined, but no core model or core-model test file is
+added.
 
-This blueprint translates METHOD_SPEC_V1.md into one concrete implementation
+This blueprint translates novelty-hardened METHOD_SPEC_V1.md v1.1 into one concrete implementation
 for an 8 GiB RTX 4060 Laptop GPU. METHOD_SPEC_V1.md remains authoritative if a
 conflict is discovered.
 
@@ -49,10 +50,12 @@ TriFusion is one deep module whose external seam is:
 
 The caller supplies images, a modality mask, and optional training targets.
 The module owns tokenization, three complete experts, two synchronous relays,
-one shared reliability posterior, role-directed peer teaching, fusion, and
-named auxiliary results. Deleting the module would force the trainer,
-evaluator, missing-modality logic, and ablations to reimplement those rules;
-therefore the interface earns its depth.
+one joint CIRC reliability posterior, URGC control, optional role-directed peer
+teaching, fusion, and named auxiliary results. An offline builder owns
+identity-disjoint full-intervention target generation; it never enters the
+inference graph. Deleting the module would force the trainer, evaluator,
+missing-modality logic, and ablations to reimplement those rules; therefore
+the interface earns its depth.
 
 Internal seams are introduced only where two real adapters exist:
 
@@ -76,6 +79,7 @@ in the research repository:
         encoder.py
         relay.py
         reliability.py
+        intervention_targets.py
         peer_teaching.py
         fusion.py
         model.py
@@ -94,6 +98,7 @@ in the research repository:
         train_trifusion.py
         eval_trifusion.py
         profile_trifusion.py
+        build_circ_targets.py
 
 The only public names exported by modeling.trifusion are the six frozen seams
 and their result types:
@@ -138,6 +143,7 @@ object. The canonical form is:
 | modality_mask | bool tensor B,3 | columns are RGB, NI, TI |
 | targets | optional long tensor B | required only for supervised losses |
 | camids | optional long tensor B | training metadata, never test selection |
+| sample_keys | optional sequence length B | immutable training keys used only to look up CIRC targets |
 
 The first operation validates that every sample has at least one true mask
 entry. An all-missing row raises ValueError with the failing row indices.
@@ -287,20 +293,22 @@ One forward pass follows this acyclic schedule:
     validate and pack valid modality slots
     shared CLIP-compatible tokenization
     run stage 1 of all three experts from one immutable stage snapshot
-    predict one URGC posterior from pre-relay stage-1 evidence
+    predict one joint CIRC posterior from all pre-relay stage-1 evidence
     apply synchronous HFER relay 1
     run stage 2 of all three experts
-    apply synchronous HFER relay 2 using the same URGC posterior
+    apply synchronous HFER relay 2 using the same posterior
     run stage 3 of all three experts
     form branch heads and contribution embeddings
-    fuse with the same URGC posterior
-    compute RDPT only when targets are present and training is true
+    fuse with the same posterior
+    look up immutable CIRC targets only in the criterion during training
+    compute RDPT only when explicitly enabled, targets are present, and training is true
 
-The posterior is predicted once because the claim says the same evidential
-belief controls relay bandwidth, final fusion, and missing/degraded
-suppression. Its counterfactual target is produced from final head
-contributions, so the stage-1 router receives supervision about downstream
-identity-margin usefulness without a second backbone pass.
+The posterior is predicted once because the claim says the same
+intervention-calibrated belief controls relay bandwidth, final fusion, and
+missing/degraded suppression. Its target is never produced inside this
+forward. A frozen out-of-fold HFER-uniform generator produces complete-network
+intervention targets offline, so the stage-1 router receives downstream
+identity-margin supervision without a self-referential target graph.
 
 HFER-uniform replaces the reliability adapter with UniformGate but leaves the
 same schedule intact. A no-relay adapter makes A0/A1 actual alternatives at
@@ -339,40 +347,120 @@ Role mixers remain small:
 The relay test surface observes input/output states, gates, private residual
 energy, and gradients. Tests do not inspect individual projection weights.
 
-## 9. Innovation II implementation: URGC
+## 9. Innovation II/III implementation: CIRC and URGC
 
-ReliabilityPosterior consumes the three pre-relay stage-1 states and the bool
-mask. For every expert-modality contribution it forms evidence from:
+ReliabilityPosterior consumes all three pre-relay stage-1 states and the bool
+mask. For every expert-modality contribution it forms an entry token from:
 
 - masked global token statistics;
 - cross-modal agreement inside the expert;
 - cross-expert agreement for the same modality;
 - signal quality statistics such as token variance, norm, and entropy;
-- the availability bit.
+- learned expert/modality identifiers and the availability bit.
 
-A shared evidence trunk followed by expert-specific heads predicts:
+The nine entry tokens pass through one small masked set mixer, so every
+prediction can observe the whole expert-modality context. One shared output
+function is applied to all mixed entry tokens; there is no expert-specific
+ModuleList of uncertainty heads. It predicts an evidence-allocation logit and
+evidence mass:
 
 \[
-\alpha_{e,m}=1+\operatorname{softplus}(a_{e,m}),\qquad
-\beta_{e,m}=1+\operatorname{softplus}(b_{e,m}).
+\mu_{e,m}=\sigma(\ell_{e,m}/\tau_{\rm shared}),\qquad
+\kappa_{e,m}=\kappa_{\min}+\operatorname{softplus}(c_{e,m}),
 \]
 
-It returns expected helpfulness r, uncertainty u, and normalized collaboration
-mass:
+\[
+\alpha_{e,m}=1+\mu_{e,m}\kappa_{e,m},\qquad
+\beta_{e,m}=1+(1-\mu_{e,m})\kappa_{e,m}.
+\]
+
+The common learned temperature and concentration prior are shared across all
+nine entries. The result exposes \(r=(1+\mu\kappa)/(2+\kappa)\), so \(\mu\) is
+not mislabeled as the posterior mean:
 
 \[
-r=\alpha/(\alpha+\beta),\qquad
-u=2/(\alpha+\beta).
+r=\alpha/(\alpha+\beta),\qquad u=2/(\alpha+\beta).
 \]
 
 Invalid entries are hard-zeroed before every normalization. A residual floor
 is applied only to valid entries during warm-up; it never gives a missing
 entry non-zero mass.
 
+### 9.1 Offline CIRC target builder
+
+tools/build_circ_targets.py is a training-only, deterministic builder:
+
+1. assign training identities to three hash-registered folds;
+2. fit one HFER-uniform target generator on each two-fold complement;
+3. freeze the generator, embed an unperturbed held-out reference bank, and
+   build cross-camera leave-one-query-out identity prototypes without its
+   classifier head;
+4. score each held-out query against the same fixed reference prototypes,
+   requiring a different-camera positive for every primary row;
+5. for every expert-modality execute total, direct-only and relay-only
+   full-network removals; then execute exactly one deterministically sampled
+   valid single-edge removal per relay stage and query-condition row, one
+   intervention at a time to stay inside 8 GiB;
+6. store helpful/neutral/harmful labels and signed deltas separately for every
+   corruption family, severity and seed; never pool heterogeneous conditions
+   into one iid count;
+7. run a pre-registered sampled query+gallery symmetric audit that rebuilds
+   the intervened reference prototypes;
+8. write immutable targets.jsonl and receipt.json keyed by sample_keys and
+   condition, with fold, mask, fixed-bank hash, generator checkpoint hash,
+   intervention seeds, decomposed effects and SHA-256.
+
+The builder asserts zero identity overlap between a target row and its
+generator training fold and never emits a gradient-bearing tensor. During
+development, target generation uses only the 141 fit identities and never the
+30 dev identities. After configuration freeze, a separately receipted final
+mode may include the former 30 dev identities as ordinary training-only rows
+in the all-171 folds, with no subsequent selection. Official-test identities
+are never read. The receipt separately counts cross-camera, same-camera-only
+and invalid-support rows. Same-camera-only and no-positive rows never enter the
+primary CIRC loss or calibration tables.
+
+The total intervention zeros the source's outgoing messages at relay stages 1
+and 2 and its final fusion contribution. Direct-only keeps relays active;
+relay-only keeps final fusion active. Edge removals are audit-only: for each
+stage, the builder lexicographically orders the valid
+source/target/modality edges and selects exactly one using SHA-256 over the
+fixed salt TriFusion-CIRC-edge-v1, protocol hash, sample key, condition and
+stage, interpreting the digest as an unsigned big-endian integer. This adds two
+edge reruns per primary row rather than all 36. Every
+query-side intervention uses the unchanged full reference bank. The symmetric
+audit applies the same intervention to query and sampled reference embeddings
+and rebuilds prototypes. No path is implemented as pixel zeroing or a
+512-dimensional head-only shortcut. The interaction residual
+total-minus-direct-minus-relay is reported, not assumed additive.
+
+Before the builder runs, protocols/circ_target_v1.json freezes and hashes the
+fold rule, epsilon, corruption families/severities/seeds, encoder config,
+target-cache schema/code commit, calibration metrics, symmetric-audit sample,
+edge salt/order/validity/two-per-row budget, final-mode policy, and agreement
+thresholds. This happens before dev labels are used.
+
+Cheap head-level leave-one-contribution-out values remain optional diagnostics.
+They can become a dense auxiliary loss only after a frozen dev audit shows
+useful signed agreement and rank correlation with full-network interventions.
+
+The primary loss consumes each condition's binary helpfulness outcome with BCE
+and Brier. It is explicitly helpful versus not-helpful: neutral and harmful are
+both negative labels. Their signed effects are logged separately as audits, and
+low \(r\) is never interpreted as harmfulness.
+Condition-wise beta-binomial/logistic-normal fits are audits for overdispersion
+and concentration coverage only. Inferential effective sample size is based on
+identity/query clusters, never raw corruption-seed count.
+
+### 9.2 Online URGC control
+
 CollaborativeFusion projects every final expert-modality embedding to 512
-dimensions. The evidential score r times one-minus-u times learned
-complementarity gives nine weights, normalized globally over valid
-contributions. The primary embedding is exactly:
+dimensions. The default promoted CIRC score is \(r\) times learned
+complementarity, giving nine weights normalized globally over valid
+contributions. Multiplication by one-minus-\(u\) is a pre-registered
+U2-evidence ablation and may replace the default only if condition-wise
+empirical concentration coverage passes before final configuration freeze.
+Otherwise \(u\) is diagnostic. The primary embedding is exactly:
 
 \[
 z=\operatorname{BN}\left(\sum_{e,m}\pi_{e,m}P^f_e z_{e,m}\right)
@@ -380,22 +468,25 @@ z=\operatorname{BN}\left(\sum_{e,m}\pi_{e,m}P^f_e z_{e,m}\right)
 \]
 
 For diagnostics, a per-expert embedding is the renormalized weighted sum over
-that expert's valid modalities.
-
-Counterfactual supervision removes one of the at most nine projected head
-contributions, renormalizes the remaining weights, and recomputes only the
-512-dimensional fused head. It never reruns an expert. Correct-class prototype
-margin deltas are detached before becoming Beta helpfulness targets.
+that expert's valid modalities. The same ReliabilityResult instance supplies
+both relay gates and fusion weights. Separate-router, relay-only and
+fusion-only adapters exist only as ablation configurations.
 
 The reliability result exposes alpha, beta, r, u, contribution weights,
-counterfactual targets when training, and valid-count diagnostics. It does not
-expose router private layers.
+valid-count diagnostics and a target-cache provenance key when training. It
+does not expose router private layers or construct targets.
 
-## 10. Innovation III implementation: RDPT
+After U2 training, a frozen dev-only target-transfer audit repeats the
+decomposed interventions with the deployed model. Weak proxy-target/router/
+deployed-effect agreement invalidates the causal-reliability claim.
 
-RoleDirectedPeerTeaching is training-only. It receives final expert states,
+## 10. Auxiliary implementation: RDPT
+
+RoleDirectedPeerTeaching is training-only and disabled in the promoted v1.1
+core configuration. It receives final expert states,
 the shared ReliabilityResult, and labels. For each sample and expert, quality
-q is the mask-weighted mean of r times one-minus-u.
+q is the mask-weighted mean of the collaboration score active in that
+configuration (mean-only \(r\) by default).
 
 Direction gates have shape B,E,E. The diagonal is zero. Teacher quality,
 direction comparisons, and all teacher payloads are detached. A gate is active
@@ -442,7 +533,7 @@ TriFusionCriterion owns the full named training objective:
 | triplet_fused | fused batch-hard triplet loss |
 | id_cnn, id_transformer, id_mamba | branch classifier losses |
 | triplet_cnn, triplet_transformer, triplet_mamba | branch metric losses |
-| reliability | counterfactual proper-score and evidence regularizer |
+| reliability | per-condition out-of-fold intervention BCE/Brier and evidence regularizer |
 | peer_logits | directional KL |
 | peer_role | role-preserving relation transfer |
 | private_diversity | cosine-hinge private protection |
@@ -469,9 +560,21 @@ TriFusion uses its own namespace:
         RELAY_RANK: 64
         EMBED_DIM: 512
         COLLABORATOR: hfer
-        GATE: evidential
-        COUNTERFACTUAL: true
-        PEER_MODE: rdpt
+        GATE: circ
+        CIRC_TARGET_MODE: full_oof_intervention
+        CIRC_PROTOCOL: protocols/circ_target_v1.json
+        CIRC_FOLDS: 3
+        CIRC_REQUIRE_CROSS_CAMERA: true
+        CIRC_INTERVENTIONS: [total, direct, relay]
+        CIRC_EDGE_AUDIT: true
+        CIRC_EDGE_PER_STAGE_PER_ROW: 1
+        CIRC_EDGE_SALT: TriFusion-CIRC-edge-v1
+        CIRC_POOL_CONDITIONS: false
+        CIRC_SYMMETRY_AUDIT: true
+        CIRC_USE_UNCERTAINTY_MULTIPLIER: false
+        CIRC_TARGETS_REQUIRED: true
+        CIRC_TARGET_TABLE: null
+        PEER_MODE: none
         PEER_REJECT: true
         ROLE_PAYLOAD: true
         ACTIVATION_CHECKPOINT: true
@@ -483,19 +586,32 @@ The minimum matrix maps to flags without source edits:
 | A0 | all experts; collaborator none; fusion uniform mean |
 | A1 | all experts; collaborator none; concat-to-512 MLP |
 | A2 | HFER; uniform gate; private residual enabled |
-| A3 | HFER; same-size softmax gate; no evidential/counterfactual loss |
-| A4 | HFER; evidential URGC; counterfactual target enabled |
-| A5 | A4 plus symmetric KL; no direction and no reject |
-| A6 | A4 plus directional teaching; reject disabled; common logits only |
-| A7 | full HFER plus URGC plus rejectable role-preserving RDPT |
-| A8 | no collaboration; enlarged concat MLP parameter-matched to A7 |
+| A3 | A2 with private residual or role mixer removed |
+| A4 | no collaboration; enlarged concat MLP parameter-matched to U2 |
+| R0 | HFER; same-size softmax gate |
+| R1 | joint Beta router; observational end-to-end supervision |
+| R2 | joint Beta router; cheap head-only LOO supervision |
+| R3 | CIRC; frozen identity-out-of-fold full-intervention targets |
+| R4 | nine independent evidential heads |
+| R5 | global non-evidential router matched to R3 |
+| U0 | R3 posterior used only at final fusion |
+| U1 | R3 posterior used only at HFER relays |
+| U2 | one R3 posterior reused at relays and fusion; promoted core |
+| U3 | separate parameter-matched relay and fusion routers |
+| C0 | shuffled targets, expert permutation and capacity-floor controls |
+| K0 | U2 with no peer teaching |
+| K1 | U2 plus symmetric KL |
+| K2 | U2 plus directional teaching without rejection |
+| K3 | U2 plus full RDPT auxiliary |
+| K4 | K3 wrong-payload and adaptive-transfer controls |
 
-The required A2 control without private residual is a separate one-flag
-diagnostic. The required A4 no-counterfactual control uses the identical
-evidential head trained without the counterfactual target.
+R1–R5 use the identical router parameter budget wherever possible. C0 must
+include a learned context-free path with matched capacity, not only a constant
+mean. K3 is not part of the promoted core unless it passes its separate
+promotion gate.
 
-A8 must actually instantiate and train its extra layers. Its total parameter
-count must be within 2 percent of A7 and activated FLOPs within 5 percent where
+A4 must actually instantiate and train its extra layers. Its total parameter
+count must be within 2 percent of U2 and activated FLOPs within 5 percent where
 feasible; otherwise it is labelled only approximately matched and cannot
 satisfy the HFER claim gate.
 
@@ -522,7 +638,8 @@ Memory controls that preserve the scientific method are:
 - non-reentrant activation checkpointing around each expert stage;
 - discard pre-relay activation references after the synchronous update;
 - compute compressed role payloads instead of full affinity matrices;
-- compute nine counterfactual heads sequentially;
+- generate offline full-network interventions sequentially and cache only
+  scalar target statistics;
 - return auxiliary tensors only when the caller requests them.
 
 Gradient accumulation must not be described as a real B32 batch if a smaller
@@ -539,13 +656,21 @@ time, and final embedding width.
 
 Development proceeds only on the frozen 141-fit/30-dev train-only split:
 
-1. fit on 141 identities;
-2. select router thresholds, loss weights, and checkpoint epoch on the 30
+1. before dev-label use, freeze and hash circ_target_v1.json, including folds,
+   epsilon, corruption conditions, target-generator recipe/code commit,
+   cache schema, metrics and audit thresholds;
+2. split the 141 fit identities into three deterministic folds, train each
+   two-fold target generator, and create held-out intervention targets;
+3. fit CIRC/URGC on 141 identities using only immutable out-of-fold targets;
+4. run query/gallery symmetry and proxy-to-deployed target-transfer audits,
+   then select router thresholds, loss weights, and checkpoint epoch on the 30
    train-only dev identities;
-3. freeze the entire configuration and selected epoch;
-4. retrain from initialization on all 171 training identities;
-5. evaluate the official test set once per frozen seed;
-6. report three fixed seeds and aggregate uncertainty.
+5. freeze the entire configuration and selected epoch;
+6. reclassify the former 30 dev identities as training-only, repeat the
+   deterministic three-fold target generation on all 171 identities, then
+   retrain from initialization with no further selection or early stopping;
+7. evaluate the official test set once per frozen seed;
+8. report three fixed seeds and aggregate uncertainty.
 
 The running DeMo job evaluates the official test set each epoch and updates
 DeMobest.pth by test mAP. That released-style best curve is reported explicitly
@@ -584,14 +709,35 @@ The accepted interface is the test surface. Tests assert observable behavior:
 
 - alpha and beta are strictly greater than one;
 - r and u are finite and bounded;
+- one shared joint output function emits all nine entries;
 - valid fusion weights sum to one;
 - invalid contributions have exactly zero mass;
-- detached counterfactual targets have no gradient function;
+- target-cache tensors have no gradient function and match sample keys;
+- every target row's identity is absent from its generator training fold;
+- every primary row has different-camera positive support;
+- total, direct and relay fields are present for all nine contributions;
+- exactly one valid edge per stage is selected by the frozen hash rule for each
+  query-condition row, the receipt proves two-per-row cost and group coverage,
+  and sampled edge values are never consumed as primary training targets;
+- helpful, neutral and harmful signed fields are present, while the learned
+  target is explicitly helpful versus not-helpful;
+- corruption family/severity/seed rows remain separate;
+- per-condition BCE/Brier/ECE, overdispersion, empirical concentration
+  coverage and identity/query-cluster effective sample size are reproducible;
+- per-camera and identity-frequency calibration group assignments are
+  deterministic and complete;
+- deterministic intervention seeds reproduce target rows and hashes;
+- receipt binds the frozen protocol, code, generator and reference-bank hashes;
+- query-only and symmetric audit fixtures use their registered reference-bank
+  semantics;
+- proxy-target-to-deployed-model transfer emits a frozen agreement receipt;
+- shuffled/permuted target controls remain constructible at the same seam;
 - controlled degradation can lower the corresponding learned weight;
 - single-available-modality inference remains finite.
 
 ### RoleDirectedPeerTeaching
 
+- disabled mode produces no peer result or loss in the promoted core;
 - teacher tensors receive no peer-loss gradient;
 - direction follows detached quality difference;
 - low-confidence samples reject;
@@ -623,12 +769,16 @@ smallest production implementation that makes it pass:
 2. immutable result types, mask validation, and tiny three-expert encoder;
 3. production tokenizer and three standalone expert heads;
 4. HFER with NoOp and uniform adapters;
-5. URGC with uniform, softmax, and evidential adapters;
-6. CollaborativeFusion and detached counterfactual targets;
-7. RDPT direction, rejection, and role payloads;
-8. full TriFusionReID plus named criterion and trainer;
-9. CUDA Mamba integration and real-loader smoke;
-10. one-batch overfit, parameter/FLOP report, and eight-step B32 memory probe.
+5. joint ReliabilityPosterior with uniform, softmax, observational, and CIRC
+   adapters;
+6. deterministic fold registry, frozen target-cache schema, and total/direct/
+   relay/edge intervention builder paths;
+7. CollaborativeFusion and immutable target lookup in the criterion;
+8. same-posterior URGC relay/fusion adapters and separate-router controls;
+9. optional RDPT direction, rejection, and role payloads;
+10. full TriFusionReID plus named criterion and trainer;
+11. CUDA Mamba integration and real-loader smoke;
+12. one-batch overfit, parameter/FLOP report, and eight-step B32 memory probe.
 
 No full experiment starts until the one-batch overfit and capacity gates pass.
 
@@ -636,9 +786,10 @@ No full experiment starts until the one-batch overfit and capacity gates pass.
 
 | Proposed contribution | Required evidence before paper promotion |
 |-----------------------|-------------------------------------------|
-| HFER | A2 beats A1 and matched A8; at least two branch embeddings improve; private diversity and three-expert gradients remain |
-| URGC | A4 beats A3 and no-counterfactual control; reliability has useful Brier/ECE, Spearman correlation, corruption monotonicity, and missing-modality robustness |
-| RDPT | A7 beats A5/A6; rejection is non-zero and non-saturated; weak branches improve without private CKA collapse; degradation shifts teacher direction |
+| HFER | A2 beats A1 and matched A4; at least two branch embeddings improve; private diversity and three-expert gradients remain |
+| CIRC | R3 beats R0/R1/R2/R4/R5; decomposed full interventions, helpful/harmful audit, grouped BCE/Brier/ECE, overdispersion/coverage, query-gallery symmetry, proxy transfer, negative controls and corruption monotonicity pass |
+| URGC | U2 beats U0/U1/U3 and C0; fused plus at least two branches improve; missing/degraded mean and worst-case robustness pass |
+| RDPT auxiliary | K3 beats K0/K1/K2/K4; rejection is non-zero and non-saturated; weak branches improve without private CKA collapse; otherwise do not promote |
 | SOTA | frozen same-protocol three-seed results exceed both 84.1 mAP and 87.2 Rank-1 and pass integrity audit |
 
 An innovation that fails its own gate is removed or renamed. Full-model gain
