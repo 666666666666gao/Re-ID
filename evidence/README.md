@@ -22,6 +22,9 @@ sha256sum -c evidence/SHA256SUMS
 - Comparator audits: PEFT-BoA and Signal pinned-source, released-protocol,
   environment/loader and claim-boundary receipts. Signal's public log is
   explicitly not treated as a local checkpoint result.
+- Claim-gate preregistration: the quantitative effect, clustered-statistics,
+  calibration, robustness and SOTA thresholds were hash-frozen before any
+  R020+ implementation or method result existed.
 - MFRNet checkpoint comparator: direct official weight download, isolated
   Python 3.8/torch 1.12/Tutel environment, real loader and 297/297 strict CPU
   state match, plus a separate batch-routing semantics receipt. No GPU metric
@@ -113,6 +116,12 @@ capacity-factor-1.0 batch-prioritized routing can retain a different token set
 after batch splitting. It supports preserving released evaluation B128 and
 labeling any lower-batch run non-comparable; it does not claim the real
 checkpoint necessarily changes metrics across batches.
+
+The claim-gate preregistration receipt binds `claim_gates_v1`, the byte-identical
+timestamped/fixed v1.2 plan and tracker, the absence of the TriFusion core and
+training/evaluation entry points, and 50 R020+ rows with zero completed method
+results at freeze time. It proves ordering and hashes only; it does not prove
+that the thresholds are optimal or that any future method claim passes them.
 
 Absolute paths inside JSON records identify the WSL2 machine on which the
 evidence was produced. File hashes, source commits and protocol fields are the

@@ -1,0 +1,188 @@
+{
+  "created_at": "2026-08-31T11:18:50+08:00",
+  "dataset": "RGBNT201",
+  "delta_convention": "candidate minus comparator, in percentage points for retrieval metrics",
+  "freeze_policy": {
+    "changes_after_any_r020_or_later_result": "forbidden",
+    "replacement_policy": "create a new version before results and retain this file",
+    "status": "frozen_before_core_implementation_and_before_any_method_result"
+  },
+  "hfer": {
+    "capacity_controls": {
+      "activated_flops_relative_tolerance": 0.05,
+      "parameter_relative_tolerance": 0.02
+    },
+    "decisive_comparators": [
+      "A1_concat_mlp",
+      "A4_capacity_matched_no_relay"
+    ],
+    "fused_mAP": {
+      "adjusted_p_less_than": 0.05,
+      "bootstrap_ci_lower_strictly_above_pp": 0.0,
+      "minimum_point_delta_pp": 0.5
+    },
+    "fused_rank1": {
+      "adjusted_p_less_than": 0.05,
+      "bootstrap_ci_lower_strictly_above_pp": 0.0,
+      "minimum_point_delta_pp": 0.3
+    },
+    "minimum_improved_receiver_branches": 2,
+    "per_receiver_branch_mAP": {
+      "adjusted_p_less_than": 0.05,
+      "bootstrap_ci_lower_strictly_above_pp": 0.0,
+      "minimum_point_delta_pp": 0.3
+    },
+    "trainable_gradient_coverage_minimum": 1.0
+  },
+  "circ": {
+    "calibration": {
+      "brier_relative_improvement_over_observational_minimum": 0.05,
+      "helpfulness_macro_auroc_minimum": 0.65,
+      "maximum_group_ece": 0.1,
+      "maximum_overall_ece": 0.05,
+      "minimum_identity_cluster_effective_sample_size_for_group_claim": 20,
+      "minimum_rows_for_group_claim": 200
+    },
+    "decisive_comparators": [
+      "R0_softmax",
+      "R1_observational_joint_beta",
+      "R2_head_only_loo",
+      "R4_independent_evidential_heads",
+      "R5_global_non_evidential_router"
+    ],
+    "effect_alignment": {
+      "high_vs_low_reliability_quartile_adjusted_p_less_than": 0.05,
+      "high_vs_low_reliability_quartile_effect_ci_lower_strictly_above": 0.0,
+      "minimum_spearman_point": 0.3,
+      "spearman_bootstrap_ci_lower_minimum": 0.1
+    },
+    "fused_mAP": {
+      "adjusted_p_less_than": 0.05,
+      "bootstrap_ci_lower_strictly_above_pp": 0.0,
+      "minimum_point_delta_pp": 0.5
+    },
+    "fused_rank1_noninferiority": {
+      "bootstrap_ci_lower_strictly_above_pp": -0.3,
+      "margin_pp": -0.3
+    },
+    "proxy_to_deployed_transfer": {
+      "minimum_sign_agreement": 0.7,
+      "minimum_spearman": 0.5
+    },
+    "query_gallery_symmetry": {
+      "minimum_sign_agreement": 0.7,
+      "minimum_spearman": 0.5
+    }
+  },
+  "multiple_testing_families": {
+    "circ_calibration_and_alignment": [
+      "R3_vs_R0",
+      "R3_vs_R1",
+      "R3_vs_R2",
+      "R3_vs_R4",
+      "R3_vs_R5"
+    ],
+    "hfer_retrieval": [
+      "A2_vs_A1",
+      "A2_vs_A4"
+    ],
+    "rdpt_promotion": [
+      "K3_vs_K0",
+      "K3_vs_K1",
+      "K3_vs_K2",
+      "K3_vs_K4"
+    ],
+    "urgc_retrieval": [
+      "U2_vs_U0",
+      "U2_vs_U1",
+      "U2_vs_U3"
+    ]
+  },
+  "negative_controls": {
+    "maximum_fraction_of_promoted_gain": 0.5,
+    "required_adjusted_p_not_less_than": 0.05,
+    "variants": [
+      "shuffled_targets",
+      "expert_identity_permutation",
+      "identity_leak_probe",
+      "camera_leak_probe",
+      "context_free_capacity_floor"
+    ]
+  },
+  "rdpt_optional_promotion": {
+    "decisive_comparators": [
+      "K0_no_peer",
+      "K1_symmetric_kl",
+      "K2_direction_no_reject",
+      "K4_wrong_payload_and_adaptive_transfer"
+    ],
+    "fused_mAP_minimum_point_delta_pp": 0.3,
+    "minimum_improved_branches": 2,
+    "private_cka_collapse_forbidden": true,
+    "rejection_rate_strictly_between": [
+      0.05,
+      0.95
+    ]
+  },
+  "reliability_binning": {
+    "ece_bins": 15,
+    "ece_strategy": "equal_frequency",
+    "heterogeneous_conditions_are_never_pooled_as_iid": true
+  },
+  "robustness": {
+    "complete_modality_noninferiority_margin_pp": -0.3,
+    "minimum_corruption_cells_with_monotone_reliability_fraction": 0.8,
+    "minimum_missing_mask_average_mAP_delta_pp": 1.0,
+    "minimum_missing_mask_worst_mAP_delta_pp": 0.5,
+    "severity_to_reliability_spearman_maximum": -0.5
+  },
+  "schema_version": 1,
+  "sota": {
+    "comparison_track": "static pure-visual CLIP-B/16, 256x128, no reranking, no TTT, no test-selected checkpoint",
+    "fixed_seeds": [
+      42,
+      3407,
+      9199
+    ],
+    "initial_mAP_threshold_percent": 84.1,
+    "initial_rank1_threshold_percent": 87.2,
+    "required_condition": "every fixed seed strictly exceeds both the submission-date refreshed mAP and Rank-1 thresholds",
+    "threshold_refresh_policy": "use the maximum comparable public value located by R071A; thresholds may only increase"
+  },
+  "statistics": {
+    "bootstrap": {
+      "confidence_level": 0.95,
+      "method": "paired percentile bootstrap resampling identity clusters with all queries retained",
+      "resamples": 10000,
+      "seed": 20260831
+    },
+    "multiplicity": {
+      "alpha": 0.05,
+      "method": "Holm",
+      "scope": "separate predeclared family per promoted claim"
+    },
+    "permutation": {
+      "method": "paired sign-flip at identity-cluster level",
+      "resamples": 100000,
+      "seed": 20260831
+    },
+    "primary_sampling_unit": "identity cluster, not individual query or corruption seed"
+  },
+  "urgc": {
+    "complete_modality_rank1_noninferiority_margin_pp": -0.3,
+    "decisive_comparators": [
+      "U0_fusion_only",
+      "U1_relay_only",
+      "U3_separate_parameter_matched_routers"
+    ],
+    "fused_mAP": {
+      "adjusted_p_less_than": 0.05,
+      "bootstrap_ci_lower_strictly_above_pp": 0.0,
+      "minimum_point_delta_pp": 0.3
+    },
+    "fused_rank1_noninferiority_margin_pp": -0.3,
+    "minimum_improved_receiver_branches": 2,
+    "per_receiver_branch_mAP_minimum_point_delta_pp": 0.3
+  },
+  "valid": true
+}

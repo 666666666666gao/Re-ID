@@ -112,3 +112,13 @@
 | 2026-08-31 11:08 | /run-experiment | evidence/mfrnet_eval_batch_semantics_audit_20260831.json | research | Tutel capacity/batch-priority 的确定性 batch 分割反例与 MFRNet B128 parity 边界 |
 | 2026-08-31 11:08 | /tdd | docs/MFRNET_CHECKPOINT_REPRODUCTION_SPEC.md | implementation | 提议 MFRNet preflight/official128 公共接缝、显存门禁、原始日志与原子 receipt 合同 |
 | 2026-08-31 11:08 | /tdd | docs/TDD_SEAMS.md | implementation | 将待确认的 MFRNet B128 checkpoint 评测 CLI 纳入接缝协议 |
+| 2026-08-31 11:20 | /experiment-plan | protocols/claim_gates_v1.json | implementation | 在 R020+ 结果前冻结三创新点效应量、identity-cluster 统计、校准、鲁棒性和 SOTA 门 |
+| 2026-08-31 11:20 | /experiment-plan | refine-logs/EXPERIMENT_PLAN_20260831_112010.md | implementation | v1.2 永久版本：量化 claim gates、必要控制、stop/go 与本地算力工期 |
+| 2026-08-31 11:20 | /experiment-plan | refine-logs/EXPERIMENT_PLAN.md | implementation | v1.2 latest copy，与 timestamped 版本逐字节一致 |
+| 2026-08-31 11:20 | /experiment-plan | refine-logs/EXPERIMENT_TRACKER_20260831_112010.md | implementation | 新增 HFER 方向/深度/同构/容量、CIRC 粒度/泄漏/温度及统计运行项 |
+| 2026-08-31 11:20 | /experiment-plan | refine-logs/EXPERIMENT_TRACKER.md | implementation | latest tracker copy，与 timestamped 版本逐字节一致 |
+| 2026-08-31 11:25 | /experiment-plan | evidence/claim_gates_v1_preregistration_20260831.json | implementation | 绑定量化门、版本化计划及 50 个 R020+ 零完成结果的 pre-result ordering receipt |
+| 2026-08-31 11:25 | /experiment-plan | evidence/SHA256SUMS | implementation | 将 claim-gates 预注册 receipt 纳入第 29 份版本化证据 |
+| 2026-08-31 11:25 | /experiment-plan | evidence/README.md | implementation | 记录预注册 receipt 的证明范围与非有效性边界 |
+| 2026-08-31 11:25 | /experiment-plan | refine-logs/EXPERIMENT_TRACKER_20260831_112526.md | implementation | evidence count 更新后的永久 tracker 版本 |
+| 2026-08-31 11:25 | /experiment-plan | refine-logs/EXPERIMENT_TRACKER.md | implementation | latest tracker copy，与 112526 timestamped 版本逐字节一致 |
