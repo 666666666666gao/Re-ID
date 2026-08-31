@@ -7,6 +7,7 @@ from collections.abc import Mapping
 import torch
 from torch import nn
 
+from .interventions import FullNetworkIntervention
 from .state import (
     EXPERT_ORDER,
     MODALITY_ORDER,
@@ -46,6 +47,22 @@ class TriBranchEncoder(nn.Module):
         images: Mapping[str, torch.Tensor],
         modality_mask: torch.Tensor,
     ) -> ExpertStateMap:
+        return self._forward(images, modality_mask, intervention=None)
+
+    def forward_intervened(
+        self,
+        images: Mapping[str, torch.Tensor],
+        modality_mask: torch.Tensor,
+        intervention: FullNetworkIntervention,
+    ) -> ExpertStateMap:
+        return self._forward(images, modality_mask, intervention=intervention)
+
+    def _forward(
+        self,
+        images: Mapping[str, torch.Tensor],
+        modality_mask: torch.Tensor,
+        intervention: FullNetworkIntervention | None,
+    ) -> ExpertStateMap:
         self._validate_inputs(images, modality_mask)
         all_missing = (~modality_mask).all(dim=1).nonzero(as_tuple=False).flatten()
         if all_missing.numel():
@@ -66,7 +83,13 @@ class TriBranchEncoder(nn.Module):
                 packed_images, modality_indices[modality_mask]
             )
         if self.collaborator is not None:
-            return self._forward_collaborative(expert_inputs, modality_mask)
+            return self._forward_collaborative(
+                expert_inputs,
+                modality_mask,
+                intervention=intervention,
+            )
+        if intervention is not None:
+            raise RuntimeError("full-network intervention requires deep collaboration")
         states = {
             expert: self._scatter_expert_output(
                 self.experts[expert](expert_inputs[expert]),
@@ -81,6 +104,7 @@ class TriBranchEncoder(nn.Module):
         self,
         expert_inputs: Mapping[str, torch.Tensor],
         modality_mask: torch.Tensor,
+        intervention: FullNetworkIntervention | None,
     ) -> ExpertStateMap:
         runtimes = {
             expert: self.experts[expert].initialize(expert_inputs[expert])
@@ -110,9 +134,17 @@ class TriBranchEncoder(nn.Module):
             if stage == 1:
                 reliability = self.reliability_gate(stage_states, modality_mask)
             if stage < 3:
-                relay_result = self.collaborator(
-                    stage_states, reliability, stage
-                )
+                if intervention is None:
+                    relay_result = self.collaborator(
+                        stage_states, reliability, stage
+                    )
+                else:
+                    relay_result = self.collaborator.forward_intervened(
+                        stage_states,
+                        reliability,
+                        stage,
+                        intervention,
+                    )
                 relay_results.append(relay_result)
                 for expert in EXPERT_ORDER:
                     relayed_packed = relay_result.states[expert].tokens[

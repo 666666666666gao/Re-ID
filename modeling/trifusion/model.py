@@ -11,6 +11,7 @@ import torch
 from torch import nn
 
 from .fusion import CollaborativeFusion
+from .interventions import FullNetworkIntervention
 from .state import EXPERT_ORDER, ReliabilityResult
 
 
@@ -19,6 +20,7 @@ class TriFusionOutput:
     fused_embedding: torch.Tensor
     branch_embeddings: Mapping[str, torch.Tensor]
     contribution_embeddings: torch.Tensor
+    fusion_weights: torch.Tensor
     reliability: ReliabilityResult
     relay_results: tuple[Any, ...]
     peer_teaching: Any
@@ -102,12 +104,33 @@ class TriFusionReID(nn.Module):
         if targets is None:
             targets = batch.get("targets")
 
-        states = self.encoder(images, modality_mask)
+        intervention = None
+        if "intervention" in batch:
+            if self.training:
+                raise RuntimeError("full-network interventions are evaluation-only")
+            intervention = FullNetworkIntervention.from_value(batch["intervention"])
+
+        if intervention is None:
+            states = self.encoder(images, modality_mask)
+        else:
+            states = self.encoder.forward_intervened(
+                images,
+                modality_mask,
+                intervention,
+            )
         if states.reliability is None:
             raise RuntimeError("TriFusionReID requires the collaborative encoder posterior")
-        fusion_result = self.fusion(
-            states, states.reliability, modality_mask
-        )
+        if intervention is None:
+            fusion_result = self.fusion(
+                states, states.reliability, modality_mask
+            )
+        else:
+            fusion_result = self.fusion.forward_intervened(
+                states,
+                states.reliability,
+                modality_mask,
+                intervention,
+            )
         fused_embedding = self.fused_neck(fusion_result.fused_embedding)
         branch_embeddings = {
             expert: self.branch_necks[expert](
@@ -155,6 +178,7 @@ class TriFusionReID(nn.Module):
             fused_embedding=fused_embedding,
             branch_embeddings=branch_embeddings,
             contribution_embeddings=fusion_result.contribution_embeddings,
+            fusion_weights=fusion_result.weights,
             reliability=states.reliability,
             relay_results=states.relay_results,
             peer_teaching=peer_result,

@@ -9,7 +9,8 @@ from types import MappingProxyType
 import torch
 from torch import nn
 
-from .state import EXPERT_ORDER, ExpertStateMap, ReliabilityResult
+from .interventions import FullNetworkIntervention
+from .state import EXPERT_ORDER, MODALITY_ORDER, ExpertStateMap, ReliabilityResult
 
 
 @dataclass(frozen=True, eq=False)
@@ -65,6 +66,29 @@ class CollaborativeFusion(nn.Module):
         reliability: ReliabilityResult,
         modality_mask: torch.Tensor,
     ) -> FusionResult:
+        return self._forward(states, reliability, modality_mask, intervention=None)
+
+    def forward_intervened(
+        self,
+        states: ExpertStateMap,
+        reliability: ReliabilityResult,
+        modality_mask: torch.Tensor,
+        intervention: FullNetworkIntervention,
+    ) -> FusionResult:
+        return self._forward(
+            states,
+            reliability,
+            modality_mask,
+            intervention=intervention,
+        )
+
+    def _forward(
+        self,
+        states: ExpertStateMap,
+        reliability: ReliabilityResult,
+        modality_mask: torch.Tensor,
+        intervention: FullNetworkIntervention | None,
+    ) -> FusionResult:
         if not torch.equal(states.modality_mask, modality_mask):
             raise ValueError("states and fusion must use the same modality mask")
         if not torch.equal(reliability.modality_mask, modality_mask):
@@ -87,6 +111,12 @@ class CollaborativeFusion(nn.Module):
         if self.use_uncertainty_multiplier:
             scores = scores * (1.0 - reliability.u)
         scores = (scores + self.residual_floor) * valid_float
+        if intervention is not None and intervention.suppresses_fusion:
+            expert_index = EXPERT_ORDER.index(intervention.expert)
+            modality_index = MODALITY_ORDER.index(intervention.modality)
+            allowed = torch.ones_like(scores)
+            allowed[:, expert_index, modality_index] = 0
+            scores = scores * allowed
         total = scores.sum(dim=(1, 2), keepdim=True)
         fallback = valid_float / valid_float.sum(
             dim=(1, 2), keepdim=True
