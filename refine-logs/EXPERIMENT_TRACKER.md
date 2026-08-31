@@ -13,13 +13,14 @@
 | R008 | M0 | 环境锁 | conda/pip/source pins | WSL2 | rebuild evidence | MUST | DONE | environment.yml + lock |
 | R009 | M0 | RGBNT100 完整性 | audit | all | triplets/JPEG | MUST | DONE | 17,250 triplets；70,715 JPEG |
 | R010 | M1 | 强 checkpoint parity | MDReID | RGBNT201 test | mAP/R1/R5/R10 | MUST | DONE | 82.0868/85.1675/90.3110/92.5837 |
-| R011 | M1 | DeMo tiny overfit | DeMo | tiny train | loss/R1 | MUST | TODO | GPU 释放后补 |
-| R012 | M1 | DeMo 50 epoch | fixed seed42 B32/K4/TB64 | RGBNT201 | mAP/R1/checkpoint | MUST | RUNNING | epoch30 闭合：joint 76.3/81.5；test-selected mAP best epoch17 77.0/79.3，仅校准 |
-| R013 | M1 | DeMo 协议偏差 | fixed vs test-selected | RGBNT201 | delta/provenance | MUST | RUNNING | 公平结果固定 DeMo_50.pth |
-| R014 | M1 | 系统门 | B32 + eval latency | RGBNT201 | VRAM/latency | MUST | WARN | 8-step 6,894 MiB；历史 ori >300s |
+| R011 | M1 | DeMo tiny overfit | DeMo | tiny train | loss/R1 | MUST | WAITING | 等本地 GPU 低于 500 MiB 空闲门禁 |
+| R012 | M1 | DeMo 50 epoch | fixed seed42 B32/K4/TB64 | RGBNT201 | mAP/R1/checkpoint | MUST | INCOMPLETE | epoch31 训练闭合后 ori 评估遭 CUDA unknown error；无 epoch31 评估/DeMo_50；epoch30 是最后固定里程碑 |
+| R012R | M1 | DeMo 50 epoch replacement | resumable-v1 seed42 B32/K4/TB64 | RGBNT201 | exact parity/mAP/R1/full state | MUST | WAITING | 必须从 epoch0 重跑；epoch10 与原 R012 417 tensors 逐张量完全一致后才可继续；等 GPU 空闲门禁 |
+| R013 | M1 | DeMo 协议偏差 | fixed vs test-selected | RGBNT201 | delta/provenance | MUST | WAITING | 等 R012R 产生固定 DeMo_50.pth；禁止用 epoch17 test-selected 代替 |
+| R014 | M1 | 系统门 | B32 + eval latency | RGBNT201 | VRAM/latency/driver | MUST | WARN | 8-step 6,894 MiB；历史 ori >300s；R012 终止附近 7 条 nvlddmkm 153 |
 | R015 | M1 | train-only dev | 141-fit/30-dev | train_171 only | overlap/positives | MUST | DONE | test overlap=0；825/825 valid |
-| R016 | M1 | 证据包 | 21 versioned JSONs | all | SHA/protocol | MUST | DONE | SHA256SUMS pass |
-| R017 | M1 | MDReID 强化驱动复验 | hardened driver | RGBNT201 | parity/full audit | MUST | WAITING | 等 R012 释放 GPU |
+| R016 | M1 | 证据包 | 22 versioned JSONs | all | SHA/protocol | MUST | DONE | 加入 R012 incident receipt；SHA256SUMS pass |
+| R017 | M1 | MDReID 强化驱动复验 | hardened driver | RGBNT201 | parity/full audit | MUST | WAITING | 等本地 GPU 低于 500 MiB 空闲门禁 |
 | R018 | M1 | epoch10 receipt | DeMo_10.pth | RGBNT201 | ordering/hash | MUST | DONE | SHA b2ab79f0…31c0 |
 | R018A | M1 | epoch20 receipt | DeMo_20.pth | RGBNT201 | ordering/hash/metrics | MUST | DONE | SHA 5d61a4cf…e7b2；非 test 选点 |
 | R018B | M1 | epoch30 receipt | DeMo_30.pth | RGBNT201 | ordering/hash/metrics | MUST | DONE | SHA d5e375fa…4ce5；非 test 选点 |

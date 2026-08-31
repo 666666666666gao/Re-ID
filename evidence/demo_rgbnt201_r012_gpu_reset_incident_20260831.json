@@ -1,0 +1,121 @@
+{
+  "baseline": {
+    "commit": "b4f323a430b32e3a1637c3e7acb25868cb52e9cd",
+    "name": "DeMo",
+    "tracked_tree_clean_at_audit": true
+  },
+  "capture": {
+    "captured_at_local": "2026-08-31T08:16:24.1140360+08:00",
+    "timezone": "Asia/Shanghai"
+  },
+  "checkpoint_recovery_audit": {
+    "checkpoint": "/root/mmreid-trifusion/runs/demo_rgbnt201_seed42_b32k4_tb64/DeMo_30.pth",
+    "checkpoint_bytes": 395426032,
+    "checkpoint_sha256": "d5e375fa2c4bab08f753fc7b0a17b698537db2398250770b130aceac1b274ce5",
+    "format": "OrderedDict[str, Tensor]",
+    "tensor_count": 417,
+    "contains_epoch": false,
+    "contains_optimizer": false,
+    "contains_rng_state": false,
+    "contains_scheduler": false,
+    "contains_scaler": false,
+    "exact_training_continuation_possible": false,
+    "required_action": "replace R012 with a seed-42 run from epoch 0 using complete atomic recovery state; do not reset Adam and call it a continuation"
+  },
+  "correlated_host_events": {
+    "interpretation": "seven temporally correlated NVIDIA display-driver events support a host/WSL GPU reset hypothesis; temporal correlation is not proof of a unique root cause",
+    "log": "Windows System",
+    "provider": "nvlddmkm",
+    "events": [
+      {"time_local": "2026-08-31T07:27:57.0857439+08:00", "event_id": 153, "record_id": 220003},
+      {"time_local": "2026-08-31T07:27:58.2990455+08:00", "event_id": 153, "record_id": 220012},
+      {"time_local": "2026-08-31T07:27:58.7883659+08:00", "event_id": 153, "record_id": 220013},
+      {"time_local": "2026-08-31T07:28:02.2053430+08:00", "event_id": 153, "record_id": 220017},
+      {"time_local": "2026-08-31T07:28:05.0902545+08:00", "event_id": 153, "record_id": 220019},
+      {"time_local": "2026-08-31T07:28:05.6937432+08:00", "event_id": 153, "record_id": 220020},
+      {"time_local": "2026-08-31T07:28:05.7040579+08:00", "event_id": 153, "record_id": 220021}
+    ]
+  },
+  "correlated_wsl_events": {
+    "kernel_messages": [
+      {"time_local": "2026-08-31T07:24:01.332410+08:00", "message": "dxgkio_make_resident: Ioctl failed: -12"},
+      {"time_local": "2026-08-31T07:27:21.149232+08:00", "message": "dxgkio_query_adapter_info: Ioctl failed: -22"},
+      {"time_local": "2026-08-31T07:27:41.999292+08:00", "message": "dxgkio_query_adapter_info: Ioctl failed: -22"},
+      {"time_local": "2026-08-31T07:28:18.981302+08:00", "message": "dxgkio_query_adapter_info: Ioctl failed: -22"}
+    ],
+    "interpretation": "DXG failures bracket the terminal CUDA exception and are consistent with, but do not uniquely prove, a WDDM/WSL GPU reset"
+  },
+  "failure": {
+    "exception": "RuntimeError: CUDA error: unknown error",
+    "call_site": "DeMo/utils/metrics.py:244 evaluator.update -> self.feats.append(feat.cpu())",
+    "exception_log": "/root/mmreid-trifusion/runs/demo_rgbnt201_seed42_b32k4_tb64/driver.stderr.log",
+    "exception_log_mtime_local": "2026-08-31T07:28:04.568574337+08:00",
+    "asynchronous_cuda_location_warning": true,
+    "no_oom_exception_observed": true,
+    "no_nonfinite_metric_or_loss_observed": true
+  },
+  "protocol": {
+    "batch_size": 32,
+    "checkpoint_period": 10,
+    "dataset": "RGBNT201/train_171",
+    "eval_period": 1,
+    "max_epochs": 50,
+    "num_instances": 4,
+    "seed": 42,
+    "test_batch_size": 64
+  },
+  "raw_file_receipts": [
+    {
+      "path": "/root/mmreid-trifusion/runs/demo_rgbnt201_seed42_b32k4_tb64/driver.stdout.log",
+      "bytes": 126436,
+      "mtime_local": "2026-08-31T07:23:22.939522720+08:00",
+      "sha256": "9b7a6f2f02849411524e92f282fbef8570889efec59dfc2aa28ec04d15d90dc2"
+    },
+    {
+      "path": "/root/mmreid-trifusion/runs/demo_rgbnt201_seed42_b32k4_tb64/driver.stderr.log",
+      "bytes": 2871,
+      "mtime_local": "2026-08-31T07:28:04.568574337+08:00",
+      "sha256": "824d5d30c3a205b1fea5b6e70655a418452cede306c99f9da42b96a1ee47964f"
+    },
+    {
+      "path": "/root/mmreid-trifusion/runs/demo_rgbnt201_seed42_b32k4_tb64/train_log.txt",
+      "bytes": 118850,
+      "mtime_local": "2026-08-31T07:23:22.935522721+08:00",
+      "sha256": "6c1a49cbc4b0d7c25edcb9a1ece8e7aa7634ee5c9a3cf6ee2c8a1a5197bad1f7"
+    },
+    {
+      "path": "/root/mmreid-trifusion/runs/demo_rgbnt201_seed42_b32k4_tb64/summary.json",
+      "bytes": 33018,
+      "mtime_local": "2026-08-31T07:22:30.011528519+08:00",
+      "sha256": "718d5c1ae14655873bf7d04272d4fcd8768046d923300f596045a4d9b5a07cfb"
+    }
+  ],
+  "run_id": "R012",
+  "scientific_disposition": {
+    "fair_endpoint_checkpoint_present": false,
+    "last_complete_fixed_checkpoint_epoch": 30,
+    "last_complete_fixed_checkpoint_metrics": {
+      "joint_mAP_percent": 76.3,
+      "joint_rank1_percent": 81.5
+    },
+    "status": "INCOMPLETE",
+    "sota_evidence": false,
+    "test_selected_best_through_epoch30": {
+      "epoch": 17,
+      "joint_mAP_percent": 77.0,
+      "joint_rank1_percent": 79.3,
+      "use": "released-protocol calibration only"
+    }
+  },
+  "terminal_boundary": {
+    "epoch31_training_completed": true,
+    "epoch31_training_completed_local": "2026-08-31T07:23:22.939+08:00",
+    "epoch31_evaluation_mode_started": "ori",
+    "epoch31_evaluation_started_local": "2026-08-31T07:23:22.941+08:00",
+    "epoch31_complete_evaluation_records": 0,
+    "process_pid": 261435,
+    "process_running_at_capture": false
+  },
+  "valid": true,
+  "valid_scope": "terminal-boundary, raw-file integrity, checkpoint recoverability, and temporally correlated host/WSL event evidence; not a unique-cause proof and not a completed baseline result"
+}

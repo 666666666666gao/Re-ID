@@ -71,3 +71,30 @@ The offline reproducibility seam is:
 No core model or test file is added until the user explicitly accepts these
 seams (reply: `接缝同意`). Environment, dataset and baseline reproduction tools
 are already independently validated and are outside this pending core seam.
+
+## Baseline crash-recovery seam (already in baseline-reproduction scope)
+
+The public recovery boundary is:
+
+`tools/run_demo_resumable.py --output-dir DIR [the frozen DeMo options]`
+
+and its state API is:
+
+`save_training_checkpoint(...)` / `restore_training_checkpoint(...)`
+
+- a fresh run records a complete epoch-0 boundary before the first batch;
+- `post_train` means training for that epoch is durable and evaluation is the
+  next action, while `post_eval` means the next action is the following epoch;
+- model, both optimizers, both criteria/scheduler state where applicable, AMP
+  scaler, best metrics, and Python/NumPy/CPU/CUDA RNG states are one atomic
+  checkpoint;
+- baseline commit, resolved configuration, pretrained-weight hash, runtime,
+  and recovery-code hashes form a fail-closed run identity;
+- a corrupt, incomplete, foreign, or phase-invalid checkpoint is rejected;
+- the pinned DeMo checkout and its training/evaluation computations remain
+  unmodified. At epoch 10, every candidate state-dict tensor must exactly equal
+  the hash-bound original DeMo seed-42 checkpoint before epoch 11 is allowed;
+  this early replacement-run parity is the empirical semantic regression gate.
+
+This seam repairs baseline experiment durability only. It does not authorize
+tests or implementation of the pending TriFusion model/evaluator seams above.
