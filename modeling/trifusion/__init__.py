@@ -2,7 +2,6 @@
 
 from .encoder import TriBranchEncoder
 from .fusion import CollaborativeFusion, FusionResult
-from .interventions import FullNetworkIntervention
 from .model import TriFusionOutput, TriFusionReID
 from .peer_teaching import PeerTeachingResult, RoleDirectedPeerTeaching
 from .reliability import ReliabilityPosterior
@@ -15,7 +14,6 @@ __all__ = [
     "ReliabilityResult",
     "RelayResult",
     "FusionResult",
-    "FullNetworkIntervention",
     "TriFusionOutput",
     "PeerTeachingResult",
     "TriBranchEncoder",

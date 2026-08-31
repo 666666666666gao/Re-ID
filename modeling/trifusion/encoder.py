@@ -49,7 +49,7 @@ class TriBranchEncoder(nn.Module):
     ) -> ExpertStateMap:
         return self._forward(images, modality_mask, intervention=None)
 
-    def forward_intervened(
+    def _forward_intervened(
         self,
         images: Mapping[str, torch.Tensor],
         modality_mask: torch.Tensor,
@@ -139,7 +139,7 @@ class TriBranchEncoder(nn.Module):
                         stage_states, reliability, stage
                     )
                 else:
-                    relay_result = self.collaborator.forward_intervened(
+                    relay_result = self.collaborator._forward_intervened(
                         stage_states,
                         reliability,
                         stage,

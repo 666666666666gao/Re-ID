@@ -126,7 +126,7 @@ class HeterogeneousRelay(nn.Module):
     ) -> RelayResult:
         return self._forward(states, reliability, stage, intervention=None)
 
-    def forward_intervened(
+    def _forward_intervened(
         self,
         states: ExpertStateMap,
         reliability: ReliabilityResult,
@@ -178,26 +178,22 @@ class HeterogeneousRelay(nn.Module):
         )
         raw_gates = raw_gates * no_self[None, :, :, None]
         raw_gates = raw_gates * modality_mask[:, None, None, :]
-        if intervention is not None and intervention.suppresses_relay:
-            if intervention.kind != "edge" or intervention.stage == stage:
-                source = (
-                    intervention.source
-                    if intervention.kind == "edge"
-                    else intervention.expert
-                )
-                if source is None:
-                    raise RuntimeError("relay intervention source was not validated")
-                source_index = EXPERT_ORDER.index(source)
-                modality_index = MODALITY_ORDER.index(intervention.modality)
-                allowed = torch.ones_like(raw_gates)
-                if intervention.kind == "edge":
-                    if intervention.target is None:
-                        raise RuntimeError("edge intervention target was not validated")
-                    target_index = EXPERT_ORDER.index(intervention.target)
-                    allowed[:, target_index, source_index, modality_index] = 0
-                else:
-                    allowed[:, :, source_index, modality_index] = 0
-                raw_gates = raw_gates * allowed
+        suppression = (
+            intervention.relay_suppression(stage)
+            if intervention is not None
+            else None
+        )
+        if suppression is not None:
+            source, modality, target = suppression
+            source_index = EXPERT_ORDER.index(source)
+            modality_index = MODALITY_ORDER.index(modality)
+            allowed = torch.ones_like(raw_gates)
+            if target is None:
+                allowed[:, :, source_index, modality_index] = 0
+            else:
+                target_index = EXPERT_ORDER.index(target)
+                allowed[:, target_index, source_index, modality_index] = 0
+            raw_gates = raw_gates * allowed
         denominator = raw_gates.sum(dim=2, keepdim=True)
         gates = torch.where(
             denominator > 0,

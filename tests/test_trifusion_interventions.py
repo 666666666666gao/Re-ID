@@ -69,6 +69,30 @@ def _build_tiny_model():
 
 
 class FullNetworkInterventionTests(unittest.TestCase):
+    def test_edge_intervention_rejects_a_missing_modality_row(self) -> None:
+        torch.manual_seed(71)
+        model = _build_tiny_model()
+        batch = {
+            "images": {
+                modality: torch.randn(2, 3, 4, 4)
+                for modality in ("RGB", "NI", "TI")
+            },
+            "modality_mask": torch.tensor(
+                [[True, True, True], [False, True, True]],
+                dtype=torch.bool,
+            ),
+            "intervention": {
+                "kind": "edge",
+                "stage": 1,
+                "source": "cnn",
+                "target": "transformer",
+                "modality": "RGB",
+            },
+        }
+
+        with self.assertRaisesRegex(ValueError, "invalid.*rows.*1"):
+            model(batch, return_aux=True)
+
     def test_direct_relay_and_total_remove_distinct_full_network_paths(self) -> None:
         torch.manual_seed(73)
         model = _build_tiny_model()
@@ -124,47 +148,45 @@ class FullNetworkInterventionTests(unittest.TestCase):
 
         cnn_index = 0
         rgb_index = 0
-        self.assertTrue(
-            torch.equal(
-                baseline.relay_results[0].gates,
-                direct.relay_results[0].gates,
-            )
-        )
-        self.assertGreater(
-            float(relay.fusion_weights[:, cnn_index, rgb_index].min()),
-            0.0,
-        )
-        self.assertTrue(
-            torch.equal(
-                direct.fusion_weights[:, cnn_index, rgb_index],
-                torch.zeros(2),
-            )
-        )
-        self.assertTrue(
-            torch.equal(
-                total.fusion_weights[:, cnn_index, rgb_index],
-                torch.zeros(2),
-            )
-        )
-        self.assertTrue(
-            torch.equal(
-                relay.relay_results[0].gates[:, :, cnn_index, rgb_index],
-                torch.zeros(2, 3),
-            )
-        )
-        self.assertTrue(
-            torch.equal(
-                relay.relay_results[0].gates,
-                total.relay_results[0].gates,
-            )
-        )
-        for output in (baseline, direct, relay, total):
+        for stage_index in (0, 1):
             self.assertTrue(
-                torch.allclose(
-                    output.fusion_weights.sum(dim=(1, 2)),
-                    torch.ones(2),
+                torch.equal(
+                    baseline.relay_results[stage_index].gates,
+                    direct.relay_results[stage_index].gates,
                 )
             )
+            self.assertTrue(
+                torch.equal(
+                    relay.relay_results[stage_index].gates[
+                        :, :, cnn_index, rgb_index
+                    ],
+                    torch.zeros(2, 3),
+                )
+            )
+            self.assertTrue(
+                torch.equal(
+                    relay.relay_results[stage_index].gates,
+                    total.relay_results[stage_index].gates,
+                )
+            )
+        self.assertTrue(
+            torch.equal(
+                baseline.contribution_embeddings,
+                direct.contribution_embeddings,
+            )
+        )
+        self.assertFalse(
+            torch.allclose(
+                baseline.contribution_embeddings,
+                relay.contribution_embeddings,
+            )
+        )
+        self.assertTrue(
+            torch.equal(
+                relay.contribution_embeddings,
+                total.contribution_embeddings,
+            )
+        )
         self.assertFalse(
             torch.allclose(baseline.fused_embedding, direct.fused_embedding)
         )
@@ -186,57 +208,60 @@ class FullNetworkInterventionTests(unittest.TestCase):
 
         with torch.no_grad():
             baseline = model(batch, return_aux=True)
-            intervened = model(
-                {
-                    **batch,
-                    "intervention": {
-                        "kind": "edge",
-                        "stage": 1,
-                        "source": "cnn",
-                        "target": "transformer",
-                        "modality": "RGB",
-                    },
-                },
-                return_aux=True,
-            )
 
         cnn_index = 0
         transformer_index = 1
         rgb_index = 0
-        baseline_stage1 = baseline.relay_results[0].gates
-        intervened_stage1 = intervened.relay_results[0].gates
-        changed = ~torch.isclose(baseline_stage1, intervened_stage1)
+        for stage in (1, 2):
+            with self.subTest(stage=stage), torch.no_grad():
+                intervened = model(
+                    {
+                        **batch,
+                        "intervention": {
+                            "kind": "edge",
+                            "stage": stage,
+                            "source": "cnn",
+                            "target": "transformer",
+                            "modality": "RGB",
+                        },
+                    },
+                    return_aux=True,
+                )
+            stage_index = stage - 1
+            other_stage_index = 1 - stage_index
+            baseline_gates = baseline.relay_results[stage_index].gates
+            intervened_gates = intervened.relay_results[stage_index].gates
+            changed = ~torch.isclose(baseline_gates, intervened_gates)
+            permitted_changes = torch.zeros_like(changed)
+            permitted_changes[:, transformer_index, :, rgb_index] = True
 
-        self.assertTrue(
-            torch.equal(
-                intervened_stage1[:, transformer_index, cnn_index, rgb_index],
-                torch.zeros(2),
+            self.assertTrue(
+                torch.equal(
+                    intervened_gates[
+                        :, transformer_index, cnn_index, rgb_index
+                    ],
+                    torch.zeros(2),
+                )
             )
-        )
-        self.assertTrue(
-            torch.equal(
-                changed[:, 0],
-                torch.zeros_like(changed[:, 0]),
+            self.assertFalse(bool((changed & ~permitted_changes).any()))
+            self.assertTrue(
+                torch.equal(
+                    baseline.relay_results[other_stage_index].gates,
+                    intervened.relay_results[other_stage_index].gates,
+                )
             )
-        )
-        self.assertTrue(
-            torch.equal(
-                changed[:, 2],
-                torch.zeros_like(changed[:, 2]),
+            self.assertFalse(
+                torch.allclose(
+                    baseline.contribution_embeddings,
+                    intervened.contribution_embeddings,
+                )
             )
-        )
-        self.assertTrue(
-            torch.equal(
-                baseline.relay_results[1].gates,
-                intervened.relay_results[1].gates,
+            self.assertFalse(
+                torch.allclose(
+                    baseline.fused_embedding,
+                    intervened.fused_embedding,
+                )
             )
-        )
-        self.assertTrue(
-            torch.equal(baseline.fusion_weights, intervened.fusion_weights)
-        )
-        self.assertFalse(
-            torch.allclose(baseline.fused_embedding, intervened.fused_embedding)
-        )
 
 
 if __name__ == "__main__":

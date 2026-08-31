@@ -20,7 +20,6 @@ class TriFusionOutput:
     fused_embedding: torch.Tensor
     branch_embeddings: Mapping[str, torch.Tensor]
     contribution_embeddings: torch.Tensor
-    fusion_weights: torch.Tensor
     reliability: ReliabilityResult
     relay_results: tuple[Any, ...]
     peer_teaching: Any
@@ -109,11 +108,12 @@ class TriFusionReID(nn.Module):
             if self.training:
                 raise RuntimeError("full-network interventions are evaluation-only")
             intervention = FullNetworkIntervention.from_value(batch["intervention"])
+            intervention.validate_modality_mask(modality_mask)
 
         if intervention is None:
             states = self.encoder(images, modality_mask)
         else:
-            states = self.encoder.forward_intervened(
+            states = self.encoder._forward_intervened(
                 images,
                 modality_mask,
                 intervention,
@@ -125,7 +125,7 @@ class TriFusionReID(nn.Module):
                 states, states.reliability, modality_mask
             )
         else:
-            fusion_result = self.fusion.forward_intervened(
+            fusion_result = self.fusion._forward_intervened(
                 states,
                 states.reliability,
                 modality_mask,
@@ -178,7 +178,6 @@ class TriFusionReID(nn.Module):
             fused_embedding=fused_embedding,
             branch_embeddings=branch_embeddings,
             contribution_embeddings=fusion_result.contribution_embeddings,
-            fusion_weights=fusion_result.weights,
             reliability=states.reliability,
             relay_results=states.relay_results,
             peer_teaching=peer_result,

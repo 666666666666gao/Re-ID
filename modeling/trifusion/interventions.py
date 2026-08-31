@@ -6,6 +6,8 @@ from collections.abc import Mapping
 from dataclasses import dataclass
 from typing import Any
 
+import torch
+
 from .state import EXPERT_ORDER, MODALITY_ORDER
 
 
@@ -78,6 +80,39 @@ class FullNetworkIntervention:
     @property
     def suppresses_fusion(self) -> bool:
         return self.kind in ("direct", "total")
+
+    def validate_modality_mask(self, modality_mask: torch.Tensor) -> None:
+        if self.kind != "edge":
+            return
+        modality_index = MODALITY_ORDER.index(self.modality)
+        invalid_rows = (~modality_mask[:, modality_index]).nonzero(
+            as_tuple=False
+        ).flatten()
+        if invalid_rows.numel():
+            rows = invalid_rows.detach().cpu().tolist()
+            raise ValueError(f"edge intervention is invalid for modality rows: {rows}")
+
+    def relay_suppression(
+        self, stage: int
+    ) -> tuple[str, str, str | None] | None:
+        if not self.suppresses_relay:
+            return None
+        if self.kind == "edge":
+            if self.stage != stage:
+                return None
+            if self.source is None or self.target is None:
+                raise RuntimeError("edge intervention was not validated")
+            return self.source, self.modality, self.target
+        if self.expert is None:
+            raise RuntimeError("contribution intervention was not validated")
+        return self.expert, self.modality, None
+
+    def fusion_suppression(self) -> tuple[str, str] | None:
+        if not self.suppresses_fusion:
+            return None
+        if self.expert is None:
+            raise RuntimeError("contribution intervention was not validated")
+        return self.expert, self.modality
 
 
 __all__ = ["FullNetworkIntervention"]

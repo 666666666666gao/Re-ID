@@ -68,7 +68,7 @@ class CollaborativeFusion(nn.Module):
     ) -> FusionResult:
         return self._forward(states, reliability, modality_mask, intervention=None)
 
-    def forward_intervened(
+    def _forward_intervened(
         self,
         states: ExpertStateMap,
         reliability: ReliabilityResult,
@@ -111,9 +111,15 @@ class CollaborativeFusion(nn.Module):
         if self.use_uncertainty_multiplier:
             scores = scores * (1.0 - reliability.u)
         scores = (scores + self.residual_floor) * valid_float
-        if intervention is not None and intervention.suppresses_fusion:
-            expert_index = EXPERT_ORDER.index(intervention.expert)
-            modality_index = MODALITY_ORDER.index(intervention.modality)
+        suppression = (
+            intervention.fusion_suppression()
+            if intervention is not None
+            else None
+        )
+        if suppression is not None:
+            expert, modality = suppression
+            expert_index = EXPERT_ORDER.index(expert)
+            modality_index = MODALITY_ORDER.index(modality)
             allowed = torch.ones_like(scores)
             allowed[:, expert_index, modality_index] = 0
             scores = scores * allowed
