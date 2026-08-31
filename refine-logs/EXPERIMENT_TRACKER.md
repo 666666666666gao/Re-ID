@@ -9,6 +9,7 @@
 | R004 | M0 | evaluator | fixed worked example | synthetic | exact mAP/CMC | MUST | WAITING | 等精确“接缝同意” |
 | R005 | M0 | MSVR310 完整性 | audit | all | ids/pairing/JPEG | MUST | DONE | 310 identities；0 errors |
 | R006 | M0 | 查新/协议/SOTA | primary-source audit | 2024–2026 | claims/resources | MUST | DONE | novelty PROCEED WITH CAUTION；implementation-readiness PASS |
+| R006A | M0 | 增量 SOTA/代码审计 | 2026-08-31 primary-source sweep | current public | metrics/protocol/artifacts | MUST | DONE | Signal/PEFT-BoA/FUSE/MGRNet/ICPL 均未超过 RoDI-CLIP 84.1/87.2；Hyper-ReID 仅占位 README，转 R071A 复查 |
 | R007 | M0 | Mamba CUDA | SM89 build + smoke | synthetic | forward/backward | MUST | DONE | mamba 2.2.6.post3 |
 | R008 | M0 | 环境锁 | conda/pip/source pins | WSL2 | rebuild evidence | MUST | DONE | environment.yml + lock |
 | R009 | M0 | RGBNT100 完整性 | audit | all | triplets/JPEG | MUST | DONE | 17,250 triplets；70,715 JPEG |
@@ -21,6 +22,8 @@
 | R015 | M1 | train-only dev | 141-fit/30-dev | train_171 only | overlap/positives | MUST | DONE | test overlap=0；825/825 valid |
 | R016 | M1 | 证据包 | 22 versioned JSONs | all | SHA/protocol | MUST | DONE | 加入 R012 incident receipt；SHA256SUMS pass |
 | R017 | M1 | MDReID 强化驱动复验 | hardened driver | RGBNT201 | parity/full audit | MUST | WAITING | 等本地 GPU 低于 500 MiB 空闲门禁 |
+| R017A | M1 | 最高开源训练代码比较器 | PEFT-BoA d2b198b from scratch | RGBNT201 | fixed mAP/R1/provenance | MUST | WAITING | 无发布权重；固定 120 epoch 且禁用 test 选点；R012R 后按 GPU 空闲门执行 |
+| R017B | M1 | 补充 checkpoint 比较器 | Signal cd1b0a6 official weight | RGBNT201 | mAP/R1/hash | SHOULD | WAITING | 百度网盘权重尚未下载；不得用论文数字冒充本机结果 |
 | R018 | M1 | epoch10 receipt | DeMo_10.pth | RGBNT201 | ordering/hash | MUST | DONE | SHA b2ab79f0…31c0 |
 | R018A | M1 | epoch20 receipt | DeMo_20.pth | RGBNT201 | ordering/hash/metrics | MUST | DONE | SHA 5d61a4cf…e7b2；非 test 选点 |
 | R018B | M1 | epoch30 receipt | DeMo_30.pth | RGBNT201 | ordering/hash/metrics | MUST | DONE | SHA d5e375fa…4ce5；非 test 选点 |
@@ -64,4 +67,5 @@
 | R065 | M5 | 外部验证 | promoted core | MSVR310/RGBNT100 | mAP/R1 | MUST | TODO | 至少单 seed |
 | R070 | M5 | 效率 | baseline/controls/core | real+synthetic | params/FLOPs/fps/VRAM | MUST | TODO | total vs activated |
 | R071 | M5 | 统计 | promoted vs controls | query level | bootstrap/permutation | MUST | TODO | 预注册配对检验 |
+| R071A | M5 | 最终 SOTA 前沿刷新 | official papers/repos/author pages | current public | protocol/resources/threshold | MUST | TODO | 重点复查 Hyper-ReID、RoDI 代码和 2026-08-31 后同赛道发布；冻结更新门槛 |
 | R072 | M5 | 结果/claim 审计 | all promoted evidence | all | hashes/protocol/claims | MUST | TODO | SOTA 前置门 |

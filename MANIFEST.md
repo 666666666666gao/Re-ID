@@ -87,3 +87,6 @@
 | 2026-08-31 06:14 | /experiment-plan | refine-logs/EXPERIMENT_PLAN.md | implementation | 最终 reviewer PASS 后的 latest 计划；时间戳副本保持逐字节一致 |
 | 2026-08-31 07:22 | /monitor-experiment | evidence/demo_rgbnt201_epoch30_checkpoint_receipt_20260831.json | research | epoch30 固定 checkpoint 的保存时序、SHA、30轮/90评估完整性与非 test 选点边界 |
 | 2026-08-31 07:22 | /experiment-plan | refine-logs/EXPERIMENT_TRACKER.md | implementation | 同步 epoch30 里程碑、21项证据包与 R012 持续运行状态 |
+| 2026-08-31 08:36 | /research-lit | docs/RESEARCH_AUDIT_2026-08-31.md | research | 增量核验 FUSE、Signal、PEFT-BoA、ICPL、MGRNet、UPCL 与 Hyper-ReID 的指标、协议和官方工件 |
+| 2026-08-31 08:36 | /research-lit | refine-logs/EXPERIMENT_PLAN.md | implementation | 固定 DeMo/MDReID/PEFT-BoA 三类基线角色及最终动态 SOTA 刷新门 |
+| 2026-08-31 08:36 | /research-lit | refine-logs/EXPERIMENT_TRACKER.md | implementation | 登记 PEFT-BoA/Signal 比较器和 R071A 投稿前前沿复查 |

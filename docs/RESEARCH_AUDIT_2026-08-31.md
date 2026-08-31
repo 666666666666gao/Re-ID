@@ -38,10 +38,19 @@ RGBNT201 原论文使用 201 个身份和 4 个非重叠视角，共 4,787 组�
 | 方法 | 报告指标 | 额外资源与推理 | 官方工件状态 | 审计判断 |
 |---|---:|---|---|---|
 | DeMo-CLIP | 79.0 / 82.3 | 无文本、掩码、TTT、rerank | [论文 Table 1](https://ojs.aaai.org/index.php/AAAI/article/download/32878/35033)；[代码和配置](https://github.com/924973292/DeMo/tree/b4f323a430b32e3a1637c3e7acb25868cb52e9cd)，未见训练后 checkpoint | 适合作为现有工程实现基线，但不是最高的公开可测基线 |
+| ICPL-ReID | 75.1 / 77.4 | CLIP 图文预训练、身份条件 prompt；无外部样本级文本、TTT、rerank | [TMM 作者稿 Table I](https://arxiv.org/abs/2505.17821)；[代码、配置和 RGBNT201 checkpoint](https://github.com/lsh-ahu/ICPL-ReID/tree/47c3d128b16c1183cf8aa66cfa76de9eef334bed) | 工件完整度较高，但指标低于当前强锚点 |
+| Signal | 80.3 / 85.2 | CLIP，选择性局部/全局交互；无文本、TTT、rerank | [AAAI 2026 论文 Table 1](https://ojs.aaai.org/index.php/AAAI/article/download/37674/41636)；[代码、配置和 RGBNT201 checkpoint 链接](https://github.com/010129/Signal/tree/cd1b0a672d1fe642e7608731cb4899a19dda7d51) | 可执行的静态比较器；checkpoint 由百度网盘分发，尚未在本机运行 |
 | MFRNet | 80.7 / 83.6 | 无额外标注、TTT、rerank | [ICML 2025 论文](https://proceedings.mlr.press/v267/feng25i.html)；[代码、配置和 RGBNT201 checkpoint](https://github.com/stone96123/MFRNet/tree/ec54a1302321cda4b5fad9ca1c0878dabf0b46b6) | 可执行的强静态比较器 |
+| MGRNet-CLIP | 80.5 / 85.0 | CLIP，模态感知图推理与缺失模态重构；静态推理 | [作者稿 Table I](https://arxiv.org/abs/2504.14847)；[作者仓库](https://github.com/wanxixi11/MGRNet/tree/5c2cfd68ba566db3fdeaaf9bbc9f4bba3778b763) 仅 README | 只能作为论文报告值，不能独立复现 |
 | MDReID | 82.1 / 85.2 | 无文本、掩码、TTT、rerank | [NeurIPS 2025 论文](https://papers.neurips.cc/paper_files/paper/2025/file/3cbe9fcdccb2399bcd6e6d01cbcae1fd-Paper-Conference.pdf)；[代码、配置和 checkpoint](https://github.com/stone96123/MDReID/tree/3525ac2da1a2a90a5a160c930fac674b4f226f6c) | 本次核查中指标最高的 checkpointed 静态 CLIP 基线；另含 any-to-any 模态任务 |
 | UGG-ReID | 81.2 / 86.8 | 不确定性图和 MoE；无 TTT/rerank | [NeurIPS 2025 论文](https://proceedings.neurips.cc/paper_files/paper/2025/file/735c847a07bf6dd4486ca1ace242a88c-Paper-Conference.pdf)；[代码和配置](https://github.com/wanxixi11/UGG-ReID/tree/eaf1e8e50d04f34ee3e471440f70d335cc67b2c1)，未见 checkpoint | 静态可靠性融合的重要对照；需自行训练 |
+| FUSE | 81.4 / 86.1 | CLIP，频域分解与能量对齐，256×128；静态推理 | [ICML 2026 作者稿 Table 1](https://arxiv.org/abs/2606.20044)；截至审计时未定位到作者代码仓库 | 论文报告值低于当前目标；无 loader/checkpoint，协议实现不可独立审计 |
+| PEFT-BoA | **82.7 / 86.1** | 冻结 CLIP 主干、6.62M 可训练 adapter，256×128；无 TTT/rerank | [AAAI 2026 论文 Table 1](https://ojs.aaai.org/index.php/AAAI/article/download/37537/41499)；[代码和配置](https://github.com/fffunly/PEFT-BoA/tree/d2b198be634ac4f9f5744eebf6e0a6604e490deb)，无 release/checkpoint | 本次定位到的最高“开源训练代码但无权重”静态 CLIP 报告值；必须从头复现后才可升级为实测锚点 |
 | RoDI-CLIP | **84.1 / 87.2** | 静态纯视觉推理；无 TTT/rerank | [CVPR 2026 Findings 论文](https://openaccess.thecvf.com/content/CVPR2026F/html/Li_Rolling_and_Denoising_Rethinking_Dynamic_Modal_Fusion_for_Multi-Modal_Object_CVPRF_2026_paper.html)；[仓库](https://github.com/lsh-ahu/RoDI/tree/2f38911c49d42d4ca259d440a851b8d77dddccbe) 仅 README/assets | 静态 CLIP 论文报告上限，当前不可独立复现 |
+
+Signal、PEFT-BoA 和 ICPL-ReID 的已发布 loader 均显式读取 `train_171`，并以完整 `test` 同时构造 query/gallery；因此其训练身份范围可以代码审计。MGRNet 的作者仓库在固定提交仅有 README，FUSE 未定位到作者代码，二者的 loader/evaluator 仍只能按论文表述归类。增量扫描中没有任何静态 CLIP 结果超过 RoDI-CLIP 的 84.1 / 87.2。
+
+工程角色据此固定为：**DeMo 是已接入的实现脚手架；MDReID 82.0868 / 85.1675 是本机已严格复现的最高 checkpoint 锚点；PEFT-BoA 是待从代码重训的更高报告值比较器。** 在 PEFT-BoA 复现闭环前，不能用其论文数字替代 MDReID 的实测基线。
 
 ### 2.2 静态更强预训练、多阶段 KD 与 TTT
 
@@ -54,7 +63,16 @@ RGBNT201 原论文使用 201 个身份和 4 个非重叠视角，共 4,787 组�
 
 复核结果：RoDI、PMKD、ProxyTTT 的既有数字无需更正。RoDI 的 85.3 / 87.9 是 DINOv3 静态纯视觉结果；PMKD 的 84.7 / 88.9 是 DINOv2 多阶段蒸馏后最终学生结果；ProxyTTT 的 85.0 / 88.5 明确包含 PESA 测试时更新，关闭 TTT 后为 82.3 / 84.7。
 
-### 2.3 额外语义资源赛道
+### 2.3 非同协议与未公开结果边界
+
+| 工作 | 已核实的公开事实 | 为什么不改变当前 SOTA 门 |
+|---|---|---|
+| UPCL，NeurIPS 2025 | 论文明确把 RGBNT201 与 RGBNT100 合并训练，再分别测试；RGBNT201 的 `RNT→RNT` 为 64.91 / 67.12；[论文](https://papers.nips.cc/paper_files/paper/2025/file/82a0696bea2c4ebf726fc796eaca7a55-Paper-Conference.pdf)和[代码](https://github.com/ZhouZhongao/UPCL/tree/c2c01c2b4ecbe79b39de555da872647d10a55ff8)均公开 | 训练数据和 seven-task any-to-any 目标均不同，不能与仅用 RGBNT201 `train_171` 的静态融合结果混排 |
+| Hyper-ReID，ACM MM 2026 accepted | [作者官方仓库](https://github.com/lsh-ahu/Hyper-ReID/tree/6e895a707c0948d03968b3e812ec6cf5fbcd1eb9) 声明录用，但固定 HEAD 只有一个 README；无论文、指标、代码、配置、权重或 release | 目前没有可加入数值榜单的公开证据；它是任何最终 SOTA 表述前必须重新检查的显式未决项 |
+
+`Hyper-ReID` 的存在否定了“尚无该工作”的旧检索表述，但其占位仓库不能用于推断性能。当前 84.1 / 87.2 只能写成“截至本次主源扫描所定位到的公开静态 CLIP 论文报告上限”，不能写成未来投稿时仍然有效的绝对门槛。
+
+### 2.4 额外语义资源赛道
 
 这些方法在训练或测试中使用样本级文本、分割/关键点掩码，不能与上面的纯视觉静态赛道无条件混排。
 
@@ -67,11 +85,12 @@ RGBNT201 原论文使用 201 个身份和 4 个非重叠视角，共 4,787 组�
 
 [IDEA](https://openaccess.thecvf.com/content/CVPR2025/papers/Wang_IDEA_Inverted_Text_with_Cooperative_Deformable_Aggregation_for_Multi-modal_Object_CVPR_2025_paper.pdf) 同样使用视觉语言模型生成文本，属于额外语义资源对照。上述方法及纯视觉方法均未报告 RGBNT201 的 mINP。
 
-基于现有 DeMo 工程继续开发时，建议把 DeMo 作为实现基线，同时加入 MFRNet 和 MDReID 的公开 checkpoint 作为可测锚点；RoDI、PMKD、NEXT 只能作为“论文报告上限”。PRISM 的工件最完整，但其结果依赖预计算 mask；CoT-ReID 和 STMI 有代码却缺关键文本/掩码或 checkpoint，不能称为端到端已封装复现。
+基于现有 DeMo 工程继续开发时，应把 DeMo 限定为实现脚手架，把已在本机完成 parity 的 MDReID 作为强 checkpoint 基线；Signal 和 MFRNet 是额外 checkpoint 比较器，PEFT-BoA 是必须从头训练的强开源代码比较器。RoDI、FUSE、MGRNet、PMKD、NEXT 只能作为“论文报告上限”。PRISM 的工件最完整，但其结果依赖预计算 mask；CoT-ReID 和 STMI 有代码却缺关键文本/掩码或 checkpoint，不能称为端到端已封装复现。
 
 可审计的目标应分轨表达：
 
 - 静态纯视觉 CLIP-B/16、256×128：RoDI-CLIP 84.1 / 87.2；
+- 静态纯视觉 CLIP-B/16、开源训练代码但未发布权重：PEFT-BoA 82.7 / 86.1，待本机从头复现；
 - 静态纯视觉、更强外部预训练：RoDI-DINOv3 85.3 / 87.9；
 - 多阶段 DINOv2 蒸馏：PMKD 84.7 / 88.9；
 - 测试时训练：ProxyTTT 85.0 / 88.5；
@@ -183,4 +202,4 @@ KL、固定教师、HeteroAKD/MST-Distill 风格自适应迁移和 wrong-payload
 
 ## 检索边界
 
-检索覆盖 RGBNT201、multi-modal/multi-spectral object ReID、CNN–Transformer ReID、Mamba ReID、uncertainty/reliability fusion、progressive/selective/mutual knowledge distillation，并追踪 AAAI、CVF、NeurIPS、PMLR、期刊官网、arXiv 作者稿及官方 GitHub。2026-08-31 的补充复核逐项检查了 CoT-ReID 的 CVF 正式论文、NEXT arXiv v5、STMI 的 AAAI 正式论文、PRISM arXiv v1，以及四者官方仓库的源码树、配置、数据资源和 release 状态；仓库状态固定到本文链接中的 commit。由于否定性结论无法由有限检索证明，投稿前仍应对 2026-08-31 之后的论文、在线优先期刊和新增代码发布做一次更新审计。
+检索覆盖 RGBNT201、multi-modal/multi-spectral object ReID、CNN–Transformer ReID、Mamba ReID、uncertainty/reliability fusion、progressive/selective/mutual knowledge distillation，并追踪 AAAI、CVF、NeurIPS、PMLR、期刊官网、arXiv 作者稿及官方 GitHub。2026-08-31 的补充复核逐项检查了 CoT-ReID、NEXT、STMI、PRISM、FUSE、Signal、PEFT-BoA、ICPL-ReID、MGRNet、UPCL 和 Hyper-ReID 的论文/作者稿与官方仓库；通过 GitHub 官方接口核对源码树、默认分支、release 和 HEAD，并把可引用仓库固定到本文链接中的 commit。领域清单与 arXiv `RGBNT201` 查询还用于发现候选，但所有性能结论都回到作者论文和官方仓库核验。由于否定性结论无法由有限检索证明，投稿前仍应重新检查 2026-08-31 之后的论文、在线优先期刊和新增代码发布，尤其是目前只有占位仓库的 Hyper-ReID。

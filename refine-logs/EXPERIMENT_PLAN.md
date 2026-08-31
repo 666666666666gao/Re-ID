@@ -6,7 +6,7 @@
 **版本**：v1.1，已纳入最近六个月查新和四轮独立 GPT-5.5 xhigh 复核；最终 implementation-readiness PASS
 **实现底座**：DeMo commit b4f323a430b32e3a1637c3e7acb25868cb52e9cd
 **可测强锚点**：MDReID commit 3525ac2da1a2a90a5a160c930fac674b4f226f6c，本机 82.0868 mAP / 85.1675 Rank-1
-**公平 SOTA 门**：RGBNT201，静态 CLIP-B/16，256×128，无 reranking、TTT、文本或测试选点；三固定种子同时超过 84.1 mAP 和 87.2 Rank-1，并通过实验完整性审计。
+**公平 SOTA 门**：RGBNT201，静态 CLIP-B/16，256×128，无 reranking、TTT、文本或测试选点；当前注册下限为 RoDI-CLIP 84.1 mAP / 87.2 Rank-1。正式 claim 前必须刷新同赛道公开结果（特别是当前只有占位仓库的 Hyper-ReID），三固定种子同时超过刷新后的两个门槛，并通过实验完整性审计。
 
 ## Claim Map
 
@@ -37,10 +37,10 @@ CIRC 与 URGC 是一个统一可靠性贡献的“如何学”和“如何用”
 - Claim tested：所有后续比较基于正确协议、固定资源和可重算基线。
 - Why this block exists：DeMo 上游每 epoch 读取 official test 并按 test mAP 写 best，必须与公平 fixed-epoch 结果分开。
 - Dataset / split / task：RGBNT201 train_171；官方 test query/gallery；141-fit/30-dev 仅用于选配置。
-- Compared systems：MDReID 官方 checkpoint；DeMo fixed DeMo_50.pth；DeMo test-selected best 仅作 released-protocol 校准。
+- Compared systems：主强 checkpoint baseline 为 MDReID 官方权重（本机 parity 82.0868 / 85.1675）；DeMo 仅作为已接入实现脚手架并报告 fixed DeMo_50.pth；PEFT-BoA 作为当前最高开源训练代码/无权重的静态 CLIP 报告值，从头复现；Signal、MFRNet checkpoint 作为可执行补充比较器；DeMo test-selected best 仅作 released-protocol 校准。
 - Metrics：mAP、R1/R5/R10、完整性门、checkpoint SHA、训练/评估延迟。
 - Setup details：CLIP-B/16、256×128、B32/K4/TB64、50 epochs、seed 42；官方 same-id/same-camera 排除。
-- Success criterion：MDReID parity 误差 ≤0.3 pp；DeMo 50 epoch 完整无 fatal/nonfinite；fixed 与 test-selected 标签绝不混用；手算 evaluator 回归通过。
+- Success criterion：MDReID parity 误差 ≤0.3 pp；DeMo 50 epoch 完整无 fatal/nonfinite；PEFT-BoA 在固定 epoch、无 test 选点下完成可审计复现，若未达到论文值则保留失败证据而不降格对手；fixed 与 test-selected 标签绝不混用；手算 evaluator 回归通过。
 - Failure interpretation：先诊断 evaluator、数据、权重或环境；不得把偏低复现当弱对手。
 - Table / figure target：复现表与协议附录。
 - Priority：MUST-RUN。
@@ -73,7 +73,7 @@ CIRC 与 URGC 是一个统一可靠性贡献的“如何学”和“如何用”
 
 - Claim tested：同一 posterior 在完整和不完整输入下都有效，不是只记住固定模态偏好。
 - Dataset / split / task：RGBNT201 七种非空 mask；RGB/NIR/TIR blur、occlusion、exposure、sensor noise；MSVR310 和 RGBNT100 作为外部验证。
-- Compared systems：MDReID、DeMo、UGG-ReID、RoDI 报告上限、Miss-ReID；HFER-uniform、CIRC/URGC、separate routers。
+- Compared systems：MDReID、DeMo、复现成功后的 PEFT-BoA、Signal、UGG-ReID、RoDI/FUSE/MGRNet 报告上限、Miss-ReID；HFER-uniform、CIRC/URGC、separate routers。
 - Metrics：完整 mAP/R1、mask 平均/最差、robustness AUC、性能保持率、分组 ECE、corruption monotonicity。
 - Setup details：corruption family、强度和 seeds 在训练前注册；缺失与低质量但存在的模态分开报告。
 - Success criterion：完整模态无材料性回退；缺失平均和最差均改善；posterior 随对应传感器退化单调下降；至少一个第二数据集方向一致。
@@ -87,7 +87,7 @@ CIRC 与 URGC 是一个统一可靠性贡献的“如何学”和“如何用”
 - Compared systems：固定 strongest baseline、promoted core、matched control；RDPT 仅作为可删 appendix variant。
 - Metrics：三种子均值±标准差；query-level paired bootstrap/permutation；params/FLOPs/fps/VRAM；失败类型；claim audit。
 - Setup details：seeds 42/3407/9199；配置在 dev 冻结；原 30 dev 随后仅作为 training rows 回流并全 171 从头重训，禁止再次选型或早停；每 seed official test 一次；无 rerank/TTT。
-- Success criterion：每个 promoted claim 通过自身门；只有同协议三种子同时超过 84.1/87.2 才写 SOTA。
+- Success criterion：每个 promoted claim 通过自身门；正式写作前完成一次有时间戳的同赛道主源刷新，以 `max(84.1/87.2, 新公开同协议门槛)` 分别更新 mAP/R1 门；只有三种子同时超过刷新后的两个值才写 SOTA。
 - Failure interpretation：未过 SOTA 门仍可报告机制结果，但不得缩小或改写比较协议。
 - Table / figure target：Table 1、效率表、统计附录、失败图。
 - Priority：MUST-RUN。
@@ -122,6 +122,7 @@ CIRC 与 URGC 是一个统一可靠性贡献的“如何学”和“如何用”
 - **8 GB/OOM**：先 tiny/一批/B32 8-step 门；checkpointing 和 serial intervention；不删专家或偷换真实 batch。
 - **单种子偶然增益**：单种子只做决策，promoted 结果固定三种子并做 query-level paired tests。
 - **SOTA 资源混排**：CLIP、DINO、额外语义、multi-stage KD、TTT 分轨报告。
+- **SOTA 前沿移动或占位论文补发**：R071A 在最终 claim 审计前重新检查 RoDI、Hyper-ReID、作者主页、会议/期刊正式页和官方仓库；新同协议结果只会抬高门槛，不会被忽略或降格。
 
 ## Final Checklist
 
@@ -137,4 +138,5 @@ CIRC 与 URGC 是一个统一可靠性贡献的“如何学”和“如何用”
 - [ ] CIRC/URGC 校准、负控制和统一复用门
 - [ ] RDPT 保留/删除决策
 - [ ] 三固定种子、paired statistics 和 robustness
+- [ ] R071A 刷新 Hyper-ReID 及新公开同协议门槛
 - [ ] 同协议 SOTA 独立审计
