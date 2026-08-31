@@ -114,7 +114,7 @@ def _collaborative_reliability_mode(contract: dict[str, Any]) -> str:
     reliability = contract.get("reliability")
     if reliability == "uniform":
         return "uniform"
-    if reliability == "joint_beta_observational":
+    if reliability in ("joint_beta_observational", "joint_beta_circ"):
         return "joint_beta"
     raise ValueError(f"unsupported collaborative reliability mode: {reliability}")
 
@@ -193,13 +193,16 @@ def _preflight(config_path: Path, variant: str) -> dict[str, Any]:
     if variant != config.get("EXPERIMENT", {}).get("VARIANT"):
         blockers.append("variant_config_mismatch")
     contract = dict(resolve_variant(variant))
+    current_source_sha256 = trifusion_source_hashes()
     clip = Path(config["MODEL"]["CLIP_CHECKPOINT"]).expanduser().resolve()
     immutable = {
         "clip": (clip, EXPECTED["clip_sha256"]),
         "dev_protocol": (DEV_PROTOCOL, EXPECTED["dev_protocol_sha256"]),
         "dataset_receipt": (DATASET_RECEIPT, EXPECTED["dataset_receipt_sha256"]),
     }
-    if variant == "hfer_uniform_generator":
+    if variant == "hfer_uniform_generator" or contract.get(
+        "circ_targets_required"
+    ):
         configured_circ = (
             PROJECT / str(config.get("PROTOCOL", {}).get("CIRC_PROTOCOL", ""))
         ).resolve()
@@ -225,6 +228,131 @@ def _preflight(config_path: Path, variant: str) -> dict[str, Any]:
         }
         if actual_hash != expected_hash:
             blockers.append(f"hash_drift:{label}")
+    circ_assets: dict[str, Any] = {}
+    if contract.get("circ_targets_required"):
+        circ_config = dict(config.get("CIRC", {}))
+        target_cache = Path(str(circ_config.get("TARGET_CACHE", ""))).expanduser().resolve()
+        scoring_receipt_path = Path(
+            str(circ_config.get("SCORING_RECEIPT", ""))
+        ).expanduser().resolve()
+        warm_checkpoint = Path(
+            str(circ_config.get("WARM_START_CHECKPOINT", ""))
+        ).expanduser().resolve()
+        warm_receipt_path = Path(
+            str(circ_config.get("WARM_START_RECEIPT", ""))
+        ).expanduser().resolve()
+        required_paths = {
+            "target_cache_receipt": target_cache / "receipt.json",
+            "target_cache_rows": target_cache / "targets.jsonl",
+            "scoring_receipt": scoring_receipt_path,
+            "scoring_run_identity": scoring_receipt_path.parent / "run_identity.json",
+            "warm_start_checkpoint": warm_checkpoint,
+            "warm_start_receipt": warm_receipt_path,
+        }
+        if any(not path.is_file() for path in required_paths.values()):
+            blockers.append("missing_circ_training_assets")
+            circ_assets = {
+                label: {"path": str(path), "exists": path.is_file()}
+                for label, path in required_paths.items()
+            }
+        else:
+            cache_receipt = json.loads(
+                required_paths["target_cache_receipt"].read_text(encoding="utf-8")
+            )
+            scoring_receipt = json.loads(
+                scoring_receipt_path.read_text(encoding="utf-8")
+            )
+            warm_receipt = json.loads(warm_receipt_path.read_text(encoding="utf-8"))
+            scoring_identity = json.loads(
+                required_paths["scoring_run_identity"].read_text(encoding="utf-8")
+            )
+            targets_sha256 = _sha256(required_paths["target_cache_rows"])
+            circ_protocol_payload = json.loads(
+                CIRC_PROTOCOL_PATH.read_text(encoding="utf-8")
+            )
+            expected_condition_count = sum(
+                len(item["seeds"])
+                for item in circ_protocol_payload.get("conditions", [])
+            )
+            target_rows = int(cache_receipt.get("row_count", -1))
+            symmetry_audit = dict(scoring_receipt.get("symmetry_audit", {}))
+            if (
+                cache_receipt.get("protocol_hash") != CIRC_PROTOCOL_SHA256
+                or cache_receipt.get("targets_sha256") != targets_sha256
+                or cache_receipt.get("mode") != "development"
+                or target_rows <= 0
+                or expected_condition_count <= 0
+                or target_rows % expected_condition_count != 0
+                or target_rows // expected_condition_count > 3126
+                or int(cache_receipt.get("cross_camera_primary_rows", -1))
+                != target_rows
+                or int(cache_receipt.get("same_camera_only_rows", -1)) != 0
+                or int(cache_receipt.get("invalid_support_rows", -1)) != 0
+                or int(cache_receipt.get("official_test_access_count", -1)) != 0
+                or cache_receipt.get("zero_identity_overlap") is not True
+                or scoring_receipt.get("status") != "COMPLETE"
+                or scoring_receipt.get("scientific_evidence_eligible") is not True
+                or scoring_receipt.get("contract_testing") is not False
+                or int(scoring_receipt.get("official_test_access_count", -1)) != 0
+                or scoring_receipt.get("circ_protocol_sha256")
+                != CIRC_PROTOCOL_SHA256
+                or scoring_receipt.get("targets_sha256") != targets_sha256
+                or scoring_receipt.get("cache_receipt_sha256")
+                != _sha256(required_paths["target_cache_receipt"])
+                or int(scoring_receipt.get("rows", -1)) != target_rows
+                or int(scoring_receipt.get("conditions", -1))
+                != expected_condition_count
+                or symmetry_audit.get("status") != "PASS"
+                or symmetry_audit.get("claim_eligible") is not True
+                or scoring_identity.get("circ_protocol_sha256")
+                != CIRC_PROTOCOL_SHA256
+                or scoring_identity.get("source_sha256") != current_source_sha256
+                or scoring_identity.get("scientific_evidence_eligible") is not True
+                or scoring_identity.get("contract_testing") is not False
+                or int(scoring_identity.get("official_test_access_count", -1)) != 0
+            ):
+                blockers.append("invalid_circ_target_cache_evidence")
+            warm_identity_path = Path(
+                str(warm_receipt.get("run_identity", ""))
+            ).expanduser().resolve()
+            warm_identity = (
+                json.loads(warm_identity_path.read_text(encoding="utf-8"))
+                if warm_identity_path.is_file()
+                else {}
+            )
+            if (
+                warm_receipt.get("schema_version")
+                != "trifusion-dev-selection-v1"
+                or warm_receipt.get("variant") != "hfer_uniform_generator"
+                or warm_receipt.get("phase") != "complete"
+                or warm_receipt.get("scientific_evidence_eligible") is not True
+                or warm_receipt.get("contract_testing") is not False
+                or int(warm_receipt.get("official_test_access_count", -1)) != 0
+                or warm_receipt.get("circ_protocol_sha256")
+                != CIRC_PROTOCOL_SHA256
+                or int(warm_receipt.get("schedule_horizon_epochs", -1)) != 60
+                or int(warm_receipt.get("dev_evaluation_count", -1)) != 60
+                or Path(str(warm_receipt.get("checkpoint", ""))).resolve()
+                != warm_checkpoint
+                or warm_receipt.get("checkpoint_sha256") != _sha256(warm_checkpoint)
+                or not warm_identity
+                or warm_receipt.get("run_identity_sha256")
+                != _sha256(warm_identity_path)
+                or warm_identity.get("circ_protocol_sha256")
+                != CIRC_PROTOCOL_SHA256
+                or warm_identity.get("source_sha256") != current_source_sha256
+                or warm_identity.get("scientific_evidence_eligible") is not True
+                or warm_identity.get("contract_testing") is not False
+            ):
+                blockers.append("invalid_circ_warm_start_evidence")
+            circ_assets = {
+                label: {
+                    "path": str(path),
+                    "exists": True,
+                    "sha256": _sha256(path),
+                }
+                for label, path in required_paths.items()
+            }
     protocol = json.loads(DEV_PROTOCOL.read_text(encoding="utf-8"))
     data_protocol = {
         "fit_identities": len(protocol["train_ids"]),
@@ -306,8 +434,9 @@ def _preflight(config_path: Path, variant: str) -> dict[str, Any]:
         "config_sha256": _sha256(config_path),
         "repository_head": head.stdout.strip() if head.returncode == 0 else None,
         "runner_sha256": _sha256(Path(__file__)),
-        "source_sha256": trifusion_source_hashes(),
+        "source_sha256": current_source_sha256,
         "file_checks": file_checks,
+        "circ_assets": circ_assets,
         "data_protocol": data_protocol,
         "optimization": optimization,
         "model_constructed": False,
@@ -540,10 +669,14 @@ def _run_identity(preflight: dict[str, Any], variant: str) -> dict[str, Any]:
         "contract_testing": contract_testing,
         "scientific_evidence_eligible": not contract_testing,
     }
-    if variant == "hfer_uniform_generator":
+    if variant == "hfer_uniform_generator" or preflight["variant_contract"].get(
+        "circ_targets_required"
+    ):
         identity["circ_protocol_sha256"] = preflight["file_checks"][
             "circ_protocol"
         ]["sha256"]
+    if preflight["variant_contract"].get("circ_targets_required"):
+        identity["circ_assets"] = preflight["circ_assets"]
     return identity
 
 
@@ -1199,21 +1332,31 @@ def _worker_dev(
             SingleBranchCriterion,
             TriFusionCriterion,
         )
+        from modeling.trifusion.circ_scoring import (
+            apply_registered_condition_batch,
+            expand_registered_conditions,
+            select_training_conditions,
+        )
         from modeling.trifusion.data import (
             build_rgbnt201_dev_loaders,
             build_rgbnt201_oof_loaders,
         )
+        from modeling.trifusion.intervention_targets import CIRCTargetCache
+        from modeling.trifusion.warm_start import load_hfer_uniform_warm_start
         from utils.reid_evaluation import evaluate_reid
 
         contract = dict(resolve_variant(variant))
         registered_circ_protocol_path: Path | None = None
         registered_circ_protocol_sha256: str | None = None
-        if variant == "hfer_uniform_generator":
+        registered_circ_protocol: dict[str, Any] | None = None
+        if variant == "hfer_uniform_generator" or contract.get(
+            "circ_targets_required"
+        ):
             registered_value = config.get("PROTOCOL", {}).get("CIRC_PROTOCOL")
             if not registered_value:
                 raise ValueError("HFER-uniform generator requires a frozen CIRC protocol")
             registered_circ_protocol_path = (PROJECT / str(registered_value)).resolve()
-            _, registered_circ_protocol_sha256 = load_trusted_circ_protocol(
+            registered_circ_protocol, registered_circ_protocol_sha256 = load_trusted_circ_protocol(
                 registered_circ_protocol_path
             )
             if (
@@ -1229,7 +1372,7 @@ def _worker_dev(
         torch.cuda.manual_seed(seed)
         torch.cuda.manual_seed_all(seed)
         torch.backends.cudnn.deterministic = True
-        torch.backends.cudnn.benchmark = True
+        torch.backends.cudnn.benchmark = False
         loader_kwargs = {
             "dataset_root": Path(config["DATA"]["DATASET_ROOT"]),
             "protocol_path": PROJECT / config["DATA"]["DEV_PROTOCOL"],
@@ -1270,7 +1413,85 @@ def _worker_dev(
                 reliability_mode=_collaborative_reliability_mode(contract),
                 **build_kwargs,
             )
-        model = built.model.cuda()
+        model = built.model
+        circ_target_cache: CIRCTargetCache | None = None
+        circ_conditions: tuple[dict[str, int | str], ...] = ()
+        circ_operators: dict[str, dict[str, object]] = {}
+        circ_training_evidence: dict[str, Any] = {}
+        if contract.get("circ_targets_required"):
+            if registered_circ_protocol is None or registered_circ_protocol_sha256 is None:
+                raise RuntimeError("full CIRC training lacks its trusted protocol")
+            circ_config = dict(config["CIRC"])
+            target_cache_path = Path(circ_config["TARGET_CACHE"]).expanduser().resolve()
+            circ_target_cache = CIRCTargetCache.from_directory(target_cache_path)
+            circ_conditions = expand_registered_conditions(registered_circ_protocol)
+            circ_operators = {
+                str(name): dict(specification)
+                for name, specification in registered_circ_protocol[
+                    "condition_operators"
+                ].items()
+            }
+            if set(circ_operators) != {
+                str(condition["family"]) for condition in circ_conditions
+            }:
+                raise ValueError("CIRC training operators do not cover the frozen suite")
+            train_sample_keys = tuple(
+                Path(record[0][0]).name for record in data.train_records
+            )
+            if len(set(train_sample_keys)) != len(train_sample_keys):
+                raise ValueError("RGBNT201 fit sample keys are not unique")
+            cache_sample_keys = {
+                str(row["sample_key"]) for row in circ_target_cache.rows
+            }
+            expected_row_count = len(cache_sample_keys) * len(circ_conditions)
+            if (
+                circ_target_cache.receipt.get("protocol_hash")
+                != registered_circ_protocol_sha256
+                or int(circ_target_cache.receipt.get("row_count", -1))
+                != expected_row_count
+                or len(circ_target_cache.rows) != expected_row_count
+                or int(circ_target_cache.receipt.get("official_test_access_count", -1))
+                != 0
+                or not cache_sample_keys
+                or not cache_sample_keys.issubset(set(train_sample_keys))
+            ):
+                raise ValueError("CIRC cache coverage is not a valid fit-record subset")
+            for condition in circ_conditions:
+                ordered_supported_keys = tuple(sorted(cache_sample_keys))
+                for start in range(0, len(ordered_supported_keys), 512):
+                    keys = ordered_supported_keys[start : start + 512]
+                    circ_target_cache.lookup(
+                        keys,
+                        tuple(dict(condition) for _ in keys),
+                        device="cpu",
+                    )
+            warm_checkpoint = Path(
+                circ_config["WARM_START_CHECKPOINT"]
+            ).expanduser().resolve()
+            warm_start = load_hfer_uniform_warm_start(model, warm_checkpoint)
+            circ_training_evidence = {
+                "schedule": "sample-hash offset plus epoch modulo frozen conditions",
+                "cycle_epochs": len(circ_conditions),
+                "conditions": list(circ_conditions),
+                "condition_operators_sha256": _canonical_json_sha256(
+                    circ_operators
+                ),
+                "target_cache": str(target_cache_path),
+                "target_cache_rows": len(circ_target_cache.rows),
+                "cross_camera_supported_train_samples": len(cache_sample_keys),
+                "excluded_no_cross_camera_train_samples": (
+                    len(train_sample_keys) - len(cache_sample_keys)
+                ),
+                "target_cache_targets_sha256": circ_target_cache.receipt[
+                    "targets_sha256"
+                ],
+                "warm_start": {
+                    **warm_start,
+                    "checkpoint_sha256": _sha256(warm_checkpoint),
+                },
+                "official_test_access_count": 0,
+            }
+        model = model.cuda()
         for name, parameter in model.named_parameters():
             if "private_projection" in name:
                 parameter.requires_grad_(False)
@@ -1346,8 +1567,12 @@ def _worker_dev(
             ).cuda()
         else:
             criterion = TriFusionCriterion(
-                target_cache=None,
+                target_cache=circ_target_cache,
                 triplet_margin=float(config["LOSS"]["TRIPLET_MARGIN"]),
+                brier_weight=float(config["LOSS"].get("BRIER_WEIGHT", 1.0)),
+                evidence_weight=float(
+                    config["LOSS"].get("EVIDENCE_WEIGHT", 0.1)
+                ),
             ).cuda()
         amp_enabled = bool(config["OPTIMIZATION"]["AMP"])
         scaler = torch.cuda.amp.GradScaler(
@@ -1370,10 +1595,10 @@ def _worker_dev(
                 "triplet_cnn": float(config["LOSS"]["TRIPLET_BRANCH"]),
                 "triplet_transformer": float(config["LOSS"]["TRIPLET_BRANCH"]),
                 "triplet_mamba": float(config["LOSS"]["TRIPLET_BRANCH"]),
-                "reliability": 0.0,
-                "peer_logits": 0.0,
-                "peer_role": 0.0,
-                "private_diversity": 0.0,
+                "reliability": float(config["LOSS"]["RELIABILITY"]),
+                "peer_logits": float(config["LOSS"]["PEER_LOGITS"]),
+                "peer_role": float(config["LOSS"]["PEER_ROLE"]),
+                "private_diversity": float(config["LOSS"]["PRIVATE_DIVERSITY"]),
             }
         identity_hash = _sha256(output_dir / "run_identity.json")
         latest_path = output_dir / ".resume/latest.json"
@@ -1487,6 +1712,7 @@ def _worker_dev(
                 "train_history": train_history,
                 "resume_history": resume_history,
                 "data_provenance": dict(data.provenance),
+                "circ_training_evidence": circ_training_evidence,
             }
             if state_phase == "complete":
                 common_evidence = {
@@ -1602,10 +1828,58 @@ def _worker_dev(
                 total_sum = 0.0
                 sample_count = 0
                 named_sums: dict[str, float] = {name: 0.0 for name in loss_weights}
-                for images, labels, _camera_ids, _view_ids, _sample_keys in data.train_loader:
-                    images = {name: tensor.cuda(non_blocking=False) for name, tensor in images.items()}
+                condition_counts: dict[str, int] = {}
+                circ_supervised_samples = 0
+                circ_excluded_samples = 0
+                for images, labels, _camera_ids, _view_ids, sample_keys in data.train_loader:
                     labels = labels.cuda(non_blocking=False)
-                    mask = torch.ones(labels.shape[0], 3, dtype=torch.bool, device="cuda")
+                    batch_conditions = None
+                    if circ_target_cache is None:
+                        images = {
+                            name: tensor.cuda(non_blocking=False)
+                            for name, tensor in images.items()
+                        }
+                        mask = torch.ones(
+                            labels.shape[0], 3, dtype=torch.bool, device="cuda"
+                        )
+                    else:
+                        if registered_circ_protocol is None:
+                            raise RuntimeError("CIRC condition schedule lost its protocol")
+                        sample_keys = tuple(str(value) for value in sample_keys)
+                        batch_conditions = select_training_conditions(
+                            sample_keys,
+                            epoch=epoch,
+                            protocol=registered_circ_protocol,
+                        )
+                        images, mask = apply_registered_condition_batch(
+                            images,
+                            sample_keys,
+                            batch_conditions,
+                            operators=circ_operators,
+                        )
+                        images = {
+                            name: tensor.cuda(non_blocking=False)
+                            for name, tensor in images.items()
+                        }
+                        mask = mask.cuda(non_blocking=False)
+                        for condition in batch_conditions:
+                            condition_key = (
+                                f"{condition['family']}:s{condition['severity']}:"
+                                f"seed{condition['seed']}"
+                            )
+                            condition_counts[condition_key] = (
+                                condition_counts.get(condition_key, 0) + 1
+                            )
+                        target_presence = [
+                            circ_target_cache.contains(sample_key, condition)
+                            for sample_key, condition in zip(
+                                sample_keys, batch_conditions
+                            )
+                        ]
+                        circ_supervised_samples += sum(target_presence)
+                        circ_excluded_samples += len(target_presence) - sum(
+                            target_presence
+                        )
                     optimizer.zero_grad(set_to_none=True)
                     with torch.cuda.amp.autocast(enabled=amp_enabled):
                         output = model(
@@ -1613,7 +1887,15 @@ def _worker_dev(
                             targets=labels,
                             return_aux=True,
                         )
-                        named_losses = criterion(output, labels)
+                        if circ_target_cache is None:
+                            named_losses = criterion(output, labels)
+                        else:
+                            named_losses = criterion(
+                                output,
+                                labels,
+                                sample_keys=sample_keys,
+                                conditions=batch_conditions,
+                            )
                         total_loss = sum(
                             named_losses[name] * weight
                             for name, weight in loss_weights.items()
@@ -1629,10 +1911,17 @@ def _worker_dev(
                     for name, value in named_losses.items():
                         named_sums[name] += float(value.detach().cpu()) * batch_size
                 scheduler.step()
+                if circ_target_cache is not None and circ_supervised_samples == 0:
+                    raise RuntimeError(
+                        "epoch contained no cross-camera-supported CIRC supervision"
+                    )
                 train_history[str(epoch)] = {
                     "total": total_sum / sample_count,
                     "named": {name: value / sample_count for name, value in named_sums.items()},
                     "learning_rates": [float(group["lr"]) for group in optimizer.param_groups],
+                    "circ_condition_counts": condition_counts,
+                    "circ_supervised_samples": circ_supervised_samples,
+                    "circ_excluded_no_cross_camera_samples": circ_excluded_samples,
                 }
                 current_epoch = epoch
                 phase = "post_train"
@@ -1705,6 +1994,7 @@ def _worker_dev(
                             "checkpoint_sha256": best_checkpoint_sha256,
                             "config_sha256": _sha256(config_path),
                             "circ_protocol_sha256": registered_circ_protocol_sha256,
+                            "circ_training_evidence": circ_training_evidence,
                             "variant_contract_sha256": variant_sha256(contract),
                             "selection_split": "train_171 held-out dev identities",
                             "official_test_access_count": 0,
@@ -1748,6 +2038,7 @@ def _worker_dev(
                     "model_constructed": True,
                     "training_started": True,
                     "fatal_or_nonfinite_detected": False,
+                    "circ_training_evidence": circ_training_evidence,
                 }
             )
             _atomic_json(best_receipt_path, completed_selection)
@@ -1849,6 +2140,7 @@ def _worker_dev(
                 "TRIFUSION_CONTRACT_TESTING"
             )
             != "1",
+            "circ_training_evidence": circ_training_evidence,
             }
         _atomic_json(result_path, result)
         return 0

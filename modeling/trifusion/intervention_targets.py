@@ -459,6 +459,7 @@ class CIRCTargetCache:
         conditions: Sequence[Mapping[str, object]],
         *,
         device: torch.device | str | None = None,
+        allow_missing: bool = False,
     ) -> CIRCTargetBatch:
         if len(sample_keys) != len(conditions):
             raise ValueError("sample keys and conditions must have equal length")
@@ -470,7 +471,21 @@ class CIRCTargetCache:
             condition_key = _canonical_json(dict(condition)).decode("utf-8")
             key = (str(sample_key), condition_key)
             if key not in self._index:
-                raise KeyError(f"missing immutable CIRC target for {key}")
+                if not allow_missing:
+                    raise KeyError(f"missing immutable CIRC target for {key}")
+                helpful_rows.append(
+                    [[0.0] * len(MODALITY_ORDER) for _ in EXPERT_ORDER]
+                )
+                valid_rows.append(
+                    [[False] * len(MODALITY_ORDER) for _ in EXPERT_ORDER]
+                )
+                effect_rows.append(
+                    [[0.0] * len(MODALITY_ORDER) for _ in EXPERT_ORDER]
+                )
+                provenance_keys.append(
+                    f"excluded-no-cross-camera-support|{sample_key}|{condition_key}"
+                )
+                continue
             row = self._index[key]
             helpful = []
             valid = []
@@ -503,6 +518,14 @@ class CIRCTargetCache:
             ),
             provenance_keys=tuple(provenance_keys),
         )
+
+    def contains(
+        self,
+        sample_key: str,
+        condition: Mapping[str, object],
+    ) -> bool:
+        condition_key = _canonical_json(dict(condition)).decode("utf-8")
+        return (str(sample_key), condition_key) in self._index
 
 
 __all__ = [

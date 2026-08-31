@@ -56,6 +56,53 @@
     {"family": "thermal_noise", "severity": 1, "seeds": [42501]},
     {"family": "modality_missing", "severity": 1, "seeds": [42601]}
   ],
+  "condition_operators": {
+    "clean": {
+      "operator": "identity",
+      "severity": 0
+    },
+    "gaussian_blur": {
+      "operator": "gaussian-blur",
+      "severity": 1,
+      "kernel_size": 5,
+      "sigma": 1.25,
+      "modalities": ["RGB", "NI", "TI"]
+    },
+    "occlusion": {
+      "operator": "shared-square-occlusion",
+      "severity": 1,
+      "side_fraction": 0.5,
+      "normalized_fill": 0.0,
+      "modalities": ["RGB", "NI", "TI"],
+      "location_seed": "SHA256(TriFusion-CIRC-condition-v1,sample_key,condition)"
+    },
+    "exposure": {
+      "operator": "raw-intensity-scale",
+      "severity": 1,
+      "modality": "RGB",
+      "raw_scale": 0.55
+    },
+    "nir_noise": {
+      "operator": "normalized-gaussian-noise",
+      "severity": 1,
+      "modality": "NI",
+      "normalized_sigma": 0.12,
+      "sample_seed": "SHA256(TriFusion-CIRC-condition-v1,sample_key,condition)"
+    },
+    "thermal_noise": {
+      "operator": "normalized-gaussian-noise",
+      "severity": 1,
+      "modality": "TI",
+      "normalized_sigma": 0.12,
+      "sample_seed": "SHA256(TriFusion-CIRC-condition-v1,sample_key,condition)"
+    },
+    "modality_missing": {
+      "operator": "hard-mask-and-zero",
+      "severity": 1,
+      "selection": "sample-hash-mod-3",
+      "selection_seed": "SHA256(TriFusion-CIRC-condition-v1,sample_key,condition)"
+    }
+  },
   "interventions": {
     "primary": ["total", "direct", "relay"],
     "total": "suppress source expert-modality at both relays and final fusion",
@@ -86,11 +133,18 @@
     "query_gallery_symmetry": {
       "sample_rows": 128,
       "identity_clustered": true,
+      "sampling_unit": "query-condition-contribution",
+      "selection_rule": "identity-cluster round-robin by canonical SHA256 without replacement",
       "minimum_sign_agreement": 0.7,
       "minimum_spearman": 0.5
     },
     "proxy_target_transfer": {
       "sample_rows": 128,
+      "sampling_unit": "query-condition-contribution",
+      "identity_clustered": true,
+      "selection_rule": "identity-cluster round-robin by canonical SHA256 without replacement",
+      "comparisons": ["proxy_effect_vs_deployed_effect", "router_helpfulness_vs_deployed_effect"],
+      "router_helpful_threshold": 0.5,
       "minimum_sign_agreement": 0.7,
       "minimum_spearman": 0.5
     },

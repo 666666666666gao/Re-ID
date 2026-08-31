@@ -558,6 +558,31 @@ def main(argv: list[str] | None = None) -> int:
     arguments = build_parser().parse_args(argv)
     config_path = arguments.config.expanduser().resolve()
     config, config_sha256 = _load_config(config_path)
+    if config.get("operation") == "audit-deployed-transfer":
+        if arguments._worker_fold is not None:
+            raise ValueError("CIRC transfer audit does not accept a generator worker fold")
+        from tools.circ_score_runtime import audit_deployed_transfer
+
+        return audit_deployed_transfer(
+            config,
+            config_path=config_path,
+            config_sha256=config_sha256,
+            mode=arguments.mode,
+            output=arguments.output,
+        )
+    if config.get("operation") == "score-oof-interventions":
+        if arguments._worker_fold is not None:
+            raise ValueError("CIRC scoring does not accept a generator worker fold")
+        from tools.circ_score_runtime import score_oof_interventions
+
+        return score_oof_interventions(
+            config,
+            config_path=config_path,
+            config_sha256=config_sha256,
+            mode=arguments.mode,
+            output=arguments.output,
+            validate_generators=_orchestrate_oof_generators,
+        )
     if config.get("operation") == "train-oof-generators":
         if arguments._worker_fold is not None:
             target_fold = int(arguments._worker_fold)

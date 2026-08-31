@@ -94,23 +94,25 @@ class TriFusionCriterion(nn.Module):
                 sample_keys,
                 conditions,
                 device=output.reliability.r.device,
+                allow_missing=True,
             )
             available = output.modality_mask[:, None, :].expand_as(circ.valid_mask)
             valid = circ.valid_mask & available
-            if not bool(valid.any()):
-                raise ValueError("batch has no valid immutable CIRC targets")
-            predicted = output.reliability.r[valid].clamp(1e-6, 1.0 - 1e-6)
-            helpful = circ.helpful_targets[valid]
-            uncertainty = output.reliability.u[valid]
-            bce = F.binary_cross_entropy(predicted, helpful)
-            brier = (predicted - helpful).square().mean()
-            detached_error = (predicted - helpful).abs().detach()
-            evidence_regularizer = (uncertainty - detached_error).square().mean()
-            losses["reliability"] = (
-                bce
-                + self.brier_weight * brier
-                + self.evidence_weight * evidence_regularizer
-            )
+            if bool(valid.any()):
+                predicted = output.reliability.r[valid].clamp(1e-6, 1.0 - 1e-6)
+                helpful = circ.helpful_targets[valid]
+                uncertainty = output.reliability.u[valid]
+                bce = F.binary_cross_entropy(predicted, helpful)
+                brier = (predicted - helpful).square().mean()
+                detached_error = (predicted - helpful).abs().detach()
+                evidence_regularizer = (uncertainty - detached_error).square().mean()
+                losses["reliability"] = (
+                    bce
+                    + self.brier_weight * brier
+                    + self.evidence_weight * evidence_regularizer
+                )
+            else:
+                losses["reliability"] = zero
 
         if output.peer_teaching is None:
             losses["peer_logits"] = zero

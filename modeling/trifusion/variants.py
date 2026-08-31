@@ -33,6 +33,18 @@ _VARIANTS: dict[str, dict[str, Any]] = {
         "circ_targets_required": False,
         "evaluation_outputs": ["fused", "cnn", "transformer", "mamba"],
     },
+    "trifusion_circ_urgc": {
+        "variant": "trifusion_circ_urgc",
+        "family": "collaborative",
+        "claim_role": "full HFER+CIRC+URGC main method",
+        "active_experts": ["cnn", "transformer", "mamba"],
+        "collaborator": "hfer",
+        "reliability": "joint_beta_circ",
+        "fusion": "reliability_weighted",
+        "peer_mode": "none",
+        "circ_targets_required": True,
+        "evaluation_outputs": ["fused", "cnn", "transformer", "mamba"],
+    },
     "cnn_standalone": {
         "variant": "cnn_standalone",
         "family": "standalone",

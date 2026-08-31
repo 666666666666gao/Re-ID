@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 from collections import defaultdict
-from collections.abc import Mapping
+from collections.abc import Mapping, Sequence
 from dataclasses import dataclass
 import hashlib
 import json
@@ -166,6 +166,26 @@ def _make_loaders(
         pin_memory=torch.cuda.is_available(),
     )
     return train_loader, eval_loader
+
+
+def build_rgbnt201_record_eval_loader(
+    records: Sequence[Record] | tuple[Record, ...],
+    *,
+    batch_size: int,
+    num_workers: int,
+) -> DataLoader:
+    """Build a deterministic evaluation loader for a frozen record sequence."""
+
+    if not records or batch_size <= 0 or num_workers < 0:
+        raise ValueError("records/batch size must be positive and workers nonnegative")
+    return DataLoader(
+        ImageDataset(tuple(records), _eval_transform()),
+        batch_size=batch_size,
+        shuffle=False,
+        num_workers=num_workers,
+        collate_fn=val_collate_fn,
+        pin_memory=torch.cuda.is_available(),
+    )
 
 
 def build_rgbnt201_oof_loaders(
@@ -402,4 +422,5 @@ __all__ = [
     "TriFusionDataLoaders",
     "build_rgbnt201_dev_loaders",
     "build_rgbnt201_oof_loaders",
+    "build_rgbnt201_record_eval_loader",
 ]

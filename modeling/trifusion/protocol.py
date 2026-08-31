@@ -58,6 +58,7 @@ def trifusion_source_hashes() -> dict[str, str]:
     paths.extend(
         [
             project / "tools/build_circ_targets.py",
+            project / "tools/circ_score_runtime.py",
             project / "tools/run_trifusion_experiment.py",
         ]
     )

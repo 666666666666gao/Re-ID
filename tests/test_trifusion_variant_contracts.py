@@ -61,6 +61,60 @@ def test_hfer_uniform_generator_preflight_binds_target_generation_topology(
     assert receipt["official_test_access_count"] == 0
 
 
+def test_full_circ_urgc_preflight_fails_closed_until_scientific_assets_exist(
+    tmp_path: Path,
+) -> None:
+    fake_bin = tmp_path / "full-circ-gpu"
+    fake_bin.mkdir()
+    nvidia_smi = fake_bin / "nvidia-smi"
+    nvidia_smi.write_text(
+        "#!/bin/sh\nprintf 'NVIDIA GeForce RTX 4060 Laptop GPU, 1061, 8188\\n'\n",
+        encoding="utf-8",
+    )
+    nvidia_smi.chmod(0o755)
+    output_dir = tmp_path / "full-circ-preflight"
+    env = dict(os.environ)
+    env["PATH"] = f"{fake_bin}:{env['PATH']}"
+    completed = subprocess.run(
+        [
+            sys.executable,
+            str(RUNNER),
+            "--mode",
+            "preflight",
+            "--variant",
+            "trifusion_circ_urgc",
+            "--config",
+            str(PROJECT / "configs/RGBNT201/TriFusion-circ-urgc-low-vram.yml"),
+            "--output-dir",
+            str(output_dir),
+        ],
+        cwd=PROJECT,
+        env=env,
+        check=False,
+        capture_output=True,
+        text=True,
+    )
+
+    assert completed.returncode == 0, completed.stdout + completed.stderr
+    receipt = json.loads((output_dir / "preflight.json").read_text(encoding="utf-8"))
+    assert receipt["status"] == "BLOCKED"
+    assert "missing_circ_training_assets" in receipt["blockers"]
+    assert receipt["variant_contract"] == {
+        "active_experts": ["cnn", "transformer", "mamba"],
+        "circ_targets_required": True,
+        "claim_role": "full HFER+CIRC+URGC main method",
+        "collaborator": "hfer",
+        "evaluation_outputs": ["fused", "cnn", "transformer", "mamba"],
+        "family": "collaborative",
+        "fusion": "reliability_weighted",
+        "peer_mode": "none",
+        "reliability": "joint_beta_circ",
+        "variant": "trifusion_circ_urgc",
+    }
+    assert receipt["launch_allowed"] is False
+    assert receipt["model_constructed"] is False
+
+
 def test_cnn_standalone_preflight_exposes_a_real_single_expert_topology(
     tmp_path: Path,
 ) -> None:

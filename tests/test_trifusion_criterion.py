@@ -61,7 +61,7 @@ class TriFusionCriterionTests(unittest.TestCase):
         condition_key = '{"family":"gaussian","seed":17,"severity":2}'
         sample_keys = [f"sample-{index}" for index in range(batch_size)]
         cache_rows = []
-        for sample_index, sample_key in enumerate(sample_keys):
+        for sample_index, sample_key in enumerate(sample_keys[:2]):
             contributions = {
                 f"{expert}.{modality}": {
                     "effects": {"total": 0.1, "direct": 0.04, "relay": 0.03},
@@ -149,6 +149,14 @@ class TriFusionCriterionTests(unittest.TestCase):
         self.assertIsNotNone(reliability_logits.grad)
         self.assertGreater(reliability_logits.grad.abs().sum().item(), 0.0)
         self.assertIsNotNone(fused_embedding.grad)
+
+        unsupported = criterion(
+            output,
+            labels,
+            sample_keys=[f"unsupported-{index}" for index in range(batch_size)],
+            conditions=[condition] * batch_size,
+        )
+        self.assertEqual(unsupported["reliability"].item(), 0.0)
 
 
 if __name__ == "__main__":

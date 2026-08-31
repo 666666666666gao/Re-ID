@@ -10,6 +10,66 @@ from unittest.mock import patch
 
 
 class CIRCTargetBuilderTests(unittest.TestCase):
+    def test_scoring_operation_cannot_use_contract_testing_override(self) -> None:
+        from tools.build_circ_targets import main
+
+        with tempfile.TemporaryDirectory() as temporary_directory:
+            root = Path(temporary_directory)
+            config_path = root / "score.json"
+            config_path.write_text(
+                json.dumps(
+                    {
+                        "schema_version": "circ-scoring-orchestration-v1",
+                        "operation": "score-oof-interventions",
+                    }
+                ),
+                encoding="utf-8",
+            )
+            with patch.dict(
+                os.environ,
+                {"TRIFUSION_CONTRACT_TESTING": "1"},
+            ), self.assertRaisesRegex(ValueError, "forbids contract-testing"):
+                main(
+                    [
+                        "--config",
+                        str(config_path),
+                        "--mode",
+                        "development",
+                        "--output",
+                        str(root / "output"),
+                    ]
+                )
+
+    def test_transfer_operation_cannot_use_contract_testing_override(self) -> None:
+        from tools.build_circ_targets import main
+
+        with tempfile.TemporaryDirectory() as temporary_directory:
+            root = Path(temporary_directory)
+            config_path = root / "transfer.json"
+            config_path.write_text(
+                json.dumps(
+                    {
+                        "schema_version": "circ-transfer-audit-v1",
+                        "operation": "audit-deployed-transfer",
+                    }
+                ),
+                encoding="utf-8",
+            )
+            with patch.dict(
+                os.environ,
+                {"TRIFUSION_CONTRACT_TESTING": "1"},
+            ), self.assertRaisesRegex(ValueError, "forbids contract-testing"):
+                main(
+                    [
+                        "--config",
+                        str(config_path),
+                        "--mode",
+                        "development",
+                        "--output",
+                        str(root / "output"),
+                    ]
+                )
+
     def test_fold_assignment_canonicalizes_zero_padded_numeric_identity(self) -> None:
         from modeling.trifusion.intervention_targets import assign_identity_fold
 
