@@ -1,7 +1,7 @@
 {
-  "schema_version": "circ-calibration-overlay-protocol-v1",
-  "protocol_name": "TriFusion-CIRC-cluster-calibration-v3",
-  "created_at_utc": "2026-08-31T22:06:16Z",
+  "schema_version": "circ-mean-only-overlay-protocol-v1",
+  "protocol_name": "TriFusion-CIRC-mean-only-v3",
+  "created_at_utc": "2026-09-01T00:00:00Z",
   "created_after_parent_failure": true,
   "official_test_access_count": 0,
   "parent_circ_protocol_sha256": "1fdf50a775b793f108c7243146084f445059213ecdf589a52d26eb02ffab3561",
@@ -15,23 +15,16 @@
     "cache/symmetry_receipt.json": "b74f049754742e6bf8699e02e5db4b72d274bc1db874d5151d261cd42af01d70",
     "cache/target_transfer_receipt.json": "610abd328e533697e2b3dd98ded33cf42eeff440f813ab35d616f63d10897840"
   },
-  "method": {
-    "name": "condition-cluster-loo-beta-binomial-moments-exact95",
-    "prediction_unit": "identity_query_cluster_helpful_count",
-    "nominal_coverage": 0.95,
-    "minimum_empirical_coverage": 0.90,
-    "minimum_identity_query_clusters": 20,
-    "thresholds_changed_from_parent": false,
-    "router_point_calibration_is_separate": true
+  "policy": {
+    "posterior_mean_control_only": true,
+    "uncertainty_control_allowed": false,
+    "concentration_claim_allowed": false,
+    "parent_calibration_failure_must_be_preserved": true
   },
-  "method_sources": [
-    "https://arxiv.org/abs/2306.06342",
-    "https://arxiv.org/abs/1809.07441"
-  ],
   "scope": {
-    "target_rows_must_be_byte_identical": true,
+    "scientific_evidence": "mean_only_training_input",
+    "target_and_calibration_artifacts_must_be_byte_identical": true,
     "gpu_rescoring": false,
-    "official_test_access": false,
-    "parent_failure_is_preserved": true
+    "official_test_access": false
   }
 }

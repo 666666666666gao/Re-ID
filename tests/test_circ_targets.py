@@ -172,60 +172,6 @@ class CIRCTargetBuilderTests(unittest.TestCase):
         self.assertIn("empirical_concentration_coverage", audit)
         self.assertEqual(len(audit["audit_sha256"]), 64)
 
-    def test_calibration_concentration_uses_exact_cluster_predictive_intervals(
-        self,
-    ) -> None:
-        """A boundary-heavy worked example must not count query repeats as iid."""
-
-        from tools.recalibrate_circ_cache import compute_cluster_calibration_audit
-
-        expert_modalities = tuple(
-            (expert, modality)
-            for expert in ("cnn", "transformer", "mamba")
-            for modality in ("RGB", "NI", "TI")
-        )
-        rows = []
-        for cluster_index in range(30):
-            successes = cluster_index % 10
-            labels = [1] * successes + [0] * (9 - successes)
-            rows.append(
-                {
-                    "cross_camera_support": True,
-                    "identity": cluster_index,
-                    "sample_key": f"query-{cluster_index}",
-                    "condition_key": "clean",
-                    "groups": {
-                        "camera": "1",
-                        "identity_frequency": "singleton",
-                    },
-                    "contributions": {
-                        f"{expert}.{modality}": {
-                            "valid": True,
-                            "helpful_target": labels[index],
-                        }
-                        for index, (expert, modality) in enumerate(
-                            expert_modalities
-                        )
-                    },
-                }
-            )
-
-        audit = compute_cluster_calibration_audit(rows)
-        concentration = audit["empirical_concentration_coverage"]["clean"]
-
-        self.assertEqual(audit["schema_version"], "circ-calibration-audit-v2")
-        self.assertEqual(
-            concentration["method"],
-            "condition-cluster-loo-beta-binomial-moments-exact95",
-        )
-        self.assertEqual(concentration["nominal_coverage"], 0.95)
-        self.assertGreaterEqual(concentration["empirical_coverage"], 0.90)
-        self.assertTrue(concentration["claim_eligible"])
-        self.assertGreater(concentration["mean_interval_width"], 0.0)
-        self.assertGreater(
-            concentration["mean_intra_cluster_correlation"], 0.0
-        )
-
     def test_scoring_operation_cannot_use_contract_testing_override(self) -> None:
         from tools.build_circ_targets import main
 

@@ -42,7 +42,7 @@ LOSS:
   TRIPLET_BRANCH: 0.5
   RELIABILITY: 1.0
   BRIER_WEIGHT: 1.0
-  EVIDENCE_WEIGHT: 0.1
+  EVIDENCE_WEIGHT: 0.0
   PEER_LOGITS: 0.0
   PEER_ROLE: 0.0
   PRIVATE_DIVERSITY: 0.0
@@ -54,8 +54,21 @@ CIRC:
   WARM_START_RECEIPT: /root/autodl-tmp/trifusion-v2/artifacts/trifusion_shared_semantic_hfer_uniform_selector_seed42/best_dev_receipt.json
 PROTOCOL:
   CIRC_PROTOCOL: protocols/circ_target_v1.json
-  CIRC_CALIBRATION_OVERLAY: protocols/circ_calibration_overlay_v2.json
+  CIRC_MEAN_ONLY_OVERLAY: protocols/circ_mean_only_overlay_v3.json
+  CIRC_MEAN_ONLY_OVERLAY_SHA256: b7e1d81b853afebfb92842e11ef47a8dcde41dfd766d09eb23eaf78cc3f888e0
+  CIRC_SCIENTIFIC_EVIDENCE_SCOPE: mean_only_training_input
+  CIRC_UNCERTAINTY_CONTROL_ALLOWED: false
   OFFICIAL_TEST_DURING_DEVELOPMENT: false
   RERANKING: false
   MODEL_SELECTION: dev_mAP
   PRIMARY_METRICS: [mAP, Rank-1, Rank-5, Rank-10]
+EXECUTION:
+  MEAN_ONLY_LAUNCHER: tools/run_trifusion_mean_only.py
+  MEAN_ONLY_LAUNCHER_SHA256: 95e33409068cf7ac889660c3f2e8f053eae58d68ce715a2bad4f96cec4fa016a
+  FROZEN_RUNNER: tools/run_trifusion_experiment.py
+  FROZEN_RUNNER_SHA256: 50540f112d99b55e761be91eaa36a273444c0318c9929929cb8a62d8cb25897c
+  MEAN_ONLY_DEV_OUTPUT_DIR: /root/autodl-tmp/trifusion-v2/artifacts/trifusion_shared_semantic_circ_urgc_v3_dev_seed42
+  MEAN_ONLY_PREFLIGHT_OUTPUT_DIR: /root/autodl-tmp/trifusion-v2/artifacts/trifusion_shared_semantic_circ_urgc_v3_dev_seed42_preflight
+  MEAN_ONLY_LEDGER_DIR: /root/autodl-tmp/trifusion-v2/artifacts/trifusion_shared_semantic_circ_urgc_v3_dev_seed42_launch_ledger
+  REQUIRE_COMPLETION_RECEIPT: true
+  RESULT_QUALIFICATION_GATE: mean_only_completion_receipt
