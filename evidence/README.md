@@ -24,7 +24,8 @@ sha256sum -c evidence/SHA256SUMS
   explicitly not treated as a local checkpoint result.
 - MFRNet checkpoint comparator: direct official weight download, isolated
   Python 3.8/torch 1.12/Tutel environment, real loader and 297/297 strict CPU
-  state match. No GPU metric is implied by this receipt.
+  state match, plus a separate batch-routing semantics receipt. No GPU metric
+  is implied by these receipts.
 - DeMo implementation base: synthetic and real-data training gates, the
   excluded TB128 paging-pressure run, the accepted TB64 live gate, a bounded
   post-launch provenance observation, and the terminal R012 incident receipt.
@@ -105,6 +106,13 @@ The MFRNet receipt binds the 407,297,967-byte official checkpoint at SHA-256
 source B64/K8 loader and exact 297-tensor model/checkpoint match. It records
 that official-test mAP selects the released best and that no GPU forward or
 metric evaluation has run; 80.7% / 83.6% remains an upstream value.
+
+The MFRNet batch-semantics receipt binds a deterministic CPU call to the pinned
+Tutel v0.3.2 routing implementation. Its four-token counterexample proves that
+capacity-factor-1.0 batch-prioritized routing can retain a different token set
+after batch splitting. It supports preserving released evaluation B128 and
+labeling any lower-batch run non-comparable; it does not claim the real
+checkpoint necessarily changes metrics across batches.
 
 Absolute paths inside JSON records identify the WSL2 machine on which the
 evidence was produced. File hashes, source commits and protocol fields are the

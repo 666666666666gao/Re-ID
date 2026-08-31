@@ -124,6 +124,17 @@ protocol parity, but that local result must retain the `test-selected released
 checkpoint` label. It is not the clean model-selection comparator and cannot
 replace the frozen dev-selection/final-once policy for TriFusion.
 
+The released evaluation batch of 128 is also protocol-relevant rather than a
+free memory knob. MFRNet's Tutel top-1 MoE uses capacity factor 1.0 and
+batch-prioritized routing. A deterministic source-runtime example shows that
+processing the same four routing scores in one batch versus two batches changes
+the accepted token set from `[0,1]` to `[0,2]`. This proves that the mechanism
+is not generally batch-partition invariant, although it does not prove an
+RGBNT201 metric change for this checkpoint. Local parity must therefore retain
+B128; an 8 GB OOM is an infeasibility result, not permission to silently lower
+the batch. The receipt is
+`evidence/mfrnet_eval_batch_semantics_audit_20260831.json`.
+
 ## Binding reporting policy
 
 1. **DeMo official reproduction column:** report the best joint test result and

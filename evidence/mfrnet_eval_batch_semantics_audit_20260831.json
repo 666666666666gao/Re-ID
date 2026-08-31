@@ -1,0 +1,163 @@
+{
+  "audit_date": "2026-08-31",
+  "audit_timestamp": "2026-08-31T11:08:08+08:00",
+  "baseline": "MFRNet",
+  "claim_boundary": {
+    "actual_checkpoint_batch_dependence_measured": false,
+    "local_metric_reproduction_complete": false,
+    "mechanism_batch_partition_sensitivity_proven": true,
+    "sota_claim_supported": false
+  },
+  "environment": {
+    "cuda_masked": true,
+    "python": "3.8.20",
+    "runtime": "/root/miniconda3/envs/mfrnet/bin/python",
+    "torch": "1.12.0+cu113",
+    "tutel_distribution": "0.3",
+    "user_site_disabled": true
+  },
+  "gpu_preflight": {
+    "gpu_index": 0,
+    "launch_allowed": false,
+    "memory_total_mib": 8188,
+    "memory_used_mib": 1080,
+    "required_memory_used_strictly_below_mib": 500,
+    "temperature_c": 44,
+    "utilization_percent": 29
+  },
+  "minimal_counterexample": {
+    "batch_prioritized_routing": true,
+    "capacity_factor": 1.0,
+    "expert_count": 2,
+    "full_batch": {
+      "accepted_global_indices": [
+        0,
+        1
+      ],
+      "capacity": 2,
+      "expert_indices": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "locations": [
+        0,
+        1,
+        2,
+        3
+      ]
+    },
+    "scores": [
+      [
+        0.99,
+        0.01
+      ],
+      [
+        0.98,
+        0.02
+      ],
+      [
+        0.60,
+        0.40
+      ],
+      [
+        0.59,
+        0.41
+      ]
+    ],
+    "split_batches": [
+      {
+        "accepted_global_indices": [
+          0
+        ],
+        "capacity": 1,
+        "global_indices": [
+          0,
+          1
+        ],
+        "expert_indices": [
+          0,
+          0
+        ],
+        "locations": [
+          0,
+          1
+        ]
+      },
+      {
+        "accepted_global_indices": [
+          2
+        ],
+        "capacity": 1,
+        "global_indices": [
+          2,
+          3
+        ],
+        "expert_indices": [
+          0,
+          0
+        ],
+        "locations": [
+          0,
+          1
+        ]
+      }
+    ],
+    "symmetric_difference_of_accepted_global_indices": [
+      1,
+      2
+    ],
+    "top_k": 1
+  },
+  "protocol_decision": {
+    "lower_batch_diagnostic_label": "non-comparable batch-partition diagnostic",
+    "official_parity_batch": 128,
+    "official_parity_must_preserve_batch": true,
+    "oom_policy": "record local-hardware infeasibility; do not silently retry with a lower batch under the parity label",
+    "why": "Tutel capacity and priority are computed per invocation, so batch-size invariance is not guaranteed"
+  },
+  "proposed_runner_seam": {
+    "accepted": false,
+    "interface": "tools/run_mfrnet_checkpoint_eval.py --mode preflight|official128 --output-dir DIR",
+    "implementation_present": false,
+    "spec": "docs/MFRNET_CHECKPOINT_REPRODUCTION_SPEC.md",
+    "tests_present": false
+  },
+  "schema_version": 1,
+  "source_evidence": {
+    "mfrnet": {
+      "commit": "ec54a1302321cda4b5fad9ca1c0878dabf0b46b6",
+      "config_sha256": "fecef5e40461930b84f4313aca86f33617be25c37fa3459c39367e6b18caa43e",
+      "config_test_batch_line": 41,
+      "model_clip_moe_lines": [
+        292,
+        300
+      ],
+      "model_clip_sha256": "4c0828601d41cf6d46af85e5959d11f8ca1fb8c84d5dfa674e7513b084cc29dc",
+      "path": "/root/mmreid-trifusion/baselines/MFRNet",
+      "test_entrypoint_sha256": "d0136fbe91dd7d7e9b4044637798ed0e26db44038b290a6beffbd3cefd1b77b3"
+    },
+    "tutel": {
+      "direct_url_json_sha256": "d77bacce3116ba7bc0e564c67d047e545b721007099696f24b4b40cd65ea2dc5",
+      "fast_dispatch_extract_critical_lines": [
+        140,
+        201
+      ],
+      "fast_dispatch_sha256": "accfecdbcf4ba0ca094a64c5ed66fc91db50600b604c425872618a9f8d39a837",
+      "installed_archive_sha256": "7aedcfb8d9e7f3e8ab4dd9d624f7b01630ead05a7a0aa074dd5c1525978c80a1",
+      "installed_archive_url": "https://github.com/microsoft/Tutel/archive/refs/tags/v0.3.2.tar.gz",
+      "jit_sparse_dispatch_acceptance_lines": [
+        24,
+        32
+      ],
+      "jit_sparse_sha256": "9dae1ed676486abea066f6f14e957da535074259eb82524c4d1e66f27965a1e2",
+      "moe_layer_routing_lines": [
+        250,
+        303
+      ],
+      "moe_layer_sha256": "f3cbe2819d97066bb297f6cf0550d1b534b071a7f3c6b383e575aafb5bd3cbc6"
+    }
+  },
+  "valid": true
+}

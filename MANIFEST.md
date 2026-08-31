@@ -109,3 +109,6 @@
 | 2026-08-31 10:10 | /run-experiment | environment/mfrnet_requirements-lock.txt | implementation | torch1.12+cu113 与 MFRNet 最小评估运行时的无用户站点版本锁 |
 | 2026-08-31 10:10 | /run-experiment | environment/mfrnet_tutel_source.txt | implementation | 固定 Tutel v0.3.2 commit 与源码归档 SHA 的第二阶段构建输入 |
 | 2026-08-31 10:10 | /run-experiment | evidence/mfrnet_rgbnt201_checkpoint_audit_20260831.json | research | MFRNet 官方权重下载、隔离环境、B64/K8 loader、297/297 strict load 与 test-selection 边界证据 |
+| 2026-08-31 11:08 | /run-experiment | evidence/mfrnet_eval_batch_semantics_audit_20260831.json | research | Tutel capacity/batch-priority 的确定性 batch 分割反例与 MFRNet B128 parity 边界 |
+| 2026-08-31 11:08 | /tdd | docs/MFRNET_CHECKPOINT_REPRODUCTION_SPEC.md | implementation | 提议 MFRNet preflight/official128 公共接缝、显存门禁、原始日志与原子 receipt 合同 |
+| 2026-08-31 11:08 | /tdd | docs/TDD_SEAMS.md | implementation | 将待确认的 MFRNet B128 checkpoint 评测 CLI 纳入接缝协议 |

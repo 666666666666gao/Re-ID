@@ -122,5 +122,25 @@ The proposed public boundary is:
 
 The detailed contract is `docs/PEFT_BOA_REPRODUCTION_SPEC.md`. No PEFT runner
 test or implementation is added until the user accepts this proposed seam.
-Replying exactly `接缝同意` accepts both the pending TriFusion seams and this
-PEFT baseline seam.
+
+## MFRNet checkpoint evaluation seam (proposed)
+
+The proposed public boundary is:
+
+`tools/run_mfrnet_checkpoint_eval.py --mode preflight|official128 --output-dir DIR`
+
+- `preflight` verifies source/config/environment/data/pretrain/checkpoint hashes,
+  resolves but does not execute the upstream command, and enforces the strict
+  `<500 MiB` launch gate;
+- `official128` preserves the released B128, no-rerank, normalized complete-
+  modality protocol, records peak VRAM and atomically binds all logs/metrics;
+- OOM or CUDA incompatibility is a failed local parity attempt, never an
+  automatic lower-batch retry;
+- a lower batch is non-comparable because Tutel capacity routing is not
+  generally batch-partition invariant.
+
+The detailed contract and deterministic routing counterexample are
+`docs/MFRNET_CHECKPOINT_REPRODUCTION_SPEC.md` and
+`evidence/mfrnet_eval_batch_semantics_audit_20260831.json`. No runner test or
+implementation is added until the user accepts this proposed seam. Replying
+exactly `接缝同意` accepts the pending TriFusion, PEFT-BoA and MFRNet seams.

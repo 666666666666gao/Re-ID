@@ -21,11 +21,11 @@
 | R013 | M1 | DeMo 协议偏差 | fixed vs test-selected | RGBNT201 | delta/provenance | MUST | WAITING | 等 R012R 产生固定 DeMo_50.pth；禁止用 epoch17 test-selected 代替 |
 | R014 | M1 | 系统门 | B32 + eval latency | RGBNT201 | VRAM/latency/driver | MUST | WARN | 8-step 6,894 MiB；历史 ori >300s；R012 终止附近 7 条 nvlddmkm 153 |
 | R015 | M1 | train-only dev | 141-fit/30-dev | train_171 only | overlap/positives | MUST | DONE | test overlap=0；825/825 valid |
-| R016 | M1 | 证据包 | 27 versioned JSONs | all | SHA/protocol | MUST | DONE | 加入 R012 incident、PEFT-BoA、Signal 与 MFRNet source/loader/protocol receipts；SHA256SUMS pass |
+| R016 | M1 | 证据包 | 28 versioned JSONs | all | SHA/protocol | MUST | DONE | 加入 R012 incident、PEFT-BoA、Signal 与 MFRNet source/loader/protocol/batch-routing receipts；SHA256SUMS pass |
 | R017 | M1 | MDReID 强化驱动复验 | hardened driver | RGBNT201 | parity/full audit | MUST | WAITING | 等本地 GPU 低于 500 MiB 空闲门禁 |
 | R017A | M1 | 最高开源训练代码比较器 | PEFT-BoA d2b198b seed1111 B64/K4 | RGBNT201 | fixed-e120 mAP/R1/provenance | MUST | WAITING | exact upstream CPU env/source/loader PASS；公开 82.7/86.1=test-selected e80，fixed e120=82.2/85.8；等待接缝同意、加固驱动和 GPU 容量门 |
 | R017B | M1 | 补充 checkpoint 比较器 | Signal cd1b0a6 official weight | RGBNT201 | mAP/R1/hash | SHOULD | WAITING | clean source、B64/K8 CPU loader 与公开 fixed-path log 已审计；百度网盘权重字节仍未取得，不得用 80.3/85.2 冒充本机结果 |
-| R017C | M1 | 补充 checkpoint 比较器 | MFRNet ec54a13 official weight | RGBNT201 | mAP/R1/hash | SHOULD | WAITING | 407,297,967-byte checkpoint SHA f0c2df33…711126e；隔离 env、B64/K8 loader、297/297 strict load PASS；等待 `<500 MiB` GPU parity，公开 best 必须标 test-selected |
+| R017C | M1 | 补充 checkpoint 比较器 | MFRNet ec54a13 official weight | RGBNT201 | mAP/R1/hash | SHOULD | WAITING | checkpoint/env/loader/strict load PASS；Tutel 路由反例证明不可默认 microbatch 等价，parity 必须 B128；等待接缝同意、`<500 MiB` GPU 门，公开 best 标 test-selected |
 | R018 | M1 | epoch10 receipt | DeMo_10.pth | RGBNT201 | ordering/hash | MUST | DONE | SHA b2ab79f0…31c0 |
 | R018A | M1 | epoch20 receipt | DeMo_20.pth | RGBNT201 | ordering/hash/metrics | MUST | DONE | SHA 5d61a4cf…e7b2；非 test 选点 |
 | R018B | M1 | epoch30 receipt | DeMo_30.pth | RGBNT201 | ordering/hash/metrics | MUST | DONE | SHA d5e375fa…4ce5；非 test 选点 |
