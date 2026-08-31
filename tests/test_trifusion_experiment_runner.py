@@ -78,6 +78,70 @@ def test_trifusion_preflight_binds_train_only_dev_protocol_and_gpu_boundary(
     assert ready["metric_result"] is None
 
 
+def test_trifusion_low_vram_profile_keeps_full_core_with_valid_pk_batch(
+    tmp_path: Path,
+) -> None:
+    fake_bin = tmp_path / "low-vram-gpu"
+    fake_bin.mkdir()
+    nvidia_smi = fake_bin / "nvidia-smi"
+    nvidia_smi.write_text(
+        "#!/bin/sh\nprintf 'NVIDIA GeForce RTX 4060 Laptop GPU, 1061, 8188\\n'\n",
+        encoding="utf-8",
+    )
+    nvidia_smi.chmod(0o755)
+    output_dir = tmp_path / "low-vram-preflight"
+    env = dict(os.environ)
+    env["PATH"] = f"{fake_bin}:{env['PATH']}"
+    completed = subprocess.run(
+        [
+            sys.executable,
+            str(RUNNER),
+            "--mode",
+            "preflight",
+            "--variant",
+            "core_pre_circ",
+            "--config",
+            str(PROJECT / "configs/RGBNT201/TriFusion-low-vram.yml"),
+            "--output-dir",
+            str(output_dir),
+        ],
+        cwd=PROJECT,
+        env=env,
+        check=False,
+        capture_output=True,
+        text=True,
+    )
+
+    assert completed.returncode == 0, completed.stdout + completed.stderr
+    receipt = json.loads((output_dir / "preflight.json").read_text(encoding="utf-8"))
+    assert receipt["status"] == "READY"
+    assert receipt["resource_profile"] == "low_vram_b8k4"
+    assert receipt["gpu_gate"] == {
+        "policy": "minimum_free_memory",
+        "required_free_mib": 6144,
+        "observed_free_mib": 7127,
+        "passed": True,
+    }
+    assert receipt["optimization"] == {
+        "train_batch_size": 8,
+        "num_instances": 4,
+        "eval_batch_size": 32,
+        "num_workers": 0,
+        "gradient_accumulation": 1,
+        "amp": True,
+        "max_epochs": 60,
+    }
+    assert receipt["variant_contract"]["active_experts"] == [
+        "cnn",
+        "transformer",
+        "mamba",
+    ]
+    assert receipt["variant_contract"]["collaborator"] == "hfer"
+    assert receipt["variant_contract"]["fusion"] == "reliability_weighted"
+    assert receipt["model_constructed"] is False
+    assert receipt["training_started"] is False
+
+
 def test_trifusion_capacity_runs_eight_train_only_steps_after_gate(tmp_path: Path) -> None:
     fake_bin = tmp_path / "capacity-gpu"
     fake_bin.mkdir()
@@ -143,6 +207,71 @@ def test_trifusion_capacity_runs_eight_train_only_steps_after_gate(tmp_path: Pat
     assert receipt["gradient_parameter_coverage"] == 1.0
     assert receipt["parameter_budget_pass"] is True
     assert invocation["CUDA_VISIBLE_DEVICES"] == "0"
+
+
+def test_trifusion_low_vram_capacity_enforces_the_profile_batch_contract(
+    tmp_path: Path,
+) -> None:
+    fake_bin = tmp_path / "low-vram-capacity-gpu"
+    fake_bin.mkdir()
+    nvidia_smi = fake_bin / "nvidia-smi"
+    nvidia_smi.write_text(
+        "#!/bin/sh\nprintf 'NVIDIA GeForce RTX 4060 Laptop GPU, 499, 8188\\n'\n",
+        encoding="utf-8",
+    )
+    nvidia_smi.chmod(0o755)
+    fake_worker = tmp_path / "fake_low_vram_worker.py"
+    fake_worker.write_text(
+        "#!/usr/bin/env python3\n"
+        "import json, pathlib, sys\n"
+        "args = sys.argv[1:]\n"
+        "out = pathlib.Path(args[args.index('--output-dir') + 1])\n"
+        "out.mkdir(parents=True, exist_ok=True)\n"
+        "result = {'status': 'PASS', 'steps': 8, 'batch_size': 8, 'num_instances': 4, "
+        "'finite_losses': True, 'finite_gradients': True, 'gradient_parameter_coverage': 1.0, "
+        "'official_test_access_count': 0, 'dev_loader_iterations': 0, "
+        "'parameter_budget_pass': True, 'total_parameters': 95874282, "
+        "'peak_allocated_mib': 4800.0, 'peak_reserved_mib': 5600.0}\n"
+        "(out / 'worker_result.json').write_text(json.dumps(result), encoding='utf-8')\n",
+        encoding="utf-8",
+    )
+    fake_worker.chmod(0o755)
+    output_dir = tmp_path / "low-vram-capacity"
+    low_vram_config = PROJECT / "configs/RGBNT201/TriFusion-low-vram.yml"
+    env = dict(os.environ)
+    env["PATH"] = f"{fake_bin}:{env['PATH']}"
+    env["TRIFUSION_CONTRACT_TESTING"] = "1"
+    env["TRIFUSION_TEST_EXECUTABLE"] = str(fake_worker)
+    completed = subprocess.run(
+        [
+            sys.executable,
+            str(RUNNER),
+            "--mode",
+            "capacity",
+            "--variant",
+            "core_pre_circ",
+            "--config",
+            str(low_vram_config),
+            "--output-dir",
+            str(output_dir),
+        ],
+        cwd=PROJECT,
+        env=env,
+        check=False,
+        capture_output=True,
+        text=True,
+    )
+
+    assert completed.returncode == 0, completed.stdout + completed.stderr
+    receipt = json.loads((output_dir / "capacity.json").read_text(encoding="utf-8"))
+    assert receipt["status"] == "PASS"
+    assert receipt["resource_profile"] == "low_vram_b8k4"
+    assert receipt["batch_size"] == 8
+    assert receipt["num_instances"] == 4
+    assert receipt["optimization"]["eval_batch_size"] == 32
+    assert receipt["worker_command"][receipt["worker_command"].index("--config") + 1] == str(
+        low_vram_config
+    )
 
 
 def test_trifusion_dev_seals_branch_and_fused_metrics_without_official_test(
@@ -275,3 +404,62 @@ def test_trifusion_overfit_requires_large_loss_drop_on_one_fixed_batch(
     assert receipt["finite_gradients"] is True
     assert receipt["official_test_access_count"] == 0
     assert receipt["dev_loader_iterations"] == 0
+
+
+def test_trifusion_low_vram_overfit_uses_the_same_b8k4_profile(
+    tmp_path: Path,
+) -> None:
+    fake_bin = tmp_path / "low-vram-overfit-gpu"
+    fake_bin.mkdir()
+    nvidia_smi = fake_bin / "nvidia-smi"
+    nvidia_smi.write_text(
+        "#!/bin/sh\nprintf 'NVIDIA GeForce RTX 4060 Laptop GPU, 499, 8188\\n'\n",
+        encoding="utf-8",
+    )
+    nvidia_smi.chmod(0o755)
+    fake_worker = tmp_path / "fake_low_vram_overfit_worker.py"
+    fake_worker.write_text(
+        "#!/usr/bin/env python3\n"
+        "import json, pathlib, sys\n"
+        "args = sys.argv[1:]\n"
+        "out = pathlib.Path(args[args.index('--output-dir') + 1])\n"
+        "result = {'status': 'PASS', 'steps': 100, 'batch_size': 8, 'num_instances': 4, "
+        "'fixed_batch_sha256': 'cd' * 32, 'initial_loss': 9.0, 'final_loss': 1.0, "
+        "'loss_ratio': 1.0 / 9.0, 'finite_losses': True, 'finite_gradients': True, "
+        "'official_test_access_count': 0, 'dev_loader_iterations': 0}\n"
+        "(out / 'worker_result.json').write_text(json.dumps(result), encoding='utf-8')\n",
+        encoding="utf-8",
+    )
+    fake_worker.chmod(0o755)
+    output_dir = tmp_path / "low-vram-overfit"
+    env = dict(os.environ)
+    env["PATH"] = f"{fake_bin}:{env['PATH']}"
+    env["TRIFUSION_CONTRACT_TESTING"] = "1"
+    env["TRIFUSION_TEST_EXECUTABLE"] = str(fake_worker)
+    completed = subprocess.run(
+        [
+            sys.executable,
+            str(RUNNER),
+            "--mode",
+            "overfit",
+            "--variant",
+            "core_pre_circ",
+            "--config",
+            str(PROJECT / "configs/RGBNT201/TriFusion-low-vram.yml"),
+            "--output-dir",
+            str(output_dir),
+        ],
+        cwd=PROJECT,
+        env=env,
+        check=False,
+        capture_output=True,
+        text=True,
+    )
+
+    assert completed.returncode == 0, completed.stdout + completed.stderr
+    receipt = json.loads((output_dir / "overfit.json").read_text(encoding="utf-8"))
+    assert receipt["status"] == "PASS"
+    assert receipt["resource_profile"] == "low_vram_b8k4"
+    assert receipt["batch_size"] == 8
+    assert receipt["num_instances"] == 4
+    assert receipt["fixed_batch_sha256"] == "cd" * 32

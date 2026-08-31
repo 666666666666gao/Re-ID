@@ -22,7 +22,9 @@ from .fusion import CollaborativeFusion
 from .model import TriFusionReID
 from .reliability import ReliabilityPosterior
 from .relay import HeterogeneousRelay
+from .standalone import SingleBranchReID, SingleExpertTokenizer
 from .tokenizer import SharedCLIPTokenizer
+from .variants import resolve_variant, variant_sha256
 
 
 class _DeMoCLIPBlockAdapter(nn.Module):
@@ -47,7 +49,7 @@ class _DeMoCLIPBlockAdapter(nn.Module):
 
 @dataclass(frozen=True, eq=False)
 class TriFusionBuildResult:
-    model: TriFusionReID
+    model: nn.Module
     checkpoint_sha256: str
     provenance: Mapping[str, object]
 
@@ -218,7 +220,130 @@ def build_trifusion_from_clip(
     )
 
 
+def build_single_branch_from_clip(
+    checkpoint: Path | str,
+    *,
+    expert_name: str,
+    num_classes: int,
+    image_size: tuple[int, int] = (256, 128),
+    patch_size: int = 16,
+    cnn_width: int = 256,
+    mamba_width: int = 256,
+    embedding_width: int = 512,
+    private_width: int = 64,
+    mamba_mixer_factory: Callable[[int], nn.Module] = production_mamba_factory,
+) -> TriFusionBuildResult:
+    """Build one complete expert without dormant peer branches or routers."""
+
+    if expert_name not in ("cnn", "transformer", "mamba"):
+        raise ValueError(f"unknown standalone expert: {expert_name}")
+    variant_name = f"{expert_name}_standalone"
+    variant_contract = resolve_variant(variant_name)
+    checkpoint = Path(checkpoint).expanduser().resolve()
+    if not checkpoint.is_file():
+        raise FileNotFoundError(checkpoint)
+    if image_size[0] % patch_size or image_size[1] % patch_size:
+        raise ValueError("image dimensions must be divisible by patch size")
+    grid_size = (image_size[0] // patch_size, image_size[1] // patch_size)
+    checkpoint_sha256 = _sha256_file(checkpoint)
+    visual = _load_resized_clip_visual(
+        checkpoint, image_size=image_size, patch_size=patch_size
+    )
+    transformer_width = int(visual.conv1.out_channels)
+    expert_width = {
+        "cnn": cnn_width,
+        "transformer": transformer_width,
+        "mamba": mamba_width,
+    }[expert_name]
+    if expert_name == "cnn":
+        expert_module: nn.Module = CNNExpert(
+            width=cnn_width,
+            grid_size=grid_size,
+            stage_depths=(3, 3, 3),
+            private_width=private_width,
+        )
+    elif expert_name == "transformer":
+        expert_module = TransformerExpert(
+            width=transformer_width,
+            grid_size=grid_size,
+            blocks=[
+                _DeMoCLIPBlockAdapter(block)
+                for block in visual.transformer.resblocks
+            ],
+            class_embedding=visual.class_embedding,
+            class_position=nn.Parameter(
+                visual.positional_embedding[0].detach().clone()
+            ),
+            pre_norm=visual.ln_pre,
+            post_norm=visual.ln_post,
+            output_projection=nn.Identity(),
+            private_width=private_width,
+        )
+    else:
+        expert_module = MambaExpert(
+            width=mamba_width,
+            grid_size=grid_size,
+            stage_depths=(3, 3, 3),
+            private_width=private_width,
+            mixer_factory=mamba_mixer_factory,
+        )
+    tokenizer = SingleExpertTokenizer(
+        expert=expert_name,
+        patch_projection=visual.conv1,
+        positional_embedding=visual.positional_embedding,
+        output_width=expert_width,
+    )
+    model = SingleBranchReID(
+        expert_name=expert_name,
+        tokenizer=tokenizer,
+        expert=expert_module,
+        expert_width=expert_width,
+        embedding_width=embedding_width,
+        num_classes=num_classes,
+    )
+    if (
+        expert_name == "transformer"
+        and visual.proj is not None
+        and visual.proj.shape == (transformer_width, embedding_width)
+    ):
+        with torch.no_grad():
+            model.embedding_projection.weight.copy_(visual.proj.detach().T.float())
+    for name, parameter in model.named_parameters():
+        if "private_projection" in name:
+            parameter.requires_grad_(False)
+    total_parameters = sum(parameter.numel() for parameter in model.parameters())
+    trainable_parameters = sum(
+        parameter.numel() for parameter in model.parameters() if parameter.requires_grad
+    )
+    provenance = {
+        "variant": variant_name,
+        "variant_contract_sha256": variant_sha256(variant_contract),
+        "architecture": "single_branch",
+        "active_experts": [expert_name],
+        "dormant_experts": [],
+        "collaborator": "none",
+        "reliability": "none",
+        "fusion": "single_expert_uniform_modality_mean",
+        "clip_checkpoint": str(checkpoint),
+        "clip_checkpoint_sha256": checkpoint_sha256,
+        "image_size": list(image_size),
+        "token_grid": list(grid_size),
+        "expert_width": expert_width,
+        "embedding_width": embedding_width,
+        "total_parameters": total_parameters,
+        "trainable_parameters": trainable_parameters,
+        "parameter_budget_pass": total_parameters <= 120_000_000,
+        "shared_patch_projection_instances": 1,
+    }
+    return TriFusionBuildResult(
+        model=model,
+        checkpoint_sha256=checkpoint_sha256,
+        provenance=provenance,
+    )
+
+
 __all__ = [
     "TriFusionBuildResult",
+    "build_single_branch_from_clip",
     "build_trifusion_from_clip",
 ]

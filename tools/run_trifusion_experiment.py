@@ -18,6 +18,15 @@ import yaml
 
 
 PROJECT = Path(__file__).resolve().parents[1]
+if str(PROJECT) not in sys.path:
+    sys.path.insert(0, str(PROJECT))
+
+from modeling.trifusion.variants import (  # noqa: E402
+    resolve_variant,
+    variant_names,
+    variant_sha256,
+)
+
 DEFAULT_CONFIG = PROJECT / "configs/RGBNT201/TriFusion.yml"
 DEV_PROTOCOL = PROJECT / "protocols/rgbnt201_dev_v1.json"
 DATASET_RECEIPT = PROJECT / "evidence/rgbnt201_audit_20260831.json"
@@ -25,6 +34,26 @@ EXPECTED = {
     "clip_sha256": "5806e77cd80f8b59890b7e101eabd078d9fb84e6937f9e85e4ecb61988df416f",
     "dev_protocol_sha256": "d916e7daaa1d55b179c1ec77e93128b6e6a8d1526adc9eac060ea8e733881946",
     "dataset_receipt_sha256": "ec36309921a3dd7c12d46bb60a83406440ba316f171e419a67ad2cc83bf24318",
+}
+RESOURCE_PROFILES = {
+    "standard_b16k4": {
+        "train_batch_size": 16,
+        "num_instances": 4,
+        "eval_batch_size": 64,
+        "num_workers": 0,
+        "gradient_accumulation": 1,
+        "amp": True,
+        "max_epochs": 60,
+    },
+    "low_vram_b8k4": {
+        "train_batch_size": 8,
+        "num_instances": 4,
+        "eval_batch_size": 32,
+        "num_workers": 0,
+        "gradient_accumulation": 1,
+        "amp": True,
+        "max_epochs": 60,
+    },
 }
 
 
@@ -75,6 +104,31 @@ def _gpu_state() -> dict[str, Any]:
     }
 
 
+def _gpu_gate(gpu: dict[str, Any], resource_profile: str) -> dict[str, Any]:
+    if not gpu.get("query_passed"):
+        return {
+            "policy": "gpu_query_required",
+            "error": gpu.get("error"),
+            "passed": False,
+        }
+    if resource_profile == "low_vram_b8k4":
+        observed_free_mib = int(gpu["memory_total_mib"]) - int(gpu["memory_used_mib"])
+        required_free_mib = 6144
+        return {
+            "policy": "minimum_free_memory",
+            "required_free_mib": required_free_mib,
+            "observed_free_mib": observed_free_mib,
+            "passed": observed_free_mib >= required_free_mib,
+        }
+    required_used_mib = 500
+    return {
+        "policy": "maximum_used_memory",
+        "required_used_strictly_below_mib": required_used_mib,
+        "observed_used_mib": int(gpu["memory_used_mib"]),
+        "passed": int(gpu["memory_used_mib"]) < required_used_mib,
+    }
+
+
 def _preflight(config_path: Path, variant: str) -> dict[str, Any]:
     blockers: list[str] = []
     if not config_path.is_file():
@@ -84,6 +138,7 @@ def _preflight(config_path: Path, variant: str) -> dict[str, Any]:
         blockers.append("config_schema_drift")
     if variant != config.get("EXPERIMENT", {}).get("VARIANT"):
         blockers.append("variant_config_mismatch")
+    contract = dict(resolve_variant(variant))
     clip = Path(config["MODEL"]["CLIP_CHECKPOINT"]).expanduser().resolve()
     immutable = {
         "clip": (clip, EXPECTED["clip_sha256"]),
@@ -138,14 +193,27 @@ def _preflight(config_path: Path, variant: str) -> dict[str, Any]:
         "amp": bool(config["OPTIMIZATION"]["AMP"]),
         "max_epochs": int(config["OPTIMIZATION"]["MAX_EPOCHS"]),
     }
-    if optimization["train_batch_size"] != 16 or optimization["num_instances"] != 4:
-        blockers.append("pk_batch_drift")
+    resource_profile = str(
+        config.get("EXPERIMENT", {}).get("RESOURCE_PROFILE", "standard_b16k4")
+    )
+    expected_optimization = RESOURCE_PROFILES.get(resource_profile)
+    if expected_optimization is None:
+        blockers.append("unknown_resource_profile")
+    elif optimization != expected_optimization:
+        blockers.append("resource_profile_drift")
+    if (
+        optimization["num_instances"] < 2
+        or optimization["train_batch_size"] % optimization["num_instances"] != 0
+        or optimization["train_batch_size"] // optimization["num_instances"] < 2
+    ):
+        blockers.append("invalid_pk_batch")
     if optimization["gradient_accumulation"] != 1:
         blockers.append("batch_hard_accumulation_forbidden")
     gpu = _gpu_state()
+    gpu_gate = _gpu_gate(gpu, resource_profile)
     if not gpu.get("query_passed"):
         blockers.append("gpu_query_failed")
-    elif int(gpu["memory_used_mib"]) >= 500:
+    elif not gpu_gate["passed"]:
         blockers.append("gpu_memory_gate")
     head = subprocess.run(
         ["git", "rev-parse", "HEAD"],
@@ -158,11 +226,17 @@ def _preflight(config_path: Path, variant: str) -> dict[str, Any]:
         "schema_version": "1.0",
         "mode": "preflight",
         "variant": variant,
+        "variant_contract": contract,
+        "variant_contract_sha256": variant_sha256(contract),
+        "resource_profile": resource_profile,
         "status": "READY" if not blockers else "BLOCKED",
         "launch_allowed": not blockers,
-        "required_memory_used_strictly_below_mib": 500,
+        "required_memory_used_strictly_below_mib": (
+            500 if resource_profile != "low_vram_b8k4" else None
+        ),
         "blockers": blockers,
         "gpu": gpu,
+        "gpu_gate": gpu_gate,
         "config": str(config_path),
         "config_sha256": _sha256(config_path),
         "repository_head": head.stdout.strip() if head.returncode == 0 else None,
@@ -252,8 +326,8 @@ def _capacity(
     required = {
         "status": "PASS",
         "steps": 8,
-        "batch_size": 16,
-        "num_instances": 4,
+        "batch_size": receipt["optimization"]["train_batch_size"],
+        "num_instances": receipt["optimization"]["num_instances"],
         "finite_losses": True,
         "finite_gradients": True,
         "gradient_parameter_coverage": 1.0,
@@ -349,8 +423,8 @@ def _overfit(
     required = {
         "status": "PASS",
         "steps": 100,
-        "batch_size": 16,
-        "num_instances": 4,
+        "batch_size": receipt["optimization"]["train_batch_size"],
+        "num_instances": receipt["optimization"]["num_instances"],
         "finite_losses": True,
         "finite_gradients": True,
         "official_test_access_count": 0,
@@ -382,6 +456,8 @@ def _run_identity(preflight: dict[str, Any], variant: str) -> dict[str, Any]:
         "schema_version": "1.0",
         "run_type": "TriFusion/RGBNT201/train-only-dev",
         "variant": variant,
+        "variant_contract": preflight["variant_contract"],
+        "variant_contract_sha256": preflight["variant_contract_sha256"],
         "repository_head": preflight["repository_head"],
         "runner_sha256": _sha256(Path(__file__)),
         "config_sha256": preflight["config_sha256"],
@@ -552,8 +628,24 @@ def _dev(
         if result.get(key) != value
     }
     metrics = result.get("metrics_percent", {})
-    if set(metrics) != {"fused", "cnn", "transformer", "mamba"}:
-        mismatches["metrics_percent"] = {"expected": "four named outputs", "actual": sorted(metrics)}
+    expected_outputs = set(preflight["variant_contract"]["evaluation_outputs"])
+    if set(metrics) != expected_outputs:
+        mismatches["metrics_percent"] = {
+            "expected": sorted(expected_outputs),
+            "actual": sorted(metrics),
+        }
+    expected_selection = (
+        "fused"
+        if "fused" in expected_outputs
+        else preflight["variant_contract"]["active_experts"][0]
+    )
+    actual_selection = result.get("selection_output", expected_selection)
+    if actual_selection != expected_selection:
+        mismatches["selection_output"] = {
+            "expected": expected_selection,
+            "actual": actual_selection,
+        }
+    result["selection_output"] = actual_selection
     if not recovery_after["valid"] or recovery_after.get("phase") != "complete":
         mismatches["recovery"] = {"expected": "valid complete", "actual": recovery_after}
     preflight.update(result)
@@ -579,10 +671,13 @@ def _worker_capacity(
     overfit: bool = False,
 ) -> int:
     result_path = output_dir / "worker_result.json"
+    config = yaml.safe_load(config_path.read_text(encoding="utf-8"))
+    resource_profile = str(
+        config.get("EXPERIMENT", {}).get("RESOURCE_PROFILE", "standard_b16k4")
+    )
     second_gpu = _gpu_state()
-    if not second_gpu.get("query_passed") or int(
-        second_gpu.get("memory_used_mib", 500)
-    ) >= 500:
+    second_gpu_gate = _gpu_gate(second_gpu, resource_profile)
+    if not second_gpu_gate["passed"]:
         _atomic_json(
             result_path,
             {
@@ -590,7 +685,7 @@ def _worker_capacity(
                 "steps": 0,
                 "official_test_access_count": 0,
                 "dev_loader_iterations": 0,
-                "second_gpu_gate": second_gpu,
+                "second_gpu_gate": second_gpu_gate,
             },
         )
         return 3
@@ -600,13 +695,17 @@ def _worker_capacity(
         import numpy as np
         import torch
 
-        from modeling.trifusion.builder import build_trifusion_from_clip
-        from modeling.trifusion.criterion import TriFusionCriterion
+        from modeling.trifusion.builder import (
+            build_single_branch_from_clip,
+            build_trifusion_from_clip,
+        )
+        from modeling.trifusion.criterion import (
+            SingleBranchCriterion,
+            TriFusionCriterion,
+        )
         from modeling.trifusion.data import build_rgbnt201_dev_loaders
 
-        config = yaml.safe_load(config_path.read_text(encoding="utf-8"))
-        if variant != "core_pre_circ":
-            raise ValueError(f"unsupported capacity variant: {variant}")
+        contract = dict(resolve_variant(variant))
         seed = int(config["EXPERIMENT"]["SEED"])
         random.seed(seed)
         np.random.seed(seed)
@@ -623,29 +722,51 @@ def _worker_capacity(
             eval_batch_size=int(config["DATA"]["EVAL_BATCH_SIZE"]),
             num_workers=int(config["DATA"]["NUM_WORKERS"]),
         )
-        built = build_trifusion_from_clip(
-            config["MODEL"]["CLIP_CHECKPOINT"],
-            num_classes=data.num_classes,
-            image_size=tuple(config["MODEL"]["IMAGE_SIZE"]),
-            patch_size=int(config["MODEL"]["PATCH_SIZE"]),
-            cnn_width=int(config["MODEL"]["CNN_WIDTH"]),
-            mamba_width=int(config["MODEL"]["MAMBA_WIDTH"]),
-            relay_rank=int(config["MODEL"]["RELAY_RANK"]),
-            embedding_width=int(config["MODEL"]["EMBEDDING_WIDTH"]),
-            private_width=int(config["MODEL"]["PRIVATE_WIDTH"]),
-        )
+        build_kwargs = {
+            "num_classes": data.num_classes,
+            "image_size": tuple(config["MODEL"]["IMAGE_SIZE"]),
+            "patch_size": int(config["MODEL"]["PATCH_SIZE"]),
+            "cnn_width": int(config["MODEL"]["CNN_WIDTH"]),
+            "mamba_width": int(config["MODEL"]["MAMBA_WIDTH"]),
+            "embedding_width": int(config["MODEL"]["EMBEDDING_WIDTH"]),
+            "private_width": int(config["MODEL"]["PRIVATE_WIDTH"]),
+        }
+        if contract["family"] == "standalone":
+            built = build_single_branch_from_clip(
+                config["MODEL"]["CLIP_CHECKPOINT"],
+                expert_name=contract["active_experts"][0],
+                **build_kwargs,
+            )
+        else:
+            built = build_trifusion_from_clip(
+                config["MODEL"]["CLIP_CHECKPOINT"],
+                relay_rank=int(config["MODEL"]["RELAY_RANK"]),
+                **build_kwargs,
+            )
         model = built.model.cuda()
         for name, parameter in model.named_parameters():
             if "private_projection" in name:
                 parameter.requires_grad_(False)
         pretrained_tokens = (
-            "encoder.tokenizer.patch_projection",
-            "encoder.tokenizer.positional_embedding",
-            "encoder.experts.transformer.blocks",
-            "encoder.experts.transformer.class_embedding",
-            "encoder.experts.transformer.class_position",
-            "encoder.experts.transformer.pre_norm",
-            "encoder.experts.transformer.post_norm",
+            (
+                "tokenizer.patch_projection",
+                "tokenizer.positional_embedding",
+                "expert.blocks",
+                "expert.class_embedding",
+                "expert.class_position",
+                "expert.pre_norm",
+                "expert.post_norm",
+            )
+            if contract["family"] == "standalone"
+            else (
+                "encoder.tokenizer.patch_projection",
+                "encoder.tokenizer.positional_embedding",
+                "encoder.experts.transformer.blocks",
+                "encoder.experts.transformer.class_embedding",
+                "encoder.experts.transformer.class_position",
+                "encoder.experts.transformer.pre_norm",
+                "encoder.experts.transformer.post_norm",
+            )
         )
         pretrained_parameters = []
         new_parameters = []
@@ -671,25 +792,37 @@ def _worker_capacity(
             ],
             weight_decay=float(config["OPTIMIZATION"]["WEIGHT_DECAY"]),
         )
-        criterion = TriFusionCriterion(
-            target_cache=None,
-            triplet_margin=float(config["LOSS"]["TRIPLET_MARGIN"]),
-        ).cuda()
+        if contract["family"] == "standalone":
+            criterion = SingleBranchCriterion(
+                triplet_margin=float(config["LOSS"]["TRIPLET_MARGIN"])
+            ).cuda()
+        else:
+            criterion = TriFusionCriterion(
+                target_cache=None,
+                triplet_margin=float(config["LOSS"]["TRIPLET_MARGIN"]),
+            ).cuda()
         scaler = torch.cuda.amp.GradScaler(enabled=bool(config["OPTIMIZATION"]["AMP"]))
-        loss_weights = {
-            "id_fused": float(config["LOSS"]["ID_FUSED"]),
-            "triplet_fused": float(config["LOSS"]["TRIPLET_FUSED"]),
-            "id_cnn": float(config["LOSS"]["ID_BRANCH"]),
-            "id_transformer": float(config["LOSS"]["ID_BRANCH"]),
-            "id_mamba": float(config["LOSS"]["ID_BRANCH"]),
-            "triplet_cnn": float(config["LOSS"]["TRIPLET_BRANCH"]),
-            "triplet_transformer": float(config["LOSS"]["TRIPLET_BRANCH"]),
-            "triplet_mamba": float(config["LOSS"]["TRIPLET_BRANCH"]),
-            "reliability": float(config["LOSS"]["RELIABILITY"]),
-            "peer_logits": float(config["LOSS"]["PEER_LOGITS"]),
-            "peer_role": float(config["LOSS"]["PEER_ROLE"]),
-            "private_diversity": float(config["LOSS"]["PRIVATE_DIVERSITY"]),
-        }
+        if contract["family"] == "standalone":
+            expert_name = contract["active_experts"][0]
+            loss_weights = {
+                f"id_{expert_name}": float(config["LOSS"]["ID_BRANCH"]),
+                f"triplet_{expert_name}": float(config["LOSS"]["TRIPLET_BRANCH"]),
+            }
+        else:
+            loss_weights = {
+                "id_fused": float(config["LOSS"]["ID_FUSED"]),
+                "triplet_fused": float(config["LOSS"]["TRIPLET_FUSED"]),
+                "id_cnn": float(config["LOSS"]["ID_BRANCH"]),
+                "id_transformer": float(config["LOSS"]["ID_BRANCH"]),
+                "id_mamba": float(config["LOSS"]["ID_BRANCH"]),
+                "triplet_cnn": float(config["LOSS"]["TRIPLET_BRANCH"]),
+                "triplet_transformer": float(config["LOSS"]["TRIPLET_BRANCH"]),
+                "triplet_mamba": float(config["LOSS"]["TRIPLET_BRANCH"]),
+                "reliability": float(config["LOSS"]["RELIABILITY"]),
+                "peer_logits": float(config["LOSS"]["PEER_LOGITS"]),
+                "peer_role": float(config["LOSS"]["PEER_ROLE"]),
+                "private_diversity": float(config["LOSS"]["PRIVATE_DIVERSITY"]),
+            }
         trainable_names = {
             name for name, parameter in model.named_parameters() if parameter.requires_grad
         }
@@ -785,7 +918,9 @@ def _worker_capacity(
                 "peak_reserved_mib": torch.cuda.max_memory_reserved() / 1024**2,
                 "data_provenance": dict(data.provenance),
                 "model_provenance": dict(built.provenance),
-                "second_gpu_gate": second_gpu,
+                "variant_contract": contract,
+                "variant_contract_sha256": variant_sha256(contract),
+                "second_gpu_gate": second_gpu_gate,
             },
         )
         return 0 if status == "PASS" else 4
@@ -800,7 +935,7 @@ def _worker_capacity(
                 "dev_loader_iterations": 0,
                 "error": message,
                 "traceback": traceback.format_exc(),
-                "second_gpu_gate": second_gpu,
+                "second_gpu_gate": second_gpu_gate,
             },
         )
         return 4
@@ -884,10 +1019,13 @@ def _save_dev_generation(
 
 def _worker_dev(config_path: Path, variant: str, output_dir: Path) -> int:
     result_path = output_dir / "dev_worker_result.json"
+    config = yaml.safe_load(config_path.read_text(encoding="utf-8"))
+    resource_profile = str(
+        config.get("EXPERIMENT", {}).get("RESOURCE_PROFILE", "standard_b16k4")
+    )
     second_gpu = _gpu_state()
-    if not second_gpu.get("query_passed") or int(
-        second_gpu.get("memory_used_mib", 500)
-    ) >= 500:
+    second_gpu_gate = _gpu_gate(second_gpu, resource_profile)
+    if not second_gpu_gate["passed"]:
         _atomic_json(
             result_path,
             {
@@ -896,7 +1034,7 @@ def _worker_dev(config_path: Path, variant: str, output_dir: Path) -> int:
                 "phase": "worker_gpu_recheck",
                 "official_test_access_count": 0,
                 "dev_evaluation_count": 0,
-                "second_gpu_gate": second_gpu,
+                "second_gpu_gate": second_gpu_gate,
             },
         )
         return 3
@@ -908,14 +1046,18 @@ def _worker_dev(config_path: Path, variant: str, output_dir: Path) -> int:
         import torch
         import torch.nn.functional as functional
 
-        from modeling.trifusion.builder import build_trifusion_from_clip
-        from modeling.trifusion.criterion import TriFusionCriterion
+        from modeling.trifusion.builder import (
+            build_single_branch_from_clip,
+            build_trifusion_from_clip,
+        )
+        from modeling.trifusion.criterion import (
+            SingleBranchCriterion,
+            TriFusionCriterion,
+        )
         from modeling.trifusion.data import build_rgbnt201_dev_loaders
         from utils.reid_evaluation import evaluate_reid
 
-        config = yaml.safe_load(config_path.read_text(encoding="utf-8"))
-        if variant != "core_pre_circ":
-            raise ValueError(f"unsupported dev variant: {variant}")
+        contract = dict(resolve_variant(variant))
         seed = int(config["EXPERIMENT"]["SEED"])
         random.seed(seed)
         np.random.seed(seed)
@@ -932,29 +1074,51 @@ def _worker_dev(config_path: Path, variant: str, output_dir: Path) -> int:
             eval_batch_size=int(config["DATA"]["EVAL_BATCH_SIZE"]),
             num_workers=int(config["DATA"]["NUM_WORKERS"]),
         )
-        built = build_trifusion_from_clip(
-            config["MODEL"]["CLIP_CHECKPOINT"],
-            num_classes=data.num_classes,
-            image_size=tuple(config["MODEL"]["IMAGE_SIZE"]),
-            patch_size=int(config["MODEL"]["PATCH_SIZE"]),
-            cnn_width=int(config["MODEL"]["CNN_WIDTH"]),
-            mamba_width=int(config["MODEL"]["MAMBA_WIDTH"]),
-            relay_rank=int(config["MODEL"]["RELAY_RANK"]),
-            embedding_width=int(config["MODEL"]["EMBEDDING_WIDTH"]),
-            private_width=int(config["MODEL"]["PRIVATE_WIDTH"]),
-        )
+        build_kwargs = {
+            "num_classes": data.num_classes,
+            "image_size": tuple(config["MODEL"]["IMAGE_SIZE"]),
+            "patch_size": int(config["MODEL"]["PATCH_SIZE"]),
+            "cnn_width": int(config["MODEL"]["CNN_WIDTH"]),
+            "mamba_width": int(config["MODEL"]["MAMBA_WIDTH"]),
+            "embedding_width": int(config["MODEL"]["EMBEDDING_WIDTH"]),
+            "private_width": int(config["MODEL"]["PRIVATE_WIDTH"]),
+        }
+        if contract["family"] == "standalone":
+            built = build_single_branch_from_clip(
+                config["MODEL"]["CLIP_CHECKPOINT"],
+                expert_name=contract["active_experts"][0],
+                **build_kwargs,
+            )
+        else:
+            built = build_trifusion_from_clip(
+                config["MODEL"]["CLIP_CHECKPOINT"],
+                relay_rank=int(config["MODEL"]["RELAY_RANK"]),
+                **build_kwargs,
+            )
         model = built.model.cuda()
         for name, parameter in model.named_parameters():
             if "private_projection" in name:
                 parameter.requires_grad_(False)
         pretrained_tokens = (
-            "encoder.tokenizer.patch_projection",
-            "encoder.tokenizer.positional_embedding",
-            "encoder.experts.transformer.blocks",
-            "encoder.experts.transformer.class_embedding",
-            "encoder.experts.transformer.class_position",
-            "encoder.experts.transformer.pre_norm",
-            "encoder.experts.transformer.post_norm",
+            (
+                "tokenizer.patch_projection",
+                "tokenizer.positional_embedding",
+                "expert.blocks",
+                "expert.class_embedding",
+                "expert.class_position",
+                "expert.pre_norm",
+                "expert.post_norm",
+            )
+            if contract["family"] == "standalone"
+            else (
+                "encoder.tokenizer.patch_projection",
+                "encoder.tokenizer.positional_embedding",
+                "encoder.experts.transformer.blocks",
+                "encoder.experts.transformer.class_embedding",
+                "encoder.experts.transformer.class_position",
+                "encoder.experts.transformer.pre_norm",
+                "encoder.experts.transformer.post_norm",
+            )
         )
         pretrained_parameters = []
         new_parameters = []
@@ -996,26 +1160,38 @@ def _worker_dev(config_path: Path, variant: str, output_dir: Path) -> int:
             schedulers=[warmup, cosine],
             milestones=[warmup_epochs],
         )
-        criterion = TriFusionCriterion(
-            target_cache=None,
-            triplet_margin=float(config["LOSS"]["TRIPLET_MARGIN"]),
-        ).cuda()
+        if contract["family"] == "standalone":
+            criterion = SingleBranchCriterion(
+                triplet_margin=float(config["LOSS"]["TRIPLET_MARGIN"])
+            ).cuda()
+        else:
+            criterion = TriFusionCriterion(
+                target_cache=None,
+                triplet_margin=float(config["LOSS"]["TRIPLET_MARGIN"]),
+            ).cuda()
         amp_enabled = bool(config["OPTIMIZATION"]["AMP"])
         scaler = torch.cuda.amp.GradScaler(enabled=amp_enabled)
-        loss_weights = {
-            "id_fused": float(config["LOSS"]["ID_FUSED"]),
-            "triplet_fused": float(config["LOSS"]["TRIPLET_FUSED"]),
-            "id_cnn": float(config["LOSS"]["ID_BRANCH"]),
-            "id_transformer": float(config["LOSS"]["ID_BRANCH"]),
-            "id_mamba": float(config["LOSS"]["ID_BRANCH"]),
-            "triplet_cnn": float(config["LOSS"]["TRIPLET_BRANCH"]),
-            "triplet_transformer": float(config["LOSS"]["TRIPLET_BRANCH"]),
-            "triplet_mamba": float(config["LOSS"]["TRIPLET_BRANCH"]),
-            "reliability": 0.0,
-            "peer_logits": 0.0,
-            "peer_role": 0.0,
-            "private_diversity": 0.0,
-        }
+        if contract["family"] == "standalone":
+            expert_name = contract["active_experts"][0]
+            loss_weights = {
+                f"id_{expert_name}": float(config["LOSS"]["ID_BRANCH"]),
+                f"triplet_{expert_name}": float(config["LOSS"]["TRIPLET_BRANCH"]),
+            }
+        else:
+            loss_weights = {
+                "id_fused": float(config["LOSS"]["ID_FUSED"]),
+                "triplet_fused": float(config["LOSS"]["TRIPLET_FUSED"]),
+                "id_cnn": float(config["LOSS"]["ID_BRANCH"]),
+                "id_transformer": float(config["LOSS"]["ID_BRANCH"]),
+                "id_mamba": float(config["LOSS"]["ID_BRANCH"]),
+                "triplet_cnn": float(config["LOSS"]["TRIPLET_BRANCH"]),
+                "triplet_transformer": float(config["LOSS"]["TRIPLET_BRANCH"]),
+                "triplet_mamba": float(config["LOSS"]["TRIPLET_BRANCH"]),
+                "reliability": 0.0,
+                "peer_logits": 0.0,
+                "peer_role": 0.0,
+                "private_diversity": 0.0,
+            }
         identity_hash = _sha256(output_dir / "run_identity.json")
         latest_path = output_dir / ".resume/latest.json"
         current_epoch = 0
@@ -1117,10 +1293,7 @@ def _worker_dev(config_path: Path, variant: str, output_dir: Path) -> int:
         def evaluate() -> dict[str, dict[str, float]]:
             model.eval()
             features: dict[str, list[Any]] = {
-                "fused": [],
-                "cnn": [],
-                "transformer": [],
-                "mamba": [],
+                name: [] for name in contract["evaluation_outputs"]
             }
             identities = []
             cameras = []
@@ -1132,9 +1305,18 @@ def _worker_dev(config_path: Path, variant: str, output_dir: Path) -> int:
                         {"images": images, "modality_mask": mask},
                         return_aux=True,
                     )
-                features["fused"].append(output.fused_embedding.detach().float().cpu())
-                for expert in ("cnn", "transformer", "mamba"):
-                    features[expert].append(output.branch_embeddings[expert].detach().float().cpu())
+                if contract["family"] == "standalone":
+                    features[output.expert].append(
+                        output.embedding.detach().float().cpu()
+                    )
+                else:
+                    features["fused"].append(
+                        output.fused_embedding.detach().float().cpu()
+                    )
+                    for expert in ("cnn", "transformer", "mamba"):
+                        features[expert].append(
+                            output.branch_embeddings[expert].detach().float().cpu()
+                        )
                 identities.extend(int(pid) for pid in pids)
                 cameras.extend(int(camid) for camid in camids.tolist())
             pid_array = np.asarray(identities)
@@ -1227,9 +1409,14 @@ def _worker_dev(config_path: Path, variant: str, output_dir: Path) -> int:
                         "official_test_access_count": 0,
                     },
                 )
-                fused_map = float(last_metrics["fused"]["mAP"])
-                if fused_map > best_map:
-                    best_map = fused_map
+                selection_output = (
+                    "fused"
+                    if "fused" in contract["evaluation_outputs"]
+                    else contract["active_experts"][0]
+                )
+                selection_map = float(last_metrics[selection_output]["mAP"])
+                if selection_map > best_map:
+                    best_map = selection_map
                     best_epoch = current_epoch
                     best_metrics = last_metrics
                     best_path = output_dir / "best_dev_model.pth"
@@ -1238,7 +1425,8 @@ def _worker_dev(config_path: Path, variant: str, output_dir: Path) -> int:
                         output_dir / "best_dev_receipt.json",
                         {
                             "epoch": best_epoch,
-                            "dev_fused_mAP": best_map,
+                            "selection_output": selection_output,
+                            "dev_selection_mAP": best_map,
                             "metrics_percent": best_metrics,
                             "checkpoint": str(best_path),
                             "checkpoint_sha256": _sha256(best_path),
@@ -1264,6 +1452,11 @@ def _worker_dev(config_path: Path, variant: str, output_dir: Path) -> int:
             "epoch": max_epochs,
             "phase": "complete",
             "best_epoch": best_epoch,
+            "selection_output": (
+                "fused"
+                if "fused" in contract["evaluation_outputs"]
+                else contract["active_experts"][0]
+            ),
             "metrics_percent": best_metrics,
             "last_metrics_percent": last_metrics,
             "dev_evaluation_count": dev_evaluation_count,
@@ -1277,10 +1470,12 @@ def _worker_dev(config_path: Path, variant: str, output_dir: Path) -> int:
             "resume_history": resume_history,
             "parameter_budget_pass": bool(built.provenance["parameter_budget_pass"]),
             "total_parameters": int(built.provenance["total_parameters"]),
+            "variant_contract": contract,
+            "variant_contract_sha256": variant_sha256(contract),
             "peak_allocated_mib": torch.cuda.max_memory_allocated() / 1024**2,
             "peak_reserved_mib": torch.cuda.max_memory_reserved() / 1024**2,
             "fatal_or_nonfinite_detected": False,
-            "second_gpu_gate": second_gpu,
+            "second_gpu_gate": second_gpu_gate,
         }
         _atomic_json(result_path, result)
         return 0
@@ -1293,7 +1488,7 @@ def _worker_dev(config_path: Path, variant: str, output_dir: Path) -> int:
                 "official_test_access_count": 0,
                 "error": message,
                 "traceback": traceback.format_exc(),
-                "second_gpu_gate": second_gpu,
+                "second_gpu_gate": second_gpu_gate,
             },
         )
         return 4
@@ -1302,7 +1497,7 @@ def _worker_dev(config_path: Path, variant: str, output_dir: Path) -> int:
 def _parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--mode", choices=("preflight", "capacity", "overfit", "dev"))
-    parser.add_argument("--variant", required=True, choices=("core_pre_circ",))
+    parser.add_argument("--variant", required=True, choices=variant_names())
     parser.add_argument("--output-dir", required=True, type=Path)
     parser.add_argument("--config", type=Path, default=DEFAULT_CONFIG)
     parser.add_argument("--_worker", choices=("capacity", "overfit", "dev"), help=argparse.SUPPRESS)

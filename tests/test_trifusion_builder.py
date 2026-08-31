@@ -41,6 +41,29 @@ class ProductionBuilderTests(unittest.TestCase):
             120_000_000,
         )
 
+    def test_real_cnn_standalone_builder_binds_the_cli_variant_contract(self) -> None:
+        checkpoint_value = os.environ.get("TRIFUSION_CLIP_CHECKPOINT")
+        if not checkpoint_value:
+            self.skipTest("TRIFUSION_CLIP_CHECKPOINT is not configured")
+
+        from modeling.trifusion.builder import build_single_branch_from_clip
+        from modeling.trifusion.variants import resolve_variant, variant_sha256
+
+        contract = resolve_variant("cnn_standalone")
+        result = build_single_branch_from_clip(
+            Path(checkpoint_value),
+            expert_name="cnn",
+            num_classes=141,
+        )
+
+        self.assertEqual(result.provenance["variant"], "cnn_standalone")
+        self.assertEqual(result.provenance["active_experts"], ["cnn"])
+        self.assertEqual(result.provenance["dormant_experts"], [])
+        self.assertEqual(
+            result.provenance["variant_contract_sha256"],
+            variant_sha256(contract),
+        )
+
 
 if __name__ == "__main__":
     unittest.main()

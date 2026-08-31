@@ -10,6 +10,7 @@ from torch import nn
 
 from .intervention_targets import CIRCTargetCache
 from .model import TriFusionOutput
+from .standalone import SingleBranchOutput
 from .state import EXPERT_ORDER
 
 
@@ -122,4 +123,28 @@ class TriFusionCriterion(nn.Module):
         return losses
 
 
-__all__ = ["TriFusionCriterion"]
+class SingleBranchCriterion(nn.Module):
+    """ID plus batch-hard metric loss for one true standalone expert."""
+
+    def __init__(self, *, triplet_margin: float = 0.3) -> None:
+        super().__init__()
+        if triplet_margin < 0:
+            raise ValueError("triplet margin must be nonnegative")
+        self.triplet_margin = float(triplet_margin)
+
+    def forward(
+        self, output: SingleBranchOutput, labels: torch.Tensor
+    ) -> dict[str, torch.Tensor]:
+        if output.logits is None:
+            raise ValueError("standalone supervised criterion requires logits")
+        if labels.ndim != 1 or labels.shape[0] != output.embedding.shape[0]:
+            raise ValueError("labels must be a length-B tensor")
+        return {
+            f"id_{output.expert}": F.cross_entropy(output.logits, labels),
+            f"triplet_{output.expert}": _batch_hard_triplet(
+                output.embedding, labels, self.triplet_margin
+            ),
+        }
+
+
+__all__ = ["SingleBranchCriterion", "TriFusionCriterion"]
