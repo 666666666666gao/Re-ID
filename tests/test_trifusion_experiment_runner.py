@@ -343,6 +343,12 @@ def test_trifusion_dev_seals_branch_and_fused_metrics_without_official_test(
     assert summary["query_records"] == 825
     assert summary["gallery_records"] == 825
     assert summary["claim_scope"] == "train-only development result"
+    assert summary["model_constructed"] is True
+    assert summary["training_started"] is True
+    assert summary["metric_result"] == summary["metrics_percent"]
+    assert summary["claim_boundary"] == (
+        "train-only development metrics; no official-test metric and no SOTA claim"
+    )
     assert summary["sota_claim_supported"] is False
     assert latest["run_identity_sha256"] == hashlib.sha256(identity.read_bytes()).hexdigest()
 

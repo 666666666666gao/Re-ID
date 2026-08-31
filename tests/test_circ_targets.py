@@ -8,6 +8,22 @@ from pathlib import Path
 
 
 class CIRCTargetBuilderTests(unittest.TestCase):
+    def test_fold_assignment_canonicalizes_zero_padded_numeric_identity(self) -> None:
+        from modeling.trifusion.intervention_targets import assign_identity_fold
+
+        self.assertEqual(
+            assign_identity_fold(
+                "000009",
+                fold_salt="TriFusion-CIRC-fold-v1",
+                fold_count=3,
+            ),
+            assign_identity_fold(
+                9,
+                fold_salt="TriFusion-CIRC-fold-v1",
+                fold_count=3,
+            ),
+        )
+
     def test_hash_selected_edge_is_deterministic_with_two_per_row_budget(self) -> None:
         from modeling.trifusion.intervention_targets import select_audit_edge
 

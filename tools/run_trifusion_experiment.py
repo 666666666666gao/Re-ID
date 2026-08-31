@@ -664,6 +664,12 @@ def _dev(
     preflight["worker_result_sha256"] = _sha256(result_path)
     preflight["recovery"] = recovery_after
     preflight["claim_scope"] = "train-only development result"
+    preflight["model_constructed"] = True
+    preflight["training_started"] = True
+    preflight["metric_result"] = metrics
+    preflight["claim_boundary"] = (
+        "train-only development metrics; no official-test metric and no SOTA claim"
+    )
     preflight["sota_claim_supported"] = False
     preflight["complete_resume_no_work"] = False
     if mismatches:

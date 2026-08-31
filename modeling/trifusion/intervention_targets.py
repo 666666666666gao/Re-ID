@@ -81,7 +81,10 @@ def assign_identity_fold(
 ) -> int:
     if fold_count < 2:
         raise ValueError("fold_count must be at least two")
-    payload = _canonical_json({"salt": fold_salt, "identity": str(identity)})
+    identity_text = str(identity)
+    if identity_text.lstrip("+-").isdigit():
+        identity_text = str(int(identity_text, 10))
+    payload = _canonical_json({"salt": fold_salt, "identity": identity_text})
     return int(hashlib.sha256(payload).hexdigest(), 16) % fold_count
 
 

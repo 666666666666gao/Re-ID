@@ -52,6 +52,14 @@ def _sha256(path: Path) -> str:
     return digest.hexdigest()
 
 
+def _identity_registry_sha256(identities: set[str]) -> str:
+    payload = json.dumps(
+        sorted(int(identity) for identity in identities),
+        separators=(",", ":"),
+    ).encode("utf-8")
+    return hashlib.sha256(payload).hexdigest()
+
+
 def _parse_record(rgb_path: Path, *, label: int) -> Record:
     filename = rgb_path.name
     fields = filename.split("_")
@@ -155,8 +163,7 @@ def build_rgbnt201_oof_loaders(
     *,
     dataset_root: Path | str,
     protocol_path: Path | str,
-    fold_salt: str,
-    fold_count: int,
+    circ_protocol_path: Path | str,
     target_fold: int,
     train_batch_size: int,
     num_instances: int,
@@ -165,10 +172,6 @@ def build_rgbnt201_oof_loaders(
 ) -> TriFusionDataLoaders:
     """Build one development OOF target-generator complement and target fold."""
 
-    if not fold_salt:
-        raise ValueError("fold_salt must be nonempty")
-    if fold_count < 2 or target_fold < 0 or target_fold >= fold_count:
-        raise ValueError("target_fold must identify one of at least two folds")
     if train_batch_size <= 0 or num_instances <= 0:
         raise ValueError("train batch size and K must be positive")
     if train_batch_size % num_instances:
@@ -178,13 +181,48 @@ def build_rgbnt201_oof_loaders(
 
     dataset_root = Path(dataset_root).expanduser().resolve()
     protocol_path = Path(protocol_path).expanduser().resolve()
+    circ_protocol_path = Path(circ_protocol_path).expanduser().resolve()
     train_root = dataset_root / "train_171"
-    if not train_root.is_dir() or not protocol_path.is_file():
-        raise FileNotFoundError("RGBNT201 train_171 or frozen dev protocol is missing")
+    if (
+        not train_root.is_dir()
+        or not protocol_path.is_file()
+        or not circ_protocol_path.is_file()
+    ):
+        raise FileNotFoundError(
+            "RGBNT201 train_171, dev protocol, or frozen CIRC protocol is missing"
+        )
     protocol = json.loads(protocol_path.read_text(encoding="utf-8"))
     if protocol.get("selection", {}).get("uses_test_labels") is not False:
         raise ValueError("OOF development protocol must be test-label blind")
     eligible_ids = {str(value) for value in protocol["train_ids"]}
+    forbidden_dev_ids = {str(value) for value in protocol["dev_ids"]}
+    if (
+        len(eligible_ids) != 141
+        or len(forbidden_dev_ids) != 30
+        or eligible_ids & forbidden_dev_ids
+    ):
+        raise ValueError("frozen 141-fit/30-dev identity registry is invalid")
+
+    circ_protocol = json.loads(circ_protocol_path.read_text(encoding="utf-8"))
+    if circ_protocol.get("schema_version") != "circ-protocol-v1":
+        raise ValueError("unsupported frozen CIRC protocol schema")
+    if int(circ_protocol.get("official_test_access_count", -1)) != 0:
+        raise ValueError("OOF development must have zero official-test access")
+    if circ_protocol.get("dev_protocol_sha256") != _sha256(protocol_path):
+        raise ValueError("CIRC protocol does not bind the frozen dev protocol")
+    folds = dict(circ_protocol.get("folds", {}))
+    fold_count = int(folds.get("count", 0))
+    fold_salt = str(folds.get("salt", ""))
+    if fold_count != 3 or not fold_salt:
+        raise ValueError("CIRC development requires exactly three registered folds")
+    if folds.get("identity_canonicalization") != "unsigned-decimal":
+        raise ValueError("CIRC fold identity canonicalization is not registered")
+    registry_sha256 = _identity_registry_sha256(eligible_ids)
+    if folds.get("development_identity_sha256") != registry_sha256:
+        raise ValueError("CIRC protocol development identity registry mismatch")
+    if target_fold < 0 or target_fold >= fold_count:
+        raise ValueError("target_fold must identify one of the three registered folds")
+
     target_ids = {
         identity
         for identity in eligible_ids
@@ -223,6 +261,8 @@ def build_rgbnt201_oof_loaders(
         "dataset_root": str(dataset_root),
         "protocol_path": str(protocol_path),
         "protocol_sha256": _sha256(protocol_path),
+        "circ_protocol_path": str(circ_protocol_path),
+        "circ_protocol_sha256": _sha256(circ_protocol_path),
         "fold_salt": fold_salt,
         "fold_count": fold_count,
         "target_fold": target_fold,
@@ -237,6 +277,8 @@ def build_rgbnt201_oof_loaders(
         "target_cross_camera_supported_records": supported_records,
         "target_cross_camera_unsupported_records": len(target_records) - supported_records,
         "generator_target_identity_overlap": len(overlap),
+        "forbidden_dev_identities": len(forbidden_dev_ids),
+        "target_forbidden_dev_identity_overlap": len(target_ids & forbidden_dev_ids),
         "protocol_uses_test_labels": False,
         "official_test_records": 0,
         "query_equals_gallery_record_list": True,

@@ -1,23 +1,59 @@
 from __future__ import annotations
 
 from collections import Counter
+import json
 from pathlib import Path
 import random
 
 import numpy as np
+import pytest
 
 
 PROJECT = Path(__file__).resolve().parents[1]
+DEV_PROTOCOL_SHA256 = (
+    "d916e7daaa1d55b179c1ec77e93128b6e6a8d1526adc9eac060ea8e733881946"
+)
+DEVELOPMENT_IDENTITY_SHA256 = (
+    "84e071d8d26cf6b038bcbd9951b22ce61f07e5e4ff7ea40b65d82a3ebd68dde2"
+)
 
 
-def test_rgbnt201_oof_loader_keeps_target_identities_out_of_generator_training() -> None:
+def _write_circ_protocol(
+    tmp_path: Path,
+    *,
+    development_identity_sha256: str = DEVELOPMENT_IDENTITY_SHA256,
+) -> Path:
+    circ_protocol_path = tmp_path / "circ-target-v1.json"
+    circ_protocol_path.write_text(
+        json.dumps(
+            {
+                "schema_version": "circ-protocol-v1",
+                "dev_protocol_sha256": DEV_PROTOCOL_SHA256,
+                "official_test_access_count": 0,
+                "folds": {
+                    "count": 3,
+                    "salt": "TriFusion-CIRC-fold-v1",
+                    "identity_canonicalization": "unsigned-decimal",
+                    "development_identity_sha256": development_identity_sha256,
+                },
+            },
+            sort_keys=True,
+        ),
+        encoding="utf-8",
+    )
+    return circ_protocol_path
+
+
+def test_rgbnt201_oof_loader_keeps_target_identities_out_of_generator_training(
+    tmp_path: Path,
+) -> None:
     from modeling.trifusion.data import build_rgbnt201_oof_loaders
 
+    circ_protocol_path = _write_circ_protocol(tmp_path)
     loaders = build_rgbnt201_oof_loaders(
         dataset_root=Path("/root/mmreid-trifusion/data/RGBNT201"),
         protocol_path=PROJECT / "protocols/rgbnt201_dev_v1.json",
-        fold_salt="TriFusion-CIRC-fold-v1",
-        fold_count=3,
+        circ_protocol_path=circ_protocol_path,
         target_fold=0,
         train_batch_size=8,
         num_instances=4,
@@ -25,16 +61,24 @@ def test_rgbnt201_oof_loader_keeps_target_identities_out_of_generator_training()
         num_workers=0,
     )
 
-    assert loaders.num_classes == 97
-    assert loaders.num_query == 1008
-    assert len(loaders.train_loader.dataset) == 2118
-    assert len(loaders.eval_loader.dataset) == 2016
+    assert loaders.num_classes == 93
+    assert loaders.num_query == 1081
+    assert len(loaders.train_loader.dataset) == 2045
+    assert len(loaders.eval_loader.dataset) == 2162
     assert loaders.provenance["target_fold"] == 0
     assert loaders.provenance["fold_count"] == 3
-    assert loaders.provenance["generator_training_identities"] == 97
-    assert loaders.provenance["target_identities"] == 44
+    assert loaders.provenance["generator_training_identities"] == 93
+    assert loaders.provenance["target_identities"] == 48
+    assert loaders.provenance["target_cross_camera_supported_identities"] == 10
+    assert loaders.provenance["target_cross_camera_unsupported_identities"] == 38
+    assert loaders.provenance["target_cross_camera_supported_records"] == 258
+    assert loaders.provenance["target_cross_camera_unsupported_records"] == 823
     assert loaders.provenance["generator_target_identity_overlap"] == 0
+    assert loaders.provenance["target_forbidden_dev_identity_overlap"] == 0
     assert loaders.provenance["official_test_records"] == 0
+    assert loaders.provenance["circ_protocol_path"] == str(
+        circ_protocol_path.resolve()
+    )
     generator_paths = {
         record[0][0] for record in loaders.train_records
     }
@@ -43,6 +87,31 @@ def test_rgbnt201_oof_loader_keeps_target_identities_out_of_generator_training()
     }
     assert generator_paths.isdisjoint(target_paths)
     assert all("/train_171/" in path for path in generator_paths | target_paths)
+
+
+def test_rgbnt201_oof_loader_rejects_unbound_identity_registry(
+    tmp_path: Path,
+) -> None:
+    from modeling.trifusion.data import build_rgbnt201_oof_loaders
+
+    circ_protocol_path = _write_circ_protocol(
+        tmp_path,
+        development_identity_sha256="0" * 64,
+    )
+    with pytest.raises(
+        ValueError,
+        match="development identity registry mismatch",
+    ):
+        build_rgbnt201_oof_loaders(
+            dataset_root=Path("/root/mmreid-trifusion/data/RGBNT201"),
+            protocol_path=PROJECT / "protocols/rgbnt201_dev_v1.json",
+            circ_protocol_path=circ_protocol_path,
+            target_fold=0,
+            train_batch_size=8,
+            num_instances=4,
+            eval_batch_size=32,
+            num_workers=0,
+        )
 
 
 def test_rgbnt201_dev_loaders_use_only_train171_and_preserve_pk_batches() -> None:
