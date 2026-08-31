@@ -90,3 +90,7 @@
 | 2026-08-31 08:36 | /research-lit | docs/RESEARCH_AUDIT_2026-08-31.md | research | 增量核验 FUSE、Signal、PEFT-BoA、ICPL、MGRNet、UPCL 与 Hyper-ReID 的指标、协议和官方工件 |
 | 2026-08-31 08:36 | /research-lit | refine-logs/EXPERIMENT_PLAN.md | implementation | 固定 DeMo/MDReID/PEFT-BoA 三类基线角色及最终动态 SOTA 刷新门 |
 | 2026-08-31 08:36 | /research-lit | refine-logs/EXPERIMENT_TRACKER.md | implementation | 登记 PEFT-BoA/Signal 比较器和 R071A 投稿前前沿复查 |
+| 2026-08-31 08:45 | /tdd | tests/test_audit_peft_boa_source.py | implementation | PEFT-BoA receipt 解析、配置/shape 漂移和 test-selection 风险的 fail-closed 单测 |
+| 2026-08-31 08:45 | /tdd | tools/audit_peft_boa_source.py | implementation | 固定官方提交并执行真实 RGBNT201 CPU loader batch 的只读来源审计器 |
+| 2026-08-31 08:45 | /tdd | evidence/peft_boa_source_audit_20260831.json | research | PEFT-BoA clean source、配置、loader、环境偏差与训练阻塞证据 |
+| 2026-08-31 08:45 | /tdd | docs/ENVIRONMENT_REPRODUCTION.md | implementation | 记录 PEFT-BoA 下载位置、复查命令及非训练就绪边界 |

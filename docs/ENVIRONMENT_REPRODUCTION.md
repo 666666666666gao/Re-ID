@@ -61,6 +61,42 @@ clean-commit checks. The underlying audit bytes and official commit were
 correct; rerun the patched driver once R012 releases the GPU to bind the new
 report schema before treating the current source revision as reproduced.
 
+## Audit the stronger open-training-code comparator
+
+PEFT-BoA reports 82.7% mAP / 86.1% Rank-1 and publishes training code but no
+checkpoint or release asset. Its official checkout is pinned, without local
+modification, at:
+
+```text
+/root/mmreid-trifusion/baselines/PEFT-BoA
+d2b198be634ac4f9f5744eebf6e0a6604e490deb
+```
+
+Run the source and CPU loader audit with:
+
+```bash
+cd /root/mmreid-trifusion/TriFusion-ReID
+conda activate tri_reid
+python tools/audit_peft_boa_source.py \
+  --json-out evidence/peft_boa_source_audit_20260831.json
+```
+
+The verified receipt binds the clean commit and official remote, six
+source-file hashes, and the 350,837,078-byte CLIP archive with SHA-256
+`5806e77c…df416f`. It reads the real `train_171` split and deterministically
+returns one seed-42 B32/K4 RGB/NIR/TIR batch of shape `32×3×256×128`, 171
+training identities and 836 queries. It also records that the published
+configuration is frozen-CLIP, B64/K4, seed 1111, 120 epochs, 256×128 and no
+reranking.
+
+This is deliberately **not** a metric reproduction or a training-ready gate.
+The released requirements pin torch 2.1.1+cu118 while the project environment
+uses 2.5.1+cu121; the upstream model constructor forces CUDA; the upstream
+loop evaluates the official test every epoch, saves `best.pth` by test mAP,
+and writes model-only periodic checkpoints. R017A therefore stays waiting
+until a fixed-epoch, crash-safe wrapper and a real 8 GiB forward/backward gate
+pass. MDReID remains the strongest locally measured checkpoint baseline.
+
 ## Reproduce the DeMo implementation base
 
 DeMo's released CLIP loader hard-codes an unavailable author-machine path.
