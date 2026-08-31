@@ -134,6 +134,108 @@ def _atomic_json(path: Path, payload: dict[str, Any]) -> None:
             os.unlink(temporary)
 
 
+def _exclusive_json(path: Path, payload: dict[str, Any]) -> None:
+    """Durably create a JSON file without ever replacing an existing one."""
+
+    path.parent.mkdir(parents=True, exist_ok=True)
+    encoded = (json.dumps(payload, indent=2, sort_keys=True) + "\n").encode("utf-8")
+    descriptor = os.open(path, os.O_WRONLY | os.O_CREAT | os.O_EXCL, 0o444)
+    with os.fdopen(descriptor, "wb") as handle:
+        handle.write(encoded)
+        handle.flush()
+        os.fsync(handle.fileno())
+
+
+def _evaluate_official_fixed_endpoint_once(
+    *,
+    output_dir: Path,
+    checkpoint_path: Path,
+    fixed_epoch: int,
+    query_records: int,
+    gallery_records: int,
+    run_identity_sha256: str,
+    evaluate: Any,
+) -> dict[str, Any]:
+    """Consume the single official-test allowance or reuse its durable result."""
+
+    checkpoint_sha256 = _sha256(checkpoint_path)
+    guard_path = output_dir / "official_test_access_guard.json"
+    metrics_path = output_dir / "official_test_metrics.json"
+    binding = {
+        "schema_version": "trifusion-official-access-guard-v1",
+        "fixed_epoch": int(fixed_epoch),
+        "checkpoint_sha256": checkpoint_sha256,
+        "run_identity_sha256": str(run_identity_sha256),
+        "official_test_access_count": 1,
+    }
+
+    if guard_path.is_file():
+        guard = json.loads(guard_path.read_text(encoding="utf-8"))
+        if any(guard.get(key) != value for key, value in binding.items()):
+            raise RuntimeError("official test access guard is foreign or corrupt")
+        if metrics_path.is_file():
+            receipt = json.loads(metrics_path.read_text(encoding="utf-8"))
+            expected_receipt = {
+                "schema_version": "trifusion-official-fixed-v1",
+                "fixed_epoch": int(fixed_epoch),
+                "query_records": int(query_records),
+                "gallery_records": int(gallery_records),
+                "official_test_evaluation_count": 1,
+                "official_test_access_count": 1,
+                "further_model_selection": False,
+                "checkpoint_sha256": checkpoint_sha256,
+                "run_identity_sha256": str(run_identity_sha256),
+            }
+            if any(receipt.get(key) != value for key, value in expected_receipt.items()):
+                raise RuntimeError("official test metrics receipt is foreign or corrupt")
+            metrics = receipt.get("metrics_percent")
+            if not isinstance(metrics, dict) or not metrics:
+                raise RuntimeError("official test metrics receipt lacks metrics")
+            metrics_sha256 = _sha256(metrics_path)
+            if guard.get("status") == "STARTED":
+                _atomic_json(
+                    guard_path,
+                    {**binding, "status": "COMPLETE", "metrics_sha256": metrics_sha256},
+                )
+            elif (
+                guard.get("status") != "COMPLETE"
+                or guard.get("metrics_sha256") != metrics_sha256
+            ):
+                raise RuntimeError("official test access guard completion is corrupt")
+            return metrics
+        if guard.get("status") == "STARTED":
+            raise RuntimeError(
+                "ambiguous_official_test_access_never_repeat: access was reserved "
+                "but no durable metrics receipt exists"
+            )
+        raise RuntimeError("completed official test access guard lacks metrics")
+
+    if metrics_path.exists():
+        raise RuntimeError("official test metrics exist without an access guard")
+    _exclusive_json(guard_path, {**binding, "status": "STARTED"})
+    metrics = evaluate()
+    if not isinstance(metrics, dict) or not metrics:
+        raise RuntimeError("official test evaluation returned no metrics")
+    receipt = {
+        "schema_version": "trifusion-official-fixed-v1",
+        "fixed_epoch": int(fixed_epoch),
+        "metrics_percent": metrics,
+        "query_records": int(query_records),
+        "gallery_records": int(gallery_records),
+        "official_test_evaluation_count": 1,
+        "official_test_access_count": 1,
+        "further_model_selection": False,
+        "checkpoint_sha256": checkpoint_sha256,
+        "run_identity_sha256": str(run_identity_sha256),
+    }
+    _atomic_json(metrics_path, receipt)
+    _atomic_json(
+        guard_path,
+        {**binding, "status": "COMPLETE", "metrics_sha256": _sha256(metrics_path)},
+    )
+    return metrics
+
+
 def _gpu_state() -> dict[str, Any]:
     completed = subprocess.run(
         [
@@ -180,6 +282,46 @@ def _gpu_gate(gpu: dict[str, Any], resource_profile: str) -> dict[str, Any]:
         "required_used_strictly_below_mib": required_used_mib,
         "observed_used_mib": int(gpu["memory_used_mib"]),
         "passed": int(gpu["memory_used_mib"]) < required_used_mib,
+    }
+
+
+def _git_tracked_file_status(path: Path) -> dict[str, Any]:
+    """Report whether a trust-root file exactly matches the tracked Git index/HEAD."""
+
+    resolved = path.resolve()
+    relative = str(resolved.relative_to(PROJECT))
+    tracked = subprocess.run(
+        ["git", "ls-files", "--error-unmatch", "--", relative],
+        cwd=PROJECT,
+        check=False,
+        capture_output=True,
+        text=True,
+    )
+    worktree = subprocess.run(
+        ["git", "diff", "--quiet", "--", relative],
+        cwd=PROJECT,
+        check=False,
+        capture_output=True,
+        text=True,
+    )
+    index = subprocess.run(
+        ["git", "diff", "--cached", "--quiet", "--", relative],
+        cwd=PROJECT,
+        check=False,
+        capture_output=True,
+        text=True,
+    )
+    is_tracked = tracked.returncode == 0
+    worktree_clean = worktree.returncode == 0
+    index_clean = index.returncode == 0
+    return {
+        "path": str(resolved),
+        "relative_path": relative,
+        "sha256": _sha256(resolved) if resolved.is_file() else None,
+        "tracked": is_tracked,
+        "worktree_clean": worktree_clean,
+        "index_clean": index_clean,
+        "clean": is_tracked and worktree_clean and index_clean,
     }
 
 
@@ -259,6 +401,7 @@ def _preflight(
         "dev_protocol": (DEV_PROTOCOL, EXPECTED["dev_protocol_sha256"]),
         "dataset_receipt": (DATASET_RECEIPT, EXPECTED["dataset_receipt_sha256"]),
     }
+    protocol_validator_git: dict[str, Any] | None = None
     if variant == "hfer_uniform_generator" or contract.get(
         "circ_targets_required"
     ):
@@ -271,6 +414,11 @@ def _preflight(
             CIRC_PROTOCOL_PATH,
             CIRC_PROTOCOL_SHA256,
         )
+        protocol_validator_git = _git_tracked_file_status(
+            PROJECT / "modeling/trifusion/protocol.py"
+        )
+        if not protocol_validator_git["clean"]:
+            blockers.append("circ_protocol_validator_not_git_clean")
     file_checks: dict[str, Any] = {}
     for label, (path, expected_hash) in immutable.items():
         if not path.is_file():
@@ -287,6 +435,8 @@ def _preflight(
         }
         if actual_hash != expected_hash:
             blockers.append(f"hash_drift:{label}")
+    if protocol_validator_git is not None:
+        file_checks["circ_protocol_validator_git"] = protocol_validator_git
     circ_assets: dict[str, Any] = {}
     if contract.get("circ_targets_required"):
         circ_config = dict(config.get("CIRC", {}))
@@ -920,16 +1070,6 @@ def _dev(
             preflight["launch_allowed"] = False
             preflight["blockers"].append("foreign_run_identity")
             return preflight, 2
-        if recovery["phase"] == "complete":
-            summary_path = output_dir / "run_summary.json"
-            if not summary_path.is_file():
-                preflight["status"] = "RECOVERY_REJECTED"
-                preflight["blockers"].append("complete_without_summary")
-                return preflight, 2
-            summary = json.loads(summary_path.read_text(encoding="utf-8"))
-            summary["complete_resume_no_work"] = True
-            summary["worker_executed"] = False
-            return summary, 0
         if not preflight["launch_allowed"]:
             preflight["claim_boundary"] = (
                 f"{data_mode} resume blocked before model construction"
@@ -1574,6 +1714,7 @@ def _worker_dev(
         from modeling.trifusion.training_phases import (
             active_loss_weights,
             parameter_trainable_in_phase,
+            registered_optimizer_parameter_names,
             resolve_training_phase,
         )
         from modeling.trifusion.warm_start import load_hfer_uniform_warm_start
@@ -1754,6 +1895,7 @@ def _worker_dev(
         for name, parameter in model.named_parameters():
             if "private_projection" in name:
                 parameter.requires_grad_(False)
+        optimizer_parameter_names = registered_optimizer_parameter_names(model)
         pretrained_tokens = (
             (
                 "tokenizer.patch_projection",
@@ -1917,6 +2059,9 @@ def _worker_dev(
             generator_checkpoint_sha256 = saved["generator_checkpoint_sha256"]
             generator_model_state_sha256 = saved["generator_model_state_sha256"]
             dev_evaluation_count = int(saved["dev_evaluation_count"])
+            eval_loader_iteration_count = int(
+                saved.get("eval_loader_iteration_count", 0)
+            )
             train_history = dict(saved.get("train_history", {}))
             resume_history = list(saved.get("resume_history", []))
             resume_history.append(
@@ -1942,6 +2087,7 @@ def _worker_dev(
                 "generator_checkpoint_sha256": None,
                 "generator_model_state_sha256": None,
                 "dev_evaluation_count": 0,
+                "eval_loader_iteration_count": 0,
                 "run_identity_sha256": identity_hash,
                 "train_history": {},
                 "resume_history": [],
@@ -1970,6 +2116,7 @@ def _worker_dev(
                 "generator_checkpoint_sha256": generator_checkpoint_sha256,
                 "generator_model_state_sha256": generator_model_state_sha256,
                 "dev_evaluation_count": dev_evaluation_count,
+                "eval_loader_iteration_count": eval_loader_iteration_count,
                 "run_identity_sha256": identity_hash,
                 "train_history": train_history,
                 "resume_history": resume_history,
@@ -2016,6 +2163,12 @@ def _worker_dev(
                             "further_model_selection": False,
                             "fixed_metrics": best_metrics,
                             "fixed_checkpoint_sha256": best_checkpoint_sha256,
+                            "official_metrics_receipt_sha256": _sha256(
+                                output_dir / "official_test_metrics.json"
+                            ),
+                            "official_access_guard_sha256": _sha256(
+                                output_dir / "official_test_access_guard.json"
+                            ),
                         }
                     )
                 else:
@@ -2355,28 +2508,35 @@ def _worker_dev(
                         )
                         continue
                     fixed_path = output_dir / "fixed_final_model.pth"
-                    _atomic_torch_save(fixed_path, model.state_dict(), torch)
+                    fixed_state = model.state_dict()
+                    if fixed_path.is_file():
+                        recovered_fixed_state = torch.load(
+                            fixed_path, map_location="cpu", weights_only=True
+                        )
+                        if _state_dict_sha256(recovered_fixed_state) != _state_dict_sha256(
+                            fixed_state
+                        ):
+                            raise RuntimeError(
+                                "durable final checkpoint differs from recovered endpoint"
+                            )
+                    else:
+                        _atomic_torch_save(fixed_path, fixed_state, torch)
                     best_checkpoint_sha256 = _sha256(fixed_path)
                     best_epoch = current_epoch
-                    last_metrics = evaluate()
+                    last_metrics = _evaluate_official_fixed_endpoint_once(
+                        output_dir=output_dir,
+                        checkpoint_path=fixed_path,
+                        fixed_epoch=current_epoch,
+                        query_records=data.num_query,
+                        gallery_records=(
+                            len(data.eval_loader.dataset) - data.num_query
+                        ),
+                        run_identity_sha256=identity_hash,
+                        evaluate=evaluate,
+                    )
+                    eval_loader_iteration_count = 1
                     best_metrics = last_metrics
                     best_map = float(best_metrics["fused"]["mAP"])
-                    _atomic_json(
-                        output_dir / "official_test_metrics.json",
-                        {
-                            "schema_version": "trifusion-official-fixed-v1",
-                            "fixed_epoch": current_epoch,
-                            "metrics_percent": best_metrics,
-                            "query_records": data.num_query,
-                            "gallery_records": (
-                                len(data.eval_loader.dataset) - data.num_query
-                            ),
-                            "official_test_evaluation_count": 1,
-                            "official_test_access_count": 1,
-                            "further_model_selection": False,
-                            "checkpoint_sha256": best_checkpoint_sha256,
-                        },
-                    )
                     phase = "complete"
                     _save_dev_generation(
                         output_dir,
@@ -2697,7 +2857,13 @@ def _worker_dev(
             {
                 "status": "OOM" if "out of memory" in message.lower() else "FAILED",
                 "official_test_access_count": (
-                    1 if final_mode and eval_loader_iteration_count else 0
+                    1
+                    if final_mode
+                    and (
+                        eval_loader_iteration_count
+                        or (output_dir / "official_test_access_guard.json").is_file()
+                    )
+                    else 0
                 ),
                 "error": message,
                 "traceback": traceback.format_exc(),

@@ -8,6 +8,8 @@ import subprocess
 import sys
 from types import SimpleNamespace
 
+import pytest
+
 
 PROJECT = Path(__file__).resolve().parents[1]
 RUNNER = PROJECT / "tools/run_trifusion_experiment.py"
@@ -17,6 +19,7 @@ def test_circ_training_begins_with_router_only_immutable_target_phase() -> None:
     from modeling.trifusion.training_phases import (
         active_loss_weights,
         parameter_trainable_in_phase,
+        registered_optimizer_parameter_names,
         resolve_training_phase,
     )
 
@@ -42,6 +45,43 @@ def test_circ_training_begins_with_router_only_immutable_target_phase() -> None:
     assert active_loss_weights(weights, joint) == weights
     assert parameter_trainable_in_phase("encoder.experts.cnn.stem.weight", joint)
     assert not parameter_trainable_in_phase("encoder.private_projection.weight", joint)
+
+    parameters = {
+        "encoder.reliability_gate.head.weight": SimpleNamespace(requires_grad=True),
+        "encoder.experts.cnn.stem.weight": SimpleNamespace(requires_grad=True),
+        "encoder.private_projection.weight": SimpleNamespace(requires_grad=False),
+    }
+    model = SimpleNamespace(named_parameters=lambda: parameters.items())
+    assert registered_optimizer_parameter_names(model) == frozenset(
+        {
+            "encoder.reliability_gate.head.weight",
+            "encoder.experts.cnn.stem.weight",
+        }
+    )
+
+
+def test_protocol_validator_git_status_detects_uncommitted_drift(monkeypatch) -> None:
+    import tools.run_trifusion_experiment as runner
+
+    def fake_run(command, **_kwargs):
+        if command[:3] == ["git", "diff", "--quiet"]:
+            return SimpleNamespace(returncode=1, stdout="", stderr="")
+        if command[:4] == ["git", "diff", "--cached", "--quiet"]:
+            return SimpleNamespace(returncode=0, stdout="", stderr="")
+        if command[:2] == ["git", "ls-files"]:
+            return SimpleNamespace(returncode=0, stdout="modeling/trifusion/protocol.py\n", stderr="")
+        raise AssertionError(command)
+
+    monkeypatch.setattr(runner.subprocess, "run", fake_run)
+
+    status = runner._git_tracked_file_status(
+        PROJECT / "modeling/trifusion/protocol.py"
+    )
+
+    assert status["tracked"] is True
+    assert status["worktree_clean"] is False
+    assert status["index_clean"] is True
+    assert status["clean"] is False
 
 
 def test_postfreeze_parent_accepts_only_one_fixed_official_evaluation(
@@ -120,6 +160,133 @@ def test_postfreeze_parent_accepts_only_one_fixed_official_evaluation(
     assert summary["further_model_selection"] is False
     assert summary["single_seed_target_exceeded"] is True
     assert summary["sota_claim_supported"] is False
+
+
+def test_official_fixed_endpoint_is_evaluated_once_and_reused_after_resume(
+    tmp_path: Path,
+) -> None:
+    import tools.run_trifusion_experiment as runner
+
+    output = tmp_path / "fixed"
+    output.mkdir()
+    identity = output / "run_identity.json"
+    identity.write_text('{"run":"fixed"}\n', encoding="utf-8")
+    checkpoint = output / "fixed_final_model.pth"
+    checkpoint.write_bytes(b"fixed-model")
+    calls = 0
+    expected = {
+        "fused": {"mAP": 86.0, "Rank-1": 88.2, "Rank-5": 95.0, "Rank-10": 97.0}
+    }
+
+    def evaluate():
+        nonlocal calls
+        calls += 1
+        return expected
+
+    first = runner._evaluate_official_fixed_endpoint_once(
+        output_dir=output,
+        checkpoint_path=checkpoint,
+        fixed_epoch=60,
+        query_records=836,
+        gallery_records=836,
+        run_identity_sha256=hashlib.sha256(identity.read_bytes()).hexdigest(),
+        evaluate=evaluate,
+    )
+    resumed = runner._evaluate_official_fixed_endpoint_once(
+        output_dir=output,
+        checkpoint_path=checkpoint,
+        fixed_epoch=60,
+        query_records=836,
+        gallery_records=836,
+        run_identity_sha256=hashlib.sha256(identity.read_bytes()).hexdigest(),
+        evaluate=evaluate,
+    )
+
+    assert first == expected
+    assert resumed == expected
+    assert calls == 1
+    guard = json.loads(
+        (output / "official_test_access_guard.json").read_text(encoding="utf-8")
+    )
+    assert guard["status"] == "COMPLETE"
+    assert guard["official_test_access_count"] == 1
+
+
+def test_complete_recovery_repairs_a_missing_parent_summary(
+    tmp_path: Path, monkeypatch,
+) -> None:
+    import tools.run_trifusion_experiment as runner
+
+    config = tmp_path / "final.yml"
+    config.write_text("SCHEMA_VERSION: 1\n", encoding="utf-8")
+    output = tmp_path / "final"
+    output.mkdir()
+    identity_payload = {"run": "final"}
+    (output / "run_identity.json").write_text(
+        json.dumps(identity_payload) + "\n", encoding="utf-8"
+    )
+    contract = {
+        "evaluation_outputs": ["fused", "cnn", "transformer", "mamba"],
+        "active_experts": ["cnn", "transformer", "mamba"],
+    }
+    preflight = {
+        "launch_allowed": True,
+        "status": "READY",
+        "blockers": [],
+        "variant_contract": contract,
+        "data_mode": "postfreeze-final",
+    }
+    recovery = {"valid": True, "kind": "resume", "epoch": 60, "phase": "complete"}
+    monkeypatch.setattr(runner, "_preflight", lambda *args, **kwargs: dict(preflight))
+    monkeypatch.setattr(runner, "_run_identity", lambda *args, **kwargs: identity_payload)
+    monkeypatch.setattr(runner, "_validate_recovery", lambda _path: dict(recovery))
+    metrics = {
+        name: {"mAP": 86.0, "Rank-1": 88.2, "Rank-5": 95.0, "Rank-10": 97.0}
+        for name in contract["evaluation_outputs"]
+    }
+    calls = 0
+
+    def fake_run(command, **_kwargs):
+        nonlocal calls
+        calls += 1
+        (output / "final_worker_result.json").write_text(
+            json.dumps(
+                {
+                    "status": "COMPLETE",
+                    "mode": "postfreeze-final",
+                    "epoch": 60,
+                    "phase": "complete",
+                    "official_test_access_count": 1,
+                    "official_test_evaluation_count": 1,
+                    "dev_evaluation_count": 0,
+                    "query_records": 836,
+                    "gallery_records": 836,
+                    "train_records": 3951,
+                    "further_model_selection": False,
+                    "model_constructed": True,
+                    "training_started": True,
+                    "metrics_percent": metrics,
+                }
+            ),
+            encoding="utf-8",
+        )
+        return SimpleNamespace(returncode=0, stdout="recovered tail\n", stderr="")
+
+    monkeypatch.setattr(runner.subprocess, "run", fake_run)
+    monkeypatch.setenv("TRIFUSION_CONTRACT_TESTING", "1")
+    monkeypatch.setenv("TRIFUSION_TEST_EXECUTABLE", "/tmp/fake-final-worker")
+
+    summary, returncode = runner._dev(
+        config,
+        "trifusion_circ_urgc",
+        output,
+        data_mode="postfreeze-final",
+    )
+
+    assert returncode == 0
+    assert summary["status"] == "PASS"
+    assert summary["single_seed_target_exceeded"] is True
+    assert calls == 1
 
 
 def _run_preflight(tmp_path: Path, memory_used_mib: int) -> dict:

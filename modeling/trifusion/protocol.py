@@ -57,7 +57,6 @@ def trifusion_source_hashes() -> dict[str, str]:
     paths = sorted(
         path
         for path in (project / "modeling/trifusion").rglob("*.py")
-        if path.name != "protocol.py"
     )
     paths.extend(
         [

@@ -33,6 +33,7 @@ from modeling.trifusion.data import (
 from modeling.trifusion.intervention_targets import (
     CIRCTargetCache,
     compile_circ_targets,
+    validate_circ_target_cache,
     write_circ_target_cache,
 )
 from modeling.trifusion.interventions import FullNetworkIntervention
@@ -121,6 +122,16 @@ def _resolve_directory(base: Path, value: object) -> Path:
     if not path.is_dir():
         raise FileNotFoundError(path)
     return path
+
+
+def _calibration_claim_eligible(audit: dict[str, Any]) -> bool:
+    coverage = audit.get("empirical_concentration_coverage")
+    if not isinstance(coverage, dict) or not coverage:
+        return False
+    return all(
+        isinstance(condition, dict) and condition.get("claim_eligible") is True
+        for condition in coverage.values()
+    )
 
 
 def _collect_images(loader: Any) -> tuple[dict[str, torch.Tensor], list[int], list[int], list[str]]:
@@ -600,16 +611,7 @@ def score_oof_interventions(
     )
     cache_output = output / "cache"
     if cache_output.exists():
-        existing_receipt = json.loads(
-            (cache_output / "receipt.json").read_text(encoding="utf-8")
-        )
-        expected_targets = b"".join(_canonical_json_bytes(row) + b"\n" for row in rows)
-        if (
-            existing_receipt.get("targets_sha256")
-            != hashlib.sha256(expected_targets).hexdigest()
-            or (cache_output / "targets.jsonl").read_bytes() != expected_targets
-        ):
-            raise ValueError("existing immutable CIRC cache differs from regenerated cache")
+        validate_circ_target_cache(cache_output, rows, receipt)
     else:
         write_circ_target_cache(rows, receipt, output_directory=cache_output)
     cache_receipt = json.loads(
@@ -626,6 +628,7 @@ def score_oof_interventions(
         != protocol["audits"]["effective_sample_size_unit"]
     ):
         raise ValueError("CIRC calibration audit differs from the frozen protocol")
+    calibration_claim_eligible = _calibration_claim_eligible(calibration_audit)
     final_receipt = {
         "schema_version": "circ-scoring-receipt-v1",
         "status": "COMPLETE",
@@ -642,11 +645,12 @@ def score_oof_interventions(
         "cache_receipt_sha256": _sha256(cache_output / "receipt.json"),
         "calibration_receipt_sha256": _sha256(calibration_receipt_path),
         "calibration_audit": calibration_audit,
+        "calibration_claim_eligible": calibration_claim_eligible,
         "symmetry_audit": symmetry_audit,
         "proxy_target_transfer_status": "PENDING_DEPLOYED_MODEL",
         "official_test_access_count": 0,
         "contract_testing": False,
-        "scientific_evidence_eligible": True,
+        "scientific_evidence_eligible": calibration_claim_eligible,
     }
     _atomic_json(output / "scoring_receipt.json", final_receipt)
     return 0

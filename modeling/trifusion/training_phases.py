@@ -4,6 +4,7 @@ from __future__ import annotations
 
 from collections.abc import Mapping
 from dataclasses import dataclass
+from typing import Any
 
 
 @dataclass(frozen=True)
@@ -50,6 +51,16 @@ def parameter_trainable_in_phase(name: str, phase: CIRCTrainingPhase) -> bool:
     return True
 
 
+def registered_optimizer_parameter_names(model: Any) -> frozenset[str]:
+    """Freeze the optimizer's original membership before phase masking begins."""
+
+    return frozenset(
+        str(name)
+        for name, parameter in model.named_parameters()
+        if bool(parameter.requires_grad)
+    )
+
+
 def active_loss_weights(
     weights: Mapping[str, float], phase: CIRCTrainingPhase
 ) -> dict[str, float]:
@@ -65,5 +76,6 @@ __all__ = [
     "CIRCTrainingPhase",
     "active_loss_weights",
     "parameter_trainable_in_phase",
+    "registered_optimizer_parameter_names",
     "resolve_training_phase",
 ]

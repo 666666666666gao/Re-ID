@@ -10,6 +10,69 @@ from unittest.mock import patch
 
 
 class CIRCTargetBuilderTests(unittest.TestCase):
+    def test_scoring_evidence_is_ineligible_if_any_calibration_condition_fails(
+        self,
+    ) -> None:
+        from tools.circ_score_runtime import _calibration_claim_eligible
+
+        audit = {
+            "empirical_concentration_coverage": {
+                "clean": {"claim_eligible": True},
+                "blur": {"claim_eligible": False},
+            }
+        }
+
+        self.assertFalse(_calibration_claim_eligible(audit))
+
+    def test_source_identity_includes_the_circ_protocol_validator(self) -> None:
+        from modeling.trifusion.protocol import trifusion_source_hashes
+
+        source_hashes = trifusion_source_hashes()
+
+        self.assertIn("modeling/trifusion/protocol.py", source_hashes)
+        self.assertEqual(len(source_hashes["modeling/trifusion/protocol.py"]), 64)
+
+    def test_existing_cache_resume_rejects_receipt_tampering(self) -> None:
+        from modeling.trifusion.intervention_targets import (
+            validate_circ_target_cache,
+            write_circ_target_cache,
+        )
+
+        rows = [{"sample_key": "q-1", "condition_key": "clean"}]
+        audit = {"status": "COMPLETE", "group_axes": ["condition"]}
+        audit["audit_sha256"] = hashlib.sha256(
+            json.dumps(
+                audit, ensure_ascii=False, sort_keys=True, separators=(",", ":")
+            ).encode("utf-8")
+        ).hexdigest()
+        receipt = {
+            "schema_version": "circ-receipt-v1",
+            "protocol_hash": "ab" * 32,
+            "row_count": 1,
+            "calibration_audit": audit,
+            "query_gallery_symmetry_audit": {
+                "status": "COMPLETE",
+                "claim_eligible": True,
+            },
+            "proxy_target_transfer_audit": {
+                "status": "PENDING_DEPLOYED_MODEL",
+                "claim_eligible": False,
+            },
+        }
+
+        with tempfile.TemporaryDirectory() as temporary_directory:
+            cache = Path(temporary_directory) / "cache"
+            write_circ_target_cache(rows, receipt, output_directory=cache)
+            validate_circ_target_cache(cache, rows, receipt)
+            forged = json.loads((cache / "receipt.json").read_text(encoding="utf-8"))
+            forged["row_count"] = 999
+            (cache / "receipt.json").write_text(
+                json.dumps(forged, sort_keys=True) + "\n", encoding="utf-8"
+            )
+
+            with self.assertRaisesRegex(ValueError, "differs from regenerated cache"):
+                validate_circ_target_cache(cache, rows, receipt)
+
     def test_calibration_audit_uses_distinct_query_clusters_and_complete_groups(
         self,
     ) -> None:
