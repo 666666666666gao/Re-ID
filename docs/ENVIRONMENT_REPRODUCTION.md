@@ -146,6 +146,68 @@ periodic epoch-50 checkpoint is saved before that evaluation. These boundaries,
 source hashes, loader shapes and unresolved checkpoint provenance are frozen in
 `evidence/signal_source_protocol_audit_20260831.json`.
 
+## Reconstruct and audit the MFRNet checkpoint comparator
+
+The official MFRNet checkout and directly downloaded RGBNT201 checkpoint are:
+
+```text
+/root/mmreid-trifusion/baselines/MFRNet
+ec54a1302321cda4b5fad9ca1c0878dabf0b46b6
+/root/mmreid-trifusion/checkpoints/MFRNet/RGBNT201_MFRNetbest.pth
+```
+
+The checkpoint came from the official README Google Drive link. Its HTTP
+attachment name and final size are `RGBNT201_MFRNetbest.pth` and 407,297,967
+bytes; local SHA-256 is
+`f0c2df33f3901738051a917e728c73d9b494113e1e327361bc8f1acf4711126e`.
+It was first inspected with torch 2.5.1 `weights_only=True`: all 297 entries are
+tensors with 101,794,851 elements and no pickle-side metadata.
+
+The released `requirements.txt` is not portable: its torch/vision/audio and
+PyG wheels use author-local `file:///root/py38/...` URLs and it includes a broad
+machine export unrelated to evaluation. Rebuild the isolated, minimal audited
+runtime in two phases:
+
+```bash
+cd /root/mmreid-trifusion/TriFusion-ReID
+/root/miniconda3/bin/conda env create \
+  -f environment/mfrnet_environment.yml
+PYTHONNOUSERSITE=1 \
+  /root/miniconda3/envs/mfrnet/bin/python -m pip install \
+  -r environment/mfrnet_requirements-lock.txt
+PYTHONNOUSERSITE=1 \
+  /root/miniconda3/envs/mfrnet/bin/python -m pip install \
+  --no-build-isolation --no-deps \
+  -r environment/mfrnet_tutel_source.txt
+PYTHONNOUSERSITE=1 \
+  /root/miniconda3/envs/mfrnet/bin/python -m pip check
+```
+
+The split installation is required because Tutel's source build imports torch
+during metadata/build. The author's unavailable `tutel==0.3` dependency is
+reconstructed from the official Tutel v0.3.2 commit
+`d4c20c3e…b3c8b0`; v0.3.0 self-identifies as distribution 0.2 and does not
+implement the custom-expert constructor used by MFRNet. The pinned v0.3.2
+archive has SHA-256 `d1f9bbe0…c805ea` and installs as distribution 0.3.
+`PYTHONNOUSERSITE=1` is mandatory so the environment cannot silently import
+packages from `/root/.local`.
+
+The resulting Python 3.8.20 / torch 1.12.0+cu113 / torchvision 0.13.0+cu113 /
+timm 1.0.12 / Tutel 0.3 environment passes `pip check`, a real B64/K8 loader
+batch and CPU model construction. The final checkpoint passes
+`load_state_dict(strict=True)` with 297 model/checkpoint tensors,
+101,794,851 elements, and zero missing, unexpected, shape-mismatched or
+dtype-mismatched entries.
+
+This is checkpoint compatibility, not metric reproduction. The released model
+constructor forces CUDA, the exact cu113 stack has not passed on the RTX 4060,
+and the upstream loop evaluates official test every epoch before saving
+`MFRNetbest.pth` by test mAP. The official 80.7% mAP / 83.6% Rank-1 therefore
+remains a test-selected published value until a GPU run reproduces it. The
+source, environment, loader, checkpoint and claim boundary are frozen in
+`evidence/mfrnet_rgbnt201_checkpoint_audit_20260831.json`. The public repository
+also has no explicit `LICENSE` file, which is a reuse/distribution warning.
+
 ## Reproduce the DeMo implementation base
 
 DeMo's released CLIP loader hard-codes an unavailable author-machine path.

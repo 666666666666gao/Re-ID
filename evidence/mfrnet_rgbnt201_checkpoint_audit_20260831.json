@@ -1,0 +1,213 @@
+{
+  "audit_date": "2026-08-31",
+  "audit_scope": "official pinned source, direct official checkpoint download, isolated upstream runtime, real CPU RGBNT201 loader, and strict CPU checkpoint compatibility; no GPU forward and no metric reproduction",
+  "baseline": "MFRNet",
+  "checkpoint": {
+    "content_disposition_filename": "RGBNT201_MFRNetbest.pth",
+    "content_length_header": 407297967,
+    "download_url": "https://drive.usercontent.google.com/download?id=1zLlwmbOiygDJcaToyXkW8fmjUabZlmbU&export=download&confirm=t",
+    "downloaded_bytes": 407297967,
+    "initial_safe_inspection": {
+      "dtypes": [
+        "torch.float32",
+        "torch.int64"
+      ],
+      "non_tensor_entries": 0,
+      "runtime": "tri_reid torch 2.5.1+cu121",
+      "tensor_count": 297,
+      "tensor_elements": 101794851,
+      "weights_only": true
+    },
+    "local_path": "/root/mmreid-trifusion/checkpoints/MFRNet/RGBNT201_MFRNetbest.pth",
+    "readme_line": 55,
+    "sha256": "f0c2df33f3901738051a917e728c73d9b494113e1e327361bc8f1acf4711126e",
+    "strict_cpu_load": {
+      "checkpoint_elements": 101794851,
+      "checkpoint_tensors": 297,
+      "dtype_mismatches": 0,
+      "missing_keys": 0,
+      "model_elements": 101794851,
+      "model_tensors": 297,
+      "shape_mismatches": 0,
+      "strict": true,
+      "unexpected_keys": 0
+    }
+  },
+  "claim_boundary": {
+    "checkpoint_compatibility_proven": true,
+    "local_metric_reproduction_complete": false,
+    "paper_reported_metrics_percent": {
+      "mAP": 80.7,
+      "rank1": 83.6
+    },
+    "paper_reported_metrics_source": "official README table; not a local result",
+    "released_checkpoint_label": "test-selected best under the released EVAL_PERIOD=1 training loop",
+    "sota_claim_supported": false
+  },
+  "environment": {
+    "conda_dry_run_passed": true,
+    "environment_name": "mfrnet",
+    "path": "/root/miniconda3/envs/mfrnet",
+    "pip_check": "pass",
+    "rebuild_files": {
+      "environment/mfrnet_environment.yml": "bd1a8da962817b909de65d08489a7150e5e3b8cff875ade44247a7f646cb6687",
+      "environment/mfrnet_requirements-lock.txt": "be6394dedddf17a702df58561a65cf26f7a51dbdb8faff263f8fe109a33188e7",
+      "environment/mfrnet_tutel_source.txt": "26f1169866694c7938a47ef696163409088ba8cb0f03212abec2fba59bd475f2"
+    },
+    "runtime": {
+      "numpy": "1.24.3",
+      "python": "3.8.20",
+      "timm": "1.0.12",
+      "torch": "1.12.0+cu113",
+      "torch_cuda_build": "11.3",
+      "torchvision": "0.13.0+cu113",
+      "tutel_distribution": "0.3",
+      "user_site_disabled": true
+    },
+    "tutel": {
+      "build_cuda_extension": false,
+      "build_nccl_extension": false,
+      "cpu_custom_kernel_import_passed": true,
+      "official_commit": "d4c20c3e23c818b04b916930636ad762dbb3c8b0",
+      "official_tag": "v0.3.2",
+      "source_archive_bytes": 124768,
+      "source_archive_sha256": "d1f9bbe0fa9e73578a1cb9fdd17c0bfdebb06247ae7548b68f45e1a1b9c805ea",
+      "why_v0_3_2": "v0.3.0 self-identifies as distribution 0.2 and lacks the custom-expert constructor used by MFRNet; v0.3.2 self-identifies as 0.3 and constructs RepAdapter with the released arguments"
+    },
+    "upstream_requirements_portability": {
+      "author_local_torch_wheel_line": 286,
+      "author_local_torchvision_wheel_line": 295,
+      "portable_as_released": false,
+      "requirements_is_broad_machine_export": true
+    }
+  },
+  "loader_probe": {
+    "adaptations": [
+      "set DATASETS.ROOT_DIR to /root/mmreid-trifusion/data",
+      "set MODEL.PRETRAIN_PATH_T to the verified local OpenAI CLIP archive",
+      "set DATALOADER.NUM_WORKERS to 0",
+      "mask CUDA and disable Python user site"
+    ],
+    "camera_count": 4,
+    "num_classes": 171,
+    "num_query": 836,
+    "num_views": 1,
+    "pid_unique_in_train_batch": 8,
+    "source_config": {
+      "eval_period": 1,
+      "max_epochs": 45,
+      "num_instance": 8,
+      "optimizer": "Adam",
+      "reranking": "no",
+      "seed": 1111,
+      "size_test": [
+        256,
+        128
+      ],
+      "size_train": [
+        256,
+        128
+      ],
+      "test_batch": 128,
+      "train_batch": 64
+    },
+    "test_batch_shapes": {
+      "NI": [
+        128,
+        3,
+        256,
+        128
+      ],
+      "RGB": [
+        128,
+        3,
+        256,
+        128
+      ],
+      "TI": [
+        128,
+        3,
+        256,
+        128
+      ]
+    },
+    "train_batch_shapes": {
+      "NI": [
+        64,
+        3,
+        256,
+        128
+      ],
+      "RGB": [
+        64,
+        3,
+        256,
+        128
+      ],
+      "TI": [
+        64,
+        3,
+        256,
+        128
+      ]
+    },
+    "train_batches": 54,
+    "train_images": 3951,
+    "train_identities": 171,
+    "val_batches": 14,
+    "val_gallery_images": 836,
+    "val_gallery_identities": 30,
+    "val_query_images": 836,
+    "val_query_identities": 30
+  },
+  "pretrain": {
+    "bytes": 350837078,
+    "path": "/root/mmreid-trifusion/pretrained/ViT-B-16.pt",
+    "sha256": "5806e77cd80f8b59890b7e101eabd078d9fb84e6937f9e85e4ecb61988df416f"
+  },
+  "protocol": {
+    "checkpoint_period": 10,
+    "gallery_source": "complete RGBNT201/test list",
+    "official_test_evaluated_during_training": true,
+    "query_gallery_same_image_list": true,
+    "query_source": "complete RGBNT201/test list",
+    "same_identity_same_camera_removed_by_evaluator": true,
+    "test_selected_best_checkpoint": true,
+    "training_source": "RGBNT201/train_171"
+  },
+  "schema_version": 1,
+  "source": {
+    "actual_commit": "ec54a1302321cda4b5fad9ca1c0878dabf0b46b6",
+    "expected_commit": "ec54a1302321cda4b5fad9ca1c0878dabf0b46b6",
+    "files_sha256": {
+      "README.md": "05aa84e711d7fc3b862454f64470d8ea21dc2b61f57a97b0373516d77fd377ff",
+      "config/defaults.py": "e49e8b96010ef0358c021ab2ac6d694f8379bbc96773a8769b64ef23c870cdf2",
+      "configs/RGBNT201/MFRNet.yml": "fecef5e40461930b84f4313aca86f33617be25c37fa3459c39367e6b18caa43e",
+      "data/datasets/RGBNT201.py": "1a3dda88f26efc2891322e2726c4f3591bfd0c040cdf5c717d0aabc55f349272",
+      "data/datasets/make_dataloader.py": "96f77b1c82fa3017f8b6fa35673592251b1bfa11ea62baf2e9793fe475d17ba5",
+      "engine/processor.py": "84500edb4f39934f824645d81878652cd49a924981307d72d7f87fffca75a1ad",
+      "modeling/make_model.py": "41ae9606b3ff1f7d42ecd2468590964612e68439cc46f72e5a0f3f5fba98b5ba",
+      "modeling/make_model_clipreid.py": "50df77f073dd10e3b6e1e11b954accca0d6ba451d3e9af4de30c9a26a9eadef4",
+      "modeling/meta_arch.py": "c54afcccaac83c44a733825c7ce18262cddfb1d90d097b20355fb22c4b3bfc76",
+      "requirements.txt": "2d99f166bfc12dacaf0144069ae4975a246884ce1c2930740c2cdf3acdc3b4cf",
+      "test_net.py": "d0136fbe91dd7d7e9b4044637798ed0e26db44038b290a6beffbd3cefd1b77b3",
+      "utils/metrics.py": "86fa0951d76afcb8aa9bd4c365dd0ff43496ce6bbb296c41223b31a67d68efb0"
+    },
+    "license_file_present": false,
+    "license_warning": "public source availability is not an explicit open-source license grant",
+    "path": "/root/mmreid-trifusion/baselines/MFRNet",
+    "remote": "https://github.com/stone96123/MFRNet.git",
+    "status_after": "",
+    "status_before": ""
+  },
+  "training_readiness": {
+    "blockers": [
+      "the released constructor forces CUDA and no GPU forward/backward has passed",
+      "torch 1.12.0+cu113 compatibility with the RTX 4060 Ada GPU remains unverified",
+      "the released training loop selects its best checkpoint using official-test mAP",
+      "the repository has no explicit LICENSE file"
+    ],
+    "gpu_metric_evaluation_ready": false
+  },
+  "valid": true
+}

@@ -105,3 +105,7 @@
 | 2026-08-31 09:43 | /run-experiment | evidence/signal_source_protocol_audit_20260831.json | research | Signal clean source、B64/K8 真实 CPU loader、公开 fixed-path 日志、test-selection 与缺失权重边界证据 |
 | 2026-08-31 09:43 | /run-experiment | docs/BASELINE_PROTOCOL_AUDIT_2026-08-31.md | research | 将 Signal fixed-e50 路径、test-selected best 和未本机复现的报告边界纳入统一协议 |
 | 2026-08-31 09:43 | /run-experiment | docs/ENVIRONMENT_REPRODUCTION.md | research | 记录 Signal 固定源码、可接通数据链、CLIP 依赖及当前 checkpoint/GPU 阻塞 |
+| 2026-08-31 10:10 | /run-experiment | environment/mfrnet_environment.yml | implementation | MFRNet Python 3.8.20 隔离环境的 conda 基础重建入口 |
+| 2026-08-31 10:10 | /run-experiment | environment/mfrnet_requirements-lock.txt | implementation | torch1.12+cu113 与 MFRNet 最小评估运行时的无用户站点版本锁 |
+| 2026-08-31 10:10 | /run-experiment | environment/mfrnet_tutel_source.txt | implementation | 固定 Tutel v0.3.2 commit 与源码归档 SHA 的第二阶段构建输入 |
+| 2026-08-31 10:10 | /run-experiment | evidence/mfrnet_rgbnt201_checkpoint_audit_20260831.json | research | MFRNet 官方权重下载、隔离环境、B64/K8 loader、297/297 strict load 与 test-selection 边界证据 |

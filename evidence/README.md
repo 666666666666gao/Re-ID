@@ -22,6 +22,9 @@ sha256sum -c evidence/SHA256SUMS
 - Comparator audits: PEFT-BoA and Signal pinned-source, released-protocol,
   environment/loader and claim-boundary receipts. Signal's public log is
   explicitly not treated as a local checkpoint result.
+- MFRNet checkpoint comparator: direct official weight download, isolated
+  Python 3.8/torch 1.12/Tutel environment, real loader and 297/297 strict CPU
+  state match. No GPU metric is implied by this receipt.
 - DeMo implementation base: synthetic and real-data training gates, the
   excluded TB128 paging-pressure run, the accepted TB64 live gate, a bounded
   post-launch provenance observation, and the terminal R012 incident receipt.
@@ -96,6 +99,12 @@ the source B64/K8 real loader shapes and the released 80.3% / 85.2% test log.
 It also records the missing checkpoint bytes, hard-coded author paths and
 per-epoch official-test selection behavior. Consequently it supports protocol
 and portability claims only; it does not support a local metric comparison.
+
+The MFRNet receipt binds the 407,297,967-byte official checkpoint at SHA-256
+`f0c2df33…711126e`, the clean source commit, pinned two-phase environment,
+source B64/K8 loader and exact 297-tensor model/checkpoint match. It records
+that official-test mAP selects the released best and that no GPU forward or
+metric evaluation has run; 80.7% / 83.6% remains an upstream value.
 
 Absolute paths inside JSON records identify the WSL2 machine on which the
 evidence was produced. File hashes, source commits and protocol fields are the

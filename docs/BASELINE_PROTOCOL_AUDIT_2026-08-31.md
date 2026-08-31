@@ -3,7 +3,8 @@
 **Status:** verified against clean official checkouts for DeMo commit
 `b4f323a430b32e3a1637c3e7acb25868cb52e9cd`, PEFT-BoA commit
 `d2b198be634ac4f9f5744eebf6e0a6604e490deb`, and Signal commit
-`cd1b0a672d1fe642e7608731cb4899a19dda7d51`.
+`cd1b0a672d1fe642e7608731cb4899a19dda7d51`, plus MFRNet commit
+`ec54a1302321cda4b5fad9ca1c0878dabf0b46b6`.
 
 ## DeMo
 
@@ -98,6 +99,31 @@ reports `Signalbest.pth`, that result must instead carry a `test-selected`
 label. The periodic epoch-50 artifact and test-selected best belong in separate
 columns even if their rounded metrics happen to match.
 
+## MFRNet
+
+### Direct source, checkpoint and loader evidence
+
+| Fact | Upstream or local evidence | Consequence |
+|---|---|---|
+| Released RGBNT201 config is B64/K8, seed 1111, 45 epochs, no reranking and `EVAL_PERIOD=1` | `configs/RGBNT201/MFRNet.yml`; `config/defaults.py:138-146` | Training reads official-test metrics after every epoch. |
+| Query and gallery both use the complete RGBNT201 `test` list | `data/datasets/RGBNT201.py:26-34`; real loader probe | Its `val_loader` is official-test evaluation. |
+| `MFRNetbest.pth` is overwritten when official-test mAP improves | `engine/processor.py:119-137` | The released best checkpoint is test-selected. |
+| Official checkpoint has 407,297,967 bytes and SHA-256 `f0c2df33…711126e` | Direct official Google Drive download | The exact local artifact is durable and identifiable. |
+| The isolated upstream model and checkpoint match 297/297 tensors under `strict=True` | CPU construction with Tutel v0.3.2 and verified CLIP | Checkpoint architecture compatibility is proven without claiming metrics. |
+
+The source/environment/checkpoint receipt is
+`evidence/mfrnet_rgbnt201_checkpoint_audit_20260831.json`. It also records that
+the repository has no explicit license and its released requirements contain
+author-local wheel URLs.
+
+### Interpretation
+
+MFRNet 80.7 / 83.6 is still an upstream test-selected result. Once the local GPU
+gate permits evaluation, the downloaded checkpoint can be used for released-
+protocol parity, but that local result must retain the `test-selected released
+checkpoint` label. It is not the clean model-selection comparator and cannot
+replace the frozen dev-selection/final-once policy for TriFusion.
+
 ## Binding reporting policy
 
 1. **DeMo official reproduction column:** report the best joint test result and
@@ -108,14 +134,17 @@ columns even if their rounded metrics happen to match.
 3. **Signal reference column:** label 80.3 / 85.2 as an upstream fixed-path
    test-log value until the exact weight is hashed and evaluated locally;
    always separate any `Signalbest.pth` test-selected result.
-4. **Matched fair baseline column:** report the pre-registered `DeMo_50.pth`
+4. **MFRNet checkpoint column:** label the downloaded official checkpoint and
+   any parity result as `test-selected (released protocol)`; strict loading is
+   not metric reproduction.
+5. **Matched fair baseline column:** report the pre-registered `DeMo_50.pth`
    and locally trained `BoA_120_fixed.pth`, regardless of whether an earlier
    test epoch is better.
-5. **TriFusion selection:** use only the frozen 141-fit/30-dev protocol for
+6. **TriFusion selection:** use only the frozen 141-fit/30-dev protocol for
    architecture and checkpoint decisions, then retrain the promoted
    configuration on all 171 training identities and evaluate the official test
    once.
-6. **No SOTA claim from a baseline calibration:** neither an interim epoch nor
+7. **No SOTA claim from a baseline calibration:** neither an interim epoch nor
    a test-best checkpoint is sufficient for a SOTA claim. Same-resource public
    comparisons, final test evaluation, ablations and multi-seed evidence remain
    mandatory.
