@@ -129,6 +129,7 @@ def test_trifusion_low_vram_profile_keeps_full_core_with_valid_pk_batch(
         "num_workers": 0,
         "gradient_accumulation": 1,
         "amp": True,
+        "amp_init_scale": 1024.0,
         "max_epochs": 60,
     }
     assert receipt["variant_contract"]["active_experts"] == [

@@ -43,6 +43,7 @@ RESOURCE_PROFILES = {
         "num_workers": 0,
         "gradient_accumulation": 1,
         "amp": True,
+        "amp_init_scale": 65536.0,
         "max_epochs": 60,
     },
     "low_vram_b8k4": {
@@ -52,6 +53,7 @@ RESOURCE_PROFILES = {
         "num_workers": 0,
         "gradient_accumulation": 1,
         "amp": True,
+        "amp_init_scale": 1024.0,
         "max_epochs": 60,
     },
 }
@@ -191,6 +193,7 @@ def _preflight(config_path: Path, variant: str) -> dict[str, Any]:
         "num_workers": int(config["DATA"]["NUM_WORKERS"]),
         "gradient_accumulation": int(config["OPTIMIZATION"]["GRADIENT_ACCUMULATION"]),
         "amp": bool(config["OPTIMIZATION"]["AMP"]),
+        "amp_init_scale": float(config["OPTIMIZATION"].get("AMP_INIT_SCALE", 65536.0)),
         "max_epochs": int(config["OPTIMIZATION"]["MAX_EPOCHS"]),
     }
     resource_profile = str(
@@ -801,7 +804,10 @@ def _worker_capacity(
                 target_cache=None,
                 triplet_margin=float(config["LOSS"]["TRIPLET_MARGIN"]),
             ).cuda()
-        scaler = torch.cuda.amp.GradScaler(enabled=bool(config["OPTIMIZATION"]["AMP"]))
+        scaler = torch.cuda.amp.GradScaler(
+            enabled=bool(config["OPTIMIZATION"]["AMP"]),
+            init_scale=float(config["OPTIMIZATION"].get("AMP_INIT_SCALE", 65536.0)),
+        )
         if contract["family"] == "standalone":
             expert_name = contract["active_experts"][0]
             loss_weights = {
@@ -1170,7 +1176,10 @@ def _worker_dev(config_path: Path, variant: str, output_dir: Path) -> int:
                 triplet_margin=float(config["LOSS"]["TRIPLET_MARGIN"]),
             ).cuda()
         amp_enabled = bool(config["OPTIMIZATION"]["AMP"])
-        scaler = torch.cuda.amp.GradScaler(enabled=amp_enabled)
+        scaler = torch.cuda.amp.GradScaler(
+            enabled=amp_enabled,
+            init_scale=float(config["OPTIMIZATION"].get("AMP_INIT_SCALE", 65536.0)),
+        )
         if contract["family"] == "standalone":
             expert_name = contract["active_experts"][0]
             loss_weights = {
