@@ -592,9 +592,9 @@ class CIRCTargetBuilderTests(unittest.TestCase):
         )
         source_sha256 = trifusion_source_hashes()
         state_hashes = (
-            "ed2562fdf682d2131f1a7882f4451a30dafba8ee916c8d8488348b86f47d1f7f",
-            "c10074aef181c4a987d35379185a7c4cbd3febbc71bc8f4dd527294846d9d60b",
-            "eab9636a2e52ebe3c7e0fa28ebe733416a2bd0a0ee887aefa04a1e40750a2418",
+            "a568ae625969063e386ca78d6b400b8e0cbf643a557c7327b6417a72df6a61e5",
+            "1d8dce2faab4e2eb54ca6f35d62709564b0e02f72bf96310c86abc82b31f9c58",
+            "3abc817562c7389fdad9fdda39183b6e5413581386072fac49f09eeb9e93e80d",
         )
 
         def canonical_sha256(value: object) -> str:
@@ -770,7 +770,10 @@ class CIRCTargetBuilderTests(unittest.TestCase):
                 ).hexdigest()
                 checkpoint = fold_output / "generator.pth"
                 torch.save(
-                    {"weight": torch.tensor([float(fold)], dtype=torch.float32)},
+                    {
+                        "num_batches_tracked": torch.tensor(0, dtype=torch.int64),
+                        "weight": torch.tensor([float(fold)], dtype=torch.float32),
+                    },
                     checkpoint,
                 )
                 checkpoint_sha256 = hashlib.sha256(
@@ -895,12 +898,18 @@ class CIRCTargetBuilderTests(unittest.TestCase):
                 fold_zero_receipt_path.read_text(encoding="utf-8")
             )
             replaced_checkpoint = output / "fold-0/generator.pth"
-            torch.save({"weight": torch.tensor([99.0])}, replaced_checkpoint)
+            torch.save(
+                {
+                    "num_batches_tracked": torch.tensor(0, dtype=torch.int64),
+                    "weight": torch.tensor([99.0]),
+                },
+                replaced_checkpoint,
+            )
             fold_zero_receipt["checkpoint_sha256"] = hashlib.sha256(
                 replaced_checkpoint.read_bytes()
             ).hexdigest()
             fold_zero_receipt["model_state_sha256"] = (
-                "992a6f9b109d2cb38dc4bbe9ff9da300667882805adb9b995b5ac4c2efb078e7"
+                "2ad3188e55525b7538309c3da17de8106d70a0f4c4863857cc48502a7ab2db93"
             )
             fold_zero_receipt_path.write_text(
                 json.dumps(fold_zero_receipt),
