@@ -12,7 +12,7 @@ CIRC_PROTOCOL_PATH = (
     Path(__file__).resolve().parents[2] / "protocols/circ_target_v1.json"
 )
 CIRC_PROTOCOL_SHA256 = (
-    "3674cdd4716a80e783e5f30993ff8f0f9cb5bbaebda1d22fcf0b9b91400dede5"
+    "ce27b49cb8b4fa787d871472d3322fef523a7d78376b94283fd9c1fb5af956f2"
 )
 
 
@@ -35,6 +35,20 @@ def load_trusted_circ_protocol(path: Path | str) -> tuple[dict[str, Any], str]:
     payload = json.loads(resolved.read_text(encoding="utf-8"))
     if payload.get("schema_version") != "circ-protocol-v1":
         raise ValueError("trusted CIRC protocol has an unsupported schema")
+    project = Path(__file__).resolve().parents[2]
+    registered_files = payload.get("implementation", {}).get("files_sha256", {})
+    if not isinstance(registered_files, dict) or not registered_files:
+        raise ValueError("trusted CIRC protocol lacks implementation hashes")
+    for relative_path, expected_sha256 in registered_files.items():
+        source_path = (project / str(relative_path)).resolve()
+        if (
+            project not in source_path.parents
+            or not source_path.is_file()
+            or sha256_file(source_path) != expected_sha256
+        ):
+            raise ValueError(
+                f"CIRC implementation differs from frozen protocol: {relative_path}"
+            )
     return payload, CIRC_PROTOCOL_SHA256
 
 
