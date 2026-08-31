@@ -1,6 +1,11 @@
 """Public TriFusion-ReID collaboration seams and result types."""
 
 from .encoder import TriBranchEncoder
+from .experts.semantic_residual import (
+    SemanticCNNExpert,
+    SemanticMambaExpert,
+    SemanticTransformerExpert,
+)
 from .fusion import CollaborativeFusion, FusionResult
 from .model import TriFusionOutput, TriFusionReID
 from .peer_teaching import PeerTeachingResult, RoleDirectedPeerTeaching
@@ -20,6 +25,9 @@ __all__ = [
     "HeterogeneousRelay",
     "ReliabilityPosterior",
     "CollaborativeFusion",
+    "SemanticCNNExpert",
+    "SemanticMambaExpert",
+    "SemanticTransformerExpert",
     "RoleDirectedPeerTeaching",
     "TriFusionReID",
 ]

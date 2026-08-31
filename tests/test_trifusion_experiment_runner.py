@@ -9,6 +9,7 @@ import sys
 from types import SimpleNamespace
 
 import pytest
+import yaml
 
 
 PROJECT = Path(__file__).resolve().parents[1]
@@ -58,6 +59,53 @@ def test_circ_training_begins_with_router_only_immutable_target_phase() -> None:
             "encoder.experts.cnn.stem.weight",
         }
     )
+
+
+def test_shared_semantic_optimizer_keeps_the_full_clip_trunk_at_pretrained_lr() -> None:
+    import tools.run_trifusion_experiment as runner
+
+    parameters = {
+        "encoder.tokenizer.patch_projection.weight": SimpleNamespace(
+            requires_grad=True, label="patch"
+        ),
+        "encoder.tokenizer.positional_embedding": SimpleNamespace(
+            requires_grad=True, label="position"
+        ),
+        "encoder.tokenizer.class_embedding": SimpleNamespace(
+            requires_grad=True, label="class"
+        ),
+        "encoder.tokenizer.pre_norm.weight": SimpleNamespace(
+            requires_grad=True, label="pre_norm"
+        ),
+        "encoder.tokenizer.shared_blocks.0.block.attn.in_proj_weight": SimpleNamespace(
+            requires_grad=True, label="shared_block"
+        ),
+        "encoder.tokenizer.post_norm.weight": SimpleNamespace(
+            requires_grad=True, label="post_norm"
+        ),
+        "encoder.tokenizer.modality_embedding.weight": SimpleNamespace(
+            requires_grad=True, label="modality_adapter"
+        ),
+        "encoder.experts.cnn.stages.0.0.down.weight": SimpleNamespace(
+            requires_grad=True, label="cnn_adapter"
+        ),
+        "fusion.contribution_projections.cnn.weight": SimpleNamespace(
+            requires_grad=True, label="clip_initialized_fusion"
+        ),
+    }
+    model = SimpleNamespace(named_parameters=lambda: parameters.items())
+
+    pretrained, new = runner._partition_trainable_parameters(
+        model,
+        family="collaborative",
+        architecture="shared_semantic_residual",
+    )
+
+    assert [parameter.label for parameter in pretrained] == [
+        "patch", "position", "class", "pre_norm", "shared_block", "post_norm",
+        "clip_initialized_fusion",
+    ]
+    assert [parameter.label for parameter in new] == ["modality_adapter", "cnn_adapter"]
 
 
 def test_protocol_validator_git_status_detects_uncommitted_drift(monkeypatch) -> None:
@@ -420,6 +468,136 @@ def test_trifusion_low_vram_profile_keeps_full_core_with_valid_pk_batch(
     assert receipt["training_started"] is False
 
 
+def test_trifusion_rtx3090_profile_selects_shared_semantic_b32k4(
+    tmp_path: Path,
+) -> None:
+    fake_bin = tmp_path / "rtx3090-gpu"
+    fake_bin.mkdir()
+    nvidia_smi = fake_bin / "nvidia-smi"
+    nvidia_smi.write_text(
+        "#!/bin/sh\nprintf 'NVIDIA GeForce RTX 3090, 120, 24576\\n'\n",
+        encoding="utf-8",
+    )
+    nvidia_smi.chmod(0o755)
+    output_dir = tmp_path / "rtx3090-preflight"
+    config = (
+        PROJECT
+        / "configs/RGBNT201/TriFusion-shared-semantic-rtx3090.yml"
+    )
+    env = dict(os.environ)
+    env["PATH"] = f"{fake_bin}:{env['PATH']}"
+    completed = subprocess.run(
+        [
+            sys.executable,
+            str(RUNNER),
+            "--mode",
+            "preflight",
+            "--variant",
+            "core_pre_circ",
+            "--config",
+            str(config),
+            "--output-dir",
+            str(output_dir),
+        ],
+        cwd=PROJECT,
+        env=env,
+        check=False,
+        capture_output=True,
+        text=True,
+    )
+
+    assert completed.returncode == 0, completed.stdout + completed.stderr
+    receipt = json.loads(
+        (output_dir / "preflight.json").read_text(encoding="utf-8")
+    )
+    assert receipt["status"] == "READY"
+    assert receipt["resource_profile"] == "rtx3090_b32k4"
+    assert receipt["model_architecture"] == "shared_semantic_residual"
+    assert receipt["gradient_checkpointing"] is True
+    assert receipt["optimization"] == {
+        "train_batch_size": 32,
+        "num_instances": 4,
+        "eval_batch_size": 64,
+        "num_workers": 4,
+        "gradient_accumulation": 1,
+        "amp": True,
+        "amp_init_scale": 512.0,
+        "max_epochs": 60,
+    }
+    assert receipt["gpu_gate"] == {
+        "policy": "minimum_free_memory",
+        "required_free_mib": 22000,
+        "observed_free_mib": 24456,
+        "passed": True,
+    }
+
+
+def test_shared_semantic_rtx3090_configs_cover_the_complete_main_pipeline() -> None:
+    config_root = PROJECT / "configs/RGBNT201"
+    generator_path = (
+        config_root / "TriFusion-circ-generator-shared-semantic-rtx3090.yml"
+    )
+    development_path = (
+        config_root / "TriFusion-circ-urgc-shared-semantic-rtx3090.yml"
+    )
+    final_path = (
+        config_root
+        / "TriFusion-circ-urgc-postfreeze-final-shared-semantic-rtx3090.yml"
+    )
+    generator = yaml.safe_load(generator_path.read_text(encoding="utf-8"))
+    development = yaml.safe_load(development_path.read_text(encoding="utf-8"))
+    final = yaml.safe_load(final_path.read_text(encoding="utf-8"))
+
+    assert generator["EXPERIMENT"]["VARIANT"] == "hfer_uniform_generator"
+    assert development["EXPERIMENT"]["VARIANT"] == "trifusion_circ_urgc"
+    assert final["EXPERIMENT"]["VARIANT"] == "trifusion_circ_urgc"
+    for config in (generator, development, final):
+        assert config["EXPERIMENT"]["RESOURCE_PROFILE"] == "rtx3090_b32k4"
+        assert config["DATA"]["TRAIN_BATCH_SIZE"] == 32
+        assert config["DATA"]["NUM_INSTANCES"] == 4
+        assert config["MODEL"]["ARCHITECTURE"] == "shared_semantic_residual"
+        assert config["MODEL"]["ADAPTER_WIDTH"] == 192
+        assert config["MODEL"]["GRADIENT_CHECKPOINTING"] is True
+        assert config["OPTIMIZATION"]["AMP_INIT_SCALE"] == 512.0
+
+    selector_root = (
+        "/root/autodl-tmp/trifusion-v2/artifacts/"
+        "trifusion_shared_semantic_hfer_uniform_selector_seed42"
+    )
+    assert development["CIRC"]["WARM_START_CHECKPOINT"] == (
+        selector_root + "/best_dev_model.pth"
+    )
+    assert final["CIRC"]["WARM_START_RECEIPT"] == (
+        selector_root + "/best_dev_receipt.json"
+    )
+    assert "development" in development["CIRC"]["TARGET_CACHE"]
+    assert "postfreeze_final" in final["CIRC"]["TARGET_CACHE"]
+
+    generator_orchestration = json.loads(
+        (
+            config_root
+            / "CIRC-generators-development-shared-semantic-rtx3090.json"
+        ).read_text(encoding="utf-8")
+    )
+    scoring_orchestration = json.loads(
+        (
+            config_root
+            / "CIRC-score-development-shared-semantic-rtx3090.json"
+        ).read_text(encoding="utf-8")
+    )
+    transfer_orchestration = json.loads(
+        (
+            config_root
+            / "CIRC-transfer-development-shared-semantic-rtx3090.json"
+        ).read_text(encoding="utf-8")
+    )
+    assert generator_orchestration["generator_config"] == generator_path.name
+    assert scoring_orchestration["generator_orchestration_config"] == (
+        "CIRC-generators-development-shared-semantic-rtx3090.json"
+    )
+    assert transfer_orchestration["model_config"] == development_path.name
+
+
 def test_trifusion_capacity_runs_eight_train_only_steps_after_gate(tmp_path: Path) -> None:
     fake_bin = tmp_path / "capacity-gpu"
     fake_bin.mkdir()
@@ -443,6 +621,7 @@ def test_trifusion_capacity_runs_eight_train_only_steps_after_gate(tmp_path: Pat
         "'gradient_safety_pass': True, 'model_parameters_finite': True, "
         "'amp_overflow_events': 1, 'amp_overflow_recovered': True, "
         "'last_step_gradients_finite': True, 'gradient_parameter_coverage': 1.0, "
+        "'model_constructed': True, 'training_started': True, "
         "'official_test_access_count': 0, 'dev_loader_iterations': 0, "
         "'parameter_budget_pass': True, 'total_parameters': 95874282, "
         "'peak_allocated_mib': 6100.0, 'peak_reserved_mib': 6900.0}\n"
@@ -489,6 +668,8 @@ def test_trifusion_capacity_runs_eight_train_only_steps_after_gate(tmp_path: Pat
     assert receipt["finite_losses"] is True
     assert receipt["gradient_parameter_coverage"] == 1.0
     assert receipt["parameter_budget_pass"] is True
+    assert receipt["model_constructed"] is True
+    assert receipt["training_started"] is True
     assert invocation["CUDA_VISIBLE_DEVICES"] == "0"
 
 
@@ -515,6 +696,7 @@ def test_trifusion_low_vram_capacity_enforces_the_profile_batch_contract(
         "'gradient_safety_pass': True, 'model_parameters_finite': True, "
         "'amp_overflow_events': 0, 'amp_overflow_recovered': False, "
         "'last_step_gradients_finite': True, 'gradient_parameter_coverage': 1.0, "
+        "'model_constructed': True, 'training_started': True, "
         "'official_test_access_count': 0, 'dev_loader_iterations': 0, "
         "'parameter_budget_pass': True, 'total_parameters': 95874282, "
         "'peak_allocated_mib': 4800.0, 'peak_reserved_mib': 5600.0}\n"

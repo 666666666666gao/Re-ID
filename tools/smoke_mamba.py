@@ -13,12 +13,42 @@ import torch
 from mamba_ssm import Mamba
 
 
+def _source_provenance(
+    *,
+    causal_conv1d_commit: str | None,
+    mamba_commit: str | None,
+    causal_conv1d_patch_sha256: str | None,
+    mamba_patch_sha256: str | None,
+) -> dict[str, str] | None:
+    fields = {
+        "causal_conv1d_commit": causal_conv1d_commit,
+        "mamba_commit": mamba_commit,
+        "causal_conv1d_patch_sha256": causal_conv1d_patch_sha256,
+        "mamba_patch_sha256": mamba_patch_sha256,
+    }
+    if all(value is None for value in fields.values()):
+        return None
+    if any(value is None for value in fields.values()):
+        raise ValueError("all source provenance fields must be supplied together")
+    return {name: str(value) for name, value in fields.items()}
+
+
 def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("--json-out", type=Path)
     parser.add_argument("--seed", type=int, default=1555)
+    parser.add_argument("--causal-conv1d-commit")
+    parser.add_argument("--mamba-commit")
+    parser.add_argument("--causal-conv1d-patch-sha256")
+    parser.add_argument("--mamba-patch-sha256")
     args = parser.parse_args()
 
+    source_provenance = _source_provenance(
+        causal_conv1d_commit=args.causal_conv1d_commit,
+        mamba_commit=args.mamba_commit,
+        causal_conv1d_patch_sha256=args.causal_conv1d_patch_sha256,
+        mamba_patch_sha256=args.mamba_patch_sha256,
+    )
     if not torch.cuda.is_available():
         raise RuntimeError("Mamba smoke requires an NVIDIA CUDA device")
     torch.manual_seed(args.seed)
@@ -62,6 +92,8 @@ def main() -> int:
         "cuda_peak_mib": torch.cuda.max_memory_allocated(device) / 1_048_576,
         "seed": args.seed,
     }
+    if source_provenance is not None:
+        report["source_provenance"] = source_provenance
     encoded = json.dumps(report, ensure_ascii=False, indent=2, sort_keys=True)
     print(encoded)
     if args.json_out:

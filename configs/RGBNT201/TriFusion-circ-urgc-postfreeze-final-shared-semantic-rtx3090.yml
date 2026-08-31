@@ -1,0 +1,61 @@
+SCHEMA_VERSION: 1
+EXPERIMENT:
+  NAME: trifusion_rgbnt201_shared_semantic_circ_urgc_postfreeze_final
+  VARIANT: trifusion_circ_urgc
+  RESOURCE_PROFILE: rtx3090_b32k4
+  SEED: 42
+DATA:
+  DATASET_ROOT: /root/autodl-tmp/trifusion-v2/data/RGBNT201
+  DEV_PROTOCOL: protocols/rgbnt201_dev_v1.json
+  TRAIN_BATCH_SIZE: 32
+  NUM_INSTANCES: 4
+  EVAL_BATCH_SIZE: 64
+  NUM_WORKERS: 4
+MODEL:
+  ARCHITECTURE: shared_semantic_residual
+  CLIP_CHECKPOINT: /root/autodl-tmp/trifusion-v2/pretrained/ViT-B-16.pt
+  IMAGE_SIZE: [256, 128]
+  PATCH_SIZE: 16
+  CNN_WIDTH: 256
+  MAMBA_WIDTH: 256
+  ADAPTER_WIDTH: 192
+  GRADIENT_CHECKPOINTING: true
+  RELAY_RANK: 64
+  EMBEDDING_WIDTH: 512
+  PRIVATE_WIDTH: 64
+  PARAMETER_BUDGET: 120000000
+OPTIMIZATION:
+  OPTIMIZER: AdamW
+  NEW_MODULE_LR: 0.0003
+  PRETRAINED_LR: 0.000005
+  WEIGHT_DECAY: 0.0001
+  MAX_EPOCHS: 60
+  ROUTER_WARM_EPOCHS: 7
+  WARMUP_EPOCHS: 5
+  GRADIENT_ACCUMULATION: 1
+  AMP: true
+  AMP_INIT_SCALE: 512.0
+LOSS:
+  ID_FUSED: 1.0
+  TRIPLET_FUSED: 1.0
+  ID_BRANCH: 0.5
+  TRIPLET_BRANCH: 0.5
+  RELIABILITY: 1.0
+  BRIER_WEIGHT: 1.0
+  EVIDENCE_WEIGHT: 0.1
+  PEER_LOGITS: 0.0
+  PEER_ROLE: 0.0
+  PRIVATE_DIVERSITY: 0.0
+  TRIPLET_MARGIN: 0.3
+CIRC:
+  TARGET_CACHE: /root/autodl-tmp/trifusion-v2/artifacts/trifusion_shared_semantic_circ_targets_postfreeze_final_seed42/cache
+  SCORING_RECEIPT: /root/autodl-tmp/trifusion-v2/artifacts/trifusion_shared_semantic_circ_targets_postfreeze_final_seed42/scoring_receipt.json
+  WARM_START_CHECKPOINT: /root/autodl-tmp/trifusion-v2/artifacts/trifusion_shared_semantic_hfer_uniform_selector_seed42/best_dev_model.pth
+  WARM_START_RECEIPT: /root/autodl-tmp/trifusion-v2/artifacts/trifusion_shared_semantic_hfer_uniform_selector_seed42/best_dev_receipt.json
+PROTOCOL:
+  CIRC_PROTOCOL: protocols/circ_target_v1.json
+  OFFICIAL_TEST_DURING_DEVELOPMENT: false
+  OFFICIAL_TEST_EVALUATIONS_AFTER_FIXED_ENDPOINT: 1
+  RERANKING: false
+  MODEL_SELECTION: none_fixed_endpoint
+  PRIMARY_METRICS: [mAP, Rank-1, Rank-5, Rank-10]

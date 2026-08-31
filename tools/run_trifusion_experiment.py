@@ -62,6 +62,16 @@ RESOURCE_PROFILES = {
         "amp_init_scale": 1024.0,
         "max_epochs": 60,
     },
+    "rtx3090_b32k4": {
+        "train_batch_size": 32,
+        "num_instances": 4,
+        "eval_batch_size": 64,
+        "num_workers": 4,
+        "gradient_accumulation": 1,
+        "amp": True,
+        "amp_init_scale": 512.0,
+        "max_epochs": 60,
+    },
 }
 
 
@@ -117,6 +127,58 @@ def _collaborative_reliability_mode(contract: dict[str, Any]) -> str:
     if reliability in ("joint_beta_observational", "joint_beta_circ"):
         return "joint_beta"
     raise ValueError(f"unsupported collaborative reliability mode: {reliability}")
+
+
+def _partition_trainable_parameters(
+    model: Any,
+    *,
+    family: str,
+    architecture: str = "legacy_parallel",
+) -> tuple[list[Any], list[Any]]:
+    if family == "standalone":
+        pretrained_tokens = (
+            "tokenizer.patch_projection",
+            "tokenizer.positional_embedding",
+            "expert.blocks",
+            "expert.class_embedding",
+            "expert.class_position",
+            "expert.pre_norm",
+            "expert.post_norm",
+        )
+    elif family == "collaborative":
+        pretrained_tokens = (
+            "encoder.tokenizer.patch_projection",
+            "encoder.tokenizer.positional_embedding",
+            "encoder.tokenizer.class_embedding",
+            "encoder.tokenizer.pre_norm",
+            "encoder.tokenizer.shared_blocks",
+            "encoder.tokenizer.post_norm",
+            "encoder.experts.transformer.blocks",
+            "encoder.experts.transformer.class_embedding",
+            "encoder.experts.transformer.class_position",
+            "encoder.experts.transformer.pre_norm",
+            "encoder.experts.transformer.post_norm",
+        )
+        if architecture == "shared_semantic_residual":
+            pretrained_tokens = (
+                *pretrained_tokens,
+                "fusion.contribution_projections",
+            )
+    else:
+        raise ValueError(f"unsupported model family: {family}")
+
+    pretrained_parameters = []
+    new_parameters = []
+    for name, parameter in model.named_parameters():
+        if not parameter.requires_grad:
+            continue
+        target = (
+            pretrained_parameters
+            if any(token in name for token in pretrained_tokens)
+            else new_parameters
+        )
+        target.append(parameter)
+    return pretrained_parameters, new_parameters
 
 
 def _atomic_json(path: Path, payload: dict[str, Any]) -> None:
@@ -267,9 +329,13 @@ def _gpu_gate(gpu: dict[str, Any], resource_profile: str) -> dict[str, Any]:
             "error": gpu.get("error"),
             "passed": False,
         }
-    if resource_profile == "low_vram_b8k4":
+    minimum_free_memory = {
+        "low_vram_b8k4": 6144,
+        "rtx3090_b32k4": 22000,
+    }
+    if resource_profile in minimum_free_memory:
         observed_free_mib = int(gpu["memory_total_mib"]) - int(gpu["memory_used_mib"])
-        required_free_mib = 6144
+        required_free_mib = minimum_free_memory[resource_profile]
         return {
             "policy": "minimum_free_memory",
             "required_free_mib": required_free_mib,
@@ -722,10 +788,18 @@ def _preflight(
         "variant_contract": contract,
         "variant_contract_sha256": variant_sha256(contract),
         "resource_profile": resource_profile,
+        "model_architecture": str(
+            config.get("MODEL", {}).get("ARCHITECTURE", "legacy_parallel")
+        ),
+        "gradient_checkpointing": bool(
+            config.get("MODEL", {}).get("GRADIENT_CHECKPOINTING", False)
+        ),
         "status": "READY" if not blockers else "BLOCKED",
         "launch_allowed": not blockers,
         "required_memory_used_strictly_below_mib": (
-            500 if resource_profile != "low_vram_b8k4" else None
+            500
+            if resource_profile not in ("low_vram_b8k4", "rtx3090_b32k4")
+            else None
         ),
         "blockers": blockers,
         "gpu": gpu,
@@ -827,6 +901,8 @@ def _capacity(
         "gradient_safety_pass": True,
         "model_parameters_finite": True,
         "gradient_parameter_coverage": 1.0,
+        "model_constructed": True,
+        "training_started": True,
         "official_test_access_count": 0,
         "dev_loader_iterations": 0,
         "parameter_budget_pass": True,
@@ -1315,6 +1391,9 @@ def _worker_capacity(
                 config["MODEL"]["CLIP_CHECKPOINT"],
                 relay_rank=int(config["MODEL"]["RELAY_RANK"]),
                 reliability_mode=_collaborative_reliability_mode(contract),
+                architecture=str(config["MODEL"].get("ARCHITECTURE", "legacy_parallel")),
+                adapter_width=int(config["MODEL"].get("ADAPTER_WIDTH", 192)),
+                gradient_checkpointing=bool(config["MODEL"].get("GRADIENT_CHECKPOINTING", False)),
                 **build_kwargs,
             )
         model = built.model.cuda()
@@ -1324,38 +1403,13 @@ def _worker_capacity(
         optimizer_parameter_names = {
             name for name, parameter in model.named_parameters() if parameter.requires_grad
         }
-        pretrained_tokens = (
-            (
-                "tokenizer.patch_projection",
-                "tokenizer.positional_embedding",
-                "expert.blocks",
-                "expert.class_embedding",
-                "expert.class_position",
-                "expert.pre_norm",
-                "expert.post_norm",
-            )
-            if contract["family"] == "standalone"
-            else (
-                "encoder.tokenizer.patch_projection",
-                "encoder.tokenizer.positional_embedding",
-                "encoder.experts.transformer.blocks",
-                "encoder.experts.transformer.class_embedding",
-                "encoder.experts.transformer.class_position",
-                "encoder.experts.transformer.pre_norm",
-                "encoder.experts.transformer.post_norm",
-            )
+        pretrained_parameters, new_parameters = _partition_trainable_parameters(
+            model,
+            family=str(contract["family"]),
+            architecture=str(
+                config["MODEL"].get("ARCHITECTURE", "legacy_parallel")
+            ),
         )
-        pretrained_parameters = []
-        new_parameters = []
-        for name, parameter in model.named_parameters():
-            if not parameter.requires_grad:
-                continue
-            target = (
-                pretrained_parameters
-                if any(token in name for token in pretrained_tokens)
-                else new_parameters
-            )
-            target.append(parameter)
         optimizer = torch.optim.AdamW(
             [
                 {
@@ -1527,6 +1581,8 @@ def _worker_capacity(
                 "initial_loss": initial_loss,
                 "final_loss": final_loss,
                 "loss_ratio": loss_ratio,
+                "model_constructed": True,
+                "training_started": True,
                 "official_test_access_count": 0,
                 "dev_loader_iterations": 0,
                 "parameter_budget_pass": bool(built.provenance["parameter_budget_pass"]),
@@ -1796,6 +1852,9 @@ def _worker_dev(
                 config["MODEL"]["CLIP_CHECKPOINT"],
                 relay_rank=int(config["MODEL"]["RELAY_RANK"]),
                 reliability_mode=_collaborative_reliability_mode(contract),
+                architecture=str(config["MODEL"].get("ARCHITECTURE", "legacy_parallel")),
+                adapter_width=int(config["MODEL"].get("ADAPTER_WIDTH", 192)),
+                gradient_checkpointing=bool(config["MODEL"].get("GRADIENT_CHECKPOINTING", False)),
                 **build_kwargs,
             )
         model = built.model
@@ -1896,36 +1955,13 @@ def _worker_dev(
             if "private_projection" in name:
                 parameter.requires_grad_(False)
         optimizer_parameter_names = registered_optimizer_parameter_names(model)
-        pretrained_tokens = (
-            (
-                "tokenizer.patch_projection",
-                "tokenizer.positional_embedding",
-                "expert.blocks",
-                "expert.class_embedding",
-                "expert.class_position",
-                "expert.pre_norm",
-                "expert.post_norm",
-            )
-            if contract["family"] == "standalone"
-            else (
-                "encoder.tokenizer.patch_projection",
-                "encoder.tokenizer.positional_embedding",
-                "encoder.experts.transformer.blocks",
-                "encoder.experts.transformer.class_embedding",
-                "encoder.experts.transformer.class_position",
-                "encoder.experts.transformer.pre_norm",
-                "encoder.experts.transformer.post_norm",
-            )
+        pretrained_parameters, new_parameters = _partition_trainable_parameters(
+            model,
+            family=str(contract["family"]),
+            architecture=str(
+                config["MODEL"].get("ARCHITECTURE", "legacy_parallel")
+            ),
         )
-        pretrained_parameters = []
-        new_parameters = []
-        for name, parameter in model.named_parameters():
-            if not parameter.requires_grad:
-                continue
-            if any(token in name for token in pretrained_tokens):
-                pretrained_parameters.append(parameter)
-            else:
-                new_parameters.append(parameter)
         optimizer = torch.optim.AdamW(
             [
                 {

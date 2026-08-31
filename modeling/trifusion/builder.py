@@ -17,11 +17,17 @@ from modeling.clip.model import build_model as build_clip_model
 from .encoder import TriBranchEncoder
 from .experts.cnn import CNNExpert
 from .experts.mamba import MambaExpert, production_mamba_factory
+from .experts.semantic_residual import (
+    SemanticCNNExpert,
+    SemanticMambaExpert,
+    SemanticTransformerExpert,
+)
 from .experts.transformer import TransformerExpert
 from .fusion import CollaborativeFusion
 from .model import TriFusionReID
 from .reliability import ReliabilityPosterior, UniformReliabilityGate
 from .relay import HeterogeneousRelay
+from .semantic_tokenizer import SharedCLIPSemanticTokenizer
 from .standalone import SingleBranchReID, SingleExpertTokenizer
 from .tokenizer import SharedCLIPTokenizer
 from .variants import resolve_variant, variant_sha256
@@ -88,6 +94,153 @@ def _load_resized_clip_visual(
     ).float()
     return clip_model.visual
 
+def _build_shared_semantic_residual(
+    *,
+    checkpoint: Path,
+    checkpoint_sha256: str,
+    visual: nn.Module,
+    num_classes: int,
+    image_size: tuple[int, int],
+    grid_size: tuple[int, int],
+    adapter_width: int,
+    relay_rank: int,
+    embedding_width: int,
+    private_width: int,
+    reliability_mode: str,
+    gradient_checkpointing: bool,
+    mamba_mixer_factory: Callable[[int], nn.Module],
+) -> TriFusionBuildResult:
+    if adapter_width <= 0:
+        raise ValueError("adapter_width must be positive")
+    semantic_width = int(visual.conv1.out_channels)
+    expert_widths = {
+        expert: semantic_width
+        for expert in ("cnn", "transformer", "mamba")
+    }
+    shared_blocks = [
+        _DeMoCLIPBlockAdapter(block)
+        for block in visual.transformer.resblocks
+    ]
+    tokenizer = SharedCLIPSemanticTokenizer(
+        patch_projection=visual.conv1,
+        positional_embedding=visual.positional_embedding,
+        class_embedding=visual.class_embedding,
+        pre_norm=visual.ln_pre,
+        post_norm=visual.ln_post,
+        shared_blocks=shared_blocks,
+        gradient_checkpointing=gradient_checkpointing,
+    )
+    stage_depths = (1, 1, 1)
+    residual_scale_init = 1e-3
+    experts = {
+        "cnn": SemanticCNNExpert(
+            width=semantic_width,
+            adapter_width=adapter_width,
+            grid_size=grid_size,
+            stage_depths=stage_depths,
+            private_width=private_width,
+            scale_init=residual_scale_init,
+        ),
+        "transformer": SemanticTransformerExpert(
+            width=semantic_width,
+            adapter_width=adapter_width,
+            grid_size=grid_size,
+            stage_depths=stage_depths,
+            private_width=private_width,
+            scale_init=residual_scale_init,
+        ),
+        "mamba": SemanticMambaExpert(
+            width=semantic_width,
+            adapter_width=adapter_width,
+            grid_size=grid_size,
+            stage_depths=stage_depths,
+            private_width=private_width,
+            mixer_factory=mamba_mixer_factory,
+            scale_init=residual_scale_init,
+        ),
+    }
+    if reliability_mode == "uniform":
+        posterior: nn.Module = UniformReliabilityGate()
+    elif reliability_mode == "joint_beta":
+        posterior = ReliabilityPosterior(
+            expert_widths=expert_widths,
+            hidden_width=128,
+            heads=4,
+            kappa_min=2.0,
+        )
+    else:
+        raise ValueError("reliability_mode must be uniform or joint_beta")
+
+    relay_gamma_init = 0.1
+    relay = HeterogeneousRelay(
+        expert_widths=expert_widths,
+        relay_rank=relay_rank,
+        token_grid=grid_size,
+        gamma_init=relay_gamma_init,
+    )
+    encoder = TriBranchEncoder(
+        experts,
+        tokenizer=tokenizer,
+        reliability_gate=posterior,
+        collaborator=relay,
+        refresh_final_reliability=True,
+    )
+    fusion = CollaborativeFusion(
+        expert_widths=expert_widths,
+        embedding_width=embedding_width,
+    )
+    if visual.proj is not None and visual.proj.shape == (
+        semantic_width,
+        embedding_width,
+    ):
+        with torch.no_grad():
+            pretrained_projection = visual.proj.detach().T.float()
+            for expert in ("cnn", "transformer", "mamba"):
+                fusion.contribution_projections[expert].weight.copy_(
+                    pretrained_projection
+                )
+
+    model = TriFusionReID(
+        encoder=encoder,
+        fusion=fusion,
+        embedding_width=embedding_width,
+        num_classes=num_classes,
+    )
+    total_parameters = sum(
+        parameter.numel() for parameter in model.parameters()
+    )
+    provenance = {
+        "architecture": "shared_semantic_residual",
+        "clip_checkpoint": str(checkpoint),
+        "clip_checkpoint_sha256": checkpoint_sha256,
+        "shared_clip_layers": len(shared_blocks),
+        "image_size": list(image_size),
+        "token_grid": list(grid_size),
+        "expert_widths": expert_widths,
+        "adapter_width": adapter_width,
+        "adapter_stage_depths": list(stage_depths),
+        "adapter_scale_init": residual_scale_init,
+        "relay_rank": relay_rank,
+        "relay_gamma_init": relay_gamma_init,
+        "reliability_mode": reliability_mode,
+        "final_reliability_refresh": True,
+        "gradient_checkpointing": bool(gradient_checkpointing),
+        "embedding_width": embedding_width,
+        "shared_patch_projection_instances": 1,
+        "total_parameters": total_parameters,
+        "parameter_budget_pass": total_parameters <= 120_000_000,
+        "mamba_mixer_factory": getattr(
+            mamba_mixer_factory,
+            "__name__",
+            type(mamba_mixer_factory).__name__,
+        ),
+    }
+    return TriFusionBuildResult(
+        model=model,
+        checkpoint_sha256=checkpoint_sha256,
+        provenance=provenance,
+    )
+
 
 def build_trifusion_from_clip(
     checkpoint: Path | str,
@@ -101,6 +254,9 @@ def build_trifusion_from_clip(
     embedding_width: int = 512,
     private_width: int = 64,
     reliability_mode: str = "joint_beta",
+    architecture: str = "legacy_parallel",
+    adapter_width: int = 192,
+    gradient_checkpointing: bool = False,
     mamba_mixer_factory: Callable[[int], nn.Module] = production_mamba_factory,
 ) -> TriFusionBuildResult:
     """Build the full three-stage, same-posterior collaborative model."""
@@ -115,6 +271,25 @@ def build_trifusion_from_clip(
     visual = _load_resized_clip_visual(
         checkpoint, image_size=image_size, patch_size=patch_size
     )
+    if architecture == "shared_semantic_residual":
+        return _build_shared_semantic_residual(
+            checkpoint=checkpoint,
+            checkpoint_sha256=checkpoint_sha256,
+            visual=visual,
+            num_classes=num_classes,
+            image_size=image_size,
+            grid_size=grid_size,
+            adapter_width=adapter_width,
+            relay_rank=relay_rank,
+            embedding_width=embedding_width,
+            private_width=private_width,
+            reliability_mode=reliability_mode,
+            gradient_checkpointing=gradient_checkpointing,
+            mamba_mixer_factory=mamba_mixer_factory,
+        )
+    if architecture != "legacy_parallel":
+        raise ValueError("unknown TriFusion architecture")
+
     transformer_width = int(visual.conv1.out_channels)
     expert_widths = {
         "cnn": cnn_width,

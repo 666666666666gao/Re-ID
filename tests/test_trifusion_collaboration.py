@@ -179,6 +179,42 @@ class DeepCollaborationScheduleTests(unittest.TestCase):
             self.assertEqual(state.stage, 3)
             self.assertTrue(torch.isfinite(state.tokens).all())
 
+    def test_shared_semantic_schedule_refreshes_quality_after_both_relays(self) -> None:
+        torch.manual_seed(32)
+        encoder, _ = _build_tiny_encoder()
+        original_gate = encoder.reliability_gate
+
+        class CountingGate(torch.nn.Module):
+            def __init__(self, gate):
+                super().__init__()
+                self.gate = gate
+                self.results = []
+
+            def forward(self, states, modality_mask):
+                result = self.gate(states, modality_mask)
+                self.results.append(result)
+                return result
+
+        counting_gate = CountingGate(original_gate)
+        encoder.reliability_gate = counting_gate
+        encoder.refresh_final_reliability = True
+        images = {
+            modality: torch.randn(2, 3, 4, 4)
+            for modality in ("RGB", "NI", "TI")
+        }
+        modality_mask = torch.tensor(
+            [[True, True, True], [True, False, True]], dtype=torch.bool
+        )
+
+        states = encoder(images, modality_mask)
+
+        self.assertEqual(len(counting_gate.results), 2)
+        relay_reliability, final_reliability = counting_gate.results
+        self.assertIs(states.relay_results[0].reliability, relay_reliability)
+        self.assertIs(states.relay_results[1].reliability, relay_reliability)
+        self.assertIs(states.reliability, final_reliability)
+        self.assertIsNot(states.reliability, relay_reliability)
+
     def test_one_forward_returns_fused_and_all_named_branch_embeddings(self) -> None:
         from modeling.trifusion import (
             CollaborativeFusion,

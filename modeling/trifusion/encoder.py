@@ -27,6 +27,7 @@ class TriBranchEncoder(nn.Module):
         tokenizer: nn.Module | None = None,
         reliability_gate: nn.Module | None = None,
         collaborator: nn.Module | None = None,
+        refresh_final_reliability: bool = False,
     ) -> None:
         super().__init__()
         if set(experts) != set(EXPERT_ORDER) or len(experts) != len(EXPERT_ORDER):
@@ -41,6 +42,7 @@ class TriBranchEncoder(nn.Module):
             raise ValueError("deep collaboration requires the shared tokenizer")
         self.reliability_gate = reliability_gate
         self.collaborator = collaborator
+        self.refresh_final_reliability = bool(refresh_final_reliability)
 
     def forward(
         self,
@@ -155,6 +157,11 @@ class TriBranchEncoder(nn.Module):
                     )
             else:
                 final_states = stage_states
+                if self.refresh_final_reliability:
+                    reliability = self.reliability_gate(
+                        final_states,
+                        modality_mask,
+                    )
 
         if reliability is None or final_states is None:
             raise RuntimeError("collaborative encoder did not complete its schedule")

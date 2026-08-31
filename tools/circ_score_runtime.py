@@ -209,6 +209,9 @@ def _build_model(
         private_width=int(model_config["PRIVATE_WIDTH"]),
         relay_rank=int(model_config["RELAY_RANK"]),
         reliability_mode="uniform",
+        architecture=str(model_config.get("ARCHITECTURE", "legacy_parallel")),
+        adapter_width=int(model_config.get("ADAPTER_WIDTH", 192)),
+        gradient_checkpointing=bool(model_config.get("GRADIENT_CHECKPOINTING", False)),
     )
     state = torch.load(checkpoint, map_location="cpu", weights_only=True)
     if not isinstance(state, dict):
@@ -861,6 +864,9 @@ def audit_deployed_transfer(
         private_width=int(model_specification["PRIVATE_WIDTH"]),
         relay_rank=int(model_specification["RELAY_RANK"]),
         reliability_mode="joint_beta",
+        architecture=str(model_specification.get("ARCHITECTURE", "legacy_parallel")),
+        adapter_width=int(model_specification.get("ADAPTER_WIDTH", 192)),
+        gradient_checkpointing=bool(model_specification.get("GRADIENT_CHECKPOINTING", False)),
     )
     state = torch.load(checkpoint, map_location="cpu", weights_only=True)
     if not isinstance(state, dict):
