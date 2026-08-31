@@ -100,12 +100,30 @@ loader audit. The project `tri_reid` environment remains separately fixed at
 torch 2.5.1+cu121 for the new architecture. The environment receipt is
 `evidence/peft_boa_environment_smoke_20260831.json`.
 
-This is deliberately **not** a metric reproduction or a training-ready gate.
-The upstream model constructor forces CUDA; the upstream loop evaluates the
-official test every epoch, saves `best.pth` by test mAP, and writes model-only
-periodic checkpoints. R017A therefore stays waiting until the accepted
-fixed-epoch crash-safe wrapper and a real B64/K4 8 GiB forward/backward gate
-pass. MDReID remains the strongest locally measured checkpoint baseline.
+This is deliberately **not** a metric reproduction. The accepted crash-safe
+wrapper is now implemented and can be invoked with:
+
+```bash
+/root/miniconda3/envs/tri_reid/bin/python \
+  tools/run_peft_boa_resumable.py \
+  --mode capacity \
+  --output-dir /root/mmreid-trifusion/runs/peft_boa_capacity
+
+/root/miniconda3/envs/tri_reid/bin/python \
+  tools/run_peft_boa_resumable.py \
+  --mode fixed120 \
+  --output-dir /root/mmreid-trifusion/runs/peft_boa_fixed120
+```
+
+The capacity worker uses only `train_171`, runs eight real B64/K4 AMP steps,
+and never constructs the official-test loader. The fixed worker retains two
+atomic full-state generations, exports epoch 80 and 120 before test access,
+and evaluates only the durable fixed-e120 checkpoint once. Its 500/499 MiB
+boundary, corrupt-output rejection and complete-state idempotence pass public
+CLI tests. The real capacity preflight matched all source/environment/protocol
+checks but was blocked at 1025 MiB used GPU memory, so neither CUDA capacity nor
+fixed120 has run. MDReID remains the strongest locally measured checkpoint
+baseline.
 The source-line and log-hash evidence, and the binding fixed-versus-selected
 reporting policy, are in `docs/BASELINE_PROTOCOL_AUDIT_2026-08-31.md` and
 `evidence/peft_boa_protocol_audit_20260831.json`.
@@ -119,13 +137,32 @@ The official Signal checkout is pinned and left unmodified at:
 cd1b0a672d1fe642e7608731cb4899a19dda7d51
 ```
 
-Its released torch 2.1.1+cu118 stack is compatible with the isolated
-`peft_boa` environment for a CPU-only data-path probe. With CUDA masked,
-`DATALOADER.NUM_WORKERS=0`, and only the path convention adapted in memory,
-the real released B64/K8 loader returns eight identities and RGB/NI/TI tensors
-of shape `64×3×256×128`. The audited corpus has 171 training identities and
-3951 training records; validation concatenates the same 836-record test list
-twice as query and gallery. No model was constructed during this probe.
+Its released torch 2.1.1+cu118 stack is now reproduced in a dedicated
+Python-3.10.13 environment. Rebuild and verify it with:
+
+```bash
+cd /root/mmreid-trifusion/TriFusion-ReID
+/root/miniconda3/bin/conda env create \
+  -f environment/signal_environment.yml
+/root/miniconda3/envs/signal/bin/python -m pip check
+```
+
+The exact installed state matches all 90 entries in
+`environment/signal_requirements-lock.txt`; `conda env create --dry-run` also
+passes. The only exclusions from the raw upstream requirements are one
+unavailable author-local `grad-cam` URI and unused legacy `visdom==0.2.4`.
+Their scope and reasons are recorded in
+`environment/signal_requirements-source-sanitized.txt` and the evidence
+receipt.
+
+With CUDA masked, `DATALOADER.NUM_WORKERS=0`, and only the path convention
+adapted in memory, the real released B64/K8 loader returns eight identities and
+finite RGB/NI/TI tensors of shape `64×3×256×128`; a validation batch returns
+all three modalities at `128×3×256×128`. The audited corpus has 171 training
+identities and 3951 training records; validation concatenates the same
+836-record test list twice as query and gallery. No model or optimizer was
+constructed during this probe. Exact environment, source and loader bindings
+are in `evidence/signal_environment_smoke_20260831.json`.
 
 Signal is not yet metric-reproduced. The README routes all three released
 checkpoints through one Baidu share (code `sign`); the share resolved during
@@ -198,6 +235,26 @@ batch and CPU model construction. The final checkpoint passes
 `load_state_dict(strict=True)` with 297 model/checkpoint tensors,
 101,794,851 elements, and zero missing, unexpected, shape-mismatched or
 dtype-mismatched entries.
+
+The accepted evaluation runner is now available as:
+
+```bash
+/root/miniconda3/envs/tri_reid/bin/python \
+  tools/run_mfrnet_checkpoint_eval.py \
+  --mode preflight \
+  --output-dir /root/mmreid-trifusion/runs/mfrnet_preflight
+
+/root/miniconda3/envs/tri_reid/bin/python \
+  tools/run_mfrnet_checkpoint_eval.py \
+  --mode official128 \
+  --output-dir /root/mmreid-trifusion/runs/mfrnet_official128
+```
+
+It verifies all immutable hashes and package pins before model import, keeps
+the released B128 sparse-MoE routing semantics, preserves and hashes both log
+streams, and classifies all terminal outcomes. The real preflight passed every
+source/checkpoint/environment/protocol check but was blocked at 1025 MiB used
+GPU memory; no upstream command was executed.
 
 This is checkpoint compatibility, not metric reproduction. The released model
 constructor forces CUDA, the exact cu113 stack has not passed on the RTX 4060,
@@ -332,6 +389,42 @@ identities, leaves 141 identities for fitting, and gives all 825 dev queries a
 valid cross-camera positive. It is derived only from `train_171` metadata and
 has zero test-identity overlap. Final promoted configurations are retrained on
 all 171 training identities.
+
+## TriFusion train-only experiment driver
+
+The accepted training seam is implemented as one fail-closed entry point:
+
+```bash
+cd /root/mmreid-trifusion/TriFusion-ReID
+/root/miniconda3/envs/tri_reid/bin/python tools/run_trifusion_experiment.py \
+  --mode capacity \
+  --variant core_pre_circ \
+  --output-dir /root/mmreid-trifusion/runs/trifusion_capacity
+
+/root/miniconda3/envs/tri_reid/bin/python tools/run_trifusion_experiment.py \
+  --mode overfit \
+  --variant core_pre_circ \
+  --output-dir /root/mmreid-trifusion/runs/trifusion_overfit
+
+/root/miniconda3/envs/tri_reid/bin/python tools/run_trifusion_experiment.py \
+  --mode dev \
+  --variant core_pre_circ \
+  --output-dir /root/mmreid-trifusion/runs/trifusion_dev
+```
+
+All three modes check `nvidia-smi` before launching a worker, and the worker
+checks again. Capacity performs eight real AMP steps on `train_171` only;
+overfit repeats one real B16/K4 batch and requires a final/initial loss ratio no
+larger than 0.2; dev runs the fixed 60-epoch train-only protocol with atomic
+current/previous full-state recovery and evaluates fused/CNN/Transformer/Mamba
+embeddings once per epoch. None of these modes may construct the official-test
+loader during development.
+
+The 2026-08-31 full regression is 51/51 passing. The latest real capacity
+invocation matched the immutable data/config checks but stopped before model
+construction at 1,035 MiB used GPU memory; launch requires strictly less than
+500 MiB. Consequently this is training-readiness evidence only, not a CUDA
+capacity result, retrieval metric, ablation result or SOTA result.
 
 ## Verify the versioned evidence
 

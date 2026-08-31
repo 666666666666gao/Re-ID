@@ -2,9 +2,10 @@
 
 Status: independently reviewed implementation-ready design, not an
 implementation. This document makes no SOTA claim. The public seams in
-TDD_SEAMS.md are still awaiting the user's exact reply 接缝同意. Until then,
-this document may be refined, but no core model or core-model test file is
-added.
+TDD_SEAMS.md were accepted by the user's exact reply 接缝同意 at
+2026-08-31T11:57:50+08:00. The pre-implementation document hashes and accepted
+scope are bound by `evidence/tdd_seam_consent_20260831.json`; implementation
+now proceeds as test-driven vertical slices.
 
 This blueprint translates novelty-hardened METHOD_SPEC_V1.md v1.1 into one concrete implementation
 for an 8 GiB RTX 4060 Laptop GPU. METHOD_SPEC_V1.md remains authoritative if a

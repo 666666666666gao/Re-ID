@@ -122,3 +122,26 @@
 | 2026-08-31 11:25 | /experiment-plan | evidence/README.md | implementation | 记录预注册 receipt 的证明范围与非有效性边界 |
 | 2026-08-31 11:25 | /experiment-plan | refine-logs/EXPERIMENT_TRACKER_20260831_112526.md | implementation | evidence count 更新后的永久 tracker 版本 |
 | 2026-08-31 11:25 | /experiment-plan | refine-logs/EXPERIMENT_TRACKER.md | implementation | latest tracker copy，与 112526 timestamped 版本逐字节一致 |
+| 2026-08-31 11:41 | /research | docs/BASELINE_SELECTION_AND_LICENSE_AUDIT_2026-08-31.md | research | 固定 Signal 高指标 MIT baseline、DeMo 实现底座及无仓库许可证比较器的隔离复用边界 |
+| 2026-08-31 11:41 | /research | evidence/baseline_license_audit_20260831.json | research | 七个本地官方仓库的精确 commit/tree/license/hash 与 baseline 角色机器可读收据 |
+| 2026-08-31 11:41 | /research | evidence/SHA256SUMS | implementation | 将 baseline license receipt 纳入第 30 份版本化证据 |
+| 2026-08-31 11:41 | /research | refine-logs/EXPERIMENT_TRACKER_20260831_114139.md | research | baseline 许可证角色纠正后的永久 tracker 版本 |
+| 2026-08-31 11:41 | /research | refine-logs/EXPERIMENT_TRACKER.md | implementation | latest tracker copy，与 114139 timestamped 版本逐字节一致 |
+| 2026-08-31 11:57 | /tdd | evidence/tdd_seam_consent_20260831.json | implementation | 记录用户精确“接缝同意”、五份冻结合同哈希及 TriFusion/PEFT/MFRNet 接缝授权边界 |
+| 2026-08-31 11:57 | /tdd | docs/IMPLEMENTATION_BLUEPRINT_V1.md | implementation | 将核心实现状态从等待同意切换为按 TDD 纵向切片实施 |
+| 2026-08-31 11:57 | /tdd | refine-logs/EXPERIMENT_TRACKER.md | implementation | R004 开始、R020-R023/R026 解锁；实验结果与 GPU 门状态不变 |
+| 2026-08-31 12:03 | /tdd | utils/reid_evaluation.py | implementation | 手算 CMC/mAP、同身份同相机剔除、无正样本跳过/全无正样本失败的统一评估内核 |
+| 2026-08-31 12:03 | /tdd | tests/test_reid_evaluation.py | implementation | 四次红绿循环并覆盖旧入口 ragged CMC 回归；全仓 21/21 PASS |
+| 2026-08-31 12:41 | /tdd | modeling/trifusion/ | implementation | 六个冻结公共接缝、三阶段深协作、HFER/CIRC/URGC、可选 RDPT、criterion 与真实 CLIP 构建器 |
+| 2026-08-31 12:41 | /tdd | tools/build_circ_targets.py | implementation | 身份外折全网络干预记录的 fail-closed 编译、两条 hash-edge 审计及三类原子收据 |
+| 2026-08-31 12:41 | /tdd | evidence/trifusion_core_tdd_20260831.json | implementation | 39/39 PASS、真实 CLIP/Mamba 默认构建、95,893,482 参数与 GPU 门失败边界收据 |
+| 2026-08-31 12:49 | /run-experiment | environment/signal_environment.yml | implementation | Signal Python3.10/torch2.1.1+cu118 独立可重建环境；Conda dry-run PASS |
+| 2026-08-31 12:49 | /run-experiment | environment/signal_requirements-lock.txt | implementation | 与已安装 Signal 环境 90/90 pip 包精确一致的版本锁 |
+| 2026-08-31 12:49 | /run-experiment | evidence/signal_environment_smoke_20260831.json | research | MIT Signal 固定源码、真实 RGBNT201 B64/K8 三模态 loader 与 GPU 门失败边界收据 |
+| 2026-08-31 13:11 | /tdd | tools/run_peft_boa_resumable.py | implementation | PEFT-BoA B64/K4容量、双代全状态恢复、e80/e120预评测导出及fixed120单次测试驱动 |
+| 2026-08-31 13:11 | /tdd | tools/run_mfrnet_checkpoint_eval.py | implementation | MFRNet immutable preflight、官方B128执行、日志哈希与终态分类驱动 |
+| 2026-08-31 13:11 | /tdd | evidence/baseline_runners_tdd_20260831.json | implementation | 45/45全仓PASS、两个真实preflight仅因1025MiB GPU门阻塞且零指标的边界收据 |
+| 2026-08-31 13:36 | /tdd | modeling/trifusion/data.py | implementation | 仅使用train_171的141-fit/30-dev真实RGB/NI/TI加载器与B16/K4采样合同 |
+| 2026-08-31 13:36 | /tdd | tools/run_trifusion_experiment.py | implementation | TriFusion capacity、单batch过拟合、60epoch train-only dev及双代全状态恢复驱动 |
+| 2026-08-31 13:36 | /tdd | configs/RGBNT201/TriFusion.yml | implementation | core_pre_circ B16/K4、60epoch、零official-test开发配置 |
+| 2026-08-31 13:36 | /tdd | evidence/trifusion_training_readiness_20260831.json | implementation | 51/51 PASS、真实数据接口及1035MiB显存门禁前阻塞且零指标的训练就绪收据 |

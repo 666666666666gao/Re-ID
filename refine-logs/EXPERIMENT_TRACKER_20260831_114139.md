@@ -6,7 +6,7 @@
 | R001 | M0 | CUDA 环境 | torch smoke | synthetic | CUDA/finite/memory | MUST | DONE | torch 2.5.1+cu121 |
 | R002 | M0 | loader | MDReID official loader | RGBNT201 | shapes/labels | MUST | DONE | 三模态真实 batch |
 | R003 | M0 | DeMo 图 | forward/backward | synthetic | loss/322 gradients | MUST | DONE | 322/322 finite |
-| R004 | M0 | evaluator | fixed worked example | synthetic | exact mAP/CMC | MUST | DONE | 4 个协议测试与 legacy 入口接线通过；全仓 21/21 PASS；未产生模型指标 |
+| R004 | M0 | evaluator | fixed worked example | synthetic | exact mAP/CMC | MUST | WAITING | 等精确“接缝同意” |
 | R005 | M0 | MSVR310 完整性 | audit | all | ids/pairing/JPEG | MUST | DONE | 310 identities；0 errors |
 | R006 | M0 | 查新/协议/SOTA | primary-source audit | 2024–2026 | claims/resources | MUST | DONE | novelty PROCEED WITH CAUTION；implementation-readiness PASS |
 | R006A | M0 | 增量 SOTA/代码审计 | 2026-08-31 primary-source sweep | current public | metrics/protocol/artifacts | MUST | DONE | Signal/PEFT-BoA/FUSE/MGRNet/ICPL 均未超过 RoDI-CLIP 84.1/87.2；Hyper-ReID 仅占位 README，转 R071A 复查 |
@@ -22,29 +22,28 @@
 | R013 | M1 | DeMo 协议偏差 | fixed vs test-selected | RGBNT201 | delta/provenance | MUST | WAITING | 等 R012R 产生固定 DeMo_50.pth；禁止用 epoch17 test-selected 代替 |
 | R014 | M1 | 系统门 | B32 + eval latency | RGBNT201 | VRAM/latency/driver | MUST | WARN | 8-step 6,894 MiB；历史 ori >300s；R012 终止附近 7 条 nvlddmkm 153 |
 | R015 | M1 | train-only dev | 141-fit/30-dev | train_171 only | overlap/positives | MUST | DONE | test overlap=0；825/825 valid |
-| R016 | M1 | 证据包 | 35 versioned JSONs | all | SHA/protocol | MUST | DONE | 加入 R012 incident、baseline/protocol/license audits、claim-gates、接缝同意、TriFusion core/training readiness、比较器 TDD 与 Signal 环境 receipts；SHA256SUMS pass |
+| R016 | M1 | 证据包 | 30 versioned JSONs | all | SHA/protocol | MUST | DONE | 加入 R012 incident、baseline/protocol/license audits 与 claim-gates pre-result receipt；SHA256SUMS pass |
 | R017 | M1 | MDReID 强化驱动复验 | hardened driver | RGBNT201 | parity/full audit | MUST | WAITING | 等本地 GPU 低于 500 MiB 空闲门禁 |
-| R017A | M1 | 最高公开源码训练比较器（无仓库许可证） | PEFT-BoA d2b198b seed1111 B64/K4 | RGBNT201 | fixed-e120 mAP/R1/provenance | MUST | WAITING | exact upstream CPU env/source/loader PASS；容量+双代全状态+fixed120单测驱动及3项CLI TDD完成；真实preflight仅因1025MiB GPU门阻塞，未启动/无指标 |
-| R017B | M1 | 高指标 MIT baseline | Signal cd1b0a6 seed1234 B64/K8 fixed-e50 | RGBNT201 | mAP/R1/hash/provenance | MUST | WAITING | MIT、clean source、独立环境90/90锁定、Conda dry-run、真实 B64/K8 CPU loader PASS；权重字节未取得，仍待 GPU 容量门和本机 fixed-e50；不得用 80.3/85.2 冒充本机结果 |
-| R017C | M1 | 补充 checkpoint 比较器 | MFRNet ec54a13 official weight | RGBNT201 | mAP/R1/hash | SHOULD | WAITING | checkpoint/env/loader/strict load PASS；official128 runner及3项CLI TDD完成；真实preflight仅因1025MiB GPU门阻塞，上游命令未执行、无指标；公开 best 仍标 test-selected |
+| R017A | M1 | 最高公开源码训练比较器（无仓库许可证） | PEFT-BoA d2b198b seed1111 B64/K4 | RGBNT201 | fixed-e120 mAP/R1/provenance | MUST | WAITING | exact upstream CPU env/source/loader PASS；公开 82.7/86.1=test-selected e80，fixed e120=82.2/85.8；仅隔离运行、不复制源码；等待接缝同意、加固驱动和 GPU 容量门 |
+| R017B | M1 | 高指标 MIT baseline | Signal cd1b0a6 seed1234 B64/K8 fixed-e50 | RGBNT201 | mAP/R1/hash/provenance | MUST | WAITING | MIT、clean source、真实 CPU loader 与公开 fixed-path log已审计；权重字节未取得，需隔离环境、容量门和本机 fixed-e50；不得用 80.3/85.2 冒充本机结果 |
+| R017C | M1 | 补充 checkpoint 比较器 | MFRNet ec54a13 official weight | RGBNT201 | mAP/R1/hash | SHOULD | WAITING | checkpoint/env/loader/strict load PASS；Tutel 路由反例证明不可默认 microbatch 等价，parity 必须 B128；等待接缝同意、`<500 MiB` GPU 门，公开 best 标 test-selected |
 | R018 | M1 | epoch10 receipt | DeMo_10.pth | RGBNT201 | ordering/hash | MUST | DONE | SHA b2ab79f0…31c0 |
 | R018A | M1 | epoch20 receipt | DeMo_20.pth | RGBNT201 | ordering/hash/metrics | MUST | DONE | SHA 5d61a4cf…e7b2；非 test 选点 |
 | R018B | M1 | epoch30 receipt | DeMo_30.pth | RGBNT201 | ordering/hash/metrics | MUST | DONE | SHA d5e375fa…4ce5；非 test 选点 |
 | R019 | M1 | summarizer fail-closed | live+synthetic | logs | coverage/latency | MUST | DONE | partial/gap/duplicate/overflow 全拒绝 |
 | R019A | M1 | quantitative claim gate | claim_gates_v1 | pre-result protocol | hash/statistics/MPRD | MUST | DONE | R020+ 前冻结；identity-cluster bootstrap/sign-flip、Holm、三创新点效应门；SHA 2ca8badf…13e4 |
-| R019B | M1 | TriFusion training readiness | core_pre_circ B16/K4 | train_171 only | capacity/overfit/recovery | MUST | WAITING | 真实 loader、capacity/overfit/dev 与双代全状态恢复已实现；51/51 PASS；真实 capacity 在1035MiB门禁前阻塞，未构图/未训练/无指标 |
-| R020 | M2 | CNN standalone | TriFusion CNN | 141-fit/dev | mAP/R1 | MUST | TODO | 9-block 完整专家、梯度和 train-only dev 驱动 TDD PASS；仍无真实训练/指标 |
-| R021 | M2 | Transformer standalone | CLIP Transformer | 141-fit/dev | mAP/R1 | MUST | TODO | 真实 CLIP 12-block 构建、梯度和 train-only dev 驱动 TDD PASS；仍无真实训练/指标 |
-| R022 | M2 | Mamba standalone | 2D bidirectional Mamba | 141-fit/dev | mAP/R1 | MUST | TODO | 9-block 四向共享核构建/TDD PASS；真实 TriFusion CUDA 容量门未通过，仍无指标 |
-| R023 | M2 | late-fusion controls | mean + concat/MLP | 141-fit/dev | fused/branch/params | MUST | TODO | 公共训练驱动已接线；仍待真实容量门与匹配控制配置 |
-| R024 | M2 | HFER tracer | HFER-uniform | 141-fit/dev | fused/branch/grad | MUST | WAITING | 同步/无自环/掩码/非零 gamma/梯度与命名分支评测 TDD PASS；仍待真实 dev 至少两个 branch 改善门 |
+| R020 | M2 | CNN standalone | TriFusion CNN | 141-fit/dev | mAP/R1 | MUST | WAITING | 等接缝同意；完整专家 |
+| R021 | M2 | Transformer standalone | CLIP Transformer | 141-fit/dev | mAP/R1 | MUST | WAITING | 等接缝同意 |
+| R022 | M2 | Mamba standalone | 2D bidirectional Mamba | 141-fit/dev | mAP/R1 | MUST | WAITING | 等接缝同意 |
+| R023 | M2 | late-fusion controls | mean + concat/MLP | 141-fit/dev | fused/branch/params | MUST | WAITING | 排除 ensemble 容量 |
+| R024 | M2 | HFER tracer | HFER-uniform | 141-fit/dev | fused/branch/grad | MUST | WAITING | 至少两个 branch 改善门 |
 | R025 | M2 | HFER controls | no-private/no-role/matched MLP | 141-fit/dev | mAP/R1/CKA/FLOPs | MUST | WAITING | capacity floor |
 | R025A | M2 | relay depth control | one-stage HFER | 141-fit/dev | fused/branch mAP/R1 | MUST | WAITING | 排除一次交换即可解释增益 |
 | R025B | M2 | relay direction control | one-way ring relay | 141-fit/dev | fused/branch mAP/R1 | MUST | WAITING | 对比完整同步双向中继 |
 | R025C | M2 | role specificity | source-role mixer permutation | 141-fit/dev | fused/branch/CKA | MUST | WAITING | 角色置换不得复现完整增益 |
 | R025D | M2 | heterogeneous necessity | parameter-matched homogeneous triple | 141-fit/dev | mAP/R1/params/FLOPs | MUST | WAITING | 至少一个同构三专家族；不匹配则明确标注 |
 | R025E | M2 | ensemble capacity | widened single backbone | 141-fit/dev | mAP/R1/params/FLOPs | MUST | WAITING | 与 U2 params≤2%、activated FLOPs≤5% |
-| R026 | M3 | CIRC CLI contract | tiny fold fixture | synthetic IDs | receipt/hash/mode/overlap | MUST | DONE | development fixture、xcam、零 overlap、九项 T/D/R、2 edge/row、独立审计 receipts 与 cache lookup PASS；final 实际运行仍属 R030 |
+| R026 | M3 | CIRC CLI contract | tiny fold fixture | synthetic IDs | receipt/hash/mode/overlap | MUST | WAITING | dev vs post-freeze-final；xcam；edge hash/cost |
 | R027 | M3 | target generator fold0 | HFER-uniform | fit folds1+2 | checkpoint | MUST | TODO | frozen generator |
 | R028 | M3 | target generator fold1 | HFER-uniform | fit folds0+2 | checkpoint | MUST | TODO | frozen generator |
 | R029 | M3 | target generator fold2 | HFER-uniform | fit folds0+1 | checkpoint | MUST | TODO | frozen generator |
@@ -62,7 +61,7 @@
 | R037B | M3 | exclusion-granularity control | TIGER-style whole-expert exclusion | 141-fit/dev | mAP/R1/effect agreement | MUST | TODO | 对比 expert×modality T/D/R target |
 | R038 | M3 | fusion-only | CIRC posterior at fusion | 141-fit/dev | fused/branch | MUST | TODO | U0 |
 | R039 | M3 | relay-only | CIRC posterior at HFER | 141-fit/dev | fused/branch | MUST | TODO | U1 |
-| R040 | M3 | promoted core | same CIRC posterior everywhere | 141-fit/dev | all claim metrics | MUST | TODO | 同一对象控制两次 HFER+fusion 的 TDD PASS；仍无 dev 结果，需过 ΔmAP≥0.30、R1 非劣和两分支门 |
+| R040 | M3 | promoted core | same CIRC posterior everywhere | 141-fit/dev | all claim metrics | MUST | TODO | U2 默认 r；需过 ΔmAP≥0.30、R1 非劣和两分支门；(1-u) 仅 coverage 过门后可晋级 |
 | R041 | M3 | fragmentation control | separate matched routers | 141-fit/dev | mAP/R1/params | MUST | TODO | U3 |
 | R042 | M3 | causal negatives | shuffle/permutation/context-free | 141-fit/dev | gain/calibration | MUST | TODO | 增益≤U2 的50%且无 Holm-corrected 正增益 |
 | R042A | M3 | calibration-form control | frozen temperature rescaling | dev frozen | ECE/Brier/AUROC/retrieval | MUST | TODO | 排除温度重标定即可解释 CIRC |

@@ -1,7 +1,9 @@
 # MFRNet RGBNT201 checkpoint reproduction specification
 
-**Status:** proposed public seam; no runner or runner test is authorized until
-the user replies exactly `接缝同意`.
+**Status:** user accepted the frozen seam with exact reply `接缝同意`; the
+runner and CLI-visible contract tests are implemented. Real `official128`
+remains blocked by the `<500 MiB` GPU-idle gate, so no local parity metric has
+been produced.
 
 ## Purpose
 
@@ -9,7 +11,7 @@ Reproduce the released MFRNet RGBNT201 checkpoint without modifying the pinned
 upstream checkout, silently changing sparse-MoE routing semantics, or promoting
 an upstream test-selected number into a clean model-selection result.
 
-The proposed public boundary is:
+The implemented public boundary is:
 
 ```text
 tools/run_mfrnet_checkpoint_eval.py \
@@ -128,7 +130,7 @@ Even a `PASS` result is reported as **local parity of a released,
 test-selected checkpoint**. It does not become TriFusion's clean
 model-selection baseline and does not support a SOTA claim by itself.
 
-## Proposed TDD observations
+## Implemented TDD observations
 
 After seam acceptance, vertical slices may test only these CLI-visible facts:
 

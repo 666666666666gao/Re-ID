@@ -1,0 +1,91 @@
+{
+  "schema_version": "1.0",
+  "event": "trifusion_train_only_training_readiness_tdd",
+  "recorded_at": "2026-08-31T13:36:37+08:00",
+  "authorization": {
+    "receipt": "evidence/tdd_seam_consent_20260831.json",
+    "receipt_sha256": "ac73e84f8f91fc27a2d0e7fe246a5673ee2de987f9a542144f800b12a62e2b89",
+    "exact_user_text": "接缝同意"
+  },
+  "verification": {
+    "command": "TRIFUSION_CLIP_CHECKPOINT=/root/mmreid-trifusion/pretrained/ViT-B-16.pt /root/miniconda3/envs/tri_reid/bin/python -m pytest -q --disable-warnings",
+    "passed": 51,
+    "failed": 0,
+    "warnings": 14,
+    "py_compile": "pass"
+  },
+  "implementation_sha256": {
+    "configs/RGBNT201/TriFusion.yml": "79123257b3fe04714cb7547861439667d7534b77f2b0979c87081ce406d1e2a3",
+    "modeling/trifusion/data.py": "34735a3a8292bc24c072c8102faef462dd1050ab60603fa593d961169cfdcf7b",
+    "modeling/trifusion/criterion.py": "420d745312e34c36566a73052bab6e3fca45893bac2bcf9dbaf9b58ff118c114",
+    "tools/run_trifusion_experiment.py": "732c2443c2632f66f9c31d5407f5989c64080d1182de9e8c56c5d89626d1077e"
+  },
+  "test_sha256": {
+    "tests/test_trifusion_data.py": "8a1f7ce3fa41862efec594d671770223131c3c19eb533f6f07c3f80796e67747",
+    "tests/test_trifusion_criterion.py": "4784c639691be0dd09367dc4eea4629f9f789f9b73555e7597caedd7a8d0f04d",
+    "tests/test_trifusion_experiment_runner.py": "fbac8032a76878bc7453ffd317b707831174d9f31a3d578063c70fb2fd7342cf"
+  },
+  "data_contract": {
+    "dataset_root": "/root/mmreid-trifusion/data/RGBNT201/train_171",
+    "protocol": "protocols/rgbnt201_dev_v1.json",
+    "protocol_sha256": "d916e7daaa1d55b179c1ec77e93128b6e6a8d1526adc9eac060ea8e733881946",
+    "fit_identities": 141,
+    "fit_records": 3126,
+    "dev_identities": 30,
+    "query_records": 825,
+    "gallery_records": 825,
+    "identity_overlap": 0,
+    "official_test_records": 0,
+    "real_loader_batch_verified": {
+      "batch_size": 16,
+      "instances_per_identity": 4,
+      "distinct_identities": 4,
+      "rgb_shape": [16, 3, 256, 128],
+      "nir_shape": [16, 3, 256, 128],
+      "tir_shape": [16, 3, 256, 128]
+    }
+  },
+  "runner_contract": {
+    "public_cli": "tools/run_trifusion_experiment.py --mode preflight|capacity|overfit|dev --variant core_pre_circ --output-dir DIR",
+    "capacity": "eight real AMP steps, full finite-gradient coverage and no dev or official-test access",
+    "overfit": "one fixed real B16/K4 batch repeated 100 times with final/initial loss ratio at most 0.2",
+    "dev": "60 fixed epochs with full-state atomic current/previous recovery, one train-only dev evaluation per epoch and zero official-test access",
+    "selection_metric": "fused train-only dev mAP",
+    "named_dev_embeddings": [
+      "fused",
+      "cnn",
+      "transformer",
+      "mamba"
+    ]
+  },
+  "real_capacity_preflight": {
+    "artifact": "/root/mmreid-trifusion/artifacts/trifusion_capacity_20260831_1400/capacity.json",
+    "artifact_sha256": "1d20275346602579eeb39b7b6a41ea3bbc97b129114338bbee9b47859c560e61",
+    "repository_head": "1a437f71a5b92553d9eda412689d31155416e603",
+    "status": "BLOCKED",
+    "only_blocker": "gpu_memory_gate",
+    "required_memory_used_strictly_below_mib": 500,
+    "memory_used_mib": 1035,
+    "memory_total_mib": 8188,
+    "launch_allowed": false,
+    "worker_executed": false,
+    "model_constructed": false,
+    "training_started": false,
+    "official_test_access_count": 0,
+    "metric_result": null
+  },
+  "synthetic_test_boundary": {
+    "fake_worker_outputs_are_model_results": false,
+    "purpose": "public CLI, GPU threshold, state transition, recovery, provenance and receipt validation only"
+  },
+  "claim_boundaries": {
+    "training_runner_ready": true,
+    "real_capacity_complete": false,
+    "real_overfit_complete": false,
+    "real_dev_training_complete": false,
+    "trifusion_metric_exists": false,
+    "new_baseline_metric_exists": false,
+    "ablation_metric_exists": false,
+    "sota_claim_supported": false
+  }
+}

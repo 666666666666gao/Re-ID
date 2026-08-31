@@ -22,6 +22,12 @@ sha256sum -c evidence/SHA256SUMS
 - Comparator audits: PEFT-BoA and Signal pinned-source, released-protocol,
   environment/loader and claim-boundary receipts. Signal's public log is
   explicitly not treated as a local checkpoint result.
+- Baseline licensing: exact pinned Git trees, repository-level license files
+  and hashes establish Signal as the selected high-metric MIT baseline and
+  DeMo as the MIT implementation scaffold. MDReID, PEFT-BoA, MFRNet and
+  UGG-ReID are classified as source-visible rather than open source because
+  their pinned trees lack a repository-level license; isolated file notices
+  are not generalized to the entire repositories.
 - Claim-gate preregistration: the quantitative effect, clustered-statistics,
   calibration, robustness and SOTA thresholds were hash-frozen before any
   R020+ implementation or method result existed.
@@ -122,6 +128,41 @@ timestamped/fixed v1.2 plan and tracker, the absence of the TriFusion core and
 training/evaluation entry points, and 50 R020+ rows with zero completed method
 results at freeze time. It proves ordering and hashes only; it does not prove
 that the thresholds are optimal or that any future method claim passes them.
+
+The TDD-seam consent receipt records the user's exact reply `接缝同意`, the
+pre-implementation repository HEAD, and SHA-256 values for all five accepted
+contracts. It authorizes the TriFusion/evaluator, PEFT-BoA runner and MFRNet
+runner public seams. It is not implementation, test, metric or SOTA evidence.
+
+The TriFusion core TDD receipt binds 39 passing tests, the implementation and
+test source hashes, the real CLIP checkpoint, the 95,893,482-parameter default
+architecture, all six public seams, and the synthetic CIRC contract. It also
+records that the GPU idle gate failed at 1,021 MiB, so no real TriFusion CUDA
+forward, overfit, training metric, ablation metric or SOTA evidence exists yet.
+
+The Signal environment smoke receipt binds the clean MIT source commit, exact
+90-package isolated `signal` environment, successful Conda reconstruction
+dry-run, and one real RGBNT201 train/validation loader batch. It proves the
+three RGB/NI/TI tensors and released B64/K8 data path are executable on CPU.
+It does not prove a Signal GPU forward, fixed-epoch reproduction, local metric,
+or SOTA result; the released 80.3% mAP / 85.2% Rank-1 remains upstream-only.
+
+The baseline-runner TDD receipt binds 45 passing project tests, the two runner
+and test hashes, all PEFT-BoA recovery/fixed-endpoint contracts, and the
+MFRNet official-B128 preflight/evaluation contract. Its two real invocations
+were both preflight-only and blocked at 1,025 MiB GPU use. Synthetic fake
+backend values exercise CLI parsing/state transitions only and are explicitly
+not model results. No PEFT capacity/fixed120, MFRNet official128, new local
+metric, TriFusion training metric or SOTA claim is supported by this receipt.
+
+The TriFusion training-readiness receipt supersedes only the project-test-count
+status, not the historical core receipt. It binds 51 passing tests, the real
+`train_171`-only B16/K4 loader, the pre-CIRC criterion, and the public
+capacity/overfit/dev runner with atomic two-generation recovery. Its real
+capacity invocation stopped before model construction at 1,035 MiB used GPU
+memory because launch requires strictly less than 500 MiB. The fake workers in
+the CLI tests are contract fixtures, not model runs. Therefore no TriFusion
+capacity, overfit, dev metric, ablation result or SOTA claim exists yet.
 
 Absolute paths inside JSON records identify the WSL2 machine on which the
 evidence was produced. File hashes, source commits and protocol fields are the

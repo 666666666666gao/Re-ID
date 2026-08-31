@@ -99,9 +99,9 @@ and its state API is:
 This seam repairs baseline experiment durability only. It does not authorize
 tests or implementation of the pending TriFusion model/evaluator seams above.
 
-## PEFT-BoA fixed-endpoint recovery seam (proposed)
+## PEFT-BoA fixed-endpoint recovery seam (accepted and implemented)
 
-The proposed public boundary is:
+The implemented public boundary is:
 
 `tools/run_peft_boa_resumable.py --output-dir DIR --mode capacity|fixed120`
 
@@ -120,12 +120,14 @@ The proposed public boundary is:
 - corrupt, foreign, partial, phase-invalid or model-only upstream checkpoints
   are rejected; no best checkpoint is selected from official-test metrics.
 
-The detailed contract is `docs/PEFT_BOA_REPRODUCTION_SPEC.md`. No PEFT runner
-test or implementation is added until the user accepts this proposed seam.
+The detailed contract is `docs/PEFT_BOA_REPRODUCTION_SPEC.md`. The exact user
+reply `接缝同意` is bound in `evidence/tdd_seam_consent_20260831.json`; the
+runner and CLI tests are now implemented. Real capacity/fixed120 execution is
+still gated on GPU `memory.used < 500 MiB`.
 
-## MFRNet checkpoint evaluation seam (proposed)
+## MFRNet checkpoint evaluation seam (accepted and implemented)
 
-The proposed public boundary is:
+The implemented public boundary is:
 
 `tools/run_mfrnet_checkpoint_eval.py --mode preflight|official128 --output-dir DIR`
 
@@ -141,6 +143,7 @@ The proposed public boundary is:
 
 The detailed contract and deterministic routing counterexample are
 `docs/MFRNET_CHECKPOINT_REPRODUCTION_SPEC.md` and
-`evidence/mfrnet_eval_batch_semantics_audit_20260831.json`. No runner test or
-implementation is added until the user accepts this proposed seam. Replying
-exactly `接缝同意` accepts the pending TriFusion, PEFT-BoA and MFRNet seams.
+`evidence/mfrnet_eval_batch_semantics_audit_20260831.json`. The exact user
+reply `接缝同意` is bound in `evidence/tdd_seam_consent_20260831.json`; the
+runner and CLI tests are now implemented. Real `official128` remains gated on
+GPU `memory.used < 500 MiB`.

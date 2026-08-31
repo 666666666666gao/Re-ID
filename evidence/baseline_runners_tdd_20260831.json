@@ -1,0 +1,98 @@
+{
+  "schema_version": "1.0",
+  "event": "peft_boa_and_mfrnet_public_runner_tdd",
+  "recorded_at": "2026-08-31T13:11:10+08:00",
+  "authorization": {
+    "receipt": "evidence/tdd_seam_consent_20260831.json",
+    "receipt_sha256": "ac73e84f8f91fc27a2d0e7fe246a5673ee2de987f9a542144f800b12a62e2b89",
+    "exact_user_text": "接缝同意"
+  },
+  "verification": {
+    "focused_command": "/root/miniconda3/envs/tri_reid/bin/python -m pytest -q tests/test_peft_boa_resumable_runner.py tests/test_mfrnet_checkpoint_runner.py",
+    "focused_passed": 6,
+    "focused_failed": 0,
+    "full_command": "TRIFUSION_CLIP_CHECKPOINT=/root/mmreid-trifusion/pretrained/ViT-B-16.pt /root/miniconda3/envs/tri_reid/bin/python -m pytest -q",
+    "full_passed": 45,
+    "full_failed": 0,
+    "full_warnings": 14,
+    "py_compile": "pass"
+  },
+  "implementation_sha256": {
+    "tools/run_peft_boa_resumable.py": "1f5dba3d9ba16ea7f9290388aa0b68e0eace04bfac2a4b03e7488c29cb44f602",
+    "tools/run_mfrnet_checkpoint_eval.py": "7322fed3c135b125da5e46664d81511893e1eafc292a67a635801b433af1afff"
+  },
+  "test_sha256": {
+    "tests/test_peft_boa_resumable_runner.py": "65c3336f6c14a13ed91ad7a1f7679e0f8c3d77ee9f4efd778dd821b89a24c989",
+    "tests/test_mfrnet_checkpoint_runner.py": "d085ff3704e8fba11b6b686de733b3aa5fc5d1700b339e2e70bc09c746b8a040"
+  },
+  "peft_boa_runner": {
+    "public_cli": "tools/run_peft_boa_resumable.py --output-dir DIR --mode capacity|fixed120",
+    "source_commit": "d2b198be634ac4f9f5744eebf6e0a6604e490deb",
+    "implemented_contracts": [
+      "strict memory.used < 500 MiB launch gate with a worker-side second check",
+      "eight real B64/K4 AMP steps using train_171 only and no official-test loader construction in capacity mode",
+      "full-state epoch-0 and epoch-boundary generations with model, AdamW, center state, scheduler, scaler and all RNG states",
+      "atomic current/previous recovery manifest with foreign, partial, corrupt and phase-invalid rejection",
+      "epoch-80 and epoch-120 model exports before any official-test iteration",
+      "fixed epoch-120 official test evaluation exactly once followed by complete-state idempotence",
+      "fixed/e120 primary label separated from released-test-selected/e80 calibration"
+    ],
+    "real_preflight_artifact": "/root/mmreid-trifusion/artifacts/peft_boa_capacity_20260831_1317/capacity.json",
+    "real_preflight_artifact_sha256": "e05a50e56382215e26f5039a9583a68d940286f9db8a872b3140cc2a9d7b64da",
+    "real_preflight": {
+      "status": "BLOCKED",
+      "only_blocker": "gpu_memory_gate",
+      "memory_used_mib": 1025,
+      "memory_total_mib": 8188,
+      "source_commit_match": true,
+      "tracked_worktree_clean": true,
+      "immutable_hashes_match": "6/6",
+      "required_packages_match": "46/46",
+      "pip_check": "pass",
+      "worker_executed": false,
+      "official_test_iteration_count": 0
+    }
+  },
+  "mfrnet_runner": {
+    "public_cli": "tools/run_mfrnet_checkpoint_eval.py --mode preflight|official128 --output-dir DIR",
+    "source_commit": "ec54a1302321cda4b5fad9ca1c0878dabf0b46b6",
+    "implemented_contracts": [
+      "immutable source/config/entrypoint/checkpoint/CLIP/dataset receipt and package-lock verification",
+      "strict 500 MiB blocked and 499 MiB eligible boundary",
+      "released B128, no-rerank, normalized, complete-modality protocol preservation",
+      "combined stdout/stderr and upstream test_log hashing",
+      "PASS, PARITY_MISMATCH, CUDA_INCOMPATIBLE, OOM, DRIVER_RESET, FAILED and BLOCKED terminal classification",
+      "test-selected released-checkpoint parity label kept separate from clean model selection"
+    ],
+    "real_preflight_artifact": "/root/mmreid-trifusion/artifacts/mfrnet_preflight_20260831_1258/receipt.json",
+    "real_preflight_artifact_sha256": "d46cf895f735ff3be26e03dd37ee0be23dadb472d6f9471f7c09bb0c23901f3d",
+    "real_preflight": {
+      "status": "BLOCKED",
+      "only_blocker": "gpu_memory_gate",
+      "memory_used_mib": 1025,
+      "memory_total_mib": 8188,
+      "source_commit_match": true,
+      "tracked_worktree_clean": true,
+      "immutable_hashes_match": "5/5",
+      "required_packages_match": "52/52",
+      "pip_check": "pass",
+      "upstream_command_executed": false,
+      "metric_result": null
+    }
+  },
+  "synthetic_test_boundary": {
+    "fake_gpu_rows_used_for_boundary_tests": [499, 500],
+    "fake_upstream_metrics_are_model_results": false,
+    "fake_peft_fixed120_metrics_are_model_results": false,
+    "purpose": "CLI state, argv, environment, hash, recovery and receipt contracts only"
+  },
+  "claim_boundaries": {
+    "runner_contracts_implemented": true,
+    "real_peft_boa_capacity_complete": false,
+    "real_peft_boa_fixed120_complete": false,
+    "real_mfrnet_official128_complete": false,
+    "new_local_baseline_metrics_exist": false,
+    "trifusion_training_metrics_exist": false,
+    "sota_claim_supported": false
+  }
+}

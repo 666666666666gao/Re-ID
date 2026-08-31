@@ -1,7 +1,9 @@
 # PEFT-BoA RGBNT201 reproduction specification
 
-**Status:** protocol and isolated upstream environment frozen; runner
-implementation waits for acceptance of the public seam in `docs/TDD_SEAMS.md`.
+**Status:** user accepted the frozen seam with exact reply `接缝同意`; the
+runner and CLI contract are implemented and TDD-verified. The real B64/K4
+capacity run remains blocked by the `<500 MiB` GPU-idle gate, so fixed120 has
+not started and no local PEFT metric exists.
 
 ## Purpose and reporting roles
 
@@ -47,7 +49,7 @@ must not inherit the exact-reproduction label.
 
 ## Public runner contract
 
-The proposed public boundary is:
+The implemented public boundary is:
 
 ```text
 tools/run_peft_boa_resumable.py --output-dir DIR --mode capacity|fixed120

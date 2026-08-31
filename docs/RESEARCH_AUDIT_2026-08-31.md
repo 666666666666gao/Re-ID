@@ -50,7 +50,7 @@ RGBNT201 原论文使用 201 个身份和 4 个非重叠视角，共 4,787 组�
 
 Signal、PEFT-BoA 和 ICPL-ReID 的已发布 loader 均显式读取 `train_171`，并以完整 `test` 同时构造 query/gallery；因此其训练身份范围可以代码审计。Signal 的真实 CPU loader 探针进一步确认 171 个训练 ID、3951 组三模态训练样本、836 query 和 836 gallery，B64/K8 批次的三路形状均为 `64×3×256×128`。其训练循环每轮读取 official test 并按 test mAP 写 `Signalbest.pth`；周期 `Signal_50.pth` 在第 50 轮 test 评估前保存，而发布的 `test.py` 硬编码另一个作者路径 `signal_50.pth`。因此公开 80.3 / 85.2 只能写成“上游固定路径 test-log 值”，不能在取得 checkpoint 哈希并本机评估前称为复现。MGRNet 的作者仓库在固定提交仅有 README，FUSE 未定位到作者代码，二者的 loader/evaluator 仍只能按论文表述归类。增量扫描中没有任何静态 CLIP 结果超过 RoDI-CLIP 的 84.1 / 87.2。
 
-工程角色据此固定为：**DeMo 是已接入的实现脚手架；MDReID 82.0868 / 85.1675 是本机已严格复现的最高 checkpoint 锚点；PEFT-BoA 是待从代码重训的更高 released-protocol 比较器。** PEFT-BoA 的 82.7 / 86.1 只能标为 test-selected epoch80；在 fixed120 复现闭环前，不能用它替代 MDReID 的实测基线。
+工程角色据此固定为：**Signal 是当前同输入静态候选中指标最高且固定提交具有仓库级 MIT 许可证的 baseline；DeMo 是已接入的 MIT 实现脚手架；MDReID 82.0868 / 85.1675 是本机已严格复现的最高 checkpoint 锚点；PEFT-BoA 是待从公开可见源码重训的更高 released-protocol 比较器。** Signal 的 80.3 / 85.2 仍只是上游固定路径日志，必须本机完成 fixed-e50 后才可称复现；PEFT-BoA 固定提交没有仓库级许可证，不能再称“开源”，且其 82.7 / 86.1 只能标为 test-selected epoch80。完整证据与复用边界见 [baseline 选择及许可证审计](BASELINE_SELECTION_AND_LICENSE_AUDIT_2026-08-31.md)。
 
 ### 2.2 静态更强预训练、多阶段 KD 与 TTT
 
@@ -85,12 +85,13 @@ Signal、PEFT-BoA 和 ICPL-ReID 的已发布 loader 均显式读取 `train_171`�
 
 [IDEA](https://openaccess.thecvf.com/content/CVPR2025/papers/Wang_IDEA_Inverted_Text_with_Cooperative_Deformable_Aggregation_for_Multi-modal_Object_CVPR_2025_paper.pdf) 同样使用视觉语言模型生成文本，属于额外语义资源对照。上述方法及纯视觉方法均未报告 RGBNT201 的 mINP。
 
-基于现有 DeMo 工程继续开发时，应把 DeMo 限定为实现脚手架，把已在本机完成 parity 的 MDReID 作为强 checkpoint 基线；Signal 和 MFRNet 是额外 checkpoint 比较器，PEFT-BoA 是必须从头训练的强开源代码比较器。RoDI、FUSE、MGRNet、PMKD、NEXT 只能作为“论文报告上限”。PRISM 的工件最完整，但其结果依赖预计算 mask；CoT-ReID 和 STMI 有代码却缺关键文本/掩码或 checkpoint，不能称为端到端已封装复现。
+基于现有 DeMo 工程继续开发时，应把 DeMo 限定为 MIT 实现脚手架，把 Signal 作为待 fixed-e50 本机重训的高指标 MIT baseline，把已完成 parity 的 MDReID 作为强 checkpoint 锚点；PEFT-BoA、MFRNet、UGG-ReID 和 MDReID 的固定源码树没有仓库级许可证，只能隔离执行或依据论文独立实现，不能称为开源代码基线。RoDI、FUSE、MGRNet、PMKD、NEXT 只能作为“论文报告上限”。PRISM 虽为 MIT，但结果依赖预计算 mask；CoT-ReID 和 STMI 有代码却缺关键文本/掩码或 checkpoint，不能称为端到端已封装复现。
 
 可审计的目标应分轨表达：
 
 - 静态纯视觉 CLIP-B/16、256×128：RoDI-CLIP 84.1 / 87.2；
-- 静态纯视觉 CLIP-B/16、开源训练代码但未发布权重：PEFT-BoA released-test-selected e80 为 82.7 / 86.1、同一公开日志 fixed e120 为 82.2 / 85.8；两者均待本机从头复现并分栏报告；
+- 静态纯视觉 CLIP-B/16、MIT 许可的高指标 baseline：Signal 上游固定路径日志为 80.3 / 85.2，待本机 fixed-e50 复现；
+- 静态纯视觉 CLIP-B/16、公开可见但无仓库级许可证的训练源码：PEFT-BoA released-test-selected e80 为 82.7 / 86.1、同一公开日志 fixed e120 为 82.2 / 85.8；两者均待本机从头复现并分栏报告；
 - 静态纯视觉、更强外部预训练：RoDI-DINOv3 85.3 / 87.9；
 - 多阶段 DINOv2 蒸馏：PMKD 84.7 / 88.9；
 - 测试时训练：ProxyTTT 85.0 / 88.5；

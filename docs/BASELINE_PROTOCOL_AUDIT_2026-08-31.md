@@ -144,13 +144,16 @@ the batch. The receipt is
    reproduced.
 3. **Signal reference column:** label 80.3 / 85.2 as an upstream fixed-path
    test-log value until the exact weight is hashed and evaluated locally;
-   always separate any `Signalbest.pth` test-selected result.
+   always separate any `Signalbest.pth` test-selected result. Signal is the
+   selected high-metric MIT baseline, so the fair primary row is a locally
+   trained seed-1234 fixed `Signal_50.pth`, not the unavailable public-link
+   bytes or a test-selected best.
 4. **MFRNet checkpoint column:** label the downloaded official checkpoint and
    any parity result as `test-selected (released protocol)`; strict loading is
    not metric reproduction.
-5. **Matched fair baseline column:** report the pre-registered `DeMo_50.pth`
-   and locally trained `BoA_120_fixed.pth`, regardless of whether an earlier
-   test epoch is better.
+5. **Matched fair baseline column:** report the pre-registered `DeMo_50.pth`,
+   locally trained `Signal_50.pth`, and locally trained
+   `BoA_120_fixed.pth`, regardless of whether an earlier test epoch is better.
 6. **TriFusion selection:** use only the frozen 141-fit/30-dev protocol for
    architecture and checkpoint decisions, then retrain the promoted
    configuration on all 171 training identities and evaluate the official test
@@ -161,4 +164,6 @@ the batch. The receipt is
    mandatory.
 
 This policy is stricter than merely copying the released training loop and is
-the protocol used for all paper claims.
+the protocol used for all paper claims. Repository-level licensing and source
+reuse boundaries are separately binding in
+`docs/BASELINE_SELECTION_AND_LICENSE_AUDIT_2026-08-31.md`.

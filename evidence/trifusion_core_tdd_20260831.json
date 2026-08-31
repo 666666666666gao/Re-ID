@@ -1,0 +1,115 @@
+{
+  "schema_version": "1.0",
+  "event": "trifusion_core_tdd_implementation",
+  "recorded_at": "2026-08-31T12:41:25+08:00",
+  "repository_head_before_implementation_commit": "1a437f71a5b92553d9eda412689d31155416e603",
+  "authorization": {
+    "receipt": "evidence/tdd_seam_consent_20260831.json",
+    "receipt_sha256": "ac73e84f8f91fc27a2d0e7fe246a5673ee2de987f9a542144f800b12a62e2b89",
+    "exact_user_text": "接缝同意"
+  },
+  "verification": {
+    "command": "TRIFUSION_CLIP_CHECKPOINT=/root/mmreid-trifusion/pretrained/ViT-B-16.pt /root/miniconda3/envs/tri_reid/bin/python -m pytest -q",
+    "passed": 39,
+    "failed": 0,
+    "warnings": 14,
+    "compileall": "pass",
+    "git_diff_check": "pass"
+  },
+  "implemented_public_seams": [
+    "TriBranchEncoder(images, modality_mask) -> ExpertStateMap",
+    "HeterogeneousRelay(states, reliability, stage) -> RelayResult",
+    "ReliabilityPosterior(states, modality_mask) -> ReliabilityResult",
+    "RoleDirectedPeerTeaching(states, reliability, labels) -> PeerTeachingResult",
+    "CollaborativeFusion(states, reliability, modality_mask) -> FusionResult",
+    "TriFusionReID.forward(batch, targets=None, return_aux=False)",
+    "official Market-1501-style evaluator worked example"
+  ],
+  "deep_collaboration_schedule": [
+    "shared tokenization",
+    "all expert stage 1",
+    "one joint stage-1 Beta posterior",
+    "same-posterior HFER stage 1",
+    "all expert stage 2",
+    "same-posterior HFER stage 2",
+    "all expert stage 3",
+    "same-posterior nine-contribution fusion"
+  ],
+  "circ_contract": {
+    "cli": "tools/build_circ_targets.py --config CFG --mode development|postfreeze-final --output DIR",
+    "synthetic_contract_test": "pass",
+    "identity_overlap": 0,
+    "official_test_access_count": 0,
+    "edge_audit_budget_per_row": 2,
+    "edge_values_are_training_targets": false,
+    "separate_symmetry_receipt": true,
+    "separate_target_transfer_receipt": true,
+    "real_oof_target_table_generated": false
+  },
+  "production_architecture": {
+    "clip_checkpoint": "/root/mmreid-trifusion/pretrained/ViT-B-16.pt",
+    "clip_checkpoint_sha256": "5806e77cd80f8b59890b7e101eabd078d9fb84e6937f9e85e4ecb61988df416f",
+    "shared_patch_projection_instances": 1,
+    "token_grid": [16, 8],
+    "transformer_blocks": 12,
+    "cnn_blocks": 9,
+    "mamba_blocks": 9,
+    "expert_widths": {
+      "cnn": 256,
+      "transformer": 768,
+      "mamba": 256
+    },
+    "relay_rank": 64,
+    "embedding_width": 512,
+    "default_mamba_factory_build": "pass",
+    "total_parameters": 95893482,
+    "parameter_budget": 120000000,
+    "parameter_budget_pass": true
+  },
+  "gpu_gate": {
+    "checked_at": "2026-08-31T12:37:07+08:00",
+    "gpu": "NVIDIA GeForce RTX 4060 Laptop GPU",
+    "memory_used_mib": 1021,
+    "memory_total_mib": 8188,
+    "required_memory_used_strictly_below_mib": 500,
+    "launch_allowed": false,
+    "cuda_forward_or_training_launched": false
+  },
+  "implementation_sha256": {
+    "modeling/trifusion/state.py": "5fe89c4885507e74ca1833cc18822a4b57e4c2d6fa9a6c6b2e127d1e74b70db9",
+    "modeling/trifusion/tokenizer.py": "ff180350cea3ea8c5a9a7c57e4f4c9b1d7f30cc70dde5405037270be2392c306",
+    "modeling/trifusion/encoder.py": "545f7be0360790e83288deec73d8941af8c349ec93a0553c286bf023732d7cbe",
+    "modeling/trifusion/experts/cnn.py": "f823cfd59589e7fa8dbe066b26eec662d93a9d01b2376f05e7a4b6f43409996a",
+    "modeling/trifusion/experts/transformer.py": "8580c6e761a2fbfd54a70d0bd231fef0695cccecbec328f643a6c5112deb674e",
+    "modeling/trifusion/experts/mamba.py": "c516c7ad937e5eee6a4ed1e3ec33c2afe3522b751d296bd2e4910e4f27a20ee5",
+    "modeling/trifusion/relay.py": "cd1657e1074b3812ee3684e4f864e00cd66099657a8531c155a33912c3fecd91",
+    "modeling/trifusion/reliability.py": "78f0198fa94a71c80f9dc06973cf3c9597e2a27b77139b2628b41aa55babd7db",
+    "modeling/trifusion/fusion.py": "8c004566ce763aab1a72b391fea0984b91cfc791c9e0ff7232af53abaa321ee8",
+    "modeling/trifusion/intervention_targets.py": "c3ca60fc9a21c5a81ec548d985c79bf4bc73da7b97fc92e180197dfae05d23ba",
+    "modeling/trifusion/peer_teaching.py": "d5ec38a6ebb26d8012be7fa5ebced3dcd5e16de4576e29fef2e89d92dc970b3b",
+    "modeling/trifusion/model.py": "c9b0bcfa0d65b57dbd8b88f03039dca0786ec38dfe7dc646b6b2354c8c63ae77",
+    "modeling/trifusion/criterion.py": "f7c4f25a6ae642b0be1d72ec58cc39d381a4020c98d89a4de0c45882a38ca8dc",
+    "modeling/trifusion/builder.py": "ffdefddd78508aebe83f9b8c6be43031dcc8ddcfcea652faa0690a5ea15d7c69",
+    "utils/reid_evaluation.py": "96dd0c93d61b67be1944bdb90d59c64ef2246a0c65c776f1e24c27ca858560f2",
+    "tools/build_circ_targets.py": "d83bc329435acf31fd2e2e371f17d3410aba1564168253c2680372684dd5a5bd"
+  },
+  "test_sha256": {
+    "test_reid_evaluation.py": "b528108ac5293774987bdd6db456a6341e265b8027c3abaab839e6c58673569b",
+    "test_trifusion_encoder.py": "57fd5cf6d717fb8d8d26cdf75c81fc389c76fb82b423db36280265c8ceac1075",
+    "test_trifusion_relay.py": "8b8e3da1b69e80ff83ea9b0c07700d3c31e3105c37b50cfcb730910d428dfbe4",
+    "test_trifusion_reliability.py": "2e3d523fbc0bdb4bbd6e2c6fd5d1ddb3aa504b3baa8433c417ca190145d46630",
+    "test_trifusion_collaboration.py": "3161379ae43df6e3951887ccef96a2a6a70fc7a8badb6e1f7cdd6b8643704052",
+    "test_circ_targets.py": "2886181a9be1a3d57331370f7e3f64e2cb2258885abe9943785acb6ba8153f60",
+    "test_trifusion_criterion.py": "fa09dab8f22d6fb2f61a0c9bc6beb68e144941ba939f6684d1f04d334607443a",
+    "test_trifusion_builder.py": "71cf479beb8c8bbd8a08f541701bd6337426df4a469c389da44df751f6344a8c",
+    "test_trifusion_peer_teaching.py": "a1b89a70a6cf78c249c896ebfaf84701dd1d6904853241a303df1eb79535fbfd"
+  },
+  "claim_boundaries": {
+    "unit_and_cpu_integration_implementation_complete": true,
+    "real_cuda_trifusion_forward_complete": false,
+    "real_rgbnt201_overfit_complete": false,
+    "training_metrics_exist": false,
+    "ablation_metrics_exist": false,
+    "sota_claim_supported": false
+  }
+}

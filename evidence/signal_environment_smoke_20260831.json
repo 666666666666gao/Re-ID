@@ -1,0 +1,111 @@
+{
+  "schema_version": "1.0",
+  "event": "signal_isolated_environment_and_real_rgbnt201_loader_smoke",
+  "recorded_at": "2026-08-31T12:49:28+08:00",
+  "baseline": {
+    "name": "Signal",
+    "repository": "/root/mmreid-trifusion/baselines/Signal",
+    "commit": "cd1b0a672d1fe642e7608731cb4899a19dda7d51",
+    "license_role": "MIT high-metric baseline",
+    "source_protocol_receipt": "evidence/signal_source_protocol_audit_20260831.json",
+    "source_protocol_receipt_sha256": "b21f90775e9e551297a467df16e7d304bdb669727caf511db7b670092eda6237"
+  },
+  "environment": {
+    "conda_name": "signal",
+    "python": "3.10.13",
+    "torch": "2.1.1+cu118",
+    "torchvision": "0.16.1+cu118",
+    "timm": "0.4.12",
+    "requirements_source_sanitized": "environment/signal_requirements-source-sanitized.txt",
+    "requirements_source_sanitized_sha256": "86061b7cbc4bbc51d1aea212c9480d946f43c310caf68a320dd6147befb6904a",
+    "requirements_lock": "environment/signal_requirements-lock.txt",
+    "requirements_lock_sha256": "a1602c14bad30b675b884a5f9dc97726ab6b44b14a4301e3a78dea51bfdca6a9",
+    "environment_yml": "environment/signal_environment.yml",
+    "environment_yml_sha256": "114ad1e418448bfec50a72d60535601af32a6a6dcc78c843881a2122216328a4",
+    "pip_lock_entries": 90,
+    "installed_pip_entries": 90,
+    "pip_lock_exact_match": true,
+    "pip_missing": [],
+    "pip_extra": [],
+    "pip_check": "pass: No broken requirements found.",
+    "conda_env_create_dry_run": "pass",
+    "source_exceptions": [
+      {
+        "requirement": "grad-cam @ file:///media/...",
+        "reason": "upstream author-local path is unavailable and the package is not imported by train.py, test.py, model or data paths"
+      },
+      {
+        "requirement": "visdom==0.2.4",
+        "reason": "legacy visualization-only build is incompatible with the isolated modern build toolchain and the package is not imported by the pinned source tree"
+      }
+    ]
+  },
+  "source_bindings": {
+    "configs/RGBNT201/Signal.yml": "a13bd5169a4c710fa79efc87db909409015a0b2611086c0fbf4c1842f0cfcc44",
+    "data/datasets/RGBNT201.py": "7b2b30b339123e92bbead5c092afa7570a06f423570c4249acfdd39294fc4a88",
+    "data/datasets/make_dataloader.py": "54c47d798a20955bde224d9c78b42149c3c2ef008b02659141829a553194434f",
+    "dataset_integrity_receipt": "evidence/rgbnt201_audit_20260831.json",
+    "dataset_integrity_receipt_sha256": "ec36309921a3dd7c12d46bb60a83406440ba316f171e419a67ad2cc83bf24318"
+  },
+  "runtime_adaptation": {
+    "CUDA_VISIBLE_DEVICES": "",
+    "cuda_available": false,
+    "cfg.DATASETS.ROOT_DIR": "/root/mmreid-trifusion",
+    "RGBNT201.dataset_dir": "data/RGBNT201",
+    "cfg.DATALOADER.NUM_WORKERS": 0,
+    "model_constructed": false,
+    "optimizer_step_executed": false
+  },
+  "released_config": {
+    "dataset": "RGBNT201",
+    "seed": 1234,
+    "max_epochs": 50,
+    "train_batch_size": 64,
+    "num_instances": 8,
+    "test_batch_size": 128
+  },
+  "real_loader": {
+    "status": "pass",
+    "train_items": 3951,
+    "num_train_ids": 171,
+    "num_train_cameras": 4,
+    "num_train_views": 1,
+    "query_items": 836,
+    "gallery_items": 836,
+    "query_gallery_items": 1672,
+    "train_batch_tuple_length": 5,
+    "validation_batch_tuple_length": 6,
+    "train_labels_shape": [64],
+    "validation_batch_labels": 128,
+    "train_modalities": {
+      "RGB": {"shape": [64, 3, 256, 128], "dtype": "torch.float32", "all_finite": true},
+      "NI": {"shape": [64, 3, 256, 128], "dtype": "torch.float32", "all_finite": true},
+      "TI": {"shape": [64, 3, 256, 128], "dtype": "torch.float32", "all_finite": true}
+    },
+    "validation_modalities": {
+      "RGB": {"shape": [128, 3, 256, 128], "dtype": "torch.float32", "all_finite": true},
+      "NI": {"shape": [128, 3, 256, 128], "dtype": "torch.float32", "all_finite": true},
+      "TI": {"shape": [128, 3, 256, 128], "dtype": "torch.float32", "all_finite": true}
+    }
+  },
+  "gpu_gate": {
+    "checked_at": "2026-08-31T12:49:28+08:00",
+    "gpu": "NVIDIA GeForce RTX 4060 Laptop GPU",
+    "memory_used_mib": 1021,
+    "memory_total_mib": 8188,
+    "utilization_percent": 25,
+    "temperature_c": 46,
+    "required_memory_used_strictly_below_mib": 500,
+    "launch_allowed": false,
+    "gpu_forward_or_training_launched": false
+  },
+  "claim_boundaries": {
+    "isolated_environment_rebuild_contract_pass": true,
+    "real_rgbnt201_source_loader_pass": true,
+    "signal_model_gpu_forward_complete": false,
+    "signal_fixed_epoch_training_complete": false,
+    "local_signal_metrics_exist": false,
+    "released_80_3_map_85_2_rank1_is_local": false,
+    "sota_claim_supported": false
+  }
+}

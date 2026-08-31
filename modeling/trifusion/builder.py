@@ -1,0 +1,224 @@
+"""Production TriFusion builder from a hash-bound CLIP ViT-B/16 checkpoint."""
+
+from __future__ import annotations
+
+import hashlib
+from collections.abc import Callable, Mapping
+from dataclasses import dataclass
+from pathlib import Path
+from types import MappingProxyType
+
+import torch
+from torch import nn
+
+from config import cfg as default_cfg
+from modeling.clip.model import build_model as build_clip_model
+
+from .encoder import TriBranchEncoder
+from .experts.cnn import CNNExpert
+from .experts.mamba import MambaExpert, production_mamba_factory
+from .experts.transformer import TransformerExpert
+from .fusion import CollaborativeFusion
+from .model import TriFusionReID
+from .reliability import ReliabilityPosterior
+from .relay import HeterogeneousRelay
+from .tokenizer import SharedCLIPTokenizer
+
+
+class _DeMoCLIPBlockAdapter(nn.Module):
+    """Expose a batch-first block while retaining the exact pretrained module."""
+
+    def __init__(self, block: nn.Module) -> None:
+        super().__init__()
+        self.block = block
+
+    def forward(self, sequence: torch.Tensor) -> torch.Tensor:
+        sequence_first = sequence.permute(1, 0, 2)
+        output = self.block(
+            sequence_first,
+            modality=None,
+            index=None,
+            last_prompt=None,
+            prompt_sign=False,
+            adapter_sign=False,
+        )
+        return output.permute(1, 0, 2)
+
+
+@dataclass(frozen=True, eq=False)
+class TriFusionBuildResult:
+    model: TriFusionReID
+    checkpoint_sha256: str
+    provenance: Mapping[str, object]
+
+    def __post_init__(self) -> None:
+        object.__setattr__(
+            self, "provenance", MappingProxyType(dict(self.provenance))
+        )
+
+
+def _sha256_file(path: Path) -> str:
+    digest = hashlib.sha256()
+    with path.open("rb") as source:
+        for chunk in iter(lambda: source.read(1024 * 1024), b""):
+            digest.update(chunk)
+    return digest.hexdigest()
+
+
+def _load_resized_clip_visual(
+    checkpoint: Path, *, image_size: tuple[int, int], patch_size: int
+) -> nn.Module:
+    scripted = torch.jit.load(str(checkpoint), map_location="cpu").eval()
+    state_dict = dict(scripted.state_dict())
+    clip_cfg = default_cfg.clone()
+    clip_cfg.defrost()
+    clip_cfg.MODEL.PROMPT = False
+    clip_cfg.MODEL.ADAPTER = False
+    clip_cfg.INPUT.SIZE_TRAIN = list(image_size)
+    clip_cfg.MODEL.STRIDE_SIZE = [patch_size, patch_size]
+    clip_cfg.freeze()
+    clip_model = build_clip_model(
+        clip_cfg,
+        state_dict,
+        image_size[0] // patch_size,
+        image_size[1] // patch_size,
+        patch_size,
+    ).float()
+    return clip_model.visual
+
+
+def build_trifusion_from_clip(
+    checkpoint: Path | str,
+    *,
+    num_classes: int,
+    image_size: tuple[int, int] = (256, 128),
+    patch_size: int = 16,
+    cnn_width: int = 256,
+    mamba_width: int = 256,
+    relay_rank: int = 64,
+    embedding_width: int = 512,
+    private_width: int = 64,
+    mamba_mixer_factory: Callable[[int], nn.Module] = production_mamba_factory,
+) -> TriFusionBuildResult:
+    """Build the full three-stage, same-posterior collaborative model."""
+
+    checkpoint = Path(checkpoint).expanduser().resolve()
+    if not checkpoint.is_file():
+        raise FileNotFoundError(checkpoint)
+    if image_size[0] % patch_size or image_size[1] % patch_size:
+        raise ValueError("image dimensions must be divisible by patch size")
+    grid_size = (image_size[0] // patch_size, image_size[1] // patch_size)
+    checkpoint_sha256 = _sha256_file(checkpoint)
+    visual = _load_resized_clip_visual(
+        checkpoint, image_size=image_size, patch_size=patch_size
+    )
+    transformer_width = int(visual.conv1.out_channels)
+    expert_widths = {
+        "cnn": cnn_width,
+        "transformer": transformer_width,
+        "mamba": mamba_width,
+    }
+
+    tokenizer = SharedCLIPTokenizer(
+        patch_projection=visual.conv1,
+        positional_embedding=visual.positional_embedding,
+        expert_widths=expert_widths,
+    )
+    transformer = TransformerExpert(
+        width=transformer_width,
+        grid_size=grid_size,
+        blocks=[
+            _DeMoCLIPBlockAdapter(block)
+            for block in visual.transformer.resblocks
+        ],
+        class_embedding=visual.class_embedding,
+        class_position=nn.Parameter(
+            visual.positional_embedding[0].detach().clone()
+        ),
+        pre_norm=visual.ln_pre,
+        post_norm=visual.ln_post,
+        output_projection=nn.Identity(),
+        private_width=private_width,
+    )
+    experts = {
+        "cnn": CNNExpert(
+            width=cnn_width,
+            grid_size=grid_size,
+            stage_depths=(3, 3, 3),
+            private_width=private_width,
+        ),
+        "transformer": transformer,
+        "mamba": MambaExpert(
+            width=mamba_width,
+            grid_size=grid_size,
+            stage_depths=(3, 3, 3),
+            private_width=private_width,
+            mixer_factory=mamba_mixer_factory,
+        ),
+    }
+    posterior = ReliabilityPosterior(
+        expert_widths=expert_widths,
+        hidden_width=128,
+        heads=4,
+        kappa_min=2.0,
+    )
+    relay = HeterogeneousRelay(
+        expert_widths=expert_widths,
+        relay_rank=relay_rank,
+        token_grid=grid_size,
+        gamma_init=0.0,
+    )
+    encoder = TriBranchEncoder(
+        experts,
+        tokenizer=tokenizer,
+        reliability_gate=posterior,
+        collaborator=relay,
+    )
+    fusion = CollaborativeFusion(
+        expert_widths=expert_widths,
+        embedding_width=embedding_width,
+    )
+    if visual.proj is not None and visual.proj.shape == (
+        transformer_width,
+        embedding_width,
+    ):
+        with torch.no_grad():
+            fusion.contribution_projections["transformer"].weight.copy_(
+                visual.proj.detach().T.float()
+            )
+    model = TriFusionReID(
+        encoder=encoder,
+        fusion=fusion,
+        embedding_width=embedding_width,
+        num_classes=num_classes,
+    )
+    total_parameters = sum(parameter.numel() for parameter in model.parameters())
+    provenance = {
+        "clip_checkpoint": str(checkpoint),
+        "clip_checkpoint_sha256": checkpoint_sha256,
+        "clip_visual_layers": len(transformer.blocks),
+        "image_size": list(image_size),
+        "token_grid": list(grid_size),
+        "expert_widths": expert_widths,
+        "relay_rank": relay_rank,
+        "embedding_width": embedding_width,
+        "cnn_blocks": sum(len(stage) for stage in experts["cnn"].stages),
+        "mamba_blocks": sum(len(stage) for stage in experts["mamba"].stages),
+        "shared_patch_projection_instances": 1,
+        "total_parameters": total_parameters,
+        "parameter_budget_pass": total_parameters <= 120_000_000,
+        "mamba_mixer_factory": getattr(
+            mamba_mixer_factory, "__name__", type(mamba_mixer_factory).__name__
+        ),
+    }
+    return TriFusionBuildResult(
+        model=model,
+        checkpoint_sha256=checkpoint_sha256,
+        provenance=provenance,
+    )
+
+
+__all__ = [
+    "TriFusionBuildResult",
+    "build_trifusion_from_clip",
+]
