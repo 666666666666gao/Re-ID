@@ -54,7 +54,11 @@ def load_trusted_circ_protocol(path: Path | str) -> tuple[dict[str, Any], str]:
 
 def trifusion_source_hashes() -> dict[str, str]:
     project = Path(__file__).resolve().parents[2]
-    paths = sorted((project / "modeling/trifusion").rglob("*.py"))
+    paths = sorted(
+        path
+        for path in (project / "modeling/trifusion").rglob("*.py")
+        if path.name != "protocol.py"
+    )
     paths.extend(
         [
             project / "tools/build_circ_targets.py",
