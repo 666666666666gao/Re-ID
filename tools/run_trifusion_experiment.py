@@ -509,17 +509,19 @@ def _preflight(
         "amp": bool(config["OPTIMIZATION"]["AMP"]),
         "amp_init_scale": float(config["OPTIMIZATION"].get("AMP_INIT_SCALE", 65536.0)),
         "max_epochs": int(config["OPTIMIZATION"]["MAX_EPOCHS"]),
-        "router_warm_epochs": int(
-            config["OPTIMIZATION"].get("ROUTER_WARM_EPOCHS", 0)
-        ),
     }
+    configured_router_warm_epochs = int(
+        config["OPTIMIZATION"].get("ROUTER_WARM_EPOCHS", 0)
+    )
+    if contract.get("circ_targets_required"):
+        optimization["router_warm_epochs"] = configured_router_warm_epochs
     if contract.get("circ_targets_required") and not (
         0
-        < optimization["router_warm_epochs"]
+        < configured_router_warm_epochs
         < optimization["max_epochs"]
     ):
         blockers.append("invalid_circ_router_warm_schedule")
-    if not contract.get("circ_targets_required") and optimization["router_warm_epochs"]:
+    if not contract.get("circ_targets_required") and configured_router_warm_epochs:
         blockers.append("router_warm_schedule_without_circ")
     resource_profile = str(
         config.get("EXPERIMENT", {}).get("RESOURCE_PROFILE", "standard_b16k4")
@@ -530,8 +532,10 @@ def _preflight(
         if registered_profile is None
         else {
             **registered_profile,
-            "router_warm_epochs": (
-                7 if contract.get("circ_targets_required") else 0
+            **(
+                {"router_warm_epochs": 7}
+                if contract.get("circ_targets_required")
+                else {}
             ),
         }
     )
