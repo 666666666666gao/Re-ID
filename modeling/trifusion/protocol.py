@@ -12,7 +12,7 @@ CIRC_PROTOCOL_PATH = (
     Path(__file__).resolve().parents[2] / "protocols/circ_target_v1.json"
 )
 CIRC_PROTOCOL_SHA256 = (
-    "fb0a591f226648387a4390ab5ae7a968457288ca37722241e6075b477a890e98"
+    "6a4d9bdfec99ac21c66f8d65ba75d8e2060ebe27eda24bacc10fab048fd356fd"
 )
 
 
