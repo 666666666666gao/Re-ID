@@ -24,6 +24,20 @@ class CIRCTargetBuilderTests(unittest.TestCase):
             ),
         )
 
+    def test_fold_assignment_rejects_signed_or_non_decimal_identity(self) -> None:
+        from modeling.trifusion.intervention_targets import assign_identity_fold
+
+        for identity in ("+9", "-9", "person-9", ""):
+            with self.subTest(identity=identity), self.assertRaisesRegex(
+                ValueError,
+                "unsigned decimal",
+            ):
+                assign_identity_fold(
+                    identity,
+                    fold_salt="TriFusion-CIRC-fold-v1",
+                    fold_count=3,
+                )
+
     def test_hash_selected_edge_is_deterministic_with_two_per_row_budget(self) -> None:
         from modeling.trifusion.intervention_targets import select_audit_edge
 

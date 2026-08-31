@@ -633,6 +633,8 @@ def _dev(
         "query_records": 825,
         "gallery_records": 825,
         "train_records": 3126,
+        "model_constructed": True,
+        "training_started": True,
     }
     mismatches = {
         key: {"expected": value, "actual": result.get(key)}
@@ -664,8 +666,6 @@ def _dev(
     preflight["worker_result_sha256"] = _sha256(result_path)
     preflight["recovery"] = recovery_after
     preflight["claim_scope"] = "train-only development result"
-    preflight["model_constructed"] = True
-    preflight["training_started"] = True
     preflight["metric_result"] = metrics
     preflight["claim_boundary"] = (
         "train-only development metrics; no official-test metric and no SOTA claim"
@@ -1501,6 +1501,8 @@ def _worker_dev(config_path: Path, variant: str, output_dir: Path) -> int:
             "peak_allocated_mib": torch.cuda.max_memory_allocated() / 1024**2,
             "peak_reserved_mib": torch.cuda.max_memory_reserved() / 1024**2,
             "fatal_or_nonfinite_detected": False,
+            "model_constructed": True,
+            "training_started": True,
             "second_gpu_gate": second_gpu_gate,
         }
         _atomic_json(result_path, result)

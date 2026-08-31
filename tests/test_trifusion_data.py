@@ -2,6 +2,7 @@ from __future__ import annotations
 
 from collections import Counter
 import json
+import hashlib
 from pathlib import Path
 import random
 
@@ -22,13 +23,14 @@ def _write_circ_protocol(
     tmp_path: Path,
     *,
     development_identity_sha256: str = DEVELOPMENT_IDENTITY_SHA256,
+    dev_protocol_sha256: str = DEV_PROTOCOL_SHA256,
 ) -> Path:
     circ_protocol_path = tmp_path / "circ-target-v1.json"
     circ_protocol_path.write_text(
         json.dumps(
             {
                 "schema_version": "circ-protocol-v1",
-                "dev_protocol_sha256": DEV_PROTOCOL_SHA256,
+                "dev_protocol_sha256": dev_protocol_sha256,
                 "official_test_access_count": 0,
                 "folds": {
                     "count": 3,
@@ -62,9 +64,9 @@ def test_rgbnt201_oof_loader_keeps_target_identities_out_of_generator_training(
     )
 
     assert loaders.num_classes == 93
-    assert loaders.num_query == 1081
+    assert loaders.num_query == 258
     assert len(loaders.train_loader.dataset) == 2045
-    assert len(loaders.eval_loader.dataset) == 2162
+    assert len(loaders.eval_loader.dataset) == 1339
     assert loaders.provenance["target_fold"] == 0
     assert loaders.provenance["fold_count"] == 3
     assert loaders.provenance["generator_training_identities"] == 93
@@ -76,6 +78,7 @@ def test_rgbnt201_oof_loader_keeps_target_identities_out_of_generator_training(
     assert loaders.provenance["generator_target_identity_overlap"] == 0
     assert loaders.provenance["target_forbidden_dev_identity_overlap"] == 0
     assert loaders.provenance["official_test_records"] == 0
+    assert loaders.provenance["query_equals_gallery_record_list"] is False
     assert loaders.provenance["circ_protocol_path"] == str(
         circ_protocol_path.resolve()
     )
@@ -87,6 +90,68 @@ def test_rgbnt201_oof_loader_keeps_target_identities_out_of_generator_training(
     }
     assert generator_paths.isdisjoint(target_paths)
     assert all("/train_171/" in path for path in generator_paths | target_paths)
+
+
+def test_rgbnt201_oof_folds_are_disjoint_and_cover_every_fit_identity(
+    tmp_path: Path,
+) -> None:
+    from modeling.trifusion.data import build_rgbnt201_oof_loaders
+
+    circ_protocol_path = _write_circ_protocol(tmp_path)
+    target_sets = []
+    for target_fold in range(3):
+        loaders = build_rgbnt201_oof_loaders(
+            dataset_root=Path("/root/mmreid-trifusion/data/RGBNT201"),
+            protocol_path=PROJECT / "protocols/rgbnt201_dev_v1.json",
+            circ_protocol_path=circ_protocol_path,
+            target_fold=target_fold,
+            train_batch_size=8,
+            num_instances=4,
+            eval_batch_size=32,
+            num_workers=0,
+        )
+        target_sets.append(set(loaders.provenance["target_identity_values"]))
+        assert loaders.provenance["generator_target_identity_overlap"] == 0
+        assert loaders.provenance["target_forbidden_dev_identity_overlap"] == 0
+
+    assert all(
+        target_sets[left].isdisjoint(target_sets[right])
+        for left in range(3)
+        for right in range(left + 1, 3)
+    )
+    protocol = json.loads(
+        (PROJECT / "protocols/rgbnt201_dev_v1.json").read_text(encoding="utf-8")
+    )
+    assert set.union(*target_sets) == {int(identity) for identity in protocol["train_ids"]}
+
+
+def test_rgbnt201_oof_loader_rejects_semantic_train_dev_identity_overlap(
+    tmp_path: Path,
+) -> None:
+    from modeling.trifusion.data import build_rgbnt201_oof_loaders
+
+    source_protocol = PROJECT / "protocols/rgbnt201_dev_v1.json"
+    protocol = json.loads(source_protocol.read_text(encoding="utf-8"))
+    protocol["dev_ids"][0] = str(int(protocol["train_ids"][0]))
+    protocol_path = tmp_path / "overlap-dev-protocol.json"
+    encoded = json.dumps(protocol, sort_keys=True).encode("utf-8")
+    protocol_path.write_bytes(encoded)
+    circ_protocol_path = _write_circ_protocol(
+        tmp_path,
+        dev_protocol_sha256=hashlib.sha256(encoded).hexdigest(),
+    )
+
+    with pytest.raises(ValueError, match="141-fit/30-dev identity registry is invalid"):
+        build_rgbnt201_oof_loaders(
+            dataset_root=Path("/root/mmreid-trifusion/data/RGBNT201"),
+            protocol_path=protocol_path,
+            circ_protocol_path=circ_protocol_path,
+            target_fold=0,
+            train_batch_size=8,
+            num_instances=4,
+            eval_batch_size=32,
+            num_workers=0,
+        )
 
 
 def test_rgbnt201_oof_loader_rejects_unbound_identity_registry(

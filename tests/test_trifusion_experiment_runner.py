@@ -304,7 +304,8 @@ def test_trifusion_dev_seals_branch_and_fused_metrics_without_official_test(
         "'Rank-10': 75.0 + i} for i, name in enumerate(['fused','cnn','transformer','mamba'])}\n"
         "result = {'status': 'COMPLETE', 'epoch': 60, 'phase': 'complete', 'best_epoch': 60, "
         "'official_test_access_count': 0, 'dev_evaluation_count': 60, 'metrics_percent': metrics, "
-        "'query_records': 825, 'gallery_records': 825, 'train_records': 3126}\n"
+        "'query_records': 825, 'gallery_records': 825, 'train_records': 3126, "
+        "'model_constructed': True, 'training_started': True}\n"
         "(out / 'dev_worker_result.json').write_text(json.dumps(result), encoding='utf-8')\n",
         encoding="utf-8",
     )

@@ -81,11 +81,18 @@ def assign_identity_fold(
 ) -> int:
     if fold_count < 2:
         raise ValueError("fold_count must be at least two")
-    identity_text = str(identity)
-    if identity_text.lstrip("+-").isdigit():
-        identity_text = str(int(identity_text, 10))
+    identity_text = canonical_unsigned_identity(identity)
     payload = _canonical_json({"salt": fold_salt, "identity": identity_text})
     return int(hashlib.sha256(payload).hexdigest(), 16) % fold_count
+
+
+def canonical_unsigned_identity(identity: int | str) -> str:
+    """Return the sole CIRC identity representation: ASCII unsigned decimal."""
+
+    identity_text = str(identity)
+    if not identity_text or any(character not in "0123456789" for character in identity_text):
+        raise ValueError("CIRC identity must be ASCII unsigned decimal")
+    return str(int(identity_text, 10))
 
 
 def valid_edges_for_mask(modality_mask: Sequence[bool]) -> tuple[str, ...]:
@@ -504,6 +511,7 @@ __all__ = [
     "CIRCTargetCache",
     "EdgeSelection",
     "assign_identity_fold",
+    "canonical_unsigned_identity",
     "compile_circ_targets",
     "select_audit_edge",
     "valid_edges_for_mask",

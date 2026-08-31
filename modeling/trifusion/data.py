@@ -23,7 +23,10 @@ from data.datasets.make_dataloader import (
 )
 from data.datasets.sampler import RandomIdentitySampler
 
-from .intervention_targets import assign_identity_fold
+from .intervention_targets import (
+    assign_identity_fold,
+    canonical_unsigned_identity,
+)
 
 
 Record = tuple[list[str], int, int, int]
@@ -54,7 +57,7 @@ def _sha256(path: Path) -> str:
 
 def _identity_registry_sha256(identities: set[str]) -> str:
     payload = json.dumps(
-        sorted(int(identity) for identity in identities),
+        sorted(int(canonical_unsigned_identity(identity)) for identity in identities),
         separators=(",", ":"),
     ).encode("utf-8")
     return hashlib.sha256(payload).hexdigest()
@@ -83,13 +86,17 @@ def _records_for_ids(
     *,
     relabel: bool,
 ) -> tuple[Record, ...]:
+    canonical_identities = {canonical_unsigned_identity(value) for value in identities}
     label_map = {
-        identity: index for index, identity in enumerate(sorted(identities))
+        identity: index
+        for index, identity in enumerate(
+            sorted(canonical_identities, key=int)
+        )
     }
     records = []
     for rgb_path in sorted((train_root / "RGB").glob("*.jpg")):
-        identity = rgb_path.name[:6]
-        if identity not in identities:
+        identity = canonical_unsigned_identity(rgb_path.name[:6])
+        if identity not in canonical_identities:
             continue
         label = label_map[identity] if relabel else int(identity)
         records.append(_parse_record(rgb_path, label=label))
@@ -128,14 +135,15 @@ def _eval_transform() -> transforms.Compose:
 def _make_loaders(
     *,
     train_records: tuple[Record, ...],
-    eval_records: tuple[Record, ...],
+    query_records: tuple[Record, ...],
+    gallery_records: tuple[Record, ...],
     train_batch_size: int,
     num_instances: int,
     eval_batch_size: int,
     num_workers: int,
 ) -> tuple[DataLoader, DataLoader]:
     train_dataset = ImageDataset(train_records, _train_transform())
-    eval_dataset = ImageDataset(eval_records + eval_records, _eval_transform())
+    eval_dataset = ImageDataset(query_records + gallery_records, _eval_transform())
     train_loader = DataLoader(
         train_dataset,
         batch_size=train_batch_size,
@@ -194,8 +202,12 @@ def build_rgbnt201_oof_loaders(
     protocol = json.loads(protocol_path.read_text(encoding="utf-8"))
     if protocol.get("selection", {}).get("uses_test_labels") is not False:
         raise ValueError("OOF development protocol must be test-label blind")
-    eligible_ids = {str(value) for value in protocol["train_ids"]}
-    forbidden_dev_ids = {str(value) for value in protocol["dev_ids"]}
+    eligible_ids = {
+        canonical_unsigned_identity(value) for value in protocol["train_ids"]
+    }
+    forbidden_dev_ids = {
+        canonical_unsigned_identity(value) for value in protocol["dev_ids"]
+    }
     if (
         len(eligible_ids) != 141
         or len(forbidden_dev_ids) != 30
@@ -249,9 +261,13 @@ def build_rgbnt201_oof_loaders(
         identity for identity, cameras in target_cameras.items() if len(cameras) >= 2
     }
     supported_records = sum(target_frequency[identity] for identity in supported_ids)
+    primary_query_records = tuple(
+        record for record in target_records if record[1] in supported_ids
+    )
     train_loader, eval_loader = _make_loaders(
         train_records=train_records,
-        eval_records=target_records,
+        query_records=primary_query_records,
+        gallery_records=target_records,
         train_batch_size=train_batch_size,
         num_instances=num_instances,
         eval_batch_size=eval_batch_size,
@@ -281,15 +297,17 @@ def build_rgbnt201_oof_loaders(
         "target_forbidden_dev_identity_overlap": len(target_ids & forbidden_dev_ids),
         "protocol_uses_test_labels": False,
         "official_test_records": 0,
-        "query_equals_gallery_record_list": True,
+        "query_records": len(primary_query_records),
+        "reference_bank_records": len(target_records),
+        "query_equals_gallery_record_list": False,
     }
     return TriFusionDataLoaders(
         train_loader=train_loader,
         eval_loader=eval_loader,
-        num_query=len(target_records),
+        num_query=len(primary_query_records),
         num_classes=len(generator_ids),
         train_records=train_records,
-        query_records=target_records,
+        query_records=primary_query_records,
         gallery_records=target_records,
         provenance=provenance,
     )
@@ -320,8 +338,12 @@ def build_rgbnt201_dev_loaders(
     protocol = json.loads(protocol_path.read_text(encoding="utf-8"))
     if protocol.get("selection", {}).get("uses_test_labels") is not False:
         raise ValueError("development protocol must be test-label blind")
-    train_ids = set(protocol["train_ids"])
-    dev_ids = set(protocol["dev_ids"])
+    train_ids = {
+        canonical_unsigned_identity(value) for value in protocol["train_ids"]
+    }
+    dev_ids = {
+        canonical_unsigned_identity(value) for value in protocol["dev_ids"]
+    }
     overlap = train_ids & dev_ids
     if overlap or len(train_ids) != 141 or len(dev_ids) != 30:
         raise ValueError("frozen protocol identity partition is invalid")
@@ -342,7 +364,8 @@ def build_rgbnt201_dev_loaders(
     gallery_records = dev_records
     train_loader, eval_loader = _make_loaders(
         train_records=train_records,
-        eval_records=dev_records,
+        query_records=dev_records,
+        gallery_records=dev_records,
         train_batch_size=train_batch_size,
         num_instances=num_instances,
         eval_batch_size=eval_batch_size,

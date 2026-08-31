@@ -234,7 +234,8 @@ def test_cnn_standalone_dev_accepts_only_its_named_metric_and_zero_test_access(
         "result = {'status': 'COMPLETE', 'epoch': 60, 'phase': 'complete', 'best_epoch': 60, "
         "'selection_output': 'cnn', 'official_test_access_count': 0, 'dev_evaluation_count': 60, "
         "'metrics_percent': metrics, 'query_records': 825, 'gallery_records': 825, "
-        "'train_records': 3126}\n"
+        "'train_records': 3126, 'model_constructed': True, "
+        "'training_started': True}\n"
         "(out / 'dev_worker_result.json').write_text(json.dumps(result), encoding='utf-8')\n",
         encoding="utf-8",
     )
