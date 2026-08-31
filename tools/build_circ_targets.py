@@ -46,6 +46,52 @@ def _sha256(path: Path) -> str:
     return digest.hexdigest()
 
 
+def _canonical_json_sha256(value: object) -> str:
+    encoded = json.dumps(
+        value,
+        ensure_ascii=False,
+        sort_keys=True,
+        separators=(",", ":"),
+    ).encode("utf-8")
+    return hashlib.sha256(encoded).hexdigest()
+
+
+def _state_dict_sha256(state_dict: dict[str, Any]) -> str:
+    import torch
+
+    digest = hashlib.sha256()
+    for name in sorted(state_dict):
+        value = state_dict[name]
+        if not isinstance(value, torch.Tensor):
+            raise TypeError(f"state entry is not a tensor: {name}")
+        tensor = value.detach().cpu().contiguous()
+        descriptor = {
+            "name": name,
+            "dtype": str(tensor.dtype),
+            "shape": list(tensor.shape),
+        }
+        digest.update(
+            json.dumps(
+                descriptor,
+                sort_keys=True,
+                separators=(",", ":"),
+            ).encode("utf-8")
+        )
+        digest.update(b"\0")
+        digest.update(tensor.view(torch.uint8).numpy().tobytes())
+        digest.update(b"\0")
+    return digest.hexdigest()
+
+
+def _safe_checkpoint_state(path: Path) -> dict[str, Any]:
+    import torch
+
+    state = torch.load(path, map_location="cpu", weights_only=True)
+    if not isinstance(state, dict):
+        raise ValueError("checkpoint must contain a tensor state dictionary")
+    return state
+
+
 def _atomic_json(path: Path, payload: dict[str, Any]) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     encoded = (json.dumps(payload, indent=2, sort_keys=True) + "\n").encode("utf-8")
@@ -88,9 +134,22 @@ def _validate_complete_manifest(
         or manifest.get("run_identity_sha256") != run_identity_sha256
     ):
         raise ValueError("recovery manifest is not the expected complete endpoint")
+    if not isinstance(manifest.get("completion_evidence"), dict):
+        raise ValueError("complete recovery lacks JSON completion evidence")
+    current = manifest.get("current")
+    expected_current_path = (
+        output_root / ".resume" / f"generation-{expected_epoch:04d}-complete.pt"
+    ).resolve()
+    if not isinstance(current, dict):
+        raise ValueError("current recovery generation is required")
+    current_path = (output_root / str(current.get("path", ""))).resolve()
+    if current_path != expected_current_path:
+        raise ValueError("current recovery generation is not the complete endpoint")
     resume_root = (output_root / ".resume").resolve()
-    for label in ("current", "previous"):
-        generation = manifest.get(label)
+    for label, generation in (
+        ("current", current),
+        ("previous", manifest.get("previous")),
+    ):
         if generation is None:
             continue
         generation_path = (output_root / str(generation["path"])).resolve()
@@ -101,6 +160,14 @@ def _validate_complete_manifest(
         ):
             raise ValueError(f"{label} recovery generation is missing or foreign")
     return _sha256(manifest_path)
+
+
+def _completion_evidence(manifest_path: Path) -> dict[str, Any]:
+    manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+    evidence = manifest.get("completion_evidence")
+    if not isinstance(evidence, dict):
+        raise ValueError("complete recovery lacks JSON completion evidence")
+    return evidence
 
 
 def _orchestrate_oof_generators(
@@ -129,6 +196,11 @@ def _orchestrate_oof_generators(
     contract = dict(resolve_variant("hfer_uniform_generator"))
     contract_sha256 = variant_sha256(contract)
     source_sha256 = trifusion_source_hashes()
+    test_executable = os.environ.get("TRIFUSION_CIRC_TEST_EXECUTABLE")
+    contract_testing = os.environ.get("TRIFUSION_CONTRACT_TESTING") == "1"
+    if test_executable and not contract_testing:
+        raise ValueError("test executable requires contract-testing mode")
+    scientific_evidence_eligible = not contract_testing and not test_executable
     if (
         protocol.get("schema_version") != "circ-protocol-v1"
         or int(protocol.get("official_test_access_count", -1)) != 0
@@ -203,6 +275,13 @@ def _orchestrate_oof_generators(
         != schedule_horizon
     ):
         raise ValueError("selector run identity differs from the frozen generator")
+    if scientific_evidence_eligible and (
+        endpoint.get("contract_testing") is not False
+        or endpoint.get("scientific_evidence_eligible") is not True
+        or selector_identity.get("contract_testing") is not False
+        or selector_identity.get("scientific_evidence_eligible") is not True
+    ):
+        raise ValueError("selector is not eligible scientific evidence")
     selector_manifest = Path(str(endpoint.get("recovery_manifest", ""))).resolve()
     manifest_sha256 = _validate_complete_manifest(
         manifest_path=selector_manifest,
@@ -212,11 +291,42 @@ def _orchestrate_oof_generators(
     )
     if manifest_sha256 != endpoint.get("recovery_manifest_sha256"):
         raise ValueError("selector recovery manifest hash mismatch")
-
-    test_executable = os.environ.get("TRIFUSION_CIRC_TEST_EXECUTABLE")
-    contract_testing = os.environ.get("TRIFUSION_CONTRACT_TESTING") == "1"
-    if test_executable and not contract_testing:
-        raise ValueError("test executable requires contract-testing mode")
+    if scientific_evidence_eligible:
+        selector_recovery = _completion_evidence(selector_manifest)
+        selector_recovery_mismatches = {
+            "kind": ("selector", selector_recovery.get("kind")),
+            "epoch": (schedule_horizon, selector_recovery.get("epoch")),
+            "phase": ("complete", selector_recovery.get("phase")),
+            "run_identity_sha256": (
+                endpoint["run_identity_sha256"],
+                selector_recovery.get("run_identity_sha256"),
+            ),
+            "best_epoch": (fixed_endpoint, selector_recovery.get("best_epoch")),
+            "best_map": (
+                float(endpoint["dev_selection_mAP"]),
+                selector_recovery.get("best_map"),
+            ),
+            "best_metrics": (metrics, selector_recovery.get("best_metrics")),
+            "best_checkpoint_sha256": (
+                endpoint["checkpoint_sha256"],
+                selector_recovery.get("best_checkpoint_sha256"),
+            ),
+            "contract_testing": (False, selector_recovery.get("contract_testing")),
+            "scientific_evidence_eligible": (
+                True,
+                selector_recovery.get("scientific_evidence_eligible"),
+            ),
+        }
+        selector_recovery_mismatches = {
+            key: {"expected": expected, "actual": actual}
+            for key, (expected, actual) in selector_recovery_mismatches.items()
+            if expected != actual
+        }
+        if selector_recovery_mismatches:
+            raise ValueError(
+                "selector checkpoint/metrics are not recovery-bound: "
+                f"{selector_recovery_mismatches}"
+            )
     worker_executable = test_executable or sys.executable
     output = output.expanduser().resolve()
     output.mkdir(parents=True, exist_ok=True)
@@ -239,6 +349,9 @@ def _orchestrate_oof_generators(
             "fixed_endpoint": fixed_endpoint,
             "schedule_horizon_epochs": schedule_horizon,
             "official_test_access_count": 0,
+            "contract_testing": contract_testing,
+            "test_override_used": bool(test_executable),
+            "scientific_evidence_eligible": scientific_evidence_eligible,
         }
         identity_path = fold_output / "run_identity.json"
         if identity_path.is_file():
@@ -276,11 +389,16 @@ def _orchestrate_oof_generators(
                 capture_output=True,
                 text=True,
             )
-            attempt = len(tuple(fold_output.glob("worker-attempt-*.log"))) + 1
-            (fold_output / f"worker-attempt-{attempt:04d}.log").write_text(
-                completed.stdout + completed.stderr,
-                encoding="utf-8",
-            )
+            attempt_numbers = []
+            for log_path in fold_output.glob("worker-attempt-*.log"):
+                try:
+                    attempt_numbers.append(int(log_path.stem.rsplit("-", 1)[1]))
+                except (IndexError, ValueError) as error:
+                    raise ValueError(f"invalid worker attempt log: {log_path}") from error
+            attempt = max(attempt_numbers, default=0) + 1
+            attempt_path = fold_output / f"worker-attempt-{attempt:04d}.log"
+            with attempt_path.open("x", encoding="utf-8") as handle:
+                handle.write(completed.stdout + completed.stderr)
             if completed.returncode != 0 or not receipt_path.is_file():
                 raise RuntimeError(f"fold-{target_fold} generator worker failed")
         receipt = json.loads(receipt_path.read_text(encoding="utf-8"))
@@ -305,6 +423,8 @@ def _orchestrate_oof_generators(
             "training_started": True,
             "fatal_or_nonfinite_detected": False,
             "parameter_budget_pass": True,
+            "contract_testing": contract_testing,
+            "scientific_evidence_eligible": scientific_evidence_eligible,
         }
         mismatches = {
             key: {"expected": value, "actual": receipt.get(key)}
@@ -320,6 +440,12 @@ def _orchestrate_oof_generators(
             or _sha256(checkpoint_path) != receipt.get("checkpoint_sha256")
         ):
             mismatches["checkpoint"] = "missing or hash-mismatched"
+        model_state_sha256 = receipt.get("model_state_sha256")
+        if scientific_evidence_eligible and (
+            not isinstance(model_state_sha256, str)
+            or len(model_state_sha256) != 64
+        ):
+            mismatches["model_state_sha256"] = "missing or malformed"
         train_history = dict(receipt.get("train_history", {}))
         if set(train_history) != {str(epoch) for epoch in range(1, fixed_endpoint + 1)}:
             mismatches["train_history"] = "does not cover every fixed-endpoint epoch"
@@ -345,6 +471,36 @@ def _orchestrate_oof_generators(
                 mismatches["recovery_manifest"] = "hash mismatch"
         except (KeyError, TypeError, ValueError) as error:
             mismatches["recovery_manifest"] = str(error)
+        if not mismatches and scientific_evidence_eligible:
+            try:
+                recovery_evidence = _completion_evidence(manifest_path)
+                checkpoint_state_sha256 = _state_dict_sha256(
+                    _safe_checkpoint_state(checkpoint_path)
+                )
+                expected_recovery_evidence = {
+                    "kind": "oof-generator",
+                    "epoch": fixed_endpoint,
+                    "phase": "complete",
+                    "run_identity_sha256": _sha256(identity_path),
+                    "train_history_sha256": _canonical_json_sha256(train_history),
+                    "data_provenance_sha256": _canonical_json_sha256(provenance),
+                    "contract_testing": False,
+                    "scientific_evidence_eligible": True,
+                    "target_fold": target_fold,
+                    "generator_checkpoint_sha256": receipt["checkpoint_sha256"],
+                    "generator_model_state_sha256": model_state_sha256,
+                }
+                if (
+                    recovery_evidence != expected_recovery_evidence
+                    or checkpoint_state_sha256 != model_state_sha256
+                ):
+                    mismatches["checkpoint_recovery_binding"] = (
+                        "checkpoint, final model and training evidence differ"
+                    )
+            except Exception as error:
+                mismatches["checkpoint_recovery_binding"] = (
+                    f"{type(error).__name__}: {error}"
+                )
         if mismatches:
             raise ValueError(f"fold-{target_fold} receipt contract failed: {mismatches}")
         fold_receipts.append(receipt)
@@ -377,6 +533,9 @@ def _orchestrate_oof_generators(
             str(index): _sha256(output / f"fold-{index}" / "generator_receipt.json")
             for index in range(3)
         },
+        "contract_testing": contract_testing,
+        "test_override_used": bool(test_executable),
+        "scientific_evidence_eligible": scientific_evidence_eligible,
     }
     _atomic_json(output / "generators_receipt.json", aggregate)
     return 0

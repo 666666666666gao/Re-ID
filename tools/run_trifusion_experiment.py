@@ -73,6 +73,43 @@ def _sha256(path: Path) -> str:
     return digest.hexdigest()
 
 
+def _canonical_json_sha256(value: object) -> str:
+    encoded = json.dumps(
+        value,
+        ensure_ascii=False,
+        sort_keys=True,
+        separators=(",", ":"),
+    ).encode("utf-8")
+    return hashlib.sha256(encoded).hexdigest()
+
+
+def _state_dict_sha256(state_dict: dict[str, Any]) -> str:
+    import torch
+
+    digest = hashlib.sha256()
+    for name in sorted(state_dict):
+        value = state_dict[name]
+        if not isinstance(value, torch.Tensor):
+            raise TypeError(f"state entry is not a tensor: {name}")
+        tensor = value.detach().cpu().contiguous()
+        descriptor = {
+            "name": name,
+            "dtype": str(tensor.dtype),
+            "shape": list(tensor.shape),
+        }
+        digest.update(
+            json.dumps(
+                descriptor,
+                sort_keys=True,
+                separators=(",", ":"),
+            ).encode("utf-8")
+        )
+        digest.update(b"\0")
+        digest.update(tensor.view(torch.uint8).numpy().tobytes())
+        digest.update(b"\0")
+    return digest.hexdigest()
+
+
 def _collaborative_reliability_mode(contract: dict[str, Any]) -> str:
     reliability = contract.get("reliability")
     if reliability == "uniform":
@@ -483,6 +520,7 @@ def _overfit(
 
 
 def _run_identity(preflight: dict[str, Any], variant: str) -> dict[str, Any]:
+    contract_testing = os.environ.get("TRIFUSION_CONTRACT_TESTING") == "1"
     identity = {
         "schema_version": "1.0",
         "run_type": "TriFusion/RGBNT201/train-only-dev",
@@ -499,6 +537,8 @@ def _run_identity(preflight: dict[str, Any], variant: str) -> dict[str, Any]:
         "data_protocol": preflight["data_protocol"],
         "optimization": preflight["optimization"],
         "official_test_access_during_development": False,
+        "contract_testing": contract_testing,
+        "scientific_evidence_eligible": not contract_testing,
     }
     if variant == "hfer_uniform_generator":
         identity["circ_protocol_sha256"] = preflight["file_checks"][
@@ -1088,6 +1128,13 @@ def _save_dev_generation(
         "current": current,
         "previous": previous,
     }
+    completion_evidence = payload.get("completion_evidence")
+    if phase == "complete":
+        if not isinstance(completion_evidence, dict):
+            raise ValueError("complete recovery requires JSON completion evidence")
+        manifest["completion_evidence"] = completion_evidence
+    elif completion_evidence is not None:
+        raise ValueError("completion evidence is valid only at the complete endpoint")
     _atomic_json(latest_path, manifest)
     keep = {current["path"]}
     if previous:
@@ -1335,6 +1382,9 @@ def _worker_dev(
         best_epoch = 0
         best_map = float("-inf")
         best_metrics: dict[str, Any] | None = None
+        best_checkpoint_sha256: str | None = None
+        generator_checkpoint_sha256: str | None = None
+        generator_model_state_sha256: str | None = None
         dev_evaluation_count = 0
         train_history: dict[str, Any] = {}
         resume_history: list[dict[str, Any]] = []
@@ -1357,6 +1407,9 @@ def _worker_dev(
                 "phase",
                 "best_epoch",
                 "best_map",
+                "best_checkpoint_sha256",
+                "generator_checkpoint_sha256",
+                "generator_model_state_sha256",
                 "dev_evaluation_count",
                 "run_identity_sha256",
             }
@@ -1373,6 +1426,9 @@ def _worker_dev(
             best_epoch = int(saved["best_epoch"])
             best_map = float(saved["best_map"])
             best_metrics = saved.get("best_metrics")
+            best_checkpoint_sha256 = saved["best_checkpoint_sha256"]
+            generator_checkpoint_sha256 = saved["generator_checkpoint_sha256"]
+            generator_model_state_sha256 = saved["generator_model_state_sha256"]
             dev_evaluation_count = int(saved["dev_evaluation_count"])
             train_history = dict(saved.get("train_history", {}))
             resume_history = list(saved.get("resume_history", []))
@@ -1395,6 +1451,9 @@ def _worker_dev(
                 "best_epoch": 0,
                 "best_map": best_map,
                 "best_metrics": None,
+                "best_checkpoint_sha256": None,
+                "generator_checkpoint_sha256": None,
+                "generator_model_state_sha256": None,
                 "dev_evaluation_count": 0,
                 "run_identity_sha256": identity_hash,
                 "train_history": {},
@@ -1409,7 +1468,7 @@ def _worker_dev(
             )
 
         def state_payload(epoch: int, state_phase: str) -> dict[str, Any]:
-            return {
+            payload = {
                 "model": model.state_dict(),
                 "optimizer": optimizer.state_dict(),
                 "scheduler": scheduler.state_dict(),
@@ -1420,11 +1479,58 @@ def _worker_dev(
                 "best_epoch": best_epoch,
                 "best_map": best_map,
                 "best_metrics": best_metrics,
+                "best_checkpoint_sha256": best_checkpoint_sha256,
+                "generator_checkpoint_sha256": generator_checkpoint_sha256,
+                "generator_model_state_sha256": generator_model_state_sha256,
                 "dev_evaluation_count": dev_evaluation_count,
                 "run_identity_sha256": identity_hash,
                 "train_history": train_history,
                 "resume_history": resume_history,
+                "data_provenance": dict(data.provenance),
             }
+            if state_phase == "complete":
+                common_evidence = {
+                    "epoch": epoch,
+                    "phase": state_phase,
+                    "run_identity_sha256": identity_hash,
+                    "train_history_sha256": _canonical_json_sha256(train_history),
+                    "data_provenance_sha256": _canonical_json_sha256(
+                        dict(data.provenance)
+                    ),
+                    "contract_testing": os.environ.get(
+                        "TRIFUSION_CONTRACT_TESTING"
+                    )
+                    == "1",
+                    "scientific_evidence_eligible": os.environ.get(
+                        "TRIFUSION_CONTRACT_TESTING"
+                    )
+                    != "1",
+                }
+                if oof_mode:
+                    common_evidence.update(
+                        {
+                            "kind": "oof-generator",
+                            "target_fold": int(oof_target_fold),
+                            "generator_checkpoint_sha256": (
+                                generator_checkpoint_sha256
+                            ),
+                            "generator_model_state_sha256": (
+                                generator_model_state_sha256
+                            ),
+                        }
+                    )
+                else:
+                    common_evidence.update(
+                        {
+                            "kind": "selector",
+                            "best_epoch": best_epoch,
+                            "best_map": best_map,
+                            "best_metrics": best_metrics,
+                            "best_checkpoint_sha256": best_checkpoint_sha256,
+                        }
+                    )
+                payload["completion_evidence"] = common_evidence
+            return payload
 
         eval_loader_iteration_count = 0
 
@@ -1540,7 +1646,17 @@ def _worker_dev(
 
             if phase == "post_train":
                 if oof_mode:
-                    phase = "complete" if current_epoch == max_epochs else "post_eval"
+                    if current_epoch == max_epochs:
+                        checkpoint_path = output_dir / "generator.pth"
+                        generator_state = model.state_dict()
+                        _atomic_torch_save(checkpoint_path, generator_state, torch)
+                        generator_checkpoint_sha256 = _sha256(checkpoint_path)
+                        generator_model_state_sha256 = _state_dict_sha256(
+                            generator_state
+                        )
+                        phase = "complete"
+                    else:
+                        phase = "post_eval"
                     _save_dev_generation(
                         output_dir,
                         epoch=current_epoch,
@@ -1575,6 +1691,7 @@ def _worker_dev(
                     best_metrics = last_metrics
                     best_path = output_dir / "best_dev_model.pth"
                     _atomic_torch_save(best_path, model.state_dict(), torch)
+                    best_checkpoint_sha256 = _sha256(best_path)
                     _atomic_json(
                         output_dir / "best_dev_receipt.json",
                         {
@@ -1585,12 +1702,20 @@ def _worker_dev(
                             "dev_selection_mAP": best_map,
                             "metrics_percent": best_metrics,
                             "checkpoint": str(best_path),
-                            "checkpoint_sha256": _sha256(best_path),
+                            "checkpoint_sha256": best_checkpoint_sha256,
                             "config_sha256": _sha256(config_path),
                             "circ_protocol_sha256": registered_circ_protocol_sha256,
                             "variant_contract_sha256": variant_sha256(contract),
                             "selection_split": "train_171 held-out dev identities",
                             "official_test_access_count": 0,
+                            "contract_testing": os.environ.get(
+                                "TRIFUSION_CONTRACT_TESTING"
+                            )
+                            == "1",
+                            "scientific_evidence_eligible": os.environ.get(
+                                "TRIFUSION_CONTRACT_TESTING"
+                            )
+                            != "1",
                         },
                     )
                 phase = "complete" if current_epoch == max_epochs else "post_eval"
@@ -1629,7 +1754,13 @@ def _worker_dev(
 
         if oof_mode:
             checkpoint_path = output_dir / "generator.pth"
-            _atomic_torch_save(checkpoint_path, model.state_dict(), torch)
+            if (
+                not checkpoint_path.is_file()
+                or generator_checkpoint_sha256 is None
+                or generator_model_state_sha256 is None
+                or _sha256(checkpoint_path) != generator_checkpoint_sha256
+            ):
+                raise RuntimeError("OOF generator checkpoint is not recovery-bound")
             result = {
                 "status": "COMPLETE",
                 "epoch": max_epochs,
@@ -1647,7 +1778,8 @@ def _worker_dev(
                 "gallery_records": len(data.eval_loader.dataset) - data.num_query,
                 "train_records": len(data.train_loader.dataset),
                 "checkpoint": str(checkpoint_path),
-                "checkpoint_sha256": _sha256(checkpoint_path),
+                "checkpoint_sha256": generator_checkpoint_sha256,
+                "model_state_sha256": generator_model_state_sha256,
                 "data_provenance": dict(data.provenance),
                 "train_history": train_history,
                 "resume_history": resume_history,
@@ -1670,6 +1802,12 @@ def _worker_dev(
                 "model_constructed": True,
                 "training_started": True,
                 "second_gpu_gate": second_gpu_gate,
+                "contract_testing": os.environ.get("TRIFUSION_CONTRACT_TESTING")
+                == "1",
+                "scientific_evidence_eligible": os.environ.get(
+                    "TRIFUSION_CONTRACT_TESTING"
+                )
+                != "1",
             }
         else:
             if best_metrics is None or last_metrics is None:
@@ -1705,6 +1843,12 @@ def _worker_dev(
             "model_constructed": True,
             "training_started": True,
             "second_gpu_gate": second_gpu_gate,
+            "contract_testing": os.environ.get("TRIFUSION_CONTRACT_TESTING")
+            == "1",
+            "scientific_evidence_eligible": os.environ.get(
+                "TRIFUSION_CONTRACT_TESTING"
+            )
+            != "1",
             }
         _atomic_json(result_path, result)
         return 0

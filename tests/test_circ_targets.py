@@ -258,6 +258,7 @@ class CIRCTargetBuilderTests(unittest.TestCase):
                             ).hexdigest(),
                         },
                         "previous": None,
+                        "completion_evidence": {},
                     },
                     sort_keys=True,
                 ),
@@ -330,7 +331,7 @@ class CIRCTargetBuilderTests(unittest.TestCase):
                 "'phase': 'complete', 'run_identity_sha256': identity_sha, "
                 "'current': {'path': '.resume/generation-0009-complete.pt', "
                 "'sha256': hashlib.sha256(state.read_bytes()).hexdigest()}, "
-                "'previous': None}), encoding='utf-8')\n"
+                "'previous': None, 'completion_evidence': {}}), encoding='utf-8')\n"
                 "checkpoint = out / 'generator.pth'\n"
                 "checkpoint.write_bytes(f'fold-{fold}'.encode())\n"
                 "receipt = {'status': 'COMPLETE', 'phase': 'complete', 'epoch': 9, "
@@ -346,6 +347,7 @@ class CIRCTargetBuilderTests(unittest.TestCase):
                 "'run_identity_sha256': identity_sha, "
                 "'model_constructed': True, 'training_started': True, "
                 "'fatal_or_nonfinite_detected': False, 'parameter_budget_pass': True, "
+                "'contract_testing': True, 'scientific_evidence_eligible': False, "
                 "'data_provenance': {'target_fold': fold, "
                 "'generator_target_identity_overlap': 0, "
                 "'target_forbidden_dev_identity_overlap': 0, 'official_test_records': 0}, "
@@ -404,11 +406,62 @@ class CIRCTargetBuilderTests(unittest.TestCase):
             self.assertEqual(receipt["target_loader_iteration_count"], 0)
             self.assertEqual(receipt["official_test_access_count"], 0)
             self.assertTrue(receipt["zero_identity_overlap"])
+            self.assertTrue(receipt["contract_testing"])
+            self.assertTrue(receipt["test_override_used"])
+            self.assertFalse(receipt["scientific_evidence_eligible"])
+
+            original_selector_manifest = selector_manifest.read_bytes()
+            empty_manifest = json.loads(original_selector_manifest)
+            empty_manifest.pop("current")
+            selector_manifest.write_text(
+                json.dumps(empty_manifest, sort_keys=True),
+                encoding="utf-8",
+            )
+            endpoint_without_current = json.loads(
+                endpoint_receipt.read_text(encoding="utf-8")
+            )
+            endpoint_without_current["recovery_manifest_sha256"] = hashlib.sha256(
+                selector_manifest.read_bytes()
+            ).hexdigest()
+            endpoint_receipt.write_text(
+                json.dumps(endpoint_without_current, sort_keys=True),
+                encoding="utf-8",
+            )
+            with patch.dict(
+                os.environ,
+                {
+                    "TRIFUSION_CONTRACT_TESTING": "1",
+                    "TRIFUSION_CIRC_TEST_EXECUTABLE": str(fake_worker),
+                },
+            ), self.assertRaisesRegex(
+                ValueError,
+                "current recovery generation",
+            ):
+                main(
+                    [
+                        "--config",
+                        str(config_path),
+                        "--mode",
+                        "development",
+                        "--output",
+                        str(root / "empty-selector-recovery"),
+                    ]
+                )
+            selector_manifest.write_bytes(original_selector_manifest)
+            endpoint_without_current["recovery_manifest_sha256"] = hashlib.sha256(
+                selector_manifest.read_bytes()
+            ).hexdigest()
+            endpoint_receipt.write_text(
+                json.dumps(endpoint_without_current, sort_keys=True),
+                encoding="utf-8",
+            )
 
             fold_one_receipt = output / "fold-1/generator_receipt.json"
             failed = json.loads(fold_one_receipt.read_text(encoding="utf-8"))
             failed["status"] = "FAILED"
             fold_one_receipt.write_text(json.dumps(failed), encoding="utf-8")
+            sparse_attempt = output / "fold-1/worker-attempt-0004.log"
+            sparse_attempt.write_text("preserve-me", encoding="utf-8")
             with patch.dict(
                 os.environ,
                 {
@@ -429,7 +482,8 @@ class CIRCTargetBuilderTests(unittest.TestCase):
                     ),
                     0,
                 )
-            self.assertTrue((output / "fold-1/worker-attempt-0002.log").is_file())
+            self.assertTrue((output / "fold-1/worker-attempt-0005.log").is_file())
+            self.assertEqual(sparse_attempt.read_text(encoding="utf-8"), "preserve-me")
 
             fold_zero_receipt = output / "fold-0/generator_receipt.json"
             forged = json.loads(fold_zero_receipt.read_text(encoding="utf-8"))
@@ -516,6 +570,359 @@ class CIRCTargetBuilderTests(unittest.TestCase):
             self.assertFalse(batch.helpful_targets.requires_grad)
             self.assertTrue(batch.valid_mask.all())
             self.assertNotIn(101, cache.rows[0]["generator_training_identities"])
+
+    def test_cli_verifies_scientific_checkpoint_recovery_binding(self) -> None:
+        import torch
+
+        from modeling.trifusion.protocol import trifusion_source_hashes
+        from modeling.trifusion.variants import resolve_variant, variant_sha256
+        from tools.build_circ_targets import main
+
+        project = Path(__file__).resolve().parents[1]
+        protocol_path = project / "protocols/circ_target_v1.json"
+        generator_config = (
+            project / "configs/RGBNT201/TriFusion-circ-generator-low-vram.yml"
+        )
+        protocol_sha256 = hashlib.sha256(protocol_path.read_bytes()).hexdigest()
+        generator_config_sha256 = hashlib.sha256(
+            generator_config.read_bytes()
+        ).hexdigest()
+        contract_sha256 = variant_sha256(
+            resolve_variant("hfer_uniform_generator")
+        )
+        source_sha256 = trifusion_source_hashes()
+        state_hashes = (
+            "ed2562fdf682d2131f1a7882f4451a30dafba8ee916c8d8488348b86f47d1f7f",
+            "c10074aef181c4a987d35379185a7c4cbd3febbc71bc8f4dd527294846d9d60b",
+            "eab9636a2e52ebe3c7e0fa28ebe733416a2bd0a0ee887aefa04a1e40750a2418",
+        )
+
+        def canonical_sha256(value: object) -> str:
+            encoded = json.dumps(
+                value,
+                ensure_ascii=False,
+                sort_keys=True,
+                separators=(",", ":"),
+            ).encode("utf-8")
+            return hashlib.sha256(encoded).hexdigest()
+
+        with tempfile.TemporaryDirectory() as temporary_directory:
+            root = Path(temporary_directory)
+            selector_root = root / "selector"
+            selector_root.mkdir()
+            selector_checkpoint = selector_root / "best_dev_model.pth"
+            torch.save({"weight": torch.tensor([7.0])}, selector_checkpoint)
+            metrics = {
+                name: {
+                    "mAP": 51.0 if name == "fused" else 40.0,
+                    "Rank-1": 52.0,
+                    "Rank-5": 60.0,
+                    "Rank-10": 65.0,
+                }
+                for name in ("fused", "cnn", "transformer", "mamba")
+            }
+            selector_identity = {
+                "variant": "hfer_uniform_generator",
+                "variant_contract_sha256": contract_sha256,
+                "config_sha256": generator_config_sha256,
+                "circ_protocol_sha256": protocol_sha256,
+                "source_sha256": source_sha256,
+                "official_test_access_during_development": False,
+                "optimization": {"max_epochs": 60},
+                "contract_testing": False,
+                "scientific_evidence_eligible": True,
+            }
+            selector_identity_path = selector_root / "run_identity.json"
+            selector_identity_path.write_text(
+                json.dumps(selector_identity, sort_keys=True),
+                encoding="utf-8",
+            )
+            selector_identity_sha256 = hashlib.sha256(
+                selector_identity_path.read_bytes()
+            ).hexdigest()
+            selector_resume = selector_root / ".resume"
+            selector_resume.mkdir()
+            selector_generation = selector_resume / "generation-0060-complete.pt"
+            selector_generation.write_bytes(b"opaque-full-selector-recovery")
+            selector_manifest = selector_resume / "latest.json"
+            selector_manifest.write_text(
+                json.dumps(
+                    {
+                        "schema_version": "1.0",
+                        "epoch": 60,
+                        "phase": "complete",
+                        "run_identity_sha256": selector_identity_sha256,
+                        "current": {
+                            "path": ".resume/generation-0060-complete.pt",
+                            "sha256": hashlib.sha256(
+                                selector_generation.read_bytes()
+                            ).hexdigest(),
+                        },
+                        "previous": None,
+                        "completion_evidence": {
+                            "kind": "selector",
+                            "epoch": 60,
+                            "phase": "complete",
+                            "run_identity_sha256": selector_identity_sha256,
+                            "best_epoch": 9,
+                            "best_map": 51.0,
+                            "best_metrics": metrics,
+                            "best_checkpoint_sha256": hashlib.sha256(
+                                selector_checkpoint.read_bytes()
+                            ).hexdigest(),
+                            "contract_testing": False,
+                            "scientific_evidence_eligible": True,
+                        },
+                    },
+                    sort_keys=True,
+                ),
+                encoding="utf-8",
+            )
+            endpoint_receipt = selector_root / "best_dev_receipt.json"
+            endpoint_receipt.write_text(
+                json.dumps(
+                    {
+                        "schema_version": "trifusion-dev-selection-v1",
+                        "variant": "hfer_uniform_generator",
+                        "epoch": 9,
+                        "selection_output": "fused",
+                        "dev_selection_mAP": 51.0,
+                        "metrics_percent": metrics,
+                        "variant_contract_sha256": contract_sha256,
+                        "phase": "complete",
+                        "schedule_horizon_epochs": 60,
+                        "dev_evaluation_count": 60,
+                        "model_constructed": True,
+                        "training_started": True,
+                        "fatal_or_nonfinite_detected": False,
+                        "config_sha256": generator_config_sha256,
+                        "circ_protocol_sha256": protocol_sha256,
+                        "checkpoint": str(selector_checkpoint),
+                        "checkpoint_sha256": hashlib.sha256(
+                            selector_checkpoint.read_bytes()
+                        ).hexdigest(),
+                        "run_identity": str(selector_identity_path),
+                        "run_identity_sha256": selector_identity_sha256,
+                        "recovery_manifest": str(selector_manifest),
+                        "recovery_manifest_sha256": hashlib.sha256(
+                            selector_manifest.read_bytes()
+                        ).hexdigest(),
+                        "official_test_access_count": 0,
+                        "contract_testing": False,
+                        "scientific_evidence_eligible": True,
+                    },
+                    sort_keys=True,
+                ),
+                encoding="utf-8",
+            )
+            orchestration_config = {
+                "schema_version": "circ-generator-orchestration-v1",
+                "operation": "train-oof-generators",
+                "circ_protocol": str(protocol_path),
+                "generator_config": str(generator_config),
+                "endpoint_receipt": str(endpoint_receipt),
+            }
+            orchestration_path = root / "orchestration.json"
+            orchestration_path.write_text(
+                json.dumps(orchestration_config),
+                encoding="utf-8",
+            )
+            orchestration_sha256 = hashlib.sha256(
+                orchestration_path.read_bytes()
+            ).hexdigest()
+            endpoint_sha256 = hashlib.sha256(
+                endpoint_receipt.read_bytes()
+            ).hexdigest()
+            output = root / "generators"
+            output.mkdir()
+
+            for fold, model_state_sha256 in enumerate(state_hashes):
+                fold_output = output / f"fold-{fold}"
+                fold_output.mkdir()
+                identity = {
+                    "schema_version": "circ-generator-run-v1",
+                    "operation": "train-oof-generator",
+                    "orchestration_config_sha256": orchestration_sha256,
+                    "circ_protocol_sha256": protocol_sha256,
+                    "generator_config_sha256": generator_config_sha256,
+                    "endpoint_receipt_sha256": endpoint_sha256,
+                    "selector_checkpoint_sha256": hashlib.sha256(
+                        selector_checkpoint.read_bytes()
+                    ).hexdigest(),
+                    "source_sha256": source_sha256,
+                    "variant": "hfer_uniform_generator",
+                    "variant_contract_sha256": contract_sha256,
+                    "target_fold": fold,
+                    "fixed_endpoint": 9,
+                    "schedule_horizon_epochs": 60,
+                    "official_test_access_count": 0,
+                    "contract_testing": False,
+                    "test_override_used": False,
+                    "scientific_evidence_eligible": True,
+                }
+                identity_path = fold_output / "run_identity.json"
+                identity_path.write_text(
+                    json.dumps(identity, indent=2, sort_keys=True) + "\n",
+                    encoding="utf-8",
+                )
+                identity_sha256 = hashlib.sha256(
+                    identity_path.read_bytes()
+                ).hexdigest()
+                checkpoint = fold_output / "generator.pth"
+                torch.save(
+                    {"weight": torch.tensor([float(fold)], dtype=torch.float32)},
+                    checkpoint,
+                )
+                checkpoint_sha256 = hashlib.sha256(
+                    checkpoint.read_bytes()
+                ).hexdigest()
+                train_history = {
+                    str(epoch): {"total": float(epoch)} for epoch in range(1, 10)
+                }
+                provenance = {
+                    "target_fold": fold,
+                    "generator_target_identity_overlap": 0,
+                    "target_forbidden_dev_identity_overlap": 0,
+                    "official_test_records": 0,
+                }
+                resume = fold_output / ".resume"
+                resume.mkdir()
+                generation = resume / "generation-0009-complete.pt"
+                generation.write_bytes(f"opaque-fold-{fold}-recovery".encode())
+                manifest = resume / "latest.json"
+                manifest.write_text(
+                    json.dumps(
+                        {
+                            "schema_version": "1.0",
+                            "epoch": 9,
+                            "phase": "complete",
+                            "run_identity_sha256": identity_sha256,
+                            "current": {
+                                "path": ".resume/generation-0009-complete.pt",
+                                "sha256": hashlib.sha256(
+                                    generation.read_bytes()
+                                ).hexdigest(),
+                            },
+                            "previous": None,
+                            "completion_evidence": {
+                                "kind": "oof-generator",
+                                "epoch": 9,
+                                "phase": "complete",
+                                "run_identity_sha256": identity_sha256,
+                                "train_history_sha256": canonical_sha256(
+                                    train_history
+                                ),
+                                "data_provenance_sha256": canonical_sha256(
+                                    provenance
+                                ),
+                                "contract_testing": False,
+                                "scientific_evidence_eligible": True,
+                                "target_fold": fold,
+                                "generator_checkpoint_sha256": checkpoint_sha256,
+                                "generator_model_state_sha256": model_state_sha256,
+                            },
+                        },
+                        sort_keys=True,
+                    ),
+                    encoding="utf-8",
+                )
+                receipt = {
+                    "status": "COMPLETE",
+                    "phase": "complete",
+                    "epoch": 9,
+                    "target_fold": fold,
+                    "fixed_endpoint": 9,
+                    "schedule_horizon_epochs": 60,
+                    "generator_target_identity_overlap": 0,
+                    "dev_evaluation_count": 0,
+                    "target_loader_iteration_count": 0,
+                    "official_test_access_count": 0,
+                    "variant": "hfer_uniform_generator",
+                    "variant_contract_sha256": contract_sha256,
+                    "circ_protocol_sha256": protocol_sha256,
+                    "config_sha256": generator_config_sha256,
+                    "source_sha256": source_sha256,
+                    "run_identity_sha256": identity_sha256,
+                    "model_constructed": True,
+                    "training_started": True,
+                    "fatal_or_nonfinite_detected": False,
+                    "parameter_budget_pass": True,
+                    "contract_testing": False,
+                    "scientific_evidence_eligible": True,
+                    "data_provenance": provenance,
+                    "train_history": train_history,
+                    "checkpoint": str(checkpoint),
+                    "checkpoint_sha256": checkpoint_sha256,
+                    "model_state_sha256": model_state_sha256,
+                    "recovery_manifest": str(manifest),
+                    "recovery_manifest_sha256": hashlib.sha256(
+                        manifest.read_bytes()
+                    ).hexdigest(),
+                }
+                (fold_output / "generator_receipt.json").write_text(
+                    json.dumps(receipt),
+                    encoding="utf-8",
+                )
+
+            with patch.dict(
+                os.environ,
+                {
+                    "TRIFUSION_CONTRACT_TESTING": "0",
+                    "TRIFUSION_CIRC_TEST_EXECUTABLE": "",
+                },
+            ):
+                self.assertEqual(
+                    main(
+                        [
+                            "--config",
+                            str(orchestration_path),
+                            "--mode",
+                            "development",
+                            "--output",
+                            str(output),
+                        ]
+                    ),
+                    0,
+                )
+            aggregate = json.loads(
+                (output / "generators_receipt.json").read_text(encoding="utf-8")
+            )
+            self.assertTrue(aggregate["scientific_evidence_eligible"])
+            self.assertFalse(aggregate["contract_testing"])
+
+            fold_zero_receipt_path = output / "fold-0/generator_receipt.json"
+            fold_zero_receipt = json.loads(
+                fold_zero_receipt_path.read_text(encoding="utf-8")
+            )
+            replaced_checkpoint = output / "fold-0/generator.pth"
+            torch.save({"weight": torch.tensor([99.0])}, replaced_checkpoint)
+            fold_zero_receipt["checkpoint_sha256"] = hashlib.sha256(
+                replaced_checkpoint.read_bytes()
+            ).hexdigest()
+            fold_zero_receipt["model_state_sha256"] = (
+                "992a6f9b109d2cb38dc4bbe9ff9da300667882805adb9b995b5ac4c2efb078e7"
+            )
+            fold_zero_receipt_path.write_text(
+                json.dumps(fold_zero_receipt),
+                encoding="utf-8",
+            )
+            with patch.dict(
+                os.environ,
+                {
+                    "TRIFUSION_CONTRACT_TESTING": "0",
+                    "TRIFUSION_CIRC_TEST_EXECUTABLE": "",
+                },
+            ), self.assertRaisesRegex(ValueError, "receipt contract failed"):
+                main(
+                    [
+                        "--config",
+                        str(orchestration_path),
+                        "--mode",
+                        "development",
+                        "--output",
+                        str(output),
+                    ]
+                )
 
 
 if __name__ == "__main__":
