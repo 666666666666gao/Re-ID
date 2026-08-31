@@ -23,6 +23,8 @@ from data.datasets.make_dataloader import (
 )
 from data.datasets.sampler import RandomIdentitySampler
 
+from .intervention_targets import assign_identity_fold
+
 
 Record = tuple[list[str], int, int, int]
 
@@ -86,6 +88,171 @@ def _records_for_ids(
     return tuple(records)
 
 
+def _train_transform() -> transforms.Compose:
+    return transforms.Compose(
+        [
+            transforms.Resize([256, 128], interpolation=3),
+            transforms.RandomHorizontalFlip(p=0.5),
+            transforms.Pad(10),
+            transforms.RandomCrop([256, 128]),
+            transforms.ToTensor(),
+            transforms.Normalize(mean=[0.5, 0.5, 0.5], std=[0.5, 0.5, 0.5]),
+            RandomErasing(
+                probability=0.5,
+                mode="pixel",
+                max_count=1,
+                device="cpu",
+            ),
+        ]
+    )
+
+
+def _eval_transform() -> transforms.Compose:
+    return transforms.Compose(
+        [
+            transforms.Resize([256, 128]),
+            transforms.ToTensor(),
+            transforms.Normalize(mean=[0.5, 0.5, 0.5], std=[0.5, 0.5, 0.5]),
+        ]
+    )
+
+
+def _make_loaders(
+    *,
+    train_records: tuple[Record, ...],
+    eval_records: tuple[Record, ...],
+    train_batch_size: int,
+    num_instances: int,
+    eval_batch_size: int,
+    num_workers: int,
+) -> tuple[DataLoader, DataLoader]:
+    train_dataset = ImageDataset(train_records, _train_transform())
+    eval_dataset = ImageDataset(eval_records + eval_records, _eval_transform())
+    train_loader = DataLoader(
+        train_dataset,
+        batch_size=train_batch_size,
+        sampler=RandomIdentitySampler(
+            train_records,
+            batch_size=train_batch_size,
+            num_instances=num_instances,
+        ),
+        num_workers=num_workers,
+        collate_fn=train_collate_fn,
+        pin_memory=torch.cuda.is_available(),
+    )
+    eval_loader = DataLoader(
+        eval_dataset,
+        batch_size=eval_batch_size,
+        shuffle=False,
+        num_workers=num_workers,
+        collate_fn=val_collate_fn,
+        pin_memory=torch.cuda.is_available(),
+    )
+    return train_loader, eval_loader
+
+
+def build_rgbnt201_oof_loaders(
+    *,
+    dataset_root: Path | str,
+    protocol_path: Path | str,
+    fold_salt: str,
+    fold_count: int,
+    target_fold: int,
+    train_batch_size: int,
+    num_instances: int,
+    eval_batch_size: int,
+    num_workers: int,
+) -> TriFusionDataLoaders:
+    """Build one development OOF target-generator complement and target fold."""
+
+    if not fold_salt:
+        raise ValueError("fold_salt must be nonempty")
+    if fold_count < 2 or target_fold < 0 or target_fold >= fold_count:
+        raise ValueError("target_fold must identify one of at least two folds")
+    if train_batch_size <= 0 or num_instances <= 0:
+        raise ValueError("train batch size and K must be positive")
+    if train_batch_size % num_instances:
+        raise ValueError("train batch size must be divisible by num_instances")
+    if eval_batch_size <= 0 or num_workers < 0:
+        raise ValueError("eval batch size must be positive and workers nonnegative")
+
+    dataset_root = Path(dataset_root).expanduser().resolve()
+    protocol_path = Path(protocol_path).expanduser().resolve()
+    train_root = dataset_root / "train_171"
+    if not train_root.is_dir() or not protocol_path.is_file():
+        raise FileNotFoundError("RGBNT201 train_171 or frozen dev protocol is missing")
+    protocol = json.loads(protocol_path.read_text(encoding="utf-8"))
+    if protocol.get("selection", {}).get("uses_test_labels") is not False:
+        raise ValueError("OOF development protocol must be test-label blind")
+    eligible_ids = {str(value) for value in protocol["train_ids"]}
+    target_ids = {
+        identity
+        for identity in eligible_ids
+        if assign_identity_fold(
+            identity,
+            fold_salt=fold_salt,
+            fold_count=fold_count,
+        )
+        == target_fold
+    }
+    generator_ids = eligible_ids - target_ids
+    overlap = generator_ids & target_ids
+    if overlap or not target_ids or not generator_ids:
+        raise ValueError("OOF identity partition is empty or overlapping")
+
+    train_records = _records_for_ids(train_root, generator_ids, relabel=True)
+    target_records = _records_for_ids(train_root, target_ids, relabel=False)
+    target_cameras: dict[int, set[int]] = defaultdict(set)
+    target_frequency: dict[int, int] = defaultdict(int)
+    for _paths, identity, camera_id, _view in target_records:
+        target_cameras[identity].add(camera_id)
+        target_frequency[identity] += 1
+    supported_ids = {
+        identity for identity, cameras in target_cameras.items() if len(cameras) >= 2
+    }
+    supported_records = sum(target_frequency[identity] for identity in supported_ids)
+    train_loader, eval_loader = _make_loaders(
+        train_records=train_records,
+        eval_records=target_records,
+        train_batch_size=train_batch_size,
+        num_instances=num_instances,
+        eval_batch_size=eval_batch_size,
+        num_workers=num_workers,
+    )
+    provenance = {
+        "dataset_root": str(dataset_root),
+        "protocol_path": str(protocol_path),
+        "protocol_sha256": _sha256(protocol_path),
+        "fold_salt": fold_salt,
+        "fold_count": fold_count,
+        "target_fold": target_fold,
+        "generator_training_identities": len(generator_ids),
+        "target_identities": len(target_ids),
+        "generator_training_identity_values": sorted(int(value) for value in generator_ids),
+        "target_identity_values": sorted(int(value) for value in target_ids),
+        "generator_training_records": len(train_records),
+        "target_records": len(target_records),
+        "target_cross_camera_supported_identities": len(supported_ids),
+        "target_cross_camera_unsupported_identities": len(target_ids) - len(supported_ids),
+        "target_cross_camera_supported_records": supported_records,
+        "target_cross_camera_unsupported_records": len(target_records) - supported_records,
+        "generator_target_identity_overlap": len(overlap),
+        "protocol_uses_test_labels": False,
+        "official_test_records": 0,
+        "query_equals_gallery_record_list": True,
+    }
+    return TriFusionDataLoaders(
+        train_loader=train_loader,
+        eval_loader=eval_loader,
+        num_query=len(target_records),
+        num_classes=len(generator_ids),
+        train_records=train_records,
+        query_records=target_records,
+        gallery_records=target_records,
+        provenance=provenance,
+    )
+
+
 def build_rgbnt201_dev_loaders(
     *,
     dataset_root: Path | str,
@@ -129,52 +296,15 @@ def build_rgbnt201_dev_loaders(
     if any(len(cameras) < 2 for cameras in dev_cameras.values()):
         raise ValueError("a dev identity lacks cross-camera positive support")
 
-    train_transform = transforms.Compose(
-        [
-            transforms.Resize([256, 128], interpolation=3),
-            transforms.RandomHorizontalFlip(p=0.5),
-            transforms.Pad(10),
-            transforms.RandomCrop([256, 128]),
-            transforms.ToTensor(),
-            transforms.Normalize(mean=[0.5, 0.5, 0.5], std=[0.5, 0.5, 0.5]),
-            RandomErasing(
-                probability=0.5,
-                mode="pixel",
-                max_count=1,
-                device="cpu",
-            ),
-        ]
-    )
-    eval_transform = transforms.Compose(
-        [
-            transforms.Resize([256, 128]),
-            transforms.ToTensor(),
-            transforms.Normalize(mean=[0.5, 0.5, 0.5], std=[0.5, 0.5, 0.5]),
-        ]
-    )
-    train_dataset = ImageDataset(train_records, train_transform)
     query_records = dev_records
     gallery_records = dev_records
-    eval_dataset = ImageDataset(query_records + gallery_records, eval_transform)
-    train_loader = DataLoader(
-        train_dataset,
-        batch_size=train_batch_size,
-        sampler=RandomIdentitySampler(
-            train_records,
-            batch_size=train_batch_size,
-            num_instances=num_instances,
-        ),
+    train_loader, eval_loader = _make_loaders(
+        train_records=train_records,
+        eval_records=dev_records,
+        train_batch_size=train_batch_size,
+        num_instances=num_instances,
+        eval_batch_size=eval_batch_size,
         num_workers=num_workers,
-        collate_fn=train_collate_fn,
-        pin_memory=torch.cuda.is_available(),
-    )
-    eval_loader = DataLoader(
-        eval_dataset,
-        batch_size=eval_batch_size,
-        shuffle=False,
-        num_workers=num_workers,
-        collate_fn=val_collate_fn,
-        pin_memory=torch.cuda.is_available(),
     )
     provenance = {
         "dataset_root": str(dataset_root),
@@ -202,4 +332,8 @@ def build_rgbnt201_dev_loaders(
     )
 
 
-__all__ = ["TriFusionDataLoaders", "build_rgbnt201_dev_loaders"]
+__all__ = [
+    "TriFusionDataLoaders",
+    "build_rgbnt201_dev_loaders",
+    "build_rgbnt201_oof_loaders",
+]
