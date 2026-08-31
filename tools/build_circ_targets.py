@@ -276,7 +276,8 @@ def _orchestrate_oof_generators(
                 capture_output=True,
                 text=True,
             )
-            (fold_output / "worker.log").write_text(
+            attempt = len(tuple(fold_output.glob("worker-attempt-*.log"))) + 1
+            (fold_output / f"worker-attempt-{attempt:04d}.log").write_text(
                 completed.stdout + completed.stderr,
                 encoding="utf-8",
             )

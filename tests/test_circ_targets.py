@@ -405,6 +405,54 @@ class CIRCTargetBuilderTests(unittest.TestCase):
             self.assertEqual(receipt["official_test_access_count"], 0)
             self.assertTrue(receipt["zero_identity_overlap"])
 
+            fold_one_receipt = output / "fold-1/generator_receipt.json"
+            failed = json.loads(fold_one_receipt.read_text(encoding="utf-8"))
+            failed["status"] = "FAILED"
+            fold_one_receipt.write_text(json.dumps(failed), encoding="utf-8")
+            with patch.dict(
+                os.environ,
+                {
+                    "TRIFUSION_CONTRACT_TESTING": "1",
+                    "TRIFUSION_CIRC_TEST_EXECUTABLE": str(fake_worker),
+                },
+            ):
+                self.assertEqual(
+                    main(
+                        [
+                            "--config",
+                            str(config_path),
+                            "--mode",
+                            "development",
+                            "--output",
+                            str(output),
+                        ]
+                    ),
+                    0,
+                )
+            self.assertTrue((output / "fold-1/worker-attempt-0002.log").is_file())
+
+            fold_zero_receipt = output / "fold-0/generator_receipt.json"
+            forged = json.loads(fold_zero_receipt.read_text(encoding="utf-8"))
+            forged["run_identity_sha256"] = "0" * 64
+            fold_zero_receipt.write_text(json.dumps(forged), encoding="utf-8")
+            with patch.dict(
+                os.environ,
+                {
+                    "TRIFUSION_CONTRACT_TESTING": "1",
+                    "TRIFUSION_CIRC_TEST_EXECUTABLE": str(fake_worker),
+                },
+            ), self.assertRaisesRegex(ValueError, "receipt contract failed"):
+                main(
+                    [
+                        "--config",
+                        str(config_path),
+                        "--mode",
+                        "development",
+                        "--output",
+                        str(output),
+                    ]
+                )
+
     def test_target_cache_lookup_is_keyed_and_never_gradient_bearing(self) -> None:
         from modeling.trifusion.intervention_targets import CIRCTargetCache
 
