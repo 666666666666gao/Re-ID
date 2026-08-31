@@ -193,6 +193,7 @@ class FullNetworkInterventionTests(unittest.TestCase):
         self.assertFalse(
             torch.allclose(baseline.fused_embedding, relay.fused_embedding)
         )
+        self.assertFalse(torch.allclose(relay.fused_embedding, total.fused_embedding))
         self.assertFalse(torch.allclose(direct.fused_embedding, total.fused_embedding))
 
     def test_edge_intervention_removes_only_the_named_stage_edge(self) -> None:
