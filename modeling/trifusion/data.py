@@ -27,6 +27,7 @@ from .intervention_targets import (
     assign_identity_fold,
     canonical_unsigned_identity,
 )
+from .protocol import load_trusted_circ_protocol
 
 
 Record = tuple[list[str], int, int, int]
@@ -199,6 +200,9 @@ def build_rgbnt201_oof_loaders(
         raise FileNotFoundError(
             "RGBNT201 train_171, dev protocol, or frozen CIRC protocol is missing"
         )
+    circ_protocol, circ_protocol_sha256 = load_trusted_circ_protocol(
+        circ_protocol_path
+    )
     protocol = json.loads(protocol_path.read_text(encoding="utf-8"))
     if protocol.get("selection", {}).get("uses_test_labels") is not False:
         raise ValueError("OOF development protocol must be test-label blind")
@@ -215,9 +219,6 @@ def build_rgbnt201_oof_loaders(
     ):
         raise ValueError("frozen 141-fit/30-dev identity registry is invalid")
 
-    circ_protocol = json.loads(circ_protocol_path.read_text(encoding="utf-8"))
-    if circ_protocol.get("schema_version") != "circ-protocol-v1":
-        raise ValueError("unsupported frozen CIRC protocol schema")
     if int(circ_protocol.get("official_test_access_count", -1)) != 0:
         raise ValueError("OOF development must have zero official-test access")
     if circ_protocol.get("dev_protocol_sha256") != _sha256(protocol_path):
@@ -278,7 +279,7 @@ def build_rgbnt201_oof_loaders(
         "protocol_path": str(protocol_path),
         "protocol_sha256": _sha256(protocol_path),
         "circ_protocol_path": str(circ_protocol_path),
-        "circ_protocol_sha256": _sha256(circ_protocol_path),
+        "circ_protocol_sha256": circ_protocol_sha256,
         "fold_salt": fold_salt,
         "fold_count": fold_count,
         "target_fold": target_fold,

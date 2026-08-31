@@ -17,6 +17,7 @@ from modeling.trifusion.intervention_targets import (
     compile_circ_targets,
     write_circ_target_cache,
 )
+from modeling.trifusion.protocol import load_trusted_circ_protocol
 
 
 def _load_config(path: Path) -> tuple[dict[str, Any], str]:
@@ -85,7 +86,7 @@ def _orchestrate_oof_generators(
     endpoint_receipt_path = _resolve_registered_file(
         config_path, config["endpoint_receipt"]
     )
-    protocol = json.loads(protocol_path.read_text(encoding="utf-8"))
+    protocol, protocol_sha256 = load_trusted_circ_protocol(protocol_path)
     endpoint = json.loads(endpoint_receipt_path.read_text(encoding="utf-8"))
     folds = dict(protocol.get("folds", {}))
     selection = dict(protocol.get("generator_selection", {}))
@@ -103,7 +104,6 @@ def _orchestrate_oof_generators(
         or int(endpoint.get("official_test_access_count", -1)) != 0
     ):
         raise ValueError("invalid HFER-uniform endpoint receipt")
-    protocol_sha256 = _sha256(protocol_path)
     generator_config_sha256 = _sha256(generator_config_path)
     if endpoint.get("circ_protocol_sha256") != protocol_sha256:
         raise ValueError("endpoint receipt is not bound to the CIRC protocol")

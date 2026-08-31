@@ -205,28 +205,7 @@ class CIRCTargetBuilderTests(unittest.TestCase):
         project = Path(__file__).resolve().parents[1]
         with tempfile.TemporaryDirectory() as temporary_directory:
             root = Path(temporary_directory)
-            protocol_path = root / "circ-target-v1.json"
-            protocol_path.write_text(
-                json.dumps(
-                    {
-                        "schema_version": "circ-protocol-v1",
-                        "official_test_access_count": 0,
-                        "folds": {
-                            "count": 3,
-                            "salt": "TriFusion-CIRC-fold-v1",
-                            "identity_canonicalization": "unsigned-decimal",
-                        },
-                        "generator_selection": {
-                            "variant": "hfer_uniform_generator",
-                            "schedule_horizon_epochs": 60,
-                            "selection_output": "fused",
-                            "selection_metric": "dev_mAP",
-                        },
-                    },
-                    sort_keys=True,
-                ),
-                encoding="utf-8",
-            )
+            protocol_path = project / "protocols/circ_target_v1.json"
             generator_config = (
                 project / "configs/RGBNT201/TriFusion-circ-generator-low-vram.yml"
             )

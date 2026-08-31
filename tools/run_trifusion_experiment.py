@@ -26,6 +26,11 @@ from modeling.trifusion.variants import (  # noqa: E402
     variant_names,
     variant_sha256,
 )
+from modeling.trifusion.protocol import (  # noqa: E402
+    CIRC_PROTOCOL_PATH,
+    CIRC_PROTOCOL_SHA256,
+    load_trusted_circ_protocol,
+)
 
 DEFAULT_CONFIG = PROJECT / "configs/RGBNT201/TriFusion.yml"
 DEV_PROTOCOL = PROJECT / "protocols/rgbnt201_dev_v1.json"
@@ -156,6 +161,16 @@ def _preflight(config_path: Path, variant: str) -> dict[str, Any]:
         "dev_protocol": (DEV_PROTOCOL, EXPECTED["dev_protocol_sha256"]),
         "dataset_receipt": (DATASET_RECEIPT, EXPECTED["dataset_receipt_sha256"]),
     }
+    if variant == "hfer_uniform_generator":
+        configured_circ = (
+            PROJECT / str(config.get("PROTOCOL", {}).get("CIRC_PROTOCOL", ""))
+        ).resolve()
+        if configured_circ != CIRC_PROTOCOL_PATH.resolve():
+            blockers.append("circ_protocol_path_drift")
+        immutable["circ_protocol"] = (
+            CIRC_PROTOCOL_PATH,
+            CIRC_PROTOCOL_SHA256,
+        )
     file_checks: dict[str, Any] = {}
     for label, (path, expected_hash) in immutable.items():
         if not path.is_file():
@@ -731,9 +746,9 @@ def _worker_capacity(
             if not registered_value:
                 raise ValueError("HFER-uniform generator requires a frozen CIRC protocol")
             registered_circ_protocol_path = (PROJECT / str(registered_value)).resolve()
-            if not registered_circ_protocol_path.is_file():
-                raise FileNotFoundError(registered_circ_protocol_path)
-            registered_circ_protocol_sha256 = _sha256(registered_circ_protocol_path)
+            _, registered_circ_protocol_sha256 = load_trusted_circ_protocol(
+                registered_circ_protocol_path
+            )
             if oof_mode and Path(circ_protocol_path).resolve() != registered_circ_protocol_path:
                 raise ValueError("OOF worker protocol differs from generator config")
         seed = int(config["EXPERIMENT"]["SEED"])

@@ -2,7 +2,6 @@ from __future__ import annotations
 
 from collections import Counter
 import json
-import hashlib
 from pathlib import Path
 import random
 
@@ -22,21 +21,20 @@ DEVELOPMENT_IDENTITY_SHA256 = (
 def _write_circ_protocol(
     tmp_path: Path,
     *,
-    development_identity_sha256: str = DEVELOPMENT_IDENTITY_SHA256,
-    dev_protocol_sha256: str = DEV_PROTOCOL_SHA256,
+    fold_salt: str = "TriFusion-CIRC-fold-v1",
 ) -> Path:
     circ_protocol_path = tmp_path / "circ-target-v1.json"
     circ_protocol_path.write_text(
         json.dumps(
             {
                 "schema_version": "circ-protocol-v1",
-                "dev_protocol_sha256": dev_protocol_sha256,
+                "dev_protocol_sha256": DEV_PROTOCOL_SHA256,
                 "official_test_access_count": 0,
                 "folds": {
                     "count": 3,
-                    "salt": "TriFusion-CIRC-fold-v1",
+                    "salt": fold_salt,
                     "identity_canonicalization": "unsigned-decimal",
-                    "development_identity_sha256": development_identity_sha256,
+                    "development_identity_sha256": DEVELOPMENT_IDENTITY_SHA256,
                 },
             },
             sort_keys=True,
@@ -51,7 +49,7 @@ def test_rgbnt201_oof_loader_keeps_target_identities_out_of_generator_training(
 ) -> None:
     from modeling.trifusion.data import build_rgbnt201_oof_loaders
 
-    circ_protocol_path = _write_circ_protocol(tmp_path)
+    circ_protocol_path = PROJECT / "protocols/circ_target_v1.json"
     loaders = build_rgbnt201_oof_loaders(
         dataset_root=Path("/root/mmreid-trifusion/data/RGBNT201"),
         protocol_path=PROJECT / "protocols/rgbnt201_dev_v1.json",
@@ -79,9 +77,7 @@ def test_rgbnt201_oof_loader_keeps_target_identities_out_of_generator_training(
     assert loaders.provenance["target_forbidden_dev_identity_overlap"] == 0
     assert loaders.provenance["official_test_records"] == 0
     assert loaders.provenance["query_equals_gallery_record_list"] is False
-    assert loaders.provenance["circ_protocol_path"] == str(
-        circ_protocol_path.resolve()
-    )
+    assert loaders.provenance["circ_protocol_path"] == str(circ_protocol_path.resolve())
     generator_paths = {
         record[0][0] for record in loaders.train_records
     }
@@ -97,7 +93,7 @@ def test_rgbnt201_oof_folds_are_disjoint_and_cover_every_fit_identity(
 ) -> None:
     from modeling.trifusion.data import build_rgbnt201_oof_loaders
 
-    circ_protocol_path = _write_circ_protocol(tmp_path)
+    circ_protocol_path = PROJECT / "protocols/circ_target_v1.json"
     target_sets = []
     for target_fold in range(3):
         loaders = build_rgbnt201_oof_loaders(
@@ -136,10 +132,7 @@ def test_rgbnt201_oof_loader_rejects_semantic_train_dev_identity_overlap(
     protocol_path = tmp_path / "overlap-dev-protocol.json"
     encoded = json.dumps(protocol, sort_keys=True).encode("utf-8")
     protocol_path.write_bytes(encoded)
-    circ_protocol_path = _write_circ_protocol(
-        tmp_path,
-        dev_protocol_sha256=hashlib.sha256(encoded).hexdigest(),
-    )
+    circ_protocol_path = PROJECT / "protocols/circ_target_v1.json"
 
     with pytest.raises(ValueError, match="141-fit/30-dev identity registry is invalid"):
         build_rgbnt201_oof_loaders(
@@ -154,18 +147,18 @@ def test_rgbnt201_oof_loader_rejects_semantic_train_dev_identity_overlap(
         )
 
 
-def test_rgbnt201_oof_loader_rejects_unbound_identity_registry(
+def test_rgbnt201_oof_loader_rejects_replacement_protocol_even_if_self_consistent(
     tmp_path: Path,
 ) -> None:
     from modeling.trifusion.data import build_rgbnt201_oof_loaders
 
     circ_protocol_path = _write_circ_protocol(
         tmp_path,
-        development_identity_sha256="0" * 64,
+        fold_salt="attacker-selected-fold-salt",
     )
     with pytest.raises(
         ValueError,
-        match="development identity registry mismatch",
+        match="trusted frozen CIRC protocol",
     ):
         build_rgbnt201_oof_loaders(
             dataset_root=Path("/root/mmreid-trifusion/data/RGBNT201"),
