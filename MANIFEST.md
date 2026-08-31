@@ -102,3 +102,6 @@
 | 2026-08-31 09:23 | /run-experiment | environment/peft_boa_requirements-lock.txt | implementation | 与已安装上游环境 `pip freeze` 完全一致的全量版本锁 |
 | 2026-08-31 09:23 | /run-experiment | evidence/peft_boa_environment_smoke_20260831.json | research | pip、CPU tensor、真实 RGBNT201 loader 通过及 GPU/训练未就绪边界证据 |
 | 2026-08-31 09:23 | /run-experiment | docs/ENVIRONMENT_REPRODUCTION.md | implementation | 增补隔离环境重建命令、验证结果和非 GPU/非指标声明边界 |
+| 2026-08-31 09:43 | /run-experiment | evidence/signal_source_protocol_audit_20260831.json | research | Signal clean source、B64/K8 真实 CPU loader、公开 fixed-path 日志、test-selection 与缺失权重边界证据 |
+| 2026-08-31 09:43 | /run-experiment | docs/BASELINE_PROTOCOL_AUDIT_2026-08-31.md | research | 将 Signal fixed-e50 路径、test-selected best 和未本机复现的报告边界纳入统一协议 |
+| 2026-08-31 09:43 | /run-experiment | docs/ENVIRONMENT_REPRODUCTION.md | research | 记录 Signal 固定源码、可接通数据链、CLIP 依赖及当前 checkpoint/GPU 阻塞 |

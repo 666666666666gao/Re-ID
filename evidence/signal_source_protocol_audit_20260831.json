@@ -1,0 +1,191 @@
+{
+  "audit_date": "2026-08-31",
+  "audit_scope": "pinned official source, released test log, and a real CPU RGBNT201 loader batch; no model construction and no checkpoint metric reproduction",
+  "baseline": "Signal",
+  "claim_boundary": {
+    "local_metric_reproduction_complete": false,
+    "released_log_is_not_local_metric_reproduction": true,
+    "released_log_label": "upstream fixed-path test-log result; checkpoint bytes and provenance are not locally verified",
+    "test_selected_best_must_be_reported_separately": true
+  },
+  "loader_probe": {
+    "adaptations": [
+      "set DATASETS.ROOT_DIR to /root/mmreid-trifusion",
+      "set the in-memory RGBNT201.dataset_dir class attribute to data/RGBNT201",
+      "set DATALOADER.NUM_WORKERS to 0",
+      "mask CUDA; do not construct the model"
+    ],
+    "camera_count": 4,
+    "num_classes": 171,
+    "num_query": 836,
+    "num_views": 1,
+    "pid_unique_in_train_batch": 8,
+    "runtime": {
+      "environment": "peft_boa",
+      "python": "3.10.21",
+      "timm": "0.4.12",
+      "torch": "2.1.1+cu118",
+      "torch_cuda_available": false,
+      "torchvision": "0.16.1+cu118"
+    },
+    "source_config": {
+      "eval_period": 1,
+      "max_epochs": 50,
+      "num_instance": 8,
+      "optimizer": "Adam",
+      "reranking": "no",
+      "seed": 1234,
+      "size_test": [256, 128],
+      "size_train": [256, 128],
+      "test_batch": 128,
+      "train_batch": 64
+    },
+    "test_batch_shapes": {
+      "NI": [128, 3, 256, 128],
+      "RGB": [128, 3, 256, 128],
+      "TI": [128, 3, 256, 128]
+    },
+    "train_batch_shapes": {
+      "NI": [64, 3, 256, 128],
+      "RGB": [64, 3, 256, 128],
+      "TI": [64, 3, 256, 128]
+    },
+    "train_batches": 54,
+    "train_images": 3951,
+    "train_identities": 171,
+    "val_batches": 14,
+    "val_gallery_images": 836,
+    "val_gallery_identities": 30,
+    "val_query_images": 836,
+    "val_query_identities": 30
+  },
+  "portability_findings": {
+    "clip_path": {
+      "finding": "load_clip_to_cpu ignores the configured path and hard-codes an unavailable author-machine path",
+      "path": "/media/zpp2/Datamy/lyy/512/ViT-B-16.pt",
+      "source_lines": [174, 175]
+    },
+    "dataset_path": {
+      "configured_root": "..",
+      "dataset_class_suffix": "512/data/RGBNT201",
+      "finding": "the released path convention does not match the audited shared data root without an explicit adapter"
+    },
+    "model_constructor_forces_cuda": {
+      "source": "modeling/meta_arch.py",
+      "source_lines": [71, 72, 73, 74, 75],
+      "value": true
+    },
+    "requirements_nonportable_entry": {
+      "line": 19,
+      "value": "grad-cam @ file:///media/zpp2/Datamy/lyy/512/pytorch-grad-cam"
+    },
+    "test_checkpoint_path": {
+      "finding": "test.py has no CLI checkpoint argument and hard-codes the author path",
+      "path": "/media/zpp2/Datamy/lyy/signal_50.pth",
+      "source_line": 51
+    }
+  },
+  "protocol": {
+    "best_checkpoint": {
+      "filename": "Signalbest.pth",
+      "selection": "maximum official-test mAP evaluated every epoch",
+      "source_lines": [172, 178, 181, 182, 186, 187]
+    },
+    "checkpoint_period": 50,
+    "fixed_endpoint": {
+      "epoch": 50,
+      "filename_generated_by_train_loop": "Signal_50.pth",
+      "saved_before_epoch_50_test_evaluation": true,
+      "source_lines": [162, 169, 170, 172]
+    },
+    "gallery_source": "complete RGBNT201/test list",
+    "official_test_evaluated_during_training": true,
+    "query_gallery_same_image_list": true,
+    "query_source": "complete RGBNT201/test list",
+    "same_identity_same_camera_removed_by_evaluator": true,
+    "training_source": "RGBNT201/train_171"
+  },
+  "published_artifacts": {
+    "checkpoint_share": {
+      "browser_observation": "the public share resolved with extraction code and showed one Signal folder containing three files; filenames and bytes were not acquired",
+      "download_complete": false,
+      "extraction_code": "sign",
+      "readme_line": 31,
+      "url": "https://pan.baidu.com/s/1mcOa-TB7_dL28a-TJmk5fg?pwd=sign"
+    },
+    "local_checkpoint": {
+      "available": false,
+      "tracked_weight_files_in_checkout": []
+    },
+    "openai_clip_pretrain": {
+      "bytes": 350837078,
+      "matches_digest_embedded_in_source_url": true,
+      "path": "/root/mmreid-trifusion/pretrained/ViT-B-16.pt",
+      "sha256": "5806e77cd80f8b59890b7e101eabd078d9fb84e6937f9e85e4ecb61988df416f"
+    },
+    "released_test_log": {
+      "bytes": 3390,
+      "checkpoint_reference": "unmodified test.py targets an author file named signal_50.pth; the released log does not hash or print that file",
+      "configured_protocol": {
+        "eval_period": 1,
+        "max_epochs": 50,
+        "num_instance": 8,
+        "reranking": "no",
+        "seed": 1234,
+        "test_batch": 128,
+        "train_batch": 64
+      },
+      "metrics_percent": {
+        "mAP": 80.3,
+        "rank1": 85.2,
+        "rank10": 93.7,
+        "rank5": 91.4
+      },
+      "path": "/root/mmreid-trifusion/baselines/Signal/test_RNT201/test_log.txt",
+      "sha256": "b200abf85f3f3c39dd315fc95c5858dbb8ca18d7a040aa6d9bb4e4f88793c83e"
+    },
+    "weight_search_boundary": {
+      "exact_huggingface_model_search_results": 0,
+      "github_release_api_verified": false,
+      "github_release_api_verified_reason": "unauthenticated rate limit",
+      "no_alternative_weight_claim": false
+    }
+  },
+  "schema_version": 1,
+  "source": {
+    "actual_commit": "cd1b0a672d1fe642e7608731cb4899a19dda7d51",
+    "expected_commit": "cd1b0a672d1fe642e7608731cb4899a19dda7d51",
+    "files_sha256": {
+      "LICENSE": "cc38a11e180b91171b84bbfd7487531ab6acd5bd835e19a6dc48387920f5f4e5",
+      "README.md": "3659e83d95d139e079d05abd987775969ea3cd6d4737be515407a5641dac3782",
+      "config/defaults.py": "40257d349153e56e345983c99b1638d7c3d77966dfd2f5496fe03c86dc8dbd57",
+      "configs/RGBNT201/Signal.yml": "a13bd5169a4c710fa79efc87db909409015a0b2611086c0fbf4c1842f0cfcc44",
+      "data/datasets/RGBNT201.py": "7b2b30b339123e92bbead5c092afa7570a06f423570c4249acfdd39294fc4a88",
+      "data/datasets/make_dataloader.py": "54c47d798a20955bde224d9c78b42149c3c2ef008b02659141829a553194434f",
+      "engine/processor.py": "aae7afbeed44a9136003f622b5cdfbf17728b8aab236b129f03285f829eb8377",
+      "modeling/make_model.py": "1a88a91d2e5055f5d338996231b16c0e13b2fa7013c74131ca663f16c2655963",
+      "modeling/make_model_clipreid.py": "087de912fec273c7630d50c553ab429674eae3f283f6e971c75c364b27defb37",
+      "modeling/meta_arch.py": "8b709d5ab4b14ba150a96bbb5e8cc7e6dbbb71dd8bd30cafd7a5cb110ee5a757",
+      "requirements.txt": "44ca3da32207dfd204220b7458b27e11db0c9a6126056b383888cddc978625b3",
+      "test.py": "9e6f2a190e02f25be97c599922c43554de1d2efb3916a5bebe1c4cce30b6ae4a",
+      "test_RNT201/test_log.txt": "b200abf85f3f3c39dd315fc95c5858dbb8ca18d7a040aa6d9bb4e4f88793c83e",
+      "utils/metrics.py": "91604acb7d978462c16904910a645d7d1697c15bf150da529099004c8b5eecb2"
+    },
+    "license": "MIT",
+    "path": "/root/mmreid-trifusion/baselines/Signal",
+    "remote": "https://github.com/010129/Signal.git",
+    "status_after_cleanup": "",
+    "status_before_probe": "",
+    "status_note": "CPU imports created only disposable __pycache__ directories; they are excluded from evidence and removed after audit"
+  },
+  "training_readiness": {
+    "blockers": [
+      "the RGBNT201 checkpoint has not been downloaded and its bytes/hash are unavailable",
+      "the released loader, CLIP path, test path, and requirements contain author-machine assumptions",
+      "the model constructor forces CUDA and has not passed a forward/backward or 8 GiB capacity gate",
+      "the released training loop evaluates official test every epoch and writes a test-selected best checkpoint"
+    ],
+    "ready": false
+  },
+  "valid": true
+}

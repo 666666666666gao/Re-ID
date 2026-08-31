@@ -110,6 +110,42 @@ The source-line and log-hash evidence, and the binding fixed-versus-selected
 reporting policy, are in `docs/BASELINE_PROTOCOL_AUDIT_2026-08-31.md` and
 `evidence/peft_boa_protocol_audit_20260831.json`.
 
+## Audit the Signal checkpoint comparator
+
+The official Signal checkout is pinned and left unmodified at:
+
+```text
+/root/mmreid-trifusion/baselines/Signal
+cd1b0a672d1fe642e7608731cb4899a19dda7d51
+```
+
+Its released torch 2.1.1+cu118 stack is compatible with the isolated
+`peft_boa` environment for a CPU-only data-path probe. With CUDA masked,
+`DATALOADER.NUM_WORKERS=0`, and only the path convention adapted in memory,
+the real released B64/K8 loader returns eight identities and RGB/NI/TI tensors
+of shape `64×3×256×128`. The audited corpus has 171 training identities and
+3951 training records; validation concatenates the same 836-record test list
+twice as query and gallery. No model was constructed during this probe.
+
+Signal is not yet metric-reproduced. The README routes all three released
+checkpoints through one Baidu share (code `sign`); the share resolved during
+the audit, but the RGBNT201 file bytes were not acquired. The released
+`test.py` has no checkpoint CLI argument and hard-codes
+`/media/zpp2/Datamy/lyy/signal_50.pth`. The CLIP loader separately hard-codes
+another author path, the constructor forces `.to("cuda")`, and
+`requirements.txt` line 19 references an author-local `grad-cam` checkout.
+The verified local OpenAI CLIP archive is available and exactly matches its
+official digest, but replacing these paths and running a model/capacity gate
+remains future implementation work.
+
+The upstream test log reports 80.3% mAP / 85.2% Rank-1 / 91.4% Rank-5 /
+93.7% Rank-10 with no reranking. It is a 3,390-byte released artifact with
+SHA-256 `b200abf8…793c83e`, not a local result. The training loop evaluates the
+official test after every epoch and keeps `Signalbest.pth` by test mAP; the
+periodic epoch-50 checkpoint is saved before that evaluation. These boundaries,
+source hashes, loader shapes and unresolved checkpoint provenance are frozen in
+`evidence/signal_source_protocol_audit_20260831.json`.
+
 ## Reproduce the DeMo implementation base
 
 DeMo's released CLIP loader hard-codes an unavailable author-machine path.

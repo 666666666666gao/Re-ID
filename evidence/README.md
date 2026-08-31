@@ -19,6 +19,9 @@ sha256sum -c evidence/SHA256SUMS
   evidence.
 - Numeric baseline: strict MDReID checkpoint loading and RGBNT201 evaluator
   parity at 82.0868% mAP / 85.1675% Rank-1.
+- Comparator audits: PEFT-BoA and Signal pinned-source, released-protocol,
+  environment/loader and claim-boundary receipts. Signal's public log is
+  explicitly not treated as a local checkpoint result.
 - DeMo implementation base: synthetic and real-data training gates, the
   excluded TB128 paging-pressure run, the accepted TB64 live gate, a bounded
   post-launch provenance observation, and the terminal R012 incident receipt.
@@ -87,6 +90,12 @@ checkpoint result, exact official commit and referenced dataset-audit bytes are
 retained as valid historical evidence; the patched driver must be rerun after
 the local GPU satisfies the registered idle-memory gate before claiming
 code-to-artifact parity for that revision.
+
+The Signal receipt binds the clean official commit, fourteen source/log hashes,
+the source B64/K8 real loader shapes and the released 80.3% / 85.2% test log.
+It also records the missing checkpoint bytes, hard-coded author paths and
+per-epoch official-test selection behavior. Consequently it supports protocol
+and portability claims only; it does not support a local metric comparison.
 
 Absolute paths inside JSON records identify the WSL2 machine on which the
 evidence was produced. File hashes, source commits and protocol fields are the
