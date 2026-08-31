@@ -30,6 +30,7 @@ from modeling.trifusion.protocol import (  # noqa: E402
     CIRC_PROTOCOL_PATH,
     CIRC_PROTOCOL_SHA256,
     load_trusted_circ_protocol,
+    trifusion_source_hashes,
 )
 
 DEFAULT_CONFIG = PROJECT / "configs/RGBNT201/TriFusion.yml"
@@ -268,6 +269,7 @@ def _preflight(config_path: Path, variant: str) -> dict[str, Any]:
         "config_sha256": _sha256(config_path),
         "repository_head": head.stdout.strip() if head.returncode == 0 else None,
         "runner_sha256": _sha256(Path(__file__)),
+        "source_sha256": trifusion_source_hashes(),
         "file_checks": file_checks,
         "data_protocol": data_protocol,
         "optimization": optimization,
@@ -356,7 +358,8 @@ def _capacity(
         "batch_size": receipt["optimization"]["train_batch_size"],
         "num_instances": receipt["optimization"]["num_instances"],
         "finite_losses": True,
-        "finite_gradients": True,
+        "gradient_safety_pass": True,
+        "model_parameters_finite": True,
         "gradient_parameter_coverage": 1.0,
         "official_test_access_count": 0,
         "dev_loader_iterations": 0,
@@ -453,7 +456,8 @@ def _overfit(
         "batch_size": receipt["optimization"]["train_batch_size"],
         "num_instances": receipt["optimization"]["num_instances"],
         "finite_losses": True,
-        "finite_gradients": True,
+        "gradient_safety_pass": True,
+        "model_parameters_finite": True,
         "official_test_access_count": 0,
         "dev_loader_iterations": 0,
     }
@@ -479,7 +483,7 @@ def _overfit(
 
 
 def _run_identity(preflight: dict[str, Any], variant: str) -> dict[str, Any]:
-    return {
+    identity = {
         "schema_version": "1.0",
         "run_type": "TriFusion/RGBNT201/train-only-dev",
         "variant": variant,
@@ -487,6 +491,7 @@ def _run_identity(preflight: dict[str, Any], variant: str) -> dict[str, Any]:
         "variant_contract_sha256": preflight["variant_contract_sha256"],
         "repository_head": preflight["repository_head"],
         "runner_sha256": _sha256(Path(__file__)),
+        "source_sha256": preflight["source_sha256"],
         "config_sha256": preflight["config_sha256"],
         "clip_sha256": EXPECTED["clip_sha256"],
         "dev_protocol_sha256": EXPECTED["dev_protocol_sha256"],
@@ -495,6 +500,11 @@ def _run_identity(preflight: dict[str, Any], variant: str) -> dict[str, Any]:
         "optimization": preflight["optimization"],
         "official_test_access_during_development": False,
     }
+    if variant == "hfer_uniform_generator":
+        identity["circ_protocol_sha256"] = preflight["file_checks"][
+            "circ_protocol"
+        ]["sha256"]
+    return identity
 
 
 def _validate_recovery(output_dir: Path) -> dict[str, Any]:
@@ -739,18 +749,6 @@ def _worker_capacity(
         from modeling.trifusion.data import build_rgbnt201_dev_loaders
 
         contract = dict(resolve_variant(variant))
-        registered_circ_protocol_path: Path | None = None
-        registered_circ_protocol_sha256: str | None = None
-        if variant == "hfer_uniform_generator":
-            registered_value = config.get("PROTOCOL", {}).get("CIRC_PROTOCOL")
-            if not registered_value:
-                raise ValueError("HFER-uniform generator requires a frozen CIRC protocol")
-            registered_circ_protocol_path = (PROJECT / str(registered_value)).resolve()
-            _, registered_circ_protocol_sha256 = load_trusted_circ_protocol(
-                registered_circ_protocol_path
-            )
-            if oof_mode and Path(circ_protocol_path).resolve() != registered_circ_protocol_path:
-                raise ValueError("OOF worker protocol differs from generator config")
         seed = int(config["EXPERIMENT"]["SEED"])
         random.seed(seed)
         np.random.seed(seed)
@@ -879,6 +877,8 @@ def _worker_capacity(
         losses_by_step = []
         all_losses_finite = True
         all_gradients_finite = True
+        nonfinite_gradients_by_step = []
+        last_step_gradients_finite = True
         iterator = iter(data.train_loader)
         fixed_batch = next(iterator) if overfit else None
         fixed_batch_sha256 = None
@@ -921,8 +921,10 @@ def _worker_capacity(
                     **{name: float(value.detach().cpu()) for name, value in named_losses.items()},
                 }
             )
+            scale_before = float(scaler.get_scale())
             scaler.scale(total_loss).backward()
             scaler.unscale_(optimizer)
+            nonfinite_names = []
             for name, parameter in model.named_parameters():
                 if not parameter.requires_grad or parameter.grad is None:
                     continue
@@ -930,14 +932,42 @@ def _worker_capacity(
                 all_gradients_finite = all_gradients_finite and finite
                 if finite:
                     finite_gradient_names.add(name)
+                else:
+                    nonfinite_names.append(name)
             scaler.step(optimizer)
             scaler.update()
+            last_step_gradients_finite = not nonfinite_names
+            if nonfinite_names:
+                nonfinite_gradients_by_step.append(
+                    {
+                        "step": _step + 1,
+                        "scale_before": scale_before,
+                        "scale_after": float(scaler.get_scale()),
+                        "parameter_names": nonfinite_names,
+                    }
+                )
             torch.cuda.synchronize()
         coverage = len(finite_gradient_names) / len(trainable_names)
+        model_parameters_finite = all(
+            bool(torch.isfinite(parameter).all().item())
+            for parameter in model.parameters()
+        )
+        amp_overflow_recovered = bool(nonfinite_gradients_by_step) and all(
+            event["scale_after"] < event["scale_before"]
+            for event in nonfinite_gradients_by_step
+        ) and (
+            nonfinite_gradients_by_step[-1]["step"] < steps
+            and last_step_gradients_finite
+        )
+        gradient_safety_pass = (
+            coverage == 1.0
+            and model_parameters_finite
+            and (all_gradients_finite or amp_overflow_recovered)
+        )
         initial_loss = losses_by_step[0]["total"]
         final_loss = losses_by_step[-1]["total"]
         loss_ratio = final_loss / max(abs(initial_loss), 1e-12)
-        gate_pass = all_losses_finite and all_gradients_finite and coverage == 1.0
+        gate_pass = all_losses_finite and gradient_safety_pass
         if overfit:
             gate_pass = gate_pass and loss_ratio <= 0.2
         status = "PASS" if gate_pass else "FAILED"
@@ -950,10 +980,16 @@ def _worker_capacity(
                 "num_instances": int(config["DATA"]["NUM_INSTANCES"]),
                 "finite_losses": all_losses_finite,
                 "finite_gradients": all_gradients_finite,
+                "gradient_safety_pass": gradient_safety_pass,
+                "model_parameters_finite": model_parameters_finite,
+                "amp_overflow_events": len(nonfinite_gradients_by_step),
+                "amp_overflow_recovered": amp_overflow_recovered,
+                "last_step_gradients_finite": last_step_gradients_finite,
                 "gradient_parameter_coverage": coverage,
                 "trainable_parameter_tensors": len(trainable_names),
                 "finite_gradient_parameter_tensors": len(finite_gradient_names),
                 "missing_gradient_parameters": sorted(trainable_names - finite_gradient_names),
+                "nonfinite_gradients_by_step": nonfinite_gradients_by_step,
                 "fixed_batch_sha256": fixed_batch_sha256,
                 "initial_loss": initial_loss,
                 "final_loss": final_loss,
@@ -1123,6 +1159,22 @@ def _worker_dev(
         from utils.reid_evaluation import evaluate_reid
 
         contract = dict(resolve_variant(variant))
+        registered_circ_protocol_path: Path | None = None
+        registered_circ_protocol_sha256: str | None = None
+        if variant == "hfer_uniform_generator":
+            registered_value = config.get("PROTOCOL", {}).get("CIRC_PROTOCOL")
+            if not registered_value:
+                raise ValueError("HFER-uniform generator requires a frozen CIRC protocol")
+            registered_circ_protocol_path = (PROJECT / str(registered_value)).resolve()
+            _, registered_circ_protocol_sha256 = load_trusted_circ_protocol(
+                registered_circ_protocol_path
+            )
+            if (
+                oof_mode
+                and Path(circ_protocol_path).resolve()
+                != registered_circ_protocol_path
+            ):
+                raise ValueError("OOF worker protocol differs from generator config")
         seed = int(config["EXPERIMENT"]["SEED"])
         random.seed(seed)
         np.random.seed(seed)
@@ -1374,7 +1426,13 @@ def _worker_dev(
                 "resume_history": resume_history,
             }
 
+        eval_loader_iteration_count = 0
+
         def evaluate() -> dict[str, dict[str, float]]:
+            nonlocal eval_loader_iteration_count
+            if oof_mode:
+                raise RuntimeError("OOF target loader iteration is forbidden")
+            eval_loader_iteration_count += 1
             model.eval()
             features: dict[str, list[Any]] = {
                 name: [] for name in contract["evaluation_outputs"]
@@ -1546,6 +1604,29 @@ def _worker_dev(
                 if phase == "complete":
                     break
 
+        if not oof_mode:
+            best_receipt_path = output_dir / "best_dev_receipt.json"
+            if not best_receipt_path.is_file():
+                raise RuntimeError("dev run completed without a best receipt")
+            completed_selection = json.loads(
+                best_receipt_path.read_text(encoding="utf-8")
+            )
+            completed_selection.update(
+                {
+                    "phase": "complete",
+                    "schedule_horizon_epochs": schedule_horizon_epochs,
+                    "dev_evaluation_count": dev_evaluation_count,
+                    "run_identity": str(output_dir / "run_identity.json"),
+                    "run_identity_sha256": identity_hash,
+                    "recovery_manifest": str(latest_path),
+                    "recovery_manifest_sha256": _sha256(latest_path),
+                    "model_constructed": True,
+                    "training_started": True,
+                    "fatal_or_nonfinite_detected": False,
+                }
+            )
+            _atomic_json(best_receipt_path, completed_selection)
+
         if oof_mode:
             checkpoint_path = output_dir / "generator.pth"
             _atomic_torch_save(checkpoint_path, model.state_dict(), torch)
@@ -1560,7 +1641,7 @@ def _worker_dev(
                     data.provenance["generator_target_identity_overlap"]
                 ),
                 "dev_evaluation_count": 0,
-                "target_loader_iteration_count": 0,
+                "target_loader_iteration_count": eval_loader_iteration_count,
                 "official_test_access_count": 0,
                 "query_records": data.num_query,
                 "gallery_records": len(data.eval_loader.dataset) - data.num_query,
@@ -1576,7 +1657,13 @@ def _worker_dev(
                 "total_parameters": int(built.provenance["total_parameters"]),
                 "variant_contract": contract,
                 "variant_contract_sha256": variant_sha256(contract),
+                "variant": variant,
+                "source_sha256": trifusion_source_hashes(),
                 "circ_protocol_sha256": registered_circ_protocol_sha256,
+                "config_sha256": _sha256(config_path),
+                "run_identity_sha256": identity_hash,
+                "recovery_manifest": str(latest_path),
+                "recovery_manifest_sha256": _sha256(latest_path),
                 "peak_allocated_mib": torch.cuda.max_memory_allocated() / 1024**2,
                 "peak_reserved_mib": torch.cuda.max_memory_reserved() / 1024**2,
                 "fatal_or_nonfinite_detected": False,

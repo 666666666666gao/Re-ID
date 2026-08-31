@@ -162,7 +162,10 @@ def test_trifusion_capacity_runs_eight_train_only_steps_after_gate(tmp_path: Pat
         "(out / 'worker_invocation.json').write_text(json.dumps({"
         "'argv': args, 'CUDA_VISIBLE_DEVICES': os.environ.get('CUDA_VISIBLE_DEVICES')}), encoding='utf-8')\n"
         "result = {'status': 'PASS', 'steps': 8, 'batch_size': 16, 'num_instances': 4, "
-        "'finite_losses': True, 'finite_gradients': True, 'gradient_parameter_coverage': 1.0, "
+        "'finite_losses': True, 'finite_gradients': False, "
+        "'gradient_safety_pass': True, 'model_parameters_finite': True, "
+        "'amp_overflow_events': 1, 'amp_overflow_recovered': True, "
+        "'last_step_gradients_finite': True, 'gradient_parameter_coverage': 1.0, "
         "'official_test_access_count': 0, 'dev_loader_iterations': 0, "
         "'parameter_budget_pass': True, 'total_parameters': 95874282, "
         "'peak_allocated_mib': 6100.0, 'peak_reserved_mib': 6900.0}\n"
@@ -201,10 +204,12 @@ def test_trifusion_capacity_runs_eight_train_only_steps_after_gate(tmp_path: Pat
     assert receipt["steps"] == 8
     assert receipt["batch_size"] == 16
     assert receipt["num_instances"] == 4
+    assert receipt["finite_gradients"] is False
+    assert receipt["gradient_safety_pass"] is True
+    assert receipt["amp_overflow_recovered"] is True
     assert receipt["official_test_access_count"] == 0
     assert receipt["dev_loader_iterations"] == 0
     assert receipt["finite_losses"] is True
-    assert receipt["finite_gradients"] is True
     assert receipt["gradient_parameter_coverage"] == 1.0
     assert receipt["parameter_budget_pass"] is True
     assert invocation["CUDA_VISIBLE_DEVICES"] == "0"
@@ -229,7 +234,10 @@ def test_trifusion_low_vram_capacity_enforces_the_profile_batch_contract(
         "out = pathlib.Path(args[args.index('--output-dir') + 1])\n"
         "out.mkdir(parents=True, exist_ok=True)\n"
         "result = {'status': 'PASS', 'steps': 8, 'batch_size': 8, 'num_instances': 4, "
-        "'finite_losses': True, 'finite_gradients': True, 'gradient_parameter_coverage': 1.0, "
+        "'finite_losses': True, 'finite_gradients': True, "
+        "'gradient_safety_pass': True, 'model_parameters_finite': True, "
+        "'amp_overflow_events': 0, 'amp_overflow_recovered': False, "
+        "'last_step_gradients_finite': True, 'gradient_parameter_coverage': 1.0, "
         "'official_test_access_count': 0, 'dev_loader_iterations': 0, "
         "'parameter_budget_pass': True, 'total_parameters': 95874282, "
         "'peak_allocated_mib': 4800.0, 'peak_reserved_mib': 5600.0}\n"
@@ -374,6 +382,7 @@ def test_trifusion_overfit_requires_large_loss_drop_on_one_fixed_batch(
         "result = {'status': 'PASS', 'steps': 100, 'batch_size': 16, 'num_instances': 4, "
         "'fixed_batch_sha256': 'ab' * 32, 'initial_loss': 9.0, 'final_loss': 1.2, "
         "'loss_ratio': 1.2 / 9.0, 'finite_losses': True, 'finite_gradients': True, "
+        "'gradient_safety_pass': True, 'model_parameters_finite': True, "
         "'official_test_access_count': 0, 'dev_loader_iterations': 0}\n"
         "(out / 'worker_result.json').write_text(json.dumps(result), encoding='utf-8')\n",
         encoding="utf-8",
@@ -434,6 +443,7 @@ def test_trifusion_low_vram_overfit_uses_the_same_b8k4_profile(
         "result = {'status': 'PASS', 'steps': 100, 'batch_size': 8, 'num_instances': 4, "
         "'fixed_batch_sha256': 'cd' * 32, 'initial_loss': 9.0, 'final_loss': 1.0, "
         "'loss_ratio': 1.0 / 9.0, 'finite_losses': True, 'finite_gradients': True, "
+        "'gradient_safety_pass': True, 'model_parameters_finite': True, "
         "'official_test_access_count': 0, 'dev_loader_iterations': 0}\n"
         "(out / 'worker_result.json').write_text(json.dumps(result), encoding='utf-8')\n",
         encoding="utf-8",

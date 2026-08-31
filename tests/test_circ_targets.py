@@ -200,6 +200,8 @@ class CIRCTargetBuilderTests(unittest.TestCase):
     def test_cli_orchestrates_three_fixed_endpoint_generators_without_target_eval(
         self,
     ) -> None:
+        from modeling.trifusion.protocol import trifusion_source_hashes
+        from modeling.trifusion.variants import resolve_variant, variant_sha256
         from tools.build_circ_targets import main
 
         project = Path(__file__).resolve().parents[1]
@@ -209,9 +211,68 @@ class CIRCTargetBuilderTests(unittest.TestCase):
             generator_config = (
                 project / "configs/RGBNT201/TriFusion-circ-generator-low-vram.yml"
             )
-            selector_checkpoint = root / "selector.pth"
+            contract_sha256 = variant_sha256(
+                resolve_variant("hfer_uniform_generator")
+            )
+            selector_root = root / "selector"
+            selector_root.mkdir()
+            selector_checkpoint = selector_root / "best_dev_model.pth"
             selector_checkpoint.write_bytes(b"frozen-selector")
-            endpoint_receipt = root / "best_dev_receipt.json"
+            selector_identity = {
+                "variant": "hfer_uniform_generator",
+                "variant_contract_sha256": contract_sha256,
+                "config_sha256": hashlib.sha256(
+                    generator_config.read_bytes()
+                ).hexdigest(),
+                "circ_protocol_sha256": hashlib.sha256(
+                    protocol_path.read_bytes()
+                ).hexdigest(),
+                "source_sha256": trifusion_source_hashes(),
+                "official_test_access_during_development": False,
+                "optimization": {"max_epochs": 60},
+            }
+            selector_identity_path = selector_root / "run_identity.json"
+            selector_identity_path.write_text(
+                json.dumps(selector_identity, sort_keys=True),
+                encoding="utf-8",
+            )
+            selector_identity_sha256 = hashlib.sha256(
+                selector_identity_path.read_bytes()
+            ).hexdigest()
+            selector_resume = selector_root / ".resume"
+            selector_resume.mkdir()
+            selector_state = selector_resume / "generation-0060-complete.pt"
+            selector_state.write_bytes(b"selector-full-state")
+            selector_manifest = selector_resume / "latest.json"
+            selector_manifest.write_text(
+                json.dumps(
+                    {
+                        "schema_version": "1.0",
+                        "epoch": 60,
+                        "phase": "complete",
+                        "run_identity_sha256": selector_identity_sha256,
+                        "current": {
+                            "path": ".resume/generation-0060-complete.pt",
+                            "sha256": hashlib.sha256(
+                                selector_state.read_bytes()
+                            ).hexdigest(),
+                        },
+                        "previous": None,
+                    },
+                    sort_keys=True,
+                ),
+                encoding="utf-8",
+            )
+            metrics = {
+                name: {
+                    "mAP": 51.0 if name == "fused" else 40.0,
+                    "Rank-1": 52.0,
+                    "Rank-5": 60.0,
+                    "Rank-10": 65.0,
+                }
+                for name in ("fused", "cnn", "transformer", "mamba")
+            }
+            endpoint_receipt = selector_root / "best_dev_receipt.json"
             endpoint_receipt.write_text(
                 json.dumps(
                     {
@@ -220,6 +281,14 @@ class CIRCTargetBuilderTests(unittest.TestCase):
                         "epoch": 9,
                         "selection_output": "fused",
                         "dev_selection_mAP": 51.0,
+                        "metrics_percent": metrics,
+                        "variant_contract_sha256": contract_sha256,
+                        "phase": "complete",
+                        "schedule_horizon_epochs": 60,
+                        "dev_evaluation_count": 60,
+                        "model_constructed": True,
+                        "training_started": True,
+                        "fatal_or_nonfinite_detected": False,
                         "config_sha256": hashlib.sha256(
                             generator_config.read_bytes()
                         ).hexdigest(),
@@ -229,6 +298,12 @@ class CIRCTargetBuilderTests(unittest.TestCase):
                         "checkpoint": str(selector_checkpoint),
                         "checkpoint_sha256": hashlib.sha256(
                             selector_checkpoint.read_bytes()
+                        ).hexdigest(),
+                        "run_identity": str(selector_identity_path),
+                        "run_identity_sha256": selector_identity_sha256,
+                        "recovery_manifest": str(selector_manifest),
+                        "recovery_manifest_sha256": hashlib.sha256(
+                            selector_manifest.read_bytes()
                         ).hexdigest(),
                         "official_test_access_count": 0,
                     },
@@ -244,12 +319,39 @@ class CIRCTargetBuilderTests(unittest.TestCase):
                 "fold = int(args[args.index('--_worker-fold') + 1])\n"
                 "out = pathlib.Path(args[args.index('--output') + 1])\n"
                 "out.mkdir(parents=True, exist_ok=True)\n"
+                "identity_path = out / 'run_identity.json'\n"
+                "identity = json.loads(identity_path.read_text())\n"
+                "identity_sha = hashlib.sha256(identity_path.read_bytes()).hexdigest()\n"
+                "resume = out / '.resume'; resume.mkdir(exist_ok=True)\n"
+                "state = resume / 'generation-0009-complete.pt'\n"
+                "state.write_bytes(f'full-state-{fold}'.encode())\n"
+                "manifest = resume / 'latest.json'\n"
+                "manifest.write_text(json.dumps({'schema_version': '1.0', 'epoch': 9, "
+                "'phase': 'complete', 'run_identity_sha256': identity_sha, "
+                "'current': {'path': '.resume/generation-0009-complete.pt', "
+                "'sha256': hashlib.sha256(state.read_bytes()).hexdigest()}, "
+                "'previous': None}), encoding='utf-8')\n"
                 "checkpoint = out / 'generator.pth'\n"
                 "checkpoint.write_bytes(f'fold-{fold}'.encode())\n"
-                "receipt = {'status': 'COMPLETE', 'target_fold': fold, "
+                "receipt = {'status': 'COMPLETE', 'phase': 'complete', 'epoch': 9, "
+                "'target_fold': fold, "
                 "'fixed_endpoint': 9, 'schedule_horizon_epochs': 60, "
                 "'generator_target_identity_overlap': 0, "
                 "'dev_evaluation_count': 0, 'target_loader_iteration_count': 0, "
+                "'variant': identity['variant'], "
+                "'variant_contract_sha256': identity['variant_contract_sha256'], "
+                "'circ_protocol_sha256': identity['circ_protocol_sha256'], "
+                "'config_sha256': identity['generator_config_sha256'], "
+                "'source_sha256': identity['source_sha256'], "
+                "'run_identity_sha256': identity_sha, "
+                "'model_constructed': True, 'training_started': True, "
+                "'fatal_or_nonfinite_detected': False, 'parameter_budget_pass': True, "
+                "'data_provenance': {'target_fold': fold, "
+                "'generator_target_identity_overlap': 0, "
+                "'target_forbidden_dev_identity_overlap': 0, 'official_test_records': 0}, "
+                "'train_history': {str(epoch): {'total': 1.0} for epoch in range(1, 10)}, "
+                "'recovery_manifest': str(manifest), "
+                "'recovery_manifest_sha256': hashlib.sha256(manifest.read_bytes()).hexdigest(), "
                 "'official_test_access_count': 0, 'checkpoint': str(checkpoint), "
                 "'checkpoint_sha256': hashlib.sha256(checkpoint.read_bytes()).hexdigest()}\n"
                 "(out / 'generator_receipt.json').write_text(json.dumps(receipt), encoding='utf-8')\n",

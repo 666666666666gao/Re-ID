@@ -38,9 +38,25 @@ def load_trusted_circ_protocol(path: Path | str) -> tuple[dict[str, Any], str]:
     return payload, CIRC_PROTOCOL_SHA256
 
 
+def trifusion_source_hashes() -> dict[str, str]:
+    project = Path(__file__).resolve().parents[2]
+    paths = sorted((project / "modeling/trifusion").rglob("*.py"))
+    paths.extend(
+        [
+            project / "tools/build_circ_targets.py",
+            project / "tools/run_trifusion_experiment.py",
+        ]
+    )
+    return {
+        str(path.relative_to(project)): sha256_file(path)
+        for path in paths
+    }
+
+
 __all__ = [
     "CIRC_PROTOCOL_PATH",
     "CIRC_PROTOCOL_SHA256",
     "load_trusted_circ_protocol",
     "sha256_file",
+    "trifusion_source_hashes",
 ]
