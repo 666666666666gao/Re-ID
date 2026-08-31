@@ -20,7 +20,7 @@ from .experts.mamba import MambaExpert, production_mamba_factory
 from .experts.transformer import TransformerExpert
 from .fusion import CollaborativeFusion
 from .model import TriFusionReID
-from .reliability import ReliabilityPosterior
+from .reliability import ReliabilityPosterior, UniformReliabilityGate
 from .relay import HeterogeneousRelay
 from .standalone import SingleBranchReID, SingleExpertTokenizer
 from .tokenizer import SharedCLIPTokenizer
@@ -100,6 +100,7 @@ def build_trifusion_from_clip(
     relay_rank: int = 64,
     embedding_width: int = 512,
     private_width: int = 64,
+    reliability_mode: str = "joint_beta",
     mamba_mixer_factory: Callable[[int], nn.Module] = production_mamba_factory,
 ) -> TriFusionBuildResult:
     """Build the full three-stage, same-posterior collaborative model."""
@@ -158,12 +159,17 @@ def build_trifusion_from_clip(
             mixer_factory=mamba_mixer_factory,
         ),
     }
-    posterior = ReliabilityPosterior(
-        expert_widths=expert_widths,
-        hidden_width=128,
-        heads=4,
-        kappa_min=2.0,
-    )
+    if reliability_mode == "uniform":
+        posterior: nn.Module = UniformReliabilityGate()
+    elif reliability_mode == "joint_beta":
+        posterior = ReliabilityPosterior(
+            expert_widths=expert_widths,
+            hidden_width=128,
+            heads=4,
+            kappa_min=2.0,
+        )
+    else:
+        raise ValueError("reliability_mode must be uniform or joint_beta")
     relay = HeterogeneousRelay(
         expert_widths=expert_widths,
         relay_rank=relay_rank,
@@ -203,6 +209,7 @@ def build_trifusion_from_clip(
         "token_grid": list(grid_size),
         "expert_widths": expert_widths,
         "relay_rank": relay_rank,
+        "reliability_mode": reliability_mode,
         "embedding_width": embedding_width,
         "cnn_blocks": sum(len(stage) for stage in experts["cnn"].stages),
         "mamba_blocks": sum(len(stage) for stage in experts["mamba"].stages),

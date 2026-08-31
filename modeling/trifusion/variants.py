@@ -9,6 +9,18 @@ from typing import Any, Mapping
 
 
 _VARIANTS: dict[str, dict[str, Any]] = {
+    "hfer_uniform_generator": {
+        "variant": "hfer_uniform_generator",
+        "family": "collaborative",
+        "claim_role": "CIRC target generator",
+        "active_experts": ["cnn", "transformer", "mamba"],
+        "collaborator": "hfer",
+        "reliability": "uniform",
+        "fusion": "uniform",
+        "peer_mode": "none",
+        "circ_targets_required": False,
+        "evaluation_outputs": ["fused", "cnn", "transformer", "mamba"],
+    },
     "core_pre_circ": {
         "variant": "core_pre_circ",
         "family": "collaborative",

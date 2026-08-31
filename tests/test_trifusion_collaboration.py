@@ -62,6 +62,50 @@ def _build_tiny_encoder():
 
 
 class DeepCollaborationScheduleTests(unittest.TestCase):
+    def test_hfer_uniform_generator_reuses_one_equal_valid_prior(self) -> None:
+        from modeling.trifusion import CollaborativeFusion
+        from modeling.trifusion.reliability import UniformReliabilityGate
+
+        torch.manual_seed(30)
+        encoder, widths = _build_tiny_encoder()
+        encoder.reliability_gate = UniformReliabilityGate()
+        modality_mask = torch.tensor(
+            [[True, True, True], [False, True, True]],
+            dtype=torch.bool,
+        )
+        images = {
+            modality: torch.randn(2, 3, 4, 4)
+            for modality in ("RGB", "NI", "TI")
+        }
+
+        states = encoder(images, modality_mask)
+        reliability = states.reliability
+        fusion = CollaborativeFusion(
+            expert_widths=widths,
+            embedding_width=6,
+        )(states, reliability, modality_mask)
+
+        valid = modality_mask[:, None, :].expand_as(reliability.r)
+        self.assertTrue(
+            torch.equal(
+                reliability.r,
+                valid.to(dtype=reliability.r.dtype) * 0.5,
+            )
+        )
+        self.assertIs(states.relay_results[0].reliability, reliability)
+        self.assertIs(states.relay_results[1].reliability, reliability)
+        for relay_result in states.relay_results:
+            expected_gate = torch.full_like(relay_result.gates, 0.5)
+            no_self = ~torch.eye(3, dtype=torch.bool)
+            expected_gate = expected_gate * no_self[None, :, :, None]
+            expected_gate = expected_gate * modality_mask[:, None, None, :]
+            self.assertTrue(torch.equal(relay_result.gates, expected_gate))
+        expected_fusion = valid.to(dtype=fusion.weights.dtype)
+        expected_fusion = expected_fusion / expected_fusion.sum(
+            dim=(1, 2), keepdim=True
+        )
+        self.assertTrue(torch.equal(fusion.weights, expected_fusion))
+
     def test_one_stage1_posterior_is_reused_by_both_deep_relays(self) -> None:
         from modeling.trifusion import (
             HeterogeneousRelay,

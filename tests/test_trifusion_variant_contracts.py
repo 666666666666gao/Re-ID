@@ -11,6 +11,56 @@ PROJECT = Path(__file__).resolve().parents[1]
 RUNNER = PROJECT / "tools/run_trifusion_experiment.py"
 
 
+def test_hfer_uniform_generator_preflight_binds_target_generation_topology(
+    tmp_path: Path,
+) -> None:
+    fake_bin = tmp_path / "uniform-generator-gpu"
+    fake_bin.mkdir()
+    nvidia_smi = fake_bin / "nvidia-smi"
+    nvidia_smi.write_text(
+        "#!/bin/sh\nprintf 'NVIDIA GeForce RTX 4060 Laptop GPU, 1061, 8188\\n'\n",
+        encoding="utf-8",
+    )
+    nvidia_smi.chmod(0o755)
+    output_dir = tmp_path / "uniform-generator-preflight"
+    env = dict(os.environ)
+    env["PATH"] = f"{fake_bin}:{env['PATH']}"
+    completed = subprocess.run(
+        [
+            sys.executable,
+            str(RUNNER),
+            "--mode",
+            "preflight",
+            "--variant",
+            "hfer_uniform_generator",
+            "--config",
+            str(PROJECT / "configs/RGBNT201/TriFusion-circ-generator-low-vram.yml"),
+            "--output-dir",
+            str(output_dir),
+        ],
+        cwd=PROJECT,
+        env=env,
+        check=False,
+        capture_output=True,
+        text=True,
+    )
+
+    assert completed.returncode == 0, completed.stdout + completed.stderr
+    receipt = json.loads((output_dir / "preflight.json").read_text(encoding="utf-8"))
+    assert receipt["status"] == "READY"
+    assert receipt["variant_contract"]["active_experts"] == [
+        "cnn",
+        "transformer",
+        "mamba",
+    ]
+    assert receipt["variant_contract"]["collaborator"] == "hfer"
+    assert receipt["variant_contract"]["reliability"] == "uniform"
+    assert receipt["variant_contract"]["fusion"] == "uniform"
+    assert receipt["variant_contract"]["claim_role"] == "CIRC target generator"
+    assert receipt["variant_contract"]["circ_targets_required"] is False
+    assert receipt["official_test_access_count"] == 0
+
+
 def test_cnn_standalone_preflight_exposes_a_real_single_expert_topology(
     tmp_path: Path,
 ) -> None:

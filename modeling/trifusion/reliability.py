@@ -12,6 +12,31 @@ from torch import nn
 from .state import EXPERT_ORDER, MODALITY_ORDER, ExpertStateMap, ReliabilityResult
 
 
+class UniformReliabilityGate(nn.Module):
+    """Return one parameter-free equal prior for HFER target generators."""
+
+    def forward(
+        self, states: ExpertStateMap, modality_mask: torch.Tensor
+    ) -> ReliabilityResult:
+        if not torch.equal(states.modality_mask, modality_mask):
+            raise ValueError("states and uniform gate must use the same modality mask")
+        valid = modality_mask[:, None, :].expand(
+            modality_mask.shape[0],
+            len(EXPERT_ORDER),
+            len(MODALITY_ORDER),
+        )
+        reference = states["cnn"].tokens
+        valid_float = valid.to(dtype=reference.dtype, device=reference.device)
+        beta_prior = torch.full_like(valid_float, 2.0)
+        return ReliabilityResult(
+            alpha=beta_prior,
+            beta=beta_prior.clone(),
+            r=valid_float * 0.5,
+            u=valid_float * 0.5,
+            modality_mask=modality_mask,
+        )
+
+
 class ReliabilityPosterior(nn.Module):
     """Predict all nine Beta posteriors with one masked joint set function."""
 
@@ -161,4 +186,4 @@ class ReliabilityPosterior(nn.Module):
         )
 
 
-__all__ = ["ReliabilityPosterior"]
+__all__ = ["ReliabilityPosterior", "UniformReliabilityGate"]

@@ -6,6 +6,35 @@ from pathlib import Path
 
 
 class ProductionBuilderTests(unittest.TestCase):
+    def test_real_clip_builder_can_construct_hfer_uniform_target_generator(self) -> None:
+        checkpoint_value = os.environ.get("TRIFUSION_CLIP_CHECKPOINT")
+        if not checkpoint_value:
+            self.skipTest("TRIFUSION_CLIP_CHECKPOINT is not configured")
+
+        from modeling.trifusion.builder import build_trifusion_from_clip
+        from modeling.trifusion.experts.mamba import TinySequenceMixer
+        from modeling.trifusion.reliability import UniformReliabilityGate
+
+        result = build_trifusion_from_clip(
+            Path(checkpoint_value),
+            num_classes=94,
+            reliability_mode="uniform",
+            mamba_mixer_factory=TinySequenceMixer,
+        )
+
+        self.assertIsInstance(
+            result.model.encoder.reliability_gate,
+            UniformReliabilityGate,
+        )
+        self.assertEqual(result.provenance["reliability_mode"], "uniform")
+        self.assertEqual(
+            sum(
+                parameter.numel()
+                for parameter in result.model.encoder.reliability_gate.parameters()
+            ),
+            0,
+        )
+
     def test_real_clip_checkpoint_builds_full_shared_tokenizer_architecture(self) -> None:
         checkpoint_value = os.environ.get("TRIFUSION_CLIP_CHECKPOINT")
         if not checkpoint_value:

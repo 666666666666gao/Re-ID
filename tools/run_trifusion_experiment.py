@@ -67,6 +67,15 @@ def _sha256(path: Path) -> str:
     return digest.hexdigest()
 
 
+def _collaborative_reliability_mode(contract: dict[str, Any]) -> str:
+    reliability = contract.get("reliability")
+    if reliability == "uniform":
+        return "uniform"
+    if reliability == "joint_beta_observational":
+        return "joint_beta"
+    raise ValueError(f"unsupported collaborative reliability mode: {reliability}")
+
+
 def _atomic_json(path: Path, payload: dict[str, Any]) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     encoded = (json.dumps(payload, indent=2, sort_keys=True) + "\n").encode("utf-8")
@@ -744,6 +753,7 @@ def _worker_capacity(
             built = build_trifusion_from_clip(
                 config["MODEL"]["CLIP_CHECKPOINT"],
                 relay_rank=int(config["MODEL"]["RELAY_RANK"]),
+                reliability_mode=_collaborative_reliability_mode(contract),
                 **build_kwargs,
             )
         model = built.model.cuda()
@@ -1099,6 +1109,7 @@ def _worker_dev(config_path: Path, variant: str, output_dir: Path) -> int:
             built = build_trifusion_from_clip(
                 config["MODEL"]["CLIP_CHECKPOINT"],
                 relay_rank=int(config["MODEL"]["RELAY_RANK"]),
+                reliability_mode=_collaborative_reliability_mode(contract),
                 **build_kwargs,
             )
         model = built.model.cuda()
