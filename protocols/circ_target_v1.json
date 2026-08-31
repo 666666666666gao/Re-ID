@@ -1,7 +1,7 @@
 {
   "schema_version": "circ-protocol-v1",
-  "protocol_name": "TriFusion-CIRC-RGBNT201-development-v1",
-  "frozen_at_utc": "2026-08-31T10:35:31Z",
+  "protocol_name": "TriFusion-CIRC-RGBNT201-shared-semantic-v2",
+  "frozen_at_utc": "2026-08-31T19:06:15Z",
   "official_test_access_count": 0,
   "development": {
     "dataset": "RGBNT201/train_171",
@@ -25,8 +25,8 @@
     "variant": "hfer_uniform_generator",
     "reliability": "uniform-beta-2-2",
     "fusion": "uniform-over-valid-contributions",
-    "config": "configs/RGBNT201/TriFusion-circ-generator-low-vram.yml",
-    "config_sha256": "450b882b789dfb42dc97d6df624a768aaeab8fe8013527817d5254f5d2f048ec",
+    "config": "configs/RGBNT201/TriFusion-circ-generator-shared-semantic-rtx3090.yml",
+    "config_sha256": "c04d1817c250a95574e8f6524fa88dd0dd29d9765683d7311a7cdc38d92e6f8e",
     "seed": 42,
     "schedule_horizon_epochs": 60,
     "selection_split": "RGBNT201/train_171 frozen 30-identity dev partition",
@@ -48,13 +48,55 @@
     "neutral_and_harmful_are_negative_for_router": true
   },
   "conditions": [
-    {"family": "clean", "severity": 0, "seeds": [42000]},
-    {"family": "gaussian_blur", "severity": 1, "seeds": [42101]},
-    {"family": "occlusion", "severity": 1, "seeds": [42201]},
-    {"family": "exposure", "severity": 1, "seeds": [42301]},
-    {"family": "nir_noise", "severity": 1, "seeds": [42401]},
-    {"family": "thermal_noise", "severity": 1, "seeds": [42501]},
-    {"family": "modality_missing", "severity": 1, "seeds": [42601]}
+    {
+      "family": "clean",
+      "severity": 0,
+      "seeds": [
+        42000
+      ]
+    },
+    {
+      "family": "gaussian_blur",
+      "severity": 1,
+      "seeds": [
+        42101
+      ]
+    },
+    {
+      "family": "occlusion",
+      "severity": 1,
+      "seeds": [
+        42201
+      ]
+    },
+    {
+      "family": "exposure",
+      "severity": 1,
+      "seeds": [
+        42301
+      ]
+    },
+    {
+      "family": "nir_noise",
+      "severity": 1,
+      "seeds": [
+        42401
+      ]
+    },
+    {
+      "family": "thermal_noise",
+      "severity": 1,
+      "seeds": [
+        42501
+      ]
+    },
+    {
+      "family": "modality_missing",
+      "severity": 1,
+      "seeds": [
+        42601
+      ]
+    }
   ],
   "condition_operators": {
     "clean": {
@@ -66,14 +108,22 @@
       "severity": 1,
       "kernel_size": 5,
       "sigma": 1.25,
-      "modalities": ["RGB", "NI", "TI"]
+      "modalities": [
+        "RGB",
+        "NI",
+        "TI"
+      ]
     },
     "occlusion": {
       "operator": "shared-square-occlusion",
       "severity": 1,
       "side_fraction": 0.5,
       "normalized_fill": 0.0,
-      "modalities": ["RGB", "NI", "TI"],
+      "modalities": [
+        "RGB",
+        "NI",
+        "TI"
+      ],
       "location_seed": "SHA256(TriFusion-CIRC-condition-v1,sample_key,condition)"
     },
     "exposure": {
@@ -104,7 +154,11 @@
     }
   },
   "interventions": {
-    "primary": ["total", "direct", "relay"],
+    "primary": [
+      "total",
+      "direct",
+      "relay"
+    ],
     "total": "suppress source expert-modality at both relays and final fusion",
     "direct": "suppress final fusion contribution only",
     "relay": "suppress outgoing source messages at both relay stages only",
@@ -115,7 +169,10 @@
       "enabled": true,
       "salt": "TriFusion-CIRC-edge-v1",
       "ordering": "lexicographic valid no-self source->target:modality",
-      "stages": [1, 2],
+      "stages": [
+        1,
+        2
+      ],
       "edges_per_stage_per_row": 1,
       "total_edges_per_row": 2,
       "used_as_training_target": false
@@ -126,7 +183,10 @@
     "targets_file": "targets.jsonl",
     "receipt_file": "receipt.json",
     "immutable_sha256_required": true,
-    "key": ["sample_key", "condition"],
+    "key": [
+      "sample_key",
+      "condition"
+    ],
     "gradient_bearing": false
   },
   "audits": {
@@ -143,13 +203,27 @@
       "sampling_unit": "query-condition-contribution",
       "identity_clustered": true,
       "selection_rule": "identity-cluster round-robin by canonical SHA256 without replacement",
-      "comparisons": ["proxy_effect_vs_deployed_effect", "router_helpfulness_vs_deployed_effect"],
+      "comparisons": [
+        "proxy_effect_vs_deployed_effect",
+        "router_helpfulness_vs_deployed_effect"
+      ],
       "router_helpful_threshold": 0.5,
       "minimum_sign_agreement": 0.7,
       "minimum_spearman": 0.5
     },
-    "calibration_metrics": ["BCE", "Brier", "ECE"],
-    "group_axes": ["condition", "expert", "modality", "expert_modality", "camera", "identity_frequency"],
+    "calibration_metrics": [
+      "BCE",
+      "Brier",
+      "ECE"
+    ],
+    "group_axes": [
+      "condition",
+      "expert",
+      "modality",
+      "expert_modality",
+      "camera",
+      "identity_frequency"
+    ],
     "concentration_claim_requires_empirical_coverage": true,
     "effective_sample_size_unit": "identity_query_cluster"
   },
@@ -163,22 +237,23 @@
     "official_test_labels_used": false
   },
   "implementation": {
-    "repository_commit": "b21ff0747e14608de42ecae93320b9b7102b0d43",
+    "repository_commit": "a612dd629fa767e810297f54d5c8f87bfe22ead4",
     "protocol_validator": {
       "path": "modeling/trifusion/protocol.py",
       "included_in_run_source_identity": true,
       "git_clean_required_at_preflight": true
     },
     "files_sha256": {
-      "modeling/trifusion/__init__.py": "a7a8bd97aeda429d3a89002542b297ac48349c0c19dcd0f4fde23529ed920edf",
-      "modeling/trifusion/builder.py": "121ed09fe4c4636681474d6ee78d583df02f20287795ede45204d05f97aa7c29",
+      "modeling/trifusion/__init__.py": "ad617b86663e319f7702e9231fdec9c5f079f4d39ec5dabb90ced469414d910c",
+      "modeling/trifusion/builder.py": "8b3620e6be3727709253589a9e59b3efd20a611ba0eec4e8f6b4d0d17eeea4eb",
       "modeling/trifusion/circ_scoring.py": "db9ae624446674812618ff8c6f7e8d773a576ea31ab1ecb0d41bc3c33ca2da3e",
       "modeling/trifusion/criterion.py": "0b2a6370f434828d885945d1a46dd56f6668133ceed45ef359fe71eeca63740a",
       "modeling/trifusion/data.py": "d0795f8c74e1a35d44d50b408f41c585e90fb57f9267915923f9de5a7aa850be",
-      "modeling/trifusion/encoder.py": "3e29b81b9b737ff5e490ea824714eb56385ad8c15520a92192319eabef362140",
+      "modeling/trifusion/encoder.py": "80fd6adc6d80b232296412ff8647a3d7c6a66d64bda699f545e477b94e72a46b",
       "modeling/trifusion/experts/__init__.py": "49709dfc6fd4ca781fa6d24f81476596f716163222ab01fe5d9eae105d8fc286",
       "modeling/trifusion/experts/cnn.py": "f823cfd59589e7fa8dbe066b26eec662d93a9d01b2376f05e7a4b6f43409996a",
       "modeling/trifusion/experts/mamba.py": "c516c7ad937e5eee6a4ed1e3ec33c2afe3522b751d296bd2e4910e4f27a20ee5",
+      "modeling/trifusion/experts/semantic_residual.py": "c8cef9717fd7bd1e5e50b428ac92762455defac2e25857c9e0dfaf82729c2a93",
       "modeling/trifusion/experts/tiny.py": "d5462c7259e5a17f7e50b87d29f44e2ecb49c4a50ccf5b59f34e8870c3e1cf90",
       "modeling/trifusion/experts/transformer.py": "8580c6e761a2fbfd54a70d0bd231fef0695cccecbec328f643a6c5112deb674e",
       "modeling/trifusion/fusion.py": "58d3672fb571e9acce8e7a8e82c8cd355fdb0f831f5439aa2d5b6e918b491a8d",
@@ -188,6 +263,7 @@
       "modeling/trifusion/peer_teaching.py": "d5ec38a6ebb26d8012be7fa5ebced3dcd5e16de4576e29fef2e89d92dc970b3b",
       "modeling/trifusion/relay.py": "a24194bc81b72444dcbf3cea3450ee27f7d541787b77fd5d5cf4bdf13799d645",
       "modeling/trifusion/reliability.py": "eb9fbed2994ef31038bd31cd129af0b0761c5adc88902ca918d20a05ae431207",
+      "modeling/trifusion/semantic_tokenizer.py": "ea5e2181aaf20be10802b626a17a5dcd6de59ba88d44fa5e833827f8a5931278",
       "modeling/trifusion/standalone.py": "2017048e0a2493acd76da3946793a02707f9dd543a96cc30994b38887506d8e2",
       "modeling/trifusion/state.py": "5fe89c4885507e74ca1833cc18822a4b57e4c2d6fa9a6c6b2e127d1e74b70db9",
       "modeling/trifusion/tokenizer.py": "ff180350cea3ea8c5a9a7c57e4f4c9b1d7f30cc70dde5405037270be2392c306",
@@ -195,8 +271,8 @@
       "modeling/trifusion/variants.py": "ca456227c5249e28461dafb67a68f7103a9b1fea292dcd2f214fb92bab1b91ef",
       "modeling/trifusion/warm_start.py": "68591452f89d6303baf81b9957c30b48135a33ce9e7a5544a40ede2b92f5a05d",
       "tools/build_circ_targets.py": "11fcfe7d00d46d7a299fa2b294f6792065bc45f61091c78ade5257eff4156f8e",
-      "tools/circ_score_runtime.py": "deb2bf6ec210bbb80284230688b0c0713c2053d9ebba4b8b56d4b4ea60d394a5",
-      "tools/run_trifusion_experiment.py": "80edc99d10916fa7a90d91ad555dc0dff203b959ea18a2a90747fd5145f9304b"
+      "tools/circ_score_runtime.py": "d71265edc49ffa7bf142f2b6d8936bfd545866e88c20305cd6cae7adb1cfeb1c",
+      "tools/run_trifusion_experiment.py": "50540f112d99b55e761be91eaa36a273444c0318c9929929cb8a62d8cb25897c"
     }
   }
 }

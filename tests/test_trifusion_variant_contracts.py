@@ -18,7 +18,7 @@ def test_hfer_uniform_generator_preflight_binds_target_generation_topology(
     fake_bin.mkdir()
     nvidia_smi = fake_bin / "nvidia-smi"
     nvidia_smi.write_text(
-        "#!/bin/sh\nprintf 'NVIDIA GeForce RTX 4060 Laptop GPU, 1061, 8188\\n'\n",
+        "#!/bin/sh\nprintf 'NVIDIA GeForce RTX 3090, 1, 24576\\n'\n",
         encoding="utf-8",
     )
     nvidia_smi.chmod(0o755)
@@ -34,7 +34,7 @@ def test_hfer_uniform_generator_preflight_binds_target_generation_topology(
             "--variant",
             "hfer_uniform_generator",
             "--config",
-            str(PROJECT / "configs/RGBNT201/TriFusion-circ-generator-low-vram.yml"),
+            str(PROJECT / "configs/RGBNT201/TriFusion-circ-generator-shared-semantic-rtx3090.yml"),
             "--output-dir",
             str(output_dir),
         ],

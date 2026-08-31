@@ -431,7 +431,7 @@ class CIRCTargetBuilderTests(unittest.TestCase):
             root = Path(temporary_directory)
             protocol_path = project / "protocols/circ_target_v1.json"
             generator_config = (
-                project / "configs/RGBNT201/TriFusion-circ-generator-low-vram.yml"
+                project / "configs/RGBNT201/TriFusion-circ-generator-shared-semantic-rtx3090.yml"
             )
             contract_sha256 = variant_sha256(
                 resolve_variant("hfer_uniform_generator")
@@ -803,7 +803,7 @@ class CIRCTargetBuilderTests(unittest.TestCase):
         project = Path(__file__).resolve().parents[1]
         protocol_path = project / "protocols/circ_target_v1.json"
         generator_config = (
-            project / "configs/RGBNT201/TriFusion-circ-generator-low-vram.yml"
+            project / "configs/RGBNT201/TriFusion-circ-generator-shared-semantic-rtx3090.yml"
         )
         protocol_sha256 = hashlib.sha256(protocol_path.read_bytes()).hexdigest()
         generator_config_sha256 = hashlib.sha256(
