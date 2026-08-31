@@ -6,10 +6,120 @@ import os
 from pathlib import Path
 import subprocess
 import sys
+from types import SimpleNamespace
 
 
 PROJECT = Path(__file__).resolve().parents[1]
 RUNNER = PROJECT / "tools/run_trifusion_experiment.py"
+
+
+def test_circ_training_begins_with_router_only_immutable_target_phase() -> None:
+    from modeling.trifusion.training_phases import (
+        active_loss_weights,
+        parameter_trainable_in_phase,
+        resolve_training_phase,
+    )
+
+    warm = resolve_training_phase(
+        epoch=1,
+        circ_enabled=True,
+        router_warm_epochs=7,
+        schedule_horizon_epochs=60,
+    )
+    joint = resolve_training_phase(
+        epoch=8,
+        circ_enabled=True,
+        router_warm_epochs=7,
+        schedule_horizon_epochs=60,
+    )
+    weights = {"id_fused": 1.0, "triplet_fused": 1.0, "reliability": 1.0}
+
+    assert warm.name == "router_only"
+    assert active_loss_weights(weights, warm) == {"reliability": 1.0}
+    assert parameter_trainable_in_phase("encoder.reliability_gate.head.weight", warm)
+    assert not parameter_trainable_in_phase("encoder.experts.cnn.stem.weight", warm)
+    assert joint.name == "joint_hfer_urgc"
+    assert active_loss_weights(weights, joint) == weights
+    assert parameter_trainable_in_phase("encoder.experts.cnn.stem.weight", joint)
+    assert not parameter_trainable_in_phase("encoder.private_projection.weight", joint)
+
+
+def test_postfreeze_parent_accepts_only_one_fixed_official_evaluation(
+    tmp_path: Path, monkeypatch,
+) -> None:
+    import tools.run_trifusion_experiment as runner
+
+    config = tmp_path / "final.yml"
+    config.write_text("SCHEMA_VERSION: 1\n", encoding="utf-8")
+    output = tmp_path / "final"
+    output.mkdir()
+    contract = {
+        "evaluation_outputs": ["fused", "cnn", "transformer", "mamba"],
+        "active_experts": ["cnn", "transformer", "mamba"],
+    }
+    preflight = {
+        "launch_allowed": True,
+        "status": "READY",
+        "blockers": [],
+        "variant_contract": contract,
+        "data_mode": "postfreeze-final",
+    }
+    recovery_calls = iter(
+        (
+            {"valid": True, "kind": "fresh", "epoch": 0, "phase": "initial"},
+            {"valid": True, "kind": "resume", "epoch": 60, "phase": "complete"},
+        )
+    )
+    monkeypatch.setattr(runner, "_preflight", lambda *args, **kwargs: dict(preflight))
+    monkeypatch.setattr(runner, "_run_identity", lambda *args, **kwargs: {"run": "final"})
+    monkeypatch.setattr(runner, "_validate_recovery", lambda _path: next(recovery_calls))
+
+    metrics = {
+        name: {"mAP": 86.0, "Rank-1": 88.2, "Rank-5": 95.0, "Rank-10": 97.0}
+        for name in contract["evaluation_outputs"]
+    }
+
+    def fake_run(command, **_kwargs):
+        (output / "final_worker_result.json").write_text(
+            json.dumps(
+                {
+                    "status": "COMPLETE",
+                    "mode": "postfreeze-final",
+                    "epoch": 60,
+                    "phase": "complete",
+                    "official_test_access_count": 1,
+                    "official_test_evaluation_count": 1,
+                    "dev_evaluation_count": 0,
+                    "query_records": 836,
+                    "gallery_records": 836,
+                    "train_records": 3951,
+                    "further_model_selection": False,
+                    "model_constructed": True,
+                    "training_started": True,
+                    "metrics_percent": metrics,
+                }
+            ),
+            encoding="utf-8",
+        )
+        return SimpleNamespace(returncode=0, stdout="fixed final\n", stderr="")
+
+    monkeypatch.setattr(runner.subprocess, "run", fake_run)
+    monkeypatch.setenv("TRIFUSION_CONTRACT_TESTING", "1")
+    monkeypatch.setenv("TRIFUSION_TEST_EXECUTABLE", "/tmp/fake-final-worker")
+
+    summary, returncode = runner._dev(
+        config,
+        "trifusion_circ_urgc",
+        output,
+        data_mode="postfreeze-final",
+    )
+
+    assert returncode == 0
+    assert summary["status"] == "PASS"
+    assert summary["official_test_evaluation_count"] == 1
+    assert summary["further_model_selection"] is False
+    assert summary["single_seed_target_exceeded"] is True
+    assert summary["sota_claim_supported"] is False
 
 
 def _run_preflight(tmp_path: Path, memory_used_mib: int) -> dict:

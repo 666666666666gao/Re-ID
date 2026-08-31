@@ -178,8 +178,8 @@ def _orchestrate_oof_generators(
     mode: str,
     output: Path,
 ) -> int:
-    if mode != "development":
-        raise ValueError("OOF generator selection is development-only")
+    if mode not in ("development", "postfreeze-final"):
+        raise ValueError("OOF generator mode must be development or postfreeze-final")
     if config.get("schema_version") != "circ-generator-orchestration-v1":
         raise ValueError("unsupported CIRC generator orchestration schema")
     protocol_path = _resolve_registered_file(config_path, config["circ_protocol"])
@@ -208,6 +208,14 @@ def _orchestrate_oof_generators(
         or folds.get("identity_canonicalization") != "unsigned-decimal"
     ):
         raise ValueError("invalid frozen three-fold CIRC protocol")
+    if mode == "postfreeze-final":
+        postfreeze = dict(protocol.get("postfreeze_final", {}))
+        if (
+            postfreeze.get("configuration_frozen") is not True
+            or postfreeze.get("further_model_selection") is not False
+            or int(postfreeze.get("identity_count", -1)) != 171
+        ):
+            raise ValueError("postfreeze-final generator policy is not frozen")
     schedule_horizon = int(selection.get("schedule_horizon_epochs", 0))
     if (
         endpoint.get("schema_version") != "trifusion-dev-selection-v1"
@@ -353,6 +361,14 @@ def _orchestrate_oof_generators(
             "test_override_used": bool(test_executable),
             "scientific_evidence_eligible": scientific_evidence_eligible,
         }
+        if mode == "postfreeze-final":
+            identity.update(
+                {
+                    "mode": mode,
+                    "identity_pool": 171,
+                    "further_model_selection": False,
+                }
+            )
         identity_path = fold_output / "run_identity.json"
         if identity_path.is_file():
             actual_identity = json.loads(identity_path.read_text(encoding="utf-8"))
@@ -431,6 +447,11 @@ def _orchestrate_oof_generators(
             for key, value in required.items()
             if receipt.get(key) != value
         }
+        if receipt.get("mode", "development") != mode:
+            mismatches["mode"] = {
+                "expected": mode,
+                "actual": receipt.get("mode"),
+            }
         checkpoint_path = Path(
             str(receipt.get("checkpoint", ""))
         ).expanduser().resolve()
@@ -453,10 +474,19 @@ def _orchestrate_oof_generators(
         if (
             provenance.get("target_fold") != target_fold
             or provenance.get("generator_target_identity_overlap") != 0
-            or provenance.get("target_forbidden_dev_identity_overlap") != 0
             or provenance.get("official_test_records") != 0
         ):
             mismatches["data_provenance"] = "fold isolation contract failed"
+        if mode == "development" and (
+            provenance.get("target_forbidden_dev_identity_overlap") != 0
+            or provenance.get("identity_pool", 141) != 141
+        ):
+            mismatches["data_provenance"] = "development fold isolation failed"
+        if mode == "postfreeze-final" and (
+            provenance.get("mode") != mode
+            or provenance.get("identity_pool") != 171
+        ):
+            mismatches["data_provenance"] = "postfreeze all-171 fold contract failed"
         manifest_path = Path(
             str(receipt.get("recovery_manifest", ""))
         ).expanduser().resolve()
@@ -628,6 +658,7 @@ def main(argv: list[str] | None = None) -> int:
                 oof_target_fold=target_fold,
                 circ_protocol_path=protocol_path,
                 fixed_endpoint=int(endpoint["epoch"]),
+                data_mode=arguments.mode,
             )
         return _orchestrate_oof_generators(
             config,

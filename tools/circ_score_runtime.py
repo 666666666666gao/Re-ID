@@ -217,8 +217,8 @@ def score_oof_interventions(
 ) -> int:
     """Validate three generators, score all frozen interventions and compile cache."""
 
-    if mode != "development":
-        raise ValueError("current CIRC OOF scoring operation is development-only")
+    if mode not in ("development", "postfreeze-final"):
+        raise ValueError("CIRC scoring mode must be development or postfreeze-final")
     if config.get("schema_version") != "circ-scoring-orchestration-v1":
         raise ValueError("unsupported CIRC scoring orchestration schema")
     if config.get("operation") != "score-oof-interventions":
@@ -238,7 +238,7 @@ def score_oof_interventions(
         generator_orchestration,
         config_path=generator_orchestration_path,
         config_sha256=generator_orchestration_sha256,
-        mode="development",
+        mode=mode,
         output=generators_root,
     ) != 0:
         raise RuntimeError("OOF generator validation did not complete")
@@ -250,8 +250,16 @@ def score_oof_interventions(
         or aggregate.get("contract_testing") is not False
         or int(aggregate.get("official_test_access_count", -1)) != 0
         or aggregate.get("circ_protocol_sha256") != protocol_sha256
+        or aggregate.get("mode") != mode
     ):
         raise ValueError("generator aggregate is not eligible scientific evidence")
+    generator_fold_receipts = dict(aggregate.get("fold_receipt_sha256", {}))
+    if set(generator_fold_receipts) != {"0", "1", "2"}:
+        raise ValueError("generator aggregate lacks all three fold receipt hashes")
+    for target_fold, expected_hash in generator_fold_receipts.items():
+        receipt_path = generators_root / f"fold-{target_fold}" / "generator_receipt.json"
+        if not receipt_path.is_file() or _sha256(receipt_path) != expected_hash:
+            raise ValueError("generator aggregate fold receipt binding is broken")
     generator_config_path = _resolve_file(
         generator_orchestration_path,
         generator_orchestration["generator_config"],
@@ -279,10 +287,12 @@ def score_oof_interventions(
     identity = {
         "schema_version": "circ-scoring-run-v1",
         "operation": "score-oof-interventions",
+        "mode": mode,
         "config_sha256": config_sha256,
         "circ_protocol_sha256": protocol_sha256,
         "generator_orchestration_sha256": generator_orchestration_sha256,
         "generator_aggregate_sha256": _sha256(aggregate_path),
+        "generator_fold_receipt_sha256": generator_fold_receipts,
         "generator_config_sha256": generator_config_sha256,
         "source_sha256": trifusion_source_hashes(),
         "conditions": list(conditions),
@@ -333,6 +343,7 @@ def score_oof_interventions(
             num_instances=int(data_config["NUM_INSTANCES"]),
             eval_batch_size=batch_size,
             num_workers=num_workers,
+            mode=mode,
         )
         model = _build_model(
             generator_config,
@@ -557,9 +568,11 @@ def score_oof_interventions(
         "fold_salt": protocol["folds"]["salt"],
         "fold_count": int(protocol["folds"]["count"]),
         "epsilon": epsilon,
-        "configuration_frozen": True,
+        "configuration_frozen": mode == "postfreeze-final",
         "official_test_access_count": 0,
-        "development_forbidden_identities": dev_protocol["dev_ids"],
+        "development_forbidden_identities": (
+            dev_protocol["dev_ids"] if mode == "development" else []
+        ),
         "samples": all_samples,
         "query_gallery_symmetry_audit": symmetry_audit,
         "proxy_target_transfer_audit": {
@@ -582,7 +595,7 @@ def score_oof_interventions(
         _atomic_bytes(source_path, source_bytes)
     rows, receipt = compile_circ_targets(
         source_config,
-        mode="development",
+        mode=mode,
         config_sha256=_sha256(source_path),
     )
     cache_output = output / "cache"
@@ -599,16 +612,36 @@ def score_oof_interventions(
             raise ValueError("existing immutable CIRC cache differs from regenerated cache")
     else:
         write_circ_target_cache(rows, receipt, output_directory=cache_output)
+    cache_receipt = json.loads(
+        (cache_output / "receipt.json").read_text(encoding="utf-8")
+    )
+    calibration_receipt_path = cache_output / "calibration_receipt.json"
+    if not calibration_receipt_path.is_file():
+        raise ValueError("immutable CIRC cache lacks its calibration receipt")
+    calibration_audit = dict(cache_receipt.get("calibration_audit", {}))
+    if (
+        calibration_audit.get("status") != "COMPLETE"
+        or calibration_audit.get("group_axes") != list(protocol["audits"]["group_axes"])
+        or calibration_audit.get("effective_sample_size", {}).get("unit")
+        != protocol["audits"]["effective_sample_size_unit"]
+    ):
+        raise ValueError("CIRC calibration audit differs from the frozen protocol")
     final_receipt = {
         "schema_version": "circ-scoring-receipt-v1",
         "status": "COMPLETE",
+        "mode": mode,
         "rows": len(rows),
         "conditions": len(conditions),
         "circ_protocol_sha256": protocol_sha256,
         "fold_receipts": fold_receipts,
+        "run_identity_sha256": _sha256(identity_path),
+        "generator_aggregate_sha256": _sha256(aggregate_path),
+        "generator_fold_receipt_sha256": generator_fold_receipts,
         "source_sha256": _sha256(source_path),
         "targets_sha256": _sha256(cache_output / "targets.jsonl"),
         "cache_receipt_sha256": _sha256(cache_output / "receipt.json"),
+        "calibration_receipt_sha256": _sha256(calibration_receipt_path),
+        "calibration_audit": calibration_audit,
         "symmetry_audit": symmetry_audit,
         "proxy_target_transfer_status": "PENDING_DEPLOYED_MODEL",
         "official_test_access_count": 0,

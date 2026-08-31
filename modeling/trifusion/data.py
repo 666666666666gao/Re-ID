@@ -198,8 +198,9 @@ def build_rgbnt201_oof_loaders(
     num_instances: int,
     eval_batch_size: int,
     num_workers: int,
+    mode: str = "development",
 ) -> TriFusionDataLoaders:
-    """Build one development OOF target-generator complement and target fold."""
+    """Build one identity-disjoint development or all-171 OOF fold."""
 
     if train_batch_size <= 0 or num_instances <= 0:
         raise ValueError("train batch size and K must be positive")
@@ -226,18 +227,42 @@ def build_rgbnt201_oof_loaders(
     protocol = json.loads(protocol_path.read_text(encoding="utf-8"))
     if protocol.get("selection", {}).get("uses_test_labels") is not False:
         raise ValueError("OOF development protocol must be test-label blind")
-    eligible_ids = {
+    development_ids = {
         canonical_unsigned_identity(value) for value in protocol["train_ids"]
     }
-    forbidden_dev_ids = {
+    former_dev_ids = {
         canonical_unsigned_identity(value) for value in protocol["dev_ids"]
     }
     if (
-        len(eligible_ids) != 141
-        or len(forbidden_dev_ids) != 30
-        or eligible_ids & forbidden_dev_ids
+        len(development_ids) != 141
+        or len(former_dev_ids) != 30
+        or development_ids & former_dev_ids
     ):
         raise ValueError("frozen 141-fit/30-dev identity registry is invalid")
+    dataset_ids = {
+        canonical_unsigned_identity(path.name[:6])
+        for path in (train_root / "RGB").glob("*.jpg")
+    }
+    if mode == "development":
+        eligible_ids = development_ids
+        forbidden_dev_ids = former_dev_ids
+        expected_registry_hash = dict(circ_protocol.get("folds", {})).get(
+            "development_identity_sha256"
+        )
+    elif mode == "postfreeze-final":
+        postfreeze = dict(circ_protocol.get("postfreeze_final", {}))
+        if (
+            len(dataset_ids) != 171
+            or dataset_ids != development_ids | former_dev_ids
+            or postfreeze.get("configuration_frozen") is not True
+            or postfreeze.get("further_model_selection") is not False
+        ):
+            raise ValueError("postfreeze-final requires the frozen all-171 identity pool")
+        eligible_ids = dataset_ids
+        forbidden_dev_ids = set()
+        expected_registry_hash = postfreeze.get("identity_sha256")
+    else:
+        raise ValueError("OOF mode must be development or postfreeze-final")
 
     if int(circ_protocol.get("official_test_access_count", -1)) != 0:
         raise ValueError("OOF development must have zero official-test access")
@@ -251,8 +276,8 @@ def build_rgbnt201_oof_loaders(
     if folds.get("identity_canonicalization") != "unsigned-decimal":
         raise ValueError("CIRC fold identity canonicalization is not registered")
     registry_sha256 = _identity_registry_sha256(eligible_ids)
-    if folds.get("development_identity_sha256") != registry_sha256:
-        raise ValueError("CIRC protocol development identity registry mismatch")
+    if expected_registry_hash != registry_sha256:
+        raise ValueError("CIRC protocol OOF identity registry mismatch")
     if target_fold < 0 or target_fold >= fold_count:
         raise ValueError("target_fold must identify one of the three registered folds")
 
@@ -303,6 +328,8 @@ def build_rgbnt201_oof_loaders(
         "fold_salt": fold_salt,
         "fold_count": fold_count,
         "target_fold": target_fold,
+        "mode": mode,
+        "identity_pool": len(eligible_ids),
         "generator_training_identities": len(generator_ids),
         "target_identities": len(target_ids),
         "generator_training_identity_values": sorted(int(value) for value in generator_ids),
@@ -316,6 +343,7 @@ def build_rgbnt201_oof_loaders(
         "generator_target_identity_overlap": len(overlap),
         "forbidden_dev_identities": len(forbidden_dev_ids),
         "target_forbidden_dev_identity_overlap": len(target_ids & forbidden_dev_ids),
+        "target_former_dev_identity_count": len(target_ids & former_dev_ids),
         "protocol_uses_test_labels": False,
         "official_test_records": 0,
         "query_records": len(primary_query_records),
@@ -330,6 +358,106 @@ def build_rgbnt201_oof_loaders(
         train_records=train_records,
         query_records=primary_query_records,
         gallery_records=target_records,
+        provenance=provenance,
+    )
+
+
+def build_rgbnt201_final_loaders(
+    *,
+    dataset_root: Path | str,
+    protocol_path: Path | str,
+    circ_protocol_path: Path | str,
+    train_batch_size: int,
+    num_instances: int,
+    eval_batch_size: int,
+    num_workers: int,
+) -> TriFusionDataLoaders:
+    """Build fixed all-171 training and the one-shot official evaluation loader."""
+
+    if train_batch_size <= 0 or num_instances <= 0:
+        raise ValueError("train batch size and K must be positive")
+    if train_batch_size % num_instances:
+        raise ValueError("train batch size must be divisible by num_instances")
+    if eval_batch_size <= 0 or num_workers < 0:
+        raise ValueError("eval batch size must be positive and workers nonnegative")
+    dataset_root = Path(dataset_root).expanduser().resolve()
+    protocol_path = Path(protocol_path).expanduser().resolve()
+    circ_protocol_path = Path(circ_protocol_path).expanduser().resolve()
+    train_root = dataset_root / "train_171"
+    test_root = dataset_root / "test"
+    if not train_root.is_dir() or not test_root.is_dir():
+        raise FileNotFoundError("RGBNT201 all-171 train or official test directory is missing")
+    circ_protocol, circ_protocol_sha256 = load_trusted_circ_protocol(
+        circ_protocol_path
+    )
+    protocol = json.loads(protocol_path.read_text(encoding="utf-8"))
+    if circ_protocol.get("dev_protocol_sha256") != _sha256(protocol_path):
+        raise ValueError("final loader protocol differs from frozen configuration")
+    train_ids = {
+        canonical_unsigned_identity(path.name[:6])
+        for path in (train_root / "RGB").glob("*.jpg")
+    }
+    test_ids = {
+        canonical_unsigned_identity(path.name[:6])
+        for path in (test_root / "RGB").glob("*.jpg")
+    }
+    postfreeze = dict(circ_protocol.get("postfreeze_final", {}))
+    if (
+        len(train_ids) != 171
+        or _identity_registry_sha256(train_ids) != postfreeze.get("identity_sha256")
+        or postfreeze.get("configuration_frozen") is not True
+        or postfreeze.get("further_model_selection") is not False
+        or len(test_ids) != 30
+        or train_ids & test_ids
+    ):
+        raise ValueError("fixed all-171/final-test registry contract failed")
+    former_dev_ids = {
+        canonical_unsigned_identity(value) for value in protocol["dev_ids"]
+    }
+    if not former_dev_ids.issubset(train_ids):
+        raise ValueError("former dev identities are absent from all-171 training")
+
+    train_records = _records_for_ids(train_root, train_ids, relabel=True)
+    test_records = _records_for_ids(test_root, test_ids, relabel=False)
+    test_cameras: dict[int, set[int]] = defaultdict(set)
+    for _paths, identity, camera_id, _view in test_records:
+        test_cameras[identity].add(camera_id)
+    if any(len(cameras) < 2 for cameras in test_cameras.values()):
+        raise ValueError("official test identity lacks cross-camera support")
+    train_loader, eval_loader = _make_loaders(
+        train_records=train_records,
+        query_records=test_records,
+        gallery_records=test_records,
+        train_batch_size=train_batch_size,
+        num_instances=num_instances,
+        eval_batch_size=eval_batch_size,
+        num_workers=num_workers,
+    )
+    provenance = {
+        "mode": "postfreeze-final",
+        "dataset_root": str(dataset_root),
+        "protocol_path": str(protocol_path),
+        "protocol_sha256": _sha256(protocol_path),
+        "circ_protocol_path": str(circ_protocol_path),
+        "circ_protocol_sha256": circ_protocol_sha256,
+        "train_records": len(train_records),
+        "train_identities": len(train_ids),
+        "official_test_records": len(test_records),
+        "official_test_identities": len(test_ids),
+        "train_test_identity_overlap": len(train_ids & test_ids),
+        "model_selection": False,
+        "former_dev_identities_are_training_only": True,
+        "official_test_evaluations_before_fixed_endpoint": 0,
+        "query_equals_gallery_record_list": True,
+    }
+    return TriFusionDataLoaders(
+        train_loader=train_loader,
+        eval_loader=eval_loader,
+        num_query=len(test_records),
+        num_classes=len(train_ids),
+        train_records=train_records,
+        query_records=test_records,
+        gallery_records=test_records,
         provenance=provenance,
     )
 
@@ -421,6 +549,7 @@ def build_rgbnt201_dev_loaders(
 __all__ = [
     "TriFusionDataLoaders",
     "build_rgbnt201_dev_loaders",
+    "build_rgbnt201_final_loaders",
     "build_rgbnt201_oof_loaders",
     "build_rgbnt201_record_eval_loader",
 ]

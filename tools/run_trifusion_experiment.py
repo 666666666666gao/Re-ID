@@ -183,8 +183,67 @@ def _gpu_gate(gpu: dict[str, Any], resource_profile: str) -> dict[str, Any]:
     }
 
 
-def _preflight(config_path: Path, variant: str) -> dict[str, Any]:
+def _complete_selection_chain_valid(
+    *,
+    receipt: dict[str, Any],
+    receipt_path: Path,
+    identity_path: Path,
+    checkpoint_path: Path,
+) -> bool:
+    """Fail closed unless a selector export is bound to its full recovery state."""
+
+    try:
+        output_root = receipt_path.parent.resolve()
+        manifest_path = Path(str(receipt["recovery_manifest"])).expanduser().resolve()
+        if manifest_path != output_root / ".resume/latest.json":
+            return False
+        if (
+            not manifest_path.is_file()
+            or receipt.get("recovery_manifest_sha256") != _sha256(manifest_path)
+        ):
+            return False
+        manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+        if (
+            int(manifest.get("epoch", -1)) != 60
+            or manifest.get("phase") != "complete"
+            or manifest.get("run_identity_sha256") != _sha256(identity_path)
+        ):
+            return False
+        current = dict(manifest.get("current", {}))
+        generation = (output_root / str(current.get("path", ""))).resolve()
+        if (
+            not generation.is_relative_to(output_root)
+            or not generation.is_file()
+            or current.get("sha256") != _sha256(generation)
+        ):
+            return False
+        evidence = dict(manifest.get("completion_evidence", {}))
+        return (
+            evidence.get("kind") == "selector"
+            and int(evidence.get("epoch", -1)) == 60
+            and evidence.get("phase") == "complete"
+            and evidence.get("run_identity_sha256") == _sha256(identity_path)
+            and int(evidence.get("best_epoch", -1)) == int(receipt.get("epoch", -2))
+            and float(evidence.get("best_map", float("nan")))
+            == float(receipt.get("dev_selection_mAP", float("inf")))
+            and evidence.get("best_metrics") == receipt.get("metrics_percent")
+            and evidence.get("best_checkpoint_sha256") == _sha256(checkpoint_path)
+            and evidence.get("contract_testing") is False
+            and evidence.get("scientific_evidence_eligible") is True
+        )
+    except (KeyError, OSError, TypeError, ValueError, json.JSONDecodeError):
+        return False
+
+
+def _preflight(
+    config_path: Path,
+    variant: str,
+    *,
+    data_mode: str = "development",
+) -> dict[str, Any]:
     blockers: list[str] = []
+    if data_mode not in ("development", "postfreeze-final"):
+        raise ValueError("preflight data mode is not registered")
     if not config_path.is_file():
         raise FileNotFoundError(config_path)
     config = yaml.safe_load(config_path.read_text(encoding="utf-8"))
@@ -244,6 +303,7 @@ def _preflight(config_path: Path, variant: str) -> dict[str, Any]:
         required_paths = {
             "target_cache_receipt": target_cache / "receipt.json",
             "target_cache_rows": target_cache / "targets.jsonl",
+            "target_cache_calibration": target_cache / "calibration_receipt.json",
             "scoring_receipt": scoring_receipt_path,
             "scoring_run_identity": scoring_receipt_path.parent / "run_identity.json",
             "warm_start_checkpoint": warm_checkpoint,
@@ -263,6 +323,9 @@ def _preflight(config_path: Path, variant: str) -> dict[str, Any]:
                 scoring_receipt_path.read_text(encoding="utf-8")
             )
             warm_receipt = json.loads(warm_receipt_path.read_text(encoding="utf-8"))
+            calibration_receipt = json.loads(
+                required_paths["target_cache_calibration"].read_text(encoding="utf-8")
+            )
             scoring_identity = json.loads(
                 required_paths["scoring_run_identity"].read_text(encoding="utf-8")
             )
@@ -276,14 +339,19 @@ def _preflight(config_path: Path, variant: str) -> dict[str, Any]:
             )
             target_rows = int(cache_receipt.get("row_count", -1))
             symmetry_audit = dict(scoring_receipt.get("symmetry_audit", {}))
+            calibration_audit = dict(cache_receipt.get("calibration_audit", {}))
+            expected_group_axes = list(
+                circ_protocol_payload.get("audits", {}).get("group_axes", [])
+            )
             if (
                 cache_receipt.get("protocol_hash") != CIRC_PROTOCOL_SHA256
                 or cache_receipt.get("targets_sha256") != targets_sha256
-                or cache_receipt.get("mode") != "development"
+                or cache_receipt.get("mode") != data_mode
                 or target_rows <= 0
                 or expected_condition_count <= 0
                 or target_rows % expected_condition_count != 0
-                or target_rows // expected_condition_count > 3126
+                or target_rows // expected_condition_count
+                > (3126 if data_mode == "development" else 3951)
                 or int(cache_receipt.get("cross_camera_primary_rows", -1))
                 != target_rows
                 or int(cache_receipt.get("same_camera_only_rows", -1)) != 0
@@ -291,6 +359,7 @@ def _preflight(config_path: Path, variant: str) -> dict[str, Any]:
                 or int(cache_receipt.get("official_test_access_count", -1)) != 0
                 or cache_receipt.get("zero_identity_overlap") is not True
                 or scoring_receipt.get("status") != "COMPLETE"
+                or scoring_receipt.get("mode", "development") != data_mode
                 or scoring_receipt.get("scientific_evidence_eligible") is not True
                 or scoring_receipt.get("contract_testing") is not False
                 or int(scoring_receipt.get("official_test_access_count", -1)) != 0
@@ -299,11 +368,33 @@ def _preflight(config_path: Path, variant: str) -> dict[str, Any]:
                 or scoring_receipt.get("targets_sha256") != targets_sha256
                 or scoring_receipt.get("cache_receipt_sha256")
                 != _sha256(required_paths["target_cache_receipt"])
+                or scoring_receipt.get("calibration_receipt_sha256")
+                != _sha256(required_paths["target_cache_calibration"])
+                or scoring_receipt.get("run_identity_sha256")
+                != _sha256(required_paths["scoring_run_identity"])
+                or scoring_receipt.get("generator_aggregate_sha256")
+                != scoring_identity.get("generator_aggregate_sha256")
+                or scoring_receipt.get("generator_fold_receipt_sha256")
+                != scoring_identity.get("generator_fold_receipt_sha256")
                 or int(scoring_receipt.get("rows", -1)) != target_rows
                 or int(scoring_receipt.get("conditions", -1))
                 != expected_condition_count
                 or symmetry_audit.get("status") != "PASS"
                 or symmetry_audit.get("claim_eligible") is not True
+                or calibration_receipt.get("protocol_hash")
+                != CIRC_PROTOCOL_SHA256
+                or calibration_receipt.get("targets_sha256") != targets_sha256
+                or calibration_receipt.get("status") != "COMPLETE"
+                or calibration_receipt.get("group_axes") != expected_group_axes
+                or calibration_receipt.get("effective_sample_size", {}).get("unit")
+                != circ_protocol_payload.get("audits", {}).get(
+                    "effective_sample_size_unit"
+                )
+                or len(calibration_receipt.get("per_condition", {}))
+                != expected_condition_count
+                or calibration_audit.get("audit_sha256")
+                != calibration_receipt.get("audit_sha256")
+                or scoring_receipt.get("calibration_audit") != calibration_audit
                 or scoring_identity.get("circ_protocol_sha256")
                 != CIRC_PROTOCOL_SHA256
                 or scoring_identity.get("source_sha256") != current_source_sha256
@@ -343,6 +434,12 @@ def _preflight(config_path: Path, variant: str) -> dict[str, Any]:
                 or warm_identity.get("source_sha256") != current_source_sha256
                 or warm_identity.get("scientific_evidence_eligible") is not True
                 or warm_identity.get("contract_testing") is not False
+                or not _complete_selection_chain_valid(
+                    receipt=warm_receipt,
+                    receipt_path=warm_receipt_path,
+                    identity_path=warm_identity_path,
+                    checkpoint_path=warm_checkpoint,
+                )
             ):
                 blockers.append("invalid_circ_warm_start_evidence")
             circ_assets = {
@@ -354,28 +451,55 @@ def _preflight(config_path: Path, variant: str) -> dict[str, Any]:
                 for label, path in required_paths.items()
             }
     protocol = json.loads(DEV_PROTOCOL.read_text(encoding="utf-8"))
-    data_protocol = {
-        "fit_identities": len(protocol["train_ids"]),
-        "fit_records": int(protocol["counts"]["train_triplets"]),
-        "dev_identities": len(protocol["dev_ids"]),
-        "query_records": int(protocol["evaluation"]["query_triplets"]),
-        "gallery_records": int(protocol["evaluation"]["gallery_triplets"]),
-        "identity_overlap": len(set(protocol["train_ids"]) & set(protocol["dev_ids"])),
-        "official_test_records": 0,
-        "uses_test_labels": bool(protocol["selection"]["uses_test_labels"]),
-    }
-    expected_data_protocol = {
-        "fit_identities": 141,
-        "fit_records": 3126,
-        "dev_identities": 30,
-        "query_records": 825,
-        "gallery_records": 825,
-        "identity_overlap": 0,
-        "official_test_records": 0,
-        "uses_test_labels": False,
-    }
+    if data_mode == "development":
+        data_protocol = {
+            "fit_identities": len(protocol["train_ids"]),
+            "fit_records": int(protocol["counts"]["train_triplets"]),
+            "dev_identities": len(protocol["dev_ids"]),
+            "query_records": int(protocol["evaluation"]["query_triplets"]),
+            "gallery_records": int(protocol["evaluation"]["gallery_triplets"]),
+            "identity_overlap": len(
+                set(protocol["train_ids"]) & set(protocol["dev_ids"])
+            ),
+            "official_test_records": 0,
+            "uses_test_labels": bool(protocol["selection"]["uses_test_labels"]),
+        }
+        expected_data_protocol = {
+            "fit_identities": 141,
+            "fit_records": 3126,
+            "dev_identities": 30,
+            "query_records": 825,
+            "gallery_records": 825,
+            "identity_overlap": 0,
+            "official_test_records": 0,
+            "uses_test_labels": False,
+        }
+    else:
+        data_protocol = {
+            "fit_identities": len(protocol["train_ids"])
+            + len(protocol["dev_ids"]),
+            "fit_records": 3951,
+            "dev_identities": 0,
+            "query_records": 836,
+            "gallery_records": 836,
+            "identity_overlap": 0,
+            "official_test_records": 836,
+            "uses_test_labels_for_selection": False,
+            "further_model_selection": False,
+        }
+        expected_data_protocol = {
+            "fit_identities": 171,
+            "fit_records": 3951,
+            "dev_identities": 0,
+            "query_records": 836,
+            "gallery_records": 836,
+            "identity_overlap": 0,
+            "official_test_records": 836,
+            "uses_test_labels_for_selection": False,
+            "further_model_selection": False,
+        }
     if data_protocol != expected_data_protocol:
-        blockers.append("development_protocol_drift")
+        blockers.append(f"{data_mode}_protocol_drift")
     optimization = {
         "train_batch_size": int(config["DATA"]["TRAIN_BATCH_SIZE"]),
         "num_instances": int(config["DATA"]["NUM_INSTANCES"]),
@@ -385,11 +509,32 @@ def _preflight(config_path: Path, variant: str) -> dict[str, Any]:
         "amp": bool(config["OPTIMIZATION"]["AMP"]),
         "amp_init_scale": float(config["OPTIMIZATION"].get("AMP_INIT_SCALE", 65536.0)),
         "max_epochs": int(config["OPTIMIZATION"]["MAX_EPOCHS"]),
+        "router_warm_epochs": int(
+            config["OPTIMIZATION"].get("ROUTER_WARM_EPOCHS", 0)
+        ),
     }
+    if contract.get("circ_targets_required") and not (
+        0
+        < optimization["router_warm_epochs"]
+        < optimization["max_epochs"]
+    ):
+        blockers.append("invalid_circ_router_warm_schedule")
+    if not contract.get("circ_targets_required") and optimization["router_warm_epochs"]:
+        blockers.append("router_warm_schedule_without_circ")
     resource_profile = str(
         config.get("EXPERIMENT", {}).get("RESOURCE_PROFILE", "standard_b16k4")
     )
-    expected_optimization = RESOURCE_PROFILES.get(resource_profile)
+    registered_profile = RESOURCE_PROFILES.get(resource_profile)
+    expected_optimization = (
+        None
+        if registered_profile is None
+        else {
+            **registered_profile,
+            "router_warm_epochs": (
+                7 if contract.get("circ_targets_required") else 0
+            ),
+        }
+    )
     if expected_optimization is None:
         blockers.append("unknown_resource_profile")
     elif optimization != expected_optimization:
@@ -418,6 +563,7 @@ def _preflight(config_path: Path, variant: str) -> dict[str, Any]:
     return {
         "schema_version": "1.0",
         "mode": "preflight",
+        "data_mode": data_mode,
         "variant": variant,
         "variant_contract": contract,
         "variant_contract_sha256": variant_sha256(contract),
@@ -650,9 +796,15 @@ def _overfit(
 
 def _run_identity(preflight: dict[str, Any], variant: str) -> dict[str, Any]:
     contract_testing = os.environ.get("TRIFUSION_CONTRACT_TESTING") == "1"
+    data_mode = str(preflight.get("data_mode", "development"))
     identity = {
         "schema_version": "1.0",
-        "run_type": "TriFusion/RGBNT201/train-only-dev",
+        "run_type": (
+            "TriFusion/RGBNT201/train-only-dev"
+            if data_mode == "development"
+            else "TriFusion/RGBNT201/postfreeze-final-fixed"
+        ),
+        "data_mode": data_mode,
         "variant": variant,
         "variant_contract": preflight["variant_contract"],
         "variant_contract_sha256": preflight["variant_contract_sha256"],
@@ -669,6 +821,16 @@ def _run_identity(preflight: dict[str, Any], variant: str) -> dict[str, Any]:
         "contract_testing": contract_testing,
         "scientific_evidence_eligible": not contract_testing,
     }
+    if data_mode == "postfreeze-final":
+        identity.update(
+            {
+                "all_171_training_identities": True,
+                "former_dev_identities_training_only": True,
+                "further_model_selection": False,
+                "official_test_evaluations_before_fixed_endpoint": 0,
+                "official_test_evaluations_after_fixed_endpoint": 1,
+            }
+        )
     if variant == "hfer_uniform_generator" or preflight["variant_contract"].get(
         "circ_targets_required"
     ):
@@ -722,11 +884,15 @@ def _validate_recovery(output_dir: Path) -> dict[str, Any]:
 
 
 def _dev(
-    config_path: Path, variant: str, output_dir: Path
+    config_path: Path,
+    variant: str,
+    output_dir: Path,
+    *,
+    data_mode: str = "development",
 ) -> tuple[dict[str, Any], int]:
     recovery = _validate_recovery(output_dir)
-    preflight = _preflight(config_path, variant)
-    preflight["mode"] = "dev"
+    preflight = _preflight(config_path, variant, data_mode=data_mode)
+    preflight["mode"] = "dev" if data_mode == "development" else "final"
     preflight["recovery"] = recovery
     preflight["worker_executed"] = False
     if not recovery["valid"]:
@@ -738,7 +904,9 @@ def _dev(
     identity_path = output_dir / "run_identity.json"
     if recovery["kind"] == "fresh":
         if not preflight["launch_allowed"]:
-            preflight["claim_boundary"] = "dev run blocked before model construction"
+            preflight["claim_boundary"] = (
+                f"{data_mode} run blocked before model construction"
+            )
             return preflight, 0
         _atomic_json(identity_path, expected_identity)
     else:
@@ -759,7 +927,9 @@ def _dev(
             summary["worker_executed"] = False
             return summary, 0
         if not preflight["launch_allowed"]:
-            preflight["claim_boundary"] = "dev resume blocked before model construction"
+            preflight["claim_boundary"] = (
+                f"{data_mode} resume blocked before model construction"
+            )
             return preflight, 0
     test_executable = os.environ.get("TRIFUSION_TEST_EXECUTABLE")
     contract_testing = os.environ.get("TRIFUSION_CONTRACT_TESTING") == "1"
@@ -771,7 +941,7 @@ def _dev(
         [
             test_executable,
             "--_worker",
-            "dev",
+            "dev" if data_mode == "development" else "final",
             "--variant",
             variant,
             "--config",
@@ -784,7 +954,7 @@ def _dev(
             sys.executable,
             str(Path(__file__)),
             "--_worker",
-            "dev",
+            "dev" if data_mode == "development" else "final",
             "--variant",
             variant,
             "--config",
@@ -803,9 +973,15 @@ def _dev(
         capture_output=True,
         text=True,
     )
-    worker_log = output_dir / "dev_worker.log"
+    worker_log = output_dir / (
+        "dev_worker.log" if data_mode == "development" else "final_worker.log"
+    )
     worker_log.write_text(completed.stdout + completed.stderr, encoding="utf-8")
-    result_path = output_dir / "dev_worker_result.json"
+    result_path = output_dir / (
+        "dev_worker_result.json"
+        if data_mode == "development"
+        else "final_worker_result.json"
+    )
     preflight.update(
         {
             "worker_executed": True,
@@ -822,18 +998,36 @@ def _dev(
         return preflight, 2
     result = json.loads(result_path.read_text(encoding="utf-8"))
     recovery_after = _validate_recovery(output_dir)
-    required = {
-        "status": "COMPLETE",
-        "epoch": 60,
-        "phase": "complete",
-        "official_test_access_count": 0,
-        "dev_evaluation_count": 60,
-        "query_records": 825,
-        "gallery_records": 825,
-        "train_records": 3126,
-        "model_constructed": True,
-        "training_started": True,
-    }
+    required = (
+        {
+            "status": "COMPLETE",
+            "epoch": 60,
+            "phase": "complete",
+            "official_test_access_count": 0,
+            "dev_evaluation_count": 60,
+            "query_records": 825,
+            "gallery_records": 825,
+            "train_records": 3126,
+            "model_constructed": True,
+            "training_started": True,
+        }
+        if data_mode == "development"
+        else {
+            "status": "COMPLETE",
+            "mode": "postfreeze-final",
+            "epoch": 60,
+            "phase": "complete",
+            "official_test_access_count": 1,
+            "official_test_evaluation_count": 1,
+            "dev_evaluation_count": 0,
+            "query_records": 836,
+            "gallery_records": 836,
+            "train_records": 3951,
+            "further_model_selection": False,
+            "model_constructed": True,
+            "training_started": True,
+        }
+    )
     mismatches = {
         key: {"expected": value, "actual": result.get(key)}
         for key, value in required.items()
@@ -863,11 +1057,30 @@ def _dev(
     preflight.update(result)
     preflight["worker_result_sha256"] = _sha256(result_path)
     preflight["recovery"] = recovery_after
-    preflight["claim_scope"] = "train-only development result"
+    preflight["claim_scope"] = (
+        "train-only development result"
+        if data_mode == "development"
+        else "single-seed postfreeze-final official result"
+    )
     preflight["metric_result"] = metrics
     preflight["claim_boundary"] = (
         "train-only development metrics; no official-test metric and no SOTA claim"
+        if data_mode == "development"
+        else (
+            "one frozen seed-42 official evaluation; target-exceedance may be reported, "
+            "but no multi-seed SOTA claim"
+        )
     )
+    if data_mode == "postfreeze-final":
+        fused = dict(metrics.get("fused", {}))
+        preflight["registered_public_target_percent"] = {
+            "mAP": 85.3,
+            "Rank-1": 87.9,
+        }
+        preflight["single_seed_target_exceeded"] = (
+            float(fused.get("mAP", float("-inf"))) > 85.3
+            and float(fused.get("Rank-1", float("-inf"))) > 87.9
+        )
     preflight["sota_claim_supported"] = False
     preflight["complete_resume_no_work"] = False
     if mismatches:
@@ -964,6 +1177,9 @@ def _worker_capacity(
         for name, parameter in model.named_parameters():
             if "private_projection" in name:
                 parameter.requires_grad_(False)
+        optimizer_parameter_names = {
+            name for name, parameter in model.named_parameters() if parameter.requires_grad
+        }
         pretrained_tokens = (
             (
                 "tokenizer.patch_projection",
@@ -1290,13 +1506,18 @@ def _worker_dev(
     oof_target_fold: int | None = None,
     circ_protocol_path: Path | None = None,
     fixed_endpoint: int | None = None,
+    data_mode: str = "development",
 ) -> int:
     oof_mode = oof_target_fold is not None
     if oof_mode != (circ_protocol_path is not None and fixed_endpoint is not None):
         raise ValueError("OOF target fold, protocol and fixed endpoint are all-or-none")
+    final_mode = not oof_mode and data_mode == "postfreeze-final"
     result_path = output_dir / (
-        "generator_receipt.json" if oof_mode else "dev_worker_result.json"
+        "generator_receipt.json"
+        if oof_mode
+        else ("final_worker_result.json" if final_mode else "dev_worker_result.json")
     )
+    eval_loader_iteration_count = 0
     config = yaml.safe_load(config_path.read_text(encoding="utf-8"))
     resource_profile = str(
         config.get("EXPERIMENT", {}).get("RESOURCE_PROFILE", "standard_b16k4")
@@ -1339,9 +1560,18 @@ def _worker_dev(
         )
         from modeling.trifusion.data import (
             build_rgbnt201_dev_loaders,
+            build_rgbnt201_final_loaders,
             build_rgbnt201_oof_loaders,
         )
-        from modeling.trifusion.intervention_targets import CIRCTargetCache
+        from modeling.trifusion.intervention_targets import (
+            CIRCTargetCache,
+            compute_calibration_audit,
+        )
+        from modeling.trifusion.training_phases import (
+            active_loss_weights,
+            parameter_trainable_in_phase,
+            resolve_training_phase,
+        )
         from modeling.trifusion.warm_start import load_hfer_uniform_warm_start
         from utils.reid_evaluation import evaluate_reid
 
@@ -1388,8 +1618,18 @@ def _worker_dev(
                 **loader_kwargs,
                 circ_protocol_path=circ_protocol_path,
                 target_fold=int(oof_target_fold),
+                mode=data_mode,
+            )
+        elif data_mode == "postfreeze-final":
+            if registered_circ_protocol_path is None:
+                raise ValueError("postfreeze-final training requires a CIRC protocol")
+            data = build_rgbnt201_final_loaders(
+                **loader_kwargs,
+                circ_protocol_path=registered_circ_protocol_path,
             )
         else:
+            if data_mode != "development":
+                raise ValueError("training data mode is not registered")
             data = build_rgbnt201_dev_loaders(**loader_kwargs)
         build_kwargs = {
             "num_classes": data.num_classes,
@@ -1447,6 +1687,7 @@ def _worker_dev(
             if (
                 circ_target_cache.receipt.get("protocol_hash")
                 != registered_circ_protocol_sha256
+                or circ_target_cache.receipt.get("mode") != data_mode
                 or int(circ_target_cache.receipt.get("row_count", -1))
                 != expected_row_count
                 or len(circ_target_cache.rows) != expected_row_count
@@ -1468,7 +1709,13 @@ def _worker_dev(
             warm_checkpoint = Path(
                 circ_config["WARM_START_CHECKPOINT"]
             ).expanduser().resolve()
-            warm_start = load_hfer_uniform_warm_start(model, warm_checkpoint)
+            warm_start = load_hfer_uniform_warm_start(
+                model,
+                warm_checkpoint,
+                allow_classifier_reinitialization=(
+                    data_mode == "postfreeze-final"
+                ),
+            )
             circ_training_evidence = {
                 "schedule": "sample-hash offset plus epoch modulo frozen conditions",
                 "cycle_epochs": len(circ_conditions),
@@ -1489,6 +1736,14 @@ def _worker_dev(
                     **warm_start,
                     "checkpoint_sha256": _sha256(warm_checkpoint),
                 },
+                "router_only_warm_epochs": int(
+                    config["OPTIMIZATION"]["ROUTER_WARM_EPOCHS"]
+                ),
+                "router_only_loss_scope": "immutable_circ_reliability_only",
+                "joint_phase_starts_epoch": int(
+                    config["OPTIMIZATION"]["ROUTER_WARM_EPOCHS"]
+                )
+                + 1,
                 "official_test_access_count": 0,
             }
         model = model.cuda()
@@ -1539,6 +1794,9 @@ def _worker_dev(
             weight_decay=float(config["OPTIMIZATION"]["WEIGHT_DECAY"]),
         )
         schedule_horizon_epochs = int(config["OPTIMIZATION"]["MAX_EPOCHS"])
+        router_warm_epochs = int(
+            config["OPTIMIZATION"].get("ROUTER_WARM_EPOCHS", 0)
+        )
         max_epochs = (
             int(fixed_endpoint) if oof_mode else schedule_horizon_epochs
         )
@@ -1745,6 +2003,17 @@ def _worker_dev(
                             ),
                         }
                     )
+                elif final_mode:
+                    common_evidence.update(
+                        {
+                            "kind": "postfreeze-final-fixed",
+                            "fixed_epoch": max_epochs,
+                            "official_test_evaluation_count": 1,
+                            "further_model_selection": False,
+                            "fixed_metrics": best_metrics,
+                            "fixed_checkpoint_sha256": best_checkpoint_sha256,
+                        }
+                    )
                 else:
                     common_evidence.update(
                         {
@@ -1757,8 +2026,6 @@ def _worker_dev(
                     )
                 payload["completion_evidence"] = common_evidence
             return payload
-
-        eval_loader_iteration_count = 0
 
         def evaluate() -> dict[str, dict[str, float]]:
             nonlocal eval_loader_iteration_count
@@ -1819,12 +2086,120 @@ def _worker_dev(
                 }
             return result
 
+        def audit_router_calibration(checkpoint_path: Path) -> dict[str, Any]:
+            if circ_target_cache is None or registered_circ_protocol is None:
+                return {}
+            state = torch.load(checkpoint_path, map_location="cpu", weights_only=True)
+            model.load_state_dict(state, strict=True)
+            model.eval()
+            supported_keys = {
+                str(row["sample_key"]) for row in circ_target_cache.rows
+            }
+            calibration_records = tuple(
+                record
+                for record in data.train_records
+                if Path(record[0][0]).name in supported_keys
+            )
+            if {
+                Path(record[0][0]).name for record in calibration_records
+            } != supported_keys:
+                raise RuntimeError("router calibration records do not cover the CIRC cache")
+            calibration_loader = build_rgbnt201_record_eval_loader(
+                calibration_records,
+                batch_size=int(config["DATA"]["EVAL_BATCH_SIZE"]),
+                num_workers=int(config["DATA"]["NUM_WORKERS"]),
+            )
+            predictions: dict[tuple[str, str, str], float] = {}
+            for condition in circ_conditions:
+                condition_key = json.dumps(
+                    condition,
+                    ensure_ascii=False,
+                    sort_keys=True,
+                    separators=(",", ":"),
+                )
+                for images, _pids, _camids, _camids_batch, _viewids, paths in calibration_loader:
+                    sample_keys = tuple(Path(path_row[0]).name for path_row in paths)
+                    conditioned, mask = apply_registered_condition_batch(
+                        images,
+                        sample_keys,
+                        tuple(dict(condition) for _ in sample_keys),
+                        operators=circ_operators,
+                    )
+                    conditioned = {
+                        name: tensor.cuda(non_blocking=False)
+                        for name, tensor in conditioned.items()
+                    }
+                    with torch.no_grad(), torch.cuda.amp.autocast(enabled=amp_enabled):
+                        output = model(
+                            {
+                                "images": conditioned,
+                                "modality_mask": mask.cuda(non_blocking=False),
+                            },
+                            return_aux=True,
+                        )
+                    scores = output.reliability.r.detach().float().cpu()
+                    for row_index, sample_key in enumerate(sample_keys):
+                        for expert_index, expert in enumerate(
+                            ("cnn", "transformer", "mamba")
+                        ):
+                            for modality_index, modality in enumerate(
+                                ("RGB", "NI", "TI")
+                            ):
+                                predictions[
+                                    (sample_key, condition_key, f"{expert}.{modality}")
+                                ] = float(scores[row_index, expert_index, modality_index])
+            audit = compute_calibration_audit(
+                circ_target_cache.rows,
+                router_probabilities=predictions,
+            )
+            receipt = {
+                **audit,
+                "schema_version": "circ-router-calibration-receipt-v1",
+                "model_checkpoint": str(checkpoint_path),
+                "model_checkpoint_sha256": _sha256(checkpoint_path),
+                "targets_sha256": circ_target_cache.receipt["targets_sha256"],
+                "circ_protocol_sha256": registered_circ_protocol_sha256,
+                "evaluation_rows_are_training_targets": True,
+                "causal_calibration_claim_eligible": False,
+                "claim_boundary": (
+                    "descriptive endpoint calibration on immutable training targets; "
+                    "identity-held-out router calibration remains required for a claim"
+                ),
+                "official_test_access_count": 0,
+            }
+            _atomic_json(output_dir / "router_calibration_receipt.json", receipt)
+            return receipt
+
         torch.cuda.reset_peak_memory_stats()
         last_metrics = best_metrics
+        router_calibration_evidence: dict[str, Any] = {}
         while current_epoch < max_epochs or phase == "post_train":
             if phase in {"epoch_boundary", "post_eval"}:
                 epoch = current_epoch + 1
-                model.train()
+                training_phase = resolve_training_phase(
+                    epoch=epoch,
+                    circ_enabled=circ_target_cache is not None,
+                    router_warm_epochs=router_warm_epochs,
+                    schedule_horizon_epochs=schedule_horizon_epochs,
+                )
+                for name, parameter in model.named_parameters():
+                    parameter.requires_grad_(
+                        name in optimizer_parameter_names
+                        and parameter_trainable_in_phase(name, training_phase)
+                    )
+                if training_phase.name == "router_only":
+                    model.eval()
+                    model.encoder.reliability_gate.train()
+                else:
+                    model.train()
+                epoch_loss_weights = active_loss_weights(
+                    loss_weights, training_phase
+                )
+                trainable_names = tuple(
+                    name
+                    for name, parameter in model.named_parameters()
+                    if parameter.requires_grad
+                )
                 total_sum = 0.0
                 sample_count = 0
                 named_sums: dict[str, float] = {name: 0.0 for name in loss_weights}
@@ -1898,7 +2273,7 @@ def _worker_dev(
                             )
                         total_loss = sum(
                             named_losses[name] * weight
-                            for name, weight in loss_weights.items()
+                            for name, weight in epoch_loss_weights.items()
                         )
                     if not bool(torch.isfinite(total_loss).item()):
                         raise FloatingPointError(f"nonfinite train loss at epoch {epoch}")
@@ -1916,6 +2291,14 @@ def _worker_dev(
                         "epoch contained no cross-camera-supported CIRC supervision"
                     )
                 train_history[str(epoch)] = {
+                    "training_phase": training_phase.name,
+                    "parameter_scope": training_phase.parameter_scope,
+                    "loss_scope": training_phase.loss_scope,
+                    "active_loss_weights": epoch_loss_weights,
+                    "trainable_parameter_tensors": len(trainable_names),
+                    "trainable_parameter_names_sha256": _canonical_json_sha256(
+                        trainable_names
+                    ),
                     "total": total_sum / sample_count,
                     "named": {name: value / sample_count for name, value in named_sums.items()},
                     "learning_rates": [float(group["lr"]) for group in optimizer.param_groups],
@@ -1956,6 +2339,49 @@ def _worker_dev(
                     if phase == "complete":
                         break
                     continue
+                if final_mode:
+                    if current_epoch < max_epochs:
+                        phase = "post_eval"
+                        _save_dev_generation(
+                            output_dir,
+                            epoch=current_epoch,
+                            phase=phase,
+                            payload=state_payload(current_epoch, phase),
+                            torch_module=torch,
+                        )
+                        continue
+                    fixed_path = output_dir / "fixed_final_model.pth"
+                    _atomic_torch_save(fixed_path, model.state_dict(), torch)
+                    best_checkpoint_sha256 = _sha256(fixed_path)
+                    best_epoch = current_epoch
+                    last_metrics = evaluate()
+                    best_metrics = last_metrics
+                    best_map = float(best_metrics["fused"]["mAP"])
+                    _atomic_json(
+                        output_dir / "official_test_metrics.json",
+                        {
+                            "schema_version": "trifusion-official-fixed-v1",
+                            "fixed_epoch": current_epoch,
+                            "metrics_percent": best_metrics,
+                            "query_records": data.num_query,
+                            "gallery_records": (
+                                len(data.eval_loader.dataset) - data.num_query
+                            ),
+                            "official_test_evaluation_count": 1,
+                            "official_test_access_count": 1,
+                            "further_model_selection": False,
+                            "checkpoint_sha256": best_checkpoint_sha256,
+                        },
+                    )
+                    phase = "complete"
+                    _save_dev_generation(
+                        output_dir,
+                        epoch=current_epoch,
+                        phase=phase,
+                        payload=state_payload(current_epoch, phase),
+                        torch_module=torch,
+                    )
+                    break
                 last_metrics = evaluate()
                 dev_evaluation_count += 1
                 _atomic_json(
@@ -2019,7 +2445,61 @@ def _worker_dev(
                 if phase == "complete":
                     break
 
-        if not oof_mode:
+        if circ_target_cache is not None:
+            calibration_checkpoint = output_dir / (
+                "fixed_final_model.pth" if final_mode else "best_dev_model.pth"
+            )
+            if not calibration_checkpoint.is_file():
+                raise RuntimeError("CIRC endpoint lacks a calibration checkpoint")
+            router_calibration_evidence = audit_router_calibration(
+                calibration_checkpoint
+            )
+
+        if final_mode:
+            fixed_receipt_path = output_dir / "fixed_final_receipt.json"
+            if best_metrics is None or best_checkpoint_sha256 is None:
+                raise RuntimeError("final run completed without fixed metrics/checkpoint")
+            fixed_receipt = {
+                "schema_version": "trifusion-postfreeze-final-v1",
+                "mode": "postfreeze-final",
+                "variant": variant,
+                "epoch": max_epochs,
+                "phase": "complete",
+                "metrics_percent": best_metrics,
+                "checkpoint": str(output_dir / "fixed_final_model.pth"),
+                "checkpoint_sha256": best_checkpoint_sha256,
+                "config_sha256": _sha256(config_path),
+                "circ_protocol_sha256": registered_circ_protocol_sha256,
+                "circ_training_evidence": circ_training_evidence,
+                "router_calibration_receipt": str(
+                    output_dir / "router_calibration_receipt.json"
+                ),
+                "router_calibration_receipt_sha256": _sha256(
+                    output_dir / "router_calibration_receipt.json"
+                ),
+                "router_calibration": router_calibration_evidence,
+                "variant_contract_sha256": variant_sha256(contract),
+                "training_split": "RGBNT201/train_171 all identities",
+                "evaluation_split": "RGBNT201 official test",
+                "further_model_selection": False,
+                "official_test_evaluation_count": 1,
+                "official_test_access_count": 1,
+                "run_identity": str(output_dir / "run_identity.json"),
+                "run_identity_sha256": identity_hash,
+                "recovery_manifest": str(latest_path),
+                "recovery_manifest_sha256": _sha256(latest_path),
+                "model_constructed": True,
+                "training_started": True,
+                "fatal_or_nonfinite_detected": False,
+                "contract_testing": os.environ.get("TRIFUSION_CONTRACT_TESTING")
+                == "1",
+                "scientific_evidence_eligible": os.environ.get(
+                    "TRIFUSION_CONTRACT_TESTING"
+                )
+                != "1",
+            }
+            _atomic_json(fixed_receipt_path, fixed_receipt)
+        elif not oof_mode:
             best_receipt_path = output_dir / "best_dev_receipt.json"
             if not best_receipt_path.is_file():
                 raise RuntimeError("dev run completed without a best receipt")
@@ -2039,6 +2519,17 @@ def _worker_dev(
                     "training_started": True,
                     "fatal_or_nonfinite_detected": False,
                     "circ_training_evidence": circ_training_evidence,
+                    "router_calibration_receipt": (
+                        str(output_dir / "router_calibration_receipt.json")
+                        if router_calibration_evidence
+                        else None
+                    ),
+                    "router_calibration_receipt_sha256": (
+                        _sha256(output_dir / "router_calibration_receipt.json")
+                        if router_calibration_evidence
+                        else None
+                    ),
+                    "router_calibration": router_calibration_evidence,
                 }
             )
             _atomic_json(best_receipt_path, completed_selection)
@@ -2054,6 +2545,7 @@ def _worker_dev(
                 raise RuntimeError("OOF generator checkpoint is not recovery-bound")
             result = {
                 "status": "COMPLETE",
+                "mode": data_mode,
                 "epoch": max_epochs,
                 "phase": "complete",
                 "target_fold": int(oof_target_fold),
@@ -2099,6 +2591,56 @@ def _worker_dev(
                     "TRIFUSION_CONTRACT_TESTING"
                 )
                 != "1",
+            }
+        elif final_mode:
+            if best_metrics is None or last_metrics is None:
+                raise RuntimeError("final run completed without official metrics")
+            result = {
+                "status": "COMPLETE",
+                "mode": "postfreeze-final",
+                "epoch": max_epochs,
+                "phase": "complete",
+                "metrics_percent": best_metrics,
+                "last_metrics_percent": last_metrics,
+                "dev_evaluation_count": 0,
+                "official_test_evaluation_count": 1,
+                "official_test_access_count": 1,
+                "further_model_selection": False,
+                "query_records": data.num_query,
+                "gallery_records": len(data.eval_loader.dataset) - data.num_query,
+                "train_records": len(data.train_loader.dataset),
+                "fixed_checkpoint": str(output_dir / "fixed_final_model.pth"),
+                "fixed_checkpoint_sha256": _sha256(
+                    output_dir / "fixed_final_model.pth"
+                ),
+                "train_history": train_history,
+                "resume_history": resume_history,
+                "parameter_budget_pass": bool(
+                    built.provenance["parameter_budget_pass"]
+                ),
+                "total_parameters": int(built.provenance["total_parameters"]),
+                "variant_contract": contract,
+                "variant_contract_sha256": variant_sha256(contract),
+                "peak_allocated_mib": torch.cuda.max_memory_allocated() / 1024**2,
+                "peak_reserved_mib": torch.cuda.max_memory_reserved() / 1024**2,
+                "fatal_or_nonfinite_detected": False,
+                "model_constructed": True,
+                "training_started": True,
+                "second_gpu_gate": second_gpu_gate,
+                "contract_testing": os.environ.get("TRIFUSION_CONTRACT_TESTING")
+                == "1",
+                "scientific_evidence_eligible": os.environ.get(
+                    "TRIFUSION_CONTRACT_TESTING"
+                )
+                != "1",
+                "circ_training_evidence": circ_training_evidence,
+                "router_calibration_receipt": str(
+                    output_dir / "router_calibration_receipt.json"
+                ),
+                "router_calibration_receipt_sha256": _sha256(
+                    output_dir / "router_calibration_receipt.json"
+                ),
+                "router_calibration": router_calibration_evidence,
             }
         else:
             if best_metrics is None or last_metrics is None:
@@ -2150,7 +2692,9 @@ def _worker_dev(
             result_path,
             {
                 "status": "OOM" if "out of memory" in message.lower() else "FAILED",
-                "official_test_access_count": 0,
+                "official_test_access_count": (
+                    1 if final_mode and eval_loader_iteration_count else 0
+                ),
                 "error": message,
                 "traceback": traceback.format_exc(),
                 "second_gpu_gate": second_gpu_gate,
@@ -2161,11 +2705,17 @@ def _worker_dev(
 
 def _parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--mode", choices=("preflight", "capacity", "overfit", "dev"))
+    parser.add_argument(
+        "--mode", choices=("preflight", "capacity", "overfit", "dev", "final")
+    )
     parser.add_argument("--variant", required=True, choices=variant_names())
     parser.add_argument("--output-dir", required=True, type=Path)
     parser.add_argument("--config", type=Path, default=DEFAULT_CONFIG)
-    parser.add_argument("--_worker", choices=("capacity", "overfit", "dev"), help=argparse.SUPPRESS)
+    parser.add_argument(
+        "--_worker",
+        choices=("capacity", "overfit", "dev", "final"),
+        help=argparse.SUPPRESS,
+    )
     return parser.parse_args()
 
 
@@ -2175,8 +2725,17 @@ def main() -> int:
     if args._worker:
         if args._worker == "capacity":
             return _worker_capacity(args.config.resolve(), args.variant, args.output_dir)
-        if args._worker == "dev":
-            return _worker_dev(args.config.resolve(), args.variant, args.output_dir)
+        if args._worker in ("dev", "final"):
+            return _worker_dev(
+                args.config.resolve(),
+                args.variant,
+                args.output_dir,
+                data_mode=(
+                    "development"
+                    if args._worker == "dev"
+                    else "postfreeze-final"
+                ),
+            )
         return _worker_capacity(
             args.config.resolve(), args.variant, args.output_dir, overfit=True
         )
@@ -2196,6 +2755,14 @@ def main() -> int:
         receipt_path = args.output_dir / "overfit.json"
     elif args.mode == "dev":
         receipt, returncode = _dev(args.config.resolve(), args.variant, args.output_dir)
+        receipt_path = args.output_dir / "run_summary.json"
+    elif args.mode == "final":
+        receipt, returncode = _dev(
+            args.config.resolve(),
+            args.variant,
+            args.output_dir,
+            data_mode="postfreeze-final",
+        )
         receipt_path = args.output_dir / "run_summary.json"
     elif args.mode != "preflight":
         receipt["mode"] = args.mode

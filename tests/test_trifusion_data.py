@@ -121,6 +121,56 @@ def test_rgbnt201_oof_folds_are_disjoint_and_cover_every_fit_identity(
     assert set.union(*target_sets) == {int(identity) for identity in protocol["train_ids"]}
 
 
+def test_rgbnt201_postfreeze_folds_cover_all_171_and_final_loader_is_fixed() -> None:
+    from modeling.trifusion.data import (
+        build_rgbnt201_final_loaders,
+        build_rgbnt201_oof_loaders,
+    )
+
+    circ_protocol_path = PROJECT / "protocols/circ_target_v1.json"
+    target_sets = []
+    for target_fold in range(3):
+        loaders = build_rgbnt201_oof_loaders(
+            dataset_root=Path("/root/mmreid-trifusion/data/RGBNT201"),
+            protocol_path=PROJECT / "protocols/rgbnt201_dev_v1.json",
+            circ_protocol_path=circ_protocol_path,
+            target_fold=target_fold,
+            train_batch_size=8,
+            num_instances=4,
+            eval_batch_size=32,
+            num_workers=0,
+            mode="postfreeze-final",
+        )
+        target_sets.append(set(loaders.provenance["target_identity_values"]))
+        assert loaders.provenance["mode"] == "postfreeze-final"
+        assert loaders.provenance["identity_pool"] == 171
+        assert loaders.provenance["generator_target_identity_overlap"] == 0
+        assert loaders.provenance["official_test_records"] == 0
+    assert len(set.union(*target_sets)) == 171
+    assert all(
+        target_sets[left].isdisjoint(target_sets[right])
+        for left in range(3)
+        for right in range(left + 1, 3)
+    )
+
+    final = build_rgbnt201_final_loaders(
+        dataset_root=Path("/root/mmreid-trifusion/data/RGBNT201"),
+        protocol_path=PROJECT / "protocols/rgbnt201_dev_v1.json",
+        circ_protocol_path=circ_protocol_path,
+        train_batch_size=8,
+        num_instances=4,
+        eval_batch_size=32,
+        num_workers=0,
+    )
+    assert final.num_classes == 171
+    assert final.num_query == 836
+    assert len(final.train_loader.dataset) == 3951
+    assert len(final.eval_loader.dataset) == 1672
+    assert final.provenance["model_selection"] is False
+    assert final.provenance["former_dev_identities_are_training_only"] is True
+    assert final.provenance["official_test_evaluations_before_fixed_endpoint"] == 0
+
+
 def test_rgbnt201_oof_loader_rejects_semantic_train_dev_identity_overlap(
     tmp_path: Path,
 ) -> None:

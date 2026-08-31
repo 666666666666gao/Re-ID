@@ -10,6 +10,105 @@ from unittest.mock import patch
 
 
 class CIRCTargetBuilderTests(unittest.TestCase):
+    def test_calibration_audit_uses_distinct_query_clusters_and_complete_groups(
+        self,
+    ) -> None:
+        from modeling.trifusion.intervention_targets import (
+            compile_circ_targets,
+            compute_calibration_audit,
+        )
+
+        experts = ("cnn", "transformer", "mamba")
+        modalities = ("RGB", "NI", "TI")
+        valid_edges = [
+            f"{source}->{target}:{modality}"
+            for source in experts
+            for target in experts
+            if source != target
+            for modality in modalities
+        ]
+        conditions = (
+            {"family": "clean", "severity": 0, "seed": 0},
+            {"family": "gaussian_blur", "severity": 1, "seed": 17},
+        )
+        query_clusters = (("q-101-a", 101, 1), ("q-101-b", 101, 2), ("q-102", 102, 1))
+        samples = []
+        for sample_index, (sample_key, identity, camera) in enumerate(query_clusters):
+            for condition in conditions:
+                helpful = sample_index % 2 == 0
+                total = 0.2 if helpful else -0.2
+                interventions = {
+                    f"{expert}.{modality}": {
+                        "total": total,
+                        "direct": total * 0.5,
+                        "relay": total * 0.25,
+                    }
+                    for expert in experts
+                    for modality in modalities
+                }
+                samples.append(
+                    {
+                        "sample_key": sample_key,
+                        "identity": identity,
+                        "camera": camera,
+                        "dataset_split": "train",
+                        "modality_mask": [True, True, True],
+                        "cross_camera_positive_cameras": [2 if camera == 1 else 1],
+                        "condition": condition,
+                        "generator_training_identities": [201, 202],
+                        "generator_checkpoint_sha256": "cd" * 32,
+                        "reference_bank_sha256": "ef" * 32,
+                        "intervention_seeds": [17, 23, 29],
+                        "interventions": interventions,
+                        "edge_effects": {
+                            "1": {edge: total for edge in valid_edges},
+                            "2": {edge: total for edge in valid_edges},
+                        },
+                    }
+                )
+        rows, receipt = compile_circ_targets(
+            {
+                "protocol_hash": "ab" * 32,
+                "fold_salt": "fixture-fold-v1",
+                "fold_count": 3,
+                "epsilon": 0.02,
+                "official_test_access_count": 0,
+                "development_forbidden_identities": [],
+                "samples": samples,
+            },
+            mode="development",
+            config_sha256="12" * 32,
+        )
+        audit = compute_calibration_audit(rows)
+
+        groups_by_sample = {row["sample_key"]: row["groups"] for row in rows}
+        self.assertEqual(groups_by_sample["q-101-a"]["identity_frequency"], "repeated")
+        self.assertEqual(groups_by_sample["q-101-b"]["identity_frequency"], "repeated")
+        self.assertEqual(groups_by_sample["q-102"]["identity_frequency"], "singleton")
+        self.assertEqual(receipt["identity_query_cluster_count"], 3)
+        self.assertEqual(audit["effective_sample_size"]["identity_query_clusters"], 3)
+        self.assertEqual(
+            audit["group_axes"],
+            [
+                "condition",
+                "expert",
+                "modality",
+                "expert_modality",
+                "camera",
+                "identity_frequency",
+            ],
+        )
+        self.assertEqual(set(audit["per_condition"]), {
+            '{"family":"clean","seed":0,"severity":0}',
+            '{"family":"gaussian_blur","seed":17,"severity":1}',
+        })
+        self.assertIn("BCE", audit["overall"])
+        self.assertIn("Brier", audit["overall"])
+        self.assertIn("ECE", audit["overall"])
+        self.assertIn("overdispersion", audit)
+        self.assertIn("empirical_concentration_coverage", audit)
+        self.assertEqual(len(audit["audit_sha256"]), 64)
+
     def test_scoring_operation_cannot_use_contract_testing_override(self) -> None:
         from tools.build_circ_targets import main
 

@@ -12,6 +12,12 @@ import torch
 def load_hfer_uniform_warm_start(
     model: torch.nn.Module,
     checkpoint: Path | str,
+    *,
+    allow_classifier_reinitialization: bool = False,
+    classifier_prefixes: tuple[str, ...] = (
+        "fused_classifier.",
+        "branch_classifiers.",
+    ),
 ) -> dict[str, Any]:
     """Load all shared HFER weights while allowing only the new posterior to be absent."""
 
@@ -33,8 +39,27 @@ def load_hfer_uniform_warm_start(
         f"encoder.reliability_gate.{name}"
         for name in model.encoder.reliability_gate.state_dict()
     }
+    state = dict(state)
+    model_state = model.state_dict()
+    reinitialized_classifier_keys = sorted(
+        name
+        for name in model_keys
+        if any(name.startswith(prefix) for prefix in classifier_prefixes)
+        and (
+            name not in state
+            or tuple(state[name].shape) != tuple(model_state[name].shape)
+        )
+    )
+    if reinitialized_classifier_keys and not allow_classifier_reinitialization:
+        raise ValueError(
+            "HFER warm-start tensor mismatch in identity classifiers: "
+            f"{reinitialized_classifier_keys}"
+        )
+    for name in reinitialized_classifier_keys:
+        state.pop(name, None)
     state_keys = set(state)
-    nonposterior_missing = sorted((model_keys - state_keys) - posterior_keys)
+    allowed_missing = posterior_keys | set(reinitialized_classifier_keys)
+    nonposterior_missing = sorted((model_keys - state_keys) - allowed_missing)
     foreign = sorted(state_keys - model_keys)
     if nonposterior_missing or foreign:
         raise ValueError(
@@ -42,12 +67,12 @@ def load_hfer_uniform_warm_start(
             f"missing={nonposterior_missing}, unexpected={foreign}"
         )
     try:
-        incompatible = model.load_state_dict(dict(state), strict=False)
+        incompatible = model.load_state_dict(state, strict=False)
     except RuntimeError as error:
         raise ValueError(f"HFER warm-start tensor mismatch: {error}") from error
     missing = sorted(incompatible.missing_keys)
     unexpected = sorted(incompatible.unexpected_keys)
-    if set(missing) != posterior_keys or unexpected:
+    if set(missing) != allowed_missing or unexpected:
         raise ValueError(
             "HFER warm start may omit only the CIRC posterior: "
             f"missing={missing}, unexpected={unexpected}"
@@ -58,6 +83,8 @@ def load_hfer_uniform_warm_start(
         "missing_keys": missing,
         "unexpected_keys": unexpected,
         "posterior_initialized_from_scratch": True,
+        "classifier_reinitialized": bool(reinitialized_classifier_keys),
+        "reinitialized_classifier_keys": reinitialized_classifier_keys,
     }
 
 

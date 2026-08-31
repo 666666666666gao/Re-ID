@@ -6,6 +6,7 @@ import hashlib
 import json
 import math
 import os
+from collections import defaultdict
 from collections.abc import Mapping, Sequence
 from dataclasses import dataclass
 from pathlib import Path
@@ -135,6 +136,245 @@ def _require_finite(value: object, field: str) -> float:
     return number
 
 
+def _binary_calibration_metrics(
+    probabilities: Sequence[float], labels: Sequence[int], *, bins: int = 10
+) -> dict[str, float | int]:
+    if len(probabilities) != len(labels) or not probabilities:
+        raise ValueError("calibration probabilities and labels must align and be nonempty")
+    if bins < 2:
+        raise ValueError("ECE requires at least two bins")
+    clipped = [min(max(float(value), 1e-6), 1.0 - 1e-6) for value in probabilities]
+    binary = [int(value) for value in labels]
+    if any(value not in (0, 1) for value in binary):
+        raise ValueError("calibration labels must be binary")
+    count = len(binary)
+    bce = -sum(
+        label * math.log(probability)
+        + (1 - label) * math.log(1.0 - probability)
+        for probability, label in zip(clipped, binary)
+    ) / count
+    brier = sum(
+        (probability - label) ** 2
+        for probability, label in zip(clipped, binary)
+    ) / count
+    ece = 0.0
+    for bin_index in range(bins):
+        lower = bin_index / bins
+        upper = (bin_index + 1) / bins
+        indices = [
+            index
+            for index, probability in enumerate(clipped)
+            if probability >= lower
+            and (probability < upper or (bin_index == bins - 1 and probability <= upper))
+        ]
+        if not indices:
+            continue
+        confidence = sum(clipped[index] for index in indices) / len(indices)
+        accuracy = sum(binary[index] for index in indices) / len(indices)
+        ece += len(indices) / count * abs(confidence - accuracy)
+    return {
+        "rows": count,
+        "BCE": bce,
+        "Brier": brier,
+        "ECE": ece,
+        "positive_rate": sum(binary) / count,
+        "mean_probability": sum(clipped) / count,
+    }
+
+
+def compute_calibration_audit(
+    rows: Sequence[Mapping[str, Any]],
+    *,
+    router_probabilities: Mapping[tuple[str, str, str], float] | None = None,
+    ece_bins: int = 10,
+) -> dict[str, Any]:
+    """Audit calibration without counting corruption repeats as iid evidence."""
+
+    if not rows:
+        raise ValueError("calibration audit requires immutable CIRC target rows")
+    observations: list[dict[str, Any]] = []
+    for row in rows:
+        if row.get("cross_camera_support") is not True:
+            raise ValueError("calibration rows require cross-camera positive support")
+        cluster = f"{int(row['identity'])}|{row['sample_key']}"
+        condition_key = str(row["condition_key"])
+        groups = dict(row["groups"])
+        for expert in EXPERT_ORDER:
+            for modality in MODALITY_ORDER:
+                contribution = dict(row["contributions"][f"{expert}.{modality}"])
+                if not bool(contribution["valid"]):
+                    continue
+                observations.append(
+                    {
+                        "cluster": cluster,
+                        "sample_key": str(row["sample_key"]),
+                        "condition": condition_key,
+                        "expert": expert,
+                        "modality": modality,
+                        "expert_modality": f"{expert}.{modality}",
+                        "camera": str(groups["camera"]),
+                        "identity_frequency": str(groups["identity_frequency"]),
+                        "label": int(contribution["helpful_target"]),
+                    }
+                )
+    if not observations:
+        raise ValueError("calibration audit has no valid expert-modality outcomes")
+
+    prediction_source = (
+        "deployed_router" if router_probabilities is not None else "cluster_loo_beta11"
+    )
+    if router_probabilities is None:
+        strata: dict[tuple[str, str, str], list[dict[str, Any]]] = defaultdict(list)
+        for observation in observations:
+            strata[
+                (
+                    observation["condition"],
+                    observation["expert"],
+                    observation["modality"],
+                )
+            ].append(observation)
+        for observation in observations:
+            peers = strata[
+                (
+                    observation["condition"],
+                    observation["expert"],
+                    observation["modality"],
+                )
+            ]
+            peer_labels = [
+                int(peer["label"])
+                for peer in peers
+                if peer["cluster"] != observation["cluster"]
+            ]
+            observation["probability"] = (1.0 + sum(peer_labels)) / (
+                2.0 + len(peer_labels)
+            )
+    else:
+        for observation in observations:
+            key = (
+                observation["sample_key"],
+                observation["condition"],
+                observation["expert_modality"],
+            )
+            if key not in router_probabilities:
+                raise ValueError(f"missing deployed-router probability for {key}")
+            probability = _require_finite(
+                router_probabilities[key], f"router_probabilities[{key}]"
+            )
+            if probability < 0.0 or probability > 1.0:
+                raise ValueError("deployed-router probabilities must lie in [0,1]")
+            observation["probability"] = probability
+
+    def metrics(selected: Sequence[Mapping[str, Any]]) -> dict[str, float | int]:
+        return _binary_calibration_metrics(
+            [float(value["probability"]) for value in selected],
+            [int(value["label"]) for value in selected],
+            bins=ece_bins,
+        )
+
+    axes = [
+        "condition",
+        "expert",
+        "modality",
+        "expert_modality",
+        "camera",
+        "identity_frequency",
+    ]
+    per_condition: dict[str, Any] = {}
+    for condition in sorted({str(value["condition"]) for value in observations}):
+        selected = [value for value in observations if value["condition"] == condition]
+        per_condition[condition] = {
+            "overall": metrics(selected),
+            "groups": {
+                axis: {
+                    group: metrics(
+                        [value for value in selected if str(value[axis]) == group]
+                    )
+                    for group in sorted({str(value[axis]) for value in selected})
+                }
+                for axis in axes[1:]
+            },
+            "identity_query_clusters": len(
+                {str(value["cluster"]) for value in selected}
+            ),
+        }
+
+    overdispersion = {}
+    concentration = {}
+    for condition in per_condition:
+        selected = [value for value in observations if value["condition"] == condition]
+        cluster_rows: dict[str, list[dict[str, Any]]] = defaultdict(list)
+        for value in selected:
+            cluster_rows[str(value["cluster"])].append(value)
+        residual_terms = [
+            (float(value["label"]) - float(value["probability"])) ** 2
+            / max(
+                float(value["probability"]) * (1.0 - float(value["probability"])),
+                1e-6,
+            )
+            for value in selected
+        ]
+        coverage_flags = []
+        for cluster, cluster_values in cluster_rows.items():
+            other = [value for value in selected if value["cluster"] != cluster]
+            successes = sum(int(value["label"]) for value in other)
+            alpha = 1.0 + successes
+            beta = 1.0 + len(other) - successes
+            posterior_mean = alpha / (alpha + beta)
+            posterior_variance = alpha * beta / (
+                (alpha + beta) ** 2 * (alpha + beta + 1.0)
+            )
+            predictive_variance = posterior_variance + posterior_mean * (
+                1.0 - posterior_mean
+            ) / max(1, len(cluster_values))
+            radius = 1.96 * math.sqrt(predictive_variance)
+            observed = sum(int(value["label"]) for value in cluster_values) / len(
+                cluster_values
+            )
+            coverage_flags.append(
+                max(0.0, posterior_mean - radius)
+                <= observed
+                <= min(1.0, posterior_mean + radius)
+            )
+        overdispersion[condition] = {
+            "pearson_dispersion": sum(residual_terms)
+            / max(1, len(residual_terms) - len(cluster_rows)),
+            "rows": len(selected),
+            "identity_query_clusters": len(cluster_rows),
+        }
+        empirical_coverage = sum(coverage_flags) / len(coverage_flags)
+        concentration[condition] = {
+            "nominal_coverage": 0.95,
+            "empirical_coverage": empirical_coverage,
+            "identity_query_clusters": len(cluster_rows),
+            "claim_eligible": len(cluster_rows) >= 20 and empirical_coverage >= 0.90,
+        }
+
+    audit: dict[str, Any] = {
+        "schema_version": "circ-calibration-audit-v1",
+        "status": "COMPLETE",
+        "prediction_source": prediction_source,
+        "calibration_metrics": ["BCE", "Brier", "ECE"],
+        "ece_bins": ece_bins,
+        "group_axes": axes,
+        "overall": metrics(observations),
+        "per_condition": per_condition,
+        "overdispersion": overdispersion,
+        "empirical_concentration_coverage": concentration,
+        "effective_sample_size": {
+            "unit": "identity_query_cluster",
+            "identity_query_clusters": len(
+                {str(value["cluster"]) for value in observations}
+            ),
+            "raw_condition_contribution_rows": len(observations),
+            "condition_seed_rows_are_not_iid": True,
+        },
+        "cross_camera_rows_only": True,
+    }
+    audit["audit_sha256"] = hashlib.sha256(_canonical_json(audit)).hexdigest()
+    return audit
+
+
 def compile_circ_targets(
     config: Mapping[str, Any], *, mode: str, config_sha256: str
 ) -> tuple[list[dict[str, Any]], dict[str, Any]]:
@@ -160,10 +400,10 @@ def compile_circ_targets(
     if not raw_samples:
         raise ValueError("at least one scored intervention sample is required")
 
-    identity_frequency: dict[int, int] = {}
+    identity_samples: dict[int, set[str]] = defaultdict(set)
     for sample in raw_samples:
         identity = int(sample["identity"])
-        identity_frequency[identity] = identity_frequency.get(identity, 0) + 1
+        identity_samples[identity].add(str(sample["sample_key"]))
 
     rows = []
     seen_keys = set()
@@ -295,7 +535,7 @@ def compile_circ_targets(
             ):
                 edge_coverage[group][key] = edge_coverage[group].get(key, 0) + 1
 
-        frequency = identity_frequency[identity]
+        frequency = len(identity_samples[identity])
         frequency_group = "singleton" if frequency == 1 else "repeated"
         rows.append(
             {
@@ -333,6 +573,9 @@ def compile_circ_targets(
         "protocol_hash": protocol_hash,
         "config_sha256": config_sha256,
         "row_count": len(rows),
+        "identity_query_cluster_count": sum(
+            len(sample_keys) for sample_keys in identity_samples.values()
+        ),
         "zero_identity_overlap": True,
         "cross_camera_primary_rows": len(rows),
         "same_camera_only_rows": 0,
@@ -347,6 +590,7 @@ def compile_circ_targets(
         "total_effect_outcome_counts": outcome_counts,
         "learned_target": "helpful_vs_not_helpful",
         "neutral_and_harmful_are_negative": True,
+        "calibration_audit": compute_calibration_audit(rows),
         "query_gallery_symmetry_audit": config.get(
             "query_gallery_symmetry_audit",
             {"status": "not_supplied", "claim_eligible": False},
@@ -383,6 +627,12 @@ def write_circ_target_cache(
         "targets_sha256": final_receipt["targets_sha256"],
         **dict(final_receipt["proxy_target_transfer_audit"]),
     }
+    calibration_receipt = {
+        **dict(final_receipt["calibration_audit"]),
+        "schema_version": "circ-calibration-receipt-v1",
+        "protocol_hash": final_receipt["protocol_hash"],
+        "targets_sha256": final_receipt["targets_sha256"],
+    }
 
     for filename, payload in (
         ("targets.jsonl", targets_bytes),
@@ -391,6 +641,10 @@ def write_circ_target_cache(
         (
             "target_transfer_receipt.json",
             _canonical_json(transfer_receipt) + b"\n",
+        ),
+        (
+            "calibration_receipt.json",
+            _canonical_json(calibration_receipt) + b"\n",
         ),
     ):
         destination = output_directory / filename
@@ -536,6 +790,7 @@ __all__ = [
     "assign_identity_fold",
     "canonical_unsigned_identity",
     "compile_circ_targets",
+    "compute_calibration_audit",
     "select_audit_edge",
     "valid_edges_for_mask",
     "write_circ_target_cache",
