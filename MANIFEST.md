@@ -94,3 +94,11 @@
 | 2026-08-31 08:45 | /tdd | tools/audit_peft_boa_source.py | implementation | 固定官方提交并执行真实 RGBNT201 CPU loader batch 的只读来源审计器 |
 | 2026-08-31 08:45 | /tdd | evidence/peft_boa_source_audit_20260831.json | research | PEFT-BoA clean source、配置、loader、环境偏差与训练阻塞证据 |
 | 2026-08-31 08:45 | /tdd | docs/ENVIRONMENT_REPRODUCTION.md | implementation | 记录 PEFT-BoA 下载位置、复查命令及非训练就绪边界 |
+| 2026-08-31 08:57 | /research | evidence/peft_boa_protocol_audit_20260831.json | research | 冻结 PEFT-BoA 论文数值来自 test-selected epoch80、fixed epoch120 为 82.2/85.8 的源码/日志证据 |
+| 2026-08-31 08:57 | /research | docs/BASELINE_PROTOCOL_AUDIT_2026-08-31.md | research | 将 DeMo 与 PEFT-BoA 的 test-selected/fixed checkpoint 报告边界统一审计 |
+| 2026-08-31 08:57 | /tdd | docs/PEFT_BOA_REPRODUCTION_SPEC.md | implementation | 固定 B64/K4 容量门、seed1111 fixed120、全状态恢复与一次 test 评估合同 |
+| 2026-08-31 08:57 | /tdd | docs/TDD_SEAMS.md | implementation | 增补待用户确认的 PEFT-BoA fixed-endpoint 恢复 CLI 公共接缝 |
+| 2026-08-31 09:23 | /run-experiment | environment/peft_boa_environment.yml | implementation | 独立 PEFT-BoA Python 3.10.21 / torch 2.1.1+cu118 conda 重建入口 |
+| 2026-08-31 09:23 | /run-experiment | environment/peft_boa_requirements-lock.txt | implementation | 与已安装上游环境 `pip freeze` 完全一致的全量版本锁 |
+| 2026-08-31 09:23 | /run-experiment | evidence/peft_boa_environment_smoke_20260831.json | research | pip、CPU tensor、真实 RGBNT201 loader 通过及 GPU/训练未就绪边界证据 |
+| 2026-08-31 09:23 | /run-experiment | docs/ENVIRONMENT_REPRODUCTION.md | implementation | 增补隔离环境重建命令、验证结果和非 GPU/非指标声明边界 |

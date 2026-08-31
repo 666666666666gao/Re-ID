@@ -45,12 +45,12 @@ RGBNT201 原论文使用 201 个身份和 4 个非重叠视角，共 4,787 组�
 | MDReID | 82.1 / 85.2 | 无文本、掩码、TTT、rerank | [NeurIPS 2025 论文](https://papers.neurips.cc/paper_files/paper/2025/file/3cbe9fcdccb2399bcd6e6d01cbcae1fd-Paper-Conference.pdf)；[代码、配置和 checkpoint](https://github.com/stone96123/MDReID/tree/3525ac2da1a2a90a5a160c930fac674b4f226f6c) | 本次核查中指标最高的 checkpointed 静态 CLIP 基线；另含 any-to-any 模态任务 |
 | UGG-ReID | 81.2 / 86.8 | 不确定性图和 MoE；无 TTT/rerank | [NeurIPS 2025 论文](https://proceedings.neurips.cc/paper_files/paper/2025/file/735c847a07bf6dd4486ca1ace242a88c-Paper-Conference.pdf)；[代码和配置](https://github.com/wanxixi11/UGG-ReID/tree/eaf1e8e50d04f34ee3e471440f70d335cc67b2c1)，未见 checkpoint | 静态可靠性融合的重要对照；需自行训练 |
 | FUSE | 81.4 / 86.1 | CLIP，频域分解与能量对齐，256×128；静态推理 | [ICML 2026 作者稿 Table 1](https://arxiv.org/abs/2606.20044)；截至审计时未定位到作者代码仓库 | 论文报告值低于当前目标；无 loader/checkpoint，协议实现不可独立审计 |
-| PEFT-BoA | **82.7 / 86.1** | 冻结 CLIP 主干、6.62M 可训练 adapter，256×128；无 TTT/rerank | [AAAI 2026 论文 Table 1](https://ojs.aaai.org/index.php/AAAI/article/download/37537/41499)；[代码和配置](https://github.com/fffunly/PEFT-BoA/tree/d2b198be634ac4f9f5744eebf6e0a6604e490deb)，无 release/checkpoint | 本次定位到的最高“开源训练代码但无权重”静态 CLIP 报告值；必须从头复现后才可升级为实测锚点 |
+| PEFT-BoA | **82.7 / 86.1**（test-selected e80）；fixed e120 为 82.2 / 85.8 | 冻结 CLIP 主干、6.62M 可训练 adapter，256×128；无 TTT/rerank | [AAAI 2026 论文 Table 1](https://ojs.aaai.org/index.php/AAAI/article/download/37537/41499)；[代码、配置和完整训练日志](https://github.com/fffunly/PEFT-BoA/tree/d2b198be634ac4f9f5744eebf6e0a6604e490deb)，无 release/checkpoint | 公开日志证明论文值来自每轮 official-test 选出的 epoch80；公平主行必须从头训练并固定报告 epoch120 |
 | RoDI-CLIP | **84.1 / 87.2** | 静态纯视觉推理；无 TTT/rerank | [CVPR 2026 Findings 论文](https://openaccess.thecvf.com/content/CVPR2026F/html/Li_Rolling_and_Denoising_Rethinking_Dynamic_Modal_Fusion_for_Multi-Modal_Object_CVPRF_2026_paper.html)；[仓库](https://github.com/lsh-ahu/RoDI/tree/2f38911c49d42d4ca259d440a851b8d77dddccbe) 仅 README/assets | 静态 CLIP 论文报告上限，当前不可独立复现 |
 
 Signal、PEFT-BoA 和 ICPL-ReID 的已发布 loader 均显式读取 `train_171`，并以完整 `test` 同时构造 query/gallery；因此其训练身份范围可以代码审计。MGRNet 的作者仓库在固定提交仅有 README，FUSE 未定位到作者代码，二者的 loader/evaluator 仍只能按论文表述归类。增量扫描中没有任何静态 CLIP 结果超过 RoDI-CLIP 的 84.1 / 87.2。
 
-工程角色据此固定为：**DeMo 是已接入的实现脚手架；MDReID 82.0868 / 85.1675 是本机已严格复现的最高 checkpoint 锚点；PEFT-BoA 是待从代码重训的更高报告值比较器。** 在 PEFT-BoA 复现闭环前，不能用其论文数字替代 MDReID 的实测基线。
+工程角色据此固定为：**DeMo 是已接入的实现脚手架；MDReID 82.0868 / 85.1675 是本机已严格复现的最高 checkpoint 锚点；PEFT-BoA 是待从代码重训的更高 released-protocol 比较器。** PEFT-BoA 的 82.7 / 86.1 只能标为 test-selected epoch80；在 fixed120 复现闭环前，不能用它替代 MDReID 的实测基线。
 
 ### 2.2 静态更强预训练、多阶段 KD 与 TTT
 
@@ -90,7 +90,7 @@ Signal、PEFT-BoA 和 ICPL-ReID 的已发布 loader 均显式读取 `train_171`�
 可审计的目标应分轨表达：
 
 - 静态纯视觉 CLIP-B/16、256×128：RoDI-CLIP 84.1 / 87.2；
-- 静态纯视觉 CLIP-B/16、开源训练代码但未发布权重：PEFT-BoA 82.7 / 86.1，待本机从头复现；
+- 静态纯视觉 CLIP-B/16、开源训练代码但未发布权重：PEFT-BoA released-test-selected e80 为 82.7 / 86.1、同一公开日志 fixed e120 为 82.2 / 85.8；两者均待本机从头复现并分栏报告；
 - 静态纯视觉、更强外部预训练：RoDI-DINOv3 85.3 / 87.9；
 - 多阶段 DINOv2 蒸馏：PMKD 84.7 / 88.9；
 - 测试时训练：ProxyTTT 85.0 / 88.5；

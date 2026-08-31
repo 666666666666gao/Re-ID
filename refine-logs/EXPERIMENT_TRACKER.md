@@ -12,6 +12,7 @@
 | R006A | M0 | 增量 SOTA/代码审计 | 2026-08-31 primary-source sweep | current public | metrics/protocol/artifacts | MUST | DONE | Signal/PEFT-BoA/FUSE/MGRNet/ICPL 均未超过 RoDI-CLIP 84.1/87.2；Hyper-ReID 仅占位 README，转 R071A 复查 |
 | R007 | M0 | Mamba CUDA | SM89 build + smoke | synthetic | forward/backward | MUST | DONE | mamba 2.2.6.post3 |
 | R008 | M0 | 环境锁 | conda/pip/source pins | WSL2 | rebuild evidence | MUST | DONE | environment.yml + lock |
+| R008A | M0 | PEFT 上游环境 | peft_boa torch2.1.1+cu118 | CPU/loader | imports/pip/shape/hash | MUST | DONE | 独立 YAML+全量锁；pip check、CPU math、真实 B32/K4 loader PASS；不代表 GPU/指标通过 |
 | R009 | M0 | RGBNT100 完整性 | audit | all | triplets/JPEG | MUST | DONE | 17,250 triplets；70,715 JPEG |
 | R010 | M1 | 强 checkpoint parity | MDReID | RGBNT201 test | mAP/R1/R5/R10 | MUST | DONE | 82.0868/85.1675/90.3110/92.5837 |
 | R011 | M1 | DeMo tiny overfit | DeMo | tiny train | loss/R1 | MUST | WAITING | 等本地 GPU 低于 500 MiB 空闲门禁 |
@@ -20,9 +21,9 @@
 | R013 | M1 | DeMo 协议偏差 | fixed vs test-selected | RGBNT201 | delta/provenance | MUST | WAITING | 等 R012R 产生固定 DeMo_50.pth；禁止用 epoch17 test-selected 代替 |
 | R014 | M1 | 系统门 | B32 + eval latency | RGBNT201 | VRAM/latency/driver | MUST | WARN | 8-step 6,894 MiB；历史 ori >300s；R012 终止附近 7 条 nvlddmkm 153 |
 | R015 | M1 | train-only dev | 141-fit/30-dev | train_171 only | overlap/positives | MUST | DONE | test overlap=0；825/825 valid |
-| R016 | M1 | 证据包 | 23 versioned JSONs | all | SHA/protocol | MUST | DONE | 加入 R012 incident 与 PEFT-BoA source/loader receipts；SHA256SUMS pass |
+| R016 | M1 | 证据包 | 25 versioned JSONs | all | SHA/protocol | MUST | DONE | 加入 R012 incident 与 PEFT-BoA source/loader/protocol/environment receipts；SHA256SUMS pass |
 | R017 | M1 | MDReID 强化驱动复验 | hardened driver | RGBNT201 | parity/full audit | MUST | WAITING | 等本地 GPU 低于 500 MiB 空闲门禁 |
-| R017A | M1 | 最高开源训练代码比较器 | PEFT-BoA d2b198b from scratch | RGBNT201 | fixed mAP/R1/provenance | MUST | WAITING | clean source + CPU loader PASS；无权重且上游 test-select/model-only checkpoint；须先加固并过 GPU 容量门 |
+| R017A | M1 | 最高开源训练代码比较器 | PEFT-BoA d2b198b seed1111 B64/K4 | RGBNT201 | fixed-e120 mAP/R1/provenance | MUST | WAITING | exact upstream CPU env/source/loader PASS；公开 82.7/86.1=test-selected e80，fixed e120=82.2/85.8；等待接缝同意、加固驱动和 GPU 容量门 |
 | R017B | M1 | 补充 checkpoint 比较器 | Signal cd1b0a6 official weight | RGBNT201 | mAP/R1/hash | SHOULD | WAITING | 百度网盘权重尚未下载；不得用论文数字冒充本机结果 |
 | R018 | M1 | epoch10 receipt | DeMo_10.pth | RGBNT201 | ordering/hash | MUST | DONE | SHA b2ab79f0…31c0 |
 | R018A | M1 | epoch20 receipt | DeMo_20.pth | RGBNT201 | ordering/hash/metrics | MUST | DONE | SHA 5d61a4cf…e7b2；非 test 选点 |

@@ -98,3 +98,29 @@ and its state API is:
 
 This seam repairs baseline experiment durability only. It does not authorize
 tests or implementation of the pending TriFusion model/evaluator seams above.
+
+## PEFT-BoA fixed-endpoint recovery seam (proposed)
+
+The proposed public boundary is:
+
+`tools/run_peft_boa_resumable.py --output-dir DIR --mode capacity|fixed120`
+
+- `capacity` proves eight real B64/K4 AMP steps, full trainable-gradient
+  coverage, finite values and the 8 GiB memory gate without opening the
+  official test loader;
+- `fixed120` records a complete epoch-0 boundary, then atomic current/previous
+  full-state epoch generations containing model, AdamW, scheduler, scaler,
+  criteria/center optimizer where constructed, and all RNG states;
+- the run identity binds the clean PEFT commit, resolved config, CLIP/data,
+  runner/runtime, seed 1111, B64/K4 and worker/device settings;
+- official test iteration count remains zero until the fixed epoch-120
+  checkpoint is durable; the primary mode then evaluates it exactly once;
+- epoch80 and epoch120 model exports are saved before any test access, but
+  epoch80 is only a separately labeled published-protocol calibration;
+- corrupt, foreign, partial, phase-invalid or model-only upstream checkpoints
+  are rejected; no best checkpoint is selected from official-test metrics.
+
+The detailed contract is `docs/PEFT_BOA_REPRODUCTION_SPEC.md`. No PEFT runner
+test or implementation is added until the user accepts this proposed seam.
+Replying exactly `接缝同意` accepts both the pending TriFusion seams and this
+PEFT baseline seam.

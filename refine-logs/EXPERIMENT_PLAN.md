@@ -37,10 +37,10 @@ CIRC 与 URGC 是一个统一可靠性贡献的“如何学”和“如何用”
 - Claim tested：所有后续比较基于正确协议、固定资源和可重算基线。
 - Why this block exists：DeMo 上游每 epoch 读取 official test 并按 test mAP 写 best，必须与公平 fixed-epoch 结果分开。
 - Dataset / split / task：RGBNT201 train_171；官方 test query/gallery；141-fit/30-dev 仅用于选配置。
-- Compared systems：主强 checkpoint baseline 为 MDReID 官方权重（本机 parity 82.0868 / 85.1675）；DeMo 仅作为已接入实现脚手架并报告 fixed DeMo_50.pth；PEFT-BoA 作为当前最高开源训练代码/无权重的静态 CLIP 报告值，从头复现；Signal、MFRNet checkpoint 作为可执行补充比较器；DeMo test-selected best 仅作 released-protocol 校准。
+- Compared systems：主强 checkpoint baseline 为 MDReID 官方权重（本机 parity 82.0868 / 85.1675）；DeMo 仅作为已接入实现脚手架并报告 fixed DeMo_50.pth；PEFT-BoA 从头复现并分栏报告 fixed e120（主行）与 released-log test-selected e80（校准）；Signal、MFRNet checkpoint 作为可执行补充比较器；所有 test-selected best 都不得进入公平主行。
 - Metrics：mAP、R1/R5/R10、完整性门、checkpoint SHA、训练/评估延迟。
 - Setup details：CLIP-B/16、256×128、B32/K4/TB64、50 epochs、seed 42；官方 same-id/same-camera 排除。
-- Success criterion：MDReID parity 误差 ≤0.3 pp；DeMo 50 epoch 完整无 fatal/nonfinite；PEFT-BoA 在固定 epoch、无 test 选点下完成可审计复现，若未达到论文值则保留失败证据而不降格对手；fixed 与 test-selected 标签绝不混用；手算 evaluator 回归通过。
+- Success criterion：MDReID parity 误差 ≤0.3 pp；DeMo 50 epoch 完整无 fatal/nonfinite；PEFT-BoA B64/K4 先过容量门，再以 seed1111 固定训练至 e120，训练期不读取 official test，主行对照公开 fixed-e120 82.2/85.8 而非 test-best 82.7/86.1；若未达到则保留失败证据而不降格对手；fixed 与 test-selected 标签绝不混用；手算 evaluator 回归通过。
 - Failure interpretation：先诊断 evaluator、数据、权重或环境；不得把偏低复现当弱对手。
 - Table / figure target：复现表与协议附录。
 - Priority：MUST-RUN。

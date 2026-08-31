@@ -64,21 +64,25 @@ report schema before treating the current source revision as reproduced.
 ## Audit the stronger open-training-code comparator
 
 PEFT-BoA reports 82.7% mAP / 86.1% Rank-1 and publishes training code but no
-checkpoint or release asset. Its official checkout is pinned, without local
-modification, at:
+checkpoint or release asset. Its complete official log shows that this is the
+test-mAP-selected epoch-80 result; the same run's fixed epoch120 is 82.2% /
+85.8%. Its official checkout is pinned, without local modification, at:
 
 ```text
 /root/mmreid-trifusion/baselines/PEFT-BoA
 d2b198be634ac4f9f5744eebf6e0a6604e490deb
 ```
 
-Run the source and CPU loader audit with:
+Create the isolated upstream-compatible runtime and run the source/CPU loader
+audit with:
 
 ```bash
 cd /root/mmreid-trifusion/TriFusion-ReID
-conda activate tri_reid
-python tools/audit_peft_boa_source.py \
-  --json-out evidence/peft_boa_source_audit_20260831.json
+/root/miniconda3/bin/conda env create \
+  -f environment/peft_boa_environment.yml
+/root/miniconda3/envs/peft_boa/bin/python -m pip check
+CUDA_VISIBLE_DEVICES='' \
+  /root/miniconda3/envs/peft_boa/bin/python tools/audit_peft_boa_source.py
 ```
 
 The verified receipt binds the clean commit and official remote, six
@@ -89,13 +93,22 @@ training identities and 836 queries. It also records that the published
 configuration is frozen-CLIP, B64/K4, seed 1111, 120 epochs, 256×128 and no
 reranking.
 
+The dedicated `peft_boa` environment exactly carries the released torch
+2.1.1+cu118 stack and a version lock matching its installed `pip freeze`. It
+passes dependency resolution, CPU imports/tensor math and the real RGBNT201
+loader audit. The project `tri_reid` environment remains separately fixed at
+torch 2.5.1+cu121 for the new architecture. The environment receipt is
+`evidence/peft_boa_environment_smoke_20260831.json`.
+
 This is deliberately **not** a metric reproduction or a training-ready gate.
-The released requirements pin torch 2.1.1+cu118 while the project environment
-uses 2.5.1+cu121; the upstream model constructor forces CUDA; the upstream
-loop evaluates the official test every epoch, saves `best.pth` by test mAP,
-and writes model-only periodic checkpoints. R017A therefore stays waiting
-until a fixed-epoch, crash-safe wrapper and a real 8 GiB forward/backward gate
+The upstream model constructor forces CUDA; the upstream loop evaluates the
+official test every epoch, saves `best.pth` by test mAP, and writes model-only
+periodic checkpoints. R017A therefore stays waiting until the accepted
+fixed-epoch crash-safe wrapper and a real B64/K4 8 GiB forward/backward gate
 pass. MDReID remains the strongest locally measured checkpoint baseline.
+The source-line and log-hash evidence, and the binding fixed-versus-selected
+reporting policy, are in `docs/BASELINE_PROTOCOL_AUDIT_2026-08-31.md` and
+`evidence/peft_boa_protocol_audit_20260831.json`.
 
 ## Reproduce the DeMo implementation base
 

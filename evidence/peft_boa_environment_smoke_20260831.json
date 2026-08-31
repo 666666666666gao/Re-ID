@@ -1,0 +1,148 @@
+{
+  "audit_date": "2026-08-31",
+  "baseline": "PEFT-BoA",
+  "checks": {
+    "cpu_import_and_matmul": {
+      "cpu_matmul": [
+        [
+          5.0,
+          14.0
+        ],
+        [
+          14.0,
+          50.0
+        ]
+      ],
+      "exit_code": 0,
+      "valid": true
+    },
+    "pip_check": {
+      "exit_code": 0,
+      "output": "No broken requirements found.",
+      "valid": true
+    },
+    "pip_lock_matches_installed_freeze": true,
+    "rgbnt201_loader": {
+      "effective_smoke_batch": 32,
+      "nir_shape": [
+        32,
+        3,
+        256,
+        128
+      ],
+      "num_cameras": 4,
+      "num_classes": 171,
+      "num_query": 836,
+      "num_views": 1,
+      "pid_shape": [
+        32
+      ],
+      "pid_unique": 8,
+      "pretrain_bytes": 350837078,
+      "pretrain_sha256": "5806e77cd80f8b59890b7e101eabd078d9fb84e6937f9e85e4ecb61988df416f",
+      "rgb_shape": [
+        32,
+        3,
+        256,
+        128
+      ],
+      "smoke_seed": 42,
+      "source_config_batch": 64,
+      "source_config_num_instance": 4,
+      "source_config_seed": 1111,
+      "tir_shape": [
+        32,
+        3,
+        256,
+        128
+      ],
+      "valid": true
+    },
+    "source_tree_clean_after": true
+  },
+  "environment": {
+    "definition": {
+      "path": "environment/peft_boa_environment.yml",
+      "sha256": "5f7f9b364933a97aec8ce757c0c3cf61aa07e90a586dec379d48cbf5fcc8b0bf"
+    },
+    "name": "peft_boa",
+    "pip_lock": {
+      "path": "environment/peft_boa_requirements-lock.txt",
+      "sha256": "e8c489e7518e758e76faca1f9aa90118df462be6616a28805b842c2c8d5ff26a"
+    },
+    "prefix": "/root/miniconda3/envs/peft_boa",
+    "source_requirements": {
+      "path": "/root/mmreid-trifusion/baselines/PEFT-BoA/requirements.txt",
+      "sha256": "c7da9876f61a9e53f7f46abd14ab070e074fca5a005782dd36027bb9ce94ec3f"
+    }
+  },
+  "gpu_boundary": {
+    "capacity_gate_passed": false,
+    "cuda_visible_devices": "",
+    "forward_backward_tested": false,
+    "gpu_snapshot_mib": {
+      "driver_version": "581.80",
+      "memory_total": 8188,
+      "memory_used": 862,
+      "name": "NVIDIA GeForce RTX 4060 Laptop GPU",
+      "temperature_c": 47,
+      "utilization_percent": 11
+    },
+    "launch_threshold_mib": 500,
+    "model_constructed": false,
+    "threshold_passed": false,
+    "torch_cuda_available_with_mask": false
+  },
+  "platform": {
+    "glibc": "2.31",
+    "kernel": "6.6.87.2-microsoft-standard-WSL2",
+    "os": "Ubuntu 20.04.6 LTS"
+  },
+  "probe_history": {
+    "corrected_probe": {
+      "exit_code": 0,
+      "version_source": "importlib.metadata for yacs"
+    },
+    "initial_probe": {
+      "environment_fault": false,
+      "exit_code": 1,
+      "reason": "the probe assumed yacs.__version__, which the package does not expose"
+    }
+  },
+  "runtime": {
+    "fvcore": "0.1.5.post20221221",
+    "matplotlib": "3.8.3",
+    "numpy": "1.26.3",
+    "opencv": "4.9.0",
+    "pandas": "2.2.1",
+    "pillow": "10.2.0",
+    "pip": "26.2.1",
+    "python": "3.10.21",
+    "scikit_learn": "1.5.1",
+    "seaborn": "0.13.2",
+    "setuptools": "83.0.0",
+    "timm": "0.4.12",
+    "torch": "2.1.1+cu118",
+    "torch_cuda_build": "11.8",
+    "torchaudio": "2.1.1+cu118",
+    "torchvision": "0.16.1+cu118",
+    "wheel": "0.47.0",
+    "yacs": "0.1.8"
+  },
+  "schema_version": 1,
+  "scope": "isolated upstream runtime dependency, CPU import, CPU tensor and real RGBNT201 loader smoke; no CUDA model construction",
+  "source": {
+    "commit": "d2b198be634ac4f9f5744eebf6e0a6604e490deb",
+    "remote": "https://github.com/fffunly/PEFT-BoA.git"
+  },
+  "training_readiness": {
+    "blockers": [
+      "the official B64/K4 CUDA forward/backward capacity gate has not run because used GPU memory exceeded 500 MiB",
+      "the fixed-endpoint crash-safe runner remains gated on the user's exact TDD seam consent",
+      "no local metric reproduction has completed"
+    ],
+    "ready": false
+  },
+  "valid": true,
+  "validity_boundary": "valid only for the stated CPU environment and loader scope; it is not a GPU compatibility, capacity, training-readiness or metric-parity claim"
+}

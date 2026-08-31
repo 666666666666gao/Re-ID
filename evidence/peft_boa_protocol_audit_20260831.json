@@ -1,0 +1,64 @@
+{
+  "audit_date": "2026-08-31",
+  "baseline": "PEFT-BoA",
+  "claim_boundary": {
+    "fair_primary": "locally trained fixed epoch 120, official test evaluated once only after the fixed checkpoint is durable",
+    "paper_report": "test-selected epoch 80 under the released EVAL_PERIOD=1 protocol",
+    "paper_report_must_not_be_labeled_fixed_epoch": true,
+    "upstream_log_is_not_local_metric_reproduction": true
+  },
+  "released_log": {
+    "bytes": 166691,
+    "configured_protocol": {
+      "batch_size": 64,
+      "checkpoint_period": 60,
+      "eval_period": 1,
+      "max_epochs": 120,
+      "num_instances": 4,
+      "optimizer": "AdamW",
+      "seed": 1111,
+      "test_batch_size": 64
+    },
+    "fixed_endpoint": {
+      "epoch": 120,
+      "log_lines": [2261, 2262, 2263, 2264, 2265, 2266],
+      "mAP": 82.2,
+      "rank1": 85.8,
+      "rank10": 93.5,
+      "rank5": 91.5
+    },
+    "paper_matching_test_selected_best": {
+      "epoch": 80,
+      "log_lines": [1661, 1662, 1663, 1664, 1665, 1666, 1667, 1668, 1669, 1670],
+      "mAP": 82.7,
+      "rank1": 86.1,
+      "rank10": 94.7,
+      "rank5": 92.3
+    },
+    "path": "/root/mmreid-trifusion/baselines/PEFT-BoA/configs/RGBNT201/train_log.txt",
+    "reported_rounded_best_minus_fixed_pp": {
+      "mAP": 0.5,
+      "rank1": 0.3,
+      "rank10": 1.2,
+      "rank5": 0.8
+    },
+    "sha256": "e2443e4fa14c250f055271ab22a3db0181c1095a755d1ddd6005c701a3139f78"
+  },
+  "schema_version": 1,
+  "source": {
+    "commit": "d2b198be634ac4f9f5744eebf6e0a6604e490deb",
+    "config": {
+      "path": "configs/RGBNT201/PEFT-BoA.yml",
+      "sha256": "c7c2ea5914f388f60f9316560ba865e5e47074f70a316f909315cb9dff358e6b"
+    },
+    "processor": {
+      "checkpoint_lines": [103, 104, 105, 106, 107, 108, 109, 110],
+      "evaluation_lines": [112, 113, 114, 115, 116, 117, 118, 119, 120, 121, 122, 123, 124, 125, 126, 127, 128, 129, 130, 131, 132, 133, 134, 135, 136, 137, 138, 139, 140, 141, 142, 143, 144, 145, 146, 147, 148, 149, 150, 151, 152, 153],
+      "path": "engine/processor.py",
+      "sha256": "d6c1ec1600bbc144d5971fecc1ad77436c5021517226fce42383640be67ea29f",
+      "test_selection_lines": [154, 155, 156, 157, 158, 159, 160]
+    },
+    "remote": "https://github.com/fffunly/PEFT-BoA.git"
+  },
+  "valid": true
+}
