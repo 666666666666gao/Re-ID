@@ -20,6 +20,7 @@ FROZEN_RUNNER = PROJECT / "tools/run_trifusion_experiment.py"
 FROZEN_RUNNER_SHA256 = (
     "50540f112d99b55e761be91eaa36a273444c0318c9929929cb8a62d8cb25897c"
 )
+AMP_SAFE_SITECUSTOMIZE = PROJECT / "tools/runtime_amp_safe/sitecustomize.py"
 VARIANT = "trifusion_circ_urgc"
 EVIDENCE_SCOPE = "mean_only_training_input"
 
@@ -152,6 +153,7 @@ def _validate_static_launch_request(
     )
     config = _load_config(config_path)
     execution = dict(config.get("EXECUTION", {}))
+    optimization = dict(config.get("OPTIMIZATION", {}))
     launcher = Path(__file__).resolve()
     registered_output_key = (
         "MEAN_ONLY_DEV_OUTPUT_DIR"
@@ -170,6 +172,12 @@ def _validate_static_launch_request(
         or execution.get("FROZEN_RUNNER_SHA256") != FROZEN_RUNNER_SHA256
         or not FROZEN_RUNNER.is_file()
         or _sha256(FROZEN_RUNNER) != FROZEN_RUNNER_SHA256
+        or _resolve_registered_path(execution.get("AMP_SAFE_SITECUSTOMIZE", ""))
+        != AMP_SAFE_SITECUSTOMIZE.resolve()
+        or not AMP_SAFE_SITECUSTOMIZE.is_file()
+        or execution.get("AMP_SAFE_SITECUSTOMIZE_SHA256")
+        != _sha256(AMP_SAFE_SITECUSTOMIZE)
+        or optimization.get("AMP") is not True
         or _resolve_registered_path(execution.get(registered_output_key, ""))
         != output_dir
         or _resolve_registered_path(execution.get("MEAN_ONLY_LEDGER_DIR", ""))
@@ -209,6 +217,12 @@ def _validate_static_launch_request(
         "launcher_sha256": _sha256(launcher),
         "runner_path": str(FROZEN_RUNNER.resolve()),
         "runner_sha256": FROZEN_RUNNER_SHA256,
+        "amp_safe_sitecustomize_path": str(AMP_SAFE_SITECUSTOMIZE.resolve()),
+        "amp_safe_sitecustomize_sha256": _sha256(AMP_SAFE_SITECUSTOMIZE),
+        "runner_environment": {
+            "PYTHONNOUSERSITE": "1",
+            "PYTHONPATH": str(AMP_SAFE_SITECUSTOMIZE.parent.resolve()),
+        },
         "parent_root": str(parent_root),
         "overlay_protocol_path": str(protocol_path),
         "overlay_protocol_sha256": _sha256(protocol_path),
@@ -507,6 +521,8 @@ def launch(validation: Mapping[str, Any]) -> tuple[Path, int]:
         "started_at_utc": datetime.now(timezone.utc).isoformat(),
     }
     _exclusive_json(entry / "prelaunch_receipt.json", prelaunch)
+    child_environment = os.environ.copy()
+    child_environment.update(dict(validation["runner_environment"]))
     with (entry / "runner.log").open("xb") as log_handle:
         process = subprocess.run(
             list(validation["runner_argv"]),
@@ -514,6 +530,7 @@ def launch(validation: Mapping[str, Any]) -> tuple[Path, int]:
             stdout=log_handle,
             stderr=subprocess.STDOUT,
             check=False,
+            env=child_environment,
         )
         log_handle.flush()
         os.fsync(log_handle.fileno())

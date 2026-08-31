@@ -117,6 +117,7 @@ class CIRCMeanOnlyOverlayTests(unittest.TestCase):
             project = Path(__file__).resolve().parents[1]
             launcher = project / "tools/run_trifusion_mean_only.py"
             runner = project / "tools/run_trifusion_experiment.py"
+            amp_safe = project / "tools/runtime_amp_safe/sitecustomize.py"
             dev_output = root / "dev-output"
             preflight_output = root / "preflight-output"
             ledger = root / "launch-ledger"
@@ -124,6 +125,7 @@ class CIRCMeanOnlyOverlayTests(unittest.TestCase):
             config = root / "train.json"
             config_payload = {
                 "EXPERIMENT": {"SEED": 42},
+                "OPTIMIZATION": {"AMP": True},
                 "LOSS": {"EVIDENCE_WEIGHT": 0.0},
                 "CIRC": {
                     "TARGET_CACHE": str(output / "cache"),
@@ -141,6 +143,8 @@ class CIRCMeanOnlyOverlayTests(unittest.TestCase):
                     "MEAN_ONLY_LAUNCHER_SHA256": _sha256(launcher),
                     "FROZEN_RUNNER": str(runner),
                     "FROZEN_RUNNER_SHA256": _sha256(runner),
+                    "AMP_SAFE_SITECUSTOMIZE": str(amp_safe),
+                    "AMP_SAFE_SITECUSTOMIZE_SHA256": _sha256(amp_safe),
                     "MEAN_ONLY_DEV_OUTPUT_DIR": str(dev_output),
                     "MEAN_ONLY_PREFLIGHT_OUTPUT_DIR": str(preflight_output),
                     "MEAN_ONLY_LEDGER_DIR": str(ledger),
@@ -181,6 +185,10 @@ class CIRCMeanOnlyOverlayTests(unittest.TestCase):
             )
             self.assertEqual(launch["variant"], "trifusion_circ_urgc")
             self.assertEqual(launch["runner_sha256"], _sha256(runner))
+            self.assertEqual(
+                launch["amp_safe_sitecustomize_sha256"],
+                _sha256(amp_safe),
+            )
             self.assertEqual(
                 launch["result_qualification_gate"],
                 "mean_only_completion_receipt",
