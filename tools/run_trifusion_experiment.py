@@ -724,6 +724,18 @@ def _worker_capacity(
         from modeling.trifusion.data import build_rgbnt201_dev_loaders
 
         contract = dict(resolve_variant(variant))
+        registered_circ_protocol_path: Path | None = None
+        registered_circ_protocol_sha256: str | None = None
+        if variant == "hfer_uniform_generator":
+            registered_value = config.get("PROTOCOL", {}).get("CIRC_PROTOCOL")
+            if not registered_value:
+                raise ValueError("HFER-uniform generator requires a frozen CIRC protocol")
+            registered_circ_protocol_path = (PROJECT / str(registered_value)).resolve()
+            if not registered_circ_protocol_path.is_file():
+                raise FileNotFoundError(registered_circ_protocol_path)
+            registered_circ_protocol_sha256 = _sha256(registered_circ_protocol_path)
+            if oof_mode and Path(circ_protocol_path).resolve() != registered_circ_protocol_path:
+                raise ValueError("OOF worker protocol differs from generator config")
         seed = int(config["EXPERIMENT"]["SEED"])
         random.seed(seed)
         np.random.seed(seed)
@@ -1039,8 +1051,21 @@ def _save_dev_generation(
     return manifest
 
 
-def _worker_dev(config_path: Path, variant: str, output_dir: Path) -> int:
-    result_path = output_dir / "dev_worker_result.json"
+def _worker_dev(
+    config_path: Path,
+    variant: str,
+    output_dir: Path,
+    *,
+    oof_target_fold: int | None = None,
+    circ_protocol_path: Path | None = None,
+    fixed_endpoint: int | None = None,
+) -> int:
+    oof_mode = oof_target_fold is not None
+    if oof_mode != (circ_protocol_path is not None and fixed_endpoint is not None):
+        raise ValueError("OOF target fold, protocol and fixed endpoint are all-or-none")
+    result_path = output_dir / (
+        "generator_receipt.json" if oof_mode else "dev_worker_result.json"
+    )
     config = yaml.safe_load(config_path.read_text(encoding="utf-8"))
     resource_profile = str(
         config.get("EXPERIMENT", {}).get("RESOURCE_PROFILE", "standard_b16k4")
@@ -1076,7 +1101,10 @@ def _worker_dev(config_path: Path, variant: str, output_dir: Path) -> int:
             SingleBranchCriterion,
             TriFusionCriterion,
         )
-        from modeling.trifusion.data import build_rgbnt201_dev_loaders
+        from modeling.trifusion.data import (
+            build_rgbnt201_dev_loaders,
+            build_rgbnt201_oof_loaders,
+        )
         from utils.reid_evaluation import evaluate_reid
 
         contract = dict(resolve_variant(variant))
@@ -1088,14 +1116,24 @@ def _worker_dev(config_path: Path, variant: str, output_dir: Path) -> int:
         torch.cuda.manual_seed_all(seed)
         torch.backends.cudnn.deterministic = True
         torch.backends.cudnn.benchmark = True
-        data = build_rgbnt201_dev_loaders(
-            dataset_root=Path(config["DATA"]["DATASET_ROOT"]),
-            protocol_path=PROJECT / config["DATA"]["DEV_PROTOCOL"],
-            train_batch_size=int(config["DATA"]["TRAIN_BATCH_SIZE"]),
-            num_instances=int(config["DATA"]["NUM_INSTANCES"]),
-            eval_batch_size=int(config["DATA"]["EVAL_BATCH_SIZE"]),
-            num_workers=int(config["DATA"]["NUM_WORKERS"]),
-        )
+        loader_kwargs = {
+            "dataset_root": Path(config["DATA"]["DATASET_ROOT"]),
+            "protocol_path": PROJECT / config["DATA"]["DEV_PROTOCOL"],
+            "train_batch_size": int(config["DATA"]["TRAIN_BATCH_SIZE"]),
+            "num_instances": int(config["DATA"]["NUM_INSTANCES"]),
+            "eval_batch_size": int(config["DATA"]["EVAL_BATCH_SIZE"]),
+            "num_workers": int(config["DATA"]["NUM_WORKERS"]),
+        }
+        if oof_mode:
+            if variant != "hfer_uniform_generator":
+                raise ValueError("OOF target generators must use HFER-uniform")
+            data = build_rgbnt201_oof_loaders(
+                **loader_kwargs,
+                circ_protocol_path=circ_protocol_path,
+                target_fold=int(oof_target_fold),
+            )
+        else:
+            data = build_rgbnt201_dev_loaders(**loader_kwargs)
         build_kwargs = {
             "num_classes": data.num_classes,
             "image_size": tuple(config["MODEL"]["IMAGE_SIZE"]),
@@ -1165,7 +1203,12 @@ def _worker_dev(config_path: Path, variant: str, output_dir: Path) -> int:
             ],
             weight_decay=float(config["OPTIMIZATION"]["WEIGHT_DECAY"]),
         )
-        max_epochs = int(config["OPTIMIZATION"]["MAX_EPOCHS"])
+        schedule_horizon_epochs = int(config["OPTIMIZATION"]["MAX_EPOCHS"])
+        max_epochs = (
+            int(fixed_endpoint) if oof_mode else schedule_horizon_epochs
+        )
+        if max_epochs < 1 or max_epochs > schedule_horizon_epochs:
+            raise ValueError("fixed endpoint is outside the configured schedule horizon")
         warmup_epochs = int(config["OPTIMIZATION"]["WARMUP_EPOCHS"])
         warmup = torch.optim.lr_scheduler.LinearLR(
             optimizer,
@@ -1175,7 +1218,7 @@ def _worker_dev(config_path: Path, variant: str, output_dir: Path) -> int:
         )
         cosine = torch.optim.lr_scheduler.CosineAnnealingLR(
             optimizer,
-            T_max=max(1, max_epochs - warmup_epochs),
+            T_max=max(1, schedule_horizon_epochs - warmup_epochs),
             eta_min=float(config["OPTIMIZATION"]["PRETRAINED_LR"]) * 0.01,
         )
         scheduler = torch.optim.lr_scheduler.SequentialLR(
@@ -1423,6 +1466,18 @@ def _worker_dev(config_path: Path, variant: str, output_dir: Path) -> int:
                 )
 
             if phase == "post_train":
+                if oof_mode:
+                    phase = "complete" if current_epoch == max_epochs else "post_eval"
+                    _save_dev_generation(
+                        output_dir,
+                        epoch=current_epoch,
+                        phase=phase,
+                        payload=state_payload(current_epoch, phase),
+                        torch_module=torch,
+                    )
+                    if phase == "complete":
+                        break
+                    continue
                 last_metrics = evaluate()
                 dev_evaluation_count += 1
                 _atomic_json(
@@ -1450,12 +1505,17 @@ def _worker_dev(config_path: Path, variant: str, output_dir: Path) -> int:
                     _atomic_json(
                         output_dir / "best_dev_receipt.json",
                         {
+                            "schema_version": "trifusion-dev-selection-v1",
+                            "variant": variant,
                             "epoch": best_epoch,
                             "selection_output": selection_output,
                             "dev_selection_mAP": best_map,
                             "metrics_percent": best_metrics,
                             "checkpoint": str(best_path),
                             "checkpoint_sha256": _sha256(best_path),
+                            "config_sha256": _sha256(config_path),
+                            "circ_protocol_sha256": registered_circ_protocol_sha256,
+                            "variant_contract_sha256": variant_sha256(contract),
                             "selection_split": "train_171 held-out dev identities",
                             "official_test_access_count": 0,
                         },
@@ -1471,9 +1531,48 @@ def _worker_dev(config_path: Path, variant: str, output_dir: Path) -> int:
                 if phase == "complete":
                     break
 
-        if best_metrics is None or last_metrics is None:
-            raise RuntimeError("dev run completed without metrics")
-        result = {
+        if oof_mode:
+            checkpoint_path = output_dir / "generator.pth"
+            _atomic_torch_save(checkpoint_path, model.state_dict(), torch)
+            result = {
+                "status": "COMPLETE",
+                "epoch": max_epochs,
+                "phase": "complete",
+                "target_fold": int(oof_target_fold),
+                "fixed_endpoint": max_epochs,
+                "schedule_horizon_epochs": schedule_horizon_epochs,
+                "generator_target_identity_overlap": int(
+                    data.provenance["generator_target_identity_overlap"]
+                ),
+                "dev_evaluation_count": 0,
+                "target_loader_iteration_count": 0,
+                "official_test_access_count": 0,
+                "query_records": data.num_query,
+                "gallery_records": len(data.eval_loader.dataset) - data.num_query,
+                "train_records": len(data.train_loader.dataset),
+                "checkpoint": str(checkpoint_path),
+                "checkpoint_sha256": _sha256(checkpoint_path),
+                "data_provenance": dict(data.provenance),
+                "train_history": train_history,
+                "resume_history": resume_history,
+                "parameter_budget_pass": bool(
+                    built.provenance["parameter_budget_pass"]
+                ),
+                "total_parameters": int(built.provenance["total_parameters"]),
+                "variant_contract": contract,
+                "variant_contract_sha256": variant_sha256(contract),
+                "circ_protocol_sha256": registered_circ_protocol_sha256,
+                "peak_allocated_mib": torch.cuda.max_memory_allocated() / 1024**2,
+                "peak_reserved_mib": torch.cuda.max_memory_reserved() / 1024**2,
+                "fatal_or_nonfinite_detected": False,
+                "model_constructed": True,
+                "training_started": True,
+                "second_gpu_gate": second_gpu_gate,
+            }
+        else:
+            if best_metrics is None or last_metrics is None:
+                raise RuntimeError("dev run completed without metrics")
+            result = {
             "status": "COMPLETE",
             "epoch": max_epochs,
             "phase": "complete",
@@ -1504,7 +1603,7 @@ def _worker_dev(config_path: Path, variant: str, output_dir: Path) -> int:
             "model_constructed": True,
             "training_started": True,
             "second_gpu_gate": second_gpu_gate,
-        }
+            }
         _atomic_json(result_path, result)
         return 0
     except Exception as error:

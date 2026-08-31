@@ -2,9 +2,11 @@ from __future__ import annotations
 
 import hashlib
 import json
+import os
 import tempfile
 import unittest
 from pathlib import Path
+from unittest.mock import patch
 
 
 class CIRCTargetBuilderTests(unittest.TestCase):
@@ -194,6 +196,133 @@ class CIRCTargetBuilderTests(unittest.TestCase):
             self.assertEqual(
                 receipt["targets_sha256"], hashlib.sha256(target_bytes).hexdigest()
             )
+
+    def test_cli_orchestrates_three_fixed_endpoint_generators_without_target_eval(
+        self,
+    ) -> None:
+        from tools.build_circ_targets import main
+
+        project = Path(__file__).resolve().parents[1]
+        with tempfile.TemporaryDirectory() as temporary_directory:
+            root = Path(temporary_directory)
+            protocol_path = root / "circ-target-v1.json"
+            protocol_path.write_text(
+                json.dumps(
+                    {
+                        "schema_version": "circ-protocol-v1",
+                        "official_test_access_count": 0,
+                        "folds": {
+                            "count": 3,
+                            "salt": "TriFusion-CIRC-fold-v1",
+                            "identity_canonicalization": "unsigned-decimal",
+                        },
+                        "generator_selection": {
+                            "variant": "hfer_uniform_generator",
+                            "schedule_horizon_epochs": 60,
+                            "selection_output": "fused",
+                            "selection_metric": "dev_mAP",
+                        },
+                    },
+                    sort_keys=True,
+                ),
+                encoding="utf-8",
+            )
+            generator_config = (
+                project / "configs/RGBNT201/TriFusion-circ-generator-low-vram.yml"
+            )
+            selector_checkpoint = root / "selector.pth"
+            selector_checkpoint.write_bytes(b"frozen-selector")
+            endpoint_receipt = root / "best_dev_receipt.json"
+            endpoint_receipt.write_text(
+                json.dumps(
+                    {
+                        "schema_version": "trifusion-dev-selection-v1",
+                        "variant": "hfer_uniform_generator",
+                        "epoch": 9,
+                        "selection_output": "fused",
+                        "dev_selection_mAP": 51.0,
+                        "config_sha256": hashlib.sha256(
+                            generator_config.read_bytes()
+                        ).hexdigest(),
+                        "circ_protocol_sha256": hashlib.sha256(
+                            protocol_path.read_bytes()
+                        ).hexdigest(),
+                        "checkpoint": str(selector_checkpoint),
+                        "checkpoint_sha256": hashlib.sha256(
+                            selector_checkpoint.read_bytes()
+                        ).hexdigest(),
+                        "official_test_access_count": 0,
+                    },
+                    sort_keys=True,
+                ),
+                encoding="utf-8",
+            )
+            fake_worker = root / "fake_fold_worker.py"
+            fake_worker.write_text(
+                "#!/usr/bin/env python3\n"
+                "import hashlib, json, pathlib, sys\n"
+                "args = sys.argv[1:]\n"
+                "fold = int(args[args.index('--_worker-fold') + 1])\n"
+                "out = pathlib.Path(args[args.index('--output') + 1])\n"
+                "out.mkdir(parents=True, exist_ok=True)\n"
+                "checkpoint = out / 'generator.pth'\n"
+                "checkpoint.write_bytes(f'fold-{fold}'.encode())\n"
+                "receipt = {'status': 'COMPLETE', 'target_fold': fold, "
+                "'fixed_endpoint': 9, 'schedule_horizon_epochs': 60, "
+                "'generator_target_identity_overlap': 0, "
+                "'dev_evaluation_count': 0, 'target_loader_iteration_count': 0, "
+                "'official_test_access_count': 0, 'checkpoint': str(checkpoint), "
+                "'checkpoint_sha256': hashlib.sha256(checkpoint.read_bytes()).hexdigest()}\n"
+                "(out / 'generator_receipt.json').write_text(json.dumps(receipt), encoding='utf-8')\n",
+                encoding="utf-8",
+            )
+            fake_worker.chmod(0o755)
+            config_path = root / "orchestration.json"
+            config_path.write_text(
+                json.dumps(
+                    {
+                        "schema_version": "circ-generator-orchestration-v1",
+                        "operation": "train-oof-generators",
+                        "circ_protocol": str(protocol_path),
+                        "generator_config": str(generator_config),
+                        "endpoint_receipt": str(endpoint_receipt),
+                    }
+                ),
+                encoding="utf-8",
+            )
+            output = root / "generators"
+
+            with patch.dict(
+                os.environ,
+                {
+                    "TRIFUSION_CONTRACT_TESTING": "1",
+                    "TRIFUSION_CIRC_TEST_EXECUTABLE": str(fake_worker),
+                },
+            ):
+                self.assertEqual(
+                    main(
+                        [
+                            "--config",
+                            str(config_path),
+                            "--mode",
+                            "development",
+                            "--output",
+                            str(output),
+                        ]
+                    ),
+                    0,
+                )
+
+            receipt = json.loads(
+                (output / "generators_receipt.json").read_text(encoding="utf-8")
+            )
+            self.assertEqual(receipt["status"], "COMPLETE")
+            self.assertEqual(receipt["completed_folds"], [0, 1, 2])
+            self.assertEqual(receipt["fixed_endpoint"], 9)
+            self.assertEqual(receipt["dev_evaluation_count"], 0)
+            self.assertEqual(receipt["target_loader_iteration_count"], 0)
+            self.assertEqual(receipt["official_test_access_count"], 0)
+            self.assertTrue(receipt["zero_identity_overlap"])
 
     def test_target_cache_lookup_is_keyed_and_never_gradient_bearing(self) -> None:
         from modeling.trifusion.intervention_targets import CIRCTargetCache
