@@ -251,3 +251,6 @@
 | 2026-09-02 05:10 | /tdd | tests/test_trifusion_signal_preserving_v9.py | implementation | V9 peer sensitivity、逐轮正交、exact prefix、三路协同输出及冻结梯度公共接缝 |
 | 2026-09-02 05:10 | /tdd | modeling/trifusion/signal_preserving_v9.py | implementation | 两轮 receiver-specific orthogonal relay、triadic synthesis、V9 五路模型与训练 criterion |
 | 2026-09-02 05:10 | /tdd | modeling/trifusion/signal_preserving_v9_builder.py | implementation | 从冻结 V8 Phase-A-plus-Router 构建单一 V9，登记三项论文机制与参数边界 |
+| 2026-09-02 05:25 | /tdd | tests/test_run_signal_preserving_v9.py | implementation | seed42/B64K8/final-only 配置与 train-only runner/import/访问边界合同 |
+| 2026-09-02 05:25 | /run-experiment | configs/RGBNT201/TriFusion-signal-preserving-v9-rtx3090.yml | implementation | 单一 V9 配置；冻结 V8 combined checkpoint、两轮中继、60 epoch 与原65门 |
+| 2026-09-02 05:25 | /run-experiment | tools/run_signal_preserving_v9.py | implementation | train-only preflight/capacity/overfit/final training，状态 SHA 与0 dev/official receipts |
