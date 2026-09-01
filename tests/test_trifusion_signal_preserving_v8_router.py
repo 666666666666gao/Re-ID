@@ -117,3 +117,25 @@ def test_v8_oof_margin_loss_prefers_the_highest_margin_slot() -> None:
         correct_loss.alpha_target,
         torch.full((2, 1), 0.5 / 1.1),
     )
+
+
+def test_v8_quality_loss_teaches_corrupted_modality_to_lose_mass() -> None:
+    from modeling.trifusion.signal_preserving_v8_router import modality_quality_loss
+
+    quality = torch.tensor([[1.0, 0.2, 1.0]])
+    modality_mask = torch.ones(1, 3, dtype=torch.bool)
+    responsive = torch.tensor([[0.45, 0.10, 0.45]])
+    inverted = torch.tensor([[0.10, 0.80, 0.10]])
+
+    responsive_loss = modality_quality_loss(
+        responsive,
+        quality,
+        modality_mask,
+    )
+    inverted_loss = modality_quality_loss(
+        inverted,
+        quality,
+        modality_mask,
+    )
+
+    assert responsive_loss < inverted_loss
