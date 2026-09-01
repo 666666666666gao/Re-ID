@@ -33,6 +33,14 @@
 > geometry, but its high-entropy router gives the strongest CNN expert the
 > lowest weight. The V6 claim gate therefore fails; official test, ablations,
 > and multiple seeds remain closed.
+> A read-only ground-truth Oracle then reaches **63.6089 mAP**, **4.5067**
+> points above the strongest fixed V6 branch, with positive leave-one-out
+> contribution from CNN, Transformer, and Mamba. The main-only V7 correction
+> therefore retains all three residual experts and fixes synchronized triplet
+> geometry, hierarchical modality/expert routing, matched-token residuals and
+> bounded sample energy. Exact Signal parity, real B64/K8 two-view capacity
+> (222/222 gradients, 11.486 GiB peak reserved) and fixed-batch overfit pass.
+> V7 has not yet produced a held-out metric; no SOTA or fusion-gain claim exists.
 > Dataset files, pretrained weights, checkpoints, and remote artifacts are not
 > distributed in this repository. The original DeMo project and attribution are
 > preserved below.

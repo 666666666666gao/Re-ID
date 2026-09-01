@@ -1,0 +1,76 @@
+SCHEMA_VERSION: 1
+EXPERIMENT:
+  NAME: trifusion_rgbnt201_signal_preserving_v7_dev
+  SEED: 42
+  RESOURCE_PROFILE: rtx3090_b64k8
+DATA:
+  DATASET_ROOT: /root/autodl-tmp/trifusion-v2/data/RGBNT201
+  DEV_PROTOCOL: protocols/rgbnt201_dev_v1.json
+  TRAIN_BATCH_SIZE: 64
+  NUM_INSTANCES: 8
+  EVAL_BATCH_SIZE: 128
+  NUM_WORKERS: 4
+SIGNAL:
+  SOURCE: /root/autodl-tmp/trifusion-v2/comparators/Signal-cd1b0a6
+  CONFIG: /root/autodl-tmp/trifusion-v2/comparators/Signal-cd1b0a6/configs/RGBNT201/Signal.yml
+  CHECKPOINT: /root/autodl-tmp/trifusion-v2/artifacts/signal_baseline_dev_seed42_f7d4b30/Signalbest.pth
+  CHECKPOINT_SHA256: 1f5c200cd43fcbc00b8a0494329519eed3e6f062d9a29d43a0ecdd97ff4966c3
+  CLIP_WEIGHT: /root/autodl-tmp/trifusion-v2/pretrained/ViT-B-16.pt
+  BASELINE_WIDTH: 3072
+  CAMERA_SIE: true
+  EXPECTED_DEV_METRICS:
+    mAP: 58.010886612624304
+    Rank-1: 57.45454430580139
+    Rank-5: 69.93939280509949
+    Rank-10: 76.60605907440186
+INITIALIZATION:
+  V6_CHECKPOINT: /root/autodl-tmp/trifusion-v2/artifacts/trifusion_signal_preserving_v6_dev_seed42_e4a6bff/best_model.pth
+  V6_CHECKPOINT_SHA256: 32bba88cc0204cec6b563ce0a8c6239c828c46eec50647d357b2e9f30031ee2e
+MODEL:
+  ARCHITECTURE: signal_preserving_collaborative_v7
+  FEATURE_WIDTH: 512
+  GRID_SIZE: [16, 8]
+  ADAPTER_WIDTH: 128
+  RESIDUAL_WIDTH: 256
+  RELAY_RANK: 64
+  PRIVATE_WIDTH: 64
+  RELIABILITY_HIDDEN_WIDTH: 128
+  ALPHA_MAX: 0.5
+  ALPHA_INIT: 0.2
+  RETRIEVAL_OUTPUTS: [baseline_only, fused, cnn, transformer, mamba]
+OPTIMIZATION:
+  OPTIMIZER: AdamW
+  NEW_MODULE_LR: 0.00035
+  WEIGHT_DECAY: 0.0001
+  MAX_EPOCHS: 60
+  ROUTER_WARMUP_EPOCHS: 10
+  WARMUP_EPOCHS: 5
+  AMP: true
+  AMP_INIT_SCALE: 256.0
+LOSS:
+  ID_FUSED: 0.25
+  TRIPLET_FUSED: 1.0
+  ID_BRANCH: 0.08333333333333333
+  TRIPLET_BRANCH: 0.25
+  ID_RESIDUAL: 0.08333333333333333
+  TRIPLET_RESIDUAL: 0.25
+  PEER_LOGITS: 1.0
+  ALPHA: 1.0
+  RELIABILITY: 1.0
+  TRIPLET_MARGIN: 0.3
+  LABEL_SMOOTHING: 0.1
+  UTILITY_TEMPERATURE: 0.1
+  ALPHA_GAIN_SCALE: 0.1
+QUALITY:
+  DEGRADATION_PROBABILITY: 0.75
+  DEGRADED_QUALITY: 0.25
+GATES:
+  CAPACITY_STEPS: 8
+  OVERFIT_STEPS: 100
+  OVERFIT_MAX_LOSS_RATIO: 0.1
+  DEV_MIN_MAP: 65.0
+  FUSED_STRICTLY_BEATS: [baseline_only, cnn, transformer, mamba]
+PROTOCOL:
+  OFFICIAL_TEST_DURING_DEVELOPMENT: false
+  RERANKING: false
+  MODEL_SELECTION: fused_dev_mAP

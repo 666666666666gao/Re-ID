@@ -227,3 +227,21 @@ These receipts support exact Signal preservation and a narrow held-out-dev
 baseline improvement. They do not support collaborative superiority, official
 evaluation, innovation-effectiveness or SOTA. V6-specific independent integrity
 remains provisional because the repository audit predates this run.
+
+The read-only V6 Oracle complementarity receipt uses ground-truth query outcomes
+for diagnosis only, never deployment. Its branch Oracle reaches 63.6089 mAP,
+4.5067 points above the strongest fixed CNN branch, and every expert has positive
+leave-one-out marginal mAP. The residual-only Oracle similarly gains 4.1940
+points over its strongest fixed expert. This supports retaining all three
+experts and identifies learned routing as a material bottleneck; it is not a
+deployable result and remains below the 65 mAP development gate.
+
+The V7 readiness receipts bind shared triplet geometry, matched-token residuals,
+hierarchical modality-then-expert routing, per-slot normalized marginal identity
+gain and a bounded sample-level residual gate. Preflight exactly preserves the
+3072D Signal output and 58.0109/57.4545 dev baseline while loading V6 epoch 8
+with exactly four expected new alpha-gate tensors. Real B64/K8 two-view capacity
+passes 222/222 gradient tensors with zero overflow and 11,486 MiB peak reserved
+memory. Fixed-batch overfit passes after subtracting the analytic 0.610636 label-
+smoothing entropy floor: excess-loss ratio 0.08048. These are train-only
+readiness facts. V7 has no held-out result yet and supports no gain or SOTA claim.

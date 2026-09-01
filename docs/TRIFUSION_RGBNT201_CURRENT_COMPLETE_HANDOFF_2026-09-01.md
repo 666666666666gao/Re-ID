@@ -2,7 +2,7 @@
 
 ## 0. 一页结论
 
-本工程是在 DeMo 代码基座上实现的 RGB–NIR–TIR 多模态目标重识别研究分支。最新完整主方法是 Signal-preserving V6：冻结并逐元素保留 Signal 的完整 3072D `direct+SIM+SIE` 检索路径，同时让 CNN、Transformer、Mamba 三个完整异构专家读取同一强语义特征场，经分阶段双向交换后追加无自由倍率、等能量激活的质量路由残差银行。
+本工程是在 DeMo 代码基座上实现的 RGB–NIR–TIR 多模态目标重识别研究分支。最新已完成结果仍是 Signal-preserving V6；最新待正式 dev 的主方法是 V7。两者都冻结并逐元素保留 Signal 的完整 3072D `direct+SIM+SIE` 检索路径，CNN、Transformer、Mamba 是共享 Signal 强语义特征场上的三类浅层异构残差专家，不是三套独立完整 backbone。
 
 V6 的三个候选论文级主创新点已经落到核心代码、专项测试和完整 dev 运行中；性能主门仍然失败：
 
@@ -22,6 +22,8 @@ V6 的三个候选论文级主创新点已经落到核心代码、专项测试�
 - 只读 checkpoint 诊断确认三分支参数实际更新，但 fused 追加残差范数只有 baseline 的 `2.747%`；融合距离与 baseline 距离相关系数为 `1.0`，Top-10 邻居重合率为 `99.9879%`。当前 V5 基本没有改变检索排序，因此不支持融合有效性主张。
 - V6 真实 preflight、capacity、overfit 和唯一 seed42、60-epoch dev 已全部完成。最佳 epoch8 的 baseline/fused/CNN mAP 为 `58.0109/58.7321/59.1022`：fused 比 baseline 高 `0.7212`，但低于 CNN `0.3701`，距 65 mAP 门 `6.2679`；official access=0。
 - V6 只读诊断确认残差/baseline 范数比已为 `1.0`，fused/baseline 距离相关降至 `0.96875`、Top-10 overlap 为 `95.3939%`，说明 V6 确实改变检索几何。当前首要失败原因是路由失配：最强 CNN 获得最低权重；次要问题是 epoch8 后的身份外泛化回落。
+- V6 ground-truth Oracle 只读诊断覆盖 825 个 dev 查询：branch Oracle `63.6089 mAP`，比最强固定 CNN 高 `4.5067`；CNN/Transformer/Mamba 的 leave-one-out 边际 mAP 均为正。因此保留三专家，V7 直接修复共享几何、匹配 Token 残差、层级模态/专家路由、逐槽边际效用和有界样本 α。Oracle 不是部署结果，也仍未达到 65。
+- V7 专项回归 `32 passed`；exact Signal preflight、真实 B64/K8 双视图 capacity 和 100-step overfit 均 PASS。capacity 为 222/222 梯度、0 overflow、峰值 reserved `11486 MiB`；overfit 在解析 label-smoothing 下限 `0.610636` 之上的损失比例为 `0.08048`。V7 尚无 held-out 指标，不能声称增益或 SOTA。
 - 原正式启动在官方指标写出后的路由校准审计因缺失导入失败；`repair-0002` 仅重算训练集路由审计，`optimizer_steps=0`、`training_reexecuted=false`、`official_test_reexecuted=false`，公开 verifier 返回 PASS。
 - 用户最新指令：只做 seed 42；现在优先完成远端 Signal baseline 保底；主实验达到目标以后才考虑消融；所有训练、评估、数据和环境只在云端 GPU，Windows/WSL 仅作传输和文档存档。
 
@@ -764,6 +766,42 @@ evidence/trifusion_signal_preserving_v6_diagnostic_seed42.json
 只读诊断处理全部 825 个 dev 样本且 optimizer0。V6 的 suffix/baseline norm ratio 为 `1.0`；fused/baseline 距离相关 `0.96875`、Top-10 overlap `95.3939%`，证明残差已实际改变排序。三专家残差保持低余弦，但路由熵 `0.97435` 且样本间变化很小；最强 CNN residual-only mAP `56.9267` 却只获约 `0.228–0.245` 权重，低于 Transformer 和 Mamba。result-to-claim 为 `no/high/provisional`：只支持 exact Signal preservation 和 held-out-dev 上 `+0.7212 mAP` 的窄主张，不支持协同优越性、65 mAP、official 或 SOTA。
 
 V6 已完成且失败，不得重跑。下一步只允许一个 V7 main-only routing-alignment 修正；正式晋级合同仍是 fused mAP 至少 65，并严格高于 baseline_only、CNN、Transformer、Mamba。失败前继续禁止 official test、消融和多种子。
+
+## 15. Signal-preserving V7 启动前冻结状态（2026-09-02）
+
+V7 不是在 V6 上扫描倍率或学习率，而是一次由失败证据限定的结构修正：
+
+1. RGB/NIR/TIR 一次采样并共享 flip、padding、crop；几何对齐后才独立 RandomErasing；
+2. 残差定义为匹配的 `expert final token - Signal anchor token`，再归一化、池化和投影；
+3. 保留两次 HFER 和三次 reliability refresh；
+4. 联合权重为 `P(modality|x) * P(expert|modality,x)`，九个槽位总质量为 1，缺失模态严格为 0；
+5. Router 目标是每个 `expert×modality` 追加槽相对 exact baseline 的 L2-normalized batch-hard 身份间隔增益；
+6. 干净同步视图训练 ReID/边际效用，单模态受控模糊视图独立监督质量；
+7. 最终残差强度由样本级 `alpha∈[0,0.5]` 控制，初始化 0.2，不再固定等能量。
+
+V6 epoch8 checkpoint SHA256 为 `32bba88c...ee2e`。V7 迁移结果 unexpected keys 为 0，missing keys 仅为新增 `fusion.alpha_predictor` 的四个 weight/bias；Signal checkpoint 和 3072D baseline 保持原 SHA 与逐元素输出。
+
+Oracle 与启动门：
+
+| 项目 | 结果 |
+|---|---:|
+| V6 branch Oracle | 63.6089 mAP / 64.1212 Rank-1 |
+| Oracle - 最强固定 CNN | +4.5067 mAP / +4.4848 Rank-1 |
+| V7 preflight | PASS；baseline 58.0109/57.4545；official0 |
+| V7 capacity | PASS；B64/K8；8 step；222/222；reserved 11486 MiB |
+| V7 overfit | PASS；100 step；超额损失 ratio 0.08048；official0 |
+
+轻量证据：
+
+```text
+evidence/trifusion_signal_preserving_v6_oracle_complementarity_seed42.json
+evidence/trifusion_signal_preserving_v7_preflight_seed42.json
+evidence/trifusion_signal_preserving_v7_capacity_seed42.json
+evidence/trifusion_signal_preserving_v7_overfit_seed42.json
+results/TRIFUSION_RGBNT201_V7_READINESS_2026-09-02.md
+```
+
+正式只允许一次 seed42、60-epoch、141-fit/30-dev。前 10 epoch 只训练 reliability Router 与 alpha；第 10 epoch 结束后，RGB、NIR、TIR 各自受控模糊都必须使对应模态平均质量严格下降，否则在进入 joint phase 前 fail closed。之后才联合微调全部既有专家/HFER/Router。正式门仍是 fused mAP 至少 65 且严格超过 baseline_only、CNN、Transformer、Mamba；未通过前继续禁止 official test、消融和多种子。
 
 ---
 

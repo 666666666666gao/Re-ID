@@ -114,6 +114,9 @@ def test_v5_overfit_gate_uses_final_to_initial_loss_ratio() -> None:
         "passed": True,
         "initial_loss": 10.0,
         "final_loss": 0.9,
+        "minimum_loss": 0.0,
+        "initial_excess_loss": 10.0,
+        "final_excess_loss": 0.9,
         "loss_ratio": 0.09,
         "maximum_loss_ratio": 0.1,
     }

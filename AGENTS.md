@@ -89,13 +89,26 @@
   change must target marginal-gain routing alignment while retaining exact
   Signal preservation; generalization is a secondary issue. Do not tune epoch,
   batch size, learning rate, residual multiplier or run an ablation matrix.
+- The V6 ground-truth Oracle is diagnostic only: branch Oracle is 63.6089 mAP,
+  4.5067 above the strongest fixed branch, and all three experts have positive
+  leave-one-out marginal mAP. V7 therefore retains CNN/Transformer/Mamba as
+  shallow heterogeneous residual experts over the frozen Signal feature field;
+  do not describe them as three independent full backbones.
+- V7 is the one permitted main-only structural correction. It uses shared
+  geometric augmentation, matched-token residuals, hierarchical
+  `P(modality) * P(expert | modality)` routing, per-slot L2-normalized marginal
+  identity gain, controlled-degradation quality supervision and bounded sample
+  alpha. Its exact-parity preflight, real B64/K8 two-view capacity (222/222
+  gradient tensors, 11,486 MiB peak reserved) and overfit gate pass. Its sole
+  seed-42 dev run must stop after router warmup if corruption does not reduce
+  all three corresponding modality masses. No V7 dev metric exists yet.
 
 ## Remote experiment constraints
 
-- Check the remote RTX 3090 before every launch. The `rtx3090_b32k4` gate
+- Check the remote RTX 3090 before every launch. The V7 `rtx3090_b64k8` gate
   requires at least 22,000 MiB free before a new training process starts.
-- Use real B32/K4 without gradient accumulation so batch-hard losses see eight
-  identities. AMP and activation checkpointing are required.
+- Use real B64/K8 without gradient accumulation so batch-hard losses see eight
+  identities. V7 uses AMP and separate clean-ReID/controlled-degradation views.
 - Run only seed 42. Signal baseline work is now explicitly authorized, but only
   on the remote GPU and without hyperparameter or epoch selection on the
   official test. Preserve its full 3072D direct-plus-SIM retrieval feature,

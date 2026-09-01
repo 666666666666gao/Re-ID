@@ -21,11 +21,34 @@ GATE_OUTPUTS = ("baseline_only", "cnn", "transformer", "mamba")
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
 ARCHITECTURE_V5 = "signal_preserving_collaborative_v5"
 ARCHITECTURE_V6 = "signal_preserving_collaborative_v6"
+ARCHITECTURE_V7 = "signal_preserving_collaborative_v7"
 
 
 def receipt_schema(architecture: str, stage: str) -> str:
-    version = {ARCHITECTURE_V5: "v5", ARCHITECTURE_V6: "v6"}[architecture]
+    version = {
+        ARCHITECTURE_V5: "v5",
+        ARCHITECTURE_V6: "v6",
+        ARCHITECTURE_V7: "v7",
+    }[architecture]
     return f"trifusion-signal-preserving-{version}-{stage}-v1"
+
+
+def architecture_source_paths(architecture: str) -> dict[str, Path]:
+    version = {
+        ARCHITECTURE_V5: "v5",
+        ARCHITECTURE_V6: "v6",
+        ARCHITECTURE_V7: "v7",
+    }[architecture]
+    return {
+        "model": PROJECT_ROOT
+        / "modeling"
+        / "trifusion"
+        / f"signal_preserving_{version}.py",
+        "builder": PROJECT_ROOT
+        / "modeling"
+        / "trifusion"
+        / f"signal_preserving_{version}_builder.py",
+    }
 
 
 def load_contract(path: Path) -> dict[str, Any]:
@@ -71,9 +94,16 @@ def _load_config(path: Path) -> dict[str, Any]:
 
 
 def weighted_training_loss(
-    losses: dict[str, Any], config: dict[str, Any]
+    losses: dict[str, Any], config: dict[str, Any], *, phase: str = "joint"
 ) -> Any:
     weights = config["LOSS"]
+    architecture = config["MODEL"]["ARCHITECTURE"]
+    if architecture == ARCHITECTURE_V7 and phase == "router_warmup":
+        return (
+            losses["peer_logits"] * float(weights["PEER_LOGITS"])
+            + losses["alpha"] * float(weights["ALPHA"])
+            + losses["reliability"] * float(weights["RELIABILITY"])
+        )
     branch_id = sum(losses[f"id_{expert}"] for expert in ("cnn", "transformer", "mamba"))
     branch_triplet = sum(
         losses[f"triplet_{expert}"] for expert in ("cnn", "transformer", "mamba")
@@ -85,7 +115,7 @@ def weighted_training_loss(
         + branch_triplet * float(weights["TRIPLET_BRANCH"])
         + losses["peer_logits"] * float(weights["PEER_LOGITS"])
     )
-    if config["MODEL"]["ARCHITECTURE"] == "signal_preserving_collaborative_v6":
+    if architecture in (ARCHITECTURE_V6, ARCHITECTURE_V7):
         residual_id = sum(
             losses[f"id_residual_{expert}"]
             for expert in ("cnn", "transformer", "mamba")
@@ -99,7 +129,125 @@ def weighted_training_loss(
             + residual_id * float(weights["ID_RESIDUAL"])
             + residual_triplet * float(weights["TRIPLET_RESIDUAL"])
         )
+    if architecture == ARCHITECTURE_V7:
+        total = (
+            total
+            + losses["alpha"] * float(weights["ALPHA"])
+            + losses["reliability"] * float(weights["RELIABILITY"])
+        )
     return total
+
+
+def apply_controlled_modality_degradation(
+    images: dict[str, Any],
+    *,
+    selected_modalities: Any,
+    selected_samples: Any,
+    degraded_quality: float,
+) -> tuple[dict[str, Any], Any]:
+    """Blur one selected modality and return its explicit quality target."""
+
+    import torch
+    import torch.nn.functional as F
+
+    modalities = ("RGB", "NI", "TI")
+    batch_size = next(iter(images.values())).shape[0]
+    quality = torch.ones(
+        batch_size,
+        len(modalities),
+        dtype=next(iter(images.values())).dtype,
+        device=selected_modalities.device,
+    )
+    degraded = {name: tensor.clone() for name, tensor in images.items()}
+    for modality_index, modality in enumerate(modalities):
+        rows = selected_samples & (selected_modalities == modality_index)
+        if bool(rows.any()):
+            degraded[modality][rows] = F.avg_pool2d(
+                degraded[modality][rows], kernel_size=5, stride=1, padding=2
+            )
+            quality[rows, modality_index] = float(degraded_quality)
+    return degraded, quality
+
+
+def quality_response_gate(
+    clean_probabilities: Any,
+    corrupted_probabilities: dict[str, Any],
+) -> dict[str, Any]:
+    """Require each modality's mean mass to fall under its own corruption."""
+
+    modalities = ("RGB", "NI", "TI")
+    results = {}
+    for index, modality in enumerate(modalities):
+        clean_mass = float(clean_probabilities[:, index].mean())
+        corrupted_mass = float(corrupted_probabilities[modality][:, index].mean())
+        results[modality] = {
+            "clean_mean_mass": clean_mass,
+            "corrupted_mean_mass": corrupted_mass,
+            "decrease": clean_mass - corrupted_mass,
+            "decreased": corrupted_mass < clean_mass,
+        }
+    return {
+        "passed": all(result["decreased"] for result in results.values()),
+        "modalities": results,
+    }
+
+
+def load_v7_initialization(
+    model: Any,
+    initialization: dict[str, Any],
+) -> dict[str, Any]:
+    """Load V6 expert state while leaving only V7's new alpha gate initialized."""
+
+    import torch
+
+    checkpoint = Path(initialization["V6_CHECKPOINT"]).resolve()
+    checkpoint_sha256 = _sha256(checkpoint)
+    if checkpoint_sha256 != str(initialization["V6_CHECKPOINT_SHA256"]):
+        raise ValueError("V6 initialization checkpoint SHA-256 differs from contract")
+    payload = torch.load(checkpoint, map_location="cpu", weights_only=True)
+    incompatible = model.load_state_dict(payload["model_state_dict"], strict=False)
+    expected_missing = [
+        "fusion.alpha_predictor.0.bias",
+        "fusion.alpha_predictor.0.weight",
+        "fusion.alpha_predictor.2.bias",
+        "fusion.alpha_predictor.2.weight",
+    ]
+    missing = sorted(incompatible.missing_keys)
+    unexpected = sorted(incompatible.unexpected_keys)
+    if missing != expected_missing or unexpected:
+        raise RuntimeError(
+            f"V6-to-V7 initialization mismatch: missing={missing}, unexpected={unexpected}"
+        )
+    return {
+        "checkpoint": str(checkpoint),
+        "checkpoint_sha256": checkpoint_sha256,
+        "missing_keys": missing,
+        "unexpected_keys": unexpected,
+    }
+
+
+def set_v7_training_phase(
+    model: Any,
+    *,
+    phase: str,
+    joint_trainable_names: set[str],
+) -> set[str]:
+    """Select the frozen-expert router warmup or restore the joint V7 phase."""
+
+    if phase == "router_warmup":
+        selected = {
+            name
+            for name in joint_trainable_names
+            if name.startswith("encoder.reliability_gate.")
+            or name.startswith("fusion.alpha_predictor.")
+        }
+    elif phase == "joint":
+        selected = set(joint_trainable_names)
+    else:
+        raise ValueError(f"unsupported V7 training phase: {phase}")
+    for name, parameter in model.named_parameters():
+        parameter.requires_grad_(name in selected)
+    return selected
 
 
 def _set_seed(seed: int) -> None:
@@ -121,6 +269,7 @@ def _build_runtime(config: dict[str, Any]) -> dict[str, Any]:
     signal_config = config["SIGNAL"]
     data_config = config["DATA"]
     model_config = config["MODEL"]
+    architecture = str(model_config["ARCHITECTURE"])
     seed = int(config["EXPERIMENT"]["SEED"])
     source = Path(signal_config["SOURCE"]).resolve()
     checkpoint = Path(signal_config["CHECKPOINT"]).resolve()
@@ -168,7 +317,17 @@ def _build_runtime(config: dict[str, Any]) -> dict[str, Any]:
     project_modeling = str(PROJECT_ROOT / "modeling")
     if project_modeling not in sys.path:
         sys.path.append(project_modeling)
-    architecture = str(model_config["ARCHITECTURE"])
+    if architecture == ARCHITECTURE_V7:
+        from trifusion.aligned_data import build_aligned_train_loader
+
+        train_loader = build_aligned_train_loader(
+            train_records,
+            batch_size=int(data_config["TRAIN_BATCH_SIZE"]),
+            num_instances=int(data_config["NUM_INSTANCES"]),
+            num_workers=int(data_config["NUM_WORKERS"]),
+            seed=seed,
+        )
+    initialization = None
     common_build_arguments = {
         "signal_checkpoint_sha256": checkpoint_sha256,
         "num_classes": len({record[1] for record in train_records}),
@@ -199,9 +358,24 @@ def _build_runtime(config: dict[str, Any]) -> dict[str, Any]:
             signal_model,
             **common_build_arguments,
         )
+    elif architecture == ARCHITECTURE_V7:
+        from trifusion.signal_preserving_v7_builder import (
+            build_signal_preserving_trifusion_v7,
+        )
+
+        build = build_signal_preserving_trifusion_v7(
+            signal_model,
+            alpha_max=float(model_config["ALPHA_MAX"]),
+            alpha_init=float(model_config["ALPHA_INIT"]),
+            **common_build_arguments,
+        )
+        initialization = load_v7_initialization(build.model, config["INITIALIZATION"])
     else:
         raise ValueError(f"unsupported Signal-preserving architecture: {architecture}")
     build.model.cuda()
+    build_provenance = dict(build.provenance)
+    if initialization is not None:
+        build_provenance["initialization"] = initialization
     return {
         "model": build.model,
         "train_loader": train_loader,
@@ -215,7 +389,7 @@ def _build_runtime(config: dict[str, Any]) -> dict[str, Any]:
         ).hexdigest(),
         "checkpoint": checkpoint,
         "checkpoint_sha256": checkpoint_sha256,
-        "build_provenance": dict(build.provenance),
+        "build_provenance": build_provenance,
     }
 
 
@@ -341,6 +515,23 @@ def _criterion_class(config: dict[str, Any]) -> Any:
     raise ValueError(f"unsupported Signal-preserving architecture: {architecture}")
 
 
+def _build_criterion(config: dict[str, Any]) -> Any:
+    architecture = str(config["MODEL"]["ARCHITECTURE"])
+    if architecture == ARCHITECTURE_V7:
+        from trifusion.signal_preserving_v7 import MarginalGainV7Criterion
+
+        return MarginalGainV7Criterion(
+            triplet_margin=float(config["LOSS"]["TRIPLET_MARGIN"]),
+            label_smoothing=float(config["LOSS"]["LABEL_SMOOTHING"]),
+            utility_temperature=float(config["LOSS"]["UTILITY_TEMPERATURE"]),
+            alpha_gain_scale=float(config["LOSS"]["ALPHA_GAIN_SCALE"]),
+        ).cuda()
+    return _criterion_class(config)(
+        target_cache=None,
+        triplet_margin=float(config["LOSS"]["TRIPLET_MARGIN"]),
+    ).cuda()
+
+
 def _training_batch(raw_batch: Any) -> tuple[dict[str, Any], Any]:
     import torch
 
@@ -360,16 +551,95 @@ def _training_batch(raw_batch: Any) -> tuple[dict[str, Any], Any]:
     )
 
 
+def _training_views(
+    raw_batch: Any,
+    config: dict[str, Any],
+) -> tuple[dict[str, Any], dict[str, Any] | None, Any]:
+    import torch
+
+    clean_batch, labels = _training_batch(raw_batch)
+    if str(config["MODEL"]["ARCHITECTURE"]) != ARCHITECTURE_V7:
+        return clean_batch, None, labels
+    batch_size = labels.shape[0]
+    selected_samples = torch.rand(batch_size, device="cuda") < float(
+        config["QUALITY"]["DEGRADATION_PROBABILITY"]
+    )
+    selected_modalities = torch.randint(3, (batch_size,), device="cuda")
+    degraded_images, quality = apply_controlled_modality_degradation(
+        clean_batch["images"],
+        selected_modalities=selected_modalities,
+        selected_samples=selected_samples,
+        degraded_quality=float(config["QUALITY"]["DEGRADED_QUALITY"]),
+    )
+    quality_batch = {
+        "images": degraded_images,
+        "modality_mask": clean_batch["modality_mask"],
+        "camera_ids": clean_batch["camera_ids"],
+        "modality_quality": quality,
+    }
+    return clean_batch, quality_batch, labels
+
+
+def _criterion_losses(
+    criterion: Any,
+    output: Any,
+    labels: Any,
+    *,
+    architecture: str,
+    quality_output: Any | None,
+) -> dict[str, Any]:
+    if architecture == ARCHITECTURE_V7:
+        return criterion(output, labels, quality_output=quality_output)
+    return criterion(output, labels)
+
+
+def _evaluate_v7_quality_response(
+    model: Any,
+    raw_batch: Any,
+    config: dict[str, Any],
+) -> dict[str, Any]:
+    import torch
+
+    clean_batch, _labels = _training_batch(raw_batch)
+    model.eval()
+    with torch.no_grad(), torch.autocast(
+        device_type="cuda",
+        dtype=torch.float16,
+        enabled=bool(config["OPTIMIZATION"]["AMP"]),
+    ):
+        clean = model(clean_batch, return_aux=True).modal_probabilities.detach()
+        corrupted = {}
+        selected_samples = torch.ones(clean.shape[0], dtype=torch.bool, device="cuda")
+        for index, modality in enumerate(("RGB", "NI", "TI")):
+            selected_modalities = torch.full(
+                (clean.shape[0],), index, dtype=torch.long, device="cuda"
+            )
+            degraded_images, quality = apply_controlled_modality_degradation(
+                clean_batch["images"],
+                selected_modalities=selected_modalities,
+                selected_samples=selected_samples,
+                degraded_quality=float(config["QUALITY"]["DEGRADED_QUALITY"]),
+            )
+            degraded_batch = {
+                "images": degraded_images,
+                "modality_mask": clean_batch["modality_mask"],
+                "camera_ids": clean_batch["camera_ids"],
+                "modality_quality": quality,
+            }
+            corrupted[modality] = model(
+                degraded_batch, return_aux=True
+            ).modal_probabilities.detach()
+    return quality_response_gate(clean, corrupted)
+
+
 def _run_capacity(config: dict[str, Any], output_dir: Path) -> dict[str, Any]:
     import torch
 
     started = time.time()
     runtime = _build_runtime(config)
     model = runtime["model"]
-    criterion = _criterion_class(config)(
-        target_cache=None,
-        triplet_margin=float(config["LOSS"]["TRIPLET_MARGIN"]),
-    ).cuda()
+    architecture = str(config["MODEL"]["ARCHITECTURE"])
+    criterion = _build_criterion(config)
     trainable = {
         name: parameter for name, parameter in model.named_parameters() if parameter.requires_grad
     }
@@ -390,7 +660,7 @@ def _run_capacity(config: dict[str, Any], output_dir: Path) -> dict[str, Any]:
     steps = int(config["GATES"]["CAPACITY_STEPS"])
     iterator = iter(runtime["train_loader"])
     for _step in range(steps):
-        batch, labels = _training_batch(next(iterator))
+        batch, quality_batch, labels = _training_views(next(iterator), config)
         optimizer.zero_grad(set_to_none=True)
         with torch.autocast(
             device_type="cuda",
@@ -398,9 +668,20 @@ def _run_capacity(config: dict[str, Any], output_dir: Path) -> dict[str, Any]:
             enabled=bool(config["OPTIMIZATION"]["AMP"]),
         ):
             output = model(batch, return_aux=True)
+            quality_output = (
+                model(quality_batch, return_aux=True)
+                if architecture == ARCHITECTURE_V7
+                else None
+            )
             if not output.diagnostics["all_finite"]:
                 raise FloatingPointError("V5 forward emitted a nonfinite tensor")
-            loss_parts = criterion(output, labels)
+            loss_parts = _criterion_losses(
+                criterion,
+                output,
+                labels,
+                architecture=architecture,
+                quality_output=quality_output,
+            )
             total_loss = weighted_training_loss(loss_parts, config)
         if not bool(torch.isfinite(total_loss)):
             raise FloatingPointError("V5 capacity loss is nonfinite")
@@ -463,10 +744,8 @@ def _run_overfit(config: dict[str, Any], output_dir: Path) -> dict[str, Any]:
     started = time.time()
     runtime = _build_runtime(config)
     model = runtime["model"]
-    criterion = _criterion_class(config)(
-        target_cache=None,
-        triplet_margin=float(config["LOSS"]["TRIPLET_MARGIN"]),
-    ).cuda()
+    architecture = str(config["MODEL"]["ARCHITECTURE"])
+    criterion = _build_criterion(config)
     trainable = {
         name: parameter for name, parameter in model.named_parameters() if parameter.requires_grad
     }
@@ -478,7 +757,9 @@ def _run_overfit(config: dict[str, Any], output_dir: Path) -> dict[str, Any]:
     scaler = torch.amp.GradScaler(
         "cuda", init_scale=float(config["OPTIMIZATION"]["AMP_INIT_SCALE"])
     )
-    fixed_batch, fixed_labels = _training_batch(next(iter(runtime["train_loader"])))
+    fixed_batch, fixed_quality_batch, fixed_labels = _training_views(
+        next(iter(runtime["train_loader"])), config
+    )
     baseline_before = _module_state_sha256(model.baseline.signal)
     model.train()
     torch.cuda.reset_peak_memory_stats()
@@ -494,9 +775,20 @@ def _run_overfit(config: dict[str, Any], output_dir: Path) -> dict[str, Any]:
             enabled=bool(config["OPTIMIZATION"]["AMP"]),
         ):
             output = model(fixed_batch, return_aux=True)
+            quality_output = (
+                model(fixed_quality_batch, return_aux=True)
+                if architecture == ARCHITECTURE_V7
+                else None
+            )
             if not output.diagnostics["all_finite"]:
                 raise FloatingPointError("V5 forward emitted a nonfinite tensor")
-            loss_parts = criterion(output, fixed_labels)
+            loss_parts = _criterion_losses(
+                criterion,
+                output,
+                fixed_labels,
+                architecture=architecture,
+                quality_output=quality_output,
+            )
             total_loss = weighted_training_loss(loss_parts, config)
         if not bool(torch.isfinite(total_loss)):
             raise FloatingPointError("V5 overfit loss is nonfinite")
@@ -518,6 +810,7 @@ def _run_overfit(config: dict[str, Any], output_dir: Path) -> dict[str, Any]:
     gate = evaluate_overfit_gate(
         losses_by_step,
         max_ratio=float(config["GATES"]["OVERFIT_MAX_LOSS_RATIO"]),
+        minimum_loss=overfit_loss_floor(config, num_classes=model.num_classes),
     )
     passed = (
         gate["passed"]
@@ -633,10 +926,8 @@ def _run_dev(config: dict[str, Any], config_path: Path, output_dir: Path) -> dic
     started = time.time()
     runtime = _build_runtime(config)
     model = runtime["model"]
-    criterion = _criterion_class(config)(
-        target_cache=None,
-        triplet_margin=float(config["LOSS"]["TRIPLET_MARGIN"]),
-    ).cuda()
+    architecture = str(config["MODEL"]["ARCHITECTURE"])
+    criterion = _build_criterion(config)
     trainable = {
         name: parameter for name, parameter in model.named_parameters() if parameter.requires_grad
     }
@@ -656,6 +947,7 @@ def _run_dev(config: dict[str, Any], config_path: Path, output_dir: Path) -> dic
         key: float(value)
         for key, value in config["SIGNAL"]["EXPECTED_DEV_METRICS"].items()
     }
+    source_paths = architecture_source_paths(architecture)
     identity = {
         "schema_version": receipt_schema(
             config["MODEL"]["ARCHITECTURE"], "dev-identity"
@@ -664,15 +956,8 @@ def _run_dev(config: dict[str, Any], config_path: Path, output_dir: Path) -> dic
         "config": str(config_path),
         "config_sha256": _sha256(config_path),
         "runner_sha256": _sha256(Path(__file__).resolve()),
-        "model_sha256": _sha256(
-            PROJECT_ROOT / "modeling" / "trifusion" / "signal_preserving_v5.py"
-        ),
-        "builder_sha256": _sha256(
-            PROJECT_ROOT
-            / "modeling"
-            / "trifusion"
-            / "signal_preserving_v5_builder.py"
-        ),
+        "model_sha256": _sha256(source_paths["model"]),
+        "builder_sha256": _sha256(source_paths["builder"]),
         "signal_source_commit": runtime["signal_source_commit"],
         "signal_source_diff_sha256": runtime["signal_source_diff_sha256"],
         "signal_checkpoint_sha256": runtime["checkpoint_sha256"],
@@ -696,6 +981,7 @@ def _run_dev(config: dict[str, Any], config_path: Path, output_dir: Path) -> dic
     optimizer_steps = 0
     overflow_events = 0
     torch.cuda.reset_peak_memory_stats()
+    joint_trainable_names = set(trainable)
 
     for epoch in range(1, max_epochs + 1):
         multiplier = learning_rate_multiplier(
@@ -706,11 +992,30 @@ def _run_dev(config: dict[str, Any], config_path: Path, output_dir: Path) -> dic
         learning_rate = base_lr * multiplier
         for group in optimizer.param_groups:
             group["lr"] = learning_rate
+        phase = "joint"
+        if architecture == ARCHITECTURE_V7:
+            phase = (
+                "router_warmup"
+                if epoch <= int(config["OPTIMIZATION"]["ROUTER_WARMUP_EPOCHS"])
+                else "joint"
+            )
+            set_v7_training_phase(
+                model,
+                phase=phase,
+                joint_trainable_names=joint_trainable_names,
+            )
         model.train()
         epoch_loss = 0.0
         epoch_steps = 0
+        quality_gate_raw_batch = None
         for raw_batch in runtime["train_loader"]:
-            batch, labels = _training_batch(raw_batch)
+            if (
+                architecture == ARCHITECTURE_V7
+                and epoch == int(config["OPTIMIZATION"]["ROUTER_WARMUP_EPOCHS"])
+                and quality_gate_raw_batch is None
+            ):
+                quality_gate_raw_batch = raw_batch
+            batch, quality_batch, labels = _training_views(raw_batch, config)
             optimizer.zero_grad(set_to_none=True)
             with torch.autocast(
                 device_type="cuda",
@@ -718,10 +1023,21 @@ def _run_dev(config: dict[str, Any], config_path: Path, output_dir: Path) -> dic
                 enabled=bool(config["OPTIMIZATION"]["AMP"]),
             ):
                 output = model(batch, return_aux=True)
+                quality_output = (
+                    model(quality_batch, return_aux=True)
+                    if architecture == ARCHITECTURE_V7
+                    else None
+                )
                 if not output.diagnostics["all_finite"]:
                     raise FloatingPointError("V5 training emitted a nonfinite tensor")
-                loss_parts = criterion(output, labels)
-                total_loss = weighted_training_loss(loss_parts, config)
+                loss_parts = _criterion_losses(
+                    criterion,
+                    output,
+                    labels,
+                    architecture=architecture,
+                    quality_output=quality_output,
+                )
+                total_loss = weighted_training_loss(loss_parts, config, phase=phase)
             if not bool(torch.isfinite(total_loss)):
                 raise FloatingPointError("V5 dev loss is nonfinite")
             scale_before = scaler.get_scale()
@@ -740,6 +1056,14 @@ def _run_dev(config: dict[str, Any], config_path: Path, output_dir: Path) -> dic
             epoch_loss += float(total_loss.detach())
             epoch_steps += 1
 
+        quality_gate_result = None
+        if (
+            architecture == ARCHITECTURE_V7
+            and epoch == int(config["OPTIMIZATION"]["ROUTER_WARMUP_EPOCHS"])
+        ):
+            quality_gate_result = _evaluate_v7_quality_response(
+                model, quality_gate_raw_batch, config
+            )
         metrics, feature_widths = _evaluate_outputs(
             model,
             runtime["eval_loader"],
@@ -750,11 +1074,14 @@ def _run_dev(config: dict[str, Any], config_path: Path, output_dir: Path) -> dic
             raise RuntimeError("frozen Signal baseline metrics changed during V5 training")
         epoch_result = {
             "epoch": epoch,
+            "phase": phase,
             "learning_rate": learning_rate,
             "mean_training_loss": epoch_loss / epoch_steps,
             "metrics_percent": metrics,
             "feature_widths": feature_widths,
         }
+        if quality_gate_result is not None:
+            epoch_result["quality_response_gate"] = quality_gate_result
         history.append(epoch_result)
         if metrics["fused"]["mAP"] > best_fused_map:
             best_epoch = epoch
@@ -790,6 +1117,10 @@ def _run_dev(config: dict[str, Any], config_path: Path, output_dir: Path) -> dic
             encoding="utf-8",
         )
         print(json.dumps(epoch_result, sort_keys=True), flush=True)
+        if quality_gate_result is not None and not quality_gate_result["passed"]:
+            raise RuntimeError(
+                "V7 quality-response gate failed after router warmup; joint phase blocked"
+            )
 
     if best_metrics is None:
         raise RuntimeError("V5 dev training did not select a checkpoint")
@@ -879,16 +1210,39 @@ def evaluate_dev_gate(
     }
 
 
+def overfit_loss_floor(config: dict[str, Any], *, num_classes: int) -> float:
+    """Return the analytic weighted CE floor introduced by label smoothing."""
+
+    if str(config["MODEL"]["ARCHITECTURE"]) != ARCHITECTURE_V7:
+        return 0.0
+    smoothing = float(config["LOSS"]["LABEL_SMOOTHING"])
+    correct_probability = 1.0 - smoothing + smoothing / num_classes
+    other_probability = smoothing / num_classes
+    entropy = -correct_probability * math.log(correct_probability)
+    entropy -= (num_classes - 1) * other_probability * math.log(other_probability)
+    identity_weight = (
+        float(config["LOSS"]["ID_FUSED"])
+        + 3.0 * float(config["LOSS"]["ID_BRANCH"])
+        + 3.0 * float(config["LOSS"]["ID_RESIDUAL"])
+    )
+    return identity_weight * entropy
+
+
 def evaluate_overfit_gate(
-    losses: list[float], *, max_ratio: float
+    losses: list[float], *, max_ratio: float, minimum_loss: float = 0.0
 ) -> dict[str, Any]:
     initial_loss = float(losses[0])
     final_loss = float(losses[-1])
-    loss_ratio = final_loss / initial_loss
+    initial_excess = initial_loss - minimum_loss
+    final_excess = final_loss - minimum_loss
+    loss_ratio = final_excess / initial_excess
     return {
         "passed": loss_ratio <= max_ratio,
         "initial_loss": initial_loss,
         "final_loss": final_loss,
+        "minimum_loss": float(minimum_loss),
+        "initial_excess_loss": initial_excess,
+        "final_excess_loss": final_excess,
         "loss_ratio": loss_ratio,
         "maximum_loss_ratio": float(max_ratio),
     }
@@ -934,14 +1288,19 @@ def run(args: argparse.Namespace) -> dict[str, Any]:
 
 
 __all__ = [
+    "architecture_source_paths",
     "evaluate_dev_gate",
     "evaluate_overfit_gate",
     "learning_rate_multiplier",
     "load_contract",
     "load_raw_config",
+    "load_v7_initialization",
+    "overfit_loss_floor",
+    "quality_response_gate",
     "receipt_schema",
     "parse_args",
     "run",
+    "set_v7_training_phase",
     "weighted_training_loss",
 ]
 
