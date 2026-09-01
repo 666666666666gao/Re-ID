@@ -7,6 +7,10 @@ from collections.abc import Sequence
 from typing import Any
 
 
+EXPERTS = ("cnn", "transformer", "mamba")
+MODALITIES = ("RGB", "NI", "TI")
+
+
 def build_complete_path_fold_records(
     records: Sequence[tuple[Any, int, int, int]],
     *,
@@ -37,4 +41,36 @@ def build_complete_path_fold_records(
     }
 
 
-__all__ = ["build_complete_path_fold_records"]
+def evaluate_complete_path_oof_gate(
+    *,
+    fold_receipts: Sequence[dict[str, Any]],
+    query_count: int,
+    fixed_map: dict[str, float],
+    expert_winner_counts: dict[str, int],
+    modality_winner_counts: dict[str, int],
+    residual_oracle_gain_map: float,
+    slot_oracle_margin_gain: float,
+) -> dict[str, Any]:
+    """Reject any utility target whose Signal or expert path saw held-out IDs."""
+
+    identity_isolation = all(
+        not (
+            set(receipt["signal_fit_identity_ids"])
+            & set(receipt["heldout_identity_ids"])
+        )
+        and not (
+            set(receipt["expert_fit_identity_ids"])
+            & set(receipt["heldout_identity_ids"])
+        )
+        for receipt in fold_receipts
+    )
+    return {
+        "passed": identity_isolation,
+        "complete_path_identity_isolation_passed": identity_isolation,
+    }
+
+
+__all__ = [
+    "build_complete_path_fold_records",
+    "evaluate_complete_path_oof_gate",
+]
