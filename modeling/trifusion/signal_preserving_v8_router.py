@@ -25,6 +25,73 @@ class OOFMarginFusionOutput:
     fused_embedding: torch.Tensor
 
 
+@dataclass(frozen=True, eq=False)
+class OOFMarginRouterLoss:
+    total: torch.Tensor
+    utility: torch.Tensor
+    alpha: torch.Tensor
+    target_weights: torch.Tensor
+    alpha_target: torch.Tensor
+
+
+def oof_margin_router_loss(
+    output: OOFMarginRouterOutput,
+    target_identity_margin: torch.Tensor,
+    modality_mask: torch.Tensor,
+    *,
+    alpha_max: float,
+    utility_temperature: float,
+    alpha_gain_scale: float,
+) -> OOFMarginRouterLoss:
+    """Fit hierarchical routing and bounded energy to continuous OOF margins."""
+
+    if target_identity_margin.shape != output.weights.shape:
+        raise ValueError("target margins must match router weights")
+    if modality_mask.dtype != torch.bool or modality_mask.shape != (
+        output.weights.shape[0],
+        len(MODALITY_ORDER),
+    ):
+        raise ValueError("modality_mask must have bool shape B,M")
+    if utility_temperature <= 0.0 or alpha_gain_scale <= 0.0:
+        raise ValueError("margin loss scales must be positive")
+    valid_slots = modality_mask[:, None].expand_as(output.weights)
+    target_logits = (target_identity_margin / float(utility_temperature)).masked_fill(
+        ~valid_slots,
+        -torch.inf,
+    )
+    target_weights = torch.softmax(target_logits.flatten(1), dim=1).reshape_as(
+        output.weights
+    )
+    predicted_weights = output.weights * valid_slots.to(output.weights.dtype)
+    predicted_weights = predicted_weights / predicted_weights.sum(
+        dim=(1, 2),
+        keepdim=True,
+    ).clamp_min(1e-12)
+    utility = F.kl_div(
+        predicted_weights.flatten(1).clamp_min(1e-12).log(),
+        target_weights.flatten(1),
+        reduction="batchmean",
+    )
+    best_margin = target_identity_margin.masked_fill(
+        ~valid_slots,
+        -torch.inf,
+    ).flatten(1).max(dim=1).values
+    positive_margin = best_margin.clamp_min(0.0)
+    alpha_target = (
+        float(alpha_max)
+        * positive_margin
+        / (positive_margin + float(alpha_gain_scale))
+    ).unsqueeze(1)
+    alpha = F.mse_loss(output.alpha, alpha_target)
+    return OOFMarginRouterLoss(
+        total=utility + alpha,
+        utility=utility,
+        alpha=alpha,
+        target_weights=target_weights,
+        alpha_target=alpha_target,
+    )
+
+
 class OOFMarginRoutedFusion(nn.Module):
     """Append one bounded, jointly routed residual bank to exact Signal."""
 
@@ -202,5 +269,7 @@ __all__ = [
     "HierarchicalOOFMarginRouter",
     "OOFMarginFusionOutput",
     "OOFMarginRoutedFusion",
+    "OOFMarginRouterLoss",
     "OOFMarginRouterOutput",
+    "oof_margin_router_loss",
 ]
