@@ -1,3 +1,13 @@
+> **TriFusion research fork.** This branch adds a shared-CLIP
+> CNN + Transformer + Mamba collaborative RGB–NIR–TIR ReID system, together
+> with identity-disjoint reliability calibration, fixed-endpoint evaluation,
+> recovery receipts, and fail-closed evidence verification. See the
+> [current complete handoff](docs/TRIFUSION_RGBNT201_CURRENT_COMPLETE_HANDOFF_2026-09-01.md)
+> for the exact status, commands, metrics, claim boundaries, and document index.
+> Dataset files, pretrained weights, checkpoints, and remote artifacts are not
+> distributed in this repository. The original DeMo project and attribution are
+> preserved below.
+
 <p align="center">
 
   <h1 align="center">DeMo: Decoupled Feature-Based Mixture of Experts for Multi-Modal Object Re-Identification</h1>
@@ -160,4 +170,3 @@ If you find **DeMo** helpful in your research, please consider citing:
   year={2025}
 }
 ```
-
