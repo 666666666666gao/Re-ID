@@ -1,4 +1,4 @@
-# TriFusion V5 baseline-preserving 主方法恢复实验计划
+# TriFusion baseline-preserving 主方法恢复实验计划
 
 > 2026-09-01 20:10 更新：V4 已完成 60/60 epoch 并失败。最佳 fused
 > `43.4031/42.7879`，低于 Mamba `44.0659/43.5152`，距 65 mAP dev 门
@@ -17,6 +17,13 @@
 > capacity 和 100-step overfit 全部 PASS；218/218 梯度、峰值 3554 MiB、
 > overfit ratio 0.05655、Signal SHA 不变、official0。现在只解锁一次 seed42
 > 的 60-epoch held-out-dev，不解锁 official test、消融或多种子。
+>
+> 2026-09-01 V6 终态：唯一 seed42 主实验已完成 60/60 epoch。epoch8 的
+> baseline/fused/CNN mAP 为 `58.0109/58.7321/59.1022`；fused 虽比 baseline
+> 高 `0.7212`，但低于 CNN `0.3701` 且距 65 门 `6.2679`，故主门失败。
+> 诊断确认残差已经改变检索几何，但高熵路由让最强 CNN 获得最低权重。
+> 下一步只允许一个“相对 exact baseline 的边际身份收益路由”V7 main-only
+> 修正；不解锁 official test、消融、多种子或超参扫描。
 
 ## 当前冻结决策
 
@@ -148,4 +155,6 @@ V4 保留 V3 的共享 12 层 CLIP、直接三模态 projected-CLS anchor、CNN/
 - [x] V5 baseline-only/fused 双输出、梯度隔离和工程门禁
 - [x] V5 60-epoch dev 与严格重载完成；晋级门失败，official0
 - [x] V5 best checkpoint 只读协同诊断完成；optimizer0、official0
-- [ ] 仅实现一个基于诊断的 baseline-preserving main-only 架构修正
+- [x] 实现 V6 baseline-preserving main-only 架构修正并通过 readiness
+- [x] V6 60-epoch dev、严格重载和只读诊断完成；fused 58.7321，低于 CNN 59.1022，official0
+- [ ] 只实现一个 V7 marginal-gain routing main-only 修正；通过同样主门前继续禁止 official test、消融和多种子

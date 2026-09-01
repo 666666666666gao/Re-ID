@@ -236,3 +236,11 @@
 | 2026-09-01 22:45 | /run-experiment | evidence/trifusion_signal_preserving_v6_preflight_seed42.json | research | V6 全825 dev exact Signal parity、独立 schema、optimizer0、official0 |
 | 2026-09-01 22:45 | /run-experiment | evidence/trifusion_signal_preserving_v6_capacity_seed42.json | research | RTX3090 B32/K4 8-step、218/218梯度、3554MiB reserved、0 overflow |
 | 2026-09-01 22:45 | /run-experiment | evidence/trifusion_signal_preserving_v6_overfit_seed42.json | research | 同一真实批100-step loss ratio0.05655、Signal SHA不变、official0 |
+| 2026-09-01 23:20 | /monitor-experiment | evidence/trifusion_signal_preserving_v6_dev_terminal_seed42.json | research | V6 60/60 dev、epoch8五路严格重载、Signal SHA不变、5498 steps、0 overflow、official0 |
+| 2026-09-01 23:20 | /analyze-results | evidence/trifusion_signal_preserving_v6_diagnostic_seed42.json | research | 全825 dev的残差指标、检索距离变化、Top-10重合、路由熵/权重与模块更新只读诊断 |
+| 2026-09-01 23:20 | /analyze-results | results/TRIFUSION_RGBNT201_V6_DEV_SEED42_2026-09-01.md | research | V6五路指标、失败门、训练回落、检索几何变化和路由失配结论 |
+| 2026-09-01 23:20 | /result-to-claim | .aris/traces/result-to-claim/2026-09-01_run04/ | research | V6 claim_supported=no/high/provisional：只支持exact Signal和dev +0.7212，不支持best-expert、65mAP或SOTA |
+| 2026-09-01 23:20 | /experiment-plan | refine-logs/EXPERIMENT_PLAN.md | implementation | 回填V6完整失败终态，并只解锁V7 marginal-gain routing main-only修正 |
+| 2026-09-01 23:20 | /experiment-plan | refine-logs/EXPERIMENT_TRACKER.md | research | V6 dev、诊断、result-to-claim终态与V7单主实验边界 |
+| 2026-09-01 23:20 | /handoff | docs/TRIFUSION_RGBNT201_CURRENT_COMPLETE_HANDOFF_2026-09-01.md | documentation | 服务器统一交接续写V6完整训练、五路指标、路由根因、证据路径和V7接续边界 |
+| 2026-09-01 23:20 | /handoff | README.md | documentation | 公开入口更新V6终局指标、失败门和路由失配结论 |

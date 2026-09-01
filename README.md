@@ -25,11 +25,14 @@
 > official test or ablation was run. A read-only checkpoint diagnostic shows
 > the fused distance matrix is effectively unchanged from baseline
 > (correlation `1.0`, Top-10 overlap `99.988%`).
-> The resulting main-only V6 correction now passes exact baseline preflight,
-> real B32/K4 capacity (`218/218` gradients, `3554 MiB` reserved), and a
-> 100-step overfit gate (loss ratio `0.05655`) with Signal unchanged and
-> official-test access zero. Its single 60-epoch seed-42 dev run is the next
-> authorized experiment; no V6 retrieval result is claimed yet.
+> The resulting main-only V6 correction passed all readiness gates and completed
+> its single seed-42 60-epoch held-out-dev run. The selected epoch 8 gives fused
+> **58.7321 mAP / 57.5758 Rank-1**, above the exact Signal baseline
+> **58.0109 / 57.4545** but below CNN **59.1022 / 59.6364** and the frozen
+> 65 mAP gate. A read-only diagnostic confirms that V6 now changes retrieval
+> geometry, but its high-entropy router gives the strongest CNN expert the
+> lowest weight. The V6 claim gate therefore fails; official test, ablations,
+> and multiple seeds remain closed.
 > Dataset files, pretrained weights, checkpoints, and remote artifacts are not
 > distributed in this repository. The original DeMo project and attribution are
 > preserved below.

@@ -75,3 +75,15 @@
 - 最新路线：先建立完整、独立可检索的 Signal 3072D baseline-only 路径；分阶段冻结 baseline，避免专家梯度破坏；同 checkpoint 同 dev 协议同时评估 baseline-only 与 fused，只有 fused 不低于 baseline 且通过冻结主门才晋级，否则拒绝 fused 且不主张融合增益。不实现额外运行时 fallback。
 - V4-specific integrity：当前只有真实 GT、`run_summary=PASS` 和完整哈希链，尚无独立 V4 integrity audit，故完整性结论标为 provisional；负结果 verdict 置信度 high，baseline 缺失是主要根因的因果判断仅为 medium。
 - 证据：`evidence/trifusion_task_anchor_v4_dev_terminal_seed42.json`；远端原始目录 `/root/autodl-tmp/trifusion-v2/artifacts/trifusion_task_anchor_v4_core_dev_seed42_3fbedbb`。
+
+## 2026-09-01 — Signal-preserving V6 60-epoch dev 主门负结果
+
+- 完整性：远端 RTX3090、seed42、B32/K4、固定 141-fit/30-dev、60/60 epoch 完成；5,498 optimizer steps、0 overflow、严格重载逐项一致、Signal state SHA 不变、official access=0。V6-specific independent integrity audit 尚未完成，因此完整性为 provisional。
+- 最佳 checkpoint：按冻结的 fused dev mAP 选择 epoch8，SHA-256 `32bba88cc0204cec6b563ce0a8c6239c828c46eec50647d357b2e9f30031ee2e`。
+- 五路 mAP：baseline `58.0109`；fused `58.7321`；CNN `59.1022`；Transformer `57.7962`；Mamba `58.7298`。
+- 主门：fused 比 baseline 高 `0.7212 mAP`，但比 CNN 低 `0.3701`，且比 65 mAP 低 `6.2679`。`claim_supported=no`，official test、消融和多种子继续封闭。
+- V5 瓶颈已解决一半：残差/baseline 范数比从 `0.02747` 提升为精确 `1.0`；fused/baseline 距离相关从 `1.0` 降为 `0.96875`，Top-10 overlap 从 `99.9879%` 降为 `95.3939%`，说明 V6 确实改变检索几何。
+- 当前首要瓶颈是路由对齐：最强 CNN residual-only mAP 为 `56.9267`，但只获约 `0.228–0.245` 权重；较弱 Transformer/Mamba 获得更高权重。路由熵 `0.97435`、std `0.00843`，整体接近静态。
+- 次要瓶颈是泛化：epoch8 达到最佳后，训练损失继续从 `0.3667` 降至 epoch60 的 `0.02797`，fused dev 却回落到 `56.5679`。训练已经完成，不能解释为“没训练完”。
+- 下一步：只允许一个 V7 main-only 结构修正，使路由目标表达各专家相对 exact baseline 的边际身份收益；保留 exact Signal、三完整专家、两次 HFER、三次可靠性刷新和无自由倍率残差银行。不扫 epoch、batch、学习率、温度或残差倍率。
+- 证据：`evidence/trifusion_signal_preserving_v6_dev_terminal_seed42.json`、`evidence/trifusion_signal_preserving_v6_diagnostic_seed42.json`、`results/TRIFUSION_RGBNT201_V6_DEV_SEED42_2026-09-01.md`。

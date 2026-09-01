@@ -78,7 +78,17 @@
   It is not an ablation or multiplier scan. Preflight, real B32/K4 capacity and
   fixed-batch overfit all pass: exact 825/825 baseline parity, 218/218 gradient
   tensors, 3,554 MiB peak reserved, zero overflow and loss ratio 0.05655.
-  One seed-42 held-out-dev run is authorized; official test remains forbidden.
+  The only seed-42 60-epoch held-out-dev run completed and selected epoch 8:
+  baseline/fused/CNN mAP is 58.0109/58.7321/59.1022. Fused improves baseline
+  by 0.7212 but trails CNN by 0.3701 and misses the 65 mAP gate by 6.2679.
+  Official test, ablations and multiple seeds remain forbidden.
+- The V6 read-only diagnostic shows all residual-bank norm ratios equal 1.0,
+  fused/baseline distance correlation 0.96875 and Top-10 overlap 95.3939%.
+  Residuals are diverse, but the router stays high entropy (0.97435) and gives
+  the strongest CNN expert the lowest mean weight. The next allowed main-only
+  change must target marginal-gain routing alignment while retaining exact
+  Signal preservation; generalization is a secondary issue. Do not tune epoch,
+  batch size, learning rate, residual multiplier or run an ablation matrix.
 
 ## Remote experiment constraints
 

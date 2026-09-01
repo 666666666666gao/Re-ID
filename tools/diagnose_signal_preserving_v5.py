@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Read-only diagnostics for a completed Signal-preserving V5 checkpoint."""
+"""Read-only diagnostics for completed Signal-preserving checkpoints."""
 
 from __future__ import annotations
 
@@ -174,11 +174,18 @@ def _parameter_updates(
 def run(args: argparse.Namespace) -> dict[str, Any]:
     if args.output.exists():
         raise FileExistsError(f"diagnostic output already exists: {args.output}")
-    from run_signal_preserving_v5 import _build_runtime, _load_config
+    from run_signal_preserving_v5 import (
+        ARCHITECTURE_V5,
+        ARCHITECTURE_V6,
+        _build_runtime,
+        _load_config,
+        receipt_schema,
+    )
 
     config_path = args.config.resolve()
     checkpoint_path = args.checkpoint.resolve()
     config = _load_config(config_path)
+    architecture = str(config["MODEL"]["ARCHITECTURE"])
     runtime = _build_runtime(config)
     model = runtime["model"]
     initial = {
@@ -200,23 +207,46 @@ def run(args: argparse.Namespace) -> dict[str, Any]:
         "r": [],
         "u": [],
     }
+    if architecture == ARCHITECTURE_V6:
+        for expert in EXPERTS:
+            collected[f"residual_{expert}"] = []
+        from utils.metrics import R1_mAP_eval
+
+        residual_evaluators = {
+            expert: R1_mAP_eval(
+                len(runtime["dev_records"]), max_rank=50, feat_norm="yes"
+            )
+            for expert in EXPERTS
+        }
+    else:
+        residual_evaluators = {}
     remaining = len(runtime["dev_records"])
-    for images, _identities, _camera_ids, camera_ids_batch, _view_ids, _paths in runtime[
+    for images, identities, camera_ids, camera_ids_batch, _view_ids, paths in runtime[
         "eval_loader"
     ]:
-        if remaining == 0:
-            break
         images = {name: tensor.cuda(non_blocking=True) for name, tensor in images.items()}
-        camera_ids = camera_ids_batch.cuda(non_blocking=True)
+        camera_labels = camera_ids_batch.cuda(non_blocking=True)
         batch = {
             "images": images,
             "modality_mask": torch.ones(
-                camera_ids.shape[0], 3, dtype=torch.bool, device="cuda"
+                camera_labels.shape[0], 3, dtype=torch.bool, device="cuda"
             ),
-            "camera_ids": camera_ids,
+            "camera_ids": camera_labels,
         }
         with torch.no_grad():
             output = model(batch, return_aux=True)
+        if architecture == ARCHITECTURE_V6:
+            for expert in EXPERTS:
+                residual_evaluators[expert].update(
+                    (
+                        output.residual_embeddings[expert],
+                        identities,
+                        camera_ids,
+                        paths,
+                    )
+                )
+        if remaining == 0:
+            continue
         take = min(remaining, output.baseline_embedding.shape[0])
         collected["baseline_only"].append(output.baseline_embedding[:take].float().cpu())
         collected["fused"].append(output.fused_embedding[:take].float().cpu())
@@ -224,6 +254,10 @@ def run(args: argparse.Namespace) -> dict[str, Any]:
             collected[expert].append(
                 output.branch_embeddings[expert][:take].float().cpu()
             )
+            if architecture == ARCHITECTURE_V6:
+                collected[f"residual_{expert}"].append(
+                    output.residual_embeddings[expert][:take].float().cpu()
+                )
         collected["router"].append(output.router_weights[:take].float().cpu())
         collected["r"].append(output.reliability.r[:take].float().cpu())
         collected["u"].append(output.reliability.u[:take].float().cpu())
@@ -242,13 +276,9 @@ def run(args: argparse.Namespace) -> dict[str, Any]:
         output: _distance_change(tensors["baseline_only"], tensors[output])
         for output in ("fused", *EXPERTS)
     }
-    scale_values = [
-        float(value)
-        for value in torch.sigmoid(model.fusion.residual_scale_logits.detach().cpu())
-    ]
     run_summary = checkpoint_path.parent / "run_summary.json"
     result = {
-        "schema_version": "trifusion-signal-preserving-v5-diagnostic-v1",
+        "schema_version": receipt_schema(architecture, "diagnostic"),
         "status": "PASS",
         "checkpoint": str(checkpoint_path),
         "checkpoint_sha256": _sha256(checkpoint_path),
@@ -261,13 +291,39 @@ def run(args: argparse.Namespace) -> dict[str, Any]:
         "samples": int(tensors["baseline_only"].shape[0]),
         "collaboration": collaboration,
         "distance_change_from_baseline": distance_change,
-        "trained_residual_scales": dict(zip(EXPERTS, scale_values, strict=True)),
         "trainable_parameter_updates": _parameter_updates(initial, model),
         "source_run_summary_sha256": _sha256(run_summary),
         "official_test_access_count": 0,
         "training_executed": False,
         "optimizer_steps": 0,
     }
+    if architecture == ARCHITECTURE_V5:
+        scale_values = [
+            float(value)
+            for value in torch.sigmoid(
+                model.fusion.residual_scale_logits.detach().cpu()
+            )
+        ]
+        result["trained_residual_scales"] = dict(
+            zip(EXPERTS, scale_values, strict=True)
+        )
+    elif architecture == ARCHITECTURE_V6:
+        result["residual_energy_activation"] = {
+            "has_free_scale": False,
+            "target_suffix_to_baseline_norm": 1.0,
+        }
+        residual_metrics = {}
+        for expert, evaluator in residual_evaluators.items():
+            cmc, mean_ap, *_ = evaluator.compute()
+            residual_metrics[expert] = {
+                "mAP": float(mean_ap * 100.0),
+                "Rank-1": float(cmc[0] * 100.0),
+                "Rank-5": float(cmc[4] * 100.0),
+                "Rank-10": float(cmc[9] * 100.0),
+            }
+        result["residual_only_metrics_percent"] = residual_metrics
+    else:
+        raise ValueError(f"unsupported Signal-preserving architecture: {architecture}")
     args.output.parent.mkdir(parents=True, exist_ok=True)
     args.output.write_text(
         json.dumps(result, indent=2, sort_keys=True) + "\n",

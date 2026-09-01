@@ -2,13 +2,13 @@
 
 ## 0. 一页结论
 
-本工程是在 DeMo 代码基座上实现的 RGB–NIR–TIR 多模态目标重识别研究分支。当前候选主方法是 Signal-preserving V5：冻结并逐字节保留 Signal 的完整 3072D `direct+SIM+SIE` 检索路径，同时让 CNN、Transformer、Mamba 三个完整异构专家读取同一强语义特征场，经分阶段双向交换后只追加质量路由的非破坏式残差银行。
+本工程是在 DeMo 代码基座上实现的 RGB–NIR–TIR 多模态目标重识别研究分支。最新完整主方法是 Signal-preserving V6：冻结并逐元素保留 Signal 的完整 3072D `direct+SIM+SIE` 检索路径，同时让 CNN、Transformer、Mamba 三个完整异构专家读取同一强语义特征场，经分阶段双向交换后追加无自由倍率、等能量激活的质量路由残差银行。
 
-V5 的三个候选论文级主创新点已经落到核心代码和专项测试中；完整真实 dev 训练已经结束，但性能主门失败：
+V6 的三个候选论文级主创新点已经落到核心代码、专项测试和完整 dev 运行中；性能主门仍然失败：
 
 1. **Signal-preserving shared semantic expertization**：完整冻结 Signal，三专家共享其 patch/global 强语义场；`baseline_only` 保持原始 3072D 路径，专家训练不能改写 baseline 参数或输出。
 2. **Stagewise bidirectional heterogeneous feature exchange**：CNN、Transformer、Mamba 都是三阶段完整专家；阶段 1/2 后进行双向 HFER，可靠性在阶段 1/2/3 分别刷新，使下一阶段能使用其他专家的互补信息。
-3. **Identity-utility quality-routed non-destructive residual bank**：不再把九路贡献压成一个向量，而是保留全部 `expert×modality` 残差；联合可靠性与身份效用只控制追加银行，最终 `fused` 的 3072D 前缀严格等于 `baseline_only`。
+3. **Complementarity-activated utility-routed residual bank**：不再把九路贡献压成一个向量，而是保留全部 `expert×modality` 残差；联合可靠性与身份效用只控制追加银行，并把银行按样本无自由倍率地校准到 baseline 能量；最终 `fused` 的 3072D 前缀严格等于 `baseline_only`。
 
 当前最重要状态：
 
@@ -20,6 +20,8 @@ V5 的三个候选论文级主创新点已经落到核心代码和专项测试�
 - Signal baseline 已完整训练 50/50 epoch并严格重载最佳 checkpoint 确定性复评：`58.0109 mAP / 57.4545 Rank-1 / 69.9394 Rank-5 / 76.6061 Rank-10`；完整 3072D `direct+SIM`、camera SIE=true、official access=0。
 - V5 核心、独立 runner/config 和专项测试已经完成。真实 preflight、B32/K4 8-step capacity、固定批 100-step overfit 和完整 60-epoch dev 均执行完成；最佳 epoch51 的 baseline/fused/CNN mAP 分别为 `58.0109/58.0168/58.0181`，fused 未超过 CNN，且距 65 mAP 门仍差 `6.9832`。
 - 只读 checkpoint 诊断确认三分支参数实际更新，但 fused 追加残差范数只有 baseline 的 `2.747%`；融合距离与 baseline 距离相关系数为 `1.0`，Top-10 邻居重合率为 `99.9879%`。当前 V5 基本没有改变检索排序，因此不支持融合有效性主张。
+- V6 真实 preflight、capacity、overfit 和唯一 seed42、60-epoch dev 已全部完成。最佳 epoch8 的 baseline/fused/CNN mAP 为 `58.0109/58.7321/59.1022`：fused 比 baseline 高 `0.7212`，但低于 CNN `0.3701`，距 65 mAP 门 `6.2679`；official access=0。
+- V6 只读诊断确认残差/baseline 范数比已为 `1.0`，fused/baseline 距离相关降至 `0.96875`、Top-10 overlap 为 `95.3939%`，说明 V6 确实改变检索几何。当前首要失败原因是路由失配：最强 CNN 获得最低权重；次要问题是 epoch8 后的身份外泛化回落。
 - 原正式启动在官方指标写出后的路由校准审计因缺失导入失败；`repair-0002` 仅重算训练集路由审计，`optimizer_steps=0`、`training_reexecuted=false`、`official_test_reexecuted=false`，公开 verifier 返回 PASS。
 - 用户最新指令：只做 seed 42；现在优先完成远端 Signal baseline 保底；主实验达到目标以后才考虑消融；所有训练、评估、数据和环境只在云端 GPU，Windows/WSL 仅作传输和文档存档。
 
@@ -481,11 +483,11 @@ best ckpt  SHA256 43f4806437545520d91b2fe70349b6036dbb3949e6d6351d79a24c3aa7f539
 ### 9.3 正式结果后的唯一决策树
 
 ```text
-V5 held-out-dev 完成且 official access=0
+V6 held-out-dev 完成且 official access=0
   ├─ fused > 85.3 mAP 且 Rank-1 > 87.9
   │    └─ 才允许设计消融；仍只能称单种子目标超越，不能直接宣称统计 SOTA
-  └─ 未通过 dev 门（本次路径：58.0168 mAP，且低于 CNN）
-       └─ 不做消融、多种子或 official test；只做一次有诊断依据的 baseline-preserving main-only 架构修正
+  └─ 未通过 dev 门（本次路径：58.7321 mAP，低于 CNN 59.1022）
+       └─ 不做消融、多种子或 official test；只做一次 marginal-gain routing main-only 架构修正
 ```
 
 ## 10. 文档索引
@@ -505,6 +507,7 @@ V5 held-out-dev 完成且 official access=0
 | `docs/BASELINE_PROTOCOL_AUDIT_2026-08-31.md` | checkpoint selection 公平性审计 |
 | `results/TRIFUSION_RGBNT201_FINAL_SEED42_2026-09-01.md` | 正式原始指标、差距和负结果分析 |
 | `results/TRIFUSION_RGBNT201_V5_DEV_SEED42_2026-09-01.md` | V5 五路 dev 终局、门禁与只读诊断 |
+| `results/TRIFUSION_RGBNT201_V6_DEV_SEED42_2026-09-01.md` | V6 五路 dev 终局、检索几何、路由失配与 claim gate |
 | `EXPERIMENT_AUDIT.md` / `.json` | 独立实验完整性审计 |
 | `findings.md` | result-to-claim 否定结论与后续边界 |
 | `evidence/README.md` | 版本化 evidence 说明 |
@@ -530,7 +533,8 @@ V5 held-out-dev 完成且 official access=0
 - [x] V5 独立 runner/config 已完成；真实 baseline parity、8-step capacity 和 100-step overfit 门均 PASS，official access=0。
 - [x] 唯一一次 V5 seed42、60-epoch held-out-dev 主训练、严格重载和五路评估完成；主门失败，official access=0。
 - [x] V5 只读协同诊断完成：确认三专家有更新但最终检索几何几乎等同 baseline。
-- [ ] 依据诊断实现一个 baseline-preserving main-only 架构修正；通过同样工程门后才允许下一次 seed42 dev。继续禁止消融和 official test。
+- [x] V6 baseline-preserving main-only 架构修正、工程门、60-epoch dev、严格重载和只读诊断全部完成；fused `58.7321` 低于 CNN `59.1022`，official0。
+- [ ] 只实现一个基于 V6 证据的 marginal-gain routing V7 main-only 修正；通过同样 dev 门前继续禁止消融、多种子和 official test。
 
 ## 12. V3/V4 主方法恢复终态
 
@@ -705,15 +709,15 @@ V5 晋级合同保持不变，而本次实际未通过：`fused` 高于 baseline
 
 下一执行者应按以下顺序调用技能：
 
-1. 先读 V5 terminal receipt 与 `diagnostic.json`，只实现一个有证据支持的 main-only 架构修正；
-2. `/run-experiment`：修正版先过 TDD、capacity 和 overfit，再运行唯一 seed42 held-out-dev；
+1. 先读 V6 terminal/diagnostic receipt 与 `results/TRIFUSION_RGBNT201_V6_DEV_SEED42_2026-09-01.md`；只实现一个“相对 exact baseline 的边际身份收益路由”main-only 修正；
+2. `/tdd` 与 `/run-experiment`：V7 先过最小 TDD、preflight、capacity 和 overfit，再运行唯一 seed42 held-out-dev；
 3. `/monitor-experiment`：长任务按 180–300 秒间隔或预计结束前数分钟轮询；
 4. `/analyze-results` 与 `/result-to-claim`：完整 dev 后重新判断；
 5. `/ablation-planner`：只有新主方法正式超过冻结目标且 `claim_supported=yes` 后才允许使用。
 
-接续时不要重跑 Signal baseline 或 V5，不做多种子，不做消融，不访问 official test。下一步不是调 batch、epoch、学习率或残差倍率，而是利用“专家有差异、融合排序不变”的诊断，完成一个最小 main-only 结构修正后重新过门。
+接续时不要重跑 Signal baseline、V5 或 V6，不做多种子，不做消融，不访问 official test。下一步不是调 batch、epoch、学习率、温度或残差倍率，而是利用“CNN 最强但获得最低路由权重”的诊断，让路由目标直接表达各专家相对 exact baseline 的边际身份收益。泛化回落是次级问题；不要把 60/60 epoch 的结果解释为未训练完成。
 
-## 14. Signal-preserving V6 readiness
+## 14. Signal-preserving V6 完整终态
 
 V6 是 V5 诊断后的唯一 main-only 修正，不是消融或超参扫描：
 
@@ -721,7 +725,7 @@ V6 是 V5 诊断后的唯一 main-only 修正，不是消融或超参扫描：
 2. 移除 learned residual scale，把路由后的联合残差银行按样本无自由倍率地校准到 baseline 能量；
 3. 为 CNN、Transformer、Mamba 各自增加 residual-only ID/triplet 监督，并从 residual-only batch-hard 身份间隔构造路由效用，避免冻结 baseline 代替专家完成目标。
 
-源码身份：Git commit `3b801de22a3737d7669641efb2430e96759844e5`。V5/V6 联合专项 `16 passed, 3 warnings`。真实工程门：
+源码身份：训练启动时 Git commit `e4a6bffcbf77ee6dde301551b8ac7a249af0fed9`。V5/V6 联合专项 `16 passed, 3 warnings`。真实工程门：
 
 | 门 | 结果 | 关键证据 |
 |---|---|---|
@@ -735,9 +739,31 @@ V6 是 V5 诊断后的唯一 main-only 修正，不是消融或超参扫描：
 evidence/trifusion_signal_preserving_v6_preflight_seed42.json
 evidence/trifusion_signal_preserving_v6_capacity_seed42.json
 evidence/trifusion_signal_preserving_v6_overfit_seed42.json
+evidence/trifusion_signal_preserving_v6_dev_terminal_seed42.json
+evidence/trifusion_signal_preserving_v6_diagnostic_seed42.json
 ```
 
-当前只解锁一次 seed42、60-epoch、141-fit/30-dev 主训练。晋级合同仍是 fused mAP 至少 65，并严格高于 baseline_only、CNN、Transformer、Mamba；失败则继续禁止 official test 和消融。
+完整 dev 运行目录：
+
+```text
+/root/autodl-tmp/trifusion-v2/artifacts/trifusion_signal_preserving_v6_dev_seed42_e4a6bff
+```
+
+按 fused dev mAP 选择 epoch8 并严格重载后的同 checkpoint 指标：
+
+| 输出 | mAP | Rank-1 | Rank-5 | Rank-10 |
+|---|---:|---:|---:|---:|
+| baseline_only | 58.0109 | 57.4545 | 69.9394 | 76.6061 |
+| fused | 58.7321 | 57.5758 | 69.2121 | 76.7273 |
+| CNN | **59.1022** | **59.6364** | **70.3030** | 76.1212 |
+| Transformer | 57.7962 | 57.4545 | 68.3636 | 76.0000 |
+| Mamba | 58.7298 | 57.6970 | 69.5758 | 76.3636 |
+
+60/60 epoch、5,498 optimizer steps、0 overflow，峰值 reserved `6084 MiB`，Signal state 在训练前后和重载后完全不变，official access=0。主门 FAIL：fused 比 baseline 高 `0.7212 mAP`，但比 CNN 低 `0.3701`，且比 65 mAP 低 `6.2679`。
+
+只读诊断处理全部 825 个 dev 样本且 optimizer0。V6 的 suffix/baseline norm ratio 为 `1.0`；fused/baseline 距离相关 `0.96875`、Top-10 overlap `95.3939%`，证明残差已实际改变排序。三专家残差保持低余弦，但路由熵 `0.97435` 且样本间变化很小；最强 CNN residual-only mAP `56.9267` 却只获约 `0.228–0.245` 权重，低于 Transformer 和 Mamba。result-to-claim 为 `no/high/provisional`：只支持 exact Signal preservation 和 held-out-dev 上 `+0.7212 mAP` 的窄主张，不支持协同优越性、65 mAP、official 或 SOTA。
+
+V6 已完成且失败，不得重跑。下一步只允许一个 V7 main-only routing-alignment 修正；正式晋级合同仍是 fused mAP 至少 65，并严格高于 baseline_only、CNN、Transformer、Mamba。失败前继续禁止 official test、消融和多种子。
 
 ---
 

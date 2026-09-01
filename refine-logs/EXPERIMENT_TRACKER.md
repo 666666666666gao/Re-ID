@@ -1,4 +1,4 @@
-# TriFusion V5 Baseline-First Experiment Tracker — 2026-09-01 21:52 +08:00
+# TriFusion Baseline-First Experiment Tracker — 2026-09-01 23:20 +08:00
 
 | Run ID | Milestone | Purpose | System / Variant | Split | Metrics | Priority | Status | Notes |
 |---|---|---|---|---|---|---|---|---|
@@ -22,7 +22,10 @@
 | V6-R001 | M1 | exact baseline preflight | V6 | 30-dev | parity、provenance、official0 | MUST | COMPLETE—PASS | 825/825逐元素相等；58.0109/57.4545；optimizer0/official0 |
 | V6-R002 | M1 | RTX3090 capacity | V6 | train-only B32/K4 8 steps | VRAM、gradient、overflow | MUST | COMPLETE—PASS | 218/218梯度；3554MiB reserved；0 overflow；Signal SHA不变 |
 | V6-R003 | M1 | fixed-batch overfit | V6 | same real B32/K4 100 steps | loss ratio≤0.10 | MUST | COMPLETE—PASS | 4.06445→0.22984；ratio0.05655；official0 |
-| V6-R004 | M2 | 完整 60-epoch dev 主实验 | V6 | 141-fit/30-dev | baseline/fused/三专家 | MUST | READY | 仅一次seed42；fused≥65且高于四个输出才晋级 |
-| V6-R005 | M3 | fixed all171 + official once | V6 | all171→official | mAP/R1/5/10 | CONDITIONAL | BLOCKED | 仅V6-R004全门通过后授权 |
+| V6-R004 | M2 | 完整 60-epoch dev 主实验 | V6 | 141-fit/30-dev | baseline/fused/三专家 | MUST | COMPLETE—FAIL | e8 baseline/fused/CNN mAP 58.0109/58.7321/59.1022；fused低于CNN 0.3701且距65门6.2679；60/60、official0 |
+| V6-D001 | M2 | 冻结 best checkpoint 只读协同诊断 | V6 epoch8 | 30-dev | residual metrics、distance delta、router alignment | MUST | COMPLETE—PASS | residual norm ratio=1；distance corr0.96875；Top10 overlap95.3939%；CNN最强但路由权重最低；optimizer0/official0 |
+| V6-C001 | M2 | 独立结果主张判断 | V6 result-to-claim | frozen receipts | claim_supported | MUST | COMPLETE—NO | 仅支持exact Signal preservation和fused比baseline高0.7212；不支持best-expert、65mAP或SOTA；integrity provisional |
+| V6-R005 | M3 | fixed all171 + official once | V6 | all171→official | mAP/R1/5/10 | CONDITIONAL | BLOCKED—NOT AUTHORIZED | V6-R004未通过；禁止official和消融 |
+| V7-R000+ | M2 | marginal-gain routing main-only correction | V7 | TDD/readiness→141-fit/30-dev | 同一五路主门 | MUST | PLANNED | 仅修正相对exact baseline的边际身份收益路由；单seed42；不是消融或超参扫描 |
 
 硬约束：所有 GPU、数据、conda、训练和评估仅在远端 RTX3090；seed42 only；只做单一 Signal baseline floor，不做 baseline 矩阵；主结果超过冻结正式目标前不运行消融；未有同协议证据不得宣称 SOTA。

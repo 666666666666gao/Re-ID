@@ -214,3 +214,16 @@ memory. Fixed-batch overfit records a 100-step loss ratio of 0.05655. Signal
 state hashes stay unchanged and official-test access is zero throughout. These
 receipts authorize one seed-42 held-out-dev main run; they do not constitute a
 retrieval gain, official result, ablation or SOTA claim.
+
+The V6 terminal dev receipt binds the completed seed-42 60-epoch run, selected
+epoch 8, strict five-output reload parity, unchanged frozen Signal state, 5,498
+optimizer steps, zero overflow and official-test access zero. Baseline/fused/
+CNN mAP is 58.0109/58.7321/59.1022: fused improves the baseline by 0.7212 but
+fails the best-expert and 65 mAP gates. The paired read-only diagnostic covers
+all 825 dev samples. It records unit residual/baseline norm ratios, fused versus
+baseline distance correlation 0.96875, 95.3939% Top-10 overlap, residual-only
+CNN/Mamba/Transformer mAP 56.9267/56.2747/53.6715 and router entropy 0.97435.
+These receipts support exact Signal preservation and a narrow held-out-dev
+baseline improvement. They do not support collaborative superiority, official
+evaluation, innovation-effectiveness or SOTA. V6-specific independent integrity
+remains provisional because the repository audit predates this run.
