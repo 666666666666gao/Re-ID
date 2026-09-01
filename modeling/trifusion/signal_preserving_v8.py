@@ -521,6 +521,7 @@ class ExpertFormationFusion(nn.Module):
 class SignalPreservingV8Output:
     fused_embedding: torch.Tensor
     baseline_embedding: torch.Tensor
+    direct_modal: torch.Tensor
     branch_embeddings: Mapping[str, torch.Tensor]
     residual_embeddings: Mapping[str, torch.Tensor]
     modal_residual_embeddings: Mapping[str, torch.Tensor]
@@ -659,6 +660,7 @@ class SignalPreservingExpertFormationV8(nn.Module):
         return SignalPreservingV8Output(
             fused_embedding=fusion.fused_embedding,
             baseline_embedding=field.baseline_embedding,
+            direct_modal=field.direct_modal,
             branch_embeddings=fusion.branch_embeddings,
             residual_embeddings=fusion.residual_embeddings,
             modal_residual_embeddings=fusion.modal_residual_embeddings,
