@@ -264,6 +264,7 @@ def _train_signal_teacher(
     signal_cfg: Any,
     *,
     epochs: int,
+    amp_init_scale: float,
     max_steps: int | None = None,
 ) -> dict[str, Any]:
     import torch
@@ -275,7 +276,7 @@ def _train_signal_teacher(
     loss_fn, center_criterion = make_loss(signal_cfg, num_classes=model.num_classes)
     optimizer, _optimizer_center = make_optimizer(signal_cfg, model, center_criterion)
     scheduler = create_scheduler(signal_cfg, optimizer)
-    scaler = torch.amp.GradScaler("cuda")
+    scaler = torch.amp.GradScaler("cuda", init_scale=float(amp_init_scale))
     initial_state_sha256 = _module_state_sha256(model)
     history = []
     overflow_events = 0
@@ -455,6 +456,7 @@ def _run_preflight(
         loader,
         signal_cfg,
         epochs=1,
+        amp_init_scale=float(config["OPTIMIZATION"]["AMP_INIT_SCALE"]),
         max_steps=1,
     )
     passed = (
@@ -565,6 +567,7 @@ def _run_oof(
             signal_loader,
             signal_cfg,
             epochs=int(config["V12"]["SIGNAL_TEACHER_EPOCHS"]),
+            amp_init_scale=float(config["OPTIMIZATION"]["AMP_INIT_SCALE"]),
         )
         signal_checkpoint = output_dir / f"fold_{fold_index}_signal_final.pth"
         torch.save(
