@@ -148,7 +148,7 @@ def _collect_quality_cache(
 def _new_router(config: dict[str, Any], *, direct_width: int, residual_width: int):
     import torch
 
-    from modeling.trifusion.signal_preserving_v8_router import (
+    from trifusion.signal_preserving_v8_router import (
         HierarchicalOOFMarginRouter,
     )
 
@@ -175,7 +175,7 @@ def _fit_router(
 ) -> dict[str, Any]:
     import torch
 
-    from modeling.trifusion.signal_preserving_v8_router import (
+    from trifusion.signal_preserving_v8_router import (
         modality_quality_loss,
         oof_margin_router_loss,
     )
