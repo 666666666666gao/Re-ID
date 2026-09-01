@@ -92,6 +92,29 @@ def oof_margin_router_loss(
     )
 
 
+def modality_quality_loss(
+    modal_probabilities: torch.Tensor,
+    modality_quality: torch.Tensor,
+    modality_mask: torch.Tensor,
+) -> torch.Tensor:
+    """Supervise modality mass from controlled corruption quality labels."""
+
+    if modal_probabilities.shape != modality_quality.shape:
+        raise ValueError("modal probabilities and quality targets must match")
+    if modality_mask.dtype != torch.bool or modality_mask.shape != modality_quality.shape:
+        raise ValueError("modality_mask must match quality targets")
+    valid = modality_mask.to(modal_probabilities.dtype)
+    target = modality_quality * valid
+    target = target / target.sum(dim=1, keepdim=True).clamp_min(1e-12)
+    predicted = modal_probabilities * valid
+    predicted = predicted / predicted.sum(dim=1, keepdim=True).clamp_min(1e-12)
+    return F.kl_div(
+        predicted.clamp_min(1e-12).log(),
+        target,
+        reduction="batchmean",
+    )
+
+
 class OOFMarginRoutedFusion(nn.Module):
     """Append one bounded, jointly routed residual bank to exact Signal."""
 
@@ -271,5 +294,6 @@ __all__ = [
     "OOFMarginRoutedFusion",
     "OOFMarginRouterLoss",
     "OOFMarginRouterOutput",
+    "modality_quality_loss",
     "oof_margin_router_loss",
 ]
