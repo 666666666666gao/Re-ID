@@ -61,3 +61,9 @@ def test_v6_runner_contract_has_a_distinct_frozen_experiment_identity() -> None:
     assert receipt_schema(contract["architecture"], "capacity") == (
         "trifusion-signal-preserving-v6-capacity-v1"
     )
+
+
+def test_v6_cli_entrypoint_exports_the_shared_runner_main() -> None:
+    from tools.run_signal_preserving_v6 import main
+
+    assert callable(main)
