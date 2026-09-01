@@ -339,6 +339,35 @@ def diagnose(args: argparse.Namespace) -> dict[str, Any]:
     del initial
     torch.cuda.empty_cache()
 
+    tokenizer_warm_start = None
+    tokenizer_warm_start_metrics = None
+    if args.tokenizer_warm_start is not None:
+        tokenizer_warm_start = args.tokenizer_warm_start.resolve()
+        warm_model = build_trifusion_cascade_v2_from_clip(
+            clip_path, **kwargs
+        ).model.cuda()
+        warm_state = torch.load(
+            tokenizer_warm_start, map_location="cpu", weights_only=True
+        )
+        prefix = "encoder.tokenizer."
+        tokenizer_state = {
+            name[len(prefix) :]: value
+            for name, value in warm_state.items()
+            if name.startswith(prefix)
+        }
+        if not tokenizer_state:
+            raise ValueError("tokenizer warm start contains no tokenizer tensors")
+        warm_model.encoder.tokenizer.load_state_dict(tokenizer_state, strict=True)
+        (
+            tokenizer_warm_start_metrics,
+            warm_identities,
+            warm_cameras,
+        ) = _collect_initial_clip(warm_model, data, amp=args.amp)
+        if warm_identities != identities or warm_cameras != cameras:
+            raise RuntimeError("development loader ordering changed for warm start")
+        del warm_model
+        torch.cuda.empty_cache()
+
     trained = build_trifusion_cascade_v2_from_clip(
         clip_path, **kwargs
     ).model.cuda()
@@ -361,6 +390,15 @@ def diagnose(args: argparse.Namespace) -> dict[str, Any]:
         "checkpoint": str(checkpoint),
         "checkpoint_sha256": _sha256(checkpoint),
         "initial_exact_clip_metrics": initial_metrics,
+        "tokenizer_warm_start": (
+            str(tokenizer_warm_start) if tokenizer_warm_start is not None else None
+        ),
+        "tokenizer_warm_start_sha256": (
+            _sha256(tokenizer_warm_start)
+            if tokenizer_warm_start is not None
+            else None
+        ),
+        "tokenizer_warm_start_exact_cls_metrics": tokenizer_warm_start_metrics,
         "trained_exact_cls_metrics": trained_metrics,
         "representation_stats": representation_stats,
         "fusion_residual_scales": [
@@ -376,6 +414,7 @@ def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser()
     parser.add_argument("--config", type=Path, required=True)
     parser.add_argument("--checkpoint", type=Path, required=True)
+    parser.add_argument("--tokenizer-warm-start", type=Path)
     parser.add_argument("--output", type=Path, required=True)
     parser.add_argument("--amp", action=argparse.BooleanOptionalAction, default=True)
     return parser.parse_args()
