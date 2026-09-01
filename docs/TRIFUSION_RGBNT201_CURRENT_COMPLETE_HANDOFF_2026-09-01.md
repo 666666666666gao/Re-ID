@@ -2,7 +2,7 @@
 
 ## 0. 一页结论
 
-本工程是在 DeMo 代码基座上实现的 RGB–NIR–TIR 多模态目标重识别研究分支。最新完成的是 V8 pretrained-tail Phase-A 专家形成与互补性探针；正式可部署主结果仍以 V7 的 `58.3293 mAP / 57.9394 Rank-1` 为当前失败终态，未达到 65 mAP dev 门，也不支持 SOTA。V8 Phase-A 从冻结 CLIP block8 分叉，让 CNN、Transformer、Mamba 共享冻结的 pretrained tail 9/10/11，再学习结构化残差；其目的只是先证明三专家能形成互补，不是完整 Router/HFER 主模型。
+本工程是在 DeMo 代码基座上实现的 RGB–NIR–TIR 多模态目标重识别研究分支。最新完成的是 V8 OOF-margin Router Phase-B：在冻结 Phase-A 专家后，仅用 fit-only 身份隔离 margin 与受控退化训练层级 Router。唯一冻结 dev 结果 fused=`58.4050 mAP / 59.3939 Rank-1`，比 exact Signal baseline 高 `0.3941 mAP / 1.9394 Rank-1` 并严格超过三个固定专家，但仍比 65 mAP 门低 `6.5950`，因此是“正向但未晋级”，不支持 HFER、official test 或 SOTA。
 
 V6 的三个候选论文级主创新点已经落到核心代码、专项测试和完整 dev 运行中；性能主门仍然失败：
 
@@ -28,6 +28,7 @@ V6 的三个候选论文级主创新点已经落到核心代码、专项测试�
 - optimizer0 的 V8 frozen-router 探针已否决“冻结现有专家、只重训 Router”路线：21 个跨摄像头合格 fit 身份、571 个 query 的最佳 residual 专家 100% 为 CNN；身份隔离教师在 dev 仅达到 CNN 多数类先验 `55.27%`，V7 Router 更低，为 `27.39%`。恢复 residual 与 baseline 等能量后，均匀/教师融合达到 `59.6188 mAP / 59.1515 Rank-1`，仍比 65 低 `5.3812`。下一版本必须增强专家表征与分工。
 - V8 Phase-A 已完成该表征修正：exact preflight、真实 B64/K8 capacity、100-step overfit 全部 PASS；20 epoch/840 step 训练期间不评估 dev，最终 epoch 只评估一次。固定 fused 为 `58.0972/56.8485`，不能称为部署增益；branch GT Oracle 为 `64.7850/65.9394`，比最强固定输出高 `6.7741 mAP`，CNN/Transformer/Mamba 均有独有胜例与正 leave-one-out 边际。residual-only Oracle 为 `63.4813/66.9091`，比最强 residual 高 `9.6153 mAP`。Oracle 使用真实标签，只是诊断上限。
 - 独立 result-to-claim 为 `partial/medium`；V8 专属完整性审计为 `WARN`，GT、指标归一化、活代码与 dev 泄漏检查均 PASS，警告只来自大 checkpoint/history/run identity 仍按 SHA/path 留在远端。下一步仅授权冻结专家、fit-only 的层级 Router 可行性阶段；Router 未证明可部署增益前不得启用 HFER，也不做 official test、消融或多种子。
+- V8 Phase-B 已完成：连续 OOF margin 的 expert/modality winner 均不塌缩，但 learned-vs-fixed OOF margin 只高 `0.000314`；三种单模态模糊均使自身质量下降，missing modality 权重严格为 0。冻结 dev fused=`58.4050/59.3939`，超过 baseline 和三个固定专家，但主门仍失败。独立 result-to-claim=`partial/medium`、完整性审计=`WARN`（仅 remote-only 大 artifact 封装警告）。Phase-B 已封存，不启动 HFER、消融、多种子、official test 或 Router 超参数扫描。
 - 原正式启动在官方指标写出后的路由校准审计因缺失导入失败；`repair-0002` 仅重算训练集路由审计，`optimizer_steps=0`、`training_reexecuted=false`、`official_test_reexecuted=false`，公开 verifier 返回 PASS。
 - 用户最新指令：只做 seed 42；现在优先完成远端 Signal baseline 保底；主实验达到目标以后才考虑消融；所有训练、评估、数据和环境只在云端 GPU，Windows/WSL 仅作传输和文档存档。
 
@@ -921,6 +922,48 @@ evidence/trifusion_signal_preserving_v8_expert_formation_overfit_seed42.json
 evidence/trifusion_signal_preserving_v8_expert_formation_probe_seed42.json
 results/TRIFUSION_RGBNT201_V8_EXPERT_FORMATION_PHASE_A_2026-09-02.md
 EXPERIMENT_AUDIT_V8_PHASE_A.md
+```
+
+## 19. V8 OOF-margin Router Phase-B 终态（2026-09-02）
+
+Phase-B 没有更新 Phase-A 专家，也没有读取 dev/official 生成训练目标。原 OOF per-query AP 标签接近饱和后，改用连续 identity margin：最近负样本距离减最远正样本距离。571 个 fit-only OOF query 中，CNN/Transformer/Mamba 独有 slot winner 为 `38/350/183`，RGB/NI/TI 为 `215/59/297`；slot Oracle mean margin=`0.317710`，比最佳固定 slot 高 `0.164303`。Oracle 使用真实身份标签，只是训练域诊断，不是部署结果。
+
+层级 Router 严格实现 `w(e,m)=P(m|x)P(e|m,x)`，并预测 `alpha∈(0,0.5]`。三个身份隔离 Router fold 各训练 100 epoch，随后在全部合格 fit 身份上 refit 100 epoch，共 400 个 Router optimizer step。Phase-A expert state SHA 在训练前后均为 `ecfd7fbc...fb77`；combined checkpoint SHA256 为 `6f95f99a86763580c3bd8592974347825659a5336f9afec43062516d21fbfe02`。
+
+fit-only OOF 门仅窄幅通过：
+
+| Router 诊断 | Learned | Fixed/majority | 差值 |
+|---|---:|---:|---:|
+| Expected identity margin | 0.1020340 | 0.1017202 | +0.0003137 |
+| Top-slot accuracy | 17.8634% | 17.6883% | +0.1751 pp |
+
+这只能证明 Router 训练链有很弱的正向泛化迹象，不能称为强路由能力。质量语义门通过：missing modality 最大权重严格为 0；单独模糊 RGB/NI/TI 后，对应模态平均质量分别从 `0.306154/0.298051/0.395795` 降到 `0.117502/0.102016/0.166562`。
+
+combined checkpoint 只进行了一次冻结 held-out-dev 评估，评估期间 optimizer0、模型状态不变、official access0：
+
+| 输出 | mAP | Rank-1 | Rank-5 | Rank-10 |
+|---|---:|---:|---:|---:|
+| baseline_only | 58.0109 | 57.4545 | 69.9394 | 76.6061 |
+| fused | **58.4050** | **59.3939** | **71.2727** | 76.6061 |
+| CNN | 57.6071 | 56.4848 | 70.9091 | **77.5758** |
+| Transformer | 56.3031 | 55.8788 | 69.6970 | 76.2424 |
+| Mamba | 56.6260 | 54.4242 | 68.8485 | 75.1515 |
+
+fused 比 exact Signal baseline 高 `0.3941 mAP / 1.9394 Rank-1`，并严格超过三个固定专家；这是当前唯一支持的部署结论。但 fused 仍比 65 mAP 门低 `6.5950`，所以 `promotion_gate=false`、`next_phase_authorized=false`。独立 result-to-claim=`partial/medium`：不能把联合增益单独归因为 learned Router，因为当前输出同时使用软融合和样本级 alpha，且 OOF learned-vs-fixed 优势极小。
+
+V8 Phase-B 至此封存为“正向但未晋级”。不得开启 HFER、消融、多种子、official test，也不得扫描 Router/alpha/epoch/LR。若继续冲击 65，下一版本必须是新的表示级主假设，能生成现有固定输出之外的新身份表示，并重新通过 exact Signal parity、真实 B64/K8 capacity、overfit 和 fit-only 互补门。
+
+独立完整性审计为 `WARN`，不是结果逻辑失败：GT 来源、常规 ReID 归一化、实际调用路径、fit/dev 边界和评价类型分类均 PASS。警告来自大型 checkpoint/cache 仍仅保存在远端，本地审计者不能从 fresh clone 直接重算其 SHA。封存时已在远端只读重算 Phase-A checkpoint `d37ca17...b40f` 和 combined checkpoint `6f95f99a...fe02`，均与 receipt 一致；这降低了拷贝错误风险，但不取消 remote-only packaging 警告。
+
+证据与报告：
+
+```text
+evidence/trifusion_v8_oof_router_margin_targets_seed42.json
+evidence/trifusion_v8_oof_margin_router_phase_b_seed42.json
+evidence/trifusion_v8_oof_margin_router_dev_seed42.json
+results/TRIFUSION_RGBNT201_V8_OOF_MARGIN_ROUTER_PHASE_B_2026-09-02.md
+EXPERIMENT_AUDIT_V8_PHASE_B.md
+EXPERIMENT_AUDIT_V8_PHASE_B.json
 ```
 
 ---

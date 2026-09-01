@@ -68,6 +68,18 @@
 > ablations, 65 mAP or SOTA. See the
 > [Phase-A report](results/TRIFUSION_RGBNT201_V8_EXPERT_FORMATION_PHASE_A_2026-09-02.md)
 > and [V8 audit](EXPERIMENT_AUDIT_V8_PHASE_A.md).
+> V8 Phase-B then replaced saturated OOF AP labels with continuous identity
+> margins and trained only a frozen-expert hierarchical Router from fit-only
+> identity-disjoint folds plus controlled single-modality degradation. Its
+> single frozen seed-42 dev evaluation gives fused **58.4050 mAP / 59.3939
+> Rank-1**, above the exact Signal baseline **58.0109 / 57.4545** and above
+> CNN/Transformer/Mamba **57.6071 / 56.3031 / 56.6260 mAP**. This is a narrow
+> deployable gain, but it remains **6.5950 mAP below** the frozen 65 gate; the
+> OOF learned-vs-fixed advantage is also only `0.000314` mean margin. Phase-B
+> is therefore sealed as positive but not promoted: HFER, official test,
+> ablations, multiple seeds and SOTA claims remain closed. See the
+> [Phase-B report](results/TRIFUSION_RGBNT201_V8_OOF_MARGIN_ROUTER_PHASE_B_2026-09-02.md)
+> and [independent audit](EXPERIMENT_AUDIT_V8_PHASE_B.md).
 > Dataset files, pretrained weights, checkpoints, and remote artifacts are not
 > distributed in this repository. The original DeMo project and attribution are
 > preserved below.

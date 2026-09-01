@@ -140,6 +140,29 @@
   quality gates. Do not enable HFER until the learned Router proves deployable
   gain and preserves complementarity. Branch Oracle is still 0.2150 below 65,
   so hard expert selection alone cannot satisfy the dev gate.
+- V8 Phase-B replaced saturated OOF AP labels with continuous identity margins
+  from the same three expert folds. The read-only 571-query target gate passed:
+  unique slot winners are CNN/Transformer/Mamba `38/350/183` and RGB/NI/TI
+  `215/59/297`; slot-Oracle margin exceeds the best fixed slot by `0.164303`.
+  Three identity-disjoint Router folds plus one all-fit refit used 400 Router
+  optimizer steps while Phase-A experts stayed byte-stable. The OOF learned
+  margin `0.102034` barely exceeds fixed `0.101720`, and Top-1 `17.8634%`
+  barely exceeds majority `17.6883%`; all three blur-response and missing-zero
+  quality gates pass. Treat this as weak feasibility evidence, not a strong
+  routing-generalization claim.
+- The one frozen V8 Phase-B dev evaluation is terminal: baseline/fused mAP is
+  `58.0109/58.4050`, and fused strictly beats CNN/Transformer/Mamba
+  `57.6071/56.3031/56.6260`; Rank-1 is `57.4545/59.3939`. This supports a
+  narrow same-checkpoint deployable gain of `+0.3941 mAP/+1.9394 Rank-1`, but
+  fused misses the 65 mAP gate by `6.5950`. Promotion and next-phase gates are
+  false. Do not enable HFER, run ablations/multiple seeds, access official test,
+  or scan Router/alpha/epoch/LR settings. Any successor requires a new
+  representation-level main hypothesis and fresh train-only gates.
+- Independent V8 Phase-B integrity audit is `WARN`, not a result-logic fail:
+  GT provenance, score normalization, live code path, fit/dev scope and
+  evaluation-type classification pass. The warning is that large checkpoint
+  and cache artifacts remain remote-only and cannot be re-hashed from a fresh
+  local clone. Keep all Phase-B claim boundaries unchanged.
 
 ## Remote experiment constraints
 

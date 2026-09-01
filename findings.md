@@ -1,5 +1,16 @@
 # Research Findings
 
+## 2026-09-02 — V8 OOF-margin Router Phase-B 正向但未晋级
+
+- 连续 OOF identity-margin target 覆盖 571 个 fit-only query；CNN/Transformer/Mamba 独有 slot winner=`38/350/183`，RGB/NI/TI=`215/59/297`，slot Oracle 比最佳固定 slot 高 `0.164303`。Oracle 使用真实身份标签，只是训练域诊断上限。
+- 三折身份隔离 Router 加 all-fit refit 共执行 400 个 Router optimizer step，Phase-A 专家和 Signal 全程冻结且 state SHA 不变。OOF learned expected margin=`0.102034`，仅比 fixed=`0.101720` 高 `0.000314`；Top-slot accuracy=`17.8634%`，仅比 majority=`17.6883%` 高 `0.1751` 个百分点，因此只能称为很弱的泛化证据。
+- 质量语义门通过：缺失模态最大权重严格为 0；单独模糊 RGB/NI/TI 后，对应模态平均质量分别从 `0.306154/0.298051/0.395795` 降到 `0.117502/0.102016/0.166562`。
+- 唯一一次冻结 held-out-dev 评估：baseline/fused mAP=`58.0109/58.4050`，CNN/Transformer/Mamba=`57.6071/56.3031/56.6260`；fused 比 baseline 高 `0.3941 mAP / 1.9394 Rank-1`，并严格超过三个固定专家。
+- 主门仍 FAIL：fused 比 65 mAP 低 `6.5950`，`promotion_gate=false`、`next_phase_authorized=false`。dev 评估 optimizer0、official access0，checkpoint/state SHA 在评估前后不变。
+- 独立 result-to-claim=`partial/medium`：只支持当前完整 Phase-B 配置在单 seed、固定协议上的小幅部署增益；不能把增益单独归因为 learned Router，也不支持充分互补、HFER、official、SOTA 或跨数据集泛化。
+- 当前 V8 Phase-B 封存为“正向但未晋级”。不启用 HFER，不做消融、多种子、official test 或 Router/alpha/epoch/LR 扫描。若继续冲击 65，必须预注册新的表示级主假设并重新通过 train-only 门。
+- 证据：`evidence/trifusion_v8_oof_router_margin_targets_seed42.json`、`evidence/trifusion_v8_oof_margin_router_phase_b_seed42.json`、`evidence/trifusion_v8_oof_margin_router_dev_seed42.json`；报告：`results/TRIFUSION_RGBNT201_V8_OOF_MARGIN_ROUTER_PHASE_B_2026-09-02.md`。
+
 ## 2026-09-02 — V8 pretrained-tail Phase-A 专家互补门通过
 
 - 结构：从冻结 Signal/CLIP 第 8 block 分叉，三路分别共享冻结的 CLIP tail 9/10/11，并加入 CNN 横向局部细节、Transformer CLS 全局关系和 Mamba 空间/跨模态长程残差；Router 与 HFER 在 Phase-A 均关闭。

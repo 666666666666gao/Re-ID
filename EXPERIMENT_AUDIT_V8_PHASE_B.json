@@ -1,0 +1,49 @@
+{
+  "audit_date": "2026-09-02",
+  "overall_verdict": "WARN",
+  "integrity_status": "warn",
+  "scope": "V8 OOF-margin target repair, frozen-expert Router training, and single frozen held-out-dev evaluation",
+  "checks": {
+    "ground_truth_provenance": "PASS",
+    "score_normalization": "PASS",
+    "result_existence_and_provenance": "WARN",
+    "dead_code_and_called_path": "PASS",
+    "scope_and_dev_leakage": "PASS",
+    "evaluation_type_classification": "PASS"
+  },
+  "evaluation_types": {
+    "oof_margin_target": "real_gt_on_model_derived_fit_only_features",
+    "router_quality_gate": "synthetic_proxy",
+    "phase_a_oracle": "real_gt_diagnostic_non_deployable",
+    "frozen_dev_retrieval": "real_gt"
+  },
+  "warning_reason": "Large checkpoint and cache artifacts remain remote-only and cannot be independently re-hashed from a fresh local clone.",
+  "numeric_checks": {
+    "oof_queries": 571,
+    "router_optimizer_steps": 400,
+    "router_training_dev_access_count": 0,
+    "router_training_official_access_count": 0,
+    "learned_oof_margin": 0.10203395783901215,
+    "fixed_oof_margin": 0.10172021389007568,
+    "frozen_dev_baseline_map": 58.010886612624304,
+    "frozen_dev_fused_map": 58.40499477520247,
+    "frozen_dev_access_count": 1,
+    "frozen_dev_optimizer_steps": 0,
+    "official_test_access_count": 0,
+    "promotion_gate_passed": false
+  },
+  "claim_impact": {
+    "supported": "Single-seed same-checkpoint small fused gain over exact Signal and all fixed experts.",
+    "supported_weakly": "Fit-only OOF and controlled-quality Router behavior.",
+    "unsupported": [
+      "learned Router causal contribution",
+      "65 mAP",
+      "HFER effectiveness",
+      "official-test improvement",
+      "SOTA",
+      "multi-seed robustness",
+      "cross-dataset generalization"
+    ]
+  },
+  "disposition": "Seal Phase-B as positive but not promoted; keep HFER, ablations, multiple seeds, official test, and hyperparameter scans closed."
+}
