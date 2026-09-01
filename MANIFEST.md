@@ -256,3 +256,7 @@
 | 2026-09-02 05:25 | /run-experiment | tools/run_signal_preserving_v9.py | implementation | train-only preflight/capacity/overfit/final training，状态 SHA 与0 dev/official receipts |
 | 2026-09-02 05:35 | /tdd | tests/test_evaluate_signal_preserving_v9_dev.py | implementation | 65门、严格超过五输出与单次冻结评估无 optimizer 合同 |
 | 2026-09-02 05:35 | /run-experiment | tools/evaluate_signal_preserving_v9_dev.py | implementation | final checkpoint 六路真实 dev、状态不变、beta/relay 诊断及0 official receipt |
+| 2026-09-02 05:40 | /run-experiment | evidence/trifusion_v9_preflight_seed42.json | research | V9 真实 train-only exact prefix/orthogonal relay/frozen state 门 PASS |
+| 2026-09-02 05:40 | /run-experiment | evidence/trifusion_v9_capacity_seed42.json | research | V9 B64/K8 8-step，59/59 梯度、2020MiB reserved、0 overflow |
+| 2026-09-02 05:40 | /run-experiment | evidence/trifusion_v9_overfit_seed42.json | research | V9 真实固定批100-step excess-loss ratio 0.000518，冻结状态不变 |
+| 2026-09-02 05:40 | /run-experiment | results/TRIFUSION_RGBNT201_V9_READINESS_2026-09-02.md | research | V9 三项 train-only readiness、主门与访问边界汇总 |
