@@ -5,7 +5,7 @@ import torch
 
 
 def test_prepare_dinov2_input_uses_fixed_geometry_and_imagenet_normalization() -> None:
-    from tools.probe_v10_dinov2_fit_utility import prepare_dinov2_input
+    from tools.probe_v10_dinov2_fit_utility import MODALITIES, prepare_dinov2_input
 
     images = torch.zeros(2, 3, 256, 128)
     prepared = prepare_dinov2_input(images)
@@ -19,6 +19,7 @@ def test_prepare_dinov2_input_uses_fixed_geometry_and_imagenet_normalization() -
 
     assert prepared.shape == (2, 3, 252, 126)
     assert torch.allclose(prepared[0, :, 0, 0], expected)
+    assert MODALITIES == ("RGB", "NI", "TI")
 
 
 def test_prepare_dinov2_state_dict_removes_only_mask_token_then_requires_exact_keys() -> None:

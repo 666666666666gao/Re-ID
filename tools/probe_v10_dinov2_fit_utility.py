@@ -15,7 +15,7 @@ import torch
 import torch.nn.functional as F
 
 
-MODALITIES = ("rgb", "nir", "tir")
+MODALITIES = ("RGB", "NI", "TI")
 DINO_IMAGE_SIZE = (252, 126)
 DINO_TOKEN_SHAPE = (163, 768)
 IMAGENET_MEAN = (0.485, 0.456, 0.406)
