@@ -209,3 +209,11 @@
 | 2026-09-01 20:29 | /tdd | modeling/trifusion/signal_preserving_v5_builder.py | implementation | 使用现有 CNN/Transformer/Mamba 完整专家、两次 HFER 与三次可靠性刷新的 V5 独立构建器 |
 | 2026-09-01 20:29 | /tdd | tests/test_trifusion_signal_preserving_v5.py | implementation | baseline 前缀、Signal 冻结、专家/路由梯度与两阶段交换合同；远端 4 passed |
 | 2026-09-01 20:29 | /handoff | docs/TRIFUSION_RGBNT201_CURRENT_COMPLETE_HANDOFF_2026-09-01.md | documentation | 纠正 Signal 运行中旧状态，记录 V5 已实现/未完成边界、包名冲突和接续技能 |
+| 2026-09-01 21:01 | /tdd | tests/test_run_signal_preserving_v5.py | implementation | 冻结配置、五路晋级门、损失权重、过拟合比例和 warmup+cosine 公开 runner 合同 |
+| 2026-09-01 21:01 | /run-experiment | configs/RGBNT201/TriFusion-signal-preserving-v5-rtx3090.yml | implementation | seed42、B32/K4、60epoch、完整 Signal checkpoint、五路输出与 65mAP 主门冻结配置 |
+| 2026-09-01 21:01 | /run-experiment | tools/run_signal_preserving_v5.py | implementation | preflight/capacity/overfit/dev 远端启动器；同 checkpoint 五路单次评估、best-fused 严格重载与 official0 |
+| 2026-09-01 21:01 | /tdd | modeling/trifusion/signal_preserving_v5_builder.py | implementation | 冻结实测无目标的三组 private projection，保留 213/213 可达梯度张量 |
+| 2026-09-01 21:01 | /run-experiment | evidence/trifusion_signal_preserving_v5_preflight_seed42.json | research | 825/825 dev 逐元素 Signal parity、四指标精确一致、official0 |
+| 2026-09-01 21:01 | /run-experiment | evidence/trifusion_signal_preserving_v5_capacity_seed42.json | research | 真实 B32/K4 8-step、213/213 梯度、0 overflow、3542MiB reserved、Signal SHA 不变 |
+| 2026-09-01 21:01 | /run-experiment | evidence/trifusion_signal_preserving_v5_overfit_seed42.json | research | 真实固定批 100-step loss ratio 0.02102、0 overflow、Signal SHA 不变 |
+| 2026-09-01 21:01 | /handoff | docs/TRIFUSION_RGBNT201_CURRENT_COMPLETE_HANDOFF_2026-09-01.md | documentation | 回填 V5 三项工程门 PASS、实测缺梯度修复和完整 dev 待办 |

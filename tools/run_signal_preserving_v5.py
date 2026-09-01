@@ -1,0 +1,895 @@
+#!/usr/bin/env python3
+"""Run the Signal-preserving TriFusion V5 development experiment."""
+
+from __future__ import annotations
+
+import argparse
+import hashlib
+import json
+import math
+from pathlib import Path
+import random
+import subprocess
+import sys
+import time
+from typing import Any
+
+import yaml
+
+
+GATE_OUTPUTS = ("baseline_only", "cnn", "transformer", "mamba")
+PROJECT_ROOT = Path(__file__).resolve().parents[1]
+
+
+def load_contract(path: Path) -> dict[str, Any]:
+    """Load the frozen public experiment contract used by every runner mode."""
+
+    config = yaml.safe_load(path.read_text(encoding="utf-8"))
+    return {
+        "seed": int(config["EXPERIMENT"]["SEED"]),
+        "train_batch_size": int(config["DATA"]["TRAIN_BATCH_SIZE"]),
+        "num_instances": int(config["DATA"]["NUM_INSTANCES"]),
+        "max_epochs": int(config["OPTIMIZATION"]["MAX_EPOCHS"]),
+        "signal_checkpoint_sha256": str(config["SIGNAL"]["CHECKPOINT_SHA256"]),
+        "baseline_width": int(config["SIGNAL"]["BASELINE_WIDTH"]),
+        "retrieval_outputs": tuple(config["MODEL"]["RETRIEVAL_OUTPUTS"]),
+        "dev_min_map": float(config["GATES"]["DEV_MIN_MAP"]),
+        "official_test_during_development": bool(
+            config["PROTOCOL"]["OFFICIAL_TEST_DURING_DEVELOPMENT"]
+        ),
+    }
+
+
+def _sha256(path: Path) -> str:
+    digest = hashlib.sha256()
+    with path.open("rb") as handle:
+        for chunk in iter(lambda: handle.read(1024 * 1024), b""):
+            digest.update(chunk)
+    return digest.hexdigest()
+
+
+def load_raw_config(path: Path) -> dict[str, Any]:
+    return yaml.safe_load(path.read_text(encoding="utf-8"))
+
+
+def _load_config(path: Path) -> dict[str, Any]:
+    config = load_raw_config(path)
+    contract = load_contract(path)
+    if contract["seed"] != 42:
+        raise ValueError("V5 main experiment is frozen to seed 42")
+    if contract["official_test_during_development"] is not False:
+        raise ValueError("V5 development must not access the official test")
+    return config
+
+
+def weighted_training_loss(
+    losses: dict[str, Any], config: dict[str, Any]
+) -> Any:
+    weights = config["LOSS"]
+    branch_id = sum(losses[f"id_{expert}"] for expert in ("cnn", "transformer", "mamba"))
+    branch_triplet = sum(
+        losses[f"triplet_{expert}"] for expert in ("cnn", "transformer", "mamba")
+    )
+    return (
+        losses["id_fused"] * float(weights["ID_FUSED"])
+        + losses["triplet_fused"] * float(weights["TRIPLET_FUSED"])
+        + branch_id * float(weights["ID_BRANCH"])
+        + branch_triplet * float(weights["TRIPLET_BRANCH"])
+        + losses["peer_logits"] * float(weights["PEER_LOGITS"])
+    )
+
+
+def _set_seed(seed: int) -> None:
+    import numpy as np
+    import torch
+
+    random.seed(seed)
+    np.random.seed(seed)
+    torch.manual_seed(seed)
+    torch.cuda.manual_seed(seed)
+    torch.cuda.manual_seed_all(seed)
+    torch.backends.cudnn.deterministic = True
+    torch.backends.cudnn.benchmark = True
+
+
+def _build_runtime(config: dict[str, Any]) -> dict[str, Any]:
+    from run_signal_baseline_dev import _build_loaders, _configure_signal_source
+
+    signal_config = config["SIGNAL"]
+    data_config = config["DATA"]
+    model_config = config["MODEL"]
+    seed = int(config["EXPERIMENT"]["SEED"])
+    source = Path(signal_config["SOURCE"]).resolve()
+    checkpoint = Path(signal_config["CHECKPOINT"]).resolve()
+    checkpoint_sha256 = _sha256(checkpoint)
+    if checkpoint_sha256 != str(signal_config["CHECKPOINT_SHA256"]):
+        raise ValueError("Signal checkpoint SHA-256 differs from the frozen contract")
+
+    source_commit = _configure_signal_source(source)
+    from config import cfg as signal_cfg
+    from modeling import make_frame
+
+    _set_seed(seed)
+    signal_cfg.merge_from_file(str(Path(signal_config["CONFIG"]).resolve()))
+    signal_cfg.defrost()
+    signal_cfg.MODEL.PRETRAIN_PATH_T = str(Path(signal_config["CLIP_WEIGHT"]).resolve())
+    signal_cfg.SOLVER.SEED = seed
+    signal_cfg.SOLVER.IMS_PER_BATCH = int(data_config["TRAIN_BATCH_SIZE"])
+    signal_cfg.DATALOADER.NUM_INSTANCE = int(data_config["NUM_INSTANCES"])
+    signal_cfg.DATALOADER.NUM_WORKERS = int(data_config["NUM_WORKERS"])
+    signal_cfg.TEST.IMS_PER_BATCH = int(data_config["EVAL_BATCH_SIZE"])
+    signal_cfg.freeze()
+
+    train_loader, eval_loader, train_records, dev_records = _build_loaders(
+        dataset_root=Path(data_config["DATASET_ROOT"]).resolve(),
+        protocol_path=(PROJECT_ROOT / data_config["DEV_PROTOCOL"]).resolve(),
+        batch_size=int(data_config["TRAIN_BATCH_SIZE"]),
+        num_instances=int(data_config["NUM_INSTANCES"]),
+        eval_batch_size=int(data_config["EVAL_BATCH_SIZE"]),
+        num_workers=int(data_config["NUM_WORKERS"]),
+        seed=seed,
+    )
+    signal_model = make_frame(
+        signal_cfg,
+        num_class=len({record[1] for record in train_records}),
+        camera_num=len({record[2] for record in train_records}),
+        view_num=len({record[3] for record in train_records}),
+    )
+
+    import torch
+
+    signal_state = torch.load(checkpoint, map_location="cpu", weights_only=True)
+    signal_model.load_state_dict(signal_state, strict=True)
+    signal_model.cuda()
+
+    project_modeling = str(PROJECT_ROOT / "modeling")
+    if project_modeling not in sys.path:
+        sys.path.append(project_modeling)
+    from trifusion.signal_preserving_v5_builder import (
+        build_signal_preserving_trifusion_v5,
+    )
+
+    build = build_signal_preserving_trifusion_v5(
+        signal_model,
+        signal_checkpoint_sha256=checkpoint_sha256,
+        num_classes=len({record[1] for record in train_records}),
+        feature_width=int(model_config["FEATURE_WIDTH"]),
+        grid_size=tuple(model_config["GRID_SIZE"]),
+        adapter_width=int(model_config["ADAPTER_WIDTH"]),
+        residual_width=int(model_config["RESIDUAL_WIDTH"]),
+        relay_rank=int(model_config["RELAY_RANK"]),
+        private_width=int(model_config["PRIVATE_WIDTH"]),
+        reliability_hidden_width=int(model_config["RELIABILITY_HIDDEN_WIDTH"]),
+        residual_scale_init=float(model_config["RESIDUAL_SCALE_INIT"]),
+    )
+    build.model.cuda()
+    return {
+        "model": build.model,
+        "train_loader": train_loader,
+        "eval_loader": eval_loader,
+        "train_records": train_records,
+        "dev_records": dev_records,
+        "signal_stage": signal_cfg.MODEL.stageName,
+        "signal_source_commit": source_commit,
+        "signal_source_diff_sha256": hashlib.sha256(
+            subprocess.check_output(["git", "-C", str(source), "diff", "--binary"])
+        ).hexdigest(),
+        "checkpoint": checkpoint,
+        "checkpoint_sha256": checkpoint_sha256,
+        "build_provenance": dict(build.provenance),
+    }
+
+
+def _evaluate_baseline_parity(
+    model: Any,
+    loader: Any,
+    *,
+    num_query: int,
+    signal_stage: str,
+) -> tuple[dict[str, float], int, bool]:
+    import numpy as np
+    import torch
+    from utils.metrics import R1_mAP_eval
+
+    evaluator = R1_mAP_eval(num_query, max_rank=50, feat_norm="yes")
+    feature_width = 0
+    exact_reference_match = True
+    model.eval()
+    for images, identities, camera_ids, camera_ids_batch, view_ids, paths in loader:
+        del view_ids
+        images = {name: tensor.cuda(non_blocking=True) for name, tensor in images.items()}
+        camera_ids_cuda = camera_ids_batch.cuda(non_blocking=True)
+        batch = {
+            "images": images,
+            "modality_mask": torch.ones(
+                camera_ids_cuda.shape[0], 3, dtype=torch.bool, device="cuda"
+            ),
+            "camera_ids": camera_ids_cuda,
+        }
+        with torch.no_grad():
+            reference = model.baseline.signal(
+                images,
+                cam_label=camera_ids_cuda,
+                view_label=None,
+                training=False,
+                sge=signal_stage,
+            )
+            baseline = model(batch, retrieval_output="baseline_only")
+        exact_reference_match = exact_reference_match and torch.equal(
+            reference, baseline
+        )
+        feature_width = int(baseline.shape[1])
+        evaluator.update((baseline, identities, camera_ids, paths))
+    cmc, mean_ap, *_ = evaluator.compute()
+    metrics = {
+        "mAP": float(mean_ap * 100.0),
+        "Rank-1": float(cmc[0] * 100.0),
+        "Rank-5": float(cmc[4] * 100.0),
+        "Rank-10": float(cmc[9] * 100.0),
+    }
+    if not all(np.isfinite(value) for value in metrics.values()):
+        raise FloatingPointError("nonfinite V5 baseline parity metric")
+    return metrics, feature_width, exact_reference_match
+
+
+def _run_preflight(config: dict[str, Any], output_dir: Path) -> dict[str, Any]:
+    started = time.time()
+    runtime = _build_runtime(config)
+    metrics, feature_width, exact_reference_match = _evaluate_baseline_parity(
+        runtime["model"],
+        runtime["eval_loader"],
+        num_query=len(runtime["dev_records"]),
+        signal_stage=runtime["signal_stage"],
+    )
+    expected_metrics = {
+        key: float(value)
+        for key, value in config["SIGNAL"]["EXPECTED_DEV_METRICS"].items()
+    }
+    metric_parity = {
+        key: metrics[key] == expected_metrics[key] for key in expected_metrics
+    }
+    if feature_width != int(config["SIGNAL"]["BASELINE_WIDTH"]):
+        raise ValueError("V5 baseline width differs from the Signal contract")
+    if not exact_reference_match or not all(metric_parity.values()):
+        raise ValueError("V5 baseline-only output failed exact Signal parity")
+    result = {
+        "schema_version": "trifusion-signal-preserving-v5-preflight-v1",
+        "status": "PASS",
+        "mode": "preflight",
+        "signal_source_commit": runtime["signal_source_commit"],
+        "signal_source_diff_sha256": runtime["signal_source_diff_sha256"],
+        "signal_checkpoint": str(runtime["checkpoint"]),
+        "signal_checkpoint_sha256": runtime["checkpoint_sha256"],
+        "baseline_metrics_percent": metrics,
+        "expected_baseline_metrics_percent": expected_metrics,
+        "metric_parity": metric_parity,
+        "exact_reference_feature_match": exact_reference_match,
+        "baseline_feature_width": feature_width,
+        "fit_triplets": len(runtime["train_records"]),
+        "dev_query_triplets": len(runtime["dev_records"]),
+        "dev_gallery_triplets": len(runtime["dev_records"]),
+        "build_provenance": runtime["build_provenance"],
+        "official_test_access_count": 0,
+        "training_started": False,
+        "optimizer_steps": 0,
+        "elapsed_seconds": time.time() - started,
+    }
+    (output_dir / "preflight.json").write_text(
+        json.dumps(result, indent=2, sort_keys=True) + "\n",
+        encoding="utf-8",
+    )
+    return result
+
+
+def _module_state_sha256(module: Any) -> str:
+    digest = hashlib.sha256()
+    for name, tensor in sorted(module.state_dict().items()):
+        digest.update(name.encode("utf-8"))
+        digest.update(tensor.detach().cpu().contiguous().numpy().tobytes())
+    return digest.hexdigest()
+
+
+def _training_batch(raw_batch: Any) -> tuple[dict[str, Any], Any]:
+    import torch
+
+    images, labels, camera_ids, _view_ids, _paths = raw_batch
+    images = {name: tensor.cuda(non_blocking=True) for name, tensor in images.items()}
+    labels = labels.cuda(non_blocking=True)
+    camera_ids = camera_ids.cuda(non_blocking=True)
+    return (
+        {
+            "images": images,
+            "modality_mask": torch.ones(
+                labels.shape[0], 3, dtype=torch.bool, device="cuda"
+            ),
+            "camera_ids": camera_ids,
+        },
+        labels,
+    )
+
+
+def _run_capacity(config: dict[str, Any], output_dir: Path) -> dict[str, Any]:
+    import torch
+
+    started = time.time()
+    runtime = _build_runtime(config)
+    model = runtime["model"]
+    from trifusion.signal_preserving_v5 import SignalPreservingV5Criterion
+
+    criterion = SignalPreservingV5Criterion(
+        target_cache=None,
+        triplet_margin=float(config["LOSS"]["TRIPLET_MARGIN"]),
+    ).cuda()
+    trainable = {
+        name: parameter for name, parameter in model.named_parameters() if parameter.requires_grad
+    }
+    optimizer = torch.optim.AdamW(
+        trainable.values(),
+        lr=float(config["OPTIMIZATION"]["NEW_MODULE_LR"]),
+        weight_decay=float(config["OPTIMIZATION"]["WEIGHT_DECAY"]),
+    )
+    scaler = torch.amp.GradScaler(
+        "cuda", init_scale=float(config["OPTIMIZATION"]["AMP_INIT_SCALE"])
+    )
+    baseline_before = _module_state_sha256(model.baseline.signal)
+    model.train()
+    torch.cuda.reset_peak_memory_stats()
+    gradient_names: set[str] = set()
+    losses_by_step: list[float] = []
+    overflow_events = 0
+    steps = int(config["GATES"]["CAPACITY_STEPS"])
+    iterator = iter(runtime["train_loader"])
+    for _step in range(steps):
+        batch, labels = _training_batch(next(iterator))
+        optimizer.zero_grad(set_to_none=True)
+        with torch.autocast(
+            device_type="cuda",
+            dtype=torch.float16,
+            enabled=bool(config["OPTIMIZATION"]["AMP"]),
+        ):
+            output = model(batch, return_aux=True)
+            if not output.diagnostics["all_finite"]:
+                raise FloatingPointError("V5 forward emitted a nonfinite tensor")
+            loss_parts = criterion(output, labels)
+            total_loss = weighted_training_loss(loss_parts, config)
+        if not bool(torch.isfinite(total_loss)):
+            raise FloatingPointError("V5 capacity loss is nonfinite")
+        scale_before = scaler.get_scale()
+        scaler.scale(total_loss).backward()
+        scaler.unscale_(optimizer)
+        for name, parameter in trainable.items():
+            if parameter.grad is not None:
+                if not bool(torch.isfinite(parameter.grad).all()):
+                    raise FloatingPointError(f"nonfinite gradient: {name}")
+                gradient_names.add(name)
+        scaler.step(optimizer)
+        scaler.update()
+        overflow_events += int(scaler.get_scale() < scale_before)
+        losses_by_step.append(float(total_loss.detach()))
+
+    baseline_after = _module_state_sha256(model.baseline.signal)
+    missing_gradients = sorted(set(trainable) - gradient_names)
+    passed = (
+        not missing_gradients
+        and overflow_events == 0
+        and baseline_before == baseline_after
+    )
+    result = {
+        "schema_version": "trifusion-signal-preserving-v5-capacity-v1",
+        "status": "PASS" if passed else "FAIL",
+        "mode": "capacity",
+        "steps": steps,
+        "batch_size": int(config["DATA"]["TRAIN_BATCH_SIZE"]),
+        "num_instances": int(config["DATA"]["NUM_INSTANCES"]),
+        "losses": losses_by_step,
+        "trainable_parameters": sum(parameter.numel() for parameter in trainable.values()),
+        "trainable_gradient_tensors": len(gradient_names),
+        "trainable_tensors": len(trainable),
+        "missing_gradient_tensors": missing_gradients,
+        "overflow_events": overflow_events,
+        "peak_allocated_mib": torch.cuda.max_memory_allocated() / 1024**2,
+        "peak_reserved_mib": torch.cuda.max_memory_reserved() / 1024**2,
+        "signal_state_sha256_before": baseline_before,
+        "signal_state_sha256_after": baseline_after,
+        "signal_state_unchanged": baseline_before == baseline_after,
+        "signal_checkpoint_sha256": runtime["checkpoint_sha256"],
+        "build_provenance": runtime["build_provenance"],
+        "official_test_access_count": 0,
+        "optimizer_steps": steps,
+        "elapsed_seconds": time.time() - started,
+    }
+    (output_dir / "capacity.json").write_text(
+        json.dumps(result, indent=2, sort_keys=True) + "\n",
+        encoding="utf-8",
+    )
+    if not passed:
+        raise RuntimeError("V5 capacity gate failed; inspect capacity.json")
+    return result
+
+
+def _run_overfit(config: dict[str, Any], output_dir: Path) -> dict[str, Any]:
+    import torch
+
+    started = time.time()
+    runtime = _build_runtime(config)
+    model = runtime["model"]
+    from trifusion.signal_preserving_v5 import SignalPreservingV5Criterion
+
+    criterion = SignalPreservingV5Criterion(
+        target_cache=None,
+        triplet_margin=float(config["LOSS"]["TRIPLET_MARGIN"]),
+    ).cuda()
+    trainable = {
+        name: parameter for name, parameter in model.named_parameters() if parameter.requires_grad
+    }
+    optimizer = torch.optim.AdamW(
+        trainable.values(),
+        lr=float(config["OPTIMIZATION"]["NEW_MODULE_LR"]),
+        weight_decay=float(config["OPTIMIZATION"]["WEIGHT_DECAY"]),
+    )
+    scaler = torch.amp.GradScaler(
+        "cuda", init_scale=float(config["OPTIMIZATION"]["AMP_INIT_SCALE"])
+    )
+    fixed_batch, fixed_labels = _training_batch(next(iter(runtime["train_loader"])))
+    baseline_before = _module_state_sha256(model.baseline.signal)
+    model.train()
+    torch.cuda.reset_peak_memory_stats()
+    gradient_names: set[str] = set()
+    losses_by_step: list[float] = []
+    overflow_events = 0
+    steps = int(config["GATES"]["OVERFIT_STEPS"])
+    for _step in range(steps):
+        optimizer.zero_grad(set_to_none=True)
+        with torch.autocast(
+            device_type="cuda",
+            dtype=torch.float16,
+            enabled=bool(config["OPTIMIZATION"]["AMP"]),
+        ):
+            output = model(fixed_batch, return_aux=True)
+            if not output.diagnostics["all_finite"]:
+                raise FloatingPointError("V5 forward emitted a nonfinite tensor")
+            loss_parts = criterion(output, fixed_labels)
+            total_loss = weighted_training_loss(loss_parts, config)
+        if not bool(torch.isfinite(total_loss)):
+            raise FloatingPointError("V5 overfit loss is nonfinite")
+        scale_before = scaler.get_scale()
+        scaler.scale(total_loss).backward()
+        scaler.unscale_(optimizer)
+        for name, parameter in trainable.items():
+            if parameter.grad is not None:
+                if not bool(torch.isfinite(parameter.grad).all()):
+                    raise FloatingPointError(f"nonfinite gradient: {name}")
+                gradient_names.add(name)
+        scaler.step(optimizer)
+        scaler.update()
+        overflow_events += int(scaler.get_scale() < scale_before)
+        losses_by_step.append(float(total_loss.detach()))
+
+    baseline_after = _module_state_sha256(model.baseline.signal)
+    missing_gradients = sorted(set(trainable) - gradient_names)
+    gate = evaluate_overfit_gate(
+        losses_by_step,
+        max_ratio=float(config["GATES"]["OVERFIT_MAX_LOSS_RATIO"]),
+    )
+    passed = (
+        gate["passed"]
+        and not missing_gradients
+        and overflow_events == 0
+        and baseline_before == baseline_after
+    )
+    result = {
+        "schema_version": "trifusion-signal-preserving-v5-overfit-v1",
+        "status": "PASS" if passed else "FAIL",
+        "mode": "overfit",
+        "steps": steps,
+        "batch_size": int(config["DATA"]["TRAIN_BATCH_SIZE"]),
+        "num_instances": int(config["DATA"]["NUM_INSTANCES"]),
+        "losses": losses_by_step,
+        "overfit_gate": gate,
+        "trainable_gradient_tensors": len(gradient_names),
+        "trainable_tensors": len(trainable),
+        "missing_gradient_tensors": missing_gradients,
+        "overflow_events": overflow_events,
+        "peak_allocated_mib": torch.cuda.max_memory_allocated() / 1024**2,
+        "peak_reserved_mib": torch.cuda.max_memory_reserved() / 1024**2,
+        "signal_state_sha256_before": baseline_before,
+        "signal_state_sha256_after": baseline_after,
+        "signal_state_unchanged": baseline_before == baseline_after,
+        "signal_checkpoint_sha256": runtime["checkpoint_sha256"],
+        "build_provenance": runtime["build_provenance"],
+        "official_test_access_count": 0,
+        "optimizer_steps": steps,
+        "elapsed_seconds": time.time() - started,
+    }
+    (output_dir / "overfit.json").write_text(
+        json.dumps(result, indent=2, sort_keys=True) + "\n",
+        encoding="utf-8",
+    )
+    if not passed:
+        raise RuntimeError("V5 overfit gate failed; inspect overfit.json")
+    return result
+
+
+def _evaluate_outputs(
+    model: Any,
+    loader: Any,
+    *,
+    num_query: int,
+    retrieval_outputs: tuple[str, ...],
+) -> tuple[dict[str, dict[str, float]], dict[str, int]]:
+    import numpy as np
+    import torch
+    from utils.metrics import R1_mAP_eval
+
+    evaluators = {
+        name: R1_mAP_eval(num_query, max_rank=50, feat_norm="yes")
+        for name in retrieval_outputs
+    }
+    feature_widths = {name: 0 for name in retrieval_outputs}
+    model.eval()
+    for images, identities, camera_ids, camera_ids_batch, _view_ids, paths in loader:
+        images = {name: tensor.cuda(non_blocking=True) for name, tensor in images.items()}
+        camera_ids_cuda = camera_ids_batch.cuda(non_blocking=True)
+        batch = {
+            "images": images,
+            "modality_mask": torch.ones(
+                camera_ids_cuda.shape[0], 3, dtype=torch.bool, device="cuda"
+            ),
+            "camera_ids": camera_ids_cuda,
+        }
+        with torch.no_grad():
+            output = model(batch, return_aux=True)
+        if not output.diagnostics["all_finite"]:
+            raise FloatingPointError("V5 evaluation emitted a nonfinite tensor")
+        if not output.diagnostics["baseline_exact_prefix"]:
+            raise RuntimeError("V5 fused output lost the exact Signal prefix")
+        features = {
+            "baseline_only": output.baseline_embedding,
+            "fused": output.fused_embedding,
+            **dict(output.branch_embeddings),
+        }
+        for name in retrieval_outputs:
+            feature_widths[name] = int(features[name].shape[1])
+            evaluators[name].update((features[name], identities, camera_ids, paths))
+
+    metrics: dict[str, dict[str, float]] = {}
+    for name in retrieval_outputs:
+        cmc, mean_ap, *_ = evaluators[name].compute()
+        metrics[name] = {
+            "mAP": float(mean_ap * 100.0),
+            "Rank-1": float(cmc[0] * 100.0),
+            "Rank-5": float(cmc[4] * 100.0),
+            "Rank-10": float(cmc[9] * 100.0),
+        }
+        if not all(np.isfinite(value) for value in metrics[name].values()):
+            raise FloatingPointError(f"nonfinite V5 retrieval metric: {name}")
+    return metrics, feature_widths
+
+
+def _metric_parity(
+    actual: dict[str, dict[str, float]],
+    expected: dict[str, dict[str, float]],
+) -> dict[str, dict[str, bool]]:
+    return {
+        output: {
+            metric: actual[output][metric] == expected[output][metric]
+            for metric in expected[output]
+        }
+        for output in expected
+    }
+
+
+def _run_dev(config: dict[str, Any], config_path: Path, output_dir: Path) -> dict[str, Any]:
+    import torch
+
+    started = time.time()
+    runtime = _build_runtime(config)
+    model = runtime["model"]
+    from trifusion.signal_preserving_v5 import SignalPreservingV5Criterion
+
+    criterion = SignalPreservingV5Criterion(
+        target_cache=None,
+        triplet_margin=float(config["LOSS"]["TRIPLET_MARGIN"]),
+    ).cuda()
+    trainable = {
+        name: parameter for name, parameter in model.named_parameters() if parameter.requires_grad
+    }
+    base_lr = float(config["OPTIMIZATION"]["NEW_MODULE_LR"])
+    optimizer = torch.optim.AdamW(
+        trainable.values(),
+        lr=base_lr,
+        weight_decay=float(config["OPTIMIZATION"]["WEIGHT_DECAY"]),
+    )
+    scaler = torch.amp.GradScaler(
+        "cuda", init_scale=float(config["OPTIMIZATION"]["AMP_INIT_SCALE"])
+    )
+    max_epochs = int(config["OPTIMIZATION"]["MAX_EPOCHS"])
+    warmup_epochs = int(config["OPTIMIZATION"]["WARMUP_EPOCHS"])
+    retrieval_outputs = tuple(config["MODEL"]["RETRIEVAL_OUTPUTS"])
+    expected_baseline = {
+        key: float(value)
+        for key, value in config["SIGNAL"]["EXPECTED_DEV_METRICS"].items()
+    }
+    identity = {
+        "schema_version": "trifusion-signal-preserving-v5-dev-identity-v1",
+        "seed": int(config["EXPERIMENT"]["SEED"]),
+        "config": str(config_path),
+        "config_sha256": _sha256(config_path),
+        "runner_sha256": _sha256(Path(__file__).resolve()),
+        "model_sha256": _sha256(
+            PROJECT_ROOT / "modeling" / "trifusion" / "signal_preserving_v5.py"
+        ),
+        "builder_sha256": _sha256(
+            PROJECT_ROOT
+            / "modeling"
+            / "trifusion"
+            / "signal_preserving_v5_builder.py"
+        ),
+        "signal_source_commit": runtime["signal_source_commit"],
+        "signal_source_diff_sha256": runtime["signal_source_diff_sha256"],
+        "signal_checkpoint_sha256": runtime["checkpoint_sha256"],
+        "fit_triplets": len(runtime["train_records"]),
+        "dev_query_triplets": len(runtime["dev_records"]),
+        "dev_gallery_triplets": len(runtime["dev_records"]),
+        "retrieval_outputs": list(retrieval_outputs),
+        "official_test_access_count": 0,
+    }
+    (output_dir / "run_identity.json").write_text(
+        json.dumps(identity, indent=2, sort_keys=True) + "\n",
+        encoding="utf-8",
+    )
+
+    baseline_before = _module_state_sha256(model.baseline.signal)
+    history: list[dict[str, Any]] = []
+    best_epoch = 0
+    best_fused_map = float("-inf")
+    best_metrics: dict[str, dict[str, float]] | None = None
+    best_checkpoint = output_dir / "best_model.pth"
+    optimizer_steps = 0
+    overflow_events = 0
+    torch.cuda.reset_peak_memory_stats()
+
+    for epoch in range(1, max_epochs + 1):
+        multiplier = learning_rate_multiplier(
+            epoch,
+            max_epochs=max_epochs,
+            warmup_epochs=warmup_epochs,
+        )
+        learning_rate = base_lr * multiplier
+        for group in optimizer.param_groups:
+            group["lr"] = learning_rate
+        model.train()
+        epoch_loss = 0.0
+        epoch_steps = 0
+        for raw_batch in runtime["train_loader"]:
+            batch, labels = _training_batch(raw_batch)
+            optimizer.zero_grad(set_to_none=True)
+            with torch.autocast(
+                device_type="cuda",
+                dtype=torch.float16,
+                enabled=bool(config["OPTIMIZATION"]["AMP"]),
+            ):
+                output = model(batch, return_aux=True)
+                if not output.diagnostics["all_finite"]:
+                    raise FloatingPointError("V5 training emitted a nonfinite tensor")
+                loss_parts = criterion(output, labels)
+                total_loss = weighted_training_loss(loss_parts, config)
+            if not bool(torch.isfinite(total_loss)):
+                raise FloatingPointError("V5 dev loss is nonfinite")
+            scale_before = scaler.get_scale()
+            scaler.scale(total_loss).backward()
+            scaler.unscale_(optimizer)
+            for name, parameter in trainable.items():
+                if parameter.grad is not None and not bool(
+                    torch.isfinite(parameter.grad).all()
+                ):
+                    raise FloatingPointError(f"nonfinite gradient: {name}")
+            scaler.step(optimizer)
+            scaler.update()
+            overflow = scaler.get_scale() < scale_before
+            overflow_events += int(overflow)
+            optimizer_steps += int(not overflow)
+            epoch_loss += float(total_loss.detach())
+            epoch_steps += 1
+
+        metrics, feature_widths = _evaluate_outputs(
+            model,
+            runtime["eval_loader"],
+            num_query=len(runtime["dev_records"]),
+            retrieval_outputs=retrieval_outputs,
+        )
+        if metrics["baseline_only"] != expected_baseline:
+            raise RuntimeError("frozen Signal baseline metrics changed during V5 training")
+        epoch_result = {
+            "epoch": epoch,
+            "learning_rate": learning_rate,
+            "mean_training_loss": epoch_loss / epoch_steps,
+            "metrics_percent": metrics,
+            "feature_widths": feature_widths,
+        }
+        history.append(epoch_result)
+        if metrics["fused"]["mAP"] > best_fused_map:
+            best_epoch = epoch
+            best_fused_map = metrics["fused"]["mAP"]
+            best_metrics = metrics
+            torch.save(
+                {
+                    "schema_version": "trifusion-signal-preserving-v5-checkpoint-v1",
+                    "epoch": epoch,
+                    "model_state_dict": model.state_dict(),
+                    "metrics_percent": metrics,
+                    "run_identity_sha256": _sha256(output_dir / "run_identity.json"),
+                },
+                best_checkpoint,
+            )
+        (output_dir / "history.json").write_text(
+            json.dumps(
+                {
+                    "schema_version": "trifusion-signal-preserving-v5-history-v1",
+                    "epochs": history,
+                    "best_epoch": best_epoch,
+                    "best_fused_mAP": best_fused_map,
+                    "official_test_access_count": 0,
+                },
+                indent=2,
+                sort_keys=True,
+            )
+            + "\n",
+            encoding="utf-8",
+        )
+        print(json.dumps(epoch_result, sort_keys=True), flush=True)
+
+    if best_metrics is None:
+        raise RuntimeError("V5 dev training did not select a checkpoint")
+    baseline_after_training = _module_state_sha256(model.baseline.signal)
+    checkpoint = torch.load(best_checkpoint, map_location="cpu", weights_only=True)
+    model.load_state_dict(checkpoint["model_state_dict"], strict=True)
+    model.cuda()
+    final_metrics, final_feature_widths = _evaluate_outputs(
+        model,
+        runtime["eval_loader"],
+        num_query=len(runtime["dev_records"]),
+        retrieval_outputs=retrieval_outputs,
+    )
+    reload_parity = _metric_parity(final_metrics, best_metrics)
+    baseline_after_reload = _module_state_sha256(model.baseline.signal)
+    dev_gate = evaluate_dev_gate(
+        final_metrics,
+        min_map=float(config["GATES"]["DEV_MIN_MAP"]),
+    )
+    completed = (
+        all(all(values.values()) for values in reload_parity.values())
+        and final_metrics["baseline_only"] == expected_baseline
+        and baseline_before == baseline_after_training == baseline_after_reload
+        and overflow_events == 0
+    )
+    result = {
+        "schema_version": "trifusion-signal-preserving-v5-dev-result-v1",
+        "status": "PASS" if completed else "FAIL",
+        "mode": "dev",
+        "epochs_completed": max_epochs,
+        "best_epoch": best_epoch,
+        "selection_metric": "fused_dev_mAP",
+        "selected_metrics_percent": best_metrics,
+        "final_reloaded_metrics_percent": final_metrics,
+        "reload_metric_parity": reload_parity,
+        "feature_widths": final_feature_widths,
+        "dev_gate": dev_gate,
+        "claim_supported": bool(dev_gate["passed"]),
+        "checkpoint": str(best_checkpoint),
+        "checkpoint_sha256": _sha256(best_checkpoint),
+        "signal_checkpoint_sha256": runtime["checkpoint_sha256"],
+        "signal_state_sha256_before": baseline_before,
+        "signal_state_sha256_after_training": baseline_after_training,
+        "signal_state_sha256_after_reload": baseline_after_reload,
+        "signal_state_unchanged": (
+            baseline_before == baseline_after_training == baseline_after_reload
+        ),
+        "build_provenance": runtime["build_provenance"],
+        "optimizer_steps": optimizer_steps,
+        "overflow_events": overflow_events,
+        "peak_allocated_mib": torch.cuda.max_memory_allocated() / 1024**2,
+        "peak_reserved_mib": torch.cuda.max_memory_reserved() / 1024**2,
+        "fit_triplets": len(runtime["train_records"]),
+        "dev_query_triplets": len(runtime["dev_records"]),
+        "dev_gallery_triplets": len(runtime["dev_records"]),
+        "official_test_access_count": 0,
+        "run_identity_sha256": _sha256(output_dir / "run_identity.json"),
+        "history_sha256": _sha256(output_dir / "history.json"),
+        "elapsed_seconds": time.time() - started,
+    }
+    (output_dir / "run_summary.json").write_text(
+        json.dumps(result, indent=2, sort_keys=True) + "\n",
+        encoding="utf-8",
+    )
+    if not completed:
+        raise RuntimeError("V5 dev completion gate failed; inspect run_summary.json")
+    return result
+
+
+def evaluate_dev_gate(
+    metrics: dict[str, dict[str, float]], *, min_map: float
+) -> dict[str, Any]:
+    """Judge the frozen same-checkpoint fused promotion contract."""
+
+    fused_map = float(metrics["fused"]["mAP"])
+    strictly_beaten = {
+        output: fused_map > float(metrics[output]["mAP"])
+        for output in GATE_OUTPUTS
+    }
+    return {
+        "passed": fused_map >= min_map and all(strictly_beaten.values()),
+        "fused_mAP": fused_map,
+        "minimum_mAP": float(min_map),
+        "strictly_beaten": strictly_beaten,
+    }
+
+
+def evaluate_overfit_gate(
+    losses: list[float], *, max_ratio: float
+) -> dict[str, Any]:
+    initial_loss = float(losses[0])
+    final_loss = float(losses[-1])
+    loss_ratio = final_loss / initial_loss
+    return {
+        "passed": loss_ratio <= max_ratio,
+        "initial_loss": initial_loss,
+        "final_loss": final_loss,
+        "loss_ratio": loss_ratio,
+        "maximum_loss_ratio": float(max_ratio),
+    }
+
+
+def learning_rate_multiplier(
+    epoch: int, *, max_epochs: int, warmup_epochs: int
+) -> float:
+    if epoch <= warmup_epochs:
+        return epoch / warmup_epochs
+    progress = (epoch - warmup_epochs - 1) / (max_epochs - warmup_epochs)
+    return 0.5 * (1.0 + math.cos(math.pi * progress))
+
+
+def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument(
+        "--mode",
+        required=True,
+        choices=("preflight", "capacity", "overfit", "dev"),
+    )
+    parser.add_argument("--config", required=True, type=Path)
+    parser.add_argument("--output-dir", required=True, type=Path)
+    return parser.parse_args(argv)
+
+
+def run(args: argparse.Namespace) -> dict[str, Any]:
+    config_path = args.config.resolve()
+    output_dir = args.output_dir.resolve()
+    if output_dir.exists():
+        raise FileExistsError(f"output directory already exists: {output_dir}")
+    config = _load_config(config_path)
+    output_dir.mkdir(parents=True)
+    if args.mode == "preflight":
+        return _run_preflight(config, output_dir)
+    if args.mode == "capacity":
+        return _run_capacity(config, output_dir)
+    if args.mode == "overfit":
+        return _run_overfit(config, output_dir)
+    if args.mode == "dev":
+        return _run_dev(config, config_path, output_dir)
+    raise NotImplementedError(f"V5 mode is not implemented yet: {args.mode}")
+
+
+__all__ = [
+    "evaluate_dev_gate",
+    "evaluate_overfit_gate",
+    "learning_rate_multiplier",
+    "load_contract",
+    "load_raw_config",
+    "parse_args",
+    "run",
+    "weighted_training_loss",
+]
+
+
+if __name__ == "__main__":
+    print(json.dumps(run(parse_args()), indent=2, sort_keys=True))

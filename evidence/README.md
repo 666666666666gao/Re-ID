@@ -185,3 +185,13 @@ official-test access is zero. It does not contain a V4 anchor-only metric and
 must not be presented as a Signal baseline reproduction. The Signal
 80.3/85.2 value remains upstream-only until its full 3072D SIM+SIE path and a
 checkpoint are verified under the same protocol.
+
+The three Signal-preserving V5 readiness receipts bind the exact 3072D
+Signalbest checkpoint to the frozen 141-fit/30-dev protocol. Preflight proves
+the V5 baseline is elementwise equal to the upstream Signal forward and exactly
+reproduces 58.0109/57.4545/69.9394/76.6061. Capacity records real B32/K4,
+213/213 trainable gradient tensors, zero AMP overflow, 3,542 MiB peak reserved
+memory and unchanged Signal state. Fixed-batch overfit records a 100-step loss
+ratio of 0.02102 and unchanged Signal state. All three keep official-test access
+at zero. They are engineering readiness evidence, not a V5 retrieval result or
+SOTA claim.

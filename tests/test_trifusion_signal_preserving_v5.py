@@ -287,3 +287,8 @@ def test_v5_builder_runs_all_experts_and_two_relay_stages() -> None:
     assert tuple(output.branch_embeddings) == EXPERT_ORDER
     assert output.diagnostics["baseline_exact_prefix"]
     assert output.diagnostics["baseline_frozen"]
+    assert all(
+        not parameter.requires_grad
+        for expert in result.model.encoder.experts.values()
+        for parameter in expert.private_projection.parameters()
+    )

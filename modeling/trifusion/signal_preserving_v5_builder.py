@@ -73,6 +73,9 @@ def build_signal_preserving_trifusion_v5(
             scale_init=scale_init,
         ),
     }
+    for expert in experts.values():
+        for parameter in expert.private_projection.parameters():
+            parameter.requires_grad_(False)
     expert_widths = {expert: feature_width for expert in EXPERT_ORDER}
     reliability = ReliabilityPosterior(
         expert_widths=expert_widths,
@@ -113,6 +116,7 @@ def build_signal_preserving_trifusion_v5(
         "signal_baseline_width": baseline.baseline_width,
         "signal_feature": "direct_3x512_plus_SIM_3x512_with_camera_SIE",
         "baseline_parameters_frozen": True,
+        "unused_private_projections_frozen": True,
         "experts": list(EXPERT_ORDER),
         "expert_stage_depths": list(stage_depths),
         "relay_stages": [1, 2],

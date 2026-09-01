@@ -58,6 +58,10 @@
   141-fit/30-dev protocol. The deterministically reloaded best checkpoint is
   `1f5c200c...66c3` with 58.0109 mAP / 57.4545 Rank-1 and official-test access
   zero. This is the V5 development floor, not an official-test reproduction.
+- Signal-preserving V5 readiness passes on the remote RTX3090: exact 825/825
+  baseline feature/metric parity, real B32/K4 8-step capacity with 213/213
+  trainable gradient tensors and 3,542 MiB peak reserved memory, and a
+  100-step fixed-batch loss ratio of 0.02102. Official-test access is zero.
 
 ## Remote experiment constraints
 

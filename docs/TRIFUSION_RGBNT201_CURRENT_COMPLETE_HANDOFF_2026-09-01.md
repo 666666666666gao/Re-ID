@@ -18,7 +18,7 @@ V5 的三个候选论文级主创新点已经落到核心代码和专项测试�
 - 后续 V3 task-anchor 与 V4 等能量残差银行均已在固定 141-fit/30-dev 上完整训练 60 epoch。V4 最佳 epoch27 fused 为 `43.4031/42.7879`，仍低于同 checkpoint 的 Mamba `44.0659/43.5152`，且距 65 mAP dev 门 `21.5969`；official access=0。
 - V4 只保留了三模态 projected-CLS 的 1536D anchor，不等于 Signal 的完整 3072D 检索特征。Signal 还包含 1536D SIM 交互特征和 camera SIE；上游 `80.3/85.2` 尚未在本服务器复现，不能与 V4 held-out dev 数字直接相减。
 - Signal baseline 已完整训练 50/50 epoch并严格重载最佳 checkpoint 确定性复评：`58.0109 mAP / 57.4545 Rank-1 / 69.9394 Rank-5 / 76.6061 Rank-10`；完整 3072D `direct+SIM`、camera SIE=true、official access=0。
-- V5 核心模型、构建器和专项测试已经完成；远端 `tri_reid` 环境复核为 `4 passed`。训练 runner、配置、真实 baseline parity、capacity、overfit 和完整 dev 训练尚未实现或执行，当前不得报告 V5 指标。
+- V5 核心、独立 runner/config 和专项测试已经完成；远端联合专项为 `10 passed`。真实 preflight、B32/K4 8-step capacity 和固定批 100-step overfit 三门均 PASS；完整 60-epoch dev 尚未启动，因此当前仍没有 V5 检索指标。
 - 原正式启动在官方指标写出后的路由校准审计因缺失导入失败；`repair-0002` 仅重算训练集路由审计，`optimizer_steps=0`、`training_reexecuted=false`、`official_test_reexecuted=false`，公开 verifier 返回 PASS。
 - 用户最新指令：只做 seed 42；现在优先完成远端 Signal baseline 保底；主实验达到目标以后才考虑消融；所有训练、评估、数据和环境只在云端 GPU，Windows/WSL 仅作传输和文档存档。
 
@@ -498,7 +498,7 @@ protocols/circ_directional_final_authorization_v1.json
 - [x] 已确认 V4 的 1536D anchor 不是 Signal 完整 3072D baseline。
 - [x] 在远端建立完整 Signal baseline-only 路径、独立环境和可复现训练回执；同协议 50-epoch dev 已完成并确定性复评为 `58.0109/57.4545/69.9394/76.6061`。
 - [x] V5 核心已建立同 checkpoint `baseline_only/fused/cnn/transformer/mamba` 五输出、冻结 Signal 路径和非破坏式残差银行；专项测试 `4 passed`。
-- [ ] 实现 V5 独立 runner/config，并依次通过真实 baseline parity、8-step capacity 和 100-step overfit 门；当前尚未执行。
+- [x] V5 独立 runner/config 已完成；真实 baseline parity、8-step capacity 和 100-step overfit 门均 PASS，official access=0。
 - [ ] 工程门全部通过后才允许唯一一次 seed42、60-epoch held-out-dev 主训练；主门通过前不做消融、不访问官方 test。
 
 ## 12. V3/V4 主方法恢复终态
@@ -617,7 +617,10 @@ Signal retrieval = concat(ori, sim)                  # 3072D
 ```text
 modeling/trifusion/signal_preserving_v5.py
 modeling/trifusion/signal_preserving_v5_builder.py
+configs/RGBNT201/TriFusion-signal-preserving-v5-rtx3090.yml
+tools/run_signal_preserving_v5.py
 tests/test_trifusion_signal_preserving_v5.py
+tests/test_run_signal_preserving_v5.py
 ```
 
 已实现并测试的合同：
@@ -628,17 +631,29 @@ tests/test_trifusion_signal_preserving_v5.py
 - 每个专家残差以对应 direct Signal 模态全局特征为基准，归一化、限幅后按可靠性和身份效用路由，九路残差全部保留；
 - 默认宽度为 `baseline=3072`、各 branch=`3840`、residual bank=`2304`、fused=`5376`，且 `fused[:, :3072]` 与 `baseline_only` 精确相同；
 - 同一模型和同一 checkpoint 显式输出 `baseline_only`、`fused`、`cnn`、`transformer`、`mamba`；
-- 专项测试覆盖 baseline 前缀相等、所有专家和路由均有梯度、一次 optimizer step 后 Signal 状态逐张量不变，以及构建器确实执行两次 relay；远端实测 `4 passed, 3 warnings`，warnings 仅为 timm 导入弃用提示。
+- 专项测试覆盖 baseline 前缀相等、所有专家和路由均有梯度、一次 optimizer step 后 Signal 状态逐张量不变、两次 relay、冻结实验合同、损失权重、晋级门、过拟合门和学习率；远端联合实测 `10 passed, 3 warnings`，warnings 仅为 timm 导入弃用提示。
 
-尚未完成：
+真实工程门终态：
 
-1. `configs/RGBNT201/TriFusion-signal-preserving-v5-rtx3090.yml`；
-2. `tools/run_signal_preserving_v5.py`；
-3. 真实 Signal checkpoint 的完整 dev `baseline_only` parity 预检；
-4. RTX3090 上的 8-step capacity 与 100-step 单批过拟合门；
-5. 唯一一次 seed42、60-epoch held-out-dev V5 主训练与同 checkpoint 五路评估。
+| 门 | 结果 | 关键证据 |
+|---|---|---|
+| preflight | PASS | 全 825/825 dev；上游 Signal 与 V5 baseline 逐批逐元素相等；四指标精确为 `58.0109/57.4545/69.9394/76.6061` |
+| capacity | PASS | B32/K4、8/8 step、213/213 可训练梯度张量、0 overflow、峰值 reserved `3542 MiB`、Signal SHA 不变 |
+| overfit | PASS | 同一真实 B32/K4 批 100 step；loss `2.81624→0.05921`、ratio `0.02102≤0.10`、0 overflow、Signal SHA 不变 |
 
-实现 runner 时必须处理一个已证实的包名冲突：Signal 与本项目都使用顶层包名 `modeling`。最直接的方案是让 Signal 源码拥有顶层 `modeling`，再把本项目的 `<repo>/modeling` 加入 `sys.path`，以顶层 `trifusion` 导入 V5；不要增加兼容层或复制/改写 Signal 包。
+capacity 首次运行真实发现 6 个 `private_projection` 张量无梯度。原因是 V5 不启用 peer-teaching/private-diversity，这 6 个张量没有任何训练目标；最小修复是在 V5 builder 中冻结它们。修复后可训练参数为 `5,395,989`、梯度覆盖 213/213，forward 特征和 baseline parity 均未改变。失败收据永久保留在远端 `_capacity_5f1ecf6_v1`，通过收据为 `_capacity_5f1ecf6_v2`。
+
+版本化轻量证据：
+
+```text
+evidence/trifusion_signal_preserving_v5_preflight_seed42.json
+evidence/trifusion_signal_preserving_v5_capacity_seed42.json
+evidence/trifusion_signal_preserving_v5_overfit_seed42.json
+```
+
+尚未完成的唯一当前工程项是：唯一一次 seed42、60-epoch held-out-dev V5 主训练、best-fused 严格重载和同 checkpoint 五路评估。
+
+runner 已按最直接方案处理已证实的包名冲突：Signal 源码拥有顶层 `modeling`，本项目从 `<repo>/modeling` 以顶层 `trifusion` 导入 V5；没有增加兼容层，也没有复制或改写 Signal 包。
 
 V5 晋级合同保持不变：`fused` 必须在同一 frozen dev 上高于 `baseline_only`、CNN、Transformer、Mamba，并达到至少 `65 mAP`；否则 `claim_supported=no`，不启动消融，也不访问官方 test。当前没有运行时 fallback。
 
@@ -646,13 +661,12 @@ V5 晋级合同保持不变：`fused` 必须在同一 frozen dev 上高于 `base
 
 下一执行者应按以下顺序调用技能：
 
-1. `/tdd`：先补 runner/config 的失败测试，再实现最小训练入口；
-2. `/run-experiment`：所有真实 checkpoint、数据、GPU 门和训练只在远端 RTX3090 执行；
-3. `/monitor-experiment`：长任务按 180–300 秒间隔或预计结束前数分钟轮询；
-4. `/analyze-results` 与 `/result-to-claim`：仅在完整 dev 终局后分析五路指标和决定是否支持主张；
-5. `/ablation-planner`：只有 `claim_supported=yes` 且 V5 主门通过后才允许使用。
+1. `/run-experiment`：从 readiness 提交启动唯一一次远端 seed42 dev；
+2. `/monitor-experiment`：长任务按 180–300 秒间隔或预计结束前数分钟轮询；
+3. `/analyze-results` 与 `/result-to-claim`：仅在完整 dev 终局后分析五路指标和决定是否支持主张；
+4. `/ablation-planner`：只有 `claim_supported=yes` 且 V5 主门通过后才允许使用。
 
-接续时不要重跑 Signal baseline，不做多种子，不做消融，不访问官方 test。先完成 runner/config 和三项真实工程门，再决定是否启动唯一一次完整 dev 主训练。
+接续时不要重跑 Signal baseline，不做多种子，不做消融，不访问官方 test。三项真实工程门已经通过；下一步是从冻结 readiness 提交启动唯一一次完整 dev 主训练。
 
 ---
 
