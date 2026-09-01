@@ -12,10 +12,10 @@
 
 当前最重要状态：
 
-- 云端 RTX 3090 的正式单种子主实验已完成全部前置构建和预检，60 epoch 全 171 身份训练尚未启动。
-- 唯一正式固定终点评估仍未消费，官方测试访问计数为 0。
-- 当前可引用的内部结果是 `train_171` 内部 141/30 身份隔离开发协议，不是官方测试：融合分支 `47.4001 mAP / 45.4545 Rank-1`。
-- 公开固定目标登记为 `85.3 mAP / 87.9 Rank-1`。在同协议正式结果产生前，不能计算可信 SOTA 差距，也不能宣称 SOTA。
+- 云端 RTX 3090 的正式 seed-42 主实验已完成 60 epoch 全 171 身份训练，并在固定终点完成唯一一次官方评估。
+- 正式融合结果为 `59.1478 mAP / 63.2775 Rank-1`；CNN 略高，为 `59.1561 / 63.7560`。官方测试访问和评估计数均恰好为 1。
+- 相对登记目标 `85.3 mAP / 87.9 Rank-1`，融合结果低 `26.1522 mAP / 24.6225 Rank-1`；`single_seed_target_exceeded=false`，不支持 SOTA 或融合增益主张。
+- 原正式启动在官方指标写出后的路由校准审计因缺失导入失败；`repair-0002` 仅重算训练集路由审计，`optimizer_steps=0`、`training_reexecuted=false`、`official_test_reexecuted=false`，公开 verifier 返回 PASS。
 - 用户已明确：只做 seed 42；不复现 baseline；主实验达到目标以后才考虑消融；所有训练、评估、数据和环境只在云端 GPU，Windows/WSL 仅作传输和文档存档。
 
 ## 1. 权威位置
@@ -215,7 +215,23 @@ RDPT 仍是辅助机制，不属于本次主实验启用的核心贡献。
 
 ### 5.3 正式主实验
 
-状态：**READY，未启动，官方 test access = 0**。
+状态：**COMPLETE，经 audit-only repair 验证；官方 test access/evaluation = 1/1**。
+
+`postfreeze-final`；seed 42；epoch 60 固定终点；train 171 身份/3951 记录；query/gallery 各 836；无 reranking：
+
+| 输出 | mAP | Rank-1 | Rank-5 | Rank-10 |
+|---|---:|---:|---:|---:|
+| fused | 59.1478 | 63.2775 | 77.2727 | 83.6124 |
+| CNN | 59.1561 | 63.7560 | 78.3493 | 83.2536 |
+| Transformer | 59.1219 | 62.6794 | 76.9139 | 83.6124 |
+| Mamba | 58.8748 | 62.4402 | 77.2727 | 83.0144 |
+
+结果判定：
+
+- fused 相对登记目标低 `26.1522 mAP / 24.6225 Rank-1`；未超过目标。
+- CNN 比 fused 高 `0.0083 mAP / 0.4785 Rank-1`；当前结果不支持“融合优于各分支”。
+- 这是单数据集、单 seed、无 baseline 复现的正式结果，不能宣称 SOTA、统计显著性或广泛稳健性。
+- 用户规定“先超过目标再做消融”；本结果未过门槛，因此不启动消融。
 
 正式输出路径：
 
@@ -231,9 +247,22 @@ RDPT 仍是辅助机制，不属于本次主实验启用的核心贡献。
   trifusion_shared_semantic_circ_urgc_directional_final_seed42_launch_ledger
 ```
 
-正式指标产生后必须补回本节，并同时写明：是否超过 `85.3/87.9`、是否只是单种子结果、是否允许进入消融。
+权威结果链：
 
-## 6. 正式运行命令
+```text
+official_test_metrics.json
+official_test_access_guard.json
+run_summary.json
+fixed_final_receipt.json
+launch_ledger/launch-0001/failure_receipt.json
+launch_ledger/repair-0002/completion_receipt.json
+```
+
+原 `launch-0001` 在唯一官方评估后的路由审计因缺失 `build_rgbnt201_record_eval_loader` 导入而失败，失败回执永久保留。`repair-0001` 完成训练集路由审计后因没有复用定向授权上下文而在汇总门失败，已事务回滚。`repair-0002` 复用原定向授权，只运行训练集路由校准审计并通过；未重训、未执行优化器 step、未重评官方 test。
+
+## 6. 正式运行与修复命令（历史记录，禁止重跑）
+
+本实验的官方测试已消费一次。以下启动命令只用于法证复现记录，**不得再次执行同一实验身份**。
 
 ### 6.1 启动前检查
 
@@ -261,6 +290,8 @@ PYTHONPATH=. /root/miniconda3/envs/tri_reid/bin/python \
 
 ### 6.2 正式启动
 
+下列命令是 2026-09-01 已执行的历史命令，不是待办操作：
+
 ```bash
 cd /root/autodl-tmp/trifusion-v2/TriFusion-ReID
 screen -dmS circ_directional_final_seed42 bash -lc '
@@ -275,7 +306,7 @@ screen -dmS circ_directional_final_seed42 bash -lc '
 '
 ```
 
-不要并行启动第二个同身份进程。中断后只能由同一 wrapper 验证恢复状态；如果已经出现 `official_test_access_guard.json` 且没有完整 metrics receipt，不得重跑官方 test。
+不要启动第二个同身份进程。当前 `official_test_access_guard.json` 和 metrics receipt 已完整存在，任何再次正式评估都会违反一次性协议。
 
 ### 6.3 监控
 
@@ -287,9 +318,9 @@ python -m json.tool \
   /root/autodl-tmp/trifusion-v2/artifacts/trifusion_shared_semantic_circ_urgc_directional_final_seed42/.resume/latest.json
 ```
 
-### 6.4 完成验证
+### 6.4 修复完成验证
 
-完成时启动器先写 `completion_candidate.json`，验证十类证据的路径、内容和哈希链，通过后才原子发布 `completion_receipt.json`。验证覆盖：
+由于原 `launch-0001` 保留失败回执，最终可用链由独立 `repair-0002` 完成回执验证。验证覆盖：
 
 1. `run_summary.json`；
 2. `run_identity.json`；
@@ -306,27 +337,21 @@ python -m json.tool \
 
 ```bash
 cd /root/autodl-tmp/trifusion-v2/TriFusion-ReID
-PYTHONPATH=. /root/miniconda3/envs/tri_reid/bin/python - <<'PY'
-from pathlib import Path
-from tools.run_trifusion_directional_final import verify_completion
-
-entry = Path(
-    "/root/autodl-tmp/trifusion-v2/artifacts/"
-    "trifusion_shared_semantic_circ_urgc_directional_final_seed42_launch_ledger/"
-    "launch-0001"
-)
-print(verify_completion(entry))
-PY
+PYTHONPATH=. /root/miniconda3/envs/tri_reid/bin/python \
+  tools/repair_trifusion_directional_final_completion.py \
+  --verify /root/autodl-tmp/trifusion-v2/artifacts/\
+trifusion_shared_semantic_circ_urgc_directional_final_seed42_launch_ledger/\
+repair-0002
 ```
 
-只有 public verifier 返回 `verified=true`，才能使用正式指标。
+该 verifier 已返回 `status=PASS`，并确认 `official_test_access_count=1`、`official_test_evaluation_count=1`、`official_test_reexecuted=false`、`optimizer_steps=0`。
 
 ## 7. 测试状态
 
-正式启动器采用 TDD：先增加失败场景，再实现修复。当前启动器专项为 `27 passed`；排除三个用户明确不要运行的外部 baseline 仓库测试后，内部全量回归为：
+正式启动器与修复器均采用 TDD。定向启动器专项原为 `27 passed`；新增最终修复器后，联合专项为 `42 passed`。排除三个用户明确不要运行的外部 baseline 仓库测试后，内部全量回归为：
 
 ```text
-127 passed, 4 skipped
+133 passed, 4 skipped
 ```
 
 全量命令：
@@ -361,6 +386,25 @@ postfreeze-final CIRC targets：
 SHA256 29b11a562422648c21870ad3a49b06a42101662efac660602ad576ee18cdd7ab
 ```
 
+正式 epoch-60 checkpoint：
+
+```text
+SHA256 ca4a7963e0c5630bd760ee68c973a5f8511a0597e38b7221e1f73526cd09edab
+```
+
+官方 metrics 与 access guard：
+
+```text
+metrics SHA256 a75d51aa5e17bc11c8c27246fc005fac5c764b4813b147c9706ed2ca5b0eeb85
+guard   SHA256 9a162b865b09f6ae13c7cc4513938df3e533703a1305091e68f92b20d65fc405
+```
+
+最终 audit-only repair 完成回执：
+
+```text
+..._launch_ledger/repair-0002/completion_receipt.json
+```
+
 正式定向授权只允许保留失败的对称性结论并使用校准后的方向性训练输入。授权文件：
 
 ```text
@@ -376,24 +420,31 @@ protocols/circ_directional_final_authorization_v1.json
 - 当前只做一个 seed 42；不能据此给出多种子均值、方差或统计显著性。
 - 没有复现 baseline；baseline 数字必须写成 upstream-reported。
 - CIRC query/gallery symmetry 审计失败；禁止对称性主张。
-- 正式官方 test 结果未产生；开发集 47.40 不能冒充官方指标。
+- 正式官方 test 已恰好评估一次；不得再次访问本次 test 做选模、调参或重评。
 - 在主结果超过冻结目标前，禁止启动消融实验。
+- 本次 fused 未优于 CNN，不能把 HFER/CIRC/URGC 写成已获检索增益的实证结论。
+- 路由校准是训练目标上的描述性证据；缺少身份留出校准，不能主张因果或身份外泛化校准。
+- 路由平均概率在条件、专家和模态之间几乎固定为 `0.24997`；`modality_missing` 的训练目标校准最差（Brier `0.22338`、ECE `0.07178`）。这不是官方 test 的分场景 ReID mAP。
 
 ### 9.2 结构风险
 
-独立代码审查留下两项值得在正式结果后处理的设计风险：
+只读代码、checkpoint 和日志诊断确认以下主结构风险：
 
-1. 当前可靠性后验在第一次协作后计算，后续交换和最终融合复用该后验；如果正式结果不足，应优先考虑在第二阶段交换后重新估计质量，而不是盲目扫学习率或 epoch。
-2. 当前 Mamba 专家负责各模态内的空间序列扫描；跨模态传播主要由通用 HFER 完成。若论文要声称“Mamba 特有的跨模态状态传播”，必须增加相应机制和消融，否则应使用更窄的表述。
+1. 当前融合将九个“专家×模态”贡献直接加权求和为一个 512 维向量；DeMo 参照推理头则保留三模态原始特征和七个 MoE 特征的拼接。路由近似常数时，当前融合退化为信息损失很大的近均匀平均。
+2. 三个融合投影在最终 checkpoint 中两两余弦相似度均高于 `0.99992`；CNN/Transformer/Mamba 官方 mAP 最大差只有 `0.2813`。三支接收完全相同的共享 CLIP token，且 `PEER_LOGITS`、`PEER_ROLE`、`PRIVATE_DIVERSITY` 均为 0，缺少防止专家同质化的训练约束。
+3. baseline 使用 CLIP 投影后的 CLS 全局特征并保留局部 token；当前共享 tokenizer 将 CLS 广播到 patch 后只输出 patch 场，专家再做均值池化。正式评估使用 BN neck 后的 512 维特征，而 DeMo 配置为 neck 前特征。因此“加载了同一 CLIP”不等于保留了 baseline 的检索表征。
+4. epoch 60 的 fused ID/triplet loss 已为 `0.01823/0.00562`，但官方 mAP 仅 `59.1478`，说明主要是身份外泛化失败，不是训练未完成。无 label smoothing、无 camera SIE、前 7 epoch 仅训练路由是次级泛化差异。
+5. HFER 的两次交换都使用 stage-1 后验；stage 3 后会为最终融合刷新质量，但第二次交换仍使用旧后验。新主版本应在第二次交换前重新估计质量。
+6. 当前 Mamba 专家负责各模态内的空间序列扫描；跨模态传播主要由通用 HFER 完成。若论文要声称“Mamba 特有的跨模态状态传播”，必须增加相应机制和消融，否则应使用更窄的表述。
 
 ### 9.3 正式结果后的唯一决策树
 
 ```text
-正式 verifier PASS
+正式/修复 verifier PASS（本次已完成）
   ├─ fused > 85.3 mAP 且 Rank-1 > 87.9
   │    └─ 才允许设计消融；仍只能称单种子目标超越，不能直接宣称统计 SOTA
-  └─ 未超过目标
-       └─ 不做消融和超参数扫；先做错误分解并检查上述两项结构风险
+  └─ 未超过目标（本次路径）
+       └─ 不做消融、多种子或 baseline 复现；先做只读错误分解和 train/dev-only 主方法恢复
 ```
 
 ## 10. 文档索引
@@ -411,6 +462,9 @@ protocols/circ_directional_final_authorization_v1.json
 | `docs/ENVIRONMENT_REPRODUCTION.md` | 环境与历史复现说明 |
 | `docs/BASELINE_SELECTION_AND_LICENSE_AUDIT_2026-08-31.md` | baseline 选择、许可证和复现边界 |
 | `docs/BASELINE_PROTOCOL_AUDIT_2026-08-31.md` | checkpoint selection 公平性审计 |
+| `results/TRIFUSION_RGBNT201_FINAL_SEED42_2026-09-01.md` | 正式原始指标、差距和负结果分析 |
+| `EXPERIMENT_AUDIT.md` / `.json` | 独立实验完整性审计 |
+| `findings.md` | result-to-claim 否定结论与后续边界 |
 | `evidence/README.md` | 版本化 evidence 说明 |
 
 ## 11. 交接检查清单
@@ -421,12 +475,12 @@ protocols/circ_directional_final_authorization_v1.json
 - [x] HFER、CIRC、URGC 已实现并有测试。
 - [x] CIRC postfreeze 三折生成、干预评分和校准已完成。
 - [x] 正式定向授权、失败边界和唯一官方 test gate 已固定。
-- [x] 启动器完成链已通过 `127 passed, 4 skipped`。
-- [ ] 正式 60 epoch 全 171 身份训练。
-- [ ] 唯一固定终点官方评估。
-- [ ] 完成收据独立重验。
-- [ ] 将最终 fused/CNN/Transformer/Mamba 指标回填本文件。
-- [ ] 仅在超过冻结目标后启动消融。
+- [x] 启动器/修复器完成链已通过 `133 passed, 4 skipped`。
+- [x] 正式 60 epoch 全 171 身份训练。
+- [x] 唯一固定终点官方评估，access/evaluation = 1/1。
+- [x] `repair-0002` 完成收据独立重验 PASS。
+- [x] 最终 fused/CNN/Transformer/Mamba 指标已回填。
+- [x] 结果未超过冻结目标，已锁定“不启动消融”。
 
 ---
 

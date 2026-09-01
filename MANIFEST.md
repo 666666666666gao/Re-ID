@@ -145,3 +145,11 @@
 | 2026-08-31 13:36 | /tdd | tools/run_trifusion_experiment.py | implementation | TriFusion capacity、单batch过拟合、60epoch train-only dev及双代全状态恢复驱动 |
 | 2026-08-31 13:36 | /tdd | configs/RGBNT201/TriFusion.yml | implementation | core_pre_circ B16/K4、60epoch、零official-test开发配置 |
 | 2026-08-31 13:36 | /tdd | evidence/trifusion_training_readiness_20260831.json | implementation | 51/51 PASS、真实数据接口及1035MiB显存门禁前阻塞且零指标的训练就绪收据 |
+| 2026-09-01 12:23 | /run-experiment | ../artifacts/trifusion_shared_semantic_circ_urgc_directional_final_seed42/ | research | seed42、epoch60、官方测试一次评估的正式结果；fused 59.1478 mAP / 63.2775 R1 |
+| 2026-09-01 12:23 | /tdd | tools/repair_trifusion_directional_final_completion.py | implementation | 缺失导入后的 audit-only 完成修复器；禁止优化器 step 和官方测试重评 |
+| 2026-09-01 12:23 | /tdd | tests/test_directional_final_completion_repair.py | implementation | 最终修复状态、一次访问、定向授权和失败回执的 fail-closed 测试 |
+| 2026-09-01 12:23 | /analyze-results | results/TRIFUSION_RGBNT201_FINAL_SEED42_2026-09-01.md | research | 四路正式指标、目标差距、训练/校准分析与下一步边界 |
+| 2026-09-01 12:23 | /result-to-claim | findings.md | research | 高置信度 claim_supported=no 与禁止消融的路由结论 |
+| 2026-09-01 12:23 | /experiment-audit | EXPERIMENT_AUDIT.md | research | 独立 GPT-5.5 完整性审计；整体 WARN、指标链 PASS、旧交接状态需更新 |
+| 2026-09-01 12:23 | /experiment-audit | EXPERIMENT_AUDIT.json | research | 完整性审计机器可读结论 |
+| 2026-09-01 12:23 | /handoff | docs/TRIFUSION_RGBNT201_CURRENT_COMPLETE_HANDOFF_2026-09-01.md | research | 正式结果、修复账本、证据哈希、测试状态和负结论的统一交接入口 |

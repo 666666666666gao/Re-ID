@@ -4,6 +4,11 @@
 > recovery receipts, and fail-closed evidence verification. See the
 > [current complete handoff](docs/TRIFUSION_RGBNT201_CURRENT_COMPLETE_HANDOFF_2026-09-01.md)
 > for the exact status, commands, metrics, claim boundaries, and document index.
+> The frozen seed-42 final result is **59.1478 mAP / 63.2775 Rank-1**
+> (fused), below the registered target; see the
+> [result report](results/TRIFUSION_RGBNT201_FINAL_SEED42_2026-09-01.md) and
+> [integrity audit](EXPERIMENT_AUDIT.md). This result does not support a SOTA
+> claim and does not pass the project gate for ablations.
 > Dataset files, pretrained weights, checkpoints, and remote artifacts are not
 > distributed in this repository. The original DeMo project and attribution are
 > preserved below.
