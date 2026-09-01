@@ -11,8 +11,8 @@
 | V4-R003 | M2 | 完整 60-epoch dev 主实验 | V4 core | 141-fit/30-dev | fused/CNN/T/M mAP/R1 | MUST | COMPLETE—FAIL | e27 fused 43.4031/42.7879；Mamba 44.0659/43.5152；距65门21.5969；V4 anchor未测；official0 |
 | V4-R004 | M3 | frozen all171 + official once | V4 final | all171→official test | mAP/R1/5/10 | CONDITIONAL MUST | BLOCKED—NOT AUTHORIZED | V4-R003 未通过，禁止 official |
 | V4-R005+ | M4 | 主张消融与公平比较 | V4 controls | frozen protocols | effect sizes | CONDITIONAL | BLOCKED | V4 已失败；当前禁止消融和多种子 |
-| V5-R000 | M0 | Signal 完整路径审计 | Signal cd1b0a6 | source/checkpoint/env | 3072D/SIM/SIE/provenance | MUST | IN PROGRESS | 上游80.3/85.2仍未本地复现；远端无Signal checkpoint/conda env |
-| V5-R001 | M1 | baseline-only 同协议门 | exact Signal baseline | 141-fit/30-dev | baseline mAP/R1/5/10 | MUST | PENDING | seed42；不得使用 official test 选点 |
+| V5-R000 | M0 | Signal 完整路径审计 | Signal cd1b0a6 | source/checkpoint/env | 3072D/SIM/SIE/provenance | MUST | COMPLETE—PASS | 独立 `signal` 环境：Python3.10.13/Torch2.1.1+cu118/CUDA11.8；完整 direct+SIM/SIE 路径已核验；上游80.3/85.2仍未本地复现 |
+| V5-R001 | M1 | baseline-only 同协议门 | exact Signal baseline | 141-fit/30-dev | baseline mAP/R1/5/10 | MUST | RUNNING | screen `signal_baseline_dev_seed42`；B64/K8、50 epoch、seed42；e1=18.0/13.8；official0；预计约30–35分钟 |
 | V5-R002 | M1 | baseline-preserving TDD/capacity | V5 | synthetic+train-only | feature parity、梯度隔离、VRAM | MUST | PENDING | 同 checkpoint 输出 baseline-only/fused；baseline 路径冻结 |
 | V5-R003 | M2 | 完整 60-epoch dev 主实验 | V5 | 141-fit/30-dev | baseline/fused/三专家 | MUST | BLOCKED | fused≥baseline、fused>best expert、fused≥65 才晋级 |
 | V5-R004 | M3 | fixed all171 + official once | V5 | all171→official | mAP/R1/5/10 | CONDITIONAL | BLOCKED | 仅 V5-R003 全门通过；正式>85.3/>87.9 才解锁消融 |

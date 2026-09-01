@@ -135,8 +135,11 @@
 | 2026-08-31 12:41 | /tdd | modeling/trifusion/ | implementation | 六个冻结公共接缝、三阶段深协作、HFER/CIRC/URGC、可选 RDPT、criterion 与真实 CLIP 构建器 |
 | 2026-08-31 12:41 | /tdd | tools/build_circ_targets.py | implementation | 身份外折全网络干预记录的 fail-closed 编译、两条 hash-edge 审计及三类原子收据 |
 | 2026-08-31 12:41 | /tdd | evidence/trifusion_core_tdd_20260831.json | implementation | 39/39 PASS、真实 CLIP/Mamba 默认构建、95,893,482 参数与 GPU 门失败边界收据 |
-| 2026-08-31 12:49 | /run-experiment | environment/signal_environment.yml | implementation | Signal Python3.10/torch2.1.1+cu118 独立可重建环境；Conda dry-run PASS |
-| 2026-08-31 12:49 | /run-experiment | environment/signal_requirements-lock.txt | implementation | 与已安装 Signal 环境 90/90 pip 包精确一致的版本锁 |
+| 2026-09-01 19:40 | /run-experiment | environment/signal_environment.yml | implementation | 远端实建 Signal Python3.10.13/torch2.1.1+cu118 环境；移除已证实无关且失败的 ninja 构建工具 |
+| 2026-09-01 19:40 | /run-experiment | environment/signal_requirements-lock.txt | implementation | 与远端 Signal 训练环境 `pip freeze` 逐字节一致的 86 包运行时锁 |
+| 2026-09-01 19:40 | /run-experiment | environment/SIGNAL_BASELINE.md | documentation | Signal 环境重建命令及 grad-cam/visdom/ninja 三项证据化排除说明 |
+| 2026-09-01 19:40 | /run-experiment | comparators/signal_cd1b0a6_clip_path.patch | implementation | 将 Signal 作者机器硬编码 CLIP 路径参数化为现有 cfg 字段的单行补丁 |
+| 2026-09-01 19:40 | /run-experiment | tools/run_signal_baseline_dev.py | implementation | Signal 原模型/损失/调度器的 seed42 B64/K8 141-fit/30-dev 训练与 3072D 终局回执入口 |
 | 2026-08-31 12:49 | /run-experiment | evidence/signal_environment_smoke_20260831.json | research | MIT Signal 固定源码、真实 RGBNT201 B64/K8 三模态 loader 与 GPU 门失败边界收据 |
 | 2026-08-31 13:11 | /tdd | tools/run_peft_boa_resumable.py | implementation | PEFT-BoA B64/K4容量、双代全状态恢复、e80/e120预评测导出及fixed120单次测试驱动 |
 | 2026-08-31 13:11 | /tdd | tools/run_mfrnet_checkpoint_eval.py | implementation | MFRNet immutable preflight、官方B128执行、日志哈希与终态分类驱动 |

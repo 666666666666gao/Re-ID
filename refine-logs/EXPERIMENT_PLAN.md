@@ -18,8 +18,8 @@
 
 | Block | 内容 | 成功门 | 当前状态 |
 |---|---|---|---|
-| B0 | Signal commit/license/checkpoint/env/source parity 与 3072D feature contract | 远端环境可重建；完整 feature/SIE 可审计；upstream 与 local 标签分开 | IN PROGRESS |
-| B1 | 同一 141/30 dev 协议训练/评估 baseline-only | 产生真实 baseline dev mAP/R1 与固定 checkpoint；无 official test | PENDING |
+| B0 | Signal commit/license/checkpoint/env/source parity 与 3072D feature contract | 远端环境可重建；完整 feature/SIE 可审计；upstream 与 local 标签分开 | COMPLETE—PASS |
+| B1 | 同一 141/30 dev 协议训练/评估 baseline-only | 产生真实 baseline dev mAP/R1 与固定 checkpoint；无 official test | RUNNING |
 | B2 | V5 TDD、容量与固定批门 | baseline bit/distance stable；专家梯度隔离；B32/K4 适配 3090 | PENDING |
 | B3 | 一次 V5 60-epoch dev 主实验 | fused≥baseline、fused>所有专家、fused≥65 mAP | BLOCKED BY B0-B2 |
 | B4 | 全171固定训练与 official once | 仅 B3 全门通过；正式 >85.3/>87.9 | BLOCKED |

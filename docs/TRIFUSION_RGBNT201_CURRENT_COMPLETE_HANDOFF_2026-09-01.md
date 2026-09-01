@@ -17,6 +17,7 @@
 - 相对登记目标 `85.3 mAP / 87.9 Rank-1`，融合结果低 `26.1522 mAP / 24.6225 Rank-1`；`single_seed_target_exceeded=false`，不支持 SOTA 或融合增益主张。
 - 后续 V3 task-anchor 与 V4 等能量残差银行均已在固定 141-fit/30-dev 上完整训练 60 epoch。V4 最佳 epoch27 fused 为 `43.4031/42.7879`，仍低于同 checkpoint 的 Mamba `44.0659/43.5152`，且距 65 mAP dev 门 `21.5969`；official access=0。
 - V4 只保留了三模态 projected-CLS 的 1536D anchor，不等于 Signal 的完整 3072D 检索特征。Signal 还包含 1536D SIM 交互特征和 camera SIE；上游 `80.3/85.2` 尚未在本服务器复现，不能与 V4 held-out dev 数字直接相减。
+- Signal baseline 的独立环境和同协议 runner 已于 2026-09-01 19:40 CST 建立并启动。当前 screen 为 `signal_baseline_dev_seed42`，配置为 seed42、B64/K8、50 epoch；第 1 个 held-out dev 结果为 `18.0 mAP / 13.8 Rank-1`，预计约 30–35 分钟完成。该运行仍在进行，不能把 e1 当最终 baseline。
 - 原正式启动在官方指标写出后的路由校准审计因缺失导入失败；`repair-0002` 仅重算训练集路由审计，`optimizer_steps=0`、`training_reexecuted=false`、`official_test_reexecuted=false`，公开 verifier 返回 PASS。
 - 用户最新指令：只做 seed 42；现在优先完成远端 Signal baseline 保底；主实验达到目标以后才考虑消融；所有训练、评估、数据和环境只在云端 GPU，Windows/WSL 仅作传输和文档存档。
 
@@ -28,6 +29,7 @@
 Repository : /root/autodl-tmp/trifusion-v2/TriFusion-ReID
 Branch     : research/trifusion-v2
 Conda env  : /root/miniconda3/envs/tri_reid
+Signal env : /root/miniconda3/envs/signal
 Dataset    : /root/autodl-tmp/trifusion-v2/data/RGBNT201
 Pretrained : /root/autodl-tmp/trifusion-v2/pretrained/ViT-B-16.pt
 Artifacts  : /root/autodl-tmp/trifusion-v2/artifacts
@@ -113,6 +115,12 @@ export PYTHONPATH="$PWD"
 ```
 
 完整重建说明见 `docs/ENVIRONMENT_REPRODUCTION.md`。该文件包含早期 WSL2 路径；当前正式执行位置以后续章节的云端路径为准。
+
+Signal baseline 使用独立环境：Python 3.10.13、PyTorch 2.1.1+cu118、
+torchvision 0.16.1+cu118、CUDA 11.8。完整训练依赖锁见
+`environment/signal_requirements-lock.txt`，构建和三项已证实的可视化/构建工具排除说明见
+`environment/SIGNAL_BASELINE.md`。远端环境回执位于
+`/root/autodl-tmp/trifusion-v2/artifacts/signal_env_cd1b0a6/`。
 
 ## 4. 当前网络结构
 
@@ -485,7 +493,7 @@ protocols/circ_directional_final_authorization_v1.json
 - [x] 结果未超过冻结目标，已锁定“不启动消融”。
 - [x] V3 与 V4 各完成一次 seed42、60-epoch、held-out dev 主实验，均未晋级且 official access=0。
 - [x] 已确认 V4 的 1536D anchor 不是 Signal 完整 3072D baseline。
-- [ ] 在远端建立完整 Signal baseline-only 路径、环境/权重或可复现训练回执及同协议 dev 指标。
+- [x] 在远端建立完整 Signal baseline-only 路径、独立环境和可复现训练回执；同协议 50-epoch dev 运行中，最终指标待终局回填。
 - [ ] 建立同 checkpoint baseline-only/fused 双输出与 fused 晋级门禁后，才允许下一次主训练。
 
 ## 12. V3/V4 主方法恢复终态
@@ -555,7 +563,7 @@ sim = SIM(rgb_patch, ni_patch, ti_patch, globals)    # 1536D
 Signal retrieval = concat(ori, sim)                  # 3072D
 ```
 
-其 ViT 还在 CLS token 上加入 camera SIE。V4 只有 `ori` 语义的一部分，没有 SIM 和 SIE，因此不是 Signal baseline。上游发布 `80.3 mAP / 85.2 Rank-1` 来自官方 test 路径；当前服务器没有 Signal checkpoint，也没有单独 `signal` conda 环境，所以仍必须标为 upstream-only。
+其 ViT 还在 CLS token 上加入 camera SIE。V4 只有 `ori` 语义的一部分，没有 SIM 和 SIE，因此不是 Signal baseline。上游发布 `80.3 mAP / 85.2 Rank-1` 来自官方 test 路径；服务器现已建立独立 `signal` conda 环境并从头训练 held-out-dev baseline，但在 50 epoch 终局 checkpoint 和同协议指标产生前，`80.3/85.2` 仍必须标为 upstream-only。
 
 真正的“baseline 保底”不是简单拼接更多维度，而是以下可验证合同：
 

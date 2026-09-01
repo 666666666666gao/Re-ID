@@ -5,10 +5,11 @@
 - Runtime: remote Linux GPU server; local WSL2 is SSH transport only and must
   not store the project or run training.
 - GPU: one NVIDIA GeForce RTX 3090, 24 GB
-- Conda: `/root/miniconda3/bin/conda`; project environment `tri_reid`.
-  As of 2026-09-01 19:00 CST, the remote host does not contain separate
-  `signal`, `peft_boa`, or `mfrnet` environments; any future comparator
-  environment must be created and receipted on the remote host before use.
+- Conda: `/root/miniconda3/bin/conda`; project environment `tri_reid` and
+  comparator environment `signal`. The latter was receipted on 2026-09-01 at
+  Python 3.10.13, PyTorch 2.1.1+cu118, and CUDA 11.8. The remote host does not
+  contain separate `peft_boa` or `mfrnet` environments; either must be created
+  and receipted before use.
 - Code directory: `/root/autodl-tmp/trifusion-v2/TriFusion-ReID`
 - Dataset root: `/root/autodl-tmp/trifusion-v2/data`
 - Artifact root: `/root/autodl-tmp/trifusion-v2/artifacts`
