@@ -276,3 +276,15 @@
 | 2026-09-02 06:03 | /experiment-plan | refine-logs/EXPERIMENT_TRACKER.md | research | V10-Q0 READY；Q1/Q2/dev全部受冻结DINO互补与身份隔离正效用门约束 |
 | 2026-09-02 06:03 | /experiment-plan | refine-logs/EXPERIMENT_PLAN_20260902_060304.md | implementation | 与latest逐字节一致的V10条件式主假设永久快照 |
 | 2026-09-02 06:03 | /experiment-plan | refine-logs/EXPERIMENT_TRACKER_20260902_060304.md | research | 与latest逐字节一致的V10资格门tracker永久快照 |
+| 2026-09-02 06:18 | /tdd | tests/test_probe_v10_dinov2_fit_utility.py | implementation | DINO输入/strict key/CLS+patch mean/等块融合/资格门真实RED→GREEN合同 |
+| 2026-09-02 06:18 | /run-experiment | tools/probe_v10_dinov2_fit_utility.py | implementation | 冻结Phase-B+DINO fit-only特征、Oracle和fail-closed资格探针；optimizer0/dev0/official0 |
+| 2026-09-02 06:18 | /analyze-results | evidence/trifusion_v10_dinov2_fit_qualification_seed42.json | research | Q0终态：PhaseB/DINO/concat mAP100/7.6284/92.2120、Oracle gain0、gate false |
+| 2026-09-02 06:18 | /analyze-results | results/TRIFUSION_RGBNT201_V10_DINOV2_FIT_QUALIFICATION_2026-09-02.md | research | V10-Q0指标、工程链、失败门、饱和边界和停止决定 |
+| 2026-09-02 06:18 | /result-to-claim | .aris/traces/result-to-claim/2026-09-02_run05/ | research | V10-Q0 claim_supported=no/high；不支持互补或继续V10，也不外推否定DINO |
+| 2026-09-02 06:18 | /experiment-audit | EXPERIMENT_AUDIT_V10_Q0.md | research | WARN/warn/FAIL_TO_QUALIFY；GT/归一化/路径/scope PASS，远端binary包装WARN |
+| 2026-09-02 06:18 | /experiment-audit | EXPERIMENT_AUDIT_V10_Q0.json | research | V10-Q0独立审计机器可读终局 |
+| 2026-09-02 06:18 | /experiment-plan | refine-logs/EXPERIMENT_PLAN.md | implementation | 回填V10-Q0失败并关闭Q1/Q2/dev及所有DINO事后扫描 |
+| 2026-09-02 06:18 | /experiment-plan | refine-logs/EXPERIMENT_TRACKER.md | research | V10-Q0 COMPLETE-FAIL；后续V10全部关闭，V11未授权 |
+| 2026-09-02 06:18 | /handoff | docs/TRIFUSION_RGBNT201_CURRENT_COMPLETE_HANDOFF_2026-09-01.md | documentation | 统一交接续写V10冻结DINO资格负结果和研究边界 |
+| 2026-09-02 06:18 | /experiment-plan | refine-logs/EXPERIMENT_PLAN_20260902_061819.md | implementation | 与latest逐字节一致的V10-Q0终局计划永久快照 |
+| 2026-09-02 06:18 | /experiment-plan | refine-logs/EXPERIMENT_TRACKER_20260902_061819.md | research | 与latest逐字节一致的V10-Q0终局tracker永久快照 |

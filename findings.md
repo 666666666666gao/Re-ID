@@ -1,5 +1,15 @@
 # Research Findings
 
+## 2026-09-02 — V10-Q0 frozen DINOv2 资格门失败
+
+- 范围：仅 141-fit 中 21 个跨摄像头身份、571 query；optimizer0、training=false、dev0、official0。DINOv2 ViT-B/14 只删除预训练专用 `mask_token` 后 strict load，输入固定252×126、token163×768，Phase-A/Router/DINO state 均不变。
+- 冻结指标 mAP/Rank-1：Phase-B=`100/100`；DINOv2=`7.6284/6.1296`；固定等块拼接=`92.2120/95.9720`。该 fit 协议对已在 fit 身份上训练的 Phase-B 完全饱和，不能作为 dev 泛化指标。
+- Phase-B/DINO hard Oracle 仍为100/100，Oracle gain=0；unique AP wins=`571/0`；concat 比 Phase-B 低 `7.7880 mAP`。concat≥+1、Oracle≥+2和双源独有胜例全部失败。
+- 独立 result-to-claim=`no/high`；只支持当前冻结 DINO 特征未提供可用互补、固定拼接有害，不支持“DINOv2 普遍不适合 RGBNT ReID”。
+- 独立审计=`WARN/warn/FAIL_TO_QUALIFY—STOP_V10_Q0`。GT/协议、归一化、实际路径、scope和评价类型PASS；WARN 仅因审计时JSON未追踪、二进制权重远端保存。
+- V10 封存：不实现Q1，不训练、不访问dev，不扫描模态子集、分辨率、block、token pooling、权重或训练头。未来若再使用DINO，必须作为新预注册假设并设计非饱和、身份隔离的train-only门。
+- 证据：`evidence/trifusion_v10_dinov2_fit_qualification_seed42.json`；报告：`results/TRIFUSION_RGBNT201_V10_DINOV2_FIT_QUALIFICATION_2026-09-02.md`。
+
 ## 2026-09-02 — V9 orthogonal triadic relay 主门负结果
 
 - 工程合同成立：exact Signal 与完整 V8 Phase-B embedding 是逐元素前缀；Phase-A/Router state SHA 在训练和评估前后不变；两轮 peer relay 实际执行，最大绝对 relay/receiver cosine=`1.01e-7`。

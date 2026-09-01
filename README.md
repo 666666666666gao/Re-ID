@@ -90,6 +90,13 @@
 > **8.4661 mAP**. V9 is sealed without official test, ablations, multiple seeds
 > or tuning scans; see the [V9 terminal report](results/TRIFUSION_RGBNT201_V9_DEV_SEED42_2026-09-02.md)
 > and [independent audit](EXPERIMENT_AUDIT_V9.md).
+> A fail-fast V10-Q0 then checked the previously unused frozen DINOv2 ViT-B/14
+> source without training or dev access. On 21 cross-camera fit identities,
+> Phase-B is saturated at **100 mAP**, DINOv2 is **7.6284**, and the one fixed
+> equal-block concat falls to **92.2120**; DINO has zero unique AP wins and the
+> two-source Oracle gain is zero. V10 therefore stops before model
+> implementation or training. This is not a general rejection of DINOv2; see
+> the [V10-Q0 report](results/TRIFUSION_RGBNT201_V10_DINOV2_FIT_QUALIFICATION_2026-09-02.md).
 > Dataset files, pretrained weights, checkpoints, and remote artifacts are not
 > distributed in this repository. The original DeMo project and attribution are
 > preserved below.

@@ -177,6 +177,15 @@ V9 fused is 56.5339 mAP, below exact Signal by 1.4770 and frozen Phase-B by
 reported hash cannot be independently recomputed from this source bundle and
 the independent audit preserves that limitation as WARN.
 
+The V10-Q0 receipt is a real-GT fit-only diagnostic, not a dev or main result.
+It binds 21 cross-camera fit identities / 571 queries, strict frozen DINOv2
+loading, state immutability, optimizer0/dev0/official0, and the failed
+qualification gate. Phase-B/DINO/fixed-concat mAP is 100.0000/7.6284/92.2120;
+DINO has zero unique AP wins and zero Oracle gain. `status=PASS` means the probe
+completed; `qualification_gate.passed=false` closes V10. The two large binary
+weights remain remote-only, so the independent audit preserves a provenance
+WARN rather than claiming fresh-clone byte rehashability.
+
 The task-anchor V4 readiness receipt binds the V4 source/config hashes to the
 remote RTX3090 preflight, eight-step capacity and 100-step fixed-batch receipts.
 It records B32/K4, 95,197,266 parameters, 6,548 MiB peak reserved memory, zero

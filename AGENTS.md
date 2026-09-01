@@ -173,6 +173,14 @@
   checkpoint choice or beta/epoch/LR/residual scan. A successor must be a new
   representation-level hypothesis and pass a fit-only identity-disjoint
   positive-retrieval-utility gate before another final-only dev access.
+- V10-Q0 tested frozen DINOv2 only on 21 cross-camera fit identities / 571
+  queries with optimizer0/dev0/official0. Phase-B is saturated at 100 mAP,
+  DINOv2 is 7.6284, fixed equal-block concat is 92.2120, Oracle gain is zero,
+  and unique AP wins are Phase-B/DINO=`571/0`. Qualification is false.
+- Seal V10: do not implement Q1, train, access dev, or scan DINO modality,
+  resolution, block, token, weighting or head choices. This result rejects only
+  the fixed V10 representation/protocol, not DINOv2 in general. Any future DINO
+  route must be a new hypothesis with a non-saturated identity-isolated gate.
 
 ## Remote experiment constraints
 

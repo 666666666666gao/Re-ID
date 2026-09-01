@@ -1037,3 +1037,48 @@ results/TRIFUSION_RGBNT201_V9_DEV_SEED42_2026-09-02.md
 EXPERIMENT_AUDIT_V9.md
 EXPERIMENT_AUDIT_V9.json
 ```
+
+## 21. V10-Q0 frozen DINOv2 fit-only 资格终态（2026-09-02）
+
+V10 没有直接实现或训练 CLIP+DINO 三分支，而是先执行预注册的零训练资格门。
+云端 DINOv2 ViT-B/14 权重 SHA256 为
+`0b8b82f85de91b424aded121c7e1dcc2b7bc6d0adeea651bf73a13307fad8c73`；
+只删除预训练专用 `mask_token` 后 strict load。输入由现有归一化确定性转换为
+ImageNet normalization 和 `252×126`，输出为一个 CLS 加18×9 patch，token
+shape=`163×768`。Phase-B、Router 和 DINO state 在执行前后不变。
+
+范围仅为 141-fit 中 21 个跨摄像头身份、571 query；`optimizer_steps=0`、
+`training_executed=false`、`dev_access_count=0`、`official_test_access_count=0`。
+这是 real-GT fit-only diagnostic，不是 dev、official 或论文主结果。
+
+| 冻结表示 | mAP | Rank-1 |
+|---|---:|---:|
+| V8 Phase-B | **100.0000** | **100.0000** |
+| DINOv2 ViT-B/14 | 7.6284 | 6.1296 |
+| fixed equal-block concat | 92.2120 | 95.9720 |
+
+Phase-B/DINO hard Oracle 仍为100/100，Oracle gain=0；unique AP wins 为
+`571/0`。固定拼接相对 Phase-B 下降 `7.7880 mAP`。因此 concat≥+1、
+Oracle≥+2 和双源独有 AP 胜例四项预注册门全部失败，
+`qualification_gate=false`、`next_phase_authorized=false`。JSON 中
+`status=PASS` 只表示程序完成，不能解释为资格通过。
+
+独立 result-to-claim=`no/high`。它只支持“当前冻结 DINO 表示在这一饱和
+fit 协议下没有可用互补、固定等块拼接有害”；不能外推为 DINOv2 普遍不适合
+RGBNT ReID。独立审计=`WARN / warn / FAIL_TO_QUALIFY—STOP_V10_Q0`：
+GT/协议、归一化、实际路径、scope 和评价类型均 PASS；WARN 来自审计时 JSON
+未追踪以及大二进制权重仍只在远端，不能从本地 fresh clone 重哈希。
+
+V10 至此封存：不实现Q1，不训练、不访问dev，不扫描模态子集、分辨率、
+intermediate block、token pooling、concat 权重或训练头。若未来再使用DINO，
+必须是新的预注册假设，并先建立非饱和、身份隔离的train-only资格门；不能作为
+V10事后挽救。当前未授权V11或新的GPU作业。
+
+证据：
+
+```text
+evidence/trifusion_v10_dinov2_fit_qualification_seed42.json
+results/TRIFUSION_RGBNT201_V10_DINOV2_FIT_QUALIFICATION_2026-09-02.md
+EXPERIMENT_AUDIT_V10_Q0.md
+EXPERIMENT_AUDIT_V10_Q0.json
+```

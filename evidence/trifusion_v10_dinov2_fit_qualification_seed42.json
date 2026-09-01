@@ -1,0 +1,112 @@
+{
+  "checkpoint_states_unchanged": true,
+  "config": "/root/autodl-tmp/trifusion-v2/TriFusion-ReID/configs/RGBNT201/TriFusion-signal-preserving-v8-router-rtx3090.yml",
+  "config_sha256": "805129099a43a358189193db802ba9a8ad03f52c9cad16dd4219f4e5eb94c9e8",
+  "dev_access_count": 0,
+  "dinov2_input_size": [
+    252,
+    126
+  ],
+  "dinov2_model": "vit_base_patch14_dinov2",
+  "dinov2_source": "https://github.com/facebookresearch/dinov2",
+  "dinov2_state_sha256_after": "68295bbda553bcbb6732c88b9ed1706aab56a0c6695eb5a1ad715c165b7446af",
+  "dinov2_state_sha256_before": "68295bbda553bcbb6732c88b9ed1706aab56a0c6695eb5a1ad715c165b7446af",
+  "dinov2_token_shape": [
+    163,
+    768
+  ],
+  "dinov2_weight": "/root/autodl-tmp/trifusion-v2/pretrained/dinov2_vitb14_pretrain.pth",
+  "dinov2_weight_sha256": "0b8b82f85de91b424aded121c7e1dcc2b7bc6d0adeea651bf73a13307fad8c73",
+  "elapsed_seconds": 27.787956953048706,
+  "feature_widths": {
+    "concat": 12288,
+    "dinov2": 4608,
+    "phase_b": 7680
+  },
+  "fit_identities": 21,
+  "fit_queries": 571,
+  "metrics_percent": {
+    "concat": {
+      "Rank-1": 95.97197898423818,
+      "mAP": 92.212006122792
+    },
+    "dinov2": {
+      "Rank-1": 6.129597197898424,
+      "mAP": 7.628391887177285
+    },
+    "phase_b": {
+      "Rank-1": 100.0,
+      "mAP": 100.0
+    }
+  },
+  "next_phase_authorized": false,
+  "official_test_access_count": 0,
+  "optimizer_steps": 0,
+  "peak_allocated_mib": 2802.84033203125,
+  "peak_reserved_mib": 3872.0,
+  "phase_a_state_sha256_after": "ecfd7fbcf4496fe83f58bd8cda288f163e21b2328b81f65308df246c1698fb77",
+  "phase_a_state_sha256_before": "ecfd7fbcf4496fe83f58bd8cda288f163e21b2328b81f65308df246c1698fb77",
+  "phase_b_checkpoint": "/root/autodl-tmp/trifusion-v2/artifacts/trifusion_v8_oof_margin_router_seed42_81dcb70/v8_phase_a_plus_router.pth",
+  "phase_b_checkpoint_sha256": "6f95f99a86763580c3bd8592974347825659a5336f9afec43062516d21fbfe02",
+  "phase_b_dinov2_oracle": {
+    "all_rank1_failures": 0,
+    "best_fixed_output": "phase_b",
+    "fixed_metrics_percent": {
+      "dinov2": {
+        "Rank-1": 6.1295971979,
+        "mAP": 7.6283918872
+      },
+      "phase_b": {
+        "Rank-1": 100.0,
+        "mAP": 100.0
+      }
+    },
+    "leave_one_expert_out": {
+      "dinov2": {
+        "marginal_mAP": 0.0,
+        "oracle_mAP": 100.0
+      },
+      "phase_b": {
+        "marginal_mAP": 92.3716081128,
+        "oracle_mAP": 7.6283918872
+      }
+    },
+    "oracle_metrics_percent": {
+      "Rank-1": 100.0,
+      "mAP": 100.0
+    },
+    "oracle_minus_best_fixed_percent": {
+      "Rank-1": 0.0,
+      "mAP": 0.0
+    },
+    "queries": 571,
+    "unique_ap_wins": {
+      "dinov2": 0,
+      "phase_b": 571
+    },
+    "unique_rank1_wins": {
+      "dinov2": 0,
+      "phase_b": 536
+    }
+  },
+  "qualification_gate": {
+    "both_sources_have_unique_ap_wins": false,
+    "concat_minus_phase_b_mAP": -7.787993877207995,
+    "minimum_concat_gain_mAP": 1.0,
+    "minimum_oracle_gain_mAP": 2.0,
+    "oracle_minus_best_fixed_mAP": 0.0,
+    "passed": false,
+    "unique_ap_wins": {
+      "dinov2": 0,
+      "phase_b": 571
+    }
+  },
+  "removed_pretraining_only_key": "mask_token",
+  "router_state_sha256_after": "7a19d4ce16682c6bf67671a90a7608a5029f2cf715b506a1301d9eb41fc13661",
+  "router_state_sha256_before": "7a19d4ce16682c6bf67671a90a7608a5029f2cf715b506a1301d9eb41fc13661",
+  "schema_version": "trifusion-v10-dinov2-fit-qualification-v1",
+  "scope": "141-fit cross-camera identities only",
+  "status": "PASS",
+  "strict_load": true,
+  "training_executed": false
+}
