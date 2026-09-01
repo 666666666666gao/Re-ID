@@ -244,4 +244,19 @@ with exactly four expected new alpha-gate tensors. Real B64/K8 two-view capacity
 passes 222/222 gradient tensors with zero overflow and 11,486 MiB peak reserved
 memory. Fixed-batch overfit passes after subtracting the analytic 0.610636 label-
 smoothing entropy floor: excess-loss ratio 0.08048. These are train-only
-readiness facts. V7 has no held-out result yet and supports no gain or SOTA claim.
+readiness facts and do not by themselves support a gain or SOTA claim.
+
+The V7 terminal receipt binds the completed seed-42 60-epoch B64/K8 run,
+selected epoch 1, 2,520 optimizer steps, zero overflow, strict five-output
+reload parity, unchanged frozen Signal state and official-test access zero.
+Baseline/fused/Mamba mAP is 58.0109/58.3293/58.3476, so fused improves the
+baseline by 0.3184 but fails both the best-expert and 65 mAP gates. The paired
+read-only diagnostic covers all 825 dev queries with optimizer0/official0. It
+records joint-router entropy 0.99791, modality entropy 0.99994, nearly constant
+alpha 0.198947, 14.0625% top-slot target agreement, fused/baseline distance
+correlation 0.999786 and 99.6364% Top-10 overlap. Residual-only ground-truth
+Oracle is 62.7435 mAP, 3.6118 above the strongest fixed residual, and is not a
+deployable result. These receipts support only exact Signal preservation and a
+narrow +0.3184 held-out-dev baseline gain; they do not support collaborative
+superiority, the 65 mAP gate, official evaluation, innovation effectiveness or
+SOTA. V7-specific independent integrity remains provisional/warn.

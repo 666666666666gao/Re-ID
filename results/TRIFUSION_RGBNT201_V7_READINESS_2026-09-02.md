@@ -47,3 +47,13 @@ to strictly lower that modality's mean routing mass. Failure blocks the joint
 phase. The frozen development gate is unchanged: fused mAP at least 65 and
 strictly above baseline_only, CNN, Transformer and Mamba. Only seed 42 is
 permitted; no ablation, multiple seed or official test is authorized.
+
+## Terminal update
+
+The authorized run subsequently completed 60/60 epochs. Epoch 1 was selected:
+baseline/fused/CNN/Transformer/Mamba mAP is
+58.0109/58.3293/58.2773/58.3028/58.3476. Fused gains 0.3184 over baseline but
+trails Mamba by 0.0183 and misses 65 by 6.6707, so the main gate fails. The
+joint phase peaks at only 57.9804 fused mAP at epoch 11 and ends at 57.7550.
+See `TRIFUSION_RGBNT201_V7_DEV_SEED42_2026-09-02.md` and the terminal evidence;
+official test, ablations and multiple seeds remain closed.

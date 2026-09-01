@@ -40,7 +40,14 @@
 > geometry, hierarchical modality/expert routing, matched-token residuals and
 > bounded sample energy. Exact Signal parity, real B64/K8 two-view capacity
 > (222/222 gradients, 11.486 GiB peak reserved) and fixed-batch overfit pass.
-> V7 has not yet produced a held-out metric; no SOTA or fusion-gain claim exists.
+> Its complete seed-42 60-epoch held-out-dev run selected epoch 1: fused is
+> **58.3293 mAP / 57.9394 Rank-1**, above the exact Signal baseline
+> **58.0109 / 57.4545** but just below Mamba **58.3476 / 57.8182** and below
+> the 65 mAP gate. The joint phase then degrades fused mAP to 57.7550 by epoch
+> 60. A read-only diagnostic finds a nearly uniform Router (entropy 0.99791),
+> while residual-only Oracle complementarity remains 3.6118 mAP. V7 therefore
+> fails the main gate; no SOTA, official-test, ablation or multiple-seed claim
+> exists. See the [V7 result report](results/TRIFUSION_RGBNT201_V7_DEV_SEED42_2026-09-02.md).
 > Dataset files, pretrained weights, checkpoints, and remote artifacts are not
 > distributed in this repository. The original DeMo project and attribution are
 > preserved below.

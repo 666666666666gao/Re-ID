@@ -1,5 +1,17 @@
 # Research Findings
 
+## 2026-09-02 — Signal-preserving V7 60-epoch dev 主门负结果
+
+- 完整性：远端 RTX3090、seed42、B64/K8、固定 141-fit/30-dev、60/60 epoch、2,520 optimizer steps、0 overflow；严格重载五路指标逐项一致；Signal state SHA 训练前后及重载后不变；official test access=0。
+- 同 checkpoint 指标：baseline `58.0109/57.4545`；fused `58.3293/57.9394`；CNN `58.2773/57.4545`；Transformer `58.3028/58.0606`；Mamba `58.3476/57.8182`（mAP/Rank-1）。
+- 主门失败：fused 比 baseline 高 `0.3184 mAP`，但比 Mamba 低 `0.0183`，并比 65 mAP 门低 `6.6707`。因此 `claim_supported=no`，不进入 official test、不做消融或多种子，也不支持协同优越性或 SOTA。
+- 不是训练不足：按预注册 fused dev mAP 选中的最佳 checkpoint 是 router-warmup epoch1；joint 阶段最佳 epoch11 仅 `57.9804 mAP`，epoch60 为 `57.7550`。联合训练持续降低 held-out 检索性能。
+- 只读诊断：epoch1 的联合 Router 归一化熵 `0.99791`、模态熵 `0.99994`，alpha `0.198947±0.0000015`，预测槽位与逐槽身份效用目标的 Top-1 一致率只有 `14.0625%`。fused/baseline 距离相关仍为 `0.999786`，Top-10 overlap `99.6364%`。
+- 三专家仍有真实差异：residual-only CNN/Transformer/Mamba 固定 mAP 为 `59.1317/54.8594/57.8991`，ground-truth Oracle 为 `62.7435`，比最强 residual 分支高 `3.6118`；每个专家的 leave-one-out 边际贡献均为正。Oracle 不是部署结果。
+- 因果边界：当前证据支持“残差专家存在查询级互补，但样本级 Router 未学会选择，且 joint 优化破坏已有 residual 检索能力”。不支持把失败归因于 CNN/Transformer/Mamba 天然不兼容，也不支持继续原样训练。
+- 独立 result-to-claim：`claim_supported=no`、置信度 high；只允许报告 exact Signal preservation 和 `+0.3184 mAP` 的窄 baseline 增益。V7-specific independent integrity audit 尚缺，因此完整性标记仍为 warn/provisional。
+- 证据：`evidence/trifusion_signal_preserving_v7_dev_terminal_seed42.json`、`evidence/trifusion_signal_preserving_v7_diagnostic_seed42.json`、`results/TRIFUSION_RGBNT201_V7_DEV_SEED42_2026-09-02.md`。
+
 ## 2026-09-01 — Signal-preserving V6 主训练就绪门
 
 - 单一诊断驱动修正：移除 V5 learned residual scale；把路由后联合残差银行按样本无自由倍率地校准到 exact Signal baseline 能量；用 residual-only ID/triplet 直接训练三个专家，并用 residual-only batch-hard 身份效用监督路由。

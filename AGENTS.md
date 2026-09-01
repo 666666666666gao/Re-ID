@@ -100,8 +100,19 @@
   identity gain, controlled-degradation quality supervision and bounded sample
   alpha. Its exact-parity preflight, real B64/K8 two-view capacity (222/222
   gradient tensors, 11,486 MiB peak reserved) and overfit gate pass. Its sole
-  seed-42 dev run must stop after router warmup if corruption does not reduce
-  all three corresponding modality masses. No V7 dev metric exists yet.
+  seed-42 60-epoch dev run completed and passed the epoch-10 corruption gate.
+  Selected epoch 1 gives baseline/fused/Mamba mAP
+  58.0109/58.3293/58.3476. Fused gains 0.3184 over baseline but trails Mamba
+  by 0.0183 and misses 65 by 6.6707, so the main gate fails. Joint training
+  degrades fused mAP to 57.7550 at epoch 60; do not rerun V7, start ablations,
+  use multiple seeds or access the official test.
+- The V7 read-only diagnostic records router entropy 0.99791, modality entropy
+  0.99994, nearly constant alpha 0.198947, 14.0625% predicted/target top-slot
+  agreement, and 99.6364% Top-10 overlap with baseline. Residual-only Oracle
+  reaches 62.7435 mAP, 3.6118 above the strongest fixed residual, so the
+  demonstrated bottleneck is learned routing plus destructive joint
+  optimization, not absent expert diversity. Any next main version requires a
+  single evidence-derived structural hypothesis and fresh train-only gates.
 
 ## Remote experiment constraints
 
