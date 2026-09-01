@@ -272,3 +272,7 @@
 | 2026-09-02 05:46 | /experiment-plan | refine-logs/EXPERIMENT_TRACKER_20260902_054650.md | research | 与latest逐字节一致的V9终局tracker永久快照 |
 | 2026-09-02 05:46 | /run-experiment | evidence/SHA256SUMS | implementation | 登记V9 preflight/capacity/overfit/train/dev五份轻量证据SHA-256 |
 | 2026-09-02 05:46 | /handoff | docs/TRIFUSION_RGBNT201_CURRENT_COMPLETE_HANDOFF_2026-09-01.md | documentation | 统一交接续写V9训练、唯一dev负结果、独立审计和后继研究边界 |
+| 2026-09-02 06:03 | /experiment-plan | refine-logs/EXPERIMENT_PLAN.md | implementation | V10共享CLIP+DINO语义场、三专家分工及identity-OOF效用保护的条件式主假设；先做零训练fit-only资格门 |
+| 2026-09-02 06:03 | /experiment-plan | refine-logs/EXPERIMENT_TRACKER.md | research | V10-Q0 READY；Q1/Q2/dev全部受冻结DINO互补与身份隔离正效用门约束 |
+| 2026-09-02 06:03 | /experiment-plan | refine-logs/EXPERIMENT_PLAN_20260902_060304.md | implementation | 与latest逐字节一致的V10条件式主假设永久快照 |
+| 2026-09-02 06:03 | /experiment-plan | refine-logs/EXPERIMENT_TRACKER_20260902_060304.md | research | 与latest逐字节一致的V10资格门tracker永久快照 |
