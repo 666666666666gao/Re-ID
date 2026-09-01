@@ -1,0 +1,62 @@
+{
+  "schema_version": "trifusion-task-anchor-v4-readiness-v1",
+  "status": "PASS",
+  "seed": 42,
+  "architecture": "task_anchored_collaborative_v4",
+  "config_sha256": "0121de897cf4e27d2a257d7ded7a2e40d97092c684b12cbed0cc5a3669df736a",
+  "source_sha256": {
+    "modeling/trifusion/task_anchor_v4.py": "d6280a25e21acd2dca10aab51e686a820ee18a2def3341692850fa28ca7057cb",
+    "modeling/trifusion/task_anchor_v4_builder.py": "1ceeae572c0273ceb4f6fde601dc1a3d717a34ff9b94f35f9ccf1a258d529736",
+    "tools/run_trifusion_task_anchor_v4.py": "0ef0da9768f4570d5af2acf349cd712edd4ff570dec12c1266bfbbd80d84df41"
+  },
+  "remote_receipts": {
+    "preflight": {
+      "path": "/root/autodl-tmp/trifusion-v2/artifacts/trifusion_task_anchor_v4_preflight_amp256_seed42/preflight.json",
+      "sha256": "20bb556799a60478af08d04b7d2e55a8e79d19e589fc8d48c7f5435503555c47",
+      "status": "READY"
+    },
+    "capacity": {
+      "path": "/root/autodl-tmp/trifusion-v2/artifacts/trifusion_task_anchor_v4_capacity_amp256_v2_seed42/capacity.json",
+      "sha256": "cb23f3cb2c08d889486fa8d57ff91064df05a4e26e360cc669418b52b181f4c2",
+      "status": "PASS"
+    },
+    "overfit": {
+      "path": "/root/autodl-tmp/trifusion-v2/artifacts/trifusion_task_anchor_v4_overfit_seed42/overfit.json",
+      "sha256": "fc2bc09cc0855583d8561d270fb252bc15c24864205516f2c9061a0194a19e92",
+      "status": "PASS"
+    }
+  },
+  "capacity": {
+    "steps": 8,
+    "train_batch_size": 32,
+    "num_instances": 4,
+    "total_parameters": 95197266,
+    "peak_allocated_mib": 6043.5791015625,
+    "peak_reserved_mib": 6548.0,
+    "gradient_parameter_coverage": 1.0,
+    "finite_gradients": true,
+    "amp_overflow_events": 0
+  },
+  "overfit": {
+    "steps": 100,
+    "initial_loss": 14.910961151123047,
+    "final_loss": 0.9956281185150146,
+    "loss_ratio": 0.06677155874958651,
+    "gradient_parameter_coverage": 1.0,
+    "finite_gradients": true,
+    "amp_overflow_events": 0
+  },
+  "tests": {
+    "v4_targeted": "6 passed",
+    "adjacent_modules": "23 passed",
+    "internal_suite": "146 passed, 7 skipped",
+    "excluded_external_baseline_runner_files": [
+      "tests/test_demo_resume_state.py",
+      "tests/test_mfrnet_checkpoint_runner.py",
+      "tests/test_run_demo_resumable.py",
+      "tests/test_peft_boa_resumable_runner.py"
+    ]
+  },
+  "official_test_access_count": 0,
+  "claim_boundary": "engineering and train-only learning-readiness evidence; no dev/test metric or SOTA claim"
+}

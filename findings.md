@@ -31,3 +31,13 @@
 - 判定：`claim_supported=no`，独立复核置信度 high。V3 只支持“残差学到身份信息但被融合机制压制”的诊断，不支持“三专家协同增益”、dev 晋级或 SOTA 主张。
 - 下一步：只允许一个 V4 主方法结构修正——非破坏式保留三个专家残差块，以无自由倍率的等能量校准让残差银行与 anchor 对检索距离贡献可比，并用训练批次身份效用监督路由。保持同一 dev 门，不做 baseline、多种子、消融或 official test。
 - 证据：`evidence/trifusion_task_anchor_v3_diagnostic_seed42_f32990b.json`，SHA-256 `c30e11e6471325f3c811e967daa6f5cb296d87d7c9df5809096c5f94a4e779fe`。
+
+## 2026-09-01 — TriFusion V4 主训练就绪门
+
+- 单一修正已实现：保留 `[CNN, Transformer, Mamba] × [RGB, NI, TI]` 九个独立残差块，不沿专家维求和；整个 4608 维残差银行无自由倍率地归一到 1536 维 direct CLIP anchor 的样本级 L2 能量；最终 fused 为 6144 维。
+- 路由监督：用训练批次内 detached 的逐样本 batch-hard 身份间隔形成三专家效用目标，并通过 `peer_logits` 槽反传到质量路由；不读取 dev/test 标签。
+- TDD：V4 专项 6/6、相邻模块 23/23、排除四个缺失外部 baseline 仓库的内部全回归 146 passed / 7 skipped。
+- RTX3090 容量门：B32/K4、AMP scale256、8 步；95,197,266 参数；峰值 6043.58 MiB allocated / 6548 MiB reserved；366/366 可训练参数张量梯度覆盖；0 overflow；official access=0。
+- 固定批门：100 步总损失 `14.91096→0.99563`，ratio `0.0667716≤0.10`；0 overflow；official access=0。
+- 边界：这些只证明工程和学习能力就绪，不证明开发集增益、SOTA 或论文主张。下一步仅运行 seed42 的完整 60-epoch held-out dev 主实验。
+- 证据：`evidence/trifusion_task_anchor_v4_readiness_seed42.json`。

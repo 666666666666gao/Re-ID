@@ -180,3 +180,15 @@
 | 2026-09-01 17:11 | /experiment-plan | refine-logs/EXPERIMENT_PLAN.md | implementation | latest V4 主方法计划 |
 | 2026-09-01 17:11 | /experiment-plan | refine-logs/EXPERIMENT_TRACKER_20260901_171116.md | implementation | V3 负结果闭环与 V4 main-only 执行追踪永久版本 |
 | 2026-09-01 17:11 | /experiment-plan | refine-logs/EXPERIMENT_TRACKER.md | implementation | latest V4 执行追踪器 |
+| 2026-09-01 18:01 | /tdd | modeling/trifusion/task_anchor_v4.py | implementation | 非破坏式等能量三专家残差银行、身份效用路由监督及 V4 输出/criterion |
+| 2026-09-01 18:01 | /tdd | modeling/trifusion/task_anchor_v4_builder.py | implementation | 真实 CLIP/V3 专家主干复用、6144 维 fused 与 95.20M 参数 V4 构建器 |
+| 2026-09-01 18:01 | /run-experiment | tools/run_trifusion_task_anchor_v4.py | implementation | 独立 V4 审计启动器、预训练参数分组、AMP256 稳定资源档案与源码哈希 |
+| 2026-09-01 18:01 | /run-experiment | configs/RGBNT201/TriFusion-task-anchor-v4-core-rtx3090.yml | implementation | seed42、B32/K4、AMP256、60epoch、utility-router loss 的主实验冻结配置 |
+| 2026-09-01 18:01 | /tdd | tests/test_trifusion_task_anchor_v4.py | implementation | 残差独立性、等能量、零残差距离、身份效用目标、路由梯度与真实 CLIP 构建红绿测试 |
+| 2026-09-01 18:01 | /run-experiment | evidence/trifusion_task_anchor_v4_readiness_seed42.json | research | 3090 capacity/overfit 收据哈希、0 overflow、100% 梯度覆盖与 official0 的 readiness 证据 |
+| 2026-09-01 18:01 | /run-experiment | evidence/README.md | research | 补充 V4 readiness 证据范围与非 dev/非 SOTA 边界 |
+| 2026-09-01 18:01 | /run-experiment | evidence/SHA256SUMS | implementation | 登记 V4 readiness 机器可读收据 SHA-256 |
+| 2026-09-01 18:01 | /experiment-plan | refine-logs/EXPERIMENT_PLAN_20260901_180105.md | implementation | V4 M1 实测门禁回填后的永久主方法计划 |
+| 2026-09-01 18:01 | /experiment-plan | refine-logs/EXPERIMENT_PLAN.md | implementation | latest V4 主方法计划，与 180105 永久版本逐字节一致 |
+| 2026-09-01 18:01 | /experiment-plan | refine-logs/EXPERIMENT_TRACKER_20260901_180105.md | implementation | V4 M1 全门通过、V4-R003 READY 的永久追踪版本 |
+| 2026-09-01 18:01 | /experiment-plan | refine-logs/EXPERIMENT_TRACKER.md | implementation | latest V4 执行追踪器，完整 dev 主实验已解锁 |

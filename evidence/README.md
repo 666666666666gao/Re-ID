@@ -167,3 +167,11 @@ capacity, overfit, dev metric, ablation result or SOTA claim exists yet.
 Absolute paths inside JSON records identify the WSL2 machine on which the
 evidence was produced. File hashes, source commits and protocol fields are the
 portable provenance anchors.
+
+The task-anchor V4 readiness receipt binds the V4 source/config hashes to the
+remote RTX3090 preflight, eight-step capacity and 100-step fixed-batch receipts.
+It records B32/K4, 95,197,266 parameters, 6,548 MiB peak reserved memory, zero
+AMP overflow at initial scale 256, complete 366/366 gradient coverage and a
+fixed-batch loss ratio of 0.06677. Official-test access remains zero. This is
+engineering and train-only learning-readiness evidence only; it does not prove
+a held-out dev gain, official metric, paper claim or SOTA result.
