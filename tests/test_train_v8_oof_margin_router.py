@@ -50,6 +50,13 @@ def test_v8_router_contract_freezes_oof_sources_and_single_seed() -> None:
     assert config["QUALITY"]["DEGRADED_QUALITY"] == 0.2
     assert len(config["INITIALIZATION"]["PHASE_A_CHECKPOINT_SHA256"]) == 64
     assert len(config["INITIALIZATION"]["OOF_MARGIN_CACHE_SHA256"]) == 64
+    assert config["GATES"]["DEV_MIN_MAP"] == 65.0
+    assert config["GATES"]["FUSED_STRICTLY_BEATS"] == [
+        "baseline_only",
+        "cnn",
+        "transformer",
+        "mamba",
+    ]
     assert config["PROTOCOL"]["ROUTER_VALIDATION"] == "three_fold_identity_oof"
     assert config["PROTOCOL"]["DEV_ACCESS_DURING_ROUTER_TRAINING"] is False
 
