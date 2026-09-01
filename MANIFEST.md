@@ -254,3 +254,5 @@
 | 2026-09-02 05:25 | /tdd | tests/test_run_signal_preserving_v9.py | implementation | seed42/B64K8/final-only 配置与 train-only runner/import/访问边界合同 |
 | 2026-09-02 05:25 | /run-experiment | configs/RGBNT201/TriFusion-signal-preserving-v9-rtx3090.yml | implementation | 单一 V9 配置；冻结 V8 combined checkpoint、两轮中继、60 epoch 与原65门 |
 | 2026-09-02 05:25 | /run-experiment | tools/run_signal_preserving_v9.py | implementation | train-only preflight/capacity/overfit/final training，状态 SHA 与0 dev/official receipts |
+| 2026-09-02 05:35 | /tdd | tests/test_evaluate_signal_preserving_v9_dev.py | implementation | 65门、严格超过五输出与单次冻结评估无 optimizer 合同 |
+| 2026-09-02 05:35 | /run-experiment | tools/evaluate_signal_preserving_v9_dev.py | implementation | final checkpoint 六路真实 dev、状态不变、beta/relay 诊断及0 official receipt |
