@@ -313,3 +313,5 @@
 | 2026-09-02 07:09 | /experiment-plan | refine-logs/EXPERIMENT_TRACKER_20260902_070902.md | implementation | V12 Q0/Q1/dev fail-closed执行tracker永久快照 |
 | 2026-09-02 07:09 | /experiment-plan | refine-logs/EXPERIMENT_TRACKER.md | implementation | V12-T0 READY；GPU作业受公共接缝和preflight约束 |
 | 2026-09-02 07:16 | /tdd | tests/test_build_v12_complete_path_oof_targets.py | implementation | V12完整路径fold隔离、连续重映射与fail-closed资格门公共接缝 |
+| 2026-09-02 07:34 | /run-experiment | configs/RGBNT201/TriFusion-signal-preserving-v12-complete-path-oof-rtx3090.yml | implementation | V12 seed42 Signal50+专家20三折train-only固定配置 |
+| 2026-09-02 07:34 | /run-experiment | tools/build_v12_complete_path_oof_targets.py | implementation | V12完整路径identity-OOF教师preflight、三折训练、margin cache与资格receipt |
