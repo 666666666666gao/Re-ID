@@ -308,3 +308,7 @@
 | 2026-09-02 06:55 | /analyze-results | findings.md | research | 登记V11完整路径非隔离、固定DINO无独有增益和后续约束 |
 | 2026-09-02 06:55 | /run-experiment | evidence/SHA256SUMS | implementation | 登记V11原始结果和provenance wrapper SHA-256 |
 | 2026-09-02 06:55 | /handoff | docs/TRIFUSION_RGBNT201_CURRENT_COMPLETE_HANDOFF_2026-09-01.md | documentation | 统一交接续写V11资格失败、100mAP饱和来源与停止边界 |
+| 2026-09-02 07:09 | /experiment-plan | refine-logs/EXPERIMENT_PLAN_20260902_070902.md | implementation | V12完整路径identity-OOF教师计划永久快照 |
+| 2026-09-02 07:09 | /experiment-plan | refine-logs/EXPERIMENT_PLAN.md | implementation | V12 Signal50+专家20三折隔离门与条件式Router/dev latest |
+| 2026-09-02 07:09 | /experiment-plan | refine-logs/EXPERIMENT_TRACKER_20260902_070902.md | implementation | V12 Q0/Q1/dev fail-closed执行tracker永久快照 |
+| 2026-09-02 07:09 | /experiment-plan | refine-logs/EXPERIMENT_TRACKER.md | implementation | V12-T0 READY；GPU作业受公共接缝和preflight约束 |
