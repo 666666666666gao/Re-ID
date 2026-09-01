@@ -2,13 +2,13 @@
 
 ## 0. 一页结论
 
-本工程是在 DeMo 代码基座上实现的 RGB–NIR–TIR 多模态目标重识别研究分支。当前主方法不是三个互不相干的并行分支，而是：共享 CLIP ViT-B/16 语义主干为 CNN、Transformer、Mamba 三个完整异构专家提供强预训练表示，再通过分阶段双向异构特征交换和统一可靠性后验完成协同融合。
+本工程是在 DeMo 代码基座上实现的 RGB–NIR–TIR 多模态目标重识别研究分支。当前候选主方法是 Signal-preserving V5：冻结并逐字节保留 Signal 的完整 3072D `direct+SIM+SIE` 检索路径，同时让 CNN、Transformer、Mamba 三个完整异构专家读取同一强语义特征场，经分阶段双向交换后只追加质量路由的非破坏式残差银行。
 
-三个论文级主创新点已经落到代码、协议和测试中：
+V5 的三个候选论文级主创新点已经落到核心代码和专项测试中，但尚无真实训练指标：
 
-1. **HFER（Heterogeneous Full-Expert Relay）**：三种完整专家在中间层进行低秩、分阶段、双向特征交换，保留局部纹理、全局语义与长程扫描的异构归纳偏置。
-2. **CIRC（Cross-fitted Interventional Reliability Calibration）**：使用身份不重叠的三折生成器，在实际模态退化干预下产生跨专家、跨模态共同尺度的可靠性监督。
-3. **URGC（Unified Reliability-Guided Collaboration）**：同一可靠性后验控制中继、最终融合和退化条件下的贡献分配，避免每个模块各自学习一套互相矛盾的 gate。
+1. **Signal-preserving shared semantic expertization**：完整冻结 Signal，三专家共享其 patch/global 强语义场；`baseline_only` 保持原始 3072D 路径，专家训练不能改写 baseline 参数或输出。
+2. **Stagewise bidirectional heterogeneous feature exchange**：CNN、Transformer、Mamba 都是三阶段完整专家；阶段 1/2 后进行双向 HFER，可靠性在阶段 1/2/3 分别刷新，使下一阶段能使用其他专家的互补信息。
+3. **Identity-utility quality-routed non-destructive residual bank**：不再把九路贡献压成一个向量，而是保留全部 `expert×modality` 残差；联合可靠性与身份效用只控制追加银行，最终 `fused` 的 3072D 前缀严格等于 `baseline_only`。
 
 当前最重要状态：
 
@@ -17,7 +17,8 @@
 - 相对登记目标 `85.3 mAP / 87.9 Rank-1`，融合结果低 `26.1522 mAP / 24.6225 Rank-1`；`single_seed_target_exceeded=false`，不支持 SOTA 或融合增益主张。
 - 后续 V3 task-anchor 与 V4 等能量残差银行均已在固定 141-fit/30-dev 上完整训练 60 epoch。V4 最佳 epoch27 fused 为 `43.4031/42.7879`，仍低于同 checkpoint 的 Mamba `44.0659/43.5152`，且距 65 mAP dev 门 `21.5969`；official access=0。
 - V4 只保留了三模态 projected-CLS 的 1536D anchor，不等于 Signal 的完整 3072D 检索特征。Signal 还包含 1536D SIM 交互特征和 camera SIE；上游 `80.3/85.2` 尚未在本服务器复现，不能与 V4 held-out dev 数字直接相减。
-- Signal baseline 的独立环境和同协议 runner 已于 2026-09-01 19:40 CST 建立并启动。当前 screen 为 `signal_baseline_dev_seed42`，配置为 seed42、B64/K8、50 epoch；第 1 个 held-out dev 结果为 `18.0 mAP / 13.8 Rank-1`，预计约 30–35 分钟完成。该运行仍在进行，不能把 e1 当最终 baseline。
+- Signal baseline 已完整训练 50/50 epoch并严格重载最佳 checkpoint 确定性复评：`58.0109 mAP / 57.4545 Rank-1 / 69.9394 Rank-5 / 76.6061 Rank-10`；完整 3072D `direct+SIM`、camera SIE=true、official access=0。
+- V5 核心模型、构建器和专项测试已经完成；远端 `tri_reid` 环境复核为 `4 passed`。训练 runner、配置、真实 baseline parity、capacity、overfit 和完整 dev 训练尚未实现或执行，当前不得报告 V5 指标。
 - 原正式启动在官方指标写出后的路由校准审计因缺失导入失败；`repair-0002` 仅重算训练集路由审计，`optimizer_steps=0`、`training_reexecuted=false`、`official_test_reexecuted=false`，公开 verifier 返回 PASS。
 - 用户最新指令：只做 seed 42；现在优先完成远端 Signal baseline 保底；主实验达到目标以后才考虑消融；所有训练、评估、数据和环境只在云端 GPU，Windows/WSL 仅作传输和文档存档。
 
@@ -27,7 +28,7 @@
 
 ```text
 Repository : /root/autodl-tmp/trifusion-v2/TriFusion-ReID
-Branch     : research/trifusion-v2
+Branch     : main
 Conda env  : /root/miniconda3/envs/tri_reid
 Signal env : /root/miniconda3/envs/signal
 Dataset    : /root/autodl-tmp/trifusion-v2/data/RGBNT201
@@ -122,7 +123,9 @@ torchvision 0.16.1+cu118、CUDA 11.8。完整训练依赖锁见
 `environment/SIGNAL_BASELINE.md`。远端环境回执位于
 `/root/autodl-tmp/trifusion-v2/artifacts/signal_env_cd1b0a6/`。
 
-## 4. 当前网络结构
+## 4. 已完成 V1 网络结构（历史）
+
+本节记录已经跑完正式实验的 V1 HFER/CIRC/URGC 结构；它不是当前 V5 候选。V5 的最新实现边界见第 12.6 节。
 
 ```text
 RGB / NIR / TIR
@@ -428,7 +431,7 @@ protocols/circ_directional_final_authorization_v1.json
 ### 9.1 必须保留的限制
 
 - 当前只做一个 seed 42；不能据此给出多种子均值、方差或统计显著性。
-- 没有复现 baseline；baseline 数字必须写成 upstream-reported。
+- 已完成 Signal 的同 held-out-dev 协议 baseline floor；Signal 上游官方 test `80.3/85.2` 仍未本地复现，必须写成 upstream-reported。
 - CIRC query/gallery symmetry 审计失败；禁止对称性主张。
 - 正式官方 test 已恰好评估一次；不得再次访问本次 test 做选模、调参或重评。
 - 在主结果超过冻结目标前，禁止启动消融实验。
@@ -494,7 +497,9 @@ protocols/circ_directional_final_authorization_v1.json
 - [x] V3 与 V4 各完成一次 seed42、60-epoch、held-out dev 主实验，均未晋级且 official access=0。
 - [x] 已确认 V4 的 1536D anchor 不是 Signal 完整 3072D baseline。
 - [x] 在远端建立完整 Signal baseline-only 路径、独立环境和可复现训练回执；同协议 50-epoch dev 已完成并确定性复评为 `58.0109/57.4545/69.9394/76.6061`。
-- [ ] 建立同 checkpoint baseline-only/fused 双输出与 fused 晋级门禁后，才允许下一次主训练。
+- [x] V5 核心已建立同 checkpoint `baseline_only/fused/cnn/transformer/mamba` 五输出、冻结 Signal 路径和非破坏式残差银行；专项测试 `4 passed`。
+- [ ] 实现 V5 独立 runner/config，并依次通过真实 baseline parity、8-step capacity 和 100-step overfit 门；当前尚未执行。
+- [ ] 工程门全部通过后才允许唯一一次 seed42、60-epoch held-out-dev 主训练；主门通过前不做消融、不访问官方 test。
 
 ## 12. V3/V4 主方法恢复终态
 
@@ -604,6 +609,50 @@ Signal retrieval = concat(ori, sim)                  # 3072D
 ### 12.5 当前 claim gate
 
 独立 result-to-claim 纠正后结论：`claim_supported=no`。高置信度支持“V4 是稳定、完整但失败的 dev 结果”；中等置信度支持“缺少完整 baseline floor 是下一项结构性优先问题”。V4-specific independent integrity audit 尚未完成，因此 V4 完整性标签为 provisional，不能复用只审计旧 V1 的 `EXPERIMENT_AUDIT.json`。
+
+### 12.6 Signal-preserving V5 最新代码状态
+
+当前版本已新增：
+
+```text
+modeling/trifusion/signal_preserving_v5.py
+modeling/trifusion/signal_preserving_v5_builder.py
+tests/test_trifusion_signal_preserving_v5.py
+```
+
+已实现并测试的合同：
+
+- `FrozenSignalBackbone` 严格冻结上游 Signal 参数，并在父模型进入 train 模式时继续保持 Signal 为 eval；
+- 从 Signal 的三模态视觉编码器取得 patch/global 特征，`baseline_only` 严格使用原 3072D `direct+SIM`；
+- CNN、Transformer、Mamba 各有三阶段完整专家，阶段 1/2 后执行双向 HFER，阶段 1/2/3 刷新联合可靠性；
+- 每个专家残差以对应 direct Signal 模态全局特征为基准，归一化、限幅后按可靠性和身份效用路由，九路残差全部保留；
+- 默认宽度为 `baseline=3072`、各 branch=`3840`、residual bank=`2304`、fused=`5376`，且 `fused[:, :3072]` 与 `baseline_only` 精确相同；
+- 同一模型和同一 checkpoint 显式输出 `baseline_only`、`fused`、`cnn`、`transformer`、`mamba`；
+- 专项测试覆盖 baseline 前缀相等、所有专家和路由均有梯度、一次 optimizer step 后 Signal 状态逐张量不变，以及构建器确实执行两次 relay；远端实测 `4 passed, 3 warnings`，warnings 仅为 timm 导入弃用提示。
+
+尚未完成：
+
+1. `configs/RGBNT201/TriFusion-signal-preserving-v5-rtx3090.yml`；
+2. `tools/run_signal_preserving_v5.py`；
+3. 真实 Signal checkpoint 的完整 dev `baseline_only` parity 预检；
+4. RTX3090 上的 8-step capacity 与 100-step 单批过拟合门；
+5. 唯一一次 seed42、60-epoch held-out-dev V5 主训练与同 checkpoint 五路评估。
+
+实现 runner 时必须处理一个已证实的包名冲突：Signal 与本项目都使用顶层包名 `modeling`。最直接的方案是让 Signal 源码拥有顶层 `modeling`，再把本项目的 `<repo>/modeling` 加入 `sys.path`，以顶层 `trifusion` 导入 V5；不要增加兼容层或复制/改写 Signal 包。
+
+V5 晋级合同保持不变：`fused` 必须在同一 frozen dev 上高于 `baseline_only`、CNN、Transformer、Mamba，并达到至少 `65 mAP`；否则 `claim_supported=no`，不启动消融，也不访问官方 test。当前没有运行时 fallback。
+
+## 13. 建议技能与接续顺序
+
+下一执行者应按以下顺序调用技能：
+
+1. `/tdd`：先补 runner/config 的失败测试，再实现最小训练入口；
+2. `/run-experiment`：所有真实 checkpoint、数据、GPU 门和训练只在远端 RTX3090 执行；
+3. `/monitor-experiment`：长任务按 180–300 秒间隔或预计结束前数分钟轮询；
+4. `/analyze-results` 与 `/result-to-claim`：仅在完整 dev 终局后分析五路指标和决定是否支持主张；
+5. `/ablation-planner`：只有 `claim_supported=yes` 且 V5 主门通过后才允许使用。
+
+接续时不要重跑 Signal baseline，不做多种子，不做消融，不访问官方 test。先完成 runner/config 和三项真实工程门，再决定是否启动唯一一次完整 dev 主训练。
 
 ---
 

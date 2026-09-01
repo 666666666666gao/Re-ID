@@ -205,3 +205,7 @@
 | 2026-09-01 19:00 | /experiment-plan | refine-logs/EXPERIMENT_TRACKER.md | implementation | latest V5 baseline-first 执行追踪器 |
 | 2026-09-01 19:00 | /handoff | docs/TRIFUSION_RGBNT201_CURRENT_COMPLETE_HANDOFF_2026-09-01.md | research | 续写服务器统一交接：V3/V4 终态、Signal 完整特征缺口与 baseline 保底合同 |
 | 2026-09-01 19:00 | /handoff | README.md | research | 公开入口回填 V4 负结果和 Signal baseline-first 状态 |
+| 2026-09-01 20:29 | /tdd | modeling/trifusion/signal_preserving_v5.py | implementation | 冻结完整 Signal 3072D baseline，三阶段三专家协作、质量/身份效用路由与非破坏式 2304D 残差银行 |
+| 2026-09-01 20:29 | /tdd | modeling/trifusion/signal_preserving_v5_builder.py | implementation | 使用现有 CNN/Transformer/Mamba 完整专家、两次 HFER 与三次可靠性刷新的 V5 独立构建器 |
+| 2026-09-01 20:29 | /tdd | tests/test_trifusion_signal_preserving_v5.py | implementation | baseline 前缀、Signal 冻结、专家/路由梯度与两阶段交换合同；远端 4 passed |
+| 2026-09-01 20:29 | /handoff | docs/TRIFUSION_RGBNT201_CURRENT_COMPLETE_HANDOFF_2026-09-01.md | documentation | 纠正 Signal 运行中旧状态，记录 V5 已实现/未完成边界、包名冲突和接续技能 |

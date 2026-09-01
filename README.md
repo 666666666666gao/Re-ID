@@ -16,6 +16,9 @@
 > project's fixed 141-fit/30-dev split. A fused successor is admitted only if
 > it beats that same-checkpoint baseline. Signal's published **80.3/85.2** is
 > an official-test result and remains upstream-only here.
+> The Signal-preserving V5 core, builder, and focused tests are now present;
+> the real checkpoint parity/capacity/overfit gates and full dev run remain
+> pending, so no V5 metric is claimed yet.
 > Dataset files, pretrained weights, checkpoints, and remote artifacts are not
 > distributed in this repository. The original DeMo project and attribution are
 > preserved below.
