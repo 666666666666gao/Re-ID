@@ -248,3 +248,6 @@
 | 2026-09-02 04:51 | /experiment-plan | refine-logs/EXPERIMENT_PLAN.md | implementation | V9 claim map、TDD/readiness、单次 final-only dev 与条件 official/消融固定入口 |
 | 2026-09-02 04:51 | /experiment-plan | refine-logs/EXPERIMENT_TRACKER_20260902_045122.md | implementation | V8 Phase-B 终态与 V9 fail-closed run order 快照 |
 | 2026-09-02 04:51 | /experiment-plan | refine-logs/EXPERIMENT_TRACKER.md | implementation | V9-R000 开始；后续 capacity/overfit/dev/official/消融依次受门禁约束 |
+| 2026-09-02 05:10 | /tdd | tests/test_trifusion_signal_preserving_v9.py | implementation | V9 peer sensitivity、逐轮正交、exact prefix、三路协同输出及冻结梯度公共接缝 |
+| 2026-09-02 05:10 | /tdd | modeling/trifusion/signal_preserving_v9.py | implementation | 两轮 receiver-specific orthogonal relay、triadic synthesis、V9 五路模型与训练 criterion |
+| 2026-09-02 05:10 | /tdd | modeling/trifusion/signal_preserving_v9_builder.py | implementation | 从冻结 V8 Phase-A-plus-Router 构建单一 V9，登记三项论文机制与参数边界 |
