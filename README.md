@@ -16,10 +16,15 @@
 > project's fixed 141-fit/30-dev split. A fused successor is admitted only if
 > it beats that same-checkpoint baseline. Signal's published **80.3/85.2** is
 > an official-test result and remains upstream-only here.
-> The Signal-preserving V5 core and runner now pass exact checkpoint parity,
+> The Signal-preserving V5 core and runner pass exact checkpoint parity,
 > real B32/K4 capacity, and 100-step fixed-batch overfit gates on the RTX3090.
-> The full 60-epoch dev run remains pending, so no V5 retrieval metric is
-> claimed yet.
+> Its complete seed-42 60-epoch held-out-dev run selected epoch 51: the exact
+> Signal baseline is **58.0109 mAP / 57.4545 Rank-1**, while fused is
+> **58.0168 / 57.4545** and CNN is **58.0181 / 57.4545**. Fused therefore
+> fails the frozen requirement to beat every expert and reach 65 mAP; no
+> official test or ablation was run. A read-only checkpoint diagnostic shows
+> the fused distance matrix is effectively unchanged from baseline
+> (correlation `1.0`, Top-10 overlap `99.988%`).
 > Dataset files, pretrained weights, checkpoints, and remote artifacts are not
 > distributed in this repository. The original DeMo project and attribution are
 > preserved below.

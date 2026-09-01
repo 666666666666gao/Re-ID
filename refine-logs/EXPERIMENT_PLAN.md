@@ -6,6 +6,12 @@
 > Signal baseline floor，再实现 baseline-preserving 三专家增量。此前“不复现
 > baseline”的约束已被用户最新指令覆盖。Signal baseline floor 已完成：
 > `58.0109 mAP / 57.4545 Rank-1`，完整 3072D、camera SIE、official0。
+>
+> 2026-09-01 21:52 终态：V5 readiness 全门通过后完成唯一 seed42、60-epoch
+> dev。epoch51 baseline/fused/CNN mAP 为 `58.0109/58.0168/58.0181`；fused
+> 未超过 CNN 且未达到 65，故 B3 失败，B4/B5 继续封闭。只读诊断显示
+> fused 距离与 baseline 相关为 1.0、Top-10 重合 `99.9879%`，下一步只能做
+> 一个有此诊断依据的 main-only 结构修正。
 
 ## 当前冻结决策
 
@@ -21,8 +27,8 @@
 |---|---|---|---|
 | B0 | Signal commit/license/checkpoint/env/source parity 与 3072D feature contract | 远端环境可重建；完整 feature/SIE 可审计；upstream 与 local 标签分开 | COMPLETE—PASS |
 | B1 | 同一 141/30 dev 协议训练/评估 baseline-only | 产生真实 baseline dev mAP/R1 与固定 checkpoint；无 official test | COMPLETE—PASS：58.0109/57.4545，best e30，official0 |
-| B2 | V5 TDD、容量与固定批门 | baseline bit/distance stable；专家梯度隔离；B32/K4 适配 3090 | PENDING |
-| B3 | 一次 V5 60-epoch dev 主实验 | fused≥baseline、fused>所有专家、fused≥65 mAP | BLOCKED BY B0-B2 |
+| B2 | V5 TDD、容量与固定批门 | baseline bit/distance stable；专家梯度隔离；B32/K4 适配 3090 | COMPLETE—PASS |
+| B3 | 一次 V5 60-epoch dev 主实验 | fused≥baseline、fused>所有专家、fused≥65 mAP | COMPLETE—FAIL：58.0168，低于 CNN 58.0181，低于65 |
 | B4 | 全171固定训练与 official once | 仅 B3 全门通过；正式 >85.3/>87.9 | BLOCKED |
 | B5 | 消融 | 仅 B4 超目标后 | BLOCKED |
 
@@ -134,4 +140,7 @@ V4 保留 V3 的共享 12 层 CLIP、直接三模态 projected-CLS anchor、CNN/
 - [ ] 仅满足 dev 门后执行正式一次评估
 - [ ] 仅正式目标超过后解锁消融与 SOTA 对比
 - [x] Signal 完整 3072D baseline-only 路径与同协议 dev 指标（58.0109/57.4545，official0）
-- [ ] V5 baseline-only/fused 双输出、梯度隔离和 fused 晋级门禁
+- [x] V5 baseline-only/fused 双输出、梯度隔离和工程门禁
+- [x] V5 60-epoch dev 与严格重载完成；晋级门失败，official0
+- [x] V5 best checkpoint 只读协同诊断完成；optimizer0、official0
+- [ ] 仅实现一个基于诊断的 baseline-preserving main-only 架构修正

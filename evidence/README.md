@@ -195,3 +195,13 @@ memory and unchanged Signal state. Fixed-batch overfit records a 100-step loss
 ratio of 0.02102 and unchanged Signal state. All three keep official-test access
 at zero. They are engineering readiness evidence, not a V5 retrieval result or
 SOTA claim.
+
+The V5 terminal dev receipt binds the complete seed-42 60-epoch run, selected
+epoch 51, strict reload parity, unchanged frozen Signal state, 5,498 optimizer
+steps, zero AMP overflow and all five same-checkpoint outputs. Baseline/fused/
+CNN mAP is 58.0109/58.0168/58.0181, so fused fails the best-expert and 65 mAP
+gates. The paired read-only diagnostic covers all 825 dev samples and records
+a 0.02747 fused-suffix/baseline norm ratio, distance correlation 1.0 and
+99.9879% Top-10 overlap. It supports the finding that V5 preserves Signal but
+does not materially change retrieval geometry. Neither receipt supports an
+official-test, ablation, fusion-gain, innovation-effectiveness or SOTA claim.

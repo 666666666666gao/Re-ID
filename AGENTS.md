@@ -62,6 +62,15 @@
   baseline feature/metric parity, real B32/K4 8-step capacity with 213/213
   trainable gradient tensors and 3,542 MiB peak reserved memory, and a
   100-step fixed-batch loss ratio of 0.02102. Official-test access is zero.
+- Signal-preserving V5 completed its only seed-42 60-epoch held-out-dev run.
+  Selected epoch 51 gives baseline/fused/CNN mAP 58.0109/58.0168/58.0181;
+  fused fails both the best-expert and 65 mAP gates. The frozen Signal state
+  stayed unchanged and official-test access stayed zero. Do not launch V5 on
+  the official test and do not start ablations.
+- The V5 read-only diagnostic shows a 0.02747 fused-suffix/baseline norm ratio,
+  distance correlation 1.0 and 99.9879% Top-10 overlap versus baseline. The
+  next main version must materially change retrieval geometry while preserving
+  the exact Signal output; do not scan hyperparameters or residual multipliers.
 
 ## Remote experiment constraints
 

@@ -4,7 +4,7 @@
 
 本工程是在 DeMo 代码基座上实现的 RGB–NIR–TIR 多模态目标重识别研究分支。当前候选主方法是 Signal-preserving V5：冻结并逐字节保留 Signal 的完整 3072D `direct+SIM+SIE` 检索路径，同时让 CNN、Transformer、Mamba 三个完整异构专家读取同一强语义特征场，经分阶段双向交换后只追加质量路由的非破坏式残差银行。
 
-V5 的三个候选论文级主创新点已经落到核心代码和专项测试中，但尚无真实训练指标：
+V5 的三个候选论文级主创新点已经落到核心代码和专项测试中；完整真实 dev 训练已经结束，但性能主门失败：
 
 1. **Signal-preserving shared semantic expertization**：完整冻结 Signal，三专家共享其 patch/global 强语义场；`baseline_only` 保持原始 3072D 路径，专家训练不能改写 baseline 参数或输出。
 2. **Stagewise bidirectional heterogeneous feature exchange**：CNN、Transformer、Mamba 都是三阶段完整专家；阶段 1/2 后进行双向 HFER，可靠性在阶段 1/2/3 分别刷新，使下一阶段能使用其他专家的互补信息。
@@ -18,7 +18,8 @@ V5 的三个候选论文级主创新点已经落到核心代码和专项测试�
 - 后续 V3 task-anchor 与 V4 等能量残差银行均已在固定 141-fit/30-dev 上完整训练 60 epoch。V4 最佳 epoch27 fused 为 `43.4031/42.7879`，仍低于同 checkpoint 的 Mamba `44.0659/43.5152`，且距 65 mAP dev 门 `21.5969`；official access=0。
 - V4 只保留了三模态 projected-CLS 的 1536D anchor，不等于 Signal 的完整 3072D 检索特征。Signal 还包含 1536D SIM 交互特征和 camera SIE；上游 `80.3/85.2` 尚未在本服务器复现，不能与 V4 held-out dev 数字直接相减。
 - Signal baseline 已完整训练 50/50 epoch并严格重载最佳 checkpoint 确定性复评：`58.0109 mAP / 57.4545 Rank-1 / 69.9394 Rank-5 / 76.6061 Rank-10`；完整 3072D `direct+SIM`、camera SIE=true、official access=0。
-- V5 核心、独立 runner/config 和专项测试已经完成；远端联合专项为 `10 passed`。真实 preflight、B32/K4 8-step capacity 和固定批 100-step overfit 三门均 PASS；完整 60-epoch dev 尚未启动，因此当前仍没有 V5 检索指标。
+- V5 核心、独立 runner/config 和专项测试已经完成。真实 preflight、B32/K4 8-step capacity、固定批 100-step overfit 和完整 60-epoch dev 均执行完成；最佳 epoch51 的 baseline/fused/CNN mAP 分别为 `58.0109/58.0168/58.0181`，fused 未超过 CNN，且距 65 mAP 门仍差 `6.9832`。
+- 只读 checkpoint 诊断确认三分支参数实际更新，但 fused 追加残差范数只有 baseline 的 `2.747%`；融合距离与 baseline 距离相关系数为 `1.0`，Top-10 邻居重合率为 `99.9879%`。当前 V5 基本没有改变检索排序，因此不支持融合有效性主张。
 - 原正式启动在官方指标写出后的路由校准审计因缺失导入失败；`repair-0002` 仅重算训练集路由审计，`optimizer_steps=0`、`training_reexecuted=false`、`official_test_reexecuted=false`，公开 verifier 返回 PASS。
 - 用户最新指令：只做 seed 42；现在优先完成远端 Signal baseline 保底；主实验达到目标以后才考虑消融；所有训练、评估、数据和环境只在云端 GPU，Windows/WSL 仅作传输和文档存档。
 
@@ -273,6 +274,22 @@ launch_ledger/repair-0002/completion_receipt.json
 
 原 `launch-0001` 在唯一官方评估后的路由审计因缺失 `build_rgbnt201_record_eval_loader` 导入而失败，失败回执永久保留。`repair-0001` 完成训练集路由审计后因没有复用定向授权上下文而在汇总门失败，已事务回滚。`repair-0002` 复用原定向授权，只运行训练集路由校准审计并通过；未重训、未执行优化器 step、未重评官方 test。
 
+### 5.4 Signal-preserving V5 held-out-dev 终局
+
+V5 只使用固定 141-fit/30-dev，未访问 official test。seed42、B32/K4、60/60 epoch 共执行 5498 个 optimizer steps，0 AMP overflow；按 fused dev mAP 选择 epoch51 后严格重载，同 checkpoint 五路结果为：
+
+| 输出 | mAP | Rank-1 | Rank-5 | Rank-10 |
+|---|---:|---:|---:|---:|
+| baseline_only | 58.0109 | 57.4545 | 69.9394 | 76.6061 |
+| fused | 58.0168 | 57.4545 | 69.9394 | 76.6061 |
+| CNN | 58.0181 | 57.4545 | 69.9394 | 76.6061 |
+| Transformer | 58.0137 | 57.4545 | 69.9394 | 76.6061 |
+| Mamba | 58.0135 | 57.4545 | 69.9394 | 76.7273 |
+
+主门为 FAIL：fused 比 baseline 仅高 `0.00587 mAP`，比 CNN 低 `0.00130 mAP`，并比 65 mAP 门低 `6.98324`。Signal state SHA 在训练前、训练后、严格重载后均为 `97234c...5a92`；official access=0。完整结果见 `results/TRIFUSION_RGBNT201_V5_DEV_SEED42_2026-09-01.md`。
+
+只读诊断处理全部 825 个 dev 样本，不训练也不创建 optimizer。fused 残差/baseline 范数比为 `0.027471`，距离 Pearson 相关为 `1.0`，平均绝对距离变化 `0.0002017`，Top-10 邻居重合率 `0.9998788`；路由归一化熵为 `0.9600`。CNN/Transformer/Mamba 残差两两余弦均接近 0，说明专家差异存在，但当前缩放和路由没有让差异实质改变检索几何。
+
 ## 6. 正式运行与修复命令（历史记录，禁止重跑）
 
 本实验的官方测试已消费一次。以下启动命令只用于法证复现记录，**不得再次执行同一实验身份**。
@@ -367,6 +384,8 @@ repair-0002
 133 passed, 4 skipped
 ```
 
+V5 新增诊断工具的专项回归为 `1 passed`；V5 core+runner readiness 联合专项此前为 `10 passed, 3 warnings`，warnings 仅来自 timm 弃用提示。提交前的当前 V5 组合回归命令和终态记录见第 12.6 节。
+
 全量命令：
 
 ```bash
@@ -426,6 +445,14 @@ protocols/circ_directional_final_authorization_v1.json
 
 启动器哈希必须以授权文件当前登记值为准，任何字节改动都要先重新测试、重新审查并更新授权，不能临时绕过。
 
+V5 held-out-dev 结果与只读诊断：
+
+```text
+run summary SHA256 58fb5ebb30f4a72b02d2377e52d55e20fa070f7a3b2f831d6a52987d32f8c4ab
+diagnostic  SHA256 4aeafcfa29219ba51fbb81accf9d8d14528e096fe82026baa922b222e9473555
+best ckpt  SHA256 43f4806437545520d91b2fe70349b6036dbb3949e6d6351d79a24c3aa7f539c0
+```
+
 ## 9. 已知限制与下一步决策
 
 ### 9.1 必须保留的限制
@@ -436,6 +463,7 @@ protocols/circ_directional_final_authorization_v1.json
 - 正式官方 test 已恰好评估一次；不得再次访问本次 test 做选模、调参或重评。
 - 在主结果超过冻结目标前，禁止启动消融实验。
 - 本次 fused 未优于 CNN，不能把 HFER/CIRC/URGC 写成已获检索增益的实证结论。
+- V5 fused 同样未优于 CNN，且几乎不改变 baseline 排序；不能把 V5 三个候选创新点写成已获性能验证的论文贡献。
 - 路由校准是训练目标上的描述性证据；缺少身份留出校准，不能主张因果或身份外泛化校准。
 - 路由平均概率在条件、专家和模态之间几乎固定为 `0.24997`；`modality_missing` 的训练目标校准最差（Brier `0.22338`、ECE `0.07178`）。这不是官方 test 的分场景 ReID mAP。
 
@@ -453,11 +481,11 @@ protocols/circ_directional_final_authorization_v1.json
 ### 9.3 正式结果后的唯一决策树
 
 ```text
-正式/修复 verifier PASS（本次已完成）
+V5 held-out-dev 完成且 official access=0
   ├─ fused > 85.3 mAP 且 Rank-1 > 87.9
   │    └─ 才允许设计消融；仍只能称单种子目标超越，不能直接宣称统计 SOTA
-  └─ 未超过目标（本次路径）
-       └─ 不做消融或多种子；先建立完整 Signal baseline floor，再做 baseline-preserving 的 train/dev-only 主方法恢复
+  └─ 未通过 dev 门（本次路径：58.0168 mAP，且低于 CNN）
+       └─ 不做消融、多种子或 official test；只做一次有诊断依据的 baseline-preserving main-only 架构修正
 ```
 
 ## 10. 文档索引
@@ -476,6 +504,7 @@ protocols/circ_directional_final_authorization_v1.json
 | `docs/BASELINE_SELECTION_AND_LICENSE_AUDIT_2026-08-31.md` | baseline 选择、许可证和复现边界 |
 | `docs/BASELINE_PROTOCOL_AUDIT_2026-08-31.md` | checkpoint selection 公平性审计 |
 | `results/TRIFUSION_RGBNT201_FINAL_SEED42_2026-09-01.md` | 正式原始指标、差距和负结果分析 |
+| `results/TRIFUSION_RGBNT201_V5_DEV_SEED42_2026-09-01.md` | V5 五路 dev 终局、门禁与只读诊断 |
 | `EXPERIMENT_AUDIT.md` / `.json` | 独立实验完整性审计 |
 | `findings.md` | result-to-claim 否定结论与后续边界 |
 | `evidence/README.md` | 版本化 evidence 说明 |
@@ -499,7 +528,9 @@ protocols/circ_directional_final_authorization_v1.json
 - [x] 在远端建立完整 Signal baseline-only 路径、独立环境和可复现训练回执；同协议 50-epoch dev 已完成并确定性复评为 `58.0109/57.4545/69.9394/76.6061`。
 - [x] V5 核心已建立同 checkpoint `baseline_only/fused/cnn/transformer/mamba` 五输出、冻结 Signal 路径和非破坏式残差银行；专项测试 `4 passed`。
 - [x] V5 独立 runner/config 已完成；真实 baseline parity、8-step capacity 和 100-step overfit 门均 PASS，official access=0。
-- [ ] 工程门全部通过后才允许唯一一次 seed42、60-epoch held-out-dev 主训练；主门通过前不做消融、不访问官方 test。
+- [x] 唯一一次 V5 seed42、60-epoch held-out-dev 主训练、严格重载和五路评估完成；主门失败，official access=0。
+- [x] V5 只读协同诊断完成：确认三专家有更新但最终检索几何几乎等同 baseline。
+- [ ] 依据诊断实现一个 baseline-preserving main-only 架构修正；通过同样工程门后才允许下一次 seed42 dev。继续禁止消融和 official test。
 
 ## 12. V3/V4 主方法恢复终态
 
@@ -621,6 +652,8 @@ configs/RGBNT201/TriFusion-signal-preserving-v5-rtx3090.yml
 tools/run_signal_preserving_v5.py
 tests/test_trifusion_signal_preserving_v5.py
 tests/test_run_signal_preserving_v5.py
+tools/diagnose_signal_preserving_v5.py
+tests/test_diagnose_signal_preserving_v5.py
 ```
 
 已实现并测试的合同：
@@ -651,22 +684,34 @@ evidence/trifusion_signal_preserving_v5_capacity_seed42.json
 evidence/trifusion_signal_preserving_v5_overfit_seed42.json
 ```
 
-尚未完成的唯一当前工程项是：唯一一次 seed42、60-epoch held-out-dev V5 主训练、best-fused 严格重载和同 checkpoint 五路评估。
+完整 V5 dev 运行目录：
+
+```text
+/root/autodl-tmp/trifusion-v2/artifacts/trifusion_signal_preserving_v5_dev_seed42_18f81c3
+```
+
+最佳 epoch51 已严格重载，终局指标和失败门见第 5.4 节。read-only 诊断文件为同目录 `diagnostic.json`；版本化轻量副本为：
+
+```text
+evidence/trifusion_signal_preserving_v5_dev_terminal_seed42.json
+evidence/trifusion_signal_preserving_v5_diagnostic_seed42.json
+```
 
 runner 已按最直接方案处理已证实的包名冲突：Signal 源码拥有顶层 `modeling`，本项目从 `<repo>/modeling` 以顶层 `trifusion` 导入 V5；没有增加兼容层，也没有复制或改写 Signal 包。
 
-V5 晋级合同保持不变：`fused` 必须在同一 frozen dev 上高于 `baseline_only`、CNN、Transformer、Mamba，并达到至少 `65 mAP`；否则 `claim_supported=no`，不启动消融，也不访问官方 test。当前没有运行时 fallback。
+V5 晋级合同保持不变，而本次实际未通过：`fused` 高于 baseline/Transformer/Mamba，但低于 CNN 且未达到 65 mAP。独立 result-to-claim 只给出 `partial`：精确保留 Signal 的工程子主张成立，协同增益和三项创新有效性不成立。当前没有运行时 fallback。
 
 ## 13. 建议技能与接续顺序
 
 下一执行者应按以下顺序调用技能：
 
-1. `/run-experiment`：从 readiness 提交启动唯一一次远端 seed42 dev；
-2. `/monitor-experiment`：长任务按 180–300 秒间隔或预计结束前数分钟轮询；
-3. `/analyze-results` 与 `/result-to-claim`：仅在完整 dev 终局后分析五路指标和决定是否支持主张；
-4. `/ablation-planner`：只有 `claim_supported=yes` 且 V5 主门通过后才允许使用。
+1. 先读 V5 terminal receipt 与 `diagnostic.json`，只实现一个有证据支持的 main-only 架构修正；
+2. `/run-experiment`：修正版先过 TDD、capacity 和 overfit，再运行唯一 seed42 held-out-dev；
+3. `/monitor-experiment`：长任务按 180–300 秒间隔或预计结束前数分钟轮询；
+4. `/analyze-results` 与 `/result-to-claim`：完整 dev 后重新判断；
+5. `/ablation-planner`：只有新主方法正式超过冻结目标且 `claim_supported=yes` 后才允许使用。
 
-接续时不要重跑 Signal baseline，不做多种子，不做消融，不访问官方 test。三项真实工程门已经通过；下一步是从冻结 readiness 提交启动唯一一次完整 dev 主训练。
+接续时不要重跑 Signal baseline 或 V5，不做多种子，不做消融，不访问 official test。下一步不是调 batch、epoch、学习率或残差倍率，而是利用“专家有差异、融合排序不变”的诊断，完成一个最小 main-only 结构修正后重新过门。
 
 ---
 

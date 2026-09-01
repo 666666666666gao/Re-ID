@@ -1,4 +1,4 @@
-# TriFusion V5 Baseline-First Experiment Tracker — 2026-09-01 20:10 +08:00
+# TriFusion V5 Baseline-First Experiment Tracker — 2026-09-01 21:52 +08:00
 
 | Run ID | Milestone | Purpose | System / Variant | Split | Metrics | Priority | Status | Notes |
 |---|---|---|---|---|---|---|---|---|
@@ -13,8 +13,10 @@
 | V4-R005+ | M4 | 主张消融与公平比较 | V4 controls | frozen protocols | effect sizes | CONDITIONAL | BLOCKED | V4 已失败；当前禁止消融和多种子 |
 | V5-R000 | M0 | Signal 完整路径审计 | Signal cd1b0a6 | source/checkpoint/env | 3072D/SIM/SIE/provenance | MUST | COMPLETE—PASS | 独立 `signal` 环境：Python3.10.13/Torch2.1.1+cu118/CUDA11.8；完整 direct+SIM/SIE 路径已核验；上游80.3/85.2仍未本地复现 |
 | V5-R001 | M1 | baseline-only 同协议门 | exact Signal baseline | 141-fit/30-dev | 58.0109/57.4545/69.9394/76.6061 | MUST | COMPLETE—PASS | 50/50 epoch；best=e30；3072D direct+SIM、camera SIE；checkpoint `1f5c200c...66c3`；peak reserved 13620 MiB；official0 |
-| V5-R002 | M1 | baseline-preserving TDD/capacity | V5 | synthetic+train-only | feature parity、梯度隔离、VRAM | MUST | PENDING | 同 checkpoint 输出 baseline-only/fused；baseline 路径冻结 |
-| V5-R003 | M2 | 完整 60-epoch dev 主实验 | V5 | 141-fit/30-dev | baseline/fused/三专家 | MUST | BLOCKED | fused≥baseline、fused>best expert、fused≥65 才晋级 |
-| V5-R004 | M3 | fixed all171 + official once | V5 | all171→official | mAP/R1/5/10 | CONDITIONAL | BLOCKED | 仅 V5-R003 全门通过；正式>85.3/>87.9 才解锁消融 |
+| V5-R002 | M1 | baseline-preserving TDD/capacity | V5 | synthetic+train-only | feature parity、梯度隔离、VRAM | MUST | COMPLETE—PASS | 825/825 exact parity；B32/K4 213/213 梯度、3542MiB reserved、0 overflow；100-step ratio0.02102；official0 |
+| V5-R003 | M2 | 完整 60-epoch dev 主实验 | V5 | 141-fit/30-dev | baseline/fused/三专家 | MUST | COMPLETE—FAIL | e51 baseline/fused/CNN mAP 58.0109/58.0168/58.0181；fused 低于 CNN，距65门6.9832；official0 |
+| V5-D001 | M2 | 冻结 best checkpoint 只读协同诊断 | V5 epoch51 | 30-dev | residual norm、distance delta、router entropy、parameter updates | MUST | COMPLETE—PASS | fused suffix/baseline norm0.02747；距离相关1.0；Top10 overlap99.9879%；三分支均实际更新；optimizer0/official0 |
+| V5-C001 | M2 | 独立结果主张判断 | V5 result-to-claim | frozen receipts | claim_supported | MUST | COMPLETE—PARTIAL | 只支持 exact Signal preservation 工程子主张；不支持融合增益、65mAP、创新有效性或 SOTA |
+| V5-R004 | M3 | fixed all171 + official once | V5 | all171→official | mAP/R1/5/10 | CONDITIONAL | BLOCKED—NOT AUTHORIZED | V5-R003 未通过；禁止 official 和消融 |
 
 硬约束：所有 GPU、数据、conda、训练和评估仅在远端 RTX3090；seed42 only；只做单一 Signal baseline floor，不做 baseline 矩阵；主结果超过冻结正式目标前不运行消融；未有同协议证据不得宣称 SOTA。

@@ -217,3 +217,13 @@
 | 2026-09-01 21:01 | /run-experiment | evidence/trifusion_signal_preserving_v5_capacity_seed42.json | research | 真实 B32/K4 8-step、213/213 梯度、0 overflow、3542MiB reserved、Signal SHA 不变 |
 | 2026-09-01 21:01 | /run-experiment | evidence/trifusion_signal_preserving_v5_overfit_seed42.json | research | 真实固定批 100-step loss ratio 0.02102、0 overflow、Signal SHA 不变 |
 | 2026-09-01 21:01 | /handoff | docs/TRIFUSION_RGBNT201_CURRENT_COMPLETE_HANDOFF_2026-09-01.md | documentation | 回填 V5 三项工程门 PASS、实测缺梯度修复和完整 dev 待办 |
+| 2026-09-01 21:52 | /tdd | tools/diagnose_signal_preserving_v5.py | implementation | 冻结 best checkpoint 的残差能量、路由熵、分支相似度、距离排序与参数更新只读诊断器 |
+| 2026-09-01 21:52 | /tdd | tests/test_diagnose_signal_preserving_v5.py | implementation | 残差范数、分支余弦和归一化路由熵的最小回归合同；远端 1 passed |
+| 2026-09-01 21:52 | /monitor-experiment | evidence/trifusion_signal_preserving_v5_dev_terminal_seed42.json | research | V5 60/60 dev、epoch51 五路严格重载、Signal SHA 不变、5498 steps、0 overflow、official0 |
+| 2026-09-01 21:52 | /analyze-results | evidence/trifusion_signal_preserving_v5_diagnostic_seed42.json | research | 全825 dev 的残差能量、距离变化、Top-10 重合、路由熵与模块更新量只读诊断 |
+| 2026-09-01 21:52 | /result-to-claim | .aris/traces/result-to-claim/2026-09-01_run03/ | research | V5 claim_supported=partial：支持 exact baseline 工程子主张，不支持融合增益、65mAP 或 SOTA |
+| 2026-09-01 21:52 | /analyze-results | results/TRIFUSION_RGBNT201_V5_DEV_SEED42_2026-09-01.md | research | V5 五路指标、失败门、检索几何诊断与下一步 main-only 边界 |
+| 2026-09-01 21:52 | /handoff | docs/TRIFUSION_RGBNT201_CURRENT_COMPLETE_HANDOFF_2026-09-01.md | documentation | 服务器统一交接续写 V5 完整训练终局、诊断根因、证据哈希与接续顺序 |
+| 2026-09-01 21:52 | /handoff | README.md | documentation | 公开入口更新 V5 终局指标、失败门和检索排序近似不变结论 |
+| 2026-09-01 21:52 | /experiment-plan | refine-logs/EXPERIMENT_PLAN.md | implementation | latest 计划关闭 V5 official/消融并限定一个诊断驱动 main-only 修正 |
+| 2026-09-01 21:52 | /experiment-plan | refine-logs/EXPERIMENT_TRACKER.md | research | V5 readiness、dev、诊断和 result-to-claim 四项终态回填 |

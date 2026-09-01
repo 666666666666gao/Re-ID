@@ -1,5 +1,16 @@
 # Research Findings
 
+## 2026-09-01 — Signal-preserving V5 60-epoch dev 主门负结果
+
+- 完整性：远端 RTX3090、seed42、B32/K4、141-fit/30-dev、60/60 epoch、5498 optimizer steps、0 AMP overflow；最佳 epoch51 严格重载五路指标逐项一致；Signal 参数 SHA 在训练前、训练后和重载后完全不变；official test access=0。
+- 同 checkpoint 结果：baseline `58.0109/57.4545`；fused `58.0168/57.4545`；CNN `58.0181/57.4545`；Transformer `58.0137/57.4545`；Mamba `58.0135/57.4545`（mAP/Rank-1）。
+- 主门失败：fused 仅比 baseline 高 `0.00587 mAP`，又比 CNN 低 `0.00130 mAP`，并比 65 mAP dev 门低 `6.98324`；因此不进入 official test、不做消融，也不支持三分支融合增益或 SOTA 主张。
+- 只读诊断：三分支参数都有明显更新，但 fused 追加残差范数仅为 baseline 的 `2.747%`；融合距离与 baseline 距离 Pearson 相关为 `1.0`，平均绝对距离变化 `0.000202`，Top-10 邻居重合率 `99.9879%`。三个分支残差两两余弦接近 0，说明专家有差异，但差异几乎没有进入最终检索排序。
+- 路由诊断：归一化熵 `0.9600`，仍偏高；三个训练后残差 scale 仅约 `0.106`。当前瓶颈不是专家没有训练，而是路由与小尺度残差共同造成输出几何几乎等同 baseline。
+- 独立 result-to-claim：`claim_supported=partial`、置信度 high。只支持“精确保留 Signal 并完成稳定训练”的工程子主张；不支持协同增益、65 mAP dev 晋级、SOTA 或三项创新有效性。
+- 下一步：只允许一个 main-only 架构修正，使互补专家信息对检索距离产生实质影响，同时继续保留 exact `baseline_only` 输出；修正后重新通过 TDD/capacity/overfit，再运行一次 seed42 held-out-dev。禁止消融、多种子和 official test。
+- 证据：`evidence/trifusion_signal_preserving_v5_dev_terminal_seed42.json` 与 `evidence/trifusion_signal_preserving_v5_diagnostic_seed42.json`。
+
 ## 2026-09-01 — TriFusion RGBNT201 seed-42 主结果
 
 - 测试内容：共享 CLIP 语义主干 + CNN/Transformer/Mamba 三专家 + HFER + CIRC + URGC；RGBNT201 `postfreeze-final`；epoch 60；官方测试一次。
