@@ -22,6 +22,7 @@ PROJECT_ROOT = Path(__file__).resolve().parents[1]
 ARCHITECTURE_V5 = "signal_preserving_collaborative_v5"
 ARCHITECTURE_V6 = "signal_preserving_collaborative_v6"
 ARCHITECTURE_V7 = "signal_preserving_collaborative_v7"
+ARCHITECTURE_V8 = "signal_preserving_collaborative_v8_expert_formation"
 
 
 def receipt_schema(architecture: str, stage: str) -> str:
@@ -29,6 +30,7 @@ def receipt_schema(architecture: str, stage: str) -> str:
         ARCHITECTURE_V5: "v5",
         ARCHITECTURE_V6: "v6",
         ARCHITECTURE_V7: "v7",
+        ARCHITECTURE_V8: "v8",
     }[architecture]
     return f"trifusion-signal-preserving-{version}-{stage}-v1"
 
@@ -38,6 +40,7 @@ def architecture_source_paths(architecture: str) -> dict[str, Path]:
         ARCHITECTURE_V5: "v5",
         ARCHITECTURE_V6: "v6",
         ARCHITECTURE_V7: "v7",
+        ARCHITECTURE_V8: "v8",
     }[architecture]
     return {
         "model": PROJECT_ROOT
@@ -113,9 +116,10 @@ def weighted_training_loss(
         + losses["triplet_fused"] * float(weights["TRIPLET_FUSED"])
         + branch_id * float(weights["ID_BRANCH"])
         + branch_triplet * float(weights["TRIPLET_BRANCH"])
-        + losses["peer_logits"] * float(weights["PEER_LOGITS"])
     )
-    if architecture in (ARCHITECTURE_V6, ARCHITECTURE_V7):
+    if architecture != ARCHITECTURE_V8:
+        total = total + losses["peer_logits"] * float(weights["PEER_LOGITS"])
+    if architecture in (ARCHITECTURE_V6, ARCHITECTURE_V7, ARCHITECTURE_V8):
         residual_id = sum(
             losses[f"id_residual_{expert}"]
             for expert in ("cnn", "transformer", "mamba")
@@ -317,7 +321,7 @@ def _build_runtime(config: dict[str, Any]) -> dict[str, Any]:
     project_modeling = str(PROJECT_ROOT / "modeling")
     if project_modeling not in sys.path:
         sys.path.append(project_modeling)
-    if architecture == ARCHITECTURE_V7:
+    if architecture in (ARCHITECTURE_V7, ARCHITECTURE_V8):
         from trifusion.aligned_data import build_aligned_train_loader
 
         train_loader = build_aligned_train_loader(
@@ -334,10 +338,6 @@ def _build_runtime(config: dict[str, Any]) -> dict[str, Any]:
         "feature_width": int(model_config["FEATURE_WIDTH"]),
         "grid_size": tuple(model_config["GRID_SIZE"]),
         "adapter_width": int(model_config["ADAPTER_WIDTH"]),
-        "residual_width": int(model_config["RESIDUAL_WIDTH"]),
-        "relay_rank": int(model_config["RELAY_RANK"]),
-        "private_width": int(model_config["PRIVATE_WIDTH"]),
-        "reliability_hidden_width": int(model_config["RELIABILITY_HIDDEN_WIDTH"]),
     }
     if architecture == ARCHITECTURE_V5:
         from trifusion.signal_preserving_v5_builder import (
@@ -347,6 +347,10 @@ def _build_runtime(config: dict[str, Any]) -> dict[str, Any]:
         build = build_signal_preserving_trifusion_v5(
             signal_model,
             residual_scale_init=float(model_config["RESIDUAL_SCALE_INIT"]),
+            residual_width=int(model_config["RESIDUAL_WIDTH"]),
+            relay_rank=int(model_config["RELAY_RANK"]),
+            private_width=int(model_config["PRIVATE_WIDTH"]),
+            reliability_hidden_width=int(model_config["RELIABILITY_HIDDEN_WIDTH"]),
             **common_build_arguments,
         )
     elif architecture == ARCHITECTURE_V6:
@@ -356,6 +360,10 @@ def _build_runtime(config: dict[str, Any]) -> dict[str, Any]:
 
         build = build_signal_preserving_trifusion_v6(
             signal_model,
+            residual_width=int(model_config["RESIDUAL_WIDTH"]),
+            relay_rank=int(model_config["RELAY_RANK"]),
+            private_width=int(model_config["PRIVATE_WIDTH"]),
+            reliability_hidden_width=int(model_config["RELIABILITY_HIDDEN_WIDTH"]),
             **common_build_arguments,
         )
     elif architecture == ARCHITECTURE_V7:
@@ -367,9 +375,27 @@ def _build_runtime(config: dict[str, Any]) -> dict[str, Any]:
             signal_model,
             alpha_max=float(model_config["ALPHA_MAX"]),
             alpha_init=float(model_config["ALPHA_INIT"]),
+            residual_width=int(model_config["RESIDUAL_WIDTH"]),
+            relay_rank=int(model_config["RELAY_RANK"]),
+            private_width=int(model_config["PRIVATE_WIDTH"]),
+            reliability_hidden_width=int(model_config["RELIABILITY_HIDDEN_WIDTH"]),
             **common_build_arguments,
         )
         initialization = load_v7_initialization(build.model, config["INITIALIZATION"])
+    elif architecture == ARCHITECTURE_V8:
+        from trifusion.signal_preserving_v8_builder import (
+            build_signal_preserving_trifusion_v8_expert_formation,
+        )
+
+        build = build_signal_preserving_trifusion_v8_expert_formation(
+            signal_model,
+            semantic_width=int(model_config["SEMANTIC_WIDTH"]),
+            branch_after_block=int(model_config["BRANCH_AFTER_BLOCK"]),
+            expert_modal_width=int(model_config["EXPERT_MODAL_WIDTH"]),
+            scale_init=float(model_config["SCALE_INIT"]),
+            gradient_checkpointing=bool(model_config["GRADIENT_CHECKPOINTING"]),
+            **common_build_arguments,
+        )
     else:
         raise ValueError(f"unsupported Signal-preserving architecture: {architecture}")
     build.model.cuda()
@@ -517,6 +543,13 @@ def _criterion_class(config: dict[str, Any]) -> Any:
 
 def _build_criterion(config: dict[str, Any]) -> Any:
     architecture = str(config["MODEL"]["ARCHITECTURE"])
+    if architecture == ARCHITECTURE_V8:
+        from trifusion.signal_preserving_v8 import ExpertFormationV8Criterion
+
+        return ExpertFormationV8Criterion(
+            triplet_margin=float(config["LOSS"]["TRIPLET_MARGIN"]),
+            label_smoothing=float(config["LOSS"]["LABEL_SMOOTHING"]),
+        ).cuda()
     if architecture == ARCHITECTURE_V7:
         from trifusion.signal_preserving_v7 import MarginalGainV7Criterion
 
@@ -1213,7 +1246,10 @@ def evaluate_dev_gate(
 def overfit_loss_floor(config: dict[str, Any], *, num_classes: int) -> float:
     """Return the analytic weighted CE floor introduced by label smoothing."""
 
-    if str(config["MODEL"]["ARCHITECTURE"]) != ARCHITECTURE_V7:
+    if str(config["MODEL"]["ARCHITECTURE"]) not in (
+        ARCHITECTURE_V7,
+        ARCHITECTURE_V8,
+    ):
         return 0.0
     smoothing = float(config["LOSS"]["LABEL_SMOOTHING"])
     correct_probability = 1.0 - smoothing + smoothing / num_classes

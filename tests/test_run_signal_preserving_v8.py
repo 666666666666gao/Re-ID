@@ -71,4 +71,4 @@ def test_v8_expert_formation_loss_has_no_router_or_hfer_term() -> None:
 
     total = weighted_training_loss(losses, config, phase="expert_formation")
 
-    assert torch.equal(total, torch.tensor(4.25))
+    assert torch.equal(total, torch.tensor(3.25))
