@@ -183,7 +183,16 @@ def _collect_trained(
     amp: bool,
 ) -> tuple[dict[str, dict[str, float]], dict[str, dict[str, float]]]:
     features = {f"trained_cls_{name}": [] for name in MODALITY_ORDER}
-    features.update({"trained_cls_concat": [], "trained_cls_mean": [], "fused": []})
+    features.update(
+        {
+            "trained_cls_concat": [],
+            "trained_cls_mean": [],
+            "fused": [],
+            "branch_normalized_mean": [],
+            "branch_normalized_concat": [],
+            "expert_mean_block_concat": [],
+        }
+    )
     features.update({expert: [] for expert in EXPERT_ORDER})
     statistic_names = [
         *(f"cls_to_{expert}" for expert in EXPERT_ORDER),
@@ -234,6 +243,29 @@ def _collect_trained(
                         cls.float(), states[expert].global_embedding.float(), dim=-1
                     ).flatten().cpu()
                 )
+            branch_tensor = torch.stack(
+                [
+                    F.normalize(fusion.branch_embeddings[expert].float(), dim=-1)
+                    for expert in EXPERT_ORDER
+                ],
+                dim=1,
+            )
+            features["branch_normalized_mean"].append(
+                branch_tensor.mean(dim=1).cpu()
+            )
+            features["branch_normalized_concat"].append(
+                branch_tensor.flatten(1).cpu()
+            )
+            expert_mean_blocks = fusion.contribution_embeddings.float().mean(dim=1)
+            features["expert_mean_block_concat"].append(
+                torch.cat(
+                    (
+                        expert_mean_blocks.flatten(1),
+                        expert_mean_blocks.mean(dim=1),
+                    ),
+                    dim=1,
+                ).cpu()
+            )
             anchors = []
             residuals = []
             for expert_index, expert in enumerate(EXPERT_ORDER):
