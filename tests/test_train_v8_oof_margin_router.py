@@ -52,3 +52,12 @@ def test_v8_router_contract_freezes_oof_sources_and_single_seed() -> None:
     assert len(config["INITIALIZATION"]["OOF_MARGIN_CACHE_SHA256"]) == 64
     assert config["PROTOCOL"]["ROUTER_VALIDATION"] == "three_fold_identity_oof"
     assert config["PROTOCOL"]["DEV_ACCESS_DURING_ROUTER_TRAINING"] is False
+
+
+def test_v8_router_runner_uses_project_namespace_after_signal_import() -> None:
+    source = (ROOT / "tools" / "train_v8_oof_margin_router.py").read_text(
+        encoding="utf-8"
+    )
+
+    assert "from modeling.trifusion.signal_preserving_v8_router import" not in source
+    assert source.count("from trifusion.signal_preserving_v8_router import") == 2
