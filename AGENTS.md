@@ -121,6 +121,25 @@
   27.39%. Equal-energy uniform/teacher fusion reaches 59.6188 mAP, still 5.3812
   below 65. Do not implement a Router-only V8; the next main change must improve
   expert representation/task division while preserving exact Signal.
+- V8 Phase-A implements that representation change. It branches after frozen
+  CLIP block 8, reuses frozen pretrained tail blocks 9/10/11 in all three
+  paths, and adds role-specific CNN local-detail, Transformer global-CLS, and
+  Mamba spatial/cross-modal residual heads. Router and HFER are disabled during
+  formation. Exact preflight, real B64/K8 capacity (203/203 gradients, 6006 MiB
+  reserved) and 100-step overfit (excess-loss ratio 0.000534) pass.
+- The only V8 Phase-A seed42 probe trained 20 epochs/840 steps and evaluated
+  held-out dev once at the final epoch. Fixed fused is 58.0972 mAP and is not a
+  deployable gain. Branch GT Oracle is 64.7850 mAP (+6.7741 over the strongest
+  fixed output), and residual-only Oracle is 63.4813 (+9.6153); all experts
+  have unique AP wins and positive leave-one-out margins. Oracle is diagnostic
+  and non-deployable. Result-to-claim is partial/medium; V8 audit is WARN due
+  only to remote large-artifact packaging. Official access remains zero.
+- The next authorized step is exactly one frozen-expert, fit-only hierarchical
+  Router feasibility phase. It must not use dev Oracle labels for training,
+  tuning or checkpoint selection, and must pass missing/corrupted-modality
+  quality gates. Do not enable HFER until the learned Router proves deployable
+  gain and preserves complementarity. Branch Oracle is still 0.2150 below 65,
+  so hard expert selection alone cannot satisfy the dev gate.
 
 ## Remote experiment constraints
 

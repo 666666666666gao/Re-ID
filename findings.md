@@ -1,5 +1,17 @@
 # Research Findings
 
+## 2026-09-02 — V8 pretrained-tail Phase-A 专家互补门通过
+
+- 结构：从冻结 Signal/CLIP 第 8 block 分叉，三路分别共享冻结的 CLIP tail 9/10/11，并加入 CNN 横向局部细节、Transformer CLS 全局关系和 Mamba 空间/跨模态长程残差；Router 与 HFER 在 Phase-A 均关闭。
+- 工程门：exact Signal preflight、真实 B64/K8 capacity、100-step overfit 全部 PASS；203/203 可训练张量有梯度，overfit 超额损失 ratio=`0.000534≤0.1`，Signal state 不变，峰值 reserved 约 `6.0 GiB`。
+- 训练边界：seed42、20 epoch、840 optimizer steps、最终 epoch 才进行一次 held-out-dev 评估，训练中 dev evaluations=0、overflow=0、official access=0；耗时 `933.24s`，峰值 reserved=`6214 MiB`。
+- 可部署固定输出仍弱：baseline/fused mAP=`58.0109/58.0972`；CNN/Transformer/Mamba branch=`57.6071/56.3031/56.6277`。fused 只比 baseline 高 `0.0863 mAP` 且 Rank-1 下降，不能作为融合成功结论。
+- branch ground-truth Oracle=`64.7850 mAP / 65.9394 Rank-1`，比最强固定 baseline 高 `6.7741 mAP`；CNN/Transformer/Mamba 独有 AP 胜例=`201/170/138`，leave-one-out 边际=`+1.2043/+1.9592/+0.8435 mAP`。
+- residual-only Oracle=`63.4813/66.9091`，比最强 residual 高 `9.6153 mAP`；三专家独有 AP 胜例=`257/232/199`，leave-one-out 边际=`+3.1128/+4.9698/+2.6370 mAP`。这证明表征互补存在，但 Oracle 使用真实标签、不是部署结果。
+- 独立 result-to-claim=`partial/medium`：只支持“值得开展一次冻结专家、fit-only Router 可行性阶段”；不支持 learned routing、HFER、65 mAP、official 或 SOTA。branch Oracle 本身仍比 65 低 `0.2150 mAP`，单纯硬选分支不够。
+- 下一步先完成 V8 专属完整性审计，再做 fit-only 层级 Router 与质量干预门；Router 未证明泛化前不启用 HFER，不做消融、多种子或 official test。
+- 证据：`evidence/trifusion_signal_preserving_v8_expert_formation_{preflight,capacity,overfit,probe}_seed42.json`。
+
 ## 2026-09-02 — V8 frozen-router 表征上限探针未晋级
 
 - 目的：在不更新模型的条件下，检验“冻结 V7 三专家、只重训身份隔离效用 Router 并恢复等能量 residual”是否值得进入 V8 主训练。source checkpoint 为 V7 epoch1 `8bcdf358...09a2b`；FP32 两次重放核心 JSON 完全一致；optimizer0、official0。

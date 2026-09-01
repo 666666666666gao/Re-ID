@@ -1,0 +1,45 @@
+{
+  "date": "2026-09-02",
+  "auditor": "gpt-5.5-xhigh-independent-read-only",
+  "scope": "trifusion_v8_phase_a_expert_formation",
+  "overall_verdict": "warn",
+  "integrity_status": "warn",
+  "checks": {
+    "gt_provenance": {
+      "status": "pass",
+      "details": "Dataset identity/camera ground truth; Oracle explicitly diagnostic and non-deployable; official access zero."
+    },
+    "score_normalization": {
+      "status": "pass",
+      "details": "Standard feature L2 normalization and Euclidean retrieval distance; no model-statistic metric normalization."
+    },
+    "result_existence": {
+      "status": "warn",
+      "details": "Four JSON receipts exist and match; large checkpoint/history/run identity remain remote artifacts referenced by SHA/path."
+    },
+    "dead_code": {
+      "status": "pass",
+      "details": "Reported formation, overfit and Oracle gates are live in the runner path."
+    },
+    "scope": {
+      "status": "pass",
+      "details": "One dataset, one seed, final-epoch-only held-out-dev evaluation, no dev evaluation during training, official access zero."
+    },
+    "eval_type": "real_gt"
+  },
+  "official_test_access_count": 0,
+  "claims": [
+    {
+      "id": "phase_a_query_level_complementarity",
+      "impact": "supported_with_qualifier"
+    },
+    {
+      "id": "fit_only_router_feasibility_phase",
+      "impact": "supported_next_step"
+    },
+    {
+      "id": "deployable_gain_or_sota",
+      "impact": "unsupported"
+    }
+  ]
+}

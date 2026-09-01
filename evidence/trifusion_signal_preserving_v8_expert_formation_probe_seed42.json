@@ -1,0 +1,192 @@
+{
+  "branch_oracle": {
+    "all_rank1_failures": 281,
+    "best_fixed_output": "baseline_only",
+    "fixed_metrics_percent": {
+      "baseline_only": {
+        "Rank-1": 57.4545454545,
+        "mAP": 58.0108866126
+      },
+      "cnn": {
+        "Rank-1": 56.4848484848,
+        "mAP": 57.6071396457
+      },
+      "mamba": {
+        "Rank-1": 54.4242424242,
+        "mAP": 56.6276684089
+      },
+      "transformer": {
+        "Rank-1": 55.8787878788,
+        "mAP": 56.3031422608
+      }
+    },
+    "leave_one_expert_out": {
+      "cnn": {
+        "marginal_mAP": 1.2042998385,
+        "oracle_mAP": 63.5806864321
+      },
+      "mamba": {
+        "marginal_mAP": 0.8434876842,
+        "oracle_mAP": 63.9414985864
+      },
+      "transformer": {
+        "marginal_mAP": 1.9591827589,
+        "oracle_mAP": 62.8258035117
+      }
+    },
+    "oracle_metrics_percent": {
+      "Rank-1": 65.9393939394,
+      "mAP": 64.7849862706
+    },
+    "oracle_minus_best_fixed_percent": {
+      "Rank-1": 8.4848484849,
+      "mAP": 6.774099658
+    },
+    "queries": 825,
+    "unique_ap_wins": {
+      "baseline_only": 152,
+      "cnn": 201,
+      "mamba": 138,
+      "transformer": 170
+    },
+    "unique_rank1_wins": {
+      "baseline_only": 16,
+      "cnn": 18,
+      "mamba": 6,
+      "transformer": 18
+    }
+  },
+  "checkpoint": "/root/autodl-tmp/trifusion-v2/artifacts/trifusion_v8_expert_formation_probe_seed42_abbf33d/final_model.pth",
+  "checkpoint_sha256": "d37ca17fad8a2786355d575b009f453e170238f3057c5db8f68789bb32b1b40f",
+  "dev_evaluations_during_training": 0,
+  "elapsed_seconds": 933.2381925582886,
+  "epochs_completed": 20,
+  "fit_triplets": 3126,
+  "formation_gate": {
+    "branch": {
+      "experts": {
+        "cnn": {
+          "marginal_mAP": 1.2042998385,
+          "passed": true,
+          "unique_ap_wins": 201
+        },
+        "mamba": {
+          "marginal_mAP": 0.8434876842,
+          "passed": true,
+          "unique_ap_wins": 138
+        },
+        "transformer": {
+          "marginal_mAP": 1.9591827589,
+          "passed": true,
+          "unique_ap_wins": 170
+        }
+      },
+      "oracle_gain_mAP": 6.774099658,
+      "oracle_gain_passed": true,
+      "passed": true
+    },
+    "passed": true,
+    "residual_only": {
+      "experts": {
+        "cnn": {
+          "marginal_mAP": 3.1128221465,
+          "passed": true,
+          "unique_ap_wins": 257
+        },
+        "mamba": {
+          "marginal_mAP": 2.6369866829,
+          "passed": true,
+          "unique_ap_wins": 199
+        },
+        "transformer": {
+          "marginal_mAP": 4.9697741345,
+          "passed": true,
+          "unique_ap_wins": 232
+        }
+      },
+      "oracle_gain_mAP": 9.61530019,
+      "oracle_gain_passed": true,
+      "passed": true
+    },
+    "thresholds": {
+      "minimum_expert_marginal_mAP_exclusive": 0.0,
+      "minimum_oracle_gain_mAP": 1.0,
+      "minimum_unique_ap_wins": 1
+    }
+  },
+  "fused_metrics_percent": {
+    "Rank-1": 56.84848484848485,
+    "mAP": 58.0972304527759
+  },
+  "history_sha256": "d91c767ce3dbe39d95f014791f6ecef3fc33d46d135ec48f2cc0401a35e4ac75",
+  "mode": "formation_probe",
+  "model_selection": "none_final_epoch_only",
+  "next_phase_authorized": true,
+  "official_test_access_count": 0,
+  "optimizer_steps": 840,
+  "oracle_is_deployment_result": false,
+  "oracle_uses_ground_truth": true,
+  "overflow_events": 0,
+  "peak_allocated_mib": 5737.02001953125,
+  "peak_reserved_mib": 6214.0,
+  "probe_gallery_triplets": 825,
+  "probe_query_triplets": 825,
+  "residual_only_oracle": {
+    "all_rank1_failures": 273,
+    "best_fixed_output": "cnn",
+    "fixed_metrics_percent": {
+      "cnn": {
+        "Rank-1": 54.4242424242,
+        "mAP": 53.8659618753
+      },
+      "mamba": {
+        "Rank-1": 51.0303030303,
+        "mAP": 52.8143028141
+      },
+      "transformer": {
+        "Rank-1": 53.3333333333,
+        "mAP": 52.7100668815
+      }
+    },
+    "leave_one_expert_out": {
+      "cnn": {
+        "marginal_mAP": 3.1128221465,
+        "oracle_mAP": 60.3684399188
+      },
+      "mamba": {
+        "marginal_mAP": 2.6369866829,
+        "oracle_mAP": 60.8442753824
+      },
+      "transformer": {
+        "marginal_mAP": 4.9697741345,
+        "oracle_mAP": 58.5114879308
+      }
+    },
+    "oracle_metrics_percent": {
+      "Rank-1": 66.9090909091,
+      "mAP": 63.4812620653
+    },
+    "oracle_minus_best_fixed_percent": {
+      "Rank-1": 12.4848484849,
+      "mAP": 9.61530019
+    },
+    "queries": 825,
+    "unique_ap_wins": {
+      "cnn": 257,
+      "mamba": 199,
+      "transformer": 232
+    },
+    "unique_rank1_wins": {
+      "cnn": 48,
+      "mamba": 24,
+      "transformer": 56
+    }
+  },
+  "run_identity_sha256": "35328c818aa801149da7ab4134e31b3eacd7ac842f75f2a791378ea2cfc020df",
+  "schema_version": "trifusion-signal-preserving-v8-formation-probe-result-v1",
+  "signal_checkpoint_sha256": "1f5c200cd43fcbc00b8a0494329519eed3e6f062d9a29d43a0ecdd97ff4966c3",
+  "signal_state_sha256_after": "97234c510f993dd2936986b9765d774b12674bf9b08dff933ce840d2c6c45a92",
+  "signal_state_sha256_before": "97234c510f993dd2936986b9765d774b12674bf9b08dff933ce840d2c6c45a92",
+  "signal_state_unchanged": true,
+  "status": "PASS"
+}

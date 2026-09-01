@@ -56,6 +56,18 @@
 > it remains 5.3812 below the dev gate. V8 must therefore improve expert
 > representations rather than only retrain the Router; see the
 > [probe report](results/TRIFUSION_RGBNT201_V8_FROZEN_ROUTER_PROBE_2026-09-02.md).
+> The replacement V8 Phase-A now branches after frozen CLIP block 8 and sends
+> CNN, Transformer, and Mamba through the same frozen pretrained tail with
+> role-specific residual heads. Exact preflight, real B64/K8 capacity and
+> 100-step overfit pass. A 20-epoch final-only probe gives a deployable fixed
+> fused **58.0972 mAP / 56.8485 Rank-1**, which is not a main gain, but the
+> ground-truth branch Oracle reaches **64.7850 / 65.9394** and every expert has
+> unique wins and positive leave-one-out contribution. Independent review is
+> `partial` and the integrity audit is `WARN`: this authorizes only one
+> frozen-expert, fit-only Router feasibility phase, not HFER, official test,
+> ablations, 65 mAP or SOTA. See the
+> [Phase-A report](results/TRIFUSION_RGBNT201_V8_EXPERT_FORMATION_PHASE_A_2026-09-02.md)
+> and [V8 audit](EXPERIMENT_AUDIT_V8_PHASE_A.md).
 > Dataset files, pretrained weights, checkpoints, and remote artifacts are not
 > distributed in this repository. The original DeMo project and attribution are
 > preserved below.

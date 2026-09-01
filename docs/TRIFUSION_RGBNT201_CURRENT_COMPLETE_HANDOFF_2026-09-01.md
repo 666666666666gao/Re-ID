@@ -2,7 +2,7 @@
 
 ## 0. 一页结论
 
-本工程是在 DeMo 代码基座上实现的 RGB–NIR–TIR 多模态目标重识别研究分支。最新完成的是 Signal-preserving V7 唯一 seed42、60-epoch held-out-dev 主实验。V7 冻结并逐元素保留 Signal 的完整 3072D `direct+SIM+SIE` 检索路径；CNN、Transformer、Mamba 是共享 Signal 强语义特征场上的三类浅层异构残差专家，不是三套独立完整 backbone。V7 fused 为 `58.3293 mAP / 57.9394 Rank-1`，未超过 Mamba `58.3476 / 57.8182`，也未达到 65 mAP dev 门，因此仍不支持 SOTA。
+本工程是在 DeMo 代码基座上实现的 RGB–NIR–TIR 多模态目标重识别研究分支。最新完成的是 V8 pretrained-tail Phase-A 专家形成与互补性探针；正式可部署主结果仍以 V7 的 `58.3293 mAP / 57.9394 Rank-1` 为当前失败终态，未达到 65 mAP dev 门，也不支持 SOTA。V8 Phase-A 从冻结 CLIP block8 分叉，让 CNN、Transformer、Mamba 共享冻结的 pretrained tail 9/10/11，再学习结构化残差；其目的只是先证明三专家能形成互补，不是完整 Router/HFER 主模型。
 
 V6 的三个候选论文级主创新点已经落到核心代码、专项测试和完整 dev 运行中；性能主门仍然失败：
 
@@ -26,6 +26,8 @@ V6 的三个候选论文级主创新点已经落到核心代码、专项测试�
 - V7 专项回归启动前 `32 passed`；exact Signal preflight、真实 B64/K8 双视图 capacity 和 100-step overfit 均 PASS。唯一正式 dev 已完成 60/60 epoch、2,520 optimizer steps、0 overflow，最佳 epoch1 的 baseline/fused/CNN/Transformer/Mamba mAP 为 `58.0109/58.3293/58.2773/58.3028/58.3476`。fused 只比 baseline 高 `0.3184`，低于 Mamba `0.0183`，距 65 仍差 `6.6707`；official access=0。
 - V7 只读终态诊断显示联合 Router 熵 `0.99791`、模态熵 `0.99994`、alpha 几乎固定 `0.198947`、预测与目标 Top-slot 一致率 `14.0625%`；fused/baseline 距离相关 `0.999786`、Top-10 overlap `99.6364%`。但 residual-only Oracle 为 `62.7435 mAP`，比最强 residual 高 `3.6118`，三专家 leave-one-out 均为正。失败点是 learned routing 与 joint optimization，而不是不存在专家互补。
 - optimizer0 的 V8 frozen-router 探针已否决“冻结现有专家、只重训 Router”路线：21 个跨摄像头合格 fit 身份、571 个 query 的最佳 residual 专家 100% 为 CNN；身份隔离教师在 dev 仅达到 CNN 多数类先验 `55.27%`，V7 Router 更低，为 `27.39%`。恢复 residual 与 baseline 等能量后，均匀/教师融合达到 `59.6188 mAP / 59.1515 Rank-1`，仍比 65 低 `5.3812`。下一版本必须增强专家表征与分工。
+- V8 Phase-A 已完成该表征修正：exact preflight、真实 B64/K8 capacity、100-step overfit 全部 PASS；20 epoch/840 step 训练期间不评估 dev，最终 epoch 只评估一次。固定 fused 为 `58.0972/56.8485`，不能称为部署增益；branch GT Oracle 为 `64.7850/65.9394`，比最强固定输出高 `6.7741 mAP`，CNN/Transformer/Mamba 均有独有胜例与正 leave-one-out 边际。residual-only Oracle 为 `63.4813/66.9091`，比最强 residual 高 `9.6153 mAP`。Oracle 使用真实标签，只是诊断上限。
+- 独立 result-to-claim 为 `partial/medium`；V8 专属完整性审计为 `WARN`，GT、指标归一化、活代码与 dev 泄漏检查均 PASS，警告只来自大 checkpoint/history/run identity 仍按 SHA/path 留在远端。下一步仅授权冻结专家、fit-only 的层级 Router 可行性阶段；Router 未证明可部署增益前不得启用 HFER，也不做 official test、消融或多种子。
 - 原正式启动在官方指标写出后的路由校准审计因缺失导入失败；`repair-0002` 仅重算训练集路由审计，`optimizer_steps=0`、`training_reexecuted=false`、`official_test_reexecuted=false`，公开 verifier 返回 PASS。
 - 用户最新指令：只做 seed 42；现在优先完成远端 Signal baseline 保底；主实验达到目标以后才考虑消融；所有训练、评估、数据和环境只在云端 GPU，Windows/WSL 仅作传输和文档存档。
 
@@ -872,6 +874,53 @@ FP32、关闭 cuDNN benchmark 后的两次探针重放核心 JSON 字节级一�
 ```text
 evidence/trifusion_v8_frozen_router_probe_seed42.json
 results/TRIFUSION_RGBNT201_V8_FROZEN_ROUTER_PROBE_2026-09-02.md
+```
+
+## 18. V8 pretrained-tail Phase-A 专家形成终态（2026-09-02）
+
+该版本不是在 V7 上继续扫 Router、alpha 或 epoch，而是直接修复专家表示与任务分工：冻结并逐元素保留 Signal 3072D baseline；从 CLIP block8 的 token 序列分叉；CNN、Transformer、Mamba 分别通过相同的冻结 pretrained tail blocks 9/10/11，再在每个 tail stage 后加入结构化残差。CNN 负责横向 part/local detail，Transformer 负责 CLS/global relation，Mamba 同时执行二维空间扫描与对齐 RGB/NI/TI 的跨模态长程扫描。残差严格定义为专家 tail 输出减去同路径冻结 tail reference。Phase-A 关闭 Router 和 HFER，避免专家形成前被联合目标拉回同质化。
+
+源码身份与工程门：
+
+- core/runner 形成提交：`b21db0ae6d1a42add651459242edd10940025dd3`；
+- formation-probe runner 提交：`abbf33d0f8ccee897391d910fb0461ffe3184aaf`；
+- exact preflight：全 825/825，baseline `58.0109/57.4545/69.9394/76.6061` 逐项一致；
+- capacity：真实 B64/K8，8 step，203/203 梯度张量，0 overflow，峰值 reserved `6006 MiB`；
+- overfit：100 step，loss `4.1156→0.6125`，扣除 label-smoothing 理论下限后的 ratio=`0.000534≤0.1`；
+- 总参数/可训练参数=`100,171,789/9,068,556`，Signal state SHA 在所有门前后不变。
+
+Phase-A 探针只用 seed42，训练 20 epoch/840 optimizer steps，训练期间 dev evaluation=0，最终 checkpoint 才在 30-ID held-out dev 上评估一次；耗时 `933.24s`，0 overflow，峰值 reserved `6214 MiB`，official access=0。未进行 checkpoint 选择。
+
+固定输出：
+
+| 输出 | mAP | Rank-1 | 相对 baseline mAP |
+|---|---:|---:|---:|
+| baseline_only | 58.0109 | 57.4545 | — |
+| fixed equal-energy fused | 58.0972 | 56.8485 | +0.0863 |
+| baseline + CNN residual | 57.6071 | 56.4848 | -0.4037 |
+| baseline + Transformer residual | 56.3031 | 55.8788 | -1.7077 |
+| baseline + Mamba residual | 56.6277 | 54.4242 | -1.3832 |
+
+query-wise GT Oracle（诊断、非部署）：
+
+| 诊断 | 最强固定 mAP | Oracle mAP | Oracle Rank-1 | 增益 |
+|---|---:|---:|---:|---:|
+| baseline + expert branch | 58.0109 | 64.7850 | 65.9394 | +6.7741 |
+| residual-only experts | 53.8660 | 63.4813 | 66.9091 | +9.6153 |
+
+branch 独有 AP 胜例 CNN/Transformer/Mamba=`201/170/138`，leave-one-out 边际=`+1.2043/+1.9592/+0.8435 mAP`；residual-only 对应为 `257/232/199` 与 `+3.1128/+4.9698/+2.6370`。这支持“三专家现在具有不同查询优势”的窄结论，但固定 fused 仍只比 baseline 高 `0.0863 mAP` 且 Rank-1 更低。branch Oracle 也仍比 65 低 `0.2150`，因此仅硬选择分支不足以达门。
+
+独立 result-to-claim=`partial/medium`；独立 V8 审计=`WARN`。下一步只允许：冻结 Phase-A 专家，不读取 dev Oracle 标签，用 fit-only OOF/CIRC `expert×modality` 效用和受控质量退化训练层级 Router；缺失模态质量必须为零，受损模态质量必须下降。Router 证明可部署 fused 超过 baseline/固定专家后，才允许以低学习率启用 typed HFER。65 mAP 前继续禁止 official test、消融和多种子。
+
+证据与报告：
+
+```text
+evidence/trifusion_signal_preserving_v8_expert_formation_preflight_seed42.json
+evidence/trifusion_signal_preserving_v8_expert_formation_capacity_seed42.json
+evidence/trifusion_signal_preserving_v8_expert_formation_overfit_seed42.json
+evidence/trifusion_signal_preserving_v8_expert_formation_probe_seed42.json
+results/TRIFUSION_RGBNT201_V8_EXPERT_FORMATION_PHASE_A_2026-09-02.md
+EXPERIMENT_AUDIT_V8_PHASE_A.md
 ```
 
 ---
