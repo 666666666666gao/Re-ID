@@ -153,3 +153,18 @@
 | 2026-09-01 12:23 | /experiment-audit | EXPERIMENT_AUDIT.md | research | 独立 GPT-5.5 完整性审计；整体 WARN、指标链 PASS、旧交接状态需更新 |
 | 2026-09-01 12:23 | /experiment-audit | EXPERIMENT_AUDIT.json | research | 完整性审计机器可读结论 |
 | 2026-09-01 12:23 | /handoff | docs/TRIFUSION_RGBNT201_CURRENT_COMPLETE_HANDOFF_2026-09-01.md | research | 正式结果、修复账本、证据哈希、测试状态和负结论的统一交接入口 |
+| 2026-09-01 12:56 | /experiment-plan | refine-logs/EXPERIMENT_PLAN_20260901_125629.md | implementation | V2 anchor-preserving、stage-updated、information-preserving 主方法恢复计划 |
+| 2026-09-01 12:56 | /experiment-plan | refine-logs/EXPERIMENT_PLAN.md | implementation | latest V2 主方法恢复计划 |
+| 2026-09-01 12:56 | /experiment-plan | refine-logs/EXPERIMENT_TRACKER_20260901_125629.md | implementation | V2 main-only train/dev 执行 tracker |
+| 2026-09-01 12:56 | /experiment-plan | refine-logs/EXPERIMENT_TRACKER.md | implementation | latest V2 执行 tracker |
+| 2026-09-01 13:29 | /tdd | modeling/trifusion/cascade_v2.py | implementation | 隔离实现APSD锚点保持、SURE逐阶段质量刷新、QIPF 5120维无损融合及效用排序监督 |
+| 2026-09-01 13:29 | /tdd | modeling/trifusion/cascade_v2_builder.py | implementation | 真实CLIP初始化、93.97M参数与三创新点provenance的独立V2构建入口 |
+| 2026-09-01 13:29 | /tdd | tools/run_trifusion_cascade_v2.py | implementation | 不改变冻结V1 runner/协议哈希的独立V2训练启动器 |
+| 2026-09-01 13:29 | /tdd | tests/test_trifusion_cascade_v2.py | implementation | 三项V2机制、真实CLIP构建、宽检索头、路由排序与label smoothing的红绿测试 |
+| 2026-09-01 13:29 | /run-experiment | configs/RGBNT201/TriFusion-cascade-v2-hfer-uniform-rtx3090.yml | implementation | seed42、B32/K4、train-only V2 uniform-selector 配置 |
+| 2026-09-01 13:48 | /run-experiment | ../artifacts/trifusion_cascade_v2_isolated_hfer_uniform_seed42_capacity/ | research | 隔离V2的93.97M参数、峰值6248MiB reserved、8步梯度覆盖100%真实3090容量门 |
+| 2026-09-01 13:48 | /run-experiment | ../artifacts/trifusion_cascade_v2_isolated_hfer_uniform_seed42_overfit/ | research | 隔离V2固定批100步损失比例0.088862的学习能力门 |
+| 2026-09-01 13:29 | /experiment-plan | refine-logs/EXPERIMENT_TRACKER_20260901_132912.md | implementation | M0全通过并将V2-R003切换为READY的永久追踪版本 |
+| 2026-09-01 13:29 | /experiment-plan | refine-logs/EXPERIMENT_TRACKER.md | implementation | latest V2执行追踪器，记录真实3090门禁证据 |
+| 2026-09-01 13:48 | /experiment-plan | refine-logs/EXPERIMENT_TRACKER_20260901_134819.md | implementation | V1哈希链恢复、141 PASS及隔离V2门禁证据的永久追踪版本 |
+| 2026-09-01 13:48 | /experiment-plan | refine-logs/EXPERIMENT_TRACKER.md | implementation | latest V2执行追踪器，V2-R003已READY |

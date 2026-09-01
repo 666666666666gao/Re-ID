@@ -108,6 +108,35 @@ def test_shared_semantic_optimizer_keeps_the_full_clip_trunk_at_pretrained_lr() 
     assert [parameter.label for parameter in new] == ["modality_adapter", "cnn_adapter"]
 
 
+def test_cascade_v2_optimizer_keeps_clip_anchor_projection_at_pretrained_lr() -> None:
+    import tools.run_trifusion_cascade_v2 as runner
+
+    parameters = {
+        "encoder.tokenizer.shared_blocks.0.block.attn.in_proj_weight": SimpleNamespace(
+            requires_grad=True, label="shared_block"
+        ),
+        "fusion.semantic_projection.weight": SimpleNamespace(
+            requires_grad=True, label="clip_anchor_projection"
+        ),
+        "fusion.residual_projections.cnn.weight": SimpleNamespace(
+            requires_grad=True, label="cnn_residual"
+        ),
+    }
+    model = SimpleNamespace(named_parameters=lambda: parameters.items())
+
+    pretrained, new = runner._partition_trainable_parameters(
+        model,
+        family="collaborative",
+        architecture="shared_semantic_cascade_v2",
+    )
+
+    assert [parameter.label for parameter in pretrained] == [
+        "shared_block",
+        "clip_anchor_projection",
+    ]
+    assert [parameter.label for parameter in new] == ["cnn_residual"]
+
+
 def test_protocol_validator_git_status_detects_uncommitted_drift(monkeypatch) -> None:
     import tools.run_trifusion_experiment as runner
 
@@ -596,6 +625,26 @@ def test_shared_semantic_rtx3090_configs_cover_the_complete_main_pipeline() -> N
         "CIRC-generators-development-shared-semantic-rtx3090.json"
     )
     assert transfer_orchestration["model_config"] == development_path.name
+
+
+def test_cascade_v2_uniform_selector_config_is_train_only_and_generalization_aware() -> None:
+    config_path = (
+        PROJECT
+        / "configs/RGBNT201/TriFusion-cascade-v2-hfer-uniform-rtx3090.yml"
+    )
+    config = yaml.safe_load(config_path.read_text(encoding="utf-8"))
+
+    assert config["EXPERIMENT"]["VARIANT"] == "hfer_uniform_generator"
+    assert config["EXPERIMENT"]["SEED"] == 42
+    assert config["MODEL"]["ARCHITECTURE"] == "shared_semantic_cascade_v2"
+    assert config["MODEL"]["PARAMETER_BUDGET"] == 120_000_000
+    assert config["DATA"]["TRAIN_BATCH_SIZE"] == 32
+    assert config["DATA"]["NUM_INSTANCES"] == 4
+    assert config["LOSS"]["LABEL_SMOOTHING"] == 0.1
+    assert config["LOSS"]["EFFECT_RANK_WEIGHT"] == 0.0
+    assert config["LOSS"]["RELIABILITY"] == 0.0
+    assert config["PROTOCOL"]["OFFICIAL_TEST_DURING_DEVELOPMENT"] is False
+    assert config["PROTOCOL"]["MODEL_SELECTION"] == "dev_mAP"
 
 
 def test_trifusion_capacity_runs_eight_train_only_steps_after_gate(tmp_path: Path) -> None:
