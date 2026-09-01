@@ -19,6 +19,13 @@ import yaml
 
 GATE_OUTPUTS = ("baseline_only", "cnn", "transformer", "mamba")
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
+ARCHITECTURE_V5 = "signal_preserving_collaborative_v5"
+ARCHITECTURE_V6 = "signal_preserving_collaborative_v6"
+
+
+def receipt_schema(architecture: str, stage: str) -> str:
+    version = {ARCHITECTURE_V5: "v5", ARCHITECTURE_V6: "v6"}[architecture]
+    return f"trifusion-signal-preserving-{version}-{stage}-v1"
 
 
 def load_contract(path: Path) -> dict[str, Any]:
@@ -27,6 +34,7 @@ def load_contract(path: Path) -> dict[str, Any]:
     config = yaml.safe_load(path.read_text(encoding="utf-8"))
     return {
         "seed": int(config["EXPERIMENT"]["SEED"]),
+        "architecture": str(config["MODEL"]["ARCHITECTURE"]),
         "train_batch_size": int(config["DATA"]["TRAIN_BATCH_SIZE"]),
         "num_instances": int(config["DATA"]["NUM_INSTANCES"]),
         "max_epochs": int(config["OPTIMIZATION"]["MAX_EPOCHS"]),
@@ -70,13 +78,28 @@ def weighted_training_loss(
     branch_triplet = sum(
         losses[f"triplet_{expert}"] for expert in ("cnn", "transformer", "mamba")
     )
-    return (
+    total = (
         losses["id_fused"] * float(weights["ID_FUSED"])
         + losses["triplet_fused"] * float(weights["TRIPLET_FUSED"])
         + branch_id * float(weights["ID_BRANCH"])
         + branch_triplet * float(weights["TRIPLET_BRANCH"])
         + losses["peer_logits"] * float(weights["PEER_LOGITS"])
     )
+    if config["MODEL"]["ARCHITECTURE"] == "signal_preserving_collaborative_v6":
+        residual_id = sum(
+            losses[f"id_residual_{expert}"]
+            for expert in ("cnn", "transformer", "mamba")
+        )
+        residual_triplet = sum(
+            losses[f"triplet_residual_{expert}"]
+            for expert in ("cnn", "transformer", "mamba")
+        )
+        total = (
+            total
+            + residual_id * float(weights["ID_RESIDUAL"])
+            + residual_triplet * float(weights["TRIPLET_RESIDUAL"])
+        )
+    return total
 
 
 def _set_seed(seed: int) -> None:
@@ -145,23 +168,39 @@ def _build_runtime(config: dict[str, Any]) -> dict[str, Any]:
     project_modeling = str(PROJECT_ROOT / "modeling")
     if project_modeling not in sys.path:
         sys.path.append(project_modeling)
-    from trifusion.signal_preserving_v5_builder import (
-        build_signal_preserving_trifusion_v5,
-    )
+    architecture = str(model_config["ARCHITECTURE"])
+    common_build_arguments = {
+        "signal_checkpoint_sha256": checkpoint_sha256,
+        "num_classes": len({record[1] for record in train_records}),
+        "feature_width": int(model_config["FEATURE_WIDTH"]),
+        "grid_size": tuple(model_config["GRID_SIZE"]),
+        "adapter_width": int(model_config["ADAPTER_WIDTH"]),
+        "residual_width": int(model_config["RESIDUAL_WIDTH"]),
+        "relay_rank": int(model_config["RELAY_RANK"]),
+        "private_width": int(model_config["PRIVATE_WIDTH"]),
+        "reliability_hidden_width": int(model_config["RELIABILITY_HIDDEN_WIDTH"]),
+    }
+    if architecture == ARCHITECTURE_V5:
+        from trifusion.signal_preserving_v5_builder import (
+            build_signal_preserving_trifusion_v5,
+        )
 
-    build = build_signal_preserving_trifusion_v5(
-        signal_model,
-        signal_checkpoint_sha256=checkpoint_sha256,
-        num_classes=len({record[1] for record in train_records}),
-        feature_width=int(model_config["FEATURE_WIDTH"]),
-        grid_size=tuple(model_config["GRID_SIZE"]),
-        adapter_width=int(model_config["ADAPTER_WIDTH"]),
-        residual_width=int(model_config["RESIDUAL_WIDTH"]),
-        relay_rank=int(model_config["RELAY_RANK"]),
-        private_width=int(model_config["PRIVATE_WIDTH"]),
-        reliability_hidden_width=int(model_config["RELIABILITY_HIDDEN_WIDTH"]),
-        residual_scale_init=float(model_config["RESIDUAL_SCALE_INIT"]),
-    )
+        build = build_signal_preserving_trifusion_v5(
+            signal_model,
+            residual_scale_init=float(model_config["RESIDUAL_SCALE_INIT"]),
+            **common_build_arguments,
+        )
+    elif architecture == ARCHITECTURE_V6:
+        from trifusion.signal_preserving_v6_builder import (
+            build_signal_preserving_trifusion_v6,
+        )
+
+        build = build_signal_preserving_trifusion_v6(
+            signal_model,
+            **common_build_arguments,
+        )
+    else:
+        raise ValueError(f"unsupported Signal-preserving architecture: {architecture}")
     build.model.cuda()
     return {
         "model": build.model,
@@ -253,7 +292,7 @@ def _run_preflight(config: dict[str, Any], output_dir: Path) -> dict[str, Any]:
     if not exact_reference_match or not all(metric_parity.values()):
         raise ValueError("V5 baseline-only output failed exact Signal parity")
     result = {
-        "schema_version": "trifusion-signal-preserving-v5-preflight-v1",
+        "schema_version": receipt_schema(config["MODEL"]["ARCHITECTURE"], "preflight"),
         "status": "PASS",
         "mode": "preflight",
         "signal_source_commit": runtime["signal_source_commit"],
@@ -289,6 +328,19 @@ def _module_state_sha256(module: Any) -> str:
     return digest.hexdigest()
 
 
+def _criterion_class(config: dict[str, Any]) -> Any:
+    architecture = str(config["MODEL"]["ARCHITECTURE"])
+    if architecture == ARCHITECTURE_V5:
+        from trifusion.signal_preserving_v5 import SignalPreservingV5Criterion
+
+        return SignalPreservingV5Criterion
+    if architecture == ARCHITECTURE_V6:
+        from trifusion.signal_preserving_v6 import ComplementarityActivatedV6Criterion
+
+        return ComplementarityActivatedV6Criterion
+    raise ValueError(f"unsupported Signal-preserving architecture: {architecture}")
+
+
 def _training_batch(raw_batch: Any) -> tuple[dict[str, Any], Any]:
     import torch
 
@@ -314,9 +366,7 @@ def _run_capacity(config: dict[str, Any], output_dir: Path) -> dict[str, Any]:
     started = time.time()
     runtime = _build_runtime(config)
     model = runtime["model"]
-    from trifusion.signal_preserving_v5 import SignalPreservingV5Criterion
-
-    criterion = SignalPreservingV5Criterion(
+    criterion = _criterion_class(config)(
         target_cache=None,
         triplet_margin=float(config["LOSS"]["TRIPLET_MARGIN"]),
     ).cuda()
@@ -375,7 +425,7 @@ def _run_capacity(config: dict[str, Any], output_dir: Path) -> dict[str, Any]:
         and baseline_before == baseline_after
     )
     result = {
-        "schema_version": "trifusion-signal-preserving-v5-capacity-v1",
+        "schema_version": receipt_schema(config["MODEL"]["ARCHITECTURE"], "capacity"),
         "status": "PASS" if passed else "FAIL",
         "mode": "capacity",
         "steps": steps,
@@ -413,9 +463,7 @@ def _run_overfit(config: dict[str, Any], output_dir: Path) -> dict[str, Any]:
     started = time.time()
     runtime = _build_runtime(config)
     model = runtime["model"]
-    from trifusion.signal_preserving_v5 import SignalPreservingV5Criterion
-
-    criterion = SignalPreservingV5Criterion(
+    criterion = _criterion_class(config)(
         target_cache=None,
         triplet_margin=float(config["LOSS"]["TRIPLET_MARGIN"]),
     ).cuda()
@@ -478,7 +526,7 @@ def _run_overfit(config: dict[str, Any], output_dir: Path) -> dict[str, Any]:
         and baseline_before == baseline_after
     )
     result = {
-        "schema_version": "trifusion-signal-preserving-v5-overfit-v1",
+        "schema_version": receipt_schema(config["MODEL"]["ARCHITECTURE"], "overfit"),
         "status": "PASS" if passed else "FAIL",
         "mode": "overfit",
         "steps": steps,
@@ -585,9 +633,7 @@ def _run_dev(config: dict[str, Any], config_path: Path, output_dir: Path) -> dic
     started = time.time()
     runtime = _build_runtime(config)
     model = runtime["model"]
-    from trifusion.signal_preserving_v5 import SignalPreservingV5Criterion
-
-    criterion = SignalPreservingV5Criterion(
+    criterion = _criterion_class(config)(
         target_cache=None,
         triplet_margin=float(config["LOSS"]["TRIPLET_MARGIN"]),
     ).cuda()
@@ -611,7 +657,9 @@ def _run_dev(config: dict[str, Any], config_path: Path, output_dir: Path) -> dic
         for key, value in config["SIGNAL"]["EXPECTED_DEV_METRICS"].items()
     }
     identity = {
-        "schema_version": "trifusion-signal-preserving-v5-dev-identity-v1",
+        "schema_version": receipt_schema(
+            config["MODEL"]["ARCHITECTURE"], "dev-identity"
+        ),
         "seed": int(config["EXPERIMENT"]["SEED"]),
         "config": str(config_path),
         "config_sha256": _sha256(config_path),
@@ -714,7 +762,9 @@ def _run_dev(config: dict[str, Any], config_path: Path, output_dir: Path) -> dic
             best_metrics = metrics
             torch.save(
                 {
-                    "schema_version": "trifusion-signal-preserving-v5-checkpoint-v1",
+                    "schema_version": receipt_schema(
+                        config["MODEL"]["ARCHITECTURE"], "checkpoint"
+                    ),
                     "epoch": epoch,
                     "model_state_dict": model.state_dict(),
                     "metrics_percent": metrics,
@@ -725,7 +775,9 @@ def _run_dev(config: dict[str, Any], config_path: Path, output_dir: Path) -> dic
         (output_dir / "history.json").write_text(
             json.dumps(
                 {
-                    "schema_version": "trifusion-signal-preserving-v5-history-v1",
+                    "schema_version": receipt_schema(
+                        config["MODEL"]["ARCHITECTURE"], "history"
+                    ),
                     "epochs": history,
                     "best_epoch": best_epoch,
                     "best_fused_mAP": best_fused_map,
@@ -764,7 +816,9 @@ def _run_dev(config: dict[str, Any], config_path: Path, output_dir: Path) -> dic
         and overflow_events == 0
     )
     result = {
-        "schema_version": "trifusion-signal-preserving-v5-dev-result-v1",
+        "schema_version": receipt_schema(
+            config["MODEL"]["ARCHITECTURE"], "dev-result"
+        ),
         "status": "PASS" if completed else "FAIL",
         "mode": "dev",
         "epochs_completed": max_epochs,
@@ -885,6 +939,7 @@ __all__ = [
     "learning_rate_multiplier",
     "load_contract",
     "load_raw_config",
+    "receipt_schema",
     "parse_args",
     "run",
     "weighted_training_loss",

@@ -227,3 +227,9 @@
 | 2026-09-01 21:52 | /handoff | README.md | documentation | 公开入口更新 V5 终局指标、失败门和检索排序近似不变结论 |
 | 2026-09-01 21:52 | /experiment-plan | refine-logs/EXPERIMENT_PLAN.md | implementation | latest 计划关闭 V5 official/消融并限定一个诊断驱动 main-only 修正 |
 | 2026-09-01 21:52 | /experiment-plan | refine-logs/EXPERIMENT_TRACKER.md | research | V5 readiness、dev、诊断和 result-to-claim 四项终态回填 |
+| 2026-09-01 22:30 | /tdd | modeling/trifusion/signal_preserving_v6.py | implementation | exact Signal 前缀、无自由倍率等能量残差激活、residual-only 监督与路由合同 |
+| 2026-09-01 22:30 | /tdd | modeling/trifusion/signal_preserving_v6_builder.py | implementation | 复用三完整专家、两次 HFER、三次可靠性刷新并构建 V6 五路输出 |
+| 2026-09-01 22:30 | /tdd | tests/test_trifusion_signal_preserving_v6.py | implementation | baseline 字节保持、残差能量激活、残差梯度、路由梯度和真实 builder 公共接缝 |
+| 2026-09-01 22:30 | /tdd | tests/test_run_signal_preserving_v6.py | implementation | residual-only 损失权重、seed42/B32K4/60epoch 与 V6 独立 receipt identity 合同 |
+| 2026-09-01 22:30 | /run-experiment | configs/RGBNT201/TriFusion-signal-preserving-v6-rtx3090.yml | implementation | 单一 V6 seed42 主实验配置；沿用 V5 优化设置且不含可扫描残差倍率 |
+| 2026-09-01 22:30 | /run-experiment | tools/run_signal_preserving_v6.py | implementation | 复用审计 runner 的 V6 独立入口；V5/V6 显式 fail-closed 分派与版本化 schema |

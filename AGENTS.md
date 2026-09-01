@@ -71,6 +71,12 @@
   distance correlation 1.0 and 99.9879% Top-10 overlap versus baseline. The
   next main version must materially change retrieval geometry while preserving
   the exact Signal output; do not scan hyperparameters or residual multipliers.
+- V6 is the single diagnostic-driven main-only correction: it removes the V5
+  learned residual scale, deterministically matches the routed residual-bank
+  norm to the exact Signal norm per sample, and trains/routes from residual-only
+  identity embeddings so the frozen baseline cannot satisfy expert objectives.
+  It is not an ablation or multiplier scan. It must pass preflight, capacity and
+  overfit before one seed-42 held-out-dev run; official test remains forbidden.
 
 ## Remote experiment constraints
 
