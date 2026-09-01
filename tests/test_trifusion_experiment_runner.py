@@ -137,6 +137,39 @@ def test_cascade_v2_optimizer_keeps_clip_anchor_projection_at_pretrained_lr() ->
     assert [parameter.label for parameter in new] == ["cnn_residual"]
 
 
+def test_task_anchor_v3_optimizer_keeps_only_clip_initialized_paths_slow() -> None:
+    import tools.run_trifusion_task_anchor_v3 as runner
+
+    parameters = {
+        "tokenizer.shared_blocks.0.block.attn.in_proj_weight": SimpleNamespace(
+            requires_grad=True, label="clip_block"
+        ),
+        "tokenizer.output_projection": SimpleNamespace(
+            requires_grad=True, label="clip_projection"
+        ),
+        "encoder.experts.cnn.stages.0.0.down.weight": SimpleNamespace(
+            requires_grad=True, label="cnn_expert"
+        ),
+        "fusion.residual_projections.cnn.weight": SimpleNamespace(
+            requires_grad=True, label="clip_initialized_residual"
+        ),
+    }
+    model = SimpleNamespace(named_parameters=lambda: parameters.items())
+
+    pretrained, new = runner._partition_trainable_parameters(
+        model,
+        family="collaborative",
+        architecture="task_anchored_collaborative_v3",
+    )
+
+    assert [parameter.label for parameter in pretrained] == [
+        "clip_block",
+        "clip_projection",
+        "clip_initialized_residual",
+    ]
+    assert [parameter.label for parameter in new] == ["cnn_expert"]
+
+
 def test_protocol_validator_git_status_detects_uncommitted_drift(monkeypatch) -> None:
     import tools.run_trifusion_experiment as runner
 

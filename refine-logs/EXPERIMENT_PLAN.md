@@ -1,107 +1,59 @@
-# TriFusion V2 主方法恢复实验计划
+# TriFusion V3 强基线锚定主实验计划
 
-**问题**：当前共享 CLIP + CNN/Transformer/Mamba 主方法已完整训练，但九路特征被压缩为 512 维、路由近似常数、专家投影高度同质，最终仅取得 59.1478 mAP / 63.2775 Rank-1。
-**方法主张**：先无损保留 CLIP 的全局身份锚点，再让三个异构专家只学习互补残差；每次交换前重估质量，并以保信息的块式融合保留九路贡献。
-**日期**：2026-09-01
-**版本**：V2 recovery-1；只做 seed 42；不复现 baseline；不做消融；旧 official test 不再访问。
+**问题**：V1 已完整训练 60 epoch，但正式 fused 仅为 59.1478 mAP / 63.2775 Rank-1；三个分支均约 59 mAP，融合未超过最佳分支。V2 同样完整训练 60 epoch，train-only dev 最佳 fused 41.0476 mAP，低于 Transformer 41.3275，说明 5120 维升维和复杂路由没有恢复强基线。
+**冻结诊断**：差距的主因不是训练未完成，也不是显存或评估器，而是旧模型没有保留 Signal 类方法的 task-adapted CLIP 直接检索路径，且三个专家高度同质。
+**版本**：V3 task-anchor-1；仅 seed 42；仅云端 RTX3090；不复现 baseline；先主实验，过登记目标后才做消融。
 
 ## Claim Map
 
-| Claim | Why It Matters | Minimum Convincing Evidence | Linked Blocks |
-|---|---|---|---|
-| C1（主张）锚点保持的异构残差协作能形成互补检索表示，而不是把三个专家训练成同一表示 | 直接对应本次 23+ mAP baseline 差距和融合无增益 | train/dev fused mAP ≥70；fused 至少高于最佳分支 1.0 pp；三专家 residual/projection 不再两两 cosine >0.999；训练与评估全程不读 official test | B1、B2 |
-| C2（支持）逐阶段质量更新与效用排序监督能避免常数路由，并把质量差异转化为融合收益 | 直接对应 mean probability≈0.24997 的路由塌缩 | 路由在有效 expert×modality 项上的样本内标准差 ≥0.03；helpful-vs-not AUROC ≥0.65；`modality_missing` 的路由排序方向正确；fused 超过全部分支 | B2、B3 |
-| Anti-claim：提升只来自继续训练、GPU、扩大 batch 或简单增加维度 | 已有 epoch60 近零训练损失排除“没训练完” | B32/K4 容量与梯度门通过；参数预算≤120M；同一个 V2 主版本固定后训练，不从旧 official test 选结构 | B0、B3 |
+| Claim | Minimum convincing evidence | Anti-claim / gate |
+|---|---|---|
+| C1：直接 task-adapted CLIP 身份锚点加有界异构残差，能在不破坏强语义主路径的前提下获得互补局部、全局和长程信息 | zero-residual 模式与 anchor 距离矩阵严格相同；每个残差范数不超过对应 anchor 范数乘可学习尺度；dev fused 同时超过 anchor 和最佳分支 | 不能把提升归因于 5120 维：V3 固定为 3072 维，低于 V2 的 5120 维 |
+| C2：分阶段双向交换、身份感知跨谱对齐和质量后验联合路由，能把三专家差异转化为融合收益 | 三专家均有有限非零梯度；fused>best branch；跨模态对齐损失有效；路由非恒定且对缺失模态正确屏蔽 | 只增加参数但不产生融合增益视为失败；正式指标未过登记目标不得声称 SOTA |
 
 ## 三个主创新点（工作命名）
 
-1. **APSD：Anchor-Preserving Semantic Decomposition**。对 CLIP 最后一层 patch token 做中心化，再加入独立 CLS：`z_i = CLS + (p_i - mean(p))`。因此 token 均值严格等于 CLS，CNN 获得局部偏差，Transformer 获得全局关系，Mamba 获得长程扫描序列，同时初始全局检索表示与预训练 CLIP 投影严格一致。
-2. **SURE：Stage-Updated Reliability Exchange**。stage 1、stage 2、stage 3 都从当前协作状态重新估计质量；第二次 HFER 不再复用 stage-1 后验。CIRC 监督增加基于 signed total effect 的成对排序项，常数预测不能使该项最小。
-3. **QIPF：Quality-Gated Information-Preserving Fusion**。九个 expert×modality 贡献不再求和压成一个 512 维向量，而是用质量权重缩放后块式保留，并附加一个协作交互块；完整 fused 为 5120 维，分支为 2048 维。共享 CLIP 投影作为慢学习语义锚点，专家残差投影用新模块学习率训练。
+1. **TACA：Task-Adaptive CLIP Anchor**。RGB、NIR、TIR 共用完整 CLIP ViT-B/16；每个模态的官方 512 维 projected CLS 直接拼接成 1536 维身份锚点，并以 `5e-6` 小学习率任务适配，不再把强主干只当作被后续模块重写的 token 源。
+2. **BCER：Bounded Collaborative Expert Residuals**。CNN、Transformer、Mamba 从同一 CLS 保持的局部 token 场出发，分别提取二维高频、全局关系和四向长程信息；三阶段 HFER 双向交换。每个专家残差显式限制为不超过相应 anchor 范数乘 sigmoid 尺度，从结构上抑制随机专家覆盖强预训练语义。
+3. **IQR Fusion：Identity-aligned Quality Routing**。以身份感知多正样本跨谱对齐约束 RGB/NIR/TIR anchor，以 `r(1-u)` 后验对三个专家的逐模态残差路由；最终表示为 `[1536-d direct anchor, 1536-d routed residual]`，保留 anchor 与专家贡献而非再次压成单一分支。
 
-这些名称仅作为工程身份；在完成新的主源查新前不声称“首次”。
+上述名称是工程身份；未经新的主源查新不声称“首次”。
 
-## Paper Storyline
+## 主实验顺序
 
-- 主文最终必须证明：强预训练锚点被精确保留；三专家拥有可测互补性；质量后验随输入变化；融合超过每个分支；同协议正式结果达到登记目标。
-- 当前只允许产生主方法 train/dev 证据。消融、多种子和 baseline 复现全部延后到主结果超过 `85.3/87.9` 之后。
-- 旧 seed-42 official 结果只作失败证据；不得用于 V2 选模、早停、阈值或特征头选择。
+| Run ID | Split / mode | Success gate | Status |
+|---|---|---|---|
+| V2-R003 | 141-fit/30-dev，60 epoch | fused≥65 且 fused>best branch | COMPLETE—FAIL：best e44 fused 41.0476，Transformer 41.3275，official access=0 |
+| V3-R000 | synthetic + real CLIP TDD / full regression | anchor、norm bound、三支梯度、builder、runner 全通过 | IN PROGRESS |
+| V3-R001 | RGBNT201 train-only B32/K4 capacity | ≤120M 参数；无 OOM/nonfinite/overflow；梯度覆盖通过 | TODO |
+| V3-R002 | 固定真实 batch 100-step overfit | 总损失显著下降且全程有限 | TODO |
+| V3-R003 | 141-fit/30-dev，seed42，完整 60 epoch | fused mAP≥65；fused>anchor 且 fused>best branch；official access=0 | BLOCKED BY R000–R002 |
+| V3-R004 | full171 固定 60 epoch + official exactly once | 预先冻结 checkpoint/选择规则；严格超过 85.3 mAP / 87.9 Rank-1 才支持目标 | BLOCKED BY DEV GATE |
 
-## Experiment Blocks
+## 固定训练配置
 
-### B0：实现与容量门
+- 位置：仅远端 RTX3090 24GB；Windows/WSL 只用于代码传输和文档。
+- 数据：RGBNT201；开发阶段只用 train_171 的 141-fit/30-dev，official test access 必须为 0。
+- batch：真实 B32/K4，不用梯度累积替代 batch-hard；eval B64；AMP initial scale 512；activation checkpointing。
+- 优化：AdamW；CLIP 与 CLIP 初始化投影 LR `5e-6`；新增专家/路由/分类器 LR `3.5e-4`；60 epoch；warmup 5。
+- 检索：raw-before-neck；不 rerank；不 TTA/TTT。
+- 资源：capacity 门要求启动前至少 22000 MiB 空闲，但训练实际可使用 3090 的绝大部分显存，不存在 500 MiB 限制。
 
-- Claim tested：V2 是完整三分支主模型，并能在 RTX3090 上以真实 B32/K4 训练。
-- Dataset / split：CPU 合成契约测试；云端 RGBNT201 train-only。
-- Metrics：形状、精确 CLS 锚点、缺失模态掩码、三阶段后验刷新、梯度覆盖、有限值、峰值显存、参数量。
-- Success criterion：全部专项与内部回归通过；B32/K4 AMP 无 OOM/overflow；所有允许训练的参数获得有限梯度。
-- Failure interpretation：先修实现，不启动 dev 长训。
-- Priority：MUST-RUN。
+## 决策边界
 
-### B1：锚点保持与保信息融合主干
+- V3-R003 是完整 60 epoch 主方法开发实验，不是短跑；若失败，如实保留并继续只在 train/dev 修结构。
+- anchor 指标由冻结 checkpoint 的独立 train-only representation diagnostic 计算；必须与 fused/三分支使用同一 dev 协议。
+- 只有 V3-R003 过门才创建新的正式实验身份；正式 official test 对该身份只访问/评估一次。
+- 不做多种子、不复现 baseline、不提前做消融。只有正式 fused 同时严格超过 85.3/87.9 后才规划消融。
+- Signal 80.3/85.2 是上游日志值，不称本地复现；MDReID 82.0868/85.1675 仅为已完成的评估链校验，不复制其无仓库级许可证代码。
 
-- Claim tested：APSD+QIPF 恢复强 CLIP 检索表征并保留专家/模态信息。
-- Dataset / split：RGBNT201 141-fit/30-dev；seed42；60 epoch；无 official test。
-- Compared systems：只运行一个冻结的 V2 主生成器身份，不运行消融；历史 V1 结果仅用于失败诊断，不参与调参。
-- Metrics：fused/三分支 mAP、Rank-1/5/10；融合相对最佳分支；投影 cosine；专家输出 CKA/余弦；训练损失。
-- Success criterion：fused dev mAP ≥65 才允许生成新的 CIRC targets；fused 必须超过最佳分支；专家投影不再高度同质。
-- Failure interpretation：主干仍不足，停止 CIRC 和正式实验，继续改主方法结构。
-- Priority：MUST-RUN。
+## 当前检查表
 
-### B2：逐阶段质量交换与效用排序
-
-- Claim tested：SURE 路由产生输入相关质量，并在两次 HFER 和最终融合中使用最新状态。
-- Dataset / split：仅 RGBNT201 train/dev；由冻结 V2 生成器重新构建身份外 CIRC cache。
-- Metrics：BCE/Brier/ECE、AUROC、signed-effect pairwise ranking、路由样本内标准差、条件/专家/模态均值、融合与分支检索指标。
-- Success criterion：AUROC≥0.65、样本内 std≥0.03、不出现近常数路由；CIRC V2 dev fused mAP≥70 且高于最佳分支≥1.0 pp。
-- Failure interpretation：不进入正式 test；不得用总体低 ECE 掩盖无区分度。
-- Priority：MUST-RUN。
-
-### B3：新主版本冻结与正式晋级
-
-- Claim tested：新实验身份在不读取旧 official test 的情况下满足正式评估资格。
-- Dataset / split：配置先在 141/30 上冻结；随后全 171 身份从固定起点训练 60 epoch；新 official test 只在固定 endpoint 访问一次。
-- Setup：seed42；无 reranking/TTT；不复现 baseline；不做消融。
-- Success criterion：dev 所有 B1/B2 门均通过，代码/config/cache/checkpoint/选择规则全部哈希冻结，才创建新正式授权。正式 fused 必须同时严格超过 `85.3 mAP / 87.9 Rank-1` 才进入消融。
-- Failure interpretation：如仍未过目标，如实保留负结果并返回 train/dev 主方法恢复；不能重复读取同一正式 test。
-- Priority：MUST-RUN。
-
-## Run Order and Milestones
-
-| Run ID | Goal | Split | Decision Gate | Estimated Cost | Status |
-|---|---|---|---|---:|---|
-| V2-R000 | APSD/SURE/QIPF TDD | synthetic/CPU | targeted + internal regression PASS | <1 h | IN PROGRESS |
-| V2-R001 | RTX3090 capacity | train-only B32/K4 | finite gradients、参数≤120M、显存门通过 | <0.5 GPU-h | TODO |
-| V2-R002 | 100-batch overfit | train-only | loss 显著下降、无 nonfinite | <1 GPU-h | TODO |
-| V2-R003 | V2 HFER-uniform selector | 141-fit/30-dev | fused mAP≥65 且融合超过分支 | 6–10 GPU-h | TODO |
-| V2-R004 | V2 CIRC cache | train folds only | 零身份泄漏、cache/hash/排序覆盖 PASS | 8–20 GPU-h | TODO |
-| V2-R005 | V2 CIRC/SURE main dev | 141-fit/30-dev | fused mAP≥70、领先最佳分支≥1.0、router 门通过 | 6–10 GPU-h | TODO |
-| V2-R006 | 新正式身份冻结 | no test | 所有选择和工件冻结 | <1 h | TODO |
-| V2-R007 | 全171固定训练+正式一次 | train171→official once | fused>85.3 且 R1>87.9 | 6–10 GPU-h | BLOCKED BY DEV GATE |
-
-## Compute and Data Budget
-
-- 计算位置：仅云端 RTX3090；Windows/WSL 只做传输、代码发布和文档。
-- batch：真实 B32/K4，不使用梯度累积替代 batch-hard 语义；AMP+activation checkpointing。
-- seeds：只运行 42。
-- 数据：沿用已审计 RGBNT201；V2 开发阶段 official test access 必须保持 0。
-- 最大风险：5120 维融合头可能增加 BN/classifier 显存；capacity gate 先测，必要时只调整 eval batch/activation checkpointing，不缩减三分支或改真实训练 batch。
-
-## Risks and Mitigations
-
-- **只靠升维获得提升**：QIPF 同时要求融合超过全部独立分支、专家投影不再同质、路由具备区分度；达到目标后再做维度匹配消融。
-- **路由再次输出常数**：signed-effect pairwise ranking 使常数输出产生正损失；报告 AUROC/std，不用低 ECE 代替区分度。
-- **CLIP 锚点被新模块破坏**：APSD 数学不变量由 worked example 测试；共享投影使用 pretrained LR，专家 delta 使用 new-module LR。
-- **dev 改进不转移到正式 test**：只允许一次新实验身份的固定终点评估；失败即封存，不循环读 test。
-
-## Final Checklist
-
-- [x] 旧主结果、失败模式和官方一次评估已审计
-- [x] V2 主张、三创新点和 train/dev 晋级门冻结
-- [ ] APSD/SURE/QIPF 红绿测试与实现
-- [ ] RTX3090 capacity/overfit
-- [ ] V2 selector dev ≥65 mAP 且融合超过分支
-- [ ] 新 V2 CIRC cache 与路由区分度门
-- [ ] V2 main dev ≥70 mAP、融合领先≥1.0 pp
-- [ ] 新正式身份一次评估严格超过 85.3/87.9
-- [ ] 仅过目标后再规划消融与 SOTA 论文主张
+- [x] V1/V2 完整训练与失败模式已审计
+- [x] V3 两项 claim、三项机制和晋级门已冻结
+- [x] TDD 证明 direct anchor、zero-residual 等价、残差范数上界及三支梯度
+- [ ] 真实 CLIP builder 与内部全回归完成
+- [ ] RTX3090 capacity / overfit 通过
+- [ ] V3-R003 完整 60 epoch dev 达到门槛
+- [ ] 过 dev 门后冻结并执行一次正式评估
+- [ ] 过 85.3/87.9 后才进入消融和论文 SOTA 主张

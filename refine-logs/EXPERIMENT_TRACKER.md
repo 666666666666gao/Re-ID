@@ -1,22 +1,18 @@
-# TriFusion V2 Experiment Tracker
+# TriFusion V3 Experiment Tracker
 
-| Run ID | Milestone | Purpose | System / Variant | Split | Metrics | Priority | Status | Notes |
-|---|---|---|---|---|---|---|---|---|
-| V2-R000 | M0 | APSD/SURE/QIPF 行为契约 | `shared_semantic_cascade_v2` | synthetic/CPU + real CLIP | anchor equality、shape、stage refresh、mask、gradient | MUST | PASS | V2专项9 PASS；联合37 PASS；内部全量141 PASS/5 SKIP |
-| V2-R001 | M0 | 真实容量门 | isolated V2 B32/K4 AMP | RGBNT201 train-only | VRAM、finite、gradient coverage、params | MUST | PASS | 93,965,138参数；峰值allocated/reserved 5721.87/6248 MiB；coverage=1.0 |
-| V2-R002 | M0 | 学习门 | isolated V2 100-step overfit | RGBNT201 train-only | loss decrease、nonfinite | MUST | PASS | 22.9879→2.04275；ratio=0.088862；finite/coverage PASS |
-| V2-R003 | M1 | 强语义主生成器 | V2 HFER-uniform | 141-fit/30-dev | fused/branch mAP、R1、projection cosine | MUST | READY | M0 全过；等待冻结提交后启动，≥65 mAP 且 fused>best branch 才晋级 |
-| V2-R004 | M2 | 新效用 target | V2 OOF CIRC | train folds only | overlap、hash、effect/rank coverage | MUST | TODO | 必须由 V2 生成器重建，禁止复用 V1 cache |
-| V2-R005 | M2 | 完整主方法 dev | V2 CIRC+SURE+QIPF | 141-fit/30-dev | retrieval、AUROC、Brier/ECE、router std | MUST | TODO | ≥70 mAP、领先分支≥1.0、AUROC≥0.65、std≥0.03 |
-| V2-R006 | M3 | 正式冻结 | exact V2 candidate | no test | SHA、config、cache、selection receipt | MUST | BLOCKED | 等 V2-R005 全部门 |
-| V2-R007 | M3 | 新正式主实验 | seed42 fixed endpoint | full171→official once | mAP、R1/5/10 | MUST | BLOCKED | 只有 >85.3/87.9 后才允许消融 |
+| Run ID | Purpose | System | Split | Priority | Status | Evidence / gate |
+|---|---|---|---|---|---|---|
+| V1-FINAL | 历史正式失败证据 | shared semantic CIRC/URGC | full171→official once | LOCKED | COMPLETE—FAIL | e60 fused 59.1478 mAP / 63.2775 R1；best branch CNN 59.1561；official access/eval 1/1 |
+| V2-R003 | 验证 5120 维 V2 是否恢复强语义 | cascade V2 uniform | 141-fit/30-dev | LOCKED | COMPLETE—FAIL | 60 epoch 完整；best e44 fused 41.0476/40.6061，低于 Transformer 41.3275；last fused 40.2379；official access=0 |
+| V3-R000 | task-anchor V3 行为合同与回归 | TACA+BCER+IQR | synthetic + real CLIP | MUST | IN PROGRESS | 定向 6 PASS/1 SKIP；真实 CLIP builder 与全回归待最终提交验证 |
+| V3-R001 | 真实容量和梯度门 | V3 B32/K4 AMP | RGBNT201 train-only | MUST | TODO | 参数≤120M；GPU free≥22000 MiB；无 OOM/overflow/nonfinite |
+| V3-R002 | 学习能力门 | V3 fixed-batch 100 steps | RGBNT201 train-only | MUST | TODO | loss 显著下降；official/dev evaluation=0 |
+| V3-R003 | 完整主实验开发选择 | V3 core seed42 | 141-fit/30-dev | MUST | BLOCKED | 60 epoch；fused≥65 且超过 anchor 与最佳分支；official access=0 |
+| V3-R004 | 新正式实验 | frozen V3 seed42 | full171→official once | MUST | BLOCKED | 仅 V3-R003 过门；严格 >85.3 mAP / >87.9 R1 后才考虑消融 |
 
-## 2026-09-01 13:48 +08:00 execution evidence
+## 当前因果判断
 
-- V2专项：`tests/test_trifusion_cascade_v2.py`，9 PASS；真实 CLIP checkpoint 已参与 builder contract。
-- 联合回归：cascade/builder/collaboration/criterion/runner/interventions，37 PASS。
-- 内部全量：排除三个用户禁止的外部 baseline 测试后，141 PASS、5 SKIP；冻结 V1 源文件与协议哈希链保持有效。
-- Preflight：`artifacts/trifusion_cascade_v2_isolated_hfer_uniform_seed42_preflight/preflight.json`，RTX3090 free 24572 MiB，数据/CLIP/protocol 哈希通过，official-test access=0。
-- Capacity：`artifacts/trifusion_cascade_v2_isolated_hfer_uniform_seed42_capacity/capacity.json`，B32/K4、8步、无 AMP overflow、无非有限梯度、official-test access=0、dev iterations=0。
-- Overfit：`artifacts/trifusion_cascade_v2_isolated_hfer_uniform_seed42_overfit/overfit.json`，固定批100步，loss ratio 0.088862、official-test access=0、dev iterations=0。
-- 隔离边界：V2 仅新增 `cascade_v2.py`、`cascade_v2_builder.py` 和 `run_trifusion_cascade_v2.py`；V1冻结文件相对 Git HEAD 无差异。
+- “未训练完”已排除：V1 与 V2 都到 epoch 60。
+- “评估器/数据错误”不是主因：隔离 checkpoint 曾在同协议得到 82.0868 mAP / 85.1675 R1。
+- 最大已证实问题是分支同质和融合无增益：V1/V2 fused 均未超过最佳分支。
+- V3 的关键修复不是单纯加模块，而是把 task-adapted CLIP projected CLS 设为不可绕过的直接检索锚点，并让三专家只提供显式范数受限的协同残差。

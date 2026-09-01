@@ -168,3 +168,7 @@
 | 2026-09-01 13:29 | /experiment-plan | refine-logs/EXPERIMENT_TRACKER.md | implementation | latest V2执行追踪器，记录真实3090门禁证据 |
 | 2026-09-01 13:48 | /experiment-plan | refine-logs/EXPERIMENT_TRACKER_20260901_134819.md | implementation | V1哈希链恢复、141 PASS及隔离V2门禁证据的永久追踪版本 |
 | 2026-09-01 13:48 | /experiment-plan | refine-logs/EXPERIMENT_TRACKER.md | implementation | latest V2执行追踪器，V2-R003已READY |
+| 2026-09-01 15:50 | /experiment-plan | refine-logs/EXPERIMENT_PLAN_20260901_155059.md | implementation | V3 task-anchor主实验冻结摘要：direct CLIP anchor、有界三专家残差、身份质量路由 |
+| 2026-09-01 15:50 | /experiment-plan | refine-logs/EXPERIMENT_PLAN.md | implementation | latest V3主实验计划；登记V1/V2完整失败证据及V3晋级门 |
+| 2026-09-01 15:50 | /experiment-plan | refine-logs/EXPERIMENT_TRACKER_20260901_155059.md | implementation | V3 main-only执行状态冻结副本 |
+| 2026-09-01 15:50 | /experiment-plan | refine-logs/EXPERIMENT_TRACKER.md | implementation | latest V3执行追踪器；V3-R000进行中 |
