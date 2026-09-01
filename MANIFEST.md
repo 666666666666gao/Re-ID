@@ -288,3 +288,7 @@
 | 2026-09-02 06:18 | /handoff | docs/TRIFUSION_RGBNT201_CURRENT_COMPLETE_HANDOFF_2026-09-01.md | documentation | 统一交接续写V10冻结DINO资格负结果和研究边界 |
 | 2026-09-02 06:18 | /experiment-plan | refine-logs/EXPERIMENT_PLAN_20260902_061819.md | implementation | 与latest逐字节一致的V10-Q0终局计划永久快照 |
 | 2026-09-02 06:18 | /experiment-plan | refine-logs/EXPERIMENT_TRACKER_20260902_061819.md | research | 与latest逐字节一致的V10-Q0终局tracker永久快照 |
+| 2026-09-02 06:29 | /experiment-plan | refine-logs/EXPERIMENT_PLAN_20260902_062924.md | implementation | V11非饱和identity-OOF双基础残差互补资格计划永久快照 |
+| 2026-09-02 06:29 | /experiment-plan | refine-logs/EXPERIMENT_PLAN.md | implementation | V11固定折内residual-only/DINO门与条件式主模型路径latest |
+| 2026-09-02 06:29 | /experiment-plan | refine-logs/EXPERIMENT_TRACKER_20260902_062924.md | implementation | V11 Q0/Q1/Q2/final门禁tracker永久快照 |
+| 2026-09-02 06:29 | /experiment-plan | refine-logs/EXPERIMENT_TRACKER.md | implementation | V11-Q0 READY；后续实现、训练和dev均受门禁约束 |
