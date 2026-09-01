@@ -161,6 +161,7 @@ def test_v8_builder_emits_three_role_disjoint_pretrained_experts() -> None:
     }
     assert torch.equal(output.fused_embedding[:, : baseline.shape[1]], baseline)
     assert tuple(output.residual_embeddings) == EXPERT_ORDER
+    assert output.direct_modal.shape == (4, 3, 4)
     assert all(value.shape == (4, 24) for value in output.residual_embeddings.values())
     assert all(
         output.modal_residual_embeddings[expert].shape == (4, 3, 8)
