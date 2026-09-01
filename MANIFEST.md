@@ -312,3 +312,4 @@
 | 2026-09-02 07:09 | /experiment-plan | refine-logs/EXPERIMENT_PLAN.md | implementation | V12 Signal50+专家20三折隔离门与条件式Router/dev latest |
 | 2026-09-02 07:09 | /experiment-plan | refine-logs/EXPERIMENT_TRACKER_20260902_070902.md | implementation | V12 Q0/Q1/dev fail-closed执行tracker永久快照 |
 | 2026-09-02 07:09 | /experiment-plan | refine-logs/EXPERIMENT_TRACKER.md | implementation | V12-T0 READY；GPU作业受公共接缝和preflight约束 |
+| 2026-09-02 07:16 | /tdd | tests/test_build_v12_complete_path_oof_targets.py | implementation | V12完整路径fold隔离、连续重映射与fail-closed资格门公共接缝 |
