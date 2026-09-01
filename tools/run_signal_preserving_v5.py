@@ -940,6 +940,340 @@ def _evaluate_outputs(
     return metrics, feature_widths
 
 
+def evaluate_v8_expert_formation_gate(
+    *,
+    branch_oracle: dict[str, Any],
+    residual_oracle: dict[str, Any],
+    min_oracle_gain_map: float,
+    min_unique_ap_wins: int,
+    min_expert_marginal_map: float,
+) -> dict[str, Any]:
+    """Require observable complementarity before training V8 routing or HFER."""
+
+    experts = ("cnn", "transformer", "mamba")
+
+    def judge(summary: dict[str, Any]) -> dict[str, Any]:
+        gain = float(summary["oracle_minus_best_fixed_percent"]["mAP"])
+        expert_results = {}
+        for expert in experts:
+            unique_wins = int(summary["unique_ap_wins"][expert])
+            marginal_map = float(
+                summary["leave_one_expert_out"][expert]["marginal_mAP"]
+            )
+            expert_results[expert] = {
+                "unique_ap_wins": unique_wins,
+                "marginal_mAP": marginal_map,
+                "passed": (
+                    unique_wins >= int(min_unique_ap_wins)
+                    and marginal_map > float(min_expert_marginal_map)
+                ),
+            }
+        return {
+            "oracle_gain_mAP": gain,
+            "oracle_gain_passed": gain >= float(min_oracle_gain_map),
+            "experts": expert_results,
+            "passed": gain >= float(min_oracle_gain_map)
+            and all(result["passed"] for result in expert_results.values()),
+        }
+
+    branch = judge(branch_oracle)
+    residual_only = judge(residual_oracle)
+    return {
+        "passed": branch["passed"] and residual_only["passed"],
+        "thresholds": {
+            "minimum_oracle_gain_mAP": float(min_oracle_gain_map),
+            "minimum_unique_ap_wins": int(min_unique_ap_wins),
+            "minimum_expert_marginal_mAP_exclusive": float(
+                min_expert_marginal_map
+            ),
+        },
+        "branch": branch,
+        "residual_only": residual_only,
+    }
+
+
+def _evaluate_v8_expert_complementarity(
+    model: Any,
+    loader: Any,
+    *,
+    num_query: int,
+) -> dict[str, Any]:
+    import numpy as np
+    import torch
+
+    from diagnose_v6_oracle_complementarity import (
+        _scores_from_features,
+        summarize_oracle_complementarity,
+    )
+
+    feature_names = (
+        "baseline_only",
+        "fused",
+        "cnn",
+        "transformer",
+        "mamba",
+        "residual_cnn",
+        "residual_transformer",
+        "residual_mamba",
+    )
+    collected = {name: [] for name in feature_names}
+    identities_all = []
+    camera_ids_all = []
+    model.eval()
+    for images, identities, camera_ids, camera_labels, _view_ids, _paths in loader:
+        images = {name: tensor.cuda(non_blocking=True) for name, tensor in images.items()}
+        camera_labels = camera_labels.cuda(non_blocking=True)
+        with torch.no_grad():
+            output = model(
+                {
+                    "images": images,
+                    "modality_mask": torch.ones(
+                        camera_labels.shape[0], 3, dtype=torch.bool, device="cuda"
+                    ),
+                    "camera_ids": camera_labels,
+                },
+                return_aux=True,
+            )
+        batch_features = {
+            "baseline_only": output.baseline_embedding,
+            "fused": output.fused_embedding,
+            **dict(output.branch_embeddings),
+            **{
+                f"residual_{expert}": output.residual_embeddings[expert]
+                for expert in ("cnn", "transformer", "mamba")
+            },
+        }
+        for name in feature_names:
+            collected[name].append(batch_features[name].float().cpu())
+        identities_all.extend(np.asarray(identities).tolist())
+        camera_ids_all.extend(np.asarray(camera_ids).tolist())
+
+    features = {name: torch.cat(values) for name, values in collected.items()}
+    identities_array = np.asarray(identities_all)
+    camera_ids_array = np.asarray(camera_ids_all)
+    if identities_array.size != num_query * 2:
+        raise ValueError("V8 formation probe requires one complete query/gallery pair")
+    scores = {
+        name: _scores_from_features(
+            tensor,
+            identities_array,
+            camera_ids_array,
+            num_query=num_query,
+        )
+        for name, tensor in features.items()
+    }
+    branch_oracle = summarize_oracle_complementarity(
+        {
+            name: scores[name]
+            for name in ("baseline_only", "cnn", "transformer", "mamba")
+        }
+    )
+    residual_oracle = summarize_oracle_complementarity(
+        {
+            expert: scores[f"residual_{expert}"]
+            for expert in ("cnn", "transformer", "mamba")
+        }
+    )
+    fused = {
+        "mAP": float(scores["fused"].average_precision.mean() * 100.0),
+        "Rank-1": float(scores["fused"].rank1_correct.mean() * 100.0),
+    }
+    return {
+        "branch_oracle": branch_oracle,
+        "residual_only_oracle": residual_oracle,
+        "fused_metrics_percent": fused,
+    }
+
+
+def _run_v8_formation_probe(
+    config: dict[str, Any],
+    config_path: Path,
+    output_dir: Path,
+) -> dict[str, Any]:
+    import torch
+
+    started = time.time()
+    if str(config["MODEL"]["ARCHITECTURE"]) != ARCHITECTURE_V8:
+        raise ValueError("expert formation probe is only defined for V8")
+    runtime = _build_runtime(config)
+    model = runtime["model"]
+    criterion = _build_criterion(config)
+    trainable = {
+        name: parameter for name, parameter in model.named_parameters() if parameter.requires_grad
+    }
+    base_lr = float(config["OPTIMIZATION"]["NEW_MODULE_LR"])
+    optimizer = torch.optim.AdamW(
+        trainable.values(),
+        lr=base_lr,
+        weight_decay=float(config["OPTIMIZATION"]["WEIGHT_DECAY"]),
+    )
+    scaler = torch.amp.GradScaler(
+        "cuda", init_scale=float(config["OPTIMIZATION"]["AMP_INIT_SCALE"])
+    )
+    epochs = int(config["OPTIMIZATION"]["FORMATION_PROBE_EPOCHS"])
+    warmup_epochs = int(config["OPTIMIZATION"]["WARMUP_EPOCHS"])
+    identity = {
+        "schema_version": receipt_schema(ARCHITECTURE_V8, "formation-probe-identity"),
+        "seed": int(config["EXPERIMENT"]["SEED"]),
+        "config": str(config_path),
+        "config_sha256": _sha256(config_path),
+        "runner_sha256": _sha256(Path(__file__).resolve()),
+        "model_sha256": _sha256(architecture_source_paths(ARCHITECTURE_V8)["model"]),
+        "builder_sha256": _sha256(architecture_source_paths(ARCHITECTURE_V8)["builder"]),
+        "epochs": epochs,
+        "model_selection": str(config["PROTOCOL"]["FORMATION_MODEL_SELECTION"]),
+        "fit_triplets": len(runtime["train_records"]),
+        "probe_query_triplets": len(runtime["dev_records"]),
+        "probe_gallery_triplets": len(runtime["dev_records"]),
+        "official_test_access_count": 0,
+    }
+    (output_dir / "run_identity.json").write_text(
+        json.dumps(identity, indent=2, sort_keys=True) + "\n",
+        encoding="utf-8",
+    )
+
+    baseline_before = _module_state_sha256(model.baseline.signal)
+    optimizer_steps = 0
+    overflow_events = 0
+    history = []
+    torch.cuda.reset_peak_memory_stats()
+    for epoch in range(1, epochs + 1):
+        learning_rate = base_lr * learning_rate_multiplier(
+            epoch,
+            max_epochs=epochs,
+            warmup_epochs=warmup_epochs,
+        )
+        for group in optimizer.param_groups:
+            group["lr"] = learning_rate
+        model.train()
+        epoch_loss = 0.0
+        epoch_steps = 0
+        for raw_batch in runtime["train_loader"]:
+            batch, _quality_batch, labels = _training_views(raw_batch, config)
+            optimizer.zero_grad(set_to_none=True)
+            with torch.autocast(
+                device_type="cuda",
+                dtype=torch.float16,
+                enabled=bool(config["OPTIMIZATION"]["AMP"]),
+            ):
+                output = model(batch, return_aux=True)
+                if not output.diagnostics["all_finite"]:
+                    raise FloatingPointError("V8 formation probe emitted a nonfinite tensor")
+                loss_parts = _criterion_losses(
+                    criterion,
+                    output,
+                    labels,
+                    architecture=ARCHITECTURE_V8,
+                    quality_output=None,
+                )
+                total_loss = weighted_training_loss(
+                    loss_parts,
+                    config,
+                    phase="expert_formation",
+                )
+            if not bool(torch.isfinite(total_loss)):
+                raise FloatingPointError("V8 formation probe loss is nonfinite")
+            scale_before = scaler.get_scale()
+            scaler.scale(total_loss).backward()
+            scaler.unscale_(optimizer)
+            for name, parameter in trainable.items():
+                if parameter.grad is not None and not bool(
+                    torch.isfinite(parameter.grad).all()
+                ):
+                    raise FloatingPointError(f"nonfinite gradient: {name}")
+            scaler.step(optimizer)
+            scaler.update()
+            overflow = scaler.get_scale() < scale_before
+            overflow_events += int(overflow)
+            optimizer_steps += int(not overflow)
+            epoch_loss += float(total_loss.detach())
+            epoch_steps += 1
+        epoch_result = {
+            "epoch": epoch,
+            "learning_rate": learning_rate,
+            "mean_training_loss": epoch_loss / epoch_steps,
+            "optimizer_steps": optimizer_steps,
+        }
+        history.append(epoch_result)
+        (output_dir / "history.json").write_text(
+            json.dumps(
+                {
+                    "schema_version": receipt_schema(ARCHITECTURE_V8, "formation-probe-history"),
+                    "epochs": history,
+                    "dev_evaluations_during_training": 0,
+                    "official_test_access_count": 0,
+                },
+                indent=2,
+                sort_keys=True,
+            )
+            + "\n",
+            encoding="utf-8",
+        )
+        print(json.dumps(epoch_result, sort_keys=True), flush=True)
+
+    baseline_after = _module_state_sha256(model.baseline.signal)
+    if baseline_after != baseline_before or overflow_events:
+        raise RuntimeError("V8 formation probe integrity gate failed")
+    checkpoint_path = output_dir / "final_model.pth"
+    torch.save(
+        {
+            "schema_version": receipt_schema(ARCHITECTURE_V8, "formation-probe-checkpoint"),
+            "epoch": epochs,
+            "model_state_dict": model.state_dict(),
+            "run_identity_sha256": _sha256(output_dir / "run_identity.json"),
+        },
+        checkpoint_path,
+    )
+    complementarity = _evaluate_v8_expert_complementarity(
+        model,
+        runtime["eval_loader"],
+        num_query=len(runtime["dev_records"]),
+    )
+    gates = config["GATES"]
+    formation_gate = evaluate_v8_expert_formation_gate(
+        branch_oracle=complementarity["branch_oracle"],
+        residual_oracle=complementarity["residual_only_oracle"],
+        min_oracle_gain_map=float(gates["FORMATION_MIN_ORACLE_GAIN_MAP"]),
+        min_unique_ap_wins=int(gates["FORMATION_MIN_UNIQUE_AP_WINS"]),
+        min_expert_marginal_map=float(gates["FORMATION_MIN_EXPERT_MARGINAL_MAP"]),
+    )
+    result = {
+        "schema_version": receipt_schema(ARCHITECTURE_V8, "formation-probe-result"),
+        "status": "PASS",
+        "mode": "formation_probe",
+        "epochs_completed": epochs,
+        "model_selection": "none_final_epoch_only",
+        "dev_evaluations_during_training": 0,
+        **complementarity,
+        "formation_gate": formation_gate,
+        "next_phase_authorized": bool(formation_gate["passed"]),
+        "oracle_uses_ground_truth": True,
+        "oracle_is_deployment_result": False,
+        "checkpoint": str(checkpoint_path),
+        "checkpoint_sha256": _sha256(checkpoint_path),
+        "signal_checkpoint_sha256": runtime["checkpoint_sha256"],
+        "signal_state_sha256_before": baseline_before,
+        "signal_state_sha256_after": baseline_after,
+        "signal_state_unchanged": baseline_before == baseline_after,
+        "optimizer_steps": optimizer_steps,
+        "overflow_events": overflow_events,
+        "peak_allocated_mib": torch.cuda.max_memory_allocated() / 1024**2,
+        "peak_reserved_mib": torch.cuda.max_memory_reserved() / 1024**2,
+        "fit_triplets": len(runtime["train_records"]),
+        "probe_query_triplets": len(runtime["dev_records"]),
+        "probe_gallery_triplets": len(runtime["dev_records"]),
+        "official_test_access_count": 0,
+        "run_identity_sha256": _sha256(output_dir / "run_identity.json"),
+        "history_sha256": _sha256(output_dir / "history.json"),
+        "elapsed_seconds": time.time() - started,
+    }
+    (output_dir / "run_summary.json").write_text(
+        json.dumps(result, indent=2, sort_keys=True) + "\n",
+        encoding="utf-8",
+    )
+    return result
+
+
 def _metric_parity(
     actual: dict[str, dict[str, float]],
     expected: dict[str, dict[str, float]],
@@ -1298,7 +1632,7 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     parser.add_argument(
         "--mode",
         required=True,
-        choices=("preflight", "capacity", "overfit", "dev"),
+        choices=("preflight", "capacity", "overfit", "formation_probe", "dev"),
     )
     parser.add_argument("--config", required=True, type=Path)
     parser.add_argument("--output-dir", required=True, type=Path)
@@ -1318,6 +1652,8 @@ def run(args: argparse.Namespace) -> dict[str, Any]:
         return _run_capacity(config, output_dir)
     if args.mode == "overfit":
         return _run_overfit(config, output_dir)
+    if args.mode == "formation_probe":
+        return _run_v8_formation_probe(config, config_path, output_dir)
     if args.mode == "dev":
         return _run_dev(config, config_path, output_dir)
     raise NotImplementedError(f"V5 mode is not implemented yet: {args.mode}")
@@ -1327,6 +1663,7 @@ __all__ = [
     "architecture_source_paths",
     "evaluate_dev_gate",
     "evaluate_overfit_gate",
+    "evaluate_v8_expert_formation_gate",
     "learning_rate_multiplier",
     "load_contract",
     "load_raw_config",
