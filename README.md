@@ -80,6 +80,16 @@
 > ablations, multiple seeds and SOTA claims remain closed. See the
 > [Phase-B report](results/TRIFUSION_RGBNT201_V8_OOF_MARGIN_ROUTER_PHASE_B_2026-09-02.md)
 > and [independent audit](EXPERIMENT_AUDIT_V8_PHASE_B.md).
+> V9 then tested a distinct representation-level hypothesis: freeze Signal,
+> the pretrained-tail experts and Phase-B Router; execute two receiver-specific
+> orthogonal peer-relay rounds; and append a triadic interaction embedding while
+> preserving the complete Phase-B vector as an exact prefix. Engineering gates
+> and the 60-epoch B64/K8 run pass, but the sole final-only dev result is a clear
+> negative: fused **56.5339 mAP / 57.2121 Rank-1**, below exact Signal by
+> **1.4770 mAP** and below Phase-B by **1.8711 mAP**. It misses the 65 gate by
+> **8.4661 mAP**. V9 is sealed without official test, ablations, multiple seeds
+> or tuning scans; see the [V9 terminal report](results/TRIFUSION_RGBNT201_V9_DEV_SEED42_2026-09-02.md)
+> and [independent audit](EXPERIMENT_AUDIT_V9.md).
 > Dataset files, pretrained weights, checkpoints, and remote artifacts are not
 > distributed in this repository. The original DeMo project and attribution are
 > preserved below.

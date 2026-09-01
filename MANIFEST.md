@@ -260,3 +260,15 @@
 | 2026-09-02 05:40 | /run-experiment | evidence/trifusion_v9_capacity_seed42.json | research | V9 B64/K8 8-step，59/59 梯度、2020MiB reserved、0 overflow |
 | 2026-09-02 05:40 | /run-experiment | evidence/trifusion_v9_overfit_seed42.json | research | V9 真实固定批100-step excess-loss ratio 0.000518，冻结状态不变 |
 | 2026-09-02 05:40 | /run-experiment | results/TRIFUSION_RGBNT201_V9_READINESS_2026-09-02.md | research | V9 三项 train-only readiness、主门与访问边界汇总 |
+| 2026-09-02 05:46 | /monitor-experiment | evidence/trifusion_v9_train_seed42.json | research | V9 seed42 B64/K8 60/60、2520 steps、0 overflow、dev0/official0 与冻结 state SHA |
+| 2026-09-02 05:46 | /analyze-results | evidence/trifusion_v9_dev_seed42.json | research | final checkpoint 唯一冻结 dev：fused56.5339，低Signal1.4770、低Phase-B1.8711、official0 |
+| 2026-09-02 05:46 | /analyze-results | results/TRIFUSION_RGBNT201_V9_DEV_SEED42_2026-09-02.md | research | V9 六路指标、训练完整性、beta/relay 诊断与终局封存决定 |
+| 2026-09-02 05:46 | /result-to-claim | .aris/traces/result-to-claim/2026-09-02_run04/ | research | V9 claim_supported=no/high；不支持协同、65、official、SOTA或Mamba必要性 |
+| 2026-09-02 05:46 | /experiment-audit | EXPERIMENT_AUDIT_V9.md | research | V9独立审计WARN/warn/FAIL_TO_PROMOTE；GT/归一化/评价类型PASS，远端artifact包装WARN |
+| 2026-09-02 05:46 | /experiment-audit | EXPERIMENT_AUDIT_V9.json | research | V9完整性审计机器可读终局 |
+| 2026-09-02 05:46 | /experiment-plan | refine-logs/EXPERIMENT_PLAN.md | implementation | V9主门失败回填与后继fit-only identity-OOF正效用前置门 |
+| 2026-09-02 05:46 | /experiment-plan | refine-logs/EXPERIMENT_TRACKER.md | research | V9-R000/R001/R002 PASS、R003 FAIL、R004/R005关闭，未授权V10 |
+| 2026-09-02 05:46 | /experiment-plan | refine-logs/EXPERIMENT_PLAN_20260902_054650.md | implementation | 与latest逐字节一致的V9终局计划永久快照 |
+| 2026-09-02 05:46 | /experiment-plan | refine-logs/EXPERIMENT_TRACKER_20260902_054650.md | research | 与latest逐字节一致的V9终局tracker永久快照 |
+| 2026-09-02 05:46 | /run-experiment | evidence/SHA256SUMS | implementation | 登记V9 preflight/capacity/overfit/train/dev五份轻量证据SHA-256 |
+| 2026-09-02 05:46 | /handoff | docs/TRIFUSION_RGBNT201_CURRENT_COMPLETE_HANDOFF_2026-09-01.md | documentation | 统一交接续写V9训练、唯一dev负结果、独立审计和后继研究边界 |

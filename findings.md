@@ -1,5 +1,16 @@
 # Research Findings
 
+## 2026-09-02 — V9 orthogonal triadic relay 主门负结果
+
+- 工程合同成立：exact Signal 与完整 V8 Phase-B embedding 是逐元素前缀；Phase-A/Router state SHA 在训练和评估前后不变；两轮 peer relay 实际执行，最大绝对 relay/receiver cosine=`1.01e-7`。
+- 远端 RTX3090、seed42、真实 B64/K8 完成 60/60 epoch、2,520 optimizer steps、0 overflow；训练 loss=`3.45323→0.62362`，训练期间 dev0/official0。final checkpoint 只进行一次冻结 dev，optimizer0、official0。
+- 同 checkpoint 指标：baseline `58.0109/57.4545`；Phase-B `58.4050/59.3939`；V9 fused `56.5339/57.2121`；CNN/Transformer/Mamba=`55.8825/51.3416/54.6342 mAP`。
+- 主门 FAIL：fused 比 baseline 低 `1.4770 mAP`，比 Phase-B 低 `1.8711 mAP`，并比 65 门低 `8.4661 mAP`。超过三个已经退化的 V9 专家不能作为协同增益证据。
+- beta mean/min/max=`0.498794/0.462330/0.499998`，接近上限0.5；这只是观察，未做消融，不能把失败因果归结为 beta 饱和。
+- 独立 result-to-claim=`no/high`；独立审计=`WARN / warn / FAIL_TO_PROMOTE`。GT、评价归一化、实际路径和评价类型均 PASS；WARN 来自远端 checkpoint 包装、审计时 JSON 未追踪/文档滞后，以及 config 门字段不是运行时单一数据源，不改变负结果。
+- V9 封存：不做 official、消融、多种子或 beta/epoch/LR/residual/checkpoint 扫描。任何新结构访问 dev 前，必须先在 fit-only 身份隔离折上证明新增表示有正检索效用，并能从训练侧抑制有害追加。
+- 证据：`evidence/trifusion_v9_{preflight,capacity,overfit,train,dev}_seed42.json`；报告：`results/TRIFUSION_RGBNT201_V9_DEV_SEED42_2026-09-02.md`；审计：`EXPERIMENT_AUDIT_V9.md`。
+
 ## 2026-09-02 — V8 OOF-margin Router Phase-B 正向但未晋级
 
 - 连续 OOF identity-margin target 覆盖 571 个 fit-only query；CNN/Transformer/Mamba 独有 slot winner=`38/350/183`，RGB/NI/TI=`215/59/297`，slot Oracle 比最佳固定 slot 高 `0.164303`。Oracle 使用真实身份标签，只是训练域诊断上限。

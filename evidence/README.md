@@ -168,6 +168,15 @@ Absolute paths inside JSON records identify the WSL2 machine on which the
 evidence was produced. File hashes, source commits and protocol fields are the
 portable provenance anchors.
 
+The five V9 receipts bind a remote-only seed42 Orthogonal Triadic Relay
+Synthesis experiment. Train-only preflight/capacity/overfit pass; the complete
+B64/K8 run finishes 60 epochs and 2,520 steps with dev0/official0; the final
+checkpoint is then evaluated once on frozen dev with optimizer0/official0.
+V9 fused is 56.5339 mAP, below exact Signal by 1.4770 and frozen Phase-B by
+1.8711, so promotion is false. The remote `.pth` is not distributed here; its
+reported hash cannot be independently recomputed from this source bundle and
+the independent audit preserves that limitation as WARN.
+
 The task-anchor V4 readiness receipt binds the V4 source/config hashes to the
 remote RTX3090 preflight, eight-step capacity and 100-step fixed-batch receipts.
 It records B32/K4, 95,197,266 parameters, 6,548 MiB peak reserved memory, zero

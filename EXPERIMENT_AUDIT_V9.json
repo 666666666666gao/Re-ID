@@ -1,0 +1,31 @@
+{
+  "audit": "TriFusion V9 orthogonal triadic relay synthesis",
+  "date": "2026-09-02",
+  "overall_verdict": "WARN",
+  "integrity_status": "warn",
+  "scientific_verdict": "FAIL_TO_PROMOTE",
+  "dimensions": {
+    "ground_truth_provenance": "PASS",
+    "score_normalization_inflation": "PASS",
+    "result_existence_consistency_provenance": "WARN",
+    "dead_code_executed_paths": "WARN",
+    "scope_leakage_claim_language": "WARN",
+    "evaluation_type_classification": "PASS"
+  },
+  "terminal_metrics": {
+    "signal_mAP": 58.010886612624304,
+    "phase_b_mAP": 58.40499477520247,
+    "v9_fused_mAP": 56.53391021417158,
+    "minimum_mAP": 65.0,
+    "promotion_gate": false,
+    "official_test_access_count": 0
+  },
+  "warn_reasons": [
+    "large checkpoint artifacts are remote-only and cannot be independently rehashed from the local source snapshot",
+    "terminal train/dev JSON receipts were untracked at audit time",
+    "terminal tracker/report were stale at audit time",
+    "config comparison key is not the evaluator runtime source of truth, although current values match"
+  ],
+  "claim_supported": false,
+  "action": "seal_v9_no_official_no_ablation_no_multiseed_no_hyperparameter_scan"
+}

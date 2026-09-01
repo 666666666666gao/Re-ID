@@ -969,3 +969,71 @@ EXPERIMENT_AUDIT_V8_PHASE_B.json
 ---
 
 本文件记录的是可核验工程状态，不是论文结论。任何后续结果都必须保留单种子、固定终点、官方 test 一次访问以及失败对称性审计这些边界。
+
+## 20. V9 Orthogonal Triadic Relay Synthesis 终态（2026-09-02）
+
+V9 是 V8 Phase-B 之后唯一执行的新表示级主假设。它冻结 exact Signal、
+V8 pretrained-tail 三专家与 Phase-B Router；每个专家进行两轮仅来自另外
+两支的 receiver-specific peer relay，将消息投影到 receiver 的正交补后注入，
+再由三专家与三组 pairwise product 合成新的 1536D synergy。完整 7680D
+Phase-B embedding 是 V9 9216D fused 的逐元素精确前缀。
+
+工程门全部通过：
+
+- 公共接缝 RED→GREEN，V9 与相邻 V8 共 12 tests；
+- preflight 保持 Signal/Phase-B exact prefix，最大 relay cosine=`2.98e-8`；
+- RTX3090 真实 B64/K8 capacity 8 step，59/59 gradients，0 overflow，
+  allocated/reserved=`1426.80/2020 MiB`；
+- 真实固定批 100-step loss=`3.78850→0.61228`，label-smoothing excess ratio
+  `0.000518≤0.1`；所有 train-only 门均 dev0/official0。
+
+唯一正式训练在代码 `b40b171` 下完成 60/60 epoch、2,520 optimizer steps，
+耗时 `1334.80s`，0 overflow；训练 loss=`3.45323→0.62362`。checkpoint：
+
+```text
+/root/autodl-tmp/trifusion-v2/artifacts/trifusion_v9_train_seed42_b40b171/final_model.pth
+SHA256 c118ada931451929ec91cc374f9be8c3f518766b4dc02dda7372e525f07c7cfa
+```
+
+训练阶段 dev access=0。final checkpoint 只进行一次冻结 30-ID dev 评估，
+optimizer0、training=false、official0、checkpoint/Phase-A/Router state SHA
+评估前后不变。
+
+| 输出 | mAP | Rank-1 | Rank-5 | Rank-10 |
+|---|---:|---:|---:|---:|
+| exact Signal baseline | 58.0109 | 57.4545 | 69.9394 | 76.6061 |
+| frozen V8 Phase-B | **58.4050** | **59.3939** | **71.2727** | **76.6061** |
+| V9 fused | 56.5339 | 57.2121 | 68.3636 | 75.5152 |
+| V9 CNN | 55.8825 | 57.3333 | 68.6061 | 75.8788 |
+| V9 Transformer | 51.3416 | 49.3333 | 65.8182 | 73.3333 |
+| V9 Mamba | 54.6342 | 54.7879 | 68.1212 | 76.2424 |
+
+主门明确 FAIL：fused 比 exact Signal 低 `1.4770 mAP / 0.2424 Rank-1`，
+比 Phase-B 低 `1.8711 / 2.1818`，比 65 门低 `8.4661 mAP`。fused 虽高于
+三个已经退化的 V9 专家输出，但这不能支持协同增益。dev 上 beta
+mean/min/max=`0.498794/0.462330/0.499998`，接近0.5上限；没有消融，故
+不能因果宣称 beta 饱和导致失败。
+
+独立 result-to-claim=`no/high`。独立审计=`WARN / warn /
+FAIL_TO_PROMOTE`：GT 来源、普通 ReID L2 normalization、实际执行路径和
+评价类型均通过；WARN 来自远端 checkpoint 未随仓库发布、审计时两个终态
+JSON 尚未追踪/文档滞后，以及 config 比较字段不是 evaluator 的唯一数据源。
+这些不改变负指标。
+
+V9 至此封存：不做 official test、消融、多种子、checkpoint 选择或
+beta/epoch/LR/residual 扫描。任何后继必须是新的表示级机制，并在访问 dev
+前用 fit-only 身份隔离 OOF 检索证明新增表示具有正效用；当追加表示会伤害
+Phase-B 时，必须能由训练侧证据抑制。当前没有授权 V10 或新 GPU 作业。
+
+证据：
+
+```text
+evidence/trifusion_v9_preflight_seed42.json
+evidence/trifusion_v9_capacity_seed42.json
+evidence/trifusion_v9_overfit_seed42.json
+evidence/trifusion_v9_train_seed42.json
+evidence/trifusion_v9_dev_seed42.json
+results/TRIFUSION_RGBNT201_V9_DEV_SEED42_2026-09-02.md
+EXPERIMENT_AUDIT_V9.md
+EXPERIMENT_AUDIT_V9.json
+```

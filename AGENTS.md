@@ -163,6 +163,16 @@
   evaluation-type classification pass. The warning is that large checkpoint
   and cache artifacts remain remote-only and cannot be re-hashed from a fresh
   local clone. Keep all Phase-B claim boundaries unchanged.
+- V9 Orthogonal Triadic Relay Synthesis is terminal and failed. Its exact
+  Signal / Phase-B prefixes and frozen states pass, and the two-round peer
+  relay is numerically orthogonal, but the sole final-only seed42 dev result is
+  fused `56.5339 mAP / 57.2121 Rank-1`, below exact Signal by `1.4770 mAP`
+  and below Phase-B by `1.8711 mAP`. It misses 65 by `8.4661 mAP`.
+- V9 independent result-to-claim is `no/high`; integrity audit is
+  `WARN/warn/FAIL_TO_PROMOTE`. Seal V9: no official test, ablation, multi-seed,
+  checkpoint choice or beta/epoch/LR/residual scan. A successor must be a new
+  representation-level hypothesis and pass a fit-only identity-disjoint
+  positive-retrieval-utility gate before another final-only dev access.
 
 ## Remote experiment constraints
 
