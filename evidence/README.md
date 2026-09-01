@@ -260,3 +260,14 @@ deployable result. These receipts support only exact Signal preservation and a
 narrow +0.3184 held-out-dev baseline gain; they do not support collaborative
 superiority, the 65 mAP gate, official evaluation, innovation effectiveness or
 SOTA. V7-specific independent integrity remains provisional/warn.
+
+The optimizer-free V8 frozen-router probe uses the selected V7 epoch-1
+checkpoint and fits an analytic utility teacher only on 21 fit identities with
+cross-camera positives (571 queries), then evaluates on 30 disjoint dev
+identities (825 queries). All fit targets choose CNN; on dev the teacher merely
+matches the 55.27% majority policy, while the V7 Router reaches 27.39% winner
+accuracy. Restoring equal residual energy raises uniform/teacher fusion to
+59.6188 mAP / 59.1515 Rank-1, but remains 5.3812 below the development gate.
+FP32 deterministic replays are byte-identical, optimizer steps and official
+access are zero. The receipt rejects a Router-only V8; it is diagnostic and
+does not support an ablation, deployable Oracle, official result or SOTA claim.

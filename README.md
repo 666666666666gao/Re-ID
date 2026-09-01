@@ -48,6 +48,14 @@
 > while residual-only Oracle complementarity remains 3.6118 mAP. V7 therefore
 > fails the main gate; no SOTA, official-test, ablation or multiple-seed claim
 > exists. See the [V7 result report](results/TRIFUSION_RGBNT201_V7_DEV_SEED42_2026-09-02.md).
+> A subsequent optimizer-free frozen-router probe rejects the obvious V8
+> follow-up. All 571 cross-camera-eligible fit queries select CNN, so an
+> identity-disjoint 18-to-3 utility teacher cannot learn expert diversity and
+> only matches the 55.27% dev majority policy. Restoring equal residual energy
+> raises the deployable frozen result to **59.6188 mAP / 59.1515 Rank-1**, but
+> it remains 5.3812 below the dev gate. V8 must therefore improve expert
+> representations rather than only retrain the Router; see the
+> [probe report](results/TRIFUSION_RGBNT201_V8_FROZEN_ROUTER_PROBE_2026-09-02.md).
 > Dataset files, pretrained weights, checkpoints, and remote artifacts are not
 > distributed in this repository. The original DeMo project and attribution are
 > preserved below.

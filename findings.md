@@ -1,5 +1,15 @@
 # Research Findings
 
+## 2026-09-02 — V8 frozen-router 表征上限探针未晋级
+
+- 目的：在不更新模型的条件下，检验“冻结 V7 三专家、只重训身份隔离效用 Router 并恢复等能量 residual”是否值得进入 V8 主训练。source checkpoint 为 V7 epoch1 `8bcdf358...09a2b`；FP32 两次重放核心 JSON 完全一致；optimizer0、official0。
+- 教师数据边界：141-fit 中只有 21 个身份具有跨摄像头正样本，共 571 个合格 query；30-dev 为 825 个 query。fit 的 residual-only 最佳专家标签 100% 为 CNN，因此检索级教师在训练域没有可学习的专家类别变化。
+- 身份隔离迁移：dev 真实赢家分布为 CNN/Transformer/Mamba `55.27%/17.45%/27.27%`。fit 教师在 dev 上恒选 CNN，准确率 `55.27%`，等于多数类先验；V7 当前 Router 预测分布为 `0%/4.61%/95.39%`，准确率仅 `27.39%`。
+- 融合几何：把 residual bank 从 V7 的约 0.2 能量恢复为与 Signal 等能量后，均匀融合和 fit 教师融合都达到 `59.6188 mAP / 59.1515 Rank-1`；比 baseline 高 `1.6079 mAP`，比最强固定 residual-CNN 高 `0.4871`，证明低 residual 能量确实压制融合。
+- 晋级门失败：`59.6188` 仍比 65 mAP 低 `5.3812`，效用教师也没有超过多数类先验。结合 residual-only GT Oracle `62.7435<65`，仅冻结专家并更换 Router/能量不能完成主目标，不启动这一 V8。
+- 下一步必须改变专家表征能力和训练分工，同时保留 exact Signal 输出；不得把该探针称为主方法结果、消融、部署 Router 或 SOTA。
+- 证据：`evidence/trifusion_v8_frozen_router_probe_seed42.json`、`results/TRIFUSION_RGBNT201_V8_FROZEN_ROUTER_PROBE_2026-09-02.md`。
+
 ## 2026-09-02 — Signal-preserving V7 60-epoch dev 主门负结果
 
 - 完整性：远端 RTX3090、seed42、B64/K8、固定 141-fit/30-dev、60/60 epoch、2,520 optimizer steps、0 overflow；严格重载五路指标逐项一致；Signal state SHA 训练前后及重载后不变；official test access=0。

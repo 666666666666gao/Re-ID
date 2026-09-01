@@ -113,6 +113,14 @@
   demonstrated bottleneck is learned routing plus destructive joint
   optimization, not absent expert diversity. Any next main version requires a
   single evidence-derived structural hypothesis and fresh train-only gates.
+- The optimizer-free V8 frozen-router probe is terminal and must not be rerun.
+  Among the 21 cross-camera-eligible fit identities (571 queries), the
+  residual-expert winner is CNN for 100% of queries, so the fit utility teacher
+  cannot learn sample-level expert diversity. On disjoint dev identities it
+  only matches the 55.27% CNN majority policy, while the V7 Router reaches
+  27.39%. Equal-energy uniform/teacher fusion reaches 59.6188 mAP, still 5.3812
+  below 65. Do not implement a Router-only V8; the next main change must improve
+  expert representation/task division while preserving exact Signal.
 
 ## Remote experiment constraints
 
