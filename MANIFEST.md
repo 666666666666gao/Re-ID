@@ -292,3 +292,5 @@
 | 2026-09-02 06:29 | /experiment-plan | refine-logs/EXPERIMENT_PLAN.md | implementation | V11固定折内residual-only/DINO门与条件式主模型路径latest |
 | 2026-09-02 06:29 | /experiment-plan | refine-logs/EXPERIMENT_TRACKER_20260902_062924.md | implementation | V11 Q0/Q1/Q2/final门禁tracker永久快照 |
 | 2026-09-02 06:29 | /experiment-plan | refine-logs/EXPERIMENT_TRACKER.md | implementation | V11-Q0 READY；后续实现、训练和dev均受门禁约束 |
+| 2026-09-02 06:39 | /tdd | tests/test_probe_v11_dinov2_oof_residual_complement.py | implementation | residual bank、折内query聚合与fail-closed资格判定公共接缝RED→GREEN合同 |
+| 2026-09-02 06:39 | /run-experiment | tools/probe_v11_dinov2_oof_residual_complement.py | implementation | 三折held-out residual-only/DINO固定资格探针，optimizer0/dev0/official0 |
