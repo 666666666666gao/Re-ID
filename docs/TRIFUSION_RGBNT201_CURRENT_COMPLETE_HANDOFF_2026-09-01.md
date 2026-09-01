@@ -1082,3 +1082,61 @@ results/TRIFUSION_RGBNT201_V10_DINOV2_FIT_QUALIFICATION_2026-09-02.md
 EXPERIMENT_AUDIT_V10_Q0.md
 EXPERIMENT_AUDIT_V10_Q0.json
 ```
+
+## 22. V11-Q0 identity-OOF residual complement 资格终态（2026-09-02）
+
+V11 试图修复 V10 的显式 Phase-B 100 mAP 饱和问题：复用三个已训练的
+
+```text
+trifusion_v8_oof_router_targets_seed42_f7b3cfc/fold_{0,1,2}_experts.pth
+```
+
+checkpoint，每折只在该 expert adapter 未见过的 held-out 身份上计算距离；
+所有检索严格折内完成，跨折仅按 query 聚合 AP/Rank-1。资格指标完全排除
+exact Signal 和 Phase-B embedding，只比较 CNN/Transformer/Mamba
+residual、三专家 residual bank、固定 DINOv2 和唯一等块拼接。
+
+| 输出 | mAP | Rank-1 |
+|---|---:|---:|
+| CNN residual | 98.5115 | 98.4238 |
+| Transformer residual | 100.0000 | 100.0000 |
+| Mamba residual | 99.9416 | 100.0000 |
+| residual bank | **100.0000** | **100.0000** |
+| DINOv2 | 14.1323 | 9.4571 |
+| fixed equal-block concat | 95.8582 | 96.4974 |
+
+fixed concat 比 residual bank 低 `4.1418 mAP`；residual-bank/DINO hard
+Oracle 仍为100/100，Oracle gain=0，unique AP wins=`570/0`。三折和571
+query协议门通过，但 `non_saturation=false`、总资格门 false。
+
+原因已经由执行证据和独立审计定位：fold expert adapter 本身没有看到 held-out
+身份，但每支专家的输入仍来自
+
+```text
+/root/autodl-tmp/trifusion-v2/artifacts/signal_baseline_dev_seed42_f7d4b30/Signalbest.pth
+```
+
+对应的 frozen Signal token field；该 Signal checkpoint 已在全部141个fit身份
+上训练。因此 adapter training 是 OOF，完整特征路径不是 identity-unseen。
+100 mAP 是 fit-identity 泄漏/饱和证据，不是部署增益，也不是指标归一化造假。
+
+本次运行 `optimizer_steps=0`、`training_executed=false`、dev0、official0，
+冻结状态未改变，峰值 allocated/reserved=`2820.82/3878 MiB`。独立
+result-to-claim=`no/high`；独立审计=`WARN / warn /
+FAIL_TO_QUALIFY—STOP_V11_Q0`。WARN 来自完整路径隔离不成立以及大二进制
+只在远端；GT、普通L2检索、实际执行路径和评价类型本身通过。
+
+V11 至此封存：不实现Q1/Q2，不训练、不访问dev/official，不做消融、多seed
+或 DINO 模态/分辨率/block/token/fusion/head 扫描。该结果不能外推为 DINOv2
+普遍无效。任何后继必须作为新预注册假设，使完整测量特征路径对 held-out
+身份未见并先证明非饱和；同时遵守不复跑 baseline 的用户约束。
+
+证据：
+
+```text
+evidence/trifusion_v11_dinov2_oof_residual_complement_seed42.json
+evidence/trifusion_v11_dinov2_oof_residual_complement_seed42_provenance.json
+results/TRIFUSION_RGBNT201_V11_DINOV2_OOF_RESIDUAL_QUALIFICATION_2026-09-02.md
+EXPERIMENT_AUDIT_V11_Q0.md
+EXPERIMENT_AUDIT_V11_Q0.json
+```

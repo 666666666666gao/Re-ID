@@ -186,6 +186,19 @@ completed; `qualification_gate.passed=false` closes V10. The two large binary
 weights remain remote-only, so the independent audit preserves a provenance
 WARN rather than claiming fresh-clone byte rehashability.
 
+The V11-Q0 receipt is a three-fold, fold-local real-GT fit diagnostic. It
+excludes explicit Signal/Phase-B embeddings and aggregates only per-query
+scores, never cross-fold distances. Nevertheless, the residual bank and
+Transformer residual reach 100 mAP because their common frozen Signal token
+field was trained on every fit identity. DINO/fixed-concat mAP is
+14.1323/95.8582; concat loses 4.1418 mAP, DINO has zero unique AP wins and the
+Oracle gain is zero. `qualification_status=FAIL` and
+`next_phase_authorized=false`. The paired provenance wrapper binds source
+commit `a29692a`, script/test/config/result hashes and the remote result path.
+The independent audit classifies the 100 mAP as saturation/leakage rather than
+metric fraud and retains WARN for non-end-to-end identity isolation and
+remote-only binaries.
+
 The task-anchor V4 readiness receipt binds the V4 source/config hashes to the
 remote RTX3090 preflight, eight-step capacity and 100-step fixed-batch receipts.
 It records B32/K4, 95,197,266 parameters, 6,548 MiB peak reserved memory, zero

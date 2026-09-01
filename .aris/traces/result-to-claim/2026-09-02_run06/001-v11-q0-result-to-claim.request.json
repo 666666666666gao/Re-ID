@@ -1,0 +1,16 @@
+{
+  "call_number": 1,
+  "purpose": "v11-q0-result-to-claim",
+  "timestamp": "2026-09-02T06:44:00+08:00",
+  "tool": "followup_task",
+  "model": "inherited-secondary-codex",
+  "reasoning_effort": "inherited",
+  "files_referenced": [
+    "evidence/trifusion_v11_dinov2_oof_residual_complement_seed42.json",
+    "tools/probe_v11_dinov2_oof_residual_complement.py",
+    "tests/test_probe_v11_dinov2_oof_residual_complement.py",
+    "refine-logs/EXPERIMENT_PLAN_20260902_062924.md",
+    "refine-logs/EXPERIMENT_TRACKER.md"
+  ],
+  "prompt": "RESULT-TO-CLAIM EVALUATION — V11-Q0\n\nJudge whether the completed V11-Q0 supports its intended qualification claim. Read the authoritative local files:\n- evidence/trifusion_v11_dinov2_oof_residual_complement_seed42.json\n- tools/probe_v11_dinov2_oof_residual_complement.py\n- tests/test_probe_v11_dinov2_oof_residual_complement.py\n- refine-logs/EXPERIMENT_PLAN_20260902_062924.md\n- refine-logs/EXPERIMENT_TRACKER.md\n\nIntended claim: frozen DINOv2 provides unique, non-saturated identity information complementary to identity-OOF CNN/Transformer/Mamba residual bank, sufficient to authorize a Dual-Foundation model.\n\nKey observed metrics: residual_bank 100.0 mAP/100 R1; Transformer residual 100/100; Mamba 99.9416/100; CNN 98.5115/98.4238; DINO 14.1323/9.4571; fixed concat 95.8582/96.4974; concat delta -4.1418 mAP; hard Oracle 100/100 gain0; unique AP wins residual_bank/DINO=570/0. Protocol 3 folds/571 queries passes, but non-saturation=false. optimizer0, training=false, dev0, official0, frozen states unchanged.\n\nKnown caveat: exact Signal/Phase-B embeddings were excluded, but every residual expert still consumes a frozen Signal token field trained on all 141 fit identities; thus the residual-only OOF metric is saturated and does not prove identity-unseen generalization.\n\nReturn exactly:\n1 claim_supported: yes|partial|no\n2 what_results_support\n3 what_results_dont_support\n4 missing_evidence\n5 suggested_claim_revision\n6 next_experiments_needed (must respect preregistered no posthoc DINO scans/no dev/no baseline reruns)\n7 confidence high|medium|low\n8 whether V11-Q1/Q2/dev is authorized.\nBe strict; do not generalize to DINO overall."
+}

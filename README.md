@@ -97,6 +97,14 @@
 > two-source Oracle gain is zero. V10 therefore stops before model
 > implementation or training. This is not a general rejection of DINOv2; see
 > the [V10-Q0 report](results/TRIFUSION_RGBNT201_V10_DINOV2_FIT_QUALIFICATION_2026-09-02.md).
+> V11-Q0 then removed the explicit Signal/Phase-B prefix and evaluated the
+> three fold-specific residual experts strictly within their held-out folds.
+> The residual bank still saturates at **100 mAP** because its frozen Signal
+> token field was trained on all fit identities; DINOv2 reaches **14.1323** and
+> fixed concat drops to **95.8582**, with zero DINO unique AP wins and zero
+> Oracle gain. This is leakage/saturation evidence, not a deployable result.
+> V11 is sealed before model implementation, training or dev; see the
+> [V11-Q0 report](results/TRIFUSION_RGBNT201_V11_DINOV2_OOF_RESIDUAL_QUALIFICATION_2026-09-02.md).
 > Dataset files, pretrained weights, checkpoints, and remote artifacts are not
 > distributed in this repository. The original DeMo project and attribution are
 > preserved below.

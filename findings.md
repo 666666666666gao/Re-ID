@@ -1,5 +1,13 @@
 # Research Findings
 
+## 2026-09-02 — V11-Q0 residual-only OOF 仍被 all-fit Signal 场饱和
+
+- 三个专家 checkpoint 的 adapter 训练身份严格隔离，距离也只在各 held-out fold 内计算；但它们共享的 frozen Signal token field 已见全部141个fit身份，因此完整表示路径并不identity-unseen。
+- 571 query 聚合 mAP/Rank-1：CNN residual=`98.5115/98.4238`，Transformer=`100/100`，Mamba=`99.9416/100`，residual bank=`100/100`，DINO=`14.1323/9.4571`，fixed concat=`95.8582/96.4974`。
+- concat 比最强fixed source低 `4.1418 mAP`；Oracle gain=0；unique AP wins residual-bank/DINO=`570/0`；non-saturation门失败。
+- 独立 result-to-claim=`no/high`；独立审计=`WARN/warn/FAIL_TO_QUALIFY`。100 mAP不是self-normalization或假GT，而是all-fit Signal场泄漏/饱和证据。
+- 封存V11：不实现Q1/Q2、不训练、不访问dev/official、不做消融或DINO事后扫描。后继必须使完整测量路径对held-out身份未见，且不能复跑baseline。
+
 ## 2026-09-02 — V10-Q0 frozen DINOv2 资格门失败
 
 - 范围：仅 141-fit 中 21 个跨摄像头身份、571 query；optimizer0、training=false、dev0、official0。DINOv2 ViT-B/14 只删除预训练专用 `mask_token` 后 strict load，输入固定252×126、token163×768，Phase-A/Router/DINO state 均不变。

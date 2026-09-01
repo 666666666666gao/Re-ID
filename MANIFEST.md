@@ -294,3 +294,17 @@
 | 2026-09-02 06:29 | /experiment-plan | refine-logs/EXPERIMENT_TRACKER.md | implementation | V11-Q0 READY；后续实现、训练和dev均受门禁约束 |
 | 2026-09-02 06:39 | /tdd | tests/test_probe_v11_dinov2_oof_residual_complement.py | implementation | residual bank、折内query聚合与fail-closed资格判定公共接缝RED→GREEN合同 |
 | 2026-09-02 06:39 | /run-experiment | tools/probe_v11_dinov2_oof_residual_complement.py | implementation | 三折held-out residual-only/DINO固定资格探针，optimizer0/dev0/official0 |
+| 2026-09-02 06:55 | /analyze-results | evidence/trifusion_v11_dinov2_oof_residual_complement_seed42.json | research | V11-Q0终态：bank/DINO/concat mAP100/14.1323/95.8582，non-saturation false、gate false |
+| 2026-09-02 06:55 | /analyze-results | evidence/trifusion_v11_dinov2_oof_residual_complement_seed42_provenance.json | research | 绑定a29692a及probe/test/config/result SHA和远端result路径 |
+| 2026-09-02 06:55 | /analyze-results | results/TRIFUSION_RGBNT201_V11_DINOV2_OOF_RESIDUAL_QUALIFICATION_2026-09-02.md | research | V11-Q0折指标、饱和来源、失败门、工程完整性和停止决定 |
+| 2026-09-02 06:55 | /result-to-claim | .aris/traces/result-to-claim/2026-09-02_run06/ | research | V11-Q0 claim_supported=no/high；不支持DINO互补、后续实现或dev |
+| 2026-09-02 06:55 | /experiment-audit | .aris/traces/experiment-audit/2026-09-02_run05/ | research | GPT-5.5只读完整性审计完整trace |
+| 2026-09-02 06:55 | /experiment-audit | EXPERIMENT_AUDIT_V11_Q0.md | research | WARN/warn/FAIL_TO_QUALIFY；100mAP为all-fit Signal饱和而非指标欺诈 |
+| 2026-09-02 06:55 | /experiment-audit | EXPERIMENT_AUDIT_V11_Q0.json | research | V11-Q0独立审计机器可读终局 |
+| 2026-09-02 06:55 | /experiment-plan | refine-logs/EXPERIMENT_PLAN.md | implementation | V11-Q0失败回填并关闭Q1/Q2/dev与DINO事后扫描 |
+| 2026-09-02 06:55 | /experiment-plan | refine-logs/EXPERIMENT_PLAN_20260902_065520.md | implementation | 与latest逐字节一致的V11-Q0终局计划永久快照 |
+| 2026-09-02 06:55 | /experiment-plan | refine-logs/EXPERIMENT_TRACKER.md | implementation | V11-Q0 COMPLETE-FAIL；Q1/Q2/R001关闭，V12未授权 |
+| 2026-09-02 06:55 | /experiment-plan | refine-logs/EXPERIMENT_TRACKER_20260902_065520.md | implementation | 与latest逐字节一致的V11-Q0终局tracker永久快照 |
+| 2026-09-02 06:55 | /analyze-results | findings.md | research | 登记V11完整路径非隔离、固定DINO无独有增益和后续约束 |
+| 2026-09-02 06:55 | /run-experiment | evidence/SHA256SUMS | implementation | 登记V11原始结果和provenance wrapper SHA-256 |
+| 2026-09-02 06:55 | /handoff | docs/TRIFUSION_RGBNT201_CURRENT_COMPLETE_HANDOFF_2026-09-01.md | documentation | 统一交接续写V11资格失败、100mAP饱和来源与停止边界 |

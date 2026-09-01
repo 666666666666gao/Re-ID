@@ -181,6 +181,16 @@
   resolution, block, token, weighting or head choices. This result rejects only
   the fixed V10 representation/protocol, not DINOv2 in general. Any future DINO
   route must be a new hypothesis with a non-saturated identity-isolated gate.
+- V11-Q0 corrected the distance aggregation to three fold-local held-out expert
+  evaluations and excluded explicit Signal/Phase-B embeddings, but the residual
+  bank and Transformer residual still reach 100 mAP because every expert reads
+  a frozen Signal token field trained on all 141 fit identities. DINOv2 reaches
+  14.1323 mAP, fixed concat 95.8582, Oracle gain zero, and DINO unique AP wins
+  zero. The intended non-saturation gate is false.
+- Seal V11: the 100 mAP value is leakage/saturation evidence, not a deployable
+  result or metric fraud. Do not implement Q1/Q2, train, access dev/official,
+  run ablations, or scan DINO choices. Any successor must isolate the complete
+  measured feature path from held-out identities without rerunning baseline.
 
 ## Remote experiment constraints
 

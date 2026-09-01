@@ -1,0 +1,20 @@
+{
+  "call_number": 1,
+  "purpose": "v11-q0-integrity-audit",
+  "timestamp": "2026-09-02T06:44:00+08:00",
+  "tool": "spawn_agent",
+  "model": "gpt-5.5",
+  "reasoning_effort": "xhigh",
+  "files_referenced": [
+    "tools/probe_v11_dinov2_oof_residual_complement.py",
+    "tools/diagnose_v6_oracle_complementarity.py",
+    "tools/build_v8_oof_router_targets.py",
+    "tools/probe_v10_dinov2_fit_utility.py",
+    "tests/test_probe_v11_dinov2_oof_residual_complement.py",
+    "evidence/trifusion_v11_dinov2_oof_residual_complement_seed42.json",
+    "refine-logs/EXPERIMENT_PLAN_20260902_062924.md",
+    "refine-logs/EXPERIMENT_TRACKER.md",
+    "protocols/rgbnt201_dev_v1.json"
+  ],
+  "prompt": "You are an independent experiment integrity auditor. Read every listed file directly and perform a read-only audit. Do not modify files and do not run new experiments.\n\nFiles:\n- Evaluation script: C:/Users/gb/.trifusion_github_publish_22c3bee/tools/probe_v11_dinov2_oof_residual_complement.py\n- Metric implementation: C:/Users/gb/.trifusion_github_publish_22c3bee/tools/diagnose_v6_oracle_complementarity.py\n- Data/fold helpers: C:/Users/gb/.trifusion_github_publish_22c3bee/tools/build_v8_oof_router_targets.py\n- DINO helper: C:/Users/gb/.trifusion_github_publish_22c3bee/tools/probe_v10_dinov2_fit_utility.py\n- Tests: C:/Users/gb/.trifusion_github_publish_22c3bee/tests/test_probe_v11_dinov2_oof_residual_complement.py\n- Result: C:/Users/gb/.trifusion_github_publish_22c3bee/evidence/trifusion_v11_dinov2_oof_residual_complement_seed42.json\n- Plan: C:/Users/gb/.trifusion_github_publish_22c3bee/refine-logs/EXPERIMENT_PLAN_20260902_062924.md\n- Tracker: C:/Users/gb/.trifusion_github_publish_22c3bee/refine-logs/EXPERIMENT_TRACKER.md\n- Protocol: C:/Users/gb/.trifusion_github_publish_22c3bee/protocols/rgbnt201_dev_v1.json\n\nAudit checklist:\nA. Ground-truth provenance and whether fold identity isolation is scientifically valid given the frozen Signal field was trained on all 141 fit identities.\nB. Score normalization/self-normalization fraud.\nC. Result existence, key/number consistency, code/config/checkpoint provenance; note remote-only binaries separately.\nD. Whether reported code paths are executed or dead.\nE. Scope/leakage/claim boundary; confirm no dev/official and distinguish expert-head OOF from end-to-end identity isolation.\nF. Evaluation classification.\n\nFor A-F report PASS|WARN|FAIL, exact file:line evidence, and details. Then provide:\n- overall_verdict PASS|WARN|FAIL\n- integrity_status pass|warn|fail\n- scientific_verdict (QUALIFY or FAIL_TO_QUALIFY/STOP_V11_Q0)\n- claim impact\n- exact action items.\nTreat 100 mAP as suspicious and explain whether it is metric fraud or expected leakage/saturation. Do not call Oracle deployable."
+}
