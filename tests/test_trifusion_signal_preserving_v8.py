@@ -94,7 +94,7 @@ def _batch(*, nir_shift: float = 0.0) -> dict[str, object]:
     images = {
         modality: torch.randn(4, 3, 4, 4) for modality in MODALITY_ORDER
     }
-    images["NI"] = images["NI"] + nir_shift
+    images["NI"][:, 0] = images["NI"][:, 0] + nir_shift
     return {
         "images": images,
         "modality_mask": torch.ones(4, 3, dtype=torch.bool),
