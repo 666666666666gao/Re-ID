@@ -23,11 +23,6 @@ def run(args: argparse.Namespace) -> dict[str, Any]:
         evaluate_dev_gate,
         load_raw_config,
     )
-    from trifusion.signal_preserving_v8_router import (
-        HierarchicalOOFMarginRouter,
-        OOFMarginRoutedFusion,
-    )
-
     started = time.time()
     config = load_raw_config(args.config.resolve())
     checkpoint_path = args.checkpoint.resolve()
@@ -37,6 +32,11 @@ def run(args: argparse.Namespace) -> dict[str, Any]:
         raise FileExistsError(f"V8 Router dev output already exists: {args.output_dir}")
     args.output_dir.mkdir(parents=True)
     runtime = _build_runtime(config)
+    from trifusion.signal_preserving_v8_router import (
+        HierarchicalOOFMarginRouter,
+        OOFMarginRoutedFusion,
+    )
+
     phase_a_model = runtime["model"]
     payload = torch.load(checkpoint_path, map_location="cpu", weights_only=True)
     if payload["schema_version"] != "trifusion-v8-phase-a-plus-router-v1":
