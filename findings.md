@@ -11,7 +11,7 @@
 - 收敛判断：epoch 60 的 fused ID/triplet loss 已降至 `0.01823/0.00562`，但 test mAP 只有 `59.1478`，说明是泛化失败而非单纯没训练完。
 - 低场景证据：训练目标路由校准中 `modality_missing` 最差（Brier `0.22338`、ECE `0.07178`）；未对官方 test 做分场景重复评估，因此不能把它写成该场景的 ReID mAP。
 - 设计风险：HFER 第二次交换仍使用 stage-1 质量后验，最终融合前才刷新；Mamba 当前主要做模态内扫描，跨模态传播主要来自通用 HFER。
-- 约束：不进入消融；不做多种子；不复现 baseline；不得再次使用本次官方测试做选模或调参。
+- 约束：不进入消融；不做多种子；不得再次使用本次官方测试做选模或调参。此前“不复现 baseline”的约束已被用户 2026-09-01 19:00 的最新指令覆盖；现在只允许先做远端 Signal baseline 保底，不允许 baseline 网格扫描或官方 test 选点。
 - 后续：先做 train/dev-only 的主方法失败分析，再设计并预注册新的主版本。需要身份留出的路由校准证据后，才能提出泛化校准主张。
 - 完整结果：`results/TRIFUSION_RGBNT201_FINAL_SEED42_2026-09-01.md`。
 
@@ -41,3 +41,16 @@
 - 固定批门：100 步总损失 `14.91096→0.99563`，ratio `0.0667716≤0.10`；0 overflow；official access=0。
 - 边界：这些只证明工程和学习能力就绪，不证明开发集增益、SOTA 或论文主张。下一步仅运行 seed42 的完整 60-epoch held-out dev 主实验。
 - 证据：`evidence/trifusion_task_anchor_v4_readiness_seed42.json`。
+
+## 2026-09-01 — TriFusion V4 60-epoch dev 主门负结果
+
+- 完整性：远端 RTX3090、seed42、B32/K4、141-fit/30-dev、60/60 epoch 完成；状态 `PASS/complete`；60 次 dev 评估；无 fatal/nonfinite；official test access=0。
+- 最佳 checkpoint：epoch27，SHA-256 `47fea7f42a5673e42deb1d67540cca6338af62b028be4d69daedfe309de1e852`。
+- 最佳 checkpoint 原始结果：fused `43.4031 mAP / 42.7879 Rank-1`；CNN `40.9147/39.5152`；Transformer `41.6819/40.1212`；Mamba `44.0659/43.5152`。
+- 主门判定：fused 比 Mamba 低 `0.6628 mAP / 0.7273 Rank-1`，比 65 mAP dev 门低 `21.5969`；因此 `claim_supported=no`，official test 与消融继续封闭。
+- 相对 V3：V4 fused mAP 只提高约 `0.5053`；这证明等能量残差银行没有把结构差异转化为足够的融合增益。
+- 过拟合信号：epoch60 fused 回落到 `40.1199/40.0000`，Mamba 为 `41.0375/42.7879`。这是完成后的早峰回落，不是“还没训练完”。
+- baseline 边界：V4 没有测得同 checkpoint 的完整 Signal baseline-only 指标。其 1536D anchor 仅是三模态 projected-CLS，缺少 Signal 推理的 1536D SIM 交互特征和 camera SIE；不得把它称为 Signal baseline，也不得把 43.4 dev 与上游 official-test `80.3/85.2` 直接相减。
+- 最新路线：先建立完整、独立可检索的 Signal 3072D baseline-only 路径；分阶段冻结 baseline，避免专家梯度破坏；同 checkpoint 同 dev 协议同时评估 baseline-only 与 fused，只有 fused 不低于 baseline 且通过冻结主门才晋级，否则拒绝 fused 且不主张融合增益。不实现额外运行时 fallback。
+- V4-specific integrity：当前只有真实 GT、`run_summary=PASS` 和完整哈希链，尚无独立 V4 integrity audit，故完整性结论标为 provisional；负结果 verdict 置信度 high，baseline 缺失是主要根因的因果判断仅为 medium。
+- 证据：`evidence/trifusion_task_anchor_v4_dev_terminal_seed42.json`；远端原始目录 `/root/autodl-tmp/trifusion-v2/artifacts/trifusion_task_anchor_v4_core_dev_seed42_3fbedbb`。

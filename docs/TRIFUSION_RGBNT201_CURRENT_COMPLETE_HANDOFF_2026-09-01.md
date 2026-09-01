@@ -15,8 +15,10 @@
 - 云端 RTX 3090 的正式 seed-42 主实验已完成 60 epoch 全 171 身份训练，并在固定终点完成唯一一次官方评估。
 - 正式融合结果为 `59.1478 mAP / 63.2775 Rank-1`；CNN 略高，为 `59.1561 / 63.7560`。官方测试访问和评估计数均恰好为 1。
 - 相对登记目标 `85.3 mAP / 87.9 Rank-1`，融合结果低 `26.1522 mAP / 24.6225 Rank-1`；`single_seed_target_exceeded=false`，不支持 SOTA 或融合增益主张。
+- 后续 V3 task-anchor 与 V4 等能量残差银行均已在固定 141-fit/30-dev 上完整训练 60 epoch。V4 最佳 epoch27 fused 为 `43.4031/42.7879`，仍低于同 checkpoint 的 Mamba `44.0659/43.5152`，且距 65 mAP dev 门 `21.5969`；official access=0。
+- V4 只保留了三模态 projected-CLS 的 1536D anchor，不等于 Signal 的完整 3072D 检索特征。Signal 还包含 1536D SIM 交互特征和 camera SIE；上游 `80.3/85.2` 尚未在本服务器复现，不能与 V4 held-out dev 数字直接相减。
 - 原正式启动在官方指标写出后的路由校准审计因缺失导入失败；`repair-0002` 仅重算训练集路由审计，`optimizer_steps=0`、`training_reexecuted=false`、`official_test_reexecuted=false`，公开 verifier 返回 PASS。
-- 用户已明确：只做 seed 42；不复现 baseline；主实验达到目标以后才考虑消融；所有训练、评估、数据和环境只在云端 GPU，Windows/WSL 仅作传输和文档存档。
+- 用户最新指令：只做 seed 42；现在优先完成远端 Signal baseline 保底；主实验达到目标以后才考虑消融；所有训练、评估、数据和环境只在云端 GPU，Windows/WSL 仅作传输和文档存档。
 
 ## 1. 权威位置
 
@@ -183,7 +185,7 @@ RDPT 仍是辅助机制，不属于本次主实验启用的核心贡献。
 
 ### 5.1 上游公开参照
 
-用户明确要求不复现 baseline。下列数字仅作为冻结的公开参照，不是本工程复现结果：
+历史阶段用户曾要求不复现 baseline；该约束已被 2026-09-01 19:00 的“先做 baseline 保底”指令覆盖。下列数字在新的本地结果产生前仍只作为冻结的公开参照，不是本工程复现结果：
 
 | 方法/角色 | mAP | Rank-1 | 边界 |
 |---|---:|---:|---|
@@ -444,7 +446,7 @@ protocols/circ_directional_final_authorization_v1.json
   ├─ fused > 85.3 mAP 且 Rank-1 > 87.9
   │    └─ 才允许设计消融；仍只能称单种子目标超越，不能直接宣称统计 SOTA
   └─ 未超过目标（本次路径）
-       └─ 不做消融、多种子或 baseline 复现；先做只读错误分解和 train/dev-only 主方法恢复
+       └─ 不做消融或多种子；先建立完整 Signal baseline floor，再做 baseline-preserving 的 train/dev-only 主方法恢复
 ```
 
 ## 10. 文档索引
@@ -481,6 +483,91 @@ protocols/circ_directional_final_authorization_v1.json
 - [x] `repair-0002` 完成收据独立重验 PASS。
 - [x] 最终 fused/CNN/Transformer/Mamba 指标已回填。
 - [x] 结果未超过冻结目标，已锁定“不启动消融”。
+- [x] V3 与 V4 各完成一次 seed42、60-epoch、held-out dev 主实验，均未晋级且 official access=0。
+- [x] 已确认 V4 的 1536D anchor 不是 Signal 完整 3072D baseline。
+- [ ] 在远端建立完整 Signal baseline-only 路径、环境/权重或可复现训练回执及同协议 dev 指标。
+- [ ] 建立同 checkpoint baseline-only/fused 双输出与 fused 晋级门禁后，才允许下一次主训练。
+
+## 12. V3/V4 主方法恢复终态
+
+### 12.1 V3 task-anchor
+
+V3 将三模态 direct CLIP projected-CLS 作为 1536D anchor，并追加质量路由的三专家残差。完整 60-epoch held-out dev 最佳为 epoch14：
+
+| 输出 | mAP | Rank-1 |
+|---|---:|---:|
+| fused | 42.8978 | 43.8788 |
+| CNN | 42.8402 | 44.0000 |
+| Transformer | 43.0168 | 44.0000 |
+| Mamba | 42.9259 | 43.8788 |
+
+冻结诊断表明 residual-only 有身份信息，但 residual/anchor norm ratio 只有约 `0.216`，路由归一化熵约 `0.9998`，残差在最终距离中的能量过弱。V3 未通过 65 mAP dev 门，official access=0。
+
+### 12.2 V4 等能量非破坏残差银行
+
+V4 commit：
+
+```text
+3fbedbb98940c6c9765c07af01f52e40f809ff95
+```
+
+V4 将 CNN、Transformer、Mamba 的三模态残差分别保留为 4608D bank，并将整个 bank 的样本级 L2 能量校准为等于 1536D anchor；最终 fused 为 6144D。工程门全部通过：95,197,266 参数，B32/K4 8-step capacity 无 overflow，366/366 梯度覆盖；固定批 100-step loss ratio `0.06677`。
+
+完整 dev 运行身份：
+
+```text
+/root/autodl-tmp/trifusion-v2/artifacts/
+trifusion_task_anchor_v4_core_dev_seed42_3fbedbb
+```
+
+终态：60/60 epoch，`run_summary=PASS`，phase=`complete`，60 次 dev 评估，无 fatal/nonfinite，official test access=0。最佳为 epoch27：
+
+| 输出 | mAP | Rank-1 | Rank-5 | Rank-10 |
+|---|---:|---:|---:|---:|
+| fused | 43.4031 | 42.7879 | 58.5455 | 65.5758 |
+| CNN | 40.9147 | 39.5152 | 55.5152 | 64.7273 |
+| Transformer | 41.6819 | 40.1212 | 56.7273 | 65.4545 |
+| Mamba | **44.0659** | **43.5152** | **58.7879** | **66.0606** |
+
+V4 fused 比 V3 fused 提高约 `0.5053 mAP`，但仍比 Mamba 低 `0.6628 mAP / 0.7273 Rank-1`，距 65 mAP dev 门低 `21.5969`。epoch60 fused 回落到 `40.1199/40.0000`，Mamba 为 `41.0375/42.7879`。这是一项完成后的负结果和过拟合信号，不是未训练完。
+
+注意：V4 terminal receipt 没有 V4 anchor-only 指标；V3 的 anchor `42.4787` 不能挪用为 V4 anchor。独立 reviewer 的初稿曾发生这一混淆，已在 trace 中纠正；最终 verdict 不声称 V4 fused 优于 V4 anchor。
+
+关键哈希：
+
+| 工件 | SHA-256 |
+|---|---|
+| best checkpoint | `47fea7f42a5673e42deb1d67540cca6338af62b028be4d69daedfe309de1e852` |
+| run summary | `cd7992d0c0a7a2deb3225f7f3a78b0185cdea1264ea39b39303fdfabc1d4a9af` |
+| dev worker result | `dceca4839ec5bafdacf03ebfff53c63dffe508592afd585e13e5719c08856ec9` |
+| best dev receipt | `0f0c1781c4352feb4a6339489f14e0e80d8219577a14661207a627c056c5f013` |
+| final resume generation | `ec7c0c0554d7fea5b58406524a3a284a3ab59435eeb1cd012dfd47fb6b30151b` |
+
+轻量终态证据：`evidence/trifusion_task_anchor_v4_dev_terminal_seed42.json`。
+
+### 12.3 为什么现在必须先保住 baseline
+
+官方 Signal commit `cd1b0a6` 的推理路径已逐行核对：
+
+```text
+ori = concat(RGB_global, NI_global, TI_global)        # 1536D
+sim = SIM(rgb_patch, ni_patch, ti_patch, globals)    # 1536D
+Signal retrieval = concat(ori, sim)                  # 3072D
+```
+
+其 ViT 还在 CLS token 上加入 camera SIE。V4 只有 `ori` 语义的一部分，没有 SIM 和 SIE，因此不是 Signal baseline。上游发布 `80.3 mAP / 85.2 Rank-1` 来自官方 test 路径；当前服务器没有 Signal checkpoint，也没有单独 `signal` conda 环境，所以仍必须标为 upstream-only。
+
+真正的“baseline 保底”不是简单拼接更多维度，而是以下可验证合同：
+
+1. 同一模型/同一 checkpoint 同时输出 `baseline_only` 与 `fused`；
+2. baseline 使用完整 Signal 3072D 路径，且能独立检索；
+3. 先训练/验证 baseline，再冻结 baseline 路径训练专家增量，专家梯度不得破坏 baseline；
+4. 同一 141/30 dev 协议上 fused 只有不低于 baseline 才能晋级；否则拒绝 fused，论文不得主张融合增益；当前不增加运行时 fallback 逻辑；
+5. 只有 dev 主门通过后才全 171 固定训练并进行一次官方评估；仍不做多种子和消融。
+
+### 12.4 当前 claim gate
+
+独立 result-to-claim 纠正后结论：`claim_supported=no`。高置信度支持“V4 是稳定、完整但失败的 dev 结果”；中等置信度支持“缺少完整 baseline floor 是下一项结构性优先问题”。V4-specific independent integrity audit 尚未完成，因此 V4 完整性标签为 provisional，不能复用只审计旧 V1 的 `EXPERIMENT_AUDIT.json`。
 
 ---
 

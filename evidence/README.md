@@ -175,3 +175,13 @@ AMP overflow at initial scale 256, complete 366/366 gradient coverage and a
 fixed-batch loss ratio of 0.06677. Official-test access remains zero. This is
 engineering and train-only learning-readiness evidence only; it does not prove
 a held-out dev gain, official metric, paper claim or SOTA result.
+
+The task-anchor V4 terminal dev receipt records the completed seed-42 60-epoch
+141-fit/30-dev run at commit `3fbedbb`. The selected epoch27 fused result is
+43.4031 mAP / 42.7879 Rank-1, below Mamba by 0.6628 mAP / 0.7273 Rank-1 and
+below the preregistered 65 mAP gate by 21.5969. It binds the best checkpoint,
+run summary, worker result, final resume generation and epoch60 metrics hashes;
+official-test access is zero. It does not contain a V4 anchor-only metric and
+must not be presented as a Signal baseline reproduction. The Signal
+80.3/85.2 value remains upstream-only until its full 3072D SIM+SIE path and a
+checkpoint are verified under the same protocol.

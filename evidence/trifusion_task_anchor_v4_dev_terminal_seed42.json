@@ -1,0 +1,112 @@
+{
+  "schema_version": "trifusion-task-anchor-v4-dev-terminal-v1",
+  "timestamp": "2026-09-01T19:00:00+08:00",
+  "evaluation_type": "real_gt_train_only_dev",
+  "backend": "remote_rtx3090",
+  "repository_head": "3fbedbb98940c6c9765c07af01f52e40f809ff95",
+  "run_output": "/root/autodl-tmp/trifusion-v2/artifacts/trifusion_task_anchor_v4_core_dev_seed42_3fbedbb",
+  "run_status": "PASS",
+  "phase": "complete",
+  "seed": 42,
+  "epoch": 60,
+  "schedule_horizon_epochs": 60,
+  "dev_evaluation_count": 60,
+  "fatal_or_nonfinite_detected": false,
+  "official_test_access_count": 0,
+  "protocol": {
+    "fit_identities": 141,
+    "fit_records": 3126,
+    "held_out_dev_identities": 30,
+    "query_records": 825,
+    "gallery_records": 825,
+    "train_batch_size": 32,
+    "instances_per_identity": 4
+  },
+  "best": {
+    "selection_output": "fused",
+    "epoch": 27,
+    "checkpoint_sha256": "47fea7f42a5673e42deb1d67540cca6338af62b028be4d69daedfe309de1e852",
+    "metrics_percent": {
+      "fused": {
+        "mAP": 43.40309493810425,
+        "Rank-1": 42.78787878787879,
+        "Rank-5": 58.54545454545455,
+        "Rank-10": 65.57575757575758
+      },
+      "cnn": {
+        "mAP": 40.91472952730578,
+        "Rank-1": 39.515151515151516,
+        "Rank-5": 55.515151515151516,
+        "Rank-10": 64.72727272727272
+      },
+      "transformer": {
+        "mAP": 41.681935598129996,
+        "Rank-1": 40.12121212121212,
+        "Rank-5": 56.72727272727273,
+        "Rank-10": 65.45454545454545
+      },
+      "mamba": {
+        "mAP": 44.06585448723621,
+        "Rank-1": 43.515151515151516,
+        "Rank-5": 58.78787878787879,
+        "Rank-10": 66.06060606060606
+      }
+    }
+  },
+  "epoch_60_metrics_percent": {
+    "fused": {
+      "mAP": 40.119866646814444,
+      "Rank-1": 40.0
+    },
+    "cnn": {
+      "mAP": 36.939467596823796,
+      "Rank-1": 35.63636363636364
+    },
+    "transformer": {
+      "mAP": 37.73876939114066,
+      "Rank-1": 36.484848484848484
+    },
+    "mamba": {
+      "mAP": 41.03750122653115,
+      "Rank-1": 42.78787878787879
+    }
+  },
+  "comparison": {
+    "fused_minus_best_expert_mAP": -0.6627595491319611,
+    "fused_minus_best_expert_Rank-1": -0.7272727272727266,
+    "fused_minus_v3_best_fused_mAP": 0.5053021674634217,
+    "fused_gap_to_dev_gate_mAP": 21.59690506189575,
+    "dev_gate_mAP": 65.0,
+    "dev_gate_passed": false
+  },
+  "resource": {
+    "total_parameters": 95197266,
+    "peak_allocated_mib": 6040.1884765625,
+    "peak_reserved_mib": 7256.0
+  },
+  "hashes": {
+    "config_sha256": "0121de897cf4e27d2a257d7ded7a2e40d97092c684b12cbed0cc5a3669df736a",
+    "runner_sha256": "0ef0da9768f4570d5af2acf349cd712edd4ff570dec12c1266bfbbd80d84df41",
+    "run_summary_sha256": "cd7992d0c0a7a2deb3225f7f3a78b0185cdea1264ea39b39303fdfabc1d4a9af",
+    "dev_worker_result_sha256": "dceca4839ec5bafdacf03ebfff53c63dffe508592afd585e13e5719c08856ec9",
+    "best_dev_receipt_sha256": "0f0c1781c4352feb4a6339489f14e0e80d8219577a14661207a627c056c5f013",
+    "resume_latest_sha256": "046cce0fa0cc1f55f5319f777e57881fa8895a46ce2d0a00e712f0a5cdeef6d8",
+    "resume_generation_complete_sha256": "ec7c0c0554d7fea5b58406524a3a284a3ab59435eeb1cd012dfd47fb6b30151b",
+    "epoch_60_metrics_sha256": "1e59b0889e3a424569f195a0f05c13d21d2dbd087532ce1e47a638c9dcc992d2"
+  },
+  "baseline_floor": {
+    "available": false,
+    "reason": "V4 preserves only the 1536D direct projected-CLS anchor, not Signal's full 3072D direct-plus-SIM feature with camera SIE.",
+    "signal_upstream_metric_percent": {
+      "mAP": 80.3,
+      "Rank-1": 85.2,
+      "status": "upstream_only_not_locally_reproduced"
+    }
+  },
+  "decision": {
+    "claim_supported": "no",
+    "official_test_authorized": false,
+    "ablation_authorized": false,
+    "next": "establish an exact, separately retrievable Signal baseline path and require same-checkpoint fused promotion over baseline"
+  }
+}

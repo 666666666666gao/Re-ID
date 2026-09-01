@@ -192,3 +192,12 @@
 | 2026-09-01 18:01 | /experiment-plan | refine-logs/EXPERIMENT_PLAN.md | implementation | latest V4 主方法计划，与 180105 永久版本逐字节一致 |
 | 2026-09-01 18:01 | /experiment-plan | refine-logs/EXPERIMENT_TRACKER_20260901_180105.md | implementation | V4 M1 全门通过、V4-R003 READY 的永久追踪版本 |
 | 2026-09-01 18:01 | /experiment-plan | refine-logs/EXPERIMENT_TRACKER.md | implementation | latest V4 执行追踪器，完整 dev 主实验已解锁 |
+| 2026-09-01 19:00 | /monitor-experiment | evidence/trifusion_task_anchor_v4_dev_terminal_seed42.json | research | V4 60/60 dev 终态、epoch27 四路指标、official0、恢复/结果哈希与失败门 |
+| 2026-09-01 19:00 | /analyze-results | findings.md | research | V4 fused 低于 Mamba 0.6628 mAP、距65门21.5969及 Signal baseline 缺口 |
+| 2026-09-01 19:00 | /result-to-claim | findings.md | research | 纠正 V3/V4 anchor 混淆后的 claim_supported=no 与 baseline-first 路由 |
+| 2026-09-01 19:00 | /experiment-plan | refine-logs/EXPERIMENT_PLAN_20260901_190000.md | implementation | V5 完整 Signal baseline floor、梯度隔离、双输出与晋级/回退永久计划 |
+| 2026-09-01 19:00 | /experiment-plan | refine-logs/EXPERIMENT_PLAN.md | implementation | latest baseline-preserving V5 主方法计划 |
+| 2026-09-01 19:00 | /experiment-plan | refine-logs/EXPERIMENT_TRACKER_20260901_190000.md | implementation | V4 负结果闭环与 V5 baseline-first 永久 tracker |
+| 2026-09-01 19:00 | /experiment-plan | refine-logs/EXPERIMENT_TRACKER.md | implementation | latest V5 baseline-first 执行追踪器 |
+| 2026-09-01 19:00 | /handoff | docs/TRIFUSION_RGBNT201_CURRENT_COMPLETE_HANDOFF_2026-09-01.md | research | 续写服务器统一交接：V3/V4 终态、Signal 完整特征缺口与 baseline 保底合同 |
+| 2026-09-01 19:00 | /handoff | README.md | research | 公开入口回填 V4 负结果和 Signal baseline-first 状态 |

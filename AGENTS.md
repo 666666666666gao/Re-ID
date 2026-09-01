@@ -5,10 +5,10 @@
 - Runtime: remote Linux GPU server; local WSL2 is SSH transport only and must
   not store the project or run training.
 - GPU: one NVIDIA GeForce RTX 3090, 24 GB
-- Conda: `/root/miniconda3/bin/conda`; project environment `tri_reid`;
-  upstream PEFT-BoA comparator environment `peft_boa`; upstream MFRNet
-  checkpoint comparator environment `mfrnet`; upstream Signal environment
-  `signal`
+- Conda: `/root/miniconda3/bin/conda`; project environment `tri_reid`.
+  As of 2026-09-01 19:00 CST, the remote host does not contain separate
+  `signal`, `peft_boa`, or `mfrnet` environments; any future comparator
+  environment must be created and receipted on the remote host before use.
 - Code directory: `/root/autodl-tmp/trifusion-v2/TriFusion-ReID`
 - Dataset root: `/root/autodl-tmp/trifusion-v2/data`
 - Artifact root: `/root/autodl-tmp/trifusion-v2/artifacts`
@@ -31,6 +31,10 @@
   isolated `mfrnet` environment and label its released best as test-selected.
   Its pinned repository likewise has no repository-level license.
 - Preserve the official baseline path and metrics; put new architecture behind explicit config flags.
+- The latest user direction supersedes the earlier no-baseline-reproduction
+  constraint: first establish a remote-only Signal baseline floor. Keep the
+  upstream `80.3/85.2` label until a local checkpoint and same-protocol result
+  have actually been verified.
 - Do not report SOTA unless the same dataset split, input resources, inference protocol, and metrics have been reproduced and audited.
 
 ## TriFusion implementation status
@@ -55,7 +59,16 @@
   requires at least 22,000 MiB free before a new training process starts.
 - Use real B32/K4 without gradient accumulation so batch-hard losses see eight
   identities. AMP and activation checkpointing are required.
-- Run only seed 42. Do not reproduce baselines locally or remotely.
+- Run only seed 42. Signal baseline work is now explicitly authorized, but only
+  on the remote GPU and without hyperparameter or epoch selection on the
+  official test. Preserve its full 3072D direct-plus-SIM retrieval feature,
+  camera SIE and baseline-only output; do not call the 1536D projected-CLS
+  anchor a Signal reproduction.
+- Any fused successor must emit baseline-only and fused embeddings from the
+  same checkpoint. Fused is promoted only if it is not worse than baseline on
+  the frozen development protocol; otherwise fused is rejected and no
+  fusion-gain claim is allowed. Do not add runtime fallback logic unless a
+  later explicit requirement and test justify it.
 - Start with RGBNT201. Do not run ablations until the frozen same-protocol main
   target (85.3 mAP / 87.9 Rank-1) has been exceeded.
 - Mamba CUDA extensions are source-locked to the receipted SM86 builds; do not

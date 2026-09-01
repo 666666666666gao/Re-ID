@@ -9,6 +9,12 @@
 > [result report](results/TRIFUSION_RGBNT201_FINAL_SEED42_2026-09-01.md) and
 > [integrity audit](EXPERIMENT_AUDIT.md). This result does not support a SOTA
 > claim and does not pass the project gate for ablations.
+> The later V4 held-out-dev run also completed 60/60 epochs: fused
+> **43.4031 mAP / 42.7879 Rank-1**, below Mamba **44.0659 / 43.5152** and the
+> frozen 65 mAP dev gate. Current work is therefore baseline-first: reproduce
+> the full Signal 3072D direct+SIM feature with camera SIE, then admit a fused
+> successor only if it beats the same-checkpoint baseline on the fixed dev
+> protocol. Signal's published **80.3/85.2** remains upstream-only here.
 > Dataset files, pretrained weights, checkpoints, and remote artifacts are not
 > distributed in this repository. The original DeMo project and attribution are
 > preserved below.
