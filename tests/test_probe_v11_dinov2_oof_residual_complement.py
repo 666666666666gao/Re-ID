@@ -95,4 +95,3 @@ def test_v11_gate_requires_fixed_gain_oracle_gain_and_two_source_wins() -> None:
     assert weak_concat["concat_gain_passed"] is False
     assert saturated["non_saturation_passed"] is False
     assert collapsed["two_source_unique_wins_passed"] is False
-
