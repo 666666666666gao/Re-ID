@@ -6,6 +6,7 @@ import math
 from dataclasses import dataclass
 
 import torch
+import torch.nn.functional as F
 from torch import nn
 
 from .state import EXPERT_ORDER, MODALITY_ORDER
@@ -17,6 +18,65 @@ class OOFMarginRouterOutput:
     modal_probabilities: torch.Tensor
     expert_probabilities: torch.Tensor
     alpha: torch.Tensor
+
+
+@dataclass(frozen=True, eq=False)
+class OOFMarginFusionOutput:
+    fused_embedding: torch.Tensor
+
+
+class OOFMarginRoutedFusion(nn.Module):
+    """Append one bounded, jointly routed residual bank to exact Signal."""
+
+    def __init__(
+        self,
+        *,
+        baseline_width: int,
+        residual_width: int,
+        alpha_max: float,
+    ) -> None:
+        super().__init__()
+        if baseline_width <= 0 or residual_width <= 0:
+            raise ValueError("fusion widths must be positive")
+        if not 0.0 < alpha_max <= 1.0:
+            raise ValueError("alpha_max must lie in (0,1]")
+        self.baseline_width = int(baseline_width)
+        self.residual_width = int(residual_width)
+        self.alpha_max = float(alpha_max)
+        self.residual_bank_width = (
+            len(EXPERT_ORDER) * len(MODALITY_ORDER) * self.residual_width
+        )
+        self.fused_embedding_width = self.baseline_width + self.residual_bank_width
+
+    def forward(
+        self,
+        baseline_embedding: torch.Tensor,
+        modal_residual: torch.Tensor,
+        routing: OOFMarginRouterOutput,
+    ) -> OOFMarginFusionOutput:
+        batch_size = baseline_embedding.shape[0]
+        if baseline_embedding.shape != (batch_size, self.baseline_width):
+            raise ValueError("baseline embedding has the wrong shape")
+        if modal_residual.shape != (
+            batch_size,
+            len(EXPERT_ORDER),
+            len(MODALITY_ORDER),
+            self.residual_width,
+        ):
+            raise ValueError("modal_residual must have shape B,E,M,R")
+        if routing.weights.shape != modal_residual.shape[:3]:
+            raise ValueError("router weights do not match residual slots")
+        if routing.alpha.shape != (batch_size, 1):
+            raise ValueError("router alpha must have shape B,1")
+        if bool((routing.alpha > self.alpha_max).any()):
+            raise ValueError("router alpha exceeds the fusion bound")
+
+        routed = (modal_residual * routing.weights[..., None]).flatten(1)
+        baseline_norm = baseline_embedding.detach().norm(dim=1, keepdim=True)
+        activated = F.normalize(routed, dim=1) * baseline_norm * routing.alpha
+        return OOFMarginFusionOutput(
+            fused_embedding=torch.cat((baseline_embedding, activated), dim=1)
+        )
 
 
 class HierarchicalOOFMarginRouter(nn.Module):
@@ -138,4 +198,9 @@ class HierarchicalOOFMarginRouter(nn.Module):
         )
 
 
-__all__ = ["HierarchicalOOFMarginRouter", "OOFMarginRouterOutput"]
+__all__ = [
+    "HierarchicalOOFMarginRouter",
+    "OOFMarginFusionOutput",
+    "OOFMarginRoutedFusion",
+    "OOFMarginRouterOutput",
+]
