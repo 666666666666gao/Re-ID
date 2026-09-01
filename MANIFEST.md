@@ -244,3 +244,7 @@
 | 2026-09-01 23:20 | /experiment-plan | refine-logs/EXPERIMENT_TRACKER.md | research | V6 dev、诊断、result-to-claim终态与V7单主实验边界 |
 | 2026-09-01 23:20 | /handoff | docs/TRIFUSION_RGBNT201_CURRENT_COMPLETE_HANDOFF_2026-09-01.md | documentation | 服务器统一交接续写V6完整训练、五路指标、路由根因、证据路径和V7接续边界 |
 | 2026-09-01 23:20 | /handoff | README.md | documentation | 公开入口更新V6终局指标、失败门和路由失配结论 |
+| 2026-09-02 04:51 | /experiment-plan | refine-logs/EXPERIMENT_PLAN_20260902_045122.md | implementation | V9 orthogonal triadic relay synthesis 时间戳计划；从 V8 弱路由失败转向新表示生成 |
+| 2026-09-02 04:51 | /experiment-plan | refine-logs/EXPERIMENT_PLAN.md | implementation | V9 claim map、TDD/readiness、单次 final-only dev 与条件 official/消融固定入口 |
+| 2026-09-02 04:51 | /experiment-plan | refine-logs/EXPERIMENT_TRACKER_20260902_045122.md | implementation | V8 Phase-B 终态与 V9 fail-closed run order 快照 |
+| 2026-09-02 04:51 | /experiment-plan | refine-logs/EXPERIMENT_TRACKER.md | implementation | V9-R000 开始；后续 capacity/overfit/dev/official/消融依次受门禁约束 |
