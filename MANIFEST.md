@@ -172,3 +172,11 @@
 | 2026-09-01 15:50 | /experiment-plan | refine-logs/EXPERIMENT_PLAN.md | implementation | latest V3主实验计划；登记V1/V2完整失败证据及V3晋级门 |
 | 2026-09-01 15:50 | /experiment-plan | refine-logs/EXPERIMENT_TRACKER_20260901_155059.md | implementation | V3 main-only执行状态冻结副本 |
 | 2026-09-01 15:50 | /experiment-plan | refine-logs/EXPERIMENT_TRACKER.md | implementation | latest V3执行追踪器；V3-R000进行中 |
+| 2026-09-01 17:11 | /tdd | tools/diagnose_trifusion_task_anchor_v3.py | implementation | 冻结 V3 最佳 checkpoint 的 anchor、三专家、路由残差、能量和熵只读诊断器 |
+| 2026-09-01 17:11 | /tdd | tests/test_trifusion_task_anchor_v3_diagnostic.py | implementation | 诊断视图重建、缺失模态与外部 checkpoint 拒绝的红绿测试 |
+| 2026-09-01 17:11 | /analyze-results | evidence/trifusion_task_anchor_v3_diagnostic_seed42_f32990b.json | research | epoch14 精确指标 parity、anchor/residual 指标、残差范数和路由熵冻结证据 |
+| 2026-09-01 17:11 | /result-to-claim | findings.md | research | V3 claim_supported=no、已证实与推断根因边界及 V4 路由决定 |
+| 2026-09-01 17:11 | /experiment-plan | refine-logs/EXPERIMENT_PLAN_20260901_171116.md | implementation | V4 非破坏式等能量身份效用路由残差银行的主方法恢复永久计划 |
+| 2026-09-01 17:11 | /experiment-plan | refine-logs/EXPERIMENT_PLAN.md | implementation | latest V4 主方法计划 |
+| 2026-09-01 17:11 | /experiment-plan | refine-logs/EXPERIMENT_TRACKER_20260901_171116.md | implementation | V3 负结果闭环与 V4 main-only 执行追踪永久版本 |
+| 2026-09-01 17:11 | /experiment-plan | refine-logs/EXPERIMENT_TRACKER.md | implementation | latest V4 执行追踪器 |

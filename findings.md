@@ -20,3 +20,14 @@
 - 原正式启动在一次官方评估后，因 `build_rgbnt201_record_eval_loader` 未导入而在训练集路由审计阶段失败。
 - `repair-0001` 完成路由审计但因未复用定向授权上下文而在汇总资格检查失败，已事务回滚。
 - `repair-0002` 复用冻结定向授权，只运行训练集路由审计；`optimizer_steps=0`、`training_reexecuted=false`、`official_test_reexecuted=false`，完成回执 PASS。
+
+## 2026-09-01 — TriFusion V3 task-anchor dev 主门负结果
+
+- 完整性：远端 RTX3090、seed42、B32/K4、141-fit/30-dev、60/60 epoch 完成；94,757,973 参数；无 OOM、fatal 或 nonfinite；60 次 dev 评估；official test access=0。
+- 最佳结果：epoch14 fused `42.8978 mAP / 43.8788 Rank-1`；CNN `42.8402/44.0000`；Transformer `43.0168/44.0000`；Mamba `42.9259/43.8788`。fused 比 65 mAP dev 门低 `22.1022`，并低于 Transformer `0.1190 mAP`。
+- 末轮结果：epoch60 fused `37.9848/36.8485`；训练 triplet 已接近 0，但 dev 从早期峰值下降，支持身份外过拟合风险。
+- 冻结最佳分解：anchor `42.4787/43.8788`；routed residual 单独 `42.8225/44.8485`；fused `42.8978/43.8788`。诊断与登记 fused/branch 指标逐项 delta=0。
+- 已证实结构瓶颈：三个残差两两余弦为 `0.5462–0.6014`，说明专家并未完全塌缩；但 learned scales 和实际 expert/anchor norm ratio 全部饱和在 `0.2529–0.2567`，routed residual/anchor norm ratio 仅 `0.2124–0.2187`，约对应最终拼接距离中 `4.3%–4.6%` 的残差平方能量。路由归一化熵 `0.99977–0.99991`，权重近似均匀三分之一；fused/branch cosine `0.9909–0.9922`。
+- 判定：`claim_supported=no`，独立复核置信度 high。V3 只支持“残差学到身份信息但被融合机制压制”的诊断，不支持“三专家协同增益”、dev 晋级或 SOTA 主张。
+- 下一步：只允许一个 V4 主方法结构修正——非破坏式保留三个专家残差块，以无自由倍率的等能量校准让残差银行与 anchor 对检索距离贡献可比，并用训练批次身份效用监督路由。保持同一 dev 门，不做 baseline、多种子、消融或 official test。
+- 证据：`evidence/trifusion_task_anchor_v3_diagnostic_seed42_f32990b.json`，SHA-256 `c30e11e6471325f3c811e967daa6f5cb296d87d7c9df5809096c5f94a4e779fe`。
