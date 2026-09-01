@@ -233,3 +233,6 @@
 | 2026-09-01 22:30 | /tdd | tests/test_run_signal_preserving_v6.py | implementation | residual-only 损失权重、seed42/B32K4/60epoch 与 V6 独立 receipt identity 合同 |
 | 2026-09-01 22:30 | /run-experiment | configs/RGBNT201/TriFusion-signal-preserving-v6-rtx3090.yml | implementation | 单一 V6 seed42 主实验配置；沿用 V5 优化设置且不含可扫描残差倍率 |
 | 2026-09-01 22:30 | /run-experiment | tools/run_signal_preserving_v6.py | implementation | 复用审计 runner 的 V6 独立入口；V5/V6 显式 fail-closed 分派与版本化 schema |
+| 2026-09-01 22:45 | /run-experiment | evidence/trifusion_signal_preserving_v6_preflight_seed42.json | research | V6 全825 dev exact Signal parity、独立 schema、optimizer0、official0 |
+| 2026-09-01 22:45 | /run-experiment | evidence/trifusion_signal_preserving_v6_capacity_seed42.json | research | RTX3090 B32/K4 8-step、218/218梯度、3554MiB reserved、0 overflow |
+| 2026-09-01 22:45 | /run-experiment | evidence/trifusion_signal_preserving_v6_overfit_seed42.json | research | 同一真实批100-step loss ratio0.05655、Signal SHA不变、official0 |

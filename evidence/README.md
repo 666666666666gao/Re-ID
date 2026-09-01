@@ -205,3 +205,12 @@ a 0.02747 fused-suffix/baseline norm ratio, distance correlation 1.0 and
 99.9879% Top-10 overlap. It supports the finding that V5 preserves Signal but
 does not materially change retrieval geometry. Neither receipt supports an
 official-test, ablation, fusion-gain, innovation-effectiveness or SOTA claim.
+
+The three V6 readiness receipts bind the one diagnostic-driven correction to
+the exact frozen Signal feature. Preflight preserves elementwise 3072D parity
+and the 58.0109/57.4545 baseline on all 825 dev samples. Real B32/K4 capacity
+records 218/218 gradient tensors, zero overflow and 3,554 MiB peak reserved
+memory. Fixed-batch overfit records a 100-step loss ratio of 0.05655. Signal
+state hashes stay unchanged and official-test access is zero throughout. These
+receipts authorize one seed-42 held-out-dev main run; they do not constitute a
+retrieval gain, official result, ablation or SOTA claim.

@@ -75,8 +75,10 @@
   learned residual scale, deterministically matches the routed residual-bank
   norm to the exact Signal norm per sample, and trains/routes from residual-only
   identity embeddings so the frozen baseline cannot satisfy expert objectives.
-  It is not an ablation or multiplier scan. It must pass preflight, capacity and
-  overfit before one seed-42 held-out-dev run; official test remains forbidden.
+  It is not an ablation or multiplier scan. Preflight, real B32/K4 capacity and
+  fixed-batch overfit all pass: exact 825/825 baseline parity, 218/218 gradient
+  tensors, 3,554 MiB peak reserved, zero overflow and loss ratio 0.05655.
+  One seed-42 held-out-dev run is authorized; official test remains forbidden.
 
 ## Remote experiment constraints
 

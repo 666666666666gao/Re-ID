@@ -18,5 +18,11 @@
 | V5-D001 | M2 | 冻结 best checkpoint 只读协同诊断 | V5 epoch51 | 30-dev | residual norm、distance delta、router entropy、parameter updates | MUST | COMPLETE—PASS | fused suffix/baseline norm0.02747；距离相关1.0；Top10 overlap99.9879%；三分支均实际更新；optimizer0/official0 |
 | V5-C001 | M2 | 独立结果主张判断 | V5 result-to-claim | frozen receipts | claim_supported | MUST | COMPLETE—PARTIAL | 只支持 exact Signal preservation 工程子主张；不支持融合增益、65mAP、创新有效性或 SOTA |
 | V5-R004 | M3 | fixed all171 + official once | V5 | all171→official | mAP/R1/5/10 | CONDITIONAL | BLOCKED—NOT AUTHORIZED | V5-R003 未通过；禁止 official 和消融 |
+| V6-R000 | M1 | 互补残差激活 TDD | V6 | synthetic + real build | exact prefix、energy、residual/router gradient | MUST | COMPLETE—PASS | V5/V6 联合16 passed；无可扫描残差倍率 |
+| V6-R001 | M1 | exact baseline preflight | V6 | 30-dev | parity、provenance、official0 | MUST | COMPLETE—PASS | 825/825逐元素相等；58.0109/57.4545；optimizer0/official0 |
+| V6-R002 | M1 | RTX3090 capacity | V6 | train-only B32/K4 8 steps | VRAM、gradient、overflow | MUST | COMPLETE—PASS | 218/218梯度；3554MiB reserved；0 overflow；Signal SHA不变 |
+| V6-R003 | M1 | fixed-batch overfit | V6 | same real B32/K4 100 steps | loss ratio≤0.10 | MUST | COMPLETE—PASS | 4.06445→0.22984；ratio0.05655；official0 |
+| V6-R004 | M2 | 完整 60-epoch dev 主实验 | V6 | 141-fit/30-dev | baseline/fused/三专家 | MUST | READY | 仅一次seed42；fused≥65且高于四个输出才晋级 |
+| V6-R005 | M3 | fixed all171 + official once | V6 | all171→official | mAP/R1/5/10 | CONDITIONAL | BLOCKED | 仅V6-R004全门通过后授权 |
 
 硬约束：所有 GPU、数据、conda、训练和评估仅在远端 RTX3090；seed42 only；只做单一 Signal baseline floor，不做 baseline 矩阵；主结果超过冻结正式目标前不运行消融；未有同协议证据不得宣称 SOTA。

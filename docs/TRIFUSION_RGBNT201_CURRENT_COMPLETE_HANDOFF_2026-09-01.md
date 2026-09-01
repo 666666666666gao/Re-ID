@@ -713,6 +713,32 @@ V5 晋级合同保持不变，而本次实际未通过：`fused` 高于 baseline
 
 接续时不要重跑 Signal baseline 或 V5，不做多种子，不做消融，不访问 official test。下一步不是调 batch、epoch、学习率或残差倍率，而是利用“专家有差异、融合排序不变”的诊断，完成一个最小 main-only 结构修正后重新过门。
 
+## 14. Signal-preserving V6 readiness
+
+V6 是 V5 诊断后的唯一 main-only 修正，不是消融或超参扫描：
+
+1. exact Signal 3072D 前缀和独立 `baseline_only` 输出保持不变；
+2. 移除 learned residual scale，把路由后的联合残差银行按样本无自由倍率地校准到 baseline 能量；
+3. 为 CNN、Transformer、Mamba 各自增加 residual-only ID/triplet 监督，并从 residual-only batch-hard 身份间隔构造路由效用，避免冻结 baseline 代替专家完成目标。
+
+源码身份：Git commit `3b801de22a3737d7669641efb2430e96759844e5`。V5/V6 联合专项 `16 passed, 3 warnings`。真实工程门：
+
+| 门 | 结果 | 关键证据 |
+|---|---|---|
+| preflight | PASS | 825/825 exact Signal parity；baseline `58.0109/57.4545/69.9394/76.6061`；optimizer0/official0 |
+| capacity | PASS | B32/K4、8 step、218/218 梯度、0 overflow、峰值 reserved `3554 MiB`、Signal SHA 不变 |
+| overfit | PASS | 同一真实批 100 step；`4.06445→0.22984`，ratio `0.05655≤0.10`；official0 |
+
+轻量证据：
+
+```text
+evidence/trifusion_signal_preserving_v6_preflight_seed42.json
+evidence/trifusion_signal_preserving_v6_capacity_seed42.json
+evidence/trifusion_signal_preserving_v6_overfit_seed42.json
+```
+
+当前只解锁一次 seed42、60-epoch、141-fit/30-dev 主训练。晋级合同仍是 fused mAP 至少 65，并严格高于 baseline_only、CNN、Transformer、Mamba；失败则继续禁止 official test 和消融。
+
 ---
 
 本文件记录的是可核验工程状态，不是论文结论。任何后续结果都必须保留单种子、固定终点、官方 test 一次访问以及失败对称性审计这些边界。

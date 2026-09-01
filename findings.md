@@ -1,5 +1,15 @@
 # Research Findings
 
+## 2026-09-01 — Signal-preserving V6 主训练就绪门
+
+- 单一诊断驱动修正：移除 V5 learned residual scale；把路由后联合残差银行按样本无自由倍率地校准到 exact Signal baseline 能量；用 residual-only ID/triplet 直接训练三个专家，并用 residual-only batch-hard 身份效用监督路由。
+- TDD：V5/V6 core+runner 联合 `16 passed, 3 warnings`，warnings 仅为 timm 弃用提示。
+- preflight：全 825/825 dev 的 3072D baseline 逐元素相等，指标精确保持 `58.0109/57.4545/69.9394/76.6061`；optimizer0、official0。
+- capacity：RTX3090、B32/K4、8 step；96,917,971 参数、5,723,154 可训练参数；218/218 梯度张量；0 overflow；峰值 `3403.44 MiB allocated / 3554 MiB reserved`；Signal SHA 不变。
+- overfit：同一真实 B32/K4 批 100 step，loss `4.06445→0.22984`，ratio `0.05655≤0.10`；218/218 梯度、0 overflow、Signal SHA 不变、official0。
+- 边界：只证明工程与固定批学习能力。下一步仅允许一次 seed42、60-epoch held-out-dev；仍禁止消融、多种子和 official test。
+- 证据：`evidence/trifusion_signal_preserving_v6_{preflight,capacity,overfit}_seed42.json`。
+
 ## 2026-09-01 — Signal-preserving V5 60-epoch dev 主门负结果
 
 - 完整性：远端 RTX3090、seed42、B32/K4、141-fit/30-dev、60/60 epoch、5498 optimizer steps、0 AMP overflow；最佳 epoch51 严格重载五路指标逐项一致；Signal 参数 SHA 在训练前、训练后和重载后完全不变；official test access=0。

@@ -12,6 +12,11 @@
 > 未超过 CNN 且未达到 65，故 B3 失败，B4/B5 继续封闭。只读诊断显示
 > fused 距离与 baseline 相关为 1.0、Top-10 重合 `99.9879%`，下一步只能做
 > 一个有此诊断依据的 main-only 结构修正。
+>
+> 2026-09-01 V6 readiness：上述唯一结构修正已经实现，preflight、B32/K4
+> capacity 和 100-step overfit 全部 PASS；218/218 梯度、峰值 3554 MiB、
+> overfit ratio 0.05655、Signal SHA 不变、official0。现在只解锁一次 seed42
+> 的 60-epoch held-out-dev，不解锁 official test、消融或多种子。
 
 ## 当前冻结决策
 

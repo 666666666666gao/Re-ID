@@ -25,6 +25,11 @@
 > official test or ablation was run. A read-only checkpoint diagnostic shows
 > the fused distance matrix is effectively unchanged from baseline
 > (correlation `1.0`, Top-10 overlap `99.988%`).
+> The resulting main-only V6 correction now passes exact baseline preflight,
+> real B32/K4 capacity (`218/218` gradients, `3554 MiB` reserved), and a
+> 100-step overfit gate (loss ratio `0.05655`) with Signal unchanged and
+> official-test access zero. Its single 60-epoch seed-42 dev run is the next
+> authorized experiment; no V6 retrieval result is claimed yet.
 > Dataset files, pretrained weights, checkpoints, and remote artifacts are not
 > distributed in this repository. The original DeMo project and attribution are
 > preserved below.
