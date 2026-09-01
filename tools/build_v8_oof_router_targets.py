@@ -91,7 +91,7 @@ def _train_fold(
 ) -> dict[str, Any]:
     import torch
 
-    from modeling.trifusion.aligned_data import build_aligned_train_loader
+    from trifusion.aligned_data import build_aligned_train_loader
     from run_signal_preserving_v5 import (
         ARCHITECTURE_V8,
         _build_criterion,

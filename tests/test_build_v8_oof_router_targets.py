@@ -1,5 +1,19 @@
 from __future__ import annotations
 
+from pathlib import Path
+
+
+ROOT = Path(__file__).resolve().parents[1]
+
+
+def test_oof_tool_uses_project_trifusion_namespace_after_signal_import() -> None:
+    source = (ROOT / "tools" / "build_v8_oof_router_targets.py").read_text(
+        encoding="utf-8"
+    )
+
+    assert "from trifusion.aligned_data import build_aligned_train_loader" in source
+    assert "from modeling.trifusion.aligned_data" not in source
+
 
 def test_identity_folds_are_disjoint_and_balance_cross_camera_ids() -> None:
     from tools.build_v8_oof_router_targets import build_identity_folds
