@@ -1,10 +1,11 @@
 # TriFusion V5 baseline-preserving 主方法恢复实验计划
 
-> 2026-09-01 19:00 更新：V4 已完成 60/60 epoch 并失败。最佳 fused
+> 2026-09-01 20:10 更新：V4 已完成 60/60 epoch 并失败。最佳 fused
 > `43.4031/42.7879`，低于 Mamba `44.0659/43.5152`，距 65 mAP dev 门
 > `21.5969`。下方 V4 计划保留为历史预注册记录；当前唯一有效路线是先建立完整
 > Signal baseline floor，再实现 baseline-preserving 三专家增量。此前“不复现
-> baseline”的约束已被用户最新指令覆盖。
+> baseline”的约束已被用户最新指令覆盖。Signal baseline floor 已完成：
+> `58.0109 mAP / 57.4545 Rank-1`，完整 3072D、camera SIE、official0。
 
 ## 当前冻结决策
 
@@ -19,7 +20,7 @@
 | Block | 内容 | 成功门 | 当前状态 |
 |---|---|---|---|
 | B0 | Signal commit/license/checkpoint/env/source parity 与 3072D feature contract | 远端环境可重建；完整 feature/SIE 可审计；upstream 与 local 标签分开 | COMPLETE—PASS |
-| B1 | 同一 141/30 dev 协议训练/评估 baseline-only | 产生真实 baseline dev mAP/R1 与固定 checkpoint；无 official test | RUNNING |
+| B1 | 同一 141/30 dev 协议训练/评估 baseline-only | 产生真实 baseline dev mAP/R1 与固定 checkpoint；无 official test | COMPLETE—PASS：58.0109/57.4545，best e30，official0 |
 | B2 | V5 TDD、容量与固定批门 | baseline bit/distance stable；专家梯度隔离；B32/K4 适配 3090 | PENDING |
 | B3 | 一次 V5 60-epoch dev 主实验 | fused≥baseline、fused>所有专家、fused≥65 mAP | BLOCKED BY B0-B2 |
 | B4 | 全171固定训练与 official once | 仅 B3 全门通过；正式 >85.3/>87.9 | BLOCKED |
@@ -132,5 +133,5 @@ V4 保留 V3 的共享 12 层 CLIP、直接三模态 projected-CLS anchor、CNN/
 - [x] V4 完整 dev 主门完成但失败（epoch27 fused `43.4031/42.7879`；低于 Mamba `0.6628 mAP`；official0）
 - [ ] 仅满足 dev 门后执行正式一次评估
 - [ ] 仅正式目标超过后解锁消融与 SOTA 对比
-- [ ] Signal 完整 3072D baseline-only 路径与同协议 dev 指标
+- [x] Signal 完整 3072D baseline-only 路径与同协议 dev 指标（58.0109/57.4545，official0）
 - [ ] V5 baseline-only/fused 双输出、梯度隔离和 fused 晋级门禁

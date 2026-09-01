@@ -19,8 +19,9 @@
 
 - Implementation base: official DeMo repository, AAAI 2025, MIT licensed.
 - High-metric licensed baseline: Signal commit `cd1b0a6`, MIT licensed;
-  80.3/85.2 is an upstream fixed-path log only and must not be called locally
-  reproduced.
+  the local 141-fit/30-dev floor is 58.0109/57.4545 from the exact 3072D
+  path, while 80.3/85.2 is an upstream official-test log only and must not be
+  called locally reproduced.
 - Measurable checkpoint anchor: official MDReID RGBNT201 checkpoint. Its pinned
   repository has no
   repository-level license, so keep it isolated and do not copy its code.
@@ -53,6 +54,10 @@
   The CIRC protocol must be re-anchored to the final committed v2 source.
 - Capacity and overfit gates are train-only engineering evidence, not retrieval
   metrics, and never support a SOTA claim.
+- The exact Signal seed42 B64/K8 run completed 50/50 epochs on the frozen
+  141-fit/30-dev protocol. The deterministically reloaded best checkpoint is
+  `1f5c200c...66c3` with 58.0109 mAP / 57.4545 Rank-1 and official-test access
+  zero. This is the V5 development floor, not an official-test reproduction.
 
 ## Remote experiment constraints
 

@@ -140,6 +140,7 @@
 | 2026-09-01 19:40 | /run-experiment | environment/SIGNAL_BASELINE.md | documentation | Signal 环境重建命令及 grad-cam/visdom/ninja 三项证据化排除说明 |
 | 2026-09-01 19:40 | /run-experiment | comparators/signal_cd1b0a6_clip_path.patch | implementation | 将 Signal 作者机器硬编码 CLIP 路径参数化为现有 cfg 字段的单行补丁 |
 | 2026-09-01 19:40 | /run-experiment | tools/run_signal_baseline_dev.py | implementation | Signal 原模型/损失/调度器的 seed42 B64/K8 141-fit/30-dev 训练与 3072D 终局回执入口 |
+| 2026-09-01 20:10 | /monitor-experiment | evidence/signal_baseline_dev_terminal_seed42.json | research | Signal seed42 50/50 epoch 终局：58.0109/57.4545/69.9394/76.6061，完整3072D、SIE、official0 |
 | 2026-08-31 12:49 | /run-experiment | evidence/signal_environment_smoke_20260831.json | research | MIT Signal 固定源码、真实 RGBNT201 B64/K8 三模态 loader 与 GPU 门失败边界收据 |
 | 2026-08-31 13:11 | /tdd | tools/run_peft_boa_resumable.py | implementation | PEFT-BoA B64/K4容量、双代全状态恢复、e80/e120预评测导出及fixed120单次测试驱动 |
 | 2026-08-31 13:11 | /tdd | tools/run_mfrnet_checkpoint_eval.py | implementation | MFRNet immutable preflight、官方B128执行、日志哈希与终态分类驱动 |

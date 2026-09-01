@@ -493,7 +493,7 @@ protocols/circ_directional_final_authorization_v1.json
 - [x] 结果未超过冻结目标，已锁定“不启动消融”。
 - [x] V3 与 V4 各完成一次 seed42、60-epoch、held-out dev 主实验，均未晋级且 official access=0。
 - [x] 已确认 V4 的 1536D anchor 不是 Signal 完整 3072D baseline。
-- [x] 在远端建立完整 Signal baseline-only 路径、独立环境和可复现训练回执；同协议 50-epoch dev 运行中，最终指标待终局回填。
+- [x] 在远端建立完整 Signal baseline-only 路径、独立环境和可复现训练回执；同协议 50-epoch dev 已完成并确定性复评为 `58.0109/57.4545/69.9394/76.6061`。
 - [ ] 建立同 checkpoint baseline-only/fused 双输出与 fused 晋级门禁后，才允许下一次主训练。
 
 ## 12. V3/V4 主方法恢复终态
@@ -563,7 +563,7 @@ sim = SIM(rgb_patch, ni_patch, ti_patch, globals)    # 1536D
 Signal retrieval = concat(ori, sim)                  # 3072D
 ```
 
-其 ViT 还在 CLS token 上加入 camera SIE。V4 只有 `ori` 语义的一部分，没有 SIM 和 SIE，因此不是 Signal baseline。上游发布 `80.3 mAP / 85.2 Rank-1` 来自官方 test 路径；服务器现已建立独立 `signal` conda 环境并从头训练 held-out-dev baseline，但在 50 epoch 终局 checkpoint 和同协议指标产生前，`80.3/85.2` 仍必须标为 upstream-only。
+其 ViT 还在 CLS token 上加入 camera SIE。V4 只有 `ori` 语义的一部分，没有 SIM 和 SIE，因此不是 Signal baseline。上游发布 `80.3 mAP / 85.2 Rank-1` 来自官方 test 路径；服务器独立 `signal` conda 环境的 held-out-dev baseline 已完成，但因数据划分不同，`80.3/85.2` 仍必须标为 upstream-only，不能与本地 dev 数值直接相减。
 
 真正的“baseline 保底”不是简单拼接更多维度，而是以下可验证合同：
 
@@ -573,7 +573,35 @@ Signal retrieval = concat(ori, sim)                  # 3072D
 4. 同一 141/30 dev 协议上 fused 只有不低于 baseline 才能晋级；否则拒绝 fused，论文不得主张融合增益；当前不增加运行时 fallback 逻辑；
 5. 只有 dev 主门通过后才全 171 固定训练并进行一次官方评估；仍不做多种子和消融。
 
-### 12.4 当前 claim gate
+### 12.4 Signal baseline floor 终局
+
+唯一 seed42 baseline 使用 Signal commit `cd1b0a6`、B64/K8、50 epoch、141-fit/30-dev 和完整 3072D direct+SIM 检索特征；camera SIE 开启。运行目录：
+
+```text
+/root/autodl-tmp/trifusion-v2/artifacts/signal_baseline_dev_seed42_f7d4b30
+```
+
+训练完整结束 50/50 epoch，终局 `run_summary.json` 为 PASS。最佳 checkpoint 在 epoch30 更新，runner 训练结束后以 `strict=True` 重新加载并确定性复评：
+
+| 输出 | mAP | Rank-1 | Rank-5 | Rank-10 |
+|---|---:|---:|---:|---:|
+| Signal baseline-only | **58.0109** | **57.4545** | **69.9394** | **76.6061** |
+
+完整性边界：
+
+- fit/dev triplets=`3126/825`，dev query/gallery=`825/825`；
+- 参数量 `91,077,121`；峰值 allocated/reserved=`11,915.32/13,620 MiB`；
+- elapsed=`1678.65s`；日志无 Traceback、OOM、nonfinite、NaN、ERROR 或 Exception；
+- retrieval width=`3072`，feature=`concat(direct_3x512,SIM_3x512)`，camera SIE=true；
+- official-test access count=`0`；
+- `Signalbest.pth` SHA256=`1f5c200cd43fcbc00b8a0494329519eed3e6f062d9a29d43a0ecdd97ff4966c3`；
+- 固定 `Signal_50.pth` SHA256=`9f3a74a75fd5e2d1fa2dff0db011dfcd0360bdd76d75ba7b4a140965dcf15b5c`；
+- `run_summary.json` SHA256=`ede1d7764a2a5e3bb8c9e63475e3e8fcc942540783910e952f008fe85f9f98b0`；
+- `run_identity.json` SHA256=`da83cc7ba40ef63741ca3c147fd4973237373323123749a301193d83285c4093`。
+
+该 baseline 比 V4 fused 高 `14.6078 mAP`，也比 V4 最强 Mamba 高 `13.9450 mAP`，证明先前主方法确实破坏了强基线能力。它仍比冻结的 65 mAP dev 晋级门低 `6.9891`，因此 V5 不能只“回到 baseline”，还必须在同 checkpoint 下使 fused 超过 `58.0109`、超过所有专家并达到至少 65 mAP。该 dev 结果不是 Signal 上游官方 test `80.3/85.2` 的本地复现。
+
+### 12.5 当前 claim gate
 
 独立 result-to-claim 纠正后结论：`claim_supported=no`。高置信度支持“V4 是稳定、完整但失败的 dev 结果”；中等置信度支持“缺少完整 baseline floor 是下一项结构性优先问题”。V4-specific independent integrity audit 尚未完成，因此 V4 完整性标签为 provisional，不能复用只审计旧 V1 的 `EXPERIMENT_AUDIT.json`。
 

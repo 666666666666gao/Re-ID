@@ -11,10 +11,11 @@
 > claim and does not pass the project gate for ablations.
 > The later V4 held-out-dev run also completed 60/60 epochs: fused
 > **43.4031 mAP / 42.7879 Rank-1**, below Mamba **44.0659 / 43.5152** and the
-> frozen 65 mAP dev gate. Current work is therefore baseline-first: reproduce
-> the full Signal 3072D direct+SIM feature with camera SIE, then admit a fused
-> successor only if it beats the same-checkpoint baseline on the fixed dev
-> protocol. Signal's published **80.3/85.2** remains upstream-only here.
+> frozen 65 mAP dev gate. The exact Signal 3072D direct+SIM baseline with
+> camera SIE subsequently reached **58.0109 mAP / 57.4545 Rank-1** on the
+> project's fixed 141-fit/30-dev split. A fused successor is admitted only if
+> it beats that same-checkpoint baseline. Signal's published **80.3/85.2** is
+> an official-test result and remains upstream-only here.
 > Dataset files, pretrained weights, checkpoints, and remote artifacts are not
 > distributed in this repository. The original DeMo project and attribution are
 > preserved below.
