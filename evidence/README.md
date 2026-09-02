@@ -318,3 +318,13 @@ overflow, unchanged frozen state and 110/110 gradient coverage by 100 steps.
 Its fixed-batch loss is 4.095560 to 1.209675 and the correctly floor-adjusted
 ratio is 0.051554. Peak reserved memory is 9,798 MiB; dev and official accesses
 are zero. M0 authorizes Q1 only and supports no dev, official or SOTA claim.
+
+The V15 Q1 receipt records the terminal complete-path identity-OOF mechanism
+test: three folds, 20 final-only epochs each, 1,669 optimizer steps, all
+110/110 trainable tensors reached per fold, zero overflow, unchanged frozen
+state and dev0/official0. Fused matched mAP gains are
+`+0.0952/-0.8311/+0.1605`; weighted aggregate is `-0.1721` and the 95% identity
+bootstrap lower bound is `-0.9503`. CNN/Transformer aggregate gains are also
+negative; only Mamba is positive at `+0.2898`. The scientific gate and next-
+phase authorization are false. Runner `status=PASS` denotes execution
+completion only. D1 was not executed and V15 is sealed.

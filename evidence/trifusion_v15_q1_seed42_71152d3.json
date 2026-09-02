@@ -1,0 +1,1388 @@
+{
+  "aggregate_matched_mAP_gains": {
+    "cnn": -0.15756505910331953,
+    "fused": -0.17206809772976328,
+    "mamba": 0.2897777983499452,
+    "transformer": -0.26058910823608983
+  },
+  "aggregate_metrics_percent": {
+    "off": {
+      "cnn": {
+        "Rank-1": 89.31698774080562,
+        "mAP": 87.09761261295259
+      },
+      "fused": {
+        "Rank-1": 91.41856392294221,
+        "mAP": 88.69149227997993
+      },
+      "mamba": {
+        "Rank-1": 90.19264448336253,
+        "mAP": 87.69285198263378
+      },
+      "transformer": {
+        "Rank-1": 91.41856392294221,
+        "mAP": 88.40122003368849
+      }
+    },
+    "on": {
+      "cnn": {
+        "Rank-1": 89.31698774080562,
+        "mAP": 86.94004755384927
+      },
+      "fused": {
+        "Rank-1": 91.59369527145358,
+        "mAP": 88.51942418225016
+      },
+      "mamba": {
+        "Rank-1": 91.59369527145358,
+        "mAP": 87.98262978098373
+      },
+      "transformer": {
+        "Rank-1": 91.76882661996497,
+        "mAP": 88.1406309254524
+      }
+    }
+  },
+  "config": "/root/autodl-tmp/trifusion-v2/TriFusion-ReID/configs/RGBNT201/TriFusion-signal-preserving-v15-crde-rtx3090.yml",
+  "config_sha256": "5444f5413c873697071a08c9fa7b8e4272f57430108da7e03734d88ee7f12ce2",
+  "d1_executed": false,
+  "dev_access_count": 0,
+  "elapsed_seconds": 2411.8123195171356,
+  "fold_receipts": [
+    {
+      "binding": {
+        "build_provenance": {
+          "architecture": "signal_preserving_collaborative_v15_crde",
+          "base_experts_frozen": true,
+          "baseline_parameters_frozen": true,
+          "branch_after_pretrained_clip_block": 8,
+          "edge_scale_init": 0.0,
+          "edge_scale_max": 0.25,
+          "exchange_after_tail_layers": [
+            9,
+            10
+          ],
+          "exchange_count": 2,
+          "exchange_rank": 64,
+          "experts": [
+            "cnn",
+            "transformer",
+            "mamba"
+          ],
+          "final_fusion": "exact_signal_plus_equal_energy_normalized_residual_bank",
+          "late_fusion_mlp_enabled": false,
+          "phase": "counterfactual_role_delta_exchange",
+          "pretrained_tail_layers": [
+            9,
+            10,
+            11
+          ],
+          "regret_weight": 1.0,
+          "router_enabled": false,
+          "signal_baseline_width": 3072,
+          "signal_checkpoint_sha256": "523c7c645ac1d85c91cd7b08ef3c3276e37f723906ae7af0d9ec6a9ddbcb38de",
+          "total_parameters": 99868583,
+          "trainable_parameters": 3549082
+        },
+        "expert_checkpoint": "/root/autodl-tmp/trifusion-v2/artifacts/trifusion_v12_complete_path_oof_seed42_c71d3de/fold_0_experts.pth",
+        "expert_checkpoint_sha256": "4baebda03e69447e552a5e2e5512aad3db69248e23cbd0aacbc6d2bb7475c3af",
+        "fit_identity_ids": [
+          1,
+          2,
+          4,
+          5,
+          7,
+          8,
+          10,
+          11,
+          13,
+          14,
+          16,
+          17,
+          19,
+          20,
+          22,
+          23,
+          25,
+          26,
+          28,
+          29,
+          31,
+          32,
+          34,
+          35,
+          37,
+          38,
+          40,
+          41,
+          43,
+          44,
+          46,
+          47,
+          49,
+          50,
+          53,
+          54,
+          56,
+          57,
+          59,
+          60,
+          62,
+          63,
+          64,
+          65,
+          67,
+          68,
+          70,
+          71,
+          74,
+          75,
+          76,
+          78,
+          79,
+          80,
+          82,
+          83,
+          86,
+          87,
+          88,
+          90,
+          92,
+          93,
+          94,
+          96,
+          98,
+          99,
+          100,
+          101,
+          103,
+          104,
+          106,
+          107,
+          109,
+          110,
+          112,
+          113,
+          115,
+          116,
+          118,
+          119,
+          121,
+          122,
+          124,
+          125,
+          127,
+          128,
+          130,
+          131,
+          133,
+          134,
+          136,
+          137,
+          139,
+          140
+        ],
+        "heldout_identity_ids": [
+          0,
+          3,
+          6,
+          9,
+          12,
+          15,
+          18,
+          21,
+          24,
+          27,
+          30,
+          33,
+          36,
+          39,
+          42,
+          45,
+          48,
+          51,
+          52,
+          55,
+          58,
+          61,
+          66,
+          69,
+          72,
+          73,
+          77,
+          81,
+          84,
+          85,
+          89,
+          91,
+          95,
+          97,
+          102,
+          105,
+          108,
+          111,
+          114,
+          117,
+          120,
+          123,
+          126,
+          129,
+          132,
+          135,
+          138
+        ],
+        "missing_v15_state_keys": [
+          "exchange_stages.0.edge_logits",
+          "exchange_stages.0.source_mixers.cnn.norm.weight",
+          "exchange_stages.0.source_mixers.cnn.norm.bias",
+          "exchange_stages.0.source_mixers.cnn.down.weight",
+          "exchange_stages.0.source_mixers.cnn.depthwise.weight",
+          "exchange_stages.0.source_mixers.transformer.norm.weight",
+          "exchange_stages.0.source_mixers.transformer.norm.bias",
+          "exchange_stages.0.source_mixers.transformer.down.weight",
+          "exchange_stages.0.source_mixers.transformer.attention_norm.weight",
+          "exchange_stages.0.source_mixers.transformer.attention_norm.bias",
+          "exchange_stages.0.source_mixers.transformer.attention.in_proj_weight",
+          "exchange_stages.0.source_mixers.transformer.attention.in_proj_bias",
+          "exchange_stages.0.source_mixers.transformer.attention.out_proj.weight",
+          "exchange_stages.0.source_mixers.transformer.attention.out_proj.bias",
+          "exchange_stages.0.source_mixers.mamba.norm.weight",
+          "exchange_stages.0.source_mixers.mamba.norm.bias",
+          "exchange_stages.0.source_mixers.mamba.down.weight",
+          "exchange_stages.0.source_mixers.mamba.spatial_mixer.norm.weight",
+          "exchange_stages.0.source_mixers.mamba.spatial_mixer.norm.bias",
+          "exchange_stages.0.source_mixers.mamba.spatial_mixer.core.A_log",
+          "exchange_stages.0.source_mixers.mamba.spatial_mixer.core.D",
+          "exchange_stages.0.source_mixers.mamba.spatial_mixer.core.in_proj.weight",
+          "exchange_stages.0.source_mixers.mamba.spatial_mixer.core.conv1d.weight",
+          "exchange_stages.0.source_mixers.mamba.spatial_mixer.core.conv1d.bias",
+          "exchange_stages.0.source_mixers.mamba.spatial_mixer.core.x_proj.weight",
+          "exchange_stages.0.source_mixers.mamba.spatial_mixer.core.dt_proj.weight",
+          "exchange_stages.0.source_mixers.mamba.spatial_mixer.core.dt_proj.bias",
+          "exchange_stages.0.source_mixers.mamba.spatial_mixer.core.out_proj.weight",
+          "exchange_stages.0.source_mixers.mamba.spatial_mixer.direction_gate.weight",
+          "exchange_stages.0.source_mixers.mamba.spatial_mixer.direction_gate.bias",
+          "exchange_stages.0.source_mixers.mamba.spatial_mixer.output_projection.weight",
+          "exchange_stages.0.source_mixers.mamba.modal_norm.weight",
+          "exchange_stages.0.source_mixers.mamba.modal_norm.bias",
+          "exchange_stages.0.source_mixers.mamba.modal_mixer.A_log",
+          "exchange_stages.0.source_mixers.mamba.modal_mixer.D",
+          "exchange_stages.0.source_mixers.mamba.modal_mixer.in_proj.weight",
+          "exchange_stages.0.source_mixers.mamba.modal_mixer.conv1d.weight",
+          "exchange_stages.0.source_mixers.mamba.modal_mixer.conv1d.bias",
+          "exchange_stages.0.source_mixers.mamba.modal_mixer.x_proj.weight",
+          "exchange_stages.0.source_mixers.mamba.modal_mixer.dt_proj.weight",
+          "exchange_stages.0.source_mixers.mamba.modal_mixer.dt_proj.bias",
+          "exchange_stages.0.source_mixers.mamba.modal_mixer.out_proj.weight",
+          "exchange_stages.0.edge_projections.cnn__transformer.weight",
+          "exchange_stages.0.edge_projections.cnn__mamba.weight",
+          "exchange_stages.0.edge_projections.transformer__cnn.weight",
+          "exchange_stages.0.edge_projections.transformer__mamba.weight",
+          "exchange_stages.0.edge_projections.mamba__cnn.weight",
+          "exchange_stages.0.edge_projections.mamba__transformer.weight",
+          "exchange_stages.1.edge_logits",
+          "exchange_stages.1.source_mixers.cnn.norm.weight",
+          "exchange_stages.1.source_mixers.cnn.norm.bias",
+          "exchange_stages.1.source_mixers.cnn.down.weight",
+          "exchange_stages.1.source_mixers.cnn.depthwise.weight",
+          "exchange_stages.1.source_mixers.transformer.norm.weight",
+          "exchange_stages.1.source_mixers.transformer.norm.bias",
+          "exchange_stages.1.source_mixers.transformer.down.weight",
+          "exchange_stages.1.source_mixers.transformer.attention_norm.weight",
+          "exchange_stages.1.source_mixers.transformer.attention_norm.bias",
+          "exchange_stages.1.source_mixers.transformer.attention.in_proj_weight",
+          "exchange_stages.1.source_mixers.transformer.attention.in_proj_bias",
+          "exchange_stages.1.source_mixers.transformer.attention.out_proj.weight",
+          "exchange_stages.1.source_mixers.transformer.attention.out_proj.bias",
+          "exchange_stages.1.source_mixers.mamba.norm.weight",
+          "exchange_stages.1.source_mixers.mamba.norm.bias",
+          "exchange_stages.1.source_mixers.mamba.down.weight",
+          "exchange_stages.1.source_mixers.mamba.spatial_mixer.norm.weight",
+          "exchange_stages.1.source_mixers.mamba.spatial_mixer.norm.bias",
+          "exchange_stages.1.source_mixers.mamba.spatial_mixer.core.A_log",
+          "exchange_stages.1.source_mixers.mamba.spatial_mixer.core.D",
+          "exchange_stages.1.source_mixers.mamba.spatial_mixer.core.in_proj.weight",
+          "exchange_stages.1.source_mixers.mamba.spatial_mixer.core.conv1d.weight",
+          "exchange_stages.1.source_mixers.mamba.spatial_mixer.core.conv1d.bias",
+          "exchange_stages.1.source_mixers.mamba.spatial_mixer.core.x_proj.weight",
+          "exchange_stages.1.source_mixers.mamba.spatial_mixer.core.dt_proj.weight",
+          "exchange_stages.1.source_mixers.mamba.spatial_mixer.core.dt_proj.bias",
+          "exchange_stages.1.source_mixers.mamba.spatial_mixer.core.out_proj.weight",
+          "exchange_stages.1.source_mixers.mamba.spatial_mixer.direction_gate.weight",
+          "exchange_stages.1.source_mixers.mamba.spatial_mixer.direction_gate.bias",
+          "exchange_stages.1.source_mixers.mamba.spatial_mixer.output_projection.weight",
+          "exchange_stages.1.source_mixers.mamba.modal_norm.weight",
+          "exchange_stages.1.source_mixers.mamba.modal_norm.bias",
+          "exchange_stages.1.source_mixers.mamba.modal_mixer.A_log",
+          "exchange_stages.1.source_mixers.mamba.modal_mixer.D",
+          "exchange_stages.1.source_mixers.mamba.modal_mixer.in_proj.weight",
+          "exchange_stages.1.source_mixers.mamba.modal_mixer.conv1d.weight",
+          "exchange_stages.1.source_mixers.mamba.modal_mixer.conv1d.bias",
+          "exchange_stages.1.source_mixers.mamba.modal_mixer.x_proj.weight",
+          "exchange_stages.1.source_mixers.mamba.modal_mixer.dt_proj.weight",
+          "exchange_stages.1.source_mixers.mamba.modal_mixer.dt_proj.bias",
+          "exchange_stages.1.source_mixers.mamba.modal_mixer.out_proj.weight",
+          "exchange_stages.1.edge_projections.cnn__transformer.weight",
+          "exchange_stages.1.edge_projections.cnn__mamba.weight",
+          "exchange_stages.1.edge_projections.transformer__cnn.weight",
+          "exchange_stages.1.edge_projections.transformer__mamba.weight",
+          "exchange_stages.1.edge_projections.mamba__cnn.weight",
+          "exchange_stages.1.edge_projections.mamba__transformer.weight"
+        ],
+        "signal_checkpoint": "/root/autodl-tmp/trifusion-v2/artifacts/trifusion_v12_complete_path_oof_seed42_c71d3de/fold_0_signal_final.pth",
+        "signal_checkpoint_sha256": "523c7c645ac1d85c91cd7b08ef3c3276e37f723906ae7af0d9ec6a9ddbcb38de"
+      },
+      "checkpoint": "/root/autodl-tmp/trifusion-v2/artifacts/trifusion_v15_q1_seed42_71152d3/fold_0_v15_final.pth",
+      "checkpoint_sha256": "d0baa95a7cf79a0470bffb29f84c0a09e57c15d6c3b3d6f2450b1a7f10243e12",
+      "dev_access_count": 0,
+      "eligible_heldout_identity_count": 7,
+      "eligible_heldout_queries": 190,
+      "fit_identity_count": 94,
+      "fold": 0,
+      "heldout_identity_count": 47,
+      "identity_overlap": [],
+      "matched_mAP_gains": {
+        "cnn": -0.025849877478648864,
+        "fused": 0.09517952989253331,
+        "mamba": 0.9374619706882328,
+        "transformer": -0.32911588833181327
+      },
+      "metrics_percent": {
+        "off": {
+          "cnn": {
+            "Rank-1": 83.15789473684211,
+            "mAP": 81.67975496380552
+          },
+          "fused": {
+            "Rank-1": 84.21052631578947,
+            "mAP": 82.6597244648084
+          },
+          "mamba": {
+            "Rank-1": 80.52631578947368,
+            "mAP": 80.3204962643769
+          },
+          "transformer": {
+            "Rank-1": 85.78947368421052,
+            "mAP": 83.27832699687619
+          }
+        },
+        "on": {
+          "cnn": {
+            "Rank-1": 82.10526315789474,
+            "mAP": 81.65390508632687
+          },
+          "fused": {
+            "Rank-1": 84.73684210526315,
+            "mAP": 82.75490399470094
+          },
+          "mamba": {
+            "Rank-1": 82.10526315789474,
+            "mAP": 81.25795823506513
+          },
+          "transformer": {
+            "Rank-1": 85.78947368421052,
+            "mAP": 82.94921110854438
+          }
+        }
+      },
+      "official_test_access_count": 0,
+      "training": {
+        "epochs": 20,
+        "frozen_state_sha256_after": "dca58bae8a975ad2151e2b01e6e965f64fc2f79fb7567e45030938153bc70de9",
+        "frozen_state_sha256_before": "dca58bae8a975ad2151e2b01e6e965f64fc2f79fb7567e45030938153bc70de9",
+        "frozen_state_unchanged": true,
+        "history": [
+          {
+            "epoch": 1,
+            "mean_training_loss": 3.0405497550964355
+          },
+          {
+            "epoch": 2,
+            "mean_training_loss": 1.6105715951749258
+          },
+          {
+            "epoch": 3,
+            "mean_training_loss": 1.3780159251443271
+          },
+          {
+            "epoch": 4,
+            "mean_training_loss": 1.2181501388549805
+          },
+          {
+            "epoch": 5,
+            "mean_training_loss": 1.20220940894094
+          },
+          {
+            "epoch": 6,
+            "mean_training_loss": 1.1407219089310745
+          },
+          {
+            "epoch": 7,
+            "mean_training_loss": 1.184158212372235
+          },
+          {
+            "epoch": 8,
+            "mean_training_loss": 1.2171109462606495
+          },
+          {
+            "epoch": 9,
+            "mean_training_loss": 1.2449106471291904
+          },
+          {
+            "epoch": 10,
+            "mean_training_loss": 1.2273401042510723
+          },
+          {
+            "epoch": 11,
+            "mean_training_loss": 1.2450402255715995
+          },
+          {
+            "epoch": 12,
+            "mean_training_loss": 1.179583625546817
+          },
+          {
+            "epoch": 13,
+            "mean_training_loss": 1.2495178683050747
+          },
+          {
+            "epoch": 14,
+            "mean_training_loss": 1.175391516515187
+          },
+          {
+            "epoch": 15,
+            "mean_training_loss": 1.197690458133303
+          },
+          {
+            "epoch": 16,
+            "mean_training_loss": 1.217012580098777
+          },
+          {
+            "epoch": 17,
+            "mean_training_loss": 1.1817329731480828
+          },
+          {
+            "epoch": 18,
+            "mean_training_loss": 1.1804373264312744
+          },
+          {
+            "epoch": 19,
+            "mean_training_loss": 1.1971320126737868
+          },
+          {
+            "epoch": 20,
+            "mean_training_loss": 1.161625471608392
+          }
+        ],
+        "missing_nonzero_gradient_tensors": [],
+        "nonzero_gradient_tensors": 110,
+        "optimizer_steps": 574,
+        "overflow_events": 0,
+        "trainable_tensors": 110
+      }
+    },
+    {
+      "binding": {
+        "build_provenance": {
+          "architecture": "signal_preserving_collaborative_v15_crde",
+          "base_experts_frozen": true,
+          "baseline_parameters_frozen": true,
+          "branch_after_pretrained_clip_block": 8,
+          "edge_scale_init": 0.0,
+          "edge_scale_max": 0.25,
+          "exchange_after_tail_layers": [
+            9,
+            10
+          ],
+          "exchange_count": 2,
+          "exchange_rank": 64,
+          "experts": [
+            "cnn",
+            "transformer",
+            "mamba"
+          ],
+          "final_fusion": "exact_signal_plus_equal_energy_normalized_residual_bank",
+          "late_fusion_mlp_enabled": false,
+          "phase": "counterfactual_role_delta_exchange",
+          "pretrained_tail_layers": [
+            9,
+            10,
+            11
+          ],
+          "regret_weight": 1.0,
+          "router_enabled": false,
+          "signal_baseline_width": 3072,
+          "signal_checkpoint_sha256": "6c1304a68663418ef9b4dcd6230bde55c87d0319ac60351aebbe8a0ab9acbcd7",
+          "total_parameters": 99868583,
+          "trainable_parameters": 3549082
+        },
+        "expert_checkpoint": "/root/autodl-tmp/trifusion-v2/artifacts/trifusion_v12_complete_path_oof_seed42_c71d3de/fold_1_experts.pth",
+        "expert_checkpoint_sha256": "f369bca3dbd53518bc082880974f203aedbb6febd0251458a25707b91de52ec3",
+        "fit_identity_ids": [
+          0,
+          2,
+          3,
+          5,
+          6,
+          8,
+          9,
+          11,
+          12,
+          14,
+          15,
+          17,
+          18,
+          20,
+          21,
+          23,
+          24,
+          26,
+          27,
+          29,
+          30,
+          32,
+          33,
+          35,
+          36,
+          38,
+          39,
+          41,
+          42,
+          44,
+          45,
+          47,
+          48,
+          50,
+          51,
+          52,
+          54,
+          55,
+          57,
+          58,
+          60,
+          61,
+          64,
+          65,
+          66,
+          68,
+          69,
+          71,
+          72,
+          73,
+          75,
+          77,
+          79,
+          80,
+          81,
+          83,
+          84,
+          85,
+          88,
+          89,
+          90,
+          91,
+          94,
+          95,
+          96,
+          97,
+          100,
+          101,
+          102,
+          104,
+          105,
+          107,
+          108,
+          110,
+          111,
+          113,
+          114,
+          116,
+          117,
+          119,
+          120,
+          122,
+          123,
+          125,
+          126,
+          128,
+          129,
+          131,
+          132,
+          134,
+          135,
+          137,
+          138,
+          140
+        ],
+        "heldout_identity_ids": [
+          1,
+          4,
+          7,
+          10,
+          13,
+          16,
+          19,
+          22,
+          25,
+          28,
+          31,
+          34,
+          37,
+          40,
+          43,
+          46,
+          49,
+          53,
+          56,
+          59,
+          62,
+          63,
+          67,
+          70,
+          74,
+          76,
+          78,
+          82,
+          86,
+          87,
+          92,
+          93,
+          98,
+          99,
+          103,
+          106,
+          109,
+          112,
+          115,
+          118,
+          121,
+          124,
+          127,
+          130,
+          133,
+          136,
+          139
+        ],
+        "missing_v15_state_keys": [
+          "exchange_stages.0.edge_logits",
+          "exchange_stages.0.source_mixers.cnn.norm.weight",
+          "exchange_stages.0.source_mixers.cnn.norm.bias",
+          "exchange_stages.0.source_mixers.cnn.down.weight",
+          "exchange_stages.0.source_mixers.cnn.depthwise.weight",
+          "exchange_stages.0.source_mixers.transformer.norm.weight",
+          "exchange_stages.0.source_mixers.transformer.norm.bias",
+          "exchange_stages.0.source_mixers.transformer.down.weight",
+          "exchange_stages.0.source_mixers.transformer.attention_norm.weight",
+          "exchange_stages.0.source_mixers.transformer.attention_norm.bias",
+          "exchange_stages.0.source_mixers.transformer.attention.in_proj_weight",
+          "exchange_stages.0.source_mixers.transformer.attention.in_proj_bias",
+          "exchange_stages.0.source_mixers.transformer.attention.out_proj.weight",
+          "exchange_stages.0.source_mixers.transformer.attention.out_proj.bias",
+          "exchange_stages.0.source_mixers.mamba.norm.weight",
+          "exchange_stages.0.source_mixers.mamba.norm.bias",
+          "exchange_stages.0.source_mixers.mamba.down.weight",
+          "exchange_stages.0.source_mixers.mamba.spatial_mixer.norm.weight",
+          "exchange_stages.0.source_mixers.mamba.spatial_mixer.norm.bias",
+          "exchange_stages.0.source_mixers.mamba.spatial_mixer.core.A_log",
+          "exchange_stages.0.source_mixers.mamba.spatial_mixer.core.D",
+          "exchange_stages.0.source_mixers.mamba.spatial_mixer.core.in_proj.weight",
+          "exchange_stages.0.source_mixers.mamba.spatial_mixer.core.conv1d.weight",
+          "exchange_stages.0.source_mixers.mamba.spatial_mixer.core.conv1d.bias",
+          "exchange_stages.0.source_mixers.mamba.spatial_mixer.core.x_proj.weight",
+          "exchange_stages.0.source_mixers.mamba.spatial_mixer.core.dt_proj.weight",
+          "exchange_stages.0.source_mixers.mamba.spatial_mixer.core.dt_proj.bias",
+          "exchange_stages.0.source_mixers.mamba.spatial_mixer.core.out_proj.weight",
+          "exchange_stages.0.source_mixers.mamba.spatial_mixer.direction_gate.weight",
+          "exchange_stages.0.source_mixers.mamba.spatial_mixer.direction_gate.bias",
+          "exchange_stages.0.source_mixers.mamba.spatial_mixer.output_projection.weight",
+          "exchange_stages.0.source_mixers.mamba.modal_norm.weight",
+          "exchange_stages.0.source_mixers.mamba.modal_norm.bias",
+          "exchange_stages.0.source_mixers.mamba.modal_mixer.A_log",
+          "exchange_stages.0.source_mixers.mamba.modal_mixer.D",
+          "exchange_stages.0.source_mixers.mamba.modal_mixer.in_proj.weight",
+          "exchange_stages.0.source_mixers.mamba.modal_mixer.conv1d.weight",
+          "exchange_stages.0.source_mixers.mamba.modal_mixer.conv1d.bias",
+          "exchange_stages.0.source_mixers.mamba.modal_mixer.x_proj.weight",
+          "exchange_stages.0.source_mixers.mamba.modal_mixer.dt_proj.weight",
+          "exchange_stages.0.source_mixers.mamba.modal_mixer.dt_proj.bias",
+          "exchange_stages.0.source_mixers.mamba.modal_mixer.out_proj.weight",
+          "exchange_stages.0.edge_projections.cnn__transformer.weight",
+          "exchange_stages.0.edge_projections.cnn__mamba.weight",
+          "exchange_stages.0.edge_projections.transformer__cnn.weight",
+          "exchange_stages.0.edge_projections.transformer__mamba.weight",
+          "exchange_stages.0.edge_projections.mamba__cnn.weight",
+          "exchange_stages.0.edge_projections.mamba__transformer.weight",
+          "exchange_stages.1.edge_logits",
+          "exchange_stages.1.source_mixers.cnn.norm.weight",
+          "exchange_stages.1.source_mixers.cnn.norm.bias",
+          "exchange_stages.1.source_mixers.cnn.down.weight",
+          "exchange_stages.1.source_mixers.cnn.depthwise.weight",
+          "exchange_stages.1.source_mixers.transformer.norm.weight",
+          "exchange_stages.1.source_mixers.transformer.norm.bias",
+          "exchange_stages.1.source_mixers.transformer.down.weight",
+          "exchange_stages.1.source_mixers.transformer.attention_norm.weight",
+          "exchange_stages.1.source_mixers.transformer.attention_norm.bias",
+          "exchange_stages.1.source_mixers.transformer.attention.in_proj_weight",
+          "exchange_stages.1.source_mixers.transformer.attention.in_proj_bias",
+          "exchange_stages.1.source_mixers.transformer.attention.out_proj.weight",
+          "exchange_stages.1.source_mixers.transformer.attention.out_proj.bias",
+          "exchange_stages.1.source_mixers.mamba.norm.weight",
+          "exchange_stages.1.source_mixers.mamba.norm.bias",
+          "exchange_stages.1.source_mixers.mamba.down.weight",
+          "exchange_stages.1.source_mixers.mamba.spatial_mixer.norm.weight",
+          "exchange_stages.1.source_mixers.mamba.spatial_mixer.norm.bias",
+          "exchange_stages.1.source_mixers.mamba.spatial_mixer.core.A_log",
+          "exchange_stages.1.source_mixers.mamba.spatial_mixer.core.D",
+          "exchange_stages.1.source_mixers.mamba.spatial_mixer.core.in_proj.weight",
+          "exchange_stages.1.source_mixers.mamba.spatial_mixer.core.conv1d.weight",
+          "exchange_stages.1.source_mixers.mamba.spatial_mixer.core.conv1d.bias",
+          "exchange_stages.1.source_mixers.mamba.spatial_mixer.core.x_proj.weight",
+          "exchange_stages.1.source_mixers.mamba.spatial_mixer.core.dt_proj.weight",
+          "exchange_stages.1.source_mixers.mamba.spatial_mixer.core.dt_proj.bias",
+          "exchange_stages.1.source_mixers.mamba.spatial_mixer.core.out_proj.weight",
+          "exchange_stages.1.source_mixers.mamba.spatial_mixer.direction_gate.weight",
+          "exchange_stages.1.source_mixers.mamba.spatial_mixer.direction_gate.bias",
+          "exchange_stages.1.source_mixers.mamba.spatial_mixer.output_projection.weight",
+          "exchange_stages.1.source_mixers.mamba.modal_norm.weight",
+          "exchange_stages.1.source_mixers.mamba.modal_norm.bias",
+          "exchange_stages.1.source_mixers.mamba.modal_mixer.A_log",
+          "exchange_stages.1.source_mixers.mamba.modal_mixer.D",
+          "exchange_stages.1.source_mixers.mamba.modal_mixer.in_proj.weight",
+          "exchange_stages.1.source_mixers.mamba.modal_mixer.conv1d.weight",
+          "exchange_stages.1.source_mixers.mamba.modal_mixer.conv1d.bias",
+          "exchange_stages.1.source_mixers.mamba.modal_mixer.x_proj.weight",
+          "exchange_stages.1.source_mixers.mamba.modal_mixer.dt_proj.weight",
+          "exchange_stages.1.source_mixers.mamba.modal_mixer.dt_proj.bias",
+          "exchange_stages.1.source_mixers.mamba.modal_mixer.out_proj.weight",
+          "exchange_stages.1.edge_projections.cnn__transformer.weight",
+          "exchange_stages.1.edge_projections.cnn__mamba.weight",
+          "exchange_stages.1.edge_projections.transformer__cnn.weight",
+          "exchange_stages.1.edge_projections.transformer__mamba.weight",
+          "exchange_stages.1.edge_projections.mamba__cnn.weight",
+          "exchange_stages.1.edge_projections.mamba__transformer.weight"
+        ],
+        "signal_checkpoint": "/root/autodl-tmp/trifusion-v2/artifacts/trifusion_v12_complete_path_oof_seed42_c71d3de/fold_1_signal_final.pth",
+        "signal_checkpoint_sha256": "6c1304a68663418ef9b4dcd6230bde55c87d0319ac60351aebbe8a0ab9acbcd7"
+      },
+      "checkpoint": "/root/autodl-tmp/trifusion-v2/artifacts/trifusion_v15_q1_seed42_71152d3/fold_1_v15_final.pth",
+      "checkpoint_sha256": "424f33e6b97de76d7f0675c65a137a8a3abde6f677024d72d75d72a353090102",
+      "dev_access_count": 0,
+      "eligible_heldout_identity_count": 7,
+      "eligible_heldout_queries": 179,
+      "fit_identity_count": 94,
+      "fold": 1,
+      "heldout_identity_count": 47,
+      "identity_overlap": [],
+      "matched_mAP_gains": {
+        "cnn": -0.0835544477419603,
+        "fused": -0.8310606121932409,
+        "mamba": -0.8019642514669556,
+        "transformer": -0.6967369467474782
+      },
+      "metrics_percent": {
+        "off": {
+          "cnn": {
+            "Rank-1": 99.4413407821229,
+            "mAP": 94.04931302192757
+          },
+          "fused": {
+            "Rank-1": 98.88268156424581,
+            "mAP": 94.52633864246647
+          },
+          "mamba": {
+            "Rank-1": 97.76536312849163,
+            "mAP": 94.53984699458276
+          },
+          "transformer": {
+            "Rank-1": 97.76536312849163,
+            "mAP": 93.47382434138805
+          }
+        },
+        "on": {
+          "cnn": {
+            "Rank-1": 99.4413407821229,
+            "mAP": 93.96575857418561
+          },
+          "fused": {
+            "Rank-1": 98.32402234636871,
+            "mAP": 93.69527803027323
+          },
+          "mamba": {
+            "Rank-1": 97.76536312849163,
+            "mAP": 93.7378827431158
+          },
+          "transformer": {
+            "Rank-1": 96.64804469273743,
+            "mAP": 92.77708739464057
+          }
+        }
+      },
+      "official_test_access_count": 0,
+      "training": {
+        "epochs": 20,
+        "frozen_state_sha256_after": "5aed6acc288d79ddd0499c319e2c49d53a373ab602d1bad2ceb3c27fbbdc2eee",
+        "frozen_state_sha256_before": "5aed6acc288d79ddd0499c319e2c49d53a373ab602d1bad2ceb3c27fbbdc2eee",
+        "frozen_state_unchanged": true,
+        "history": [
+          {
+            "epoch": 1,
+            "mean_training_loss": 3.194229415484837
+          },
+          {
+            "epoch": 2,
+            "mean_training_loss": 1.558872606073107
+          },
+          {
+            "epoch": 3,
+            "mean_training_loss": 1.3386669073786055
+          },
+          {
+            "epoch": 4,
+            "mean_training_loss": 1.2611248408045088
+          },
+          {
+            "epoch": 5,
+            "mean_training_loss": 1.2397893560784203
+          },
+          {
+            "epoch": 6,
+            "mean_training_loss": 1.182659347142492
+          },
+          {
+            "epoch": 7,
+            "mean_training_loss": 1.2330458887985773
+          },
+          {
+            "epoch": 8,
+            "mean_training_loss": 1.206684912954058
+          },
+          {
+            "epoch": 9,
+            "mean_training_loss": 1.1198161862514637
+          },
+          {
+            "epoch": 10,
+            "mean_training_loss": 1.1797793927016083
+          },
+          {
+            "epoch": 11,
+            "mean_training_loss": 1.157140695622989
+          },
+          {
+            "epoch": 12,
+            "mean_training_loss": 1.1238393275826066
+          },
+          {
+            "epoch": 13,
+            "mean_training_loss": 1.2165624839918954
+          },
+          {
+            "epoch": 14,
+            "mean_training_loss": 1.2984893918037415
+          },
+          {
+            "epoch": 15,
+            "mean_training_loss": 1.1797873846122198
+          },
+          {
+            "epoch": 16,
+            "mean_training_loss": 1.2572016545704432
+          },
+          {
+            "epoch": 17,
+            "mean_training_loss": 1.191434504730361
+          },
+          {
+            "epoch": 18,
+            "mean_training_loss": 1.2121916898974665
+          },
+          {
+            "epoch": 19,
+            "mean_training_loss": 1.2306139182161402
+          },
+          {
+            "epoch": 20,
+            "mean_training_loss": 1.2526799078498567
+          }
+        ],
+        "missing_nonzero_gradient_tensors": [],
+        "nonzero_gradient_tensors": 110,
+        "optimizer_steps": 555,
+        "overflow_events": 0,
+        "trainable_tensors": 110
+      }
+    },
+    {
+      "binding": {
+        "build_provenance": {
+          "architecture": "signal_preserving_collaborative_v15_crde",
+          "base_experts_frozen": true,
+          "baseline_parameters_frozen": true,
+          "branch_after_pretrained_clip_block": 8,
+          "edge_scale_init": 0.0,
+          "edge_scale_max": 0.25,
+          "exchange_after_tail_layers": [
+            9,
+            10
+          ],
+          "exchange_count": 2,
+          "exchange_rank": 64,
+          "experts": [
+            "cnn",
+            "transformer",
+            "mamba"
+          ],
+          "final_fusion": "exact_signal_plus_equal_energy_normalized_residual_bank",
+          "late_fusion_mlp_enabled": false,
+          "phase": "counterfactual_role_delta_exchange",
+          "pretrained_tail_layers": [
+            9,
+            10,
+            11
+          ],
+          "regret_weight": 1.0,
+          "router_enabled": false,
+          "signal_baseline_width": 3072,
+          "signal_checkpoint_sha256": "3cf0ef340c44db43d299ea8ca3a742ad12b4e113c12dffbd1db21f656923f678",
+          "total_parameters": 99868583,
+          "trainable_parameters": 3549082
+        },
+        "expert_checkpoint": "/root/autodl-tmp/trifusion-v2/artifacts/trifusion_v12_complete_path_oof_seed42_c71d3de/fold_2_experts.pth",
+        "expert_checkpoint_sha256": "7abdecdec6e39eb6f3244b8f24428139e52079c91f7e5d0dad1d1c17dc387678",
+        "fit_identity_ids": [
+          0,
+          1,
+          3,
+          4,
+          6,
+          7,
+          9,
+          10,
+          12,
+          13,
+          15,
+          16,
+          18,
+          19,
+          21,
+          22,
+          24,
+          25,
+          27,
+          28,
+          30,
+          31,
+          33,
+          34,
+          36,
+          37,
+          39,
+          40,
+          42,
+          43,
+          45,
+          46,
+          48,
+          49,
+          51,
+          52,
+          53,
+          55,
+          56,
+          58,
+          59,
+          61,
+          62,
+          63,
+          66,
+          67,
+          69,
+          70,
+          72,
+          73,
+          74,
+          76,
+          77,
+          78,
+          81,
+          82,
+          84,
+          85,
+          86,
+          87,
+          89,
+          91,
+          92,
+          93,
+          95,
+          97,
+          98,
+          99,
+          102,
+          103,
+          105,
+          106,
+          108,
+          109,
+          111,
+          112,
+          114,
+          115,
+          117,
+          118,
+          120,
+          121,
+          123,
+          124,
+          126,
+          127,
+          129,
+          130,
+          132,
+          133,
+          135,
+          136,
+          138,
+          139
+        ],
+        "heldout_identity_ids": [
+          2,
+          5,
+          8,
+          11,
+          14,
+          17,
+          20,
+          23,
+          26,
+          29,
+          32,
+          35,
+          38,
+          41,
+          44,
+          47,
+          50,
+          54,
+          57,
+          60,
+          64,
+          65,
+          68,
+          71,
+          75,
+          79,
+          80,
+          83,
+          88,
+          90,
+          94,
+          96,
+          100,
+          101,
+          104,
+          107,
+          110,
+          113,
+          116,
+          119,
+          122,
+          125,
+          128,
+          131,
+          134,
+          137,
+          140
+        ],
+        "missing_v15_state_keys": [
+          "exchange_stages.0.edge_logits",
+          "exchange_stages.0.source_mixers.cnn.norm.weight",
+          "exchange_stages.0.source_mixers.cnn.norm.bias",
+          "exchange_stages.0.source_mixers.cnn.down.weight",
+          "exchange_stages.0.source_mixers.cnn.depthwise.weight",
+          "exchange_stages.0.source_mixers.transformer.norm.weight",
+          "exchange_stages.0.source_mixers.transformer.norm.bias",
+          "exchange_stages.0.source_mixers.transformer.down.weight",
+          "exchange_stages.0.source_mixers.transformer.attention_norm.weight",
+          "exchange_stages.0.source_mixers.transformer.attention_norm.bias",
+          "exchange_stages.0.source_mixers.transformer.attention.in_proj_weight",
+          "exchange_stages.0.source_mixers.transformer.attention.in_proj_bias",
+          "exchange_stages.0.source_mixers.transformer.attention.out_proj.weight",
+          "exchange_stages.0.source_mixers.transformer.attention.out_proj.bias",
+          "exchange_stages.0.source_mixers.mamba.norm.weight",
+          "exchange_stages.0.source_mixers.mamba.norm.bias",
+          "exchange_stages.0.source_mixers.mamba.down.weight",
+          "exchange_stages.0.source_mixers.mamba.spatial_mixer.norm.weight",
+          "exchange_stages.0.source_mixers.mamba.spatial_mixer.norm.bias",
+          "exchange_stages.0.source_mixers.mamba.spatial_mixer.core.A_log",
+          "exchange_stages.0.source_mixers.mamba.spatial_mixer.core.D",
+          "exchange_stages.0.source_mixers.mamba.spatial_mixer.core.in_proj.weight",
+          "exchange_stages.0.source_mixers.mamba.spatial_mixer.core.conv1d.weight",
+          "exchange_stages.0.source_mixers.mamba.spatial_mixer.core.conv1d.bias",
+          "exchange_stages.0.source_mixers.mamba.spatial_mixer.core.x_proj.weight",
+          "exchange_stages.0.source_mixers.mamba.spatial_mixer.core.dt_proj.weight",
+          "exchange_stages.0.source_mixers.mamba.spatial_mixer.core.dt_proj.bias",
+          "exchange_stages.0.source_mixers.mamba.spatial_mixer.core.out_proj.weight",
+          "exchange_stages.0.source_mixers.mamba.spatial_mixer.direction_gate.weight",
+          "exchange_stages.0.source_mixers.mamba.spatial_mixer.direction_gate.bias",
+          "exchange_stages.0.source_mixers.mamba.spatial_mixer.output_projection.weight",
+          "exchange_stages.0.source_mixers.mamba.modal_norm.weight",
+          "exchange_stages.0.source_mixers.mamba.modal_norm.bias",
+          "exchange_stages.0.source_mixers.mamba.modal_mixer.A_log",
+          "exchange_stages.0.source_mixers.mamba.modal_mixer.D",
+          "exchange_stages.0.source_mixers.mamba.modal_mixer.in_proj.weight",
+          "exchange_stages.0.source_mixers.mamba.modal_mixer.conv1d.weight",
+          "exchange_stages.0.source_mixers.mamba.modal_mixer.conv1d.bias",
+          "exchange_stages.0.source_mixers.mamba.modal_mixer.x_proj.weight",
+          "exchange_stages.0.source_mixers.mamba.modal_mixer.dt_proj.weight",
+          "exchange_stages.0.source_mixers.mamba.modal_mixer.dt_proj.bias",
+          "exchange_stages.0.source_mixers.mamba.modal_mixer.out_proj.weight",
+          "exchange_stages.0.edge_projections.cnn__transformer.weight",
+          "exchange_stages.0.edge_projections.cnn__mamba.weight",
+          "exchange_stages.0.edge_projections.transformer__cnn.weight",
+          "exchange_stages.0.edge_projections.transformer__mamba.weight",
+          "exchange_stages.0.edge_projections.mamba__cnn.weight",
+          "exchange_stages.0.edge_projections.mamba__transformer.weight",
+          "exchange_stages.1.edge_logits",
+          "exchange_stages.1.source_mixers.cnn.norm.weight",
+          "exchange_stages.1.source_mixers.cnn.norm.bias",
+          "exchange_stages.1.source_mixers.cnn.down.weight",
+          "exchange_stages.1.source_mixers.cnn.depthwise.weight",
+          "exchange_stages.1.source_mixers.transformer.norm.weight",
+          "exchange_stages.1.source_mixers.transformer.norm.bias",
+          "exchange_stages.1.source_mixers.transformer.down.weight",
+          "exchange_stages.1.source_mixers.transformer.attention_norm.weight",
+          "exchange_stages.1.source_mixers.transformer.attention_norm.bias",
+          "exchange_stages.1.source_mixers.transformer.attention.in_proj_weight",
+          "exchange_stages.1.source_mixers.transformer.attention.in_proj_bias",
+          "exchange_stages.1.source_mixers.transformer.attention.out_proj.weight",
+          "exchange_stages.1.source_mixers.transformer.attention.out_proj.bias",
+          "exchange_stages.1.source_mixers.mamba.norm.weight",
+          "exchange_stages.1.source_mixers.mamba.norm.bias",
+          "exchange_stages.1.source_mixers.mamba.down.weight",
+          "exchange_stages.1.source_mixers.mamba.spatial_mixer.norm.weight",
+          "exchange_stages.1.source_mixers.mamba.spatial_mixer.norm.bias",
+          "exchange_stages.1.source_mixers.mamba.spatial_mixer.core.A_log",
+          "exchange_stages.1.source_mixers.mamba.spatial_mixer.core.D",
+          "exchange_stages.1.source_mixers.mamba.spatial_mixer.core.in_proj.weight",
+          "exchange_stages.1.source_mixers.mamba.spatial_mixer.core.conv1d.weight",
+          "exchange_stages.1.source_mixers.mamba.spatial_mixer.core.conv1d.bias",
+          "exchange_stages.1.source_mixers.mamba.spatial_mixer.core.x_proj.weight",
+          "exchange_stages.1.source_mixers.mamba.spatial_mixer.core.dt_proj.weight",
+          "exchange_stages.1.source_mixers.mamba.spatial_mixer.core.dt_proj.bias",
+          "exchange_stages.1.source_mixers.mamba.spatial_mixer.core.out_proj.weight",
+          "exchange_stages.1.source_mixers.mamba.spatial_mixer.direction_gate.weight",
+          "exchange_stages.1.source_mixers.mamba.spatial_mixer.direction_gate.bias",
+          "exchange_stages.1.source_mixers.mamba.spatial_mixer.output_projection.weight",
+          "exchange_stages.1.source_mixers.mamba.modal_norm.weight",
+          "exchange_stages.1.source_mixers.mamba.modal_norm.bias",
+          "exchange_stages.1.source_mixers.mamba.modal_mixer.A_log",
+          "exchange_stages.1.source_mixers.mamba.modal_mixer.D",
+          "exchange_stages.1.source_mixers.mamba.modal_mixer.in_proj.weight",
+          "exchange_stages.1.source_mixers.mamba.modal_mixer.conv1d.weight",
+          "exchange_stages.1.source_mixers.mamba.modal_mixer.conv1d.bias",
+          "exchange_stages.1.source_mixers.mamba.modal_mixer.x_proj.weight",
+          "exchange_stages.1.source_mixers.mamba.modal_mixer.dt_proj.weight",
+          "exchange_stages.1.source_mixers.mamba.modal_mixer.dt_proj.bias",
+          "exchange_stages.1.source_mixers.mamba.modal_mixer.out_proj.weight",
+          "exchange_stages.1.edge_projections.cnn__transformer.weight",
+          "exchange_stages.1.edge_projections.cnn__mamba.weight",
+          "exchange_stages.1.edge_projections.transformer__cnn.weight",
+          "exchange_stages.1.edge_projections.transformer__mamba.weight",
+          "exchange_stages.1.edge_projections.mamba__cnn.weight",
+          "exchange_stages.1.edge_projections.mamba__transformer.weight"
+        ],
+        "signal_checkpoint": "/root/autodl-tmp/trifusion-v2/artifacts/trifusion_v12_complete_path_oof_seed42_c71d3de/fold_2_signal_final.pth",
+        "signal_checkpoint_sha256": "3cf0ef340c44db43d299ea8ca3a742ad12b4e113c12dffbd1db21f656923f678"
+      },
+      "checkpoint": "/root/autodl-tmp/trifusion-v2/artifacts/trifusion_v15_q1_seed42_71152d3/fold_2_v15_final.pth",
+      "checkpoint_sha256": "21caa9e9ed8be7eb9735d704c375def64b5741bea171b04869265f41542e287b",
+      "dev_access_count": 0,
+      "eligible_heldout_identity_count": 7,
+      "eligible_heldout_queries": 202,
+      "fit_identity_count": 94,
+      "fold": 2,
+      "heldout_identity_count": 47,
+      "identity_overlap": [],
+      "matched_mAP_gains": {
+        "cnn": -0.3470392370359434,
+        "fused": 0.1605190846500335,
+        "mamba": 0.6480047001962532,
+        "transformer": 0.19035421508925765
+      },
+      "metrics_percent": {
+        "off": {
+          "cnn": {
+            "Rank-1": 86.13861386138613,
+            "mAP": 86.03344716805866
+          },
+          "fused": {
+            "Rank-1": 91.58415841584159,
+            "mAP": 89.19445458689822
+          },
+          "mamba": {
+            "Rank-1": 92.57425742574257,
+            "mAP": 88.55985930604935
+          },
+          "transformer": {
+            "Rank-1": 91.0891089108911,
+            "mAP": 88.72475224119404
+          }
+        },
+        "on": {
+          "cnn": {
+            "Rank-1": 87.12871287128714,
+            "mAP": 85.68640793102271
+          },
+          "fused": {
+            "Rank-1": 92.07920792079209,
+            "mAP": 89.35497367154825
+          },
+          "mamba": {
+            "Rank-1": 95.04950495049505,
+            "mAP": 89.2078640062456
+          },
+          "transformer": {
+            "Rank-1": 93.06930693069307,
+            "mAP": 88.9151064562833
+          }
+        }
+      },
+      "official_test_access_count": 0,
+      "training": {
+        "epochs": 20,
+        "frozen_state_sha256_after": "e5f25715880605fed64d393e15bc22eb4e8083851380ccffd28e10517eb2bfdb",
+        "frozen_state_sha256_before": "e5f25715880605fed64d393e15bc22eb4e8083851380ccffd28e10517eb2bfdb",
+        "frozen_state_unchanged": true,
+        "history": [
+          {
+            "epoch": 1,
+            "mean_training_loss": 3.218587937178435
+          },
+          {
+            "epoch": 2,
+            "mean_training_loss": 1.6255589657359653
+          },
+          {
+            "epoch": 3,
+            "mean_training_loss": 1.3389644357893202
+          },
+          {
+            "epoch": 4,
+            "mean_training_loss": 1.15711776415507
+          },
+          {
+            "epoch": 5,
+            "mean_training_loss": 1.2085396470846954
+          },
+          {
+            "epoch": 6,
+            "mean_training_loss": 1.1771038947282013
+          },
+          {
+            "epoch": 7,
+            "mean_training_loss": 1.2210510505570307
+          },
+          {
+            "epoch": 8,
+            "mean_training_loss": 1.2002859623343856
+          },
+          {
+            "epoch": 9,
+            "mean_training_loss": 1.1960679005693506
+          },
+          {
+            "epoch": 10,
+            "mean_training_loss": 1.1714798212051392
+          },
+          {
+            "epoch": 11,
+            "mean_training_loss": 1.1581690311431885
+          },
+          {
+            "epoch": 12,
+            "mean_training_loss": 1.1879928134105824
+          },
+          {
+            "epoch": 13,
+            "mean_training_loss": 1.233592015725595
+          },
+          {
+            "epoch": 14,
+            "mean_training_loss": 1.268950089260384
+          },
+          {
+            "epoch": 15,
+            "mean_training_loss": 1.2158810165193346
+          },
+          {
+            "epoch": 16,
+            "mean_training_loss": 1.2248965987452753
+          },
+          {
+            "epoch": 17,
+            "mean_training_loss": 1.2533306104165536
+          },
+          {
+            "epoch": 18,
+            "mean_training_loss": 1.210155027884024
+          },
+          {
+            "epoch": 19,
+            "mean_training_loss": 1.2146398976997093
+          },
+          {
+            "epoch": 20,
+            "mean_training_loss": 1.2067593601014879
+          }
+        ],
+        "missing_nonzero_gradient_tensors": [],
+        "nonzero_gradient_tensors": 110,
+        "optimizer_steps": 540,
+        "overflow_events": 0,
+        "trainable_tensors": 110
+      }
+    }
+  ],
+  "fused_gain_identity_bootstrap": {
+    "identity_clusters": 21,
+    "lower_bound_95_percent": -0.9503304326869484,
+    "observed_mean_percent": -0.17206809493433153,
+    "resamples": 10000
+  },
+  "gate": {
+    "aggregate_branch_gains_passed": false,
+    "bootstrap_lower_bound_passed": false,
+    "fused_strictly_beats_branches_passed": true,
+    "integrity_passed": true,
+    "passed": false,
+    "per_fold_fused_noninferiority_passed": false,
+    "per_fold_two_receivers_passed": false,
+    "weighted_fused_gain_passed": false
+  },
+  "integrity": {
+    "access_boundary": true,
+    "fold_isolation": true,
+    "frozen_state_unchanged": true,
+    "pre_bn_evaluation": true,
+    "regret_weight_exact": true,
+    "same_tensor_pairing": true
+  },
+  "m0_summary": "/root/autodl-tmp/trifusion-v2/artifacts/trifusion_v15_m0_seed42_1f2de44/run_summary.json",
+  "m0_summary_sha256": "eba7be559fff38efea49461ceccb8d5e83b370591122eb64b5d9daa10b7009de",
+  "next_phase_authorized": false,
+  "official_test_access_count": 0,
+  "optimizer_steps": 1669,
+  "peak_allocated_mib": 9185.623046875,
+  "peak_reserved_mib": 12324.0,
+  "regret_weight": 1.0,
+  "repository_commit": "71152d3848c05177da0af30b0b921c6a3aa9942a",
+  "repository_diff_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "runner_sha256": "50cc76778f346104bd1453aeeb6ee63d3c308f37003db367b4ae390c06259e1c",
+  "schema_version": "trifusion-v15-q1-result-v1",
+  "seed": 42,
+  "signal_source_diff_sha256": "b889caca9c4a92689b13eb7e20bd3224067f3e5ed2a3db6825201870ca422741",
+  "source_commit": "cd1b0a672d1fe642e7608731cb4899a19dda7d51",
+  "status": "PASS",
+  "v12_summary": "/root/autodl-tmp/trifusion-v2/artifacts/trifusion_v12_complete_path_oof_seed42_c71d3de/run_summary.json",
+  "v12_summary_sha256": "9105b86a9c079c44843e9b118a21599746a87d279370341b8cf8d26bd18a8b69"
+}

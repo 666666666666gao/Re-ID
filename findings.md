@@ -203,3 +203,24 @@
 - 独立result-to-claim=`no/high`；integrity=`WARN/warn`，WARN仅为审计时tracker陈旧与execution-PASS语义，GT/normalization/path/leakage/scope均PASS。
 - 封存V14：不调LR/epoch/temperature/loss/fold/margin/threshold，不消融、多seed、refit、dev、official。它表明仅改变Router loss不足以让all-fit sample-local输入稳定预测heldout relational utility。
 - 完整报告：`results/TRIFUSION_RGBNT201_V14_FOLD_ROBUST_ROUTER_2026-09-02.md`。
+
+## 2026-09-02 — V15 CRDE complete-path Q1 终态
+
+- M0 在修正两项门禁实现错误后有效通过：B64/K8、两 exchange stage live、
+  100-step 110/110 梯度、0 overflow、frozen SHA 不变；联合下界校正后的
+  excess-loss ratio=`0.051554<=0.1`，dev0/official0。
+- 唯一 seed42 Q1 完成三 fold×20 epoch，共1,669 optimizer steps；每折均
+  110/110 梯度、0 overflow、frozen SHA 不变。运行40.20min，peak reserved
+  12,324MiB，dev0/official0。
+- fused matched mAP gain 三折为 `+0.0952/-0.8311/+0.1605`，weighted
+  aggregate=`-0.1721`；CNN/Transformer/Mamba aggregate=`-0.1576/-0.2606/
+  +0.2898`。fold1 四路全部退化。
+- 21 identity clusters、10,000 bootstrap 的 fused 95% lower bound=
+  `-0.9503 mAP`。每折 fused noninferiority、每折两个正 receiver、aggregate
+  +1 mAP、bootstrap>0、三 receiver aggregate>0 共五项门失败。
+- `status=PASS`只代表runner执行完成；科学`gate.passed=false`、
+  `next_phase_authorized=false`、`d1_executed=false`。不访问dev/official，
+  不做消融、多seed、checkpoint selection或超参数扫描。
+- 独立 result-to-claim=`no/high`：只支持 CRDE 可训练、协议干净以及 Mamba
+  局部受益，不支持稳定三分支协同。V15封存，后继必须是新的预注册表示假设。
+- 完整报告：`results/TRIFUSION_RGBNT201_V15_CRDE_Q1_2026-09-02.md`。

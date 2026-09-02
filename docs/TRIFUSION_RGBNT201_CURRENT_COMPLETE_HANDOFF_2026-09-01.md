@@ -1385,3 +1385,50 @@ EXPERIMENT_AUDIT_V14.json
 RESULT_TO_CLAIM_V14.md
 RESULT_TO_CLAIM_V14.json
 ```
+
+## 26. V15 Counterfactual Role-Delta Exchange 终态（2026-09-02）
+
+V15 将协作移入冻结 CLIP tail 内部：CNN/Transformer/Mamba 在 tail9 和
+tail10 后只交换各自相对输入的 role-delta，再由后续冻结预训练 block 解释；
+两级同步无 self-edge，六条有向边以 `0.25*tanh(theta)` 控制且 theta=0 起步。
+训练使用同一 tensor 的 exchange-on 与 state-clean no-exchange off comparator，
+总损失为 V8 on-path 监督加 matched retrieval regret，权重固定1.0。
+
+M0 在 clean commit `1f2de44f...` 有效 PASS：两 exchange stage 在 B64/K8
+8-step 均 live，0 overflow，peak reserved9798MiB；100-step 达到110/110梯度，
+loss `4.095560→1.209675`。扣除 label floor `0.578383` 与 matched-regret
+floor `0.474426` 后，excess ratio=`0.051554<=0.1`。dev0/official0。
+
+唯一 seed42 Q1 在 clean commit `71152d3848c05177da0af30b0b921c6a3aa9942a`
+完成三折各20 epoch、final-only，共1,669 optimizer steps，0 overflow；每折
+110/110梯度且 frozen state SHA 不变。结果为：
+
+| Fold | fused gain | CNN gain | Transformer gain | Mamba gain |
+|---:|---:|---:|---:|---:|
+| 0 | +0.0952 | -0.0258 | -0.3291 | +0.9375 |
+| 1 | -0.8311 | -0.0836 | -0.6967 | -0.8020 |
+| 2 | +0.1605 | -0.3470 | +0.1904 | +0.6480 |
+| aggregate | -0.1721 | -0.1576 | -0.2606 | +0.2898 |
+
+fused bootstrap 95% lower bound=`-0.9503 mAP`。每折 fused 非劣、aggregate
++1 mAP、bootstrap>0、三receiver aggregate>0、每折两个receiver>0等五项
+硬门失败。`status=PASS`只表示执行完成；科学`gate.passed=false`、
+`next_phase_authorized=false`、`d1_executed=false`。因此没有 all-fit D1，
+没有新的 30-dev 指标；当前可部署最好仍为 V8 Phase-B
+`58.4050 mAP / 59.3939 Rank-1`，距65为6.5950。
+
+独立 result-to-claim=`no/high`。V15只支持 CRDE 工程可训练、协议干净以及
+Mamba 局部受益，不支持稳定三分支协同。V15已封存：不做D1/dev/official、
+消融、多seed、checkpoint selection或LR/epoch/regret/edge-scale扫描。任何后继
+必须是新的预注册主假设。
+
+证据：
+
+```text
+evidence/trifusion_v15_m0_seed42_1f2de44.json
+evidence/trifusion_v15_q1_seed42_71152d3.json
+results/TRIFUSION_RGBNT201_V15_CRDE_Q1_2026-09-02.md
+EXPERIMENT_AUDIT_V15_M0.md
+EXPERIMENT_AUDIT_V15_Q1.md
+RESULT_TO_CLAIM_V15.md
+```
