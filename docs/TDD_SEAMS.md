@@ -72,6 +72,31 @@ No core model or test file is added until the user explicitly accepts these
 seams (reply: `接缝同意`). Environment, dataset and baseline reproduction tools
 are already independently validated and are outside this pending core seam.
 
+## V13 deployment-aligned counterfactual extension (accepted scope)
+
+The user's existing `接缝同意` also covers the offline target-builder seam used
+by V13. The public behavior added by V13 is intentionally small:
+
+1. `compose_v13_fusion(baseline, modal_residual, weights)`
+   - uses one shared blockwise fusion implementation for Q0, Q1 replay and dev;
+   - preserves the exact Signal prefix before evaluator normalization;
+   - fixes residual energy at `alpha=0.2`.
+2. `query_side_counterfactual_utilities(...)`
+   - builds one immutable uniform reference bank;
+   - removes a slot before residual-bank normalization;
+   - returns higher-is-better `full_margin - removed_margin` for all nine slots.
+3. `identity_cluster_bootstrap_lower_bound(...)`
+   - samples identities as whole clusters with fixed statistical seed 42;
+   - never retrains a model and is not a model multi-seed experiment.
+4. `tools/build_v13_deployment_aligned_targets.py --mode preflight|q0`
+   - pairs identity-OOF teacher target/replay features with the exact all-fit
+     Phase-A deployment inputs by ordered sample key;
+   - records all checkpoint, feature, ordering and access-count hashes;
+   - fails closed before Q1 when target health or action transfer fails.
+
+Tests observe only these return values and CLI receipts. They do not inspect
+private Router layers or mock project-owned model collaborators.
+
 ## Baseline crash-recovery seam (already in baseline-reproduction scope)
 
 The public recovery boundary is:

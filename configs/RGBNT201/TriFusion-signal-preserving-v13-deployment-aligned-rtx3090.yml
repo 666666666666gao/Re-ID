@@ -1,0 +1,79 @@
+SCHEMA_VERSION: 1
+EXPERIMENT:
+  NAME: trifusion_rgbnt201_v13_deployment_aligned_counterfactual
+  SEED: 42
+  RESOURCE_PROFILE: rtx3090_forward_and_router
+DATA:
+  DATASET_ROOT: /root/autodl-tmp/trifusion-v2/data/RGBNT201
+  DEV_PROTOCOL: protocols/rgbnt201_dev_v1.json
+  TRAIN_BATCH_SIZE: 64
+  NUM_INSTANCES: 8
+  EVAL_BATCH_SIZE: 128
+  NUM_WORKERS: 4
+SIGNAL:
+  SOURCE: /root/autodl-tmp/trifusion-v2/comparators/Signal-cd1b0a6
+  CONFIG: /root/autodl-tmp/trifusion-v2/comparators/Signal-cd1b0a6/configs/RGBNT201/Signal.yml
+  CHECKPOINT: /root/autodl-tmp/trifusion-v2/artifacts/signal_baseline_dev_seed42_f7d4b30/Signalbest.pth
+  CHECKPOINT_SHA256: 1f5c200cd43fcbc00b8a0494329519eed3e6f062d9a29d43a0ecdd97ff4966c3
+  CLIP_WEIGHT: /root/autodl-tmp/trifusion-v2/pretrained/ViT-B-16.pt
+  BASELINE_WIDTH: 3072
+  CAMERA_SIE: true
+MODEL:
+  ARCHITECTURE: signal_preserving_collaborative_v8_expert_formation
+  FEATURE_WIDTH: 512
+  SEMANTIC_WIDTH: 768
+  GRID_SIZE: [16, 8]
+  BRANCH_AFTER_BLOCK: 8
+  ADAPTER_WIDTH: 128
+  EXPERT_MODAL_WIDTH: 512
+  SCALE_INIT: 0.05
+  GRADIENT_CHECKPOINTING: true
+  RETRIEVAL_OUTPUTS: [baseline_only, fused, cnn, transformer, mamba]
+INITIALIZATION:
+  PHASE_A_CHECKPOINT: /root/autodl-tmp/trifusion-v2/artifacts/trifusion_v8_expert_formation_probe_seed42_abbf33d/final_model.pth
+  PHASE_A_CHECKPOINT_SHA256: d37ca17fad8a2786355d575b009f453e170238f3057c5db8f68789bb32b1b40f
+OPTIMIZATION:
+  AMP: true
+  NEW_MODULE_LR: 0.00035
+  WEIGHT_DECAY: 0.0001
+LOSS:
+  ID_FUSED: 0.25
+  TRIPLET_FUSED: 1.0
+  ID_BRANCH: 0.08333333333333333
+  TRIPLET_BRANCH: 0.25
+  ID_RESIDUAL: 0.08333333333333333
+  TRIPLET_RESIDUAL: 0.25
+  TRIPLET_MARGIN: 0.3
+  LABEL_SMOOTHING: 0.1
+ROUTER:
+  EPOCHS: 100
+  HIDDEN_WIDTH: 128
+  LEARNING_RATE: 0.00035
+  WEIGHT_DECAY: 0.0001
+  UTILITY_TEMPERATURE: 0.05
+  QUALITY_LOSS_WEIGHT: 1.0
+QUALITY:
+  DEGRADED_QUALITY: 0.2
+GATES:
+  DEV_MIN_MAP: 65.0
+  FUSED_STRICTLY_BEATS: [baseline_only, cnn, transformer, mamba]
+PROTOCOL:
+  OOF_TARGET_FOLDS: 3
+  DEV_ACCESS_DURING_TARGET_BUILDING: false
+  DEV_ACCESS_DURING_ROUTER_TRAINING: false
+  OFFICIAL_TEST_DURING_DEVELOPMENT: false
+  RERANKING: false
+V13:
+  V12_OOF_DIR: /root/autodl-tmp/trifusion-v2/artifacts/trifusion_v12_complete_path_oof_seed42_c71d3de
+  FIXED_ALPHA: 0.2
+  EXPECTED_FOLDS: 3
+  EXPECTED_QUERIES: 571
+  BOOTSTRAP_RESAMPLES: 10000
+  BOOTSTRAP_SEED: 42
+  FOLD_CHECKPOINT_SHA256:
+    - SIGNAL: 523c7c645ac1d85c91cd7b08ef3c3276e37f723906ae7af0d9ec6a9ddbcb38de
+      EXPERT: 4baebda03e69447e552a5e2e5512aad3db69248e23cbd0aacbc6d2bb7475c3af
+    - SIGNAL: 6c1304a68663418ef9b4dcd6230bde55c87d0319ac60351aebbe8a0ab9acbcd7
+      EXPERT: f369bca3dbd53518bc082880974f203aedbb6febd0251458a25707b91de52ec3
+    - SIGNAL: 3cf0ef340c44db43d299ea8ca3a742ad12b4e113c12dffbd1db21f656923f678
+      EXPERT: 7abdecdec6e39eb6f3244b8f24428139e52079c91f7e5d0dad1d1c17dc387678

@@ -328,3 +328,35 @@
 | 2026-09-02 09:05 | /experiment-plan | refine-logs/EXPERIMENT_TRACKER.md | research | V12 T0/P1/Q0/Q1与独立review全部终态 |
 | 2026-09-02 09:05 | /handoff | docs/TRIFUSION_RGBNT201_CURRENT_COMPLETE_HANDOFF_2026-09-01.md | documentation | 统一交接续写V12完整路径教师、Router负结果、哈希与接续边界 |
 | 2026-09-02 09:05 | /handoff | README.md | documentation | 公开入口更新V12 Q0资格通过、Q1失败和当前deployable best |
+| 2026-09-02 09:13 | /research-refine | refine-logs/REFINE_STATE_20260902_091348.json | implementation | V13路径一致关系型反事实路由 refinement 状态永久快照 |
+| 2026-09-02 09:13 | /research-refine | refine-logs/REFINE_STATE.json | implementation | V13 refinement latest 状态 |
+| 2026-09-02 09:13 | /research-refine | refine-logs/round-0-initial-proposal.md | implementation | V13 initial anchored proposal：actual-path counterfactual utility + relational Router input |
+| 2026-09-02 09:21 | /research-refine | refine-logs/round-1-review.md | implementation | GPT-5.5 xhigh round1 原始评审：6.75/10 REVISE |
+| 2026-09-02 09:21 | /research-refine | refine-logs/score-history.md | implementation | V13 refinement 评分演进 |
+| 2026-09-02 09:21 | /research-refine | refine-logs/round-1-refinement.md | implementation | V13 完整修订：paired OOF teacher / deployment student、固定 alpha、OOF replay gate |
+| 2026-09-02 09:21 | /research-refine | refine-logs/REFINE_STATE_20260902_092108.json | implementation | V13 round1 refinement 状态永久快照 |
+| 2026-09-02 09:21 | /research-refine | refine-logs/REFINE_STATE.json | implementation | V13 round1 refinement latest 状态 |
+| 2026-09-02 09:26 | /research-refine | refine-logs/round-2-review.md | implementation | GPT-5.5 xhigh round2 原始评审：8.00/10 REVISE |
+| 2026-09-02 09:26 | /research-refine | refine-logs/round-2-refinement.md | implementation | V13 完整修订：claim边界、read-only transfer、identity-cluster paired hard gates |
+| 2026-09-02 09:26 | /research-refine | refine-logs/REFINE_STATE_20260902_092628.json | implementation | V13 round2 refinement 状态永久快照 |
+| 2026-09-02 09:26 | /research-refine | refine-logs/REFINE_STATE.json | implementation | V13 round2 refinement latest 状态 |
+| 2026-09-02 09:30 | /research-refine | refine-logs/round-3-review.md | implementation | GPT-5.5 xhigh round3 原始评审：9.05/10 READY |
+| 2026-09-02 09:30 | /research-refine | refine-logs/FINAL_PROPOSAL_20260902_093054.md | implementation | V13 final proposal 永久快照 |
+| 2026-09-02 09:30 | /research-refine | refine-logs/FINAL_PROPOSAL.md | implementation | V13 deployment-aligned counterfactual distillation latest proposal |
+| 2026-09-02 09:30 | /research-refine | refine-logs/REVIEW_SUMMARY_20260902_093054.md | implementation | V13 三轮评审解决记录永久快照 |
+| 2026-09-02 09:30 | /research-refine | refine-logs/REVIEW_SUMMARY.md | implementation | V13 review summary latest |
+| 2026-09-02 09:30 | /research-refine | refine-logs/REFINEMENT_REPORT_20260902_093054.md | implementation | V13 refinement完整报告永久快照 |
+| 2026-09-02 09:30 | /research-refine | refine-logs/REFINEMENT_REPORT.md | implementation | V13 refinement report latest |
+| 2026-09-02 09:30 | /research-refine | refine-logs/REFINE_STATE_20260902_093054.json | implementation | V13 completed state 永久快照 |
+| 2026-09-02 09:30 | /research-refine | refine-logs/REFINE_STATE.json | implementation | V13 completed state latest |
+| 2026-09-02 09:33 | /experiment-plan | refine-logs/EXPERIMENT_PLAN_20260902_093332.md | implementation | V13 claim-driven执行计划永久快照 |
+| 2026-09-02 09:33 | /experiment-plan | refine-logs/EXPERIMENT_PLAN.md | implementation | V13 M0→Q0→Q1→conditional dev latest计划 |
+| 2026-09-02 09:33 | /experiment-plan | refine-logs/EXPERIMENT_TRACKER_20260902_093332.md | implementation | V13 fail-closed tracker永久快照 |
+| 2026-09-02 09:33 | /experiment-plan | refine-logs/EXPERIMENT_TRACKER.md | implementation | V13 execution tracker latest |
+| 2026-09-02 09:37 | /tdd | tests/test_trifusion_signal_preserving_v13.py | implementation | V13 shared fusion/counterfactual/bootstrap public seam worked examples |
+| 2026-09-02 09:37 | /tdd | tests/test_build_v13_deployment_aligned_targets.py | implementation | V13 Q0 fail-closed target/transfer gate seam |
+| 2026-09-02 09:37 | /tdd | docs/TDD_SEAMS.md | documentation | 已同意offline builder scope下的V13 public seam扩展 |
+| 2026-09-02 09:41 | /tdd | modeling/trifusion/signal_preserving_v13.py | implementation | V13 shared fusion、query-side actual-path utility与identity-cluster bootstrap最小实现 |
+| 2026-09-02 09:41 | /tdd | tools/build_v13_deployment_aligned_targets.py | implementation | V13 Q0 target diversity/action-transfer fail-closed gate最小实现 |
+| 2026-09-02 09:49 | /tdd | tools/build_v13_deployment_aligned_targets.py | implementation | V13 paired cache、fold checkpoint reuse、preflight/Q0 actual-path builder与receipts |
+| 2026-09-02 09:49 | /run-experiment | configs/RGBNT201/TriFusion-signal-preserving-v13-deployment-aligned-rtx3090.yml | implementation | V13 seed42 fixed-alpha paired target/router frozen contract |
