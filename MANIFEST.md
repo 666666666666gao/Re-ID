@@ -315,3 +315,4 @@
 | 2026-09-02 07:16 | /tdd | tests/test_build_v12_complete_path_oof_targets.py | implementation | V12完整路径fold隔离、连续重映射与fail-closed资格门公共接缝 |
 | 2026-09-02 07:34 | /run-experiment | configs/RGBNT201/TriFusion-signal-preserving-v12-complete-path-oof-rtx3090.yml | implementation | V12 seed42 Signal50+专家20三折train-only固定配置 |
 | 2026-09-02 07:34 | /run-experiment | tools/build_v12_complete_path_oof_targets.py | implementation | V12完整路径identity-OOF教师preflight、三折训练、margin cache与资格receipt |
+| 2026-09-02 08:47 | /run-experiment | configs/RGBNT201/TriFusion-signal-preserving-v12-complete-path-router-rtx3090.yml | implementation | 复用冻结V8 Router合同，仅替换为V12完整路径OOF margin cache及其SHA |
