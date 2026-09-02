@@ -179,3 +179,14 @@ The detailed contract and deterministic routing counterexample are
 reply `接缝同意` is bound in `evidence/tdd_seam_consent_20260831.json`; the
 runner and CLI tests are now implemented. Real `official128` remains gated on
 GPU `memory.used < 500 MiB`.
+# V14 fold-robust Router public seams
+
+- `cross_camera_retrieval_risk`: L2-normalized hardest cross-camera positive
+  versus nearest negative softplus risk.
+- `fold_bound_retrieval_risk`: exact V13 fusion plus mandatory single-OOF-fold
+  row binding.
+- `select_minimax_fixed_slot`: source-fold-only fixed comparator selection.
+- `evaluate_v14_q1_gate`: held-out risk/AP/margin and safety/access contract.
+
+These seams were frozen in the V14 READY proposal before implementation. Tests
+do not inspect private training helpers.

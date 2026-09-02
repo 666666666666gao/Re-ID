@@ -1,84 +1,101 @@
-# Research Proposal: TriFusion V13 部署对齐的融合路径反事实蒸馏
+# 研究方案：V14 Fold-Robust Retrieval-Regret Router
 
 ## Problem Anchor
 
-- Bottom-line problem: 在 RGBNT201 的固定 `141-fit / 30-dev` 协议上，把 CNN、Transformer、Mamba 三类异构专家已经被 V12 证明存在的互补空间转化为可部署融合增益，同时严格保留 exact Signal baseline，最终 seed 42 fused mAP 达到至少 65，并严格超过 baseline 与全部固定专家。
-- Must-solve bottleneck: V12 的身份 Router 在完整路径 identity-OOF 条件下仍不能跨折泛化；learned expected margin 为 `-0.117330`，低于固定策略 `-0.099975`，Top-slot accuracy 为 `12.2592%`，低于 majority `16.8126%`，而质量响应门已经通过。
-- Non-goals: 不复现 baseline；不做多种子；主结果达到 65 mAP 前不做消融；不访问 official test；不增加大 backbone、HFER 或超参数扫描来掩盖 Router 监督失配。
-- Constraints: 所有训练、推理和数据处理仅在远端单张 RTX 3090 24 GiB 上进行；固定 seed 42、B64/K8、既有 3-fold identity-OOF 划分和 V8/V12 已登记超参数；复用 V12 fold checkpoints，不重新训练 Signal baseline 或 V12 教师。
-- Success condition: Q0 实际融合路径九槽效用非退化且可转移；Q1 的 expected utility、OOF replay AP/margin、质量与 missing gates 全通过；此后唯一一次 dev 的 fused≥65 mAP，并严格超过 exact Signal、V8 Phase-B 与全部固定专家。
+- **底线问题**：在远端单张 RTX 3090 上，基于 RGBNT201 固定
+  `141-fit / 30-dev`、seed 42 和 exact Signal 3072D 前缀，让 CNN、
+  Transformer、Mamba 三类预训练残差专家形成可部署的动态融合，而不是
+  继续被近静态 Router 平均。
+- **必须解决的瓶颈**：V8 已证明专家具有 query 级互补性；V13 的九路
+  点式 utility-KL 目标却近乎均匀且随 fold 漂移，不能稳定把互补性转成
+  held-out 检索增益。
+- **非目标**：本阶段不增加新 backbone、不启用 HFER、不复现 baseline、
+  不做多种子、不做消融、不访问 official test，也不扫描温度、epoch、LR、
+  margin、fold 或损失权重。
+- **成功条件**：先通过严格 train-only OOF Router 门；只有通过后才允许
+  一次 dev。dev fused 必须 mAP≥65，且 mAP/Rank-1 严格超过 exact Signal、
+  当前可部署最好结果和 CNN/Transformer/Mamba 三个分支。
 
-## Technical Gap
+## 证据锚点
 
-V12 用 residual-only absolute margin 监督最终 `[exact Signal, routed residual bank]`，target 与 action 后果不同；V12 Q1 的 Router 又读取三套 fold raw features，final inference 则读取 all-fit Phase-A feature，student 输入坐标也不同。
+V13 target-learnability 诊断使用 571 个 fit-only query、21 个身份和三折，
+训练为 false、optimizer step 为 0、dev/official access 均为 0。九路 target
+平均归一化熵 `0.99983197`，平均最大概率 `0.11527554`（均匀值
+`0.11111111`），Top1-Top2 utility 中位差 `0.00034070`，fold 槽位排序相关
+`-0.50 / 0.40 / 0.05`。这些证据只支持删除点式 utility-KL，不支持预言
+V14 能达到 65 mAP。
 
-V13 用一个 paired cache 闭合两处失配：OOF complete model 生成真实融合 query-side counterfactual target，并提供 non-saturated replay path；同一样本的 frozen all-fit Phase-A feature 是 Router 唯一输入。Router 决策通过 sample key 回放到 OOF path，直接以真实 ReID margin/AP 过门。
+## 方法假设与冻结边界
 
-## Method Thesis and Claim Boundary
+> 当专家、部署输入、融合能量和质量控制全部固定时，在每个 OOF teacher
+> 坐标系内直接优化跨相机检索 regret，并由最坏 source fold 控制更新，会比
+> V13 的近均匀点式动作蒸馏更稳定地迁移到 held-out fit fold。
 
-- Thesis: 将 identity-OOF complete-path 的融合贡献效用蒸馏到 fixed deployment feature interface 上的轻量层级 Router，并用 OOF replay 证明 policy 的真实检索收益。
-- Dominant contribution: Deployment-Aligned Fusion-Path Counterfactual Distillation。
-- Scientific boundary: Q1 是 fixed all-fit deployment feature interface 下的 identity-heldout policy validation。OOF teacher supervision 与 OOF replay 对 heldout identity 隔离；student feature extractor 本身见过全部 141 fit identities，因此不声称 identity-heldout representation training/generalization。
-- Non-contributions: quality gate、hierarchical normalization、exact prefix 和 fixed alpha 是沿用控制，不作 novelty claim。
+保持共享三模态几何、exact frozen Signal、V8 Phase-A CNN/Transformer/
+Mamba residual experts、matched-token residual、层级 Router、missing mass=0、
+fixed `alpha=0.2`、V13 optimizer/100 epochs 和质量损失不变。Router 输入是
+冻结的 all-fit deployment features；只有 teacher/replay embedding 是
+identity-OOF。本实验不是完整路径 identity-OOF 泛化实验。HFER 保持关闭。
 
-## Complexity Budget
+## Fold-bound 检索风险
 
-- Reuse: V12 三个 fold Signal/expert checkpoints；V8 Phase-A all-fit checkpoint；现有 Router；exact Signal evaluator。
-- New trainable component: 仍只有既有 Router。
-- Fixed simplification: `alpha=0.2`；无 alpha head/loss、Gram、HFER、DINO、额外 backbone、joint training 或超参数扫描。
+所有损失使用：
 
-## Single Shared Fusion Seam
+```text
+risk(fold_id, rows_in_fold_id, features_from_generator_fold_id, weights)
+```
 
-Q0 target、Q1 replay、transfer audit 和 final dev 必须调用同一个公共函数：
+row、fold、OOF generator 必须一致，query/gallery 只来自同一 fold，禁止跨
+generator 距离。embedding 经 exact V13 fusion 和 L2 normalize 后：
 
-`b(x,w)=vec({w_s r_s(x)} in fixed expert-major/modality-minor order)`
+```text
+d_pos(i) = max_j ||z_i-z_j||_2, y_j=y_i 且 camera_j!=camera_i
+d_neg(i) = min_k ||z_i-z_k||_2, y_k!=y_i
+R_f(w)   = mean_i softplus(d_pos(i)-d_neg(i)).
+```
 
-`F(x;w)=L2(concat(z0(x),0.2*||z0(x)||_2*L2(b(x,w))))`。
+不增加 margin、temperature、listwise relaxation 或新损失权重。
 
-函数在 residual-bank normalization 前应用 weights/mask；pre-final-L2 的前 3072D 必须逐元素等于 exact `z0`。clean uniform 权重为 `1/9`；remove `s` 时先在 unnormalized bank 置零，再以其余八槽 `1/8` 完整重跑同一函数。
+## Source-only comparator 与训练目标
 
-## Fixed OOF Bank and Counterfactual Target
+留出 fold `h`，source folds 为 `a,b`：
 
-每 fold 的 `Q_f` 为具备 different-camera positive 的 heldout fit records（沿用 `190/179/202`）；`G_f` 为相同 ordered records 的复制。同 identity/same camera（包括自身）剔除，positive=`same identity && different camera`，negative=`different identity`。
+```text
+s* = argmin_s max(R_a(one_hot(s)), R_b(one_hot(s))), s∈{0,...,8}
+G_f(w) = R_f(w) - stop_gradient(R_f(one_hot(s*)))
+L_total = max(G_a(w), G_b(w)) + L_quality.
+```
 
-`B_f={F_f(x_i;w^U):x_i∈G_f}` 固定一次。Euclidean distance 作用于 final L2 embeddings，定义 higher-is-better margin：
+`s*` 只由 source folds 选择。九槽枚举是 comparator 定义，不是调参。V13
+utility tensor、softmax temperature 与 KL 不参与优化，只作诊断。
 
-`M_f(q,B_f)=min_negative_distance-max_positive_distance`。
+## Q1 门禁
 
-`Delta_f(q,s)=M_f(F_f(q;w^U),B_f)-M_f(F_f(q;w^{-s}),B_f)`。
+在 held-out fold `h` 上定义：
 
-因此 `Delta>0` 表示槽 `s` 有益。intervention 只发生在 query side；`B_f` 的 tensor SHA 在九次 removal 中必须不变。
+```text
+risk_gain_h   = R_h(one_hot(s*)) - R_h(learned)
+ap_gain_h     = AP_h(learned) - AP_h(fixed)
+margin_gain_h = margin_h(learned) - margin_h(fixed).
+```
 
-## Paired Teacher–Student Cache
+必须满足：每折 risk gain>0；每折 AP/margin gain≥0；三项 pooled paired
+identity-cluster bootstrap 95% 下界均>0；三模态退化后质量下降；missing mass
+严格为0；Phase-A SHA 不变；dev0、official0。Replay Rank-1、V13 utility/
+action Top-1 和 held-out 自身最佳 fixed slot 仅报告、不门控、不参与选择。
 
-每行按 sample key 存储 `teacher_oof_baseline/modal_residual/Delta`、`student_allfit_direct/modal_residual`、identity/camera/fold/sample path hash。receipt 绑定 ordered sample、checkpoints、feature tensors、shared fusion/evaluator/config/commit、alpha、slot order 和 mask 的 SHA。final refit 的 Phase-A SHA 必须与 cache 完全一致。
+## 执行与终止
 
-## Read-Only Action-Transfer Prerequisite
+1. **M0**：手算 risk、跨相机正样本、fold binding、梯度覆盖、exact fusion
+   和范围回执测试。
+2. **Q0**：exact cache 零优化步，验证三折风险支持、有限非零梯度、SHA、
+   dev0/official0。
+3. **Q1**：唯一 seed42 三折 OOF qualification；任一门失败即封存，不扫描。
+4. **条件 final refit/dev**：Q1 全通过后才以三折各自 OOF risk 的最大 regret
+   refit 一次并做一次 dev；feature vector 和距离永不跨 fold 混合。
 
-all-fit path Delta 只执行一次，不进入 Router loss，不选择 fixed policy、temperature、threshold、checkpoint/epoch 或 dev 决策。sign agreement、top-slot overlap 与 Spearman 只报告。唯一 binary gate：OOF Delta 的 per-query oracle slot 在 all-fit Delta 上 aggregate 严格优于仅由 OOF train folds 选出的 fixed slot，且每 fold不低于 fixed。
+dev fused 必须 mAP≥65，且 mAP/Rank-1 严格超过 Signal、V8 Phase-B 和三
+分支。此前禁止 official test、消融、多种子和 baseline rerun。
 
-## Router Training and OOF Replay
-
-Router 始终读取 `student_allfit_*`，target 为同一行 `teacher_oof_Delta`。保留 `P(m|x)P(e|m,x)`、utility KL、quality KL、100 epochs、LR `3.5e-4`、temperature `0.05`、hidden128、seed42；alpha 常量0.2。
-
-heldout fold 时，Router 对 query/gallery student features 分别输出 weights；按 sample key 将 weights 应用到 teacher OOF baseline/residual，再调用共享 `F`，按相同 cross-camera filter 产生 per-query margin、AP、Rank-1。fixed slot 与 majority 只能由另外两个 OOF training folds定义。
-
-## Hard Gates
-
-Q0 需要通过 target health、bank immutability、三专家/三模态 unique positive、slot Oracle 和 action-transfer prerequisite。
-
-Q1 必须同时满足：每 fold expected Delta、Top1、OOF replay mAP 和 mean margin 均不低于 train-fold fixed/majority；aggregate query-level paired difference 对四项指标按 identity cluster（保留 cluster 全部 queries）以固定统计 seed42 做10,000次 bootstrap，95% percentile lower bound均 `>0`；三模态 corruption mass下降、missing mass为0；所有冻结 state SHA不变；dev/official access为0。
-
-bootstrap 不重训模型，不属于模型多种子，且不能用于调参。任一失败即停止。
-
-## Final Integration
-
-Q1 全门通过后才在全部 paired rows 上 final refit，并组合相同 SHA 的 Phase-A checkpoint；只做一次 30-dev。fused 必须 ≥65 mAP，并严格超过 exact Signal `58.0109`、V8 Phase-B `58.4050` 和三个 fixed experts。失败则不访问 official、不做消融、不声称 SOTA。
-
-主结果通过后只允许两项 claim-critical deletion checks：`actual-path target→residual-only target`、`paired deployment input→fold raw input`。
-
-## Compute and Run Order
-
-- Q0 paired forward/replay 预计 `0.1–0.3 GPU-hour`；Q1/final Router 数分钟。
-- 无教师重训、baseline 重跑、新数据或模型多种子。
-- TDD RED→GREEN → remote preflight → Q0 → 条件式 Q1 → 条件式 dev。
+Q1 通过最多支持 all-fit deployment input + identity-OOF teacher/replay 范围
+下的三 fit-fold 转移；不支持完整路径 OOF、HFER、dev、SOTA 或因果主张。

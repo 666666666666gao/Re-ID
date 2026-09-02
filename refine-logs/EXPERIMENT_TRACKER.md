@@ -1,10 +1,8 @@
-# Experiment Tracker
+# V14 Experiment Tracker
 
-| Run ID | Status | Gate |
-|---|---|---|
-| V13-T0 | PASS | public seam real RED→GREEN |
-| V13-P0/P1 | PASS | remote 19/19；真实8样本preflight |
-| V13-Q0 | PASS | actual-path target/transfer全门通过 |
-| V13-Q1 | TERMINAL_FAIL | fold0 Top1、fold2 utility/AP/margin、四项bootstrap LB失败 |
-| V13-D1 | NOT_AUTHORIZED | Q1失败；无refit、无dev |
-| V13-A1/A2 | NOT_AUTHORIZED | 主结果未成功 |
+| Run ID | Gate | Status | Next condition |
+|---|---|---|---|
+| V14-M0 | public-seam tests | TODO | pass → Q0 |
+| V14-Q0 | real-cache zero-step | BLOCKED_BY_M0 | pass → Q1 |
+| V14-Q1-S42 | OOF retrieval qualification | BLOCKED_BY_Q0 | full pass → D1; failure → seal |
+| V14-D1-S42 | final refit + one dev | BLOCKED_BY_Q1 | fused≥65 + strict wins required |

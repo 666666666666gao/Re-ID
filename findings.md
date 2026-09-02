@@ -183,3 +183,12 @@
 - 次要瓶颈是泛化：epoch8 达到最佳后，训练损失继续从 `0.3667` 降至 epoch60 的 `0.02797`，fused dev 却回落到 `56.5679`。训练已经完成，不能解释为“没训练完”。
 - 下一步：只允许一个 V7 main-only 结构修正，使路由目标表达各专家相对 exact baseline 的边际身份收益；保留 exact Signal、三完整专家、两次 HFER、三次可靠性刷新和无自由倍率残差银行。不扫 epoch、batch、学习率、温度或残差倍率。
 - 证据：`evidence/trifusion_signal_preserving_v6_dev_terminal_seed42.json`、`evidence/trifusion_signal_preserving_v6_diagnostic_seed42.json`、`results/TRIFUSION_RGBNT201_V6_DEV_SEED42_2026-09-01.md`。
+
+## 2026-09-02 — V13 Router target-learnability 零训练诊断
+
+- 完整性：固定 V13 paired cache、571 个 fit-only query、21 个身份、三 identity folds；训练 false、optimizer steps=0、dev0、official0；源提交 `e6774432aba906cbb27913eb213984fbbc6b8678`。
+- 目标退化：固定温度 0.05 下，九路 softmax target 的平均归一化熵为 `0.99983197`，平均最大概率仅 `0.11527554`，接近均匀值 `0.11111111`；Top1-Top2 utility 中位差只有 `0.00034070`。
+- fold 不稳定：三个 fold 的均值最优槽为 `2/0/2`，槽位排序相关为 `-0.50/0.40/0.05`。这解释了 V13-Q1 能改善 fold1，却牺牲 fold0 Top1 与 fold2 utility/AP/margin。
+- 可观测性：identity 内 utility 余弦 `0.52291` 高于 identity 间 `0.04061`，但 identity 多数赢家准确率仍仅 `49.91%`；residual norm 对 utility 的最大绝对相关仅 `0.11382`，本地质量幅值不足以恢复检索效用。
+- 下一步：封存 V13 utility-temperature 方向，不做温度/epoch/LR 扫描；V14 只替换点式 utility-KL，直接在各 OOF teacher 坐标系内优化 cross-camera retrieval regret，并用最坏训练 fold 聚合，其他专家、Router、alpha 和质量控制保持不变。
+- 完整报告：`results/TRIFUSION_RGBNT201_V13_TARGET_LEARNABILITY_DIAGNOSTIC_2026-09-02.md`。

@@ -360,3 +360,35 @@
 | 2026-09-02 09:41 | /tdd | tools/build_v13_deployment_aligned_targets.py | implementation | V13 Q0 target diversity/action-transfer fail-closed gate最小实现 |
 | 2026-09-02 09:49 | /tdd | tools/build_v13_deployment_aligned_targets.py | implementation | V13 paired cache、fold checkpoint reuse、preflight/Q0 actual-path builder与receipts |
 | 2026-09-02 09:49 | /run-experiment | configs/RGBNT201/TriFusion-signal-preserving-v13-deployment-aligned-rtx3090.yml | implementation | V13 seed42 fixed-alpha paired target/router frozen contract |
+| 2026-09-02 10:34 | /analyze-results | evidence/trifusion_v13_target_learnability_diagnostic_seed42.json | experiment | V13 fit-only零训练target learnability原始诊断，dev0/official0 |
+| 2026-09-02 10:34 | /analyze-results | results/TRIFUSION_RGBNT201_V13_TARGET_LEARNABILITY_DIAGNOSTIC_2026-09-02.md | analysis | V13近均匀target、fold漂移与局部可观测性分析 |
+| 2026-09-02 10:34 | /analyze-results | findings.md | analysis | 追加V13 target-learnability结论与V14唯一允许方向 |
+| 2026-09-02 10:34 | /research-refine | refine-logs/v14/round-0-initial-proposal.md | implementation | V14 fold-local retrieval regret与worst-fold Router初始方案 |
+| 2026-09-02 10:34 | /research-refine | refine-logs/REFINE_STATE_20260902_103424.json | implementation | V14 round0 review状态永久快照 |
+| 2026-09-02 10:34 | /research-refine | refine-logs/REFINE_STATE.json | implementation | V14 refinement latest状态 |
+| 2026-09-02 10:42 | /research-refine | refine-logs/v14/round-1-review.md | implementation | GPT-5.5 xhigh V14 round1原始评审：7.20/10 REVISE |
+| 2026-09-02 10:42 | /research-refine | refine-logs/v14/round-1-refinement.md | implementation | V14修订：held-out risk/AP/margin门、fold-bound API、诚实OOF边界 |
+| 2026-09-02 10:42 | /research-refine | refine-logs/v14/score-history.md | implementation | V14 refinement评分演进 |
+| 2026-09-02 10:42 | /research-refine | refine-logs/REFINE_STATE_20260902_104236.json | implementation | V14 round1状态永久快照 |
+| 2026-09-02 10:42 | /research-refine | refine-logs/REFINE_STATE.json | implementation | V14 round1 latest状态 |
+| 2026-09-02 10:45 | /research-refine | refine-logs/v14/round-2-review.md | implementation | GPT-5.5 xhigh V14 round2评审：9.25/10 READY |
+| 2026-09-02 10:45 | /research-refine | refine-logs/FINAL_PROPOSAL_20260902_104547.md | implementation | V14最终方案永久快照 |
+| 2026-09-02 10:45 | /research-refine | refine-logs/FINAL_PROPOSAL.md | implementation | V14 fold-robust retrieval-regret Router latest方案 |
+| 2026-09-02 10:45 | /research-refine | refine-logs/REVIEW_SUMMARY_20260902_104547.md | implementation | V14两轮评审解决记录永久快照 |
+| 2026-09-02 10:45 | /research-refine | refine-logs/REVIEW_SUMMARY.md | implementation | V14 review summary latest |
+| 2026-09-02 10:45 | /research-refine | refine-logs/REFINEMENT_REPORT_20260902_104547.md | implementation | V14 refinement完整报告永久快照 |
+| 2026-09-02 10:45 | /research-refine | refine-logs/REFINEMENT_REPORT.md | implementation | V14 refinement report latest |
+| 2026-09-02 10:45 | /research-refine | refine-logs/score-history_20260902_104547.md | implementation | V14评分演进永久快照 |
+| 2026-09-02 10:45 | /research-refine | refine-logs/score-history.md | implementation | V14 score history latest |
+| 2026-09-02 10:45 | /research-refine | refine-logs/REFINE_STATE_20260902_104547.json | implementation | V14 completed状态永久快照 |
+| 2026-09-02 10:45 | /research-refine | refine-logs/REFINE_STATE.json | implementation | V14 completed latest状态 |
+| 2026-09-02 10:48 | /experiment-plan | refine-logs/EXPERIMENT_PLAN_20260902_104830.md | implementation | V14 claim-driven M0→Q0→Q1→conditional dev永久计划 |
+| 2026-09-02 10:48 | /experiment-plan | refine-logs/EXPERIMENT_PLAN.md | implementation | V14最小执行路线latest计划 |
+| 2026-09-02 10:48 | /experiment-plan | refine-logs/EXPERIMENT_TRACKER_20260902_104830.md | implementation | V14 fail-closed tracker永久快照 |
+| 2026-09-02 10:48 | /experiment-plan | refine-logs/EXPERIMENT_TRACKER.md | implementation | V14执行状态latest tracker |
+| 2026-09-02 10:55 | /tdd | tests/test_trifusion_signal_preserving_v14.py | implementation | V14 fold-bound risk、minimax comparator与gradient public seams |
+| 2026-09-02 10:55 | /tdd | tests/test_train_v14_fold_robust_router.py | implementation | V14 held-out retrieval Q1 gate public seam |
+| 2026-09-02 10:55 | /tdd | modeling/trifusion/signal_preserving_v14.py | implementation | V14 cross-camera fold-bound retrieval risk最小实现 |
+| 2026-09-02 10:55 | /tdd | tools/train_v14_fold_robust_router.py | implementation | V14 Q0/Q1/source-minimax/worst-fold runner |
+| 2026-09-02 10:55 | /tdd | configs/RGBNT201/TriFusion-signal-preserving-v14-fold-robust-router-rtx3090.yml | implementation | V14 seed42冻结合同，无utility temperature |
+| 2026-09-02 10:55 | /tdd | docs/TDD_SEAMS.md | documentation | 登记V14已同意public seams |
