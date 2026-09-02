@@ -257,3 +257,43 @@ successor. V16 adds no inference Router or exchange. Tests are restricted to:
 
 Tests observe these public return values and receipts. They do not inspect
 private adapter layers or runner helpers.
+
+## V17 dense triadic relation-envelope public seams
+
+The prior user reply `接缝同意` covers this representation-level successor.
+V17 keeps the frozen V8/Signal endpoint and adds only one shared low-rank
+correction module. Tests are restricted to:
+
+1. `TriadicCorrectionV17.forward(residual_embeddings)`
+   - preserves the registered CNN/Transformer/Mamba receiver ordering;
+   - forms every receiver correction from its own projection, the Hadamard
+     intersection of the other two experts, and the tri-expert mean;
+   - returns three normalized corrected residuals plus their normalized
+     concatenation, with gradients reaching the shared correction and all
+     three receiver projections.
+2. `relation_envelope_objective_v17(...)`
+   - constructs detached positive lower and negative upper pairwise cosine
+     envelopes from the frozen expert residuals;
+   - uses only same-identity/different-physical-camera positives and
+     different-identity negatives;
+   - penalizes only student similarities that fall below the positive envelope
+     or above the negative envelope, averaging positive and negative pairs
+     independently;
+   - reports the registered fused/branch weighting and descriptive teacher
+     source counts without sending gradients into the frozen teachers.
+3. `build_signal_preserving_trifusion_v17(...)`
+   - freezes the exact V8 Signal/tail endpoint and trains only the shared
+     triadic correction plus V17 heads;
+   - preserves the exact Signal prefix and exposes `baseline_only`, `fused`,
+     `cnn`, `transformer`, and `mamba` retrieval outputs without a Router,
+     sample gate, fallback, or reranking.
+4. `evaluate_v17_m0_gate(...)`, `evaluate_v17_q1_gate(...)`, and the V17 runner
+   receipt
+   - fail closed on the preregistered gradient, memory, fixed-batch,
+     paired-endpoint, identity-bootstrap, branch, access-count, and frozen-state
+     conditions;
+   - authorize the single final-only dev evaluation only after every M0 and Q1
+     condition passes.
+
+Tests observe these public outputs and receipts. Private layer layouts and
+private runner helpers are not test seams.
