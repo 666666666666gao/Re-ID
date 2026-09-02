@@ -1,5 +1,17 @@
 # Research Findings
 
+## 2026-09-02 — V13 actual-path target 通过，但部署 Router 的 OOF replay 门失败
+
+- V13 修复了 V12 的 target/action 失配：同一 sample key 同时保存 complete-path identity-OOF teacher 的 baseline/residual/actual-path counterfactual utility，以及 frozen all-fit Phase-A 的 deployment Router 输入；共享融合严格为 `[exact Signal, 0.2×||Signal||×L2(weighted residual bank)]`。
+- Q0 是 train-only proxy/diagnostic 资格结果：571 queries 上 CNN/Transformer/Mamba 独有正贡献=`218/196/157`，RGB/NI/TI=`241/109/221`；Oracle mean utility=`0.0020423`，best fixed=`0.0005742`，差=`+0.0014682`。read-only action transfer 每折不劣，aggregate gain=`+0.0008706`，所以 Q0 通过。
+- Q1 使用固定 deployment features、层级 `P(m|x)P(e|m,x)`、fixed alpha0.2、三折各100 epoch，共300 Router steps。Phase-A SHA 前后同为`ecfd7fbc...fb77`；峰值 reserved=`3400 MiB`；dev0、official0。
+- 每折硬门失败：fold0 的 learned/majority Top1=`10.0000%/12.1053%`；fold2 的 learned-vs-fixed expected utility gain=`-0.0003723`、replay AP gain=`-0.0039748`、margin gain=`-0.0023345`。
+- 聚合点估计虽略正，但21个身份簇、10,000次bootstrap的95%下界全部为负：utility=`-0.0004691`、Top1=`-0.0396049`、AP=`-0.0081192`、margin=`-0.0028545`。质量门独立通过：RGB/NI/TI受损后自身质量`0.3382/0.3315/0.3304→0.1110/0.1191/0.1152`，missing mass=0。
+- 终态：`next_phase_authorized=false`、`final_training=null`、`combined_checkpoint=null`。没有新的 dev 指标；当前可部署最好仍是 V8 Phase-B `58.4050 mAP / 59.3939 Rank-1`，距65 mAP为`6.5950`。
+- 独立 result-to-claim=`no/high`；完整性审计=`WARN/warn`，WARN仅为远端大缓存只以SHA登记及审计时tracker滞后，未发现假GT、自归一化、dev/official泄漏或隐藏refit。
+- V13封存：不refit、不访问dev/official、不做消融、多seed或temperature/LR/epoch/fold/门槛扫描。若继续，必须提出新的预注册 train-only policy-generalization 主假设，不能把Q0 proxy资格写成部署增益。
+- 证据：`evidence/trifusion_v13_deployment_aligned_{preflight,q0,router_q1}_seed42.json`；报告：`results/TRIFUSION_RGBNT201_V13_DEPLOYMENT_ALIGNED_ROUTER_2026-09-02.md`。
+
 ## 2026-09-02 — V12 完整路径 OOF 有互补，但 Router 泛化门失败
 
 - V12 修复 V11 的完整路径泄漏：三折内 Signal 和专家均只在94个fit身份训练，对47个held-out身份的交集为0；queries=`190/179/202=571`，Signal50/Expert20 final-only，dev0/official0。

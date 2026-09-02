@@ -2,9 +2,9 @@
 
 | Run ID | Status | Gate |
 |---|---|---|
-| V13-T0 | TODO | public seam RED→GREEN |
-| V13-P0/P1 | BLOCKED | T0后remote tests/preflight |
-| V13-Q0 | BLOCKED | P1 PASS后actual-path target |
-| V13-Q1 | BLOCKED | Q0全门PASS |
-| V13-D1 | BLOCKED | Q1全门PASS后一次dev |
-| V13-A1/A2 | BLOCKED | D1≥65且strict wins后 |
+| V13-T0 | PASS | public seam real RED→GREEN |
+| V13-P0/P1 | PASS | remote 19/19；真实8样本preflight |
+| V13-Q0 | PASS | actual-path target/transfer全门通过 |
+| V13-Q1 | TERMINAL_FAIL | fold0 Top1、fold2 utility/AP/margin、四项bootstrap LB失败 |
+| V13-D1 | NOT_AUTHORIZED | Q1失败；无refit、无dev |
+| V13-A1/A2 | NOT_AUTHORIZED | 主结果未成功 |

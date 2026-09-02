@@ -207,6 +207,25 @@
   Seal V12 without dev, official, ablations, multiple seeds, HFER or tuning
   scans. Current deployable dev best remains V8 Phase-B `58.4050 mAP /
   59.3939 Rank-1`.
+- V13-Q0 aligned the supervision with the deployed fixed-alpha fusion path and
+  paired every identity-OOF teacher row with the frozen all-fit Phase-A Router
+  input. Its train-only gate passed: expert unique positive wins are
+  CNN/Transformer/Mamba `218/196/157`, modality wins RGB/NI/TI
+  `241/109/221`, Oracle-minus-fixed utility is `+0.0014682`, and the one-shot
+  read-only action-transfer gain is `+0.0008706` with all folds non-inferior.
+- V13-Q1 is terminal and failed. Three Router folds used 300 optimizer steps;
+  Phase-A stayed byte-stable, all quality/missing-modality gates passed, and
+  dev/official access remained zero. Fold0 failed Top-1 non-inferiority; fold2
+  failed expected utility, replay AP and replay margin. The 95% identity-cluster
+  bootstrap lower bounds are negative for utility `-0.0004691`, Top-1
+  `-0.0396049`, AP `-0.0081192`, and margin `-0.0028545`.
+- V13 produced no final refit or combined checkpoint and is sealed as
+  `Q0_QUALIFIED_Q1_FAILED_DO_NOT_PROMOTE`. Independent result-to-claim is
+  `no/high`; integrity is `WARN/warn` only for remote-artifact packaging and
+  tracker staleness, not metric fraud or leakage. Do not run V13 dev, official,
+  ablations, multiple seeds, or fold/epoch/LR/temperature/threshold scans.
+  V8 Phase-B remains the current deployable best at `58.4050 mAP / 59.3939
+  Rank-1`; any successor needs a new preregistered train-only hypothesis.
 
 ## Remote experiment constraints
 

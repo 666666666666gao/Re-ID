@@ -1240,3 +1240,94 @@ results/TRIFUSION_RGBNT201_V12_COMPLETE_PATH_OOF_ROUTER_2026-09-02.md
 EXPERIMENT_AUDIT_V12.md
 EXPERIMENT_AUDIT_V12.json
 ```
+
+## 24. V13 deployment-aligned actual-path Router 终态（2026-09-02）
+
+V13 修复 V12 的监督/部署动作失配，但没有通过 Router 泛化门。它将每个
+complete-path identity-OOF teacher 样本的 exact Signal baseline、九槽 residual
+和 actual-path query-side counterfactual utility，与同一 sample key 的 frozen
+all-fit Phase-A deployment `direct_modal/modal_residual` 配对。Q0、Q1 replay 和
+未来 dev 均调用同一融合函数：
+
+```text
+F(x,w) = L2([z0, 0.2 * ||z0|| * L2(vec(w_e,m * residual_e,m))])
+```
+
+Router 不再包含 learned alpha，只输出层级
+`P(modality|x) * P(expert|modality,x)`；alpha 固定0.2。公共接缝完成真实
+RED→GREEN，远端 commit `46b3e993b732c3afee63af9a56c75a62b3dbae21`
+通过19/19 V13及相邻V8/V12测试。
+
+### 24.1 P1 与 Q0
+
+真实 fold0 八样本 preflight 通过，Phase-A state SHA 前后同为
+`ecfd7fbc...fb77`，耗时13.91s，峰值 reserved1440MiB，dev0/official0。
+
+Q0 在571个fit-only eligible query上得到：
+
+| Q0 quantity | Value |
+|---|---:|
+| CNN/Transformer/Mamba unique positive wins | 218 / 196 / 157 |
+| RGB/NI/TI unique positive wins | 241 / 109 / 221 |
+| Oracle mean utility | 0.0020423282 |
+| Best fixed mean utility | 0.0005741757 |
+| Oracle-minus-fixed | +0.0014681525 |
+| Read-only action-transfer aggregate gain | +0.0008705698 |
+
+action transfer 三折均不劣；target health、reference immutability、专家/模态
+diversity、Oracle gain、access boundary 全部通过。Q0 无训练、dev0、official0。
+paired target cache SHA 为
+`1cc499a1acb7b12336f19de0e74ad4ef452dae8b2aa8299e4a16e2d619e15e27`。
+
+### 24.2 Q1 失败
+
+Q1 使用完全冻结的 all-fit deployment features，三折各100 epoch，共300 Router
+optimizer steps。Phase-A state 未改变；耗时34.26s；峰值
+allocated/reserved=`2459.15/3400 MiB`；dev0、official0。
+
+| Fold | Utility gain | Top1 gain | Replay AP gain | Replay margin gain | Result |
+|---:|---:|---:|---:|---:|---|
+| 0 | +0.0000726 | -0.0210526 | +0.0041573 | +0.0005697 | Top1 FAIL |
+| 1 | +0.0004395 | +0.0111732 | +0.0011984 | +0.0056176 | PASS |
+| 2 | -0.0003723 | +0.0742574 | -0.0039748 | -0.0023345 | utility/AP/margin FAIL |
+
+聚合点估计均略正，但21个身份簇、10,000次 bootstrap 的95%下界全部为负：
+
+```text
+expected utility  -0.0004691
+Top1              -0.0396049
+replay AP         -0.0081192
+replay margin     -0.0028545
+```
+
+质量门独立通过：受损 RGB/NI/TI 的自身质量从
+`0.338163/0.331485/0.330352` 降到 `0.111049/0.119141/0.115227`；missing mass
+严格为0。但身份策略和 replay 硬门失败，所以
+`next_phase_authorized=false`、`final_training=null`、
+`combined_checkpoint=null`。
+
+### 24.3 Claim、审计与后续边界
+
+独立 result-to-claim=`no/high`。完整性审计=`WARN/warn`：Q0 proxy 与 Q1
+real-GT replay 分类正确，普通L2评价、实际执行路径、scope/leakage均PASS；WARN
+仅来自远端大cache/checkpoint以SHA而非本体进入轻量Git仓库，以及审计时tracker
+尚未更新。未发现假GT、自归一化、dev/official泄漏或隐藏final refit。
+
+V13 终态为 `Q0_QUALIFIED_Q1_FAILED_DO_NOT_PROMOTE`。不运行final refit、dev、
+official、消融、多seed，也不扫描fold/epoch/LR/temperature/门槛。当前可部署
+最好仍为V8 Phase-B `58.4050 mAP / 59.3939 Rank-1`，距65 mAP为6.5950。
+任何后继必须是新的预注册train-only policy-generalization主假设，并先通过
+identity-disjoint Q0/Q1式门禁。
+
+证据：
+
+```text
+evidence/trifusion_v13_deployment_aligned_preflight_seed42.json
+evidence/trifusion_v13_deployment_aligned_q0_seed42.json
+evidence/trifusion_v13_deployment_aligned_router_q1_seed42.json
+results/TRIFUSION_RGBNT201_V13_DEPLOYMENT_ALIGNED_ROUTER_2026-09-02.md
+EXPERIMENT_AUDIT_V13.md
+EXPERIMENT_AUDIT_V13.json
+RESULT_TO_CLAIM_V13.md
+RESULT_TO_CLAIM_V13.json
+```

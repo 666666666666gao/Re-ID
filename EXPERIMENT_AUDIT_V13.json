@@ -1,0 +1,49 @@
+{
+  "date": "2026-09-02",
+  "auditor": "gpt-5.5-xhigh",
+  "overall_verdict": "warn",
+  "integrity_status": "warn",
+  "terminal_scientific_status": "Q0_QUALIFIED_Q1_FAILED_DO_NOT_PROMOTE",
+  "checks": {
+    "gt_provenance": {
+      "status": "pass",
+      "details": "Q0 utilities are honestly labeled teacher proxies; Q1 replay AP and margin use real identity/camera labels."
+    },
+    "score_normalization": {
+      "status": "pass",
+      "details": "Standard L2 retrieval normalization and ReID ranking; no self-normalized metric inflation."
+    },
+    "result_existence": {
+      "status": "warn",
+      "details": "Numbers and source/config hashes are consistent; remote pth payloads are represented locally by hashes and the tracker was stale at audit time."
+    },
+    "dead_code": {
+      "status": "pass",
+      "details": "Failed Q1 correctly skipped final refit and checkpoint creation."
+    },
+    "scope": {
+      "status": "pass",
+      "details": "Seed42, 141-fit three-fold train-only policy validation, dev0 and official0; no representation-generalization claim."
+    },
+    "eval_type": {
+      "preflight": "engineering_preflight",
+      "q0": "teacher_proxy_and_diagnostic_oracle",
+      "q1_policy": "teacher_proxy_identity_oof",
+      "q1_replay": "real_gt_identity_oof_replay",
+      "quality": "synthetic_engineering_control"
+    }
+  },
+  "claims": [
+    {
+      "id": "C1",
+      "impact": "unsupported",
+      "details": "Q1 failed per-fold non-inferiority and every aggregate bootstrap lower-bound gate."
+    },
+    {
+      "id": "C2",
+      "impact": "unsupported",
+      "details": "No final refit, combined checkpoint, or frozen dev evaluation was authorized."
+    }
+  ]
+}
+
