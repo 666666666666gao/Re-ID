@@ -215,7 +215,7 @@ def _build_fold_model(
         raise RuntimeError("V15 did not load the V12 base experts exactly")
     model = build.model.cuda()
     return model, {
-        "build_provenance": build.provenance,
+        "build_provenance": dict(build.provenance),
         "signal_checkpoint": str(signal_path),
         "signal_checkpoint_sha256": fold_paths["SIGNAL_CHECKPOINT_SHA256"],
         "expert_checkpoint": str(expert_path),
