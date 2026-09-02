@@ -1,49 +1,46 @@
 {
-  "date": "2026-09-01",
-  "auditor": "gpt-5.5-xhigh-independent-read-only",
+  "date": "2026-09-02",
+  "auditor": "gpt-5.5-xhigh",
+  "project": "TriFusion RGBNT201 V16 SATR M0",
   "overall_verdict": "warn",
   "integrity_status": "warn",
+  "routing_verdict": "M0_FAIL_Q1_BLOCKED",
   "checks": {
     "gt_provenance": {
       "status": "pass",
-      "details": "RGBNT201 filename-derived identity/camera labels; train/test identity separation enforced."
+      "details": "Dataset identity and physical-camera labels; complete-path fit and heldout identities are disjoint."
     },
     "score_normalization": {
       "status": "pass",
-      "details": "Feature L2 normalization plus Euclidean distance; no model-statistic metric normalization."
+      "details": "No prediction-statistic normalization; raw M0 activity coverage only."
     },
     "result_existence": {
       "status": "warn",
-      "details": "Durable results and hashes pass; handoff was stale at audit time and is updated in this change."
+      "details": "Formal artifacts agree; proposal-time threshold coverage lacked sampler/tensor hash binding and did not reproduce."
     },
     "dead_code": {
       "status": "pass",
-      "details": "Official metric path is called; repair forbids official re-evaluation and optimizer steps."
+      "details": "SATR objective, paired endpoints, backward and fixed-initial activity paths executed."
     },
     "scope": {
-      "status": "warn",
-      "details": "One dataset, one seed, no reproduced baseline, no ablations; broad/SOTA claims unsupported."
+      "status": "pass",
+      "details": "One seed42 train-only M0; dev0, official0, no retrieval metric and no promoted checkpoint."
     },
-    "eval_type": "real_gt"
+    "eval_type": "self_supervised_proxy_train_only_engineering_probe"
   },
-  "official_test_access_count": 1,
-  "official_test_evaluation_count": 1,
   "claims": [
     {
-      "id": "single_seed_fixed_endpoint_metrics",
+      "id": "v16_engineering_feasibility",
       "impact": "supported"
     },
     {
-      "id": "sota_or_target_exceedance",
+      "id": "v16_mutual_promotion",
       "impact": "unsupported"
     },
     {
-      "id": "fusion_outperforms_branches",
+      "id": "v16_deployable_or_sota_gain",
       "impact": "unsupported"
-    },
-    {
-      "id": "general_router_calibration",
-      "impact": "needs_qualifier"
     }
-  ]
+  ],
+  "next_phase_authorized": false
 }

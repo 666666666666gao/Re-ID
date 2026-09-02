@@ -492,3 +492,36 @@
 | 2026-09-02 16:30 | /experiment-plan | refine-logs/EXPERIMENT_TRACKER.md | implementation | V16 M0失败终态latest tracker |
 | 2026-09-02 16:30 | /handoff | docs/TRIFUSION_RGBNT201_CURRENT_COMPLETE_HANDOFF_2026-09-01.md | documentation | 主交接追加V16 SATR M0终态、资源与封锁边界 |
 | 2026-09-02 16:30 | /handoff | AGENTS.md | documentation | 工作区规则追加V15/V16终态与禁止重放边界 |
+| 2026-09-02 17:11 | /research-refine | refine-logs/v17/round-0-initial-proposal.md | implementation | V17 DTRED问题锚、关系包络蒸馏与no-reranking初始方案 |
+| 2026-09-02 17:11 | /research-refine | refine-logs/REFINE_STATE_20260902_171121.json | implementation | V17 proposal阶段永久状态快照 |
+| 2026-09-02 17:11 | /research-refine | refine-logs/REFINE_STATE.json | implementation | V17 proposal阶段latest状态 |
+| 2026-09-02 17:19 | /research-refine | refine-logs/v17/round-1-review.md | review | V17 GPT-5.5 xhigh首轮7.4/REVISE原始审查 |
+| 2026-09-02 17:19 | /research-refine | refine-logs/v17/score-history.md | implementation | V17首轮评分演进 |
+| 2026-09-02 17:19 | /research-refine | refine-logs/REFINE_STATE_20260902_171907.json | implementation | V17 round1 review永久状态快照 |
+| 2026-09-02 17:19 | /research-refine | refine-logs/REFINE_STATE.json | implementation | V17 round1 review latest状态 |
+| 2026-09-02 17:22 | /research-refine | refine-logs/v17/round-1-refinement.md | implementation | V17 one-sided正负平衡envelope完整修订案 |
+| 2026-09-02 17:22 | /research-refine | refine-logs/REFINE_STATE_20260902_172200.json | implementation | V17 round1 refinement永久状态快照 |
+| 2026-09-02 17:22 | /research-refine | refine-logs/REFINE_STATE.json | implementation | V17 round1 refinement latest状态 |
+| 2026-09-02 17:25 | /research-refine | refine-logs/v17/round-2-review.md | review | V17 GPT-5.5 xhigh二轮8.3/REVISE原始审查 |
+| 2026-09-02 17:25 | /research-refine | refine-logs/v17/score-history.md | implementation | V17二轮评分演进 |
+| 2026-09-02 17:25 | /research-refine | refine-logs/REFINE_STATE_20260902_172507.json | implementation | V17 round2 review永久状态快照 |
+| 2026-09-02 17:25 | /research-refine | refine-logs/REFINE_STATE.json | implementation | V17 round2 review latest状态 |
+| 2026-09-02 17:29 | /research-refine | refine-logs/v17/round-2-refinement.md | implementation | V17冻结loss scalar、teacher来源回执与Oracle边界完整修订案 |
+| 2026-09-02 17:29 | /research-refine | refine-logs/REFINE_STATE_20260902_172900.json | implementation | V17 round2 refinement永久状态快照 |
+| 2026-09-02 17:29 | /research-refine | refine-logs/REFINE_STATE.json | implementation | V17 round2 refinement latest状态 |
+| 2026-09-02 17:42 | /research-refine | refine-logs/v17/round-3-review.md | review | V17 GPT-5.5 xhigh终审9.03/READY原始审查 |
+| 2026-09-02 17:42 | /research-refine | refine-logs/v17/score-history.md | implementation | V17三轮评分终态 |
+| 2026-09-02 17:42 | /research-refine | refine-logs/REFINE_STATE_20260902_174258.json | implementation | V17完成态永久状态快照 |
+| 2026-09-02 17:42 | /research-refine | refine-logs/REFINE_STATE.json | implementation | V17 9.03/READY完成态 |
+| 2026-09-02 17:42 | /research-refine | refine-logs/FINAL_PROPOSAL_20260902_174258.md | implementation | V17 DTRED 9.03/READY最终方法方案永久版 |
+| 2026-09-02 17:42 | /research-refine | refine-logs/FINAL_PROPOSAL.md | implementation | V17 DTRED最终方法方案latest |
+| 2026-09-02 17:42 | /research-refine | refine-logs/REVIEW_SUMMARY_20260902_174258.md | implementation | V17三轮审查摘要永久版 |
+| 2026-09-02 17:42 | /research-refine | refine-logs/REVIEW_SUMMARY.md | implementation | V17审查摘要latest |
+| 2026-09-02 17:42 | /research-refine | refine-logs/REFINEMENT_REPORT_20260902_174258.md | implementation | V17方法演进与风险永久版 |
+| 2026-09-02 17:42 | /research-refine | refine-logs/REFINEMENT_REPORT.md | implementation | V17 refinement报告latest |
+| 2026-09-02 17:42 | /research-refine | refine-logs/score-history_20260902_174258.md | implementation | V17评分历史永久版 |
+| 2026-09-02 17:42 | /research-refine | refine-logs/score-history.md | implementation | V17评分历史latest |
+| 2026-09-02 17:47 | /experiment-plan | refine-logs/EXPERIMENT_PLAN_20260902_174747.md | implementation | V17 T0→M0→Q1→条件D1冻结执行计划 |
+| 2026-09-02 17:47 | /experiment-plan | refine-logs/EXPERIMENT_PLAN.md | implementation | V17冻结执行计划latest |
+| 2026-09-02 17:47 | /experiment-plan | refine-logs/EXPERIMENT_TRACKER_20260902_174747.md | implementation | V17执行tracker永久版 |
+| 2026-09-02 17:47 | /experiment-plan | refine-logs/EXPERIMENT_TRACKER.md | implementation | V17执行tracker latest |

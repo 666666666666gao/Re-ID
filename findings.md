@@ -259,3 +259,7 @@
 - V16封存于M0：Q1/D1/dev/official均未运行，无新retrieval指标。当前可部署
   最好仍为V8 Phase-B `58.4050/59.3939`，距65 mAP为6.5950。
 - 完整报告：`results/TRIFUSION_RGBNT201_V16_SATR_M0_2026-09-02.md`。
+- 独立完整性审计为`WARN/warn`，警告仅指proposal-time threshold probe未绑定
+  sampler/增强后tensor SHA；正式M0失败回执本身有效，无指标造假、泄漏或dead
+  loss path。独立result-to-claim=`no/high`：只支持工程可训练性，不支持三方互教、
+  Q1资格、部署增益或SOTA。路由为`M0_FAIL_Q1_BLOCKED`，V16保持封存。

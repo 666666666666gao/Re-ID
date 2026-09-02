@@ -244,7 +244,10 @@
   fixed-initial coverage was zero for Transformer in all three folds, so M0
   failed and Q1/D1/dev/official were not run. Do not relax the registered
   thresholds or replay V16 under another worker/RNG draw. The current
-  deployable best remains V8 Phase-B `58.4050/59.3939`.
+  deployable best remains V8 Phase-B `58.4050/59.3939`. Independent audit is
+  `WARN/warn` for the unbound proposal-time threshold receipt only; formal M0
+  is a valid negative result. Result-to-claim is `no/high`, routing
+  `M0_FAIL_Q1_BLOCKED`.
 
 ## Remote experiment constraints
 

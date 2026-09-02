@@ -46,4 +46,3 @@ V8 query-level branch Oracle为64.785 mAP，DTRED必须学到per-pair synthesis�
 ## Next Step
 
 进入 `/experiment-plan`，随后TDD实现M0和identity-OOF Q1；Q1全门通过才运行D1。
-
