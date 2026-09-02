@@ -47,7 +47,15 @@ def cross_camera_retrieval_risk_v15(
     negatives = ~same_identity
     valid = positives.any(dim=1) & negatives.any(dim=1)
     if not bool(valid.any()):
-        raise ValueError("V15 retrieval risk requires at least one valid query")
+        zero = embedding.sum() * 0.0
+        empty = distances.new_empty((0,))
+        return CrossCameraRetrievalRiskV15(
+            risk=zero,
+            per_query_loss=empty,
+            hardest_positive_distance=empty,
+            nearest_negative_distance=empty,
+            valid_query_mask=valid,
+        )
     hardest_positive = distances.masked_fill(~positives, -torch.inf).max(dim=1).values[
         valid
     ]
@@ -85,21 +93,29 @@ def matched_retrieval_regret_v15(
 
     if tuple(on_embeddings) != V15_OUTPUT_ORDER or tuple(off_embeddings) != V15_OUTPUT_ORDER:
         raise ValueError(f"V15 retrieval outputs must follow {V15_OUTPUT_ORDER}")
-    on_risks = {
+    on_outputs = {
         output: cross_camera_retrieval_risk_v15(
             on_embeddings[output], identities, cameras
-        ).risk
+        )
         for output in V15_OUTPUT_ORDER
     }
-    off_risks = {
+    off_outputs = {
         output: cross_camera_retrieval_risk_v15(
             off_embeddings[output].detach(), identities, cameras
-        ).risk.detach()
+        )
         for output in V15_OUTPUT_ORDER
+    }
+    on_risks = {output: value.risk for output, value in on_outputs.items()}
+    off_risks = {
+        output: value.risk.detach() for output, value in off_outputs.items()
     }
     total = V15_REGRET_WEIGHT * torch.stack(
         [
-            F.softplus(on_risks[output] - off_risks[output])
+            (
+                F.softplus(on_risks[output] - off_risks[output])
+                if bool(on_outputs[output].valid_query_mask.any())
+                else on_risks[output]
+            )
             for output in V15_OUTPUT_ORDER
         ]
     ).mean()
