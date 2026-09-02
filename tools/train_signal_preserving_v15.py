@@ -717,6 +717,10 @@ def _run_q1(
     import numpy as np
     import torch
 
+    project_modeling = str(Path(__file__).resolve().parents[1] / "modeling")
+    if project_modeling not in sys.path:
+        sys.path.append(project_modeling)
+
     from tools.build_v12_complete_path_oof_targets import (
         _configure_signal,
         _eval_loader,
