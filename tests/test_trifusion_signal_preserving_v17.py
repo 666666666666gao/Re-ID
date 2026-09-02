@@ -72,6 +72,8 @@ def test_v17_relation_envelope_is_one_sided_balanced_and_teacher_detached() -> N
     assert objective.total.item() == pytest.approx(0.25)
     assert sum(objective.positive_source_counts.values()) == 4
     assert sum(objective.negative_source_counts.values()) == 8
+    assert objective.positive_tie_count == 4
+    assert objective.negative_tie_count == 8
 
     objective.total.backward()
 

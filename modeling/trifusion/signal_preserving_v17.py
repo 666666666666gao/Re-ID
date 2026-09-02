@@ -292,6 +292,8 @@ class RelationEnvelopeObjectiveV17:
     branch_negative: Mapping[str, torch.Tensor]
     positive_source_counts: Mapping[str, int]
     negative_source_counts: Mapping[str, int]
+    positive_tie_count: int
+    negative_tie_count: int
 
     def __post_init__(self) -> None:
         for name in (
@@ -389,6 +391,16 @@ def relation_envelope_objective_v17(
         expert: int(((negative_source == index) & negative_mask).sum().item())
         for index, expert in enumerate(EXPERT_ORDER)
     }
+    positive_tie_count = int(
+        (
+            (teacher_similarities == positive_target.unsqueeze(0)).sum(dim=0) > 1
+        )[positive_mask].sum().item()
+    )
+    negative_tie_count = int(
+        (
+            (teacher_similarities == negative_target.unsqueeze(0)).sum(dim=0) > 1
+        )[negative_mask].sum().item()
+    )
     return RelationEnvelopeObjectiveV17(
         total=total,
         fused_positive=fused_positive,
@@ -397,6 +409,8 @@ def relation_envelope_objective_v17(
         branch_negative=branch_negative,
         positive_source_counts=positive_source_counts,
         negative_source_counts=negative_source_counts,
+        positive_tie_count=positive_tie_count,
+        negative_tie_count=negative_tie_count,
     )
 
 
@@ -539,6 +553,18 @@ class DenseTriadicV17Criterion(nn.Module):
         for expert in EXPERT_ORDER:
             losses[f"envelope_positive_{expert}"] = envelope.branch_positive[expert]
             losses[f"envelope_negative_{expert}"] = envelope.branch_negative[expert]
+            losses[f"teacher_positive_source_{expert}"] = envelope.total.new_tensor(
+                envelope.positive_source_counts[expert]
+            )
+            losses[f"teacher_negative_source_{expert}"] = envelope.total.new_tensor(
+                envelope.negative_source_counts[expert]
+            )
+        losses["teacher_positive_ties"] = envelope.total.new_tensor(
+            envelope.positive_tie_count
+        )
+        losses["teacher_negative_ties"] = envelope.total.new_tensor(
+            envelope.negative_tie_count
+        )
         losses["signal_protection"] = protection
         losses["total"] = (
             supervised_total

@@ -63,3 +63,42 @@ def test_triplet_dataset_calls_one_triplet_transform(monkeypatch) -> None:
     assert len(calls) == 1
     assert [float(image.item()) for image in images] == [0.0, 1.0, 2.0]
     assert (identity, camera, view, filename) == (3, 2, -1, "rgb")
+
+
+def test_cross_camera_sampler_keeps_b64k8_semantics_and_pairs_every_batch() -> None:
+    from modeling.trifusion.aligned_data import CrossCameraIdentitySampler
+
+    records = []
+    for identity in range(8):
+        for sample in range(4):
+            camera = sample % 2 if identity < 2 else 0
+            records.append(([f"{identity}_{sample}"] * 3, identity, camera, -1))
+
+    first = list(
+        CrossCameraIdentitySampler(
+            records,
+            batch_size=8,
+            num_instances=2,
+            seed=42,
+        )
+    )
+    second = list(
+        CrossCameraIdentitySampler(
+            records,
+            batch_size=8,
+            num_instances=2,
+            seed=42,
+        )
+    )
+
+    assert first == second
+    assert len(first) == 32
+    for offset in range(0, len(first), 8):
+        batch = [records[index] for index in first[offset : offset + 8]]
+        identities = torch.tensor([record[1] for record in batch])
+        cameras = torch.tensor([record[2] for record in batch])
+        assert identities.unique().numel() == 4
+        assert all(int((identities == identity).sum()) == 2 for identity in identities.unique())
+        same_identity = identities[:, None] == identities[None, :]
+        different_camera = cameras[:, None] != cameras[None, :]
+        assert bool((same_identity & different_camera).any())
