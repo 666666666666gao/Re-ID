@@ -1432,3 +1432,28 @@ EXPERIMENT_AUDIT_V15_M0.md
 EXPERIMENT_AUDIT_V15_Q1.md
 RESULT_TO_CLAIM_V15.md
 ```
+
+### 26.1 V15 只读交换后验
+
+三折 final checkpoint 在原 identity-OOF heldout train records 上做一次 matched
+on/off 重放；optimizer0、training=false、dev0、official0，三fold frozen SHA
+不变。12个 stage×有向边中10个跨fold符号一致度仅1/3。虽然edge scale绝对值
+只有约0.0002–0.0164，Transformer实际收到的incoming/own-delta能量比达到
+0.291–0.428，CNN为0.024–0.251，Mamba为0.132–0.202；注入与自身角色增量
+余弦绝大多数接近0。
+
+571 query 汇总改善/伤害/不变：fused=`87/141/343`，CNN=`113/136/322`，
+Transformer=`107/143/321`，Mamba=`153/89/329`。fold1 fused只有5个改善、
+30个伤害且表示位移最大。该证据说明V15并非单纯scale太小：静态向量注入的
+方向跨身份不稳定，增加能量反而可能放大伤害。
+
+后继不得调V15 scale/edge/regret/epoch/checkpoint。新的预注册假设应把协作从
+推理期隐藏向量注入转为训练期选择性检索关系互教，只让两个peer一致且优于
+exact Signal anchor的关系修正落后expert，并在推理保留三支私有表示。
+
+证据：
+
+```text
+evidence/trifusion_v15_crde_postmortem_seed42_27f9a6a.json
+results/TRIFUSION_RGBNT201_V15_CRDE_POSTMORTEM_2026-09-02.md
+```

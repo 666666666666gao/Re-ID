@@ -224,3 +224,19 @@
 - 独立 result-to-claim=`no/high`：只支持 CRDE 可训练、协议干净以及 Mamba
   局部受益，不支持稳定三分支协同。V15封存，后继必须是新的预注册表示假设。
 - 完整报告：`results/TRIFUSION_RGBNT201_V15_CRDE_Q1_2026-09-02.md`。
+
+## 2026-09-02 — V15 CRDE 只读交换后验
+
+- 三个Q1 final checkpoint只读重放，optimizer0、training=false、dev0、
+  official0、三fold frozen SHA不变；commit `27f9a6a5...b4e9b`，runtime diff空。
+- 12个stage×有向边中10个跨fold符号一致度仅1/3。静态方向明显依赖训练身份；
+  不能用统一调大/调小scale修复。
+- 小scale不等于弱作用：Transformer两stage实际incoming/own-delta能量比为
+  `0.291–0.428`，却有负aggregate gain；CNN为`0.024–0.251`，Mamba为
+  `0.132–0.202`。incoming与own-delta余弦绝大多数接近0。
+- 571 query中，fused改善/伤害/不变=`87/141/343`，CNN=`113/136/322`，
+  Transformer=`107/143/321`，Mamba=`153/89/329`。fold1 fused只有5改善、
+  30伤害且位移最大；位移/AP gain相关跨fold不稳定。
+- 后继边界：不调V15。新假设应把协作移到训练期的选择性检索关系互教，
+  仅传递两peer一致且优于exact Signal anchor的关系，推理保留三专家私有表示。
+  该方向必须先重新预注册，不直接训练。

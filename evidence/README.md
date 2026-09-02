@@ -328,3 +328,12 @@ bootstrap lower bound is `-0.9503`. CNN/Transformer aggregate gains are also
 negative; only Mamba is positive at `+0.2898`. The scientific gate and next-
 phase authorization are false. Runner `status=PASS` denotes execution
 completion only. D1 was not executed and V15 is sealed.
+
+The V15 read-only postmortem replays the three final Q1 checkpoints on their
+registered identity-OOF train records with optimizer0/training false/dev0/
+official0. Ten of twelve stage-edge directions reverse sign across folds.
+Transformer receives 29–43% incoming-to-own-delta energy but regresses on
+aggregate; incoming/own cosines stay near zero. Across 571 queries, fused has
+87 improvements versus 141 harms, while Mamba has 153 versus 89. These facts
+reject a V15 scale-only repair and motivate a new training-time relational
+collaboration hypothesis; they are not an ablation or deployable result.
