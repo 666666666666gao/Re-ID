@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+import torch
+
 
 def test_v13_q1_gate_requires_fold_replay_bootstrap_and_quality_evidence() -> None:
     from tools.train_v13_deployment_aligned_router import evaluate_v13_q1_gate
@@ -51,3 +53,27 @@ def test_v13_q1_gate_requires_fold_replay_bootstrap_and_quality_evidence() -> No
     assert passing["aggregate_bootstrap_passed"] is True
     assert failed_replay["passed"] is False
     assert failed_replay["per_fold_noninferiority_passed"] is False
+
+
+def test_v13_target_diagnostic_reports_scale_stability_and_observability() -> None:
+    from tools.diagnose_v13_target_learnability import (
+        analyze_v13_target_learnability,
+    )
+
+    utility = torch.arange(36, dtype=torch.float32).reshape(4, 3, 3) / 100.0
+    cache = {
+        "teacher_identity_utility": utility,
+        "identities": torch.tensor([0, 0, 1, 1]),
+        "fold_indices": torch.tensor([0, 1, 2, 0]),
+        "student_direct_modal": torch.randn(4, 3, 2),
+        "student_modal_residual": torch.randn(4, 3, 3, 2),
+    }
+
+    result = analyze_v13_target_learnability(cache, temperature=0.05)
+
+    assert result["query_count"] == 4
+    assert result["identity_count"] == 2
+    assert len(result["cross_fold_slot_semantics"]["fixed_slots"]) == 3
+    assert 0.0 <= result["distillation_target"]["normalized_entropy_mean"] <= 1.0
+    assert result["training_executed"] is False
+    assert result["dev_access_count"] == 0
