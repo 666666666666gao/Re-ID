@@ -126,6 +126,33 @@ def matched_retrieval_regret_v15(
     )
 
 
+def matched_retrieval_regret_floor_v15(
+    off_embeddings: Mapping[str, torch.Tensor],
+    identities: torch.Tensor,
+    cameras: torch.Tensor,
+) -> torch.Tensor:
+    """Return the fixed-comparator lower bound of the V15 regret term."""
+
+    if tuple(off_embeddings) != V15_OUTPUT_ORDER:
+        raise ValueError(f"V15 retrieval outputs must follow {V15_OUTPUT_ORDER}")
+    off_outputs = {
+        output: cross_camera_retrieval_risk_v15(
+            off_embeddings[output].detach(), identities, cameras
+        )
+        for output in V15_OUTPUT_ORDER
+    }
+    return V15_REGRET_WEIGHT * torch.stack(
+        [
+            (
+                F.softplus(-off_outputs[output].risk.detach())
+                if bool(off_outputs[output].valid_query_mask.any())
+                else off_outputs[output].risk.detach()
+            )
+            for output in V15_OUTPUT_ORDER
+        ]
+    ).mean()
+
+
 @dataclass(frozen=True, eq=False)
 class RoleDeltaExchangeOutput:
     states: Mapping[str, torch.Tensor]
@@ -881,5 +908,6 @@ __all__ = [
     "V15_OUTPUT_ORDER",
     "V15_REGRET_WEIGHT",
     "cross_camera_retrieval_risk_v15",
+    "matched_retrieval_regret_floor_v15",
     "matched_retrieval_regret_v15",
 ]

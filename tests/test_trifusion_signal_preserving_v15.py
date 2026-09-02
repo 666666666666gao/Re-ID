@@ -184,6 +184,7 @@ def test_v15_retrieval_risk_masks_only_queries_without_cross_camera_positive() -
 
 def test_v15_matched_regret_is_zero_when_batch_has_no_valid_query() -> None:
     from modeling.trifusion.signal_preserving_v15 import (
+        matched_retrieval_regret_floor_v15,
         matched_retrieval_regret_v15,
     )
 
@@ -199,12 +200,33 @@ def test_v15_matched_regret_is_zero_when_batch_has_no_valid_query() -> None:
     cameras = torch.zeros(4, dtype=torch.long)
 
     result = matched_retrieval_regret_v15(on, off, identities, cameras)
+    floor = matched_retrieval_regret_floor_v15(off, identities, cameras)
     result.total.backward()
 
     assert torch.equal(result.total, torch.tensor(0.0))
+    assert torch.equal(floor, torch.tensor(0.0))
     assert all(value.grad is not None for value in on.values())
     assert all(torch.count_nonzero(value.grad) == 0 for value in on.values())
     assert all(value.grad is None for value in off.values())
+
+
+def test_v15_regret_floor_includes_fixed_off_risk() -> None:
+    from modeling.trifusion.signal_preserving_v15 import (
+        matched_retrieval_regret_floor_v15,
+    )
+
+    worked = torch.tensor(
+        [[1.0, 0.0], [0.0, 1.0], [-1.0, 0.0], [0.0, -1.0]]
+    )
+    off = {
+        output: worked.clone() for output in ("fused", *EXPERT_ORDER)
+    }
+    identities = torch.tensor([0, 0, 1, 1])
+    cameras = torch.tensor([0, 1, 0, 1])
+
+    floor = matched_retrieval_regret_floor_v15(off, identities, cameras)
+
+    assert torch.allclose(floor, torch.tensor(math.log(1.5)), atol=1e-6)
 
 
 def test_v15_encoder_zero_exchange_matches_v8_with_only_two_tail_exchanges() -> None:

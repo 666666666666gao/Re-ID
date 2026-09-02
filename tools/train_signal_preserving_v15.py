@@ -64,6 +64,42 @@ def evaluate_v15_q1_gate(
     }
 
 
+def evaluate_v15_m0_gate(
+    *,
+    step0_passed: bool,
+    capacity_overflow_events: int,
+    capacity_frozen_state_unchanged: bool,
+    live_exchange_stages: tuple[int, ...],
+    overfit_overflow_events: int,
+    overfit_frozen_state_unchanged: bool,
+    overfit_all_trainable_tensors_reached: bool,
+    overfit_excess_loss_ratio: float,
+    overfit_max_loss_ratio: float,
+) -> dict[str, bool]:
+    """Apply the preregistered train-only V15 M0 gate."""
+
+    capacity_two_exchange_live = tuple(live_exchange_stages) == (0, 1)
+    capacity_passed = (
+        capacity_overflow_events == 0
+        and capacity_frozen_state_unchanged
+        and capacity_two_exchange_live
+    )
+    overfit_passed = (
+        overfit_overflow_events == 0
+        and overfit_frozen_state_unchanged
+        and overfit_all_trainable_tensors_reached
+        and overfit_excess_loss_ratio <= overfit_max_loss_ratio
+    )
+    passed = step0_passed and capacity_passed and overfit_passed
+    return {
+        "passed": passed,
+        "step0_passed": step0_passed,
+        "capacity_passed": capacity_passed,
+        "capacity_two_exchange_live_passed": capacity_two_exchange_live,
+        "overfit_passed": overfit_passed,
+    }
+
+
 def _sha256(path: Path) -> str:
     digest = hashlib.sha256()
     with path.open("rb") as handle:
@@ -356,12 +392,36 @@ def _run_fixed_steps(
     steps: int,
     fixed_batch: bool,
 ) -> dict[str, Any]:
+    import torch
+
+    from tools.run_signal_preserving_v5 import _training_batch
+    from trifusion.signal_preserving_v15 import (
+        matched_retrieval_regret_floor_v15,
+    )
+
     loader = _training_loader(records, config)
     criterion = _criterion(config)
     optimizer, scaler = _new_optimizer(model, config)
     frozen_before = _frozen_state_sha256(model)
     iterator = iter(loader)
     raw_fixed = next(iterator) if fixed_batch else None
+    matched_regret_floor = None
+    if raw_fixed is not None:
+        batch, labels = _training_batch(raw_fixed)
+        model.eval()
+        with torch.no_grad():
+            paired = model.forward_paired(batch, with_on_heads=False)
+        off_embeddings = {
+            "fused": paired.exchange_off.fused_embedding,
+            **dict(paired.exchange_off.branch_embeddings),
+        }
+        matched_regret_floor = float(
+            matched_retrieval_regret_floor_v15(
+                off_embeddings,
+                labels,
+                batch["camera_ids"],
+            )
+        )
     losses = []
     overflow_events = 0
     gradient_names: set[str] = set()
@@ -390,6 +450,14 @@ def _run_fixed_steps(
     trainable_names = {
         name for name, parameter in model.named_parameters() if parameter.requires_grad
     }
+    live_exchange_stages = tuple(
+        stage
+        for stage in range(2)
+        if any(
+            name.startswith(f"encoder.exchange_stages.{stage}.")
+            for name in gradient_names
+        )
+    )
     return {
         "steps": steps,
         "losses": losses,
@@ -397,6 +465,8 @@ def _run_fixed_steps(
         "trainable_tensors": len(trainable_names),
         "nonzero_gradient_tensors": len(gradient_names),
         "missing_nonzero_gradient_tensors": sorted(trainable_names - gradient_names),
+        "live_exchange_stages": list(live_exchange_stages),
+        "matched_regret_floor": matched_regret_floor,
         "frozen_state_sha256_before": frozen_before,
         "frozen_state_sha256_after": frozen_after,
         "frozen_state_unchanged": frozen_before == frozen_after,
@@ -586,22 +656,14 @@ def _run_m0(contract: dict[str, Any], output_dir: Path) -> dict[str, Any]:
         + 3.0 * float(config["LOSS"]["ID_RESIDUAL"])
     )
     conservative_floor = identity_weight * ce_floor
-    initial_excess = overfit["losses"][0] - conservative_floor
-    final_excess = overfit["losses"][-1] - conservative_floor
+    matched_regret_floor = float(overfit["matched_regret_floor"])
+    combined_floor = conservative_floor + matched_regret_floor
+    initial_excess = overfit["losses"][0] - combined_floor
+    final_excess = overfit["losses"][-1] - combined_floor
     overfit["analytic_label_smoothing_floor"] = conservative_floor
+    overfit["analytic_matched_regret_floor"] = matched_regret_floor
+    overfit["analytic_combined_floor"] = combined_floor
     overfit["excess_loss_ratio"] = final_excess / initial_excess
-    overfit["passed"] = (
-        overfit["excess_loss_ratio"]
-        <= float(config["GATES"]["OVERFIT_MAX_LOSS_RATIO"])
-        and overfit["overflow_events"] == 0
-        and overfit["frozen_state_unchanged"]
-        and not overfit["missing_nonzero_gradient_tensors"]
-    )
-    capacity["passed"] = (
-        capacity["overflow_events"] == 0
-        and capacity["frozen_state_unchanged"]
-        and not capacity["missing_nonzero_gradient_tensors"]
-    )
     step0_passed = all(
         (
             step0["same_field_tensor_pointers"],
@@ -613,7 +675,22 @@ def _run_m0(contract: dict[str, Any], output_dir: Path) -> dict[str, Any]:
             step0["edge_scales_zero"],
         )
     )
-    passed = step0_passed and capacity["passed"] and overfit["passed"]
+    m0_gate = evaluate_v15_m0_gate(
+        step0_passed=step0_passed,
+        capacity_overflow_events=capacity["overflow_events"],
+        capacity_frozen_state_unchanged=capacity["frozen_state_unchanged"],
+        live_exchange_stages=tuple(capacity["live_exchange_stages"]),
+        overfit_overflow_events=overfit["overflow_events"],
+        overfit_frozen_state_unchanged=overfit["frozen_state_unchanged"],
+        overfit_all_trainable_tensors_reached=(
+            not overfit["missing_nonzero_gradient_tensors"]
+        ),
+        overfit_excess_loss_ratio=overfit["excess_loss_ratio"],
+        overfit_max_loss_ratio=float(config["GATES"]["OVERFIT_MAX_LOSS_RATIO"]),
+    )
+    capacity["passed"] = m0_gate["capacity_passed"]
+    overfit["passed"] = m0_gate["overfit_passed"]
+    passed = m0_gate["passed"]
     return {
         "schema_version": "trifusion-v15-m0-result-v1",
         "status": "PASS" if passed else "FAIL",
@@ -622,6 +699,7 @@ def _run_m0(contract: dict[str, Any], output_dir: Path) -> dict[str, Any]:
         "step0": step0,
         "capacity": capacity,
         "overfit": overfit,
+        "m0_gate": m0_gate,
         "binding": binding,
         "regret_weight": float(config["LOSS"]["REGRET_WEIGHT"]),
         "source_commit": source_commit,
@@ -905,4 +983,4 @@ if __name__ == "__main__":
     run(parse_args())
 
 
-__all__ = ["evaluate_v15_q1_gate", "run"]
+__all__ = ["evaluate_v15_m0_gate", "evaluate_v15_q1_gate", "run"]

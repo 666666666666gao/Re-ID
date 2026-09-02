@@ -53,3 +53,22 @@ def test_v15_q1_gate_requires_fold_stability_and_aggregate_collaboration() -> No
     assert passing["passed"] is True
     assert one_receiver_only["passed"] is False
     assert one_receiver_only["per_fold_two_receivers_passed"] is False
+
+
+def test_v15_m0_gate_requires_two_live_exchanges_not_every_tensor_nonzero() -> None:
+    from tools.train_signal_preserving_v15 import evaluate_v15_m0_gate
+
+    gate = evaluate_v15_m0_gate(
+        step0_passed=True,
+        capacity_overflow_events=0,
+        capacity_frozen_state_unchanged=True,
+        live_exchange_stages=(0, 1),
+        overfit_overflow_events=0,
+        overfit_frozen_state_unchanged=True,
+        overfit_all_trainable_tensors_reached=True,
+        overfit_excess_loss_ratio=0.051,
+        overfit_max_loss_ratio=0.1,
+    )
+
+    assert gate["passed"] is True
+    assert gate["capacity_two_exchange_live_passed"] is True
