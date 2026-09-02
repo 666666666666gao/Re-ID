@@ -93,6 +93,13 @@ by V13. The public behavior added by V13 is intentionally small:
      Phase-A deployment inputs by ordered sample key;
    - records all checkpoint, feature, ordering and access-count hashes;
    - fails closed before Q1 when target health or action transfer fails.
+5. `evaluate_v13_q1_gate(...)` and
+   `tools/train_v13_deployment_aligned_router.py`
+   - train the fixed-alpha hierarchical Router on paired deployment inputs;
+   - replay held-out decisions on identity-OOF teacher features;
+   - require per-fold non-inferiority plus positive identity-cluster bootstrap
+     lower bounds for expected utility, Top-1, AP and retrieval margin;
+   - produce a combined checkpoint only after every Q1 gate passes.
 
 Tests observe only these return values and CLI receipts. They do not inspect
 private Router layers or mock project-owned model collaborators.

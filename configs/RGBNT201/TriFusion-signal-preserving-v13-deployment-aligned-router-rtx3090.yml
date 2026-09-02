@@ -1,0 +1,59 @@
+SCHEMA_VERSION: 1
+EXPERIMENT:
+  NAME: trifusion_rgbnt201_v13_deployment_aligned_router
+  SEED: 42
+  RESOURCE_PROFILE: rtx3090_router_only
+DATA:
+  DATASET_ROOT: /root/autodl-tmp/trifusion-v2/data/RGBNT201
+  DEV_PROTOCOL: protocols/rgbnt201_dev_v1.json
+  TRAIN_BATCH_SIZE: 64
+  NUM_INSTANCES: 8
+  EVAL_BATCH_SIZE: 128
+  NUM_WORKERS: 4
+SIGNAL:
+  SOURCE: /root/autodl-tmp/trifusion-v2/comparators/Signal-cd1b0a6
+  CONFIG: /root/autodl-tmp/trifusion-v2/comparators/Signal-cd1b0a6/configs/RGBNT201/Signal.yml
+  CHECKPOINT: /root/autodl-tmp/trifusion-v2/artifacts/signal_baseline_dev_seed42_f7d4b30/Signalbest.pth
+  CHECKPOINT_SHA256: 1f5c200cd43fcbc00b8a0494329519eed3e6f062d9a29d43a0ecdd97ff4966c3
+  CLIP_WEIGHT: /root/autodl-tmp/trifusion-v2/pretrained/ViT-B-16.pt
+  BASELINE_WIDTH: 3072
+  CAMERA_SIE: true
+MODEL:
+  ARCHITECTURE: signal_preserving_collaborative_v8_expert_formation
+  FEATURE_WIDTH: 512
+  SEMANTIC_WIDTH: 768
+  GRID_SIZE: [16, 8]
+  BRANCH_AFTER_BLOCK: 8
+  ADAPTER_WIDTH: 128
+  EXPERT_MODAL_WIDTH: 512
+  SCALE_INIT: 0.05
+  GRADIENT_CHECKPOINTING: true
+  RETRIEVAL_OUTPUTS: [baseline_only, fused, cnn, transformer, mamba]
+INITIALIZATION:
+  PHASE_A_CHECKPOINT: /root/autodl-tmp/trifusion-v2/artifacts/trifusion_v8_expert_formation_probe_seed42_abbf33d/final_model.pth
+  PHASE_A_CHECKPOINT_SHA256: d37ca17fad8a2786355d575b009f453e170238f3057c5db8f68789bb32b1b40f
+  PAIRED_TARGET_CACHE: /root/autodl-tmp/trifusion-v2/artifacts/trifusion_v13_deployment_aligned_q0_seed42_a387d0a/paired_target_cache.pth
+  PAIRED_TARGET_CACHE_SHA256: 1cc499a1acb7b12336f19de0e74ad4ef452dae8b2aa8299e4a16e2d619e15e27
+OPTIMIZATION:
+  AMP: true
+ROUTER:
+  EPOCHS: 100
+  HIDDEN_WIDTH: 128
+  LEARNING_RATE: 0.00035
+  WEIGHT_DECAY: 0.0001
+  UTILITY_TEMPERATURE: 0.05
+  QUALITY_LOSS_WEIGHT: 1.0
+QUALITY:
+  DEGRADED_QUALITY: 0.2
+GATES:
+  DEV_MIN_MAP: 65.0
+  FUSED_STRICTLY_BEATS: [baseline_only, v8_phase_b, cnn, transformer, mamba]
+PROTOCOL:
+  OOF_TARGET_FOLDS: 3
+  DEV_ACCESS_DURING_ROUTER_TRAINING: false
+  OFFICIAL_TEST_DURING_DEVELOPMENT: false
+  RERANKING: false
+V13:
+  FIXED_ALPHA: 0.2
+  BOOTSTRAP_RESAMPLES: 10000
+  BOOTSTRAP_SEED: 42

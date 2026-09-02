@@ -8,6 +8,7 @@ import hashlib
 import numpy as np
 import torch
 import torch.nn.functional as F
+from torch import nn
 
 
 EXPERT_COUNT = 3
@@ -35,6 +36,119 @@ class ClusterBootstrapResult:
     lower_bound: float
     cluster_count: int
     resamples: int
+
+
+@dataclass(frozen=True, eq=False)
+class DeploymentAlignedRouterOutput:
+    weights: torch.Tensor
+    modal_probabilities: torch.Tensor
+    expert_probabilities: torch.Tensor
+
+
+class DeploymentAlignedRouter(nn.Module):
+    """Predict P(modality) P(expert|modality) from frozen deployment features."""
+
+    def __init__(
+        self,
+        *,
+        direct_width: int,
+        residual_width: int,
+        hidden_width: int,
+    ) -> None:
+        super().__init__()
+        self.direct_width = int(direct_width)
+        self.residual_width = int(residual_width)
+        self.direct_projection = nn.Sequential(
+            nn.LayerNorm(self.direct_width),
+            nn.Linear(self.direct_width, hidden_width, bias=False),
+        )
+        self.residual_projection = nn.Sequential(
+            nn.LayerNorm(self.residual_width),
+            nn.Linear(self.residual_width, hidden_width, bias=False),
+        )
+        self.modal_head = nn.Sequential(
+            nn.Linear(3 * hidden_width, hidden_width),
+            nn.GELU(),
+            nn.Linear(hidden_width, 1),
+        )
+        self.expert_head = nn.Sequential(
+            nn.Linear(3 * hidden_width, hidden_width),
+            nn.GELU(),
+            nn.Linear(hidden_width, 1),
+        )
+
+    def forward(
+        self,
+        direct_modal: torch.Tensor,
+        modal_residual: torch.Tensor,
+        modality_mask: torch.Tensor,
+    ) -> DeploymentAlignedRouterOutput:
+        direct = self.direct_projection(direct_modal)
+        residual = self.residual_projection(modal_residual)
+        valid = modality_mask[..., None].to(direct.dtype)
+        context = (direct * valid).sum(dim=1) / valid.sum(dim=1)
+
+        modal_features = torch.cat(
+            (
+                direct,
+                residual.mean(dim=1),
+                context[:, None].expand(-1, MODALITY_COUNT, -1),
+            ),
+            dim=-1,
+        )
+        modal_logits = self.modal_head(modal_features).squeeze(-1)
+        modal_probabilities = torch.softmax(
+            modal_logits.masked_fill(~modality_mask, -torch.inf),
+            dim=1,
+        )
+
+        expert_features = torch.cat(
+            (
+                direct[:, None].expand(-1, EXPERT_COUNT, -1, -1),
+                residual,
+                context[:, None, None].expand(
+                    -1,
+                    EXPERT_COUNT,
+                    MODALITY_COUNT,
+                    -1,
+                ),
+            ),
+            dim=-1,
+        )
+        expert_probabilities = torch.softmax(
+            self.expert_head(expert_features).squeeze(-1),
+            dim=1,
+        )
+        return DeploymentAlignedRouterOutput(
+            weights=expert_probabilities * modal_probabilities[:, None],
+            modal_probabilities=modal_probabilities,
+            expert_probabilities=expert_probabilities,
+        )
+
+
+def deployment_aligned_utility_loss(
+    weights: torch.Tensor,
+    teacher_utility: torch.Tensor,
+    modality_mask: torch.Tensor,
+    *,
+    temperature: float,
+) -> torch.Tensor:
+    """Distill actual-path slot utility into the hierarchical Router."""
+
+    valid_slots = modality_mask[:, None].expand_as(weights)
+    target = torch.softmax(
+        (teacher_utility / float(temperature))
+        .masked_fill(~valid_slots, -torch.inf)
+        .flatten(1),
+        dim=1,
+    )
+    predicted = weights.masked_fill(~valid_slots, 0.0).flatten(1)
+    predicted = predicted / predicted.sum(dim=1, keepdim=True)
+    return F.kl_div(
+        predicted.clamp_min(1e-12).log(),
+        target,
+        reduction="batchmean",
+    )
 
 
 def compose_v13_fusion(
@@ -168,9 +282,12 @@ def identity_cluster_bootstrap_lower_bound(
 __all__ = [
     "ClusterBootstrapResult",
     "CounterfactualUtilityOutput",
+    "DeploymentAlignedRouter",
+    "DeploymentAlignedRouterOutput",
     "FIXED_ALPHA",
     "V13FusionOutput",
     "compose_v13_fusion",
+    "deployment_aligned_utility_loss",
     "identity_cluster_bootstrap_lower_bound",
     "query_side_counterfactual_utilities",
 ]
