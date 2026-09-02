@@ -2,7 +2,7 @@
 
 ## 0. 一页结论
 
-本工程是在 DeMo 代码基座上实现的 RGB–NIR–TIR 多模态目标重识别研究分支。最新完成的是 V8 OOF-margin Router Phase-B：在冻结 Phase-A 专家后，仅用 fit-only 身份隔离 margin 与受控退化训练层级 Router。唯一冻结 dev 结果 fused=`58.4050 mAP / 59.3939 Rank-1`，比 exact Signal baseline 高 `0.3941 mAP / 1.9394 Rank-1` 并严格超过三个固定专家，但仍比 65 mAP 门低 `6.5950`，因此是“正向但未晋级”，不支持 HFER、official test 或 SOTA。
+本工程是在 DeMo 代码基座上实现的 RGB–NIR–TIR 多模态目标重识别研究分支。最新终态是 V16 SATR 在 train-only M0 因三折 Transformer relation coverage 均为0而封存，未运行Q1/D1、未访问dev/official。当前最高的可部署结果仍是 V8 OOF-margin Router Phase-B：唯一冻结 dev fused=`58.4050 mAP / 59.3939 Rank-1`，比 exact Signal baseline 高 `0.3941 mAP / 1.9394 Rank-1` 并严格超过三个固定专家，但仍比65 mAP门低`6.5950`，因此不支持 official test 或 SOTA。
 
 V6 的三个候选论文级主创新点已经落到核心代码、专项测试和完整 dev 运行中；性能主门仍然失败：
 
@@ -1456,4 +1456,38 @@ exact Signal anchor的关系修正落后expert，并在推理保留三支私有�
 ```text
 evidence/trifusion_v15_crde_postmortem_seed42_27f9a6a.json
 results/TRIFUSION_RGBNT201_V15_CRDE_POSTMORTEM_2026-09-02.md
+```
+
+## 27. V16 Signal-Anchored Triadic Repair M0 终态（2026-09-02）
+
+V16 不再做 Router 或推理期 hidden exchange，而是在训练期用 exact Signal
+选择共同 hard positive/nearest negative；只有另外两支都以至少0.05 margin
+超过 Signal 和 receiver 时，才单向修复落后 receiver。另以
+`gamma=0.30, epsilon=0.02` 保护高可信 Signal relation。推理结构完全复用 V8
+固定 residual bank，新增推理模块/参数为0。
+
+公共 hard-pair、two-peer detach、receiver-only gradient、criterion、builder、
+M0/Q1/D1 gate 测试已完成，V8/V15/V16 相邻回归为23/23 PASS。远端 seed42 M0
+也证明工程路径可训练：真实B64/K8 capacity 203/203张量有非零有限梯度，0
+overflow，peak allocated/reserved=`5715.68/5962 MiB`；100-step fixed batch
+loss `0.622885→0.581252`，floor-aware excess ratio=`0.064479<=0.10`；exact
+Signal prefix 与 frozen state 均PASS。3090显存不是限制。
+
+但 M0 最终为 `FAIL`：clean runner 的三折 CNN/T/M fixed-initial coverage 为
+`3.125/0/3.125%`、`0/0/7.8125%`、`2.778/0/11.111%`。Transformer 三折均为0，
+fold1 CNN也为0，违反预注册每 receiver `[0.5%,25%]`。SATR/no-SATR 两端的
+初态、trainable names、seed、sampler indices 和前8个增强后 RGB/NI/TI tensor
+SHA 全部相等；失败来自 proposal-time threshold probe 没有绑定原始 batch SHA，
+其 margin/coverage 无法由正式 runner 重现。
+
+因此 V16 在 M0 后封存：Q1、D1、dev、official 均未执行，不调 relation gap、
+worker/RNG、epoch/LR 或 loss weight。当前没有新 retrieval 指标，可部署最好仍是
+V8 Phase-B `58.4050 mAP / 59.3939 Rank-1`，距65 mAP为6.5950。
+
+证据：
+
+```text
+evidence/trifusion_v16_satr_m0_seed42_20260902.json
+results/TRIFUSION_RGBNT201_V16_SATR_M0_2026-09-02.md
+refine-logs/v16/threshold-freeze-readonly.md
 ```

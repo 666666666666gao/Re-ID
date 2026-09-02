@@ -220,3 +220,40 @@ public behavior is restricted to:
 
 Tests observe these return values and receipts. Directed module internals and
 private runner helpers are not test seams.
+
+## V16 Signal-anchored triadic repair public seams
+
+The prior user reply `接缝同意` covers this training-only representation
+successor. V16 adds no inference Router or exchange. Tests are restricted to:
+
+1. `select_signal_hard_pairs_v16(baseline, identities, physical_cameras)`
+   - L2-normalizes the exact Signal embedding;
+   - chooses the lowest-similarity same-identity, different-physical-camera
+     positive and the highest-similarity different-identity negative;
+   - marks a query invalid when no cross-camera positive exists and never
+     substitutes a fallback positive.
+2. `satr_relation_objective_v16(...)`
+   - evaluates every expert on the exact same Signal-selected pair;
+   - admits a receiver only when the detached minimum of the other two expert
+     margins is positive and exceeds detached Signal/receiver by `0.05`;
+   - sends gradients only through the live receiver margin; empty masks return
+     exact differentiable zero;
+   - applies the fixed fused safety constraint at `gamma=0.30`, tolerance
+     `0.02`, and registered weights `lambda_r=1.0`, `lambda_p=0.25`.
+3. `build_signal_preserving_trifusion_v16(...)`
+   - reuses the V8 pretrained-tail topology and exact fixed fusion;
+   - freezes Signal and shared CLIP tail while opening the existing role
+     adapters/residual projections and training heads in both SATR/no-SATR
+     endpoints;
+   - adds zero trainable inference modules and preserves the exact Signal
+     prefix.
+4. `evaluate_v16_q1_gate(...)` and the V16 runner receipt
+   - require matched SATR/no-SATR initial state, trainable-name, sample-order,
+     seed and first-eight transformed-batch hashes;
+   - gate relation activity only on the deterministic optimizer-0 pass;
+     training-trajectory coverage is diagnostic;
+   - authorize D1 only after every registered fold, aggregate, bootstrap,
+     branch, state and access gate passes.
+
+Tests observe these public return values and receipts. They do not inspect
+private adapter layers or runner helpers.

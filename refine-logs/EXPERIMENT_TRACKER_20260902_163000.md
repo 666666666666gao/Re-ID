@@ -14,5 +14,5 @@
 | V16-Q1-2N | Q1 | fold2 matched comparator | no-SATR | same | paired metrics | MUST | NOT_RUN_M0_FAIL | same draws/scope |
 | V16-Q1-G | Q1 | aggregate scientific gate | SATR-noSATR | 571 queries / 21 IDs | fused≥+1, LB>0, all branch aggregate>0 | MUST | NOT_RUN_M0_FAIL | V16封存 |
 | V16-D1 | D1 | unique deployable main | SATR all-fit | 141-fit/30-dev | fused≥65且严格胜出 | CONDITIONAL | NOT_AUTHORIZED | dev0/official0 |
-| V16-A1 | P1 | minimal ablation | noSATR/single-peer/no-protect | frozen dev protocol | mechanism isolation | LOCKED | BLOCKED_BY_D1 | 主成功后 |
-| V16-O1 | P1 | official/SOTA | frozen all171 endpoint | official test | same-track mAP/R1 | LOCKED | BLOCKED_BY_D1 | test once |
+| V16-A1 | P1 | minimal ablation | noSATR/single-peer/no-protect | frozen dev protocol | mechanism isolation | LOCKED | NOT_AUTHORIZED | 主实验未通过 |
+| V16-O1 | P1 | official/SOTA | frozen all171 endpoint | official test | same-track mAP/R1 | LOCKED | NOT_AUTHORIZED | official0 |

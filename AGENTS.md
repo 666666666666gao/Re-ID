@@ -235,6 +235,16 @@
   gates pass, but there is no final refit/checkpoint/dev. Seal V14 without any
   LR/epoch/loss/fold/margin scan, ablation, multi-seed or official evaluation.
   Current deployable best remains V8 Phase-B `58.4050/59.3939` mAP/Rank-1.
+- V15 CRDE completed its only three-fold seed42 Q1 and failed the scientific
+  gate: aggregate fused/CNN/Transformer/Mamba gains were
+  `-0.1721/-0.1576/-0.2606/+0.2898` mAP and fused bootstrap lower bound was
+  `-0.9503`. It has no D1/dev/official result and is sealed without tuning.
+- V16 SATR implemented training-only two-peer relation repair with zero new
+  inference modules. Its B64/K8 capacity and 100-step gates passed, but formal
+  fixed-initial coverage was zero for Transformer in all three folds, so M0
+  failed and Q1/D1/dev/official were not run. Do not relax the registered
+  thresholds or replay V16 under another worker/RNG draw. The current
+  deployable best remains V8 Phase-B `58.4050/59.3939`.
 
 ## Remote experiment constraints
 

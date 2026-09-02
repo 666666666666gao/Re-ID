@@ -240,3 +240,22 @@
 - 后继边界：不调V15。新假设应把协作移到训练期的选择性检索关系互教，
   仅传递两peer一致且优于exact Signal anchor的关系，推理保留三专家私有表示。
   该方向必须先重新预注册，不直接训练。
+
+## 2026-09-02 — V16 SATR M0 终态
+
+- TDD与相邻回归23/23 PASS；V16复用V8三专家和fixed bank，训练期增加无参数
+  Signal-hard two-peer relation repair，推理新增模块/参数为0。
+- M0工程路径通过：SATR/no-SATR同初态、同trainable names、同seed/sampler与
+  前8个增强后batch SHA；exact Signal prefix和frozen state不变。
+- 真实B64/K8 capacity为203/203非零有限梯度、0 overflow，peak reserved
+  5962MiB；100-step fixed-batch excess-loss ratio=`0.064479<=0.10`。3090显存
+  不是阻碍。
+- 固定初始activity失败：三折CNN/T/M coverage为
+  `3.125/0/3.125%`、`0/0/7.8125%`、`2.778/0/11.111%`；Transformer三折
+  均为0，不能支持三方互教。
+- proposal-time threshold probe未保存sampler indices和增强后tensor SHA；正式
+  replay的Signal margin quantiles与其登记值不同，因此原positive coverage证据
+  不可复现。门槛不在失败后放宽。
+- V16封存于M0：Q1/D1/dev/official均未运行，无新retrieval指标。当前可部署
+  最好仍为V8 Phase-B `58.4050/59.3939`，距65 mAP为6.5950。
+- 完整报告：`results/TRIFUSION_RGBNT201_V16_SATR_M0_2026-09-02.md`。

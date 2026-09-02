@@ -443,3 +443,52 @@
 | 2026-09-02 12:20 | /tdd | tests/test_train_signal_preserving_v15.py | implementation | V15 Q1全门联合判定接缝 |
 | 2026-09-02 12:20 | /run-experiment | configs/RGBNT201/TriFusion-signal-preserving-v15-crde-rtx3090.yml | implementation | V12三折与V8 Phase-A SHA绑定的seed42 B64/K8 V15冻结合同 |
 | 2026-09-02 12:20 | /run-experiment | tools/train_signal_preserving_v15.py | implementation | 独立M0与三折Q1 runner；Q1失败不含自动D1路径 |
+| 2026-09-02 14:45 | /research-refine | refine-logs/v16/round-0-initial-proposal.md | implementation | V16 Signal锚定三方关系修复初始锚定方案 |
+| 2026-09-02 14:45 | /research-refine | refine-logs/REFINE_STATE_20260902_144550.json | implementation | V16 proposal状态永久快照 |
+| 2026-09-02 14:45 | /research-refine | refine-logs/REFINE_STATE.json | implementation | V16 refinement进行中状态 |
+| 2026-09-02 14:58 | /research-refine | refine-logs/v16/round-1-review.md | review | V16 GPT-5.5 xhigh首轮7.1/REVISE原始审查 |
+| 2026-09-02 14:58 | /research-refine | refine-logs/v16/score-history.md | implementation | V16评分演进 |
+| 2026-09-02 14:58 | /research-refine | refine-logs/REFINE_STATE_20260902_145844.json | implementation | V16 round1 review状态永久快照 |
+| 2026-09-02 14:58 | /research-refine | refine-logs/REFINE_STATE.json | implementation | V16 round1 review状态 |
+| 2026-09-02 15:00 | /research-refine | refine-logs/v16/threshold-freeze-readonly.md | implementation | V16三折fit-only零步阈值冻结证据 |
+| 2026-09-02 15:00 | /research-refine | refine-logs/v16/round-1-refinement.md | implementation | V16公平双端点与Signal-hard relation完整修订案 |
+| 2026-09-02 15:00 | /research-refine | refine-logs/REFINE_STATE_20260902_150037.json | implementation | V16 round1 refinement状态永久快照 |
+| 2026-09-02 15:00 | /research-refine | refine-logs/REFINE_STATE.json | implementation | V16 round1 refinement状态 |
+| 2026-09-02 15:07 | /research-refine | refine-logs/v16/round-2-review.md | review | V16 GPT-5.5 xhigh二轮8.13/REVISE原始审查 |
+| 2026-09-02 15:07 | /research-refine | refine-logs/v16/score-history.md | implementation | V16二轮评分演进 |
+| 2026-09-02 15:07 | /research-refine | refine-logs/v16/threshold-freeze-readonly.md | implementation | 补全V16阈值候选披露并改为fixed-initial activity gate |
+| 2026-09-02 15:07 | /research-refine | refine-logs/REFINE_STATE_20260902_150718.json | implementation | V16 round2 review状态永久快照 |
+| 2026-09-02 15:07 | /research-refine | refine-logs/REFINE_STATE.json | implementation | V16 round2 review状态 |
+| 2026-09-02 15:09 | /research-refine | refine-logs/v16/round-2-refinement.md | implementation | V16 fixed-initial activity与paired draw封口完整修订案 |
+| 2026-09-02 15:09 | /research-refine | refine-logs/REFINE_STATE_20260902_150907.json | implementation | V16 round2 refinement状态永久快照 |
+| 2026-09-02 15:09 | /research-refine | refine-logs/REFINE_STATE.json | implementation | V16 round2 refinement状态 |
+| 2026-09-02 15:13 | /research-refine | refine-logs/v16/round-3-review.md | review | V16 GPT-5.5 xhigh终审9.10/READY原始审查 |
+| 2026-09-02 15:13 | /research-refine | refine-logs/v16/score-history.md | implementation | V16三轮评分终态 |
+| 2026-09-02 15:13 | /research-refine | refine-logs/FINAL_PROPOSAL_20260902_151345.md | implementation | V16 9.10/READY最终方法方案永久版 |
+| 2026-09-02 15:13 | /research-refine | refine-logs/REVIEW_SUMMARY_20260902_151345.md | implementation | V16三轮审查摘要永久版 |
+| 2026-09-02 15:13 | /research-refine | refine-logs/REFINEMENT_REPORT_20260902_151345.md | implementation | V16方法演进与边界报告永久版 |
+| 2026-09-02 15:13 | /research-refine | refine-logs/score-history_20260902_151345.md | implementation | V16评分历史永久版 |
+| 2026-09-02 15:13 | /research-refine | refine-logs/REFINE_STATE_20260902_151345.json | implementation | V16完成态永久快照 |
+| 2026-09-02 15:13 | /research-refine | refine-logs/FINAL_PROPOSAL.md | implementation | V16最终方法方案latest |
+| 2026-09-02 15:13 | /research-refine | refine-logs/REVIEW_SUMMARY.md | implementation | V16审查摘要latest |
+| 2026-09-02 15:13 | /research-refine | refine-logs/REFINEMENT_REPORT.md | implementation | V16 refinement报告latest |
+| 2026-09-02 15:13 | /research-refine | refine-logs/score-history.md | implementation | V16评分历史latest |
+| 2026-09-02 15:13 | /research-refine | refine-logs/REFINE_STATE.json | implementation | V16 9.10/READY完成态 |
+| 2026-09-02 15:21 | /experiment-plan | refine-logs/EXPERIMENT_PLAN_20260902_152139.md | implementation | V16 TDD→M0→matched Q1→conditional D1冻结计划 |
+| 2026-09-02 15:21 | /experiment-plan | refine-logs/EXPERIMENT_TRACKER_20260902_152139.md | implementation | V16执行tracker永久版 |
+| 2026-09-02 15:21 | /experiment-plan | refine-logs/EXPERIMENT_PLAN.md | implementation | V16冻结执行计划latest |
+| 2026-09-02 15:21 | /experiment-plan | refine-logs/EXPERIMENT_TRACKER.md | implementation | V16执行tracker latest |
+| 2026-09-02 15:27 | /tdd | docs/TDD_SEAMS.md | documentation | 登记既有接缝同意覆盖的V16 hard-pair/SATR/builder/Q1公共接缝 |
+| 2026-09-02 16:05 | /tdd | modeling/trifusion/signal_preserving_v16.py | implementation | V16 Signal-hard pair、two-peer SATR、protect与固定ReID criterion |
+| 2026-09-02 16:05 | /tdd | modeling/trifusion/signal_preserving_v16_builder.py | implementation | 复用V8三专家、零新增推理模块的V16 builder |
+| 2026-09-02 16:05 | /tdd | tests/test_trifusion_signal_preserving_v16.py | implementation | V16 pair、detach/gradient与criterion公共接缝 |
+| 2026-09-02 16:05 | /tdd | tests/test_train_signal_preserving_v16.py | implementation | V16 M0/Q1/D1 fail-closed gates |
+| 2026-09-02 16:05 | /tdd | tests/test_trifusion_signal_preserving_v8.py | implementation | 追加V16复用V8拓扑且零推理协作builder测试 |
+| 2026-09-02 16:05 | /run-experiment | configs/RGBNT201/TriFusion-signal-preserving-v16-satr-rtx3090.yml | implementation | seed42 B64/K8、V12/V8 SHA与SATR常数冻结合同 |
+| 2026-09-02 16:05 | /run-experiment | tools/train_signal_preserving_v16.py | implementation | 配对M0、三折Q1与条件D1独立runner |
+| 2026-09-02 16:30 | /run-experiment | evidence/trifusion_v16_satr_m0_seed42_20260902.json | experiment | V16 M0工程门通过但fixed-initial activity失败，dev0/official0 |
+| 2026-09-02 16:30 | /analyze-results | results/TRIFUSION_RGBNT201_V16_SATR_M0_2026-09-02.md | analysis | V16 M0覆盖差异、资源结果与Q1封锁结论 |
+| 2026-09-02 16:30 | /experiment-plan | refine-logs/EXPERIMENT_TRACKER_20260902_163000.md | implementation | V16 M0失败终态tracker永久快照 |
+| 2026-09-02 16:30 | /experiment-plan | refine-logs/EXPERIMENT_TRACKER.md | implementation | V16 M0失败终态latest tracker |
+| 2026-09-02 16:30 | /handoff | docs/TRIFUSION_RGBNT201_CURRENT_COMPLETE_HANDOFF_2026-09-01.md | documentation | 主交接追加V16 SATR M0终态、资源与封锁边界 |
+| 2026-09-02 16:30 | /handoff | AGENTS.md | documentation | 工作区规则追加V15/V16终态与禁止重放边界 |

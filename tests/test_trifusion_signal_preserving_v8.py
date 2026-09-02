@@ -177,6 +177,43 @@ def test_v8_builder_emits_three_role_disjoint_pretrained_experts() -> None:
     )
 
 
+def test_v16_builder_reuses_v8_experts_without_inference_collaboration() -> None:
+    from modeling.trifusion.experts.mamba import TinySequenceMixer
+    from modeling.trifusion.signal_preserving_v16_builder import (
+        build_signal_preserving_trifusion_v16,
+    )
+
+    build = build_signal_preserving_trifusion_v16(
+        _FakeSignal(),
+        signal_checkpoint_sha256="8" * 64,
+        num_classes=2,
+        feature_width=4,
+        semantic_width=6,
+        grid_size=(2, 2),
+        branch_after_block=0,
+        adapter_width=4,
+        expert_modal_width=8,
+        mamba_mixer_factory=TinySequenceMixer,
+    )
+    baseline = build.model(_batch(), retrieval_output="baseline_only")
+    output = build.model(_batch(), return_aux=True)
+
+    assert build.provenance["architecture"] == "signal_anchored_triadic_repair_v16"
+    assert build.provenance["training_collaboration"] == (
+        "signal_anchored_triadic_relation_repair"
+    )
+    assert build.provenance["inference_collaboration"] == "none"
+    assert build.provenance["new_trainable_inference_parameters"] == 0
+    assert build.provenance["router_enabled"] is False
+    assert build.provenance["hfer_enabled"] is False
+    assert build.provenance["crde_enabled"] is False
+    assert torch.equal(output.fused_embedding[:, : baseline.shape[1]], baseline)
+    assert all(
+        not parameter.requires_grad for parameter in build.model.baseline.parameters()
+    )
+    assert any(parameter.requires_grad for parameter in build.model.encoder.parameters())
+
+
 def test_v8_phase_a_trains_each_expert_but_not_the_signal_tail() -> None:
     from modeling.trifusion.experts.mamba import TinySequenceMixer
     from modeling.trifusion.signal_preserving_v8 import ExpertFormationV8Criterion
