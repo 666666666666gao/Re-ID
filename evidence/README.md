@@ -308,3 +308,13 @@ experiment. Q0 is a zero-step engineering PASS. Q1 completed 300 Router steps
 but failed per-fold and identity-bootstrap retrieval gates; no final checkpoint
 or dev evaluation exists. `status=PASS` in the Q1 JSON denotes runner completion,
 while `router_oof.gate.passed=false` is the scientific verdict.
+
+The V15 M0 receipts document CRDE train-only qualification. The first receipt
+is retained as an invalid-gate implementation record: its capacity gate was
+stricter than the frozen plan and its excess-loss ratio omitted the fixed
+matched-regret floor. The corrected clean-commit receipt `1f2de44` passes exact
+step-0 counterfactual parity, both live exchange stages at B64/K8, zero AMP
+overflow, unchanged frozen state and 110/110 gradient coverage by 100 steps.
+Its fixed-batch loss is 4.095560 to 1.209675 and the correctly floor-adjusted
+ratio is 0.051554. Peak reserved memory is 9,798 MiB; dev and official accesses
+are zero. M0 authorizes Q1 only and supports no dev, official or SOTA claim.
