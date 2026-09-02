@@ -190,3 +190,33 @@ GPU `memory.used < 500 MiB`.
 
 These seams were frozen in the V14 READY proposal before implementation. Tests
 do not inspect private training helpers.
+
+## V15 counterfactual role-delta exchange public seams
+
+The prior user reply `接缝同意` covers this representation-level successor. Its
+public behavior is restricted to:
+
+1. `CounterfactualRoleDeltaExchangeStage(before, after)`
+   - exchanges only `after-before` role deltas, synchronously and without
+     self-edges;
+   - initializes to exact no-exchange parity and exposes bounded directed-edge
+     scales/messages as diagnostics.
+2. `matched_retrieval_regret_v15(on, off, identities, cameras)`
+   - scores pre-BN L2-normalized embeddings with cross-camera batch-hard risk;
+   - treats the matched off embeddings as stop-gradient and fixes the registered
+     regret coefficient to exactly `1.0`.
+3. `SignalPreservingCollaborativeV15.forward_paired(batch)` and
+   `.forward(batch, return_aux=...)`
+   - reuse the same post-augmentation tensor objects for off/on paths;
+   - the off path calls no V15 BN/classifier and mutates no frozen parameter,
+     buffer or running statistic;
+   - retrieval outputs bypass training-only source-class heads and preserve the
+     exact Signal prefix.
+4. `evaluate_v15_q1_gate(...)` and the V15 runner receipt
+   - bind every CRDE-on result to the exact same-fold frozen V12 checkpoint SHA
+     used by its no-exchange comparator;
+   - authorize D1 only after all preregistered per-fold, aggregate, bootstrap,
+     receiver, state and access gates pass.
+
+Tests observe these return values and receipts. Directed module internals and
+private runner helpers are not test seams.

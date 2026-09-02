@@ -403,3 +403,43 @@
 | 2026-09-02 11:15 | /experiment-plan | refine-logs/EXPERIMENT_TRACKER.md | implementation | V14 terminal tracker latest |
 | 2026-09-02 11:15 | /analyze-results | findings.md | analysis | 追加V14终态负结果与禁止扫描边界 |
 | 2026-09-02 11:15 | /handoff | docs/TRIFUSION_RGBNT201_CURRENT_COMPLETE_HANDOFF_2026-09-01.md | documentation | 主交接追加V14 §25终态 |
+| 2026-09-02 11:32 | /research-refine | refine-logs/v15/round-0-initial-proposal.md | implementation | V15 CRDE初始锚定方案 |
+| 2026-09-02 11:32 | /research-refine | refine-logs/REFINE_STATE_20260902_113220.json | implementation | V14完成态永久快照 |
+| 2026-09-02 11:32 | /research-refine | refine-logs/REFINE_STATE.json | implementation | V15 refinement进行中状态 |
+| 2026-09-02 11:38 | /research-refine | refine-logs/v15/round-1-review.md | review | V15 GPT-5.5 xhigh首轮6.9/REVISE原始审查 |
+| 2026-09-02 11:38 | /research-refine | refine-logs/v15/score-history.md | implementation | V15评分演进 |
+| 2026-09-02 11:38 | /research-refine | refine-logs/REFINE_STATE_20260902_113858.json | implementation | V15 proposal阶段状态快照 |
+| 2026-09-02 11:38 | /research-refine | refine-logs/REFINE_STATE.json | implementation | V15 round1 review状态 |
+| 2026-09-02 11:39 | /research-refine | refine-logs/v15/round-1-refinement.md | implementation | V15反事实/BN/两层交换收敛后的完整修订案 |
+| 2026-09-02 11:41 | /research-refine | refine-logs/REFINE_STATE_20260902_114107.json | implementation | V15 round1 review状态快照 |
+| 2026-09-02 11:41 | /research-refine | refine-logs/REFINE_STATE.json | implementation | V15 round1 refinement状态 |
+| 2026-09-02 11:44 | /research-refine | refine-logs/v15/round-2-review.md | review | V15 GPT-5.5 xhigh二轮8.35/REVISE原始审查 |
+| 2026-09-02 11:44 | /research-refine | refine-logs/v15/score-history.md | implementation | V15二轮评分演进 |
+| 2026-09-02 11:44 | /research-refine | refine-logs/REFINE_STATE_20260902_114401.json | implementation | V15 round1 refinement状态快照 |
+| 2026-09-02 11:44 | /research-refine | refine-logs/REFINE_STATE.json | implementation | V15 round2 review状态 |
+| 2026-09-02 11:45 | /research-refine | refine-logs/v15/round-2-refinement.md | implementation | V15冻结regret系数与同tensor反事实后的完整终审案 |
+| 2026-09-02 11:45 | /research-refine | refine-logs/REFINE_STATE_20260902_114557.json | implementation | V15 round2 review状态快照 |
+| 2026-09-02 11:45 | /research-refine | refine-logs/REFINE_STATE.json | implementation | V15 round2 refinement状态 |
+| 2026-09-02 11:47 | /research-refine | refine-logs/v15/round-3-review.md | review | V15 GPT-5.5 xhigh终审9.15/READY原始审查 |
+| 2026-09-02 11:47 | /research-refine | refine-logs/v15/score-history.md | implementation | V15三轮评分终态 |
+| 2026-09-02 11:47 | /research-refine | refine-logs/FINAL_PROPOSAL_20260902_114746.md | implementation | V15 9.15/READY最终方法方案永久版 |
+| 2026-09-02 11:47 | /research-refine | refine-logs/REVIEW_SUMMARY_20260902_114746.md | implementation | V15三轮审查摘要永久版 |
+| 2026-09-02 11:47 | /research-refine | refine-logs/REFINEMENT_REPORT_20260902_114746.md | implementation | V15方法演进与边界报告永久版 |
+| 2026-09-02 11:47 | /research-refine | refine-logs/score-history_20260902_114746.md | implementation | V15评分历史永久版 |
+| 2026-09-02 11:47 | /research-refine | refine-logs/REFINE_STATE_20260902_114746.json | implementation | V15 round2 refinement状态快照 |
+| 2026-09-02 11:47 | /research-refine | refine-logs/FINAL_PROPOSAL.md | implementation | V15最终方法方案latest |
+| 2026-09-02 11:47 | /research-refine | refine-logs/REVIEW_SUMMARY.md | implementation | V15审查摘要latest |
+| 2026-09-02 11:47 | /research-refine | refine-logs/REFINEMENT_REPORT.md | implementation | V15 refinement报告latest |
+| 2026-09-02 11:47 | /research-refine | refine-logs/score-history.md | implementation | V15评分历史latest |
+| 2026-09-02 11:47 | /research-refine | refine-logs/REFINE_STATE.json | implementation | V15 9.15/READY完成态 |
+| 2026-09-02 11:50 | /experiment-plan | refine-logs/EXPERIMENT_PLAN_20260902_115051.md | implementation | V15 M0→Q1→conditional D1冻结执行计划 |
+| 2026-09-02 11:50 | /experiment-plan | refine-logs/EXPERIMENT_TRACKER_20260902_115051.md | implementation | V15执行tracker永久版 |
+| 2026-09-02 11:50 | /experiment-plan | refine-logs/EXPERIMENT_PLAN.md | implementation | V15冻结执行计划latest |
+| 2026-09-02 11:50 | /experiment-plan | refine-logs/EXPERIMENT_TRACKER.md | implementation | V15执行tracker latest |
+| 2026-09-02 11:52 | /tdd | docs/TDD_SEAMS.md | documentation | 登记V15已同意CRDE/反事实/Q1 public seams |
+| 2026-09-02 12:20 | /tdd | modeling/trifusion/signal_preserving_v15.py | implementation | V15两层异构role-delta交换、matched off/on前向、有效query regret与统一criterion |
+| 2026-09-02 12:20 | /tdd | modeling/trifusion/signal_preserving_v15_builder.py | implementation | 冻结Signal/V8专家并仅开放CRDE与source-local heads的V15 builder |
+| 2026-09-02 12:20 | /tdd | tests/test_trifusion_signal_preserving_v15.py | implementation | V15零交换、同步无self、异构mixer、配对前向、masked risk与criterion接缝 |
+| 2026-09-02 12:20 | /tdd | tests/test_train_signal_preserving_v15.py | implementation | V15 Q1全门联合判定接缝 |
+| 2026-09-02 12:20 | /run-experiment | configs/RGBNT201/TriFusion-signal-preserving-v15-crde-rtx3090.yml | implementation | V12三折与V8 Phase-A SHA绑定的seed42 B64/K8 V15冻结合同 |
+| 2026-09-02 12:20 | /run-experiment | tools/train_signal_preserving_v15.py | implementation | 独立M0与三折Q1 runner；Q1失败不含自动D1路径 |
