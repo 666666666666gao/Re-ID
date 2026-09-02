@@ -226,6 +226,15 @@
   ablations, multiple seeds, or fold/epoch/LR/temperature/threshold scans.
   V8 Phase-B remains the current deployable best at `58.4050 mAP / 59.3939
   Rank-1`; any successor needs a new preregistered train-only hypothesis.
+- V14 replaced V13 pointwise utility-KL with fold-local cross-camera retrieval
+  risk and worst-source-fold regret. Q0 passed with optimizer0, dev0/official0,
+  no cross-fold feature distances, 14/14 finite nonzero Router gradients and an
+  unchanged Phase-A SHA. The sole seed42 Q1 then failed: fold0 AP gain is
+  `-0.0005571`; fold2 risk/margin gains are `-0.0016102/-0.0033642`; bootstrap
+  lower bounds for risk/AP/margin are all negative. Quality and missing-modality
+  gates pass, but there is no final refit/checkpoint/dev. Seal V14 without any
+  LR/epoch/loss/fold/margin scan, ablation, multi-seed or official evaluation.
+  Current deployable best remains V8 Phase-B `58.4050/59.3939` mAP/Rank-1.
 
 ## Remote experiment constraints
 

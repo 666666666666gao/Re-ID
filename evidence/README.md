@@ -302,3 +302,9 @@ accuracy. Restoring equal residual energy raises uniform/teacher fusion to
 FP32 deterministic replays are byte-identical, optimizer steps and official
 access are zero. The receipt rejects a Router-only V8; it is diagnostic and
 does not support an ablation, deployable Oracle, official result or SOTA claim.
+
+The V14 Q0/Q1 receipts record the terminal fold-robust retrieval-regret Router
+experiment. Q0 is a zero-step engineering PASS. Q1 completed 300 Router steps
+but failed per-fold and identity-bootstrap retrieval gates; no final checkpoint
+or dev evaluation exists. `status=PASS` in the Q1 JSON denotes runner completion,
+while `router_oof.gate.passed=false` is the scientific verdict.

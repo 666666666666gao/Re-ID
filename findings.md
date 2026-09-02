@@ -192,3 +192,14 @@
 - 可观测性：identity 内 utility 余弦 `0.52291` 高于 identity 间 `0.04061`，但 identity 多数赢家准确率仍仅 `49.91%`；residual norm 对 utility 的最大绝对相关仅 `0.11382`，本地质量幅值不足以恢复检索效用。
 - 下一步：封存 V13 utility-temperature 方向，不做温度/epoch/LR 扫描；V14 只替换点式 utility-KL，直接在各 OOF teacher 坐标系内优化 cross-camera retrieval regret，并用最坏训练 fold 聚合，其他专家、Router、alpha 和质量控制保持不变。
 - 完整报告：`results/TRIFUSION_RGBNT201_V13_TARGET_LEARNABILITY_DIAGNOSTIC_2026-09-02.md`。
+
+## 2026-09-02 — V14 fold-robust retrieval-regret Router 终态
+
+- Q0 PASS：571 fit-only query、三fold严格同OOF-generator距离；optimizer0、dev0、official0、cross-fold distance0、14/14 Router梯度张量finite/nonzero、Phase-A SHA不变；耗时9.30s、reserved636MiB。
+- Q1 FAIL：三折risk/AP/margin gain分别为 fold0 `+0.0003567/-0.0005571/+0.0004422`，fold1 `+0.0045235/+0.0049162/+0.0091674`，fold2 `-0.0016102/+0.0001532/-0.0033642`。fold0 AP、fold2 risk/margin硬门失败。
+- 21 identity clusters、10,000 bootstrap 的95%下界全部为负：risk `-0.0018584`、AP `-0.0054337`、margin `-0.0039411`。aggregate点估计略正不能晋级。
+- 工程/安全门通过：受损RGB/NI/TI质量均下降，missing mass=0，Phase-A SHA不变，dev0/official0；300 steps耗时37.79s，reserved3400MiB。
+- `status=PASS`只表示runner完整执行；科学gate=false。没有final refit、combined checkpoint或dev。
+- 独立result-to-claim=`no/high`；integrity=`WARN/warn`，WARN仅为审计时tracker陈旧与execution-PASS语义，GT/normalization/path/leakage/scope均PASS。
+- 封存V14：不调LR/epoch/temperature/loss/fold/margin/threshold，不消融、多seed、refit、dev、official。它表明仅改变Router loss不足以让all-fit sample-local输入稳定预测heldout relational utility。
+- 完整报告：`results/TRIFUSION_RGBNT201_V14_FOLD_ROBUST_ROUTER_2026-09-02.md`。

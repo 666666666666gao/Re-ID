@@ -1,0 +1,20 @@
+{
+  "date": "2026-09-02",
+  "auditor": "gpt-5.5-xhigh",
+  "overall_verdict": "warn",
+  "integrity_status": "warn",
+  "terminal_status": "Q0_PASS_Q1_FAIL_DO_NOT_PROMOTE",
+  "checks": {
+    "gt_provenance": {"status": "pass", "details": "real identity/camera GT for OOF risk/AP/margin; utility only diagnostic"},
+    "score_normalization": {"status": "pass", "details": "ordinary L2-normalized retrieval geometry; no prediction-statistic normalization"},
+    "result_existence": {"status": "warn", "details": "numbers and hashes match; tracker was stale and status PASS meant execution completion"},
+    "dead_code": {"status": "pass", "details": "Q1 path executed; false gate prevented refit/checkpoint/dev"},
+    "scope": {"status": "pass", "details": "source-only comparator, fold-bound distances, all-fit input/OOF-teacher boundary explicit"},
+    "eval_type": "real_gt_oof_fit_replay_with_engineering_and_proxy_diagnostics"
+  },
+  "claim_impacts": [
+    {"claim": "Q0 executability", "impact": "supported"},
+    {"claim": "reliable fold transfer", "impact": "unsupported"},
+    {"claim": "deployable dev or SOTA gain", "impact": "unsupported"}
+  ]
+}

@@ -1331,3 +1331,57 @@ EXPERIMENT_AUDIT_V13.json
 RESULT_TO_CLAIM_V13.md
 RESULT_TO_CLAIM_V13.json
 ```
+
+## 25. V14 fold-robust retrieval-regret Router 终态（2026-09-02）
+
+V14 只替换 Router identity objective：删除 V13 近均匀的 utility-KL，在每个
+identity-OOF teacher 坐标系内以 cross-camera hardest-positive / nearest-negative
+softplus risk 训练，并由两个 source folds 中相对固定策略 regret 最大的一折
+控制更新。专家、all-fit deployment input、fixed alpha0.2、quality loss、seed42
+和100 epochs/fold全部冻结。source-only minimax fixed slot 不读取 heldout fold；
+任何 feature distance 都不跨 OOF generator。
+
+Q0 在 exact paired cache 上 PASS：fold queries=`190/179/202`、identity=`7/7/7`，
+minimax fixed slot=2、worst risk=`0.7034838`；14/14 Router 参数张量梯度有限且
+非零，optimizer0、dev0、official0、cross-fold distance0、Phase-A SHA前后均为
+`ecfd7fbc...fb77`。耗时9.30s，peak reserved636MiB。
+
+唯一 Q1 共300 Router steps，37.79s，peak allocated/reserved=
+`2459.15/3400MiB`。结果：
+
+| Held-out fold | Risk gain | AP gain | Margin gain | Result |
+|---:|---:|---:|---:|---|
+| 0 | +0.0003567 | -0.0005571 | +0.0004422 | AP FAIL |
+| 1 | +0.0045235 | +0.0049162 | +0.0091674 | PASS |
+| 2 | -0.0016102 | +0.0001532 | -0.0033642 | risk/margin FAIL |
+
+21个identity clusters、10,000次bootstrap的95%下界为risk `-0.0018584`、
+AP `-0.0054337`、margin `-0.0039411`，全部失败。质量门通过：clean→corrupt
+RGB `0.335696→0.108547`、NI `0.332487→0.117822`、TI
+`0.331818→0.116403`；missing mass=0，Phase-A SHA不变，dev0/official0。
+
+因此 `router_oof.gate.passed=false`、`next_phase_authorized=false`、
+`final_training=null`、`combined_checkpoint=null`。JSON 的 `status=PASS`只表示
+runner执行完成，不代表科学门通过。没有final refit、checkpoint或dev。
+
+独立result-to-claim=`no/high`；integrity=`WARN/warn`，WARN仅因审计时tracker
+未更新及execution-PASS语义可能误读，GT、普通L2/risk、实际路径、scope/
+leakage和评价分类均PASS。V14封存：不扫描LR/epoch/temperature/loss/fold/
+margin/threshold，不做refit、dev、official、消融或多seed。
+
+当前可部署最好仍为V8 Phase-B `58.4050 mAP / 59.3939 Rank-1`，距65 mAP为
+6.5950。V14增加的证据是：即便把训练目标直接对齐到fold-local检索几何，
+all-fit sample-local Router输入仍不能可靠预测heldout relational utility；后继
+必须是新的结构假设，而不是继续调Router loss。
+
+证据：
+
+```text
+evidence/trifusion_v14_q0_seed42.json
+evidence/trifusion_v14_q1_seed42.json
+results/TRIFUSION_RGBNT201_V14_FOLD_ROBUST_ROUTER_2026-09-02.md
+EXPERIMENT_AUDIT_V14.md
+EXPERIMENT_AUDIT_V14.json
+RESULT_TO_CLAIM_V14.md
+RESULT_TO_CLAIM_V14.json
+```

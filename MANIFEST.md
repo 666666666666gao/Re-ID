@@ -392,3 +392,14 @@
 | 2026-09-02 10:55 | /tdd | tools/train_v14_fold_robust_router.py | implementation | V14 Q0/Q1/source-minimax/worst-fold runner |
 | 2026-09-02 10:55 | /tdd | configs/RGBNT201/TriFusion-signal-preserving-v14-fold-robust-router-rtx3090.yml | implementation | V14 seed42冻结合同，无utility temperature |
 | 2026-09-02 10:55 | /tdd | docs/TDD_SEAMS.md | documentation | 登记V14已同意public seams |
+| 2026-09-02 11:15 | /run-experiment | evidence/trifusion_v14_q0_seed42.json | experiment | V14 real-cache零步Q0 PASS，optimizer0/dev0/official0 |
+| 2026-09-02 11:15 | /run-experiment | evidence/trifusion_v14_q1_seed42.json | experiment | V14唯一seed42 Q1终态负结果，无refit/dev |
+| 2026-09-02 11:15 | /analyze-results | results/TRIFUSION_RGBNT201_V14_FOLD_ROBUST_ROUTER_2026-09-02.md | analysis | V14 Q0/Q1原始表、质量/资源/claim边界 |
+| 2026-09-02 11:15 | /experiment-audit | EXPERIMENT_AUDIT_V14.md | review | GPT-5.5 xhigh独立完整性审计WARN/warn |
+| 2026-09-02 11:15 | /experiment-audit | EXPERIMENT_AUDIT_V14.json | review | V14完整性审计机器可读结果 |
+| 2026-09-02 11:15 | /result-to-claim | RESULT_TO_CLAIM_V14.md | review | V14 claim_supported=no/high终局判定 |
+| 2026-09-02 11:15 | /result-to-claim | RESULT_TO_CLAIM_V14.json | review | V14 result-to-claim机器可读结果 |
+| 2026-09-02 11:15 | /experiment-plan | refine-logs/EXPERIMENT_TRACKER_20260902_111508.md | implementation | V14 terminal tracker永久快照 |
+| 2026-09-02 11:15 | /experiment-plan | refine-logs/EXPERIMENT_TRACKER.md | implementation | V14 terminal tracker latest |
+| 2026-09-02 11:15 | /analyze-results | findings.md | analysis | 追加V14终态负结果与禁止扫描边界 |
+| 2026-09-02 11:15 | /handoff | docs/TRIFUSION_RGBNT201_CURRENT_COMPLETE_HANDOFF_2026-09-01.md | documentation | 主交接追加V14 §25终态 |
