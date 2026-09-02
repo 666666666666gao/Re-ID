@@ -10,6 +10,12 @@ CONFIG = (
     / "RGBNT201"
     / "TriFusion-signal-preserving-v8-router-rtx3090.yml"
 )
+V12_CONFIG = (
+    ROOT
+    / "configs"
+    / "RGBNT201"
+    / "TriFusion-signal-preserving-v12-complete-path-router-rtx3090.yml"
+)
 
 
 def test_v8_router_phase_gate_requires_oof_gain_alignment_and_quality() -> None:
@@ -68,3 +74,38 @@ def test_v8_router_runner_uses_project_namespace_after_signal_import() -> None:
 
     assert "from modeling.trifusion.signal_preserving_v8_router import" not in source
     assert source.count("from trifusion.signal_preserving_v8_router import") == 2
+
+
+def test_v12_router_changes_only_the_oof_teacher_identity() -> None:
+    from tools.run_signal_preserving_v5 import load_raw_config
+
+    v8 = load_raw_config(CONFIG)
+    v12 = load_raw_config(V12_CONFIG)
+
+    for section in (
+        "DATA",
+        "SIGNAL",
+        "MODEL",
+        "OPTIMIZATION",
+        "ROUTER",
+        "QUALITY",
+        "GATES",
+        "PROTOCOL",
+    ):
+        assert v12[section] == v8[section]
+    assert v12["EXPERIMENT"]["SEED"] == v8["EXPERIMENT"]["SEED"] == 42
+    assert (
+        v12["INITIALIZATION"]["PHASE_A_CHECKPOINT"]
+        == v8["INITIALIZATION"]["PHASE_A_CHECKPOINT"]
+    )
+    assert (
+        v12["INITIALIZATION"]["PHASE_A_CHECKPOINT_SHA256"]
+        == v8["INITIALIZATION"]["PHASE_A_CHECKPOINT_SHA256"]
+    )
+    assert v12["INITIALIZATION"]["OOF_MARGIN_CACHE"].endswith(
+        "/trifusion_v12_complete_path_oof_seed42_c71d3de/"
+        "oof_router_margin_targets.pth"
+    )
+    assert v12["INITIALIZATION"]["OOF_MARGIN_CACHE_SHA256"] == (
+        "fdacc405b14e1fd2613dd11911338b8dd8a6c10805744f6908454301c14ac681"
+    )
