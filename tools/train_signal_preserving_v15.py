@@ -127,7 +127,7 @@ def _load_contract(config_path: Path) -> dict[str, Any]:
 
 
 def _criterion(config: dict[str, Any]) -> Any:
-    from modeling.trifusion.signal_preserving_v15 import CollaborativeV15Criterion
+    from trifusion.signal_preserving_v15 import CollaborativeV15Criterion
 
     loss = config["LOSS"]
     return CollaborativeV15Criterion(
@@ -227,7 +227,7 @@ def _build_fold_model(
 
 
 def _training_loader(records: list[Any], config: dict[str, Any]) -> Any:
-    from modeling.trifusion.aligned_data import build_aligned_train_loader
+    from trifusion.aligned_data import build_aligned_train_loader
 
     return build_aligned_train_loader(
         records,
@@ -648,7 +648,7 @@ def _run_q1(
     from tools.diagnose_v6_oracle_complementarity import QueryRetrievalScores
     from tools.probe_v8_frozen_router import select_cross_camera_records
     from tools.run_signal_preserving_v5 import _set_seed
-    from modeling.trifusion.signal_preserving_v13 import (
+    from trifusion.signal_preserving_v13 import (
         identity_cluster_bootstrap_lower_bound,
     )
 
