@@ -191,6 +191,22 @@
   result or metric fraud. Do not implement Q1/Q2, train, access dev/official,
   run ablations, or scan DINO choices. Any successor must isolate the complete
   measured feature path from held-out identities without rerunning baseline.
+- V12-Q0 repaired the complete-path identity leakage by training a raw-CLIP
+  Signal teacher and the three experts only on the other 94 fit identities in
+  each fold. Across 571 held-out-fit queries, fixed CNN/Transformer/Mamba
+  residuals reach `83.7717/86.9549/85.8870 mAP`, residual bank reaches
+  `87.9968`, and diagnostic hard Oracle reaches `92.2679`, or `+5.3130 mAP`
+  over the strongest fixed expert. All experts and modalities have unique
+  utility wins, so the preregistered Q0 qualification passed.
+- V12-Q1 reused the exact V8 Phase-A checkpoint, Router structure and all
+  Router hyperparameters, changing only the complete-path OOF cache. It failed
+  the train-only gate: learned/fixed OOF margin is
+  `-0.117330/-0.099975`, and learned/majority Top-1 is
+  `12.2592%/16.8126%`. Quality corruption and missing-zero gates pass, but no
+  final refit or combined checkpoint was produced; dev/official access is zero.
+  Seal V12 without dev, official, ablations, multiple seeds, HFER or tuning
+  scans. Current deployable dev best remains V8 Phase-B `58.4050 mAP /
+  59.3939 Rank-1`.
 
 ## Remote experiment constraints
 

@@ -105,6 +105,19 @@
 > Oracle gain. This is leakage/saturation evidence, not a deployable result.
 > V11 is sealed before model implementation, training or dev; see the
 > [V11-Q0 report](results/TRIFUSION_RGBNT201_V11_DINOV2_OOF_RESIDUAL_QUALIFICATION_2026-09-02.md).
+> V12 repaired that hidden leakage by training each fold's Signal teacher and
+> CNN/Transformer/Mamba experts only on the other 94 fit identities. The
+> complete-path OOF residuals are non-saturated: fixed CNN/Transformer/Mamba
+> reach **83.7717/86.9549/85.8870 mAP**, while the diagnostic hard Oracle
+> reaches **92.2679**, a **5.3130 mAP** gain over the best fixed expert. All
+> experts and modalities have unique utility wins. However, the unchanged V8
+> Router trained from these targets fails its fit-only OOF gate: learned margin
+> **-0.117330** is below fixed **-0.099975**, and Top-1 **12.2592%** is below
+> the **16.8126%** majority policy. Quality-response gates pass, but no combined
+> checkpoint is produced and dev/official remain unopened. V12 is therefore
+> sealed before deployable evaluation; the current dev best remains V8
+> Phase-B **58.4050 mAP / 59.3939 Rank-1**. See the
+> [V12 terminal report](results/TRIFUSION_RGBNT201_V12_COMPLETE_PATH_OOF_ROUTER_2026-09-02.md).
 > Dataset files, pretrained weights, checkpoints, and remote artifacts are not
 > distributed in this repository. The original DeMo project and attribution are
 > preserved below.

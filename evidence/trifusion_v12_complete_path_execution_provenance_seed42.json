@@ -1,0 +1,47 @@
+{
+  "schema_version": "trifusion-v12-complete-path-execution-provenance-v1",
+  "seed": 42,
+  "runtime": "remote_rtx3090_only",
+  "preflight": {
+    "project_commit": "c71d3de65102e2143146ec2f292fa907a65ca792",
+    "local_evidence": "evidence/trifusion_v12_complete_path_preflight_seed42.json",
+    "remote_result": "/root/autodl-tmp/trifusion-v2/artifacts/trifusion_v12_complete_path_preflight_seed42_c71d3de/run_summary.json",
+    "result_sha256": "f14b79466c8c32cfeb9bcd2f024a6dc05ff240aa14a1ac835d99eba644dc46c5"
+  },
+  "q0_complete_path_oof": {
+    "project_commit": "c71d3de65102e2143146ec2f292fa907a65ca792",
+    "config": "configs/RGBNT201/TriFusion-signal-preserving-v12-complete-path-oof-rtx3090.yml",
+    "config_sha256": "efbe735fb8e4fe84f33b0d6bed94c9fb2aba67490d7ba16eb977ab1fa4885445",
+    "runner": "tools/build_v12_complete_path_oof_targets.py",
+    "runner_sha256": "fc13354b1065c46677122ee9cf63816087facca4e0e98ec5e6e2fb0dece141e4",
+    "local_evidence": "evidence/trifusion_v12_complete_path_oof_seed42.json",
+    "remote_result": "/root/autodl-tmp/trifusion-v2/artifacts/trifusion_v12_complete_path_oof_seed42_c71d3de/run_summary.json",
+    "result_sha256": "9105b86a9c079c44843e9b118a21599746a87d279370341b8cf8d26bd18a8b69",
+    "remote_log": "/root/autodl-tmp/trifusion-v2/artifacts/trifusion_v12_complete_path_oof_seed42_c71d3de.log",
+    "log_sha256": "208faa1a3dad529341232760b3f35f6c08b54558c71a56b001b5d4a2da389126",
+    "remote_progress_sha256": "95ca42c7c04f0ece8cb3bddd9860ebbaf0e543ee4ccdaacdb9c4b27ed63d63e4",
+    "target_cache_sha256": "fdacc405b14e1fd2613dd11911338b8dd8a6c10805744f6908454301c14ac681"
+  },
+  "q1_router": {
+    "project_commit": "5c2b8ee02a0356877f80aea6defb4facbbbead14",
+    "config": "configs/RGBNT201/TriFusion-signal-preserving-v12-complete-path-router-rtx3090.yml",
+    "config_sha256": "d77889613c6855d1b4f405852bf1d3640692365aaedc1cda715f6b972bf9aaa5",
+    "runner": "tools/train_v8_oof_margin_router.py",
+    "runner_sha256": "259fd8ecdf15c93d8401eb007cd060d0aadaf15a7c5a13084295c2a10ea666d4",
+    "local_evidence": "evidence/trifusion_v12_complete_path_router_seed42.json",
+    "remote_result": "/root/autodl-tmp/trifusion-v2/artifacts/trifusion_v12_complete_path_router_seed42_5c2b8ee/run_summary.json",
+    "result_sha256": "c42f1148b6c703017e59943dbe6ec87593ed19e8628ffa9764923a855f3dc9b5",
+    "remote_log": "/root/autodl-tmp/trifusion-v2/artifacts/trifusion_v12_complete_path_router_seed42_5c2b8ee.log",
+    "log_sha256": "2d9799429d76ad08d90207a0fd13e6d788dfcd68bcb521cf9971d3c46d280186",
+    "quality_cache_sha256": "76807e0f812c65f833cb5bd5cf405f3ba6980939bbc967bf5e65a272e472b972",
+    "phase_a_checkpoint_sha256": "d37ca17fad8a2786355d575b009f453e170238f3057c5db8f68789bb32b1b40f",
+    "combined_checkpoint": null
+  },
+  "canonicality": {
+    "q0_remote_and_local_result_sha_match": true,
+    "q1_remote_and_local_result_sha_match": true,
+    "q0_artifacts_form_one_ordered_fold0_fold1_fold2_terminal_sequence": true,
+    "active_training_processes_after_q1": 0,
+    "note": "The byte-identical raw receipts and remote logs supersede any earlier paraphrase containing different runtime totals or cache hashes."
+  }
+}

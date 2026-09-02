@@ -1140,3 +1140,103 @@ results/TRIFUSION_RGBNT201_V11_DINOV2_OOF_RESIDUAL_QUALIFICATION_2026-09-02.md
 EXPERIMENT_AUDIT_V11_Q0.md
 EXPERIMENT_AUDIT_V11_Q0.json
 ```
+
+## 23. V12 complete-path identity-OOF teacher 与 Router 终态（2026-09-02）
+
+V12 直接修复 V11 已证明的完整路径身份泄漏。固定三折内，每折从 raw
+`ViT-B-16.pt` 初始化一个内部 Signal 教师，只在另外94个fit身份上训练50
+epoch；随后 CNN/Transformer/Mamba expert 也只在相同94身份上训练20 epoch。
+Signal 和 expert 均只使用 final epoch，不读取 held-out 指标选 checkpoint。
+每折 held-out 为47身份，train/heldout overlap 全为0；可评价 query 数依次为
+`190/179/202=571`。fold Signal 是方法内部教师，不是 baseline 重跑，也不报告
+为部署模型。
+
+### 23.1 工程门与 Q0 资格
+
+公共接缝经历真实 RED→GREEN，远端相邻测试8/8通过。真实 fold0 B64/K8
+preflight 完成1步，191个 gradient tensors，loss=`13.70739`，0 overflow，
+allocated/reserved=`10701.82/11502 MiB`，dev0/official0。
+
+正式 Q0 完成三折 Signal50+Expert20：
+
+- 总 optimizer steps=`5839`，overflow=0；
+- 峰值 allocated/reserved=`11375.61/17530 MiB`；
+- 耗时=`3958.52s`；
+- dev access=0，official access=0；
+- raw CLIP SHA=`5806e77c...416f`；
+- target cache SHA=`fdacc405...ac681`。
+
+完整路径 held-out residual-only 聚合结果：
+
+| 输出 | mAP | Rank-1 |
+|---|---:|---:|
+| CNN residual | 83.7717 | 85.6392 |
+| Transformer residual | 86.9549 | 89.4921 |
+| Mamba residual | 85.8870 | 88.6165 |
+| residual bank | 87.9968 | 90.1926 |
+| residual expert hard Oracle | **92.2679** | **95.2715** |
+
+Oracle 比最强固定 expert 高 `5.3130 mAP / 5.7793 Rank-1`。AP 独有胜出
+CNN/Transformer/Mamba=`79/118/76`；slot-margin expert winner=
+`210/186/175`，RGB/NI/TI winner=`293/119/159`。slot Oracle mean margin
+`0.099913`，比最强 fixed slot 高 `0.186130`。所有 fixed 输出均低于99 mAP，
+完整路径隔离、非饱和、专家/模态多样性、Oracle、训练计划、运行时和访问门
+全部通过，故 Q0 唯一授权了固定 Q1 Router。
+
+上述数值分类为 `real_gt_train_identity_oof` 与
+`teacher_proxy_train_identity_oof`；是 train-only 资格诊断，不是 dev、official
+或 deployable mAP。
+
+### 23.2 Q1 Router 失败并停止
+
+Q1 保持 V8 Phase-A checkpoint、层级 Router、质量退化、100 epoch、LR、
+alpha 和全部门槛不变，只替换成 V12 cache。三折各100 epoch，共300 Router
+optimizer steps；Phase-A expert state SHA 前后同为 `ecfd7fbc...fb77`，没有
+expert training。
+
+| Router 门 | Learned | Fixed / majority | 结论 |
+|---|---:|---:|---|
+| OOF expected identity margin | -0.117330 | -0.099975 | FAIL |
+| Top-slot accuracy | 12.2592% | 16.8126% | FAIL |
+
+质量语义门通过：missing modality 最大质量为0；扰动 RGB/NI/TI 后各自平均
+质量从 `0.325516/0.316737/0.357746` 降至
+`0.111743/0.104597/0.144510`。但这不改变身份效用路由的两项失败。
+
+因此 `next_phase_authorized=false`、`final_training=null`、
+`combined_checkpoint=null`。Q1 耗时32.36s，峰值 allocated/reserved=
+`2459.15/3400 MiB`，dev0、official0。没有运行 V12-R001，也没有新的可部署
+指标；当前同协议最好仍是 V8 Phase-B fused `58.4050 mAP / 59.3939 Rank-1`。
+
+### 23.3 Claim、审计与封存边界
+
+独立 result-to-claim=`partial/high`：只支持“完整路径 OOF 产生非饱和且具有
+专家/模态多样性的 residual utility 教师”，不支持 Router 增益、65 mAP、
+official、SOTA 或泛化。独立完整性审计=
+`WARN/warn/Q0_QUALIFIED_Q1_FAILED_DO_NOT_PROMOTE`；GT、完整路径隔离、普通
+ReID L2、实际代码路径、scope 和评价类型均 PASS。WARN 来自大 checkpoint/
+cache 仍只在远端，轻量 GitHub clone 不能独立重哈希；终态 provenance wrapper
+已补齐项目 commit、config/runner/log/result SHA，但不取消 remote-only 包装限制。
+
+Q0 原始 summary 的本地/远端 SHA 都为 `9105b86a...8a8b69`，Q1 都为
+`c42f1148...c9b5`。Q0 目录只有一个按 fold0→fold1→fold2→terminal 顺序生成的
+artifact 序列；以原始 summary 和日志为权威，任何较早转述中的不同步数、耗时
+或 cache SHA 均作废。
+
+V12 至此封存：不访问dev/official，不做消融、多种子、HFER，且不扫描fold、
+epoch、LR、alpha、margin temperature 或门槛。一个与现象一致但未被因果
+消融证明的解释是 complete-path fold target 与 all-fit Phase-A Router 输入存在
+表示/分布错配；后继必须是新的预注册监督-表示对齐假设，并先在train-only
+identity-disjoint门上让learned Router严格超过固定策略。
+
+证据：
+
+```text
+evidence/trifusion_v12_complete_path_preflight_seed42.json
+evidence/trifusion_v12_complete_path_oof_seed42.json
+evidence/trifusion_v12_complete_path_router_seed42.json
+evidence/trifusion_v12_complete_path_execution_provenance_seed42.json
+results/TRIFUSION_RGBNT201_V12_COMPLETE_PATH_OOF_ROUTER_2026-09-02.md
+EXPERIMENT_AUDIT_V12.md
+EXPERIMENT_AUDIT_V12.json
+```

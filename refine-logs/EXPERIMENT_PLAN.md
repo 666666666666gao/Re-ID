@@ -6,6 +6,8 @@
 
 **Date**：2026-09-02
 
+**Terminal status**：V12-Q0 通过；V12-Q1 Router OOF 门失败；V12-R001 dev、official、消融和多种子均未获授权。V12 已按预注册规则在 train-only 阶段封存。
+
 ## Claim Map
 
 | Claim | Why It Matters | Minimum Convincing Evidence | Linked Blocks |
@@ -83,6 +85,14 @@
 - [x] fold Signal 明确是内部教师而非 baseline 复现
 - [x] 主结果前不做消融、多 seed 或 official
 - [x] 固定单配置和 fail-closed 门，禁止事后扫描
-- [ ] V12-Q0 RED→GREEN 与真实 preflight
-- [ ] V12-Q0 三折完整路径隔离证据
-- [ ] 条件式 Router 与唯一 dev
+- [x] V12-Q0 RED→GREEN 与真实 preflight
+- [x] V12-Q0 三折完整路径隔离证据：所有门通过
+- [x] 条件式 Router：OOF margin 与 Top-1 两门失败，未访问 dev
+
+## Terminal Outcome
+
+- Q0：三折 `190/179/202=571` queries；完整路径 train/heldout identity overlap 均为 0；CNN/Transformer/Mamba residual mAP=`83.7717/86.9549/85.8870`，residual bank=`87.9968`，hard Oracle=`92.2679`，Oracle 比最强固定 expert 高 `5.3130 mAP`。三专家和 RGB/NI/TI 均有独有 slot-margin 胜例，资格门通过。
+- Q1：复用原 V8 Phase-A、Router 结构与全部超参数，只替换 Q0 cache。learned/fixed OOF margin=`-0.117330/-0.099975`；learned/majority Top-1=`12.2592%/16.8126%`，两项身份路由门失败。三模态 corruption-response 和 missing-zero 门通过。
+- Q1 共 300 Router optimizer steps，expert state 不变；`combined_checkpoint=null`、dev0、official0。没有新的 deployable dev mAP，当前同协议可部署最佳仍为 V8 Phase-B fused `58.4050/59.3939`。
+- 结论：C1 获得 train-only diagnostic 支持；C2 不受支持。不得通过扫描 fold、epoch、LR、alpha、margin temperature 或门槛挽救 V12。
+- 独立 result-to-claim=`partial/high`；完整性审计=`WARN/warn/Q0_QUALIFIED_Q1_FAILED_DO_NOT_PROMOTE`。WARN 仅来自远端大 checkpoint/cache 不能在轻量本地 clone 中重新哈希，不改变 Q1 负结论。

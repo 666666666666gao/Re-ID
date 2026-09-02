@@ -1,5 +1,15 @@
 # Research Findings
 
+## 2026-09-02 — V12 完整路径 OOF 有互补，但 Router 泛化门失败
+
+- V12 修复 V11 的完整路径泄漏：三折内 Signal 和专家均只在94个fit身份训练，对47个held-out身份的交集为0；queries=`190/179/202=571`，Signal50/Expert20 final-only，dev0/official0。
+- residual-only mAP/Rank-1：CNN=`83.7717/85.6392`，Transformer=`86.9549/89.4921`，Mamba=`85.8870/88.6165`，bank=`87.9968/90.1926`，hard Oracle=`92.2679/95.2715`。Oracle 比最强固定专家高`5.3130 mAP`；三专家、三模态均有独有slot-margin胜例。Q0全部资格门通过。
+- 复用既有 V8 Phase-A 与完全相同 Router 超参、只替换 V12 cache 后，三折各100 epoch。learned OOF margin=`-0.117330`低于fixed=`-0.099975`；Top-slot=`12.2592%`低于majority=`16.8126%`，所以Q1失败。
+- 质量语义独立通过：missing mass=0；RGB/NI/TI受损后自身质量从`0.325516/0.316737/0.357746`降到`0.111743/0.104597/0.144510`。Phase-A expert state前后不变，Q1共300 optimizer steps。
+- `combined_checkpoint=null`、dev0、official0；没有新的可部署mAP。当前同协议最佳仍为V8 Phase-B fused `58.4050/59.3939`，不支持65、official或SOTA。
+- 一个与证据一致但非因果结论的解释是 complete-path fold teacher target 与 all-fit Phase-A Router输入发生表示/分布错配。V12封存，不扫描fold/epoch/LR/alpha/temperature/门槛；任何后继必须是新预注册监督-表示对齐假设。
+- 证据：`evidence/trifusion_v12_complete_path_{preflight,oof,router}_seed42.json`；报告：`results/TRIFUSION_RGBNT201_V12_COMPLETE_PATH_OOF_ROUTER_2026-09-02.md`。
+
 ## 2026-09-02 — V11-Q0 residual-only OOF 仍被 all-fit Signal 场饱和
 
 - 三个专家 checkpoint 的 adapter 训练身份严格隔离，距离也只在各 held-out fold 内计算；但它们共享的 frozen Signal token field 已见全部141个fit身份，因此完整表示路径并不identity-unseen。

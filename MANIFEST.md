@@ -316,3 +316,15 @@
 | 2026-09-02 07:34 | /run-experiment | configs/RGBNT201/TriFusion-signal-preserving-v12-complete-path-oof-rtx3090.yml | implementation | V12 seed42 Signal50+专家20三折train-only固定配置 |
 | 2026-09-02 07:34 | /run-experiment | tools/build_v12_complete_path_oof_targets.py | implementation | V12完整路径identity-OOF教师preflight、三折训练、margin cache与资格receipt |
 | 2026-09-02 08:47 | /run-experiment | configs/RGBNT201/TriFusion-signal-preserving-v12-complete-path-router-rtx3090.yml | implementation | 复用冻结V8 Router合同，仅替换为V12完整路径OOF margin cache及其SHA |
+| 2026-09-02 09:05 | /analyze-results | evidence/trifusion_v12_complete_path_preflight_seed42.json | research | V12 fold0真实B64/K8单步preflight、191 gradients、0 overflow、dev0/official0 |
+| 2026-09-02 09:05 | /analyze-results | evidence/trifusion_v12_complete_path_oof_seed42.json | research | V12三折完整路径OOF终态：非饱和、多样性、Oracle与隔离全门PASS |
+| 2026-09-02 09:05 | /analyze-results | evidence/trifusion_v12_complete_path_router_seed42.json | research | V12 Router终态：margin/Top1门FAIL、quality PASS、combined null、dev0/official0 |
+| 2026-09-02 09:05 | /experiment-audit | evidence/trifusion_v12_complete_path_execution_provenance_seed42.json | research | 绑定V12项目commit、config/runner/log/result与remote cache/checkpoint SHA |
+| 2026-09-02 09:05 | /analyze-results | results/TRIFUSION_RGBNT201_V12_COMPLETE_PATH_OOF_ROUTER_2026-09-02.md | research | V12 Q0窄资格正证据与Q1 Router失败的完整终态报告 |
+| 2026-09-02 09:05 | /result-to-claim | .aris/traces/result-to-claim/2026-09-02_run07/ | research | 独立GPT-5.5审阅partial/high；只支持Q0 train-only资格，不授权dev |
+| 2026-09-02 09:05 | /experiment-audit | EXPERIMENT_AUDIT_V12.md | research | 独立完整性审计WARN/warn/Q0_QUALIFIED_Q1_FAILED_DO_NOT_PROMOTE |
+| 2026-09-02 09:05 | /experiment-audit | EXPERIMENT_AUDIT_V12.json | research | V12完整性审计机器可读终局 |
+| 2026-09-02 09:05 | /experiment-plan | refine-logs/EXPERIMENT_PLAN.md | research | 回填V12 Q0 PASS、Q1 FAIL并关闭dev/official/消融/多种子 |
+| 2026-09-02 09:05 | /experiment-plan | refine-logs/EXPERIMENT_TRACKER.md | research | V12 T0/P1/Q0/Q1与独立review全部终态 |
+| 2026-09-02 09:05 | /handoff | docs/TRIFUSION_RGBNT201_CURRENT_COMPLETE_HANDOFF_2026-09-01.md | documentation | 统一交接续写V12完整路径教师、Router负结果、哈希与接续边界 |
+| 2026-09-02 09:05 | /handoff | README.md | documentation | 公开入口更新V12 Q0资格通过、Q1失败和当前deployable best |
