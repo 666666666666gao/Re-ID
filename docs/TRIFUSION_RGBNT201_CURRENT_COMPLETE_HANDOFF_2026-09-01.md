@@ -2719,3 +2719,24 @@ current HEAD ad7841d不同，绑定依赖执行源码SHA，不把文档commit当
 初始化完整图库只读诊断的独立审计另在run11进行，27份输入保持冻结；
 该诊断不是新增训练或checkpoint选择，不能把初始化fused当作新的部署结果。
 目前没有新GPU作业，V23尚未实现；下一步核查新的表征改动原始论文与实际源码。
+
+### 39.8 初始化完整图库独立诊断审计完成（2026-09-05）
+
+初始化完整图库诊断的独立审计已返回：overall/integrity WARN，
+engineering_integrity=pass_with_provenance_limitations，
+scientific_qualification=fail_to_promote_descriptive_only。
+审计独立重算完整query mask、45组fold/阶段/输出指标、21身份、AP/R1变化计数及
+两终态相对初始化的差值，最大全精度差2.842170943040401e-14；
+结果表六位小数最大舍入差4.958391315312838e-7。未发现伪GT、自归一化评分、
+虚构聚合值、隐藏优化/选点/dev访问或数值漂移证据。
+
+审计实际算术使用E:/python.exe 3.12.6和标准JSON/整数/浮点运算，
+不是模型/图像/embedding/distance重算；权重、CLIP、图像与远端文件持有依旧限于清单。
+protocol本地CRLF与远端LF只在换行归一化后SHA匹配，不能写成原始字节全相同。
+比较JSON保存配对变化计数汇总，显式逐query差值行未另存；
+初始化和终态原始AP/Rank数组及query身份完整保存，足以精确重算全部变化。
+这是复用的train-internal完整路径OOF描述性诊断，不是独立验证或官方结果。
+它不改变V22 Q1_FAIL，不选择初始化checkpoint，也不提供D1/dev/official资格。
+原始报告EXPERIMENT_AUDIT_V22_INITIALIZATION.md/json、实际请求/回复、27份输入SHA
+及审计时result/tracker快照均保留于trace run11。派发模型gpt-5.5/xhigh来自实际工具请求；
+报告自身auditor字符串codex-gpt-5-direct-bounded-audit原样保留。

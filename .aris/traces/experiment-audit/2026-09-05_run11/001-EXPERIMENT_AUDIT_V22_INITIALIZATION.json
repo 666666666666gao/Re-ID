@@ -1,0 +1,437 @@
+{
+  "date": "2026-09-05",
+  "auditor": "codex-gpt-5-direct-bounded-audit",
+  "overall_verdict": "warn",
+  "integrity_status": "warn",
+  "engineering_integrity": "pass_with_provenance_limitations",
+  "scientific_qualification": "fail_to_promote_descriptive_only",
+  "evaluation_type": {
+    "classification": "real_gt_train_internal_complete_path_oof_reused_development_diagnostic",
+    "source_evaluation_type": "read_only_fixed_source_initialization_on_reused_train_internal_complete_path_oof_full_gallery",
+    "terminal_evaluation_type": "real_gt_train_internal_complete_path_oof_reused_development_qualification",
+    "is_independent_validation": false,
+    "dev_access_count": 0,
+    "official_test_access_count": 0,
+    "d1_authorized_or_executed": false
+  },
+  "checks": {
+    "A_ground_truth_scope": {
+      "status": "pass",
+      "details": "GT derives from dataset identity and camera labels. The full-gallery diagnostic excludes only queries without cross-camera positives while retaining those records as gallery distractors. Fit and heldout identities are disjoint in each fold. V12 scope differs because it evaluated an eligible-only heldout subset and residual/bank outputs, so V12 about 88 mAP is not directly comparable to current full-gallery fused outputs.",
+      "evidence": [
+        "protocols/rgbnt201_dev_v1.json:126-130",
+        "tools/run_signal_baseline_dev.py:27-37",
+        "tools/build_v12_complete_path_oof_targets.py:29-56",
+        "tools/build_v12_complete_path_oof_targets.py:156-173",
+        "tools/audit_v17_full_gallery.py:14-41",
+        "tools/diagnose_v22_initialization_full_gallery.py:44-48",
+        "evidence/trifusion_v22_initialization_full_comparison_20260905.json:9-27",
+        "tools/build_v12_complete_path_oof_targets.py:610-617",
+        "results/TRIFUSION_RGBNT201_V22_INITIALIZATION_FULL_GALLERY_2026-09-05.md:6"
+      ]
+    },
+    "B_score_normalization_and_arithmetic": {
+      "status": "pass",
+      "details": "No metric is divided by the model's own max/min/mean prediction statistic. Feature L2 normalization precedes Euclidean distance, then AP and ranks are computed from sorted distances and real identity-camera labels. Independent recomputation matched fold metrics, aggregate metrics, identity rows, paired-count summaries, and terminal-minus-initial deltas with maximum full-precision difference 2.842170943040401e-14.",
+      "evidence": [
+        "tools/train_signal_preserving_v18.py:133-150",
+        "tools/diagnose_v6_oracle_complementarity.py:91-104",
+        "tools/diagnose_v22_initialization_full_gallery.py:118-126",
+        "evidence/trifusion_v22_initialization_full_comparison_20260905.json:7-8",
+        "evidence/trifusion_v22_initialization_full_gallery_20260905.json:37850-37962",
+        "results/TRIFUSION_RGBNT201_V22_INITIALIZATION_FULL_GALLERY_2026-09-05.md:9-15"
+      ],
+      "maximum_difference": 2.842170943040401e-14,
+      "markdown_rounding_max_difference": 4.958391315312838e-7
+    },
+    "C_source_hashes_and_possession": {
+      "status": "warn",
+      "details": "All 27 primary files named in the request are locally present and match the request manifest. The diagnostic and observation records show matching source/config/checkpoint ledgers, but remote checkpoints, CLIP weights, and image bytes were not independently possessed or tensor-loaded by this audit. The local protocol file is CRLF; its LF-normalized hash matches the remote source ledger.",
+      "evidence": [
+        "tools/diagnose_v22_initialization_full_gallery.py:24-43",
+        "tools/diagnose_v22_initialization_full_gallery.py:127-130",
+        "evidence/trifusion_v22_initialization_diagnostic_observation_210912_20260905.json:10-220",
+        "evidence/trifusion_v22_terminal_file_verification_20260905.json:75-79",
+        "configs/RGBNT201/TriFusion-signal-preserving-v22-camera-negative-rtx3090.yml:49-64",
+        "evidence/trifusion_v22_initialization_diagnostic_observation_210912_20260905.json:145-191"
+      ],
+      "primary_file_hash_mismatches_against_request": 0,
+      "line_ending_note": {
+        "file": "protocols/rgbnt201_dev_v1.json",
+        "local_raw_sha256": "f7f6f8a906c06fec4918929fb5c17abfc197986b99e017aca1d3e15831c1541d",
+        "local_lf_normalized_sha256": "d916e7daaa1d55b179c1ec77e93128b6e6a8d1526adc9eac060ea8e733881946",
+        "remote_source_ledger_sha256": "d916e7daaa1d55b179c1ec77e93128b6e6a8d1526adc9eac060ea8e733881946"
+      }
+    },
+    "D_called_paths_and_read_only_behavior": {
+      "status": "pass",
+      "details": "The diagnostic imports the V22 builder and V18 evaluator, rebuilds fixed initializations, runs eval/inference mode, counts forward calls and triplets, asserts model state unchanged and gradients None, and records zero optimizer steps, zero checkpoint writes, zero dev/official access, and no checkpoint selection.",
+      "evidence": [
+        "tools/diagnose_v22_initialization_full_gallery.py:15-19",
+        "tools/train_signal_preserving_v22.py:59-89",
+        "tools/train_signal_preserving_v18.py:133-152",
+        "modeling/trifusion/signal_preserving_v8.py:614-635",
+        "modeling/trifusion/signal_preserving_v8.py:670-686",
+        "tools/diagnose_v22_initialization_full_gallery.py:49-66",
+        "tools/diagnose_v22_initialization_full_gallery.py:84-97",
+        "tools/diagnose_v22_initialization_full_gallery.py:131-142",
+        "evidence/trifusion_v22_initialization_diagnostic_observation_210912_20260905.json:5-8",
+        "evidence/trifusion_v22_initialization_diagnostic_observation_210912_20260905.json:276-277"
+      ]
+    },
+    "E_retention_scope_and_qualification": {
+      "status": "warn",
+      "details": "Raw initialization and terminal evidence retain all folds, outputs, query indices, AP arrays, rank arrays, gallery manifests, bindings, and state checks. The derived comparison retains all 45 metric rows and all 21 identity rows, but paired query changes are retained as count summaries rather than explicit per-query delta rows. Scientific qualification remains failed and no next phase is authorized.",
+      "evidence": [
+        "evidence/trifusion_v22_initialization_full_gallery_20260905.json:57-58",
+        "evidence/trifusion_v22_initialization_full_gallery_20260905.json:5060-5227",
+        "evidence/trifusion_v22_initialization_full_gallery_20260905.json:5233-6621",
+        "evidence/trifusion_v22_initialization_full_comparison_20260905.json:143-548",
+        "evidence/trifusion_v22_initialization_full_comparison_20260905.json:550-575",
+        "evidence/trifusion_v22_initialization_full_comparison_20260905.json:4122-4195",
+        "evidence/trifusion_v22_q1_seed42_5ae096b.json:82130-82152",
+        "refine-logs/v22/EXPERIMENT_PLAN.md:109-127"
+      ]
+    },
+    "F_claim_support": {
+      "status": "warn",
+      "details": "Core numeric and boundary claims are supported. Claims that the diagnostic changes qualification, proves a unique causal mechanism, or that the comparison JSON itself stores every per-query delta row are rejected or need qualification.",
+      "evidence": [
+        "results/TRIFUSION_RGBNT201_V22_INITIALIZATION_FULL_GALLERY_2026-09-05.md:3-7",
+        "results/TRIFUSION_RGBNT201_V22_INITIALIZATION_FULL_GALLERY_2026-09-05.md:121-128",
+        "evidence/trifusion_v22_initialization_full_comparison_20260905.json:4122-4204",
+        "evidence/trifusion_v22_q1_seed42_5ae096b.json:82142-82152"
+      ]
+    }
+  },
+  "claims": [
+    {
+      "id": "C1",
+      "claim": "The fixed-initialization diagnostic completed 3 models, 26 model calls, and 3126 triplet forwards with optimizer steps 0 and checkpoint writes 0.",
+      "verdict": "supported",
+      "impact": "usable as bounded execution-integrity evidence"
+    },
+    {
+      "id": "C2",
+      "claim": "Initialization fused is 80.590328 mAP and 83.712785 Rank-1 on the same full-gallery diagnostic.",
+      "verdict": "supported",
+      "impact": "usable as descriptive same-gallery initialization value"
+    },
+    {
+      "id": "C3",
+      "claim": "Batch-hard terminal fused is +0.050348 mAP versus initialization, so the bounded evidence does not support overall fused mAP decline under ordinary continuation.",
+      "verdict": "supported_with_boundary",
+      "impact": "valid only for this reused OOF full-gallery diagnostic and these outputs"
+    },
+    {
+      "id": "C4",
+      "claim": "MCNL terminal fused is -1.605874 mAP versus initialization.",
+      "verdict": "supported",
+      "impact": "supports negative MCNL terminal-minus-initial descriptive result"
+    },
+    {
+      "id": "C5",
+      "claim": "The old V12 about 88 mAP result must not be directly subtracted from current V22 fused full-gallery results.",
+      "verdict": "supported",
+      "impact": "requires scope/output qualifier in any mechanism discussion"
+    },
+    {
+      "id": "C6",
+      "claim": "The diagnostic changes V22 Q1 qualification, authorizes D1/dev/official access, or selects an initialization checkpoint.",
+      "verdict": "rejected",
+      "impact": "must not be claimed"
+    },
+    {
+      "id": "C7",
+      "claim": "The comparison JSON preserves every per-query paired delta row.",
+      "verdict": "needs_qualifier",
+      "impact": "comparison JSON has count summaries; raw arrays permit exact recomputation"
+    },
+    {
+      "id": "C8",
+      "claim": "This diagnostic proves a unique mechanism or camera-causal failure reason.",
+      "verdict": "unsupported",
+      "impact": "mechanism discussion must stay descriptive and bounded"
+    }
+  ],
+  "recomputation": {
+    "tools": [
+      "PowerShell Get-Content",
+      "ripgrep rg",
+      "PowerShell Get-FileHash SHA256",
+      "E:\\python.exe 3.12.6 with stdlib json/hashlib/re/time collections"
+    ],
+    "prohibited_operations_avoided": [
+      "no model loading",
+      "no checkpoint tensor loading",
+      "no image loading",
+      "no GPU operation",
+      "no training",
+      "no inference",
+      "no remote command",
+      "no network",
+      "no download",
+      "no package installation",
+      "no retrieval run"
+    ],
+    "arithmetic_runtime_seconds": 0.16530100000090897,
+    "maximum_differences": {
+      "full_precision_json_arithmetic": 2.842170943040401e-14,
+      "markdown_top_table_rounding": 4.958391315312838e-7
+    },
+    "mismatches": [],
+    "scope": [
+      {
+        "fold": 0,
+        "gallery": 1000,
+        "eligible_queries": 190,
+        "excluded_only_from_query": 810,
+        "eligible_identity_count": 7,
+        "gallery_identity_count": 47
+      },
+      {
+        "fold": 1,
+        "gallery": 1051,
+        "eligible_queries": 179,
+        "excluded_only_from_query": 872,
+        "eligible_identity_count": 7,
+        "gallery_identity_count": 47
+      },
+      {
+        "fold": 2,
+        "gallery": 1075,
+        "eligible_queries": 202,
+        "excluded_only_from_query": 873,
+        "eligible_identity_count": 7,
+        "gallery_identity_count": 47
+      }
+    ],
+    "totals": {
+      "gallery": 3126,
+      "eligible_queries": 571,
+      "excluded_only_from_query": 2555,
+      "identity_rows": 21,
+      "identity_query_total": 571,
+      "unique_query_identities": 21
+    },
+    "initialization_aggregate": {
+      "baseline_only": {
+        "mAP": 77.48760311601094,
+        "Rank-1": 79.33450087565674,
+        "Rank-5": 89.49211908931699,
+        "Rank-10": 93.52014010507881
+      },
+      "fused": {
+        "mAP": 80.59032840164478,
+        "Rank-1": 83.71278458844134,
+        "Rank-5": 88.96672504378283,
+        "Rank-10": 92.6444833625219
+      },
+      "cnn": {
+        "mAP": 79.31987375374185,
+        "Rank-1": 82.31173380035027,
+        "Rank-5": 88.61646234676007,
+        "Rank-10": 90.54290718038528
+      },
+      "transformer": {
+        "mAP": 79.13635154968365,
+        "Rank-1": 83.36252189141857,
+        "Rank-5": 91.06830122591944,
+        "Rank-10": 95.44658493870402
+      },
+      "mamba": {
+        "mAP": 78.78752599990524,
+        "Rank-1": 81.26094570928196,
+        "Rank-5": 88.2661996497373,
+        "Rank-10": 91.06830122591944
+      }
+    },
+    "terminal_minus_initial_mAP": {
+      "batch_hard_residual": {
+        "baseline_only": 0.0,
+        "fused": 0.05034813100998292,
+        "cnn": 0.7295644789192295,
+        "transformer": 0.5398503019029732,
+        "mamba": -1.0445320268367908
+      },
+      "camera_negative_residual": {
+        "baseline_only": 0.0,
+        "fused": -1.6058741185324408,
+        "cnn": -0.16774782055459525,
+        "transformer": -3.725590045522779,
+        "mamba": -0.72690743438379
+      }
+    },
+    "paired_change_counts": {
+      "batch_hard_residual": {
+        "baseline_only": {
+          "ap_improved": 0,
+          "ap_declined": 0,
+          "ap_equal": 571,
+          "rank1_repaired": 0,
+          "rank1_broken": 0
+        },
+        "fused": {
+          "ap_improved": 190,
+          "ap_declined": 182,
+          "ap_equal": 199,
+          "rank1_repaired": 10,
+          "rank1_broken": 10
+        },
+        "cnn": {
+          "ap_improved": 211,
+          "ap_declined": 176,
+          "ap_equal": 184,
+          "rank1_repaired": 20,
+          "rank1_broken": 7
+        },
+        "transformer": {
+          "ap_improved": 205,
+          "ap_declined": 200,
+          "ap_equal": 166,
+          "rank1_repaired": 16,
+          "rank1_broken": 22
+        },
+        "mamba": {
+          "ap_improved": 190,
+          "ap_declined": 196,
+          "ap_equal": 185,
+          "rank1_repaired": 6,
+          "rank1_broken": 23
+        }
+      },
+      "camera_negative_residual": {
+        "baseline_only": {
+          "ap_improved": 0,
+          "ap_declined": 0,
+          "ap_equal": 571,
+          "rank1_repaired": 0,
+          "rank1_broken": 0
+        },
+        "fused": {
+          "ap_improved": 194,
+          "ap_declined": 217,
+          "ap_equal": 160,
+          "rank1_repaired": 9,
+          "rank1_broken": 17
+        },
+        "cnn": {
+          "ap_improved": 227,
+          "ap_declined": 188,
+          "ap_equal": 156,
+          "rank1_repaired": 19,
+          "rank1_broken": 13
+        },
+        "transformer": {
+          "ap_improved": 178,
+          "ap_declined": 269,
+          "ap_equal": 124,
+          "rank1_repaired": 12,
+          "rank1_broken": 34
+        },
+        "mamba": {
+          "ap_improved": 209,
+          "ap_declined": 210,
+          "ap_equal": 152,
+          "rank1_repaired": 14,
+          "rank1_broken": 14
+        }
+      }
+    },
+    "binding_checks": {
+      "fold_gallery_equals_terminal_gallery": true,
+      "baseline_arrays_equal_to_both_terminal_endpoints": true,
+      "initial_binding_equals_both_terminal_bindings": true,
+      "initial_state_equals_both_terminal_initial_states": true,
+      "observation_source_file_matches": 30,
+      "observation_source_file_count": 30
+    },
+    "terminal_scientific_gate": {
+      "status": "Q1_FAIL",
+      "matched_gains_mAP": {
+        "baseline_only": 0.0,
+        "fused": -1.6562222495424237,
+        "cnn": -0.8973122994738247,
+        "transformer": -4.265440347425752,
+        "mamba": 0.3176245924530008
+      },
+      "fold_fused_gains_mAP": [
+        -0.6760682853190474,
+        -2.1499426404255075,
+        -2.140644542781857
+      ],
+      "scientific_checks": {
+        "aggregate_fused_gain_at_least_1pp": false,
+        "all_fold_fused_nonnegative": false,
+        "all_expert_aggregate_nonnegative": false,
+        "fused_bootstrap_lower_positive": false,
+        "fused_beats_baseline_and_experts": false
+      },
+      "bootstrap": {
+        "lower_bound_95_mAP": -3.8769957222550886,
+        "clusters": 21,
+        "resamples": 10000
+      }
+    }
+  },
+  "primary_file_sha256": {
+    "tools/diagnose_v22_initialization_full_gallery.py": "e29d2a495ba85a67d58078b3c5c7a9fccea57de8ae69dbbf253b67616a153f0c",
+    "refine-logs/v22/INITIALIZATION_FULL_GALLERY_DIAGNOSTIC_PLAN.md": "8e7be0d713ca87fe7212948074fb50148f5b34724110b79beb76241312f08f88",
+    "refine-logs/v22/INITIALIZATION_FULL_GALLERY_DIAGNOSTIC_TRACKER.md": "22e66dfdfb922b2263be3f56d1cee1d44a0a5b27cc88fe3e860940374c30bde4",
+    "results/TRIFUSION_RGBNT201_V22_INITIALIZATION_FULL_GALLERY_2026-09-05.md": "5a980c40d861124f9796f3f8e0566d469e6d091b332179bfa5b7381b7249b270",
+    "evidence/trifusion_v22_initialization_diagnostic_preregistration_20260905.json": "08d1649ba4f9c3a047c66e6ff39c414ce63336b1bbe5dcf8a18e3e8670dac053",
+    "evidence/trifusion_v22_initialization_diagnostic_launch_20260905.json": "ac87a8bab83423f1e6232816aa99277f1254bcc8c014975886bc4cd68973ae91",
+    "evidence/trifusion_v22_initialization_diagnostic_observation_210912_20260905.json": "0be02bfd137f30f27f8d14bd8241c961566a316ec75652260fabbd6374842d15",
+    "evidence/trifusion_v22_initialization_full_gallery_20260905.json": "21a73baacca91834eb5f47ec0c129731cfdb42ff92a5b90c2d712bef40f334ca",
+    "evidence/trifusion_v22_initialization_full_gallery_20260905.log": "756aa7a7eb67c8bde7c1ce41d62274677a62522cd01864bb4549f45d362c2a55",
+    "evidence/trifusion_v22_initialization_full_comparison_20260905.json": "a7a42bcda5ec01ef9cf55952a7d0a8947d0dad0fcc2f6d3135861c8130d589fa",
+    "evidence/trifusion_v22_q1_seed42_5ae096b.json": "b8cd7db81efc3827a91d165d47e001073785420baf8ddfc8507a2eead9c3d6a3",
+    "evidence/trifusion_v22_terminal_file_verification_20260905.json": "e71172316897ba2c7fcef1262ccf302a755ed0bec26339100ad8846adce4075f",
+    "evidence/trifusion_v12_complete_path_oof_seed42.json": "9105b86a9c079c44843e9b118a21599746a87d279370341b8cf8d26bd18a8b69",
+    "configs/RGBNT201/TriFusion-signal-preserving-v22-camera-negative-rtx3090.yml": "5efd8e6dbf8cd70624902148a52701ad69ae5766825293efa878836a3e74f4f6",
+    "refine-logs/v22/EXPERIMENT_PLAN.md": "ce2d1f93d5ef36a3eb53d2593fc548b31bff0ea4a3f737b19e1dcaf721d9723b",
+    "tools/train_signal_preserving_v22.py": "ee17aeba9bc2a567b1163e6a57759a55423ee5f77edde21e6c7a81625fe45a53",
+    "tools/train_signal_preserving_v19.py": "5f000d3d3abe9636cae97e292db2c63a3a20f349c125dfe4b27bd3fca95bb9c5",
+    "tools/train_signal_preserving_v18.py": "f6bdda4631d710d0b6db5fe2a8df124d8dcbd294cb54adcf3ec261d523e96cf8",
+    "tools/train_signal_preserving_v17.py": "333886d16f73987accddb70b0780661bb9400b8afd04af01b57e188d34e5228d",
+    "tools/build_v12_complete_path_oof_targets.py": "fc13354b1065c46677122ee9cf63816087facca4e0e98ec5e6e2fb0dece141e4",
+    "tools/run_signal_preserving_v5.py": "e162184f68778b4991db0f97f26c5fda273b2ad2f7c8db2bbb2d53775eb717e5",
+    "tools/run_signal_baseline_dev.py": "083967f2a38267415b2992da98c2ad9429ebb793f387b45daac1dbb4eb16f365",
+    "tools/audit_v17_full_gallery.py": "856881f984ab8793788d291018a60046a47e309c625a65394b1a3ff4e670d8a9",
+    "tools/diagnose_v6_oracle_complementarity.py": "919b624156c57f92fa75f79a06fe7c872a02d730fa8cd021ce9d7b4e498b1db2",
+    "modeling/trifusion/signal_preserving_v8.py": "97a7b5fe6dab882c2ed92ed1db95b9a8f48eae1d99a3a9b145b0cdfc4b8cefbc",
+    "modeling/trifusion/signal_preserving_v8_builder.py": "8afb028957ecff1a0a26497f7d0460bc240b0f8612a3c476b52a9a6667a3049d",
+    "protocols/rgbnt201_dev_v1.json": "f7f6f8a906c06fec4918929fb5c17abfc197986b99e017aca1d3e15831c1541d"
+  },
+  "artifact_possession": {
+    "local_raw_primary_files": 27,
+    "local_primary_hash_mismatches_against_request": 0,
+    "lf_only_remote_match": [
+      {
+        "file": "protocols/rgbnt201_dev_v1.json",
+        "local_raw_sha256": "f7f6f8a906c06fec4918929fb5c17abfc197986b99e017aca1d3e15831c1541d",
+        "local_lf_normalized_sha256": "d916e7daaa1d55b179c1ec77e93128b6e6a8d1526adc9eac060ea8e733881946",
+        "remote_source_sha256": "d916e7daaa1d55b179c1ec77e93128b6e6a8d1526adc9eac060ea8e733881946"
+      }
+    ],
+    "remote_ledger_only": [
+      "six V12 source checkpoint .pth files",
+      "CLIP ViT-B-16.pt weight file",
+      "remote execution source file hashes",
+      "remote terminal endpoint receipts"
+    ],
+    "not_possessed_or_not_loaded_by_scope": [
+      "raw RGBNT201 image tensors",
+      "model checkpoint tensors",
+      "GPU execution state beyond supplied receipts"
+    ]
+  },
+  "limitations": [
+    "The audit did not load models, checkpoints, tensors, images, GPU state, or remote files.",
+    "Remote checkpoint, CLIP weight, and image provenance is ledger-verified only in this local bounded audit.",
+    "Metric recomputation starts from saved AP/Rank arrays and manifests, not from raw images or embeddings.",
+    "The diagnostic is reused train-internal OOF evidence, not new independent validation and not official-test evidence.",
+    "The derived comparison JSON stores paired-change count summaries rather than explicit per-query delta rows.",
+    "No mechanism or unique camera-causal explanation is established by this diagnostic."
+  ]
+}

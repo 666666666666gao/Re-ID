@@ -610,3 +610,5 @@
 
 | 2026-09-05 21:35 | /experiment-audit | EXPERIMENT_AUDIT_V22_Q1.md/json | evidence | Independent full terminal audit: engineering/fixed M0 PASS, integrity WARN, all scientific gates FAIL; raw reports and trace run10 archived |
 | 2026-09-05 21:35 | /experiment-audit | refine-logs/v22/EXPERIMENT_TRACKER_20260905_213543.md | evidence | Independent terminal audit complete; negative result and provenance limits retained |
+
+| 2026-09-05 21:41 | /experiment-audit | EXPERIMENT_AUDIT_V22_INITIALIZATION.md/json | evidence | Independent full-gallery initialization diagnostic WARN, engineering pass with provenance limits, descriptive only; trace run11 archived |
