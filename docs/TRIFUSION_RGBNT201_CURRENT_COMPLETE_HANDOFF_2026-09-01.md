@@ -3307,3 +3307,21 @@ M0只比较共48条clean source前向的严格重载一致性，不读held-out�
 仅source三折各8步工程检查，路径artifacts/msvr310_signal_source_oof_v1_seed42_2dcbe85/m0。
 没有读取M0终态或提前称通过，首次计划检查约04:29:50，正式50epoch三折尚未启动。
 原配置/损失/源码/数据合同不变；没有车辆TriFusion或官方结果。
+
+### 41.19 MSVR310 首次M0失败定位与最小工程修订（2026-09-06）
+
+记录时间：2026-09-06T04:38:57.493093+08:00。04:29:56检查原wrapper61639已结束、exit1、GPU释放。
+fold0完成8步，mean loss13.362928748、训练9.545426秒；在全部trainable有梯度门停止，后两折和held-out未运行。
+首版失败前未落盘完整training细目，因此不补造逐步数组；完整原stdout/exit与启动回执已归档。
+
+一次新的fold0 B64 source前后传诊断，optimizer0/checkpoint0/heldout-dev-official0，6.844008秒，
+查得201个trainable中6个无梯度，均为SIM.token_selection W_q/W_k/W_v的weight/bias，合计787968参数。
+原useA.py证实Q/K只生成离散索引/二值掩码，V未调用；安装的Adam只处理grad非None项。
+R2仅将这6个原本不更新的参数标记冻结，保留原值、state_dict键和全部前向路径；
+不新加可微选择器、不改loss/LR/50epoch/seed/采样/评价或原梯度门。训练前后冻结模块SHA必须不变。
+新版在断言前保存实际training.json，保留失败诊断细目。
+
+原M0失败完整保留；R2合同/配置/脚本已登记，尚未运行新的三折M0或正式基线。
+排序函数AST与已通过T0相同，不把该T0扩大成构造/梯度修正的验证。
+完整证据evidence/trifusion_msvr310_signal_v1_unused_gradient_diagnostic_20260906.json、
+evidence/trifusion_msvr310_signal_v1_token_selection_source_inspection_20260906.json及R2注册记录。

@@ -628,3 +628,5 @@
 
 | 2026-09-06T04:22:31.026558+08:00 | /experiment-audit | EXPERIMENT_AUDIT_V24_Q1.md/json; EXPERIMENT_AUDIT_V24_SOURCE_DIAGNOSIS.md/json | evidence | Two-round independent audit closures, raw corrections retained in trace15/16, Q1 scientific FAIL |
 | 2026-09-06T04:22:31.026558+08:00 | /experiment-plan + /run-experiment | refine-logs/msvr310_signal_v1/EXPERIMENT_PLAN.md; tools/train_msvr310_signal_oof.py | preparation | Fixed source-only MSVR baseline contract and entry; remote T0/M0/full baseline NOT_RUN |
+
+| 2026-09-06T04:38:57.493093+08:00 | /run-experiment | refine-logs/msvr310_signal_v1/EXPERIMENT_PLAN.md; evidence/trifusion_msvr310_signal_v1_m0_r2_preregistration_20260906.json | engineering | Original8-step M0 failure retained;0-update diagnosis traced6 structurally no-grad selector tensors; R2 fixed flags, not yet executed |

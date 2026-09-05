@@ -103,8 +103,11 @@ def new_model(cfg, fold):
     from tools.build_v12_complete_path_oof_targets import _build_signal_teacher
 
     assert fold["source_camera_values"] == list(range(8))
-    return _build_signal_teacher(cfg, num_classes=len(fold["source_ids"]),
-                                 camera_num=8, view_num=0)
+    model = _build_signal_teacher(cfg, num_classes=len(fold["source_ids"]),
+                                  camera_num=8, view_num=0)
+    # Upstream Q/K only form discrete masks; W_v is unused. Adam already skips them.
+    model.SIM.token_selection.requires_grad_(False)
+    return model
 
 
 def train_source(model, loader, cfg, record_indices, records, *, preflight):
@@ -130,6 +133,7 @@ def train_source(model, loader, cfg, record_indices, records, *, preflight):
                      for row, index in zip(records, record_indices, strict=True)}
     assert len(name_to_index) == len(records)
     initial_state = _module_state_sha256(model)
+    selector_initial_state = _module_state_sha256(model.SIM.token_selection)
     trainable_names = {name for name, p in model.named_parameters() if p.requires_grad}
     gradient_names = set()
     history, steps = [], []
@@ -186,7 +190,12 @@ def train_source(model, loader, cfg, record_indices, records, *, preflight):
                         "learning_rates": sorted({group["lr"] for group in optimizer.param_groups}),
                         "elapsed_seconds": time.perf_counter() - started})
         print(json.dumps({"event": "signal_source_epoch", **history[-1]}), flush=True)
+    selector_final_state = _module_state_sha256(model.SIM.token_selection)
+    assert selector_final_state == selector_initial_state
     return {"epochs": len(history), "optimizer_steps": len(steps), "overflow_events": 0,
+            "frozen_token_selection_initial_sha256": selector_initial_state,
+            "frozen_token_selection_final_sha256": selector_final_state,
+            "frozen_token_selection_parameters": sum(p.numel() for p in model.SIM.token_selection.parameters()),
             "initial_state_sha256": initial_state, "final_state_sha256": _module_state_sha256(model),
             "total_parameters": sum(p.numel() for p in model.parameters()),
             "trainable_parameters": sum(p.numel() for p in model.parameters() if p.requires_grad),
@@ -307,8 +316,9 @@ def run(args):
         torch.cuda.reset_peak_memory_stats()
         training = train_source(model, loader, cfg, fold["source_record_indices"], source_records,
                                 preflight=preflight)
+        write_json(fold_dir / "training.json", training)
         assert training["epochs"] == (1 if preflight else 50)
-        assert not training["trainable_without_gradient"]
+        assert not training["trainable_without_gradient"], training["trainable_without_gradient"]
         assert training["initial_state_sha256"] != training["final_state_sha256"]
         checkpoint = fold_dir / ("signal_m0.pth" if preflight else "signal_epoch50.pth")
         torch.save({"model_state_dict": model.state_dict(), "fold": fold["fold"],
