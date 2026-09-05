@@ -2615,3 +2615,45 @@ fused差-0.676068pp；CNN/Transformer/Mamba的mAP差为-1.072661/-1.791450/+0.84
 
 首折五路完整指标见results/TRIFUSION_RGBNT201_V22_FIRST_PAIRED_FOLD_2026-09-05.md及原始部分JSON。
 当前best dev仍58.4050/59.3939，整体目标未达；D1/dev/official保持0，原完整Q1继续。
+
+
+### 39.4 V22全六端终态失败并封存（2026-09-05）
+
+V22原始单进程完整结束，退出码0；20:43:56实际观测PID34656已退出、GPU1MiB/0%。
+原始运行耗时4165.238463401794秒（69.420641分钟，含M0）；三fold两端各20epoch、
+共120条完整epoch记录/3360优化步全部完成，未因第一折负收益提前停止。
+执行commit5ae096b65eb4c9987b0b8edaa7bfcd8a4cee1c36及固定配置/方案不变。
+
+全部141 heldout身份、3126gallery、571合法query/21跨camera身份完整保留，
+2555条只从query分母排除；六个最终checkpoint均从原source重建后strict reload，
+模型state SHA与该端训练final一致，冻结Signal与共享尾部不变。
+baseline/fused/CNN/Transformer/Mamba五输出与三fold/all21身份完整表均已生成。
+
+MCNL/control aggregate fused为78.984454/80.640677 mAP，差-1.656222pp；
+R1为82.311734/83.712785。三fold fused差-0.676068/-2.149943/-2.140645。
+CNN/Transformer/Mamba aggregate mAP差-0.897312/-4.265440/+0.317625；
+candidate CNN79.152126高于candidate fused78.984454，因此五项固定科学门全部FAIL。
+全部21身份、10000次seed42 cluster bootstrap的95%下界为-3.8769957222550886。
+
+原始汇总2207490字节 SHAb8cd7db81efc3827a91d165d47e001073785420baf8ddfc8507a2eead9c3d6a3；
+完整日志255971字节 SHAa091390a25ced0cfd336fce3c5bd6c51565fcad6becfbf3419778bcb9b7a2f1a。
+远端36项source/config/plan/tests/metadata/CLIP/V12/source及新final权重全文件SHA通过，
+六独立receipt对象与summary内嵌对象相同。核验没有加载额外权重tensor/图像或重跑检索。
+本地NumPy2.5.2完整mask、AP/Rank聚合、全21身份Bootstrap数值最大差0；
+120行日志逐对象等于六端history，步数和不可变M0都精确一致。
+
+每臂1680batch/107520样本暴露：98796行具两类负例、7852缺同相机负例、
+872缺其他相机负例、17600具跨camera正例；六端全部训练批次支持数与冻结metadata相同。
+三候选末epoch MCNL项均下降，但未选用的普通残差Triplet项均较首epoch上升；
+这是训练目标改变后的实测诊断，不能把MCNL下降写成检索泛化改善或唯一因果证明。
+
+固定V22封存Q1_FAIL，不作margin/系数/sampler/epoch/LR/seed变体或重训，
+D1/dev/official均未执行。M0工程/固定门独立审计PASS、完整性WARN已归档；
+它不覆盖完整Q1，本终态独立审计待完成。当前best dev仍V8的58.4050/59.3939，
+65mAP开发门和官方目标均未达到，整体goal继续active。
+
+下一步先核对共同初始化与最终模型的可比性。旧V12缓存的检索gallery只含
+跨camera合格身份（tools/build_v12_complete_path_oof_targets.py:610–617），
+当前评价保留3126条完整gallery。因此旧V12约88mAP与当前约80mAP不能直接
+相减来证明继续训练导致退化。尚未执行共同初始化的完整gallery诊断或新训练。
+完整结果和所有负收益见results/TRIFUSION_RGBNT201_V22_CAMERA_NEGATIVE_2026-09-05.md。

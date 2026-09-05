@@ -602,3 +602,6 @@
 
 | 2026-09-05 18:27 | /experiment-audit | EXPERIMENT_AUDIT_V22_M0.md/json | evidence | Independent engineering/fixed M0 PASS; integrity WARN; bounded scientific qualification FAIL |
 | 2026-09-05 18:27 | /run-experiment | refine-logs/v22/EXPERIMENT_TRACKER_20260905_182750.md | evidence | First paired fold negative; original complete Q1 continues |
+
+| 2026-09-05 20:51 | /run-experiment | results/TRIFUSION_RGBNT201_V22_CAMERA_NEGATIVE_2026-09-05.md | evidence | Full 6x20 endpoints complete; all five gates FAIL; no dev/official |
+| 2026-09-05 20:51 | /run-experiment | refine-logs/v22/EXPERIMENT_TRACKER_20260905_205157.md | evidence | 36 SHA files and complete arrays/logs verified; terminal independent audit pending |

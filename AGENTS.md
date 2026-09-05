@@ -259,24 +259,20 @@
 
 ## Remote experiment constraints
 
-- V22 T0 and real M0 passed. Original PID34656 continues the full Q1
-  without restart. At 18:20 the first paired fold completed: fused MCNL/control
-  mAP70.525659/71.201727, gain-0.676068; preserve all remaining endpoints.
-  This already misses the fixed per-fold nonnegative gate, but Q1 is not terminal.
-  Independent M0 audit is complete: engineering/fixed M0 PASS, integrity WARN;
-  its scientific FAIL means no terminal retrieval evidence in the M0 audit scope.
-  Preserve EXPERIMENT_AUDIT_V22_M0.md/json and provenance limits. It replaces only the three residual
-  batch-hard triplets with camera-negative MCNL at margins 0.1/0.1 and the
-  original coefficient 0.25. All seven ID losses and fused/branch triplets,
-  exact Signal/V8 architecture, seed42/B64K8/20 epochs and initialization stay.
-  Read refine-logs/v22/EXPERIMENT_PLAN.md. The 1680-batch source-label replay
-  found only 8.070791% cross-camera positive pairs and 8.113839% rows lacking
-  one required negative-camera group. MCNL uses the explicit eligible-row
-  domain (42--64 rows per batch); no fabricated negatives or zero-fill.
-  T0 and real M0 must pass before all six final-only Q1 endpoints. Preserve
-  all five fixed scientific gates and complete 3126-gallery/571-query scope.
-  No margin/weight/sampler/epoch/LR/seed scan; dev/official remain zero.
-
+- V22 camera-negative MCNL completed all three folds x two endpoints x20
+  epochs, seed42, 3360 optimizer steps, and is sealed Q1_FAIL. Candidate/
+  matched-control fused mAP is 78.984454/80.640677, gain-1.656222; all fold
+  gains are negative (-0.676068/-2.149943/-2.140645). CNN/Transformer/Mamba
+  gains are -0.897312/-4.265440/+0.317625; bootstrap lower bound-3.876996.
+  All five scientific gates fail, including fused>all experts. All five outputs,
+  3126 gallery records, 571 queries and 21 query identities are retained.
+  Original PID34656 ended with exit0. No D1/dev/official, MCNL margin/weight/
+  sampler/epoch/LR/seed scan or V22 retraining. Remote 36-file SHA, six receipt
+  bindings, 120 epoch-log rows and full NumPy/bootstrap arithmetic passed.
+  Independent M0 audit is engineering/fixed-M0 PASS, integrity WARN; preserve
+  its bounded scope. Independent terminal Q1 audit is pending. Read the full
+  V22 result and tracker. Any successor requires a new evidence-grounded
+  hypothesis and preregistered complete training qualification.
 
 - V21 is sealed M0_FAIL. All three T0 CUDA tests passed; six-model preflight,
   both capacities, gradient/frozen/AMP/BN checks passed, but the fixed 100-step
