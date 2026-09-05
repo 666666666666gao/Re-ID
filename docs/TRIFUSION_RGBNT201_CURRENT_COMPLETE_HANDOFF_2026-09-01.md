@@ -3123,3 +3123,18 @@ evidence/trifusion_msvr310_train_oof_protocol_verification_20260906.json。
 完整说明 docs/MSVR310_TRAIN_INTERNAL_PROTOCOL_V1_2026-09-06.md。
 仅冻结数据清单；新Signal source初始化、车辆横向loader/scene evaluator、训练合同与真实工程门未运行。
 MSVR310训练/检索仍0，RGBNT201原V24继续，未推广不合格候选、未修改官方591/1055协议。
+
+
+### 41.8 SNR 原始 ReID 公式与直接 Token 接入边界（2026-09-06）
+
+记录时间：2026-09-06T02:26:36.380613+08:00。已补读原始arXiv v1第3节；原方法使用正/负对距离的四个Softplus项，
+与当前PACS分类仓库的概率熵约束区分，未把两者称作等价复现。
+项目代码中Mamba在最终残差Patch上先求均值。对紧接该读取位置的空间IN，
+代数上mean(IN(X))=beta；通道回补后为beta+a*(mean(X)-beta)。
+该位置只能从门控均值体现回补，不能据此称空间内容得到新的身份表征。
+推论仅限没有中间空间/Token非线性的情况，不否定原SNR或其他位置。
+
+四个Softplus项具有正下界；未来若引入该损失，需要训练前定义工程指标，
+不能把旧CE解析下界当成新增全部loss的最优值，当前V24门槛没有更改。
+详见docs/SNR_CODE_MECHANISM_AND_SCOPE_2026-09-06.md和
+evidence/snr_original_reid_formula_review_20260906.json；新模型/优化/检索均0，后继版本未登记。

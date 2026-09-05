@@ -1,0 +1,54 @@
+{
+  "reviewed_at": "2026-09-06T02:26:36.380613+08:00",
+  "scope": "Original SNR ReID paper Section 3 formula text plus local source inspection and algebra; no reproduction",
+  "paper": {
+    "url": "https://arxiv.org/pdf/2005.11037",
+    "version_observed": "arXiv:2005.11037v1, 22 May 2020",
+    "pages": 16,
+    "sections_read_for_formulas": [
+      "3.1",
+      "3.2"
+    ],
+    "printed_pages": [
+      4,
+      5
+    ],
+    "acquisition": "Web PDF text extraction; no local PDF binary hash claim"
+  },
+  "source_comparison": {
+    "public_repository_commit": "f3d51b5e3525fe5e1ea364fafdf0e4cc60b1362b",
+    "current_classification_loss": "PACS probability entropy with SoftMargin",
+    "original_reid_loss": "Four Softplus terms comparing positive and negative pair cosine distances before/after useful/useless restitution",
+    "not_claimed_equivalent": true
+  },
+  "original_reid_equations": {
+    "distance": "d(x,y)=0.5 - cosine(x,y)/2",
+    "clarification": "softplus(d(f+_a,f+_p)-d(f0_a,f0_p)) + softplus(d(f0_a,f0_n)-d(f+_a,f+_n))",
+    "destruction": "softplus(d(f0_a,f0_p)-d(f-_a,f-_p)) + softplus(d(f-_a,f-_n)-d(f0_a,f0_n))",
+    "pooling": "spatial average per sample before pair distances",
+    "stage_weights": [
+      0.1,
+      0.1,
+      0.5,
+      0.5
+    ]
+  },
+  "executor_algebra_not_author_experiment": {
+    "assumption": "Per-instance per-channel normalization over all N patch positions, spatially constant affine gamma/beta and channel gate; immediate spatial mean before another nonlinear spatial operation",
+    "normalized_spatial_mean": "mean_N(IN(X)) = beta",
+    "snr_output_spatial_mean": "mean_N(IN(X)+a*(X-IN(X))) = beta + a*(mean_N(X)-beta)",
+    "project_specific_location": "modeling/trifusion/signal_preserving_v8.py:449-452; Mamba residual takes mean across patch positions before its global head",
+    "consequence": "Appending IN directly to the final residual tokens immediately before mean removes sample-specific mean from that readout; SNR restitution restores only a gated mean there. This statement does not apply across intervening nonlinear spatial/token operators.",
+    "softplus_loose_lower_bound_assumptions": "All cosine distances mathematically defined and lie in [0,1]; each of four differences is >= -1",
+    "four_term_loose_lower_bound": 1.2530467500728915,
+    "is_tight_attainable_minimum": false,
+    "does_not_redefine_any_registered_m0_gate": true
+  },
+  "source_file_sha256": {
+    "modeling/trifusion/signal_preserving_v8.py": "97a7b5fe6dab882c2ed92ed1db95b9a8f48eae1d99a3a9b145b0cdfc4b8cefbc"
+  },
+  "new_optimizer_steps": 0,
+  "new_retrieval_evaluations": 0,
+  "new_model_or_tensor_loads": 0,
+  "successor_implementation_or_registration": false
+}
