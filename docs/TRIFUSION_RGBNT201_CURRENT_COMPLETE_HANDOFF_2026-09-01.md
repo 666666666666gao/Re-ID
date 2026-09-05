@@ -1591,6 +1591,25 @@ EXPERIMENT_AUDIT_V17.md
 EXPERIMENT_AUDIT_V17.json
 ```
 
+### 28.4 全21身份错误普查已完成
+
+对全部571条保存的逐query结果在远端汇总，覆盖全部21个合法身份；没有训练、
+推理或checkpoint选择。fused AP总损失最大的身份是000261/000239/000251；
+CNN为000217/000261/000220，其中000217的17条query平均AP下降12.418605pp，
+新增4个Rank1错误。完整所有身份/所有分支表保存于
+`evidence/trifusion_v17_error_census_20260905.json`，不是只汇报这些病例。
+下一步数值普查已不需要重复；要核实固定病例的图像/token匹配原因，再决定
+新表征假设，不能凭病例编号或这些已消费结果调阈值。
+
+### 28.5 独立审计已完成
+
+GPT-5.5 xhigh直接审阅源码和回执：M0 PASS、原Q1科学FAIL、integrity WARN；补评
+为PASS_READONLY_EXECUTION_ONLY、FAIL_NO_ADVANCEMENT。逐query AP/rank重新汇总
+与报告一致（mAP最大舍入差5.684e-14、rank rate差0）；六个checkpoint SHA及
+模型state SHA与原Q1完全相等。其限制是大数据/权重仍在远端，独立审计者未另行
+打开远端权重重哈希；由执行脚本强制检查及回执对齐作证，不应写成第三方权重
+独立复现。完整报告`EXPERIMENT_AUDIT_V17.md/json`已归档。D1仍不授权。
+
 ## 29. 各数据集公开高指标与代码资源增量核验（2026-09-05）
 
 主源表及资源边界见`docs/SOTA_REFRESH_2026-09-05.md`。本次从RoDI作者GitHub

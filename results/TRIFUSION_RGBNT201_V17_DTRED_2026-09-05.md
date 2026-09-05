@@ -123,3 +123,19 @@ CNN为138/238/195及6/14；Transformer为211/153/207及6/3；Mamba为190/177/204
 远端最终专项回归13/13通过。M0、原Q1和补评JSON的远端/本地字节SHA逐一相等，
 完整回执和两次补评日志SHA记录在`evidence/trifusion_v17_terminal_verification_20260905.json`。
 独立审计报告见`EXPERIMENT_AUDIT_V17.md/json`；科学失败与完整性问题分开记录。
+
+
+## 全21身份错误普查
+
+从保存的571条逐query AP/首个正例rank进行一次远端只读汇总，覆盖全部21个
+合法跨摄像头身份，没有新推理或训练。完整分组在
+`evidence/trifusion_v17_error_census_20260905.json`，绑定完整gallery回执SHA。
+
+按AP差值总和排序，fused主要损失身份为000261（28query，平均-4.425325pp）、
+000239（24query，-4.296612pp）、000251（30query，-2.543289pp）。CNN主要损失
+为000217（17query，-12.418605pp，Rank1新破坏4条）、000261（28query，
+-6.876664pp，新破坏2条）、000220（30query，-6.288551pp，新破坏2条）。
+该表仅用于描述失败集中在哪里，不选择checkpoint、门槛或新模型；图像/token
+级错误匹配原因仍需核实。后续不再重复数值普查，先查这些固定病例及完整分组。
+
+独立补评审计已完成：逐query指标重算最大mAP舍入差5.684e-14，rank rate差0；全六端checkpoint/final-state SHA与原Q1一致。完整性WARN仅保留远端大权重未由审计者直接打开重哈希等复现范围限制，补评的执行PASS不改变科学FAIL。
