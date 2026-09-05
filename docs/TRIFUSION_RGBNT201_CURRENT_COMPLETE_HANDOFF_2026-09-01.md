@@ -2740,3 +2740,28 @@ protocol本地CRLF与远端LF只在换行归一化后SHA匹配，不能写成原
 原始报告EXPERIMENT_AUDIT_V22_INITIALIZATION.md/json、实际请求/回复、27份输入SHA
 及审计时result/tracker快照均保留于trace run11。派发模型gpt-5.5/xhigh来自实际工具请求；
 报告自身auditor字符串codex-gpt-5-direct-bounded-audit原样保留。
+
+
+## 40. V23模态专属语义尾部适配主实验（2026-09-05）
+
+### 40.1 执行前固定方案
+
+V22及初始化诊断两份独立审计均已归档，负结果和只读描述范围不变。
+ICPL实际源码核查见docs/SPECTRAL_ADAPTER_SOURCE_NOTES_2026-09-05.md：
+官方RGBNT201入口使用独立视觉模型和768中间维并行MLP，
+不把README low-rank、未调用model_mm_adapter文件或论文完整方法当成本次实现。
+
+新V23在三个frozen CLIP尾部block输出后、原角色算子前分别加入RGB/NI/TI
+768→128→768残差MLP，同阶段模态参数在CNN/T/M间共享；共9MLP/1777536参数。
+up和bias置零，两端初始结构和输出相同；控制固定零，候选训练新参数。
+原Signal/CLIP/角色/等能量五输出结构及原ID/Triplet目标保持完整。
+预期控制/候选trainable为7841292/9618828，203/239tensor；
+该比较不能排除额外可训练容量的作用，不声称唯一模态机制已证实。
+代码已实现、AST通过；T0/M0/Q1均未执行，尚无新指标。
+
+固定方案refine-logs/v23/EXPERIMENT_PLAN.md与版本化副本、preregistration已生成。
+远端T0五用例；M0三fold两端共54只读前向+116优化步，固定首/100步excess门<=0.1。
+M0通过后原进程完成3fold×2端×20epoch/3360步、完整3126gallery/571query五输出。
+沿用所有五项Q1科学门，失败封存不作宽度/插点/scale/epoch/LR/seed扫描。
+只在Q1全门通过后另行固定D1，当前不访问dev/official、不开始消融。
+预计M0 4–7分钟、Q1 75–100分钟，需启动前检查真实GPU和源文件SHA。

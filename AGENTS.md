@@ -259,6 +259,15 @@
 
 ## Remote experiment constraints
 
+- V23 is implemented but not executed. Read refine-logs/v23/EXPERIMENT_PLAN.md:
+  modality-specific zero-output residual MLPs follow three frozen CLIP tail
+  stages, shared across expert roles. Control freezes the new 1777536
+  parameters; candidate trains them. This is not capacity-matched evidence
+  for a unique modality mechanism. Preserve all five Q1 gates, complete
+  3-fold x 2-endpoint x20 training, seed42, full gallery, final-only selection.
+  Remote CUDA T0 and real M0 must pass; no dev/official or ablations yet.
+  No V23 width/stage/scale/epoch/LR/seed scans after the fixed outcome.
+
 - V22 camera-negative MCNL completed all three folds x two endpoints x20
   epochs, seed42, 3360 optimizer steps, and is sealed Q1_FAIL. Candidate/
   matched-control fused mAP is 78.984454/80.640677, gain-1.656222; all fold

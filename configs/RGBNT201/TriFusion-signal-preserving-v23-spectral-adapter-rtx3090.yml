@@ -1,0 +1,79 @@
+SCHEMA_VERSION: 1
+EXPERIMENT:
+  NAME: trifusion_rgbnt201_v23_spectral_adapter
+  SEED: 42
+  RESOURCE_PROFILE: rtx3090_b64k8
+DATA:
+  DATASET_ROOT: /root/autodl-tmp/trifusion-v2/data/RGBNT201
+  DEV_PROTOCOL: protocols/rgbnt201_dev_v1.json
+  TRAIN_BATCH_SIZE: 64
+  NUM_INSTANCES: 8
+  SAMPLER: cross_camera_identity
+  EVAL_BATCH_SIZE: 128
+  NUM_WORKERS: 4
+SIGNAL:
+  SOURCE: /root/autodl-tmp/trifusion-v2/comparators/Signal-cd1b0a6
+  CONFIG: /root/autodl-tmp/trifusion-v2/comparators/Signal-cd1b0a6/configs/RGBNT201/Signal.yml
+  CLIP_WEIGHT: /root/autodl-tmp/trifusion-v2/pretrained/ViT-B-16.pt
+  CLIP_WEIGHT_SHA256: 5806e77cd80f8b59890b7e101eabd078d9fb84e6937f9e85e4ecb61988df416f
+  BASELINE_WIDTH: 3072
+  CAMERA_SIE: true
+MODEL:
+  ARCHITECTURE: signal_preserving_v23_spectral_adapter
+  FEATURE_WIDTH: 512
+  SEMANTIC_WIDTH: 768
+  GRID_SIZE: [16, 8]
+  BRANCH_AFTER_BLOCK: 8
+  ADAPTER_WIDTH: 128
+  SPECTRAL_ADAPTER_WIDTH: 128
+  EXPERT_MODAL_WIDTH: 512
+  SCALE_INIT: 0.05
+  GRADIENT_CHECKPOINTING: true
+OPTIMIZATION:
+  NEW_MODULE_LR: 0.00035
+  WEIGHT_DECAY: 0.0001
+  MAX_EPOCHS: 20
+  WARMUP_EPOCHS: 5
+  AMP: true
+  AMP_INIT_SCALE: 256.0
+LOSS:
+  ID_FUSED: 0.25
+  TRIPLET_FUSED: 1.0
+  ID_BRANCH: 0.08333333333333333
+  TRIPLET_BRANCH: 0.25
+  ID_RESIDUAL: 0.08333333333333333
+  TRIPLET_RESIDUAL: 0.25
+  TRIPLET_MARGIN: 0.3
+  LABEL_SMOOTHING: 0.1
+INITIALIZATION:
+  V12_RUN_SUMMARY: /root/autodl-tmp/trifusion-v2/artifacts/trifusion_v12_complete_path_oof_seed42_c71d3de/run_summary.json
+  V12_RUN_SUMMARY_SHA256: 9105b86a9c079c44843e9b118a21599746a87d279370341b8cf8d26bd18a8b69
+  V12_FOLDS:
+    - SIGNAL_CHECKPOINT: /root/autodl-tmp/trifusion-v2/artifacts/trifusion_v12_complete_path_oof_seed42_c71d3de/fold_0_signal_final.pth
+      SIGNAL_CHECKPOINT_SHA256: 523c7c645ac1d85c91cd7b08ef3c3276e37f723906ae7af0d9ec6a9ddbcb38de
+      EXPERT_CHECKPOINT: /root/autodl-tmp/trifusion-v2/artifacts/trifusion_v12_complete_path_oof_seed42_c71d3de/fold_0_experts.pth
+      EXPERT_CHECKPOINT_SHA256: 4baebda03e69447e552a5e2e5512aad3db69248e23cbd0aacbc6d2bb7475c3af
+    - SIGNAL_CHECKPOINT: /root/autodl-tmp/trifusion-v2/artifacts/trifusion_v12_complete_path_oof_seed42_c71d3de/fold_1_signal_final.pth
+      SIGNAL_CHECKPOINT_SHA256: 6c1304a68663418ef9b4dcd6230bde55c87d0319ac60351aebbe8a0ab9acbcd7
+      EXPERT_CHECKPOINT: /root/autodl-tmp/trifusion-v2/artifacts/trifusion_v12_complete_path_oof_seed42_c71d3de/fold_1_experts.pth
+      EXPERT_CHECKPOINT_SHA256: f369bca3dbd53518bc082880974f203aedbb6febd0251458a25707b91de52ec3
+    - SIGNAL_CHECKPOINT: /root/autodl-tmp/trifusion-v2/artifacts/trifusion_v12_complete_path_oof_seed42_c71d3de/fold_2_signal_final.pth
+      SIGNAL_CHECKPOINT_SHA256: 3cf0ef340c44db43d299ea8ca3a742ad12b4e113c12dffbd1db21f656923f678
+      EXPERT_CHECKPOINT: /root/autodl-tmp/trifusion-v2/artifacts/trifusion_v12_complete_path_oof_seed42_c71d3de/fold_2_experts.pth
+      EXPERT_CHECKPOINT_SHA256: 7abdecdec6e39eb6f3244b8f24428139e52079c91f7e5d0dad1d1c17dc387678
+GATES:
+  PREFLIGHT_BATCHES: 8
+  CAPACITY_STEPS: 8
+  CAPACITY_MAX_RESERVED_MIB: 24576.0
+  OVERFIT_STEPS: 100
+  OVERFIT_MAX_EXCESS_LOSS_RATIO: 0.1
+  Q1_MIN_FUSED_GAIN_MAP: 1.0
+  Q1_BOOTSTRAP_RESAMPLES: 10000
+  Q1_BOOTSTRAP_SEED: 42
+PROTOCOL:
+  Q1_ENDPOINTS: [frozen_zero_spectral_adapter, trained_spectral_adapter]
+  DEV_ACCESS_DURING_Q1: false
+  OFFICIAL_TEST_DURING_DEVELOPMENT: false
+  RERANKING: false
+V12:
+  SIGNAL_TEACHER_EPOCHS: 50

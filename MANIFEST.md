@@ -612,3 +612,6 @@
 | 2026-09-05 21:35 | /experiment-audit | refine-logs/v22/EXPERIMENT_TRACKER_20260905_213543.md | evidence | Independent terminal audit complete; negative result and provenance limits retained |
 
 | 2026-09-05 21:41 | /experiment-audit | EXPERIMENT_AUDIT_V22_INITIALIZATION.md/json | evidence | Independent full-gallery initialization diagnostic WARN, engineering pass with provenance limits, descriptive only; trace run11 archived |
+
+| 2026-09-05 21:56 | /experiment-plan | refine-logs/v23/EXPERIMENT_PLAN.md | implementation | New spectral adapter hypothesis fixed, full matched Q1 and five gates; not executed |
+| 2026-09-05 21:56 | /run-experiment | tools/train_signal_preserving_v23.py | implementation | Isolated V23 runner, zero-adapter pairing, full final-only training and five outputs |
