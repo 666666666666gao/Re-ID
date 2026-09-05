@@ -3325,3 +3325,23 @@ R2仅将这6个原本不更新的参数标记冻结，保留原值、state_dict�
 排序函数AST与已通过T0相同，不把该T0扩大成构造/梯度修正的验证。
 完整证据evidence/trifusion_msvr310_signal_v1_unused_gradient_diagnostic_20260906.json、
 evidence/trifusion_msvr310_signal_v1_token_selection_source_inspection_20260906.json及R2注册记录。
+
+### 41.20 MSVR310 三折M0 R2通过，固定source Signal基线运行中（2026-09-06）
+
+记录时间：2026-09-06T05:00:34.202298+08:00。M0 R2执行bb01d60，原wrapper63101 exit0，
+三折各8步，共24更新/1536训练曝光/48clean source前向，77.374851秒；
+195/195实际训练张量有梯度，0overflow，冻结TokenSelection SHA不变，
+三折3072D source特征严格重载逐元素相同，峰值显存11379.005MiB。
+source短检查实际曝光身份63/61/62，可用全身份103/103/104；heldout/dev/official前向0。
+21个完整文件含3checkpoint SHA及24步标量/标签核验完成；独立终态审计仍待完整基线。
+R1额外8次更新与0更新诊断保留，不声称未保存的R1/R2逐步轨迹一致。
+
+正式B0于2026-09-06T04:50:55.255082+08:00启动，wrapper63945，
+仍绑定bb01d60及原config/plan/runner；三折各重新从固定CLIP初始化训练50epoch，
+不使用M0权重。04:57:26观察fold0达46/50，进程运行，完整折和检索终态尚未取得。
+按实际约8秒/epoch，预计05:13–05:16附近完成；未用loss或某折结果改配置。
+首次进度reader event名误查，原log_tail证明已到46，原记录及更正单独保存。
+
+完整报告results/TRIFUSION_MSVR310_SIGNAL_SOURCE_M0_2026-09-06.md；
+M0原始SHA 79c0e2b1c981c4bb10548f0249dca684c113feb43151cc4bdcc2a2e9bf2887ae。
+这是源基线基础建设，没有车辆TriFusion、官方测试或RGBNT201dev访问，不改变未达主目标状态。

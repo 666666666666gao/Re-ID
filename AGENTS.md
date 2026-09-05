@@ -17,7 +17,8 @@
 
 - MSVR310 was installed on 2026-09-05 from the ICPL-ReID author link and
   SHA/ZIP-CRC/modality-pair verified: train1032/query3 591/gallery1055 triplets.
-  It has no project training or retrieval-evaluation result yet. RGBNT100 is
+  Its source Signal M0 is complete and fixed baseline training is running;
+  no complete retrieval result has yet been observed. RGBNT100 is
   installed and SHA/ZIP-CRC/modality-pair verified: train8675/query1715/
   gallery8575, with disjoint 50-train/50-test identities and 768x128 montages.
   Its training and retrieval evaluation counts are also zero. Keep RGBNT201 as the
@@ -29,10 +30,13 @@
   M0 R1 failed after8 fold0 updates because6 TokenSelection tensors had no grad.
   One zero-update source batch and upstream source confirm Q/K discrete masks, unused V.
   R2 explicitly freezes this already-unupdated module; weights/forward/gates remain.
-  R2 M0 is PREPARED_NOT_RUN; full baseline and heldout retrieval are NOT_RUN.
+  R2 M0 passed all3 folds/24 updates/195 of195 gradient tensors; exit0.
+  B0 wrapper63945 started04:50:55 onbb01d60;3 fresh folds at50 epochs.
+  At04:57:26 fold0 reached46 epochs; complete retrieval is not yet observed.
   Three fresh source models, fixed50epochs, B64/K8,128x256, original MSVR
   multi-step schedule and scene filtering; no V24 promotion or vehicle expert run.
-  Validate the same-source8-step-per-fold M0 before starting the baseline.
+  M0 files and scalar arrays verified; preserve initial R1 failure and all costs.
+  Do not relaunch the running B0 or modify bound plan/config/source files.
 
 ## Research provenance
 
