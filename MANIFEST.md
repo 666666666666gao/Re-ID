@@ -536,3 +536,8 @@
 - Result and independent audit: `results/TRIFUSION_RGBNT201_V17_DTRED_2026-09-05.md`, `EXPERIMENT_AUDIT_V17.md/json`.
 - Updated main handoff through sections28/29 and `docs/SOTA_REFRESH_2026-09-05.md`.
 - V17 is terminal negative, without D1 or a new deployable/official result. Large weights remain remote-only.
+
+| 2026-09-05 12:12 | /experiment-plan | refine-logs/v19/EXPERIMENT_PLAN_20260905_121232.md | implementation | V19 private semantic tail preregistration; no results yet |
+| 2026-09-05 12:12 | /experiment-plan | refine-logs/v19/EXPERIMENT_PLAN.md | implementation | V19 private semantic tail preregistration; no results yet |
+| 2026-09-05 12:12 | /experiment-plan | refine-logs/v19/EXPERIMENT_TRACKER_20260905_121232.md | implementation | V19 private semantic tail preregistration; no results yet |
+| 2026-09-05 12:12 | /experiment-plan | refine-logs/v19/EXPERIMENT_TRACKER.md | implementation | V19 private semantic tail preregistration; no results yet |

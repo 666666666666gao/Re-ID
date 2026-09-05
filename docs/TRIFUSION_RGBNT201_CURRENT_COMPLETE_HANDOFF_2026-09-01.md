@@ -1921,3 +1921,29 @@ PMKD仓库当前仅README；CoT有代码但不提供文本与预训练权重；D
 实现和附mask数据链接。本次没有下载或接入这些模块，没有改变V18冻结方案。
 主源链接、CoT PDF SHA与CCL/Hyper-ReID待核边界统一见
 `docs/SOTA_REFRESH_2026-09-05.md`，不称已穷尽最新SOTA。
+
+## 35. V19私有语义尾部实现与预注册（2026-09-05）
+
+§33.4的候选现已实现为`modeling/trifusion/signal_preserving_v19.py`，独立runner
+为`tools/train_signal_preserving_v19.py`。原Signal和V8源码未修改；wrapper持有
+原角色模块，并给三专家各自复制CLIP索引9/10/11，原完整3072D Signal冻结。
+两端都持有九份相同初始副本；匹配对照冻结副本，实验端训练副本，两端共同
+继续训练V12 source-only角色模块和head。可训练参数差63790848，108tensor，
+容量差异必须披露，不把此比较称等可训练容量或角色分工的独立因果证明。
+
+执行前固定方案在`refine-logs/v19/EXPERIMENT_PLAN.md`及时间戳副本；配置
+`configs/RGBNT201/TriFusion-signal-preserving-v19-private-tail-rtx3090.yml`。
+角色/head LR=3.5e-4，预训练尾部LR=3.5e-6，AdamW wd1e-4、5epoch warmup
++cosine、20epoch、B64/K8、seed42。损失沿用V8，ID权重和0.75，过拟合下界
+为0.75H。V19自身关闭CuDNN benchmark以处理此前观察到的重训差异风险；
+历史seed helper保持原样，不声称所有CUDA算子自动确定性。
+
+M0要求三折两端原V8五路输出/初始state/增强配对精确一致，私有storage互不
+共享；两端8步真实容量与实验端固定100步均需全训练梯度、overflow0、冻结
+状态不变，过拟合excess ratio<=0.1。通过后自动完整三折×两端×20epoch，
+保留3126gallery/571query五路输出，全部最终checkpoint重新strict reload。
+Q1沿用+1mAP、全部fold/专家非负、身份bootstrap下界>0及fused严格胜出门。
+
+当前状态为实现与方案已写，远端T0/M0/Q1尚未执行，不能称工程或科学通过。
+初始估计M0 5–15分钟、Q1 2–4小时，将按真实容量与首epoch更新。
+两个跨数据集仅安装，不训练；D1/dev/official仍为0，全局目标未达。
