@@ -2257,3 +2257,54 @@ CNN+0.418478、Transformer-4.332104、Mamba-0.534771。整体仍RUNNING，
 已保存完整fold对象和配对条件后才记录该折完成。原始进度与传输回执同存
 evidence/trifusion_v20_*。M0审计不代替完整Q1审计，旧V19失败封存和未达
 dev65/官方SOTA状态不变。全局任务继续active。
+
+
+### 37.4 V20完整六端终态及全数组重算（2026-09-05 16:12 CST）
+
+三折两端各20epoch、120条epoch记录、3360优化步全部完成；运行4236.036166秒
+（70.600603分钟，包含M0等整体流程）。原进程26383在16:08:40CST观测已退出，
+GPU 1MiB/0%。固定Q1判定FAIL，D1拒绝晋级，dev/official/D1访问均为0。
+
+完整141 heldout身份、3126 gallery、571合法query/21跨camera身份保留。
+2555条只从query排除、仍作gallery干扰项；三折gallery/query为
+1000/190、1051/179、1075/202，六端全部最终epoch20保存后strict reload，
+读取六个模型的全部baseline/fused/CNN/T/M输出，无末折提前停止或结果删选。
+配对初始化、完整采样序列、前8增强、绑定、baseline输出均相同；
+六端203/203训练tensor梯度覆盖、overflow0、冻结state不变全部通过。
+
+本次实际对照→跨模态身份损失的全量mAP：
+baseline77.487603→77.487603，fused80.206258→79.195387（-1.010871），
+CNN79.126676→78.116938（-1.009739），Transformer78.475388→73.695598
+（-4.779791），Mamba77.780907→79.087275（+1.306367）。
+三折fused差-1.087608/-2.539986/+0.416314。fused Rank1从83.012259降至
+79.334501：9个原错query修复，30个原对query变错。全部571个query中AP改善189、
+下降208、相等174；21身份全表和五路Rank1/5/10见完整结果及配套JSON。
+
+固定五个科学条件中，aggregate>=+1、各折非负、各专家非负、bootstrap下界>0
+四项失败；只有候选fused高于同checkpoint的baseline和三专家通过。
+21身份聚类、10000次seed42 bootstrap的95%下界为-3.8126559810990917。
+跨模态监督未带来完整泛化收益；不能以Mamba单路收益晋级，也不能据此断言
+所有跨模态监督必然无效。V20封存，不扫描温度/系数/分支/epoch或另种子重训。
+
+远端32个绑定文件（包括六个最终权重）全字节SHA校验及六receipt与summary
+对象相等校验通过；下载原始summary2022853字节，SHA
+23c683b92ad3551e9aa07a24470e82c47565ef54b6683e00213ce7ea0bfbf522；
+日志65335字节，SHA978a9f98f8c2d38cb59b101c834c8838acab139c580f88e2612bb2585a00d50e。
+本地NumPy2.5.2实际重算全部掩码、三折两端五路AP/rank聚合、增益和bootstrap，
+最大绝对数值差1.3322676295501878e-15个百分点，训练损失分量检查通过。
+此为JSON算术与文件SHA核验，未在本地执行模型/权重张量加载/图像或距离重算。
+独立GPT-5.5 xhigh完整Q1审计待完成，M0审计不能替代Q1审计。
+
+全部三折/五路/21身份结果见
+results/TRIFUSION_RGBNT201_V20_CROSS_MODAL_IDENTITY_2026-09-05.md，
+逐身份完整Rank1/5/10、六checkpoint训练绑定见
+evidence/trifusion_v20_complete_comparison_20260905.json。
+原始全量receipt、日志、远端文件SHA、传输、数组重算各自保留；前两折快照
+evidence/trifusion_v20_two_paired_folds_20260905.json亦保留，SHA
+59b7bfdce0d1b0d8fe5ca351e3f7f53c16a79ab78ef5eac40bccb22557c49053。
+
+V20作为已失败的主实验封存。训练内OOF反复开发使用，不能与官方85.3/87.9
+并列为相同协议；可部署dev最佳仍V8 58.4050/59.3939，dev65及SOTA未达。
+下步完成独立Q1审计后再固定新的主实验假设；当前V21无代码、配置、预注册
+或训练。SAM只做作者论文/源码可行性研究，尚未采用，不声称已诊断出尖锐极小值。
+全局任务继续active，不能把这次负结果闭环写成用户目标已实现。

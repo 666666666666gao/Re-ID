@@ -259,6 +259,18 @@
 
 ## Remote experiment constraints
 
+- V20 cross-modal identity supervision completed all three folds x two endpoints
+  x20 epochs, seed42, 3360 optimizer steps, and is sealed as Q1_FAIL. Candidate/
+  actual matched-control fused mAP is 79.195387/80.206258, gain -1.010871;
+  fold gains are -1.087608/-2.539986/+0.416314. CNN/Transformer/Mamba gains
+  are -1.009739/-4.779791/+1.306367, and the 21-identity bootstrap lower bound
+  is -3.812656. All 3126 gallery records and 571 eligible queries were retained.
+  No D1/dev/official, temperature/loss-weight/branch/epoch/seed scans or V20
+  retraining. Whole-file remote SHA and complete local NumPy arithmetic passed;
+  independent Q1 audit is pending. Any successor needs a new evidence-grounded
+  hypothesis and preregistered train-only qualification. No V21 implementation
+  or training exists yet. Current deployable best and unmet objective are unchanged.
+
 - V19 private semantic tail completed three folds x two endpoints x20 epochs,
   seed42, 3360 optimizer steps, and is sealed as Q1_FAIL. Trained/frozen fused
   mAP is 80.496828/80.240792, gain +0.256035; fold gains are

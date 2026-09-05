@@ -162,7 +162,7 @@ if __name__ == "__main__":
     report = audit(json.loads(raw))
     report["input_summary_sha256"] = hashlib.sha256(raw).hexdigest()
     report["audit_script_sha256"] = hashlib.sha256(Path(__file__).read_bytes()).hexdigest()
-    args.output.write_text(json.dumps(report, indent=2) + "\n", encoding="utf-8")
+    args.output.write_bytes((json.dumps(report, indent=2) + "\n").encode("utf-8"))
     print(json.dumps({key: report[key] for key in ("verification_passed", "scientific_status",
                                                  "max_absolute_numeric_difference_percent",
                                                  "bootstrap_lower_bound_95_mAP")}))

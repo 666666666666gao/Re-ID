@@ -572,3 +572,7 @@
 | 2026-09-05 15:23 | /experiment-audit | EXPERIMENT_AUDIT_V20_M0.md/json | evidence | Independent M0 engineering PASS, integrity WARN, scientific not evaluated; two verbatim rounds retained |
 | 2026-09-05 15:23 | /run-experiment | refine-logs/v20/EXPERIMENT_TRACKER_20260905_152333.md | evidence | First complete paired fold, 2/6 endpoints; negative fold retained; Q1 continues |
 | 2026-09-05 15:23 | /run-experiment | evidence/trifusion_v20_first_paired_fold_20260905.json | evidence | All first-fold five-output final arrays and receipts; remote SHA verified |
+
+| 2026-09-05 16:12 | /run-experiment | refine-logs/v20/EXPERIMENT_TRACKER_20260905_161219.md | evidence | V20 all six endpoints complete, Q1_FAIL; independent terminal audit pending |
+| 2026-09-05 16:12 | /run-experiment | results/TRIFUSION_RGBNT201_V20_CROSS_MODAL_IDENTITY_2026-09-05.md | evidence | All three folds, five outputs, 21 identities and paired query changes |
+| 2026-09-05 16:12 | /run-experiment | evidence/trifusion_v20_q1_seed42_3cea5bf.json | evidence | Terminal raw arrays; six receipts, complete log, remote 32-file SHA and actual NumPy bootstrap audit |
