@@ -590,3 +590,7 @@
 
 | 2026-09-05 17:24 | /experiment-audit | EXPERIMENT_AUDIT_V21_M0.md/json | evidence | Independent engineering PASS, integrity WARN, fixed M0/scientific qualification FAIL; no retrieval |
 | 2026-09-05 17:24 | /run-experiment | refine-logs/v21/EXPERIMENT_TRACKER_20260905_172433.md | evidence | V21 audit closed; exact M0 negative retained, Q1 not run |
+
+| 2026-09-05 17:45 | /run-experiment | evidence/trifusion_source_camera_metadata_20260905.json | evidence | Source-only 1680-batch camera-label replay; no model execution |
+| 2026-09-05 17:45 | /experiment-plan | refine-logs/v22/EXPERIMENT_PLAN_20260905_174555.md | implementation | Frozen V22 residual MCNL main comparison; not launched |
+| 2026-09-05 17:45 | /experiment-plan | refine-logs/v22/EXPERIMENT_TRACKER_20260905_174555.md | implementation | T0/M0/Q1 pending, dev/official zero |

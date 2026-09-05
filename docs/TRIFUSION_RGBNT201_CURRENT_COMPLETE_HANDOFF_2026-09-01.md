@@ -2476,3 +2476,39 @@ JSON24466字节 SHA3ec24312ed4f2c4ea466247ed93be3fc0d44bcbead3f22669965cfadc346c
 完整请求、逐字回复、元数据及报告原件已在本地trace run08归档；
 trace不公开提交，审计报告本身随仓库发布。本段是审计完成后的归档说明，
 不冒充审计者已复核本段新增文字。V21封存，当前没有新的训练或检索结果。
+
+
+## 39. 完整相机监督检查与V22冻结主计划（2026-09-05）
+
+V21独立M0审计闭环已完成；fa1e860同步三份master，原负结果保留。
+随后commit418cf556在远端CPU重放原sampler三fold各20epoch：1680批、107520
+样本暴露，原始manifest只取训练source，前8批全索引/文件名与V21实录一致。
+没有模型构建/forward、图像读取、权重张量加载、优化或新检索。
+全752640有向同ID正对仅60744跨camera，8.070791%；17600/107520行有跨camera
+正例。1580/1680批为一组跨camera身份，其余集中于epoch末，不能一概说每批一组。
+
+缺少同camera负例7852行、异camera负例872行，923个批含不完整行；
+每批仍有42–64行同时具备两类真实负例。完整source标签证据6367917字节，
+SHA5a42be65a512534bb87f52a5f3f4385042157511803774579e65d96d94662d31，
+所有逐行计数由本地JSON整数重算通过。此处数量为跨epoch/fold重复暴露，不是新增图像。
+同相机负例现象和监督稀疏是新假设的依据，尚未证明相机是唯一失败原因。
+
+V22将三个residual的0.25*batch-hard triplet换为0.25*MCNL；
+两个margin均0.1，负例按真实ID及same/other camera划分，保留全部真实ID正例。
+只在负例齐全行平均，其他行继续参与原七路ID和fused/branch triplet；
+不补造负例、不补零距离。正式每batch支持数必须逐项等于上述冻结元数据。
+原V8/Signal结构、同checkpoint baseline3072D、三个专家、推理宽度、
+训练参数203tensor与全部初始化不变；无新推理参数。
+来源和移植差异见docs/CAMERA_SUPERVISION_AND_MCNL_SOURCE_NOTES_2026-09-05.md。
+
+新固定两端batch_hard_residual/camera_negative_residual，seed42/B64K8，
+同AdamW0.00035/wd0.0001、warmup5、20epochs、原增强采样及AMP256。
+T0三项CUDA数学契约及真实M0（48forward-only+116优化步，过拟合固定100步
+超额loss比<=0.1）通过后，执行全3fold×2端×20epoch/3360步，不提前挑fold。
+五路输出/21身份/571query全报；同五项Q1科学门，dev/official仍0。
+方案冻结SHA ce2d1f93d5ef36a3eb53d2593fc548b31bff0ea4a3f737b19e1dcaf721d9723b，
+配置SHA 5efd8e6dbf8cd70624902148a52701ad69ae5766825293efa878836a3e74f4f6，
+runner SHA ee17aeba9bc2a567b1163e6a57759a55423ee5f77edde21e6c7a81625fe45a53。
+当前仅已写代码并AST解析，T0/M0/Q1均未启动；不能称模型已训练或改善。
+T0预估5–10秒、M0约4–7分钟、完整Q1约75–95分钟，依实际epoch修正。
+原本best dev58.4050/59.3939、未达65和官方目标的状态不变，整体goal继续active。

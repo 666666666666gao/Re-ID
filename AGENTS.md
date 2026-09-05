@@ -259,6 +259,19 @@
 
 ## Remote experiment constraints
 
+- V22 is preregistered but not launched. It replaces only the three residual
+  batch-hard triplets with camera-negative MCNL at margins 0.1/0.1 and the
+  original coefficient 0.25. All seven ID losses and fused/branch triplets,
+  exact Signal/V8 architecture, seed42/B64K8/20 epochs and initialization stay.
+  Read refine-logs/v22/EXPERIMENT_PLAN.md. The 1680-batch source-label replay
+  found only 8.070791% cross-camera positive pairs and 8.113839% rows lacking
+  one required negative-camera group. MCNL uses the explicit eligible-row
+  domain (42--64 rows per batch); no fabricated negatives or zero-fill.
+  T0 and real M0 must pass before all six final-only Q1 endpoints. Preserve
+  all five fixed scientific gates and complete 3126-gallery/571-query scope.
+  No margin/weight/sampler/epoch/LR/seed scan; dev/official remain zero.
+
+
 - V21 is sealed M0_FAIL. All three T0 CUDA tests passed; six-model preflight,
   both capacities, gradient/frozen/AMP/BN checks passed, but the fixed 100-step
   excess-loss ratio was 0.398999 > 0.1. Final/initial loss was
