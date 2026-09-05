@@ -2214,3 +2214,46 @@ trace run06，尚未返回；不借用V19审计覆盖V20。
 Q1必须继续原进程完成三折两端20epoch/3360步及全部五路终态评价，当前尚无
 完整科学结果。初估60–80分钟，待稳定epoch时长修正；所有科学门/失败封存
 策略不变。仅seed42，无本地模型执行、消融、扫描、D1/dev/official或新SOTA。
+
+
+### 37.2 V20 M0独立审计完成（2026-09-05）
+
+M0独立审计及字面字段/记录范围校对已完成：EXPERIMENT_AUDIT_V20_M0.md/json，
+工程PASS，overall/integrity WARN，scientific_qualification not_evaluated。
+熵下界与比例独立复算差0，损失分量最大舍入差5.96e-8。两轮原文及完整
+request/response/meta保存于trace run06。最终MD SHA
+28964c3a11d900db7300671fdd07772c4217710a751daef078c4df15e709de8a，
+JSON SHAb3e717f453ee813ea45b4b1abdb6004ae29337b1a140a6b45c974b54ba06892a。
+字面键名、3126源码断言/48正例记录推导、preflight无optimizer状态保存、
+容量8不同batch/过拟合100固定batch等描述已精确区分，数值/门槛不变。
+本地criterion.py及protocol只在LF规范化后匹配SHA，远端大权重/图像独立持有
+范围有限；M0审计不覆盖后续Q1终态。不作无关换行符重构或运行中源码改动。
+
+
+### 37.3 V20第一折完整配对终态（2026-09-05 15:16 CST）
+
+15:16:12CST确认第一折两端各完成20epoch/580步，共1160步；strict reload完整
+state SHA、只读评价、overflow0、冻结state、203训练tensor梯度覆盖及完整
+采样序列/前8增强/初始state/baseline输出配对检查均通过。保留1000gallery/
+190合法query。完整snapshot889149字节，SHA
+1f71ee488494019937a2f8a9d76b7ec29a611ac10f4037ae6ac5ff8f42a0eb0c，
+本地与远端一致；见evidence/trifusion_v20_first_paired_fold_20260905.json。
+
+第一折fused相对实际对照-1.087608 mAP；固定“各折均非负”条件已有失败项。
+CNN+0.418478、Transformer-4.332104、Mamba-0.534771。整体仍RUNNING，
+按合同完成剩余4/6端，不能删分支/改温度权重/缩预算；所有五路Rank1/5/10、
+逐query AP/rank及源/终态权重绑定完整保留。无D1/dev/official访问。
+预计六端15:56–16:06完成，下一观测窗口15:33–15:34临近第二折配对完成。
+
+| 第一折输出 | 对照mAP | 新损失mAP | mAP增益 | 对照R1 | 新损失R1 |
+|---|---:|---:|---:|---:|---:|
+| baseline_only | 68.767642 | 68.767642 | +0.000000 | 69.473684 | 69.473684 |
+| fused | 71.494649 | 70.407041 | -1.087608 | 71.578947 | 70.000000 |
+| cnn | 71.243655 | 71.662133 | +0.418478 | 71.052632 | 73.684211 |
+| transformer | 70.175142 | 65.843037 | -4.332104 | 71.578947 | 65.263158 |
+| mamba | 69.964462 | 69.429691 | -0.534771 | 68.421053 | 71.578947 |
+
+首次15:15:19观测见两个Q1_final日志行，summary尚未append该折；随后直接核对
+已保存完整fold对象和配对条件后才记录该折完成。原始进度与传输回执同存
+evidence/trifusion_v20_*。M0审计不代替完整Q1审计，旧V19失败封存和未达
+dev65/官方SOTA状态不变。全局任务继续active。

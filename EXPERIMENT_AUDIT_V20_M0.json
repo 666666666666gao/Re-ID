@@ -1,0 +1,391 @@
+{
+  "date": "2026-09-05",
+  "auditor": "GPT-5.5 xhigh independent integrity auditor",
+  "overall_verdict": "warn",
+  "integrity_status": "warn",
+  "engineering_integrity": "pass",
+  "scientific_qualification": "not_evaluated",
+  "evaluation_type": "v20_m0_train_source_engineering_probe_no_retrieval_evaluation",
+  "stage_classification": {
+    "observed_stage": "T0 plus M0 engineering gate",
+    "tracker_status": "M0_PASS_Q1_RUNNING",
+    "snapshot_literal_fields": {
+      "status": {
+        "value": "RUNNING",
+        "source": "evidence/trifusion_v20_m0_seed42_3cea5bf.json:3"
+      },
+      "evaluation_type": {
+        "value": "real_gt_train_internal_complete_path_oof",
+        "source": "evidence/trifusion_v20_m0_seed42_3cea5bf.json:28"
+      },
+      "epochs_per_endpoint": {
+        "value": 20,
+        "source": "evidence/trifusion_v20_m0_seed42_3cea5bf.json:30"
+      },
+      "model_selection": {
+        "value": "none_final_epoch_only",
+        "source": "evidence/trifusion_v20_m0_seed42_3cea5bf.json:31"
+      },
+      "dev_access_count": {
+        "value": 0,
+        "source": "evidence/trifusion_v20_m0_seed42_3cea5bf.json:36"
+      },
+      "official_test_access_count": {
+        "value": 0,
+        "source": "evidence/trifusion_v20_m0_seed42_3cea5bf.json:37"
+      },
+      "d1_executed": {
+        "value": false,
+        "source": "evidence/trifusion_v20_m0_seed42_3cea5bf.json:38"
+      },
+      "next_phase_qualified": {
+        "value": false,
+        "source": "evidence/trifusion_v20_m0_seed42_3cea5bf.json:39"
+      },
+      "folds": {
+        "value": [],
+        "source": "evidence/trifusion_v20_m0_seed42_3cea5bf.json:9294"
+      },
+      "m0.passed": {
+        "value": true,
+        "source": "evidence/trifusion_v20_m0_seed42_3cea5bf.json:9296-9297"
+      }
+    },
+    "derived_interpretation": {
+      "q1_completed_in_snapshot": false,
+      "basis": "folds is an empty literal snapshot field at evidence/trifusion_v20_m0_seed42_3cea5bf.json:9294; Q1 source appends folds only after reload/evaluate/receipt checks in tools/train_signal_preserving_v20.py:344-373."
+    }
+  },
+  "checks": {
+    "A_labels_positive_masks_sample_registry_folds_source_weights": {
+      "status": "pass",
+      "scope": "M0 engineering",
+      "findings": [
+        "Called code builds positive masks directly from minibatch identity labels and normalizes same-identity targets per anchor at modeling/trifusion/cross_modal_identity_v20.py:21-23; tools/train_signal_preserving_v20.py:146-164 calls that loss with batch labels.",
+        "Called code passes labels and camera IDs from the training batch directly to CUDA with a full three-modality mask at tools/run_signal_preserving_v5.py:571-583.",
+        "aligned_data.py provides aligned RGB/NIR/TIR triplets and a cross-camera identity sampler.",
+        "The 48 positive-pair-record count is independently derived from 3 preflight folds x 2 endpoints x 8 entries; the called code creates 8 entries at tools/train_signal_preserving_v20.py:143-153 and the six literal positive_pair_counts arrays start at evidence/trifusion_v20_m0_seed42_3cea5bf.json:1343,2883,4429,5968,7513,9051.",
+        "The V20 runner checks fit and heldout identity separation before strict-loading V12 fold sources at tools/train_signal_preserving_v20.py:58-77; binding identity arrays are literal snapshot fields beginning at evidence/trifusion_v20_m0_seed42_3cea5bf.json:55 and :151.",
+        "The 3126-record/no-overlap statement is an executed source assertion at tools/train_signal_preserving_v20.py:247-250 and a plan contract at refine-logs/v20/EXPERIMENT_PLAN.md:66, not a literal M0 snapshot count field.",
+        "No heldout retrieval evaluation was run in the M0 snapshot."
+      ],
+      "field_precision": {
+        "literal_snapshot_fields": [
+          "preflight",
+          "positive_pair_counts",
+          "positives_per_anchor_per_directed_modality_pair",
+          "cross_camera_identity_pairs_per_directed_modality_pair",
+          "directed_modality_pairs_per_expert",
+          "binding.fit_identity_ids",
+          "binding.heldout_identity_ids"
+        ],
+        "source_code_assertions_or_contracts": [
+          "len(records) == 3126",
+          "all(not split['identity_overlap'] for split in splits)",
+          "same.sum(dim=1) == 8",
+          "(same & cross).any()"
+        ],
+        "independently_derived_values": [
+          "48 positive-pair records",
+          "observed cross-camera count values [14, 24, 30, 32]"
+        ]
+      }
+    },
+    "B_loss_target_normalization_gradients_entropy_capacity": {
+      "status": "pass",
+      "findings": [
+        "The V20 loss averages six directed cross-modality same-identity cross-entropies per expert after L2-normalizing modal embeddings and applying temperature 0.07.",
+        "The V20 runner adds 0.25 times the cross-modal identity loss to the V8 base ID/triplet objective.",
+        "The loss module has no parameters and therefore adds no inference parameters.",
+        "Independent arithmetic reproduced the identity entropy floor, alignment floor, combined floor, overfit excess ratio, and M0 pass gate.",
+        "Capacity was equal between control and experiment arms: 98,800,141 total parameters, 7,841,292 trainable parameters, 203 trainable tensors, and 6062 MiB peak reserved memory."
+      ]
+    },
+    "C_hashes_provenance_bindings_logs": {
+      "status": "warn",
+      "findings": [
+        "The V20 runner, config, plan, module, M0 JSON, transfer receipt, launch receipt, preregistration, and T0 receipt exist locally and have stable recorded hashes.",
+        "The M0 transfer receipt reports remote/local hash agreement for the M0 JSON and run log.",
+        "All 15 M0 source_file_sha256 bindings matched local content after LF normalization; 13 matched raw bytes exactly.",
+        "modeling/trifusion/criterion.py and protocols/rgbnt201_dev_v1.json did not match recorded source hashes as raw local bytes but did match after CRLF-to-LF normalization.",
+        "V12 checkpoints, CLIP weight artifact, raw dataset, checkpoint tensors, and remote CUDA execution environment are receipt-bound/remote-only in this local audit."
+      ],
+      "source_hash_recheck": {
+        "recorded_source_bindings": 15,
+        "raw_byte_matches": 13,
+        "lf_normalized_matches": 15,
+        "raw_mismatches": [
+          {
+            "path": "modeling/trifusion/criterion.py",
+            "recorded_sha256": "0b2a6370f434828d885945d1a46dd56f6668133ceed45ef359fe71eeca63740a",
+            "local_raw_sha256": "9a028e5711981123310f5e0d441a35b7dbecaf33f9edcec4fd3773d070cf877f",
+            "local_lf_normalized_matches_recorded": true
+          },
+          {
+            "path": "protocols/rgbnt201_dev_v1.json",
+            "recorded_sha256": "d916e7daaa1d55b179c1ec77e93128b6e6a8d1526adc9eac060ea8e733881946",
+            "local_raw_sha256": "f7f6f8a906c06fec4918929fb5c17abfc197986b99e017aca1d3e15831c1541d",
+            "local_lf_normalized_matches_recorded": true
+          }
+        ]
+      }
+    },
+    "D_cuda_preflight_backward_gradients_state_optimizer_amp_reload": {
+      "status": "pass",
+      "scope": "executed M0 only",
+      "findings": [
+        "T0 remote CUDA pytest receipt records exit code 0 with 3 tests passed.",
+        "Called code pairs endpoints on literal keys initial_state_sha256, batch_receipts, all_output_sha256, binding, and positive_pair_counts at tools/train_signal_preserving_v20.py:288-290; the first endpoint snapshot shows these keys at evidence/trifusion_v20_m0_seed42_3cea5bf.json:210, :211, :1333, :47, and :1343.",
+        "Batch receipts are hash-level records of paths, sampler_indices, tensor_sha256, and metadata_sha256, defined at tools/train_signal_preserving_v17.py:466-489 and visible in the first snapshot receipt at evidence/trifusion_v20_m0_seed42_3cea5bf.json:213, :279, :345, and :350.",
+        "Standalone alignment backward reached CNN, Transformer, and Mamba encoder tensors for both endpoints in all folds; the called code collects alignment_nonzero_encoder_gradients at tools/train_signal_preserving_v20.py:165-180 and the first literal key appears at evidence/trifusion_v20_m0_seed42_3cea5bf.json:1385.",
+        "Capacity and overfit stages literally record 203 trainable tensors, 203 nonzero-gradient tensors, empty missing_nonzero_gradients, zero overflow_events, and unchanged frozen state at evidence/trifusion_v20_m0_seed42_3cea5bf.json:9361-9365, :9423-9427, and :10038-10042.",
+        "The runner uses an optimizer and scaler in fixed_steps at tools/train_signal_preserving_v20.py:187 and :192-194, but fixed_steps returns only training/gradient/frozen/overflow fields at tools/train_signal_preserving_v20.py:199-202; optimizer/scaler state is not a literal M0 record.",
+        "Q1 reload/evaluation code exists at tools/train_signal_preserving_v20.py:344-358 and paired Q1 checks at :368-373, but no completed Q1 folds are present because the literal M0 snapshot has folds = [] at evidence/trifusion_v20_m0_seed42_3cea5bf.json:9294."
+      ],
+      "field_precision": {
+        "literal_snapshot_fields": [
+          "initial_state_sha256",
+          "batch_receipts",
+          "all_output_sha256",
+          "positive_pair_counts",
+          "alignment_nonzero_encoder_gradients",
+          "baseline_no_gradient",
+          "state_unchanged",
+          "steps",
+          "alignment_weight",
+          "losses",
+          "components",
+          "trainable_tensors",
+          "nonzero_gradient_tensors",
+          "missing_nonzero_gradients",
+          "frozen_state_unchanged",
+          "overflow_events",
+          "peak_reserved_mib"
+        ],
+        "called_code_not_literal_snapshot_state": [
+          "optimizer construction",
+          "GradScaler construction",
+          "Q1 checkpoint reload",
+          "Q1 heldout evaluate call"
+        ],
+        "corrected_description": "The report no longer claims that M0 preflight records optimizer/scaler state."
+      }
+    },
+    "E_scope_chronology_query_gallery_model_selection": {
+      "status": "pass_with_warning",
+      "findings": [
+        "Executed M0 preflight scope matches called code: ENDPOINTS is fixed at tools/train_signal_preserving_v20.py:30-32; the runner iterates folds and endpoints at :281-285 and appends each preflight fold at :290-291.",
+        "Capacity calls fixed_steps with count=8 and fixed=false for weights 0.0 and 0.25 at tools/train_signal_preserving_v20.py:293-300; literal snapshot fields record steps/alignment_weight at evidence/trifusion_v20_m0_seed42_3cea5bf.json:9305-9308 and :9368-9370.",
+        "Overfit calls fixed_steps with count=100 and fixed=true at tools/train_signal_preserving_v20.py:303-304; fixed_steps selects one fixed_batch at :190 and reuses it through :192-194; literal snapshot fields record steps/alignment_weight at evidence/trifusion_v20_m0_seed42_3cea5bf.json:9431-9433.",
+        "The literal snapshot keys are status, evaluation_type, epochs_per_endpoint, model_selection, dev_access_count, official_test_access_count, d1_executed, next_phase_qualified, preflight, folds, and m0.passed at evidence/trifusion_v20_m0_seed42_3cea5bf.json:3, :28, :30-31, :36-40, :9294, and :9296-9297.",
+        "The prior dev/official/D1 run-count wording was corrected because the literal M0 JSON keys are dev_access_count, official_test_access_count, and d1_executed.",
+        "The broader Q1 retrieval/query-gallery scope is not assessable from the M0 snapshot because folds is empty at evidence/trifusion_v20_m0_seed42_3cea5bf.json:9294 and Q1 appends folds only after reload/evaluate/receipt checks at tools/train_signal_preserving_v20.py:344-373."
+      ],
+      "field_precision": {
+        "fixed_step_distinction": {
+          "capacity": "8 optimizer steps per capacity arm with fixed=false; the loader supplies the next batch each step.",
+          "overfit": "100 optimizer steps with fixed=true; one fixed_batch is selected once and reused."
+        },
+        "literal_snapshot_field_names_corrected": [
+          "dev_access_count",
+          "official_test_access_count",
+          "d1_executed"
+        ],
+        "unsupported_literal_names_removed": true
+      }
+    },
+    "F_observed_stage_and_claim_eligibility": {
+      "status": "pass",
+      "findings": [
+        "Eligible claim class is V20 M0 engineering feasibility/readiness only.",
+        "Scientific retrieval improvement, complete-path benefit, dev65, official RGBNT201, D1, and SOTA claims are unsupported by this M0 evidence."
+      ]
+    }
+  },
+  "claims": [
+    {
+      "claim": "V20 implements a cross-modal same-identity alignment loss using dataset labels.",
+      "assessment": "supported",
+      "evidence": "cross_modal_identity_v20.py derives positives from labels and M0 preflight records K=8 positive structure."
+    },
+    {
+      "claim": "V20 adds no new inference parameters.",
+      "assessment": "supported",
+      "evidence": "The loss module has no parameters and the M0 binding reports new_inference_parameters = 0."
+    },
+    {
+      "claim": "V20 T0 passed on remote CUDA.",
+      "assessment": "supported_by_receipt",
+      "evidence": "trifusion_v20_t0_20260905.json records pytest exit code 0 and 3 passed tests."
+    },
+    {
+      "claim": "V20 M0 passed.",
+      "assessment": "supported",
+      "evidence": "Independent replay of M0 JSON gates reproduced m0_passed = true."
+    },
+    {
+      "claim": "Control and experiment capacity are equal.",
+      "assessment": "supported",
+      "evidence": "Both capacity arms report identical parameter counts, trainable tensor counts, and peak reserved memory."
+    },
+    {
+      "claim": "Cross-modal identity overfit reaches the configured 0.1 excess-ratio gate.",
+      "assessment": "supported",
+      "evidence": "Recomputed overfit excess ratio is 0.0030658060054957735."
+    },
+    {
+      "claim": "Heldout retrieval data was used for M0 fitting.",
+      "assessment": "refuted_for_observed_m0",
+      "evidence": "The M0 stage is train-source only; split/binding checks separate fit and heldout, and no retrieval folds are present."
+    },
+    {
+      "claim": "Q1 retrieval improvement, complete-path benefit, or statistical win is established.",
+      "assessment": "unsupported",
+      "evidence": "The M0 snapshot has folds = [] and no completed endpoint metrics."
+    },
+    {
+      "claim": "Dev65, official RGBNT201, D1, or SOTA performance is established.",
+      "assessment": "unsupported",
+      "evidence": "The M0 JSON records zero dev/official runs, D1 false, and next_phase_qualified false."
+    }
+  ],
+  "recomputation": {
+    "runtime": {
+      "python": "3.13.12",
+      "numpy": "2.5.2"
+    },
+    "input_artifact": "evidence/trifusion_v20_m0_seed42_3cea5bf.json",
+    "input_artifact_sha256": "5fd4922a7a7036f6905c54397809faed18387666b1df18aa39e5429cd10876a0",
+    "constants": {
+      "seed": 42,
+      "temperature": 0.07,
+      "cross_modal_identity_weight": 0.25,
+      "batch_size": 64,
+      "instances_per_identity": 8,
+      "classes_for_identity_floor": 94,
+      "label_smoothing": 0.1,
+      "identity_weight_sum": 0.75
+    },
+    "preflight": {
+      "fold_count": 3,
+      "endpoints_per_fold": 2,
+      "positive_pair_records": 48,
+      "positive_pair_unique_values": {
+        "positives_per_anchor_per_directed_modality_pair": [8],
+        "directed_modality_pairs_per_expert": [6],
+        "cross_camera_identity_pairs_per_directed_modality_pair": [14, 24, 30, 32]
+      },
+      "paired_checked_keys_equal_for_all_folds": true,
+      "checked_keys": [
+        "initial_state_sha256",
+        "batch_receipts",
+        "all_output_sha256",
+        "binding",
+        "positive_pair_counts"
+      ]
+    },
+    "capacity": {
+      "control_alignment_weight": 0.0,
+      "experiment_alignment_weight": 0.25,
+      "control_steps": 8,
+      "experiment_steps": 8,
+      "control_first_loss": 0.6110473871231079,
+      "control_last_loss": 0.828916609287262,
+      "experiment_first_loss": 1.886078119277954,
+      "experiment_last_loss": 1.6901416778564453,
+      "total_parameters_control": 98800141,
+      "total_parameters_experiment": 98800141,
+      "trainable_parameters_control": 7841292,
+      "trainable_parameters_experiment": 7841292,
+      "trainable_tensors_control": 203,
+      "trainable_tensors_experiment": 203,
+      "nonzero_gradient_tensors_control": 203,
+      "nonzero_gradient_tensors_experiment": 203,
+      "missing_gradient_tensors_control": 0,
+      "missing_gradient_tensors_experiment": 0,
+      "amp_overflow_count_control": 0,
+      "amp_overflow_count_experiment": 0,
+      "frozen_state_unchanged_control": true,
+      "frozen_state_unchanged_experiment": true,
+      "peak_reserved_mib_control": 6062.0,
+      "peak_reserved_mib_experiment": 6062.0,
+      "peak_reserved_mib_limit": 24576.0
+    },
+    "overfit": {
+      "steps": 100,
+      "alignment_weight": 0.25,
+      "initial_loss": 1.886078119277954,
+      "final_loss": 1.100658655166626,
+      "initial_base_loss": 0.6110473871231079,
+      "final_base_loss": 0.580313503742218,
+      "initial_cross_modal_identity_loss": 5.100122928619385,
+      "final_cross_modal_identity_loss": 2.081380605697632,
+      "identity_entropy_floor": 0.57838292104621,
+      "cross_modal_alignment_floor": 2.0794415416798357,
+      "combined_floor": 1.098243306466169,
+      "excess_loss_ratio": 0.0030658060054957735,
+      "configured_ratio_gate": 0.1,
+      "trainable_tensors": 203,
+      "nonzero_gradient_tensors": 203,
+      "missing_gradient_tensors": 0,
+      "amp_overflow_count": 0,
+      "frozen_state_unchanged": true
+    },
+    "maximum_numerical_differences": {
+      "entropy_floor_max_abs_diff": 0.0,
+      "stored_total_vs_recomputed_base_plus_weighted_alignment_max_abs_diff": 5.960464477539063e-08,
+      "overfit_excess_ratio_abs_diff": 0.0
+    },
+    "replayed_gate_results": {
+      "all_gradients_live": true,
+      "all_frozen_states_unchanged": true,
+      "amp_overflow_zero": true,
+      "capacity_within_limit": true,
+      "overfit_excess_ratio_at_most_point1": true,
+      "m0_passed_recomputed": true,
+      "m0_passed_reported": true,
+      "reported_and_recomputed_match": true
+    }
+  },
+  "limitations": [
+    "This audit did not run training, inference, evaluation, downloads, network calls, checkpoint tensor inspection, image inspection, feature inspection, or distance-matrix inspection.",
+    "The audit covers the V20 M0 stage snapshot only; the M0 JSON has literal status RUNNING and literal folds = [], so Q1 retrieval performance is not audited here.",
+    "T0 CUDA execution is supported by receipt but was not rerun locally.",
+    "V12 fold checkpoints, CLIP weights, raw dataset files, checkpoint tensors, and the remote CUDA environment are receipt-bound/remote-only from this local audit position.",
+    "Two source/protocol files match recorded hashes only after LF normalization, not as raw local bytes."
+  ],
+  "files_read": {
+    "request": "C:/Users/gb/.trifusion_github_publish_22c3bee/.aris/traces/experiment-audit/2026-09-05_run06/AUDIT_REQUEST.txt",
+    "primary_artifacts": [
+      "modeling/trifusion/cross_modal_identity_v20.py",
+      "tests/test_trifusion_cross_modal_identity_v20.py",
+      "tools/train_signal_preserving_v20.py",
+      "configs/RGBNT201/TriFusion-signal-preserving-v20-cross-modal-identity-rtx3090.yml",
+      "refine-logs/v20/EXPERIMENT_PLAN.md",
+      "refine-logs/v20/EXPERIMENT_TRACKER.md",
+      "evidence/trifusion_v20_preregistration_20260905.json",
+      "evidence/trifusion_v20_t0_20260905.json",
+      "evidence/trifusion_v20_launch_20260905.json",
+      "evidence/trifusion_v20_m0_seed42_3cea5bf.json",
+      "evidence/trifusion_v20_m0_transfer_20260905.json",
+      "evidence/trifusion_v20_m0_run_20260905.log",
+      "modeling/trifusion/signal_preserving_v8.py",
+      "modeling/trifusion/signal_preserving_v8_builder.py",
+      "modeling/trifusion/criterion.py",
+      "modeling/trifusion/aligned_data.py",
+      "tools/train_signal_preserving_v17.py",
+      "tools/train_signal_preserving_v18.py",
+      "tools/train_signal_preserving_v19.py",
+      "tools/build_v12_complete_path_oof_targets.py",
+      "tools/run_signal_preserving_v5.py",
+      "tools/audit_v17_full_gallery.py",
+      "tools/diagnose_v6_oracle_complementarity.py",
+      "protocols/rgbnt201_dev_v1.json",
+      "modeling/trifusion/signal_preserving_v13.py"
+    ]
+  },
+  "output_files": {
+    "markdown": "C:/Users/gb/.trifusion_github_publish_22c3bee/EXPERIMENT_AUDIT_V20_M0.md",
+    "json": "C:/Users/gb/.trifusion_github_publish_22c3bee/EXPERIMENT_AUDIT_V20_M0.json"
+  }
+}

@@ -568,3 +568,7 @@
 
 | 2026-09-05 14:55 | /run-experiment | evidence/trifusion_v20_m0_seed42_3cea5bf.json | evidence | Immutable M0_PASS snapshot; Q1 running, no retrieval claim |
 | 2026-09-05 14:55 | /run-experiment | refine-logs/v20/EXPERIMENT_TRACKER_20260905_145411.md | evidence | T0 three CUDA tests and M0 passed; independent M0 audit in progress |
+
+| 2026-09-05 15:23 | /experiment-audit | EXPERIMENT_AUDIT_V20_M0.md/json | evidence | Independent M0 engineering PASS, integrity WARN, scientific not evaluated; two verbatim rounds retained |
+| 2026-09-05 15:23 | /run-experiment | refine-logs/v20/EXPERIMENT_TRACKER_20260905_152333.md | evidence | First complete paired fold, 2/6 endpoints; negative fold retained; Q1 continues |
+| 2026-09-05 15:23 | /run-experiment | evidence/trifusion_v20_first_paired_fold_20260905.json | evidence | All first-fold five-output final arrays and receipts; remote SHA verified |
