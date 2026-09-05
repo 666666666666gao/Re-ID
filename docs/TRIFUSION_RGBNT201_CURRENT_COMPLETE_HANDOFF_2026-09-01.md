@@ -3390,3 +3390,25 @@ EXPERIMENT_AUDIT_MSVR310_SIGNAL_B0.md SHA aa04e91403b24d2c4bf4beb24c014111033537
 JSON SHA 34c00b4f8b4add6e5abff55cf9ee8fd4e89b2e491f8aa65224623c2eb9d23a23。
 单seed内部基线不等于官方复现、新方法资格或多seed稳健性。B0不重训；
 后续MSVR310三角色独立训练比较仍待新合同，RGBNT201未达目标与V23/V24封存不变。
+
+### 41.24 MSVR310 原三角色架构独立训练比较合同已固定（2026-09-06）
+
+登记时间：2026-09-06T06:03:04.455453+08:00。B0审计eea8c20闭合后登记新的车辆全系统比较，状态PREPARED_NOT_RUN。
+每fold仅加载已固定本fold车辆Signal epoch50，全Signal/tail冻结，原V8三角色/七分类头seed42新初始化。
+输入128x256/grid8x16、原七组ID/Triplet及固定等能量拼接；无Router/HFER/V23/V24干预或RGBNT201角色权重。
+这是新数据集独立训练，不是零样本迁移、消融或已有失败版本再命名。
+
+先三fold各8步容量、8条source独立Signal前缀核对与五输出严格重载，另新fold0固定100步过拟合。
+总M0 124更新，0heldout；扣除原七头CE熵下界的最后/最初excess ratio<=0.1，门不变。
+M0完整PASS及收据核对后，三个source各20epoch，B64/K8、AdamW0.00035、5epoch warmup/cosine；
+正式新初始化状态必须与各自M0初始状态相同，不能加载M0后权重。
+600query/60身份/1032完整gallery，保留95单scene干扰身份，原scene过滤不变。
+固定最后checkpoint五输出；baseline特征/距离必须逐元素复现B0。
+
+五项内部支持条件为fused增益>=1pp、三fold非负、三完整分支不低于Signal、
+60身份加权seed42/10000bootstrap的2.5%线性下界>0、fused严格优于baseline和全部分支。
+无论通过否均保留全部身份及新增错误；不扫描、不延长、不选epoch/fold/seed。
+B0前置1950更新另计，本比较无法排除额外计算/参数解释；所有消融留主结果后。
+合同refine-logs/msvr310_trifusion_v1/EXPERIMENT_PLAN.md，入口tools/train_msvr310_trifusion_oof.py；
+注册evidence/trifusion_msvr310_trifusion_v1_preregistration_20260906.json。
+当前只完成本地AST/文本检查，新模型尚未在远端运行，RGBNT201目标未达及官方边界保持。

@@ -1,0 +1,110 @@
+{
+  "schema": "msvr310-trifusion-source-oof-v1",
+  "EXPERIMENT": {
+    "NAME": "msvr310_original_three_role_source_oof_v1",
+    "SEED": 42,
+    "SCOPE": "Independently trained full three-role system on a new dataset; not zero-shot transfer, RGBNT201 promotion or ablation"
+  },
+  "BASELINE": {
+    "CONFIG": "configs/MSVR310/Signal-source-oof-v1.json",
+    "CONFIG_SHA256": "ebf767f8c704c9886c80335014e571838400e733ce40665847cd1a9ea6783278",
+    "SUMMARY": "/root/autodl-tmp/trifusion-v2/artifacts/msvr310_signal_source_oof_v1_seed42_bb01d60/baseline/summary.json",
+    "SUMMARY_SHA256": "22a4f3642e88088a8dfcb4acddb610d6566c12d6b765cb7b344b28acdbcea6eb",
+    "EPOCH": 50,
+    "RETRAIN": false
+  },
+  "DATA": {
+    "PROTOCOL": "protocols/msvr310_train_oof_v1.json",
+    "PROTOCOL_SHA256": "4ff4c60bca3d019929add5788212c526387d93d535a2c52aa7b1c3acfd387cb4",
+    "TRAIN_BATCH_SIZE": 64,
+    "NUM_INSTANCES": 8,
+    "NUM_WORKERS": 4,
+    "INPUT_SIZE": [
+      128,
+      256
+    ],
+    "EVAL_BATCH_SIZE": 64
+  },
+  "MODEL": {
+    "ARCHITECTURE": "signal_preserving_collaborative_v8_expert_formation",
+    "FEATURE_WIDTH": 512,
+    "SEMANTIC_WIDTH": 768,
+    "GRID_SIZE": [
+      8,
+      16
+    ],
+    "BRANCH_AFTER_BLOCK": 8,
+    "ADAPTER_WIDTH": 128,
+    "EXPERT_MODAL_WIDTH": 512,
+    "SCALE_INIT": 0.05,
+    "GRADIENT_CHECKPOINTING": true,
+    "RETRIEVAL_OUTPUTS": [
+      "baseline_only",
+      "fused",
+      "cnn",
+      "transformer",
+      "mamba"
+    ]
+  },
+  "OPTIMIZATION": {
+    "OPTIMIZER": "AdamW",
+    "NEW_MODULE_LR": 0.00035,
+    "WEIGHT_DECAY": 0.0001,
+    "MAX_EPOCHS": 20,
+    "WARMUP_EPOCHS": 5,
+    "AMP_INIT_SCALE": 256.0,
+    "CAPACITY_STEPS_PER_FOLD": 8,
+    "OVERFIT_STEPS": 100
+  },
+  "LOSS": {
+    "ID_FUSED": 0.25,
+    "TRIPLET_FUSED": 1.0,
+    "ID_BRANCH": 0.08333333333333333,
+    "TRIPLET_BRANCH": 0.25,
+    "ID_RESIDUAL": 0.08333333333333333,
+    "TRIPLET_RESIDUAL": 0.25,
+    "TRIPLET_MARGIN": 0.3,
+    "LABEL_SMOOTHING": 0.1
+  },
+  "GATES": {
+    "OVERFIT_MAX_EXCESS_RATIO": 0.1,
+    "FUSED_MIN_GAIN_PP": 1.0,
+    "ALL_FOLD_FUSED_NONNEGATIVE": true,
+    "ALL_FULL_BRANCH_MAP_AT_LEAST_SIGNAL": true,
+    "BOOTSTRAP_SEED": 42,
+    "BOOTSTRAP_RESAMPLES": 10000,
+    "BOOTSTRAP_PERCENTILE": 2.5,
+    "BOOTSTRAP_QUANTILE_METHOD": "linear",
+    "BOOTSTRAP_LOWER_STRICTLY_POSITIVE": true,
+    "FUSED_STRICTLY_BEST": true
+  },
+  "PROTOCOL": {
+    "OFFICIAL_TEST_ACCESS": false,
+    "RGBNT201_DEV_ACCESS": false,
+    "RERANKING": false,
+    "MODEL_SELECTION": "fixed_epoch20",
+    "CROSS_FOLD_FEATURE_DISTANCES": false,
+    "M0_WEIGHTS_REUSED": false
+  },
+  "project_source_file_sha256": {
+    "tools/train_msvr310_trifusion_oof.py": "a1771c2e16e129f0a1ecdfb1f5fffcc7d83fe2faf5073033efe520a73c800f87",
+    "tools/train_msvr310_signal_oof.py": "8262e808c65a6e30cda71cb6c20e969a25609486f435e3b62f2f506b18d2104f",
+    "tools/run_signal_preserving_v5.py": "e162184f68778b4991db0f97f26c5fda273b2ad2f7c8db2bbb2d53775eb717e5",
+    "tools/run_signal_baseline_dev.py": "083967f2a38267415b2992da98c2ad9429ebb793f387b45daac1dbb4eb16f365",
+    "tools/build_v12_complete_path_oof_targets.py": "fc13354b1065c46677122ee9cf63816087facca4e0e98ec5e6e2fb0dece141e4",
+    "tools/train_signal_preserving_v17.py": "333886d16f73987accddb70b0780661bb9400b8afd04af01b57e188d34e5228d",
+    "modeling/trifusion/signal_preserving_v8.py": "97a7b5fe6dab882c2ed92ed1db95b9a8f48eae1d99a3a9b145b0cdfc4b8cefbc",
+    "modeling/trifusion/signal_preserving_v8_builder.py": "8afb028957ecff1a0a26497f7d0460bc240b0f8612a3c476b52a9a6667a3049d",
+    "modeling/trifusion/signal_preserving_v13.py": "7b7c4abb220ed234608553c77aeedd5f8ef763abb04cce5b21f1bfce0f4daa62",
+    "modeling/trifusion/aligned_data.py": "3ea362d17660483b554cb599442b6377ace020fa114969b9bdd58906fbceedd5",
+    "modeling/trifusion/criterion.py": "9a028e5711981123310f5e0d441a35b7dbecaf33f9edcec4fd3773d070cf877f",
+    "modeling/trifusion/state.py": "d6491db289e68e0b97a8d532edc933252ab60fdaad963af85f603dec9002e2b9",
+    "modeling/trifusion/builder.py": "70a94158fca9424b6ca35e4d64adbf2d4329d03d898e63a723a6ebf1ab6068e6",
+    "modeling/trifusion/experts/mamba.py": "8b9cb420c42e4d70f8de7e4608637c81c505b97ca54228175462a7e92fdfcc83",
+    "modeling/trifusion/experts/semantic_residual.py": "c1831a3de031be033624420791cecf2e7a3945e009655089cb48ee4b9912edd6",
+    "tests/test_msvr310_signal_scene_protocol.py": "f631e9dac38da47ecaf9a9564056b4ba24f8f3bd58a9ebf4c70071e0c3f2320e",
+    "refine-logs/msvr310_trifusion_v1/EXPERIMENT_PLAN.md": "574ef0f1ce9c0e927323d103e282a3d02379513de5e881e807c850ea0b5d34c5",
+    "evidence/trifusion_msvr310_signal_v1_audit_closure_20260906.json": "d60776e17acb004c2dfc9d73c1d51ea103d1950d7c9e07f03a1f4ca55ac58a4f",
+    "configs/RGBNT201/TriFusion-signal-preserving-v8-expert-formation-rtx3090.yml": "3f81049ef8d06af88a4da88d6d71b554da263e246cb94dbe007cb4fc2d09eaab"
+  }
+}

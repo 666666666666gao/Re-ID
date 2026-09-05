@@ -638,3 +638,5 @@
 | 2026-09-06T05:17:36.048722+08:00 | /run-experiment | results/TRIFUSION_MSVR310_SIGNAL_SOURCE_BASELINE_2026-09-06.md; evidence/trifusion_msvr310_signal_v1_baseline_complete_20260906.json | evidence | Complete3x50epoch baseline,1950updates,600queries,53.129381mAP/63R1; complete saved-ranking arithmetic verified; independent audit pending |
 
 | 2026-09-06T05:55:13.439177+08:00 | /experiment-audit | EXPERIMENT_AUDIT_MSVR310_SIGNAL_B0.md/json; evidence/trifusion_msvr310_signal_v1_audit_closure_20260906.json | evidence | Two-round independent baseline audit CLOSED_WARN/engineering PASS;71 inputs unchanged, own stdlib replay; original and revised provenance retained in trace17 |
+
+| 2026-09-06T06:03:04.455453+08:00 | /experiment-plan + /run-experiment | refine-logs/msvr310_trifusion_v1/EXPERIMENT_PLAN.md; tools/train_msvr310_trifusion_oof.py; configs/MSVR310/TriFusion-source-oof-v1.json | preparation | Fixed new-dataset original three-role comparison after B0 audit; M0 and complete comparison NOT_RUN |

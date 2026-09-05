@@ -21,8 +21,10 @@
   internal600-query/1032-gallery mAP53.129381/R1 63.0, independent audit closed WARN. RGBNT100 is
   installed and SHA/ZIP-CRC/modality-pair verified: train8675/query1715/
   gallery8575, with disjoint 50-train/50-test identities and 768x128 montages.
-  Its training and retrieval evaluation counts are also zero. Keep RGBNT201 as the
-  active model experiment until its fixed main gate is resolved.
+  Its training and retrieval evaluation counts are also zero. RGBNT201 main
+  targets remain unresolved. The latest user-directed cross-dataset route now
+  permits the separately registered original three-role MSVR310 comparison below;
+  it does not promote any failed RGBNT201 version or open official/ablation access.
 
 - MSVR310 Signal source-only baseline infrastructure is registered in
   refine-logs/msvr310_signal_v1/EXPERIMENT_PLAN.md. T0 passed2 tests and1032
@@ -429,3 +431,24 @@
   target (85.3 mAP / 87.9 Rank-1) has been exceeded.
 - Mamba CUDA extensions are source-locked to the receipted SM86 builds; do not
   replace them with unverified wheels.
+
+## MSVR310 original three-role independent training comparison v1
+
+- Signal B0 independent baseline audit is CLOSED_WARN/engineering PASS at eea8c20.
+- Fixed contract: refine-logs/msvr310_trifusion_v1/EXPERIMENT_PLAN.md;
+  config configs/MSVR310/TriFusion-source-oof-v1.json; runner tools/train_msvr310_trifusion_oof.py.
+  Status PREPARED_NOT_RUN. New dataset full-system comparison, not a V23/V24 rerun or ablation.
+- Each fold loads only its fixed vehicle B0 Signal, freezes all Signal/tail parameters,
+  and initializes original V8 roles/heads fresh at seed42; no RGBNT201 role checkpoint.
+  Preserve128x256/grid8x16, camera SIE, source-only training and original scene filter.
+- First M0: three8-step B64/K8 capacities, direct3072D Signal parity and five-output
+  strict reload; a fresh fold0 fixed100-step overfit must pass excess-loss ratio<=0.1.
+  M0 uses124 updates and0heldout; never initialize final training from M0 weights.
+- Only after M0 PASS and full receipt verification, train three fixed20epoch endpoints;
+  original seven ID/triplet losses/AdamW0.00035/5epoch warmup-cosine; no new module/loss.
+  Final-only600query/1032gallery retains95single-scene distractor identities.
+  Baseline full features/distances must equal original B0; retain all five outputs.
+- Five preregistered support conditions and complete negative outcomes stay fixed.
+  Signal1950 prerequisite updates plus added role cost are disclosed, not budget matched.
+  No seed/epoch/fold choice, tuning/retry of scientific failures, official evaluation
+  or pre-success ablations. RGBNT201 dev65 and official85.3/87.9 targets remain unmet.
