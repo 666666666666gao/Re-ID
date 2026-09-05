@@ -632,3 +632,5 @@
 | 2026-09-06T04:38:57.493093+08:00 | /run-experiment | refine-logs/msvr310_signal_v1/EXPERIMENT_PLAN.md; evidence/trifusion_msvr310_signal_v1_m0_r2_preregistration_20260906.json | engineering | Original8-step M0 failure retained;0-update diagnosis traced6 structurally no-grad selector tensors; R2 fixed flags, not yet executed |
 
 | 2026-09-06T05:00:34.202298+08:00 | /run-experiment | results/TRIFUSION_MSVR310_SIGNAL_SOURCE_M0_2026-09-06.md; evidence/trifusion_msvr310_signal_v1_m0_r2_20260906.json | evidence | Three-fold M0 R2 PASS,24updates/48source forwards; original R1 retained; fixed B0 launched, no complete retrieval yet |
+
+| 2026-09-06T05:07:58.159629+08:00 | /run-experiment | refine-logs/msvr310_signal_v1/TERMINAL_VERIFICATION_PLAN_20260906.md; tools/verify_msvr310_signal_terminal_files.py; tools/verify_msvr310_signal_terminal_arrays.py | preparation | Read-only complete saved rankings and all-step verification prepared; not executed |

@@ -3345,3 +3345,12 @@ R1额外8次更新与0更新诊断保留，不声称未保存的R1/R2逐步轨�
 完整报告results/TRIFUSION_MSVR310_SIGNAL_SOURCE_M0_2026-09-06.md；
 M0原始SHA 79c0e2b1c981c4bb10548f0249dca684c113feb43151cc4bdcc2a2e9bf2887ae。
 这是源基线基础建设，没有车辆TriFusion、官方测试或RGBNT201dev访问，不改变未达主目标状态。
+
+### 41.21 MSVR310 完整排序及训练终态核验预备（2026-09-06）
+
+登记时间：2026-09-06T05:07:58.159629+08:00。两个终态核验入口已完成AST检查，尚未在终态执行。
+固定读取三份原checkpoint文件SHA及已有特征/距离，逐元素核对由3072D特征重算的距离；
+从原保存距离导出600query的完整gallery索引序列，以原ID/scene标签重算AP/Rank，
+保留全部干扰身份；核对全部150epoch与真实source采样。没有新模型/图像前向或优化。
+计划refine-logs/msvr310_signal_v1/TERMINAL_VERIFICATION_PLAN_20260906.md；脚本SHA见evidence/trifusion_msvr310_signal_v1_terminal_verification_plan_20260906.json。
+原B0代码/配置/计划仍固定bb01d60，独立审计待完整结果后执行。
