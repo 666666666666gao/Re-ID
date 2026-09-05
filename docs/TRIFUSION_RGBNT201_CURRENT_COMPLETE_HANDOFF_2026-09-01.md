@@ -2049,3 +2049,54 @@ fold1保留全部1051gallery/179合法query；加上fold0为2051gallery/369query
 预计完成节点时再检查。源配置/方案/训练预算均未改变，没有重启或附加训练。
 全部完成后保存完整终态、核验六端checkpoint及source SHA、全部五路数组与
 身份bootstrap，并进行独立终态审计。D1/dev/official访问仍为0，全局目标未达。
+
+
+## 36. V19完整六端终态：Q1_FAIL，未晋级（2026-09-05）
+
+V19按冻结计划完整完成三折×两端×20epoch、3360优化步，seed42，总耗时
+4839.900912秒。13:38:22 CST观察训练进程18811和screen18809结束、GPU空闲。
+执行源仍为4b749cd92735c228a4bdb1cfacb0b2c6cb80cfe9；后续文档与只读核验工具
+提交不改变实验源。以下终态取代§35的RUNNING进度，不修改历史原始快照。
+
+全部五路、三折两端、21身份及AP/Rank查询变化见
+`results/TRIFUSION_RGBNT201_V19_PRIVATE_TAIL_2026-09-05.md`。所有heldout身份与
+3126 gallery记录均保留，571合法query来自21跨camera身份；2555记录仅不计入
+query分母。仍是复用的real_gt训练内完整路径OOF资格，非dev/official/SOTA结果。
+
+| 输出 | 冻结尾部mAP | 训练尾部mAP | 增益 | 冻结R1 | 训练R1 |
+|---|---:|---:|---:|---:|---:|
+| Signal baseline | 77.487603 | 77.487603 | 0.000000 | 79.334501 | 79.334501 |
+| fused | 80.240792 | 80.496828 | +0.256035 | 83.187391 | 84.238179 |
+| CNN | 79.915105 | 80.054797 | +0.139692 | 84.763573 | 84.238179 |
+| Transformer | 78.150546 | 79.331729 | +1.181183 | 82.136602 | 83.187391 |
+| Mamba | 77.801980 | 77.379156 | -0.422824 | 78.984238 | 79.509632 |
+
+三折fused增益+1.619524/-0.900867/-0.001279，21身份10000次seed42聚类bootstrap
+95%下界-1.615129。因此aggregate>=1、三折非负、三专家非负、下界>0四项均FAIL；
+只有fused严格胜过同checkpoint baseline与三专家PASS。Q1_FAIL，next_phase_qualified
+与d1_executed均false，dev_access_count和official_test_access_count均0。
+
+全部六端overflow0、实际203/311训练tensor完整非零梯度、冻结state不变；两端
+完整sample order/前8增强receipt/初始state与baseline输出精确匹配。各fold每端
+580/560/540步，最终checkpoint重建strict reload通过。六个源checkpoint终态
+SHA未变；远端再次逐字节核验29个源码/配置/计划/来源/CLIP/最终checkpoint文件。
+六个独立endpoint JSON与汇总对象逐项相同。核验不加载权重张量或执行新检索。
+
+完整汇总`evidence/trifusion_v19_q1_seed42_4b749cd.json`为1971525字节，SHA
+`e0c9c2e0683c934fd65ae594186d89452c9786e203e1f4b1a9b7612505316d59`。
+完整日志、六receipt及terminal_file_verification同在evidence；传回文件SHA均匹配。
+`tools/audit_v19_terminal_arrays.py`重建全部query mask、五路指标和身份sum/count
+bootstrap，最大数值差0.0，见terminal_array_audit回执。这是执行端数组/文件核验，
+不冒称独立审计员已持有远端权重重新推理。完整Q1独立审计当前待完成，M0审计
+已完成的PASS/WARN及范围限定保持原样。
+
+融合共有180query改善、186下降、205相等，R1修复19/新增错误13；21身份为
+9改善/11下降/1相等。新增63790848个可训练私有尾部参数在固定合同下没有给出
+稳定身份泛化收益，不能证明共享尾部是唯一原因。V18与V19只各自比较实际匹配
+对照，不能把跨版本均值差作单因素归因，也不拼接两个版本有利分支。
+
+V19封存：不执行D1/dev/official，不放宽条件，不做层数/宽度/LR/epoch/seed扫描。
+后续先分析全部终态中的可重复身份/分支错误，再形成不同的表征假设并提前固定
+验证合同。当前可部署dev最好仍为V8 Phase-B58.4050/59.3939，exact Signal
+58.0109/57.4545；dev65门与官方85.3/87.9目标未过，RGBNT100/MSVR310仍无训练
+或检索成绩。全局目标保持active，不能因这次完整负结果归档而标记完成。

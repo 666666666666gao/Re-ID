@@ -551,3 +551,7 @@
 | 2026-09-05 12:48 | /run-experiment | refine-logs/v19/EXPERIMENT_TRACKER_20260905_124940.md | evidence | First complete paired fold, 2 of 6 endpoints; overall Q1 still RUNNING |
 
 | 2026-09-05 13:14 | /run-experiment | refine-logs/v19/EXPERIMENT_TRACKER_20260905_131521.md | evidence | Two complete paired folds; 4/6 endpoints, overall Q1 still RUNNING |
+
+| 2026-09-05 13:55 | /run-experiment | refine-logs/v19/EXPERIMENT_TRACKER_20260905_135536.md | evidence | V19 full six-endpoint Q1_FAIL; independent terminal audit pending |
+| 2026-09-05 13:55 | /run-experiment | results/TRIFUSION_RGBNT201_V19_PRIVATE_TAIL_2026-09-05.md | evidence | Complete five-output, three-fold and 21-identity terminal results |
+| 2026-09-05 13:55 | /run-experiment | evidence/trifusion_v19_q1_seed42_4b749cd.json | evidence | Complete source-bound Q1 summary; all six receipts and terminal verification accompany it |

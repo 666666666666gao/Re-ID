@@ -259,6 +259,18 @@
 
 ## Remote experiment constraints
 
+- V19 private semantic tail completed three folds x two endpoints x20 epochs,
+  seed42, 3360 optimizer steps, and is sealed as Q1_FAIL. Trained/frozen fused
+  mAP is 80.496828/80.240792, gain +0.256035; fold gains are
+  +1.619524/-0.900867/-0.001279, Mamba aggregate gain -0.422824,
+  and the 21-identity bootstrap lower bound is -1.615129. All 3126 gallery
+  records and 571 eligible queries were retained. No D1/dev/official, private
+  tail layer/width/LR/epoch/seed scans or V19 retraining. Read the V19 result
+  report and frozen plan; any successor needs a new representation hypothesis
+  and preregistered train-only qualification. Current deployable best remains
+  V8 Phase-B 58.4050 mAP / 59.3939 Rank-1; the main objective is unmet.
+
+
 - V18 PVNP completed all three folds x two endpoints x20 epochs, seed42,
   and is sealed as Q1_FAIL. Projected/uncentered full-gallery fused mAP is
   81.482001/80.560497, gain +0.921504, below the frozen +1.0 gate; the
