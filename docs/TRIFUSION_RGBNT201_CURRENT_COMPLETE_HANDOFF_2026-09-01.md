@@ -2,7 +2,7 @@
 
 ## 0. 一页结论
 
-本工程是在 DeMo 代码基座上实现的 RGB–NIR–TIR 多模态目标重识别研究分支。最新已完成结果是V17完整训练和完整gallery补评失败；其全部查询/图像/分区诊断见§30。当前正在执行V18 source配对视角变化投影的固定M0→完整三折两端20epoch主实验（§31），尚无新检索结果。V17 fused相对matched weight0为-0.328915 mAP，没有D1/dev/official结果。当前最高可部署结果仍是V8 Phase-B：冻结dev fused=`58.4050 mAP / 59.3939 Rank-1`，比exact Signal高`0.3941 mAP / 1.9394 Rank-1`并超过三个专家，但仍比65 mAP门低`6.5950`，不能声称SOTA。
+本工程是在 DeMo 代码基座上实现的 RGB–NIR–TIR 多模态目标重识别研究分支。最新已完成结果是V17完整训练和完整gallery补评失败；其全部查询/图像/分区诊断见§30。V18 source配对视角变化投影已通过M0，正在执行完整三折两端20epoch主实验（§31），完整比较尚未结束。V17 fused相对matched weight0为-0.328915 mAP，没有D1/dev/official结果。当前最高可部署结果仍是V8 Phase-B：冻结dev fused=`58.4050 mAP / 59.3939 Rank-1`，比exact Signal高`0.3941 mAP / 1.9394 Rank-1`并超过三个专家，但仍比65 mAP门低`6.5950`，不能声称SOTA。
 
 V6 的三个候选论文级主创新点已经落到核心代码、专项测试和完整 dev 运行中；性能主门仍然失败：
 
@@ -1702,6 +1702,17 @@ M0 PASS：三折两端初始全state/前8批增强配对、exact Signal前缀和
 计划跑完所有六端后统一判定，不因首折结果改变epoch/rank/数据范围。
 M0独立终态快照`evidence/trifusion_v18_m0_seed42_2a71e20.json`，源运行summary
 快照SHA`4fbf61e540e9a083ea966c5715ce9d23a1dd3ffe41fa69c379c25c5f0db5da8d`。
+
+### 31.2 已完成首个对照端的重训差异核查
+
+首折uncentered已完成20epoch/580步，checkpoint严格重载成功。它与历史V17
+weight0的全gallery融合mAP为69.256502/68.912955（+0.343548pp），逐query AP
+并不完全相等；冻结Signal五项指标完全相等，epochs/steps/sample_order及前8批
+增强回执相等。首epoch loss均值已出现0.000246差异，不能宣称跨次重训位级复现。
+公共`_set_seed`同时设定cudnn.deterministic=True及benchmark=True；benchmark
+允许不同运行选择不同算法，是数值差异的可能来源，但本次没有证明唯一原因。
+当前不改公共种子函数、不重训首端，不把历史对照替代新成对对照。完整六端和
+预注册晋级条件保持不变；该首端数字只作重训范围审计，不提前判定V18有效。
 
 ## 32. 跨数据集数据来源与传输（2026-09-05）
 
