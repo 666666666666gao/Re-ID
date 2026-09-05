@@ -618,3 +618,5 @@
 
 | 2026-09-05 22:04 | /run-experiment | evidence/trifusion_v23_t0_20260905.json/log/xml | evidence | Remote CUDA five tests PASS, synthetic only, six toy updates |
 | 2026-09-05 22:04 | /run-experiment | evidence/trifusion_v23_launch_20260905.json | evidence | Original PID44684 launched M0 and conditional complete Q1, no scientific result yet |
+
+| 2026-09-05 22:14 | /run-experiment | results/TRIFUSION_RGBNT201_V23_SPECTRAL_ADAPTER_M0_2026-09-05.md | evidence | Complete M0 PASS; 54 preflight forwards and116 real updates; original Q1 running |

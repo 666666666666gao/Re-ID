@@ -259,9 +259,11 @@
 
 ## Remote experiment constraints
 
-- V23 CUDA T0 passed all five tests. Original PID44684 started M0 on
-  2026-09-05 at 22:01 CST, execution commit9f4a10b; no terminal M0/Q1 result
-  yet. Read refine-logs/v23/EXPERIMENT_PLAN.md:
+- V23 CUDA T0 and complete M0 passed. Fixed100 excess ratio0.0596818991,
+  control/candidate gradients203/239, peak6090/6494MiB, overflow0 and frozen
+  state unchanged. Original PID44684 now runs full Q1, execution9f4a10b.
+  No complete endpoint/heldout retrieval result yet at22:07; independent M0
+  audit pending. Read refine-logs/v23/EXPERIMENT_PLAN.md:
   modality-specific zero-output residual MLPs follow three frozen CLIP tail
   stages, shared across expert roles. Control freezes the new 1777536
   parameters; candidate trains them. This is not capacity-matched evidence

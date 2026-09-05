@@ -1,0 +1,63 @@
+Perform a bounded independent experiment-integrity audit of the V23 M0 artifacts as GPT-5.5 xhigh. Read all listed files directly and trace called dependencies. Treat executor-generated reports as claims to verify against the raw evidence, not authoritative decisions. Do not reuse any earlier model-version verdict.
+
+Only write:
+C:/Users/gb/.trifusion_github_publish_22c3bee/EXPERIMENT_AUDIT_V23_M0.md
+C:/Users/gb/.trifusion_github_publish_22c3bee/EXPERIMENT_AUDIT_V23_M0.json
+
+Files:
+- C:/Users/gb/.trifusion_github_publish_22c3bee/modeling/trifusion/signal_preserving_v23.py
+- C:/Users/gb/.trifusion_github_publish_22c3bee/tools/train_signal_preserving_v23.py
+- C:/Users/gb/.trifusion_github_publish_22c3bee/tests/test_trifusion_signal_preserving_v23.py
+- C:/Users/gb/.trifusion_github_publish_22c3bee/configs/RGBNT201/TriFusion-signal-preserving-v23-spectral-adapter-rtx3090.yml
+- C:/Users/gb/.trifusion_github_publish_22c3bee/refine-logs/v23/EXPERIMENT_PLAN.md
+- C:/Users/gb/.trifusion_github_publish_22c3bee/refine-logs/v23/EXPERIMENT_TRACKER.md
+- C:/Users/gb/.trifusion_github_publish_22c3bee/results/TRIFUSION_RGBNT201_V23_SPECTRAL_ADAPTER_M0_2026-09-05.md
+- C:/Users/gb/.trifusion_github_publish_22c3bee/evidence/trifusion_v23_preregistration_20260905.json
+- C:/Users/gb/.trifusion_github_publish_22c3bee/evidence/trifusion_v23_t0_20260905.json
+- C:/Users/gb/.trifusion_github_publish_22c3bee/evidence/trifusion_v23_t0_20260905.log
+- C:/Users/gb/.trifusion_github_publish_22c3bee/evidence/trifusion_v23_t0_20260905.xml
+- C:/Users/gb/.trifusion_github_publish_22c3bee/evidence/trifusion_v23_launch_20260905.json
+- C:/Users/gb/.trifusion_github_publish_22c3bee/evidence/trifusion_v23_m0_seed42_9f4a10b.json
+- C:/Users/gb/.trifusion_github_publish_22c3bee/evidence/trifusion_v23_m0_run_snapshot_20260905.log
+- C:/Users/gb/.trifusion_github_publish_22c3bee/evidence/trifusion_v23_m0_array_verification_20260905.json
+- C:/Users/gb/.trifusion_github_publish_22c3bee/evidence/trifusion_v23_m0_file_verification_20260905.json
+- C:/Users/gb/.trifusion_github_publish_22c3bee/evidence/trifusion_v23_progress_2207_20260905.json
+- C:/Users/gb/.trifusion_github_publish_22c3bee/docs/SPECTRAL_ADAPTER_SOURCE_NOTES_2026-09-05.md
+- C:/Users/gb/.trifusion_github_publish_22c3bee/evidence/icpl_spectral_adapter_source_inspection_20260905.json
+- C:/Users/gb/.trifusion_github_publish_22c3bee/modeling/trifusion/signal_preserving_v8.py
+- C:/Users/gb/.trifusion_github_publish_22c3bee/modeling/trifusion/signal_preserving_v8_builder.py
+- C:/Users/gb/.trifusion_github_publish_22c3bee/modeling/trifusion/state.py
+- C:/Users/gb/.trifusion_github_publish_22c3bee/modeling/trifusion/experts/mamba.py
+- C:/Users/gb/.trifusion_github_publish_22c3bee/modeling/trifusion/experts/semantic_residual.py
+- C:/Users/gb/.trifusion_github_publish_22c3bee/modeling/trifusion/criterion.py
+- C:/Users/gb/.trifusion_github_publish_22c3bee/modeling/trifusion/aligned_data.py
+- C:/Users/gb/.trifusion_github_publish_22c3bee/tests/test_trifusion_signal_preserving_v8.py
+- C:/Users/gb/.trifusion_github_publish_22c3bee/tools/train_signal_preserving_v19.py
+- C:/Users/gb/.trifusion_github_publish_22c3bee/modeling/trifusion/signal_preserving_v19.py
+- C:/Users/gb/.trifusion_github_publish_22c3bee/tools/train_signal_preserving_v17.py
+- C:/Users/gb/.trifusion_github_publish_22c3bee/tools/train_signal_preserving_v18.py
+- C:/Users/gb/.trifusion_github_publish_22c3bee/tools/build_v12_complete_path_oof_targets.py
+- C:/Users/gb/.trifusion_github_publish_22c3bee/tools/run_signal_preserving_v5.py
+- C:/Users/gb/.trifusion_github_publish_22c3bee/tools/run_signal_baseline_dev.py
+- C:/Users/gb/.trifusion_github_publish_22c3bee/tools/audit_v17_full_gallery.py
+- C:/Users/gb/.trifusion_github_publish_22c3bee/tools/diagnose_v6_oracle_complementarity.py
+- C:/Users/gb/.trifusion_github_publish_22c3bee/modeling/trifusion/signal_preserving_v13.py
+- C:/Users/gb/.trifusion_github_publish_22c3bee/protocols/rgbnt201_dev_v1.json
+- C:/Users/gb/.trifusion_github_publish_22c3bee/evidence/trifusion_v12_complete_path_oof_seed42.json
+
+Constraints:
+- Local read-only except the two report writes. Do not edit source, plans, trackers, raw evidence or traces.
+- No model training, retrieval, inference, tensor/checkpoint/image loading, GPU use, remote commands, network, downloads, or package installation. Available local Python/JSON/NumPy/integer arithmetic on supplied arrays is permitted.
+- Keep synthetic T0, real source-only M0, nonterminal Q1 log progress, and future unexecuted paths distinct.
+- No artifact or score selection, threshold change, or scientific advancement inferred from engineering qualification.
+
+Checklist:
+A. GT and source isolation: trace real identity/camera labels, protocol source/heldout boundaries, full initialization chain and all six bindings. Check that synthetic fixtures are explicitly synthetic, source-only M0 uses real source batches, and no heldout or dev labels are used in training.
+B. Mathematics: independently reconstruct all per-step loss components and coefficients, exact fixed first/100th entropy-adjusted overfit gate, and aggregate gradient/overflow checks. Trace the actual spectral adapter formula, modality/stage/role parameter sharing, initialization gradients, paired initial function/state, parameter counts, and optimizer coverage. Detect hidden changes in loss, batch order, augmentations, selection, gradient accumulation, or frozen baseline. Check the executable final metric/gate path without crediting it as measured.
+C. Provenance: hash all locally available primary bytes and distinguish raw, LF-only, Git-execution-blob, current mutable tracker, and remote-ledger-only possessions. Verify configuration/plan/runner/source/checkpoint binding, strict loads, matched initial state, preflight legacy-output comparison, T0 JUnit/log/runtime, original PID capture, and M0 snapshot/log consistency. Do not equate the executor's remote ledger with independent possession of binary weights.
+D. Execution: trace actual T0 tests, all preflight forwards, both capacities and every fixed-batch update. Reconcile reported counts, finite/nonzero gradient coverage, zero-initial adapter gradient behavior, freeze-state checks and all raw log statements. Distinguish intended steps from executed steps and source-only M0 from nonterminal Q1 progress.
+E. Scope: verify what was and was not measured. Assess scientific claim limits, added trainable parameter/compute confounding, reused OOF boundaries, no dev/official/SOTA advancement, and complete future training requirements.
+F. Claim impacts: support/qualify/reject each substantive result and plan claim using exact file:line evidence; preserve all provenance warnings and negative results.
+
+JSON required top-level fields: date, auditor, overall_verdict, integrity_status, engineering_integrity, fixed_m0_qualification, scientific_qualification, evaluation_type, checks, claims, recomputation, limitations.
+Record actual arithmetic runtime/tools and numerical discrepancies. Reports must retain exact numbers and distinguish engineering vs scientific status. Return a concise final response with actual verdicts, SHA256 hashes/byte lengths read from written files, and material limitations.
