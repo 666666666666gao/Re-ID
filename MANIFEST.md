@@ -559,3 +559,9 @@
 | 2026-09-05 14:25 | /experiment-audit | EXPERIMENT_AUDIT_V19_Q1.md/json | evidence | Independent complete Q1 engineering PASS, integrity WARN, scientific FAIL; actual bootstrap replay |
 | 2026-09-05 14:25 | /run-experiment | refine-logs/v19/EXPERIMENT_TRACKER_20260905_142550.md | evidence | V19 terminal audit complete; all-six-model read-only geometry diagnosis complete |
 | 2026-09-05 14:25 | /run-experiment | results/TRIFUSION_RGBNT201_V19_GENERALIZATION_DIAGNOSIS_2026-09-05.md | evidence | All source/heldout records and all nine modality pair geometries; independent diagnosis audit pending |
+
+| 2026-09-05 14:46 | /experiment-audit | EXPERIMENT_AUDIT_V19_GEOMETRY.md/json | evidence | Complete independent arithmetic replay; engineering PASS, integrity WARN, V19 Q1_FAIL unchanged |
+| 2026-09-05 14:46 | /experiment-plan | refine-logs/v20/EXPERIMENT_PLAN_20260905_144458.md | implementation | Frozen per-expert cross-modal identity objective and matched full main comparison; not launched |
+| 2026-09-05 14:46 | /experiment-plan | refine-logs/v20/EXPERIMENT_PLAN.md | implementation | Current frozen V20 plan, byte-identical timestamped copy |
+| 2026-09-05 14:46 | /experiment-plan | refine-logs/v20/EXPERIMENT_TRACKER_20260905_144458.md | implementation | T0/M0/Q1 pending; D1 locked |
+| 2026-09-05 14:46 | /experiment-plan | evidence/trifusion_v20_preregistration_20260905.json | implementation | Config/plan/runner/module hashes and AST receipt; no model execution |

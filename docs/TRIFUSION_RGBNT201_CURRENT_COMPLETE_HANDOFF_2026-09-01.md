@@ -2141,3 +2141,45 @@ cosine margin分别+.162041/+.191277/+.155974，heldout为-.052331/-.067698/
 Q1独立审计不覆盖这项后续诊断，其独立审计待进行。公开方法参考见
 `docs/GENERALIZATION_MODULE_SOURCE_NOTES_2026-09-05.md`（SupContrast/UPCL/MixStyle），
 无移植、下载模型或额外数据训练。全局目标仍active且未达。
+
+
+### 36.3 V19全六端几何诊断独立审计完成（2026-09-05）
+
+EXPERIMENT_AUDIT_V19_GEOMETRY.md/json已由GPT-5.5 xhigh完成；工程PASS、
+overall/integrity WARN、scientific FAIL。独立JSON/NumPy复算覆盖全部60个fold
+指标行、20个汇总行、42/14分类头、108有向模态对、24组几何和5路配对距离，
+与汇总相同。唯一物理来源3126条、fold来源memberships6252条范围核对通过。
+远端大权重/数据仍为receipt持有限制；不能据此改变Q1_FAIL或宣称因果/新验证。
+
+MD SHA8406c80fe0a408a40f1bd8e067c984af88cc3e4a2f0476a77f009d6635bea27f；
+JSON SHAb163e3349711cb2ec2df5f27b4eb71be79950d498a368b36617e7ca332155d97。
+原文和完整request/response/meta归档在.aris/traces/experiment-audit/
+2026-09-05_run05。V19全部主实验与后续诊断已归档，封存失败不再扫描。
+
+## 37. V20每专家跨模态身份监督：执行前冻结（2026-09-05 14:44 CST）
+
+新假设是每专家内部的真实身份跨模态监督能改善身份泛化；不是已证明的原因
+修复。原concat检索的独立模态正交旋转不变性解释边界仍保留。参考SupContrast
+作者监督对比目标，独立实现18项平均（三专家各六个有向不同模态对）；B64/K8
+全部8个同身份目标均为正例，其他身份为负例，温度0.07，实验端权重0.25。
+
+原V8完整Signal3072D及共享冻结CLIP尾部不变；CNN局部、Transformer全局、
+Mamba跨模态空间角色与原五路输出保留，fused为3072+4608D。无新推理参数，
+不继承V19私有尾部；没有跨专家强制对齐。两端identity_concat/cross_modal_identity
+从同一V12 fold权重strict reload，唯一差别是新损失系数0/0.25，原ID/Triplet、
+模型容量、初始化、20epoch预算、采样和增强相同，三折两端完整训练与评价。
+
+方案refine-logs/v20/EXPERIMENT_PLAN.md与时间戳副本执行前冻结，
+SHA28bfbe5dd324e2600bc4bea06d8bfe4c3b1730409d21409d97a981c2b8a86f8f；
+配置configs/RGBNT201/TriFusion-signal-preserving-v20-cross-modal-identity-rtx3090.yml，
+SHA87d5a53ceb88d2546b9edf62510c3a112d669c4b60293563aba0a7d78cc94026。
+仅seed42远端GPU，B64/K8无梯度累积，20epoch/5warmup/AdamW3.5e-4。
+新损失FP32，总熵下界0.75H+0.25log8；M0固定100步超额损失比<=0.1，
+梯度全覆盖、overflow0、冻结state不变、两端8步容量门保持。
+
+T0为三项远端CUDA数学测试；M0通过才自动执行三折两端20epoch，完整3126
+gallery/571query/21身份、五路AP与Rank1/5/10、全部负收益和身份bootstrap；
+固定五个Q1科学门仍须全部通过。失败即封存，不以调温度/权重/预算重试。
+当前仅完成代码AST与预注册，尚未启动V20训练，T0/M0/Q1无结果；dev/official0。
+下一步先发布并在远端验证T0，再按固定合同启动。训练前预计M0约3–8分钟，
+Q1约60–80分钟，按实际时长修正。可部署dev最佳与未达65/SOTA状态均不变。

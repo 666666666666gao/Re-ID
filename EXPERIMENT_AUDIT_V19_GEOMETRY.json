@@ -1,0 +1,341 @@
+{
+  "date": "2026-09-05",
+  "auditor": "gpt-5.5-xhigh-independent-read-only",
+  "overall_verdict": "warn",
+  "integrity_status": "warn",
+  "engineering_integrity": "pass",
+  "scientific_qualification": "fail",
+  "evaluation_type": "read_only_train_source_and_reused_oof_postmortem_not_new_validation",
+  "scientific_status": "Q1_FAIL_unchanged",
+  "summary": {
+    "conclusion": "The V19 terminal generalization geometry diagnostic is internally consistent and independently reproducible from the raw JSON arrays. It supports descriptive postmortem claims about source fit saturation, heldout gap, and weak cross-modality residual geometry. It does not prove a causal failure mechanism, validate a new intervention, or change V19 Q1_FAIL.",
+    "training_or_evaluation_launched_by_auditor": false,
+    "model_inference_or_checkpoint_tensor_loading_by_auditor": false,
+    "executor_summaries_used_as_evidence": false,
+    "allowed_recomputation": "Local JSON/NumPy replay of raw diagnostic arrays only."
+  },
+  "artifact_hashes": {
+    "docs/V19_GENERALIZATION_DIAGNOSIS_PROTOCOL_2026-09-05.md": "fbaffb040da21e9f07917da1e37ddd579e19237b595282eedeaf55c8659bbd73",
+    "tools/diagnose_v19_generalization_geometry.py": "53d94c54d40ed139e6f0230d9da28d07b2f604839976cc57aabcab7b084f7ceb",
+    "tools/summarize_v19_generalization_geometry.py": "f7a3162a04edd39b3ee32e994a85f6534e39c7717751e61c6a0941d0e204a015",
+    "evidence/trifusion_v19_generalization_geometry_20260905.json": "0e40093688ed568b7e0584672e4a74098c5fba4e57df06fba4bab1b6405adbe6",
+    "evidence/trifusion_v19_generalization_geometry_summary_20260905.json": "0564a600c4aca9d5597355fa26e468413c8be7d53e1c391bfaeae4d407706b21",
+    "evidence/trifusion_v19_generalization_geometry_20260905.log": "455d80583f686101f371b51b3f545434ab4fc8cee26392e58ab541c53a968fb2",
+    "evidence/trifusion_v19_generalization_diagnosis_launch_20260905.json": "dc6e79ddf06857a6b0f2a77e39640e0db7c12d31aba1d497c6f7b8dffd82542c",
+    "evidence/trifusion_v19_generalization_transfer_receipt_20260905.json": "69c701b761ac6f4f9667a93832553b42fe45ffcb044d4f2f6310dc87b5fc15dc",
+    "results/TRIFUSION_RGBNT201_V19_GENERALIZATION_DIAGNOSIS_2026-09-05.md": "2c2d4e21bee9ddc272fb18947520985f2e1abf7ca7a9f1a0ad27d7f33f419d8a",
+    "evidence/trifusion_v19_q1_seed42_4b749cd.json": "e0c9c2e0683c934fd65ae594186d89452c9786e203e1f4b1a9b7612505316d59",
+    "tools/train_signal_preserving_v19.py": "5f000d3d3abe9636cae97e292db2c63a3a20f349c125dfe4b27bd3fca95bb9c5",
+    "tools/train_signal_preserving_v18.py": "f6bdda4631d710d0b6db5fe2a8df124d8dcbd294cb54adcf3ec261d523e96cf8",
+    "tools/audit_v17_full_gallery.py": "856881f984ab8793788d291018a60046a47e309c625a65394b1a3ff4e670d8a9",
+    "modeling/trifusion/signal_preserving_v8.py": "97a7b5fe6dab882c2ed92ed1db95b9a8f48eae1d99a3a9b145b0cdfc4b8cefbc",
+    "tools/build_v12_complete_path_oof_targets.py": "fc13354b1065c46677122ee9cf63816087facca4e0e98ec5e6e2fb0dece141e4",
+    "refine-logs/v19/EXPERIMENT_TRACKER.md": "a47ef301134e9264752e40c4d80f29a6b72615ef7d43188a5eed055ea2eb345f"
+  },
+  "checks": {
+    "A_dataset_identity_camera_and_source_heldout_gt_provenance": {
+      "status": "PASS",
+      "finding": "The diagnostic uses dataset identity/camera labels from the frozen train-internal complete-path records. Fit/source identities are fold-local relabeled and heldout identities keep original registry IDs; the audit replay verified source mapping and zero fit/heldout overlap.",
+      "evidence": [
+        "docs/V19_GENERALIZATION_DIAGNOSIS_PROTOCOL_2026-09-05.md:13-20",
+        "docs/V19_GENERALIZATION_DIAGNOSIS_PROTOCOL_2026-09-05.md:25-27",
+        "tools/build_v12_complete_path_oof_targets.py:29-55",
+        "tools/build_v12_complete_path_oof_targets.py:156-173",
+        "tools/diagnose_v19_generalization_geometry.py:81-87",
+        "tools/diagnose_v19_generalization_geometry.py:143-172",
+        "evidence/trifusion_v19_generalization_geometry_20260905.json:119-123",
+        "evidence/trifusion_v19_generalization_geometry_20260905.json:66775-66779",
+        "evidence/trifusion_v19_generalization_geometry_20260905.json:461326-461330",
+        "evidence/trifusion_v19_generalization_geometry_20260905.json:525258-525262",
+        "evidence/trifusion_v19_generalization_geometry_20260905.json:921105-921109",
+        "evidence/trifusion_v19_generalization_geometry_20260905.json:992039-992043"
+      ],
+      "claim_impact": "Source results are valid training-fit diagnostics; heldout results are reused Q1 train-internal OOF diagnostics, not new validation."
+    },
+    "B_genuine_feature_metric_normalization_and_denominators": {
+      "status": "PASS",
+      "finding": "Metrics and geometry are computed from normalized features, pairwise distances/cosines, AP/rank arrays, source labels, and identity/camera masks. No audited metric denominator is derived from prediction max/min/mean statistics.",
+      "evidence": [
+        "tools/diagnose_v19_generalization_geometry.py:31-57",
+        "tools/diagnose_v19_generalization_geometry.py:87-101",
+        "tools/diagnose_v19_generalization_geometry.py:105-113",
+        "tools/summarize_v19_generalization_geometry.py:27-33",
+        "tools/summarize_v19_generalization_geometry.py:39-58",
+        "tools/audit_v17_full_gallery.py:14-43",
+        "tools/train_signal_preserving_v18.py:133-152"
+      ],
+      "claim_impact": "The 100% source metrics are fitted-source correctness results, not self-normalized scores."
+    },
+    "C_primary_result_existence_hashes_numerical_claims_and_receipt_consistency": {
+      "status": "WARN",
+      "finding": "All requested local artifacts exist and were read. Raw diagnostic SHA, summary binding, log SHA, transfer receipt, result report, and numerical claims are internally consistent. The warning is retained because remote checkpoint/image bytes were not independently read locally.",
+      "evidence": [
+        "evidence/trifusion_v19_generalization_geometry_20260905.json:2-13",
+        "evidence/trifusion_v19_generalization_transfer_receipt_20260905.json:3-15",
+        "evidence/trifusion_v19_generalization_geometry_20260905.log:16-67",
+        "evidence/trifusion_v19_generalization_geometry_summary_20260905.json:1545-1548",
+        "results/TRIFUSION_RGBNT201_V19_GENERALIZATION_DIAGNOSIS_2026-09-05.md:3-10",
+        "results/TRIFUSION_RGBNT201_V19_GENERALIZATION_DIAGNOSIS_2026-09-05.md:243-249"
+      ],
+      "claim_impact": "Local arithmetic and receipt binding are supported; byte-complete verification of large remote binaries is not."
+    },
+    "D_actual_feature_evaluation_model_reload_calls_and_state_write_protections": {
+      "status": "PASS",
+      "finding": "The diagnostic script verifies hashes, rebuilds splits, strict-reloads all six endpoint checkpoints, checks final model state SHA, extracts heldout/source features under inference mode, verifies Q1 heldout equality, records source logits, asserts state unchanged, and records optimizer0/checkpoint_writes0/dev0/official0.",
+      "evidence": [
+        "tools/diagnose_v19_generalization_geometry.py:60-80",
+        "tools/diagnose_v19_generalization_geometry.py:118-140",
+        "tools/diagnose_v19_generalization_geometry.py:143-177",
+        "tools/diagnose_v19_generalization_geometry.py:184-188",
+        "evidence/trifusion_v19_generalization_geometry_20260905.log:16-67",
+        "evidence/trifusion_v19_generalization_geometry_20260905.json:114-117",
+        "evidence/trifusion_v19_generalization_geometry_20260905.json:230667-230670",
+        "evidence/trifusion_v19_generalization_geometry_20260905.json:461321-461324",
+        "evidence/trifusion_v19_generalization_geometry_20260905.json:691160-691163",
+        "evidence/trifusion_v19_generalization_geometry_20260905.json:921100-921103",
+        "evidence/trifusion_v19_generalization_geometry_20260905.json:1150603-1150606"
+      ],
+      "claim_impact": "Supports read-only diagnostic execution integrity within receipt-bound remote byte limits."
+    },
+    "E_all_endpoint_all_scope_all_query_all_modality_pair_and_source_heldout_scope": {
+      "status": "PASS",
+      "finding": "The diagnostic covers three folds, two endpoints, source and heldout scopes, all five existing outputs, all eligible queries, seven source classification heads, and all 3x3 modality pairs for each expert. It does not create new modality subset retrieval outputs or perform scans.",
+      "evidence": [
+        "docs/V19_GENERALIZATION_DIAGNOSIS_PROTOCOL_2026-09-05.md:21-24",
+        "docs/V19_GENERALIZATION_DIAGNOSIS_PROTOCOL_2026-09-05.md:25-32",
+        "tools/diagnose_v19_generalization_geometry.py:25-28",
+        "tools/summarize_v19_generalization_geometry.py:20-61",
+        "tools/summarize_v19_generalization_geometry.py:73-85",
+        "results/TRIFUSION_RGBNT201_V19_GENERALIZATION_DIAGNOSIS_2026-09-05.md:12-17",
+        "results/TRIFUSION_RGBNT201_V19_GENERALIZATION_DIAGNOSIS_2026-09-05.md:64-70",
+        "results/TRIFUSION_RGBNT201_V19_GENERALIZATION_DIAGNOSIS_2026-09-05.md:99-210"
+      ],
+      "claim_impact": "Supports complete fixed-scope diagnostic coverage."
+    },
+    "F_evaluation_diagnostic_type_and_claim_qualification": {
+      "status": "PASS",
+      "finding": "The diagnostic is a read-only train-source and reused-heldout OOF postmortem. It is not new validation and does not support dev, official, public-test, or SOTA claims. Causal and future-intervention claims remain prospective.",
+      "evidence": [
+        "docs/V19_GENERALIZATION_DIAGNOSIS_PROTOCOL_2026-09-05.md:3-4",
+        "docs/V19_GENERALIZATION_DIAGNOSIS_PROTOCOL_2026-09-05.md:18-20",
+        "docs/V19_GENERALIZATION_DIAGNOSIS_PROTOCOL_2026-09-05.md:34-36",
+        "results/TRIFUSION_RGBNT201_V19_GENERALIZATION_DIAGNOSIS_2026-09-05.md:225-237",
+        "results/TRIFUSION_RGBNT201_V19_GENERALIZATION_DIAGNOSIS_2026-09-05.md:239-241",
+        "refine-logs/v19/EXPERIMENT_TRACKER.md:49-51",
+        "evidence/trifusion_v19_q1_seed42_4b749cd.json:3",
+        "evidence/trifusion_v19_q1_seed42_4b749cd.json:26",
+        "evidence/trifusion_v19_q1_seed42_4b749cd.json:33-35",
+        "evidence/trifusion_v19_q1_seed42_4b749cd.json:78074-78082"
+      ],
+      "claim_impact": "Supports descriptive diagnostic claims only; V19 scientific qualification remains fail."
+    }
+  },
+  "claims": [
+    {
+      "id": "C1",
+      "claim": "The geometry diagnostic completed all six final endpoint replays read-only.",
+      "impact": "supported_with_receipt_bound_caveat"
+    },
+    {
+      "id": "C2",
+      "claim": "Heldout five-output AP/Rank arrays exactly reproduce Q1.",
+      "impact": "supported"
+    },
+    {
+      "id": "C3",
+      "claim": "Source retrieval is saturated at 100% for all five outputs and both endpoints.",
+      "impact": "supported_as_training_fit_diagnostic"
+    },
+    {
+      "id": "C4",
+      "claim": "All seven source classification heads are 100% accurate.",
+      "impact": "supported_as_training_fit_diagnostic"
+    },
+    {
+      "id": "C5",
+      "claim": "There is a descriptive source-to-heldout generalization gap.",
+      "impact": "supported_descriptively"
+    },
+    {
+      "id": "C6",
+      "claim": "Cross-modality residual geometry does not automatically form a shared identity direction.",
+      "impact": "supported_descriptively_within_fixed_diagnostic_scope"
+    },
+    {
+      "id": "C7",
+      "claim": "Cross-modality direction inconsistency caused V19 failure.",
+      "impact": "unsupported_causal_claim"
+    },
+    {
+      "id": "C8",
+      "claim": "A future identity-aware cross-modality alignment loss will improve dev/official performance.",
+      "impact": "unsupported_prospective_hypothesis"
+    },
+    {
+      "id": "C9",
+      "claim": "V19 Q1 scientific status changed.",
+      "impact": "rejected_q1_fail_unchanged"
+    },
+    {
+      "id": "C10",
+      "claim": "Any D1/dev/official/SOTA result is supported.",
+      "impact": "unsupported"
+    }
+  ],
+  "recomputation": {
+    "numpy_version": "2.5.2",
+    "status_checks": {
+      "diag_status": "ALL_SIX_FINAL_MODELS_REPLAY_AND_SOURCE_DIAGNOSIS_COMPLETE",
+      "diag_scope": "read_only_train_source_and_reused_oof_postmortem_not_new_validation",
+      "optimizer_steps": 0,
+      "checkpoint_writes": 0,
+      "dev_access_count": 0,
+      "official_test_access_count": 0,
+      "q1_status": "Q1_FAIL",
+      "summary_scientific_status_unchanged": "Q1_FAIL",
+      "diag_sha_matches_summary": true,
+      "diag_script_sha_matches": true,
+      "summary_script_sha_matches": true,
+      "q1_sha_matches_diag": true
+    },
+    "metric_replay": {
+      "fold_metric_rows_recomputed": 60,
+      "aggregate_metric_rows_recomputed": 20,
+      "max_abs_diff_vs_reported": 0.0,
+      "metrics_aggregate_percent": {
+        "frozen_private_tail": {
+          "source": {
+            "baseline_only": {"mAP": 100.0, "Rank-1": 100.0, "Rank-5": 100.0, "Rank-10": 100.0},
+            "fused": {"mAP": 100.0, "Rank-1": 100.0, "Rank-5": 100.0, "Rank-10": 100.0},
+            "cnn": {"mAP": 100.0, "Rank-1": 100.0, "Rank-5": 100.0, "Rank-10": 100.0},
+            "transformer": {"mAP": 100.0, "Rank-1": 100.0, "Rank-5": 100.0, "Rank-10": 100.0},
+            "mamba": {"mAP": 100.0, "Rank-1": 100.0, "Rank-5": 100.0, "Rank-10": 100.0}
+          },
+          "heldout": {
+            "baseline_only": {"mAP": 77.48760311601094, "Rank-1": 79.33450087565674, "Rank-5": 89.49211908931699, "Rank-10": 93.52014010507881},
+            "fused": {"mAP": 80.24079232211736, "Rank-1": 83.18739054290718, "Rank-5": 90.01751313485113, "Rank-10": 93.87040280210157},
+            "cnn": {"mAP": 79.91510541150345, "Rank-1": 84.76357267950964, "Rank-5": 88.96672504378283, "Rank-10": 91.59369527145358},
+            "transformer": {"mAP": 78.15054560122677, "Rank-1": 82.13660245183888, "Rank-5": 90.54290718038528, "Rank-10": 92.99474605954467},
+            "mamba": {"mAP": 77.80198014575362, "Rank-1": 78.98423817863399, "Rank-5": 89.31698774080562, "Rank-10": 94.04553415061297}
+          }
+        },
+        "trained_private_tail": {
+          "source": {
+            "baseline_only": {"mAP": 100.0, "Rank-1": 100.0, "Rank-5": 100.0, "Rank-10": 100.0},
+            "fused": {"mAP": 100.0, "Rank-1": 100.0, "Rank-5": 100.0, "Rank-10": 100.0},
+            "cnn": {"mAP": 100.0, "Rank-1": 100.0, "Rank-5": 100.0, "Rank-10": 100.0},
+            "transformer": {"mAP": 100.0, "Rank-1": 100.0, "Rank-5": 100.0, "Rank-10": 100.0},
+            "mamba": {"mAP": 100.0, "Rank-1": 100.0, "Rank-5": 100.0, "Rank-10": 100.0}
+          },
+          "heldout": {
+            "baseline_only": {"mAP": 77.48760311601094, "Rank-1": 79.33450087565674, "Rank-5": 89.49211908931699, "Rank-10": 93.52014010507881},
+            "fused": {"mAP": 80.49682755120588, "Rank-1": 84.23817863397548, "Rank-5": 89.84238178633976, "Rank-10": 93.6952714535902},
+            "cnn": {"mAP": 80.0547973247663, "Rank-1": 84.23817863397548, "Rank-5": 90.36777583187391, "Rank-10": 92.46935201401051},
+            "transformer": {"mAP": 79.33172899030271, "Rank-1": 83.18739054290718, "Rank-5": 89.14185639229422, "Rank-10": 92.46935201401051},
+            "mamba": {"mAP": 77.37915613474735, "Rank-1": 79.50963222416813, "Rank-5": 89.66725043782837, "Rank-10": 93.87040280210157}
+          }
+        }
+      }
+    },
+    "source_classification_replay": {
+      "aggregate_heads_recomputed": 14,
+      "fold_heads_recomputed": 42,
+      "max_abs_diff_vs_summary": 0.0,
+      "max_abs_diff_vs_fold_records": 9.680368817654994e-08,
+      "all_heads_accuracy_percent": 100.0,
+      "rows": {
+        "frozen_private_tail": {
+          "fused": {"correct": 6252, "total": 6252, "accuracy_percent": 100.0, "mean_smoothed_cross_entropy": 0.8517219325860036},
+          "cnn": {"correct": 6252, "total": 6252, "accuracy_percent": 100.0, "mean_smoothed_cross_entropy": 0.8366516492760342},
+          "transformer": {"correct": 6252, "total": 6252, "accuracy_percent": 100.0, "mean_smoothed_cross_entropy": 0.838168075087737},
+          "mamba": {"correct": 6252, "total": 6252, "accuracy_percent": 100.0, "mean_smoothed_cross_entropy": 0.8354318723492491},
+          "residual_cnn": {"correct": 6252, "total": 6252, "accuracy_percent": 100.0, "mean_smoothed_cross_entropy": 0.850776618879267},
+          "residual_transformer": {"correct": 6252, "total": 6252, "accuracy_percent": 100.0, "mean_smoothed_cross_entropy": 0.8469936100817307},
+          "residual_mamba": {"correct": 6252, "total": 6252, "accuracy_percent": 100.0, "mean_smoothed_cross_entropy": 0.8472935462123831}
+        },
+        "trained_private_tail": {
+          "fused": {"correct": 6252, "total": 6252, "accuracy_percent": 100.0, "mean_smoothed_cross_entropy": 0.8512215241646812},
+          "cnn": {"correct": 6252, "total": 6252, "accuracy_percent": 100.0, "mean_smoothed_cross_entropy": 0.836807423650799},
+          "transformer": {"correct": 6252, "total": 6252, "accuracy_percent": 100.0, "mean_smoothed_cross_entropy": 0.8366460726284782},
+          "mamba": {"correct": 6252, "total": 6252, "accuracy_percent": 100.0, "mean_smoothed_cross_entropy": 0.8363594215360881},
+          "residual_cnn": {"correct": 6252, "total": 6252, "accuracy_percent": 100.0, "mean_smoothed_cross_entropy": 0.8502410655782837},
+          "residual_transformer": {"correct": 6252, "total": 6252, "accuracy_percent": 100.0, "mean_smoothed_cross_entropy": 0.8448073512094568},
+          "residual_mamba": {"correct": 6252, "total": 6252, "accuracy_percent": 100.0, "mean_smoothed_cross_entropy": 0.8482829971204411}
+        }
+      }
+    },
+    "membership_replay": {
+      "source_memberships_total": 6252,
+      "source_unique_physical_records": 3126,
+      "heldout_memberships_total": 3126,
+      "heldout_unique_physical_records": 3126,
+      "fit_membership_count_distribution": {"2": 141},
+      "heldout_membership_count_distribution": {"1": 141},
+      "fit_heldout_overlap_max": 0,
+      "q1_heldout_arrays_exact_all_outputs_all_endpoints": true,
+      "strict_reload_state_unchanged_all_endpoints": true,
+      "folds": [
+        {"fold": 0, "source_mapping_len": 94, "source_gallery": 2126, "source_eligible_queries": 381, "source_cross_camera_identities": 14, "source_excluded_only_from_query": 1745, "heldout_gallery": 1000, "heldout_eligible_queries": 190, "heldout_cross_camera_identities": 7, "heldout_excluded_only_from_query": 810, "fit_heldout_overlap": 0},
+        {"fold": 1, "source_mapping_len": 94, "source_gallery": 2075, "source_eligible_queries": 392, "source_cross_camera_identities": 14, "source_excluded_only_from_query": 1683, "heldout_gallery": 1051, "heldout_eligible_queries": 179, "heldout_cross_camera_identities": 7, "heldout_excluded_only_from_query": 872, "fit_heldout_overlap": 0},
+        {"fold": 2, "source_mapping_len": 94, "source_gallery": 2051, "source_eligible_queries": 369, "source_cross_camera_identities": 14, "source_excluded_only_from_query": 1682, "heldout_gallery": 1075, "heldout_eligible_queries": 202, "heldout_cross_camera_identities": 7, "heldout_excluded_only_from_query": 873, "fit_heldout_overlap": 0}
+      ]
+    },
+    "geometry_replay": {
+      "all_3x3_pair_rows_recomputed": 108,
+      "grouped_rows_recomputed": 24,
+      "finite_all_numeric_geometry": true,
+      "max_abs_diff_all_3x3_vs_summary": 0.0,
+      "max_abs_diff_grouped_vs_summary": 0.0,
+      "grouped_geometry": {
+        "frozen_private_tail": {
+          "source": {
+            "cnn": {"same_modality": {"nearest_cosine_margin": 0.16204148503993593, "negative_at_least_as_close_percent": 1.8680677174547577}, "different_modality": {"nearest_cosine_margin": -0.18943470227708784, "negative_at_least_as_close_percent": 73.89083479276124}},
+            "transformer": {"same_modality": {"nearest_cosine_margin": 0.19127674768768552, "negative_at_least_as_close_percent": 0.8756567425569177}, "different_modality": {"nearest_cosine_margin": -0.19000979380937333, "negative_at_least_as_close_percent": 72.94220665499125}},
+            "mamba": {"same_modality": {"nearest_cosine_margin": 0.15597419560790687, "negative_at_least_as_close_percent": 3.9988324576765906}, "different_modality": {"nearest_cosine_margin": -0.21788711978675243, "negative_at_least_as_close_percent": 78.67775831873905}}
+          },
+          "heldout": {
+            "cnn": {"same_modality": {"nearest_cosine_margin": -0.05233071937162692, "negative_at_least_as_close_percent": 58.844133099824866}, "different_modality": {"nearest_cosine_margin": -0.23862609632213486, "negative_at_least_as_close_percent": 90.33858727378868}},
+            "transformer": {"same_modality": {"nearest_cosine_margin": -0.06769837070391305, "negative_at_least_as_close_percent": 61.12084063047285}, "different_modality": {"nearest_cosine_margin": -0.2387146737788202, "negative_at_least_as_close_percent": 92.14827787507296}},
+            "mamba": {"same_modality": {"nearest_cosine_margin": -0.05111520907907408, "negative_at_least_as_close_percent": 58.96088733216579}, "different_modality": {"nearest_cosine_margin": -0.2648182620077736, "negative_at_least_as_close_percent": 94.01634559252773}}
+          }
+        },
+        "trained_private_tail": {
+          "source": {
+            "cnn": {"same_modality": {"nearest_cosine_margin": 0.1693731049522627, "negative_at_least_as_close_percent": 1.7221249270286048}, "different_modality": {"nearest_cosine_margin": -0.19656902784819746, "negative_at_least_as_close_percent": 74.19731465265616}},
+            "transformer": {"same_modality": {"nearest_cosine_margin": 0.19919115601578305, "negative_at_least_as_close_percent": 0.9048453006421483}, "different_modality": {"nearest_cosine_margin": -0.188781118010748, "negative_at_least_as_close_percent": 71.55575014594278}},
+            "mamba": {"same_modality": {"nearest_cosine_margin": 0.1686826807431011, "negative_at_least_as_close_percent": 2.626970227670753}, "different_modality": {"nearest_cosine_margin": -0.2229050510092062, "negative_at_least_as_close_percent": 78.10858143607706}}
+          },
+          "heldout": {
+            "cnn": {"same_modality": {"nearest_cosine_margin": -0.045958437607827515, "negative_at_least_as_close_percent": 58.96088733216579}, "different_modality": {"nearest_cosine_margin": -0.25029243049389177, "negative_at_least_as_close_percent": 91.85639229422067}},
+            "transformer": {"same_modality": {"nearest_cosine_margin": -0.06776432577309661, "negative_at_least_as_close_percent": 62.521891418563925}, "different_modality": {"nearest_cosine_margin": -0.23144682739549102, "negative_at_least_as_close_percent": 90.95154699357852}},
+            "mamba": {"same_modality": {"nearest_cosine_margin": -0.051436483068418866, "negative_at_least_as_close_percent": 59.13601868067717}, "different_modality": {"nearest_cosine_margin": -0.2564219035039277, "negative_at_least_as_close_percent": 93.28663164039696}}
+          }
+        }
+      }
+    },
+    "heldout_paired_distance_changes": {
+      "outputs_recomputed": 5,
+      "queries_per_output": 571,
+      "max_abs_diff_vs_summary": 0.0,
+      "mean_deltas": {
+        "baseline_only": {"positive_distance": 0.0, "negative_distance": 0.0, "nearest_margin": 0.0},
+        "fused": {"positive_distance": -0.0028141165990545535, "negative_distance": -0.0009900330453328202, "nearest_margin": 0.0018240835537217336},
+        "cnn": {"positive_distance": -0.008615169028267134, "negative_distance": -0.005311347139695897, "nearest_margin": 0.0033038218885712363},
+        "transformer": {"positive_distance": 0.00014380774021983774, "negative_distance": 0.001325415541954508, "nearest_margin": 0.0011816078017346705},
+        "mamba": {"positive_distance": 0.0002914350838669545, "negative_distance": 0.0029208684134608602, "nearest_margin": 0.0026294333295939056}
+      }
+    },
+    "source_heldout_fused_gap_pp": {
+      "frozen_private_tail": 19.759207677882642,
+      "trained_private_tail": 19.503172448794118
+    }
+  },
+  "limitations": [
+    "No training, evaluation, remote execution, model inference, checkpoint tensor loading, image reads, feature replay, distance replay, or downloads were performed by this audit.",
+    "Large checkpoint bytes and image/data bytes used by the original diagnostic remain remote/receipt-bound from this local audit.",
+    "The summary script was not used as sole evidence; independent JSON/NumPy replay from raw arrays was performed.",
+    "The source membership counts are fold-model memberships, not unique physical data counts; each original identity appears in source for exactly two fold models.",
+    "Heldout results are reused Q1 train-internal OOF diagnostics and are not dev, official, public-test, or SOTA evidence.",
+    "The diagnostic supports descriptive postmortem claims only and does not establish a causal mechanism or validate a future intervention."
+  ]
+}

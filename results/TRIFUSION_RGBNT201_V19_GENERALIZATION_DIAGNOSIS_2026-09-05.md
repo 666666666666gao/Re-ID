@@ -247,3 +247,16 @@ engineering PASS、integrity WARN、scientific FAIL，见EXPERIMENT_AUDIT_V19_Q1
 `tools/summarize_v19_generalization_geometry.py`与同名evidence summary JSON。
 原始日志、启动回执和传输SHA回执均归档。大权重/图像仍只在服务器，独立审计员
 若未实际读取其字节，仍须保留receipt-bound限制。
+
+
+### 独立诊断审计闭环（2026-09-05 14:43 CST）
+
+EXPERIMENT_AUDIT_V19_GEOMETRY.md/json已完成；工程完整性PASS，overall/integrity
+WARN，scientific_qualification FAIL，V19 Q1_FAIL不变。审计员从原始JSON独立
+重算60个fold指标行、20个aggregate指标行、42个fold分类头、14个aggregate
+分类头、108个模态对、24个分组几何与5路配对距离统计，汇总差异为0。
+源码记录的fold均值与逐样本float64重算最大差9.68e-8，属于记录精度差异。
+source6252为fold-model memberships，唯一物理记录3126；每身份恰在两折来源
+训练集合中。权重/数据远端字节仍只经receipt绑定，独立审计未读取本地模型。
+报告不支持唯一因果、未来干预收益或dev/official/SOTA主张。审计原文及调用
+trace完整归档于.aris/traces/experiment-audit/2026-09-05_run05。
