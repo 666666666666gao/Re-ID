@@ -259,6 +259,19 @@
 
 ## Remote experiment constraints
 
+- V24 is implemented and preregistered, awaiting remote CUDA T0 and complete M0.
+  Read refine-logs/v24/EXPERIMENT_PLAN.md. Training-only identity/camera
+  prototypes retain all94 source IDs and108 real memberships per fold, with
+  weak EMA and strong-view global/intra-camera ID competition. Inference stays
+  original V8/Signal with zero new inference parameters. Both arms use identical
+  dual views and original seven ID/triplet objectives; candidate adds the fixed
+  prototype objective. No V23 adapter or later-version checkpoint is inherited.
+  All runtime tests and qualification results are pending; AST is not execution.
+  Preserve fixed M0 and full six-endpoint Q1, seed42, 3360 updates/6720 view
+  forward-backward pairs and all five scientific gates. No scans or dev/official
+  advancement on failure.
+
+
 - V23 completed its original three folds x two endpoints x20 epochs, seed42,
   120 epoch rows and 3360 updates; original PID44684 exited0, execution9f4a10b.
   Q1_FAIL is sealed. Matched control/candidate fused mAP80.507516/80.254811,
