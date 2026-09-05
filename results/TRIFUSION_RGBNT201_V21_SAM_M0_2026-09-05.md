@@ -1,16 +1,4 @@
-# V21 Experiment Tracker
-
-更新时间：2026-09-05T16:55:28.118434+08:00；状态M0_FAIL_Q1_NOT_RUN。
-
-| ID | 内容 | 状态 | 证据/依赖 |
-|---|---|---|---|
-| V21-T0 | 三项CUDA数学/AMP/BN单测 | DONE_PASS | evidence/trifusion_v21_t0_20260905.json |
-| V21-M0 | 六模型配对、两端容量、100步过拟合 | DONE_FAIL_FIXED_OVERFIT_GATE | evidence/trifusion_v21_m0_seed42_3c39351.json |
-| V21-FILES | 远端30个完整源文件SHA | DONE_PASS | evidence/trifusion_v21_m0_terminal_file_verification_20260905.json |
-| V21-ARRAYS | 全配对/预算/100步/解析底实际复核 | DONE_PASS | evidence/trifusion_v21_m0_array_verification_20260905.json |
-| V21-M0-AUDIT | 独立M0终态审计 | PENDING | .aris/traces/experiment-audit/2026-09-05_run08 |
-| V21-Q1 | 完整三fold ordinary40/SAM20 | NOT_QUALIFIED_NOT_RUN | M0固定门失败 |
-| V21-D1 | 141-fit refit与30-dev | NOT_QUALIFIED_NOT_RUN | 无Q1 |
+# V21 SAM M0 完整终态（2026-09-05）
 
 V21原进程执行342.520254秒后按固定M0门自动停止，状态M0_FAIL；
 16:49:44实际观测原PID32331已退出、GPU1MiB/0%。Q1 fold/endpoint/epoch
@@ -49,4 +37,24 @@ preflight batch；不能将这些计成Q1主训练预算。
 工程数值可运行与M0固定准备门通过是两回事。独立M0终态审计待完成，
 执行器的本地复核不替代独立审计。
 
-V21固定运行封存；无V22方案、代码或训练。用户整体目标未完成。
+## 证据索引
+
+- 实际执行源码commit：3c393510f0e0a31bad602af8dd618a8dcdfe6ae6。
+- 固定方案：refine-logs/v21/EXPERIMENT_PLAN.md；配置与源码SHA见
+  evidence/trifusion_v21_preregistration_20260905.json。
+- 原始完整M0：evidence/trifusion_v21_m0_seed42_3c39351.json。
+- 全日志：evidence/trifusion_v21_m0_run_snapshot_20260905.log。
+- 远端文件核验：evidence/trifusion_v21_m0_terminal_file_verification_20260905.json。
+- 本地实际算术复核：evidence/trifusion_v21_m0_array_verification_20260905.json。
+- T0：evidence/trifusion_v21_t0_20260905.json，三项远端CUDA数学测试PASS。
+- 原始进程确认：evidence/trifusion_v21_launch_observation_20260905.json。
+- 管理连接超时单列：evidence/trifusion_v21_launch_transport_20260905.json。
+  screen -DmS等待结束引起的管理错误未导致训练中断；本次终态是固定M0门失败。
+- 最终进程/状态观测：evidence/trifusion_v21_progress_20260905_1649.json。
+
+## 当前研究范围
+
+这是source身份的训练内工程门，无heldout mAP/R1、dev或官方测试结果；
+T0 toy optimizer数学测试不是项目主训练。不能将源损失或容量当作SOTA证据。
+V20完整Q1_FAIL保持。当前可部署dev最佳V8 58.4050/59.3939、exact Signal
+58.0109/57.4545未改变；dev65及官方85.3/87.9目标未达到，全局任务继续active。

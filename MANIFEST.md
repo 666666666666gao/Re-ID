@@ -582,3 +582,8 @@
 | 2026-09-05 16:38 | /experiment-plan | refine-logs/v21/EXPERIMENT_PLAN_20260905_163644.md | implementation | Frozen SAM20/AdamW40 comparison; equal forward-backward counts; not launched |
 | 2026-09-05 16:38 | /experiment-plan | refine-logs/v21/EXPERIMENT_PLAN.md | implementation | Latest frozen V21 plan, identical timestamped copy |
 | 2026-09-05 16:38 | /experiment-plan | refine-logs/v21/EXPERIMENT_TRACKER_20260905_163644.md | implementation | T0/M0/Q1 pending; D1 locked |
+
+| 2026-09-05 16:48 | /run-experiment | refine-logs/v21/EXPERIMENT_TRACKER_20260905_164838.md | evidence | T0 all three passed; original PID32331 running M0; launch transport timeout isolated |
+
+| 2026-09-05 16:55 | /run-experiment | refine-logs/v21/EXPERIMENT_TRACKER_20260905_165528.md | evidence | V21 M0_FAIL fixed overfit gate, Q1 not run; independent M0 audit pending |
+| 2026-09-05 16:55 | /run-experiment | results/TRIFUSION_RGBNT201_V21_SAM_M0_2026-09-05.md | evidence | Complete M0 pairing, capacity and 100-step trajectory; no retrieval result |

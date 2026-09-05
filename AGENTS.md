@@ -259,7 +259,15 @@
 
 ## Remote experiment constraints
 
-- V21 is preregistered and not yet launched. It keeps the original V8/Signal
+- V21 is sealed M0_FAIL. All three T0 CUDA tests passed; six-model preflight,
+  both capacities, gradient/frozen/AMP/BN checks passed, but the fixed 100-step
+  excess-loss ratio was 0.398999 > 0.1. Final/initial loss was
+  0.591416/0.611047 with floor0.578383. All 116 M0 updates completed; Q1,
+  D1/dev/official and new checkpoints are zero. Original PID32331 ended.
+  Do not select an earlier minimum, relax the gate, scan rho/LR/steps/seed,
+  or retrain V21. Independent M0 audit is pending. Read the complete result
+  results/TRIFUSION_RGBNT201_V21_SAM_M0_2026-09-05.md and tracker.
+  The planned Q1 kept the original V8/Signal
   inference model and seven ID/triplet objectives. Compare ordinary AdamW 40
   epochs with SAM 20 epochs at fixed rho 0.05, seed42, B64/K8: each arm has
   3360 forward/backward pairs across three folds, while optimizer updates are
