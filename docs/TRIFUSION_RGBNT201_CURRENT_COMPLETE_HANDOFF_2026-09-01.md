@@ -2657,3 +2657,17 @@ D1/dev/official均未执行。M0工程/固定门独立审计PASS、完整性WARN
 当前评价保留3126条完整gallery。因此旧V12约88mAP与当前约80mAP不能直接
 相减来证明继续训练导致退化。尚未执行共同初始化的完整gallery诊断或新训练。
 完整结果和所有负收益见results/TRIFUSION_RGBNT201_V22_CAMERA_NEGATIVE_2026-09-05.md。
+
+
+### 39.5 共同初始化完整图库诊断执行前冻结（2026-09-05）
+
+tools/diagnose_v22_initialization_full_gallery.py及
+refine-logs/v22/INITIALIZATION_FULL_GALLERY_DIAGNOSTIC_PLAN.md已固定并AST通过。
+将只读恢复三个既有共同初始化，要求state和两端training.initial_state精确一致，
+按同一完整3126gallery/571query评价全部五输出，前后比对source与模型state SHA。
+不优化、不写checkpoint、不选中间epoch、不访问dev/official，不改变V22的Q1_FAIL。
+补齐旧eligible-only缓存与当前完整gallery不直接可比的证据缺口，不预设退化方向。
+全部初始、对照终态与MCNL终态将保留；计划、源码SHA和未执行状态见
+evidence/trifusion_v22_initialization_diagnostic_preregistration_20260905.json。
+预计2–3分钟；启动前实际核验GPU与源文件，诊断结果尚不存在。
+V22完整Q1终态独立审计已交GPT-5.5 xhigh，trace run10；它的46份输入保持不变。
