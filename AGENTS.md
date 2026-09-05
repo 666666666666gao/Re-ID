@@ -259,8 +259,10 @@
 
 ## Remote experiment constraints
 
-- V22 T0 passed all three CUDA tests; original PID34656 launched M0
-  at 17:51:07 CST. No M0/Q1 result exists yet. It replaces only the three residual
+- V22 T0 and real M0 passed. Original PID34656 continues the full Q1
+  without restart; no complete Q1 retrieval result yet. M0 ratio0.013769,
+  203/203 gradients, overflow0 and frozen state checks passed. Independent
+  M0 audit is pending; see the complete M0 result and tracker. It replaces only the three residual
   batch-hard triplets with camera-negative MCNL at margins 0.1/0.1 and the
   original coefficient 0.25. All seven ID losses and fused/branch triplets,
   exact Signal/V8 architecture, seed42/B64K8/20 epochs and initialization stay.

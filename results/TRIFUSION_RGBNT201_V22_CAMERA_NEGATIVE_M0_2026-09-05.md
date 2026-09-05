@@ -1,17 +1,6 @@
-# V22 Experiment Tracker
+# V22 Camera-Negative M0 已完成，完整 Q1 运行中
 
-更新时间：2026-09-05T18:01:37.883354+08:00；状态M0_PASS_Q1_RUNNING。
-
-| ID | 内容 | 状态 | 证据/依赖 |
-|---|---|---|---|
-| V22-SOURCE | 全1680batch相机监督元数据与整数复核 | DONE_METADATA_ONLY | evidence/trifusion_source_camera_metadata_20260905.json |
-| V22-T0 | 三项CUDA数学/行域/梯度契约 | DONE_PASS | evidence/trifusion_v22_t0_20260905.json |
-| V22-M0 | 六模型配对、两端容量、100步过拟合 | DONE_PASS | evidence/trifusion_v22_m0_seed42_5ae096b.json |
-| V22-FILES | 30完整source/config/plan/weights字节SHA | DONE_PASS | evidence/trifusion_v22_m0_file_verification_20260905.json |
-| V22-ARRAYS | 全48batch/116更新/100步实际整数及loss复核 | DONE_PASS | evidence/trifusion_v22_m0_array_verification_20260905.json |
-| V22-M0-AUDIT | 独立M0审计 | PENDING | 原始文件交独立审计 |
-| V22-Q1 | 三fold两端各20epoch完整检索 | RUNNING | 原PID34656；17:57已有3完整epoch/87步，零完整paired fold |
-| V22-D1 | 141-fit refit与30-dev | NOT_QUALIFIED_NOT_RUN | 五项Q1门全通过后登记执行细节 |
+记录时间：2026-09-05T18:01:37.883354+08:00
 
 M0于原进程约225.699910秒时完成，全部五项工程检查通过。17:55:06实际观测
 原PID34656存活、三fold配对完整、GPU6546MiB/93%；没有完整Q1 paired fold。
@@ -49,3 +38,40 @@ Signal commit/diff与执行绑定相同；该检查没有加载权重tensor或�
 所有5输出/3126gallery/571query/21身份与五项科学门保持。当前没有Q1检索结果、
 D1/dev/official或SOTA新指标。首个完整paired fold下一次观测约18:18–18:20；
 完整Q1暂估19:10–19:30，收到完整epoch/端点用时后修正，不提前反复查询GPU。
+
+## 原始证据
+
+- evidence/trifusion_v22_m0_seed42_5ae096b.json
+- evidence/trifusion_v22_m0_run_snapshot_20260905.log
+- evidence/trifusion_v22_m0_file_verification_20260905.json
+- evidence/trifusion_v22_m0_array_verification_20260905.json
+- evidence/trifusion_v22_progress_20260905_175506.json
+- evidence/trifusion_v22_t0_20260905.json
+- evidence/trifusion_v22_launch_20260905.json
+- evidence/trifusion_source_camera_metadata_20260905.json
+- evidence/trifusion_source_camera_metadata_integer_verification_20260905.json
+
+## 全100步分量范围（固定batch；末步不是中间最佳）
+
+| 分量 | 初值 | 第100步更新前 | 最小 | 最大 | 末20步均值 |
+|---|---:|---:|---:|---:|---:|
+| total | 0.718905091286 | 0.580317795277 | 0.580317795277 | 0.718905091286 | 0.580341613293 |
+| common_identity_and_branch_triplet | 0.61069560051 | 0.580317795277 | 0.580317795277 | 0.643919408321 | 0.580341613293 |
+| ordinary_residual_triplet | 0.000351776834577 | 0.0321446023881 | 0.000351776834577 | 0.0554895401001 | 0.0329893773422 |
+| camera_residual_metric | 0.108209520578 | 0 | 0 | 0.108209520578 | 0 |
+| camera_valid_rows | 56 | 56 | 56 | 56 | 56 |
+| camera_same_negative_missing_rows | 8 | 8 | 8 | 8 | 8 |
+| camera_other_negative_missing_rows | 0 | 0 | 0 | 0 | 0 |
+| camera_cross_camera_positive_rows | 8 | 8 | 8 | 8 | 8 |
+| mcnl_cnn_positive_term | 0 | 0 | 0 | 3.46696833731e-05 | 0 |
+| mcnl_cnn_camera_term | 0.161605209112 | 0 | 0 | 0.161605209112 | 0 |
+| mcnl_cnn_positive_active_rows | 0 | 0 | 0 | 1 | 0 |
+| mcnl_cnn_camera_active_rows | 47 | 0 | 0 | 47 | 0 |
+| mcnl_transformer_positive_term | 0 | 0 | 0 | 0 | 0 |
+| mcnl_transformer_camera_term | 0.123479753733 | 0 | 0 | 0.123479753733 | 0 |
+| mcnl_transformer_positive_active_rows | 0 | 0 | 0 | 0 | 0 |
+| mcnl_transformer_camera_active_rows | 53 | 0 | 0 | 53 | 0 |
+| mcnl_mamba_positive_term | 0 | 0 | 0 | 0.00011707629892 | 0 |
+| mcnl_mamba_camera_term | 0.147753119469 | 0 | 0 | 0.147753119469 | 0 |
+| mcnl_mamba_positive_active_rows | 0 | 0 | 0 | 1 | 0 |
+| mcnl_mamba_camera_active_rows | 40 | 0 | 0 | 40 | 0 |

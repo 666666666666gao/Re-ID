@@ -596,3 +596,6 @@
 | 2026-09-05 17:45 | /experiment-plan | refine-logs/v22/EXPERIMENT_TRACKER_20260905_174555.md | implementation | T0/M0/Q1 pending, dev/official zero |
 
 | 2026-09-05 17:53 | /run-experiment | refine-logs/v22/EXPERIMENT_TRACKER_20260905_175301.md | evidence | V22 T0 all 3 passed; original M0 PID34656 running; no retrieval result |
+
+| 2026-09-05 18:01 | /run-experiment | refine-logs/v22/EXPERIMENT_TRACKER_20260905_180137.md | evidence | V22 complete M0_PASS; original complete Q1 running |
+| 2026-09-05 18:01 | /run-experiment | results/TRIFUSION_RGBNT201_V22_CAMERA_NEGATIVE_M0_2026-09-05.md | evidence | All M0 pairing, capacity and 100-step components; no Q1 retrieval result |
