@@ -146,4 +146,3 @@ if __name__ == "__main__":
     parser.add_argument("--v17-geometry",type=Path,required=True)
     parser.add_argument("--output-dir",type=Path,required=True)
     run(parser.parse_args())
-
