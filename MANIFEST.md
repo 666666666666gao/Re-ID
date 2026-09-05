@@ -623,3 +623,5 @@
 
 | 2026-09-05 22:22 | /run-experiment | tools/audit_v23_terminal_arrays.py | implementation | Prepared full terminal metric/loss/parameter/bootstrap verifier, not executed on V23 terminal yet |
 | 2026-09-05 22:22 | /run-experiment | tools/verify_v23_terminal_files.py; tools/report_v23_complete_comparison.py | implementation | Prepared whole-file verification and complete six-endpoint comparison helpers |
+
+| 2026-09-05 22:42 | /experiment-audit + Q1 progress | EXPERIMENT_AUDIT_V23_M0.md/json; results/TRIFUSION_RGBNT201_V23_PARTIAL_Q1_2237_2026-09-05.md | evidence | M0 independent WARN, engineering/fixed M0 PASS; original Q1 1/3 pairs, all first-fold outputs preserved, no terminal qualification; trace run12 closed |

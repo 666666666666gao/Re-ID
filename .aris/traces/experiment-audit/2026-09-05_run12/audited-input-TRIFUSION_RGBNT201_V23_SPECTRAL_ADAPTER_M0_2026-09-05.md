@@ -68,24 +68,5 @@ M0快照343499字节 SHAb662bf6420f7f5dc6f92fd0d93d00b2eabfdb3aee4e70af34d694658
 - evidence/trifusion_v23_m0_file_verification_20260905.json；12208字节；SHA256 f39c5f2e127419b4777ce01238f960f2b806b006887d68b66c001de07c87de7d。
 - evidence/trifusion_v23_progress_2207_20260905.json；1796字节；SHA256 fa88c9dba833a9840c38b7dc6293be821e28476591aeaa0f312f9a35576ea27b。
 
-Q1将按原方案继续执行：三fold×两端×20epoch、3360步，完整3126图库/571query、五输出。
-截至本M0证据快照22:07，没有V23检索指标、dev/官方/SOTA结果；额外可训练容量的机制混杂没有被本M0排除。
-
-## 独立M0审计闭环
-
-独立M0审计完成：overall/integrity WARN，engineering PASS，
-fixed M0 PASS（source-only工程门），scientific NOT_QUALIFIED。
-审计使用Node.js v24.13.0标准库对全部116步分量及固定门独立重算；
-最大总loss差8.940696727410824e-08，entropy floor=0.57838292104621，
-固定第100步excess比0.059681899095254606。它没有执行模型、tensor、图像、
-GPU、网络、远端或新优化。七份远端大权重仅由执行器全文件SHA清单支持，
-没有被本地审计重新持有/散列。
-criterion/mamba/semantic_residual/protocol四文件本地CRLF与执行LF原始字节不同，
-仅LF归一化SHA一致；当前latest tracker与执行前登记不同，历史Git blob及版本副本保留。
-审计39份输入的原始SHA在归档前再次全部匹配，原始报告/请求/回复与审计时
-result/tracker快照保存于trace run12。
-审计指出M0结果原句“所有Q1计划原样执行”可能误读为已经完成；
-保留审计时原文后，当前M0结果改为明确将按计划继续执行并标注22:07证据时间。
-这是文字时态澄清，未改变方案、门限、训练或结果。
-M0审计不提供终态Q1、D1/dev、官方或SOTA资格，新增1777536可训练参数及
-额外反向计算仍是模态机制解释的混杂因素。
+所有Q1计划原样执行：三fold×两端×20epoch、3360步，完整3126图库/571query、五输出。
+当前没有V23检索指标、dev/官方/SOTA结果；额外可训练容量的机制混杂没有被本M0排除。

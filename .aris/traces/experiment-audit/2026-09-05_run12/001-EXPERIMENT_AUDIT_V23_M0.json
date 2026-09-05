@@ -1,0 +1,611 @@
+{
+  "date": "2026-09-05",
+  "auditor": "GPT-5.5 xhigh requested; independent local read-only audit",
+  "overall_verdict": "WARN",
+  "integrity_status": "warn",
+  "engineering_integrity": {
+    "status": "pass",
+    "summary": "V23 M0 engineering integrity passes for the audited source-only M0 evidence."
+  },
+  "fixed_m0_qualification": {
+    "status": "pass",
+    "engineering_only": true,
+    "passed_checks": {
+      "all_gradients_live": true,
+      "all_frozen_states_unchanged": true,
+      "overflow_zero": true,
+      "capacity_within_limit": true,
+      "overfit_excess_ratio_at_most_point1": true
+    },
+    "elapsed_seconds": 240.08384251594543,
+    "preflight_forward_pairs": 48,
+    "legacy_zero_adapter_first_batch_checks": 6,
+    "project_optimizer_steps": 116,
+    "capacity_steps": [
+      8,
+      8
+    ],
+    "overfit_steps": 100,
+    "capacity_peak_reserved_mib": [
+      6090,
+      6494
+    ],
+    "overfit_excess_ratio": 0.059681899095254606
+  },
+  "scientific_qualification": {
+    "status": "not_qualified",
+    "reason": "Audited artifacts contain no terminal V23 Q1 retrieval metrics, no D1/dev run, no official-test run, and no SOTA advancement.",
+    "q1_terminal_retrieval_available": false,
+    "completed_q1_folds": 0,
+    "q1_epoch_rows_in_snapshot": 2,
+    "d1_executed": false,
+    "dev_access_count": 0,
+    "official_test_access_count": 0
+  },
+  "evaluation_type": {
+    "t0": "synthetic_cuda_zero_adapter_modality_dispatch_gradient_and_strict_reload_contract",
+    "m0": "source_only_engineering_m0_real_train_source_batches",
+    "planned_q1": "real_gt_train_internal_complete_path_oof_reused_development_qualification",
+    "q1_current_state": "nonterminal_training_progress_only",
+    "d1_dev_official": "not_run"
+  },
+  "checks": {
+    "A_gt_and_source_isolation": {
+      "status": "PASS",
+      "details": "Real identity/camera labels are parsed from RGBNT201 filenames and protocol records; train records use 141 protocol train IDs from train_171; fold construction excludes heldout identities and relabels only fit records. T0 is explicitly synthetic, while M0 uses real source batch receipts.",
+      "evidence": [
+        "tools/run_signal_baseline_dev.py:27",
+        "tools/run_signal_baseline_dev.py:37",
+        "tools/build_v12_complete_path_oof_targets.py:156",
+        "tools/build_v12_complete_path_oof_targets.py:173",
+        "tools/build_v12_complete_path_oof_targets.py:29",
+        "tools/build_v12_complete_path_oof_targets.py:56",
+        "protocols/rgbnt201_dev_v1.json:2",
+        "protocols/rgbnt201_dev_v1.json:13",
+        "protocols/rgbnt201_dev_v1.json:126",
+        "protocols/rgbnt201_dev_v1.json:130",
+        "evidence/trifusion_v23_t0_20260905.json:37",
+        "evidence/trifusion_v23_t0_20260905.json:45",
+        "evidence/trifusion_v23_m0_seed42_9f4a10b.json:31",
+        "evidence/trifusion_v23_m0_seed42_9f4a10b.json:220",
+        "evidence/trifusion_v23_m0_seed42_9f4a10b.json:270"
+      ],
+      "direct_recomputation": {
+        "v12_status": "PASS",
+        "fold_count": 3,
+        "folds": [
+          {
+            "fold": 0,
+            "signal_fit_count": 94,
+            "expert_fit_count": 94,
+            "heldout_count": 47,
+            "signal_fit_heldout_overlap": 0,
+            "expert_fit_heldout_overlap": 0,
+            "eligible_heldout_queries": 190
+          },
+          {
+            "fold": 1,
+            "signal_fit_count": 94,
+            "expert_fit_count": 94,
+            "heldout_count": 47,
+            "signal_fit_heldout_overlap": 0,
+            "expert_fit_heldout_overlap": 0,
+            "eligible_heldout_queries": 179
+          },
+          {
+            "fold": 2,
+            "signal_fit_count": 94,
+            "expert_fit_count": 94,
+            "heldout_count": 47,
+            "signal_fit_heldout_overlap": 0,
+            "expert_fit_heldout_overlap": 0,
+            "eligible_heldout_queries": 202
+          }
+        ],
+        "eligible_queries_total": 571
+      }
+    },
+    "B_mathematics": {
+      "status": "PASS",
+      "details": "The V23 adapter formula, parameter sharing, zero-output initialization, configured loss coefficients, gradient coverage checks, entropy floor, fixed first/100th overfit gate, and executable final metric/gate path are internally consistent. No self-normalized reported score was found in M0 claims.",
+      "evidence": [
+        "modeling/trifusion/signal_preserving_v23.py:16",
+        "modeling/trifusion/signal_preserving_v23.py:31",
+        "modeling/trifusion/signal_preserving_v23.py:37",
+        "modeling/trifusion/signal_preserving_v23.py:61",
+        "tools/train_signal_preserving_v23.py:109",
+        "tools/train_signal_preserving_v23.py:125",
+        "tools/train_signal_preserving_v23.py:306",
+        "tools/train_signal_preserving_v23.py:324",
+        "tools/train_signal_preserving_v23.py:379",
+        "tools/train_signal_preserving_v23.py:405",
+        "configs/RGBNT201/TriFusion-signal-preserving-v23-spectral-adapter-rtx3090.yml:39",
+        "configs/RGBNT201/TriFusion-signal-preserving-v23-spectral-adapter-rtx3090.yml:47",
+        "evidence/trifusion_v23_m0_seed42_9f4a10b.json:10273",
+        "evidence/trifusion_v23_m0_seed42_9f4a10b.json:10277",
+        "evidence/trifusion_v23_m0_array_verification_20260905.json:396",
+        "evidence/trifusion_v23_m0_array_verification_20260905.json:399"
+      ],
+      "adapter_parameter_count_formula": "9 * ((768*128 + 128) + (128*768 + 768)) = 1777536",
+      "direct_recomputation": {
+        "component_rows": 116,
+        "max_total_diff": 8.940696727410824e-8,
+        "max_common_diff": 8.940696727410824e-8,
+        "max_ordinary_residual_triplet_diff": 5.122274160385132e-9,
+        "classes": 94,
+        "identity_weight_sum": 0.75,
+        "entropy_floor": 0.57838292104621,
+        "reported_entropy_floor": 0.57838292104621,
+        "fixed100_excess_ratio": 0.059681899095254606,
+        "reported_fixed100_excess_ratio": 0.059681899095254606
+      },
+      "score_normalization": {
+        "status": "PASS",
+        "details": "L2 feature normalization is present before distance scoring; I found no reported metric divided by a model's own max/min/mean. Oracle max code exists in a diagnostic helper but is not used for the V23 M0 claim or final matched Q1 gate."
+      }
+    },
+    "C_provenance": {
+      "status": "WARN",
+      "details": "Source/config/plan/M0 JSON/log provenance is well bound, but seven large binary weights are only represented by a remote file-verification ledger in the local audit. Several local Windows raw hashes differ from execution hashes due to CRLF; LF-normalized hashes match. The current tracker is mutable and differs from preregistration.",
+      "evidence": [
+        "tools/train_signal_preserving_v23.py:35",
+        "tools/train_signal_preserving_v23.py:54",
+        "tools/train_signal_preserving_v23.py:238",
+        "tools/train_signal_preserving_v23.py:272",
+        "evidence/trifusion_v23_m0_seed42_9f4a10b.json:2",
+        "evidence/trifusion_v23_m0_seed42_9f4a10b.json:43",
+        "evidence/trifusion_v23_m0_file_verification_20260905.json:153",
+        "evidence/trifusion_v23_m0_file_verification_20260905.json:207",
+        "evidence/trifusion_v23_m0_file_verification_20260905.json:211",
+        "evidence/trifusion_v23_m0_file_verification_20260905.json:235",
+        "evidence/trifusion_v23_m0_file_verification_20260905.json:215",
+        "evidence/trifusion_v23_m0_file_verification_20260905.json:228"
+      ],
+      "remote_ledger_only_binary_weight_count": 7,
+      "mutable_latest_tracker": {
+        "current_bytes": 3008,
+        "current_sha256": "674a26e3ea02da0aa9f81abd7a2966e9a65f6f31927b575c309c9a00f089da0f",
+        "preregistered_sha256": "4764466c024ed035b29a34f2a031c7898caf89eec14e714853133be817ffa592",
+        "excluded_from_current_prereg_hash_claim": true
+      },
+      "line_ending_equivalence": [
+        {
+          "path": "modeling/trifusion/criterion.py",
+          "raw_bytes": 6231,
+          "raw_sha256": "9a028e5711981123310f5e0d441a35b7dbecaf33f9edcec4fd3773d070cf877f",
+          "lf_bytes": 6101,
+          "lf_sha256": "0b2a6370f434828d885945d1a46dd56f6668133ceed45ef359fe71eeca63740a",
+          "execution_sha256": "0b2a6370f434828d885945d1a46dd56f6668133ceed45ef359fe71eeca63740a",
+          "lf_matches_execution": true
+        },
+        {
+          "path": "modeling/trifusion/experts/mamba.py",
+          "raw_bytes": 7479,
+          "raw_sha256": "8b9cb420c42e4d70f8de7e4608637c81c505b97ca54228175462a7e92fdfcc83",
+          "lf_bytes": 7270,
+          "lf_sha256": "c516c7ad937e5eee6a4ed1e3ec33c2afe3522b751d296bd2e4910e4f27a20ee5",
+          "execution_sha256": "c516c7ad937e5eee6a4ed1e3ec33c2afe3522b751d296bd2e4910e4f27a20ee5",
+          "lf_matches_execution": true
+        },
+        {
+          "path": "modeling/trifusion/experts/semantic_residual.py",
+          "raw_bytes": 15882,
+          "raw_sha256": "c1831a3de031be033624420791cecf2e7a3945e009655089cb48ee4b9912edd6",
+          "lf_bytes": 15428,
+          "lf_sha256": "c8cef9717fd7bd1e5e50b428ac92762455defac2e25857c9e0dfaf82729c2a93",
+          "execution_sha256": "c8cef9717fd7bd1e5e50b428ac92762455defac2e25857c9e0dfaf82729c2a93",
+          "lf_matches_execution": true
+        },
+        {
+          "path": "protocols/rgbnt201_dev_v1.json",
+          "raw_bytes": 5685,
+          "raw_sha256": "f7f6f8a906c06fec4918929fb5c17abfc197986b99e017aca1d3e15831c1541d",
+          "lf_bytes": 5376,
+          "lf_sha256": "d916e7daaa1d55b179c1ec77e93128b6e6a8d1526adc9eac060ea8e733881946",
+          "execution_sha256": "d916e7daaa1d55b179c1ec77e93128b6e6a8d1526adc9eac060ea8e733881946",
+          "lf_matches_execution": true
+        }
+      ]
+    },
+    "D_execution": {
+      "status": "PASS",
+      "details": "T0 passed; M0 executed all fixed M0 preflight/capacity/overfit work and passed. Q1 had begun in the same original process but is nonterminal in the audited artifacts.",
+      "evidence": [
+        "evidence/trifusion_v23_launch_20260905.json:2",
+        "evidence/trifusion_v23_launch_20260905.json:27",
+        "evidence/trifusion_v23_launch_20260905.json:102",
+        "evidence/trifusion_v23_launch_20260905.json:109",
+        "evidence/trifusion_v23_t0_20260905.json:22",
+        "evidence/trifusion_v23_t0_20260905.json:45",
+        "evidence/trifusion_v23_t0_20260905.log:17",
+        "evidence/trifusion_v23_m0_seed42_9f4a10b.json:7900",
+        "evidence/trifusion_v23_m0_seed42_9f4a10b.json:7909",
+        "evidence/trifusion_v23_m0_seed42_9f4a10b.json:8079",
+        "evidence/trifusion_v23_m0_seed42_9f4a10b.json:8084",
+        "evidence/trifusion_v23_m0_seed42_9f4a10b.json:8253",
+        "evidence/trifusion_v23_m0_seed42_9f4a10b.json:8258",
+        "evidence/trifusion_v23_m0_seed42_9f4a10b.json:10268",
+        "evidence/trifusion_v23_m0_seed42_9f4a10b.json:10277",
+        "evidence/trifusion_v23_progress_2207_20260905.json:18",
+        "evidence/trifusion_v23_progress_2207_20260905.json:24",
+        "evidence/trifusion_v23_m0_run_snapshot_20260905.log:91",
+        "evidence/trifusion_v23_m0_run_snapshot_20260905.log:102"
+      ],
+      "executed_counts": {
+        "t0_pytest_tests": 5,
+        "m0_preflight_forward_pairs": 48,
+        "m0_legacy_first_batch_forward_checks": 6,
+        "m0_project_optimizer_steps": 116,
+        "q1_completed_folds_in_snapshot": 0,
+        "q1_epoch_rows_in_snapshot": 2
+      }
+    },
+    "E_scope": {
+      "status": "WARN",
+      "details": "M0 scope supports engineering qualification only. No terminal heldout retrieval, D1/dev, official, or SOTA claim is supported; reused OOF is development qualification; added parameter/compute capacity remains confounded.",
+      "evidence": [
+        "refine-logs/v23/EXPERIMENT_PLAN.md:5",
+        "refine-logs/v23/EXPERIMENT_PLAN.md:11",
+        "refine-logs/v23/EXPERIMENT_PLAN.md:43",
+        "refine-logs/v23/EXPERIMENT_PLAN.md:49",
+        "refine-logs/v23/EXPERIMENT_PLAN.md:68",
+        "refine-logs/v23/EXPERIMENT_PLAN.md:105",
+        "refine-logs/v23/EXPERIMENT_PLAN.md:109",
+        "results/TRIFUSION_RGBNT201_V23_SPECTRAL_ADAPTER_M0_2026-09-05.md:24",
+        "results/TRIFUSION_RGBNT201_V23_SPECTRAL_ADAPTER_M0_2026-09-05.md:29",
+        "results/TRIFUSION_RGBNT201_V23_SPECTRAL_ADAPTER_M0_2026-09-05.md:71",
+        "results/TRIFUSION_RGBNT201_V23_SPECTRAL_ADAPTER_M0_2026-09-05.md:72"
+      ]
+    },
+    "F_claim_impacts": {
+      "status": "WARN",
+      "details": "Core implementation, T0, M0, and source-isolation claims are supported or supported with provenance caveats. Complete Q1/dev/official/SOTA/D1 claims are rejected for the audited artifact set. Mechanism-isolation claims need future capacity/compute-matched ablation.",
+      "evidence": [
+        "results/TRIFUSION_RGBNT201_V23_SPECTRAL_ADAPTER_M0_2026-09-05.md:3",
+        "results/TRIFUSION_RGBNT201_V23_SPECTRAL_ADAPTER_M0_2026-09-05.md:29",
+        "results/TRIFUSION_RGBNT201_V23_SPECTRAL_ADAPTER_M0_2026-09-05.md:72",
+        "docs/SPECTRAL_ADAPTER_SOURCE_NOTES_2026-09-05.md:47",
+        "docs/SPECTRAL_ADAPTER_SOURCE_NOTES_2026-09-05.md:51"
+      ]
+    }
+  },
+  "claims": [
+    {
+      "id": "C1",
+      "claim": "V23 implements modality-specific residual adapters after frozen semantic tail stages.",
+      "impact": "supported",
+      "evidence": [
+        "modeling/trifusion/signal_preserving_v23.py:11",
+        "modeling/trifusion/signal_preserving_v23.py:31",
+        "modeling/trifusion/signal_preserving_v23.py:37",
+        "modeling/trifusion/signal_preserving_v23.py:61"
+      ]
+    },
+    {
+      "id": "C2",
+      "claim": "T0 passed zero-adapter, dispatch, gradient, update, and reload contracts.",
+      "impact": "supported_synthetic_only",
+      "evidence": [
+        "tests/test_trifusion_signal_preserving_v23.py:33",
+        "tests/test_trifusion_signal_preserving_v23.py:103",
+        "evidence/trifusion_v23_t0_20260905.json:22",
+        "evidence/trifusion_v23_t0_20260905.json:45"
+      ]
+    },
+    {
+      "id": "C3",
+      "claim": "V23 M0 passed all fixed source-only engineering gates.",
+      "impact": "supported_engineering_only",
+      "evidence": [
+        "evidence/trifusion_v23_m0_seed42_9f4a10b.json:7900",
+        "evidence/trifusion_v23_m0_seed42_9f4a10b.json:7909",
+        "evidence/trifusion_v23_m0_array_verification_20260905.json:396",
+        "evidence/trifusion_v23_m0_array_verification_20260905.json:406"
+      ]
+    },
+    {
+      "id": "C4",
+      "claim": "Source/heldout identity isolation holds for the reused OOF folds.",
+      "impact": "supported_with_binary_provenance_caveat",
+      "evidence": [
+        "tools/build_v12_complete_path_oof_targets.py:29",
+        "tools/build_v12_complete_path_oof_targets.py:56",
+        "evidence/trifusion_v12_complete_path_oof_seed42.json:94",
+        "evidence/trifusion_v12_complete_path_oof_seed42.json:101",
+        "evidence/trifusion_v12_complete_path_oof_seed42.json:308",
+        "evidence/trifusion_v12_complete_path_oof_seed42.json:362"
+      ]
+    },
+    {
+      "id": "C5",
+      "claim": "V23 has terminal Q1 retrieval metrics, dev metrics, official metrics, SOTA progress, or D1 qualification.",
+      "impact": "rejected",
+      "evidence": [
+        "evidence/trifusion_v23_m0_seed42_9f4a10b.json:3",
+        "evidence/trifusion_v23_m0_seed42_9f4a10b.json:40",
+        "evidence/trifusion_v23_m0_seed42_9f4a10b.json:43",
+        "evidence/trifusion_v23_m0_seed42_9f4a10b.json:7900",
+        "evidence/trifusion_v23_progress_2207_20260905.json:18",
+        "evidence/trifusion_v23_progress_2207_20260905.json:24",
+        "results/TRIFUSION_RGBNT201_V23_SPECTRAL_ADAPTER_M0_2026-09-05.md:24",
+        "results/TRIFUSION_RGBNT201_V23_SPECTRAL_ADAPTER_M0_2026-09-05.md:29"
+      ]
+    },
+    {
+      "id": "C6",
+      "claim": "Any later V23 success would isolate the modality-specific adapter mechanism from capacity/compute.",
+      "impact": "rejected_until_future_ablation",
+      "evidence": [
+        "docs/SPECTRAL_ADAPTER_SOURCE_NOTES_2026-09-05.md:47",
+        "docs/SPECTRAL_ADAPTER_SOURCE_NOTES_2026-09-05.md:51",
+        "refine-logs/v23/EXPERIMENT_PLAN.md:68"
+      ]
+    }
+  ],
+  "recomputation": {
+    "tools": [
+      "PowerShell Get-FileHash/Get-Content",
+      "rg",
+      "Node.js v24.13.0 standard library fs/crypto/path/Math"
+    ],
+    "runtime_ms_final_compact_pass": 14.3643,
+    "model_tensor_image_gpu_remote_network_package_operations": 0,
+    "json_arithmetic": {
+      "component_rows_recomputed": 116,
+      "max_total_diff": 8.940696727410824e-8,
+      "max_common_diff": 8.940696727410824e-8,
+      "max_ordinary_residual_triplet_diff": 5.122274160385132e-9,
+      "classes": 94,
+      "identity_weight_sum": 0.75,
+      "entropy_floor_recomputed": 0.57838292104621,
+      "entropy_floor_reported": 0.57838292104621,
+      "fixed100_excess_ratio_recomputed": 0.059681899095254606,
+      "fixed100_excess_ratio_reported": 0.059681899095254606
+    },
+    "hash_inventory": [
+      {
+        "path": "modeling/trifusion/signal_preserving_v23.py",
+        "bytes": 3908,
+        "sha256": "89816298baedf6ab5d3f122fe16db69035420df8cc91b65e0bb0c8c6f9cde1af",
+        "lines": 88
+      },
+      {
+        "path": "tools/train_signal_preserving_v23.py",
+        "bytes": 24966,
+        "sha256": "1b18edbd28e335469f6647a7095228e9e03cf8195b2739b4a9c54c62aedec42b",
+        "lines": 415
+      },
+      {
+        "path": "tests/test_trifusion_signal_preserving_v23.py",
+        "bytes": 4378,
+        "sha256": "5496375c971399735f424513fa9cbf57fdab63da0d23841c685416176ab9209b",
+        "lines": 103
+      },
+      {
+        "path": "configs/RGBNT201/TriFusion-signal-preserving-v23-spectral-adapter-rtx3090.yml",
+        "bytes": 3397,
+        "sha256": "9859342d044e8bb0b630bc8f6af345ee95dbf1eb445f7a2bffce4173df8c01fa",
+        "lines": 79
+      },
+      {
+        "path": "refine-logs/v23/EXPERIMENT_PLAN.md",
+        "bytes": 7282,
+        "sha256": "7877e7fe6a857b965cac701220be387da4774c3e88dfa3682938df8dc32e4997",
+        "lines": 118
+      },
+      {
+        "path": "refine-logs/v23/EXPERIMENT_TRACKER.md",
+        "bytes": 3008,
+        "sha256": "674a26e3ea02da0aa9f81abd7a2966e9a65f6f31927b575c309c9a00f089da0f",
+        "lines": 42
+      },
+      {
+        "path": "results/TRIFUSION_RGBNT201_V23_SPECTRAL_ADAPTER_M0_2026-09-05.md",
+        "bytes": 5832,
+        "sha256": "24f56f598f1191e50f16ab3948e80debf235135d26d928c204f6888601319e44",
+        "lines": 72
+      },
+      {
+        "path": "evidence/trifusion_v23_preregistration_20260905.json",
+        "bytes": 1530,
+        "sha256": "11c13c301db0aa27cc5d7c1b867cc86373dd62bfc238e210f176298c10ad2bc7",
+        "lines": 23
+      },
+      {
+        "path": "evidence/trifusion_v23_t0_20260905.json",
+        "bytes": 2151,
+        "sha256": "69dce97c0abb4ad9d19bc0d66dc652abcd1eb54949aef35b53227b0239996b48",
+        "lines": 46
+      },
+      {
+        "path": "evidence/trifusion_v23_t0_20260905.log",
+        "bytes": 1516,
+        "sha256": "fe9153e5fba784e9cda3a88104e1f432ef2614897175d68f9cd0c340834a90c2",
+        "lines": 17
+      },
+      {
+        "path": "evidence/trifusion_v23_t0_20260905.xml",
+        "bytes": 1058,
+        "sha256": "ad207f3864259df347d4f6f88e9558116872431c42eb757a2699aa96deab0ed7",
+        "lines": 1
+      },
+      {
+        "path": "evidence/trifusion_v23_launch_20260905.json",
+        "bytes": 5314,
+        "sha256": "b8db2fad72334988161cbb380be41b9f5846a97bb720240262eb4a4264bfc8aa",
+        "lines": 118
+      },
+      {
+        "path": "evidence/trifusion_v23_m0_seed42_9f4a10b.json",
+        "bytes": 343499,
+        "sha256": "b662bf6420f7f5dc6f92fd0d93d00b2eabfdb3aee4e70af34d6946589b587a2a",
+        "lines": 10280
+      },
+      {
+        "path": "evidence/trifusion_v23_m0_run_snapshot_20260905.log",
+        "bytes": 83703,
+        "sha256": "48303a40fd7ff82e4a0afa646729e4b7bf2a7f3e3b3e29f2586bcf0ea83029bf",
+        "lines": 102
+      },
+      {
+        "path": "evidence/trifusion_v23_m0_array_verification_20260905.json",
+        "bytes": 13582,
+        "sha256": "e560ed21908f852e6d9cf87a3e6f4141f53f463c970ad109e230181a0071696c",
+        "lines": 408
+      },
+      {
+        "path": "evidence/trifusion_v23_m0_file_verification_20260905.json",
+        "bytes": 12208,
+        "sha256": "f39c5f2e127419b4777ce01238f960f2b806b006887d68b66c001de07c87de7d",
+        "lines": 236
+      },
+      {
+        "path": "evidence/trifusion_v23_progress_2207_20260905.json",
+        "bytes": 1796,
+        "sha256": "fa88c9dba833a9840c38b7dc6293be821e28476591aeaa0f312f9a35576ea27b",
+        "lines": 50
+      },
+      {
+        "path": "docs/SPECTRAL_ADAPTER_SOURCE_NOTES_2026-09-05.md",
+        "bytes": 4232,
+        "sha256": "addd165b19c405e99f9eb185268351118b186dcd50c8896c23af1c19af9852f7",
+        "lines": 55
+      },
+      {
+        "path": "evidence/icpl_spectral_adapter_source_inspection_20260905.json",
+        "bytes": 2126,
+        "sha256": "6077aef366811ae9ac9e96ab4c06f4f369ef77d670820e8a1a4334c3c2260718",
+        "lines": 47
+      },
+      {
+        "path": "modeling/trifusion/signal_preserving_v8.py",
+        "bytes": 28592,
+        "sha256": "97a7b5fe6dab882c2ed92ed1db95b9a8f48eae1d99a3a9b145b0cdfc4b8cefbc",
+        "lines": 755
+      },
+      {
+        "path": "modeling/trifusion/signal_preserving_v8_builder.py",
+        "bytes": 3900,
+        "sha256": "8afb028957ecff1a0a26497f7d0460bc240b0f8612a3c476b52a9a6667a3049d",
+        "lines": 103
+      },
+      {
+        "path": "modeling/trifusion/state.py",
+        "bytes": 4990,
+        "sha256": "d6491db289e68e0b97a8d532edc933252ab60fdaad963af85f603dec9002e2b9",
+        "lines": 136
+      },
+      {
+        "path": "modeling/trifusion/experts/mamba.py",
+        "bytes": 7479,
+        "sha256": "8b9cb420c42e4d70f8de7e4608637c81c505b97ca54228175462a7e92fdfcc83",
+        "lines": 209
+      },
+      {
+        "path": "modeling/trifusion/experts/semantic_residual.py",
+        "bytes": 15882,
+        "sha256": "c1831a3de031be033624420791cecf2e7a3945e009655089cb48ee4b9912edd6",
+        "lines": 454
+      },
+      {
+        "path": "modeling/trifusion/criterion.py",
+        "bytes": 6231,
+        "sha256": "9a028e5711981123310f5e0d441a35b7dbecaf33f9edcec4fd3773d070cf877f",
+        "lines": 152
+      },
+      {
+        "path": "modeling/trifusion/aligned_data.py",
+        "bytes": 10062,
+        "sha256": "3ea362d17660483b554cb599442b6377ace020fa114969b9bdd58906fbceedd5",
+        "lines": 296
+      },
+      {
+        "path": "tests/test_trifusion_signal_preserving_v8.py",
+        "bytes": 10503,
+        "sha256": "dc30e84d6dc9abaab11cec7435fa4cae6143d2891b8644b47780cc7c2dcc9e62",
+        "lines": 298
+      },
+      {
+        "path": "tools/train_signal_preserving_v19.py",
+        "bytes": 26363,
+        "sha256": "5f000d3d3abe9636cae97e292db2c63a3a20f349c125dfe4b27bd3fca95bb9c5",
+        "lines": 516
+      },
+      {
+        "path": "modeling/trifusion/signal_preserving_v19.py",
+        "bytes": 4059,
+        "sha256": "69989cced25950ff476759bc93df945b167e8ce88a4340676e8adbbd9f88918e",
+        "lines": 92
+      },
+      {
+        "path": "tools/train_signal_preserving_v17.py",
+        "bytes": 61124,
+        "sha256": "333886d16f73987accddb70b0780661bb9400b8afd04af01b57e188d34e5228d",
+        "lines": 1616
+      },
+      {
+        "path": "tools/train_signal_preserving_v18.py",
+        "bytes": 17540,
+        "sha256": "f6bdda4631d710d0b6db5fe2a8df124d8dcbd294cb54adcf3ec261d523e96cf8",
+        "lines": 310
+      },
+      {
+        "path": "tools/build_v12_complete_path_oof_targets.py",
+        "bytes": 32723,
+        "sha256": "fc13354b1065c46677122ee9cf63816087facca4e0e98ec5e6e2fb0dece141e4",
+        "lines": 857
+      },
+      {
+        "path": "tools/run_signal_preserving_v5.py",
+        "bytes": 65190,
+        "sha256": "e162184f68778b4991db0f97f26c5fda273b2ad2f7c8db2bbb2d53775eb717e5",
+        "lines": 1682
+      },
+      {
+        "path": "tools/run_signal_baseline_dev.py",
+        "bytes": 12601,
+        "sha256": "083967f2a38267415b2992da98c2ad9429ebb793f387b45daac1dbb4eb16f365",
+        "lines": 351
+      },
+      {
+        "path": "tools/audit_v17_full_gallery.py",
+        "bytes": 10425,
+        "sha256": "856881f984ab8793788d291018a60046a47e309c625a65394b1a3ff4e670d8a9",
+        "lines": 191
+      },
+      {
+        "path": "tools/diagnose_v6_oracle_complementarity.py",
+        "bytes": 9754,
+        "sha256": "919b624156c57f92fa75f79a06fe7c872a02d730fa8cd021ce9d7b4e498b1db2",
+        "lines": 276
+      },
+      {
+        "path": "modeling/trifusion/signal_preserving_v13.py",
+        "bytes": 9347,
+        "sha256": "7b7c4abb220ed234608553c77aeedd5f8ef763abb04cce5b21f1bfce0f4daa62",
+        "lines": 293
+      },
+      {
+        "path": "protocols/rgbnt201_dev_v1.json",
+        "bytes": 5685,
+        "sha256": "f7f6f8a906c06fec4918929fb5c17abfc197986b99e017aca1d3e15831c1541d",
+        "lines": 309
+      },
+      {
+        "path": "evidence/trifusion_v12_complete_path_oof_seed42.json",
+        "bytes": 43930,
+        "sha256": "9105b86a9c079c44843e9b118a21599746a87d279370341b8cf8d26bd18a8b69",
+        "lines": 1934
+      }
+    ]
+  },
+  "limitations": [
+    "No model/tensor/checkpoint/image/GPU/remote/network/package operations were performed.",
+    "The seven large CLIP/V12 .pt/.pth binary weights are remote-ledger-only in this local audit and were not independently rehashed from local possession.",
+    "M0 supports source-only engineering integrity only; it does not establish heldout retrieval improvement.",
+    "The audited snapshot has status RUNNING, folds [], completed_q1_folds 0, q1_epoch_rows 2, and terminal_q1_retrieval_available false.",
+    "The OOF protocol is reused development qualification, not a fresh independent validation.",
+    "Added trainable parameters and compute remain a confound for any modality-adapter mechanism claim.",
+    "The current tracker is mutable and differs from preregistration; that drift is acknowledged by the file verifier and preserved here."
+  ]
+}
