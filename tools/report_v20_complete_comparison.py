@@ -161,4 +161,3 @@ if __name__ == "__main__":
                       "fold_metric_rows": len(report["fold_metric_rows"]),
                       "identities": len(report["all_identity_rows"]),
                       "endpoints": len(report["all_checkpoint_training_bindings"])}))
-
