@@ -544,3 +544,6 @@
 
 | 2026-09-05 12:29 | /run-experiment | refine-logs/v19/EXPERIMENT_TRACKER_20260905_122939.md | evidence | T0/M0 complete; Q1 running, no retrieval claim |
 | 2026-09-05 12:29 | /run-experiment | evidence/trifusion_v19_m0_seed42_4b749cd.json | evidence | Immutable M0 snapshot; remote SHA verified |
+
+| 2026-09-05 12:46 | /experiment-audit | EXPERIMENT_AUDIT_V19_M0.md/json | evidence | Independent M0 engineering PASS; integrity WARN; Q1 pending |
+| 2026-09-05 12:46 | /run-experiment | refine-logs/v19/EXPERIMENT_TRACKER_20260905_124646.md | evidence | M0 audit complete; Q1 unchanged and running |

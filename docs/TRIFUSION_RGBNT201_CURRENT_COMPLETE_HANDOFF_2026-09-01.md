@@ -1991,3 +1991,27 @@ RGBNT100全部1715 query均有合法正例，train/test身份不相交。MSVR310
 `docs/VEHICLE_EVAL_PROTOCOL_READINESS_2026-09-05.md`。
 该检查仅读取文件名标签，optimizer0、图像/权重/特征加载0、检索评价0；
 不改变V19冻结配置，也不构成跨数据集性能结果。
+
+### 35.3 V19 M0独立审计完成（2026-09-05）
+
+按experiment-audit的独立审计要求，GPT-5.5 xhigh直接读取25项原始路径及
+调用依赖，原文报告为`EXPERIMENT_AUDIT_V19_M0.md/json`。工程完整性PASS，
+overall/integrity为WARN；A/B/F通过，C/D/E保留证据持有与阶段范围限定。
+审计员独立核对M0 JSON/plan/config/runner/module SHA、三折六端48组batch
+receipt，并从完整loss数组重算excess ratio=0.0595140216437626。
+
+WARN不改变M0工程通过，也不构成Q1科学通过：被审计的是M0后RUNNING且
+folds为空的固定快照，尚无可审计的六端终态/检索/统计bootstrap。远端source
+checkpoint、CLIP权重和数据图像未被该本地审计员直接读取，须保留receipt约束。
+两份既有本地文件criterion.py与rgbnt201_dev_v1.json存在CRLF/LF原始字节差异，
+其LF hash与远端source map一致；历史文件未改写，执行SHA以远端LF字节为准。
+
+审计MD SHA`3d97b4aab6d3d5595fb86a78502cab3d3e08421692a17030a14122da48ffab34`，
+JSON SHA`e65c23aef16a5ba2fdc630cd0df1c653d53fb0a354c052004591f20caa75fd23`。
+完整两轮request/response/meta及原报告快照保存于本地忽略的
+`.aris/traces/experiment-audit/2026-09-05_run03/`。第二轮仅补机器接口所需
+integrity_status字段，结论和工程/科学区分不变。
+
+Q1保持原进程和冻结预算；全部完成后独立审计全部端、五路AP/rank、图库范围、
+strict reload与远端checkpoint终态SHA。大权重保持远端，本地同步完整JSON与
+哈希回执，后续审计仍须如实标明独立持有范围。当前全局目标未达。

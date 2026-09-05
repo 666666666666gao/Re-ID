@@ -1,0 +1,297 @@
+{
+  "date": "2026-09-05",
+  "auditor": "gpt-5.5-xhigh-independent",
+  "project": "TriFusion RGBNT201 V19 private semantic tail T0/M0",
+  "overall_verdict": "warn",
+  "integrity_status": "warn",
+  "engineering_integrity": "pass",
+  "scientific_qualification": "warn",
+  "summary_zh": "V19 M0 的工程合同有充分本地证据支持，未发现假 GT、自归一化、M0 数字错配或 M0 代码路径伪造；但当前快照仍为 RUNNING 且 folds 为空，只覆盖 M0/preflight，不证明 Q1、D1、30-dev、official、跨数据集、SOTA 或因果/等容量主张。",
+  "checks": {
+    "A_ground_truth_provenance": {
+      "status": "pass",
+      "evidence": [
+        "configs/RGBNT201/TriFusion-signal-preserving-v19-private-tail-rtx3090.yml:6-13",
+        "protocols/rgbnt201_dev_v1.json:2-13",
+        "protocols/rgbnt201_dev_v1.json:126-131",
+        "tools/build_v12_complete_path_oof_targets.py:29-55",
+        "tools/build_v12_complete_path_oof_targets.py:156-173",
+        "tools/train_signal_preserving_v19.py:62-68",
+        "tools/train_signal_preserving_v19.py:75-95",
+        "modeling/trifusion/aligned_data.py:91-94",
+        "tools/run_signal_preserving_v5.py:568-584",
+        "evidence/trifusion_v19_m0_seed42_4b749cd.json:26",
+        "evidence/trifusion_v19_m0_seed42_4b749cd.json:33-36"
+      ],
+      "details_zh": "M0 使用 RGBNT201 train_171 内部 141-fit 记录的真实 identity/camera 标签和 V12 source split；没有把模型输出伪装成 M0 ground truth。V12 target cache 是历史 proxy/teacher 材料，但不是本次 M0 的评价 GT。",
+      "action_items": [
+        "Q1 终态审计必须重新核验远端 checkpoint 字节、数据路径、query/gallery manifest 和全部 AP/rank 数组。"
+      ],
+      "claim_impact": [
+        {
+          "claim": "M0 使用真实数据标签和身份隔离训练域 source-only 检查",
+          "impact": "supported"
+        },
+        {
+          "claim": "V19 已有 dev/official/SOTA 性能结果",
+          "impact": "unsupported"
+        }
+      ]
+    },
+    "B_score_normalization": {
+      "status": "pass",
+      "evidence": [
+        "modeling/trifusion/signal_preserving_v8.py:702-711",
+        "modeling/trifusion/criterion.py:17-34",
+        "tools/train_signal_preserving_v19.py:151-160",
+        "configs/RGBNT201/TriFusion-signal-preserving-v19-private-tail-rtx3090.yml:39-47",
+        "tools/train_signal_preserving_v19.py:384-391",
+        "evidence/trifusion_v19_m0_seed42_4b749cd.json:8332-8334",
+        "tools/diagnose_v6_oracle_complementarity.py:91-104",
+        "tools/audit_v17_full_gallery.py:39-41",
+        "tools/train_signal_preserving_v18.py:149-150"
+      ],
+      "details_zh": "未发现用模型自身输出 max/min/mean 归一化指标。M0 loss 使用固定权重的 CE/triplet；overfit ratio 使用解析 label-smoothing floor；ReID AP/Rank 若执行则来自排序和 raw AP/Rank 百分比。",
+      "action_items": [
+        "Q1 完成后继续发布 raw AP、Rank-1/5/10 和逐 query 数组。"
+      ],
+      "claim_impact": [
+        {
+          "claim": "M0 过拟合比值 0.0595140216 <= 0.1",
+          "impact": "supported"
+        },
+        {
+          "claim": "M0 证明检索 mAP 提升",
+          "impact": "unsupported"
+        }
+      ]
+    },
+    "C_existence_and_reproducibility": {
+      "status": "warn",
+      "evidence": [
+        "evidence/trifusion_v19_t0_and_launch_20260905.json:3-14",
+        "evidence/trifusion_v19_t0_and_launch_20260905.json:16-20",
+        "evidence/trifusion_v19_m0_seed42_4b749cd.json:3-9",
+        "evidence/trifusion_v19_m0_seed42_4b749cd.json:12-24",
+        "evidence/trifusion_v19_m0_seed42_4b749cd.json:8130-8137",
+        "evidence/trifusion_v19_m0_seed42_4b749cd.json:8141-8204",
+        "evidence/trifusion_v19_m0_seed42_4b749cd.json:8207-8334",
+        "evidence/trifusion_v19_m0_transfer_receipt_20260905.json:2-9",
+        "refine-logs/v19/EXPERIMENT_TRACKER.md:5-8",
+        "refine-logs/v19/EXPERIMENT_TRACKER.md:11-19",
+        "docs/TRIFUSION_RGBNT201_CURRENT_COMPLETE_HANDOFF_2026-09-01.md:1951-1978"
+      ],
+      "details_zh": "请求文件均存在，M0 JSON 的本地 SHA 与 transfer receipt 一致，plan/config/runner SHA 匹配。source hash map 中 criterion.py 与 protocol JSON 的 Windows CRLF 原始字节 SHA 不同，但 LF-normalized SHA 与 receipt 匹配。远端 source checkpoint、CLIP weight 和数据图像未被本地审计者直接持有。",
+      "action_items": [
+        "Q1 结束后保存并传回六个终态 checkpoint、endpoint receipt、run_summary、log、source checkpoint SHA 复核结果和 full-gallery AP/rank 数组。",
+        "若需要 fresh-clone byte-for-byte 审计，明确 LF 字节或 CRLF/LF 归一化 hash 规则。"
+      ],
+      "claim_impact": [
+        {
+          "claim": "T0/M0 证据文件存在且 M0 数字匹配 receipt",
+          "impact": "supported"
+        },
+        {
+          "claim": "从本地仓库可直接重算远端 checkpoint/data 的所有字节",
+          "impact": "needs_qualifier"
+        }
+      ]
+    },
+    "D_dead_code_and_contract_coverage": {
+      "status": "warn",
+      "evidence": [
+        "modeling/trifusion/signal_preserving_v19.py:17-25",
+        "modeling/trifusion/signal_preserving_v19.py:75-82",
+        "modeling/trifusion/signal_preserving_v19.py:85-92",
+        "tools/train_signal_preserving_v19.py:125-134",
+        "tools/train_signal_preserving_v19.py:178-217",
+        "tools/train_signal_preserving_v19.py:226-256",
+        "tools/train_signal_preserving_v19.py:356-368",
+        "tools/train_signal_preserving_v19.py:394-403",
+        "tools/train_signal_preserving_v19.py:411-506",
+        "evidence/trifusion_v19_m0_seed42_4b749cd.json:8127",
+        "evidence/trifusion_v19_m0_and_progress_log_20260905.txt:101-111",
+        "tests/test_trifusion_signal_preserving_v19.py:27-78"
+      ],
+      "details_zh": "M0 执行路径覆盖了它声称覆盖的工程合同。Q1 strict reload、终态 checkpoint 保存、full-gallery evaluate、bootstrap 与科学 gate 代码存在，但当前 M0 快照没有执行产物；这不是 M0 伪造问题，但 downstream claim 仍未被支持。",
+      "action_items": [
+        "不要把 m0.passed=true 写成 Q1 reload/eval 已审计。",
+        "Q1 终态审计需要逐 endpoint 验证 strict_reload、checkpoint SHA、state SHA、baseline_only 两端一致和 3126/571 范围。"
+      ],
+      "claim_impact": [
+        {
+          "claim": "V19 M0 工程合同执行并通过",
+          "impact": "supported"
+        },
+        {
+          "claim": "V19 Q1 终态 reload/eval 已通过",
+          "impact": "unsupported_pending_q1"
+        }
+      ]
+    },
+    "E_scope": {
+      "status": "warn",
+      "evidence": [
+        "refine-logs/v19/EXPERIMENT_PLAN.md:19-22",
+        "refine-logs/v19/EXPERIMENT_PLAN.md:68-86",
+        "refine-logs/v19/EXPERIMENT_PLAN.md:88-112",
+        "refine-logs/v19/EXPERIMENT_PLAN.md:116-123",
+        "refine-logs/v19/EXPERIMENT_PLAN.md:125-127",
+        "evidence/trifusion_v19_m0_seed42_4b749cd.json:28-29",
+        "evidence/trifusion_v19_m0_seed42_4b749cd.json:8127",
+        "docs/TRIFUSION_RGBNT201_CURRENT_COMPLETE_HANDOFF_2026-09-01.md:1969-1978"
+      ],
+      "details_zh": "实际完成范围为 3 folds/6 endpoints preflight、fold0 两端 8-step capacity、fold0 实验端 100-step overfit。没有完成 retrieval aggregate、bootstrap、D1、30-dev、official、跨数据集训练或多种子。计划本身也承认 V19 对照不是等可训练参数量比较。",
+      "actual_scope": {
+        "preflight_folds": 3,
+        "preflight_endpoints": 6,
+        "preflight_batch_receipts": 48,
+        "preflight_output_hashes": 48,
+        "capacity_checks": 2,
+        "capacity_total_steps": 16,
+        "overfit_steps": 100,
+        "q1_folds_in_snapshot": 0,
+        "dev_access_count": 0,
+        "official_test_access_count": 0
+      },
+      "action_items": [
+        "当前只可公开为 V19 T0/M0 工程门通过，Q1 运行中。",
+        "禁止从该快照推导检索提升、统计显著性、跨数据集泛化、SOTA 或 65 mAP gate。"
+      ],
+      "claim_impact": [
+        {
+          "claim": "Q1 正在运行，最终科学结论待完整终态",
+          "impact": "supported"
+        },
+        {
+          "claim": "V19 已通过主科学门或具备发布主结果",
+          "impact": "unsupported"
+        }
+      ]
+    },
+    "F_evaluation_classification": {
+      "status": "pass",
+      "evidence": [
+        "evidence/trifusion_v19_m0_seed42_4b749cd.json:26",
+        "modeling/trifusion/aligned_data.py:91-94",
+        "tools/train_signal_preserving_v18.py:133-151",
+        "tools/audit_v17_full_gallery.py:14-42",
+        "evidence/trifusion_v12_complete_path_oof_seed42.json:1930-1932"
+      ],
+      "classification": {
+        "m0_engineering_checks": "real_gt_train_internal_complete_path_oof",
+        "planned_q1_if_completed": "real_gt_train_internal_complete_path_oof",
+        "v12_target_cache_historical_material": "synthetic_proxy_teacher_proxy_train_identity_oof",
+        "d1_dev_official_cross_dataset": "not_executed_in_snapshot"
+      },
+      "details_zh": "M0 是训练域 real-GT 工程检查；Q1 若完成也是 train-internal OOF custom ReID 评价；本快照没有 official benchmark 评价。V12 target cache 是历史 proxy 材料，不是本次 M0 的评价 GT。",
+      "action_items": [
+        "后续报告应分开标记 train-internal OOF、30-dev、official test 与跨数据集。"
+      ],
+      "claim_impact": [
+        {
+          "claim": "M0 是训练域 real-GT 工程检查",
+          "impact": "supported"
+        },
+        {
+          "claim": "M0 是官方 benchmark 评价",
+          "impact": "unsupported"
+        }
+      ]
+    }
+  },
+  "verification_ledger": {
+    "independently_verified": [
+      "请求列出的 25 个 primary 文件均存在。",
+      "读取 V19 plan、tracker、config、runner、wrapper、V8/V17/V18/V5/V12 相关 helper、AP/rank helper、T0/M0/transfer/V12 evidence 和 master section 35/35.1。",
+      "M0 JSON SHA256 等于 transfer receipt SHA256。",
+      "从 M0 JSON loss 数组重算 overfit ratio。",
+      "从 M0 JSON 解析 preflight/capacity/overfit 数量和 paired equality。",
+      "比较 M0 source_file_sha256 与本地文件；记录 CRLF/LF caveat。"
+    ],
+    "not_independently_verified": [
+      "远端 V12 Signal/expert checkpoint 字节。",
+      "远端 CLIP weight 字节。",
+      "RGBNT201 图像/数据集文件字节。",
+      "远端 CUDA 环境和实际 GPU kernel 复现。",
+      "T0 单测重新运行。",
+      "M0 GPU 训练步重新运行。",
+      "Q1 retrieval、bootstrap、D1/dev/official 指标。"
+    ],
+    "hashes": {
+      "plan_sha256": "2b7674cf395ba2c53a7b9fd695b76e99eeecd0445957f188e22c5700bdaafe7b",
+      "config_sha256": "89f7335a0d0995aa23f1a3387e76b4693ecb3721c865e706feaf1b059fd97dd5",
+      "runner_sha256": "5f000d3d3abe9636cae97e292db2c63a3a20f349c125dfe4b27bd3fca95bb9c5",
+      "v19_module_sha256": "69989cced25950ff476759bc93df945b167e8ce88a4340676e8adbbd9f88918e",
+      "t0_launch_receipt_sha256": "8d802dacf84bc3d00699225684186b2d99bfcb049367a6dea8895a4ccdc5d925",
+      "m0_snapshot_sha256": "89fd884a8c894de16639c26cfa162a2bbd005dc13c1e38ebe0fe6ce7adafe992",
+      "m0_transfer_receipt_sha256": "26612c0ef7d72952d179921a6bd3e5dcf323e4acc2a7e6f06e6ed1dc831d4146",
+      "m0_progress_log_sha256": "af159b75fd93c21147d0d08551e729fb6f5782f33843df7c688013c28d4ecd5a",
+      "v12_oof_summary_sha256": "9105b86a9c079c44843e9b118a21599746a87d279370341b8cf8d26bd18a8b69"
+    },
+    "source_hash_comparison": {
+      "raw_byte_matches": 10,
+      "lf_normalized_matches_with_crlf_local_bytes": [
+        {
+          "path": "modeling/trifusion/criterion.py",
+          "declared_lf_sha256": "0b2a6370f434828d885945d1a46dd56f6668133ceed45ef359fe71eeca63740a",
+          "local_raw_crlf_sha256": "9a028e5711981123310f5e0d441a35b7dbecaf33f9edcec4fd3773d070cf877f",
+          "lf_normalized_match": true
+        },
+        {
+          "path": "protocols/rgbnt201_dev_v1.json",
+          "declared_lf_sha256": "d916e7daaa1d55b179c1ec77e93128b6e6a8d1526adc9eac060ea8e733881946",
+          "local_raw_crlf_sha256": "f7f6f8a906c06fec4918929fb5c17abfc197986b99e017aca1d3e15831c1541d",
+          "lf_normalized_match": true
+        }
+      ]
+    },
+    "recomputed": {
+      "m0_overfit_ratio": 0.0595140216437626,
+      "m0_overfit_first_loss": 0.6110473871231079,
+      "m0_overfit_final_loss": 0.5803269147872925,
+      "m0_overfit_floor": 0.57838292104621,
+      "preflight_folds": 3,
+      "preflight_endpoints": 6,
+      "preflight_batch_receipts": 48,
+      "preflight_output_hashes": 48,
+      "capacity_checks": 2,
+      "capacity_total_steps": 16,
+      "overfit_steps": 100,
+      "q1_folds_in_snapshot": 0
+    }
+  },
+  "claims": [
+    {
+      "id": "C1",
+      "claim": "V19 T0 四项定向测试 receipt 存在",
+      "impact": "supported"
+    },
+    {
+      "id": "C2",
+      "claim": "V19 M0 工程门通过",
+      "impact": "supported"
+    },
+    {
+      "id": "C3",
+      "claim": "M0 梯度覆盖、显存、overflow、frozen-state、tail mutation、paired preflight 和 overfit ratio 数字匹配 receipt",
+      "impact": "supported"
+    },
+    {
+      "id": "C4",
+      "claim": "远端 source checkpoint 与数据字节可由本地审计者直接重算",
+      "impact": "needs_qualifier"
+    },
+    {
+      "id": "C5",
+      "claim": "V19 Q1/D1/dev/official/跨数据集/SOTA 已经成功",
+      "impact": "unsupported"
+    },
+    {
+      "id": "C6",
+      "claim": "V19 正结果可排除容量效应或证明角色分工独立因果",
+      "impact": "unsupported"
+    }
+  ],
+  "conclusion_zh": "总体 WARN：M0 工程完整性 PASS，但科学资格仍 WARN/未完成。当前只能声称 V19 T0/M0 工程门通过且 Q1 正在运行，不能声称检索提升、Q1 pass、dev/official/SOTA 或因果/等容量结论。"
+}
