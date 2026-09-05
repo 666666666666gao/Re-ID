@@ -17,8 +17,8 @@
 
 - MSVR310 was installed on 2026-09-05 from the ICPL-ReID author link and
   SHA/ZIP-CRC/modality-pair verified: train1032/query3 591/gallery1055 triplets.
-  Its source Signal M0 is complete and fixed baseline training is running;
-  no complete retrieval result has yet been observed. RGBNT100 is
+  Its source Signal baseline completed3 folds at50 epochs,1950 updates;
+  internal600-query/1032-gallery mAP53.129381/R1 63.0, independent audit pending. RGBNT100 is
   installed and SHA/ZIP-CRC/modality-pair verified: train8675/query1715/
   gallery8575, with disjoint 50-train/50-test identities and 768x128 montages.
   Its training and retrieval evaluation counts are also zero. Keep RGBNT201 as the
@@ -31,12 +31,15 @@
   One zero-update source batch and upstream source confirm Q/K discrete masks, unused V.
   R2 explicitly freezes this already-unupdated module; weights/forward/gates remain.
   R2 M0 passed all3 folds/24 updates/195 of195 gradient tensors; exit0.
-  B0 wrapper63945 started04:50:55 onbb01d60;3 fresh folds at50 epochs.
-  At04:57:26 fold0 reached46 epochs; complete retrieval is not yet observed.
+  B0 wrapper63945 exited0 after3 fresh folds at50 epochs onbb01d60.
+  Internal mAP53.129381/R1 63.0; all3 checkpoints, saved arrays and complete
+  ranking/training arithmetic verified. Independent terminal audit is PENDING.
   Three fresh source models, fixed50epochs, B64/K8,128x256, original MSVR
   multi-step schedule and scene filtering; no V24 promotion or vehicle expert run.
   M0 files and scalar arrays verified; preserve initial R1 failure and all costs.
-  Do not relaunch the running B0 or modify bound plan/config/source files.
+  Do not retrain B0, select epochs/seeds/folds or modify its fixed inputs.
+  Read results/TRIFUSION_MSVR310_SIGNAL_SOURCE_BASELINE_2026-09-06.md.
+  This is a source-only baseline, not a new-method or official-test qualification.
 
 ## Research provenance
 

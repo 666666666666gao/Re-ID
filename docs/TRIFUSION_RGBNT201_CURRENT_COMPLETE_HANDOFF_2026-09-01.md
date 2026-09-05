@@ -3354,3 +3354,21 @@ M0原始SHA 79c0e2b1c981c4bb10548f0249dca684c113feb43151cc4bdcc2a2e9bf2887ae。
 保留全部干扰身份；核对全部150epoch与真实source采样。没有新模型/图像前向或优化。
 计划refine-logs/msvr310_signal_v1/TERMINAL_VERIFICATION_PLAN_20260906.md；脚本SHA见evidence/trifusion_msvr310_signal_v1_terminal_verification_plan_20260906.json。
 原B0代码/配置/计划仍固定bb01d60，独立审计待完整结果后执行。
+
+### 41.22 MSVR310 Signal 完整三折源基线完成（2026-09-06）
+
+记录时间：2026-09-06T05:17:36.048722+08:00。原wrapper63945 exit0，执行bb01d60，150epoch/1950更新/124800训练记录曝光，
+程序配置后计时1299.025203秒；三个source模型均从固定CLIP独立初始化，固定epoch50，0官方/dev访问。
+完整600query/60query身份/1032gallery/155heldout身份，95单scene身份432记录继续作干扰。
+fold0/1/2 mAP49.311695078/47.942264566/63.377724618，
+Rank-1 59.523809524/60.869565217/69.398907104；
+600query加权mAP53.129380561、Rank-1/5/10为63.0/77.0/82.833333333。
+不把该内部测量与官方591query/1055gallery结果直接比较。
+
+23完整文件含3checkpoint和3特征距离SHA、7项目与17Signal源码绑定核对完成。
+由保存3072D特征重算距离逐元素一致；全部完整排序以真实ID/scene重算AP/Rank，
+全部1950steps/150epochs/实际source索引核验，指标最大差3.33066907388e-16，
+loss组合差1.300722360e-6，原AMP dtype缺项保持披露。没有新模型/图像前向或优化。
+完整报告results/TRIFUSION_MSVR310_SIGNAL_SOURCE_BASELINE_2026-09-06.md；原始SHA 22a4f3642e88088a8dfcb4acddb610d6566c12d6b765cb7b344b28acdbcea6eb。
+独立审计PENDING；结果只建立车辆source基线，不是TriFusion晋级。
+V23/V24封存、RGBNT201主目标未达、RGBNT100训练检索尚无，状态均保持。
