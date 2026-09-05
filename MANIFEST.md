@@ -599,3 +599,6 @@
 
 | 2026-09-05 18:01 | /run-experiment | refine-logs/v22/EXPERIMENT_TRACKER_20260905_180137.md | evidence | V22 complete M0_PASS; original complete Q1 running |
 | 2026-09-05 18:01 | /run-experiment | results/TRIFUSION_RGBNT201_V22_CAMERA_NEGATIVE_M0_2026-09-05.md | evidence | All M0 pairing, capacity and 100-step components; no Q1 retrieval result |
+
+| 2026-09-05 18:27 | /experiment-audit | EXPERIMENT_AUDIT_V22_M0.md/json | evidence | Independent engineering/fixed M0 PASS; integrity WARN; bounded scientific qualification FAIL |
+| 2026-09-05 18:27 | /run-experiment | refine-logs/v22/EXPERIMENT_TRACKER_20260905_182750.md | evidence | First paired fold negative; original complete Q1 continues |

@@ -2570,3 +2570,48 @@ Signal commit/diff与执行绑定相同；该检查没有加载权重tensor或�
 所有5输出/3126gallery/571query/21身份与五项科学门保持。当前没有Q1检索结果、
 D1/dev/official或SOTA新指标。首个完整paired fold下一次观测约18:18–18:20；
 完整Q1暂估19:10–19:30，收到完整epoch/端点用时后修正，不提前反复查询GPU。
+
+
+### 39.3 V22独立M0审计与首个完整配对折（2026-09-05）
+
+独立M0审计原始结论为overall/integrity WARN/warn、engineering_integrity=pass、
+fixed_m0_qualification=pass、scientific_qualification=fail。审计者用Python3.12.14/
+NumPy2.3.5独立复算元数据和全部100步分量，sidecar最大差0，固定超额loss比
+0.013769174124866987；总loss及MCNL分量重构差分别5.960464477539063e-08、
+7.450580596923828e-09。未选中的原残差triplet上升这一负诊断原样保留。
+
+这里scientific_qualification=fail表示本次审计所持M0文件尚无Q1终态检索科学证据，
+不表示固定M0门失败，也不冒充Q1终态判定。审计范围为17:57的M0/早期训练日志：
+3个完整Q1 epoch、87步、当时零checkpoint；不覆盖随后18:20捕获的第一折检索。
+实际分类为source_only_engineering_m0_real_train_source_batches_and_metadata_replay_plus_synthetic_cuda_t0_with_nonterminal_q1_training_log_no_heldout_retrieval。
+
+保留来源限制：审计时HEADf63889f不同于执行5ae096b、远端M0验证观察2fd6506；
+17个依赖中13个本地原字节匹配，criterion.py、experts/mamba.py、
+experts/semantic_residual.py及protocols/rgbnt201_dev_v1.json四个只在LF标准化后匹配。
+远端30项全文件SHA账本存在，但审计者未独立持有/加载CLIP、V12、权重tensor或图像。
+审计没有远端命令、网络、下载、模型、训练或额外检索；WARN不能由文字整理抹去。
+
+原始审计MD30347字节 SHA6c8420dfb7275df657c53b387eb02a8913077fc5d3bd11d6f30881d39d280e9c；
+JSON50920字节 SHA371f54725d8c601559a323f3beb31c2e00ced50b68b978d49cd2af81834de91d。
+完整请求、逐字回复、元数据、报告和审计前M0说明/跟踪表已在本地trace run09归档。
+本段为执行器在审计完成后的归档说明，不声称审计者复核了本段及后续Q1结果。
+
+18:20:12实际观测原PID34656仍运行，GPU6546MiB/100%；第一折两端最终20epoch
+checkpoint均已strict reload并完成全部五输出检索，第二折control已记录第4epoch。
+共44个完整Q1 epoch日志，已知完成1272步；其中两端完整receipt共40epoch/1160步。
+这个计数不包含正在进行的epoch，不能把summary仅有1fold当作总训练只有1160步。
+
+第一折1000gallery、47heldout身份、190合法query、810条仅从query分母排除。
+fused对照71.201727/71.578947 mAP/R1，MCNL70.525659/69.473684，
+fused差-0.676068pp；CNN/Transformer/Mamba的mAP差为-1.072661/-1.791450/+0.848838。
+预注册“每折fused非负”条件已不满足，但全部后续端点照原计划继续，
+不择端/择折，不重新训练或修改margin/权重/epoch/LR，终态仍未完成。
+
+本地JSON/NumPy复算第一折两端五输出mAP/R1/R5/R10全部差0；
+两端各580步的相机支持累计数与冻结metadata精确一致，loss加和最大误差
+6.583487088818174e-09。这是执行器的第一折部分结果核验，不替代独立终态审计。
+完整Q1仍为六端120epoch/3360步，下一完整paired-fold观测窗口约18:39–18:43，
+按实际第一折速度修正整轮ETA为19:00–19:10（估计），原进程不重启。
+
+首折五路完整指标见results/TRIFUSION_RGBNT201_V22_FIRST_PAIRED_FOLD_2026-09-05.md及原始部分JSON。
+当前best dev仍58.4050/59.3939，整体目标未达；D1/dev/official保持0，原完整Q1继续。

@@ -260,9 +260,12 @@
 ## Remote experiment constraints
 
 - V22 T0 and real M0 passed. Original PID34656 continues the full Q1
-  without restart; no complete Q1 retrieval result yet. M0 ratio0.013769,
-  203/203 gradients, overflow0 and frozen state checks passed. Independent
-  M0 audit is pending; see the complete M0 result and tracker. It replaces only the three residual
+  without restart. At 18:20 the first paired fold completed: fused MCNL/control
+  mAP70.525659/71.201727, gain-0.676068; preserve all remaining endpoints.
+  This already misses the fixed per-fold nonnegative gate, but Q1 is not terminal.
+  Independent M0 audit is complete: engineering/fixed M0 PASS, integrity WARN;
+  its scientific FAIL means no terminal retrieval evidence in the M0 audit scope.
+  Preserve EXPERIMENT_AUDIT_V22_M0.md/json and provenance limits. It replaces only the three residual
   batch-hard triplets with camera-negative MCNL at margins 0.1/0.1 and the
   original coefficient 0.25. All seven ID losses and fused/branch triplets,
   exact Signal/V8 architecture, seed42/B64K8/20 epochs and initialization stay.
