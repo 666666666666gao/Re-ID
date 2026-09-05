@@ -642,3 +642,5 @@
 | 2026-09-06T06:03:04.455453+08:00 | /experiment-plan + /run-experiment | refine-logs/msvr310_trifusion_v1/EXPERIMENT_PLAN.md; tools/train_msvr310_trifusion_oof.py; configs/MSVR310/TriFusion-source-oof-v1.json | preparation | Fixed new-dataset original three-role comparison after B0 audit; M0 and complete comparison NOT_RUN |
 
 | 2026-09-06T06:08:14.672010+08:00 | /run-experiment | evidence/trifusion_msvr310_trifusion_v1_source_binding_r2_20260906.json | preparation | Prelaunch0-update SHA failure preserved; five actual remote LF/Git bytes pinned; no runtime/algorithm change |
+
+| 2026-09-06T06:24:17.950707+08:00 | /run-experiment | results/TRIFUSION_MSVR310_ORIGINAL_ROLES_M0_2026-09-06.md; evidence/trifusion_msvr310_trifusion_v1_m0_complete_20260906.json | evidence | Complete124-update source M0 PASS;17files/all scalar accounting verified; original three20epoch comparison running, no terminal retrieval yet |

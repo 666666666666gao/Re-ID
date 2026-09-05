@@ -457,3 +457,12 @@
   have localCRLF/remoteLF bytes. All5 remote bytes match Git blobs and AST.
   R2 pins their actual remote SHA, preserving original config/attempt evidence;
   no runner/model/loss/gate/seed/protocol change or runtime normalization. M0 still NOT_RUN.
+
+- MSVR310 original three-role M0 completed on1c444cd: wrapper69455 exit0,
+  124updates,203/203 nonzero-gradient tensors in all stages, frozen/AMP/reload pass.
+  Final100step excess-loss ratio0.000702022804; no heldout.17 whole files and
+  all124step scalar/source accounting verified; independent M0 audit pending.
+- Its original complete comparison is now RUNNING, wrapper70422 launched06:21.
+  Three freshly initialized role models, fixed20epochs, original five support
+  conditions and complete600query/1032gallery. Do not relaunch or change inputs.
+  No complete retrieval result yet. Read the new M0 result and tracker.

@@ -3424,3 +3424,22 @@ R2只将配置内5项绑定改为实际远端SHA，入口仍严格逐文件检�
 runner SHA a1771c2e16e129f0a1ecdfb1f5fffcc7d83fe2faf5073033efe520a73c800f87不变，
 模型、数据、优化、M0/科学门与seed均不变。新M0/正式三折尚未运行。
 详见evidence/trifusion_msvr310_trifusion_v1_source_binding_r2_20260906.json及原prelaunch诊断。
+
+### 41.26 MSVR310 原三角色完整M0通过，固定三折比较已启动（2026-09-06）
+
+记录时间：2026-09-06T06:24:17.950707+08:00。实际M0 wrapper69455 exit0，执行1c444cd；三fold各8步容量+
+全新fold0固定100步，总124更新/7936训练记录曝光，72role+24独立Signal clean source记录前向，0heldout。
+203/203可训练张量有非零梯度，全部冻结状态/Signal保持、AMP overflow0、五输出严格重载逐元素相同。
+初末loss4.122129917145/0.588196277618，解析熵下界0.585713632744，
+唯一最后100步excess ratio0.000702022804<=0.1。配置后程序计时246.289107秒。
+
+17完整文件含3checkpoint及20项目输入SHA核对，独立fold JSON相等；
+本地stdlib重算124步/采样/损失门，loss组成最大差4.122654591e-7、epoch均值差0，
+原AMP dtype未保存的范围保持。M0独立审计PENDING，不能当作未知身份检索有效。
+原始SHA e021303b51d6af0b8bc49717016744e0ad483af419496652e0525b188d3d646b；
+完整报告results/TRIFUSION_MSVR310_ORIGINAL_ROLES_M0_2026-09-06.md。
+
+正式比较于2026-09-06T06:21:14.660925+08:00启动，wrapper70422，仍执行1c444cd及固定R2字节配置。
+每fold新初始化角色，不加载M0后权重；固定20epoch、600query/1032gallery、全部五输出。
+按实际M0预计18–25分钟，初查约6分钟后，不以训练loss选择停止或修改合同。
+当前没有完整比较检索结果；RGBNT201未达目标、V23/V24封存、无官方/消融限制保持。
