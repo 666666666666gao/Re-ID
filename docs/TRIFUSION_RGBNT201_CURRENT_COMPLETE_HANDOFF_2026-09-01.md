@@ -3218,3 +3218,25 @@ GPU释放后按已固定只读计划启动诊断，实际2026-09-06T03:22:48.092
 目录/root/autodl-tmp/trifusion-v2/artifacts/trifusion_v24_source_prototype_diagnostic_seed42_4452a98。固定九模型/18756 source记录/153batch前向；更新、反传、checkpoint写入、
 heldout/dev/official图像前向均0。尚无该诊断终态结果，预计6–10分钟，首次检查约03:29。
 该读取不改V24训练终态、原科学门或任何权重；Q1_FAIL封存保持。
+
+
+### 41.14 V24 九模型 source 只读诊断完成；两项独立审阅进行中（2026-09-06）
+
+记录时间：2026-09-06T03:38:41.260074+08:00。原PID59375 exit0，执行4452a98，耗时312.011035秒；
+九模型/18756 source记录/153batch前向，所有模型状态不变，优化/反传/checkpoint写入/heldout/dev/official前向均0。
+三折各94 source身份，完整14跨相机身份和108身份/相机成员；无跨fold距离。
+
+共同初始化时clean原型CE已仅0.000456865/0.000513873/0.000368214；九模型global/env分类全100%。
+九模型所有非self同身份正例都严格比任何异身份负例近，最小余弦间隔约0.075874–0.154448。
+样本负例比均值原型更接近query约0.031–0.034，但完整clean source中仍没有未分开的负例。
+因此“扩大同一批干净source负例池即可解除瓶颈”缺乏当前直接证据；不是对增强视图或XBM的普遍否定。
+最终缓存/当前clean原型平均余弦约0.979–0.982，混合弱增强视图差与模型变化，不能单独认定缓存陈旧。
+新原型含被评分source自身，source几何正例则排除了self；不把100%表述为未知身份验证或新测检索mAP。
+
+全部逐记录、1692身份均值行及日志核验完成，最大均值/分位差1.42108547152e-14，
+最大概率/FP32代数差2.98719532443e-08。
+原始evidence/trifusion_v24_source_diagnostic_20260906.json，
+SHA a66f17a450fb0eca2404fd23721545eed0dd7b061550230a7d51368da24fa271；完整报告results/TRIFUSION_RGBNT201_V24_SOURCE_PROTOTYPE_DIAGNOSIS_2026-09-06.md。
+source独立审阅 /root/audit_v24_source，GPT-5.5 xhigh，27主文件、trace16，结果PENDING；
+完整Q1独立审阅 /root/audit_v24_q1、49主文件、trace15，仍PENDING。
+两套冻结输入在本次更新前全部复核SHA不变。V24 Q1_FAIL、无晋级与既有目标状态保持。
