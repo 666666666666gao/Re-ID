@@ -152,6 +152,7 @@ def run(args):
         folds.append(result)
     from trifusion.signal_preserving_v13 import identity_cluster_bootstrap_lower_bound
     gains = torch.tensor(all_ap["dtred"]["fused"]) - torch.tensor(all_ap["weight0"]["fused"])
+    bootstrap = identity_cluster_bootstrap_lower_bound(gains, torch.tensor(all_ids), seed=42, resamples=10000)
     aggregate = {endpoint: {name: {
         "mAP": float(np.mean(all_ap[endpoint][name]) * 100),
         **{f"Rank-{k}": float(np.mean(np.array(all_ranks[endpoint][name]) <= k) * 100) for k in (1, 5, 10)},
@@ -164,7 +165,12 @@ def run(args):
         "source_file_sha256": _current_source_hashes(contract),
         "folds": folds, "aggregate_metrics_percent": aggregate,
         "matched_mAP_gains": {name: aggregate["dtred"][name]["mAP"] - aggregate["weight0"][name]["mAP"] for name in names},
-        "fused_gain_identity_bootstrap": identity_cluster_bootstrap_lower_bound(gains, torch.tensor(all_ids), seed=42, resamples=10000),
+        "fused_gain_identity_bootstrap": {
+            "observed_mean_percent": bootstrap.observed_mean * 100,
+            "lower_bound_95_percent": bootstrap.lower_bound * 100,
+            "identity_clusters": bootstrap.cluster_count,
+            "resamples": bootstrap.resamples,
+        },
         "total_gallery_records": sum(f["gallery_records"] for f in folds),
         "total_eligible_queries": sum(f["eligible_queries"] for f in folds),
         "total_excluded_queries": sum(f["excluded_queries"] for f in folds),
