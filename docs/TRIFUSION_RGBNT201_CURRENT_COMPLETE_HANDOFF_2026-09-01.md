@@ -2765,3 +2765,22 @@ M0通过后原进程完成3fold×2端×20epoch/3360步、完整3126gallery/571qu
 沿用所有五项Q1科学门，失败封存不作宽度/插点/scale/epoch/LR/seed扫描。
 只在Q1全门通过后另行固定D1，当前不访问dev/official、不开始消融。
 预计M0 4–7分钟、Q1 75–100分钟，需启动前检查真实GPU和源文件SHA。
+
+
+### 40.2 T0通过，原单进程M0及完整Q1启动（2026-09-05）
+
+远端CUDA T0实际9.800828秒、5passed，零适配器与原模型全五输出/strict reload一致，
+单模态梯度分派、零up初始化首步梯度、两条件各3步toy优化与冻结Signal契约通过。
+真实数据/项目训练步0，6个synthetic模型/1个独立stage/6步toy优化；
+原日志含3条timm弃用warning，保留未隐去。
+
+22:01:32.893788+08:00以执行commit9f4a10b6162b9658ba103cd92466411ebb6ccd8f
+启动原PID44684，screen v23_spectral_adapter_9f4a10b。
+启动前空闲24126MiB/使用1MiB，18项代码/配置/方案/来源权重完整SHA核验通过。
+证据evidence/trifusion_v23_t0_20260905.json/log/xml及trifusion_v23_launch_20260905.json。
+run为artifacts/trifusion_v23_spectral_adapter_seed42_9f4a10b及同名.log/.exit。
+
+当前M0运行，尚无M0完整资格或Q1科学结果；预计22:06–22:09附近完成M0，
+若全门通过，原进程自动完成六端Q1，预计另75–100分钟。
+按预计窗口查看，间隔180–300秒；原进程观察超时不得当作训练失败重启。
+保留固定54前向/116步M0、完整3360步Q1与五门，不更改首/100步门或早停选择。

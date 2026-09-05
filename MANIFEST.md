@@ -615,3 +615,6 @@
 
 | 2026-09-05 21:56 | /experiment-plan | refine-logs/v23/EXPERIMENT_PLAN.md | implementation | New spectral adapter hypothesis fixed, full matched Q1 and five gates; not executed |
 | 2026-09-05 21:56 | /run-experiment | tools/train_signal_preserving_v23.py | implementation | Isolated V23 runner, zero-adapter pairing, full final-only training and five outputs |
+
+| 2026-09-05 22:04 | /run-experiment | evidence/trifusion_v23_t0_20260905.json/log/xml | evidence | Remote CUDA five tests PASS, synthetic only, six toy updates |
+| 2026-09-05 22:04 | /run-experiment | evidence/trifusion_v23_launch_20260905.json | evidence | Original PID44684 launched M0 and conditional complete Q1, no scientific result yet |
