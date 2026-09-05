@@ -2015,3 +2015,18 @@ integrity_status字段，结论和工程/科学区分不变。
 Q1保持原进程和冻结预算；全部完成后独立审计全部端、五路AP/rank、图库范围、
 strict reload与远端checkpoint终态SHA。大权重保持远端，本地同步完整JSON与
 哈希回执，后续审计仍须如实标明独立持有范围。当前全局目标未达。
+
+### 35.4 V19首折完整配对终态完成（2026-09-05 12:48 CST）
+
+12:48:21远端观测：完整Q1仍RUNNING，fold0两端各20epoch/580优化步已结束；
+两端均overflow0、冻结state不变、strict reload及只读评价通过。完整sample
+order、前8增强batch、初始state和baseline-only输出对象两端逐项相等。
+该折保留全部1000gallery记录/190合法query，独立endpoint receipt位于运行
+目录`fold_0_frozen_private_tail_receipt.json`与
+`fold_0_trained_private_tail_receipt.json`。这是2/6端的进度记录，不是整体科学结论。
+
+当前进入fold1对照第2/20epoch，实测28batch/epoch、约34秒/epoch；同一screen
+继续执行，无重新启动。六端终态预计约13:36–13:51 CST，随后核验全部3126
+gallery/571query、五路数组、原固定科学门与源checkpoint终态SHA。
+下一次常规进度观察窗口12:52–12:53；按180–300秒或预计完成节点检查。
+本轮D1/dev/official访问仍为0，RGBNT100/MSVR310仍无训练和检索结果。

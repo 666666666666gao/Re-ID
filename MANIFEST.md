@@ -547,3 +547,5 @@
 
 | 2026-09-05 12:46 | /experiment-audit | EXPERIMENT_AUDIT_V19_M0.md/json | evidence | Independent M0 engineering PASS; integrity WARN; Q1 pending |
 | 2026-09-05 12:46 | /run-experiment | refine-logs/v19/EXPERIMENT_TRACKER_20260905_124646.md | evidence | M0 audit complete; Q1 unchanged and running |
+
+| 2026-09-05 12:48 | /run-experiment | refine-logs/v19/EXPERIMENT_TRACKER_20260905_124940.md | evidence | First complete paired fold, 2 of 6 endpoints; overall Q1 still RUNNING |
