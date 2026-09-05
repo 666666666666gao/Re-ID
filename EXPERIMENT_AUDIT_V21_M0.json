@@ -1,0 +1,474 @@
+{
+  "date": "2026-09-05",
+  "auditor": "gpt-5.5-xhigh-independent-local-artifact-audit",
+  "overall_verdict": "warn",
+  "integrity_status": "warn",
+  "engineering_integrity": "pass",
+  "fixed_m0_qualification": "fail",
+  "scientific_qualification": "fail",
+  "evaluation_type": "source_only_engineering_m0_real_train_source_batches_plus_synthetic_t0_no_heldout_dev_official_or_test_retrieval",
+  "checks": {
+    "A_ground_truth_provenance_and_path_isolation": {
+      "status": "PASS",
+      "evidence": [
+        "protocols/rgbnt201_dev_v1.json:1-18",
+        "protocols/rgbnt201_dev_v1.json:126-132",
+        "tools/run_signal_baseline_dev.py:27-54",
+        "tools/build_v12_complete_path_oof_targets.py:156-173",
+        "tools/build_v12_complete_path_oof_targets.py:29-56",
+        "tools/train_signal_preserving_v21.py:201-206",
+        "tools/train_signal_preserving_v20.py:58-88",
+        "evidence/trifusion_v21_m0_seed42_3c39351.json:48-216",
+        "evidence/trifusion_v21_m0_seed42_3c39351.json:2657",
+        "evidence/trifusion_v21_m0_seed42_3c39351.json:5263",
+        "evidence/trifusion_v21_m0_seed42_3c39351.json:7868"
+      ],
+      "findings": [
+        "Local protocol replay: 141 train identities, 30 dev identities, 30 test identities, zero train/dev, train/test and dev/test overlap, 3126 train triplets, selection.uses_test_labels=false.",
+        "Called record parser derives identity/camera from RGBNT201 filenames and verifies RGB/NI/TI triplet paths; remote image bytes were not locally read.",
+        "Six recorded preflight bindings replay with 94 fit identities, 47 heldout identities, zero fit/heldout overlap per fold, and 141 unique heldout identity indices across folds.",
+        "Recorded endpoint pairing comparisons replay true for binding, initial_state_sha256, batch_receipts, all_output_sha256 and state_unchanged.",
+        "Receipt filename replay over all 48 preflight batches found 64 samples, 8 identities, 8 samples per identity and exactly one cross-camera identity group per batch.",
+        "Literal folds array is empty, so no V21 heldout retrieval masks or denominators were produced."
+      ],
+      "claim_impact": "Supports source-only M0 provenance and pairing integrity; does not support heldout retrieval or scientific generalization claims."
+    },
+    "B_losses_scores_and_mathematical_recomputation": {
+      "status": "PASS",
+      "evidence": [
+        "configs/RGBNT201/TriFusion-signal-preserving-v21-sam-rtx3090.yml:31-47",
+        "tools/train_signal_preserving_v21.py:59-69",
+        "modeling/trifusion/signal_preserving_v8.py:690-742",
+        "modeling/trifusion/sam_training_v21.py:24-75",
+        "tools/train_signal_preserving_v21.py:253-281",
+        "evidence/trifusion_v21_m0_seed42_3c39351.json:7870-7878",
+        "evidence/trifusion_v21_m0_seed42_3c39351.json:7975-7985",
+        "evidence/trifusion_v21_m0_seed42_3c39351.json:8082-8092",
+        "evidence/trifusion_v21_m0_seed42_3c39351.json:9202-9215",
+        "evidence/trifusion_v21_m0_array_verification_20260905.json:14-64"
+      ],
+      "findings": [
+        "Executed V21 M0 loss path is the original V8 seven smoothed-ID plus seven batch-hard-triplet objective; no V20 cross-modal identity loss was executed.",
+        "SAM source uses first gradient at w, perturbation rho/||scaled_grad||, second gradient at w+epsilon, parameter and first-pass BatchNorm-stat restoration, then one unscale/step/update.",
+        "Independent replay computed identity_entropy_floor=combined_loss_floor=0.57838292104621 and excess_loss_ratio=0.39899872365870204.",
+        "All M0 gate booleans replay exactly; maximum difference versus summary/array-verification sidecar is 0.0.",
+        "No AP/Rank retrieval metrics exist for V21 M0; no model-output self-normalization was found."
+      ],
+      "claim_impact": "Supports fixed M0 failure arithmetic and SAM-update mechanics; cannot establish SAM heldout retrieval quality, optimizer superiority, causal mechanism or SOTA."
+    },
+    "C_file_existence_and_provenance": {
+      "status": "WARN",
+      "evidence": [
+        "evidence/trifusion_v21_preregistration_20260905.json:3-33",
+        "evidence/trifusion_v21_t0_20260905.json:3-40",
+        "evidence/trifusion_v21_m0_seed42_3c39351.json:3-30",
+        "evidence/trifusion_v21_m0_terminal_file_verification_20260905.json:2-8",
+        "evidence/trifusion_v21_m0_terminal_file_verification_20260905.json:17-43",
+        "evidence/trifusion_v21_m0_terminal_file_verification_20260905.json:80-85",
+        "evidence/trifusion_v21_m0_terminal_file_verification_20260905.json:164-224",
+        "results/TRIFUSION_RGBNT201_V21_SAM_M0_2026-09-05.md:30-53"
+      ],
+      "findings": [
+        "All listed primary files exist locally and were read directly.",
+        "Main V21 prereg/T0/M0 files match current local raw bytes: train_signal_preserving_v21.py deafa4d6d2287928c9143d28f2bfb7f32e303939fa6db547f91219f3d708e0fa; sam_training_v21.py 9233e8f806914eed623976c7f30830ecac80af274f842214c73055ded9009b56; test_trifusion_sam_v21.py 75f05728853af1fb82af23588362ef56bd573c1322bf2b423be7c6d1aad48add; config f2f47acf54790dc69d9b0d7b5c94dcf9ecfd37bfcf3dd20dc8251e1e1a3600a3; plan ba17807f30e294618d2a21907a8fde0da82f24f6dab0d51073be49014cc40f71.",
+        "Summary SHA 2ecc322270e4e1b82a77cf76e22ab76e359179fda9abc5ef7f2036db064d3c5d and log SHA 0be3a21d007f1ff125779c13231c672ffaab67e884f02478b4be68e620f85194 match the result and file-verification ledgers.",
+        "Recorded execution commit is 3c393510f0e0a31bad602af8dd618a8dcdfe6ae6; current local HEAD observed read-only is 4f31651a6962372fb1d8c62b87e05a00abe953b0, so file hashes rather than HEAD establish equivalence.",
+        "Of 19 source_file_sha256 dependencies, 15 match current local raw bytes and four match only after LF normalization: modeling/trifusion/criterion.py, modeling/trifusion/experts/mamba.py, modeling/trifusion/experts/semantic_residual.py and protocols/rgbnt201_dev_v1.json.",
+        "Remote CLIP, V12 summary and V12 source/expert checkpoint bytes are represented by the terminal verifier ledger; this audit did not independently possess/read those remote bytes or load checkpoint tensors.",
+        "Terminal verifier records new_checkpoint_count=0 and scope limited to whole-file SHA/directory listing with no model or tensor loading."
+      ],
+      "claim_impact": "Integrity is warn due HEAD, LF-normalization and remote-possession limits; these do not change M0_FAIL arithmetic or zero-Q1 conclusion."
+    },
+    "D_execution_and_engineering": {
+      "status": "PASS",
+      "evidence": [
+        "tools/train_signal_preserving_v21.py:72-85",
+        "tools/train_signal_preserving_v21.py:113-138",
+        "tools/train_signal_preserving_v21.py:241-287",
+        "tools/train_signal_preserving_v20.py:91-96",
+        "modeling/trifusion/sam_training_v21.py:24-75",
+        "tests/test_trifusion_sam_v21.py:10-69",
+        "evidence/trifusion_v21_t0_20260905.json:33-40",
+        "evidence/trifusion_v21_launch_observation_20260905.json:3-30",
+        "evidence/trifusion_v21_launch_transport_20260905.json:3-11",
+        "evidence/trifusion_v21_progress_20260905_1649.json:1"
+      ],
+      "findings": [
+        "Optimizer targets all requires_grad parameters through AdamW with LR 0.00035, weight_decay 0.0001 and GradScaler init scale 256.",
+        "Literal capacity/overfit summaries record 203/203 first and update gradient coverage, no missing gradients, overflow_events=0, frozen_state_unchanged=true and batchnorm_updates_per_step=1.",
+        "Derived execution counts: 48 preflight forward-only batches; 16 capacity optimizer steps; 100 overfit optimizer steps; 116 M0 project optimizer steps; 224 M0 forward/backward pairs; 108 SAM restore batches; 0 Q1 optimizer steps/endpoints/epoch rows; 0 new checkpoints; 6 T0 toy optimizer updates with 0 project training steps.",
+        "Launch transport exit code 1 is a manager timeout, not a training execution failure; live process and terminal progress records reconcile the original training process with M0_FAIL.",
+        "Exact parameter and BN restoration are source/runtime assertions plus summary counters, not full tensor/buffer dumps."
+      ],
+      "claim_impact": "Supports engineering integrity of the executed M0 sequence and failure handling; does not qualify the model for Q1."
+    },
+    "E_scope_and_selection": {
+      "status": "PASS",
+      "evidence": [
+        "refine-logs/v21/EXPERIMENT_PLAN.md:99-125",
+        "refine-logs/v21/EXPERIMENT_PLAN.md:127-147",
+        "tools/train_signal_preserving_v21.py:253-287",
+        "tools/train_signal_preserving_v21.py:288-365",
+        "evidence/trifusion_v21_m0_seed42_3c39351.json:34-47",
+        "evidence/trifusion_v21_m0_seed42_3c39351.json:7868-7871",
+        "refine-logs/v21/EXPERIMENT_TRACKER.md:15-40",
+        "results/TRIFUSION_RGBNT201_V21_SAM_M0_2026-09-05.md:18-28",
+        "results/TRIFUSION_RGBNT201_V21_SAM_M0_2026-09-05.md:55-60"
+      ],
+      "findings": [
+        "Executed scope is M0 only: folds=[], dev_access_count=0, official_test_access_count=0, d1_executed=false, next_phase_qualified=false.",
+        "Fixed selection criterion is the 100th update-before loss ratio against the first update-before loss and analytic floor; intermediate minimum and last-20 mean are descriptive only.",
+        "All attempted M0 outcomes are retained: two 8-step capacity component lists and one complete 100-step fixed-batch history.",
+        "Q1 code exists after the M0 return point but was not executed because m0.passed=false.",
+        "Ordinary40/SAM20 final checkpoint comparison, heldout masks, bootstrap, D1/dev, official/test and SOTA scope remain unexecuted."
+      ],
+      "claim_impact": "Supports fixed M0 stop decision and scope accounting only; all main-arm and scientific claims remain unsupported."
+    },
+    "F_evaluation_classification_and_claims": {
+      "status": "PASS",
+      "evidence": [
+        "evidence/trifusion_v21_m0_seed42_3c39351.json:32-47",
+        "evidence/trifusion_v21_m0_seed42_3c39351.json:7868-7871",
+        "evidence/trifusion_v21_m0_array_verification_20260905.json:5-13",
+        "evidence/trifusion_v21_t0_20260905.json:33-40",
+        "results/TRIFUSION_RGBNT201_V21_SAM_M0_2026-09-05.md:26-28",
+        "results/TRIFUSION_RGBNT201_V21_SAM_M0_2026-09-05.md:55-60",
+        "refine-logs/v21/EXPERIMENT_TRACKER.md:38-40"
+      ],
+      "findings": [
+        "Actual V21 M0 evidence type is source-only engineering: real train-source RGBNT201 batch records in M0 plus synthetic CUDA toy tests in T0.",
+        "It is not heldout retrieval, development-set evaluation, official/test evaluation or SOTA evidence.",
+        "Literal summary evaluation_type=real_gt_train_internal_complete_path_oof is a runner/Q1 contract label and must be read with folds=[], M0_FAIL and zero Q1 counts.",
+        "Scientific qualification is fail: no SAM heldout mAP/Rank, no dev access, no official test access, no D1, and no new checkpoint suitable for final heldout evaluation."
+      ],
+      "claim_impact": "T0 optimizer/AMP/BN toy checks are supported; M0 fixed qualification fails; mechanism, generalization, causal, deployment and SOTA claims are unsupported."
+    }
+  },
+  "claims": [
+    {
+      "id": "C1",
+      "claim": "V21 SAM implementation passed T0 mathematical CUDA tests.",
+      "assessment": "supported_with_scope_limit",
+      "evidence": [
+        "tests/test_trifusion_sam_v21.py:10-69",
+        "evidence/trifusion_v21_t0_20260905.json:33-40"
+      ],
+      "limit": "Synthetic toy optimizer tests only; dataset_access_count=0 and project_training_steps=0."
+    },
+    {
+      "id": "C2",
+      "claim": "V21 M0 executed paired source preflights, capacity checks and a 100-step fixed-batch overfit test.",
+      "assessment": "supported",
+      "evidence": [
+        "tools/train_signal_preserving_v21.py:241-281",
+        "evidence/trifusion_v21_m0_seed42_3c39351.json:48-9215"
+      ],
+      "limit": "No local tensor/checkpoint/image execution was performed by this audit."
+    },
+    {
+      "id": "C3",
+      "claim": "V21 passed the fixed M0 engineering qualification.",
+      "assessment": "unsupported_false",
+      "evidence": [
+        "evidence/trifusion_v21_m0_seed42_3c39351.json:7870-7878",
+        "evidence/trifusion_v21_m0_seed42_3c39351.json:9212-9215"
+      ],
+      "limit": "The only failed gate is overfit_excess_ratio_at_most_point1=false; ratio 0.39899872365870204 > 0.1."
+    },
+    {
+      "id": "C4",
+      "claim": "SAM improves or harms heldout retrieval/generalization in V21.",
+      "assessment": "unsupported",
+      "evidence": [
+        "evidence/trifusion_v21_m0_seed42_3c39351.json:7868",
+        "evidence/trifusion_v21_m0_array_verification_20260905.json:11-13",
+        "results/TRIFUSION_RGBNT201_V21_SAM_M0_2026-09-05.md:55-60"
+      ],
+      "limit": "Q1 was not run and no heldout retrieval metrics exist for V21."
+    },
+    {
+      "id": "C5",
+      "claim": "V21 changes deployable dev/SOTA status.",
+      "assessment": "unsupported",
+      "evidence": [
+        "results/TRIFUSION_RGBNT201_V21_SAM_M0_2026-09-05.md:55-60"
+      ],
+      "limit": "No D1/dev/official/test access or result was produced."
+    }
+  ],
+  "recomputation": {
+    "runtime": {
+      "python": "3.12.14",
+      "numpy": "2.3.5",
+      "elapsed_seconds": 0.011746
+    },
+    "arithmetic_method": "standard-library math plus NumPy array reductions over local JSON scalar arrays; no model, tensor, image, feature, distance, training, or evaluation execution",
+    "literal_summary_status": "M0_FAIL",
+    "literal_summary_evaluation_type": "real_gt_train_internal_complete_path_oof",
+    "actual_executed_evaluation_type_derived": "source_only_engineering_m0_real_train_source_batches_plus_synthetic_t0; no heldout/dev/official/test retrieval executed",
+    "smoothed_entropy": 0.7711772280616133,
+    "identity_weight_sum": 0.75,
+    "identity_entropy_floor": 0.57838292104621,
+    "combined_loss_floor": 0.57838292104621,
+    "excess_loss_ratio": 0.39899872365870204,
+    "fixed_m0_gate_threshold": 0.1,
+    "fixed_m0_gate_passed": false,
+    "max_difference_vs_summary_or_array_verification": 0.0,
+    "overfit_ranges": [
+      {
+        "name": "loss_at_parameters",
+        "first": 0.6110473871231079,
+        "last": 0.5914160013198853,
+        "minimum": 0.5813781023025513,
+        "maximum": 0.7327114939689636,
+        "last20_mean": 0.5843785017728805
+      },
+      {
+        "name": "loss_for_update_gradient",
+        "first": 0.627093493938446,
+        "last": 0.6106454133987427,
+        "minimum": 0.5943088531494141,
+        "maximum": 0.9014252424240112,
+        "last20_mean": 0.6061754256486893
+      },
+      {
+        "name": "first_gradient_norm",
+        "first": 0.15330751240253448,
+        "last": 0.3367374539375305,
+        "minimum": 0.08146421611309052,
+        "maximum": 2.6079766750335693,
+        "last20_mean": 0.22608692720532417
+      },
+      {
+        "name": "update_gradient_norm",
+        "first": 0.6312003135681152,
+        "last": 0.4366075098514557,
+        "minimum": 0.3225419223308563,
+        "maximum": 3.9590492248535156,
+        "last20_mean": 0.7561642244458199
+      },
+      {
+        "name": "actual_perturbation_norm",
+        "first": 0.05000000074505806,
+        "last": 0.05000000447034836,
+        "minimum": 0.04999999329447746,
+        "maximum": 0.050000011920928955,
+        "last20_mean": 0.05000000186264515
+      }
+    ],
+    "capacity_ranges": {
+      "0.0": {
+        "loss_at_parameters": {
+          "minimum": 0.6110473871231079,
+          "maximum": 0.8435304164886475,
+          "mean": 0.7345278561115265
+        },
+        "loss_for_update_gradient": {
+          "minimum": 0.6110473871231079,
+          "maximum": 0.8435304164886475,
+          "mean": 0.7345278561115265
+        },
+        "first_gradient_norm": {
+          "minimum": 0.15330751240253448,
+          "maximum": 3.2709567546844482,
+          "mean": 1.9617540705949068
+        },
+        "update_gradient_norm": {
+          "minimum": 0.15330751240253448,
+          "maximum": 3.2709567546844482,
+          "mean": 1.9617540705949068
+        },
+        "actual_perturbation_norm": {
+          "minimum": 0.0,
+          "maximum": 0.0,
+          "mean": 0.0
+        }
+      },
+      "0.05": {
+        "loss_at_parameters": {
+          "minimum": 0.6110473871231079,
+          "maximum": 0.8659583926200867,
+          "mean": 0.7185222208499908
+        },
+        "loss_for_update_gradient": {
+          "minimum": 0.627093493938446,
+          "maximum": 1.0011695623397827,
+          "mean": 0.8273080140352249
+        },
+        "first_gradient_norm": {
+          "minimum": 0.15330751240253448,
+          "maximum": 3.030792713165283,
+          "mean": 1.559830391779542
+        },
+        "update_gradient_norm": {
+          "minimum": 0.6312003135681152,
+          "maximum": 4.20034122467041,
+          "mean": 2.854231894016266
+        },
+        "actual_perturbation_norm": {
+          "minimum": 0.05000000074505806,
+          "maximum": 0.05000000819563866,
+          "mean": 0.050000003073364496
+        }
+      }
+    },
+    "counts": {
+      "preflight_models": 6,
+      "preflight_forward_only_batches": 48,
+      "capacity_optimizer_steps": 16,
+      "capacity_forward_backward_pairs": 24,
+      "overfit_optimizer_steps": 100,
+      "overfit_forward_backward_pairs": 200,
+      "m0_project_optimizer_steps_total": 116,
+      "m0_forward_backward_pairs_total": 224,
+      "sam_restore_batches_total_derived": 108,
+      "q1_optimizer_steps": 0,
+      "q1_endpoint_count": 0,
+      "q1_epoch_rows": 0,
+      "new_checkpoint_count": 0,
+      "t0_toy_optimizer_updates_derived_from_test_source": 6
+    },
+    "m0_gate_replay": {
+      "all_gradients_live": true,
+      "all_frozen_states_unchanged": true,
+      "overflow_zero": true,
+      "capacity_within_limit": true,
+      "overfit_excess_ratio_at_most_point1": false
+    },
+    "m0_gate_replay_matches_literal_summary_checks": true,
+    "preflight_pairing_replay": [
+      {
+        "fold": 0,
+        "paired_flag": true,
+        "binding_equal": true,
+        "initial_state_sha256_equal": true,
+        "batch_receipts_equal": true,
+        "all_output_sha256_equal": true,
+        "state_unchanged_all": true,
+        "fit_identity_count": 94,
+        "heldout_identity_count": 47,
+        "fit_heldout_overlap_count": 0,
+        "total_parameters": 98800141,
+        "trainable_parameters": 7841292,
+        "trainable_tensors": 203
+      },
+      {
+        "fold": 1,
+        "paired_flag": true,
+        "binding_equal": true,
+        "initial_state_sha256_equal": true,
+        "batch_receipts_equal": true,
+        "all_output_sha256_equal": true,
+        "state_unchanged_all": true,
+        "fit_identity_count": 94,
+        "heldout_identity_count": 47,
+        "fit_heldout_overlap_count": 0,
+        "total_parameters": 98800141,
+        "trainable_parameters": 7841292,
+        "trainable_tensors": 203
+      },
+      {
+        "fold": 2,
+        "paired_flag": true,
+        "binding_equal": true,
+        "initial_state_sha256_equal": true,
+        "batch_receipts_equal": true,
+        "all_output_sha256_equal": true,
+        "state_unchanged_all": true,
+        "fit_identity_count": 94,
+        "heldout_identity_count": 47,
+        "fit_heldout_overlap_count": 0,
+        "total_parameters": 98800141,
+        "trainable_parameters": 7841292,
+        "trainable_tensors": 203
+      }
+    ],
+    "preflight_batch_filename_replay": {
+      "batch_count": 48,
+      "all_64_samples": true,
+      "all_8_identities": true,
+      "all_8_samples_per_identity": true,
+      "cross_camera_identity_count_min": 1,
+      "cross_camera_identity_count_max": 1
+    },
+    "fold_identity_replay": {
+      "fold_count": 3,
+      "heldout_identity_records_across_folds": 141,
+      "unique_heldout_identity_records_across_folds": 141,
+      "per_fold_fit_heldout_overlap_counts": [
+        0,
+        0,
+        0
+      ]
+    },
+    "protocol_counts": {
+      "valid": true,
+      "train_ids": 141,
+      "dev_ids": 30,
+      "test_ids": 30,
+      "train_dev_overlap": 0,
+      "train_test_overlap": 0,
+      "dev_test_overlap": 0,
+      "train_triplets": 3126,
+      "dev_triplets": 825,
+      "train171_triplets": 3951,
+      "uses_test_labels": false
+    }
+  },
+  "limitations": [
+    "Audit was local and read-only except writing EXPERIMENT_AUDIT_V21_M0.md/json. I did not run model training, inference, evaluation, tests, image reads, feature/distance computation, checkpoint tensor loads, downloads, network, remote commands, or new tensor execution.",
+    "The raw image dataset tree and remote source checkpoints/CLIP/V12 files were not independently possessed/read locally. Their existence/hashes are represented by the terminal file-verification ledger, which this audit read but did not re-execute remotely.",
+    "The current local git HEAD differs from the recorded execution commit; current local source equivalence is established by file hashes, with four source dependencies matching execution hashes only after LF normalization.",
+    "Several engineering properties such as exact parameter and BatchNorm restoration are evidenced by source/runtime assertions and summarized literal fields, not by full tensor/buffer dumps in the artifact.",
+    "The summary literal evaluation_type is broader than the executed M0 scope. Actual V21 M0 produced source-only engineering evidence and no heldout retrieval arrays."
+  ],
+  "provenance": {
+    "recorded_execution_commit": "3c393510f0e0a31bad602af8dd618a8dcdfe6ae6",
+    "current_local_git_head_observed": "4f31651a6962372fb1d8c62b87e05a00abe953b0",
+    "current_primary_hashes_selected": {
+      "tools/train_signal_preserving_v21.py": "deafa4d6d2287928c9143d28f2bfb7f32e303939fa6db547f91219f3d708e0fa",
+      "modeling/trifusion/sam_training_v21.py": "9233e8f806914eed623976c7f30830ecac80af274f842214c73055ded9009b56",
+      "tests/test_trifusion_sam_v21.py": "75f05728853af1fb82af23588362ef56bd573c1322bf2b423be7c6d1aad48add",
+      "configs/RGBNT201/TriFusion-signal-preserving-v21-sam-rtx3090.yml": "f2f47acf54790dc69d9b0d7b5c94dcf9ecfd37bfcf3dd20dc8251e1e1a3600a3",
+      "refine-logs/v21/EXPERIMENT_PLAN.md": "ba17807f30e294618d2a21907a8fde0da82f24f6dab0d51073be49014cc40f71",
+      "evidence/trifusion_v21_m0_seed42_3c39351.json": "2ecc322270e4e1b82a77cf76e22ab76e359179fda9abc5ef7f2036db064d3c5d",
+      "evidence/trifusion_v21_m0_run_snapshot_20260905.log": "0be3a21d007f1ff125779c13231c672ffaab67e884f02478b4be68e620f85194"
+    },
+    "source_hash_replay_counts": {
+      "dependencies_in_literal_source_file_sha256": 19,
+      "current_local_raw_matches": 15,
+      "current_local_lf_normalized_matches": 4,
+      "mismatches_after_lf_normalization": 0
+    },
+    "lf_normalized_source_matches": [
+      {
+        "file": "modeling/trifusion/criterion.py",
+        "expected_execution_sha256": "0b2a6370f434828d885945d1a46dd56f6668133ceed45ef359fe71eeca63740a",
+        "current_local_raw_sha256": "9a028e5711981123310f5e0d441a35b7dbecaf33f9edcec4fd3773d070cf877f"
+      },
+      {
+        "file": "modeling/trifusion/experts/mamba.py",
+        "expected_execution_sha256": "c516c7ad937e5eee6a4ed1e3ec33c2afe3522b751d296bd2e4910e4f27a20ee5",
+        "current_local_raw_sha256": "8b9cb420c42e4d70f8de7e4608637c81c505b97ca54228175462a7e92fdfcc83"
+      },
+      {
+        "file": "modeling/trifusion/experts/semantic_residual.py",
+        "expected_execution_sha256": "c8cef9717fd7bd1e5e50b428ac92762455defac2e25857c9e0dfaf82729c2a93",
+        "current_local_raw_sha256": "c1831a3de031be033624420791cecf2e7a3945e009655089cb48ee4b9912edd6"
+      },
+      {
+        "file": "protocols/rgbnt201_dev_v1.json",
+        "expected_execution_sha256": "d916e7daaa1d55b179c1ec77e93128b6e6a8d1526adc9eac060ea8e733881946",
+        "current_local_raw_sha256": "f7f6f8a906c06fec4918929fb5c17abfc197986b99e017aca1d3e15831c1541d"
+      }
+    ],
+    "terminal_file_verification": {
+      "verified": true,
+      "status": "M0_FAIL",
+      "summary_sha256": "2ecc322270e4e1b82a77cf76e22ab76e359179fda9abc5ef7f2036db064d3c5d",
+      "log_sha256": "0be3a21d007f1ff125779c13231c672ffaab67e884f02478b4be68e620f85194",
+      "new_checkpoint_count": 0,
+      "scope": "Whole-file SHA and directory listing only; no model or tensor loading"
+    }
+  }
+}

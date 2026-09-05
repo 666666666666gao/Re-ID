@@ -587,3 +587,6 @@
 
 | 2026-09-05 16:55 | /run-experiment | refine-logs/v21/EXPERIMENT_TRACKER_20260905_165528.md | evidence | V21 M0_FAIL fixed overfit gate, Q1 not run; independent M0 audit pending |
 | 2026-09-05 16:55 | /run-experiment | results/TRIFUSION_RGBNT201_V21_SAM_M0_2026-09-05.md | evidence | Complete M0 pairing, capacity and 100-step trajectory; no retrieval result |
+
+| 2026-09-05 17:24 | /experiment-audit | EXPERIMENT_AUDIT_V21_M0.md/json | evidence | Independent engineering PASS, integrity WARN, fixed M0/scientific qualification FAIL; no retrieval |
+| 2026-09-05 17:24 | /run-experiment | refine-logs/v21/EXPERIMENT_TRACKER_20260905_172433.md | evidence | V21 audit closed; exact M0 negative retained, Q1 not run |

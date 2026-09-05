@@ -265,7 +265,9 @@
   0.591416/0.611047 with floor0.578383. All 116 M0 updates completed; Q1,
   D1/dev/official and new checkpoints are zero. Original PID32331 ended.
   Do not select an earlier minimum, relax the gate, scan rho/LR/steps/seed,
-  or retrain V21. Independent M0 audit is pending. Read the complete result
+  or retrain V21. Independent M0 audit is complete:
+  engineering PASS, integrity WARN, fixed M0/scientific qualification FAIL.
+  Preserve EXPERIMENT_AUDIT_V21_M0.md/json and their provenance limits. Read the complete result
   results/TRIFUSION_RGBNT201_V21_SAM_M0_2026-09-05.md and tracker.
   The planned Q1 kept the original V8/Signal
   inference model and seven ID/triplet objectives. Compare ordinary AdamW 40

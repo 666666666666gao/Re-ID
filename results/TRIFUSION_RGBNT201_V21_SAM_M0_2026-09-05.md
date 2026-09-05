@@ -58,3 +58,33 @@ preflight batch；不能将这些计成Q1主训练预算。
 T0 toy optimizer数学测试不是项目主训练。不能将源损失或容量当作SOTA证据。
 V20完整Q1_FAIL保持。当前可部署dev最佳V8 58.4050/59.3939、exact Signal
 58.0109/57.4545未改变；dev65及官方85.3/87.9目标未达到，全局任务继续active。
+
+
+## 独立审计闭环（2026-09-05T17:24:33.877849+08:00）
+
+独立V21 M0审计已完成，原始EXPERIMENT_AUDIT_V21_M0.md/json逐字节保留。
+overall/integrity为WARN/warn；engineering_integrity=pass，
+fixed_m0_qualification=fail，scientific_qualification=fail。
+审计实际使用Python3.12.14/NumPy2.3.5重算全部M0记录，数值最大差0；
+五项M0布尔门、116优化步/224前反传对和6项T0 toy更新均与原始证据一致。
+
+实际分类为
+source_only_engineering_m0_real_train_source_batches_plus_synthetic_t0_no_heldout_dev_official_or_test_retrieval。
+原summary中的real_gt_train_internal_complete_path_oof是宽于本次执行范围的
+runner/Q1标签，不能据此声称执行了OOF检索。原始summary不改写；
+解释以M0_FAIL、folds=[]和零Q1/D1/dev/official访问共同约束。
+scientific_qualification=fail在此表示没有科学推进资格及检索证据，
+不等于观测到SAM heldout检索下降。
+
+保留四项来源限制：执行commit3c393510与审计时HEAD4f31651不同，按文件SHA核对；
+19个依赖中15个本地原字节一致，criterion.py、experts/mamba.py、
+experts/semantic_residual.py、protocols/rgbnt201_dev_v1.json四个仅LF标准化一致；
+远端数据/CLIP/V12权重只由完整文件SHA账本绑定，审计者没有直接持有这些字节；
+参数和BN逐步精确恢复由运行assert及计数支持，原始文件没有逐步完整tensor dump。
+这些限制不改变固定M0负结果，亦不能通过格式整理抹去WARN。
+
+审计MD22047字节 SHA00244a74f9f1732aed811d3af9953dd5ea7245981b8c4ddc028b2f0593221244；
+JSON24466字节 SHA3ec24312ed4f2c4ea466247ed93be3fc0d44bcbead3f22669965cfadc346ce95。
+完整请求、逐字回复、元数据及报告原件已在本地trace run08归档；
+trace不公开提交，审计报告本身随仓库发布。本段是审计完成后的归档说明，
+不冒充审计者已复核本段新增文字。V21封存，当前没有新的训练或检索结果。
