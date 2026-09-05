@@ -1,0 +1,82 @@
+{
+  "schema": "v24-read-only-source-prototype-diagnostic-v1",
+  "registered_at": "2026-09-06T03:06:30.962594+08:00",
+  "status_at_registration": "PREPARED_AWAITING_ORIGINAL_Q1_TERMINAL",
+  "scope": "All three fold-local source populations; one shared legal initialization and both fixed V24 endpoints per fold; clean fused-feature prototype and sample geometry only",
+  "motivation_evidence": [
+    "evidence/trifusion_v24_progress_summary_20260906_023911.json",
+    "evidence/trifusion_v24_fold1_progress_verification_20260906.json"
+  ],
+  "q1_execution_commit": "6a4ac2cd95af2ca1a9122d1f79aabd3a83e4fe33",
+  "q1_config_sha256": "8e025891cdbd2fca48f6c0b24b88f583540a3760ea624e24169dddd7aed148ba",
+  "q1_plan_sha256": "a31eba5b907772b7d725b35cdcdf4e4378c538be206c51161d1cc267097e3391",
+  "script": "tools/diagnose_v24_source_prototypes.py",
+  "script_sha256": "aedaa9a1366a37ebcf65c3a24a1a8708c67971cff9163ff82f23565ddab148a8",
+  "launch_prerequisites": [
+    "original Q1 terminal with three paired folds and exit0",
+    "terminal summary SHA supplied explicitly",
+    "remote GPU at least22000MiB free",
+    "all input checkpoint, memory, config and source SHA bindings match"
+  ],
+  "models_per_fold": [
+    "shared_initial",
+    "ordinary_two_view_final",
+    "environment_identity_prototype_final"
+  ],
+  "source_records_per_fold": [
+    2126,
+    2075,
+    2051
+  ],
+  "source_identities_per_fold": 94,
+  "real_identity_camera_pairs_per_fold": 108,
+  "cross_camera_source_identities_per_fold": 14,
+  "source_minimum_records_per_identity_verified_from_existing_registry": [
+    10,
+    8,
+    8
+  ],
+  "model_extractions": 9,
+  "source_record_forwards": 18756,
+  "source_batch_forward_calls": 153,
+  "feature": "7680D deployed fused embedding; existing deterministic evaluation transform, FP32, no autocast",
+  "prototype_settings_unchanged": {
+    "temperature": 0.05,
+    "momentum": 0.2
+  },
+  "measurements": [
+    "Per-source-record global and environment CE, target probability, prediction, candidate count and global positive/nearest-negative prototype cosine; all94 identity means",
+    "Per-source-record nearest negative, nearest/hardest nonself positive, true cross-camera-positive subset and source-only cosine margins",
+    "Difference between nearest sample negative cosine and nearest fresh identity-prototype negative cosine",
+    "All108 cached/fresh identity-camera and all94 global prototype cosine agreements; original update counts/steps",
+    "Raw feature tensor hash, full model state unchanged hash, initial memory exact reconstruction, original loss mean identity check"
+  ],
+  "summary_quantiles": [
+    0,
+    0.25,
+    0.5,
+    0.75,
+    0.9,
+    0.95,
+    0.99,
+    1
+  ],
+  "optimizer_steps": 0,
+  "backward_calls": 0,
+  "checkpoint_writes": 0,
+  "heldout_image_forwards": 0,
+  "dev_access_count": 0,
+  "official_test_access_count": 0,
+  "scientific_qualification_gates_added": 0,
+  "parameter_scans": 0,
+  "boundaries": [
+    "Seen-source descriptive diagnosis, not independent unknown-identity validation or a new retrieval result",
+    "Clean-image CE does not replay the distribution of strong training augmentations",
+    "Fresh prototypes include the same source records being scored; their accuracy is in-sample",
+    "Cached final prototypes originate from weak augmented training features; cached/fresh disagreement mixes view distribution and model drift",
+    "Prototype/sample margin differences are descriptive association and do not prove a causal explanation for held-out Q1 changes",
+    "No weight, temperature, momentum, sampler, augmentation, epoch, architecture or promotion-rule changes",
+    "All tensors/images/model runtime remains remote; local checks limited to source, JSON and numeric metadata"
+  ],
+  "output": "Unique remote artifact directory containing diagnostic.json and immutable launch/log/exit receipts; no feature tensor export to the local machine"
+}

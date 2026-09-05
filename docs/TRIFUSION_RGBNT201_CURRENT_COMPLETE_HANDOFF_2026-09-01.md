@@ -3173,3 +3173,15 @@ evidence/trifusion_v24_fold1_progress_verification_20260906.json。
 log SHA3c39496ceafe2ef66ec978ca34bf7fd01be97f757f7b8ed6ae22039ce52104e8。
 M0独立审计已闭合，完整Q1独立审计仍待终态。第二对实测平均epoch61.8784秒，
 全终态预计03:18–03:25、下一阶段检查03:17附近；无配置更改、无D1/dev/official/消融晋级。
+
+
+### 41.11 V24 只读 source 原型诊断已固定，尚未运行（2026-09-06）
+
+登记时间：2026-09-06T03:06:30.962594+08:00。依据前两折真实记录准备，不把损失约0.002直接归因为饱和。
+原六端终态 exit0 后，单次读取每折共同初始化和两端最终模型，共9模型/18756 source 样本前向。
+全部94 source 身份和108真实身份/相机原型保留，只计算 fold 内 clean fused 的原型CE、
+样本正负例间隔和缓存/当前clean均值的余弦偏移。heldout/dev/official前向、优化、反传、checkpoint写入均0。
+原型包含被评分样本自身；缓存偏移混有弱增强与clean视图差异，不据此独立声称缓存陈旧或因果失败。
+详见refine-logs/v24/SOURCE_PROTOTYPE_DIAGNOSTIC_PLAN_20260906.md、同名JSON和tools/diagnose_v24_source_prototypes.py；
+脚本SHA aedaa9a1366a37ebcf65c3a24a1a8708c67971cff9163ff82f23565ddab148a8，计划SHA b66e3fd49e3f6645a7ef4e9ce52ef358ec7a828615cc72d3758f5bd1f3a2c41d。本地只做AST解析，无模型或张量运行。
+V24原固定Q1及审计优先，尚未启动该诊断或任何后继训练。
