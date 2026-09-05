@@ -1682,3 +1682,40 @@ Q1需fused增益>=1mAP、各折非负、各专家aggregate非负、bootstrap下�
 超过baseline及三个分支；失败则封存，通过才执行一次all-fit完整主训练与30-dev。
 本节启动时尚无V18训练完成或检索成绩。下次接续先检查同一screen/PID和日志，
 不得因为文档仍显示RUNNING而重复启动，也不得因观察超时重训。
+
+### 31.1 M0已通过，完整Q1执行中
+
+三折source拟合均完成，各14个身份相机配对。每专家第一方向解释的差分能量：
+
+| fold | CNN | Transformer | Mamba |
+|---:|---:|---:|---:|
+| 0 | 17.0265% | 13.3208% | 19.3079% |
+| 1 | 16.6534% | 15.1640% | 17.4071% |
+| 2 | 17.4534% | 16.2247% | 21.5256% |
+
+M0 PASS：三折两端初始全state/前8批增强配对、exact Signal前缀和source状态
+检查通过；真实B64/K8容量8步及固定batch100步均22/22梯度、overflow0、冻结
+模型/方向buffer不变，峰值reserved1810MiB，floor-aware excess ratio
+0.000693512976。该训练内工程门不证明检索提升。
+
+正式Q1已开始；北京时间10:43观测第一折uncentered训练到16/20epoch，仍按
+计划跑完所有六端后统一判定，不因首折结果改变epoch/rank/数据范围。
+M0独立终态快照`evidence/trifusion_v18_m0_seed42_2a71e20.json`，源运行summary
+快照SHA`4fbf61e540e9a083ea966c5715ce9d23a1dd3ffe41fa69c379c25c5f0db5da8d`。
+
+## 32. 跨数据集数据来源与传输（2026-09-05）
+
+从[ICPL-ReID作者仓库](https://github.com/lsh-ahu/ICPL-ReID)核到公开数据链接：
+
+- MSVR310：Google Drive文件`1IxI-fGiluPO_Ies6YjDHeTEuVYhFdYwD`，
+  `MSVR310.zip`，HEAD核得491186967字节。
+- RGBNT100：Google Drive文件`1R4XtbfnwTYyTvaTwrEx-pRCK2tApDWjj`，
+  `RGBNT100.zip`，HEAD核得1584573535字节。
+
+服务器直连Drive实测连接超时；Windows网络HEAD均200且可匿名访问。采用
+Windows内存流→SSH/SFTP传到`/root/autodl-tmp/trifusion-v2/downloads/`，没有
+在Windows保存数据文件。传输进程为本轮本地exec session97866，按MSVR310、
+RGBNT100顺序进行；10:46远端MSVR310.zip已有175865856字节，此时尚未传完。
+后续先检查原会话和文件，不重复下载；传完须核对流SHA与远端文件SHA、查看
+zip目录与解压空间，再落到data目录并核实配对结构。当前不能宣称两个数据集
+已安装或训练。数据传输不等于官方检索评价，未新增官方测试指标访问。
