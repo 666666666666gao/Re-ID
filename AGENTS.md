@@ -24,7 +24,9 @@
   active model experiment until its fixed main gate is resolved.
 
 - MSVR310 Signal source-only baseline infrastructure is registered in
-  refine-logs/msvr310_signal_v1/EXPERIMENT_PLAN.md. T0/M0/full baseline are NOT_RUN.
+  refine-logs/msvr310_signal_v1/EXPERIMENT_PLAN.md. T0 passed2 tests and1032
+  real label masks; M0 wrapper PID61639 launched at04:25:50 on2dcbe85.
+  M0 terminal is not yet observed; full baseline is NOT_RUN.
   Three fresh source models, fixed50epochs, B64/K8,128x256, original MSVR
   multi-step schedule and scene filtering; no V24 promotion or vehicle expert run.
   Validate the same-source8-step-per-fold M0 before starting the baseline.

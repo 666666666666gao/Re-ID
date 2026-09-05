@@ -3295,3 +3295,15 @@ M0只比较共48条clean source前向的严格重载一致性，不读held-out�
 三折M0工程PASS后，才用新初始化执行固定基线终点；任何内部mAP不自动解除RGBNT201主结果晋级门。
 当前只完成本地AST与实际源码字节核对，T0/M0/正式基线仍NOT_RUN，车辆训练和检索仍0。
 注册记录evidence/trifusion_msvr310_signal_v1_preregistration_20260906.json。
+
+### 41.18 MSVR310 协议T0通过，source M0已启动（2026-09-06）
+
+记录时间：2026-09-06T04:28:08.218395+08:00。远端T0两项NumPy排序测试PASS，0.611659秒，1032真实记录query掩码全量一致；
+这是合成距离测试与真实标签核验，不是模型检索结果。一次传输脚本字符串解析错误在执行测试前修正，
+无模型/图像/优化操作，实际T0只执行一次，原错误另行记录。
+
+实际启动2026-09-06T04:25:50.148612+08:00，wrapper PID61639，执行2dcbe85；
+启动前GPU free24126MiB/used1MiB/util0，wrapper SHAff3280a9972f39ab0c4b4a170bf512ed5db916ea1d434add1cb15b0e2001a9c7。
+仅source三折各8步工程检查，路径artifacts/msvr310_signal_source_oof_v1_seed42_2dcbe85/m0。
+没有读取M0终态或提前称通过，首次计划检查约04:29:50，正式50epoch三折尚未启动。
+原配置/损失/源码/数据合同不变；没有车辆TriFusion或官方结果。
