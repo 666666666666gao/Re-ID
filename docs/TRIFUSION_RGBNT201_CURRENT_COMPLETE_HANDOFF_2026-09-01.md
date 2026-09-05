@@ -2694,3 +2694,28 @@ MCNL分别-0.167748/-3.725590/-0.726907。不能用单一分支取代整体比�
 配套evidence/trifusion_v22_initialization_full_comparison_20260905.json保留所有21身份全部输出。
 独立诊断审计待完成；不选择初始化作为部署checkpoint，不改变V22 Q1_FAIL/禁重训规则。
 后继需要新的表征干预依据，当前未设计或启动V23；best dev与未达总目标状态不变。
+
+### 39.7 V22完整Q1独立终态审计完成（2026-09-05）
+
+独立终态审计已完成：GPT-5.5 xhigh原始结论为工程PASS、固定M0 PASS、
+完整性WARN、科学资格FAIL，实际evaluation_type为
+real_gt_train_internal_complete_path_oof_reused_development_qualification。
+全部五项固定科学门均FAIL；没有D1/dev/official/test结果，也没有SOTA晋级证据。
+
+审计员以本地Python3.12.14/NumPy2.3.5从原始AP/Rank和真实ID/camera数组重算
+全部fold/output聚合、21身份/10000次seed42 Bootstrap、全部120epoch日志及loss、
+1680批相机元数据整数计数、M0固定首/100步门；指标/增益/Bootstrap最大差0，
+loss分量舍入最大差7.105646293581458e-09，support舍入最大差7.105427357601002e-15。
+全部六receipt与summary对象一致，query mask无不一致，3360步训练记录完整。
+
+WARN原样保留：criterion、mamba、semantic_residual及protocol四份本地文本仅LF归一化后
+等于运行字节；远端CLIP/V12/final权重等14项只有清单持有，审计员未独立取得权重字节，
+没有加载tensor、图像或重算模型embedding/distance。运行commit5ae096b与审计时
+current HEAD ad7841d不同，绑定依赖执行源码SHA，不把文档commit当作训练commit。
+这仍是反复使用的train-internal完整路径OOF开发资格，不能写成独立dev或官方泛化。
+报告EXPERIMENT_AUDIT_V22_Q1.md/json和trace run10保留原始字节与完整限制；
+审计时result/tracker快照及全部46输入SHA已归档。固定Q1_FAIL及禁扫描/重训规则不变。
+
+初始化完整图库只读诊断的独立审计另在run11进行，27份输入保持冻结；
+该诊断不是新增训练或checkpoint选择，不能把初始化fused当作新的部署结果。
+目前没有新GPU作业，V23尚未实现；下一步核查新的表征改动原始论文与实际源码。

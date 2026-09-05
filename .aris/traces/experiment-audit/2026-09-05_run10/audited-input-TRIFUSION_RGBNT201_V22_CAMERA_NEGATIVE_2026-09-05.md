@@ -156,7 +156,7 @@ candidate CNN79.152126高于candidate fused78.984454，因此五项固定科学�
 
 固定V22封存Q1_FAIL，不作margin/系数/sampler/epoch/LR/seed变体或重训，
 D1/dev/official均未执行。M0工程/固定门独立审计PASS、完整性WARN已归档；
-它不覆盖完整Q1；独立终态审计现已完成，结论见下。当前best dev仍V8的58.4050/59.3939，
+它不覆盖完整Q1，本终态独立审计待完成。当前best dev仍V8的58.4050/59.3939，
 65mAP开发门和官方目标均未达到，整体goal继续active。
 
 ## 全六端最后epoch损失诊断
@@ -174,24 +174,3 @@ D1/dev/official均未执行。M0工程/固定门独立审计PASS、完整性WARN
 
 首/末epoch全部分量、三专家两类hinge和逐臂支持数见evidence/trifusion_v22_terminal_log_and_loss_verification_20260905.json；其余全部epoch保留于六端原始history与日志。
 文件SHA核验见evidence/trifusion_v22_terminal_file_verification_20260905.json；传输原件及SHA见evidence/trifusion_v22_terminal_transfer_manifest_20260905.json。
-
-## 独立终态审计归档
-
-独立终态审计已完成：GPT-5.5 xhigh原始结论为工程PASS、固定M0 PASS、
-完整性WARN、科学资格FAIL，实际evaluation_type为
-real_gt_train_internal_complete_path_oof_reused_development_qualification。
-全部五项固定科学门均FAIL；没有D1/dev/official/test结果，也没有SOTA晋级证据。
-
-审计员以本地Python3.12.14/NumPy2.3.5从原始AP/Rank和真实ID/camera数组重算
-全部fold/output聚合、21身份/10000次seed42 Bootstrap、全部120epoch日志及loss、
-1680批相机元数据整数计数、M0固定首/100步门；指标/增益/Bootstrap最大差0，
-loss分量舍入最大差7.105646293581458e-09，support舍入最大差7.105427357601002e-15。
-全部六receipt与summary对象一致，query mask无不一致，3360步训练记录完整。
-
-WARN原样保留：criterion、mamba、semantic_residual及protocol四份本地文本仅LF归一化后
-等于运行字节；远端CLIP/V12/final权重等14项只有清单持有，审计员未独立取得权重字节，
-没有加载tensor、图像或重算模型embedding/distance。运行commit5ae096b与审计时
-current HEAD ad7841d不同，绑定依赖执行源码SHA，不把文档commit当作训练commit。
-这仍是反复使用的train-internal完整路径OOF开发资格，不能写成独立dev或官方泛化。
-报告EXPERIMENT_AUDIT_V22_Q1.md/json和trace run10保留原始字节与完整限制；
-审计时result/tracker快照及全部46输入SHA已归档。固定Q1_FAIL及禁扫描/重训规则不变。

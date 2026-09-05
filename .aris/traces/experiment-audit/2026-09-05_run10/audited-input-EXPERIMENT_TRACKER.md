@@ -1,6 +1,6 @@
 # V22 Experiment Tracker
 
-更新时间：2026-09-05T21:35:43.112525+08:00；状态Q1_FAIL_SEALED_INDEPENDENT_AUDIT_COMPLETE。
+更新时间：2026-09-05T20:51:57.952144+08:00；状态Q1_FAIL_SEALED_TERMINAL_AUDIT_PENDING。
 
 | ID | 内容 | 状态 | 证据/依赖 |
 |---|---|---|---|
@@ -12,7 +12,7 @@
 | V22-Q1-FILES | 36项完整文件SHA/六receipt一致 | DONE_PASS | evidence/trifusion_v22_terminal_file_verification_20260905.json |
 | V22-Q1-ARRAYS | 全mask/五路/21身份/10000次Bootstrap | DONE_PASS | evidence/trifusion_v22_terminal_array_verification_20260905.json |
 | V22-Q1-LOG | 全120epoch逐行一致/3360步/全部loss诊断 | DONE_PASS | evidence/trifusion_v22_terminal_log_and_loss_verification_20260905.json |
-| V22-Q1-AUDIT | 独立终态审计 | DONE_ENGINEERING_PASS_INTEGRITY_WARN_SCIENTIFIC_FAIL | EXPERIMENT_AUDIT_V22_Q1.md/json |
+| V22-Q1-AUDIT | 独立终态审计 | PENDING | 将交原始文件和固定计划 |
 | V22-D1 | 141-fit refit和30-dev | NOT_QUALIFIED_NOT_RUN | 固定五科学门均FAIL |
 
 V22原始单进程完整结束，退出码0；20:43:56实际观测PID34656已退出、GPU1MiB/0%。
@@ -45,7 +45,7 @@ candidate CNN79.152126高于candidate fused78.984454，因此五项固定科学�
 
 固定V22封存Q1_FAIL，不作margin/系数/sampler/epoch/LR/seed变体或重训，
 D1/dev/official均未执行。M0工程/固定门独立审计PASS、完整性WARN已归档；
-它不覆盖完整Q1；独立终态审计现已完成，结论见下。当前best dev仍V8的58.4050/59.3939，
+它不覆盖完整Q1，本终态独立审计待完成。当前best dev仍V8的58.4050/59.3939，
 65mAP开发门和官方目标均未达到，整体goal继续active。
 
 完整比较：results/TRIFUSION_RGBNT201_V22_CAMERA_NEGATIVE_2026-09-05.md，
@@ -53,24 +53,3 @@ D1/dev/official均未执行。M0工程/固定门独立审计PASS、完整性WARN
 M0审计原始scope/四项LF-only依赖及remote-ledger持有限制保留；
 终态执行器核验不替代独立审计。
 历史每版tracker和第一折部分结果原件不改写。
-
-## 独立终态审计
-
-独立终态审计已完成：GPT-5.5 xhigh原始结论为工程PASS、固定M0 PASS、
-完整性WARN、科学资格FAIL，实际evaluation_type为
-real_gt_train_internal_complete_path_oof_reused_development_qualification。
-全部五项固定科学门均FAIL；没有D1/dev/official/test结果，也没有SOTA晋级证据。
-
-审计员以本地Python3.12.14/NumPy2.3.5从原始AP/Rank和真实ID/camera数组重算
-全部fold/output聚合、21身份/10000次seed42 Bootstrap、全部120epoch日志及loss、
-1680批相机元数据整数计数、M0固定首/100步门；指标/增益/Bootstrap最大差0，
-loss分量舍入最大差7.105646293581458e-09，support舍入最大差7.105427357601002e-15。
-全部六receipt与summary对象一致，query mask无不一致，3360步训练记录完整。
-
-WARN原样保留：criterion、mamba、semantic_residual及protocol四份本地文本仅LF归一化后
-等于运行字节；远端CLIP/V12/final权重等14项只有清单持有，审计员未独立取得权重字节，
-没有加载tensor、图像或重算模型embedding/distance。运行commit5ae096b与审计时
-current HEAD ad7841d不同，绑定依赖执行源码SHA，不把文档commit当作训练commit。
-这仍是反复使用的train-internal完整路径OOF开发资格，不能写成独立dev或官方泛化。
-报告EXPERIMENT_AUDIT_V22_Q1.md/json和trace run10保留原始字节与完整限制；
-审计时result/tracker快照及全部46输入SHA已归档。固定Q1_FAIL及禁扫描/重训规则不变。

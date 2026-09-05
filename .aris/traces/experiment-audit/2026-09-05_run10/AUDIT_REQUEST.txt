@@ -1,0 +1,70 @@
+Perform a bounded independent V22 terminal Q1 experiment-integrity audit as GPT-5.5 xhigh. Read the listed primary artifacts directly and follow their called source dependencies. Do not reuse earlier audit verdicts or executor narratives as findings. Treat generated comparison/recomputation reports as claims to verify against raw evidence, not as authoritative PASS decisions.
+
+Only write these two reports:
+C:/Users/gb/.trifusion_github_publish_22c3bee/EXPERIMENT_AUDIT_V22_Q1.md
+C:/Users/gb/.trifusion_github_publish_22c3bee/EXPERIMENT_AUDIT_V22_Q1.json
+
+Primary files:
+- C:/Users/gb/.trifusion_github_publish_22c3bee/tools/train_signal_preserving_v22.py
+- C:/Users/gb/.trifusion_github_publish_22c3bee/modeling/trifusion/camera_negative_v22.py
+- C:/Users/gb/.trifusion_github_publish_22c3bee/tests/test_trifusion_camera_negative_v22.py
+- C:/Users/gb/.trifusion_github_publish_22c3bee/configs/RGBNT201/TriFusion-signal-preserving-v22-camera-negative-rtx3090.yml
+- C:/Users/gb/.trifusion_github_publish_22c3bee/refine-logs/v22/EXPERIMENT_PLAN.md
+- C:/Users/gb/.trifusion_github_publish_22c3bee/refine-logs/v22/EXPERIMENT_TRACKER.md
+- C:/Users/gb/.trifusion_github_publish_22c3bee/results/TRIFUSION_RGBNT201_V22_CAMERA_NEGATIVE_2026-09-05.md
+- C:/Users/gb/.trifusion_github_publish_22c3bee/evidence/trifusion_v22_q1_seed42_5ae096b.json
+- C:/Users/gb/.trifusion_github_publish_22c3bee/evidence/trifusion_v22_complete_run_20260905.log
+- C:/Users/gb/.trifusion_github_publish_22c3bee/evidence/trifusion_v22_fold_0_batch_hard_residual_receipt.json
+- C:/Users/gb/.trifusion_github_publish_22c3bee/evidence/trifusion_v22_fold_0_camera_negative_residual_receipt.json
+- C:/Users/gb/.trifusion_github_publish_22c3bee/evidence/trifusion_v22_fold_1_batch_hard_residual_receipt.json
+- C:/Users/gb/.trifusion_github_publish_22c3bee/evidence/trifusion_v22_fold_1_camera_negative_residual_receipt.json
+- C:/Users/gb/.trifusion_github_publish_22c3bee/evidence/trifusion_v22_fold_2_batch_hard_residual_receipt.json
+- C:/Users/gb/.trifusion_github_publish_22c3bee/evidence/trifusion_v22_fold_2_camera_negative_residual_receipt.json
+- C:/Users/gb/.trifusion_github_publish_22c3bee/evidence/trifusion_v22_terminal_file_verification_20260905.json
+- C:/Users/gb/.trifusion_github_publish_22c3bee/evidence/trifusion_v22_terminal_transfer_manifest_20260905.json
+- C:/Users/gb/.trifusion_github_publish_22c3bee/evidence/trifusion_v22_terminal_array_verification_20260905.json
+- C:/Users/gb/.trifusion_github_publish_22c3bee/evidence/trifusion_v22_terminal_log_and_loss_verification_20260905.json
+- C:/Users/gb/.trifusion_github_publish_22c3bee/evidence/trifusion_v22_complete_comparison_20260905.json
+- C:/Users/gb/.trifusion_github_publish_22c3bee/evidence/trifusion_v22_progress_20260905_204357.json
+- C:/Users/gb/.trifusion_github_publish_22c3bee/evidence/trifusion_v22_m0_seed42_5ae096b.json
+- C:/Users/gb/.trifusion_github_publish_22c3bee/evidence/trifusion_v22_preregistration_20260905.json
+- C:/Users/gb/.trifusion_github_publish_22c3bee/evidence/trifusion_v22_t0_20260905.json
+- C:/Users/gb/.trifusion_github_publish_22c3bee/evidence/trifusion_v22_launch_20260905.json
+- C:/Users/gb/.trifusion_github_publish_22c3bee/tools/audit_v22_terminal_arrays.py
+- C:/Users/gb/.trifusion_github_publish_22c3bee/tools/verify_v22_terminal_files.py
+- C:/Users/gb/.trifusion_github_publish_22c3bee/tools/report_v22_complete_comparison.py
+- C:/Users/gb/.trifusion_github_publish_22c3bee/tools/audit_source_camera_supervision.py
+- C:/Users/gb/.trifusion_github_publish_22c3bee/evidence/trifusion_source_camera_metadata_20260905.json
+- C:/Users/gb/.trifusion_github_publish_22c3bee/evidence/trifusion_source_camera_metadata_integer_verification_20260905.json
+- C:/Users/gb/.trifusion_github_publish_22c3bee/modeling/trifusion/aligned_data.py
+- C:/Users/gb/.trifusion_github_publish_22c3bee/modeling/trifusion/signal_preserving_v8.py
+- C:/Users/gb/.trifusion_github_publish_22c3bee/modeling/trifusion/signal_preserving_v8_builder.py
+- C:/Users/gb/.trifusion_github_publish_22c3bee/modeling/trifusion/experts/mamba.py
+- C:/Users/gb/.trifusion_github_publish_22c3bee/modeling/trifusion/experts/semantic_residual.py
+- C:/Users/gb/.trifusion_github_publish_22c3bee/modeling/trifusion/criterion.py
+- C:/Users/gb/.trifusion_github_publish_22c3bee/modeling/trifusion/signal_preserving_v13.py
+- C:/Users/gb/.trifusion_github_publish_22c3bee/tools/train_signal_preserving_v17.py
+- C:/Users/gb/.trifusion_github_publish_22c3bee/tools/train_signal_preserving_v18.py
+- C:/Users/gb/.trifusion_github_publish_22c3bee/tools/train_signal_preserving_v19.py
+- C:/Users/gb/.trifusion_github_publish_22c3bee/tools/build_v12_complete_path_oof_targets.py
+- C:/Users/gb/.trifusion_github_publish_22c3bee/tools/run_signal_preserving_v5.py
+- C:/Users/gb/.trifusion_github_publish_22c3bee/tools/run_signal_baseline_dev.py
+- C:/Users/gb/.trifusion_github_publish_22c3bee/tools/diagnose_v6_oracle_complementarity.py
+- C:/Users/gb/.trifusion_github_publish_22c3bee/protocols/rgbnt201_dev_v1.json
+
+Scope and constraints:
+- Local read-only audit except the two report writes. Do not edit implementation, plans, configuration, raw evidence, trackers or traces.
+- No model training/inference/retrieval, images, tensor/checkpoint loads, GPU operations, remote commands, network, downloads or package installation. Available local Python/NumPy/JSON/integer/math operations on supplied arrays are permitted.
+- Keep synthetic T0, real source-only M0, partial captures, terminal Q1 and subsequent file/arithmetic checks separate. Do not infer measurements outside actual artifacts.
+- Judge complete terminal evidence rather than substituting the old M0 audit. Preserve every warning/failure and original frozen gate.
+
+Checklist:
+A. Ground truth and scope: trace real IDs/cameras, source/heldout folds, query masks, complete gallery inclusion and distractors. Independently derive the legal query indices and no-cross-camera-positive exclusions from every complete gallery manifest. Check fit/heldout disjointness, all fold identities, all paired outputs and sampled first-eight augmentation/order records.
+B. Mathematics: trace normalized retrieval/AP/Rank computation and reject self-max/min normalization. Recompute every fold/aggregate output metric, all query paired changes and all identity-level comparisons. Independently execute the entire fixed seed42 identity-cluster bootstrap from AP arrays, including its RNG and denominator, and all preregistered scientific gates. Inspect selected common/ordinary/MCNL objectives, weights, margins, valid-row domain and retained diagnostics. Recompute each epoch's loss arithmetic and camera support statistics against frozen source metadata, all complete training sums, and M0's fixed first/100th gate if used.
+C. File provenance: hash available local primary bytes and distinguish raw, LF-only, remote-ledger-only and inaccessible possessions. Check execution/config/plan/prereg/source/checkpoint/state binding consistency, all standalone receipts against embedded endpoints, and comparison/log/array reports against their real inputs. Distinguish the author's remote whole-file ledger from independently possessed remote binaries.
+D. Live execution: trace actual M0/Q1 loops, optimizer steps, epochs, overflow/gradient/frozen-state checks, final-only saving, strict model reconstruction, full state hash equality and read-only evaluation. Reconcile every logged epoch with saved endpoint history, and actual exit/progress with terminal state. Do not credit unexecuted code.
+E. Selection and claim scope: check all planned arms, folds, epochs, outputs, query identities and checkpoint receipts were retained. Separate reused train-internal complete-path OOF qualification from independent dev/official/test evidence, and engineering completion from scientific advancement. Check all positive and negative findings, and no post-hoc gate changes or endpoint selection.
+F. Claim impact: support/qualify/reject claims with exact file:line references, precise actual evaluation type and untested limits. Treat any cross-version or camera-causality narrative as unproven unless direct evidence supports it.
+
+Required JSON top-level fields: date, auditor, overall_verdict, integrity_status, engineering_integrity, fixed_m0_qualification, scientific_qualification, evaluation_type, checks, claims, recomputation, limitations.
+Record the actual arithmetic tools/runtime and maximum differences in recomputation. Preserve exact numeric values. Return a concise final response with actual verdicts, file hashes and limitations; full details belong in the two reports.

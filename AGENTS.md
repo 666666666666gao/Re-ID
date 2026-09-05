@@ -270,7 +270,10 @@
   sampler/epoch/LR/seed scan or V22 retraining. Remote 36-file SHA, six receipt
   bindings, 120 epoch-log rows and full NumPy/bootstrap arithmetic passed.
   Independent M0 audit is engineering/fixed-M0 PASS, integrity WARN; preserve
-  its bounded scope. Independent terminal Q1 audit is pending. Read the full
+  its bounded scope. Independent terminal Q1 audit is complete: engineering/
+  fixed M0 PASS, integrity WARN, scientific qualification FAIL. Preserve the
+  four LF-only source matches and remote-ledger-only binary limits in
+  EXPERIMENT_AUDIT_V22_Q1.md/json. Read the full
   V22 result and tracker. Any successor requires a new evidence-grounded
   hypothesis and preregistered complete training qualification.
 

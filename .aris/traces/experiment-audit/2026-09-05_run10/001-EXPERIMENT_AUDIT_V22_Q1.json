@@ -1,0 +1,2497 @@
+{
+  "date": "2026-09-05",
+  "auditor": "GPT-5.5 xhigh independent experiment integrity auditor",
+  "overall_verdict": "WARN: terminal Q1 artifacts are internally coherent and engineering-complete, fixed M0 qualification passes, but Q1 scientific qualification fails all preregistered gates; provenance remains limited by LF-only local source matches and remote-ledger-only checkpoint/CLIP/V12 bytes.",
+  "integrity_status": "warn",
+  "engineering_integrity": "pass",
+  "fixed_m0_qualification": "pass",
+  "scientific_qualification": "fail",
+  "evaluation_type": "real_gt_train_internal_complete_path_oof_reused_development_qualification",
+  "checks": {
+    "A_ground_truth_and_scope": {
+      "status": "PASS",
+      "evidence": [
+        ".aris/traces/experiment-audit/2026-09-05_run10/AUDIT_REQUEST.txt:1",
+        ".aris/traces/experiment-audit/2026-09-05_run10/AUDIT_REQUEST.txt:55-70",
+        "configs/RGBNT201/TriFusion-signal-preserving-v22-camera-negative-rtx3090.yml:2-12",
+        "configs/RGBNT201/TriFusion-signal-preserving-v22-camera-negative-rtx3090.yml:31-48",
+        "configs/RGBNT201/TriFusion-signal-preserving-v22-camera-negative-rtx3090.yml:49-83",
+        "tools/build_v12_complete_path_oof_targets.py:29-56",
+        "tools/build_v12_complete_path_oof_targets.py:156-173",
+        "tools/run_signal_baseline_dev.py:27-54",
+        "protocols/rgbnt201_dev_v1.json:2-18",
+        "tools/train_signal_preserving_v22.py:35-56",
+        "tools/train_signal_preserving_v22.py:59-89",
+        "tools/audit_source_camera_supervision.py:23-50",
+        "tools/audit_source_camera_supervision.py:51-101",
+        "tools/audit_source_camera_supervision.py:103-127",
+        "evidence/trifusion_source_camera_metadata_20260905.json:2-18",
+        "evidence/trifusion_source_camera_metadata_20260905.json:22-42",
+        "evidence/trifusion_source_camera_metadata_20260905.json:124440-124460",
+        "evidence/trifusion_source_camera_metadata_20260905.json:244584-244603",
+        "evidence/trifusion_source_camera_metadata_integer_verification_20260905.json:2-22",
+        "evidence/trifusion_v22_q1_seed42_5ae096b.json:8166-8167",
+        "evidence/trifusion_v22_q1_seed42_5ae096b.json:31253-31254",
+        "evidence/trifusion_v22_q1_seed42_5ae096b.json:54885-54886"
+      ],
+      "findings": [
+        "Real identity/camera labels are derived from RGBNT201 filenames and gallery/source manifests, while split construction uses frozen protocol train_ids and fit-only relabeling.",
+        "All six Q1 model bindings have 94 fit identities, 47 heldout identities, zero overlap and heldout IDs equal the gallery-manifest identities.",
+        "Independent query mask replay exactly matched every recorded query_indices and excluded_no_cross_camera_positive array; no query_mask_mismatches were found.",
+        "Derived scope: [{'fold': 0, 'gallery_records': 1000, 'eligible_queries': 190, 'excluded_only_from_query': 810, 'gallery_identities': 47, 'eligible_query_identities': 7, 'unique_files': 1000, 'camera_counts': {'0': 694, '1': 212, '2': 38, '3': 56}}, {'fold': 1, 'gallery_records': 1051, 'eligible_queries': 179, 'excluded_only_from_query': 872, 'gallery_identities': 47, 'eligible_query_identities': 7, 'unique_files': 1051, 'camera_counts': {'0': 710, '1': 243, '2': 25, '3': 73}}, {'fold': 2, 'gallery_records': 1075, 'eligible_queries': 202, 'excluded_only_from_query': 873, 'gallery_identities': 47, 'eligible_query_identities': 7, 'unique_files': 1075, 'camera_counts': {'0': 769, '1': 281, '2': 25}}]; heldout identity union=141, heldout identity sum=141.",
+        "The metadata field first_8_batches_exactly_match_v21_m0_indices_and_paths is a stale literal name; the generating code reads the supplied M0 preflight object, so it is treated as V22 metadata-prefix evidence."
+      ],
+      "claim_impact": "Supports Q1 engineering use of real train-internal complete-path OOF identity/camera labels, with no independent dev/official/test upgrade."
+    },
+    "B_mathematics_losses_scores_and_gates": {
+      "status": "FAIL",
+      "evidence": [
+        "tools/train_signal_preserving_v22.py:100-128",
+        "modeling/trifusion/camera_negative_v22.py:8-50",
+        "modeling/trifusion/signal_preserving_v8.py:690-742",
+        "modeling/trifusion/criterion.py:17-34",
+        "tools/train_signal_preserving_v18.py:133-151",
+        "tools/audit_v17_full_gallery.py:14-43",
+        "tools/diagnose_v6_oracle_complementarity.py:81-108",
+        "modeling/trifusion/signal_preserving_v13.py:253-279",
+        "evidence/trifusion_v22_q1_seed42_5ae096b.json:3-43",
+        "evidence/trifusion_v22_q1_seed42_5ae096b.json:82064-82156",
+        "evidence/trifusion_v22_terminal_array_verification_20260905.json:1-6",
+        "evidence/trifusion_v22_terminal_array_verification_20260905.json:87-205",
+        "evidence/trifusion_v22_terminal_array_verification_20260905.json:325-365",
+        "evidence/trifusion_v22_q1_seed42_5ae096b.json:79338-79346",
+        "evidence/trifusion_v22_q1_seed42_5ae096b.json:82057-82061"
+      ],
+      "findings": [
+        "The common objective retains fused ID, fused triplet, branch ID/triplet and residual ID terms; only the selected residual metric differs between endpoints.",
+        "MCNL uses normalized residual embeddings, FP32 Euclidean distance, real same-ID positives, same-camera negatives and other-camera negatives, and averages only rows with all required groups.",
+        "Retrieval normalizes features before cdist and computes AP/rank with cross-camera query eligibility and same-ID same-camera junk exclusion; no self max/min score normalization is used in the audited path.",
+        "Independent AP/rank aggregation matched all recorded metrics/gains/bootstrap with max summary numeric difference 0.0.",
+        "All Q1 scientific gates fail: gains={'baseline_only': 0.0, 'fused': -1.6562222495424237, 'cnn': -0.8973122994738247, 'transformer': -4.265440347425752, 'mamba': 0.3176245924530008}, fold_fused_gains=[-0.6760682853190474, -2.1499426404255075, -2.140644542781857], bootstrap_lower_bound_95_mAP=-3.8769957222550886, checks={'aggregate_fused_gain_at_least_1pp': False, 'all_fold_fused_nonnegative': False, 'all_expert_aggregate_nonnegative': False, 'fused_bootstrap_lower_positive': False, 'fused_beats_baseline_and_experts': False}.",
+        "Epoch loss/support arithmetic matched: max loss roundoff=7.105646293581458e-09, max support roundoff=7.105427357601002e-15. M0 floor=0.57838292104621, excess ratio=0.013769174124866987, both exact versus recorded."
+      ],
+      "claim_impact": "Rejects the fixed V22 scientific improvement claim, while supporting arithmetic integrity."
+    },
+    "C_file_existence_and_provenance": {
+      "status": "WARN",
+      "evidence": [
+        "evidence/trifusion_v22_q1_seed42_5ae096b.json:5-28",
+        "evidence/trifusion_v22_terminal_file_verification_20260905.json:1-20",
+        "evidence/trifusion_v22_terminal_file_verification_20260905.json:222-318",
+        "evidence/trifusion_v22_terminal_transfer_manifest_20260905.json:1-65",
+        "tests/test_trifusion_camera_negative_v22.py:9-71",
+        "evidence/trifusion_v22_t0_20260905.json:27-42",
+        "evidence/trifusion_v22_launch_20260905.json:1-59",
+        "evidence/trifusion_v22_progress_20260905_204357.json:1-10",
+        "evidence/trifusion_v22_progress_20260905_204357.json:38-58"
+      ],
+      "findings": [
+        "All requested primary local artifacts existed and were hashed; Q1 summary SHA=b8cd7db81efc3827a91d165d47e001073785420baf8ddfc8507a2eead9c3d6a3, log SHA=a091390a25ced0cfd336fce3c5bd6c51565fcad6becfbf3419778bcb9b7a2f1a.",
+        "Transferred local summary/log/receipt artifacts match manifest bytes/SHA: True; all standalone receipts equal embedded endpoint objects: True.",
+        "Execution commit=5ae096b65eb4c9987b0b8edaa7bfcd8a4cee1c36; current local HEAD=ad7841d57a063148f4b278aec5b87e3d3104af44; terminal verifier observed HEAD=25e9a1bb8ad36dd8be93c6ba9b4202ba405e6f05.",
+        "Current local source raw mismatches are LF-only matches for ['modeling/trifusion/criterion.py', 'modeling/trifusion/experts/mamba.py', 'modeling/trifusion/experts/semantic_residual.py', 'protocols/rgbnt201_dev_v1.json'].",
+        "Terminal verifier records 36 remote whole-file SHA checks and six receipt checks; 14 entries, including remote CLIP/V12/final checkpoint binaries, were not independently possessed as local bytes."
+      ],
+      "claim_impact": "Supports local evidence-file integrity and content-level source identity, but restricts remote binary claims to the recorded remote SHA ledger."
+    },
+    "D_live_execution_and_engineering": {
+      "status": "PASS",
+      "evidence": [
+        "tools/train_signal_preserving_v22.py:131-146",
+        "tools/train_signal_preserving_v22.py:149-171",
+        "tools/train_signal_preserving_v22.py:196-241",
+        "tools/train_signal_preserving_v22.py:333-407",
+        "evidence/trifusion_v22_complete_run_20260905.log:25",
+        "evidence/trifusion_v22_complete_run_20260905.log:91",
+        "evidence/trifusion_v22_complete_run_20260905.log:101-325",
+        "evidence/trifusion_v22_complete_run_20260905.log:326",
+        "evidence/trifusion_v22_terminal_log_and_loss_verification_20260905.json:1-10",
+        "evidence/trifusion_v22_terminal_log_and_loss_verification_20260905.json:235-251",
+        "evidence/trifusion_v22_progress_20260905_204357.json:1-10",
+        "evidence/trifusion_v22_progress_20260905_204357.json:38-58",
+        "evidence/trifusion_v22_terminal_log_and_loss_verification_20260905.json:11-84",
+        "evidence/trifusion_v22_terminal_log_and_loss_verification_20260905.json:86-233"
+      ],
+      "findings": [
+        "The source implements optimizer/AMP gradient coverage, preflight, 20-epoch endpoint training, final checkpoint save, rebuild/strict reload and read-only evaluation before terminal status assignment.",
+        "Parsed log reconciliation: {'log_sha256': 'a091390a25ced0cfd336fce3c5bd6c51565fcad6becfbf3419778bcb9b7a2f1a', 'log_lines': 326, 'epoch_json_rows': 120, 'epoch_rows_equal_saved_histories': True, 'preflight_lines': [{'line': 25, 'fold': 0}, {'line': 44, 'fold': 1}, {'line': 63, 'fold': 2}], 'm0_line': {'line': 91, 'passed': True}, 'q1_final_lines': [{'line': 130, 'fold': 0, 'endpoint': 'batch_hard_residual'}, {'line': 169, 'fold': 0, 'endpoint': 'camera_negative_residual'}, {'line': 208, 'fold': 1, 'endpoint': 'batch_hard_residual'}, {'line': 247, 'fold': 1, 'endpoint': 'camera_negative_residual'}, {'line': 286, 'fold': 2, 'endpoint': 'batch_hard_residual'}, {'line': 325, 'fold': 2, 'endpoint': 'camera_negative_residual'}], 'final_line': {'line': 326, 'status': 'Q1_FAIL'}}.",
+        "Q1 training rows: [(0, 'batch_hard_residual', 580, 203, 203, 0, True), (0, 'camera_negative_residual', 580, 203, 203, 0, True), (1, 'batch_hard_residual', 560, 203, 203, 0, True), (1, 'camera_negative_residual', 560, 203, 203, 0, True), (2, 'batch_hard_residual', 540, 203, 203, 0, True), (2, 'camera_negative_residual', 540, 203, 203, 0, True)]; total optimizer steps=3360.",
+        "M0 comprises 8 control capacity steps, 8 candidate capacity steps and 100 fixed-batch candidate steps. T0 and terminal verification processes record zero project optimizer or retrieval executions."
+      ],
+      "claim_impact": "Supports engineering completion and fixed M0 qualification, but not scientific advancement."
+    },
+    "E_scope_selection_and_retention": {
+      "status": "WARN",
+      "evidence": [
+        "refine-logs/v22/EXPERIMENT_PLAN.md:68-87",
+        "refine-logs/v22/EXPERIMENT_PLAN.md:109-125",
+        "evidence/trifusion_v22_q1_seed42_5ae096b.json:3-43",
+        "evidence/trifusion_v22_q1_seed42_5ae096b.json:82064-82156",
+        "results/TRIFUSION_RGBNT201_V22_CAMERA_NEGATIVE_2026-09-05.md:3-11",
+        "results/TRIFUSION_RGBNT201_V22_CAMERA_NEGATIVE_2026-09-05.md:129-160",
+        "results/TRIFUSION_RGBNT201_V22_CAMERA_NEGATIVE_2026-09-05.md:162-176",
+        "evidence/trifusion_v22_terminal_array_verification_20260905.json:1-6",
+        "evidence/trifusion_v22_terminal_array_verification_20260905.json:87-205",
+        "evidence/trifusion_v22_terminal_array_verification_20260905.json:325-365"
+      ],
+      "findings": [
+        "All planned Q1 arms, folds, endpoints, outputs, final checkpoints, histories, identity rows, paired query changes and negative outcomes are retained.",
+        "No endpoint, epoch, margin, coefficient, sampler, LR or seed rerun is evidenced; D1/dev/official were not executed after Q1 failure.",
+        "Complete Q1 scope is 571 eligible queries, 21 eligible query identities, 3126 gallery records and 2555 records excluded only from the query denominator.",
+        "WARN reflects reused train-internal OOF scope, not hidden selection."
+      ],
+      "claim_impact": "Qualifies the result as complete Q1 artifact evidence only; rejects dev/official/test/SOTA escalation."
+    },
+    "F_evaluation_classification_and_claims": {
+      "status": "FAIL",
+      "evidence": [
+        "evidence/trifusion_v22_q1_seed42_5ae096b.json:3-43",
+        "evidence/trifusion_v22_q1_seed42_5ae096b.json:82064-82156",
+        "results/TRIFUSION_RGBNT201_V22_CAMERA_NEGATIVE_2026-09-05.md:3-11",
+        "results/TRIFUSION_RGBNT201_V22_CAMERA_NEGATIVE_2026-09-05.md:129-160",
+        "results/TRIFUSION_RGBNT201_V22_CAMERA_NEGATIVE_2026-09-05.md:162-176",
+        "tests/test_trifusion_camera_negative_v22.py:9-71",
+        "evidence/trifusion_v22_t0_20260905.json:27-42",
+        "evidence/trifusion_v22_launch_20260905.json:1-59",
+        "refine-logs/v22/EXPERIMENT_PLAN.md:109-125"
+      ],
+      "findings": [
+        "Classification: T0 synthetic CUDA loss/autograd contract only; M0 source-only engineering on real train-source batches; Q1 real-GT train-internal complete-path OOF reused development qualification; D1/dev/official/test absent.",
+        "Scientific claim eligibility is false: candidate fused mAP 78.98445428311234 < control fused mAP 80.64067653265477; all fold fused gains are negative; bootstrap lower bound is negative; candidate fused does not beat candidate CNN.",
+        "Camera-causality, mechanism, broad generalization and SOTA narratives are not established by these artifacts."
+      ],
+      "claim_impact": "Rejects scientific improvement/generalization/SOTA claims; permits engineering-integrity and negative-result reporting claims."
+    }
+  },
+  "claims": {
+    "terminal_q1_completed": {
+      "assessment": "supported",
+      "evidence": [
+        "evidence/trifusion_v22_complete_run_20260905.log:101-326",
+        "evidence/trifusion_v22_progress_20260905_204357.json:1-10"
+      ],
+      "basis": "Three folds, two endpoints, 120 epoch rows, six final metric rows, terminal Q1_FAIL, exit code 0 and six standalone receipts."
+    },
+    "fixed_m0_gate_passed": {
+      "assessment": "supported_engineering_only",
+      "evidence": [
+        "evidence/trifusion_v22_q1_seed42_5ae096b.json:79338-79346",
+        "evidence/trifusion_v22_q1_seed42_5ae096b.json:82057-82061"
+      ],
+      "basis": "M0 checks all true; floor=0.57838292104621, excess ratio=0.013769174124866987."
+    },
+    "camera_negative_improves_fused_mAP_by_at_least_1pp": {
+      "assessment": "rejected",
+      "evidence": [
+        "evidence/trifusion_v22_q1_seed42_5ae096b.json:82130-82148"
+      ],
+      "basis": "Fused mAP gain is -1.6562222495424237 pp."
+    },
+    "all_fold_fused_nonnegative": {
+      "assessment": "rejected",
+      "evidence": [
+        "evidence/trifusion_v22_q1_seed42_5ae096b.json:82137-82148"
+      ],
+      "basis": "Fold gains are [-0.6760682853190474, -2.1499426404255075, -2.140644542781857]."
+    },
+    "all_expert_aggregate_nonnegative": {
+      "assessment": "rejected",
+      "evidence": [
+        "evidence/trifusion_v22_q1_seed42_5ae096b.json:82130-82148"
+      ],
+      "basis": "cnn=-0.8973122994738247, transformer=-4.265440347425752, mamba=0.3176245924530008."
+    },
+    "positive_identity_cluster_bootstrap": {
+      "assessment": "rejected",
+      "evidence": [
+        "evidence/trifusion_v22_q1_seed42_5ae096b.json:82149-82152",
+        "modeling/trifusion/signal_preserving_v13.py:253-279"
+      ],
+      "basis": "Lower bound is -3.8769957222550886 mAP."
+    },
+    "candidate_fused_beats_baseline_and_experts": {
+      "assessment": "rejected",
+      "evidence": [
+        "evidence/trifusion_v22_q1_seed42_5ae096b.json:82104-82127"
+      ],
+      "basis": "Candidate fused mAP 78.98445428311234 is below candidate CNN 79.15212593318725."
+    },
+    "independent_dev_or_official_test_or_sota": {
+      "assessment": "rejected",
+      "evidence": [
+        "evidence/trifusion_v22_q1_seed42_5ae096b.json:30-42",
+        "results/TRIFUSION_RGBNT201_V22_CAMERA_NEGATIVE_2026-09-05.md:157-160"
+      ],
+      "basis": "dev_access_count=0, official_test_access_count=0, d1_executed=false, next_phase_qualified=false."
+    },
+    "mechanism_camera_causality_generalization": {
+      "assessment": "unsupported",
+      "evidence": [
+        "refine-logs/v22/EXPERIMENT_PLAN.md:64-66",
+        "results/TRIFUSION_RGBNT201_V22_CAMERA_NEGATIVE_2026-09-05.md:152-155"
+      ],
+      "basis": "No causal ablation, independent dev/test, or direct mechanism proof."
+    }
+  },
+  "recomputation": {
+    "tools": {
+      "python": "3.12.14 local codex primary runtime",
+      "numpy": "2.3.5",
+      "method": "Inline local Python/NumPy/JSON arithmetic over supplied arrays and metadata only",
+      "runtime_seconds": 0.6549305000226013
+    },
+    "hashes": {
+      "request_sha256": "793c10bee03fcb95fdb1758b9423a7698a26dc99bdf641898efe4989be9fd60c",
+      "q1_summary_sha256": "b8cd7db81efc3827a91d165d47e001073785420baf8ddfc8507a2eead9c3d6a3",
+      "m0_snapshot_sha256": "ad0a27abbba79f1c039f68ebcfcc64eba731916581a8dec67a5c64c19d212427",
+      "log_sha256": "a091390a25ced0cfd336fce3c5bd6c51565fcad6becfbf3419778bcb9b7a2f1a",
+      "metadata_sha256": "5a42be65a512534bb87f52a5f3f4385042157511803774579e65d96d94662d31",
+      "array_verification_sha256": "d0a30ecbe697589f582092e0f6653b625087a2bf2d33e028358aa1c1726fa704",
+      "log_loss_verification_sha256": "6d0bf3a04a795dd1e3dc6f034ec2eede7c05f66a9f789337d34b1d3b10820b5a",
+      "file_verification_sha256": "e71172316897ba2c7fcef1262ccf302a755ed0bec26339100ad8846adce4075f",
+      "transfer_manifest_sha256": "158989ae769abce44835d54a21777c98ced9e6aa0f6587d08bd232f0a9972bfa",
+      "complete_comparison_sha256": "63fc4aa6e147fbf5faf73e707adc09bf7dc0f77912e99ac3ae7fe3437108c30c"
+    },
+    "primary_file_hashes": [
+      {
+        "path": "tools/train_signal_preserving_v22.py",
+        "exists": true,
+        "bytes": 25452,
+        "lines": 417,
+        "sha256": "ee17aeba9bc2a567b1163e6a57759a55423ee5f77edde21e6c7a81625fe45a53"
+      },
+      {
+        "path": "modeling/trifusion/camera_negative_v22.py",
+        "exists": true,
+        "bytes": 2358,
+        "lines": 50,
+        "sha256": "38b6ccc4e495d55af7e68617cdb6b54fdede9e3f177fa3c54a7f8d0db4465f97"
+      },
+      {
+        "path": "tests/test_trifusion_camera_negative_v22.py",
+        "exists": true,
+        "bytes": 3553,
+        "lines": 71,
+        "sha256": "0d529426d2eb7dad8d5fdae1930866fae672e1a7aee24a8fd81793b0ab78eaa3"
+      },
+      {
+        "path": "configs/RGBNT201/TriFusion-signal-preserving-v22-camera-negative-rtx3090.yml",
+        "exists": true,
+        "bytes": 3571,
+        "lines": 83,
+        "sha256": "5efd8e6dbf8cd70624902148a52701ad69ae5766825293efa878836a3e74f4f6"
+      },
+      {
+        "path": "refine-logs/v22/EXPERIMENT_PLAN.md",
+        "exists": true,
+        "bytes": 8418,
+        "lines": 136,
+        "sha256": "ce2d1f93d5ef36a3eb53d2593fc548b31bff0ea4a3f737b19e1dcaf721d9723b"
+      },
+      {
+        "path": "refine-logs/v22/EXPERIMENT_TRACKER.md",
+        "exists": true,
+        "bytes": 4193,
+        "lines": 55,
+        "sha256": "9225c367b0ae6d2b8456748bee46f98339c1eadc6c28da75fba3d58730c5353f"
+      },
+      {
+        "path": "results/TRIFUSION_RGBNT201_V22_CAMERA_NEGATIVE_2026-09-05.md",
+        "exists": true,
+        "bytes": 13071,
+        "lines": 176,
+        "sha256": "6375665996b84b90af48757f1f4634c165d61f3e5d93222235611b7cedbd5010"
+      },
+      {
+        "path": "evidence/trifusion_v22_q1_seed42_5ae096b.json",
+        "exists": true,
+        "bytes": 2207490,
+        "lines": 82157,
+        "sha256": "b8cd7db81efc3827a91d165d47e001073785420baf8ddfc8507a2eead9c3d6a3"
+      },
+      {
+        "path": "evidence/trifusion_v22_complete_run_20260905.log",
+        "exists": true,
+        "bytes": 255971,
+        "lines": 326,
+        "sha256": "a091390a25ced0cfd336fce3c5bd6c51565fcad6becfbf3419778bcb9b7a2f1a"
+      },
+      {
+        "path": "evidence/trifusion_v22_fold_0_batch_hard_residual_receipt.json",
+        "exists": true,
+        "bytes": 170924,
+        "lines": 9040,
+        "sha256": "68ebe7a4e364e49b216fa05282fb6cc56d962c73cd59528ee05a4f6ae3de99ea"
+      },
+      {
+        "path": "evidence/trifusion_v22_fold_0_camera_negative_residual_receipt.json",
+        "exists": true,
+        "bytes": 172173,
+        "lines": 9040,
+        "sha256": "061348db10cbaa77f42ba1266cb1041eb8fb3fa7d5318e75b0dea6ff6dfebb9a"
+      },
+      {
+        "path": "evidence/trifusion_v22_fold_1_batch_hard_residual_receipt.json",
+        "exists": true,
+        "bytes": 166909,
+        "lines": 9185,
+        "sha256": "a220ad85229b2af8053312394c9923a3bd2f298b3069850e340d1f7c318b4673"
+      },
+      {
+        "path": "evidence/trifusion_v22_fold_1_camera_negative_residual_receipt.json",
+        "exists": true,
+        "bytes": 169560,
+        "lines": 9185,
+        "sha256": "0215da798fa78e0031a337dbfb3a9ac8d5c8ca67eb11ba50e367fd0fe7209335"
+      },
+      {
+        "path": "evidence/trifusion_v22_fold_2_batch_hard_residual_receipt.json",
+        "exists": true,
+        "bytes": 178754,
+        "lines": 9535,
+        "sha256": "71c64c1c85dab6df835ac86fb41eab5e16fb48fd68b0ca5949ea3d0c79e4bd53"
+      },
+      {
+        "path": "evidence/trifusion_v22_fold_2_camera_negative_residual_receipt.json",
+        "exists": true,
+        "bytes": 179724,
+        "lines": 9535,
+        "sha256": "f35a97430b1311244431cba0f946866a0141f9192c1350f1bbc4329ba4a20c42"
+      },
+      {
+        "path": "evidence/trifusion_v22_terminal_file_verification_20260905.json",
+        "exists": true,
+        "bytes": 15846,
+        "lines": 318,
+        "sha256": "e71172316897ba2c7fcef1262ccf302a755ed0bec26339100ad8846adce4075f"
+      },
+      {
+        "path": "evidence/trifusion_v22_terminal_transfer_manifest_20260905.json",
+        "exists": true,
+        "bytes": 3493,
+        "lines": 65,
+        "sha256": "158989ae769abce44835d54a21777c98ced9e6aa0f6587d08bd232f0a9972bfa"
+      },
+      {
+        "path": "evidence/trifusion_v22_terminal_array_verification_20260905.json",
+        "exists": true,
+        "bytes": 10039,
+        "lines": 365,
+        "sha256": "d0a30ecbe697589f582092e0f6653b625087a2bf2d33e028358aa1c1726fa704"
+      },
+      {
+        "path": "evidence/trifusion_v22_terminal_log_and_loss_verification_20260905.json",
+        "exists": true,
+        "bytes": 10781,
+        "lines": 252,
+        "sha256": "6d0bf3a04a795dd1e3dc6f034ec2eede7c05f66a9f789337d34b1d3b10820b5a"
+      },
+      {
+        "path": "evidence/trifusion_v22_complete_comparison_20260905.json",
+        "exists": true,
+        "bytes": 553089,
+        "lines": 15152,
+        "sha256": "63fc4aa6e147fbf5faf73e707adc09bf7dc0f77912e99ac3ae7fe3437108c30c"
+      },
+      {
+        "path": "evidence/trifusion_v22_progress_20260905_204357.json",
+        "exists": true,
+        "bytes": 2254,
+        "lines": 59,
+        "sha256": "2f1e2ed92fedf2f8624d5e075710e65b02fc01922d71823c1c93b39f8004ee8d"
+      },
+      {
+        "path": "evidence/trifusion_v22_m0_seed42_5ae096b.json",
+        "exists": true,
+        "bytes": 374648,
+        "lines": 10892,
+        "sha256": "ad0a27abbba79f1c039f68ebcfcc64eba731916581a8dec67a5c64c19d212427"
+      },
+      {
+        "path": "evidence/trifusion_v22_preregistration_20260905.json",
+        "exists": true,
+        "bytes": 1289,
+        "lines": 32,
+        "sha256": "2f6a2a594e9953d8b7f0110d042cb985a3753fff6d7ef4db07fc23591dc00871"
+      },
+      {
+        "path": "evidence/trifusion_v22_t0_20260905.json",
+        "exists": true,
+        "bytes": 1543,
+        "lines": 43,
+        "sha256": "5301aef81deaa33f3fc2966969612f175cb6b4879594d92241f2386b925750f3"
+      },
+      {
+        "path": "evidence/trifusion_v22_launch_20260905.json",
+        "exists": true,
+        "bytes": 3434,
+        "lines": 59,
+        "sha256": "c486c4ce1cd37c42faa5b094de70f31011594b78f279ad05a85e6d5f97dc5c9c"
+      },
+      {
+        "path": "tools/audit_v22_terminal_arrays.py",
+        "exists": true,
+        "bytes": 14160,
+        "lines": 225,
+        "sha256": "73b44d072be44b9af5147ab4cd1c2e0e4f85762865061ce7afd54c8cf076698a"
+      },
+      {
+        "path": "tools/verify_v22_terminal_files.py",
+        "exists": true,
+        "bytes": 5813,
+        "lines": 102,
+        "sha256": "2fef1b7663a647d053665e82c535d3b3c19943dcad406580bb7ee8ef02507759"
+      },
+      {
+        "path": "tools/report_v22_complete_comparison.py",
+        "exists": true,
+        "bytes": 11558,
+        "lines": 167,
+        "sha256": "3007a5b93e4f965851ee1332332937e599c80f92a12aad0d1a969f14e4f7a552"
+      },
+      {
+        "path": "tools/audit_source_camera_supervision.py",
+        "exists": true,
+        "bytes": 7574,
+        "lines": 140,
+        "sha256": "3f3e18d832a0f44837ca0a28551b5ecaf9a1081c8e0e3da7e298bc633b4ed6a0"
+      },
+      {
+        "path": "evidence/trifusion_source_camera_metadata_20260905.json",
+        "exists": true,
+        "bytes": 6367917,
+        "lines": 360562,
+        "sha256": "5a42be65a512534bb87f52a5f3f4385042157511803774579e65d96d94662d31"
+      },
+      {
+        "path": "evidence/trifusion_source_camera_metadata_integer_verification_20260905.json",
+        "exists": true,
+        "bytes": 899,
+        "lines": 23,
+        "sha256": "014252d6d3dfa8fe512f770411c9eb43dd7dcd5ad17a49273814f0b957482703"
+      },
+      {
+        "path": "modeling/trifusion/aligned_data.py",
+        "exists": true,
+        "bytes": 10062,
+        "lines": 296,
+        "sha256": "3ea362d17660483b554cb599442b6377ace020fa114969b9bdd58906fbceedd5"
+      },
+      {
+        "path": "modeling/trifusion/signal_preserving_v8.py",
+        "exists": true,
+        "bytes": 28592,
+        "lines": 755,
+        "sha256": "97a7b5fe6dab882c2ed92ed1db95b9a8f48eae1d99a3a9b145b0cdfc4b8cefbc"
+      },
+      {
+        "path": "modeling/trifusion/signal_preserving_v8_builder.py",
+        "exists": true,
+        "bytes": 3900,
+        "lines": 103,
+        "sha256": "8afb028957ecff1a0a26497f7d0460bc240b0f8612a3c476b52a9a6667a3049d"
+      },
+      {
+        "path": "modeling/trifusion/experts/mamba.py",
+        "exists": true,
+        "bytes": 7479,
+        "lines": 209,
+        "sha256": "8b9cb420c42e4d70f8de7e4608637c81c505b97ca54228175462a7e92fdfcc83"
+      },
+      {
+        "path": "modeling/trifusion/experts/semantic_residual.py",
+        "exists": true,
+        "bytes": 15882,
+        "lines": 454,
+        "sha256": "c1831a3de031be033624420791cecf2e7a3945e009655089cb48ee4b9912edd6"
+      },
+      {
+        "path": "modeling/trifusion/criterion.py",
+        "exists": true,
+        "bytes": 6231,
+        "lines": 152,
+        "sha256": "9a028e5711981123310f5e0d441a35b7dbecaf33f9edcec4fd3773d070cf877f"
+      },
+      {
+        "path": "modeling/trifusion/signal_preserving_v13.py",
+        "exists": true,
+        "bytes": 9347,
+        "lines": 293,
+        "sha256": "7b7c4abb220ed234608553c77aeedd5f8ef763abb04cce5b21f1bfce0f4daa62"
+      },
+      {
+        "path": "tools/train_signal_preserving_v17.py",
+        "exists": true,
+        "bytes": 61124,
+        "lines": 1616,
+        "sha256": "333886d16f73987accddb70b0780661bb9400b8afd04af01b57e188d34e5228d"
+      },
+      {
+        "path": "tools/train_signal_preserving_v18.py",
+        "exists": true,
+        "bytes": 17540,
+        "lines": 310,
+        "sha256": "f6bdda4631d710d0b6db5fe2a8df124d8dcbd294cb54adcf3ec261d523e96cf8"
+      },
+      {
+        "path": "tools/train_signal_preserving_v19.py",
+        "exists": true,
+        "bytes": 26363,
+        "lines": 516,
+        "sha256": "5f000d3d3abe9636cae97e292db2c63a3a20f349c125dfe4b27bd3fca95bb9c5"
+      },
+      {
+        "path": "tools/build_v12_complete_path_oof_targets.py",
+        "exists": true,
+        "bytes": 32723,
+        "lines": 857,
+        "sha256": "fc13354b1065c46677122ee9cf63816087facca4e0e98ec5e6e2fb0dece141e4"
+      },
+      {
+        "path": "tools/run_signal_preserving_v5.py",
+        "exists": true,
+        "bytes": 65190,
+        "lines": 1682,
+        "sha256": "e162184f68778b4991db0f97f26c5fda273b2ad2f7c8db2bbb2d53775eb717e5"
+      },
+      {
+        "path": "tools/run_signal_baseline_dev.py",
+        "exists": true,
+        "bytes": 12601,
+        "lines": 351,
+        "sha256": "083967f2a38267415b2992da98c2ad9429ebb793f387b45daac1dbb4eb16f365"
+      },
+      {
+        "path": "tools/diagnose_v6_oracle_complementarity.py",
+        "exists": true,
+        "bytes": 9754,
+        "lines": 276,
+        "sha256": "919b624156c57f92fa75f79a06fe7c872a02d730fa8cd021ce9d7b4e498b1db2"
+      },
+      {
+        "path": "protocols/rgbnt201_dev_v1.json",
+        "exists": true,
+        "bytes": 5685,
+        "lines": 309,
+        "sha256": "f7f6f8a906c06fec4918929fb5c17abfc197986b99e017aca1d3e15831c1541d"
+      }
+    ],
+    "source_hash_comparison": [
+      {
+        "path": "modeling/trifusion/aligned_data.py",
+        "execution_sha256_literal": "3ea362d17660483b554cb599442b6377ace020fa114969b9bdd58906fbceedd5",
+        "current_local_raw_sha256": "3ea362d17660483b554cb599442b6377ace020fa114969b9bdd58906fbceedd5",
+        "current_local_lf_normalized_sha256": "3ea362d17660483b554cb599442b6377ace020fa114969b9bdd58906fbceedd5",
+        "current_raw_matches_execution": true,
+        "current_lf_normalized_matches_execution": false
+      },
+      {
+        "path": "modeling/trifusion/camera_negative_v22.py",
+        "execution_sha256_literal": "38b6ccc4e495d55af7e68617cdb6b54fdede9e3f177fa3c54a7f8d0db4465f97",
+        "current_local_raw_sha256": "38b6ccc4e495d55af7e68617cdb6b54fdede9e3f177fa3c54a7f8d0db4465f97",
+        "current_local_lf_normalized_sha256": "38b6ccc4e495d55af7e68617cdb6b54fdede9e3f177fa3c54a7f8d0db4465f97",
+        "current_raw_matches_execution": true,
+        "current_lf_normalized_matches_execution": false
+      },
+      {
+        "path": "modeling/trifusion/criterion.py",
+        "execution_sha256_literal": "0b2a6370f434828d885945d1a46dd56f6668133ceed45ef359fe71eeca63740a",
+        "current_local_raw_sha256": "9a028e5711981123310f5e0d441a35b7dbecaf33f9edcec4fd3773d070cf877f",
+        "current_local_lf_normalized_sha256": "0b2a6370f434828d885945d1a46dd56f6668133ceed45ef359fe71eeca63740a",
+        "current_raw_matches_execution": false,
+        "current_lf_normalized_matches_execution": true
+      },
+      {
+        "path": "modeling/trifusion/experts/mamba.py",
+        "execution_sha256_literal": "c516c7ad937e5eee6a4ed1e3ec33c2afe3522b751d296bd2e4910e4f27a20ee5",
+        "current_local_raw_sha256": "8b9cb420c42e4d70f8de7e4608637c81c505b97ca54228175462a7e92fdfcc83",
+        "current_local_lf_normalized_sha256": "c516c7ad937e5eee6a4ed1e3ec33c2afe3522b751d296bd2e4910e4f27a20ee5",
+        "current_raw_matches_execution": false,
+        "current_lf_normalized_matches_execution": true
+      },
+      {
+        "path": "modeling/trifusion/experts/semantic_residual.py",
+        "execution_sha256_literal": "c8cef9717fd7bd1e5e50b428ac92762455defac2e25857c9e0dfaf82729c2a93",
+        "current_local_raw_sha256": "c1831a3de031be033624420791cecf2e7a3945e009655089cb48ee4b9912edd6",
+        "current_local_lf_normalized_sha256": "c8cef9717fd7bd1e5e50b428ac92762455defac2e25857c9e0dfaf82729c2a93",
+        "current_raw_matches_execution": false,
+        "current_lf_normalized_matches_execution": true
+      },
+      {
+        "path": "modeling/trifusion/signal_preserving_v13.py",
+        "execution_sha256_literal": "7b7c4abb220ed234608553c77aeedd5f8ef763abb04cce5b21f1bfce0f4daa62",
+        "current_local_raw_sha256": "7b7c4abb220ed234608553c77aeedd5f8ef763abb04cce5b21f1bfce0f4daa62",
+        "current_local_lf_normalized_sha256": "7b7c4abb220ed234608553c77aeedd5f8ef763abb04cce5b21f1bfce0f4daa62",
+        "current_raw_matches_execution": true,
+        "current_lf_normalized_matches_execution": false
+      },
+      {
+        "path": "modeling/trifusion/signal_preserving_v19.py",
+        "execution_sha256_literal": "69989cced25950ff476759bc93df945b167e8ce88a4340676e8adbbd9f88918e",
+        "current_local_raw_sha256": "69989cced25950ff476759bc93df945b167e8ce88a4340676e8adbbd9f88918e",
+        "current_local_lf_normalized_sha256": "69989cced25950ff476759bc93df945b167e8ce88a4340676e8adbbd9f88918e",
+        "current_raw_matches_execution": true,
+        "current_lf_normalized_matches_execution": false
+      },
+      {
+        "path": "modeling/trifusion/signal_preserving_v8.py",
+        "execution_sha256_literal": "97a7b5fe6dab882c2ed92ed1db95b9a8f48eae1d99a3a9b145b0cdfc4b8cefbc",
+        "current_local_raw_sha256": "97a7b5fe6dab882c2ed92ed1db95b9a8f48eae1d99a3a9b145b0cdfc4b8cefbc",
+        "current_local_lf_normalized_sha256": "97a7b5fe6dab882c2ed92ed1db95b9a8f48eae1d99a3a9b145b0cdfc4b8cefbc",
+        "current_raw_matches_execution": true,
+        "current_lf_normalized_matches_execution": false
+      },
+      {
+        "path": "modeling/trifusion/signal_preserving_v8_builder.py",
+        "execution_sha256_literal": "8afb028957ecff1a0a26497f7d0460bc240b0f8612a3c476b52a9a6667a3049d",
+        "current_local_raw_sha256": "8afb028957ecff1a0a26497f7d0460bc240b0f8612a3c476b52a9a6667a3049d",
+        "current_local_lf_normalized_sha256": "8afb028957ecff1a0a26497f7d0460bc240b0f8612a3c476b52a9a6667a3049d",
+        "current_raw_matches_execution": true,
+        "current_lf_normalized_matches_execution": false
+      },
+      {
+        "path": "protocols/rgbnt201_dev_v1.json",
+        "execution_sha256_literal": "d916e7daaa1d55b179c1ec77e93128b6e6a8d1526adc9eac060ea8e733881946",
+        "current_local_raw_sha256": "f7f6f8a906c06fec4918929fb5c17abfc197986b99e017aca1d3e15831c1541d",
+        "current_local_lf_normalized_sha256": "d916e7daaa1d55b179c1ec77e93128b6e6a8d1526adc9eac060ea8e733881946",
+        "current_raw_matches_execution": false,
+        "current_lf_normalized_matches_execution": true
+      },
+      {
+        "path": "tools/audit_v17_full_gallery.py",
+        "execution_sha256_literal": "856881f984ab8793788d291018a60046a47e309c625a65394b1a3ff4e670d8a9",
+        "current_local_raw_sha256": "856881f984ab8793788d291018a60046a47e309c625a65394b1a3ff4e670d8a9",
+        "current_local_lf_normalized_sha256": "856881f984ab8793788d291018a60046a47e309c625a65394b1a3ff4e670d8a9",
+        "current_raw_matches_execution": true,
+        "current_lf_normalized_matches_execution": false
+      },
+      {
+        "path": "tools/build_v12_complete_path_oof_targets.py",
+        "execution_sha256_literal": "fc13354b1065c46677122ee9cf63816087facca4e0e98ec5e6e2fb0dece141e4",
+        "current_local_raw_sha256": "fc13354b1065c46677122ee9cf63816087facca4e0e98ec5e6e2fb0dece141e4",
+        "current_local_lf_normalized_sha256": "fc13354b1065c46677122ee9cf63816087facca4e0e98ec5e6e2fb0dece141e4",
+        "current_raw_matches_execution": true,
+        "current_lf_normalized_matches_execution": false
+      },
+      {
+        "path": "tools/diagnose_v6_oracle_complementarity.py",
+        "execution_sha256_literal": "919b624156c57f92fa75f79a06fe7c872a02d730fa8cd021ce9d7b4e498b1db2",
+        "current_local_raw_sha256": "919b624156c57f92fa75f79a06fe7c872a02d730fa8cd021ce9d7b4e498b1db2",
+        "current_local_lf_normalized_sha256": "919b624156c57f92fa75f79a06fe7c872a02d730fa8cd021ce9d7b4e498b1db2",
+        "current_raw_matches_execution": true,
+        "current_lf_normalized_matches_execution": false
+      },
+      {
+        "path": "tools/run_signal_preserving_v5.py",
+        "execution_sha256_literal": "e162184f68778b4991db0f97f26c5fda273b2ad2f7c8db2bbb2d53775eb717e5",
+        "current_local_raw_sha256": "e162184f68778b4991db0f97f26c5fda273b2ad2f7c8db2bbb2d53775eb717e5",
+        "current_local_lf_normalized_sha256": "e162184f68778b4991db0f97f26c5fda273b2ad2f7c8db2bbb2d53775eb717e5",
+        "current_raw_matches_execution": true,
+        "current_lf_normalized_matches_execution": false
+      },
+      {
+        "path": "tools/train_signal_preserving_v17.py",
+        "execution_sha256_literal": "333886d16f73987accddb70b0780661bb9400b8afd04af01b57e188d34e5228d",
+        "current_local_raw_sha256": "333886d16f73987accddb70b0780661bb9400b8afd04af01b57e188d34e5228d",
+        "current_local_lf_normalized_sha256": "333886d16f73987accddb70b0780661bb9400b8afd04af01b57e188d34e5228d",
+        "current_raw_matches_execution": true,
+        "current_lf_normalized_matches_execution": false
+      },
+      {
+        "path": "tools/train_signal_preserving_v18.py",
+        "execution_sha256_literal": "f6bdda4631d710d0b6db5fe2a8df124d8dcbd294cb54adcf3ec261d523e96cf8",
+        "current_local_raw_sha256": "f6bdda4631d710d0b6db5fe2a8df124d8dcbd294cb54adcf3ec261d523e96cf8",
+        "current_local_lf_normalized_sha256": "f6bdda4631d710d0b6db5fe2a8df124d8dcbd294cb54adcf3ec261d523e96cf8",
+        "current_raw_matches_execution": true,
+        "current_lf_normalized_matches_execution": false
+      },
+      {
+        "path": "tools/train_signal_preserving_v19.py",
+        "execution_sha256_literal": "5f000d3d3abe9636cae97e292db2c63a3a20f349c125dfe4b27bd3fca95bb9c5",
+        "current_local_raw_sha256": "5f000d3d3abe9636cae97e292db2c63a3a20f349c125dfe4b27bd3fca95bb9c5",
+        "current_local_lf_normalized_sha256": "5f000d3d3abe9636cae97e292db2c63a3a20f349c125dfe4b27bd3fca95bb9c5",
+        "current_raw_matches_execution": true,
+        "current_lf_normalized_matches_execution": false
+      },
+      {
+        "path": "tools/train_signal_preserving_v22.py",
+        "execution_sha256_literal": "ee17aeba9bc2a567b1163e6a57759a55423ee5f77edde21e6c7a81625fe45a53",
+        "current_local_raw_sha256": "ee17aeba9bc2a567b1163e6a57759a55423ee5f77edde21e6c7a81625fe45a53",
+        "current_local_lf_normalized_sha256": "ee17aeba9bc2a567b1163e6a57759a55423ee5f77edde21e6c7a81625fe45a53",
+        "current_raw_matches_execution": true,
+        "current_lf_normalized_matches_execution": false
+      },
+      {
+        "path": "configs/RGBNT201/TriFusion-signal-preserving-v22-camera-negative-rtx3090.yml",
+        "execution_sha256_literal": "5efd8e6dbf8cd70624902148a52701ad69ae5766825293efa878836a3e74f4f6",
+        "current_local_raw_sha256": "5efd8e6dbf8cd70624902148a52701ad69ae5766825293efa878836a3e74f4f6",
+        "current_local_lf_normalized_sha256": "5efd8e6dbf8cd70624902148a52701ad69ae5766825293efa878836a3e74f4f6",
+        "current_raw_matches_execution": true,
+        "current_lf_normalized_matches_execution": false
+      },
+      {
+        "path": "refine-logs/v22/EXPERIMENT_PLAN.md",
+        "execution_sha256_literal": "ce2d1f93d5ef36a3eb53d2593fc548b31bff0ea4a3f737b19e1dcaf721d9723b",
+        "current_local_raw_sha256": "ce2d1f93d5ef36a3eb53d2593fc548b31bff0ea4a3f737b19e1dcaf721d9723b",
+        "current_local_lf_normalized_sha256": "ce2d1f93d5ef36a3eb53d2593fc548b31bff0ea4a3f737b19e1dcaf721d9723b",
+        "current_raw_matches_execution": true,
+        "current_lf_normalized_matches_execution": false
+      }
+    ],
+    "raw_mismatch_paths": [
+      "modeling/trifusion/criterion.py",
+      "modeling/trifusion/experts/mamba.py",
+      "modeling/trifusion/experts/semantic_residual.py",
+      "protocols/rgbnt201_dev_v1.json"
+    ],
+    "lf_only_match_paths": [
+      "modeling/trifusion/criterion.py",
+      "modeling/trifusion/experts/mamba.py",
+      "modeling/trifusion/experts/semantic_residual.py",
+      "protocols/rgbnt201_dev_v1.json"
+    ],
+    "file_verification_mapping": [
+      {
+        "remote_path": "/root/autodl-tmp/trifusion-v2/TriFusion-ReID/modeling/trifusion/aligned_data.py",
+        "recorded_bytes": 10062,
+        "recorded_sha256": "3ea362d17660483b554cb599442b6377ace020fa114969b9bdd58906fbceedd5",
+        "matches_recorded_remote": true,
+        "local_equivalent_path": "modeling/trifusion/aligned_data.py",
+        "local_raw_sha256": "3ea362d17660483b554cb599442b6377ace020fa114969b9bdd58906fbceedd5",
+        "local_lf_normalized_sha256": "3ea362d17660483b554cb599442b6377ace020fa114969b9bdd58906fbceedd5",
+        "local_raw_matches_remote": true,
+        "local_lf_normalized_matches_remote": false
+      },
+      {
+        "remote_path": "/root/autodl-tmp/trifusion-v2/TriFusion-ReID/modeling/trifusion/camera_negative_v22.py",
+        "recorded_bytes": 2358,
+        "recorded_sha256": "38b6ccc4e495d55af7e68617cdb6b54fdede9e3f177fa3c54a7f8d0db4465f97",
+        "matches_recorded_remote": true,
+        "local_equivalent_path": "modeling/trifusion/camera_negative_v22.py",
+        "local_raw_sha256": "38b6ccc4e495d55af7e68617cdb6b54fdede9e3f177fa3c54a7f8d0db4465f97",
+        "local_lf_normalized_sha256": "38b6ccc4e495d55af7e68617cdb6b54fdede9e3f177fa3c54a7f8d0db4465f97",
+        "local_raw_matches_remote": true,
+        "local_lf_normalized_matches_remote": false
+      },
+      {
+        "remote_path": "/root/autodl-tmp/trifusion-v2/TriFusion-ReID/modeling/trifusion/criterion.py",
+        "recorded_bytes": 6101,
+        "recorded_sha256": "0b2a6370f434828d885945d1a46dd56f6668133ceed45ef359fe71eeca63740a",
+        "matches_recorded_remote": true,
+        "local_equivalent_path": "modeling/trifusion/criterion.py",
+        "local_raw_sha256": "9a028e5711981123310f5e0d441a35b7dbecaf33f9edcec4fd3773d070cf877f",
+        "local_lf_normalized_sha256": "0b2a6370f434828d885945d1a46dd56f6668133ceed45ef359fe71eeca63740a",
+        "local_raw_matches_remote": false,
+        "local_lf_normalized_matches_remote": true
+      },
+      {
+        "remote_path": "/root/autodl-tmp/trifusion-v2/TriFusion-ReID/modeling/trifusion/experts/mamba.py",
+        "recorded_bytes": 7270,
+        "recorded_sha256": "c516c7ad937e5eee6a4ed1e3ec33c2afe3522b751d296bd2e4910e4f27a20ee5",
+        "matches_recorded_remote": true,
+        "local_equivalent_path": "modeling/trifusion/experts/mamba.py",
+        "local_raw_sha256": "8b9cb420c42e4d70f8de7e4608637c81c505b97ca54228175462a7e92fdfcc83",
+        "local_lf_normalized_sha256": "c516c7ad937e5eee6a4ed1e3ec33c2afe3522b751d296bd2e4910e4f27a20ee5",
+        "local_raw_matches_remote": false,
+        "local_lf_normalized_matches_remote": true
+      },
+      {
+        "remote_path": "/root/autodl-tmp/trifusion-v2/TriFusion-ReID/modeling/trifusion/experts/semantic_residual.py",
+        "recorded_bytes": 15428,
+        "recorded_sha256": "c8cef9717fd7bd1e5e50b428ac92762455defac2e25857c9e0dfaf82729c2a93",
+        "matches_recorded_remote": true,
+        "local_equivalent_path": "modeling/trifusion/experts/semantic_residual.py",
+        "local_raw_sha256": "c1831a3de031be033624420791cecf2e7a3945e009655089cb48ee4b9912edd6",
+        "local_lf_normalized_sha256": "c8cef9717fd7bd1e5e50b428ac92762455defac2e25857c9e0dfaf82729c2a93",
+        "local_raw_matches_remote": false,
+        "local_lf_normalized_matches_remote": true
+      },
+      {
+        "remote_path": "/root/autodl-tmp/trifusion-v2/TriFusion-ReID/modeling/trifusion/signal_preserving_v13.py",
+        "recorded_bytes": 9347,
+        "recorded_sha256": "7b7c4abb220ed234608553c77aeedd5f8ef763abb04cce5b21f1bfce0f4daa62",
+        "matches_recorded_remote": true,
+        "local_equivalent_path": "modeling/trifusion/signal_preserving_v13.py",
+        "local_raw_sha256": "7b7c4abb220ed234608553c77aeedd5f8ef763abb04cce5b21f1bfce0f4daa62",
+        "local_lf_normalized_sha256": "7b7c4abb220ed234608553c77aeedd5f8ef763abb04cce5b21f1bfce0f4daa62",
+        "local_raw_matches_remote": true,
+        "local_lf_normalized_matches_remote": false
+      },
+      {
+        "remote_path": "/root/autodl-tmp/trifusion-v2/TriFusion-ReID/modeling/trifusion/signal_preserving_v19.py",
+        "recorded_bytes": 4059,
+        "recorded_sha256": "69989cced25950ff476759bc93df945b167e8ce88a4340676e8adbbd9f88918e",
+        "matches_recorded_remote": true,
+        "local_equivalent_path": "modeling/trifusion/signal_preserving_v19.py",
+        "local_raw_sha256": "69989cced25950ff476759bc93df945b167e8ce88a4340676e8adbbd9f88918e",
+        "local_lf_normalized_sha256": "69989cced25950ff476759bc93df945b167e8ce88a4340676e8adbbd9f88918e",
+        "local_raw_matches_remote": true,
+        "local_lf_normalized_matches_remote": false
+      },
+      {
+        "remote_path": "/root/autodl-tmp/trifusion-v2/TriFusion-ReID/modeling/trifusion/signal_preserving_v8.py",
+        "recorded_bytes": 28592,
+        "recorded_sha256": "97a7b5fe6dab882c2ed92ed1db95b9a8f48eae1d99a3a9b145b0cdfc4b8cefbc",
+        "matches_recorded_remote": true,
+        "local_equivalent_path": "modeling/trifusion/signal_preserving_v8.py",
+        "local_raw_sha256": "97a7b5fe6dab882c2ed92ed1db95b9a8f48eae1d99a3a9b145b0cdfc4b8cefbc",
+        "local_lf_normalized_sha256": "97a7b5fe6dab882c2ed92ed1db95b9a8f48eae1d99a3a9b145b0cdfc4b8cefbc",
+        "local_raw_matches_remote": true,
+        "local_lf_normalized_matches_remote": false
+      },
+      {
+        "remote_path": "/root/autodl-tmp/trifusion-v2/TriFusion-ReID/modeling/trifusion/signal_preserving_v8_builder.py",
+        "recorded_bytes": 3900,
+        "recorded_sha256": "8afb028957ecff1a0a26497f7d0460bc240b0f8612a3c476b52a9a6667a3049d",
+        "matches_recorded_remote": true,
+        "local_equivalent_path": "modeling/trifusion/signal_preserving_v8_builder.py",
+        "local_raw_sha256": "8afb028957ecff1a0a26497f7d0460bc240b0f8612a3c476b52a9a6667a3049d",
+        "local_lf_normalized_sha256": "8afb028957ecff1a0a26497f7d0460bc240b0f8612a3c476b52a9a6667a3049d",
+        "local_raw_matches_remote": true,
+        "local_lf_normalized_matches_remote": false
+      },
+      {
+        "remote_path": "/root/autodl-tmp/trifusion-v2/TriFusion-ReID/protocols/rgbnt201_dev_v1.json",
+        "recorded_bytes": 5376,
+        "recorded_sha256": "d916e7daaa1d55b179c1ec77e93128b6e6a8d1526adc9eac060ea8e733881946",
+        "matches_recorded_remote": true,
+        "local_equivalent_path": "protocols/rgbnt201_dev_v1.json",
+        "local_raw_sha256": "f7f6f8a906c06fec4918929fb5c17abfc197986b99e017aca1d3e15831c1541d",
+        "local_lf_normalized_sha256": "d916e7daaa1d55b179c1ec77e93128b6e6a8d1526adc9eac060ea8e733881946",
+        "local_raw_matches_remote": false,
+        "local_lf_normalized_matches_remote": true
+      },
+      {
+        "remote_path": "/root/autodl-tmp/trifusion-v2/TriFusion-ReID/tools/audit_v17_full_gallery.py",
+        "recorded_bytes": 10425,
+        "recorded_sha256": "856881f984ab8793788d291018a60046a47e309c625a65394b1a3ff4e670d8a9",
+        "matches_recorded_remote": true,
+        "local_equivalent_path": "tools/audit_v17_full_gallery.py",
+        "local_raw_sha256": "856881f984ab8793788d291018a60046a47e309c625a65394b1a3ff4e670d8a9",
+        "local_lf_normalized_sha256": "856881f984ab8793788d291018a60046a47e309c625a65394b1a3ff4e670d8a9",
+        "local_raw_matches_remote": true,
+        "local_lf_normalized_matches_remote": false
+      },
+      {
+        "remote_path": "/root/autodl-tmp/trifusion-v2/TriFusion-ReID/tools/build_v12_complete_path_oof_targets.py",
+        "recorded_bytes": 32723,
+        "recorded_sha256": "fc13354b1065c46677122ee9cf63816087facca4e0e98ec5e6e2fb0dece141e4",
+        "matches_recorded_remote": true,
+        "local_equivalent_path": "tools/build_v12_complete_path_oof_targets.py",
+        "local_raw_sha256": "fc13354b1065c46677122ee9cf63816087facca4e0e98ec5e6e2fb0dece141e4",
+        "local_lf_normalized_sha256": "fc13354b1065c46677122ee9cf63816087facca4e0e98ec5e6e2fb0dece141e4",
+        "local_raw_matches_remote": true,
+        "local_lf_normalized_matches_remote": false
+      },
+      {
+        "remote_path": "/root/autodl-tmp/trifusion-v2/TriFusion-ReID/tools/diagnose_v6_oracle_complementarity.py",
+        "recorded_bytes": 9754,
+        "recorded_sha256": "919b624156c57f92fa75f79a06fe7c872a02d730fa8cd021ce9d7b4e498b1db2",
+        "matches_recorded_remote": true,
+        "local_equivalent_path": "tools/diagnose_v6_oracle_complementarity.py",
+        "local_raw_sha256": "919b624156c57f92fa75f79a06fe7c872a02d730fa8cd021ce9d7b4e498b1db2",
+        "local_lf_normalized_sha256": "919b624156c57f92fa75f79a06fe7c872a02d730fa8cd021ce9d7b4e498b1db2",
+        "local_raw_matches_remote": true,
+        "local_lf_normalized_matches_remote": false
+      },
+      {
+        "remote_path": "/root/autodl-tmp/trifusion-v2/TriFusion-ReID/tools/run_signal_preserving_v5.py",
+        "recorded_bytes": 65190,
+        "recorded_sha256": "e162184f68778b4991db0f97f26c5fda273b2ad2f7c8db2bbb2d53775eb717e5",
+        "matches_recorded_remote": true,
+        "local_equivalent_path": "tools/run_signal_preserving_v5.py",
+        "local_raw_sha256": "e162184f68778b4991db0f97f26c5fda273b2ad2f7c8db2bbb2d53775eb717e5",
+        "local_lf_normalized_sha256": "e162184f68778b4991db0f97f26c5fda273b2ad2f7c8db2bbb2d53775eb717e5",
+        "local_raw_matches_remote": true,
+        "local_lf_normalized_matches_remote": false
+      },
+      {
+        "remote_path": "/root/autodl-tmp/trifusion-v2/TriFusion-ReID/tools/train_signal_preserving_v17.py",
+        "recorded_bytes": 61124,
+        "recorded_sha256": "333886d16f73987accddb70b0780661bb9400b8afd04af01b57e188d34e5228d",
+        "matches_recorded_remote": true,
+        "local_equivalent_path": "tools/train_signal_preserving_v17.py",
+        "local_raw_sha256": "333886d16f73987accddb70b0780661bb9400b8afd04af01b57e188d34e5228d",
+        "local_lf_normalized_sha256": "333886d16f73987accddb70b0780661bb9400b8afd04af01b57e188d34e5228d",
+        "local_raw_matches_remote": true,
+        "local_lf_normalized_matches_remote": false
+      },
+      {
+        "remote_path": "/root/autodl-tmp/trifusion-v2/TriFusion-ReID/tools/train_signal_preserving_v18.py",
+        "recorded_bytes": 17540,
+        "recorded_sha256": "f6bdda4631d710d0b6db5fe2a8df124d8dcbd294cb54adcf3ec261d523e96cf8",
+        "matches_recorded_remote": true,
+        "local_equivalent_path": "tools/train_signal_preserving_v18.py",
+        "local_raw_sha256": "f6bdda4631d710d0b6db5fe2a8df124d8dcbd294cb54adcf3ec261d523e96cf8",
+        "local_lf_normalized_sha256": "f6bdda4631d710d0b6db5fe2a8df124d8dcbd294cb54adcf3ec261d523e96cf8",
+        "local_raw_matches_remote": true,
+        "local_lf_normalized_matches_remote": false
+      },
+      {
+        "remote_path": "/root/autodl-tmp/trifusion-v2/TriFusion-ReID/tools/train_signal_preserving_v19.py",
+        "recorded_bytes": 26363,
+        "recorded_sha256": "5f000d3d3abe9636cae97e292db2c63a3a20f349c125dfe4b27bd3fca95bb9c5",
+        "matches_recorded_remote": true,
+        "local_equivalent_path": "tools/train_signal_preserving_v19.py",
+        "local_raw_sha256": "5f000d3d3abe9636cae97e292db2c63a3a20f349c125dfe4b27bd3fca95bb9c5",
+        "local_lf_normalized_sha256": "5f000d3d3abe9636cae97e292db2c63a3a20f349c125dfe4b27bd3fca95bb9c5",
+        "local_raw_matches_remote": true,
+        "local_lf_normalized_matches_remote": false
+      },
+      {
+        "remote_path": "/root/autodl-tmp/trifusion-v2/TriFusion-ReID/tools/train_signal_preserving_v22.py",
+        "recorded_bytes": 25452,
+        "recorded_sha256": "ee17aeba9bc2a567b1163e6a57759a55423ee5f77edde21e6c7a81625fe45a53",
+        "matches_recorded_remote": true,
+        "local_equivalent_path": "tools/train_signal_preserving_v22.py",
+        "local_raw_sha256": "ee17aeba9bc2a567b1163e6a57759a55423ee5f77edde21e6c7a81625fe45a53",
+        "local_lf_normalized_sha256": "ee17aeba9bc2a567b1163e6a57759a55423ee5f77edde21e6c7a81625fe45a53",
+        "local_raw_matches_remote": true,
+        "local_lf_normalized_matches_remote": false
+      },
+      {
+        "remote_path": "/root/autodl-tmp/trifusion-v2/TriFusion-ReID/configs/RGBNT201/TriFusion-signal-preserving-v22-camera-negative-rtx3090.yml",
+        "recorded_bytes": 3571,
+        "recorded_sha256": "5efd8e6dbf8cd70624902148a52701ad69ae5766825293efa878836a3e74f4f6",
+        "matches_recorded_remote": true,
+        "local_equivalent_path": "configs/RGBNT201/TriFusion-signal-preserving-v22-camera-negative-rtx3090.yml",
+        "local_raw_sha256": "5efd8e6dbf8cd70624902148a52701ad69ae5766825293efa878836a3e74f4f6",
+        "local_lf_normalized_sha256": "5efd8e6dbf8cd70624902148a52701ad69ae5766825293efa878836a3e74f4f6",
+        "local_raw_matches_remote": true,
+        "local_lf_normalized_matches_remote": false
+      },
+      {
+        "remote_path": "/root/autodl-tmp/trifusion-v2/TriFusion-ReID/refine-logs/v22/EXPERIMENT_PLAN.md",
+        "recorded_bytes": 8418,
+        "recorded_sha256": "ce2d1f93d5ef36a3eb53d2593fc548b31bff0ea4a3f737b19e1dcaf721d9723b",
+        "matches_recorded_remote": true,
+        "local_equivalent_path": "refine-logs/v22/EXPERIMENT_PLAN.md",
+        "local_raw_sha256": "ce2d1f93d5ef36a3eb53d2593fc548b31bff0ea4a3f737b19e1dcaf721d9723b",
+        "local_lf_normalized_sha256": "ce2d1f93d5ef36a3eb53d2593fc548b31bff0ea4a3f737b19e1dcaf721d9723b",
+        "local_raw_matches_remote": true,
+        "local_lf_normalized_matches_remote": false
+      },
+      {
+        "remote_path": "/root/autodl-tmp/trifusion-v2/pretrained/ViT-B-16.pt",
+        "recorded_bytes": 350837078,
+        "recorded_sha256": "5806e77cd80f8b59890b7e101eabd078d9fb84e6937f9e85e4ecb61988df416f",
+        "matches_recorded_remote": true
+      },
+      {
+        "remote_path": "/root/autodl-tmp/trifusion-v2/TriFusion-ReID/evidence/trifusion_source_camera_metadata_20260905.json",
+        "recorded_bytes": 6367917,
+        "recorded_sha256": "5a42be65a512534bb87f52a5f3f4385042157511803774579e65d96d94662d31",
+        "matches_recorded_remote": true,
+        "local_equivalent_path": "evidence/trifusion_source_camera_metadata_20260905.json",
+        "local_raw_sha256": "5a42be65a512534bb87f52a5f3f4385042157511803774579e65d96d94662d31",
+        "local_lf_normalized_sha256": "5a42be65a512534bb87f52a5f3f4385042157511803774579e65d96d94662d31",
+        "local_raw_matches_remote": true,
+        "local_lf_normalized_matches_remote": false
+      },
+      {
+        "remote_path": "/root/autodl-tmp/trifusion-v2/TriFusion-ReID/tests/test_trifusion_camera_negative_v22.py",
+        "recorded_bytes": 3553,
+        "recorded_sha256": "0d529426d2eb7dad8d5fdae1930866fae672e1a7aee24a8fd81793b0ab78eaa3",
+        "matches_recorded_remote": true,
+        "local_equivalent_path": "tests/test_trifusion_camera_negative_v22.py",
+        "local_raw_sha256": "0d529426d2eb7dad8d5fdae1930866fae672e1a7aee24a8fd81793b0ab78eaa3",
+        "local_lf_normalized_sha256": "0d529426d2eb7dad8d5fdae1930866fae672e1a7aee24a8fd81793b0ab78eaa3",
+        "local_raw_matches_remote": true,
+        "local_lf_normalized_matches_remote": false
+      },
+      {
+        "remote_path": "/root/autodl-tmp/trifusion-v2/artifacts/trifusion_v12_complete_path_oof_seed42_c71d3de/run_summary.json",
+        "recorded_bytes": 43930,
+        "recorded_sha256": "9105b86a9c079c44843e9b118a21599746a87d279370341b8cf8d26bd18a8b69",
+        "matches_recorded_remote": true
+      },
+      {
+        "remote_path": "/root/autodl-tmp/trifusion-v2/artifacts/trifusion_v12_complete_path_oof_seed42_c71d3de/fold_0_signal_final.pth",
+        "recorded_bytes": 363826340,
+        "recorded_sha256": "523c7c645ac1d85c91cd7b08ef3c3276e37f723906ae7af0d9ec6a9ddbcb38de",
+        "matches_recorded_remote": true
+      },
+      {
+        "remote_path": "/root/autodl-tmp/trifusion-v2/artifacts/trifusion_v12_complete_path_oof_seed42_c71d3de/fold_0_experts.pth",
+        "recorded_bytes": 31753553,
+        "recorded_sha256": "4baebda03e69447e552a5e2e5512aad3db69248e23cbd0aacbc6d2bb7475c3af",
+        "matches_recorded_remote": true
+      },
+      {
+        "remote_path": "/root/autodl-tmp/trifusion-v2/artifacts/trifusion_v12_complete_path_oof_seed42_c71d3de/fold_1_signal_final.pth",
+        "recorded_bytes": 363826340,
+        "recorded_sha256": "6c1304a68663418ef9b4dcd6230bde55c87d0319ac60351aebbe8a0ab9acbcd7",
+        "matches_recorded_remote": true
+      },
+      {
+        "remote_path": "/root/autodl-tmp/trifusion-v2/artifacts/trifusion_v12_complete_path_oof_seed42_c71d3de/fold_1_experts.pth",
+        "recorded_bytes": 31753553,
+        "recorded_sha256": "f369bca3dbd53518bc082880974f203aedbb6febd0251458a25707b91de52ec3",
+        "matches_recorded_remote": true
+      },
+      {
+        "remote_path": "/root/autodl-tmp/trifusion-v2/artifacts/trifusion_v12_complete_path_oof_seed42_c71d3de/fold_2_signal_final.pth",
+        "recorded_bytes": 363826340,
+        "recorded_sha256": "3cf0ef340c44db43d299ea8ca3a742ad12b4e113c12dffbd1db21f656923f678",
+        "matches_recorded_remote": true
+      },
+      {
+        "remote_path": "/root/autodl-tmp/trifusion-v2/artifacts/trifusion_v12_complete_path_oof_seed42_c71d3de/fold_2_experts.pth",
+        "recorded_bytes": 31753553,
+        "recorded_sha256": "7abdecdec6e39eb6f3244b8f24428139e52079c91f7e5d0dad1d1c17dc387678",
+        "matches_recorded_remote": true
+      },
+      {
+        "remote_path": "/root/autodl-tmp/trifusion-v2/artifacts/trifusion_v22_camera_negative_seed42_5ae096b/fold_0_batch_hard_residual_final.pth",
+        "recorded_bytes": 31758807,
+        "recorded_sha256": "7b1c66b4c1560f733427eed85903a01202852ce24fee2f801de6fe362d3b56bb",
+        "matches_recorded_remote": true
+      },
+      {
+        "remote_path": "/root/autodl-tmp/trifusion-v2/artifacts/trifusion_v22_camera_negative_seed42_5ae096b/fold_0_camera_negative_residual_final.pth",
+        "recorded_bytes": 31759982,
+        "recorded_sha256": "04b17bf58dde28fd6fe3b0c6c0bfb4b1113a290b9ef78d1d0db2efa8bf984d7a",
+        "matches_recorded_remote": true
+      },
+      {
+        "remote_path": "/root/autodl-tmp/trifusion-v2/artifacts/trifusion_v22_camera_negative_seed42_5ae096b/fold_1_batch_hard_residual_final.pth",
+        "recorded_bytes": 31758807,
+        "recorded_sha256": "8b4a0e9cd0ee7aa7abc917a6e5921afb7462010598795a2e0acdb1fa1a877cdb",
+        "matches_recorded_remote": true
+      },
+      {
+        "remote_path": "/root/autodl-tmp/trifusion-v2/artifacts/trifusion_v22_camera_negative_seed42_5ae096b/fold_1_camera_negative_residual_final.pth",
+        "recorded_bytes": 31759982,
+        "recorded_sha256": "e2d2083e79835f9950bf4b8364b2051076f7376b101159d92638f205a164cd6d",
+        "matches_recorded_remote": true
+      },
+      {
+        "remote_path": "/root/autodl-tmp/trifusion-v2/artifacts/trifusion_v22_camera_negative_seed42_5ae096b/fold_2_batch_hard_residual_final.pth",
+        "recorded_bytes": 31758807,
+        "recorded_sha256": "ceca7c6705df7b7724dffc81a7f64910aa8d4538c8796adb96ff448abb804b51",
+        "matches_recorded_remote": true
+      },
+      {
+        "remote_path": "/root/autodl-tmp/trifusion-v2/artifacts/trifusion_v22_camera_negative_seed42_5ae096b/fold_2_camera_negative_residual_final.pth",
+        "recorded_bytes": 31759982,
+        "recorded_sha256": "7717ab98f3e64da218c09280b4a8bba4f38f01096964c72c8d6edf89faf90a97",
+        "matches_recorded_remote": true
+      }
+    ],
+    "remote_ledger_only_count": 14,
+    "transfer_replay": [
+      {
+        "local_evidence_name": "trifusion_v22_q1_seed42_5ae096b.json",
+        "recorded_bytes": 2207490,
+        "local_bytes": 2207490,
+        "recorded_sha256": "b8cd7db81efc3827a91d165d47e001073785420baf8ddfc8507a2eead9c3d6a3",
+        "local_sha256": "b8cd7db81efc3827a91d165d47e001073785420baf8ddfc8507a2eead9c3d6a3",
+        "matches_transfer_manifest": true
+      },
+      {
+        "local_evidence_name": "trifusion_v22_complete_run_20260905.log",
+        "recorded_bytes": 255971,
+        "local_bytes": 255971,
+        "recorded_sha256": "a091390a25ced0cfd336fce3c5bd6c51565fcad6becfbf3419778bcb9b7a2f1a",
+        "local_sha256": "a091390a25ced0cfd336fce3c5bd6c51565fcad6becfbf3419778bcb9b7a2f1a",
+        "matches_transfer_manifest": true
+      },
+      {
+        "local_evidence_name": "trifusion_v22_terminal_file_verification_20260905.json",
+        "recorded_bytes": 15846,
+        "local_bytes": 15846,
+        "recorded_sha256": "e71172316897ba2c7fcef1262ccf302a755ed0bec26339100ad8846adce4075f",
+        "local_sha256": "e71172316897ba2c7fcef1262ccf302a755ed0bec26339100ad8846adce4075f",
+        "matches_transfer_manifest": true
+      },
+      {
+        "local_evidence_name": "trifusion_v22_fold_0_batch_hard_residual_receipt.json",
+        "recorded_bytes": 170924,
+        "local_bytes": 170924,
+        "recorded_sha256": "68ebe7a4e364e49b216fa05282fb6cc56d962c73cd59528ee05a4f6ae3de99ea",
+        "local_sha256": "68ebe7a4e364e49b216fa05282fb6cc56d962c73cd59528ee05a4f6ae3de99ea",
+        "matches_transfer_manifest": true
+      },
+      {
+        "local_evidence_name": "trifusion_v22_fold_0_camera_negative_residual_receipt.json",
+        "recorded_bytes": 172173,
+        "local_bytes": 172173,
+        "recorded_sha256": "061348db10cbaa77f42ba1266cb1041eb8fb3fa7d5318e75b0dea6ff6dfebb9a",
+        "local_sha256": "061348db10cbaa77f42ba1266cb1041eb8fb3fa7d5318e75b0dea6ff6dfebb9a",
+        "matches_transfer_manifest": true
+      },
+      {
+        "local_evidence_name": "trifusion_v22_fold_1_batch_hard_residual_receipt.json",
+        "recorded_bytes": 166909,
+        "local_bytes": 166909,
+        "recorded_sha256": "a220ad85229b2af8053312394c9923a3bd2f298b3069850e340d1f7c318b4673",
+        "local_sha256": "a220ad85229b2af8053312394c9923a3bd2f298b3069850e340d1f7c318b4673",
+        "matches_transfer_manifest": true
+      },
+      {
+        "local_evidence_name": "trifusion_v22_fold_1_camera_negative_residual_receipt.json",
+        "recorded_bytes": 169560,
+        "local_bytes": 169560,
+        "recorded_sha256": "0215da798fa78e0031a337dbfb3a9ac8d5c8ca67eb11ba50e367fd0fe7209335",
+        "local_sha256": "0215da798fa78e0031a337dbfb3a9ac8d5c8ca67eb11ba50e367fd0fe7209335",
+        "matches_transfer_manifest": true
+      },
+      {
+        "local_evidence_name": "trifusion_v22_fold_2_batch_hard_residual_receipt.json",
+        "recorded_bytes": 178754,
+        "local_bytes": 178754,
+        "recorded_sha256": "71c64c1c85dab6df835ac86fb41eab5e16fb48fd68b0ca5949ea3d0c79e4bd53",
+        "local_sha256": "71c64c1c85dab6df835ac86fb41eab5e16fb48fd68b0ca5949ea3d0c79e4bd53",
+        "matches_transfer_manifest": true
+      },
+      {
+        "local_evidence_name": "trifusion_v22_fold_2_camera_negative_residual_receipt.json",
+        "recorded_bytes": 179724,
+        "local_bytes": 179724,
+        "recorded_sha256": "f35a97430b1311244431cba0f946866a0141f9192c1350f1bbc4329ba4a20c42",
+        "local_sha256": "f35a97430b1311244431cba0f946866a0141f9192c1350f1bbc4329ba4a20c42",
+        "matches_transfer_manifest": true
+      }
+    ],
+    "standalone_receipts": [
+      {
+        "fold": 0,
+        "endpoint": "batch_hard_residual",
+        "path": "evidence/trifusion_v22_fold_0_batch_hard_residual_receipt.json",
+        "sha256": "68ebe7a4e364e49b216fa05282fb6cc56d962c73cd59528ee05a4f6ae3de99ea",
+        "equals_embedded_endpoint": true
+      },
+      {
+        "fold": 0,
+        "endpoint": "camera_negative_residual",
+        "path": "evidence/trifusion_v22_fold_0_camera_negative_residual_receipt.json",
+        "sha256": "061348db10cbaa77f42ba1266cb1041eb8fb3fa7d5318e75b0dea6ff6dfebb9a",
+        "equals_embedded_endpoint": true
+      },
+      {
+        "fold": 1,
+        "endpoint": "batch_hard_residual",
+        "path": "evidence/trifusion_v22_fold_1_batch_hard_residual_receipt.json",
+        "sha256": "a220ad85229b2af8053312394c9923a3bd2f298b3069850e340d1f7c318b4673",
+        "equals_embedded_endpoint": true
+      },
+      {
+        "fold": 1,
+        "endpoint": "camera_negative_residual",
+        "path": "evidence/trifusion_v22_fold_1_camera_negative_residual_receipt.json",
+        "sha256": "0215da798fa78e0031a337dbfb3a9ac8d5c8ca67eb11ba50e367fd0fe7209335",
+        "equals_embedded_endpoint": true
+      },
+      {
+        "fold": 2,
+        "endpoint": "batch_hard_residual",
+        "path": "evidence/trifusion_v22_fold_2_batch_hard_residual_receipt.json",
+        "sha256": "71c64c1c85dab6df835ac86fb41eab5e16fb48fd68b0ca5949ea3d0c79e4bd53",
+        "equals_embedded_endpoint": true
+      },
+      {
+        "fold": 2,
+        "endpoint": "camera_negative_residual",
+        "path": "evidence/trifusion_v22_fold_2_camera_negative_residual_receipt.json",
+        "sha256": "f35a97430b1311244431cba0f946866a0141f9192c1350f1bbc4329ba4a20c42",
+        "equals_embedded_endpoint": true
+      }
+    ],
+    "comparison_replay": {
+      "comparison_matches_q1_summary": true,
+      "comparison_source_summary_sha256_matches_local": true,
+      "comparison_array_audit_sha256_matches_local": true
+    },
+    "current_local_head": "ad7841d57a063148f4b278aec5b87e3d3104af44",
+    "execution_head_literal": "5ae096b65eb4c9987b0b8edaa7bfcd8a4cee1c36",
+    "terminal_file_verifier_observed_head": "25e9a1bb8ad36dd8be93c6ba9b4202ba405e6f05",
+    "mask_counts": [
+      {
+        "fold": 0,
+        "gallery_records": 1000,
+        "eligible_queries": 190,
+        "excluded_only_from_query": 810,
+        "gallery_identities": 47,
+        "eligible_query_identities": 7,
+        "unique_files": 1000,
+        "camera_counts": {
+          "0": 694,
+          "1": 212,
+          "2": 38,
+          "3": 56
+        }
+      },
+      {
+        "fold": 1,
+        "gallery_records": 1051,
+        "eligible_queries": 179,
+        "excluded_only_from_query": 872,
+        "gallery_identities": 47,
+        "eligible_query_identities": 7,
+        "unique_files": 1051,
+        "camera_counts": {
+          "0": 710,
+          "1": 243,
+          "2": 25,
+          "3": 73
+        }
+      },
+      {
+        "fold": 2,
+        "gallery_records": 1075,
+        "eligible_queries": 202,
+        "excluded_only_from_query": 873,
+        "gallery_identities": 47,
+        "eligible_query_identities": 7,
+        "unique_files": 1075,
+        "camera_counts": {
+          "0": 769,
+          "1": 281,
+          "2": 25
+        }
+      }
+    ],
+    "fit_heldout_bindings": [
+      {
+        "fold": 0,
+        "endpoint": "batch_hard_residual",
+        "fit_identity_count": 94,
+        "heldout_identity_count": 47,
+        "fit_heldout_overlap_count": 0,
+        "heldout_equals_gallery_identities": true,
+        "source_state_strictly_loaded": true,
+        "baseline_frozen": true,
+        "shared_tail_frozen": true,
+        "new_inference_parameters": 0,
+        "total_parameters": 98800141,
+        "trainable_parameters": 7841292,
+        "trainable_tensors": 203
+      },
+      {
+        "fold": 0,
+        "endpoint": "camera_negative_residual",
+        "fit_identity_count": 94,
+        "heldout_identity_count": 47,
+        "fit_heldout_overlap_count": 0,
+        "heldout_equals_gallery_identities": true,
+        "source_state_strictly_loaded": true,
+        "baseline_frozen": true,
+        "shared_tail_frozen": true,
+        "new_inference_parameters": 0,
+        "total_parameters": 98800141,
+        "trainable_parameters": 7841292,
+        "trainable_tensors": 203
+      },
+      {
+        "fold": 1,
+        "endpoint": "batch_hard_residual",
+        "fit_identity_count": 94,
+        "heldout_identity_count": 47,
+        "fit_heldout_overlap_count": 0,
+        "heldout_equals_gallery_identities": true,
+        "source_state_strictly_loaded": true,
+        "baseline_frozen": true,
+        "shared_tail_frozen": true,
+        "new_inference_parameters": 0,
+        "total_parameters": 98800141,
+        "trainable_parameters": 7841292,
+        "trainable_tensors": 203
+      },
+      {
+        "fold": 1,
+        "endpoint": "camera_negative_residual",
+        "fit_identity_count": 94,
+        "heldout_identity_count": 47,
+        "fit_heldout_overlap_count": 0,
+        "heldout_equals_gallery_identities": true,
+        "source_state_strictly_loaded": true,
+        "baseline_frozen": true,
+        "shared_tail_frozen": true,
+        "new_inference_parameters": 0,
+        "total_parameters": 98800141,
+        "trainable_parameters": 7841292,
+        "trainable_tensors": 203
+      },
+      {
+        "fold": 2,
+        "endpoint": "batch_hard_residual",
+        "fit_identity_count": 94,
+        "heldout_identity_count": 47,
+        "fit_heldout_overlap_count": 0,
+        "heldout_equals_gallery_identities": true,
+        "source_state_strictly_loaded": true,
+        "baseline_frozen": true,
+        "shared_tail_frozen": true,
+        "new_inference_parameters": 0,
+        "total_parameters": 98800141,
+        "trainable_parameters": 7841292,
+        "trainable_tensors": 203
+      },
+      {
+        "fold": 2,
+        "endpoint": "camera_negative_residual",
+        "fit_identity_count": 94,
+        "heldout_identity_count": 47,
+        "fit_heldout_overlap_count": 0,
+        "heldout_equals_gallery_identities": true,
+        "source_state_strictly_loaded": true,
+        "baseline_frozen": true,
+        "shared_tail_frozen": true,
+        "new_inference_parameters": 0,
+        "total_parameters": 98800141,
+        "trainable_parameters": 7841292,
+        "trainable_tensors": 203
+      }
+    ],
+    "pairing_checks": [
+      {
+        "fold": 0,
+        "same_initial_state_sha256": true,
+        "same_sample_order_sha256": true,
+        "same_first_eight_batch_receipts": true,
+        "same_binding": true,
+        "same_baseline_output": true
+      },
+      {
+        "fold": 1,
+        "same_initial_state_sha256": true,
+        "same_sample_order_sha256": true,
+        "same_first_eight_batch_receipts": true,
+        "same_binding": true,
+        "same_baseline_output": true
+      },
+      {
+        "fold": 2,
+        "same_initial_state_sha256": true,
+        "same_sample_order_sha256": true,
+        "same_first_eight_batch_receipts": true,
+        "same_binding": true,
+        "same_baseline_output": true
+      }
+    ],
+    "query_mask_mismatches": [],
+    "fold_metrics": [
+      {
+        "fold": 0,
+        "endpoint": "batch_hard_residual",
+        "output": "baseline_only",
+        "gallery_records": 1000,
+        "eligible_queries": 190,
+        "mAP": 68.76764248141828,
+        "Rank-1": 69.47368421052632,
+        "Rank-5": 80.52631578947368,
+        "Rank-10": 86.31578947368422
+      },
+      {
+        "fold": 0,
+        "endpoint": "batch_hard_residual",
+        "output": "fused",
+        "gallery_records": 1000,
+        "eligible_queries": 190,
+        "mAP": 71.20172711396336,
+        "Rank-1": 71.57894736842105,
+        "Rank-5": 78.42105263157895,
+        "Rank-10": 84.73684210526315
+      },
+      {
+        "fold": 0,
+        "endpoint": "batch_hard_residual",
+        "output": "cnn",
+        "gallery_records": 1000,
+        "eligible_queries": 190,
+        "mAP": 71.35941284942113,
+        "Rank-1": 71.05263157894737,
+        "Rank-5": 77.36842105263158,
+        "Rank-10": 79.47368421052632
+      },
+      {
+        "fold": 0,
+        "endpoint": "batch_hard_residual",
+        "output": "transformer",
+        "gallery_records": 1000,
+        "eligible_queries": 190,
+        "mAP": 69.88915912838677,
+        "Rank-1": 72.10526315789474,
+        "Rank-5": 82.63157894736842,
+        "Rank-10": 86.31578947368422
+      },
+      {
+        "fold": 0,
+        "endpoint": "batch_hard_residual",
+        "output": "mamba",
+        "gallery_records": 1000,
+        "eligible_queries": 190,
+        "mAP": 69.03047264670052,
+        "Rank-1": 66.3157894736842,
+        "Rank-5": 75.26315789473685,
+        "Rank-10": 85.26315789473684
+      },
+      {
+        "fold": 0,
+        "endpoint": "camera_negative_residual",
+        "output": "baseline_only",
+        "gallery_records": 1000,
+        "eligible_queries": 190,
+        "mAP": 68.76764248141828,
+        "Rank-1": 69.47368421052632,
+        "Rank-5": 80.52631578947368,
+        "Rank-10": 86.31578947368422
+      },
+      {
+        "fold": 0,
+        "endpoint": "camera_negative_residual",
+        "output": "fused",
+        "gallery_records": 1000,
+        "eligible_queries": 190,
+        "mAP": 70.52565882864431,
+        "Rank-1": 69.47368421052632,
+        "Rank-5": 78.94736842105263,
+        "Rank-10": 84.73684210526315
+      },
+      {
+        "fold": 0,
+        "endpoint": "camera_negative_residual",
+        "output": "cnn",
+        "gallery_records": 1000,
+        "eligible_queries": 190,
+        "mAP": 70.28675144344582,
+        "Rank-1": 70.0,
+        "Rank-5": 77.89473684210526,
+        "Rank-10": 81.05263157894737
+      },
+      {
+        "fold": 0,
+        "endpoint": "camera_negative_residual",
+        "output": "transformer",
+        "gallery_records": 1000,
+        "eligible_queries": 190,
+        "mAP": 68.09770884834747,
+        "Rank-1": 70.52631578947368,
+        "Rank-5": 79.47368421052632,
+        "Rank-10": 84.21052631578947
+      },
+      {
+        "fold": 0,
+        "endpoint": "camera_negative_residual",
+        "output": "mamba",
+        "gallery_records": 1000,
+        "eligible_queries": 190,
+        "mAP": 69.87931048377644,
+        "Rank-1": 67.36842105263158,
+        "Rank-5": 77.36842105263158,
+        "Rank-10": 83.6842105263158
+      },
+      {
+        "fold": 1,
+        "endpoint": "batch_hard_residual",
+        "output": "baseline_only",
+        "gallery_records": 1051,
+        "eligible_queries": 179,
+        "mAP": 88.67823992785485,
+        "Rank-1": 93.29608938547486,
+        "Rank-5": 99.4413407821229,
+        "Rank-10": 100.0
+      },
+      {
+        "fold": 1,
+        "endpoint": "batch_hard_residual",
+        "output": "fused",
+        "gallery_records": 1051,
+        "eligible_queries": 179,
+        "mAP": 91.1630298819438,
+        "Rank-1": 98.32402234636871,
+        "Rank-5": 100.0,
+        "Rank-10": 100.0
+      },
+      {
+        "fold": 1,
+        "endpoint": "batch_hard_residual",
+        "output": "cnn",
+        "gallery_records": 1051,
+        "eligible_queries": 179,
+        "mAP": 92.42626536530835,
+        "Rank-1": 98.88268156424581,
+        "Rank-5": 100.0,
+        "Rank-10": 100.0
+      },
+      {
+        "fold": 1,
+        "endpoint": "batch_hard_residual",
+        "output": "transformer",
+        "gallery_records": 1051,
+        "eligible_queries": 179,
+        "mAP": 88.20052943780003,
+        "Rank-1": 90.5027932960894,
+        "Rank-5": 96.64804469273743,
+        "Rank-10": 99.4413407821229
+      },
+      {
+        "fold": 1,
+        "endpoint": "batch_hard_residual",
+        "output": "mamba",
+        "gallery_records": 1051,
+        "eligible_queries": 179,
+        "mAP": 89.74685358782722,
+        "Rank-1": 96.08938547486034,
+        "Rank-5": 98.88268156424581,
+        "Rank-10": 100.0
+      },
+      {
+        "fold": 1,
+        "endpoint": "camera_negative_residual",
+        "output": "baseline_only",
+        "gallery_records": 1051,
+        "eligible_queries": 179,
+        "mAP": 88.67823992785485,
+        "Rank-1": 93.29608938547486,
+        "Rank-5": 99.4413407821229,
+        "Rank-10": 100.0
+      },
+      {
+        "fold": 1,
+        "endpoint": "camera_negative_residual",
+        "output": "fused",
+        "gallery_records": 1051,
+        "eligible_queries": 179,
+        "mAP": 89.01308724151829,
+        "Rank-1": 97.20670391061452,
+        "Rank-5": 100.0,
+        "Rank-10": 100.0
+      },
+      {
+        "fold": 1,
+        "endpoint": "camera_negative_residual",
+        "output": "cnn",
+        "gallery_records": 1051,
+        "eligible_queries": 179,
+        "mAP": 91.67255696069435,
+        "Rank-1": 99.4413407821229,
+        "Rank-5": 100.0,
+        "Rank-10": 100.0
+      },
+      {
+        "fold": 1,
+        "endpoint": "camera_negative_residual",
+        "output": "transformer",
+        "gallery_records": 1051,
+        "eligible_queries": 179,
+        "mAP": 84.44842229954999,
+        "Rank-1": 89.3854748603352,
+        "Rank-5": 94.41340782122904,
+        "Rank-10": 98.32402234636871
+      },
+      {
+        "fold": 1,
+        "endpoint": "camera_negative_residual",
+        "output": "mamba",
+        "gallery_records": 1051,
+        "eligible_queries": 179,
+        "mAP": 87.80298373748685,
+        "Rank-1": 96.64804469273743,
+        "Rank-5": 99.4413407821229,
+        "Rank-10": 100.0
+      },
+      {
+        "fold": 2,
+        "endpoint": "batch_hard_residual",
+        "output": "baseline_only",
+        "gallery_records": 1075,
+        "eligible_queries": 202,
+        "mAP": 75.77309089448893,
+        "Rank-1": 76.23762376237624,
+        "Rank-5": 89.10891089108911,
+        "Rank-10": 94.55445544554455
+      },
+      {
+        "fold": 2,
+        "endpoint": "batch_hard_residual",
+        "output": "fused",
+        "gallery_records": 1075,
+        "eligible_queries": 202,
+        "mAP": 80.19463267141037,
+        "Rank-1": 82.17821782178217,
+        "Rank-5": 92.07920792079209,
+        "Rank-10": 96.03960396039604
+      },
+      {
+        "fold": 2,
+        "endpoint": "batch_hard_residual",
+        "output": "cnn",
+        "gallery_records": 1075,
+        "eligible_queries": 202,
+        "mAP": 77.25564004489733,
+        "Rank-1": 84.65346534653465,
+        "Rank-5": 90.0990099009901,
+        "Rank-10": 94.55445544554455
+      },
+      {
+        "fold": 2,
+        "endpoint": "batch_hard_residual",
+        "output": "transformer",
+        "gallery_records": 1075,
+        "eligible_queries": 202,
+        "mAP": 81.32810026483305,
+        "Rank-1": 84.65346534653465,
+        "Rank-5": 95.04950495049505,
+        "Rank-10": 96.03960396039604
+      },
+      {
+        "fold": 2,
+        "endpoint": "batch_hard_residual",
+        "output": "mamba",
+        "gallery_records": 1075,
+        "eligible_queries": 202,
+        "mAP": 75.30085625508869,
+        "Rank-1": 73.76237623762376,
+        "Rank-5": 91.58415841584159,
+        "Rank-10": 96.53465346534654
+      },
+      {
+        "fold": 2,
+        "endpoint": "camera_negative_residual",
+        "output": "baseline_only",
+        "gallery_records": 1075,
+        "eligible_queries": 202,
+        "mAP": 75.77309089448893,
+        "Rank-1": 76.23762376237624,
+        "Rank-5": 89.10891089108911,
+        "Rank-10": 94.55445544554455
+      },
+      {
+        "fold": 2,
+        "endpoint": "camera_negative_residual",
+        "output": "fused",
+        "gallery_records": 1075,
+        "eligible_queries": 202,
+        "mAP": 78.05398812862852,
+        "Rank-1": 81.1881188118812,
+        "Rank-5": 93.56435643564357,
+        "Rank-10": 97.52475247524752
+      },
+      {
+        "fold": 2,
+        "endpoint": "camera_negative_residual",
+        "output": "cnn",
+        "gallery_records": 1075,
+        "eligible_queries": 202,
+        "mAP": 76.39600711698476,
+        "Rank-1": 81.68316831683168,
+        "Rank-5": 91.58415841584159,
+        "Rank-10": 92.57425742574257
+      },
+      {
+        "fold": 2,
+        "endpoint": "camera_negative_residual",
+        "output": "transformer",
+        "gallery_records": 1075,
+        "eligible_queries": 202,
+        "mAP": 74.28075517856634,
+        "Rank-1": 79.20792079207921,
+        "Rank-5": 94.05940594059405,
+        "Rank-10": 97.52475247524752
+      },
+      {
+        "fold": 2,
+        "endpoint": "camera_negative_residual",
+        "output": "mamba",
+        "gallery_records": 1075,
+        "eligible_queries": 202,
+        "mAP": 77.1228223761638,
+        "Rank-1": 80.6930693069307,
+        "Rank-5": 93.56435643564357,
+        "Rank-10": 96.03960396039604
+      }
+    ],
+    "aggregate": {
+      "batch_hard_residual": {
+        "baseline_only": {
+          "mAP": 77.48760311601094,
+          "Rank-1": 79.33450087565674,
+          "Rank-5": 89.49211908931699,
+          "Rank-10": 93.52014010507881
+        },
+        "fused": {
+          "mAP": 80.64067653265477,
+          "Rank-1": 83.71278458844134,
+          "Rank-5": 90.01751313485113,
+          "Rank-10": 93.52014010507881
+        },
+        "cnn": {
+          "mAP": 80.04943823266107,
+          "Rank-1": 84.58844133099825,
+          "Rank-5": 88.96672504378283,
+          "Rank-10": 91.24343257443083
+        },
+        "transformer": {
+          "mAP": 79.67620185158663,
+          "Rank-1": 82.31173380035027,
+          "Rank-5": 91.41856392294221,
+          "Rank-10": 93.87040280210157
+        },
+        "mamba": {
+          "mAP": 77.74299397306845,
+          "Rank-1": 78.28371278458845,
+          "Rank-5": 88.44133099824869,
+          "Rank-10": 93.87040280210157
+        }
+      },
+      "camera_negative_residual": {
+        "baseline_only": {
+          "mAP": 77.48760311601094,
+          "Rank-1": 79.33450087565674,
+          "Rank-5": 89.49211908931699,
+          "Rank-10": 93.52014010507881
+        },
+        "fused": {
+          "mAP": 78.98445428311234,
+          "Rank-1": 82.31173380035027,
+          "Rank-5": 90.71803852889667,
+          "Rank-10": 94.04553415061297
+        },
+        "cnn": {
+          "mAP": 79.15212593318725,
+          "Rank-1": 83.36252189141857,
+          "Rank-5": 89.66725043782837,
+          "Rank-10": 91.06830122591944
+        },
+        "transformer": {
+          "mAP": 75.41076150416087,
+          "Rank-1": 79.50963222416813,
+          "Rank-5": 89.31698774080562,
+          "Rank-10": 93.34500875656742
+        },
+        "mamba": {
+          "mAP": 78.06061856552145,
+          "Rank-1": 81.26094570928196,
+          "Rank-5": 90.01751313485113,
+          "Rank-10": 93.16987740805604
+        }
+      }
+    },
+    "matched_gains_mAP": {
+      "baseline_only": 0.0,
+      "fused": -1.6562222495424237,
+      "cnn": -0.8973122994738247,
+      "transformer": -4.265440347425752,
+      "mamba": 0.3176245924530008
+    },
+    "fold_fused_gains_mAP": [
+      -0.6760682853190474,
+      -2.1499426404255075,
+      -2.140644542781857
+    ],
+    "scientific_checks": {
+      "aggregate_fused_gain_at_least_1pp": false,
+      "all_fold_fused_nonnegative": false,
+      "all_expert_aggregate_nonnegative": false,
+      "fused_bootstrap_lower_positive": false,
+      "fused_beats_baseline_and_experts": false
+    },
+    "bootstrap": {
+      "lower_bound_95_mAP": -3.8769957222550886,
+      "clusters": 21,
+      "resamples": 10000
+    },
+    "identity_fused_gains": [
+      {
+        "encoded_identity": 51,
+        "original_identity": "000159",
+        "queries": 30,
+        "fused_gain_mAP": 1.6530418324823881,
+        "weighted_contribution_mAP": 0.08684983358051075
+      },
+      {
+        "encoded_identity": 62,
+        "original_identity": "000191",
+        "queries": 17,
+        "fused_gain_mAP": -0.3429087252616657,
+        "weighted_contribution_mAP": -0.010209191470137156
+      },
+      {
+        "encoded_identity": 64,
+        "original_identity": "000195",
+        "queries": 31,
+        "fused_gain_mAP": -3.2114851778718667,
+        "weighted_contribution_mAP": -0.17435383627675632
+      },
+      {
+        "encoded_identity": 66,
+        "original_identity": "000198",
+        "queries": 27,
+        "fused_gain_mAP": -0.6026521798124865,
+        "weighted_contribution_mAP": -0.028496688012149097
+      },
+      {
+        "encoded_identity": 67,
+        "original_identity": "000200",
+        "queries": 32,
+        "fused_gain_mAP": -5.448070292456846,
+        "weighted_contribution_mAP": -0.30532092707288805
+      },
+      {
+        "encoded_identity": 68,
+        "original_identity": "000201",
+        "queries": 32,
+        "fused_gain_mAP": -1.873859344152868,
+        "weighted_contribution_mAP": -0.10501488443588752
+      },
+      {
+        "encoded_identity": 69,
+        "original_identity": "000204",
+        "queries": 27,
+        "fused_gain_mAP": -7.757548668690741,
+        "weighted_contribution_mAP": -0.3668192890624343
+      },
+      {
+        "encoded_identity": 70,
+        "original_identity": "000209",
+        "queries": 30,
+        "fused_gain_mAP": -4.068475244981015,
+        "weighted_contribution_mAP": -0.21375526681161203
+      },
+      {
+        "encoded_identity": 71,
+        "original_identity": "000212",
+        "queries": 30,
+        "fused_gain_mAP": 6.880187279022324,
+        "weighted_contribution_mAP": 0.36148094285581384
+      },
+      {
+        "encoded_identity": 72,
+        "original_identity": "000213",
+        "queries": 20,
+        "fused_gain_mAP": 4.494964241580936,
+        "weighted_contribution_mAP": 0.15744182982770352
+      },
+      {
+        "encoded_identity": 76,
+        "original_identity": "000217",
+        "queries": 17,
+        "fused_gain_mAP": -2.4613940789634388,
+        "weighted_contribution_mAP": -0.07328143492535631
+      },
+      {
+        "encoded_identity": 79,
+        "original_identity": "000220",
+        "queries": 30,
+        "fused_gain_mAP": 7.165336698492748,
+        "weighted_contribution_mAP": 0.37646252356354193
+      },
+      {
+        "encoded_identity": 84,
+        "original_identity": "000228",
+        "queries": 28,
+        "fused_gain_mAP": 0.0,
+        "weighted_contribution_mAP": 0.0
+      },
+      {
+        "encoded_identity": 87,
+        "original_identity": "000232",
+        "queries": 30,
+        "fused_gain_mAP": -0.053636839351124774,
+        "weighted_contribution_mAP": -0.002818047601635277
+      },
+      {
+        "encoded_identity": 88,
+        "original_identity": "000233",
+        "queries": 30,
+        "fused_gain_mAP": -11.504231620908948,
+        "weighted_contribution_mAP": -0.6044254792071251
+      },
+      {
+        "encoded_identity": 89,
+        "original_identity": "000235",
+        "queries": 28,
+        "fused_gain_mAP": -0.9203836800842312,
+        "weighted_contribution_mAP": -0.045132649811485945
+      },
+      {
+        "encoded_identity": 92,
+        "original_identity": "000239",
+        "queries": 24,
+        "fused_gain_mAP": -1.1255836710908547,
+        "weighted_contribution_mAP": -0.04730999668332839
+      },
+      {
+        "encoded_identity": 96,
+        "original_identity": "000250",
+        "queries": 21,
+        "fused_gain_mAP": -16.017605951224887,
+        "weighted_contribution_mAP": -0.5890888353340151
+      },
+      {
+        "encoded_identity": 97,
+        "original_identity": "000251",
+        "queries": 30,
+        "fused_gain_mAP": -0.5482449354921243,
+        "weighted_contribution_mAP": -0.02880446246018166
+      },
+      {
+        "encoded_identity": 99,
+        "original_identity": "000257",
+        "queries": 29,
+        "fused_gain_mAP": -0.41899879205452145,
+        "weighted_contribution_mAP": -0.021280148808373246
+      },
+      {
+        "encoded_identity": 101,
+        "original_identity": "000261",
+        "queries": 28,
+        "fused_gain_mAP": -0.45570370848131303,
+        "weighted_contribution_mAP": -0.022346241396631814
+      }
+    ],
+    "query_paired_changes": {
+      "baseline_only": {
+        "ap_improved": 0,
+        "ap_declined": 0,
+        "ap_equal": 571,
+        "rank1_repaired": 0,
+        "rank1_broken": 0
+      },
+      "fused": {
+        "ap_improved": 176,
+        "ap_declined": 227,
+        "ap_equal": 168,
+        "rank1_repaired": 10,
+        "rank1_broken": 18
+      },
+      "cnn": {
+        "ap_improved": 196,
+        "ap_declined": 207,
+        "ap_equal": 168,
+        "rank1_repaired": 9,
+        "rank1_broken": 16
+      },
+      "transformer": {
+        "ap_improved": 151,
+        "ap_declined": 286,
+        "ap_equal": 134,
+        "rank1_repaired": 17,
+        "rank1_broken": 33
+      },
+      "mamba": {
+        "ap_improved": 218,
+        "ap_declined": 197,
+        "ap_equal": 156,
+        "rank1_repaired": 23,
+        "rank1_broken": 6
+      }
+    },
+    "training": [
+      {
+        "fold": 0,
+        "endpoint": "batch_hard_residual",
+        "camera_negative_enabled": false,
+        "epochs": 20,
+        "history_rows": 20,
+        "optimizer_steps": 580,
+        "overflow_events": 0,
+        "trainable_tensors": 203,
+        "nonzero_gradient_tensors": 203,
+        "missing_nonzero_gradients": 0,
+        "frozen_state_unchanged": true,
+        "support_sums": {
+          "valid_rows": 34266,
+          "same_negative_missing_rows": 2519,
+          "other_negative_missing_rows": 335,
+          "cross_camera_positive_rows": 6240
+        },
+        "max_loss_component_roundoff": 6.583487088818174e-09,
+        "max_support_roundoff": 7.105427357601002e-15,
+        "checkpoint_sha256": "7b1c66b4c1560f733427eed85903a01202852ce24fee2f801de6fe362d3b56bb",
+        "strict_reload": true,
+        "read_only_evaluation": true,
+        "final_epoch": {
+          "fold": 0,
+          "endpoint": "batch_hard_residual",
+          "epoch": 20,
+          "batches": 29,
+          "learning_rate": 3.824169871584004e-06,
+          "mean_total": 0.6084252040961693,
+          "mean_common_identity_and_branch_triplet": 0.6069723717097578,
+          "mean_ordinary_residual_triplet": 0.0014528334461923304,
+          "mean_camera_residual_metric": 0.13633304808674188,
+          "mean_camera_valid_rows": 59.206896551724135,
+          "mean_camera_same_negative_missing_rows": 4.0344827586206895,
+          "mean_camera_other_negative_missing_rows": 0.7586206896551724,
+          "mean_camera_cross_camera_positive_rows": 10.758620689655173,
+          "mean_mcnl_cnn_positive_term": 1.5343792820831055e-06,
+          "mean_mcnl_cnn_camera_term": 0.18691767906320506,
+          "mean_mcnl_cnn_positive_active_rows": 0.034482758620689655,
+          "mean_mcnl_cnn_camera_active_rows": 53.89655172413793,
+          "mean_mcnl_transformer_positive_term": 0.0,
+          "mean_mcnl_transformer_camera_term": 0.1734570592384914,
+          "mean_mcnl_transformer_positive_active_rows": 0.0,
+          "mean_mcnl_transformer_camera_active_rows": 53.827586206896555,
+          "mean_mcnl_mamba_positive_term": 0.0,
+          "mean_mcnl_mamba_camera_term": 0.18495591832646008,
+          "mean_mcnl_mamba_positive_active_rows": 0.0,
+          "mean_mcnl_mamba_camera_active_rows": 53.6551724137931
+        }
+      },
+      {
+        "fold": 0,
+        "endpoint": "camera_negative_residual",
+        "camera_negative_enabled": true,
+        "epochs": 20,
+        "history_rows": 20,
+        "optimizer_steps": 580,
+        "overflow_events": 0,
+        "trainable_tensors": 203,
+        "nonzero_gradient_tensors": 203,
+        "missing_nonzero_gradients": 0,
+        "frozen_state_unchanged": true,
+        "support_sums": {
+          "valid_rows": 34266,
+          "same_negative_missing_rows": 2519,
+          "other_negative_missing_rows": 335,
+          "cross_camera_positive_rows": 6240
+        },
+        "max_loss_component_roundoff": 5.138331427012588e-09,
+        "max_support_roundoff": 7.105427357601002e-15,
+        "checkpoint_sha256": "04b17bf58dde28fd6fe3b0c6c0bfb4b1113a290b9ef78d1d0db2efa8bf984d7a",
+        "strict_reload": true,
+        "read_only_evaluation": true,
+        "final_epoch": {
+          "fold": 0,
+          "endpoint": "camera_negative_residual",
+          "epoch": 20,
+          "batches": 29,
+          "learning_rate": 3.824169871584004e-06,
+          "mean_total": 0.6789967335503677,
+          "mean_common_identity_and_branch_triplet": 0.620484944047599,
+          "mean_ordinary_residual_triplet": 0.02431743181760198,
+          "mean_camera_residual_metric": 0.05851179464110013,
+          "mean_camera_valid_rows": 59.206896551724135,
+          "mean_camera_same_negative_missing_rows": 4.0344827586206895,
+          "mean_camera_other_negative_missing_rows": 0.7586206896551724,
+          "mean_camera_cross_camera_positive_rows": 10.758620689655173,
+          "mean_mcnl_cnn_positive_term": 0.0007868268926515533,
+          "mean_mcnl_cnn_camera_term": 0.07781820956232219,
+          "mean_mcnl_cnn_positive_active_rows": 0.896551724137931,
+          "mean_mcnl_cnn_camera_active_rows": 47.724137931034484,
+          "mean_mcnl_transformer_positive_term": 0.00017459225837855824,
+          "mean_mcnl_transformer_camera_term": 0.07382940562795205,
+          "mean_mcnl_transformer_positive_active_rows": 0.2413793103448276,
+          "mean_mcnl_transformer_camera_active_rows": 44.3448275862069,
+          "mean_mcnl_mamba_positive_term": 0.00044503253781746525,
+          "mean_mcnl_mamba_camera_term": 0.08099311262626073,
+          "mean_mcnl_mamba_positive_active_rows": 0.6896551724137931,
+          "mean_mcnl_mamba_camera_active_rows": 47.41379310344828
+        }
+      },
+      {
+        "fold": 1,
+        "endpoint": "batch_hard_residual",
+        "camera_negative_enabled": false,
+        "epochs": 20,
+        "history_rows": 20,
+        "optimizer_steps": 560,
+        "overflow_events": 0,
+        "trainable_tensors": 203,
+        "nonzero_gradient_tensors": 203,
+        "missing_nonzero_gradients": 0,
+        "frozen_state_unchanged": true,
+        "support_sums": {
+          "valid_rows": 33276,
+          "same_negative_missing_rows": 2261,
+          "other_negative_missing_rows": 303,
+          "cross_camera_positive_rows": 6080
+        },
+        "max_loss_component_roundoff": 6.2697965708125025e-09,
+        "max_support_roundoff": 0.0,
+        "checkpoint_sha256": "8b4a0e9cd0ee7aa7abc917a6e5921afb7462010598795a2e0acdb1fa1a877cdb",
+        "strict_reload": true,
+        "read_only_evaluation": true,
+        "final_epoch": {
+          "fold": 1,
+          "endpoint": "batch_hard_residual",
+          "epoch": 20,
+          "batches": 28,
+          "learning_rate": 3.824169871584004e-06,
+          "mean_total": 0.611569459949221,
+          "mean_common_identity_and_branch_triplet": 0.6097465412957328,
+          "mean_ordinary_residual_triplet": 0.001822923875546881,
+          "mean_camera_residual_metric": 0.1345136064503874,
+          "mean_camera_valid_rows": 59.82142857142857,
+          "mean_camera_same_negative_missing_rows": 3.75,
+          "mean_camera_other_negative_missing_rows": 0.42857142857142855,
+          "mean_camera_cross_camera_positive_rows": 10.857142857142858,
+          "mean_mcnl_cnn_positive_term": 1.9088121397154672e-05,
+          "mean_mcnl_cnn_camera_term": 0.18813379108905792,
+          "mean_mcnl_cnn_positive_active_rows": 0.03571428571428571,
+          "mean_mcnl_cnn_camera_active_rows": 56.75,
+          "mean_mcnl_transformer_positive_term": 0.0,
+          "mean_mcnl_transformer_camera_term": 0.16493059801203863,
+          "mean_mcnl_transformer_positive_active_rows": 0.0,
+          "mean_mcnl_transformer_camera_active_rows": 55.357142857142854,
+          "mean_mcnl_mamba_positive_term": 0.0,
+          "mean_mcnl_mamba_camera_term": 0.18497095416699136,
+          "mean_mcnl_mamba_positive_active_rows": 0.0,
+          "mean_mcnl_mamba_camera_active_rows": 56.107142857142854
+        }
+      },
+      {
+        "fold": 1,
+        "endpoint": "camera_negative_residual",
+        "camera_negative_enabled": true,
+        "epochs": 20,
+        "history_rows": 20,
+        "optimizer_steps": 560,
+        "overflow_events": 0,
+        "trainable_tensors": 203,
+        "nonzero_gradient_tensors": 203,
+        "missing_nonzero_gradients": 0,
+        "frozen_state_unchanged": true,
+        "support_sums": {
+          "valid_rows": 33276,
+          "same_negative_missing_rows": 2261,
+          "other_negative_missing_rows": 303,
+          "cross_camera_positive_rows": 6080
+        },
+        "max_loss_component_roundoff": 6.718827161300567e-09,
+        "max_support_roundoff": 0.0,
+        "checkpoint_sha256": "e2d2083e79835f9950bf4b8364b2051076f7376b101159d92638f205a164cd6d",
+        "strict_reload": true,
+        "read_only_evaluation": true,
+        "final_epoch": {
+          "fold": 1,
+          "endpoint": "camera_negative_residual",
+          "epoch": 20,
+          "batches": 28,
+          "learning_rate": 3.824169871584004e-06,
+          "mean_total": 0.6749431852783475,
+          "mean_common_identity_and_branch_triplet": 0.6241797102349145,
+          "mean_ordinary_residual_triplet": 0.030199595959857106,
+          "mean_camera_residual_metric": 0.05076347675640136,
+          "mean_camera_valid_rows": 59.82142857142857,
+          "mean_camera_same_negative_missing_rows": 3.75,
+          "mean_camera_other_negative_missing_rows": 0.42857142857142855,
+          "mean_camera_cross_camera_positive_rows": 10.857142857142858,
+          "mean_mcnl_cnn_positive_term": 0.0007312355399855213,
+          "mean_mcnl_cnn_camera_term": 0.0686049481072197,
+          "mean_mcnl_cnn_positive_active_rows": 1.4285714285714286,
+          "mean_mcnl_cnn_camera_active_rows": 45.67857142857143,
+          "mean_mcnl_transformer_positive_term": 0.00025299274732658105,
+          "mean_mcnl_transformer_camera_term": 0.05901386484869623,
+          "mean_mcnl_transformer_positive_active_rows": 0.5357142857142857,
+          "mean_mcnl_transformer_camera_active_rows": 41.17857142857143,
+          "mean_mcnl_mamba_positive_term": 0.0009411116001761652,
+          "mean_mcnl_mamba_camera_term": 0.07350975386465766,
+          "mean_mcnl_mamba_positive_active_rows": 1.6428571428571428,
+          "mean_mcnl_mamba_camera_active_rows": 47.57142857142857
+        }
+      },
+      {
+        "fold": 2,
+        "endpoint": "batch_hard_residual",
+        "camera_negative_enabled": false,
+        "epochs": 20,
+        "history_rows": 20,
+        "optimizer_steps": 540,
+        "overflow_events": 0,
+        "trainable_tensors": 203,
+        "nonzero_gradient_tensors": 203,
+        "missing_nonzero_gradients": 0,
+        "frozen_state_unchanged": true,
+        "support_sums": {
+          "valid_rows": 31254,
+          "same_negative_missing_rows": 3072,
+          "other_negative_missing_rows": 234,
+          "cross_camera_positive_rows": 5280
+        },
+        "max_loss_component_roundoff": 6.915932382334233e-09,
+        "max_support_roundoff": 0.0,
+        "checkpoint_sha256": "ceca7c6705df7b7724dffc81a7f64910aa8d4538c8796adb96ff448abb804b51",
+        "strict_reload": true,
+        "read_only_evaluation": true,
+        "final_epoch": {
+          "fold": 2,
+          "endpoint": "batch_hard_residual",
+          "epoch": 20,
+          "batches": 27,
+          "learning_rate": 3.824169871584004e-06,
+          "mean_total": 0.6081007454130385,
+          "mean_common_identity_and_branch_triplet": 0.6071331280249136,
+          "mean_ordinary_residual_triplet": 0.0009676183970576083,
+          "mean_camera_residual_metric": 0.13789240960721616,
+          "mean_camera_valid_rows": 58.370370370370374,
+          "mean_camera_same_negative_missing_rows": 5.037037037037037,
+          "mean_camera_other_negative_missing_rows": 0.5925925925925926,
+          "mean_camera_cross_camera_positive_rows": 9.777777777777779,
+          "mean_mcnl_cnn_positive_term": 0.0,
+          "mean_mcnl_cnn_camera_term": 0.18674794418944252,
+          "mean_mcnl_cnn_positive_active_rows": 0.0,
+          "mean_mcnl_cnn_camera_active_rows": 54.148148148148145,
+          "mean_mcnl_transformer_positive_term": 0.0,
+          "mean_mcnl_transformer_camera_term": 0.1715127577384313,
+          "mean_mcnl_transformer_positive_active_rows": 0.0,
+          "mean_mcnl_transformer_camera_active_rows": 55.592592592592595,
+          "mean_mcnl_mamba_positive_term": 0.0,
+          "mean_mcnl_mamba_camera_term": 0.19330893760478055,
+          "mean_mcnl_mamba_positive_active_rows": 0.0,
+          "mean_mcnl_mamba_camera_active_rows": 53.925925925925924
+        }
+      },
+      {
+        "fold": 2,
+        "endpoint": "camera_negative_residual",
+        "camera_negative_enabled": true,
+        "epochs": 20,
+        "history_rows": 20,
+        "optimizer_steps": 540,
+        "overflow_events": 0,
+        "trainable_tensors": 203,
+        "nonzero_gradient_tensors": 203,
+        "missing_nonzero_gradients": 0,
+        "frozen_state_unchanged": true,
+        "support_sums": {
+          "valid_rows": 31254,
+          "same_negative_missing_rows": 3072,
+          "other_negative_missing_rows": 234,
+          "cross_camera_positive_rows": 5280
+        },
+        "max_loss_component_roundoff": 7.105646293581458e-09,
+        "max_support_roundoff": 0.0,
+        "checkpoint_sha256": "7717ab98f3e64da218c09280b4a8bba4f38f01096964c72c8d6edf89faf90a97",
+        "strict_reload": true,
+        "read_only_evaluation": true,
+        "final_epoch": {
+          "fold": 2,
+          "endpoint": "camera_negative_residual",
+          "epoch": 20,
+          "batches": 27,
+          "learning_rate": 3.824169871584004e-06,
+          "mean_total": 0.6715437571207682,
+          "mean_common_identity_and_branch_triplet": 0.6217785058198152,
+          "mean_ordinary_residual_triplet": 0.0352804956405803,
+          "mean_camera_residual_metric": 0.0497652469030409,
+          "mean_camera_valid_rows": 58.370370370370374,
+          "mean_camera_same_negative_missing_rows": 5.037037037037037,
+          "mean_camera_other_negative_missing_rows": 0.5925925925925926,
+          "mean_camera_cross_camera_positive_rows": 9.777777777777779,
+          "mean_mcnl_cnn_positive_term": 0.0007913359807355812,
+          "mean_mcnl_cnn_camera_term": 0.06743848242762464,
+          "mean_mcnl_cnn_positive_active_rows": 1.5555555555555556,
+          "mean_mcnl_cnn_camera_active_rows": 42.111111111111114,
+          "mean_mcnl_transformer_positive_term": 0.00014213663612112955,
+          "mean_mcnl_transformer_camera_term": 0.0632032330872284,
+          "mean_mcnl_transformer_positive_active_rows": 0.37037037037037035,
+          "mean_mcnl_transformer_camera_active_rows": 38.18518518518518,
+          "mean_mcnl_mamba_positive_term": 0.0013339579885791022,
+          "mean_mcnl_mamba_camera_term": 0.0661518433502082,
+          "mean_mcnl_mamba_positive_active_rows": 1.7407407407407407,
+          "mean_mcnl_mamba_camera_active_rows": 41.18518518518518
+        }
+      }
+    ],
+    "metadata_integer_replay": {
+      "total_batches": 1680,
+      "sample_exposures": 107520,
+      "sums": {
+        "cross_camera_positive_rows": 17600,
+        "directed_cross_camera_positive_pairs": 60744,
+        "all_directed_positive_pairs": 752640,
+        "same_camera_negative_missing_rows": 7852,
+        "other_camera_negative_missing_rows": 872,
+        "both_camera_negative_groups_available_rows": 98796
+      },
+      "cross_camera_positive_row_fraction": 0.1636904761904762,
+      "cross_camera_positive_pair_fraction": 0.08070790816326531,
+      "missing_either_camera_negative_fraction": 0.08113839285714286,
+      "min_valid_rows_per_batch": 42,
+      "max_valid_rows_per_batch": 64,
+      "batches_with_incomplete_support": 923,
+      "batches_with_single_cross_camera_identity_group": 1580,
+      "max_integer_difference_vs_report": 0
+    },
+    "log_reconciliation": {
+      "log_sha256": "a091390a25ced0cfd336fce3c5bd6c51565fcad6becfbf3419778bcb9b7a2f1a",
+      "log_lines": 326,
+      "epoch_json_rows": 120,
+      "epoch_rows_equal_saved_histories": true,
+      "preflight_lines": [
+        {
+          "line": 25,
+          "fold": 0
+        },
+        {
+          "line": 44,
+          "fold": 1
+        },
+        {
+          "line": 63,
+          "fold": 2
+        }
+      ],
+      "m0_line": {
+        "line": 91,
+        "passed": true
+      },
+      "q1_final_lines": [
+        {
+          "line": 130,
+          "fold": 0,
+          "endpoint": "batch_hard_residual"
+        },
+        {
+          "line": 169,
+          "fold": 0,
+          "endpoint": "camera_negative_residual"
+        },
+        {
+          "line": 208,
+          "fold": 1,
+          "endpoint": "batch_hard_residual"
+        },
+        {
+          "line": 247,
+          "fold": 1,
+          "endpoint": "camera_negative_residual"
+        },
+        {
+          "line": 286,
+          "fold": 2,
+          "endpoint": "batch_hard_residual"
+        },
+        {
+          "line": 325,
+          "fold": 2,
+          "endpoint": "camera_negative_residual"
+        }
+      ],
+      "final_line": {
+        "line": 326,
+        "status": "Q1_FAIL"
+      }
+    },
+    "m0_replay": {
+      "checks": {
+        "all_gradients_live": true,
+        "all_frozen_states_unchanged": true,
+        "overflow_zero": true,
+        "capacity_within_limit": true,
+        "overfit_excess_ratio_at_most_point1": true
+      },
+      "classes": 94,
+      "label_smoothing": 0.1,
+      "entropy": 0.7711772280616134,
+      "identity_weight_sum": 0.75,
+      "identity_entropy_floor": 0.57838292104621,
+      "combined_loss_floor": 0.57838292104621,
+      "first_loss": 0.7189050912857056,
+      "hundredth_loss": 0.5803177952766418,
+      "excess_loss_ratio": 0.013769174124866987,
+      "floor_difference_vs_recorded": 0.0,
+      "ratio_difference_vs_recorded": 0.0,
+      "overfit_component_ranges": {
+        "total": {
+          "min": 0.5803177952766418,
+          "max": 0.7189050912857056
+        },
+        "common_identity_and_branch_triplet": {
+          "min": 0.5803177952766418,
+          "max": 0.6439194083213806
+        },
+        "ordinary_residual_triplet": {
+          "min": 0.000351776834577322,
+          "max": 0.055489540100097656
+        },
+        "camera_residual_metric": {
+          "min": 0.0,
+          "max": 0.1082095205783844
+        },
+        "camera_valid_rows": {
+          "min": 56.0,
+          "max": 56.0
+        },
+        "camera_same_negative_missing_rows": {
+          "min": 8.0,
+          "max": 8.0
+        },
+        "camera_other_negative_missing_rows": {
+          "min": 0.0,
+          "max": 0.0
+        },
+        "camera_cross_camera_positive_rows": {
+          "min": 8.0,
+          "max": 8.0
+        },
+        "mcnl_cnn_positive_term": {
+          "min": 0.0,
+          "max": 3.466968337306753e-05
+        },
+        "mcnl_cnn_camera_term": {
+          "min": 0.0,
+          "max": 0.16160520911216736
+        },
+        "mcnl_cnn_positive_active_rows": {
+          "min": 0.0,
+          "max": 1.0
+        },
+        "mcnl_cnn_camera_active_rows": {
+          "min": 0.0,
+          "max": 47.0
+        },
+        "mcnl_transformer_positive_term": {
+          "min": 0.0,
+          "max": 0.0
+        },
+        "mcnl_transformer_camera_term": {
+          "min": 0.0,
+          "max": 0.12347975373268127
+        },
+        "mcnl_transformer_positive_active_rows": {
+          "min": 0.0,
+          "max": 0.0
+        },
+        "mcnl_transformer_camera_active_rows": {
+          "min": 0.0,
+          "max": 53.0
+        },
+        "mcnl_mamba_positive_term": {
+          "min": 0.0,
+          "max": 0.0001170762989204377
+        },
+        "mcnl_mamba_camera_term": {
+          "min": 0.0,
+          "max": 0.14775311946868896
+        },
+        "mcnl_mamba_positive_active_rows": {
+          "min": 0.0,
+          "max": 1.0
+        },
+        "mcnl_mamba_camera_active_rows": {
+          "min": 0.0,
+          "max": 40.0
+        }
+      },
+      "capacity_peak_reserved_mib": [
+        6054.0,
+        6200.0
+      ]
+    },
+    "max_differences": {
+      "max_summary_numeric_difference_percent_or_points": 0.0,
+      "max_metric_diff_vs_endpoint_output": 0.0,
+      "max_aggregate_diff_vs_summary": 0.0,
+      "max_gain_diff_vs_summary": 0.0,
+      "max_fold_gain_diff_vs_summary": 0.0,
+      "bootstrap_diff_vs_summary": 0.0,
+      "max_epoch_loss_component_roundoff": 7.105646293581458e-09,
+      "max_epoch_support_roundoff": 7.105427357601002e-15,
+      "metadata_integer_max_difference": 0,
+      "m0_floor_diff": 0.0,
+      "m0_ratio_diff": 0.0
+    }
+  },
+  "limitations": [
+    "Local read-only artifact audit except for the two requested reports; no model training/inference/retrieval, image reads, checkpoint/tensor loads, GPU, remote, network, downloads, package installation, or new tests.",
+    "Distances and features were not recomputed because raw embeddings/distances were absent and model/tensor loading was outside scope. Metric replay starts from supplied AP/rank/query arrays and gallery identity/camera manifests.",
+    "Remote CLIP, V12 checkpoints and V22 final checkpoints are evidenced by the terminal remote verifier ledger; they were not independently possessed as local bytes.",
+    "Four current local text files differ from execution hashes as raw bytes but match after LF normalization: modeling/trifusion/criterion.py, modeling/trifusion/experts/mamba.py, modeling/trifusion/experts/semantic_residual.py, protocols/rgbnt201_dev_v1.json.",
+    "Current local repository HEAD differs from the execution commit; source/config/plan identity is assessed by recorded execution hashes and current raw/LF-normalized content, not by HEAD equality.",
+    "Q1 is reused train-internal complete-path OOF development qualification, not independent dev, official test, public benchmark SOTA, or causal mechanism evidence."
+  ]
+}

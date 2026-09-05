@@ -607,3 +607,6 @@
 | 2026-09-05 20:51 | /run-experiment | refine-logs/v22/EXPERIMENT_TRACKER_20260905_205157.md | evidence | 36 SHA files and complete arrays/logs verified; terminal independent audit pending |
 
 | 2026-09-05 21:17 | /run-experiment | results/TRIFUSION_RGBNT201_V22_INITIALIZATION_FULL_GALLERY_2026-09-05.md | evidence | All three fixed initial states, full gallery, optimizer0; 45 metric rows and 21 identities verified |
+
+| 2026-09-05 21:35 | /experiment-audit | EXPERIMENT_AUDIT_V22_Q1.md/json | evidence | Independent full terminal audit: engineering/fixed M0 PASS, integrity WARN, all scientific gates FAIL; raw reports and trace run10 archived |
+| 2026-09-05 21:35 | /experiment-audit | refine-logs/v22/EXPERIMENT_TRACKER_20260905_213543.md | evidence | Independent terminal audit complete; negative result and provenance limits retained |
