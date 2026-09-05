@@ -605,3 +605,5 @@
 
 | 2026-09-05 20:51 | /run-experiment | results/TRIFUSION_RGBNT201_V22_CAMERA_NEGATIVE_2026-09-05.md | evidence | Full 6x20 endpoints complete; all five gates FAIL; no dev/official |
 | 2026-09-05 20:51 | /run-experiment | refine-logs/v22/EXPERIMENT_TRACKER_20260905_205157.md | evidence | 36 SHA files and complete arrays/logs verified; terminal independent audit pending |
+
+| 2026-09-05 21:17 | /run-experiment | results/TRIFUSION_RGBNT201_V22_INITIALIZATION_FULL_GALLERY_2026-09-05.md | evidence | All three fixed initial states, full gallery, optimizer0; 45 metric rows and 21 identities verified |
