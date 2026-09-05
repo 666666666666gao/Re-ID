@@ -3443,3 +3443,19 @@ runner SHA a1771c2e16e129f0a1ecdfb1f5fffcc7d83fe2faf5073033efe520a73c800f87不�
 每fold新初始化角色，不加载M0后权重；固定20epoch、600query/1032gallery、全部五输出。
 按实际M0预计18–25分钟，初查约6分钟后，不以训练loss选择停止或修改合同。
 当前没有完整比较检索结果；RGBNT201未达目标、V23/V24封存、无官方/消融限制保持。
+
+### 41.27 MSVR310 第0折训练完成，基线特征一致性门停止（2026-09-06）
+
+记录时间：2026-09-06T06:41:47.899579+08:00。原wrapper70422已exit1；fold0训练满20epoch/260更新，
+所有训练工程条件通过；保存并严格重载epoch20后提取360条heldout gallery，
+在与原B0保存3072D特征的逐元素比较断言失败。0检索AP/Rank，fold1/2未运行。
+原RUNNING字段、日志/exit及训练receipt原样封存，不补造终态。
+checkpoint SHA b8a85e167861c51bb7d9a5854d700d11468ee9ca2a6e7ba21b75ce557130003c。
+
+M0源8条parity通过不能证明本次完整跨进程B0数组一致；原因当前未知，
+不先判算法负结果或把数值差当成可忽略。新只读诊断固定覆盖已访问全部360条，
+五个64批及40尾批，四种Signal路径共1440记录前向；不改backend、不算排名、0更新/反传/checkpoint。
+首64草案从未执行，执行前按全矩阵与尾批范围修订，原稿保存。
+完整计划与入口已登记，尚NOT_RUN；原260更新不重跑，不放宽门，不盲启后两折。
+results/TRIFUSION_MSVR310_ORIGINAL_ROLES_COMPARISON_STOP_2026-09-06.md。
+独立M0审计run18进行中，其60份原始输入SHA仍相同。RGBNT201目标与全部官方/消融边界不变。

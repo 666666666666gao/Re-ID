@@ -1,0 +1,48 @@
+{
+  "observed_at": "2026-09-06T06:28:53.095729+08:00",
+  "wrapper_pid": 70422,
+  "wrapper_proc_exists": false,
+  "gpu_free_used_util": "24126, 1, 0",
+  "exit_code": "1",
+  "summary": {
+    "status": "RUNNING",
+    "project_commit": "1c444cdf72e13fd041afd0c641dc8f522faa5844"
+  },
+  "folds": [
+    {
+      "fold": 0,
+      "epochs": 20,
+      "optimizer_steps": 260,
+      "checks": {
+        "all_trainable_gradients_live": true,
+        "overflow_zero": true,
+        "frozen_state_unchanged": true,
+        "signal_state_unchanged": true,
+        "role_state_updated": true,
+        "capacity_below_24gib": true,
+        "expected_training_length": true
+      }
+    }
+  ],
+  "epoch_event_count": 20,
+  "last_epoch_event": {
+    "event": "msvr310_role_epoch",
+    "fold": 0,
+    "mode": "comparison",
+    "epoch": 20,
+    "optimizer_steps": 13,
+    "learning_rate": 3.824169871584004e-06,
+    "mean_loss": 0.8293835383195144,
+    "elapsed_seconds": 15.746793182566762
+  },
+  "log_bytes": 6357,
+  "log_tail": [
+    "  File \"/root/autodl-tmp/trifusion-v2/TriFusion-ReID/tools/train_msvr310_trifusion_oof.py\", line 425, in <module>",
+    "    run(arguments)",
+    "  File \"/root/autodl-tmp/trifusion-v2/TriFusion-ReID/tools/train_msvr310_trifusion_oof.py\", line 383, in run",
+    "    row[\"retrieval\"] = evaluate(features, protocol, fold, fold_dir, baseline_fold)",
+    "  File \"/root/autodl-tmp/trifusion-v2/TriFusion-ReID/tools/train_msvr310_trifusion_oof.py\", line 204, in evaluate",
+    "    assert torch.equal(features[\"baseline_only\"], original[\"features\"])",
+    "AssertionError"
+  ]
+}

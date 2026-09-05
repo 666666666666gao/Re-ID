@@ -644,3 +644,5 @@
 | 2026-09-06T06:08:14.672010+08:00 | /run-experiment | evidence/trifusion_msvr310_trifusion_v1_source_binding_r2_20260906.json | preparation | Prelaunch0-update SHA failure preserved; five actual remote LF/Git bytes pinned; no runtime/algorithm change |
 
 | 2026-09-06T06:24:17.950707+08:00 | /run-experiment | results/TRIFUSION_MSVR310_ORIGINAL_ROLES_M0_2026-09-06.md; evidence/trifusion_msvr310_trifusion_v1_m0_complete_20260906.json | evidence | Complete124-update source M0 PASS;17files/all scalar accounting verified; original three20epoch comparison running, no terminal retrieval yet |
+
+| 2026-09-06T06:41:47.899579+08:00 | /run-experiment | results/TRIFUSION_MSVR310_ORIGINAL_ROLES_COMPARISON_STOP_2026-09-06.md; tools/diagnose_msvr310_baseline_feature_parity.py | evidence/preparation | Original fold0 260updates retained; stop beforeAP on exact B0 feature gate; full360 four-path read-only diagnosis registered, NOT_RUN |

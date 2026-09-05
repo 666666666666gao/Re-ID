@@ -466,3 +466,12 @@
   Three freshly initialized role models, fixed20epochs, original five support
   conditions and complete600query/1032gallery. Do not relaunch or change inputs.
   No complete retrieval result yet. Read the new M0 result and tracker.
+
+- MSVR310 comparison70422 STOPPED, exit1 afterfold0 fixed20epochs/260updates.
+  Frozen/gradient/training checks passed;360gallery records extracted, then
+  original B0 feature bitwise-equality assertion failed before any AP/Rank.
+  No fold1/2, no complete retrieval. Preserve original partial RUNNING JSON and
+  final checkpoint b8a85e16..., no retraining, gate relaxation or blind relaunch.
+  New read-only full360-record four-path parity diagnosis is registered, NOT_RUN;
+  1440record forwards/0updates/0ranking, backend flags observed but not changed.
+  Read the comparison stop report and BASELINE_PARITY_DIAGNOSIS_PLAN_20260906.md.
