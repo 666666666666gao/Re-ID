@@ -1,0 +1,626 @@
+{
+  "date": "2026-09-06",
+  "auditor": {
+    "agent": "Codex child audit agent",
+    "requested_model_in_audit_request": "GPT-5.5 xhigh",
+    "reviewer_family_limit": "OpenAI/Codex same-family review; not cross-family acquittal"
+  },
+  "overall_verdict": "WARN: V24 M0 engineering integrity is supported within bounded evidence; scientific efficacy and Q1 qualification are not established.",
+  "integrity_status": "M0_ENGINEERING_PASS_WITH_PROVENANCE_AND_SCOPE_WARNINGS",
+  "engineering_integrity": "PASS for the source-only M0 engineering gate: no scalar arithmetic mismatch above 1e-5, no manifest hash mismatch, reported M0 gates pass, gradients/frozen/overflow accounting is internally consistent, and prototype membership/reset logic matches the source membership contract.",
+  "fixed_m0_qualification": "QUALIFIED_PASS: 8-step control capacity, 8-step candidate capacity, and fixed 100-step candidate overfit checks are internally consistent and meet stated M0 gates.",
+  "scientific_qualification": "NOT_ESTABLISHED: Q1 was still running at the supplied 2026-09-06T01:10:42+08:00 snapshot; no dev, official, D1, multiseed, or ablation evidence was available.",
+  "evaluation_type": {
+    "synthetic_T0": "synthetic_remote_cuda_prototype_math_gradients_memory_membership_and_aligned_view_contract",
+    "engineering_M0": "source_only_engineering_m0_real_train_source_batches",
+    "planned_Q1": "real_gt_train_internal_complete_path_oof_reused_development_qualification",
+    "observed_Q1_status": {
+      "status": "RUNNING",
+      "epoch_rows": 1,
+      "optimizer_steps_logged": 29,
+      "paired_q1_folds": 0,
+      "exit_code": null
+    },
+    "dev_official_d1": {
+      "m0_dev_access_count": 0,
+      "m0_official_test_access_count": 0,
+      "d1_executed": false,
+      "next_phase_qualified": false
+    }
+  },
+  "checks": {
+    "A": {
+      "verdict": "PASS",
+      "summary": "Source/heldout construction, real source ID-camera membership, retained cross-camera positives, and memory reset boundaries are supported. Prototype targets are local source labels, separate from dataset IDs and heldout retrieval GT."
+    },
+    "B": {
+      "verdict": "PASS",
+      "summary": "All 116 supplied M0 scalar rows, floor, fixed 100-step ratio, gradient/frozen/overflow accounting, and coverage fields are internally consistent within roundoff."
+    },
+    "C": {
+      "verdict": "WARN",
+      "summary": "All 42 local primary files match the manifest. Binary/checkpoint/prototype-memory evidence is receipt-level here; known CRLF-only differences and the mutable tracker are recorded by the supplied verifier."
+    },
+    "D": {
+      "verdict": "PASS",
+      "summary": "Synthetic T0, engineering M0, nonterminal Q1, and unrun D1/dev/official stages are separated. M0 ran its stated gate; Q1 was not complete."
+    },
+    "E": {
+      "verdict": "WARN",
+      "summary": "M0 is engineering-only source evidence and does not prove retrieval improvement, stale-prototype behavior across Q1, dev/official performance, multiseed robustness, or generalization."
+    },
+    "F": {
+      "verdict": "WARN",
+      "summary": "Engineering claims are supported or qualified; Q1/scientific-improvement/advancement claims are rejected or unavailable from the supplied snapshot."
+    }
+  },
+  "claims": [
+    {
+      "claim": "V24 adds training-only source identity-camera prototype supervision with zero new inference parameters.",
+      "status": "supported_for_code_and_m0_scope",
+      "citations": [
+        "source_prototype_v24.py:12-30",
+        "source_prototype_v24.py:32-49",
+        "tools/train_signal_preserving_v24.py:81-96",
+        "tools/train_signal_preserving_v24.py:122-126"
+      ]
+    },
+    {
+      "claim": "M0 passed as a source-only engineering gate on real train/source batches.",
+      "status": "supported",
+      "citations": [
+        "evidence/trifusion_v24_progress_20260906_011042.json:14-28",
+        "tools/train_signal_preserving_v24.py:395-414",
+        "results/TRIFUSION_RGBNT201_V24_COMPLETE_M0_2026-09-06.md:25-47"
+      ]
+    },
+    {
+      "claim": "T0 is synthetic implementation evidence, not real-data evidence.",
+      "status": "supported_with_scope_limit",
+      "citations": [
+        "evidence/trifusion_v24_t0_20260906.json:27-50",
+        "tests/test_trifusion_source_prototype_v24.py:28-104"
+      ]
+    },
+    {
+      "claim": "Q1 scientific qualification was complete in the supplied snapshot.",
+      "status": "rejected",
+      "citations": [
+        "evidence/trifusion_v24_progress_20260906_011042.json:2-13",
+        "refine-logs/v24/EXPERIMENT_TRACKER.md:14-22",
+        "results/TRIFUSION_RGBNT201_V24_COMPLETE_M0_2026-09-06.md:64-74"
+      ]
+    },
+    {
+      "claim": "V24 demonstrated retrieval improvement or qualified for D1/dev/official from M0.",
+      "status": "rejected_or_unavailable",
+      "citations": [
+        "refine-logs/v24/EXPERIMENT_PLAN.md:113-114",
+        "evidence/trifusion_v24_m0_seed42_6a4ac2c.json:43-46",
+        "tools/train_signal_preserving_v24.py:478-493"
+      ]
+    }
+  ],
+  "recomputation": {
+    "arithmetic_runtime_seconds": 0.0007586999563500285,
+    "m0_rows_recomputed": 116,
+    "optimizer_steps_reported": 116,
+    "view_forward_backward_pairs_reported": 232,
+    "source_initialization_records_reported": 18882,
+    "source_initialization_forward_calls_reported": 153,
+    "preflight_view_forward_calls_reported": 96,
+    "max_original_weighted_sum_discrepancy": 1.043081283569336e-07,
+    "max_prototype_half_sum_discrepancy": 2.3283064365386963e-10,
+    "max_weighted_prototype_discrepancy": 2.3283064365386963e-10,
+    "max_step_total_discrepancy": 7.896839337995232e-08,
+    "max_loss_list_discrepancy": 7.896839337995232e-08,
+    "bad_rows_over_1e_minus_5": 0,
+    "identity_entropy_floor_recomputed": 0.57838292104621,
+    "identity_entropy_floor_reported": 0.57838292104621,
+    "combined_loss_floor_reported": 0.57838292104621,
+    "floor_discrepancy": 0.0,
+    "fixed_100th_step_ratio_recomputed": 0.059999361786045424,
+    "fixed_100th_step_ratio_reported": 0.059999361786045424,
+    "fixed_100th_step_ratio_discrepancy": 0.0,
+    "identity_weight_sum_recomputed": 0.75,
+    "weights_used_from_config": {
+      "ID_FUSED": 0.25,
+      "TRIPLET_FUSED": 1.0,
+      "ID_BRANCH": 0.08333333333333333,
+      "TRIPLET_BRANCH": 0.25,
+      "ID_RESIDUAL": 0.08333333333333333,
+      "TRIPLET_RESIDUAL": 0.25,
+      "LABEL_SMOOTHING": 0.1
+    },
+    "run_accounting": {
+      "capacity_control": {
+        "steps": 8,
+        "view_forward_backward_pairs": 16,
+        "prototype_loss_enabled": false,
+        "trainable_tensors": 203,
+        "nonzero_gradient_tensors": 203,
+        "missing_nonzero_gradients_count": 0,
+        "frozen_state_unchanged": true,
+        "overflow_events": 0,
+        "peak_reserved_mib": 5950.0,
+        "first_loss": 0.6119523346424103,
+        "last_loss": 0.7076011598110199
+      },
+      "capacity_candidate": {
+        "steps": 8,
+        "view_forward_backward_pairs": 16,
+        "prototype_loss_enabled": true,
+        "trainable_tensors": 203,
+        "nonzero_gradient_tensors": 203,
+        "missing_nonzero_gradients_count": 0,
+        "frozen_state_unchanged": true,
+        "overflow_events": 0,
+        "peak_reserved_mib": 6010.0,
+        "first_loss": 0.6134311258792877,
+        "last_loss": 0.7116176187992096
+      },
+      "fixed_100_candidate": {
+        "steps": 100,
+        "view_forward_backward_pairs": 200,
+        "prototype_loss_enabled": true,
+        "trainable_tensors": 203,
+        "nonzero_gradient_tensors": 203,
+        "missing_nonzero_gradients_count": 0,
+        "frozen_state_unchanged": true,
+        "overflow_events": 0,
+        "peak_reserved_mib": null,
+        "first_loss": 0.6134311258792877,
+        "last_loss": 0.5804857909679413
+      }
+    },
+    "coverage_summary": {
+      "capacity_control": {
+        "global_negative_identities_per_anchor_unique": [
+          93
+        ],
+        "environment_negative_relations_min": 3451,
+        "environment_negative_relations_max": 4298,
+        "anchors_with_real_other_camera_positive_unique": [
+          8
+        ],
+        "real_other_camera_positive_prototypes_unique": [
+          8
+        ],
+        "prototype_pairs_updated_first_last": [
+          0,
+          59
+        ],
+        "prototype_age_max_first_last": [
+          1,
+          8
+        ]
+      },
+      "capacity_candidate": {
+        "global_negative_identities_per_anchor_unique": [
+          93
+        ],
+        "environment_negative_relations_min": 3451,
+        "environment_negative_relations_max": 4298,
+        "anchors_with_real_other_camera_positive_unique": [
+          8
+        ],
+        "real_other_camera_positive_prototypes_unique": [
+          8
+        ],
+        "prototype_pairs_updated_first_last": [
+          0,
+          59
+        ],
+        "prototype_age_max_first_last": [
+          1,
+          8
+        ]
+      },
+      "fixed_100_candidate": {
+        "global_negative_identities_per_anchor_unique": [
+          93
+        ],
+        "environment_negative_relations_min": 3492,
+        "environment_negative_relations_max": 3492,
+        "anchors_with_real_other_camera_positive_unique": [
+          8
+        ],
+        "real_other_camera_positive_prototypes_unique": [
+          8
+        ],
+        "prototype_pairs_updated_first_last": [
+          0,
+          9
+        ],
+        "prototype_age_max_first_last": [
+          1,
+          100
+        ]
+      }
+    },
+    "final_memory_stats": {
+      "capacity_control": {
+        "updated_pairs": 61,
+        "zero_update_pairs": 47,
+        "update_count_sum": 72,
+        "update_count_max": 2,
+        "last_update_min": 0,
+        "last_update_max": 8,
+        "prototype_norm_min": 0.9999999403953552,
+        "prototype_norm_max": 1.0
+      },
+      "capacity_candidate": {
+        "updated_pairs": 61,
+        "zero_update_pairs": 47,
+        "update_count_sum": 72,
+        "update_count_max": 2,
+        "last_update_min": 0,
+        "last_update_max": 8,
+        "prototype_norm_min": 0.9999999403953552,
+        "prototype_norm_max": 1.0000001192092896
+      },
+      "fixed_100_candidate": {
+        "updated_pairs": 9,
+        "zero_update_pairs": 99,
+        "update_count_sum": 900,
+        "update_count_max": 100,
+        "last_update_min": 0,
+        "last_update_max": 100,
+        "prototype_norm_min": 0.9999998807907104,
+        "prototype_norm_max": 1.0
+      }
+    },
+    "membership_by_fold": {
+      "0": {
+        "source_records": 2126,
+        "source_identities": 94,
+        "identity_camera_pairs": 108,
+        "single_camera_identity_count": 80,
+        "multi_camera_identity_count": 14,
+        "extra_identity_camera_pairs_over_identities": 14,
+        "identities_per_camera_recomputed": {
+          "0": 72,
+          "1": 31,
+          "2": 2,
+          "3": 3
+        },
+        "multi_camera_local_ids": [
+          40,
+          42,
+          44,
+          45,
+          46,
+          47,
+          50,
+          52,
+          57,
+          58,
+          60,
+          63,
+          65,
+          67
+        ]
+      },
+      "1": {
+        "source_records": 2075,
+        "source_identities": 94,
+        "identity_camera_pairs": 108,
+        "single_camera_identity_count": 80,
+        "multi_camera_identity_count": 14,
+        "extra_identity_camera_pairs_over_identities": 14,
+        "identities_per_camera_recomputed": {
+          "0": 71,
+          "1": 31,
+          "2": 3,
+          "3": 3
+        },
+        "multi_camera_local_ids": [
+          34,
+          42,
+          44,
+          45,
+          46,
+          47,
+          48,
+          52,
+          56,
+          58,
+          59,
+          64,
+          65,
+          67
+        ]
+      },
+      "2": {
+        "source_records": 2051,
+        "source_identities": 94,
+        "identity_camera_pairs": 108,
+        "single_camera_identity_count": 80,
+        "multi_camera_identity_count": 14,
+        "extra_identity_camera_pairs_over_identities": 14,
+        "identities_per_camera_recomputed": {
+          "0": 69,
+          "1": 30,
+          "2": 3,
+          "3": 6
+        },
+        "multi_camera_local_ids": [
+          34,
+          42,
+          44,
+          45,
+          46,
+          47,
+          48,
+          51,
+          56,
+          59,
+          60,
+          62,
+          65,
+          67
+        ]
+      }
+    },
+    "all_initial_receipts_match_membership": true,
+    "preflight_pair_checks": [
+      {
+        "fold": 0,
+        "paired_flag": true,
+        "initial_state_equal": true,
+        "batch_receipts_equal": true,
+        "all_output_sha256_equal": true,
+        "memory_initial_state_equal": true
+      },
+      {
+        "fold": 1,
+        "paired_flag": true,
+        "initial_state_equal": true,
+        "batch_receipts_equal": true,
+        "all_output_sha256_equal": true,
+        "memory_initial_state_equal": true
+      },
+      {
+        "fold": 2,
+        "paired_flag": true,
+        "initial_state_equal": true,
+        "batch_receipts_equal": true,
+        "all_output_sha256_equal": true,
+        "memory_initial_state_equal": true
+      }
+    ],
+    "all_preflight_pair_checks_passed": true,
+    "capacity_first_eight_receipts_equal": true,
+    "capacity_initial_state_equal": true,
+    "overfit_initial_matches_capacity_candidate_initial": true
+  },
+  "limitations": [
+    "No model/tensor/image/checkpoint/GPU/training/retrieval/network/package-install/remote command was executed by this audit.",
+    "Binary/checkpoint/prototype-memory evidence is treated as supplied hash-receipt evidence unless it is a local JSON/log/source file hashed from the manifest.",
+    "Parameter counts were checked against source assertions and M0/preflight metadata, not by model instantiation.",
+    "T0 is synthetic CUDA evidence only.",
+    "M0 is source-only engineering evidence and does not establish heldout retrieval improvement.",
+    "Q1 was nonterminal: one epoch row, 29 logged updates, zero paired Q1 folds, no final aggregation.",
+    "The request asked for GPT-5.5 xhigh; this is an OpenAI/Codex same-family audit, not a cross-family acquittal."
+  ],
+  "primary_file_verification": {
+    "manifest": "C:/Users/gb/.trifusion_github_publish_22c3bee/.aris/traces/experiment-audit/2026-09-06_run14/input_file_sha256.json",
+    "primary_file_count": 42,
+    "all_matched": true,
+    "mismatches": []
+  },
+  "called_dependencies_read": [
+    "data/datasets/make_dataloader.py",
+    "modeling/trifusion/builder.py",
+    "modeling/trifusion/intervention_targets.py",
+    "modeling/trifusion/model.py",
+    "modeling/trifusion/standalone.py"
+  ],
+  "executor_reports_treated_as_claims": {
+    "array_verification": {
+      "verified": true,
+      "scope": "All116 M0 update rows, both views'14 original loss components, prototype terms, fixed floor/100th ratio and metadata only; no model/tensor/image runtime or retrieval",
+      "maximum_loss_component_roundoff": 1.043081283569336e-07,
+      "fixed_excess_ratio": 0.059999361786045424
+    },
+    "file_verification": {
+      "verified": true,
+      "scope": "M0 immutable snapshot, complete file SHA256, execution Git blobs and source bindings; no tensor/image/model execution; live Q1 is not evaluated",
+      "execution_source_commit": "6a4ac2cd95af2ca1a9122d1f79aabd3a83e4fe33",
+      "observed_repository_commit": "8ee6bd50cde6f4f53d2d6ad9cb27b2b0bfe39216",
+      "prototype_memory_binary_files_verified": 12,
+      "new_optimizer_steps": 0,
+      "new_retrieval_evaluations": 0,
+      "verification_script_sha256": "347408bf928a9d7354feb440cc83cca2551ddb2e407a9ecf13beff59c003c40d"
+    },
+    "preflight_metadata": {
+      "verified": true,
+      "scope": "Completed preflight metadata, hashes, membership and reported norms only; not complete M0 or Q1; no model/tensor/image runtime",
+      "source_initialization_record_forwards": 12504,
+      "source_forward_calls": 102,
+      "preflight_view_forward_calls": 96
+    }
+  },
+  "protocol_and_v12_context": {
+    "protocol_valid": true,
+    "protocol_train_triplets": 3126,
+    "protocol_dev_triplets": 825,
+    "protocol_test_identity_overlap": [],
+    "v12_status": "PASS",
+    "v12_training_executed": true,
+    "v12_optimizer_steps": 5839,
+    "v12_dev_access_count": 0,
+    "v12_official_test_access_count": 0,
+    "v12_fold_receipts": 3
+  },
+  "input_file_sha256": {
+    "modeling/trifusion/source_prototype_v24.py": {
+      "bytes": 4229,
+      "sha256": "703f2393aaec83a2276497ededddb6ad888f305cb5b93f3bdf600953b5e6ebf7"
+    },
+    "modeling/trifusion/dual_view_data_v24.py": {
+      "bytes": 3038,
+      "sha256": "68de48892c217bdeb143d041b56520822cc9785dea05cd37f7b30328a6f3b560"
+    },
+    "tools/train_signal_preserving_v24.py": {
+      "bytes": 31335,
+      "sha256": "7ee3200f86758b7426fa69d8b67e4ad004417a5da0ce879841bce78ab041dd3e"
+    },
+    "tests/test_trifusion_source_prototype_v24.py": {
+      "bytes": 4953,
+      "sha256": "689e583b057f43de4174022c535a57e0f72f6bf609bf0b2b7010bdc417379724"
+    },
+    "configs/RGBNT201/TriFusion-signal-preserving-v24-source-prototype-rtx3090.yml": {
+      "bytes": 3428,
+      "sha256": "8e025891cdbd2fca48f6c0b24b88f583540a3760ea624e24169dddd7aed148ba"
+    },
+    "refine-logs/v24/EXPERIMENT_PLAN.md": {
+      "bytes": 9062,
+      "sha256": "a31eba5b907772b7d725b35cdcdf4e4378c538be206c51161d1cc267097e3391"
+    },
+    "refine-logs/v24/EXPERIMENT_TRACKER.md": {
+      "bytes": 1987,
+      "sha256": "1be1aa48dfc0993b32c88ff875a3ceb329e70298e76558717b5e27bfefe2d312"
+    },
+    "results/TRIFUSION_RGBNT201_V24_COMPLETE_M0_2026-09-06.md": {
+      "bytes": 5677,
+      "sha256": "5d3c9c609f8bd4bd237b86e54371a60d9b9d51a85be1165776dd3279ca7886d0"
+    },
+    "evidence/trifusion_v24_preregistration_20260906.json": {
+      "bytes": 1889,
+      "sha256": "affb3bc9531e32daea43f79afec221df4a9ae698911d023c783fb8103fc5b32b"
+    },
+    "evidence/trifusion_v24_source_membership_contract_20260906.json": {
+      "bytes": 40409,
+      "sha256": "c201cc07de9306da8cd8181ea701c46af10bda47ab0d4ad18d8db2a9e9dd4b3d"
+    },
+    "evidence/trifusion_v24_launch_20260906.json": {
+      "bytes": 6651,
+      "sha256": "843d6a976102cf239a0f740e1ab83212e2d2f77d0be01c851031d0deef50c3e5"
+    },
+    "evidence/trifusion_v24_launch_wrapper_20260906.py": {
+      "bytes": 6056,
+      "sha256": "e08f8804a80586a8be8728a3ea362517c742e93fd8de5b007c0326e369a36d29"
+    },
+    "evidence/trifusion_v24_t0_20260906.json": {
+      "bytes": 2767,
+      "sha256": "905d6dd61b24cc1119c8ca4018025606d4c4c87a92b445d187061db1aded3a18"
+    },
+    "evidence/trifusion_v24_t0_20260906.log": {
+      "bytes": 1516,
+      "sha256": "d1b95fd3b752b6d32e0f3f171663a08b2d1934cb8b6c7143097274161cb22e61"
+    },
+    "evidence/trifusion_v24_t0_20260906.xml": {
+      "bytes": 1167,
+      "sha256": "8c7836e56bbb05ee846423ee16aa4b447f591927c5323659974aee81921b4d11"
+    },
+    "evidence/trifusion_v24_m0_seed42_6a4ac2c.json": {
+      "bytes": 1075922,
+      "sha256": "5046a4ad8bd92aa9cd75fcaf802d1bb787b2f9975b91fcfb1b6ccaa60278373b"
+    },
+    "evidence/trifusion_v24_m0_run_snapshot_20260906.log": {
+      "bytes": 332849,
+      "sha256": "87a4999c83a296903832c7a787c204798ea533b9a10b8fdedac2c7e6b66ffffa"
+    },
+    "evidence/trifusion_v24_m0_array_verification_20260906.json": {
+      "bytes": 968,
+      "sha256": "d8562caf855e2264b9edd3b9f8e3a69dfbe957ac254dab9401fef431fda66069"
+    },
+    "evidence/trifusion_v24_m0_file_verification_20260906.json": {
+      "bytes": 30976,
+      "sha256": "bdf11b4f7039e4d94c51e12f3ab6e5937185226653d972e67f56a0f1ee3d325b"
+    },
+    "evidence/trifusion_v24_m0_file_verifier_20260906.py": {
+      "bytes": 13279,
+      "sha256": "347408bf928a9d7354feb440cc83cca2551ddb2e407a9ecf13beff59c003c40d"
+    },
+    "evidence/trifusion_v24_preflight_metadata_verification_20260906.json": {
+      "bytes": 2411,
+      "sha256": "0bdf7f654a97949fd669100fb9ff56b1162e3cd0fe020768c509a4edda8d3351"
+    },
+    "evidence/trifusion_v24_progress_20260906_011042.json": {
+      "bytes": 1636,
+      "sha256": "9e1b9b93bdc380a257244a77cd58c663891f750b22b5c32fa3e95ccd44641026"
+    },
+    "modeling/trifusion/signal_preserving_v8.py": {
+      "bytes": 28592,
+      "sha256": "97a7b5fe6dab882c2ed92ed1db95b9a8f48eae1d99a3a9b145b0cdfc4b8cefbc"
+    },
+    "modeling/trifusion/signal_preserving_v8_builder.py": {
+      "bytes": 3900,
+      "sha256": "8afb028957ecff1a0a26497f7d0460bc240b0f8612a3c476b52a9a6667a3049d"
+    },
+    "modeling/trifusion/state.py": {
+      "bytes": 4990,
+      "sha256": "d6491db289e68e0b97a8d532edc933252ab60fdaad963af85f603dec9002e2b9"
+    },
+    "modeling/trifusion/experts/mamba.py": {
+      "bytes": 7479,
+      "sha256": "8b9cb420c42e4d70f8de7e4608637c81c505b97ca54228175462a7e92fdfcc83"
+    },
+    "modeling/trifusion/experts/semantic_residual.py": {
+      "bytes": 15882,
+      "sha256": "c1831a3de031be033624420791cecf2e7a3945e009655089cb48ee4b9912edd6"
+    },
+    "modeling/trifusion/criterion.py": {
+      "bytes": 6231,
+      "sha256": "9a028e5711981123310f5e0d441a35b7dbecaf33f9edcec4fd3773d070cf877f"
+    },
+    "modeling/trifusion/aligned_data.py": {
+      "bytes": 10062,
+      "sha256": "3ea362d17660483b554cb599442b6377ace020fa114969b9bdd58906fbceedd5"
+    },
+    "tools/train_signal_preserving_v19.py": {
+      "bytes": 26363,
+      "sha256": "5f000d3d3abe9636cae97e292db2c63a3a20f349c125dfe4b27bd3fca95bb9c5"
+    },
+    "modeling/trifusion/signal_preserving_v19.py": {
+      "bytes": 4059,
+      "sha256": "69989cced25950ff476759bc93df945b167e8ce88a4340676e8adbbd9f88918e"
+    },
+    "tools/train_signal_preserving_v17.py": {
+      "bytes": 61124,
+      "sha256": "333886d16f73987accddb70b0780661bb9400b8afd04af01b57e188d34e5228d"
+    },
+    "tools/train_signal_preserving_v18.py": {
+      "bytes": 17540,
+      "sha256": "f6bdda4631d710d0b6db5fe2a8df124d8dcbd294cb54adcf3ec261d523e96cf8"
+    },
+    "tools/build_v12_complete_path_oof_targets.py": {
+      "bytes": 32723,
+      "sha256": "fc13354b1065c46677122ee9cf63816087facca4e0e98ec5e6e2fb0dece141e4"
+    },
+    "tools/run_signal_preserving_v5.py": {
+      "bytes": 65190,
+      "sha256": "e162184f68778b4991db0f97f26c5fda273b2ad2f7c8db2bbb2d53775eb717e5"
+    },
+    "tools/run_signal_baseline_dev.py": {
+      "bytes": 12601,
+      "sha256": "083967f2a38267415b2992da98c2ad9429ebb793f387b45daac1dbb4eb16f365"
+    },
+    "tools/audit_v17_full_gallery.py": {
+      "bytes": 10425,
+      "sha256": "856881f984ab8793788d291018a60046a47e309c625a65394b1a3ff4e670d8a9"
+    },
+    "tools/diagnose_v6_oracle_complementarity.py": {
+      "bytes": 9754,
+      "sha256": "919b624156c57f92fa75f79a06fe7c872a02d730fa8cd021ce9d7b4e498b1db2"
+    },
+    "modeling/trifusion/signal_preserving_v13.py": {
+      "bytes": 9347,
+      "sha256": "7b7c4abb220ed234608553c77aeedd5f8ef763abb04cce5b21f1bfce0f4daa62"
+    },
+    "protocols/rgbnt201_dev_v1.json": {
+      "bytes": 5685,
+      "sha256": "f7f6f8a906c06fec4918929fb5c17abfc197986b99e017aca1d3e15831c1541d"
+    },
+    "evidence/trifusion_v12_complete_path_oof_seed42.json": {
+      "bytes": 43930,
+      "sha256": "9105b86a9c079c44843e9b118a21599746a87d279370341b8cf8d26bd18a8b69"
+    },
+    "docs/SOURCE_PROTOTYPE_MEMORY_RESEARCH_2026-09-05.md": {
+      "bytes": 4595,
+      "sha256": "b68338d4f3c53d3a9bbb8815ed491dd0b0aa66be8615eefe2e98d260dccbc89c"
+    }
+  }
+}

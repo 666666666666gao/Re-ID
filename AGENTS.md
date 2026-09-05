@@ -259,18 +259,22 @@
 
 ## Remote experiment constraints
 
-- V24 is implemented and preregistered, awaiting remote CUDA T0 and complete M0.
-  Read refine-logs/v24/EXPERIMENT_PLAN.md. Training-only identity/camera
-  prototypes retain all94 source IDs and108 real memberships per fold, with
-  weak EMA and strong-view global/intra-camera ID competition. Inference stays
-  original V8/Signal with zero new inference parameters. Both arms use identical
-  dual views and original seven ID/triplet objectives; candidate adds the fixed
-  prototype objective. No V23 adapter or later-version checkpoint is inherited.
-  All runtime tests and qualification results are pending; AST is not execution.
-  Preserve fixed M0 and full six-endpoint Q1, seed42, 3360 updates/6720 view
-  forward-backward pairs and all five scientific gates. No scans or dev/official
-  advancement on failure.
-
+- V24 completed CUDA T0 and all fixed M0 engineering gates under execution
+  6a4ac2c. Original PID52030 is running its unchanged six-endpoint Q1.
+  Independent M0 audit is WARN, engineering PASS, fixed M0 QUALIFIED_PASS;
+  read EXPERIMENT_AUDIT_V24_M0.md/json and the source/provenance limits.
+  At the actual 2026-09-06 01:53 observation, fold0 completed both20 epochs:
+  fused control/candidate72.721325/72.596181, delta-0.125144pp. This violates
+  the necessary every-fold-nonnegative gate; finish all remaining four endpoints
+  before full aggregation and terminal audit. Do not restart or modify V24.
+  Read refine-logs/v24/EXPERIMENT_PLAN.md and EXPERIMENT_TRACKER.md.
+  Training-only identity/camera prototypes retain all94 source IDs and108 real
+  memberships per fold. Both arms retain all original203 trainable tensors,
+  identical dual views and seven ID/triplet objectives; only the prototype
+  coefficient differs. Inference remains original V8/Signal, zero new parameters.
+  No V23 adapter or later-version checkpoint is inherited. Preserve seed42,
+  3360 Q1 updates/6720 view pairs, all five outputs and complete galleries.
+  No scans, ablations, D1/dev/official advancement on failure.
 
 - V23 completed its original three folds x two endpoints x20 epochs, seed42,
   120 epoch rows and 3360 updates; original PID44684 exited0, execution9f4a10b.
@@ -289,7 +293,7 @@
   The user's successor priority is source-only environment-conditioned identity
   discrimination, real cross-camera positive coverage and prototype/hard-negative
   supervision. Keep every real source identity and true multi-camera positive.
-  No successor training has yet been registered or launched.
+  V24 now implements that registered successor; its current status is above.
 
 - V22 camera-negative MCNL completed all three folds x two endpoints x20
   epochs, seed42, 3360 optimizer steps, and is sealed Q1_FAIL. Candidate/
