@@ -1,6 +1,6 @@
 # V23 experiment tracker
 
-更新时间：2026-09-05T23:22:40.871241+08:00；状态Q1_COMPLETE_FAIL_SEALED_AUDIT_COMPLETE_WARN。
+更新时间：2026-09-05T23:22:40.871241+08:00；状态Q1_COMPLETE_FAIL_SEALED_INDEPENDENT_AUDIT_PENDING。
 实际执行源码9f4a10b6162b9658ba103cd92466411ebb6ccd8f；原PID44684退出码0。
 原三fold、两端、20epoch全部完成，120epoch行、3360次优化更新；未重启或选点。
 
@@ -13,7 +13,7 @@
 | V23-Q1-FILES | 39文件SHA和六独立回执 | DONE_VERIFIED | evidence/trifusion_v23_q1_terminal_file_verification_20260905.json |
 | V23-Q1-ARRAYS | 120训练行、全部AP/Rank与bootstrap | DONE_VERIFIED | evidence/trifusion_v23_q1_array_verification_20260905.json |
 | V23-Q1-LOG | 全部120训练行和终态事件 | DONE_VERIFIED | evidence/trifusion_v23_q1_log_verification_20260905.json |
-| V23-Q1-AUDIT | 独立终态完整性审计 | COMPLETE_WARN_ENGINEERING_PASS_SCIENTIFIC_FAIL | EXPERIMENT_AUDIT_V23_Q1.md/json |
+| V23-Q1-AUDIT | 独立终态完整性审计 | PENDING | .aris/traces/experiment-audit/2026-09-05_run13/ |
 | V23-D1 | 141-fit refit与固定30-dev | NOT_QUALIFIED_NOT_RUN | 五项固定门全部失败 |
 
 完整图库1000/1051/1075，共3126条；合法query190/179/202，共571条、21身份。
@@ -35,18 +35,7 @@
 候选CNN改善不能替代融合晋级，也不证明模态适配普遍无效。
 新增1777536可训练参数和额外反向计算仍是机制解释的混杂因素。
 全指标和bootstrap重算最大差0.0；120epoch的14项加权loss最大舍入差3.3728824289092074e-08。
-以上为执行器数值核对；独立终态Q1审计已另行完成，M0审计不作为Q1替代。
+这些为执行器数值核对，独立终态审计仍待完成；M0审计不能代替Q1审计。
 完整30组fold/endpoint/output指标、21身份的两端全部五路四指标及逐query变化，
 见results/TRIFUSION_RGBNT201_V23_COMPLETE_Q1_2026-09-05.md及对应完整比较JSON。
 原运行耗时4282.281049251556秒。
-
-独立终态审计完成于2026-09-06T00:14:21.188997+08:00，原始请求/两轮报告/回复完整保留trace run13。
-overall/integrity WARN；engineering PASS；fixed M0工程PASS；scientific FAIL。
-审计使用既有Python3.13.12/NumPy2.5.2独立重算10000次身份bootstrap，
-下界-1.509454322847345，差0；21身份贡献与完整比较差0，
-与数组核验的加权贡献最大浮点差5.551115123125783e-17。
-审计第一轮将训练范围写成仅adapter；复核后更正为两端原203角色/分类头tensor
-均训练，候选另训练36adapter tensor。原始错误表述及更正报告均归档，未修改实验。
-44份原始输入SHA在报告归档前再次全匹配；审计时tracker/result快照保留。
-远端大权重仍为ledger-only持有，四源文件仍只有LF归一化匹配；
-GPT同家族独立审计不构成跨家族认证。V23继续封存，无D1/dev/official资格。

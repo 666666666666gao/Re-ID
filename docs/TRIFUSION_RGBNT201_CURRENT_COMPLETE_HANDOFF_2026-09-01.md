@@ -2943,3 +2943,17 @@ s_fused = 0.5*s_Signal + (s_r_CNN+s_r_T+s_r_M)/6。
 日志branch各为Signal与单残差等能量拼接，所以同一图像对
 s_fused = (s_branch_CNN+s_branch_T+s_branch_M)/3；AP不能按此平均。
 细节见docs/USER_REVIEW_ACTIONS_2026-09-05.md。
+
+
+### 40.8 V23独立终态审计完成（2026-09-06）
+
+独立终态审计完成于2026-09-06T00:14:21.188997+08:00，原始请求/两轮报告/回复完整保留trace run13。
+overall/integrity WARN；engineering PASS；fixed M0工程PASS；scientific FAIL。
+审计使用既有Python3.13.12/NumPy2.5.2独立重算10000次身份bootstrap，
+下界-1.509454322847345，差0；21身份贡献与完整比较差0，
+与数组核验的加权贡献最大浮点差5.551115123125783e-17。
+审计第一轮将训练范围写成仅adapter；复核后更正为两端原203角色/分类头tensor
+均训练，候选另训练36adapter tensor。原始错误表述及更正报告均归档，未修改实验。
+44份原始输入SHA在报告归档前再次全匹配；审计时tracker/result快照保留。
+远端大权重仍为ledger-only持有，四源文件仍只有LF归一化匹配；
+GPT同家族独立审计不构成跨家族认证。V23继续封存，无D1/dev/official资格。

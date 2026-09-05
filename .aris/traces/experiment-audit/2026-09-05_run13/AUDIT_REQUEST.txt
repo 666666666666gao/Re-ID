@@ -1,0 +1,69 @@
+Perform a bounded independent experiment-integrity audit of the V23 complete Q1 artifacts as GPT-5.5 xhigh. Read all listed files directly and trace called dependencies. Treat executor-generated reports as claims to verify against raw evidence. Do not reuse an earlier verdict.
+
+Only write:
+C:/Users/gb/.trifusion_github_publish_22c3bee/EXPERIMENT_AUDIT_V23_Q1.md
+C:/Users/gb/.trifusion_github_publish_22c3bee/EXPERIMENT_AUDIT_V23_Q1.json
+
+Files:
+- C:/Users/gb/.trifusion_github_publish_22c3bee/modeling/trifusion/signal_preserving_v23.py
+- C:/Users/gb/.trifusion_github_publish_22c3bee/tools/train_signal_preserving_v23.py
+- C:/Users/gb/.trifusion_github_publish_22c3bee/configs/RGBNT201/TriFusion-signal-preserving-v23-spectral-adapter-rtx3090.yml
+- C:/Users/gb/.trifusion_github_publish_22c3bee/refine-logs/v23/EXPERIMENT_PLAN.md
+- C:/Users/gb/.trifusion_github_publish_22c3bee/refine-logs/v23/EXPERIMENT_TRACKER.md
+- C:/Users/gb/.trifusion_github_publish_22c3bee/results/TRIFUSION_RGBNT201_V23_COMPLETE_Q1_2026-09-05.md
+- C:/Users/gb/.trifusion_github_publish_22c3bee/evidence/trifusion_v23_preregistration_20260905.json
+- C:/Users/gb/.trifusion_github_publish_22c3bee/evidence/trifusion_v23_launch_20260905.json
+- C:/Users/gb/.trifusion_github_publish_22c3bee/evidence/trifusion_v23_q1_seed42_9f4a10b.json
+- C:/Users/gb/.trifusion_github_publish_22c3bee/evidence/trifusion_v23_q1_run_20260905.log
+- C:/Users/gb/.trifusion_github_publish_22c3bee/evidence/trifusion_v23_q1_exit_20260905.txt
+- C:/Users/gb/.trifusion_github_publish_22c3bee/evidence/trifusion_v23_q1_intake_20260905.json
+- C:/Users/gb/.trifusion_github_publish_22c3bee/evidence/trifusion_v23_q1_terminal_file_verification_20260905.json
+- C:/Users/gb/.trifusion_github_publish_22c3bee/evidence/trifusion_v23_q1_array_verification_20260905.json
+- C:/Users/gb/.trifusion_github_publish_22c3bee/evidence/trifusion_v23_q1_log_verification_20260905.json
+- C:/Users/gb/.trifusion_github_publish_22c3bee/evidence/trifusion_v23_q1_complete_comparison_20260905.json
+- C:/Users/gb/.trifusion_github_publish_22c3bee/tools/verify_v23_terminal_files.py
+- C:/Users/gb/.trifusion_github_publish_22c3bee/tools/audit_v23_terminal_arrays.py
+- C:/Users/gb/.trifusion_github_publish_22c3bee/tools/report_v23_complete_comparison.py
+- C:/Users/gb/.trifusion_github_publish_22c3bee/modeling/trifusion/signal_preserving_v8.py
+- C:/Users/gb/.trifusion_github_publish_22c3bee/modeling/trifusion/signal_preserving_v8_builder.py
+- C:/Users/gb/.trifusion_github_publish_22c3bee/modeling/trifusion/state.py
+- C:/Users/gb/.trifusion_github_publish_22c3bee/modeling/trifusion/experts/mamba.py
+- C:/Users/gb/.trifusion_github_publish_22c3bee/modeling/trifusion/experts/semantic_residual.py
+- C:/Users/gb/.trifusion_github_publish_22c3bee/modeling/trifusion/criterion.py
+- C:/Users/gb/.trifusion_github_publish_22c3bee/modeling/trifusion/aligned_data.py
+- C:/Users/gb/.trifusion_github_publish_22c3bee/tools/train_signal_preserving_v19.py
+- C:/Users/gb/.trifusion_github_publish_22c3bee/modeling/trifusion/signal_preserving_v19.py
+- C:/Users/gb/.trifusion_github_publish_22c3bee/tools/train_signal_preserving_v17.py
+- C:/Users/gb/.trifusion_github_publish_22c3bee/tools/train_signal_preserving_v18.py
+- C:/Users/gb/.trifusion_github_publish_22c3bee/tools/build_v12_complete_path_oof_targets.py
+- C:/Users/gb/.trifusion_github_publish_22c3bee/tools/run_signal_preserving_v5.py
+- C:/Users/gb/.trifusion_github_publish_22c3bee/tools/run_signal_baseline_dev.py
+- C:/Users/gb/.trifusion_github_publish_22c3bee/tools/audit_v17_full_gallery.py
+- C:/Users/gb/.trifusion_github_publish_22c3bee/tools/diagnose_v6_oracle_complementarity.py
+- C:/Users/gb/.trifusion_github_publish_22c3bee/modeling/trifusion/signal_preserving_v13.py
+- C:/Users/gb/.trifusion_github_publish_22c3bee/protocols/rgbnt201_dev_v1.json
+- C:/Users/gb/.trifusion_github_publish_22c3bee/evidence/trifusion_v12_complete_path_oof_seed42.json
+- C:/Users/gb/.trifusion_github_publish_22c3bee/evidence/trifusion_v23_q1_receipts/fold_0_frozen_zero_spectral_adapter_receipt.json
+- C:/Users/gb/.trifusion_github_publish_22c3bee/evidence/trifusion_v23_q1_receipts/fold_0_trained_spectral_adapter_receipt.json
+- C:/Users/gb/.trifusion_github_publish_22c3bee/evidence/trifusion_v23_q1_receipts/fold_1_frozen_zero_spectral_adapter_receipt.json
+- C:/Users/gb/.trifusion_github_publish_22c3bee/evidence/trifusion_v23_q1_receipts/fold_1_trained_spectral_adapter_receipt.json
+- C:/Users/gb/.trifusion_github_publish_22c3bee/evidence/trifusion_v23_q1_receipts/fold_2_frozen_zero_spectral_adapter_receipt.json
+- C:/Users/gb/.trifusion_github_publish_22c3bee/evidence/trifusion_v23_q1_receipts/fold_2_trained_spectral_adapter_receipt.json
+
+Constraints:
+- Local read-only except the two report writes. Do not edit code, plans, trackers, raw evidence or traces.
+- No model training, retrieval, inference, tensor/checkpoint/image loading, GPU use, remote commands, network, downloads, package installation, or delegation. Local standard-library Python/JavaScript and available NumPy arithmetic on supplied arrays is permitted.
+- Keep engineering M0, complete train-internal Q1, fixed dev and official testing distinct.
+- No artifact selection, threshold change, or scientific advancement inferred from engineering qualification.
+- Record actual reviewer model request and same-family limits; do not call this a cross-family acquittal.
+
+Checklist:
+A. GT and source isolation: trace real identity/camera labels, source/heldout boundaries, complete initialization chain and all six bindings. Reconstruct complete galleries and legal query exclusions from labels. Verify no heldout/dev training or crossfold distances.
+B. Mathematics: independently recompute all endpoints and folds, all five outputs, all AP/Rank aggregates, all identity contributions and fixed scientific gates from raw arrays. Independently recompute the registered identity-cluster bootstrap if locally feasible; precisely disclose anything not recomputed. Reconcile all epoch loss components/coefficients and parameter/gradient counts. Trace adapter sharing, paired initialization and final feature geometry without treating branch/residual similarities or AP as interchangeable.
+C. Provenance: hash locally available primary bytes. Distinguish raw, LF-only, Git execution blob, mutable tracker and remote-ledger-only possession. Verify config/plan/runner/source/checkpoint binding, full-file hashes, standalone endpoint receipts versus summary, strict final reload, frozen states, paired ordering/augmentation and exit/log consistency. Do not equate remote-ledger hashes with independent possession of binary weights.
+D. Execution: trace actual six final endpoints, original prescribed training and saved terminal selection. Compare all epoch history with full log and receipts; account for optimizer steps, overflow, gradient reachability, timing and preservation of source checkpoints. Distinguish measured distances from saved AP/rank arithmetic. Check for metric functions that are never used.
+E. Scope: assess single-seed and reused-OOF limits, added trainable capacity and compute confounding, full-result reporting, gate fidelity and scientific qualification. Assess claims against current artifacts without inferring general efficacy or universal failure.
+F. Claim impacts: support, qualify or reject each substantive claim with exact file:line evidence, including negative results and provenance warnings.
+
+JSON required top-level fields: date, auditor, overall_verdict, integrity_status, engineering_integrity, fixed_m0_qualification, scientific_qualification, evaluation_type, checks, claims, recomputation, limitations, input_file_sha256.
+Report A-F PASS/WARN/FAIL with file:line citations. Record arithmetic tools/runtime and discrepancies. Return concise actual verdicts and SHA256/byte lengths read from written reports.

@@ -259,18 +259,24 @@
 
 ## Remote experiment constraints
 
-- V23 CUDA T0 and complete M0 passed. Fixed100 excess ratio0.0596818991,
-  control/candidate gradients203/239, peak6090/6494MiB, overflow0 and frozen
-  state unchanged. Original PID44684 now runs full Q1, execution9f4a10b.
-  No complete endpoint/heldout retrieval result yet at22:07; independent M0
-  audit pending. Read refine-logs/v23/EXPERIMENT_PLAN.md:
-  modality-specific zero-output residual MLPs follow three frozen CLIP tail
-  stages, shared across expert roles. Control freezes the new 1777536
-  parameters; candidate trains them. This is not capacity-matched evidence
-  for a unique modality mechanism. Preserve all five Q1 gates, complete
-  3-fold x 2-endpoint x20 training, seed42, full gallery, final-only selection.
-  Remote CUDA T0 and real M0 must pass; no dev/official or ablations yet.
-  No V23 width/stage/scale/epoch/LR/seed scans after the fixed outcome.
+- V23 completed its original three folds x two endpoints x20 epochs, seed42,
+  120 epoch rows and 3360 updates; original PID44684 exited0, execution9f4a10b.
+  Q1_FAIL is sealed. Matched control/candidate fused mAP80.507516/80.254811,
+  gain-0.252705; CNN/T/M gains+1.068656/-0.602428/-0.266864.
+  Fold fused gains-0.000121/-0.999667/+0.171630; bootstrap lower-1.509454.
+  All five fixed scientific gates fail. Preserve all five outputs, all3126
+  gallery/571 queries/21 identities and negative results. No D1/dev/official,
+  ablations or V23 width/stage/scale/modality/expert/epoch/LR/seed/loss scans.
+  Independent complete Q1 audit is WARN/warn, engineering PASS, scientific
+  FAIL. Bootstrap and identity contributions were independently recomputed;
+  preserve remote-ledger-only binaries, four LF-only source matches and the
+  same-family review limit. Both arms train the original203 role/head tensors;
+  the candidate adds36 adapter tensors/1777536 parameters. Read the complete
+  V23 result, tracker and EXPERIMENT_AUDIT_V23_Q1.md/json.
+  The user's successor priority is source-only environment-conditioned identity
+  discrimination, real cross-camera positive coverage and prototype/hard-negative
+  supervision. Keep every real source identity and true multi-camera positive.
+  No successor training has yet been registered or launched.
 
 - V22 camera-negative MCNL completed all three folds x two endpoints x20
   epochs, seed42, 3360 optimizer steps, and is sealed Q1_FAIL. Candidate/

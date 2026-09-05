@@ -1,0 +1,517 @@
+{
+  "date": "2026-09-05",
+  "auditor": "Codex constrained same-family local audit; requested reviewer model in AUDIT_REQUEST.txt was GPT-5.5 xhigh; no cross-family delegation was performed because this task forbade delegation.",
+  "overall_verdict": "WARN",
+  "integrity_status": "warn",
+  "engineering_integrity": "pass",
+  "fixed_m0_qualification": "engineering_pass_only_not_scientific_or_selection_qualification",
+  "scientific_qualification": "fail",
+  "evaluation_type": "real_gt_train_internal_complete_path_oof_reused_development_qualification_not_fixed_dev_not_official_test",
+  "audit_request": {
+    "path": ".aris/traces/experiment-audit/2026-09-05_run13/AUDIT_REQUEST.txt",
+    "bytes": 7877,
+    "sha256": "287dc8bdd75493ae5b6506e326f33637ecd0421beef23cefc8cf96d735519e80",
+    "relevant_lines": [
+      ".aris/traces/experiment-audit/2026-09-05_run13/AUDIT_REQUEST.txt:1",
+      ".aris/traces/experiment-audit/2026-09-05_run13/AUDIT_REQUEST.txt:55-58",
+      ".aris/traces/experiment-audit/2026-09-05_run13/AUDIT_REQUEST.txt:60-68"
+    ]
+  },
+  "reviewer_model_request_and_limits": {
+    "requested_in_file": "GPT-5.5 xhigh independent audit request",
+    "actual_execution": "Codex constrained same-family local audit",
+    "cross_family_acquittal": false,
+    "delegation_used": false
+  },
+  "checks": {
+    "A_gt_and_source_isolation": {
+      "status": "PASS",
+      "verdict": "The Q1 artifacts consistently use real RGBNT201 identity/camera labels, three heldout train-identity folds, and no dev/official/test evaluation. Complete-path OOF targets are reused only inside train-internal qualification scope.",
+      "evidence": [
+        "tools/build_v12_complete_path_oof_targets.py:29-56",
+        "tools/run_signal_baseline_dev.py:27-54",
+        "protocols/rgbnt201_dev_v1.json:1-19",
+        "protocols/rgbnt201_dev_v1.json:52-58",
+        "protocols/rgbnt201_dev_v1.json:123-164",
+        "refine-logs/v23/EXPERIMENT_PLAN.md:41-49",
+        "evidence/trifusion_v23_q1_seed42_9f4a10b.json:1-45",
+        "evidence/trifusion_v23_q1_seed42_9f4a10b.json:81254-81280"
+      ]
+    },
+    "B_mathematics": {
+      "status": "WARN",
+      "verdict": "AP/rank aggregation, matched gains, fold gains, fold query scopes, receipt equality, and scientific gates recompute correctly from the supplied terminal arrays. Exact NumPy bootstrap resampling was not regenerated in this run because local NumPy was unavailable; the stored verifier reports NumPy 2.5.2 and a negative lower bound.",
+      "evidence": [
+        "tools/audit_v17_full_gallery.py:14-43",
+        "tools/diagnose_v6_oracle_complementarity.py:81-108",
+        "tools/audit_v23_terminal_arrays.py:18-21",
+        "tools/audit_v23_terminal_arrays.py:68-80",
+        "tools/audit_v23_terminal_arrays.py:117-166",
+        "evidence/trifusion_v23_q1_array_verification_20260905.json:1-7",
+        "evidence/trifusion_v23_q1_array_verification_20260905.json:81-166",
+        "results/TRIFUSION_RGBNT201_V23_COMPLETE_Q1_2026-09-05.md:17-21",
+        "results/TRIFUSION_RGBNT201_V23_COMPLETE_Q1_2026-09-05.md:99-114"
+      ]
+    },
+    "C_provenance_and_receipts": {
+      "status": "WARN",
+      "verdict": "Terminal summary, receipts, config, plan, preregistration, runner, and source hashes are internally bound. Four local raw files differ from execution hashes only by CRLF/LF normalization and git blob comparison showed no semantic source drift. Checkpoint hashes are supported by the remote terminal ledger and receipts, but this audit did not possess or load checkpoint binaries.",
+      "evidence": [
+        "evidence/trifusion_v23_preregistration_20260905.json:1-23",
+        "evidence/trifusion_v23_launch_20260905.json:1-118",
+        "evidence/trifusion_v23_q1_terminal_file_verification_20260905.json:1-45",
+        "evidence/trifusion_v23_q1_terminal_file_verification_20260905.json:229-341",
+        "evidence/trifusion_v23_q1_intake_20260905.json:6-81"
+      ]
+    },
+    "D_execution_and_dead_code": {
+      "status": "PASS",
+      "verdict": "The active Q1 path is used: V23 wraps V12/V8, trains only spectral adapters, imports the actual V18 evaluator, which calls the full-gallery score function and per-query AP/rank routine. Logs, receipts, and verifiers agree on 120 epoch rows, six final endpoint events, 3,360 Q1 optimizer steps, exit code 0, M0 pass, strict reload, and read-only evaluation.",
+      "evidence": [
+        "modeling/trifusion/signal_preserving_v23.py:11-62",
+        "tools/train_signal_preserving_v23.py:35-98",
+        "tools/train_signal_preserving_v23.py:146-175",
+        "tools/train_signal_preserving_v23.py:200-235",
+        "tools/train_signal_preserving_v23.py:331-370",
+        "tools/train_signal_preserving_v18.py:133-152",
+        "tools/audit_v17_full_gallery.py:14-43",
+        "tools/diagnose_v6_oracle_complementarity.py:81-108",
+        "evidence/trifusion_v23_q1_log_verification_20260905.json:1-12",
+        "evidence/trifusion_v23_q1_exit_20260905.txt:1-2",
+        "evidence/trifusion_v23_q1_run_20260905.log:325-326"
+      ]
+    },
+    "E_scope_and_qualification": {
+      "status": "WARN",
+      "verdict": "The artifacts correctly describe Q1 as a train-internal complete-path OOF qualification, not fixed dev or official testing. Scientific qualification fails all preregistered gates. M0 remains an engineering can-train check and does not justify model selection, threshold adjustment, D1, dev, or official claims.",
+      "evidence": [
+        "refine-logs/v23/EXPERIMENT_PLAN.md:97-109",
+        "refine-logs/v23/EXPERIMENT_TRACKER.md:3-38",
+        "results/TRIFUSION_RGBNT201_V23_COMPLETE_Q1_2026-09-05.md:3-10",
+        "results/TRIFUSION_RGBNT201_V23_COMPLETE_Q1_2026-09-05.md:99-124",
+        "evidence/trifusion_v23_q1_seed42_9f4a10b.json:78810-78818",
+        "evidence/trifusion_v23_q1_seed42_9f4a10b.json:81175-81280"
+      ]
+    },
+    "F_claim_impacts": {
+      "status": "WARN",
+      "verdict": "The supported claim is an honest negative Q1 result with engineering execution integrity. Claims of scientific improvement, general efficacy, fixed-dev improvement, official-test improvement, or mechanism validation are not supported by these artifacts.",
+      "evidence": [
+        "results/TRIFUSION_RGBNT201_V23_COMPLETE_Q1_2026-09-05.md:17-21",
+        "results/TRIFUSION_RGBNT201_V23_COMPLETE_Q1_2026-09-05.md:65-93",
+        "results/TRIFUSION_RGBNT201_V23_COMPLETE_Q1_2026-09-05.md:99-114",
+        "tools/report_v23_complete_comparison.py:79-143"
+      ]
+    }
+  },
+  "claims": [
+    {
+      "claim": "V23 Q1 completed and terminal status is Q1_FAIL.",
+      "audit_impact": "supported",
+      "evidence": [
+        "evidence/trifusion_v23_q1_seed42_9f4a10b.json:1-45",
+        "evidence/trifusion_v23_q1_run_20260905.log:325-326",
+        "evidence/trifusion_v23_q1_exit_20260905.txt:1-2"
+      ]
+    },
+    {
+      "claim": "Frozen M0 fixed-zero adapter preserves the V12 baseline and shows the training/evaluation path can run.",
+      "audit_impact": "supported as engineering only",
+      "evidence": [
+        "tools/train_signal_preserving_v23.py:146-175",
+        "evidence/trifusion_v23_q1_seed42_9f4a10b.json:78810-78818"
+      ]
+    },
+    {
+      "claim": "The trainable V23 spectral adapter improves fused mAP.",
+      "audit_impact": "rejected by Q1 arithmetic",
+      "evidence": [
+        "results/TRIFUSION_RGBNT201_V23_COMPLETE_Q1_2026-09-05.md:17-21",
+        "evidence/trifusion_v23_q1_seed42_9f4a10b.json:81188-81280"
+      ]
+    },
+    {
+      "claim": "The result qualifies D1/fixed dev/official test progression.",
+      "audit_impact": "rejected",
+      "evidence": [
+        "refine-logs/v23/EXPERIMENT_PLAN.md:97-109",
+        "results/TRIFUSION_RGBNT201_V23_COMPLETE_Q1_2026-09-05.md:99-124"
+      ]
+    },
+    {
+      "claim": "The run is a cross-family independent acquittal.",
+      "audit_impact": "rejected",
+      "evidence": [
+        ".aris/traces/experiment-audit/2026-09-05_run13/AUDIT_REQUEST.txt:1",
+        ".aris/traces/experiment-audit/2026-09-05_run13/AUDIT_REQUEST.txt:55-58"
+      ]
+    }
+  ],
+  "recomputation": {
+    "arithmetic_tools_runtime": {
+      "node": "v24.13.0",
+      "default_python_status": "python command returned: No pyvenv.cfg file",
+      "alternate_python": "E:/python.exe Python 3.12.6",
+      "numpy_status": "E:/python.exe import numpy failed with ModuleNotFoundError"
+    },
+    "counts": {
+      "log_event_counts": {
+        "json_lines": 131,
+        "preflight": 3,
+        "m0": 1,
+        "epoch": 120,
+        "q1_final": 6,
+        "terminal": 1
+      },
+      "optimizer_steps_q1": 3360,
+      "heldout_identity_union": 141,
+      "total_queries": 571,
+      "receipt_count": 6,
+      "exit_file_text_json_stringified": "\"0\\n\""
+    },
+    "fold_scopes": [
+      {
+        "fold": 0,
+        "gallery": 1000,
+        "queries": 190,
+        "excluded_same_identity_same_camera_pairs": 810,
+        "heldout_identities": 47
+      },
+      {
+        "fold": 1,
+        "gallery": 1051,
+        "queries": 179,
+        "excluded_same_identity_same_camera_pairs": 872,
+        "heldout_identities": 47
+      },
+      {
+        "fold": 2,
+        "gallery": 1075,
+        "queries": 202,
+        "excluded_same_identity_same_camera_pairs": 873,
+        "heldout_identities": 47
+      }
+    ],
+    "aggregate_metrics": {
+      "frozen_zero_spectral_adapter": {
+        "baseline_only": {
+          "mAP": 77.487603116011,
+          "rank1": 79.334500875657,
+          "rank5": 89.492119089317,
+          "rank10": 93.520140105079
+        },
+        "fused": {
+          "mAP": 80.507515546712,
+          "rank1": 84.413309982487,
+          "rank5": 90.192644483363,
+          "rank10": 93.169877408056
+        },
+        "cnn": {
+          "mAP": 79.471874953647,
+          "rank1": 83.53765323993,
+          "rank5": 88.966725043783,
+          "rank10": 91.593695271454
+        },
+        "transformer": {
+          "mAP": 78.529832158357,
+          "rank1": 80.910683012259,
+          "rank5": 88.966725043783,
+          "rank10": 92.119089316988
+        },
+        "mamba": {
+          "mAP": 77.79684067549,
+          "rank1": 80.035026269702,
+          "rank5": 89.316987740806,
+          "rank10": 94.045534150613
+        }
+      },
+      "trained_spectral_adapter": {
+        "baseline_only": {
+          "mAP": 77.487603116011,
+          "rank1": 79.334500875657,
+          "rank5": 89.492119089317,
+          "rank10": 93.520140105079
+        },
+        "fused": {
+          "mAP": 80.254811045804,
+          "rank1": 83.53765323993,
+          "rank5": 91.418563922942,
+          "rank10": 94.92119089317
+        },
+        "cnn": {
+          "mAP": 80.540530605339,
+          "rank1": 84.413309982487,
+          "rank5": 89.84238178634,
+          "rank10": 92.994746059545
+        },
+        "transformer": {
+          "mAP": 77.927403684145,
+          "rank1": 81.786339754816,
+          "rank5": 89.84238178634,
+          "rank10": 92.819614711033
+        },
+        "mamba": {
+          "mAP": 77.529976218872,
+          "rank1": 78.633975481611,
+          "rank5": 87.915936952715,
+          "rank10": 93.520140105079
+        }
+      }
+    },
+    "matched_map_gains_pp": {
+      "baseline_only": 0,
+      "fused": -0.252704500907456,
+      "cnn": 1.068655651691316,
+      "transformer": -0.602428474211266,
+      "mamba": -0.26686445661754
+    },
+    "fold_fused_map_gains_pp": [
+      -0.000121211614271,
+      -0.999667315709658,
+      0.17162975099302
+    ],
+    "scientific_checks": {
+      "aggregate_fused_gain_at_least_1pp": false,
+      "all_fold_fused_nonnegative": false,
+      "all_expert_aggregate_nonnegative": false,
+      "fused_bootstrap_lower_positive_from_recorded_numpy_result": false,
+      "fused_beats_baseline_and_experts": false
+    },
+    "reported_bootstrap_lower_pp": -1.509454322847345,
+    "bootstrap_exact_rng_regenerated": false,
+    "bootstrap_limitation": "Stored NumPy 2.5.2 verifier reports zero discrepancy; this audit did not regenerate NumPy default_rng(42) because NumPy was not importable locally.",
+    "max_metric_difference_vs_summary": 5.684341886080802e-14,
+    "max_loss_component_roundoff_abs_diff": 3.3728824289092074e-8,
+    "receipt_checks": [
+      {
+        "file": "evidence/trifusion_v23_q1_receipts/fold_0_frozen_zero_spectral_adapter_receipt.json",
+        "sha256": "7fe91e7173613e42421832648d5f31c3eeeb4d78f3417f1bd14bc4c32179ce8e",
+        "fold": 0,
+        "endpoint": "frozen_zero_spectral_adapter",
+        "equals_summary_endpoint_object": true,
+        "strict_reload": true,
+        "read_only_evaluation": true
+      },
+      {
+        "file": "evidence/trifusion_v23_q1_receipts/fold_0_trained_spectral_adapter_receipt.json",
+        "sha256": "ef54222e23ed1fc8489f8628589491c76082dedd0d2023d211d578bb4668b8dc",
+        "fold": 0,
+        "endpoint": "trained_spectral_adapter",
+        "equals_summary_endpoint_object": true,
+        "strict_reload": true,
+        "read_only_evaluation": true
+      },
+      {
+        "file": "evidence/trifusion_v23_q1_receipts/fold_1_frozen_zero_spectral_adapter_receipt.json",
+        "sha256": "ecb8fe210e6349e6349de7d3c6d45df31dd37e159d2d747e39b32d903b719f6c",
+        "fold": 1,
+        "endpoint": "frozen_zero_spectral_adapter",
+        "equals_summary_endpoint_object": true,
+        "strict_reload": true,
+        "read_only_evaluation": true
+      },
+      {
+        "file": "evidence/trifusion_v23_q1_receipts/fold_1_trained_spectral_adapter_receipt.json",
+        "sha256": "761fb52579908d65333d95b75205bb8e7b171289109dfb1af585ee1078246bc5",
+        "fold": 1,
+        "endpoint": "trained_spectral_adapter",
+        "equals_summary_endpoint_object": true,
+        "strict_reload": true,
+        "read_only_evaluation": true
+      },
+      {
+        "file": "evidence/trifusion_v23_q1_receipts/fold_2_frozen_zero_spectral_adapter_receipt.json",
+        "sha256": "633ebb7ec30aed38f667af75b6e9ff8a151473e465db3cfe648ea0a310c00ad7",
+        "fold": 2,
+        "endpoint": "frozen_zero_spectral_adapter",
+        "equals_summary_endpoint_object": true,
+        "strict_reload": true,
+        "read_only_evaluation": true
+      },
+      {
+        "file": "evidence/trifusion_v23_q1_receipts/fold_2_trained_spectral_adapter_receipt.json",
+        "sha256": "4eeebad700dad1535c9da3ec6ee4d317b06838a28d367f62f553cdf67b94bd7c",
+        "fold": 2,
+        "endpoint": "trained_spectral_adapter",
+        "equals_summary_endpoint_object": true,
+        "strict_reload": true,
+        "read_only_evaluation": true
+      }
+    ],
+    "query_paired_changes": {
+      "baseline_only": {
+        "improved": 0,
+        "declined": 0,
+        "equal": 571,
+        "rank1_repaired": 0,
+        "rank1_broken": 0
+      },
+      "fused": {
+        "improved": 178,
+        "declined": 191,
+        "equal": 202,
+        "rank1_repaired": 7,
+        "rank1_broken": 12
+      },
+      "cnn": {
+        "improved": 225,
+        "declined": 154,
+        "equal": 192,
+        "rank1_repaired": 15,
+        "rank1_broken": 10
+      },
+      "transformer": {
+        "improved": 194,
+        "declined": 215,
+        "equal": 162,
+        "rank1_repaired": 20,
+        "rank1_broken": 15
+      },
+      "mamba": {
+        "improved": 164,
+        "declined": 218,
+        "equal": 189,
+        "rank1_repaired": 5,
+        "rank1_broken": 13
+      }
+    },
+    "source_line_ending_drift": [
+      {
+        "file": "modeling/trifusion/experts/mamba.py",
+        "local_raw_sha256": "8b9cb420c42e4d70f8de7e4608637c81c505b97ca54228175462a7e92fdfcc83",
+        "local_lf_sha256": "c516c7f6e185a2d93152d9f18ac65e0548fd5320d71102e40f4d85af7216fc8e",
+        "execution_sha256": "c516c7f6e185a2d93152d9f18ac65e0548fd5320d71102e40f4d85af7216fc8e",
+        "lf_matches_execution": true
+      },
+      {
+        "file": "modeling/trifusion/experts/semantic_residual.py",
+        "local_raw_sha256": "c1831a3de031be033624420791cecf2e7a3945e009655089cb48ee4b9912edd6",
+        "local_lf_sha256": "c8cef88b44ba155aaecdfdd5d51ecf8372b3b5d40fbfcae9eb17a82141791b4b",
+        "execution_sha256": "c8cef88b44ba155aaecdfdd5d51ecf8372b3b5d40fbfcae9eb17a82141791b4b",
+        "lf_matches_execution": true
+      },
+      {
+        "file": "modeling/trifusion/criterion.py",
+        "local_raw_sha256": "9a028e5711981123310f5e0d441a35b7dbecaf33f9edcec4fd3773d070cf877f",
+        "local_lf_sha256": "0b2a63705cd52197fb99b0e6d5c6b774423179df9ff459bc78b99e2fd5b72444",
+        "execution_sha256": "0b2a63705cd52197fb99b0e6d5c6b774423179df9ff459bc78b99e2fd5b72444",
+        "lf_matches_execution": true
+      },
+      {
+        "file": "protocols/rgbnt201_dev_v1.json",
+        "local_raw_sha256": "f7f6f8a906c06fec4918929fb5c17abfc197986b99e017aca1d3e15831c1541d",
+        "local_lf_sha256": "d91629c908baad72b5208d938065616459cf79a6a5e0f8aa2c3f6eb66dd85949",
+        "execution_sha256": "d91629c908baad72b5208d938065616459cf79a6a5e0f8aa2c3f6eb66dd85949",
+        "lf_matches_execution": true
+      }
+    ],
+    "terminal_verifiers": {
+      "file_verification_passed": true,
+      "array_verification_passed": true,
+      "log_verification_passed": true,
+      "intake_exit_code": 0,
+      "summary_status": "Q1_FAIL",
+      "prereg_q1_executed_at_registration": false,
+      "launch_single_original_process": true
+    }
+  },
+  "limitations": [
+    "This audit followed the explicit no model/tensor/image/GPU/remote/network/installation/delegation constraint; no checkpoint tensor, model forward pass, image bytes, or distance matrices were loaded.",
+    "Checkpoint hash evidence is based on the terminal verification ledger and endpoint receipts, not independent possession and hashing of checkpoint binaries in this audit run.",
+    "Exact NumPy 2.5.2 default_rng(42) identity-cluster bootstrap was not regenerated because local Python could not import NumPy; the recorded verifier result is negative and internally consistent.",
+    "The audit is same-family/constrained. It is not a cross-family acquittal despite the reviewer model requested in AUDIT_REQUEST.txt.",
+    "Q1 is single-seed, train-internal, complete-path OOF, reused-development qualification. It is not fixed dev, D1, official test, model selection, threshold selection, or scientific advancement."
+  ],
+  "input_file_sha256": {
+    "modeling/trifusion/signal_preserving_v23.py": "89816298baedf6ab5d3f122fe16db69035420df8cc91b65e0bb0c8c6f9cde1af",
+    "tools/train_signal_preserving_v23.py": "1b18edbd28e335469f6647a7095228e9e03cf8195b2739b4a9c54c62aedec42b",
+    "configs/RGBNT201/TriFusion-signal-preserving-v23-spectral-adapter-rtx3090.yml": "9859342d044e8bb0b630bc8f6af345ee95dbf1eb445f7a2bffce4173df8c01fa",
+    "refine-logs/v23/EXPERIMENT_PLAN.md": "7877e7fe6a857b965cac701220be387da4774c3e88dfa3682938df8dc32e4997",
+    "refine-logs/v23/EXPERIMENT_TRACKER.md": "957909b60d13a9e318a976c38e8f9aee65206da585593f15a07f4bf441cee681",
+    "results/TRIFUSION_RGBNT201_V23_COMPLETE_Q1_2026-09-05.md": "c8b241a62dd2b1426b1a161c3f75a709db53d4d7e03a1221cc1a9a9f349107ff",
+    "evidence/trifusion_v23_preregistration_20260905.json": "11c13c301db0aa27cc5d7c1b867cc86373dd62bfc238e210f176298c10ad2bc7",
+    "evidence/trifusion_v23_launch_20260905.json": "b8db2fad72334988161cbb380be41b9f5846a97bb720240262eb4a4264bfc8aa",
+    "evidence/trifusion_v23_q1_seed42_9f4a10b.json": "dbb58d0d614dc5e8007e8548508dec75e6a5225647450467e7b13a2c1111d9b0",
+    "evidence/trifusion_v23_q1_run_20260905.log": "60482e4297b484cf035a5e6417f2a3e49949d0fe609dba4b928971d39d7e9588",
+    "evidence/trifusion_v23_q1_exit_20260905.txt": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "evidence/trifusion_v23_q1_intake_20260905.json": "eb457353effb1f803c6e978fac9a661c12b68ef9b3eafe7325a2929d0734c218",
+    "evidence/trifusion_v23_q1_terminal_file_verification_20260905.json": "203505c88c2ac1cbf828300151fbdbccfd50e85f24e2ec900dda33e3d3121ca3",
+    "evidence/trifusion_v23_q1_array_verification_20260905.json": "a39c30f0c4df1c72fa83329ebe811f78cd46ffb97e396d83e65781c8993756e5",
+    "evidence/trifusion_v23_q1_log_verification_20260905.json": "1071cdc946d3f4f05abc5328e948ba45bb857badf50753f12d49caaf0f471df7",
+    "evidence/trifusion_v23_q1_complete_comparison_20260905.json": "6f9503b541a2b66a39451adc9dfaa9f241aa509c7384ebee9040cacd08acf27f",
+    "tools/verify_v23_terminal_files.py": "e8ae141d2fa926d215f3884b19f0475c8734ea95ac6bc911bee01b31ed8b4a92",
+    "tools/audit_v23_terminal_arrays.py": "860cab914a8367625a5ce0bef454a7bb5c353141794454f544bb924ea8821fb3",
+    "tools/report_v23_complete_comparison.py": "01ee60adbb484183b292b664b0f69e8448307e7b866067592d69d20cf48f0c68",
+    "modeling/trifusion/signal_preserving_v8.py": "97a7b5fe6dab882c2ed92ed1db95b9a8f48eae1d99a3a9b145b0cdfc4b8cefbc",
+    "modeling/trifusion/signal_preserving_v8_builder.py": "8afb028957ecff1a0a26497f7d0460bc240b0f8612a3c476b52a9a6667a3049d",
+    "modeling/trifusion/state.py": "d6491db289e68e0b97a8d532edc933252ab60fdaad963af85f603dec9002e2b9",
+    "modeling/trifusion/experts/mamba.py": "8b9cb420c42e4d70f8de7e4608637c81c505b97ca54228175462a7e92fdfcc83",
+    "modeling/trifusion/experts/semantic_residual.py": "c1831a3de031be033624420791cecf2e7a3945e009655089cb48ee4b9912edd6",
+    "modeling/trifusion/criterion.py": "9a028e5711981123310f5e0d441a35b7dbecaf33f9edcec4fd3773d070cf877f",
+    "modeling/trifusion/aligned_data.py": "3ea362d17660483b554cb599442b6377ace020fa114969b9bdd58906fbceedd5",
+    "tools/train_signal_preserving_v19.py": "5f000d3d3abe9636cae97e292db2c63a3a20f349c125dfe4b27bd3fca95bb9c5",
+    "modeling/trifusion/signal_preserving_v19.py": "69989cced25950ff476759bc93df945b167e8ce88a4340676e8adbbd9f88918e",
+    "tools/train_signal_preserving_v17.py": "333886d16f73987accddb70b0780661bb9400b8afd04af01b57e188d34e5228d",
+    "tools/train_signal_preserving_v18.py": "f6bdda4631d710d0b6db5fe2a8df124d8dcbd294cb54adcf3ec261d523e96cf8",
+    "tools/build_v12_complete_path_oof_targets.py": "fc13354b1065c46677122ee9cf63816087facca4e0e98ec5e6e2fb0dece141e4",
+    "tools/run_signal_preserving_v5.py": "e162184f68778b4991db0f97f26c5fda273b2ad2f7c8db2bbb2d53775eb717e5",
+    "tools/run_signal_baseline_dev.py": "083967f2a38267415b2992da98c2ad9429ebb793f387b45daac1dbb4eb16f365",
+    "tools/audit_v17_full_gallery.py": "856881f984ab8793788d291018a60046a47e309c625a65394b1a3ff4e670d8a9",
+    "tools/diagnose_v6_oracle_complementarity.py": "919b624156c57f92fa75f79a06fe7c872a02d730fa8cd021ce9d7b4e498b1db2",
+    "modeling/trifusion/signal_preserving_v13.py": "7b7c4abb220ed234608553c77aeedd5f8ef763abb04cce5b21f1bfce0f4daa62",
+    "protocols/rgbnt201_dev_v1.json": "f7f6f8a906c06fec4918929fb5c17abfc197986b99e017aca1d3e15831c1541d",
+    "evidence/trifusion_v12_complete_path_oof_seed42.json": "9105b86a9c079c44843e9b118a21599746a87d279370341b8cf8d26bd18a8b69",
+    "evidence/trifusion_v23_q1_receipts/fold_0_frozen_zero_spectral_adapter_receipt.json": "7fe91e7173613e42421832648d5f31c3eeeb4d78f3417f1bd14bc4c32179ce8e",
+    "evidence/trifusion_v23_q1_receipts/fold_0_trained_spectral_adapter_receipt.json": "ef54222e23ed1fc8489f8628589491c76082dedd0d2023d211d578bb4668b8dc",
+    "evidence/trifusion_v23_q1_receipts/fold_1_frozen_zero_spectral_adapter_receipt.json": "ecb8fe210e6349e6349de7d3c6d45df31dd37e159d2d747e39b32d903b719f6c",
+    "evidence/trifusion_v23_q1_receipts/fold_1_trained_spectral_adapter_receipt.json": "761fb52579908d65333d95b75205bb8e7b171289109dfb1af585ee1078246bc5",
+    "evidence/trifusion_v23_q1_receipts/fold_2_frozen_zero_spectral_adapter_receipt.json": "633ebb7ec30aed38f667af75b6e9ff8a151473e465db3cfe648ea0a310c00ad7",
+    "evidence/trifusion_v23_q1_receipts/fold_2_trained_spectral_adapter_receipt.json": "4eeebad700dad1535c9da3ec6ee4d317b06838a28d367f62f553cdf67b94bd7c"
+  },
+  "input_file_bytes": {
+    "modeling/trifusion/signal_preserving_v23.py": 3908,
+    "tools/train_signal_preserving_v23.py": 24966,
+    "configs/RGBNT201/TriFusion-signal-preserving-v23-spectral-adapter-rtx3090.yml": 3397,
+    "refine-logs/v23/EXPERIMENT_PLAN.md": 7282,
+    "refine-logs/v23/EXPERIMENT_TRACKER.md": 3190,
+    "results/TRIFUSION_RGBNT201_V23_COMPLETE_Q1_2026-09-05.md": 9379,
+    "evidence/trifusion_v23_preregistration_20260905.json": 1530,
+    "evidence/trifusion_v23_launch_20260905.json": 5314,
+    "evidence/trifusion_v23_q1_seed42_9f4a10b.json": 2148943,
+    "evidence/trifusion_v23_q1_run_20260905.log": 201215,
+    "evidence/trifusion_v23_q1_exit_20260905.txt": 2,
+    "evidence/trifusion_v23_q1_intake_20260905.json": 4151,
+    "evidence/trifusion_v23_q1_terminal_file_verification_20260905.json": 17104,
+    "evidence/trifusion_v23_q1_array_verification_20260905.json": 8902,
+    "evidence/trifusion_v23_q1_log_verification_20260905.json": 523,
+    "evidence/trifusion_v23_q1_complete_comparison_20260905.json": 527772,
+    "tools/verify_v23_terminal_files.py": 6098,
+    "tools/audit_v23_terminal_arrays.py": 12876,
+    "tools/report_v23_complete_comparison.py": 11456,
+    "modeling/trifusion/signal_preserving_v8.py": 28592,
+    "modeling/trifusion/signal_preserving_v8_builder.py": 3900,
+    "modeling/trifusion/state.py": 4990,
+    "modeling/trifusion/experts/mamba.py": 7479,
+    "modeling/trifusion/experts/semantic_residual.py": 15882,
+    "modeling/trifusion/criterion.py": 6231,
+    "modeling/trifusion/aligned_data.py": 10062,
+    "tools/train_signal_preserving_v19.py": 26363,
+    "modeling/trifusion/signal_preserving_v19.py": 4059,
+    "tools/train_signal_preserving_v17.py": 61124,
+    "tools/train_signal_preserving_v18.py": 17540,
+    "tools/build_v12_complete_path_oof_targets.py": 32723,
+    "tools/run_signal_preserving_v5.py": 65190,
+    "tools/run_signal_baseline_dev.py": 12601,
+    "tools/audit_v17_full_gallery.py": 10425,
+    "tools/diagnose_v6_oracle_complementarity.py": 9754,
+    "modeling/trifusion/signal_preserving_v13.py": 9347,
+    "protocols/rgbnt201_dev_v1.json": 5685,
+    "evidence/trifusion_v12_complete_path_oof_seed42.json": 43930,
+    "evidence/trifusion_v23_q1_receipts/fold_0_frozen_zero_spectral_adapter_receipt.json": 166376,
+    "evidence/trifusion_v23_q1_receipts/fold_0_trained_spectral_adapter_receipt.json": 168389,
+    "evidence/trifusion_v23_q1_receipts/fold_1_frozen_zero_spectral_adapter_receipt.json": 162812,
+    "evidence/trifusion_v23_q1_receipts/fold_1_trained_spectral_adapter_receipt.json": 165145,
+    "evidence/trifusion_v23_q1_receipts/fold_2_frozen_zero_spectral_adapter_receipt.json": 174012,
+    "evidence/trifusion_v23_q1_receipts/fold_2_trained_spectral_adapter_receipt.json": 175984
+  }
+}
