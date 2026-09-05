@@ -1,3 +1,5 @@
+> **2026-09-05 status:** V17 DTRED completed all six 20-epoch endpoint runs and failed its train-only Q1 gate (fused matched gain **-0.338635 mAP**). No V17 dev or official result exists. The deployable V8 Phase-B dev result remains **58.4050/59.3939**. See the [V17 terminal and full-gallery audit](results/TRIFUSION_RGBNT201_V17_DTRED_2026-09-05.md) and [current cross-dataset references](docs/SOTA_REFRESH_2026-09-05.md).
+
 > **TriFusion research fork.** This branch adds a shared-CLIP
 > CNN + Transformer + Mamba collaborative RGB–NIR–TIR ReID system, together
 > with identity-disjoint reliability calibration, fixed-endpoint evaluation,

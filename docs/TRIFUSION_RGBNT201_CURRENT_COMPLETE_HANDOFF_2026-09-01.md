@@ -2,7 +2,7 @@
 
 ## 0. 一页结论
 
-本工程是在 DeMo 代码基座上实现的 RGB–NIR–TIR 多模态目标重识别研究分支。最新终态是 V16 SATR 在 train-only M0 因三折 Transformer relation coverage 均为0而封存，未运行Q1/D1、未访问dev/official。当前最高的可部署结果仍是 V8 OOF-margin Router Phase-B：唯一冻结 dev fused=`58.4050 mAP / 59.3939 Rank-1`，比 exact Signal baseline 高 `0.3941 mAP / 1.9394 Rank-1` 并严格超过三个固定专家，但仍比65 mAP门低`6.5950`，因此不支持 official test 或 SOTA。
+本工程是在 DeMo 代码基座上实现的 RGB–NIR–TIR 多模态目标重识别研究分支。最新终态是 V17 DTRED 完整跑完三折×两个endpoint×20 epoch后Q1失败；2026-09-05严格重载六个final checkpoint并补齐全部留出gallery后，fused相对matched weight0仍为-0.328915 mAP。V17没有D1/dev/official结果。当前最高的可部署结果仍是 V8 OOF-margin Router Phase-B：唯一冻结 dev fused=`58.4050 mAP / 59.3939 Rank-1`，比 exact Signal baseline 高 `0.3941 mAP / 1.9394 Rank-1` 并严格超过三个固定专家，但仍比65 mAP门低`6.5950`，因此不支持 official test 或 SOTA。
 
 V6 的三个候选论文级主创新点已经落到核心代码、专项测试和完整 dev 运行中；性能主门仍然失败：
 
@@ -1491,3 +1491,115 @@ evidence/trifusion_v16_satr_m0_seed42_20260902.json
 results/TRIFUSION_RGBNT201_V16_SATR_M0_2026-09-02.md
 refine-logs/v16/threshold-freeze-readonly.md
 ```
+
+
+## 28. V17完整训练终态与全gallery核查（2026-09-05接续）
+
+接续时服务器无训练进程、GPU空闲；原M0和Q1已经完整结束，但交接文档只写到
+V16。此次以实际run_summary和保存权重为准补齐，未重复训练。
+
+### 28.1 当前架构与原实验
+
+V17冻结完整Signal的3072D direct+SIM（含camera SIE）与V8三个pretrained-tail
+专家：CNN局部细节、Transformer全局CLS、Mamba空间/跨模态序列。共享CLIP在
+block8后分支，并复用冻结tail9/10/11；不是三套独立backbone。每expert产生
+三模态1536D残差。新增唯一TriadicCorrection将残差映射至256D，共享MLP读取
+receiver自身、两个peer的Hadamard乘积及三支均值，三个独立output projections
+给出修正残差。fused=3072D exact Signal前缀+等能量4608D残差银行；分支为4608D。
+无Router、reranking、sample alpha、测试时训练或runtime fallback。
+
+训练目标是普通ID/triplet加source-only同身份最大cosine/异身份最小cosine的
+one-sided关系包络以及既定Signal保护；weight0仅把包络系数置0，其他完全相同。
+该训练teacher是模型关系代理，不是性能GT；mAP/CMC使用数据集身份和camera。
+
+M0通过：真实B64/K8、22/22梯度、overflow0、capacity peak reserved1808MiB，
+100-step excess ratio0.000693508。Q1完整完成三折每端20 epoch，共3360步，
+22/22梯度、overflow0、冻结状态不变，耗时35.23分钟，peak reserved5656MiB。
+执行来源commit为`535ef2f305668493c0d07095ab17bb66e9997db6`。
+
+原Q1的fused三折增益为-0.600212/-0.302472/-0.124641，aggregate -0.338635 mAP，
+bootstrap95%下界-1.120318。科学gate=false，D1未授权/未运行，dev0/official0。
+
+### 28.2 全gallery补评，不再删除无跨摄像头正例身份的干扰样本
+
+发现原Q1先筛选跨摄像头身份，再把同一列表同时作query/gallery；每fold的47个
+留出身份中只有7个进入gallery。原协议的相对比较一致，但不覆盖全部留出gallery。
+
+新只读脚本`tools/audit_v17_full_gallery.py`严格重载六个最终checkpoint，复核
+整模型final-state SHA、源文件/Signal/expert权重SHA、exact Signal前缀，遍历
+三折gallery 1000/1051/1075条，共3126条、141身份。query仍为全部合格的571条；
+其余2555条因无同身份跨摄像头正例不进入query分母，但全部保留为gallery干扰项。
+
+注意：这里的固定141-fit来自`train_171`协议文件，共3126条；它不是数据目录
+自带`train_141`的3280条。固定30-dev为825条，合计3951条。
+
+| 输出 | matched weight0 mAP / R1 | DTRED mAP / R1 | mAP差值 |
+|---|---:|---:|---:|
+| exact Signal-only | 77.487603 / 79.334501 | 77.487603 / 79.334501 | 0 |
+| fused | 80.614939 / 84.063047 | 80.286024 / 83.537653 | -0.328915 |
+| CNN | 79.952578 / 82.837128 | 78.433784 / 81.436077 | -1.518794 |
+| Transformer | 78.123409 / 82.311734 | 78.853236 / 82.837128 | +0.729826 |
+| Mamba | 78.858043 / 82.311734 | 79.064729 / 81.961471 | +0.206686 |
+
+全gallery fused三折Δ为+0.129220/-0.906481/-0.248032，aggregate bootstrap95%
+下界-1.124616；fused AP改善/受损/不变=165/184/222，Rank1修复/破坏=2/5。
+CNN AP改善/受损/不变=138/238/195，Rank1修复/破坏=6/14。DTRED比Signal高
+2.798421 mAP，但matched weight0高3.127336，所以不能归因关系包络有效。
+
+原限制gallery的DTRED fused 88.364223降为全gallery80.286024，差8.078199。
+两种协议的aggregate相对结论都为负，但fold0及Mamba符号发生变化，说明不能
+混用两个gallery协议选择有利分支结论。这些数字均为fit内identity-OOF资格结果，
+不是30-dev，更不是官方测试；不得与85.3官方目标混排。
+
+首次补评在全部六端推理后因bootstrap数据类未转JSON失败；提交`0888f454`只改
+序列化，随后相同权重/数据的完整只读重放成功，耗时127.24秒。两次均optimizer0、
+checkpoint writes0、dev0/official0。所有六端strict reload及state/checkpoint
+unchanged通过；原始失败日志保留，原Q1 gate不变，没有重训或D1。
+
+### 28.3 诊断、后续计划与边界
+
+训练最终epoch平均负关系violation降低37.26%，正关系violation却增加7.44%；
+全gallery检索同时揭示CNN主要受损。这个证据支持包络训练未把负关系约束变为
+稳定正负检索排序改善，但还不能把背景、分辨率、学习率或cosine几何冲突判为
+已证实的主因。该loss统计是在线epoch均值，不是固定批次终态因果比较。
+
+V17完整训练已封存，不运行D1/dev/official/消融/多seed，也不扫width/loss/LR/
+epoch/checkpoint。当前可部署dev最好仍是V8 Phase-B58.4050/59.3939；65门未过。
+
+下一步工作的具体顺序：
+
+1. 后继协议必须固定完整gallery，并报告所有合法query、排除原因、五路输出及
+   mAP/Rank1/5/10；不再沿用仅跨摄像头身份组成gallery的旧资格协议。
+2. 利用本次保存的全571-query AP/first-match rank，对三个fold和全部分支做
+   固定错误普查，重点区分CNN正例排序受损与新增干扰样本导致的错误匹配。
+   必须取得图像/token层面的证据后，才决定新的表征结构，不能凭此直接加掩码
+   或换backbone，也不能继续扫描已封存Router/hidden exchange/cosine-envelope。
+3. 新假设单独预注册固定seed42、完整训练终点及完整gallery评价，再开展一次
+   主实验；先验证跨身份机制，随后才是固定30-dev和冻结官方协议。多次用同一
+   21身份的结果不能称为新的独立验证。
+4. RGBNT100/MSVR310本项目训练仍未开始；当前服务器只安装RGBNT201。跨数据集
+   主训练/完整评估、最终官方比较与SOTA证明继续作为原总目标的未完成项。
+
+原始回执、全部逐query结果与详细CMC：
+
+```text
+evidence/trifusion_v17_dtred_m0_seed42_535ef2f.json
+evidence/trifusion_v17_dtred_q1_seed42_535ef2f.json
+evidence/trifusion_v17_full_gallery_fixed_20260905.json
+results/TRIFUSION_RGBNT201_V17_DTRED_2026-09-05.md
+EXPERIMENT_AUDIT_V17.md
+EXPERIMENT_AUDIT_V17.json
+```
+
+## 29. 各数据集公开高指标与代码资源增量核验（2026-09-05）
+
+主源表及资源边界见`docs/SOTA_REFRESH_2026-09-05.md`。本次从RoDI作者GitHub
+PDF第6页直接复核：RGBNT201 CLIP84.1/87.2、DINOv3 85.3/87.9；RGBNT100
+DINOv3 89.0/99.1；MSVR310 DINOv3 71.8/84.8。PMKD的AAAI官方表为RGBNT201
+84.7/88.9、RGBNT100 91.6/98.0，因此最高mAP和最高Rank1可能来自不同方法。
+RoDI仍只有README/assets，Hyper-ReID仍只有占位README，不能当成可直接
+复现的模块。Signal仍是有MIT许可证、可审计并已建立同协议dev底线的代码基座。
+ProxyTTT必须标注测试时更新，PRISM的OpenPifPaf/SAM2掩码属于额外资源。
+
+这些是已定位的公开报告参照，不是本机复现或绝对穷尽榜单。没有新的SOTA
+声明，也没有因未获取代码而用猜测补齐指标。完整目标仍未达到。

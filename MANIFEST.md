@@ -525,3 +525,14 @@
 | 2026-09-02 17:47 | /experiment-plan | refine-logs/EXPERIMENT_PLAN.md | implementation | V17冻结执行计划latest |
 | 2026-09-02 17:47 | /experiment-plan | refine-logs/EXPERIMENT_TRACKER_20260902_174747.md | implementation | V17执行tracker永久版 |
 | 2026-09-02 17:47 | /experiment-plan | refine-logs/EXPERIMENT_TRACKER.md | implementation | V17执行tracker latest |
+
+
+## 2026-09-05 V17 terminal and full-gallery continuation
+
+- Source execution: V17 M0/Q1 `535ef2f`; supplementary evaluator `5ca978c`, numeric JSON fix `0888f45`.
+- Raw receipts: `evidence/trifusion_v17_dtred_m0_seed42_535ef2f.json`, `evidence/trifusion_v17_dtred_q1_seed42_535ef2f.json`.
+- Complete-gallery receipt: `evidence/trifusion_v17_full_gallery_fixed_20260905.json`; all six final endpoints, 3126 gallery rows, 571 eligible queries, optimizer0/dev0/official0.
+- Remote verification: `evidence/trifusion_v17_terminal_verification_20260905.json` (13 tests and raw receipt/log SHAs).
+- Result and independent audit: `results/TRIFUSION_RGBNT201_V17_DTRED_2026-09-05.md`, `EXPERIMENT_AUDIT_V17.md/json`.
+- Updated main handoff through sections28/29 and `docs/SOTA_REFRESH_2026-09-05.md`.
+- V17 is terminal negative, without D1 or a new deployable/official result. Large weights remain remote-only.

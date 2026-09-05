@@ -251,6 +251,21 @@
 
 ## Remote experiment constraints
 
+- V17 DTRED completed all three folds, two endpoints, and 20 epochs per
+  endpoint (3360 steps). M0 passed; Q1 failed with fused matched gain
+  -0.338635 mAP. Its six final checkpoints were strictly reload-verified on
+  2026-09-05 using all 3126 held-out gallery records and all 571 eligible
+  cross-camera queries: fused DTRED/weight0 is 80.286024/80.614939 mAP,
+  gain -0.328915, bootstrap lower bound -1.124616. These are fit-only OOF
+  results, not dev/official metrics. V17 has no D1 and remains sealed without
+  training/width/loss/LR/epoch/checkpoint scans.
+- Future complete-gallery evaluation must retain single-camera held-out
+  identities as gallery distractors while excluding only queries with no
+  valid cross-camera positive from the metric denominator. The fixed 141-fit
+  registry has 3126 triplets, distinct from the supplied train_141 directory.
+  Preserve both the original Q1 and supplementary full-gallery receipts;
+  do not choose between their branch results for a favorable claim.
+
 - Check the remote RTX 3090 before every launch. The V7 `rtx3090_b64k8` gate
   requires at least 22,000 MiB free before a new training process starts.
 - Use real B64/K8 without gradient accumulation so batch-hard losses see eight
