@@ -3138,3 +3138,19 @@ MSVR310训练/检索仍0，RGBNT201原V24继续，未推广不合格候选、未
 不能把旧CE解析下界当成新增全部loss的最优值，当前V24门槛没有更改。
 详见docs/SNR_CODE_MECHANISM_AND_SCOPE_2026-09-06.md和
 evidence/snr_original_reid_formula_review_20260906.json；新模型/优化/检索均0，后继版本未登记。
+
+
+### 41.9 MambaPro 固定代码的 3N 聚合参照（2026-09-06）
+
+记录时间：2026-09-06T02:33:13.022271+08:00。固定官方commit f9ee6f60e58f21f3da1c8fd0e659fcc8db9ab149，MIT，98文件树，
+14份纯源码/配置文本137,173bytes逐Gitblob核验；无模型、权重下载或运行。
+实际两层MA，各先模态内、后整个3N模态间SSM，CLS与聚合Patch均值共同降维，最终1536D。
+默认MAMBA_BI=False且两数据集配置未覆盖，因此完整3N不等于已启用双向传播。
+当前TriFusion长度3的逐位置混合、与reference作差及平行残差银行是另一结构。
+
+PFA实际d→2d→d；冻结函数按adapter参数名选择，不据函数名将其称作LoRA。
+原配置B64/K4、60epoch；MSVR310 DIRECT=0、RGBNT201 DIRECT=1；原验证best选择不等于项目固定终点。
+CLIP实际硬编码../PTH/ViT-B-16.pt；future基线需绑定真实读取文件。
+详见docs/MAMBAPRO_CODE_AGGREGATION_AND_SCOPE_2026-09-06.md、
+evidence/mambapro_source_text_inspection_20260906.json。
+这里只作原文及调用链研究，没有改变V24、发起消融或登记后继训练。
