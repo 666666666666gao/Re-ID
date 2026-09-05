@@ -541,3 +541,6 @@
 | 2026-09-05 12:12 | /experiment-plan | refine-logs/v19/EXPERIMENT_PLAN.md | implementation | V19 private semantic tail preregistration; no results yet |
 | 2026-09-05 12:12 | /experiment-plan | refine-logs/v19/EXPERIMENT_TRACKER_20260905_121232.md | implementation | V19 private semantic tail preregistration; no results yet |
 | 2026-09-05 12:12 | /experiment-plan | refine-logs/v19/EXPERIMENT_TRACKER.md | implementation | V19 private semantic tail preregistration; no results yet |
+
+| 2026-09-05 12:29 | /run-experiment | refine-logs/v19/EXPERIMENT_TRACKER_20260905_122939.md | evidence | T0/M0 complete; Q1 running, no retrieval claim |
+| 2026-09-05 12:29 | /run-experiment | evidence/trifusion_v19_m0_seed42_4b749cd.json | evidence | Immutable M0 snapshot; remote SHA verified |

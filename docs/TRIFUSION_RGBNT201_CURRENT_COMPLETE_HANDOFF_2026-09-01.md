@@ -1944,6 +1944,50 @@ M0要求三折两端原V8五路输出/初始state/增强配对精确一致，私
 保留3126gallery/571query五路输出，全部最终checkpoint重新strict reload。
 Q1沿用+1mAP、全部fold/专家非负、身份bootstrap下界>0及fused严格胜出门。
 
-当前状态为实现与方案已写，远端T0/M0/Q1尚未执行，不能称工程或科学通过。
-初始估计M0 5–15分钟、Q1 2–4小时，将按真实容量与首epoch更新。
+上述实现于4b749cd提交并部署，执行前状态保留于该提交；实际运行见下节。
+
+### 35.1 V19 T0/M0完成，完整Q1运行中（2026-09-05 12:26 CST）
+
+实际源提交`4b749cd92735c228a4bdb1cfacb0b2c6cb80cfe9`，配置SHA
+`89f7335a0d0995aa23f1a3387e76b4693ecb3721c865e706feaf1b059fd97dd5`，
+冻结方案SHA`2b7674cf395ba2c53a7b9fd695b76e99eeecd0445957f188e22c5700bdaafe7b`。
+远端T0四项定向测试通过（6.95秒）；12:15:41 CST在screen
+`18809.v19_private_tail_4b749cd`启动，GPU启动前24126MiB空闲。
+运行目录为`/root/autodl-tmp/trifusion-v2/artifacts/trifusion_v19_private_tail_seed42_4b749cd`，
+日志为同路径后接`.log`。禁止重复启动同一实验。
+
+三折初始检查均通过：原V8与两端五路输出精确一致，初始state和增强receipt
+配对相等，九个副本storage独立。两端实例总参数同为162590989；对照训练
+7841292参数/203tensor，实验端71632140/311，差额63790848/108。
+
+两端8个真实训练batch中全部203/311张量均收到有限非零梯度，overflow0，
+峰值reserved分别6478/6814MiB；对照私有尾部不变，实验端尾部改变，全部冻结
+state保持一致。新初始化实验端固定100步loss从0.6110473871到0.5803269148；
+解析平滑下界0.5783829210，excess ratio=0.0595140216 <=0.1，完整梯度覆盖、
+overflow0及冻结state检查全部通过。M0全部工程条件PASS，训练状态不带入Q1。
+
+完整原始M0快照`evidence/trifusion_v19_m0_seed42_4b749cd.json`共257741字节，
+SHA`89fd884a8c894de16639c26cfa162a2bbd005dc13c1e38ebe0fe6ce7adafe992`，
+已与远端汇总SHA核对；启动/T0 receipt和当时完整日志同存evidence目录。
+该快照状态RUNNING，只覆盖M0及preflight，不能充当Q1终态证据。
+
+Q1已自动从源checkpoint重新构建；12:26:41时fold0对照第9/20epoch，
+约35秒/epoch，GPU使用6672MiB、利用率100%。据实测将六端训练连同终态
+重载/评价估计修正为75–90分钟。必须完成所有端后按原固定门判断，当前没有
+完整检索结果。工程独立审计与Q1可并行，科学终态审计等待全部端结果。
 两个跨数据集仅安装，不训练；D1/dev/official仍为0，全局目标未达。
+
+### 35.2 文献与跨数据集协议准备（2026-09-05）
+
+另核对NEXT当前arXiv v5、PDRNet完整模态主表、FUSE及DCG主表，详见
+`docs/SOTA_REFRESH_2026-09-05.md`，其数值未超过前述已核主要高mAP参照。
+NEXT仓库当前公开文本/assets而非完整训练实现；CCL/Hyper-ReID待核边界保留。
+
+服务器上的车辆数据已补充全split标签清单检查：MSVR310全部591 query和
+RGBNT100全部1715 query均有合法正例，train/test身份不相交。MSVR310的既有
+协议按同身份且同scene/time过滤，516/591 query在改成同camera过滤时正例数
+会改变；后续不得套用RGBNT201评价过滤。完整清单/逐query计数/脚本SHA见
+`evidence/vehicle_query_protocol_labels_20260905.json`与
+`docs/VEHICLE_EVAL_PROTOCOL_READINESS_2026-09-05.md`。
+该检查仅读取文件名标签，optimizer0、图像/权重/特征加载0、检索评价0；
+不改变V19冻结配置，也不构成跨数据集性能结果。

@@ -73,3 +73,31 @@ Hyper-ReID继续作为最终SOTA措辞前的待核项。现有高参照不构成
 CoT PDF已从CVF直接下载核读，7178132字节，SHA256
 `e0aff58aefc2c39001bc7b36e69476fe2e24b074d964b0f1ef7237e6a84b0efa`。
 本次只补文献/代码资源状态，不改变已冻结的V18训练和晋级条件。
+
+## 12:30 增量：NEXT当前版本、PDRNet、FUSE与DCG
+
+以下继续使用完整模态主表，缺失模态表与多次运行均值另列；所有数值仍是论文
+报告值。NEXT核对的是2026-05-11更新的arXiv v5，未把旧v2当作当前版本。
+
+| 方法 | RGBNT201 mAP/R1 | RGBNT100 mAP/R1 | MSVR310 mAP/R1 | 直接主源 |
+|---|---:|---:|---:|---|
+| NEXT，CLIP与MLLM描述 | 82.4/86.6 | 88.2/97.7 | 60.8/79.0 | [v5 Table II/III](https://arxiv.org/html/2505.20001v5) |
+| PDRNet，原型自适应解耦与层次注入 | 81.4/83.0 | 89.7/98.3 | 59.0/76.0 | [作者PDF Table 2，第7页](https://aihuazheng.github.io/publications/pdf/2026/2026-PDRNet.pdf) |
+| FUSE，CLIP频域解耦与跨模态对齐 | 81.4/86.1 | 88.5/96.9 | 50.1/65.7 | [v1 Table 1/2](https://arxiv.org/html/2606.20044v1) |
+| DCG，CLIP动态置信度协作/引导融合 | 未报告 | 87.6/97.6 | 62.9/77.5 | [v1 Table I](https://arxiv.org/html/2601.02924v1) |
+
+NEXT使用GPT-4o/Qwen-VL属性与DeepSeek-V3组合描述，其文本资源应与纯视觉
+方法分列。[作者仓库](https://github.com/lsh-ahu/NEXT-ReID)当前有MIT许可证、
+Annotation_Text/NEXT与assets，README仍说明完整源代码待整理后发布；不能把
+已公开文本等同于完整可训练实现。论文在MSVR310明确按同身份/同时间跨度剔除
+容易匹配项，跨数据集主实验前必须核对实际评价器的时间标签定义。
+
+PDRNet已刊于Pattern Recognition 180 (2026) 114641；上表取完整模态Table 2，
+不使用Table 1缺失模态均值。Table 4另给RGBNT201三seed均值
+80.2±1.7/82.0±2.3，应保留为不同统计口径，不能替换或拼接单行主结果。
+FUSE和DCG提供了可读方法细节，本轮没有核到可直接接入的作者训练代码链接；
+这仅描述本次核查范围，不断言网上绝无实现。
+
+这些补充行未超过前文已核的主要高mAP参照。CCL正文和Hyper-ReID公开数字仍
+待核；CoT主表与变体表的差异继续保留。V19配置和科学门已冻结，本增量不用于
+临时改变其backbone、学习率、loss或训练预算。
