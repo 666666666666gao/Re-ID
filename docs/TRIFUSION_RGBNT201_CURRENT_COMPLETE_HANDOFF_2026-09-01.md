@@ -3412,3 +3412,15 @@ B0前置1950更新另计，本比较无法排除额外计算/参数解释；所�
 合同refine-logs/msvr310_trifusion_v1/EXPERIMENT_PLAN.md，入口tools/train_msvr310_trifusion_oof.py；
 注册evidence/trifusion_msvr310_trifusion_v1_preregistration_20260906.json。
 当前只完成本地AST/文本检查，新模型尚未在远端运行，RGBNT201目标未达及官方边界保持。
+
+### 41.25 MSVR310 三角色入口启动前实际源码字节修订（2026-09-06）
+
+记录时间：2026-09-06T06:08:14.672010+08:00。148f5a7首次launch在创建远端目录/wrapper/训练进程前被criterion.py SHA断言阻止，
+0模型/张量/图像调用、0优化。全量19输入核得5项历史CRLF/LF差异，
+criterion/state/builder及experts mamba/semantic_residual远端字节均等于Git原blob，
+本地LF转换后逐字节相同且AST一致。原wrapper文本、注册/config及真实错误证据保存。
+
+R2只将配置内5项绑定改为实际远端SHA，入口仍严格逐文件检查；不加自动归一化/fallback。
+runner SHA a1771c2e16e129f0a1ecdfb1f5fffcc7d83fe2faf5073033efe520a73c800f87不变，
+模型、数据、优化、M0/科学门与seed均不变。新M0/正式三折尚未运行。
+详见evidence/trifusion_msvr310_trifusion_v1_source_binding_r2_20260906.json及原prelaunch诊断。

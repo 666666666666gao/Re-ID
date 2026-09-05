@@ -452,3 +452,8 @@
   Signal1950 prerequisite updates plus added role cost are disclosed, not budget matched.
   No seed/epoch/fold choice, tuning/retry of scientific failures, official evaluation
   or pre-success ablations. RGBNT201 dev65 and official85.3/87.9 targets remain unmet.
+
+- MSVR310 three-role prelaunch R1 stopped before any process because5 old files
+  have localCRLF/remoteLF bytes. All5 remote bytes match Git blobs and AST.
+  R2 pins their actual remote SHA, preserving original config/attempt evidence;
+  no runner/model/loss/gate/seed/protocol change or runtime normalization. M0 still NOT_RUN.
