@@ -23,6 +23,12 @@
   Its training and retrieval evaluation counts are also zero. Keep RGBNT201 as the
   active model experiment until its fixed main gate is resolved.
 
+- MSVR310 Signal source-only baseline infrastructure is registered in
+  refine-logs/msvr310_signal_v1/EXPERIMENT_PLAN.md. T0/M0/full baseline are NOT_RUN.
+  Three fresh source models, fixed50epochs, B64/K8,128x256, original MSVR
+  multi-step schedule and scene filtering; no V24 promotion or vehicle expert run.
+  Validate the same-source8-step-per-fold M0 before starting the baseline.
+
 ## Research provenance
 
 - Implementation base: official DeMo repository, AAAI 2025, MIT licensed.

@@ -625,3 +625,6 @@
 | 2026-09-05 22:22 | /run-experiment | tools/verify_v23_terminal_files.py; tools/report_v23_complete_comparison.py | implementation | Prepared whole-file verification and complete six-endpoint comparison helpers |
 
 | 2026-09-05 22:42 | /experiment-audit + Q1 progress | EXPERIMENT_AUDIT_V23_M0.md/json; results/TRIFUSION_RGBNT201_V23_PARTIAL_Q1_2237_2026-09-05.md | evidence | M0 independent WARN, engineering/fixed M0 PASS; original Q1 1/3 pairs, all first-fold outputs preserved, no terminal qualification; trace run12 closed |
+
+| 2026-09-06T04:22:31.026558+08:00 | /experiment-audit | EXPERIMENT_AUDIT_V24_Q1.md/json; EXPERIMENT_AUDIT_V24_SOURCE_DIAGNOSIS.md/json | evidence | Two-round independent audit closures, raw corrections retained in trace15/16, Q1 scientific FAIL |
+| 2026-09-06T04:22:31.026558+08:00 | /experiment-plan + /run-experiment | refine-logs/msvr310_signal_v1/EXPERIMENT_PLAN.md; tools/train_msvr310_signal_oof.py | preparation | Fixed source-only MSVR baseline contract and entry; remote T0/M0/full baseline NOT_RUN |

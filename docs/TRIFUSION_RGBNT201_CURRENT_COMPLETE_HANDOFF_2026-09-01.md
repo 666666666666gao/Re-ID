@@ -3275,3 +3275,23 @@ p0.5、alpha0.1、eval不作用，无新增推理参数。crossdomain实现依�
 原论文ReID末层混合下降和当前CLIP深语义/均值读取共同限制直接尾部接入，但不是CLIP失败实测。
 详见docs/MIXSTYLE_CODE_MECHANISM_AND_SCOPE_2026-09-06.md、
 evidence/mixstyle_source_text_inspection_20260906.json。没有登记V25或运行新模型。
+
+### 41.17 MSVR310 Signal 独立源基线合同及入口已固定（2026-09-06）
+
+登记时间：2026-09-06T04:22:31.026558+08:00。代码tools/train_msvr310_signal_oof.py；配置configs/MSVR310/Signal-source-oof-v1.json；
+完整合同refine-logs/msvr310_signal_v1/EXPERIMENT_PLAN.md。仅新数据集基线建设，不是V24晋级或车辆TriFusion新方法。
+三个source模型各自从固定CLIP初始化，正式基线各50epoch，source103/103/104身份；
+最终一次读取360/349/323完整gallery，按scene过滤210/207/183query，合计600query。
+没有官方或固定RGBNT201dev访问，没有V24权重继承、三分支训练、消融或seed扫描。
+
+源码调用链确认原MSVR分支使用WarmupMultiStepLR的20/40epoch衰减，而当前RGBNT201辅助训练固定cosine，
+因此只复用原损失计算，新入口明确保留车辆Adam参数组及分类头100倍基础LR。
+DIRECT=0是模态独立分类头，推理仍输出直接特征+SIM的3072D；视觉主干FROZEN=False，camera SIE启用。
+B64/K8与共享三模态几何是项目现行设置，与作者K4/原增强差异单独披露。
+16份Signal实际源码及7份项目源码/计划文件已绑定SHA，既有Signal路径补丁完整保留、未修改。
+
+先在远端跑两个scene协议回归，再做三折各8步真实source M0；
+M0只比较共48条clean source前向的严格重载一致性，不读held-out，不使用V24的100步损失门。
+三折M0工程PASS后，才用新初始化执行固定基线终点；任何内部mAP不自动解除RGBNT201主结果晋级门。
+当前只完成本地AST与实际源码字节核对，T0/M0/正式基线仍NOT_RUN，车辆训练和检索仍0。
+注册记录evidence/trifusion_msvr310_signal_v1_preregistration_20260906.json。
