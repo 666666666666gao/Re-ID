@@ -565,3 +565,6 @@
 | 2026-09-05 14:46 | /experiment-plan | refine-logs/v20/EXPERIMENT_PLAN.md | implementation | Current frozen V20 plan, byte-identical timestamped copy |
 | 2026-09-05 14:46 | /experiment-plan | refine-logs/v20/EXPERIMENT_TRACKER_20260905_144458.md | implementation | T0/M0/Q1 pending; D1 locked |
 | 2026-09-05 14:46 | /experiment-plan | evidence/trifusion_v20_preregistration_20260905.json | implementation | Config/plan/runner/module hashes and AST receipt; no model execution |
+
+| 2026-09-05 14:55 | /run-experiment | evidence/trifusion_v20_m0_seed42_3cea5bf.json | evidence | Immutable M0_PASS snapshot; Q1 running, no retrieval claim |
+| 2026-09-05 14:55 | /run-experiment | refine-logs/v20/EXPERIMENT_TRACKER_20260905_145411.md | evidence | T0 three CUDA tests and M0 passed; independent M0 audit in progress |
