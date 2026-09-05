@@ -3030,3 +3030,30 @@ V23保持Q1_FAIL封存；当前固定dev最佳和原总目标未达状态不变�
 审计尚在运行，不能写成已通过；同模型家族独立复核，不称跨家族背书。
 V23 维持 Q1_FAIL 封存；V24 尚无完整 Q1 科学结果，D1/dev/official/消融均未获资格。
 原总目标仍未达，固定 dev 最佳仍 V8 58.4050；下一跨数据集重点仍 MSVR310，再 RGBNT100。
+
+
+### 41.3 V24 终态核验工具与 MSVR310 准备（2026-09-06）
+
+记录时间：2026-09-06T01:47:51.822863+08:00。本节不包含新的 V24 训练进度观察，M0 独立审计仍在运行。
+已准备 tools/verify_v24_terminal_files.py、audit_v24_terminal_arrays.py、
+report_v24_complete_comparison.py，三份 AST 解析通过；尚未对不存在的完整 V24 Q1 终态执行。
+工具只读取完整终态原始 JSON/日志和文件字节，覆盖六端、五输出、全部 21 个资格身份、
+120 个 epoch 的损失均值、完整采样 SHA 与 108 原型逐 epoch 年龄/更新计数、固定 bootstrap 和五项门。
+原采样器的纯标签/index 方法由 AST 读取，省略 torch 基类；不加载图像/张量或运行模型。
+验收仍以真实终态执行为准，不能把工具写好称为 Q1 核验已通过。训练源码、配置和计划均未改变。
+
+MSVR310 另完成 Signal 九份源码/配置文本核查，全部与 cd1b0a6 执行 Git blob 相同。
+原配置输入高×宽128×256、网格8×16、B64/K4、50 epoch Adam5e-6，20/40步进衰减；
+当前项目 seed42/B64K8 与作者配置差异必须明示。原 train.py 每 epoch test-best 选择不用于本项目新合同。
+完整训练标签普查1032记录/155身份：155身份跨 camera/v，但仅60身份跨 scene，
+95身份单scene，真实身份/camera对768、身份/scene对276。
+600条训练记录在原 scene 过滤下具有合法跨 scene 正例；这是标签可评价性，不是 mAP。
+MSVR310 官方 gallery1055/155身份应完整保留，query591/52身份；不能删掉未出现于query的干扰身份。
+
+准备文档 docs/MSVR310_BASELINE_AND_TRANSFER_PREPARATION_2026-09-06.md；
+原始证据 evidence/trifusion_msvr310_signal_source_inspection_20260906.json 和
+evidence/trifusion_msvr310_source_label_support_20260906.json。
+当前 V24 loader 固定竖向输入、旧 evaluator 采用 same-camera，因此不能只换数据根目录迁移。
+车辆下一步需要登记独立 source/held-out、横向共享几何、scene 过滤及新的 Signal 基线；
+本节没有启动车辆模型、确定未合格候选推广、加入新损失或执行消融。
+MSVR310/RGBNT100 项目训练和检索次数仍为0，原 RGBNT201 总目标未达状态不变。
