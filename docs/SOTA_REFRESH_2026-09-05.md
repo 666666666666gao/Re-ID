@@ -37,5 +37,39 @@ MSVR310 `53.2/72.4`，且提供 MIT 许可证和代码。
 
 本次仅补充主源和数值边界，不下载新数据、不改 backbone、不引入第三方模块。
 本次后续已从ICPL-ReID作者链接获取并安装MSVR310，通过SHA/CRC及三模态配对
-核验；RGBNT100压缩包仍在中转。二者本项目全训练/全评估尚未执行，完整SOTA
+核验；RGBNT100也已完成SHA/CRC、全模态配对和拼接尺寸检查。二者本项目全训练/全评估尚未执行，完整SOTA
 目标仍未达到。数据状态详见主交接文档§32。
+
+## 11:14 增量：CoT-ReID、DSGM与代码可用性
+
+进一步核对了[CoT-ReID作者仓库](https://github.com/Gaoya615/CoT-ReID)及
+[CVPR 2026主论文](https://openaccess.thecvf.com/content/CVPR2026/papers/Gao_Chain-of-Thought_Guided_Multi-Modal_Object_Re-Identification_CVPR_2026_paper.pdf)
+的Table 1/2（PDF第6/7页），补充以下论文主比较值：
+
+| 方法与资源 | RGBNT201 mAP/R1 | RGBNT100 mAP/R1 | MSVR310 mAP/R1 |
+|---|---:|---:|---:|
+| CoT-ReID，DINOv3与MLLM推理文本 | 83.3/86.1 | 89.9/99.3 | 71.7/85.3 |
+| DSGM，CLIP、GPT-4o文本及SAM2软mask | 82.6/87.0 | 89.4/98.2 | 64.6/76.0 |
+
+DSGM数值来自[作者arXiv v1的Table I/II](https://arxiv.org/html/2607.29207v1#S4.T1)，
+额外文本/mask资源见同文§IV-A。[DSGM作者仓库](https://github.com/zw-absin/DSGM)
+现已含训练、模型实现和MIT许可证，README列出附mask数据链接。
+
+因此，上表之前的RGBNT100 `99.1 Rank-1`与MSVR310 `84.8 Rank-1`不能当作本次
+已核文献的最高Rank-1；CoT主表分别为99.3和85.3。已核mAP高参照仍为RGBNT201
+RoDI 85.3、RGBNT100 PMKD 91.6、MSVR310 RoDI 71.8。不同资源方法必须分列，
+不能把不同方法的mAP和Rank-1拼成一个实际checkpoint结果。
+
+CoT主表的MSVR310行为71.7/85.3；其Table 3文本替换实验另有72.7/86.3，
+本表采用主比较Table 1，保留该表间差异，不自行解释或择优合并。
+CoT仓库README明确其文本与预训练权重不随仓库提供；TRAINING.md仍有作者
+本地训练包路径，不能把这些路径当成本机现成资源。本次未接入其模块。
+
+[PMKD作者仓库](https://github.com/moonaricc/PMKD)本次仍只有README，无训练实现。
+另发现ICML 2026 CCL，作者[主页](https://sunyuan-cs.github.io/)可核其录用记录，
+但本次OpenReview正文请求返回浏览器验证页，尚未核得其主表数字；它与
+Hyper-ReID继续作为最终SOTA措辞前的待核项。现有高参照不构成穷尽证明。
+
+CoT PDF已从CVF直接下载核读，7178132字节，SHA256
+`e0aff58aefc2c39001bc7b36e69476fe2e24b074d964b0f1ef7237e6a84b0efa`。
+本次只补文献/代码资源状态，不改变已冻结的V18训练和晋级条件。
