@@ -1,0 +1,394 @@
+{
+  "date": "2026-09-06",
+  "timezone": "Asia/Shanghai",
+  "project": "MSVR310 Signal source-only B0 baseline",
+  "auditor": {
+    "execution": "root-dispatched Codex-family reviewer agent; current reviewer did not delegate further",
+    "root_dispatched_current_reviewer": true,
+    "root_dispatch_request": {
+      "tool": "spawn_agent",
+      "task_name": "audit_msvr_signal_b0",
+      "requested_model": "gpt-5.5",
+      "requested_reasoning_effort": "xhigh",
+      "fork_turns": "none",
+      "evidence": "C:/Users/gb/.trifusion_github_publish_22c3bee/.aris/traces/experiment-audit/2026-09-06_run17/001-complete-baseline.request.json:5-10"
+    },
+    "dispatch_observation": {
+      "tool": "collaboration.spawn_agent",
+      "requested_model": "gpt-5.5",
+      "requested_reasoning_effort": "xhigh",
+      "fork_turns": "none",
+      "returned_task_name": "/root/audit_msvr_signal_b0",
+      "status": "accepted_and_running",
+      "resolved_backend_independently_attested": false,
+      "evidence": "C:/Users/gb/.trifusion_github_publish_22c3bee/.aris/traces/experiment-audit/2026-09-06_run17/dispatch_observation.json:3-9"
+    },
+    "completion_meta": {
+      "agent_id": "/root/audit_msvr_signal_b0",
+      "status": "ok",
+      "input_files_rechecked": 71,
+      "resolved_backend_independently_attested": false,
+      "evidence": "C:/Users/gb/.trifusion_github_publish_22c3bee/.aris/traces/experiment-audit/2026-09-06_run17/001-complete-baseline.meta.json:5-9,20-21"
+    },
+    "current_reviewer_delegated_further": false,
+    "requested_configuration_is_backend_attestation": false,
+    "backend_identity_independently_verified": false,
+    "independent_backend_attestation": false,
+    "review_family_scope": "Codex/GPT-family Type-A only; no Type-B cross-family acquittal claimed",
+    "routing_notes": [
+      {
+        "evidence": "C:/Users/gb/.codex/skills/shared-references/reviewer-routing.md:9-15",
+        "detail": "默认 Codex reviewer 通过 spawn_agent 派发；同家族 reviewer 只能构成 Type-A。"
+      },
+      {
+        "evidence": "C:/Users/gb/.codex/skills/shared-references/reviewer-routing.md:59-60",
+        "detail": "reviewer omitted 或 reviewer=codex 时使用 Codex reviewer at xhigh。"
+      },
+      {
+        "evidence": "C:/Users/gb/.codex/skills/shared-references/reviewer-routing.md:73-74",
+        "detail": "base skills 不走 legacy Codex MCP thread path；reviewer 仍需直接读 primary artifacts。"
+      },
+      {
+        "evidence": "C:/Users/gb/.codex/skills/shared-references/reviewer-independence.md:3-21",
+        "detail": "审计者必须直接判断 primary artifacts，不接收执行侧预消化结论。"
+      }
+    ],
+    "no_delegation_is_not_model_availability_evidence": true
+  },
+  "overall_verdict": "WARN",
+  "integrity_status": "WARN",
+  "integrity_status_note": "未发现伪 GT、自归一化、phantom result 或泄漏；WARN 来自单 seed、train-internal OOF、非官方测试以及本地未直接读取二进制/图像的证据边界。",
+  "engineering_conclusion": "PASS：B0 工程与结果封存完成，三折 source-only 模型各 50 epoch / 650 step，总 1950 step，固定 epoch50 后做一次完整 held-out gallery 检索。",
+  "evaluation_type": {
+    "class": "real_gt",
+    "subtype": "train_internal_identity_oof_baseline",
+    "not_official_test": true,
+    "not_synthetic_proxy": true,
+    "not_self_supervised_proxy": true,
+    "not_simulation_only": true,
+    "not_human_eval": true
+  },
+  "input_verification": {
+    "manifest": "C:/Users/gb/.trifusion_github_publish_22c3bee/.aris/traces/experiment-audit/2026-09-06_run17/input_manifest.json",
+    "input_count": 71,
+    "bytes_and_sha256_all_match": true,
+    "mismatch_count": 0,
+    "signal_source_path_mapping_count": 17,
+    "evidence": [
+      "C:/Users/gb/.trifusion_github_publish_22c3bee/.aris/traces/experiment-audit/2026-09-06_run17/independent_replay_output.json:5-11",
+      "C:/Users/gb/.trifusion_github_publish_22c3bee/.aris/traces/experiment-audit/2026-09-06_run17/independent_replay_output.json:13-43"
+    ]
+  },
+  "independent_arithmetic": {
+    "script": "C:/Users/gb/.trifusion_github_publish_22c3bee/.aris/traces/experiment-audit/2026-09-06_run17/audit_msvr310_signal_b0_replay.py",
+    "output": "C:/Users/gb/.trifusion_github_publish_22c3bee/.aris/traces/experiment-audit/2026-09-06_run17/independent_replay_output.json",
+    "command": "& 'C:\\Users\\gb\\AppData\\Roaming\\uv\\python\\cpython-3.13-windows-x86_64-none\\python.exe' 'C:\\Users\\gb\\.trifusion_github_publish_22c3bee\\.aris\\traces\\experiment-audit\\2026-09-06_run17\\audit_msvr310_signal_b0_replay.py'",
+    "first_attempt": {
+      "result": "FAIL",
+      "reason": "ModuleNotFoundError: No module named 'numpy'",
+      "resolution": "脚本改为纯 stdlib 标量计算。"
+    },
+    "final_result": "PASS",
+    "elapsed_seconds": 0.17811989999609068,
+    "numpy_imported": false,
+    "query_records": 600,
+    "query_identities": 60,
+    "gallery_records": 1032,
+    "optimizer_steps": 1950,
+    "log_epoch_rows": 150,
+    "maximum_loss_composition_absolute_discrepancy": 1.3007223600425277e-06,
+    "aggregate": {
+      "mAP": 53.1293805608712,
+      "Rank-1": 63.0,
+      "Rank-5": 77.0,
+      "Rank-10": 82.83333333333334
+    },
+    "evidence": [
+      "C:/Users/gb/.trifusion_github_publish_22c3bee/.aris/traces/experiment-audit/2026-09-06_run17/audit_msvr310_signal_b0_replay.py:68-89",
+      "C:/Users/gb/.trifusion_github_publish_22c3bee/.aris/traces/experiment-audit/2026-09-06_run17/audit_msvr310_signal_b0_replay.py:152-177",
+      "C:/Users/gb/.trifusion_github_publish_22c3bee/.aris/traces/experiment-audit/2026-09-06_run17/audit_msvr310_signal_b0_replay.py:292-318",
+      "C:/Users/gb/.trifusion_github_publish_22c3bee/.aris/traces/experiment-audit/2026-09-06_run17/independent_replay_output.json:158-173",
+      "C:/Users/gb/.trifusion_github_publish_22c3bee/.aris/traces/experiment-audit/2026-09-06_run17/independent_replay_output.json:695-778"
+    ],
+    "follow_up_repeated": false,
+    "follow_up_note": "2026-09-06 metadata-only follow-up did not repeat AP/Rank arithmetic; original replay command/result/timing remain unchanged."
+  },
+  "checks": {
+    "A_ground_truth_provenance": {
+      "status": "PASS",
+      "details": "真实 identity/camera/scene 标签来自 MSVR310 训练 split 文件名和协议记录；没有从模型输出构造 GT。",
+      "required_scope_qualifier": "仅为 MSVR310 官方训练部分内部 OOF ground truth，不是官方 query/gallery test。",
+      "evidence": [
+        "C:/Users/gb/.codex_tmp/msvr310_signal_source_text_20260906/data/datasets/msvr310.py:67-88",
+        "C:/Users/gb/.trifusion_github_publish_22c3bee/evidence/msvr310_dataset_install_20260905.json:2-15",
+        "C:/Users/gb/.trifusion_github_publish_22c3bee/protocols/msvr310_train_oof_v1.json:3-11",
+        "C:/Users/gb/.trifusion_github_publish_22c3bee/evidence/trifusion_msvr310_source_label_support_20260906.json:6-7",
+        "C:/Users/gb/.trifusion_github_publish_22c3bee/evidence/trifusion_msvr310_source_label_support_20260906.json:70-71",
+        "C:/Users/gb/.trifusion_github_publish_22c3bee/evidence/trifusion_msvr310_train_oof_protocol_verification_20260906.json:8-11"
+      ]
+    },
+    "B_metric_denominator_and_normalization": {
+      "status": "PASS",
+      "details": "AP 分母是 query 的真实保留正例数；mAP/Rank 是 per-query 平均。特征 L2 normalization 是检索距离预处理，不是结果自归一化。",
+      "required_scope_qualifier": "指标单位为百分比；不得跨协议与官方 test 数字直接相减。",
+      "evidence": [
+        "C:/Users/gb/.codex_tmp/msvr310_signal_source_text_20260906/utils/metrics.py:68-100",
+        "C:/Users/gb/.trifusion_github_publish_22c3bee/tools/train_msvr310_signal_oof.py:223-238",
+        "C:/Users/gb/.trifusion_github_publish_22c3bee/tools/train_msvr310_signal_oof.py:253-265",
+        "C:/Users/gb/.trifusion_github_publish_22c3bee/tools/train_msvr310_signal_oof.py:360-362",
+        "C:/Users/gb/.trifusion_github_publish_22c3bee/.aris/traces/experiment-audit/2026-09-06_run17/independent_replay_output.json:158-168"
+      ]
+    },
+    "C_result_existence_number_status": {
+      "status": "PASS",
+      "details": "B0 summary、result markdown、tracker、日志完成事件和独立 replay 数字一致；71 个本地 primary input 全部 byte/SHA 匹配。",
+      "required_scope_qualifier": "远端 checkpoint/retrieval arrays 只通过收据核验；独立审计前 tracker 的 PENDING 行未作为矛盾处理。",
+      "evidence": [
+        "C:/Users/gb/.trifusion_github_publish_22c3bee/evidence/trifusion_msvr310_signal_v1_baseline_complete_20260906.json:4",
+        "C:/Users/gb/.trifusion_github_publish_22c3bee/evidence/trifusion_msvr310_signal_v1_baseline_complete_20260906.json:181782-181793",
+        "C:/Users/gb/.trifusion_github_publish_22c3bee/results/TRIFUSION_MSVR310_SIGNAL_SOURCE_BASELINE_2026-09-06.md:3-9",
+        "C:/Users/gb/.trifusion_github_publish_22c3bee/results/TRIFUSION_MSVR310_SIGNAL_SOURCE_BASELINE_2026-09-06.md:16-21",
+        "C:/Users/gb/.trifusion_github_publish_22c3bee/evidence/trifusion_msvr310_signal_v1_baseline_run_20260906.log:225",
+        "C:/Users/gb/.trifusion_github_publish_22c3bee/refine-logs/msvr310_signal_v1/EXPERIMENT_TRACKER.md:15-17",
+        "C:/Users/gb/.trifusion_github_publish_22c3bee/.aris/traces/experiment-audit/2026-09-06_run17/independent_replay_output.json:5-11"
+      ]
+    },
+    "D_metric_call_path_output_retention": {
+      "status": "PASS",
+      "details": "B0 claimed metric path calls direct scene_scores and upstream eval_func_msrv, asserts tiny difference, saves per-query AP、first_match_rank、gallery_manifest、query_rows 和 rankings。",
+      "required_scope_qualifier": "上游通用 metric helper 不作为 B0 数字证据；只评价本次声明使用的指标路径。",
+      "evidence": [
+        "C:/Users/gb/.trifusion_github_publish_22c3bee/tools/train_msvr310_signal_oof.py:241-271",
+        "C:/Users/gb/.codex_tmp/msvr310_signal_source_text_20260906/utils/metrics.py:13-108",
+        "C:/Users/gb/.trifusion_github_publish_22c3bee/evidence/trifusion_msvr310_signal_v1_baseline_saved_rankings_20260906.json:2-3",
+        "C:/Users/gb/.trifusion_github_publish_22c3bee/evidence/trifusion_msvr310_signal_v1_baseline_saved_rankings_20260906.json:7",
+        "C:/Users/gb/.trifusion_github_publish_22c3bee/evidence/trifusion_msvr310_signal_v1_baseline_saved_rankings_20260906.json:369",
+        "C:/Users/gb/.trifusion_github_publish_22c3bee/evidence/trifusion_msvr310_signal_v1_baseline_saved_rankings_20260906.json:581",
+        "C:/Users/gb/.trifusion_github_publish_22c3bee/evidence/trifusion_msvr310_signal_v1_baseline_file_verification_20260906.json:120-122",
+        "C:/Users/gb/.trifusion_github_publish_22c3bee/.aris/traces/experiment-audit/2026-09-06_run17/independent_replay_output.json:85-97"
+      ]
+    },
+    "E_scope_seed_protocol_limitations": {
+      "status": "WARN",
+      "details": "结果文本大体限定得当，但证据范围只有单 seed42、训练集内部 OOF、固定 epoch50、非官方 test、非多 seed、非严格作者复现。",
+      "required_scope_qualifier": "只能称 train-internal source-only baseline；不得称官方复现、SOTA、多 seed 稳健、跨数据集泛化或新方法有效性。",
+      "evidence": [
+        "C:/Users/gb/.trifusion_github_publish_22c3bee/configs/MSVR310/Signal-source-oof-v1.json:3-5",
+        "C:/Users/gb/.trifusion_github_publish_22c3bee/refine-logs/msvr310_signal_v1/EXPERIMENT_PLAN.md:4-5",
+        "C:/Users/gb/.trifusion_github_publish_22c3bee/refine-logs/msvr310_signal_v1/EXPERIMENT_PLAN.md:19-22",
+        "C:/Users/gb/.trifusion_github_publish_22c3bee/refine-logs/msvr310_signal_v1/EXPERIMENT_PLAN.md:44-48",
+        "C:/Users/gb/.trifusion_github_publish_22c3bee/refine-logs/msvr310_signal_v1/EXPERIMENT_PLAN.md:61-65",
+        "C:/Users/gb/.trifusion_github_publish_22c3bee/results/TRIFUSION_MSVR310_SIGNAL_SOURCE_BASELINE_2026-09-06.md:8-9",
+        "C:/Users/gb/.trifusion_github_publish_22c3bee/results/TRIFUSION_MSVR310_SIGNAL_SOURCE_BASELINE_2026-09-06.md:23-27",
+        "C:/Users/gb/.trifusion_github_publish_22c3bee/results/TRIFUSION_MSVR310_SIGNAL_SOURCE_BASELINE_2026-09-06.md:73-82"
+      ]
+    },
+    "F_evaluation_type_classification": {
+      "status": "PASS",
+      "details": "real_gt，子类型 train_internal_identity_oof_baseline；不是 synthetic_proxy/self_supervised_proxy/simulation_only/human_eval。",
+      "required_scope_qualifier": "非官方 test，非方法资格评估。",
+      "evidence": [
+        "C:/Users/gb/.trifusion_github_publish_22c3bee/protocols/msvr310_train_oof_v1.json:13-22",
+        "C:/Users/gb/.trifusion_github_publish_22c3bee/evidence/trifusion_msvr310_signal_v1_baseline_complete_20260906.json:181775-181779",
+        "C:/Users/gb/.trifusion_github_publish_22c3bee/.aris/traces/experiment-audit/2026-09-06_run17/independent_replay_output.json:780-789"
+      ]
+    }
+  },
+  "additional_integrity_checks": {
+    "source_heldout_identity_isolation": {
+      "status": "PASS",
+      "details": "每折 source/heldout disjoint；gallery union 覆盖 1032 records 一次。",
+      "evidence": [
+        "C:/Users/gb/.trifusion_github_publish_22c3bee/tools/train_msvr310_signal_oof.py:311-314",
+        "C:/Users/gb/.trifusion_github_publish_22c3bee/.aris/traces/experiment-audit/2026-09-06_run17/independent_replay_output.json:68-84",
+        "C:/Users/gb/.trifusion_github_publish_22c3bee/.aris/traces/experiment-audit/2026-09-06_run17/independent_replay_output.json:170-173"
+      ]
+    },
+    "scene_camera_filtering": {
+      "status": "PASS",
+      "details": "按 same identity AND same scene 移除；camera 只用于 SIE，不替代 scene filter。",
+      "evidence": [
+        "C:/Users/gb/.trifusion_github_publish_22c3bee/protocols/msvr310_train_oof_v1.json:15-19",
+        "C:/Users/gb/.codex_tmp/msvr310_signal_source_text_20260906/utils/metrics.py:55-69",
+        "C:/Users/gb/.trifusion_github_publish_22c3bee/tools/train_msvr310_signal_oof.py:227-230",
+        "C:/Users/gb/.trifusion_github_publish_22c3bee/evidence/trifusion_msvr310_train_oof_protocol_verification_20260906.json:16-21",
+        "C:/Users/gb/.trifusion_github_publish_22c3bee/evidence/trifusion_msvr310_train_oof_protocol_verification_20260906.json:2548-2553",
+        "C:/Users/gb/.trifusion_github_publish_22c3bee/evidence/trifusion_msvr310_train_oof_protocol_verification_20260906.json:5003-5008"
+      ]
+    },
+    "complete_distractor_gallery_retention": {
+      "status": "PASS",
+      "details": "432 个无跨 scene 正例的 excluded query records 保留为 gallery；95 个 single-scene 身份作为 distractor。",
+      "evidence": [
+        "C:/Users/gb/.trifusion_github_publish_22c3bee/protocols/msvr310_train_oof_v1.json:22576-22582",
+        "C:/Users/gb/.trifusion_github_publish_22c3bee/results/TRIFUSION_MSVR310_SIGNAL_SOURCE_BASELINE_2026-09-06.md:23-25",
+        "C:/Users/gb/.trifusion_github_publish_22c3bee/.aris/traces/experiment-audit/2026-09-06_run17/independent_replay_output.json:79-81",
+        "C:/Users/gb/.trifusion_github_publish_22c3bee/.aris/traces/experiment-audit/2026-09-06_run17/independent_replay_output.json:108-110",
+        "C:/Users/gb/.trifusion_github_publish_22c3bee/.aris/traces/experiment-audit/2026-09-06_run17/independent_replay_output.json:137-139"
+      ]
+    },
+    "fixed_endpoint_not_selection": {
+      "status": "PASS",
+      "details": "固定 epoch50；epochs_selected_by_heldout=false；评估前未按 heldout 选 best。",
+      "evidence": [
+        "C:/Users/gb/.trifusion_github_publish_22c3bee/configs/MSVR310/Signal-source-oof-v1.json:56",
+        "C:/Users/gb/.trifusion_github_publish_22c3bee/tools/train_msvr310_signal_oof.py:291-305",
+        "C:/Users/gb/.trifusion_github_publish_22c3bee/tools/train_msvr310_signal_oof.py:320-347",
+        "C:/Users/gb/.trifusion_github_publish_22c3bee/tools/train_msvr310_signal_oof.py:364-368",
+        "C:/Users/gb/.trifusion_github_publish_22c3bee/.aris/traces/experiment-audit/2026-09-06_run17/independent_replay_output.json:775-778"
+      ]
+    },
+    "initialization_and_update_accounting": {
+      "status": "PASS",
+      "details": "每折新建模型；195/195 trainable/gradient tensors；无 trainable_without_gradient；150 epoch rows、1950 steps 与日志一致。",
+      "evidence": [
+        "C:/Users/gb/.trifusion_github_publish_22c3bee/tools/train_msvr310_signal_oof.py:102-110",
+        "C:/Users/gb/.trifusion_github_publish_22c3bee/tools/train_msvr310_signal_oof.py:135-204",
+        "C:/Users/gb/.trifusion_github_publish_22c3bee/.aris/traces/experiment-audit/2026-09-06_run17/independent_replay_output.json:695-778",
+        "C:/Users/gb/.trifusion_github_publish_22c3bee/evidence/trifusion_msvr310_signal_v1_baseline_run_20260906.log:22-41",
+        "C:/Users/gb/.trifusion_github_publish_22c3bee/evidence/trifusion_msvr310_signal_v1_baseline_run_20260906.log:225"
+      ]
+    },
+    "original_failures_later_repairs": {
+      "status": "PASS",
+      "details": "M0 R1 失败、R2 工程修复、B0 不继承 M0 checkpoint 均有记录且未混作正式 epoch。",
+      "evidence": [
+        "C:/Users/gb/.trifusion_github_publish_22c3bee/evidence/trifusion_msvr310_signal_v1_m0_r2_preregistration_20260906.json:4-27",
+        "C:/Users/gb/.trifusion_github_publish_22c3bee/results/TRIFUSION_MSVR310_SIGNAL_SOURCE_M0_2026-09-06.md:16-24",
+        "C:/Users/gb/.trifusion_github_publish_22c3bee/results/TRIFUSION_MSVR310_SIGNAL_SOURCE_M0_2026-09-06.md:28-35",
+        "C:/Users/gb/.trifusion_github_publish_22c3bee/results/TRIFUSION_MSVR310_SIGNAL_SOURCE_BASELINE_2026-09-06.md:50"
+      ]
+    },
+    "source_engineering_vs_retrieval_evidence": {
+      "status": "PASS",
+      "details": "M0 只支持工程完成；B0 才支持完整 held-out retrieval baseline。",
+      "evidence": [
+        "C:/Users/gb/.trifusion_github_publish_22c3bee/results/TRIFUSION_MSVR310_SIGNAL_SOURCE_M0_2026-09-06.md:22-24",
+        "C:/Users/gb/.trifusion_github_publish_22c3bee/evidence/trifusion_msvr310_signal_v1_baseline_complete_20260906.json:60889",
+        "C:/Users/gb/.trifusion_github_publish_22c3bee/evidence/trifusion_msvr310_signal_v1_baseline_complete_20260906.json:121612",
+        "C:/Users/gb/.trifusion_github_publish_22c3bee/evidence/trifusion_msvr310_signal_v1_baseline_complete_20260906.json:181761",
+        "C:/Users/gb/.trifusion_github_publish_22c3bee/evidence/trifusion_msvr310_signal_v1_baseline_complete_20260906.json:181793"
+      ]
+    }
+  },
+  "personally_inspected_evidence": {
+    "directly_read": [
+      "input_manifest.json and all listed local file byte/SHA values",
+      "configuration JSON",
+      "protocol JSON including records/folds/query_rows programmatically",
+      "complete categorical rankings JSON programmatically",
+      "summary, receipt, training JSON files programmatically",
+      "source text snapshots for Signal and project files",
+      "baseline log and text result/tracker/plan reports",
+      "executor file/array verification JSON as text receipts"
+    ],
+    "receipt_only": [
+      "remote signal_epoch50.pth checkpoint binaries",
+      "remote retrieval_arrays.pt tensor files",
+      "CLIP weight binary",
+      "MSVR310 image pixel contents",
+      "remote GPU and torch runtime identity",
+      "remote dataset archive bytes"
+    ]
+  },
+  "claims": {
+    "supported": [
+      {
+        "id": "C1",
+        "claim": "B0 工程完成：三折 source-only Signal 模型各 50 epoch / 650 step，总 1950 step。",
+        "support": "supported"
+      },
+      {
+        "id": "C2",
+        "claim": "训练集内部 OOF 指标为 mAP 53.1293805608712 / Rank-1 63.0 / Rank-5 77.0 / Rank-10 82.83333333333334。",
+        "support": "supported"
+      },
+      {
+        "id": "C3",
+        "claim": "真实 dataset identity/scene label 与完整排序足以重算 per-query AP/Rank。",
+        "support": "supported"
+      },
+      {
+        "id": "C4",
+        "claim": "M0 R1 失败保留，R2 仅是工程 pass，不计为 B0 检索结果。",
+        "support": "supported"
+      }
+    ],
+    "qualified": [
+      {
+        "id": "Q1",
+        "claim": "MSVR310 Signal baseline",
+        "required_qualifier": "官方训练集内部身份隔离 OOF source-only baseline, seed42, fixed epoch50"
+      },
+      {
+        "id": "Q2",
+        "claim": "source 文件与远端 artifact 已核验",
+        "required_qualifier": "本地文本/JSON/receipt 已核验；远端 checkpoint/retrieval arrays/图像像素未由本审计直接读取"
+      }
+    ],
+    "unsupported": [
+      "TriFusion 新方法有效性或 V24/RGBNT201 晋级",
+      "官方 MSVR310 test 结果、SOTA、公开榜单比较",
+      "多 seed 稳健性、统计显著性、跨数据集泛化",
+      "严格逐项复现 Signal 作者训练设置",
+      "本地直接检查 pth/pt/image 像素的声明"
+    ]
+  },
+  "action_items": [
+    "后续方法比较必须另立合同并冻结同一 split、endpoint、query/gallery/scene filter。",
+    "在本次合同/计划边界内，二进制证据应继续表述为远端 artifact 收据与本地 JSON/SHA 可追溯；不得追改 run17 input manifest 或把当前审计改称二进制直接复核。",
+    "如果未来需要 pth、pt、CLIP 权重或图像像素的直接二进制复核，应新建明确授权的 provenance contract 和新 manifest，再做 byte/SHA 与只读解析。",
+    "论文式表述只能写为内部工程/基线结果，保留 single-seed、train-only、非官方 test、非严格作者复现限定。",
+    "在正式官方 test、多 seed 或消融前，不得宣称官方性能、泛化性能、稳健性或新方法资格。"
+  ],
+  "reports": {
+    "markdown": "C:/Users/gb/.trifusion_github_publish_22c3bee/EXPERIMENT_AUDIT_MSVR310_SIGNAL_B0.md",
+    "json": "C:/Users/gb/.trifusion_github_publish_22c3bee/EXPERIMENT_AUDIT_MSVR310_SIGNAL_B0.json",
+    "replay_script": "C:/Users/gb/.trifusion_github_publish_22c3bee/.aris/traces/experiment-audit/2026-09-06_run17/audit_msvr310_signal_b0_replay.py",
+    "replay_output": "C:/Users/gb/.trifusion_github_publish_22c3bee/.aris/traces/experiment-audit/2026-09-06_run17/independent_replay_output.json"
+  },
+  "follow_up_2026_09_06_dispatch_binary": {
+    "scope": "metadata-only follow-up limited to reviewer dispatch/provenance and binary-evidence action items",
+    "files_read_directly": [
+      "C:/Users/gb/.trifusion_github_publish_22c3bee/.aris/traces/experiment-audit/2026-09-06_run17/001-complete-baseline.request.json",
+      "C:/Users/gb/.trifusion_github_publish_22c3bee/.aris/traces/experiment-audit/2026-09-06_run17/dispatch_observation.json",
+      "C:/Users/gb/.trifusion_github_publish_22c3bee/.aris/traces/experiment-audit/2026-09-06_run17/001-complete-baseline.meta.json",
+      "C:/Users/gb/.trifusion_github_publish_22c3bee/.aris/traces/experiment-audit/2026-09-06_run17/001-complete-baseline.report.md",
+      "C:/Users/gb/.trifusion_github_publish_22c3bee/.aris/traces/experiment-audit/2026-09-06_run17/001-complete-baseline.report.json",
+      "C:/Users/gb/.trifusion_github_publish_22c3bee/.aris/traces/experiment-audit/2026-09-06_run17/input_manifest.json",
+      "C:/Users/gb/.trifusion_github_publish_22c3bee/refine-logs/msvr310_signal_v1/EXPERIMENT_PLAN.md",
+      "C:/Users/gb/.codex/skills/shared-references/reviewer-routing.md"
+    ],
+    "input_hash_recheck": {
+      "input_count": 71,
+      "all_ok": true,
+      "mismatch_count": 0,
+      "created_at": "2026-09-06T05:19:29.510965+08:00"
+    },
+    "arithmetic_repeated": false,
+    "arithmetic_repeated_reason": "输入、评分规则和执行侧报告未改变；本次只修正 dispatch/provenance 与 binary-evidence action-item 表述。原独立算术仍由 audit_msvr310_signal_b0_replay.py 和 independent_replay_output.json 支持。",
+    "scientific_scope_changed": false,
+    "af_statuses_changed": false,
+    "overall_verdict_changed": false,
+    "reports_rewritten": [
+      "C:/Users/gb/.trifusion_github_publish_22c3bee/EXPERIMENT_AUDIT_MSVR310_SIGNAL_B0.md",
+      "C:/Users/gb/.trifusion_github_publish_22c3bee/EXPERIMENT_AUDIT_MSVR310_SIGNAL_B0.json"
+    ],
+    "resolved_findings": [
+      "原报告中“本次 reviewer 派发：未派发”表述过宽；已改为 root 确实通过 spawn_agent 派发当前 reviewer，当前 reviewer 未再委派。",
+      "requested_model/requested_reasoning_effort/fork_turns/status 只作为请求并被接受的配置记录，不作为独立后端身份认证。",
+      "review-family scope 已限定为 Codex/GPT-family Type-A；未声明 Type-B cross-family acquittal。",
+      "原 action item 中把 pth/pt/CLIP artifact 纳入本地 manifest 的建议已改为未来新 provenance contract/new manifest；不得追改 run17 输入或突破原远端 artifact/local text 边界。"
+    ]
+  },
+  "binary_evidence_path_compatibility": {
+    "current_contract_boundary": "remote artifacts retained remotely; local audit can inspect text/JSON/SHA receipts only",
+    "compatible_with_original_plan_for_this_run": true,
+    "retroactively_adding_binaries_to_run17_manifest": "unsupported",
+    "direct_binary_inspection_path": "requires future explicit provenance contract and new manifest; not a patch to this run17 audit",
+    "evidence": [
+      "C:/Users/gb/.trifusion_github_publish_22c3bee/refine-logs/msvr310_signal_v1/EXPERIMENT_PLAN.md:67",
+      "C:/Users/gb/.trifusion_github_publish_22c3bee/refine-logs/msvr310_signal_v1/EXPERIMENT_PLAN.md:87"
+    ]
+  }
+}

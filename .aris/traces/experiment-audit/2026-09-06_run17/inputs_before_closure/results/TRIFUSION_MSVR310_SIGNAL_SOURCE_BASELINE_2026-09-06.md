@@ -1,6 +1,6 @@
 # MSVR310 Signal 完整训练内部源基线
 
-记录时间：2026-09-06T05:17:36.048722+08:00。状态 **BASELINE_COMPLETE_AUDIT_WARN**。
+记录时间：2026-09-06T05:17:36.048722+08:00。状态 **BASELINE_COMPLETE_INDEPENDENT_AUDIT_PENDING**。
 原wrapper63945正常退出0，执行bb01d60b6e1517ee6f5dc9120faefd17d75401e5。
 完成三个独立source模型，各50epoch/650更新，总150epoch/1950更新；
 仅seed42，终点固定epoch50，完整600query的加权mAP **53.129380561**，
@@ -60,11 +60,11 @@ B0成本之外，原R1 M0为8更新，R2 M0为24更新，另有1次零更新梯�
 由三份保存的3072D特征重算距离，三fold与原距离文件均逐元素一致，最大差0。
 从原距离导出全部600query的完整gallery排序索引，再用原真实身份/scene标签独立于训练函数重算AP/Rank。
 本地核对全部600个AP/首正例排名、60身份均值、完整干扰图库与所有1950step；
-逐query AP最大绝对差3.33066907388e-16（AP的0–1尺度），总mAP/Rank完全一致；loss分量组合最大差1.30072236004e-06。
+指标最大绝对差3.33066907388e-16，loss分量组合最大差1.30072236004e-06。
 原AMP中间dtype未保存，保留该组合误差，不追改阈值；本地核验0.133057秒。
 本地仅有文本、JSON和离散排名索引；checkpoint、特征与距离张量留在远端。
 
-以上为执行侧文件和算术核验。独立experiment-audit已在两轮后闭合为WARN，工程PASS；见下文范围。
+这些是执行侧文件和算术核验；独立experiment-audit仍PENDING，不把它们称跨模型审计或独立图像复现。
 首次只读进度reader误查event名所产生的epoch_rows=0及其更正记录保留；
 完整150条实际event日志已逐一与最终history相等核对。
 
@@ -91,20 +91,3 @@ dev65和官方85.3/87.9目标未达到。后继配对方法须另立合同，本
 - 完整日志：evidence/trifusion_msvr310_signal_v1_baseline_run_20260906.log。
 - 独立fold训练/receipt/作者re.txt：evidence/msvr310_signal_v1_baseline_receipts/。
 - 远端原始目录：/root/autodl-tmp/trifusion-v2/artifacts/msvr310_signal_source_oof_v1_seed42_bb01d60/baseline。
-
-## 独立审计闭合（2026-09-06T05:55:13.439177+08:00）
-
-原始71份输入的字节数/SHA全部相同；审阅者自行编写stdlib replay，重算600条query完整排名、
-1032图库记录、60身份以及1950更新/150epoch，得到相同53.129380561 mAP与63.0 Rank-1。
-首轮独立重算0.1781199秒；第二轮只核对元数据和报告边界，没有重复算术或模型运行。
-
-最终overall/integrity为WARN，A/B/C/D/F为PASS，E为WARN，工程结论PASS。
-它是root实际派发、独立上下文的GPT家族Type-A审阅；请求配置gpt-5.5/xhigh已被接受，
-不把请求记录当后端身份独立认证，不声称跨家族Type-B审计。
-完整checkpoint/特征/距离及图像仍在远端，审阅者仅核对本地文本、JSON、离散排序与远端SHA收据；
-单seed内部源基线不能支持官方复现、多seed稳健性或新方法资格。
-
-审阅者自行修正了“未继续委派”等于“root未派发”的初版表述，以及与原远端证据边界不符的本地二进制建议；
-两轮原始请求/回复/报告、独立replay及原执行报告快照完整保存在trace run17，未改原实验输入或评分规则。
-最终报告EXPERIMENT_AUDIT_MSVR310_SIGNAL_B0.md/json；闭合收据
-evidence/trifusion_msvr310_signal_v1_audit_closure_20260906.json。

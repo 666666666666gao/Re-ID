@@ -3372,3 +3372,21 @@ loss组合差1.300722360e-6，原AMP dtype缺项保持披露。没有新模型/�
 完整报告results/TRIFUSION_MSVR310_SIGNAL_SOURCE_BASELINE_2026-09-06.md；原始SHA 22a4f3642e88088a8dfcb4acddb610d6566c12d6b765cb7b344b28acdbcea6eb。
 独立审计PENDING；结果只建立车辆source基线，不是TriFusion晋级。
 V23/V24封存、RGBNT201主目标未达、RGBNT100训练检索尚无，状态均保持。
+
+### 41.23 MSVR310 Signal 完整基线独立审计闭合（2026-09-06）
+
+记录时间：2026-09-06T05:55:13.439177+08:00。trace run17两轮审计完成：overall/integrity WARN，engineering PASS，
+A/B/C/D/F PASS、E范围限制WARN；71原始输入字节/SHA全部一致。
+首轮审阅者以独立stdlib脚本重算600完整query排名、1032gallery、60身份、1950更新/150epoch，
+总mAP53.129380561与Rank-1 63.0完全相同；AP最大差3.33066907388e-16（0–1尺度）。
+第二轮只复核派发元数据和远端二进制证据边界，没有重复算术、模型、图片或训练。
+
+root实际请求并派发gpt-5.5/xhigh独立上下文审阅，未继续委派不代表未派发或模型不可用；
+请求/接受记录不构成独立后端认证，保持GPT家族Type-A、非跨家族Type-B限制。
+二进制及图像留远端；本地独立审阅覆盖文本、JSON、离散排名和远端SHA收据。
+审阅者自行修正原报告的两处表述，初版原回复/报告、最终版和执行侧审计前快照均保留。
+
+EXPERIMENT_AUDIT_MSVR310_SIGNAL_B0.md SHA aa04e91403b24d2c4bf4beb24c01411103353762de58e0f009e6fdca7c2e3c49；
+JSON SHA 34c00b4f8b4add6e5abff55cf9ee8fd4e89b2e491f8aa65224623c2eb9d23a23。
+单seed内部基线不等于官方复现、新方法资格或多seed稳健性。B0不重训；
+后续MSVR310三角色独立训练比较仍待新合同，RGBNT201未达目标与V23/V24封存不变。

@@ -41,7 +41,7 @@ R1原日志、退出、配置和commit仍保存。
 本地JSON算术核对全部24步B64/K8、source原始索引、真实ID映射、195组实际训练参数和各loss分量；
 mean loss重算误差0，loss组合最大绝对差1.300722360e-6。
 原AMP中间操作dtype未保存，该差如实报告，不追改M0门槛。
-这些是执行侧文件/标量核验。完整B0及工程前置的独立审计现已闭合为WARN/engineering PASS；不等价于独立模型前向复现。
+这些是执行侧文件/标量核验；完整基线后仍需独立审计，不等价于独立模型前向复现。
 
 原始结果 [evidence/trifusion_msvr310_signal_v1_m0_r2_20260906.json](../evidence/trifusion_msvr310_signal_v1_m0_r2_20260906.json)，SHA 79c0e2b1c981c4bb10548f0249dca684c113feb43151cc4bdcc2a2e9bf2887ae。
 逐文件核验见 evidence/trifusion_msvr310_signal_v1_m0_r2_file_verification_20260906.json；
@@ -61,6 +61,3 @@ B64/K8和同步几何与作者K4/原增强差异已在固定计划披露。
 原始20–35分钟估计按04:57实测约8秒/epoch收窄到05:13–05:16附近；
 不按训练loss提前终止，不依据某折结果改配置。没有官方测试、RGBNT201固定dev、
 新三分支、消融或新seed操作。V23/V24封存和RGBNT201未达主目标的状态保持。
-
-2026-09-06T05:55:13.439177+08:00补记：完整终态审计见EXPERIMENT_AUDIT_MSVR310_SIGNAL_B0.md/json及trace run17。
-两轮原始报告与审计前本文件快照保留；原M0门、失败记录、训练成本和二进制证据边界不变。

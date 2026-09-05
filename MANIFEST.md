@@ -636,3 +636,5 @@
 | 2026-09-06T05:07:58.159629+08:00 | /run-experiment | refine-logs/msvr310_signal_v1/TERMINAL_VERIFICATION_PLAN_20260906.md; tools/verify_msvr310_signal_terminal_files.py; tools/verify_msvr310_signal_terminal_arrays.py | preparation | Read-only complete saved rankings and all-step verification prepared; not executed |
 
 | 2026-09-06T05:17:36.048722+08:00 | /run-experiment | results/TRIFUSION_MSVR310_SIGNAL_SOURCE_BASELINE_2026-09-06.md; evidence/trifusion_msvr310_signal_v1_baseline_complete_20260906.json | evidence | Complete3x50epoch baseline,1950updates,600queries,53.129381mAP/63R1; complete saved-ranking arithmetic verified; independent audit pending |
+
+| 2026-09-06T05:55:13.439177+08:00 | /experiment-audit | EXPERIMENT_AUDIT_MSVR310_SIGNAL_B0.md/json; evidence/trifusion_msvr310_signal_v1_audit_closure_20260906.json | evidence | Two-round independent baseline audit CLOSED_WARN/engineering PASS;71 inputs unchanged, own stdlib replay; original and revised provenance retained in trace17 |

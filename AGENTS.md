@@ -18,7 +18,7 @@
 - MSVR310 was installed on 2026-09-05 from the ICPL-ReID author link and
   SHA/ZIP-CRC/modality-pair verified: train1032/query3 591/gallery1055 triplets.
   Its source Signal baseline completed3 folds at50 epochs,1950 updates;
-  internal600-query/1032-gallery mAP53.129381/R1 63.0, independent audit pending. RGBNT100 is
+  internal600-query/1032-gallery mAP53.129381/R1 63.0, independent audit closed WARN. RGBNT100 is
   installed and SHA/ZIP-CRC/modality-pair verified: train8675/query1715/
   gallery8575, with disjoint 50-train/50-test identities and 768x128 montages.
   Its training and retrieval evaluation counts are also zero. Keep RGBNT201 as the
@@ -33,7 +33,9 @@
   R2 M0 passed all3 folds/24 updates/195 of195 gradient tensors; exit0.
   B0 wrapper63945 exited0 after3 fresh folds at50 epochs onbb01d60.
   Internal mAP53.129381/R1 63.0; all3 checkpoints, saved arrays and complete
-  ranking/training arithmetic verified. Independent terminal audit is PENDING.
+  ranking/training arithmetic verified. Independent terminal audit is CLOSED_WARN,
+  engineering PASS;71 inputs and independent stdlib replay pass (trace17, two rounds).
+  Keep same-family Type-A, unverified backend identity, remote binaries and single-seed limits.
   Three fresh source models, fixed50epochs, B64/K8,128x256, original MSVR
   multi-step schedule and scene filtering; no V24 promotion or vehicle expert run.
   M0 files and scalar arrays verified; preserve initial R1 failure and all costs.
