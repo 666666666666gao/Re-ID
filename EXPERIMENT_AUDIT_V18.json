@@ -1,0 +1,250 @@
+{
+  "date": "2026-09-05",
+  "auditor": "codex-independent-experiment-integrity-auditor-direct-primary-artifact-read-no-subagents",
+  "project": "TriFusion RGBNT201 V18 paired-view projection",
+  "overall_verdict": "warn",
+  "integrity_status": "warn",
+  "scientific_advancement_status": "fail_no_advancement",
+  "terminal_status": "Q1_FAIL",
+  "evaluation_type": "real_gt_train_internal_complete_path_oof",
+  "artifact_hashes": {
+    "q1_summary_sha256": "8c5f99fcd4ba218ac2925a01123e377415c8443b7ed89de9ec0da5f400415f20",
+    "training_log_sha256": "f4c6f61e8b2a021c49f89f0f5399441dfa31a24b4a37391aef7368f6b37cd9bc",
+    "postrun_bindings_sha256": "40e791443352aa5f689a95b941090b3db8f0e18e6a129ba9d66b783bef893f79",
+    "complete_comparison_sha256": "27c1aad049b60b2d8f51c1b496f56fd1dd2ece984f1dbc387417a5f9427b47a0",
+    "projection_geometry_sha256": "55865c3b10c55871f9ccda48e84f6872750b3d1fad649d7b0bfff60ce9f9ad4f",
+    "v18_result_doc_sha256": "ef671f92a882040fda9c3cfc37a838fcfa8b533bab3f6397c3d550b45944707e",
+    "sota_refresh_doc_sha256": "11fcccee023da5eac75fd5d7a116000678dbc5d61d30394752fb7e63bbc3ea1b"
+  },
+  "checks": {
+    "gt_provenance": {
+      "status": "pass",
+      "details": "Dataset identities/cameras from RGBNT201 records and frozen protocol splits are used; calibration uses train_records only and records heldout_records_used_for_calibration=0; retrieval matching uses identity/camera arrays, not model-derived ground truth.",
+      "evidence": [
+        "tools/run_signal_baseline_dev.py:27-37",
+        "tools/run_signal_baseline_dev.py:89-95",
+        "tools/build_v12_complete_path_oof_targets.py:29-56",
+        "tools/build_v12_complete_path_oof_targets.py:156-173",
+        "tools/train_signal_preserving_v18.py:63-99",
+        "tools/audit_v17_full_gallery.py:14-28",
+        "tools/diagnose_v6_oracle_complementarity.py:91-108",
+        "evidence/trifusion_v18_q1_seed42_2a71e20.json:70074",
+        "evidence/trifusion_v18_q1_seed42_2a71e20.json:140125",
+        "evidence/trifusion_v18_q1_seed42_2a71e20.json:210176"
+      ]
+    },
+    "score_normalization": {
+      "status": "pass",
+      "details": "Features are L2-normalized before distance computation; mAP is mean AP times 100 and Rank-k is a fraction times 100. No audited metric divides by model-specific max/min/mean prediction statistics.",
+      "evidence": [
+        "tools/train_signal_preserving_v18.py:148-150",
+        "tools/audit_v17_full_gallery.py:34-43",
+        "tools/diagnose_v6_oracle_complementarity.py:91-108"
+      ]
+    },
+    "result_existence": {
+      "status": "warn",
+      "details": "Terminal Q1, endpoint receipts, calibration receipts, comparison artifact, result writeup, and geometry diagnostic exist and bind to matching numbers. WARN remains because large remote checkpoint/source-cache bytes were not independently byte-read locally; postrun binding is a receipt of remote SHA/JSON equality, not auditor possession of those bytes.",
+      "evidence": [
+        "evidence/trifusion_v18_q1_seed42_2a71e20.json:2-23",
+        "evidence/trifusion_v18_q1_seed42_2a71e20.json:286987-287080",
+        "evidence/trifusion_v18_postrun_bindings_20260905.json:2-6",
+        "evidence/trifusion_v18_postrun_bindings_20260905.json:56-145",
+        "evidence/trifusion_v18_postrun_bindings_20260905.json:147-205",
+        "evidence/trifusion_v18_complete_comparison_20260905.json:1-45",
+        "evidence/trifusion_v18_complete_comparison_20260905.json:584-585",
+        "results/TRIFUSION_RGBNT201_V18_PVNP_Q1_2026-09-05.md:15-21",
+        "results/TRIFUSION_RGBNT201_V18_PVNP_Q1_2026-09-05.md:96-104"
+      ]
+    },
+    "dead_code": {
+      "status": "pass",
+      "details": "The reported metrics are produced by called paths: V18 evaluate calls full_gallery_scores for every output, Q1 prints six final metric records and writes receipts, and the geometry diagnostic replays each head and asserts score equality with Q1.",
+      "evidence": [
+        "tools/train_signal_preserving_v18.py:16",
+        "tools/train_signal_preserving_v18.py:133-151",
+        "tools/train_signal_preserving_v18.py:233-269",
+        "C:/Users/gb/.codex_tmp/trifusion_v18_terminal_20260905/training.log:148",
+        "C:/Users/gb/.codex_tmp/trifusion_v18_terminal_20260905/training.log:187",
+        "C:/Users/gb/.codex_tmp/trifusion_v18_terminal_20260905/training.log:226",
+        "C:/Users/gb/.codex_tmp/trifusion_v18_terminal_20260905/training.log:265",
+        "C:/Users/gb/.codex_tmp/trifusion_v18_terminal_20260905/training.log:304",
+        "C:/Users/gb/.codex_tmp/trifusion_v18_terminal_20260905/training.log:343",
+        "tools/diagnose_v18_projection_geometry.py:87-93",
+        "evidence/trifusion_v18_projection_geometry_20260905.json:8029-8032",
+        "evidence/trifusion_v18_projection_geometry_20260905.json:35163-35166",
+        "evidence/trifusion_v18_projection_geometry_20260905.json:70722-70725",
+        "evidence/trifusion_v18_projection_geometry_20260905.json:97270-97273",
+        "evidence/trifusion_v18_projection_geometry_20260905.json:132435-132438",
+        "evidence/trifusion_v18_projection_geometry_20260905.json:161384-161387"
+      ]
+    },
+    "scope": {
+      "status": "pass",
+      "details": "Actual scope is exactly the frozen train-internal complete-path OOF Q1: three folds, two endpoints, 20 epochs, seed42, final-only selection, 3126 gallery records, 571 eligible queries, dev0, official0. Result and handoff text qualify it as not 30-dev/official/SOTA.",
+      "evidence": [
+        "docs/V18_PAIRED_VIEW_PROJECTION_PLAN_2026-09-05.md:44-57",
+        "tools/train_signal_preserving_v18.py:28-30",
+        "tools/train_signal_preserving_v18.py:166-175",
+        "tools/train_signal_preserving_v18.py:230-301",
+        "evidence/trifusion_v18_q1_seed42_2a71e20.json:287079-287080",
+        "evidence/trifusion_v18_complete_comparison_20260905.json:584-585",
+        "results/TRIFUSION_RGBNT201_V18_PVNP_Q1_2026-09-05.md:11-13",
+        "docs/TRIFUSION_RGBNT201_CURRENT_COMPLETE_HANDOFF_2026-09-01.md:1778-1804"
+      ],
+      "recomputed_scope": [
+        {
+          "fold": 0,
+          "gallery_records": 1000,
+          "eligible_queries": 190,
+          "excluded_query_candidates": 810,
+          "heldout_identities": 47
+        },
+        {
+          "fold": 1,
+          "gallery_records": 1051,
+          "eligible_queries": 179,
+          "excluded_query_candidates": 872,
+          "heldout_identities": 47
+        },
+        {
+          "fold": 2,
+          "gallery_records": 1075,
+          "eligible_queries": 202,
+          "excluded_query_candidates": 873,
+          "heldout_identities": 47
+        }
+      ]
+    },
+    "eval_type": {
+      "status": "pass",
+      "classification": "real_gt",
+      "claim_ceiling": "train-internal complete-path OOF only; geometry diagnostic is read-only postmortem replay; no dev/official/SOTA result.",
+      "evidence": [
+        "tools/run_signal_baseline_dev.py:27-37",
+        "tools/build_v12_complete_path_oof_targets.py:156-173",
+        "tools/diagnose_v6_oracle_complementarity.py:91-108",
+        "evidence/trifusion_v18_projection_geometry_20260905.json:2-11"
+      ]
+    }
+  },
+  "recomputation": {
+    "per_fold_metric_max_abs_delta_vs_stored": 7.105427357601002e-14,
+    "aggregate_metric_max_abs_delta_vs_stored": 9.947598300641403e-14,
+    "query_index_mismatches": [],
+    "total_gallery_records": 3126,
+    "total_eligible_queries": 571,
+    "total_excluded_query_candidates": 2555,
+    "calibration_receipts_json_equivalent_to_q1": true,
+    "endpoint_receipts_json_equivalent_to_q1": true,
+    "complete_comparison_source_sha_matches_q1": true,
+    "complete_comparison_metric_mismatches": [],
+    "geometry_q1_summary_sha_matches": true,
+    "geometry_script_sha_matches": true,
+    "geometry_all_six_replays_exact": true,
+    "geometry_max_abs_projected_direction_coefficient": 1.6763806343078613e-08
+  },
+  "q1_metrics_percent": {
+    "uncentered": {
+      "baseline_only": {"mAP": 77.48760311601094, "Rank1": 79.33450087565674, "Rank5": 89.49211908931699, "Rank10": 93.52014010507881},
+      "fused": {"mAP": 80.56049709533691, "Rank1": 83.71278458844134, "Rank5": 88.96672504378283, "Rank10": 92.29422066549913},
+      "cnn": {"mAP": 79.29886852259087, "Rank1": 81.9614711033275, "Rank5": 88.79159369527146, "Rank10": 90.71803852889667},
+      "transformer": {"mAP": 78.5138970414604, "Rank1": 81.9614711033275, "Rank5": 90.19264448336253, "Rank10": 95.27145359019265},
+      "mamba": {"mAP": 78.86519154666934, "Rank1": 82.83712784588442, "Rank5": 87.39054290718039, "Rank10": 90.89316987740806}
+    },
+    "projected": {
+      "baseline_only": {"mAP": 77.48760311601094, "Rank1": 79.33450087565674, "Rank5": 89.49211908931699, "Rank10": 93.52014010507881},
+      "fused": {"mAP": 81.48200129590435, "Rank1": 84.93870402802102, "Rank5": 90.01751313485113, "Rank10": 93.52014010507881},
+      "cnn": {"mAP": 79.54859267288691, "Rank1": 82.48686514886164, "Rank5": 89.66725043782837, "Rank10": 91.06830122591944},
+      "transformer": {"mAP": 79.41746258778977, "Rank1": 83.18739054290718, "Rank5": 91.59369527145358, "Rank10": 94.57092819614711},
+      "mamba": {"mAP": 80.7027410554542, "Rank1": 83.36252189141857, "Rank5": 90.36777583187391, "Rank10": 92.46935201401051}
+    }
+  },
+  "advancement_checks": {
+    "aggregate_fused_gain_at_least_1pp": {
+      "passed": false,
+      "value": 0.9215042005674405,
+      "threshold": 1.0,
+      "evidence": "evidence/trifusion_v18_q1_seed42_2a71e20.json:287053-287056"
+    },
+    "all_fold_fused_nonnegative": {
+      "passed": true,
+      "values": [1.7557860965124235, 0.11091134470029829, 0.8550812350757298],
+      "evidence": "evidence/trifusion_v18_q1_seed42_2a71e20.json:287060-287064"
+    },
+    "all_expert_aggregate_nonnegative": {
+      "passed": true,
+      "values": {"cnn": 0.24972415029604633, "transformer": 0.903565546329375, "mamba": 1.8375495087848606},
+      "evidence": "evidence/trifusion_v18_q1_seed42_2a71e20.json:287053-287058"
+    },
+    "fused_bootstrap_lower_positive": {
+      "passed": false,
+      "lower_bound_95_mAP": -0.1173380335236633,
+      "clusters": 21,
+      "resamples": 10000,
+      "evidence": "evidence/trifusion_v18_q1_seed42_2a71e20.json:287065-287069"
+    },
+    "fused_beats_baseline_and_experts": {
+      "passed": true,
+      "projected_fused_mAP": 81.48200129590435,
+      "next_best_projected_mAP": 80.7027410554542,
+      "evidence": "evidence/trifusion_v18_q1_seed42_2a71e20.json:287020-287050"
+    },
+    "d1_executed": false,
+    "next_phase_qualified": false
+  },
+  "complete_comparison": {
+    "source_sha_matches_q1": true,
+    "raw_inference_runs_added": 0,
+    "selection": "All 571 legal queries and all 21 query identities; no subset selection",
+    "counts": {
+      "baseline_only": {"queries": 571, "AP_improved": 0, "AP_worse": 0, "AP_equal": 571, "rank1_repaired": 0, "rank1_broken": 0},
+      "fused": {"queries": 571, "AP_improved": 224, "AP_worse": 132, "AP_equal": 215, "rank1_repaired": 10, "rank1_broken": 3},
+      "cnn": {"queries": 571, "AP_improved": 203, "AP_worse": 181, "AP_equal": 187, "rank1_repaired": 12, "rank1_broken": 9},
+      "transformer": {"queries": 571, "AP_improved": 223, "AP_worse": 146, "AP_equal": 202, "rank1_repaired": 11, "rank1_broken": 4},
+      "mamba": {"queries": 571, "AP_improved": 247, "AP_worse": 131, "AP_equal": 193, "rank1_repaired": 13, "rank1_broken": 10}
+    }
+  },
+  "geometry_diagnostic": {
+    "status": "ALL_SIX_FINAL_HEAD_REPLAYS_MATCH",
+    "scope": "read_only_train_only_postmortem_not_new_validation",
+    "optimizer_steps": 0,
+    "checkpoint_writes": 0,
+    "dev_access_count": 0,
+    "official_test_access_count": 0,
+    "max_abs_projected_direction_coefficient": 1.6763806343078613e-08,
+    "aggregate": {
+      "baseline_only": {"positive_distance_delta": 0.0, "negative_distance_delta": 0.0, "nearest_margin_delta": 0.0, "uncentered_negative_same_camera": 0.6760070052539404, "projected_negative_same_camera": 0.6760070052539404, "rank1_repaired": 0, "rank1_broken": 0},
+      "fused": {"positive_distance_delta": -0.006439493750523769, "negative_distance_delta": 0.0022665222555451133, "nearest_margin_delta": 0.008706016006068882, "uncentered_negative_same_camera": 0.6357267950963222, "projected_negative_same_camera": 0.6007005253940455, "rank1_repaired": 10, "rank1_broken": 3},
+      "cnn": {"positive_distance_delta": -0.009466849985139383, "negative_distance_delta": -0.0006329171920616029, "nearest_margin_delta": 0.00883393279307778, "uncentered_negative_same_camera": 0.6357267950963222, "projected_negative_same_camera": 0.6024518388791593, "rank1_repaired": 12, "rank1_broken": 9},
+      "transformer": {"positive_distance_delta": -0.0027000055421672227, "negative_distance_delta": 0.0010405902060861138, "nearest_margin_delta": 0.0037405957482533362, "uncentered_negative_same_camera": 0.6654991243432574, "projected_negative_same_camera": 0.6322241681260946, "rank1_repaired": 11, "rank1_broken": 4},
+      "mamba": {"positive_distance_delta": -0.007447885235220246, "negative_distance_delta": 0.005348258281547426, "nearest_margin_delta": 0.012796143516767671, "uncentered_negative_same_camera": 0.6357267950963222, "projected_negative_same_camera": 0.5831873905429071, "rank1_repaired": 13, "rank1_broken": 10}
+    },
+    "broken_rank1_stats": [
+      {"output": "fused", "count": 3, "positive_distance_delta_mean": 0.007996201515197754, "negative_distance_delta_mean": -0.008232295513153076},
+      {"output": "cnn", "count": 9, "positive_distance_delta_mean": -0.0020150409804450143, "negative_distance_delta_mean": -0.024873773256937664}
+    ]
+  },
+  "claims": [
+    {"id": "C1", "claim": "V18 M0 engineering gate passed", "impact": "supported"},
+    {"id": "C2", "claim": "V18 completed frozen Q1 protocol: three folds x two endpoints x 20 epochs, seed42", "impact": "supported"},
+    {"id": "C3", "claim": "Projected fused improves by +0.921504 mAP over matched uncentered fused", "impact": "supported_train_internal_oof"},
+    {"id": "C4", "claim": "V18 qualifies for D1/dev advancement", "impact": "unsupported"},
+    {"id": "C5", "claim": "V18 provides new 30-dev, official, SOTA, or deployable result", "impact": "unsupported"},
+    {"id": "C6", "claim": "Projection geometry replay validates saved Q1 arrays", "impact": "supported_with_remote_binary_packaging_qualifier"},
+    {"id": "C7", "claim": "Handoff section 33 terminal and diagnostic claims", "impact": "supported_with_same_boundaries"},
+    {"id": "C8", "claim": "Handoff section 34 SOTA/resource refresh", "impact": "not_v18_experiment_integrity_claim_external_sources_not_rechecked"}
+  ],
+  "unavailable_evidence": [
+    "Independent local byte access to remote final checkpoints, frozen source checkpoints, and source feature caches was not available; only binding receipts and local JSON artifacts were audited.",
+    "No local exact NumPy bootstrap replay was performed because available local Python entry points lack NumPy and package installation was outside the read-only scope.",
+    "No local training or inference was run, per task instruction.",
+    "No new dev or official-test evidence exists for V18; Q1 records dev_access_count=0 and official_test_access_count=0."
+  ],
+  "action_items": [
+    "Seal V18 as completed Q1_FAIL; do not run D1/dev/official under this plan.",
+    "Do not relax rank, direction estimation, epoch count, learning rate, folds, or thresholds to rerun V18.",
+    "For a future PASS packaging audit, provide independently byte-readable checkpoint/source-cache artifact bundle.",
+    "Limit V18 claims to train-internal OOF and read-only geometry diagnosis."
+  ]
+}

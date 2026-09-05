@@ -107,8 +107,11 @@ fused在21身份中15个改善、6个下降；000235和000201合计贡献85.4459
 [全查询比较派生表](../evidence/trifusion_v18_complete_comparison_20260905.json)，
 [远端文件绑定](../evidence/trifusion_v18_postrun_bindings_20260905.json)，
 [冻结方案](../docs/V18_PAIRED_VIEW_PROJECTION_PLAN_2026-09-05.md)。
-独立审计完成后以[EXPERIMENT_AUDIT_V18.md](../EXPERIMENT_AUDIT_V18.md)为准；
-本文不替代独立完整性判定。
+独立终态审计已完成：[EXPERIMENT_AUDIT_V18.md](../EXPERIMENT_AUDIT_V18.md)
+判定完整性`WARN/warn`、科学晋级`fail_no_advancement / Q1_FAIL`。
+全部query/fold/aggregate指标复算最大差异约1e-13；GT、归一化、实际路径和
+范围均PASS。限制是审计者未直接读取远端大权重/cache字节，且未独立重放
+NumPy bootstrap随机抽样。原始审计报告保留这些限制，本文不替代其判定。
 
 ## 六端缓存重放与实际几何
 

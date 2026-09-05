@@ -17,9 +17,10 @@
 
 - MSVR310 was installed on 2026-09-05 from the ICPL-ReID author link and
   SHA/ZIP-CRC/modality-pair verified: train1032/query3 591/gallery1055 triplets.
-  It has no project training or retrieval-evaluation result yet. RGBNT100
-  transfer is active in local exec session97866; inspect its existing handle
-  and receipt before downloading or extracting again. Keep RGBNT201 as the
+  It has no project training or retrieval-evaluation result yet. RGBNT100 is
+  installed and SHA/ZIP-CRC/modality-pair verified: train8675/query1715/
+  gallery8575, with disjoint 50-train/50-test identities and 768x128 montages.
+  Its training and retrieval evaluation counts are also zero. Keep RGBNT201 as the
   active model experiment until its fixed main gate is resolved.
 
 ## Research provenance
