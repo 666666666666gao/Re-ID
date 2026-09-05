@@ -156,3 +156,31 @@ CNN79.126676→78.116938（-1.009739），Transformer78.475388→73.695598
 最大绝对数值差1.3322676295501878e-15个百分点，训练损失分量检查通过。
 此为JSON算术与文件SHA核验，未在本地执行模型/权重张量加载/图像或距离重算。
 独立GPT-5.5 xhigh完整Q1审计待完成，M0审计不能替代Q1审计。
+
+
+## 独立Q1审计闭环
+
+V20独立GPT-5.5 xhigh终态审计完成：engineering_integrity pass、
+overall_verdict/integrity_status warn、scientific_qualification fail。
+JSON evaluation_type为real_gt_train_internal_complete_path_oof_reused_development_qualification。
+全部三fold、六端、五路、21身份、571query掩码/数组、120epoch/3360优化步、
+10k身份聚类bootstrap均被独立实际重算。Python3.13.12/NumPy2.5.2，
+最大数值差1.3322676295501878e-15个百分点，训练损失分量残差最大
+2.128737297546479e-8。Q1_FAIL和禁止D1/dev/official晋级保持。
+
+独立报告MD SHA3fd30e649a2a84d23dba923437035b620d22284390201412326f477fa4e6bfcc，
+JSON SHAcb05f019fb895209997635647a517ccea1017e9e72dc96a08460d6dabac881ab；
+原文未修改。完整request/response/meta留在本地trace run07，含追加的当前文件
+字节检查清单及共同最终回复。不得把M0审计或本执行器核验冒充独立Q1审计。
+
+WARN保留两类实际限制：criterion.py/protocol当前本地原字节与远端不同，
+仅LF规范化后匹配；发布前修正Windows生成的数组回执换行导致算术核验脚本、
+回执、比较JSON和报告四个派生文件在审计窗口内SHA发生变化。
+独立审计重读后的当前哈希链与独立算术一致；训练summary/六receipt/原日志
+从未变化。数组回执现SHA4579ee11406a9666d7e254c7b1092cd91e0079a27e1cbdb65621d4bbaae92b9b。
+9e17a552发布后的远端/本地两份派生JSON已逐字节匹配。
+此外独立审计未持有远端大权重、图像/特征/距离，其范围为源码、回执和数组。
+这些限定不会使负科学结果转为通过。
+
+独立审计读取的结果MD为ce71979e495342607dd95e237e65d26318a432c75bf59cf0f1a3c5fd4626a3f6；
+本节是该审计完成后的追加记录，数值与原报告保持，不追写审计原文。

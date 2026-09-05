@@ -576,3 +576,9 @@
 | 2026-09-05 16:12 | /run-experiment | refine-logs/v20/EXPERIMENT_TRACKER_20260905_161219.md | evidence | V20 all six endpoints complete, Q1_FAIL; independent terminal audit pending |
 | 2026-09-05 16:12 | /run-experiment | results/TRIFUSION_RGBNT201_V20_CROSS_MODAL_IDENTITY_2026-09-05.md | evidence | All three folds, five outputs, 21 identities and paired query changes |
 | 2026-09-05 16:12 | /run-experiment | evidence/trifusion_v20_q1_seed42_3cea5bf.json | evidence | Terminal raw arrays; six receipts, complete log, remote 32-file SHA and actual NumPy bootstrap audit |
+
+| 2026-09-05 16:38 | /experiment-audit | EXPERIMENT_AUDIT_V20_Q1.md/json | evidence | Independent engineering PASS, integrity WARN, scientific FAIL; full bootstrap replay |
+| 2026-09-05 16:38 | /run-experiment | refine-logs/v20/EXPERIMENT_TRACKER_20260905_163841.md | evidence | V20 Q1 audited and sealed; warnings preserved |
+| 2026-09-05 16:38 | /experiment-plan | refine-logs/v21/EXPERIMENT_PLAN_20260905_163644.md | implementation | Frozen SAM20/AdamW40 comparison; equal forward-backward counts; not launched |
+| 2026-09-05 16:38 | /experiment-plan | refine-logs/v21/EXPERIMENT_PLAN.md | implementation | Latest frozen V21 plan, identical timestamped copy |
+| 2026-09-05 16:38 | /experiment-plan | refine-logs/v21/EXPERIMENT_TRACKER_20260905_163644.md | implementation | T0/M0/Q1 pending; D1 locked |

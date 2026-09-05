@@ -2308,3 +2308,66 @@ V20作为已失败的主实验封存。训练内OOF反复开发使用，不能�
 下步完成独立Q1审计后再固定新的主实验假设；当前V21无代码、配置、预注册
 或训练。SAM只做作者论文/源码可行性研究，尚未采用，不声称已诊断出尖锐极小值。
 全局任务继续active，不能把这次负结果闭环写成用户目标已实现。
+
+
+### 37.5 V20独立终态审计完成（2026-09-05）
+
+V20独立GPT-5.5 xhigh终态审计完成：engineering_integrity pass、
+overall_verdict/integrity_status warn、scientific_qualification fail。
+JSON evaluation_type为real_gt_train_internal_complete_path_oof_reused_development_qualification。
+全部三fold、六端、五路、21身份、571query掩码/数组、120epoch/3360优化步、
+10k身份聚类bootstrap均被独立实际重算。Python3.13.12/NumPy2.5.2，
+最大数值差1.3322676295501878e-15个百分点，训练损失分量残差最大
+2.128737297546479e-8。Q1_FAIL和禁止D1/dev/official晋级保持。
+
+独立报告MD SHA3fd30e649a2a84d23dba923437035b620d22284390201412326f477fa4e6bfcc，
+JSON SHAcb05f019fb895209997635647a517ccea1017e9e72dc96a08460d6dabac881ab；
+原文未修改。完整request/response/meta留在本地trace run07，含追加的当前文件
+字节检查清单及共同最终回复。不得把M0审计或本执行器核验冒充独立Q1审计。
+
+WARN保留两类实际限制：criterion.py/protocol当前本地原字节与远端不同，
+仅LF规范化后匹配；发布前修正Windows生成的数组回执换行导致算术核验脚本、
+回执、比较JSON和报告四个派生文件在审计窗口内SHA发生变化。
+独立审计重读后的当前哈希链与独立算术一致；训练summary/六receipt/原日志
+从未变化。数组回执现SHA4579ee11406a9666d7e254c7b1092cd91e0079a27e1cbdb65621d4bbaae92b9b。
+9e17a552发布后的远端/本地两份派生JSON已逐字节匹配。
+此外独立审计未持有远端大权重、图像/特征/距离，其范围为源码、回执和数组。
+这些限定不会使负科学结果转为通过。
+
+独立审计读取的结果MD为ce71979e495342607dd95e237e65d26318a432c75bf59cf0f1a3c5fd4626a3f6；
+本节是该审计完成后的追加记录，数值与原报告保持，不追写审计原文。
+
+
+## 38. V21 SAM固定训练计算预算主比较（2026-09-05）
+
+V21已按新主假设实现并在执行前冻结方案；目前未运行T0/M0/Q1。
+保持原V8完整冻结Signal和共享CLIP尾部、三角色专家和七路ID/Triplet，
+不含V20跨模态辅助损失、V19私有尾部或新推理参数。
+以作者SAM参数邻域梯度检验身份泛化，不能声称已证明尖锐极小值是唯一原因。
+作者论文/固定仓库commit与许可证、当前PyTorch2.5.1 AMP限制以及BN代码
+证据见docs/SAM_SOURCE_AND_DESIGN_NOTES_2026-09-05.md。
+
+普通AdamW40epoch/SAM20epoch，rho0/.05，LR.00035、wd.0001、warmup10/5，
+仅seed42/B64K8/远端3090。Q1各端3360对前向反传，合计6720对；
+实际优化步分别3360/1680，合计5040；两端数据暴露和更新次数不同。
+保留原模型98,800,141总/7,841,292训练参数，新增推理参数0。
+SAM两遍复用batch，参数copy精确恢复；七BN只保留第一遍统计、计数每步+1；
+第二遍之后只unscale一次，所有第一遍及实际更新梯度覆盖均检查。
+SAM全20epoch采样SHA必须等于对照前20epoch，不能声称两端完整40/20一致。
+
+T0三项CUDA解析/AMP/BN测试通过后才跑M0：六模型8batch配对，
+两端各8实际容量步及SAM固定batch100步。过拟合解析底0.75H，
+第100/1更新前超额loss比例<=.1；所有梯度/冻结/BN/参数/overflow门保持。
+M0全通过才自动进入三fold两端完整训练及五路终态strict reload评价。
+全部3126gallery/571query/21身份、三fold五路与负结果保留，固定五科学门不变。
+无中途选epoch或对照20epoch检索，无rho/LR/epoch扫描、消融或多种子。
+Q1失败封存，D1/dev/official均锁定。预计M0 4–8分钟、Q1 130–160分钟，
+按稳定epoch时长修正，遵守180–300秒或更长的端点里程碑查询。
+
+冻结计划refine-logs/v21/EXPERIMENT_PLAN.md及时间戳副本，配置
+configs/RGBNT201/TriFusion-signal-preserving-v21-sam-rtx3090.yml。
+源码tools/train_signal_preserving_v21.py和modeling/trifusion/sam_training_v21.py；
+T0 tests/test_trifusion_sam_v21.py；全部SHA在
+evidence/trifusion_v21_preregistration_20260905.json，当前AST通过但无GPU结果。
+下一步发布并远端校验三项T0；通过后仅启动一个固定原始M0/Q1进程。
+V20失败封存、可部署dev最佳58.4050/59.3939和未达65/SOTA状态保持，任务active。

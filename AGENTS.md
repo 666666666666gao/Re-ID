@@ -259,6 +259,16 @@
 
 ## Remote experiment constraints
 
+- V21 is preregistered and not yet launched. It keeps the original V8/Signal
+  inference model and seven ID/triplet objectives. Compare ordinary AdamW 40
+  epochs with SAM 20 epochs at fixed rho 0.05, seed42, B64/K8: each arm has
+  3360 forward/backward pairs across three folds, while optimizer updates are
+  3360/1680. This is not equal epochs, updates, data exposure or wall time.
+  Read refine-logs/v21/EXPERIMENT_PLAN.md before execution. T0 CUDA math and
+  M0 pairing/capacity/100-step overfit must pass before the full six-endpoint
+  Q1. Preserve full 3126 gallery/571 queries, all five outputs, final-only
+  checkpoints and all five scientific gates. No rho/epoch/LR/seed scans.
+
 - V20 cross-modal identity supervision completed all three folds x two endpoints
   x20 epochs, seed42, 3360 optimizer steps, and is sealed as Q1_FAIL. Candidate/
   actual matched-control fused mAP is 79.195387/80.206258, gain -1.010871;
@@ -267,9 +277,10 @@
   is -3.812656. All 3126 gallery records and 571 eligible queries were retained.
   No D1/dev/official, temperature/loss-weight/branch/epoch/seed scans or V20
   retraining. Whole-file remote SHA and complete local NumPy arithmetic passed;
-  independent Q1 audit is pending. Any successor needs a new evidence-grounded
-  hypothesis and preregistered train-only qualification. No V21 implementation
-  or training exists yet. Current deployable best and unmet objective are unchanged.
+  independent Q1 audit is complete: engineering PASS, integrity WARN, scientific
+  FAIL. Preserve the provenance limits in EXPERIMENT_AUDIT_V20_Q1.md/json.
+  Any successor needs a new evidence-grounded hypothesis and preregistered
+  train-only qualification. Current deployable best and unmet objective are unchanged.
 
 - V19 private semantic tail completed three folds x two endpoints x20 epochs,
   seed42, 3360 optimizer steps, and is sealed as Q1_FAIL. Trained/frozen fused
