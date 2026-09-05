@@ -259,22 +259,24 @@
 
 ## Remote experiment constraints
 
-- V24 completed CUDA T0 and all fixed M0 engineering gates under execution
-  6a4ac2c. Original PID52030 is running its unchanged six-endpoint Q1.
-  Independent M0 audit is WARN, engineering PASS, fixed M0 QUALIFIED_PASS;
-  read EXPERIMENT_AUDIT_V24_M0.md/json and the source/provenance limits.
-  At the actual 2026-09-06 01:53 observation, fold0 completed both20 epochs:
-  fused control/candidate72.721325/72.596181, delta-0.125144pp. This violates
-  the necessary every-fold-nonnegative gate; finish all remaining four endpoints
-  before full aggregation and terminal audit. Do not restart or modify V24.
-  Read refine-logs/v24/EXPERIMENT_PLAN.md and EXPERIMENT_TRACKER.md.
-  Training-only identity/camera prototypes retain all94 source IDs and108 real
-  memberships per fold. Both arms retain all original203 trainable tensors,
-  identical dual views and seven ID/triplet objectives; only the prototype
-  coefficient differs. Inference remains original V8/Signal, zero new parameters.
-  No V23 adapter or later-version checkpoint is inherited. Preserve seed42,
-  3360 Q1 updates/6720 view pairs, all five outputs and complete galleries.
-  No scans, ablations, D1/dev/official advancement on failure.
+- V24 completed its original three-fold, two-endpoint,20-epoch seed42 Q1:
+  execution6a4ac2c, PID52030 exit0,120epoch/3360updates/6720view pairs.
+  Q1_FAIL is sealed. Fused control/candidate mAP79.534978/80.026285,
+  gain+0.491307; CNN/T/M gains-0.745102/+1.351266/-0.579203.
+  Fold fused gains-0.125144,+0.166401,+1.359050; bootstrap lower-0.694807.
+  Preserve all five outputs,3126 gallery/571 queries/21 identities and negative results.
+  Whole-file remote hashes, full local JSON/NumPy metric/loss/log/sampler/memory
+  metadata verification passed. Complete Q1 independent audit is pending.
+  Independent M0 audit remains WARN, engineering PASS, fixed M0 QUALIFIED_PASS.
+  Read the complete V24 Q1 result and refine-logs/v24/EXPERIMENT_TRACKER.md.
+  Both arms retain original203 trainable tensors, matched two views and seven
+  ID/triplet objectives; only prototype coefficient differs. New inference
+  parameters0; every94 source IDs and108 real identity/camera memberships retained.
+  No V23 adapter or later-version weights are inherited. No V24 retraining,
+  loss/temperature/momentum/augmentation/sampler/epoch/LR/seed scans,
+  ablations, D1/dev/official advancement. The separately registered read-only
+  source prototype diagnosis does not change weights, Q1 or qualification gates.
+
 
 - V23 completed its original three folds x two endpoints x20 epochs, seed42,
   120 epoch rows and 3360 updates; original PID44684 exited0, execution9f4a10b.

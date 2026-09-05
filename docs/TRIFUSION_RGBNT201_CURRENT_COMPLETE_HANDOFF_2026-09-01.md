@@ -3185,3 +3185,36 @@ M0独立审计已闭合，完整Q1独立审计仍待终态。第二对实测平�
 详见refine-logs/v24/SOURCE_PROTOTYPE_DIAGNOSTIC_PLAN_20260906.md、同名JSON和tools/diagnose_v24_source_prototypes.py；
 脚本SHA aedaa9a1366a37ebcf65c3a24a1a8708c67971cff9163ff82f23565ddab148a8，计划SHA b66e3fd49e3f6645a7ef4e9ce52ef358ec7a828615cc72d3758f5bd1f3a2c41d。本地只做AST解析，无模型或张量运行。
 V24原固定Q1及审计优先，尚未启动该诊断或任何后继训练。
+
+
+### 41.12 V24 原六端终态完成并封存；独立 Q1 审计待执行（2026-09-06）
+
+记录时间：2026-09-06T03:21:48.280439+08:00。原PID52030 exit0，源码6a4ac2c，120epoch/3360更新/6720视图前后传。
+全程8523.534031秒，含M0/初始化/训练/评价。完整3126gallery、571query、21query身份。
+matched control→candidate fused 79.534977571→80.026284762 mAP，
+增益+0.491307191 pp；Rank1 82.136602452→82.311733800。
+CNN/T/M增益-0.745102386/+1.351265626/-0.579202618，
+各折fused -0.125144076, +0.166400744, +1.359049739；bootstrap下界-0.694806868。
+五门{"aggregate_fused_gain_at_least_1pp": false, "all_fold_fused_nonnegative": false, "all_expert_aggregate_nonnegative": false, "fused_bootstrap_lower_positive": false, "fused_beats_baseline_and_experts": true}；状态Q1_FAIL_SEALED。
+本比较是相同双视图配置下原型损失系数的效应，不推断整个双视图方案相对旧单视图的贡献。
+
+远端63文件和24原型二进制哈希通过，六端独立receipt一致。
+本地全部AP/Rank/身份/120epoch损失/完整采样与原型年龄元数据核验通过，最大数值差1.11022302463e-16 pp。
+完整结果 results/TRIFUSION_RGBNT201_V24_COMPLETE_Q1_2026-09-06.md；
+原始evidence/trifusion_v24_q1_seed42_6a4ac2c.json，SHA 7e43c38529598de5ca04cbe67502c60f60d26f8c6d8e20232d11254a0e2aa86a。
+独立终态审计仍PENDING，不以M0审计代替。无D1/dev/official/消融晋级；V24不改门、不扫描、不重训。
+已登记source只读诊断独立于Q1终态，当前可部署dev最好仍V8 Phase-B58.4050/59.3939。
+
+
+### 41.13 V24 完整Q1独立复核及source只读诊断已启动（2026-09-06）
+
+记录时间：2026-09-06T03:23:45.602081+08:00。独立审阅者 /root/audit_v24_q1，GPT-5.5 xhigh，fork none，
+直接核查49份主文件；输入manifest及实际请求保存在.aris/traces/experiment-audit/2026-09-06_run15/。
+这是同GPT家族独立审阅，非跨家族认可；当前报告尚未完成，不提前填写审计结论。
+49份输入在发出时逐SHA核对，审计期间保持tracker/结果原稿/原始证据不变。
+
+GPU释放后按已固定只读计划启动诊断，实际2026-09-06T03:22:48.092419+08:00，PID59375，
+代码4452a9801c69bc0bfbdbe012ff9311e4afc04f46，screen v24_source_diag_4452a98，启动前free/used/util 24126, 1, 0。
+目录/root/autodl-tmp/trifusion-v2/artifacts/trifusion_v24_source_prototype_diagnostic_seed42_4452a98。固定九模型/18756 source记录/153batch前向；更新、反传、checkpoint写入、
+heldout/dev/official图像前向均0。尚无该诊断终态结果，预计6–10分钟，首次检查约03:29。
+该读取不改V24训练终态、原科学门或任何权重；Q1_FAIL封存保持。
