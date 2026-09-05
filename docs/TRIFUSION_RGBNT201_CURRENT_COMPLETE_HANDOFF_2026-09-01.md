@@ -3105,3 +3105,21 @@ JSON 23401 bytes，SHA 04d24cde7ccbb0bfa1d8dfa323648aa3263c681366725f13b04e8b20a
 审计依据仍是 01:10 快照；41.4 中 01:53 的第一折负结果不冒充其已审计范围。
 Q1 最近真实观察仍为第一对 40epoch/1160更新，原剩余四端继续；完整终态和独立 Q1 审计尚待完成。
 首折已违反每折 fused 非负必要门，不能晋级，仍保留全部终态比较。V23 封存和总目标未达状态不变。
+
+
+### 41.7 MSVR310 训练内部身份协议已固定，尚未训练（2026-09-06）
+
+记录时间：2026-09-06T02:17:57.188547+08:00。只按官方训练标签划分全部155身份/1032三元组，
+依真实scene可评价性分组、身份排序后轮流分入三折；不按特征或指标选身份，不额外选择随机划分。
+每折source103/103/104身份、672/683/709记录，均40个跨scene身份；
+heldout52/52/51身份、完整gallery360/349/323记录；各20个query身份、210/207/183合法query。
+合计600query，95个单scene身份的432记录全部仍为图库干扰；完整三折距离各自计算。
+错误用same-camera将合法query改成1032，且926条记录的正例数量变化。
+
+数据协议 protocols/msvr310_train_oof_v1.json 的SHA
+4ff4c60bca3d019929add5788212c526387d93d535a2c52aa7b1c3acfd387cb4；
+生成器 tools/build_msvr310_train_oof_protocol.py，全1032掩码直接枚举核验见
+evidence/trifusion_msvr310_train_oof_protocol_verification_20260906.json。
+完整说明 docs/MSVR310_TRAIN_INTERNAL_PROTOCOL_V1_2026-09-06.md。
+仅冻结数据清单；新Signal source初始化、车辆横向loader/scene evaluator、训练合同与真实工程门未运行。
+MSVR310训练/检索仍0，RGBNT201原V24继续，未推广不合格候选、未修改官方591/1055协议。
