@@ -2,7 +2,7 @@
 
 ## 0. 一页结论
 
-本工程是在 DeMo 代码基座上实现的 RGB–NIR–TIR 多模态目标重识别研究分支。最新已完成结果是V17完整训练和完整gallery补评失败；其全部查询/图像/分区诊断见§30。V18 source配对视角变化投影已通过M0，正在执行完整三折两端20epoch主实验（§31），完整比较尚未结束。V17 fused相对matched weight0为-0.328915 mAP，没有D1/dev/official结果。当前最高可部署结果仍是V8 Phase-B：冻结dev fused=`58.4050 mAP / 59.3939 Rank-1`，比exact Signal高`0.3941 mAP / 1.9394 Rank-1`并超过三个专家，但仍比65 mAP门低`6.5950`，不能声称SOTA。
+本工程是在 DeMo 代码基座上实现的 RGB–NIR–TIR 多模态目标重识别研究分支。V17完整训练和完整gallery补评已封存为失败；其全部查询/图像/分区诊断见§30。V18完整三折两端20epoch主实验已结束（§33）：fused增益+0.921504 mAP，bootstrap下界-0.117338，未通过固定晋级条件；无D1/dev/official。MSVR310、RGBNT100均已安装核验（§32）。V17 fused相对matched weight0为-0.328915 mAP，没有D1/dev/official结果。当前最高可部署结果仍是V8 Phase-B：冻结dev fused=`58.4050 mAP / 59.3939 Rank-1`，比exact Signal高`0.3941 mAP / 1.9394 Rank-1`并超过三个专家，但仍比65 mAP门低`6.5950`，不能声称SOTA。
 
 V6 的三个候选论文级主创新点已经落到核心代码、专项测试和完整 dev 运行中；性能主门仍然失败：
 
@@ -1750,3 +1750,153 @@ ZIP CRC全部通过，18970个archive entry、解压512942463字节，已原样�
 训练0、检索评估0。RGBNT100由同一session97866继续中转，预计约30余分钟，
 完成回执持续写入本地`.codex_tmp/trifusion_cross_dataset_transfer_20260905.json`；
 必须先确认该数据集的完成记录再解压，不以文件存在或旧进度猜测完成。
+
+### 32.2 RGBNT100也已完整安装并通过结构核验
+
+同一内存中转会话完成RGBNT100，耗时1742.49秒、1584573535字节，
+SHA256 `9fecdf2978cade2a3d165fc3f63e1d0b8aa3283e31aebaacd0f755187b219a30`。
+流SHA与远端完整文件SHA相等，71023个ZIP entry的CRC均通过，原样解压
+1603150791字节到`/root/autodl-tmp/trifusion-v2/data/RGBNT100`。
+
+R/N/T原始文件集合逐相对路径相等，共100身份、17250 triplets。现有loader
+`data/datasets/RGBNT100.py`使用rgbir拼接图；全部拼接图头尺寸均为768×128，
+对应三个256×128模态切片，未重编码或重排原始图片。
+
+| loader目录 | 身份数 | 三模态拼接样本数 |
+|---|---:|---:|
+| bounding_box_train | 50 | 8675 |
+| query | 50 | 1715 |
+| bounding_box_test | 50 | 8575 |
+
+训练/测试身份不相交，query身份均在gallery，均覆盖8个camera。
+回执`evidence/rgbnt100_dataset_install_20260905.json`；安装检查耗时23.02秒。
+压缩包readme声明研究使用及不得再分发；GitHub只提交安装元数据，没有数据文件。
+本次MSVR310、RGBNT100训练和检索评估都仍为0，数据安装不能当成跨数据集结果。
+
+## 33. V18完整主实验终态（2026-09-05）
+
+原screen `9812.v18_pvnp_2a71e20`自然结束，M0加完整Q1耗时2477.35秒。
+三折×两端×20epoch全部完成，共3360 optimizer steps：每端分别为
+fold0 580、fold1 560、fold2 540；0 overflow、无中间检索选择。训练代码commit
+`2a71e20`不变。新终态原始汇总9600061字节，SHA256
+`8c5f99fcd4ba218ac2925a01123e377415c8443b7ed89de9ec0da5f400415f20`。
+
+### 33.1 全部输出与固定晋级判定
+
+下表是141-fit内部完整路径OOF，不是30-dev/official指标。每折全47个heldout
+身份保留在gallery，合计3126条；全部571个合法query参与；2555条只因无
+跨camera正例而排除query分母，仍作为gallery干扰。完整30个fold×端×输出
+行及全部Rank5/10见结果报告，不择优展示。
+
+| 输出 | uncentered mAP/R1 | projected mAP/R1 | mAP增益 |
+|---|---:|---:|---:|
+| exact Signal | 77.487603/79.334501 | 77.487603/79.334501 | 0 |
+| fused | 80.560497/83.712785 | 81.482001/84.938704 | +0.921504 |
+| CNN | 79.298869/81.961471 | 79.548593/82.486865 | +0.249724 |
+| Transformer | 78.513897/81.961471 | 79.417463/83.187391 | +0.903566 |
+| Mamba | 78.865192/82.837128 | 80.702741/83.362522 | +1.837550 |
+
+三折fused mAP增益为`+1.755786/+0.110911/+0.855081`。三个专家aggregate
+非负，projected fused也优于同checkpoint Signal和全部专家；这三项通过。
+然而总增益0.921504低于冻结+1.0门，21身份聚类bootstrap10000次、seed42的
+95%下界为`-0.117338 mAP`，不满足下界>0。因此最终 **Q1_FAIL**、
+`next_phase_qualified=false`、`d1_executed=false`、dev/official访问0。
+不放宽门、不改秩/方向估计/epoch/LR后重跑V18，不进入D1。
+
+### 33.2 全部查询变化与复现边界
+
+| 输出 | AP改善/下降/相等 | Rank1修复/新增错误 |
+|---|---:|---:|
+| Signal | 0/0/571 | 0/0 |
+| fused | 224/132/215 | 10/3 |
+| CNN | 203/181/187 | 12/9 |
+| Transformer | 223/146/202 | 11/4 |
+| Mamba | 247/131/193 | 13/10 |
+
+全部21身份的分支与fused增益已逐身份列在结果报告和派生JSON。
+fused为15身份改善、6身份下降；000235、000201两身份贡献约85.4459%的
+查询加权净增益。这解释了平均收益与身份泛化不稳定并存，不能据此声称已找到
+唯一图像因果因素，也没有删去负收益身份再计算晋级指标。
+
+六个终态均重新构建/strict reload，模型state SHA与实际最终训练state完全一致。
+训练后远端再次逐文件SHA核对6个checkpoint、6个冻结来源、3个source cache及
+8个汇总/方案/代码文件，共23个文件；6份endpoint JSON与完整汇总对象相等。
+绑定核对见`evidence/trifusion_v18_postrun_bindings_20260905.json`，未新建optimizer。
+
+两端Signal逐query对象精确相等、样本顺序hash和前8增强batch回执相等。
+历史V17 weight0与本次uncentered不是位级重训一致，见§31.2；不拿历史对照
+替换本次对照。嵌套build_provenance沿用V17默认描述，V18顶层与实际执行
+明确`projection_enabled`及`envelope_enabled=false`，原始记录不改写。
+
+当前可部署最好仍为V8 Phase-B的30-dev `58.4050/59.3939`，exact Signal
+为`58.0109/57.4545`；65开发门和官方/跨数据集SOTA目标仍未达到。
+独立审计已完成M0阶段，正在直接检查本次终态与全部校准文件；最终报告更新后
+再记录其完整性判定，不能把先前M0-only审计当作终态审计。
+
+证据：
+
+- `evidence/trifusion_v18_q1_seed42_2a71e20.json`
+- `evidence/trifusion_v18_complete_comparison_20260905.json`
+- `results/TRIFUSION_RGBNT201_V18_PVNP_Q1_2026-09-05.md`
+- `docs/V18_PAIRED_VIEW_PROJECTION_PLAN_2026-09-05.md`
+
+### 33.3 六端完整缓存重放与投影几何诊断
+
+新脚本`tools/diagnose_v18_projection_geometry.py`在commit `e5ae63d`运行，
+复用已SHA绑定的V17完整gallery冻结Signal/teacher缓存，严格加载六份V18最终
+correction state、原projection开关与方向。按原128 batch执行全部头部前向；
+六端×五路的全部AP/rank数组及指标字典与本次Q1逐项精确相等，Signal前缀不变，
+head state和checkpoint文件不变。耗时7.58秒，optimizer0、checkpoint writes0、
+dev0、official0，不是新验证集或新训练结果。
+
+| 输出 | 最近正例距离变化 | 最近负例距离变化 | 最近正负margin变化 | 最近负例同camera比例变化 |
+|---|---:|---:|---:|---:|
+| fused | -0.006439 | +0.002267 | +0.008706 | 63.5727% → 60.0701% |
+| CNN | -0.009467 | -0.000633 | +0.008834 | 63.5727% → 60.2452% |
+| Transformer | -0.002700 | +0.001041 | +0.003741 | 66.5499% → 63.2224% |
+| Mamba | -0.007448 | +0.005348 | +0.012796 | 63.5727% → 58.3187% |
+
+这些是所有571个query的均值。新增CNN Rank1错误的9个query中，最近负例距离
+平均下降0.024874，而最近正例仅下降0.002015；fused新增3个错误中正例距离
+上升0.007996、负例下降0.008232。条件组覆盖其全部新增错误，完整原始query行
+仍在JSON中。投影方向在各fold/expert的heldout平均能量约0.9987%–1.6889%；
+projected输出沿该方向的最大系数绝对值均<1e-6，说明投影确实生效。
+
+可支持的诊断是：平均正负间距和同camera负例比例改善，但少量身份和困难负例
+仍受损，特别是CNN负例分离没有像Mamba一样整体改善。不能由此断言camera
+是唯一因果因素，或把单轴移除改成多轴/方向重估后继续试V18。
+后续优化应把困难负例的身份区分和视角不变性共同作为新表征的要求；具体新
+网络与主实验须依据此全量证据另行冻结，维持完全身份隔离的训练内比较。
+
+原始诊断`evidence/trifusion_v18_projection_geometry_20260905.json`为8356224
+字节，SHA256 `55865c3b10c55871f9ccda48e84f6872750b3d1fad649d7b0bfff60ce9f9ad4f`；
+远端位于`/root/autodl-tmp/trifusion-v2/artifacts/trifusion_v18_projection_geometry_e5ae63d/`。
+
+### 33.4 下一项表征方向的设计状态
+
+候选方向见`docs/V19_PRIVATE_SEMANTIC_TAIL_DESIGN_DRAFT_2026-09-05.md`：
+保持exact Signal不变，给三个专家各自复制/训练现有CLIP索引9–11尾部，
+使角色模块与其后的语义变换共同适应身份区分。该方向基于实际共享冻结尾部
+代码约束与V18困难负例证据；尚不能声称已证明该约束是唯一原因。
+
+远端读取实际fold0 Signal checkpoint的model_state_dict核得每尾部block为
+7087872参数、12个tensor，三个expert的9个block合计63790848额外参数。
+它不需要新backbone下载，但容量变化显著，须在对照中披露并实测B64/K8。
+目前只有设计草案，尚无V19实现、M0或训练；预训练尾部学习率、optimizer分组、
+参数梯度合同及显存必须在实现核验后、任何检索结果之前正式冻结。
+后续按这一顺序继续执行，不重训V18，不先访问dev/official。
+
+## 34. SOTA参照与开源资源再次增量核对
+
+已从CVF主PDF核读CoT-ReID Table1/2：RGBNT201 83.3/86.1、
+RGBNT100 89.9/99.3、MSVR310 71.7/85.3（mAP/R1）。它使用DINOv3和MLLM
+推理文本，须与纯视觉静态方法分列。因而§29记录的RGBNT100 R1=99.1和
+MSVR310 R1=84.8不再是本次已核文献的最高Rank1。CoT Table3另有MSVR
+72.7/86.3，仍保留表间差异，主比较采用Table1而不择优拼接。
+
+DSGM作者稿与开源仓库也已核到；其主表为RGBNT201 82.6/87.0、
+RGBNT100 89.4/98.2、MSVR310 64.6/76.0，依赖GPT-4o文本和SAM2软mask。
+PMKD仓库当前仅README；CoT有代码但不提供文本与预训练权重；DSGM有MIT
+实现和附mask数据链接。本次没有下载或接入这些模块，没有改变V18冻结方案。
+主源链接、CoT PDF SHA与CCL/Hyper-ReID待核边界统一见
+`docs/SOTA_REFRESH_2026-09-05.md`，不称已穷尽最新SOTA。

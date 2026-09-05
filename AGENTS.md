@@ -258,14 +258,15 @@
 
 ## Remote experiment constraints
 
-- V18 PVNP is the active new representation experiment, committed at 2a71e20
-  and launched on 2026-09-05 in screen v18_pvnp_2a71e20. Its source-only
-  paired-view rank-one projection precedes and follows the learned correction;
-  matched uncentered/projected endpoints use no DTRED envelope. Follow the
-  fixed docs/V18_PAIRED_VIEW_PROJECTION_PLAN_2026-09-05.md. Run all three
-  folds x two endpoints x20 epochs after M0, with complete gallery and all
-  five outputs. Inspect the existing process before any launch. No V18
-  retrieval result exists at this launch record; V17 remains sealed below.
+- V18 PVNP completed all three folds x two endpoints x20 epochs, seed42,
+  and is sealed as Q1_FAIL. Projected/uncentered full-gallery fused mAP is
+  81.482001/80.560497, gain +0.921504, below the frozen +1.0 gate; the
+  21-identity bootstrap lower bound is -0.117338. Every fold and all expert
+  aggregate gains are positive, but the scientific gate still fails.
+  No D1/dev/official, direction/rank/epoch/LR scans or V18 retraining.
+  Read the complete result report and frozen V18 plan. Any successor
+  requires a new representation hypothesis and preregistered train-only
+  qualification, preserving the same complete-gallery and seed42 rules.
 
 - V17 DTRED completed all three folds, two endpoints, and 20 epochs per
   endpoint (3360 steps). M0 passed; Q1 failed with fused matched gain
