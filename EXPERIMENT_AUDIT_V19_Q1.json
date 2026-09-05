@@ -1,0 +1,313 @@
+{
+  "date": "2026-09-05",
+  "auditor": "independent experiment integrity auditor",
+  "overall_verdict": "warn",
+  "integrity_status": "warn",
+  "engineering_integrity": "pass",
+  "scientific_qualification": "fail",
+  "scientific_status": "Q1_FAIL",
+  "evaluation_type": "real_gt_train_internal_complete_path_oof",
+  "summary": {
+    "conclusion": "V19 Q1 terminal artifacts are internally consistent and numerically reproducible from the reported JSON arrays, but the preregistered Q1 scientific gate fails. Integrity is warn because large checkpoint/data/CLIP bytes are remote/receipt-bound and two source hashes match only after LF normalization.",
+    "training_or_evaluation_launched_by_auditor": false,
+    "model_inference_or_checkpoint_tensor_loading_by_auditor": false,
+    "executor_summaries_used": false,
+    "allowed_recomputation": "Pure JSON/NumPy recomputation of metrics, masks, paired deltas, fold aggregates, and identity-cluster bootstrap."
+  },
+  "primary_artifact_hashes": {
+    "audit_request": "7b2898dd2b7f409ab06fa8de71732f9643204879274488dd9d9e244d3d76012e",
+    "q1_summary": "e0c9c2e0683c934fd65ae594186d89452c9786e203e1f4b1a9b7612505316d59",
+    "complete_run_log": "1b15ae13fdf41d0a81b0a4f21ecadd6cae542bce5aa3a9d459b331953afa36c5",
+    "terminal_array_audit": "6c720a3638da37fdb5f11f9716cca6f0efe94bb8d2ef0f0198a5de73092fbc18",
+    "terminal_file_verification": "d24eeccf3a06177cfc7117842f2601c6b1b17e5da628ed4ce2a08b85a7464163",
+    "complete_comparison": "7f8cfae97bbb21829f3740440e527ca3e25f4a9eacd4d86ceaae72994b23f072",
+    "result_report": "8496643b6a50adf294139f4c45d1e10a8f93fa1c393b881e5fbbc1c667d4b0d0",
+    "signal_preserving_v13_py": "7b7c4abb220ed234608553c77aeedd5f8ef763abb04cce5b21f1bfce0f4daa62"
+  },
+  "endpoint_receipt_hashes": {
+    "fold0_frozen_private_tail": "3c53df49fc5f2641f00d687f75250a8964b39242afa2dd55afe3bb3ba7b02cac",
+    "fold0_trained_private_tail": "b274c2244399185b254400757c6bce8a7985654b284f2ebcfb9e4c97d0ca431c",
+    "fold1_frozen_private_tail": "f4d7c179cdffc1211208042907b5fca701ee43ee16493fd8140fff458a7dbca6",
+    "fold1_trained_private_tail": "fbafa984dff70c33b27f914c0a0dd9de46ac17551d56cedc6d482715e2f4d381",
+    "fold2_frozen_private_tail": "03f3b979c039b5558e695d61b0b9845229e3c6ebaa2947b0ed33ae00731ba1ef",
+    "fold2_trained_private_tail": "e44a7137b94b82c3b23a9796a033b6c7a9755a616565e242913a1bc2e6fdd30c"
+  },
+  "checks": {
+    "A_ground_truth_provenance": {
+      "status": "pass",
+      "finding": "The Q1 evaluation uses real train-internal held-out identity labels from the frozen RGBNT201 dev protocol and V12 complete-path OOF manifests. It is not dev, official, or test-label evidence.",
+      "evidence": [
+        "protocols/rgbnt201_dev_v1.json:2-14",
+        "protocols/rgbnt201_dev_v1.json:52-58",
+        "protocols/rgbnt201_dev_v1.json:126-130",
+        "tools/build_v12_complete_path_oof_targets.py:29-55",
+        "tools/train_signal_preserving_v18.py:145-152",
+        "evidence/trifusion_v19_q1_seed42_4b749cd.json:26-27",
+        "results/TRIFUSION_RGBNT201_V19_PRIVATE_TAIL_2026-09-05.md:12-15"
+      ],
+      "claim_impact": "Supports train-internal real-ground-truth OOF arithmetic only; no official/dev/SOTA claim."
+    },
+    "B_score_normalization_and_metrics": {
+      "status": "pass",
+      "finding": "The source evaluation path L2-normalizes embeddings, computes pairwise distances, applies same-identity/same-camera junk masking, and computes AP/Rank from identity/camera arrays. Independent JSON/NumPy metric replay matched the Q1 artifacts.",
+      "evidence": [
+        "tools/train_signal_preserving_v18.py:133-152",
+        "tools/audit_v17_full_gallery.py:14-43",
+        "tools/diagnose_v6_oracle_complementarity.py:91-108",
+        "evidence/trifusion_v19_terminal_array_audit_20260905.json:31-116"
+      ],
+      "claim_impact": "No evidence of prediction-derived metric normalization leakage in the audited path or arrays."
+    },
+    "C_result_existence_and_binding": {
+      "status": "warn",
+      "finding": "The local Q1 summary, log, six endpoint receipts, array audit, file verification, comparison, and result report are present and internally bound. The six standalone receipts equal the embedded summary endpoints. Warning remains because large checkpoint/data/CLIP bytes are remote or receipt-bound, and two local source files match execution hashes only after LF normalization.",
+      "evidence": [
+        "evidence/trifusion_v19_q1_seed42_4b749cd.json:3-12",
+        "evidence/trifusion_v19_terminal_file_verification_20260905.json:1-9",
+        "evidence/trifusion_v19_terminal_file_verification_20260905.json:117-212",
+        "evidence/trifusion_v19_terminal_file_verification_20260905.json:215-257",
+        "evidence/trifusion_v19_terminal_file_verification_20260905.json:259-266"
+      ],
+      "claim_impact": "Engineering binding is sufficient for warn-level integrity, not a byte-perfect pass for all remote large artifacts."
+    },
+    "D_live_execution_path": {
+      "status": "pass",
+      "finding": "The runner enforces the fixed contract, loads strict V12 source checkpoints, creates paired frozen/trained V19 endpoints, trains final-only for 20 epochs, strict-reloads, evaluates read-only, writes endpoint receipts, and aggregates terminal arrays. Receipts report expected private-tail state changes, paired baseline outputs, optimizer steps, gradients, and zero overflow.",
+      "evidence": [
+        "tools/train_signal_preserving_v19.py:52-69",
+        "tools/train_signal_preserving_v19.py:72-114",
+        "tools/train_signal_preserving_v19.py:125-142",
+        "tools/train_signal_preserving_v19.py:145-175",
+        "tools/train_signal_preserving_v19.py:259-311",
+        "tools/train_signal_preserving_v19.py:411-506",
+        "evidence/trifusion_v19_complete_comparison_20260905.json:649-715",
+        "evidence/trifusion_v19_complete_run_20260905.log:326"
+      ],
+      "claim_impact": "Supports that Q1 was a terminal paired engineering run, not an M0-only diagnostic."
+    },
+    "E_scope": {
+      "status": "pass",
+      "finding": "The recomputed masks match the planned full train-internal complete-path OOF scope: all held-out identities retained as gallery distractors, only queries without valid cross-camera positives excluded, 3126 gallery records, and 571 eligible queries.",
+      "evidence": [
+        "refine-logs/v19/EXPERIMENT_PLAN.md:88-99",
+        "AGENTS.md:287-297",
+        "evidence/trifusion_v19_terminal_array_audit_20260905.json:8-29",
+        "evidence/trifusion_v19_q1_seed42_4b749cd.json:78081-78082",
+        "results/TRIFUSION_RGBNT201_V19_PRIVATE_TAIL_2026-09-05.md:12-15"
+      ],
+      "claim_impact": "Supports the reported full-gallery train-internal OOF scope."
+    },
+    "F_evaluation_and_diagnostic_classification": {
+      "status": "pass",
+      "finding": "The artifacts consistently classify Q1 as train-internal complete-path OOF; M0 capacity/overfit checks remain train-only engineering diagnostics; vehicle data artifacts remain readiness-only; and no D1/dev/official/SOTA claim is supported.",
+      "evidence": [
+        "evidence/trifusion_v19_q1_seed42_4b749cd.json:26-35",
+        "AGENTS.md:61-68",
+        "evidence/trifusion_v19_terminal_array_audit_20260905.json:4",
+        "evidence/trifusion_v19_terminal_file_verification_20260905.json:264-266",
+        "docs/TRIFUSION_RGBNT201_CURRENT_COMPLETE_HANDOFF_2026-09-01.md:1986-1993",
+        "docs/TRIFUSION_RGBNT201_CURRENT_COMPLETE_HANDOFF_2026-09-01.md:2054-2102"
+      ],
+      "claim_impact": "Final classification is engineering execution with failed Q1 scientific qualification."
+    }
+  },
+  "claims": {
+    "v19_q1_terminal_artifacts_exist_and_are_internally_consistent": {
+      "status": "supported_with_warning",
+      "reason": "All listed local JSON/log/report/receipt artifacts were read and arithmetic replay matched; remote large bytes remain receipt-bound."
+    },
+    "frozen_and_trained_endpoints_are_paired_within_each_fold": {
+      "status": "supported",
+      "reason": "Endpoint receipts show paired baseline outputs, initial state, sample order, and first-batch controls within each fold."
+    },
+    "private_tails_change_only_in_trained_endpoints": {
+      "status": "supported",
+      "reason": "Frozen endpoints report private_tail_changed false and trained endpoints report true."
+    },
+    "trained_fused_improves_aggregate_map_over_frozen_fused": {
+      "status": "supported_numerically",
+      "value_pp": 0.25603522908852483
+    },
+    "v19_passes_preregistered_q1_scientific_qualification": {
+      "status": "rejected",
+      "reason": "Four of five scientific predicates are false."
+    },
+    "v19_should_proceed_to_d1_dev_or_official": {
+      "status": "unsupported",
+      "reason": "Q1 status is Q1_FAIL and next_phase_permitted is false."
+    },
+    "v19_dev_official_or_sota_improvement": {
+      "status": "unsupported",
+      "reason": "No D1, dev, official, public-test, or SOTA evaluation was run or audited."
+    }
+  },
+  "recomputation": {
+    "numpy_version": "2.5.2",
+    "receipt_embedding_check": {
+      "standalone_receipts_equal_q1_summary_endpoints": true,
+      "count": 6
+    },
+    "scope": {
+      "total_gallery_records": 3126,
+      "total_eligible_queries": 571,
+      "total_query_only_exclusions": 2555,
+      "identity_clusters": 21,
+      "folds": [
+        {
+          "fold": 0,
+          "gallery_records": 1000,
+          "eligible_queries": 190,
+          "query_only_exclusions": 810,
+          "heldout_gallery_identities": 47,
+          "eligible_query_identities": 7
+        },
+        {
+          "fold": 1,
+          "gallery_records": 1051,
+          "eligible_queries": 179,
+          "query_only_exclusions": 872,
+          "heldout_gallery_identities": 47,
+          "eligible_query_identities": 7
+        },
+        {
+          "fold": 2,
+          "gallery_records": 1075,
+          "eligible_queries": 202,
+          "query_only_exclusions": 873,
+          "heldout_gallery_identities": 47,
+          "eligible_query_identities": 7
+        }
+      ],
+      "mask_replay": {
+        "query_indices_match_endpoint_outputs": true,
+        "excluded_query_lists_match": true,
+        "valid_cross_camera_positive_required": true,
+        "same_identity_same_camera_junk_excluded": true,
+        "fit_heldout_identity_overlap_max": 0
+      }
+    },
+    "aggregate_metrics_percent": {
+      "frozen_private_tail": {
+        "baseline_only": {"mAP": 77.48760311601094, "Rank1": 79.33450087565674, "Rank5": 89.49211908931699, "Rank10": 93.52014010507881},
+        "fused": {"mAP": 80.24079232211736, "Rank1": 83.18739054290718, "Rank5": 90.01751313485113, "Rank10": 93.87040280210157},
+        "cnn": {"mAP": 79.91510541150345, "Rank1": 84.76357267950964, "Rank5": 88.96672504378283, "Rank10": 91.59369527145358},
+        "transformer": {"mAP": 78.15054560122677, "Rank1": 82.13660245183888, "Rank5": 90.54290718038528, "Rank10": 92.99474605954467},
+        "mamba": {"mAP": 77.80198014575362, "Rank1": 78.98423817863399, "Rank5": 89.31698774080562, "Rank10": 94.04553415061297}
+      },
+      "trained_private_tail": {
+        "baseline_only": {"mAP": 77.48760311601094, "Rank1": 79.33450087565674, "Rank5": 89.49211908931699, "Rank10": 93.52014010507881},
+        "fused": {"mAP": 80.49682755120588, "Rank1": 84.23817863397548, "Rank5": 89.84238178633976, "Rank10": 93.6952714535902},
+        "cnn": {"mAP": 80.0547973247663, "Rank1": 84.23817863397548, "Rank5": 90.36777583187391, "Rank10": 92.46935201401051},
+        "transformer": {"mAP": 79.33172899030271, "Rank1": 83.18739054290718, "Rank5": 89.14185639229422, "Rank10": 92.46935201401051},
+        "mamba": {"mAP": 77.37915613474735, "Rank1": 79.50963222416813, "Rank5": 89.66725043782837, "Rank10": 93.87040280210157}
+      }
+    },
+    "matched_mAP_gains_percent_points": {
+      "baseline_only": 0.0,
+      "fused": 0.25603522908852483,
+      "cnn": 0.13969191326285113,
+      "transformer": 1.1811833890759402,
+      "mamba": -0.42282401100627
+    },
+    "fold_fused_mAP_gains_percent_points": [
+      {
+        "fold": 0,
+        "eligible_queries": 190,
+        "frozen_fused_mAP": 79.58389447971457,
+        "trained_fused_mAP": 81.2034187002336,
+        "gain": 1.6195242205190254
+      },
+      {
+        "fold": 1,
+        "eligible_queries": 179,
+        "frozen_fused_mAP": 86.7851393229515,
+        "trained_fused_mAP": 85.88427222298535,
+        "gain": -0.9008670999661632
+      },
+      {
+        "fold": 2,
+        "eligible_queries": 202,
+        "frozen_fused_mAP": 75.20819613004948,
+        "trained_fused_mAP": 75.20691753997463,
+        "gain": -0.0012785900748468748
+      }
+    ],
+    "identity_cluster_bootstrap": {
+      "source": "modeling/trifusion/signal_preserving_v13.py:253-279",
+      "seed": 42,
+      "resamples": 10000,
+      "clusters": 21,
+      "observed_mean_mAP_gain_percent_points": 0.25603522908853593,
+      "lower_bound_95_mAP_gain_percent_points": -1.6151285618296207,
+      "max_abs_diff_vs_summary": 0.0
+    },
+    "scientific_predicates": {
+      "aggregate_fused_gain_at_least_1pp": false,
+      "all_fold_fused_nonnegative": false,
+      "all_expert_aggregate_nonnegative": false,
+      "fused_bootstrap_lower_positive": false,
+      "fused_beats_baseline_and_experts": true
+    },
+    "paired_changes": {
+      "baseline_only": {"ap_improved": 0, "ap_declined": 0, "ap_equal": 571, "rank1_repaired": 0, "rank1_broken": 0},
+      "fused": {"ap_improved": 180, "ap_declined": 186, "ap_equal": 205, "rank1_repaired": 19, "rank1_broken": 13},
+      "cnn": {"ap_improved": 180, "ap_declined": 193, "ap_equal": 198, "rank1_repaired": 8, "rank1_broken": 11},
+      "transformer": {"ap_improved": 214, "ap_declined": 199, "ap_equal": 158, "rank1_repaired": 25, "rank1_broken": 19},
+      "mamba": {"ap_improved": 157, "ap_declined": 202, "ap_equal": 212, "rank1_repaired": 10, "rank1_broken": 7}
+    },
+    "endpoint_execution_controls": {
+      "epochs_per_endpoint": 20,
+      "optimizer_steps_total": 3360,
+      "optimizer_steps_by_endpoint": {
+        "fold0_frozen_private_tail": 580,
+        "fold0_trained_private_tail": 580,
+        "fold1_frozen_private_tail": 560,
+        "fold1_trained_private_tail": 560,
+        "fold2_frozen_private_tail": 540,
+        "fold2_trained_private_tail": 540
+      },
+      "amp_overflow_count_total": 0,
+      "baseline_outputs_paired_equal_within_folds": true,
+      "initial_state_paired_equal_within_folds": true,
+      "sample_order_paired_equal_within_folds": true,
+      "first_batches_paired_equal_within_folds": true,
+      "strict_reload_all_endpoints": true,
+      "read_only_evaluation_all_endpoints": true,
+      "private_tail_changed_only_for_trained_endpoints": true,
+      "nonzero_gradient_tensors_equal_trainable_tensors": true,
+      "missing_gradient_tensors": 0
+    },
+    "cross_artifact_consistency": {
+      "terminal_array_audit_matches_recomputation": true,
+      "complete_comparison_source_summary_sha_matches_q1_summary": true,
+      "terminal_file_verification_summary_sha_matches_q1_summary": true,
+      "max_numeric_diff_vs_terminal_array_audit": 0.0
+    }
+  },
+  "source_hash_audit": {
+    "all_other_reported_source_hashes_match_raw_local_bytes": true,
+    "line_ending_normalized_matches": [
+      {
+        "path": "modeling/trifusion/criterion.py",
+        "execution_sha256": "0b2a6370f434828d885945d1a46dd56f6668133ceed45ef359fe71eeca63740a",
+        "local_raw_sha256": "9a028e5711981123310f5e0d441a35b7dbecaf33f9edcec4fd3773d070cf877f",
+        "lf_normalized_sha256_matches_execution": true,
+        "terminal_file_verification_bytes": 6101
+      },
+      {
+        "path": "protocols/rgbnt201_dev_v1.json",
+        "execution_sha256": "d916e7daaa1d55b179c1ec77e93128b6e6a8d1526adc9eac060ea8e733881946",
+        "local_raw_sha256": "f7f6f8a906c06fec4918929fb5c17abfc197986b99e017aca1d3e15831c1541d",
+        "lf_normalized_sha256_matches_execution": true,
+        "terminal_file_verification_bytes": 5376
+      }
+    ]
+  },
+  "limitations": [
+    "No training, evaluation, inference, checkpoint tensor loading, feature replay, distance replay, or downloads were performed by this audit.",
+    "Large final checkpoints, V12 source checkpoints, CLIP/data artifacts, and target cache bytes were not independently possessed as local bytes; they remain receipt-bound.",
+    "Two local source files have CRLF raw-byte hashes but match execution hashes after LF normalization.",
+    "The evaluation is train-internal complete-path OOF and does not support dev, official, public-test, or SOTA claims.",
+    "The audit is bounded to the listed primary artifacts and source files."
+  ]
+}

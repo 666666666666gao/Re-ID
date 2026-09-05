@@ -5,7 +5,7 @@
 | V19-T0 | T0 | 新wrapper/optimizer行为 | 冻结/可训练私有尾部 | 远端单元测试 | 输出/重载/storage/更新范围 | DONE_PASS |
 | V19-M0 | M0 | 真实工程合同 | 三折配对、两端容量、实验端过拟合 | source-only | 梯度/显存/溢出/过拟合/冻结 | DONE_PASS |
 | V19-Q1 | Q1 | 完整身份隔离主比较 | 三折×两端×20epoch | 3126gallery/571query | 五路mAP/R1/R5/R10/全部AP | DONE_Q1_FAIL |
-| V19-AUDIT | 审计 | 全部结果与来源核验 | 全部端 | 完整Q1 | 完整性/科学门 | PENDING_TERMINAL_REVIEW |
+| V19-AUDIT | 审计 | 全部结果与来源核验 | 全部端 | 完整Q1 | 完整性/科学门 | DONE_WARN_Q1_FAIL |
 | V19-D1 | D1 | 同协议dev主结果 | 当前最佳与exact Signal | 141-fit/30-dev | >=65mAP及固定严格胜出 | NOT_RUN_Q1_FAIL |
 
 最新终态（2026-09-05）：三折×两端×20epoch全部完成，3360步，Q1_FAIL。
@@ -14,7 +14,7 @@ fused增益+0.256035、fold增益+1.619524/-0.900867/-0.001279、Mamba增益-0.4
 全部3126gallery/571query保留，overflow0、strict reload、冻结及配对检查通过。
 执行端已重算全部数组/bootstrap并在远端核验29文件SHA与六receipt；完整证据与
 五路/三折/21身份表见results/TRIFUSION_RGBNT201_V19_PRIVATE_TAIL_2026-09-05.md。
-完整Q1独立审计待完成。V19封存，不执行D1/dev/official或任何超参/层数/epoch扫描。
+完整Q1独立审计已完成：工程PASS、integrity WARN、科学FAIL。V19封存，不执行D1/dev/official或任何超参/层数/epoch扫描。
 以下带时间的RUNNING条目均为历史进度，不能覆盖本终态。
 
 2026-09-05 12:26:41 CST：远端T0四项测试通过，6.95秒；M0全部检查通过。
@@ -42,3 +42,10 @@ Q1状态仍RUNNING，整体科学门等待全部端终态；预计13:36–13:51�
 前两折保留2051gallery/369query；当前fold2对照第3/20epoch，27batch/epoch。
 剩余两端完整预算预计1080步，最后一折1075gallery/202query必须全部保留。
 Q1仍RUNNING，等待全六端统一科学结论；下一阶段观察13:21–13:22。
+
+Q1独立审计：EXPERIMENT_AUDIT_V19_Q1.md/json。审计员实际使用NumPy2.5.2
+重算所有数组、标签mask、科学门和10000次身份bootstrap，数值一致；远端大权重/
+数据仅有receipt与两项本地CRLF/LF来源字节差异的限制保留。Q1_FAIL与无D1不变。
+随后六端只读表征诊断全部完成329.784541秒，全部原五路检索数组精确复现；
+七个来源分类头和来源fused均100%，诊断报告另列全部模态几何及因果解释限度。
+该诊断无训练/dev/official，尚待其独立范围审计；不能并入已完成的Q1审计范围。

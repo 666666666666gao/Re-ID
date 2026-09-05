@@ -555,3 +555,7 @@
 | 2026-09-05 13:55 | /run-experiment | refine-logs/v19/EXPERIMENT_TRACKER_20260905_135536.md | evidence | V19 full six-endpoint Q1_FAIL; independent terminal audit pending |
 | 2026-09-05 13:55 | /run-experiment | results/TRIFUSION_RGBNT201_V19_PRIVATE_TAIL_2026-09-05.md | evidence | Complete five-output, three-fold and 21-identity terminal results |
 | 2026-09-05 13:55 | /run-experiment | evidence/trifusion_v19_q1_seed42_4b749cd.json | evidence | Complete source-bound Q1 summary; all six receipts and terminal verification accompany it |
+
+| 2026-09-05 14:25 | /experiment-audit | EXPERIMENT_AUDIT_V19_Q1.md/json | evidence | Independent complete Q1 engineering PASS, integrity WARN, scientific FAIL; actual bootstrap replay |
+| 2026-09-05 14:25 | /run-experiment | refine-logs/v19/EXPERIMENT_TRACKER_20260905_142550.md | evidence | V19 terminal audit complete; all-six-model read-only geometry diagnosis complete |
+| 2026-09-05 14:25 | /run-experiment | results/TRIFUSION_RGBNT201_V19_GENERALIZATION_DIAGNOSIS_2026-09-05.md | evidence | All source/heldout records and all nine modality pair geometries; independent diagnosis audit pending |

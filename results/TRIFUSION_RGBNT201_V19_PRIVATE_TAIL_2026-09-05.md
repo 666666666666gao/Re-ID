@@ -5,7 +5,8 @@ V19已完整执行三折×两端×20 epoch、3360 optimizer steps，seed42，终
 三折fused增益为+1.619524/-0.900867/-0.001279，Mamba aggregate下降0.422824。
 21身份cluster bootstrap 10000次的95%下界为-1.615129 mAP。五项科学条件仅
 “fused严格胜过同checkpoint baseline及三专家”通过，因此不执行D1/dev/official。
-独立Q1终态审计待完成；下列数值已完成执行端的完整数组与远端文件核验。
+独立Q1终态审计已完成：engineering PASS、integrity WARN、scientific FAIL；
+下列数值经执行端完整数组/远端文件核验，并经审计员独立数组/bootstrap重算。
 
 ## 完整五路汇总
 
@@ -151,3 +152,18 @@ V18与V19的本次对照不是位级相同的训练（loss合同/确定性设置
 这里的数组/文件核验由执行端完成，不等于独立审计员持有远端图像/权重并重新推理。
 哈希脚本未加载模型，数组核验未重新生成feature或distance；远端大权重和图像保留
 原位。报告不声称本地端到端重跑，独立终态审计结论将在完成后另行记录。
+
+
+## 独立Q1审计完成（2026-09-05）
+
+EXPERIMENT_AUDIT_V19_Q1.md/json已完成；审计员实际使用NumPy2.5.2重算全部
+三折/两端/五路AP/Rank、query mask、全部配对变化和10000次身份bootstrap。
+下界-1.6151285618296207、全部科学布尔条件均一致。工程完整性PASS，整体与
+integrity WARN，科学资格FAIL。WARN限于远端大权重/数据的独立持有范围及两份
+本地CRLF与远端LF来源文件差异，不能改写成科学通过。
+
+审计MD SHA 1e5602615a23609c0f36bfcebadc8e8e6cef9977a956e3900c0f84eb9b4674bf，
+JSON SHA d29f908d62d52c55e7e2f576297494da1cd4006de22cf6ecc16c94d4a6ba31c4。
+原报告逐字归档，完整request/response/meta位于本地忽略的run04 trace目录。
+上文审计待完成的文字反映首版报告状态，已由本节终态替代；后续额外只读表征
+诊断另列于V19_GENERALIZATION_DIAGNOSIS报告，不冒称由本次Q1审计覆盖。

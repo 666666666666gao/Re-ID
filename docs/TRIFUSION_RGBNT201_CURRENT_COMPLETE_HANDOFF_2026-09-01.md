@@ -2100,3 +2100,44 @@ V19封存：不执行D1/dev/official，不放宽条件，不做层数/宽度/LR/
 验证合同。当前可部署dev最好仍为V8 Phase-B58.4050/59.3939，exact Signal
 58.0109/57.4545；dev65门与官方85.3/87.9目标未过，RGBNT100/MSVR310仍无训练
 或检索成绩。全局目标保持active，不能因这次完整负结果归档而标记完成。
+
+
+### 36.1 V19 Q1独立审计完成（2026-09-05）
+
+GPT-5.5 xhigh读取38项路径及实际依赖，完成EXPERIMENT_AUDIT_V19_Q1.md/json。
+工程完整性PASS，overall/integrity WARN，科学资格FAIL；实际使用NumPy2.5.2
+独立重算三折两端五路AP/Rank、全部标签mask、配对变化和10000次身份bootstrap，
+下界-1.6151285618296207与原始汇总精确一致。全部源训练预算/配对/冻结记录一致。
+
+WARN保留远端大权重/数据的独立持有范围，以及criterion.py、rgbnt201_dev_v1.json
+本地CRLF/远端LF字节差异；不能把审计算术通过写成Q1科学通过。MD SHA为
+1e5602615a23609c0f36bfcebadc8e8e6cef9977a956e3900c0f84eb9b4674bf，JSON SHA为
+d29f908d62d52c55e7e2f576297494da1cd4006de22cf6ecc16c94d4a6ba31c4。完整request/
+response/meta及原报告归档于.aris/traces/experiment-audit/2026-09-05_run04。
+tracker已更新DONE_WARN_Q1_FAIL，D1/dev/official未执行，V19封存不变。
+
+### 36.2 全六端来源拟合与模态表征诊断完成（2026-09-05）
+
+固定协议`docs/V19_GENERALIZATION_DIAGNOSIS_PROTOCOL_2026-09-05.md`和脚本先于
+执行提交，source3edb0f9，14:08:51在screen24879启动，329.784541秒完成。
+14:16:20观测进程已结束、GPU空闲。全部六个最终模型严格重建，18756次triplet
+只读前向，模型state/权重文件不变；全部原五路heldout AP/Rank与Q1精确相等。
+optimizer0、checkpoint writes0、dev0、official0。完整source/heldout结果与全部
+3×3模态对表见`results/TRIFUSION_RGBNT201_V19_GENERALIZATION_DIAGNOSIS_2026-09-05.md`。
+
+各fold94-source含14跨camera身份，47-heldout含7；来源的所有七个分类头准确率
+和fused检索mAP均100%，并非训练身份拟合失败。对照来源三个专家同模态最近
+cosine margin分别+.162041/+.191277/+.155974，heldout为-.052331/-.067698/
+-.051115。跨模态margin在source/heldout及两个端均为负；完整统计覆盖所有
+有向模态对，不挑选RGB/TI单一方向。这显示来源拟合与身份泛化有明显落差。
+
+但原concat距离只比较对应模态；独立正交旋转能改变跨模态cosine而不改变该
+部署距离。因此不能断言模态方向不一致是融合失败的唯一原因。后继可检验
+“每专家内部的真实身份跨模态约束是否改善泛化”，不强迫不同专家相互对齐，
+且必须另行预注册完整配对训练。尚未启动新训练，无新的开发/官方成绩。
+
+原始诊断47990970字节，SHA0e40093688ed568b7e0584672e4a74098c5fba4e57df06fba4bab1b6405adbe6，
+已与远端完整文件SHA核对；日志、启动、传输与全数组算术summary回执同存evidence。
+Q1独立审计不覆盖这项后续诊断，其独立审计待进行。公开方法参考见
+`docs/GENERALIZATION_MODULE_SOURCE_NOTES_2026-09-05.md`（SupContrast/UPCL/MixStyle），
+无移植、下载模型或额外数据训练。全局目标仍active且未达。
