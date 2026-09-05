@@ -1730,3 +1730,23 @@ RGBNT100顺序进行；10:46远端MSVR310.zip已有175865856字节，此时尚�
 后续先检查原会话和文件，不重复下载；传完须核对流SHA与远端文件SHA、查看
 zip目录与解压空间，再落到data目录并核实配对结构。当前不能宣称两个数据集
 已安装或训练。数据传输不等于官方检索评价，未新增官方测试指标访问。
+
+### 32.1 MSVR310已安装，RGBNT100传输继续
+
+MSVR310内存中转603.10秒完成，491186967字节，流SHA与远端完整文件SHA一致：
+`c6b15d61fdee6c34e6d25e5acbf103586dd46ee76138874652d92c4404f3359f`。
+ZIP CRC全部通过，18970个archive entry、解压512942463字节，已原样解压到
+`/root/autodl-tmp/trifusion-v2/data/MSVR310`，未更改原始图像。
+
+按现有loader使用的目录逐身份核对vis/ni/th文件名集合完全一致：
+
+| 目录 | 身份目录数 | 完整三模态triplet数 |
+|---|---:|---:|
+| bounding_box_train | 155 | 1032 |
+| query3 | 52 | 591 |
+| bounding_box_test | 155 | 1055 |
+
+安装回执`evidence/msvr310_dataset_install_20260905.json`。仅文件与配对结构校验，
+训练0、检索评估0。RGBNT100由同一session97866继续中转，预计约30余分钟，
+完成回执持续写入本地`.codex_tmp/trifusion_cross_dataset_transfer_20260905.json`；
+必须先确认该数据集的完成记录再解压，不以文件存在或旧进度猜测完成。

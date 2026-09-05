@@ -15,6 +15,13 @@
 - Artifact root: `/root/autodl-tmp/trifusion-v2/artifacts`
 - W&B: false
 
+- MSVR310 was installed on 2026-09-05 from the ICPL-ReID author link and
+  SHA/ZIP-CRC/modality-pair verified: train1032/query3 591/gallery1055 triplets.
+  It has no project training or retrieval-evaluation result yet. RGBNT100
+  transfer is active in local exec session97866; inspect its existing handle
+  and receipt before downloading or extracting again. Keep RGBNT201 as the
+  active model experiment until its fixed main gate is resolved.
+
 ## Research provenance
 
 - Implementation base: official DeMo repository, AAAI 2025, MIT licensed.
