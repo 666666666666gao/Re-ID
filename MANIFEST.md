@@ -620,3 +620,6 @@
 | 2026-09-05 22:04 | /run-experiment | evidence/trifusion_v23_launch_20260905.json | evidence | Original PID44684 launched M0 and conditional complete Q1, no scientific result yet |
 
 | 2026-09-05 22:14 | /run-experiment | results/TRIFUSION_RGBNT201_V23_SPECTRAL_ADAPTER_M0_2026-09-05.md | evidence | Complete M0 PASS; 54 preflight forwards and116 real updates; original Q1 running |
+
+| 2026-09-05 22:22 | /run-experiment | tools/audit_v23_terminal_arrays.py | implementation | Prepared full terminal metric/loss/parameter/bootstrap verifier, not executed on V23 terminal yet |
+| 2026-09-05 22:22 | /run-experiment | tools/verify_v23_terminal_files.py; tools/report_v23_complete_comparison.py | implementation | Prepared whole-file verification and complete six-endpoint comparison helpers |

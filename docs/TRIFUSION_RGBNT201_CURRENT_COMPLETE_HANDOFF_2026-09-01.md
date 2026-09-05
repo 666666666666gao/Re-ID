@@ -2814,3 +2814,18 @@ M0快照343499字节 SHAb662bf6420f7f5dc6f92fd0d93d00b2eabfdb3aee4e70af34d694658
 对应log83703字节 SHA48303a40fd7ff82e4a0afa646729e4b7bf2a7f3e3b3e29f2586bcf0ea83029bf。
 这是含明确非终态训练日志的source-only工程证据，不是检索改进。
 独立M0审计待完成；M0通过不改变五项Q1科学门，不允许D1/dev/official。
+
+
+### 40.4 M0独立审计派发与终态核验准备（2026-09-05）
+
+22:16已将39份完整M0/T0/来源/计划/代码工件交GPT-5.5 xhigh独立审计，
+trace run12，agent /root/audit_v23_m0。输入SHA保持冻结，审计报告尚未返回。
+实际四份执行器inline源码已归档，终态Q1不由M0工程审计替代。
+
+终态辅助工具已准备且AST/CLI help通过，尚未在终态数据上执行：
+tools/verify_v23_terminal_files.py核对完整文件/六receipt/执行Git blob，
+tools/audit_v23_terminal_arrays.py复算全部标签mask、六端五路、loss分量、21身份Bootstrap及五门，
+tools/report_v23_complete_comparison.py生成全部三fold×两端×五路/21身份/六训练绑定完整比较。
+V23适配参数差、额外反向计算和复用OOF限制已写入结果模板。
+准备状态见evidence/trifusion_v23_terminal_helpers_prepared_20260905.json；
+不能把AST/CLI help称为终态数值或文件核验成功。
