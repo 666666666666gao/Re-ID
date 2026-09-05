@@ -3057,3 +3057,34 @@ evidence/trifusion_msvr310_source_label_support_20260906.json。
 车辆下一步需要登记独立 source/held-out、横向共享几何、scene 过滤及新的 Signal 基线；
 本节没有启动车辆模型、确定未合格候选推广、加入新损失或执行消融。
 MSVR310/RGBNT100 项目训练和检索次数仍为0，原 RGBNT201 总目标未达状态不变。
+
+
+### 41.4 V24 第一折固定终态为负，继续原剩余四端（2026-09-06 01:53）
+
+01:53:22 原 PID52030 仍在运行，三折六端预检及完整M0均通过，Q1已完成第一对共40epoch/1160更新。
+第一折1000完整gallery、190query：fused ordinary_two_view 72.72132545325914 →
+environment_identity_prototype 72.59618137737564，增益-0.1251440758834974 pp。
+CNN/T/M分别+0.09201704604836891/-0.19233788066681257/-0.4895198885976413。
+两端baseline_only均68.76764248141828，fused Rank-1均73.15789473684211。
+首折已使“每折fused均非负”的必要门不成立；不能晋级，但仍执行完整剩余四端并保存全部正负结果。
+
+全部五输出已由190条原始AP/Rank复算；40个epoch与日志逐项相同。
+两端580步完整sample_order SHA相同，20epoch的108个原型年龄/更新计数与纯标签采样重放精确一致。
+每端正对259840，其中跨camera21396，占8.23429802955665%，为第一折覆盖统计。
+580批有540批只含1组跨camera身份；不能把该折数据冒充三折原8.070791%的新全量观察。
+记录详见 refine-logs/v24/PROGRESS_20260906_015322.md 和
+evidence/trifusion_v24_fold0_progress_verification_20260906.json。
+原始快照SHA3b63e4277e1dc84c36ece2b957b9177b40c52a5dd754f0a3fcadc00b019744a0；
+原日志SHA53ab212512b977f9267e2364820a58126c9a371c42d465eee8bdb92fc65744b1。
+完整三折Q1尚未结束，M0独立审计仍运行，二者范围分开。
+按40epoch均值64.0445秒和剩余批数，第二对预计02:37、全终态约03:20–03:35；不是新实测成绩。
+
+### 41.5 SNR 固定开源实现的机制与边界（2026-09-06）
+
+作者CVPR2020主页code链接指向microsoft/SNR，已固定commit f3d51b5e3525fe5e1ea364fafdf0e4cc60b1362b。
+当前287文件的树与六份源码/说明文本已取得并逐Gitblob核验；未取得权重或数据、未执行源码。
+分类入口为后续扩展论文的PACS/ResNet18，使用IN+通道门控残差回补，
+以及分类概率熵SoftMargin约束。不能把该分类损失或代码可用性当成已复现CVPR2020 ReID度量监督或CLIP版本。
+源文本与MIT许可证证据见 evidence/snr_source_text_inspection_20260906.json，
+机制及固定源码链接见 docs/SNR_CODE_MECHANISM_AND_SCOPE_2026-09-06.md。
+这是后继研究准备，没有向V24加入SNR或改写其封存规则，也未决定正式后继版本。
