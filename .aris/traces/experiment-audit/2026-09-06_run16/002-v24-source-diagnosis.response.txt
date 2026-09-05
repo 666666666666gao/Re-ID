@@ -1,0 +1,45 @@
+Follow-up completed. I rewrote only the two originally permitted root report files:
+
+- `C:/Users/gb/.trifusion_github_publish_22c3bee/EXPERIMENT_AUDIT_V24_SOURCE_DIAGNOSIS.md`
+- `C:/Users/gb/.trifusion_github_publish_22c3bee/EXPERIMENT_AUDIT_V24_SOURCE_DIAGNOSIS.json`
+
+Actual final verdicts are unchanged:
+
+- Overall: `WARN`
+- Integrity status: `warn`
+- Evaluation type: `real_gt_seen_source_descriptive_geometry_not_unknown_identity_validation`
+- A Ground Truth And Scope: `PASS`
+- B Mathematics: `PASS`
+- C Provenance And Execution: `WARN`
+- D Dead Code And Metric Type: `PASS`
+- E Claim Scope: `WARN`
+- F Conclusion: `WARN`
+
+Corrected finding: round 1 overstated the reviewer provenance. The preserved dispatch records support: `gpt-5.5` with `xhigh` was requested, `/root/audit_v24_source` was accepted, and no independent backend identity attestation exists. They do not support a claim that GPT-5.5 was unavailable or “requested but not used.” The no-delegation constraint supports only that this auditor did not create further child agents. GPT-5.5, if resolved, is GPT-lineage and therefore not cross-family relative to a GPT-lineage executor.
+
+Follow-up verification performed:
+
+- Read the follow-up checklist, round-1 request, dispatch observation, preserved round-1 report MD/JSON, raw response, original audit request, and input manifest.
+- Rechecked all 27 original input hashes against local bytes.
+- Input hash mismatches: none.
+- Hash recheck runtime: `0.029725799977313727` seconds.
+- Did not repeat saved-array arithmetic; retained round-1 arithmetic result because the follow-up scope was provenance metadata.
+
+Retained round-1 arithmetic result:
+
+- Local arithmetic runtime: `0.346868299995549` seconds.
+- Max distribution/per-identity mean discrepancy: `1.4210854715202004e-14`.
+- Max probability/FP32 algebra discrepancy: `2.987195324433145e-08`.
+- Claim-check failures: none.
+
+Final report hashes:
+
+- `EXPERIMENT_AUDIT_V24_SOURCE_DIAGNOSIS.md`
+  - bytes: `16340`
+  - sha256: `c5900e3202167233c4450cb5689b4b2f572e0416ffe5260a3bc01c49e05a4a80`
+
+- `EXPERIMENT_AUDIT_V24_SOURCE_DIAGNOSIS.json`
+  - bytes: `25185`
+  - sha256: `de22c8edd47776dfadb4636d664000e677e52d9863210ec24fbbf6c58dde1617`
+
+The JSON report parses successfully and still contains the required fields: `date`, `auditor`, `overall_verdict`, `integrity_status`, `evaluation_type`, `checks`, `claims`, `recomputation`, `limitations`, and `input_file_sha256`.

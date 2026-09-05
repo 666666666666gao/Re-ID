@@ -1,0 +1,472 @@
+{
+  "date": "2026-09-06",
+  "auditor": "Codex same-family read-only audit; GPT-5.5 xhigh was requested but not used because this audit request explicitly prohibited delegation",
+  "overall_verdict": "WARN",
+  "integrity_status": "warn",
+  "evaluation_type": "real_gt_seen_source_descriptive_geometry_not_unknown_identity_validation",
+  "checks": {
+    "A_ground_truth_and_scope": {
+      "status": "PASS",
+      "summary": "Real RGBNT201 train-source identity and camera labels are used; each fold excludes heldout identities and keeps fold-local source records only. No heldout image or crossfold distance is used in the source diagnosis path.",
+      "evidence": [
+        "tools/run_signal_baseline_dev.py:27-54",
+        "tools/build_v12_complete_path_oof_targets.py:29-56",
+        "tools/build_v12_complete_path_oof_targets.py:156-173",
+        "tools/diagnose_v24_source_prototypes.py:175-203",
+        "tools/diagnose_v24_source_prototypes.py:190-237",
+        "evidence/trifusion_v24_source_diagnostic_20260906.json:2-18",
+        "evidence/trifusion_v24_source_diagnostic_20260906.json:850431-850433"
+      ],
+      "verdict_detail": "Pass for source-diagnosis scope; not a pass for unknown-identity validation."
+    },
+    "B_mathematics": {
+      "status": "PASS",
+      "summary": "Saved source-record distributions, per-identity means, CE/probability relationships, combined CE, masks, indices, cosine margins, prototype comparisons and all nine summary rows recompute within numerical tolerance.",
+      "evidence": [
+        "tools/diagnose_v24_source_prototypes.py:27-84",
+        "tools/diagnose_v24_source_prototypes.py:87-125",
+        "modeling/trifusion/source_prototype_v24.py:12-49",
+        "tools/audit_v24_source_diagnostic_arrays.py:24-140",
+        "results/TRIFUSION_RGBNT201_V24_SOURCE_PROTOTYPE_DIAGNOSIS_2026-09-06.md:28-38",
+        "evidence/trifusion_v24_source_diagnostic_array_verification_20260906.json:8-126"
+      ],
+      "verdict_detail": "Pass for saved-array arithmetic; feature and distance regeneration was not performed."
+    },
+    "C_provenance_and_execution": {
+      "status": "WARN",
+      "summary": "Local listed-file hashes match the audit input manifest, and launch/log/exit/intake receipts are consistent. Warning is retained because remote binary checkpoints, memory tensors, CLIP weights, feature tensors and images were not locally loaded, and one local protocol file differs byte-for-byte from the remote Q1 source receipt due CRLF line endings.",
+      "evidence": [
+        ".aris/traces/experiment-audit/2026-09-06_run16/input_file_sha256.json:2-109",
+        "evidence/trifusion_v24_source_diagnostic_launch_20260906.json:1-43",
+        "evidence/trifusion_v24_source_diagnostic_launch_wrapper_20260906.py:1-12",
+        "evidence/trifusion_v24_source_diagnostic_run_20260906.log:16-97",
+        "evidence/trifusion_v24_source_diagnostic_exit_20260906.txt:1",
+        "evidence/trifusion_v24_source_diagnostic_intake_20260906.json:1-30",
+        "tools/diagnose_v24_source_prototypes.py:162-188",
+        "tools/diagnose_v24_source_prototypes.py:210-224",
+        "tools/diagnose_v24_source_prototypes.py:229-243",
+        "tools/diagnose_v24_source_prototypes.py:262-270",
+        "evidence/trifusion_v24_q1_terminal_file_verification_20260906.json:1-9",
+        "evidence/trifusion_v24_q1_terminal_file_verification_20260906.json:242-282",
+        "evidence/trifusion_v24_q1_terminal_file_verification_20260906.json:497-512"
+      ],
+      "source_diagnostic_counts_from_code": {
+        "batch_forward_calls": 153,
+        "source_record_forwards": 18756,
+        "model_extractions": 9,
+        "optimizer_updates": 0,
+        "backward_calls": 0,
+        "checkpoint_writes": 0,
+        "diagnostic_json_writes": 4,
+        "wrapper_receipt_writes": [
+          "launch json",
+          "log",
+          "exit file"
+        ]
+      },
+      "line_ending_note": {
+        "local_protocol_raw_bytes": 5685,
+        "local_protocol_raw_sha256": "f7f6f8a906c06fec4918929fb5c17abfc197986b99e017aca1d3e15831c1541d",
+        "local_protocol_lf_bytes": 5376,
+        "local_protocol_lf_sha256": "d916e7daaa1d55b179c1ec77e93128b6e6a8d1526adc9eac060ea8e733881946",
+        "q1_remote_protocol_sha256": "d916e7daaa1d55b179c1ec77e93128b6e6a8d1526adc9eac060ea8e733881946"
+      }
+    },
+    "D_dead_code_and_metric_type": {
+      "status": "PASS",
+      "summary": "Claimed statistics are emitted by executed source-diagnosis paths and stored in the diagnostic JSON. The metric type is real dataset labels on seen-source descriptive geometry and in-sample prototype classification, not unknown-identity validation.",
+      "evidence": [
+        "tools/diagnose_v24_source_prototypes.py:244-253",
+        "tools/diagnose_v24_source_prototypes.py:261",
+        "tools/diagnose_v24_source_prototypes.py:270",
+        "evidence/trifusion_v24_source_diagnostic_20260906.json:4",
+        "evidence/trifusion_v24_source_diagnostic_20260906.json:18",
+        "results/TRIFUSION_RGBNT201_V24_SOURCE_PROTOTYPE_DIAGNOSIS_2026-09-06.md:40-43",
+        "results/TRIFUSION_RGBNT201_V24_SOURCE_PROTOTYPE_DIAGNOSIS_2026-09-06.md:68-78"
+      ],
+      "metric_classification": "real_gt_seen_source_in_sample_geometry",
+      "self_inclusion": "Fresh prototypes include scored source records and this is disclosed.",
+      "self_match": "Sample positive geometry excludes query self; local recomputation found zero positive self-matches."
+    },
+    "E_claim_scope": {
+      "status": "WARN",
+      "summary": "The main descriptive source claims are supported, but all claims must retain clean-view, seen-source, in-sample qualifiers. The observations do not establish unknown-identity validation, dev/official performance, or causal explanations for heldout Q1 behavior.",
+      "evidence": [
+        "results/TRIFUSION_RGBNT201_V24_SOURCE_PROTOTYPE_DIAGNOSIS_2026-09-06.md:7-9",
+        "results/TRIFUSION_RGBNT201_V24_SOURCE_PROTOTYPE_DIAGNOSIS_2026-09-06.md:28-38",
+        "results/TRIFUSION_RGBNT201_V24_SOURCE_PROTOTYPE_DIAGNOSIS_2026-09-06.md:59-65",
+        "results/TRIFUSION_RGBNT201_V24_SOURCE_PROTOTYPE_DIAGNOSIS_2026-09-06.md:68-78",
+        "evidence/trifusion_v24_q1_seed42_6a4ac2c.json:3",
+        "evidence/trifusion_v24_q1_seed42_6a4ac2c.json:46"
+      ],
+      "verdict_detail": "Warn for possible overuse outside the report's own stated boundaries; no unsupported numeric source claim was found."
+    },
+    "F_conclusion": {
+      "status": "WARN",
+      "summary": "No evidence was found for fake ground truth, self-normalized scoring, phantom rows, dead metric reporting, heldout leakage inside the source diagnosis, crossfold distance use, or undisclosed sample self-match. Overall remains WARN because this was same-family and did not regenerate features/distances from remote binary inputs.",
+      "evidence": [
+        "tools/diagnose_v24_source_prototypes.py:128-141",
+        "tools/diagnose_v24_source_prototypes.py:159-188",
+        "tools/diagnose_v24_source_prototypes.py:262-270",
+        "evidence/trifusion_v24_source_diagnostic_array_verification_20260906.json:1-7",
+        "evidence/trifusion_v24_source_diagnostic_log_verification_20260906.json:1-12"
+      ]
+    }
+  },
+  "claims": [
+    {
+      "id": "C1",
+      "claim": "All nine source models were diagnosed read-only with 18756 source record forwards and 153 batch forwards.",
+      "impact": "supported"
+    },
+    {
+      "id": "C2",
+      "claim": "Fold-local source memberships are 94 identities, 108 identity-camera pairs and 2126/2075/2051 records.",
+      "impact": "supported"
+    },
+    {
+      "id": "C3",
+      "claim": "The source diagnosis did not train, backpropagate, write checkpoints, or touch heldout/dev/official images.",
+      "impact": "supported"
+    },
+    {
+      "id": "C4",
+      "claim": "Initialization, checkpoint, memory bindings and strict reload/state-preservation checks happened in the remote source diagnostic.",
+      "impact": "qualified",
+      "qualifier": "Verified through code, logs and receipts; no local binary tensor replay was performed."
+    },
+    {
+      "id": "C5",
+      "claim": "Prototype CE, accuracy, distributions, per-identity means and nine-row summary numbers are correct.",
+      "impact": "supported",
+      "qualifier": "Supported for saved JSON arithmetic."
+    },
+    {
+      "id": "C6",
+      "claim": "Clean source global/environment prototype correctness is 100 percent for all nine models.",
+      "impact": "qualified",
+      "qualifier": "Seen-source, clean-view, in-sample prototype classification only."
+    },
+    {
+      "id": "C7",
+      "claim": "Nonself sample positive margins are strictly positive and sample geometry does not rely on self-match positives.",
+      "impact": "supported"
+    },
+    {
+      "id": "C8",
+      "claim": "Fresh source prototypes include the scored source records.",
+      "impact": "supported",
+      "qualifier": "This is disclosed and limits prototype-classification interpretation."
+    },
+    {
+      "id": "C9",
+      "claim": "Cached/fresh cosine differences describe saved-memory versus clean-view fresh-mean disagreement.",
+      "impact": "qualified",
+      "qualifier": "Do not interpret the difference as purely stale-cache behavior."
+    },
+    {
+      "id": "C10",
+      "claim": "Sample negatives being closer than prototype negatives is evidence about sample-level competition.",
+      "impact": "qualified",
+      "qualifier": "Descriptive association only; not causal proof of heldout Q1 behavior."
+    },
+    {
+      "id": "C11",
+      "claim": "Q1 remains Q1_FAIL and the source diagnosis does not upgrade dev/official or next-phase qualification.",
+      "impact": "supported"
+    }
+  ],
+  "recomputation": {
+    "local_arithmetic_runtime_seconds": 0.346868299995549,
+    "existing_verifier_runtime_seconds": 1.2713813000009395,
+    "numpy_version": "2.5.2",
+    "local_model_tensor_image_loads": 0,
+    "diagnostic_sha256": "a66f17a450fb0eca2404fd23721545eed0dd7b061550230a7d51368da24fa271",
+    "q1_sha256": "7e43c38529598de5ca04cbe67502c60f60d26f8c6d8e20232d11254a0e2aa86a",
+    "max_distribution_or_mean_error": 1.4210854715202004e-14,
+    "max_probability_or_float32_algebra_error": 2.987195324433145e-08,
+    "claim_check_failures": [],
+    "all_source_record_arrays_checked": 18756,
+    "prototype_identity_mean_rows_checked": 1692,
+    "not_independently_regenerated": [
+      "raw image transforms",
+      "model forward features",
+      "pairwise feature distances",
+      "torch checkpoint tensors",
+      "prototype memory tensors"
+    ],
+    "folds": [
+      {
+        "fold": 0,
+        "source_records": 2126,
+        "source_identities": 94,
+        "identity_camera_pairs": 108,
+        "cross_camera_source_queries": 381,
+        "cross_camera_source_identities": 14
+      },
+      {
+        "fold": 1,
+        "source_records": 2075,
+        "source_identities": 94,
+        "identity_camera_pairs": 108,
+        "cross_camera_source_queries": 392,
+        "cross_camera_source_identities": 14
+      },
+      {
+        "fold": 2,
+        "source_records": 2051,
+        "source_identities": 94,
+        "identity_camera_pairs": 108,
+        "cross_camera_source_queries": 369,
+        "cross_camera_source_identities": 14
+      }
+    ],
+    "all_model_rows": [
+      {
+        "fold": 0,
+        "model": "initial",
+        "source_records": 2126,
+        "cross_camera_source_queries": 381,
+        "cached_combined_ce": 0.00045686481512634736,
+        "fresh_combined_ce": 0.00045686481512634736,
+        "cached_global_accuracy_percent": 100.0,
+        "fresh_global_accuracy_percent": 100.0,
+        "sample_hardest_positive_margin_negative_records": 0,
+        "sample_negative_minus_prototype_negative_cosine_mean": 0.03280672494073242,
+        "cached_fresh_pair_cosine_mean": 1.0000000292504274,
+        "hardest_positive_minus_negative_min": 0.1051790714263916
+      },
+      {
+        "fold": 0,
+        "model": "ordinary_two_view",
+        "source_records": 2126,
+        "cross_camera_source_queries": 381,
+        "cached_combined_ce": 0.0003814964633760985,
+        "fresh_combined_ce": 0.0002794679899386141,
+        "cached_global_accuracy_percent": 100.0,
+        "fresh_global_accuracy_percent": 100.0,
+        "sample_hardest_positive_margin_negative_records": 0,
+        "sample_negative_minus_prototype_negative_cosine_mean": 0.03311606425781465,
+        "cached_fresh_pair_cosine_mean": 0.9806256023822006,
+        "hardest_positive_minus_negative_min": 0.13932597637176514
+      },
+      {
+        "fold": 0,
+        "model": "environment_identity_prototype",
+        "source_records": 2126,
+        "cross_camera_source_queries": 381,
+        "cached_combined_ce": 0.0003370993684120934,
+        "fresh_combined_ce": 0.0002463427461121496,
+        "cached_global_accuracy_percent": 100.0,
+        "fresh_global_accuracy_percent": 100.0,
+        "sample_hardest_positive_margin_negative_records": 0,
+        "sample_negative_minus_prototype_negative_cosine_mean": 0.0341412932073184,
+        "cached_fresh_pair_cosine_mean": 0.9804147647486792,
+        "hardest_positive_minus_negative_min": 0.1489870548248291
+      },
+      {
+        "fold": 1,
+        "model": "initial",
+        "source_records": 2075,
+        "cross_camera_source_queries": 392,
+        "cached_combined_ce": 0.0005138726682238791,
+        "fresh_combined_ce": 0.0005138726682238791,
+        "cached_global_accuracy_percent": 100.0,
+        "fresh_global_accuracy_percent": 100.0,
+        "sample_hardest_positive_margin_negative_records": 0,
+        "sample_negative_minus_prototype_negative_cosine_mean": 0.03181996825229691,
+        "cached_fresh_pair_cosine_mean": 1.000000035321271,
+        "hardest_positive_minus_negative_min": 0.0758739709854126
+      },
+      {
+        "fold": 1,
+        "model": "ordinary_two_view",
+        "source_records": 2075,
+        "cross_camera_source_queries": 392,
+        "cached_combined_ce": 0.0004887065405014857,
+        "fresh_combined_ce": 0.00035776411027665787,
+        "cached_global_accuracy_percent": 100.0,
+        "fresh_global_accuracy_percent": 100.0,
+        "sample_hardest_positive_margin_negative_records": 0,
+        "sample_negative_minus_prototype_negative_cosine_mean": 0.03222978886351528,
+        "cached_fresh_pair_cosine_mean": 0.9818223113263095,
+        "hardest_positive_minus_negative_min": 0.09895896911621094
+      },
+      {
+        "fold": 1,
+        "model": "environment_identity_prototype",
+        "source_records": 2075,
+        "cross_camera_source_queries": 392,
+        "cached_combined_ce": 0.00041588341666130255,
+        "fresh_combined_ce": 0.0003041353029130919,
+        "cached_global_accuracy_percent": 100.0,
+        "fresh_global_accuracy_percent": 100.0,
+        "sample_hardest_positive_margin_negative_records": 0,
+        "sample_negative_minus_prototype_negative_cosine_mean": 0.03308863160121872,
+        "cached_fresh_pair_cosine_mean": 0.9815618616563302,
+        "hardest_positive_minus_negative_min": 0.10659545660018921
+      },
+      {
+        "fold": 2,
+        "model": "initial",
+        "source_records": 2051,
+        "cross_camera_source_queries": 369,
+        "cached_combined_ce": 0.0003682140546353867,
+        "fresh_combined_ce": 0.0003682140546353867,
+        "cached_global_accuracy_percent": 100.0,
+        "fresh_global_accuracy_percent": 100.0,
+        "sample_hardest_positive_margin_negative_records": 0,
+        "sample_negative_minus_prototype_negative_cosine_mean": 0.03135069680179055,
+        "cached_fresh_pair_cosine_mean": 1.0000000413921144,
+        "hardest_positive_minus_negative_min": 0.11534762382507324
+      },
+      {
+        "fold": 2,
+        "model": "ordinary_two_view",
+        "source_records": 2051,
+        "cross_camera_source_queries": 369,
+        "cached_combined_ce": 0.0003407959553337545,
+        "fresh_combined_ce": 0.0002472327022996114,
+        "cached_global_accuracy_percent": 100.0,
+        "fresh_global_accuracy_percent": 100.0,
+        "sample_hardest_positive_margin_negative_records": 0,
+        "sample_negative_minus_prototype_negative_cosine_mean": 0.03207579737520985,
+        "cached_fresh_pair_cosine_mean": 0.9793749462675164,
+        "hardest_positive_minus_negative_min": 0.1377069354057312
+      },
+      {
+        "fold": 2,
+        "model": "environment_identity_prototype",
+        "source_records": 2051,
+        "cross_camera_source_queries": 369,
+        "cached_combined_ce": 0.00031614344997260774,
+        "fresh_combined_ce": 0.00022923458114903586,
+        "cached_global_accuracy_percent": 100.0,
+        "fresh_global_accuracy_percent": 100.0,
+        "sample_hardest_positive_margin_negative_records": 0,
+        "sample_negative_minus_prototype_negative_cosine_mean": 0.03260468835077421,
+        "cached_fresh_pair_cosine_mean": 0.9792815308879922,
+        "hardest_positive_minus_negative_min": 0.15444821119308472
+      }
+    ]
+  },
+  "limitations": [
+    "No GPT-5.5 xhigh cross-family reviewer was spawned because the audit request prohibited delegation.",
+    "No model, checkpoint, memory tensor, feature tensor or image was loaded locally.",
+    "No feature vectors or pairwise distances were independently regenerated.",
+    "Remote binary inputs are verified through source code paths, saved receipts and terminal file verification, not local tensor replay.",
+    "The local protocol JSON raw bytes use CRLF and differ from the LF remote Q1 source receipt, although LF normalization matches the remote hash.",
+    "This conclusion applies only to the registered source diagnosis, not to Q1 scientific qualification, D1, dev, official test or future research claims."
+  ],
+  "input_file_sha256_verified_against_local_bytes": true,
+  "input_file_sha256": {
+    "tools/diagnose_v24_source_prototypes.py": {
+      "bytes": 17998,
+      "sha256": "aedaa9a1366a37ebcf65c3a24a1a8708c67971cff9163ff82f23565ddab148a8"
+    },
+    "tools/audit_v24_source_diagnostic_arrays.py": {
+      "bytes": 11280,
+      "sha256": "83dda9faa86af47e42c1d2766db50f354740fca5d0ac9ccc91c5ec71bb1400b6"
+    },
+    "refine-logs/v24/SOURCE_PROTOTYPE_DIAGNOSTIC_PLAN_20260906.md": {
+      "bytes": 2703,
+      "sha256": "547e47d9b1ba9c7ec216aea71686cf175127bc378897a9a890113df6aa9a8a64"
+    },
+    "refine-logs/v24/SOURCE_PROTOTYPE_DIAGNOSTIC_PLAN_20260906.json": {
+      "bytes": 3925,
+      "sha256": "b66e3fd49e3f6645a7ef4e9ce52ef358ec7a828615cc72d3758f5bd1f3a2c41d"
+    },
+    "results/TRIFUSION_RGBNT201_V24_SOURCE_PROTOTYPE_DIAGNOSIS_2026-09-06.md": {
+      "bytes": 6507,
+      "sha256": "b3dee779323980c2063f0b368e512c1f677f9891a8d18ebca09dce0ff7e6f3cb"
+    },
+    "evidence/trifusion_v24_source_diagnostic_launch_20260906.json": {
+      "bytes": 2293,
+      "sha256": "de6947e06a52d3f08a8c4a05841e735e62503d0234ff34551d922e144045412e"
+    },
+    "evidence/trifusion_v24_source_diagnostic_launch_wrapper_20260906.py": {
+      "bytes": 2617,
+      "sha256": "6b6ce588c5839f99302e437feddce94314050db2676e1a77cf7e29291bc2b069"
+    },
+    "evidence/trifusion_v24_source_diagnostic_original_launch_20260906.json": {
+      "bytes": 2119,
+      "sha256": "ae29fd5c5bc3d607cf8fba679424dd1994ae9c703cef0953d107507bc1fea64e"
+    },
+    "evidence/trifusion_v24_source_diagnostic_20260906.json": {
+      "bytes": 25284903,
+      "sha256": "a66f17a450fb0eca2404fd23721545eed0dd7b061550230a7d51368da24fa271"
+    },
+    "evidence/trifusion_v24_source_diagnostic_run_20260906.log": {
+      "bytes": 5996,
+      "sha256": "7bd45b500d16f173a160b5bfce6610bae70358dd43602bd5e5704213237945e3"
+    },
+    "evidence/trifusion_v24_source_diagnostic_exit_20260906.txt": {
+      "bytes": 2,
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+    },
+    "evidence/trifusion_v24_source_diagnostic_intake_20260906.json": {
+      "bytes": 1886,
+      "sha256": "4d6a134e4294761f55203f5ae11b7fd672e2418b8e8f98b91e88a3992c20c9d9"
+    },
+    "evidence/trifusion_v24_source_diagnostic_array_verification_20260906.json": {
+      "bytes": 5719,
+      "sha256": "238cec72aa4f056db711b60ed81717cb84c8bffaf8dbfbd90f80b0bb23e34156"
+    },
+    "evidence/trifusion_v24_source_diagnostic_log_verification_20260906.json": {
+      "bytes": 648,
+      "sha256": "20b1e5471ec26dc123e0a7d1641b0af39b4a7e4f746049b7332f4d51e035991e"
+    },
+    "evidence/trifusion_v24_q1_seed42_6a4ac2c.json": {
+      "bytes": 4061937,
+      "sha256": "7e43c38529598de5ca04cbe67502c60f60d26f8c6d8e20232d11254a0e2aa86a"
+    },
+    "evidence/trifusion_v24_q1_terminal_file_verification_20260906.json": {
+      "bytes": 26452,
+      "sha256": "9a73484dc0b896b0d773e367d24763dd687c8fc1101463a18899cdea0e2e9d7a"
+    },
+    "configs/RGBNT201/TriFusion-signal-preserving-v24-source-prototype-rtx3090.yml": {
+      "bytes": 3428,
+      "sha256": "8e025891cdbd2fca48f6c0b24b88f583540a3760ea624e24169dddd7aed148ba"
+    },
+    "tools/train_signal_preserving_v24.py": {
+      "bytes": 31335,
+      "sha256": "7ee3200f86758b7426fa69d8b67e4ad004417a5da0ce879841bce78ab041dd3e"
+    },
+    "modeling/trifusion/source_prototype_v24.py": {
+      "bytes": 4229,
+      "sha256": "703f2393aaec83a2276497ededddb6ad888f305cb5b93f3bdf600953b5e6ebf7"
+    },
+    "tools/build_v12_complete_path_oof_targets.py": {
+      "bytes": 32723,
+      "sha256": "fc13354b1065c46677122ee9cf63816087facca4e0e98ec5e6e2fb0dece141e4"
+    },
+    "tools/train_signal_preserving_v17.py": {
+      "bytes": 61124,
+      "sha256": "333886d16f73987accddb70b0780661bb9400b8afd04af01b57e188d34e5228d"
+    },
+    "tools/train_signal_preserving_v18.py": {
+      "bytes": 17540,
+      "sha256": "f6bdda4631d710d0b6db5fe2a8df124d8dcbd294cb54adcf3ec261d523e96cf8"
+    },
+    "tools/train_signal_preserving_v19.py": {
+      "bytes": 26363,
+      "sha256": "5f000d3d3abe9636cae97e292db2c63a3a20f349c125dfe4b27bd3fca95bb9c5"
+    },
+    "tools/run_signal_preserving_v5.py": {
+      "bytes": 65190,
+      "sha256": "e162184f68778b4991db0f97f26c5fda273b2ad2f7c8db2bbb2d53775eb717e5"
+    },
+    "modeling/trifusion/signal_preserving_v8.py": {
+      "bytes": 28592,
+      "sha256": "97a7b5fe6dab882c2ed92ed1db95b9a8f48eae1d99a3a9b145b0cdfc4b8cefbc"
+    },
+    "modeling/trifusion/signal_preserving_v8_builder.py": {
+      "bytes": 3900,
+      "sha256": "8afb028957ecff1a0a26497f7d0460bc240b0f8612a3c476b52a9a6667a3049d"
+    },
+    "protocols/rgbnt201_dev_v1.json": {
+      "bytes": 5685,
+      "sha256": "f7f6f8a906c06fec4918929fb5c17abfc197986b99e017aca1d3e15831c1541d"
+    }
+  }
+}

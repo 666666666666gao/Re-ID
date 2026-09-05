@@ -266,7 +266,8 @@
   Fold fused gains-0.125144,+0.166401,+1.359050; bootstrap lower-0.694807.
   Preserve all five outputs,3126 gallery/571 queries/21 identities and negative results.
   Whole-file remote hashes, full local JSON/NumPy metric/loss/log/sampler/memory
-  metadata verification passed. Complete Q1 independent audit is pending.
+  metadata verification passed. Complete Q1 independent audit is closed:
+  WARN / engineering PASS / scientific FAIL_FIXED_Q1_GATES (trace15, two rounds).
   Independent M0 audit remains WARN, engineering PASS, fixed M0 QUALIFIED_PASS.
   Read the complete V24 Q1 result and refine-logs/v24/EXPERIMENT_TRACKER.md.
   Both arms retain original203 trainable tensors, matched two views and seven
@@ -275,7 +276,12 @@
   No V23 adapter or later-version weights are inherited. No V24 retraining,
   loss/temperature/momentum/augmentation/sampler/epoch/LR/seed scans,
   ablations, D1/dev/official advancement. The separately registered read-only
-  source prototype diagnosis does not change weights, Q1 or qualification gates.
+  source prototype diagnosis completed9 models/18756 source records, exit0.
+  Its independent audit is WARN with arithmetic/scope checks passing (trace16).
+  Clean source prototypes classify100%; every nonself positive margin is positive.
+  This is descriptive seen-source geometry, not unknown-identity retrieval validation.
+  Both audits retain remote-binary and same-family limitations; original reports
+  and corrected metadata are preserved. No weights, Q1 or qualification gates changed.
 
 
 - V23 completed its original three folds x two endpoints x20 epochs, seed42,

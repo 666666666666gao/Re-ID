@@ -2,6 +2,8 @@
 
 ## 0. 一页结论
 
+最新状态（2026-09-06T04:03:18.863105+08:00）：V23与V24均已完成原固定Q1并封存失败；V24 fused+0.491307 mAP，五门中四项失败。V24完整Q1和source只读诊断的独立审计已闭合，均保留WARN来源限制（§41.15）。九模型clean source已充分拟合，不当作未知身份泛化；当前dev最好仍58.4050/59.3939。MSVR310三折数据协议已固定，但车辆训练/检索仍0；MixStyle仅完成代码与边界研究（§41.16）。
+
 本工程是在 DeMo 代码基座上实现的 RGB–NIR–TIR 多模态目标重识别研究分支。V17完整训练和完整gallery补评已封存为失败；其全部查询/图像/分区诊断见§30。V18完整三折两端20epoch主实验已结束（§33）：fused增益+0.921504 mAP，bootstrap下界-0.117338，未通过固定晋级条件；无D1/dev/official。MSVR310、RGBNT100均已安装核验（§32）。V17 fused相对matched weight0为-0.328915 mAP，没有D1/dev/official结果。当前最高可部署结果仍是V8 Phase-B：冻结dev fused=`58.4050 mAP / 59.3939 Rank-1`，比exact Signal高`0.3941 mAP / 1.9394 Rank-1`并超过三个专家，但仍比65 mAP门低`6.5950`，不能声称SOTA。
 
 V6 的三个候选论文级主创新点已经落到核心代码、专项测试和完整 dev 运行中；性能主门仍然失败：
@@ -3240,3 +3242,36 @@ SHA a66f17a450fb0eca2404fd23721545eed0dd7b061550230a7d51368da24fa271；完整报
 source独立审阅 /root/audit_v24_source，GPT-5.5 xhigh，27主文件、trace16，结果PENDING；
 完整Q1独立审阅 /root/audit_v24_q1、49主文件、trace15，仍PENDING。
 两套冻结输入在本次更新前全部复核SHA不变。V24 Q1_FAIL、无晋级与既有目标状态保持。
+
+### 41.15 V24 两项独立审计闭合，保留原稿与元数据更正（2026-09-06）
+
+记录时间：2026-09-06T04:03:18.863105+08:00。完整Q1整体WARN、工程PASS、科学FAIL_FIXED_Q1_GATES；
+source诊断整体WARN、数学/GT/活代码指标类型PASS，范围仍是seen-source描述性几何。
+49与27份原始输入在闭合前再次逐SHA核对一致；将变动的tracker/结果原稿先作快照，
+两轮实际请求/回复、报告原字节与SHA均保留trace15/16。
+
+Q1首轮把bootstrap种子写成20260906，第二轮按注册seed42从完整逐query数组独立重算：
+21身份/10000次、query数加权/线性2.5%分位，下界-0.6948068678403989pp，
+全部fused身份均值与下界差异0，算术0.160515秒。科学失败判定不变。
+source独立重算18756记录和1692身份均值，0.346868秒；均值/分位最大差1.42108547152e-14，
+概率/FP32代数最大差2.98719532443e-8，仍不能用clean source100%声称未知身份有效。
+
+两项审阅都请求gpt-5.5/xhigh并取得独立agent；请求/接受记录不独立证明后端身份。
+禁止子审阅者继续委派不能推出模型不可用。首轮相关过度表述已由审阅者纠正并保存原稿。
+保留CRLF/LF原字节差异、远端checkpoint/原型二进制回执依赖、没有重新生成特征或距离的限制。
+同GPT家族独立审阅不构成跨家族认证。
+
+完整报告 EXPERIMENT_AUDIT_V24_Q1.md/json 与 EXPERIMENT_AUDIT_V24_SOURCE_DIAGNOSIS.md/json；
+闭合记录 evidence/trifusion_v24_q1_audit_closure_20260906.json、
+evidence/trifusion_v24_source_diagnostic_audit_closure_20260906.json。
+V24保持Q1_FAIL：不重训/改门/扫参，不进入D1/dev/official，当前整体目标仍未达到。
+
+### 41.16 MixStyle 固定代码及深层语义边界（2026-09-06）
+
+记录时间：2026-09-06T04:03:18.863105+08:00。作者仓库commit16f7cf1fe2c7b1b3c660c72b32817ebb0545397a，
+MIT，12份纯文本85559bytes逐Gitblob核对。原模块混合detach的空间均值/标准差；
+p0.5、alpha0.1、eval不作用，无新增推理参数。crossdomain实现依赖两半batch来自两个域，
+不由算子读取域标签保证；当前域先验配置180epoch，随机配置60epoch，不能称预算匹配对照。
+原论文ReID末层混合下降和当前CLIP深语义/均值读取共同限制直接尾部接入，但不是CLIP失败实测。
+详见docs/MIXSTYLE_CODE_MECHANISM_AND_SCOPE_2026-09-06.md、
+evidence/mixstyle_source_text_inspection_20260906.json。没有登记V25或运行新模型。

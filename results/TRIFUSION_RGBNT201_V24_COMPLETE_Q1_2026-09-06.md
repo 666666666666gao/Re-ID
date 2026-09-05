@@ -126,4 +126,19 @@ ordinary_two_view的原型损失系数为0；environment_identity_prototype为1�
 - 实际执行源码：6a4ac2cd95af2ca1a9122d1f79aabd3a83e4fe33。
 - 本生成器仅处理已完成且经数值核验的JSON；不加载模型、权重张量或图像，不生成检索距离。
 - 远端文件SHA核验和独立终态审计须以各自完成的原始报告为准。
-- M0独立审计不覆盖完整Q1。此处生成数值表，不替代随后独立终态审计。
+- M0独立审计不覆盖完整Q1。此处生成数值表；后续已完成的独立终态审计见本文末节。
+
+## 独立终态审计已闭合（2026-09-06T04:03:18.863105+08:00）
+
+EXPERIMENT_AUDIT_V24_Q1.md/json：整体 WARN、工程 PASS、科学 FAIL_FIXED_Q1_GATES。
+审阅者从逐 query AP、query_indices、gallery_manifest 独立重算全部 fused 身份增益和聚类bootstrap；
+seed42、21身份、10000次，按抽中身份携带的query数加权，默认线性2.5%分位，
+下界仍-0.6948068678403989 pp，差异0；算术耗时0.160515秒。49个原始输入逐SHA一致。
+
+首轮审计JSON把种子误写为20260906；第二轮已重算并更正，原稿与原回复完整保留trace15。
+两轮也区分请求gpt-5.5/xhigh、已接受的独立agent和未独立证明的后端模型身份；
+不得据禁止继续委派推断请求的模型不可用，也不称同GPT家族审阅为跨家族认证。
+四份源码的CRLF/LF字节差异、远端checkpoint/原型二进制回执依赖及未重算距离级AP等限制保留。
+闭合证据 evidence/trifusion_v24_q1_audit_closure_20260906.json；审计时tracker和结果原稿已快照。
+
+这不改变Q1_FAIL、四门失败一门通过、无D1/dev/official资格或V24封存范围。
