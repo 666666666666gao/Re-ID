@@ -549,3 +549,5 @@
 | 2026-09-05 12:46 | /run-experiment | refine-logs/v19/EXPERIMENT_TRACKER_20260905_124646.md | evidence | M0 audit complete; Q1 unchanged and running |
 
 | 2026-09-05 12:48 | /run-experiment | refine-logs/v19/EXPERIMENT_TRACKER_20260905_124940.md | evidence | First complete paired fold, 2 of 6 endpoints; overall Q1 still RUNNING |
+
+| 2026-09-05 13:14 | /run-experiment | refine-logs/v19/EXPERIMENT_TRACKER_20260905_131521.md | evidence | Two complete paired folds; 4/6 endpoints, overall Q1 still RUNNING |

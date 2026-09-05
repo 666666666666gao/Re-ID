@@ -2030,3 +2030,22 @@ order、前8增强batch、初始state和baseline-only输出对象两端逐项相
 gallery/571query、五路数组、原固定科学门与源checkpoint终态SHA。
 下一次常规进度观察窗口12:52–12:53；按180–300秒或预计完成节点检查。
 本轮D1/dev/official访问仍为0，RGBNT100/MSVR310仍无训练和检索结果。
+
+### 35.5 V19前两折完整配对完成，进入最后一折（2026-09-05 13:14 CST）
+
+13:14:21远端实际进程18811与screen18809均存活，run_summary仍为RUNNING，
+已有fold0/1的四个完整endpoint receipt。fold1两端各20epoch/560优化步，
+overflow0、冻结state不变、strict reload与只读评价通过；完整sample order、
+前8增强batch、初始state和baseline-only输出对象两端完全一致。
+fold1保留全部1051gallery/179合法query；加上fold0为2051gallery/369query。
+
+四端累计2280优化步，下一步继续完成fold2的两个固定20epoch端点，预期再
+1080步，总计3360步。当前fold2对照第3/20epoch，27batch/epoch、约33秒/epoch。
+剩余fold2必须保留全部1075gallery/202合法query；整体仍以3126/571为准。
+以上仅为完成范围与工程进度，尚无全三折的科学门结论。
+
+按当前速度，最后对照端预计13:24左右结束，随后实验端继续；完整Q1预计
+13:36–13:51 CST。下一次有意义的阶段观察放在13:21–13:22，接近对照端
+预计完成节点时再检查。源配置/方案/训练预算均未改变，没有重启或附加训练。
+全部完成后保存完整终态、核验六端checkpoint及source SHA、全部五路数组与
+身份bootstrap，并进行独立终态审计。D1/dev/official访问仍为0，全局目标未达。
