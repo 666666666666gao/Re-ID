@@ -2,7 +2,7 @@
 
 ## 0. 一页结论
 
-本工程是在 DeMo 代码基座上实现的 RGB–NIR–TIR 多模态目标重识别研究分支。最新终态是 V17 DTRED 完整跑完三折×两个endpoint×20 epoch后Q1失败；2026-09-05严格重载六个final checkpoint并补齐全部留出gallery后，fused相对matched weight0仍为-0.328915 mAP。V17没有D1/dev/official结果。当前最高的可部署结果仍是 V8 OOF-margin Router Phase-B：唯一冻结 dev fused=`58.4050 mAP / 59.3939 Rank-1`，比 exact Signal baseline 高 `0.3941 mAP / 1.9394 Rank-1` 并严格超过三个固定专家，但仍比65 mAP门低`6.5950`，因此不支持 official test 或 SOTA。
+本工程是在 DeMo 代码基座上实现的 RGB–NIR–TIR 多模态目标重识别研究分支。最新已完成结果是V17完整训练和完整gallery补评失败；其全部查询/图像/分区诊断见§30。当前正在执行V18 source配对视角变化投影的固定M0→完整三折两端20epoch主实验（§31），尚无新检索结果。V17 fused相对matched weight0为-0.328915 mAP，没有D1/dev/official结果。当前最高可部署结果仍是V8 Phase-B：冻结dev fused=`58.4050 mAP / 59.3939 Rank-1`，比exact Signal高`0.3941 mAP / 1.9394 Rank-1`并超过三个专家，但仍比65 mAP门低`6.5950`，不能声称SOTA。
 
 V6 的三个候选论文级主创新点已经落到核心代码、专项测试和完整 dev 运行中；性能主门仍然失败：
 
@@ -1622,3 +1622,63 @@ ProxyTTT必须标注测试时更新，PRISM的OpenPifPaf/SAM2掩码属于额外�
 
 这些是已定位的公开报告参照，不是本机复现或绝对穷尽榜单。没有新的SOTA
 声明，也没有因未获取代码而用猜测补齐指标。完整目标仍未达到。
+
+## 30. V17全部查询、图像与分区诊断终态（2026-09-05）
+
+固定范围文档`docs/V17_FAILURE_DIAGNOSIS_PROTOCOL_2026-09-05.md`先提交，再执行
+`tools/diagnose_v17_failure_geometry.py`；源码8f31a4d，129.23秒完成全部六端。
+3126 gallery/571 query、五路逐query AP/rank与原完整gallery回执精确相等；
+checkpoint及整模型final-state SHA相等、推理前后状态不变。新采集correction
+原始向量、teacher/corrected cosine、模态能量和CNN四水平分区3x4x768特征。
+
+全部571条CNN query中，DTRED/weight0 correction范数均值0.288484/0.335074，
+teacher cosine0.957932/0.943869。更接近冻结teacher没有改善检索：最近负例距离
+变化-0.004551、最近正例变化+0.000103，margin变化-0.004655。14个Rank1新增
+错误的最近负例距离平均缩短0.014158；fused新增5个Rank1错误，正例距离增加
+0.010235、负例距离缩短0.006438。全部分支和全部query都保留，不只统计这些错误。
+
+CNN模态能量均值变化很小：weight0 RGB/NI/TI=.3424/.3244/.3332，DTRED为
+.3423/.3213/.3364，因此没有模态能量崩塌证据。CNN原始四分区的正例最佳对应
+97.62%为同一区域，不能把区域错位判为主因。最近正/负例的分区cosine差在
+RGB/TI均值为正，而NI四区均值为负；这是条件于冻结CNN所选困难负例的诊断，
+不是丢弃NI的依据。
+
+按预注册规则检查九张三模态图：每折CNN最差AP、最好AP、fused最差AP各一张；
+无人工替换。病例有明显跨相机亮度/视角变化、模态遮挡，例如fold0负例000009的
+NI被车遮挡；不能仅从九张图推断全数据集原因。CNN新增错误9/14的最近负例与
+query同相机，fused为4/5；全CNN最近负例同相机比例62.17%→64.62%，仅支持
+进一步检查视角/相机变化假设。
+
+一次固定后续诊断比较了现有投影头和直接保留相同四分区原特征的检索几何，
+没有训练或part/layer/rank搜索：冻结CNN分支79.319874mAP/82.311734R1，原始
+四分区分支72.745261/73.380035，三折均更差。故不直接替换分区头。临时写入器
+附加了字面量反斜线n，修正版只改JSON序列化；原文件和源码保留，未重新计算结果。
+
+所有大特征和九张图保存在远端：
+`artifacts/trifusion_v17_failure_geometry_8f31a4d/`。
+本地诊断图片在`C:/Users/gb/.codex_tmp/trifusion_v17_geometry_20260905/`。
+原始diagnostic JSON SHA为`ff1144c82436d5006ff324a6eebe7156debf12eb97dd04629523e08508852759`，
+analysis JSON SHA为`111de9901870cd01f6e120de5567ec67d450283912e2c89e3361ec038926e4b0`。
+这是已消费fit数据上的开发诊断，没有新的dev/official结果，不改变V17失败判定。
+
+## 31. V18 PVNP主实验已启动（2026-09-05）
+
+完整冻结计划：`docs/V18_PAIRED_VIEW_PROJECTION_PLAN_2026-09-05.md`，SHA
+`bb7bb3ca6581e9d6d0bac1a3c0a83888fef77d8a0401650e97776f93e695e6d7`。
+实现提交`2a71e20`，远端8项相关测试通过。北京时间10:34:57启动，screen
+`9812.v18_pvnp_2a71e20`，日志`artifacts/trifusion_v18_pvnp_seed42_2a71e20.log`，
+输出目录`artifacts/trifusion_v18_pvnp_seed42_2a71e20/`。
+
+当前网络保留Signal完整3072D前缀和冻结三专家；新表征由各专家source训练身份的
+同身份跨相机均值差分估计一个主方向，在共享低秩修正前后各去除该方向。
+固定rank1，无额外训练参数、mask模型、rerank或TTT。方向拟合只用每折94个source
+身份；不使用47个heldout身份。两端参数和增强配对，`uncentered`显式关闭投影，
+`projected`开启；均使用ID/triplet和原Signal保护项，不使用DTRED envelope。
+
+执行链：全三折source拟合→M0真实B64/K8容量8步和固定batch100步→M0通过后
+完整三折×两端×20epoch。预计约40分钟，需以实际进程/日志为准，不能用该估计
+宣称完成。仅最终checkpoint统一评价全部3126 gallery、571 query和五路CMC。
+Q1需fused增益>=1mAP、各折非负、各专家aggregate非负、bootstrap下界>0且fused
+超过baseline及三个分支；失败则封存，通过才执行一次all-fit完整主训练与30-dev。
+本节启动时尚无V18训练完成或检索成绩。下次接续先检查同一screen/PID和日志，
+不得因为文档仍显示RUNNING而重复启动，也不得因观察超时重训。

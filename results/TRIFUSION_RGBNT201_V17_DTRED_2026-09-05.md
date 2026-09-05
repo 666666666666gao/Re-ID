@@ -139,3 +139,27 @@ CNN为138/238/195及6/14；Transformer为211/153/207及6/3；Mamba为190/177/204
 级错误匹配原因仍需核实。后续不再重复数值普查，先查这些固定病例及完整分组。
 
 独立补评审计已完成：逐query指标重算最大mAP舍入差5.684e-14，rank rate差0；全六端checkpoint/final-state SHA与原Q1一致。完整性WARN仅保留远端大权重未由审计者直接打开重哈希等复现范围限制，补评的执行PASS不改变科学FAIL。
+
+## 全查询几何与九个固定图像病例（已完成）
+
+2026-09-05再次只读提取全部六端，耗时129.23秒；全部五路逐query AP和rank与
+上轮精确相等，checkpoint/state不变。完整新证据：
+
+- `evidence/trifusion_v17_failure_geometry_20260905.json`
+- `evidence/trifusion_v17_failure_analysis_20260905.json`
+- `evidence/trifusion_v17_part_projection_diagnosis_20260905.json`
+
+CNN的DTRED correction更小（范数0.288484 vs0.335074），更接近teacher，但最近
+负例距离平均缩短0.004551；14个Rank1新增错误对应缩短0.014158。不能以简单
+加大或减小correction为修复依据。模态能量均值没有崩塌。
+
+四分区正例最佳对应97.62%在同一区域，不支持直接归因区域错位；一次固定比较
+直接保留相同分区原特征，分支mAP72.745261，低于现有冻结CNN head79.319874，
+故不采用直接换分区头。该临时比较源码SHA为
+`12993e10671be77124aab531a914cdcfcc09608bc22528f5beef6f7be6ce4da1`；其原始
+writer的字面量反斜线n只在单独修正副本中改为有效JSON，原文件/源码仍在远端。
+
+预注册的九张三模态图全部检查，涵盖三折CNN最差/最好和fused最差；存在跨相机
+亮度/视角变化及模态遮挡。CNN新增错误9/14、fused新增错误4/5的最近负例与query
+同相机。这些是开发诊断关联，不是相机因果证明。新V18以source同身份跨相机
+差分拟合唯一主方向，单独验证去除该方向的表征假设；不改变本页V17科学FAIL。

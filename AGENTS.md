@@ -251,6 +251,15 @@
 
 ## Remote experiment constraints
 
+- V18 PVNP is the active new representation experiment, committed at 2a71e20
+  and launched on 2026-09-05 in screen v18_pvnp_2a71e20. Its source-only
+  paired-view rank-one projection precedes and follows the learned correction;
+  matched uncentered/projected endpoints use no DTRED envelope. Follow the
+  fixed docs/V18_PAIRED_VIEW_PROJECTION_PLAN_2026-09-05.md. Run all three
+  folds x two endpoints x20 epochs after M0, with complete gallery and all
+  five outputs. Inspect the existing process before any launch. No V18
+  retrieval result exists at this launch record; V17 remains sealed below.
+
 - V17 DTRED completed all three folds, two endpoints, and 20 epochs per
   endpoint (3360 steps). M0 passed; Q1 failed with fused matched gain
   -0.338635 mAP. Its six final checkpoints were strictly reload-verified on
