@@ -259,7 +259,8 @@
 
 ## Remote experiment constraints
 
-- V22 is preregistered but not launched. It replaces only the three residual
+- V22 T0 passed all three CUDA tests; original PID34656 launched M0
+  at 17:51:07 CST. No M0/Q1 result exists yet. It replaces only the three residual
   batch-hard triplets with camera-negative MCNL at margins 0.1/0.1 and the
   original coefficient 0.25. All seven ID losses and fused/branch triplets,
   exact Signal/V8 architecture, seed42/B64K8/20 epochs and initialization stay.

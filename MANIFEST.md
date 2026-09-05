@@ -594,3 +594,5 @@
 | 2026-09-05 17:45 | /run-experiment | evidence/trifusion_source_camera_metadata_20260905.json | evidence | Source-only 1680-batch camera-label replay; no model execution |
 | 2026-09-05 17:45 | /experiment-plan | refine-logs/v22/EXPERIMENT_PLAN_20260905_174555.md | implementation | Frozen V22 residual MCNL main comparison; not launched |
 | 2026-09-05 17:45 | /experiment-plan | refine-logs/v22/EXPERIMENT_TRACKER_20260905_174555.md | implementation | T0/M0/Q1 pending, dev/official zero |
+
+| 2026-09-05 17:53 | /run-experiment | refine-logs/v22/EXPERIMENT_TRACKER_20260905_175301.md | evidence | V22 T0 all 3 passed; original M0 PID34656 running; no retrieval result |

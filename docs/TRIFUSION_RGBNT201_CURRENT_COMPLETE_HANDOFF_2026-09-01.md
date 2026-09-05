@@ -2512,3 +2512,21 @@ runner SHA ee17aeba9bc2a567b1163e6a57759a55423ee5f77edde21e6c7a81625fe45a53。
 当前仅已写代码并AST解析，T0/M0/Q1均未启动；不能称模型已训练或改善。
 T0预估5–10秒、M0约4–7分钟、完整Q1约75–95分钟，依实际epoch修正。
 原本best dev58.4050/59.3939、未达65和官方目标的状态不变，整体goal继续active。
+
+
+### 39.1 V22 T0通过，原M0实际启动（2026-09-05）
+
+V22三项远端CUDA数学契约全部PASS，pytest3.02秒、总管理3.957356秒；
+这是合成loss/autograd测试，模型实例、数据集、项目及toy optimizer更新均0。
+全部runner/module/tests/config/plan SHA与冻结回执相同，T0源码commit5ae096b65eb4c9987b0b8edaa7bfcd8a4cee1c36。
+
+17:51:07.422CST以小写screen -dmS启动唯一原始训练进程34656，
+screen34654.v22_camera_negative_5ae096b；17:51:08实际确认PID和完整argv。
+目录/root/autodl-tmp/trifusion-v2/artifacts/trifusion_v22_camera_negative_seed42_5ae096b，
+日志同路径+.log，退出码将写同路径+.exit。启动前GPU24126MiB free/1MiB used，
+磁盘8342507520字节空闲。当前只是M0已启动，没有Q1检索结果或新模型改进声明。
+权威T0及启动回执为evidence/trifusion_v22_t0_20260905.json及trifusion_v22_launch_20260905.json。
+
+M0预估4–7分钟，下一次有意义检查17:54–17:55；通过后原进程自动执行完整六端，
+Q1初估75–95分钟、约19:10–19:30完成，首个完整paired-fold约18:20，
+须按实际epoch速度修正。失败则保留完整M0轨迹并停止Q1，不重启或更换门槛。
