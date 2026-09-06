@@ -497,3 +497,9 @@
   verified360 features; train only untouched folds1/2 with original functions/settings,
   520 new updates,672new gallery forwards. Preserve all original failed bytes/exact gates.
   Read COMPARISON_RESUME_R3_PLAN_20260906.md; no original fold0 retraining or metric selection.
+
+- R3 continuation75993 launched08:27:45 on1ff7e2d; live08:33:49,GPU100%,no exit.
+  Fold0 reused,fold1 finished260new updates and exact B0 parity;fold2 running.
+  Keep original fixed full3fold comparison despite opposite partial gain directions.
+  Terminal all15 saved-array and3000query/780step verifiers prepared,not executed;
+  no model/training source change and no original fold0 repeated training.

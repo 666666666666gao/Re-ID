@@ -653,3 +653,5 @@
 | 2026-09-06T08:19:47.876038+08:00 | /run-experiment | results/TRIFUSION_MSVR310_SIGNAL_PARITY_DIAGNOSIS_2026-09-06.md | engineering diagnosis/preparation | Freeze toggles SIM projection mm/bmm;fixed full360 inference repair verification registered |
 
 | 2026-09-06T08:26:05.110072+08:00 | /run-experiment | refine-logs/msvr310_trifusion_v1/COMPARISON_RESUME_R3_PLAN_20260906.md | engineering PASS/continuation registration | Full360 exact B0 features/distances restored;reuse fold0 and original gates,train only folds1/2,520 new updates |
+
+| 2026-09-06T08:36:44.580202+08:00 | /run-experiment | results/TRIFUSION_MSVR310_ORIGINAL_ROLES_COMPARISON_2026-09-06.md | running/verification preparation | R3 wrapper75993;fold0 reused,fold1 complete,fold2 live;full terminal verifiers NOT_RUN |
