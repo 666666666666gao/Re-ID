@@ -1,6 +1,6 @@
 # RGBNT100 原完整三角色主比较
 
-更新2026-09-06T14:15:52.731518+08:00。**RUNNING；没有完整三fold检索终态。**
+更新2026-09-06T14:55:50.366010+08:00。**RUNNING；fold0完整评估已完成，fold1训练中，尚无三fold合并终态。**
 实际启动2026-09-06T14:13:43.910354+08:00，执行commit bbe49e1c24956e891afb8ec3e83df01acd75c579，
 wrapper93313/child93317。启动观察2026-09-06T14:13:45.758912+08:00确认两个进程存在；
 这只是启动检查，未报告完成epoch或检索数字。
@@ -56,3 +56,22 @@ MSVR310原完整比较、V23/V24负结果保持，不能用本内部结果取代
 第3epoch进行中，已完整写出189条更新，全部有效且203项梯度有限，AMP下降0。
 GPU6260MiB/100%，两个进程存活；完整fold receipt和terminal仍未出现，未读取heldout指标。
 [原始启动活动证据](../evidence/trifusion_rgbnt100_original_roles_comparison_startup_check_20260906.json)。训练loss不作为检索增益证据，阶段观察计划仍14:43:43。
+
+## 第一折完整评估与第二折训练进度
+
+阶段计划14:43:43，实际14:44:19.454172观察：19个完整epoch、第20epoch进行中，
+1642条有效更新，203项梯度均有限、0 AMP下降；当时尚无完整fold回执。
+第二次阶段观察14:49:35.802643，与前次相隔316.348471秒：
+fold0固定20epoch/1653有效更新已结束，训练耗时1829.3539913秒，即1.10668723秒/更新；
+全部3125 gallery记录和五输出评估完成，运行回执中的B0 features及distance逐元素相等。
+完整rankings.json.gz已经关闭，84388592字节、SHA 06b6138a4632b58e6dd73350beda77d9dbfe3154e17b31d6aeedb214c4027c8e。
+这仍是运行侧终点回执，全部三fold结束后统一执行既定完整文件和标量核验。
+
+fold1已开始，第一epoch86步完成、第2epoch进行中，落盘127有效更新；
+整体1780条更新均有效、每条203项梯度有限，0 AMP下降，GPU6460MiB/96%。
+未根据第一fold的检索分数调整任何训练，也未给出三fold总体结论。
+
+B0前20epoch实际采样次数1653/1719/1823（合计5195）仅用于改进成本预测；
+后续角色实际步数仍以自己的完整日志为准，不从相同步数推断相同采样序列。
+下一阶段观察15:18，接近第二折预计终点；完成窗口更新为15:55–16:10。
+[原始阶段观察1](../evidence/trifusion_rgbnt100_original_roles_comparison_progress_20260906_144419.json)、[原始阶段观察2](../evidence/trifusion_rgbnt100_original_roles_comparison_progress_20260906_144935.json)、[阶段判断与时间估计](../evidence/trifusion_rgbnt100_original_roles_first_fold_progress_assessment_20260906.json)。
