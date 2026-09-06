@@ -1,0 +1,81 @@
+{
+  "closed_at": "2026-09-06T09:36:57.748608+08:00",
+  "status": "CLOSED_WITH_LIMITS_ENGINEERING_PASS_SCIENTIFIC_FAIL",
+  "reviewer": "/root/audit_msvr_trifusion_terminal",
+  "review_family_scope": "GPT-family Type-A",
+  "resolved_backend_independently_attested": false,
+  "dispatch_observation": "Written09:21:14 after actual dispatch; live list_agents confirmed specific running agent; no backend attestation",
+  "verdicts": {
+    "a_f_categories": [
+      {
+        "basis": "600 valid internal queries, 60 query identities, 1032 gallery records, source/heldout disjoint per fold, and no official test/dev access.",
+        "category": "A",
+        "name": "Protocol, labels, and data isolation",
+        "verdict": "PASS"
+      },
+      {
+        "basis": "AP/Rank recomputed from categorical labels after same identity/same scene filtering and complete saved rankings.",
+        "category": "B",
+        "name": "Metric and score computation",
+        "verdict": "PASS"
+      },
+      {
+        "basis": "Independent stdlib/NumPy replay matched aggregate/fold metrics, query AP/Rank, bootstrap, loss/epoch/LR, protocol counts, and error census; manifest pre/post hash checks passed.",
+        "category": "C",
+        "name": "Independent replay and number/file agreement",
+        "verdict": "PASS"
+      },
+      {
+        "basis": "Original fold0 failure and R3 continuation are separated; fold0 training/verified features reused, folds1/2 trained once, no metric-selection retraining found in text receipts.",
+        "category": "D",
+        "name": "Execution boundary, reuse, and source binding",
+        "verdict": "PASS"
+      },
+      {
+        "basis": "Evidence is complete for the declared internal OOF comparison, but not an official MSVR310 591/1055 test result; raw tensor/checkpoint binaries are represented by remote receipts only.",
+        "category": "E",
+        "name": "Scope and claim qualification",
+        "verdict": "WARN"
+      },
+      {
+        "basis": "All five fixed scientific conditions are false; fused mAP is 1.011990 pp below Signal baseline and the identity bootstrap lower bound is negative.",
+        "category": "F",
+        "name": "Scientific support",
+        "verdict": "FAIL"
+      }
+    ],
+    "engineering_qualification": "PASS",
+    "integrity_qualification": "PASS_WITH_LIMITS",
+    "overall": "Engineering evidence supports the completed original three-role internal comparison, but the scientific support gate fails.",
+    "scientific_qualification": "FAIL"
+  },
+  "report_sha256": {
+    "EXPERIMENT_AUDIT_MSVR310_TRIFUSION_TERMINAL.md": "a7c9e80327e91246ddf3666cc399c5b92cbc60ca067ff89dbc70b29bd26fd6a5",
+    "EXPERIMENT_AUDIT_MSVR310_TRIFUSION_TERMINAL.json": "9a0c6174d6a418f4e7d824ae61978826f2877223fa0ba0c957416de2d492d498"
+  },
+  "immutable_input_files": 102,
+  "immutable_input_bytes": 25929381,
+  "immutable_input_hash_mismatches_at_closure": 0,
+  "manifest_sha256": "af1df38e530edd0a7702d7fdd6544b11efa1e317a8697d0a3e02edd9ce5a9059",
+  "rounds": 2,
+  "numerical_replays": 1,
+  "independent_replay_seconds": 1.2726867999881506,
+  "query_outputs_replayed": 3000,
+  "training_steps_replayed": 780,
+  "epochs_replayed": 60,
+  "query_identities": 60,
+  "round2_numerical_replay_repeated": false,
+  "corrections": [
+    "qualified dispatch_observation as initially absent but now present and delayed",
+    "corrected Linear.cpp source references to Tensor linear line 73 and at::matmul line 111",
+    "made native MHA self-attention fastpath query-is-not-key block explicit and requires_grad fastpath gate non-causal for this observation",
+    "removed wording that suggested adding local raw binaries; retained remote-binary receipt limit without requesting copies"
+  ],
+  "remote_binary_limit": "All15 saved-array/checkpoint claims examined against actual code and remote receipts; reviewer did not locally reload tensor/checkpoint binaries",
+  "raw_response_source_log": "C:\\Users\\gb\\.codex\\sessions\\2026\\09\\06\\rollout-2026-09-06T08-59-03-01a07439-d7f0-7a60-b021-0f0a12b8a9bd.jsonl",
+  "first_response_timestamp": "2026-09-06T01:27:08.084Z",
+  "final_response_timestamp": "2026-09-06T01:33:51.805Z",
+  "science_result_unchanged": true,
+  "scientific_failure_sealed": true,
+  "new_model_tensor_image_or_training_calls_for_closure": 0
+}

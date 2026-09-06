@@ -1,6 +1,6 @@
 # MSVR310 原三角色完整比较：工程核验通过，五项科学条件均未通过
 
-记录时间：2026-09-06T08:53:29.912750+08:00。状态 **COMPLETE_COMPARISON_SUPPORT_FAIL_AUDIT_PENDING**。
+记录时间：2026-09-06T08:53:29.912750+08:00。状态 **COMPLETE_COMPARISON_SUPPORT_FAIL_AUDIT_CLOSED_WITH_LIMITS**。
 正式终态08:39:25.099313+08；wrapper75993 exit0，08:42:26确认进程结束/GPU空闲。
 R3执行1ff7e2d，原第0折训练执行1c444cd；只复用其260更新与已验证完整特征，后两折新增520更新。
 原失败run的RUNNING JSON、日志、receipt及checkpoint保持原字节，未重训第0折。
@@ -74,7 +74,7 @@ epoch均值差0；保存分项损失双精度重组最大差5.650023613412714e�
 ## 当前处理与下一步
 
 封存此固定原三角色MSVR310试验为科学条件失败：不重跑epoch/seed/参数、不做消融、不访问官方test。
-先由独立审计核对终态及工程修复/第0折复用的证据链；审计仍PENDING，不能写成已经独立确认。
+独立终态审计run19已闭合：integrity PASS_WITH_LIMITS、engineering PASS、scientific FAIL；A/B/C/D PASS、E WARN、F FAIL。
 后续新假设应直接验证未知身份下困难竞争样本的区分与信息保留，结合RGBNT201和MSVR310两份负证据；
 不把RGBNT201的21个资格身份或相机正例稀疏当成所有数据集失败的充分解释。
 RGBNT100已安装但尚无本项目训练/检索结果，仍按已登记三核心数据集路线独立建立协议与基线。
@@ -83,3 +83,12 @@ RGBNT100已安装但尚无本项目训练/检索结果，仍按已登记三核�
 主终态JSON SHA c3831a0e95423767cf152e332ed671a8d91d1779c286a0afce8bf522391bfbac。
 完整证据见evidence/trifusion_msvr310_trifusion_v1_comparison_complete_20260906.json、
 terminal_files_verification、terminal_scalar_verification和complete_error_census对应20260906文件。
+
+## 独立终态审计闭合
+
+2026-09-06T09:36:57.748608+08:00：run19两轮完成。102份不可变输入/25,929,381字节均原SHA；
+独立复算全部3000query-output、780训练步/60epoch、60身份及bootstrap和完整错误普查，1.2726868秒，主要指标差0。
+第2轮只纠正审计报告的延迟dispatch观察、Linear.cpp行号与MHA/底层matmul区别、远端二进制边界措辞；未重复数值计算或修改实验。
+两轮请求/原始回答、首轮及最终报告、原始复算代码/结果/完整输出均在run19归档。GPT同族Type-A、后端未独立证明，
+张量/checkpoint只在远端；审计对15数组及checkpoint的验证依赖原源码和远端回执，此证据边界保留。
+最终报告EXPERIMENT_AUDIT_MSVR310_TRIFUSION_TERMINAL.md/.json；闭合回执evidence/trifusion_msvr310_trifusion_v1_terminal_audit_closure_20260906.json。

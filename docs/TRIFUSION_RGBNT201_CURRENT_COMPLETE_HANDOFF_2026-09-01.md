@@ -2,7 +2,9 @@
 
 ## 0. 一页结论
 
-最新状态（2026-09-06T04:03:18.863105+08:00）：V23与V24均已完成原固定Q1并封存失败；V24 fused+0.491307 mAP，五门中四项失败。V24完整Q1和source只读诊断的独立审计已闭合，均保留WARN来源限制（§41.15）。九模型clean source已充分拟合，不当作未知身份泛化；当前dev最好仍58.4050/59.3939。MSVR310三折数据协议已固定，但车辆训练/检索仍0；MixStyle仅完成代码与边界研究（§41.16）。
+最新状态（2026-09-06T09:33:54.149499+08:00）：MSVR310完整三折原三角色比较已结束，Signal53.129381/63.0、fused52.117390/60.833333，五项科学条件均失败，精确B0特征/距离与全部3000query-output、780训练步已核验（§41.32）。独立终态审计run19已闭合，integrity PASS_WITH_LIMITS、engineering PASS、scientific FAIL（§41.34）。RGBNT100全量8675训练记录身份协议及Signal30epoch三折基线合同已登记，T0/M0/训练未运行（§41.33）。V23/V24及MSVR原三角色科学负结果均封存。RGBNT201保留dev58.4050/59.3939，65与官方85.3/87.9目标未达。
+
+当前用于MSVR310完整比较的是原V8平行三角色结构：冻结Signal/CLIP，共享block8之前语义和tail9/10/11参数，三个角色分别运行共享tail；CNN处理局部语义Patch高频，Transformer处理全局CLS/Patch关系，Mamba处理空间与位置级三模态扫描。各角色相对冻结reference形成1536D残差，三角色4608D银行拼接3072D Signal得到7680D fused；完整单角色输出为4608D Signal+角色残差。三条路径均执行，当前没有Router/HFER、V23模态MLP或V24原型。训练已完成，尚无被证实超过Signal的新主方案。下面V1—V8条目保留历史经过，不代表当前又启用了旧模块。
 
 本工程是在 DeMo 代码基座上实现的 RGB–NIR–TIR 多模态目标重识别研究分支。V17完整训练和完整gallery补评已封存为失败；其全部查询/图像/分区诊断见§30。V18完整三折两端20epoch主实验已结束（§33）：fused增益+0.921504 mAP，bootstrap下界-0.117338，未通过固定晋级条件；无D1/dev/official。MSVR310、RGBNT100均已安装核验（§32）。V17 fused相对matched weight0为-0.328915 mAP，没有D1/dev/official结果。当前最高可部署结果仍是V8 Phase-B：冻结dev fused=`58.4050 mAP / 59.3939 Rank-1`，比exact Signal高`0.3941 mAP / 1.9394 Rank-1`并超过三个专家，但仍比65 mAP门低`6.5950`，不能声称SOTA。
 
@@ -12,7 +14,7 @@ V6 的三个候选论文级主创新点已经落到核心代码、专项测试�
 2. **Stagewise bidirectional heterogeneous feature exchange**：CNN、Transformer、Mamba 都是三阶段完整专家；阶段 1/2 后进行双向 HFER，可靠性在阶段 1/2/3 分别刷新，使下一阶段能使用其他专家的互补信息。
 3. **Complementarity-activated utility-routed residual bank**：不再把九路贡献压成一个向量，而是保留全部 `expert×modality` 残差；联合可靠性与身份效用只控制追加银行，并把银行按样本无自由倍率地校准到 baseline 能量；最终 `fused` 的 3072D 前缀严格等于 `baseline_only`。
 
-当前最重要状态：
+历史阶段与保留结果（V1—V8）：
 
 - 云端 RTX 3090 的正式 seed-42 主实验已完成 60 epoch 全 171 身份训练，并在固定终点完成唯一一次官方评估。
 - 正式融合结果为 `59.1478 mAP / 63.2775 Rank-1`；CNN 略高，为 `59.1561 / 63.7560`。官方测试访问和评估计数均恰好为 1。
@@ -3558,3 +3560,31 @@ scene与camera是不同协议关系，不直接套用RGBNT201正对比例或过�
 RGBNT100仍尚无本项目训练/检索成绩。RGBNT201保留dev58.4050，65与官方SOTA目标继续未达。
 结果页results/TRIFUSION_MSVR310_ORIGINAL_ROLES_COMPARISON_2026-09-06.md。
 原始完整summary SHA c3831a0e95423767cf152e332ed671a8d91d1779c286a0afce8bf522391bfbac。
+
+### 41.33 RGBNT100 完整训练清单、身份协议与独立Signal基线合同（2026-09-06）
+
+登记时间2026-09-06T09:31:59.717843+08。真实训练8675张768×128拼图全部文件名/大小/SHA已核对，50个身份全部跨camera。
+标签确定的三fold source33/33/34身份、5550/5725/6075记录；heldout17/17/16身份，query=gallery3125/2950/2600。
+完整内部8675query/8675gallery只过滤同身份同camera，保留所有异身份负例；不沿用MSVR310 scene过滤，官方1715/8575未访问。
+配置configs/RGBNT100/Signal-source-oof-v1.json SHA7270e2bf95c5f5a60e1dc6d6b047f043dce667d508783b36bc4734aecbc4c15b；
+协议SHA42bd612ecc8720db7f6684214e1f60d1cb4bab6b2fa8db3df343a9d2c52e4abf；18份Signal实际源码、8份项目源码/合同绑定。
+作者RGBNT100为固定30epoch、Gram/Patch均0.1、BASE_LR0.0007但CLIP非adapter base组固定5e-6，
+原create_scheduler保留warmup5/epoch1–29seed42噪声/epoch30最小LR；不套用MSVR31050epoch和20/40阶梯调度。
+项目B64/K8/workers4/同步几何与作者B128/K16/workers12不同，保持每批8身份；不得声称完全相同训练条件。
+拼图按RGB/NIR/TIR三个256×128区域切片。T0将逐张比较全部26025切片与作者loader像素，验证全部query mask和两项人工camera排序fixture。
+T0后M0三fold各8步，共24更新/1536源记录曝光/48clean source重载前向；正式训练fresh初始化，M0权重不复用。
+正式三fold固定epoch30才完整检索一次，保存全部8675条AP/Rank和压缩完整排列，无Top-k截断/挑query/选best。
+当前仅文本/AST与文件清单工作，T0/M0/30epoch基线均NOT_RUN。新基线建设不是TriFusion主方法成功，不解除主目标门或允许消融。
+
+### 41.34 MSVR310 原三角色完整终态独立审计闭合（2026-09-06）
+
+闭合时间2026-09-06T09:36:57.748608+08:00。run19 GPT同族Type-A两轮，102输入/25,929,381字节原SHA，未独立证明实际后端。
+审计独立复算全部3000query-output、780步/60epoch、60身份与query加权bootstrap、完整错误普查，1.2726868秒，主要指标差0。
+verdict integrity PASS_WITH_LIMITS、engineering PASS、scientific FAIL；A/B/C/D PASS、E WARN、F FAIL。
+fused52.117390117低于Signal53.129380561，五项原科学条件仍全false，不晋级、不重训、不做官方评估。
+第2轮只纠正延迟dispatch的时间措辞、Linear.cpp真正linear73–120/matmul111与MHA107非selfattention分流，
+并保留远端二进制回执审计范围，不要求本地张量复制。未重复数值回放或训练。
+首轮与最终报告、两轮原始回答/请求、全部复算产物和完整命令输出已归档；本地只计算文本/JSON/NumPy。
+最终md SHAa7c9e80327e91246ddf3666cc399c5b92cbc60ca067ff89dbc70b29bd26fd6a5；
+json SHA9a0c6174d6a418f4e7d824ae61978826f2877223fa0ba0c957416de2d492d498。
+RGBNT100源基线合同已固定，下一动作是远端完整T0及三折M0；RGBNT201主目标继续未达。

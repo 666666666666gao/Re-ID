@@ -513,3 +513,22 @@
   Seal fixed study: no retrain/scan/ablation/official promotion. Terminal independent
   audit pending, M0 audit already CLOSED_WARN. Do not conflate repaired SIM drift with
   scientific failure or treat RGBNT201 camera sparsity as the sole vehicle explanation.
+
+
+## RGBNT100 independent source Signal baseline v1
+
+- Frozen contract: refine-logs/rgbnt100_signal_v1/EXPERIMENT_PLAN.md, configs/RGBNT100/Signal-source-oof-v1.json.
+- Status PREPARED_NOT_RUN. All8675 official-training records/50cross-camera IDs; 3fold source33/33/34.
+- Internal query/gallery3125/2950/2600 per fold; remove same-ID AND same-camera, retain all negatives.
+- Original RGBNT100 Signal30epochs, taskLR0.0007/CLIPbase5e-6, author noise-cosine warmup5;
+  B64K8/seed42/synchronized geometry are project conditions. No MSVR scene/LR/scheduler copy.
+- Remote T0 checks all8675 montage hashes/26025crop parity and complete query masks; then M0 3x8steps.
+- Only after exact same-config T0/M0 PASS, fresh 3x30epoch fixed-final baseline and all8675query ranks.
+- No official test, new role training, failed-study retry, tuning, or pre-success ablation.
+- MSVR original role terminal audit has independently replayed3000query/780steps: enginePASS/scienceFAIL;
+  report provenance corrections pending, no scientific result or training change.
+
+- MSVR original-role terminal audit run19 now CLOSED_WITH_LIMITS: integrityPASS_WITH_LIMITS,
+  engineeringPASS/scienceFAIL;102immutable inputs, all3000query/780steps independently replayed once.
+  Round2 report-only source/provenance correction; same-family/backend and remote-binary limits retained.
+  Read EXPERIMENT_AUDIT_MSVR310_TRIFUSION_TERMINAL.md/json and terminal_audit_closure receipt.
