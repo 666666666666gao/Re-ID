@@ -1,0 +1,65 @@
+{
+  "observed_at": "2026-09-06T14:17:33.866656+08:00",
+  "launched_at": "2026-09-06T14:13:43.910354+08:00",
+  "elapsed_seconds": 229.956302,
+  "observation_type": "ONE_STARTUP_ACTIVITY_CHECK_AFTER180_SECONDS",
+  "stage_observation_plan_still": "2026-09-06T14:43:43.910354+08:00",
+  "summary_status": "RUNNING",
+  "execution_commit": "bbe49e1c24956e891afb8ec3e83df01acd75c579",
+  "config_sha256": "8d3ce84068a584ca732e62ac4dac2dca366119863570ca6f8d4af6fb3d3f2ee2",
+  "completed_fold_receipts": 0,
+  "epoch_events": [
+    {
+      "event": "rgbnt100_role_epoch",
+      "fold": 0,
+      "mode": "comparison",
+      "epoch": 1,
+      "optimizer_steps": 81,
+      "learning_rate": 7.000000000000001e-05,
+      "mean_loss": 1.3583068788787465,
+      "elapsed_seconds": 91.20628800429404
+    },
+    {
+      "event": "rgbnt100_role_epoch",
+      "fold": 0,
+      "mode": "comparison",
+      "epoch": 2,
+      "optimizer_steps": 83,
+      "learning_rate": 0.00014000000000000001,
+      "mean_loss": 0.5762912106801228,
+      "elapsed_seconds": 91.98267720080912
+    }
+  ],
+  "steps": {
+    "comparison/fold_0/steps.jsonl": {
+      "complete_rows": 189,
+      "trailing_unclosed_bytes": 0,
+      "effective_updates": 189,
+      "all_recorded_gradients_finite": true,
+      "amp_scale_drops": 0,
+      "last_completed_step": {
+        "step": 189,
+        "epoch": 3,
+        "loss": 0.5063096284866333,
+        "amp_scale_before": 256.0,
+        "amp_scale_after": 256.0,
+        "optimizer_update_applied": true
+      }
+    }
+  },
+  "gpu": "6260, 17868, 100",
+  "processes": "   PID   PPID STAT     ELAPSED COMMAND\n 93313      1 Ss         03:50 /root/miniconda3/envs/tri_reid/bin/python -u /root/trifusion-storage/artifacts/rgbnt100_trifusion_source_oof_v1_seed42_20260906/comparison_wrapper.py\n 93317  93313 Rl         03:50 /root/miniconda3/envs/tri_reid/bin/python -u /root/autodl-tmp/trifusion-v2/TriFusion-ReID/tools/train_rgbnt100_trifusion_oof.py --config /root/autodl-tmp/trifusion-v2/TriFusion-ReID/configs/RGBNT100/TriFusion-source-oof-v1.json --mode comparison --output-dir /root/trifusion-storage/artifacts/rgbnt100_trifusion_source_oof_v1_seed42_20260906/comparison --m0-receipt /root/trifusion-storage/artifacts/rgbnt100_trifusion_source_oof_v1_seed42_20260906/m0/summary.json\n",
+  "terminal_exists": false,
+  "log_tail": [
+    "Position embedding resize to height:8 width: 16",
+    "Successfully load ckpt!",
+    "<All keys matched successfully>",
+    "Loading pretrained model from CLIP",
+    "camera number is : 8",
+    "===========Building Signal===========",
+    "{\"event\": \"rgbnt100_role_epoch\", \"fold\": 0, \"mode\": \"comparison\", \"epoch\": 1, \"optimizer_steps\": 81, \"learning_rate\": 7.000000000000001e-05, \"mean_loss\": 1.3583068788787465, \"elapsed_seconds\": 91.20628800429404}",
+    "{\"event\": \"rgbnt100_role_epoch\", \"fold\": 0, \"mode\": \"comparison\", \"epoch\": 2, \"optimizer_steps\": 83, \"learning_rate\": 0.00014000000000000001, \"mean_loss\": 0.5762912106801228, \"elapsed_seconds\": 91.98267720080912}"
+  ],
+  "heldout_metrics_read": false,
+  "model_tensor_image_calls": 0
+}

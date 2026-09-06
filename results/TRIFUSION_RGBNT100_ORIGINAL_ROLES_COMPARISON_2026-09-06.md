@@ -49,3 +49,10 @@ bootstrap固定seed42/10000/2.5%linear、身份重抽且query加权；不选中�
 [启动回执](../evidence/trifusion_rgbnt100_original_roles_comparison_launch_20260906.json)；输出根 /root/trifusion-storage/artifacts/rgbnt100_trifusion_source_oof_v1_seed42_20260906/comparison。
 官方测试/RGBNT201 dev为0。RGBNT201保留58.4050/59.3939、主目标未达；
 MSVR310原完整比较、V23/V24负结果保持，不能用本内部结果取代官方成绩。
+
+## 真实启动活动核对
+
+2026-09-06T14:17:33.866656+08:00（启动后229.956302秒）：fold0完成epoch1/2，81+83=164更新；
+第3epoch进行中，已完整写出189条更新，全部有效且203项梯度有限，AMP下降0。
+GPU6260MiB/100%，两个进程存活；完整fold receipt和terminal仍未出现，未读取heldout指标。
+[原始启动活动证据](../evidence/trifusion_rgbnt100_original_roles_comparison_startup_check_20260906.json)。训练loss不作为检索增益证据，阶段观察计划仍14:43:43。

@@ -2,7 +2,7 @@
 
 ## 0. 一页结论
 
-最新状态（2026-09-06T14:15:52.731518+08:00）：RGBNT100原完整三角色三fold×20epoch已于14:13:43.910354启动，执行bbe49e1、wrapper93313/child93317，预计15:58–16:18，尚无完整检索终态（§41.50）。此前M0全部124步/3权重核验PASS，excess ratio0.001551768。Signal R2内部基线89.5241750420 mAP/96.8299711816 R1已全量核验。独立审计因服务额度限制未闭合；MSVR310原三角色/V23/V24负结果封存，RGBNT201仍dev58.4050/59.3939，主目标未达。
+最新状态（2026-09-06T14:17:33.866656+08:00）：RGBNT100原完整三角色正式比较运行中，执行bbe49e1、wrapper93313/child93317；实测首fold已完成2epoch/189有效更新、0 AMP下降、203梯度均有限，GPU100%，尚无完整检索终态（§41.50）。预计15:58–16:18，阶段首查14:43。M0全部124步/3权重核验PASS；对应Signal R2内部基线89.5241750420 mAP/96.8299711816 R1已全量核验。独立审计因服务额度限制未闭合；MSVR310原三角色/V23/V24负结果封存，RGBNT201仍dev58.4050/59.3939，主目标未达。
 
 当前用于已完成MSVR310比较及新登记RGBNT100比较的是原V8平行三角色结构：冻结Signal/CLIP，共享block8之前语义和tail9/10/11参数，三个角色分别运行共享tail；CNN处理局部语义Patch高频，Transformer处理全局CLS/Patch关系，Mamba处理空间与位置级三模态扫描。各角色相对冻结reference形成1536D残差，三角色4608D银行拼接3072D Signal得到7680D fused；完整单角色输出为4608D Signal+角色残差。三条路径均执行，当前没有Router/HFER、V23模态MLP或V24原型。训练已完成，尚无被证实超过Signal的新主方案。下面V1—V8条目保留历史经过，不代表当前又启用了旧模块。
 
@@ -3796,3 +3796,9 @@ GPU启动1MiB used/24126MiB free，新私有输出卷14163791872字节free。
 估计105–125分钟，预计15:58:43至16:18:43；阶段首查14:43:43接近首折预计终点，
 另在>=180秒完成一次实际训练启动确认，不逐epoch轮询。
 结果页results/TRIFUSION_RGBNT100_ORIGINAL_ROLES_COMPARISON_2026-09-06.md，启动回执evidence/trifusion_rgbnt100_original_roles_comparison_launch_20260906.json。当前RUNNING，无完整三fold或官方成绩。
+
+启动活动实查2026-09-06T14:17:33.866656+08:00，距14:13:43启动229.956302秒，符合>=180秒间隔。
+fold0完成epoch1/2，共164更新；第三epoch进行中，完整落盘189条更新全部有效，
+每条203项gradient finite均真、0 AMP下降。GPU6260MiB/100%，wrapper/child存活。
+仅运行日志/source更新观察，未读取heldout指标；完整fold receipt仍0。
+证据evidence/trifusion_rgbnt100_original_roles_comparison_startup_check_20260906.json；下一阶段观察仍14:43:43，预估终点不因两epoch训练loss下降而改写成功判断。

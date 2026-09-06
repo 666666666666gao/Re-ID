@@ -664,3 +664,5 @@
 | 2026-09-06T14:11:01.774271+08:00 | /run-experiment | results/TRIFUSION_RGBNT100_ORIGINAL_ROLES_M0_2026-09-06.md; evidence/trifusion_rgbnt100_original_roles_m0_executor_closure_20260906.json; evidence/trifusion_rgbnt100_original_roles_comparison_registration_20260906.json | M0 complete / comparison registration | All124 updates/3checkpoint/31project21Signal bindings verified;excess.001551768;fresh three20epoch full comparison NOT_RUN |
 
 | 2026-09-06T14:15:52.731518+08:00 | /run-experiment | results/TRIFUSION_RGBNT100_ORIGINAL_ROLES_COMPARISON_2026-09-06.md; evidence/trifusion_rgbnt100_original_roles_comparison_launch_20260906.json | running | bbe49e1,threefold20epochs launched14:13:43;43375query-output;estimated105–125min;no terminal metrics |
+
+| 2026-09-06T14:17:33.866656+08:00 | /run-experiment | evidence/trifusion_rgbnt100_original_roles_comparison_startup_check_20260906.json | actual startup activity | First fold2complete epochs,189applied updates/203finite gradients/0AMPdrop;GPU100%;no heldout metrics;phase observation still14:43 |
