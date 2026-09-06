@@ -490,3 +490,10 @@
   Full360 inference-only functional-view repair verification is registered NOT_RUN,
   720role forwards/0updates/ranking. Require exact original features AND distances,
   unchanged role/modal residuals and frozen parameter flags/state. No fold0 retraining.
+
+- Exact SIM inference verification9eba027 PASS: all360 B0 features AND210x360
+  distances bitwise equal; all role/modal residuals, states and parameter flags unchanged.
+  Registered R3 continuation is NOT_RUN: reuse original fold0 checkpoint/260updates and
+  verified360 features; train only untouched folds1/2 with original functions/settings,
+  520 new updates,672new gallery forwards. Preserve all original failed bytes/exact gates.
+  Read COMPARISON_RESUME_R3_PLAN_20260906.md; no original fold0 retraining or metric selection.

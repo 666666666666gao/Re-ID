@@ -651,3 +651,5 @@
 
 | 2026-09-06T08:19:47.876038+08:00 | /experiment-audit | EXPERIMENT_AUDIT_MSVR310_TRIFUSION_M0.md | independent audit | run18 two rounds CLOSED_WARN;engineering PASS;60 inputs/124-step replay;no retrieval claim |
 | 2026-09-06T08:19:47.876038+08:00 | /run-experiment | results/TRIFUSION_MSVR310_SIGNAL_PARITY_DIAGNOSIS_2026-09-06.md | engineering diagnosis/preparation | Freeze toggles SIM projection mm/bmm;fixed full360 inference repair verification registered |
+
+| 2026-09-06T08:26:05.110072+08:00 | /run-experiment | refine-logs/msvr310_trifusion_v1/COMPARISON_RESUME_R3_PLAN_20260906.md | engineering PASS/continuation registration | Full360 exact B0 features/distances restored;reuse fold0 and original gates,train only folds1/2,520 new updates |

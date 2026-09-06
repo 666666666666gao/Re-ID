@@ -45,3 +45,17 @@ weight view under no_grad restores original dispatch metadata while leaving regi
 The repaired whole baseline feature matrix AND210x360 distances must exactly match B0; all role/modal
 residuals must remain bitwise unchanged.720 full-role forwards,0 optimization/ranking. Verification NOT_RUN.
 Original comparison still stopped; no fold0 training repeated or scientific gate changed.
+
+## Full verification passed; original comparison continuation registered
+
+2026-09-06T08:26:05.110072+08:00: verification9eba027 passed all checks, exit0,30.378821736201644seconds.
+All360 baseline3072D features and210x360 distances are bitwise equal to original B0. All role/modal
+residuals and direct modalities are bitwise unchanged across original five64+40 batches; model/frozen/
+Signal states and all registered parameter flags unchanged. No ranking,720 role forwards,0 updates.
+Runtime torch git a8d6afb511a69687bbb2b7e88a3cf67917e1697e, version2.5.1+cu121.
+
+R3 continues the original fixed comparison by reusing original fold0 checkpoint/training and these
+verified complete features. Only untouched folds1/2 will train,520 new updates; total study780.
+Original training/model/config/gates and old failed files remain unchanged. Full600 queries/1032 gallery,
+no scientific early stop, no original fold0 reread/retraining, no M0 optimization repeated.
+Plan refine-logs/msvr310_trifusion_v1/COMPARISON_RESUME_R3_PLAN_20260906.md; continuation NOT_RUN.

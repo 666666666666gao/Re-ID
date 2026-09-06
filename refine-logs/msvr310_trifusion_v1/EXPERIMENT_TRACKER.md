@@ -24,3 +24,5 @@ Signal B0独立审计已闭合，内部53.129380561 mAP/63.0 Rank-1；新三角�
 2026-09-06T08:11:44.639211+08:00: independent M0 audit run18 CLOSED_WARN, engineering PASS, scientific/retrieval NOT_ESTABLISHED;60/60 immutable inputs and independent124-step replay pass. Two report-only field corrections by reviewer do not alter verdict. Comparison remains stopped, operation probe separate; no promotion.
 
 2026-09-06T08:19:47.876038+08:00: operation cause measured: SIM freeze changes mm to bmm, restored flags recover exact B0. Inference-only functional view helper/full360 exact feature+distance verification registered NOT_RUN;720 role forwards/0update/ranking. Original comparison remains stopped.
+
+2026-09-06T08:26:05.110072+08:00: full360 exact inference verification PASSED, including whole210x360 B0 distances and unchanged role/modal residuals. R3 continuation PREPARED_NOT_RUN: reuse fold0 training/features, only train folds1/2,520 new updates; all original scientific gates remain. No retrieval metrics read yet.
