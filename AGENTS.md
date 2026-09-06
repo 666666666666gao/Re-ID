@@ -2,30 +2,34 @@
 
 ## Latest verified state (2026-09-06)
 
-- Original RGBNT100 OOF complete support PASS: fused91.316540/97.936599 versus
-  Signal89.524175/96.829971, mAP+1.792365pp, all5 gates pass. Do not retrain.
-- Full50 Signal B0 complete verified fixed30epochs/3936 updates/195 gradients/AMP0.
-- Full50 original roles M0 complete verified108 updates, overfit excess0.0011232312.
-- Full50 roles main COMPLETE VERIFIED: execution2800c88, terminal20:31:30,
-  fixed20epochs/2625 updates/168000 exposures, all8675 records/50 identities seen.
-  All203 gradients finite/live, AMP0; frozen/Signal state unchanged; strict reload parity.
-  Fresh M0 initial state reused, no M0 trained weight or OOF trained-weight reuse.
-  All12 original text files/103421043 bytes SHA verified and2625 scalar rows checked.
-- Official complete comparison RUNNING: launched20:44, wrapper108798/child108802,
-  executiond9e4f9d. Health20:45 confirms GPU1434MiB/48%; no terminal metrics yet.
-  First stage observation20:54; expected terminal20:54–21:04. Fixed config:
-  configs/RGBNT100/Official-main-v1.json SHA96baf923bc5f92b56feb490342d193031a522cfa50a626156bd2eb2e0d732985.
-  Bound B0 epoch30/role epoch20; all1715 query/8575 gallery/all5 outputs.
-  Official model extraction has begun; no complete retrieval score yet.
-  Do not restart, tune endpoints or weights on official. Evaluation updates0.
-- Original cleanup24 redundant resume snapshots/24.90GiB remains effective.
-  At20:39 all24 absent/12 standalone model sizes correct;20:45 datafree24.03GiB/system10.36GiB.
-  Current CLIP, B0, M0, epoch20 and all result artifacts remain protected.
-- Independent audit unavailable_service_limit; executor verification is not independent.
-  RGBNT201 retained dev58.4050/59.3939 and MSVR310 negative comparison unchanged.
-  Overall goal unmet; seed42 only, no ablations before main success, no sealed-failure scans.
-- Read master handoff section41.64 and refine-logs/rgbnt100_main_v1/EXPERIMENT_TRACKER.md.
-  Author code and complete source sampling constraints in section41.62 remain unchanged.
+- RGBNT100 official COMPLETE, engineering/full verification PASS, scientific support FAIL:
+  Signal80.712162/94.227405 -> fused83.284770/96.151603, mAP+2.572608pp.
+  CNN81.961715/95.860058, Transformer81.709681/94.577259, Mamba83.440622/95.510204.
+  All branches beat Signal, identity bootstrap lower+1.565054815pp; fused mAP is
+  below Mamba by0.155851768pp. Original4 gates:3 PASS/1 FAIL. Do not change gates.
+  Fused Rank-1/5/10 highest; not highest mAP, not SOTA.
+- Every1715 query/8575 gallery/50 identities/all5 outputs verified:
+  73530625 distances/full ranking positions,8575 query scores, full50 bootstrap,
+  entire saved endpoints, all10290 Signal features/distances exactly match.
+  Executiond9e4f9d,20:44:27->20:50:12, both exit0. All16 text/gzip files
+  163634139 bytes received with full SHA verification. Remote arrays1490973250 bytes.
+- Fused39 identities improve/9 decline/2 tie; query AP971/460/284; R1 repairs41/new8,
+  total errors99->66. Complete census and50-ID CSV archived, no selective comparison.
+- Full50 Signal fixed30epochs/3936 updates and roles fixed20/2625 complete verified;
+  M0 Signal130 and roles108 complete. Fresh role initialization, no M0/OOF trained reuse.
+  Original RGBNT100 OOF complete support PASS (+1.792365pp); do not retrain any sealed run.
+- No live training/evaluation now. No official tuning, reranking, endpoint selection or
+  pre-success ablations. Seed42 only. Next research: source-only actual camera-positive
+  sampling exposure under B64/K8 and unchanged losses; complete replay before paired run.
+- Author B128/K16/independent geometry/metric-best differs from project B64/K8/shared
+  geometry/fixed30, as previously disclosed; current data does not isolate causality.
+  Signal local80.712162 vs author86.3; fused vs published PMKD91.6 gap8.315230pp.
+- User cleanup24 redundant resume weights/24.90GiB remains; datafreeabout22.49GiB after
+  official artifacts. Keep required weights, all logs/arrays and baseline provenance.
+- Independent audit unavailable_service_limit; executor checks are not independent.
+  RGBNT201 dev58.4050/59.3939 and MSVR310 negative remain; overall goal unmet.
+- Read master section41.65, refine-logs/rgbnt100_main_v1/EXPERIMENT_TRACKER.md,
+  results/TRIFUSION_RGBNT100_OFFICIAL_COMPARISON_2026-09-06.md and full identity CSV.
 
 ## Experiment environment
 
