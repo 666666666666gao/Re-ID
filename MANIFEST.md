@@ -920,3 +920,12 @@
 | 2026-09-06T22:33:37.459788+08:00 | /experiment-plan | evidence/trifusion_v25_camera_coverage_preregistration_20260906.json | registered | V25 full metadata replay PASS; fixed six-endpoint main comparison registered before runtime |
 | 2026-09-06T22:33:37.459788+08:00 | /experiment-plan | docs/TRIFUSION_RGBNT201_CURRENT_COMPLETE_HANDOFF_2026-09-01.md | registered | V25 full metadata replay PASS; fixed six-endpoint main comparison registered before runtime |
 | 2026-09-06T22:33:37.459788+08:00 | /experiment-plan | AGENTS.md | registered | V25 full metadata replay PASS; fixed six-endpoint main comparison registered before runtime |
+
+| 2026-09-06T22:42:56.382205+08:00 | /run-experiment | evidence/trifusion_v25_launch_wrapper_20260906.py | verified | V25 original112550 launch live; M0 in progress, Q1 result pending |
+| 2026-09-06T22:42:56.382205+08:00 | /run-experiment | evidence/trifusion_v25_camera_coverage_dispatch_20260906.json | verified | V25 original112550 launch live; M0 in progress, Q1 result pending |
+| 2026-09-06T22:42:56.382205+08:00 | /run-experiment | evidence/trifusion_v25_camera_coverage_launch_health_20260906.json | verified | V25 original112550 launch live; M0 in progress, Q1 result pending |
+| 2026-09-06T22:42:56.382205+08:00 | /run-experiment | evidence/trifusion_v25_camera_coverage_registered_sync_20260906.json | verified | V25 original112550 launch live; M0 in progress, Q1 result pending |
+| 2026-09-06T22:42:56.382205+08:00 | /run-experiment | refine-logs/trifusion_v25_camera_coverage/EXPERIMENT_TRACKER_20260906_224256.md | verified | V25 original112550 launch live; M0 in progress, Q1 result pending |
+| 2026-09-06T22:42:56.382205+08:00 | /run-experiment | refine-logs/trifusion_v25_camera_coverage/EXPERIMENT_TRACKER.md | verified | V25 original112550 launch live; M0 in progress, Q1 result pending |
+| 2026-09-06T22:42:56.382205+08:00 | /run-experiment | docs/TRIFUSION_RGBNT201_CURRENT_COMPLETE_HANDOFF_2026-09-01.md | verified | V25 original112550 launch live; M0 in progress, Q1 result pending |
+| 2026-09-06T22:42:56.382205+08:00 | /run-experiment | AGENTS.md | verified | V25 original112550 launch live; M0 in progress, Q1 result pending |

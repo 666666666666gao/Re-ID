@@ -4189,3 +4189,23 @@ V25只改变实际source采样：B64/K8，每批两组跨摄像头与六组单�
 系统盘free 10.365GiB。
 外部独立审计额度限制继续存在，执行器核验不能替代独立审计。
 RGBNT201固定dev目标、MSVR310负结果和跨三数据集SOTA总目标均未解决。
+
+## 41.67 V25原持久进程已启动，M0进行中（2026-09-06T22:42:56.382205+08:00）
+
+注册代码97468dd于22:37:03完成GitHub/local/server一致、服务器/本地/桌面主交接字节相等。
+启动前核对全部登记的源码、配置、计划与Git提交，以及CLIP和6个V12起点权重全文件SHA。
+22:39:45.136173启动screen v25_camera_coverage_97468dd，
+wrapper112548、原训练PID112550；一个原过程先M0，成功后完成六端完整20epoch。
+完整启动合同、原包装脚本与健康观察均已归档。
+
+22:40:53.359908观察原PID和wrapper均活跃，GPU使用3072MiB。
+第0折两端只读预检完成、初始模型一致，参数98800141/可训练7841292/203tensor符合登记。
+尚未完整M0终态，尚无Q1结果，不能提前认定检索有效。
+预计M0在22:44–22:49完成；随后根据每epoch实测耗时修正Q1预期75–100分钟。
+原日志/root/autodl-tmp/trifusion-v2/artifacts/trifusion_v25_camera_coverage_seed42_97468dd.log；
+完整终态/root/autodl-tmp/trifusion-v2/artifacts/trifusion_v25_camera_coverage_seed42_97468dd/run_summary.json，退出文件/root/autodl-tmp/trifusion-v2/artifacts/trifusion_v25_camera_coverage_seed42_97468dd.exit。
+按180–300秒/预计里程碑观察；观察超时不构成重启依据。
+
+启动前数据盘free22.015GiB，
+系统free10.365GiB，继续只保留必要终点和完整证据。
+已清理24个冗余resume权重的结果不变，当前整体baseline/SOTA目标仍未达成。
