@@ -548,3 +548,7 @@
 - RGBNT100 saved batch probes56f094f completed: original losses exactly replayed,3zero Gram determinants per4096-entry call,
   AbsBackward0 at sqrt(abs(det)),153nonfinite encoder gradients; fullFP32 all195finite.
   A minimal localFP32 Gram wrapper and real-input regression are registered, READY_NOT_RUN; no epsilon/clamp or formal restart.
+
+- LocalFP32-only Gram regression8034451 FAILED:1zero determinant and512NaNs per saved input group; no full-model forward executed.
+  StableFP32 Gram with fixed1e-12 sqrt floor is separately registered, READY_NOT_RUN; real zero-point evidence and definition change documented.
+  Preserve old failed helper/plan, no formal baseline restart until new engineering gates pass.

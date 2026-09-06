@@ -10,7 +10,8 @@
 | B0 first attempt | ENGINEERING_STOP_AMP_OVERFLOW | 60a3d0e、33.7765秒退出1；0完整epoch，无checkpoint，成功更新数未知 |
 | Source overflow capture | REPRODUCED | 8b412d0第34步；33有效更新/2176前向，0heldout；M0标量非完全一致 |
 | Saved batch probe | COMPLETE_NUMERICAL_DIAGNOSIS | 192source前向/0更新；原AMP三零Gramdet、AbsBackward0 NaN，完整FP32有限 |
-| Local Gram FP32 regression | READY_NOT_RUN | 真实保存输入算子回归后完整batch；最多192source前向/0更新 |
+| Local Gram FP32 regression | FAIL_OPERATOR_FINITE_GATE | 8034451，仍1零det/各512NaN；0模型前向/0更新 |
+| Stable Gram regression | READY_NOT_RUN | FP32+固定1e-12开方下限；先真实算子，再完整batch；0更新 |
 | Full terminal verifiers | PREPARED_NOT_RUN | 原先准备完整三fold/90epoch/8675query核验，不用于本失败目录 |
 
 原config/plan/runner未改；M0不是真实检索成绩。原始失败现场与独立诊断的更新成本分别登记。
