@@ -1,0 +1,66 @@
+{
+  "read_at": "2026-09-06T21:00:55.141442+08:00",
+  "author_commit": "cd1b0a672d1fe642e7608731cb4899a19dda7d51",
+  "scope": "Read-only author training configuration and preprocessing/selection source; no model/image execution",
+  "files": {
+    "configs/RGBNT100/Signal.yml": {
+      "sha256": "02641ce2941dcd50df77d379aab54650cae4a2a6b15ba1bcd43deba970b6900f",
+      "bytes": 946
+    },
+    "config/defaults.py": {
+      "sha256": "40257d349153e56e345983c99b1638d7c3d77966dfd2f5496fe03c86dc8dbd57",
+      "bytes": 6411
+    },
+    "data/datasets/make_dataloader.py": {
+      "sha256": "54c47d798a20955bde224d9c78b42149c3c2ef008b02659141829a553194434f",
+      "bytes": 10233
+    },
+    "data/datasets/bases.py": {
+      "sha256": "48f050a7924cebd1e51f8831ba05df78dbccc7049afb0bcf83351d9d1ee23814",
+      "bytes": 3874
+    },
+    "engine/processor.py": {
+      "sha256": "aae7afbeed44a9136003f622b5cdfbf17728b8aab236b129f03285f829eb8377",
+      "bytes": 11238
+    }
+  },
+  "reviewed_at": "2026-09-06T21:09:38.082355+08:00",
+  "status": "AUTHOR_CONDITION_DIFFERENCES_RECONFIRMED_AFTER_FIXED_OFFICIAL_COMPARISON",
+  "already_registered_in": "refine-logs/rgbnt100_signal_v1/EXPERIMENT_PLAN.md",
+  "author": {
+    "batch": 128,
+    "instances_per_identity": 16,
+    "workers": 12,
+    "epochs": 30,
+    "evaluation_period": 1,
+    "selection": "processor updates best checkpoint on evaluation mAP",
+    "augmentation": "Each modality independently invokes the random transform after montage cropping"
+  },
+  "project": {
+    "batch": 64,
+    "instances_per_identity": 8,
+    "workers": 4,
+    "epochs": 30,
+    "selection": "One fixed epoch30 with no official model scores during training",
+    "augmentation": "Shared geometry and independent erasing",
+    "gram": "Registered R2 FP32 sqrt(abs(det).clamp_min(1e-12))"
+  },
+  "same_identities_per_batch": 8,
+  "same_identity_positive_pairs_per_batch": {
+    "author": 960,
+    "project": 224
+  },
+  "observed_official_map": {
+    "local_signal": 80.71216176494414,
+    "fused": 83.28476979405968,
+    "author_reported_signal": 86.3
+  },
+  "limits": [
+    "These differences were disclosed before this run; not newly discovered runtime bugs",
+    "Current evidence does not identify the separate causal contribution of batch, augmentation, checkpoint selection or Gram numerics",
+    "Do not tune current weights or rerun sealed official endpoints on test metrics",
+    "No new training hypothesis or B128 run is registered by this read-only review"
+  ],
+  "model_tensor_image_calls": 0,
+  "optimizer_updates": 0
+}
