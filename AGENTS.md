@@ -8,16 +8,19 @@
   Nonzero gradient gate is phase coverage; all16 capacity steps203/203,
   late overfit may have zero gradients, all finite and full phase coverage203.
 - Original126981/wrapper126979 launched03:15:43 and entered complete Q1.
-  03:30 fold0 control469 persisted steps, epoch17, no overflow. No Q1 terminal.
+  03:42 fold0 control580 completed steps, candidate460/epoch16, no overflow.
+  No complete three-fold Q1 terminal.
   Keep source-style plan fixed: 3fold x2end x20epochs,3360 updates and original5 gates.
 - R1 849b608 JSON-via-YAML type failure before T0/models/updates is retained.
   R2 only JSON parser repair. No training-source changes after c225652.
 - Full terminal verifier queue128288 alive, waits180sec for original126981 terminal.
   Verification not yet executed; automatic retries0. Keep original training running.
-  Report results/TRIFUSION_V27_M0_AND_Q1_LAUNCH_2026-09-07.md. Master41.83.
+  Complete reporter queue129047 also confirmed live; waits for full verification,
+  then renders all21 identities/571queries/five outputs and all3360 training-loss rows.
+  Report results/TRIFUSION_V27_M0_AND_Q1_LAUNCH_2026-09-07.md. Master41.84.
 - Prior V26 FAIL and fullsource purebank saturation remain sealed. No bank-gate rescue,
   weight scan or fused XBM. RGBNT100 baseline gain retained; full goal UNMET.
-- Disk data18.63GiB/system10.36GiB separately. 24 redundant weights removed24.90GiB,
+- Disk data18.48GiB/system10.36GiB separately. 24 redundant weights removed24.90GiB,
   all12 retained model hashes verified; new deletions0. Preserve active/anchor weights.
 - Executor verification is not an external independent audit.
 
