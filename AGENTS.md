@@ -1,23 +1,21 @@
 # TriFusion-ReID workspace
 
-## Latest verified state (2026-09-07T02:47:36.949548+08:00)
+## Latest verified state (2026-09-07T03:09:50.045072+08:00)
 
-- Fullsource supportdecomposition COMPLETE,125623/wrapper125621 ended0.
-  634354228relations/25008queryrows/216metrics/108sixteen-cell tables allverified.
-  Original14outputs match previousfullsource census perquery. Execution22be78c.
-- Purebank augmentedsource mAP99.999877/R1=100, only5nonpositivepairs.
-  1806777/1808433slotwrongrelations alreadycorrect in same-role3modality residual
-  andfused; bank/fusedcorrect1808411. Source saturation is NOT mainly Signal cover.
-  Do not simply replaceV26fusedgate withbankgate, scaleweight or addfusedXBM.
-- Nextcandidate: source-environment diversity, with verified low-level interface
-  and synchronizedgeometry/separate spectral statistics. MixStyle primarypaper/
-  MITrepo reviewed, lowerCNN layers recommended, finalpredictionlayer discouraged.
-  CLIPblock8 transplant NOT verified. NoMixStylecodecopy, V27contract ortraining.
-- Reports results/TRIFUSION_SOURCE_SUPPORT_DECOMPOSITION_2026-09-07.md and
-  TRIFUSION_SOURCE_SUPPORT_ANALYSIS_2026-09-07.md. Master41.79.
-  No newmodel/imageforward/featurefile/weights, datafreeabout18.64GiB.
-- V26Q1_FAIL sealed, RGBNT100baselinegain retained, full3dataset/SOTAgoalUNMET.
-  Executorverification notexternal independent audit; externalserviceunavailable.
+- V27 source-style training candidate IMPLEMENTED_REGISTERED_NOT_RUN.
+  Cross-camera same-modality stem moment mixing, shared three-modality plan,
+  original Signal prefix and matched perturbed anchor/reference. Evaluation is original V8.
+  No new parameters/inference compute; additional frozen training visual pass in BOTH arms.
+  Full fixed plan: refine-logs/trifusion_v27_source_style/EXPERIMENT_PLAN.md.
+  T0/M0 then complete 3fold x2end x20epochs/3360updates; original five gates.
+  No V24 prototype/brightness rescue, V25 sampler, V26 auxiliary, or XBM.
+- Prior source support decomposition COMPLETE: pure bank augmentedsource
+  mAP99.999877/R1=100, only5 nonpositive pairs. Do not simply change V26 gate to bank.
+  V26 Q1_FAIL remains sealed; RGBNT100 baseline gain retained; full goal UNMET.
+- Disk recheck03:00: 24 deleted recovery weights remain absent; all12 retained
+  independent models fully SHA verified. Additional deletions0; datafree18.63GiB.
+  Read evidence/trifusion_disk_weight_recheck_20260907.json. Master41.80.
+- No training running at preregistration. Executor verification is not independent audit.
 
 ## Experiment environment
 

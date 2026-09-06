@@ -1,0 +1,3 @@
+# V27 tracker
+
+IMPLEMENTED_REGISTERED_NOT_RUN。T0/M0/Q1均未运行；完整计划已固定。

@@ -1,0 +1,140 @@
+{
+  "SCHEMA_VERSION": 1,
+  "EXPERIMENT": {
+    "NAME": "trifusion_rgbnt201_v27_source_style",
+    "SEED": 42,
+    "RESOURCE_PROFILE": "rtx3090_b64k8"
+  },
+  "DATA": {
+    "DATASET_ROOT": "/root/autodl-tmp/trifusion-v2/data/RGBNT201",
+    "DEV_PROTOCOL": "protocols/rgbnt201_dev_v1.json",
+    "TRAIN_BATCH_SIZE": 64,
+    "NUM_INSTANCES": 8,
+    "SAMPLER": "CrossCameraIdentitySampler_identical_paired",
+    "EVAL_BATCH_SIZE": 128,
+    "NUM_WORKERS": 4
+  },
+  "SIGNAL": {
+    "SOURCE": "/root/autodl-tmp/trifusion-v2/comparators/Signal-cd1b0a6",
+    "CONFIG": "/root/autodl-tmp/trifusion-v2/comparators/Signal-cd1b0a6/configs/RGBNT201/Signal.yml",
+    "CLIP_WEIGHT": "/root/autodl-tmp/trifusion-v2/pretrained/ViT-B-16.pt",
+    "CLIP_WEIGHT_SHA256": "5806e77cd80f8b59890b7e101eabd078d9fb84e6937f9e85e4ecb61988df416f",
+    "BASELINE_WIDTH": 3072,
+    "CAMERA_SIE": true
+  },
+  "MODEL": {
+    "ARCHITECTURE": "signal_preserving_v27_source_style",
+    "FEATURE_WIDTH": 512,
+    "SEMANTIC_WIDTH": 768,
+    "GRID_SIZE": [
+      16,
+      8
+    ],
+    "BRANCH_AFTER_BLOCK": 8,
+    "ADAPTER_WIDTH": 128,
+    "EXPERT_MODAL_WIDTH": 512,
+    "SCALE_INIT": 0.05,
+    "GRADIENT_CHECKPOINTING": true
+  },
+  "OPTIMIZATION": {
+    "NEW_MODULE_LR": 0.00035,
+    "WEIGHT_DECAY": 0.0001,
+    "MAX_EPOCHS": 20,
+    "WARMUP_EPOCHS": 5,
+    "AMP": true,
+    "AMP_INIT_SCALE": 256.0
+  },
+  "LOSS": {
+    "ID_FUSED": 0.25,
+    "TRIPLET_FUSED": 1.0,
+    "ID_BRANCH": 0.08333333333333333,
+    "TRIPLET_BRANCH": 0.25,
+    "ID_RESIDUAL": 0.08333333333333333,
+    "TRIPLET_RESIDUAL": 0.25,
+    "TRIPLET_MARGIN": 0.3,
+    "LABEL_SMOOTHING": 0.1
+  },
+  "INITIALIZATION": {
+    "V12_RUN_SUMMARY": "/root/autodl-tmp/trifusion-v2/artifacts/trifusion_v12_complete_path_oof_seed42_c71d3de/run_summary.json",
+    "V12_RUN_SUMMARY_SHA256": "9105b86a9c079c44843e9b118a21599746a87d279370341b8cf8d26bd18a8b69",
+    "V12_FOLDS": [
+      {
+        "SIGNAL_CHECKPOINT": "/root/autodl-tmp/trifusion-v2/artifacts/trifusion_v12_complete_path_oof_seed42_c71d3de/fold_0_signal_final.pth",
+        "SIGNAL_CHECKPOINT_SHA256": "523c7c645ac1d85c91cd7b08ef3c3276e37f723906ae7af0d9ec6a9ddbcb38de",
+        "EXPERT_CHECKPOINT": "/root/autodl-tmp/trifusion-v2/artifacts/trifusion_v12_complete_path_oof_seed42_c71d3de/fold_0_experts.pth",
+        "EXPERT_CHECKPOINT_SHA256": "4baebda03e69447e552a5e2e5512aad3db69248e23cbd0aacbc6d2bb7475c3af"
+      },
+      {
+        "SIGNAL_CHECKPOINT": "/root/autodl-tmp/trifusion-v2/artifacts/trifusion_v12_complete_path_oof_seed42_c71d3de/fold_1_signal_final.pth",
+        "SIGNAL_CHECKPOINT_SHA256": "6c1304a68663418ef9b4dcd6230bde55c87d0319ac60351aebbe8a0ab9acbcd7",
+        "EXPERT_CHECKPOINT": "/root/autodl-tmp/trifusion-v2/artifacts/trifusion_v12_complete_path_oof_seed42_c71d3de/fold_1_experts.pth",
+        "EXPERT_CHECKPOINT_SHA256": "f369bca3dbd53518bc082880974f203aedbb6febd0251458a25707b91de52ec3"
+      },
+      {
+        "SIGNAL_CHECKPOINT": "/root/autodl-tmp/trifusion-v2/artifacts/trifusion_v12_complete_path_oof_seed42_c71d3de/fold_2_signal_final.pth",
+        "SIGNAL_CHECKPOINT_SHA256": "3cf0ef340c44db43d299ea8ca3a742ad12b4e113c12dffbd1db21f656923f678",
+        "EXPERT_CHECKPOINT": "/root/autodl-tmp/trifusion-v2/artifacts/trifusion_v12_complete_path_oof_seed42_c71d3de/fold_2_experts.pth",
+        "EXPERT_CHECKPOINT_SHA256": "7abdecdec6e39eb6f3244b8f24428139e52079c91f7e5d0dad1d1c17dc387678"
+      }
+    ]
+  },
+  "GATES": {
+    "PREFLIGHT_BATCHES": 8,
+    "CAPACITY_STEPS": 8,
+    "CAPACITY_MAX_RESERVED_MIB": 24576.0,
+    "OVERFIT_STEPS": 100,
+    "OVERFIT_MAX_EXCESS_LOSS_RATIO": 0.1,
+    "Q1_MIN_FUSED_GAIN_MAP": 1.0,
+    "Q1_BOOTSTRAP_RESAMPLES": 10000,
+    "Q1_BOOTSTRAP_SEED": 42
+  },
+  "PROTOCOL": {
+    "Q1_ENDPOINTS": [
+      "control",
+      "source_style"
+    ],
+    "DEV_ACCESS_DURING_Q1": false,
+    "OFFICIAL_TEST_DURING_DEVELOPMENT": false,
+    "RERANKING": false
+  },
+  "V12": {
+    "SIGNAL_TEACHER_EPOCHS": 50
+  },
+  "SUPERVISION_METADATA": {
+    "PATH": "evidence/trifusion_v26_fixed_sampler_metadata_20260907.json",
+    "SHA256": "656f91a81f33f43141d7ca275be7b80ef71884cb02283fb930f21d83695cb4e4"
+  },
+  "SOURCE_FILE_SHA256": {
+    "modeling/trifusion/aligned_data.py": "3ea362d17660483b554cb599442b6377ace020fa114969b9bdd58906fbceedd5",
+    "modeling/trifusion/criterion.py": "0b2a6370f434828d885945d1a46dd56f6668133ceed45ef359fe71eeca63740a",
+    "modeling/trifusion/signal_preserving_v8.py": "97a7b5fe6dab882c2ed92ed1db95b9a8f48eae1d99a3a9b145b0cdfc4b8cefbc",
+    "modeling/trifusion/signal_preserving_v8_builder.py": "8afb028957ecff1a0a26497f7d0460bc240b0f8612a3c476b52a9a6667a3049d",
+    "modeling/trifusion/signal_preserving_v13.py": "7b7c4abb220ed234608553c77aeedd5f8ef763abb04cce5b21f1bfce0f4daa62",
+    "modeling/trifusion/signal_preserving_v19.py": "69989cced25950ff476759bc93df945b167e8ce88a4340676e8adbbd9f88918e",
+    "modeling/trifusion/signal_preserving_v23.py": "89816298baedf6ab5d3f122fe16db69035420df8cc91b65e0bb0c8c6f9cde1af",
+    "modeling/trifusion/experts/mamba.py": "c516c7ad937e5eee6a4ed1e3ec33c2afe3522b751d296bd2e4910e4f27a20ee5",
+    "modeling/trifusion/experts/semantic_residual.py": "c8cef9717fd7bd1e5e50b428ac92762455defac2e25857c9e0dfaf82729c2a93",
+    "modeling/trifusion/state.py": "5fe89c4885507e74ca1833cc18822a4b57e4c2d6fa9a6c6b2e127d1e74b70db9",
+    "tools/train_signal_preserving_v17.py": "333886d16f73987accddb70b0780661bb9400b8afd04af01b57e188d34e5228d",
+    "tools/train_signal_preserving_v18.py": "f6bdda4631d710d0b6db5fe2a8df124d8dcbd294cb54adcf3ec261d523e96cf8",
+    "tools/train_signal_preserving_v19.py": "5f000d3d3abe9636cae97e292db2c63a3a20f349c125dfe4b27bd3fca95bb9c5",
+    "tools/train_signal_preserving_v22.py": "ee17aeba9bc2a567b1163e6a57759a55423ee5f77edde21e6c7a81625fe45a53",
+    "tools/train_signal_preserving_v23.py": "1b18edbd28e335469f6647a7095228e9e03cf8195b2739b4a9c54c62aedec42b",
+    "tools/build_v12_complete_path_oof_targets.py": "fc13354b1065c46677122ee9cf63816087facca4e0e98ec5e6e2fb0dece141e4",
+    "tools/run_signal_preserving_v5.py": "e162184f68778b4991db0f97f26c5fda273b2ad2f7c8db2bbb2d53775eb717e5",
+    "tools/audit_v17_full_gallery.py": "856881f984ab8793788d291018a60046a47e309c625a65394b1a3ff4e670d8a9",
+    "tools/diagnose_v6_oracle_complementarity.py": "919b624156c57f92fa75f79a06fe7c872a02d730fa8cd021ce9d7b4e498b1db2",
+    "protocols/rgbnt201_dev_v1.json": "d916e7daaa1d55b179c1ec77e93128b6e6a8d1526adc9eac060ea8e733881946",
+    "modeling/trifusion/source_style_v27.py": "402b959863222ea4dfa82ea19c4aa63b02dd0aeef8ad3bc18dd00848ce945d8e",
+    "tools/train_signal_preserving_v27.py": "33c9b7ed14f9b2550af5aa5a4967d281ff7b6137ee1ef9ddc0ef3005c0c25be6",
+    "tools/check_v27_style_math.py": "d5a6ab903cc8e63adb064adf4b58853c7c67713047a8c9b5ecd5f346538f5a39"
+  },
+  "STYLE": {
+    "LOCATION": "patch_conv_before_cls_position_sie",
+    "PROBABILITY": 0.5,
+    "BETA_ALPHA": 0.1,
+    "VARIANCE_EPSILON": 1e-06,
+    "CROSS_CAMERA_DONOR": true,
+    "SHARED_MODAL_PLAN": true
+  }
+}
