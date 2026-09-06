@@ -1003,3 +1003,15 @@
 | 2026-09-07T00:10:56.694726+08:00 | /executor-analysis | refine-logs/trifusion_v25_camera_coverage/EXPERIMENT_TRACKER.md | verified | V25 complete Q1_FAIL/full CPU and all-query verification; BIER source review only |
 | 2026-09-07T00:10:56.694726+08:00 | /executor-analysis | docs/TRIFUSION_RGBNT201_CURRENT_COMPLETE_HANDOFF_2026-09-01.md | verified | V25 complete Q1_FAIL/full CPU and all-query verification; BIER source review only |
 | 2026-09-07T00:10:56.694726+08:00 | /executor-analysis | AGENTS.md | verified | V25 complete Q1_FAIL/full CPU and all-query verification; BIER source review only |
+| 2026-09-07T00:35:14.340790+08:00 | /experiment-plan | modeling/trifusion/role_modal_responsibility_v26.py | registered | V26 fixed responsibility objective; T0/M0/Q1 not run |
+| 2026-09-07T00:35:14.340790+08:00 | /experiment-plan | tools/train_signal_preserving_v26.py | registered | V26 fixed responsibility objective; T0/M0/Q1 not run |
+| 2026-09-07T00:35:14.340790+08:00 | /experiment-plan | tools/check_v26_responsibility_math.py | registered | V26 fixed responsibility objective; T0/M0/Q1 not run |
+| 2026-09-07T00:35:14.340790+08:00 | /experiment-plan | configs/RGBNT201/TriFusion-signal-preserving-v26-role-modal-responsibility-rtx3090.json | registered | V26 fixed responsibility objective; T0/M0/Q1 not run |
+| 2026-09-07T00:35:14.340790+08:00 | /experiment-plan | evidence/trifusion_v26_fixed_sampler_metadata_20260907.json | registered | V26 fixed responsibility objective; T0/M0/Q1 not run |
+| 2026-09-07T00:35:14.340790+08:00 | /experiment-plan | refine-logs/trifusion_v26_role_modal_responsibility/EXPERIMENT_PLAN.md | registered | V26 fixed responsibility objective; T0/M0/Q1 not run |
+| 2026-09-07T00:35:14.340790+08:00 | /experiment-plan | refine-logs/trifusion_v26_role_modal_responsibility/EXPERIMENT_TRACKER_20260907_registered.md | registered | V26 fixed responsibility objective; T0/M0/Q1 not run |
+| 2026-09-07T00:35:14.340790+08:00 | /experiment-plan | refine-logs/trifusion_v26_role_modal_responsibility/EXPERIMENT_TRACKER.md | registered | V26 fixed responsibility objective; T0/M0/Q1 not run |
+| 2026-09-07T00:35:14.340790+08:00 | /experiment-plan | evidence/trifusion_v26_role_modal_responsibility_preregistration_20260907.json | registered | V26 fixed responsibility objective; T0/M0/Q1 not run |
+| 2026-09-07T00:35:14.340790+08:00 | /experiment-plan | evidence/trifusion_v25_complete_sync_20260907.json | registered | V26 fixed responsibility objective; T0/M0/Q1 not run |
+| 2026-09-07T00:35:14.340790+08:00 | /experiment-plan | docs/TRIFUSION_RGBNT201_CURRENT_COMPLETE_HANDOFF_2026-09-01.md | registered | V26 fixed responsibility objective; T0/M0/Q1 not run |
+| 2026-09-07T00:35:14.340790+08:00 | /experiment-plan | AGENTS.md | registered | V26 fixed responsibility objective; T0/M0/Q1 not run |

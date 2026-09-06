@@ -1,40 +1,30 @@
 # TriFusion-ReID workspace
 
-## Latest verified state (2026-09-07 00:00)
+## Latest verified state (2026-09-07T00:35:14.340790+08:00)
 
-- V25 COMPLETE: training112550/wrapper112548 exit0 atSep6 23:50:33;
-  all6x20epochs/3360updates/215040exposures completed, execution97468dd.
-  Full CPU verification queue114796 exit0 at23:50:53, no retries.
-  32602260 distances/5952790 ranking positions,571queries/21IDs/5outputs,
-  all source exposures/weights/input SHA verified; maxdistance/metric error0.
-- V25 scientific Q1_FAIL,1of5 gatesPASS: fused80.881569/84.588441
-  ->80.420931/82.486865, delta-0.460638pp.
-  Fold+0.564526/+1.526056/-3.185387, bootstrap lower-2.306666pp.
-  CNN-0.636440,T-2.026329,M+1.835080; only fused-best gatePASS.
-  Fused AP181up/193down/197tie,11IDup/10down,R1repair3/new15.
-  Same Signal features/distances/rankings in both arms; fused still beats Signal.
-  Seal V25 rule; no ratio/copy/seed/epoch/loss scans or D1/dev/official.
-- Complete original24 text files/15638325bytes and all30fold rows/105identity
-  output rows/2855query output rows downloaded and byte/arithmetic verified.
-  No local model/image/tensor execution. All6weights/arrays remain remote.
-  Read results/TRIFUSION_V25_COMPLETE_COMPARISON_2026-09-06.md and failure analysis.
-- Current inference is original frozen Signal/V8 roles, no V23/V24/Router/HFER.
-  User next direction: fixed sampling, role-modal ranking responsibility;
-  inspect true nine-slot decomposition, support and same-block auxiliary gradients.
-  BIER source cd04edf (7files, GPLv3) reviewed only; no author code copied/run.
-  Instance memory requires actual augmented hard-instance/drift evidence.
-  No new model executed yet. Read docs/BIER_ROLE_MODAL_RESPONSIBILITY_SCOPE_2026-09-07.md.
-- RGBNT100 official Signal80.712162/94.227405 ->fused83.284770/96.151603,
-  +2.572608pp, full1715queries/8575gallery/50IDs verified;3of4 scientificPASS,
-  Mamba83.440622 still higher mAP. Positive baseline gain preserved, not SOTA.
-  Full50 Signal30epochs/roles20epochs sealed; no retraining or official tuning.
-- RGBNT201 retaineddev58.4050/59.3939; MSVR310 original roles negative.
-  Whole three-dataset baseline/SOTA goal remains unmet. Seed42, no pre-success ablations.
-  External independent audit unavailable; executor verification is not independent audit.
-- Cleanup24 redundant old resume weights/24.900344GiB confirmed; keep12 old
-  final models, baselines and current weights/arrays. Datafree21.095GiB
-  atSep6 23:51, systemfree10.364922GiB. No extra deletions.
-  Read master41.71 and V25 immutable experiment plan/tracker.
+- V26 IMPLEMENTED_REGISTERED_NOT_RUN. New role-modal responsibility loss,
+  tau0.1/lambda1 fixed, OLD identical sampler both arms, original14 losses and
+  V8/Signal model. No new inference parameters. T0/M0/Q1 not executed yet.
+  Read refine-logs/trifusion_v26_role_modal_responsibility/EXPERIMENT_PLAN.md.
+  Planned48 read-only batches +116 M0 updates, then full6x20 epochs/3360updates.
+  Same original five Q1 gates. All nine-slot support and same-encoder-block
+  auxiliary gradients recorded; no XBM/PCGrad/new sampling/Router/ablation.
+- V25 COMPLETE Q1_FAIL, training and full CPU verifier exit0. Full571queries,
+  21IDs/32602260 distances/5952790 ranks verified. Fused80.881569->80.420931,
+  delta-0.460638pp; T-2.026329/M+1.835080. Only1of5 science gatesPASS.
+  All2855 query-output and105 identity-output rows published; version sealed.
+- RGBNT100 official full verified Signal80.712162/94.227405
+  ->fused83.284770/96.151603,+2.572608pp. Mamba83.440622 higher mAP,
+  original3of4 gatesPASS. Real baseline gain preserved; no official tuning.
+  RGBNT201 fixeddev58.4050, MSVR310 original roles negative; no SOTA.
+- BIER paper/author sourcecd04edf verified; GPLv3 code reviewed only,
+  no copied/run author code. Independent implementation, novelty unproven.
+  Reused21-ID OOF remains development qualification, not independent validation.
+- Three-dataset baseline/SOTA goal active and unmet. External independent audit
+  service unavailable; executor verification is not an independent audit.
+- Cleanup24 obsolete resume files/24.900344GiB completed. Preserve baseline,
+  useful finals and full evaluation arrays. Datafree~21.07GiB at00:25.
+  No GPU job active at00:25; new V26 has not launched. Master through41.72.
 
 ## Experiment environment
 
