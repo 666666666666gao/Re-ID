@@ -1,5 +1,29 @@
 # TriFusion-ReID workspace
 
+## Latest verified state (2026-09-06)
+
+- RGBNT100 original full-three-role comparison is COMPLETE_EXECUTOR_VERIFIED_SUPPORT_PASS:
+  3x20 epochs/5195 updates/all8675 queries and50 IDs; Signal89.524175/96.829971
+  versus fused91.316540/97.936599, mAP+1.792365pp, all5 registered gates pass,
+  identity-bootstrap lower+0.951777609pp. All3 checkpoints/15 array paths/43375
+  outputs/all updates verified. Execution bbe49e1; terminal15:57:30. No running training.
+- RGBNT100 Signal R2 B0 and role M0 are complete and verified, not pending.
+  Older entries below document historical stages. Do not retrain completed OOF,
+  change its gates, or report this internal result as official/SOTA.
+- Next: separately register full50-training-ID RGBNT100 main training and the
+  fixed official same-protocol comparison; that next run is not launched.
+  Existing RGBNT201/MSVR310 failures and pre-success ablation/seed42 limits remain.
+  RGBNT201 dev58.4050/59.3939 and the main target remain unmet.
+- Independent RGBNT100 audit has no verdict due service limit; executor checks
+  are complete but are not an independent audit.
+- User-directed disk cleanup removed24 completed-run resume snapshots/24.90GiB,
+  with12 standalone models verified and retained. Old resume binaries are gone;
+  historical metadata remains. Current training/B0/CLIP/V8/V12 weights retained.
+- Read the current master handoff section41.55 and
+  results/TRIFUSION_RGBNT100_ORIGINAL_ROLES_COMPARISON_2026-09-06.md.
+
+
+
 ## Experiment environment
 
 - Runtime: remote Linux GPU server; local WSL2 is SSH transport only and must

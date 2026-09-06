@@ -1,0 +1,89 @@
+{
+  "closed_at": "2026-09-06T17:27:54.699789+08:00",
+  "status": "COMPLETE_EXECUTOR_VERIFIED_SUPPORT_PASS",
+  "execution_commit": "bbe49e1c24956e891afb8ec3e83df01acd75c579",
+  "terminal_exit_code": 0,
+  "engineering": "PASS_FULL_EXECUTOR_FILE_ARRAY_SCALAR_CHECKS",
+  "scientific_checks": {
+    "fused_gain_at_least_1pp": true,
+    "all_fold_fused_gains_nonnegative": true,
+    "all_full_branches_not_below_signal": true,
+    "identity_bootstrap_lower_positive": true,
+    "fused_strictly_best": true
+  },
+  "scientific_passed": true,
+  "metrics": {
+    "baseline_only": {
+      "mAP": 89.52417504200771,
+      "Rank-1": 96.82997118155619,
+      "Rank-5": 97.38328530259366,
+      "Rank-10": 97.57925072046109
+    },
+    "fused": {
+      "mAP": 91.31654049653056,
+      "Rank-1": 97.93659942363112,
+      "Rank-5": 98.37463976945246,
+      "Rank-10": 98.57060518731988
+    },
+    "cnn": {
+      "mAP": 91.03996435125474,
+      "Rank-1": 97.94812680115274,
+      "Rank-5": 98.30547550432277,
+      "Rank-10": 98.5014409221902
+    },
+    "transformer": {
+      "mAP": 90.40859214333973,
+      "Rank-1": 97.24495677233429,
+      "Rank-5": 97.9250720461095,
+      "Rank-10": 98.25936599423632
+    },
+    "mamba": {
+      "mAP": 90.32935233228622,
+      "Rank-1": 97.9250720461095,
+      "Rank-5": 98.1671469740634,
+      "Rank-10": 98.36311239193084
+    }
+  },
+  "gains_over_signal_pp": {
+    "baseline_only": 0.0,
+    "fused": 1.7923654545228516,
+    "cnn": 1.515789309247026,
+    "transformer": 0.8844171013320192,
+    "mamba": 0.8051772902785075
+  },
+  "fold_fused_gains_pp": [
+    2.515769703766466,
+    2.083219074656938,
+    0.592882201337531
+  ],
+  "identity_bootstrap_lower_pp": 0.9517776090865597,
+  "optimizer_steps": 5195,
+  "source_record_exposures": 332480,
+  "query_output_evaluations": 43375,
+  "queries": 8675,
+  "query_identities": 50,
+  "gallery_records": 8675,
+  "checkpoint_files_verified": 3,
+  "retrieval_array_files_verified": 3,
+  "feature_distance_paths_verified": 15,
+  "baseline_features_distances_and_saved_states_all_bitwise_equal_b0": true,
+  "query_errors": "All8675 query rows/all5outputs/all50identities retained in complete error census",
+  "independent_audit": "UNAVAILABLE_SERVICE_LIMIT_NO_INDEPENDENT_VERDICT",
+  "official_test_image_access": 0,
+  "rgbnt201_dev_image_access": 0,
+  "local_model_tensor_image_calls": 0,
+  "inputs_sha256": {
+    "evidence/rgbnt100_original_roles_v1_comparison_receipts/comparison/summary.json": "8520db24326a4b4f46974e68ee949163c76cb63e0f0d4a89ba9bad99004ede3e",
+    "evidence/trifusion_rgbnt100_original_roles_terminal_files_verification_20260906.json": "893c1e43ea63b9aa541e4bc9d839f3bb2bf4c337123b5c435c18da8694483577",
+    "evidence/trifusion_rgbnt100_original_roles_terminal_scalar_verification_20260906.json": "fc614c9e5262878818263b4cde82e59ac3a7cfc722f692aeb4e5ac908eb7287c",
+    "evidence/trifusion_rgbnt100_original_roles_complete_error_census_20260906.json": "6682b9dfb701359b2c4f6f515a61b3cbdf6c21813d89ad86d6beaeed0dafda0e",
+    "evidence/trifusion_rgbnt100_original_roles_terminal_intake_20260906.json": "dd5e18bc6456ab52e3f852059b338b2261711ec61161ff96d33eb1ee479b67b8"
+  },
+  "limits": [
+    "Single seed42 internal identity-OOF, not official test or independent SOTA evidence",
+    "Weights and feature/distance tensors remain remote; executor CPU tensor verification is separately receipted",
+    "Extra role-training/compute after complete Signal B0, not equal total compute budget",
+    "No independent audit verdict due service limit; this closure is by the executor",
+    "RGBNT201 retaineddev58.4050/59.3939 and main65/official target remain unmet"
+  ]
+}
