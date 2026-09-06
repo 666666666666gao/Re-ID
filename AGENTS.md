@@ -26,7 +26,13 @@
 - Independent audit unavailable due service limit; executor checks are not independent.
   Existing RGBNT201/MSVR310 failures sealed; seed42 only; no pre-success ablations.
   RGBNT201 dev58.4050/59.3939 and overall targets remain unmet.
-- Read master handoff section41.61 and refine-logs/rgbnt100_main_v1/EXPERIMENT_TRACKER.md.
+- 19:56:46 ps confirmed wrapper106196 and child106200 still live; training metrics not read.
+  Primary author-code review and all-source camera sampling feasibility completed separately.
+  V24 already tests weak-update/strong global+camera prototype supervision.
+  Two cross-camera IDs per batch requires extra group draws; do not just change sort priority.
+  No new sampler implemented and no active training source changed.
+- Read master handoff section41.62, refine-logs/rgbnt100_main_v1/EXPERIMENT_TRACKER.md
+  and docs/IICI_XBM_SNR_CODE_AND_SAMPLING_CONSTRAINTS_2026-09-06.md.
 
 ## Experiment environment
 

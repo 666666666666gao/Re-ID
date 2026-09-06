@@ -2,7 +2,7 @@
 
 ## 0. 一页结论
 
-最新状态（2026-09-06，§41.61）：RGBNT100原三折完整比较内部Signal89.524175/96.829971→fused91.316540/97.936599，mAP+1.792365pp并通过原五门。新全50类Signal固定30epoch/3936更新已完整核验PASS；全50类角色M0于19:39完成108有效更新，203梯度及过拟合/冻结/重载/全权重与标量核验PASS。fresh同初态固定20epoch主训练19:42启动，执行2800c88、wrapper106196；预计20:33–20:43，20:28首次训练观察。官方检索尚未运行，RGBNT201/MSVR310负结果及RGBNT201未达主目标保持。用户要求的24个重复续训权重/24.90GiB已清理，19:44数据盘可用24.60GiB。
+最新状态（2026-09-06，§41.62）：RGBNT100原三折完整比较内部Signal89.524175/96.829971→fused91.316540/97.936599，mAP+1.792365pp并通过原五门。新全50类Signal固定30epoch/3936更新已完整核验PASS；全50类角色M0于19:39完成108有效更新，203梯度及过拟合/冻结/重载/全权重与标量核验PASS。fresh同初态固定20epoch主训练19:42启动，执行2800c88、wrapper106196；预计20:33–20:43，20:28首次训练观察。官方检索尚未运行，RGBNT201/MSVR310负结果及RGBNT201未达主目标保持。用户要求的24个重复续训权重/24.90GiB已清理，19:44数据盘可用24.60GiB。 19:56已确认主训练进程仍在；新增作者代码核查与全source采样数量约束见§41.62，不改变当前固定训练。
 
 当前用于已完成MSVR310比较及新登记RGBNT100比较的是原V8平行三角色结构：冻结Signal/CLIP，共享block8之前语义和tail9/10/11参数，三个角色分别运行共享tail；CNN处理局部语义Patch高频，Transformer处理全局CLS/Patch关系，Mamba处理空间与位置级三模态扫描。各角色相对冻结reference形成1536D残差，三角色4608D银行拼接3072D Signal得到7680D fused；完整单角色输出为4608D Signal+角色残差。三条路径均执行，当前没有Router/HFER、V23模态MLP或V24原型。两项车辆训练比较均已完成；RGBNT100内部完整比较支持三角色增益，MSVR310尚未超过Signal。下面V1—V8条目保留历史经过，不代表当前又启用了旧模块。
 
@@ -4038,3 +4038,43 @@ summary4ab4eb9cdcba0e4c9a90be32974a623c11c6fdda1e232f58e622f6ac84a2ca3e；
 另计压缩排序/模型，当前磁盘足够。静态流程复核见
 evidence/trifusion_rgbnt100_official_pipeline_static_scope_review_20260906.json；
 静态复核不代替未运行的官方模型与全数组核验，官方配置继续等待真实角色epoch20终态。
+
+### 41.62 作者代码核查和跨camera采样的完整数量约束（2026-09-06）
+
+更新时间2026-09-06T20:15:02.777248+08:00。上一轮是实质进展：全50类Signal B0及角色M0完整核验，fresh固定20epoch已启动。
+19:56:46只读ps确认wrapper106196和训练child106200都仍在运行，未读取训练指标；
+实际执行2800c88、当前发布c96e26d，预计20:33–20:43结束，20:28首次训练观察不变。
+当前没有角色主训练或官方检索终态；本节并行工作只阅读作者文本、已有source标签与源码。
+
+作者代码三仓库固定提交：IICI d60e09bad6637b076a3c1347dfe59745b4cd76b3，
+XBM（旧MalongTech地址转向msight-tech）223ecdc25f71ef1721a58bc87cc567025a32bc92，
+Microsoft通用SNR f3d51b5e3525fe5e1ea364fafdf0e4cc60b1362b。
+20份代码/README/许可证文本逐文件SHA记录，未下载作者权重或执行作者训练。
+IICI原入口强制每身份只有一个camera，默认Market不做subcamera拆分，MSMT才按epoch低层特征聚类。
+XBM是detach实例队列加memory度量损失，样例128D/55000/1000步后启用；
+其标签0空槽约定与本项目合法class0不兼容，不能直接照搬。
+XBM实际LICENSE为CC-BY-NC-4.0；IICI本次页面/文件未见仓库级许可证声明；
+SNR实际MIT，但本轮读取的是PACS分类通用DG/DA代码，不能算原ReID或三光谱复现。
+作者源码未复制到本项目，证据及引用见docs/IICI_XBM_SNR_CODE_AND_SAMPLING_CONSTRAINTS_2026-09-06.md。
+
+本地实际V24源码确认：108个identity-camera原型汇成94个全局身份原型，
+weak按组EMA更新，strong fused7680D接受全局及同camera原型损失，原采样器未变。
+两端共享双视图/原型计算，系数0/1比较已完整封存；它不是完整IICI复现，但weak/strong原型核心路线已测试。
+因此，不能再把“加入同环境原型或更多source负身份标签”当成全新关键修复。
+实例XBM真正新增的是同一负身份的困难视角/实例多样性，不只是身份数量；
+clean-source原型分类100%也不能代替真实增强训练视图中实例难例是否饱和的证据。
+
+新增纯标准库census完整覆盖三折282个source身份成员/6252条source记录成员，并逐折对齐1680旧batch统计。
+原每epoch批次29/28/27；原K8跨camera组容量41/41/40，原调度实际使用39/38/33。
+每batch两个跨camera身份要求58/56/54组，较原分组容量缺17/15/14组；
+对应真实cross-camera记录381/392/369，重复记录位置的聚合下界83/56/63。
+这不是某个新采样器实测重复数；新采样器尚未实现，标签数量也不是mAP改善证据。
+仅改变原组优先级无法实现目标，必须显式定义额外组抽取和身份频率变化，
+并保留每折全部80个单camera身份和完整干扰图库。
+每个cross身份内4+4是独立干预，无复用最多31/34/29组；不能与“两身份/批次”及XBM同时加入后混合归因。
+后继应先固定唯一采样合同并全epoch重放，再决定配对训练；不改变当前RGBNT100输入或重启已封存版本。
+
+新证据为trifusion_iici_xbm_snr_author_code_review_20260906.json、
+trifusion_rgbnt201_camera_sampling_feasibility_plan_20260906.json及对应结果；
+脚本tools/census_rgbnt201_camera_sampling_feasibility.py SHA9ca71b57a469c0a5ff5cf1801e1caa16221df094e1cca6261c5e20734a16339e。
+所有新增模型/张量/图片/优化器/检索指标计算均0，独立审计仍不可用。

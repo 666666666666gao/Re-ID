@@ -828,3 +828,14 @@
 | 2026-09-06T19:46:27.249393+08:00 | /run-experiment | refine-logs/rgbnt100_main_v1/EXPERIMENT_TRACKER.md | verified | Full50 roles M0108 updates fully verified; fresh20 main running; disk cleanup intact |
 | 2026-09-06T19:46:27.249393+08:00 | /run-experiment | docs/TRIFUSION_RGBNT201_CURRENT_COMPLETE_HANDOFF_2026-09-01.md | verified | Full50 roles M0108 updates fully verified; fresh20 main running; disk cleanup intact |
 | 2026-09-06T19:46:27.249393+08:00 | /run-experiment | AGENTS.md | verified | Full50 roles M0108 updates fully verified; fresh20 main running; disk cleanup intact |
+
+| 2026-09-06T20:15:02.777248+08:00 | /research-lit | tools/census_rgbnt201_camera_sampling_feasibility.py | verified | Author code review and complete source sampling capacity; active RGBNT100 training unchanged |
+| 2026-09-06T20:15:02.777248+08:00 | /research-lit | evidence/trifusion_rgbnt201_camera_sampling_feasibility_plan_20260906.json | verified | Author code review and complete source sampling capacity; active RGBNT100 training unchanged |
+| 2026-09-06T20:15:02.777248+08:00 | /research-lit | evidence/trifusion_rgbnt201_camera_sampling_feasibility_20260906.json | verified | Author code review and complete source sampling capacity; active RGBNT100 training unchanged |
+| 2026-09-06T20:15:02.777248+08:00 | /research-lit | evidence/trifusion_iici_xbm_snr_author_code_review_20260906.json | verified | Author code review and complete source sampling capacity; active RGBNT100 training unchanged |
+| 2026-09-06T20:15:02.777248+08:00 | /research-lit | docs/IICI_XBM_SNR_CODE_AND_SAMPLING_CONSTRAINTS_2026-09-06.md | verified | Author code review and complete source sampling capacity; active RGBNT100 training unchanged |
+| 2026-09-06T20:15:02.777248+08:00 | /research-lit | evidence/trifusion_rgbnt100_roles_main_handle_20260906_195646.json | verified | Author code review and complete source sampling capacity; active RGBNT100 training unchanged |
+| 2026-09-06T20:15:02.777248+08:00 | /research-lit | refine-logs/rgbnt100_main_v1/EXPERIMENT_TRACKER_20260906_201502.md | verified | Author code review and complete source sampling capacity; active RGBNT100 training unchanged |
+| 2026-09-06T20:15:02.777248+08:00 | /research-lit | refine-logs/rgbnt100_main_v1/EXPERIMENT_TRACKER.md | verified | Author code review and complete source sampling capacity; active RGBNT100 training unchanged |
+| 2026-09-06T20:15:02.777248+08:00 | /research-lit | docs/TRIFUSION_RGBNT201_CURRENT_COMPLETE_HANDOFF_2026-09-01.md | verified | Author code review and complete source sampling capacity; active RGBNT100 training unchanged |
+| 2026-09-06T20:15:02.777248+08:00 | /research-lit | AGENTS.md | verified | Author code review and complete source sampling capacity; active RGBNT100 training unchanged |
