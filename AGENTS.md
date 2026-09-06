@@ -1,23 +1,24 @@
 # TriFusion-ReID workspace
 
-## Latest verified state (2026-09-07T03:09:50.045072+08:00)
+## Latest verified state (2026-09-07T03:28:24.943088+08:00)
 
-- V27 source-style training candidate IMPLEMENTED_REGISTERED_NOT_RUN.
-  Cross-camera same-modality stem moment mixing, shared three-modality plan,
-  original Signal prefix and matched perturbed anchor/reference. Evaluation is original V8.
-  No new parameters/inference compute; additional frozen training visual pass in BOTH arms.
-  Full fixed plan: refine-logs/trifusion_v27_source_style/EXPERIMENT_PLAN.md.
-  T0/M0 then complete 3fold x2end x20epochs/3360updates; original five gates.
-  No V24 prototype/brightness rescue, V25 sampler, V26 auxiliary, or XBM.
-- Prior source support decomposition COMPLETE: pure bank augmentedsource
-  mAP99.999877/R1=100, only5 nonpositive pairs. Do not simply change V26 gate to bank.
-  V26 Q1_FAIL remains sealed; RGBNT100 baseline gain retained; full goal UNMET.
-- Disk recheck03:00: 24 deleted recovery weights remain absent; all12 retained
-  independent models fully SHA verified. Additional deletions0; datafree18.63GiB.
-  Read evidence/trifusion_disk_weight_recheck_20260907.json. Master41.80.
-- R1 startup849b608 failed before T0/models/updates: YAML read JSON 1e-06 as string.
-  R2 only reads JSON using json.loads; all scientific settings and plan unchanged.
-  R1 logs preserved; R2 REGISTERED_NOT_RUN. Master41.81. Executor checks are not independent audit.
+- V27 R2 c225652 full M0 PASS: 48 preflight batches and116 updates verified.
+  Original Signal unchanged, matched perturbed role/reference, overfit excess
+  ratio0.013348012343, candidate capacity6418MiB, all frozen hashes unchanged.
+  Nonzero gradient gate is phase coverage; all16 capacity steps203/203,
+  late overfit may have zero gradients, all finite and full phase coverage203.
+- Original126981/wrapper126979 launched03:15:43 and entered complete Q1.
+  03:25 fold0 control230steps, epoch8, no overflow. No Q1 terminal.
+  Keep source-style plan fixed: 3fold x2end x20epochs,3360 updates and original5 gates.
+- R1 849b608 JSON-via-YAML type failure before T0/models/updates is retained.
+  R2 only JSON parser repair. No training-source changes after c225652.
+- Full terminal verifier prepared, not yet executed. Queue pending sync/launch.
+  Report results/TRIFUSION_V27_M0_AND_Q1_LAUNCH_2026-09-07.md. Master41.82.
+- Prior V26 FAIL and fullsource purebank saturation remain sealed. No bank-gate rescue,
+  weight scan or fused XBM. RGBNT100 baseline gain retained; full goal UNMET.
+- Disk data18.63GiB/system10.36GiB separately. 24 redundant weights removed24.90GiB,
+  all12 retained model hashes verified; new deletions0. Preserve active/anchor weights.
+- Executor verification is not an external independent audit.
 
 ## Experiment environment
 
