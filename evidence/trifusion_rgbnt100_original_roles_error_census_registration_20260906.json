@@ -1,0 +1,35 @@
+{
+  "registered_at": "2026-09-06T15:14:36.721471+08:00",
+  "status": "PREPARED_NOT_RUN",
+  "scope": "Complete descriptive census after whole three-fold terminal verification: all8675 queries, all5 outputs, all50 identities. No new training, retrieval forwards, selection, scientific gate or image interpretation.",
+  "script": "tools/census_rgbnt100_trifusion_comparison_errors.py",
+  "script_sha256": "44e89a63ec7d8807e50cf1cc512314081fe999061e6ec894b7844738efb5eefb",
+  "protocol": "protocols/rgbnt100_train_oof_v1.json",
+  "protocol_sha256": "42bd612ecc8720db7f6684214e1f60d1cb4bab6b2fa8db3df343a9d2c52e4abf",
+  "comparison_run": "/root/trifusion-storage/artifacts/rgbnt100_trifusion_source_oof_v1_seed42_20260906/comparison",
+  "execution_prerequisite": "PASS_COMPLETE_SCALAR_REPLAY after PASS_WHOLE_FILES_AND_ALL15_ARRAYS; exact summary, protocol and allranking input hashes",
+  "preparation_timing": "After first fold full evaluation and before three-fold terminal. Latest runtime observation14:49:35; no intermediate retrieval score used to define groups.",
+  "outputs": [
+    "baseline_only",
+    "fused",
+    "cnn",
+    "transformer",
+    "mamba"
+  ],
+  "query_fields": [
+    "query record/identity/camera/path",
+    "negative candidate counts by camera",
+    "all5 AP/first positive ranks",
+    "all5 first retained and nearest different-ID candidate labels",
+    "paired AP and Rank-1 changes"
+  ],
+  "groups": "Every identity, every query, all errors, all newly introduced errors, all repaired errors; retain zero/negative/unchanged results.",
+  "interpretation": "Descriptive camera-label association only; candidate fraction is not a random-retrieval null model. No causal attribution or significance claim.",
+  "validation": {
+    "ast": "PASS",
+    "cli_help": "PASS",
+    "real_terminal_data_execution": "NOT_RUN"
+  },
+  "model_tensor_image_calls": 0,
+  "optimizer_updates": 0
+}

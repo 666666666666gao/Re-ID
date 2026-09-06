@@ -2,9 +2,9 @@
 
 ## 0. 一页结论
 
-最新状态（进度观测2026-09-06T14:49:35.802643+08:00）：RGBNT100原完整三角色fold0已完成20epoch/1653更新及3125图库五输出评估，运行回执B0 features/distance逐元素相同；fold1训练中127步，合计1780更新无数值异常，尚无三fold终态（§41.52）。执行bbe49e1，下一阶段15:18，预计15:55–16:10。Signal R2内部基线89.5241750420/96.8299711816已全量核验；新三数据集完整环境标签普查见§41.51。独立审计受服务额度限制；MSVR310/V23/V24负结果封存，RGBNT201仍dev58.4050/59.3939，主目标未达。
+最新状态（进度观测2026-09-06T15:23:56.572837+08:00）：RGBNT100原完整三角色前两fold各20epoch、1653+1719更新及6075图库五输出评估完成，运行回执B0 features/distance逐元素相同；第三fold已133有效更新，累计3505，仍无三fold终态（§41.53）。执行bbe49e1，下一观察15:53，预计15:55–16:10。Signal R2内部基线89.5241750420/96.8299711816已全量核验；用户综述更新及完整错误描述准备见§41.53。独立审计受服务额度限制；MSVR310/V23/V24负结果封存，RGBNT201仍dev58.4050/59.3939，主目标未达。
 
-当前用于已完成MSVR310比较及新登记RGBNT100比较的是原V8平行三角色结构：冻结Signal/CLIP，共享block8之前语义和tail9/10/11参数，三个角色分别运行共享tail；CNN处理局部语义Patch高频，Transformer处理全局CLS/Patch关系，Mamba处理空间与位置级三模态扫描。各角色相对冻结reference形成1536D残差，三角色4608D银行拼接3072D Signal得到7680D fused；完整单角色输出为4608D Signal+角色残差。三条路径均执行，当前没有Router/HFER、V23模态MLP或V24原型。训练已完成，尚无被证实超过Signal的新主方案。下面V1—V8条目保留历史经过，不代表当前又启用了旧模块。
+当前用于已完成MSVR310比较及新登记RGBNT100比较的是原V8平行三角色结构：冻结Signal/CLIP，共享block8之前语义和tail9/10/11参数，三个角色分别运行共享tail；CNN处理局部语义Patch高频，Transformer处理全局CLS/Patch关系，Mamba处理空间与位置级三模态扫描。各角色相对冻结reference形成1536D残差，三角色4608D银行拼接3072D Signal得到7680D fused；完整单角色输出为4608D Signal+角色残差。三条路径均执行，当前没有Router/HFER、V23模态MLP或V24原型。MSVR310训练比较已完成，RGBNT100状态见上；尚无被证实超过Signal的新主方案。下面V1—V8条目保留历史经过，不代表当前又启用了旧模块。
 
 本工程是在 DeMo 代码基座上实现的 RGB–NIR–TIR 多模态目标重识别研究分支。V17完整训练和完整gallery补评已封存为失败；其全部查询/图像/分区诊断见§30。V18完整三折两端20epoch主实验已结束（§33）：fused增益+0.921504 mAP，bootstrap下界-0.117338，未通过固定晋级条件；无D1/dev/official。MSVR310、RGBNT100均已安装核验（§32）。V17 fused相对matched weight0为-0.328915 mAP，没有D1/dev/official结果。当前最高可部署结果仍是V8 Phase-B：冻结dev fused=`58.4050 mAP / 59.3939 Rank-1`，比exact Signal高`0.3941 mAP / 1.9394 Rank-1`并超过三个专家，但仍比65 mAP门低`6.5950`，不能声称SOTA。
 
@@ -3831,3 +3831,22 @@ summary会先加入训练完的fold再评估；只有retrieval及heldout_record_
 B0前20epoch采样步数1653/1719/1823仅用于时间预测，角色最终步数以自身日志为准。
 下一阶段15:18，更新完成窗口15:55–16:10；无首折分数调参、无三fold合并指标或官方结果。
 原始两观察和判断evidence/trifusion_rgbnt100_original_roles_first_fold_progress_assessment_20260906.json，完整标签普查与失败条件仍保持。
+
+### 41.53 RGBNT100前两折完整评估完成及用户综述更新（2026-09-06）
+
+15:18阶段实际15:18:22第二折第20epoch/1693更新，整体3346有效更新。
+15:23:56前两折20epoch/1653和20epoch/1719更新、6075gallery五输出全部完成，
+Signal的features/distance均逐元素等于原B0；第三折epoch2、已133更新，
+整体3505均有效，203梯度有限、AMP下降0。两次阶段观察间隔334.525秒。
+第三折及合并科学终态仍待完成，没有提前PASS/FAIL或按fold分数调整训练。
+下一观察15:53，预计15:55–16:10；终态3权重/15数组/43375排名/50身份/全部更新核验已登记但NOT_RUN。
+
+docs/USER_REVIEW_ACTIONS_2026-09-06.md更新用户长篇综述中的V23进行中、车辆仅安装等旧状态：
+V23−0.252705、V24+0.491307但未过门、MSVR310−1.011990、RGBNT100B0=89.524175。
+明确V24两端同为双视图且物理采样器不变，不能声称已经验证提高batch跨相机覆盖；
+完整clean source间隔大部分满足，也不证明增强分布下样本级记忆必然无效。
+
+完整8675query×5输出错误描述入口已准备，全部身份/全部错误均保留；仅处理完整核验后的排名和标签，
+不新增模型运行、训练、科学门、子集选择或相机因果声明。代码AST/CLI通过，真实数据执行NOT_RUN。
+终态CPU文件核验包装器同步归档，原四核验器及训练绑定字节不变。
+依据evidence/trifusion_rgbnt100_original_roles_comparison_progress_20260906_152356.json及evidence/trifusion_rgbnt100_original_roles_second_fold_progress_assessment_20260906.json。
