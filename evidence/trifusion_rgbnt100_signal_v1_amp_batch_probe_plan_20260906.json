@@ -1,0 +1,56 @@
+{
+  "registered_at": "2026-09-06T10:32:30.132478+08:00",
+  "status": "READY_NOT_RUN",
+  "config": "configs/RGBNT100/Signal-source-oof-v1.json",
+  "config_sha256": "7270e2bf95c5f5a60e1dc6d6b047f043dce667d508783b36bc4734aecbc4c15b",
+  "probe": "tools/probe_rgbnt100_signal_amp_batch.py",
+  "probe_sha256": "eac55904dcec25a34f035f6e48f3b638dac37f86a826c9cf2c18615b33a952d1",
+  "fixture": "/root/autodl-tmp/trifusion-v2/artifacts/rgbnt100_signal_amp_capture_v1_seed42_8b412d0/capture/failed_batch_preforward.pt",
+  "fixture_sha256": "3c9b41a70a3e3bfabd317cea8b76f314ba16ded8a8246fd41e0561fc7f8286eb",
+  "capture_loss": 6.734400272369385,
+  "capture_diagnosis_sha256": "ced5af3a84dce22ae2f022e858e0ad23667c5ba86f05894f7d1d5719bbba8033",
+  "extra_signal_files": {
+    "modeling/AddModule/useB.py": "39a65f82d59048745663d891a1c4c012eb1cc404ef8c8084f942702aeef46fec",
+    "utils/volume.py": "a154f65e5f4483446748e216b7b03672617efb02004e14e9940446c1013b8ccb",
+    "layers/triplet_loss.py": "f502c44bec642bbf72ce6d0f58c9f9a0084beef9cbb451c2d2786bb13f94960a"
+  },
+  "pytorch_source_files": {
+    "pytorch/amp/grad_scaler.py": "eb4bc91fda9815ba40206e2dbb68f9845b85622fee3a92611f227b5845b20780",
+    "pytorch/autograd/anomaly_mode.py": "e3285e5353c9cbe2d64f36236633e00821f9dad05fc96efc0be17ac6a98dffc5"
+  },
+  "hypotheses": [
+    {
+      "id": "precision",
+      "prediction": "identical saved input/state fullFP32 remains finite while originalFP16 has nonfinite gradients"
+    },
+    {
+      "id": "singular_derivative",
+      "prediction": "anomaly mode locates a specific loss backward operator; fullFP32 may also fail; capture both complete Gram matrices for exact operator minimization"
+    },
+    {
+      "id": "inexact_replay",
+      "prediction": "FP16 restored forward differs from captured loss/components, limiting causal inference; compare and report, do not silently accept as exact"
+    }
+  ],
+  "fixed_modes": [
+    "fp16",
+    "fp16_anomaly",
+    "fp32"
+  ],
+  "scope": "each mode once, separate process, same complete64-record augmented source batch/state/RNG, fixedscale256, no optimizer or new training trajectory",
+  "source_record_forwards": 192,
+  "optimizer_steps": 0,
+  "heldout_image_forwards": 0,
+  "image_decodes": 0,
+  "volume_recording": "save both actual volume_computation3 inputs/3x3Gram matrices/determinants; all64x64 entries per call, no cherry-picking",
+  "expected_runtime_minutes": [
+    1,
+    3
+  ],
+  "failure_policy": "first originalFP16 result records actual gradient nonfiniteness; anomaly subprocess expected to fail with original framework traceback; FP32 records observed result without retry or lowering batch",
+  "no_method_or_training_config_change": true,
+  "technical_sources": [
+    "https://github.com/pytorch/pytorch/blob/v2.5.1/torch/amp/grad_scaler.py",
+    "https://github.com/pytorch/pytorch/blob/v2.5.1/torch/autograd/anomaly_mode.py"
+  ]
+}

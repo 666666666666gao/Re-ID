@@ -20,3 +20,19 @@ fold0目录为空，无checkpoint、training.json或retrieval。原运行成功�
 
 提前准备的完整终态核验器仍NOT_RUN，本失败目录不符合三折30epoch完整终态输入条件。
 RGBNT201主目标与既有V23/V24/MSVR310原三角色科学负结果保持原结论。
+
+## 固定source捕获完成，根因仍待定位
+
+8b412d0执行一次，wrapper81713，10:25:42.449230退出1，37.470637565秒。
+原AMP断言在本诊断第34步复现：33个成功更新/2176源记录前向，step34 loss6.734400272有限、scale256到128且该步跳过。
+195份梯度中153份包含非有限值，均在CLIP encoder；未据此认定上游损失或具体算子是根因。
+原正式失败运行的步数仍未知；本次诊断消耗独立登记，不冒充正式训练有效步数。
+初始状态与M0相同、前8步记录索引全部相同，但只有step1的全部标量逐位相等；
+step2起差异保留（step6 loss差+0.722964287），尚未解释，不声称固定seed保证训练轨迹逐位复现。
+已保存438600256字节真实异常batch及前向前model/buffers/RNG，SHA3c9b41a70a3e3bfabd317cea8b76f314ba16ded8a8246fd41e0561fc7f8286eb；只在远端保留。
+本地完整34步/source/loss重算通过，非有限梯度计数与原记录一致；无本地模型/张量/图像操作。
+
+下一固定诊断一次检查fp16/fp16_anomaly/fp32，各64条相同保存source batch，共192源记录前向、0优化更新、0图像解码/heldout。
+异常模式自然保留PyTorch原始traceback；原精度先核对捕获loss，FP32只作数值定位，不改正式训练精度。
+保存两次volume_computation3的全部64×64 Gram矩阵/行列式/输入，便于随后对真实触发算子最小化。
+计划evidence/trifusion_rgbnt100_signal_v1_amp_batch_probe_plan_20260906.json，当前READY_NOT_RUN。

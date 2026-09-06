@@ -540,3 +540,7 @@
   no checkpoint/retrieval and original successful step count unknown. Preserve failed files.
   Fixed fold0 source-only trace capture is READY_NOT_RUN; same bound train_source/settings,
   stop at first overflow or before epoch2, save exact failed batch/preforward state, no blind restart.
+
+- RGBNT100 fixed source capture8b412d0 reproduced overflow on its step34 after33updates; source2176/heldout0.
+  Original failed run step count remains unknown. M0 initial state and first8indices match, only first-step scalars exact.
+  Saved real batch/preforward state permits fixed fp16/anomaly/fp32 zero-update localization; registered plan, READY_NOT_RUN.

@@ -8,7 +8,8 @@
 | M0 | PASS_ENGINEERING_ONLY | 3×8更新、1536源曝光、195/195梯度、48clean source重载前向 |
 | M0 files/scalars | PASS | 三checkpoint内容/21文本及全部24步，0模型/图像前向 |
 | B0 first attempt | ENGINEERING_STOP_AMP_OVERFLOW | 60a3d0e、33.7765秒退出1；0完整epoch，无checkpoint，成功更新数未知 |
-| Source overflow capture | READY_NOT_RUN | 原train_source固定fold0/首异常或epoch1边界；逐步落盘，0heldout |
+| Source overflow capture | REPRODUCED | 8b412d0第34步；33有效更新/2176前向，0heldout；M0标量非完全一致 |
+| Saved batch probe | READY_NOT_RUN | fp16/anomaly/fp32各一次，192source前向，0更新/图像解码 |
 | Full terminal verifiers | PREPARED_NOT_RUN | 原先准备完整三fold/90epoch/8675query核验，不用于本失败目录 |
 
 原config/plan/runner未改；M0不是真实检索成绩。原始失败现场与独立诊断的更新成本分别登记。
