@@ -2,7 +2,7 @@
 
 ## 0. 一页结论
 
-最新状态（2026-09-07T02:11:28.506430+08:00，§41.76）：V26完整Q1_FAIL已封存（fused+0.311934pp，五门1/5），完整终态核验通过；当前无原训练进程。完整来源实例—原型只读普查已实现并登记、数学反例检查PASS，尚未运行。固定三折6252来源记录—模型配对、干净/固定增强两视图、14输出、两合法关系协议，共200前向批和350112完整query输出行；原V12初始化，优化0，不读heldout/dev/official图像。后续先执行全量普查和独立实现的全行算术核验，再决定实例记忆是否有依据；不重跑V26或改旧门槛。RGBNT100真实增益保留，三数据集/SOTA目标未达。数据卷仍约20.05GiB可用。
+最新状态（2026-09-07T02:17:07.991120+08:00，§41.77）：完整来源实例普查于02:12:37实际启动，执行99e2a4c，原进程124596/wrapper124594在02:16:02仍存活，前两折全量完成、第三折进行中。共6252来源记录—模型配对、两视图、14输出和两协议；固定合同与模型未改，优化0。尚无完整三折终态或CPU全行核验结果，不根据中途fold解释机制。完整报告生成器已准备，终态后输出全部168分项及56汇总项。V26 Q1_FAIL和RGBNT100官方真实基线增益继续保留，三数据集/SOTA目标未达。数据卷余约19.13GiB，未删除新权重。
 
 当前用于已完成MSVR310比较及新登记RGBNT100比较的是原V8平行三角色结构：冻结Signal/CLIP，共享block8之前语义和tail9/10/11参数，三个角色分别运行共享tail；CNN处理局部语义Patch高频，Transformer处理全局CLS/Patch关系，Mamba处理空间与位置级三模态扫描。各角色相对冻结reference形成1536D残差，三角色4608D银行拼接3072D Signal得到7680D fused；完整单角色输出为4608D Signal+角色残差。三条路径均执行，当前没有Router/HFER、V23模态MLP或V24原型。两项车辆训练比较均已完成；RGBNT100内部完整比较支持三角色增益，MSVR310尚未超过Signal。下面V1—V8条目保留历史经过，不代表当前又启用了旧模块。
 
@@ -4435,3 +4435,19 @@ verification SHA6f165629aae26492a0c4079f72c7a922701b6963448d83a51739403084fed445
 runner SHA66069cf6b43afadd0cecbc2817332bcaac2f74cbbc96422de8f4fd47057e6468；CPU verifier SHA4adf4a0801bbf7a4b7edffe5d5287ec8631a5831ed790f69d7f565fa298fd686。
 计划refine-logs/trifusion_source_instance_census/EXPERIMENT_PLAN.md已冻结。
 持久wrapper已准备，当前还没有launch/exit/来源模型输出；不得提前写成执行成功。
+
+
+## 41.77 来源实例普查原进程存活、前两折完成（2026-09-07T02:17:07.991120+08:00）
+
+最新状态（2026-09-07T02:17:07.991120+08:00，§41.77）：完整来源实例普查于02:12:37实际启动，执行99e2a4c，原进程124596/wrapper124594在02:16:02仍存活，前两折全量完成、第三折进行中。共6252来源记录—模型配对、两视图、14输出和两协议；固定合同与模型未改，优化0。尚无完整三折终态或CPU全行核验结果，不根据中途fold解释机制。完整报告生成器已准备，终态后输出全部168分项及56汇总项。V26 Q1_FAIL和RGBNT100官方真实基线增益继续保留，三数据集/SOTA目标未达。数据卷余约19.13GiB，未删除新权重。
+
+screen source_instance_census_99e2a4c，原PID124596/wrapper124594。
+02:16:02实际/proc及GPU2386MiB/47%确认活跃；source_census状态RUNNING_SOURCE_ONLY_CENSUS。
+截至上次已完成fold1全量记录时172.145秒；不按前两折结果决定是否继续，完整第三折仍在执行。
+每折所有source记录均顺序遍历，原M0初始model state绑定及提取前后state/grad检查真实通过。
+全流程源码/合同仍为登记99e2a4c，不热补丁或替换初始化。
+后续CPU核验由同一个wrapper在提取完成且exit0后自动启动；没有重试/新训练。
+报告生成器tools/report_source_instance_census.py只读取完整已核验摘要，拒绝部分fold。
+原始launch/live收据evidence/trifusion_source_instance_census_launch_20260907.json及
+evidence/trifusion_source_census_live_20260907_021602.json。
+完整结果尚未形成；不得提前宣称XBM存在有效监督或没有难例。

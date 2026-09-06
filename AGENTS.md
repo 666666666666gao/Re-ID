@@ -1,22 +1,21 @@
 # TriFusion-ReID workspace
 
-## Latest verified state (2026-09-07T02:11:28.506430+08:00)
+## Latest verified state (2026-09-07T02:17:07.991120+08:00)
 
-- V26 COMPLETE_Q1_FAIL sealed; fullCPU verificationPASS, originalPIDsended0.
-  Fused+.311934pp, fivegates1/5. Baseline gains onRGBNT100 remain real.
-- Source instance/prototype census IMPLEMENTED_REGISTERED_NOT_RUN.
-  All6252source-record/modelpairs,2views,14outputs,2protocols,200forwardbatches,
-  350112completequery-output rows. OriginalV12initialstate, model.eval, updates0.
-- Read configs/RGBNT201/source-instance-census-v26.json and fixedplan in
-  refine-logs/trifusion_source_instance_census/EXPERIMENT_PLAN.md.
-  ContractSHA3139d941b3f3e2a2394b48438aefceb1e4caaba3b2108c4fbe4ad27b5d7a1e92.
-- Mathematical hidden-instance/self-exclusion/class0/fullgallery counterexamplePASS.
-  CPU verifier independently recomputes allrows/aggregates fromsavedfeatures.
-  No sourceimage execution/launch/queue yet. Do not claim results beforeterminal.
-- NoV26retuning/retraining, noXBM/PCGrad/Router, noheldout/dev/officialimages.
-  Onefixedaugmentation does not measure cached-feature drift or demonstrate XBM.
-- Datafreeabout20.05GiB, expectedfeaturecostabout1.5GiB; preserve usefulweights.
-  Master41.76; goalUNMET, external independent audit unavailable.
+- Full source instance/prototype census RUNNING, execution99e2a4c.
+  OriginalPID124596/wrapper124594 launched02:12:37, verifiedalive02:16:02.
+  First2folds complete, third underway, GPU2386MiB/47%, datafree19.13GiB.
+- Fixedall6252source-record/modelpairs,2views,14outputs,2protocols,200forwardbatches,
+  350112completequery-output rows, originalV12initialstates. Optimizerupdates0.
+  Registeredcontract3139d941b3f3e2a2394b48438aefceb1e4caaba3b2108c4fbe4ad27b5d7a1e92.
+- Full3foldterminal and subsequentCPU allrow verifier NOT complete yet.
+  Do not restart on observationtimeout or interpretpartialfoldmetrics.
+  tools/report_source_instance_census.py requires completedverifiedinputs.
+- NoV26retuning/retraining, XBM/PCGrad/Router orheldout/dev/officialimages.
+  Singleaugview cannot prove allaugmentations or cachefeaturedrift.
+- V26 Q1_FAIL sealed, originalfivegates1/5; RGBNT100 officialbaselinegain
+  +2.572608pp retained. Three-dataset/SOTAgoalUNMET. Master41.77.
+  External independent audit unavailable; executorverification notindependentaudit.
 
 ## Experiment environment
 
