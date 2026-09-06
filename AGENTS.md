@@ -1,29 +1,29 @@
 # TriFusion-ReID workspace
 
-## Latest verified state (2026-09-07T00:51:10.467612+08:00)
+## Latest verified state (2026-09-07T00:55:51.284049+08:00)
 
-- V26 T0/M0 PASS, Q1 RUNNING. OriginalPID118939/wrapper118937, launched00:39:52,
-  training commitff18e40. Verified00:47:43 fold0-control epoch6; no Q1 terminal.
-  All48 read-only batches/116updates/203 tensors passed, overfit ratio0.058728.
-  Nine slot and three same-encoder-block auxiliary gradients nonzero.
-- Initial48 forward and candidate8 capacity batches have ZERO fused-nonpositive
-  triplets. Auxiliary/base gradient norm ratios4.13e-5..2.88e-4; fused-role
-  gradient cosines positive in all24 block observations. Weak initial signal,
-  not proof of Q1 failure or no full-source instance hard negatives.
-  Keep fixedtau0.1/lambda1, OLD identical sampler, original14 losses/model.
-  Complete original6x20epochs/3360updates and all five original scientific gates.
-- New full CPU verifier/reporter prepared but NOT executed or queued yet;
-  verify all training rows and all32,602,260 distances/5,952,790 ranking positions.
-  Read V26 immutable plan, tracker and complete M0 report. Master through41.73.
-- V25 full Q1_FAIL/complete CPU verification sealed; fused80.881569->80.420931.
-  RGBNT100 official real baseline gain+2.572608pp preserved; fused83.284770
-  trailsMamba83.440622. RGBNT201dev58.4050, MSVR310 negative, no SOTA.
-- Three-dataset baseline/SOTA goal active and unmet. Reused21-ID OOF is
-  development qualification; no official tuning or pre-success ablations.
-  BIER paper/code reviewed only; independent implementation, novelty unproven.
-  No XBM/PCGrad/new sampler/Router. External independent audit service unavailable.
-- Cleanup24 obsolete resume files/24.900344GiB complete. Protect useful finals,
-  source baselines and evaluation arrays. Datafree~21.05GiB at00:47.
+- V26 T0/M0 PASS, complete six-endpoint Q1 RUNNING. TrainingPID118939,
+  wrapper118937, executionff18e40, launch00:39:52. Verified00:53:44
+  fold0-control epoch17/GPU100%; no full Q1 terminal yet.
+- Full CPU verifier queuePID120255 started00:52:52, verified alive/waiting.
+  180s dependency polling; automatic retries0, optimizer/model forwards0.
+  Will verify all3360steps/32602260distances/5952790ranks after originalexit0.
+  tools/verify_v26_complete_terminal.py SHAac7b37ee389ddbea2eb48f94ffbc00fab885f02d248d803d7f04f6d23dff819e.
+- Fixedtau0.1/lambda1, OLD identical sampling, original14losses/V8model,
+ 6x20epochs and originalfivegates. Do not hotpatch/scale weight/restart jobs.
+  M0 all48read-only/116updates/203tensors passed, ratio0.0587284155.
+  Initial48 forward and candidate8 capacity batches fused-nonpositive0;
+  auxiliary/basegradient ratio4.13e-5..2.88e-4, all24fused-rolecosinespositive.
+  This weak initial signal is not a Q1 result or full-source instance census.
+- V25 fullQ1_FAIL sealed; fused80.881569->80.420931. RGBNT100 official
+  real baselinegain+2.572608pp preserved; fused83.284770<Mamba83.440622.
+  RGBNT201dev58.4050, MSVR310rolesnegative; three-dataset/SOTAgoalUNMET.
+- NoXBM/PCGrad/Router/new sampler/ablation/official tuning. BIER code reviewed
+  only, independent implementation, noveltyunproven. Reused21-ID OOF remains
+  development qualification. External independent audit service unavailable.
+- Cleanup24redundantresumeweights/24.900344GiB complete. Datafree21.049GiB
+  at00:53:44. Preserve sourcebaselines/usefulfinals/fullarrays. Master41.74.
+  Read V26immutableplan/tracker/M0report and terminalqueue evidence.
 
 ## Experiment environment
 

@@ -1033,3 +1033,11 @@
 | 2026-09-07T00:51:10.467612+08:00 | /executor-analysis | refine-logs/trifusion_v26_role_modal_responsibility/EXPERIMENT_TRACKER.md | recorded | V26 full M0 PASS, Q1 active; terminal verifier prepared only |
 | 2026-09-07T00:51:10.467612+08:00 | /executor-analysis | docs/TRIFUSION_RGBNT201_CURRENT_COMPLETE_HANDOFF_2026-09-01.md | recorded | V26 full M0 PASS, Q1 active; terminal verifier prepared only |
 | 2026-09-07T00:51:10.467612+08:00 | /executor-analysis | AGENTS.md | recorded | V26 full M0 PASS, Q1 active; terminal verifier prepared only |
+| 2026-09-07T00:55:51.284049+08:00 | /executor-observation | evidence/trifusion_v26_live_20260907_005344.json | recorded | V26 Q1 original process and full terminal verifier queue alive; no Q1 terminal |
+| 2026-09-07T00:55:51.284049+08:00 | /executor-observation | evidence/trifusion_v26_terminal_verification_queue_dispatch_20260907.json | recorded | V26 Q1 original process and full terminal verifier queue alive; no Q1 terminal |
+| 2026-09-07T00:55:51.284049+08:00 | /executor-observation | evidence/trifusion_v26_terminal_verification_queue_launch_20260907.json | recorded | V26 Q1 original process and full terminal verifier queue alive; no Q1 terminal |
+| 2026-09-07T00:55:51.284049+08:00 | /executor-observation | evidence/trifusion_v26_m0_sync_20260907.json | recorded | V26 Q1 original process and full terminal verifier queue alive; no Q1 terminal |
+| 2026-09-07T00:55:51.284049+08:00 | /executor-observation | refine-logs/trifusion_v26_role_modal_responsibility/EXPERIMENT_TRACKER_20260907_queue_live.md | recorded | V26 Q1 original process and full terminal verifier queue alive; no Q1 terminal |
+| 2026-09-07T00:55:51.284049+08:00 | /executor-observation | refine-logs/trifusion_v26_role_modal_responsibility/EXPERIMENT_TRACKER.md | recorded | V26 Q1 original process and full terminal verifier queue alive; no Q1 terminal |
+| 2026-09-07T00:55:51.284049+08:00 | /executor-observation | docs/TRIFUSION_RGBNT201_CURRENT_COMPLETE_HANDOFF_2026-09-01.md | recorded | V26 Q1 original process and full terminal verifier queue alive; no Q1 terminal |
+| 2026-09-07T00:55:51.284049+08:00 | /executor-observation | AGENTS.md | recorded | V26 Q1 original process and full terminal verifier queue alive; no Q1 terminal |
