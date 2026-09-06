@@ -101,3 +101,17 @@ FUSE和DCG提供了可读方法细节，本轮没有核到可直接接入的作�
 这些补充行未超过前文已核的主要高mAP参照。CCL正文和Hyper-ReID公开数字仍
 待核；CoT主表与变体表的差异继续保留。V19配置和科学门已冻结，本增量不用于
 临时改变其backbone、学习率、loss或训练预算。
+
+
+## 2026-09-06 增量：MODAL 与未解决的资源缺口
+
+[MODAL v1主表](https://arxiv.org/pdf/2608.15096v1)报告 RGBNT201 83.8/86.1、
+RGBNT100 87.7/98.6、MSVR310 57.7/73.9、WMVEID863 71.2/79.9。
+它使用CLIP和IDEA的生成文本；稀疏展开分离单/双/三模态子空间，再作文本差分过滤。
+MSVR310正文§IV-C另写55.9/70.4，与Table II冲突，保留差异，不自行归因。
+按式14–17直接推导，无共同模态时没有激活子空间；Table IV的非重叠模态结果如何产生仍待实现解释。
+这些边界使其目前适合作为研究参照；本轮没有取得作者训练实现，没有改变前文已核高mAP参照。
+
+[ICML官方列表](https://icml.cc/Downloads/2026)可定位CCL及poster65854，但正文仍遇OpenReview浏览器验证，
+没有采用第三方摘要补其主表数字。[Hyper-ReID](https://github.com/lsh-ahu/Hyper-ReID)当前仍只见1次commit的一份README。
+核查记录为evidence/trifusion_literature_incremental_modal_ccl_20260906.json；当前运行中的RGBNT100基线保持固定。

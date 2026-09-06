@@ -2,7 +2,7 @@
 
 ## 0. 一页结论
 
-最新状态（2026-09-06T12:11:15.931344+08:00）：RGBNT100 Signal R2存储重试已完成三折完整首epoch M0，257更新、16448 source训练记录前向；三个完整checkpoint、195梯度、48严格重载前向和全部257步精确标量核验通过（§41.44）。固定三折30epoch基线已登记，尚无检索结果；真实T0回执复用、旧磁盘满失败现场保留。run20独立审计因服务额度限制未闭合，原153输入/973项重放保留但无最终报告。MSVR310原三角色/V23/V24科学负结果封存。RGBNT201保留dev58.4050/59.3939，主目标继续未达。
+最新状态（2026-09-06T12:35:34.237907+08:00）：RGBNT100 Signal R2固定三折30epoch基线正在运行，执行def7b9b、wrapper87066/训练87070。首次实测第0折30epoch、2479次有效更新和完整排序文件已产生，0 AMP下降；尚无三折终态，最终指标待完整核验（§41.45）。此前三折完整首epoch M0及全部257步/权重核验通过。原三角色RGBNT100入口已准备但没有正式配置/M0/角色训练，等待完整B0绑定。run20独立审计因服务额度限制未闭合，无最终报告；MSVR310原三角色/V23/V24负结果封存，RGBNT201保留dev58.4050/59.3939，主目标继续未达。
 
 当前用于MSVR310完整比较的是原V8平行三角色结构：冻结Signal/CLIP，共享block8之前语义和tail9/10/11参数，三个角色分别运行共享tail；CNN处理局部语义Patch高频，Transformer处理全局CLS/Patch关系，Mamba处理空间与位置级三模态扫描。各角色相对冻结reference形成1536D残差，三角色4608D银行拼接3072D Signal得到7680D fused；完整单角色输出为4608D Signal+角色残差。三条路径均执行，当前没有Router/HFER、V23模态MLP或V24原型。训练已完成，尚无被证实超过Signal的新主方案。下面V1—V8条目保留历史经过，不代表当前又启用了旧模块。
 
@@ -3700,3 +3700,27 @@ run20初始独立重放153输入/973项完成，但最终报告引用范围断�
 实际后端仍未独立证明，亦未审计本次R2完整M0，不把旧输入审计扩大到新运行。
 固定30epoch baseline已登记，三fold fresh通用CLIP/seed42、唯一epoch30全8675内部query-gallery，无中间heldout选择，
 完整终态验证工具已就绪；当前READY_NOT_RUN，尚无RGBNT100检索数字或主方法晋级。
+
+### 41.45 RGBNT100 R2完整基线运行及原三角色第三数据集准备（2026-09-06）
+
+实际启动2026-09-06T12:14:01.080628+08:00，执行def7b9b7ecd9e7e37821716a13fdb2580b2d955c；
+wrapper87066/训练87070，输出/root/trifusion-storage/artifacts/rgbnt100_signal_source_oof_v1_r2_storage_retry_seed42_20260906/baseline。
+首次观察2026-09-06T12:35:34.237907+08:00，距启动1293.157279秒；原计划15分钟，实际首次约21.55分钟，不能把观察时间当作完成时间。
+第0折30个完整epoch已输出，共2479/2479有效更新、无AMPscale下降，checkpoint、retrieval_arrays及完整gzip排序已生成；
+整体summary/terminal尚未生成，进程仍在运行，当前未做完整终态验证，也没有可发布的三折最终检索指标。
+以首折速度修订总耗时估计为65–75分钟，下一计划观察13:15；不减epoch、不改变采样/数值定义，不根据部分fold选模型。
+原始进度：evidence/trifusion_rgbnt100_signal_v1_r2_baseline_progress_20260906_1235.json；
+判断与ETA：evidence/trifusion_rgbnt100_signal_v1_r2_baseline_progress_assessment_20260906.json。
+
+RGBNT100原完整三角色入口tools/train_rgbnt100_trifusion_oof.py已准备，SHA7f18cf950ff85bae9f300618c63154cc5394101ce12b97a7344615937c4a945d。
+仅有源文件/准备合同，无可执行正式配置，也没有运行M0或角色训练；须先核完真实B0 summary、三权重、数组与全部8675query/90epoch。
+模型本体、七组ID/Triplet、三角色/五输出和原五项支持条件保持；用本数据集montage/camera协议替换MSVR的tuple/scene协议。
+同一SIM精确推理functional视图有MSVR实际依据，但仍须本数据集M0及全量B0数组逐位相等，不能借用旧PASS。
+详细准备：refine-logs/rgbnt100_trifusion_v1/PREPARATION_20260906.md；
+只做第三数据集完整原模型比较，不重复已封存失败，不提前做单/双角色、容量或融合消融。
+
+文献增量已核对MODAL原论文主表与公式：其MSVR310主表57.7/73.9与正文55.9/70.4不同，保留差异；
+不把新论文的shared missing-modality公式未经实现核验就用作任意跨模态可用路径。
+CCL原PDF仍受挑战页限制、Hyper作者库本轮仅README，未获得可验证完整训练实现。
+参见docs/SOTA_REFRESH_2026-09-05.md及evidence/trifusion_literature_incremental_modal_ccl_20260906.json；
+既有公开高指标参照和本项目未达主目标的结论不变。
