@@ -1,0 +1,25 @@
+/root/miniconda3/envs/tri_reid/lib/python3.10/site-packages/timm/models/helpers.py:7: FutureWarning: Importing from timm.models.helpers is deprecated, please import via timm.models
+  warnings.warn(f"Importing from {__name__} is deprecated, please import via timm.models", FutureWarning)
+/root/miniconda3/envs/tri_reid/lib/python3.10/site-packages/timm/models/registry.py:4: FutureWarning: Importing from timm.models.registry is deprecated, please import via timm.models
+  warnings.warn(f"Importing from {__name__} is deprecated, please import via timm.models", FutureWarning)
+/root/miniconda3/envs/tri_reid/lib/python3.10/site-packages/timm/models/layers/__init__.py:48: FutureWarning: Importing from timm.models.layers is deprecated, please import via timm.layers
+  warnings.warn(f"Importing from {__name__} is deprecated, please import via timm.layers", FutureWarning)
+建立transformer............
+using Transformer_type: ViT-B-16 as a backbone
+Resized position embedding: %s to %s torch.Size([197, 768]) torch.Size([129, 768])
+Position embedding resize to height:8 width: 16
+Successfully load ckpt!
+<All keys matched successfully>
+Loading pretrained model from CLIP
+camera number is : 8
+===========Building Signal===========
+using soft triplet loss for training
+label smooth on, numclasses: 33
+Traceback (most recent call last):
+  File "/root/autodl-tmp/trifusion-v2/TriFusion-ReID/tools/train_rgbnt100_signal_oof.py", line 417, in <module>
+    run(arguments)
+  File "/root/autodl-tmp/trifusion-v2/TriFusion-ReID/tools/train_rgbnt100_signal_oof.py", line 351, in run
+    training = train_source(model, loader, cfg, fold["source_record_indices"], source_records,
+  File "/root/autodl-tmp/trifusion-v2/TriFusion-ReID/tools/train_rgbnt100_signal_oof.py", line 201, in train_source
+    assert scaler.get_scale() >= scale_before, "AMP overflow; fixed run stops"
+AssertionError: AMP overflow; fixed run stops

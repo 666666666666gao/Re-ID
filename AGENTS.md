@@ -21,7 +21,7 @@
   internal600-query/1032-gallery mAP53.129381/R1 63.0, independent audit closed WARN. RGBNT100 is
   installed and SHA/ZIP-CRC/modality-pair verified: train8675/query1715/
   gallery8575, with disjoint 50-train/50-test identities and 768x128 montages.
-  Its training and retrieval evaluation counts are also zero. RGBNT201 main
+  Its T0/M0 passed; the first formal Signal run stopped on AMP overflow before a complete epoch. No retrieval result exists. RGBNT201 main
   targets remain unresolved. The latest user-directed cross-dataset route now
   permits the separately registered original three-role MSVR310 comparison below;
   it does not promote any failed RGBNT201 version or open official/ablation access.
@@ -536,4 +536,7 @@
 - RGBNT100 T0/M0 on1157f0d PASS: all8675montages/26025crop pixels, allquery masks,
   3x8source updates/195of195gradient tensors, exact3072D source reload,0heldout model forwards.
   Whole3 checkpoint contents and all24scalar/source steps verified. M0 JSON7e9f6214... is fixed.
-  Baseline READY_NOT_RUN: fresh threefold30epochs, original source-only settings, no M0 reuse.
+  First baseline attempt60a3d0e exited1 onAMP overflow in33.7765seconds, before epoch1 completion;
+  no checkpoint/retrieval and original successful step count unknown. Preserve failed files.
+  Fixed fold0 source-only trace capture is READY_NOT_RUN; same bound train_source/settings,
+  stop at first overflow or before epoch2, save exact failed batch/preforward state, no blind restart.

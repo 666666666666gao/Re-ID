@@ -1,0 +1,17 @@
+{
+  "prepared_at": "2026-09-06T10:03:35.337746+08:00",
+  "status": "PREPARED_NOT_COMPUTED",
+  "scope": "Posthoc scalar consequence of all9 already completed clean source models; no new model/tensor/image/runtime",
+  "input_sha256": "a66f17a450fb0eca2404fd23721545eed0dd7b061550230a7d51368da24fa271",
+  "source_models": 9,
+  "source_rows": 18756,
+  "fixed_margin": 0.3,
+  "formula": "unit L2 distances from d=sqrt(2-2cos); full-source hinge=max(0,0.3+d_farthest_nonself_positive-d_nearest_other_ID_negative)",
+  "cosine_domain_check": "All recorded hardest positive and closest negative cosines strictly between-1 and1; no clipping/fallback required",
+  "limits": [
+    "Approximate distance derived from serialized FP32 cosine; not bitwise cdist recomputation",
+    "Full clean source positive AND negative extrema, not actual augmented-batch triplet",
+    "Cannot isolate negative coverage from positive coverage, prove slow drift, or change V24 failure",
+    "No margin scan, no new training or heldout/dev/official evaluation"
+  ]
+}

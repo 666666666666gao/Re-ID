@@ -2,7 +2,7 @@
 
 ## 0. 一页结论
 
-最新状态（2026-09-06T09:33:54.149499+08:00）：MSVR310完整三折原三角色比较已结束，Signal53.129381/63.0、fused52.117390/60.833333，五项科学条件均失败，精确B0特征/距离与全部3000query-output、780训练步已核验（§41.32）。独立终态审计run19已闭合，integrity PASS_WITH_LIMITS、engineering PASS、scientific FAIL（§41.34）。RGBNT100全量T0和三折M0已通过，固定30epoch三折Signal基线准备启动（§41.35）。V23/V24及MSVR原三角色科学负结果均封存。RGBNT201保留dev58.4050/59.3939，65与官方85.3/87.9目标未达。
+最新状态（2026-09-06T10:22:31.091890+08:00）：MSVR310完整原三角色比较及独立审计闭合，Signal53.129381/63.0、fused52.117390/60.833333，五项科学条件全失败（§41.32/34）。RGBNT100全量T0/三折M0通过，但60a3d0e上的首次正式基线在09:53:41因AMP溢出退出1，尚无完整epoch或检索终态；原成功步数未保存，正在准备固定source诊断（§41.36）。V24已存source余弦全量推导显示大部分干净source已满足0.3间隔，不能直接把扩大记忆库当作充足的新监督（§41.37）。V23/V24及MSVR原三角色负结果封存，RGBNT201保留dev58.4050/59.3939，主目标未达。
 
 当前用于MSVR310完整比较的是原V8平行三角色结构：冻结Signal/CLIP，共享block8之前语义和tail9/10/11参数，三个角色分别运行共享tail；CNN处理局部语义Patch高频，Transformer处理全局CLS/Patch关系，Mamba处理空间与位置级三模态扫描。各角色相对冻结reference形成1536D残差，三角色4608D银行拼接3072D Signal得到7680D fused；完整单角色输出为4608D Signal+角色残差。三条路径均执行，当前没有Router/HFER、V23模态MLP或V24原型。训练已完成，尚无被证实超过Signal的新主方案。下面V1—V8条目保留历史经过，不代表当前又启用了旧模块。
 
@@ -3600,3 +3600,28 @@ M0一次76.987059359秒，三fold各8更新共24/1536源曝光，195/195梯度�
 原本地核验字面量7e-5与作者0.1×0.0007的表示不同，改为相同作者表达式后通过；保留原核验与原因，0模型/配置变化、0训练重跑。
 正式三fold30epoch固定终点基线READY_NOT_RUN，将fresh通用CLIP重建，不用M0权重。预计75–100分钟，约15分钟首次观察后依据训练epoch耗时更新ETA。
 M0 summary SHA7e9f6214efdbf14611fd5bb0ce2f4d7e6c9ae68c9549af06659d018b39e09820；完整结果页TRIFUSION_RGBNT100_SIGNAL_SOURCE_M0_2026-09-06.md。
+
+### 41.36 RGBNT100 首次正式基线AMP停止，固定source定位已登记（2026-09-06）
+
+记录时间2026-09-06T10:22:31.091890+08:00。60a3d0e、wrapper80418实际09:53:41.130891退出1，耗时33.776537912秒。
+原runner第201行AMP scale下降断言失败。完整epoch事件0、fold0目录为空、无checkpoint或training.json/检索。
+原成功优化更新步数未持久化，不能等同0；10:09:23是首次观察时间而非错误发生时间。
+失败现场所有文本已按SHA取得，原训练没有重启，T0/M0通过的范围保留。
+诊断tools/diagnose_rgbnt100_signal_amp.py调用未修改的原train_source，
+仅原175/201/164行追踪：保存前向前buffer/RNG、逐步落盘、首overflow捕获或第二epoch前停止。
+固定source fold0/seed42/B64K8/原AMP256/全部作者目标与调度不变；最多一个source epoch，0heldout/official。
+先核对前8步与M0，触发batch权重/输入只保留远端；本条为READY_NOT_RUN，不能提前写成已定位根因。
+完整终态核验器事前已准备、NOT_RUN；本失败目录不满足其三折30epoch输入要求。
+详见results/TRIFUSION_RGBNT100_SIGNAL_FORMAL_ENGINEERING_STOP_2026-09-06.md。
+
+### 41.37 V24 已存全量source余弦的0.3间隔推导（2026-09-06）
+
+仅本地stdlib复算已归档JSON：9模型、18756 source-model行，每condition6252 fold-local行；
+每条fit记录在两份source fold出现，不是6252独立原图。原始模型/图像/张量/排序运行0。
+依据实际V8 normalized batch-hard L2 Triplet固定margin0.3，计算sqrt(2-2cos_neg)-sqrt(2-2cos_pos)，未扫margin。
+initial400/6252=6.39795%未满足，普通two-view终点116/6252=1.85541%，V24原型终点88/6252=1.40755%；
+mean global-source hinge为0.002149224/0.000626920/0.000489391。全部行/身份已保存，无选择性抽样。
+source严格正负排序正确不等于固定0.3间隔全部满足；但原型继续降低干净source hinge仍未带来V24科学晋级。
+这限制“记忆库必然提供大量缺失监督”的推断；不证明XBM或增强后的困难负例无效，
+不能替代真实增强batch梯度/缓存陈旧验证，也不是新的候选注册或V24复跑。
+结果页results/TRIFUSION_SOURCE_GLOBAL_MARGIN_SCALAR_CENSUS_2026-09-06.md。
