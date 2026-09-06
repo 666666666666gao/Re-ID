@@ -1,6 +1,6 @@
 # TriFusion-ReID workspace
 
-## Latest verified state (2026-09-07T05:42:49.961304+08:00)
+## Latest verified state (2026-09-07T06:04:45.052076+08:00)
 
 - V27 c225652 completed all3 folds x2 endpoints x20epochs,3360 updates; original
   training, full array verifier and reporter all exit0. Source diagnostic R2 d5bc048 is running; wrapper134209/child134211 verified.
@@ -17,7 +17,7 @@
   Next full source-only relation support diagnostic at fixed initial/final models
   is now R2_RUNNING (R1 Path interface error archived, 0 forwards): 3 fixed states x2 inputs x1680 original batches,10080 forwards,
   0 updates; full18 outputs and273297024 relation exposures. Math CPU/GPU tests PASS; actual Path interface recheck PASS.
-  Plan refine-logs/v27_source_style_relations/EXPERIMENT_PLAN.md; master41.90. At05:41:23,203batches/1218forwards; full results pending.
+  Plan refine-logs/v27_source_style_relations/EXPERIMENT_PLAN.md; master41.91. Fold0 file/exposure checks PASS; total608batches/3648forwards at06:04:45, fold1 running; full results pending.
 - Seal V27 settings. No D1/dev/official or p/alpha/layer/fusion-weight/seed/epoch scan.
   Do not simply combine V26/V27 as a rescue. Preserve prior FAIL and source saturation.
 - Original V8 inference: frozen3072D Signal+4608D bank=7680D; V27 stem statistics
@@ -595,3 +595,7 @@
 - Require original R2 pipeline and complete NumPy verification exit0; no partial scientific report.
 - Preserve all72 conditions,18 outputs,16 signcells and94 source IDs percell including zeros.
 - Reporter aggregation math PASS; running diagnostic and Q1 gates unchanged.
+
+- Fold0 milestone:580batches/3480forwards/37120 sample exposures verified; full1,026,293,888-byte array SHA matches.
+- Three fixed model states unchanged/gradients absent receipted; decomposition max5.960464477539062e-7.
+- All three process PIDs still live; no full CPU relation or scientific terminal result.

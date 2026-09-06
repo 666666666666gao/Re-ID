@@ -18,3 +18,8 @@ Aggregation math PASS; requires original pipeline end + full CPU array verificat
 05:42:28 report queue134960 launched onf97186d;05:42:49 original wrapper134209/child134211/queue134960 all live.
 Queue waits180s for original pipeline, then requires both diagnostic and full CPU verifier exit0. No report/model changes executed yet.
 05:41:23 main progress203batches/1218forwards; estimated GPU end near07:09 plus full CPU replay.
+
+06:04:45 fold0 complete:580batches/3480forwards,37120 raw sample exposures.
+Whole1,026,293,888-byte NPY SHA matches; actual PK orders/per-record exposures replay PASS; all3 fixed states unchanged and gradients absent receipted.
+Maximum fusion decomposition error5.960464477539062e-7. Main total608batches/3648forwards, fold1 underway; original3PIDs live.
+This is a file/exposure engineering milestone, not complete CPU relation verification or a scientific conclusion.
