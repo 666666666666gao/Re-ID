@@ -5,5 +5,8 @@ No model was loaded; no images, optimizer updates or output arrays. Original wra
 
 R2 changes exactly two calls to _sha256(Path(__file__)); actual helper and original V27 contract load PASS.
 Synthetic mathematics unchanged, maxerror3.1086244689504383e-15, model forwards0.
-R2_REGISTERED_NOT_RUN; same1680batches/10080forwards/273297024 relation exposures, same states, views and statistics.
+R2_RUNNING d5bc048, wrapper134209/child134211; same1680batches/10080forwards/273297024 relation exposures, same states, views and statistics.
 No retry loop, new training mechanism or promotion.
+
+05:27:41 both original PIDs live, GPU3130MiB/73%; initial RUNNING summary, persisted completed_batches0.
+No complete diagnostic or CPU verification result yet. Original process will verify all arrays before analysis.
