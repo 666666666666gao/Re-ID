@@ -1,23 +1,23 @@
 # TriFusion-ReID workspace
 
-## Latest verified state (2026-09-07T02:24:42.415837+08:00)
+## Latest verified state (2026-09-07T02:47:36.949548+08:00)
 
-- Fullsourcecensus COMPLETE, original124596/wrapper124594 ended0, verificationPASS.
-  All6252source-record/modelpairs,200forwardbatches,350112rows/168groups verified,
-  maximumerror0. Execution99e2a4c, unchangedmodelstate, optimizerupdates0.
-- Augmentedidentityprotocol fullfused R1=100/mAP99.999973, only1queryAP<1.
-  Crosscamerafused fullycorrect. Completefused instance hard-negative support tiny.
-- Nine residual slots:192 prototype-correct/R1wrong and16570 prototype-correct/AP<1
-  slot-query events, unique fold-query counts132/4779; NOT independentimagecounts.
-  Sloterror may be compensated bySignal/otherroles/modalities; unique causeunproven.
-- Next: use savedcompletefeatures to separateSignal/residualbank/slotcompensation.
-  Do not directly addfusedXBM, retuneV26 or forceallslotssamewithout evidence.
-  No cached-featuredrift orXBMtraining, heldout/dev/official access0.
-- Fullreport andanalysis inresults/TRIFUSION_SOURCE_INSTANCE_CENSUS*2026-09-07.md.
-  Allrawtext/evidence/source_instance_census_20260907; 3featurefilesremote1.36GiB.
-  Datafree18.682GiB, baseline/init/usefulfinalweights retained.
-- V26 Q1_FAIL sealed; RGBNT100officialbaselinegain+2.572608pp remainsreal.
-  Three-dataset/SOTAgoalUNMET; master41.78. Externalindependentauditunavailable.
+- Fullsource supportdecomposition COMPLETE,125623/wrapper125621 ended0.
+  634354228relations/25008queryrows/216metrics/108sixteen-cell tables allverified.
+  Original14outputs match previousfullsource census perquery. Execution22be78c.
+- Purebank augmentedsource mAP99.999877/R1=100, only5nonpositivepairs.
+  1806777/1808433slotwrongrelations alreadycorrect in same-role3modality residual
+  andfused; bank/fusedcorrect1808411. Source saturation is NOT mainly Signal cover.
+  Do not simply replaceV26fusedgate withbankgate, scaleweight or addfusedXBM.
+- Nextcandidate: source-environment diversity, with verified low-level interface
+  and synchronizedgeometry/separate spectral statistics. MixStyle primarypaper/
+  MITrepo reviewed, lowerCNN layers recommended, finalpredictionlayer discouraged.
+  CLIPblock8 transplant NOT verified. NoMixStylecodecopy, V27contract ortraining.
+- Reports results/TRIFUSION_SOURCE_SUPPORT_DECOMPOSITION_2026-09-07.md and
+  TRIFUSION_SOURCE_SUPPORT_ANALYSIS_2026-09-07.md. Master41.79.
+  No newmodel/imageforward/featurefile/weights, datafreeabout18.64GiB.
+- V26Q1_FAIL sealed, RGBNT100baselinegain retained, full3dataset/SOTAgoalUNMET.
+  Executorverification notexternal independent audit; externalserviceunavailable.
 
 ## Experiment environment
 
