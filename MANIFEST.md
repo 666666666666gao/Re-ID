@@ -942,3 +942,12 @@
 | 2026-09-06T23:00:03.502087+08:00 | /run-experiment | refine-logs/trifusion_v25_camera_coverage/EXPERIMENT_TRACKER.md | verified | V25 complete M0 PASS; full paired Q1 running; terminal verifier prepared |
 | 2026-09-06T23:00:03.502087+08:00 | /run-experiment | docs/TRIFUSION_RGBNT201_CURRENT_COMPLETE_HANDOFF_2026-09-01.md | verified | V25 complete M0 PASS; full paired Q1 running; terminal verifier prepared |
 | 2026-09-06T23:00:03.502087+08:00 | /run-experiment | AGENTS.md | verified | V25 complete M0 PASS; full paired Q1 running; terminal verifier prepared |
+
+| 2026-09-06T23:10:34.125041+08:00 | /run-experiment | evidence/trifusion_v25_terminal_verification_wrapper_20260906.py | verified | Original V25 Q1 live; full terminal CPU verification queued once; disk and retained weights rechecked |
+| 2026-09-06T23:10:34.125041+08:00 | /run-experiment | evidence/trifusion_v25_terminal_verification_queue_launch_20260906.json | verified | Original V25 Q1 live; full terminal CPU verification queued once; disk and retained weights rechecked |
+| 2026-09-06T23:10:34.125041+08:00 | /run-experiment | evidence/trifusion_v25_m0_complete_sync_20260906.json | verified | Original V25 Q1 live; full terminal CPU verification queued once; disk and retained weights rechecked |
+| 2026-09-06T23:10:34.125041+08:00 | /run-experiment | evidence/trifusion_v25_post_sync_health_disk_20260906.json | verified | Original V25 Q1 live; full terminal CPU verification queued once; disk and retained weights rechecked |
+| 2026-09-06T23:10:34.125041+08:00 | /run-experiment | refine-logs/trifusion_v25_camera_coverage/EXPERIMENT_TRACKER_20260906_231034.md | verified | Original V25 Q1 live; full terminal CPU verification queued once; disk and retained weights rechecked |
+| 2026-09-06T23:10:34.125041+08:00 | /run-experiment | refine-logs/trifusion_v25_camera_coverage/EXPERIMENT_TRACKER.md | verified | Original V25 Q1 live; full terminal CPU verification queued once; disk and retained weights rechecked |
+| 2026-09-06T23:10:34.125041+08:00 | /run-experiment | docs/TRIFUSION_RGBNT201_CURRENT_COMPLETE_HANDOFF_2026-09-01.md | verified | Original V25 Q1 live; full terminal CPU verification queued once; disk and retained weights rechecked |
+| 2026-09-06T23:10:34.125041+08:00 | /run-experiment | AGENTS.md | verified | Original V25 Q1 live; full terminal CPU verification queued once; disk and retained weights rechecked |

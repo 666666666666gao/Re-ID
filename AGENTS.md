@@ -3,7 +3,8 @@
 ## Latest verified state (2026-09-06 22:33)
 
 - V25 complete M0 PASS; Q1 RUNNING on execution97468dd, launched22:39:45.
-  screen v25_camera_coverage_97468dd; wrapper112548/child112550 confirmed live22:54:32; fold0-control19/20epoch. Full source metadata
+  screen v25_camera_coverage_97468dd; wrapper112548/child112550 confirmed live23:08:42; last23:04:45 progress36/120epoch,
+  fold0-control20/20 endpoint complete and candidate16/20. Full source metadata
   replay PASS:3fold x2arms x20epochs/3360batches; all1680 old order hashes/pair counts match.
   Candidate every batch has2 cross-camera K8 IDs plus6 single-camera K8 IDs.
   All94 source IDs and all2126/2075/2051 records covered over20epochs in each fold.
@@ -25,14 +26,16 @@
 - Full50 Signal30epochs/3936updates and roles20epochs/2625updates complete; never retrain.
   RGBNT100 source OOF +1.792365pp PASS is a different protocol from official evaluation.
   Fused official R1 repairs41/new8,39 IDs improve/9 decline/2 tie, all census archived.
-- V25 original GPU process112550 live at22:54:32;19/120epoch complete.
-  Full terminal verifier prepared/AST checked, not yet run; all571queries/21IDs/5outputs.
+- V25 original GPU process112550 live23:08:42; last detailed progress36/120epoch.
+  Full terminal verifier QUEUED_WAITING in livewrapper114796, screenv25_terminal_verify_97468dd;
+  every180s wait for original terminal, then CPU-only full571queries/21IDs/5outputs once.
+  No automatic retries. Queue not yet verification PASS.
   RGBNT201 dev58.4050/59.3939, MSVR310 original roles negative; whole goal unmet.
   No official tuning, reranking, pre-success ablations or sealed-failure reruns. Seed42 only.
 - Cleanup24 redundant resume weights/24.90GiB remains; datafree21.782GiB
   at22:28, systemfree10.365GiB. Keep required baselines/final weights/arrays.
 - Independent audit unavailable_service_limit; executor verification is not independent audit.
-  Read master41.68, refine-logs/trifusion_v25_camera_coverage/EXPERIMENT_PLAN.md and tracker.
+  Read master41.69, refine-logs/trifusion_v25_camera_coverage/EXPERIMENT_PLAN.md and tracker.
 
 ## Experiment environment
 
