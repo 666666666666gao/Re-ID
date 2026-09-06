@@ -17,7 +17,7 @@
   Next full source-only relation support diagnostic at fixed initial/final models
   is now R2_RUNNING (R1 Path interface error archived, 0 forwards): 3 fixed states x2 inputs x1680 original batches,10080 forwards,
   0 updates; full18 outputs and273297024 relation exposures. Math CPU/GPU tests PASS; actual Path interface recheck PASS.
-  Plan refine-logs/v27_source_style_relations/EXPERIMENT_PLAN.md; master41.88. R2 first snapshot only initializes; full results pending.
+  Plan refine-logs/v27_source_style_relations/EXPERIMENT_PLAN.md; master41.89. At05:36:49,145batches/870forwards; full results pending.
 - Seal V27 settings. No D1/dev/official or p/alpha/layer/fusion-weight/seed/epoch scan.
   Do not simply combine V26/V27 as a rescue. Preserve prior FAIL and source saturation.
 - Original V8 inference: frozen3072D Signal+4608D bank=7680D; V27 stem statistics
@@ -588,3 +588,10 @@
   RGBNT100 R2 config/ENGINEERING_R2_PLAN registered; new_model installs stable Gram, steps persist before AMP stop,
   M0 is now three complete first source epochs; original data/retrieval AST unchanged. R2 T0/M0 READY_NOT_RUN.
   Archive original R1 runner under .aris/traces/experiment-audit/2026-09-06_run20/inputs; do not reinterpret old receipts as R2 passes.
+
+## Full source-style diagnostic reporting (2026-09-07)
+
+- Report and180s dependency queue registered; queue not started yet.
+- Require original R2 pipeline and complete NumPy verification exit0; no partial scientific report.
+- Preserve all72 conditions,18 outputs,16 signcells and94 source IDs percell including zeros.
+- Reporter aggregation math PASS; running diagnostic and Q1 gates unchanged.

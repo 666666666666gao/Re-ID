@@ -10,3 +10,7 @@ No retry loop, new training mechanism or promotion.
 
 05:27:41 both original PIDs live, GPU3130MiB/73%; initial RUNNING summary, persisted completed_batches0.
 No complete diagnostic or CPU verification result yet. Original process will verify all arrays before analysis.
+
+05:36:49 original wrapper/child live;145batches/870forwards persisted.
+Complete reporting code registered: all72 cells, all18 outputs, all16 support signs, all94 source IDs percell including zeros.
+Aggregation math PASS; requires original pipeline end + full CPU array verification exit0; queue not started yet. Active diagnostic unchanged.
