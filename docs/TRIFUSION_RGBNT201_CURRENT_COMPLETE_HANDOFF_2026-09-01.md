@@ -3724,3 +3724,14 @@ RGBNT100原完整三角色入口tools/train_rgbnt100_trifusion_oof.py已准备�
 CCL原PDF仍受挑战页限制、Hyper作者库本轮仅README，未获得可验证完整训练实现。
 参见docs/SOTA_REFRESH_2026-09-05.md及evidence/trifusion_literature_incremental_modal_ccl_20260906.json；
 既有公开高指标参照和本项目未达主目标的结论不变。
+
+### 41.46 RGBNT100原三角色M0与完整终态核验器准备（2026-09-06）
+
+记录2026-09-06T12:54:28.792843+08:00。四个独立入口完成AST检查，源码尚未在RGBNT100三角色上运行：
+verify_rgbnt100_trifusion_m0.py、verify_rgbnt100_trifusion_m0_files.py、
+verify_rgbnt100_trifusion_terminal_files.py、verify_rgbnt100_trifusion_terminal_scalars.py。
+M0固定124步/7936 source训练曝光、203梯度项、全Signal保存状态对B0、三权重严格重载回执；
+终态全部15数组/43375query-output/50身份/60epoch及全部真实步数，不再套用MSVR的scene过滤或每epoch13步。
+加权loss按实际FP32分组运算重算；已对旧MSVR完整124条M0 JSON标量验证124/124 exact、最大差0。
+这只是核验器算术检查，0新模型/张量/图像/训练；当前B0保持运行中的原定义，新三角色没有配置或运行。
+详见refine-logs/rgbnt100_trifusion_v1/VERIFIER_PREPARATION_20260906.md及对应evidence注册。

@@ -1,0 +1,52 @@
+{
+  "schema": "rgbnt100-original-three-role-verifier-preparation-v1",
+  "recorded_at": "2026-09-06T12:54:28.792843+08:00",
+  "status": "PREPARED_SOURCE_ONLY_NO_RGBNT100_ROLE_M0_OR_COMPARISON",
+  "files": {
+    "tools/verify_rgbnt100_trifusion_m0.py": {
+      "sha256": "caa68e9787c7b180fa4b0be038ec899284b32dbdc9a39097fc72e6b7ea02723b",
+      "AST": "PASS"
+    },
+    "tools/verify_rgbnt100_trifusion_m0_files.py": {
+      "sha256": "a6a8a136723c9e89dfbf53bb514a7f47d788c8c6c1b22aef0416cc34079b87f1",
+      "AST": "PASS"
+    },
+    "tools/verify_rgbnt100_trifusion_terminal_files.py": {
+      "sha256": "a5dce96853fbe413b8ef1daa6828c974a38d186abf3b92b1843283c3f5a4d9f3",
+      "AST": "PASS"
+    },
+    "tools/verify_rgbnt100_trifusion_terminal_scalars.py": {
+      "sha256": "5af40310f885c5a9347a07835a994d3db3ed330faabf77c332798b538ace959e",
+      "AST": "PASS"
+    }
+  },
+  "runner_sha256": "7f18cf950ff85bae9f300618c63154cc5394101ce12b97a7344615937c4a945d",
+  "loss_arithmetic_validation": {
+    "status": "PASS_EXISTING_MSVR_JSON_ONLY",
+    "executed_in_current_turn": true,
+    "stored_steps": 124,
+    "exact_fp32_recompositions": 124,
+    "maximum_absolute_difference": 0.0,
+    "inputs": {
+      "evidence/msvr310_trifusion_v1_m0_receipts/fold_0_training.json": "7150499b095b9e2023d95849f319ebfca105e18c7caf9ae50771df16afb8791d",
+      "evidence/msvr310_trifusion_v1_m0_receipts/fold_1_training.json": "c54c1d5dcebaefee9b3a634d9e7298cbb9e4e9d14294b0b6f451c7436296cea7",
+      "evidence/msvr310_trifusion_v1_m0_receipts/fold_2_training.json": "cb37e6ff1c9d4acf098b228c5d003bbe24574a088aa45ebbf7a91c5f435099b7",
+      "evidence/msvr310_trifusion_v1_m0_receipts/overfit_fold0_training.json": "517a1f56d64ecbd051b49cb0c24cb809ce1c5563f172febb430e006fc135d57c"
+    },
+    "scope": "Only weighted_loss_f32 against existing published MSVR M0 scalars; this is not a new dataset or model M0 pass.",
+    "model_tensor_image_calls": 0,
+    "optimizer_updates": 0
+  },
+  "m0_files_scope": "Three role checkpoint contents and complete baseline.signal states versus real same-fold B0; all124JSONL/training rows; strict feature parity remains runtime receipt.",
+  "m0_scalars_scope": "All124source steps/7936training records/203gradient flags each/actual grouped FP32 sums/entropy floor/fixed100overfit/72role+24direct clean forwards; noheldout.",
+  "terminal_files_scope": "All3role checkpoints/3B0 state equivalence/all15feature-distance paths/full saved argsort; zero new model forward.",
+  "terminal_scalars_scope": "All8675queries times5outputs=43375 full ranks,50IDs,3folds,60epochs,allactualvariable-count steps,50-ID bootstrap and same5science gates.",
+  "numeric_arithmetic_source": "tools/run_signal_preserving_v5.py weighted_training_loss: sum three expert losses before multiplying each common weight; preserve FP32 operation order.",
+  "protocol_difference": "RGBNT100 same-ID AND same-camera filter and valid_positive_count key; no MSVR scene rule or fixed13steps/epoch assumption.",
+  "runtime_status": "NOT_RUN",
+  "role_config_created": false,
+  "baseline_run_source_changed": false,
+  "current_baseline_execution_commit": "def7b9b7ecd9e7e37821716a13fdb2580b2d955c",
+  "remote_tensor_checks_timing": "Only after respective complete terminus and fixed source bindings; no check on partial current baseline.",
+  "independent_audit": "No final new independent verdict available; executor file/scalar checks are not a substitute report."
+}
