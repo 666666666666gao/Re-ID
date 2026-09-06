@@ -2,37 +2,27 @@
 
 ## Latest verified state (2026-09-06)
 
-- RGBNT100 original OOF complete support PASS: Signal89.524175/96.829971 versus
-  fused91.316540/97.936599, mAP+1.792365pp, all5 gates pass, bootstrap lower+0.951777609pp.
-  Full3 checkpoints/15 arrays/43375 outputs/5195 updates verified. Do not retrain OOF.
-- Full50 Signal B0 COMPLETE PASS: fixed30epochs/3936 updates, all8675 source records/
-  50 identities, 195 gradients/AMP0, whole state/all losses/PK rows/author LR verified.
-  Execution545186d; terminal19:16:19. All12 raw text files/14283116 bytes archived.
-- Full50 original roles M0 COMPLETE PASS: 19:36:09→19:39:00 on2800c88, 108 valid updates,
-  seven50-class heads, 203 gradients/AMP0, overfit excess ratio0.0011232312<=0.1.
-  Parameters97519117 total/6692364 trainable; strict state/output/Signal parity and
-  all108 FP32/PK/gradient/LR rows verified. All14 raw text files/4360400 bytes archived.
-- Full50 role main RUNNING: dispatched19:42:57, wrapper106196/child106200, actual2800c88.
-  Fresh M0 initial state3b8c3b751201ed1c53e5d71658680645704b65f7bf13f59e685a67e63ccc9b7f
-  verified19:44 launch health; GPU6338MiB/100%. No M0/OOF trained-weight reuse.
-  Fixed20epochs; estimate20:33–20:43 terminal, first training observation20:28.
-  Do not restart, scan, change the bound config/loss/sampler/seed42/epoch budget.
-- T0 all18965 file headers/hashes/author labels/all1715 complete masks verified.
-  Official raw headers were read; official model forwards/metrics remain0.
-  Official config awaits verified actual role epoch20; its drivers/static review are ready.
-- User cleanup removed24 redundant resume snapshots/24.90GiB;12 standalone models
-  whole-SHA checked before/after.19:44 all24 absent/12 sizes correct, datafree24.60GiB,
-  system10.36GiB. CLIP/Signal/current checkpoints/result artifacts retained.
-- Independent audit unavailable due service limit; executor checks are not independent.
-  Existing RGBNT201/MSVR310 failures sealed; seed42 only; no pre-success ablations.
-  RGBNT201 dev58.4050/59.3939 and overall targets remain unmet.
-- 19:56:46 ps confirmed wrapper106196 and child106200 still live; training metrics not read.
-  Primary author-code review and all-source camera sampling feasibility completed separately.
-  V24 already tests weak-update/strong global+camera prototype supervision.
-  Two cross-camera IDs per batch requires extra group draws; do not just change sort priority.
-  No new sampler implemented and no active training source changed.
-- Read master handoff section41.62, refine-logs/rgbnt100_main_v1/EXPERIMENT_TRACKER.md
-  and docs/IICI_XBM_SNR_CODE_AND_SAMPLING_CONSTRAINTS_2026-09-06.md.
+- Original RGBNT100 OOF complete support PASS: fused91.316540/97.936599 versus
+  Signal89.524175/96.829971, mAP+1.792365pp, all5 gates pass. Do not retrain.
+- Full50 Signal B0 complete verified fixed30epochs/3936 updates/195 gradients/AMP0.
+- Full50 original roles M0 complete verified108 updates, overfit excess0.0011232312.
+- Full50 roles main COMPLETE VERIFIED: execution2800c88, terminal20:31:30,
+  fixed20epochs/2625 updates/168000 exposures, all8675 records/50 identities seen.
+  All203 gradients finite/live, AMP0; frozen/Signal state unchanged; strict reload parity.
+  Fresh M0 initial state reused, no M0 trained weight or OOF trained-weight reuse.
+  All12 original text files/103421043 bytes SHA verified and2625 scalar rows checked.
+- Official main config READY_NOT_RUN, bound actual B0 epoch30 and role epoch20:
+  configs/RGBNT100/Official-main-v1.json SHA96baf923bc5f92b56feb490342d193031a522cfa50a626156bd2eb2e0d732985.
+  Publish/sync before one complete1715-query/8575-gallery/all5-output evaluation.
+  No official model forwards or scores yet. Do not tune endpoints or weights on official.
+- Original cleanup24 redundant resume snapshots/24.90GiB remains effective.
+  At20:39 all24 absent/12 standalone model sizes correct; datafree24.14GiB/system10.36GiB.
+  Current CLIP, B0, M0, epoch20 and all result artifacts remain protected.
+- Independent audit unavailable_service_limit; executor verification is not independent.
+  RGBNT201 retained dev58.4050/59.3939 and MSVR310 negative comparison unchanged.
+  Overall goal unmet; seed42 only, no ablations before main success, no sealed-failure scans.
+- Read master handoff section41.63 and refine-logs/rgbnt100_main_v1/EXPERIMENT_TRACKER.md.
+  Author code and complete source sampling constraints in section41.62 remain unchanged.
 
 ## Experiment environment
 

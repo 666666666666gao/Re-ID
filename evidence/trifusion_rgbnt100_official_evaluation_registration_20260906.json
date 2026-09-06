@@ -1,0 +1,47 @@
+{
+  "registered_at": "2026-09-06T20:39:39.769817+08:00",
+  "status": "FIXED_OFFICIAL_COMPARISON_READY_NOT_RUN",
+  "config": "configs/RGBNT100/Official-main-v1.json",
+  "config_sha256": "96baf923bc5f92b56feb490342d193031a522cfa50a626156bd2eb2e0d732985",
+  "runner": "tools/evaluate_rgbnt100_official_main.py",
+  "runner_sha256": "b155b2dfe40930017c05789b34fda67afb0c40183093a4281f878f1b48846532",
+  "verifier": "tools/verify_rgbnt100_official_main.py",
+  "verifier_sha256": "01582c2d1821a907c19c4378271ccd2d8da1c6e1e10fb5e48a319ee8007e94f2",
+  "wrapper": "evidence/trifusion_rgbnt100_official_evaluation_wrapper_20260906.py",
+  "wrapper_sha256": "0b8494f2b11ba4919b70b82b0e6f3ce351825f88c40c2c1083eca7df9d10159c",
+  "baseline_binding": {
+    "CONFIG": "configs/RGBNT100/Signal-main-v1.json",
+    "CONFIG_SHA256": "14b86b6e6161e55681b528ec2858590bed8e011be0b442ce1921529c6265da54",
+    "SUMMARY": "/root/autodl-tmp/trifusion-v2/artifacts/rgbnt100_trifusion_main_v1_seed42_20260906/signal_baseline/summary.json",
+    "SUMMARY_SHA256": "7c82f15a1227e36b04b41091bcf57ebc8a23375682448d62cd263a58120ccc13",
+    "VERIFICATION": "/root/autodl-tmp/trifusion-v2/artifacts/rgbnt100_trifusion_main_v1_seed42_20260906/signal_baseline_verification.json",
+    "VERIFICATION_SHA256": "5d1697e37035dfe17c0ad02268b0b8da5ee23801e9f071664ba7c8db39669a94",
+    "EPOCH": 30,
+    "RETRAIN": false
+  },
+  "roles_summary_sha256": "908397c508e1052735153d4dfa5e2bc96091ebc947cc33eb7981661797736ab9",
+  "roles_verification_sha256": "a367158e7571ef073714b15f9a761d176343c19a444627ea52e959fc129d2f66",
+  "roles_checkpoint_sha256": "3946c4ede79e6f622819b10c183906e25526796165b0b82560a7d4ebed6605e1",
+  "fixed_protocol": {
+    "query": 1715,
+    "gallery": 8575,
+    "test_identities": 50,
+    "all5_outputs": true,
+    "filter": "exclude same identity AND same camera, retain all different identities",
+    "seed": 42,
+    "signal_checkpoint": "fixed_epoch30",
+    "role_checkpoint": "fixed_epoch20",
+    "reranking": false,
+    "test_time_adaptation": false
+  },
+  "scientific_checks": {
+    "fused_gain_at_least_1pp": 1.0,
+    "all_full_branches_not_below_signal": true,
+    "identity_bootstrap_lower_positive": true,
+    "fused_strictly_best": true
+  },
+  "registered_main_plan_sha256": "57f9cb601b1a5697acaff0e8bed3a737eb499d1f1a752ad6a29691c9afb503f3",
+  "official_model_record_forwards_before_run": 0,
+  "training_updates_in_evaluation": 0,
+  "scope": "One fixed full official comparison after both complete endpoints verified; no query/gallery model selection"
+}

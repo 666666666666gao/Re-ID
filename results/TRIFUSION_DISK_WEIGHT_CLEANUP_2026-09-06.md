@@ -24,3 +24,6 @@
 清理后原RGBNT100 wrapper93313/child93317持续运行。15:53:41阶段检查确认第三折正在第20epoch，累计5105有效更新，梯度正常，无AMP下降；输出卷剩11.21 GiB。完整科学比较尚待终态。
 
 全部删除路径、大小、原SHA和12个保留模型见[完整清理回执](../evidence/trifusion_completed_resume_weight_cleanup_receipt_20260906.json)。清理计划与实际执行源一并归档；未新增自动删除策略，也未修改训练代码或合同。
+
+
+20:39:40在新全50身份角色epoch20权重落盘后复查：数据卷剩24.14GiB，系统卷剩10.36GiB。原24个删除路径仍不存在，12个旧独立模型都在且大小一致；当前Signal epoch30、角色M0、角色epoch20及CLIP权重全部保留。这次没有额外删除。详情见evidence/trifusion_disk_after_full50_roles_main_20260906.json。
