@@ -20,7 +20,7 @@ from tools.check_v27_style_math import run as check_style_math
 from tools.build_v12_complete_path_oof_targets import (
     _configure_signal, _load_records, build_complete_path_fold_records,
 )
-from tools.run_signal_preserving_v5 import _training_batch, learning_rate_multiplier, load_raw_config
+from tools.run_signal_preserving_v5 import _training_batch, learning_rate_multiplier
 from tools.train_signal_preserving_v17 import (
     _model_state_sha256, _raw_batch_receipt, _record_index_by_path, _sha256,
     _tensor_mapping_sha256, _trainable_names,
@@ -56,7 +56,7 @@ def build_model(config, signal_cfg, fold, split):
 
 
 def load_contract(path):
-    config = load_raw_config(path)
+    config = json.loads(path.read_bytes())
     assert config["MODEL"]["ARCHITECTURE"] == "signal_preserving_v27_source_style"
     assert config["EXPERIMENT"]["SEED"] == 42
     assert (config["DATA"]["TRAIN_BATCH_SIZE"], config["DATA"]["NUM_INSTANCES"]) == (64, 8)

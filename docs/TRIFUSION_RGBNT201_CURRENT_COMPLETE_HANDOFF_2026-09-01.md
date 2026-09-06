@@ -2,7 +2,7 @@
 
 ## 0. 一页结论
 
-最新状态（2026-09-07T03:09:50.045072+08:00，§41.80）：V27来源环境统计混合已实现并预登记，T0/M0/Q1尚未运行。只在训练角色路径的冻结CLIP最早Patch stem混合同模态跨摄像头统计，三模态共用供体/系数，Signal保留原输出，角色anchor/reference同扰动；推理仍原V8。与V24亮度/擦除及原型不同，借鉴MixStyle但不宣称已有效或原创。三折两端3360updates完整合同及原五门固定。此前24个冗余恢复权重清理仍有效，12保留模型本轮SHA完整一致，数据卷余18.63GiB。本次无新增删除。V26失败与来源银行饱和结论保持，三数据集/SOTA目标未达。
+最新状态（2026-09-07T03:14:22.617591+08:00，§41.81）：V27首启849b608在配置断言前置检查失败退出1，T0/模型图像前向/更新均0。已定位YAML读取JSON将1e-06变成字符串，R2仅改V27为json.loads，全部科学设置和原计划不变，尚未重启。原失败log/exit/terminal保留，不作为模型检索失败。磁盘已清24恢复文件共24.90GiB、12保留模型SHA通过，当前数据卷约18.63GiB。三数据集/SOTA目标未达。
 
 当前用于已完成MSVR310比较及新登记RGBNT100比较的是原V8平行三角色结构：冻结Signal/CLIP，共享block8之前语义和tail9/10/11参数，三个角色分别运行共享tail；CNN处理局部语义Patch高频，Transformer处理全局CLS/Patch关系，Mamba处理空间与位置级三模态扫描。各角色相对冻结reference形成1536D残差，三角色4608D银行拼接3072D Signal得到7680D fused；完整单角色输出为4608D Signal+角色残差。三条路径均执行，当前没有Router/HFER、V23模态MLP或V24原型。两项车辆训练比较均已完成；RGBNT100内部完整比较支持三角色增益，MSVR310尚未超过Signal。下面V1—V8条目保留历史经过，不代表当前又启用了旧模块。
 
@@ -4528,3 +4528,16 @@ M0固定48原模型前向+48backbone接口前向、116updates；通过后原进�
 24个旧恢复文件均仍不存在、12个保留模型全SHA一致；本次追加删除0。
 全部198个权重文件路径/大小清单与回执在evidence/trifusion_disk_weight_recheck_20260907.json，
 不是198个可删除文件。原始CLIP/Signal/V12/正式最终权重与检索证据保留。
+
+
+## 41.81 V27启动R1配置类型失败与R2最小修复（2026-09-07T03:14:22.617591+08:00）
+
+原wrapper126752/child126754均结束，849b608原进程03:12:15启动后退出1，
+在load_contract固定STYLE断言停止，尚未执行T0、加载构建模型、真实图像前向或更新。
+实际原JSON中VARIANCE_EPSILON是数字1e-06；旧load_raw_config使用yaml.safe_load，
+读得字符串"1e-06"。源码行和远端实际输出已核对，不是梯度/模型/检索失败。
+仅V27的配置读取改为json.loads(path.read_bytes())，没有增加fallback。
+所有科学配置逐字段与原Git849b608比较一致，仅runner来源SHA更新。
+原计划refine-logs/trifusion_v27_source_style/EXPERIMENT_PLAN.md字节不变，SHA305f89d0fe58257c76f9536d2260ab0ae6668b1fa42e81a6e766845649e94d3c。
+R2配置SHA6f3161985f3a3831ffa890a163a510c6fa463ce4fd933793f0ce79db2c07677a，原失败log/exit/terminal及启动记录已收回文本归档。
+本条登记时R2未运行，需完成同步后以单一新原进程执行全部原合同。

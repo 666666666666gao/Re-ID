@@ -15,7 +15,9 @@
 - Disk recheck03:00: 24 deleted recovery weights remain absent; all12 retained
   independent models fully SHA verified. Additional deletions0; datafree18.63GiB.
   Read evidence/trifusion_disk_weight_recheck_20260907.json. Master41.80.
-- No training running at preregistration. Executor verification is not independent audit.
+- R1 startup849b608 failed before T0/models/updates: YAML read JSON 1e-06 as string.
+  R2 only reads JSON using json.loads; all scientific settings and plan unchanged.
+  R1 logs preserved; R2 REGISTERED_NOT_RUN. Master41.81. Executor checks are not independent audit.
 
 ## Experiment environment
 
