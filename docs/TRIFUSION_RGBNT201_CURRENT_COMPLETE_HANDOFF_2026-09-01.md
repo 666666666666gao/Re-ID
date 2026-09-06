@@ -3802,3 +3802,19 @@ fold0完成epoch1/2，共164更新；第三epoch进行中，完整落盘189条�
 每条203项gradient finite均真、0 AMP下降。GPU6260MiB/100%，wrapper/child存活。
 仅运行日志/source更新观察，未读取heldout指标；完整fold receipt仍0。
 证据evidence/trifusion_rgbnt100_original_roles_comparison_startup_check_20260906.json；下一阶段观察仍14:43:43，预估终点不因两epoch训练loss下降而改写成功判断。
+
+### 41.51 三个内部协议完整环境标签与候选池普查（2026-09-06）
+
+登记14:32:48，完整执行1.5863748秒，12833记录/346个各数据集独立身份/9846合法query，
+每记录heldout一次/source两次，0模型/张量/图像/训练/新检索指标；未使用当前RGBNT100三分支输出。
+RGBNT201 571 query、RGBNT1008675 query的camera均在对应source出现；
+MSVR310仅fold0的7/600 query（ID40/64/138，scene6/21）scene未见，所有camera/v标签已见。
+这限制把大部分失败解释为未见环境标签；不证明视觉环境分布相同或排除环境捷径。
+同camera负候选比例query均值RGBNT20145.3665%、MSVR31013.6770%、RGBNT10012.5940%；
+MSVR同scene为7.2436%。这些是完整候选池构成，不是最近错误概率，不直接与挑选错误子集相比。
+各fold正例数中位数RGBNT20113/12/13、MSVR8/7/7、RGBNT100175/175/175。
+gallery-only干扰身份/记录分别120/2555、95/432、0/0；RGBNT100无gallery-only身份仍有完整不同身份干扰。
+完整不同记录对占比10.6833%/56.7064%/86.6812%与身份平均7.1339%/25.5752%/85.0937%分开报告；
+不能与不同PK运行的8.0708%/26.0640%/86.0855%直接作“可用监督上限”或因果比较。
+完整报告results/TRIFUSION_THREE_DATASET_ENVIRONMENT_LABEL_CENSUS_2026-09-06.md；六输入SHA/脚本及全部9846query/所有身份计数见evidence/trifusion_three_dataset_environment_census_20260906.json。
+当前模型/损失/采样/五科学门不变，RGBNT100完整终态后再决定新主假设。

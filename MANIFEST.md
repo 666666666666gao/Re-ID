@@ -666,3 +666,5 @@
 | 2026-09-06T14:15:52.731518+08:00 | /run-experiment | results/TRIFUSION_RGBNT100_ORIGINAL_ROLES_COMPARISON_2026-09-06.md; evidence/trifusion_rgbnt100_original_roles_comparison_launch_20260906.json | running | bbe49e1,threefold20epochs launched14:13:43;43375query-output;estimated105–125min;no terminal metrics |
 
 | 2026-09-06T14:17:33.866656+08:00 | /run-experiment | evidence/trifusion_rgbnt100_original_roles_comparison_startup_check_20260906.json | actual startup activity | First fold2complete epochs,189applied updates/203finite gradients/0AMPdrop;GPU100%;no heldout metrics;phase observation still14:43 |
+
+| 2026-09-06T14:37:26.152805+08:00 | /run-experiment evidence analysis | results/TRIFUSION_THREE_DATASET_ENVIRONMENT_LABEL_CENSUS_2026-09-06.md; evidence/trifusion_three_dataset_environment_census_20260906.json; evidence/trifusion_three_dataset_environment_census_plan_20260906.json | full label census | All12833records/9846queries/346identities;unseen evaluation environments0/7/0;candidate distributions and pair denominators separated;0model/update |
