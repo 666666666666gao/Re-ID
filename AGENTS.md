@@ -1,38 +1,40 @@
 # TriFusion-ReID workspace
 
-## Latest verified state (2026-09-06 23:33)
+## Latest verified state (2026-09-07 00:00)
 
-- Cleanup complete:24 redundant completed-run resume weights/24.900344GiB deleted.
-  At23:33:41 all24 paths remain absent,12 retained models exist with recorded sizes.
-  No additional deletions. V25 uses data volume/free21.414532GiB;
-  system overlay/free10.364922GiB. Keep final weights/baselines/full arrays.
-- V25 complete M0 PASS; original Q1 process112550 live/command verified23:33:41.
-  Execution97468dd unchanged. 88/120epochs complete; fold0/1 both endpoints done,
-  fold2-control8/20. Full three-fold scientific terminal still pending.
-  Physical sampler candidate2 cross-camera IDs plus6 single-camera IDs, B64/K8.
-  Full source metadata replay3360batches PASS; cross-camera positive fraction
-  8.070790816%->12.344547194%; per-arm107520exposures, all source IDs/records covered.
-  Additional record reuse/identity frequency changes are explicit intervention costs.
-- Same frozen Signal/V8 model, original seven ID/Triplet heads and V12 initialization;
-  7,841,292 trainable parameters/203 tensors, new inference parameters0.
-  M0 all48 preflight batches and116updates checked; overfit excess0.0398826204,
-  frozen unchanged,203 gradients,overflow0,capacity6054/6198MiB.
-  Full six20epoch endpoints/3360updates, all five scientific gates unchanged. No scans.
-- Full terminal verifier remains QUEUED_WAITING in livewrapper114796,
-  screen v25_terminal_verify_97468dd, poll180s then CPU-only verification once.
-  It checks all training rows, six arrays, all571queries/21IDs/5outputs.
-  Report generator prepared/AST only; complete original terminal required.
-  No complete Q1/CPU-verification result yet. No D1/official/ablations.
-- RGBNT100 official COMPLETE: Signal80.712162/94.227405 -> fused83.284770/96.151603,
-  +2.572608pp; CNN81.961715/95.860058,T81.709681/94.577259,M83.440622/95.510204.
-  Full1715queries/8575gallery/50IDs/5outputs verified; engineeringPASS,
-  scientific3of4PASS, fused below Mamba0.155851768pp; not SOTA.
-  Full50 Signal30epochs and roles20epochs complete; never retrain.
-  OOF+1.792365pp PASS is a different protocol from official evaluation.
-- RGBNT201 dev58.4050/59.3939, MSVR310 original roles negative; whole goal unmet.
-  No official tuning, reranking, pre-success ablations or sealed-failure reruns.
-  Seed42 only. External independent audit unavailable; executor checks are not independent audit.
-  Read master41.70 and refine-logs/trifusion_v25_camera_coverage/EXPERIMENT_PLAN.md/tracker.
+- V25 COMPLETE: training112550/wrapper112548 exit0 atSep6 23:50:33;
+  all6x20epochs/3360updates/215040exposures completed, execution97468dd.
+  Full CPU verification queue114796 exit0 at23:50:53, no retries.
+  32602260 distances/5952790 ranking positions,571queries/21IDs/5outputs,
+  all source exposures/weights/input SHA verified; maxdistance/metric error0.
+- V25 scientific Q1_FAIL,1of5 gatesPASS: fused80.881569/84.588441
+  ->80.420931/82.486865, delta-0.460638pp.
+  Fold+0.564526/+1.526056/-3.185387, bootstrap lower-2.306666pp.
+  CNN-0.636440,T-2.026329,M+1.835080; only fused-best gatePASS.
+  Fused AP181up/193down/197tie,11IDup/10down,R1repair3/new15.
+  Same Signal features/distances/rankings in both arms; fused still beats Signal.
+  Seal V25 rule; no ratio/copy/seed/epoch/loss scans or D1/dev/official.
+- Complete original24 text files/15638325bytes and all30fold rows/105identity
+  output rows/2855query output rows downloaded and byte/arithmetic verified.
+  No local model/image/tensor execution. All6weights/arrays remain remote.
+  Read results/TRIFUSION_V25_COMPLETE_COMPARISON_2026-09-06.md and failure analysis.
+- Current inference is original frozen Signal/V8 roles, no V23/V24/Router/HFER.
+  User next direction: fixed sampling, role-modal ranking responsibility;
+  inspect true nine-slot decomposition, support and same-block auxiliary gradients.
+  BIER source cd04edf (7files, GPLv3) reviewed only; no author code copied/run.
+  Instance memory requires actual augmented hard-instance/drift evidence.
+  No new model executed yet. Read docs/BIER_ROLE_MODAL_RESPONSIBILITY_SCOPE_2026-09-07.md.
+- RGBNT100 official Signal80.712162/94.227405 ->fused83.284770/96.151603,
+  +2.572608pp, full1715queries/8575gallery/50IDs verified;3of4 scientificPASS,
+  Mamba83.440622 still higher mAP. Positive baseline gain preserved, not SOTA.
+  Full50 Signal30epochs/roles20epochs sealed; no retraining or official tuning.
+- RGBNT201 retaineddev58.4050/59.3939; MSVR310 original roles negative.
+  Whole three-dataset baseline/SOTA goal remains unmet. Seed42, no pre-success ablations.
+  External independent audit unavailable; executor verification is not independent audit.
+- Cleanup24 redundant old resume weights/24.900344GiB confirmed; keep12 old
+  final models, baselines and current weights/arrays. Datafree21.095GiB
+  atSep6 23:51, systemfree10.364922GiB. No extra deletions.
+  Read master41.71 and V25 immutable experiment plan/tracker.
 
 ## Experiment environment
 
