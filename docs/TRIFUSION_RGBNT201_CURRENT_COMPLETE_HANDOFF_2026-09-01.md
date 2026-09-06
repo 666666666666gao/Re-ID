@@ -2,7 +2,7 @@
 
 ## 0. 一页结论
 
-最新状态（2026-09-06T13:56:31.328098+08:00）：RGBNT100 Signal R2三折30epoch完整结束，通过三权重/三数组/8675 query/7794步全部执行侧核验，内部89.5241750420 mAP/96.8299711816 R1（§41.47）。原完整三角色配置、实际源字节、四核验器及固定合同已绑定B0，M0 REGISTERED_NOT_RUN（§41.48）；仍无RGBNT100主方法成绩。run20独立审计因服务额度限制未闭合，不覆盖本次B0或新三角色。MSVR310原三角色/V23/V24负结果封存，RGBNT201保留dev58.4050/59.3939，主目标继续未达。
+最新状态（2026-09-06T14:11:01.774271+08:00）：RGBNT100原完整三角色M0和3权重/124步完整执行侧核验已PASS，excess ratio0.001551768；正式三fold×20epoch已登记待启动，尚无三角色检索终态（§41.49）。对应Signal R2内部基线89.5241750420 mAP/96.8299711816 R1已经全部核验。独立审计因服务额度限制未闭合。MSVR310原三角色/V23/V24负结果封存，RGBNT201仍dev58.4050/59.3939，主目标未达。
 
 当前用于已完成MSVR310比较及新登记RGBNT100比较的是原V8平行三角色结构：冻结Signal/CLIP，共享block8之前语义和tail9/10/11参数，三个角色分别运行共享tail；CNN处理局部语义Patch高频，Transformer处理全局CLS/Patch关系，Mamba处理空间与位置级三模态扫描。各角色相对冻结reference形成1536D残差，三角色4608D银行拼接3072D Signal得到7680D fused；完整单角色输出为4608D Signal+角色残差。三条路径均执行，当前没有Router/HFER、V23模态MLP或V24原型。训练已完成，尚无被证实超过Signal的新主方案。下面V1—V8条目保留历史经过，不代表当前又启用了旧模块。
 
@@ -3766,3 +3766,21 @@ M0三fold各8步+fresh fold0固定100步，共124更新/7936source曝光、72角
 M0完整工程和权重/标量核验PASS后fresh三fold×20epoch，最终43375 query-output/50身份，五门不改。
 预计正式100–140分钟，按本次M0计时更新；新私有overlay先检查>=8GiB和GPU>=22000MiB。
 没有官方、消融或失败版本扫描，原ENOSPC和科学失败全部保留。
+
+### 41.49 RGBNT100原完整三角色M0及全部文件/标量核验通过（2026-09-06）
+
+登记2026-09-06T14:11:01.774271+08:00。执行9e908c8，wrapper92186/child92190；14:01:21.442232→14:05:20.261521，
+exit0，wrapper238.8160716秒。首观察14:06:33.454192距启动312.011960秒，不当作完成时间。
+三fold各8容量步+fresh fold0固定100步，共124更新/7936source曝光，0 AMP下降；
+203/203张量有限非零梯度，Signal/冻结state不变，三foldsource前缀和全部五输出重载逐元素相同。
+实际total97022989/97022989/97052173，trainable6248460/6248460/6274572，后者与静态预测一致。
+原固定100步loss2.8034026623→0.4944220185，解析floor0.4908334477，
+excess ratio0.00155176796144928<0.1，peak reserved6234MiB；0heldout/dev/official。
+远端3完整权重/31项目21Signal源绑定/完整CLIP/124记录核验11.517526秒；
+本地全部124 FP32损失及真实source/梯度/4epoch日志0.071510秒，全部相等。
+23份文本5451771字节全SHA收取，summary SHAb2ba13b644033f2888f2c7eb4535e1b117f9175e2cef412f06aa2c438466a2f8；
+结果results/TRIFUSION_RGBNT100_ORIGINAL_ROLES_M0_2026-09-06.md，执行侧closure evidence/trifusion_rgbnt100_original_roles_m0_executor_closure_20260906.json。独立审计仍无最终verdict。
+正式比较登记evidence/trifusion_rgbnt100_original_roles_comparison_registration_20260906.json：配置/原合同不改，fresh同M0初始SHA的三fold各20epoch，
+不加载M0权重，最终43375 query-output/50身份，原五科学门保持。
+据M0容量约1.208–1.332秒/步，估计105–125分钟、首查启动后30分钟，当前READY_NOT_RUN。
+核验器换行曾被执行者误读；AST实际码点10，原四入口及全部训练源字节未改，转换脚本未使用。

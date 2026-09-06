@@ -1,0 +1,162 @@
+{
+  "status": "PASS_COMPLETE_M0_SCALAR_REPLAY",
+  "engineering_gate_passed": true,
+  "optimizer_steps": 124,
+  "training_record_exposures": 7936,
+  "clean_role_source_record_forwards": 72,
+  "direct_signal_source_record_forwards": 24,
+  "heldout_record_forwards": 0,
+  "sections": [
+    {
+      "fold": 0,
+      "mode": "capacity",
+      "optimizer_steps": 8,
+      "source_record_exposures": 512,
+      "unique_source_records": 512,
+      "unique_source_identities": 31,
+      "same_identity_unordered_pairs": 1792,
+      "cross_camera_positive_pairs": 1528,
+      "trainable_tensors": 203,
+      "nonzero_gradient_tensors": 203,
+      "checks_recomputed": {
+        "all_trainable_gradients_live": true,
+        "overflow_zero": true,
+        "frozen_state_unchanged": true,
+        "signal_state_unchanged": true,
+        "role_state_updated": true,
+        "capacity_below_24gib": true
+      }
+    },
+    {
+      "fold": 1,
+      "mode": "capacity",
+      "optimizer_steps": 8,
+      "source_record_exposures": 512,
+      "unique_source_records": 512,
+      "unique_source_identities": 29,
+      "same_identity_unordered_pairs": 1792,
+      "cross_camera_positive_pairs": 1532,
+      "trainable_tensors": 203,
+      "nonzero_gradient_tensors": 203,
+      "checks_recomputed": {
+        "all_trainable_gradients_live": true,
+        "overflow_zero": true,
+        "frozen_state_unchanged": true,
+        "signal_state_unchanged": true,
+        "role_state_updated": true,
+        "capacity_below_24gib": true
+      }
+    },
+    {
+      "fold": 2,
+      "mode": "capacity",
+      "optimizer_steps": 8,
+      "source_record_exposures": 512,
+      "unique_source_records": 512,
+      "unique_source_identities": 30,
+      "same_identity_unordered_pairs": 1792,
+      "cross_camera_positive_pairs": 1549,
+      "trainable_tensors": 203,
+      "nonzero_gradient_tensors": 203,
+      "checks_recomputed": {
+        "all_trainable_gradients_live": true,
+        "overflow_zero": true,
+        "frozen_state_unchanged": true,
+        "signal_state_unchanged": true,
+        "role_state_updated": true,
+        "capacity_below_24gib": true
+      }
+    },
+    {
+      "fold": 0,
+      "mode": "overfit",
+      "optimizer_steps": 100,
+      "source_record_exposures": 6400,
+      "unique_source_records": 64,
+      "unique_source_identities": 8,
+      "same_identity_unordered_pairs": 22400,
+      "cross_camera_positive_pairs": 19400,
+      "trainable_tensors": 203,
+      "nonzero_gradient_tensors": 203,
+      "checks_recomputed": {
+        "all_trainable_gradients_live": true,
+        "overflow_zero": true,
+        "frozen_state_unchanged": true,
+        "signal_state_unchanged": true,
+        "role_state_updated": true,
+        "capacity_below_24gib": true
+      }
+    }
+  ],
+  "entropy_floor": 0.4908334477121887,
+  "overfit_excess_ratio": 0.00155176796144928,
+  "exact_fp32_loss_recompositions": 124,
+  "maximum_epoch_mean_absolute_difference": 0.0,
+  "expected_epoch_log_events": [
+    {
+      "event": "rgbnt100_role_epoch",
+      "fold": 0,
+      "mode": "capacity",
+      "epoch": 1,
+      "optimizer_steps": 8,
+      "learning_rate": 0.00035,
+      "mean_loss": 2.2073731273412704,
+      "elapsed_seconds": 10.65986237116158
+    },
+    {
+      "event": "rgbnt100_role_epoch",
+      "fold": 1,
+      "mode": "capacity",
+      "epoch": 1,
+      "optimizer_steps": 8,
+      "learning_rate": 0.00035,
+      "mean_loss": 2.196419343352318,
+      "elapsed_seconds": 9.666065035387874
+    },
+    {
+      "event": "rgbnt100_role_epoch",
+      "fold": 2,
+      "mode": "capacity",
+      "epoch": 1,
+      "optimizer_steps": 8,
+      "learning_rate": 0.00035,
+      "mean_loss": 2.23719385266304,
+      "elapsed_seconds": 9.73278963752091
+    },
+    {
+      "event": "rgbnt100_role_epoch",
+      "fold": 0,
+      "mode": "overfit",
+      "epoch": 1,
+      "optimizer_steps": 100,
+      "learning_rate": 0.00035,
+      "mean_loss": 0.5813337898254395,
+      "elapsed_seconds": 108.93099877238274
+    }
+  ],
+  "scope": "All saved JSONL/training rows, FP32 arithmetic and source labels; binary/model facts remain remote receipts",
+  "inputs": {
+    "summary": {
+      "path": "evidence\\rgbnt100_original_roles_v1_m0_receipts\\m0\\summary.json",
+      "sha256": "b2ba13b644033f2888f2c7eb4535e1b117f9175e2cef412f06aa2c438466a2f8"
+    },
+    "config": {
+      "path": "configs\\RGBNT100\\TriFusion-source-oof-v1.json",
+      "sha256": "8d3ce84068a584ca732e62ac4dac2dca366119863570ca6f8d4af6fb3d3f2ee2"
+    },
+    "protocol": {
+      "path": "protocols\\rgbnt100_train_oof_v1.json",
+      "sha256": "42bd612ecc8720db7f6684214e1f60d1cb4bab6b2fa8db3df343a9d2c52e4abf"
+    },
+    "log": {
+      "path": "evidence\\rgbnt100_original_roles_v1_m0_receipts\\m0.log",
+      "sha256": "91aae0662931d30ebfcc0b1d66b5d41f7f8ed12ab370f6bcd89b41065cf55869"
+    },
+    "remote_verification": {
+      "path": "evidence\\trifusion_rgbnt100_original_roles_m0_files_verification_20260906.json",
+      "sha256": "ce71f8ed6363cec4e3dd65de1a5f71bc13e6feb2c27d37d97cf1e3876dcd851c"
+    }
+  },
+  "elapsed_seconds": 0.07151019998127595,
+  "verifier_sha256": "caa68e9787c7b180fa4b0be038ec899284b32dbdc9a39097fc72e6b7ea02723b"
+}
