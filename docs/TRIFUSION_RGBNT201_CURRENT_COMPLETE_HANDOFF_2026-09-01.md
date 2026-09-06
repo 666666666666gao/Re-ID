@@ -3476,3 +3476,25 @@ results/TRIFUSION_MSVR310_ORIGINAL_ROLES_COMPARISON_STOP_2026-09-06.md。
 预算576次SIM记录计算，其中128包含完整Signal，其余448为缓存输入；0排名/更新，不扫描backend。
 结果页results/TRIFUSION_MSVR310_SIGNAL_PARITY_DIAGNOSIS_2026-09-06.md；新操作诊断尚NOT_RUN。
 M0独立审计首轮WARN/engineering PASS，原60份输入未变；报告字段名核对中，未作为已闭合审计。
+
+### 41.29 MSVR310 SIM差异的可逆触发因素与原M0审计闭合（2026-09-06）
+
+记录时间：2026-09-06T08:19:47.876038+08:00。操作诊断0be865b一次完成，exit0，72.9874秒；576次SIM记录计算、0更新/排名。
+同一B64缓存输入和权重下，仅冻结SIM就复现64113个SIM元素差异；恢复requires_grad则逐元素恢复B0。
+TokenSelection及注意力输入精确一致，最早差异在cross_attn；两次mm变为bmm。
+builder/Mamba导入不改变输出，构建时冻结复现差异，加载final不再引入额外差异。
+PyTorch2.5.1 should_fold源码明确按小操作数requires_grad选择折叠mm，no_grad不会屏蔽该条件；
+与实际非连续Q/KV投影输入及算子追踪一致。权重数值、dtype/stride/storage未因冻结标志改变。
+这次停止的直接原因已定位到冻结参数后的数值执行分支，不归因于checkpoint损坏或算法检索失败。
+
+仅推理修复已编写：functional_call使用一个共享原数据的detached投影权重视图恢复B0计算分支，
+整个调用no_grad，注册参数原样冻结，无新参数/更新/反传或backend修改。
+固定全360条、原5x64+40批验证尚NOT_RUN；要求完整3072D特征及210x360距离逐元素等于B0，
+三角色及三模态残差逐元素不变，全部参数flags/state复核；预算720次full-role前向、0排名。
+验证通过后才单独登记复用原fold0、训练原后两折的续跑，不重训原260更新。
+
+独立M0审计run18两轮闭合WARN，engineering PASS，scientific/retrieval NOT_ESTABLISHED。
+独立124步/采样/熵下界/过拟合复算一致，60/60原输入SHA相同；第二轮只由审计者修正字段引用，
+未重复数值复算。两轮请求、原始回复和报告版本已存档；hash-only复核复用同名文件，首轮原hash仅由
+首轮回复保留，不假称另有首轮原文件。保持GPT同族Type-A、后台身份未独立证明、张量仅远端等限制。
+审计未读取新的比较/诊断数据，不将M0通过扩大为检索有效。closure SHA71cceb45825d591bfa42af649ba142369a3966acc2d84c2036b9dad502f92840。

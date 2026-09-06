@@ -1,0 +1,372 @@
+{
+  "schema": "experiment-audit-msvr310-trifusion-m0-v1",
+  "date": "2026-09-06",
+  "auditor": {
+    "agent": "Codex reviewer",
+    "requested_model": "gpt-5.5",
+    "requested_reasoning_effort": "xhigh",
+    "review_family_scope": "GPT-family Type-A only",
+    "backend_independently_attested": false,
+    "no_further_delegation_by_this_reviewer": true,
+    "provenance_evidence": [
+      ".aris/traces/experiment-audit/2026-09-06_run18/001-m0.request.json:2-10",
+      ".aris/traces/experiment-audit/2026-09-06_run18/dispatch_observation.json:2-10",
+      ".aris/traces/experiment-audit/2026-09-06_run18/run.meta.json:2-8",
+      "C:/Users/gb/Auto-claude-code-research-in-sleep/skills/skills-codex/shared-references/reviewer-routing.md:8-15"
+    ]
+  },
+  "project": "TriFusion MSVR310 original three-role source-only M0",
+  "scope": {
+    "audited": [
+      "completed M0 engineering run",
+      "prelaunch source-binding revision",
+      "M0 initialization provenance",
+      "executor timestamped M0 report",
+      "Signal B0 checkpoint/source-fold bindings as prerequisite"
+    ],
+    "out_of_scope": [
+      "newly launched 20-epoch comparison without terminal result in the immutable inputs",
+      "Signal B0 prior 1950-update audit repeat",
+      "remote tensor/image/binary replay",
+      "official MSVR310 test or unknown-identity retrieval qualification"
+    ]
+  },
+  "overall_verdict": "WARN",
+  "integrity_status": "WARN",
+  "engineering_qualification": "PASS_ENGINEERING_ONLY",
+  "scientific_or_retrieval_qualification": "NOT_ESTABLISHED",
+  "fixed_m0_qualification": "PASS",
+  "summary": "No arithmetic, file-existence, split-boundary, source-binding, initialization, gradient/frozen-state, or executor-report mismatch was found for the completed M0. The WARN verdict is from scope and evidence limits: M0 is source-only engineering evidence, not a terminal comparison result, official result, or unknown-identity retrieval claim; the reviewer provenance is same-family Type-A without independent backend attestation.",
+  "checks": {
+    "A_ground_truth_provenance": {
+      "status": "PASS",
+      "details": "The M0 claim is engineering/source-only, not a retrieval score. The fixed protocol uses MSVR310 bounding_box_train labels, deterministic identity folds, source/heldout identity separation, and declares official query/gallery unused. No synthetic or model-generated ground truth was used for the audited M0 claim.",
+      "evidence": [
+        "protocols/msvr310_train_oof_v1.json:2-22",
+        "refine-logs/msvr310_trifusion_v1/EXPERIMENT_PLAN.md:50-59",
+        "tools/train_msvr310_trifusion_oof.py:337-350",
+        ".aris/traces/experiment-audit/2026-09-06_run18/msvr310_trifusion_m0_replay_result.json:633-694"
+      ]
+    },
+    "B_score_normalization_and_loss_arithmetic": {
+      "status": "PASS",
+      "details": "All 124 saved step totals were independently recomputed from the saved scalar component outputs and the registered weighted_training_loss formula. The maximum absolute weighted-loss difference is 4.122654591043329e-07, consistent with original float accumulation differences. Epoch means match exactly. The overfit ratio uses a predeclared analytic label-smoothing entropy floor, not a prediction self-normalizer.",
+      "evidence": [
+        "configs/MSVR310/TriFusion-source-oof-v1.json:59-70",
+        "tools/run_signal_preserving_v5.py:99-142",
+        "modeling/trifusion/signal_preserving_v8.py:690-742",
+        "tools/run_signal_preserving_v5.py:1580-1618",
+        ".aris/traces/experiment-audit/2026-09-06_run18/msvr310_trifusion_m0_replay_result.json:104-111",
+        ".aris/traces/experiment-audit/2026-09-06_run18/msvr310_trifusion_m0_replay_result.json:620-628",
+        ".aris/traces/experiment-audit/2026-09-06_run18/msvr310_trifusion_m0_replay_result.json:752-756"
+      ],
+      "independent_results": {
+        "total_recomputed_training_steps": 124,
+        "max_weighted_loss_abs_diff": 4.122654591043329e-07,
+        "max_epoch_mean_abs_diff": 0.0,
+        "label_smoothing_entropy_floor": 0.5857136327437849,
+        "overfit_initial_loss": 4.122129917144775,
+        "overfit_final_loss": 0.5881962776184082,
+        "overfit_initial_excess_loss": 3.5364162844009908,
+        "overfit_final_excess_loss": 0.002482644874623352,
+        "overfit_loss_ratio": 0.0007020228035862781,
+        "overfit_ratio_gate": 0.1,
+        "overfit_gate_passed": true,
+        "epoch_mean_losses": {
+          "capacity_fold0": 3.9842726290225983,
+          "capacity_fold1": 4.000509351491928,
+          "capacity_fold2": 4.056699812412262,
+          "overfit_fold0": 0.7473260003328324
+        }
+      }
+    },
+    "C_result_file_existence_and_report_matching": {
+      "status": "PASS",
+      "details": "The run18 manifest contains 60 immutable input files and every one still matches bytes and SHA-256. M0 exit text is 0, the M0 summary status is PASS_ENGINEERING_ONLY, independent fold training JSONs equal the fold receipts and summary payloads, and the timestamped executor report's update/exposure/loss figures match the independent replay.",
+      "evidence": [
+        ".aris/traces/experiment-audit/2026-09-06_run18/input_manifest.json:1-8",
+        ".aris/traces/experiment-audit/2026-09-06_run18/input_manifest.json:322",
+        "evidence/trifusion_msvr310_trifusion_v1_m0_exit_20260906.txt:1",
+        "evidence/trifusion_msvr310_trifusion_v1_m0_complete_20260906.json:2-8",
+        "evidence/trifusion_msvr310_trifusion_v1_m0_file_verification_20260906.json:2-4",
+        "evidence/trifusion_msvr310_trifusion_v1_m0_file_verification_20260906.json:30-73",
+        "results/TRIFUSION_MSVR310_ORIGINAL_ROLES_M0_20260906_062417.md:3-6",
+        "results/TRIFUSION_MSVR310_ORIGINAL_ROLES_M0_20260906_062417.md:26-32",
+        "results/TRIFUSION_MSVR310_ORIGINAL_ROLES_M0_20260906_062417.md:34-54",
+        ".aris/traces/experiment-audit/2026-09-06_run18/msvr310_trifusion_m0_replay_result.json:26-49",
+        ".aris/traces/experiment-audit/2026-09-06_run18/msvr310_trifusion_m0_replay_result.json:695-738"
+      ],
+      "independent_results": {
+        "manifest_file_count": 60,
+        "manifest_all_ok": true,
+        "input_manifest_sha256": "8e96f807e582f8f9ed98afeb11a2223c7ee7979ead9e19189dffcbac994cb783",
+        "m0_exit_text": "0",
+        "summary_status": "PASS_ENGINEERING_ONLY",
+        "summary_mode": "m0"
+      }
+    },
+    "D_dead_code_and_actual_call_path": {
+      "status": "PASS",
+      "details": "For M0, the actual call path builds a fresh role model from each fixed B0 Signal checkpoint, verifies source-only direct Signal parity on clean records, trains capacity folds with eight batches, saves and reloads M0 checkpoints, verifies five-output bitwise equality after reload, and then runs a fresh fold0 100-step overfit probe. The retrieval branch is present in the script but is not the M0 branch and is outside this audit.",
+      "evidence": [
+        "evidence/trifusion_msvr310_trifusion_v1_m0_r2_wrapper_20260906.py:9-23",
+        "evidence/trifusion_msvr310_trifusion_v1_m0_launch_20260906.json:5-15",
+        "tools/train_msvr310_trifusion_oof.py:27-55",
+        "tools/train_msvr310_trifusion_oof.py:98-123",
+        "tools/train_msvr310_trifusion_oof.py:139-183",
+        "tools/train_msvr310_trifusion_oof.py:337-385",
+        "tools/train_msvr310_trifusion_oof.py:390-405",
+        "evidence/trifusion_msvr310_trifusion_v1_m0_run_20260906.log:16-16",
+        "evidence/trifusion_msvr310_trifusion_v1_m0_run_20260906.log:35-35",
+        "evidence/trifusion_msvr310_trifusion_v1_m0_run_20260906.log:54-54",
+        "evidence/trifusion_msvr310_trifusion_v1_m0_run_20260906.log:73-74"
+      ]
+    },
+    "E_scope_assessment": {
+      "status": "WARN",
+      "details": "M0 is a fixed engineering/capacity/overfit probe: three capacity folds of eight updates plus one fixed 100-update overfit run, source records only, single seed42, no heldout/dev/official forwards, no terminal 20-epoch comparison result in scope, no local tensor/image replay, and no cross-family reviewer acquittal. It supports engineering readiness only.",
+      "evidence": [
+        "configs/MSVR310/TriFusion-source-oof-v1.json:81-88",
+        "refine-logs/msvr310_trifusion_v1/EXPERIMENT_PLAN.md:83-90",
+        "refine-logs/msvr310_trifusion_v1/EXPERIMENT_PLAN.md:113-114",
+        "results/TRIFUSION_MSVR310_ORIGINAL_ROLES_M0_20260906_062417.md:3-6",
+        "results/TRIFUSION_MSVR310_ORIGINAL_ROLES_M0_20260906_062417.md:56-57",
+        "results/TRIFUSION_MSVR310_ORIGINAL_ROLES_M0_20260906_062417.md:65-70",
+        ".aris/traces/experiment-audit/2026-09-06_run18/msvr310_trifusion_m0_replay_result.json:113-118",
+        ".aris/traces/experiment-audit/2026-09-06_run18/msvr310_trifusion_m0_replay_result.json:739-750"
+      ]
+    },
+    "F_evaluation_type_classification": {
+      "status": "WARN",
+      "type": "source_only_engineering",
+      "details": "The completed M0 is not an unknown-identity retrieval evaluation. It is an engineering M0 using real MSVR310 official-training labels for source-only training and source-only clean parity/overfit checks. The separately launched 20-epoch comparison is not terminal in these inputs and is excluded.",
+      "evidence": [
+        "protocols/msvr310_train_oof_v1.json:13-22",
+        "evidence/trifusion_msvr310_trifusion_v1_m0_complete_20260906.json:3477-3484",
+        "evidence/trifusion_msvr310_trifusion_v1_m0_complete_20260906.json:12810-12812",
+        "results/TRIFUSION_MSVR310_ORIGINAL_ROLES_M0_20260906_062417.md:65-70"
+      ]
+    }
+  },
+  "source_binding_revision": {
+    "status": "PASS",
+    "details": "The first prelaunch attempt failed before process creation because registered hashes for five local files used local CRLF-sized bytes while the actual remote/git blobs were LF-sized. R2 changed only byte bindings to the actual remote LF snapshots; all five rows have local_lf_bytes_match_remote=true, remote_matches_git_blob=true, ast_equal=true, and manifest snapshot hashes matching the remote hashes. No model, optimizer, protocol, gate, or runtime fallback change is recorded.",
+    "evidence": [
+      "evidence/trifusion_msvr310_trifusion_v1_prelaunch_source_bytes_20260906.json:2-10",
+      "evidence/trifusion_msvr310_trifusion_v1_source_binding_r2_20260906.json:2-9",
+      "evidence/trifusion_msvr310_trifusion_v1_source_binding_r2_20260906.json:10-80",
+      "evidence/trifusion_msvr310_trifusion_v1_source_binding_r2_20260906.json:82-85",
+      ".aris/traces/experiment-audit/2026-09-06_run18/input_manifest.json:60-82",
+      ".aris/traces/experiment-audit/2026-09-06_run18/input_manifest.json:305-322"
+    ],
+    "independent_results": {
+      "prelaunch_fail_before_process_creation": true,
+      "prelaunch_training_model_tensor_image_calls": 0,
+      "prelaunch_optimizer_updates": 0,
+      "changed_binding_rows": 5,
+      "all_rows_lf_ast_remote_snapshot_ok": true,
+      "model_or_optimizer_or_gate_or_protocol_changes": false,
+      "runtime_fallback_added": false
+    }
+  },
+  "initialization_and_reuse": {
+    "status": "PASS",
+    "details": "Each M0 fold loads the matching fixed Signal B0 fold checkpoint and final Signal state, freezes the baseline, records role_weights_loaded=false and role_initialization_seed=42, and updates only role state. The overfit probe is freshly built from the same fold0 Signal and seed; its initial SHA equals fold0 capacity initial by deterministic construction, while its final SHA differs from the fold0 capacity final. M0 weights and RGBNT201 role weights are not reused.",
+    "evidence": [
+      "tools/train_msvr310_trifusion_oof.py:27-55",
+      "tools/train_msvr310_trifusion_oof.py:337-349",
+      "tools/train_msvr310_trifusion_oof.py:390-405",
+      "evidence/trifusion_msvr310_trifusion_v1_m0_complete_20260906.json:51-56",
+      "evidence/trifusion_msvr310_trifusion_v1_m0_complete_20260906.json:1198-1203",
+      "evidence/trifusion_msvr310_trifusion_v1_m0_complete_20260906.json:2345-2350",
+      "evidence/trifusion_msvr310_trifusion_v1_m0_complete_20260906.json:3481-3484",
+      "evidence/trifusion_msvr310_trifusion_v1_m0_complete_20260906.json:3487-3493",
+      ".aris/traces/experiment-audit/2026-09-06_run18/msvr310_trifusion_m0_replay_result.json:53-103"
+    ],
+    "signal_b0_bindings": {
+      "baseline_status": "COMPLETE_BASELINE_NOT_METHOD_QUALIFICATION",
+      "audit_closure_status": "CLOSED_WARN",
+      "audit_closure_engineering": "PASS",
+      "baseline_optimizer_steps": 1950,
+      "fold_checkpoint_sha256": [
+        "fd17dd2e4c1a5576bf02b70e2b7faced979794d955a4e510cb76fd144d9c4b00",
+        "a11e0fd6c531ea55e43040285671e8adbd3481c7dc5510309fe0d9ea0c974253",
+        "fa7531cc3de677cec99852e588dcaa0851d0c1b5dc34bb65e0d4cc23ff95c06b"
+      ],
+      "fold_final_state_sha256": [
+        "1bd8fa7c4f2ad959a1375605abe21b9989bf8ab03b7b55115d6990028bbc8c3a",
+        "51e180f406f26d7dfdb3f412c8b1ed11f88923fff807d4d9ff59fe751db6c562",
+        "e76436a293f4c8337b460377a2092b131bc7a4b130fdf845a39047fa71026581"
+      ],
+      "not_reaudited_here": true
+    }
+  },
+  "sampling_and_exposure": {
+    "status": "PASS",
+    "details": "Every saved training step has 64 samples arranged as 8 identities x 8 samples, all sampled indices belong to that fold's source records, and no sampled identity belongs to heldout IDs. The overfit run repeats one fixed source batch after step 1.",
+    "independent_results": {
+      "capacity_fold0": {
+        "steps": 8,
+        "exposures": 512,
+        "unique_source_identities": 63,
+        "unique_source_records": 333,
+        "unordered_same_identity_pairs": 1792,
+        "unordered_cross_scene_positive_pairs": 440
+      },
+      "capacity_fold1": {
+        "steps": 8,
+        "exposures": 512,
+        "unique_source_identities": 61,
+        "unique_source_records": 316,
+        "unordered_same_identity_pairs": 1792,
+        "unordered_cross_scene_positive_pairs": 482
+      },
+      "capacity_fold2": {
+        "steps": 8,
+        "exposures": 512,
+        "unique_source_identities": 62,
+        "unique_source_records": 350,
+        "unordered_same_identity_pairs": 1792,
+        "unordered_cross_scene_positive_pairs": 543
+      },
+      "overfit_fold0": {
+        "steps": 100,
+        "exposures": 6400,
+        "unique_source_identities": 8,
+        "unique_source_records": 53,
+        "fixed_batch_repeated_after_step1": true,
+        "unordered_same_identity_pairs": 22400,
+        "unordered_cross_scene_positive_pairs": 9200
+      },
+      "total_optimizer_steps": 124,
+      "total_exposures": 7936
+    },
+    "evidence": [
+      "tools/train_msvr310_trifusion_oof.py:139-164",
+      "evidence/msvr310_trifusion_v1_m0_receipts/fold_0_training.json:2-22",
+      "evidence/msvr310_trifusion_v1_m0_receipts/fold_0_training.json:30-47",
+      "evidence/msvr310_trifusion_v1_m0_receipts/overfit_fold0_training.json:2-22",
+      "evidence/msvr310_trifusion_v1_m0_receipts/overfit_fold0_training.json:30-47",
+      "evidence/msvr310_trifusion_v1_m0_receipts/overfit_fold0_training.json:8841-8858",
+      ".aris/traces/experiment-audit/2026-09-06_run18/msvr310_trifusion_m0_replay_result.json:933-1010",
+      ".aris/traces/experiment-audit/2026-09-06_run18/msvr310_trifusion_m0_replay_result.json:1106-1181",
+      ".aris/traces/experiment-audit/2026-09-06_run18/msvr310_trifusion_m0_replay_result.json:1277-1353",
+      ".aris/traces/experiment-audit/2026-09-06_run18/msvr310_trifusion_m0_replay_result.json:1449-1471"
+    ]
+  },
+  "protocol_boundaries": {
+    "status": "PASS",
+    "independent_results": {
+      "total_protocol_records": 1032,
+      "unique_protocol_identities": 155,
+      "heldout_identity_union_count": 155,
+      "heldout_identity_assignments_unique": true,
+      "gallery_record_union_count": 1032,
+      "gallery_record_assignments_unique": true,
+      "folds": [
+        {
+          "fold": 0,
+          "source_id_count": 103,
+          "source_record_count": 672,
+          "heldout_id_count": 52,
+          "gallery_record_count": 360,
+          "query_count": 210
+        },
+        {
+          "fold": 1,
+          "source_id_count": 103,
+          "source_record_count": 683,
+          "heldout_id_count": 52,
+          "gallery_record_count": 349,
+          "query_count": 207
+        },
+        {
+          "fold": 2,
+          "source_id_count": 104,
+          "source_record_count": 709,
+          "heldout_id_count": 51,
+          "gallery_record_count": 323,
+          "query_count": 183
+        }
+      ]
+    },
+    "evidence": [
+      "protocols/msvr310_train_oof_v1.json:13-22",
+      "protocols/msvr310_train_oof_v1.json:15523-15536",
+      "protocols/msvr310_train_oof_v1.json:19127-19140",
+      "protocols/msvr310_train_oof_v1.json:22489-22502",
+      ".aris/traces/experiment-audit/2026-09-06_run18/msvr310_trifusion_m0_replay_result.json:633-694"
+    ]
+  },
+  "five_output_parity_and_frozen_state": {
+    "status": "PASS_WITH_RECEIPT_LIMIT",
+    "details": "The code names five outputs and asserts their widths; the M0 branch extracts before and after strict reload and checks torch.equal over all five outputs. Receipts record direct Signal parity, five-output bitwise equality, strict reload state matching final training state, 72 clean role source forwards, 24 direct Signal source forwards, and 0 heldout forwards. Because tensor artifacts are remote, this audit verifies the code path and text receipts, not local tensor values.",
+    "evidence": [
+      "tools/train_msvr310_trifusion_oof.py:22-24",
+      "tools/train_msvr310_trifusion_oof.py:68-73",
+      "tools/train_msvr310_trifusion_oof.py:361-379",
+      "evidence/msvr310_trifusion_v1_m0_receipts/fold_0_receipt.json:1140-1146",
+      "evidence/msvr310_trifusion_v1_m0_receipts/fold_1_receipt.json:1140-1146",
+      "evidence/msvr310_trifusion_v1_m0_receipts/fold_2_receipt.json:1140-1146",
+      ".aris/traces/experiment-audit/2026-09-06_run18/msvr310_trifusion_m0_replay_result.json:695-738"
+    ]
+  },
+  "frozen_state_and_gradient_evidence": {
+    "status": "PASS",
+    "details": "All four M0 training records have trainable_tensors equal to nonzero_gradient_tensors, empty missing_nonzero_gradients, zero overflow events, equal frozen-state hashes before/after, and equal Signal-state hashes before/after. Role state hashes change after training.",
+    "evidence": [
+      "tools/train_msvr310_trifusion_oof.py:153-181",
+      "tools/train_msvr310_trifusion_oof.py:187-193",
+      "evidence/trifusion_msvr310_trifusion_v1_m0_complete_20260906.json:424-437",
+      "evidence/trifusion_msvr310_trifusion_v1_m0_complete_20260906.json:1571-1584",
+      "evidence/trifusion_msvr310_trifusion_v1_m0_complete_20260906.json:2718-2731",
+      "evidence/trifusion_msvr310_trifusion_v1_m0_complete_20260906.json:3861-3874",
+      ".aris/traces/experiment-audit/2026-09-06_run18/msvr310_trifusion_m0_replay_result.json:26-49"
+    ]
+  },
+  "replay": {
+    "script": ".aris/traces/experiment-audit/2026-09-06_run18/msvr310_trifusion_m0_replay.py",
+    "result_json": ".aris/traces/experiment-audit/2026-09-06_run18/msvr310_trifusion_m0_replay_result.json",
+    "stdout": ".aris/traces/experiment-audit/2026-09-06_run18/msvr310_trifusion_m0_replay_output.txt",
+    "command": [
+      "C:\\Users\\gb\\AppData\\Roaming\\uv\\python\\cpython-3.13-windows-x86_64-none\\python.exe",
+      "C:/Users/gb/.trifusion_github_publish_22c3bee/.aris/traces/experiment-audit/2026-09-06_run18/msvr310_trifusion_m0_replay.py",
+      "--output-json",
+      "C:/Users/gb/.trifusion_github_publish_22c3bee/.aris/traces/experiment-audit/2026-09-06_run18/msvr310_trifusion_m0_replay_result.json"
+    ],
+    "elapsed_seconds": 0.09392510005272925,
+    "saved_complete_stdout": true,
+    "model_tensor_image_library_imports": false
+  },
+  "report_only_corrections": [
+    {
+      "date": "2026-09-06",
+      "scope": "bounded report-only correction; no verdict change; no numerical rerun",
+      "markdown_corrections": [
+        {
+          "location": "EXPERIMENT_AUDIT_MSVR310_TRIFUSION_M0.md:25",
+          "corrected_to": [
+            "official_test_image_access",
+            "rgbnt201_dev_image_access",
+            "source_only_training"
+          ],
+          "primary_evidence": "evidence/trifusion_msvr310_trifusion_v1_m0_complete_20260906.json:3478-3480"
+        },
+        {
+          "location": "EXPERIMENT_AUDIT_MSVR310_TRIFUSION_M0.md:168",
+          "corrected_to": [
+            "training_model_tensor_image_calls"
+          ],
+          "primary_evidence": "evidence/trifusion_msvr310_trifusion_v1_prelaunch_source_bytes_20260906.json:7"
+        }
+      ],
+      "json_report_check": "The JSON report already used prelaunch_training_model_tensor_image_calls and did not contain the incorrect Markdown-only M0 summary field names; this entry records the bounded correction review.",
+      "conclusion_change": false
+    }
+  ],
+  "action_items": [
+    "Do not describe M0 as retrieval gain, official MSVR310 result, SOTA evidence, or cross-family-acquitted evidence.",
+    "Use the terminal 20-epoch comparison and a separate audit before making any unknown-identity retrieval claim.",
+    "Keep the LF remote source snapshots and R2 binding distinction when citing source provenance."
+  ]
+}

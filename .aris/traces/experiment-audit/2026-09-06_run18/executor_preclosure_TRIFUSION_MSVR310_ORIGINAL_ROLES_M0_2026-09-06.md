@@ -1,6 +1,6 @@
 # MSVR310 原三角色架构 source-only M0 完整结果
 
-记录时间：2026-09-06T06:24:17.950707+08:00。状态 **M0_AUDIT_CLOSED_WARN_COMPARISON_ENGINEERING_STOP**。
+记录时间：2026-09-06T06:24:17.950707+08:00。状态 **M0_PASS_COMPARISON_STOPPED_INDEPENDENT_AUDIT_PENDING**。
 执行1c444cdf72e13fd041afd0c641dc8f522faa5844；原M0 wrapper69455 exit0，
 三fold各8步容量和一个全新fold0固定100步拟合完成，共124更新/7936训练记录曝光，
 0heldout/RGBNT201dev/官方前向。M0只证明工程与固定拟合条件，不是检索收益。
@@ -79,16 +79,3 @@
 
 2026-09-06T06:41:47.899579+08:00状态补记：原正式比较在fold0训练完成后因baseline与B0特征逐元素差异停止，
 0检索指标、fold1/2未开始。此前M0结论不变；最初时间戳版供独立审计且保持原SHA。
-
-## Independent M0 audit closed
-
-2026-09-06T08:11:44.639211+08:00: run18, two rounds, overall WARN; engineering PASS_ENGINEERING_ONLY,
-scientific/retrieval NOT_ESTABLISHED. Independent stdlib replay of all124 steps, sampling and
-entropy floor/overfit ratio agrees (0.09392510005272925 seconds);60/60 immutable input hashes match.
-A/B/C/D PASS, E/F WARN. Reviewer corrected only literal JSON field quotations in round2;
-no numerical replay repeated and conclusions unchanged. Raw requests/responses and both report
-versions are preserved. The reviewer overwrote its same hash-only recheck files in round2;
-the first response retains their original hashes, without a false separate-file retention claim.
-GPT-family Type-A only, backend identity not independently attested; all tensor/image/checkpoint
-runtime stays remote. This audit covers only completed M0, not the comparison stop/parity probes.
-Receipt evidence/trifusion_msvr310_trifusion_v1_m0_audit_closure_20260906.json.

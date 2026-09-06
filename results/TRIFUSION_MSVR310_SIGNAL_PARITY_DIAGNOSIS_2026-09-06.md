@@ -23,3 +23,25 @@ Next: fixed first64 cached-input nine-stage operation diagnosis registered befor
 Plan refine-logs/msvr310_trifusion_v1/SIM_OPERATION_PARITY_DIAGNOSIS_PLAN_20260906.md.
 All576 SIM record evaluations,0 optimization/ranking; no repair, tolerance change or fold0 retraining.
 Original comparison remains stopped with no AP/Rank result and folds1/2 not started.
+
+## Operation cause measured; repair verification registered
+
+2026-09-06T08:19:47.876038+08:00: fixed nine-stage probe completed once on0be865b, exit0,
+72.98739485256374 seconds;576 SIM-record computations,128 inside full Signal,448 cached SIM.
+Initial instrumented original Signal exactly matches B0. Repeat SIM exact; freeze SIM only changes64113
+SIM elements (max1.9073486328125e-6); restoring flags returns exact equality. Builder/Mamba imports
+remain exact. Actual construction then freezing reproduces the same change; final checkpoint load adds
+no difference. First mismatch is cross_attn with exact inputs and token selection. No weight value,
+stride, storage pointer or dtype changes explain the flag-only pair. Two mm calls become bmm (6 to8).
+
+PyTorch 2.5.1 should_fold explicitly inspects the small operand requires_grad even under no_grad;
+noncontiguous projection inputs thus select different mm/bmm implementations after freezing.
+Primary source: https://github.com/pytorch/pytorch/blob/v2.5.1/aten/src/ATen/native/LinearAlgebra.cpp
+and https://github.com/pytorch/pytorch/blob/v2.5.1/aten/src/ATen/native/Linear.cpp ; raw source archived.
+MHA native fastpath is separately blocked by non-self-attention. No blame assigned to checkpoint corruption.
+
+Inference helper is registered for full360 verification: functional call with one detached projection
+weight view under no_grad restores original dispatch metadata while leaving registered weights frozen.
+The repaired whole baseline feature matrix AND210x360 distances must exactly match B0; all role/modal
+residuals must remain bitwise unchanged.720 full-role forwards,0 optimization/ranking. Verification NOT_RUN.
+Original comparison still stopped; no fold0 training repeated or scientific gate changed.

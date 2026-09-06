@@ -648,3 +648,6 @@
 | 2026-09-06T06:41:47.899579+08:00 | /run-experiment | results/TRIFUSION_MSVR310_ORIGINAL_ROLES_COMPARISON_STOP_2026-09-06.md; tools/diagnose_msvr310_baseline_feature_parity.py | evidence/preparation | Original fold0 260updates retained; stop beforeAP on exact B0 feature gate; full360 four-path read-only diagnosis registered, NOT_RUN |
 
 | 2026-09-06T08:08:29.999652+08:00 | /run-experiment | results/TRIFUSION_MSVR310_SIGNAL_PARITY_DIAGNOSIS_2026-09-06.md | engineering evidence/preparation | Full360 B0 mismatch isolated to SIM after wrapping; fixed-input operation probe registered;0 rankings/updates |
+
+| 2026-09-06T08:19:47.876038+08:00 | /experiment-audit | EXPERIMENT_AUDIT_MSVR310_TRIFUSION_M0.md | independent audit | run18 two rounds CLOSED_WARN;engineering PASS;60 inputs/124-step replay;no retrieval claim |
+| 2026-09-06T08:19:47.876038+08:00 | /run-experiment | results/TRIFUSION_MSVR310_SIGNAL_PARITY_DIAGNOSIS_2026-09-06.md | engineering diagnosis/preparation | Freeze toggles SIM projection mm/bmm;fixed full360 inference repair verification registered |

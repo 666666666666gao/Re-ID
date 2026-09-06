@@ -482,3 +482,11 @@
   Registered fixed64 cached-input nine-stage SIM operation probe is NOT_RUN;
   576 SIM-record computations,0 updates/ranking/backend changes. No gate relaxation.
   Read results/TRIFUSION_MSVR310_SIGNAL_PARITY_DIAGNOSIS_2026-09-06.md.
+
+- MSVR310 M0 audit run18 CLOSED_WARN/engineering PASS,60 immutable inputs and124-step
+  independent replay; no retrieval qualification. Same-family Type-A/backend limits remain.
+- SIM operation probe0be865b completed: freezing alone changes two mm to bmm; restoring
+  flags restores exact B0. First difference cross_attn, weights/inputs unchanged.
+  Full360 inference-only functional-view repair verification is registered NOT_RUN,
+  720role forwards/0updates/ranking. Require exact original features AND distances,
+  unchanged role/modal residuals and frozen parameter flags/state. No fold0 retraining.

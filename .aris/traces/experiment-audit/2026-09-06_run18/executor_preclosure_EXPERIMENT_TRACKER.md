@@ -20,7 +20,3 @@ Signal B0独立审计已闭合，内部53.129380561 mAP/63.0 Rank-1；新三角�
 不更改原固定计划/config/runner/门，不重训已完成fold0。独立M0审计继续以原60份冻结输入为范围。
 
 2026-09-06T08:08:29.999652+08:00: full360 parity diagnosis completed once, exit0; B0 standalone exact, after-wrap differences isolated to SIM. Fixed64 cached-input operation diagnosis registered, NOT_RUN. Original comparison remains ENGINEERING_STOP; no ranking or repeated fold0 training.
-
-2026-09-06T08:11:44.639211+08:00: independent M0 audit run18 CLOSED_WARN, engineering PASS, scientific/retrieval NOT_ESTABLISHED;60/60 immutable inputs and independent124-step replay pass. Two report-only field corrections by reviewer do not alter verdict. Comparison remains stopped, operation probe separate; no promotion.
-
-2026-09-06T08:19:47.876038+08:00: operation cause measured: SIM freeze changes mm to bmm, restored flags recover exact B0. Inference-only functional view helper/full360 exact feature+distance verification registered NOT_RUN;720 role forwards/0update/ranking. Original comparison remains stopped.
