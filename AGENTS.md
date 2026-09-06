@@ -3,7 +3,7 @@
 ## Latest verified state (2026-09-07T05:19:00.946321+08:00)
 
 - V27 c225652 completed all3 folds x2 endpoints x20epochs,3360 updates; original
-  training, full array verifier and reporter all exit0. No active job. Full source-style relation diagnostic registered, not launched.
+  training, full array verifier and reporter all exit0. No active job. Source diagnostic R1 failed before model load; R2 path-only fix registered.
 - Scientific Q1_FAIL,4/5: fused80.253418->81.592361 (+1.338944), three fold gains
   +1.172124/+1.036418/+1.763932; all3 role aggregate gains positive; bootstrap
   lower +0.170768. Only fused-best gate fails: CNN81.662859, gap0.070498.
@@ -15,9 +15,9 @@
 - V27 increased residual Triplet pressure and matched retrieval. Positive margin
   loss does not prove nonpositive fused margins or useful V26 responsibility weights.
   Next full source-only relation support diagnostic at fixed initial/final models
-  is now REGISTERED_NOT_RUN: 3 fixed states x2 inputs x1680 original batches,10080 forwards,
-  0 updates; full18 outputs and273297024 relation exposures. Math CPU/GPU tests PASS.
-  Plan refine-logs/v27_source_style_relations/EXPERIMENT_PLAN.md; master41.86.
+  is now R2_REGISTERED_NOT_RUN (R1 Path interface error, 0 forwards): 3 fixed states x2 inputs x1680 original batches,10080 forwards,
+  0 updates; full18 outputs and273297024 relation exposures. Math CPU/GPU tests PASS; actual Path interface recheck PASS.
+  Plan refine-logs/v27_source_style_relations/EXPERIMENT_PLAN.md; master41.87.
 - Seal V27 settings. No D1/dev/official or p/alpha/layer/fusion-weight/seed/epoch scan.
   Do not simply combine V26/V27 as a rescue. Preserve prior FAIL and source saturation.
 - Original V8 inference: frozen3072D Signal+4608D bank=7680D; V27 stem statistics

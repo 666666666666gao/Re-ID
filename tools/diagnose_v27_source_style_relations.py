@@ -201,7 +201,7 @@ def run(args):
     assert contract["optimizer_updates"] == 0 and contract["seed"] == 42
     for file, expected in contract["source_file_sha256"].items():
         assert _sha256(Path(file)) == expected, file
-    assert _sha256(__file__) == contract["runner_sha256"]
+    assert _sha256(Path(__file__)) == contract["runner_sha256"]
     assert shutil.disk_usage(args.output_dir.parent).free >= contract["minimum_free_bytes"]
     prior_dir = Path(contract["v27_run"])
     assert _sha256(prior_dir/"run_summary.json") == contract["v27_summary_sha256"]
@@ -223,7 +223,7 @@ def run(args):
         "status":"RUNNING_FIXED_SOURCE_STYLE_RELATION_DIAGNOSTIC",
         "started_at":datetime.now().astimezone().isoformat(),
         "execution_commit":subprocess.check_output(["git","rev-parse","HEAD"],text=True).strip(),
-        "runner_sha256":_sha256(__file__),"contract_sha256":args.contract_sha256,
+        "runner_sha256":_sha256(Path(__file__)),"contract_sha256":args.contract_sha256,
         "prior_summary_sha256":contract["v27_summary_sha256"],"math_check":math_check,
         "signal_commit":signal_commit,"signal_diff_sha256":signal_diff,
         "states":list(STATES),"views":list(VIEWS),"outputs":list(OUTPUTS),"protocols":list(PROTOCOLS),
