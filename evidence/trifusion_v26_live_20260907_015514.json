@@ -1,0 +1,205 @@
+{
+  "observed_at": "2026-09-07T01:55:14.719155+08:00",
+  "run_dir": "/root/autodl-tmp/trifusion-v2/artifacts/trifusion_v26_role_modal_responsibility_seed42_ff18e40",
+  "execution_commit": "ff18e40b12a62ddee25e36c5bdfe5fe4de0f7d5a",
+  "launched_at": "2026-09-07T00:39:52.612096+08:00",
+  "original_pid": 118939,
+  "wrapper_pid": 118937,
+  "original_alive": false,
+  "wrapper_alive": false,
+  "exit": "0",
+  "data_disk": {
+    "total": 53687091200,
+    "used": 32096653312,
+    "free": 21590437888
+  },
+  "gpu": "1 MiB, 0 %",
+  "status": "Q1_FAIL",
+  "preflight_folds": 3,
+  "completed_folds": 3,
+  "math_check": {
+    "status": "PASS_ANALYTICAL_VALUE_GRADIENT_DETACHED_WEIGHTS_CLASS_ZERO_PERMUTATION",
+    "triplets": 8,
+    "slots": 9,
+    "loss_error": 2.2227258450469023e-08,
+    "gradient_max_error": 2.506407685565204e-09,
+    "fused_and_baseline_auxiliary_gradient": null,
+    "model_forwards": 0,
+    "dataset_accesses": 0,
+    "checkpoint_loads": 0
+  },
+  "m0": {
+    "passed": true,
+    "checks": {
+      "all_gradients_live": true,
+      "all_frozen_states_unchanged": true,
+      "overflow_zero": true,
+      "capacity_within_limit": true,
+      "overfit_excess_ratio_at_most_point1": true,
+      "all_nine_auxiliary_slot_gradients_live": true,
+      "all_three_new_encoder_gradients_live": true
+    },
+    "overfit_ratio": 0.05872841549936165,
+    "peak_reserved_mib": [
+      6130.0,
+      7258.0
+    ],
+    "parameter_gradient_rows": 8
+  },
+  "aggregate": {
+    "control": {
+      "baseline_only": {
+        "mAP": 77.48760311601094,
+        "Rank-1": 79.33450087565674,
+        "Rank-5": 89.49211908931699,
+        "Rank-10": 93.52014010507881
+      },
+      "fused": {
+        "mAP": 80.40275204634155,
+        "Rank-1": 83.36252189141857,
+        "Rank-5": 90.36777583187391,
+        "Rank-10": 93.87040280210157
+      },
+      "cnn": {
+        "mAP": 79.44565867533537,
+        "Rank-1": 84.0630472854641,
+        "Rank-5": 88.79159369527146,
+        "Rank-10": 91.41856392294221
+      },
+      "transformer": {
+        "mAP": 78.77349070500193,
+        "Rank-1": 83.0122591943958,
+        "Rank-5": 90.71803852889667,
+        "Rank-10": 92.99474605954467
+      },
+      "mamba": {
+        "mAP": 78.41018396435788,
+        "Rank-1": 79.33450087565674,
+        "Rank-5": 89.66725043782837,
+        "Rank-10": 94.04553415061297
+      }
+    },
+    "responsibility": {
+      "baseline_only": {
+        "mAP": 77.48760311601094,
+        "Rank-1": 79.33450087565674,
+        "Rank-5": 89.49211908931699,
+        "Rank-10": 93.52014010507881
+      },
+      "fused": {
+        "mAP": 80.71468633582326,
+        "Rank-1": 83.88791593695272,
+        "Rank-5": 90.01751313485113,
+        "Rank-10": 93.52014010507881
+      },
+      "cnn": {
+        "mAP": 80.11263304339361,
+        "Rank-1": 84.58844133099825,
+        "Rank-5": 89.14185639229422,
+        "Rank-10": 91.76882661996497
+      },
+      "transformer": {
+        "mAP": 78.81781849201292,
+        "Rank-1": 82.48686514886164,
+        "Rank-5": 90.36777583187391,
+        "Rank-10": 93.87040280210157
+      },
+      "mamba": {
+        "mAP": 78.03020341824535,
+        "Rank-1": 79.50963222416813,
+        "Rank-5": 89.14185639229422,
+        "Rank-10": 93.6952714535902
+      }
+    }
+  },
+  "matched_gains_mAP": {
+    "baseline_only": 0.0,
+    "fused": 0.3119342894817123,
+    "cnn": 0.6669743680582485,
+    "transformer": 0.044327787010985276,
+    "mamba": -0.3799805461125345
+  },
+  "fold_fused_gains_mAP": [
+    0.3065898854804061,
+    -0.5532905566520583,
+    1.0836703499678038
+  ],
+  "scientific_checks": {
+    "aggregate_fused_gain_at_least_1pp": false,
+    "all_fold_fused_nonnegative": false,
+    "all_expert_aggregate_nonnegative": false,
+    "fused_bootstrap_lower_positive": false,
+    "fused_beats_baseline_and_experts": true
+  },
+  "bootstrap": {
+    "lower_bound_95_mAP": -0.27621192581847737,
+    "clusters": 21,
+    "resamples": 10000
+  },
+  "verification_queue": {
+    "status": "VERIFICATION_PROCESS_COMPLETE",
+    "queued_at": "2026-09-07T00:52:52.223331+08:00",
+    "wrapper_pid": 120255,
+    "training_original_pid": 118939,
+    "training_execution_commit": "ff18e40b12a62ddee25e36c5bdfe5fe4de0f7d5a",
+    "verifier_sha256": "ac7b37ee389ddbea2eb48f94ffbc00fab885f02d248d803d7f04f6d23dff819e",
+    "run_dir": "/root/autodl-tmp/trifusion-v2/artifacts/trifusion_v26_role_modal_responsibility_seed42_ff18e40",
+    "poll_interval_seconds": 180,
+    "automatic_retries": 0,
+    "verification_started_at": "2026-09-07T01:49:53.970857+08:00",
+    "verification_exit_code": 0,
+    "verification_completed_at": "2026-09-07T01:50:03.115709+08:00",
+    "verification_elapsed_seconds": 9.144225835800171,
+    "wrapper_alive": false
+  },
+  "saved_final_checkpoints": [
+    {
+      "file": "fold_0_control_final.pth",
+      "bytes": 31755923
+    },
+    {
+      "file": "fold_0_responsibility_final.pth",
+      "bytes": 31757632
+    },
+    {
+      "file": "fold_1_control_final.pth",
+      "bytes": 31755923
+    },
+    {
+      "file": "fold_1_responsibility_final.pth",
+      "bytes": 31757632
+    },
+    {
+      "file": "fold_2_control_final.pth",
+      "bytes": 31755923
+    },
+    {
+      "file": "fold_2_responsibility_final.pth",
+      "bytes": 31757632
+    }
+  ],
+  "output_directory_bytes": 1016649758,
+  "last_log_lines": [
+    "<All keys matched successfully>",
+    "Loading pretrained model from CLIP",
+    "camera number is : 4",
+    "===========Building Signal==========="
+  ],
+  "last_events": [
+    {
+      "fold": 2,
+      "endpoint": "responsibility",
+      "epoch": 20,
+      "batches": 27,
+      "mean_total": 0.6080561721766437
+    },
+    {
+      "stage": "Q1_final",
+      "fold": 2,
+      "endpoint": "responsibility"
+    },
+    {
+      "status": "Q1_FAIL"
+    }
+  ]
+}

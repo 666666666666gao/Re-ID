@@ -1,29 +1,29 @@
 # TriFusion-ReID workspace
 
-## Latest verified state (2026-09-07T00:55:51.284049+08:00)
+## Latest verified state (2026-09-07T02:01:11.178140+08:00)
 
-- V26 T0/M0 PASS, complete six-endpoint Q1 RUNNING. TrainingPID118939,
-  wrapper118937, executionff18e40, launch00:39:52. Verified00:53:44
-  fold0-control epoch17/GPU100%; no full Q1 terminal yet.
-- Full CPU verifier queuePID120255 started00:52:52, verified alive/waiting.
-  180s dependency polling; automatic retries0, optimizer/model forwards0.
-  Will verify all3360steps/32602260distances/5952790ranks after originalexit0.
-  tools/verify_v26_complete_terminal.py SHAac7b37ee389ddbea2eb48f94ffbc00fab885f02d248d803d7f04f6d23dff819e.
-- Fixedtau0.1/lambda1, OLD identical sampling, original14losses/V8model,
- 6x20epochs and originalfivegates. Do not hotpatch/scale weight/restart jobs.
-  M0 all48read-only/116updates/203tensors passed, ratio0.0587284155.
-  Initial48 forward and candidate8 capacity batches fused-nonpositive0;
-  auxiliary/basegradient ratio4.13e-5..2.88e-4, all24fused-rolecosinespositive.
-  This weak initial signal is not a Q1 result or full-source instance census.
-- V25 fullQ1_FAIL sealed; fused80.881569->80.420931. RGBNT100 official
-  real baselinegain+2.572608pp preserved; fused83.284770<Mamba83.440622.
-  RGBNT201dev58.4050, MSVR310rolesnegative; three-dataset/SOTAgoalUNMET.
-- NoXBM/PCGrad/Router/new sampler/ablation/official tuning. BIER code reviewed
-  only, independent implementation, noveltyunproven. Reused21-ID OOF remains
-  development qualification. External independent audit service unavailable.
-- Cleanup24redundantresumeweights/24.900344GiB complete. Datafree21.049GiB
-  at00:53:44. Preserve sourcebaselines/usefulfinals/fullarrays. Master41.74.
-  Read V26immutableplan/tracker/M0report and terminalqueue evidence.
+- V26 COMPLETE six-endpoint Q1_FAIL; original118939/wrapper118937/verifier120255
+  all ended0. Execution remainsff18e40. No pending training/verification process.
+- Fused80.402752->80.714686 (+0.311934pp), CNN+0.666974, Transformer+0.044328,
+  Mamba-0.379981. Fold gains+.306590/-.553291/+1.083670, bootstrapLB-.276212.
+  Originalfivegates1/5PASS. Do not retune weight/temperature/seed/epoch or promote.
+- CPU full3360steps/32602260distances/5952790ranks verified, maximumerrors0.
+  All30fold-output rows/105identity-output rows/2855query-output rows archived.
+  Executor verification is NOT independent audit; external audit quota unavailable.
+- Eacharm42147840 batch-triplet exposures, fusednonpositive control1/candidate2;
+  auxiliarymean7.3951e-6/7.4406e-6. This zero-cosine-margin census does not imply
+  ordinaryTriplet0.3 satisfied or full-source instance gallery has no hard cases.
+- Cross-version control trajectories diverge fromstep2 despite fixedseed/start/order;
+  do not claim bitwise determinism or subtract cross-version noise from currentgain.
+- Source instance/prototype census: local unregistered/unexecuted draft only,
+  tools/census_v26_source_instances.py. No contract, launch, queue or data result.
+  NoXBM/PCGrad/Router/new sampler/ablation/official tuning.
+- V25fullQ1_FAIL sealed. RGBNT100official realbaselinegain+2.572608pp preserved,
+  fused83.284770<Mamba83.440622. RGBNT201dev58.4050, MSVR310rolesnegative.
+  Three-dataset/SOTAgoal remainsUNMET; no completion claim.
+- Disk24redundantresumeweights/24.900344GiB cleanup complete, old12models retained.
+  At01:55 datafree20.108GiB. Allsourcebaselines/usefulfinals/fullarrays protected.
+  Master41.75; read complete comparison, terminal analysis and intake/disk receipts.
 
 ## Experiment environment
 

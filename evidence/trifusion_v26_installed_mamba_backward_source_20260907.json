@@ -1,0 +1,65 @@
+{
+  "checked_at": "2026-09-07T01:02:59.110435+08:00",
+  "packages": {
+    "mamba-ssm": {
+      "version": "2.2.6.post3",
+      "files": {
+        "mamba_ssm/modules/mamba_simple.py": {
+          "path": "/root/miniconda3/envs/tri_reid/lib/python3.10/site-packages/mamba_ssm/modules/mamba_simple.py",
+          "sha256": "a17e4c51b582dc0d4d690a649eba521cd0c1ee3dc8f0473a0967cdc9ec0874e3",
+          "selected_source_lines": [
+            {
+              "line": 46,
+              "text": "        use_fast_path=True,  # Fused kernel options"
+            },
+            {
+              "line": 59,
+              "text": "        self.use_fast_path = use_fast_path"
+            },
+            {
+              "line": 145,
+              "text": "        if self.use_fast_path and causal_conv1d_fn is not None and inference_params is None:  # Doesn't support outputting the states"
+            },
+            {
+              "line": 146,
+              "text": "            out = mamba_inner_fn("
+            }
+          ]
+        },
+        "mamba_ssm/ops/selective_scan_interface.py": {
+          "path": "/root/miniconda3/envs/tri_reid/lib/python3.10/site-packages/mamba_ssm/ops/selective_scan_interface.py",
+          "sha256": "543edd077f11c80cccd5c5e2f926420d9105fd238d9e8960e53660cfa234dce8",
+          "selected_source_lines": [
+            {
+              "line": 71,
+              "text": "        du, ddelta, dA, dB, dC, dD, ddelta_bias, *rest = selective_scan_cuda.bwd("
+            },
+            {
+              "line": 324,
+              "text": "        dconv1d_out, ddelta, dA, dB, dC, dD, ddelta_bias, dz, out_z = selective_scan_cuda.bwd("
+            },
+            {
+              "line": 373,
+              "text": "def mamba_inner_fn("
+            },
+            {
+              "line": 390,
+              "text": "    assert causal_conv1d_fn is not None, \"causal_conv1d_fn is not available. Please install causal-conv1d.\""
+            }
+          ]
+        }
+      }
+    },
+    "causal-conv1d": {
+      "version": "1.6.0",
+      "files": {
+        "causal_conv1d/causal_conv1d_interface.py": {
+          "path": "/root/miniconda3/envs/tri_reid/lib/python3.10/site-packages/causal_conv1d/causal_conv1d_interface.py",
+          "sha256": "221f41aa963a8f84683d9c6b2b4bf448692feb963fefcd778fa1b4ed2688c859",
+          "selected_source_lines": []
+        }
+      }
+    }
+  },
+  "gpu_or_model_execution": false
+}
