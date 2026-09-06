@@ -767,3 +767,13 @@
 | 2026-09-06T18:47:16.854802+08:00 | /run-experiment | refine-logs/rgbnt100_main_v1/EXPERIMENT_TRACKER.md | implementation | Full50 Signal M0 verified130 updates; fresh30 B0 dispatched; role driver/verifier AST only |
 | 2026-09-06T18:47:16.854802+08:00 | /run-experiment | docs/TRIFUSION_RGBNT201_CURRENT_COMPLETE_HANDOFF_2026-09-01.md | implementation | Full50 Signal M0 verified130 updates; fresh30 B0 dispatched; role driver/verifier AST only |
 | 2026-09-06T18:47:16.854802+08:00 | /run-experiment | AGENTS.md | implementation | Full50 Signal M0 verified130 updates; fresh30 B0 dispatched; role driver/verifier AST only |
+
+| 2026-09-06T19:03:25.224563+08:00 | /run-experiment | tools/evaluate_rgbnt100_official_main.py | implementation | Role and complete official pipeline AST only; actual B0/endpoints pending; fixed training unchanged |
+| 2026-09-06T19:03:25.224563+08:00 | /run-experiment | tools/verify_rgbnt100_official_main.py | implementation | Role and complete official pipeline AST only; actual B0/endpoints pending; fixed training unchanged |
+| 2026-09-06T19:03:25.224563+08:00 | /run-experiment | evidence/trifusion_rgbnt100_full50_roles_stage_wrapper_20260906.py | implementation | Role and complete official pipeline AST only; actual B0/endpoints pending; fixed training unchanged |
+| 2026-09-06T19:03:25.224563+08:00 | /run-experiment | evidence/trifusion_rgbnt100_official_evaluation_wrapper_20260906.py | implementation | Role and complete official pipeline AST only; actual B0/endpoints pending; fixed training unchanged |
+| 2026-09-06T19:03:25.224563+08:00 | /run-experiment | evidence/trifusion_rgbnt100_official_pipeline_preparation_20260906.json | implementation | Role and complete official pipeline AST only; actual B0/endpoints pending; fixed training unchanged |
+| 2026-09-06T19:03:25.224563+08:00 | /run-experiment | refine-logs/rgbnt100_main_v1/EXPERIMENT_TRACKER_20260906_190325.md | implementation | Role and complete official pipeline AST only; actual B0/endpoints pending; fixed training unchanged |
+| 2026-09-06T19:03:25.224563+08:00 | /run-experiment | refine-logs/rgbnt100_main_v1/EXPERIMENT_TRACKER.md | implementation | Role and complete official pipeline AST only; actual B0/endpoints pending; fixed training unchanged |
+| 2026-09-06T19:03:25.224563+08:00 | /run-experiment | docs/TRIFUSION_RGBNT201_CURRENT_COMPLETE_HANDOFF_2026-09-01.md | implementation | Role and complete official pipeline AST only; actual B0/endpoints pending; fixed training unchanged |
+| 2026-09-06T19:03:25.224563+08:00 | /run-experiment | AGENTS.md | implementation | Role and complete official pipeline AST only; actual B0/endpoints pending; fixed training unchanged |

@@ -18,7 +18,9 @@
   130 updates/195 gradients/AMP0, whole state and all scalar/LR rows verified.
   Fresh30-epoch B0 dispatched18:42:15 on545186d, wrapper102783; ETA19:18,
   first observation19:13. Do not restart M0/B0 or change its bound inputs.
-  Full50 role driver/verifier AST-checked, pending actual B0 bindings and M0.
+  Full50 role and official evaluation drivers/verifiers/wrappers AST-checked.
+  Role config awaits actual B0; official config awaits verified fixed roles20.
+  No role/official model run has started; first B0 observation remains19:13.
   Existing RGBNT201/MSVR310 failures and pre-success ablation/seed42 limits remain.
   RGBNT201 dev58.4050/59.3939 and the main target remain unmet.
 - Independent RGBNT100 audit has no verdict due service limit; executor checks
@@ -26,7 +28,7 @@
 - User-directed disk cleanup removed24 completed-run resume snapshots/24.90GiB,
   with12 standalone models verified and retained. Old resume binaries are gone;
   historical metadata remains. Current training/B0/CLIP/V8/V12 weights retained.
-- Read the current master handoff section41.58 and
+- Read the current master handoff section41.59 and
   results/TRIFUSION_RGBNT100_ORIGINAL_ROLES_COMPARISON_2026-09-06.md.
 
 
