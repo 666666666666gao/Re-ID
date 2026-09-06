@@ -1,21 +1,23 @@
 # TriFusion-ReID workspace
 
-## Latest verified state (2026-09-07T02:17:07.991120+08:00)
+## Latest verified state (2026-09-07T02:24:42.415837+08:00)
 
-- Full source instance/prototype census RUNNING, execution99e2a4c.
-  OriginalPID124596/wrapper124594 launched02:12:37, verifiedalive02:16:02.
-  First2folds complete, third underway, GPU2386MiB/47%, datafree19.13GiB.
-- Fixedall6252source-record/modelpairs,2views,14outputs,2protocols,200forwardbatches,
-  350112completequery-output rows, originalV12initialstates. Optimizerupdates0.
-  Registeredcontract3139d941b3f3e2a2394b48438aefceb1e4caaba3b2108c4fbe4ad27b5d7a1e92.
-- Full3foldterminal and subsequentCPU allrow verifier NOT complete yet.
-  Do not restart on observationtimeout or interpretpartialfoldmetrics.
-  tools/report_source_instance_census.py requires completedverifiedinputs.
-- NoV26retuning/retraining, XBM/PCGrad/Router orheldout/dev/officialimages.
-  Singleaugview cannot prove allaugmentations or cachefeaturedrift.
-- V26 Q1_FAIL sealed, originalfivegates1/5; RGBNT100 officialbaselinegain
-  +2.572608pp retained. Three-dataset/SOTAgoalUNMET. Master41.77.
-  External independent audit unavailable; executorverification notindependentaudit.
+- Fullsourcecensus COMPLETE, original124596/wrapper124594 ended0, verificationPASS.
+  All6252source-record/modelpairs,200forwardbatches,350112rows/168groups verified,
+  maximumerror0. Execution99e2a4c, unchangedmodelstate, optimizerupdates0.
+- Augmentedidentityprotocol fullfused R1=100/mAP99.999973, only1queryAP<1.
+  Crosscamerafused fullycorrect. Completefused instance hard-negative support tiny.
+- Nine residual slots:192 prototype-correct/R1wrong and16570 prototype-correct/AP<1
+  slot-query events, unique fold-query counts132/4779; NOT independentimagecounts.
+  Sloterror may be compensated bySignal/otherroles/modalities; unique causeunproven.
+- Next: use savedcompletefeatures to separateSignal/residualbank/slotcompensation.
+  Do not directly addfusedXBM, retuneV26 or forceallslotssamewithout evidence.
+  No cached-featuredrift orXBMtraining, heldout/dev/official access0.
+- Fullreport andanalysis inresults/TRIFUSION_SOURCE_INSTANCE_CENSUS*2026-09-07.md.
+  Allrawtext/evidence/source_instance_census_20260907; 3featurefilesremote1.36GiB.
+  Datafree18.682GiB, baseline/init/usefulfinalweights retained.
+- V26 Q1_FAIL sealed; RGBNT100officialbaselinegain+2.572608pp remainsreal.
+  Three-dataset/SOTAgoalUNMET; master41.78. Externalindependentauditunavailable.
 
 ## Experiment environment
 
