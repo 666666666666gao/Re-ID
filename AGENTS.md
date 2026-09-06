@@ -599,3 +599,6 @@
 - Fold0 milestone:580batches/3480forwards/37120 sample exposures verified; full1,026,293,888-byte array SHA matches.
 - Three fixed model states unchanged/gradients absent receipted; decomposition max5.960464477539062e-7.
 - All three process PIDs still live; no full CPU relation or scientific terminal result.
+
+- Fold1 milestone:560batches/3360forwards/35840 sample exposures verified; full990,904,448-byte array SHA matches.
+- Original three PIDs live and fold2 continues; all3fold CPU relation verification/report pending, no partial scientific conclusion.

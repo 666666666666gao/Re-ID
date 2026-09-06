@@ -23,3 +23,9 @@ Queue waits180s for original pipeline, then requires both diagnostic and full CP
 Whole1,026,293,888-byte NPY SHA matches; actual PK orders/per-record exposures replay PASS; all3 fixed states unchanged and gradients absent receipted.
 Maximum fusion decomposition error5.960464477539062e-7. Main total608batches/3648forwards, fold1 underway; original3PIDs live.
 This is a file/exposure engineering milestone, not complete CPU relation verification or a scientific conclusion.
+
+06:39:00 fold1 complete:560batches/3360forwards/35840 sample exposures.
+Full 990,904,448-byte NPY current SHA and all560 PK/order/per-record exposures PASS.
+Fixed model states/gradient absence and first8 augmentation match receipted; no external audit.
+Main 1167/1680 batches, 7002/10080 forwards; original3PIDs live, fold2 continues.
+Full CPU relation verification/report pending; no partial scientific conclusion or new model update.
