@@ -1,0 +1,702 @@
+FILE 80: evidence/rgbnt100_signal_v1_gram_fp32_regression/exit.txt
+1: 1
+
+FILE 81: evidence/rgbnt100_signal_v1_gram_fp32_regression/launch.json
+1: {
+2:   "launched_at": "2026-09-06T10:46:17.692713+08:00",
+3:   "wrapper_pid": 83185,
+4:   "command": [
+5:     "/root/miniconda3/envs/tri_reid/bin/python",
+6:     "-u",
+7:     "/root/autodl-tmp/trifusion-v2/TriFusion-ReID/tools/verify_rgbnt100_signal_gram_fp32.py",
+8:     "--plan",
+9:     "/root/autodl-tmp/trifusion-v2/TriFusion-ReID/evidence/trifusion_rgbnt100_signal_v1_gram_fp32_regression_plan_20260906.json",
+10:     "--fixture",
+11:     "/root/autodl-tmp/trifusion-v2/artifacts/rgbnt100_signal_amp_capture_v1_seed42_8b412d0/capture/failed_batch_preforward.pt",
+12:     "--volume-inputs",
+13:     "/root/autodl-tmp/trifusion-v2/artifacts/rgbnt100_signal_amp_batch_probe_v1_seed42_56f094f/fp16/volume_inputs.pt",
+14:     "--output-dir",
+15:     "/root/autodl-tmp/trifusion-v2/artifacts/rgbnt100_signal_gram_fp32_regression_v1_8034451/regression"
+16:   ],
+17:   "gpu_free_mib": 24126,
+18:   "project_commit": "80344512b80505e7b9ca72652c06c818f263144e",
+19:   "plan_sha256": "1261d076ae40bc5a492560ac2f9db14bb1a98d834c820ff22bfe573491ca5dfa",
+20:   "scope": "real Gram operator regression then full batch if operator passes;0updates"
+21: }
+
+FILE 82: evidence/rgbnt100_signal_v1_gram_fp32_regression/regression/operator_results.json
+1: {
+2:   "created_at": "2026-09-06T10:46:24.077015+08:00",
+3:   "signal_commit": "cd1b0a672d1fe642e7608731cb4899a19dda7d51",
+4:   "signal_diff_sha256": "b889caca9c4a92689b13eb7e20bd3224067f3e5ed2a3db6825201870ca422741",
+5:   "project_commit": "80344512b80505e7b9ca72652c06c818f263144e",
+6:   "plan_sha256": "1261d076ae40bc5a492560ac2f9db14bb1a98d834c820ff22bfe573491ca5dfa",
+7:   "fixture_sha256": "3c9b41a70a3e3bfabd317cea8b76f314ba16ded8a8246fd41e0561fc7f8286eb",
+8:   "volume_inputs_sha256": "3db0ee54b54d0bbe4b0ca73f06cf94bcd170da49e87abd2f15baeff1bf7f5c72",
+9:   "optimizer_steps": 0,
+10:   "image_decodes": 0,
+11:   "heldout_image_forwards": 0,
+12:   "torch_version": "2.5.1+cu121",
+13:   "operators": [
+14:     {
+15:       "mode": "original_amp",
+16:       "gram_loss": 3.970210552215576,
+17:       "gradient_counts": [
+18:         {
+19:           "input": "language",
+20:           "elements": 32768,
+21:           "nan_count": 1536,
+22:           "inf_count": 0
+23:         },
+24:         {
+25:           "input": "video",
+26:           "elements": 32768,
+27:           "nan_count": 1536,
+28:           "inf_count": 0
+29:         },
+30:         {
+31:           "input": "audio",
+32:           "elements": 32768,
+33:           "nan_count": 1536,
+34:           "inf_count": 0
+35:         },
+36:         {
+37:           "input": "temperature",
+38:           "elements": 1,
+39:           "nan_count": 0,
+40:           "inf_count": 0
+41:         }
+42:       ],
+43:       "volume_calls": [
+44:         {
+45:           "G_dtype": "torch.float16",
+46:           "zero_determinants": 3,
+47:           "negative_determinants": 1,
+48:           "min_absolute_determinant": 0.0,
+49:           "zero_coordinates": [
+50:             [
+51:               3,
+52:               3
+53:             ],
+54:             [
+55:               4,
+56:               4
+57:             ],
+58:             [
+59:               5,
+60:               5
+61:             ]
+62:           ]
+63:         },
+64:         {
+65:           "G_dtype": "torch.float16",
+66:           "zero_determinants": 3,
+67:           "negative_determinants": 1,
+68:           "min_absolute_determinant": 0.0,
+69:           "zero_coordinates": [
+70:             [
+71:               3,
+72:               3
+73:             ],
+74:             [
+75:               4,
+76:               4
+77:             ],
+78:             [
+79:               5,
+80:               5
+81:             ]
+82:           ]
+83:         }
+84:       ]
+85:     },
+86:     {
+87:       "mode": "local_gram_fp32",
+88:       "gram_loss": 3.9716601371765137,
+89:       "gradient_counts": [
+90:         {
+91:           "input": "language",
+92:           "elements": 32768,
+93:           "nan_count": 512,
+94:           "inf_count": 0
+95:         },
+96:         {
+97:           "input": "video",
+98:           "elements": 32768,
+99:           "nan_count": 512,
+100:           "inf_count": 0
+101:         },
+102:         {
+103:           "input": "audio",
+104:           "elements": 32768,
+105:           "nan_count": 512,
+106:           "inf_count": 0
+107:         },
+108:         {
+109:           "input": "temperature",
+110:           "elements": 1,
+111:           "nan_count": 0,
+112:           "inf_count": 0
+113:         }
+114:       ],
+115:       "volume_calls": [
+116:         {
+117:           "G_dtype": "torch.float32",
+118:           "zero_determinants": 1,
+119:           "negative_determinants": 0,
+120:           "min_absolute_determinant": 0.0,
+121:           "zero_coordinates": [
+122:             [
+123:               4,
+124:               4
+125:             ]
+126:           ]
+127:         },
+128:         {
+129:           "G_dtype": "torch.float32",
+130:           "zero_determinants": 1,
+131:           "negative_determinants": 0,
+132:           "min_absolute_determinant": 0.0,
+133:           "zero_coordinates": [
+134:             [
+135:               4,
+136:               4
+137:             ]
+138:           ]
+139:         }
+140:       ]
+141:     }
+142:   ]
+143: }
+
+FILE 83: evidence/rgbnt100_signal_v1_gram_fp32_regression/regression.log
+1: /root/miniconda3/envs/tri_reid/lib/python3.10/site-packages/timm/models/helpers.py:7: FutureWarning: Importing from timm.models.helpers is deprecated, please import via timm.models
+2:   warnings.warn(f"Importing from {__name__} is deprecated, please import via timm.models", FutureWarning)
+3: /root/miniconda3/envs/tri_reid/lib/python3.10/site-packages/timm/models/registry.py:4: FutureWarning: Importing from timm.models.registry is deprecated, please import via timm.models
+4:   warnings.warn(f"Importing from {__name__} is deprecated, please import via timm.models", FutureWarning)
+5: /root/miniconda3/envs/tri_reid/lib/python3.10/site-packages/timm/models/layers/__init__.py:48: FutureWarning: Importing from timm.models.layers is deprecated, please import via timm.layers
+6:   warnings.warn(f"Importing from {__name__} is deprecated, please import via timm.layers", FutureWarning)
+7: Traceback (most recent call last):
+8:   File "/root/autodl-tmp/trifusion-v2/TriFusion-ReID/tools/verify_rgbnt100_signal_gram_fp32.py", line 181, in <module>
+9:     run(parser.parse_args())
+10:   File "/root/autodl-tmp/trifusion-v2/TriFusion-ReID/tools/verify_rgbnt100_signal_gram_fp32.py", line 102, in run
+11:     assert all(row["nan_count"] + row["inf_count"] == 0 for row in operator_rows[1]["gradient_counts"])
+12: AssertionError
+
+FILE 84: evidence/rgbnt100_signal_v1_gram_fp32_regression/terminal.json
+1: {
+2:   "launched_at": "2026-09-06T10:46:17.692713+08:00",
+3:   "wrapper_pid": 83185,
+4:   "command": [
+5:     "/root/miniconda3/envs/tri_reid/bin/python",
+6:     "-u",
+7:     "/root/autodl-tmp/trifusion-v2/TriFusion-ReID/tools/verify_rgbnt100_signal_gram_fp32.py",
+8:     "--plan",
+9:     "/root/autodl-tmp/trifusion-v2/TriFusion-ReID/evidence/trifusion_rgbnt100_signal_v1_gram_fp32_regression_plan_20260906.json",
+10:     "--fixture",
+11:     "/root/autodl-tmp/trifusion-v2/artifacts/rgbnt100_signal_amp_capture_v1_seed42_8b412d0/capture/failed_batch_preforward.pt",
+12:     "--volume-inputs",
+13:     "/root/autodl-tmp/trifusion-v2/artifacts/rgbnt100_signal_amp_batch_probe_v1_seed42_56f094f/fp16/volume_inputs.pt",
+14:     "--output-dir",
+15:     "/root/autodl-tmp/trifusion-v2/artifacts/rgbnt100_signal_gram_fp32_regression_v1_8034451/regression"
+16:   ],
+17:   "gpu_free_mib": 24126,
+18:   "project_commit": "80344512b80505e7b9ca72652c06c818f263144e",
+19:   "plan_sha256": "1261d076ae40bc5a492560ac2f9db14bb1a98d834c820ff22bfe573491ca5dfa",
+20:   "scope": "real Gram operator regression then full batch if operator passes;0updates",
+21:   "completed_at": "2026-09-06T10:46:25.641635+08:00",
+22:   "exit_code": 1,
+23:   "elapsed_seconds": 7.948580875992775
+24: }
+
+FILE 85: evidence/rgbnt100_signal_v1_gram_fp32_regression/wrapper.log
+
+
+FILE 86: evidence/rgbnt100_signal_v1_gram_fp32_regression/wrapper.py
+1: from pathlib import Path
+2: import datetime,hashlib,json,os,subprocess,sys,time
+3: ROOT=Path("/root/autodl-tmp/trifusion-v2/TriFusion-ReID")
+4: OUT=Path("/root/autodl-tmp/trifusion-v2/artifacts/rgbnt100_signal_gram_fp32_regression_v1_8034451")
+5: PY="/root/miniconda3/envs/tri_reid/bin/python"
+6: sha=lambda p:hashlib.sha256(p.read_bytes()).hexdigest()
+7: assert subprocess.check_output(["git","rev-parse","HEAD"],cwd=ROOT,text=True).strip()=="80344512b80505e7b9ca72652c06c818f263144e"
+8: plan_path=ROOT/"evidence/trifusion_rgbnt100_signal_v1_gram_fp32_regression_plan_20260906.json"
+9: plan=json.loads(plan_path.read_text())
+10: for name,digest in plan["project_files"].items(): assert sha(ROOT/name)==digest
+11: free=int(subprocess.check_output(["nvidia-smi","--query-gpu=memory.free","--format=csv,noheader,nounits"],text=True).strip())
+12: assert free>=22000,free
+13: command=[PY,"-u",str(ROOT/"tools/verify_rgbnt100_signal_gram_fp32.py"),"--plan",str(plan_path),
+14: "--fixture",plan["fixture"],"--volume-inputs",plan["volume_inputs"],"--output-dir",str(OUT/"regression")]
+15: launch={"launched_at":datetime.datetime.now(datetime.timezone(datetime.timedelta(hours=8))).isoformat(),
+16: "wrapper_pid":os.getpid(),"command":command,"gpu_free_mib":free,"project_commit":"80344512b80505e7b9ca72652c06c818f263144e",
+17: "plan_sha256":sha(plan_path),"scope":"real Gram operator regression then full batch if operator passes;0updates"}
+18: (OUT/"launch.json").write_text(json.dumps(launch,indent=2)+"\n")
+19: start=time.perf_counter()
+20: with (OUT/"regression.log").open("w") as log:
+21:     code=subprocess.run(command,cwd=ROOT,stdout=log,stderr=subprocess.STDOUT).returncode
+22: (OUT/"exit.txt").write_text(str(code)+"\n")
+23: (OUT/"terminal.json").write_text(json.dumps({**launch,"completed_at":datetime.datetime.now(datetime.timezone(datetime.timedelta(hours=8))).isoformat(),
+24: "exit_code":code,"elapsed_seconds":time.perf_counter()-start},indent=2)+"\n")
+25: sys.exit(code)
+
+FILE 87: evidence/rgbnt100_signal_v1_gram_stable_regression/exit.txt
+1: 0
+
+FILE 88: evidence/rgbnt100_signal_v1_gram_stable_regression/launch.json
+1: {
+2:   "launched_at": "2026-09-06T10:53:03.234182+08:00",
+3:   "wrapper_pid": 83532,
+4:   "command": [
+5:     "/root/miniconda3/envs/tri_reid/bin/python",
+6:     "-u",
+7:     "/root/autodl-tmp/trifusion-v2/TriFusion-ReID/tools/verify_rgbnt100_signal_gram_stable.py",
+8:     "--plan",
+9:     "/root/autodl-tmp/trifusion-v2/TriFusion-ReID/evidence/trifusion_rgbnt100_signal_v1_gram_stable_regression_plan_20260906.json",
+10:     "--fixture",
+11:     "/root/autodl-tmp/trifusion-v2/artifacts/rgbnt100_signal_amp_capture_v1_seed42_8b412d0/capture/failed_batch_preforward.pt",
+12:     "--volume-inputs",
+13:     "/root/autodl-tmp/trifusion-v2/artifacts/rgbnt100_signal_amp_batch_probe_v1_seed42_56f094f/fp16/volume_inputs.pt",
+14:     "--output-dir",
+15:     "/root/autodl-tmp/trifusion-v2/artifacts/rgbnt100_signal_gram_stable_regression_v1_6c741b8/regression"
+16:   ],
+17:   "gpu_free_mib": 24126,
+18:   "project_commit": "6c741b8b56b6a14f83c0e8a9452388aa23e5b301",
+19:   "plan_sha256": "e35e8a03da2fba93f023041e8e2e0209458d84ad88c8a386d52a9834668e7e90",
+20:   "scope": "real Gram operator regression then full batch if operator passes;0updates"
+21: }
+
+FILE 89: evidence/rgbnt100_signal_v1_gram_stable_regression/regression/full_batch_forward.json
+1: {
+2:   "created_at": "2026-09-06T10:53:09.140195+08:00",
+3:   "signal_commit": "cd1b0a672d1fe642e7608731cb4899a19dda7d51",
+4:   "signal_diff_sha256": "b889caca9c4a92689b13eb7e20bd3224067f3e5ed2a3db6825201870ca422741",
+5:   "project_commit": "6c741b8b56b6a14f83c0e8a9452388aa23e5b301",
+6:   "plan_sha256": "e35e8a03da2fba93f023041e8e2e0209458d84ad88c8a386d52a9834668e7e90",
+7:   "fixture_sha256": "3c9b41a70a3e3bfabd317cea8b76f314ba16ded8a8246fd41e0561fc7f8286eb",
+8:   "volume_inputs_sha256": "3db0ee54b54d0bbe4b0ca73f06cf94bcd170da49e87abd2f15baeff1bf7f5c72",
+9:   "optimizer_steps": 0,
+10:   "image_decodes": 0,
+11:   "heldout_image_forwards": 0,
+12:   "torch_version": "2.5.1+cu121",
+13:   "loss": 6.7345452308654785,
+14:   "id_triplet_head_losses": [
+15:     1.5988661050796509,
+16:     1.632498860359192,
+17:     1.6219165325164795,
+18:     1.4804165363311768
+19:   ],
+20:   "gram_loss": 3.9716601371765137,
+21:   "patch_loss": 0.03680669143795967,
+22:   "scale": 256.0,
+23:   "retrieval_feature_max_difference": 0.0,
+24:   "retrieval_feature_bitwise_equal": true,
+25:   "source_record_forwards": 192,
+26:   "operator_model_forwards": 0
+27: }
+
+FILE 91: evidence/rgbnt100_signal_v1_gram_stable_regression/regression/operator_results.json
+1: {
+2:   "created_at": "2026-09-06T10:53:09.140195+08:00",
+3:   "signal_commit": "cd1b0a672d1fe642e7608731cb4899a19dda7d51",
+4:   "signal_diff_sha256": "b889caca9c4a92689b13eb7e20bd3224067f3e5ed2a3db6825201870ca422741",
+5:   "project_commit": "6c741b8b56b6a14f83c0e8a9452388aa23e5b301",
+6:   "plan_sha256": "e35e8a03da2fba93f023041e8e2e0209458d84ad88c8a386d52a9834668e7e90",
+7:   "fixture_sha256": "3c9b41a70a3e3bfabd317cea8b76f314ba16ded8a8246fd41e0561fc7f8286eb",
+8:   "volume_inputs_sha256": "3db0ee54b54d0bbe4b0ca73f06cf94bcd170da49e87abd2f15baeff1bf7f5c72",
+9:   "optimizer_steps": 0,
+10:   "image_decodes": 0,
+11:   "heldout_image_forwards": 0,
+12:   "torch_version": "2.5.1+cu121",
+13:   "operators": [
+14:     {
+15:       "mode": "original_amp",
+16:       "gram_loss": 3.970210552215576,
+17:       "gradient_counts": [
+18:         {
+19:           "input": "language",
+20:           "elements": 32768,
+21:           "nan_count": 1536,
+22:           "inf_count": 0
+23:         },
+24:         {
+25:           "input": "video",
+26:           "elements": 32768,
+27:           "nan_count": 1536,
+28:           "inf_count": 0
+29:         },
+30:         {
+31:           "input": "audio",
+32:           "elements": 32768,
+33:           "nan_count": 1536,
+34:           "inf_count": 0
+35:         },
+36:         {
+37:           "input": "temperature",
+38:           "elements": 1,
+39:           "nan_count": 0,
+40:           "inf_count": 0
+41:         }
+42:       ],
+43:       "volume_calls": [
+44:         {
+45:           "G_dtype": "torch.float16",
+46:           "zero_determinants": 3,
+47:           "negative_determinants": 1,
+48:           "min_absolute_determinant": 0.0,
+49:           "zero_coordinates": [
+50:             [
+51:               3,
+52:               3
+53:             ],
+54:             [
+55:               4,
+56:               4
+57:             ],
+58:             [
+59:               5,
+60:               5
+61:             ]
+62:           ],
+63:           "floor_eligible_count": 3,
+64:           "minimum_volume": 0.0
+65:         },
+66:         {
+67:           "G_dtype": "torch.float16",
+68:           "zero_determinants": 3,
+69:           "negative_determinants": 1,
+70:           "min_absolute_determinant": 0.0,
+71:           "zero_coordinates": [
+72:             [
+73:               3,
+74:               3
+75:             ],
+76:             [
+77:               4,
+78:               4
+79:             ],
+80:             [
+81:               5,
+82:               5
+83:             ]
+84:           ],
+85:           "floor_eligible_count": 3,
+86:           "minimum_volume": 0.0
+87:         }
+88:       ]
+89:     },
+90:     {
+91:       "mode": "stable_gram_fp32_floor",
+92:       "gram_loss": 3.9716601371765137,
+93:       "gradient_counts": [
+94:         {
+95:           "input": "language",
+96:           "elements": 32768,
+97:           "nan_count": 0,
+98:           "inf_count": 0
+99:         },
+100:         {
+101:           "input": "video",
+102:           "elements": 32768,
+103:           "nan_count": 0,
+104:           "inf_count": 0
+105:         },
+106:         {
+107:           "input": "audio",
+108:           "elements": 32768,
+109:           "nan_count": 0,
+110:           "inf_count": 0
+111:         },
+112:         {
+113:           "input": "temperature",
+114:           "elements": 1,
+115:           "nan_count": 0,
+116:           "inf_count": 0
+117:         }
+118:       ],
+119:       "volume_calls": [
+120:         {
+121:           "G_dtype": "torch.float32",
+122:           "zero_determinants": 1,
+123:           "negative_determinants": 0,
+124:           "min_absolute_determinant": 0.0,
+125:           "zero_coordinates": [
+126:             [
+127:               4,
+128:               4
+129:             ]
+130:           ],
+131:           "floor_eligible_count": 1,
+132:           "minimum_volume": 9.999999974752427e-07
+133:         },
+134:         {
+135:           "G_dtype": "torch.float32",
+136:           "zero_determinants": 1,
+137:           "negative_determinants": 0,
+138:           "min_absolute_determinant": 0.0,
+139:           "zero_coordinates": [
+140:             [
+141:               4,
+142:               4
+143:             ]
+144:           ],
+145:           "floor_eligible_count": 1,
+146:           "minimum_volume": 9.999999974752427e-07
+147:         }
+148:       ]
+149:     }
+150:   ]
+151: }
+
+FILE 92: evidence/rgbnt100_signal_v1_gram_stable_regression/regression/summary.json
+1: {
+2:   "created_at": "2026-09-06T10:53:09.140195+08:00",
+3:   "signal_commit": "cd1b0a672d1fe642e7608731cb4899a19dda7d51",
+4:   "signal_diff_sha256": "b889caca9c4a92689b13eb7e20bd3224067f3e5ed2a3db6825201870ca422741",
+5:   "project_commit": "6c741b8b56b6a14f83c0e8a9452388aa23e5b301",
+6:   "plan_sha256": "e35e8a03da2fba93f023041e8e2e0209458d84ad88c8a386d52a9834668e7e90",
+7:   "fixture_sha256": "3c9b41a70a3e3bfabd317cea8b76f314ba16ded8a8246fd41e0561fc7f8286eb",
+8:   "volume_inputs_sha256": "3db0ee54b54d0bbe4b0ca73f06cf94bcd170da49e87abd2f15baeff1bf7f5c72",
+9:   "optimizer_steps": 0,
+10:   "image_decodes": 0,
+11:   "heldout_image_forwards": 0,
+12:   "torch_version": "2.5.1+cu121",
+13:   "status": "PASS_STABLE_GRAM_REAL_OPERATOR_AND_BATCH_REGRESSION",
+14:   "operators": [
+15:     {
+16:       "mode": "original_amp",
+17:       "gram_loss": 3.970210552215576,
+18:       "gradient_counts": [
+19:         {
+20:           "input": "language",
+21:           "elements": 32768,
+22:           "nan_count": 1536,
+23:           "inf_count": 0
+24:         },
+25:         {
+26:           "input": "video",
+27:           "elements": 32768,
+28:           "nan_count": 1536,
+29:           "inf_count": 0
+30:         },
+31:         {
+32:           "input": "audio",
+33:           "elements": 32768,
+34:           "nan_count": 1536,
+35:           "inf_count": 0
+36:         },
+37:         {
+38:           "input": "temperature",
+39:           "elements": 1,
+40:           "nan_count": 0,
+41:           "inf_count": 0
+42:         }
+43:       ],
+44:       "volume_calls": [
+45:         {
+46:           "G_dtype": "torch.float16",
+47:           "zero_determinants": 3,
+48:           "negative_determinants": 1,
+49:           "min_absolute_determinant": 0.0,
+50:           "zero_coordinates": [
+51:             [
+52:               3,
+53:               3
+54:             ],
+55:             [
+56:               4,
+57:               4
+58:             ],
+59:             [
+60:               5,
+61:               5
+62:             ]
+63:           ],
+64:           "floor_eligible_count": 3,
+65:           "minimum_volume": 0.0
+66:         },
+67:         {
+68:           "G_dtype": "torch.float16",
+69:           "zero_determinants": 3,
+70:           "negative_determinants": 1,
+71:           "min_absolute_determinant": 0.0,
+72:           "zero_coordinates": [
+73:             [
+74:               3,
+75:               3
+76:             ],
+77:             [
+78:               4,
+79:               4
+80:             ],
+81:             [
+82:               5,
+83:               5
+84:             ]
+85:           ],
+86:           "floor_eligible_count": 3,
+87:           "minimum_volume": 0.0
+88:         }
+89:       ]
+90:     },
+91:     {
+92:       "mode": "stable_gram_fp32_floor",
+93:       "gram_loss": 3.9716601371765137,
+94:       "gradient_counts": [
+95:         {
+96:           "input": "language",
+97:           "elements": 32768,
+98:           "nan_count": 0,
+99:           "inf_count": 0
+100:         },
+101:         {
+102:           "input": "video",
+103:           "elements": 32768,
+104:           "nan_count": 0,
+105:           "inf_count": 0
+106:         },
+107:         {
+108:           "input": "audio",
+109:           "elements": 32768,
+110:           "nan_count": 0,
+111:           "inf_count": 0
+112:         },
+113:         {
+114:           "input": "temperature",
+115:           "elements": 1,
+116:           "nan_count": 0,
+117:           "inf_count": 0
+118:         }
+119:       ],
+120:       "volume_calls": [
+121:         {
+122:           "G_dtype": "torch.float32",
+123:           "zero_determinants": 1,
+124:           "negative_determinants": 0,
+125:           "min_absolute_determinant": 0.0,
+126:           "zero_coordinates": [
+127:             [
+128:               4,
+129:               4
+130:             ]
+131:           ],
+132:           "floor_eligible_count": 1,
+133:           "minimum_volume": 9.999999974752427e-07
+134:         },
+135:         {
+136:           "G_dtype": "torch.float32",
+137:           "zero_determinants": 1,
+138:           "negative_determinants": 0,
+139:           "min_absolute_determinant": 0.0,
+140:           "zero_coordinates": [
+141:             [
+142:               4,
+143:               4
+144:             ]
+145:           ],
+146:           "floor_eligible_count": 1,
+147:           "minimum_volume": 9.999999974752427e-07
+148:         }
+149:       ]
+150:     }
+151:   ],
+152:   "operator_arrays_sha256": "2023b791515c2ef5090c5ad034aef5619cb91450cac3c01368858d60d70b5e0c",
+153:   "full_batch": {
+154:     "loss": 6.7345452308654785,
+155:     "id_triplet_head_losses": [
+156:       1.5988661050796509,
+157:       1.632498860359192,
+158:       1.6219165325164795,
+159:       1.4804165363311768
+160:     ],
+161:     "gram_loss": 3.9716601371765137,
+162:     "patch_loss": 0.03680669143795967,
+163:     "scale": 256.0,
+164:     "retrieval_feature_max_difference": 0.0,
+165:     "retrieval_feature_bitwise_equal": true,
+166:     "source_record_forwards": 192,
+167:     "operator_model_forwards": 0
+168:   },
+169:   "gradient_tensors": 195,
+170:   "all_gradients_finite": true,
+171:   "operator_backward_passes": 2,
+172:   "full_model_backward_passes": 1,
+173:   "elapsed_seconds": 9.43972253985703,
+174:   "peak_allocated_mib": 10701.00537109375,
+175:   "limits": "one saved real failed batch, numerical repair only, no full epoch or retrieval-performance claim"
+176: }
+
+FILE 93: evidence/rgbnt100_signal_v1_gram_stable_regression/regression.log
+1: /root/miniconda3/envs/tri_reid/lib/python3.10/site-packages/timm/models/helpers.py:7: FutureWarning: Importing from timm.models.helpers is deprecated, please import via timm.models
+2:   warnings.warn(f"Importing from {__name__} is deprecated, please import via timm.models", FutureWarning)
+3: /root/miniconda3/envs/tri_reid/lib/python3.10/site-packages/timm/models/registry.py:4: FutureWarning: Importing from timm.models.registry is deprecated, please import via timm.models
+4:   warnings.warn(f"Importing from {__name__} is deprecated, please import via timm.models", FutureWarning)
+5: /root/miniconda3/envs/tri_reid/lib/python3.10/site-packages/timm/models/layers/__init__.py:48: FutureWarning: Importing from timm.models.layers is deprecated, please import via timm.layers
+6:   warnings.warn(f"Importing from {__name__} is deprecated, please import via timm.layers", FutureWarning)
+7: 建立transformer............
+8: using Transformer_type: ViT-B-16 as a backbone
+9: Resized position embedding: %s to %s torch.Size([197, 768]) torch.Size([129, 768])
+10: Position embedding resize to height:8 width: 16
+11: Successfully load ckpt!
+12: <All keys matched successfully>
+13: Loading pretrained model from CLIP
+14: camera number is : 8
+15: ===========Building Signal===========
+16: using soft triplet loss for training
+17: label smooth on, numclasses: 33
+18: {"event": "stable_gram_regression_pass", "source_record_forwards": 192, "optimizer_steps": 0, "all195_gradients_finite": true}
+
+FILE 94: evidence/rgbnt100_signal_v1_gram_stable_regression/terminal.json
+1: {
+2:   "launched_at": "2026-09-06T10:53:03.234182+08:00",
+3:   "wrapper_pid": 83532,
+4:   "command": [
+5:     "/root/miniconda3/envs/tri_reid/bin/python",
+6:     "-u",
+7:     "/root/autodl-tmp/trifusion-v2/TriFusion-ReID/tools/verify_rgbnt100_signal_gram_stable.py",
+8:     "--plan",
+9:     "/root/autodl-tmp/trifusion-v2/TriFusion-ReID/evidence/trifusion_rgbnt100_signal_v1_gram_stable_regression_plan_20260906.json",
+10:     "--fixture",
+11:     "/root/autodl-tmp/trifusion-v2/artifacts/rgbnt100_signal_amp_capture_v1_seed42_8b412d0/capture/failed_batch_preforward.pt",
+12:     "--volume-inputs",
+13:     "/root/autodl-tmp/trifusion-v2/artifacts/rgbnt100_signal_amp_batch_probe_v1_seed42_56f094f/fp16/volume_inputs.pt",
+14:     "--output-dir",
+15:     "/root/autodl-tmp/trifusion-v2/artifacts/rgbnt100_signal_gram_stable_regression_v1_6c741b8/regression"
+16:   ],
+17:   "gpu_free_mib": 24126,
+18:   "project_commit": "6c741b8b56b6a14f83c0e8a9452388aa23e5b301",
+19:   "plan_sha256": "e35e8a03da2fba93f023041e8e2e0209458d84ad88c8a386d52a9834668e7e90",
+20:   "scope": "real Gram operator regression then full batch if operator passes;0updates",
+21:   "completed_at": "2026-09-06T10:53:19.647243+08:00",
+22:   "exit_code": 0,
+23:   "elapsed_seconds": 16.41254509985447
+24: }
+
+FILE 95: evidence/rgbnt100_signal_v1_gram_stable_regression/wrapper.log
+
+
+FILE 96: evidence/rgbnt100_signal_v1_gram_stable_regression/wrapper.py
+1: from pathlib import Path
+2: import datetime,hashlib,json,os,subprocess,sys,time
+3: ROOT=Path("/root/autodl-tmp/trifusion-v2/TriFusion-ReID")
+4: OUT=Path("/root/autodl-tmp/trifusion-v2/artifacts/rgbnt100_signal_gram_stable_regression_v1_6c741b8")
+5: PY="/root/miniconda3/envs/tri_reid/bin/python"
+6: sha=lambda p:hashlib.sha256(p.read_bytes()).hexdigest()
+7: assert subprocess.check_output(["git","rev-parse","HEAD"],cwd=ROOT,text=True).strip()=="6c741b8b56b6a14f83c0e8a9452388aa23e5b301"
+8: plan_path=ROOT/"evidence/trifusion_rgbnt100_signal_v1_gram_stable_regression_plan_20260906.json"
+9: plan=json.loads(plan_path.read_text())
+10: for name,digest in plan["project_files"].items(): assert sha(ROOT/name)==digest
+11: free=int(subprocess.check_output(["nvidia-smi","--query-gpu=memory.free","--format=csv,noheader,nounits"],text=True).strip())
+12: assert free>=22000,free
+13: command=[PY,"-u",str(ROOT/"tools/verify_rgbnt100_signal_gram_stable.py"),"--plan",str(plan_path),
+14: "--fixture",plan["fixture"],"--volume-inputs",plan["volume_inputs"],"--output-dir",str(OUT/"regression")]
+15: launch={"launched_at":datetime.datetime.now(datetime.timezone(datetime.timedelta(hours=8))).isoformat(),
+16: "wrapper_pid":os.getpid(),"command":command,"gpu_free_mib":free,"project_commit":"6c741b8b56b6a14f83c0e8a9452388aa23e5b301",
+17: "plan_sha256":sha(plan_path),"scope":"real Gram operator regression then full batch if operator passes;0updates"}
+18: (OUT/"launch.json").write_text(json.dumps(launch,indent=2)+"\n")
+19: start=time.perf_counter()
+20: with (OUT/"regression.log").open("w") as log:
+21:     code=subprocess.run(command,cwd=ROOT,stdout=log,stderr=subprocess.STDOUT).returncode
+22: (OUT/"exit.txt").write_text(str(code)+"\n")
+23: (OUT/"terminal.json").write_text(json.dumps({**launch,"completed_at":datetime.datetime.now(datetime.timezone(datetime.timedelta(hours=8))).isoformat(),
+24: "exit_code":code,"elapsed_seconds":time.perf_counter()-start},indent=2)+"\n")
+25: sys.exit(code)

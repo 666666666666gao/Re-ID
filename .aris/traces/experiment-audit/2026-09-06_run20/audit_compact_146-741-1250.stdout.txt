@@ -1,0 +1,487 @@
+FILE 146: tools/run_signal_preserving_v5.py (comments/blank lines/docstrings omitted only)
+741:     result = {
+742:         "schema_version": receipt_schema(config["MODEL"]["ARCHITECTURE"], "capacity"),
+743:         "status": "PASS" if passed else "FAIL",
+744:         "mode": "capacity",
+745:         "steps": steps,
+746:         "batch_size": int(config["DATA"]["TRAIN_BATCH_SIZE"]),
+747:         "num_instances": int(config["DATA"]["NUM_INSTANCES"]),
+748:         "losses": losses_by_step,
+749:         "trainable_parameters": sum(parameter.numel() for parameter in trainable.values()),
+750:         "trainable_gradient_tensors": len(gradient_names),
+751:         "trainable_tensors": len(trainable),
+752:         "missing_gradient_tensors": missing_gradients,
+753:         "overflow_events": overflow_events,
+754:         "peak_allocated_mib": torch.cuda.max_memory_allocated() / 1024**2,
+755:         "peak_reserved_mib": torch.cuda.max_memory_reserved() / 1024**2,
+756:         "signal_state_sha256_before": baseline_before,
+757:         "signal_state_sha256_after": baseline_after,
+758:         "signal_state_unchanged": baseline_before == baseline_after,
+759:         "signal_checkpoint_sha256": runtime["checkpoint_sha256"],
+760:         "build_provenance": runtime["build_provenance"],
+761:         "official_test_access_count": 0,
+762:         "optimizer_steps": steps,
+763:         "elapsed_seconds": time.time() - started,
+764:     }
+765:     (output_dir / "capacity.json").write_text(
+766:         json.dumps(result, indent=2, sort_keys=True) + "\n",
+767:         encoding="utf-8",
+768:     )
+769:     if not passed:
+770:         raise RuntimeError("V5 capacity gate failed; inspect capacity.json")
+771:     return result
+774: def _run_overfit(config: dict[str, Any], output_dir: Path) -> dict[str, Any]:
+775:     import torch
+777:     started = time.time()
+778:     runtime = _build_runtime(config)
+779:     model = runtime["model"]
+780:     architecture = str(config["MODEL"]["ARCHITECTURE"])
+781:     criterion = _build_criterion(config)
+782:     trainable = {
+783:         name: parameter for name, parameter in model.named_parameters() if parameter.requires_grad
+784:     }
+785:     optimizer = torch.optim.AdamW(
+786:         trainable.values(),
+787:         lr=float(config["OPTIMIZATION"]["NEW_MODULE_LR"]),
+788:         weight_decay=float(config["OPTIMIZATION"]["WEIGHT_DECAY"]),
+789:     )
+790:     scaler = torch.amp.GradScaler(
+791:         "cuda", init_scale=float(config["OPTIMIZATION"]["AMP_INIT_SCALE"])
+792:     )
+793:     fixed_batch, fixed_quality_batch, fixed_labels = _training_views(
+794:         next(iter(runtime["train_loader"])), config
+795:     )
+796:     baseline_before = _module_state_sha256(model.baseline.signal)
+797:     model.train()
+798:     torch.cuda.reset_peak_memory_stats()
+799:     gradient_names: set[str] = set()
+800:     losses_by_step: list[float] = []
+801:     overflow_events = 0
+802:     steps = int(config["GATES"]["OVERFIT_STEPS"])
+803:     for _step in range(steps):
+804:         optimizer.zero_grad(set_to_none=True)
+805:         with torch.autocast(
+806:             device_type="cuda",
+807:             dtype=torch.float16,
+808:             enabled=bool(config["OPTIMIZATION"]["AMP"]),
+809:         ):
+810:             output = model(fixed_batch, return_aux=True)
+811:             quality_output = (
+812:                 model(fixed_quality_batch, return_aux=True)
+813:                 if architecture == ARCHITECTURE_V7
+814:                 else None
+815:             )
+816:             if not output.diagnostics["all_finite"]:
+817:                 raise FloatingPointError("V5 forward emitted a nonfinite tensor")
+818:             loss_parts = _criterion_losses(
+819:                 criterion,
+820:                 output,
+821:                 fixed_labels,
+822:                 architecture=architecture,
+823:                 quality_output=quality_output,
+824:             )
+825:             total_loss = weighted_training_loss(loss_parts, config)
+826:         if not bool(torch.isfinite(total_loss)):
+827:             raise FloatingPointError("V5 overfit loss is nonfinite")
+828:         scale_before = scaler.get_scale()
+829:         scaler.scale(total_loss).backward()
+830:         scaler.unscale_(optimizer)
+831:         for name, parameter in trainable.items():
+832:             if parameter.grad is not None:
+833:                 if not bool(torch.isfinite(parameter.grad).all()):
+834:                     raise FloatingPointError(f"nonfinite gradient: {name}")
+835:                 gradient_names.add(name)
+836:         scaler.step(optimizer)
+837:         scaler.update()
+838:         overflow_events += int(scaler.get_scale() < scale_before)
+839:         losses_by_step.append(float(total_loss.detach()))
+841:     baseline_after = _module_state_sha256(model.baseline.signal)
+842:     missing_gradients = sorted(set(trainable) - gradient_names)
+843:     gate = evaluate_overfit_gate(
+844:         losses_by_step,
+845:         max_ratio=float(config["GATES"]["OVERFIT_MAX_LOSS_RATIO"]),
+846:         minimum_loss=overfit_loss_floor(config, num_classes=model.num_classes),
+847:     )
+848:     passed = (
+849:         gate["passed"]
+850:         and not missing_gradients
+851:         and overflow_events == 0
+852:         and baseline_before == baseline_after
+853:     )
+854:     result = {
+855:         "schema_version": receipt_schema(config["MODEL"]["ARCHITECTURE"], "overfit"),
+856:         "status": "PASS" if passed else "FAIL",
+857:         "mode": "overfit",
+858:         "steps": steps,
+859:         "batch_size": int(config["DATA"]["TRAIN_BATCH_SIZE"]),
+860:         "num_instances": int(config["DATA"]["NUM_INSTANCES"]),
+861:         "losses": losses_by_step,
+862:         "overfit_gate": gate,
+863:         "trainable_gradient_tensors": len(gradient_names),
+864:         "trainable_tensors": len(trainable),
+865:         "missing_gradient_tensors": missing_gradients,
+866:         "overflow_events": overflow_events,
+867:         "peak_allocated_mib": torch.cuda.max_memory_allocated() / 1024**2,
+868:         "peak_reserved_mib": torch.cuda.max_memory_reserved() / 1024**2,
+869:         "signal_state_sha256_before": baseline_before,
+870:         "signal_state_sha256_after": baseline_after,
+871:         "signal_state_unchanged": baseline_before == baseline_after,
+872:         "signal_checkpoint_sha256": runtime["checkpoint_sha256"],
+873:         "build_provenance": runtime["build_provenance"],
+874:         "official_test_access_count": 0,
+875:         "optimizer_steps": steps,
+876:         "elapsed_seconds": time.time() - started,
+877:     }
+878:     (output_dir / "overfit.json").write_text(
+879:         json.dumps(result, indent=2, sort_keys=True) + "\n",
+880:         encoding="utf-8",
+881:     )
+882:     if not passed:
+883:         raise RuntimeError("V5 overfit gate failed; inspect overfit.json")
+884:     return result
+887: def _evaluate_outputs(
+888:     model: Any,
+889:     loader: Any,
+890:     *,
+891:     num_query: int,
+892:     retrieval_outputs: tuple[str, ...],
+893: ) -> tuple[dict[str, dict[str, float]], dict[str, int]]:
+894:     import numpy as np
+895:     import torch
+896:     from utils.metrics import R1_mAP_eval
+898:     evaluators = {
+899:         name: R1_mAP_eval(num_query, max_rank=50, feat_norm="yes")
+900:         for name in retrieval_outputs
+901:     }
+902:     feature_widths = {name: 0 for name in retrieval_outputs}
+903:     model.eval()
+904:     for images, identities, camera_ids, camera_ids_batch, _view_ids, paths in loader:
+905:         images = {name: tensor.cuda(non_blocking=True) for name, tensor in images.items()}
+906:         camera_ids_cuda = camera_ids_batch.cuda(non_blocking=True)
+907:         batch = {
+908:             "images": images,
+909:             "modality_mask": torch.ones(
+910:                 camera_ids_cuda.shape[0], 3, dtype=torch.bool, device="cuda"
+911:             ),
+912:             "camera_ids": camera_ids_cuda,
+913:         }
+914:         with torch.no_grad():
+915:             output = model(batch, return_aux=True)
+916:         if not output.diagnostics["all_finite"]:
+917:             raise FloatingPointError("V5 evaluation emitted a nonfinite tensor")
+918:         if not output.diagnostics["baseline_exact_prefix"]:
+919:             raise RuntimeError("V5 fused output lost the exact Signal prefix")
+920:         features = {
+921:             "baseline_only": output.baseline_embedding,
+922:             "fused": output.fused_embedding,
+923:             **dict(output.branch_embeddings),
+924:         }
+925:         for name in retrieval_outputs:
+926:             feature_widths[name] = int(features[name].shape[1])
+927:             evaluators[name].update((features[name], identities, camera_ids, paths))
+929:     metrics: dict[str, dict[str, float]] = {}
+930:     for name in retrieval_outputs:
+931:         cmc, mean_ap, *_ = evaluators[name].compute()
+932:         metrics[name] = {
+933:             "mAP": float(mean_ap * 100.0),
+934:             "Rank-1": float(cmc[0] * 100.0),
+935:             "Rank-5": float(cmc[4] * 100.0),
+936:             "Rank-10": float(cmc[9] * 100.0),
+937:         }
+938:         if not all(np.isfinite(value) for value in metrics[name].values()):
+939:             raise FloatingPointError(f"nonfinite V5 retrieval metric: {name}")
+940:     return metrics, feature_widths
+943: def evaluate_v8_expert_formation_gate(
+944:     *,
+945:     branch_oracle: dict[str, Any],
+946:     residual_oracle: dict[str, Any],
+947:     min_oracle_gain_map: float,
+948:     min_unique_ap_wins: int,
+949:     min_expert_marginal_map: float,
+950: ) -> dict[str, Any]:
+953:     experts = ("cnn", "transformer", "mamba")
+955:     def judge(summary: dict[str, Any]) -> dict[str, Any]:
+956:         gain = float(summary["oracle_minus_best_fixed_percent"]["mAP"])
+957:         expert_results = {}
+958:         for expert in experts:
+959:             unique_wins = int(summary["unique_ap_wins"][expert])
+960:             marginal_map = float(
+961:                 summary["leave_one_expert_out"][expert]["marginal_mAP"]
+962:             )
+963:             expert_results[expert] = {
+964:                 "unique_ap_wins": unique_wins,
+965:                 "marginal_mAP": marginal_map,
+966:                 "passed": (
+967:                     unique_wins >= int(min_unique_ap_wins)
+968:                     and marginal_map > float(min_expert_marginal_map)
+969:                 ),
+970:             }
+971:         return {
+972:             "oracle_gain_mAP": gain,
+973:             "oracle_gain_passed": gain >= float(min_oracle_gain_map),
+974:             "experts": expert_results,
+975:             "passed": gain >= float(min_oracle_gain_map)
+976:             and all(result["passed"] for result in expert_results.values()),
+977:         }
+979:     branch = judge(branch_oracle)
+980:     residual_only = judge(residual_oracle)
+981:     return {
+982:         "passed": branch["passed"] and residual_only["passed"],
+983:         "thresholds": {
+984:             "minimum_oracle_gain_mAP": float(min_oracle_gain_map),
+985:             "minimum_unique_ap_wins": int(min_unique_ap_wins),
+986:             "minimum_expert_marginal_mAP_exclusive": float(
+987:                 min_expert_marginal_map
+988:             ),
+989:         },
+990:         "branch": branch,
+991:         "residual_only": residual_only,
+992:     }
+995: def _evaluate_v8_expert_complementarity(
+996:     model: Any,
+997:     loader: Any,
+998:     *,
+999:     num_query: int,
+1000: ) -> dict[str, Any]:
+1001:     import numpy as np
+1002:     import torch
+1004:     from diagnose_v6_oracle_complementarity import (
+1005:         _scores_from_features,
+1006:         summarize_oracle_complementarity,
+1007:     )
+1009:     feature_names = (
+1010:         "baseline_only",
+1011:         "fused",
+1012:         "cnn",
+1013:         "transformer",
+1014:         "mamba",
+1015:         "residual_cnn",
+1016:         "residual_transformer",
+1017:         "residual_mamba",
+1018:     )
+1019:     collected = {name: [] for name in feature_names}
+1020:     identities_all = []
+1021:     camera_ids_all = []
+1022:     model.eval()
+1023:     for images, identities, camera_ids, camera_labels, _view_ids, _paths in loader:
+1024:         images = {name: tensor.cuda(non_blocking=True) for name, tensor in images.items()}
+1025:         camera_labels = camera_labels.cuda(non_blocking=True)
+1026:         with torch.no_grad():
+1027:             output = model(
+1028:                 {
+1029:                     "images": images,
+1030:                     "modality_mask": torch.ones(
+1031:                         camera_labels.shape[0], 3, dtype=torch.bool, device="cuda"
+1032:                     ),
+1033:                     "camera_ids": camera_labels,
+1034:                 },
+1035:                 return_aux=True,
+1036:             )
+1037:         batch_features = {
+1038:             "baseline_only": output.baseline_embedding,
+1039:             "fused": output.fused_embedding,
+1040:             **dict(output.branch_embeddings),
+1041:             **{
+1042:                 f"residual_{expert}": output.residual_embeddings[expert]
+1043:                 for expert in ("cnn", "transformer", "mamba")
+1044:             },
+1045:         }
+1046:         for name in feature_names:
+1047:             collected[name].append(batch_features[name].float().cpu())
+1048:         identities_all.extend(np.asarray(identities).tolist())
+1049:         camera_ids_all.extend(np.asarray(camera_ids).tolist())
+1051:     features = {name: torch.cat(values) for name, values in collected.items()}
+1052:     identities_array = np.asarray(identities_all)
+1053:     camera_ids_array = np.asarray(camera_ids_all)
+1054:     if identities_array.size != num_query * 2:
+1055:         raise ValueError("V8 formation probe requires one complete query/gallery pair")
+1056:     scores = {
+1057:         name: _scores_from_features(
+1058:             tensor,
+1059:             identities_array,
+1060:             camera_ids_array,
+1061:             num_query=num_query,
+1062:         )
+1063:         for name, tensor in features.items()
+1064:     }
+1065:     branch_oracle = summarize_oracle_complementarity(
+1066:         {
+1067:             name: scores[name]
+1068:             for name in ("baseline_only", "cnn", "transformer", "mamba")
+1069:         }
+1070:     )
+1071:     residual_oracle = summarize_oracle_complementarity(
+1072:         {
+1073:             expert: scores[f"residual_{expert}"]
+1074:             for expert in ("cnn", "transformer", "mamba")
+1075:         }
+1076:     )
+1077:     fused = {
+1078:         "mAP": float(scores["fused"].average_precision.mean() * 100.0),
+1079:         "Rank-1": float(scores["fused"].rank1_correct.mean() * 100.0),
+1080:     }
+1081:     return {
+1082:         "branch_oracle": branch_oracle,
+1083:         "residual_only_oracle": residual_oracle,
+1084:         "fused_metrics_percent": fused,
+1085:     }
+1088: def _run_v8_formation_probe(
+1089:     config: dict[str, Any],
+1090:     config_path: Path,
+1091:     output_dir: Path,
+1092: ) -> dict[str, Any]:
+1093:     import torch
+1095:     started = time.time()
+1096:     if str(config["MODEL"]["ARCHITECTURE"]) != ARCHITECTURE_V8:
+1097:         raise ValueError("expert formation probe is only defined for V8")
+1098:     runtime = _build_runtime(config)
+1099:     model = runtime["model"]
+1100:     criterion = _build_criterion(config)
+1101:     trainable = {
+1102:         name: parameter for name, parameter in model.named_parameters() if parameter.requires_grad
+1103:     }
+1104:     base_lr = float(config["OPTIMIZATION"]["NEW_MODULE_LR"])
+1105:     optimizer = torch.optim.AdamW(
+1106:         trainable.values(),
+1107:         lr=base_lr,
+1108:         weight_decay=float(config["OPTIMIZATION"]["WEIGHT_DECAY"]),
+1109:     )
+1110:     scaler = torch.amp.GradScaler(
+1111:         "cuda", init_scale=float(config["OPTIMIZATION"]["AMP_INIT_SCALE"])
+1112:     )
+1113:     epochs = int(config["OPTIMIZATION"]["FORMATION_PROBE_EPOCHS"])
+1114:     warmup_epochs = int(config["OPTIMIZATION"]["WARMUP_EPOCHS"])
+1115:     identity = {
+1116:         "schema_version": receipt_schema(ARCHITECTURE_V8, "formation-probe-identity"),
+1117:         "seed": int(config["EXPERIMENT"]["SEED"]),
+1118:         "config": str(config_path),
+1119:         "config_sha256": _sha256(config_path),
+1120:         "runner_sha256": _sha256(Path(__file__).resolve()),
+1121:         "model_sha256": _sha256(architecture_source_paths(ARCHITECTURE_V8)["model"]),
+1122:         "builder_sha256": _sha256(architecture_source_paths(ARCHITECTURE_V8)["builder"]),
+1123:         "epochs": epochs,
+1124:         "model_selection": str(config["PROTOCOL"]["FORMATION_MODEL_SELECTION"]),
+1125:         "fit_triplets": len(runtime["train_records"]),
+1126:         "probe_query_triplets": len(runtime["dev_records"]),
+1127:         "probe_gallery_triplets": len(runtime["dev_records"]),
+1128:         "official_test_access_count": 0,
+1129:     }
+1130:     (output_dir / "run_identity.json").write_text(
+1131:         json.dumps(identity, indent=2, sort_keys=True) + "\n",
+1132:         encoding="utf-8",
+1133:     )
+1135:     baseline_before = _module_state_sha256(model.baseline.signal)
+1136:     optimizer_steps = 0
+1137:     overflow_events = 0
+1138:     history = []
+1139:     torch.cuda.reset_peak_memory_stats()
+1140:     for epoch in range(1, epochs + 1):
+1141:         learning_rate = base_lr * learning_rate_multiplier(
+1142:             epoch,
+1143:             max_epochs=epochs,
+1144:             warmup_epochs=warmup_epochs,
+1145:         )
+1146:         for group in optimizer.param_groups:
+1147:             group["lr"] = learning_rate
+1148:         model.train()
+1149:         epoch_loss = 0.0
+1150:         epoch_steps = 0
+1151:         for raw_batch in runtime["train_loader"]:
+1152:             batch, _quality_batch, labels = _training_views(raw_batch, config)
+1153:             optimizer.zero_grad(set_to_none=True)
+1154:             with torch.autocast(
+1155:                 device_type="cuda",
+1156:                 dtype=torch.float16,
+1157:                 enabled=bool(config["OPTIMIZATION"]["AMP"]),
+1158:             ):
+1159:                 output = model(batch, return_aux=True)
+1160:                 if not output.diagnostics["all_finite"]:
+1161:                     raise FloatingPointError("V8 formation probe emitted a nonfinite tensor")
+1162:                 loss_parts = _criterion_losses(
+1163:                     criterion,
+1164:                     output,
+1165:                     labels,
+1166:                     architecture=ARCHITECTURE_V8,
+1167:                     quality_output=None,
+1168:                 )
+1169:                 total_loss = weighted_training_loss(
+1170:                     loss_parts,
+1171:                     config,
+1172:                     phase="expert_formation",
+1173:                 )
+1174:             if not bool(torch.isfinite(total_loss)):
+1175:                 raise FloatingPointError("V8 formation probe loss is nonfinite")
+1176:             scale_before = scaler.get_scale()
+1177:             scaler.scale(total_loss).backward()
+1178:             scaler.unscale_(optimizer)
+1179:             for name, parameter in trainable.items():
+1180:                 if parameter.grad is not None and not bool(
+1181:                     torch.isfinite(parameter.grad).all()
+1182:                 ):
+1183:                     raise FloatingPointError(f"nonfinite gradient: {name}")
+1184:             scaler.step(optimizer)
+1185:             scaler.update()
+1186:             overflow = scaler.get_scale() < scale_before
+1187:             overflow_events += int(overflow)
+1188:             optimizer_steps += int(not overflow)
+1189:             epoch_loss += float(total_loss.detach())
+1190:             epoch_steps += 1
+1191:         epoch_result = {
+1192:             "epoch": epoch,
+1193:             "learning_rate": learning_rate,
+1194:             "mean_training_loss": epoch_loss / epoch_steps,
+1195:             "optimizer_steps": optimizer_steps,
+1196:         }
+1197:         history.append(epoch_result)
+1198:         (output_dir / "history.json").write_text(
+1199:             json.dumps(
+1200:                 {
+1201:                     "schema_version": receipt_schema(ARCHITECTURE_V8, "formation-probe-history"),
+1202:                     "epochs": history,
+1203:                     "dev_evaluations_during_training": 0,
+1204:                     "official_test_access_count": 0,
+1205:                 },
+1206:                 indent=2,
+1207:                 sort_keys=True,
+1208:             )
+1209:             + "\n",
+1210:             encoding="utf-8",
+1211:         )
+1212:         print(json.dumps(epoch_result, sort_keys=True), flush=True)
+1214:     baseline_after = _module_state_sha256(model.baseline.signal)
+1215:     if baseline_after != baseline_before or overflow_events:
+1216:         raise RuntimeError("V8 formation probe integrity gate failed")
+1217:     checkpoint_path = output_dir / "final_model.pth"
+1218:     torch.save(
+1219:         {
+1220:             "schema_version": receipt_schema(ARCHITECTURE_V8, "formation-probe-checkpoint"),
+1221:             "epoch": epochs,
+1222:             "model_state_dict": model.state_dict(),
+1223:             "run_identity_sha256": _sha256(output_dir / "run_identity.json"),
+1224:         },
+1225:         checkpoint_path,
+1226:     )
+1227:     complementarity = _evaluate_v8_expert_complementarity(
+1228:         model,
+1229:         runtime["eval_loader"],
+1230:         num_query=len(runtime["dev_records"]),
+1231:     )
+1232:     gates = config["GATES"]
+1233:     formation_gate = evaluate_v8_expert_formation_gate(
+1234:         branch_oracle=complementarity["branch_oracle"],
+1235:         residual_oracle=complementarity["residual_only_oracle"],
+1236:         min_oracle_gain_map=float(gates["FORMATION_MIN_ORACLE_GAIN_MAP"]),
+1237:         min_unique_ap_wins=int(gates["FORMATION_MIN_UNIQUE_AP_WINS"]),
+1238:         min_expert_marginal_map=float(gates["FORMATION_MIN_EXPERT_MARGINAL_MAP"]),
+1239:     )
+1240:     result = {
+1241:         "schema_version": receipt_schema(ARCHITECTURE_V8, "formation-probe-result"),
+1242:         "status": "PASS",
+1243:         "mode": "formation_probe",
+1244:         "epochs_completed": epochs,
+1245:         "model_selection": "none_final_epoch_only",
+1246:         "dev_evaluations_during_training": 0,
+1247:         **complementarity,
+1248:         "formation_gate": formation_gate,
+1249:         "next_phase_authorized": bool(formation_gate["passed"]),
+1250:         "oracle_uses_ground_truth": True,

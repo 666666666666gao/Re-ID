@@ -1,0 +1,436 @@
+FILE 152: tools/verify_rgbnt100_signal_protocol.py
+1: #!/usr/bin/env python3
+2: """Check every RGBNT100 training montage, identity fold, and camera query mask."""
+3: import argparse
+4: from collections import Counter
+5: import hashlib
+6: import json
+7: from pathlib import Path
+8: import subprocess
+9: import sys
+10: import time
+11: 
+12: ROOT = Path(__file__).resolve().parents[1]
+13: sys.path.insert(0, str(ROOT))
+14: 
+15: from tools.train_rgbnt100_signal_oof import configure, read_montage, camera_scores, sha256
+16: 
+17: 
+18: def run(args):
+19:     started = time.perf_counter()
+20:     config_path = args.config.resolve()
+21:     config = json.loads(config_path.read_text(encoding="utf-8"))
+22:     cfg, binding = configure(config)
+23:     from data.datasets.bases import read_image
+24:     from utils.metrics import eval_func
+25:     import numpy as np
+26: 
+27:     protocol_path = ROOT / config["protocol"]
+28:     assert sha256(protocol_path) == config["protocol_sha256"]
+29:     protocol = json.loads(protocol_path.read_text(encoding="utf-8"))
+30:     records = protocol["records"]
+31:     assert len(records) == 8675
+32:     dimensions = Counter()
+33:     for row in records:
+34:         path = Path(config["dataset_root"]) / row["path"]
+35:         assert sha256(path) == row["sha256"], row["path"]
+36:         actual, original = read_montage(path), read_image(str(path))
+37:         assert len(actual) == len(original) == 3
+38:         for left, right in zip(actual, original, strict=True):
+39:             assert left.mode == right.mode == "RGB"
+40:             assert left.size == right.size == (256, 128)
+41:             assert left.tobytes() == right.tobytes(), row["path"]
+42:         dimensions["768x128"] += 1
+43:     all_heldout, all_queries = [], []
+44:     fold_checks = []
+45:     for fold in protocol["folds"]:
+46:         source, gallery = set(fold["source_record_indices"]), fold["gallery_record_indices"]
+47:         assert source.isdisjoint(gallery)
+48:         assert source | set(gallery) == set(range(8675))
+49:         assert {records[i]["identity"] for i in source} == set(fold["source_ids"])
+50:         assert {records[i]["identity"] for i in gallery} == set(fold["heldout_ids"])
+51:         assert set(fold["source_ids"]).isdisjoint(fold["heldout_ids"])
+52:         assert {records[i]["camera"] for i in source} == set(range(8))
+53:         assert fold["source_label_map"] == {str(pid): i for i, pid in enumerate(fold["source_ids"])}
+54:         counts = Counter(records[i]["identity"] for i in gallery)
+55:         camera_counts = Counter((records[i]["identity"], records[i]["camera"]) for i in gallery)
+56:         query_lookup = {q["record_index"]: q for q in fold["query_rows"]}
+57:         assert len(query_lookup) == len(fold["query_rows"])
+58:         expected_queries = []
+59:         for position, index in enumerate(gallery):
+60:             row = records[index]
+61:             positive_count = counts[row["identity"]] - camera_counts[row["identity"], row["camera"]]
+62:             if positive_count:
+63:                 q = query_lookup[index]
+64:                 assert q == {"record_index": index, "gallery_position": position,
+65:                              "identity": row["identity"], "valid_positive_count": positive_count}
+66:                 expected_queries.append(index)
+67:         assert expected_queries == [q["record_index"] for q in fold["query_rows"]]
+68:         all_heldout.extend(gallery)
+69:         all_queries.extend(expected_queries)
+70:         fold_checks.append({"fold": fold["fold"], "source_records": len(source),
+71:                             "gallery_records": len(gallery), "query_records": len(expected_queries),
+72:                             "source_identities": len(fold["source_ids"]),
+73:                             "heldout_identities": len(fold["heldout_ids"]),
+74:                             "all_query_positive_counts_match": True, "identity_isolation": True})
+75:     assert sorted(all_heldout) == sorted(all_queries) == list(range(8675))
+76:     # Hand-computable fixtures: preserve same-camera negatives and every legal positive.
+77:     fixtures = [
+78:         {"d": [0., .1, .3, .2, .4], "ids": [1, 1, 1, 2, 3],
+79:          "cams": [0, 0, 1, 0, 1], "ap": .5, "rank": 2},
+80:         {"d": [0., .1, .2, .3], "ids": [1, 1, 2, 1],
+81:          "cams": [0, 1, 0, 2], "ap": 5 / 6, "rank": 1},
+82:     ]
+83:     fixture_results = []
+84:     for f in fixtures:
+85:         d, ids, cams = np.asarray([f["d"]]), np.asarray(f["ids"]), np.asarray(f["cams"])
+86:         scores = camera_scores(d, np.asarray([1]), ids, np.asarray([0]), cams)
+87:         cmc, ap = eval_func(d, np.asarray([1]), ids, np.asarray([0]), cams, max_rank=3)
+88:         assert abs(scores["average_precision"][0] - f["ap"]) < 1e-15
+89:         assert scores["first_match_rank"] == [f["rank"]]
+90:         assert abs(float(ap) - f["ap"]) < 1e-15
+91:         assert int(np.flatnonzero(cmc)[0]) + 1 == f["rank"]
+92:         fixture_results.append({"expected_ap": f["ap"], "actual_ap": float(ap),
+93:                                 "first_match_rank": f["rank"], "synthetic_not_retrieval_result": True})
+94:     output = args.output.resolve()
+95:     assert not output.exists()
+96:     report = {"status": "PASS_FULL_TRAIN_PROTOCOL_AND_MONTAGE",
+97:               "config_sha256": sha256(config_path), "protocol_sha256": sha256(protocol_path),
+98:               "runner_sha256": sha256(ROOT / "tools/train_rgbnt100_signal_oof.py"),
+99:               "verifier_sha256": sha256(__file__), **binding,
+100:               "project_commit": subprocess.check_output(["git", "-C", str(ROOT), "rev-parse", "HEAD"], text=True).strip(),
+101:               "training_montages_verified": 8675, "modality_crops_compared": 26025,
+102:               "image_decodes": 17350, "dimensions": dict(dimensions), "folds": fold_checks,
+103:               "camera_ranking_synthetic_fixtures": fixture_results,
+104:               "model_forwards": 0, "optimizer_steps": 0, "real_retrieval_metric_calls": 0,
+105:               "official_query_gallery_image_access": 0,
+106:               "elapsed_seconds": time.perf_counter() - started}
+107:     output.write_text(json.dumps(report, indent=2) + "\n", encoding="utf-8")
+108:     print(json.dumps(report), flush=True)
+109: 
+110: 
+111: if __name__ == "__main__":
+112:     parser = argparse.ArgumentParser()
+113:     parser.add_argument("--config", type=Path, required=True)
+114:     parser.add_argument("--output", type=Path, required=True)
+115:     run(parser.parse_args())
+116: 
+
+FILE 143: tools/diagnose_rgbnt100_signal_amp.py
+84:             step_rows.append(row)
+85:             with (args.output_dir / "steps.jsonl").open("a") as handle:
+86:                 handle.write(json.dumps(row, allow_nan=False) + "\n")
+87:             if overflow:
+88:                 gradient_rows = []
+89:                 for name, parameter in model.named_parameters():
+90:                     if parameter.grad is not None:
+91:                         gradient = parameter.grad.detach()
+92:                         gradient_rows.append({
+93:                             "name": name, "elements": gradient.numel(),
+94:                             "nan_count": int(torch.isnan(gradient).sum()),
+95:                             "positive_inf_count": int(torch.isposinf(gradient).sum()),
+96:                             "negative_inf_count": int(torch.isneginf(gradient).sum()),
+97:                         })
+98:                 model_state = {name: value.detach().cpu() for name, value in model.state_dict().items()}
+99:                 model_state.update(before["buffers"])
+100:                 fixture = args.output_dir / "failed_batch_preforward.pt"
+101:                 torch.save({
+102:                     "model_state_dict": model_state,
+103:                     "images": {name: value.detach().cpu() for name, value in state["images"].items()},
+104:                     "labels": state["labels"].detach().cpu(),
+105:                     "cameras": state["cameras"].detach().cpu(),
+106:                     "scenes": state["scenes"].detach().cpu(),
+107:                     "cpu_rng_state": before["cpu_rng_state"], "cuda_rng_state": before["cuda_rng_state"],
+108:                     "amp_scale": state["scale_before"], "step": row["step"], "fold": 0,
+109:                     "source_ids": fold["source_ids"], "source_record_indices": row["sampled_record_indices"],
+110:                 }, fixture)
+111:                 overlap = min(8, len(step_rows))
+112:                 comparisons = []
+113:                 keys = ["loss", "id_triplet_head_losses", "gram_loss", "patch_loss",
+114:                         "sampled_record_indices", "amp_scale_before", "amp_scale_after"]
+115:                 for index in range(overlap):
+116:                     comparisons.append({
+117:                         "step": index + 1,
+118:                         "all_recorded_values_exactly_match_m0": all(
+119:                             step_rows[index][key] == m0["steps"][index][key] for key in keys),
+120:                         "loss_difference": step_rows[index]["loss"] - m0["steps"][index]["loss"],
+121:                         "sample_indices_exact": step_rows[index]["sampled_record_indices"] ==
+122:                                                 m0["steps"][index]["sampled_record_indices"],
+123:                     })
+124:                 runner.write_json(args.output_dir / "diagnosis.json", {
+125:                     **launch, "status": "REPRODUCED_FIRST_AMP_OVERFLOW",
+126:                     "attempted_steps": len(step_rows), "successful_optimizer_steps": len(step_rows) - 1,
+127:                     "source_record_exposures": len(step_rows) * 64, "failed_step": row,
+128:                     "all_parameter_gradient_counts": gradient_rows, "m0_first8_comparison": comparisons,
+129:                     "diagnostic_initial_state_matches_m0": state["initial_state"] == m0["initial_state_sha256"],
+130:                     "fixture_sha256": runner.sha256(fixture), "fixture_bytes": fixture.stat().st_size,
+131:                     "fixture_semantics": "weights before skipped step, all buffers and RNG restored to before failed forward; exact augmented source batch",
+132:                     "elapsed_seconds": time.perf_counter() - started,
+133:                     "peak_allocated_mib": torch.cuda.max_memory_allocated() / 1024**2,
+134:                     "original_failed_successful_steps": "UNKNOWN_NOT_PERSISTED",
+135:                 })
+136:                 print(json.dumps({"event": "diagnostic_overflow_capture", "step": row["step"],
+137:                                   "scale_before": row["amp_scale_before"], "scale_after": scale_after}), flush=True)
+138:         return trace
+139: 
+140:     sys.settrace(trace)
+141:     runner.train_source(model, loader, cfg, fold["source_record_indices"], records, preflight=False)
+142:     raise AssertionError("Diagnostic must stop before the second epoch")
+143: 
+144: if __name__ == "__main__":
+145:     parser = argparse.ArgumentParser()
+146:     parser.add_argument("--config", type=Path, required=True)
+147:     parser.add_argument("--output-dir", type=Path, required=True)
+148:     parser.add_argument("--m0-receipt", type=Path, required=True)
+149:     run(parser.parse_args())
+
+FILE 12: .aris/traces/experiment-audit/2026-09-06_run19/signal_source/solver/lr_scheduler310.py
+1: # encoding: utf-8
+2: """
+3: @author:  liaoxingyu
+4: @contact: sherlockliao01@gmail.com
+5: """
+6: from bisect import bisect_right
+7: import torch
+8: 
+9: 
+10: # FIXME ideally this would be achieved with a CombinedLRScheduler,
+11: # separating MultiStepLR with WarmupLR
+12: # but the current LRScheduler design doesn't allow it
+13: 
+14: class WarmupMultiStepLR(torch.optim.lr_scheduler._LRScheduler):
+15:     def __init__(
+16:             self,
+17:             optimizer,
+18:             milestones,  # steps
+19:             gamma=0.1,
+20:             warmup_factor=1.0 / 3,
+21:             warmup_iters=500,
+22:             warmup_method="linear",
+23:             last_epoch=-1,
+24:     ):
+25:         if not list(milestones) == sorted(milestones):
+26:             raise ValueError(
+27:                 "Milestones should be a list of" " increasing integers. Got {}",
+28:                 milestones,
+29:             )
+30: 
+31:         if warmup_method not in ("constant", "linear"):
+32:             raise ValueError(
+33:                 "Only 'constant' or 'linear' warmup_method accepted"
+34:                 "got {}".format(warmup_method)
+35:             )
+36:         self.milestones = milestones
+37:         self.gamma = gamma
+38:         self.warmup_factor = warmup_factor
+39:         self.warmup_iters = warmup_iters
+40:         self.warmup_method = warmup_method
+41:         super(WarmupMultiStepLR, self).__init__(optimizer, last_epoch)
+42: 
+43:     def get_lr(self):
+44:         warmup_factor = 1
+45:         if self.last_epoch < self.warmup_iters:
+46:             if self.warmup_method == "constant":
+47:                 warmup_factor = self.warmup_factor
+48:             elif self.warmup_method == "linear":
+49:                 alpha = self.last_epoch / self.warmup_iters
+50:                 warmup_factor = self.warmup_factor * (1 - alpha) + alpha
+51:         return [
+52:             base_lr
+53:             * warmup_factor
+54:             * self.gamma ** bisect_right(self.milestones, self.last_epoch)
+55:             for base_lr in self.base_lrs
+56:         ]
+
+FILE 13: .aris/traces/experiment-audit/2026-09-06_run19/signal_source/solver/make_optimizer.py
+1: import torch
+2: 
+3: 
+4: def make_optimizer(cfg, model, center_criterion):
+5:     params = []
+6:     for key, value in model.named_parameters():
+7:         if not value.requires_grad:
+8:             continue
+9:         lr = cfg.SOLVER.BASE_LR
+10:         weight_decay = cfg.SOLVER.WEIGHT_DECAY
+11:         if "bias" in key:
+12:             lr = cfg.SOLVER.BASE_LR * cfg.SOLVER.BIAS_LR_FACTOR
+13:             weight_decay = cfg.SOLVER.WEIGHT_DECAY_BIAS
+14: 
+15:         if cfg.MODEL.TRANSFORMER_TYPE == 'ViT-B-16':  # this setting is for the CLIP pre-trained models
+16:             if not cfg.MODEL.FROZEN:
+17:                 if "base" in key:
+18:                     if "adapter" not in key: # this setting is from MambaPro, where we use to fine-tune the CLIP visual backbone
+19:                         lr = 0.000005
+20:         else:
+21:             if not cfg.MODEL.FROZEN: # this setting is for the ImageNet pre-trained models
+22:                 if "base" in key:
+23:                     if "adapter" not in key:
+24:                         lr = cfg.SOLVER.BASE_LR*0.8
+25:                         
+26:         if cfg.DATASETS.NAMES == 'MSVR310':
+27:             if "classifier" in key:
+28:                 lr = cfg.SOLVER.BASE_LR * 100
+29:                 weight_decay = cfg.SOLVER.WEIGHT_DECAY_BIAS
+30:                 
+31:         if cfg.SOLVER.LARGE_FC_LR:
+32:             if "classifier" in key or "arcface" in key:
+33:                 lr = cfg.SOLVER.BASE_LR * 2
+34:                 print('Using two times learning rate for fc ')
+35: 
+36:         params += [{"params": [value], "lr": lr, "weight_decay": weight_decay}]
+37:     if cfg.SOLVER.OPTIMIZER_NAME == 'SGD':
+38:         optimizer = getattr(torch.optim, cfg.SOLVER.OPTIMIZER_NAME)(params, momentum=cfg.SOLVER.MOMENTUM)
+39:     elif cfg.SOLVER.OPTIMIZER_NAME == 'AdamW':
+40:         optimizer = torch.optim.AdamW(params, lr=cfg.SOLVER.BASE_LR, weight_decay=cfg.SOLVER.WEIGHT_DECAY)
+41:     else:
+42:         optimizer = getattr(torch.optim, cfg.SOLVER.OPTIMIZER_NAME)(params)
+43:     optimizer_center = torch.optim.SGD(center_criterion.parameters(), lr=cfg.SOLVER.CENTER_LR)
+44: 
+45:     return optimizer, optimizer_center
+
+FILE 27: evidence/rgbnt100_signal_source_text_20260906/solver/cosine_lr.py
+25: 
+26:     def __init__(self,
+27:                  optimizer: torch.optim.Optimizer,
+28:                  t_initial: int,
+29:                  t_mul: float = 1.,
+30:                  lr_min: float = 0.,
+31:                  decay_rate: float = 1.,
+32:                  warmup_t=0,
+33:                  warmup_lr_init=0,
+34:                  warmup_prefix=False,
+35:                  cycle_limit=0,
+36:                  t_in_epochs=True,
+37:                  noise_range_t=None,
+38:                  noise_pct=0.67,
+39:                  noise_std=1.0,
+40:                  noise_seed=42,
+41:                  initialize=True) -> None:
+42:         super().__init__(
+43:             optimizer, param_group_field="lr",
+44:             noise_range_t=noise_range_t, noise_pct=noise_pct, noise_std=noise_std, noise_seed=noise_seed,
+45:             initialize=initialize)
+46: 
+47:         assert t_initial > 0
+48:         assert lr_min >= 0
+49:         if t_initial == 1 and t_mul == 1 and decay_rate == 1:
+50:             _logger.warning("Cosine annealing scheduler will have no effect on the learning "
+51:                            "rate since t_initial = t_mul = eta_mul = 1.")
+52:         self.t_initial = t_initial
+53:         self.t_mul = t_mul
+54:         self.lr_min = lr_min
+55:         self.decay_rate = decay_rate
+56:         self.cycle_limit = cycle_limit
+57:         self.warmup_t = warmup_t
+58:         self.warmup_lr_init = warmup_lr_init
+59:         self.warmup_prefix = warmup_prefix
+60:         self.t_in_epochs = t_in_epochs
+61:         if self.warmup_t:
+62:             self.warmup_steps = [(v - warmup_lr_init) / self.warmup_t for v in self.base_values]
+63:             super().update_groups(self.warmup_lr_init)
+64:         else:
+65:             self.warmup_steps = [1 for _ in self.base_values]
+66: 
+67:     def _get_lr(self, t):
+68:         if t < self.warmup_t:
+69:             lrs = [self.warmup_lr_init + t * s for s in self.warmup_steps]
+70:         else:
+71:             if self.warmup_prefix:
+72:                 t = t - self.warmup_t
+73: 
+74:             if self.t_mul != 1:
+75:                 i = math.floor(math.log(1 - t / self.t_initial * (1 - self.t_mul), self.t_mul))
+76:                 t_i = self.t_mul ** i * self.t_initial
+77:                 t_curr = t - (1 - self.t_mul ** i) / (1 - self.t_mul) * self.t_initial
+78:             else:
+79:                 i = t // self.t_initial
+80:                 t_i = self.t_initial
+81:                 t_curr = t - (self.t_initial * i)
+82: 
+83:             gamma = self.decay_rate ** i
+84:             lr_min = self.lr_min * gamma
+85:             lr_max_values = [v * gamma for v in self.base_values]
+86: 
+87:             if self.cycle_limit == 0 or (self.cycle_limit > 0 and i < self.cycle_limit):
+88:                 lrs = [
+89:                     lr_min + 0.5 * (lr_max - lr_min) * (1 + math.cos(math.pi * t_curr / t_i)) for lr_max in lr_max_values
+90:                 ]
+91:             else:
+92:                 lrs = [self.lr_min for _ in self.base_values]
+93: 
+94:         return lrs
+95: 
+96:     def get_epoch_values(self, epoch: int):
+97:         if self.t_in_epochs:
+98:             return self._get_lr(epoch)
+99:         else:
+100:             return None
+101: 
+102:     def get_update_values(self, num_updates: int):
+103:         if not self.t_in_epochs:
+104:             return self._get_lr(num_updates)
+105:         else:
+106:             return None
+107: 
+108:     def get_cycle_length(self, cycles=0):
+109:         if not cycles:
+110:             cycles = self.cycle_limit
+111:         cycles = max(1, cycles)
+112:         if self.t_mul == 1.0:
+113:             return self.t_initial * cycles
+114:         else:
+115:             return int(math.floor(-self.t_initial * (self.t_mul ** cycles - 1) / (1 - self.t_mul)))
+
+FILE 28: evidence/rgbnt100_signal_source_text_20260906/solver/scheduler.py
+55:     def state_dict(self) -> Dict[str, Any]:
+56:         return {key: value for key, value in self.__dict__.items() if key != 'optimizer'}
+57: 
+58:     def load_state_dict(self, state_dict: Dict[str, Any]) -> None:
+59:         self.__dict__.update(state_dict)
+60: 
+61:     def get_epoch_values(self, epoch: int):
+62:         return None
+63: 
+64:     def get_update_values(self, num_updates: int):
+65:         return None
+66: 
+67:     def step(self, epoch: int, metric: float = None) -> None:
+68:         self.metric = metric
+69:         values = self.get_epoch_values(epoch)
+70:         if values is not None:
+71:             values = self._add_noise(values, epoch)
+72:             self.update_groups(values)
+73: 
+74:     def step_update(self, num_updates: int, metric: float = None):
+75:         self.metric = metric
+76:         values = self.get_update_values(num_updates)
+77:         if values is not None:
+78:             values = self._add_noise(values, num_updates)
+79:             self.update_groups(values)
+80: 
+81:     def update_groups(self, values):
+82:         if not isinstance(values, (list, tuple)):
+83:             values = [values] * len(self.optimizer.param_groups)
+84:         for param_group, value in zip(self.optimizer.param_groups, values):
+85:             param_group[self.param_group_field] = value
+86: 
+87:     def _add_noise(self, lrs, t):
+88:         if self.noise_range_t is not None:
+89:             if isinstance(self.noise_range_t, (list, tuple)):
+90:                 apply_noise = self.noise_range_t[0] <= t < self.noise_range_t[1]
+91:             else:
+92:                 apply_noise = t >= self.noise_range_t
+93:             if apply_noise:
+94:                 g = torch.Generator()
+95:                 g.manual_seed(self.noise_seed + t)
+96:                 if self.noise_type == 'normal':
+97:                     while True:
+98:                         # resample if noise out of percent limit, brute force but shouldn't spin much
+99:                         noise = torch.randn(1, generator=g).item()
+100:                         if abs(noise) < self.noise_pct:
+101:                             break
+102:                 else:
+103:                     noise = 2 * (torch.rand(1, generator=g).item() - 0.5) * self.noise_pct
+104:                 lrs = [v + v * noise for v in lrs]
+105:         return lrs

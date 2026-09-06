@@ -1,6 +1,6 @@
 # RGBNT100 Signal source-only 三折基线 v1
 
-更新时间：2026-09-06T12:11:15.931344+08:00。R2存储重试三折完整首epoch M0及全部权重/257步标量核验通过；固定30epoch基线已登记，尚无RGBNT100检索结果。独立审计因服务额度限制未闭合。
+更新时间：2026-09-06T10:22:31.091890+08:00。T0/M0已通过，首次完整基线在fold0首个epoch内AMP溢出停止；无检索结果。
 
 | 阶段 | 状态 | 完整范围 |
 |---|---|---|
@@ -12,14 +12,9 @@
 | Saved batch probe | COMPLETE_NUMERICAL_DIAGNOSIS | 192source前向/0更新；原AMP三零Gramdet、AbsBackward0 NaN，完整FP32有限 |
 | Local Gram FP32 regression | FAIL_OPERATOR_FINITE_GATE | 8034451，仍1零det/各512NaN；0模型前向/0更新 |
 | Stable Gram regression | PASS_SINGLE_REAL_BATCH | 6c741b8，192source前向/0更新；195finite与3072D逐位相同 |
-| R2 T0 | PASS | e699eac全量切片/协议；后续相同源码/config复用真实回执 |
-| R2 M0 first attempt | INCOMPLETE_STORAGE_WRITE | fold0完成81更新/5184 source前向、195梯度有限；写盘失败，strict reload未执行 |
-| R2 storage recovery | COMPLETE | 两个下载zip按SHA无损迁移；所有科学产物保留，新产物固定overlay |
-| R2 M0 storage retry | PASS_ENGINEERING_ONLY | 81/86/90更新，共257/16448 source前向，195梯度/48严格重载前向 |
-| R2 M0 all files/scalars | PASS | 3完整权重内容、全部257步精确FP32重算；0新模型前向 |
-| R2 fixed30 B0 | READY_NOT_RUN | 3fresh source模型/seed42，固定30epoch/8675完整内部query-gallery |
-| Independent Gram audit | INCOMPLETE_SERVICE_LIMIT | 153输入/973项重放完成，最终报告未生成；不覆盖新M0 |
-| Full terminal verifiers | R2_PREPARED_NOT_RUN | R2配置/T0路径/逐步JSONL/精确FP32 loss重算；完整三fold/90epoch/8675query |
+| R2 T0 | READY_NOT_RUN | 新runner/config绑定，重新验证全量切片/协议 |
+| R2 M0 | READY_NOT_RUN | 三fold分别完整首epoch，195梯度/AMP/重载门保留 |
+| Full terminal verifiers | PREPARED_NOT_RUN | 原先准备完整三fold/90epoch/8675query核验，不用于本失败目录 |
 
 R1配置/合同/回执保留；原runner源字节另行存档，R2的最小源码修订单独绑定。M0不是真实检索成绩，各阶段成本分别登记。
 内部三fold协议与官方1715query/8575gallery不同；没有读取官方测试，主目标未达到。

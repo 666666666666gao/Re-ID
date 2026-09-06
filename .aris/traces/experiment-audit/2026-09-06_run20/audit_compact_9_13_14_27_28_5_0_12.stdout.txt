@@ -1,0 +1,592 @@
+FILE 9: .aris/traces/experiment-audit/2026-09-06_run19/signal_source/modeling/make_model.py (comments/blank lines/docstrings omitted only)
+2: import torch.nn as nn
+3: from modeling.backbones.vit_pytorch import vit_base_patch16_224, vit_small_patch16_224, \
+4:     deit_small_patch16_224
+5: from modeling.backbones.t2t import t2t_vit_t_14, t2t_vit_t_24
+6: from fvcore.nn import flop_count
+7: from modeling.backbones.basic_cnn_params.flops import give_supported_ops
+8: import copy
+9: from modeling.meta_arch import build_transformer, weights_init_classifier, weights_init_kaiming
+10: import torch
+11: import torch.nn.functional as F
+14: from modeling.AddModule.useA import Select_Interactive_Module
+15: from modeling.AddModule.useB import AlignmentM
+17: class Signal(nn.Module):
+18:     def __init__(self, num_classes, cfg, camera_num, view_num, factory):
+19:         super(Signal, self).__init__()
+20:         if 'vit_base_patch16_224' in cfg.MODEL.TRANSFORMER_TYPE:
+21:             self.feat_dim = 768
+22:         elif 'ViT-B-16' in cfg.MODEL.TRANSFORMER_TYPE:
+23:             self.feat_dim = 512
+25:         self.num_classes = num_classes
+26:         self.cfg = cfg
+27:         self.num_instance = cfg.DATALOADER.NUM_INSTANCE
+28:         self.direct = cfg.MODEL.DIRECT
+29:         self.camera = camera_num
+30:         self.view = view_num
+31:         self.use_A = cfg.MODEL.USE_A  
+32:         self.use_B = cfg.MODEL.USE_B  
+34:         self.ID_LOSS_TYPE = cfg.MODEL.ID_LOSS_TYPE
+35:         self.image_size = cfg.INPUT.SIZE_TRAIN
+36:         self.h, self.w = self.image_size[0]//16,self.image_size[1]//16
+39:         self.clip_vision_encoder = build_transformer(num_classes, cfg, camera_num, view_num, factory, feat_dim=self.feat_dim)
+41:         if self.direct:
+42:             self.bottleneck = nn.BatchNorm1d(3 * self.feat_dim)
+43:             self.bottleneck.bias.requires_grad_(False)
+44:             self.bottleneck.apply(weights_init_kaiming)
+45:             self.classifier = nn.Linear(3 * self.feat_dim, self.num_classes, bias=False)
+46:             self.classifier.apply(weights_init_classifier)
+50:         else:
+51:             self.classifier_r = nn.Linear(self.feat_dim, self.num_classes, bias=False)
+52:             self.classifier_r.apply(weights_init_classifier)
+54:             self.bottleneck_r = nn.BatchNorm1d(self.feat_dim)
+55:             self.bottleneck_r.bias.requires_grad_(False)
+56:             self.bottleneck_r.apply(weights_init_kaiming)
+57:             self.classifier_n = nn.Linear(self.feat_dim, self.num_classes, bias=False)
+58:             self.classifier_n.apply(weights_init_classifier)
+60:             self.bottleneck_n = nn.BatchNorm1d(self.feat_dim)
+61:             self.bottleneck_n.bias.requires_grad_(False)
+62:             self.bottleneck_n.apply(weights_init_kaiming)
+63:             self.classifier_t = nn.Linear(self.feat_dim, self.num_classes, bias=False)
+64:             self.classifier_t.apply(weights_init_classifier)
+66:             self.bottleneck_t = nn.BatchNorm1d(self.feat_dim)
+67:             self.bottleneck_t.bias.requires_grad_(False)
+71:         if self.use_A:
+72:             num = 3
+73:             self.SIM = Select_Interactive_Module(self.feat_dim,k=int(cfg.MODEL.TOPK))
+74:             self.classifier_var = nn.Linear(num*self.feat_dim, self.num_classes, bias=False)
+75:             self.classifier_var.apply(weights_init_classifier)
+77:             self.bottleneck_var = nn.BatchNorm1d(num*self.feat_dim)
+78:             self.bottleneck_var.bias.requires_grad_(False)
+79:             self.bottleneck_var.apply(weights_init_kaiming)
+81:         if self.use_B:
+83:             self.AlignM = AlignmentM(self.feat_dim,self.h, self.w)
+86:     def load_param(self, trained_path):
+87:         state_dict = torch.load(trained_path, map_location="cpu")
+88:         print(f"Successfully load ckpt!")
+89:         incompatibleKeys = self.load_state_dict(state_dict, strict=False)
+90:         print(incompatibleKeys)
+92:     def flops(self, shape=(3, 256, 128)):
+93:         if self.image_size[0] != shape[1] or self.image_size[1] != shape[2]:
+94:             shape = (3, self.image_size[0], self.image_size[1])
+96:         supported_ops = give_supported_ops()
+97:         model = copy.deepcopy(self)
+98:         model.cuda().eval()
+99:         input_r = torch.randn((1, *shape), device=next(model.parameters()).device)
+100:         input_n = torch.randn((1, *shape), device=next(model.parameters()).device)
+101:         input_t = torch.randn((1, *shape), device=next(model.parameters()).device)
+102:         cam_label = 0
+103:         input = {"RGB": input_r, "NI": input_n, "TI": input_t, "cam_label": cam_label}
+104:         Gflops, unsupported = flop_count(model=model, inputs=(input,), supported_ops=supported_ops)
+105:         del model, input
+106:         return sum(Gflops.values()) * 1e9
+108:     def forward(self, x, label=None, cam_label=None, view_label=None,return_pattern=1,training=True,sge="CLS"):
+109:         if training:
+110:             RGB = x['RGB'] 
+111:             NI = x['NI']
+112:             TI = x['TI']
+116:             rgb_patch,RGB_global = self.clip_vision_encoder(RGB, cam_label=cam_label, view_label=view_label)
+117:             ni_patch,NI_global = self.clip_vision_encoder(NI, cam_label=cam_label, view_label=view_label)
+118:             ti_patch,TI_global = self.clip_vision_encoder(TI, cam_label=cam_label, view_label=view_label)
+122:             if self.use_A:
+123:                 vars_total  = self.SIM(rgb_patch,ni_patch,ti_patch,RGB_global, NI_global, TI_global)
+124:                 vars_global = self.bottleneck_var(vars_total)
+125:                 vars_score = self.classifier_var(vars_global) 
+128:             if self.use_B:
+129:                 if sge == "CLS":
+130:                     loss_area = self.AlignM(rgb_patch,ni_patch,ti_patch ,stage="CLS")
+132:                 else:
+133:                     loss_area,patch_loss = self.AlignM(rgb_patch,ni_patch,ti_patch,stage="together_CLS_Patch")
+138:             if self.direct:
+140:                 ori = torch.cat([RGB_global, NI_global, TI_global], dim=-1)
+141:                 ori_global = self.bottleneck(ori)
+142:                 ori_score = self.classifier(ori_global)
+145:             else:
+147:                 RGB_ori_score = self.classifier_r(self.bottleneck_r(RGB_global))
+148:                 NI_ori_score = self.classifier_n(self.bottleneck_n(NI_global))
+149:                 TI_ori_score = self.classifier_t(self.bottleneck_t(TI_global))
+153:             if self.direct:
+154:                 if not self.use_A:
+155:                     sign = 1
+156:                     return sign,ori_score, ori
+158:                 elif self.use_A and self.use_B == False:
+160:                     sign = 2
+161:                     return sign,ori_score, ori,vars_score,vars_total
+163:                 elif self.use_A and self.use_B:
+164:                     sign = 3
+166:                     if sge == "CLS":
+167:                         return sign, ori_score, ori,vars_score,vars_total,loss_area   
+168:                     else:
+169:                         return sign, ori_score, ori,vars_score,vars_total,loss_area,patch_loss  
+174:             else:
+175:                 if not self.use_A:
+177:                     sign = 1
+178:                     return sign,RGB_ori_score, RGB_global, NI_ori_score, NI_global, TI_ori_score, TI_global
+180:                 elif self.use_A and self.use_B == False:
+183:                     sign = 2
+184:                     return sign,RGB_ori_score, RGB_global, NI_ori_score, NI_global, TI_ori_score, TI_global,vars_score,vars_total
+187:                 elif self.use_A and self.use_B:
+189:                     sign = 3
+190:                     if sge == "CLS":
+191:                         return sign, RGB_ori_score, RGB_global, NI_ori_score, NI_global, TI_ori_score, TI_global,vars_score,vars_total,loss_area  
+192:                     else:
+193:                         return sign, RGB_ori_score, RGB_global, NI_ori_score, NI_global, TI_ori_score, TI_global,vars_score,vars_total,loss_area,patch_loss
+197:         else:
+199:             RGB = x['RGB']
+200:             NI = x['NI']
+201:             TI = x['TI']
+203:             if 'cam_label' in x:
+204:                 cam_label = x['cam_label']
+206:             rgb_patch,RGB_global = self.clip_vision_encoder(RGB, cam_label=cam_label, view_label=view_label)
+207:             ni_patch,NI_global = self.clip_vision_encoder(NI, cam_label=cam_label, view_label=view_label)
+208:             ti_patch,TI_global = self.clip_vision_encoder(TI, cam_label=cam_label, view_label=view_label)
+210:             if self.use_A:
+211:                 vars_total = self.SIM(rgb_patch,ni_patch,ti_patch,RGB_global, NI_global, TI_global)
+214:             if self.use_B:
+215:                 if sge == "CLS":
+216:                     _ = self.AlignM(rgb_patch,ni_patch,ti_patch,stage="CLS")
+218:                 else:
+219:                     _,_ = self.AlignM(rgb_patch,ni_patch,ti_patch,stage="together_CLS_Patch")
+223:             ori = torch.cat([RGB_global, NI_global, TI_global], dim=-1)
+225:             if not self.use_A:
+226:                 return ori
+227:             else:
+228:                 return torch.cat([ori,vars_total],dim=-1)
+233: __factory_T_type = {
+234:     'vit_base_patch16_224': vit_base_patch16_224,
+235:     'deit_base_patch16_224': vit_base_patch16_224,
+236:     'vit_small_patch16_224': vit_small_patch16_224,
+237:     'deit_small_patch16_224': deit_small_patch16_224,
+238:     't2t_vit_t_14': t2t_vit_t_14,
+239:     't2t_vit_t_24': t2t_vit_t_24,
+240: }
+246: def make_frame(cfg, num_class, camera_num, view_num=0):
+247:     model = Signal(num_class, cfg, camera_num, view_num, __factory_T_type)
+248:     print('===========Building Signal===========')
+249:     return model
+252: class LayerNorm(nn.LayerNorm):
+254:     """before and after attention,use it"""
+256:     def forward(self, x: torch.Tensor):
+257:         orig_type = x.dtype
+258:         ret = super().forward(x.type(torch.float32))
+259:         return ret.type(orig_type)
+
+FILE 13: .aris/traces/experiment-audit/2026-09-06_run19/signal_source/solver/make_optimizer.py (comments/blank lines/docstrings omitted only)
+1: import torch
+4: def make_optimizer(cfg, model, center_criterion):
+5:     params = []
+6:     for key, value in model.named_parameters():
+7:         if not value.requires_grad:
+8:             continue
+9:         lr = cfg.SOLVER.BASE_LR
+10:         weight_decay = cfg.SOLVER.WEIGHT_DECAY
+11:         if "bias" in key:
+12:             lr = cfg.SOLVER.BASE_LR * cfg.SOLVER.BIAS_LR_FACTOR
+13:             weight_decay = cfg.SOLVER.WEIGHT_DECAY_BIAS
+15:         if cfg.MODEL.TRANSFORMER_TYPE == 'ViT-B-16':  # this setting is for the CLIP pre-trained models
+16:             if not cfg.MODEL.FROZEN:
+17:                 if "base" in key:
+18:                     if "adapter" not in key: # this setting is from MambaPro, where we use to fine-tune the CLIP visual backbone
+19:                         lr = 0.000005
+20:         else:
+21:             if not cfg.MODEL.FROZEN: # this setting is for the ImageNet pre-trained models
+22:                 if "base" in key:
+23:                     if "adapter" not in key:
+24:                         lr = cfg.SOLVER.BASE_LR*0.8
+26:         if cfg.DATASETS.NAMES == 'MSVR310':
+27:             if "classifier" in key:
+28:                 lr = cfg.SOLVER.BASE_LR * 100
+29:                 weight_decay = cfg.SOLVER.WEIGHT_DECAY_BIAS
+31:         if cfg.SOLVER.LARGE_FC_LR:
+32:             if "classifier" in key or "arcface" in key:
+33:                 lr = cfg.SOLVER.BASE_LR * 2
+34:                 print('Using two times learning rate for fc ')
+36:         params += [{"params": [value], "lr": lr, "weight_decay": weight_decay}]
+37:     if cfg.SOLVER.OPTIMIZER_NAME == 'SGD':
+38:         optimizer = getattr(torch.optim, cfg.SOLVER.OPTIMIZER_NAME)(params, momentum=cfg.SOLVER.MOMENTUM)
+39:     elif cfg.SOLVER.OPTIMIZER_NAME == 'AdamW':
+40:         optimizer = torch.optim.AdamW(params, lr=cfg.SOLVER.BASE_LR, weight_decay=cfg.SOLVER.WEIGHT_DECAY)
+41:     else:
+42:         optimizer = getattr(torch.optim, cfg.SOLVER.OPTIMIZER_NAME)(params)
+43:     optimizer_center = torch.optim.SGD(center_criterion.parameters(), lr=cfg.SOLVER.CENTER_LR)
+45:     return optimizer, optimizer_center
+
+FILE 14: .aris/traces/experiment-audit/2026-09-06_run19/signal_source/solver/scheduler_factory.py (comments/blank lines/docstrings omitted only)
+4: from .cosine_lr import CosineLRScheduler
+7: def create_scheduler(cfg, optimizer):
+8:     num_epochs = cfg.SOLVER.MAX_EPOCHS
+9:     lr_min = 0.001 * cfg.SOLVER.BASE_LR
+10:     warmup_lr_init = 0.1 * cfg.SOLVER.BASE_LR
+12:     warmup_t = cfg.SOLVER.WARMUP_ITERS
+13:     noise_range = (0, num_epochs)
+16:     lr_scheduler = CosineLRScheduler(
+17:         optimizer,
+18:         t_initial=num_epochs,
+19:         lr_min=lr_min,
+20:         t_mul=1.,
+21:         decay_rate=0.1,
+22:         warmup_lr_init=warmup_lr_init,
+23:         warmup_t=warmup_t,
+24:         cycle_limit=1,
+25:         t_in_epochs=True,
+26:         noise_range_t=noise_range,
+27:         noise_pct=0.67,
+28:         noise_std=1.,
+29:         noise_seed=42,
+30:     )
+32:     return lr_scheduler
+
+FILE 27: evidence/rgbnt100_signal_source_text_20260906/solver/cosine_lr.py (comments/blank lines/docstrings omitted only)
+7: import logging
+8: import math
+9: import torch
+11: from .scheduler import Scheduler
+14: _logger = logging.getLogger(__name__)
+17: class CosineLRScheduler(Scheduler):
+26:     def __init__(self,
+27:                  optimizer: torch.optim.Optimizer,
+28:                  t_initial: int,
+29:                  t_mul: float = 1.,
+30:                  lr_min: float = 0.,
+31:                  decay_rate: float = 1.,
+32:                  warmup_t=0,
+33:                  warmup_lr_init=0,
+34:                  warmup_prefix=False,
+35:                  cycle_limit=0,
+36:                  t_in_epochs=True,
+37:                  noise_range_t=None,
+38:                  noise_pct=0.67,
+39:                  noise_std=1.0,
+40:                  noise_seed=42,
+41:                  initialize=True) -> None:
+42:         super().__init__(
+43:             optimizer, param_group_field="lr",
+44:             noise_range_t=noise_range_t, noise_pct=noise_pct, noise_std=noise_std, noise_seed=noise_seed,
+45:             initialize=initialize)
+47:         assert t_initial > 0
+48:         assert lr_min >= 0
+49:         if t_initial == 1 and t_mul == 1 and decay_rate == 1:
+50:             _logger.warning("Cosine annealing scheduler will have no effect on the learning "
+51:                            "rate since t_initial = t_mul = eta_mul = 1.")
+52:         self.t_initial = t_initial
+53:         self.t_mul = t_mul
+54:         self.lr_min = lr_min
+55:         self.decay_rate = decay_rate
+56:         self.cycle_limit = cycle_limit
+57:         self.warmup_t = warmup_t
+58:         self.warmup_lr_init = warmup_lr_init
+59:         self.warmup_prefix = warmup_prefix
+60:         self.t_in_epochs = t_in_epochs
+61:         if self.warmup_t:
+62:             self.warmup_steps = [(v - warmup_lr_init) / self.warmup_t for v in self.base_values]
+63:             super().update_groups(self.warmup_lr_init)
+64:         else:
+65:             self.warmup_steps = [1 for _ in self.base_values]
+67:     def _get_lr(self, t):
+68:         if t < self.warmup_t:
+69:             lrs = [self.warmup_lr_init + t * s for s in self.warmup_steps]
+70:         else:
+71:             if self.warmup_prefix:
+72:                 t = t - self.warmup_t
+74:             if self.t_mul != 1:
+75:                 i = math.floor(math.log(1 - t / self.t_initial * (1 - self.t_mul), self.t_mul))
+76:                 t_i = self.t_mul ** i * self.t_initial
+77:                 t_curr = t - (1 - self.t_mul ** i) / (1 - self.t_mul) * self.t_initial
+78:             else:
+79:                 i = t // self.t_initial
+80:                 t_i = self.t_initial
+81:                 t_curr = t - (self.t_initial * i)
+83:             gamma = self.decay_rate ** i
+84:             lr_min = self.lr_min * gamma
+85:             lr_max_values = [v * gamma for v in self.base_values]
+87:             if self.cycle_limit == 0 or (self.cycle_limit > 0 and i < self.cycle_limit):
+88:                 lrs = [
+89:                     lr_min + 0.5 * (lr_max - lr_min) * (1 + math.cos(math.pi * t_curr / t_i)) for lr_max in lr_max_values
+90:                 ]
+91:             else:
+92:                 lrs = [self.lr_min for _ in self.base_values]
+94:         return lrs
+96:     def get_epoch_values(self, epoch: int):
+97:         if self.t_in_epochs:
+98:             return self._get_lr(epoch)
+99:         else:
+100:             return None
+102:     def get_update_values(self, num_updates: int):
+103:         if not self.t_in_epochs:
+104:             return self._get_lr(num_updates)
+105:         else:
+106:             return None
+108:     def get_cycle_length(self, cycles=0):
+109:         if not cycles:
+110:             cycles = self.cycle_limit
+111:         cycles = max(1, cycles)
+112:         if self.t_mul == 1.0:
+113:             return self.t_initial * cycles
+114:         else:
+115:             return int(math.floor(-self.t_initial * (self.t_mul ** cycles - 1) / (1 - self.t_mul)))
+
+FILE 28: evidence/rgbnt100_signal_source_text_20260906/solver/scheduler.py (comments/blank lines/docstrings omitted only)
+1: from typing import Dict, Any
+3: import torch
+6: class Scheduler:
+25:     def __init__(self,
+26:                  optimizer: torch.optim.Optimizer,
+27:                  param_group_field: str,
+28:                  noise_range_t=None,
+29:                  noise_type='normal',
+30:                  noise_pct=0.67,
+31:                  noise_std=1.0,
+32:                  noise_seed=None,
+33:                  initialize: bool = True) -> None:
+34:         self.optimizer = optimizer
+35:         self.param_group_field = param_group_field
+36:         self._initial_param_group_field = f"initial_{param_group_field}"
+37:         if initialize:
+38:             for i, group in enumerate(self.optimizer.param_groups):
+39:                 if param_group_field not in group:
+40:                     raise KeyError(f"{param_group_field} missing from param_groups[{i}]")
+41:                 group.setdefault(self._initial_param_group_field, group[param_group_field])
+42:         else:
+43:             for i, group in enumerate(self.optimizer.param_groups):
+44:                 if self._initial_param_group_field not in group:
+45:                     raise KeyError(f"{self._initial_param_group_field} missing from param_groups[{i}]")
+46:         self.base_values = [group[self._initial_param_group_field] for group in self.optimizer.param_groups]
+47:         self.metric = None  # any point to having this for all?
+48:         self.noise_range_t = noise_range_t
+49:         self.noise_pct = noise_pct
+50:         self.noise_type = noise_type
+51:         self.noise_std = noise_std
+52:         self.noise_seed = noise_seed if noise_seed is not None else 42
+53:         self.update_groups(self.base_values)
+55:     def state_dict(self) -> Dict[str, Any]:
+56:         return {key: value for key, value in self.__dict__.items() if key != 'optimizer'}
+58:     def load_state_dict(self, state_dict: Dict[str, Any]) -> None:
+59:         self.__dict__.update(state_dict)
+61:     def get_epoch_values(self, epoch: int):
+62:         return None
+64:     def get_update_values(self, num_updates: int):
+65:         return None
+67:     def step(self, epoch: int, metric: float = None) -> None:
+68:         self.metric = metric
+69:         values = self.get_epoch_values(epoch)
+70:         if values is not None:
+71:             values = self._add_noise(values, epoch)
+72:             self.update_groups(values)
+74:     def step_update(self, num_updates: int, metric: float = None):
+75:         self.metric = metric
+76:         values = self.get_update_values(num_updates)
+77:         if values is not None:
+78:             values = self._add_noise(values, num_updates)
+79:             self.update_groups(values)
+81:     def update_groups(self, values):
+82:         if not isinstance(values, (list, tuple)):
+83:             values = [values] * len(self.optimizer.param_groups)
+84:         for param_group, value in zip(self.optimizer.param_groups, values):
+85:             param_group[self.param_group_field] = value
+87:     def _add_noise(self, lrs, t):
+88:         if self.noise_range_t is not None:
+89:             if isinstance(self.noise_range_t, (list, tuple)):
+90:                 apply_noise = self.noise_range_t[0] <= t < self.noise_range_t[1]
+91:             else:
+92:                 apply_noise = t >= self.noise_range_t
+93:             if apply_noise:
+94:                 g = torch.Generator()
+95:                 g.manual_seed(self.noise_seed + t)
+96:                 if self.noise_type == 'normal':
+97:                     while True:
+99:                         noise = torch.randn(1, generator=g).item()
+100:                         if abs(noise) < self.noise_pct:
+101:                             break
+102:                 else:
+103:                     noise = 2 * (torch.rand(1, generator=g).item() - 0.5) * self.noise_pct
+104:                 lrs = [v + v * noise for v in lrs]
+105:         return lrs
+
+FILE 5: .aris/traces/experiment-audit/2026-09-06_run19/signal_source/data/datasets/sampler.py (comments/blank lines/docstrings omitted only)
+1: from torch.utils.data.sampler import Sampler
+2: from collections import defaultdict
+3: import copy
+4: import random
+5: import numpy as np
+8: class RandomIdentitySampler(Sampler):
+18:     def __init__(self, data_source, batch_size, num_instances,seed):
+20:         np.random.seed(seed)
+21:         random.seed(seed)
+23:         self.data_source = data_source
+24:         self.batch_size = batch_size
+25:         self.num_instances = num_instances
+26:         self.num_pids_per_batch = self.batch_size // self.num_instances
+27:         self.index_dic = defaultdict(list)  # dict with list value
+29:         for index, (_, pid, _, _) in enumerate(self.data_source):
+30:             self.index_dic[pid].append(index)
+31:         self.pids = list(self.index_dic.keys())
+34:         self.length = 0
+35:         for pid in self.pids:
+36:             idxs = self.index_dic[pid]
+37:             num = len(idxs)
+38:             if num < self.num_instances:
+39:                 num = self.num_instances
+40:             self.length += num - num % self.num_instances
+42:     def __iter__(self):
+43:         batch_idxs_dict = defaultdict(list)
+45:         for pid in self.pids:
+46:             idxs = copy.deepcopy(self.index_dic[pid])
+47:             if len(idxs) < self.num_instances:
+48:                 idxs = np.random.choice(idxs, size=self.num_instances, replace=True)
+49:             random.shuffle(idxs)
+50:             batch_idxs = []
+51:             for idx in idxs:
+52:                 batch_idxs.append(idx)
+53:                 if len(batch_idxs) == self.num_instances:
+54:                     batch_idxs_dict[pid].append(batch_idxs)
+55:                     batch_idxs = []
+57:         avai_pids = copy.deepcopy(self.pids)
+58:         final_idxs = []
+60:         while len(avai_pids) >= self.num_pids_per_batch:
+61:             selected_pids = random.sample(avai_pids, self.num_pids_per_batch)
+62:             for pid in selected_pids:
+63:                 batch_idxs = batch_idxs_dict[pid].pop(0)
+64:                 final_idxs.extend(batch_idxs)
+65:                 if len(batch_idxs_dict[pid]) == 0:
+66:                     avai_pids.remove(pid)
+68:         return iter(final_idxs)
+70:     def __len__(self):
+71:         return self.length
+
+FILE 0: .aris/traces/experiment-audit/2026-09-06_run19/signal_source/config/defaults.py (comments/blank lines/docstrings omitted only)
+1: from yacs.config import CfgNode as CN
+3: _C = CN()
+7: _C.MODEL = CN()
+9: _C.MODEL.DEVICE = "cuda"
+11: _C.MODEL.DEVICE_ID = '0'
+13: _C.MODEL.NAME = 'Signal'
+15: _C.MODEL.PRETRAIN_PATH_T = '/path/to/your/vitb_16_224_21k.pth'
+20: _C.MODEL.NECK = 'bnneck'
+22: _C.MODEL.IF_WITH_CENTER = 'no'
+23: _C.MODEL.ID_LOSS_TYPE = 'softmax'
+24: _C.MODEL.ID_LOSS_WEIGHT = 1.0
+25: _C.MODEL.TRIPLET_LOSS_WEIGHT = 1.0
+26: _C.MODEL.Gram_Loss_weight = 0.15
+27: _C.MODEL.PAT_Loss_weight = 0.1
+28: _C.MODEL.MoE_Loss_weight = 0.1
+31: _C.MODEL.METRIC_LOSS_TYPE = 'triplet'
+33: _C.MODEL.DIST_TRAIN = False
+34: _C.MODEL.PROMPT = False # From MambaPro
+35: _C.MODEL.ADAPTER = False # From MambaPro
+36: _C.MODEL.FROZEN = False # whether to freeze the backbone
+38: _C.MODEL.IF_LABELSMOOTH = 'on'
+39: _C.MODEL.DIRECT = 1
+41: _C.MODEL.DROP_PATH = 0.1
+42: _C.MODEL.DROP_OUT = 0.0
+43: _C.MODEL.ATT_DROP_RATE = 0.0
+44: _C.MODEL.TRANSFORMER_TYPE = 'vit_base_patch16_224'
+45: _C.MODEL.STRIDE_SIZE = [16, 16]
+46: _C.MODEL.USE_A = False  
+47: _C.MODEL.USE_B = False  
+48: _C.MODEL.TOPK = 64
+49: _C.MODEL.stageName = 'CLS '
+51: _C.MODEL.SIE_COE = 3.0
+52: _C.MODEL.SIE_CAMERA = True
+53: _C.MODEL.SIE_VIEW = False  # We do not use this parameter
+59: _C.INPUT = CN()
+61: _C.INPUT.SIZE_TRAIN = [256, 128]
+63: _C.INPUT.SIZE_TEST = [256, 128]
+65: _C.INPUT.PROB = 0.5
+67: _C.INPUT.RE_PROB = 0.5
+69: _C.INPUT.PIXEL_MEAN = [0.5, 0.5, 0.5]
+71: _C.INPUT.PIXEL_STD = [0.5, 0.5, 0.5]
+73: _C.INPUT.PADDING = 10
+78: _C.DATASETS = CN()
+80: _C.DATASETS.NAMES = ('RGBNT201')
+82: _C.DATASETS.ROOT_DIR = ('./data')
+87: _C.DATALOADER = CN()
+89: _C.DATALOADER.NUM_WORKERS = 6  # This may be affected by the order of data reading
+91: _C.DATALOADER.SAMPLER = 'softmax_triplet'
+93: _C.DATALOADER.NUM_INSTANCE = 8 # You can adjust it to 8 to save memory while the batch_size need to be 64 to ensure the number of ID
+98: _C.SOLVER = CN()
+100: _C.SOLVER.OPTIMIZER_NAME = "SGD"
+102: _C.SOLVER.MAX_EPOCHS = 120
+104: _C.SOLVER.BASE_LR = 0.009
+106: _C.SOLVER.LARGE_FC_LR = False
+107: _C.SOLVER.BIAS_LR_FACTOR = 2
+109: _C.SOLVER.MOMENTUM = 0.9
+111: _C.SOLVER.MARGIN = 0.3
+113: _C.SOLVER.CLUSTER_MARGIN = 0.3
+115: _C.SOLVER.CENTER_LR = 0.5
+117: _C.SOLVER.CENTER_LOSS_WEIGHT = 0.0005
+119: _C.SOLVER.RANGE_K = 2
+120: _C.SOLVER.RANGE_MARGIN = 0.3
+121: _C.SOLVER.RANGE_ALPHA = 0
+122: _C.SOLVER.RANGE_BETA = 1
+123: _C.SOLVER.RANGE_LOSS_WEIGHT = 1
+125: _C.SOLVER.WEIGHT_DECAY = 0.0001
+126: _C.SOLVER.WEIGHT_DECAY_BIAS = 0.0001
+128: _C.SOLVER.GAMMA = 0.1
+130: _C.SOLVER.STEPS = (40, 70)
+132: _C.SOLVER.WARMUP_FACTOR = 0.01
+134: _C.SOLVER.WARMUP_ITERS = 10
+136: _C.SOLVER.WARMUP_METHOD = "linear"
+138: _C.SOLVER.COSINE_MARGIN = 0.5
+139: _C.SOLVER.COSINE_SCALE = 30
+140: _C.SOLVER.SEED = 1234
+141: _C.MODEL.NO_MARGIN = True
+143: _C.SOLVER.CHECKPOINT_PERIOD = 50
+145: _C.SOLVER.LOG_PERIOD = 10
+147: _C.SOLVER.EVAL_PERIOD = 5
+151: _C.SOLVER.IMS_PER_BATCH = 128  # You can adjust it to 64
+158: _C.TEST = CN()
+160: _C.TEST.EVAL=False
+161: _C.TEST.IMS_PER_BATCH = 256
+163: _C.TEST.RE_RANKING = 'no'
+165: _C.TEST.WEIGHT = ""
+167: _C.TEST.NECK_FEAT = 'before'
+169: _C.TEST.FEAT_NORM = 'yes'
+171: _C.TEST.MISS = 'None'
+176: _C.OUTPUT_DIR = "./test"
+177: _C.ckpt_save_path = 'baseline'
+178: _C.ckpt_test_path = 'test_RNT'
+
+FILE 12: .aris/traces/experiment-audit/2026-09-06_run19/signal_source/solver/lr_scheduler310.py (comments/blank lines/docstrings omitted only)
+6: from bisect import bisect_right
+7: import torch
+14: class WarmupMultiStepLR(torch.optim.lr_scheduler._LRScheduler):
+15:     def __init__(
+16:             self,
+17:             optimizer,
+18:             milestones,  # steps
+19:             gamma=0.1,
+20:             warmup_factor=1.0 / 3,
+21:             warmup_iters=500,
+22:             warmup_method="linear",
+23:             last_epoch=-1,
+24:     ):
+25:         if not list(milestones) == sorted(milestones):
+26:             raise ValueError(
+27:                 "Milestones should be a list of" " increasing integers. Got {}",
+28:                 milestones,
+29:             )
+31:         if warmup_method not in ("constant", "linear"):
+32:             raise ValueError(
+33:                 "Only 'constant' or 'linear' warmup_method accepted"
+34:                 "got {}".format(warmup_method)
+35:             )
+36:         self.milestones = milestones
+37:         self.gamma = gamma
+38:         self.warmup_factor = warmup_factor
+39:         self.warmup_iters = warmup_iters
+40:         self.warmup_method = warmup_method
+41:         super(WarmupMultiStepLR, self).__init__(optimizer, last_epoch)
+43:     def get_lr(self):
+44:         warmup_factor = 1
+45:         if self.last_epoch < self.warmup_iters:
+46:             if self.warmup_method == "constant":
+47:                 warmup_factor = self.warmup_factor
+48:             elif self.warmup_method == "linear":
+49:                 alpha = self.last_epoch / self.warmup_iters
+50:                 warmup_factor = self.warmup_factor * (1 - alpha) + alpha
+51:         return [
+52:             base_lr
+53:             * warmup_factor
+54:             * self.gamma ** bisect_right(self.milestones, self.last_epoch)
+55:             for base_lr in self.base_lrs
+56:         ]

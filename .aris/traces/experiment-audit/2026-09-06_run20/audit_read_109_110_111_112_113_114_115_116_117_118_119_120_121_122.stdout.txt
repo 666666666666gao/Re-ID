@@ -1,0 +1,429 @@
+FILE 109: evidence/trifusion_rgbnt100_signal_v1_baseline_launch_20260906.json
+1: {
+2:   "launched_at": "2026-09-06T09:53:07.227306+08:00",
+3:   "wrapper_pid": 80418,
+4:   "wrapper_proc_exists": true,
+5:   "wrapper_sha256": "337d7ac2e064209fb557add0c1495203e70a8bd57f02fd58484e9ef3725f6825",
+6:   "project_commit": "60a3d0e99646ce1f48edfab698ac132b79146a9e",
+7:   "output_root": "/root/autodl-tmp/trifusion-v2/artifacts/rgbnt100_signal_source_oof_v1_seed42_1157f0d",
+8:   "scope": "three complete30epoch source Signal endpoints;8675query/gallery, no checkpoint choice, no M0 weight reuse;first progress observation around10:08"
+9: }
+
+FILE 110: evidence/trifusion_rgbnt100_signal_v1_baseline_launch_plan_20260906.json
+1: {
+2:   "prepared_at": "2026-09-06T09:50:38.079036+08:00",
+3:   "status": "READY_NOT_RUN",
+4:   "scope": "Only the already registered threefold fixed30epoch Signal source baselines; no new method",
+5:   "run_root": "/root/autodl-tmp/trifusion-v2/artifacts/rgbnt100_signal_source_oof_v1_seed42_1157f0d",
+6:   "output_directory": "baseline",
+7:   "config_sha256": "7270e2bf95c5f5a60e1dc6d6b047f043dce667d508783b36bc4734aecbc4c15b",
+8:   "runner_sha256": "514a2c86634b61ef8b6de32b6ff1990cdf18e208a91673fb192534b52e5a1357",
+9:   "t0_receipt_sha256": "b60c8b45ca6e6d4eaf374ea127b0b7eef3331a393f05b414d2825bf731a41dcd",
+10:   "m0_receipt_sha256": "7e9f6214efdbf14611fd5bb0ce2f4d7e6c9ae68c9549af06659d018b39e09820",
+11:   "m0_files_verification_sha256": "5002b67ce4aa547dfea79d58ed4189ceee123772c51949df05a5941df51b6e5d",
+12:   "epochs_per_fold": 30,
+13:   "folds": [
+14:     0,
+15:     1,
+16:     2
+17:   ],
+18:   "seed": 42,
+19:   "batch_size": 64,
+20:   "instances_per_identity": 8,
+21:   "checkpoint_selection": "fixed_epoch30",
+22:   "source_initialization": "fresh seed42 universal CLIP/source classifiers; no M0 or prior dataset weights",
+23:   "heldout_queries": 8675,
+24:   "heldout_gallery_forwards": 8675,
+25:   "official_test_forwards": 0,
+26:   "initial_duration_estimate_minutes": [
+27:     75,
+28:     100
+29:   ],
+30:   "observation_plan": "first training progress at approximately15min, then estimate completion from actual epoch durations; no heldout-guided stopping"
+31: }
+
+FILE 111: evidence/trifusion_rgbnt100_signal_v1_baseline_wrapper_20260906.py
+1: from pathlib import Path
+2: import datetime,hashlib,json,os,subprocess,sys,time
+3: ROOT=Path("/root/autodl-tmp/trifusion-v2/TriFusion-ReID")
+4: OUT=Path("/root/autodl-tmp/trifusion-v2/artifacts/rgbnt100_signal_source_oof_v1_seed42_1157f0d")
+5: PY="/root/miniconda3/envs/tri_reid/bin/python"
+6: def sha(p):return hashlib.sha256(p.read_bytes()).hexdigest()
+7: assert subprocess.check_output(["git","rev-parse","HEAD"],cwd=ROOT,text=True).strip()=="60a3d0e99646ce1f48edfab698ac132b79146a9e"
+8: plan=json.loads((ROOT/"evidence/trifusion_rgbnt100_signal_v1_baseline_launch_plan_20260906.json").read_text())
+9: assert sha(ROOT/"configs/RGBNT100/Signal-source-oof-v1.json")==plan["config_sha256"]
+10: assert sha(ROOT/"tools/train_rgbnt100_signal_oof.py")==plan["runner_sha256"]
+11: assert sha(OUT/"t0.json")==plan["t0_receipt_sha256"]
+12: assert sha(OUT/"m0/summary.json")==plan["m0_receipt_sha256"]
+13: assert sha(OUT/"m0_files_verification.json")==plan["m0_files_verification_sha256"]
+14: assert json.loads((OUT/"m0/summary.json").read_text())["status"]=="PASS_ENGINEERING_ONLY"
+15: assert not (OUT/"baseline").exists()
+16: free=int(subprocess.check_output(["nvidia-smi","--query-gpu=memory.free","--format=csv,noheader,nounits"],text=True).strip())
+17: assert free>=22000,free
+18: command=[PY,"-u",str(ROOT/"tools/train_rgbnt100_signal_oof.py"),"--config",str(ROOT/"configs/RGBNT100/Signal-source-oof-v1.json"),
+19: "--output-dir",str(OUT/"baseline"),"--mode","train","--preflight-receipt",str(OUT/"m0/summary.json"),
+20: "--protocol-receipt",str(OUT/"t0.json")]
+21: receipt={"launched_at":datetime.datetime.now(datetime.timezone(datetime.timedelta(hours=8))).isoformat(),
+22: "wrapper_pid":os.getpid(),"command":command,"project_commit":"60a3d0e99646ce1f48edfab698ac132b79146a9e",
+23: "gpu_free_mib":free,"runner_sha256":plan["runner_sha256"],"config_sha256":plan["config_sha256"],
+24: "m0_receipt_sha256":plan["m0_receipt_sha256"],"t0_receipt_sha256":plan["t0_receipt_sha256"],
+25: "scope":"fresh threefold fixed30epoch Signal source baseline, all8675query/gallery,0official, no M0 weight reuse"}
+26: (OUT/"baseline_launch.json").write_text(json.dumps(receipt,indent=2)+"\n")
+27: start=time.perf_counter()
+28: with (OUT/"baseline.log").open("w") as log:
+29:     code=subprocess.run(command,cwd=ROOT,stdout=log,stderr=subprocess.STDOUT).returncode
+30: (OUT/"baseline_exit.txt").write_text(str(code)+"\n")
+31: (OUT/"baseline_terminal.json").write_text(json.dumps({"completed_at":datetime.datetime.now(datetime.timezone(datetime.timedelta(hours=8))).isoformat(),
+32: "exit_code":code,"elapsed_seconds":time.perf_counter()-start},indent=2)+"\n")
+33: sys.exit(code)
+
+FILE 112: evidence/trifusion_rgbnt100_signal_v1_engineering_launch_20260906.json
+1: {
+2:   "launched_at": "2026-09-06T09:39:51.845657+08:00",
+3:   "wrapper_pid": 79272,
+4:   "proc_exists": true,
+5:   "wrapper_sha256": "5ca49e8f2cbba97c35583c7855041887babb9b4549ead18e42d3a549acdbece0",
+6:   "project_commit": "1157f0de6063bbf51855279ceb8b1822ef8c98d1",
+7:   "output_root": "/root/autodl-tmp/trifusion-v2/artifacts/rgbnt100_signal_source_oof_v1_seed42_1157f0d",
+8:   "scope": "T0 complete8675train montage/scene-free camera protocol; then T0-PASS-gated threefold8-step M0; formal30epoch baseline not launched"
+9: }
+
+FILE 113: evidence/trifusion_rgbnt100_signal_v1_engineering_wrapper_20260906.py
+1: from pathlib import Path
+2: import datetime,hashlib,json,os,subprocess,sys,time
+3: ROOT=Path("/root/autodl-tmp/trifusion-v2/TriFusion-ReID")
+4: OUT=Path("/root/autodl-tmp/trifusion-v2/artifacts/rgbnt100_signal_source_oof_v1_seed42_1157f0d")
+5: PY="/root/miniconda3/envs/tri_reid/bin/python"
+6: def now():return datetime.datetime.now(datetime.timezone(datetime.timedelta(hours=8))).isoformat()
+7: def dump(p,x):p.write_text(json.dumps(x,indent=2)+"\n")
+8: def sha(p):return hashlib.sha256(p.read_bytes()).hexdigest()
+9: assert subprocess.check_output(["git","rev-parse","HEAD"],cwd=ROOT,text=True).strip()=="1157f0de6063bbf51855279ceb8b1822ef8c98d1"
+10: assert sha(ROOT/"configs/RGBNT100/Signal-source-oof-v1.json")=="7270e2bf95c5f5a60e1dc6d6b047f043dce667d508783b36bc4734aecbc4c15b"
+11: assert sha(ROOT/"tools/train_rgbnt100_signal_oof.py")=="514a2c86634b61ef8b6de32b6ff1990cdf18e208a91673fb192534b52e5a1357"
+12: assert sha(ROOT/"tools/verify_rgbnt100_signal_protocol.py")=="4555014620f3adadf1fcdfe99700d843e2db3229ce0b8c5dc3bb2610aef1ee6f"
+13: config=ROOT/"configs/RGBNT100/Signal-source-oof-v1.json"
+14: start=time.perf_counter()
+15: t0cmd=[PY,"-u",str(ROOT/"tools/verify_rgbnt100_signal_protocol.py"),"--config",str(config),"--output",str(OUT/"t0.json")]
+16: dump(OUT/"t0_launch.json",{"launched_at":now(),"command":t0cmd,"wrapper_pid":os.getpid(),"project_commit":"1157f0de6063bbf51855279ceb8b1822ef8c98d1"})
+17: with (OUT/"t0.log").open("w") as log:
+18:     code=subprocess.run(t0cmd,cwd=ROOT,stdout=log,stderr=subprocess.STDOUT).returncode
+19: (OUT/"t0_exit.txt").write_text(str(code)+"\n")
+20: if code!=0:
+21:     (OUT/"engineering_exit.txt").write_text(str(code)+"\n")
+22:     sys.exit(code)
+23: t0=json.loads((OUT/"t0.json").read_text())
+24: assert t0["status"]=="PASS_FULL_TRAIN_PROTOCOL_AND_MONTAGE"
+25: free=int(subprocess.check_output(["nvidia-smi","--query-gpu=memory.free","--format=csv,noheader,nounits"],text=True).strip())
+26: assert free>=22000,free
+27: cmd=[PY,"-u",str(ROOT/"tools/train_rgbnt100_signal_oof.py"),"--config",str(config),
+28: "--output-dir",str(OUT/"m0"),"--mode","preflight","--protocol-receipt",str(OUT/"t0.json")]
+29: dump(OUT/"m0_launch.json",{"launched_at":now(),"command":cmd,"wrapper_pid":os.getpid(),"gpu_free_mib":free,
+30: "project_commit":"1157f0de6063bbf51855279ceb8b1822ef8c98d1","t0_receipt_sha256":sha(OUT/"t0.json"),
+31: "scope":"three fresh fold capacities8updates each;24updates total;48clean source strict reload forwards;0heldout model forwards"})
+32: with (OUT/"m0.log").open("w") as log:
+33:     code=subprocess.run(cmd,cwd=ROOT,stdout=log,stderr=subprocess.STDOUT).returncode
+34: (OUT/"m0_exit.txt").write_text(str(code)+"\n")
+35: (OUT/"engineering_exit.txt").write_text(str(code)+"\n")
+36: dump(OUT/"engineering_terminal.json",{"completed_at":now(),"exit_code":code,"elapsed_seconds":time.perf_counter()-start})
+37: sys.exit(code)
+
+FILE 114: evidence/trifusion_rgbnt100_signal_v1_gram_fp32_regression_intake_20260906.json
+1: {
+2:   "observed_at": "2026-09-06T10:47:18.065216+08:00",
+3:   "remote_root": "/root/autodl-tmp/trifusion-v2/artifacts/rgbnt100_signal_gram_fp32_regression_v1_8034451",
+4:   "files": [
+5:     {
+6:       "path": "wrapper.py",
+7:       "bytes": 1893,
+8:       "sha256": "c07f3964f2be81068230f4c61c39a3f4a17d207e53da10dd18ba43cb4b1a2bc3"
+9:     },
+10:     {
+11:       "path": "wrapper.log",
+12:       "bytes": 0,
+13:       "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+14:     },
+15:     {
+16:       "path": "launch.json",
+17:       "bytes": 1071,
+18:       "sha256": "aa3b752023d1584179463a3f1e4f37aa41bceecb650637adb1f997bcd1d37cb4"
+19:     },
+20:     {
+21:       "path": "exit.txt",
+22:       "bytes": 2,
+23:       "sha256": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865"
+24:     },
+25:     {
+26:       "path": "terminal.json",
+27:       "bytes": 1183,
+28:       "sha256": "8a7434ffec883691c166eaa00077ec2a6df6bad16b64a7dec825bbaf443210d9"
+29:     },
+30:     {
+31:       "path": "regression.log",
+32:       "bytes": 1287,
+33:       "sha256": "4c9a5012f92eeae0e275a98341b79dfa58f8f9ac5fcd74241c9a52bc6fe1cab1"
+34:     },
+35:     {
+36:       "path": "regression/operator_results.json",
+37:       "bytes": 3392,
+38:       "sha256": "b0d9a9b6c2a816b02f5913cdfee27b60383842b1add968fbc6241d9a086da878"
+39:     }
+40:   ],
+41:   "scope": "Raw saved text only; no model/optimizer/image execution"
+42: }
+
+FILE 115: evidence/trifusion_rgbnt100_signal_v1_gram_fp32_regression_launch_20260906.json
+1: {
+2:   "wrapper_pid": 83185,
+3:   "proc_exists": true,
+4:   "observed_at": "2026-09-06T10:46:16.586067+08:00",
+5:   "remote_root": "/root/autodl-tmp/trifusion-v2/artifacts/rgbnt100_signal_gram_fp32_regression_v1_8034451",
+6:   "wrapper_sha256": "c07f3964f2be81068230f4c61c39a3f4a17d207e53da10dd18ba43cb4b1a2bc3",
+7:   "project_commit": "80344512b80505e7b9ca72652c06c818f263144e",
+8:   "scope": "real saved Gram operator then full-batch regression if it passes; no optimizer updates"
+9: }
+
+FILE 116: evidence/trifusion_rgbnt100_signal_v1_gram_fp32_regression_plan_20260906.json
+1: {
+2:   "registered_at": "2026-09-06T10:43:29.465425+08:00",
+3:   "status": "READY_NOT_RUN",
+4:   "project_files": {
+5:     "tools/signal_gram_fp32.py": "065d7736cf1e16da318996433f018155371a1ad752440edcbd74b2477f304f03",
+6:     "tools/verify_rgbnt100_signal_gram_fp32.py": "a9d3666e8317ce0adaf7996c3c79c3d8648868e128477a9699c5e9c2b9d46ea2"
+7:   },
+8:   "config": "configs/RGBNT100/Signal-source-oof-v1.json",
+9:   "config_sha256": "7270e2bf95c5f5a60e1dc6d6b047f043dce667d508783b36bc4734aecbc4c15b",
+10:   "fixture": "/root/autodl-tmp/trifusion-v2/artifacts/rgbnt100_signal_amp_capture_v1_seed42_8b412d0/capture/failed_batch_preforward.pt",
+11:   "fixture_sha256": "3c9b41a70a3e3bfabd317cea8b76f314ba16ded8a8246fd41e0561fc7f8286eb",
+12:   "volume_inputs": "/root/autodl-tmp/trifusion-v2/artifacts/rgbnt100_signal_amp_batch_probe_v1_seed42_56f094f/fp16/volume_inputs.pt",
+13:   "volume_inputs_sha256": "3db0ee54b54d0bbe4b0ca73f06cf94bcd170da49e87abd2f15baeff1bf7f5c72",
+14:   "extra_signal_files": {
+15:     "modeling/AddModule/useB.py": "39a65f82d59048745663d891a1c4c012eb1cc404ef8c8084f942702aeef46fec",
+16:     "utils/volume.py": "a154f65e5f4483446748e216b7b03672617efb02004e14e9940446c1013b8ccb",
+17:     "layers/triplet_loss.py": "f502c44bec642bbf72ce6d0f58c9f9a0084beef9cbb451c2d2786bb13f94960a"
+18:   },
+19:   "original_gram_loss": 3.970210552215576,
+20:   "original_patch_loss": 0.03680669143795967,
+21:   "original_id_triplet_head_losses": [
+22:     1.5988661050796509,
+23:     1.632498860359192,
+24:     1.6219165325164795,
+25:     1.4804165363311768
+26:   ],
+27:   "evidence": "FP16 full batch exactly reproduces six losses and153nonfinite gradients; both4096-entry Gram calls have3zero determinants; AbsBackward0 traceback at sqrt(abs(det)); fullFP32 all195finite.",
+28:   "single_change": "existing volume_computation3 only executes with autocast disabled and FP32 inputs; no clamp/epsilon/fallback/objective/scale/LR or network change",
+29:   "operator_stage": "same actual normalized language/video/audio vectors and trained temperature, original AMP versus local Gram FP32; both original calls, all4096entries;2operator backwards,0model/imageforward/update",
+30:   "operator_gates": [
+31:     "original loss exactly3.970210552215576 and nonfinite input gradients reproduced",
+32:     "local GramFP32 allinput/temperature gradients finite,0zero determinants"
+33:   ],
+34:   "full_batch_stage": "only after operator gates pass, same saved model/images/RNG; original and helper3072D inference features exactly equal; corrected AMP fullbatch original4head losses andPatch unchanged, all195gradients finite",
+35:   "maximum_source_record_forwards": 192,
+36:   "maximum_full_model_backward_passes": 1,
+37:   "optimizer_steps": 0,
+38:   "heldout_image_forwards": 0,
+39:   "image_decodes": 0,
+40:   "expected_runtime_minutes": [
+41:     1,
+42:     2
+43:   ],
+44:   "continuation_boundary": "No formal training restart yet. Passing this single-real-batch regression still requires separately registered engineering training and updated provenance.",
+45:   "source_support": [
+46:     "https://github.com/pytorch/pytorch/blob/v2.5.1/torch/amp/grad_scaler.py",
+47:     "https://github.com/pytorch/pytorch/blob/v2.5.1/torch/autograd/anomaly_mode.py"
+48:   ],
+49:   "prepublication_formatting": "Removed trailing blank lines from the two new, unexecuted source files before publication; rebound exact bytes, no code behavior change."
+50: }
+
+FILE 117: evidence/trifusion_rgbnt100_signal_v1_gram_fp32_regression_wrapper_20260906.py
+1: from pathlib import Path
+2: import datetime,hashlib,json,os,subprocess,sys,time
+3: ROOT=Path("/root/autodl-tmp/trifusion-v2/TriFusion-ReID")
+4: OUT=Path("/root/autodl-tmp/trifusion-v2/artifacts/rgbnt100_signal_gram_fp32_regression_v1_8034451")
+5: PY="/root/miniconda3/envs/tri_reid/bin/python"
+6: sha=lambda p:hashlib.sha256(p.read_bytes()).hexdigest()
+7: assert subprocess.check_output(["git","rev-parse","HEAD"],cwd=ROOT,text=True).strip()=="80344512b80505e7b9ca72652c06c818f263144e"
+8: plan_path=ROOT/"evidence/trifusion_rgbnt100_signal_v1_gram_fp32_regression_plan_20260906.json"
+9: plan=json.loads(plan_path.read_text())
+10: for name,digest in plan["project_files"].items(): assert sha(ROOT/name)==digest
+11: free=int(subprocess.check_output(["nvidia-smi","--query-gpu=memory.free","--format=csv,noheader,nounits"],text=True).strip())
+12: assert free>=22000,free
+13: command=[PY,"-u",str(ROOT/"tools/verify_rgbnt100_signal_gram_fp32.py"),"--plan",str(plan_path),
+14: "--fixture",plan["fixture"],"--volume-inputs",plan["volume_inputs"],"--output-dir",str(OUT/"regression")]
+15: launch={"launched_at":datetime.datetime.now(datetime.timezone(datetime.timedelta(hours=8))).isoformat(),
+16: "wrapper_pid":os.getpid(),"command":command,"gpu_free_mib":free,"project_commit":"80344512b80505e7b9ca72652c06c818f263144e",
+17: "plan_sha256":sha(plan_path),"scope":"real Gram operator regression then full batch if operator passes;0updates"}
+18: (OUT/"launch.json").write_text(json.dumps(launch,indent=2)+"\n")
+19: start=time.perf_counter()
+20: with (OUT/"regression.log").open("w") as log:
+21:     code=subprocess.run(command,cwd=ROOT,stdout=log,stderr=subprocess.STDOUT).returncode
+22: (OUT/"exit.txt").write_text(str(code)+"\n")
+23: (OUT/"terminal.json").write_text(json.dumps({**launch,"completed_at":datetime.datetime.now(datetime.timezone(datetime.timedelta(hours=8))).isoformat(),
+24: "exit_code":code,"elapsed_seconds":time.perf_counter()-start},indent=2)+"\n")
+25: sys.exit(code)
+
+FILE 118: evidence/trifusion_rgbnt100_signal_v1_gram_stable_regression_intake_20260906.json
+1: {
+2:   "observed_at": "2026-09-06T10:55:44.202537+08:00",
+3:   "remote_root": "/root/autodl-tmp/trifusion-v2/artifacts/rgbnt100_signal_gram_stable_regression_v1_6c741b8",
+4:   "files": [
+5:     {
+6:       "path": "wrapper.py",
+7:       "bytes": 1899,
+8:       "sha256": "c19a2c30e4089cb3f874ae5cb6cff5688acaa3385fd05492a60ff80d54f5aa7d"
+9:     },
+10:     {
+11:       "path": "wrapper.log",
+12:       "bytes": 0,
+13:       "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+14:     },
+15:     {
+16:       "path": "launch.json",
+17:       "bytes": 1077,
+18:       "sha256": "53392ac523dc698f36bff32c9815ee6116e8243c523ce0c8abfba47eb8000392"
+19:     },
+20:     {
+21:       "path": "exit.txt",
+22:       "bytes": 2,
+23:       "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+24:     },
+25:     {
+26:       "path": "terminal.json",
+27:       "bytes": 1189,
+28:       "sha256": "535ba924c17362d0da6b843453d5aa9e9f9923b8db4d3dece1fb816e687699a3"
+29:     },
+30:     {
+31:       "path": "regression.log",
+32:       "bytes": 1425,
+33:       "sha256": "99c4d2959ae3bf7253db6a2e5e25a733b9bc2b5079ede7b5ba21040dda9209ba"
+34:     },
+35:     {
+36:       "path": "regression/operator_results.json",
+37:       "bytes": 3709,
+38:       "sha256": "8e998cb5de7dec2aadb578d00f0bb50fd213edffddf9794d3905180eef39ad00"
+39:     },
+40:     {
+41:       "path": "regression/full_batch_forward.json",
+42:       "bytes": 1052,
+43:       "sha256": "67b4037065607c81e6b1139382cb5a9539ff89e55ccebb507fdf3a66eec350a8"
+44:     },
+45:     {
+46:       "path": "regression/full_batch_gradients.json",
+47:       "bytes": 27587,
+48:       "sha256": "1476bea8830e95b9fe329a404c942728591a69da5d472509919fecf16fcb3682"
+49:     },
+50:     {
+51:       "path": "regression/summary.json",
+52:       "bytes": 4643,
+53:       "sha256": "8d5dee0f1a16f417fbdd52fd78cf7118554f5b92667b518fb77c5047ba9de8ba"
+54:     }
+55:   ],
+56:   "scope": "Raw saved text only; no model/optimizer/image execution"
+57: }
+
+FILE 119: evidence/trifusion_rgbnt100_signal_v1_gram_stable_regression_launch_20260906.json
+1: {
+2:   "wrapper_pid": 83532,
+3:   "proc_exists": true,
+4:   "observed_at": "2026-09-06T10:53:02.107761+08:00",
+5:   "remote_root": "/root/autodl-tmp/trifusion-v2/artifacts/rgbnt100_signal_gram_stable_regression_v1_6c741b8",
+6:   "wrapper_sha256": "c19a2c30e4089cb3f874ae5cb6cff5688acaa3385fd05492a60ff80d54f5aa7d",
+7:   "project_commit": "6c741b8b56b6a14f83c0e8a9452388aa23e5b301",
+8:   "scope": "real saved Gram operator then full-batch regression if it passes; no optimizer updates"
+9: }
+
+FILE 120: evidence/trifusion_rgbnt100_signal_v1_gram_stable_regression_plan_20260906.json
+1: {
+2:   "registered_at": "2026-09-06T10:51:50.831737+08:00",
+3:   "status": "READY_NOT_RUN",
+4:   "project_files": {
+5:     "tools/signal_gram_stable.py": "fb23d9475b4629cbfac6962d89358668f2390fbf9e7a44fe12c2c6a885b43e60",
+6:     "tools/verify_rgbnt100_signal_gram_stable.py": "351efcf80e748d621991b133f7b971b3b785f80ace8f5cdda065a546a31a7589"
+7:   },
+8:   "config": "configs/RGBNT100/Signal-source-oof-v1.json",
+9:   "config_sha256": "7270e2bf95c5f5a60e1dc6d6b047f043dce667d508783b36bc4734aecbc4c15b",
+10:   "fixture": "/root/autodl-tmp/trifusion-v2/artifacts/rgbnt100_signal_amp_capture_v1_seed42_8b412d0/capture/failed_batch_preforward.pt",
+11:   "fixture_sha256": "3c9b41a70a3e3bfabd317cea8b76f314ba16ded8a8246fd41e0561fc7f8286eb",
+12:   "volume_inputs": "/root/autodl-tmp/trifusion-v2/artifacts/rgbnt100_signal_amp_batch_probe_v1_seed42_56f094f/fp16/volume_inputs.pt",
+13:   "volume_inputs_sha256": "3db0ee54b54d0bbe4b0ca73f06cf94bcd170da49e87abd2f15baeff1bf7f5c72",
+14:   "extra_signal_files": {
+15:     "modeling/AddModule/useB.py": "39a65f82d59048745663d891a1c4c012eb1cc404ef8c8084f942702aeef46fec",
+16:     "utils/volume.py": "a154f65e5f4483446748e216b7b03672617efb02004e14e9940446c1013b8ccb",
+17:     "layers/triplet_loss.py": "f502c44bec642bbf72ce6d0f58c9f9a0084beef9cbb451c2d2786bb13f94960a"
+18:   },
+19:   "original_gram_loss": 3.970210552215576,
+20:   "original_patch_loss": 0.03680669143795967,
+21:   "original_id_triplet_head_losses": [
+22:     1.5988661050796509,
+23:     1.632498860359192,
+24:     1.6219165325164795,
+25:     1.4804165363311768
+26:   ],
+27:   "evidence": "Previous localFP32-only proposal actually failed:1zero determinant at(4,4) and512NaNs in each input vector group. OriginalAMP has3zeros. Old proposal remainsFAIL.",
+28:   "single_change": "FP32 Gram calculation plus sqrt(abs(det).clamp_min(1e-12)); fixed numerical floor borrowed from author Triplet sqrt protection, no search.",
+29:   "operator_stage": "Same original two4096-entry volume calls/real normalized vectors and trained temperature; originalAMP versus stableFP32floor",
+30:   "operator_gates": [
+31:     "original saved Gram loss and nonfinite gradients reproduced",
+32:     "stable allinput/temperature gradients finite; exactly the known1rawzero remains and is protected by the fixed floor"
+33:   ],
+34:   "full_batch_stage": "Only after operator passes: original/stable full3072D inference exactly equal; original fourID/Triplet andPatch values unchanged;195finite gradients under original AMPscale256",
+35:   "maximum_source_record_forwards": 192,
+36:   "maximum_full_model_backward_passes": 1,
+37:   "optimizer_steps": 0,
+38:   "heldout_image_forwards": 0,
+39:   "image_decodes": 0,
+40:   "expected_runtime_minutes": [
+41:     1,
+42:     2
+43:   ],
+44:   "continuation_boundary": "No formal training restart yet. Passing this single-real-batch regression still requires separately registered engineering training and updated provenance.",
+45:   "source_support": [
+46:     "https://github.com/pytorch/pytorch/blob/v2.5.1/torch/amp/grad_scaler.py",
+47:     "https://github.com/pytorch/pytorch/blob/v2.5.1/torch/autograd/anomaly_mode.py"
+48:   ],
+49:   "prepublication_formatting": "New files stored with one LF at EOF; old failed helper/runner/plan unchanged.",
+50:   "numerical_definition_change": "Above1e-12 original sqrt(abs(det)); below the floor output1e-6 with zero derivative through the clamped determinant. This is an explicit numerical stabilization, not claimed exactly identical to unguarded formula.",
+51:   "prior_failed_proposal_intake_sha256": "f15f4f62d5eb3561dd479aae597aca6175c8c8c5fd8cee2610b195cdcdc09b5c"
+52: }
+
+FILE 121: evidence/trifusion_rgbnt100_signal_v1_gram_stable_regression_wrapper_20260906.py
+1: from pathlib import Path
+2: import datetime,hashlib,json,os,subprocess,sys,time
+3: ROOT=Path("/root/autodl-tmp/trifusion-v2/TriFusion-ReID")
+4: OUT=Path("/root/autodl-tmp/trifusion-v2/artifacts/rgbnt100_signal_gram_stable_regression_v1_6c741b8")
+5: PY="/root/miniconda3/envs/tri_reid/bin/python"
+6: sha=lambda p:hashlib.sha256(p.read_bytes()).hexdigest()
+7: assert subprocess.check_output(["git","rev-parse","HEAD"],cwd=ROOT,text=True).strip()=="6c741b8b56b6a14f83c0e8a9452388aa23e5b301"
+8: plan_path=ROOT/"evidence/trifusion_rgbnt100_signal_v1_gram_stable_regression_plan_20260906.json"
+9: plan=json.loads(plan_path.read_text())
+10: for name,digest in plan["project_files"].items(): assert sha(ROOT/name)==digest
+11: free=int(subprocess.check_output(["nvidia-smi","--query-gpu=memory.free","--format=csv,noheader,nounits"],text=True).strip())
+12: assert free>=22000,free
+13: command=[PY,"-u",str(ROOT/"tools/verify_rgbnt100_signal_gram_stable.py"),"--plan",str(plan_path),
+14: "--fixture",plan["fixture"],"--volume-inputs",plan["volume_inputs"],"--output-dir",str(OUT/"regression")]
+15: launch={"launched_at":datetime.datetime.now(datetime.timezone(datetime.timedelta(hours=8))).isoformat(),
+16: "wrapper_pid":os.getpid(),"command":command,"gpu_free_mib":free,"project_commit":"6c741b8b56b6a14f83c0e8a9452388aa23e5b301",
+17: "plan_sha256":sha(plan_path),"scope":"real Gram operator regression then full batch if operator passes;0updates"}
+18: (OUT/"launch.json").write_text(json.dumps(launch,indent=2)+"\n")
+19: start=time.perf_counter()
+20: with (OUT/"regression.log").open("w") as log:
+21:     code=subprocess.run(command,cwd=ROOT,stdout=log,stderr=subprocess.STDOUT).returncode
+22: (OUT/"exit.txt").write_text(str(code)+"\n")
+23: (OUT/"terminal.json").write_text(json.dumps({**launch,"completed_at":datetime.datetime.now(datetime.timezone(datetime.timedelta(hours=8))).isoformat(),
+24: "exit_code":code,"elapsed_seconds":time.perf_counter()-start},indent=2)+"\n")
+25: sys.exit(code)
+
+FILE 122: evidence/trifusion_rgbnt100_signal_v1_gram_stable_scalar_verification_20260906.json
+1: {
+2:   "verified_at": "2026-09-06T11:04:50.243649+08:00",
+3:   "status": "PASS_COMPLETE_STABLE_REGRESSION_SCALARS",
+4:   "gradient_tensors": 195,
+5:   "source_record_forwards": 192,
+6:   "optimizer_steps": 0,
+7:   "image_decodes": 0,
+8:   "same_saved_original_four_identity_losses": true,
+9:   "same_patch_loss": true,
+10:   "retrieval_feature_max_difference": 0,
+11:   "full_loss_difference": 0.00014495849609375,
+12:   "summary_sha256": "8d5dee0f1a16f417fbdd52fd78cf7118554f5b92667b518fb77c5047ba9de8ba",
+13:   "runtime": "local JSON/text only"
+14: }

@@ -84,32 +84,6 @@ R2计划：refine-logs/rgbnt100_signal_v1/ENGINEERING_R2_PLAN.md。
 runner SHA4677e7345f282646e6654000d9d526d8207f698fc58a1f90b0c44bda6dd5fc25，固定helper SHAfb23d9475b4629cbfac6962d89358668f2390fbf9e7a44fe12c2c6a885b43e60。
 new_model仅安装稳定Gram函数；逐步JSONL在原AMP失败门之前写出；原finite-gradient检查仍保留。
 M0改为三fold分别完整首epoch，其他训练条件和30epoch正式终点不变。
-configure/数据/提取/排名共9个函数或类AST与R1相同；原runner原字节已存run20 inputs，旧回执/配置/失败日志不覆盖。
+configure/数据/提取/排名共10个函数或类AST与R1相同；原runner原字节已存run20 inputs，旧回执/配置/失败日志不覆盖。
 新代码绑定需要新T0/M0真实回执；完整T0重核全量输入，然后完整首epochM0，预计3–6分钟。
-以上为启动前登记状态。R2 T0及M0的实际结果见下节；正式训练尚未恢复。
-
-## R2 T0通过、完整首epoch保存失败；存储恢复后M0重试已登记
-
-当前记录 2026-09-06T11:36:28.223741+08:00。e699eac wrapper84049实际11:07:00.063517启动，11:08:23.174872退出1，总83.110578753秒。
-T0子进程25.543181276秒、原报告24.582185848秒；8675文件/26025切片全部通过，0模型前向。
-M0子进程57.565920144秒；fold0完整首epoch81有效更新/5184 source训练记录前向，mean loss7.006990939，
-epoch训练44.882046388秒、195/195梯度、AMP256无下降。全部81条JSONL与training.json相等，逐项FP32 loss重算全相等。
-torch.save在data/141写入失败，之后报告unexpected pos；数据盘可用空间1785856字节。
-不完整checkpoint101712000字节、SHAad2d141c92ff38d40f9b75d8ee98c438a8d419d16ba5f2dde1eb81c0c1da4557保留；
-strict reload尚未执行，fold1/2未开始，summary/完整M0资格不存在，heldout模型前向0。
-
-已校验后将两个下载zip无损迁至/root/trifusion-storage/downloads，未删除科学产物。
-数据盘恢复2077556736可用字节，overlay余17817534464字节；新产物固定写overlay专用artifacts目录。
-ENGINEERING_R2_STORAGE_RETRY.md登记三折fresh完整首epochM0，真实T0回执复用，不重复T0、不复用训练权重。
-两份M0核验器及完整终态核验器R2绑定已准备，全部实际标量/权重核验后才能进入固定30epoch正式基线。
-当前状态T0 PASS / 首次R2 M0 INCOMPLETE_STORAGE_WRITE / storage retry READY_NOT_RUN。
-独立审计另在run20按其冻结输入进行，当前运行终态将单独补充，不能将其初始快照当成已覆盖本次M0。
-
-## 存储重试M0通过，正式基线重新登记
-
-2026-09-06T12:11:15.931344+08:00。ed9c300三折完整首epoch重试于11:43:42.345603退出0，共257更新/16448 source训练记录前向。
-实际首次确认12:06:37；三个完整权重、195梯度、48source strict reload及全部257步骤日志/精确FP32loss重算已通过。
-此前81更新保存失败成本和部分checkpoint保留，T0未重复，正式不复用M0权重。
-详见TRIFUSION_RGBNT100_SIGNAL_R2_SOURCE_M0_2026-09-06.md，完整固定30epoch基线已另行登记READY_NOT_RUN。
-run20代理最终报告未生成：写报告脚本的引用范围断言失败，随后服务额度限制中止；原153输入/973项重放保留，
-无完整独立verdict，不声称该初始快照已审计新的R2运行终态。
+当前R2_T0_M0_READY_NOT_RUN。正式训练尚未恢复；旧R1完整终态核验器仍未执行，需在R2正式启动前更新绑定。

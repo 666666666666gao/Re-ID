@@ -1,0 +1,537 @@
+FILE 137: refine-logs/rgbnt100_signal_v1/ENGINEERING_R2_PLAN.md
+1: # RGBNT100 Signal 工程修订R2合同
+2: 
+3: 登记于2026-09-06T11:00:06.191514+08:00，READY_NOT_RUN。本修订只解决已捕获的数值失败，不是新TriFusion方法或科学负结果重跑。
+4: 
+5: ## 已知证据与修正
+6: 
+7: 原正式R1在60a3d0e首个epoch内AMP检查停止，成功更新数未持久化、无checkpoint/检索。
+8: 8b412d0独立source诊断第34步捕获异常，但其轨迹与旧M0不完全逐位相同，不能替原运行填入34步。
+9: 56f094f单batch完整重载复现原损失/153NaN梯度；原Gram半精度有3零det，AbsBackward0在sqrt(abs(det))报告NaN。
+10: 8034451只将Gram改FP32仍1零det/各512NaN，算子门失败，完整模型段未执行。
+11: 6c741b8真实输入回归将FP32 Gram与固定1e-12开方下限结合后通过：195梯度有限、4身份分量/Patch不变、3072D推理逐位一致。
+12: 本修订使用已通过的tools/signal_gram_stable.py；原Signal文件不改，在当前进程明确绑定useB.volume_computation3。
+13: 
+14: 数值定义为sqrt(abs(det).clamp_min(1e-12))，下限取自作者Triplet现有开方保护值；
+15: abs(det)低于下限时volume=1e-6、该det梯度0。这是明确的数值稳定化，与原无保护公式不完全等价。
+16: 不增加损失项、权重、网络容量、回退路径或可扫描超参数。所有配对候选若将来获准都必须使用同一数值基线定义。
+17: 
+18: ## 最小工程变更及冻结内容
+19: 
+20: 1. 原train_rgbnt100_signal_oof.py的new_model只安装该稳定化函数；helper无参数/缓存/随机数。
+21: 2. 每次尝试的步标量/实际source索引/AMPscale/是否更新先写steps.jsonl，再执行原AMP失败门。
+22:    完整training.json与checkpoint仍在成功结束该fold后写出；失败记录不再因未结束epoch丢失。
+23: 3. M0由每fold8步改为每fold完整第1个source epoch，覆盖曾在34步出现的真实问题；
+24:    这是工程检查覆盖范围变更，正式固定30epochs、仅seed42/B64K8、原noise-cosine/Adam及所有权重不变。
+25: 4. 初始CLIP/三折身份/全部8675内部query-gallery/原camera过滤/128×256拼图切片/增强/精确3072D检索不变。
+26:    configure、数据函数、提取与排名函数AST逐一等同R1；旧runner原字节保存在run20 inputs中。
+27: 
+28: ## T0与M0顺序、真实成本与停止
+29: 
+30: 新runner/config改变了旧回执的源码绑定，因此对R2执行一次原全量T0以取得匹配本修订的真实回执，
+31: 不伪造或改写R1通过回执。T0重新核对8675文件/26025切片/全部query mask及2人工排序fixture，
+32: 17350图片解码、0模型/优化/真实检索；这是新工程源码绑定检查，数据协议没有重新选择。
+33: 
+34: 随后新初始化三个fold各完整1个source epoch；原sampler实际完整batch数逐步记录，不用len(loader)猜更新数。
+35: 原195可训练梯度必须全有限、AMPscale不能下降、6个selector参数不变、严格重载8条源样本逐位相同。
+36: 没有100步新方法拟合门，因为这是Signal基线工程修订；不改变此前TriFusion新方法的门。
+37: T0预计20–60秒，完整M0预计3–6分钟；首次检查安排在约4分钟，按实际终态决定后续，无盲目重启。
+38: 失败保留全部steps.jsonl/日志，停止定位；不会在本合同内改floor/精度/学习率/采样/seed或跳过异常batch。
+39: 模型/数据/张量仅在远端，Windows仅文本/JSON/AST与SHA计算。
+40: 
+41: ## 后续完整基线边界
+42: 
+43: 完整M0通过并核对全部实际步、checkpoint内容和源码后，才可单独登记/启动三个fresh模型的固定30epoch基线。
+44: M0权重不用作正式初始化；无中间heldout评估/选best。完整8675query与gallery在各fold固定epoch30提取一次。
+45: 旧R1终态核验器的配置路径/源码绑定必须在正式启动前适配本R2，并保持真实全量算术复核。
+46: 独立审计按实际完成的工程/终态范围判定；本修订没有RGBNT100检索结果，不晋级主方法、dev或官方测试。
+47: 
+48: 保留原失败日志、原8步M0、仅FP32失败、所有诊断成本及R1/R2的配置与来源差异，不覆盖历史。
+
+FILE 138: refine-logs/rgbnt100_signal_v1/EXPERIMENT_PLAN.md
+1: # RGBNT100 source-only Signal 三折基线合同 v1
+2: 
+3: 状态：PREPARED_NOT_RUN。登记于2026-09-06。
+4: 这是第三个数据集的独立同源基线建设；不属于新TriFusion方法、结构消融或V23/V24/MSVR原三角色负结果重跑。
+5: RGBNT201 dev65和官方85.3/87.9主目标仍未达，不以本基线的内部数值自动晋级。
+6: 
+7: ## 固定数据、完整检索与用途
+8: 
+9: 真实官方训练目录为RGBNT100/rgbir/bounding_box_train，8675张768×128三模态拼图，50个身份501/503/.../599。
+10: 全量文件名、大小、SHA已从服务器读取；这次清单检查没有图像解码、模型或排序。
+11: 数据清单：evidence/rgbnt100_signal_train_file_inventory_20260906.json，
+12: SHA50d5bb1ab2f24946ea30aa3f98d070e7e416017bc2930de08745d7b7c8b535e0。
+13: 协议：protocols/rgbnt100_train_oof_v1.json，
+14: SHA42bd612ecc8720db7f6684214e1f60d1cb4bab6b2fa8db3df343a9d2c52e4abf。
+15: 
+16: 按跨camera资格组内排序身份round-robin三折；实际50个身份全部跨camera，单camera身份0。
+17: source身份33/33/34、记录5550/5725/6075；heldout身份17/17/16，query=gallery分别3125/2950/2600。
+18: 全部8675条记录在自己的heldout fold中评估一次；没有挑选容易query或去掉困难负例。
+19: 只过滤同身份AND同camera；同camera不同身份负例保留。camera减1映射0–7用于SIE。
+20: view保持作者loader的-1，view SIE关闭；不得把MSVR310 scene过滤直接套过来。
+21: 不同fold距离单独计算，最终池化逐query AP/Rank；不跨fold比较特征。
+22: 官方query1715/gallery8575不参与source/heldout划分、训练、验证或checkpoint选择。
+23: 
+24: ## 模型与作者配置
+25: 
+26: Signal固定commit cd1b0a672d1fe642e7608731cb4899a19dda7d51；
+27: 已有diff SHA b889caca9c4a92689b13eb7e20bd3224067f3e5ed2a3db6825201870ca422741。
+28: 包括既有本地CLIP路径补丁，完整实际源码SHA绑定于本配置，不改作者源文件。
+29: CLIP ViT-B-16文件SHA5806e77cd80f8b59890b7e101eabd078d9fb84e6937f9e85e4ecb61988df416f。
+30: 每fold独立seed42从通用CLIP重建，source分类头重建；无RGBNT201/MSVR310/M0/其他fold已学权重。
+31: 
+32: 作者RGBNT100配置为高128×宽256、8×16 patch、DIRECT0、USE_A/B=True、TOPK112，
+33: camera SIE=True、view SIE=False、FROZEN=False；检索仍为完整3072D direct+SIM。
+34: Gram/Patch权重均0.1、各身份目标ID0.25/Triplet1，沿用原四组ID/Triplet及Gram/Patch调用。
+35: 与MSVR310的Gram0.2/Patch0.01不同，不继承车辆前一数据集权重。
+36: 原TokenSelection Q/K产生离散mask、W_v未调用，六个参数本来不被Adam更新；
+37: 显式冻结该原模块参数并核对其状态不变，沿用已查明的工程处理，不改前向选择机制。
+38: 
+39: Adam原参数组：配置BASE_LR0.0007；非adapter的CLIP base参数按作者make_optimizer固定5e-6，
+40: 其他bias按原因子，任务参数按原基础值；RGBNT100没有MSVR classifier×100规则。
+41: 记录每个参数组initial_lr及调度后的实际epoch LR，不能把所有参数都描述成0.0007。
+42: 完整固定30epochs；使用作者create_scheduler/CosineLRScheduler，
+43: warmup5、lr_min=0.001×BASE_LR=7e-7、warmup起点7e-5；
+44: 保留作者seed42、epoch1–29噪声、t_initial30、cycle_limit1，epoch30落在lr_min。
+45: 保持processor.py中每epoch开始前scheduler.step(epoch)时序，不另写近似cosine。
+46: 
+47: 项目现行约束为真实B64/K8、workers4、AMP初始scale256，无梯度累积，seed仅42。
+48: 作者原配置B128/K16/workers12；本项目保持每批8身份但每身份8张，明确这是复现条件差异。
+49: 增强采用已有共享flip/crop、各模态独立擦除；不声称作者原增强几何本来同步。
+50: 清洁输入用BILINEAR resize、[0.5]*3归一化，沿用作者test默认插值。
+51: 拼图先按RGB[0:256]、NIR[256:512]、TIR[512:768]切成三张256×128图，不使用raw目录替代压缩后的拼图。
+52: 原RandomIdentitySampler保留，完整保存每步实际记录indices；用实际完整batch数记账，不用估计len(loader)代替。
+53: 
+54: ## 一次性T0、M0、完整基线
+55: 
+56: 1. T0 tools/verify_rgbnt100_signal_protocol.py：在远端再次核对全部8675文件SHA，
+57:    逐张对比新loader与作者read_image的全部26025模态切片像素；17350次拼图解码，
+58:    每条真实query正例计数/完整gallery/source隔离验证。
+59:    两项人工可解camera排序fixture要求同camera负例保留、所有合法正例用于AP；
+60:    交叉核对作者eval_func。fixture明确是合成协议测试，不是真实数据检索结果。
+61:    不做模型前向/优化/真实检索，无官方测试图像访问。
+62: 2. M0：通过同配置/runner绑定的完整T0后，三fold各自fresh初始化、真实B64/K8恰好8步，
+63:    共24优化更新/1536源记录暴露。保存全部逐步目标、AMP、源indices、参数组与峰值显存；
+64:    无缺失梯度的可训练张量、无非有限量/overflow、原六个selector参数状态不变、模型状态确有改变。
+65:    每fold8条clean source在保存前后严格重载对比3072D特征，共48条源模型前向；heldout模型前向0。
+66:    这是新数据集基线容量/调用链检查，不是新方法100步拟合门或科学收益证明。
+67:    M0权重保存为独立工程证据，正式训练不用它。
+68: 3. 完整基线：同配置/runner的M0 PASS后，各fold重新seed42初始化，一次训练完整30epochs。
+69:    不逐epoch做heldout，不存best候选，第30epoch是唯一最终checkpoint，严格重载后提取全部heldout gallery。
+70:    query复用该次gallery提取的位置，三fold共8675条heldout模型前向；无重复query解码/前向。
+71:    L2归一化后CPU squared Euclidean、NumPy原argsort、无rerank、无Oracle或测试时调参。
+72:    全部8675条AP/首正例名次、mAP/Rank1/5/10、完整gallery排列均保存，
+73:    full_rankings.json.gz仅压缩完整整数排列，不截取Top-k，不抽样。
+74:    特征/距离/checkpoint保留服务器，本地只接收JSON、文本、压缩JSON及文件SHA。
+75: 4. 完整终态后核对全量原始数据、训练标量与作者eval_func，独立审计后才登记候选配对训练。
+76:    低基线分数也完整报告；没有按内部mAP自动通过或失败的机制门，不扫描epoch/LR/seed以提高它。
+77:    不启动官方评估、原三角色消融或已有科学失败版本重跑。
+78: 
+79: ## 成本、停止及观察
+80: 
+81: T0全量CPU图片/协议检查预计1–3分钟，M0约2–5分钟；这是事前估计。
+82: 正式90 fold-epoch约7000–8000步量级，以原sampler实际输出为准，预计60–150分钟；
+83: 根据M0与首折实际epoch时间只更新观察时刻，不改变30epoch终点。
+84: 任何工程门实际失败则保留失败日志和可用逐步证据，先定位具体问题；不放宽门、不加fallback、不盲目重启。
+85: 新训练进程前核对RTX3090至少22000MiB可用。长任务按预计终态前几分钟观察，间隔180–300秒或更长，
+86: 不以观察超时当成训练终止，不按临时heldout指标提前停止。
+87: 
+88: 当前代码只完成本地文本/AST检查；本地模型/张量/图片运行0。T0、M0、完整基线均NOT_RUN。
+89: 
+
+FILE 139: refine-logs/rgbnt100_signal_v1/EXPERIMENT_TRACKER.md
+1: # RGBNT100 Signal source-only 三折基线 v1
+2: 
+3: 更新时间：2026-09-06T10:22:31.091890+08:00。T0/M0已通过，首次完整基线在fold0首个epoch内AMP溢出停止；无检索结果。
+4: 
+5: | 阶段 | 状态 | 完整范围 |
+6: |---|---|---|
+7: | T0 | PASS | 8675文件/26025切片、8675query mask、2项人工camera协议fixture |
+8: | M0 | PASS_ENGINEERING_ONLY | 3×8更新、1536源曝光、195/195梯度、48clean source重载前向 |
+9: | M0 files/scalars | PASS | 三checkpoint内容/21文本及全部24步，0模型/图像前向 |
+10: | B0 first attempt | ENGINEERING_STOP_AMP_OVERFLOW | 60a3d0e、33.7765秒退出1；0完整epoch，无checkpoint，成功更新数未知 |
+11: | Source overflow capture | REPRODUCED | 8b412d0第34步；33有效更新/2176前向，0heldout；M0标量非完全一致 |
+12: | Saved batch probe | COMPLETE_NUMERICAL_DIAGNOSIS | 192source前向/0更新；原AMP三零Gramdet、AbsBackward0 NaN，完整FP32有限 |
+13: | Local Gram FP32 regression | FAIL_OPERATOR_FINITE_GATE | 8034451，仍1零det/各512NaN；0模型前向/0更新 |
+14: | Stable Gram regression | PASS_SINGLE_REAL_BATCH | 6c741b8，192source前向/0更新；195finite与3072D逐位相同 |
+15: | R2 T0 | READY_NOT_RUN | 新runner/config绑定，重新验证全量切片/协议 |
+16: | R2 M0 | READY_NOT_RUN | 三fold分别完整首epoch，195梯度/AMP/重载门保留 |
+17: | Full terminal verifiers | PREPARED_NOT_RUN | 原先准备完整三fold/90epoch/8675query核验，不用于本失败目录 |
+18: 
+19: R1配置/合同/回执保留；原runner源字节另行存档，R2的最小源码修订单独绑定。M0不是真实检索成绩，各阶段成本分别登记。
+20: 内部三fold协议与官方1715query/8575gallery不同；没有读取官方测试，主目标未达到。
+21: 结果页：results/TRIFUSION_RGBNT100_SIGNAL_FORMAL_ENGINEERING_STOP_2026-09-06.md。
+
+FILE 140: results/TRIFUSION_RGBNT100_SIGNAL_FORMAL_ENGINEERING_STOP_2026-09-06.md
+1: # RGBNT100 Signal 正式基线工程停止
+2: 
+3: 记录时间：2026-09-06T10:22:31.091890+08:00。完整正式基线尚无检索结果。
+4: 
+5: 60a3d0e上的wrapper80418于09:53:07启动，09:53:41.130891退出1，耗时33.77653791196644秒。
+6: 第一计划观察于10:09:23发现已结束，现场于10:16:01.901188取得；不把观察时间写成失败发生时间。
+7: 直接失败为原runner第201行AMP overflow; fixed run stops。三个fold中仅fold0开始、完整epoch记录0；
+8: fold0目录为空，无checkpoint、training.json或retrieval。原运行成功优化步数未持久化，不能写成0或按耗时估算。
+9: 
+10: 此前T0全量切片/协议和M0三折各8步、24更新均通过；它们不能保证30epoch训练无后续数值异常。
+11: 原runner在AMP断言之后才把步骤加到内存列表，整个fold训练返回才写training.json，导致本次早停缺少逐步证据。
+12: 此次先保存完整baseline.log、wrapper、launch、terminal和effective config及文件清单；均不覆盖原文件。
+13: 原config、runner、模型、优化器、调度器、AMP256和原工程门不变，不盲目重启正式训练。
+14: 
+15: 固定诊断见 evidence/trifusion_rgbnt100_signal_v1_amp_capture_plan_20260906.json。
+16: 它直接调用原绑定train_source，通过三个固定行断点记录同seed42 source fold0，
+17: 首个overflow前后逐步落盘并保存原异常batch、前向前buffer/RNG/参数；最多一个epoch，第二epoch之前停止。
+18: 首先核对前8步与原M0的全部数值和索引；实际捕获后再决定零更新的单batch诊断。
+19: 这是工程定位，不是新方法试验、heldout检索或科学失败重跑，不改变任何科学门。
+20: 
+21: 提前准备的完整终态核验器仍NOT_RUN，本失败目录不符合三折30epoch完整终态输入条件。
+22: RGBNT201主目标与既有V23/V24/MSVR310原三角色科学负结果保持原结论。
+23: 
+24: ## 固定source捕获完成，根因仍待定位
+25: 
+26: 8b412d0执行一次，wrapper81713，10:25:42.449230退出1，37.470637565秒。
+27: 原AMP断言在本诊断第34步复现：33个成功更新/2176源记录前向，step34 loss6.734400272有限、scale256到128且该步跳过。
+28: 195份梯度中153份包含非有限值，均在CLIP encoder；未据此认定上游损失或具体算子是根因。
+29: 原正式失败运行的步数仍未知；本次诊断消耗独立登记，不冒充正式训练有效步数。
+30: 初始状态与M0相同、前8步记录索引全部相同，但只有step1的全部标量逐位相等；
+31: step2起差异保留（step6 loss差+0.722964287），尚未解释，不声称固定seed保证训练轨迹逐位复现。
+32: 已保存438600256字节真实异常batch及前向前model/buffers/RNG，SHA3c9b41a70a3e3bfabd317cea8b76f314ba16ded8a8246fd41e0561fc7f8286eb；只在远端保留。
+33: 本地完整34步/source/loss重算通过，非有限梯度计数与原记录一致；无本地模型/张量/图像操作。
+34: 
+35: 下一固定诊断一次检查fp16/fp16_anomaly/fp32，各64条相同保存source batch，共192源记录前向、0优化更新、0图像解码/heldout。
+36: 异常模式自然保留PyTorch原始traceback；原精度先核对捕获loss，FP32只作数值定位，不改正式训练精度。
+37: 保存两次volume_computation3的全部64×64 Gram矩阵/行列式/输入，便于随后对真实触发算子最小化。
+38: 计划evidence/trifusion_rgbnt100_signal_v1_amp_batch_probe_plan_20260906.json，当前READY_NOT_RUN。
+39: 
+40: ## 单batch三项定位完成：Gram矩阵半精度量化与零点导数
+41: 
+42: 56f094f、wrapper82470于10:35:40.134040结束48.6883秒；三项退出码fp16=0、anomaly=1、fp32=0，均按实际含义报告。
+43: fp16/anomaly的四个ID/Triplet分量、Gram和Patch全部与捕获现场逐位相同；fp16仍153/195梯度非有限。
+44: 两次完整64×64 Gram中各3个行列式恰为0，坐标(3,3)/(4,4)/(5,5)，另各1个负值。
+45: 原normalized输入是FP32，但einsum/matmul在autocast下生成FP16 Gram；之后G.float()求det不能恢复此前舍入的信息。
+46: 异常模式在Signal utils/volume.py第60行sqrt(abs(gram_det))处报告AbsBackward0产生NaN。
+47: 完整FP32模型下两次Gram均0个零值，最小绝对det7.6721002884e-9，195/195梯度有限；总loss6.645667553，与原6.734400272不同。
+48: 这个全FP32比较改变了全模型数值精度，尚不足以证明只改Gram即可修复，因此不直接用于正式训练。
+49: 
+50: 下一项局部修复已准备：tools/signal_gram_fp32.py只在原volume函数内关闭autocast并使用FP32输入，
+51: 公式、既有abs/sqrt、四组身份目标、Gram/Patch权重、AMPscale256与全部优化配置不改，无epsilon/clamp/fallback。
+52: 先用已保存两次完整Gram输入做原AMP/局部FP32算子回归（0模型前向），原非有限必须复现、修复后全梯度有限且零det=0；
+53: 通过后才运行完整batch64，比较原/修复3072D推理逐位相同、四身份分量/Patch原值不变和195梯度有限。
+54: 最多192条保存source记录前向、0更新/解码/heldout；计划登记于2026-09-06T10:43:29.465425+08:00，当前READY_NOT_RUN。
+55: 正式基线仍未恢复，单batch修复不代表长期训练或检索效果。
+56: 
+57: ## 局部FP32提议未通过，零点数值处理有真实证据
+58: 
+59: 8034451、wrapper83185于10:46:25.641635退出1，耗时7.948580876秒。
+60: 真实保存输入的原AMP算子复现loss3.970210552、各输入1536NaN；
+61: 仅Gram FP32后loss3.971660137，但仍1个零det(4,4)，三个输入各512NaN。
+62: 原注册的全梯度有限门失败，完整batch/模型构建未执行；本次模型前向0、优化0、仅2次真实特征算子backward。
+63: 全FP32模型之前能通过，不代表“只改Gram FP32”充分；该提议明确保持失败。
+64: 
+65: 现准备tools/signal_gram_stable.py：FP32构造Gram并计算sqrt(abs(det).clamp_min(1e-12))。
+66: 实际风险是上述FP32零det产生NaN，不是推测edgecase。1e-12沿用作者layers/triplet_loss.py平方距离开方前的已有数值下限。
+67: 这是明确的零点数值定义变更：绝对det低于1e-12时输出1e-6、对该det的梯度为0；不冒充原无保护公式逐位等价。
+68: 没有阈值扫描、额外损失、fallback、学习率或scale修改；原Signal源码、原正式runner/config和失败提议保持不变。
+69: 新回归保留原AMP红例，对同输入要求稳定化后梯度有限、真实1个rawzero仍被记录且受到保护，
+70: 通过后才做完整batch195梯度/四身份分量Patch不变/3072D精确推理；最多192模型记录前向/0更新。
+71: 计划登记2026-09-06T10:51:50.831737+08:00，当前READY_NOT_RUN。原FP32提议失败条件不被改写，新数值处理单独注册。
+72: 
+73: ## 稳定化单batch回归通过；R2完整首epoch工程检查已登记
+74: 
+75: 6c741b8、wrapper83532于10:53:19.647243退出0，耗时16.412545100秒。
+76: 原AMP真实算子红例保留；稳定化后同一个rawzero仍记录在(4,4)，volume下限约1e-6，三个输入及温度梯度均有限。
+77: 完整AMP batch的195参数梯度全部有限；四组身份loss和Patch与原场景完全相同，只有Gram由3.970210552变为3.971660137，
+78: 总loss6.734400272变为6.734545231（+0.000144958496）。原/修复的64×3072推理特征逐位相等。
+79: 实际192 source记录前向、0优化/图像解码/heldout；2次特征算子backward与1次模型backward。
+80: 这个结果仅支持该真实失败batch的数值修复；不是完整epoch、检索效用或长期稳定性证明。
+81: 
+82: R2计划：refine-logs/rgbnt100_signal_v1/ENGINEERING_R2_PLAN.md。
+83: 配置configs/RGBNT100/Signal-source-oof-v1-r2.json SHA9d5ecf5f350c2f1eea50650bf0abc9580a4d2e86947e20a83b7ba94c67faf997；
+84: runner SHA4677e7345f282646e6654000d9d526d8207f698fc58a1f90b0c44bda6dd5fc25，固定helper SHAfb23d9475b4629cbfac6962d89358668f2390fbf9e7a44fe12c2c6a885b43e60。
+85: new_model仅安装稳定Gram函数；逐步JSONL在原AMP失败门之前写出；原finite-gradient检查仍保留。
+86: M0改为三fold分别完整首epoch，其他训练条件和30epoch正式终点不变。
+87: configure/数据/提取/排名共10个函数或类AST与R1相同；原runner原字节已存run20 inputs，旧回执/配置/失败日志不覆盖。
+88: 新代码绑定需要新T0/M0真实回执；完整T0重核全量输入，然后完整首epochM0，预计3–6分钟。
+89: 当前R2_T0_M0_READY_NOT_RUN。正式训练尚未恢复；旧R1完整终态核验器仍未执行，需在R2正式启动前更新绑定。
+
+FILE 141: results/TRIFUSION_RGBNT100_SIGNAL_SOURCE_M0_2026-09-06.md
+1: # RGBNT100 Signal 三折M0：完整协议与工程检查通过
+2: 
+3: 记录时间：2026-09-06T09:50:38.079036+08:00。状态PASS_ENGINEERING_ONLY；正式三折30epoch基线READY_NOT_RUN。
+4: 执行commit1157f0d；wrapper79272三阶段退出均0，09:43:16确认进程已结束/GPU空闲。
+5: 
+6: T0一次性20.701875953秒：全部8675张官方训练拼图SHA相同，26025个RGB/NIR/TIR切片与作者像素完全相同，
+7: 实际17350次拼图解码；全部身份隔离、8675个query正例mask和完整gallery核对通过。两项人工camera排序fixture通过，
+8: 不将其50%/83.33%合成AP当作模型指标。T0没有模型前向/优化/真实检索，无官方query/gallery图片。
+9: 
+10: M0一次性76.987059359秒：三fold各fresh seed42/B64K8/8更新，共24更新、1536源记录曝光。
+11: 三折195/195可训练张量均获梯度、0overflow、无非有限量；原六个TokenSelection参数状态不变。
+12: 每fold8条clean source在保存/严格重载前后比较3072D特征，逐元素一致，共48条source前向，heldout模型前向0。
+13: 
+14: | fold | 8步均值loss | 8步耗时秒 | 总参数 | 可训练参数 | 峰值allocated MiB |
+15: |---|---:|---:|---:|---:|---:|
+16: | 0 | 11.031642497 | 8.076460 | 90748417 | 89957377 | 11379.449 |
+17: | 1 | 11.177569866 | 5.338920 | 90748417 | 89957377 | 11374.792 |
+18: | 2 | 10.965902865 | 5.364467 | 90751489 | 89960449 | 11374.828 |
+19: 
+20: 这是新数据集基线的source调用链/容量检查，未计算检索mAP，也不是新模块收益或固定100步过拟合证明。
+21: 
+22: 原参数组initial_lr为5e-6/0.0007/0.0014；作者warmup/noise后epoch1实际值为
+23: 0.00002004113835096/0.00006891338801384/0.00011813723659515，共同noise倍率0.351598918438。
+24: 不能把基础5e-6描述成整个训练过程每epoch恒定的实际LR；本文沿用原调度器而非修改它。
+25: 
+26: 远端完整文件/三checkpoint内容与fold/source/heldout/state核对5.368404388秒，8项目/18Signal源绑定全部相同；
+27: 本地21个文本文件已逐SHA收入。checkpoint与tensor留在服务器，核验0模型前向/0图片解码/0训练。
+28: 本地24步JSON/source记录/参数组重算0.034618800秒，epoch均值差0，分项loss双精度重组最大差2.10627913e-6，
+29: 没有用该浮点差新增科学通过门。首个本地核验把warmup0.1×0.0007写成十进制字面量0.00007，
+30: 因7.000000000000001e-5与7e-5差一个浮点表示位而停止；改为作者原表达式后通过。
+31: 原核验源码、失败原因与修正版均保留，模型/配置/T0/M0未改变或重跑，无新增tolerance。
+32: 
+33: M0 summary SHA7e9f6214efdbf14611fd5bb0ce2f4d7e6c9ae68c9549af06659d018b39e09820；
+34: T0 SHAb60c8b45ca6e6d4eaf374ea127b0b7eef3331a393f05b414d2825bf731a41dcd。
+35: 下一步按原合同fresh初始化三fold完整30epoch，终点才一次性评估全部8675query；预计75–100分钟，约15分钟后首次检查训练进度并更新ETA。
+36: 无官方评估/模型消融/科学失败重跑，RGBNT201主目标仍未达到。
+
+FILE 125: evidence/trifusion_rgbnt100_signal_v1_m0_intake_20260906.json
+1: {
+2:   "intaken_at": "2026-09-06T09:45:07.325743+08:00",
+3:   "status": "ALL_ENGINEERING_TEXT_AND_CHECKPOINT_SHA_VERIFIED",
+4:   "files": [
+5:     {
+6:       "remote": "engineering_exit.txt",
+7:       "local": "evidence/rgbnt100_signal_v1_engineering/engineering_exit.txt",
+8:       "bytes": 2,
+9:       "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+10:     },
+11:     {
+12:       "remote": "engineering_launch.json",
+13:       "local": "evidence/rgbnt100_signal_v1_engineering/engineering_launch.json",
+14:       "bytes": 506,
+15:       "sha256": "01bda4f6f332069c3488f4729609ee0c212ddcbaba40f7adbaf72f8d2e12820e"
+16:     },
+17:     {
+18:       "remote": "engineering_terminal.json",
+19:       "local": "evidence/rgbnt100_signal_v1_engineering/engineering_terminal.json",
+20:       "bytes": 116,
+21:       "sha256": "e5272179e04cf69f7d699a7b242dfef511be97870fd41ba556ab7746adefd653"
+22:     },
+23:     {
+24:       "remote": "engineering_wrapper.log",
+25:       "local": "evidence/rgbnt100_signal_v1_engineering/engineering_wrapper.log",
+26:       "bytes": 0,
+27:       "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+28:     },
+29:     {
+30:       "remote": "engineering_wrapper.py",
+31:       "local": "evidence/rgbnt100_signal_v1_engineering/engineering_wrapper.py",
+32:       "bytes": 2754,
+33:       "sha256": "5ca49e8f2cbba97c35583c7855041887babb9b4549ead18e42d3a549acdbece0"
+34:     },
+35:     {
+36:       "remote": "m0/fold_0/receipt.json",
+37:       "local": "evidence/rgbnt100_signal_v1_engineering/m0/fold_0/receipt.json",
+38:       "bytes": 50892,
+39:       "sha256": "f3b51567ff1218bb22f670107eea026cd08b557377544a95fd53893200b3159e"
+40:     },
+41:     {
+42:       "remote": "m0/fold_0/training.json",
+43:       "local": "evidence/rgbnt100_signal_v1_engineering/m0/fold_0/training.json",
+44:       "bytes": 46076,
+45:       "sha256": "8dc9c2211f267bf32d3e0c7aa94597a96b7002c1f2dc933948d23b5fae0451f3"
+46:     },
+47:     {
+48:       "remote": "m0/fold_1/receipt.json",
+49:       "local": "evidence/rgbnt100_signal_v1_engineering/m0/fold_1/receipt.json",
+50:       "bytes": 50907,
+51:       "sha256": "2582badd3249391b70205947cc19b9b6dab62f379a0684cad1b400f858d2d382"
+52:     },
+53:     {
+54:       "remote": "m0/fold_1/training.json",
+55:       "local": "evidence/rgbnt100_signal_v1_engineering/m0/fold_1/training.json",
+56:       "bytes": 46091,
+57:       "sha256": "b1721cd926eb22f30363c6238448cc59882bc62e0a2e8d4d7a0767453c482dad"
+58:     },
+59:     {
+60:       "remote": "m0/fold_2/receipt.json",
+61:       "local": "evidence/rgbnt100_signal_v1_engineering/m0/fold_2/receipt.json",
+62:       "bytes": 50862,
+63:       "sha256": "57f3678ad825ba418c214f9af1b78d8f6ffe57cbf1d0fd1fb856d9f34bc9efb8"
+64:     },
+65:     {
+66:       "remote": "m0/fold_2/training.json",
+67:       "local": "evidence/rgbnt100_signal_v1_engineering/m0/fold_2/training.json",
+68:       "bytes": 46046,
+69:       "sha256": "a88ff0cc94c87ccdef57f626bc771721b8fea922468b5d7814a54a516f319f9c"
+70:     },
+71:     {
+72:       "remote": "m0/signal_effective_config.yml",
+73:       "local": "evidence/rgbnt100_signal_v1_engineering/m0/signal_effective_config.yml",
+74:       "bytes": 1765,
+75:       "sha256": "e5a897714b538e417f9cd73b5d610d7dd38afb73161caaeedd3a94d31f76c3e7"
+76:     },
+77:     {
+78:       "remote": "m0/summary.json",
+79:       "local": "evidence/rgbnt100_signal_v1_engineering/m0/summary.json",
+80:       "bytes": 177826,
+81:       "sha256": "7e9f6214efdbf14611fd5bb0ce2f4d7e6c9ae68c9549af06659d018b39e09820"
+82:     },
+83:     {
+84:       "remote": "m0.log",
+85:       "local": "evidence/rgbnt100_signal_v1_engineering/m0.log",
+86:       "bytes": 4006,
+87:       "sha256": "35d52d543d7afb98be941e2cc9f9e3dad3b15b049ee9db83a705bc694f962066"
+88:     },
+89:     {
+90:       "remote": "m0_exit.txt",
+91:       "local": "evidence/rgbnt100_signal_v1_engineering/m0_exit.txt",
+92:       "bytes": 2,
+93:       "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+94:     },
+95:     {
+96:       "remote": "m0_files_verifier.py",
+97:       "local": "evidence/rgbnt100_signal_v1_engineering/m0_files_verifier.py",
+98:       "bytes": 3393,
+99:       "sha256": "ae8a919d16e4c7b942a7f95df6ca31ff4089a631c8a39849325efaa1def97406"
+100:     },
+101:     {
+102:       "remote": "m0_launch.json",
+103:       "local": "evidence/rgbnt100_signal_v1_engineering/m0_launch.json",
+104:       "bytes": 941,
+105:       "sha256": "097e891df7eb41637be4d35f42ead706decbcc28884529c701f2df39f5c6f4fd"
+106:     },
+107:     {
+108:       "remote": "t0.json",
+109:       "local": "evidence/rgbnt100_signal_v1_engineering/t0.json",
+110:       "bytes": 2092,
+111:       "sha256": "b60c8b45ca6e6d4eaf374ea127b0b7eef3331a393f05b414d2825bf731a41dcd"
+112:     },
+113:     {
+114:       "remote": "t0.log",
+115:       "local": "evidence/rgbnt100_signal_v1_engineering/t0.log",
+116:       "bytes": 1794,
+117:       "sha256": "4de17008a35c7e4e6559710cf2219be433613a6a9ab83b75076b75633aa980b7"
+118:     },
+119:     {
+120:       "remote": "t0_exit.txt",
+121:       "local": "evidence/rgbnt100_signal_v1_engineering/t0_exit.txt",
+122:       "bytes": 2,
+123:       "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+124:     },
+125:     {
+126:       "remote": "t0_launch.json",
+127:       "local": "evidence/rgbnt100_signal_v1_engineering/t0_launch.json",
+128:       "bytes": 542,
+129:       "sha256": "54d19cb72df7d09b4d03cd1eed838b5f82cb0e9f377a50dc6856086b8da88340"
+130:     }
+131:   ],
+132:   "checkpoint_binary_copies": 0,
+133:   "local_model_tensor_image_calls": 0,
+134:   "remote_file_verification": "PASS_COMPLETE_M0_FILES_AND_CHECKPOINT_CONTENTS"
+135: }
+
+FILE 126: evidence/trifusion_rgbnt100_signal_v1_m0_scalar_verification_20260906.json
+1: {
+2:   "verified_at": "2026-09-06T09:47:20.441594+08:00",
+3:   "status": "PASS_ALL24_M0_SCALARS_AND_SOURCE_ACCOUNTING",
+4:   "summary_sha256": "7e9f6214efdbf14611fd5bb0ce2f4d7e6c9ae68c9549af06659d018b39e09820",
+5:   "folds": [
+6:     {
+7:       "fold": 0,
+8:       "updates": 8,
+9:       "source_exposures": 512,
+10:       "source_identity_count_exposed": 31,
+11:       "source_record_count_exposed": 512,
+12:       "same_identity_pairs": 1792,
+13:       "cross_camera_pairs": 1528,
+14:       "total_parameters": 90748417,
+15:       "trainable_parameters": 89957377,
+16:       "peak_allocated_mib": 11379.44873046875,
+17:       "training_8_steps_seconds": 8.076460383832455,
+18:       "mean_loss": 11.031642496585846,
+19:       "initial_parameter_group_lrs": [
+20:         5e-06,
+21:         0.0007,
+22:         0.0014
+23:       ],
+24:       "epoch1_actual_lrs": [
+25:         2.0041138350963593e-05,
+26:         6.891338801383971e-05,
+27:         0.00011813723659515383
+28:       ],
+29:       "epoch1_common_noise_factor": 0.35159891843795776
+30:     },
+31:     {
+32:       "fold": 1,
+33:       "updates": 8,
+34:       "source_exposures": 512,
+35:       "source_identity_count_exposed": 29,
+36:       "source_record_count_exposed": 512,
+37:       "same_identity_pairs": 1792,
+38:       "cross_camera_pairs": 1532,
+39:       "total_parameters": 90748417,
+40:       "trainable_parameters": 89957377,
+41:       "peak_allocated_mib": 11374.79248046875,
+42:       "training_8_steps_seconds": 5.338920095935464,
+43:       "mean_loss": 11.17756986618042,
+44:       "initial_parameter_group_lrs": [
+45:         5e-06,
+46:         0.0007,
+47:         0.0014
+48:       ],
+49:       "epoch1_actual_lrs": [
+50:         2.0041138350963593e-05,
+51:         6.891338801383971e-05,
+52:         0.00011813723659515383
+53:       ],
+54:       "epoch1_common_noise_factor": 0.35159891843795776
+55:     },
+56:     {
+57:       "fold": 2,
+58:       "updates": 8,
+59:       "source_exposures": 512,
+60:       "source_identity_count_exposed": 30,
+61:       "source_record_count_exposed": 512,
+62:       "same_identity_pairs": 1792,
+63:       "cross_camera_pairs": 1549,
+64:       "total_parameters": 90751489,
+65:       "trainable_parameters": 89960449,
+66:       "peak_allocated_mib": 11374.82763671875,
+67:       "training_8_steps_seconds": 5.364467008039355,
+68:       "mean_loss": 10.965902864933014,
+69:       "initial_parameter_group_lrs": [
+70:         5e-06,
+71:         0.0007,
+72:         0.0014
+73:       ],
+74:       "epoch1_actual_lrs": [
+75:         2.0041138350963593e-05,
+76:         6.891338801383971e-05,
+77:         0.00011813723659515383
+78:       ],
+79:       "epoch1_common_noise_factor": 0.35159891843795776
+80:     }
+81:   ],
+82:   "optimizer_steps": 24,
+83:   "source_exposures": 1536,
+84:   "clean_source_reload_feature_forwards": 48,
+85:   "max_loss_composition_difference": 2.1062791333292807e-06,
+86:   "max_epoch_mean_difference": 0.0,
+87:   "lr_scope": "original optimizer group rules and common epoch1 noise scaling verified from JSON; no local Torch RNG execution",
+88:   "precision_scope": "Recorded float components regrouped with Python doubles; no new tolerance-based scientific gate",
+89:   "local_model_tensor_image_calls": 0,
+90:   "elapsed_seconds": 0.0346187999821268
+91: }
+
+FILE 129: evidence/trifusion_rgbnt100_signal_v1_m0_scalar_verifier_literal_fix_20260906.json
+1: {
+2:   "stage": "local JSON scalar verifier only",
+3:   "exit_code": 1,
+4:   "failure": "assert group[lr]==.00007 at line56",
+5:   "actual_lr": 7.000000000000001e-05,
+6:   "literal_comparison_lr": 7e-05,
+7:   "author_expression": ".1*.0007",
+8:   "author_expression_value": 7.000000000000001e-05,
+9:   "original_verifier_sha256": "4c1d88eef000a0f61ed764180ec0f271a9036a39a3eae8d1bac71b35b4a69e42",
+10:   "correction": "Use the exact author arithmetic expression for warmup_lr_init; no tolerance added",
+11:   "model_config_training_changes": 0,
+12:   "training_restarts": 0
+13: }

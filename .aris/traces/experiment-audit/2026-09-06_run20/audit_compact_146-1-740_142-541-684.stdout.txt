@@ -1,0 +1,799 @@
+FILE 146: tools/run_signal_preserving_v5.py (comments/blank lines/docstrings omitted only)
+4: from __future__ import annotations
+6: import argparse
+7: import hashlib
+8: import json
+9: import math
+10: from pathlib import Path
+11: import random
+12: import subprocess
+13: import sys
+14: import time
+15: from typing import Any
+17: import yaml
+20: GATE_OUTPUTS = ("baseline_only", "cnn", "transformer", "mamba")
+21: PROJECT_ROOT = Path(__file__).resolve().parents[1]
+22: ARCHITECTURE_V5 = "signal_preserving_collaborative_v5"
+23: ARCHITECTURE_V6 = "signal_preserving_collaborative_v6"
+24: ARCHITECTURE_V7 = "signal_preserving_collaborative_v7"
+25: ARCHITECTURE_V8 = "signal_preserving_collaborative_v8_expert_formation"
+28: def receipt_schema(architecture: str, stage: str) -> str:
+29:     version = {
+30:         ARCHITECTURE_V5: "v5",
+31:         ARCHITECTURE_V6: "v6",
+32:         ARCHITECTURE_V7: "v7",
+33:         ARCHITECTURE_V8: "v8",
+34:     }[architecture]
+35:     return f"trifusion-signal-preserving-{version}-{stage}-v1"
+38: def architecture_source_paths(architecture: str) -> dict[str, Path]:
+39:     version = {
+40:         ARCHITECTURE_V5: "v5",
+41:         ARCHITECTURE_V6: "v6",
+42:         ARCHITECTURE_V7: "v7",
+43:         ARCHITECTURE_V8: "v8",
+44:     }[architecture]
+45:     return {
+46:         "model": PROJECT_ROOT
+47:         / "modeling"
+48:         / "trifusion"
+49:         / f"signal_preserving_{version}.py",
+50:         "builder": PROJECT_ROOT
+51:         / "modeling"
+52:         / "trifusion"
+53:         / f"signal_preserving_{version}_builder.py",
+54:     }
+57: def load_contract(path: Path) -> dict[str, Any]:
+60:     config = yaml.safe_load(path.read_text(encoding="utf-8"))
+61:     return {
+62:         "seed": int(config["EXPERIMENT"]["SEED"]),
+63:         "architecture": str(config["MODEL"]["ARCHITECTURE"]),
+64:         "train_batch_size": int(config["DATA"]["TRAIN_BATCH_SIZE"]),
+65:         "num_instances": int(config["DATA"]["NUM_INSTANCES"]),
+66:         "max_epochs": int(config["OPTIMIZATION"]["MAX_EPOCHS"]),
+67:         "signal_checkpoint_sha256": str(config["SIGNAL"]["CHECKPOINT_SHA256"]),
+68:         "baseline_width": int(config["SIGNAL"]["BASELINE_WIDTH"]),
+69:         "retrieval_outputs": tuple(config["MODEL"]["RETRIEVAL_OUTPUTS"]),
+70:         "dev_min_map": float(config["GATES"]["DEV_MIN_MAP"]),
+71:         "official_test_during_development": bool(
+72:             config["PROTOCOL"]["OFFICIAL_TEST_DURING_DEVELOPMENT"]
+73:         ),
+74:     }
+77: def _sha256(path: Path) -> str:
+78:     digest = hashlib.sha256()
+79:     with path.open("rb") as handle:
+80:         for chunk in iter(lambda: handle.read(1024 * 1024), b""):
+81:             digest.update(chunk)
+82:     return digest.hexdigest()
+85: def load_raw_config(path: Path) -> dict[str, Any]:
+86:     return yaml.safe_load(path.read_text(encoding="utf-8"))
+89: def _load_config(path: Path) -> dict[str, Any]:
+90:     config = load_raw_config(path)
+91:     contract = load_contract(path)
+92:     if contract["seed"] != 42:
+93:         raise ValueError("V5 main experiment is frozen to seed 42")
+94:     if contract["official_test_during_development"] is not False:
+95:         raise ValueError("V5 development must not access the official test")
+96:     return config
+99: def weighted_training_loss(
+100:     losses: dict[str, Any], config: dict[str, Any], *, phase: str = "joint"
+101: ) -> Any:
+102:     weights = config["LOSS"]
+103:     architecture = config["MODEL"]["ARCHITECTURE"]
+104:     if architecture == ARCHITECTURE_V7 and phase == "router_warmup":
+105:         return (
+106:             losses["peer_logits"] * float(weights["PEER_LOGITS"])
+107:             + losses["alpha"] * float(weights["ALPHA"])
+108:             + losses["reliability"] * float(weights["RELIABILITY"])
+109:         )
+110:     branch_id = sum(losses[f"id_{expert}"] for expert in ("cnn", "transformer", "mamba"))
+111:     branch_triplet = sum(
+112:         losses[f"triplet_{expert}"] for expert in ("cnn", "transformer", "mamba")
+113:     )
+114:     total = (
+115:         losses["id_fused"] * float(weights["ID_FUSED"])
+116:         + losses["triplet_fused"] * float(weights["TRIPLET_FUSED"])
+117:         + branch_id * float(weights["ID_BRANCH"])
+118:         + branch_triplet * float(weights["TRIPLET_BRANCH"])
+119:     )
+120:     if architecture != ARCHITECTURE_V8:
+121:         total = total + losses["peer_logits"] * float(weights["PEER_LOGITS"])
+122:     if architecture in (ARCHITECTURE_V6, ARCHITECTURE_V7, ARCHITECTURE_V8):
+123:         residual_id = sum(
+124:             losses[f"id_residual_{expert}"]
+125:             for expert in ("cnn", "transformer", "mamba")
+126:         )
+127:         residual_triplet = sum(
+128:             losses[f"triplet_residual_{expert}"]
+129:             for expert in ("cnn", "transformer", "mamba")
+130:         )
+131:         total = (
+132:             total
+133:             + residual_id * float(weights["ID_RESIDUAL"])
+134:             + residual_triplet * float(weights["TRIPLET_RESIDUAL"])
+135:         )
+136:     if architecture == ARCHITECTURE_V7:
+137:         total = (
+138:             total
+139:             + losses["alpha"] * float(weights["ALPHA"])
+140:             + losses["reliability"] * float(weights["RELIABILITY"])
+141:         )
+142:     return total
+145: def apply_controlled_modality_degradation(
+146:     images: dict[str, Any],
+147:     *,
+148:     selected_modalities: Any,
+149:     selected_samples: Any,
+150:     degraded_quality: float,
+151: ) -> tuple[dict[str, Any], Any]:
+154:     import torch
+155:     import torch.nn.functional as F
+157:     modalities = ("RGB", "NI", "TI")
+158:     batch_size = next(iter(images.values())).shape[0]
+159:     quality = torch.ones(
+160:         batch_size,
+161:         len(modalities),
+162:         dtype=next(iter(images.values())).dtype,
+163:         device=selected_modalities.device,
+164:     )
+165:     degraded = {name: tensor.clone() for name, tensor in images.items()}
+166:     for modality_index, modality in enumerate(modalities):
+167:         rows = selected_samples & (selected_modalities == modality_index)
+168:         if bool(rows.any()):
+169:             degraded[modality][rows] = F.avg_pool2d(
+170:                 degraded[modality][rows], kernel_size=5, stride=1, padding=2
+171:             )
+172:             quality[rows, modality_index] = float(degraded_quality)
+173:     return degraded, quality
+176: def quality_response_gate(
+177:     clean_probabilities: Any,
+178:     corrupted_probabilities: dict[str, Any],
+179: ) -> dict[str, Any]:
+182:     modalities = ("RGB", "NI", "TI")
+183:     results = {}
+184:     for index, modality in enumerate(modalities):
+185:         clean_mass = float(clean_probabilities[:, index].mean())
+186:         corrupted_mass = float(corrupted_probabilities[modality][:, index].mean())
+187:         results[modality] = {
+188:             "clean_mean_mass": clean_mass,
+189:             "corrupted_mean_mass": corrupted_mass,
+190:             "decrease": clean_mass - corrupted_mass,
+191:             "decreased": corrupted_mass < clean_mass,
+192:         }
+193:     return {
+194:         "passed": all(result["decreased"] for result in results.values()),
+195:         "modalities": results,
+196:     }
+199: def load_v7_initialization(
+200:     model: Any,
+201:     initialization: dict[str, Any],
+202: ) -> dict[str, Any]:
+205:     import torch
+207:     checkpoint = Path(initialization["V6_CHECKPOINT"]).resolve()
+208:     checkpoint_sha256 = _sha256(checkpoint)
+209:     if checkpoint_sha256 != str(initialization["V6_CHECKPOINT_SHA256"]):
+210:         raise ValueError("V6 initialization checkpoint SHA-256 differs from contract")
+211:     payload = torch.load(checkpoint, map_location="cpu", weights_only=True)
+212:     incompatible = model.load_state_dict(payload["model_state_dict"], strict=False)
+213:     expected_missing = [
+214:         "fusion.alpha_predictor.0.bias",
+215:         "fusion.alpha_predictor.0.weight",
+216:         "fusion.alpha_predictor.2.bias",
+217:         "fusion.alpha_predictor.2.weight",
+218:     ]
+219:     missing = sorted(incompatible.missing_keys)
+220:     unexpected = sorted(incompatible.unexpected_keys)
+221:     if missing != expected_missing or unexpected:
+222:         raise RuntimeError(
+223:             f"V6-to-V7 initialization mismatch: missing={missing}, unexpected={unexpected}"
+224:         )
+225:     return {
+226:         "checkpoint": str(checkpoint),
+227:         "checkpoint_sha256": checkpoint_sha256,
+228:         "missing_keys": missing,
+229:         "unexpected_keys": unexpected,
+230:     }
+233: def set_v7_training_phase(
+234:     model: Any,
+235:     *,
+236:     phase: str,
+237:     joint_trainable_names: set[str],
+238: ) -> set[str]:
+241:     if phase == "router_warmup":
+242:         selected = {
+243:             name
+244:             for name in joint_trainable_names
+245:             if name.startswith("encoder.reliability_gate.")
+246:             or name.startswith("fusion.alpha_predictor.")
+247:         }
+248:     elif phase == "joint":
+249:         selected = set(joint_trainable_names)
+250:     else:
+251:         raise ValueError(f"unsupported V7 training phase: {phase}")
+252:     for name, parameter in model.named_parameters():
+253:         parameter.requires_grad_(name in selected)
+254:     return selected
+257: def _set_seed(seed: int) -> None:
+258:     import numpy as np
+259:     import torch
+261:     random.seed(seed)
+262:     np.random.seed(seed)
+263:     torch.manual_seed(seed)
+264:     torch.cuda.manual_seed(seed)
+265:     torch.cuda.manual_seed_all(seed)
+266:     torch.backends.cudnn.deterministic = True
+267:     torch.backends.cudnn.benchmark = True
+270: def _build_runtime(config: dict[str, Any]) -> dict[str, Any]:
+271:     from run_signal_baseline_dev import _build_loaders, _configure_signal_source
+273:     signal_config = config["SIGNAL"]
+274:     data_config = config["DATA"]
+275:     model_config = config["MODEL"]
+276:     architecture = str(model_config["ARCHITECTURE"])
+277:     seed = int(config["EXPERIMENT"]["SEED"])
+278:     source = Path(signal_config["SOURCE"]).resolve()
+279:     checkpoint = Path(signal_config["CHECKPOINT"]).resolve()
+280:     checkpoint_sha256 = _sha256(checkpoint)
+281:     if checkpoint_sha256 != str(signal_config["CHECKPOINT_SHA256"]):
+282:         raise ValueError("Signal checkpoint SHA-256 differs from the frozen contract")
+284:     source_commit = _configure_signal_source(source)
+285:     from config import cfg as signal_cfg
+286:     from modeling import make_frame
+288:     _set_seed(seed)
+289:     signal_cfg.merge_from_file(str(Path(signal_config["CONFIG"]).resolve()))
+290:     signal_cfg.defrost()
+291:     signal_cfg.MODEL.PRETRAIN_PATH_T = str(Path(signal_config["CLIP_WEIGHT"]).resolve())
+292:     signal_cfg.SOLVER.SEED = seed
+293:     signal_cfg.SOLVER.IMS_PER_BATCH = int(data_config["TRAIN_BATCH_SIZE"])
+294:     signal_cfg.DATALOADER.NUM_INSTANCE = int(data_config["NUM_INSTANCES"])
+295:     signal_cfg.DATALOADER.NUM_WORKERS = int(data_config["NUM_WORKERS"])
+296:     signal_cfg.TEST.IMS_PER_BATCH = int(data_config["EVAL_BATCH_SIZE"])
+297:     signal_cfg.freeze()
+299:     train_loader, eval_loader, train_records, dev_records = _build_loaders(
+300:         dataset_root=Path(data_config["DATASET_ROOT"]).resolve(),
+301:         protocol_path=(PROJECT_ROOT / data_config["DEV_PROTOCOL"]).resolve(),
+302:         batch_size=int(data_config["TRAIN_BATCH_SIZE"]),
+303:         num_instances=int(data_config["NUM_INSTANCES"]),
+304:         eval_batch_size=int(data_config["EVAL_BATCH_SIZE"]),
+305:         num_workers=int(data_config["NUM_WORKERS"]),
+306:         seed=seed,
+307:     )
+308:     signal_model = make_frame(
+309:         signal_cfg,
+310:         num_class=len({record[1] for record in train_records}),
+311:         camera_num=len({record[2] for record in train_records}),
+312:         view_num=len({record[3] for record in train_records}),
+313:     )
+315:     import torch
+317:     signal_state = torch.load(checkpoint, map_location="cpu", weights_only=True)
+318:     signal_model.load_state_dict(signal_state, strict=True)
+319:     signal_model.cuda()
+321:     project_modeling = str(PROJECT_ROOT / "modeling")
+322:     if project_modeling not in sys.path:
+323:         sys.path.append(project_modeling)
+324:     if architecture in (ARCHITECTURE_V7, ARCHITECTURE_V8):
+325:         from trifusion.aligned_data import build_aligned_train_loader
+327:         train_loader = build_aligned_train_loader(
+328:             train_records,
+329:             batch_size=int(data_config["TRAIN_BATCH_SIZE"]),
+330:             num_instances=int(data_config["NUM_INSTANCES"]),
+331:             num_workers=int(data_config["NUM_WORKERS"]),
+332:             seed=seed,
+333:         )
+334:     initialization = None
+335:     common_build_arguments = {
+336:         "signal_checkpoint_sha256": checkpoint_sha256,
+337:         "num_classes": len({record[1] for record in train_records}),
+338:         "feature_width": int(model_config["FEATURE_WIDTH"]),
+339:         "grid_size": tuple(model_config["GRID_SIZE"]),
+340:         "adapter_width": int(model_config["ADAPTER_WIDTH"]),
+341:     }
+342:     if architecture == ARCHITECTURE_V5:
+343:         from trifusion.signal_preserving_v5_builder import (
+344:             build_signal_preserving_trifusion_v5,
+345:         )
+347:         build = build_signal_preserving_trifusion_v5(
+348:             signal_model,
+349:             residual_scale_init=float(model_config["RESIDUAL_SCALE_INIT"]),
+350:             residual_width=int(model_config["RESIDUAL_WIDTH"]),
+351:             relay_rank=int(model_config["RELAY_RANK"]),
+352:             private_width=int(model_config["PRIVATE_WIDTH"]),
+353:             reliability_hidden_width=int(model_config["RELIABILITY_HIDDEN_WIDTH"]),
+354:             **common_build_arguments,
+355:         )
+356:     elif architecture == ARCHITECTURE_V6:
+357:         from trifusion.signal_preserving_v6_builder import (
+358:             build_signal_preserving_trifusion_v6,
+359:         )
+361:         build = build_signal_preserving_trifusion_v6(
+362:             signal_model,
+363:             residual_width=int(model_config["RESIDUAL_WIDTH"]),
+364:             relay_rank=int(model_config["RELAY_RANK"]),
+365:             private_width=int(model_config["PRIVATE_WIDTH"]),
+366:             reliability_hidden_width=int(model_config["RELIABILITY_HIDDEN_WIDTH"]),
+367:             **common_build_arguments,
+368:         )
+369:     elif architecture == ARCHITECTURE_V7:
+370:         from trifusion.signal_preserving_v7_builder import (
+371:             build_signal_preserving_trifusion_v7,
+372:         )
+374:         build = build_signal_preserving_trifusion_v7(
+375:             signal_model,
+376:             alpha_max=float(model_config["ALPHA_MAX"]),
+377:             alpha_init=float(model_config["ALPHA_INIT"]),
+378:             residual_width=int(model_config["RESIDUAL_WIDTH"]),
+379:             relay_rank=int(model_config["RELAY_RANK"]),
+380:             private_width=int(model_config["PRIVATE_WIDTH"]),
+381:             reliability_hidden_width=int(model_config["RELIABILITY_HIDDEN_WIDTH"]),
+382:             **common_build_arguments,
+383:         )
+384:         initialization = load_v7_initialization(build.model, config["INITIALIZATION"])
+385:     elif architecture == ARCHITECTURE_V8:
+386:         from trifusion.signal_preserving_v8_builder import (
+387:             build_signal_preserving_trifusion_v8_expert_formation,
+388:         )
+390:         build = build_signal_preserving_trifusion_v8_expert_formation(
+391:             signal_model,
+392:             semantic_width=int(model_config["SEMANTIC_WIDTH"]),
+393:             branch_after_block=int(model_config["BRANCH_AFTER_BLOCK"]),
+394:             expert_modal_width=int(model_config["EXPERT_MODAL_WIDTH"]),
+395:             scale_init=float(model_config["SCALE_INIT"]),
+396:             gradient_checkpointing=bool(model_config["GRADIENT_CHECKPOINTING"]),
+397:             **common_build_arguments,
+398:         )
+399:     else:
+400:         raise ValueError(f"unsupported Signal-preserving architecture: {architecture}")
+401:     build.model.cuda()
+402:     build_provenance = dict(build.provenance)
+403:     if initialization is not None:
+404:         build_provenance["initialization"] = initialization
+405:     return {
+406:         "model": build.model,
+407:         "train_loader": train_loader,
+408:         "eval_loader": eval_loader,
+409:         "train_records": train_records,
+410:         "dev_records": dev_records,
+411:         "signal_stage": signal_cfg.MODEL.stageName,
+412:         "signal_source_commit": source_commit,
+413:         "signal_source_diff_sha256": hashlib.sha256(
+414:             subprocess.check_output(["git", "-C", str(source), "diff", "--binary"])
+415:         ).hexdigest(),
+416:         "checkpoint": checkpoint,
+417:         "checkpoint_sha256": checkpoint_sha256,
+418:         "build_provenance": build_provenance,
+419:     }
+422: def _evaluate_baseline_parity(
+423:     model: Any,
+424:     loader: Any,
+425:     *,
+426:     num_query: int,
+427:     signal_stage: str,
+428: ) -> tuple[dict[str, float], int, bool]:
+429:     import numpy as np
+430:     import torch
+431:     from utils.metrics import R1_mAP_eval
+433:     evaluator = R1_mAP_eval(num_query, max_rank=50, feat_norm="yes")
+434:     feature_width = 0
+435:     exact_reference_match = True
+436:     model.eval()
+437:     for images, identities, camera_ids, camera_ids_batch, view_ids, paths in loader:
+438:         del view_ids
+439:         images = {name: tensor.cuda(non_blocking=True) for name, tensor in images.items()}
+440:         camera_ids_cuda = camera_ids_batch.cuda(non_blocking=True)
+441:         batch = {
+442:             "images": images,
+443:             "modality_mask": torch.ones(
+444:                 camera_ids_cuda.shape[0], 3, dtype=torch.bool, device="cuda"
+445:             ),
+446:             "camera_ids": camera_ids_cuda,
+447:         }
+448:         with torch.no_grad():
+449:             reference = model.baseline.signal(
+450:                 images,
+451:                 cam_label=camera_ids_cuda,
+452:                 view_label=None,
+453:                 training=False,
+454:                 sge=signal_stage,
+455:             )
+456:             baseline = model(batch, retrieval_output="baseline_only")
+457:         exact_reference_match = exact_reference_match and torch.equal(
+458:             reference, baseline
+459:         )
+460:         feature_width = int(baseline.shape[1])
+461:         evaluator.update((baseline, identities, camera_ids, paths))
+462:     cmc, mean_ap, *_ = evaluator.compute()
+463:     metrics = {
+464:         "mAP": float(mean_ap * 100.0),
+465:         "Rank-1": float(cmc[0] * 100.0),
+466:         "Rank-5": float(cmc[4] * 100.0),
+467:         "Rank-10": float(cmc[9] * 100.0),
+468:     }
+469:     if not all(np.isfinite(value) for value in metrics.values()):
+470:         raise FloatingPointError("nonfinite V5 baseline parity metric")
+471:     return metrics, feature_width, exact_reference_match
+474: def _run_preflight(config: dict[str, Any], output_dir: Path) -> dict[str, Any]:
+475:     started = time.time()
+476:     runtime = _build_runtime(config)
+477:     metrics, feature_width, exact_reference_match = _evaluate_baseline_parity(
+478:         runtime["model"],
+479:         runtime["eval_loader"],
+480:         num_query=len(runtime["dev_records"]),
+481:         signal_stage=runtime["signal_stage"],
+482:     )
+483:     expected_metrics = {
+484:         key: float(value)
+485:         for key, value in config["SIGNAL"]["EXPECTED_DEV_METRICS"].items()
+486:     }
+487:     metric_parity = {
+488:         key: metrics[key] == expected_metrics[key] for key in expected_metrics
+489:     }
+490:     if feature_width != int(config["SIGNAL"]["BASELINE_WIDTH"]):
+491:         raise ValueError("V5 baseline width differs from the Signal contract")
+492:     if not exact_reference_match or not all(metric_parity.values()):
+493:         raise ValueError("V5 baseline-only output failed exact Signal parity")
+494:     result = {
+495:         "schema_version": receipt_schema(config["MODEL"]["ARCHITECTURE"], "preflight"),
+496:         "status": "PASS",
+497:         "mode": "preflight",
+498:         "signal_source_commit": runtime["signal_source_commit"],
+499:         "signal_source_diff_sha256": runtime["signal_source_diff_sha256"],
+500:         "signal_checkpoint": str(runtime["checkpoint"]),
+501:         "signal_checkpoint_sha256": runtime["checkpoint_sha256"],
+502:         "baseline_metrics_percent": metrics,
+503:         "expected_baseline_metrics_percent": expected_metrics,
+504:         "metric_parity": metric_parity,
+505:         "exact_reference_feature_match": exact_reference_match,
+506:         "baseline_feature_width": feature_width,
+507:         "fit_triplets": len(runtime["train_records"]),
+508:         "dev_query_triplets": len(runtime["dev_records"]),
+509:         "dev_gallery_triplets": len(runtime["dev_records"]),
+510:         "build_provenance": runtime["build_provenance"],
+511:         "official_test_access_count": 0,
+512:         "training_started": False,
+513:         "optimizer_steps": 0,
+514:         "elapsed_seconds": time.time() - started,
+515:     }
+516:     (output_dir / "preflight.json").write_text(
+517:         json.dumps(result, indent=2, sort_keys=True) + "\n",
+518:         encoding="utf-8",
+519:     )
+520:     return result
+523: def _module_state_sha256(module: Any) -> str:
+524:     digest = hashlib.sha256()
+525:     for name, tensor in sorted(module.state_dict().items()):
+526:         digest.update(name.encode("utf-8"))
+527:         digest.update(tensor.detach().cpu().contiguous().numpy().tobytes())
+528:     return digest.hexdigest()
+531: def _criterion_class(config: dict[str, Any]) -> Any:
+532:     architecture = str(config["MODEL"]["ARCHITECTURE"])
+533:     if architecture == ARCHITECTURE_V5:
+534:         from trifusion.signal_preserving_v5 import SignalPreservingV5Criterion
+536:         return SignalPreservingV5Criterion
+537:     if architecture == ARCHITECTURE_V6:
+538:         from trifusion.signal_preserving_v6 import ComplementarityActivatedV6Criterion
+540:         return ComplementarityActivatedV6Criterion
+541:     raise ValueError(f"unsupported Signal-preserving architecture: {architecture}")
+544: def _build_criterion(config: dict[str, Any]) -> Any:
+545:     architecture = str(config["MODEL"]["ARCHITECTURE"])
+546:     if architecture == ARCHITECTURE_V8:
+547:         from trifusion.signal_preserving_v8 import ExpertFormationV8Criterion
+549:         return ExpertFormationV8Criterion(
+550:             triplet_margin=float(config["LOSS"]["TRIPLET_MARGIN"]),
+551:             label_smoothing=float(config["LOSS"]["LABEL_SMOOTHING"]),
+552:         ).cuda()
+553:     if architecture == ARCHITECTURE_V7:
+554:         from trifusion.signal_preserving_v7 import MarginalGainV7Criterion
+556:         return MarginalGainV7Criterion(
+557:             triplet_margin=float(config["LOSS"]["TRIPLET_MARGIN"]),
+558:             label_smoothing=float(config["LOSS"]["LABEL_SMOOTHING"]),
+559:             utility_temperature=float(config["LOSS"]["UTILITY_TEMPERATURE"]),
+560:             alpha_gain_scale=float(config["LOSS"]["ALPHA_GAIN_SCALE"]),
+561:         ).cuda()
+562:     return _criterion_class(config)(
+563:         target_cache=None,
+564:         triplet_margin=float(config["LOSS"]["TRIPLET_MARGIN"]),
+565:     ).cuda()
+568: def _training_batch(raw_batch: Any) -> tuple[dict[str, Any], Any]:
+569:     import torch
+571:     images, labels, camera_ids, _view_ids, _paths = raw_batch
+572:     images = {name: tensor.cuda(non_blocking=True) for name, tensor in images.items()}
+573:     labels = labels.cuda(non_blocking=True)
+574:     camera_ids = camera_ids.cuda(non_blocking=True)
+575:     return (
+576:         {
+577:             "images": images,
+578:             "modality_mask": torch.ones(
+579:                 labels.shape[0], 3, dtype=torch.bool, device="cuda"
+580:             ),
+581:             "camera_ids": camera_ids,
+582:         },
+583:         labels,
+584:     )
+587: def _training_views(
+588:     raw_batch: Any,
+589:     config: dict[str, Any],
+590: ) -> tuple[dict[str, Any], dict[str, Any] | None, Any]:
+591:     import torch
+593:     clean_batch, labels = _training_batch(raw_batch)
+594:     if str(config["MODEL"]["ARCHITECTURE"]) != ARCHITECTURE_V7:
+595:         return clean_batch, None, labels
+596:     batch_size = labels.shape[0]
+597:     selected_samples = torch.rand(batch_size, device="cuda") < float(
+598:         config["QUALITY"]["DEGRADATION_PROBABILITY"]
+599:     )
+600:     selected_modalities = torch.randint(3, (batch_size,), device="cuda")
+601:     degraded_images, quality = apply_controlled_modality_degradation(
+602:         clean_batch["images"],
+603:         selected_modalities=selected_modalities,
+604:         selected_samples=selected_samples,
+605:         degraded_quality=float(config["QUALITY"]["DEGRADED_QUALITY"]),
+606:     )
+607:     quality_batch = {
+608:         "images": degraded_images,
+609:         "modality_mask": clean_batch["modality_mask"],
+610:         "camera_ids": clean_batch["camera_ids"],
+611:         "modality_quality": quality,
+612:     }
+613:     return clean_batch, quality_batch, labels
+616: def _criterion_losses(
+617:     criterion: Any,
+618:     output: Any,
+619:     labels: Any,
+620:     *,
+621:     architecture: str,
+622:     quality_output: Any | None,
+623: ) -> dict[str, Any]:
+624:     if architecture == ARCHITECTURE_V7:
+625:         return criterion(output, labels, quality_output=quality_output)
+626:     return criterion(output, labels)
+629: def _evaluate_v7_quality_response(
+630:     model: Any,
+631:     raw_batch: Any,
+632:     config: dict[str, Any],
+633: ) -> dict[str, Any]:
+634:     import torch
+636:     clean_batch, _labels = _training_batch(raw_batch)
+637:     model.eval()
+638:     with torch.no_grad(), torch.autocast(
+639:         device_type="cuda",
+640:         dtype=torch.float16,
+641:         enabled=bool(config["OPTIMIZATION"]["AMP"]),
+642:     ):
+643:         clean = model(clean_batch, return_aux=True).modal_probabilities.detach()
+644:         corrupted = {}
+645:         selected_samples = torch.ones(clean.shape[0], dtype=torch.bool, device="cuda")
+646:         for index, modality in enumerate(("RGB", "NI", "TI")):
+647:             selected_modalities = torch.full(
+648:                 (clean.shape[0],), index, dtype=torch.long, device="cuda"
+649:             )
+650:             degraded_images, quality = apply_controlled_modality_degradation(
+651:                 clean_batch["images"],
+652:                 selected_modalities=selected_modalities,
+653:                 selected_samples=selected_samples,
+654:                 degraded_quality=float(config["QUALITY"]["DEGRADED_QUALITY"]),
+655:             )
+656:             degraded_batch = {
+657:                 "images": degraded_images,
+658:                 "modality_mask": clean_batch["modality_mask"],
+659:                 "camera_ids": clean_batch["camera_ids"],
+660:                 "modality_quality": quality,
+661:             }
+662:             corrupted[modality] = model(
+663:                 degraded_batch, return_aux=True
+664:             ).modal_probabilities.detach()
+665:     return quality_response_gate(clean, corrupted)
+668: def _run_capacity(config: dict[str, Any], output_dir: Path) -> dict[str, Any]:
+669:     import torch
+671:     started = time.time()
+672:     runtime = _build_runtime(config)
+673:     model = runtime["model"]
+674:     architecture = str(config["MODEL"]["ARCHITECTURE"])
+675:     criterion = _build_criterion(config)
+676:     trainable = {
+677:         name: parameter for name, parameter in model.named_parameters() if parameter.requires_grad
+678:     }
+679:     optimizer = torch.optim.AdamW(
+680:         trainable.values(),
+681:         lr=float(config["OPTIMIZATION"]["NEW_MODULE_LR"]),
+682:         weight_decay=float(config["OPTIMIZATION"]["WEIGHT_DECAY"]),
+683:     )
+684:     scaler = torch.amp.GradScaler(
+685:         "cuda", init_scale=float(config["OPTIMIZATION"]["AMP_INIT_SCALE"])
+686:     )
+687:     baseline_before = _module_state_sha256(model.baseline.signal)
+688:     model.train()
+689:     torch.cuda.reset_peak_memory_stats()
+690:     gradient_names: set[str] = set()
+691:     losses_by_step: list[float] = []
+692:     overflow_events = 0
+693:     steps = int(config["GATES"]["CAPACITY_STEPS"])
+694:     iterator = iter(runtime["train_loader"])
+695:     for _step in range(steps):
+696:         batch, quality_batch, labels = _training_views(next(iterator), config)
+697:         optimizer.zero_grad(set_to_none=True)
+698:         with torch.autocast(
+699:             device_type="cuda",
+700:             dtype=torch.float16,
+701:             enabled=bool(config["OPTIMIZATION"]["AMP"]),
+702:         ):
+703:             output = model(batch, return_aux=True)
+704:             quality_output = (
+705:                 model(quality_batch, return_aux=True)
+706:                 if architecture == ARCHITECTURE_V7
+707:                 else None
+708:             )
+709:             if not output.diagnostics["all_finite"]:
+710:                 raise FloatingPointError("V5 forward emitted a nonfinite tensor")
+711:             loss_parts = _criterion_losses(
+712:                 criterion,
+713:                 output,
+714:                 labels,
+715:                 architecture=architecture,
+716:                 quality_output=quality_output,
+717:             )
+718:             total_loss = weighted_training_loss(loss_parts, config)
+719:         if not bool(torch.isfinite(total_loss)):
+720:             raise FloatingPointError("V5 capacity loss is nonfinite")
+721:         scale_before = scaler.get_scale()
+722:         scaler.scale(total_loss).backward()
+723:         scaler.unscale_(optimizer)
+724:         for name, parameter in trainable.items():
+725:             if parameter.grad is not None:
+726:                 if not bool(torch.isfinite(parameter.grad).all()):
+727:                     raise FloatingPointError(f"nonfinite gradient: {name}")
+728:                 gradient_names.add(name)
+729:         scaler.step(optimizer)
+730:         scaler.update()
+731:         overflow_events += int(scaler.get_scale() < scale_before)
+732:         losses_by_step.append(float(total_loss.detach()))
+734:     baseline_after = _module_state_sha256(model.baseline.signal)
+735:     missing_gradients = sorted(set(trainable) - gradient_names)
+736:     passed = (
+737:         not missing_gradients
+738:         and overflow_events == 0
+739:         and baseline_before == baseline_after
+740:     )
+
+FILE 142: tools/build_v12_complete_path_oof_targets.py (comments/blank lines/docstrings omitted only)
+541:     for fold_index, heldout_ids in enumerate(folds):
+542:         _set_seed(int(config["EXPERIMENT"]["SEED"]))
+543:         split_records = build_complete_path_fold_records(
+544:             records,
+545:             heldout_ids=heldout_ids,
+546:         )
+547:         expert_fit_original = [
+548:             (paths, split_records["label_map"][int(identity)], camera, view)
+549:             for paths, identity, camera, view in records
+550:             if int(identity) in split_records["fit_identity_ids"]
+551:         ]
+552:         signal_loader = build_aligned_train_loader(
+553:             split_records["train_records"],
+554:             batch_size=int(config["DATA"]["TRAIN_BATCH_SIZE"]),
+555:             num_instances=int(config["DATA"]["NUM_INSTANCES"]),
+556:             num_workers=int(config["DATA"]["NUM_WORKERS"]),
+557:             seed=int(config["EXPERIMENT"]["SEED"]),
+558:         )
+559:         signal_model = _build_signal_teacher(
+560:             signal_cfg,
+561:             num_classes=len(split_records["fit_identity_ids"]),
+562:             camera_num=len({record[2] for record in split_records["train_records"]}),
+563:             view_num=len({record[3] for record in split_records["train_records"]}),
+564:         )
+565:         signal_training = _train_signal_teacher(
+566:             signal_model,
+567:             signal_loader,
+568:             signal_cfg,
+569:             epochs=int(config["V12"]["SIGNAL_TEACHER_EPOCHS"]),
+570:             amp_init_scale=float(config["OPTIMIZATION"]["AMP_INIT_SCALE"]),
+571:         )
+572:         signal_checkpoint = output_dir / f"fold_{fold_index}_signal_final.pth"
+573:         torch.save(
+574:             {
+575:                 "schema_version": "trifusion-v12-fold-signal-final-v1",
+576:                 "fold": fold_index,
+577:                 "fit_identity_ids": list(split_records["fit_identity_ids"]),
+578:                 "heldout_identity_ids": list(split_records["heldout_identity_ids"]),
+579:                 "model_state_dict": {
+580:                     name: value.detach().cpu()
+581:                     for name, value in signal_model.state_dict().items()
+582:                 },
+583:             },
+584:             signal_checkpoint,
+585:         )
+586:         signal_checkpoint_sha256 = _sha256(signal_checkpoint)
+587:         model = _build_v8_experts(
+588:             signal_model,
+589:             config,
+590:             signal_checkpoint_sha256=signal_checkpoint_sha256,
+591:             num_classes=len(split_records["fit_identity_ids"]),
+592:         )
+593:         expert_training = _train_fold(model, expert_fit_original, config)
+594:         expert_checkpoint = output_dir / f"fold_{fold_index}_experts.pth"
+595:         torch.save(
+596:             {
+597:                 "schema_version": "trifusion-v12-fold-experts-v1",
+598:                 "fold": fold_index,
+599:                 "signal_checkpoint_sha256": signal_checkpoint_sha256,
+600:                 "fit_identity_ids": list(split_records["fit_identity_ids"]),
+601:                 "heldout_identity_ids": list(split_records["heldout_identity_ids"]),
+602:                 "expert_state_dict": {
+603:                     name: value.detach().cpu()
+604:                     for name, value in model.state_dict().items()
+605:                     if not name.startswith("baseline.")
+606:                 },
+607:             },
+608:             expert_checkpoint,
+609:         )
+610:         heldout_records = [
+611:             record
+612:             for record in eligible_records
+613:             if int(record[1]) in heldout_ids
+614:         ]
+615:         heldout_loader = _eval_loader(heldout_records, config)
+616:         collected = _collect_fold(model, heldout_loader)
+617:         num_query = len(heldout_records)
+618:         identities = collected["identities"]
+619:         cameras = collected["cameras"]
+620:         residuals = {
+621:             expert: collected[f"residual_{expert}"] for expert in EXPERTS
+622:         }
+623:         residuals["bank"] = torch.cat(
+624:             [F.normalize(residuals[expert].float(), dim=1) for expert in EXPERTS],
+625:             dim=1,
+626:         )
+627:         local_scores = {
+628:             name: _scores_from_features(
+629:                 features,
+630:                 identities,
+631:                 cameras,
+632:                 num_query=num_query,
+633:             )
+634:             for name, features in residuals.items()
+635:         }
+636:         for name, scores in local_scores.items():
+637:             score_parts[name].append(scores)
+638:         slot_margin = np.empty(
+639:             (num_query, len(EXPERTS), len(MODALITIES)),
+640:             dtype=np.float64,
+641:         )
+642:         for expert_index, expert in enumerate(EXPERTS):
+643:             for modality_index, modality in enumerate(MODALITIES):
+644:                 slot_margin[:, expert_index, modality_index] = _margins_from_features(
+645:                     collected[f"slot_{expert}_{modality}"],
+646:                     identities,
+647:                     cameras,
+648:                     num_query=num_query,
+649:                 )
+650:         query_direct.append(collected["direct_modal"][:num_query].half())
+651:         query_modal_residual.append(collected["modal_residual"][:num_query].half())
+652:         query_target_margin.append(torch.from_numpy(slot_margin).float())
+653:         query_identities.extend(identities[:num_query].tolist())
+654:         query_cameras.extend(cameras[:num_query].tolist())
+655:         query_folds.extend([fold_index] * num_query)
+656:         fold_metrics.append(
+657:             {
+658:                 "fold": fold_index,
+659:                 "queries": num_query,
+660:                 "metrics_percent": {
+661:                     name: _metric_summary(scores)
+662:                     for name, scores in local_scores.items()
+663:                 },
+664:             }
+665:         )
+666:         receipt = {
+667:             "fold": fold_index,
+668:             "signal_fit_identity_ids": list(split_records["fit_identity_ids"]),
+669:             "expert_fit_identity_ids": list(split_records["fit_identity_ids"]),
+670:             "heldout_identity_ids": list(split_records["heldout_identity_ids"]),
+671:             "eligible_heldout_identity_count": len(heldout_ids & eligible_ids),
+672:             "eligible_heldout_queries": num_query,
+673:             "signal_epochs": int(signal_training["epochs"]),
+674:             "expert_epochs": int(expert_training["epochs"]),
+675:             "signal_checkpoint_selection": "final_epoch_only",
+676:             "signal_checkpoint": str(signal_checkpoint),
+677:             "signal_checkpoint_sha256": signal_checkpoint_sha256,
+678:             "expert_checkpoint": str(expert_checkpoint),
+679:             "expert_checkpoint_sha256": _sha256(expert_checkpoint),
+680:             "signal_training": signal_training,
+681:             "expert_training": expert_training,
+682:             "overflow_events": int(signal_training["overflow_events"])
+683:             + int(expert_training["overflow_events"]),
+684:             "dev_access_count": 0,

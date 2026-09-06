@@ -1,0 +1,404 @@
+FILE 146: tools/run_signal_preserving_v5.py (comments/blank lines/docstrings omitted only)
+1251:         "oracle_is_deployment_result": False,
+1252:         "checkpoint": str(checkpoint_path),
+1253:         "checkpoint_sha256": _sha256(checkpoint_path),
+1254:         "signal_checkpoint_sha256": runtime["checkpoint_sha256"],
+1255:         "signal_state_sha256_before": baseline_before,
+1256:         "signal_state_sha256_after": baseline_after,
+1257:         "signal_state_unchanged": baseline_before == baseline_after,
+1258:         "optimizer_steps": optimizer_steps,
+1259:         "overflow_events": overflow_events,
+1260:         "peak_allocated_mib": torch.cuda.max_memory_allocated() / 1024**2,
+1261:         "peak_reserved_mib": torch.cuda.max_memory_reserved() / 1024**2,
+1262:         "fit_triplets": len(runtime["train_records"]),
+1263:         "probe_query_triplets": len(runtime["dev_records"]),
+1264:         "probe_gallery_triplets": len(runtime["dev_records"]),
+1265:         "official_test_access_count": 0,
+1266:         "run_identity_sha256": _sha256(output_dir / "run_identity.json"),
+1267:         "history_sha256": _sha256(output_dir / "history.json"),
+1268:         "elapsed_seconds": time.time() - started,
+1269:     }
+1270:     (output_dir / "run_summary.json").write_text(
+1271:         json.dumps(result, indent=2, sort_keys=True) + "\n",
+1272:         encoding="utf-8",
+1273:     )
+1274:     return result
+1277: def _metric_parity(
+1278:     actual: dict[str, dict[str, float]],
+1279:     expected: dict[str, dict[str, float]],
+1280: ) -> dict[str, dict[str, bool]]:
+1281:     return {
+1282:         output: {
+1283:             metric: actual[output][metric] == expected[output][metric]
+1284:             for metric in expected[output]
+1285:         }
+1286:         for output in expected
+1287:     }
+1290: def _run_dev(config: dict[str, Any], config_path: Path, output_dir: Path) -> dict[str, Any]:
+1291:     import torch
+1293:     started = time.time()
+1294:     runtime = _build_runtime(config)
+1295:     model = runtime["model"]
+1296:     architecture = str(config["MODEL"]["ARCHITECTURE"])
+1297:     criterion = _build_criterion(config)
+1298:     trainable = {
+1299:         name: parameter for name, parameter in model.named_parameters() if parameter.requires_grad
+1300:     }
+1301:     base_lr = float(config["OPTIMIZATION"]["NEW_MODULE_LR"])
+1302:     optimizer = torch.optim.AdamW(
+1303:         trainable.values(),
+1304:         lr=base_lr,
+1305:         weight_decay=float(config["OPTIMIZATION"]["WEIGHT_DECAY"]),
+1306:     )
+1307:     scaler = torch.amp.GradScaler(
+1308:         "cuda", init_scale=float(config["OPTIMIZATION"]["AMP_INIT_SCALE"])
+1309:     )
+1310:     max_epochs = int(config["OPTIMIZATION"]["MAX_EPOCHS"])
+1311:     warmup_epochs = int(config["OPTIMIZATION"]["WARMUP_EPOCHS"])
+1312:     retrieval_outputs = tuple(config["MODEL"]["RETRIEVAL_OUTPUTS"])
+1313:     expected_baseline = {
+1314:         key: float(value)
+1315:         for key, value in config["SIGNAL"]["EXPECTED_DEV_METRICS"].items()
+1316:     }
+1317:     source_paths = architecture_source_paths(architecture)
+1318:     identity = {
+1319:         "schema_version": receipt_schema(
+1320:             config["MODEL"]["ARCHITECTURE"], "dev-identity"
+1321:         ),
+1322:         "seed": int(config["EXPERIMENT"]["SEED"]),
+1323:         "config": str(config_path),
+1324:         "config_sha256": _sha256(config_path),
+1325:         "runner_sha256": _sha256(Path(__file__).resolve()),
+1326:         "model_sha256": _sha256(source_paths["model"]),
+1327:         "builder_sha256": _sha256(source_paths["builder"]),
+1328:         "signal_source_commit": runtime["signal_source_commit"],
+1329:         "signal_source_diff_sha256": runtime["signal_source_diff_sha256"],
+1330:         "signal_checkpoint_sha256": runtime["checkpoint_sha256"],
+1331:         "fit_triplets": len(runtime["train_records"]),
+1332:         "dev_query_triplets": len(runtime["dev_records"]),
+1333:         "dev_gallery_triplets": len(runtime["dev_records"]),
+1334:         "retrieval_outputs": list(retrieval_outputs),
+1335:         "official_test_access_count": 0,
+1336:     }
+1337:     (output_dir / "run_identity.json").write_text(
+1338:         json.dumps(identity, indent=2, sort_keys=True) + "\n",
+1339:         encoding="utf-8",
+1340:     )
+1342:     baseline_before = _module_state_sha256(model.baseline.signal)
+1343:     history: list[dict[str, Any]] = []
+1344:     best_epoch = 0
+1345:     best_fused_map = float("-inf")
+1346:     best_metrics: dict[str, dict[str, float]] | None = None
+1347:     best_checkpoint = output_dir / "best_model.pth"
+1348:     optimizer_steps = 0
+1349:     overflow_events = 0
+1350:     torch.cuda.reset_peak_memory_stats()
+1351:     joint_trainable_names = set(trainable)
+1353:     for epoch in range(1, max_epochs + 1):
+1354:         multiplier = learning_rate_multiplier(
+1355:             epoch,
+1356:             max_epochs=max_epochs,
+1357:             warmup_epochs=warmup_epochs,
+1358:         )
+1359:         learning_rate = base_lr * multiplier
+1360:         for group in optimizer.param_groups:
+1361:             group["lr"] = learning_rate
+1362:         phase = "joint"
+1363:         if architecture == ARCHITECTURE_V7:
+1364:             phase = (
+1365:                 "router_warmup"
+1366:                 if epoch <= int(config["OPTIMIZATION"]["ROUTER_WARMUP_EPOCHS"])
+1367:                 else "joint"
+1368:             )
+1369:             set_v7_training_phase(
+1370:                 model,
+1371:                 phase=phase,
+1372:                 joint_trainable_names=joint_trainable_names,
+1373:             )
+1374:         model.train()
+1375:         epoch_loss = 0.0
+1376:         epoch_steps = 0
+1377:         quality_gate_raw_batch = None
+1378:         for raw_batch in runtime["train_loader"]:
+1379:             if (
+1380:                 architecture == ARCHITECTURE_V7
+1381:                 and epoch == int(config["OPTIMIZATION"]["ROUTER_WARMUP_EPOCHS"])
+1382:                 and quality_gate_raw_batch is None
+1383:             ):
+1384:                 quality_gate_raw_batch = raw_batch
+1385:             batch, quality_batch, labels = _training_views(raw_batch, config)
+1386:             optimizer.zero_grad(set_to_none=True)
+1387:             with torch.autocast(
+1388:                 device_type="cuda",
+1389:                 dtype=torch.float16,
+1390:                 enabled=bool(config["OPTIMIZATION"]["AMP"]),
+1391:             ):
+1392:                 output = model(batch, return_aux=True)
+1393:                 quality_output = (
+1394:                     model(quality_batch, return_aux=True)
+1395:                     if architecture == ARCHITECTURE_V7
+1396:                     else None
+1397:                 )
+1398:                 if not output.diagnostics["all_finite"]:
+1399:                     raise FloatingPointError("V5 training emitted a nonfinite tensor")
+1400:                 loss_parts = _criterion_losses(
+1401:                     criterion,
+1402:                     output,
+1403:                     labels,
+1404:                     architecture=architecture,
+1405:                     quality_output=quality_output,
+1406:                 )
+1407:                 total_loss = weighted_training_loss(loss_parts, config, phase=phase)
+1408:             if not bool(torch.isfinite(total_loss)):
+1409:                 raise FloatingPointError("V5 dev loss is nonfinite")
+1410:             scale_before = scaler.get_scale()
+1411:             scaler.scale(total_loss).backward()
+1412:             scaler.unscale_(optimizer)
+1413:             for name, parameter in trainable.items():
+1414:                 if parameter.grad is not None and not bool(
+1415:                     torch.isfinite(parameter.grad).all()
+1416:                 ):
+1417:                     raise FloatingPointError(f"nonfinite gradient: {name}")
+1418:             scaler.step(optimizer)
+1419:             scaler.update()
+1420:             overflow = scaler.get_scale() < scale_before
+1421:             overflow_events += int(overflow)
+1422:             optimizer_steps += int(not overflow)
+1423:             epoch_loss += float(total_loss.detach())
+1424:             epoch_steps += 1
+1426:         quality_gate_result = None
+1427:         if (
+1428:             architecture == ARCHITECTURE_V7
+1429:             and epoch == int(config["OPTIMIZATION"]["ROUTER_WARMUP_EPOCHS"])
+1430:         ):
+1431:             quality_gate_result = _evaluate_v7_quality_response(
+1432:                 model, quality_gate_raw_batch, config
+1433:             )
+1434:         metrics, feature_widths = _evaluate_outputs(
+1435:             model,
+1436:             runtime["eval_loader"],
+1437:             num_query=len(runtime["dev_records"]),
+1438:             retrieval_outputs=retrieval_outputs,
+1439:         )
+1440:         if metrics["baseline_only"] != expected_baseline:
+1441:             raise RuntimeError("frozen Signal baseline metrics changed during V5 training")
+1442:         epoch_result = {
+1443:             "epoch": epoch,
+1444:             "phase": phase,
+1445:             "learning_rate": learning_rate,
+1446:             "mean_training_loss": epoch_loss / epoch_steps,
+1447:             "metrics_percent": metrics,
+1448:             "feature_widths": feature_widths,
+1449:         }
+1450:         if quality_gate_result is not None:
+1451:             epoch_result["quality_response_gate"] = quality_gate_result
+1452:         history.append(epoch_result)
+1453:         if metrics["fused"]["mAP"] > best_fused_map:
+1454:             best_epoch = epoch
+1455:             best_fused_map = metrics["fused"]["mAP"]
+1456:             best_metrics = metrics
+1457:             torch.save(
+1458:                 {
+1459:                     "schema_version": receipt_schema(
+1460:                         config["MODEL"]["ARCHITECTURE"], "checkpoint"
+1461:                     ),
+1462:                     "epoch": epoch,
+1463:                     "model_state_dict": model.state_dict(),
+1464:                     "metrics_percent": metrics,
+1465:                     "run_identity_sha256": _sha256(output_dir / "run_identity.json"),
+1466:                 },
+1467:                 best_checkpoint,
+1468:             )
+1469:         (output_dir / "history.json").write_text(
+1470:             json.dumps(
+1471:                 {
+1472:                     "schema_version": receipt_schema(
+1473:                         config["MODEL"]["ARCHITECTURE"], "history"
+1474:                     ),
+1475:                     "epochs": history,
+1476:                     "best_epoch": best_epoch,
+1477:                     "best_fused_mAP": best_fused_map,
+1478:                     "official_test_access_count": 0,
+1479:                 },
+1480:                 indent=2,
+1481:                 sort_keys=True,
+1482:             )
+1483:             + "\n",
+1484:             encoding="utf-8",
+1485:         )
+1486:         print(json.dumps(epoch_result, sort_keys=True), flush=True)
+1487:         if quality_gate_result is not None and not quality_gate_result["passed"]:
+1488:             raise RuntimeError(
+1489:                 "V7 quality-response gate failed after router warmup; joint phase blocked"
+1490:             )
+1492:     if best_metrics is None:
+1493:         raise RuntimeError("V5 dev training did not select a checkpoint")
+1494:     baseline_after_training = _module_state_sha256(model.baseline.signal)
+1495:     checkpoint = torch.load(best_checkpoint, map_location="cpu", weights_only=True)
+1496:     model.load_state_dict(checkpoint["model_state_dict"], strict=True)
+1497:     model.cuda()
+1498:     final_metrics, final_feature_widths = _evaluate_outputs(
+1499:         model,
+1500:         runtime["eval_loader"],
+1501:         num_query=len(runtime["dev_records"]),
+1502:         retrieval_outputs=retrieval_outputs,
+1503:     )
+1504:     reload_parity = _metric_parity(final_metrics, best_metrics)
+1505:     baseline_after_reload = _module_state_sha256(model.baseline.signal)
+1506:     dev_gate = evaluate_dev_gate(
+1507:         final_metrics,
+1508:         min_map=float(config["GATES"]["DEV_MIN_MAP"]),
+1509:     )
+1510:     completed = (
+1511:         all(all(values.values()) for values in reload_parity.values())
+1512:         and final_metrics["baseline_only"] == expected_baseline
+1513:         and baseline_before == baseline_after_training == baseline_after_reload
+1514:         and overflow_events == 0
+1515:     )
+1516:     result = {
+1517:         "schema_version": receipt_schema(
+1518:             config["MODEL"]["ARCHITECTURE"], "dev-result"
+1519:         ),
+1520:         "status": "PASS" if completed else "FAIL",
+1521:         "mode": "dev",
+1522:         "epochs_completed": max_epochs,
+1523:         "best_epoch": best_epoch,
+1524:         "selection_metric": "fused_dev_mAP",
+1525:         "selected_metrics_percent": best_metrics,
+1526:         "final_reloaded_metrics_percent": final_metrics,
+1527:         "reload_metric_parity": reload_parity,
+1528:         "feature_widths": final_feature_widths,
+1529:         "dev_gate": dev_gate,
+1530:         "claim_supported": bool(dev_gate["passed"]),
+1531:         "checkpoint": str(best_checkpoint),
+1532:         "checkpoint_sha256": _sha256(best_checkpoint),
+1533:         "signal_checkpoint_sha256": runtime["checkpoint_sha256"],
+1534:         "signal_state_sha256_before": baseline_before,
+1535:         "signal_state_sha256_after_training": baseline_after_training,
+1536:         "signal_state_sha256_after_reload": baseline_after_reload,
+1537:         "signal_state_unchanged": (
+1538:             baseline_before == baseline_after_training == baseline_after_reload
+1539:         ),
+1540:         "build_provenance": runtime["build_provenance"],
+1541:         "optimizer_steps": optimizer_steps,
+1542:         "overflow_events": overflow_events,
+1543:         "peak_allocated_mib": torch.cuda.max_memory_allocated() / 1024**2,
+1544:         "peak_reserved_mib": torch.cuda.max_memory_reserved() / 1024**2,
+1545:         "fit_triplets": len(runtime["train_records"]),
+1546:         "dev_query_triplets": len(runtime["dev_records"]),
+1547:         "dev_gallery_triplets": len(runtime["dev_records"]),
+1548:         "official_test_access_count": 0,
+1549:         "run_identity_sha256": _sha256(output_dir / "run_identity.json"),
+1550:         "history_sha256": _sha256(output_dir / "history.json"),
+1551:         "elapsed_seconds": time.time() - started,
+1552:     }
+1553:     (output_dir / "run_summary.json").write_text(
+1554:         json.dumps(result, indent=2, sort_keys=True) + "\n",
+1555:         encoding="utf-8",
+1556:     )
+1557:     if not completed:
+1558:         raise RuntimeError("V5 dev completion gate failed; inspect run_summary.json")
+1559:     return result
+1562: def evaluate_dev_gate(
+1563:     metrics: dict[str, dict[str, float]], *, min_map: float
+1564: ) -> dict[str, Any]:
+1567:     fused_map = float(metrics["fused"]["mAP"])
+1568:     strictly_beaten = {
+1569:         output: fused_map > float(metrics[output]["mAP"])
+1570:         for output in GATE_OUTPUTS
+1571:     }
+1572:     return {
+1573:         "passed": fused_map >= min_map and all(strictly_beaten.values()),
+1574:         "fused_mAP": fused_map,
+1575:         "minimum_mAP": float(min_map),
+1576:         "strictly_beaten": strictly_beaten,
+1577:     }
+1580: def overfit_loss_floor(config: dict[str, Any], *, num_classes: int) -> float:
+1583:     if str(config["MODEL"]["ARCHITECTURE"]) not in (
+1584:         ARCHITECTURE_V7,
+1585:         ARCHITECTURE_V8,
+1586:     ):
+1587:         return 0.0
+1588:     smoothing = float(config["LOSS"]["LABEL_SMOOTHING"])
+1589:     correct_probability = 1.0 - smoothing + smoothing / num_classes
+1590:     other_probability = smoothing / num_classes
+1591:     entropy = -correct_probability * math.log(correct_probability)
+1592:     entropy -= (num_classes - 1) * other_probability * math.log(other_probability)
+1593:     identity_weight = (
+1594:         float(config["LOSS"]["ID_FUSED"])
+1595:         + 3.0 * float(config["LOSS"]["ID_BRANCH"])
+1596:         + 3.0 * float(config["LOSS"]["ID_RESIDUAL"])
+1597:     )
+1598:     return identity_weight * entropy
+1601: def evaluate_overfit_gate(
+1602:     losses: list[float], *, max_ratio: float, minimum_loss: float = 0.0
+1603: ) -> dict[str, Any]:
+1604:     initial_loss = float(losses[0])
+1605:     final_loss = float(losses[-1])
+1606:     initial_excess = initial_loss - minimum_loss
+1607:     final_excess = final_loss - minimum_loss
+1608:     loss_ratio = final_excess / initial_excess
+1609:     return {
+1610:         "passed": loss_ratio <= max_ratio,
+1611:         "initial_loss": initial_loss,
+1612:         "final_loss": final_loss,
+1613:         "minimum_loss": float(minimum_loss),
+1614:         "initial_excess_loss": initial_excess,
+1615:         "final_excess_loss": final_excess,
+1616:         "loss_ratio": loss_ratio,
+1617:         "maximum_loss_ratio": float(max_ratio),
+1618:     }
+1621: def learning_rate_multiplier(
+1622:     epoch: int, *, max_epochs: int, warmup_epochs: int
+1623: ) -> float:
+1624:     if epoch <= warmup_epochs:
+1625:         return epoch / warmup_epochs
+1626:     progress = (epoch - warmup_epochs - 1) / (max_epochs - warmup_epochs)
+1627:     return 0.5 * (1.0 + math.cos(math.pi * progress))
+1630: def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
+1631:     parser = argparse.ArgumentParser(description=__doc__)
+1632:     parser.add_argument(
+1633:         "--mode",
+1634:         required=True,
+1635:         choices=("preflight", "capacity", "overfit", "formation_probe", "dev"),
+1636:     )
+1637:     parser.add_argument("--config", required=True, type=Path)
+1638:     parser.add_argument("--output-dir", required=True, type=Path)
+1639:     return parser.parse_args(argv)
+1642: def run(args: argparse.Namespace) -> dict[str, Any]:
+1643:     config_path = args.config.resolve()
+1644:     output_dir = args.output_dir.resolve()
+1645:     if output_dir.exists():
+1646:         raise FileExistsError(f"output directory already exists: {output_dir}")
+1647:     config = _load_config(config_path)
+1648:     output_dir.mkdir(parents=True)
+1649:     if args.mode == "preflight":
+1650:         return _run_preflight(config, output_dir)
+1651:     if args.mode == "capacity":
+1652:         return _run_capacity(config, output_dir)
+1653:     if args.mode == "overfit":
+1654:         return _run_overfit(config, output_dir)
+1655:     if args.mode == "formation_probe":
+1656:         return _run_v8_formation_probe(config, config_path, output_dir)
+1657:     if args.mode == "dev":
+1658:         return _run_dev(config, config_path, output_dir)
+1659:     raise NotImplementedError(f"V5 mode is not implemented yet: {args.mode}")
+1662: __all__ = [
+1663:     "architecture_source_paths",
+1664:     "evaluate_dev_gate",
+1665:     "evaluate_overfit_gate",
+1666:     "evaluate_v8_expert_formation_gate",
+1667:     "learning_rate_multiplier",
+1668:     "load_contract",
+1669:     "load_raw_config",
+1670:     "load_v7_initialization",
+1671:     "overfit_loss_floor",
+1672:     "quality_response_gate",
+1673:     "receipt_schema",
+1674:     "parse_args",
+1675:     "run",
+1676:     "set_v7_training_phase",
+1677:     "weighted_training_loss",
+1678: ]
+1681: if __name__ == "__main__":
+1682:     print(json.dumps(run(parse_args()), indent=2, sort_keys=True))

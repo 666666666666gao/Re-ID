@@ -1,0 +1,821 @@
+FILE 135: modeling/trifusion/aligned_data.py (comments/blank lines/docstrings omitted only)
+65:         tensors = [
+66:             transform_functional.normalize(
+67:                 transform_functional.to_tensor(image),
+68:                 mean=(0.5, 0.5, 0.5),
+69:                 std=(0.5, 0.5, 0.5),
+70:             )
+71:             for image in transformed
+72:         ]
+73:         return [self.erase(tensor) for tensor in tensors]
+76: class AlignedTripletImageDataset(Dataset):
+79:     def __init__(
+80:         self,
+81:         records: Sequence[tuple[Sequence[str], int, int, int]],
+82:         *,
+83:         transform: Callable[[Sequence[Image.Image]], list[torch.Tensor]],
+84:     ) -> None:
+85:         self.records = records
+86:         self.transform = transform
+88:     def __len__(self) -> int:
+89:         return len(self.records)
+91:     def __getitem__(self, index: int):
+92:         paths, identity, camera, view = self.records[index]
+93:         images = self.transform(_read_triplet(paths))
+94:         return images, identity, camera, view, Path(paths[0]).name
+97: class CrossCameraIdentitySampler(Sampler):
+100:     def __init__(
+101:         self,
+102:         records: Sequence[tuple[Sequence[str], int, int, int]],
+103:         *,
+104:         batch_size: int,
+105:         num_instances: int,
+106:         seed: int,
+107:     ) -> None:
+108:         self.records = records
+109:         self.batch_size = int(batch_size)
+110:         self.num_instances = int(num_instances)
+111:         self.identities_per_batch = self.batch_size // self.num_instances
+112:         self.seed = int(seed)
+113:         self.iteration = 0
+114:         self.indices_by_identity: dict[int, list[int]] = defaultdict(list)
+115:         self.camera_by_index: dict[int, int] = {}
+116:         for index, (_paths, identity, camera, _view) in enumerate(records):
+117:             self.indices_by_identity[int(identity)].append(index)
+118:             self.camera_by_index[index] = int(camera)
+119:         total_groups = sum(
+120:             max(len(indices), self.num_instances) // self.num_instances
+121:             for indices in self.indices_by_identity.values()
+122:         )
+123:         self.length = (
+124:             total_groups // self.identities_per_batch * self.batch_size
+125:         )
+127:     def _identity_groups(
+128:         self,
+
+FILE 16: .aris/traces/experiment-audit/2026-09-06_run19/signal_source/utils/metrics.py (comments/blank lines/docstrings omitted only)
+1: import torch
+2: import os
+3: from utils.reranking import re_ranking
+4: import numpy as np
+5: from sklearn import manifold
+6: import matplotlib.patches as patches
+7: from PIL import Image
+8: import matplotlib.pyplot as plt
+9: import seaborn as sns  # 使用Seaborn库绘制KDE图
+10: from sklearn.metrics.pairwise import cosine_similarity
+11: from scipy.integrate import simps
+13: def eval_func_msrv(distmat, q_pids, g_pids, q_camids, g_camids, q_sceneids, g_sceneids, max_rank=50):
+17:     num_q, num_g = distmat.shape
+18:     if num_g < max_rank:
+19:         max_rank = num_g
+20:         print("Note: number of gallery samples is quite small, got {}".format(num_g))
+21:     indices = np.argsort(distmat, axis=1)
+23:     query_arg = np.argsort(q_pids, axis=0)
+24:     result = g_pids[indices]
+25:     gall_re = result[query_arg]
+26:     gall_re = gall_re.astype(np.str_)
+29:     result = gall_re[:, :100]
+38:     with open('re.txt', 'w') as f:
+39:         f.write('rank list file\n')
+42:     matches = (g_pids[indices] == q_pids[:, np.newaxis]).astype(np.int32)
+45:     all_cmc = []
+46:     all_AP = []
+47:     num_valid_q = 0.  # number of valid query
+48:     for q_idx in range(num_q):
+50:         q_pid = q_pids[q_idx]
+51:         q_camid = q_camids[q_idx]
+53:         q_sceneid = q_sceneids[q_idx]
+56:         order = indices[q_idx]
+68:         remove = (g_pids[order] == q_pid) & (g_sceneids[order] == q_sceneid)
+69:         keep = np.invert(remove)
+71:         with open('re.txt', 'a') as f:
+72:             f.write('{}_s{}_v{}:\n'.format(q_pid, q_sceneid, q_camid))
+73:             v_ids = g_pids[order][keep][:max_rank]
+74:             v_cams = g_camids[order][keep][:max_rank]
+75:             v_scenes = g_sceneids[order][keep][:max_rank]
+76:             for vid, vcam, vscene in zip(v_ids, v_cams, v_scenes):
+77:                 f.write('{}_s{}_v{}  '.format(vid, vscene, vcam))
+78:             f.write('\n')
+82:         orig_cmc = matches[q_idx][keep]
+83:         if not np.any(orig_cmc):
+85:             continue
+87:         cmc = orig_cmc.cumsum()
+88:         cmc[cmc > 1] = 1
+90:         all_cmc.append(cmc[:max_rank])
+91:         num_valid_q += 1.
+95:         num_rel = orig_cmc.sum()
+96:         tmp_cmc = orig_cmc.cumsum()
+97:         tmp_cmc = [x / (i + 1.) for i, x in enumerate(tmp_cmc)]
+98:         tmp_cmc = np.asarray(tmp_cmc) * orig_cmc
+99:         AP = tmp_cmc.sum() / num_rel
+100:         all_AP.append(AP)
+102:     assert num_valid_q > 0, "Error: all query identities do not appear in gallery"
+104:     all_cmc = np.asarray(all_cmc).astype(np.float32)
+105:     all_cmc = all_cmc.sum(0) / num_valid_q
+106:     mAP = np.mean(all_AP)
+108:     return all_cmc, mAP
+111: def eval_func(distmat, q_pids, g_pids, q_camids, g_camids, max_rank=50):
+115:     num_q, num_g = distmat.shape
+119:     if num_g < max_rank:
+120:         max_rank = num_g
+121:         print("Note: number of gallery samples is quite small, got {}".format(num_g))
+122:     indices = np.argsort(distmat, axis=1)
+125:     matches = (g_pids[indices] == q_pids[:, np.newaxis]).astype(np.int32)
+127:     all_cmc = []
+128:     all_AP = []
+129:     num_valid_q = 0.  # number of valid query
+130:     for q_idx in range(num_q):
+132:         q_pid = q_pids[q_idx]
+133:         q_camid = q_camids[q_idx]
+136:         order = indices[q_idx]  # select one row
+137:         remove = (g_pids[order] == q_pid) & (g_camids[order] == q_camid)
+138:         keep = np.invert(remove)
+142:         orig_cmc = matches[q_idx][keep]
+143:         if not np.any(orig_cmc):
+145:             continue
+147:         cmc = orig_cmc.cumsum()
+148:         cmc[cmc > 1] = 1
+150:         all_cmc.append(cmc[:max_rank])
+151:         num_valid_q += 1.
+155:         num_rel = orig_cmc.sum()
+156:         tmp_cmc = orig_cmc.cumsum()
+158:         y = np.arange(1, tmp_cmc.shape[0] + 1) * 1.0
+159:         tmp_cmc = tmp_cmc / y
+160:         tmp_cmc = np.asarray(tmp_cmc) * orig_cmc
+161:         AP = tmp_cmc.sum() / num_rel
+162:         all_AP.append(AP)
+164:     assert num_valid_q > 0, "Error: all query identities do not appear in gallery"
+166:     all_cmc = np.asarray(all_cmc).astype(np.float32)
+167:     all_cmc = all_cmc.sum(0) / num_valid_q
+168:     mAP = np.mean(all_AP)
+170:     return all_cmc, mAP
+173: class R1_mAP():
+174:     def __init__(self, num_query, max_rank=50, feat_norm='yes'):
+175:         super(R1_mAP, self).__init__()
+176:         self.num_query = num_query
+177:         self.max_rank = max_rank
+178:         self.feat_norm = feat_norm
+180:     def reset(self):
+181:         self.feats = []
+182:         self.pids = []
+183:         self.camids = []
+184:         self.sceneids = []
+185:         self.img_path = []
+187:     def update(self, output):
+188:         feat, pid, camid, sceneid, img_path = output
+189:         self.feats.append(feat)
+190:         self.pids.extend(np.asarray(pid))
+191:         self.camids.extend(np.asarray(camid))
+192:         self.sceneids.extend(np.asarray(sceneid))
+193:         self.img_path.extend(img_path)
+195:     def compute(self):
+196:         feats = torch.cat(self.feats, dim=0)
+197:         if self.feat_norm == 'yes':
+198:             print("The test feature is normalized")
+199:             feats = torch.nn.functional.normalize(feats, dim=1, p=2)
+201:         qf = feats[:self.num_query]
+202:         q_pids = np.asarray(self.pids[:self.num_query])
+203:         q_camids = np.asarray(self.camids[:self.num_query])
+205:         q_sceneids = np.asarray(self.sceneids[:self.num_query])  # zxp
+207:         gf = feats[self.num_query:]
+208:         g_pids = np.asarray(self.pids[self.num_query:])
+209:         g_camids = np.asarray(self.camids[self.num_query:])
+211:         g_sceneids = np.asarray(self.sceneids[self.num_query:])  # zxp
+213:         m, n = qf.shape[0], gf.shape[0]
+214:         distmat = torch.pow(qf, 2).sum(dim=1, keepdim=True).expand(m, n) + \
+215:                   torch.pow(gf, 2).sum(dim=1, keepdim=True).expand(n, m).t()
+216:         distmat.addmm_(qf, gf.t(),beta=1, alpha=-2)
+217:         distmat = distmat.cpu().numpy()
+218:         cmc, mAP = eval_func_msrv(distmat, q_pids, g_pids, q_camids, g_camids, q_sceneids, g_sceneids)
+219:         return cmc, mAP, distmat, self.pids, self.camids, qf, gf
+222: class R1_mAP_eval():
+223:     def __init__(self, num_query, max_rank=50, feat_norm=True, reranking=False):
+224:         super(R1_mAP_eval, self).__init__()
+225:         self.num_query = num_query
+226:         self.max_rank = max_rank
+227:         self.feat_norm = feat_norm
+228:         self.reranking = reranking
+229:         self.reset()
+231:     def reset(self):
+232:         self.feats = []
+233:         self.pids = []
+234:         self.camids = []
+236:         self.img_paths = []
+237:         self.img_prefixes = {
+238:             'RGB': './data/RGBNT201/test/RGB/',
+239:             'NIR': './data/RGBNT201/test/NI/',
+240:             'TIR': './data/RGBNT201/test/TI/'
+241:         }
+243:     def update(self, output):  # called once for each batch
+244:         feat, pid, camid, img_paths = output
+245:         self.feats.append(feat.cpu())
+246:         self.pids.extend(np.asarray(pid))
+247:         self.camids.extend(np.asarray(camid))
+249:         self.img_paths.extend(img_paths)
+251:     def set_image_prefixes(self, rgb_prefix, nir_prefix, tir_prefix):
+252:         self.img_prefixes['RGB'] = rgb_prefix
+253:         self.img_prefixes['NIR'] = nir_prefix
+254:         self.img_prefixes['TIR'] = tir_prefix
+256:     def load_image(self, path):
+257:         if not os.path.isfile(path):
+258:             print(f"Warning: File {path} does not exist.")
+259:             return np.zeros((100, 100, 3), dtype=np.uint8)  # Return a dummy image with default size
+260:         image = Image.open(path).convert('RGB')  # Ensure image is in RGB format
+261:         return np.array(image)  # Convert to NumPy array
+263:     def compute(self):  # called after each epoch
+264:         feats = torch.cat(self.feats, dim=0)
+265:         if self.feat_norm:
+266:             print("The test feature is normalized")
+267:             feats = torch.nn.functional.normalize(feats, dim=1, p=2)  # along channel
+270:         qf = feats[:self.num_query]
+271:         q_pids = np.asarray(self.pids[:self.num_query])
+272:         q_camids = np.asarray(self.camids[:self.num_query])
+275:         gf = feats[self.num_query:]
+276:         g_pids = np.asarray(self.pids[self.num_query:])
+277:         g_camids = np.asarray(self.camids[self.num_query:])
+279:         if self.reranking:
+280:             print('=> Enter reranking')
+281:             distmat = re_ranking(qf, gf, k1=50, k2=15, lambda_value=0.3)
+282:         else:
+283:             print('=> Computing DistMat with euclidean_distance')
+284:             distmat = euclidean_distance(qf, gf)
+286:         cmc, mAP = eval_func(distmat, q_pids, g_pids, q_camids, g_camids)
+300:         return cmc, mAP, distmat, self.pids, self.camids, qf, gf
+303:     def visualize_ranked_list_results(self, distmat, topk=10, save_dir='vis_results',num2vis=10):
+304:         print("enter rank_list")
+305:         """
+306:         Visualize the top-N ranked results for each query in RGB, NIR, and TIR modalities.
+307:         :param distmat: Distance matrix between query and gallery.
+308:         :param topk: Number of top ranked results to visualize.
+309:         :param save_dir: Directory to save the visualized results.
+310:         """
+311:         if not os.path.exists(save_dir):
+312:             os.makedirs(save_dir)
+314:         num2vis = num2vis  # Number of queries to visualize
+315:         for i in range(0, num2vis):
+316:             query_name = self.img_paths[i]  # Simple image name (without prefix)
+317:             query_pid = self.pids[i]  # Query person ID
+318:             query_camid = self.camids[i]  # Query camera ID
+321:             ranked_indices = [idx for idx in np.argsort(distmat[i]) if self.camids[idx + self.num_query] != query_camid]
+322:             ranked_indices = ranked_indices[:topk]  # Get topk indices
+325:             query_imgs = [self.load_image(os.path.join(self.img_prefixes[modality], query_name))
+326:                           for modality in ['RGB', 'NIR', 'TIR']]
+329:             gallery_paths = [self.img_paths[idx + self.num_query] for idx in ranked_indices]  # List of names
+330:             gallery_paths = [[os.path.join(self.img_prefixes[modality], path) for path in gallery_paths]
+331:                              for modality in ['RGB', 'NIR', 'TIR']]
+334:             new_gallery_paths = []
+335:             for j in range(topk):
+336:                 gallery_path = [gallery_paths[0][j], gallery_paths[1][j], gallery_paths[2][j]]
+337:                 new_gallery_paths.append(gallery_path)
+338:             gallery_paths = new_gallery_paths
+340:             gallery_pids = [self.pids[idx + self.num_query] for idx in ranked_indices]  # Get corresponding PIDs
+343:             gallery_imgs = [[self.load_image(path) for path in paths] for paths in zip(*gallery_paths)]
+346:             self.plot_images(query_imgs, gallery_imgs, gallery_pids, query_pid,
+347:                              save_path=os.path.join(save_dir, f'query_{i}_results.png'))
+349:     def plot_images(self, query_imgs, gallery_imgs, gallery_pids, query_pid, save_path=None):
+350:         print("enter plot_images",end='\r')
+351:         """
+352:         Helper function to plot the query images and the gallery images.
+353:         Correctly retrieved images are marked with a green box, incorrect ones with a red box.
+354:         """
+355:         num_results = len(gallery_imgs[0])  # Number of top-ranked results
+356:         fig, axs = plt.subplots(3, num_results + 1, figsize=(20, 8))
+359:         modalities = ['RGB', 'NIR', 'TIR']
+360:         for j, (img, modality) in enumerate(zip(query_imgs, modalities)):
+361:             axs[j, 0].imshow(img)
+362:             axs[j, 0].set_title(f"Query {modality}", fontsize=21)
+363:             axs[j, 0].axis('off')
+366:         for i, (imgs, pid) in enumerate(zip(zip(*gallery_imgs), gallery_pids)):  # Unzip and process each modality
+367:             for j, (img, modality) in enumerate(zip(imgs, modalities)):
+368:                 axs[j, i + 1].imshow(img)
+369:                 axs[j, i + 1].axis('off')
+372:                 color = 'green' if pid == query_pid else 'red'
+373:                 rect = patches.Rectangle((0, 0), img.shape[1], img.shape[0], linewidth=10, edgecolor=color,
+374:                                          facecolor='none')
+375:                 axs[j, i + 1].add_patch(rect)
+376:                 axs[j, i + 1].set_title(f"Rank {i + 1}", fontsize=22)
+378:         plt.tight_layout()
+379:         if save_path:
+380:             print("save plot_images",end='\r')
+381:             plt.savefig(save_path)
+383:         plt.close()
+387:     def showPointMultiModal(self, features, real_label, draw_label, save_path='TSNE/base_A_cls_pat'):
+388:         print("enter T-SNE")
+389:         if not os.path.exists(save_path):
+390:             os.makedirs(save_path)
+391:         id_show = 25
+392:         save_path = os.path.join(save_path, str(draw_label) + ".pdf")
+393:         print("Draw points of features to {}".format(save_path))
+394:         indices = find_label_indices(real_label, draw_label, max_indices_per_label=id_show)
+395:         feat = features[indices]
+396:         tsne = manifold.TSNE(n_components=2, init='pca', random_state=1, learning_rate=100, perplexity=60)
+397:         features_tsne = tsne.fit_transform(feat)
+398:         colors = ['#1f78b4', '#33a02c', '#e31a1c', '#ff7f00', '#6a3d9a', '#b15928', '#a6cee3', '#b2df8a', '#fb9a99',
+399:                   '#fdbf6f', '#cab2d6', '#ffff99']
+400:         MARKS = ['*']
+401:         plt.figure(figsize=(10, 10))
+402:         for i in range(features_tsne.shape[0]):
+403:             plt.scatter(features_tsne[i, 0], features_tsne[i, 1], s=300, color=colors[i // id_show], marker=MARKS[0],
+404:                         alpha=0.4)
+405:         plt.title("t-SNE Visualization of Different IDs")
+406:         plt.xlabel("t-SNE Dimension 1")
+407:         plt.ylabel("t-SNE Dimension 2")
+409:         plt.savefig(save_path)
+411:         plt.close()
+414:     def plot_similarity_distribution(self, features, ids, title="Cosine Similarity Distribution",base_dir = 'Similarity_pic',condition='baseline'):
+416:         print("enter plot_similarity_distribution")
+417:         ft = 34
+418:         if not os.path.exists(base_dir):
+419:             os.makedirs(base_dir)
+420:         features = features.cpu().detach().numpy()
+421:         similarity_matrix = cosine_similarity(features)
+423:         positive_similarities = []
+424:         negative_similarities = []
+426:         num_samples = features.shape[0]
+427:         for i in range(num_samples):
+428:             for j in range(i + 1, num_samples):  
+429:                 if ids[i] == ids[j]:
+430:                     positive_similarities.append(similarity_matrix[i, j])  
+431:                 else:
+432:                     negative_similarities.append(similarity_matrix[i, j])  
+434:         positive_similarities = np.array(positive_similarities)
+435:         negative_similarities = np.array(negative_similarities)
+437:         mean_positive = np.mean(positive_similarities)
+438:         mean_negative = np.mean(negative_similarities)
+440:         plt.figure(figsize=(9, 8))
+441:         sns.kdeplot(positive_similarities, label='Positive', color='green', shade=True)
+442:         sns.kdeplot(negative_similarities, label='Negative', color='red', shade=True)
+443:         plt.axvline(mean_positive, color='green', linestyle='--',
+444:                     label=f'Mean Positive')
+445:         plt.axvline(mean_negative, color='red', linestyle='--', label=f'Mean Negative')
+446:         plt.ylabel('')
+448:         plt.text(mean_positive, 0.02, f'{mean_positive:.4f}', color='green', fontsize=ft, fontweight='bold', ha='center', va='bottom')
+449:         plt.text(mean_negative, 0.02, f'{mean_negative:.4f}', color='red', fontsize=ft, fontweight='bold', ha='center', va='bottom')
+453:         plt.legend(prop={'size': 28, 'weight': 'bold'})
+454:         plt.xticks(fontsize=ft, fontweight='bold')
+455:         plt.yticks(fontsize=ft, fontweight='bold')
+456:         plt.grid(True, linestyle='--', alpha=0.5)
+457:         filename = 'sd_{}.png'
+458:         save_path = f'{base_dir}/{filename.format(condition)}'
+459:         plt.savefig(save_path,dpi=600)
+462:         x_vals = np.linspace(min(min(positive_similarities), min(negative_similarities)),
+463:                             max(max(positive_similarities), max(negative_similarities)), 1000)
+465:         from scipy.stats import gaussian_kde
+466:         from scipy.integrate import simps
+468:         x_vals = np.linspace(
+469:             min(positive_similarities.min(), negative_similarities.min()),
+470:             max(positive_similarities.max(), negative_similarities.max()),
+471:             1000
+472:         )
+474:         kde_positive = gaussian_kde(positive_similarities)
+475:         kde_negative = gaussian_kde(negative_similarities)
+477:         y_positive = kde_positive(x_vals)
+478:         y_negative = kde_negative(x_vals)
+481:         overlap_area = simps(np.minimum(y_positive, y_negative), x_vals)
+483:         print(f"Overlap Area between Positive and Negative Distributions: {overlap_area:.4f}")
+487:         print(f"Mean Positive Similarity: {mean_positive:.4f}")
+488:         print(f"Mean Negative Similarity: {mean_negative:.4f}")
+489:         print(f"Positive Similarity Std Dev: {np.std(positive_similarities):.4f}")
+490:         print(f"Negative Similarity Std Dev: {np.std(negative_similarities):.4f}")
+494: def euclidean_distance(qf, gf):
+495:     m = qf.shape[0]
+496:     n = gf.shape[0]
+497:     dist_mat = torch.pow(qf, 2).sum(dim=1, keepdim=True).expand(m, n) + \
+498:                torch.pow(gf, 2).sum(dim=1, keepdim=True).expand(n, m).t()
+499:     dist_mat.addmm_(qf, gf.t(), beta=1, alpha=-2)
+500:     return dist_mat.cpu().numpy()
+503: def find_label_indices(label_list, target_labels, max_indices_per_label=1):
+504:     indices = []
+505:     counts = {label: 0 for label in target_labels}
+506:     for index, label in enumerate(label_list):
+507:         if label in target_labels and counts[label] < max_indices_per_label:
+508:             indices.append(index)
+509:             counts[label] += 1
+510:     sorted_indices = sorted(indices, key=lambda index: (label_list[index], index))
+511:     return sorted_indices
+514: def _calculate_similarity(pre_fusion_tokens, post_fusion_tokens):
+516:     similarities = torch.nn.functional.cosine_similarity(pre_fusion_tokens, post_fusion_tokens,
+517:                                                          dim=-1).cpu().detach().numpy()
+520:     return similarities
+523: def visualize_similarity(pre_fusion_src_tokens, pre_fusion_tgt_tokens, post_fusion_src_tokens, post_fusion_tgt_tokens,
+524:                          writer=None, epoch=None, mode=1,
+525:                          pattern=None, figure_size=(6, 6), seaborn_style='whitegrid'):
+528:     similarities_ori = _calculate_similarity(pre_fusion_src_tokens, pre_fusion_tgt_tokens)
+529:     similarities = _calculate_similarity(post_fusion_src_tokens, post_fusion_tgt_tokens)
+531:     sns.set(style=seaborn_style)
+533:     fig, ax = plt.subplots(figsize=figure_size)
+535:     sns.kdeplot(similarities, color='b', label='Before ..', ax=ax, multiple="stack")
+536:     sns.kdeplot(similarities_ori, color='g', label='After ..', ax=ax, multiple="stack")
+538:     if pattern == 'r2t':
+539:         sign = 'R and T'
+540:     elif pattern == 'r2n':
+541:         sign = 'R and N'
+542:     elif pattern == 'n2t':
+543:         sign = 'N and T'
+544:     elif pattern == 'n2r':
+545:         sign = 'N and R'
+546:     elif pattern == 't2r':
+547:         sign = 'T and R'
+548:     elif pattern == 't2n':
+549:         sign = 'T and N'
+550:     plt.title("Similarity Distribution between {}".format(sign), fontsize=18, fontweight='bold')
+551:     plt.xlabel("Cosine Similarity", fontsize=16, fontweight='bold')
+552:     plt.ylabel("Density", fontsize=16, fontweight='bold')
+554:     plt.xticks(fontsize=15)
+557:     plt.yticks(fontsize=15)
+559:     plt.legend(loc='upper right', fontsize=17)
+562:     plt.show()
+564:     if writer is not None:
+565:         writer.add_figure('Similarity_{}'.format(sign), plt.gcf(), epoch)
+
+FILE 22: evidence/rgbnt100_signal_amp_source_text_20260906/pytorch/amp/grad_scaler.py (comments/blank lines/docstrings omitted only)
+2: from __future__ import annotations
+4: import inspect
+5: import warnings
+6: from collections import abc, defaultdict
+7: from enum import Enum
+8: from typing import Any, cast, Dict, Iterable, List, Optional, overload, Tuple, Union
+10: import torch
+13: __all__ = ["OptState", "GradScaler"]
+16: class _MultiDeviceReplicator:
+22:     def __init__(self, master_tensor: torch.Tensor) -> None:
+23:         self.master = master_tensor
+24:         self._per_device_tensors: Dict[torch.device, torch.Tensor] = {}
+26:     def get(self, device: torch.device) -> torch.Tensor:
+27:         retval = self._per_device_tensors.get(device, None)
+28:         if retval is None:
+29:             retval = self.master.to(device=device, non_blocking=True, copy=True)
+30:             self._per_device_tensors[device] = retval
+31:         return retval
+39: class OptState(Enum):
+40:     READY = 0
+41:     UNSCALED = 1
+42:     STEPPED = 2
+45: def _refresh_per_optimizer_state() -> Dict[str, Any]:
+46:     return {"stage": OptState.READY, "found_inf_per_device": {}}
+49: class GradScaler:
+119:     def __init__(
+120:         self,
+121:         device: str = "cuda",
+122:         init_scale: float = 2.0**16,
+123:         growth_factor: float = 2.0,
+124:         backoff_factor: float = 0.5,
+125:         growth_interval: int = 2000,
+126:         enabled: bool = True,
+127:     ) -> None:
+128:         self._device = device
+129:         self._enabled = enabled
+130:         if self._device == "cuda":
+131:             if enabled and torch.cuda.amp.common.amp_definitely_not_available():
+132:                 warnings.warn(
+133:                     "torch.cuda.amp.GradScaler is enabled, but CUDA is not available.  Disabling."
+134:                 )
+135:                 self._enabled = False
+137:         if self._enabled:
+138:             assert growth_factor > 1.0, "The growth factor must be > 1.0."
+139:             assert backoff_factor < 1.0, "The backoff factor must be < 1.0."
+141:             self._init_scale = init_scale
+143:             self._scale: Optional[torch.Tensor] = None
+144:             self._growth_factor = growth_factor
+145:             self._backoff_factor = backoff_factor
+146:             self._growth_interval = growth_interval
+147:             self._init_growth_tracker = 0
+149:             self._growth_tracker: Optional[torch.Tensor] = None
+150:             self._per_optimizer_states: Dict[int, Dict[str, Any]] = defaultdict(
+151:                 _refresh_per_optimizer_state
+152:             )
+154:     def _check_scale_growth_tracker(
+155:         self, funcname: str
+156:     ) -> Tuple[torch.Tensor, torch.Tensor]:
+157:         fix = "This may indicate your script did not use scaler.scale(loss or outputs) earlier in the iteration."
+158:         assert self._scale is not None, (
+159:             f"Attempted {funcname} but _scale is None.  " + fix
+160:         )
+161:         assert self._growth_tracker is not None, (
+162:             f"Attempted {funcname} but _growth_tracker is None.  " + fix
+163:         )
+164:         return (self._scale, self._growth_tracker)
+166:     def _lazy_init_scale_growth_tracker(self, dev: torch.device) -> None:
+167:         assert self._growth_tracker is None, "_growth_tracker initialized before _scale"
+168:         self._scale = torch.full((), self._init_scale, dtype=torch.float32, device=dev)
+169:         self._growth_tracker = torch.full(
+170:             (), self._init_growth_tracker, dtype=torch.int32, device=dev
+171:         )
+173:     @overload
+174:     def scale(self, outputs: torch.Tensor) -> torch.Tensor:
+175:         ...
+177:     @overload
+178:     def scale(self, outputs: List[torch.Tensor]) -> List[torch.Tensor]:
+179:         ...
+181:     @overload
+182:     def scale(self, outputs: Tuple[torch.Tensor, ...]) -> Tuple[torch.Tensor, ...]:
+183:         ...
+185:     @overload
+186:     def scale(self, outputs: Iterable[torch.Tensor]) -> Iterable[torch.Tensor]:
+187:         ...
+189:     def scale(
+190:         self,
+191:         outputs: Union[torch.Tensor, Iterable[torch.Tensor]],
+192:     ) -> Union[torch.Tensor, Iterable[torch.Tensor]]:
+202:         if not self._enabled:
+203:             return outputs
+206:         if isinstance(outputs, torch.Tensor):
+207:             if self._scale is None:
+208:                 self._lazy_init_scale_growth_tracker(outputs.device)
+209:             assert self._scale is not None
+210:             return outputs * self._scale.to(device=outputs.device, non_blocking=True)
+213:         stash: List[
+214:             _MultiDeviceReplicator
+215:         ] = []  # holds a reference that can be overwritten by apply_scale
+217:         def apply_scale(val: Union[torch.Tensor, Iterable[torch.Tensor]]):
+218:             if isinstance(val, torch.Tensor):
+219:                 if len(stash) == 0:
+220:                     if self._scale is None:
+221:                         self._lazy_init_scale_growth_tracker(val.device)
+222:                     assert self._scale is not None
+223:                     stash.append(_MultiDeviceReplicator(self._scale))
+224:                 return val * stash[0].get(val.device)
+225:             if isinstance(val, abc.Iterable):
+226:                 iterable = map(apply_scale, val)
+227:                 if isinstance(val, (list, tuple)):
+228:                     return type(val)(iterable)
+229:                 return iterable
+230:             raise ValueError("outputs must be a Tensor or an iterable of Tensors")
+232:         return apply_scale(outputs)
+234:     def _unscale_grads_(
+235:         self,
+236:         optimizer: torch.optim.Optimizer,
+237:         inv_scale: torch.Tensor,
+238:         found_inf: torch.Tensor,
+239:         allow_fp16: bool,
+240:     ) -> Dict[torch.device, torch.Tensor]:
+241:         per_device_inv_scale = _MultiDeviceReplicator(inv_scale)
+242:         per_device_found_inf = _MultiDeviceReplicator(found_inf)
+250:         per_device_and_dtype_grads: Dict[
+251:             torch.device, Dict[torch.dtype, List[torch.Tensor]]
+252:         ] = defaultdict(lambda: defaultdict(list))
+253:         with torch.no_grad():
+254:             for group in optimizer.param_groups:
+255:                 for param in group["params"]:
+256:                     assert isinstance(param, torch.Tensor)
+257:                     if param.grad is None:
+258:                         continue
+259:                     if (not allow_fp16) and param.grad.dtype == torch.float16:
+260:                         raise ValueError("Attempting to unscale FP16 gradients.")
+261:                     if param.grad.is_sparse:
+266:                         if param.grad.dtype is torch.float16:
+267:                             param.grad = param.grad.coalesce()
+268:                         to_unscale = param.grad._values()
+269:                     else:
+270:                         to_unscale = param.grad
+273:                     per_device_and_dtype_grads[to_unscale.device][
+274:                         to_unscale.dtype
+275:                     ].append(to_unscale)
+277:             for device, per_dtype_grads in per_device_and_dtype_grads.items():
+278:                 for grads in per_dtype_grads.values():
+279:                     torch._amp_foreach_non_finite_check_and_unscale_(
+280:                         grads,
+281:                         per_device_found_inf.get(device),
+282:                         per_device_inv_scale.get(device),
+283:                     )
+285:         return per_device_found_inf._per_device_tensors
+287:     def unscale_(self, optimizer: torch.optim.Optimizer) -> None:
+319:         if not self._enabled:
+320:             return
+322:         self._check_scale_growth_tracker("unscale_")
+324:         optimizer_state = self._per_optimizer_states[id(optimizer)]
+326:         if optimizer_state["stage"] is OptState.UNSCALED:
+327:             raise RuntimeError(
+328:                 "unscale_() has already been called on this optimizer since the last update()."
+329:             )
+330:         elif optimizer_state["stage"] is OptState.STEPPED:
+331:             raise RuntimeError("unscale_() is being called after step().")
+334:         assert self._scale is not None
+335:         inv_scale = self._scale.double().reciprocal().float()
+336:         found_inf = torch.full((), 0.0, dtype=torch.float32, device=self._scale.device)
+338:         optimizer_state["found_inf_per_device"] = self._unscale_grads_(
+339:             optimizer, inv_scale, found_inf, False
+340:         )
+341:         optimizer_state["stage"] = OptState.UNSCALED
+343:     def _maybe_opt_step(
+344:         self,
+345:         optimizer: torch.optim.Optimizer,
+346:         optimizer_state: Dict[str, Any],
+347:         *args: Any,
+348:         **kwargs: Any,
+349:     ) -> Optional[float]:
+350:         retval: Optional[float] = None
+351:         if not sum(v.item() for v in optimizer_state["found_inf_per_device"].values()):
+352:             retval = optimizer.step(*args, **kwargs)
+353:         return retval
+355:     def step(
+356:         self, optimizer: torch.optim.Optimizer, *args: Any, **kwargs: Any
+357:     ) -> Optional[float]:
+379:         if not self._enabled:
+380:             return optimizer.step(*args, **kwargs)
+382:         if "closure" in kwargs:
+383:             raise RuntimeError(
+384:                 "Closure use is not currently supported if GradScaler is enabled."
+385:             )
+387:         self._check_scale_growth_tracker("step")
+389:         optimizer_state = self._per_optimizer_states[id(optimizer)]
+391:         if optimizer_state["stage"] is OptState.STEPPED:
+392:             raise RuntimeError(
+393:                 "step() has already been called since the last update()."
+394:             )
+396:         retval: Optional[float] = None
+398:         if getattr(optimizer, "_step_supports_amp_scaling", False):
+410:             kwargs_ = kwargs
+411:             has_grad_scaler_kwarg = (
+412:                 "grad_scaler" in inspect.signature(optimizer.step).parameters
+413:             )
+414:             if has_grad_scaler_kwarg:
+415:                 warnings.warn(
+416:                     "GradScaler is going to stop passing itself as a keyword argument to the passed "
+417:                     "optimizer. In the near future GradScaler registers `grad_scale: Tensor` and "
+418:                     "`found_inf: Tensor` to the passed optimizer and let the optimizer use them directly.",
+419:                     FutureWarning,
+420:                 )
+421:                 kwargs_.update({"grad_scaler": self})
+422:             else:
+423:                 if optimizer_state["stage"] is OptState.READY:
+424:                     self._check_inf_per_device(optimizer)
+425:                 scaler = self._get_scale_async()
+426:                 assert scaler is not None
+427:                 found_inf = cast(
+428:                     torch.Tensor,
+429:                     sum(
+430:                         [  # noqa: C419
+431:                             t.to(scaler.device, non_blocking=True)
+432:                             for t in optimizer_state["found_inf_per_device"].values()
+433:                         ]
+434:                     ),
+435:                 )
+437:                 optimizer.grad_scale = (  # type: ignore[attr-defined]
+438:                     getattr(optimizer, "grad_scale", None)
+439:                     if optimizer_state["stage"] == OptState.UNSCALED
+440:                     else scaler * getattr(optimizer, "grad_scale", 1)
+441:                 )
+442:                 optimizer.found_inf = found_inf  # type: ignore[attr-defined]
+443:             retval = optimizer.step(*args, **kwargs_)
+444:             optimizer_state["stage"] = OptState.STEPPED
+445:             if not has_grad_scaler_kwarg:
+446:                 del optimizer.grad_scale  # type: ignore[attr-defined]
+447:                 del optimizer.found_inf  # type: ignore[attr-defined]
+448:             return retval
+450:         if optimizer_state["stage"] is OptState.READY:
+451:             self.unscale_(optimizer)
+453:         assert (
+454:             len(optimizer_state["found_inf_per_device"]) > 0
+455:         ), "No inf checks were recorded for this optimizer."
+457:         retval = self._maybe_opt_step(optimizer, optimizer_state, *args, **kwargs)
+459:         optimizer_state["stage"] = OptState.STEPPED
+461:         return retval
+463:     def update(self, new_scale: Optional[Union[float, torch.Tensor]] = None) -> None:
+488:         if not self._enabled:
+489:             return
+491:         _scale, _growth_tracker = self._check_scale_growth_tracker("update")
+493:         if new_scale is not None:
+494:             assert self._scale is not None
+496:             if isinstance(new_scale, float):
+497:                 self._scale.fill_(new_scale)
+498:             else:
+499:                 reason = "new_scale should be a float or a 1-element torch.cuda.FloatTensor or \
+500:                     torch.FloatTensor with requires_grad=False."
+501:                 assert new_scale.device.type == self._device, reason
+502:                 assert new_scale.numel() == 1, reason
+503:                 assert new_scale.requires_grad is False, reason
+504:                 self._scale.copy_(new_scale)
+505:         else:
+508:             found_infs = [
+509:                 found_inf.to(device=_scale.device, non_blocking=True)
+510:                 for state in self._per_optimizer_states.values()
+511:                 for found_inf in state["found_inf_per_device"].values()
+512:             ]
+514:             assert len(found_infs) > 0, "No inf checks were recorded prior to update."
+516:             found_inf_combined = found_infs[0]
+517:             if len(found_infs) > 1:
+518:                 for i in range(1, len(found_infs)):
+519:                     found_inf_combined += found_infs[i]
+521:             torch._amp_update_scale_(
+522:                 _scale,
+523:                 _growth_tracker,
+524:                 found_inf_combined,
+525:                 self._growth_factor,
+526:                 self._backoff_factor,
+527:                 self._growth_interval,
+528:             )
+531:         self._per_optimizer_states = defaultdict(_refresh_per_optimizer_state)
+533:     def _get_scale_async(self) -> Optional[torch.Tensor]:
+534:         return self._scale
+536:     def get_scale(self) -> float:
+542:         if self._enabled:
+543:             return (
+544:                 self._init_scale
+545:                 if (scale := self._get_scale_async()) is None
+546:                 else cast(float, scale.item())
+547:             )
+548:         return 1.0
+550:     def get_growth_factor(self) -> float:
+552:         return self._growth_factor
+554:     def set_growth_factor(self, new_factor: float) -> None:
+560:         self._growth_factor = new_factor
+562:     def get_backoff_factor(self) -> float:
+564:         return self._backoff_factor
+566:     def set_backoff_factor(self, new_factor: float) -> None:
+572:         self._backoff_factor = new_factor
+574:     def get_growth_interval(self) -> int:
+576:         return self._growth_interval
+578:     def set_growth_interval(self, new_interval: int) -> None:
+584:         self._growth_interval = new_interval
+586:     def _get_growth_tracker(self) -> int:
+587:         if self._enabled:
+588:             return (
+589:                 self._init_growth_tracker
+590:                 if self._growth_tracker is None
+591:                 else cast(int, self._growth_tracker.item())
+592:             )
+593:         return 0
+595:     def is_enabled(self) -> bool:
+597:         return self._enabled
+599:     def state_dict(self) -> Dict[str, Any]:
+616:         if self._enabled:
+617:             return {
+618:                 "scale": self.get_scale(),
+619:                 "growth_factor": self._growth_factor,
+620:                 "backoff_factor": self._backoff_factor,
+621:                 "growth_interval": self._growth_interval,
+622:                 "_growth_tracker": self._get_growth_tracker(),
+623:             }
+624:         return {}
+626:     def load_state_dict(self, state_dict: Dict[str, Any]) -> None:
+634:         if not self._enabled:
+635:             return
+637:         if len(state_dict) == 0:
+638:             raise RuntimeError(
+639:                 "The source state dict is empty, possibly because it was saved "
+640:                 "from a disabled instance of GradScaler."
+641:             )
+643:         self._init_scale = cast(float, state_dict["scale"])
+644:         if self._scale is not None:
+645:             self._scale.fill_(state_dict["scale"])
+646:         self._growth_factor = cast(float, state_dict["growth_factor"])
+647:         self._backoff_factor = cast(float, state_dict["backoff_factor"])
+648:         self._growth_interval = cast(int, state_dict["growth_interval"])
+649:         self._init_growth_tracker = cast(int, state_dict["_growth_tracker"])
+650:         if self._growth_tracker is not None:
+651:             self._growth_tracker.fill_(state_dict["_growth_tracker"])
+653:     def __getstate__(self) -> Dict[str, Any]:
+654:         state = self.__dict__.copy()
+655:         if self._enabled:
+656:             assert len(self._per_optimizer_states) == 0, (
+657:                 "A GradScaler instance may only be pickled at the beginning "
+658:                 "of an iteration, or at the end after scaler.update()."
+659:             )
+663:             state["_init_scale"] = self.get_scale()
+664:             state["_init_growth_tracker"] = self._get_growth_tracker()
+665:             state["_scale"] = None
+666:             state["_growth_tracker"] = None
+667:         return state
+669:     def __setstate__(self, state: Dict[str, Any]) -> None:
+670:         self.__dict__.update(state)
+672:     def _check_inf_per_device(self, optimizer: torch.optim.Optimizer) -> Dict[str, Any]:
+673:         _scale, _ = self._check_scale_growth_tracker("_check_inf_per_device")
+675:         dummy_inv_scale = torch.full((), 1.0, dtype=torch.float32, device=_scale.device)
+676:         found_inf = torch.full((), 0.0, dtype=torch.float32, device=_scale.device)
+678:         self._per_optimizer_states[id(optimizer)][
+679:             "found_inf_per_device"
+680:         ] = self._unscale_grads_(optimizer, dummy_inv_scale, found_inf, True)
+682:         return self._per_optimizer_states[id(optimizer)]["found_inf_per_device"]
+684:     def _found_inf_per_device(self, optimizer: torch.optim.Optimizer) -> Dict[str, Any]:
+685:         return self._per_optimizer_states[id(optimizer)]["found_inf_per_device"]
+
+FILE 23: evidence/rgbnt100_signal_amp_source_text_20260906/pytorch/autograd/anomaly_mode.py (comments/blank lines/docstrings omitted only)
+3: import warnings
+5: import torch
+8: __all__ = ["detect_anomaly", "set_detect_anomaly"]
+11: class detect_anomaly:
+77:     def __init__(self, check_nan=True) -> None:  # noqa: D107
+78:         self.prev = torch.is_anomaly_enabled()
+79:         self.check_nan = check_nan
+80:         self.prev_check_nan = torch.is_anomaly_check_nan_enabled()
+81:         warnings.warn(
+82:             "Anomaly Detection has been enabled. "
+83:             "This mode will increase the runtime "
+84:             "and should only be enabled for debugging.",
+85:             stacklevel=2,
+86:         )
+88:     def __enter__(self) -> None:  # noqa: D105
+89:         torch.set_anomaly_enabled(True, self.check_nan)
+91:     def __exit__(self, *args: object) -> None:  # noqa: D105
+92:         torch.set_anomaly_enabled(self.prev, self.prev_check_nan)
+95: class set_detect_anomaly:
+112:     def __init__(self, mode: bool, check_nan: bool = True) -> None:  # noqa: D107
+113:         self.prev = torch.is_anomaly_enabled()
+114:         self.prev_check_nan = torch.is_anomaly_check_nan_enabled()
+115:         torch.set_anomaly_enabled(mode, check_nan)
+117:     def __enter__(self) -> None:  # noqa: D105
+118:         pass
+120:     def __exit__(self, *args: object) -> None:  # noqa: D105
+121:         torch.set_anomaly_enabled(self.prev, self.prev_check_nan)

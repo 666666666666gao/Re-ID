@@ -1,0 +1,45 @@
+{
+  "registered_at": "2026-09-06T10:22:31.091890+08:00",
+  "status": "READY_NOT_RUN",
+  "scope": "one fold0 source-only capture through unchanged bound train_source; first overflow or end of first epoch only",
+  "evidence": "formal run on60a3d0e stopped at registered AMP assertion after33.776537912s; original successful step count not persisted",
+  "config": "configs/RGBNT100/Signal-source-oof-v1.json",
+  "config_sha256": "7270e2bf95c5f5a60e1dc6d6b047f043dce667d508783b36bc4734aecbc4c15b",
+  "runner": "tools/train_rgbnt100_signal_oof.py",
+  "runner_sha256": "514a2c86634b61ef8b6de32b6ff1990cdf18e208a91673fb192534b52e5a1357",
+  "diagnostic": "tools/diagnose_rgbnt100_signal_amp.py",
+  "diagnostic_sha256": "4a282447ac3305090379e86620d7127b3d489006a0a70dfb0d4e4c9e2e7e04f6",
+  "failure_intake_sha256": "151bece84590619b90195ae6ae77d5982d47d457a1efe59b36730c7c204280f6",
+  "unchanged": [
+    "seed42",
+    "B64/K8",
+    "RGBNT100 source fold0",
+    "all original model/loss/optimizer/scheduler/AMP settings",
+    "source sample order",
+    "existing bound files"
+  ],
+  "observations": [
+    "flush every attempted step before original AMP assertion",
+    "first8 exact scalars and indices versus savedM0",
+    "all gradient tensors nonfinite counts on first overflow",
+    "save exact failed augmented batch and preforward model buffers/RNG/weights remote only"
+  ],
+  "instrumentation_seams": {
+    "175": "preforward buffers/RNG without consuming random values",
+    "201": "after original scaler step/update and before original stop assertion",
+    "164": "stop before epoch2 starts"
+  },
+  "boundary": {
+    "maximum_epochs": 1,
+    "heldout_model_forwards": 0,
+    "official_test_access": 0,
+    "new_method": false,
+    "checkpoint_used_for_formal_training": false
+  },
+  "expected_runtime_minutes": [
+    1,
+    3
+  ],
+  "stop_policy": "Natural original AssertionError retained; expected reproduction exits1, judged only by captured diagnosis. If epoch1 ends without reproduction, stop without epoch2 and register finding; no automatic repeat.",
+  "future_probe": "After first fixed capture inspect evidence and register one exact-batch zero-update comparison; no AMP scale/loss/optimizer scan or formal restart is authorized by this capture itself."
+}

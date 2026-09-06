@@ -1,0 +1,982 @@
+FILE 2: .aris/traces/experiment-audit/2026-09-06_run19/signal_source/data/datasets/bases.py (comments/blank lines/docstrings omitted only)
+1: from PIL import Image, ImageFile
+2: from torch.utils.data import Dataset
+3: import os.path as osp
+5: ImageFile.LOAD_TRUNCATED_IMAGES = True
+8: def read_image(img_list):
+11:     if type(img_list) == type("This is a str"):
+12:         img_path = img_list
+13:         got_img = False
+14:         if not osp.exists(img_path):
+15:             raise IOError("{} does not exist".format(img_path))
+16:         while not got_img:
+17:             try:
+18:                 img = Image.open(img_path).convert('RGB')
+19:                 RGB = img.crop((0, 0, 256, 128))
+20:                 NI = img.crop((256, 0, 512, 128))
+21:                 TI = img.crop((512, 0, 768, 128))
+22:                 img3 = [RGB, NI, TI]
+23:                 got_img = True
+24:             except IOError:
+25:                 print("IOError incurred when reading '{}'. Will redo. Don't worry. Just chill.".format(img_path))
+26:                 pass
+27:     else:
+28:         img3 = []
+29:         for i in img_list:
+30:             img_path = i
+31:             got_img = False
+32:             if not osp.exists(img_path):
+33:                 raise IOError("{} does not exist".format(img_path))
+34:             while not got_img:
+35:                 try:
+36:                     img = Image.open(img_path).convert('RGB')
+37:                     img3.append(img)
+38:                     got_img = True
+39:                 except IOError:
+40:                     print("IOError incurred when reading '{}'. Will redo. Don't worry. Just chill.".format(img_path))
+41:                     pass
+42:     return img3
+45: class BaseDataset(object):
+50:     def get_imagedata_info(self, data):
+51:         pids, cams, tracks = [], [], []
+53:         for _, pid, camid, trackid in data:
+54:             pids += [pid]
+55:             cams += [camid]
+56:             tracks += [trackid]
+57:         pids = set(pids)
+58:         cams = set(cams)
+59:         tracks = set(tracks)
+60:         num_pids = len(pids)
+61:         num_cams = len(cams)
+62:         num_imgs = len(data)
+63:         num_views = len(tracks)
+64:         return num_pids, num_imgs, num_cams, num_views
+66:     def print_dataset_statistics(self):
+67:         raise NotImplementedError
+70: class BaseImageDataset(BaseDataset):
+75:     def print_dataset_statistics(self, train, query, gallery):
+76:         num_train_pids, num_train_imgs, num_train_cams, num_train_views = self.get_imagedata_info(train)
+77:         num_query_pids, num_query_imgs, num_query_cams, num_train_views = self.get_imagedata_info(query)
+78:         num_gallery_pids, num_gallery_imgs, num_gallery_cams, num_train_views = self.get_imagedata_info(gallery)
+80:         print("Dataset statistics:")
+81:         print("  ----------------------------------------")
+82:         print("  subset   | # ids | # images | # cameras")
+83:         print("  ----------------------------------------")
+84:         print("  train    | {:5d} | {:8d} | {:9d}".format(num_train_pids, num_train_imgs, num_train_cams))
+85:         print("  query    | {:5d} | {:8d} | {:9d}".format(num_query_pids, num_query_imgs, num_query_cams))
+86:         print("  gallery  | {:5d} | {:8d} | {:9d}".format(num_gallery_pids, num_gallery_imgs, num_gallery_cams))
+87:         print("  ----------------------------------------")
+90: class ImageDataset(Dataset):
+91:     def __init__(self, dataset, transform=None):
+92:         self.dataset = dataset
+93:         self.transform = transform
+95:     def __len__(self):
+96:         return len(self.dataset)
+98:     def __getitem__(self, index):
+99:         img_path, pid, camid, trackid = self.dataset[index]
+100:         img3 = read_image(img_path)
+102:         if self.transform is not None:
+103:             img = [self.transform(img) for img in img3]
+104:         if type(img_path) == type("This is a str"):
+105:             return img, pid, camid, trackid, img_path.split('/')[-1]
+106:         else:
+107:             return img, pid, camid, trackid, img_path[0].split('/')[-1]
+
+FILE 3: .aris/traces/experiment-audit/2026-09-06_run19/signal_source/data/datasets/make_dataloader.py (comments/blank lines/docstrings omitted only)
+1: import torchvision.transforms as T
+2: from torch.utils.data import DataLoader
+4: from .bases import ImageDataset
+5: from .sampler import RandomIdentitySampler
+6: from .dukemtmcreid import DukeMTMCreID
+7: from .market1501 import Market1501
+8: from .msmt17 import MSMT17
+9: from .msvr310 import MSVR310
+10: from .RGBNT201 import RGBNT201
+11: from .RGBNT100 import RGBNT100
+12: from .sampler_ddp import RandomIdentitySampler_DDP
+13: import torch.distributed as dist
+15: __factory = {
+16:     'market1501': Market1501,
+17:     'dukemtmc': DukeMTMCreID,
+18:     'msmt17': MSMT17,
+19:     'RGBNT201': RGBNT201,
+20:     'RGBNT100': RGBNT100,
+21:     'MSVR310': MSVR310
+22: }
+23: """ Random Erasing (Cutout)
+25: Originally inspired by impl at https://github.com/zhunzhong07/Random-Erasing, Apache 2.0
+26: Copyright Zhun Zhong & Liang Zheng
+28: Hacked together by / Copyright 2019, Ross Wightman
+29: """
+30: import random
+31: import math
+33: import torch
+36: def _get_pixels(per_pixel, rand_color, patch_size, dtype=torch.float32, device='cpu'):
+40:     if per_pixel:
+41:         return torch.empty(patch_size, dtype=dtype, device=device).normal_()
+42:     elif rand_color:
+43:         return torch.empty((patch_size[0], 1, 1), dtype=dtype, device=device).normal_()
+44:     else:
+45:         return torch.zeros((patch_size[0], 1, 1), dtype=dtype, device=device)
+48: class RandomErasing:
+68:     def __init__(
+69:             self,
+70:             probability=0.5,
+71:             min_area=0.02,
+72:             max_area=1 / 3,
+73:             min_aspect=0.3,
+74:             max_aspect=None,
+75:             mode='const',
+76:             min_count=1,
+77:             max_count=None,
+78:             num_splits=0,
+79:             device='cpu',
+80:     ):
+81:         self.probability = probability
+82:         self.min_area = min_area
+83:         self.max_area = max_area
+84:         max_aspect = max_aspect or 1 / min_aspect
+85:         self.log_aspect_ratio = (math.log(min_aspect), math.log(max_aspect))
+86:         self.min_count = min_count
+87:         self.max_count = max_count or min_count
+88:         self.num_splits = num_splits
+89:         self.mode = mode.lower()
+90:         self.rand_color = False
+91:         self.per_pixel = False
+92:         if self.mode == 'rand':
+93:             self.rand_color = True  # per block random normal
+94:         elif self.mode == 'pixel':
+95:             self.per_pixel = True  # per pixel random normal
+96:         else:
+97:             assert not self.mode or self.mode == 'const'
+98:         self.device = device
+100:     def _erase(self, img, chan, img_h, img_w, dtype):
+101:         if random.random() > self.probability:
+102:             return
+103:         area = img_h * img_w
+104:         count = self.min_count if self.min_count == self.max_count else \
+105:             random.randint(self.min_count, self.max_count)
+106:         for _ in range(count):
+107:             for attempt in range(10):
+108:                 target_area = random.uniform(self.min_area, self.max_area) * area / count
+109:                 aspect_ratio = math.exp(random.uniform(*self.log_aspect_ratio))
+110:                 h = int(round(math.sqrt(target_area * aspect_ratio)))
+111:                 w = int(round(math.sqrt(target_area / aspect_ratio)))
+112:                 if w < img_w and h < img_h:
+113:                     top = random.randint(0, img_h - h)
+114:                     left = random.randint(0, img_w - w)
+115:                     img[:, top:top + h, left:left + w] = _get_pixels(
+116:                         self.per_pixel,
+117:                         self.rand_color,
+118:                         (chan, h, w),
+119:                         dtype=dtype,
+120:                         device=self.device,
+121:                     )
+122:                     break
+124:     def __call__(self, input):
+125:         if len(input.size()) == 3:
+126:             self._erase(input, *input.size(), input.dtype)
+127:         else:
+128:             batch_size, chan, img_h, img_w = input.size()
+130:             batch_start = batch_size // self.num_splits if self.num_splits > 1 else 0
+131:             for i in range(batch_start, batch_size):
+132:                 self._erase(input[i], chan, img_h, img_w, input.dtype)
+133:         return input
+135:     def __repr__(self):
+137:         fs = self.__class__.__name__ + f'(p={self.probability}, mode={self.mode}'
+138:         fs += f', count=({self.min_count}, {self.max_count}))'
+139:         return fs
+142: def train_collate_fn(batch):
+144:     imgs, pids, camids, viewids, _ = zip(*batch)
+145:     pids = torch.tensor(pids, dtype=torch.int64)
+146:     viewids = torch.tensor(viewids, dtype=torch.int64)
+147:     camids = torch.tensor(camids, dtype=torch.int64)
+148:     RGB_list = []
+149:     NI_list = []
+150:     TI_list = []
+152:     for img in imgs:
+153:         RGB_list.append(img[0])
+154:         NI_list.append(img[1])
+155:         TI_list.append(img[2])
+157:     RGB = torch.stack(RGB_list, dim=0)
+158:     NI = torch.stack(NI_list, dim=0)
+159:     TI = torch.stack(TI_list, dim=0)
+160:     imgs = {'RGB': RGB, "NI": NI, "TI": TI}
+161:     return imgs, pids, camids, viewids,_
+164: def val_collate_fn(batch):
+165:     imgs, pids, camids, viewids, img_paths = zip(*batch)
+166:     viewids = torch.tensor(viewids, dtype=torch.int64)
+167:     camids = torch.tensor(camids, dtype=torch.int64)
+168:     camids_batch = camids
+169:     RGB_list = []
+170:     NI_list = []
+171:     TI_list = []
+173:     for img in imgs:
+174:         RGB_list.append(img[0])
+175:         NI_list.append(img[1])
+176:         TI_list.append(img[2])
+178:     RGB = torch.stack(RGB_list, dim=0)
+179:     NI = torch.stack(NI_list, dim=0)
+180:     TI = torch.stack(TI_list, dim=0)
+181:     imgs = {'RGB': RGB, "NI": NI, "TI": TI}
+182:     return imgs, pids, camids, camids_batch, viewids, img_paths
+185: def make_dataloader(cfg):
+186:     train_transforms = T.Compose([
+187:         T.Resize(cfg.INPUT.SIZE_TRAIN, interpolation=3),
+188:         T.RandomHorizontalFlip(p=cfg.INPUT.PROB),
+189:         T.Pad(cfg.INPUT.PADDING),
+190:         T.RandomCrop(cfg.INPUT.SIZE_TRAIN),
+191:         T.ToTensor(),
+192:         T.Normalize(mean=cfg.INPUT.PIXEL_MEAN, std=cfg.INPUT.PIXEL_STD),
+193:         RandomErasing(probability=cfg.INPUT.RE_PROB, mode='pixel', max_count=1, device='cpu'),
+194:     ])
+196:     val_transforms = T.Compose([
+197:         T.Resize(cfg.INPUT.SIZE_TEST),
+198:         T.ToTensor(),
+199:         T.Normalize(mean=cfg.INPUT.PIXEL_MEAN, std=cfg.INPUT.PIXEL_STD)
+200:     ])
+202:     num_workers = cfg.DATALOADER.NUM_WORKERS
+204:     dataset = __factory[cfg.DATASETS.NAMES](root=cfg.DATASETS.ROOT_DIR)
+206:     train_set = ImageDataset(dataset.train, train_transforms)
+207:     train_set_normal = ImageDataset(dataset.train, val_transforms)
+208:     num_classes = dataset.num_train_pids
+209:     cam_num = dataset.num_train_cams
+210:     view_num = dataset.num_train_vids
+212:     if 'triplet' in cfg.DATALOADER.SAMPLER:
+213:         if cfg.MODEL.DIST_TRAIN:
+214:             print('DIST_TRAIN START')
+215:             mini_batch_size = cfg.SOLVER.IMS_PER_BATCH // dist.get_world_size()
+216:             data_sampler = RandomIdentitySampler_DDP(dataset.train, cfg.SOLVER.IMS_PER_BATCH,
+217:                                                      cfg.DATALOADER.NUM_INSTANCE)
+218:             batch_sampler = torch.utils.data.sampler.BatchSampler(data_sampler, mini_batch_size, True)
+219:             train_loader = torch.utils.data.DataLoader(
+220:                 train_set,
+221:                 num_workers=num_workers,
+222:                 batch_sampler=batch_sampler,
+223:                 collate_fn=train_collate_fn,
+224:                 pin_memory=True,
+225:             )
+226:         else:  # train_collate_fn： imgs, pids, camids, viewids,_
+227:             train_loader = DataLoader(
+228:                 train_set, batch_size=cfg.SOLVER.IMS_PER_BATCH,
+229:                 sampler=RandomIdentitySampler(dataset.train, cfg.SOLVER.IMS_PER_BATCH, cfg.DATALOADER.NUM_INSTANCE,cfg.SOLVER.SEED),
+230:                 num_workers=num_workers, collate_fn=train_collate_fn,
+231:             )
+232:     elif cfg.DATALOADER.SAMPLER == 'softmax':
+233:         print('using softmax sampler')
+234:         train_loader = DataLoader(
+235:             train_set, batch_size=cfg.SOLVER.IMS_PER_BATCH, num_workers=num_workers,
+236:             collate_fn=train_collate_fn
+237:         )
+238:     else:
+239:         print('unsupported sampler! expected softmax or triplet but got {}'.format(cfg.SAMPLER))
+247:     val_set = ImageDataset(dataset.query + dataset.gallery, val_transforms)
+249:     val_loader = DataLoader(
+250:         val_set, batch_size=cfg.TEST.IMS_PER_BATCH, shuffle=False, num_workers=num_workers,
+251:         collate_fn=val_collate_fn
+252:     )
+253:     train_loader_normal = DataLoader(
+254:         train_set_normal, batch_size=cfg.TEST.IMS_PER_BATCH, shuffle=False, num_workers=num_workers,
+255:         collate_fn=val_collate_fn
+256:     )
+257:     return train_loader, train_loader_normal, val_loader, len(dataset.query), num_classes, cam_num, view_num
+
+FILE 4: .aris/traces/experiment-audit/2026-09-06_run19/signal_source/data/datasets/msvr310.py (comments/blank lines/docstrings omitted only)
+7: import glob
+8: import re
+9: import pdb
+10: import os
+11: import os.path as osp
+12: import numpy as np
+13: from .bases import BaseImageDataset
+16: class MSVR310(BaseImageDataset):
+27:     dataset_dir = '512/data/MSVR310'
+29:     def __init__(self, root='', verbose=True, **kwargs):
+30:         super(MSVR310, self).__init__()
+31:         root = osp.abspath(osp.expanduser(root))
+32:         self.dataset_dir = osp.join(root, self.dataset_dir)
+33:         self.train_dir = osp.join(self.dataset_dir, 'bounding_box_train')
+34:         self.query_dir = osp.join(self.dataset_dir, 'query3')
+35:         self.gallery_dir = osp.join(self.dataset_dir, 'bounding_box_test')
+36:         self._check_before_run()
+38:         train = self._process_dir(self.train_dir, relabel=True)
+39:         query = self._process_dir(self.query_dir, relabel=False)
+40:         gallery = self._process_dir(self.gallery_dir, relabel=False)
+41:         if verbose:
+42:             print("=> RGB_NIR_TIR loaded")
+43:             self.print_dataset_statistics(train, query, gallery)
+45:         self.train = train
+46:         self.query = query
+47:         self.gallery = gallery
+49:         self.num_train_pids, self.num_train_imgs, self.num_train_cams, self.num_train_vids = self.get_imagedata_info(
+50:             self.train)
+51:         self.num_query_pids, self.num_query_imgs, self.num_query_cams, self.num_query_vids = self.get_imagedata_info(
+52:             self.query)
+53:         self.num_gallery_pids, self.num_gallery_imgs, self.num_gallery_cams, self.num_gallery_vids = self.get_imagedata_info(
+54:             self.gallery)
+56:     def _check_before_run(self):
+58:         if not osp.exists(self.dataset_dir):
+59:             raise RuntimeError("'{}' is not available".format(self.dataset_dir))
+60:         if not osp.exists(self.train_dir):
+61:             raise RuntimeError("'{}' is not available".format(self.train_dir))
+62:         if not osp.exists(self.query_dir):
+63:             raise RuntimeError("'{}' is not available".format(self.query_dir))
+64:         if not osp.exists(self.gallery_dir):
+65:             raise RuntimeError("'{}' is not available".format(self.gallery_dir))
+67:     def _process_dir(self, dir_path, relabel=False):
+68:         vid_container = set()
+69:         for vid in os.listdir(dir_path):
+70:             vid_container.add(int(vid))
+71:         vid2label = {vid: label for label, vid in enumerate(vid_container)}
+73:         dataset = []
+74:         for vid in os.listdir(dir_path):
+75:             vid_path = osp.join(dir_path, vid)
+76:             r_data = os.listdir(osp.join(vid_path, 'vis'))
+77:             for img in r_data:
+78:                 r_img_path = osp.join(vid_path, 'vis', img)
+79:                 n_img_path = osp.join(vid_path, 'ni', img)
+80:                 t_img_path = osp.join(vid_path, 'th', img)
+81:                 vid = int(img[0:4])
+82:                 camid = int(img[11])
+83:                 sceneid = int(img[6:9])  # scene id
+84:                 assert 0 <= camid <= 7
+85:                 if relabel:
+86:                     vid = vid2label[vid]
+87:                 dataset.append(((r_img_path, n_img_path, t_img_path), vid, camid, sceneid))
+88:         return dataset
+
+FILE 26: evidence/rgbnt100_signal_source_text_20260906/data/datasets/RGBNT100.py (comments/blank lines/docstrings omitted only)
+7: import glob
+8: import re
+9: import os.path as osp
+10: from .bases import BaseImageDataset
+13: class RGBNT100(BaseImageDataset):
+24:     dataset_dir = '512/data/RGBNT100/rgbir'
+26:     def __init__(self, root='/home/haoluo/data', verbose=True, **kwargs):
+27:         super(RGBNT100, self).__init__()
+28:         self.dataset_dir = osp.join(root, self.dataset_dir)
+29:         self.train_dir = osp.join(self.dataset_dir, 'bounding_box_train')
+30:         self.query_dir = osp.join(self.dataset_dir, 'query')
+31:         self.gallery_dir = osp.join(self.dataset_dir, 'bounding_box_test')
+33:         self._check_before_run()
+35:         train = self._process_dir(self.train_dir, relabel=True)
+36:         query = self._process_dir(self.query_dir, relabel=False)
+37:         gallery = self._process_dir(self.gallery_dir, relabel=False)
+39:         if verbose:
+40:             print("=> RGB_IR loaded")
+41:             self.print_dataset_statistics(train, query, gallery)
+43:         self.train = train
+44:         self.query = query
+45:         self.gallery = gallery
+47:         self.num_train_pids, self.num_train_imgs, self.num_train_cams,self.num_train_vids = self.get_imagedata_info(self.train)
+48:         self.num_query_pids, self.num_query_imgs, self.num_query_cams,self.num_query_vids = self.get_imagedata_info(self.query)
+49:         self.num_gallery_pids, self.num_gallery_imgs, self.num_gallery_cams,self.num_gallery_vids = self.get_imagedata_info(self.gallery)
+52:     def _check_before_run(self):
+54:         if not osp.exists(self.dataset_dir):
+55:             raise RuntimeError("'{}' is not available".format(self.dataset_dir))
+56:         if not osp.exists(self.train_dir):
+57:             raise RuntimeError("'{}' is not available".format(self.train_dir))
+58:         if not osp.exists(self.query_dir):
+59:             raise RuntimeError("'{}' is not available".format(self.query_dir))
+60:         if not osp.exists(self.gallery_dir):
+61:             raise RuntimeError("'{}' is not available".format(self.gallery_dir))
+63:     def _process_dir(self, dir_path, relabel=False):
+64:         img_paths = glob.glob(osp.join(dir_path, '*.jpg'))
+65:         pattern = re.compile(r'([-\d]+)_c([-\d]+)')
+67:         pid_container = set()
+68:         for img_path in img_paths:
+69:             pid, _ = map(int, pattern.search(img_path).groups())
+70:             if pid == -1: continue  # junk images are just ignored
+71:             pid_container.add(pid)
+72:         pid2label = {pid: label for label, pid in enumerate(pid_container)}
+74:         dataset = []
+75:         for img_path in img_paths:
+76:             pid, camid = map(int, pattern.search(img_path).groups())
+79:             assert 1 <= pid <= 600  # pid == 0 means background
+80:             assert 1 <= camid <= 8
+81:             trackid = -1
+82:             camid -= 1  # index starts from 0
+83:             if relabel: pid = pid2label[pid]
+84:             dataset.append((img_path, pid, camid,trackid))
+85:         return dataset
+
+FILE 135: modeling/trifusion/aligned_data.py (comments/blank lines/docstrings omitted only)
+3: from __future__ import annotations
+5: import random
+6: from collections import defaultdict
+7: from collections.abc import Callable, Sequence
+8: from pathlib import Path
+10: import torch
+11: from PIL import Image
+12: from torch.utils.data import Dataset
+13: from torch.utils.data import DataLoader
+14: from torch.utils.data import Sampler
+15: from torchvision.transforms import InterpolationMode, RandomCrop, RandomErasing
+16: from torchvision.transforms import functional as transform_functional
+19: def _read_triplet(paths: Sequence[str]) -> tuple[Image.Image, Image.Image, Image.Image]:
+20:     if len(paths) != 3:
+21:         raise ValueError("RGBNT201 records must contain RGB, NIR and TIR paths")
+22:     images = tuple(Image.open(path).convert("RGB") for path in paths)
+23:     return images
+26: class SharedGeometryTripletTransform:
+29:     def __init__(
+30:         self,
+31:         *,
+32:         size: tuple[int, int] = (256, 128),
+33:         padding: int = 10,
+34:         flip_probability: float = 0.5,
+35:         erase_probability: float = 0.5,
+36:     ) -> None:
+37:         self.size = tuple(int(value) for value in size)
+38:         self.padding = int(padding)
+39:         self.flip_probability = float(flip_probability)
+40:         self.erase = RandomErasing(p=float(erase_probability), value="random")
+42:     def __call__(self, images: Sequence[Image.Image]) -> list[torch.Tensor]:
+43:         if len(images) != 3:
+44:             raise ValueError("triplet transform requires exactly three modalities")
+45:         transformed = [
+46:             transform_functional.resize(
+47:                 image,
+48:                 self.size,
+49:                 interpolation=InterpolationMode.BICUBIC,
+50:             )
+51:             for image in images
+52:         ]
+53:         if random.random() < self.flip_probability:
+54:             transformed = [transform_functional.hflip(image) for image in transformed]
+55:         transformed = [
+56:             transform_functional.pad(image, self.padding) for image in transformed
+57:         ]
+58:         top, left, height, width = RandomCrop.get_params(
+59:             transformed[0], output_size=self.size
+60:         )
+61:         transformed = [
+62:             transform_functional.crop(image, top, left, height, width)
+63:             for image in transformed
+64:         ]
+65:         tensors = [
+66:             transform_functional.normalize(
+67:                 transform_functional.to_tensor(image),
+68:                 mean=(0.5, 0.5, 0.5),
+69:                 std=(0.5, 0.5, 0.5),
+70:             )
+71:             for image in transformed
+72:         ]
+73:         return [self.erase(tensor) for tensor in tensors]
+76: class AlignedTripletImageDataset(Dataset):
+79:     def __init__(
+80:         self,
+81:         records: Sequence[tuple[Sequence[str], int, int, int]],
+82:         *,
+83:         transform: Callable[[Sequence[Image.Image]], list[torch.Tensor]],
+84:     ) -> None:
+85:         self.records = records
+86:         self.transform = transform
+88:     def __len__(self) -> int:
+89:         return len(self.records)
+91:     def __getitem__(self, index: int):
+92:         paths, identity, camera, view = self.records[index]
+93:         images = self.transform(_read_triplet(paths))
+94:         return images, identity, camera, view, Path(paths[0]).name
+97: class CrossCameraIdentitySampler(Sampler):
+100:     def __init__(
+101:         self,
+102:         records: Sequence[tuple[Sequence[str], int, int, int]],
+103:         *,
+104:         batch_size: int,
+105:         num_instances: int,
+106:         seed: int,
+107:     ) -> None:
+108:         self.records = records
+109:         self.batch_size = int(batch_size)
+110:         self.num_instances = int(num_instances)
+111:         self.identities_per_batch = self.batch_size // self.num_instances
+112:         self.seed = int(seed)
+113:         self.iteration = 0
+114:         self.indices_by_identity: dict[int, list[int]] = defaultdict(list)
+115:         self.camera_by_index: dict[int, int] = {}
+116:         for index, (_paths, identity, camera, _view) in enumerate(records):
+117:             self.indices_by_identity[int(identity)].append(index)
+118:             self.camera_by_index[index] = int(camera)
+119:         total_groups = sum(
+120:             max(len(indices), self.num_instances) // self.num_instances
+121:             for indices in self.indices_by_identity.values()
+122:         )
+123:         self.length = (
+124:             total_groups // self.identities_per_batch * self.batch_size
+125:         )
+127:     def _identity_groups(
+128:         self,
+129:         identity: int,
+130:         rng: random.Random,
+131:     ) -> tuple[list[list[int]], bool]:
+132:         indices = list(self.indices_by_identity[identity])
+133:         if len(indices) < self.num_instances:
+134:             indices.extend(
+135:                 rng.choices(indices, k=self.num_instances - len(indices))
+136:             )
+137:         group_count = len(indices) // self.num_instances
+138:         cameras: dict[int, list[int]] = defaultdict(list)
+139:         for index in indices:
+140:             cameras[self.camera_by_index[index]].append(index)
+141:         if len(cameras) == 1:
+142:             rng.shuffle(indices)
+143:             return (
+144:                 [
+145:                     indices[offset : offset + self.num_instances]
+146:                     for offset in range(
+147:                         0,
+148:                         group_count * self.num_instances,
+149:                         self.num_instances,
+150:                     )
+151:                 ],
+152:                 False,
+153:             )
+155:         ordered_cameras = sorted(
+156:             cameras.values(),
+157:             key=len,
+158:             reverse=True,
+159:         )
+160:         primary = list(ordered_cameras[0])
+161:         secondary = [
+162:             index for camera_indices in ordered_cameras[1:] for index in camera_indices
+163:         ]
+164:         if len(primary) < group_count or len(secondary) < group_count:
+165:             raise ValueError(
+166:                 "cross-camera identities must supply one sample per camera group"
+167:             )
+168:         rng.shuffle(primary)
+169:         rng.shuffle(secondary)
+170:         anchors = list(zip(primary[:group_count], secondary[:group_count], strict=True))
+171:         remainder = list(indices)
+172:         for pair in anchors:
+173:             for index in pair:
+174:                 remainder.remove(index)
+175:         rng.shuffle(remainder)
+176:         groups = []
+177:         fill = self.num_instances - 2
+178:         for group_index, pair in enumerate(anchors):
+179:             start = group_index * fill
+180:             groups.append([*pair, *remainder[start : start + fill]])
+181:         return groups, True
+183:     def __iter__(self):
+184:         rng = random.Random(self.seed + self.iteration)
+185:         self.iteration += 1
+186:         queues: dict[int, list[list[int]]] = {}
+187:         cross_camera: set[int] = set()
+188:         for identity in self.indices_by_identity:
+189:             groups, is_cross_camera = self._identity_groups(identity, rng)
+190:             rng.shuffle(groups)
+191:             queues[identity] = groups
+192:             if is_cross_camera:
+193:                 cross_camera.add(identity)
+195:         final_indices = []
+196:         batch_count = self.length // self.batch_size
+197:         for _batch in range(batch_count):
+198:             anchors = [identity for identity in cross_camera if queues[identity]]
+199:             if not anchors:
+200:                 raise ValueError("cross-camera groups cannot cover every formal batch")
+201:             rng.shuffle(anchors)
+202:             anchors.sort(key=lambda identity: len(queues[identity]), reverse=True)
+203:             selected = [anchors[0]]
+204:             available = [
+205:                 identity
+206:                 for identity, groups in queues.items()
+207:                 if groups and identity not in selected
+208:             ]
+209:             rng.shuffle(available)
+210:             available.sort(
+211:                 key=lambda identity: (
+212:                     identity in cross_camera,
+213:                     -len(queues[identity]),
+214:                 )
+215:             )
+216:             selected.extend(available[: self.identities_per_batch - 1])
+217:             if len(selected) != self.identities_per_batch:
+218:                 raise ValueError("identity groups cannot fill a formal batch")
+219:             for identity in selected:
+220:                 final_indices.extend(queues[identity].pop())
+221:         return iter(final_indices)
+223:     def __len__(self) -> int:
+224:         return self.length
+227: def build_aligned_train_loader(
+228:     records: Sequence[tuple[Sequence[str], int, int, int]],
+229:     *,
+230:     batch_size: int,
+231:     num_instances: int,
+232:     num_workers: int,
+233:     seed: int,
+234: ) -> DataLoader:
+237:     from data.datasets.make_dataloader import train_collate_fn
+238:     from data.datasets.sampler import RandomIdentitySampler
+240:     dataset = AlignedTripletImageDataset(
+241:         records,
+242:         transform=SharedGeometryTripletTransform(),
+243:     )
+244:     return DataLoader(
+245:         dataset,
+246:         batch_size=batch_size,
+247:         sampler=RandomIdentitySampler(
+248:             records,
+249:             batch_size,
+250:             num_instances,
+251:             seed,
+252:         ),
+253:         num_workers=num_workers,
+254:         collate_fn=train_collate_fn,
+255:         pin_memory=torch.cuda.is_available(),
+256:     )
+259: def build_cross_camera_train_loader(
+260:     records: Sequence[tuple[Sequence[str], int, int, int]],
+261:     *,
+262:     batch_size: int,
+263:     num_instances: int,
+264:     num_workers: int,
+265:     seed: int,
+266: ) -> DataLoader:
+269:     from data.datasets.make_dataloader import train_collate_fn
+271:     dataset = AlignedTripletImageDataset(
+272:         records,
+273:         transform=SharedGeometryTripletTransform(),
+274:     )
+275:     return DataLoader(
+276:         dataset,
+277:         batch_size=batch_size,
+278:         sampler=CrossCameraIdentitySampler(
+279:             records,
+280:             batch_size=batch_size,
+281:             num_instances=num_instances,
+282:             seed=seed,
+283:         ),
+284:         num_workers=num_workers,
+285:         collate_fn=train_collate_fn,
+286:         pin_memory=torch.cuda.is_available(),
+287:     )
+290: __all__ = [
+291:     "AlignedTripletImageDataset",
+292:     "CrossCameraIdentitySampler",
+293:     "SharedGeometryTripletTransform",
+294:     "build_aligned_train_loader",
+295:     "build_cross_camera_train_loader",
+296: ]
+
+FILE 15: .aris/traces/experiment-audit/2026-09-06_run19/signal_source/train.py (comments/blank lines/docstrings omitted only)
+1: from utils.logger import setup_logger
+2: from data import make_dataloader
+3: from modeling import make_frame
+4: from solver.make_optimizer import make_optimizer
+5: from solver.scheduler_factory import create_scheduler
+6: from solver.lr_scheduler310 import WarmupMultiStepLR
+7: from layers.make_loss import make_loss
+8: from engine.processor import do_train
+9: import random
+10: import torch
+11: import numpy as np
+12: import os
+13: import argparse
+14: from config import cfg
+15: def set_seed(seed):
+16:     torch.manual_seed(seed)
+17:     torch.cuda.manual_seed(seed)
+18:     torch.cuda.manual_seed_all(seed)
+19:     np.random.seed(seed)
+20:     random.seed(seed)
+21:     torch.backends.cudnn.deterministic = True
+22:     torch.backends.cudnn.benchmark = True
+24: if __name__ == '__main__':
+26:     parser = argparse.ArgumentParser(description="Signal Training")
+27:     parser.add_argument(
+28:         "--config_file", default="configs/RGBNT201/Signal.yml", help="path to config file", type=str
+29:     )
+30:     parser.add_argument("--fea_cft", default=0, help="Feature choose to be tested", type=int)
+31:     parser.add_argument("opts", help="Modify config options using the command-line", default=None,
+32:                         nargs=argparse.REMAINDER)
+33:     parser.add_argument("--local_rank", default=0, type=int)
+35:     args = parser.parse_args()
+37:     if args.config_file != "":
+38:         cfg.merge_from_file(args.config_file)
+39:     cfg.merge_from_list(args.opts)
+40:     cfg.TEST.FEAT = args.fea_cft
+41:     cfg.freeze()
+43:     set_seed(cfg.SOLVER.SEED)
+46:     if cfg.MODEL.DIST_TRAIN:
+47:         torch.distributed.init_process_group(backend='nccl', init_method='env://')
+48:         os.environ['CUDA_VISIBLE_DEVICES'] = cfg.MODEL.DEVICE_ID  
+50:     new_output_dir = os.path.join(cfg.OUTPUT_DIR, cfg.ckpt_save_path)
+51:     if not os.path.exists(new_output_dir):
+52:         os.makedirs(new_output_dir)
+54:     logger = setup_logger("Signal", new_output_dir, if_train=True)
+55:     if torch.cuda.is_available():
+56:         gpu_info = torch.cuda.get_device_name(args.local_rank)
+57:     else:
+58:         gpu_info = "No GPU available"
+59:     torch_version = torch.__version__
+60:     cuda_version = torch.version.cuda
+61:     logger.info("Local GPU model: {}, Torch version: {},cuda:{}".format(gpu_info, torch_version,cuda_version))
+62:     logger.info("Saving model in the path :{}".format(new_output_dir))
+63:     logger.info(args)
+65:     if args.config_file != "":
+66:         logger.info("Loaded configuration file {}".format(args.config_file))
+67:         with open(args.config_file, 'r') as cf:
+68:             config_str = "\n" + cf.read()
+69:             logger.info(config_str)
+70:     logger.info("Running with config:\n{}".format(cfg))
+72:     train_loader, train_loader_normal, val_loader, num_query, num_classes, camera_num, view_num = make_dataloader(cfg)
+74:     model = make_frame(cfg, num_class=num_classes, camera_num=camera_num, view_num=view_num)
+75:     if hasattr(model, 'flops'):   
+76:         logger.info(str(model))
+77:         n_parameters = sum(p.numel() for p in model.parameters() if p.requires_grad)
+78:         logger.info(f"number of parameters:{n_parameters / 1e6}")
+80:     else:
+81:         print("model has no flops")
+83:     loss_func, center_criterion = make_loss(cfg, num_classes=num_classes) # ID_loss,Triplet_loss,center_loss
+85:     optimizer, optimizer_center = make_optimizer(cfg, model, center_criterion)
+87:     if cfg.DATASETS.NAMES not in ["MSVR310"]:
+88:         scheduler = create_scheduler(cfg, optimizer)
+89:     else:
+90:         scheduler = WarmupMultiStepLR(optimizer, cfg.SOLVER.STEPS, cfg.SOLVER.GAMMA, cfg.SOLVER.WARMUP_FACTOR,
+91:                                       cfg.SOLVER.WARMUP_ITERS, cfg.SOLVER.WARMUP_METHOD)
+96:     do_train(
+97:         cfg,
+98:         model,
+99:         center_criterion,
+100:         train_loader,
+101:         val_loader,
+102:         optimizer,
+103:         optimizer_center,
+104:         scheduler,
+105:         loss_func,
+106:         num_query, 
+107:         args.local_rank,
+108:         cfg.MODEL.stageName
+109:     )
+
+FILE 6: .aris/traces/experiment-audit/2026-09-06_run19/signal_source/engine/processor.py (comments/blank lines/docstrings omitted only)
+1: import logging
+2: import os
+3: import time
+4: import torch
+5: import torch.nn as nn
+6: from utils.meter import AverageMeter
+7: from utils.metrics import R1_mAP_eval, R1_mAP
+8: from torch.cuda import amp
+9: import torch.distributed as dist
+10: import torch.nn.functional as F
+11: import math
+13: def adjust_weights(epoch, total_epochs, initial_weight, final_weight):
+14:     alpha = min(epoch / (total_epochs * 0.2), 1.0)
+15:     return initial_weight + alpha * (final_weight - initial_weight)
+17: def do_train(cfg,
+18:              model,
+19:              center_criterion,
+20:              train_loader,
+21:              val_loader,
+22:              optimizer,
+23:              optimizer_center,
+24:              scheduler,
+25:              loss_fn,
+26:              num_query, local_rank,stage):
+28:     log_period = cfg.SOLVER.LOG_PERIOD
+29:     checkpoint_period = cfg.SOLVER.CHECKPOINT_PERIOD
+30:     eval_period = cfg.SOLVER.EVAL_PERIOD
+31:     alpha = cfg.MODEL.Gram_Loss_weight
+32:     beta = cfg.MODEL.PAT_Loss_weight
+34:     device = torch.device(f"cuda:{local_rank}" if torch.cuda.is_available() else "cpu")
+35:     epochs = cfg.SOLVER.MAX_EPOCHS
+36:     logging.getLogger().setLevel(logging.INFO)
+37:     logger = logging.getLogger("Signal.train")
+38:     logger.info('start training')
+40:     if device:
+41:         print(f"use CUDA {device}")
+42:         model.to(device)
+43:         if torch.cuda.device_count() > 1 and cfg.MODEL.DIST_TRAIN:
+44:             print('Using {} GPUs for training'.format(torch.cuda.device_count()))
+45:             model = torch.nn.parallel.DistributedDataParallel(model, device_ids=[device],
+46:                                                               find_unused_parameters=True)
+49:     loss_meter = AverageMeter()
+50:     acc_meter = AverageMeter()
+52:     if cfg.DATASETS.NAMES == "MSVR310":
+53:         evaluator = R1_mAP(num_query, max_rank=50, feat_norm=cfg.TEST.FEAT_NORM)
+54:     else:
+55:         evaluator = R1_mAP_eval(num_query, max_rank=50, feat_norm=cfg.TEST.FEAT_NORM)
+56:     scaler = amp.GradScaler() 
+58:     best_index = {'mAP': 0, "Rank-1": 0, 'Rank-5': 0, 'Rank-10': 0}
+59:     print("<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< Start Training >>>>>>>>>>>>>>>>>>>>>>>>>>>>>")
+60:     for epoch in range(1, epochs + 1):
+61:         start_time = time.time()
+62:         loss_meter.reset()
+63:         acc_meter.reset()
+64:         scheduler.step(epoch)
+65:         model.train()
+67:         for n_iter, (img, vid, target_cam, target_view, _) in enumerate(train_loader):
+69:             optimizer.zero_grad()
+70:             optimizer_center.zero_grad()
+73:             img = {'RGB': img['RGB'].to(device),
+74:                    'NI': img['NI'].to(device),
+75:                    'TI': img['TI'].to(device)}
+76:             target = vid.to(device)
+77:             target_cam = target_cam.to(device)
+78:             target_view = target_view.to(device)
+80:             with amp.autocast(enabled=True):
+81:                 output = model(img, label=target, cam_label=target_cam, view_label=target_view,training=True,sge=stage)
+83:                 loss = 0
+84:                 sign = output[0]
+86:                 if sign == 1:
+87:                     index = len(output) - 1
+88:                     for i in range(1, index, 2):
+89:                         loss_tmp = loss_fn(score=output[i], feat=output[i + 1], target=target, target_cam=target_cam)
+90:                         loss = loss + loss_tmp
+93:                 elif sign == 2:
+94:                     index = len(output) - 1
+95:                     for i in range(1, index, 2):
+96:                         loss_tmp = loss_fn(score=output[i], feat=output[i + 1], target=target, target_cam=target_cam)
+97:                         loss = loss + loss_tmp
+100:                 else:
+102:                     if stage == "CLS":
+103:                         index = len(output) - 2
+104:                         for i in range(1, index, 2):
+105:                             loss_tmp = loss_fn(score=output[i], feat=output[i + 1], target=target, target_cam=target_cam)
+106:                             loss = loss + loss_tmp
+108:                         CLS_loss = output[-1]
+109:                         loss = loss + alpha * CLS_loss  
+111:                     else:
+112:                         index = len(output) - 3
+113:                         for i in range(1, index, 2):
+114:                             loss_tmp = loss_fn(score=output[i], feat=output[i + 1], target=target, target_cam=target_cam)
+115:                             loss = loss + loss_tmp
+117:                         CLS_loss,pat_loss = output[-2],output[-1]
+119:                         loss = loss + alpha * CLS_loss + beta * pat_loss 
+122:             scaler.scale(loss).backward()
+123:             scaler.step(optimizer)
+125:             scaler.update()
+127:             if 'center' in cfg.MODEL.METRIC_LOSS_TYPE:
+128:                 for param in center_criterion.parameters():
+129:                     param.grad.data *= (1. / cfg.SOLVER.CENTER_LOSS_WEIGHT)
+130:                 scaler.step(optimizer_center)
+131:                 scaler.update()
+134:             if isinstance(output, list):
+135:                 acc = (output[1][0].max(1)[1] == target).float().mean()
+136:             else:
+137:                 acc = (output[1].max(1)[1] == target).float().mean()
+139:             loss_meter.update(loss.item(), img['RGB'].shape[0])
+140:             acc_meter.update(acc, 1)
+142:             torch.cuda.synchronize()
+143:             if (n_iter + 1) % log_period == 0:
+144:                 logger.info("Epoch[{}] Iteration[{}/{}] Loss: {:.3f}, Acc: {:.3f}, Base Lr: {:.2e}"
+145:                             .format(epoch, (n_iter + 1), len(train_loader),
+146:                                     loss_meter.avg, acc_meter.avg, scheduler._get_lr(epoch)[0]))
+150:         end_time = time.time()
+151:         time_per_batch = (end_time - start_time) / (n_iter + 1)
+152:         if cfg.MODEL.DIST_TRAIN:
+153:             pass
+154:         else:
+155:             logger.info("Epoch {} done. Time per batch: {:.3f}[s] Speed: {:.1f}[samples/s]"
+156:                         .format(epoch, time_per_batch, train_loader.batch_size / time_per_batch))
+158:         new_output_dir = os.path.join(cfg.OUTPUT_DIR, cfg.ckpt_save_path)
+159:         if not os.path.exists(new_output_dir):
+160:             os.makedirs(new_output_dir)
+162:         if epoch % checkpoint_period == 0:
+163:             if cfg.MODEL.DIST_TRAIN:
+165:                 if dist.get_rank() == 0:
+166:                     torch.save(model.state_dict(),
+167:                                os.path.join(new_output_dir, cfg.MODEL.NAME + '_{}.pth'.format(epoch)))
+168:             else:
+169:                 torch.save(model.state_dict(),
+170:                            os.path.join(new_output_dir, cfg.MODEL.NAME + '_{}.pth'.format(epoch)))
+172:         if epoch % eval_period == 0:
+173:             if cfg.MODEL.DIST_TRAIN:
+175:                 if dist.get_rank() == 0:
+176:                     training_neat_eval(cfg, model, val_loader, device, evaluator, epoch, logger)
+177:             else:
+178:                 mAP, cmc = training_neat_eval(cfg, model, val_loader, device, evaluator, epoch, logger,sge=stage)
+181:                 if mAP >= best_index['mAP']:
+182:                     best_index['mAP'] = mAP
+183:                     best_index['Rank-1'] = cmc[0]
+184:                     best_index['Rank-5'] = cmc[4]
+185:                     best_index['Rank-10'] = cmc[9]
+186:                     torch.save(model.state_dict(),
+187:                                os.path.join(new_output_dir, cfg.MODEL.NAME + 'best.pth'))
+188:                 logger.info("~" * 50)
+189:                 logger.info("Best mAP: {:.1%}".format(best_index['mAP']))
+190:                 logger.info("Best Rank-1: {:.1%}".format(best_index['Rank-1']))
+191:                 logger.info("Best Rank-5: {:.1%}".format(best_index['Rank-5']))
+192:                 logger.info("Best Rank-10: {:.1%}".format(best_index['Rank-10']))
+193:                 logger.info("~" * 50)
+197: def do_inference(cfg,
+198:                  model,
+199:                  val_loader,
+200:                  num_query,
+201:                  logger,
+202:                  sge,
+203:                  local_rank):
+204:     device = torch.device(f"cuda:{local_rank}" if torch.cuda.is_available() else "cpu")
+205:     logger = logging.getLogger("Signal.test")
+206:     logger.info("Enter inferencing")
+208:     if cfg.DATASETS.NAMES == "MSVR310":
+209:         evaluator = R1_mAP(num_query, max_rank=50, feat_norm=cfg.TEST.FEAT_NORM)
+210:         evaluator.reset()
+211:     else:
+212:         evaluator = R1_mAP_eval(num_query, max_rank=50, feat_norm=cfg.TEST.FEAT_NORM)
+213:         evaluator.reset()
+214:     if device:
+218:         model.to(device)
+220:     model.eval()
+221:     img_path_list = []
+222:     logger.info("~" * 50)
+223:     for n_iter, (img, pid, camid, camids, target_view, imgpath) in enumerate(val_loader):
+224:         with torch.no_grad():
+225:             img = {'RGB': img['RGB'].to(device),
+226:                    'NI': img['NI'].to(device),
+227:                    'TI': img['TI'].to(device)}
+228:             camids = camids.to(device)
+229:             scenceids = target_view
+230:             target_view = target_view.to(device)
+231:             feat = model(img, cam_label=camids, view_label=target_view,training=False,sge=sge)
+232:             if cfg.DATASETS.NAMES == "MSVR310":
+233:                 evaluator.update((feat, pid, camid, scenceids, imgpath))
+234:             else:
+235:                 evaluator.update((feat, pid, camid, imgpath))
+236:             img_path_list.extend(imgpath)
+238:     cmc, mAP, _, _, _, _, _ = evaluator.compute()
+239:     print("Validation Results ")
+240:     print("mAP: {:.1%}".format(mAP))
+241:     logger.info("Validation Results ")
+242:     logger.info("mAP: {:.1%}".format(mAP))
+243:     for r in [1, 5, 10]:
+244:         print("CMC curve, Rank-{:<3}:{:.1%}".format(r, cmc[r - 1]))
+245:         logger.info("CMC curve, Rank-{:<3}:{:.1%}".format(r, cmc[r - 1]))
+246:     return cmc[0], cmc[4]
+249: def training_neat_eval(cfg,
+250:                        model,
+251:                        val_loader,
+252:                        device,
+253:                        evaluator, epoch, logger, return_pattern=1,sge="CLS"):
+254:     evaluator.reset()
+255:     model.eval()
+256:     logger.info("~" * 50)
+258:     if not cfg.MODEL.USE_A:
+259:         logger.info("Current is the base feature testing!")
+261:     else:
+262:         logger.info("Current is the our feature testing!")
+267:     logger.info("~" * 50)
+269:     for n_iter, (img, vid, camid, camids, target_view, _) in enumerate(val_loader):
+270:         with torch.no_grad():
+271:             img = {'RGB': img['RGB'].to(device),
+272:                    'NI': img['NI'].to(device),
+273:                    'TI': img['TI'].to(device)}
+274:             camids = camids.to(device)
+275:             scenceids = target_view
+276:             target_view = target_view.to(device)
+277:             feat = model(img, cam_label=camids, view_label=target_view,return_pattern=return_pattern,training=False,sge=sge)
+278:             if cfg.DATASETS.NAMES == "MSVR310":
+279:                 evaluator.update((feat, vid, camid, scenceids, _))
+280:             else:
+281:                 evaluator.update((feat, vid, camid, _))
+282:     cmc, mAP, _, _, _, _, _ = evaluator.compute()
+283:     logger.info("Validation Results - Epoch: {}".format(epoch))
+284:     logger.info("mAP: {:.1%}".format(mAP))
+285:     for r in [1, 5, 10]:
+286:         logger.info("CMC curve, Rank-{:<3}:{:.1%}".format(r, cmc[r - 1]))
+287:     logger.info("~" * 50)
+288:     torch.cuda.empty_cache()
+289:     return mAP, cmc

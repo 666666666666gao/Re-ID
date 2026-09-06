@@ -1,0 +1,75 @@
+{
+  "launched_at": "2026-09-06T10:34:51.445828+08:00",
+  "wrapper_pid": 82470,
+  "project_commit": "56f094f82ad03c7140ed844f452d91346ad977cf",
+  "plan_sha256": "0e8a38ef743cf3cda522890217dbb7a8412097aab6b139e52e061268f9845b9e",
+  "scope": "each mode once, separate process, same complete64-record augmented source batch/state/RNG, fixedscale256, no optimizer or new training trajectory",
+  "modes": [
+    "fp16",
+    "fp16_anomaly",
+    "fp32"
+  ],
+  "completed_at": "2026-09-06T10:35:40.134040+08:00",
+  "status": "FIXED_THREE_PROBES_FINISHED_INSPECT_ACTUAL_RESULTS",
+  "probes": [
+    {
+      "mode": "fp16",
+      "command": [
+        "/root/miniconda3/envs/tri_reid/bin/python",
+        "-u",
+        "/root/autodl-tmp/trifusion-v2/TriFusion-ReID/tools/probe_rgbnt100_signal_amp_batch.py",
+        "--plan",
+        "/root/autodl-tmp/trifusion-v2/TriFusion-ReID/evidence/trifusion_rgbnt100_signal_v1_amp_batch_probe_plan_20260906.json",
+        "--fixture",
+        "/root/autodl-tmp/trifusion-v2/artifacts/rgbnt100_signal_amp_capture_v1_seed42_8b412d0/capture/failed_batch_preforward.pt",
+        "--output-dir",
+        "/root/autodl-tmp/trifusion-v2/artifacts/rgbnt100_signal_amp_batch_probe_v1_seed42_56f094f/fp16",
+        "--mode",
+        "fp16"
+      ],
+      "exit_code": 0,
+      "gpu_free_mib_before": 24126,
+      "elapsed_seconds": 15.562607422471046
+    },
+    {
+      "mode": "fp16_anomaly",
+      "command": [
+        "/root/miniconda3/envs/tri_reid/bin/python",
+        "-u",
+        "/root/autodl-tmp/trifusion-v2/TriFusion-ReID/tools/probe_rgbnt100_signal_amp_batch.py",
+        "--plan",
+        "/root/autodl-tmp/trifusion-v2/TriFusion-ReID/evidence/trifusion_rgbnt100_signal_v1_amp_batch_probe_plan_20260906.json",
+        "--fixture",
+        "/root/autodl-tmp/trifusion-v2/artifacts/rgbnt100_signal_amp_capture_v1_seed42_8b412d0/capture/failed_batch_preforward.pt",
+        "--output-dir",
+        "/root/autodl-tmp/trifusion-v2/artifacts/rgbnt100_signal_amp_batch_probe_v1_seed42_56f094f/fp16_anomaly",
+        "--mode",
+        "fp16_anomaly"
+      ],
+      "exit_code": 1,
+      "gpu_free_mib_before": 24126,
+      "elapsed_seconds": 16.807157903909683
+    },
+    {
+      "mode": "fp32",
+      "command": [
+        "/root/miniconda3/envs/tri_reid/bin/python",
+        "-u",
+        "/root/autodl-tmp/trifusion-v2/TriFusion-ReID/tools/probe_rgbnt100_signal_amp_batch.py",
+        "--plan",
+        "/root/autodl-tmp/trifusion-v2/TriFusion-ReID/evidence/trifusion_rgbnt100_signal_v1_amp_batch_probe_plan_20260906.json",
+        "--fixture",
+        "/root/autodl-tmp/trifusion-v2/artifacts/rgbnt100_signal_amp_capture_v1_seed42_8b412d0/capture/failed_batch_preforward.pt",
+        "--output-dir",
+        "/root/autodl-tmp/trifusion-v2/artifacts/rgbnt100_signal_amp_batch_probe_v1_seed42_56f094f/fp32",
+        "--mode",
+        "fp32"
+      ],
+      "exit_code": 0,
+      "gpu_free_mib_before": 24126,
+      "elapsed_seconds": 16.08429942280054
+    }
+  ],
+  "elapsed_seconds": 48.68828552775085,
+  "optimizer_steps": 0
+}

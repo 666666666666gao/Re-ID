@@ -1,0 +1,662 @@
+FILE 143: tools/diagnose_rgbnt100_signal_amp.py
+1: #!/usr/bin/env python3
+2: """Capture the first RGBNT100 AMP stop in the unchanged registered train loop."""
+3: from pathlib import Path
+4: import argparse
+5: import datetime
+6: import json
+7: import subprocess
+8: import sys
+9: import time
+10: 
+11: ROOT = Path(__file__).resolve().parents[1]
+12: sys.path.insert(0, str(ROOT))
+13: 
+14: def run(args):
+15:     import torch
+16:     from tools import train_rgbnt100_signal_oof as runner
+17:     from tools.run_signal_preserving_v5 import _set_seed
+18: 
+19:     assert runner.sha256(runner.__file__) == "514a2c86634b61ef8b6de32b6ff1990cdf18e208a91673fb192534b52e5a1357"
+20:     assert runner.sha256(args.config) == "7270e2bf95c5f5a60e1dc6d6b047f043dce667d508783b36bc4734aecbc4c15b"
+21:     assert not args.output_dir.exists()
+22:     args.output_dir.mkdir(parents=True)
+23:     config = json.loads(args.config.read_text())
+24:     protocol = json.loads((ROOT / config["protocol"]).read_text())
+25:     assert runner.sha256(ROOT / config["protocol"]) == config["protocol_sha256"]
+26:     assert runner.sha256(args.m0_receipt) == "7e9f6214efdbf14611fd5bb0ce2f4d7e6c9ae68c9549af06659d018b39e09820"
+27:     m0 = json.loads(args.m0_receipt.read_text())["folds"][0]["training"]
+28:     cfg, binding = runner.configure(config)
+29:     fold = protocol["folds"][0]
+30:     _set_seed(42)
+31:     records = runner.records_for(config, protocol, fold, True)
+32:     loader = runner.loader_for(records, True)
+33:     model = runner.new_model(cfg, fold)
+34:     torch.cuda.reset_peak_memory_stats()
+35:     started = time.perf_counter()
+36:     step_rows = []
+37:     before = {}
+38:     target_code = runner.train_source.__code__
+39:     launch = {
+40:         "created_at": datetime.datetime.now(datetime.timezone(datetime.timedelta(hours=8))).isoformat(),
+41:         "scope": "fold0 source only, unchanged train_source via line tracing, stop at first overflow or epoch1 boundary",
+42:         "project_commit": subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=ROOT, text=True).strip(),
+43:         "diagnostic_sha256": runner.sha256(__file__), "runner_sha256": runner.sha256(runner.__file__),
+44:         "config_sha256": runner.sha256(args.config), "protocol_sha256": config["protocol_sha256"],
+45:         "m0_receipt_sha256": runner.sha256(args.m0_receipt), **binding,
+46:         "heldout_image_forwards": 0, "official_test_image_access": 0,
+47:         "new_method_training": False, "original_failed_successful_steps": "UNKNOWN_NOT_PERSISTED",
+48:     }
+49:     runner.write_json(args.output_dir / "launch.json", launch)
+50: 
+51:     def trace(frame, event, arg):
+52:         if frame.f_code is not target_code:
+53:             return None
+54:         if event != "line":
+55:             return trace
+56:         state = frame.f_locals
+57:         if frame.f_lineno == 164 and state["epoch"] == 2:
+58:             runner.write_json(args.output_dir / "diagnosis.json", {
+59:                 **launch, "status": "NOT_REPRODUCED_IN_FIXED_FIRST_EPOCH",
+60:                 "attempted_steps": len(step_rows), "successful_optimizer_steps": len(step_rows),
+61:                 "source_record_exposures": len(step_rows) * 64,
+62:                 "elapsed_seconds": time.perf_counter() - started})
+63:             raise RuntimeError("Fixed diagnostic boundary reached: no second-epoch update")
+64:         if frame.f_lineno == 175:
+65:             before.clear()
+66:             before.update({
+67:                 "buffers": {name: value.detach().cpu().clone() for name, value in model.named_buffers()},
+68:                 "cpu_rng_state": torch.get_rng_state().clone(),
+69:                 "cuda_rng_state": torch.cuda.get_rng_state().cpu().clone(),
+70:             })
+71:         if frame.f_lineno == 201:
+72:             scale_after = state["scaler"].get_scale()
+73:             overflow = scale_after < state["scale_before"]
+74:             row = {
+75:                 "step": len(step_rows) + 1, "epoch": state["epoch"],
+76:                 "loss": float(state["loss"].detach()),
+77:                 "id_triplet_head_losses": state["components"],
+78:                 "gram_loss": float(state["output"][-2].detach()),
+79:                 "patch_loss": float(state["output"][-1].detach()),
+80:                 "sampled_record_indices": [state["name_to_index"][p] for p in state["paths"]],
+81:                 "amp_scale_before": state["scale_before"], "amp_scale_after": scale_after,
+82:                 "optimizer_update_applied": not overflow,
+83:             }
+84:             step_rows.append(row)
+85:             with (args.output_dir / "steps.jsonl").open("a") as handle:
+86:                 handle.write(json.dumps(row, allow_nan=False) + "\n")
+87:             if overflow:
+88:                 gradient_rows = []
+89:                 for name, parameter in model.named_parameters():
+90:                     if parameter.grad is not None:
+91:                         gradient = parameter.grad.detach()
+92:                         gradient_rows.append({
+93:                             "name": name, "elements": gradient.numel(),
+94:                             "nan_count": int(torch.isnan(gradient).sum()),
+95:                             "positive_inf_count": int(torch.isposinf(gradient).sum()),
+96:                             "negative_inf_count": int(torch.isneginf(gradient).sum()),
+97:                         })
+98:                 model_state = {name: value.detach().cpu() for name, value in model.state_dict().items()}
+99:                 model_state.update(before["buffers"])
+100:                 fixture = args.output_dir / "failed_batch_preforward.pt"
+101:                 torch.save({
+102:                     "model_state_dict": model_state,
+103:                     "images": {name: value.detach().cpu() for name, value in state["images"].items()},
+104:                     "labels": state["labels"].detach().cpu(),
+105:                     "cameras": state["cameras"].detach().cpu(),
+106:                     "scenes": state["scenes"].detach().cpu(),
+107:                     "cpu_rng_state": before["cpu_rng_state"], "cuda_rng_state": before["cuda_rng_state"],
+108:                     "amp_scale": state["scale_before"], "step": row["step"], "fold": 0,
+109:                     "source_ids": fold["source_ids"], "source_record_indices": row["sampled_record_indices"],
+110:                 }, fixture)
+111:                 overlap = min(8, len(step_rows))
+112:                 comparisons = []
+113:                 keys = ["loss", "id_triplet_head_losses", "gram_loss", "patch_loss",
+114:                         "sampled_record_indices", "amp_scale_before", "amp_scale_after"]
+115:                 for index in range(overlap):
+116:                     comparisons.append({
+117:                         "step": index + 1,
+118:                         "all_recorded_values_exactly_match_m0": all(
+119:                             step_rows[index][key] == m0["steps"][index][key] for key in keys),
+120:                         "loss_difference": step_rows[index]["loss"] - m0["steps"][index]["loss"],
+121:                         "sample_indices_exact": step_rows[index]["sampled_record_indices"] ==
+122:                                                 m0["steps"][index]["sampled_record_indices"],
+123:                     })
+124:                 runner.write_json(args.output_dir / "diagnosis.json", {
+125:                     **launch, "status": "REPRODUCED_FIRST_AMP_OVERFLOW",
+126:                     "attempted_steps": len(step_rows), "successful_optimizer_steps": len(step_rows) - 1,
+127:                     "source_record_exposures": len(step_rows) * 64, "failed_step": row,
+128:                     "all_parameter_gradient_counts": gradient_rows, "m0_first8_comparison": comparisons,
+129:                     "diagnostic_initial_state_matches_m0": state["initial_state"] == m0["initial_state_sha256"],
+130:                     "fixture_sha256": runner.sha256(fixture), "fixture_bytes": fixture.stat().st_size,
+131:                     "fixture_semantics": "weights before skipped step, all buffers and RNG restored to before failed forward; exact augmented source batch",
+132:                     "elapsed_seconds": time.perf_counter() - started,
+133:                     "peak_allocated_mib": torch.cuda.max_memory_allocated() / 1024**2,
+134:                     "original_failed_successful_steps": "UNKNOWN_NOT_PERSISTED",
+135:                 })
+136:                 print(json.dumps({"event": "diagnostic_overflow_capture", "step": row["step"],
+137:                                   "scale_before": row["amp_scale_before"], "scale_after": scale_after}), flush=True)
+138:         return trace
+139: 
+140:     sys.settrace(trace)
+141:     runner.train_source(model, loader, cfg, fold["source_record_indices"], records, preflight=False)
+142:     raise AssertionError("Diagnostic must stop before the second epoch")
+143: 
+144: if __name__ == "__main__":
+145:     parser = argparse.ArgumentParser()
+146:     parser.add_argument("--config", type=Path, required=True)
+147:     parser.add_argument("--output-dir", type=Path, required=True)
+148:     parser.add_argument("--m0-receipt", type=Path, required=True)
+149:     run(parser.parse_args())
+
+FILE 144: tools/probe_rgbnt100_signal_amp_batch.py
+1: #!/usr/bin/env python3
+2: """Zero-update precision/anomaly checks of the saved real RGBNT100 failed batch."""
+3: from pathlib import Path
+4: import argparse
+5: import datetime
+6: import json
+7: import subprocess
+8: import sys
+9: import time
+10: 
+11: ROOT = Path(__file__).resolve().parents[1]
+12: sys.path.insert(0, str(ROOT))
+13: 
+14: def run(args):
+15:     import torch
+16:     from tools import train_rgbnt100_signal_oof as runner
+17:     from tools.run_signal_preserving_v5 import _set_seed
+18: 
+19:     assert not args.output_dir.exists()
+20:     args.output_dir.mkdir(parents=True)
+21:     plan = json.loads(args.plan.read_text())
+22:     assert runner.sha256(__file__) == plan["probe_sha256"]
+23:     assert runner.sha256(args.fixture) == plan["fixture_sha256"]
+24:     config_path = ROOT / plan["config"]
+25:     assert runner.sha256(config_path) == plan["config_sha256"]
+26:     config = json.loads(config_path.read_text())
+27:     cfg, binding = runner.configure(config)
+28:     from tools.build_v12_complete_path_oof_targets import _signal_training_loss
+29:     for name, digest in plan["extra_signal_files"].items():
+30:         assert runner.sha256(Path(config["signal_source"]) / name) == digest, name
+31:     from layers.make_loss import make_loss
+32:     from utils.volume import volume_computation3
+33: 
+34:     protocol = json.loads((ROOT / config["protocol"]).read_text())
+35:     fold = protocol["folds"][0]
+36:     fixture = torch.load(args.fixture, map_location="cpu", weights_only=True)
+37:     assert fixture["fold"] == 0 and fixture["step"] == 34 and fixture["amp_scale"] == 256.0
+38:     assert fixture["source_ids"] == fold["source_ids"]
+39:     assert set(fixture["source_record_indices"]) <= set(fold["source_record_indices"])
+40:     _set_seed(42)
+41:     model = runner.new_model(cfg, fold)
+42:     model.load_state_dict(fixture["model_state_dict"], strict=True)
+43:     model.train()
+44:     loss_fn, _ = make_loss(cfg, num_classes=model.num_classes)
+45:     images = {name: value.cuda() for name, value in fixture["images"].items()}
+46:     labels, cameras, scenes = (fixture[name].cuda() for name in ("labels", "cameras", "scenes"))
+47:     assert labels.numel() == 64
+48:     model.zero_grad(set_to_none=True)
+49:     volume_calls = []
+50:     components = []
+51: 
+52:     def trace(frame, event, arg):
+53:         if frame.f_code is not volume_computation3.__code__:
+54:             return None
+55:         if event == "return":
+56:             values = frame.f_locals
+57:             volume_calls.append({name: values[name].detach().cpu().clone()
+58:                                  for name in ("language", "video", "audio", "G", "gram_det", "res")})
+59:         return trace
+60: 
+61:     def recorded_loss(**kwargs):
+62:         value = loss_fn(**kwargs)
+63:         components.append(float(value.detach()))
+64:         return value
+65: 
+66:     started = time.perf_counter()
+67:     torch.cuda.reset_peak_memory_stats()
+68:     torch.set_rng_state(fixture["cpu_rng_state"])
+69:     torch.cuda.set_rng_state(fixture["cuda_rng_state"])
+70:     with torch.autograd.set_detect_anomaly(args.mode == "fp16_anomaly"):
+71:         sys.settrace(trace)
+72:         with torch.autocast("cuda", dtype=torch.float16, enabled=args.mode != "fp32"):
+73:             output = model(images, label=labels, cam_label=cameras, view_label=scenes,
+74:                            training=True, sge=cfg.MODEL.stageName)
+75:             loss = _signal_training_loss(output, loss_fn=recorded_loss, labels=labels, cameras=cameras,
+76:                                         stage=cfg.MODEL.stageName, gram_weight=cfg.MODEL.Gram_Loss_weight,
+77:                                         patch_weight=cfg.MODEL.PAT_Loss_weight)
+78:         sys.settrace(None)
+79:         assert torch.isfinite(loss).item() and len(volume_calls) == 2
+80:         arrays_path = args.output_dir / "volume_inputs.pt"
+81:         torch.save(volume_calls, arrays_path)
+82:         volume_stats = []
+83:         for call in volume_calls:
+84:             determinant = call["gram_det"]
+85:             assert torch.isfinite(determinant).all().item()
+86:             volume_stats.append({
+87:                 "G_dtype": str(call["G"].dtype), "input_dtype": str(call["language"].dtype),
+88:                 "determinant_dtype": str(determinant.dtype), "shape": list(determinant.shape),
+89:                 "exact_zero_count": int((determinant == 0).sum()),
+90:                 "negative_count": int((determinant < 0).sum()),
+91:                 "min_absolute_determinant": float(determinant.abs().min()),
+92:                 "max_absolute_determinant": float(determinant.abs().max()),
+93:                 "zero_coordinates": torch.nonzero(determinant == 0).tolist(),
+94:             })
+95:         forward = {
+96:             "mode": args.mode, "created_at": datetime.datetime.now().astimezone().isoformat(),
+97:             "project_commit": subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=ROOT, text=True).strip(),
+98:             "probe_sha256": runner.sha256(__file__), "fixture_sha256": plan["fixture_sha256"],
+99:             "torch_version": str(torch.__version__),
+100:             "plan_sha256": runner.sha256(args.plan), "loss": float(loss.detach()),
+101:             "id_triplet_head_losses": components, "gram_loss": float(output[-2].detach()),
+102:             "patch_loss": float(output[-1].detach()), "scale": 256.0,
+103:             "capture_loss_exact": float(loss.detach()) == plan["capture_loss"],
+104:             "capture_loss_difference": float(loss.detach()) - plan["capture_loss"],
+105:             "volume_calls": volume_stats, "volume_inputs_sha256": runner.sha256(arrays_path),
+106:             "source_record_forwards": 64, "optimizer_steps": 0,
+107:             "heldout_image_forwards": 0, "image_decodes": 0, **binding,
+108:         }
+109:         runner.write_json(args.output_dir / "forward.json", forward)
+110:         (loss * 256.0).backward()
+111:     gradient_rows = []
+112:     for name, parameter in model.named_parameters():
+113:         if parameter.grad is not None:
+114:             parameter.grad.div_(256.0)
+115:             gradient = parameter.grad.detach()
+116:             gradient_rows.append({
+117:                 "name": name, "elements": gradient.numel(),
+118:                 "nan_count": int(torch.isnan(gradient).sum()),
+119:                 "positive_inf_count": int(torch.isposinf(gradient).sum()),
+120:                 "negative_inf_count": int(torch.isneginf(gradient).sum()),
+121:             })
+122:     bad = [row["name"] for row in gradient_rows
+123:            if row["nan_count"] + row["positive_inf_count"] + row["negative_inf_count"]]
+124:     runner.write_json(args.output_dir / "result.json", {
+125:         **forward, "status": "NONFINITE_GRADIENT_REPRODUCED" if bad else "ALL_GRADIENTS_FINITE",
+126:         "all_gradient_counts": gradient_rows, "nonfinite_gradient_names": bad,
+127:         "gradient_tensors": len(gradient_rows), "backward_passes": 1,
+128:         "peak_allocated_mib": torch.cuda.max_memory_allocated() / 1024**2,
+129:         "elapsed_seconds": time.perf_counter() - started,
+130:     })
+131:     print(json.dumps({"mode": args.mode, "loss": float(loss.detach()),
+132:                       "nonfinite_gradient_tensors": len(bad), "optimizer_steps": 0}), flush=True)
+133: 
+134: if __name__ == "__main__":
+135:     parser = argparse.ArgumentParser()
+136:     parser.add_argument("--plan", type=Path, required=True)
+137:     parser.add_argument("--fixture", type=Path, required=True)
+138:     parser.add_argument("--output-dir", type=Path, required=True)
+139:     parser.add_argument("--mode", choices=["fp16", "fp16_anomaly", "fp32"], required=True)
+140:     run(parser.parse_args())
+
+FILE 150: tools/verify_rgbnt100_signal_gram_fp32.py
+1: #!/usr/bin/env python3
+2: """Registered real-input operator regression and full-batch check of local FP32 Gram."""
+3: from pathlib import Path
+4: import argparse
+5: import datetime
+6: import json
+7: import subprocess
+8: import sys
+9: import time
+10: 
+11: ROOT = Path(__file__).resolve().parents[1]
+12: sys.path.insert(0, str(ROOT))
+13: 
+14: def run(args):
+15:     import torch
+16:     import torch.nn.functional as F
+17:     from tools import train_rgbnt100_signal_oof as runner
+18:     from tools.run_signal_preserving_v5 import _set_seed
+19: 
+20:     assert not args.output_dir.exists()
+21:     args.output_dir.mkdir(parents=True)
+22:     plan = json.loads(args.plan.read_text())
+23:     for name, digest in plan["project_files"].items():
+24:         assert runner.sha256(ROOT / name) == digest, name
+25:     assert runner.sha256(args.fixture) == plan["fixture_sha256"]
+26:     assert runner.sha256(args.volume_inputs) == plan["volume_inputs_sha256"]
+27:     config = json.loads((ROOT / plan["config"]).read_text())
+28:     cfg, binding = runner.configure(config)
+29:     for name, digest in plan["extra_signal_files"].items():
+30:         assert runner.sha256(Path(config["signal_source"]) / name) == digest, name
+31:     from utils.volume import volume_computation3
+32:     from modeling.AddModule import useB
+33:     from layers.make_loss import make_loss
+34:     from tools.build_v12_complete_path_oof_targets import _signal_training_loss
+35:     from tools.signal_gram_fp32 import signal_gram_volume_fp32
+36: 
+37:     fixture = torch.load(args.fixture, map_location="cpu", weights_only=True)
+38:     calls = torch.load(args.volume_inputs, map_location="cpu", weights_only=True)
+39:     assert len(calls) == 2
+40:     for key in calls[0]:
+41:         assert torch.equal(calls[0][key], calls[1][key]), key
+42:     assert fixture["fold"] == 0 and fixture["step"] == 34 and fixture["amp_scale"] == 256.0
+43:     started = time.perf_counter()
+44:     context = {
+45:         "created_at": datetime.datetime.now().astimezone().isoformat(), **binding,
+46:         "project_commit": subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=ROOT, text=True).strip(),
+47:         "plan_sha256": runner.sha256(args.plan), "fixture_sha256": plan["fixture_sha256"],
+48:         "volume_inputs_sha256": plan["volume_inputs_sha256"],
+49:         "optimizer_steps": 0, "image_decodes": 0, "heldout_image_forwards": 0,
+50:         "torch_version": str(torch.__version__),
+51:     }
+52:     operator_rows = []
+53:     operator_arrays = {}
+54:     recorded_calls = []
+55: 
+56:     def trace(frame, event, arg):
+57:         if frame.f_code is not volume_computation3.__code__:
+58:             return None
+59:         if event == "return":
+60:             state = frame.f_locals
+61:             recorded_calls.append({key: state[key].detach().cpu().clone()
+62:                                    for key in ("G", "gram_det", "res")})
+63:         return trace
+64: 
+65:     for mode, function in [("original_amp", volume_computation3),
+66:                            ("local_gram_fp32", signal_gram_volume_fp32)]:
+67:         inputs = [calls[0][name].cuda().clone().requires_grad_(True)
+68:                   for name in ("language", "video", "audio")]
+69:         temperature = fixture["model_state_dict"]["AlignM.contra_temp"].cuda().clone().requires_grad_(True)
+70:         targets = torch.arange(64, device="cuda")
+71:         recorded_calls.clear()
+72:         sys.settrace(trace)
+73:         with torch.autocast("cuda", dtype=torch.float16):
+74:             volume = function(*inputs) / temperature
+75:             volume_t = function(*inputs).T / temperature
+76:             loss = (F.cross_entropy(-volume, targets, label_smoothing=.1) +
+77:                     F.cross_entropy(-volume_t, targets, label_smoothing=.1)) / 2
+78:         sys.settrace(None)
+79:         assert len(recorded_calls) == 2 and torch.isfinite(loss).item()
+80:         (loss * .1 * 256).backward()
+81:         gradient_rows = [
+82:             {"input": name, "elements": value.numel(),
+83:              "nan_count": int(torch.isnan(value.grad).sum()),
+84:              "inf_count": int(torch.isinf(value.grad).sum())}
+85:             for name, value in zip(("language", "video", "audio", "temperature"), [*inputs, temperature])]
+86:         stats = [{
+87:             "G_dtype": str(call["G"].dtype), "zero_determinants": int((call["gram_det"] == 0).sum()),
+88:             "negative_determinants": int((call["gram_det"] < 0).sum()),
+89:             "min_absolute_determinant": float(call["gram_det"].abs().min()),
+90:             "zero_coordinates": torch.nonzero(call["gram_det"] == 0).tolist(),
+91:         } for call in recorded_calls]
+92:         operator_rows.append({"mode": mode, "gram_loss": float(loss.detach()),
+93:                               "gradient_counts": gradient_rows, "volume_calls": stats})
+94:         operator_arrays[mode] = [{**call} for call in recorded_calls]
+95:         runner.write_json(args.output_dir / "operator_results.json", {**context, "operators": operator_rows})
+96:         del inputs, temperature, loss, volume, volume_t
+97: 
+98:     arrays_path = args.output_dir / "operator_arrays.pt"
+99:     torch.save(operator_arrays, arrays_path)
+100:     assert operator_rows[0]["gram_loss"] == plan["original_gram_loss"]
+101:     assert any(row["nan_count"] + row["inf_count"] for row in operator_rows[0]["gradient_counts"])
+102:     assert all(row["nan_count"] + row["inf_count"] == 0 for row in operator_rows[1]["gradient_counts"])
+103:     assert all(row["zero_determinants"] == 0 for row in operator_rows[1]["volume_calls"])
+104: 
+105:     protocol = json.loads((ROOT / config["protocol"]).read_text())
+106:     fold = protocol["folds"][0]
+107:     _set_seed(42)
+108:     model = runner.new_model(cfg, fold)
+109:     model.load_state_dict(fixture["model_state_dict"], strict=True)
+110:     images = {name: value.cuda() for name, value in fixture["images"].items()}
+111:     labels, cameras, scenes = (fixture[name].cuda() for name in ("labels", "cameras", "scenes"))
+112:     assert labels.numel() == 64
+113:     model.eval()
+114:     with torch.no_grad():
+115:         before = model(images, cam_label=cameras, view_label=scenes, training=False,
+116:                        sge=cfg.MODEL.stageName).float().cpu()
+117:     assert useB.volume_computation3 is volume_computation3
+118:     useB.volume_computation3 = signal_gram_volume_fp32
+119:     with torch.no_grad():
+120:         after = model(images, cam_label=cameras, view_label=scenes, training=False,
+121:                       sge=cfg.MODEL.stageName).float().cpu()
+122:     assert before.shape == after.shape == (64, 3072) and torch.equal(before, after)
+123:     model.train()
+124:     model.zero_grad(set_to_none=True)
+125:     loss_fn, _ = make_loss(cfg, num_classes=model.num_classes)
+126:     components = []
+127: 
+128:     def recorded_loss(**kwargs):
+129:         value = loss_fn(**kwargs)
+130:         components.append(float(value.detach()))
+131:         return value
+132: 
+133:     torch.cuda.reset_peak_memory_stats()
+134:     torch.set_rng_state(fixture["cpu_rng_state"])
+135:     torch.cuda.set_rng_state(fixture["cuda_rng_state"])
+136:     with torch.autocast("cuda", dtype=torch.float16):
+137:         output = model(images, label=labels, cam_label=cameras, view_label=scenes,
+138:                        training=True, sge=cfg.MODEL.stageName)
+139:         loss = _signal_training_loss(output, loss_fn=recorded_loss, labels=labels, cameras=cameras,
+140:                                     stage=cfg.MODEL.stageName, gram_weight=cfg.MODEL.Gram_Loss_weight,
+141:                                     patch_weight=cfg.MODEL.PAT_Loss_weight)
+142:     forward = {"loss": float(loss.detach()), "id_triplet_head_losses": components,
+143:                "gram_loss": float(output[-2].detach()), "patch_loss": float(output[-1].detach()),
+144:                "scale": 256.0, "retrieval_feature_max_difference": float((before-after).abs().max()),
+145:                "retrieval_feature_bitwise_equal": torch.equal(before, after),
+146:                "source_record_forwards": 192, "operator_model_forwards": 0}
+147:     runner.write_json(args.output_dir / "full_batch_forward.json", {**context, **forward})
+148:     assert torch.isfinite(loss).item()
+149:     assert components == plan["original_id_triplet_head_losses"]
+150:     assert forward["patch_loss"] == plan["original_patch_loss"]
+151:     (loss * 256.0).backward()
+152:     gradients = []
+153:     for name, parameter in model.named_parameters():
+154:         if parameter.grad is not None:
+155:             parameter.grad.div_(256.0)
+156:             gradients.append({"name": name, "elements": parameter.numel(),
+157:                               "nan_count": int(torch.isnan(parameter.grad).sum()),
+158:                               "inf_count": int(torch.isinf(parameter.grad).sum())})
+159:     runner.write_json(args.output_dir / "full_batch_gradients.json", gradients)
+160:     assert len(gradients) == 195
+161:     assert all(row["nan_count"] + row["inf_count"] == 0 for row in gradients)
+162:     useB.volume_computation3 = volume_computation3
+163:     runner.write_json(args.output_dir / "summary.json", {
+164:         **context, "status": "PASS_LOCAL_FP32_GRAM_REAL_OPERATOR_AND_BATCH_REGRESSION",
+165:         "operators": operator_rows, "operator_arrays_sha256": runner.sha256(arrays_path),
+166:         "full_batch": forward, "gradient_tensors": 195, "all_gradients_finite": True,
+167:         "operator_backward_passes": 2, "full_model_backward_passes": 1,
+168:         "elapsed_seconds": time.perf_counter() - started,
+169:         "peak_allocated_mib": torch.cuda.max_memory_allocated() / 1024**2,
+170:         "limits": "one saved real failed batch, numerical repair only, no full epoch or retrieval-performance claim",
+171:     })
+172:     print(json.dumps({"event": "local_gram_fp32_regression_pass", "source_record_forwards": 192,
+173:                       "optimizer_steps": 0, "all195_gradients_finite": True}), flush=True)
+174: 
+175: if __name__ == "__main__":
+176:     parser = argparse.ArgumentParser()
+177:     parser.add_argument("--plan", type=Path, required=True)
+178:     parser.add_argument("--fixture", type=Path, required=True)
+179:     parser.add_argument("--volume-inputs", type=Path, required=True)
+180:     parser.add_argument("--output-dir", type=Path, required=True)
+181:     run(parser.parse_args())
+
+FILE 151: tools/verify_rgbnt100_signal_gram_stable.py
+1: #!/usr/bin/env python3
+2: """Registered real-input operator regression and full-batch check of FP32 Gram with a finite zero-point floor."""
+3: from pathlib import Path
+4: import argparse
+5: import datetime
+6: import json
+7: import subprocess
+8: import sys
+9: import time
+10: 
+11: ROOT = Path(__file__).resolve().parents[1]
+12: sys.path.insert(0, str(ROOT))
+13: 
+14: def run(args):
+15:     import torch
+16:     import torch.nn.functional as F
+17:     from tools import train_rgbnt100_signal_oof as runner
+18:     from tools.run_signal_preserving_v5 import _set_seed
+19: 
+20:     assert not args.output_dir.exists()
+21:     args.output_dir.mkdir(parents=True)
+22:     plan = json.loads(args.plan.read_text())
+23:     for name, digest in plan["project_files"].items():
+24:         assert runner.sha256(ROOT / name) == digest, name
+25:     assert runner.sha256(args.fixture) == plan["fixture_sha256"]
+26:     assert runner.sha256(args.volume_inputs) == plan["volume_inputs_sha256"]
+27:     config = json.loads((ROOT / plan["config"]).read_text())
+28:     cfg, binding = runner.configure(config)
+29:     for name, digest in plan["extra_signal_files"].items():
+30:         assert runner.sha256(Path(config["signal_source"]) / name) == digest, name
+31:     from utils.volume import volume_computation3
+32:     from modeling.AddModule import useB
+33:     from layers.make_loss import make_loss
+34:     from tools.build_v12_complete_path_oof_targets import _signal_training_loss
+35:     from tools.signal_gram_stable import signal_gram_volume_stable
+36: 
+37:     fixture = torch.load(args.fixture, map_location="cpu", weights_only=True)
+38:     calls = torch.load(args.volume_inputs, map_location="cpu", weights_only=True)
+39:     assert len(calls) == 2
+40:     for key in calls[0]:
+41:         assert torch.equal(calls[0][key], calls[1][key]), key
+42:     assert fixture["fold"] == 0 and fixture["step"] == 34 and fixture["amp_scale"] == 256.0
+43:     started = time.perf_counter()
+44:     context = {
+45:         "created_at": datetime.datetime.now().astimezone().isoformat(), **binding,
+46:         "project_commit": subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=ROOT, text=True).strip(),
+47:         "plan_sha256": runner.sha256(args.plan), "fixture_sha256": plan["fixture_sha256"],
+48:         "volume_inputs_sha256": plan["volume_inputs_sha256"],
+49:         "optimizer_steps": 0, "image_decodes": 0, "heldout_image_forwards": 0,
+50:         "torch_version": str(torch.__version__),
+51:     }
+52:     operator_rows = []
+53:     operator_arrays = {}
+54:     recorded_calls = []
+55: 
+56:     def trace(frame, event, arg):
+57:         if frame.f_code not in (volume_computation3.__code__, signal_gram_volume_stable.__code__):
+58:             return None
+59:         if event == "return":
+60:             state = frame.f_locals
+61:             recorded_calls.append({key: state[key].detach().cpu().clone()
+62:                                    for key in ("G", "gram_det", "res")})
+63:         return trace
+64: 
+65:     for mode, function in [("original_amp", volume_computation3),
+66:                            ("stable_gram_fp32_floor", signal_gram_volume_stable)]:
+67:         inputs = [calls[0][name].cuda().clone().requires_grad_(True)
+68:                   for name in ("language", "video", "audio")]
+69:         temperature = fixture["model_state_dict"]["AlignM.contra_temp"].cuda().clone().requires_grad_(True)
+70:         targets = torch.arange(64, device="cuda")
+71:         recorded_calls.clear()
+72:         sys.settrace(trace)
+73:         with torch.autocast("cuda", dtype=torch.float16):
+74:             volume = function(*inputs) / temperature
+75:             volume_t = function(*inputs).T / temperature
+76:             loss = (F.cross_entropy(-volume, targets, label_smoothing=.1) +
+77:                     F.cross_entropy(-volume_t, targets, label_smoothing=.1)) / 2
+78:         sys.settrace(None)
+79:         assert len(recorded_calls) == 2 and torch.isfinite(loss).item()
+80:         (loss * .1 * 256).backward()
+81:         gradient_rows = [
+82:             {"input": name, "elements": value.numel(),
+83:              "nan_count": int(torch.isnan(value.grad).sum()),
+84:              "inf_count": int(torch.isinf(value.grad).sum())}
+85:             for name, value in zip(("language", "video", "audio", "temperature"), [*inputs, temperature])]
+86:         stats = [{
+87:             "G_dtype": str(call["G"].dtype), "zero_determinants": int((call["gram_det"] == 0).sum()),
+88:             "negative_determinants": int((call["gram_det"] < 0).sum()),
+89:             "min_absolute_determinant": float(call["gram_det"].abs().min()),
+90:             "zero_coordinates": torch.nonzero(call["gram_det"] == 0).tolist(),
+91:             "floor_eligible_count": int((call["gram_det"].abs() < 1e-12).sum()),
+92:             "minimum_volume": float(call["res"].min()),
+93:         } for call in recorded_calls]
+94:         operator_rows.append({"mode": mode, "gram_loss": float(loss.detach()),
+95:                               "gradient_counts": gradient_rows, "volume_calls": stats})
+96:         operator_arrays[mode] = [{**call} for call in recorded_calls]
+97:         runner.write_json(args.output_dir / "operator_results.json", {**context, "operators": operator_rows})
+98:         del inputs, temperature, loss, volume, volume_t
+99: 
+100:     arrays_path = args.output_dir / "operator_arrays.pt"
+101:     torch.save(operator_arrays, arrays_path)
+102:     assert operator_rows[0]["gram_loss"] == plan["original_gram_loss"]
+103:     assert any(row["nan_count"] + row["inf_count"] for row in operator_rows[0]["gradient_counts"])
+104:     assert all(row["nan_count"] + row["inf_count"] == 0 for row in operator_rows[1]["gradient_counts"])
+105:     assert all(row["zero_determinants"] == 1 for row in operator_rows[1]["volume_calls"])
+106:     assert all(row["floor_eligible_count"] == 1 for row in operator_rows[1]["volume_calls"])
+107:     assert all(row["minimum_volume"] > 0 for row in operator_rows[1]["volume_calls"])
+108: 
+109:     protocol = json.loads((ROOT / config["protocol"]).read_text())
+110:     fold = protocol["folds"][0]
+111:     _set_seed(42)
+112:     model = runner.new_model(cfg, fold)
+113:     model.load_state_dict(fixture["model_state_dict"], strict=True)
+114:     images = {name: value.cuda() for name, value in fixture["images"].items()}
+115:     labels, cameras, scenes = (fixture[name].cuda() for name in ("labels", "cameras", "scenes"))
+116:     assert labels.numel() == 64
+117:     model.eval()
+118:     with torch.no_grad():
+119:         before = model(images, cam_label=cameras, view_label=scenes, training=False,
+120:                        sge=cfg.MODEL.stageName).float().cpu()
+121:     assert useB.volume_computation3 is volume_computation3
+122:     useB.volume_computation3 = signal_gram_volume_stable
+123:     with torch.no_grad():
+124:         after = model(images, cam_label=cameras, view_label=scenes, training=False,
+125:                       sge=cfg.MODEL.stageName).float().cpu()
+126:     assert before.shape == after.shape == (64, 3072) and torch.equal(before, after)
+127:     model.train()
+128:     model.zero_grad(set_to_none=True)
+129:     loss_fn, _ = make_loss(cfg, num_classes=model.num_classes)
+130:     components = []
+131: 
+132:     def recorded_loss(**kwargs):
+133:         value = loss_fn(**kwargs)
+134:         components.append(float(value.detach()))
+135:         return value
+136: 
+137:     torch.cuda.reset_peak_memory_stats()
+138:     torch.set_rng_state(fixture["cpu_rng_state"])
+139:     torch.cuda.set_rng_state(fixture["cuda_rng_state"])
+140:     with torch.autocast("cuda", dtype=torch.float16):
+141:         output = model(images, label=labels, cam_label=cameras, view_label=scenes,
+142:                        training=True, sge=cfg.MODEL.stageName)
+143:         loss = _signal_training_loss(output, loss_fn=recorded_loss, labels=labels, cameras=cameras,
+144:                                     stage=cfg.MODEL.stageName, gram_weight=cfg.MODEL.Gram_Loss_weight,
+145:                                     patch_weight=cfg.MODEL.PAT_Loss_weight)
+146:     forward = {"loss": float(loss.detach()), "id_triplet_head_losses": components,
+147:                "gram_loss": float(output[-2].detach()), "patch_loss": float(output[-1].detach()),
+148:                "scale": 256.0, "retrieval_feature_max_difference": float((before-after).abs().max()),
+149:                "retrieval_feature_bitwise_equal": torch.equal(before, after),
+150:                "source_record_forwards": 192, "operator_model_forwards": 0}
+151:     runner.write_json(args.output_dir / "full_batch_forward.json", {**context, **forward})
+152:     assert torch.isfinite(loss).item()
+153:     assert components == plan["original_id_triplet_head_losses"]
+154:     assert forward["patch_loss"] == plan["original_patch_loss"]
+155:     (loss * 256.0).backward()
+156:     gradients = []
+157:     for name, parameter in model.named_parameters():
+158:         if parameter.grad is not None:
+159:             parameter.grad.div_(256.0)
+160:             gradients.append({"name": name, "elements": parameter.numel(),
+161:                               "nan_count": int(torch.isnan(parameter.grad).sum()),
+162:                               "inf_count": int(torch.isinf(parameter.grad).sum())})
+163:     runner.write_json(args.output_dir / "full_batch_gradients.json", gradients)
+164:     assert len(gradients) == 195
+165:     assert all(row["nan_count"] + row["inf_count"] == 0 for row in gradients)
+166:     useB.volume_computation3 = volume_computation3
+167:     runner.write_json(args.output_dir / "summary.json", {
+168:         **context, "status": "PASS_STABLE_GRAM_REAL_OPERATOR_AND_BATCH_REGRESSION",
+169:         "operators": operator_rows, "operator_arrays_sha256": runner.sha256(arrays_path),
+170:         "full_batch": forward, "gradient_tensors": 195, "all_gradients_finite": True,
+171:         "operator_backward_passes": 2, "full_model_backward_passes": 1,
+172:         "elapsed_seconds": time.perf_counter() - started,
+173:         "peak_allocated_mib": torch.cuda.max_memory_allocated() / 1024**2,
+174:         "limits": "one saved real failed batch, numerical repair only, no full epoch or retrieval-performance claim",
+175:     })
+176:     print(json.dumps({"event": "stable_gram_regression_pass", "source_record_forwards": 192,
+177:                       "optimizer_steps": 0, "all195_gradients_finite": True}), flush=True)
+178: 
+179: if __name__ == "__main__":
+180:     parser = argparse.ArgumentParser()
+181:     parser.add_argument("--plan", type=Path, required=True)
+182:     parser.add_argument("--fixture", type=Path, required=True)
+183:     parser.add_argument("--volume-inputs", type=Path, required=True)
+184:     parser.add_argument("--output-dir", type=Path, required=True)
+185:     run(parser.parse_args())

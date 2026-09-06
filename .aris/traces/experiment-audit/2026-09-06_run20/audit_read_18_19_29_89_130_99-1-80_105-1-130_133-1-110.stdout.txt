@@ -1,0 +1,392 @@
+FILE 18: configs/RGBNT100/Signal-source-oof-v1-r2.json
+1: {
+2:   "schema": "rgbnt100-signal-source-oof-v1-r2",
+3:   "seed": 42,
+4:   "epochs": 30,
+5:   "scope": "New dataset Signal baseline only; not a TriFusion method or failed-study rerun",
+6:   "dataset_root": "/root/autodl-tmp/trifusion-v2/data/RGBNT100",
+7:   "protocol": "protocols/rgbnt100_train_oof_v1.json",
+8:   "protocol_sha256": "42bd612ecc8720db7f6684214e1f60d1cb4bab6b2fa8db3df343a9d2c52e4abf",
+9:   "signal_source": "/root/autodl-tmp/trifusion-v2/comparators/Signal-cd1b0a6",
+10:   "signal_commit": "cd1b0a672d1fe642e7608731cb4899a19dda7d51",
+11:   "signal_diff_sha256": "b889caca9c4a92689b13eb7e20bd3224067f3e5ed2a3db6825201870ca422741",
+12:   "signal_source_file_sha256": {
+13:     "config/defaults.py": "40257d349153e56e345983c99b1638d7c3d77966dfd2f5496fe03c86dc8dbd57",
+14:     "data/datasets/bases.py": "48f050a7924cebd1e51f8831ba05df78dbccc7049afb0bcf83351d9d1ee23814",
+15:     "data/datasets/make_dataloader.py": "54c47d798a20955bde224d9c78b42149c3c2ef008b02659141829a553194434f",
+16:     "engine/processor.py": "aae7afbeed44a9136003f622b5cdfbf17728b8aab236b129f03285f829eb8377",
+17:     "modeling/make_model.py": "1a88a91d2e5055f5d338996231b16c0e13b2fa7013c74131ca663f16c2655963",
+18:     "train.py": "243a2f6de57f6113c6f0e35390670ee937bbcea84ab3335eea2b6257b3bcbd8f",
+19:     "utils/metrics.py": "91604acb7d978462c16904910a645d7d1697c15bf150da529099004c8b5eecb2",
+20:     "modeling/meta_arch.py": "8b709d5ab4b14ba150a96bbb5e8cc7e6dbbb71dd8bd30cafd7a5cb110ee5a757",
+21:     "solver/make_optimizer.py": "ada1023a79fcaaed092bce0849a61db9d0253cf8974c494bfb3082d0fd35fee1",
+22:     "solver/scheduler_factory.py": "c5e20bdffec4b5360faa04f823639c8e5fd8672914813fb96148927c9ee19abc",
+23:     "data/datasets/sampler.py": "b77902214633a2b06a7c0a80924a737fdb5122984a857f3c6e120a8ad8cce65a",
+24:     "layers/make_loss.py": "7eb7ab953c2bbc52d0c298ef971d0c3ff7000e5e50756fbb5a5fd63ac4c109aa",
+25:     "modeling/make_model_clipreid.py": "5494c2b7cb9acfb2c727a2cde201ba587184b344667e077eacfe0c3a0c578651",
+26:     "modeling/AddModule/useA.py": "1f8fef4dcadb89f5097f83b41a699d9f801a23c88ca3eea73b3ad973a56952a9",
+27:     "configs/RGBNT100/Signal.yml": "02641ce2941dcd50df77d379aab54650cae4a2a6b15ba1bcd43deba970b6900f",
+28:     "data/datasets/RGBNT100.py": "fe38cdb9d0905b4637f215b804e933a226aefcd9a865e9f73e564a84ef2393ac",
+29:     "solver/cosine_lr.py": "d3db6e30c1666c5af71200086f33c644d476310b6c5dc7ed98097cc989bdad4d",
+30:     "solver/scheduler.py": "b7517bb0f79a3334e2a3ac5ecb14bdcf69cb28c62dd3c734c4e3d212d0955228",
+31:     "modeling/AddModule/useB.py": "39a65f82d59048745663d891a1c4c012eb1cc404ef8c8084f942702aeef46fec",
+32:     "utils/volume.py": "a154f65e5f4483446748e216b7b03672617efb02004e14e9940446c1013b8ccb",
+33:     "layers/triplet_loss.py": "f502c44bec642bbf72ce6d0f58c9f9a0084beef9cbb451c2d2786bb13f94960a"
+34:   },
+35:   "clip_weight": "/root/autodl-tmp/trifusion-v2/pretrained/ViT-B-16.pt",
+36:   "clip_weight_sha256": "5806e77cd80f8b59890b7e101eabd078d9fb84e6937f9e85e4ecb61988df416f",
+37:   "train_batch_size": 64,
+38:   "instances_per_identity": 8,
+39:   "input_height_width": [
+40:     128,
+41:     256
+42:   ],
+43:   "grid_height_width": [
+44:     8,
+45:     16
+46:   ],
+47:   "preflight_folds": [
+48:     0,
+49:     1,
+50:     2
+51:   ],
+52:   "optimizer": "upstream Adam; CLIP non-adapter base fixed5e-6; remaining0.0007/bias rules; no MSVR classifier multiplier",
+53:   "scheduler": "upstream create_scheduler/CosineLRScheduler;30epochs/warmup5/min7e-7;seed42 noise epochs1-29;step(epoch) before each epoch",
+54:   "stage": "together_CLS_Patch",
+55:   "amp_init_scale": 256.0,
+56:   "num_workers": 4,
+57:   "training_geometry": "author montage crops then existing shared three-modal flip/crop, independent erasing at128x256",
+58:   "sampler": "upstream RandomIdentitySampler; actual sampled global record indices saved per step",
+59:   "checkpoint_selection": "fixed_epoch30; no heldout evaluation until final checkpoint",
+60:   "retrieval": "3072D direct+SIM; unit normalization; squared Euclidean; same-ID AND same-camera removed; complete8675queries/gallery acrossfolds",
+61:   "official_test_access": false,
+62:   "rgbnt201_dev_access": false,
+63:   "new_expert_training": false,
+64:   "project_source_file_sha256": {
+65:     "tools/run_signal_baseline_dev.py": "083967f2a38267415b2992da98c2ad9429ebb793f387b45daac1dbb4eb16f365",
+66:     "tools/run_signal_preserving_v5.py": "e162184f68778b4991db0f97f26c5fda273b2ad2f7c8db2bbb2d53775eb717e5",
+67:     "tools/build_v12_complete_path_oof_targets.py": "fc13354b1065c46677122ee9cf63816087facca4e0e98ec5e6e2fb0dece141e4",
+68:     "modeling/trifusion/aligned_data.py": "3ea362d17660483b554cb599442b6377ace020fa114969b9bdd58906fbceedd5",
+69:     "tools/train_rgbnt100_signal_oof.py": "4677e7345f282646e6654000d9d526d8207f698fc58a1f90b0c44bda6dd5fc25",
+70:     "tools/build_rgbnt100_signal_oof_protocol.py": "4b288cef674dd7f8425a96f3c4be899b316f743397b53cb922270b779b34d469",
+71:     "tools/verify_rgbnt100_signal_protocol.py": "4555014620f3adadf1fcdfe99700d843e2db3229ce0b8c5dc3bb2610aef1ee6f",
+72:     "refine-logs/rgbnt100_signal_v1/EXPERIMENT_PLAN.md": "2184ef9d597737148777b04bafe2caaf0bc8c5d1c122a6a68b0986449dfbb7df",
+73:     "tools/signal_gram_stable.py": "fb23d9475b4629cbfac6962d89358668f2390fbf9e7a44fe12c2c6a885b43e60",
+74:     "refine-logs/rgbnt100_signal_v1/ENGINEERING_R2_PLAN.md": "9746dafcad90ee3b99872aa46d07ee874a56784e5fa8e42922100c59c0bfd888"
+75:   },
+76:   "engineering_revision": 2,
+77:   "upstream_no_gradient_token_selection_frozen": [
+78:     "SIM.token_selection.W_q.weight",
+79:     "SIM.token_selection.W_q.bias",
+80:     "SIM.token_selection.W_k.weight",
+81:     "SIM.token_selection.W_k.bias",
+82:     "SIM.token_selection.W_v.weight",
+83:     "SIM.token_selection.W_v.bias"
+84:   ],
+85:   "preflight_complete_source_epochs": 1,
+86:   "gram_numerics": "FP32 Gram, sqrt(abs(det).clamp_min(1e-12))"
+87: }
+
+FILE 19: configs/RGBNT100/Signal-source-oof-v1.json
+1: {
+2:   "schema": "rgbnt100-signal-source-oof-v1",
+3:   "seed": 42,
+4:   "epochs": 30,
+5:   "scope": "New dataset Signal baseline only; not a TriFusion method or failed-study rerun",
+6:   "dataset_root": "/root/autodl-tmp/trifusion-v2/data/RGBNT100",
+7:   "protocol": "protocols/rgbnt100_train_oof_v1.json",
+8:   "protocol_sha256": "42bd612ecc8720db7f6684214e1f60d1cb4bab6b2fa8db3df343a9d2c52e4abf",
+9:   "signal_source": "/root/autodl-tmp/trifusion-v2/comparators/Signal-cd1b0a6",
+10:   "signal_commit": "cd1b0a672d1fe642e7608731cb4899a19dda7d51",
+11:   "signal_diff_sha256": "b889caca9c4a92689b13eb7e20bd3224067f3e5ed2a3db6825201870ca422741",
+12:   "signal_source_file_sha256": {
+13:     "config/defaults.py": "40257d349153e56e345983c99b1638d7c3d77966dfd2f5496fe03c86dc8dbd57",
+14:     "data/datasets/bases.py": "48f050a7924cebd1e51f8831ba05df78dbccc7049afb0bcf83351d9d1ee23814",
+15:     "data/datasets/make_dataloader.py": "54c47d798a20955bde224d9c78b42149c3c2ef008b02659141829a553194434f",
+16:     "engine/processor.py": "aae7afbeed44a9136003f622b5cdfbf17728b8aab236b129f03285f829eb8377",
+17:     "modeling/make_model.py": "1a88a91d2e5055f5d338996231b16c0e13b2fa7013c74131ca663f16c2655963",
+18:     "train.py": "243a2f6de57f6113c6f0e35390670ee937bbcea84ab3335eea2b6257b3bcbd8f",
+19:     "utils/metrics.py": "91604acb7d978462c16904910a645d7d1697c15bf150da529099004c8b5eecb2",
+20:     "modeling/meta_arch.py": "8b709d5ab4b14ba150a96bbb5e8cc7e6dbbb71dd8bd30cafd7a5cb110ee5a757",
+21:     "solver/make_optimizer.py": "ada1023a79fcaaed092bce0849a61db9d0253cf8974c494bfb3082d0fd35fee1",
+22:     "solver/scheduler_factory.py": "c5e20bdffec4b5360faa04f823639c8e5fd8672914813fb96148927c9ee19abc",
+23:     "data/datasets/sampler.py": "b77902214633a2b06a7c0a80924a737fdb5122984a857f3c6e120a8ad8cce65a",
+24:     "layers/make_loss.py": "7eb7ab953c2bbc52d0c298ef971d0c3ff7000e5e50756fbb5a5fd63ac4c109aa",
+25:     "modeling/make_model_clipreid.py": "5494c2b7cb9acfb2c727a2cde201ba587184b344667e077eacfe0c3a0c578651",
+26:     "modeling/AddModule/useA.py": "1f8fef4dcadb89f5097f83b41a699d9f801a23c88ca3eea73b3ad973a56952a9",
+27:     "configs/RGBNT100/Signal.yml": "02641ce2941dcd50df77d379aab54650cae4a2a6b15ba1bcd43deba970b6900f",
+28:     "data/datasets/RGBNT100.py": "fe38cdb9d0905b4637f215b804e933a226aefcd9a865e9f73e564a84ef2393ac",
+29:     "solver/cosine_lr.py": "d3db6e30c1666c5af71200086f33c644d476310b6c5dc7ed98097cc989bdad4d",
+30:     "solver/scheduler.py": "b7517bb0f79a3334e2a3ac5ecb14bdcf69cb28c62dd3c734c4e3d212d0955228"
+31:   },
+32:   "clip_weight": "/root/autodl-tmp/trifusion-v2/pretrained/ViT-B-16.pt",
+33:   "clip_weight_sha256": "5806e77cd80f8b59890b7e101eabd078d9fb84e6937f9e85e4ecb61988df416f",
+34:   "train_batch_size": 64,
+35:   "instances_per_identity": 8,
+36:   "input_height_width": [
+37:     128,
+38:     256
+39:   ],
+40:   "grid_height_width": [
+41:     8,
+42:     16
+43:   ],
+44:   "preflight_steps_per_fold": 8,
+45:   "preflight_folds": [
+46:     0,
+47:     1,
+48:     2
+49:   ],
+50:   "optimizer": "upstream Adam; CLIP non-adapter base fixed5e-6; remaining0.0007/bias rules; no MSVR classifier multiplier",
+51:   "scheduler": "upstream create_scheduler/CosineLRScheduler;30epochs/warmup5/min7e-7;seed42 noise epochs1-29;step(epoch) before each epoch",
+52:   "stage": "together_CLS_Patch",
+53:   "amp_init_scale": 256.0,
+54:   "num_workers": 4,
+55:   "training_geometry": "author montage crops then existing shared three-modal flip/crop, independent erasing at128x256",
+56:   "sampler": "upstream RandomIdentitySampler; actual sampled global record indices saved per step",
+57:   "checkpoint_selection": "fixed_epoch30; no heldout evaluation until final checkpoint",
+58:   "retrieval": "3072D direct+SIM; unit normalization; squared Euclidean; same-ID AND same-camera removed; complete8675queries/gallery acrossfolds",
+59:   "official_test_access": false,
+60:   "rgbnt201_dev_access": false,
+61:   "new_expert_training": false,
+62:   "project_source_file_sha256": {
+63:     "tools/run_signal_baseline_dev.py": "083967f2a38267415b2992da98c2ad9429ebb793f387b45daac1dbb4eb16f365",
+64:     "tools/run_signal_preserving_v5.py": "e162184f68778b4991db0f97f26c5fda273b2ad2f7c8db2bbb2d53775eb717e5",
+65:     "tools/build_v12_complete_path_oof_targets.py": "fc13354b1065c46677122ee9cf63816087facca4e0e98ec5e6e2fb0dece141e4",
+66:     "modeling/trifusion/aligned_data.py": "3ea362d17660483b554cb599442b6377ace020fa114969b9bdd58906fbceedd5",
+67:     "tools/train_rgbnt100_signal_oof.py": "514a2c86634b61ef8b6de32b6ff1990cdf18e208a91673fb192534b52e5a1357",
+68:     "tools/build_rgbnt100_signal_oof_protocol.py": "4b288cef674dd7f8425a96f3c4be899b316f743397b53cb922270b779b34d469",
+69:     "tools/verify_rgbnt100_signal_protocol.py": "4555014620f3adadf1fcdfe99700d843e2db3229ce0b8c5dc3bb2610aef1ee6f",
+70:     "refine-logs/rgbnt100_signal_v1/EXPERIMENT_PLAN.md": "2184ef9d597737148777b04bafe2caaf0bc8c5d1c122a6a68b0986449dfbb7df"
+71:   },
+72:   "engineering_revision": 1,
+73:   "upstream_no_gradient_token_selection_frozen": [
+74:     "SIM.token_selection.W_q.weight",
+75:     "SIM.token_selection.W_q.bias",
+76:     "SIM.token_selection.W_k.weight",
+77:     "SIM.token_selection.W_k.bias",
+78:     "SIM.token_selection.W_v.weight",
+79:     "SIM.token_selection.W_v.bias"
+80:   ]
+81: }
+
+FILE 29: evidence/rgbnt100_signal_v1_amp_batch_probe/fp16/forward.json
+1: {
+2:   "mode": "fp16",
+3:   "created_at": "2026-09-06T10:35:04.724419+08:00",
+4:   "project_commit": "56f094f82ad03c7140ed844f452d91346ad977cf",
+5:   "probe_sha256": "eac55904dcec25a34f035f6e48f3b638dac37f86a826c9cf2c18615b33a952d1",
+6:   "fixture_sha256": "3c9b41a70a3e3bfabd317cea8b76f314ba16ded8a8246fd41e0561fc7f8286eb",
+7:   "torch_version": "2.5.1+cu121",
+8:   "plan_sha256": "0e8a38ef743cf3cda522890217dbb7a8412097aab6b139e52e061268f9845b9e",
+9:   "loss": 6.734400272369385,
+10:   "id_triplet_head_losses": [
+11:     1.5988661050796509,
+12:     1.632498860359192,
+13:     1.6219165325164795,
+14:     1.4804165363311768
+15:   ],
+16:   "gram_loss": 3.970210552215576,
+17:   "patch_loss": 0.03680669143795967,
+18:   "scale": 256.0,
+19:   "capture_loss_exact": true,
+20:   "capture_loss_difference": 0.0,
+21:   "volume_calls": [
+22:     {
+23:       "G_dtype": "torch.float16",
+24:       "input_dtype": "torch.float32",
+25:       "determinant_dtype": "torch.float32",
+26:       "shape": [
+27:         64,
+28:         64
+29:       ],
+30:       "exact_zero_count": 3,
+31:       "negative_count": 1,
+32:       "min_absolute_determinant": 0.0,
+33:       "max_absolute_determinant": 0.0069842166267335415,
+34:       "zero_coordinates": [
+35:         [
+36:           3,
+37:           3
+38:         ],
+39:         [
+40:           4,
+41:           4
+42:         ],
+43:         [
+44:           5,
+45:           5
+46:         ]
+47:       ]
+48:     },
+49:     {
+50:       "G_dtype": "torch.float16",
+51:       "input_dtype": "torch.float32",
+52:       "determinant_dtype": "torch.float32",
+53:       "shape": [
+54:         64,
+55:         64
+56:       ],
+57:       "exact_zero_count": 3,
+58:       "negative_count": 1,
+59:       "min_absolute_determinant": 0.0,
+60:       "max_absolute_determinant": 0.0069842166267335415,
+61:       "zero_coordinates": [
+62:         [
+63:           3,
+64:           3
+65:         ],
+66:         [
+67:           4,
+68:           4
+69:         ],
+70:         [
+71:           5,
+72:           5
+73:         ]
+74:       ]
+75:     }
+76:   ],
+77:   "volume_inputs_sha256": "3db0ee54b54d0bbe4b0ca73f06cf94bcd170da49e87abd2f15baeff1bf7f5c72",
+78:   "source_record_forwards": 64,
+79:   "optimizer_steps": 0,
+80:   "heldout_image_forwards": 0,
+81:   "image_decodes": 0,
+82:   "signal_commit": "cd1b0a672d1fe642e7608731cb4899a19dda7d51",
+83:   "signal_diff_sha256": "b889caca9c4a92689b13eb7e20bd3224067f3e5ed2a3db6825201870ca422741"
+84: }
+
+FILE 89: evidence/rgbnt100_signal_v1_gram_stable_regression/regression/full_batch_forward.json
+1: {
+2:   "created_at": "2026-09-06T10:53:09.140195+08:00",
+3:   "signal_commit": "cd1b0a672d1fe642e7608731cb4899a19dda7d51",
+4:   "signal_diff_sha256": "b889caca9c4a92689b13eb7e20bd3224067f3e5ed2a3db6825201870ca422741",
+5:   "project_commit": "6c741b8b56b6a14f83c0e8a9452388aa23e5b301",
+6:   "plan_sha256": "e35e8a03da2fba93f023041e8e2e0209458d84ad88c8a386d52a9834668e7e90",
+7:   "fixture_sha256": "3c9b41a70a3e3bfabd317cea8b76f314ba16ded8a8246fd41e0561fc7f8286eb",
+8:   "volume_inputs_sha256": "3db0ee54b54d0bbe4b0ca73f06cf94bcd170da49e87abd2f15baeff1bf7f5c72",
+9:   "optimizer_steps": 0,
+10:   "image_decodes": 0,
+11:   "heldout_image_forwards": 0,
+12:   "torch_version": "2.5.1+cu121",
+13:   "loss": 6.7345452308654785,
+14:   "id_triplet_head_losses": [
+15:     1.5988661050796509,
+16:     1.632498860359192,
+17:     1.6219165325164795,
+18:     1.4804165363311768
+19:   ],
+20:   "gram_loss": 3.9716601371765137,
+21:   "patch_loss": 0.03680669143795967,
+22:   "scale": 256.0,
+23:   "retrieval_feature_max_difference": 0.0,
+24:   "retrieval_feature_bitwise_equal": true,
+25:   "source_record_forwards": 192,
+26:   "operator_model_forwards": 0
+27: }
+
+FILE 130: evidence/trifusion_rgbnt100_signal_v1_r2_engineering_launch_20260906.json
+1: {
+2:   "wrapper_pid": 84049,
+3:   "proc_exists": true,
+4:   "observed_at": "2026-09-06T11:06:58.956344+08:00",
+5:   "remote_root": "/root/autodl-tmp/trifusion-v2/artifacts/rgbnt100_signal_source_oof_v1_r2_seed42_e699eac",
+6:   "wrapper_sha256": "81b8c21ff360b81b937ab34c0ea0bc18ca404bfd7b39604c1ad7a6ba05ae6bf3",
+7:   "project_commit": "e699eaca888061145a402e6b91fe90ebf96a7989",
+8:   "scope": "R2 fullT0 then three fresh complete-first-epoch source M0; first observation around11:10"
+9: }
+
+FILE 99: evidence/trifusion_rgbnt100_signal_v1_amp_batch_probe_plan_20260906.json
+1: {
+2:   "registered_at": "2026-09-06T10:32:30.132478+08:00",
+3:   "status": "READY_NOT_RUN",
+4:   "config": "configs/RGBNT100/Signal-source-oof-v1.json",
+5:   "config_sha256": "7270e2bf95c5f5a60e1dc6d6b047f043dce667d508783b36bc4734aecbc4c15b",
+6:   "probe": "tools/probe_rgbnt100_signal_amp_batch.py",
+7:   "probe_sha256": "eac55904dcec25a34f035f6e48f3b638dac37f86a826c9cf2c18615b33a952d1",
+8:   "fixture": "/root/autodl-tmp/trifusion-v2/artifacts/rgbnt100_signal_amp_capture_v1_seed42_8b412d0/capture/failed_batch_preforward.pt",
+9:   "fixture_sha256": "3c9b41a70a3e3bfabd317cea8b76f314ba16ded8a8246fd41e0561fc7f8286eb",
+10:   "capture_loss": 6.734400272369385,
+11:   "capture_diagnosis_sha256": "ced5af3a84dce22ae2f022e858e0ad23667c5ba86f05894f7d1d5719bbba8033",
+12:   "extra_signal_files": {
+13:     "modeling/AddModule/useB.py": "39a65f82d59048745663d891a1c4c012eb1cc404ef8c8084f942702aeef46fec",
+14:     "utils/volume.py": "a154f65e5f4483446748e216b7b03672617efb02004e14e9940446c1013b8ccb",
+15:     "layers/triplet_loss.py": "f502c44bec642bbf72ce6d0f58c9f9a0084beef9cbb451c2d2786bb13f94960a"
+16:   },
+17:   "pytorch_source_files": {
+18:     "pytorch/amp/grad_scaler.py": "eb4bc91fda9815ba40206e2dbb68f9845b85622fee3a92611f227b5845b20780",
+19:     "pytorch/autograd/anomaly_mode.py": "e3285e5353c9cbe2d64f36236633e00821f9dad05fc96efc0be17ac6a98dffc5"
+20:   },
+21:   "hypotheses": [
+22:     {
+23:       "id": "precision",
+24:       "prediction": "identical saved input/state fullFP32 remains finite while originalFP16 has nonfinite gradients"
+25:     },
+26:     {
+27:       "id": "singular_derivative",
+28:       "prediction": "anomaly mode locates a specific loss backward operator; fullFP32 may also fail; capture both complete Gram matrices for exact operator minimization"
+29:     },
+30:     {
+31:       "id": "inexact_replay",
+32:       "prediction": "FP16 restored forward differs from captured loss/components, limiting causal inference; compare and report, do not silently accept as exact"
+33:     }
+34:   ],
+35:   "fixed_modes": [
+36:     "fp16",
+37:     "fp16_anomaly",
+38:     "fp32"
+39:   ],
+40:   "scope": "each mode once, separate process, same complete64-record augmented source batch/state/RNG, fixedscale256, no optimizer or new training trajectory",
+41:   "source_record_forwards": 192,
+42:   "optimizer_steps": 0,
+43:   "heldout_image_forwards": 0,
+44:   "image_decodes": 0,
+45:   "volume_recording": "save both actual volume_computation3 inputs/3x3Gram matrices/determinants; all64x64 entries per call, no cherry-picking",
+46:   "expected_runtime_minutes": [
+47:     1,
+48:     3
+49:   ],
+50:   "failure_policy": "first originalFP16 result records actual gradient nonfiniteness; anomaly subprocess expected to fail with original framework traceback; FP32 records observed result without retry or lowering batch",
+51:   "no_method_or_training_config_change": true,
+52:   "technical_sources": [
+53:     "https://github.com/pytorch/pytorch/blob/v2.5.1/torch/amp/grad_scaler.py",
+54:     "https://github.com/pytorch/pytorch/blob/v2.5.1/torch/autograd/anomaly_mode.py"
+55:   ]
+56: }
+
+FILE 105: evidence/trifusion_rgbnt100_signal_v1_amp_capture_scalar_verification_20260906.json
+1: {
+2:   "verified_at": "2026-09-06T10:32:30.132478+08:00",
+3:   "status": "PASS_ALL34_CAPTURE_SCALARS_AND_SOURCE_ACCOUNTING",
+4:   "attempted_steps": 34,
+5:   "successful_updates": 33,
+6:   "source_record_exposures": 2176,
+7:   "gradient_tensors": 195,
+8:   "nonfinite_gradient_tensors": 153,
+9:   "nonfinite_only_clip_encoder": true,
+10:   "maximum_loss_recomposition_error": 1.1775642632990552e-06,
+11:   "m0_initial_state_equal": true,
+12:   "m0_first8_equal_indices": true,
+13:   "m0_first8_equal_scalars_count": 1,
+14:   "original_failed_updates": "UNKNOWN_NOT_PERSISTED",
+15:   "model_tensor_image_runtime": 0
+16: }
+
+FILE 133: evidence/trifusion_rgbnt100_signal_v1_registration_20260906.json
+1: {
+2:   "registered_at": "2026-09-06T09:31:59.717843+08:00",
+3:   "status": "PREPARED_NOT_RUN",
+4:   "config": "configs/RGBNT100/Signal-source-oof-v1.json",
+5:   "config_sha256": "7270e2bf95c5f5a60e1dc6d6b047f043dce667d508783b36bc4734aecbc4c15b",
+6:   "protocol_sha256": "42bd612ecc8720db7f6684214e1f60d1cb4bab6b2fa8db3df343a9d2c52e4abf",
+7:   "plan_sha256": "2184ef9d597737148777b04bafe2caaf0bc8c5d1c122a6a68b0986449dfbb7df",
+8:   "runner_sha256": "514a2c86634b61ef8b6de32b6ff1990cdf18e208a91673fb192534b52e5a1357",
+9:   "protocol_verifier_sha256": "4555014620f3adadf1fcdfe99700d843e2db3229ce0b8c5dc3bb2610aef1ee6f",
+10:   "signal_bound_files": 18,
+11:   "project_bound_files": 8,
+12:   "local_ast": "PASS",
+13:   "local_model_tensor_image_calls": 0,
+14:   "remote_training_or_retrieval_started": false,
+15:   "official_query_gallery_access": 0,
+16:   "scope": "baseline infrastructure only; main goal unmet; no pre-success ablations"
+17: }

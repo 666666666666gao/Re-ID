@@ -1,0 +1,52 @@
+{
+  "registered_at": "2026-09-06T10:51:50.831737+08:00",
+  "status": "READY_NOT_RUN",
+  "project_files": {
+    "tools/signal_gram_stable.py": "fb23d9475b4629cbfac6962d89358668f2390fbf9e7a44fe12c2c6a885b43e60",
+    "tools/verify_rgbnt100_signal_gram_stable.py": "351efcf80e748d621991b133f7b971b3b785f80ace8f5cdda065a546a31a7589"
+  },
+  "config": "configs/RGBNT100/Signal-source-oof-v1.json",
+  "config_sha256": "7270e2bf95c5f5a60e1dc6d6b047f043dce667d508783b36bc4734aecbc4c15b",
+  "fixture": "/root/autodl-tmp/trifusion-v2/artifacts/rgbnt100_signal_amp_capture_v1_seed42_8b412d0/capture/failed_batch_preforward.pt",
+  "fixture_sha256": "3c9b41a70a3e3bfabd317cea8b76f314ba16ded8a8246fd41e0561fc7f8286eb",
+  "volume_inputs": "/root/autodl-tmp/trifusion-v2/artifacts/rgbnt100_signal_amp_batch_probe_v1_seed42_56f094f/fp16/volume_inputs.pt",
+  "volume_inputs_sha256": "3db0ee54b54d0bbe4b0ca73f06cf94bcd170da49e87abd2f15baeff1bf7f5c72",
+  "extra_signal_files": {
+    "modeling/AddModule/useB.py": "39a65f82d59048745663d891a1c4c012eb1cc404ef8c8084f942702aeef46fec",
+    "utils/volume.py": "a154f65e5f4483446748e216b7b03672617efb02004e14e9940446c1013b8ccb",
+    "layers/triplet_loss.py": "f502c44bec642bbf72ce6d0f58c9f9a0084beef9cbb451c2d2786bb13f94960a"
+  },
+  "original_gram_loss": 3.970210552215576,
+  "original_patch_loss": 0.03680669143795967,
+  "original_id_triplet_head_losses": [
+    1.5988661050796509,
+    1.632498860359192,
+    1.6219165325164795,
+    1.4804165363311768
+  ],
+  "evidence": "Previous localFP32-only proposal actually failed:1zero determinant at(4,4) and512NaNs in each input vector group. OriginalAMP has3zeros. Old proposal remainsFAIL.",
+  "single_change": "FP32 Gram calculation plus sqrt(abs(det).clamp_min(1e-12)); fixed numerical floor borrowed from author Triplet sqrt protection, no search.",
+  "operator_stage": "Same original two4096-entry volume calls/real normalized vectors and trained temperature; originalAMP versus stableFP32floor",
+  "operator_gates": [
+    "original saved Gram loss and nonfinite gradients reproduced",
+    "stable allinput/temperature gradients finite; exactly the known1rawzero remains and is protected by the fixed floor"
+  ],
+  "full_batch_stage": "Only after operator passes: original/stable full3072D inference exactly equal; original fourID/Triplet andPatch values unchanged;195finite gradients under original AMPscale256",
+  "maximum_source_record_forwards": 192,
+  "maximum_full_model_backward_passes": 1,
+  "optimizer_steps": 0,
+  "heldout_image_forwards": 0,
+  "image_decodes": 0,
+  "expected_runtime_minutes": [
+    1,
+    2
+  ],
+  "continuation_boundary": "No formal training restart yet. Passing this single-real-batch regression still requires separately registered engineering training and updated provenance.",
+  "source_support": [
+    "https://github.com/pytorch/pytorch/blob/v2.5.1/torch/amp/grad_scaler.py",
+    "https://github.com/pytorch/pytorch/blob/v2.5.1/torch/autograd/anomaly_mode.py"
+  ],
+  "prepublication_formatting": "New files stored with one LF at EOF; old failed helper/runner/plan unchanged.",
+  "numerical_definition_change": "Above1e-12 original sqrt(abs(det)); below the floor output1e-6 with zero derivative through the clamped determinant. This is an explicit numerical stabilization, not claimed exactly identical to unguarded formula.",
+  "prior_failed_proposal_intake_sha256": "f15f4f62d5eb3561dd479aae597aca6175c8c8c5fd8cee2610b195cdcdc09b5c"
+}

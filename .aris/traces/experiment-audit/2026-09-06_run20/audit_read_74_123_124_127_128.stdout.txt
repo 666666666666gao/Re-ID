@@ -1,0 +1,411 @@
+FILE 74: evidence/rgbnt100_signal_v1_engineering/m0_files_verifier.py
+1: from pathlib import Path
+2: import datetime,hashlib,json,subprocess,time
+3: import torch
+4: ROOT=Path("/root/autodl-tmp/trifusion-v2/TriFusion-ReID")
+5: RUN=Path("/root/autodl-tmp/trifusion-v2/artifacts/rgbnt100_signal_source_oof_v1_seed42_1157f0d")
+6: def sha(path):
+7:     d=hashlib.sha256()
+8:     with Path(path).open("rb") as f:
+9:         for chunk in iter(lambda:f.read(1024*1024),b""):d.update(chunk)
+10:     return d.hexdigest()
+11: started=time.perf_counter()
+12: assert not (RUN/"m0_files_verification.json").exists()
+13: assert (RUN/"engineering_exit.txt").read_text().strip()=="0"
+14: assert not Path("/proc/79272").exists()
+15: config=json.loads((ROOT/"configs/RGBNT100/Signal-source-oof-v1.json").read_text())
+16: protocol=json.loads((ROOT/config["protocol"]).read_text())
+17: summary=json.loads((RUN/"m0/summary.json").read_text())
+18: assert summary["status"]=="PASS_ENGINEERING_ONLY" and summary["optimizer_steps"]==24
+19: assert summary["config_sha256"]==sha(ROOT/"configs/RGBNT100/Signal-source-oof-v1.json")
+20: assert summary["protocol_sha256"]==sha(ROOT/config["protocol"])
+21: assert summary["protocol_receipt_sha256"]==sha(RUN/"t0.json")
+22: for path,digest in config["project_source_file_sha256"].items():assert sha(ROOT/path)==digest,path
+23: for path,digest in config["signal_source_file_sha256"].items():assert sha(Path(config["signal_source"])/path)==digest,path
+24: files={p.relative_to(RUN).as_posix():{"bytes":p.stat().st_size,"sha256":sha(p)} for p in sorted(RUN.rglob("*")) if p.is_file()}
+25: checks=[]
+26: for actual,fold in zip(summary["folds"],protocol["folds"],strict=True):
+27:     directory=RUN/"m0"/("fold_"+str(fold["fold"]))
+28:     assert actual==json.loads((directory/"receipt.json").read_text())
+29:     assert actual["training"]==json.loads((directory/"training.json").read_text())
+30:     cp=Path(actual["checkpoint"])
+31:     assert sha(cp)==actual["checkpoint_sha256"]
+32:     payload=torch.load(cp,map_location="cpu",weights_only=True)
+33:     assert payload["fold"]==fold["fold"]
+34:     assert payload["source_ids"]==fold["source_ids"] and payload["heldout_ids"]==fold["heldout_ids"]
+35:     assert payload["config_sha256"]==summary["config_sha256"] and payload["protocol_sha256"]==summary["protocol_sha256"]
+36:     digest=hashlib.sha256()
+37:     for name,tensor in sorted(payload["model_state_dict"].items()):
+38:         digest.update(name.encode())
+39:         digest.update(tensor.detach().cpu().contiguous().numpy().tobytes())
+40:     assert digest.hexdigest()==actual["training"]["final_state_sha256"]
+41:     checks.append({"fold":fold["fold"],"checkpoint_sha256":sha(cp),"checkpoint_content_state_sha256":digest.hexdigest(),
+42:                    "fold_source_heldout_binding":True,"receipt_training_summary_equal":True})
+43:     del payload
+44: report={"verified_at":datetime.datetime.now(datetime.timezone(datetime.timedelta(hours=8))).isoformat(),
+45: "status":"PASS_COMPLETE_M0_FILES_AND_CHECKPOINT_CONTENTS","files":files,"folds":checks,
+46: "summary_sha256":sha(RUN/"m0/summary.json"),"verifier_sha256":sha(__file__),
+47: "project_commit":subprocess.check_output(["git","-C",str(ROOT),"rev-parse","HEAD"],text=True).strip(),
+48: "source_bindings":{"project":len(config["project_source_file_sha256"]),"signal":len(config["signal_source_file_sha256"])},
+49: "model_forwards":0,"image_decodes":0,"optimizer_steps":0,"elapsed_seconds":time.perf_counter()-started}
+50: (RUN/"m0_files_verification.json").write_text(json.dumps(report,indent=2)+"\n")
+51: print(json.dumps({k:v for k,v in report.items() if k!="files"}))
+
+FILE 123: evidence/trifusion_rgbnt100_signal_v1_m0_files_verification_20260906.json
+1: {
+2:   "verified_at": "2026-09-06T09:44:59.653995+08:00",
+3:   "status": "PASS_COMPLETE_M0_FILES_AND_CHECKPOINT_CONTENTS",
+4:   "files": {
+5:     "engineering_exit.txt": {
+6:       "bytes": 2,
+7:       "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+8:     },
+9:     "engineering_launch.json": {
+10:       "bytes": 506,
+11:       "sha256": "01bda4f6f332069c3488f4729609ee0c212ddcbaba40f7adbaf72f8d2e12820e"
+12:     },
+13:     "engineering_terminal.json": {
+14:       "bytes": 116,
+15:       "sha256": "e5272179e04cf69f7d699a7b242dfef511be97870fd41ba556ab7746adefd653"
+16:     },
+17:     "engineering_wrapper.log": {
+18:       "bytes": 0,
+19:       "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+20:     },
+21:     "engineering_wrapper.py": {
+22:       "bytes": 2754,
+23:       "sha256": "5ca49e8f2cbba97c35583c7855041887babb9b4549ead18e42d3a549acdbece0"
+24:     },
+25:     "m0/fold_0/receipt.json": {
+26:       "bytes": 50892,
+27:       "sha256": "f3b51567ff1218bb22f670107eea026cd08b557377544a95fd53893200b3159e"
+28:     },
+29:     "m0/fold_0/signal_m0.pth": {
+30:       "bytes": 363104762,
+31:       "sha256": "de084693f743b17625f0cbfeab8b71c194e19270365bea30b37c080747cc3f19"
+32:     },
+33:     "m0/fold_0/training.json": {
+34:       "bytes": 46076,
+35:       "sha256": "8dc9c2211f267bf32d3e0c7aa94597a96b7002c1f2dc933948d23b5fae0451f3"
+36:     },
+37:     "m0/fold_1/receipt.json": {
+38:       "bytes": 50907,
+39:       "sha256": "2582badd3249391b70205947cc19b9b6dab62f379a0684cad1b400f858d2d382"
+40:     },
+41:     "m0/fold_1/signal_m0.pth": {
+42:       "bytes": 363104762,
+43:       "sha256": "81d205962e836adc14aed8f76679061cdf8fd45487fd214cc09303ea0c1468ca"
+44:     },
+45:     "m0/fold_1/training.json": {
+46:       "bytes": 46091,
+47:       "sha256": "b1721cd926eb22f30363c6238448cc59882bc62e0a2e8d4d7a0767453c482dad"
+48:     },
+49:     "m0/fold_2/receipt.json": {
+50:       "bytes": 50862,
+51:       "sha256": "57f3678ad825ba418c214f9af1b78d8f6ffe57cbf1d0fd1fb856d9f34bc9efb8"
+52:     },
+53:     "m0/fold_2/signal_m0.pth": {
+54:       "bytes": 363117050,
+55:       "sha256": "64adc41da1d21c0b7b991202334a96f238e01e33239796e28f85aa851831a4b6"
+56:     },
+57:     "m0/fold_2/training.json": {
+58:       "bytes": 46046,
+59:       "sha256": "a88ff0cc94c87ccdef57f626bc771721b8fea922468b5d7814a54a516f319f9c"
+60:     },
+61:     "m0/signal_effective_config.yml": {
+62:       "bytes": 1765,
+63:       "sha256": "e5a897714b538e417f9cd73b5d610d7dd38afb73161caaeedd3a94d31f76c3e7"
+64:     },
+65:     "m0/summary.json": {
+66:       "bytes": 177826,
+67:       "sha256": "7e9f6214efdbf14611fd5bb0ce2f4d7e6c9ae68c9549af06659d018b39e09820"
+68:     },
+69:     "m0.log": {
+70:       "bytes": 4006,
+71:       "sha256": "35d52d543d7afb98be941e2cc9f9e3dad3b15b049ee9db83a705bc694f962066"
+72:     },
+73:     "m0_exit.txt": {
+74:       "bytes": 2,
+75:       "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+76:     },
+77:     "m0_files_verifier.py": {
+78:       "bytes": 3393,
+79:       "sha256": "ae8a919d16e4c7b942a7f95df6ca31ff4089a631c8a39849325efaa1def97406"
+80:     },
+81:     "m0_launch.json": {
+82:       "bytes": 941,
+83:       "sha256": "097e891df7eb41637be4d35f42ead706decbcc28884529c701f2df39f5c6f4fd"
+84:     },
+85:     "t0.json": {
+86:       "bytes": 2092,
+87:       "sha256": "b60c8b45ca6e6d4eaf374ea127b0b7eef3331a393f05b414d2825bf731a41dcd"
+88:     },
+89:     "t0.log": {
+90:       "bytes": 1794,
+91:       "sha256": "4de17008a35c7e4e6559710cf2219be433613a6a9ab83b75076b75633aa980b7"
+92:     },
+93:     "t0_exit.txt": {
+94:       "bytes": 2,
+95:       "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+96:     },
+97:     "t0_launch.json": {
+98:       "bytes": 542,
+99:       "sha256": "54d19cb72df7d09b4d03cd1eed838b5f82cb0e9f377a50dc6856086b8da88340"
+100:     }
+101:   },
+102:   "folds": [
+103:     {
+104:       "fold": 0,
+105:       "checkpoint_sha256": "de084693f743b17625f0cbfeab8b71c194e19270365bea30b37c080747cc3f19",
+106:       "checkpoint_content_state_sha256": "fb87809b3eda53e80cf8fa6f25387690f2375b427c730b048f6769cae7c52543",
+107:       "fold_source_heldout_binding": true,
+108:       "receipt_training_summary_equal": true
+109:     },
+110:     {
+111:       "fold": 1,
+112:       "checkpoint_sha256": "81d205962e836adc14aed8f76679061cdf8fd45487fd214cc09303ea0c1468ca",
+113:       "checkpoint_content_state_sha256": "993715ee8e387cdade82b8cf460bf00ad808d18083c75016377468bd55c113dc",
+114:       "fold_source_heldout_binding": true,
+115:       "receipt_training_summary_equal": true
+116:     },
+117:     {
+118:       "fold": 2,
+119:       "checkpoint_sha256": "64adc41da1d21c0b7b991202334a96f238e01e33239796e28f85aa851831a4b6",
+120:       "checkpoint_content_state_sha256": "ccb68d77d5974df5c23e61f9cb6cf6e5936ddcec19e42d473779533562ca2f6c",
+121:       "fold_source_heldout_binding": true,
+122:       "receipt_training_summary_equal": true
+123:     }
+124:   ],
+125:   "summary_sha256": "7e9f6214efdbf14611fd5bb0ce2f4d7e6c9ae68c9549af06659d018b39e09820",
+126:   "verifier_sha256": "ae8a919d16e4c7b942a7f95df6ca31ff4089a631c8a39849325efaa1def97406",
+127:   "project_commit": "1157f0de6063bbf51855279ceb8b1822ef8c98d1",
+128:   "source_bindings": {
+129:     "project": 8,
+130:     "signal": 18
+131:   },
+132:   "model_forwards": 0,
+133:   "image_decodes": 0,
+134:   "optimizer_steps": 0,
+135:   "elapsed_seconds": 5.368404388427734
+136: }
+
+FILE 124: evidence/trifusion_rgbnt100_signal_v1_m0_files_verifier_20260906.py
+1: from pathlib import Path
+2: import datetime,hashlib,json,subprocess,time
+3: import torch
+4: ROOT=Path("/root/autodl-tmp/trifusion-v2/TriFusion-ReID")
+5: RUN=Path("/root/autodl-tmp/trifusion-v2/artifacts/rgbnt100_signal_source_oof_v1_seed42_1157f0d")
+6: def sha(path):
+7:     d=hashlib.sha256()
+8:     with Path(path).open("rb") as f:
+9:         for chunk in iter(lambda:f.read(1024*1024),b""):d.update(chunk)
+10:     return d.hexdigest()
+11: started=time.perf_counter()
+12: assert not (RUN/"m0_files_verification.json").exists()
+13: assert (RUN/"engineering_exit.txt").read_text().strip()=="0"
+14: assert not Path("/proc/79272").exists()
+15: config=json.loads((ROOT/"configs/RGBNT100/Signal-source-oof-v1.json").read_text())
+16: protocol=json.loads((ROOT/config["protocol"]).read_text())
+17: summary=json.loads((RUN/"m0/summary.json").read_text())
+18: assert summary["status"]=="PASS_ENGINEERING_ONLY" and summary["optimizer_steps"]==24
+19: assert summary["config_sha256"]==sha(ROOT/"configs/RGBNT100/Signal-source-oof-v1.json")
+20: assert summary["protocol_sha256"]==sha(ROOT/config["protocol"])
+21: assert summary["protocol_receipt_sha256"]==sha(RUN/"t0.json")
+22: for path,digest in config["project_source_file_sha256"].items():assert sha(ROOT/path)==digest,path
+23: for path,digest in config["signal_source_file_sha256"].items():assert sha(Path(config["signal_source"])/path)==digest,path
+24: files={p.relative_to(RUN).as_posix():{"bytes":p.stat().st_size,"sha256":sha(p)} for p in sorted(RUN.rglob("*")) if p.is_file()}
+25: checks=[]
+26: for actual,fold in zip(summary["folds"],protocol["folds"],strict=True):
+27:     directory=RUN/"m0"/("fold_"+str(fold["fold"]))
+28:     assert actual==json.loads((directory/"receipt.json").read_text())
+29:     assert actual["training"]==json.loads((directory/"training.json").read_text())
+30:     cp=Path(actual["checkpoint"])
+31:     assert sha(cp)==actual["checkpoint_sha256"]
+32:     payload=torch.load(cp,map_location="cpu",weights_only=True)
+33:     assert payload["fold"]==fold["fold"]
+34:     assert payload["source_ids"]==fold["source_ids"] and payload["heldout_ids"]==fold["heldout_ids"]
+35:     assert payload["config_sha256"]==summary["config_sha256"] and payload["protocol_sha256"]==summary["protocol_sha256"]
+36:     digest=hashlib.sha256()
+37:     for name,tensor in sorted(payload["model_state_dict"].items()):
+38:         digest.update(name.encode())
+39:         digest.update(tensor.detach().cpu().contiguous().numpy().tobytes())
+40:     assert digest.hexdigest()==actual["training"]["final_state_sha256"]
+41:     checks.append({"fold":fold["fold"],"checkpoint_sha256":sha(cp),"checkpoint_content_state_sha256":digest.hexdigest(),
+42:                    "fold_source_heldout_binding":True,"receipt_training_summary_equal":True})
+43:     del payload
+44: report={"verified_at":datetime.datetime.now(datetime.timezone(datetime.timedelta(hours=8))).isoformat(),
+45: "status":"PASS_COMPLETE_M0_FILES_AND_CHECKPOINT_CONTENTS","files":files,"folds":checks,
+46: "summary_sha256":sha(RUN/"m0/summary.json"),"verifier_sha256":sha(__file__),
+47: "project_commit":subprocess.check_output(["git","-C",str(ROOT),"rev-parse","HEAD"],text=True).strip(),
+48: "source_bindings":{"project":len(config["project_source_file_sha256"]),"signal":len(config["signal_source_file_sha256"])},
+49: "model_forwards":0,"image_decodes":0,"optimizer_steps":0,"elapsed_seconds":time.perf_counter()-started}
+50: (RUN/"m0_files_verification.json").write_text(json.dumps(report,indent=2)+"\n")
+51: print(json.dumps({k:v for k,v in report.items() if k!="files"}))
+
+FILE 127: evidence/trifusion_rgbnt100_signal_v1_m0_scalar_verifier_20260906.py
+1: from collections import Counter
+2: from pathlib import Path
+3: from statistics import mean
+4: import datetime,hashlib,json,math,time
+5: ROOT=Path(r"C:/Users/gb/.trifusion_github_publish_22c3bee")
+6: started=time.perf_counter()
+7: base=ROOT/"evidence/rgbnt100_signal_v1_engineering"
+8: summary=json.loads((base/"m0/summary.json").read_text())
+9: protocol=json.loads((ROOT/"protocols/rgbnt100_train_oof_v1.json").read_text())
+10: config=json.loads((ROOT/"configs/RGBNT100/Signal-source-oof-v1.json").read_text())
+11: sha=lambda p:hashlib.sha256(Path(p).read_bytes()).hexdigest()
+12: assert summary["status"]=="PASS_ENGINEERING_ONLY" and summary["mode"]=="preflight"
+13: assert summary["optimizer_steps"]==24 and summary["heldout_image_forwards"]==0
+14: assert summary["official_test_image_access"]==summary["fixed_rgbnt201_dev_image_access"]==summary["expert_training"]==0
+15: assert summary["config_sha256"]==sha(ROOT/"configs/RGBNT100/Signal-source-oof-v1.json")
+16: assert summary["protocol_receipt_sha256"]==sha(base/"t0.json")
+17: max_loss=0.
+18: max_mean=0.
+19: all_exposures=[]
+20: checks=[]
+21: for actual,fold in zip(summary["folds"],protocol["folds"],strict=True):
+22:     training=actual["training"]
+23:     assert training["optimizer_steps"]==len(training["steps"])==8
+24:     assert training["epochs"]==len(training["history"])==1
+25:     assert training["trainable_tensors"]==training["gradient_tensors"]==195
+26:     assert not training["trainable_without_gradient"] and training["overflow_events"]==0
+27:     assert training["initial_state_sha256"]!=training["final_state_sha256"]
+28:     assert training["frozen_token_selection_initial_sha256"]==training["frozen_token_selection_final_sha256"]
+29:     assert actual["strict_reload_exact_feature_parity"] and actual["feature_width"]==3072
+30:     assert actual["clean_source_feature_forwards"]==16 and actual["heldout_image_forwards"]==0
+31:     exposures=[]
+32:     cross=0
+33:     positive=0
+34:     for number,step in enumerate(training["steps"],1):
+35:         assert step["epoch"]==1 and step["step"]==number
+36:         indices=step["sampled_record_indices"]
+37:         assert len(indices)==64 and set(indices)<=set(fold["source_record_indices"])
+38:         rows=[protocol["records"][i] for i in indices]
+39:         assert sorted(Counter(r["identity"] for r in rows).values())==[8]*8
+40:         assert len(step["id_triplet_head_losses"])==4
+41:         composed=sum(step["id_triplet_head_losses"])+.1*step["gram_loss"]+.1*step["patch_loss"]
+42:         max_loss=max(max_loss,abs(composed-step["loss"]))
+43:         assert math.isfinite(step["loss"]) and step["amp_scale_after"]>=step["amp_scale_before"]
+44:         exposures.extend(indices)
+45:         for i,a in enumerate(rows):
+46:             for b in rows[i+1:]:
+47:                 if a["identity"]==b["identity"]:
+48:                     positive+=1
+49:                     cross+=int(a["camera"]!=b["camera"])
+50:     max_mean=max(max_mean,abs(mean(s["loss"] for s in training["steps"])-training["history"][0]["mean_loss"]))
+51:     initial_lrs=set()
+52:     for group in training["optimizer_groups"]:
+53:         expected=.0007*(2 if "bias" in group["name"] else 1)
+54:         if "base" in group["name"] and "adapter" not in group["name"]:expected=.000005
+55:         assert group["initial_lr"]==expected,group["name"]
+56:         assert group["lr"]==.00007
+57:         initial_lrs.add(expected)
+58:     clean_lrs=sorted(.00007+(v-.00007)/5 for v in initial_lrs)
+59:     actual_lrs=training["history"][0]["learning_rates"]
+60:     assert len(clean_lrs)==len(actual_lrs)
+61:     factors=[a/b for a,b in zip(actual_lrs,clean_lrs,strict=True)]
+62:     assert max(factors)-min(factors)<1e-14
+63:     assert all(1-.67<x<1+.67 for x in factors)
+64:     all_exposures.extend(exposures)
+65:     checks.append({"fold":fold["fold"],"updates":8,"source_exposures":len(exposures),
+66:         "source_identity_count_exposed":len({protocol["records"][i]["identity"] for i in exposures}),
+67:         "source_record_count_exposed":len(set(exposures)),"same_identity_pairs":positive,"cross_camera_pairs":cross,
+68:         "total_parameters":training["total_parameters"],"trainable_parameters":training["trainable_parameters"],
+69:         "peak_allocated_mib":actual["peak_allocated_mib"],"training_8_steps_seconds":training["history"][0]["elapsed_seconds"],
+70:         "mean_loss":training["history"][0]["mean_loss"],"initial_parameter_group_lrs":sorted(initial_lrs),
+71:         "epoch1_actual_lrs":actual_lrs,"epoch1_common_noise_factor":factors[0]})
+72: assert len(all_exposures)==1536
+73: result={"verified_at":datetime.datetime.now().astimezone().isoformat(),"status":"PASS_ALL24_M0_SCALARS_AND_SOURCE_ACCOUNTING",
+74: "summary_sha256":sha(base/"m0/summary.json"),"folds":checks,"optimizer_steps":24,"source_exposures":1536,
+75: "clean_source_reload_feature_forwards":48,"max_loss_composition_difference":max_loss,
+76: "max_epoch_mean_difference":max_mean,"lr_scope":"original optimizer group rules and common epoch1 noise scaling verified from JSON; no local Torch RNG execution",
+77: "precision_scope":"Recorded float components regrouped with Python doubles; no new tolerance-based scientific gate",
+78: "local_model_tensor_image_calls":0,"elapsed_seconds":time.perf_counter()-started}
+79: p=ROOT/"evidence/trifusion_rgbnt100_signal_v1_m0_scalar_verification_20260906.json"
+80: assert not p.exists()
+81: p.write_bytes((json.dumps(result,indent=2)+"\n").encode())
+82: print(json.dumps(result))
+
+FILE 128: evidence/trifusion_rgbnt100_signal_v1_m0_scalar_verifier_corrected_20260906.py
+1: from collections import Counter
+2: from pathlib import Path
+3: from statistics import mean
+4: import datetime,hashlib,json,math,time
+5: ROOT=Path(r"C:/Users/gb/.trifusion_github_publish_22c3bee")
+6: started=time.perf_counter()
+7: base=ROOT/"evidence/rgbnt100_signal_v1_engineering"
+8: summary=json.loads((base/"m0/summary.json").read_text())
+9: protocol=json.loads((ROOT/"protocols/rgbnt100_train_oof_v1.json").read_text())
+10: config=json.loads((ROOT/"configs/RGBNT100/Signal-source-oof-v1.json").read_text())
+11: sha=lambda p:hashlib.sha256(Path(p).read_bytes()).hexdigest()
+12: assert summary["status"]=="PASS_ENGINEERING_ONLY" and summary["mode"]=="preflight"
+13: assert summary["optimizer_steps"]==24 and summary["heldout_image_forwards"]==0
+14: assert summary["official_test_image_access"]==summary["fixed_rgbnt201_dev_image_access"]==summary["expert_training"]==0
+15: assert summary["config_sha256"]==sha(ROOT/"configs/RGBNT100/Signal-source-oof-v1.json")
+16: assert summary["protocol_receipt_sha256"]==sha(base/"t0.json")
+17: max_loss=0.
+18: max_mean=0.
+19: all_exposures=[]
+20: checks=[]
+21: for actual,fold in zip(summary["folds"],protocol["folds"],strict=True):
+22:     training=actual["training"]
+23:     assert training["optimizer_steps"]==len(training["steps"])==8
+24:     assert training["epochs"]==len(training["history"])==1
+25:     assert training["trainable_tensors"]==training["gradient_tensors"]==195
+26:     assert not training["trainable_without_gradient"] and training["overflow_events"]==0
+27:     assert training["initial_state_sha256"]!=training["final_state_sha256"]
+28:     assert training["frozen_token_selection_initial_sha256"]==training["frozen_token_selection_final_sha256"]
+29:     assert actual["strict_reload_exact_feature_parity"] and actual["feature_width"]==3072
+30:     assert actual["clean_source_feature_forwards"]==16 and actual["heldout_image_forwards"]==0
+31:     exposures=[]
+32:     cross=0
+33:     positive=0
+34:     for number,step in enumerate(training["steps"],1):
+35:         assert step["epoch"]==1 and step["step"]==number
+36:         indices=step["sampled_record_indices"]
+37:         assert len(indices)==64 and set(indices)<=set(fold["source_record_indices"])
+38:         rows=[protocol["records"][i] for i in indices]
+39:         assert sorted(Counter(r["identity"] for r in rows).values())==[8]*8
+40:         assert len(step["id_triplet_head_losses"])==4
+41:         composed=sum(step["id_triplet_head_losses"])+.1*step["gram_loss"]+.1*step["patch_loss"]
+42:         max_loss=max(max_loss,abs(composed-step["loss"]))
+43:         assert math.isfinite(step["loss"]) and step["amp_scale_after"]>=step["amp_scale_before"]
+44:         exposures.extend(indices)
+45:         for i,a in enumerate(rows):
+46:             for b in rows[i+1:]:
+47:                 if a["identity"]==b["identity"]:
+48:                     positive+=1
+49:                     cross+=int(a["camera"]!=b["camera"])
+50:     max_mean=max(max_mean,abs(mean(s["loss"] for s in training["steps"])-training["history"][0]["mean_loss"]))
+51:     initial_lrs=set()
+52:     for group in training["optimizer_groups"]:
+53:         expected=.0007*(2 if "bias" in group["name"] else 1)
+54:         if "base" in group["name"] and "adapter" not in group["name"]:expected=.000005
+55:         assert group["initial_lr"]==expected,group["name"]
+56:         assert group["lr"]==.1*.0007
+57:         initial_lrs.add(expected)
+58:     clean_lrs=sorted(.1*.0007+(v-.1*.0007)/5 for v in initial_lrs)
+59:     actual_lrs=training["history"][0]["learning_rates"]
+60:     assert len(clean_lrs)==len(actual_lrs)
+61:     factors=[a/b for a,b in zip(actual_lrs,clean_lrs,strict=True)]
+62:     assert max(factors)-min(factors)<1e-14
+63:     assert all(1-.67<x<1+.67 for x in factors)
+64:     all_exposures.extend(exposures)
+65:     checks.append({"fold":fold["fold"],"updates":8,"source_exposures":len(exposures),
+66:         "source_identity_count_exposed":len({protocol["records"][i]["identity"] for i in exposures}),
+67:         "source_record_count_exposed":len(set(exposures)),"same_identity_pairs":positive,"cross_camera_pairs":cross,
+68:         "total_parameters":training["total_parameters"],"trainable_parameters":training["trainable_parameters"],
+69:         "peak_allocated_mib":actual["peak_allocated_mib"],"training_8_steps_seconds":training["history"][0]["elapsed_seconds"],
+70:         "mean_loss":training["history"][0]["mean_loss"],"initial_parameter_group_lrs":sorted(initial_lrs),
+71:         "epoch1_actual_lrs":actual_lrs,"epoch1_common_noise_factor":factors[0]})
+72: assert len(all_exposures)==1536
+73: result={"verified_at":datetime.datetime.now().astimezone().isoformat(),"status":"PASS_ALL24_M0_SCALARS_AND_SOURCE_ACCOUNTING",
+74: "summary_sha256":sha(base/"m0/summary.json"),"folds":checks,"optimizer_steps":24,"source_exposures":1536,
+75: "clean_source_reload_feature_forwards":48,"max_loss_composition_difference":max_loss,
+76: "max_epoch_mean_difference":max_mean,"lr_scope":"original optimizer group rules and common epoch1 noise scaling verified from JSON; no local Torch RNG execution",
+77: "precision_scope":"Recorded float components regrouped with Python doubles; no new tolerance-based scientific gate",
+78: "local_model_tensor_image_calls":0,"elapsed_seconds":time.perf_counter()-started}
+79: p=ROOT/"evidence/trifusion_rgbnt100_signal_v1_m0_scalar_verification_20260906.json"
+80: assert not p.exists()
+81: p.write_bytes((json.dumps(result,indent=2)+"\n").encode())
+82: print(json.dumps(result))

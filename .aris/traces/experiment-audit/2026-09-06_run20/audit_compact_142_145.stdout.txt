@@ -1,0 +1,1119 @@
+FILE 142: tools/build_v12_complete_path_oof_targets.py (comments/blank lines/docstrings omitted only)
+4: from __future__ import annotations
+6: from collections.abc import Sequence
+7: import argparse
+8: import hashlib
+9: import json
+10: from pathlib import Path
+11: import subprocess
+12: import sys
+13: import time
+14: from typing import Any
+16: import numpy as np
+19: EXPERTS = ("cnn", "transformer", "mamba")
+20: MODALITIES = ("RGB", "NI", "TI")
+21: EXPECTED_FOLDS = 3
+22: EXPECTED_QUERIES = 571
+23: SIGNAL_EPOCHS = 50
+24: EXPERT_EPOCHS = 20
+25: SATURATION_MAP = 99.0
+26: MIN_RESIDUAL_ORACLE_GAIN_MAP = 1.0
+29: def build_complete_path_fold_records(
+30:     records: Sequence[tuple[Any, int, int, int]],
+31:     *,
+32:     heldout_ids: set[int],
+33: ) -> dict[str, Any]:
+36:     heldout = {int(identity) for identity in heldout_ids}
+37:     fit_ids = sorted({int(record[1]) for record in records} - heldout)
+38:     label_map = {identity: index for index, identity in enumerate(fit_ids)}
+39:     train_records = [
+40:         (paths, label_map[int(identity)], camera, view)
+41:         for paths, identity, camera, view in records
+42:         if int(identity) not in heldout
+43:     ]
+44:     heldout_records = [
+45:         record for record in records if int(record[1]) in heldout
+46:     ]
+47:     heldout_present = sorted({int(record[1]) for record in heldout_records})
+48:     overlap = sorted(set(fit_ids) & set(heldout_present))
+49:     return {
+50:         "train_records": train_records,
+51:         "heldout_records": heldout_records,
+52:         "label_map": label_map,
+53:         "fit_identity_ids": tuple(fit_ids),
+54:         "heldout_identity_ids": tuple(heldout_present),
+55:         "identity_overlap": tuple(overlap),
+56:     }
+59: def evaluate_complete_path_oof_gate(
+60:     *,
+61:     fold_receipts: Sequence[dict[str, Any]],
+62:     query_count: int,
+63:     fixed_map: dict[str, float],
+64:     expert_winner_counts: dict[str, int],
+65:     modality_winner_counts: dict[str, int],
+66:     residual_oracle_gain_map: float,
+67:     slot_oracle_margin_gain: float,
+68: ) -> dict[str, Any]:
+71:     protocol = len(fold_receipts) == EXPECTED_FOLDS and int(query_count) == EXPECTED_QUERIES
+72:     identity_isolation = all(
+73:         not (
+74:             set(receipt["signal_fit_identity_ids"])
+75:             & set(receipt["heldout_identity_ids"])
+76:         )
+77:         and not (
+78:             set(receipt["expert_fit_identity_ids"])
+79:             & set(receipt["heldout_identity_ids"])
+80:         )
+81:         for receipt in fold_receipts
+82:     )
+83:     training_schedule = all(
+84:         int(receipt["signal_epochs"]) == SIGNAL_EPOCHS
+85:         and int(receipt["expert_epochs"]) == EXPERT_EPOCHS
+86:         and receipt["signal_checkpoint_selection"] == "final_epoch_only"
+87:         for receipt in fold_receipts
+88:     )
+89:     runtime_integrity = all(
+90:         int(receipt["overflow_events"]) == 0
+91:         and int(receipt["dev_access_count"]) == 0
+92:         and int(receipt["official_test_access_count"]) == 0
+93:         for receipt in fold_receipts
+94:     )
+95:     best_fixed_map = max(float(value) for value in fixed_map.values())
+96:     non_saturation = best_fixed_map < SATURATION_MAP
+97:     expert_diversity = all(
+98:         int(expert_winner_counts[expert]) > 0 for expert in EXPERTS
+99:     )
+100:     modality_diversity = all(
+101:         int(modality_winner_counts[modality]) > 0 for modality in MODALITIES
+102:     )
+103:     residual_oracle_gain = (
+104:         float(residual_oracle_gain_map) >= MIN_RESIDUAL_ORACLE_GAIN_MAP
+105:     )
+106:     slot_oracle_margin = float(slot_oracle_margin_gain) > 0.0
+107:     passed = all(
+108:         (
+109:             protocol,
+110:             identity_isolation,
+111:             training_schedule,
+112:             runtime_integrity,
+113:             non_saturation,
+114:             expert_diversity,
+115:             modality_diversity,
+116:             residual_oracle_gain,
+117:             slot_oracle_margin,
+118:         )
+119:     )
+120:     return {
+121:         "passed": passed,
+122:         "protocol_passed": protocol,
+123:         "complete_path_identity_isolation_passed": identity_isolation,
+124:         "training_schedule_passed": training_schedule,
+125:         "runtime_integrity_passed": runtime_integrity,
+126:         "non_saturation_passed": non_saturation,
+127:         "expert_diversity_passed": expert_diversity,
+128:         "modality_diversity_passed": modality_diversity,
+129:         "residual_oracle_gain_passed": residual_oracle_gain,
+130:         "slot_oracle_margin_gain_passed": slot_oracle_margin,
+131:         "fold_count": len(fold_receipts),
+132:         "query_count": int(query_count),
+133:         "best_fixed_mAP": best_fixed_map,
+134:         "saturation_mAP": SATURATION_MAP,
+135:         "residual_oracle_gain_mAP": float(residual_oracle_gain_map),
+136:         "minimum_residual_oracle_gain_mAP": MIN_RESIDUAL_ORACLE_GAIN_MAP,
+137:         "slot_oracle_margin_gain": float(slot_oracle_margin_gain),
+138:         "expert_unique_winner_counts": {
+139:             expert: int(expert_winner_counts[expert]) for expert in EXPERTS
+140:         },
+141:         "modality_unique_winner_counts": {
+142:             modality: int(modality_winner_counts[modality])
+143:             for modality in MODALITIES
+144:         },
+145:     }
+148: def _sha256(path: Path) -> str:
+149:     digest = hashlib.sha256()
+150:     with path.open("rb") as handle:
+151:         for chunk in iter(lambda: handle.read(1024 * 1024), b""):
+152:             digest.update(chunk)
+153:     return digest.hexdigest()
+156: def _load_records(config: dict[str, Any]) -> list[tuple[Any, int, int, int]]:
+157:     from tools.run_signal_baseline_dev import _records_for_ids
+159:     protocol_path = Path(config["DATA"]["DEV_PROTOCOL"]).resolve()
+160:     protocol = json.loads(protocol_path.read_text(encoding="utf-8"))
+161:     train_ids = {int(value) for value in protocol["train_ids"]}
+162:     if len(train_ids) != 141 or int(protocol["counts"]["train_triplets"]) <= 0:
+163:         raise ValueError("V12 requires the frozen 141-fit identity registry")
+164:     records = list(
+165:         _records_for_ids(
+166:             Path(config["DATA"]["DATASET_ROOT"]).resolve() / "train_171",
+167:             train_ids,
+168:             relabel=True,
+169:         )
+170:     )
+171:     if len(records) != int(protocol["counts"]["train_triplets"]):
+172:         raise ValueError("V12 fit records differ from the frozen protocol")
+173:     return records
+176: def _configure_signal(config: dict[str, Any]) -> tuple[Any, str, str]:
+177:     from tools.run_signal_baseline_dev import _configure_signal_source
+179:     source = Path(config["SIGNAL"]["SOURCE"]).resolve()
+180:     source_commit = _configure_signal_source(source)
+181:     source_diff_sha256 = hashlib.sha256(
+182:         subprocess.check_output(["git", "-C", str(source), "diff", "--binary"])
+183:     ).hexdigest()
+184:     from config import cfg as signal_cfg
+186:     signal_cfg.merge_from_file(str(Path(config["SIGNAL"]["CONFIG"]).resolve()))
+187:     signal_cfg.defrost()
+188:     signal_cfg.MODEL.PRETRAIN_PATH_T = str(
+189:         Path(config["SIGNAL"]["CLIP_WEIGHT"]).resolve()
+190:     )
+191:     signal_cfg.SOLVER.SEED = int(config["EXPERIMENT"]["SEED"])
+192:     signal_cfg.SOLVER.MAX_EPOCHS = int(config["V12"]["SIGNAL_TEACHER_EPOCHS"])
+193:     signal_cfg.SOLVER.IMS_PER_BATCH = int(config["DATA"]["TRAIN_BATCH_SIZE"])
+194:     signal_cfg.DATALOADER.NUM_INSTANCE = int(config["DATA"]["NUM_INSTANCES"])
+195:     signal_cfg.DATALOADER.NUM_WORKERS = int(config["DATA"]["NUM_WORKERS"])
+196:     signal_cfg.TEST.IMS_PER_BATCH = int(config["DATA"]["EVAL_BATCH_SIZE"])
+197:     signal_cfg.freeze()
+198:     return signal_cfg, source_commit, source_diff_sha256
+201: def _signal_training_loss(
+202:     output: Any,
+203:     *,
+204:     loss_fn: Any,
+205:     labels: Any,
+206:     cameras: Any,
+207:     stage: str,
+208:     gram_weight: float,
+209:     patch_weight: float,
+210: ) -> Any:
+211:     loss = 0
+212:     sign = output[0]
+213:     if sign in (1, 2):
+214:         end = len(output) - 1
+215:         for index in range(1, end, 2):
+216:             loss = loss + loss_fn(
+217:                 score=output[index],
+218:                 feat=output[index + 1],
+219:                 target=labels,
+220:                 target_cam=cameras,
+221:             )
+222:         return loss
+223:     if stage == "CLS":
+224:         end = len(output) - 2
+225:         for index in range(1, end, 2):
+226:             loss = loss + loss_fn(
+227:                 score=output[index],
+228:                 feat=output[index + 1],
+229:                 target=labels,
+230:                 target_cam=cameras,
+231:             )
+232:         return loss + float(gram_weight) * output[-1]
+233:     end = len(output) - 3
+234:     for index in range(1, end, 2):
+235:         loss = loss + loss_fn(
+236:             score=output[index],
+237:             feat=output[index + 1],
+238:             target=labels,
+239:             target_cam=cameras,
+240:         )
+241:     return loss + float(gram_weight) * output[-2] + float(patch_weight) * output[-1]
+244: def _build_signal_teacher(
+245:     signal_cfg: Any,
+246:     *,
+247:     num_classes: int,
+248:     camera_num: int,
+249:     view_num: int,
+250: ) -> Any:
+251:     from modeling import make_frame
+253:     return make_frame(
+254:         signal_cfg,
+255:         num_class=num_classes,
+256:         camera_num=camera_num,
+257:         view_num=view_num,
+258:     ).cuda()
+261: def _train_signal_teacher(
+262:     model: Any,
+263:     loader: Any,
+264:     signal_cfg: Any,
+265:     *,
+266:     epochs: int,
+267:     amp_init_scale: float,
+268:     max_steps: int | None = None,
+269: ) -> dict[str, Any]:
+270:     import torch
+271:     from layers.make_loss import make_loss
+272:     from solver.make_optimizer import make_optimizer
+273:     from solver.scheduler_factory import create_scheduler
+274:     from tools.run_signal_preserving_v5 import _module_state_sha256
+276:     loss_fn, center_criterion = make_loss(signal_cfg, num_classes=model.num_classes)
+277:     optimizer, _optimizer_center = make_optimizer(signal_cfg, model, center_criterion)
+278:     scheduler = create_scheduler(signal_cfg, optimizer)
+279:     scaler = torch.amp.GradScaler("cuda", init_scale=float(amp_init_scale))
+280:     initial_state_sha256 = _module_state_sha256(model)
+281:     history = []
+282:     overflow_events = 0
+283:     optimizer_steps = 0
+284:     gradient_names: set[str] = set()
+285:     stop = False
+286:     for epoch in range(1, int(epochs) + 1):
+287:         scheduler.step(epoch)
+288:         model.train()
+289:         epoch_losses = []
+290:         for images, labels, cameras, views, _paths in loader:
+291:             optimizer.zero_grad(set_to_none=True)
+292:             images = {
+293:                 name: tensor.cuda(non_blocking=True)
+294:                 for name, tensor in images.items()
+295:             }
+296:             labels = labels.cuda(non_blocking=True)
+297:             cameras = cameras.cuda(non_blocking=True)
+298:             views = views.cuda(non_blocking=True)
+299:             with torch.autocast(
+300:                 device_type="cuda",
+301:                 dtype=torch.float16,
+302:                 enabled=True,
+303:             ):
+304:                 output = model(
+305:                     images,
+306:                     label=labels,
+307:                     cam_label=cameras,
+308:                     view_label=views,
+309:                     training=True,
+310:                     sge=signal_cfg.MODEL.stageName,
+311:                 )
+312:                 loss = _signal_training_loss(
+313:                     output,
+314:                     loss_fn=loss_fn,
+315:                     labels=labels,
+316:                     cameras=cameras,
+317:                     stage=signal_cfg.MODEL.stageName,
+318:                     gram_weight=float(signal_cfg.MODEL.Gram_Loss_weight),
+319:                     patch_weight=float(signal_cfg.MODEL.PAT_Loss_weight),
+320:                 )
+321:             if not bool(torch.isfinite(loss)):
+322:                 raise FloatingPointError("V12 Signal teacher loss is nonfinite")
+323:             scale_before = scaler.get_scale()
+324:             scaler.scale(loss).backward()
+325:             scaler.unscale_(optimizer)
+326:             for name, parameter in model.named_parameters():
+327:                 if parameter.grad is not None:
+328:                     if not bool(torch.isfinite(parameter.grad).all()):
+329:                         raise FloatingPointError(
+330:                             f"V12 Signal teacher gradient is nonfinite: {name}"
+331:                         )
+332:                     gradient_names.add(name)
+333:             scaler.step(optimizer)
+334:             scaler.update()
+335:             overflow = scaler.get_scale() < scale_before
+336:             overflow_events += int(overflow)
+337:             optimizer_steps += int(not overflow)
+338:             epoch_losses.append(float(loss.detach()))
+339:             if max_steps is not None and optimizer_steps + overflow_events >= max_steps:
+340:                 stop = True
+341:                 break
+342:         history.append(
+343:             {
+344:                 "epoch": epoch,
+345:                 "mean_training_loss": float(np.mean(epoch_losses)),
+346:             }
+347:         )
+348:         print(json.dumps(history[-1], sort_keys=True), flush=True)
+349:         if stop:
+350:             break
+351:     return {
+352:         "epochs": len(history),
+353:         "optimizer_steps": optimizer_steps,
+354:         "overflow_events": overflow_events,
+355:         "gradient_tensors": len(gradient_names),
+356:         "initial_state_sha256": initial_state_sha256,
+357:         "final_state_sha256": _module_state_sha256(model),
+358:         "history": history,
+359:     }
+362: def _eval_loader(records: Sequence[Any], config: dict[str, Any]) -> Any:
+363:     import torchvision.transforms as transforms
+364:     from data.datasets.bases import ImageDataset
+365:     from data.datasets.make_dataloader import val_collate_fn
+366:     from torch.utils.data import DataLoader
+368:     transform = transforms.Compose(
+369:         [
+370:             transforms.Resize([256, 128]),
+371:             transforms.ToTensor(),
+372:             transforms.Normalize(mean=[0.5, 0.5, 0.5], std=[0.5, 0.5, 0.5]),
+373:         ]
+374:     )
+375:     return DataLoader(
+376:         ImageDataset(list(records) + list(records), transform),
+377:         batch_size=int(config["DATA"]["EVAL_BATCH_SIZE"]),
+378:         shuffle=False,
+379:         num_workers=int(config["DATA"]["NUM_WORKERS"]),
+380:         collate_fn=val_collate_fn,
+381:     )
+384: def _build_v8_experts(
+385:     signal_model: Any,
+386:     config: dict[str, Any],
+387:     *,
+388:     signal_checkpoint_sha256: str,
+389:     num_classes: int,
+390: ) -> Any:
+391:     project_modeling = str(Path(__file__).resolve().parents[1] / "modeling")
+392:     if project_modeling not in sys.path:
+393:         sys.path.append(project_modeling)
+394:     from trifusion.signal_preserving_v8_builder import (
+395:         build_signal_preserving_trifusion_v8_expert_formation,
+396:     )
+398:     model_config = config["MODEL"]
+399:     return build_signal_preserving_trifusion_v8_expert_formation(
+400:         signal_model,
+401:         signal_checkpoint_sha256=signal_checkpoint_sha256,
+402:         num_classes=num_classes,
+403:         feature_width=int(model_config["FEATURE_WIDTH"]),
+404:         grid_size=tuple(model_config["GRID_SIZE"]),
+405:         adapter_width=int(model_config["ADAPTER_WIDTH"]),
+406:         semantic_width=int(model_config["SEMANTIC_WIDTH"]),
+407:         branch_after_block=int(model_config["BRANCH_AFTER_BLOCK"]),
+408:         expert_modal_width=int(model_config["EXPERT_MODAL_WIDTH"]),
+409:         scale_init=float(model_config["SCALE_INIT"]),
+410:         gradient_checkpointing=bool(model_config["GRADIENT_CHECKPOINTING"]),
+411:     ).model.cuda()
+414: def _metric_summary(scores: Any) -> dict[str, float]:
+415:     return {
+416:         "mAP": float(scores.average_precision.mean() * 100.0),
+417:         "Rank-1": float(scores.rank1_correct.mean() * 100.0),
+418:     }
+421: def _run_preflight(
+422:     config: dict[str, Any],
+423:     config_path: Path,
+424:     output_dir: Path,
+425: ) -> dict[str, Any]:
+426:     import torch
+427:     project_modeling = str(Path(__file__).resolve().parents[1] / "modeling")
+428:     if project_modeling not in sys.path:
+429:         sys.path.append(project_modeling)
+430:     from trifusion.aligned_data import build_aligned_train_loader
+431:     from tools.build_v8_oof_router_targets import build_identity_folds
+432:     from tools.run_signal_preserving_v5 import _set_seed
+434:     started = time.time()
+435:     signal_cfg, source_commit, source_diff_sha256 = _configure_signal(config)
+436:     records = _load_records(config)
+437:     folds = build_identity_folds(records, num_folds=EXPECTED_FOLDS)
+438:     split = build_complete_path_fold_records(records, heldout_ids=folds[0])
+439:     loader = build_aligned_train_loader(
+440:         split["train_records"],
+441:         batch_size=int(config["DATA"]["TRAIN_BATCH_SIZE"]),
+442:         num_instances=int(config["DATA"]["NUM_INSTANCES"]),
+443:         num_workers=int(config["DATA"]["NUM_WORKERS"]),
+444:         seed=int(config["EXPERIMENT"]["SEED"]),
+445:     )
+446:     _set_seed(int(config["EXPERIMENT"]["SEED"]))
+447:     torch.cuda.reset_peak_memory_stats()
+448:     model = _build_signal_teacher(
+449:         signal_cfg,
+450:         num_classes=len(split["fit_identity_ids"]),
+451:         camera_num=len({record[2] for record in split["train_records"]}),
+452:         view_num=len({record[3] for record in split["train_records"]}),
+453:     )
+454:     training = _train_signal_teacher(
+455:         model,
+456:         loader,
+457:         signal_cfg,
+458:         epochs=1,
+459:         amp_init_scale=float(config["OPTIMIZATION"]["AMP_INIT_SCALE"]),
+460:         max_steps=1,
+461:     )
+462:     passed = (
+463:         split["identity_overlap"] == ()
+464:         and training["optimizer_steps"] == 1
+465:         and training["overflow_events"] == 0
+466:         and training["gradient_tensors"] > 0
+467:     )
+468:     result = {
+469:         "schema_version": "trifusion-v12-complete-path-oof-preflight-v1",
+470:         "status": "PASS" if passed else "FAIL",
+471:         "mode": "preflight",
+472:         "source_commit": source_commit,
+473:         "source_diff_sha256": source_diff_sha256,
+474:         "config": str(config_path),
+475:         "config_sha256": _sha256(config_path),
+476:         "runner_sha256": _sha256(Path(__file__).resolve()),
+477:         "fold": 0,
+478:         "fit_identity_count": len(split["fit_identity_ids"]),
+479:         "heldout_identity_count": len(split["heldout_identity_ids"]),
+480:         "identity_overlap": list(split["identity_overlap"]),
+481:         "batch_size": int(config["DATA"]["TRAIN_BATCH_SIZE"]),
+482:         "num_instances": int(config["DATA"]["NUM_INSTANCES"]),
+483:         "training": training,
+484:         "peak_allocated_mib": torch.cuda.max_memory_allocated() / 1024**2,
+485:         "peak_reserved_mib": torch.cuda.max_memory_reserved() / 1024**2,
+486:         "dev_access_count": 0,
+487:         "official_test_access_count": 0,
+488:         "elapsed_seconds": time.time() - started,
+489:     }
+490:     (output_dir / "run_summary.json").write_text(
+491:         json.dumps(result, indent=2, sort_keys=True) + "\n",
+492:         encoding="utf-8",
+493:     )
+494:     print(json.dumps(result, indent=2, sort_keys=True))
+495:     if not passed:
+496:         raise RuntimeError("V12 complete-path preflight failed")
+497:     return result
+500: def _run_oof(
+501:     config: dict[str, Any],
+502:     config_path: Path,
+503:     output_dir: Path,
+504: ) -> dict[str, Any]:
+505:     import torch
+506:     import torch.nn.functional as F
+507:     project_modeling = str(Path(__file__).resolve().parents[1] / "modeling")
+508:     if project_modeling not in sys.path:
+509:         sys.path.append(project_modeling)
+510:     from trifusion.aligned_data import build_aligned_train_loader
+511:     from tools.build_v8_oof_router_targets import (
+512:         _collect_fold,
+513:         _train_fold,
+514:         build_identity_folds,
+515:     )
+516:     from tools.diagnose_v6_oracle_complementarity import (
+517:         QueryRetrievalScores,
+518:         _scores_from_features,
+519:         summarize_oracle_complementarity,
+520:     )
+521:     from tools.probe_v8_frozen_router import select_cross_camera_records
+522:     from tools.repair_v8_oof_margin_targets import _margins_from_features
+523:     from tools.run_signal_preserving_v5 import _set_seed
+525:     started = time.time()
+526:     signal_cfg, source_commit, source_diff_sha256 = _configure_signal(config)
+527:     records = _load_records(config)
+528:     folds = build_identity_folds(records, num_folds=EXPECTED_FOLDS)
+529:     eligible_records = select_cross_camera_records(records)
+530:     eligible_ids = {int(record[1]) for record in eligible_records}
+531:     fold_receipts = []
+532:     fold_metrics = []
+533:     query_direct = []
+534:     query_modal_residual = []
+535:     query_target_margin = []
+536:     query_identities = []
+537:     query_cameras = []
+538:     query_folds = []
+539:     score_parts = {name: [] for name in (*EXPERTS, "bank")}
+540:     torch.cuda.reset_peak_memory_stats()
+541:     for fold_index, heldout_ids in enumerate(folds):
+542:         _set_seed(int(config["EXPERIMENT"]["SEED"]))
+543:         split_records = build_complete_path_fold_records(
+544:             records,
+545:             heldout_ids=heldout_ids,
+546:         )
+547:         expert_fit_original = [
+548:             (paths, split_records["label_map"][int(identity)], camera, view)
+549:             for paths, identity, camera, view in records
+550:             if int(identity) in split_records["fit_identity_ids"]
+551:         ]
+552:         signal_loader = build_aligned_train_loader(
+553:             split_records["train_records"],
+554:             batch_size=int(config["DATA"]["TRAIN_BATCH_SIZE"]),
+555:             num_instances=int(config["DATA"]["NUM_INSTANCES"]),
+556:             num_workers=int(config["DATA"]["NUM_WORKERS"]),
+557:             seed=int(config["EXPERIMENT"]["SEED"]),
+558:         )
+559:         signal_model = _build_signal_teacher(
+560:             signal_cfg,
+561:             num_classes=len(split_records["fit_identity_ids"]),
+562:             camera_num=len({record[2] for record in split_records["train_records"]}),
+563:             view_num=len({record[3] for record in split_records["train_records"]}),
+564:         )
+565:         signal_training = _train_signal_teacher(
+566:             signal_model,
+567:             signal_loader,
+568:             signal_cfg,
+569:             epochs=int(config["V12"]["SIGNAL_TEACHER_EPOCHS"]),
+570:             amp_init_scale=float(config["OPTIMIZATION"]["AMP_INIT_SCALE"]),
+571:         )
+572:         signal_checkpoint = output_dir / f"fold_{fold_index}_signal_final.pth"
+573:         torch.save(
+574:             {
+575:                 "schema_version": "trifusion-v12-fold-signal-final-v1",
+576:                 "fold": fold_index,
+577:                 "fit_identity_ids": list(split_records["fit_identity_ids"]),
+578:                 "heldout_identity_ids": list(split_records["heldout_identity_ids"]),
+579:                 "model_state_dict": {
+580:                     name: value.detach().cpu()
+581:                     for name, value in signal_model.state_dict().items()
+582:                 },
+583:             },
+584:             signal_checkpoint,
+585:         )
+586:         signal_checkpoint_sha256 = _sha256(signal_checkpoint)
+587:         model = _build_v8_experts(
+588:             signal_model,
+589:             config,
+590:             signal_checkpoint_sha256=signal_checkpoint_sha256,
+591:             num_classes=len(split_records["fit_identity_ids"]),
+592:         )
+593:         expert_training = _train_fold(model, expert_fit_original, config)
+594:         expert_checkpoint = output_dir / f"fold_{fold_index}_experts.pth"
+595:         torch.save(
+596:             {
+597:                 "schema_version": "trifusion-v12-fold-experts-v1",
+598:                 "fold": fold_index,
+599:                 "signal_checkpoint_sha256": signal_checkpoint_sha256,
+600:                 "fit_identity_ids": list(split_records["fit_identity_ids"]),
+601:                 "heldout_identity_ids": list(split_records["heldout_identity_ids"]),
+602:                 "expert_state_dict": {
+603:                     name: value.detach().cpu()
+604:                     for name, value in model.state_dict().items()
+605:                     if not name.startswith("baseline.")
+606:                 },
+607:             },
+608:             expert_checkpoint,
+609:         )
+610:         heldout_records = [
+611:             record
+612:             for record in eligible_records
+613:             if int(record[1]) in heldout_ids
+614:         ]
+615:         heldout_loader = _eval_loader(heldout_records, config)
+616:         collected = _collect_fold(model, heldout_loader)
+617:         num_query = len(heldout_records)
+618:         identities = collected["identities"]
+619:         cameras = collected["cameras"]
+620:         residuals = {
+621:             expert: collected[f"residual_{expert}"] for expert in EXPERTS
+622:         }
+623:         residuals["bank"] = torch.cat(
+624:             [F.normalize(residuals[expert].float(), dim=1) for expert in EXPERTS],
+625:             dim=1,
+626:         )
+627:         local_scores = {
+628:             name: _scores_from_features(
+629:                 features,
+630:                 identities,
+631:                 cameras,
+632:                 num_query=num_query,
+633:             )
+634:             for name, features in residuals.items()
+635:         }
+636:         for name, scores in local_scores.items():
+637:             score_parts[name].append(scores)
+638:         slot_margin = np.empty(
+639:             (num_query, len(EXPERTS), len(MODALITIES)),
+640:             dtype=np.float64,
+641:         )
+642:         for expert_index, expert in enumerate(EXPERTS):
+643:             for modality_index, modality in enumerate(MODALITIES):
+644:                 slot_margin[:, expert_index, modality_index] = _margins_from_features(
+645:                     collected[f"slot_{expert}_{modality}"],
+646:                     identities,
+647:                     cameras,
+648:                     num_query=num_query,
+649:                 )
+650:         query_direct.append(collected["direct_modal"][:num_query].half())
+651:         query_modal_residual.append(collected["modal_residual"][:num_query].half())
+652:         query_target_margin.append(torch.from_numpy(slot_margin).float())
+653:         query_identities.extend(identities[:num_query].tolist())
+654:         query_cameras.extend(cameras[:num_query].tolist())
+655:         query_folds.extend([fold_index] * num_query)
+656:         fold_metrics.append(
+657:             {
+658:                 "fold": fold_index,
+659:                 "queries": num_query,
+660:                 "metrics_percent": {
+661:                     name: _metric_summary(scores)
+662:                     for name, scores in local_scores.items()
+663:                 },
+664:             }
+665:         )
+666:         receipt = {
+667:             "fold": fold_index,
+668:             "signal_fit_identity_ids": list(split_records["fit_identity_ids"]),
+669:             "expert_fit_identity_ids": list(split_records["fit_identity_ids"]),
+670:             "heldout_identity_ids": list(split_records["heldout_identity_ids"]),
+671:             "eligible_heldout_identity_count": len(heldout_ids & eligible_ids),
+672:             "eligible_heldout_queries": num_query,
+673:             "signal_epochs": int(signal_training["epochs"]),
+674:             "expert_epochs": int(expert_training["epochs"]),
+675:             "signal_checkpoint_selection": "final_epoch_only",
+676:             "signal_checkpoint": str(signal_checkpoint),
+677:             "signal_checkpoint_sha256": signal_checkpoint_sha256,
+678:             "expert_checkpoint": str(expert_checkpoint),
+679:             "expert_checkpoint_sha256": _sha256(expert_checkpoint),
+680:             "signal_training": signal_training,
+681:             "expert_training": expert_training,
+682:             "overflow_events": int(signal_training["overflow_events"])
+683:             + int(expert_training["overflow_events"]),
+684:             "dev_access_count": 0,
+685:             "official_test_access_count": 0,
+686:         }
+687:         fold_receipts.append(receipt)
+688:         (output_dir / "progress.json").write_text(
+689:             json.dumps(
+690:                 {
+691:                     "schema_version": "trifusion-v12-complete-path-oof-progress-v1",
+692:                     "completed_folds": fold_receipts,
+693:                     "dev_access_count": 0,
+694:                     "official_test_access_count": 0,
+695:                 },
+696:                 indent=2,
+697:                 sort_keys=True,
+698:             )
+699:             + "\n",
+700:             encoding="utf-8",
+701:         )
+702:         del model
+703:         del signal_model
+704:         torch.cuda.empty_cache()
+706:     combined_scores = {
+707:         name: QueryRetrievalScores(
+708:             average_precision=np.concatenate(
+709:                 [scores.average_precision for scores in parts]
+710:             ),
+711:             rank1_correct=np.concatenate(
+712:                 [scores.rank1_correct for scores in parts]
+713:             ),
+714:         )
+715:         for name, parts in score_parts.items()
+716:     }
+717:     fixed_metrics = {
+718:         name: _metric_summary(scores) for name, scores in combined_scores.items()
+719:     }
+720:     expert_oracle = summarize_oracle_complementarity(
+721:         {expert: combined_scores[expert] for expert in EXPERTS}
+722:     )
+723:     target_margin = torch.cat(query_target_margin)
+724:     maximum = target_margin.amax(dim=(1, 2), keepdim=True)
+725:     unique = torch.isclose(
+726:         target_margin,
+727:         maximum,
+728:         rtol=0.0,
+729:         atol=1e-8,
+730:     ).flatten(1).sum(dim=1) == 1
+731:     winners = target_margin.flatten(1).argmax(dim=1)
+732:     expert_counts = {
+733:         expert: int((unique & (winners // len(MODALITIES) == index)).sum())
+734:         for index, expert in enumerate(EXPERTS)
+735:     }
+736:     modality_counts = {
+737:         modality: int((unique & (winners % len(MODALITIES) == index)).sum())
+738:         for index, modality in enumerate(MODALITIES)
+739:     }
+740:     fixed_margin = target_margin.mean(dim=0)
+741:     slot_oracle_margin = float(target_margin.amax(dim=(1, 2)).mean())
+742:     slot_margin_gain = slot_oracle_margin - float(fixed_margin.max())
+743:     gate = evaluate_complete_path_oof_gate(
+744:         fold_receipts=fold_receipts,
+745:         query_count=int(target_margin.shape[0]),
+746:         fixed_map={name: values["mAP"] for name, values in fixed_metrics.items()},
+747:         expert_winner_counts=expert_counts,
+748:         modality_winner_counts=modality_counts,
+749:         residual_oracle_gain_map=float(
+750:             expert_oracle["oracle_minus_best_fixed_percent"]["mAP"]
+751:         ),
+752:         slot_oracle_margin_gain=slot_margin_gain,
+753:     )
+754:     target_cache = output_dir / "oof_router_margin_targets.pth"
+755:     torch.save(
+756:         {
+757:             "schema_version": "trifusion-v8-oof-router-margin-cache-v1",
+758:             "direct_modal": torch.cat(query_direct),
+759:             "modal_residual": torch.cat(query_modal_residual),
+760:             "target_identity_margin": target_margin,
+761:             "identities": torch.tensor(query_identities, dtype=torch.long),
+762:             "cameras": torch.tensor(query_cameras, dtype=torch.long),
+763:             "fold_indices": torch.tensor(query_folds, dtype=torch.long),
+764:             "experts": EXPERTS,
+765:             "modalities": MODALITIES,
+766:             "teacher_protocol": "complete_path_identity_oof_v12",
+767:         },
+768:         target_cache,
+769:     )
+770:     result = {
+771:         "schema_version": "trifusion-v12-complete-path-oof-result-v1",
+772:         "status": "PASS",
+773:         "seed": int(config["EXPERIMENT"]["SEED"]),
+774:         "source_commit": source_commit,
+775:         "source_diff_sha256": source_diff_sha256,
+776:         "config": str(config_path),
+777:         "config_sha256": _sha256(config_path),
+778:         "runner_sha256": _sha256(Path(__file__).resolve()),
+779:         "clip_weight": str(Path(config["SIGNAL"]["CLIP_WEIGHT"]).resolve()),
+780:         "clip_weight_sha256": _sha256(
+781:             Path(config["SIGNAL"]["CLIP_WEIGHT"]).resolve()
+782:         ),
+783:         "fold_receipts": fold_receipts,
+784:         "fold_metrics": fold_metrics,
+785:         "fixed_metrics_percent": fixed_metrics,
+786:         "residual_expert_oracle": expert_oracle,
+787:         "slot_fixed_mean_identity_margin": {
+788:             expert: {
+789:                 modality: float(fixed_margin[expert_index, modality_index])
+790:                 for modality_index, modality in enumerate(MODALITIES)
+791:             }
+792:             for expert_index, expert in enumerate(EXPERTS)
+793:         },
+794:         "slot_oracle_mean_identity_margin": slot_oracle_margin,
+795:         "slot_oracle_minus_best_fixed_margin": slot_margin_gain,
+796:         "qualification_gate": gate,
+797:         "next_phase_authorized": bool(gate["passed"]),
+798:         "target_cache": str(target_cache),
+799:         "target_cache_sha256": _sha256(target_cache),
+800:         "training_executed": True,
+801:         "optimizer_steps": sum(
+802:             int(receipt["signal_training"]["optimizer_steps"])
+803:             + int(receipt["expert_training"]["optimizer_steps"])
+804:             for receipt in fold_receipts
+805:         ),
+806:         "peak_allocated_mib": torch.cuda.max_memory_allocated() / 1024**2,
+807:         "peak_reserved_mib": torch.cuda.max_memory_reserved() / 1024**2,
+808:         "dev_access_count": 0,
+809:         "official_test_access_count": 0,
+810:         "elapsed_seconds": time.time() - started,
+811:     }
+812:     (output_dir / "run_summary.json").write_text(
+813:         json.dumps(result, indent=2, sort_keys=True) + "\n",
+814:         encoding="utf-8",
+815:     )
+816:     print(json.dumps(result, indent=2, sort_keys=True))
+817:     return result
+820: def run(args: argparse.Namespace) -> dict[str, Any]:
+821:     import yaml
+823:     config_path = args.config.resolve()
+824:     config = yaml.safe_load(config_path.read_text(encoding="utf-8"))
+825:     if int(config["EXPERIMENT"]["SEED"]) != 42:
+826:         raise ValueError("V12 is frozen to seed 42")
+827:     if bool(config["PROTOCOL"]["DEV_ACCESS_DURING_TARGET_BUILDING"]):
+828:         raise ValueError("V12 target building cannot access dev")
+829:     clip_weight = Path(config["SIGNAL"]["CLIP_WEIGHT"]).resolve()
+830:     if _sha256(clip_weight) != str(config["SIGNAL"]["CLIP_WEIGHT_SHA256"]):
+831:         raise ValueError("V12 raw CLIP SHA-256 differs from the contract")
+832:     output_dir = args.output_dir.resolve()
+833:     if output_dir.exists():
+834:         raise FileExistsError(f"V12 output already exists: {output_dir}")
+835:     output_dir.mkdir(parents=True)
+836:     if args.mode == "preflight":
+837:         return _run_preflight(config, config_path, output_dir)
+838:     return _run_oof(config, config_path, output_dir)
+841: def parse_args() -> argparse.Namespace:
+842:     parser = argparse.ArgumentParser(description=__doc__)
+843:     parser.add_argument("--config", type=Path, required=True)
+844:     parser.add_argument("--output-dir", type=Path, required=True)
+845:     parser.add_argument("--mode", choices=("preflight", "oof"), required=True)
+846:     return parser.parse_args()
+849: if __name__ == "__main__":
+850:     run(parse_args())
+853: __all__ = [
+854:     "build_complete_path_fold_records",
+855:     "evaluate_complete_path_oof_gate",
+856:     "run",
+857: ]
+
+FILE 145: tools/run_signal_baseline_dev.py (comments/blank lines/docstrings omitted only)
+4: from __future__ import annotations
+6: import argparse
+7: import hashlib
+8: import json
+9: from pathlib import Path
+10: import random
+11: import subprocess
+12: import sys
+13: import time
+16: EXPECTED_SIGNAL_COMMIT = "cd1b0a672d1fe642e7608731cb4899a19dda7d51"
+19: def _sha256(path: Path) -> str:
+20:     digest = hashlib.sha256()
+21:     with path.open("rb") as handle:
+22:         for chunk in iter(lambda: handle.read(1024 * 1024), b""):
+23:             digest.update(chunk)
+24:     return digest.hexdigest()
+27: def _parse_record(rgb_path: Path, label: int) -> tuple[list[str], int, int, int]:
+28:     fields = rgb_path.name.split("_")
+29:     camera_id = int(fields[1][3]) - 1
+30:     paths = [
+31:         rgb_path,
+32:         rgb_path.parents[1] / "NI" / rgb_path.name,
+33:         rgb_path.parents[1] / "TI" / rgb_path.name,
+34:     ]
+35:     if any(not path.is_file() for path in paths):
+36:         raise FileNotFoundError(f"unpaired RGBNT201 triplet: {rgb_path.name}")
+37:     return [str(path) for path in paths], label, camera_id, -1
+40: def _records_for_ids(
+41:     train_root: Path,
+42:     identities: set[int],
+43:     *,
+44:     relabel: bool,
+45: ) -> tuple[tuple[list[str], int, int, int], ...]:
+46:     labels = {identity: index for index, identity in enumerate(sorted(identities))}
+47:     records = []
+48:     for rgb_path in sorted((train_root / "RGB").glob("*.jpg")):
+49:         identity = int(rgb_path.name[:6])
+50:         if identity in identities:
+51:             records.append(
+52:                 _parse_record(rgb_path, labels[identity] if relabel else identity)
+53:             )
+54:     return tuple(records)
+57: def _configure_signal_source(source: Path) -> str:
+58:     commit = subprocess.check_output(
+59:         ["git", "-C", str(source), "rev-parse", "HEAD"], text=True
+60:     ).strip()
+61:     if commit != EXPECTED_SIGNAL_COMMIT:
+62:         raise ValueError(f"Signal source commit is {commit}, expected {EXPECTED_SIGNAL_COMMIT}")
+63:     sys.path.insert(0, str(source))
+64:     return commit
+67: def _build_loaders(
+68:     *,
+69:     dataset_root: Path,
+70:     protocol_path: Path,
+71:     batch_size: int,
+72:     num_instances: int,
+73:     eval_batch_size: int,
+74:     num_workers: int,
+75:     seed: int,
+76: ):
+77:     import torch
+78:     import torchvision.transforms as transforms
+79:     from torch.utils.data import DataLoader
+81:     from data.datasets.bases import ImageDataset
+82:     from data.datasets.make_dataloader import (
+83:         RandomErasing,
+84:         train_collate_fn,
+85:         val_collate_fn,
+86:     )
+87:     from data.datasets.sampler import RandomIdentitySampler
+89:     protocol = json.loads(protocol_path.read_text(encoding="utf-8"))
+90:     if protocol["selection"]["uses_test_labels"] is not False:
+91:         raise ValueError("development protocol must be test-label blind")
+92:     train_ids = {int(value) for value in protocol["train_ids"]}
+93:     dev_ids = {int(value) for value in protocol["dev_ids"]}
+94:     if len(train_ids) != 141 or len(dev_ids) != 30 or train_ids & dev_ids:
+95:         raise ValueError("frozen 141-fit/30-dev identity registry is invalid")
+97:     train_root = dataset_root / "train_171"
+98:     train_records = _records_for_ids(train_root, train_ids, relabel=True)
+99:     dev_records = _records_for_ids(train_root, dev_ids, relabel=False)
+100:     if len(train_records) != int(protocol["counts"]["train_triplets"]):
+101:         raise ValueError("Signal fit records differ from the frozen protocol")
+102:     if len(dev_records) != int(protocol["counts"]["dev_triplets"]):
+103:         raise ValueError("Signal dev records differ from the frozen protocol")
+105:     train_transform = transforms.Compose(
+106:         [
+107:             transforms.Resize([256, 128], interpolation=3),
+108:             transforms.RandomHorizontalFlip(p=0.5),
+109:             transforms.Pad(10),
+110:             transforms.RandomCrop([256, 128]),
+111:             transforms.ToTensor(),
+112:             transforms.Normalize(mean=[0.5, 0.5, 0.5], std=[0.5, 0.5, 0.5]),
+113:             RandomErasing(
+114:                 probability=0.5,
+115:                 mode="pixel",
+116:                 max_count=1,
+117:                 device="cpu",
+118:             ),
+119:         ]
+120:     )
+121:     eval_transform = transforms.Compose(
+122:         [
+123:             transforms.Resize([256, 128]),
+124:             transforms.ToTensor(),
+125:             transforms.Normalize(mean=[0.5, 0.5, 0.5], std=[0.5, 0.5, 0.5]),
+126:         ]
+127:     )
+128:     train_loader = DataLoader(
+129:         ImageDataset(train_records, train_transform),
+130:         batch_size=batch_size,
+131:         sampler=RandomIdentitySampler(
+132:             train_records,
+133:             batch_size,
+134:             num_instances,
+135:             seed,
+136:         ),
+137:         num_workers=num_workers,
+138:         collate_fn=train_collate_fn,
+139:     )
+140:     eval_loader = DataLoader(
+141:         ImageDataset(dev_records + dev_records, eval_transform),
+142:         batch_size=eval_batch_size,
+143:         shuffle=False,
+144:         num_workers=num_workers,
+145:         collate_fn=val_collate_fn,
+146:     )
+147:     return train_loader, eval_loader, train_records, dev_records
+150: def _evaluate(model, loader, num_query: int, stage: str) -> tuple[dict[str, float], int]:
+151:     import numpy as np
+152:     import torch
+153:     from utils.metrics import R1_mAP_eval
+155:     evaluator = R1_mAP_eval(num_query, max_rank=50, feat_norm="yes")
+156:     model.eval()
+157:     feature_width = 0
+158:     for images, identities, camera_ids, camera_ids_batch, view_ids, paths in loader:
+159:         with torch.no_grad():
+160:             images = {name: tensor.cuda() for name, tensor in images.items()}
+161:             features = model(
+162:                 images,
+163:                 cam_label=camera_ids_batch.cuda(),
+164:                 view_label=view_ids.cuda(),
+165:                 training=False,
+166:                 sge=stage,
+167:             )
+168:         feature_width = int(features.shape[1])
+169:         evaluator.update((features, identities, camera_ids, paths))
+170:     if feature_width != 3072:
+171:         raise ValueError(f"Signal retrieval feature width is {feature_width}, expected 3072")
+172:     cmc, mean_ap, *_ = evaluator.compute()
+173:     metrics = {
+174:         "mAP": float(mean_ap * 100.0),
+175:         "Rank-1": float(cmc[0] * 100.0),
+176:         "Rank-5": float(cmc[4] * 100.0),
+177:         "Rank-10": float(cmc[9] * 100.0),
+178:     }
+179:     if not all(np.isfinite(value) for value in metrics.values()):
+180:         raise FloatingPointError("nonfinite Signal baseline metric")
+181:     return metrics, feature_width
+184: def run(args: argparse.Namespace) -> dict[str, object]:
+185:     source = args.signal_source.resolve()
+186:     output_dir = args.output_dir.resolve()
+187:     dataset_root = args.dataset_root.resolve()
+188:     protocol_path = args.protocol.resolve()
+189:     clip_weight = args.clip_weight.resolve()
+190:     if output_dir.exists():
+191:         raise FileExistsError(f"output directory already exists: {output_dir}")
+192:     output_dir.mkdir(parents=True)
+194:     source_commit = _configure_signal_source(source)
+195:     import numpy as np
+196:     import torch
+197:     from config import cfg
+198:     from engine.processor import do_train
+199:     from layers.make_loss import make_loss
+200:     from modeling import make_frame
+201:     from solver.make_optimizer import make_optimizer
+202:     from solver.scheduler_factory import create_scheduler
+203:     from utils.logger import setup_logger
+205:     random.seed(args.seed)
+206:     np.random.seed(args.seed)
+207:     torch.manual_seed(args.seed)
+208:     torch.cuda.manual_seed(args.seed)
+209:     torch.cuda.manual_seed_all(args.seed)
+210:     torch.backends.cudnn.deterministic = True
+211:     torch.backends.cudnn.benchmark = True
+213:     cfg.merge_from_file(str(args.config.resolve()))
+214:     cfg.defrost()
+215:     cfg.MODEL.PRETRAIN_PATH_T = str(clip_weight)
+216:     cfg.SOLVER.SEED = args.seed
+217:     cfg.SOLVER.MAX_EPOCHS = args.epochs
+218:     cfg.SOLVER.IMS_PER_BATCH = args.batch_size
+219:     cfg.DATALOADER.NUM_INSTANCE = args.num_instances
+220:     cfg.DATALOADER.NUM_WORKERS = args.num_workers
+221:     cfg.TEST.IMS_PER_BATCH = args.eval_batch_size
+222:     cfg.OUTPUT_DIR = str(output_dir.parent)
+223:     cfg.ckpt_save_path = output_dir.name
+224:     cfg.freeze()
+226:     train_loader, eval_loader, train_records, dev_records = _build_loaders(
+227:         dataset_root=dataset_root,
+228:         protocol_path=protocol_path,
+229:         batch_size=args.batch_size,
+230:         num_instances=args.num_instances,
+231:         eval_batch_size=args.eval_batch_size,
+232:         num_workers=args.num_workers,
+233:         seed=args.seed,
+234:     )
+235:     camera_num = len({record[2] for record in train_records})
+236:     view_num = len({record[3] for record in train_records})
+237:     logger = setup_logger("Signal", str(output_dir), if_train=True)
+238:     logger.info("Pinned Signal commit: %s", source_commit)
+239:     logger.info("Frozen dev protocol: %s", protocol_path)
+240:     logger.info("Fit/dev triplets: %d/%d", len(train_records), len(dev_records))
+242:     model = make_frame(
+243:         cfg,
+244:         num_class=len({record[1] for record in train_records}),
+245:         camera_num=camera_num,
+246:         view_num=view_num,
+247:     )
+248:     loss_fn, center_criterion = make_loss(
+249:         cfg,
+250:         num_classes=len({record[1] for record in train_records}),
+251:     )
+252:     optimizer, optimizer_center = make_optimizer(cfg, model, center_criterion)
+253:     scheduler = create_scheduler(cfg, optimizer)
+254:     parameters = sum(parameter.numel() for parameter in model.parameters())
+256:     identity = {
+257:         "schema_version": "signal-baseline-dev-v1",
+258:         "signal_source_commit": source_commit,
+259:         "signal_source_diff_sha256": hashlib.sha256(
+260:             subprocess.check_output(
+261:                 ["git", "-C", str(source), "diff", "--binary"]
+262:             )
+263:         ).hexdigest(),
+264:         "protocol_sha256": _sha256(protocol_path),
+265:         "clip_sha256": _sha256(clip_weight),
+266:         "seed": args.seed,
+267:         "epochs": args.epochs,
+268:         "batch_size": args.batch_size,
+269:         "num_instances": args.num_instances,
+270:         "fit_triplets": len(train_records),
+271:         "dev_query_triplets": len(dev_records),
+272:         "dev_gallery_triplets": len(dev_records),
+273:         "official_test_access_count": 0,
+274:     }
+275:     (output_dir / "run_identity.json").write_text(
+276:         json.dumps(identity, indent=2, sort_keys=True) + "\n",
+277:         encoding="utf-8",
+278:     )
+280:     started = time.time()
+281:     torch.cuda.reset_peak_memory_stats()
+282:     do_train(
+283:         cfg,
+284:         model,
+285:         center_criterion,
+286:         train_loader,
+287:         eval_loader,
+288:         optimizer,
+289:         optimizer_center,
+290:         scheduler,
+291:         loss_fn,
+292:         len(dev_records),
+293:         0,
+294:         cfg.MODEL.stageName,
+295:     )
+296:     best_checkpoint = output_dir / "Signalbest.pth"
+297:     model.load_state_dict(torch.load(best_checkpoint, map_location="cpu"), strict=True)
+298:     model.cuda()
+299:     metrics, feature_width = _evaluate(
+300:         model,
+301:         eval_loader,
+302:         len(dev_records),
+303:         cfg.MODEL.stageName,
+304:     )
+305:     result = {
+306:         "schema_version": "signal-baseline-dev-result-v1",
+307:         "status": "PASS",
+308:         "metrics_percent": metrics,
+309:         "retrieval_feature": "concat(direct_3x512,SIM_3x512)",
+310:         "retrieval_feature_width": feature_width,
+311:         "camera_sie": bool(cfg.MODEL.SIE_CAMERA),
+312:         "signal_source_commit": source_commit,
+313:         "checkpoint": str(best_checkpoint),
+314:         "checkpoint_sha256": _sha256(best_checkpoint),
+315:         "parameters": parameters,
+316:         "peak_allocated_mib": torch.cuda.max_memory_allocated() / 1024**2,
+317:         "peak_reserved_mib": torch.cuda.max_memory_reserved() / 1024**2,
+318:         "elapsed_seconds": time.time() - started,
+319:         "fit_triplets": len(train_records),
+320:         "dev_query_triplets": len(dev_records),
+321:         "dev_gallery_triplets": len(dev_records),
+322:         "official_test_access_count": 0,
+323:         "run_identity_sha256": _sha256(output_dir / "run_identity.json"),
+324:     }
+325:     (output_dir / "run_summary.json").write_text(
+326:         json.dumps(result, indent=2, sort_keys=True) + "\n",
+327:         encoding="utf-8",
+328:     )
+329:     print(json.dumps(result, indent=2, sort_keys=True))
+330:     return result
+333: def parse_args() -> argparse.Namespace:
+334:     parser = argparse.ArgumentParser(description=__doc__)
+335:     parser.add_argument("--signal-source", required=True, type=Path)
+336:     parser.add_argument("--config", required=True, type=Path)
+337:     parser.add_argument("--dataset-root", required=True, type=Path)
+338:     parser.add_argument("--protocol", required=True, type=Path)
+339:     parser.add_argument("--clip-weight", required=True, type=Path)
+340:     parser.add_argument("--output-dir", required=True, type=Path)
+341:     parser.add_argument("--seed", type=int, default=42)
+342:     parser.add_argument("--epochs", type=int, default=50)
+343:     parser.add_argument("--batch-size", type=int, default=64)
+344:     parser.add_argument("--num-instances", type=int, default=8)
+345:     parser.add_argument("--eval-batch-size", type=int, default=128)
+346:     parser.add_argument("--num-workers", type=int, default=12)
+347:     return parser.parse_args()
+350: if __name__ == "__main__":
+351:     run(parse_args())

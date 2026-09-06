@@ -1,0 +1,50 @@
+{
+  "registered_at": "2026-09-06T10:43:29.465425+08:00",
+  "status": "READY_NOT_RUN",
+  "project_files": {
+    "tools/signal_gram_fp32.py": "065d7736cf1e16da318996433f018155371a1ad752440edcbd74b2477f304f03",
+    "tools/verify_rgbnt100_signal_gram_fp32.py": "a9d3666e8317ce0adaf7996c3c79c3d8648868e128477a9699c5e9c2b9d46ea2"
+  },
+  "config": "configs/RGBNT100/Signal-source-oof-v1.json",
+  "config_sha256": "7270e2bf95c5f5a60e1dc6d6b047f043dce667d508783b36bc4734aecbc4c15b",
+  "fixture": "/root/autodl-tmp/trifusion-v2/artifacts/rgbnt100_signal_amp_capture_v1_seed42_8b412d0/capture/failed_batch_preforward.pt",
+  "fixture_sha256": "3c9b41a70a3e3bfabd317cea8b76f314ba16ded8a8246fd41e0561fc7f8286eb",
+  "volume_inputs": "/root/autodl-tmp/trifusion-v2/artifacts/rgbnt100_signal_amp_batch_probe_v1_seed42_56f094f/fp16/volume_inputs.pt",
+  "volume_inputs_sha256": "3db0ee54b54d0bbe4b0ca73f06cf94bcd170da49e87abd2f15baeff1bf7f5c72",
+  "extra_signal_files": {
+    "modeling/AddModule/useB.py": "39a65f82d59048745663d891a1c4c012eb1cc404ef8c8084f942702aeef46fec",
+    "utils/volume.py": "a154f65e5f4483446748e216b7b03672617efb02004e14e9940446c1013b8ccb",
+    "layers/triplet_loss.py": "f502c44bec642bbf72ce6d0f58c9f9a0084beef9cbb451c2d2786bb13f94960a"
+  },
+  "original_gram_loss": 3.970210552215576,
+  "original_patch_loss": 0.03680669143795967,
+  "original_id_triplet_head_losses": [
+    1.5988661050796509,
+    1.632498860359192,
+    1.6219165325164795,
+    1.4804165363311768
+  ],
+  "evidence": "FP16 full batch exactly reproduces six losses and153nonfinite gradients; both4096-entry Gram calls have3zero determinants; AbsBackward0 traceback at sqrt(abs(det)); fullFP32 all195finite.",
+  "single_change": "existing volume_computation3 only executes with autocast disabled and FP32 inputs; no clamp/epsilon/fallback/objective/scale/LR or network change",
+  "operator_stage": "same actual normalized language/video/audio vectors and trained temperature, original AMP versus local Gram FP32; both original calls, all4096entries;2operator backwards,0model/imageforward/update",
+  "operator_gates": [
+    "original loss exactly3.970210552215576 and nonfinite input gradients reproduced",
+    "local GramFP32 allinput/temperature gradients finite,0zero determinants"
+  ],
+  "full_batch_stage": "only after operator gates pass, same saved model/images/RNG; original and helper3072D inference features exactly equal; corrected AMP fullbatch original4head losses andPatch unchanged, all195gradients finite",
+  "maximum_source_record_forwards": 192,
+  "maximum_full_model_backward_passes": 1,
+  "optimizer_steps": 0,
+  "heldout_image_forwards": 0,
+  "image_decodes": 0,
+  "expected_runtime_minutes": [
+    1,
+    2
+  ],
+  "continuation_boundary": "No formal training restart yet. Passing this single-real-batch regression still requires separately registered engineering training and updated provenance.",
+  "source_support": [
+    "https://github.com/pytorch/pytorch/blob/v2.5.1/torch/amp/grad_scaler.py",
+    "https://github.com/pytorch/pytorch/blob/v2.5.1/torch/autograd/anomaly_mode.py"
+  ],
+  "prepublication_formatting": "Removed trailing blank lines from the two new, unexecuted source files before publication; rebound exact bytes, no code behavior change."
+}
