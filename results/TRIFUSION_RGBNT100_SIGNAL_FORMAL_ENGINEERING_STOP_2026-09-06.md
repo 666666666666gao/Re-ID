@@ -69,3 +69,21 @@ fp16/anomaly的四个ID/Triplet分量、Gram和Patch全部与捕获现场逐位�
 新回归保留原AMP红例，对同输入要求稳定化后梯度有限、真实1个rawzero仍被记录且受到保护，
 通过后才做完整batch195梯度/四身份分量Patch不变/3072D精确推理；最多192模型记录前向/0更新。
 计划登记2026-09-06T10:51:50.831737+08:00，当前READY_NOT_RUN。原FP32提议失败条件不被改写，新数值处理单独注册。
+
+## 稳定化单batch回归通过；R2完整首epoch工程检查已登记
+
+6c741b8、wrapper83532于10:53:19.647243退出0，耗时16.412545100秒。
+原AMP真实算子红例保留；稳定化后同一个rawzero仍记录在(4,4)，volume下限约1e-6，三个输入及温度梯度均有限。
+完整AMP batch的195参数梯度全部有限；四组身份loss和Patch与原场景完全相同，只有Gram由3.970210552变为3.971660137，
+总loss6.734400272变为6.734545231（+0.000144958496）。原/修复的64×3072推理特征逐位相等。
+实际192 source记录前向、0优化/图像解码/heldout；2次特征算子backward与1次模型backward。
+这个结果仅支持该真实失败batch的数值修复；不是完整epoch、检索效用或长期稳定性证明。
+
+R2计划：refine-logs/rgbnt100_signal_v1/ENGINEERING_R2_PLAN.md。
+配置configs/RGBNT100/Signal-source-oof-v1-r2.json SHA9d5ecf5f350c2f1eea50650bf0abc9580a4d2e86947e20a83b7ba94c67faf997；
+runner SHA4677e7345f282646e6654000d9d526d8207f698fc58a1f90b0c44bda6dd5fc25，固定helper SHAfb23d9475b4629cbfac6962d89358668f2390fbf9e7a44fe12c2c6a885b43e60。
+new_model仅安装稳定Gram函数；逐步JSONL在原AMP失败门之前写出；原finite-gradient检查仍保留。
+M0改为三fold分别完整首epoch，其他训练条件和30epoch正式终点不变。
+configure/数据/提取/排名共10个函数或类AST与R1相同；原runner原字节已存run20 inputs，旧回执/配置/失败日志不覆盖。
+新代码绑定需要新T0/M0真实回执；完整T0重核全量输入，然后完整首epochM0，预计3–6分钟。
+当前R2_T0_M0_READY_NOT_RUN。正式训练尚未恢复；旧R1完整终态核验器仍未执行，需在R2正式启动前更新绑定。

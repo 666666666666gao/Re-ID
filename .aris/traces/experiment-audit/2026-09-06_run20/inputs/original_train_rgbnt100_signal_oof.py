@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Fixed-source RGBNT100 Signal baseline with registered R2 Gram stabilization."""
+"""Fixed-source Signal baselines for the registered RGBNT100 identity folds."""
 
 from __future__ import annotations
 
@@ -125,10 +125,6 @@ def loader_for(records, training):
 
 def new_model(cfg, fold):
     from tools.build_v12_complete_path_oof_targets import _build_signal_teacher
-    from modeling.AddModule import useB
-    from tools.signal_gram_stable import signal_gram_volume_stable
-
-    useB.volume_computation3 = signal_gram_volume_stable
 
     assert fold["source_camera_values"] == list(range(8))
     model = _build_signal_teacher(cfg, num_classes=len(fold["source_ids"]),
@@ -138,7 +134,7 @@ def new_model(cfg, fold):
     return model
 
 
-def train_source(model, loader, cfg, record_indices, records, *, preflight, step_log):
+def train_source(model, loader, cfg, record_indices, records, *, preflight):
     import numpy as np
     import torch
     from layers.make_loss import make_loss
@@ -198,23 +194,20 @@ def train_source(model, loader, cfg, record_indices, records, *, preflight, step
             for name, parameter in model.named_parameters():
                 if parameter.grad is not None:
                     gradient_names.add(name)
+                    if preflight:
+                        assert torch.isfinite(parameter.grad).all().item(), name
             scaler.step(optimizer)
             scaler.update()
+            assert scaler.get_scale() >= scale_before, "AMP overflow; fixed run stops"
             row = {"step": len(steps) + 1, "epoch": epoch, "loss": float(loss.detach()),
                    "id_triplet_head_losses": components, "gram_loss": float(output[-2].detach()),
                    "patch_loss": float(output[-1].detach()),
                    "sampled_record_indices": [name_to_index[p] for p in paths],
-                   "amp_scale_before": scale_before, "amp_scale_after": scaler.get_scale(),
-                   "optimizer_update_applied": scaler.get_scale() >= scale_before}
-            with Path(step_log).open("a", encoding="utf-8") as handle:
-                handle.write(json.dumps(row, allow_nan=False) + "\n")
-            assert row["optimizer_update_applied"], "AMP overflow; fixed run stops"
-            if preflight:
-                for name, parameter in model.named_parameters():
-                    if parameter.grad is not None:
-                        assert torch.isfinite(parameter.grad).all().item(), name
+                   "amp_scale_before": scale_before, "amp_scale_after": scaler.get_scale()}
             steps.append(row)
             epoch_losses.append(row["loss"])
+            if preflight and len(steps) == 8:
+                break
         history.append({"epoch": epoch, "optimizer_steps": len(epoch_losses),
                         "mean_loss": float(np.mean(epoch_losses)),
                         "learning_rates": sorted({group["lr"] for group in optimizer.param_groups}),
@@ -317,9 +310,7 @@ def run(args):
     protocol = json.loads(protocol_path.read_text(encoding="utf-8"))
     assert config["seed"] == 42 and config["epochs"] == 30
     assert (config["train_batch_size"], config["instances_per_identity"],
-            config["num_workers"]) == (64, 8, 4)
-    assert config["engineering_revision"] == 2 and config["preflight_complete_source_epochs"] == 1
-    assert config["gram_numerics"] == "FP32 Gram, sqrt(abs(det).clamp_min(1e-12))"
+            config["num_workers"], config["preflight_steps_per_fold"]) == (64, 8, 4, 8)
     assert not output_dir.exists()
     cfg, binding = configure(config)
     protocol_receipt_path = args.protocol_receipt.resolve()
@@ -337,11 +328,9 @@ def run(args):
         assert preflight_report["config_sha256"] == sha256(config_path)
         assert preflight_report["runner_sha256"] == sha256(__file__)
     started = time.perf_counter()
-    summary = {"schema": "rgbnt100-signal-source-oof-v1-r2", "mode": args.mode, "status": "RUNNING",
+    summary = {"schema": "rgbnt100-signal-source-oof-v1", "mode": args.mode, "status": "RUNNING",
                **binding, "config_sha256": sha256(config_path), "protocol_sha256": sha256(protocol_path),
                "runner_sha256": sha256(__file__), "seed": 42, "folds": [],
-               "engineering_revision": 2, "gram_numerics": config["gram_numerics"],
-               "preflight_contract": "one complete source epoch per fold",
                "protocol_receipt_sha256": sha256(protocol_receipt_path),
                "project_commit": subprocess.check_output(["git", "-C", str(ROOT), "rev-parse", "HEAD"], text=True).strip(),
                "project_source_file_sha256": config["project_source_file_sha256"],
@@ -360,7 +349,7 @@ def run(args):
         model = new_model(cfg, fold)
         torch.cuda.reset_peak_memory_stats()
         training = train_source(model, loader, cfg, fold["source_record_indices"], source_records,
-                                preflight=preflight, step_log=fold_dir / "steps.jsonl")
+                                preflight=preflight)
         write_json(fold_dir / "training.json", training)
         assert training["epochs"] == (1 if preflight else 30)
         assert not training["trainable_without_gradient"], training["trainable_without_gradient"]
@@ -382,7 +371,7 @@ def run(args):
                "checkpoint": str(checkpoint), "checkpoint_sha256": sha256(checkpoint)}
         if preflight:
             after_reload = extract(model, source_records[:8], cfg)
-            assert training["optimizer_steps"] > 8 and torch.equal(before_reload, after_reload)
+            assert training["optimizer_steps"] == 8 and torch.equal(before_reload, after_reload)
             row.update({"strict_reload_exact_feature_parity": True, "clean_source_feature_forwards": 16,
                         "feature_width": 3072, "heldout_image_forwards": 0})
         else:

@@ -552,3 +552,9 @@
 - LocalFP32-only Gram regression8034451 FAILED:1zero determinant and512NaNs per saved input group; no full-model forward executed.
   StableFP32 Gram with fixed1e-12 sqrt floor is separately registered, READY_NOT_RUN; real zero-point evidence and definition change documented.
   Preserve old failed helper/plan, no formal baseline restart until new engineering gates pass.
+
+- Stable Gram regression6c741b8 PASSED one real batch:195finite gradients,4ID/Triplet andPatch unchanged,
+  3072D inference bitwise equal;192saved source-record forwards/0updates. Numerical zero-point definition differs explicitly.
+  RGBNT100 R2 config/ENGINEERING_R2_PLAN registered; new_model installs stable Gram, steps persist before AMP stop,
+  M0 is now three complete first source epochs; original data/retrieval AST unchanged. R2 T0/M0 READY_NOT_RUN.
+  Archive original R1 runner under .aris/traces/experiment-audit/2026-09-06_run20/inputs; do not reinterpret old receipts as R2 passes.

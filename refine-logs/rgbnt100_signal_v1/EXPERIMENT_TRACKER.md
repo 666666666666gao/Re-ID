@@ -11,9 +11,11 @@
 | Source overflow capture | REPRODUCED | 8b412d0第34步；33有效更新/2176前向，0heldout；M0标量非完全一致 |
 | Saved batch probe | COMPLETE_NUMERICAL_DIAGNOSIS | 192source前向/0更新；原AMP三零Gramdet、AbsBackward0 NaN，完整FP32有限 |
 | Local Gram FP32 regression | FAIL_OPERATOR_FINITE_GATE | 8034451，仍1零det/各512NaN；0模型前向/0更新 |
-| Stable Gram regression | READY_NOT_RUN | FP32+固定1e-12开方下限；先真实算子，再完整batch；0更新 |
+| Stable Gram regression | PASS_SINGLE_REAL_BATCH | 6c741b8，192source前向/0更新；195finite与3072D逐位相同 |
+| R2 T0 | READY_NOT_RUN | 新runner/config绑定，重新验证全量切片/协议 |
+| R2 M0 | READY_NOT_RUN | 三fold分别完整首epoch，195梯度/AMP/重载门保留 |
 | Full terminal verifiers | PREPARED_NOT_RUN | 原先准备完整三fold/90epoch/8675query核验，不用于本失败目录 |
 
-原config/plan/runner未改；M0不是真实检索成绩。原始失败现场与独立诊断的更新成本分别登记。
+R1配置/合同/回执保留；原runner源字节另行存档，R2的最小源码修订单独绑定。M0不是真实检索成绩，各阶段成本分别登记。
 内部三fold协议与官方1715query/8575gallery不同；没有读取官方测试，主目标未达到。
 结果页：results/TRIFUSION_RGBNT100_SIGNAL_FORMAL_ENGINEERING_STOP_2026-09-06.md。
