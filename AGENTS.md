@@ -503,3 +503,13 @@
   Keep original fixed full3fold comparison despite opposite partial gain directions.
   Terminal all15 saved-array and3000query/780step verifiers prepared,not executed;
   no model/training source change and no original fold0 repeated training.
+
+- MSVR310 original-role comparison is TERMINAL_SUPPORT_FAIL,75993 exit0.
+  Full600query/1032gallery: Signal53.129381/63.0 vs fused52.117390/60.833333,
+  gain-1.011990;fold gains+2.405513/-3.759723/-1.825624,bootstrap lower-2.939110.
+  All5 science gates fail;all3 extended branches below Signal. All15 arrays/ranks,
+  3 checkpoint contents,780steps and3000query outputs verified;exact B0 parity all3 folds.
+  Original fold0 only reused;520 new updates,780 total. No running process.
+  Seal fixed study: no retrain/scan/ablation/official promotion. Terminal independent
+  audit pending, M0 audit already CLOSED_WARN. Do not conflate repaired SIM drift with
+  scientific failure or treat RGBNT201 camera sparsity as the sole vehicle explanation.
