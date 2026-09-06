@@ -951,3 +951,13 @@
 | 2026-09-06T23:10:34.125041+08:00 | /run-experiment | refine-logs/trifusion_v25_camera_coverage/EXPERIMENT_TRACKER.md | verified | Original V25 Q1 live; full terminal CPU verification queued once; disk and retained weights rechecked |
 | 2026-09-06T23:10:34.125041+08:00 | /run-experiment | docs/TRIFUSION_RGBNT201_CURRENT_COMPLETE_HANDOFF_2026-09-01.md | verified | Original V25 Q1 live; full terminal CPU verification queued once; disk and retained weights rechecked |
 | 2026-09-06T23:10:34.125041+08:00 | /run-experiment | AGENTS.md | verified | Original V25 Q1 live; full terminal CPU verification queued once; disk and retained weights rechecked |
+
+| 2026-09-06T23:38:33.458059+08:00 | /run-experiment | evidence/trifusion_v25_disk_live_observation_20260906_233341.json | verified | Disk cleanup rechecked; original V25 two folds complete and Q1 running; full reporter prepared only |
+| 2026-09-06T23:38:33.458059+08:00 | /run-experiment | evidence/trifusion_v25_verification_queued_sync_20260906.json | verified | Disk cleanup rechecked; original V25 two folds complete and Q1 running; full reporter prepared only |
+| 2026-09-06T23:38:33.458059+08:00 | /run-experiment | tools/report_v25_complete_comparison.py | verified | Disk cleanup rechecked; original V25 two folds complete and Q1 running; full reporter prepared only |
+| 2026-09-06T23:38:33.458059+08:00 | /run-experiment | evidence/trifusion_v25_complete_reporter_prepared_20260906.json | verified | Disk cleanup rechecked; original V25 two folds complete and Q1 running; full reporter prepared only |
+| 2026-09-06T23:38:33.458059+08:00 | /run-experiment | results/TRIFUSION_DISK_WEIGHT_CLEANUP_2026-09-06.md | verified | Disk cleanup rechecked; original V25 two folds complete and Q1 running; full reporter prepared only |
+| 2026-09-06T23:38:33.458059+08:00 | /run-experiment | refine-logs/trifusion_v25_camera_coverage/EXPERIMENT_TRACKER_20260906_233833.md | verified | Disk cleanup rechecked; original V25 two folds complete and Q1 running; full reporter prepared only |
+| 2026-09-06T23:38:33.458059+08:00 | /run-experiment | refine-logs/trifusion_v25_camera_coverage/EXPERIMENT_TRACKER.md | verified | Disk cleanup rechecked; original V25 two folds complete and Q1 running; full reporter prepared only |
+| 2026-09-06T23:38:33.458059+08:00 | /run-experiment | docs/TRIFUSION_RGBNT201_CURRENT_COMPLETE_HANDOFF_2026-09-01.md | verified | Disk cleanup rechecked; original V25 two folds complete and Q1 running; full reporter prepared only |
+| 2026-09-06T23:38:33.458059+08:00 | /run-experiment | AGENTS.md | verified | Disk cleanup rechecked; original V25 two folds complete and Q1 running; full reporter prepared only |

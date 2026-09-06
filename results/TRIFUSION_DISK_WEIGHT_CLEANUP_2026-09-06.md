@@ -27,3 +27,10 @@
 
 
 20:39:40在新全50身份角色epoch20权重落盘后复查：数据卷剩24.14GiB，系统卷剩10.36GiB。原24个删除路径仍不存在，12个旧独立模型都在且大小一致；当前Signal epoch30、角色M0、角色epoch20及CLIP权重全部保留。这次没有额外删除。详情见evidence/trifusion_disk_after_full50_roles_main_20260906.json。
+
+23:33:41再次核对：24个旧恢复权重均仍不存在，12个保留模型全部存在且大小与清理回执一致。
+当前V25目录实际位于/root/autodl-tmp数据卷（device66305），可用21.414532GiB；
+/root/trifusion-storage位于系统overlay（device53），可用10.364922GiB。
+这两个位置分属不同卷，不将它们的空闲空间相加。原V25进程112550正常，已完成88/120epoch。
+已产生的4个V25最终权重与4份完整检索数组均保留，自动终态核验队列114796仍在等待。
+本次额外删除0；原清理释放24.900344GiB的结果保持。新证据：evidence/trifusion_v25_disk_live_observation_20260906_233341.json。

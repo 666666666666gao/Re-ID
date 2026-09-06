@@ -4262,3 +4262,25 @@ fold0-control20/20及终点检索已结束，candidate16/20，其余fold按原�
 23:04:45数据盘free21.863GiB，
 系统free10.365GiB。
 当前原Q1与自动终态核验都保留，整体三数据集baseline/SOTA目标仍未达成。
+
+## 41.70 磁盘清理复查通过；原V25完成两折并继续（2026-09-06T23:38:33.458059+08:00）
+
+23:11:34已确认c2be955的GitHub/服务器/本地一致，三份主交接字节相同，同步回执归档。
+23:33:41实际复查24个已删除的旧resume权重仍不存在，12个保留模型全在且大小符合原回执。
+原清理释放26736541280字节（24.900344GiB），本次额外删除0。
+V25实际目录位于/root/autodl-tmp数据卷，剩21.414532GiB；
+系统overlay及/root/trifusion-storage剩10.364922GiB，分属不同文件系统。
+当前输出尚有足够空间，保留必要最终权重、基线和完整检索数组。
+证据：evidence/trifusion_v25_disk_live_observation_20260906_233341.json及results/TRIFUSION_DISK_WEIGHT_CLEANUP_2026-09-06.md。
+
+原训练112550存活且命令匹配，M0完整PASS，Q1已完成88/120epoch：
+fold0/1两端完整终点均产生，fold2-control8/20。自动完整核验wrapper114796仍存活等待。
+首两fold的fused mAP差分别+0.564526417/+1.526055502pp；
+首fold Rank1下降1.052631579pp、次fold Rank1持平，不能将部分结果提前写成完整科学通过。
+后续保持原三fold、六端、20epoch、完整图库、全部五路结果与原五项科学门。
+
+已准备tools/report_v25_complete_comparison.py，仅AST通过，尚未取得完整终态输入或生成最终报告。
+生成器SHA256 cfa92b739b0dd2010f5905634641ea200e289542de40dd46c8334c672cec43db；
+只处理已全量核验的原JSON，输出全部21身份/571query的五路配对变化，保留下降与新增错误。
+新增报告代码不改训练源码、配置、采样合同或执行commit97468dd。
+本机基线提升、三角色共同必要性和三数据集SOTA的完整目标继续保留，尚未全部达成。

@@ -1,41 +1,38 @@
 # TriFusion-ReID workspace
 
-## Latest verified state (2026-09-06 22:33)
+## Latest verified state (2026-09-06 23:33)
 
-- V25 complete M0 PASS; Q1 RUNNING on execution97468dd, launched22:39:45.
-  screen v25_camera_coverage_97468dd; wrapper112548/child112550 confirmed live23:08:42; last23:04:45 progress36/120epoch,
-  fold0-control20/20 endpoint complete and candidate16/20. Full source metadata
-  replay PASS:3fold x2arms x20epochs/3360batches; all1680 old order hashes/pair counts match.
-  Candidate every batch has2 cross-camera K8 IDs plus6 single-camera K8 IDs.
-  All94 source IDs and all2126/2075/2051 records covered over20epochs in each fold.
-  Overall cross-camera positives 8.070790816%
-  ->12.344547194%; per-arm107520exposures.
-  Extra record reuse/changed identity frequency are explicit costs, not a pure loss intervention.
-- V25 T0 metadata PASS; complete M0 PASS (48 preflight batches/116updates);
-  overfit excess0.0398826204<=0.1,203/203 gradients each stage,overflow0,frozen unchanged.
-  Capacity reserved6054/6198MiB. Q1 six endpoints continue; final comparison pending. Same frozen Signal/V8 initialization and original
-  seven ID/Triplet heads, no V23 adapters/V24 prototypes/MCNL/Router. Expected203 tensors,
-  7,841,292 trainable parameters, new inference parameters0. M0:48 readonly forwards/116updates;
-  if PASS complete six20epoch endpoints/3360updates. Each arm must match its own full sampler.
-  Original five scientific gates remain. Full features/distances/rankings saved. No scans.
+- Cleanup complete:24 redundant completed-run resume weights/24.900344GiB deleted.
+  At23:33:41 all24 paths remain absent,12 retained models exist with recorded sizes.
+  No additional deletions. V25 uses data volume/free21.414532GiB;
+  system overlay/free10.364922GiB. Keep final weights/baselines/full arrays.
+- V25 complete M0 PASS; original Q1 process112550 live/command verified23:33:41.
+  Execution97468dd unchanged. 88/120epochs complete; fold0/1 both endpoints done,
+  fold2-control8/20. Full three-fold scientific terminal still pending.
+  Physical sampler candidate2 cross-camera IDs plus6 single-camera IDs, B64/K8.
+  Full source metadata replay3360batches PASS; cross-camera positive fraction
+  8.070790816%->12.344547194%; per-arm107520exposures, all source IDs/records covered.
+  Additional record reuse/identity frequency changes are explicit intervention costs.
+- Same frozen Signal/V8 model, original seven ID/Triplet heads and V12 initialization;
+  7,841,292 trainable parameters/203 tensors, new inference parameters0.
+  M0 all48 preflight batches and116updates checked; overfit excess0.0398826204,
+  frozen unchanged,203 gradients,overflow0,capacity6054/6198MiB.
+  Full six20epoch endpoints/3360updates, all five scientific gates unchanged. No scans.
+- Full terminal verifier remains QUEUED_WAITING in livewrapper114796,
+  screen v25_terminal_verify_97468dd, poll180s then CPU-only verification once.
+  It checks all training rows, six arrays, all571queries/21IDs/5outputs.
+  Report generator prepared/AST only; complete original terminal required.
+  No complete Q1/CPU-verification result yet. No D1/official/ablations.
 - RGBNT100 official COMPLETE: Signal80.712162/94.227405 -> fused83.284770/96.151603,
-  +2.572608pp; CNN81.961715/95.860058, T81.709681/94.577259, M83.440622/95.510204.
-  Full1715query/8575gallery/50IDs/5outputs and entire endpoints verified.
-  Engineering PASS; scientific3of4 PASS, fused mAP below Mamba0.155851768pp; not SOTA.
-  All official evidence published eb1b34a; server/local/Desktop masters byte-equal at22:23:55.
-- Full50 Signal30epochs/3936updates and roles20epochs/2625updates complete; never retrain.
-  RGBNT100 source OOF +1.792365pp PASS is a different protocol from official evaluation.
-  Fused official R1 repairs41/new8,39 IDs improve/9 decline/2 tie, all census archived.
-- V25 original GPU process112550 live23:08:42; last detailed progress36/120epoch.
-  Full terminal verifier QUEUED_WAITING in livewrapper114796, screenv25_terminal_verify_97468dd;
-  every180s wait for original terminal, then CPU-only full571queries/21IDs/5outputs once.
-  No automatic retries. Queue not yet verification PASS.
-  RGBNT201 dev58.4050/59.3939, MSVR310 original roles negative; whole goal unmet.
-  No official tuning, reranking, pre-success ablations or sealed-failure reruns. Seed42 only.
-- Cleanup24 redundant resume weights/24.90GiB remains; datafree21.782GiB
-  at22:28, systemfree10.365GiB. Keep required baselines/final weights/arrays.
-- Independent audit unavailable_service_limit; executor verification is not independent audit.
-  Read master41.69, refine-logs/trifusion_v25_camera_coverage/EXPERIMENT_PLAN.md and tracker.
+  +2.572608pp; CNN81.961715/95.860058,T81.709681/94.577259,M83.440622/95.510204.
+  Full1715queries/8575gallery/50IDs/5outputs verified; engineeringPASS,
+  scientific3of4PASS, fused below Mamba0.155851768pp; not SOTA.
+  Full50 Signal30epochs and roles20epochs complete; never retrain.
+  OOF+1.792365pp PASS is a different protocol from official evaluation.
+- RGBNT201 dev58.4050/59.3939, MSVR310 original roles negative; whole goal unmet.
+  No official tuning, reranking, pre-success ablations or sealed-failure reruns.
+  Seed42 only. External independent audit unavailable; executor checks are not independent audit.
+  Read master41.70 and refine-logs/trifusion_v25_camera_coverage/EXPERIMENT_PLAN.md/tracker.
 
 ## Experiment environment
 
