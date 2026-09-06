@@ -2,31 +2,31 @@
 
 ## Latest verified state (2026-09-06)
 
-- RGBNT100 original full-three-role OOF is COMPLETE_EXECUTOR_VERIFIED_SUPPORT_PASS:
-  all8675 queries/50 IDs; Signal89.524175/96.829971 versus fused91.316540/97.936599,
-  mAP+1.792365pp, all5 gates pass, identity-bootstrap lower+0.951777609pp.
-  All3 checkpoints/15 array paths/43375 outputs/5195 updates verified. Do not retrain it.
-- Full50 Signal B0 is COMPLETE_EXECUTOR_VERIFIED: fixed30 epochs/3936 updates,
-  all8675 source records/50 identities, 195 gradients/AMP0, whole state/all FP32
-  losses/PK rows/author LR verified. Execution545186d; terminal19:16:19.
-  All12 raw text receipts/14283116 bytes locally SHA-verified; no local model/tensor/image calls.
-- Full50 original role config and registration bind actual B0 state/summary/verifier.
-  All36 remote source bindings passed19:24:36. M0 READY_NOT_RUN:
-  fresh8 capacity plus anotherfresh100 fixed-batch overfit; seven50-class heads,
-  203 gradient tensors and excess ratio<=0.1 checked by the actual run.
-  Only after complete M0 PASS: fresh sameinitial20 epochs, no M0/OOF trained-weight reuse.
-- T0 all18965 headers/hashes/original-author labels/all1715 full masks COMPLETE.
-  Official headers were read; official model forwards/metrics remain0.
-  Official config awaits actual verified role epoch20. Bound main plan unchanged.
-- Independent RGBNT100 audit has no verdict due service limit; full executor
-  verification is not an independent audit.
-- User-directed cleanup removed24 redundant completed-run resume weights/24.90GiB,
-  with12 standalone models byte-verified and retained. At19:31 all24 paths remain
-  absent; data volume free24.99GiB/system10.36GiB. CLIP/B0/current result weights retained.
-- Existing RGBNT201/MSVR310 failures remain sealed. Seed42 only; no pre-success ablations.
+- RGBNT100 original OOF complete support PASS: Signal89.524175/96.829971 versus
+  fused91.316540/97.936599, mAP+1.792365pp, all5 gates pass, bootstrap lower+0.951777609pp.
+  Full3 checkpoints/15 arrays/43375 outputs/5195 updates verified. Do not retrain OOF.
+- Full50 Signal B0 COMPLETE PASS: fixed30epochs/3936 updates, all8675 source records/
+  50 identities, 195 gradients/AMP0, whole state/all losses/PK rows/author LR verified.
+  Execution545186d; terminal19:16:19. All12 raw text files/14283116 bytes archived.
+- Full50 original roles M0 COMPLETE PASS: 19:36:09→19:39:00 on2800c88, 108 valid updates,
+  seven50-class heads, 203 gradients/AMP0, overfit excess ratio0.0011232312<=0.1.
+  Parameters97519117 total/6692364 trainable; strict state/output/Signal parity and
+  all108 FP32/PK/gradient/LR rows verified. All14 raw text files/4360400 bytes archived.
+- Full50 role main RUNNING: dispatched19:42:57, wrapper106196/child106200, actual2800c88.
+  Fresh M0 initial state3b8c3b751201ed1c53e5d71658680645704b65f7bf13f59e685a67e63ccc9b7f
+  verified19:44 launch health; GPU6338MiB/100%. No M0/OOF trained-weight reuse.
+  Fixed20epochs; estimate20:33–20:43 terminal, first training observation20:28.
+  Do not restart, scan, change the bound config/loss/sampler/seed42/epoch budget.
+- T0 all18965 file headers/hashes/author labels/all1715 complete masks verified.
+  Official raw headers were read; official model forwards/metrics remain0.
+  Official config awaits verified actual role epoch20; its drivers/static review are ready.
+- User cleanup removed24 redundant resume snapshots/24.90GiB;12 standalone models
+  whole-SHA checked before/after.19:44 all24 absent/12 sizes correct, datafree24.60GiB,
+  system10.36GiB. CLIP/Signal/current checkpoints/result artifacts retained.
+- Independent audit unavailable due service limit; executor checks are not independent.
+  Existing RGBNT201/MSVR310 failures sealed; seed42 only; no pre-success ablations.
   RGBNT201 dev58.4050/59.3939 and overall targets remain unmet.
-- Read master handoff section41.60, refine-logs/rgbnt100_main_v1/EXPERIMENT_TRACKER.md
-  and docs/SOTA_PRIMARY_REFRESH_2026-09-06.md for current evidence and literature conditions.
+- Read master handoff section41.61 and refine-logs/rgbnt100_main_v1/EXPERIMENT_TRACKER.md.
 
 ## Experiment environment
 

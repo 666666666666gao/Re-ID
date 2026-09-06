@@ -1,0 +1,29 @@
+{
+  "reviewed_at": "2026-09-06T19:39:11.231682+08:00",
+  "status": "STATIC_SCOPE_REVIEW_COMPLETE_RUNTIME_PENDING",
+  "reviewer": "executor, not independent audit",
+  "source_files_sha256": {
+    "tools/train_rgbnt100_trifusion_main.py": "ff40a3bf4a71024bb16be2c3d880b88cd328d921e5bed40b57b8a3baa0886586",
+    "tools/train_rgbnt100_trifusion_oof.py": "7f18cf950ff85bae9f300618c63154cc5394101ce12b97a7344615937c4a945d",
+    "tools/evaluate_rgbnt100_official_main.py": "b155b2dfe40930017c05789b34fda67afb0c40183093a4281f878f1b48846532",
+    "tools/verify_rgbnt100_official_main.py": "01582c2d1821a907c19c4378271ccd2d8da1c6e1e10fb5e48a319ee8007e94f2"
+  },
+  "reviewed_behavior": {
+    "role_checkpoint_writes": "One saved model state at the capacity endpoint in M0, and one at fixed epoch20 in main; train_roles has no per-epoch checkpoint/resume writes",
+    "official_population": "All1715 queries + all8575 gallery records; excludes same identity AND same camera and retains every different identity",
+    "endpoint_binding": "Real B0 epoch30 and verified role epoch20, strict state reload and unchanged state checks",
+    "signal_parity": "All10290 independent Signal features must exactly equal the embedded Signal prefix; saved distance matrices also match",
+    "metric_verification": "All5 saved matrices, every full ranking, all8575 query-output AP/Rank values and50 identity bootstrap independently recomputed from saved arrays",
+    "optimization": "No optimizer or reranking in official stage; no official model forward during M0/main"
+  },
+  "storage_estimate": {
+    "feature_float32_bytes": 1137991680,
+    "distance_float32_bytes": 352947000,
+    "array_payload_bytes_before_serialization_overhead": 1490938680,
+    "note": "Source-derived size estimate, not actual artifact size; compressed full rankings and checkpoints stored separately"
+  },
+  "runtime_limits": "Static review does not establish successful full50 M0/main/official execution or retrieval efficacy",
+  "model_tensor_image_calls": 0,
+  "training_updates": 0,
+  "official_model_record_forwards": 0
+}
