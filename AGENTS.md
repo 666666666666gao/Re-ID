@@ -544,3 +544,7 @@
 - RGBNT100 fixed source capture8b412d0 reproduced overflow on its step34 after33updates; source2176/heldout0.
   Original failed run step count remains unknown. M0 initial state and first8indices match, only first-step scalars exact.
   Saved real batch/preforward state permits fixed fp16/anomaly/fp32 zero-update localization; registered plan, READY_NOT_RUN.
+
+- RGBNT100 saved batch probes56f094f completed: original losses exactly replayed,3zero Gram determinants per4096-entry call,
+  AbsBackward0 at sqrt(abs(det)),153nonfinite encoder gradients; fullFP32 all195finite.
+  A minimal localFP32 Gram wrapper and real-input regression are registered, READY_NOT_RUN; no epsilon/clamp or formal restart.

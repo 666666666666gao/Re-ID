@@ -36,3 +36,20 @@ step2起差异保留（step6 loss差+0.722964287），尚未解释，不声称�
 异常模式自然保留PyTorch原始traceback；原精度先核对捕获loss，FP32只作数值定位，不改正式训练精度。
 保存两次volume_computation3的全部64×64 Gram矩阵/行列式/输入，便于随后对真实触发算子最小化。
 计划evidence/trifusion_rgbnt100_signal_v1_amp_batch_probe_plan_20260906.json，当前READY_NOT_RUN。
+
+## 单batch三项定位完成：Gram矩阵半精度量化与零点导数
+
+56f094f、wrapper82470于10:35:40.134040结束48.6883秒；三项退出码fp16=0、anomaly=1、fp32=0，均按实际含义报告。
+fp16/anomaly的四个ID/Triplet分量、Gram和Patch全部与捕获现场逐位相同；fp16仍153/195梯度非有限。
+两次完整64×64 Gram中各3个行列式恰为0，坐标(3,3)/(4,4)/(5,5)，另各1个负值。
+原normalized输入是FP32，但einsum/matmul在autocast下生成FP16 Gram；之后G.float()求det不能恢复此前舍入的信息。
+异常模式在Signal utils/volume.py第60行sqrt(abs(gram_det))处报告AbsBackward0产生NaN。
+完整FP32模型下两次Gram均0个零值，最小绝对det7.6721002884e-9，195/195梯度有限；总loss6.645667553，与原6.734400272不同。
+这个全FP32比较改变了全模型数值精度，尚不足以证明只改Gram即可修复，因此不直接用于正式训练。
+
+下一项局部修复已准备：tools/signal_gram_fp32.py只在原volume函数内关闭autocast并使用FP32输入，
+公式、既有abs/sqrt、四组身份目标、Gram/Patch权重、AMPscale256与全部优化配置不改，无epsilon/clamp/fallback。
+先用已保存两次完整Gram输入做原AMP/局部FP32算子回归（0模型前向），原非有限必须复现、修复后全梯度有限且零det=0；
+通过后才运行完整batch64，比较原/修复3072D推理逐位相同、四身份分量/Patch原值不变和195梯度有限。
+最多192条保存source记录前向、0更新/解码/heldout；计划登记于2026-09-06T10:43:29.465425+08:00，当前READY_NOT_RUN。
+正式基线仍未恢复，单batch修复不代表长期训练或检索效果。
