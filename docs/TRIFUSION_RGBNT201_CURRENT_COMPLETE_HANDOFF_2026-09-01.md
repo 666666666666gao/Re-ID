@@ -2,9 +2,9 @@
 
 ## 0. 一页结论
 
-最新状态（2026-09-06T12:35:34.237907+08:00）：RGBNT100 Signal R2固定三折30epoch基线正在运行，执行def7b9b、wrapper87066/训练87070。首次实测第0折30epoch、2479次有效更新和完整排序文件已产生，0 AMP下降；尚无三折终态，最终指标待完整核验（§41.45）。此前三折完整首epoch M0及全部257步/权重核验通过。原三角色RGBNT100入口已准备但没有正式配置/M0/角色训练，等待完整B0绑定。run20独立审计因服务额度限制未闭合，无最终报告；MSVR310原三角色/V23/V24负结果封存，RGBNT201保留dev58.4050/59.3939，主目标继续未达。
+最新状态（2026-09-06T13:56:31.328098+08:00）：RGBNT100 Signal R2三折30epoch完整结束，通过三权重/三数组/8675 query/7794步全部执行侧核验，内部89.5241750420 mAP/96.8299711816 R1（§41.47）。原完整三角色配置、实际源字节、四核验器及固定合同已绑定B0，M0 REGISTERED_NOT_RUN（§41.48）；仍无RGBNT100主方法成绩。run20独立审计因服务额度限制未闭合，不覆盖本次B0或新三角色。MSVR310原三角色/V23/V24负结果封存，RGBNT201保留dev58.4050/59.3939，主目标继续未达。
 
-当前用于MSVR310完整比较的是原V8平行三角色结构：冻结Signal/CLIP，共享block8之前语义和tail9/10/11参数，三个角色分别运行共享tail；CNN处理局部语义Patch高频，Transformer处理全局CLS/Patch关系，Mamba处理空间与位置级三模态扫描。各角色相对冻结reference形成1536D残差，三角色4608D银行拼接3072D Signal得到7680D fused；完整单角色输出为4608D Signal+角色残差。三条路径均执行，当前没有Router/HFER、V23模态MLP或V24原型。训练已完成，尚无被证实超过Signal的新主方案。下面V1—V8条目保留历史经过，不代表当前又启用了旧模块。
+当前用于已完成MSVR310比较及新登记RGBNT100比较的是原V8平行三角色结构：冻结Signal/CLIP，共享block8之前语义和tail9/10/11参数，三个角色分别运行共享tail；CNN处理局部语义Patch高频，Transformer处理全局CLS/Patch关系，Mamba处理空间与位置级三模态扫描。各角色相对冻结reference形成1536D残差，三角色4608D银行拼接3072D Signal得到7680D fused；完整单角色输出为4608D Signal+角色残差。三条路径均执行，当前没有Router/HFER、V23模态MLP或V24原型。训练已完成，尚无被证实超过Signal的新主方案。下面V1—V8条目保留历史经过，不代表当前又启用了旧模块。
 
 本工程是在 DeMo 代码基座上实现的 RGB–NIR–TIR 多模态目标重识别研究分支。V17完整训练和完整gallery补评已封存为失败；其全部查询/图像/分区诊断见§30。V18完整三折两端20epoch主实验已结束（§33）：fused增益+0.921504 mAP，bootstrap下界-0.117338，未通过固定晋级条件；无D1/dev/official。MSVR310、RGBNT100均已安装核验（§32）。V17 fused相对matched weight0为-0.328915 mAP，没有D1/dev/official结果。当前最高可部署结果仍是V8 Phase-B：冻结dev fused=`58.4050 mAP / 59.3939 Rank-1`，比exact Signal高`0.3941 mAP / 1.9394 Rank-1`并超过三个专家，但仍比65 mAP门低`6.5950`，不能声称SOTA。
 
@@ -3735,3 +3735,34 @@ M0固定124步/7936 source训练曝光、203梯度项、全Signal保存状态对
 加权loss按实际FP32分组运算重算；已对旧MSVR完整124条M0 JSON标量验证124/124 exact、最大差0。
 这只是核验器算术检查，0新模型/张量/图像/训练；当前B0保持运行中的原定义，新三角色没有配置或运行。
 详见refine-logs/rgbnt100_trifusion_v1/VERIFIER_PREPARATION_20260906.md及对应evidence注册。
+
+### 41.47 RGBNT100 R2完整三折基线及全部终态核验通过（2026-09-06）
+
+登记2026-09-06T13:56:31.328098+08:00。执行def7b9b，实际12:14:01.080628启动、13:22:06.744688完成，exit0；
+wrapper4085.6617515秒，三fold×30epoch/7794有效更新/498816 source曝光，0 AMP下降。
+内部8675 query/gallery、50身份，mAP89.52417504200771/R1 96.82997118155619；
+fold mAP82.73298803596518/90.29154465089529/96.81599006034025，逐fold保留。
+全部source记录覆盖；完整跨camera正对1502928/1745856=86.0854503464%，不作因果结论。
+远端3完整checkpoint/数组/8675排序、10项目21Signal源绑定、整个CLIP、作者LR全部PASS；
+距离逐元素重算相等；本地90epoch/7794步/8675 query核验，7794/7794 FP32原分组loss完全相等。
+27份文本/JSON/JSONL/gzip 94457434字节按SHA收取；张量/权重留远端，0新模型或图像。
+summary SHA549476408e82f085e7987fe087f6784773a54cd8f7eaf82e4e01faefd85711d5；结果页results/TRIFUSION_RGBNT100_SIGNAL_R2_SOURCE_BASELINE_2026-09-06.md；
+执行侧closure evidence/trifusion_rgbnt100_signal_v1_r2_baseline_executor_closure_20260906.json。独立run20无最终verdict且不覆盖R2 M0/B0。
+纠正§41.45：12:35只见尚在写入排名文件（7554299字节），关闭后16867041字节，不等于当时全排名完成。
+13:21虽90epoch已齐，最后检索未结束，以真实terminal为准；原观察均保留。
+这是内部Signal基线，不是官方1715/8575或主方法成绩，不与公开91.6直接比较。
+
+### 41.48 RGBNT100原完整三角色固定M0及主比较登记（2026-09-06）
+
+登记2026-09-06T13:56:31.328098+08:00，REGISTERED_NOT_RUN。基线前置由§41.47完整终态满足。
+新配置configs/RGBNT100/TriFusion-source-oof-v1.json SHA8d3ce84068a584ca732e62ac4dac2dca366119863570ca6f8d4af6fb3d3f2ee2；
+合同refine-logs/rgbnt100_trifusion_v1/EXPERIMENT_PLAN.md SHA37250b85b4e0e6069b1e44937a45ac70a8f66653bf6cd91b365400523d6ee129；登记evidence/trifusion_rgbnt100_original_roles_registration_20260906.json。
+26实际远端源文件+合同/核验/闭合记录绑定，五已有本地CRLF差异记SHA/相同AST，不改源码或归一化。
+原模型/七ID-Triplet/AdamW3.5e-4/20epoch5warmup/B64K8/seed42和五科学条件不变，
+仅用各自fold真实epoch30 Signal；全部baseline features/distance必须逐元素复现B0。
+M0三fold各8步+fresh fold0固定100步，共124更新/7936source曝光、72角色clean+24独立Signal，0heldout；
+203张量梯度/冻结state/逐位重载及原final excess<=0.1门不变。
+静态预测trainable6248460/6248460/6274572，尚非M0实际计数。
+M0完整工程和权重/标量核验PASS后fresh三fold×20epoch，最终43375 query-output/50身份，五门不改。
+预计正式100–140分钟，按本次M0计时更新；新私有overlay先检查>=8GiB和GPU>=22000MiB。
+没有官方、消融或失败版本扫描，原ENOSPC和科学失败全部保留。

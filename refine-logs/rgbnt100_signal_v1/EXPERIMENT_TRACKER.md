@@ -1,6 +1,6 @@
 # RGBNT100 Signal source-only 三折基线 v1
 
-更新时间：2026-09-06T12:35:34.237907+08:00。R2固定三折30epoch基线正在运行：首折30epoch/2479次有效更新，0 AMP下降；整体终态尚未产生。三折完整首epoch M0及全部权重/257步标量已核验通过。独立审计因服务额度限制未闭合。
+更新时间：2026-09-06T13:56:31.328098+08:00。R2三折30epoch已结束并通过全部权重/数组/7794步/8675 query执行侧核验，内部89.5241750420 mAP/96.8299711816 R1，0官方。独立审计因服务额度限制未闭合，不覆盖本B0。
 
 | 阶段 | 状态 | 完整范围 |
 |---|---|---|
@@ -17,12 +17,12 @@
 | R2 storage recovery | COMPLETE | 两个下载zip按SHA无损迁移；所有科学产物保留，新产物固定overlay |
 | R2 M0 storage retry | PASS_ENGINEERING_ONLY | 81/86/90更新，共257/16448 source前向，195梯度/48严格重载前向 |
 | R2 M0 all files/scalars | PASS | 3完整权重内容、全部257步精确FP32重算；0新模型前向 |
-| R2 fixed30 B0 | RUNNING | def7b9b/wrapper87066；首折30epoch/2479有效更新，整体90epoch/8675query尚未完成 |
+| R2 fixed30 B0 | COMPLETE_BASELINE | def7b9b；90epoch/7794更新/498816 source曝光，8675 query，0 AMP下降 |
 | Independent Gram audit | INCOMPLETE_SERVICE_LIMIT | 153输入/973项重放完成，最终报告未生成；不覆盖新M0 |
-| Full terminal verifiers | R2_PREPARED_NOT_RUN | R2配置/T0路径/逐步JSONL/精确FP32 loss重算；完整三fold/90epoch/8675query |
+| Full terminal verifiers | PASS_ALL_FILES_AND_SCALARS | 三checkpoint/数组/8675排名与7794精确FP32 loss，作者LR及全部实际source覆盖 |
 
 R1配置/合同/回执保留；原runner源字节另行存档，R2的最小源码修订单独绑定。M0不是真实检索成绩，各阶段成本分别登记。
 内部三fold协议与官方1715query/8575gallery不同；没有读取官方测试，主目标未达到。
-结果页：results/TRIFUSION_RGBNT100_SIGNAL_FORMAL_ENGINEERING_STOP_2026-09-06.md。
+结果页：results/TRIFUSION_RGBNT100_SIGNAL_R2_SOURCE_BASELINE_2026-09-06.md；此前工程停止记录保留。
 
-首次进度与终态区分详见baseline_progress_20260906_1235及baseline_progress_assessment证据；预计总65–75分钟，下一计划观察13:15。新RGBNT100三角色入口仅准备，未配置/运行，须等完整B0核验。
+实际13:22:06.744688完成，4085.66175秒；12:35仅见尚在写入的排名文件，已另行纠正。原完整三角色配置/合同已绑定真实B0，M0尚未执行。

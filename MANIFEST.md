@@ -657,3 +657,6 @@
 | 2026-09-06T08:36:44.580202+08:00 | /run-experiment | results/TRIFUSION_MSVR310_ORIGINAL_ROLES_COMPARISON_2026-09-06.md | running/verification preparation | R3 wrapper75993;fold0 reused,fold1 complete,fold2 live;full terminal verifiers NOT_RUN |
 
 | 2026-09-06T08:53:29.912750+08:00 | /run-experiment | results/TRIFUSION_MSVR310_ORIGINAL_ROLES_COMPARISON_2026-09-06.md | complete negative result | Full600query/1032gallery,fused-1.011990pp,all5gates fail;3 checkpoints/15arrays/780steps/3000outputs verified;independent audit pending |
+
+| 2026-09-06T13:56:31.328098+08:00 | /run-experiment | results/TRIFUSION_RGBNT100_SIGNAL_R2_SOURCE_BASELINE_2026-09-06.md; evidence/trifusion_rgbnt100_signal_v1_r2_baseline_executor_closure_20260906.json | complete baseline | RGBNT100 R2 full90epochs/7794steps/8675query executor verified;89.5241750420mAP;no official/method claim;independent audit unavailable |
+| 2026-09-06T13:56:31.328098+08:00 | /experiment-plan + /run-experiment | refine-logs/rgbnt100_trifusion_v1/EXPERIMENT_PLAN.md; configs/RGBNT100/TriFusion-source-oof-v1.json; evidence/trifusion_rgbnt100_original_roles_registration_20260906.json | registration | Original full-three-role RGBNT100 after complete B0;fixed124-step M0 and three20epoch comparison NOT_RUN;no scans/ablations |
