@@ -1,0 +1,88 @@
+{
+  "observed_at": "2026-09-06T11:11:03.301781+08:00",
+  "wrapper_proc_exists": false,
+  "gpu": "24126, 1, 0",
+  "files": [
+    "wrapper.py",
+    "wrapper.log",
+    "launch.json",
+    "t0.log",
+    "t0.json",
+    "t0_exit.txt",
+    "progress.json",
+    "m0.log",
+    "m0",
+    "m0_exit.txt",
+    "terminal.json"
+  ],
+  "progress.json": [
+    {
+      "stage": "t0",
+      "exit_code": 0,
+      "elapsed_seconds": 25.543181275948882
+    },
+    {
+      "stage": "m0",
+      "exit_code": 1,
+      "elapsed_seconds": 57.565920144319534
+    }
+  ],
+  "terminal.json": {
+    "launched_at": "2026-09-06T11:07:00.063517+08:00",
+    "wrapper_pid": 84049,
+    "commands": [
+      [
+        "t0",
+        [
+          "/root/miniconda3/envs/tri_reid/bin/python",
+          "-u",
+          "/root/autodl-tmp/trifusion-v2/TriFusion-ReID/tools/verify_rgbnt100_signal_protocol.py",
+          "--config",
+          "/root/autodl-tmp/trifusion-v2/TriFusion-ReID/configs/RGBNT100/Signal-source-oof-v1-r2.json",
+          "--output",
+          "/root/autodl-tmp/trifusion-v2/artifacts/rgbnt100_signal_source_oof_v1_r2_seed42_e699eac/t0.json"
+        ]
+      ],
+      [
+        "m0",
+        [
+          "/root/miniconda3/envs/tri_reid/bin/python",
+          "-u",
+          "/root/autodl-tmp/trifusion-v2/TriFusion-ReID/tools/train_rgbnt100_signal_oof.py",
+          "--config",
+          "/root/autodl-tmp/trifusion-v2/TriFusion-ReID/configs/RGBNT100/Signal-source-oof-v1-r2.json",
+          "--mode",
+          "preflight",
+          "--protocol-receipt",
+          "/root/autodl-tmp/trifusion-v2/artifacts/rgbnt100_signal_source_oof_v1_r2_seed42_e699eac/t0.json",
+          "--output-dir",
+          "/root/autodl-tmp/trifusion-v2/artifacts/rgbnt100_signal_source_oof_v1_r2_seed42_e699eac/m0"
+        ]
+      ]
+    ],
+    "gpu_free_mib": 24126,
+    "project_commit": "e699eaca888061145a402e6b91fe90ebf96a7989",
+    "config_sha256": "9d5ecf5f350c2f1eea50650bf0abc9580a4d2e86947e20a83b7ba94c67faf997",
+    "runner_sha256": "4677e7345f282646e6654000d9d526d8207f698fc58a1f90b0c44bda6dd5fc25",
+    "scope": "R2 fullT0 then three fresh complete-first-epoch source M0;0heldout; no baseline restart",
+    "first_observation": "about4minutes",
+    "completed_at": "2026-09-06T11:08:23.174872+08:00",
+    "exit_code": 1,
+    "stages": [
+      {
+        "stage": "t0",
+        "exit_code": 0,
+        "elapsed_seconds": 25.543181275948882
+      },
+      {
+        "stage": "m0",
+        "exit_code": 1,
+        "elapsed_seconds": 57.565920144319534
+      }
+    ],
+    "elapsed_seconds": 83.11057875305414
+  },
+  "wrapper.log_tail": "",
+  "t0.log_tail": "{\"status\": \"PASS_FULL_TRAIN_PROTOCOL_AND_MONTAGE\", \"config_sha256\": \"9d5ecf5f350c2f1eea50650bf0abc9580a4d2e86947e20a83b7ba94c67faf997\", \"protocol_sha256\": \"42bd612ecc8720db7f6684214e1f60d1cb4bab6b2fa8db3df343a9d2c52e4abf\", \"runner_sha256\": \"4677e7345f282646e6654000d9d526d8207f698fc58a1f90b0c44bda6dd5fc25\", \"verifier_sha256\": \"4555014620f3adadf1fcdfe99700d843e2db3229ce0b8c5dc3bb2610aef1ee6f\", \"signal_commit\": \"cd1b0a672d1fe642e7608731cb4899a19dda7d51\", \"signal_diff_sha256\": \"b889caca9c4a92689b13eb7e20bd3224067f3e5ed2a3db6825201870ca422741\", \"project_commit\": \"e699eaca888061145a402e6b91fe90ebf96a7989\", \"training_montages_verified\": 8675, \"modality_crops_compared\": 26025, \"image_decodes\": 17350, \"dimensions\": {\"768x128\": 8675}, \"folds\": [{\"fold\": 0, \"source_records\": 5550, \"gallery_records\": 3125, \"query_records\": 3125, \"source_identities\": 33, \"heldout_identities\": 17, \"all_query_positive_counts_match\": true, \"identity_isolation\": true}, {\"fold\": 1, \"source_records\": 5725, \"gallery_records\": 2950, \"query_records\": 2950, \"source_identities\": 33, \"heldout_identities\": 17, \"all_query_positive_counts_match\": true, \"identity_isolation\": true}, {\"fold\": 2, \"source_records\": 6075, \"gallery_records\": 2600, \"query_records\": 2600, \"source_identities\": 34, \"heldout_identities\": 16, \"all_query_positive_counts_match\": true, \"identity_isolation\": true}], \"camera_ranking_synthetic_fixtures\": [{\"expected_ap\": 0.5, \"actual_ap\": 0.5, \"first_match_rank\": 2, \"synthetic_not_retrieval_result\": true}, {\"expected_ap\": 0.8333333333333334, \"actual_ap\": 0.8333333333333333, \"first_match_rank\": 1, \"synthetic_not_retrieval_result\": true}], \"model_forwards\": 0, \"optimizer_steps\": 0, \"real_retrieval_metric_calls\": 0, \"official_query_gallery_image_access\": 0, \"elapsed_seconds\": 24.58218584768474}\n",
+  "m0.log_tail": "_} is deprecated, please import via timm.layers\", FutureWarning)\n\u5efa\u7acbtransformer............\nusing Transformer_type: ViT-B-16 as a backbone\nResized position embedding: %s to %s torch.Size([197, 768]) torch.Size([129, 768])\nPosition embedding resize to height:8 width: 16\nSuccessfully load ckpt!\n<All keys matched successfully>\nLoading pretrained model from CLIP\ncamera number is : 8\n===========Building Signal===========\nusing soft triplet loss for training\nlabel smooth on, numclasses: 33\n{\"event\": \"signal_source_epoch\", \"epoch\": 1, \"optimizer_steps\": 81, \"mean_loss\": 7.006990939010809, \"learning_rates\": [2.0041138350963593e-05, 6.891338801383971e-05, 0.00011813723659515383], \"elapsed_seconds\": 44.882046388462186}\nTraceback (most recent call last):\n  File \"/root/miniconda3/envs/tri_reid/lib/python3.10/site-packages/torch/serialization.py\", line 850, in save\n    _save(\n  File \"/root/miniconda3/envs/tri_reid/lib/python3.10/site-packages/torch/serialization.py\", line 1114, in _save\n    zip_file.write_record(name, storage, num_bytes)\nRuntimeError: [enforce fail at inline_container.cc:778] . PytorchStreamWriter failed writing file data/141: file write failed\n\nDuring handling of the above exception, another exception occurred:\n\nTraceback (most recent call last):\n  File \"/root/autodl-tmp/trifusion-v2/TriFusion-ReID/tools/train_rgbnt100_signal_oof.py\", line 428, in <module>\n    run(arguments)\n  File \"/root/autodl-tmp/trifusion-v2/TriFusion-ReID/tools/train_rgbnt100_signal_oof.py\", line 369, in run\n    torch.save({\"model_state_dict\": model.state_dict(), \"fold\": fold[\"fold\"],\n  File \"/root/miniconda3/envs/tri_reid/lib/python3.10/site-packages/torch/serialization.py\", line 849, in save\n    with _open_zipfile_writer(f) as opened_zipfile:\n  File \"/root/miniconda3/envs/tri_reid/lib/python3.10/site-packages/torch/serialization.py\", line 690, in __exit__\n    self.file_like.write_end_of_file()\nRuntimeError: [enforce fail at inline_container.cc:603] . unexpected pos 101687680 vs 101687568\n"
+}

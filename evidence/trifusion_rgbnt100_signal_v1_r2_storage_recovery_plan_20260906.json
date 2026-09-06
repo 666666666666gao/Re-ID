@@ -1,0 +1,35 @@
+{
+  "schema": "rgbnt100-r2-storage-recovery-plan-v1",
+  "registered_at": "2026-09-06T11:28:13.604778+08:00",
+  "reason": "R2 fold0 completed 81 source updates then torch.save failed. Data partition has 1785856 bytes free; overlay has 19893301248 bytes free.",
+  "source_directory": "/root/autodl-tmp/trifusion-v2/downloads",
+  "destination_directory": "/root/trifusion-storage/downloads",
+  "archives": [
+    {
+      "name": "MSVR310.zip",
+      "expected_bytes": 491186967
+    },
+    {
+      "name": "RGBNT100.zip",
+      "expected_bytes": 1584573535
+    }
+  ],
+  "procedure": [
+    "Hash both regular source files.",
+    "Copy each archive with metadata to the owned overlay directory.",
+    "Verify target size and SHA-256 equal source and recheck unchanged source.",
+    "Unlink only verified redundant original archive copies; retain both complete destination archives."
+  ],
+  "retained_unchanged": [
+    "all installed datasets",
+    "all scientific checkpoints/features/distance arrays",
+    "failed R2 partial checkpoint and all logs",
+    "R2 runner/config/helper",
+    "existing successful T0 receipt"
+  ],
+  "future_output_root": "/root/trifusion-storage/artifacts",
+  "m0_retry": "Separately registered fresh three-fold complete-first-epoch M0 with same R2 code/config, genuine existing R2 T0 receipt; do not reuse partial checkpoint.",
+  "public_mount_writes": 0,
+  "tensor_model_image_loads": 0,
+  "optimizer_updates": 0
+}

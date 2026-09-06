@@ -1,0 +1,40 @@
+{
+  "launched_at": "2026-09-06T11:07:00.063517+08:00",
+  "wrapper_pid": 84049,
+  "commands": [
+    [
+      "t0",
+      [
+        "/root/miniconda3/envs/tri_reid/bin/python",
+        "-u",
+        "/root/autodl-tmp/trifusion-v2/TriFusion-ReID/tools/verify_rgbnt100_signal_protocol.py",
+        "--config",
+        "/root/autodl-tmp/trifusion-v2/TriFusion-ReID/configs/RGBNT100/Signal-source-oof-v1-r2.json",
+        "--output",
+        "/root/autodl-tmp/trifusion-v2/artifacts/rgbnt100_signal_source_oof_v1_r2_seed42_e699eac/t0.json"
+      ]
+    ],
+    [
+      "m0",
+      [
+        "/root/miniconda3/envs/tri_reid/bin/python",
+        "-u",
+        "/root/autodl-tmp/trifusion-v2/TriFusion-ReID/tools/train_rgbnt100_signal_oof.py",
+        "--config",
+        "/root/autodl-tmp/trifusion-v2/TriFusion-ReID/configs/RGBNT100/Signal-source-oof-v1-r2.json",
+        "--mode",
+        "preflight",
+        "--protocol-receipt",
+        "/root/autodl-tmp/trifusion-v2/artifacts/rgbnt100_signal_source_oof_v1_r2_seed42_e699eac/t0.json",
+        "--output-dir",
+        "/root/autodl-tmp/trifusion-v2/artifacts/rgbnt100_signal_source_oof_v1_r2_seed42_e699eac/m0"
+      ]
+    ]
+  ],
+  "gpu_free_mib": 24126,
+  "project_commit": "e699eaca888061145a402e6b91fe90ebf96a7989",
+  "config_sha256": "9d5ecf5f350c2f1eea50650bf0abc9580a4d2e86947e20a83b7ba94c67faf997",
+  "runner_sha256": "4677e7345f282646e6654000d9d526d8207f698fc58a1f90b0c44bda6dd5fc25",
+  "scope": "R2 fullT0 then three fresh complete-first-epoch source M0;0heldout; no baseline restart",
+  "first_observation": "about4minutes"
+}

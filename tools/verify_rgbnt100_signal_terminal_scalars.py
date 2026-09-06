@@ -6,6 +6,7 @@ import gzip
 import hashlib
 import json
 import math
+import struct
 from pathlib import Path
 from statistics import mean
 import time
@@ -17,6 +18,10 @@ def sha(path):
         for block in iter(lambda: stream.read(1024 * 1024), b""):
             digest.update(block)
     return digest.hexdigest()
+
+
+def f32(value):
+    return struct.unpack("f", struct.pack("f", value))[0]
 
 
 def metrics(aps, ranks):
@@ -32,6 +37,8 @@ def run(args):
     remote = json.loads(args.remote_verification.read_text(encoding="utf-8"))
     assert not args.output.exists()
     assert summary["status"] == "COMPLETE_BASELINE_NOT_METHOD_QUALIFICATION" and summary["mode"] == "train"
+    assert summary["engineering_revision"] == m0["engineering_revision"] == 2
+    exact_loss_count = 0
     assert summary["seed"] == 42 and summary["checkpoint_selection"] == "fixed_epoch_30"
     assert not summary["epochs_selected_by_heldout"] and summary["training_source_only"]
     assert summary["expert_training"] == summary["official_test_image_access"] == summary["fixed_rgbnt201_dev_image_access"] == 0
@@ -95,6 +102,8 @@ def run(args):
         recalculated = metrics(aps, ranks)
         metric_diffs.extend(abs(v - retrieval["metrics"][k]) for k, v in recalculated.items())
         assert max(retrieval["upstream_metric_difference_pp"].values()) < 1e-5
+        step_path = args.rankings_root / f"fold_{index}" / "steps.jsonl"
+        assert training["steps"] == [json.loads(line) for line in step_path.read_text(encoding="utf-8").splitlines()]
         assert training["epochs"] == len(training["history"]) == 30
         assert training["optimizer_steps"] == len(training["steps"])
         assert training["initial_state_sha256"] == capacity["training"]["initial_state_sha256"]
@@ -114,12 +123,20 @@ def run(args):
         same_identity_pairs = cross_camera_pairs = 0
         for step_number, step in enumerate(training["steps"], 1):
             assert step["step"] == step_number and 1 <= step["epoch"] <= 30
+            assert step["optimizer_update_applied"]
             assert step["amp_scale_after"] >= step["amp_scale_before"]
             sampled = step["sampled_record_indices"]
             assert len(sampled) == 64 and set(sampled) <= source
             assert sorted(Counter(records[i]["identity"] for i in sampled).values()) == [8] * 8
             assert len(step["id_triplet_head_losses"]) == 4
             composed = sum(step["id_triplet_head_losses"]) + .1 * step["gram_loss"] + .1 * step["patch_loss"]
+            exact = 0.
+            for component in step["id_triplet_head_losses"]:
+                exact = f32(exact + component)
+            exact = f32(exact + f32(f32(.1) * step["gram_loss"]))
+            exact = f32(exact + f32(f32(.1) * step["patch_loss"]))
+            assert exact == step["loss"]
+            exact_loss_count += 1
             assert math.isfinite(composed) and math.isfinite(step["loss"])
             loss_diffs.append(abs(composed - step["loss"]))
             losses[step["epoch"]].append(step["loss"])
@@ -166,7 +183,8 @@ def run(args):
               "epoch_rows": 90, "query_records": 8675, "gallery_records": 8675, "query_identities": 50,
               "maximum_metric_difference": max(metric_diffs), "maximum_epoch_mean_difference": max(mean_diffs),
               "maximum_loss_composition_difference": max(loss_diffs),
-              "loss_note": "Stored float components regrouped with Python doubles; AMP intermediate dtypes not retained; no new scientific tolerance gate.",
+              "exact_float32_loss_recompositions": exact_loss_count,
+              "loss_note": "Every sequential float32 loss recomposition exactly matches saved total; Python double regrouping also reported.",
               "new_method_qualification": False, "official_test_access": 0, "local_model_tensor_image_calls": 0,
               "elapsed_seconds": time.perf_counter() - started,
               "input_sha256": {k: sha(getattr(args, k)) for k in ("summary", "protocol", "preflight", "log", "remote_verification")}}
@@ -179,4 +197,3 @@ if __name__ == "__main__":
     for name in ("summary", "protocol", "preflight", "log", "rankings-root", "remote-verification", "output"):
         parser.add_argument("--" + name, type=Path, required=True)
     run(parser.parse_args())
-

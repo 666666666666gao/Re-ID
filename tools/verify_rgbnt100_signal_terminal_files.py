@@ -37,15 +37,16 @@ def main(args):
     assert (run / "baseline_exit.txt").read_text().strip() == "0"
     summary = json.loads((run / "baseline/summary.json").read_text())
     m0 = json.loads((run / "m0/summary.json").read_text())
-    config_path = project / "configs/RGBNT100/Signal-source-oof-v1.json"
+    config_path = project / "configs/RGBNT100/Signal-source-oof-v1-r2.json"
     config = json.loads(config_path.read_text())
     protocol = json.loads((project / config["protocol"]).read_text())
     assert summary["status"] == "COMPLETE_BASELINE_NOT_METHOD_QUALIFICATION"
+    assert summary["engineering_revision"] == m0["engineering_revision"] == 2
     assert summary["mode"] == "train" and summary["checkpoint_selection"] == "fixed_epoch_30"
     assert summary["config_sha256"] == sha(config_path)
     assert summary["protocol_sha256"] == sha(project / config["protocol"])
     assert summary["preflight_receipt_sha256"] == sha(run / "m0/summary.json")
-    assert summary["protocol_receipt_sha256"] == sha(run / "t0.json")
+    assert summary["protocol_receipt_sha256"] == sha(args.protocol_receipt)
     assert summary["heldout_image_forwards"] == protocol["counts"]["gallery_records"] == 8675
     for name, expected in config["project_source_file_sha256"].items():
         assert sha(project / name) == expected, name
@@ -58,7 +59,7 @@ def main(args):
     files = {}
     selected = sorted((run / "baseline").rglob("*"))
     selected += [run / name for name in ("baseline.log", "baseline_exit.txt", "baseline_launch.json",
-                 "baseline_wrapper.log", "baseline_wrapper.py", "original_baseline_launch.json", "baseline_terminal.json")]
+                 "baseline_wrapper.log", "baseline_wrapper.py", "baseline_terminal.json")]
     for path in selected:
         if path.is_file():
             files[path.relative_to(run).as_posix()] = {"bytes": path.stat().st_size, "sha256": sha(path)}
@@ -69,6 +70,8 @@ def main(args):
         assert actual == json.loads((directory / "receipt.json").read_text())
         training = actual["training"]
         assert training == json.loads((directory / "training.json").read_text())
+        assert training["steps"] == [json.loads(line) for line in (directory / "steps.jsonl").read_text().splitlines()]
+        assert all(step["optimizer_update_applied"] for step in training["steps"])
         assert training["epochs"] == len(training["history"]) == 30
         assert training["initial_state_sha256"] == capacity["training"]["initial_state_sha256"]
         assert training["initial_state_sha256"] != capacity["training"]["final_state_sha256"]
@@ -147,5 +150,5 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("--run-root", type=Path, required=True)
     parser.add_argument("--project-root", type=Path, required=True)
+    parser.add_argument("--protocol-receipt", type=Path, required=True)
     main(parser.parse_args())
-

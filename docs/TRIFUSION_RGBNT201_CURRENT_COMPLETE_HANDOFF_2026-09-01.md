@@ -2,7 +2,7 @@
 
 ## 0. 一页结论
 
-最新状态（2026-09-06T11:04:50.243649+08:00）：RGBNT100首次正式基线因Gram零行列式的NaN反向停止，尚无检索终态；仅FP32提议失败，FP32+固定1e-12开方下限的真实单batch回归已通过，195梯度有限且3072D推理逐位一致。R2数值修订与三折完整首epoch工程检查已登记待运行（§41.41/42）。MSVR310原三角色比较及独立审计闭合，fused52.117390低于Signal53.129381，五项科学条件全失败；V23/V24负结果封存。RGBNT201保留dev58.4050/59.3939，主目标继续未达。
+最新状态（2026-09-06T11:36:28.223741+08:00）：RGBNT100 Signal R2全量T0通过；M0 fold0完成81更新后因数据盘写满而无法保存完整checkpoint，三折工程门尚未通过。已按SHA无损迁移两个下载zip，科学产物全部保留；相同R2代码/config的三折M0存储重试已登记，将复用真实T0回执（§41.43）。正式基线尚未恢复，RGBNT100仍无检索结果。MSVR310原三角色fused52.117390低于Signal53.129381，五项科学条件全失败且审计闭合；V23/V24负结果封存。RGBNT201保留dev58.4050/59.3939，主目标继续未达。
 
 当前用于MSVR310完整比较的是原V8平行三角色结构：冻结Signal/CLIP，共享block8之前语义和tail9/10/11参数，三个角色分别运行共享tail；CNN处理局部语义Patch高频，Transformer处理全局CLS/Patch关系，Mamba处理空间与位置级三模态扫描。各角色相对冻结reference形成1536D残差，三角色4608D银行拼接3072D Signal得到7680D fused；完整单角色输出为4608D Signal+角色残差。三条路径均执行，当前没有Router/HFER、V23模态MLP或V24原型。训练已完成，尚无被证实超过Signal的新主方案。下面V1—V8条目保留历史经过，不代表当前又启用了旧模块。
 
@@ -3669,6 +3669,21 @@ FP32+1e-12开方下限保留已知(4,4)零det并令反向有限；完整AMP195�
 R2登记2026-09-06T11:04:50.243649+08:00，配置SHA9d5ecf5f350c2f1eea50650bf0abc9580a4d2e86947e20a83b7ba94c67faf997，runner SHA4677e7345f282646e6654000d9d526d8207f698fc58a1f90b0c44bda6dd5fc25。
 仅安装已验证的稳定Gram函数、逐步JSONL写在AMP失败门之前、M0由8步改为每fold完整1个source epoch。
 原AMPscale不能下降、finite195梯度、selector冻结与严格重载门保留；正式仍fresh三fold各30epoch，不使用M0权重。
-10个数据/提取/排名/configure函数AST等同R1；原runner原字节单独存run20/inputs，旧R1回执不改。
+9个数据/提取/排名/configure函数AST等同R1；原runner原字节单独存run20/inputs，旧R1回执不改。
 新源码绑定执行一次完整T0后进行完整首epochM0，预计3–6分钟；当前READY_NOT_RUN，完整基线尚未重启。
 必须在正式启动前完成全部新M0标量/权重核验并适配终态核验器；无官方测试、消融或方法晋级。
+
+### 41.43 R2 T0通过、M0保存失败与无损存储恢复（2026-09-06）
+
+记录2026-09-06T11:36:28.223741+08:00。e699eac wrapper84049实际11:08:23.174872退出1，总83.1106秒；
+T0原报告24.5822秒通过，回执SHAe54c826d1cfba2eca6526d4e4bdecb6758a19ff3b0ada4a498adfb3f11883ba5。
+M0 fold0完成首epoch81更新/5184 source训练记录前向，195/195梯度有限、AMP256无下降、均loss7.006990939。
+所有81步JSONL和training.json一致且逐项FP32 loss重算精确相同；torch.save随后因数据盘仅余1785856字节失败。
+部分checkpoint101712000字节已记录全SHA并原地保留；strict reload/fold1/2未运行，M0不完整，无heldout检索。
+已将已安装数据集的两个下载zip按前后SHA验证无损迁至/root/trifusion-storage/downloads；
+数据盘余2077556736字节，overlay余17817534464字节，实验权重/数组/日志/数据集均未删除，公共挂载写入0。
+存储重试登记ENGINEERING_R2_STORAGE_RETRY.md：同R2代码/config、三fold fresh完整首epoch，
+输出固定/root/trifusion-storage/artifacts/rgbnt100_signal_source_oof_v1_r2_storage_retry_seed42_20260906，
+复用相同绑定的真实R2 T0回执，不重复T0、不复用M0训练权重。旧81更新另记实际工程成本。
+M0文件/权重/全部标量核验器已准备，完整终态核验器亦在正式启动前适配R2；当前retry READY_NOT_RUN，正式基线未恢复。
+§41.42中的不变AST对象数按注册清单及独立比较更正为9；10是项目文件绑定数量，两者不同。
