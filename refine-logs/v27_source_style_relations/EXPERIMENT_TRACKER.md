@@ -14,3 +14,7 @@ No complete diagnostic or CPU verification result yet. Original process will ver
 05:36:49 original wrapper/child live;145batches/870forwards persisted.
 Complete reporting code registered: all72 cells, all18 outputs, all16 support signs, all94 source IDs percell including zeros.
 Aggregation math PASS; requires original pipeline end + full CPU array verification exit0; queue not started yet. Active diagnostic unchanged.
+
+05:42:28 report queue134960 launched onf97186d;05:42:49 original wrapper134209/child134211/queue134960 all live.
+Queue waits180s for original pipeline, then requires both diagnostic and full CPU verifier exit0. No report/model changes executed yet.
+05:41:23 main progress203batches/1218forwards; estimated GPU end near07:09 plus full CPU replay.
