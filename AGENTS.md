@@ -1,30 +1,29 @@
 # TriFusion-ReID workspace
 
-## Latest verified state (2026-09-07T00:35:14.340790+08:00)
+## Latest verified state (2026-09-07T00:51:10.467612+08:00)
 
-- V26 IMPLEMENTED_REGISTERED_NOT_RUN. New role-modal responsibility loss,
-  tau0.1/lambda1 fixed, OLD identical sampler both arms, original14 losses and
-  V8/Signal model. No new inference parameters. T0/M0/Q1 not executed yet.
-  Read refine-logs/trifusion_v26_role_modal_responsibility/EXPERIMENT_PLAN.md.
-  Planned48 read-only batches +116 M0 updates, then full6x20 epochs/3360updates.
-  Same original five Q1 gates. All nine-slot support and same-encoder-block
-  auxiliary gradients recorded; no XBM/PCGrad/new sampling/Router/ablation.
-- V25 COMPLETE Q1_FAIL, training and full CPU verifier exit0. Full571queries,
-  21IDs/32602260 distances/5952790 ranks verified. Fused80.881569->80.420931,
-  delta-0.460638pp; T-2.026329/M+1.835080. Only1of5 science gatesPASS.
-  All2855 query-output and105 identity-output rows published; version sealed.
-- RGBNT100 official full verified Signal80.712162/94.227405
-  ->fused83.284770/96.151603,+2.572608pp. Mamba83.440622 higher mAP,
-  original3of4 gatesPASS. Real baseline gain preserved; no official tuning.
-  RGBNT201 fixeddev58.4050, MSVR310 original roles negative; no SOTA.
-- BIER paper/author sourcecd04edf verified; GPLv3 code reviewed only,
-  no copied/run author code. Independent implementation, novelty unproven.
-  Reused21-ID OOF remains development qualification, not independent validation.
-- Three-dataset baseline/SOTA goal active and unmet. External independent audit
-  service unavailable; executor verification is not an independent audit.
-- Cleanup24 obsolete resume files/24.900344GiB completed. Preserve baseline,
-  useful finals and full evaluation arrays. Datafree~21.07GiB at00:25.
-  No GPU job active at00:25; new V26 has not launched. Master through41.72.
+- V26 T0/M0 PASS, Q1 RUNNING. OriginalPID118939/wrapper118937, launched00:39:52,
+  training commitff18e40. Verified00:47:43 fold0-control epoch6; no Q1 terminal.
+  All48 read-only batches/116updates/203 tensors passed, overfit ratio0.058728.
+  Nine slot and three same-encoder-block auxiliary gradients nonzero.
+- Initial48 forward and candidate8 capacity batches have ZERO fused-nonpositive
+  triplets. Auxiliary/base gradient norm ratios4.13e-5..2.88e-4; fused-role
+  gradient cosines positive in all24 block observations. Weak initial signal,
+  not proof of Q1 failure or no full-source instance hard negatives.
+  Keep fixedtau0.1/lambda1, OLD identical sampler, original14 losses/model.
+  Complete original6x20epochs/3360updates and all five original scientific gates.
+- New full CPU verifier/reporter prepared but NOT executed or queued yet;
+  verify all training rows and all32,602,260 distances/5,952,790 ranking positions.
+  Read V26 immutable plan, tracker and complete M0 report. Master through41.73.
+- V25 full Q1_FAIL/complete CPU verification sealed; fused80.881569->80.420931.
+  RGBNT100 official real baseline gain+2.572608pp preserved; fused83.284770
+  trailsMamba83.440622. RGBNT201dev58.4050, MSVR310 negative, no SOTA.
+- Three-dataset baseline/SOTA goal active and unmet. Reused21-ID OOF is
+  development qualification; no official tuning or pre-success ablations.
+  BIER paper/code reviewed only; independent implementation, novelty unproven.
+  No XBM/PCGrad/new sampler/Router. External independent audit service unavailable.
+- Cleanup24 obsolete resume files/24.900344GiB complete. Protect useful finals,
+  source baselines and evaluation arrays. Datafree~21.05GiB at00:47.
 
 ## Experiment environment
 

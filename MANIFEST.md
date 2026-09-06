@@ -1015,3 +1015,21 @@
 | 2026-09-07T00:35:14.340790+08:00 | /experiment-plan | evidence/trifusion_v25_complete_sync_20260907.json | registered | V26 fixed responsibility objective; T0/M0/Q1 not run |
 | 2026-09-07T00:35:14.340790+08:00 | /experiment-plan | docs/TRIFUSION_RGBNT201_CURRENT_COMPLETE_HANDOFF_2026-09-01.md | registered | V26 fixed responsibility objective; T0/M0/Q1 not run |
 | 2026-09-07T00:35:14.340790+08:00 | /experiment-plan | AGENTS.md | registered | V26 fixed responsibility objective; T0/M0/Q1 not run |
+| 2026-09-07T00:51:10.467612+08:00 | /executor-analysis | evidence/trifusion_v26_launch_wrapper_20260907.py | recorded | V26 full M0 PASS, Q1 active; terminal verifier prepared only |
+| 2026-09-07T00:51:10.467612+08:00 | /executor-analysis | evidence/trifusion_v26_role_modal_responsibility_dispatch_20260907.json | recorded | V26 full M0 PASS, Q1 active; terminal verifier prepared only |
+| 2026-09-07T00:51:10.467612+08:00 | /executor-analysis | evidence/trifusion_v26_live_20260907_004048.json | recorded | V26 full M0 PASS, Q1 active; terminal verifier prepared only |
+| 2026-09-07T00:51:10.467612+08:00 | /executor-analysis | evidence/trifusion_v26_live_20260907_004359.json | recorded | V26 full M0 PASS, Q1 active; terminal verifier prepared only |
+| 2026-09-07T00:51:10.467612+08:00 | /executor-analysis | evidence/trifusion_v26_live_20260907_004743.json | recorded | V26 full M0 PASS, Q1 active; terminal verifier prepared only |
+| 2026-09-07T00:51:10.467612+08:00 | /executor-analysis | evidence/trifusion_v26_m0_complete_20260907.json | recorded | V26 full M0 PASS, Q1 active; terminal verifier prepared only |
+| 2026-09-07T00:51:10.467612+08:00 | /executor-analysis | evidence/trifusion_v26_m0_executor_verification_20260907.json | recorded | V26 full M0 PASS, Q1 active; terminal verifier prepared only |
+| 2026-09-07T00:51:10.467612+08:00 | /executor-analysis | results/TRIFUSION_V26_COMPLETE_M0_2026-09-07.md | recorded | V26 full M0 PASS, Q1 active; terminal verifier prepared only |
+| 2026-09-07T00:51:10.467612+08:00 | /executor-analysis | evidence/trifusion_v26_registered_sync_20260907.json | recorded | V26 full M0 PASS, Q1 active; terminal verifier prepared only |
+| 2026-09-07T00:51:10.467612+08:00 | /executor-analysis | tools/verify_v26_complete_terminal.py | recorded | V26 full M0 PASS, Q1 active; terminal verifier prepared only |
+| 2026-09-07T00:51:10.467612+08:00 | /executor-analysis | tools/report_v26_complete_comparison.py | recorded | V26 full M0 PASS, Q1 active; terminal verifier prepared only |
+| 2026-09-07T00:51:10.467612+08:00 | /executor-analysis | evidence/trifusion_v26_terminal_verification_wrapper_20260907.py | recorded | V26 full M0 PASS, Q1 active; terminal verifier prepared only |
+| 2026-09-07T00:51:10.467612+08:00 | /executor-analysis | evidence/trifusion_v26_terminal_verification_registration_20260907.json | recorded | V26 full M0 PASS, Q1 active; terminal verifier prepared only |
+| 2026-09-07T00:51:10.467612+08:00 | /executor-analysis | refine-logs/trifusion_v26_role_modal_responsibility/TERMINAL_VERIFICATION_PLAN.md | recorded | V26 full M0 PASS, Q1 active; terminal verifier prepared only |
+| 2026-09-07T00:51:10.467612+08:00 | /executor-analysis | refine-logs/trifusion_v26_role_modal_responsibility/EXPERIMENT_TRACKER_20260907_m0_pass.md | recorded | V26 full M0 PASS, Q1 active; terminal verifier prepared only |
+| 2026-09-07T00:51:10.467612+08:00 | /executor-analysis | refine-logs/trifusion_v26_role_modal_responsibility/EXPERIMENT_TRACKER.md | recorded | V26 full M0 PASS, Q1 active; terminal verifier prepared only |
+| 2026-09-07T00:51:10.467612+08:00 | /executor-analysis | docs/TRIFUSION_RGBNT201_CURRENT_COMPLETE_HANDOFF_2026-09-01.md | recorded | V26 full M0 PASS, Q1 active; terminal verifier prepared only |
+| 2026-09-07T00:51:10.467612+08:00 | /executor-analysis | AGENTS.md | recorded | V26 full M0 PASS, Q1 active; terminal verifier prepared only |
