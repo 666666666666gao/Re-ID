@@ -2,7 +2,7 @@
 
 ## 0. 一页结论
 
-最新状态（进度观测2026-09-06T15:23:56.572837+08:00）：RGBNT100原完整三角色前两fold各20epoch、1653+1719更新及6075图库五输出评估完成，运行回执B0 features/distance逐元素相同；第三fold已133有效更新，累计3505，仍无三fold终态（§41.53）。执行bbe49e1，下一观察15:53，预计15:55–16:10。Signal R2内部基线89.5241750420/96.8299711816已全量核验；用户综述更新及完整错误描述准备见§41.53。独立审计受服务额度限制；MSVR310/V23/V24负结果封存，RGBNT201仍dev58.4050/59.3939，主目标未达。
+最新状态（进度观测2026-09-06T15:53:41.025150+08:00）：RGBNT100原完整三角色前两fold各20epoch、1653+1719更新及6075图库五输出评估完成；第三fold已到第20epoch、1733有效更新，累计5105，仍无三fold终态。执行bbe49e1，下一观察15:59，预计15:55–16:10。按用户指令已删除12个已结束旧实验的24份重复恢复检查点，释放24.90GiB；旧数据盘剩26.62GiB，12个独立模型SHA保留核验通过，当前训练未中断（§41.54）。Signal R2内部基线89.5241750420/96.8299711816已全量核验；独立审计受服务额度限制；MSVR310/V23/V24负结果封存，RGBNT201仍dev58.4050/59.3939，主目标未达。
 
 当前用于已完成MSVR310比较及新登记RGBNT100比较的是原V8平行三角色结构：冻结Signal/CLIP，共享block8之前语义和tail9/10/11参数，三个角色分别运行共享tail；CNN处理局部语义Patch高频，Transformer处理全局CLS/Patch关系，Mamba处理空间与位置级三模态扫描。各角色相对冻结reference形成1536D残差，三角色4608D银行拼接3072D Signal得到7680D fused；完整单角色输出为4608D Signal+角色残差。三条路径均执行，当前没有Router/HFER、V23模态MLP或V24原型。MSVR310训练比较已完成，RGBNT100状态见上；尚无被证实超过Signal的新主方案。下面V1—V8条目保留历史经过，不代表当前又启用了旧模块。
 
@@ -3850,3 +3850,19 @@ V23−0.252705、V24+0.491307但未过门、MSVR310−1.011990、RGBNT100B0=89.5
 不新增模型运行、训练、科学门、子集选择或相机因果声明。代码AST/CLI通过，真实数据执行NOT_RUN。
 终态CPU文件核验包装器同步归档，原四核验器及训练绑定字节不变。
 依据evidence/trifusion_rgbnt100_original_roles_comparison_progress_20260906_152356.json及evidence/trifusion_rgbnt100_original_roles_second_fold_progress_assessment_20260906.json。
+
+### 41.54 按用户指令清理已结束实验的重复恢复检查点（2026-09-06）
+
+用户要求“注意一下磁盘空间，把没用的权重删掉”。全量权重目录核查后，仅选12个已完成旧运行的24个.resume/generation-*-{complete,post_train}.pt。
+清理前核对全部24个目标的原SHA/大小、各latest.json的complete状态及12个独立best/final/generator模型的原SHA；排除活动进程引用目录。
+2026-09-06T15:47:02.523745+08:00清理结束，共删除26736541280字节=24.900344GiB；24个路径均不存在，12个独立模型删除后再次全文件SHA验证通过。
+/root/autodl-tmp 50GiB卷由97%降至47%，free从1844940800字节（1.72GiB）升至28581548032字节（26.62GiB）。
+当前RGBNT100输出所在root overlay是另一个卷，清理后free12051623936字节（11.22GiB）；不能将两卷空间相加当作同一输出目录可用容量。
+CLIP、Signal baseline、V8最佳模型、V12 source模型、当前RGBNT100 M0/B0/比较权重、检索数组、日志和指标均未列入删除目标。
+旧24份优化器/恢复状态已经删除，不能继续从这些旧状态恢复训练或重新核验其原二进制；历史JSON和既往审计为原时点证据，独立推理模型仍在。
+完整路径/SHA/逐个删除回执见evidence/trifusion_completed_resume_weight_cleanup_receipt_20260906.json；结果页results/TRIFUSION_DISK_WEIGHT_CLEANUP_2026-09-06.md。
+
+清理后原wrapper93313/child93317仍存活。按原阶段计划15:53实查于15:53:41完成：
+第三fold第20epoch/1733有效更新，整体5105，全部203梯度有限、无AMP下降；59个完整epoch，前两fold完整评估不变。
+当前输出卷free12034846720字节，两进程及GPU正常；科学终态尚未齐全，没有按中间分数改训练。
+证据evidence/trifusion_rgbnt100_original_roles_comparison_progress_20260906_155341.json；下一查看15:59、仍预计15:55–16:10结束。
