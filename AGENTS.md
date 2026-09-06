@@ -532,3 +532,8 @@
   engineeringPASS/scienceFAIL;102immutable inputs, all3000query/780steps independently replayed once.
   Round2 report-only source/provenance correction; same-family/backend and remote-binary limits retained.
   Read EXPERIMENT_AUDIT_MSVR310_TRIFUSION_TERMINAL.md/json and terminal_audit_closure receipt.
+
+- RGBNT100 T0/M0 on1157f0d PASS: all8675montages/26025crop pixels, allquery masks,
+  3x8source updates/195of195gradient tensors, exact3072D source reload,0heldout model forwards.
+  Whole3 checkpoint contents and all24scalar/source steps verified. M0 JSON7e9f6214... is fixed.
+  Baseline READY_NOT_RUN: fresh threefold30epochs, original source-only settings, no M0 reuse.

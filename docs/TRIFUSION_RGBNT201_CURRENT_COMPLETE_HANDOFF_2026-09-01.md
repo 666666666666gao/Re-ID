@@ -2,7 +2,7 @@
 
 ## 0. 一页结论
 
-最新状态（2026-09-06T09:33:54.149499+08:00）：MSVR310完整三折原三角色比较已结束，Signal53.129381/63.0、fused52.117390/60.833333，五项科学条件均失败，精确B0特征/距离与全部3000query-output、780训练步已核验（§41.32）。独立终态审计run19已闭合，integrity PASS_WITH_LIMITS、engineering PASS、scientific FAIL（§41.34）。RGBNT100全量8675训练记录身份协议及Signal30epoch三折基线合同已登记，T0/M0/训练未运行（§41.33）。V23/V24及MSVR原三角色科学负结果均封存。RGBNT201保留dev58.4050/59.3939，65与官方85.3/87.9目标未达。
+最新状态（2026-09-06T09:33:54.149499+08:00）：MSVR310完整三折原三角色比较已结束，Signal53.129381/63.0、fused52.117390/60.833333，五项科学条件均失败，精确B0特征/距离与全部3000query-output、780训练步已核验（§41.32）。独立终态审计run19已闭合，integrity PASS_WITH_LIMITS、engineering PASS、scientific FAIL（§41.34）。RGBNT100全量T0和三折M0已通过，固定30epoch三折Signal基线准备启动（§41.35）。V23/V24及MSVR原三角色科学负结果均封存。RGBNT201保留dev58.4050/59.3939，65与官方85.3/87.9目标未达。
 
 当前用于MSVR310完整比较的是原V8平行三角色结构：冻结Signal/CLIP，共享block8之前语义和tail9/10/11参数，三个角色分别运行共享tail；CNN处理局部语义Patch高频，Transformer处理全局CLS/Patch关系，Mamba处理空间与位置级三模态扫描。各角色相对冻结reference形成1536D残差，三角色4608D银行拼接3072D Signal得到7680D fused；完整单角色输出为4608D Signal+角色残差。三条路径均执行，当前没有Router/HFER、V23模态MLP或V24原型。训练已完成，尚无被证实超过Signal的新主方案。下面V1—V8条目保留历史经过，不代表当前又启用了旧模块。
 
@@ -3588,3 +3588,15 @@ fused52.117390117低于Signal53.129380561，五项原科学条件仍全false，�
 最终md SHAa7c9e80327e91246ddf3666cc399c5b92cbc60ca067ff89dbc70b29bd26fd6a5；
 json SHA9a0c6174d6a418f4e7d824ae61978826f2877223fa0ba0c957416de2d492d498。
 RGBNT100源基线合同已固定，下一动作是远端完整T0及三折M0；RGBNT201主目标继续未达。
+
+### 41.35 RGBNT100 全量T0、三折M0与完整权重/标量核验通过（2026-09-06）
+
+执行1157f0d，wrapper79272于09:39:51启动，T0/M0/总退出码0，09:43:16确认已结束。
+T0一次20.701875953秒，8675文件SHA/26025模态切片与作者逐像素相同，8675query mask及全部fold隔离成立。
+M0一次76.987059359秒，三fold各8更新共24/1536源曝光，195/195梯度、0overflow、selector冻结状态和48clean source重载前向完全一致。
+三fold8步loss11.031642497/11.177569866/10.965902865；均非检索成绩。M0 heldout模型前向0，无官方test。
+三checkpoint内容与全部fold/source/heldout/state、8项目/18Signal源绑定核验5.3684秒；21文本逐SHA取得，权重/张量仍在远端。
+本地24步完整JSON核验0.0346188秒，epoch均值差0，分项float重组最大差2.1063e-6，未增设科学容差门。
+原本地核验字面量7e-5与作者0.1×0.0007的表示不同，改为相同作者表达式后通过；保留原核验与原因，0模型/配置变化、0训练重跑。
+正式三fold30epoch固定终点基线READY_NOT_RUN，将fresh通用CLIP重建，不用M0权重。预计75–100分钟，约15分钟首次观察后依据训练epoch耗时更新ETA。
+M0 summary SHA7e9f6214efdbf14611fd5bb0ce2f4d7e6c9ae68c9549af06659d018b39e09820；完整结果页TRIFUSION_RGBNT100_SIGNAL_SOURCE_M0_2026-09-06.md。
