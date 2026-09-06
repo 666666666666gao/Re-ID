@@ -3897,3 +3897,16 @@ summary SHA8520db24326a4b4f46974e68ee949163c76cb63e0f0d4a89ba9bad99004ede3e；
 该主训练尚未执行，不能先报官方结果，也不自动晋级RGBNT201/MSVR310失败方案或解锁主目标前消融。
 RGBNT201新采样/监督假设应针对真实证据单独比较，不重复V23模态MLP或V24原型配置。
 磁盘清理后当前终态权重完整保留；16:03输出卷free11129262080字节（10.37GiB），旧数据盘约26.62GiB另计。
+
+### 41.56 RGBNT100全训练集官方主比较准备（2026-09-06）
+
+前置§41.55内部完整比较已通过原五门；下一阶段以全部50个训练身份fresh训练Signal30epoch，
+再从固定Signal构造fresh原三角色20epoch，两组终点固定后统一官方1715query/8575gallery完整比较。
+不复用三折OOF或M0已训练权重，不以官方分数挑epoch/模型，既有RGBNT201/MSVR310负结果及消融限制保持。
+新合同refine-logs/rgbnt100_main_v1/EXPERIMENT_PLAN.md；当前PREPARATION_ONLY_NOT_RUN。
+协议入口tools/build_rgbnt100_official_protocol.py已AST通过，拟逐个核对全部18965文件的SHA/标签/RGB montage头和全部query正例/排除集合；
+Signal全50类训练入口tools/train_rgbnt100_signal_main.py仅AST通过，角色训练/官方检索/完整核验入口仍待绑定，没有新GPU训练或checkpoint。
+配置与终态登记按各阶段真实前置完成后建立，不能把“入口文件存在”当作M0、B0或官方结果。
+计划使用刚清理后有空间的原数据卷/root/autodl-tmp/trifusion-v2/artifacts下独立目录；原OOF和所有保留权重不覆盖。
+主比较要求全量报告mAP及R1/5/10、所有50身份、全部8575条query-output和所有训练步；SOTA与同源Signal增益分开。
+PMKD官方页面本轮可读，但大PDF网页工具超大小限制、直接下载断连，数值仍注明来自既有原表归档，不冒称新的独立核验。
