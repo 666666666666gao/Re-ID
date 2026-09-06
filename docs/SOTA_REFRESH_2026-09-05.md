@@ -115,3 +115,13 @@ MSVR310正文§IV-C另写55.9/70.4，与Table II冲突，保留差异，不自�
 [ICML官方列表](https://icml.cc/Downloads/2026)可定位CCL及poster65854，但正文仍遇OpenReview浏览器验证，
 没有采用第三方摘要补其主表数字。[Hyper-ReID](https://github.com/lsh-ahu/Hyper-ReID)当前仍只见1次commit的一份README。
 核查记录为evidence/trifusion_literature_incremental_modal_ccl_20260906.json；当前运行中的RGBNT100基线保持固定。
+
+## 2026-09-06 补充：取得CCL会议官方摘要，主表仍待核
+
+本次直接取得[ICML官方poster页面](https://icml.cc/virtual/2026/poster/65854)，确认CCL作者与两项机制：
+CGSR按前一epoch估计的图文对应难度，用文本语义调节视觉特征；CDDO先偏重容易对应的样本，再逐步纳入困难样本。
+这与当前没有MLLM文本分支的TriFusion存在设置差异，不能据此断言本项目身份标签有噪声。
+
+该页只有摘要及OpenReview入口，没有主表或额外全文/海报PDF。OpenReview公开API两次请求均明确返回403 ChallengeRequiredError，
+所以仍未向高指标表添加CCL数字，也未取得其训练实现。此次补足的是方法摘要的主源归属，没有补全全文核验。
+证据：evidence/trifusion_ccl_icml_primary_abstract_20260906.json；当前模型训练合同保持。
