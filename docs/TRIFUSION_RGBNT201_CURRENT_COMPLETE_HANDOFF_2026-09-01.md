@@ -4209,3 +4209,32 @@ wrapper112548、原训练PID112550；一个原过程先M0，成功后完成六�
 启动前数据盘free22.015GiB，
 系统free10.365GiB，继续只保留必要终点和完整证据。
 已清理24个冗余resume权重的结果不变，当前整体baseline/SOTA目标仍未达成。
+
+## 41.68 V25完整M0已通过，原进程进入六端Q1（2026-09-06T23:00:03.502087+08:00）
+
+22:47:10取得原PID112550完整M0快照，三fold两端48批只读预检完成。
+各fold两端初始模型相同；总参数98800141、可训练7841292、203tensor。
+控制/候选各8步容量分别reserved6054/6198MiB，候选固定第一个真实batch100步。
+全部阶段203tensor均有非零有限梯度、冻结state不变、AMP overflow0。
+固定loss1=0.6269225478172302、loss100=0.580318808555603，
+下界0.57838292104621，超额loss比0.03988262041085136，通过原0.1门。
+全部48批索引/路径及116步loss记录已复核；此结果是M0工程PASS，不是检索有效证据。
+
+22:54:32观察原PID和wrapper活跃，原Q1已完成fold0-control19/20epoch，
+六端120epoch目标保持、无完整终点比较结论。按最近每epoch约31.6秒估计，
+六端预计23:45–次日00:00完成，后续按实际终点耗时修正。
+原训练核心代码继续固定97468dd；新增核验器不改正在执行的模型、loss或采样。
+
+已准备tools/verify_v25_complete_terminal.py，SHA256 cc1cf0c1db52dc3b9bf770cd9cdc427d9142f751b62afda78bb5a73fa4e5a277，
+终态后在服务器CPU复核所有3360训练行、六端五输出全特征/距离/排序、
+全部571query/21身份、mAP/Rank1/5/10及原5项bootstrap科学条件。
+核验期间新模型前向/优化/图像/权重tensor读取0，仅加载6份已保存检索数组。
+当前只完成AST与核验范围登记，未执行终态核验。
+完整M0报告results/TRIFUSION_V25_M0_ENGINEERING_2026-09-06.md；
+终态核验合同refine-logs/trifusion_v25_camera_coverage/TERMINAL_VERIFICATION_PLAN.md。
+
+最新datafree22.014GiB；
+24个冗余resume权重已删除的结果不变，继续保留必要终点/基线与完整数组。
+外部独立审计不可用；执行器核验不标为独立审计。
+RGBNT100官方融合83.284770/96.151603虽高于本机Signal，仍非三角色最佳mAP或SOTA；
+RGBNT201、MSVR310与整个三数据集目标均仍未完成。

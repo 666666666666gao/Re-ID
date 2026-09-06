@@ -2,15 +2,17 @@
 
 ## Latest verified state (2026-09-06 22:33)
 
-- V25 camera-coverage M0 RUNNING on execution97468dd, launched22:39:45.
-  screen v25_camera_coverage_97468dd; wrapper112548/child112550 confirmed live22:40:53. Full source metadata
+- V25 complete M0 PASS; Q1 RUNNING on execution97468dd, launched22:39:45.
+  screen v25_camera_coverage_97468dd; wrapper112548/child112550 confirmed live22:54:32; fold0-control19/20epoch. Full source metadata
   replay PASS:3fold x2arms x20epochs/3360batches; all1680 old order hashes/pair counts match.
   Candidate every batch has2 cross-camera K8 IDs plus6 single-camera K8 IDs.
   All94 source IDs and all2126/2075/2051 records covered over20epochs in each fold.
   Overall cross-camera positives 8.070790816%
   ->12.344547194%; per-arm107520exposures.
   Extra record reuse/changed identity frequency are explicit costs, not a pure loss intervention.
-- V25 T0 metadata PASS; M0 running (fold0 paired preflight done), Q1 pending M0 PASS. Same frozen Signal/V8 initialization and original
+- V25 T0 metadata PASS; complete M0 PASS (48 preflight batches/116updates);
+  overfit excess0.0398826204<=0.1,203/203 gradients each stage,overflow0,frozen unchanged.
+  Capacity reserved6054/6198MiB. Q1 six endpoints continue; final comparison pending. Same frozen Signal/V8 initialization and original
   seven ID/Triplet heads, no V23 adapters/V24 prototypes/MCNL/Router. Expected203 tensors,
   7,841,292 trainable parameters, new inference parameters0. M0:48 readonly forwards/116updates;
   if PASS complete six20epoch endpoints/3360updates. Each arm must match its own full sampler.
@@ -23,13 +25,14 @@
 - Full50 Signal30epochs/3936updates and roles20epochs/2625updates complete; never retrain.
   RGBNT100 source OOF +1.792365pp PASS is a different protocol from official evaluation.
   Fused official R1 repairs41/new8,39 IDs improve/9 decline/2 tie, all census archived.
-- V25 original GPU process112550 live at22:40:53; GPU3072MiB. Complete M0 not yet passed.
+- V25 original GPU process112550 live at22:54:32;19/120epoch complete.
+  Full terminal verifier prepared/AST checked, not yet run; all571queries/21IDs/5outputs.
   RGBNT201 dev58.4050/59.3939, MSVR310 original roles negative; whole goal unmet.
   No official tuning, reranking, pre-success ablations or sealed-failure reruns. Seed42 only.
 - Cleanup24 redundant resume weights/24.90GiB remains; datafree21.782GiB
   at22:28, systemfree10.365GiB. Keep required baselines/final weights/arrays.
 - Independent audit unavailable_service_limit; executor verification is not independent audit.
-  Read master41.67, refine-logs/trifusion_v25_camera_coverage/EXPERIMENT_PLAN.md and tracker.
+  Read master41.68, refine-logs/trifusion_v25_camera_coverage/EXPERIMENT_PLAN.md and tracker.
 
 ## Experiment environment
 

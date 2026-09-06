@@ -929,3 +929,16 @@
 | 2026-09-06T22:42:56.382205+08:00 | /run-experiment | refine-logs/trifusion_v25_camera_coverage/EXPERIMENT_TRACKER.md | verified | V25 original112550 launch live; M0 in progress, Q1 result pending |
 | 2026-09-06T22:42:56.382205+08:00 | /run-experiment | docs/TRIFUSION_RGBNT201_CURRENT_COMPLETE_HANDOFF_2026-09-01.md | verified | V25 original112550 launch live; M0 in progress, Q1 result pending |
 | 2026-09-06T22:42:56.382205+08:00 | /run-experiment | AGENTS.md | verified | V25 original112550 launch live; M0 in progress, Q1 result pending |
+
+| 2026-09-06T23:00:03.502087+08:00 | /run-experiment | evidence/trifusion_v25_observation_20260906_224710.json | verified | V25 complete M0 PASS; full paired Q1 running; terminal verifier prepared |
+| 2026-09-06T23:00:03.502087+08:00 | /run-experiment | evidence/trifusion_v25_observation_20260906_225432.json | verified | V25 complete M0 PASS; full paired Q1 running; terminal verifier prepared |
+| 2026-09-06T23:00:03.502087+08:00 | /run-experiment | evidence/trifusion_v25_m0_executor_closure_20260906.json | verified | V25 complete M0 PASS; full paired Q1 running; terminal verifier prepared |
+| 2026-09-06T23:00:03.502087+08:00 | /run-experiment | tools/verify_v25_complete_terminal.py | verified | V25 complete M0 PASS; full paired Q1 running; terminal verifier prepared |
+| 2026-09-06T23:00:03.502087+08:00 | /run-experiment | evidence/trifusion_v25_camera_coverage_launched_sync_20260906.json | verified | V25 complete M0 PASS; full paired Q1 running; terminal verifier prepared |
+| 2026-09-06T23:00:03.502087+08:00 | /run-experiment | refine-logs/trifusion_v25_camera_coverage/TERMINAL_VERIFICATION_PLAN.md | verified | V25 complete M0 PASS; full paired Q1 running; terminal verifier prepared |
+| 2026-09-06T23:00:03.502087+08:00 | /run-experiment | evidence/trifusion_v25_terminal_verification_registration_20260906.json | verified | V25 complete M0 PASS; full paired Q1 running; terminal verifier prepared |
+| 2026-09-06T23:00:03.502087+08:00 | /run-experiment | results/TRIFUSION_V25_M0_ENGINEERING_2026-09-06.md | verified | V25 complete M0 PASS; full paired Q1 running; terminal verifier prepared |
+| 2026-09-06T23:00:03.502087+08:00 | /run-experiment | refine-logs/trifusion_v25_camera_coverage/EXPERIMENT_TRACKER_20260906_230003.md | verified | V25 complete M0 PASS; full paired Q1 running; terminal verifier prepared |
+| 2026-09-06T23:00:03.502087+08:00 | /run-experiment | refine-logs/trifusion_v25_camera_coverage/EXPERIMENT_TRACKER.md | verified | V25 complete M0 PASS; full paired Q1 running; terminal verifier prepared |
+| 2026-09-06T23:00:03.502087+08:00 | /run-experiment | docs/TRIFUSION_RGBNT201_CURRENT_COMPLETE_HANDOFF_2026-09-01.md | verified | V25 complete M0 PASS; full paired Q1 running; terminal verifier prepared |
+| 2026-09-06T23:00:03.502087+08:00 | /run-experiment | AGENTS.md | verified | V25 complete M0 PASS; full paired Q1 running; terminal verifier prepared |
