@@ -19,7 +19,7 @@ from tools.train_rgbnt100_signal_oof import (
 
 def run(args):
     import torch
-    from tools.run_signal_preserving_v5 import _module_state_sha256
+    from tools.run_signal_preserving_v5 import _module_state_sha256, _set_seed
 
     started = time.perf_counter()
     config = json.loads(args.config.read_text(encoding="utf-8"))
@@ -55,9 +55,14 @@ def run(args):
         assert preflight["protocol_sha256"] == sha256(protocol_path)
         assert preflight["runner_sha256"] == sha256(Path(__file__))
         assert all(preflight["checks"].values())
+        verified = json.loads(args.m0_verification.read_text(encoding="utf-8"))
+        assert verified["status"] == "PASS_FULL50_SIGNAL_FILES_ALL_UPDATES_AND_AUTHOR_LR"
+        assert verified["mode"] == "m0" and verified["summary_sha256"] == sha256(args.m0_receipt)
     assert not args.output_dir.exists()
     args.output_dir.mkdir(parents=True)
+    _set_seed(42)
     model = new_model(cfg, fold)
+    assert model.num_classes == 50
     initial = _module_state_sha256(model)
     if not m0:
         assert initial == preflight["training"]["initial_state_sha256"]
@@ -68,7 +73,7 @@ def run(args):
                "runner_sha256": sha256(Path(__file__)), "source_files_sha256": config["source_files_sha256"],
                "baseline_config_sha256": sha256(baseline_path), **binding,
                "source_ids": source_ids, "heldout_ids": fold["heldout_ids"], "fold": "full_train",
-               "seed": 42, "source_records": 8675, "source_identities": 50,
+               "seed": 42, "source_records": 8675, "source_identities": 50, "model_num_classes": model.num_classes,
                "official_model_record_forwards": 0, "rgbnt201_dev_record_forwards": 0,
                "official_metrics_read": False, "m0_trained_weights_loaded": False}
     write_json(args.output_dir / "summary.json", summary)
@@ -118,6 +123,7 @@ def run(args):
                     "elapsed_seconds": time.perf_counter() - started})
     if not m0:
         summary["m0_receipt_sha256"] = sha256(args.m0_receipt)
+        summary["m0_verification_sha256"] = sha256(args.m0_verification)
     write_json(args.output_dir / "summary.json", summary)
     print(json.dumps({"status": summary["status"], "optimizer_steps": training["optimizer_steps"],
                       "checkpoint_sha256": summary["checkpoint_sha256"], "official_model_record_forwards": 0,
@@ -130,6 +136,7 @@ if __name__ == "__main__":
     parser.add_argument("--output-dir", type=Path, required=True)
     parser.add_argument("--mode", choices=("m0", "baseline"), required=True)
     parser.add_argument("--m0-receipt", type=Path)
+    parser.add_argument("--m0-verification", type=Path)
     args = parser.parse_args()
-    assert args.mode == "m0" or args.m0_receipt is not None
+    assert args.mode == "m0" or (args.m0_receipt is not None and args.m0_verification is not None)
     run(args)

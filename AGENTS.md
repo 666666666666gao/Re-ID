@@ -12,8 +12,11 @@
   change its gates, or report this internal result as official/SOTA.
 - Next main plan is registered in refine-logs/rgbnt100_main_v1/EXPERIMENT_PLAN.md:
   fresh full50-ID Signal30epochs, then original roles20epochs, fixed official comparison.
-  Protocol builder and Signal driver have local AST checks only; T0/new training
-  have not run. Role/evaluation drivers and full verification still need binding.
+  T0 is COMPLETE: all18965 file headers/hashes and original-author label rows,
+  all1715 complete query masks verified. Official raw headers/bytes were read;
+  official model forwards and metrics remain0. Full50 Signal M0 driver/config/
+  whole-file verifier are bound and AST-checked, NOT_RUN. Execute fresh M0 once,
+  then fresh30epochs only after complete verification. Role/evaluation pending.
   Existing RGBNT201/MSVR310 failures and pre-success ablation/seed42 limits remain.
   RGBNT201 dev58.4050/59.3939 and the main target remain unmet.
 - Independent RGBNT100 audit has no verdict due service limit; executor checks
@@ -21,7 +24,7 @@
 - User-directed disk cleanup removed24 completed-run resume snapshots/24.90GiB,
   with12 standalone models verified and retained. Old resume binaries are gone;
   historical metadata remains. Current training/B0/CLIP/V8/V12 weights retained.
-- Read the current master handoff section41.55 and
+- Read the current master handoff section41.57 and
   results/TRIFUSION_RGBNT100_ORIGINAL_ROLES_COMPARISON_2026-09-06.md.
 
 
