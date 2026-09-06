@@ -602,3 +602,7 @@
 
 - Fold1 milestone:560batches/3360forwards/35840 sample exposures verified; full990,904,448-byte array SHA matches.
 - Original three PIDs live and fold2 continues; all3fold CPU relation verification/report pending, no partial scientific conclusion.
+
+- Source-style relation diagnostic is COMPLETE: all1680batches/10080forwards/273297024relations and all18 outputs/72cells verified; all5PIDs ended, original/CPU/report exits0.
+- Statistical-style robustness improved; active fused wrong relations42/8/1 across initial/control/style remain sparse. Preserve original-input tradeoffs and V27Q1_FAIL4/5.
+- Read complete analysis before a new mechanism. Do not auto-combine V26/V27 or treat margin derivatives as encoder gradients; no new training registered.

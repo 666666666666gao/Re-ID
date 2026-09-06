@@ -29,3 +29,8 @@ Full 990,904,448-byte NPY current SHA and all560 PK/order/per-record exposures P
 Fixed model states/gradient absence and first8 augmentation match receipted; no external audit.
 Main 1167/1680 batches, 7002/10080 forwards; original3PIDs live, fold2 continues.
 Full CPU relation verification/report pending; no partial scientific conclusion or new model update.
+
+COMPLETE: original134211 exit0 07:09:31; verifier138508 PASS exit0 07:15:01; report138685 exit0, all5PIDs ended.
+All1680batches/10080forwards/743178240similarities/273297024relations/72cells verified; maxerror4.979483492206782e-11; updates0.
+All26 text files 34626196bytes SHA verified; all3 array fullSHA retained remote. Full report and terminal analysis published.
+Style robustness improved in all3folds; fused error support remains sparse. V27Q1_FAIL4/5 unchanged. No automatic V26+V27 or new training launch.
