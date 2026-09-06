@@ -1,29 +1,22 @@
 # TriFusion-ReID workspace
 
-## Latest verified state (2026-09-07T02:01:11.178140+08:00)
+## Latest verified state (2026-09-07T02:11:28.506430+08:00)
 
-- V26 COMPLETE six-endpoint Q1_FAIL; original118939/wrapper118937/verifier120255
-  all ended0. Execution remainsff18e40. No pending training/verification process.
-- Fused80.402752->80.714686 (+0.311934pp), CNN+0.666974, Transformer+0.044328,
-  Mamba-0.379981. Fold gains+.306590/-.553291/+1.083670, bootstrapLB-.276212.
-  Originalfivegates1/5PASS. Do not retune weight/temperature/seed/epoch or promote.
-- CPU full3360steps/32602260distances/5952790ranks verified, maximumerrors0.
-  All30fold-output rows/105identity-output rows/2855query-output rows archived.
-  Executor verification is NOT independent audit; external audit quota unavailable.
-- Eacharm42147840 batch-triplet exposures, fusednonpositive control1/candidate2;
-  auxiliarymean7.3951e-6/7.4406e-6. This zero-cosine-margin census does not imply
-  ordinaryTriplet0.3 satisfied or full-source instance gallery has no hard cases.
-- Cross-version control trajectories diverge fromstep2 despite fixedseed/start/order;
-  do not claim bitwise determinism or subtract cross-version noise from currentgain.
-- Source instance/prototype census: local unregistered/unexecuted draft only,
-  tools/census_v26_source_instances.py. No contract, launch, queue or data result.
-  NoXBM/PCGrad/Router/new sampler/ablation/official tuning.
-- V25fullQ1_FAIL sealed. RGBNT100official realbaselinegain+2.572608pp preserved,
-  fused83.284770<Mamba83.440622. RGBNT201dev58.4050, MSVR310rolesnegative.
-  Three-dataset/SOTAgoal remainsUNMET; no completion claim.
-- Disk24redundantresumeweights/24.900344GiB cleanup complete, old12models retained.
-  At01:55 datafree20.108GiB. Allsourcebaselines/usefulfinals/fullarrays protected.
-  Master41.75; read complete comparison, terminal analysis and intake/disk receipts.
+- V26 COMPLETE_Q1_FAIL sealed; fullCPU verificationPASS, originalPIDsended0.
+  Fused+.311934pp, fivegates1/5. Baseline gains onRGBNT100 remain real.
+- Source instance/prototype census IMPLEMENTED_REGISTERED_NOT_RUN.
+  All6252source-record/modelpairs,2views,14outputs,2protocols,200forwardbatches,
+  350112completequery-output rows. OriginalV12initialstate, model.eval, updates0.
+- Read configs/RGBNT201/source-instance-census-v26.json and fixedplan in
+  refine-logs/trifusion_source_instance_census/EXPERIMENT_PLAN.md.
+  ContractSHA3139d941b3f3e2a2394b48438aefceb1e4caaba3b2108c4fbe4ad27b5d7a1e92.
+- Mathematical hidden-instance/self-exclusion/class0/fullgallery counterexamplePASS.
+  CPU verifier independently recomputes allrows/aggregates fromsavedfeatures.
+  No sourceimage execution/launch/queue yet. Do not claim results beforeterminal.
+- NoV26retuning/retraining, noXBM/PCGrad/Router, noheldout/dev/officialimages.
+  Onefixedaugmentation does not measure cached-feature drift or demonstrate XBM.
+- Datafreeabout20.05GiB, expectedfeaturecostabout1.5GiB; preserve usefulweights.
+  Master41.76; goalUNMET, external independent audit unavailable.
 
 ## Experiment environment
 
