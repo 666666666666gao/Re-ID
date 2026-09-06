@@ -2,7 +2,7 @@
 
 ## 0. 一页结论
 
-最新状态（2026-09-06，§41.57）：RGBNT100原三折完整比较已通过原五门，Signal89.524175/96.829971→fused91.316540/97.936599，mAP+1.792365pp；这是内部成绩。新全50身份主结果的T0已逐个核对18965文件和原作者所有标签/1715完整掩码；官方文件头已访问，官方模型前向仍0。全50类Signal M0驱动、配置与完整核验器已绑定并通过AST，尚未执行；完整M0通过后才fresh固定30epoch，随后原三角色fresh20epoch。当前无训练。RGBNT201和MSVR310负结果保持，RGBNT201 dev58.4050/59.3939与主目标未达。用户要求的冗余权重已清理24.90GiB，18:28数据盘可用25.69GiB，系统盘10.36GiB。
+最新状态（2026-09-06，§41.58）：RGBNT100原三折完整比较通过原五门，内部Signal89.524175/96.829971→fused91.316540/97.936599，mAP+1.792365pp。新全50身份T0已完整通过；Signal M0首epoch130有效更新、195梯度/AMP0/权重重载/全标量/作者LR核验全部PASS。fresh固定30epoch Signal B0于18:42:15下发，执行545186d、wrapper102783，预计19:18终态/19:13首查；现在没有官方检索成绩。后续原三角色驱动/完整核验器AST通过但未绑定真实B0、未运行。RGBNT201/MSVR310负结果及RGBNT201未达主目标保持。冗余权重清理24.90GiB已完成，18:41数据盘可用25.34GiB。
 
 当前用于已完成MSVR310比较及新登记RGBNT100比较的是原V8平行三角色结构：冻结Signal/CLIP，共享block8之前语义和tail9/10/11参数，三个角色分别运行共享tail；CNN处理局部语义Patch高频，Transformer处理全局CLS/Patch关系，Mamba处理空间与位置级三模态扫描。各角色相对冻结reference形成1536D残差，三角色4608D银行拼接3072D Signal得到7680D fused；完整单角色输出为4608D Signal+角色残差。三条路径均执行，当前没有Router/HFER、V23模态MLP或V24原型。两项车辆训练比较均已完成；RGBNT100内部完整比较支持三角色增益，MSVR310尚未超过Signal。下面V1—V8条目保留历史经过，不代表当前又启用了旧模块。
 
@@ -3932,3 +3932,26 @@ M0实际核对全50类/195梯度/全部首epoch、唯一保存/严格重载；�
 18:28实查数据盘free27584786432字节（25.69GiB），系统盘11129262080（10.36GiB），GPU无计算任务；
 按用户清理后使用数据盘，既有结果/基线/当前权重保留，启动前仍按登记>=8GiB检查。
 原计划SHA57f9cb601b1a5697acaff0e8bed3a737eb499d1f1a752ad6a29691c9afb503f3保持不变，状态更新在tracker。
+
+### 41.58 全50类Signal M0完整通过并下发固定30epoch B0（2026-09-06）
+
+实际M0执行545186daf4edd3bf3aabf1a905adbc5a3359d03f，18:33:45.558703→18:35:27.358802；
+完整首epoch130有效更新，8320source记录曝光/8320独立记录/50身份；195梯度完整、无AMP下降。
+总参数90800641/可训练90009601，冻结TokenSelection787968参数，peak allocated11380.147949/reserved12100MiB。
+原Signal训练epoch实测71.037809秒，模型阶段92.404400秒；权重与全部130步FP32 loss/PK索引/LR远端CPU核验3.041780秒，wrapper总101.797487秒。
+保存363313722字节权重SHAeb8d6c30d9ab577c9796c34bed328fa0342afada4b01b7ed2af9c2431a17f3f6；
+summary9095369fcf69d58fe9920738fdbd1b2158d183692e4147eb1a7bba2aaded2054。
+16个clean source前向的保存前后结果逐元素一致，完整保存state等于训练终态；没有官方模型前向/指标。
+首epoch的sampler尾部剩余355记录未进入batch，这是该完整epoch的实际情况；不冒称首epoch全部8675覆盖，B0终态独立要求全部覆盖。
+完整原始文本/JSON位于evidence/rgbnt100_full50_signal_m0_receipts，未把模型/张量复制到本机。
+
+18:42:15.824772使用同已发布wrapper下发fresh固定30epoch B0，wrapper102783，执行仍545186d；
+入口断言fresh初态SHA9eb41bcd8ab10438ed6f74997f9821f19406d6cbbccabf084367f4ea8400d584，与M0初态相同；
+只读M0完整核验回执，不加载其已训练checkpoint。预计19:18:16.959，按实际首epoch线性估计；
+首次阶段观察安排19:13:16.959，未逐epoch轮询，当前仅下发事实，尚无B0终态或官方结果。
+
+两份后续角色入口tools/train_rgbnt100_trifusion_main.py及tools/verify_rgbnt100_trifusion_main.py已AST通过，
+重用既有build_model/train_roles/extract，保持原完整V8、七组50类head、8+100 M0及fresh20epoch；
+完整文件/所有标量核验入口不构造模型，只在远端CPU读取保留state和原始步记录。
+配置需等待该B0实际epoch30权重/summary/核验SHA后登记；当前未执行角色模型，不能称角色M0已通过。
+18:41数据盘free27208171520字节=25.34GiB，系统盘独立另计；删除重复续训权重的清理回执保持不变。

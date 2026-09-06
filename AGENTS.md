@@ -6,7 +6,7 @@
   3x20 epochs/5195 updates/all8675 queries and50 IDs; Signal89.524175/96.829971
   versus fused91.316540/97.936599, mAP+1.792365pp, all5 registered gates pass,
   identity-bootstrap lower+0.951777609pp. All3 checkpoints/15 array paths/43375
-  outputs/all updates verified. Execution bbe49e1; terminal15:57:30. No running training.
+  outputs/all updates verified. Execution bbe49e1; terminal15:57:30. Current full50 Signal B0 is below.
 - RGBNT100 Signal R2 B0 and role M0 are complete and verified, not pending.
   Older entries below document historical stages. Do not retrain completed OOF,
   change its gates, or report this internal result as official/SOTA.
@@ -14,9 +14,11 @@
   fresh full50-ID Signal30epochs, then original roles20epochs, fixed official comparison.
   T0 is COMPLETE: all18965 file headers/hashes and original-author label rows,
   all1715 complete query masks verified. Official raw headers/bytes were read;
-  official model forwards and metrics remain0. Full50 Signal M0 driver/config/
-  whole-file verifier are bound and AST-checked, NOT_RUN. Execute fresh M0 once,
-  then fresh30epochs only after complete verification. Role/evaluation pending.
+  official model forwards and metrics remain0. Full50 Signal M0 COMPLETE PASS:
+  130 updates/195 gradients/AMP0, whole state and all scalar/LR rows verified.
+  Fresh30-epoch B0 dispatched18:42:15 on545186d, wrapper102783; ETA19:18,
+  first observation19:13. Do not restart M0/B0 or change its bound inputs.
+  Full50 role driver/verifier AST-checked, pending actual B0 bindings and M0.
   Existing RGBNT201/MSVR310 failures and pre-success ablation/seed42 limits remain.
   RGBNT201 dev58.4050/59.3939 and the main target remain unmet.
 - Independent RGBNT100 audit has no verdict due service limit; executor checks
@@ -24,7 +26,7 @@
 - User-directed disk cleanup removed24 completed-run resume snapshots/24.90GiB,
   with12 standalone models verified and retained. Old resume binaries are gone;
   historical metadata remains. Current training/B0/CLIP/V8/V12 weights retained.
-- Read the current master handoff section41.57 and
+- Read the current master handoff section41.58 and
   results/TRIFUSION_RGBNT100_ORIGINAL_ROLES_COMPARISON_2026-09-06.md.
 
 
