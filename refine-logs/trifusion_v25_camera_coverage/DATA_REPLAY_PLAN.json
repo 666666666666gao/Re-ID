@@ -1,0 +1,64 @@
+{
+  "created_at": "2026-09-06T22:14:22.115406+08:00",
+  "stage": "metadata_replay_only",
+  "hypothesis": "Two physical cross-camera K8 identity groups in each source batch increase real cross-camera positive exposure while retaining full-source coverage.",
+  "seed": 42,
+  "epochs": 20,
+  "batch_size": 64,
+  "num_instances": 8,
+  "arms": [
+    "control",
+    "two_cross_camera"
+  ],
+  "folds": [
+    0,
+    1,
+    2
+  ],
+  "source_identities_per_fold": 94,
+  "batches_per_epoch": [
+    29,
+    28,
+    27
+  ],
+  "total_batches_both_arms": 3360,
+  "sample_exposures_per_arm": 107520,
+  "geometry": "evidence/trifusion_v19_generalization_geometry_20260905.json",
+  "old_replay": "evidence/trifusion_source_camera_metadata_20260905.json",
+  "bound_source_files": {
+    "modeling/trifusion/aligned_data.py": "3ea362d17660483b554cb599442b6377ace020fa114969b9bdd58906fbceedd5",
+    "evidence/trifusion_v19_generalization_geometry_20260905.json": "0e40093688ed568b7e0584672e4a74098c5fba4e57df06fba4bab1b6405adbe6",
+    "evidence/trifusion_source_camera_metadata_20260905.json": "5a42be65a512534bb87f52a5f3f4385042157511803774579e65d96d94662d31"
+  },
+  "script": "tools/replay_v25_camera_coverage.py",
+  "script_sha256": "9fb5c9519891ad4eda2318791f39f3e1a38820f6dbdf51d0640f56db304f1918",
+  "candidate_sampler": "modeling/trifusion/camera_coverage_v25.py",
+  "candidate_sampler_sha256": "341bacc189c3782d72c3f7c5b7c5bdde8e966f0eddb32966d90b3fd154ff75b5",
+  "remote_directory": "/root/autodl-tmp/trifusion-v2/artifacts/trifusion_v25_camera_coverage_metadata_seed42_20260906",
+  "output_basename": "metadata_replay.json",
+  "gates": [
+    "all 1680 old batch path-order hashes and positive-pair counts match the archived old replay",
+    "same 107520 sample exposures per arm and 580/560/540 batches per fold",
+    "all candidate batches contain eight distinct identities with K8 and exactly two cross-camera groups",
+    "every source identity is observed over all 20 epochs in every candidate fold",
+    "every source record is observed over all 20 epochs in every candidate fold",
+    "cross-camera positive-pair fraction increases separately in all three folds"
+  ],
+  "preflight_checked_at": "2026-09-06T22:11:47.300313+08:00",
+  "limitations": [
+    "two source partitions reuse cross-camera records and change relative identity exposure",
+    "within-group one-primary/one-secondary-plus-six construction remains unchanged; no 4+4 balancing",
+    "complete existing geometry file is hash-bound, only source gallery_manifest and source identity mapping fields are accessed",
+    "metadata pass is not an M0 or retrieval pass",
+    "no model training plan is registered by this file",
+    "independent audit service unavailable; executor metadata checks are not an independent audit"
+  ],
+  "prohibited": [
+    "image access",
+    "model or checkpoint tensor loading",
+    "optimizer updates",
+    "retrieval scoring",
+    "dev or official access",
+    "seed or sampling scans"
+  ]
+}

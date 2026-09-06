@@ -1,35 +1,34 @@
 # TriFusion-ReID workspace
 
-## Latest verified state (2026-09-06)
+## Latest verified state (2026-09-06 22:33)
 
-- RGBNT100 official COMPLETE, engineering/full verification PASS, scientific support FAIL:
-  Signal80.712162/94.227405 -> fused83.284770/96.151603, mAP+2.572608pp.
-  CNN81.961715/95.860058, Transformer81.709681/94.577259, Mamba83.440622/95.510204.
-  All branches beat Signal, identity bootstrap lower+1.565054815pp; fused mAP is
-  below Mamba by0.155851768pp. Original4 gates:3 PASS/1 FAIL. Do not change gates.
-  Fused Rank-1/5/10 highest; not highest mAP, not SOTA.
-- Every1715 query/8575 gallery/50 identities/all5 outputs verified:
-  73530625 distances/full ranking positions,8575 query scores, full50 bootstrap,
-  entire saved endpoints, all10290 Signal features/distances exactly match.
-  Executiond9e4f9d,20:44:27->20:50:12, both exit0. All16 text/gzip files
-  163634139 bytes received with full SHA verification. Remote arrays1490973250 bytes.
-- Fused39 identities improve/9 decline/2 tie; query AP971/460/284; R1 repairs41/new8,
-  total errors99->66. Complete census and50-ID CSV archived, no selective comparison.
-- Full50 Signal fixed30epochs/3936 updates and roles fixed20/2625 complete verified;
-  M0 Signal130 and roles108 complete. Fresh role initialization, no M0/OOF trained reuse.
-  Original RGBNT100 OOF complete support PASS (+1.792365pp); do not retrain any sealed run.
-- No live training/evaluation now. No official tuning, reranking, endpoint selection or
-  pre-success ablations. Seed42 only. Next research: source-only actual camera-positive
-  sampling exposure under B64/K8 and unchanged losses; complete replay before paired run.
-- Author B128/K16/independent geometry/metric-best differs from project B64/K8/shared
-  geometry/fixed30, as previously disclosed; current data does not isolate causality.
-  Signal local80.712162 vs author86.3; fused vs published PMKD91.6 gap8.315230pp.
-- User cleanup24 redundant resume weights/24.90GiB remains; datafreeabout22.49GiB after
-  official artifacts. Keep required weights, all logs/arrays and baseline provenance.
-- Independent audit unavailable_service_limit; executor checks are not independent.
-  RGBNT201 dev58.4050/59.3939 and MSVR310 negative remain; overall goal unmet.
-- Read master section41.65, refine-logs/rgbnt100_main_v1/EXPERIMENT_TRACKER.md,
-  results/TRIFUSION_RGBNT100_OFFICIAL_COMPARISON_2026-09-06.md and full identity CSV.
+- V25 camera-coverage main comparison IMPLEMENTED_REGISTERED_NOT_RUN. Full source metadata
+  replay PASS:3fold x2arms x20epochs/3360batches; all1680 old order hashes/pair counts match.
+  Candidate every batch has2 cross-camera K8 IDs plus6 single-camera K8 IDs.
+  All94 source IDs and all2126/2075/2051 records covered over20epochs in each fold.
+  Overall cross-camera positives 8.070790816%
+  ->12.344547194%; per-arm107520exposures.
+  Extra record reuse/changed identity frequency are explicit costs, not a pure loss intervention.
+- V25 T0 metadata PASS; M0 and Q1 NOT RUN. Same frozen Signal/V8 initialization and original
+  seven ID/Triplet heads, no V23 adapters/V24 prototypes/MCNL/Router. Expected203 tensors,
+  7,841,292 trainable parameters, new inference parameters0. M0:48 readonly forwards/116updates;
+  if PASS complete six20epoch endpoints/3360updates. Each arm must match its own full sampler.
+  Original five scientific gates remain. Full features/distances/rankings saved. No scans.
+- RGBNT100 official COMPLETE: Signal80.712162/94.227405 -> fused83.284770/96.151603,
+  +2.572608pp; CNN81.961715/95.860058, T81.709681/94.577259, M83.440622/95.510204.
+  Full1715query/8575gallery/50IDs/5outputs and entire endpoints verified.
+  Engineering PASS; scientific3of4 PASS, fused mAP below Mamba0.155851768pp; not SOTA.
+  All official evidence published eb1b34a; server/local/Desktop masters byte-equal at22:23:55.
+- Full50 Signal30epochs/3936updates and roles20epochs/2625updates complete; never retrain.
+  RGBNT100 source OOF +1.792365pp PASS is a different protocol from official evaluation.
+  Fused official R1 repairs41/new8,39 IDs improve/9 decline/2 tie, all census archived.
+- No live GPU job at last22:11 check; V25 training has not launched.
+  RGBNT201 dev58.4050/59.3939, MSVR310 original roles negative; whole goal unmet.
+  No official tuning, reranking, pre-success ablations or sealed-failure reruns. Seed42 only.
+- Cleanup24 redundant resume weights/24.90GiB remains; datafree21.782GiB
+  at22:28, systemfree10.365GiB. Keep required baselines/final weights/arrays.
+- Independent audit unavailable_service_limit; executor verification is not independent audit.
+  Read master41.66, refine-logs/trifusion_v25_camera_coverage/EXPERIMENT_PLAN.md and tracker.
 
 ## Experiment environment
 
