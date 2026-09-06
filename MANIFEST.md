@@ -864,3 +864,10 @@
 | 2026-09-06T20:42:09.976719+08:00 | /run-experiment | refine-logs/rgbnt100_main_v1/EXPERIMENT_TRACKER.md | verified | Full50 roles fixed20 complete; actual official endpoints registered; cleanup preserved |
 | 2026-09-06T20:42:09.976719+08:00 | /run-experiment | docs/TRIFUSION_RGBNT201_CURRENT_COMPLETE_HANDOFF_2026-09-01.md | verified | Full50 roles fixed20 complete; actual official endpoints registered; cleanup preserved |
 | 2026-09-06T20:42:09.976719+08:00 | /run-experiment | AGENTS.md | verified | Full50 roles fixed20 complete; actual official endpoints registered; cleanup preserved |
+
+| 2026-09-06T20:47:32.259139+08:00 | /run-experiment | evidence/trifusion_rgbnt100_official_evaluation_dispatch_20260906.json | verified | Official fixed comparison launched and launch health checked; terminal pending |
+| 2026-09-06T20:47:32.259139+08:00 | /run-experiment | evidence/trifusion_rgbnt100_official_evaluation_launch_health_20260906.json | verified | Official fixed comparison launched and launch health checked; terminal pending |
+| 2026-09-06T20:47:32.259139+08:00 | /run-experiment | refine-logs/rgbnt100_main_v1/EXPERIMENT_TRACKER_20260906_204732.md | verified | Official fixed comparison launched and launch health checked; terminal pending |
+| 2026-09-06T20:47:32.259139+08:00 | /run-experiment | refine-logs/rgbnt100_main_v1/EXPERIMENT_TRACKER.md | verified | Official fixed comparison launched and launch health checked; terminal pending |
+| 2026-09-06T20:47:32.259139+08:00 | /run-experiment | docs/TRIFUSION_RGBNT201_CURRENT_COMPLETE_HANDOFF_2026-09-01.md | verified | Official fixed comparison launched and launch health checked; terminal pending |
+| 2026-09-06T20:47:32.259139+08:00 | /run-experiment | AGENTS.md | verified | Official fixed comparison launched and launch health checked; terminal pending |

@@ -11,17 +11,20 @@
   All203 gradients finite/live, AMP0; frozen/Signal state unchanged; strict reload parity.
   Fresh M0 initial state reused, no M0 trained weight or OOF trained-weight reuse.
   All12 original text files/103421043 bytes SHA verified and2625 scalar rows checked.
-- Official main config READY_NOT_RUN, bound actual B0 epoch30 and role epoch20:
+- Official complete comparison RUNNING: launched20:44, wrapper108798/child108802,
+  executiond9e4f9d. Health20:45 confirms GPU1434MiB/48%; no terminal metrics yet.
+  First stage observation20:54; expected terminal20:54–21:04. Fixed config:
   configs/RGBNT100/Official-main-v1.json SHA96baf923bc5f92b56feb490342d193031a522cfa50a626156bd2eb2e0d732985.
-  Publish/sync before one complete1715-query/8575-gallery/all5-output evaluation.
-  No official model forwards or scores yet. Do not tune endpoints or weights on official.
+  Bound B0 epoch30/role epoch20; all1715 query/8575 gallery/all5 outputs.
+  Official model extraction has begun; no complete retrieval score yet.
+  Do not restart, tune endpoints or weights on official. Evaluation updates0.
 - Original cleanup24 redundant resume snapshots/24.90GiB remains effective.
-  At20:39 all24 absent/12 standalone model sizes correct; datafree24.14GiB/system10.36GiB.
+  At20:39 all24 absent/12 standalone model sizes correct;20:45 datafree24.03GiB/system10.36GiB.
   Current CLIP, B0, M0, epoch20 and all result artifacts remain protected.
 - Independent audit unavailable_service_limit; executor verification is not independent.
   RGBNT201 retained dev58.4050/59.3939 and MSVR310 negative comparison unchanged.
   Overall goal unmet; seed42 only, no ablations before main success, no sealed-failure scans.
-- Read master handoff section41.63 and refine-logs/rgbnt100_main_v1/EXPERIMENT_TRACKER.md.
+- Read master handoff section41.64 and refine-logs/rgbnt100_main_v1/EXPERIMENT_TRACKER.md.
   Author code and complete source sampling constraints in section41.62 remain unchanged.
 
 ## Experiment environment
