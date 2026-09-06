@@ -18,3 +18,5 @@ Signal B0独立审计已闭合，内部53.129380561 mAP/63.0 Rank-1；新三角�
 
 2026-09-06T06:41:47.899579+08:00：已封存原失败；完整360条同条件四路径只读特征诊断PREPARED_NOT_RUN。
 不更改原固定计划/config/runner/门，不重训已完成fold0。独立M0审计继续以原60份冻结输入为范围。
+
+2026-09-06T08:08:29.999652+08:00: full360 parity diagnosis completed once, exit0; B0 standalone exact, after-wrap differences isolated to SIM. Fixed64 cached-input operation diagnosis registered, NOT_RUN. Original comparison remains ENGINEERING_STOP; no ranking or repeated fold0 training.

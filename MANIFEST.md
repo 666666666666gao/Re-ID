@@ -646,3 +646,5 @@
 | 2026-09-06T06:24:17.950707+08:00 | /run-experiment | results/TRIFUSION_MSVR310_ORIGINAL_ROLES_M0_2026-09-06.md; evidence/trifusion_msvr310_trifusion_v1_m0_complete_20260906.json | evidence | Complete124-update source M0 PASS;17files/all scalar accounting verified; original three20epoch comparison running, no terminal retrieval yet |
 
 | 2026-09-06T06:41:47.899579+08:00 | /run-experiment | results/TRIFUSION_MSVR310_ORIGINAL_ROLES_COMPARISON_STOP_2026-09-06.md; tools/diagnose_msvr310_baseline_feature_parity.py | evidence/preparation | Original fold0 260updates retained; stop beforeAP on exact B0 feature gate; full360 four-path read-only diagnosis registered, NOT_RUN |
+
+| 2026-09-06T08:08:29.999652+08:00 | /run-experiment | results/TRIFUSION_MSVR310_SIGNAL_PARITY_DIAGNOSIS_2026-09-06.md | engineering evidence/preparation | Full360 B0 mismatch isolated to SIM after wrapping; fixed-input operation probe registered;0 rankings/updates |

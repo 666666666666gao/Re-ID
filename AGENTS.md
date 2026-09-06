@@ -475,3 +475,10 @@
   New read-only full360-record four-path parity diagnosis is registered, NOT_RUN;
   1440record forwards/0updates/0ranking, backend flags observed but not changed.
   Read the comparison stop report and BASELINE_PARITY_DIAGNOSIS_PLAN_20260906.md.
+
+- Full360 MSVR310 feature probe completed once on15ffddc: standalone B0 exact;
+  after-wrap standalone/hierarchical/full baselines equal each other but SIM differs
+  by max1.90735e-6; direct1536 exact, state/backend flags unchanged. No AP/Rank.
+  Registered fixed64 cached-input nine-stage SIM operation probe is NOT_RUN;
+  576 SIM-record computations,0 updates/ranking/backend changes. No gate relaxation.
+  Read results/TRIFUSION_MSVR310_SIGNAL_PARITY_DIAGNOSIS_2026-09-06.md.

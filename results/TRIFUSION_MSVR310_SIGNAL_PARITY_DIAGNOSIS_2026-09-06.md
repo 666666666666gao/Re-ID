@@ -1,0 +1,25 @@
+# MSVR310 Signal feature parity diagnosis
+
+Recorded 2026-09-06T08:08:29.999652+08:00. Full360 four-path probe completed once, exit0,
+execution15ffddce0e4db78907b645081577fba0a1ded605, elapsed29.83202269859612 seconds.
+Original checkpoint b8a85e167861c51bb7d9a5854d700d11468ee9ca2a6e7ba21b75ce557130003c unchanged.
+
+Original standalone Signal before wrapping exactly reproduces all360 stored B0 features.
+After wrapping and loading original final roles, standalone Signal, hierarchical baseline and
+full-model baseline agree with each other; all differ from B0 in359604 elements,0/360 exact rows.
+The first1536 direct dimensions remain exact. SIM last1536 maxabs1.9073486328125e-6,
+meanabs over3072 dimensions1.9935917978376173e-8; maxrelativeL2 9.066239721122114e-8.
+All six original batches (five64 plus40) show the same localization. All Signal/model states and
+recorded backend flags are unchanged, all Signal modules eval and full fused Signal prefixes exact.
+This isolates wrapping/build/loading or their execution effects for further diagnosis; it does not
+identify a kernel or cause, and small differences do not waive the registered bitwise gate.
+
+1440 record forwards/360 distinct original gallery records,0 updates/backward/checkpoint/ranking.
+Raw probe_arrays.pt remains remote, SHA48f7be2f2140d0bed53e54f60f9f0444ad795b38cbb0cf5f21d71dd12e470c1f.
+Full JSON evidence: evidence/trifusion_msvr310_trifusion_v1_baseline_parity_diagnosis_20260906.json.
+Original first64 draft was never executed; this was one full360 diagnosis.
+
+Next: fixed first64 cached-input nine-stage operation diagnosis registered before execution.
+Plan refine-logs/msvr310_trifusion_v1/SIM_OPERATION_PARITY_DIAGNOSIS_PLAN_20260906.md.
+All576 SIM record evaluations,0 optimization/ranking; no repair, tolerance change or fold0 retraining.
+Original comparison remains stopped with no AP/Rank result and folds1/2 not started.

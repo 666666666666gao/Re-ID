@@ -3459,3 +3459,20 @@ M0源8条parity通过不能证明本次完整跨进程B0数组一致；原因当
 完整计划与入口已登记，尚NOT_RUN；原260更新不重跑，不放宽门，不盲启后两折。
 results/TRIFUSION_MSVR310_ORIGINAL_ROLES_COMPARISON_STOP_2026-09-06.md。
 独立M0审计run18进行中，其60份原始输入SHA仍相同。RGBNT201目标与全部官方/消融边界不变。
+
+### 41.28 MSVR310 全360特征差异已定位到装入三分支后的SIM（2026-09-06）
+
+记录时间：2026-09-06T08:08:29.999652+08:00。只读四路径诊断一次完成，exit0，执行15ffddc；耗时29.8320秒。
+独立Signal装入三分支前逐元素复现全部360条B0特征；装入后，独立Signal、hierarchical baseline、
+完整三分支baseline三者相同，但与原B0有359604个元素不同，0/360行完全相同。
+差异只在SIM1536维，maxabs1.9073486328125e-6；direct1536维仍完全相同。
+权重state SHA、记录的backend flags和eval状态不变，fused内Signal前缀仍精确。
+这排除了该次同进程中普遍B0不可复现，以及完整融合单独引入误差的解释；尚未证明具体操作原因。
+原bitwise特征/距离门仍保留，不以误差小作豁免；未算任何AP/Rank，后两折仍未训练。
+
+共1440记录前向/360不同已访问gallery，0优化/反传/checkpoint；原260训练更新和checkpoint保留。
+下一项固定64条缓存SIM输入的九阶段操作诊断已登记：原Signal、重复SIM、只冻结SIM、恢复flags、
+导入builder、导入mamba_ssm、构建原三支、加载原final、最后原Signal。记录中间值、布局和实际算子。
+预算576次SIM记录计算，其中128包含完整Signal，其余448为缓存输入；0排名/更新，不扫描backend。
+结果页results/TRIFUSION_MSVR310_SIGNAL_PARITY_DIAGNOSIS_2026-09-06.md；新操作诊断尚NOT_RUN。
+M0独立审计首轮WARN/engineering PASS，原60份输入未变；报告字段名核对中，未作为已闭合审计。
