@@ -1,15 +1,15 @@
 # TriFusion-ReID workspace
 
-## Latest verified state (2026-09-07T20:18 source census registered, NOT RUN)
+## Latest verified state (2026-09-07 complete source census)
 
-- MSVRstyleQ1 fully completed/verified/published fb819ef; both5gatefamilies0/5. F52.126691->51.824477, paired-.302214, vsSignal-1.304904. No priorR3process live.
-- Next diagnostic: configs/MSVR310/Source-relation-census-v1.json, plan refine-logs/msvr310_source_relation_census_v1/EXPERIMENT_PLAN.md. Static/math PASS; remote check/extract/CPU NOT_RUN. Do not claim it is already running.
-- Full3sourcefolds xinitial/controlfinal/stylefinal xclean/augmented/coupled_style;18576recordforwards,0optimization,0newcheckpoint,0heldout/officialreads. All1032 source records included through2064foldmemberships.
-- 18outputs; identity_exclude_record and cross_scene, not samecamera filtering. Allnegative distractors retained; complete972conditions/668736queryrows/100440identityrows expected.
-- Styleforcedactive is a newly registered source stress view, NOT originaltraining260step pixel replay or a p0.5 training change. Fullrawpixels paired acrossstates/augmented-style; allmodelstateSHAunchanged.
-- Complete CPU checks exact relation counts, independent alltriplet hinge/AP, prototypesvsinstances, fixedsimilarity decomposition. Seen-source metrics do not prove unknownidentity improvement.
-- Originaltraining/env/failedversions unchanged, no official/ablation promotion or parameter scans. Reuse existing tri_reid after actual19:53freeGPU check; expectedfeatures2.85GB, disk8.32GiB, minimumfree4GiB.
-- Master41.129; fullthree-datasetGoalactive/unmet. Preserve unrelateddirty files; launch persistent ordered check->extract->CPU only after code/contract sync; observe180-300sec orestimatedmilestones.
+- New MSVR310 source census on4e57e54 is COMPLETE_VERIFIED_SOURCE_DIAGNOSTIC: check/GPU/CPU exit0, original175887/175889/175895/176897 ended. GPU27conditions/18576records/306batches; CPU972conditions/668736queryrows/100440identityrows.
+- All64text files57,135,882bytes SHA-verified; localcomplete query/identity reaggregation PASS. Source features/checkpoints remain remote and unchanged. 0optimizer/newcheckpoint/heldout/official images.
+- Control augmented cross-scene source fused94.956353,333/1200querymembers wrongorder,864onlymargin,3satisfied. Purebank95.128771,327wrongorder. F300prototype-correct/some-instance-wrong,22prototype-correct/Rank1-wrong. Do not import RGBNT201 complete source saturation conclusion here.
+- Style control-paired source fused cross-scene clean/augmented/stress -1.601491/-1.772789/-1.361499. Sealed actual heldout Q1 remainsFAIL0/5 bothfamilies, paired-.302214, vsSignal-1.304904.
+- Next candidate is MSVR source-only instance relation coverage; no newtraining contract or run yet. Verify deduplication, actualidentity/scene filtering, age/drift and novelhardrelation coverage, then matched budget/initialization comparison. No simultaneousRouter/joint/style/newrankingloss; ordinaryXBM is prior work, not claimednovel.
+- Master41.130, report results/MSVR310_COMPLETE_SOURCE_RELATION_CENSUS_2026-09-07.md, evidence/msvr310_source_relation_complete_20260907/. Goal active/unmet. Preserve all failedversions and unrelateddirty files.
+- Last cpu_progress RUNNING is only a progress snapshot; authoritative pipeline and CPU verification are COMPLETE/PASS with all originalprocesses ended. Do not rerun sourceextraction or CPU because of that staleprogress field.
+- Mainartifact free~5.626GiB; extraexistingstorage~10.365GiB. Current .pt inventory includes diagnostic/retrieval tensors; do not delete by extension. No newdeletions this census. Models/images/NPY stayremote.
 
 ## Experiment environment
 
