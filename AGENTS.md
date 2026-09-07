@@ -24,6 +24,12 @@
   M0 is engineering evidence, not retrieval success. V27FAIL4/5,V28FAIL0/5,seed42/reused OOF and SOTA goal unresolved.
   Master section41.110 must be byte-equal remote/repo/Desktop.
 
+
+- Current V29 architecture and supervision reference: docs/V29_CURRENT_NETWORK_AND_SUPERVISION.md.
+  Joint reads Patch tokens while independent Transformer reads CLS; three role output projections share across modalities.
+  Candidate fused differs from the mean of old branch similarities; only current h-to-y direction is bounded.
+  Master section41.111; this is documentation only, active f4c6a03 source/contract unchanged.
+
 ## Experiment environment
 
 - Runtime: remote Linux GPU server; local WSL2 is SSH transport only and must
