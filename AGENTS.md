@@ -1,11 +1,12 @@
 # TriFusion-ReID workspace
 
-## Latest verified state (2026-09-08T05:18:07.906237+08:00, candidate-gradient real preflight running)
+## Latest verified state (2026-09-08T06:01:53.451454+08:00, full source diagnostic running)
 
-- Fixed eebaaa0/configc99ddcf6 R1 launched05:17:55, wrapper3302; T03304exit0 at05:17:57, preflight3312live with commandline. Firstfoldinitial started; all9state preflight/CPU pending.
-- Originala22aaa1 fixture failure preserved; R1 onlyadds syntheticage1. No optimizer or heldout/official read. Fullsource9x260 automaticallyaftercompletepreflightCPU, no newtraining/Q1.
-- GPU890MiB/3%, free3730124800B atactualcheck; no newweightdeletion. Plan unchanged; master41.151. Observe180–300seconds or estimatedmilestone, do not restart on timeout.
-- Previousfresh-coordinateQ1sealedFAIL0/5both. Seed42 only; longGoal ACTIVE/UNMET.
+- Fixed eebaaa0/configc99ddcf6: all9-state/72B64 preflight and original CPU PASS;25raw texts805652B received. Additional read-only CPU checks all13memory statistics,936checks/625920distance elements PASS. Never edit the running bound tools/config.
+- Independent same-family/provisional audit WARN;19782 initial deterministic text checks pass. Keep single-history-group direct-graph, missing14-component loss breakdown and remote binary/runtime-gradient limits; source is not complete.
+- Original wrapper3302/source3799 still present with exact commands. GPU17130, 88, free3702099968B. Filled-memory runtime revises full9-state ETA to6–7hours. Observe180–300seconds or estimated milestone; no timeout restart.
+- Finish all2340source batches, original source CPU plus separate all13-statistics postcheck, full text intake/analysis/audit before deciding a new paired-training hypothesis. No new training/Q1 registered; optimizer/heldout/official image forwards0.
+- Seed42 only. Previousfresh-coordinateQ1 remains0/5both. Master41.152; longGoal ACTIVE/UNMET.
 
 ## Experiment environment
 

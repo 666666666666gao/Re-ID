@@ -19,5 +19,3 @@ Historical observations:
 2026-09-08T05:16:13.822789+08:00: Originalrun a22aaa1 stopped04:42:26 atT0, missing age in synthetic metadata. Addage1 only; remote math exactPASS. Real model preflight/source notstarted. New repaired run tolaunch, master41.150.
 
 2026-09-08T05:18:07.906237+08:00: R1 eebaaa0/c99ddcf6 wrapper3302 andpreflight3312 confirmedlive; T03304exit0. Source9x260notstarted, fullpreflight/CPUawaited. Master41.151.
-
-2026-09-08T06:06:01.076635+08:00: Complete preflight/audit plus all13-statistics postcheck published; source stillRUNNING at2026-09-08T06:01:53.451454+08:00. Execute additional statistics postcheck on complete source as well. Master41.152, Goal ACTIVE/UNMET.

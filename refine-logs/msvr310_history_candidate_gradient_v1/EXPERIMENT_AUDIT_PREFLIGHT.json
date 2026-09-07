@@ -1,0 +1,136 @@
+{
+  "audit_skill": "experiment-audit",
+  "verdict": "WARN",
+  "reason_code": "runtime_witness_and_preflight_scope",
+  "summary": "完整预检算术及梯度公式未发现错误；13项统计补核及tracker修正已审阅，模型反传和完整来源范围仍有限。",
+  "audited_input_hashes": {
+    "configs/MSVR310/TriFusion-history-candidate-gradient-v1.json": "sha256:c99ddcf6f6605b2d43725e7fc4f74f0747e774a1110a3d0567c3c42c74a1c0b3",
+    "refine-logs/msvr310_history_candidate_gradient_v1/EXPERIMENT_PLAN.md": "sha256:4969e022983e60a568d37c30e79a10e6c8e71a3003760654d6f7d66862d33961",
+    "tools/probe_msvr_history_candidate_gradients.py": "sha256:cfa56255f6dd5a471cf3bfbfc99be3d0693f5c9c5dfc29bd8c6e4d15c79090de",
+    "tools/verify_msvr_history_candidate_gradients.py": "sha256:4a05d40ef78653563067b785ada3e3129d62cb2e6134c746e6881324683f1626",
+    "tools/run_msvr_history_candidate_gradients.py": "sha256:e726f953dc35f18c9543f64f123afe2dbcefefb7d0980531d2803f9bca6befb2",
+    "tools/analyze_msvr_history_gradient_text.py": "sha256:33f20cd7b486bdebcb9336a7884354bc485e4cc96af2a2a5501e5a525fb81e24",
+    "tools/verify_msvr_history_gradient_all_statistics.py": "sha256:bb9c078f7800c2d5255c5922df68ed5072e6e93931347cb185b7dcce44987026",
+    "docs/MSVR310_PARTIAL_VS_TOTAL_METRIC_GRADIENT_2026-09-08.md": "sha256:aa2920f3970a69cabf568a7bccbd3586670c27e7447e04a10f426590332b06d8",
+    "results/MSVR310_HISTORY_CANDIDATE_GRADIENT_PREFLIGHT_2026-09-08.md": "sha256:48f51aad79350acd4bfe7c4b19273c15b9d5e58fe34302008a3cd8e10078d6d1",
+    "evidence/msvr310_history_gradient_preflight_20260908/intake_manifest.json": "sha256:22a14888e42021ce5ebef08ce6071403742567f5894a62d40d32fa43726d792d",
+    "evidence/msvr310_history_gradient_preflight_20260908/observation_053241.json": "sha256:a08f7f5b18df292be9e6adae5e2f732ce349473040774fc733be40a8043a0764",
+    "evidence/msvr310_history_gradient_preflight_20260908/pipeline.json": "sha256:6950d07d8c682f1bed9175cb2996725ab4155cb053d26a9638034021abdffbe8",
+    "evidence/msvr310_history_gradient_preflight_20260908/preflight.log": "sha256:7674ba82496cb9a755f86640ff86815784a71963fea64352b6f3170f96898190",
+    "evidence/msvr310_history_gradient_preflight_20260908/preflight_cpu.log": "sha256:5b0bd7d74ca8f445a4c59b13ec2ee40b3d5171141da991cf25b4c9807051be5a",
+    "evidence/msvr310_history_gradient_preflight_20260908/t0.json": "sha256:258ff17d26289c42867c2fe909ada98ae87026ca479d5bf25fa7040252a0b7e5",
+    "evidence/msvr310_history_gradient_preflight_20260908/t0.log": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "evidence/msvr310_history_gradient_preflight_20260908/additional_statistics/all_statistics_postcheck.json": "sha256:434beb27dc6349a2d62ea64dedfa0efa17b41cfd2db8b11b7383a47923fd509b",
+    "evidence/msvr310_history_gradient_preflight_20260908/additional_statistics/execution_binding.json": "sha256:f86f8b6194a7751168e79f84b5a4c8f736e58bca2ecde89c9287a7e9f6901250",
+    "evidence/msvr310_history_gradient_preflight_20260908/additional_statistics/postcheck.stdout.log": "sha256:a8a1134be7d3bd3d1fa57822fc37b6f9710cd2673a17896308aa6cf362e6da4e",
+    "evidence/msvr310_history_gradient_preflight_20260908/independent_audit_followup/audited_report.md": "sha256:48f51aad79350acd4bfe7c4b19273c15b9d5e58fe34302008a3cd8e10078d6d1",
+    "evidence/msvr310_history_gradient_preflight_20260908/independent_audit_followup/audited_tracker.md": "sha256:6036ed120cd39a9d5d478fcfdbe1f5b7751cf5d891d22f516ff89983f3373ec0",
+    "evidence/msvr310_history_gradient_preflight_20260908/independent_audit_followup/followup_checks.json": "sha256:cb6f843fae8ae02618b42044f1e8635cdff4dc9e04bb82f4f17cc78f3db413a8",
+    "evidence/msvr310_history_gradient_preflight_20260908/independent_audit_followup/reviewer_full_response.md": "sha256:8bb2d8db4792c185635361558e58f301466e1c176c7b8fd4d02e69d5407229cc",
+    "evidence/msvr310_history_gradient_preflight_20260908/independent_audit_initial/audit.py": "sha256:499e1ba64be979f12dd41b52204f376469f1874186a73d2b0183c607cc03d87e",
+    "evidence/msvr310_history_gradient_preflight_20260908/independent_audit_initial/audited_report.md": "sha256:584ffecad92a90585d0e678775ee5a74d0b404f18c68ad588d8da151def5335e",
+    "evidence/msvr310_history_gradient_preflight_20260908/independent_audit_initial/audited_tracker.md": "sha256:0c940dabaffda96bc74faa0096a4d7ffc11249cd5e941374d094e0f60ec21841",
+    "evidence/msvr310_history_gradient_preflight_20260908/independent_audit_initial/independent_checks.json": "sha256:81b4a93c05c81cc51e2450100bd1fd0970778bc2c652b8d89f93b589b775074e",
+    "evidence/msvr310_history_gradient_preflight_20260908/independent_audit_initial/reviewer_full_response.md": "sha256:7f187f9c0cf58679bd2f29182357f96fb7a753d19adf68336872a32889bb2166",
+    "evidence/msvr310_history_gradient_preflight_20260908/preflight/cpu_verification.json": "sha256:aa12d9ca442bfe4a6ca16254d4ce4b0874c732f8ebd2290028630c929fccd966",
+    "evidence/msvr310_history_gradient_preflight_20260908/preflight/summary.json": "sha256:3f2665ff764e1949570d1fd52ac04c0432d53826a4d4e61714be143f7d7e389b",
+    "evidence/msvr310_history_gradient_preflight_20260908/reaggregation/all_role_history_steps.csv": "sha256:151f4cdecff4dc44239e85a1b279c8b87b62f07c86b05edd91957cd60cc147b7",
+    "evidence/msvr310_history_gradient_preflight_20260908/reaggregation/complete_text_reaggregation.json": "sha256:a98ca7f3baf97773130b6c5ce00de16bba2cd7d8225a191b51fbcb362276f7b5",
+    "evidence/msvr310_history_gradient_preflight_20260908/preflight/fold_0_control/receipt.json": "sha256:f586a7034b7ac87c0df8250705ffacb8f201848f2dee3cb3cabf3fbf8a5f1687",
+    "evidence/msvr310_history_gradient_preflight_20260908/preflight/fold_0_control/steps.jsonl": "sha256:91e31bb934ae91f9c3a7666cfa2992c4b4ba7ba273bb3487657b69126ee62a18",
+    "evidence/msvr310_history_gradient_preflight_20260908/preflight/fold_0_fresh_memory/receipt.json": "sha256:ef253fe2699a988a2f9bdb417d4e57d9f653f482b461fc064b5d99ec3d831195",
+    "evidence/msvr310_history_gradient_preflight_20260908/preflight/fold_0_fresh_memory/steps.jsonl": "sha256:200e8a532f2f8a1d3d11362290e75d5b66af767833b7d151cdf6249bb77b737e",
+    "evidence/msvr310_history_gradient_preflight_20260908/preflight/fold_0_initial/receipt.json": "sha256:076fd8e6515a23a936c8e9d1ffbb97ce7711d10440880549f82e7f498b2a4e6c",
+    "evidence/msvr310_history_gradient_preflight_20260908/preflight/fold_0_initial/steps.jsonl": "sha256:d9f2533dcef10b30e916a8bf12e80863889e64152537cfb07a8036000b707840",
+    "evidence/msvr310_history_gradient_preflight_20260908/preflight/fold_1_control/receipt.json": "sha256:66a7a29e0ae4e2993eabbf416604a9c6fa661b7d13b7d605126696b7572860b5",
+    "evidence/msvr310_history_gradient_preflight_20260908/preflight/fold_1_control/steps.jsonl": "sha256:ac638e6e9d52ab4fab86120176ed58d7f4297c6d2eebdfaa335062575c9e3b97",
+    "evidence/msvr310_history_gradient_preflight_20260908/preflight/fold_1_fresh_memory/receipt.json": "sha256:391e859598de6fd53f9d49299bb28a6854b43dcfbf7594b2a6fbf3419bae27fd",
+    "evidence/msvr310_history_gradient_preflight_20260908/preflight/fold_1_fresh_memory/steps.jsonl": "sha256:e1cd9f94e6e1ea60e6b43f2bb3a22a4ae1d5c68de80fe59678f2ce2cab092761",
+    "evidence/msvr310_history_gradient_preflight_20260908/preflight/fold_1_initial/receipt.json": "sha256:75557f25dc092a879a03036f109b72b875857710f36e30e26a0c949f9cc1238d",
+    "evidence/msvr310_history_gradient_preflight_20260908/preflight/fold_1_initial/steps.jsonl": "sha256:d7e49b818dc9c257c2629016237165abb048cf98d95f794cc026e29324cd1dfb",
+    "evidence/msvr310_history_gradient_preflight_20260908/preflight/fold_2_control/receipt.json": "sha256:3b53acda21c646ea163dbcb73e6e6c4e2f3552d8ac53c618a62c78affe4393e1",
+    "evidence/msvr310_history_gradient_preflight_20260908/preflight/fold_2_control/steps.jsonl": "sha256:4591adfb32c397d11c91f282e2f91dcc856dfe88ec707751d40ab8fc768a3f8b",
+    "evidence/msvr310_history_gradient_preflight_20260908/preflight/fold_2_fresh_memory/receipt.json": "sha256:663d970371e4e7422a1be6d90bf957d218a7655dea5461f1011a1c45f15388a5",
+    "evidence/msvr310_history_gradient_preflight_20260908/preflight/fold_2_fresh_memory/steps.jsonl": "sha256:bc2fcd105b8bd99ac07f809342a43ab7829e22011792b9ea5b4b582610b4628a",
+    "evidence/msvr310_history_gradient_preflight_20260908/preflight/fold_2_initial/receipt.json": "sha256:b5b4afa6036df5e605899b8308fe3c59a93f26cd37393b58c9bb5dba7f4abe2d",
+    "evidence/msvr310_history_gradient_preflight_20260908/preflight/fold_2_initial/steps.jsonl": "sha256:053afe96e327128f3e1db097a5e165333df423da6cd025011747b53108f92e20"
+  },
+  "trace_path": ".aris/traces/experiment-audit/2026-09-08_history_gradient_preflight/",
+  "agent_id": "01a07dcd-02e8-76e0-accc-f1100e592633",
+  "verdict_id": "01a07dcd-02e8-76e0-accc-f1100e592633:followup",
+  "executor_model": "codex-gpt-6-astra",
+  "executor_family": "openai",
+  "reviewer_model": "gpt-6-astra",
+  "reviewer_family": "openai",
+  "reviewer_reasoning": "max",
+  "review_independence": "same-family",
+  "acceptance_status": "provisional",
+  "generated_at": "2026-09-08T06:05:14.428552+08:00",
+  "date": "2026-09-08",
+  "auditor": "gpt-6-astra-max",
+  "overall_verdict": "warn",
+  "integrity_status": "warn",
+  "checks": {
+    "gt_provenance": {
+      "status": "pass",
+      "details": "Real official-training labels, identity-isolated source folds, real-ID mining and class0 retained; no new heldout/official image inference."
+    },
+    "score_normalization": {
+      "status": "pass",
+      "details": "Raw norms, ordinary cosine/norm-ratio and relative-error definitions; same role parameter blocks, correctly weighted historical VJP."
+    },
+    "result_existence": {
+      "status": "warn",
+      "details": "All25raw texts/all72steps/all135role rows/all36table rows verified; remote matrices and model tensors not independently accessed by reviewer."
+    },
+    "dead_code": {
+      "status": "warn",
+      "details": "All13statistics gap closed by reviewed remote NumPy postcheck; direct graph remains one single-history-group per state, component loss decomposition absent."
+    },
+    "scope": {
+      "status": "pass",
+      "details": "Seed42 fixed-state preflight only, optimizer0; fullsource/retrieval gain not claimed. Runtime witness and queue coverage limits retained."
+    },
+    "eval_type": {
+      "t0": "synthetic_proxy",
+      "source_identity_statistics": "real_gt_source_only",
+      "gradient_consistency": "self_supervised_proxy_conditioned_on_real_gt_loss",
+      "rotation_note": "analytic_example",
+      "full_source": "not_complete_in_reviewed_package"
+    }
+  },
+  "initial_deterministic_checks": 19782,
+  "followup_deterministic_checks": 127,
+  "remote_additional_statistics_checks": 936,
+  "closed_actions": [
+    "all13 logged statistics have actual bound CPU postcheck",
+    "tracker separates completedpreflight from runningsource"
+  ],
+  "remaining_limits": [
+    "No independent parameter VJP or model/image reconstruction",
+    "Only one single-history-group directgraph witness per state",
+    "14 component total loss cannot be reconstructed from saved components",
+    "Short preflight lacks expiry/capacity/zero-upstream coverage",
+    "Fullsource not completed in this package",
+    "Five inherited local CRLF source copies differ from bound remote LF raw bytes"
+  ],
+  "live_observation_review_scope": "Review verified chronology; later executor process/GPU/free-space observations are separately receipted, not independently live-verified by reviewer.",
+  "claims": [
+    {
+      "id": "preflight_complete",
+      "impact": "supported"
+    },
+    {
+      "id": "recorded_gradient_contribution",
+      "impact": "supported_with_runtime_witness_qualifier"
+    },
+    {
+      "id": "all13_saved_statistics",
+      "impact": "supported_by_reviewed_remote_cpu_receipt"
+    },
+    {
+      "id": "complete_source_or_training_retrieval_gain",
+      "impact": "unsupported"
+    }
+  ]
+}

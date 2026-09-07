@@ -2,7 +2,7 @@
 
 ## 0. 一页结论
 
-当前执行入口：§41.151；固定候选梯度诊断修订入口已启动，T0通过、原预检3312运行，完整9状态预检/来源尚未终态，Goal ACTIVE/UNMET。
+当前执行入口：§41.152；固定状态候选梯度九状态预检及补充13项统计CPU核验通过，独立审计WARN，原完整来源3799持续；无新训练/Q1，Goal ACTIVE/UNMET。
 
 当前用于已完成MSVR310比较及新登记RGBNT100比较的是原V8平行三角色结构：冻结Signal/CLIP，共享block8之前语义和tail9/10/11参数，三个角色分别运行共享tail；CNN处理局部语义Patch高频，Transformer处理全局CLS/Patch关系，Mamba处理空间与位置级三模态扫描。各角色相对冻结reference形成1536D残差，三角色4608D银行拼接3072D Signal得到7680D fused；完整单角色输出为4608D Signal+角色残差。三条路径均执行，当前没有Router/HFER、V23模态MLP或V24原型。两项车辆训练比较均已完成；RGBNT100内部完整比较支持三角色增益，MSVR310尚未超过Signal。下面V1—V8条目保留历史经过，不代表当前又启用了旧模块。
 
@@ -5859,3 +5859,19 @@ AST及ruff F通过，尚未运行真实模型预检；不提前工程PASS。复�
 原a22aaa1 T0夹具失败run保留，不覆盖；此次只修复math metadata，9固定状态/完整来源、0optimizer、0heldout/official和预定数值门不变。完整预检和CPU未通过前不宣称工程成功；预检CPU通过才自动进入2340来源batch诊断，不自动启动历史反传训练或Q1。原始观察见evidence/msvr310_history_gradient_r1_launch_20260908/。
 
 预计预检5–15min、来源1–3h，以完成状态和速度调整观察里程碑；180–300秒观察原进程，超时不重启。主交接/桌面/GitHub随本提交同步，长期三数据集Goal ACTIVE/UNMET。
+
+### 41.152 历史候选梯度完整预检、审计及只读统计补核（2026-09-08T06:06:01.076635+08:00）
+
+固定执行eebaaa0/configc99ddcf6，预检3312于05:24:58.144320退出0，九固定状态各8个真实B64共72batch；CPU3795随后退出0，625920距离元素核验。全部25文本805652B接收size/SHA一致，summary3f2665ff。每状态5个历史batch，全部135角色行历史梯度非零且高于同图重复差异；这是短预检的运行时贡献证据，不是完整来源或泛化收益。
+
+全部135行g_U/g_V余弦为负，g_U/(g_U+g_V)及原14项任务角色梯度/加入历史项后的余弦为正。角色参数空间内的贡献范数/夹角改变不等于有害任务冲突、实际AdamW方向或mAP提升。首次单历史组直接反传与分解链式梯度的最大相对误差7.623875794974142e-5，小于原0.005；每状态仅step4一次，后续多组没有独立直接模型反传对照。额外9792角色记录前向、预检420.1877秒，峰值allocated约16062MiB。
+
+只读文本重聚合验证72step/135角色行及全部范数闭合，最大相对误差6.026005765920966e-12。fresh-context gpt-6-astra/max标准库审计19782项检查通过，原报告全部36表行、CSV与原始文本一致；总体WARN，same-family/provisional。原审计及后续补核审计均保留，不能当作跨模型家族独立接受。
+
+审计发现原CPU仅检查13项memory统计中的6项。新增只读NumPy工具verify_msvr_history_gradient_all_statistics.py，在原九个距离矩阵上实际完成72×13=936项全统计补核PASS；没有改动固定probe/原CPU/config/原始证据。完整来源终态也须另行执行此补核。14项总loss没有保存逐项分量，无法从该包独立重组；梯度、RNG、状态SHA仍是运行时见证。预检未触发8batch上限的年龄过期、512容量淘汰或零upstream组跳过，不能提前声称这些分支覆盖。五个递归继承文件的本地CRLF与绑定远端LF差异继续披露。
+
+数学说明docs/MSVR310_PARTIAL_VS_TOTAL_METRIC_GRADIENT_2026-09-08.md给出共同正交旋转保持度量距离但两侧偏导相互抵消的标准例子；经审计确认公式和1/√18槽位尺度正确。没有测量项目旋转分量，不将理论例子写成失败成因或原创定理。GradCache链式VJP为既有计算基础。
+
+2026-09-08T06:01:53.451454+08:00实查原wrapper3302/source3799及命令行持续，GPU17130, 88，主盘3702099968B。本轮未删权重，诊断不新增权重。已装满历史后的实际速度约170–180秒/13batch，预计完整九状态约6–7小时，替代早期1–3小时预估；不缩短2340batch合同或重启。当前无optimizer更新、无新增heldout/official图像读取；继承上下文读取既有Q1工件属于来源绑定。
+
+完整预检报告results/MSVR310_HISTORY_CANDIDATE_GRADIENT_PREFLIGHT_2026-09-08.md，证据evidence/msvr310_history_gradient_preflight_20260908/，审计refine-logs/msvr310_history_candidate_gradient_v1/EXPERIMENT_AUDIT_PREFLIGHT.md/json。先完成原全部来源及CPU、全部13项补核、完整文本和独立审计，再决定是否登记只改变历史候选梯度范围的配对训练；当前未登记新训练/Q1。原新鲜坐标Q1两组0/5、seed42-only、三数据集长期Goal ACTIVE/UNMET保持。

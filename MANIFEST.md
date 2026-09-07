@@ -1417,3 +1417,5 @@
 - 2026-09-08T05:16:47.288559+08:00: Preserve candidate-gradient T0 fixture failure; add missing age=1, actual remote synthetic chain rule PASS. No realmodel/optimizer started; master41.150, repairedrun pending.
 
 - 2026-09-08T05:20:15.778282+08:00: Launch repaired fixed-state candidate-gradient diagnosis eebaaa0/c99ddcf6 once; T0exit0, originalpreflight3312verifiedlive at2026-09-08T05:18:07.906237+08:00. No optimizer/retrieval, completepreflight/sourceawaited; master41.151.
+
+- 2026-09-08T06:06:01.076635+08:00: Publish complete history-gradient preflight,19782 independent text checks and separate all13-statistics936checks; WARN same-family/provisional with explicit limits. Original source3799continues, no optimizer or newQ1; master41.152.
