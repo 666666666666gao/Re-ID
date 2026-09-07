@@ -1119,3 +1119,15 @@
 | 2026-09-07T08:54:26.714584+08:00 | /diagnosing-bugs | refine-logs/trifusion_v28_joint_tokens_fp32/EXPERIMENT_TRACKER.md | implementation | Same-forward precision result and local FP32 R2 registration |
 | 2026-09-07T08:54:26.714584+08:00 | /diagnosing-bugs | docs/TRIFUSION_RGBNT201_CURRENT_COMPLETE_HANDOFF_2026-09-01.md | implementation | Same-forward precision result and local FP32 R2 registration |
 | 2026-09-07T08:54:26.714584+08:00 | /diagnosing-bugs | AGENTS.md | implementation | Same-forward precision result and local FP32 R2 registration |
+| 2026-09-07T09:06:44.480654+08:00 | /run-experiment | evidence/v28_fp32_launch_20260907/intake.json | verification | V28 R2 launch and pinned complete verifiers; pending M0 terminal |
+| 2026-09-07T09:06:44.480654+08:00 | /run-experiment | evidence/v28_fp32_launch_20260907/trifusion_v28_joint_tokens_fp32_seed42_bf8de95_disk_prelaunch.json | verification | V28 R2 launch and pinned complete verifiers; pending M0 terminal |
+| 2026-09-07T09:06:44.480654+08:00 | /run-experiment | evidence/v28_fp32_launch_20260907/trifusion_v28_joint_tokens_fp32_seed42_bf8de95_launch.json | verification | V28 R2 launch and pinned complete verifiers; pending M0 terminal |
+| 2026-09-07T09:06:44.480654+08:00 | /run-experiment | evidence/v28_fp32_launch_20260907/v28_fp32_prelaunch_guard_r1_failure_20260907.json | verification | V28 R2 launch and pinned complete verifiers; pending M0 terminal |
+| 2026-09-07T09:06:44.480654+08:00 | /run-experiment | evidence/v28_fp32_launch_20260907/wrapper.py | verification | V28 R2 launch and pinned complete verifiers; pending M0 terminal |
+| 2026-09-07T09:06:44.480654+08:00 | /run-experiment | refine-logs/trifusion_v28_joint_tokens_fp32/EXPERIMENT_TRACKER_20260907_090644.md | verification | V28 R2 launch and pinned complete verifiers; pending M0 terminal |
+| 2026-09-07T09:06:44.480654+08:00 | /run-experiment | refine-logs/trifusion_v28_joint_tokens_fp32/EXPERIMENT_TRACKER.md | verification | V28 R2 launch and pinned complete verifiers; pending M0 terminal |
+| 2026-09-07T09:06:44.480654+08:00 | /run-experiment | docs/TRIFUSION_RGBNT201_CURRENT_COMPLETE_HANDOFF_2026-09-01.md | verification | V28 R2 launch and pinned complete verifiers; pending M0 terminal |
+| 2026-09-07T09:06:44.480654+08:00 | /run-experiment | AGENTS.md | verification | V28 R2 launch and pinned complete verifiers; pending M0 terminal |
+| 2026-09-07T09:06:44.480654+08:00 | /run-experiment | tools/verify_v28_fp32_m0.py | verification | V28 R2 launch and pinned complete verifiers; pending M0 terminal |
+| 2026-09-07T09:06:44.480654+08:00 | /run-experiment | tools/verify_v28_fp32_complete_terminal.py | verification | V28 R2 launch and pinned complete verifiers; pending M0 terminal |
+| 2026-09-07T09:06:44.480654+08:00 | /run-experiment | tools/report_v28_fp32_complete_comparison.py | verification | V28 R2 launch and pinned complete verifiers; pending M0 terminal |

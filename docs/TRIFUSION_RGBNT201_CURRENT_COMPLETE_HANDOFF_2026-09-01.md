@@ -2,7 +2,7 @@
 
 ## 0. 一页结论
 
-最新状态（2026-09-07T08:54:26.714584+08:00）：同前向数值配对已确认新增joint模块AMP丢失小导数，FP32恢复dt2048个梯度；原V28 M0_FAIL保持。仅局部FP32的R2代码与原门槛重验计划已登记，尚未运行。
+最新状态（2026-09-07T09:06:44.480654+08:00）：V28 R2 bf8de95于09:02:55启动PID143321；真实fixture回归AMP dt0/2048、FP32 2048/2048；完整M0仍待终态。原R1 M0_FAIL与3次诊断更新封存，Q1尚无完整结果。data14.55GiB；24删除与12保留SHA复核。详见§41.99。
 
 当前用于已完成MSVR310比较及新登记RGBNT100比较的是原V8平行三角色结构：冻结Signal/CLIP，共享block8之前语义和tail9/10/11参数，三个角色分别运行共享tail；CNN处理局部语义Patch高频，Transformer处理全局CLS/Patch关系，Mamba处理空间与位置级三模态扫描。各角色相对冻结reference形成1536D残差，三角色4608D银行拼接3072D Signal得到7680D fused；完整单角色输出为4608D Signal+角色残差。三条路径均执行，当前没有Router/HFER、V23模态MLP或V24原型。两项车辆训练比较均已完成；RGBNT100内部完整比较支持三角色增益，MSVR310尚未超过Signal。下面V1—V8条目保留历史经过，不代表当前又启用了旧模块。
 
@@ -4944,3 +4944,32 @@ R2使用train_signal_preserving_v28_fp32.py与独立config/plan；
 通过后才完整Q1六端3360更新。当前R2尚未运行，诊断不是M0晋级或检索结果。
 计划refine-logs/trifusion_v28_joint_tokens_fp32/EXPERIMENT_PLAN.md。
 精度成本实际记录，标准FP32工程修复不包装为算法创新。
+
+
+## 41.99 V28 R2已启动：真实FP32回归PASS，完整M0待终态
+
+2026-09-07，运行commit bf8de956e685311dd70631395009a2c06a2c8591。
+09:02:55启动子进程143321 / wrapper143320；09:03:17确认child存活。
+远端run：/root/autodl-tmp/trifusion-v2/artifacts/trifusion_v28_joint_tokens_fp32_seed42_bf8de95。
+原配置SHA43b75c87e2e7795759912b9051fae012b2cc39a23279b5d3d6bc85600fae9029，
+原R2计划SHA64111a40d44e9a28ff4e9ab62670d608254480fc5c04e44f6841a9613b281e7b。
+
+T0三项PASS：风格公式、实际CUDA合成联合模块、真实fixture梯度回归。
+真实旧AMP dt0/2048，新局部FP32 dt2048/2048；scaled最大梯度3.534658077342101e-8，
+两端梯度有限。无图像/优化更新的fixture测试不初始化真实fold。
+M0正在运行，尚未发布M0终态或Q1检索结果。
+R2数值修复没有改变原116步M0、219/203覆盖、过拟合与五科学门。
+
+启动前校验脚本第一次生成时，通用HEAD占位替换误改git HEAD字面量而SyntaxError。
+该次检查根本未执行、screen/child未创建；修复为专用占位符并先compile后执行。
+模型wrapper已正确编译，未改模型/计划，真实训练只启动一次；错误JSON保留。
+
+09:02:55磁盘实查：data15624220672B，system11129249792B；
+GPU空闲24126MiB。既有24个删除路径仍不存在；12受保护模型完整SHA一致。
+既有回收26736541280B，本次新删除0。预留本轮六final与数组<1GiB。
+
+R2专用tools/verify_v28_fp32_m0.py、verify_v28_fp32_complete_terminal.py、
+report_v28_fp32_complete_comparison.py已准备，尚未执行或冒充审计PASS。
+原R1脚本和失败报告保持。绑定R2执行commit/config/plan及precision fixture。
+完整Q1核验将检查3360更新、32,602,260距离元素、5,952,790排名位置、571query/21身份。
+单seed42、重复OOF、非外部独立审计和多数据集/SOTA目标未完成边界不变。

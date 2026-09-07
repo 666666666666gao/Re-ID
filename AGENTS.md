@@ -1,26 +1,26 @@
 # TriFusion-ReID workspace
 
-## Latest verified state (2026-09-07T08:54:26.714584+08:00)
+## Latest verified state (2026-09-07T09:06:44.480654+08:00)
 
-- Original V28 c9a38e6 M0_FAIL sealed:116updates,218/219candidate gradients;
-  joint.mixer.dt_proj.weight zero; allother11checks pass. Q1/heldout0.
-  Complete scalar/source/48paired preflight verification PASS; original FAIL unchanged.
-- Two cross-process precision probes each stopped after1update/2forwards on exact-loss
-  replay; differences1.19209e-6 (logged probe) preserved. No tolerance rescues them.
-- Same-forward probe863022c COMPLETE exit0 08:47:22: fixedinput/state/trueupstream,
-  original AMP dt0/2048; FP32 fast/unfused2048/2048, maxscaledgrad3.534658e-8.
-  Supports local mixed-precision derivative loss. Total diagnosticupdates3.
-  Read results/TRIFUSION_V28_SAME_FORWARD_PRECISION_DIAGNOSIS_2026-09-07.md.
-- V28 R2 local-FP32 correction IMPLEMENTED_REGISTERED_NOT_RUN.
-  Onlynewjoint forward disablesautocast andcastsinputFP32; alloldfiles/FAILs kept.
-  Read refine-logs/trifusion_v28_joint_tokens_fp32/EXPERIMENT_PLAN.md.
-  Realfixture regression0updates, thenfresh116stepM0; onlyPASS permits6end3360stepQ1.
-  Original203/219gradient, overfit and5sciencegates unchanged. Nohyperparameterscan.
-- Diagnosticfixture is engineering-only and never initializesanyfold model.
-  Alltraining stilluses legal per-foldV12. PreserveSignal, originalroles and7heads.
-- GPUidle; data~14.5GiB. Prior24redundantweights removed24.90GiB; newdeletions0.
-  Protectanchors/finals/arrays/failurefixtures. Wholemulti-dataset/SOTAgoalunmet.
-  Single seed/reusedOOF andexecutor-not-external-review boundaries. Master41.98.
+- V28 R2 bf8de956e685311dd70631395009a2c06a2c8591 started09:02:55,
+  child143321/wrapper143320; alive09:03:17. T0 all3checks PASS.
+  Captured real fixture:AMP dt0/2048; localFP32 2048/2048, finite.
+  M0 still awaiting complete terminal; no complete Q1 or new official result.
+- Read refine-logs/trifusion_v28_joint_tokens_fp32/EXPERIMENT_TRACKER.md.
+  R2 onlyjoint FP32 execution; original sources/116step gates/5science gates unchanged.
+  First prelaunch guard SyntaxError occurred before executing any remote check/child;
+  fixed dedicated placeholder and compile. Actual training started once.
+- OriginalV28 c9a38e6 M0_FAIL218/219 and116updates sealed.
+  Same-forward863022c diagnosis restored2048/2048 FP32 dt gradients;
+  two failed exact-loss cross-process probes preserved; totaldiagnosticupdates3.
+  Fixture engineering-only, never initializesfolds. LegalperfoldV12 remains.
+- R2 M0/terminal verifier and reporter prepared, not yet executed; originalR1 scripts kept.
+  Preserve203/219phase gradient coverage, fixedoverfitfloor and all5sciencegates.
+- Disk09:02:55 data15624220672B/system11129249792B; previous24deletions
+  stillabsent, protected12models fullSHA match. Released24.900344GiB earlier;
+  newdeletions0. Protectanchors/finals/arrays/fixtures.
+- GPU training active. Poll180–300s. Wholemulti-dataset/SOTAgoalunmet.
+  Single seed/reusedOOF andexecutor-not-external-review boundaries. Master41.99.
 
 ## Experiment environment
 
