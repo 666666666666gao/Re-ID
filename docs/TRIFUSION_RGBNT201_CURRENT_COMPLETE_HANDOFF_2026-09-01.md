@@ -2,7 +2,7 @@
 
 ## 0. 一页结论
 
-最新状态（2026-09-07完整Q1与只读分析）：MSVR实例记忆V1完整1560更新/CPU/59文本已封存，配对和相对Signal均0/5 FAIL，fused−0.2162pp。后续全部29,125,376距离的正负例损失分解完成：候选新增hinge约87.8%–88.3%来自负例，负例赢家age1–3占63.5%–66.8%，不能只归咎最老缓存。全部1560CSV/六端20epoch重算PASS，0新模型前向或更新；下一训练尚未登记。磁盘约4.71GiB/10.37GiB，无新权重删除。Goal active/unmet，详见41.135。
+最新状态（2026-09-07来源直接测量登记）：MSVR实例记忆Q1和完整挖掘诊断均已封存。下一项固定为旧缓存与当前编码的直接比较：同一模型状态、anchor和真实历史视图，记录完整距离、困难选择、真实角色梯度与重复反传噪声。新鲜loss不参与更新；六端72步预检/CPU通过才运行六端1560步来源测量，0heldout/official。两新工具静态通过，尚未新前向/启动。预计2–4小时，主盘约4.62GiB。Goal active/unmet，详见41.136。
 
 当前用于已完成MSVR310比较及新登记RGBNT100比较的是原V8平行三角色结构：冻结Signal/CLIP，共享block8之前语义和tail9/10/11参数，三个角色分别运行共享tail；CNN处理局部语义Patch高频，Transformer处理全局CLS/Patch关系，Mamba处理空间与位置级三模态扫描。各角色相对冻结reference形成1536D残差，三角色4608D银行拼接3072D Signal得到7680D fused；完整单角色输出为4608D Signal+角色残差。三条路径均执行，当前没有Router/HFER、V23模态MLP或V24原型。两项车辆训练比较均已完成；RGBNT100内部完整比较支持三角色增益，MSVR310尚未超过Signal。下面V1—V8条目保留历史经过，不代表当前又启用了旧模块。
 
@@ -5689,3 +5689,19 @@ wrapper code_commit104506b，Q1 summary project_commit9da45c5；实际git diff�
 远端目录msvr310_instance_memory_mining_diagnosis_v1_r4_20260907，本地全部1560CSV再汇总六端及每端20epoch，最大累加误差5.46e−12。报告results/MSVR310_INSTANCE_MEMORY_MINING_DIAGNOSIS_2026-09-07.md；证据evidence/msvr310_instance_memory_mining_20260907/；工具tools/analyze_msvr_memory_mining.py。原Q1_FAIL0/5与官方边界不变。
 
 主盘再次空闲5,058,236,416B，另一存储盘11,129,241,600B，GPU1MiB/0%。272个pt/pth含检索/诊断数据，0新增删除；保留初始化/终点/复核证据。模型/原图/NPY仍留远端。长期三核心数据集Goal active/unmet。
+
+### 41.136 MSVR310缓存坐标直接测量V1登记（2026-09-07T23:05:25.484121+08:00）
+
+依据33ec3c0完整Q1与全部训练挖掘结果，登记source-only诊断，计划refine-logs/msvr310_freshness_measurement_v1/EXPERIMENT_PLAN.md；合同configs/MSVR310/TriFusion-source-freshness-measurement-v1.json，SHAf3a063499b125ef7e90e1b304324a40c967b8d61ba940a6e3193dab5919edae4。两新工具AST/ruff F通过；尚无新模型前向、更新、checkpoint或GPU任务。
+
+唯一测量是在同一实际参数状态、anchor、真实历史视图下比较旧编码与当前重新编码的距离/最难选择/三个角色参数梯度。额外重复同一旧loss反传测量数值噪声；使用AMP缩放后还原实际梯度。新鲜loss不更新参数。原control仍用batch Triplet，原memory仍用stale Triplet，其余13loss、权重、原V8、初始化、采样和预算不变；不是新增方法或挽救旧失败。
+
+记录原冻结Signal的anchor/reference/baseline字段与encoder入口RNG，在RAM保留最多8次更新。重新编码仅复用不变冻结字段并运行当前角色encoder/fusion，先用真实B64零更新验证与完整路径逐位一致；必须保持buffers及全局RNG不变。每个合法缓存record按最新实际视图/原batch最后位置重编码，最多512/age1–8，当前记录历史全部排除，class0和真实身份关系不改。全部有历史的训练步都测，不挑高漂移步或身份。
+
+预检三折两端12步共72更新、预热2；包含真实零更新重编码、203梯度、0overflow、冻结状态、strict compact reload与全CPU。通过后六端20epoch/260步共1560来源更新、65step预热，同旧780采样batch/三模态像素SHA逐项比较，终点再全CPU核查全部距离/实际loss/队列/权重。0heldout/official图片，没有新的检索表。原100步overfit与旧工程修复保留，不为无新增优化目标的诊断重复执行该门。
+
+旧同初始化/前65步同更新规则两端已有64/65步非零loss差异，各fold最大0.00152755/0.00105834/0.00106740；不把新来源轨迹声称为旧训练逐位重放。记录差异并保留旧Q1，不用新的来源终点替换旧检索成绩。参数梯度为运行时真实见证，CPU不声称重新计算这些梯度。
+
+复用原tri_reid/PyTorch环境，无安装重建；22:46实查原wrapper不存在、GPU1MiB/0%且无CUDA计算进程，远端HEAD33ec3c0。主盘4,964,216,832B、另一存储盘11,129,241,600B，预计新增<1GiB，启动门至少3GiB。预计预检8–15min、完整2–4h，依实际epoch速度修订；持久进程顺序预检→CPU→source→CPU，失败停，观察超时不重启，按180–300sec或里程碑观察。
+
+完整文本/结果同步与原三个数据集Goal不变；尚未执行新训练，不提前判断缓存近似是否有害或任何方法晋级。证据evidence/msvr310_freshness_registration_20260907/。
