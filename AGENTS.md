@@ -1,23 +1,21 @@
 # TriFusion-ReID workspace
 
-## Latest verified state (2026-09-07T11:53:35.445631+08:00)
+## Latest verified state (2026-09-07T12:15:07.851194+08:00)
 
-- V28 complete source geometry diagnostic COMPLETE, originalcode4158c95; GPU149890/CPU152087/wrapper149889 exited0 by11:45:40.
-  All1680batches/3360forwards/1935360slots/30965760scalars verified; allsource records and94IDs/fold covered.
-  Parameters/buffers unchanged, gradNone; no heldout/dev/official/retrieval or optimizer updates.
-- ThreefoldMamba andfold1CNN dominate44.444444% slot exposures inboth views; other slots mostly preserve current direction.
-  Transformer small corrections despite largest independentretrieval decline; fold0fused positive despiteMamba takeover.
-  Do not infer universal identity-informationloss or fullcausal explanation from direction/scale.
-- User-requested tangent supplement completed once from savedFP64scalars,0forwards; all162strata/5076identity rows locally recomposed.
-  Originalanglemedian16.354346deg/P95 94.642040deg; no initial-to-final rolevector comparison.
-  Executorreviews only, not externalindependentaudit. OriginalGPUsummary pendingstatus sealed; CPU/parentexit0 final.
-- Read results/TRIFUSION_V28_SOURCE_JOINT_GEOMETRY_2026-09-07.md, evidence/v28_source_joint_scale_complete_20260907/,
-  docs/V28_GEOMETRY_FOLLOWUP_BOUNDARIES_2026-09-07.md and source-scale tracker.
-- Next independentgeometry-constrained joint-training hypothesis NOT_REGISTERED/NOT_RUN.
-  KeepV27perturbation,localFP32,legalinit,pairedsixendpoints,budget/gates. No simultaneousteacher/memory/PCGrad extras.
-  V28Q1_FAIL0/5 andV27Q1_FAIL4/5 sealed; single-seed/reusedOOF andthree-dataset/SOTA limits remain.
-- Datafree14272937984B; GPUidle1MiB/0%; diagnostic288045485B,no newweights/deletions.
-  Preserve anchors/finals/arrays/failedreceipts. Master41.106 remote/repo/Desktop bytes must remain identical.
+- V29 bounded-tangent joint adaptation REGISTERED_NOT_RUN; priorV28 completegeometry evidence andQ1_FAIL0/5 sealed.
+  Read refine-logs/trifusion_v29_bounded_joint/EXPERIMENT_PLAN.md and tracker.
+  Config427242f945fdb329f72467f97f58a56a86f410630adb68cd69f76fd7e4bc83b5; plan61d6841eea54303b3c87dad31a94da32089fdff9513d9fde076a3839bd435028.
+- Only new hypothesis: fixedb0.5 tangent relativebound, finalidealangle<=26.565051deg; actualh norm used forzero-init parity.
+  ControloriginalV8fixedfusion+V27; candidateV28FP32joint+boundedupdate. No teacher/Router/memory/PCGrad extras.
+  Actual eachforward geometry norms/cosines recorded and checked2e-6; no newparameters beyondV28joint413056.
+- Same legalV12source folds, seed42,B64K8,20epochs,originalsampler/loss/optimizer; M0116updates thenQ13360updates.
+  Allold12M0conditions plusactualgeometry; all5sciencegates unchanged. All3126gallery/571queries/fiveoutputs/final-only.
+  AST/F821 andfixedconfiguration/depSHA checks PASS; CUDA T0/M0/Q1 NOT_RUN.
+- Pipelineimplemented withrealtraining/CPUverification/report handles; noautorerun on observationorvalidation failure.
+  Warmreuse existingtri_reid/RTX3090 environment, noenvironment changes. M0~5–8min,total~1.3–1.6GPUh.
+  Priorcomparable directory~1.019GB; reserve2GiB,currently~13.2GiBfree. Necessaryweights/arrays preserved.
+- Directionbound doesnot guarantee identityinformation or preventh trainingdrift. ReusedOOF/single-seed limits remain.
+  No newmodel effective or SOTA claim. Three-dataset objective active; master41.107 remote/repo/Desktop sync required.
 
 ## Experiment environment
 

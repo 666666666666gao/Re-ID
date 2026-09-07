@@ -2,7 +2,7 @@
 
 ## 0. 一页结论
 
-最新状态（2026-09-07T11:53:35.445631+08:00）：V28完整来源几何诊断及切向补充全部完成；三折Mamba及fold1 CNN占44.44%槽位曝光，出现大修正主导。其余槽位多数保留当前方向，不能解释为全部身份信息丢失。Q1_FAIL0/5不变；下一项独立几何约束待注册，三数据集目标继续。
+最新状态（2026-09-07T12:15:07.851194+08:00）：V29固定b0.5切向几何约束联合适配已实现并登记，真实T0/M0/Q1尚未运行；准备同初始化完整六端实验。V28全来源诊断与Q1_FAIL0/5封存，三数据集目标继续。
 
 当前用于已完成MSVR310比较及新登记RGBNT100比较的是原V8平行三角色结构：冻结Signal/CLIP，共享block8之前语义和tail9/10/11参数，三个角色分别运行共享tail；CNN处理局部语义Patch高频，Transformer处理全局CLS/Patch关系，Mamba处理空间与位置级三模态扫描。各角色相对冻结reference形成1536D残差，三角色4608D银行拼接3072D Signal得到7680D fused；完整单角色输出为4608D Signal+角色残差。三条路径均执行，当前没有Router/HFER、V23模态MLP或V24原型。两项车辆训练比较均已完成；RGBNT100内部完整比较支持三角色增益，MSVR310尚未超过Signal。下面V1—V8条目保留历史经过，不代表当前又启用了旧模块。
 
@@ -5213,3 +5213,20 @@ CPU核验SHAaf3da282a5e7f1f3c3c050ca974b66652fcaa3aadc682dbbd4b042732ce2d89d；
 切向补充SHA28434c5e14584affb604acb5e9fd4620c59a0d695b3d094be51f8a739a103900。
 
 V27配对正收益/Q1_FAIL4/5、V28 Q1_FAIL0/5保持。新几何约束训练尚未注册；应先固定一种有明确最终方向界的机制，维持V27/FP32/合法初始化与六端预算，可靠关系保留不同时叠加。MAG/nGPT/DELTA原文及旧V7/V9/V15机制边界已核对，见docs/V28_GEOMETRY_FOLLOWUP_BOUNDARIES_2026-09-07.md。单seed/反复OOF与三数据集目标未达边界保持。
+
+## 41.107 V29固定切向几何约束登记（2026-09-07T12:15:07.851194+08:00）
+
+在V28全部来源几何证据基础上登记唯一新假设：保留V27扰动和V28局部FP32联合1152Token模块，将输出c投影到当前角色h切向，以r=v/sqrt(1+||v||²/(0.25||h||²))平滑约束，再normalize(h+r)。固定b0.5，精确角度上限26.565051度，不按holdout/官方分数选择、无倍率扫描。使用实际h范数使零修正输出遵循旧normalize(h+0)，检查初始化两端精确输出SHA。
+
+控制为V27扰动下原V8固定融合；候选为受约束联合适配，新增413056参数/16张量，几何0参数。候选/控制219/203可训练张量，原七头ID/Triplet、学习率、20轮、seed42、B64/K8、原采样和所有合法初始化SHA不变。M0仍116真实更新与原12项条件，额外检查实际角度/相对范数界；通过后六端3360正式更新，全部3126图库/571查询、五输出、原五项科学门。每次训练及完整图库前向保存几何统计。
+
+源码：modeling/trifusion/joint_geometry_v29.py，tools/check_v29_joint_geometry.py，tools/train_signal_preserving_v29.py；
+完整M0/终态核验与报告及持久pipeline均已实现。AST/F821、旧配置固定部分与全部依赖SHA静态核验PASS；真实CUDA T0/M0/Q1均NOT_RUN。
+配置：configs/RGBNT201/TriFusion-signal-preserving-v29-bounded-joint-rtx3090.json，SHA427242f945fdb329f72467f97f58a56a86f410630adb68cd69f76fd7e4bc83b5；
+合同：refine-logs/trifusion_v29_bounded_joint/EXPERIMENT_PLAN.md，SHA61d6841eea54303b3c87dad31a94da32089fdff9513d9fde076a3839bd435028。
+同一pipeline记录各原PID/退出码，M0失败不Q1，训练/验证失败不自动重跑。预估M0/预检5–8分钟，完整约1.3–1.6GPU小时，观察240秒或估计里程碑。
+V28实测同规模目录1,018,766,834B，六权重195,514,551B，数组792,764,381B；新实验预留2GiB，现有约13.2GiB，暂无需删必要权重。
+
+当前h到新h的角度界不约束原角色参数漂移、也不保证检索不下降。三折Mamba及fold1CNN大修正与Transformer/其他CNN小修正的区别、fold0正收益反例均保留。不同时叠加教师/可靠关系loss/Router/XBM/PCGrad。MAG/nGPT已有相对范数/归一化方向思想，标准工具不改名冒充原创。主条件成立后再登记近邻简单方法/同容量对照与车辆扩展。
+
+当前仍只有登记和静态证据；V28Q1_FAIL0/5、V27Q1_FAIL4/5及其正增益、RGBNT100官方增益/MSVR310负结果/RGBNT201固定dev不足和单seed反复OOF限制保持。三数据集超过基线/SOTA目标未完成。

@@ -1278,3 +1278,21 @@
 - docs/V28_GEOMETRY_FOLLOWUP_BOUNDARIES_2026-09-07.md
 - tools/summarize_v28_source_tangent_geometry.py
 - evidence/v28_source_joint_scale_complete_20260907/local_tangent_table_check.py
+
+
+## 2026-09-07T12:15:07.851194+08:00 V29 bounded geometry registration
+
+- modeling/trifusion/joint_geometry_v29.py
+- tools/check_v29_joint_geometry.py
+- tools/train_signal_preserving_v29.py
+- tools/verify_v29_complete_terminal.py
+- tools/verify_v29_m0.py
+- tools/report_v29_complete_comparison.py
+- tools/run_v29_pipeline.py
+- configs/RGBNT201/TriFusion-signal-preserving-v29-bounded-joint-rtx3090.json
+- refine-logs/trifusion_v29_bounded_joint/EXPERIMENT_PLAN.md
+- evidence/v29_registered_static_contract_20260907.json
+- refine-logs/trifusion_v29_bounded_joint/EXPERIMENT_TRACKER.md
+- refine-logs/trifusion_v29_bounded_joint/EXPERIMENT_TRACKER_20260907_121521.md
+- docs/TRIFUSION_RGBNT201_CURRENT_COMPLETE_HANDOFF_2026-09-01.md
+- AGENTS.md
