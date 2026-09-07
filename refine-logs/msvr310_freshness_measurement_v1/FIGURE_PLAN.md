@@ -5,7 +5,7 @@ This reporting plan does not change EXPERIMENT_PLAN.md, configuration, training 
 | Artifact | Data | Design | Scope |
 |---|---|---|---|
 | Complete preflight check | Verified 72-update text reaggregation, three folds and both endpoints | Six-panel paired dots, fold on x axis; no interpolated time curve | Completed short preflight only, one epoch per endpoint |
-| Complete source diagnostic | All 1560 updates after six endpoints and full CPU verification | Same six metrics, epoch curves for all six trajectories separately | Not yet executed or render-verified; no partial-source plot |
+| Complete source diagnostic | All 1560 updates after six endpoints and full CPU verification | Same six metrics, epoch curves for all six trajectories separately | Complete source executed and render-verified on 2026-09-08; all720 fields independently reaggregated, same-family provisional review |
 
 Panels: pair-weighted absolute stale/fresh historical-distance difference; mean fresh-minus-stale expanded hinge; changed hardest-negative identity-of-record selections per historical anchor exposure; and runtime parameter-gradient cosine for CNN, Transformer and Mamba. Here a changed selection means a different candidate record, not necessarily a different identity.
 

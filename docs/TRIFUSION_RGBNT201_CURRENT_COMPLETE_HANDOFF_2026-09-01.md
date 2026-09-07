@@ -2,7 +2,7 @@
 
 ## 0. 一页结论
 
-最新状态（2026-09-08T00:41:25.149335+08:00实查）：MSVR缓存坐标来源测量已完成4/6端，fold2 control达13/20epoch；原wrapper185622/source186000持续，完整CPU未开始。已补核PRISM/DSGM原表与固定提交的发布配置差异，不改当前合同。主盘约4.71GiB，Goal active/unmet；详见41.142。
+当前执行入口：§41.143；MSVR310完整缓存新鲜度六端1560更新及全CPU已通过，完整图表/报告已核验。下一项固定陈旧/新鲜坐标更新配对实验待登记；旧Q1封存，Goal ACTIVE/UNMET。
 
 当前用于已完成MSVR310比较及新登记RGBNT100比较的是原V8平行三角色结构：冻结Signal/CLIP，共享block8之前语义和tail9/10/11参数，三个角色分别运行共享tail；CNN处理局部语义Patch高频，Transformer处理全局CLS/Patch关系，Mamba处理空间与位置级三模态扫描。各角色相对冻结reference形成1536D残差，三角色4608D银行拼接3072D Signal得到7680D fused；完整单角色输出为4608D Signal+角色残差。三条路径均执行，当前没有Router/HFER、V23模态MLP或V24原型。两项车辆训练比较均已完成；RGBNT100内部完整比较支持三角色增益，MSVR310尚未超过Signal。下面V1—V8条目保留历史经过，不代表当前又启用了旧模块。
 
@@ -5767,3 +5767,15 @@ GradCache原论文RepL4NLP2021及作者提交906f03835fbc183132a9db32612a9e8f180
 固定作者HEAD0067f6d/6566f78共31文本及许可证SHA已核。PRISM MSVR论文K8而YAML K4；DSGM RGB201论文60epoch而YAML50epoch，发布BASE_LR也与文中模块LR数值不同，但未执行优化器不能推出每组实际LR。DSGM工厂实际选用RGBNT201_Text并读取train_171，不仅凭141/30/30描述认定论文主表真实训练划分；目录名亦不证明实际身份计数。仅来源与静态代码核查，未接入作者模型、mask或权重。详见docs/PRISM_DSGM_PRIMARY_AND_RELEASE_BOUNDARIES_2026-09-08.md与evidence/prism_dsgm_primary_20260908/。
 
 2026-09-08T00:41:25.149335+08:00原wrapper185622/source186000持续，4/6端完成，fold2 control13/20epoch，主盘5,053,583,360B。执行工具/配置/计划四项SHA不变。仍等六端与全CPU后接收全部文本、完整重聚合和来源正式图；预检图不能替代完整来源。Goal active/unmet。
+
+### 41.143 完整来源缓存坐标与梯度诊断终态（2026-09-08T01:22:40.378147+08:00）
+
+固定ab67d4c/f3a0634全部6端1560更新结束，source于01:07:56、CPU于01:08:08退出0，原wrapper01:08:09完成。全51,860,992距离CPU通过；17文本59,343,243B逐文件size/SHA相同，120epoch/960年龄/360角色epoch全量重聚合。203/203梯度、0overflow、冻结状态/RNG/buffer/零更新bitwise/strictreload通过，额外585,600条角色记录前向。01:19:41主盘4,926,001,152B/GPU1MiB/0%，原PIDs结束；0新权重删除。
+
+历史194步/端：control距离MAE0.01979–0.02406，memory0.03915–0.04348；负例candidate选择变化分别20.23%–24.46%与32.26%–34.43%。memory Transformer stale/fresh诊断梯度平均余弦0.66037–0.67395。全部3492角色比较实际差异大于重复同loss噪声。六端fresh−stale hinge均值为正，但每端仍有27–56步为负。最后epoch距离误差<0.00089、余弦>0.996，不能用终点稳定代替整个训练近似可靠。
+
+当前peers梯度保留、历史detach；测量的是expanded项在相同当前参数图上的梯度，不是所有监督的总更新梯度。freshloss更新0、heldout/official读取0，旧Q1−0.216156pp和两组0/5FAIL不改。新轨迹不冒充原训练逐位重放，陈旧坐标改变信号不证明它是泛化失败唯一原因。
+
+实际source图720字段/540有效/180缺失全量核对；PNG与PDF渲染检查、新上下文同家族provisional复核通过，不以预检图替代来源图。完整报告results/MSVR310_FRESHNESS_MEASUREMENT_V1_COMPLETE_SOURCE_2026-09-08.md、证据evidence/msvr310_freshness_complete_source_20260908/。
+
+下一项拟固定同历史候选陈旧/当前重编码坐标更新配对，双方匹配重编码计算；不同时加历史反传/新anchor/新融合。尚需独立注册和M0/Q1，非已启动或已成功。三数据集长期Goal ACTIVE/UNMET。

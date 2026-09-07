@@ -1,12 +1,12 @@
 # TriFusion-ReID workspace
 
-## Latest verified state (2026-09-08T00:41:25.149335+08:00, primary-reference gap closed)
+## Latest verified state (2026-09-08T01:22:40.378147+08:00, complete source diagnosis)
 
-- Source run /root/autodl-tmp/trifusion-v2/artifacts/msvr310_freshness_v1_seed42_ab67d4c remains on fixedab67d4c/configf3a0634. Originalwrapper185622/source186000 live; 4/6 source endpoints complete, fold2 control 13/20epoch. Complete1560/sourceCPU pending.
-- All72preflight/36plot values, rendered vectorPDF/PNG and same-family provisional figure review already verified. Source plotting NOT_EXECUTED; complete source/fullCPU before alltext intake, reaggregation and real source render verification.
-- PRISM/DSGM author-preprint tables and31pinned code/config/license texts checked. Record mask/text resources and paper/release discrepancies; no author model installed or trained, no current contract change.
-- Mainfree5,053,583,360B. Priorweight/bundle cleanup remains archived, not repeated. Four frozen freshness source/config/plan SHAs unchanged; fresh loss diagnostic only; source current peers retain gradients/history detach.
-- Master41.142/docs/PRISM_DSGM_PRIMARY_AND_RELEASE_BOUNDARIES_2026-09-08.md. Expected current control end around00:50, fullsource01:10-01:20 thenCPU. Observe original handles at180-300seconds or milestones. WholeGoal ACTIVE/UNMET.
+- Fixed ab67d4c/config f3a0634 freshness run completed all six endpoints/1560 updates and CPU 51,860,992 distances; wrapper/source/CPU exited 0. Do not restart.
+- All17 text files/59,343,243B verified, all120 epoch/960 age/360 role groups and real source PNG/PDF reviewed; 720 fields equal CPU reaggregation. Same-family review is provisional, not retrieval efficacy.
+- Cached historical coordinates materially affect early/mid-training mining and role gradients; terminal differences shrink. Fresh losses made zero updates; historical candidates detach, current peers retain gradients. Old Q1 failures remain sealed.
+- Main free4,926,001,152B at01:19:41, GPU1MiB/0%. Required weights/data preserved; prior cleanups not repeated.
+- Master41.143 and complete-source report. Next: preregister one compute-matched stale-vs-current-reencoded historical coordinate update comparison, M0 then full paired Q1; no new method currently launched. WholeGoal ACTIVE/UNMET.
 
 ## Experiment environment
 
