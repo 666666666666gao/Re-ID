@@ -20,10 +20,14 @@
   Executor verification is not independent external audit.
 - Data free13187350528 B; no new deletion; final weights and arrays retained remotely.
   Local text/code/generated plots only, no model/checkpoint/image/NPY transfers.
-- Source-only initial/control/candidate role-relation drift diagnosis is REGISTERED_NOT_RUN.
+- Source-only initial/control/candidate role-relation drift diagnosis is MATH_PASS_SOURCE_RUNNING.
   Contract configs/RGBNT201/TriFusion-v29-source-role-drift-diagnostic.json; plan refine-logs/v29_source_role_drift/EXPERIMENT_PLAN.md.
   All1680 source batches/10080 fixed forwards, all94 source IDs per fold, no model update or retrieval.
-  Local explicit-scalar/rotation T0 and AST/F821 PASS; remote CUDA/math/model/CPU terminal NOT_RUN.
+  Local T0/AST/F821 PASS; remote CPU/CUDA T0 PASS,1728 synthetic slot pairs max2.384185791e-7.
+  Original diagnostic159463/wrapper159453 live at14:21:39 on code1d52c1e; screen v29_source_drift_1d52c1e.
+  Run /root/autodl-tmp/trifusion-v2/artifacts/v29_source_role_drift_seed42_1d52c1e.
+  No complete source or CPU terminal yet. Do not restart, edit source/contract, or infer progress from initial summary0.
+  Next regular poll not before14:25:39; ETA16:00-16:30 pending actual first-epoch timing.
   Expected3.115GiB raw arrays, startup requires6GiB free; last free13146820608B/GPU1MiB.
   Estimate90-110 minutes GPU plus5-20 CPU; original handles poll180-300 seconds, no automatic restart.
   Check pairwise identity geometry as well as vector change; no new preservation loss justified yet.
@@ -31,7 +35,7 @@
 - Current architecture: docs/V29_CURRENT_NETWORK_AND_SUPERVISION.md.
   Vehicle interface boundaries: docs/V29_TERMINAL_AND_VEHICLE_BOUNDARIES_2026-09-07.md.
   No new vehicle experiment launched.
-- Master section41.113; remote/repo/Desktop must be byte-equal.
+- Master section41.114; remote/repo/Desktop must be byte-equal.
   RGBNT100 baseline gain, MSVR310 negative, RGBNT201 dev shortfall, single42/reused OOF remain.
   Three-dataset baseline/SOTA objective is not complete.
 
