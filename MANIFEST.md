@@ -1409,3 +1409,5 @@
 - 2026-09-08T02:05:10.411619+08:00: Complete coordinate-update M0/248steps/1,677,824 distanceelements and all27text intake pass; same-family audit WARN/provisional, complete248row/1244leafchecks PASS with scope limits. Q1 original193650 running, master41.146, Goal active/unmet.
 
 - 2026-09-08T02:26:26.994875+08:00: Full terminal ranking replay CLI validated on sealed old six-end Q1, all2,069,520 rank positions and two originalgate sets; complete CSVs. Active coordinate Q1 untouched, master41.147, Goal active/unmet.
+
+- 2026-09-08T04:22:22.639559+08:00: Complete fresh-coordinate Q1 all6ends/1560updates and CPU PASS, paired fused−0.07158042pp and both scientificgate sets0/5; all29text/complete rankings independently audited WARN same-family/provisional. Preserve frozen experiment, official0 and seed42-only boundary; add S-XBM/BroadFace/ANCE primary references. Master41.148, Goal ACTIVE/UNMET.

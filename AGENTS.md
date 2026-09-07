@@ -1,12 +1,12 @@
 # TriFusion-ReID workspace
 
-## Latest verified state (2026-09-08T02:21:04.467174+08:00, complete M0 audited / Q1 live)
+## Latest verified state (2026-09-08T04:22:22.639559+08:00, complete Q1 FAIL / audit closed)
 
-- Fixed b4501fa/config32e22d3a coordinate update run. M0192718 andCPU193575 exit0 at01:41:44/01:41:52, all248updates/1,677,824 distanceelements;27texts/2,571,292B complete. Do not rerun M0.
-- Same-family fresh-context audit WARN/provisional, all248rows/1244 numericaggregate leaves PASS; no code/restart required. Preserve remote-binary/runtime-gradient limits, cumulative203/203 semantics and training-only scope.
-- Originalwrapper192704/Q1193650 live with exactcommandlines. Q1 started01:41:52, fold0 both endpoints terminal recorded, fold1control1/20epoch. FullsixQ1 andCPU pending. Expectedaround03:40, historicalepochs~71sec; observe180–300seconds or milestones, no restarts on observationtimeout.
-- Master41.147 and completeM0 report/audit. New audit_msvr_paired_ranking_text.py replayed all2,069,520 oldQ1 rank positions with3000query/300identity output rows; currentQ1 replay stillpending. Read-only analyze_msvr_fresh_coordinate_text.py validated onfullM0; Q1 textpath not yet run. Running source/config/plan hashes unchanged.
-- Mainfree4362149888B/GPU7356, 100, no newweightdeletion. Preserve requiredinitializations/endpoints/evidence and unrelatedlocal edits. WholeGoal ACTIVE/UNMET.
+- MSVR fresh-coordinate all6ends/1560updates complete03:36:56, CPU PASS03:37:11. Both original5gates0/5; stale fused51.78835925 to fresh51.71677883, delta−0.07158042pp. Do not rerun sealed M0/Q1.
+- Pipeline launch b4501fa; Q1-start HEAD ced43dd2 differs only docs/evidence. All fixed training source/config hashes unchanged.
+- All29rawtexts/79,009,736B matched; independent text/complete ranking audit WARN same-family/provisional with remote-binary/runtime-gradient limits. See master41.148 and separate EXPERIMENT_AUDIT_Q1 files.
+- Fused exceeds all3roles but trails Signal53.12938056. Source objectives/coordinate consistency improved without required heldout gain; no automatic selective-refresh progression or new training registration.
+- User requires seed42 only. Core3datasets and complete protocols remain; official reads0. No newweightdeletion, required artifacts protected. Unrelated local edits preserved. WholeGoal ACTIVE/UNMET.
 
 ## Experiment environment
 

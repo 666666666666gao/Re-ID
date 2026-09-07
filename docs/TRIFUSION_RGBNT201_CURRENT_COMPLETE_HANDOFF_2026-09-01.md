@@ -2,7 +2,7 @@
 
 ## 0. 一页结论
 
-当前执行入口：§41.147；原Q1193650继续，最近实查已完成2/6端、进入fold1 control；完整排名文本复核入口已用旧封存Q1验证，全六端新结果仍未终态，Goal ACTIVE/UNMET。
+当前执行入口：§41.148；MSVR新鲜坐标配对完整六端与CPU结束，两组0/5 FAIL；独立审计收束，当前无训练运行，下一假设待完整证据决定。仅seed42，Goal ACTIVE/UNMET。
 
 当前用于已完成MSVR310比较及新登记RGBNT100比较的是原V8平行三角色结构：冻结Signal/CLIP，共享block8之前语义和tail9/10/11参数，三个角色分别运行共享tail；CNN处理局部语义Patch高频，Transformer处理全局CLS/Patch关系，Mamba处理空间与位置级三模态扫描。各角色相对冻结reference形成1536D残差，三角色4608D银行拼接3072D Signal得到7680D fused；完整单角色输出为4608D Signal+角色残差。三条路径均执行，当前没有Router/HFER、V23模态MLP或V24原型。两项车辆训练比较均已完成；RGBNT100内部完整比较支持三角色增益，MSVR310尚未超过Signal。下面V1—V8条目保留历史经过，不代表当前又启用了旧模块。
 
@@ -5817,3 +5817,19 @@ run /root/autodl-tmp/trifusion-v2/artifacts/msvr310_fresh_coordinate_v1_seed42_b
 旧实例记忆fused配对-0.2161564150 mAP、AP258改善/284下降/58不变、Rank1修复20/新增16，原FAIL0/5保持。这是验证工具，不是新增训练或新科学证据。结果见results/MSVR310_TERMINAL_RANKING_TEXT_REPLAY_2026-09-08.md及evidence/msvr310_terminal_ranking_replay_validation_20260908/；当前fresh-coordinate路径尚未执行。近负例记录/身份/scene仅是排名事实，不补写视觉原因。
 
 2026-09-08T02:21:04+08:00实查原wrapper192704/Q1193650和命令行持续，fold0两个端完成，fold1 control1/20epoch，主盘4,362,149,888B。固定b4501fa/config32e22d3a及模型训练文件不变，无新权重删除。当前control指陈旧历史更新，与旧batch-only control不可混淆。预计03:40左右全Q1/CPU，待完整终态再运行新文本复核、全量分析与独立审计；不读单端调方案。长期Goal ACTIVE/UNMET。
+
+### 41.148 当前历史坐标更新完整Q1失败、独立审计与新近邻边界（2026-09-08T04:22:22.639559+08:00）
+
+原Q1193650于03:36:56退出0（6904.0152秒），CPU199698于03:37:11退出0，wrapper192704终态COMPLETE_VERIFIED_Q1_FAIL；全部六端1560更新/120epoch完成，不重跑。pipeline启动b4501fa，Q1开始时HEAD记录ced43dd2；两者仅文档/证据差异，固定训练源/合同SHA不变，配置32e22d3a。29文本79,009,736B完整接收并核对size/SHA，summary419c27a0、CPU91892b5d。
+
+本次control为陈旧历史更新，候选为当前角色重编码历史坐标更新；匹配初始化/780组batch像素/候选年龄/计算，历史两端仍detach。fused51.78835925→51.71677883，−0.07158042pp，配对bootstrap下界−0.50635600；CNN+0.00317187、Transformer−0.54635529、Mamba+0.44331602。三个fold fused增益+0.01329176/−0.77169879/+0.62296244。候选相对Signal53.12938056为−1.41260174pp，下界−3.00062303；两组五门0/5。两个端fused均高于全部角色、但低于Signal，不误诊为融合低于最强角色。预历史66步每fold从step2开始loss有微小差异（最大0.00115347/0.00199091/0.00183570），第67步才有历史；上述配对匹配不等于逐位相同训练轨迹，同图重复梯度噪声不代表独立训练重复噪声，单次极小mAP差值不能作确定因果效应。
+
+全部600query/60身份/完整分折gallery合计1032，正确MSVR scene过滤；Signal特征/距离bitwise，官方读取0。Fused AP279升/251降/70同、Rank1修复9/新增10、身份33升/22降/5同；全部3000query×输出和300身份×输出CSV保留。训练wrong-anchor计数不当成检索R1，改善人数不代替query加权mAP。
+
+候选的来源漂移更小、旧新诊断梯度更一致，三个fold最后65步批内和当前坐标expanded Triplet均更低，但未产生所需heldout增益。仍有非零间隔/错误曝光，不能套RGBNT201来源饱和，也不说明所有记忆无效。累计203/203张量梯度、0overflow、冻结/零年龄重编码/strictreload通过。额外585600角色记录重编码，原漂移另7680；CPU训练及坐标距离74,596,608、检索排名2,069,520，均为元素计数而非独立关系。
+
+独立上下文审计WARN、same-family/provisional；全部29文本SHA、1560更新/780配对、10764数值叶项及全部排名/AP/CMC/原门独立复核一致。CPU收据49文件中25文本本地可读、24二进制未访问；运行时梯度不是独立模型反传，其余13loss仅标量与加权和。原M0审计保留，新EXPERIMENT_AUDIT_Q1.md/json单列。完整报告results/MSVR310_FRESH_COORDINATE_V1_Q1_2026-09-08.md，证据evidence/msvr310_fresh_coordinate_complete_q1_20260908/。
+
+用户00:44快照提出的新鲜坐标比较现已完成FAIL，不能再次作为新方案；只用seed42的要求延续到后继机制实验，不扩展多seed。已核SMEC/S-XBM原文§3.4冻结字段+当前FC+Top-k，BroadFace类别代表位移补偿与分类器/编码器梯度范围，ANCE异步索引候选机制；这些是已有方法基础，不包装为原创。详见docs/MSVR310_MEMORY_PRIMARY_NEIGHBORS_AND_FRESH_Q1_2026-09-08.md。全刷新未证明收益，不自动推进选择性刷新；历史反传/历史anchor覆盖尚未测量，亦不直接当成已批准新方法。下一项先依据完整证据选择单一干预或必要诊断，无新训练登记/启动。
+
+03:38:23实查原进程结束、GPU1MiB/0%、主盘3,837,997,056B；本轮0权重删除。保留必要初始化/终点/二进制证据。三数据集官方与内部口径继续分开，长期Goal ACTIVE/UNMET。
