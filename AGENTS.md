@@ -1,13 +1,12 @@
 # TriFusion-ReID workspace
 
-## Latest verified state (2026-09-07 source freshness measurement registered, NOT_RUN)
+## Latest verified state (2026-09-07 23:11 source freshness preflight running)
 
-- Original MSVR memory Q1 and complete mining are sealed. Bothscience0/5FAIL; do not rerun retrieval, change old contracts or scan hyperparameters. Source/mining records through33ec3c0 remain authoritative.
-- New source-only freshness measurement V1: tools/msvr_freshness_probe.py and run_msvr_freshness_probe.py; plan refine-logs/msvr310_freshness_measurement_v1/EXPERIMENT_PLAN.md; config configs/MSVR310/TriFusion-source-freshness-measurement-v1.json. StaticPASS, no newmodel/GPU execution yet.
-- Same current model/anchor and real historical views, compare stale/current distances, hard choices and actual encoder gradients against duplicate-loss numerical noise. Cache immutable frozenSignalfields plus role RNG; zero-age realB64 must be bitwise equal. No newfresh loss updates, noheldout/official image access.
-- Preflight6x12=72steps+fullCPU, then source6x260=1560steps+fullCPU. Existing oldupdate rules, seed42/B64K8/20epoch/warmup65 and fullsampler/pixelSHA unchanged. Source trajectories are not claimed bitwise copies of sealed training. No official/retrieval improvement claim.
-- GPU verified idle22:46, oldwrapper absent, remoteHEAD33ec3c0. Mainfree~4.62GiB/otherstore~10.37GiB, expectedextra<1GiB, reuse current environment; estimated2-4hours full source diagnostics, persistentpipeline and180-300second/milestone observations.
-- Master41.136; wholeGoal ACTIVE/UNMET. Next sync exact registered code and launch once, verify original PIDs; no extra preflight or train restart on observation timeout.
+- Fixed executionab67d4c/configf3a0634, run /root/autodl-tmp/trifusion-v2/artifacts/msvr310_freshness_v1_seed42_ab67d4c. Originalwrapper185622 and preflight185624 verified live23:11:43; screen msvr_freshness_ab67d4c. Do not restart on polling timeout.
+- Firstfold twoends each12steps/2880extra role record forwards complete and strict reload; realB64 zero-update frozen-field reuse bitwise PASS. Full6end72steps and CPU still pending. No completepreflight qualification yet.
+- Same original batch/stale updates, fresh loss diagnostic only; every historical item/step reencoded under current model, actual role parameter gradients compared with duplicate-loss numerical noise. No newheldout/official reads, noQ1 result, no newmethod promotion.
+- Source1560steps/fullCPU auto follows only after completepreflightCPU. Newplan/config/source files fixed. WholeGoal ACTIVE/UNMET. Mainfree23:11~4.56GiB, GPU7402MiB/100%, maxallocated~6558MiB, no newweight cleanup.
+- Master41.137; evidence/msvr310_freshness_launch_20260907/. Next observe original handles at3-5minute/milestone interval, archivefullpreflight after terminal, then continue complete source measurement. OldQ1/mining sealed.
 
 ## Experiment environment
 

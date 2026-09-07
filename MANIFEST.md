@@ -1387,3 +1387,5 @@
 - 2026-09-07T22:39:48.831744+08:00: Complete source-only MSVR memory mining decomposition, all1560steps/all29Mdistances and all6x20epoch local CSV verification PASS; archive3diagnostic interface errors, distinguish executioncode/docsHEAD. No training/official changes; master41.135, Goal active/unmet.
 
 - 2026-09-07T23:05:25.484121+08:00: /experiment-plan and /run-experiment register source-only MSVR current-vs-stale coordinate measurement V1; two newtools/frozenplan/config/staticreadiness, no GPU execution. 72step preflight/fullCPU then1560source steps/fullCPU; master41.136, Goal active/unmet.
+
+- 2026-09-07T23:13:43.196349+08:00: Source freshness V1 launched once onab67d4c; originalwrapper185622/preflight185624 verifiedlive, firstfold2ends complete, fullpreflight pending. Evidence/master41.137; no sciencepromotion.

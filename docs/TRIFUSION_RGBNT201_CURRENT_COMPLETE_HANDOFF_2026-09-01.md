@@ -2,7 +2,7 @@
 
 ## 0. 一页结论
 
-最新状态（2026-09-07来源直接测量登记）：MSVR实例记忆Q1和完整挖掘诊断均已封存。下一项固定为旧缓存与当前编码的直接比较：同一模型状态、anchor和真实历史视图，记录完整距离、困难选择、真实角色梯度与重复反传噪声。新鲜loss不参与更新；六端72步预检/CPU通过才运行六端1560步来源测量，0heldout/official。两新工具静态通过，尚未新前向/启动。预计2–4小时，主盘约4.62GiB。Goal active/unmet，详见41.136。
+最新状态（2026-09-07 23:11实查）：MSVR缓存坐标直接测量V1已在ab67d4c启动一次，wrapper185622/预检185624持续。第0折两端各12步已完成并严格重载，零更新字段复用逐位一致；六端72步及全CPU尚未终态。新鲜loss仅诊断，原更新规则不改，0heldout/official。预检通过才进入完整1560来源步。主盘约4.56GiB，Goal active/unmet，详见41.137。
 
 当前用于已完成MSVR310比较及新登记RGBNT100比较的是原V8平行三角色结构：冻结Signal/CLIP，共享block8之前语义和tail9/10/11参数，三个角色分别运行共享tail；CNN处理局部语义Patch高频，Transformer处理全局CLS/Patch关系，Mamba处理空间与位置级三模态扫描。各角色相对冻结reference形成1536D残差，三角色4608D银行拼接3072D Signal得到7680D fused；完整单角色输出为4608D Signal+角色残差。三条路径均执行，当前没有Router/HFER、V23模态MLP或V24原型。两项车辆训练比较均已完成；RGBNT100内部完整比较支持三角色增益，MSVR310尚未超过Signal。下面V1—V8条目保留历史经过，不代表当前又启用了旧模块。
 
@@ -5705,3 +5705,13 @@ wrapper code_commit104506b，Q1 summary project_commit9da45c5；实际git diff�
 复用原tri_reid/PyTorch环境，无安装重建；22:46实查原wrapper不存在、GPU1MiB/0%且无CUDA计算进程，远端HEAD33ec3c0。主盘4,964,216,832B、另一存储盘11,129,241,600B，预计新增<1GiB，启动门至少3GiB。预计预检8–15min、完整2–4h，依实际epoch速度修订；持久进程顺序预检→CPU→source→CPU，失败停，观察超时不重启，按180–300sec或里程碑观察。
 
 完整文本/结果同步与原三个数据集Goal不变；尚未执行新训练，不提前判断缓存近似是否有害或任何方法晋级。证据evidence/msvr310_freshness_registration_20260907/。
+
+### 41.137 MSVR缓存坐标V1已启动，预检原进程持续（2026-09-07 23:11）
+
+登记提交ab67d4cd18b0a2b010a46702ac01d03df1c3b1de、合同f3a063499b125ef7e90e1b304324a40c967b8d61ba940a6e3193dab5919edae4。23:08三端主文档/全部10发布文件SHA核对一致，登记主文档SHAb4b96aab3291c5a1cc040a133071d85af4f310c3720f94ab7896181ff12b4aed。23:09一次启动screen msvr_freshness_ab67d4c，run /root/autodl-tmp/trifusion-v2/artifacts/msvr310_freshness_v1_seed42_ab67d4c。
+
+原wrapper185622、preflight185624，23:11:43均存在且命令行匹配；不是依据锁文件认定运行。第0折control/memory各12步已完成、compact终点严格重载；每端额外2880条角色记录前向，包含真实零更新字段复用逐位一致检查。全部六端预检及全CPU还未终态，不写M0 PASS或泛化有效。
+
+最大已分配显存约6558MiB，23:11 GPU7402MiB/100%；主盘4,894,457,856B。主机MemAvailable约704GiB，仅作当前资源信息，不改变单GPU合同；缓存字段在RAM保存，不将原图/模型下载。没有新增权重删除，原必要初始化/终点/复核证据保留。
+
+原计划预检72步→完整CPU→来源1560步→完整CPU持续；真实字段复用只减少冻结主干重算，所有角色额外前向/梯度开销仍计入。新鲜loss不更新，原Q1_FAIL不改，不读取heldout/official。下一次按3–5分钟或完整预检里程碑观察同一进程，任何超时不重启。证据evidence/msvr310_freshness_launch_20260907/；Goal active/unmet。
