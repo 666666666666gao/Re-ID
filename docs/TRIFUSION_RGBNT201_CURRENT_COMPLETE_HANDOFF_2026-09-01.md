@@ -2,7 +2,7 @@
 
 ## 0. 一页结论
 
-最新状态：2026-09-07，MSVR style R3实际484264e已通过精确CPU距离/原终点全state检查，第一端360gallery/210query正式评价恢复并全量核验；Q1PID170273继续余5端，18:54候选epoch4，完整科学终态未出（§41.127）。
+最新状态（2026-09-07 19:33）：MSVR310 source-style R3完整六端Q1及CPU/reuse/本地全量排序核验结束；Q1_FAIL，两组0/5，fused52.126691→51.824477（−0.302214），相对Signal−1.304904。原进程均结束，1560比较更新含原control260复用＋1300新更新；32文字文件39,513,093B完整接收。下一步须先登记MSVR310完整source关系诊断，尚未启动新任务；三数据集Goal active/unmet。详见§41.128。
 
 当前用于已完成MSVR310比较及新登记RGBNT100比较的是原V8平行三角色结构：冻结Signal/CLIP，共享block8之前语义和tail9/10/11参数，三个角色分别运行共享tail；CNN处理局部语义Patch高频，Transformer处理全局CLS/Patch关系，Mamba处理空间与位置级三模态扫描。各角色相对冻结reference形成1536D残差，三角色4608D银行拼接3072D Signal得到7680D fused；完整单角色输出为4608D Signal+角色残差。三条路径均执行，当前没有Router/HFER、V23模态MLP或V24原型。两项车辆训练比较均已完成；RGBNT100内部完整比较支持三角色增益，MSVR310尚未超过Signal。下面V1—V8条目保留历史经过，不代表当前又启用了旧模块。
 
@@ -5581,3 +5581,16 @@ R2 Q1PID168456完成fold0control固定20epoch/260更新、保存compact终点后
 评价后恢复CPU4线程，原训练接口继续。18:54候选fold0epoch4，余5端1300新更新，总比较1560仍不变；新2064与失败阶段旧360图库record前向分开记录。完整原CPU verifier将在56线程运行，并另核验原260步复用/原文件不变。终态本地摘要工具已加必需的resume_verification绑定，不能把缺少接续证据的部分摘要当完成。
 
 报告results/MSVR310_SOURCE_STYLE_R3_DISTANCE_RECOVERY_2026-09-07.md；证据evidence/msvr310_style_r3_first_recovery_20260907/。18:54余9,395,724,288bytes约8.75GiB；约21秒/epoch，粗估全Q1/CPU19:29-19:34，实际以原进程终态为准。下一观察不早于18:59:30。R1/R2错误及完整M0均保留，主Goal仍active未达。
+
+
+### 41.128 MSVR310来源统计扰动：完整Q1负结果与全量复核（2026-09-07 19:33）
+
+实际执行484264e，原Q1于19:26:40退出0，CPU于19:26:52退出0；wrapper170083及其全部原始child均已结束。pipeline `COMPLETE_VERIFIED_Q1_FAIL`，科学条件相对control0/5、相对Signal0/5。fused52.126691→51.824477，配对−0.302214、bootstrap下界−0.864710；相对Signal53.129381为−1.304904。CNN−0.222331、Transformer+0.600893、Mamba−0.237235。三折fused−1.163999/+0.296255/+0.009763。
+
+候选fused高于自己的三个完整角色，但低于Signal；注册“最高”条件包含Signal，因此仍FAIL。60身份25改善/29下降/6不变；配对Rank1修复8、新增11，新增同camera3、同scene1。Transformer的下界−0.254319，不能宣布稳定单支成功。RGBNT201 V27正结果及RGBNT100既有增益保持，不能用它们抵消MSVR310负结果。
+
+六端各260更新、总1560（原R2control260复用＋1300新更新），203/203真实梯度，0 overflow，三折所有实际增强像素/样本/扰动计划配对一致，393真实扰动批。六端Signal特征和距离逐位B0一致。CPU全量2,069,520距离/排序位置核对；原失败文件未改。32文字文件39,513,093B全接收，6checkpoint远端SHA核验；本地全部600query×5输出×2端重算通过。summary `e04f2de56db973fd0ee16db0f261a56f38e1ceb4a651433db9bffe951c4b4e1b`；reuse `95c3527ebcef3d71293de7cdf485ff283b4d50c7ff31d30b405a7dfdce8b9a9c`。
+
+全部1560步训练日志显示MSVR310增强输入下终点Triplet仍非零；这不等于反序计数，也不能直接沿用RGBNT201来源饱和诊断。下一步先登记MSVR310完整source合法间隔与实例覆盖普查，尚未启动，不扫描本次失败配置或消费official结果。Goal active/unmet。
+
+报告：[results/MSVR310_SOURCE_STYLE_V1_Q1_2026-09-07.md](../results/MSVR310_SOURCE_STYLE_V1_Q1_2026-09-07.md)；完整证据：[evidence/msvr310_style_r3_complete_q1_20260907](../evidence/msvr310_style_r3_complete_q1_20260907/)。19:32空闲8.395GiB，保留必要B0/CLIP和六端角色终点，无新增删除。文献新增[原表刷新](SOTA_PRIMARY_REFRESH_2026-09-07_EVENING.md)，FUSE的50.1/65.7不替代更强MSVR参考；RoDI CLIP/DINOv3分列，内部Q1不能直接对比论文official。
