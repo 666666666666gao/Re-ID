@@ -1369,3 +1369,5 @@
 - 2026-09-07T17:32:41.610773+08:00: Register complete source-only V29 joint similarity decomposition; math/static PASS, CPU NOT_RUN, no weights/retrieval changes. Master41.119.
 
 - 2026-09-07T17:38:22.966321+08:00: Archive source joint-similarity R1 arithmetic-check failure; register R2 matching old FP32 path without changing data/science, math PASS, CPU NOT_RUN. Master41.120.
+
+- 2026-09-07T17:48:15.534539+08:00: Complete V29 joint similarity R2 evidence/CSV verification; next MSVR310 source-style paired direction selected with780batch/3Signal readiness, not training launched. Master41.121.

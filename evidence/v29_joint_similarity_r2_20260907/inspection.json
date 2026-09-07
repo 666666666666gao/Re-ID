@@ -1,0 +1,168 @@
+{
+  "checked_at": "2026-09-07T17:40:20.432849+08:00",
+  "launch": {
+    "wrapper_pid": 166192,
+    "original_pid": 166197,
+    "command": [
+      "/root/miniconda3/envs/tri_reid/bin/python",
+      "-u",
+      "-m",
+      "tools.analyze_v29_joint_similarity",
+      "--contract",
+      "/root/autodl-tmp/trifusion-v2/TriFusion-ReID/configs/diagnostics/V29-joint-similarity-v2.json",
+      "--output-dir",
+      "/root/autodl-tmp/trifusion-v2/artifacts/v29_joint_similarity_1013e2e_r2"
+    ],
+    "code_commit": "1013e2ed0a5e6065a33c48fc64c3097af273c099",
+    "contract_sha256": "b943bfc05293cfdcd92a5d5432604463485a01071847760ae0fbb9c0b72c65f1",
+    "started_at": "2026-09-07T17:39:28.819878+08:00"
+  },
+  "original_alive": false,
+  "wrapper_alive": false,
+  "exit": {
+    "wrapper_pid": 166192,
+    "original_pid": 166197,
+    "exit_code": 0,
+    "ended_at": "2026-09-07T17:40:00.076857+08:00",
+    "elapsed_seconds": 31.257762670516968
+  },
+  "result": {
+    "status": "PASS_COMPLETE_SOURCE_JOINT_SIMILARITY_ANALYSIS",
+    "completed_at": "2026-09-07T17:40:00.040129+08:00",
+    "elapsed_seconds": 31.089518070220947,
+    "contract_sha256": "b943bfc05293cfdcd92a5d5432604463485a01071847760ae0fbb9c0b72c65f1",
+    "runner_sha256": "7def2af842ff6d72316a1b6933bceaffa151adc7b0a36224f6d7f3346c90ad19",
+    "source_summary_sha256": "af69e94457c527737728c183112d27c175a59dfb6cb6000c35ad4df6d98232f5",
+    "inputs": [
+      {
+        "path": "/root/autodl-tmp/trifusion-v2/artifacts/v29_source_role_drift_seed42_1d52c1e/fold_0_similarities.npy",
+        "bytes": 1026293888,
+        "sha256": "8bd6dc730fadcc3a0e0c0d3883ad21946d6155dc74ad4a2002b80c0bf7e7b332"
+      },
+      {
+        "path": "/root/autodl-tmp/trifusion-v2/artifacts/v29_source_role_drift_seed42_1d52c1e/fold_0_batch_receipts.jsonl",
+        "bytes": 4233628,
+        "sha256": "cd2b35c0f3495401187e0cb0b3a2af5ca98d5eb030b56ce08e870f05f4715115"
+      },
+      {
+        "path": "/root/autodl-tmp/trifusion-v2/artifacts/v29_source_role_drift_seed42_1d52c1e/fold_1_similarities.npy",
+        "bytes": 990904448,
+        "sha256": "fc2120467aed0246fbc7ac8c7aa491d58892207a2f90f91ae4abbfbcd8350b9d"
+      },
+      {
+        "path": "/root/autodl-tmp/trifusion-v2/artifacts/v29_source_role_drift_seed42_1d52c1e/fold_1_batch_receipts.jsonl",
+        "bytes": 4085673,
+        "sha256": "05b65ad31fa39197b959d1246fd300d35fb9755fed03151074f8328a06073100"
+      },
+      {
+        "path": "/root/autodl-tmp/trifusion-v2/artifacts/v29_source_role_drift_seed42_1d52c1e/fold_2_similarities.npy",
+        "bytes": 955515008,
+        "sha256": "b4b8bd0d792f9a659032f7f9efea0fa5845e1463015e704f58a81c78ac92a726"
+      },
+      {
+        "path": "/root/autodl-tmp/trifusion-v2/artifacts/v29_source_role_drift_seed42_1d52c1e/fold_2_batch_receipts.jsonl",
+        "bytes": 3929430,
+        "sha256": "74009e3b6017ef596c4311b4b1d9b95f0a6995d3d2279c12fbcb424bc220279f"
+      }
+    ],
+    "math_check": {
+      "status": "PASS_AFFINE_MATH_EXPLICIT_PAIRS_AND_RELATIONS",
+      "seed": 42
+    },
+    "checked_cases": 1680,
+    "directed_off_diagonal_pairs_per_view": 6773760,
+    "maximum_direct_sse_mean_error": 2.102387560484789e-15,
+    "maximum_previous_joint_mean_error": 3.0832419207164156e-16,
+    "maximum_fp32_decomposition_rounding": 5.960464477539063e-08,
+    "maximum_exact_vs_legacy_joint_mean_difference": 6.039675008573301e-10,
+    "model_forwards": 0,
+    "optimizer_updates": 0,
+    "image_reads": 0,
+    "retrieval_evaluations": 0,
+    "exports": {
+      "pair_affine.csv": {
+        "rows": 144,
+        "bytes": 37835,
+        "sha256": "8d1f326ba1a1902a8d205a9351e253289536be5f57a8278b2db8504dbb7f9917"
+      },
+      "batch_affine.csv": {
+        "rows": 3360,
+        "bytes": 489146,
+        "sha256": "ce231b6ca85453f7fa5961e67adbdf83bf9fea674b461e11ae441fcb7045afc1"
+      },
+      "relation_residual.csv": {
+        "rows": 36,
+        "bytes": 10999,
+        "sha256": "d8a7543390ad982aa8d52bfca54fd0555b9b19bdce7db3a3f4a7946be37a66e0"
+      },
+      "identity_relation_residual.csv": {
+        "rows": 3384,
+        "bytes": 693904,
+        "sha256": "7abd7d78af3f4fe4e6c4c5c72a30106a001616c4ac9e0f8af7ceaf77038e1a3d"
+      }
+    },
+    "interpretation": "Descriptive fits only; no deployed score modification, parameter selection, independence or unseen-identity claim."
+  },
+  "files": [
+    {
+      "path": "/root/autodl-tmp/trifusion-v2/artifacts/v29_joint_similarity_1013e2e_r2/analysis.json",
+      "name": "analysis.json",
+      "bytes": 3237,
+      "sha256": "8500fad21f4841e142d1691a4cc91e4209ac2405798efdb360278b958f5f70dc"
+    },
+    {
+      "path": "/root/autodl-tmp/trifusion-v2/artifacts/v29_joint_similarity_1013e2e_r2/pair_affine.csv",
+      "name": "pair_affine.csv",
+      "bytes": 37835,
+      "sha256": "8d1f326ba1a1902a8d205a9351e253289536be5f57a8278b2db8504dbb7f9917"
+    },
+    {
+      "path": "/root/autodl-tmp/trifusion-v2/artifacts/v29_joint_similarity_1013e2e_r2/batch_affine.csv",
+      "name": "batch_affine.csv",
+      "bytes": 489146,
+      "sha256": "ce231b6ca85453f7fa5961e67adbdf83bf9fea674b461e11ae441fcb7045afc1"
+    },
+    {
+      "path": "/root/autodl-tmp/trifusion-v2/artifacts/v29_joint_similarity_1013e2e_r2/relation_residual.csv",
+      "name": "relation_residual.csv",
+      "bytes": 10999,
+      "sha256": "d8a7543390ad982aa8d52bfca54fd0555b9b19bdce7db3a3f4a7946be37a66e0"
+    },
+    {
+      "path": "/root/autodl-tmp/trifusion-v2/artifacts/v29_joint_similarity_1013e2e_r2/identity_relation_residual.csv",
+      "name": "identity_relation_residual.csv",
+      "bytes": 693904,
+      "sha256": "7abd7d78af3f4fe4e6c4c5c72a30106a001616c4ac9e0f8af7ceaf77038e1a3d"
+    },
+    {
+      "path": "/root/autodl-tmp/trifusion-v2/artifacts/v29_joint_similarity_1013e2e_r2_submission.json",
+      "name": "v29_joint_similarity_1013e2e_r2_submission.json",
+      "bytes": 953,
+      "sha256": "69f5fde995a7ffa6feb29227bdb1f769d3105dbf63ca15048d104504b7f65c07"
+    },
+    {
+      "path": "/root/autodl-tmp/trifusion-v2/artifacts/v29_joint_similarity_1013e2e_r2_launch.json",
+      "name": "v29_joint_similarity_1013e2e_r2_launch.json",
+      "bytes": 604,
+      "sha256": "f008286260625a5b94db6468d147044abc183be786fdf5dd7f4b0dca2c251aec"
+    },
+    {
+      "path": "/root/autodl-tmp/trifusion-v2/artifacts/v29_joint_similarity_1013e2e_r2_exit.json",
+      "name": "v29_joint_similarity_1013e2e_r2_exit.json",
+      "bytes": 163,
+      "sha256": "facfbb53f56b3e9cbda5cf8d6b91633368ab1bdf8a7d7d3f8b4ac718646daa1a"
+    },
+    {
+      "path": "/root/autodl-tmp/trifusion-v2/artifacts/v29_joint_similarity_1013e2e_r2.log",
+      "name": "v29_joint_similarity_1013e2e_r2.log",
+      "bytes": 3151,
+      "sha256": "d639e4137570b4e70ff4c61d1f4dbf3787761f0ae5efa5ddc322d66b9f4fc726"
+    },
+    {
+      "path": "/root/autodl-tmp/trifusion-v2/artifacts/v29_joint_similarity_1013e2e_r2_screen.log",
+      "name": "v29_joint_similarity_1013e2e_r2_screen.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ]
+}

@@ -1,12 +1,15 @@
 # TriFusion-ReID workspace
 
-## Latest verified state (2026-09-07T17:38:22.966321+08:00)
+## Latest verified state (2026-09-07T17:48:15.534539+08:00)
 
-- V29 Q1/source terminal remain sealed; source joint-similarity R1 ended1 at legacy arithmetic check, not model failure.
-- Read refine-logs/v29_joint_similarity/ENGINEERING_R2_PLAN.md. R2 REGISTERED_NOT_RUN; exact old FP32 path replayed separately from FP64 decomposition.
-- All3fold observed addition-rounding maximum5.960464477539063e-8. No threshold relaxation, model update or retrieval.
-- Full source-only coverage and original plan unchanged, fixed144/3360/36/3384 CSV rows. R1 evidence preserved.
-- Master41.120 sync required before single R2 CPU launch. Three-dataset Goal active/unmet; preserve unrelated dirty files.
+- V29 joint similarity R2 COMPLETE/PASS, actual1013e2e; CPU166197/wrapper166192 ended0 at17:40:00. R1 failure preserved.
+- Full1680batches,144pair/3360batch/36relation/3384identity CSV rows and prior scalar arithmetic verified. No model/image/optimizer/retrieval.
+- Joint bank approximately .914-.927 times original similarity plus constant; R2~.991-.993, residual identity contributions mixed. No causal unknown-identity claim or deployed affine weights.
+- Read results/TRIFUSION_V29_JOINT_SIMILARITY_2026-09-07.md; V29 Q1_FAIL0/5 unchanged.
+- Next unique main comparison: MSVR310 V27 source-style paired test, original V8 roles, no joint. Direction selected; training code/contract/M0 NOT_RUN.
+- Read docs/MSVR310_SOURCE_STYLE_NEXT_EXPERIMENT_2026-09-07.md. All780 old source batches/camera donors and3current Signal anchors verified.
+- Keep vehicle8x16 grid, original scene filtering, exact Signal inference, true source identity isolation and full gallery. Do not retrain Signal or repeat V29 diagnostics.
+- Master41.121; three-dataset Goal active/unmet. Preserve unrelated dirty worktree files; sync all3masters.
 
 ## Experiment environment
 
