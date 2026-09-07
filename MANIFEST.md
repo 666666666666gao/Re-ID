@@ -1296,3 +1296,18 @@
 - refine-logs/trifusion_v29_bounded_joint/EXPERIMENT_TRACKER_20260907_121521.md
 - docs/TRIFUSION_RGBNT201_CURRENT_COMPLETE_HANDOFF_2026-09-01.md
 - AGENTS.md
+
+
+## 2026-09-07T12:24:14.894132+08:00 V29 actual launch and CUDA T0
+
+- evidence/v29_launch_20260907/intake.json
+- evidence/v29_launch_20260907/trifusion_v29_bounded_joint_seed42_f4c6a03_launch.json
+- evidence/v29_launch_20260907/trifusion_v29_bounded_joint_seed42_f4c6a03_launch_math_snapshot.json
+- evidence/v29_launch_20260907/trifusion_v29_bounded_joint_seed42_f4c6a03_launcher.json
+- evidence/v29_launch_20260907/trifusion_v29_bounded_joint_seed42_f4c6a03_prelaunch.json
+- evidence/v29_launch_20260907/trifusion_v29_bounded_joint_seed42_f4c6a03_submission.json
+- evidence/v29_launch_20260907/v29_progress_20260907_1220.json
+- refine-logs/trifusion_v29_bounded_joint/EXPERIMENT_TRACKER.md
+- refine-logs/trifusion_v29_bounded_joint/EXPERIMENT_TRACKER_20260907_122414.md
+- docs/TRIFUSION_RGBNT201_CURRENT_COMPLETE_HANDOFF_2026-09-01.md
+- AGENTS.md

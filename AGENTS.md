@@ -1,21 +1,23 @@
 # TriFusion-ReID workspace
 
-## Latest verified state (2026-09-07T12:15:07.851194+08:00)
+## Latest verified state (2026-09-07T12:24:14.894132+08:00)
 
-- V29 bounded-tangent joint adaptation REGISTERED_NOT_RUN; priorV28 completegeometry evidence andQ1_FAIL0/5 sealed.
-  Read refine-logs/trifusion_v29_bounded_joint/EXPERIMENT_PLAN.md and tracker.
-  Config427242f945fdb329f72467f97f58a56a86f410630adb68cd69f76fd7e4bc83b5; plan61d6841eea54303b3c87dad31a94da32089fdff9513d9fde076a3839bd435028.
-- Only new hypothesis: fixedb0.5 tangent relativebound, finalidealangle<=26.565051deg; actualh norm used forzero-init parity.
-  ControloriginalV8fixedfusion+V27; candidateV28FP32joint+boundedupdate. No teacher/Router/memory/PCGrad extras.
-  Actual eachforward geometry norms/cosines recorded and checked2e-6; no newparameters beyondV28joint413056.
-- Same legalV12source folds, seed42,B64K8,20epochs,originalsampler/loss/optimizer; M0116updates thenQ13360updates.
-  Allold12M0conditions plusactualgeometry; all5sciencegates unchanged. All3126gallery/571queries/fiveoutputs/final-only.
-  AST/F821 andfixedconfiguration/depSHA checks PASS; CUDA T0/M0/Q1 NOT_RUN.
-- Pipelineimplemented withrealtraining/CPUverification/report handles; noautorerun on observationorvalidation failure.
-  Warmreuse existingtri_reid/RTX3090 environment, noenvironment changes. M0~5–8min,total~1.3–1.6GPUh.
-  Priorcomparable directory~1.019GB; reserve2GiB,currently~13.2GiBfree. Necessaryweights/arrays preserved.
-- Directionbound doesnot guarantee identityinformation or preventh trainingdrift. ReusedOOF/single-seed limits remain.
-  No newmodel effective or SOTA claim. Three-dataset objective active; master41.107 remote/repo/Desktop sync required.
+- V29 RUNNING sourcepreflight/M0, actualcodef4c6a03e1b263aaa9e4bce71427152007018a0ca.
+  Originaltraining153151/wrapper153149 started12:18:47; bothlive/cmdchecked12:19:45,GPU3388MiB100%.
+  Immutable12:21:23mathsnapshot has2fold preflightpairs passed; M0NOT_TERMINAL,Q1NOT_STARTED.
+- All3T0PASS: V27style,actualV29CUDAgeometry/Mamba,realFP32small-derivativefixture.
+  SlotNumPymaxerror2.542e-8,zero-graderror4.768e-7; zero-bankexact,16jointparameters connected after nonzero output.
+  Legacyfieldnumpy_bank_max_error nowmeansslotformulaerror; fullbankzero-case separatelyexact.
+- Config427242f945fdb329f72467f97f58a56a86f410630adb68cd69f76fd7e4bc83b5;
+  plan61d6841eea54303b3c87dad31a94da32089fdff9513d9fde076a3839bd435028.
+  run=/root/autodl-tmp/trifusion-v2/artifacts/trifusion_v29_bounded_joint_seed42_f4c6a03.
+  Read evidence/v29_launch_20260907/, sourceplan/tracker. DO NOT edit pinnedsource/config/plan duringrun.
+- Fixedb0.5,noextra teacher/Router/memory/PCGrad; originalV27/FP32/legalsourceinit/loss/budget/5sciencegates unchanged.
+  M0116updates thenQ13360ifPASS; full3126gallery/571queries/fiveoutputs and automaticCPUverification/report.
+  EstimatedM012:25–12:27/full13:40–13:55; poll240seconds/milestone, sameoriginalPID, no timeoutrestarts.
+- Startupallsource/9protectedfileSHAmatch; disk14212608000B,no newdeletions. Preserve finals/anchors/arrays.
+  Directionbound isnot identity/mAP guarantee. V28FAIL0/5,seed42/reusedOOF,three-datasetSOTAunfinished.
+  Master41.108 remote/repo/Desktop byte-sync required.
 
 ## Experiment environment
 
