@@ -2,7 +2,7 @@
 
 ## 0. 一页结论
 
-当前执行入口：§41.146；MSVR当前历史坐标更新V1完整M0/CPU与文本审查已收束，原Q1193650继续，第0折fresh_memory训练中；全六端未终态，Goal ACTIVE/UNMET。
+当前执行入口：§41.147；原Q1193650继续，最近实查已完成2/6端、进入fold1 control；完整排名文本复核入口已用旧封存Q1验证，全六端新结果仍未终态，Goal ACTIVE/UNMET。
 
 当前用于已完成MSVR310比较及新登记RGBNT100比较的是原V8平行三角色结构：冻结Signal/CLIP，共享block8之前语义和tail9/10/11参数，三个角色分别运行共享tail；CNN处理局部语义Patch高频，Transformer处理全局CLS/Patch关系，Mamba处理空间与位置级三模态扫描。各角色相对冻结reference形成1536D残差，三角色4608D银行拼接3072D Signal得到7680D fused；完整单角色输出为4608D Signal+角色残差。三条路径均执行，当前没有Router/HFER、V23模态MLP或V24原型。两项车辆训练比较均已完成；RGBNT100内部完整比较支持三角色增益，MSVR310尚未超过Signal。下面V1—V8条目保留历史经过，不代表当前又启用了旧模块。
 
@@ -5809,3 +5809,11 @@ run /root/autodl-tmp/trifusion-v2/artifacts/msvr310_fresh_coordinate_v1_seed42_b
 独立上下文experiment-audit最终WARN、same-family/provisional，全部248行及1244汇总数值叶项核对PASS，无代码修改/重启要求。远端CPU从保存距离重算expandedTriplet；其余13loss仅核对运行标量与加权和，运行时梯度摘要不是独立反传。审查者本地未持有22二进制，保留范围限制。报告已修正累计梯度覆盖和数值一致性proxy分类。详见results/MSVR310_FRESH_COORDINATE_V1_M0_2026-09-08.md、refine-logs/msvr310_fresh_coordinate_v1/EXPERIMENT_AUDIT.md/json及evidence/msvr310_fresh_coordinate_complete_m0_20260908/。
 
 新增只读文本汇总tools/analyze_msvr_fresh_coordinate_text.py已实际执行完整M0并通过AST/ruff F，Q1路径准备但未执行，不修改训练合同。原wrapper192704自动于01:41:52启动Q1193650；2026-09-08T02:03:41.516384+08:00实查两原进程/命令行持续，第0折control已记录终点、fresh_memory5/20epoch。主盘4495597568B，GPU7418, 100；0新权重删除。稳定历史阶段约71秒/epoch，预计完整Q1/CPU约03:40前后，以里程碑观察同一进程，不看单端改方案。长期三数据集Goal ACTIVE/UNMET。
+
+### 41.147 完整排名文本复核入口验证，原Q1继续（2026-09-08T02:26:26.994875+08:00）
+
+从旧实例记忆完整Q1已执行分析中提取tools/audit_msvr_paired_ranking_text.py，只读终态summary/CPU/pipeline绑定与六端排名文本，不加载模型、距离矩阵或图片。旧封存完整数据实跑重算2,069,520排名位置、600query/60身份/五输出，完整gallery排列、合法scene过滤、AP/CMC、两组原五门与10000次seed42身份bootstrap一致；Ruff F通过。输出全部3000条query×输出及300条身份×输出CSV。
+
+旧实例记忆fused配对-0.2161564150 mAP、AP258改善/284下降/58不变、Rank1修复20/新增16，原FAIL0/5保持。这是验证工具，不是新增训练或新科学证据。结果见results/MSVR310_TERMINAL_RANKING_TEXT_REPLAY_2026-09-08.md及evidence/msvr310_terminal_ranking_replay_validation_20260908/；当前fresh-coordinate路径尚未执行。近负例记录/身份/scene仅是排名事实，不补写视觉原因。
+
+2026-09-08T02:21:04+08:00实查原wrapper192704/Q1193650和命令行持续，fold0两个端完成，fold1 control1/20epoch，主盘4,362,149,888B。固定b4501fa/config32e22d3a及模型训练文件不变，无新权重删除。当前control指陈旧历史更新，与旧batch-only control不可混淆。预计03:40左右全Q1/CPU，待完整终态再运行新文本复核、全量分析与独立审计；不读单端调方案。长期Goal ACTIVE/UNMET。

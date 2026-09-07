@@ -1407,3 +1407,5 @@
 - 2026-09-08T01:36:19.337245+08:00: One fixed coordinate-update launch b4501fa/32e22d3a, T0 all780batches PASS; originalwrapper192704/M0192718 verified live, M0 pending. Master41.145, no newQ1, Goal active/unmet.
 
 - 2026-09-08T02:05:10.411619+08:00: Complete coordinate-update M0/248steps/1,677,824 distanceelements and all27text intake pass; same-family audit WARN/provisional, complete248row/1244leafchecks PASS with scope limits. Q1 original193650 running, master41.146, Goal active/unmet.
+
+- 2026-09-08T02:26:26.994875+08:00: Full terminal ranking replay CLI validated on sealed old six-end Q1, all2,069,520 rank positions and two originalgate sets; complete CSVs. Active coordinate Q1 untouched, master41.147, Goal active/unmet.

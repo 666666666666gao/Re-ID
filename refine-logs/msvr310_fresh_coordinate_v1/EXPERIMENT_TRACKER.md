@@ -21,3 +21,7 @@ control=陈旧缓存更新，fresh_memory=当前角色重编码历史坐标更�
 ## 审查收束与实查（2026-09-08T02:03:41.516384+08:00）
 
 全部248步和1244汇总数值叶项独立核对一致；本地22二进制不可读、其余13loss仅标量重算和运行时梯度边界明确。报告已修正累计203/203及proxy分类，训练合同不变。第0折control已完成，fresh_memory5/20epoch；全Q1尚未终态，预计03:40前后。
+
+## Terminal text replay preparation (2026-09-08T02:26:26.994875+08:00)
+
+Read-only ranking CLI validated on complete sealed old instance-memory Q1 (2,069,520 ranks,3000query/output and300identity/output records); old FAIL unchanged. New coordinate Q1 not consumed; lastactual02:21 originalPIDs live,2/6complete,fold1control1/20. No running contract change. See master41.147 and terminal-ranking report.
