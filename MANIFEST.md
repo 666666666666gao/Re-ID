@@ -1375,3 +1375,5 @@
 - 2026-09-07T20:18:27.745672+08:00: /experiment-plan /run-experiment register MSVR310 complete source relation census V1; new4tools, fixedcontract, plan/tracker, staticmath/environment/liveevidence. Master41.129; allGPUsource/CPUfullstages NOT_RUN. See refine-logs/msvr310_source_relation_census_v1/EXPERIMENT_PLAN.md.
 
 - 2026-09-07T20:44:02.430539+08:00: Complete MSVR310 source-only frozen census, all27conditions/18576forwards/972CPUconditions, textreaggregation PASS; source-only limitations and sealedQ1_FAIL retained. Master41.130.
+
+- 2026-09-07T21:16:42.245629+08:00: /experiment-plan /run-experiment register MSVR310 source-instance memory V1; five new tools and frozenplan/contract, staticPASS, remoteNOT_RUN. Master41.131.

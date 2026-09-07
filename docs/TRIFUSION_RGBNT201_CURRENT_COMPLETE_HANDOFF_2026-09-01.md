@@ -2,7 +2,7 @@
 
 ## 0. 一页结论
 
-最新状态（2026-09-07 20:41完整核验）：MSVR310完整source关系普查27条件/18576冻结前向及972CPU条件全部结束并通过，本地668736query/100440身份行重算一致。普通终点增强跨scene fused94.956353，333/1200query有反序、864仅间隔不足，300原型分对但部分实例错；不同于RGBNT201来源饱和。统计扰动在三种跨scene来源视图均退化，原完整Q1_FAIL保持。下一项候选是source-only困难实例覆盖，尚未登记/启动训练；Goal active/unmet。详见§41.130。
+最新状态（2026-09-07 21:16登记）：MSVR310来源普查完整通过并封存。现登记实例覆盖V1配对实验：原V8固定融合及14项权重不变，只扩展fused Triplet历史候选，去重512记录/8更新年龄、65step预热；两端同等缓存/固定像素漂移诊断。静态PASS，T0/M0/Q1尚未运行；先完整M0及CPU，再六端1560更新Q1。原失败、完整scene图库和两组科学门保持，Goal active/unmet。详见§41.131。
 
 当前用于已完成MSVR310比较及新登记RGBNT100比较的是原V8平行三角色结构：冻结Signal/CLIP，共享block8之前语义和tail9/10/11参数，三个角色分别运行共享tail；CNN处理局部语义Patch高频，Transformer处理全局CLS/Patch关系，Mamba处理空间与位置级三模态扫描。各角色相对冻结reference形成1536D残差，三角色4608D银行拼接3072D Signal得到7680D fused；完整单角色输出为4608D Signal+角色残差。三条路径均执行，当前没有Router/HFER、V23模态MLP或V24原型。两项车辆训练比较均已完成；RGBNT100内部完整比较支持三角色增益，MSVR310尚未超过Signal。下面V1—V8条目保留历史经过，不代表当前又启用了旧模块。
 
@@ -5620,3 +5620,18 @@ R2 Q1PID168456完成fold0control固定20epoch/260更新、保存compact终点后
 下一项候选收敛为MSVR310 source-only实例关系覆盖：先固定并检查缓存去重、真身份/scene关系、年龄/漂移和实际新增有效难例，再一组匹配配对训练；保持原V8固定融合，不同时叠加Router、联合头、style或新排名loss。该训练尚未登记/启动，不把普通XBM称为原创或已证实泛化。来源成员跨折重复，只作描述统计。主Goal active/unmet。
 
 20:38终态主盘空闲约5.626GiB；20:37另一存储盘10.365GiB。现存181个pth/73个pt的元数据清单包含检索与诊断张量，不按扩展名当无用权重删除；本轮0新增删除，必要初始化/终点/复核证据保留。报告results/MSVR310_COMPLETE_SOURCE_RELATION_CENSUS_2026-09-07.md；完整证据evidence/msvr310_source_relation_complete_20260907/。
+
+
+### 41.131 MSVR310来源实例覆盖V1登记（2026-09-07T21:16:42.245629+08:00）
+
+前置2a9b618全source普查已完成；不重跑。新合同configs/MSVR310/TriFusion-instance-memory-paired-v1.json，SHA 40f44b0e6c12771c53a283a5b65ca6a45556e0293b7d48decf5fd518ad771a3d，计划refine-logs/msvr310_instance_memory_v1/EXPERIMENT_PLAN.md。五新工具已AST/ruff检查，真实CPU数学/T0、模型前向、训练均尚未执行。
+
+唯一干预是将fused原batch-hard Triplet候选扩展到当前batch+历史source实例。其余13项损失/所有权重、原V8网络和静态推理表示不变。历史按真实记录保留最新增强视图，排除当前记录历史副本，最多512记录/8更新年龄，5epoch65step预热后入队。训练正负标签沿用真实身份，跨scene正对单列；评价严格排除同身份同scene、完整图库干扰身份保留，不套samecamera。当前batch梯度保持，历史detach，不新增参数/EMA/style/Router/联合头。
+
+control也维护shadow缓存/全部关系诊断及同等固定像素重放，但不使用扩展loss更新。两端重新从原Signal source初始化及seed42角色初始化训练，同20epoch260步/端，完整六端1560步、600query/1032gallery成员，两组原五科学条件不变。XBM原文https://arxiv.org/html/1912.06798本轮重读，历史队列/慢漂移是已有思路；代码独立实现，不声称原创。
+
+每步保存全部批内/历史欧氏距离及索引、身份、scene、年龄和像素SHA，CPU全量重放队列准入和loss；实际encoder三角色新增参数梯度必须测得。每epoch首个真实batch在8更新后用相同像素/RNG重放，恢复所有buffers/RNG，报告全部64个L2漂移；不把随机新增强差异当漂移。完整source原型差异同时可能来自困难正例或负例，不能只归因为负例均值。
+
+M0保持6x8容量+2x100固定过拟合=248更新；容量预热2步触发实际记忆路径。固定100步的重复batch被合法历史去重排除，该门检验原主任务，不能冒充记忆过拟合；新路径另由多batch实际梯度验证。T0->M0->完整CPU->Q1->完整CPU持久执行；任一失败原地封存，观察超时不重启。预估M0 7–10min/Q1 35–50min，随真实速度修订，180–300sec或里程碑观察。
+
+沿用已核验tri_reid环境，不新增安装。原精确Signal推理及56CPU线程距离保留，训练4线程，0official访问。预计新增<1.8GiB、启动最少3GiB，20:51主盘约5.46GiB，必要初始化/最终权重/历史证据不删。执行前先同步固定代码；此处是登记，不声称已启动或通过M0。Goal active/unmet。

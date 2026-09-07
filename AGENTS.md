@@ -1,15 +1,14 @@
 # TriFusion-ReID workspace
 
-## Latest verified state (2026-09-07 complete source census)
+## Latest verified state (2026-09-07T21:16:42.245629+08:00 instance memory registered NOT RUN)
 
-- New MSVR310 source census on4e57e54 is COMPLETE_VERIFIED_SOURCE_DIAGNOSTIC: check/GPU/CPU exit0, original175887/175889/175895/176897 ended. GPU27conditions/18576records/306batches; CPU972conditions/668736queryrows/100440identityrows.
-- All64text files57,135,882bytes SHA-verified; localcomplete query/identity reaggregation PASS. Source features/checkpoints remain remote and unchanged. 0optimizer/newcheckpoint/heldout/official images.
-- Control augmented cross-scene source fused94.956353,333/1200querymembers wrongorder,864onlymargin,3satisfied. Purebank95.128771,327wrongorder. F300prototype-correct/some-instance-wrong,22prototype-correct/Rank1-wrong. Do not import RGBNT201 complete source saturation conclusion here.
-- Style control-paired source fused cross-scene clean/augmented/stress -1.601491/-1.772789/-1.361499. Sealed actual heldout Q1 remainsFAIL0/5 bothfamilies, paired-.302214, vsSignal-1.304904.
-- Next candidate is MSVR source-only instance relation coverage; no newtraining contract or run yet. Verify deduplication, actualidentity/scene filtering, age/drift and novelhardrelation coverage, then matched budget/initialization comparison. No simultaneousRouter/joint/style/newrankingloss; ordinaryXBM is prior work, not claimednovel.
-- Master41.130, report results/MSVR310_COMPLETE_SOURCE_RELATION_CENSUS_2026-09-07.md, evidence/msvr310_source_relation_complete_20260907/. Goal active/unmet. Preserve all failedversions and unrelateddirty files.
-- Last cpu_progress RUNNING is only a progress snapshot; authoritative pipeline and CPU verification are COMPLETE/PASS with all originalprocesses ended. Do not rerun sourceextraction or CPU because of that staleprogress field.
-- Mainartifact free~5.626GiB; extraexistingstorage~10.365GiB. Current .pt inventory includes diagnostic/retrieval tensors; do not delete by extension. No newdeletions this census. Models/images/NPY stayremote.
+- Complete source census remains sealed on2a9b618; report and master41.130. No oldsource process live at20:51; GPU1MiB0%, mainfree5.46GiB.
+- New configs/MSVR310/TriFusion-instance-memory-paired-v1.json SHA40f44b0e6c12771c53a283a5b65ca6a45556e0293b7d48decf5fd518ad771a3d, plan refine-logs/msvr310_instance_memory_v1/EXPERIMENT_PLAN.md. Five tools staticPASS; remoteT0/M0/Q1 NOT_RUN.
+- PlainV8 same14loss weights, only fusedTriplet expands to current+deduplicated sourcehistory. 512unique records, age8updates, warmup65. Control computes same shadowcache/probes; no extra trainableparameter/style/Router/jointhead.
+- All realidentity labels retained includingclass0; histories exclude currentrecords; trainpositive anysameidentity asoriginalTriplet. Evaluation sameidentity+samescene exclusion, fullgallery, notsamecamera.
+- PipelineT0->M0248updates->fullCPU->Q1sixends1560updates->fullCPU. Capacitywarmup2; fixed100step overfit legitimately nohistory aftersame-record exclusion, memorysignal checked through multibatchcapacity.
+- Actual new encoder gradient required; all stepcandidate metadata/distances saved; fixed pixels/RNG age8 probes with buffer/RNG restoration bothends. Drift measured, not assumed.
+- Keep original exact Signal inference and56CPUdistance/4trainthreads. Before launching sync fixedcontract; source-only checkpoints/noofficial. Original gates and failedversions unchanged; Goalactive/unmet, master41.131.
 
 ## Experiment environment
 
