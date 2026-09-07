@@ -1,0 +1,73 @@
+{
+  "checked_at": "2026-09-07T22:04:58.700792+08:00",
+  "status": "PASS_CONFIG_SOURCE_BINDING_ONLY",
+  "upstream_commit": "cd1b0a672d1fe642e7608731cb4899a19dda7d51",
+  "remote_configs": {
+    "configs/RGBNT201/Signal.yml": {
+      "sha256": "a13bd5169a4c710fa79efc87db909409015a0b2611086c0fbf4c1842f0cfcc44",
+      "text": "MODEL:\n  TRANSFORMER_TYPE: 'ViT-B-16'\n  STRIDE_SIZE: [ 16, 16 ]\n  SIE_CAMERA: True\n  DIRECT: 1\n  SIE_COE: 1.0\n  ID_LOSS_WEIGHT: 0.25\n  TRIPLET_LOSS_WEIGHT: 1.0\n  Gram_Loss_weight: 0.2\n  PAT_Loss_weight: 0.2\n  USE_A: True\n  TOPK: 80\n  USE_B: True\n  stageName: 'together_CLS_Patch'     # [CLS,  together_CLS_Patch]\n  \n  \n\nINPUT:\n  SIZE_TRAIN: [ 256, 128 ]\n  SIZE_TEST: [ 256, 128 ]\n  PROB: 0.5 # random horizontal flip\n  RE_PROB: 0.5 # random erasing\n  PADDING: 10\n\nDATALOADER:\n  SAMPLER: 'softmax_triplet'\n  NUM_INSTANCE: 8\n  NUM_WORKERS: 12\n\nDATASETS:\n  NAMES: ('RGBNT201')\n  ROOT_DIR: '..'\n\nSOLVER:\n  BASE_LR: 0.00035\n  WARMUP_ITERS: 10\n  MAX_EPOCHS: 50\n  OPTIMIZER_NAME: 'Adam'\n  IMS_PER_BATCH: 64\n  EVAL_PERIOD: 1\n\nTEST:\n  IMS_PER_BATCH: 128\n  RE_RANKING: 'no'\n  WEIGHT: ''\n  NECK_FEAT: 'before'\n  FEAT_NORM: 'yes'\n  MISS: \"nothing\"\n\nOUTPUT_DIR: '.'\nckpt_save_path: 'RGBNT201_all'\nckpt_test_path:  'test_RNT201'"
+    },
+    "configs/MSVR310/Signal.yml": {
+      "sha256": "357ca3a989e943ea5348e6206c0d0f69b3c0d35ad9fbadbf68d2786439b8a915",
+      "text": "MODEL:\n  TRANSFORMER_TYPE: 'ViT-B-16'\n  STRIDE_SIZE: [ 16, 16 ]\n  SIE_CAMERA: True\n  SIE_COE: 1.0\n  DIRECT: 0\n  ID_LOSS_WEIGHT: 0.25\n  TRIPLET_LOSS_WEIGHT: 1.0\n  Gram_Loss_weight: 0.2\n  PAT_Loss_weight: 0.01\n  USE_A: True\n  TOPK: 64\n  USE_B: True\n  stageName: 'together_CLS_Patch'     # [CLS,  together_CLS_Patch]\n\nINPUT:\n  SIZE_TRAIN: [ 128, 256 ]\n  SIZE_TEST: [ 128, 256 ]\n  PROB: 0.5 # random horizontal flip\n  RE_PROB: 0.5 # random erasing\n  PADDING: 10\n\nDATALOADER:\n  SAMPLER: 'softmax_triplet'\n  NUM_INSTANCE: 4\n  NUM_WORKERS: 8\n\nDATASETS:\n  NAMES: ('MSVR310')\n  ROOT_DIR: '..'\n\nSOLVER:\n  BASE_LR: 5e-6\n  WARMUP_ITERS: 0\n  MAX_EPOCHS: 50\n  OPTIMIZER_NAME: 'Adam'\n  GAMMA: 0.1\n  IMS_PER_BATCH: 64\n  EVAL_PERIOD: 1\n  STEPS: [20, 40]\n\n\nTEST:\n  IMS_PER_BATCH: 64\n  RE_RANKING: 'no'\n  WEIGHT: ''\n  NECK_FEAT: 'before'\n  FEAT_NORM: 'yes'\n  MISS: \"nothing\"\n\nOUTPUT_DIR: '.'\nckpt_save_path: 'MSVR310_all'\nckpt_test_path: 'test_MSVR310'\n"
+    },
+    "configs/RGBNT100/Signal.yml": {
+      "sha256": "02641ce2941dcd50df77d379aab54650cae4a2a6b15ba1bcd43deba970b6900f",
+      "text": "MODEL:\n  TRANSFORMER_TYPE: 'ViT-B-16'\n  STRIDE_SIZE: [ 16, 16 ]\n  SIE_CAMERA: True\n  DIRECT: 0\n  SIE_COE: 1.0\n  ID_LOSS_WEIGHT: 0.25\n  TRIPLET_LOSS_WEIGHT: 1.0\n  Gram_Loss_weight: 0.1\n  PAT_Loss_weight: 0.1\n  USE_A: True\n  TOPK: 112\n  USE_B: True\n  stageName: 'together_CLS_Patch'     # [CLS,  together_CLS_Patch]\n \nINPUT:\n  SIZE_TRAIN: [ 128, 256 ]\n  SIZE_TEST: [ 128, 256 ]\n  PROB: 0.5 # random horizontal flip\n  RE_PROB: 0.5 # random erasing\n  PADDING: 10\n\nDATALOADER:\n  SAMPLER: 'softmax_triplet'\n  NUM_INSTANCE: 16\n  NUM_WORKERS: 12\n\nDATASETS:\n  NAMES: ('RGBNT100')\n  ROOT_DIR: '..'\n\nSOLVER:\n  BASE_LR: 0.0007\n  WARMUP_ITERS: 5\n  MAX_EPOCHS: 30\n  OPTIMIZER_NAME: 'Adam'\n  GAMMA: 0.1\n  IMS_PER_BATCH: 128\n  EVAL_PERIOD: 1\n  CHECKPOINT_PERIOD: 30\n\nTEST:\n  IMS_PER_BATCH: 128\n  RE_RANKING: 'no'\n  WEIGHT: ''\n  NECK_FEAT: 'before'\n  FEAT_NORM: 'yes'\n  MISS: \"nothing\"\n\nOUTPUT_DIR: '.'\nckpt_save_path: 'RGBNT100_all'\nckpt_test_path: 'test_RNT100'"
+    }
+  },
+  "author_paper": "https://ojs.aaai.org/index.php/AAAI/article/download/37674/41636",
+  "paper_parsed_pages_0_based": [
+    4,
+    5
+  ],
+  "paper_epoch_statement": 50,
+  "paper_msvr310_map_rank1": [
+    53.6,
+    71.9
+  ],
+  "author_readme": "https://github.com/010129/Signal/blob/cd1b0a672d1fe642e7608731cb4899a19dda7d51/README.md",
+  "readme_msvr310_map_rank1": [
+    53.2,
+    72.4
+  ],
+  "paper_page4_screenshot": "TimeoutError; no visual verification claimed",
+  "current_msvr": {
+    "batch": 64,
+    "instances_per_identity": 8,
+    "epochs": 50
+  },
+  "current_rgbnt100": {
+    "batch": 64,
+    "instances_per_identity": 8,
+    "epochs": 30
+  },
+  "new_model_runs": 0,
+  "official_test_reads": 0,
+  "causal_performance_attribution": false,
+  "boundary": "Paper text, released YAML and model table are distinct versioned evidence. This comparison does not change sealed experiments or current running Q1.",
+  "public_raw_files_byte_sha_verification": {
+    "configs/RGBNT201/Signal.yml": {
+      "url": "https://raw.githubusercontent.com/010129/Signal/cd1b0a672d1fe642e7608731cb4899a19dda7d51/configs/RGBNT201/Signal.yml",
+      "bytes": 914,
+      "sha256": "a13bd5169a4c710fa79efc87db909409015a0b2611086c0fbf4c1842f0cfcc44",
+      "public_remote_file_sha_equal": true
+    },
+    "configs/MSVR310/Signal.yml": {
+      "url": "https://raw.githubusercontent.com/010129/Signal/cd1b0a672d1fe642e7608731cb4899a19dda7d51/configs/MSVR310/Signal.yml",
+      "bytes": 934,
+      "sha256": "357ca3a989e943ea5348e6206c0d0f69b3c0d35ad9fbadbf68d2786439b8a915",
+      "public_remote_file_sha_equal": true
+    },
+    "configs/RGBNT100/Signal.yml": {
+      "url": "https://raw.githubusercontent.com/010129/Signal/cd1b0a672d1fe642e7608731cb4899a19dda7d51/configs/RGBNT100/Signal.yml",
+      "bytes": 946,
+      "sha256": "02641ce2941dcd50df77d379aab54650cae4a2a6b15ba1bcd43deba970b6900f",
+      "public_remote_file_sha_equal": true
+    }
+  },
+  "project_vehicle_contract_binding_checked": [
+    "MSVR310",
+    "RGBNT100"
+  ]
+}

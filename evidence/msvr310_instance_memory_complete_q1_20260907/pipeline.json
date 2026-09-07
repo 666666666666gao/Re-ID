@@ -1,0 +1,114 @@
+{
+  "status": "COMPLETE_VERIFIED_Q1_FAIL",
+  "wrapper_pid": 178471,
+  "code_commit": "104506b72193b6cdbcd237044be97c2410fd7a45",
+  "config_sha256": "40f44b0e6c12771c53a283a5b65ca6a45556e0293b7d48decf5fd518ad771a3d",
+  "started_at": "2026-09-07T21:25:39.836700+08:00",
+  "stages": [
+    {
+      "stage": "t0",
+      "original_pid": 178473,
+      "command": [
+        "/root/miniconda3/envs/tri_reid/bin/python",
+        "-u",
+        "-m",
+        "tools.check_msvr_instance_memory",
+        "--config",
+        "/root/autodl-tmp/trifusion-v2/TriFusion-ReID/configs/MSVR310/TriFusion-instance-memory-paired-v1.json",
+        "--output",
+        "/root/autodl-tmp/trifusion-v2/artifacts/msvr310_instance_memory_v1_seed42_104506b/t0.json"
+      ],
+      "started_at": "2026-09-07T21:25:39.837396+08:00",
+      "exit_code": 0,
+      "ended_at": "2026-09-07T21:25:45.566346+08:00",
+      "elapsed_seconds": 5.729517888277769
+    },
+    {
+      "stage": "m0",
+      "original_pid": 178485,
+      "command": [
+        "/root/miniconda3/envs/tri_reid/bin/python",
+        "-u",
+        "-m",
+        "tools.train_msvr_instance_memory",
+        "--config",
+        "/root/autodl-tmp/trifusion-v2/TriFusion-ReID/configs/MSVR310/TriFusion-instance-memory-paired-v1.json",
+        "--mode",
+        "m0",
+        "--output-dir",
+        "/root/autodl-tmp/trifusion-v2/artifacts/msvr310_instance_memory_v1_seed42_104506b/m0"
+      ],
+      "started_at": "2026-09-07T21:25:45.567702+08:00",
+      "exit_code": 0,
+      "ended_at": "2026-09-07T21:33:28.540547+08:00",
+      "elapsed_seconds": 462.97357473149896
+    },
+    {
+      "stage": "m0_cpu",
+      "original_pid": 179313,
+      "command": [
+        "/root/miniconda3/envs/tri_reid/bin/python",
+        "-u",
+        "-m",
+        "tools.verify_msvr_instance_memory",
+        "--config",
+        "/root/autodl-tmp/trifusion-v2/TriFusion-ReID/configs/MSVR310/TriFusion-instance-memory-paired-v1.json",
+        "--run-dir",
+        "/root/autodl-tmp/trifusion-v2/artifacts/msvr310_instance_memory_v1_seed42_104506b/m0",
+        "--output",
+        "/root/autodl-tmp/trifusion-v2/artifacts/msvr310_instance_memory_v1_seed42_104506b/m0_cpu.json"
+      ],
+      "started_at": "2026-09-07T21:33:28.542442+08:00",
+      "exit_code": 0,
+      "ended_at": "2026-09-07T21:33:37.263231+08:00",
+      "elapsed_seconds": 8.721765695139766
+    },
+    {
+      "stage": "q1",
+      "original_pid": 179387,
+      "command": [
+        "/root/miniconda3/envs/tri_reid/bin/python",
+        "-u",
+        "-m",
+        "tools.train_msvr_instance_memory",
+        "--config",
+        "/root/autodl-tmp/trifusion-v2/TriFusion-ReID/configs/MSVR310/TriFusion-instance-memory-paired-v1.json",
+        "--mode",
+        "q1",
+        "--output-dir",
+        "/root/autodl-tmp/trifusion-v2/artifacts/msvr310_instance_memory_v1_seed42_104506b/q1",
+        "--m0-receipt",
+        "/root/autodl-tmp/trifusion-v2/artifacts/msvr310_instance_memory_v1_seed42_104506b/m0/summary.json",
+        "--m0-verification",
+        "/root/autodl-tmp/trifusion-v2/artifacts/msvr310_instance_memory_v1_seed42_104506b/m0_cpu.json"
+      ],
+      "started_at": "2026-09-07T21:33:37.265115+08:00",
+      "exit_code": 0,
+      "ended_at": "2026-09-07T22:10:39.423316+08:00",
+      "elapsed_seconds": 2222.159115675837
+    },
+    {
+      "stage": "q1_cpu",
+      "original_pid": 183557,
+      "command": [
+        "/root/miniconda3/envs/tri_reid/bin/python",
+        "-u",
+        "-m",
+        "tools.verify_msvr_instance_memory",
+        "--config",
+        "/root/autodl-tmp/trifusion-v2/TriFusion-ReID/configs/MSVR310/TriFusion-instance-memory-paired-v1.json",
+        "--run-dir",
+        "/root/autodl-tmp/trifusion-v2/artifacts/msvr310_instance_memory_v1_seed42_104506b/q1",
+        "--output",
+        "/root/autodl-tmp/trifusion-v2/artifacts/msvr310_instance_memory_v1_seed42_104506b/q1_cpu.json"
+      ],
+      "started_at": "2026-09-07T22:10:39.425435+08:00",
+      "exit_code": 0,
+      "ended_at": "2026-09-07T22:10:55.117895+08:00",
+      "elapsed_seconds": 15.693496176972985
+    }
+  ],
+  "ended_at": "2026-09-07T22:10:55.229733+08:00",
+  "terminal_summary_sha256": "bc31618239d1aa27ed6d159199aa18169bdba6ca43059d9cbf1f4517a13b18a9",
+  "terminal_cpu_sha256": "b5c9ca9d07e0b0b8ce1b0759dcca774aa8dda536b1f2763c55a3e728aa9b89fb"
+}

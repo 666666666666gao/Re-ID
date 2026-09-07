@@ -1,13 +1,13 @@
 # TriFusion-ReID workspace
 
-## Latest verified state (2026-09-07 21:36 complete MSVR memory M0 PASS, Q1 running)
+## Latest verified state (2026-09-07 complete MSVR instance-memory Q1 FAIL)
 
-- Fixed execution104506b/config40f44b0; run /root/autodl-tmp/trifusion-v2/artifacts/msvr310_instance_memory_v1_seed42_104506b. Originalwrapper178471, Q1179387 persistent; do not restart.
-- T0 PASS; M0248updates ended21:33:28 exit0; fullCPU1236480distance elements ended21:33:37 exit0. All27texts/4903487bytes SHA verified, local248step reaggregation PASS.
-- All6capacityends real CNN/T/M delta-parameter gradients; all8trainingends203/203 gradients, zerooverflow, frozenSignal unchanged; compactstrictreload/zero-age replay PASS. Fixedbatch overfit has0historical candidates by true-record exclusion; memorysignal is from multibatchcapacity.
-- Early8update drift~0.56-0.71 mean does not prove postwarmupslowdrift. Q1 warmup65, capacity512/age8 fixed; allactualepochprobes retained. No interim tuning.
-- Q1 at21:36 fold0control epoch8/20; complete6ends1560updates/full600query scene-filter gallery/fiveoutputs/two5gatefamilies still required. No completeQ1 metrics, noofficial.
-- Main free5.26GiB; no newweight deletion. Master41.133/report results/MSVR310_INSTANCE_MEMORY_V1_M0_2026-09-07.md; completeevidencefolder. Whole Goal ACTIVE/UNMET.
+- Fixed execution104506b/config40f44b0; run /root/autodl-tmp/trifusion-v2/artifacts/msvr310_instance_memory_v1_seed42_104506b. All stages ended0; Q1 complete22:10:39, CPU22:10:55, originalwrapper178471 ended. Do not restart sealed training.
+- Complete1560updates/203of203gradients/zerooverflow/frozenSignal state/exact Signal/strict compact reload PASS; all780pairedpixels and sampler batches agree. Complete CPU29,125,376 trainingdistance elements and2,069,520 retrieval positions PASS.
+- All59texts/71,974,384bytes SHA and local all-training/600query/60ID reaggregation PASS. Scientific paired and Signal comparisons both0/5 FAIL; F52.12111331->51.90495689(-0.21615642), paired bootstrapLB-1.16083775. C/T improve, M falls; not a no-gradient/no-new-hardness failure.
+- Same-pixel age8 drift larger early/midtraining and smaller late; no direct all-history fresh-distance audit exists. Do not claim stale cache is sole cause or rescue by age/capacity/warmup/margin scans. No next training registered.
+- Public Signal released configs differ from local B/K; officialpaper vs README MSVR figures also differ. See docs/SIGNAL_PUBLIC_CONFIG_AND_BASELINE_BOUNDARIES_2026-09-07.md; no baseline/official/gate retuning.
+- Report results/MSVR310_INSTANCE_MEMORY_V1_Q1_2026-09-07.md; master41.134. Mainfree22:11 ~4.71GiB, no newweights deleted, preserve init/final/evidence. WholeGoal ACTIVE/UNMET; next diagnose fresh-instance difficulty versus stale-coordinate approximation before a new method contract.
 
 ## Experiment environment
 
