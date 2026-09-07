@@ -2,7 +2,7 @@
 
 ## 0. 一页结论
 
-最新状态（2026-09-07 23:41后实查）：MSVR缓存坐标测量原source186000持续，首个控制端260更新完成，完整六端1560步/CPU仍未终态。预检72步及完整CPU/文本已通过并在a0e5785同步。清理182个已导入Git的旧bundle副本释放607.71MiB，主盘回升至约4.94GiB；279个模型/数据文件元数据核对保留，0新增权重删除。全epoch/年龄/角色汇总工具已在全部预检记录跑通，等待完整来源终态。Goal active/unmet，详见41.139。
+最新状态（2026-09-07 23:53实查）：MSVR缓存坐标来源测量已完成第0折两端各260更新，进入第1折控制端；原wrapper185622/source186000持续，完整六端1560步/CPU尚未终态。已厘清当前batch peers保留反传、历史fresh/stale均detach；坐标刷新、历史反传与增加anchor是不同干预，不能混称完整大batch。主盘约4.88GiB。前次预检/清理/三端同步均已完成，Goal active/unmet；详见41.140。
 
 当前用于已完成MSVR310比较及新登记RGBNT100比较的是原V8平行三角色结构：冻结Signal/CLIP，共享block8之前语义和tail9/10/11参数，三个角色分别运行共享tail；CNN处理局部语义Patch高频，Transformer处理全局CLS/Patch关系，Mamba处理空间与位置级三模态扫描。各角色相对冻结reference形成1536D残差，三角色4608D银行拼接3072D Signal得到7680D fused；完整单角色输出为4608D Signal+角色残差。三条路径均执行，当前没有Router/HFER、V23模态MLP或V24原型。两项车辆训练比较均已完成；RGBNT100内部完整比较支持三角色增益，MSVR310尚未超过Signal。下面V1—V8条目保留历史经过，不代表当前又启用了旧模块。
 
@@ -5743,3 +5743,11 @@ wrapper code_commit104506b，Q1 summary project_commit9da45c5；实际git diff�
 新增只读后处理tools/analyze_msvr_freshness_epochs.py，SHA7636fe83b9bce0e1a39dc835681d5676bb23cf238c438da1c47b8c57f2c70b29，ruff F及全部72预检行重聚合通过；6epoch/48年龄/18角色组，记录无历史阶段及未定义余弦计数。完整来源预计120epoch组，年龄报告候选曝光机会而非只数赢家；此处没有执行新的模型前向或参数更新。完整来源汇总尚未运行。
 
 详细报告results/TRIFUSION_TRANSPORT_CLEANUP_AND_FRESHNESS_PREPARATION_2026-09-07.md；完整清理证据evidence/trifusion_obsolete_transport_cleanup_20260907/；预检汇总证据evidence/msvr310_freshness_epoch_age_preflight_20260907/。继续原任务及全部终态接收/核验，预计9月8日01:10–01:20来源结束后CPU，Goal active/unmet。
+
+### 41.140 历史坐标与反传范围边界核查，第0折两端完成（2026-09-07T23:55:48.665398+08:00）
+
+当前expanded_triplet使用cdist(unit,unit)，当前batch的anchor与peers均可反传；历史距离显式memory.detach。fresh字段重新编码也在no_grad中，仍不含历史样本参数梯度。因此本次真实测量是同一当前batch计算图下的旧/新历史坐标影响，不是只计算每条距离anchor一端，也不是已实现全候选反传。即使将来增加历史参数梯度，若loss仍仅当前64anchor平均，也不等于全部候选一起作anchor的对称大batch目标。
+
+GradCache原论文RepL4NLP2021及作者提交906f03835fbc183132a9db32612a9e8f180ca3b4已核：无图表示、缓存表示梯度、分块重算/反传、最后一次optimizer更新属于已有方法。当前模型分类路径有7个BN neck，而度量表示在neck之前；不能将整个return_aux两遍分块前向未经验证就称为同一训练定义。详见docs/MSVR310_MEMORY_COORDINATE_VS_GRADIENT_BOUNDARIES_2026-09-07.md。0新方法登记/安装/模型前向，仅代码与原文核查；原运行代码/合同不改。
+
+23:53:34实查原wrapper185622/source186000及完整命令行存在，第0折control/memory各260更新完成，每端额外97,600条角色记录前向；第1折control已2/20epoch。六端2/6，不对中间诊断指标作科学结论，完整CPU和新鲜度报告仍待全程结束。主盘5,243,092,992B；前次182旧bundle清理及279模型/数据保留证据不变。预计9月8日01:10–01:20完整来源阶段结束后CPU。证据evidence/msvr310_memory_gradient_boundary_20260907/；Goal active/unmet。

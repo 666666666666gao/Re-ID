@@ -1,12 +1,12 @@
 # TriFusion-ReID workspace
 
-## Latest verified state (2026-09-07 freshness source running, obsolete bundles cleaned)
+## Latest verified state (2026-09-07 23:53 source2of6, gradient boundary clarified)
 
-- Source original186000/wrapper185622 continue ab67d4c/configf3a0634. Run /root/autodl-tmp/trifusion-v2/artifacts/msvr310_freshness_v1_seed42_ab67d4c. First control end260steps complete; full6ends1560 and CPU not terminal. Preserve handles, never restart on poll timeout.
-- Complete72step preflight/CPU1,667,072distances/all17text reaggregation PASS archived at a0e5785. Fresh loss is diagnostic only; no new Q1/official. No tuning from intermediate source endpoints.
-- Deleted182 obsolete imported transport bundles (637,229,963B), all commits retained, git reachable connectivity before/after PASS. Main free about4.94GiB, second volume10.36GiB separate. All279 preexisting serialized model/data file metadata unchanged;0 new weight/evidence deletion.
-- New text-only tools/analyze_msvr_freshness_epochs.py passes all72preflight rows and ruff F. Fullsource use --mode source --input-dir complete intake directory after originalCPU PASS. Includes no-history warmup/age opportunities/all roles; no independent gradient recomputation.
-- Master41.139; cleanup/epoch-age evidence and report archived. Training tools/config/plan unchanged. Expected source Sep8 01:10-01:20 then completeCPU; use3-5minute or milestone polling. WholeGoal ACTIVE/UNMET.
+- Run /root/autodl-tmp/trifusion-v2/artifacts/msvr310_freshness_v1_seed42_ab67d4c on fixedab67d4c/configf3a0634. Originalwrapper185622/source186000 live23:53:34; fold0both260steps complete, fold1control2/20epoch. Full1560/sourceCPU not terminal; no intermediate scientific decision.
+- Preflight72/fullCPU/all17text PASS, oldQ1/mining sealed. Current peers retain gradients, old/fresh historical candidates detach. Coordinate refresh, historical backpropagation and anchor expansion are distinct interventions; current fresh loss never updates. GradCache primary/code boundary documented, not installed or adopted.
+- Existing source tools/config/plan unchanged; do not rerun or switch objectives. Expected source Sep8 01:10-01:20 then fullCPU; observe original handles at3-5minute or completion milestones. Completedfold1control expected around00:12; no need continuous polling.
+- Mainfree5,243,092,992B after prior182obsolete bundles cleanup; all279preexisting serialized model/data metadata retained,0newweights deleted. Other volume remains separate.
+- Master41.140 and docs/MSVR310_MEMORY_COORDINATE_VS_GRADIENT_BOUNDARIES_2026-09-07.md. FullCPU terminal before source alltext intake; run complete text then published epoch/age postprocessor. WholeGoal ACTIVE/UNMET.
 
 ## Experiment environment
 
