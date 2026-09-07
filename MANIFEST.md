@@ -1075,3 +1075,15 @@
 | 2026-09-07T08:29:30.648354+08:00 | /experiment-audit | refine-logs/trifusion_v28_joint_tokens/EXPERIMENT_TRACKER.md | implementation | V28 original M0 FAIL preserved; precision diagnostic registered |
 | 2026-09-07T08:29:30.648354+08:00 | /experiment-audit | docs/TRIFUSION_RGBNT201_CURRENT_COMPLETE_HANDOFF_2026-09-01.md | implementation | V28 original M0 FAIL preserved; precision diagnostic registered |
 | 2026-09-07T08:29:30.648354+08:00 | /experiment-audit | AGENTS.md | implementation | V28 original M0 FAIL preserved; precision diagnostic registered |
+| 2026-09-07T08:38:58.698637+08:00 | /diagnosing-bugs | tools/diagnose_v28_joint_precision_instrumented.py | implementation | Original exact-loss diagnostic failed; log-only instrumentation registered |
+| 2026-09-07T08:38:58.698637+08:00 | /diagnosing-bugs | evidence/v28_precision_r1_failure_20260907/complete_m0_verification.json | implementation | Original exact-loss diagnostic failed; log-only instrumentation registered |
+| 2026-09-07T08:38:58.698637+08:00 | /diagnosing-bugs | evidence/v28_precision_r1_failure_20260907/intake.json | implementation | Original exact-loss diagnostic failed; log-only instrumentation registered |
+| 2026-09-07T08:38:58.698637+08:00 | /diagnosing-bugs | evidence/v28_precision_r1_failure_20260907/reconstruction_step.json | implementation | Original exact-loss diagnostic failed; log-only instrumentation registered |
+| 2026-09-07T08:38:58.698637+08:00 | /diagnosing-bugs | evidence/v28_precision_r1_failure_20260907/started.json | implementation | Original exact-loss diagnostic failed; log-only instrumentation registered |
+| 2026-09-07T08:38:58.698637+08:00 | /diagnosing-bugs | evidence/v28_precision_r1_failure_20260907/v28_joint_precision_66dc4e0.log | implementation | Original exact-loss diagnostic failed; log-only instrumentation registered |
+| 2026-09-07T08:38:58.698637+08:00 | /diagnosing-bugs | evidence/v28_precision_r1_failure_20260907/v28_joint_precision_66dc4e0_exit.json | implementation | Original exact-loss diagnostic failed; log-only instrumentation registered |
+| 2026-09-07T08:38:58.698637+08:00 | /diagnosing-bugs | evidence/v28_precision_r1_failure_20260907/v28_joint_precision_66dc4e0_launch.json | implementation | Original exact-loss diagnostic failed; log-only instrumentation registered |
+| 2026-09-07T08:38:58.698637+08:00 | /diagnosing-bugs | refine-logs/trifusion_v28_joint_precision/REPLAY_INSTRUMENTATION_20260907_083858.md | implementation | Original exact-loss diagnostic failed; log-only instrumentation registered |
+| 2026-09-07T08:38:58.698637+08:00 | /diagnosing-bugs | evidence/v28_precision_logging_preregistration_20260907.json | implementation | Original exact-loss diagnostic failed; log-only instrumentation registered |
+| 2026-09-07T08:38:58.698637+08:00 | /diagnosing-bugs | docs/TRIFUSION_RGBNT201_CURRENT_COMPLETE_HANDOFF_2026-09-01.md | implementation | Original exact-loss diagnostic failed; log-only instrumentation registered |
+| 2026-09-07T08:38:58.698637+08:00 | /diagnosing-bugs | AGENTS.md | implementation | Original exact-loss diagnostic failed; log-only instrumentation registered |

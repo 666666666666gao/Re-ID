@@ -11,7 +11,11 @@
 - Archive evidence/v28_m0_terminal_20260907 and
   results/TRIFUSION_V28_ORIGINAL_M0_2026-09-07.md. All7rawfiles SHA matched.
   Wrapper-before-child SyntaxError0forwards/updates preserved separately.
-- Fixed one-update source derivative precision diagnostic REGISTERED_NOT_RUN:
+- First precision diagnostic FAILED second-batch exact-loss replay after1update/2forwards.
+  No precision comparisons ran; AMP rootcause UNPROVEN. Instrumented diagnostic REGISTERED_NOT_RUN:
+  tools/diagnose_v28_joint_precision_instrumented.py (only logs actual/expected before unchanged assertion).
+  Maximum1additional reconstruction update; preserve original M0/Q1 stop and both failure records.
+- Original one-update source derivative precision diagnostic:
   refine-logs/trifusion_v28_joint_precision/EXPERIMENT_PLAN.md.
   Exactly1 reconstruction update,2real source forwards,3joint derivative replays.
   Same input/state/upstream in AMP fast / FP32 fast / FP32 unfused.
@@ -21,7 +25,7 @@
 - Data disk14.77GiB/system10.36GiB; GPU idle. Prior24redundantweights removed24.90GiB.
   New deletions0/new retrieval weights0; protect anchors/finals/arrays/negative evidence.
 - Whole multi-dataset/SOTA goal remains unmet; single seed/reusedOOF limits.
-  Executor verification is not external independent review. Master41.95.
+  Executor verification is not external independent review. Master41.96.
 
 ## Experiment environment
 
