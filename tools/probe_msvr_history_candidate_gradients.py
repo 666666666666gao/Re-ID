@@ -114,7 +114,7 @@ def math_check():
     raw = torch.randn(4,16)
     transform = torch.randn(16,16,requires_grad=True)
     history = F.normalize(raw@transform,dim=1)
-    metadata = [dict(identity=i, scene=1) for i in (0,1,4,5)]
+    metadata = [dict(identity=i, scene=1, age=1) for i in (0,1,4,5)]
     old = expanded_triplet(current,ids,scenes,history.detach(),metadata)[0]
     new = differentiable_history_loss(current,ids,history,metadata)
     assert torch.equal(old,new)

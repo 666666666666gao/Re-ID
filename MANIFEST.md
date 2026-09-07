@@ -1413,3 +1413,5 @@
 - 2026-09-08T04:22:22.639559+08:00: Complete fresh-coordinate Q1 all6ends/1560updates and CPU PASS, paired fused−0.07158042pp and both scientificgate sets0/5; all29text/complete rankings independently audited WARN same-family/provisional. Preserve frozen experiment, official0 and seed42-only boundary; add S-XBM/BroadFace/ANCE primary references. Master41.148, Goal ACTIVE/UNMET.
 
 - 2026-09-08T04:40:36.610990+08:00: Register fixed-state source candidate-gradient diagnosis,9states/2340batches, no optimizer/retrieval; new3tools and frozenplan/config, AST/ruff F pass only. Master41.149, not launched, Goal ACTIVE/UNMET.
+
+- 2026-09-08T05:16:47.288559+08:00: Preserve candidate-gradient T0 fixture failure; add missing age=1, actual remote synthetic chain rule PASS. No realmodel/optimizer started; master41.150, repairedrun pending.

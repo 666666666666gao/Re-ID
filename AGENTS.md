@@ -1,11 +1,10 @@
 # TriFusion-ReID workspace
 
-## Latest verified state (2026-09-08T04:40:36.610990+08:00, source candidate-gradient diagnosis registered)
+## Latest verified state (2026-09-08T05:16:47.288559+08:00, candidate-gradient T0 fixture repaired)
 
-- Published98828b7 sealed fresh-coordinate Q1: both original5gates0/5, paired fused−0.07158042pp; full audit WARN same-family/provisional. No rerun or official access.
-- New source-only fixed-state candidate-gradient diagnosis:3folds x initial/stale/fresh terminal states x260registeredbatches=2340. Optimizer0, complete source coverage, original memory rules. Plan master41.149; no launch yet.
-- T0 then9x8 real B64 preflight/CPU before complete source. Direct autograd vs decomposed candidate VJP requires relativeL2<=.005; state/RNG/buffer/coordinate equality checked. Static AST/ruff F pass only, no real model PASS claimed.
-- Existing tri_reid reused; GPU1MiB/0%, free3731091456B at registration check. No newweights, preserve all required evidence. Onlyseed42; longGoal ACTIVE/UNMET.
+- Originala22aaa1 wrapper2228/T02230 stopped04:42:26 with missing age in synthetic metadata. No real model forward or optimizer update; rawfailure evidence preserved.
+- Minimal age=1 fixture repair; remote synthetic math now exactPASS, ruff F pass. Fixed9states/2340batches and originalplan unchanged. New configc99ddcf6, repairedpipeline notyetlaunched.
+- Source diagnostic only; allpreviousQ1sealed, seed42, no official/heldout images. Master41.150; Goal ACTIVE/UNMET.
 
 ## Experiment environment
 

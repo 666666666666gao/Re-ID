@@ -2,7 +2,7 @@
 
 ## 0. 一页结论
 
-当前执行入口：§41.149；完整新鲜坐标Q1已封存FAIL，现登记固定来源模型的历史候选梯度诊断；尚未启动，无新检索成绩，seed42，Goal ACTIVE/UNMET。
+当前执行入口：§41.150；历史候选梯度诊断T0测试夹具缺age停止，已最小修复并实际通过数学检查，真实模型尚未启动；将按修订提交一次接续，Goal ACTIVE/UNMET。
 
 当前用于已完成MSVR310比较及新登记RGBNT100比较的是原V8平行三角色结构：冻结Signal/CLIP，共享block8之前语义和tail9/10/11参数，三个角色分别运行共享tail；CNN处理局部语义Patch高频，Transformer处理全局CLS/Patch关系，Mamba处理空间与位置级三模态扫描。各角色相对冻结reference形成1536D残差，三角色4608D银行拼接3072D Signal得到7680D fused；完整单角色输出为4608D Signal+角色残差。三条路径均执行，当前没有Router/HFER、V23模态MLP或V24原型。两项车辆训练比较均已完成；RGBNT100内部完整比较支持三角色增益，MSVR310尚未超过Signal。下面V1—V8条目保留历史经过，不代表当前又启用了旧模块。
 
@@ -5843,3 +5843,11 @@ run /root/autodl-tmp/trifusion-v2/artifacts/msvr310_fresh_coordinate_v1_seed42_b
 先T0数学，再9×8真实B64预检及全CPU，成功才完整来源测量。第一处单历史组将直接参数反传与g_U+g_V链式分解比较，预定相对L2误差≤0.005；每处重复同图梯度、RNG/buffers/坐标一致性和全部候选矩阵核验。只重算非零upstream组为去除零链式项，不宣称新选择性刷新。GradCache为既有计算思想，非本项目原创；非零历史梯度不证明泛化收益。
 
 AST及ruff F通过，尚未运行真实模型预检；不提前工程PASS。复用刚完成Q1的tri_reid环境、不重建；当前服务器98828b7、GPU1MiB/0%、主盘3,731,091,456B。预计预检5–15min、来源1–3h，新增证据<0.8GiB，无模型权重新增。固定seed42、不开展新Q1或自动接历史反传训练；只有全量诊断才决定后续。下一步一次部署启动，记录PID/日志，180–300秒或预计里程碑观察。Goal ACTIVE/UNMET。
+
+### 41.150 候选梯度诊断T0夹具修正（2026-09-08T05:16:13.822789+08:00）
+
+原a22aaa1/config168eada入口04:42:24启动wrapper2228，T02230于04:42:26退出1，STOPPED_AT_T0。05:14:21实查原PID不存在、GPU1MiB/0%、主盘3,730,661,376B；明确是终止而非观察超时。失败原因是新math_check构造的metadata漏age，旧expanded_triplet统计接口读取age报KeyError；真实模型forward0、optimizer0、heldout/official0。原pipeline/log完整保留evidence/msvr310_history_gradient_t0_repair_20260908/。
+
+仅补测试夹具age=1，未改数学公式、真实队列、梯度机制、0.005工程容差或来源范围；原计划不变。修订脚本已通过AST/ruff F，并在同远端tri_reid以0真实模型前向执行T0：标量/当前侧梯度与原实现逐位同、候选链式VJP精确一致、class0合法。配置新SHA c99ddcf6f6605b2d43725e7fc4f74f0747e774a1110a3d0567c3c42c74a1c0b3。
+
+下一步以修订提交建立新run再次T0→9状态预检→CPU→完整来源，保留原失败run，不以覆盖或重启原PID处理。无新模型成绩或科学结论；长期Goal ACTIVE/UNMET。
