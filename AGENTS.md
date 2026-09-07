@@ -1,14 +1,13 @@
 # TriFusion-ReID workspace
 
-## Latest verified state (2026-09-07T21:16:42.245629+08:00 instance memory registered NOT RUN)
+## Latest verified state (2026-09-07 21:28 MSVR instance memory launched)
 
-- Complete source census remains sealed on2a9b618; report and master41.130. No oldsource process live at20:51; GPU1MiB0%, mainfree5.46GiB.
-- New configs/MSVR310/TriFusion-instance-memory-paired-v1.json SHA40f44b0e6c12771c53a283a5b65ca6a45556e0293b7d48decf5fd518ad771a3d, plan refine-logs/msvr310_instance_memory_v1/EXPERIMENT_PLAN.md. Five tools staticPASS; remoteT0/M0/Q1 NOT_RUN.
-- PlainV8 same14loss weights, only fusedTriplet expands to current+deduplicated sourcehistory. 512unique records, age8updates, warmup65. Control computes same shadowcache/probes; no extra trainableparameter/style/Router/jointhead.
-- All realidentity labels retained includingclass0; histories exclude currentrecords; trainpositive anysameidentity asoriginalTriplet. Evaluation sameidentity+samescene exclusion, fullgallery, notsamecamera.
-- PipelineT0->M0248updates->fullCPU->Q1sixends1560updates->fullCPU. Capacitywarmup2; fixed100step overfit legitimately nohistory aftersame-record exclusion, memorysignal checked through multibatchcapacity.
-- Actual new encoder gradient required; all stepcandidate metadata/distances saved; fixed pixels/RNG age8 probes with buffer/RNG restoration bothends. Drift measured, not assumed.
-- Keep original exact Signal inference and56CPUdistance/4trainthreads. Before launching sync fixedcontract; source-only checkpoints/noofficial. Original gates and failedversions unchanged; Goalactive/unmet, master41.131.
+- Execution104506b72193b6cdbcd237044be97c2410fd7a45; config40f44b0e6c12771c53a283a5b65ca6a45556e0293b7d48decf5fd518ad771a3d. Source census remains sealed on2a9b618; no rerun.
+- Run /root/autodl-tmp/trifusion-v2/artifacts/msvr310_instance_memory_v1_seed42_104506b; original wrapper178471, M0178485; live21:28. T0 full780batches/math PASS exited0.
+- M0 RUNNING, completeM0/M0CPU/Q1 NOT_AVAILABLE. Original persistent pipeline continues automatically only after complete engineering checks. No restart.
+- Original plainV8, all14weights, only fusedTriplet pool current+512unique sourcehistory/age8/warmup65. Bothends shadowcache/samepixels/drift probes. No newparameter/style/router.
+- M0248updates, then sixendsQ11560updates; exactSignal inference and56CPUdistance retained. All original science gates, fullscene gallery, sourceidentity isolation and noofficial remain.
+- Main free5.34GiB at21:28; no newweight deletion. Text-only local artifacts. Launch evidence and master41.132. Whole Goal active/unmet.
 
 ## Experiment environment
 

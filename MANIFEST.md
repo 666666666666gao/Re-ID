@@ -1377,3 +1377,5 @@
 - 2026-09-07T20:44:02.430539+08:00: Complete MSVR310 source-only frozen census, all27conditions/18576forwards/972CPUconditions, textreaggregation PASS; source-only limitations and sealedQ1_FAIL retained. Master41.130.
 
 - 2026-09-07T21:16:42.245629+08:00: /experiment-plan /run-experiment register MSVR310 source-instance memory V1; five new tools and frozenplan/contract, staticPASS, remoteNOT_RUN. Master41.131.
+
+- 2026-09-07 21:28: MSVR instance-memory V1 launched once on104506b; T0 fullmath/780batches PASS, M0 running, fullQ1 notavailable. Evidence launchfolder/master41.132; Goal active/unmet.
