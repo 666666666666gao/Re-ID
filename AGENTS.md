@@ -1,12 +1,12 @@
 # TriFusion-ReID workspace
 
-## Latest verified state (2026-09-07 23:53 source2of6, gradient boundary clarified)
+## Latest verified state (2026-09-08T00:23:16.002855+08:00, complete preflight figures)
 
-- Run /root/autodl-tmp/trifusion-v2/artifacts/msvr310_freshness_v1_seed42_ab67d4c on fixedab67d4c/configf3a0634. Originalwrapper185622/source186000 live23:53:34; fold0both260steps complete, fold1control2/20epoch. Full1560/sourceCPU not terminal; no intermediate scientific decision.
-- Preflight72/fullCPU/all17text PASS, oldQ1/mining sealed. Current peers retain gradients, old/fresh historical candidates detach. Coordinate refresh, historical backpropagation and anchor expansion are distinct interventions; current fresh loss never updates. GradCache primary/code boundary documented, not installed or adopted.
-- Existing source tools/config/plan unchanged; do not rerun or switch objectives. Expected source Sep8 01:10-01:20 then fullCPU; observe original handles at3-5minute or completion milestones. Completedfold1control expected around00:12; no need continuous polling.
-- Mainfree5,243,092,992B after prior182obsolete bundles cleanup; all279preexisting serialized model/data metadata retained,0newweights deleted. Other volume remains separate.
-- Master41.140 and docs/MSVR310_MEMORY_COORDINATE_VS_GRADIENT_BOUNDARIES_2026-09-07.md. FullCPU terminal before source alltext intake; run complete text then published epoch/age postprocessor. WholeGoal ACTIVE/UNMET.
+- Originalrun /root/autodl-tmp/trifusion-v2/artifacts/msvr310_freshness_v1_seed42_ab67d4c remains bound toab67d4c/configf3a0634. Wrapper185622/source186000 live; 3/6 source endpoints complete; fold1 instance_memory 13/20epoch. Full1560/sourceCPU not terminal.
+- Complete preflight72/CPU/text/36plot values verified; fresh same-family provisional figure review. Actual rendered PNG/vectorPDF and caption/binding receipt archived. Source plotting code NOT_EXECUTED; wait for complete source and fullCPU before intake, reaggregation, plotting and actual render review.
+- Source tools/config/EXPERIMENT_PLAN unchanged. Fresh loss diagnostic only; current peers retain gradients, historical stale/fresh candidates detach. PreviousQ1/mining failures sealed. No new model forward, training intervention or official retrieval in this reporting task.
+- Mainfree5,140,942,848B; prior182obsolete bundle cleanup and priorweight cleanup not repeated. Preserve needed checkpoints/data/evidence.
+- Master41.141/results/MSVR310_FRESHNESS_DIAGNOSTIC_PLOTS_2026-09-08.md. Expected source01:10-01:20 thenCPU; observe original handles at180-300seconds or completion milestones. WholeGoal ACTIVE/UNMET.
 
 ## Experiment environment
 

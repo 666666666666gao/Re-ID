@@ -2,7 +2,7 @@
 
 ## 0. 一页结论
 
-最新状态（2026-09-07 23:53实查）：MSVR缓存坐标来源测量已完成第0折两端各260更新，进入第1折控制端；原wrapper185622/source186000持续，完整六端1560步/CPU尚未终态。已厘清当前batch peers保留反传、历史fresh/stale均detach；坐标刷新、历史反传与增加anchor是不同干预，不能混称完整大batch。主盘约4.88GiB。前次预检/清理/三端同步均已完成，Goal active/unmet；详见41.140。
+最新状态（2026-09-08T00:23:16.002855+08:00实查）：MSVR缓存坐标来源测量3/6端完成，fold1 instance_memory达13/20epoch，原wrapper185622/source186000持续；六端1560步/全CPU尚未终态。完整72步预检诊断图及36点独立重算通过，source绘图仍待全终态实测。主盘约4.79GiB，执行合同不变；Goal active/unmet，详见41.141。
 
 当前用于已完成MSVR310比较及新登记RGBNT100比较的是原V8平行三角色结构：冻结Signal/CLIP，共享block8之前语义和tail9/10/11参数，三个角色分别运行共享tail；CNN处理局部语义Patch高频，Transformer处理全局CLS/Patch关系，Mamba处理空间与位置级三模态扫描。各角色相对冻结reference形成1536D残差，三角色4608D银行拼接3072D Signal得到7680D fused；完整单角色输出为4608D Signal+角色残差。三条路径均执行，当前没有Router/HFER、V23模态MLP或V24原型。两项车辆训练比较均已完成；RGBNT100内部完整比较支持三角色增益，MSVR310尚未超过Signal。下面V1—V8条目保留历史经过，不代表当前又启用了旧模块。
 
@@ -5751,3 +5751,11 @@ wrapper code_commit104506b，Q1 summary project_commit9da45c5；实际git diff�
 GradCache原论文RepL4NLP2021及作者提交906f03835fbc183132a9db32612a9e8f180ca3b4已核：无图表示、缓存表示梯度、分块重算/反传、最后一次optimizer更新属于已有方法。当前模型分类路径有7个BN neck，而度量表示在neck之前；不能将整个return_aux两遍分块前向未经验证就称为同一训练定义。详见docs/MSVR310_MEMORY_COORDINATE_VS_GRADIENT_BOUNDARIES_2026-09-07.md。0新方法登记/安装/模型前向，仅代码与原文核查；原运行代码/合同不改。
 
 23:53:34实查原wrapper185622/source186000及完整命令行存在，第0折control/memory各260更新完成，每端额外97,600条角色记录前向；第1折control已2/20epoch。六端2/6，不对中间诊断指标作科学结论，完整CPU和新鲜度报告仍待全程结束。主盘5,243,092,992B；前次182旧bundle清理及279模型/数据保留证据不变。预计9月8日01:10–01:20完整来源阶段结束后CPU。证据evidence/msvr310_memory_gradient_boundary_20260907/；Goal active/unmet。
+
+### 41.141 完整预检诊断图与来源报告准备（2026-09-08T00:26:29.973957+08:00）
+
+已增加只读文本生成器tools/plot_msvr_freshness_diagnostics.py，使用全部72预检更新，六端分别绘制距离误差、fresh−stale hinge、负例选中变化、CNN/T/M实际参数诊断梯度余弦。每端2warmup+1首次cache填充+9历史更新，负例变化分母576；距离误差只计anchor×历史候选，不能混入当前peers。fresh损失不更新模型，Control实际更新仍用批内项。
+
+同模型家族、独立上下文复核逐条重算72条CPU文本，全部36点零差异；PNG/PDF自查及页面文字边界、矢量属性、SHA、AST/ruff F通过。图注已补清分母与诊断/更新区别。预检单epoch/fullLR图不冒充完整来源趋势；source绘图路径尚未实际执行，须六端/全CPU后再次验证。详见results/MSVR310_FRESHNESS_DIAGNOSTIC_PLOTS_2026-09-08.md，证据evidence/msvr310_freshness_preflight_figures_20260908/。
+
+2026-09-08T00:23:16.002855+08:00原进程实查3/6端完成，fold1 instance_memory达13/20epoch，主盘5,140,942,848B。未重跑、未改执行源/配置/计划、未读取heldout/official、未新增模型前向；之前权重与bundle清理不重复计数。原任务预计01:10–01:20后进入全CPU，完成后全量文本接收、重聚合、绘图与科学解释。总Goal active/unmet。
