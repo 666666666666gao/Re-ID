@@ -1,29 +1,23 @@
 # TriFusion-ReID workspace
 
-## Latest verified state (2026-09-07T10:37:59.144025+08:00)
+## Latest verified state (2026-09-07T11:03:56.845228+08:00)
 
-- V28 R2 bf8de956e685311dd70631395009a2c06a2c8591 is SEALED Q1_FAIL,0/5 gates.
-  Full M0 PASS retained; six20epoch endpoints/3360updates completed.
-  fused81.825305665429→81.268873589012;gain-0.556432076417.
-  fold+1.092754438462/-1.487873238871/-1.282261134575;bootstrapLB-2.366968012858.
-  C/T/M gains+0.002070340050/-0.957453055872/-0.435400679632.
-- Original training143321 exited0 at10:21:48; waiter144462 exited0 at10:23:36.
-  No active training/verifier. All30 endpoint-output scores,571queries/21IDs verified.
-  Remote32602260distances/5952790rankpositions errors0; local3360loss maxerror1.8090941012e-7 and metrics0.
-  30source text files31215636B downloaded with matchingSHA/bytes; no local Torch/model/images.
-- Read results/TRIFUSION_V28_FP32_R2_Q1_2026-09-07.md,
-  evidence/v28_fp32_complete_terminal_20260907/ and current tracker.
-  OriginalR1 M0_FAIL116updates+3diagnosticupdates+R2M0116updates=235pre-Q1 updates preserved.
-- New measured concern: original512Dmodal slots unit-normalized; joint correction unbounded before normalize(h+c).
-  Real epoch20 joint meanabs350.844528; averaged scale mismatch is proven, per-slot takeover/causality not yet.
-  Next: separately register complete source-only scale/direction retention diagnostic; NOT yet registered/run.
-  No V28 retuning, restarts, failed-gate promotion, dev/official, pre-success ablations or multi-seed sweep.
-- Disk terminal14604984320B free; newdeletions0; preserveanchors/allfinals/arrays/fixtures.
-  Prior24redundantweights24.900344GiB cleanup preserved.
-- Seed42/reusedOOF and no external independent audit limits remain.
-  RGBNT201/MSVR310/RGBNT100 baseline/SOTA goal NOT achieved. Master41.103;sync all3copies.
-- PMKD authorPDF verified:RGBNT20184.7/88.9,RGBNT10091.6/98.0,WMVeID86371.9/79.5;noMSVR310.
-  See docs/PMKD_AUTHOR_PDF_VERIFICATION_2026-09-07.md.
+- V28 R2 remains SEALED Q1_FAIL0/5; full sixendpoint3360updates and all arrays verified.
+  Read results/TRIFUSION_V28_FP32_R2_Q1_2026-09-07.md. Original training/verifier ended exit0.
+- New fixed-source joint scale/direction diagnostic IMPLEMENTED_REGISTERED_NOT_RUN.
+  Plan: refine-logs/v28_source_joint_scale/EXPERIMENT_PLAN.md; contract: configs/diagnostics/V28-source-joint-scale-v1.json.
+  Three candidate epoch20 checkpoints, all1680source batches×2views=3360forwards/1935360slots;0updates.
+  Original2126/2075/2051source records all have registered exposure. No cherry-picked batches.
+  Three CPU/CUDA/independentNumPy math tests PASS; no real model/image/optimizer use yet.
+  Formal diagnostic and complete CPU verification NOT RUN; no newPID yet.
+- Save all16scalar fields(~236.25MiB), full batch receipts,162strata and5076identity-output rows.
+  Raw vectors checked in memory then discarded; offline check covers all persisted scalars, not raw vector re-forward.
+  No localTorch/model/images, dev/official/retrieval/newweights or V28 gate changes.
+- Next: publish/sync, then detached sequential GPU diagnostic+CPU verification,240second polls,no autoretry.
+- Master41.104;sync remote/repo/Desktop bytes. Preserve both unrelated dirty local files.
+  Whole RGBNT201/MSVR310/RGBNT100 baseline/SOTA goal remains incomplete.
+  OriginalR1 failure and all235pre-Q1 updates remain; data~13.56GiB, expected newfiles<512MiB.
+  Single seed/reusedOOF and unavailable external independent audit limits remain.
 
 ## Experiment environment
 

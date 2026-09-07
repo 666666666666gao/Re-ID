@@ -1208,3 +1208,19 @@
 - refine-logs/trifusion_v28_joint_tokens_fp32/EXPERIMENT_TRACKER.md
 - docs/TRIFUSION_RGBNT201_CURRENT_COMPLETE_HANDOFF_2026-09-01.md
 - AGENTS.md
+
+
+## 2026-09-07T11:03:56.845228+08:00 V28 source joint scale diagnostic registration
+
+- tools/diagnose_v28_source_joint_scale.py
+- tools/verify_v28_source_joint_scale.py
+- evidence/v28_source_joint_scale_t0_20260907.json
+- evidence/v28_source_joint_scale_verifier_math_20260907.json
+- evidence/v28_source_joint_scale_cuda_math_20260907.json
+- evidence/v28_source_joint_scale_registered_coverage_20260907.json
+- configs/diagnostics/V28-source-joint-scale-v1.json
+- refine-logs/v28_source_joint_scale/EXPERIMENT_PLAN.md
+- refine-logs/v28_source_joint_scale/EXPERIMENT_TRACKER.md
+- refine-logs/v28_source_joint_scale/EXPERIMENT_TRACKER_20260907_110356.md
+- docs/TRIFUSION_RGBNT201_CURRENT_COMPLETE_HANDOFF_2026-09-01.md
+- AGENTS.md
