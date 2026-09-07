@@ -2,7 +2,7 @@
 
 ## 0. 一页结论
 
-最新状态：2026-09-07，MSVR style R2完整248步M0、CPU及本地全量文本核验均通过；Q1PID168456于18:29开始，18:31原进程仍live。29文本全SHA一致，正式六端检索未终态（§41.125）。
+最新状态：2026-09-07，MSVR style Q1第一端260更新后因CPU距离bitwise检查停止；4/56线程全3折重放已定位差异，56线程全部精确。R3只修复评价CPU路径，保留原终点继续余5端，已登记尚未启动（§41.126）。
 
 当前用于已完成MSVR310比较及新登记RGBNT100比较的是原V8平行三角色结构：冻结Signal/CLIP，共享block8之前语义和tail9/10/11参数，三个角色分别运行共享tail；CNN处理局部语义Patch高频，Transformer处理全局CLS/Patch关系，Mamba处理空间与位置级三模态扫描。各角色相对冻结reference形成1536D残差，三角色4608D银行拼接3072D Signal得到7680D fused；完整单角色输出为4608D Signal+角色残差。三条路径均执行，当前没有Router/HFER、V23模态MLP或V24原型。两项车辆训练比较均已完成；RGBNT100内部完整比较支持三角色增益，MSVR310尚未超过Signal。下面V1—V8条目保留历史经过，不代表当前又启用了旧模块。
 
@@ -5559,3 +5559,15 @@ M0PID167458于18:29:11退出0，完整248更新；CPU168446于18:29:21退出0，
 持久wrapper167448已于18:29:21启动全新Q1PID168456，阶段实际HEAD893be37；原始实现02cc09e到该HEAD仅交接/报告工具发布，全部训练文件/config SHA仍固定。18:31:25通过/proc原PID+完整命令核对wrapper与Q1live，M0/CPU旧PID已结束。第一折控制端当时完成epoch5，尚无完整Q1检索终态。两端三折1560更新/2064留出record前向/每端600query和1032完整gallery合同不变，两组5条件全部达成才晋级。
 
 18:31实查空闲9,481,236,480bytes；Q1早期约20秒/epoch，全部六端加恢复评价粗估19:12-19:20，非完成保证。下一观察不早于18:37，优先核对第一端完整Signal/gallery/compact终点。不要因为早期loss变化修改方案，不重跑已完成M0，不提前报告Q1成功失败。三数据集总Goal仍active未达。
+
+## 41.126 MSVR style Q1 CPU距离数值问题与R3无重训接续登记
+
+R2 Q1PID168456完成fold0control固定20epoch/260更新、保存compact终点后，在原evaluate的Signal距离torch.equal检查处失败，于18:36:31退出1；wrapper167448也结束。Signal全图库特征torch.equal已通过，尚无该端完整检索回执，不能记科学Q1_FAIL。原训练/权重/日志/partialsummary完整保留。
+
+同一B0已保存特征、同一距离公式CPU全三折重放：4线程有32173/31344/25512个entry不同，最大2.384185791015625e-7；56线程三折全部0差bitwise相等。服务器当前默认56，旧baseline wrapper未显式覆盖线程。证据支持匹配的CPU算术执行路径，不能虚构未记录的历史运行线程细节。诊断0模型/0图像/0更新，不读指标选参数。
+
+新R3合同configs/MSVR310/TriFusion-source-style-v1-r3-distance-resume.json及refine-logs/msvr310_source_style_v1/R3_EXACT_DISTANCE_RESUME.md：原模型/训练/提取仍4线程，仅原evaluate和完整CPU verifier用56，随后恢复4。保留原严格bitwise检查、所有scene/fullgallery/损失/初始化/配对/科学门；没有替换已算距离、放宽容差或改变loss。完整M0仍有效不重跑。
+
+原第一端checkpoint SHAeb4f85bf3b0928f4041d8112a34fb62a7a3f79e4dffaa851bbf932e39795ac7d，原训练SHAf68c6d94b53c80fbfd3a936c2c6002f09ab6d20e45e8e5ec7c1e5fcc2a7f9ba7。接续前CPU严格重建全state，正式阶段严格GPU加载后重新完成该端失败的360图库评价；不重训、不重复保存该权重。余5端1300新更新，总比较仍1560；本次2064图库record前向与先前失败已读360分开记账。新持久pipeline CPU修复检查→完整接续Q1→原全量CPU＋额外原260步复用核验，失败即停。
+
+新源码已实现/静态检查，R3登记时尚未启动。证据evidence/msvr310_style_r2_distance_failure_20260907/包含完整真实失败和CPU重放。原T0末位字节失败与已完成M0记录不改。下一步先同步该固定修复再接续，Goal仍active且三数据集目标未达。

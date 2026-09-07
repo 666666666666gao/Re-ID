@@ -1,14 +1,13 @@
 # TriFusion-ReID workspace
 
-## Latest verified state (2026-09-07T18:34 MSVR style R2 M0 complete, Q1 running)
+## Latest verified state (2026-09-07 MSVR style distance repair R3 registration)
 
-- R2 run /root/autodl-tmp/trifusion-v2/artifacts/msvr310_source_style_v1_r2_seed42_02cc09e, wrapper167448.
-- All248 M0updates complete18:29:11, PID167458 exit0; fullCPU168446 PASS/exit0 at18:29:21. All8runs203gradients, frozenstates unchanged, 6strict checkpoints.
-- Overfit ratios control0.000702124/style0.000710503; 29textfiles2,059,528bytes completeSHA and local all248step/floor/pixel/plan verifier PASS.
-- Q1PID168456 started18:29:21, actualstageHEAD893be37; registered source02cc09e files remain pinned/unchanged. Originalprocess and wrapper live by/proc at18:31:25.
-- Q1 firstfold control reachedepoch5; complete6end scientific result pending. Next observation not before18:37 for first end fullgallery Signal equality and compact final; fullETA19:12-19:20 estimate.
-- Read results/MSVR310_SOURCE_STYLE_V1_R2_M0_2026-09-07.md and tracker. No M0 rerun or duplicate Q1; preserved R1 T0 byte failure; no official/dev access.
-- Master41.125; all3dataset Goal active/unmet, diskfree~8.83GiB. Preserve unrelated dirty files; sync all3masters.
+- R2Q1PID168456 completed fold0control260updates then stopped at Signal distance bitwise check18:36:31; wrapper167448/child ended. No complete scientificQ1 result.
+- Saved B0features replay:4CPUthreads mismatch max2.384e-7;56threads exact across all3folds. Original Signal feature equality already passed. No images/updates for diagnosis.
+- R3 only runs original evaluator/CPU verifier at56threads; training/extraction4 unchanged. Fixed originalcontrolcheckpoint reused, no retraining/duplicate checkpoint; remaining5ends1300newupdates, total1560.
+- R3 config configs/MSVR310/TriFusion-source-style-v1-r3-distance-resume.json and plan refine-logs/msvr310_source_style_v1/R3_EXACT_DISTANCE_RESUME.md. REGISTERED_NOT_LAUNCHED.
+- Next pinned persistent check(CPUall3 + originalfullstate) -> resumedQ1 -> fullCPU+reuse verification. All original failed files immutable, all10scientific conditions unchanged, M0notrerun.
+- Master41.126; Goal active/unmet. No official/dev access, models/arrays remote, compact checkpoint storage. Preserve unrelated dirty files; sync all3masters.
 
 ## Experiment environment
 

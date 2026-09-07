@@ -1,0 +1,228 @@
+{
+  "status": "COMPLETE_BASELINE_DISTANCE_THREAD_REPLAY",
+  "checked_at": "2026-09-07T18:39:38.784003+08:00",
+  "default_threads": 56,
+  "environment": {
+    "OMP_NUM_THREADS": null,
+    "MKL_NUM_THREADS": null,
+    "OPENBLAS_NUM_THREADS": null
+  },
+  "torch_version": "2.5.1+cu121",
+  "rows": [
+    {
+      "threads": 4,
+      "fold": 0,
+      "shape": [
+        210,
+        360
+      ],
+      "bitwise_equal": false,
+      "differing_entries": 32173,
+      "max_error": 2.384185791015625e-07,
+      "feature_contiguous": true,
+      "feature_stride": [
+        3072,
+        1
+      ],
+      "array_sha256": "8bbc6082b222d85bfeb09a1cc62b8c597a7fcb06cb394fe7c7dd8d1a690becd7"
+    },
+    {
+      "threads": 4,
+      "fold": 1,
+      "shape": [
+        207,
+        349
+      ],
+      "bitwise_equal": false,
+      "differing_entries": 31344,
+      "max_error": 2.384185791015625e-07,
+      "feature_contiguous": true,
+      "feature_stride": [
+        3072,
+        1
+      ],
+      "array_sha256": "265b95b3d95f0888c99c06819743294807b89f9b1ffbe62163d7a56546be9218"
+    },
+    {
+      "threads": 4,
+      "fold": 2,
+      "shape": [
+        183,
+        323
+      ],
+      "bitwise_equal": false,
+      "differing_entries": 25512,
+      "max_error": 2.384185791015625e-07,
+      "feature_contiguous": true,
+      "feature_stride": [
+        3072,
+        1
+      ],
+      "array_sha256": "0a1dfdb78e3a158ef93b9fdb6175c5ca6da0e8c80397627d62d9a5133c2ee3cb"
+    },
+    {
+      "threads": 56,
+      "fold": 0,
+      "shape": [
+        210,
+        360
+      ],
+      "bitwise_equal": true,
+      "differing_entries": 0,
+      "max_error": 0.0,
+      "feature_contiguous": true,
+      "feature_stride": [
+        3072,
+        1
+      ],
+      "array_sha256": "8bbc6082b222d85bfeb09a1cc62b8c597a7fcb06cb394fe7c7dd8d1a690becd7"
+    },
+    {
+      "threads": 56,
+      "fold": 1,
+      "shape": [
+        207,
+        349
+      ],
+      "bitwise_equal": true,
+      "differing_entries": 0,
+      "max_error": 0.0,
+      "feature_contiguous": true,
+      "feature_stride": [
+        3072,
+        1
+      ],
+      "array_sha256": "265b95b3d95f0888c99c06819743294807b89f9b1ffbe62163d7a56546be9218"
+    },
+    {
+      "threads": 56,
+      "fold": 2,
+      "shape": [
+        183,
+        323
+      ],
+      "bitwise_equal": true,
+      "differing_entries": 0,
+      "max_error": 0.0,
+      "feature_contiguous": true,
+      "feature_stride": [
+        3072,
+        1
+      ],
+      "array_sha256": "0a1dfdb78e3a158ef93b9fdb6175c5ca6da0e8c80397627d62d9a5133c2ee3cb"
+    }
+  ],
+  "original_baseline_launch_files": [],
+  "failed_q1_files": {
+    "q1/fold_0_control/roles_epoch20.pth": {
+      "bytes": 32735974,
+      "sha256": "eb4f85bf3b0928f4041d8112a34fb62a7a3f79e4dffaa851bbf932e39795ac7d"
+    },
+    "q1/fold_0_control/style_steps.jsonl": {
+      "bytes": 723124,
+      "sha256": "c75d730fbcb6457e9b296692a8481a9f8e8bdac97cd3e4b3918e878fabe5804b"
+    },
+    "q1/fold_0_control/training.json": {
+      "bytes": 452069,
+      "sha256": "f68c6d94b53c80fbfd3a936c2c6002f09ab6d20e45e8e5ec7c1e5fcc2a7f9ba7"
+    }
+  },
+  "pipeline": {
+    "status": "STOPPED_AT_Q1",
+    "wrapper_pid": 167448,
+    "code_commit": "02cc09e3de5ab97728d1ccb6a43db3c09ec91806",
+    "config_sha256": "848254aab6dc02230a7fd33be0d60fc2560c99fc77cbd320cf0ef2efd655539d",
+    "started_at": "2026-09-07T18:19:57.813004+08:00",
+    "stages": [
+      {
+        "stage": "t0",
+        "original_pid": 167450,
+        "command": [
+          "/root/miniconda3/envs/tri_reid/bin/python",
+          "-u",
+          "-m",
+          "tools.check_msvr310_source_style_contract",
+          "--config",
+          "/root/autodl-tmp/trifusion-v2/TriFusion-ReID/configs/MSVR310/TriFusion-source-style-paired-v1-r2.json",
+          "--output",
+          "/root/autodl-tmp/trifusion-v2/artifacts/msvr310_source_style_v1_r2_seed42_02cc09e/t0.json"
+        ],
+        "gpu_enabled": false,
+        "started_at": "2026-09-07T18:19:57.813990+08:00",
+        "exit_code": 0,
+        "ended_at": "2026-09-07T18:20:03.668775+08:00",
+        "elapsed_seconds": 5.855607271194458
+      },
+      {
+        "stage": "m0",
+        "original_pid": 167458,
+        "command": [
+          "/root/miniconda3/envs/tri_reid/bin/python",
+          "-u",
+          "-m",
+          "tools.train_msvr310_source_style",
+          "--config",
+          "/root/autodl-tmp/trifusion-v2/TriFusion-ReID/configs/MSVR310/TriFusion-source-style-paired-v1-r2.json",
+          "--mode",
+          "m0",
+          "--output-dir",
+          "/root/autodl-tmp/trifusion-v2/artifacts/msvr310_source_style_v1_r2_seed42_02cc09e/m0"
+        ],
+        "gpu_enabled": true,
+        "started_at": "2026-09-07T18:20:03.671662+08:00",
+        "exit_code": 0,
+        "ended_at": "2026-09-07T18:29:11.437389+08:00",
+        "elapsed_seconds": 547.766595363617
+      },
+      {
+        "stage": "m0_cpu",
+        "original_pid": 168446,
+        "command": [
+          "/root/miniconda3/envs/tri_reid/bin/python",
+          "-u",
+          "-m",
+          "tools.verify_msvr310_source_style",
+          "--config",
+          "/root/autodl-tmp/trifusion-v2/TriFusion-ReID/configs/MSVR310/TriFusion-source-style-paired-v1-r2.json",
+          "--run-dir",
+          "/root/autodl-tmp/trifusion-v2/artifacts/msvr310_source_style_v1_r2_seed42_02cc09e/m0",
+          "--output",
+          "/root/autodl-tmp/trifusion-v2/artifacts/msvr310_source_style_v1_r2_seed42_02cc09e/m0_cpu.json"
+        ],
+        "gpu_enabled": false,
+        "started_at": "2026-09-07T18:29:11.439062+08:00",
+        "exit_code": 0,
+        "ended_at": "2026-09-07T18:29:21.032187+08:00",
+        "elapsed_seconds": 9.594074487686157
+      },
+      {
+        "stage": "q1",
+        "original_pid": 168456,
+        "command": [
+          "/root/miniconda3/envs/tri_reid/bin/python",
+          "-u",
+          "-m",
+          "tools.train_msvr310_source_style",
+          "--config",
+          "/root/autodl-tmp/trifusion-v2/TriFusion-ReID/configs/MSVR310/TriFusion-source-style-paired-v1-r2.json",
+          "--mode",
+          "q1",
+          "--output-dir",
+          "/root/autodl-tmp/trifusion-v2/artifacts/msvr310_source_style_v1_r2_seed42_02cc09e/q1",
+          "--m0-receipt",
+          "/root/autodl-tmp/trifusion-v2/artifacts/msvr310_source_style_v1_r2_seed42_02cc09e/m0/summary.json",
+          "--m0-verification",
+          "/root/autodl-tmp/trifusion-v2/artifacts/msvr310_source_style_v1_r2_seed42_02cc09e/m0_cpu.json"
+        ],
+        "gpu_enabled": true,
+        "started_at": "2026-09-07T18:29:21.034137+08:00",
+        "exit_code": 1,
+        "ended_at": "2026-09-07T18:36:31.348455+08:00",
+        "elapsed_seconds": 430.3153076171875
+      }
+    ],
+    "ended_at": "2026-09-07T18:36:31.348455+08:00"
+  },
+  "new_model_forwards": 0,
+  "new_optimizer_updates": 0
+}
