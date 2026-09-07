@@ -1,6 +1,6 @@
 # TriFusion-ReID workspace
 
-## Latest verified state (2026-09-07T09:27:35.657795+08:00)
+## Latest verified state (2026-09-07T09:41:03.887819+08:00)
 
 - V28 R2 bf8de956e685311dd70631395009a2c06a2c8591 fullM0 PASS all12gates.
   116updates;48pairedpreflight/48originalV8/48backbonechecks allcomplete.
@@ -11,8 +11,8 @@
   refine-logs/trifusion_v28_joint_tokens_fp32/EXPERIMENT_TRACKER.md.
   OriginalR1 M0_FAIL116updates and3diagnosticupdates preserved;前置235updates.
   Truefixture AMPdt0/2048→localFP322048/2048; fixture never initializesfolds.
-- Q1 training143321/wrapper143320 live09:25:53;fold0control580/candidate232updates,
-  Q1 812/3360,1/6terminalreceipts. Waiter144462 live, noexit.
+- Q1 training143321/wrapper143320 live09:39:40;fold0both580updates complete,
+  fold1control285/560;Q1 1445/3360,2/6terminalreceipts. Waiter144462 live,noexit.
   Complete6endpoint3360step terminal NOT YET. No partialfold decision/tuning.
   Actualfixedconfig/plan and original5sciencegates unchanged.
 - Persistent CPU terminalwaiter144462/wrapper144461 started09:15:24,aliveverified.
@@ -23,11 +23,16 @@
   protected12models fullSHA match; earlierrelease24.900344GiB,newdeletions0.
   Preserveanchors/finals/arrays/fixtures;trainingremainsdetached.
 - Single seed/reusedOOF, noexternalindependentaudit,wholemulti-dataset/SOTAgoalunmet.
-  Master41.101; remote/repo/Desktop must stay byteidentical.
+  Master41.102; remote/repo/Desktop must stay byteidentical.
 
 - PMKD authorPDF9pages acquiredandTable1/2 visuallyread:84.7/88.9 RGBNT201,
   91.6/98.0 RGBNT100,71.9/79.5 WMVeID863; noMSVR310result.
   See docs/PMKD_AUTHOR_PDF_VERIFICATION_2026-09-07.md. No modelcontractchange.
+
+- Firstpair execution receipts:control715.091922s/candidate744.685403s,
+  overflow0,full203/219gradcoverage,strictreload/read-onlyevaluation true.
+  Estimate trainterminal~10:20; completeCPUaudit canstartafter<=240swait.
+  Theseareexecutionreceipts,notfullarrayaudit or partialsciencepromotion.
 
 ## Experiment environment
 

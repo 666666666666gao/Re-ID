@@ -1157,3 +1157,9 @@
 | 2026-09-07T09:27:35.657795+08:00 | /research-lit | refine-logs/trifusion_v28_joint_tokens_fp32/EXPERIMENT_TRACKER.md | verification | PMKD authorPDF primary tables verified; V28 Q1 original process live |
 | 2026-09-07T09:27:35.657795+08:00 | /research-lit | docs/TRIFUSION_RGBNT201_CURRENT_COMPLETE_HANDOFF_2026-09-01.md | verification | PMKD authorPDF primary tables verified; V28 Q1 original process live |
 | 2026-09-07T09:27:35.657795+08:00 | /research-lit | AGENTS.md | verification | PMKD authorPDF primary tables verified; V28 Q1 original process live |
+| 2026-09-07T09:41:03.887819+08:00 | /run-experiment | evidence/v28_fp32_first_pair_execution_20260907.json | monitoring | Original V28 R2 live; firstcompletepair saved; no interim science decision |
+| 2026-09-07T09:41:03.887819+08:00 | /run-experiment | evidence/v28_fp32_progress_20260907_093940.json | monitoring | Original V28 R2 live; firstcompletepair saved; no interim science decision |
+| 2026-09-07T09:41:03.887819+08:00 | /run-experiment | refine-logs/trifusion_v28_joint_tokens_fp32/EXPERIMENT_TRACKER_20260907_094103.md | monitoring | Original V28 R2 live; firstcompletepair saved; no interim science decision |
+| 2026-09-07T09:41:03.887819+08:00 | /run-experiment | refine-logs/trifusion_v28_joint_tokens_fp32/EXPERIMENT_TRACKER.md | monitoring | Original V28 R2 live; firstcompletepair saved; no interim science decision |
+| 2026-09-07T09:41:03.887819+08:00 | /run-experiment | docs/TRIFUSION_RGBNT201_CURRENT_COMPLETE_HANDOFF_2026-09-01.md | monitoring | Original V28 R2 live; firstcompletepair saved; no interim science decision |
+| 2026-09-07T09:41:03.887819+08:00 | /run-experiment | AGENTS.md | monitoring | Original V28 R2 live; firstcompletepair saved; no interim science decision |
