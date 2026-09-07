@@ -1361,3 +1361,5 @@
 - 2026-09-07T14:45:40.975318+08:00: V29 source diagnostic348/1680 batches continues; complete scalar reporter and240s queue implemented/static PASS, NOT_RUN. See docs/V29_SOURCE_DRIFT_COMPLETE_REPORTING.md and master41.115.
 
 - 2026-09-07T14:50:37.378436+08:00: V29 source report queue160653 launched once,240s dependency wait; source435/1680 batches remains live. Launch evidence, reporting doc and master41.116; no full source/report terminal yet.
+
+- 2026-09-07T15:02:31.635407+08:00: V29 source first fold580batches/3480forwards storage and unchanged model receipts verified; all original processes live. Complete terminal42-text inspector prepared/static PASS, NOT_RUN; evidence/v29_source_drift_first_fold_20260907/, master41.117.

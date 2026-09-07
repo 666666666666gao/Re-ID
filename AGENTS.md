@@ -1,6 +1,6 @@
 # TriFusion-ReID workspace
 
-## Latest verified state (2026-09-07T14:50:37.378436+08:00)
+## Latest verified state (2026-09-07T15:02:31.635407+08:00)
 
 - V29 COMPLETE_VERIFIED_Q1_FAIL, 0/5 scientific gates, not running.
   Execution f4c6a03e1b263aaa9e4bce71427152007018a0ca; fixed 6 ends/20 epochs/3360 steps.
@@ -24,11 +24,12 @@
   Contract configs/RGBNT201/TriFusion-v29-source-role-drift-diagnostic.json; plan refine-logs/v29_source_role_drift/EXPERIMENT_PLAN.md.
   All1680 source batches/10080 fixed forwards, all94 source IDs per fold, no model update or retrieval.
   Local T0/AST/F821 PASS; remote CPU/CUDA T0 PASS,1728 synthetic slot pairs max2.384185791e-7.
-  Original diagnostic159463/wrapper159453 live at14:48:20 on code1d52c1e; 435/1680 batches,2610/10080 forwards.
+  Original diagnostic159463/wrapper159453 and report queue160653 live at14:58:28; first fold580/1680 batches,3480/10080 forwards complete.
   Run /root/autodl-tmp/trifusion-v2/artifacts/v29_source_role_drift_seed42_1d52c1e.
   No complete source or CPU terminal yet. Do not restart, edit source/contract, or infer progress from initial summary0.
-  Next regular poll not before14:52:20; first-fold milestone ~14:56. GPU ETA16:03-16:10 plus5-20 CPU minutes.
-  Expected3.115GiB raw arrays, startup requires6GiB free; latest free12257234944B; original source process remains active.
+  First fold storage SHA and two final checkpoint SHA verified; no complete CPU/scientific conclusion.
+  Next fold expected ~15:30; GPU ETA16:03-16:10 plus5-20 CPU minutes; poll original handles180-300s or milestone.
+  Expected3.115GiB raw arrays, startup requires6GiB free; latest free11934138368B; original source process remains active.
   Estimate90-110 minutes GPU plus5-20 CPU; original handles poll180-300 seconds, no automatic restart.
   Check pairwise identity geometry as well as vector change; no new preservation loss justified yet.
   No scan b/seed/epoch or V29 rerun; no pre-success mechanism ablations/official tuning.
@@ -38,7 +39,9 @@
 - Complete scalar reporter and240s queue implemented, AST/CLI/F821 PASS.
   Original queue160653 launched14:48:19 onacf4720, WAITING; report NOT_RUN.
   See docs/V29_SOURCE_DRIFT_COMPLETE_REPORTING.md. Pinned running source/config/plan unchanged.
-- Master section41.116; remote/repo/Desktop must be byte-equal.
+- Complete terminal inspector and42-file text-only intake prepared, AST/CLI/F821 PASS, NOT_RUN.
+  First-fold evidence: evidence/v29_source_drift_first_fold_20260907/.
+- Master section41.117; remote/repo/Desktop must be byte-equal.
   RGBNT100 baseline gain, MSVR310 negative, RGBNT201 dev shortfall, single42/reused OOF remain.
   Three-dataset baseline/SOTA objective is not complete.
 
