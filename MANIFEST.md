@@ -1087,3 +1087,16 @@
 | 2026-09-07T08:38:58.698637+08:00 | /diagnosing-bugs | evidence/v28_precision_logging_preregistration_20260907.json | implementation | Original exact-loss diagnostic failed; log-only instrumentation registered |
 | 2026-09-07T08:38:58.698637+08:00 | /diagnosing-bugs | docs/TRIFUSION_RGBNT201_CURRENT_COMPLETE_HANDOFF_2026-09-01.md | implementation | Original exact-loss diagnostic failed; log-only instrumentation registered |
 | 2026-09-07T08:38:58.698637+08:00 | /diagnosing-bugs | AGENTS.md | implementation | Original exact-loss diagnostic failed; log-only instrumentation registered |
+| 2026-09-07T08:45:50.969147+08:00 | /diagnosing-bugs | tools/diagnose_v28_joint_precision_paired.py | implementation | Preserve exact-loss failures; preregister same-forward precision pair |
+| 2026-09-07T08:45:50.969147+08:00 | /diagnosing-bugs | evidence/v28_precision_r2_failure_20260907/intake.json | implementation | Preserve exact-loss failures; preregister same-forward precision pair |
+| 2026-09-07T08:45:50.969147+08:00 | /diagnosing-bugs | evidence/v28_precision_r2_failure_20260907/reconstruction_step.json | implementation | Preserve exact-loss failures; preregister same-forward precision pair |
+| 2026-09-07T08:45:50.969147+08:00 | /diagnosing-bugs | evidence/v28_precision_r2_failure_20260907/remote_fixture_receipt.json | implementation | Preserve exact-loss failures; preregister same-forward precision pair |
+| 2026-09-07T08:45:50.969147+08:00 | /diagnosing-bugs | evidence/v28_precision_r2_failure_20260907/second_batch_loss_comparison.json | implementation | Preserve exact-loss failures; preregister same-forward precision pair |
+| 2026-09-07T08:45:50.969147+08:00 | /diagnosing-bugs | evidence/v28_precision_r2_failure_20260907/started.json | implementation | Preserve exact-loss failures; preregister same-forward precision pair |
+| 2026-09-07T08:45:50.969147+08:00 | /diagnosing-bugs | evidence/v28_precision_r2_failure_20260907/v28_joint_precision_9da1986.log | implementation | Preserve exact-loss failures; preregister same-forward precision pair |
+| 2026-09-07T08:45:50.969147+08:00 | /diagnosing-bugs | evidence/v28_precision_r2_failure_20260907/v28_joint_precision_9da1986_exit.json | implementation | Preserve exact-loss failures; preregister same-forward precision pair |
+| 2026-09-07T08:45:50.969147+08:00 | /diagnosing-bugs | evidence/v28_precision_r2_failure_20260907/v28_joint_precision_9da1986_launch.json | implementation | Preserve exact-loss failures; preregister same-forward precision pair |
+| 2026-09-07T08:45:50.969147+08:00 | /diagnosing-bugs | refine-logs/trifusion_v28_joint_precision/SAME_FORWARD_PRECISION_PLAN_20260907_084550.md | implementation | Preserve exact-loss failures; preregister same-forward precision pair |
+| 2026-09-07T08:45:50.969147+08:00 | /diagnosing-bugs | evidence/v28_same_forward_precision_preregistration_20260907.json | implementation | Preserve exact-loss failures; preregister same-forward precision pair |
+| 2026-09-07T08:45:50.969147+08:00 | /diagnosing-bugs | docs/TRIFUSION_RGBNT201_CURRENT_COMPLETE_HANDOFF_2026-09-01.md | implementation | Preserve exact-loss failures; preregister same-forward precision pair |
+| 2026-09-07T08:45:50.969147+08:00 | /diagnosing-bugs | AGENTS.md | implementation | Preserve exact-loss failures; preregister same-forward precision pair |

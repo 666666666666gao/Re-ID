@@ -27,6 +27,17 @@
 - Whole multi-dataset/SOTA goal remains unmet; single seed/reusedOOF limits.
   Executor verification is not external independent review. Master41.96.
 
+## Current numerical diagnostic refinement
+
+- Both cross-process exact-loss diagnostics ended FAIL before precision comparison.
+  Source pixels/first update exact; second total differs1.1920928955e-6 in Mamba/fused only.
+  No AMP rootcause yet. Original M0_FAIL, Q1 stopped,2diagnostic updates already spent.
+- A separately registered same-forward input/state/true-upstream precision test is NOT_RUN.
+  Read evidence/v28_same_forward_precision_preregistration_20260907.json.
+  At most1additional reconstruction update (3diagnostic total); old FAIL never relabeled.
+  AMP replay must exactly match its own captured full forward before FP32 comparison.
+  Master41.97; do not use stale registered-only descriptions above to restart old runs.
+
 ## Experiment environment
 
 - Runtime: remote Linux GPU server; local WSL2 is SSH transport only and must
