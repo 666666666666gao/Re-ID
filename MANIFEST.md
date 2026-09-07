@@ -1041,3 +1041,13 @@
 | 2026-09-07T00:55:51.284049+08:00 | /executor-observation | refine-logs/trifusion_v26_role_modal_responsibility/EXPERIMENT_TRACKER.md | recorded | V26 Q1 original process and full terminal verifier queue alive; no Q1 terminal |
 | 2026-09-07T00:55:51.284049+08:00 | /executor-observation | docs/TRIFUSION_RGBNT201_CURRENT_COMPLETE_HANDOFF_2026-09-01.md | recorded | V26 Q1 original process and full terminal verifier queue alive; no Q1 terminal |
 | 2026-09-07T00:55:51.284049+08:00 | /executor-observation | AGENTS.md | recorded | V26 Q1 original process and full terminal verifier queue alive; no Q1 terminal |
+| 2026-09-07T08:10:52.738667+08:00 | /experiment-plan | modeling/trifusion/joint_tokens_v28.py | implementation | V28 single structural hypothesis registered; not run |
+| 2026-09-07T08:10:52.738667+08:00 | /experiment-plan | tools/train_signal_preserving_v28.py | implementation | V28 single structural hypothesis registered; not run |
+| 2026-09-07T08:10:52.738667+08:00 | /experiment-plan | tools/check_v28_joint_tokens.py | implementation | V28 single structural hypothesis registered; not run |
+| 2026-09-07T08:10:52.738667+08:00 | /experiment-plan | refine-logs/trifusion_v28_joint_tokens/EXPERIMENT_PLAN_20260907_081052.md | implementation | V28 single structural hypothesis registered; not run |
+| 2026-09-07T08:10:52.738667+08:00 | /experiment-plan | refine-logs/trifusion_v28_joint_tokens/EXPERIMENT_PLAN.md | implementation | V28 single structural hypothesis registered; not run |
+| 2026-09-07T08:10:52.738667+08:00 | /experiment-plan | refine-logs/trifusion_v28_joint_tokens/EXPERIMENT_TRACKER_20260907_081052.md | implementation | V28 single structural hypothesis registered; not run |
+| 2026-09-07T08:10:52.738667+08:00 | /experiment-plan | refine-logs/trifusion_v28_joint_tokens/EXPERIMENT_TRACKER.md | implementation | V28 single structural hypothesis registered; not run |
+| 2026-09-07T08:10:52.738667+08:00 | /experiment-plan | configs/RGBNT201/TriFusion-signal-preserving-v28-joint-tokens-rtx3090.json | implementation | V28 single structural hypothesis registered; not run |
+| 2026-09-07T08:10:52.738667+08:00 | /experiment-plan | docs/TRIFUSION_RGBNT201_CURRENT_COMPLETE_HANDOFF_2026-09-01.md | implementation | V28 single structural hypothesis registered; not run |
+| 2026-09-07T08:10:52.738667+08:00 | /experiment-plan | AGENTS.md | implementation | V28 single structural hypothesis registered; not run |

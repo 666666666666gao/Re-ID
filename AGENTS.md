@@ -1,34 +1,29 @@
 # TriFusion-ReID workspace
 
-## Latest verified state (2026-09-07T06:04:45.052076+08:00)
+## Latest verified state (2026-09-07T08:10:52.738667+08:00)
 
-- V27 c225652 completed all3 folds x2 endpoints x20epochs,3360 updates; original
-  training, full array verifier and reporter all exit0. Source diagnostic R2 d5bc048 is running; wrapper134209/child134211 verified.
-- Scientific Q1_FAIL,4/5: fused80.253418->81.592361 (+1.338944), three fold gains
-  +1.172124/+1.036418/+1.763932; all3 role aggregate gains positive; bootstrap
-  lower +0.170768. Only fused-best gate fails: CNN81.662859, gap0.070498.
-- All571 queries/21 identities/3126 gallery,3360 updates,32,602,260 distances,
-  5,952,790 rankings verified;31 raw texts SHA matched; full local text replay PASS.
-- All21 identities:13 up/8 down; fused R1 repaired12/new8.
-  Complete comparison and terminal analysis are in results/TRIFUSION_V27_COMPLETE_COMPARISON_2026-09-07.md
-  and results/TRIFUSION_V27_TERMINAL_ANALYSIS_2026-09-07.md. Master41.85.
-- V27 increased residual Triplet pressure and matched retrieval. Positive margin
-  loss does not prove nonpositive fused margins or useful V26 responsibility weights.
-  Next full source-only relation support diagnostic at fixed initial/final models
-  is now R2_RUNNING (R1 Path interface error archived, 0 forwards): 3 fixed states x2 inputs x1680 original batches,10080 forwards,
-  0 updates; full18 outputs and273297024 relation exposures. Math CPU/GPU tests PASS; actual Path interface recheck PASS.
-  Plan refine-logs/v27_source_style_relations/EXPERIMENT_PLAN.md; master41.91. Fold0 file/exposure checks PASS; total608batches/3648forwards at06:04:45, fold1 running; full results pending.
-- Seal V27 settings. No D1/dev/official or p/alpha/layer/fusion-weight/seed/epoch scan.
-  Do not simply combine V26/V27 as a rescue. Preserve prior FAIL and source saturation.
-- Original V8 inference: frozen3072D Signal+4608D bank=7680D; V27 stem statistics
-  mix is training-only. No added parameters or inference passes; training cost recorded.
-  R1 parser failure and M0 phase-gradient coverage limitations remain archived.
-- Disk data17.65GiB/system10.36GiB separately. Prior24 redundant weights removed
-  24.90GiB;12 retained model hashes reverified at05:19; all24 deletions still absent. New deletions0.
-  Preserve anchors, six V27 finals, arrays and all negative results.
-- RGBNT100 official baseline gain +2.572608 remains. RGBNT201 dev/MSVR310 gain and
-  whole multi-dataset/SOTA goal UNMET. Single seed42 and reused identities remain.
-- Executor verification is not an external independent audit.
+- V27 c225652 complete Q1_FAIL4/5 remains sealed: fused+1.338944mAP,
+  CNN81.662859>fused81.592361 by0.070498. No parameter/epoch/seed rescue.
+- Source-style relation diagnostic R2 d5bc048 is COMPLETE, CPU verified and reported:
+  all3fold1680batches,10080forwards,743178240saved similarities,
+  273297024relation exposures,0updates. All original PIDs ended.
+  All26rawtexts SHA matched; all18outputs/72cells/6768identity rows inspected.
+  Read results/TRIFUSION_V27_SOURCE_STYLE_RELATIONS_ANALYSIS_2026-09-07.md.
+- V28 is IMPLEMENTED_REGISTERED_NOT_RUN. One new structural hypothesis:
+  joint pre-pooling 3roles x3modalities x128patch residual tokens,1152total,
+  one shared bidirectional128D Mamba, zero-initialized corrections.
+  Preserve original Signal, independent roles and all7 supervision heads.
+  Both fresh endpoints use fixed V27 training style/loss and legal V12 initializations.
+  Read refine-logs/trifusion_v28_joint_tokens/EXPERIMENT_PLAN.md; master41.94.
+- T0/M0/Q1 NOT YET RUN for V28. M0 must pass before complete6endpoint3360update Q1.
+  Old five science gates and full-gallery/source-only boundaries unchanged.
+  No direct V26+V27 rescue, old Router/exchange retry, dev/official tuning or pre-success ablations.
+- Data disk14.77GiB/system10.36GiB free at08:02; GPU idle.
+  Prior24redundantweights removed24.90GiB; new deletions0.
+  Protect all anchors, V27 finals, arrays and negative evidence.
+- Whole multi-dataset/SOTA goal UNMET. RGBNT100 official+2.572608 remains;
+  RGBNT201 dev/MSVR310 goals remain. Single seed/reusedOOF limits preserved.
+- Executor code/math verification is not an external independent audit.
 
 ## Experiment environment
 
