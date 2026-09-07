@@ -2,7 +2,7 @@
 
 ## 0. 一页结论
 
-当前执行入口：§41.154；原九状态来源诊断3799持续，完整终态梯度图入口已用全部短预检核验；无新训练/Q1，Goal ACTIVE/UNMET。
+当前执行入口：§41.154；原来源诊断第0折三固定状态780batch已完成，3799继续第1折；全九状态及CPU待完成，Goal ACTIVE/UNMET。
 
 当前用于已完成MSVR310比较及新登记RGBNT100比较的是原V8平行三角色结构：冻结Signal/CLIP，共享block8之前语义和tail9/10/11参数，三个角色分别运行共享tail；CNN处理局部语义Patch高频，Transformer处理全局CLS/Patch关系，Mamba处理空间与位置级三模态扫描。各角色相对冻结reference形成1536D残差，三角色4608D银行拼接3072D Signal得到7680D fused；完整单角色输出为4608D Signal+角色残差。三条路径均执行，当前没有Router/HFER、V23模态MLP或V24原型。两项车辆训练比较均已完成；RGBNT100内部完整比较支持三角色增益，MSVR310尚未超过Signal。下面V1—V8条目保留历史经过，不代表当前又启用了旧模块。
 
@@ -5889,3 +5889,5 @@ AST及ruff F通过，尚未运行真实模型预检；不提前工程PASS。复�
 新增只读plot_msvr_history_candidate_gradients，九固定状态/三角色分开显示历史与当前梯度范数比、两侧夹角及对原14项总梯度方向的改变。全部72batch/135角色行的108格/540有效值已从CSV重算一致；PDF108个值及108个n与收据相符，PNG/PDF渲染自查通过。仅短预检5历史batch/状态，source图未执行；负偏导余弦不当作有害任务冲突、AdamW更新或泛化收益。原审计范围不自动扩大，证据evidence/msvr310_history_gradient_preflight_figures_20260908/，报告results/MSVR310_HISTORY_GRADIENT_FIGURE_VALIDATION_2026-09-08.md。
 
 2026-09-08T06:42:47.914143+08:00实查原3302/3799持续，第0折initial260batch完成、control16/20epoch，主盘4073558016B。固定eebaaa0/configc99ddcf6、2340batch合同不变，图稿工作未新增模型前向；原诊断持续，无新训练或权重清理。待九状态/原CPU/13项补核完整终态后生成全来源图并审计，再决定下一单一干预；预计中午前后，seed42-only，Goal ACTIVE/UNMET。
+
+2026-09-08T07:36:42.976107+08:00里程碑观察：第0折initial/control/fresh_memory均完成260batch，共780/2340batch的状态终点已写出；原3302/3799继续第1折initial，日志5/20epoch。整项来源与CPU尚未终态，不分析部分fold选择方案。主盘4043554816B，执行eebaaa0/configc99ddcf6不变。连续五分钟进程观察正常，证据evidence/msvr310_history_gradient_first_fold_observation_20260908.json；无新训练或清理，长期Goal ACTIVE/UNMET。

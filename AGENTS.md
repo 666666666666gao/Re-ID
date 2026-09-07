@@ -1,11 +1,11 @@
 # TriFusion-ReID workspace
 
-## Latest verified state (2026-09-08T06:42:47.914143+08:00, full source diagnostic running)
+## Latest verified state (2026-09-08T07:36:42.976107+08:00, first source fold complete)
 
-- Original3302/3799 live, fixed eebaaa0/configc99ddcf6. Fold0initial260batches complete, control16/20epoch. All9states/2340batches and sourceCPU pending; ETA aroundnoon, no restart or bound-file edits.
+- Original3302/3799 live, fixed eebaaa0/configc99ddcf6. Fold0 all3states complete260batches each (780 total); fold1initial5/20epoch. All9states/2340batches and sourceCPU pending; no bound-file edits or restart.
 - Preflight72B64 and originalCPU plus all13-statistics postcheck PASS; original audit WARN same-family/provisional. Direct-model proof is single-history-group only; runtime gradient limits remain.
 - Complete-terminal text and plot tools prepared: preflight108cells/540metric values checked, PDF values/counts and rendering verified. SHORT PREFLIGHT label explicit; complete-source analysis/plots not yet run.
-- Lastturn removed69redundant code bundles399442735B; thisturn0weight/file cleanup. Latest free4073558016B. Master41.154.
+- Previous cleanup69redundant code bundles399442735B is unchanged; no new cleanup. Latest free4043554816B. Master41.154 plus firstfold milestone.
 - After allsource/originalCPU, run all13-statistics postcheck, fulltext intake/analysis/plots and fresh-context audit before a new paired-training hypothesis. Seed42 only; priorfresh-coordinateQ1 remains0/5both; Goal ACTIVE/UNMET.
 
 ## Experiment environment
