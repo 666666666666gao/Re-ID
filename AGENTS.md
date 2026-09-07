@@ -1,34 +1,34 @@
 # TriFusion-ReID workspace
 
-## Latest verified state (2026-09-07T12:59:21.075742+08:00)
+## Latest verified state (2026-09-07T13:48:58.752066+08:00)
 
-- V29 full paired Q1 RUNNING on f4c6a03e1b263aaa9e4bce71427152007018a0ca; M0 PASS all 13.
-  Original training 153151 / wrapper 153149 alive at 12:54:14; fold0 complete, fold1 control epoch7.
-  No complete three-fold scientific terminal; do not decide from the partial fold.
-- First fold both arms 580 updates/20 epochs/1000 gallery/190 queries/five outputs.
-  At12:55 both complete weights, retrieval arrays and step logs rehashed; strict reload/read-only receipts match.
-  Weights65171960 B, arrays251852276 B; data free13877886976 B. No deletions or new model reads.
-  Evidence: evidence/v29_first_fold_storage_20260907/.
-- New local terminal tools AST/F821 checked, READY NOT RUN on V29 terminal:
-  tools/verify_v29_terminal_scalars_local.py and tools/summarize_v29_terminal_outcomes.py.
-  Complete original pipeline must finish first; only text/JSON/CSV transferred locally.
-- Read docs/V29_TERMINAL_AND_VEHICLE_BOUNDARIES_2026-09-07.md.
-  Vehicle8x16 versus current style16x8, legal initialization history, sampler, MSVRscene filtering and exact Signal execution need their own binding.
-  No new vehicle training or official tuning is authorized by a partial score.
-- Run /root/autodl-tmp/trifusion-v2/artifacts/trifusion_v29_bounded_joint_seed42_f4c6a03.
-  Config427242f945fdb329f72467f97f58a56a86f410630adb68cd69f76fd7e4bc83b5;
-  plan61d6841eea54303b3c87dad31a94da32089fdff9513d9fde076a3839bd435028.
-  DO NOT edit pinned source/config/plan or restart original handles. New helpers are report-only.
-- Six ends3360 steps/full3126 gallery/571 queries/five science gates unchanged; terminal estimate13:40–13:55.
-  Poll240 seconds or predicted milestones. First pair training1465.745378 seconds; no timeout restart.
-  M0 is engineering evidence, not retrieval success. V27FAIL4/5,V28FAIL0/5,seed42/reused OOF and SOTA goal unresolved.
-  Master section41.110 must be byte-equal remote/repo/Desktop.
-
-
-- Current V29 architecture and supervision reference: docs/V29_CURRENT_NETWORK_AND_SUPERVISION.md.
-  Joint reads Patch tokens while independent Transformer reads CLS; three role output projections share across modalities.
-  Candidate fused differs from the mean of old branch similarities; only current h-to-y direction is bounded.
-  Master section41.111; this is documentation only, active f4c6a03 source/contract unchanged.
+- V29 COMPLETE_VERIFIED_Q1_FAIL, 0/5 scientific gates, not running.
+  Execution f4c6a03e1b263aaa9e4bce71427152007018a0ca; fixed 6 ends/20 epochs/3360 steps.
+  M0 116 updates/13 engineering gates passed. Full 3126 gallery/571 eligible queries/21 identities.
+- Training153151 exited0 at13:38:00; CPU158223/report158273/wrapper153149 exited0 by13:38:11.
+  All original processes absent at13:42. Do not restart or retune this sealed run.
+- F81.4874846980 ->81.7070190620 (+0.2195343641);
+  C-0.0918723450/T+0.0577887793/M+0.0751655938.
+  Fold F+1.3264342011/-0.1400842027/-0.5029371488; identity bootstrap LB-0.5389154198.
+  Candidate F is0.0099539899 below CNN. All original gates remain FAIL.
+- Complete training1935360 and retrieval56268 slot statistics meet b0.5 geometry bound.
+  Candidate final weighted mean update ratio ~0.5 in all folds; raw corrections remain large.
+  Current h-to-y bound does not freeze original role training geometry or guarantee retrieval.
+- Read results/TRIFUSION_V29_Q1_2026-09-07.md and evidence/v29_complete_terminal_20260907/.
+  Full remote arrays/rankings verified; local3360-loss/metrics/bootstrap/geometry scalars PASS.
+  PNG reviewed; SVG XML checked; first legend-overlap render fixed and disclosed.
+  Executor verification is not independent external audit.
+- Data free13187350528 B; no new deletion; final weights and arrays retained remotely.
+  Local text/code/generated plots only, no model/checkpoint/image/NPY transfers.
+- Next source-only initial/control/candidate role-relation drift diagnosis is PROPOSED_NOT_REGISTERED_NOT_RUN.
+  Check pairwise identity geometry as well as vector change; no new preservation loss justified yet.
+  No scan b/seed/epoch or V29 rerun; no pre-success mechanism ablations/official tuning.
+- Current architecture: docs/V29_CURRENT_NETWORK_AND_SUPERVISION.md.
+  Vehicle interface boundaries: docs/V29_TERMINAL_AND_VEHICLE_BOUNDARIES_2026-09-07.md.
+  No new vehicle experiment launched.
+- Master section41.112; remote/repo/Desktop must be byte-equal.
+  RGBNT100 baseline gain, MSVR310 negative, RGBNT201 dev shortfall, single42/reused OOF remain.
+  Three-dataset baseline/SOTA objective is not complete.
 
 ## Experiment environment
 
