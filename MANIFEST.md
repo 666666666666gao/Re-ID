@@ -1311,3 +1311,22 @@
 - refine-logs/trifusion_v29_bounded_joint/EXPERIMENT_TRACKER_20260907_122414.md
 - docs/TRIFUSION_RGBNT201_CURRENT_COMPLETE_HANDOFF_2026-09-01.md
 - AGENTS.md
+
+
+## 2026-09-07T12:38:33.609921+08:00 V29 complete M0 verification
+
+- evidence/v29_m0_complete_20260907/intake.json
+- evidence/v29_m0_complete_20260907/local_complete_m0_log_aggregation.json
+- evidence/v29_m0_complete_20260907/m0_bounded_joint_capacity_steps.jsonl
+- evidence/v29_m0_complete_20260907/m0_bounded_joint_overfit_steps.jsonl
+- evidence/v29_m0_complete_20260907/m0_control_capacity_steps.jsonl
+- evidence/v29_m0_complete_20260907/trifusion_v29_bounded_joint_seed42_f4c6a03_m0_complete_snapshot.json
+- evidence/v29_m0_complete_20260907/trifusion_v29_bounded_joint_seed42_f4c6a03_m0_complete_verification.json
+- evidence/v29_m0_complete_20260907/trifusion_v29_bounded_joint_seed42_f4c6a03_m0_complete_verification.log
+- evidence/v29_m0_complete_20260907/trifusion_v29_bounded_joint_seed42_f4c6a03_m0_complete_verification_receipt.json
+- evidence/v29_m0_complete_20260907/v29_progress_20260907_1233.json
+- results/TRIFUSION_V29_M0_2026-09-07.md
+- refine-logs/trifusion_v29_bounded_joint/EXPERIMENT_TRACKER.md
+- refine-logs/trifusion_v29_bounded_joint/EXPERIMENT_TRACKER_20260907_123833.md
+- docs/TRIFUSION_RGBNT201_CURRENT_COMPLETE_HANDOFF_2026-09-01.md
+- AGENTS.md

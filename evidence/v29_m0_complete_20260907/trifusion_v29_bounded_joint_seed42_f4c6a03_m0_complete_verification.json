@@ -1,0 +1,85 @@
+{
+  "status": "PASS_COMPLETE_V29_BOUNDED_GEOMETRY_M0_RECEIPT_RECOMPUTATION",
+  "precision_fixture": {
+    "status": "PASS_REAL_SOURCE_SMALL_DERIVATIVE_REGRESSION",
+    "cases": [
+      {
+        "implementation": "original_amp",
+        "nonzero_dt_elements": 0,
+        "scaled_dt_abs_max": 0.0,
+        "scaled_dt_l2": 0.0,
+        "all_parameter_grads_finite": true,
+        "output_dtype": "torch.float16",
+        "output_error_from_original_amp": 0.0
+      },
+      {
+        "implementation": "local_fp32_fix",
+        "nonzero_dt_elements": 2048,
+        "scaled_dt_abs_max": 3.534658077342101e-08,
+        "scaled_dt_l2": 2.214225816032922e-07,
+        "all_parameter_grads_finite": true,
+        "output_dtype": "torch.float32",
+        "output_error_from_original_amp": 6.494112312793732e-06
+      }
+    ],
+    "fixture_sha256": "c569133afd9742f85699b70b1dfd953c8c4f5ac7ff9f9f500afb182db7f6943f",
+    "source_image_reads": 0,
+    "optimizer_updates": 0,
+    "retrieval_evaluation": 0
+  },
+  "execution_commit": "f4c6a03e1b263aaa9e4bce71427152007018a0ca",
+  "m0_passed": true,
+  "checks": {
+    "all_gradients_live": true,
+    "all_frozen_states_unchanged": true,
+    "overflow_zero": true,
+    "capacity_within_limit": true,
+    "overfit_excess_ratio_at_most_point1": true,
+    "style_alters_both_role_fields": true,
+    "all_training_signal_prefixes_exact": true,
+    "candidate_has_active_capacity_batches": true,
+    "all_overfit_updates_style_active": true,
+    "matched_capacity_plans": true,
+    "joint_correction_becomes_nonzero": true,
+    "both_capacity_arms_same_style_activation": true,
+    "all_actual_slot_updates_within_geometry_bound": true
+  },
+  "fixed_overfit_excess_ratio": 0.013351322882393919,
+  "original_summary_snapshot_sha256": "6b036c1406c8176d93568e83b140335f099d20c3c7b0ad0e0e4d7727d8643e67",
+  "verifier_sha256": "c8c7524a42c4fca6c613acaf57022db4da7571afecb51539fda32240dd502c02",
+  "checked_real_optimizer_updates": 116,
+  "checked_preflight_batches": 48,
+  "checked_original_v8_parity_forwards": 48,
+  "checked_backbone_interface_forwards": 48,
+  "maximum_total_loss_recompute_error": 1.126900316394952e-07,
+  "stage_gradient_tensor_ranges": [
+    {
+      "endpoint": "control",
+      "fixed": false,
+      "trainable": 203,
+      "phase_nonzero": 203,
+      "minimum_per_step": 203,
+      "maximum_per_step": 203
+    },
+    {
+      "endpoint": "bounded_joint",
+      "fixed": false,
+      "trainable": 219,
+      "phase_nonzero": 219,
+      "minimum_per_step": 206,
+      "maximum_per_step": 219
+    },
+    {
+      "endpoint": "bounded_joint",
+      "fixed": true,
+      "trainable": 219,
+      "phase_nonzero": 219,
+      "minimum_per_step": 206,
+      "maximum_per_step": 219
+    }
+  ],
+  "source_image_reads": 0,
+  "new_optimizer_updates": 0,
+  "model_tensor_loads": 0,
+  "independent_audit": false
+}
