@@ -1,13 +1,14 @@
 # TriFusion-ReID workspace
 
-## Latest verified state (2026-09-07 MSVR style runtime binding R2)
+## Latest verified state (2026-09-07T18:23 MSVR style R2 actually running)
 
-- Original style628cce0 T0 stopped18:15:06, wrapper167185/child167187 ended1; zero model/update/heldout work. All failure evidence preserved.
-- Complete780plan comparison found31 Float64 least-bit coefficient differences, max2.22e-16; all applied Float32 coefficients and all other fields identical.
-- R2 binds actual NumPy1.24.4 runtime plans, retains exact checks, original code/hypothesis/budget/gates. Config configs/MSVR310/TriFusion-source-style-paired-v1-r2.json; R2_NOT_LAUNCHED.
-- Next persistent T0 -> M0(248updates) -> M0CPU -> fresh Q1(1560updates) -> Q1CPU. Do not weaken tests or reuse old single endpoint.
-- Original V8/vehicle8x16; original scene/fullgallery/Signal unchanged; compact role checkpoints; three-dataset Goal active/unmet.
-- Master41.123; V29 and prior science results sealed. Preserve unrelated dirty files and sync all3masters.
+- Original628cce0 T0 failed only scalar byte binding, zero training; evidence retained. R2 full780plan T0 PASS, PID167450 ended0 at18:20:03.
+- Active run /root/autodl-tmp/trifusion-v2/artifacts/msvr310_source_style_v1_r2_seed42_02cc09e; execution02cc09e, wrapper167448, M0PID167458.
+- At18:23:38 M0 RUNNING, capacity reaches fold2. Fold0 both8updates fully recovered/203gradients and source Signal equality verified. Each compact checkpoint32734799bytes.
+- Full248step M0 and CPU not terminal; Q1 not yet started. Persistent wrapper advances only on original complete PASS; no duplicate launch.
+- Next observation not before18:27; M0 estimate18:28-18:30. Follow pipeline.json and original PIDs. Then fresh six-end1560update Q1 and full CPU verification.
+- Use registered configs/MSVR310/TriFusion-source-style-paired-v1-r2.json. Preserve all bound source/config/gates; no official/dev or original Signal retraining.
+- Master41.124; three-dataset Goal active/unmet. Preserve unrelated dirty files and sync all3masters. Post-start publication only documentation/report tool; training files remain pinned.
 
 ## Experiment environment
 

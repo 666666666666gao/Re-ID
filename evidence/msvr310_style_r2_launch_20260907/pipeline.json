@@ -1,0 +1,46 @@
+{
+  "status": "RUNNING",
+  "wrapper_pid": 167448,
+  "code_commit": "02cc09e3de5ab97728d1ccb6a43db3c09ec91806",
+  "config_sha256": "848254aab6dc02230a7fd33be0d60fc2560c99fc77cbd320cf0ef2efd655539d",
+  "started_at": "2026-09-07T18:19:57.813004+08:00",
+  "stages": [
+    {
+      "stage": "t0",
+      "original_pid": 167450,
+      "command": [
+        "/root/miniconda3/envs/tri_reid/bin/python",
+        "-u",
+        "-m",
+        "tools.check_msvr310_source_style_contract",
+        "--config",
+        "/root/autodl-tmp/trifusion-v2/TriFusion-ReID/configs/MSVR310/TriFusion-source-style-paired-v1-r2.json",
+        "--output",
+        "/root/autodl-tmp/trifusion-v2/artifacts/msvr310_source_style_v1_r2_seed42_02cc09e/t0.json"
+      ],
+      "gpu_enabled": false,
+      "started_at": "2026-09-07T18:19:57.813990+08:00",
+      "exit_code": 0,
+      "ended_at": "2026-09-07T18:20:03.668775+08:00",
+      "elapsed_seconds": 5.855607271194458
+    },
+    {
+      "stage": "m0",
+      "original_pid": 167458,
+      "command": [
+        "/root/miniconda3/envs/tri_reid/bin/python",
+        "-u",
+        "-m",
+        "tools.train_msvr310_source_style",
+        "--config",
+        "/root/autodl-tmp/trifusion-v2/TriFusion-ReID/configs/MSVR310/TriFusion-source-style-paired-v1-r2.json",
+        "--mode",
+        "m0",
+        "--output-dir",
+        "/root/autodl-tmp/trifusion-v2/artifacts/msvr310_source_style_v1_r2_seed42_02cc09e/m0"
+      ],
+      "gpu_enabled": true,
+      "started_at": "2026-09-07T18:20:03.671662+08:00"
+    }
+  ]
+}

@@ -2,7 +2,7 @@
 
 ## 0. 一页结论
 
-最新状态：2026-09-07，MSVR source-style首次T0因31个Float64末位字节差异停止，0训练；实际FP32扰动全部一致。R2固定服务器计划字节，保持原硬检查与合同，尚待启动（§41.123）。
+最新状态：2026-09-07 18:23实查，MSVR source-style R2完整T0通过，M0实际PID167458运行中，容量检查推进至第三折；第一折双端完整恢复/203梯度已核验。完整M0/CPU/Q1尚无终态（§41.124），Goal持续未达。
 
 当前用于已完成MSVR310比较及新登记RGBNT100比较的是原V8平行三角色结构：冻结Signal/CLIP，共享block8之前语义和tail9/10/11参数，三个角色分别运行共享tail；CNN处理局部语义Patch高频，Transformer处理全局CLS/Patch关系，Mamba处理空间与位置级三模态扫描。各角色相对冻结reference形成1536D残差，三角色4608D银行拼接3072D Signal得到7680D fused；完整单角色输出为4608D Signal+角色残差。三条路径均执行，当前没有Router/HFER、V23模态MLP或V24原型。两项车辆训练比较均已完成；RGBNT100内部完整比较支持三角色增益，MSVR310尚未超过Signal。下面V1—V8条目保留历史经过，不代表当前又启用了旧模块。
 
@@ -5535,3 +5535,17 @@ CPU终态将重算所有五输出/六端的完整距离、排序、AP/CMC、身�
 随后对全部780batch重放：31个Float64混合系数末位不同，最大2.220446049250313e-16；模型实际使用的Float32系数全部bitwise相同，所有供体、启用状态、曝光字段全等。训练服务器NumPy1.24.4；先前本地元数据的末位计算不能作为服务器完整Python字典的字节合同。
 
 R2配置configs/MSVR310/TriFusion-source-style-paired-v1-r2.json绑定实际服务器全量计划，严格字典相等检查保留；不改公式、采样、训练步数、初始化或晋级条件。新实现代码无需修改。原元数据/配置与失败证据保留；R2仍须T0→248步M0→CPU→1560步完整Q1→CPU，不复用任何旧更新。详见refine-logs/msvr310_source_style_v1/R2_RUNTIME_PLAN_BINDING.md和evidence/msvr310_style_t0_runtime_binding_20260907/。此登记时R2尚未启动。
+
+## 41.124 MSVR source-style R2真实启动与第一折完整检查
+
+R2实际启动18:19:57，执行源码提交02cc09e，wrapper167448；T0PID167450于18:20:03退出0。正式登记配置SHA848254aab6dc02230a7fd33be0d60fc2560c99fc77cbd320cf0ef2efd655539d。Run：/root/autodl-tmp/trifusion-v2/artifacts/msvr310_source_style_v1_r2_seed42_02cc09e。首次628cce0的T0失败证据仍保留，未转写为通过。
+
+T0完成全780来源计划、全部来源record覆盖、35文件源码绑定、车辆类AST仅名称/shape变化、独立NumPy公式最大误差2.384185791015625e-7，0模型前向/0优化更新/0留出图像。启用批次129/127/137保持不变。
+
+M0PID167458于18:20:03开始。18:23:38实查仍RUNNING，容量检查已推进第三折。第一折control/source_style各8步，完整检查与严格恢复完成，初始全state/参数完全匹配；总参数99,065,869，可训练8,076,300，203/203梯度非零、0overflow、冻结Signal unchanged。五个输出加载前后bitwise一致；独立来源Signal与原B0相等。两端8步耗时14.7707/12.7259秒，峰值reserved5954/6228MiB。这是短工程运行，不能作为正式吞吐或检索收益结论。
+
+两份实际compact checkpoint各32,734,799bytes（约31.22MiB），远端文件SHA、下载的5份文本SHA和本地第一折全回执一致性均核验。本地未接收模型。18:23实查余9,516,294,144bytes。后续仍需六端容量＋两端固定100步全部248更新及CPU验证，才能开始全新六端1560更新Q1。完整M0和Q1未有PASS/FAIL结论。
+
+证据evidence/msvr310_style_r2_launch_20260907/；持久tracker记录原PID、下次不早于18:27观察、M0预计18:28-18:30（估计非保证）。新增tools/summarize_msvr310_source_style.py准备终态完整600query/60身份/五输出的本地文本重算与修复/新增错误、camera/scene关联、成本分析，已语法/F821检查，未在未完成终态上虚报运行。该报告工具不改变训练绑定或运行中的模型。
+
+当前代码和新实验推进属于实际进展；三个数据集同协议baseline及资源注明SOTA总Goal仍未达，继续保持active。文档发布后的HEAD可能只推进交接/分析工具，GPU训练参数/配置/绑定文件不变；各子阶段均记录实际HEAD和文件SHA。
