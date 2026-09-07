@@ -1,12 +1,12 @@
 # TriFusion-ReID workspace
 
-## Latest verified state (2026-09-08T06:28:21.401529+08:00, full source diagnostic running)
+## Latest verified state (2026-09-08T06:42:47.914143+08:00, full source diagnostic running)
 
-- Fixed eebaaa0/configc99ddcf6: original wrapper3302/source3799 live; fold0 initial260batches complete, control11/20epoch. All9states/2340source batches and sourceCPU still pending. ETA around noon; do not restart or edit bound tools/config/plan.
-- All9-state/72B64 preflight and originalCPU PASS; additional all13-statistics936checks PASS. Original independent audit WARN, same-family/provisional with explicit runtime-gradient and single-group direct-graph limits.
-- Read-only queue/VJP coverage extension replayed all72preflight batches; all original JSON fields and CSV unchanged. Age/capacity/zero-upstream branches unexercised in preflight; report actual complete-source coverage later.
-- Deleted69 verified redundant root-level code bundles,399442735B; retained nonancestor bundle and all model weights. Free4078333952B in latest observation; exact cleanup plan/receipt retained. Master41.153.
-- Complete allsource plus originalCPU, separate all13-statistics postcheck, complete text analysis and fresh-context audit before any new paired-training hypothesis. Seed42 only, priorfresh-coordinateQ1 remains0/5both, longGoal ACTIVE/UNMET.
+- Original3302/3799 live, fixed eebaaa0/configc99ddcf6. Fold0initial260batches complete, control16/20epoch. All9states/2340batches and sourceCPU pending; ETA aroundnoon, no restart or bound-file edits.
+- Preflight72B64 and originalCPU plus all13-statistics postcheck PASS; original audit WARN same-family/provisional. Direct-model proof is single-history-group only; runtime gradient limits remain.
+- Complete-terminal text and plot tools prepared: preflight108cells/540metric values checked, PDF values/counts and rendering verified. SHORT PREFLIGHT label explicit; complete-source analysis/plots not yet run.
+- Lastturn removed69redundant code bundles399442735B; thisturn0weight/file cleanup. Latest free4073558016B. Master41.154.
+- After allsource/originalCPU, run all13-statistics postcheck, fulltext intake/analysis/plots and fresh-context audit before a new paired-training hypothesis. Seed42 only; priorfresh-coordinateQ1 remains0/5both; Goal ACTIVE/UNMET.
 
 ## Experiment environment
 
