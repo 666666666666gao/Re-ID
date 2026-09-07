@@ -2,7 +2,7 @@
 
 ## 0. 一页结论
 
-最新状态（2026-09-07完整Q1与CPU核验）：MSVR310实例记忆V1六端1560更新及全量距离/排序核验完成，59文本逐文件SHA与600query/60身份本地重算PASS；科学配对和相对Signal两组均0/5 FAIL。fused52.1211→51.9050（−0.2162），C/T提高、M下降；新增困难关系与实际梯度存在，前中期缓存漂移明显、末期减小，尚未证明陈旧为唯一原因。已封存不扫参；下一训练尚未登记。公开Signal配置/论文与README来源差异另记。主盘约4.71GiB，Goal active/unmet。详见41.134。
+最新状态（2026-09-07完整Q1与只读分析）：MSVR实例记忆V1完整1560更新/CPU/59文本已封存，配对和相对Signal均0/5 FAIL，fused−0.2162pp。后续全部29,125,376距离的正负例损失分解完成：候选新增hinge约87.8%–88.3%来自负例，负例赢家age1–3占63.5%–66.8%，不能只归咎最老缓存。全部1560CSV/六端20epoch重算PASS，0新模型前向或更新；下一训练尚未登记。磁盘约4.71GiB/10.37GiB，无新权重删除。Goal active/unmet，详见41.135。
 
 当前用于已完成MSVR310比较及新登记RGBNT100比较的是原V8平行三角色结构：冻结Signal/CLIP，共享block8之前语义和tail9/10/11参数，三个角色分别运行共享tail；CNN处理局部语义Patch高频，Transformer处理全局CLS/Patch关系，Mamba处理空间与位置级三模态扫描。各角色相对冻结reference形成1536D残差，三角色4608D银行拼接3072D Signal得到7680D fused；完整单角色输出为4608D Signal+角色残差。三条路径均执行，当前没有Router/HFER、V23模态MLP或V24原型。两项车辆训练比较均已完成；RGBNT100内部完整比较支持三角色增益，MSVR310尚未超过Signal。下面V1—V8条目保留历史经过，不代表当前又启用了旧模块。
 
@@ -5673,3 +5673,19 @@ matched fused52.12111331→51.90495689，−0.21615642pp；fold−1.56815327/+0.
 同期原始作者配置SHA与本机登记绑定核对：MSVR作者B64/K4、本机B64/K8；RGBNT100作者B128/K16、本机B64/K8。作者RGB100 YAML30epoch、正式论文文字统一50，保留差异，不能补成同一作者实际合同。Signal正式论文表2 MSVR53.6/71.9，README模型表53.2/72.4；历史README来源不改成论文表2。详见docs/SIGNAL_PUBLIC_CONFIG_AND_BASELINE_BOUNDARIES_2026-09-07.md。只是资源与来源边界核对，不改变已完成配对比较、官方记录或门槛。
 
 报告results/MSVR310_INSTANCE_MEMORY_V1_Q1_2026-09-07.md，完整证据evidence/msvr310_instance_memory_complete_q1_20260907/。新增7680探针record前向、2064heldout记录前向，0official；峰值allocated6551.053MiB/reserved6968MiB。22:11主盘空闲5,057,875,968B，GPU空闲。模型/原图/NPY留远端，0新权重删除；保护初始化/最终/复核证据。三个核心数据集长期Goal仍active/unmet。
+
+### 41.135 MSVR实例记忆完整挖掘损失分解通过与下一测量边界（2026-09-07 22:33）
+
+对已封存104506b六端Q1，仅读取原来源训练距离及索引：1560步、29,125,376距离元素、99,840anchor重复曝光，0新前向/梯度/更新/图片/official/权重。按固定0.3hinge，计算原batch、仅加历史正例、仅加历史负例、两者同时四项数值；两种加入顺序平均分配新增loss。不是实际训练了两个消融模型，也不是因果或创新声明。
+
+候选三fold负例占新增hinge88.0755%/87.8174%/88.3196%；control shadow为94.0229%/94.1271%/94.6401%。候选历史负例赢家9819/10056/9781次，其中age1–3占63.4586%/66.7562%/65.3512%，精确并列0。年龄统计未校正候选机会，不支持扫年龄或认定年轻项无误差；说明不能把主要训练问题只归因于age8最老实例。
+
+有历史的每端194步/12416anchor，原batch反序control285/282/305、candidate295/328/329；扩展后分别1376/1629/1603与1486/1844/1660。现有来源难例与实际梯度证据继续成立；只有当前模型重新编码同一视图后，才可直接区分真实困难与陈旧误差。目前未做此对照，原日志不能完整恢复各缓存项当时像素/RNG/模型状态，不补写结果。下一训练尚未登记，不扫描原V1参数挽救科学失败。
+
+只读脚本R1/R2/R3分别因远端Python3.10不支持file_digest、混淆wrapper代码提交与Q1文档HEAD、错误从距离审计读取epoch而退出；全部失败源码/日志保留。修正正确接口后R4完整CPU2.221秒通过，数学目标、训练文件与样本不变，0训练重跑。最终源码SHA330325d5c7914f412085158530864e1ef10baddd85d4c52b36935a7df5d565f7；CSV SHAa663afa88bd4d3305050420a15570f4053f91cbb4769b70af1572975dbcb7c01。
+
+wrapper code_commit104506b，Q1 summary project_commit9da45c5；实际git diff只含8文档/证据/跟踪文件，runner SHA c16cdbff37b46decb279aa013e4a53d9273851a59160cda99fbdf0f16cf39f3b与原代码一致。不是训练途中改代码；原receipt保持，主报告补充字段区别。
+
+远端目录msvr310_instance_memory_mining_diagnosis_v1_r4_20260907，本地全部1560CSV再汇总六端及每端20epoch，最大累加误差5.46e−12。报告results/MSVR310_INSTANCE_MEMORY_MINING_DIAGNOSIS_2026-09-07.md；证据evidence/msvr310_instance_memory_mining_20260907/；工具tools/analyze_msvr_memory_mining.py。原Q1_FAIL0/5与官方边界不变。
+
+主盘再次空闲5,058,236,416B，另一存储盘11,129,241,600B，GPU1MiB/0%。272个pt/pth含检索/诊断数据，0新增删除；保留初始化/终点/复核证据。模型/原图/NPY仍留远端。长期三核心数据集Goal active/unmet。

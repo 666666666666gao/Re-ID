@@ -111,3 +111,5 @@
 证据：[完整文本目录](../evidence/msvr310_instance_memory_complete_q1_20260907/)、[全部600query/60身份与训练重算](../evidence/msvr310_instance_memory_complete_q1_20260907/local_complete_reaggregation.json)、[CPU终态](../evidence/msvr310_instance_memory_complete_q1_20260907/q1_cpu.json)、[接收SHA清单](../evidence/msvr310_instance_memory_complete_q1_20260907/intake_manifest.json)。已执行分析脚本按当时接收目录原样归档；如在新目录复核，只需设置其开头的输入目录，运算定义不变。
 
 RGBNT201、MSVR310、RGBNT100三个核心数据集的长期Goal仍ACTIVE/UNMET。RGBNT100已有基线正收益、RGBNT201 V27正证据与本次MSVR负结果分别保留；任何一项不能替代全部目标。
+
+后续完整来源距离分解已完成，详见[只读诊断](MSVR310_INSTANCE_MEMORY_MINING_DIAGNOSIS_2026-09-07.md)。另核清执行来源：wrapper绑定104506b，Q1 receipt记录启动时文档HEAD9da45c5；两提交之间只有8个文档/证据/跟踪文件，训练源码及runner SHA不变。原始receipt全部保留，没有用后来的文档提交冒充新训练。
