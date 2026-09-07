@@ -1,0 +1,88 @@
+{
+  "status": "RUNNING",
+  "wrapper_pid": 192704,
+  "code_commit": "b4501fa795155eb613fb3bcb07a07c5fae4c6a79",
+  "config_sha256": "32e22d3a0cd858e96430e4b9f9b0a2093c0fdf30f026d8d334ad92d46cfb94aa",
+  "started_at": "2026-09-08T01:32:35.773678+08:00",
+  "stages": [
+    {
+      "stage": "t0",
+      "original_pid": 192706,
+      "command": [
+        "/root/miniconda3/envs/tri_reid/bin/python",
+        "-u",
+        "-m",
+        "tools.check_msvr_fresh_coordinate",
+        "--config",
+        "/root/autodl-tmp/trifusion-v2/TriFusion-ReID/configs/MSVR310/TriFusion-fresh-coordinate-paired-v1.json",
+        "--output",
+        "/root/autodl-tmp/trifusion-v2/artifacts/msvr310_fresh_coordinate_v1_seed42_b4501fa/t0.json"
+      ],
+      "started_at": "2026-09-08T01:32:35.774400+08:00",
+      "exit_code": 0,
+      "ended_at": "2026-09-08T01:32:40.589991+08:00",
+      "elapsed_seconds": 4.816164139658213
+    },
+    {
+      "stage": "m0",
+      "original_pid": 192718,
+      "command": [
+        "/root/miniconda3/envs/tri_reid/bin/python",
+        "-u",
+        "-m",
+        "tools.train_msvr_fresh_coordinate",
+        "--config",
+        "/root/autodl-tmp/trifusion-v2/TriFusion-ReID/configs/MSVR310/TriFusion-fresh-coordinate-paired-v1.json",
+        "--mode",
+        "m0",
+        "--output-dir",
+        "/root/autodl-tmp/trifusion-v2/artifacts/msvr310_fresh_coordinate_v1_seed42_b4501fa/m0"
+      ],
+      "started_at": "2026-09-08T01:32:40.591616+08:00",
+      "exit_code": 0,
+      "ended_at": "2026-09-08T01:41:44.350164+08:00",
+      "elapsed_seconds": 543.7595197707415
+    },
+    {
+      "stage": "m0_cpu",
+      "original_pid": 193575,
+      "command": [
+        "/root/miniconda3/envs/tri_reid/bin/python",
+        "-u",
+        "-m",
+        "tools.verify_msvr_fresh_coordinate",
+        "--config",
+        "/root/autodl-tmp/trifusion-v2/TriFusion-ReID/configs/MSVR310/TriFusion-fresh-coordinate-paired-v1.json",
+        "--run-dir",
+        "/root/autodl-tmp/trifusion-v2/artifacts/msvr310_fresh_coordinate_v1_seed42_b4501fa/m0",
+        "--output",
+        "/root/autodl-tmp/trifusion-v2/artifacts/msvr310_fresh_coordinate_v1_seed42_b4501fa/m0_cpu.json"
+      ],
+      "started_at": "2026-09-08T01:41:44.351577+08:00",
+      "exit_code": 0,
+      "ended_at": "2026-09-08T01:41:52.215811+08:00",
+      "elapsed_seconds": 7.8650756403803825
+    },
+    {
+      "stage": "q1",
+      "original_pid": 193650,
+      "command": [
+        "/root/miniconda3/envs/tri_reid/bin/python",
+        "-u",
+        "-m",
+        "tools.train_msvr_fresh_coordinate",
+        "--config",
+        "/root/autodl-tmp/trifusion-v2/TriFusion-ReID/configs/MSVR310/TriFusion-fresh-coordinate-paired-v1.json",
+        "--mode",
+        "q1",
+        "--output-dir",
+        "/root/autodl-tmp/trifusion-v2/artifacts/msvr310_fresh_coordinate_v1_seed42_b4501fa/q1",
+        "--m0-receipt",
+        "/root/autodl-tmp/trifusion-v2/artifacts/msvr310_fresh_coordinate_v1_seed42_b4501fa/m0/summary.json",
+        "--m0-verification",
+        "/root/autodl-tmp/trifusion-v2/artifacts/msvr310_fresh_coordinate_v1_seed42_b4501fa/m0_cpu.json"
+      ],
+      "started_at": "2026-09-08T01:41:52.217645+08:00"
+    }
+  ]
+}

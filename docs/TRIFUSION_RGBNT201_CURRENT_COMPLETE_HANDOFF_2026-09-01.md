@@ -2,7 +2,7 @@
 
 ## 0. 一页结论
 
-当前执行入口：§41.145；MSVR当前历史坐标更新V1已于01:32启动，T0通过，原wrapper192704/M0192718运行；全部M0/CPU/Q1待终态，三数据集Goal ACTIVE/UNMET。
+当前执行入口：§41.146；MSVR当前历史坐标更新V1完整M0/CPU与文本审查已收束，原Q1193650继续，第0折fresh_memory训练中；全六端未终态，Goal ACTIVE/UNMET。
 
 当前用于已完成MSVR310比较及新登记RGBNT100比较的是原V8平行三角色结构：冻结Signal/CLIP，共享block8之前语义和tail9/10/11参数，三个角色分别运行共享tail；CNN处理局部语义Patch高频，Transformer处理全局CLS/Patch关系，Mamba处理空间与位置级三模态扫描。各角色相对冻结reference形成1536D残差，三角色4608D银行拼接3072D Signal得到7680D fused；完整单角色输出为4608D Signal+角色残差。三条路径均执行，当前没有Router/HFER、V23模态MLP或V24原型。两项车辆训练比较均已完成；RGBNT100内部完整比较支持三角色增益，MSVR310尚未超过Signal。下面V1—V8条目保留历史经过，不代表当前又启用了旧模块。
 
@@ -5797,3 +5797,15 @@ GradCache原论文RepL4NLP2021及作者提交906f03835fbc183132a9db32612a9e8f180
 run /root/autodl-tmp/trifusion-v2/artifacts/msvr310_fresh_coordinate_v1_seed42_b4501fa，screen msvr_fresh_coordinate_b4501fa。启动主盘4,843,671,552B，最近4706992128B；GPU6252, 0。所有绑定依赖SHA保持，复用原环境，0权重删除。报告results/MSVR310_FRESH_COORDINATE_V1_LAUNCH_2026-09-08.md及证据evidence/msvr310_fresh_coordinate_launch_20260908/。
 
 预计M001:43–01:48后CPU；成功才完整六端Q1，估计再2–3h并按实速修订。两组原五门、source隔离、完整gallery、seed42与停止梯度边界不变。观察原进程180–300秒或里程碑，不因等待超时重启，不提前声称方法有效；长期Goal ACTIVE/UNMET。
+
+### 41.146 当前历史坐标更新完整M0通过，审查收束与Q1持续（2026-09-08T02:05:10.411619+08:00）
+
+固定b4501fa/config32e22d3a不变。M0192718于01:41:44退出0（543.7595sec），CPU193575于01:41:52退出0。全部六端8步＋两端100步共248更新，CPU重算选中训练距离1,236,480和旧/新历史坐标441,344元素，共1,677,824；27文本2,571,292B逐文件size/SHA相同，完整文本再聚合PASS。summary SHAc72c51ae5126fa4e17cd10f869d53811a6e39aeb9d459097f3e1bccdf33cb5f9，CPU SHA3e8f1f7cebd9709b71bf09d4c729e23809f6fd5c8a65471307aa4443b117d25e。
+
+每端累计203/203可训练张量至少一次非零（不称每步全部非零）、0overflow、冻结Signal不变、真实B64零更新重编码逐位相同、六compact严格重载及五输出相同。全部90role/update旧新梯度差异大于重复噪声。重编码额外6272角色记录，原固定漂移另512；两端含overfit在内初始化/record/像素/历史/计数完整匹配。
+
+两个100步excess ratio0.0007015509/0.0007023767，低于原0.1门。固定batch被历史去重排除，200步无历史候选，只支持主任务拟合。六capacity端实际历史年龄1–5、最大集合195/176/221，不冒充真实模型已覆盖age8/capacity512。M0heldout和official读取0，无本实验Q1成绩终态。
+
+独立上下文experiment-audit最终WARN、same-family/provisional，全部248行及1244汇总数值叶项核对PASS，无代码修改/重启要求。远端CPU从保存距离重算expandedTriplet；其余13loss仅核对运行标量与加权和，运行时梯度摘要不是独立反传。审查者本地未持有22二进制，保留范围限制。报告已修正累计梯度覆盖和数值一致性proxy分类。详见results/MSVR310_FRESH_COORDINATE_V1_M0_2026-09-08.md、refine-logs/msvr310_fresh_coordinate_v1/EXPERIMENT_AUDIT.md/json及evidence/msvr310_fresh_coordinate_complete_m0_20260908/。
+
+新增只读文本汇总tools/analyze_msvr_fresh_coordinate_text.py已实际执行完整M0并通过AST/ruff F，Q1路径准备但未执行，不修改训练合同。原wrapper192704自动于01:41:52启动Q1193650；2026-09-08T02:03:41.516384+08:00实查两原进程/命令行持续，第0折control已记录终点、fresh_memory5/20epoch。主盘4495597568B，GPU7418, 100；0新权重删除。稳定历史阶段约71秒/epoch，预计完整Q1/CPU约03:40前后，以里程碑观察同一进程，不看单端改方案。长期三数据集Goal ACTIVE/UNMET。
