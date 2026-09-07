@@ -1,23 +1,23 @@
 # TriFusion-ReID workspace
 
-## Latest verified state (2026-09-07T11:03:56.845228+08:00)
+## Latest verified state (2026-09-07T11:15:31.063509+08:00)
 
-- V28 R2 remains SEALED Q1_FAIL0/5; full sixendpoint3360updates and all arrays verified.
-  Read results/TRIFUSION_V28_FP32_R2_Q1_2026-09-07.md. Original training/verifier ended exit0.
-- New fixed-source joint scale/direction diagnostic IMPLEMENTED_REGISTERED_NOT_RUN.
-  Plan: refine-logs/v28_source_joint_scale/EXPERIMENT_PLAN.md; contract: configs/diagnostics/V28-source-joint-scale-v1.json.
-  Three candidate epoch20 checkpoints, all1680source batches×2views=3360forwards/1935360slots;0updates.
-  Original2126/2075/2051source records all have registered exposure. No cherry-picked batches.
-  Three CPU/CUDA/independentNumPy math tests PASS; no real model/image/optimizer use yet.
-  Formal diagnostic and complete CPU verification NOT RUN; no newPID yet.
-- Save all16scalar fields(~236.25MiB), full batch receipts,162strata and5076identity-output rows.
-  Raw vectors checked in memory then discarded; offline check covers all persisted scalars, not raw vector re-forward.
-  No localTorch/model/images, dev/official/retrieval/newweights or V28 gate changes.
-- Next: publish/sync, then detached sequential GPU diagnostic+CPU verification,240second polls,no autoretry.
-- Master41.104;sync remote/repo/Desktop bytes. Preserve both unrelated dirty local files.
-  Whole RGBNT201/MSVR310/RGBNT100 baseline/SOTA goal remains incomplete.
-  OriginalR1 failure and all235pre-Q1 updates remain; data~13.56GiB, expected newfiles<512MiB.
-  Single seed/reusedOOF and unavailable external independent audit limits remain.
+- V28 fixed-source joint scale diagnostic RUNNING, actual code4158c95ca639721e584d1e7271219f0f3b557cc3.
+  Originalwrapper149889/GPUchild149890 started11:08:46, both live and commands checked11:13:06.
+  Completed174/1680batches,348/3360forwards,200448/1935360slots; firstfold not complete.
+  GPU2582MiB/100%,data14531252224B. No restart or new optimizer update.
+- Contractf32293b64d9343ab308b3e9cd95cd41a6722630a34026ff42fafcf0ef2cd398e;
+  configs/diagnostics/V28-source-joint-scale-v1.json and refine-logs/v28_source_joint_scale/EXPERIMENT_PLAN.md.
+  Three fixedcandidate finals, allsource records/exposures,2views,raw vectors checked then discarded.
+  All16scalar fields saved; complete CPU validation will cover all1935360observations and5076identity rows.
+  CPU stage NOT YET started; samewrapper starts it only after GPUexit0, no autoretry.
+- Estimate GPU11:45–11:47 from actual37.3seconds/29batches,CPU verification after.
+  Poll180–300seconds or estimatedmilestone. Do not treat observation timeout as stopped.
+  Read evidence/v28_source_joint_scale_launch_20260907/ and current tracker.
+- V28 R2 remains SEALED Q1_FAIL0/5, no retuning, gate changes or dev/official/retrieval.
+  All6V28 final checkpointSHA matched at launch; preserveanchors/finals/arrays, newdeletions0.
+  Seed42/reusedOOF and noexternalindependentaudit limits; three-dataset/SOTA goal incomplete.
+  Master41.105; remote/repo/Desktop bytes must stay identical.
 
 ## Experiment environment
 

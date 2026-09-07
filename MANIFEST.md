@@ -1224,3 +1224,17 @@
 - refine-logs/v28_source_joint_scale/EXPERIMENT_TRACKER_20260907_110356.md
 - docs/TRIFUSION_RGBNT201_CURRENT_COMPLETE_HANDOFF_2026-09-01.md
 - AGENTS.md
+
+
+## 2026-09-07T11:15:31.063509+08:00 V28 source scale actual launch
+
+- evidence/v28_source_joint_scale_launch_20260907/intake.json
+- evidence/v28_source_joint_scale_launch_20260907/v28_source_joint_scale_4158c95_wrapper.py
+- evidence/v28_source_joint_scale_launch_20260907/v28_source_joint_scale_seed42_4158c95_launch.json
+- evidence/v28_source_joint_scale_launch_20260907/v28_source_joint_scale_seed42_4158c95_launcher.json
+- evidence/v28_source_joint_scale_launch_20260907/v28_source_joint_scale_seed42_4158c95_prelaunch.json
+- evidence/v28_source_joint_scale_launch_20260907/v28_source_joint_scale_progress_20260907_111250.json
+- refine-logs/v28_source_joint_scale/EXPERIMENT_TRACKER.md
+- refine-logs/v28_source_joint_scale/EXPERIMENT_TRACKER_20260907_111531.md
+- docs/TRIFUSION_RGBNT201_CURRENT_COMPLETE_HANDOFF_2026-09-01.md
+- AGENTS.md
