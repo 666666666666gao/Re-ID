@@ -1,23 +1,23 @@
 # TriFusion-ReID workspace
 
-## Latest verified state (2026-09-07T11:15:31.063509+08:00)
+## Latest verified state (2026-09-07T11:53:35.445631+08:00)
 
-- V28 fixed-source joint scale diagnostic RUNNING, actual code4158c95ca639721e584d1e7271219f0f3b557cc3.
-  Originalwrapper149889/GPUchild149890 started11:08:46, both live and commands checked11:13:06.
-  Completed174/1680batches,348/3360forwards,200448/1935360slots; firstfold not complete.
-  GPU2582MiB/100%,data14531252224B. No restart or new optimizer update.
-- Contractf32293b64d9343ab308b3e9cd95cd41a6722630a34026ff42fafcf0ef2cd398e;
-  configs/diagnostics/V28-source-joint-scale-v1.json and refine-logs/v28_source_joint_scale/EXPERIMENT_PLAN.md.
-  Three fixedcandidate finals, allsource records/exposures,2views,raw vectors checked then discarded.
-  All16scalar fields saved; complete CPU validation will cover all1935360observations and5076identity rows.
-  CPU stage NOT YET started; samewrapper starts it only after GPUexit0, no autoretry.
-- Estimate GPU11:45–11:47 from actual37.3seconds/29batches,CPU verification after.
-  Poll180–300seconds or estimatedmilestone. Do not treat observation timeout as stopped.
-  Read evidence/v28_source_joint_scale_launch_20260907/ and current tracker.
-- V28 R2 remains SEALED Q1_FAIL0/5, no retuning, gate changes or dev/official/retrieval.
-  All6V28 final checkpointSHA matched at launch; preserveanchors/finals/arrays, newdeletions0.
-  Seed42/reusedOOF and noexternalindependentaudit limits; three-dataset/SOTA goal incomplete.
-  Master41.105; remote/repo/Desktop bytes must stay identical.
+- V28 complete source geometry diagnostic COMPLETE, originalcode4158c95; GPU149890/CPU152087/wrapper149889 exited0 by11:45:40.
+  All1680batches/3360forwards/1935360slots/30965760scalars verified; allsource records and94IDs/fold covered.
+  Parameters/buffers unchanged, gradNone; no heldout/dev/official/retrieval or optimizer updates.
+- ThreefoldMamba andfold1CNN dominate44.444444% slot exposures inboth views; other slots mostly preserve current direction.
+  Transformer small corrections despite largest independentretrieval decline; fold0fused positive despiteMamba takeover.
+  Do not infer universal identity-informationloss or fullcausal explanation from direction/scale.
+- User-requested tangent supplement completed once from savedFP64scalars,0forwards; all162strata/5076identity rows locally recomposed.
+  Originalanglemedian16.354346deg/P95 94.642040deg; no initial-to-final rolevector comparison.
+  Executorreviews only, not externalindependentaudit. OriginalGPUsummary pendingstatus sealed; CPU/parentexit0 final.
+- Read results/TRIFUSION_V28_SOURCE_JOINT_GEOMETRY_2026-09-07.md, evidence/v28_source_joint_scale_complete_20260907/,
+  docs/V28_GEOMETRY_FOLLOWUP_BOUNDARIES_2026-09-07.md and source-scale tracker.
+- Next independentgeometry-constrained joint-training hypothesis NOT_REGISTERED/NOT_RUN.
+  KeepV27perturbation,localFP32,legalinit,pairedsixendpoints,budget/gates. No simultaneousteacher/memory/PCGrad extras.
+  V28Q1_FAIL0/5 andV27Q1_FAIL4/5 sealed; single-seed/reusedOOF andthree-dataset/SOTA limits remain.
+- Datafree14272937984B; GPUidle1MiB/0%; diagnostic288045485B,no newweights/deletions.
+  Preserve anchors/finals/arrays/failedreceipts. Master41.106 remote/repo/Desktop bytes must remain identical.
 
 ## Experiment environment
 
