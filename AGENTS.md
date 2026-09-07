@@ -1,26 +1,28 @@
 # TriFusion-ReID workspace
 
-## Latest verified state (2026-09-07T12:38:33.609921+08:00)
+## Latest verified state (2026-09-07T12:59:21.075742+08:00)
 
-- V29 M0 PASS all 13 checks; full paired Q1 RUNNING on f4c6a03e1b263aaa9e4bce71427152007018a0ca.
-  Original training 153151 / wrapper 153149, started 12:18:47; alive and exact commands at 12:32:19.
-  Log completed fold 0 control epoch 13; no complete paired retrieval terminal result.
-- CPU verification 154239 exit 0 at 12:31:33: all 116 updates and complete preflight/parity/field receipts.
-  Loss error 1.126900316394952e-7; excess ratio 0.013351322882393919; all 66816 slot observations bounded.
-  Candidate maximum update ratio 0.4886577725 / minimum cosine 0.8984663486.
-  Phase gradients 203/203 and 219/219; candidate first step 206, fixed-batch last step 209.
-  Do not claim all 219 gradients on every step or an external independent audit.
-- Read results/TRIFUSION_V29_M0_2026-09-07.md and evidence/v29_m0_complete_20260907/.
-  Master section 41.109; remote / repo / Desktop must match bytes.
-- Config 427242f945fdb329f72467f97f58a56a86f410630adb68cd69f76fd7e4bc83b5;
-  plan 61d6841eea54303b3c87dad31a94da32089fdff9513d9fde076a3839bd435028.
-  Run /root/autodl-tmp/trifusion-v2/artifacts/trifusion_v29_bounded_joint_seed42_f4c6a03.
-  DO NOT edit pinned source/config/plan or restart the original processes.
-- Fixed b0.5; same V27/FP32/legal fresh Q1 init/seven-head loss/budget/five science gates.
-  Six ends 3360 updates, full3126 gallery/571 eligible queries/five outputs; automatic CPU verification/report.
-  Estimate terminal 13:40–13:55; poll at 240-second or expected milestone intervals.
-- Disk14203797504 B free at 12:32:19; no new weight deletions. Preserve finals/anchors/arrays/fixture.
-  M0 PASS is not retrieval effectiveness; V28 FAIL0/5, seed42/reused OOF and three-dataset goal unresolved.
+- V29 full paired Q1 RUNNING on f4c6a03e1b263aaa9e4bce71427152007018a0ca; M0 PASS all 13.
+  Original training 153151 / wrapper 153149 alive at 12:54:14; fold0 complete, fold1 control epoch7.
+  No complete three-fold scientific terminal; do not decide from the partial fold.
+- First fold both arms 580 updates/20 epochs/1000 gallery/190 queries/five outputs.
+  At12:55 both complete weights, retrieval arrays and step logs rehashed; strict reload/read-only receipts match.
+  Weights65171960 B, arrays251852276 B; data free13877886976 B. No deletions or new model reads.
+  Evidence: evidence/v29_first_fold_storage_20260907/.
+- New local terminal tools AST/F821 checked, READY NOT RUN on V29 terminal:
+  tools/verify_v29_terminal_scalars_local.py and tools/summarize_v29_terminal_outcomes.py.
+  Complete original pipeline must finish first; only text/JSON/CSV transferred locally.
+- Read docs/V29_TERMINAL_AND_VEHICLE_BOUNDARIES_2026-09-07.md.
+  Vehicle8x16 versus current style16x8, legal initialization history, sampler, MSVRscene filtering and exact Signal execution need their own binding.
+  No new vehicle training or official tuning is authorized by a partial score.
+- Run /root/autodl-tmp/trifusion-v2/artifacts/trifusion_v29_bounded_joint_seed42_f4c6a03.
+  Config427242f945fdb329f72467f97f58a56a86f410630adb68cd69f76fd7e4bc83b5;
+  plan61d6841eea54303b3c87dad31a94da32089fdff9513d9fde076a3839bd435028.
+  DO NOT edit pinned source/config/plan or restart original handles. New helpers are report-only.
+- Six ends3360 steps/full3126 gallery/571 queries/five science gates unchanged; terminal estimate13:40–13:55.
+  Poll240 seconds or predicted milestones. First pair training1465.745378 seconds; no timeout restart.
+  M0 is engineering evidence, not retrieval success. V27FAIL4/5,V28FAIL0/5,seed42/reused OOF and SOTA goal unresolved.
+  Master section41.110 must be byte-equal remote/repo/Desktop.
 
 ## Experiment environment
 

@@ -1330,3 +1330,17 @@
 - refine-logs/trifusion_v29_bounded_joint/EXPERIMENT_TRACKER_20260907_123833.md
 - docs/TRIFUSION_RGBNT201_CURRENT_COMPLETE_HANDOFF_2026-09-01.md
 - AGENTS.md
+
+
+## 2026-09-07T12:59:21.075742+08:00 V29 first full fold storage and terminal preparation
+
+- evidence/v29_first_fold_storage_20260907/v29_first_fold_storage_20260907.json
+- evidence/v29_first_fold_storage_20260907/v29_progress_20260907_1254.json
+- evidence/v29_first_fold_storage_20260907/v29_terminal_preparation_20260907.json
+- tools/verify_v29_terminal_scalars_local.py
+- tools/summarize_v29_terminal_outcomes.py
+- docs/V29_TERMINAL_AND_VEHICLE_BOUNDARIES_2026-09-07.md
+- refine-logs/trifusion_v29_bounded_joint/EXPERIMENT_TRACKER.md
+- refine-logs/trifusion_v29_bounded_joint/EXPERIMENT_TRACKER_20260907_125921.md
+- docs/TRIFUSION_RGBNT201_CURRENT_COMPLETE_HANDOFF_2026-09-01.md
+- AGENTS.md
