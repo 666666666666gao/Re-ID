@@ -1,49 +1,28 @@
 # TriFusion-ReID workspace
 
-## Latest verified state (2026-09-07T15:02:31.635407+08:00)
+## Latest verified state (2026-09-07T17:15:50.540517+08:00)
 
-- V29 COMPLETE_VERIFIED_Q1_FAIL, 0/5 scientific gates, not running.
-  Execution f4c6a03e1b263aaa9e4bce71427152007018a0ca; fixed 6 ends/20 epochs/3360 steps.
-  M0 116 updates/13 engineering gates passed. Full 3126 gallery/571 eligible queries/21 identities.
-- Training153151 exited0 at13:38:00; CPU158223/report158273/wrapper153149 exited0 by13:38:11.
-  All original processes absent at13:42. Do not restart or retune this sealed run.
-- F81.4874846980 ->81.7070190620 (+0.2195343641);
-  C-0.0918723450/T+0.0577887793/M+0.0751655938.
-  Fold F+1.3264342011/-0.1400842027/-0.5029371488; identity bootstrap LB-0.5389154198.
-  Candidate F is0.0099539899 below CNN. All original gates remain FAIL.
-- Complete training1935360 and retrieval56268 slot statistics meet b0.5 geometry bound.
-  Candidate final weighted mean update ratio ~0.5 in all folds; raw corrections remain large.
-  Current h-to-y bound does not freeze original role training geometry or guarantee retrieval.
-- Read results/TRIFUSION_V29_Q1_2026-09-07.md and evidence/v29_complete_terminal_20260907/.
-  Full remote arrays/rankings verified; local3360-loss/metrics/bootstrap/geometry scalars PASS.
-  PNG reviewed; SVG XML checked; first legend-overlap render fixed and disclosed.
-  Executor verification is not independent external audit.
-- Data free13187350528 B; no new deletion; final weights and arrays retained remotely.
-  Local text/code/generated plots only, no model/checkpoint/image/NPY transfers.
-- Source-only initial/control/candidate role-relation drift diagnosis is MATH_PASS_SOURCE_RUNNING.
-  Contract configs/RGBNT201/TriFusion-v29-source-role-drift-diagnostic.json; plan refine-logs/v29_source_role_drift/EXPERIMENT_PLAN.md.
-  All1680 source batches/10080 fixed forwards, all94 source IDs per fold, no model update or retrieval.
-  Local T0/AST/F821 PASS; remote CPU/CUDA T0 PASS,1728 synthetic slot pairs max2.384185791e-7.
-  Original diagnostic159463/wrapper159453 and report queue160653 live at14:58:28; first fold580/1680 batches,3480/10080 forwards complete.
-  Run /root/autodl-tmp/trifusion-v2/artifacts/v29_source_role_drift_seed42_1d52c1e.
-  No complete source or CPU terminal yet. Do not restart, edit source/contract, or infer progress from initial summary0.
-  First fold storage SHA and two final checkpoint SHA verified; no complete CPU/scientific conclusion.
-  Next fold expected ~15:30; GPU ETA16:03-16:10 plus5-20 CPU minutes; poll original handles180-300s or milestone.
-  Expected3.115GiB raw arrays, startup requires6GiB free; latest free11934138368B; original source process remains active.
-  Estimate90-110 minutes GPU plus5-20 CPU; original handles poll180-300 seconds, no automatic restart.
-  Check pairwise identity geometry as well as vector change; no new preservation loss justified yet.
-  No scan b/seed/epoch or V29 rerun; no pre-success mechanism ablations/official tuning.
-- Current architecture: docs/V29_CURRENT_NETWORK_AND_SUPERVISION.md.
-  Vehicle interface boundaries: docs/V29_TERMINAL_AND_VEHICLE_BOUNDARIES_2026-09-07.md.
-  No new vehicle experiment launched.
-- Complete scalar reporter and240s queue implemented, AST/CLI/F821 PASS.
-  Original queue160653 launched14:48:19 onacf4720, WAITING; report NOT_RUN.
-  See docs/V29_SOURCE_DRIFT_COMPLETE_REPORTING.md. Pinned running source/config/plan unchanged.
-- Complete terminal inspector and42-file text-only intake prepared, AST/CLI/F821 PASS, NOT_RUN.
-  First-fold evidence: evidence/v29_source_drift_first_fold_20260907/.
-- Master section41.117; remote/repo/Desktop must be byte-equal.
-  RGBNT100 baseline gain, MSVR310 negative, RGBNT201 dev shortfall, single42/reused OOF remain.
-  Three-dataset baseline/SOTA objective is not complete.
+- Long-term TriFusion goal restored by user request and verified active via official API.
+  Read docs/TRIFUSION_RESEARCH_GOAL_2026-09-07.md; all3datasets baseline/SOTA objective remains unmet.
+- V29 Q1 COMPLETE_FAIL0/5 remains sealed, fused+0.219534 mAP, two negative folds, CNN aggregate negative.
+  Read results/TRIFUSION_V29_Q1_2026-09-07.md. No b/seed/checkpoint scan or official tuning.
+- Source role drift diagnostic on1d52c1e is COMPLETE:1680batches/10080forwards.
+  Original159463/wrapper159453/queue160653/CPU163560/report163862/math159455 all ended exit0.
+  GPU16:03:55, CPU16:14:47, report16:16:23. Do not restart these completed jobs.
+- Full743178240 similarity values/7741440 vector observations/45549504 protocol relation exposures verified.
+  42text files48248745B received and allSHA/CSVrows checked; all18 outputs/allsource IDs retained.
+  Source state unchanged, grads absent; no new training or retrieval. Raw arrays/models remain remote.
+  First transfer socket10054 reset preserved;29 complete files verified,13 missing prefetched, all complete17:01:53.
+- Reliable fused/full-role ordering had no newly lost relations; source fused still0 original/1style wrong.
+  Mean fused margin decreased for all282fold-source identity combinations and all42eligiblecross-camera combinations.
+  Joint accounts for~80–81% of net mean-margin decrease; this is scalar decomposition, not retrieval causality.
+  Role coordinate drift and near-bound h-to-y updates are real, not sufficient proof of identity loss.
+- Read results/TRIFUSION_V29_SOURCE_ROLE_DRIFT_2026-09-07.md and evidence/v29_source_drift_complete_20260907/.
+  Next: use already-saved complete matrices to distinguish independent joint discrimination from common similarity
+  shift/contraction. PROPOSED_NOT_RUN; no new GPU/loss/teacher/PCGrad or premature preservation claim.
+- Keep V27 positive paired evidence, RGBNT100 baseline gain and limitations, MSVR310 negative and RGBNT201dev shortfall.
+  Current architecture docs/V29_CURRENT_NETWORK_AND_SUPERVISION.md; vehicle bounds docs/V29_TERMINAL_AND_VEHICLE_BOUNDARIES_2026-09-07.md.
+- Master41.118; remote/repo/Desktop byte-equal sync required. Preserve unrelated dirty worktree files.
 
 ## Experiment environment
 
