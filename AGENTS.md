@@ -1,26 +1,28 @@
 # TriFusion-ReID workspace
 
-## Latest verified state (2026-09-07T09:06:44.480654+08:00)
+## Latest verified state (2026-09-07T09:17:53.290164+08:00)
 
-- V28 R2 bf8de956e685311dd70631395009a2c06a2c8591 started09:02:55,
-  child143321/wrapper143320; alive09:03:17. T0 all3checks PASS.
-  Captured real fixture:AMP dt0/2048; localFP32 2048/2048, finite.
-  M0 still awaiting complete terminal; no complete Q1 or new official result.
-- Read refine-logs/trifusion_v28_joint_tokens_fp32/EXPERIMENT_TRACKER.md.
-  R2 onlyjoint FP32 execution; original sources/116step gates/5science gates unchanged.
-  First prelaunch guard SyntaxError occurred before executing any remote check/child;
-  fixed dedicated placeholder and compile. Actual training started once.
-- OriginalV28 c9a38e6 M0_FAIL218/219 and116updates sealed.
-  Same-forward863022c diagnosis restored2048/2048 FP32 dt gradients;
-  two failed exact-loss cross-process probes preserved; totaldiagnosticupdates3.
-  Fixture engineering-only, never initializesfolds. LegalperfoldV12 remains.
-- R2 M0/terminal verifier and reporter prepared, not yet executed; originalR1 scripts kept.
-  Preserve203/219phase gradient coverage, fixedoverfitfloor and all5sciencegates.
-- Disk09:02:55 data15624220672B/system11129249792B; previous24deletions
-  stillabsent, protected12models fullSHA match. Released24.900344GiB earlier;
-  newdeletions0. Protectanchors/finals/arrays/fixtures.
-- GPU training active. Poll180–300s. Wholemulti-dataset/SOTAgoalunmet.
-  Single seed/reusedOOF andexecutor-not-external-review boundaries. Master41.99.
+- V28 R2 bf8de956e685311dd70631395009a2c06a2c8591 fullM0 PASS all12gates.
+  116updates;48pairedpreflight/48originalV8/48backbonechecks allcomplete.
+  control203/203; candidatecapacity andfixed100overfit219/219; overflow0.
+  reserved6026/7608MiB, excesslossratio0.013347598525834775.
+  Serverfullreceipt andlocalfull116scalar recomputation PASS; executor,notexternalreview.
+- Read results/TRIFUSION_V28_FP32_R2_M0_2026-09-07.md and
+  refine-logs/trifusion_v28_joint_tokens_fp32/EXPERIMENT_TRACKER.md.
+  OriginalR1 M0_FAIL116updates and3diagnosticupdates preserved;前置235updates.
+  Truefixture AMPdt0/2048→localFP322048/2048; fixture never initializesfolds.
+- Q1 training143321/wrapper143320 active;09:14:20 fold0control281/580updates.
+  Complete6endpoint3360step terminal NOT YET. No partialfold decision/tuning.
+  Actualfixedconfig/plan and original5sciencegates unchanged.
+- Persistent CPU terminalwaiter144462/wrapper144461 started09:15:24,aliveverified.
+  tools/wait_v28_fp32_terminal.py waits240s between checks; aftercompleteexit0
+  verifies6arraysets/all3360updates/rankings/bootstrap thenrendersallidentities/queries.
+  It is WAITING, not completedreview; no newmodel/images/updates/evaluation.
+- Disk09:02:55 data15624220672B/system11129249792B;24deletedpathsstillabsent,
+  protected12models fullSHA match; earlierrelease24.900344GiB,newdeletions0.
+  Preserveanchors/finals/arrays/fixtures;trainingremainsdetached.
+- Single seed/reusedOOF, noexternalindependentaudit,wholemulti-dataset/SOTAgoalunmet.
+  Master41.100; remote/repo/Desktop must stay byteidentical.
 
 ## Experiment environment
 
