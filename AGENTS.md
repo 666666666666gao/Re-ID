@@ -1,12 +1,12 @@
 # TriFusion-ReID workspace
 
-## Latest verified state (2026-09-07 23:11 source freshness preflight running)
+## Latest verified state (2026-09-07 23:26 freshness preflight complete, source running)
 
-- Fixed executionab67d4c/configf3a0634, run /root/autodl-tmp/trifusion-v2/artifacts/msvr310_freshness_v1_seed42_ab67d4c. Originalwrapper185622 and preflight185624 verified live23:11:43; screen msvr_freshness_ab67d4c. Do not restart on polling timeout.
-- Firstfold twoends each12steps/2880extra role record forwards complete and strict reload; realB64 zero-update frozen-field reuse bitwise PASS. Full6end72steps and CPU still pending. No completepreflight qualification yet.
-- Same original batch/stale updates, fresh loss diagnostic only; every historical item/step reencoded under current model, actual role parameter gradients compared with duplicate-loss numerical noise. No newheldout/official reads, noQ1 result, no newmethod promotion.
-- Source1560steps/fullCPU auto follows only after completepreflightCPU. Newplan/config/source files fixed. WholeGoal ACTIVE/UNMET. Mainfree23:11~4.56GiB, GPU7402MiB/100%, maxallocated~6558MiB, no newweight cleanup.
-- Master41.137; evidence/msvr310_freshness_launch_20260907/. Next observe original handles at3-5minute/milestone interval, archivefullpreflight after terminal, then continue complete source measurement. OldQ1/mining sealed.
+- Execution ab67d4c / config f3a0634 unchanged. Run /root/autodl-tmp/trifusion-v2/artifacts/msvr310_freshness_v1_seed42_ab67d4c; original wrapper185622, source186000 live23:26:11, fold0 control13/20epoch. Do not restart on poll timeout.
+- Complete6end72step preflight and CPU1,667,072distances PASS; all17texts/full72row local reaggregation PASS. RealB64 frozen-field reencoding bitwise equal,203/203gradient,0overflow,frozen states/RNG/buffers unchanged, strict compact reload.
+- Full1560source measurement runs same original batch/stale update rules; fresh loss diagnostic only,0heldout/official. Preflight short trajectory differs from source warmup; do not infer generalization or stale-only causality from positive fresh-minus-stale loss.
+- Source began23:14:55; about70sec/steady epoch, estimated Sep8 01:10-01:20 source completion then fullCPU. Main free4,720,369,664B, GPU7266MiB/100%. No new weight deletion; protected initial/final/evidence retained.
+- Fullpreflight report/evidence published, master41.138; AXBN primary prior-art note archived. Source tools/config/plan frozen. Next complete original6ends/fullCPU and alltext intake; oldQ1/mining sealed. WholeGoal ACTIVE/UNMET.
 
 ## Experiment environment
 

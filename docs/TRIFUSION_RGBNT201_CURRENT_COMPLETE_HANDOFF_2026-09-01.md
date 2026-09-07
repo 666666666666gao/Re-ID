@@ -2,7 +2,7 @@
 
 ## 0. 一页结论
 
-最新状态（2026-09-07 23:11实查）：MSVR缓存坐标直接测量V1已在ab67d4c启动一次，wrapper185622/预检185624持续。第0折两端各12步已完成并严格重载，零更新字段复用逐位一致；六端72步及全CPU尚未终态。新鲜loss仅诊断，原更新规则不改，0heldout/official。预检通过才进入完整1560来源步。主盘约4.56GiB，Goal active/unmet，详见41.137。
+最新状态（2026-09-07 23:26实查）：MSVR缓存坐标直接测量V1完整六端72步预检及CPU/全部文本重聚合PASS；原wrapper185622自动启动source186000，fold0 control13/20epoch，完整1560步仍运行。新鲜loss只诊断不更新，短预检显示距离与实际角色参数梯度受历史坐标影响，但不证明完整训练或泛化因果。主盘约4.40GiB，预计9月8日01:10–01:20来源阶段结束后全CPU。旧Q1_FAIL不改，Goal active/unmet；详见41.138。
 
 当前用于已完成MSVR310比较及新登记RGBNT100比较的是原V8平行三角色结构：冻结Signal/CLIP，共享block8之前语义和tail9/10/11参数，三个角色分别运行共享tail；CNN处理局部语义Patch高频，Transformer处理全局CLS/Patch关系，Mamba处理空间与位置级三模态扫描。各角色相对冻结reference形成1536D残差，三角色4608D银行拼接3072D Signal得到7680D fused；完整单角色输出为4608D Signal+角色残差。三条路径均执行，当前没有Router/HFER、V23模态MLP或V24原型。两项车辆训练比较均已完成；RGBNT100内部完整比较支持三角色增益，MSVR310尚未超过Signal。下面V1—V8条目保留历史经过，不代表当前又启用了旧模块。
 
@@ -5715,3 +5715,19 @@ wrapper code_commit104506b，Q1 summary project_commit9da45c5；实际git diff�
 最大已分配显存约6558MiB，23:11 GPU7402MiB/100%；主盘4,894,457,856B。主机MemAvailable约704GiB，仅作当前资源信息，不改变单GPU合同；缓存字段在RAM保存，不将原图/模型下载。没有新增权重删除，原必要初始化/终点/复核证据保留。
 
 原计划预检72步→完整CPU→来源1560步→完整CPU持续；真实字段复用只减少冻结主干重算，所有角色额外前向/梯度开销仍计入。新鲜loss不更新，原Q1_FAIL不改，不读取heldout/official。下一次按3–5分钟或完整预检里程碑观察同一进程，任何超时不重启。证据evidence/msvr310_freshness_launch_20260907/；Goal active/unmet。
+
+### 41.138 MSVR缓存坐标完整预检通过，正式来源测量持续（2026-09-07T23:30:28.698381+08:00）
+
+固定ab67d4c/f3a0634与计划不变。preflight185624于23:14:47退出0、CPU185992于23:14:55退出0；全部六端72更新和1,667,072距离元素通过。17文本2,004,547B逐文件SHA相同，本地全部72审计行重聚合PASS。summary SHAd5f453fae567c14753b3c6602464d920c09b85e725d7c536a399ccbab9efc074，CPU SHA7734737ab898be8679f23a807a4007b132dc09e0a7fc79a00305b5506a6f6782。
+
+真实B64冻结字段零更新重编码逐位一致，六端203/203梯度、0overflow、冻结Signal/CLIP不变、RNG/buffer保持、compact严格重载。新增17,280条角色记录前向，峰值allocated约6554–6558MiB。梯度为真实运行见证，CPU未独立重算模型反传。
+
+每端9历史步/576anchor重复曝光，六端fresh loss−stale loss均值约+0.01943至+0.02582；绝对距离误差均值0.02470–0.11656，同角色stale/fresh梯度平均余弦约0.547–0.830。全部6×3×9步梯度差异大于重复同loss数值差异。历史坐标既可能制造也可能掩盖困难关系，不能概括为陈旧必定更难。短预检2步预热/全LR不同于正式65步预热，仅支持当前预检，不证明完整训练或旧Q1泛化失败原因。
+
+新鲜loss只测量，不更新；历史特征始终detach，测量当前anchor参数梯度，不等于历史候选也反传的完整大batch。原control batch/候选stale更新与其余13loss保持。0heldout/official，旧两组0/5FAIL和所有门槛不变。
+
+同一wrapper185622于23:14:55自动启动source186000，23:26:11原进程/命令行均存在，fold0 control13/20epoch。稳态约70sec/epoch，估计9月8日01:10–01:20完整六端来源阶段结束，随后全CPU；不是终态承诺。主盘4,720,369,664B、GPU7266MiB/100%。0新权重删除，模型/二进制/原图留远端。
+
+同期核对AXBN原文arXiv:2303.17127v1：历史记忆均值/标准差匹配及Kalman统计估计已有，不能把缓存漂移修正重新命名为原创。只归档近邻边界，不中途加入新归一化或改变本实验。详见docs/MSVR310_MEMORY_DRIFT_PRIOR_ART_2026-09-07.md。
+
+完整报告results/MSVR310_FRESHNESS_MEASUREMENT_V1_PREFLIGHT_2026-09-07.md，证据evidence/msvr310_freshness_complete_preflight_20260907/。下一步按完整1560步/所有epoch/年龄/角色终态核验；原三个数据集Goal active/unmet。
