@@ -2,7 +2,7 @@
 
 ## 0. 一页结论
 
-当前执行入口：§41.148；MSVR新鲜坐标配对完整六端与CPU结束，两组0/5 FAIL；独立审计收束，当前无训练运行，下一假设待完整证据决定。仅seed42，Goal ACTIVE/UNMET。
+当前执行入口：§41.149；完整新鲜坐标Q1已封存FAIL，现登记固定来源模型的历史候选梯度诊断；尚未启动，无新检索成绩，seed42，Goal ACTIVE/UNMET。
 
 当前用于已完成MSVR310比较及新登记RGBNT100比较的是原V8平行三角色结构：冻结Signal/CLIP，共享block8之前语义和tail9/10/11参数，三个角色分别运行共享tail；CNN处理局部语义Patch高频，Transformer处理全局CLS/Patch关系，Mamba处理空间与位置级三模态扫描。各角色相对冻结reference形成1536D残差，三角色4608D银行拼接3072D Signal得到7680D fused；完整单角色输出为4608D Signal+角色残差。三条路径均执行，当前没有Router/HFER、V23模态MLP或V24原型。两项车辆训练比较均已完成；RGBNT100内部完整比较支持三角色增益，MSVR310尚未超过Signal。下面V1—V8条目保留历史经过，不代表当前又启用了旧模块。
 
@@ -5833,3 +5833,13 @@ run /root/autodl-tmp/trifusion-v2/artifacts/msvr310_fresh_coordinate_v1_seed42_b
 用户00:44快照提出的新鲜坐标比较现已完成FAIL，不能再次作为新方案；只用seed42的要求延续到后继机制实验，不扩展多seed。已核SMEC/S-XBM原文§3.4冻结字段+当前FC+Top-k，BroadFace类别代表位移补偿与分类器/编码器梯度范围，ANCE异步索引候选机制；这些是已有方法基础，不包装为原创。详见docs/MSVR310_MEMORY_PRIMARY_NEIGHBORS_AND_FRESH_Q1_2026-09-08.md。全刷新未证明收益，不自动推进选择性刷新；历史反传/历史anchor覆盖尚未测量，亦不直接当成已批准新方法。下一项先依据完整证据选择单一干预或必要诊断，无新训练登记/启动。
 
 03:38:23实查原进程结束、GPU1MiB/0%、主盘3,837,997,056B；本轮0权重删除。保留必要初始化/终点/二进制证据。三数据集官方与内部口径继续分开，长期Goal ACTIVE/UNMET。
+
+### 41.149 固定来源模型的历史候选梯度诊断登记（2026-09-08T04:40:36.610990+08:00）
+
+完整新鲜坐标Q1及独立审计已在98828b7发布，46文件size/SHA、主交接三处字节一致。该干预两组0/5保持；当前fused高于三角色但低于Signal，不按末端融合不足继续加头。唯一后继测量为当前尚未量化的历史候选侧参数梯度g_V，以及它对g_U和原14项任务总梯度的改变。
+
+新增probe/verify/run_msvr_history_candidate_gradients.py与TriFusion-history-candidate-gradient-v1.json，计划refine-logs/msvr310_history_candidate_gradient_v1/EXPERIMENT_PLAN.md。三fold的初始化、陈旧终点、当前坐标终点共9固定状态，各重放全部260注册来源batch，总2340；全部source记录覆盖，历史队列/三模态像素与登记一致。参数和buffers不更新，optimizer0、heldout0、official0；历史age仅代表batch存储间隔，不冒充参数更新年龄或原训练轨迹。
+
+先T0数学，再9×8真实B64预检及全CPU，成功才完整来源测量。第一处单历史组将直接参数反传与g_U+g_V链式分解比较，预定相对L2误差≤0.005；每处重复同图梯度、RNG/buffers/坐标一致性和全部候选矩阵核验。只重算非零upstream组为去除零链式项，不宣称新选择性刷新。GradCache为既有计算思想，非本项目原创；非零历史梯度不证明泛化收益。
+
+AST及ruff F通过，尚未运行真实模型预检；不提前工程PASS。复用刚完成Q1的tri_reid环境、不重建；当前服务器98828b7、GPU1MiB/0%、主盘3,731,091,456B。预计预检5–15min、来源1–3h，新增证据<0.8GiB，无模型权重新增。固定seed42、不开展新Q1或自动接历史反传训练；只有全量诊断才决定后续。下一步一次部署启动，记录PID/日志，180–300秒或预计里程碑观察。Goal ACTIVE/UNMET。

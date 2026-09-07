@@ -1,12 +1,11 @@
 # TriFusion-ReID workspace
 
-## Latest verified state (2026-09-08T04:22:22.639559+08:00, complete Q1 FAIL / audit closed)
+## Latest verified state (2026-09-08T04:40:36.610990+08:00, source candidate-gradient diagnosis registered)
 
-- MSVR fresh-coordinate all6ends/1560updates complete03:36:56, CPU PASS03:37:11. Both original5gates0/5; stale fused51.78835925 to fresh51.71677883, delta−0.07158042pp. Do not rerun sealed M0/Q1.
-- Pipeline launch b4501fa; Q1-start HEAD ced43dd2 differs only docs/evidence. All fixed training source/config hashes unchanged.
-- All29rawtexts/79,009,736B matched; independent text/complete ranking audit WARN same-family/provisional with remote-binary/runtime-gradient limits. See master41.148 and separate EXPERIMENT_AUDIT_Q1 files.
-- Fused exceeds all3roles but trails Signal53.12938056. Source objectives/coordinate consistency improved without required heldout gain; no automatic selective-refresh progression or new training registration.
-- User requires seed42 only. Core3datasets and complete protocols remain; official reads0. No newweightdeletion, required artifacts protected. Unrelated local edits preserved. WholeGoal ACTIVE/UNMET.
+- Published98828b7 sealed fresh-coordinate Q1: both original5gates0/5, paired fused−0.07158042pp; full audit WARN same-family/provisional. No rerun or official access.
+- New source-only fixed-state candidate-gradient diagnosis:3folds x initial/stale/fresh terminal states x260registeredbatches=2340. Optimizer0, complete source coverage, original memory rules. Plan master41.149; no launch yet.
+- T0 then9x8 real B64 preflight/CPU before complete source. Direct autograd vs decomposed candidate VJP requires relativeL2<=.005; state/RNG/buffer/coordinate equality checked. Static AST/ruff F pass only, no real model PASS claimed.
+- Existing tri_reid reused; GPU1MiB/0%, free3731091456B at registration check. No newweights, preserve all required evidence. Onlyseed42; longGoal ACTIVE/UNMET.
 
 ## Experiment environment
 
