@@ -1,14 +1,14 @@
 # TriFusion-ReID workspace
 
-## Latest verified state (2026-09-07T18:23 MSVR style R2 actually running)
+## Latest verified state (2026-09-07T18:34 MSVR style R2 M0 complete, Q1 running)
 
-- Original628cce0 T0 failed only scalar byte binding, zero training; evidence retained. R2 full780plan T0 PASS, PID167450 ended0 at18:20:03.
-- Active run /root/autodl-tmp/trifusion-v2/artifacts/msvr310_source_style_v1_r2_seed42_02cc09e; execution02cc09e, wrapper167448, M0PID167458.
-- At18:23:38 M0 RUNNING, capacity reaches fold2. Fold0 both8updates fully recovered/203gradients and source Signal equality verified. Each compact checkpoint32734799bytes.
-- Full248step M0 and CPU not terminal; Q1 not yet started. Persistent wrapper advances only on original complete PASS; no duplicate launch.
-- Next observation not before18:27; M0 estimate18:28-18:30. Follow pipeline.json and original PIDs. Then fresh six-end1560update Q1 and full CPU verification.
-- Use registered configs/MSVR310/TriFusion-source-style-paired-v1-r2.json. Preserve all bound source/config/gates; no official/dev or original Signal retraining.
-- Master41.124; three-dataset Goal active/unmet. Preserve unrelated dirty files and sync all3masters. Post-start publication only documentation/report tool; training files remain pinned.
+- R2 run /root/autodl-tmp/trifusion-v2/artifacts/msvr310_source_style_v1_r2_seed42_02cc09e, wrapper167448.
+- All248 M0updates complete18:29:11, PID167458 exit0; fullCPU168446 PASS/exit0 at18:29:21. All8runs203gradients, frozenstates unchanged, 6strict checkpoints.
+- Overfit ratios control0.000702124/style0.000710503; 29textfiles2,059,528bytes completeSHA and local all248step/floor/pixel/plan verifier PASS.
+- Q1PID168456 started18:29:21, actualstageHEAD893be37; registered source02cc09e files remain pinned/unchanged. Originalprocess and wrapper live by/proc at18:31:25.
+- Q1 firstfold control reachedepoch5; complete6end scientific result pending. Next observation not before18:37 for first end fullgallery Signal equality and compact final; fullETA19:12-19:20 estimate.
+- Read results/MSVR310_SOURCE_STYLE_V1_R2_M0_2026-09-07.md and tracker. No M0 rerun or duplicate Q1; preserved R1 T0 byte failure; no official/dev access.
+- Master41.125; all3dataset Goal active/unmet, diskfree~8.83GiB. Preserve unrelated dirty files; sync all3masters.
 
 ## Experiment environment
 

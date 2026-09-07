@@ -2,7 +2,7 @@
 
 ## 0. 一页结论
 
-最新状态：2026-09-07 18:23实查，MSVR source-style R2完整T0通过，M0实际PID167458运行中，容量检查推进至第三折；第一折双端完整恢复/203梯度已核验。完整M0/CPU/Q1尚无终态（§41.124），Goal持续未达。
+最新状态：2026-09-07，MSVR style R2完整248步M0、CPU及本地全量文本核验均通过；Q1PID168456于18:29开始，18:31原进程仍live。29文本全SHA一致，正式六端检索未终态（§41.125）。
 
 当前用于已完成MSVR310比较及新登记RGBNT100比较的是原V8平行三角色结构：冻结Signal/CLIP，共享block8之前语义和tail9/10/11参数，三个角色分别运行共享tail；CNN处理局部语义Patch高频，Transformer处理全局CLS/Patch关系，Mamba处理空间与位置级三模态扫描。各角色相对冻结reference形成1536D残差，三角色4608D银行拼接3072D Signal得到7680D fused；完整单角色输出为4608D Signal+角色残差。三条路径均执行，当前没有Router/HFER、V23模态MLP或V24原型。两项车辆训练比较均已完成；RGBNT100内部完整比较支持三角色增益，MSVR310尚未超过Signal。下面V1—V8条目保留历史经过，不代表当前又启用了旧模块。
 
@@ -5549,3 +5549,13 @@ M0PID167458于18:20:03开始。18:23:38实查仍RUNNING，容量检查已推进�
 证据evidence/msvr310_style_r2_launch_20260907/；持久tracker记录原PID、下次不早于18:27观察、M0预计18:28-18:30（估计非保证）。新增tools/summarize_msvr310_source_style.py准备终态完整600query/60身份/五输出的本地文本重算与修复/新增错误、camera/scene关联、成本分析，已语法/F821检查，未在未完成终态上虚报运行。该报告工具不改变训练绑定或运行中的模型。
 
 当前代码和新实验推进属于实际进展；三个数据集同协议baseline及资源注明SOTA总Goal仍未达，继续保持active。文档发布后的HEAD可能只推进交接/分析工具，GPU训练参数/配置/绑定文件不变；各子阶段均记录实际HEAD和文件SHA。
+
+## 41.125 MSVR style R2完整M0/CPU/本地核验通过，Q1已实际接续
+
+M0PID167458于18:29:11退出0，完整248更新；CPU168446于18:29:21退出0，状态PASS_COMPLETE_MSVR_STYLE_M0。八个run均203/203实际非零梯度、0overflow、冻结state/Signal保持，六个容量checkpoint完整重建并五输出bitwise恢复。两端100步超额损失比0.000702123930784/0.000710502676525均通过固定0.1门。详见results/MSVR310_SOURCE_STYLE_V1_R2_M0_2026-09-07.md，工程门通过不代表检索有效。
+
+29文本2,059,528bytes逐份SHA/bytes接收；本地新tools/verify_msvr310_style_m0_text.py独立核对全部248steps、真实source曝光/风格计划/配对像素、epoch均值、解析label-smoothing floor及过拟合比，PASS。保存14标量double重组最大差4.222e-7只作诊断，原AMP中间dtype未知，不据此虚构bitwise复算。M0摘要SHA5d9d71d05fd4dcb2c2a5640ee48d6d58a11cd9ca5b375c08cf8edcdcf506f332；CPU SHA058f726e5c62f201ccd24fdd057e15a980b27efa9ba43fae39822bc3b4bdb931。全证据evidence/msvr310_style_r2_m0_complete_20260907/。
+
+持久wrapper167448已于18:29:21启动全新Q1PID168456，阶段实际HEAD893be37；原始实现02cc09e到该HEAD仅交接/报告工具发布，全部训练文件/config SHA仍固定。18:31:25通过/proc原PID+完整命令核对wrapper与Q1live，M0/CPU旧PID已结束。第一折控制端当时完成epoch5，尚无完整Q1检索终态。两端三折1560更新/2064留出record前向/每端600query和1032完整gallery合同不变，两组5条件全部达成才晋级。
+
+18:31实查空闲9,481,236,480bytes；Q1早期约20秒/epoch，全部六端加恢复评价粗估19:12-19:20，非完成保证。下一观察不早于18:37，优先核对第一端完整Signal/gallery/compact终点。不要因为早期loss变化修改方案，不重跑已完成M0，不提前报告Q1成功失败。三数据集总Goal仍active未达。
