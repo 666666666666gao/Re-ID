@@ -1353,3 +1353,5 @@
 - AGENTS.md
 
 - 2026-09-07T13:48:58.752066+08:00: V29 complete Q1_FAIL0/5, full3360 steps/3126 gallery/571 queries and geometry verified; results/TRIFUSION_V29_Q1_2026-09-07.md, evidence/v29_complete_terminal_20260907/, tools/plot_v29_complete_comparison.py, master41.112. No training/source-contract change.
+
+- 2026-09-07T14:17:27.602636+08:00: Register complete source-only V29 role drift diagnosis; five new tools, all1680 batches/10080 fixed forwards, zero optimizer/retrieval; local math/static PASS, remote NOT_RUN. See refine-logs/v29_source_role_drift/EXPERIMENT_PLAN.md and master41.113.

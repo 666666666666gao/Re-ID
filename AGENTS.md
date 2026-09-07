@@ -1,6 +1,6 @@
 # TriFusion-ReID workspace
 
-## Latest verified state (2026-09-07T13:48:58.752066+08:00)
+## Latest verified state (2026-09-07T14:17:27.602636+08:00)
 
 - V29 COMPLETE_VERIFIED_Q1_FAIL, 0/5 scientific gates, not running.
   Execution f4c6a03e1b263aaa9e4bce71427152007018a0ca; fixed 6 ends/20 epochs/3360 steps.
@@ -20,13 +20,18 @@
   Executor verification is not independent external audit.
 - Data free13187350528 B; no new deletion; final weights and arrays retained remotely.
   Local text/code/generated plots only, no model/checkpoint/image/NPY transfers.
-- Next source-only initial/control/candidate role-relation drift diagnosis is PROPOSED_NOT_REGISTERED_NOT_RUN.
+- Source-only initial/control/candidate role-relation drift diagnosis is REGISTERED_NOT_RUN.
+  Contract configs/RGBNT201/TriFusion-v29-source-role-drift-diagnostic.json; plan refine-logs/v29_source_role_drift/EXPERIMENT_PLAN.md.
+  All1680 source batches/10080 fixed forwards, all94 source IDs per fold, no model update or retrieval.
+  Local explicit-scalar/rotation T0 and AST/F821 PASS; remote CUDA/math/model/CPU terminal NOT_RUN.
+  Expected3.115GiB raw arrays, startup requires6GiB free; last free13146820608B/GPU1MiB.
+  Estimate90-110 minutes GPU plus5-20 CPU; original handles poll180-300 seconds, no automatic restart.
   Check pairwise identity geometry as well as vector change; no new preservation loss justified yet.
   No scan b/seed/epoch or V29 rerun; no pre-success mechanism ablations/official tuning.
 - Current architecture: docs/V29_CURRENT_NETWORK_AND_SUPERVISION.md.
   Vehicle interface boundaries: docs/V29_TERMINAL_AND_VEHICLE_BOUNDARIES_2026-09-07.md.
   No new vehicle experiment launched.
-- Master section41.112; remote/repo/Desktop must be byte-equal.
+- Master section41.113; remote/repo/Desktop must be byte-equal.
   RGBNT100 baseline gain, MSVR310 negative, RGBNT201 dev shortfall, single42/reused OOF remain.
   Three-dataset baseline/SOTA objective is not complete.
 
