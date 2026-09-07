@@ -1,29 +1,27 @@
 # TriFusion-ReID workspace
 
-## Latest verified state (2026-09-07T08:10:52.738667+08:00)
+## Latest verified state (2026-09-07T08:29:30.648354+08:00)
 
-- V27 c225652 complete Q1_FAIL4/5 remains sealed: fused+1.338944mAP,
-  CNN81.662859>fused81.592361 by0.070498. No parameter/epoch/seed rescue.
-- Source-style relation diagnostic R2 d5bc048 is COMPLETE, CPU verified and reported:
-  all3fold1680batches,10080forwards,743178240saved similarities,
-  273297024relation exposures,0updates. All original PIDs ended.
-  All26rawtexts SHA matched; all18outputs/72cells/6768identity rows inspected.
-  Read results/TRIFUSION_V27_SOURCE_STYLE_RELATIONS_ANALYSIS_2026-09-07.md.
-- V28 is IMPLEMENTED_REGISTERED_NOT_RUN. One new structural hypothesis:
-  joint pre-pooling 3roles x3modalities x128patch residual tokens,1152total,
-  one shared bidirectional128D Mamba, zero-initialized corrections.
-  Preserve original Signal, independent roles and all7 supervision heads.
-  Both fresh endpoints use fixed V27 training style/loss and legal V12 initializations.
-  Read refine-logs/trifusion_v28_joint_tokens/EXPERIMENT_PLAN.md; master41.94.
-- T0/M0/Q1 NOT YET RUN for V28. M0 must pass before complete6endpoint3360update Q1.
-  Old five science gates and full-gallery/source-only boundaries unchanged.
-  No direct V26+V27 rescue, old Router/exchange retry, dev/official tuning or pre-success ablations.
-- Data disk14.77GiB/system10.36GiB free at08:02; GPU idle.
-  Prior24redundantweights removed24.90GiB; new deletions0.
-  Protect all anchors, V27 finals, arrays and negative evidence.
-- Whole multi-dataset/SOTA goal UNMET. RGBNT100 official+2.572608 remains;
-  RGBNT201 dev/MSVR310 goals remain. Single seed/reusedOOF limits preserved.
-- Executor code/math verification is not an external independent audit.
+- V28 c9a38e6 original M0 ENDED 08:20:07, exit0, M0_FAIL.
+  All3fold paired preflight/original-V8 parity passed;116updates complete.
+  Only gradient coverage fails: candidate218/219, joint.mixer.dt_proj.weight
+  stays zero in both8step capacity and100step overfit. All grads exist/finite.
+  Control203/203; overflow0; frozenstate unchanged; capacity6172/6788MiB;
+  overfit excess ratio0.0133422188997 PASS. Q1/heldout/new retrieval weights0.
+- Archive evidence/v28_m0_terminal_20260907 and
+  results/TRIFUSION_V28_ORIGINAL_M0_2026-09-07.md. All7rawfiles SHA matched.
+  Wrapper-before-child SyntaxError0forwards/updates preserved separately.
+- Fixed one-update source derivative precision diagnostic REGISTERED_NOT_RUN:
+  refine-logs/trifusion_v28_joint_precision/EXPERIMENT_PLAN.md.
+  Exactly1 reconstruction update,2real source forwards,3joint derivative replays.
+  Same input/state/upstream in AMP fast / FP32 fast / FP32 unfused.
+  Do not label AMP rootcause before actual comparison. Do not resume originalM0/Q1.
+- V27 complete Q1_FAIL4/5 and full source-style diagnostic remain sealed.
+  No V26/V27 rescue or old Router/exchange retry; no gate/width/loss/seed/epoch scan.
+- Data disk14.77GiB/system10.36GiB; GPU idle. Prior24redundantweights removed24.90GiB.
+  New deletions0/new retrieval weights0; protect anchors/finals/arrays/negative evidence.
+- Whole multi-dataset/SOTA goal remains unmet; single seed/reusedOOF limits.
+  Executor verification is not external independent review. Master41.95.
 
 ## Experiment environment
 

@@ -1051,3 +1051,27 @@
 | 2026-09-07T08:10:52.738667+08:00 | /experiment-plan | configs/RGBNT201/TriFusion-signal-preserving-v28-joint-tokens-rtx3090.json | implementation | V28 single structural hypothesis registered; not run |
 | 2026-09-07T08:10:52.738667+08:00 | /experiment-plan | docs/TRIFUSION_RGBNT201_CURRENT_COMPLETE_HANDOFF_2026-09-01.md | implementation | V28 single structural hypothesis registered; not run |
 | 2026-09-07T08:10:52.738667+08:00 | /experiment-plan | AGENTS.md | implementation | V28 single structural hypothesis registered; not run |
+| 2026-09-07T08:29:30.648354+08:00 | /experiment-audit | evidence/v28_m0_terminal_20260907/intake_proof.json | implementation | V28 original M0 FAIL preserved; precision diagnostic registered |
+| 2026-09-07T08:29:30.648354+08:00 | /experiment-audit | evidence/v28_m0_terminal_20260907/m0_control_capacity_steps.jsonl | implementation | V28 original M0 FAIL preserved; precision diagnostic registered |
+| 2026-09-07T08:29:30.648354+08:00 | /experiment-audit | evidence/v28_m0_terminal_20260907/m0_joint_tokens_capacity_steps.jsonl | implementation | V28 original M0 FAIL preserved; precision diagnostic registered |
+| 2026-09-07T08:29:30.648354+08:00 | /experiment-audit | evidence/v28_m0_terminal_20260907/m0_joint_tokens_overfit_steps.jsonl | implementation | V28 original M0 FAIL preserved; precision diagnostic registered |
+| 2026-09-07T08:29:30.648354+08:00 | /experiment-audit | evidence/v28_m0_terminal_20260907/run_summary.json | implementation | V28 original M0 FAIL preserved; precision diagnostic registered |
+| 2026-09-07T08:29:30.648354+08:00 | /experiment-audit | evidence/v28_m0_terminal_20260907/trifusion_v28_joint_tokens_seed42_c9a38e6.log | implementation | V28 original M0 FAIL preserved; precision diagnostic registered |
+| 2026-09-07T08:29:30.648354+08:00 | /experiment-audit | evidence/v28_m0_terminal_20260907/trifusion_v28_joint_tokens_seed42_c9a38e6_exit.json | implementation | V28 original M0 FAIL preserved; precision diagnostic registered |
+| 2026-09-07T08:29:30.648354+08:00 | /experiment-audit | evidence/v28_m0_terminal_20260907/trifusion_v28_joint_tokens_seed42_c9a38e6_launch.json | implementation | V28 original M0 FAIL preserved; precision diagnostic registered |
+| 2026-09-07T08:29:30.648354+08:00 | /experiment-audit | evidence/v28_m0_terminal_20260907/wrapper_r1_failure.json | implementation | V28 original M0 FAIL preserved; precision diagnostic registered |
+| 2026-09-07T08:29:30.648354+08:00 | /experiment-audit | evidence/v28_m0_terminal_20260907/wrapper_r1_original.txt | implementation | V28 original M0 FAIL preserved; precision diagnostic registered |
+| 2026-09-07T08:29:30.648354+08:00 | /experiment-audit | evidence/v28_m0_terminal_20260907/wrapper_r2_actual.txt | implementation | V28 original M0 FAIL preserved; precision diagnostic registered |
+| 2026-09-07T08:29:30.648354+08:00 | /experiment-audit | evidence/v28_m0_terminal_20260907/local_scalar_recomputation.json | implementation | V28 original M0 FAIL preserved; precision diagnostic registered |
+| 2026-09-07T08:29:30.648354+08:00 | /experiment-audit | tools/verify_v28_m0.py | implementation | V28 original M0 FAIL preserved; precision diagnostic registered |
+| 2026-09-07T08:29:30.648354+08:00 | /experiment-audit | tools/verify_v28_complete_terminal.py | implementation | V28 original M0 FAIL preserved; precision diagnostic registered |
+| 2026-09-07T08:29:30.648354+08:00 | /experiment-audit | tools/report_v28_complete_comparison.py | implementation | V28 original M0 FAIL preserved; precision diagnostic registered |
+| 2026-09-07T08:29:30.648354+08:00 | /experiment-audit | tools/diagnose_v28_joint_precision.py | implementation | V28 original M0 FAIL preserved; precision diagnostic registered |
+| 2026-09-07T08:29:30.648354+08:00 | /experiment-audit | refine-logs/trifusion_v28_joint_precision/EXPERIMENT_PLAN_20260907_082930.md | implementation | V28 original M0 FAIL preserved; precision diagnostic registered |
+| 2026-09-07T08:29:30.648354+08:00 | /experiment-audit | refine-logs/trifusion_v28_joint_precision/EXPERIMENT_PLAN.md | implementation | V28 original M0 FAIL preserved; precision diagnostic registered |
+| 2026-09-07T08:29:30.648354+08:00 | /experiment-audit | evidence/v28_precision_diagnostic_preregistration_20260907.json | implementation | V28 original M0 FAIL preserved; precision diagnostic registered |
+| 2026-09-07T08:29:30.648354+08:00 | /experiment-audit | results/TRIFUSION_V28_ORIGINAL_M0_2026-09-07.md | implementation | V28 original M0 FAIL preserved; precision diagnostic registered |
+| 2026-09-07T08:29:30.648354+08:00 | /experiment-audit | refine-logs/trifusion_v28_joint_tokens/EXPERIMENT_TRACKER_20260907_082930.md | implementation | V28 original M0 FAIL preserved; precision diagnostic registered |
+| 2026-09-07T08:29:30.648354+08:00 | /experiment-audit | refine-logs/trifusion_v28_joint_tokens/EXPERIMENT_TRACKER.md | implementation | V28 original M0 FAIL preserved; precision diagnostic registered |
+| 2026-09-07T08:29:30.648354+08:00 | /experiment-audit | docs/TRIFUSION_RGBNT201_CURRENT_COMPLETE_HANDOFF_2026-09-01.md | implementation | V28 original M0 FAIL preserved; precision diagnostic registered |
+| 2026-09-07T08:29:30.648354+08:00 | /experiment-audit | AGENTS.md | implementation | V28 original M0 FAIL preserved; precision diagnostic registered |

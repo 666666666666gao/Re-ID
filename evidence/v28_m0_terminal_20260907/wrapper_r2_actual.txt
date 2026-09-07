@@ -1,0 +1,16 @@
+import os,json,subprocess,time,datetime
+from pathlib import Path
+argv=['/root/miniconda3/envs/tri_reid/bin/python', '-u', 'tools/train_signal_preserving_v28.py', '--config', '/root/autodl-tmp/trifusion-v2/TriFusion-ReID/configs/RGBNT201/TriFusion-signal-preserving-v28-joint-tokens-rtx3090.json', '--config-sha256', '3dc91aa14aa7640490e4dc6816746cdbb20a2c1acbe6558e776ca46b04b0b82e', '--plan', '/root/autodl-tmp/trifusion-v2/TriFusion-ReID/refine-logs/trifusion_v28_joint_tokens/EXPERIMENT_PLAN.md', '--plan-sha256', '853fb5b532f16623c246472c3c50cab52c5227954093b29d8752d52757bd730d', '--output-dir', '/root/autodl-tmp/trifusion-v2/artifacts/trifusion_v28_joint_tokens_seed42_c9a38e6']
+repo='/root/autodl-tmp/trifusion-v2/TriFusion-ReID'
+log=Path('/root/autodl-tmp/trifusion-v2/artifacts/trifusion_v28_joint_tokens_seed42_c9a38e6.log')
+launch=Path('/root/autodl-tmp/trifusion-v2/artifacts/trifusion_v28_joint_tokens_seed42_c9a38e6_launch.json')
+terminal=Path('/root/autodl-tmp/trifusion-v2/artifacts/trifusion_v28_joint_tokens_seed42_c9a38e6_exit.json')
+env=dict(os.environ)
+env.update({"PYTHONPATH":repo+"/modeling:"+repo,"CUDA_VISIBLE_DEVICES":"0","PYTHONUNBUFFERED":"1","OMP_NUM_THREADS":"4"})
+started=time.time()
+with log.open("xb") as stream:
+    child=subprocess.Popen(argv,cwd=repo,env=env,stdout=stream,stderr=subprocess.STDOUT)
+    launch.write_bytes((json.dumps({"wrapper_pid":os.getpid(),"original_pid":child.pid,"started_at":datetime.datetime.now().astimezone().isoformat(),"argv":argv,"repository_commit":'c9a38e673bd29ac0340dab776ed6646f547acc75',"poll_seconds":180,"environment":"existing_tri_reid"},indent=2)+chr(10)).encode())
+    code=child.wait()
+terminal.write_bytes((json.dumps({"wrapper_pid":os.getpid(),"original_pid":child.pid,"exit_code":code,"ended_at":datetime.datetime.now().astimezone().isoformat(),"elapsed_seconds":time.time()-started},indent=2)+chr(10)).encode())
+raise SystemExit(code)
