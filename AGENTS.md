@@ -1,15 +1,13 @@
 # TriFusion-ReID workspace
 
-## Latest verified state (2026-09-07T17:48:15.534539+08:00)
+## Latest verified state (2026-09-07 MSVR style V1 registration)
 
-- V29 joint similarity R2 COMPLETE/PASS, actual1013e2e; CPU166197/wrapper166192 ended0 at17:40:00. R1 failure preserved.
-- Full1680batches,144pair/3360batch/36relation/3384identity CSV rows and prior scalar arithmetic verified. No model/image/optimizer/retrieval.
-- Joint bank approximately .914-.927 times original similarity plus constant; R2~.991-.993, residual identity contributions mixed. No causal unknown-identity claim or deployed affine weights.
-- Read results/TRIFUSION_V29_JOINT_SIMILARITY_2026-09-07.md; V29 Q1_FAIL0/5 unchanged.
-- Next unique main comparison: MSVR310 V27 source-style paired test, original V8 roles, no joint. Direction selected; training code/contract/M0 NOT_RUN.
-- Read docs/MSVR310_SOURCE_STYLE_NEXT_EXPERIMENT_2026-09-07.md. All780 old source batches/camera donors and3current Signal anchors verified.
-- Keep vehicle8x16 grid, original scene filtering, exact Signal inference, true source identity isolation and full gallery. Do not retrain Signal or repeat V29 diagnostics.
-- Master41.121; three-dataset Goal active/unmet. Preserve unrelated dirty worktree files; sync all3masters.
+- V29 source joint-similarity analysis fully complete/published; Q1_FAIL0/5 remains sealed.
+- MSVR310 source-style paired V1 implemented/registered, T0/M0/Q1 NOT_LAUNCHED. Read refine-logs/msvr310_source_style_v1/EXPERIMENT_PLAN.md and pinned config.
+- Vehicle8x16 original V8 roles; both endpoints identical initialization/pixels/plans and extra3 frozen passes; only source_style enables statistics. Original V27 byte unchanged.
+- Next: persistent T0 CPU -> M0 GPU248updates -> complete M0 CPU -> fresh six-end Q1 GPU1560updates -> complete Q1 CPU. Stop on original failure, no retry/partial PASS.
+- Save compact role checkpoints with exact B0 bindings; existing3 Signal anchors retained, no Signal retraining. No official/dev access, original scene filtering/full gallery retained.
+- Master41.122; full three-dataset Goal active/unmet. Preserve unrelated dirty files and sync all3 master copies.
 
 ## Experiment environment
 

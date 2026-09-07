@@ -2,7 +2,7 @@
 
 ## 0. 一页结论
 
-最新状态（2026-09-07T17:48:15.534539+08:00）：V29来源联合相似度R2完整完成并核验；主要变化可由约.92倍相似度缩放解释，剩余身份贡献有正有负，详见§41.121。下一唯一主比较转向MSVR310的V27耦合统计扰动，全部780旧batch供体及3Signal锚点已核实，新训练未登记/启动。三数据集目标继续active。
+最新状态：2026-09-07，MSVR310耦合来源统计扰动配对V1已实现并注册（§41.122），尚未启动；先完整T0/M0/CPU，再固定六端Q1。V29及已封存结果不变，三数据集Goal持续未达。
 
 当前用于已完成MSVR310比较及新登记RGBNT100比较的是原V8平行三角色结构：冻结Signal/CLIP，共享block8之前语义和tail9/10/11参数，三个角色分别运行共享tail；CNN处理局部语义Patch高频，Transformer处理全局CLS/Patch关系，Mamba处理空间与位置级三模态扫描。各角色相对冻结reference形成1536D残差，三角色4608D银行拼接3072D Signal得到7680D fused；完整单角色输出为4608D Signal+角色残差。三条路径均执行，当前没有Router/HFER、V23模态MLP或V24原型。两项车辆训练比较均已完成；RGBNT100内部完整比较支持三角色增益，MSVR310尚未超过Signal。下面V1—V8条目保留历史经过，不代表当前又启用了旧模块。
 
@@ -5515,3 +5515,15 @@ V29完整联合诊断完成后，唯一下一训练问题确定为：V27耦合�
 三个当前Signal全文件SHA：evidence/msvr310_style_readiness_20260907/msvr310_style_remote_readiness_20260907.json。
 角色原实现tools/train_msvr310_trifusion_oof.py；过滤tools/train_msvr310_signal_oof.py的scene_scores；精确推理tools/msvr310_exact_signal_inference.py。
 这不是零样本迁移、官方成绩或新SOTA主张。三数据集长期Goal保持。
+
+## 41.122 MSVR310 source-style V1 注册：复用原角色训练，完整双端验证
+
+在§41.121来源联合相似度诊断完成后，下一唯一主实验选择V27耦合统计扰动的MSVR310独立训练验证。此时仅实现/注册，T0/M0/Q1均未启动；不能写成已通过或已产生收益。
+
+新增车辆接口只将原V27类名与stem768x16x8改成768x8x16，其余类体通过AST同构核对；直接复用原统计公式、原V8模型/训练/损失/scene评价和既有exact_signal_forward。控制端与候选均额外执行3次冻结CLIP，只有候选启用扰动，避免不同输入/计算路径混淆。原Signal不重训，每折角色与七头全新且两端初始SHA一致。真实增强像素hash、采样record序列与确定性风格计划逐批配对。原RGBNT201 V27代码不改。
+
+合同：configs/MSVR310/TriFusion-source-style-paired-v1.json；完整计划refine-logs/msvr310_source_style_v1/EXPERIMENT_PLAN.md。T0全780来源batch计划/覆盖及CPU公式，M0六端各8步＋两端fold0固定100步共248步；M0CPU通过后才能进入新初始化Q1。Q1两端三折各20epoch共1560更新、2064留出record前向、每端600query/1032完整gallery，原scene规则不变。双端固定过拟合采用同一raw输入/force-active step0风格计划。原五项vehicle-v-Signal门与新增五项配对style-v-control门均固定，晋级需两组全通过。
+
+磁盘：刚实查空闲约9.03GiB。检查点只写非baseline角色state，保留B0别名/配置/身份/SHA绑定，严格重建核对全模型，六M0加六Q1约400MB，全部增量计划约1GiB；启动至少留2GiB。无本次新增删除，必要初始化/终态/证据保留。
+
+CPU终态将重算所有五输出/六端的完整距离、排序、AP/CMC、身份结果、bootstrap与全部门槛。14项loss由保存标量作double重组诊断，不伪称原AMP中间dtype已保存或bitwise复算。新pipeline阶段持久PID/日志/退出码，原错误即停。无官方图像、dev调参、跨fold特征距离或挑checkpoint。主Goal仍为三个数据集各自超过同协议基线和资源注明的当前SOTA，尚未达成。
