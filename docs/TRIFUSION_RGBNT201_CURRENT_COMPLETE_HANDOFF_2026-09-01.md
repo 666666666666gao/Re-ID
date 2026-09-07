@@ -2,7 +2,7 @@
 
 ## 0. 一页结论
 
-最新状态：2026-09-07，MSVR310耦合来源统计扰动配对V1已实现并注册（§41.122），尚未启动；先完整T0/M0/CPU，再固定六端Q1。V29及已封存结果不变，三数据集Goal持续未达。
+最新状态：2026-09-07，MSVR source-style首次T0因31个Float64末位字节差异停止，0训练；实际FP32扰动全部一致。R2固定服务器计划字节，保持原硬检查与合同，尚待启动（§41.123）。
 
 当前用于已完成MSVR310比较及新登记RGBNT100比较的是原V8平行三角色结构：冻结Signal/CLIP，共享block8之前语义和tail9/10/11参数，三个角色分别运行共享tail；CNN处理局部语义Patch高频，Transformer处理全局CLS/Patch关系，Mamba处理空间与位置级三模态扫描。各角色相对冻结reference形成1536D残差，三角色4608D银行拼接3072D Signal得到7680D fused；完整单角色输出为4608D Signal+角色残差。三条路径均执行，当前没有Router/HFER、V23模态MLP或V24原型。两项车辆训练比较均已完成；RGBNT100内部完整比较支持三角色增益，MSVR310尚未超过Signal。下面V1—V8条目保留历史经过，不代表当前又启用了旧模块。
 
@@ -5527,3 +5527,11 @@ V29完整联合诊断完成后，唯一下一训练问题确定为：V27耦合�
 磁盘：刚实查空闲约9.03GiB。检查点只写非baseline角色state，保留B0别名/配置/身份/SHA绑定，严格重建核对全模型，六M0加六Q1约400MB，全部增量计划约1GiB；启动至少留2GiB。无本次新增删除，必要初始化/终态/证据保留。
 
 CPU终态将重算所有五输出/六端的完整距离、排序、AP/CMC、身份结果、bootstrap与全部门槛。14项loss由保存标量作double重组诊断，不伪称原AMP中间dtype已保存或bitwise复算。新pipeline阶段持久PID/日志/退出码，原错误即停。无官方图像、dev调参、跨fold特征距离或挑checkpoint。主Goal仍为三个数据集各自超过同协议基线和资源注明的当前SOTA，尚未达成。
+
+## 41.123 MSVR style T0原始失败与R2字节绑定
+
+首次实际628cce0/wrapper167185/T0PID167187于18:15:06退出1，停止在风格计划完整字典相等检查。无模型/GPU训练/留出图像；完整原始pipeline/t0.log已归档，不能记为M0或检索失败。
+
+随后对全部780batch重放：31个Float64混合系数末位不同，最大2.220446049250313e-16；模型实际使用的Float32系数全部bitwise相同，所有供体、启用状态、曝光字段全等。训练服务器NumPy1.24.4；先前本地元数据的末位计算不能作为服务器完整Python字典的字节合同。
+
+R2配置configs/MSVR310/TriFusion-source-style-paired-v1-r2.json绑定实际服务器全量计划，严格字典相等检查保留；不改公式、采样、训练步数、初始化或晋级条件。新实现代码无需修改。原元数据/配置与失败证据保留；R2仍须T0→248步M0→CPU→1560步完整Q1→CPU，不复用任何旧更新。详见refine-logs/msvr310_source_style_v1/R2_RUNTIME_PLAN_BINDING.md和evidence/msvr310_style_t0_runtime_binding_20260907/。此登记时R2尚未启动。

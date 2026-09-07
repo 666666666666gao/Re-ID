@@ -1,13 +1,13 @@
 # TriFusion-ReID workspace
 
-## Latest verified state (2026-09-07 MSVR style V1 registration)
+## Latest verified state (2026-09-07 MSVR style runtime binding R2)
 
-- V29 source joint-similarity analysis fully complete/published; Q1_FAIL0/5 remains sealed.
-- MSVR310 source-style paired V1 implemented/registered, T0/M0/Q1 NOT_LAUNCHED. Read refine-logs/msvr310_source_style_v1/EXPERIMENT_PLAN.md and pinned config.
-- Vehicle8x16 original V8 roles; both endpoints identical initialization/pixels/plans and extra3 frozen passes; only source_style enables statistics. Original V27 byte unchanged.
-- Next: persistent T0 CPU -> M0 GPU248updates -> complete M0 CPU -> fresh six-end Q1 GPU1560updates -> complete Q1 CPU. Stop on original failure, no retry/partial PASS.
-- Save compact role checkpoints with exact B0 bindings; existing3 Signal anchors retained, no Signal retraining. No official/dev access, original scene filtering/full gallery retained.
-- Master41.122; full three-dataset Goal active/unmet. Preserve unrelated dirty files and sync all3 master copies.
+- Original style628cce0 T0 stopped18:15:06, wrapper167185/child167187 ended1; zero model/update/heldout work. All failure evidence preserved.
+- Complete780plan comparison found31 Float64 least-bit coefficient differences, max2.22e-16; all applied Float32 coefficients and all other fields identical.
+- R2 binds actual NumPy1.24.4 runtime plans, retains exact checks, original code/hypothesis/budget/gates. Config configs/MSVR310/TriFusion-source-style-paired-v1-r2.json; R2_NOT_LAUNCHED.
+- Next persistent T0 -> M0(248updates) -> M0CPU -> fresh Q1(1560updates) -> Q1CPU. Do not weaken tests or reuse old single endpoint.
+- Original V8/vehicle8x16; original scene/fullgallery/Signal unchanged; compact role checkpoints; three-dataset Goal active/unmet.
+- Master41.123; V29 and prior science results sealed. Preserve unrelated dirty files and sync all3masters.
 
 ## Experiment environment
 
