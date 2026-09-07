@@ -1,28 +1,13 @@
 # TriFusion-ReID workspace
 
-## Latest verified state (2026-09-07T17:15:50.540517+08:00)
+## Latest verified state (2026-09-07T17:32:41.610773+08:00)
 
-- Long-term TriFusion goal restored by user request and verified active via official API.
-  Read docs/TRIFUSION_RESEARCH_GOAL_2026-09-07.md; all3datasets baseline/SOTA objective remains unmet.
-- V29 Q1 COMPLETE_FAIL0/5 remains sealed, fused+0.219534 mAP, two negative folds, CNN aggregate negative.
-  Read results/TRIFUSION_V29_Q1_2026-09-07.md. No b/seed/checkpoint scan or official tuning.
-- Source role drift diagnostic on1d52c1e is COMPLETE:1680batches/10080forwards.
-  Original159463/wrapper159453/queue160653/CPU163560/report163862/math159455 all ended exit0.
-  GPU16:03:55, CPU16:14:47, report16:16:23. Do not restart these completed jobs.
-- Full743178240 similarity values/7741440 vector observations/45549504 protocol relation exposures verified.
-  42text files48248745B received and allSHA/CSVrows checked; all18 outputs/allsource IDs retained.
-  Source state unchanged, grads absent; no new training or retrieval. Raw arrays/models remain remote.
-  First transfer socket10054 reset preserved;29 complete files verified,13 missing prefetched, all complete17:01:53.
-- Reliable fused/full-role ordering had no newly lost relations; source fused still0 original/1style wrong.
-  Mean fused margin decreased for all282fold-source identity combinations and all42eligiblecross-camera combinations.
-  Joint accounts for~80–81% of net mean-margin decrease; this is scalar decomposition, not retrieval causality.
-  Role coordinate drift and near-bound h-to-y updates are real, not sufficient proof of identity loss.
-- Read results/TRIFUSION_V29_SOURCE_ROLE_DRIFT_2026-09-07.md and evidence/v29_source_drift_complete_20260907/.
-  Next: use already-saved complete matrices to distinguish independent joint discrimination from common similarity
-  shift/contraction. PROPOSED_NOT_RUN; no new GPU/loss/teacher/PCGrad or premature preservation claim.
-- Keep V27 positive paired evidence, RGBNT100 baseline gain and limitations, MSVR310 negative and RGBNT201dev shortfall.
-  Current architecture docs/V29_CURRENT_NETWORK_AND_SUPERVISION.md; vehicle bounds docs/V29_TERMINAL_AND_VEHICLE_BOUNDARIES_2026-09-07.md.
-- Master41.118; remote/repo/Desktop byte-equal sync required. Preserve unrelated dirty worktree files.
+- V29 Q1 and complete source diagnosis sealed; source evidence published240cbce, master41.118.
+- New complete source-only joint similarity analysis REGISTERED_NOT_RUN. Read refine-logs/v29_joint_similarity/EXPERIMENT_PLAN.md.
+- Tools analyze_v29_joint_similarity/run_v29_joint_similarity use only existing matrices, no GPU/image/model/update/retrieval.
+- Full3fold/1680batches/two views/all-active-inactive/true relation and allsource identity outputs; math/static PASS.
+- No affine coefficient deployment, b/checkpoint/seed scan or preservation loss. Full three-dataset Goal remains active and unmet.
+- Preserve unrelated dirty files. Master41.119 must sync remote/GitHub/Desktop before single persistent launch.
 
 ## Experiment environment
 

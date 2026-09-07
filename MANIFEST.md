@@ -1365,3 +1365,5 @@
 - 2026-09-07T15:02:31.635407+08:00: V29 source first fold580batches/3480forwards storage and unchanged model receipts verified; all original processes live. Complete terminal42-text inspector prepared/static PASS, NOT_RUN; evidence/v29_source_drift_first_fold_20260907/, master41.117.
 
 - 2026-09-07T17:15:50.540517+08:00: User long-term Goal restored active; complete V29 source drift GPU/CPU/report and42-text intake verified, full18outputs/allIDs published. Source reliable ranking saturation and widespread margin contraction distinguished; report and master41.118. No new training or SOTA claim.
+
+- 2026-09-07T17:32:41.610773+08:00: Register complete source-only V29 joint similarity decomposition; math/static PASS, CPU NOT_RUN, no weights/retrieval changes. Master41.119.
