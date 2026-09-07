@@ -1,12 +1,12 @@
 # TriFusion-ReID workspace
 
-## Latest verified state (2026-09-07 23:26 freshness preflight complete, source running)
+## Latest verified state (2026-09-07 freshness source running, obsolete bundles cleaned)
 
-- Execution ab67d4c / config f3a0634 unchanged. Run /root/autodl-tmp/trifusion-v2/artifacts/msvr310_freshness_v1_seed42_ab67d4c; original wrapper185622, source186000 live23:26:11, fold0 control13/20epoch. Do not restart on poll timeout.
-- Complete6end72step preflight and CPU1,667,072distances PASS; all17texts/full72row local reaggregation PASS. RealB64 frozen-field reencoding bitwise equal,203/203gradient,0overflow,frozen states/RNG/buffers unchanged, strict compact reload.
-- Full1560source measurement runs same original batch/stale update rules; fresh loss diagnostic only,0heldout/official. Preflight short trajectory differs from source warmup; do not infer generalization or stale-only causality from positive fresh-minus-stale loss.
-- Source began23:14:55; about70sec/steady epoch, estimated Sep8 01:10-01:20 source completion then fullCPU. Main free4,720,369,664B, GPU7266MiB/100%. No new weight deletion; protected initial/final/evidence retained.
-- Fullpreflight report/evidence published, master41.138; AXBN primary prior-art note archived. Source tools/config/plan frozen. Next complete original6ends/fullCPU and alltext intake; oldQ1/mining sealed. WholeGoal ACTIVE/UNMET.
+- Source original186000/wrapper185622 continue ab67d4c/configf3a0634. Run /root/autodl-tmp/trifusion-v2/artifacts/msvr310_freshness_v1_seed42_ab67d4c. First control end260steps complete; full6ends1560 and CPU not terminal. Preserve handles, never restart on poll timeout.
+- Complete72step preflight/CPU1,667,072distances/all17text reaggregation PASS archived at a0e5785. Fresh loss is diagnostic only; no new Q1/official. No tuning from intermediate source endpoints.
+- Deleted182 obsolete imported transport bundles (637,229,963B), all commits retained, git reachable connectivity before/after PASS. Main free about4.94GiB, second volume10.36GiB separate. All279 preexisting serialized model/data file metadata unchanged;0 new weight/evidence deletion.
+- New text-only tools/analyze_msvr_freshness_epochs.py passes all72preflight rows and ruff F. Fullsource use --mode source --input-dir complete intake directory after originalCPU PASS. Includes no-history warmup/age opportunities/all roles; no independent gradient recomputation.
+- Master41.139; cleanup/epoch-age evidence and report archived. Training tools/config/plan unchanged. Expected source Sep8 01:10-01:20 then completeCPU; use3-5minute or milestone polling. WholeGoal ACTIVE/UNMET.
 
 ## Experiment environment
 

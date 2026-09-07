@@ -2,7 +2,7 @@
 
 ## 0. 一页结论
 
-最新状态（2026-09-07 23:26实查）：MSVR缓存坐标直接测量V1完整六端72步预检及CPU/全部文本重聚合PASS；原wrapper185622自动启动source186000，fold0 control13/20epoch，完整1560步仍运行。新鲜loss只诊断不更新，短预检显示距离与实际角色参数梯度受历史坐标影响，但不证明完整训练或泛化因果。主盘约4.40GiB，预计9月8日01:10–01:20来源阶段结束后全CPU。旧Q1_FAIL不改，Goal active/unmet；详见41.138。
+最新状态（2026-09-07 23:41后实查）：MSVR缓存坐标测量原source186000持续，首个控制端260更新完成，完整六端1560步/CPU仍未终态。预检72步及完整CPU/文本已通过并在a0e5785同步。清理182个已导入Git的旧bundle副本释放607.71MiB，主盘回升至约4.94GiB；279个模型/数据文件元数据核对保留，0新增权重删除。全epoch/年龄/角色汇总工具已在全部预检记录跑通，等待完整来源终态。Goal active/unmet，详见41.139。
 
 当前用于已完成MSVR310比较及新登记RGBNT100比较的是原V8平行三角色结构：冻结Signal/CLIP，共享block8之前语义和tail9/10/11参数，三个角色分别运行共享tail；CNN处理局部语义Patch高频，Transformer处理全局CLS/Patch关系，Mamba处理空间与位置级三模态扫描。各角色相对冻结reference形成1536D残差，三角色4608D银行拼接3072D Signal得到7680D fused；完整单角色输出为4608D Signal+角色残差。三条路径均执行，当前没有Router/HFER、V23模态MLP或V24原型。两项车辆训练比较均已完成；RGBNT100内部完整比较支持三角色增益，MSVR310尚未超过Signal。下面V1—V8条目保留历史经过，不代表当前又启用了旧模块。
 
@@ -5731,3 +5731,15 @@ wrapper code_commit104506b，Q1 summary project_commit9da45c5；实际git diff�
 同期核对AXBN原文arXiv:2303.17127v1：历史记忆均值/标准差匹配及Kalman统计估计已有，不能把缓存漂移修正重新命名为原创。只归档近邻边界，不中途加入新归一化或改变本实验。详见docs/MSVR310_MEMORY_DRIFT_PRIOR_ART_2026-09-07.md。
 
 完整报告results/MSVR310_FRESHNESS_MEASUREMENT_V1_PREFLIGHT_2026-09-07.md，证据evidence/msvr310_freshness_complete_preflight_20260907/。下一步按完整1560步/所有epoch/年龄/角色终态核验；原三个数据集Goal active/unmet。
+
+### 41.139 冗余传输副本清理及完整来源汇总准备（2026-09-07T23:43:28.110625+08:00）
+
+固定计划SHAe9bc085253232ba89a34506abb1f8b6690470ac636abdb749f1e11284c1d9127全量复核后，23:38:35删除182个旧Git bundle副本，共637,229,963B（607.709849MiB）。包含提交全为保留a0e5785的祖先，删除前后仓库可达对象连通性检查PASS；当前freshness传输包及Git仓库对象保持。只删transport直接子文件，不递归、不动模型/检索数据。
+
+主盘空闲4,670,595,072→5,308,112,896B，约4.35→4.94GiB；另一存储卷11,129,233,408B单独计算。此前24.90GiB旧恢复权重清理不重复计为本次。全部279个序列化模型/数据文件大小、mtime、device、inode保持；不是重新计算了279个内容SHA。当前所需初始化、终点和证据继续保留。
+
+原wrapper185622/source186000清理前后持续；最近2026-09-07T23:42:41.033870+08:00实查已完成1/6来源端，首控制端260步/97,600额外角色记录前向完成。完整源测量1560步及CPU仍等待，执行源码ab67d4c/合同f3a0634不变。0新Q1/official，不以单端结果提前下结论或改参。
+
+新增只读后处理tools/analyze_msvr_freshness_epochs.py，SHA7636fe83b9bce0e1a39dc835681d5676bb23cf238c438da1c47b8c57f2c70b29，ruff F及全部72预检行重聚合通过；6epoch/48年龄/18角色组，记录无历史阶段及未定义余弦计数。完整来源预计120epoch组，年龄报告候选曝光机会而非只数赢家；此处没有执行新的模型前向或参数更新。完整来源汇总尚未运行。
+
+详细报告results/TRIFUSION_TRANSPORT_CLEANUP_AND_FRESHNESS_PREPARATION_2026-09-07.md；完整清理证据evidence/trifusion_obsolete_transport_cleanup_20260907/；预检汇总证据evidence/msvr310_freshness_epoch_age_preflight_20260907/。继续原任务及全部终态接收/核验，预计9月8日01:10–01:20来源结束后CPU，Goal active/unmet。
