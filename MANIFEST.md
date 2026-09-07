@@ -1100,3 +1100,22 @@
 | 2026-09-07T08:45:50.969147+08:00 | /diagnosing-bugs | evidence/v28_same_forward_precision_preregistration_20260907.json | implementation | Preserve exact-loss failures; preregister same-forward precision pair |
 | 2026-09-07T08:45:50.969147+08:00 | /diagnosing-bugs | docs/TRIFUSION_RGBNT201_CURRENT_COMPLETE_HANDOFF_2026-09-01.md | implementation | Preserve exact-loss failures; preregister same-forward precision pair |
 | 2026-09-07T08:45:50.969147+08:00 | /diagnosing-bugs | AGENTS.md | implementation | Preserve exact-loss failures; preregister same-forward precision pair |
+| 2026-09-07T08:54:26.714584+08:00 | /diagnosing-bugs | modeling/trifusion/joint_tokens_v28_fp32.py | implementation | Same-forward precision result and local FP32 R2 registration |
+| 2026-09-07T08:54:26.714584+08:00 | /diagnosing-bugs | tools/check_v28_fp32_fixture.py | implementation | Same-forward precision result and local FP32 R2 registration |
+| 2026-09-07T08:54:26.714584+08:00 | /diagnosing-bugs | tools/train_signal_preserving_v28_fp32.py | implementation | Same-forward precision result and local FP32 R2 registration |
+| 2026-09-07T08:54:26.714584+08:00 | /diagnosing-bugs | configs/RGBNT201/TriFusion-signal-preserving-v28-joint-tokens-fp32-rtx3090.json | implementation | Same-forward precision result and local FP32 R2 registration |
+| 2026-09-07T08:54:26.714584+08:00 | /diagnosing-bugs | evidence/v28_same_forward_precision_terminal_20260907/diagnosis.json | implementation | Same-forward precision result and local FP32 R2 registration |
+| 2026-09-07T08:54:26.714584+08:00 | /diagnosing-bugs | evidence/v28_same_forward_precision_terminal_20260907/intake.json | implementation | Same-forward precision result and local FP32 R2 registration |
+| 2026-09-07T08:54:26.714584+08:00 | /diagnosing-bugs | evidence/v28_same_forward_precision_terminal_20260907/reconstruction_step.json | implementation | Same-forward precision result and local FP32 R2 registration |
+| 2026-09-07T08:54:26.714584+08:00 | /diagnosing-bugs | evidence/v28_same_forward_precision_terminal_20260907/second_batch_loss_comparison.json | implementation | Same-forward precision result and local FP32 R2 registration |
+| 2026-09-07T08:54:26.714584+08:00 | /diagnosing-bugs | evidence/v28_same_forward_precision_terminal_20260907/started.json | implementation | Same-forward precision result and local FP32 R2 registration |
+| 2026-09-07T08:54:26.714584+08:00 | /diagnosing-bugs | evidence/v28_same_forward_precision_terminal_20260907/v28_joint_precision_863022c.log | implementation | Same-forward precision result and local FP32 R2 registration |
+| 2026-09-07T08:54:26.714584+08:00 | /diagnosing-bugs | evidence/v28_same_forward_precision_terminal_20260907/v28_joint_precision_863022c_exit.json | implementation | Same-forward precision result and local FP32 R2 registration |
+| 2026-09-07T08:54:26.714584+08:00 | /diagnosing-bugs | evidence/v28_same_forward_precision_terminal_20260907/v28_joint_precision_863022c_launch.json | implementation | Same-forward precision result and local FP32 R2 registration |
+| 2026-09-07T08:54:26.714584+08:00 | /diagnosing-bugs | results/TRIFUSION_V28_SAME_FORWARD_PRECISION_DIAGNOSIS_2026-09-07.md | implementation | Same-forward precision result and local FP32 R2 registration |
+| 2026-09-07T08:54:26.714584+08:00 | /diagnosing-bugs | refine-logs/trifusion_v28_joint_tokens_fp32/EXPERIMENT_PLAN_20260907_085426.md | implementation | Same-forward precision result and local FP32 R2 registration |
+| 2026-09-07T08:54:26.714584+08:00 | /diagnosing-bugs | refine-logs/trifusion_v28_joint_tokens_fp32/EXPERIMENT_PLAN.md | implementation | Same-forward precision result and local FP32 R2 registration |
+| 2026-09-07T08:54:26.714584+08:00 | /diagnosing-bugs | refine-logs/trifusion_v28_joint_tokens_fp32/EXPERIMENT_TRACKER_20260907_085426.md | implementation | Same-forward precision result and local FP32 R2 registration |
+| 2026-09-07T08:54:26.714584+08:00 | /diagnosing-bugs | refine-logs/trifusion_v28_joint_tokens_fp32/EXPERIMENT_TRACKER.md | implementation | Same-forward precision result and local FP32 R2 registration |
+| 2026-09-07T08:54:26.714584+08:00 | /diagnosing-bugs | docs/TRIFUSION_RGBNT201_CURRENT_COMPLETE_HANDOFF_2026-09-01.md | implementation | Same-forward precision result and local FP32 R2 registration |
+| 2026-09-07T08:54:26.714584+08:00 | /diagnosing-bugs | AGENTS.md | implementation | Same-forward precision result and local FP32 R2 registration |

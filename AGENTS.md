@@ -1,42 +1,26 @@
 # TriFusion-ReID workspace
 
-## Latest verified state (2026-09-07T08:29:30.648354+08:00)
+## Latest verified state (2026-09-07T08:54:26.714584+08:00)
 
-- V28 c9a38e6 original M0 ENDED 08:20:07, exit0, M0_FAIL.
-  All3fold paired preflight/original-V8 parity passed;116updates complete.
-  Only gradient coverage fails: candidate218/219, joint.mixer.dt_proj.weight
-  stays zero in both8step capacity and100step overfit. All grads exist/finite.
-  Control203/203; overflow0; frozenstate unchanged; capacity6172/6788MiB;
-  overfit excess ratio0.0133422188997 PASS. Q1/heldout/new retrieval weights0.
-- Archive evidence/v28_m0_terminal_20260907 and
-  results/TRIFUSION_V28_ORIGINAL_M0_2026-09-07.md. All7rawfiles SHA matched.
-  Wrapper-before-child SyntaxError0forwards/updates preserved separately.
-- First precision diagnostic FAILED second-batch exact-loss replay after1update/2forwards.
-  No precision comparisons ran; AMP rootcause UNPROVEN. Instrumented diagnostic REGISTERED_NOT_RUN:
-  tools/diagnose_v28_joint_precision_instrumented.py (only logs actual/expected before unchanged assertion).
-  Maximum1additional reconstruction update; preserve original M0/Q1 stop and both failure records.
-- Original one-update source derivative precision diagnostic:
-  refine-logs/trifusion_v28_joint_precision/EXPERIMENT_PLAN.md.
-  Exactly1 reconstruction update,2real source forwards,3joint derivative replays.
-  Same input/state/upstream in AMP fast / FP32 fast / FP32 unfused.
-  Do not label AMP rootcause before actual comparison. Do not resume originalM0/Q1.
-- V27 complete Q1_FAIL4/5 and full source-style diagnostic remain sealed.
-  No V26/V27 rescue or old Router/exchange retry; no gate/width/loss/seed/epoch scan.
-- Data disk14.77GiB/system10.36GiB; GPU idle. Prior24redundantweights removed24.90GiB.
-  New deletions0/new retrieval weights0; protect anchors/finals/arrays/negative evidence.
-- Whole multi-dataset/SOTA goal remains unmet; single seed/reusedOOF limits.
-  Executor verification is not external independent review. Master41.96.
-
-## Current numerical diagnostic refinement
-
-- Both cross-process exact-loss diagnostics ended FAIL before precision comparison.
-  Source pixels/first update exact; second total differs1.1920928955e-6 in Mamba/fused only.
-  No AMP rootcause yet. Original M0_FAIL, Q1 stopped,2diagnostic updates already spent.
-- A separately registered same-forward input/state/true-upstream precision test is NOT_RUN.
-  Read evidence/v28_same_forward_precision_preregistration_20260907.json.
-  At most1additional reconstruction update (3diagnostic total); old FAIL never relabeled.
-  AMP replay must exactly match its own captured full forward before FP32 comparison.
-  Master41.97; do not use stale registered-only descriptions above to restart old runs.
+- Original V28 c9a38e6 M0_FAIL sealed:116updates,218/219candidate gradients;
+  joint.mixer.dt_proj.weight zero; allother11checks pass. Q1/heldout0.
+  Complete scalar/source/48paired preflight verification PASS; original FAIL unchanged.
+- Two cross-process precision probes each stopped after1update/2forwards on exact-loss
+  replay; differences1.19209e-6 (logged probe) preserved. No tolerance rescues them.
+- Same-forward probe863022c COMPLETE exit0 08:47:22: fixedinput/state/trueupstream,
+  original AMP dt0/2048; FP32 fast/unfused2048/2048, maxscaledgrad3.534658e-8.
+  Supports local mixed-precision derivative loss. Total diagnosticupdates3.
+  Read results/TRIFUSION_V28_SAME_FORWARD_PRECISION_DIAGNOSIS_2026-09-07.md.
+- V28 R2 local-FP32 correction IMPLEMENTED_REGISTERED_NOT_RUN.
+  Onlynewjoint forward disablesautocast andcastsinputFP32; alloldfiles/FAILs kept.
+  Read refine-logs/trifusion_v28_joint_tokens_fp32/EXPERIMENT_PLAN.md.
+  Realfixture regression0updates, thenfresh116stepM0; onlyPASS permits6end3360stepQ1.
+  Original203/219gradient, overfit and5sciencegates unchanged. Nohyperparameterscan.
+- Diagnosticfixture is engineering-only and never initializesanyfold model.
+  Alltraining stilluses legal per-foldV12. PreserveSignal, originalroles and7heads.
+- GPUidle; data~14.5GiB. Prior24redundantweights removed24.90GiB; newdeletions0.
+  Protectanchors/finals/arrays/failurefixtures. Wholemulti-dataset/SOTAgoalunmet.
+  Single seed/reusedOOF andexecutor-not-external-review boundaries. Master41.98.
 
 ## Experiment environment
 

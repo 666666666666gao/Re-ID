@@ -2,7 +2,7 @@
 
 ## 0. 一页结论
 
-最新状态（2026-09-07T08:45:50.969147+08:00）：两次来源精度诊断均在跨进程loss逐bit回放处停止，已记录第二批差1.19209e-6，尚无AMP结论；另登记同一次前向内严格配对的导数精度诊断，原V28 M0_FAIL与Q1停止保持。
+最新状态（2026-09-07T08:54:26.714584+08:00）：同前向数值配对已确认新增joint模块AMP丢失小导数，FP32恢复dt2048个梯度；原V28 M0_FAIL保持。仅局部FP32的R2代码与原门槛重验计划已登记，尚未运行。
 
 当前用于已完成MSVR310比较及新登记RGBNT100比较的是原V8平行三角色结构：冻结Signal/CLIP，共享block8之前语义和tail9/10/11参数，三个角色分别运行共享tail；CNN处理局部语义Patch高频，Transformer处理全局CLS/Patch关系，Mamba处理空间与位置级三模态扫描。各角色相对冻结reference形成1536D残差，三角色4608D银行拼接3072D Signal得到7680D fused；完整单角色输出为4608D Signal+角色残差。三条路径均执行，当前没有Router/HFER、V23模态MLP或V24原型。两项车辆训练比较均已完成；RGBNT100内部完整比较支持三角色增益，MSVR310尚未超过Signal。下面V1—V8条目保留历史经过，不代表当前又启用了旧模块。
 
@@ -4917,3 +4917,30 @@ FP32显式转换捕获输入并关闭autocast。固定最多1次更新，诊断�
 这改变的是数值因果问题的配对位置，不修改原M0门或开放Q1。
 计划与源hash见evidence/v28_same_forward_precision_preregistration_20260907.json。
 当前新诊断尚未运行，AMP根因未证明，无训练精度修复。
+
+
+## 41.98 同前向精度证据成立，登记V28 R2局部FP32修复（2026-09-07）
+
+863022c同前向诊断142507于08:47:22退出0，18.285619秒。
+本次1重建更新/2source前向/3joint导数重放，三项诊断共3次更新；
+原M0仍116步、FAIL，Q1仍0。旧第二步loss差4.11272049e-6保留，不声称原轨迹逐bit一致。
+
+当前完整AMP图与AMP子图的dt_proj.weight均0/2048梯度，输出精确相同。
+相同输入/state/真实upstream转FP32 fast/unfused后，两者均2048/2048非零，
+scaled256下absmax3.534658077e-8、L2 2.214225816e-7。两者dt统计一致，
+其他部分参数统计有微小差异，不宣称所有梯度逐元素相等。
+x_proj非零也从1384/10240恢复10240/10240。参数SHA不变，无比较期更新。
+该局部配对支持FP16路径丢失小导数，不支持整个CUDA实现错误或改变loss权重。
+
+原诊断JSON SHA8c1d3e16c58e17fc00275fd8abdef549239bae3a96e5a87b633041b440d96d2a；
+真实fixture116085842字节SHAc569133afd9742f85699b70b1dfd953c8c4f5ac7ff9f9f500afb182db7f6943f，
+仅留远端作无更新工程回归，绝不用于后续fold训练初始化。
+完整报告results/TRIFUSION_V28_SAME_FORWARD_PRECISION_DIAGNOSIS_2026-09-07.md。
+
+新增joint_tokens_v28_fp32.py仅在新joint forward关闭autocast并转FP32；
+原Signal/C/T/M、参数值、所有loss/预算/门槛保持。旧源码与失败合同不改。
+R2使用train_signal_preserving_v28_fp32.py与独立config/plan；
+先真实fixture旧AMP0→新FP32非零回归，再完整原M0 116步；
+通过后才完整Q1六端3360更新。当前R2尚未运行，诊断不是M0晋级或检索结果。
+计划refine-logs/trifusion_v28_joint_tokens_fp32/EXPERIMENT_PLAN.md。
+精度成本实际记录，标准FP32工程修复不包装为算法创新。
