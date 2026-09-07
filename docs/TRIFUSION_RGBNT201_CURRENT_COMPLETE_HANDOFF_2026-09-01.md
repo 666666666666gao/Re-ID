@@ -2,7 +2,7 @@
 
 ## 0. 一页结论
 
-最新状态（2026-09-08T00:23:16.002855+08:00实查）：MSVR缓存坐标来源测量3/6端完成，fold1 instance_memory达13/20epoch，原wrapper185622/source186000持续；六端1560步/全CPU尚未终态。完整72步预检诊断图及36点独立重算通过，source绘图仍待全终态实测。主盘约4.79GiB，执行合同不变；Goal active/unmet，详见41.141。
+最新状态（2026-09-08T00:41:25.149335+08:00实查）：MSVR缓存坐标来源测量已完成4/6端，fold2 control达13/20epoch；原wrapper185622/source186000持续，完整CPU未开始。已补核PRISM/DSGM原表与固定提交的发布配置差异，不改当前合同。主盘约4.71GiB，Goal active/unmet；详见41.142。
 
 当前用于已完成MSVR310比较及新登记RGBNT100比较的是原V8平行三角色结构：冻结Signal/CLIP，共享block8之前语义和tail9/10/11参数，三个角色分别运行共享tail；CNN处理局部语义Patch高频，Transformer处理全局CLS/Patch关系，Mamba处理空间与位置级三模态扫描。各角色相对冻结reference形成1536D残差，三角色4608D银行拼接3072D Signal得到7680D fused；完整单角色输出为4608D Signal+角色残差。三条路径均执行，当前没有Router/HFER、V23模态MLP或V24原型。两项车辆训练比较均已完成；RGBNT100内部完整比较支持三角色增益，MSVR310尚未超过Signal。下面V1—V8条目保留历史经过，不代表当前又启用了旧模块。
 
@@ -5759,3 +5759,11 @@ GradCache原论文RepL4NLP2021及作者提交906f03835fbc183132a9db32612a9e8f180
 同模型家族、独立上下文复核逐条重算72条CPU文本，全部36点零差异；PNG/PDF自查及页面文字边界、矢量属性、SHA、AST/ruff F通过。图注已补清分母与诊断/更新区别。预检单epoch/fullLR图不冒充完整来源趋势；source绘图路径尚未实际执行，须六端/全CPU后再次验证。详见results/MSVR310_FRESHNESS_DIAGNOSTIC_PLOTS_2026-09-08.md，证据evidence/msvr310_freshness_preflight_figures_20260908/。
 
 2026-09-08T00:23:16.002855+08:00原进程实查3/6端完成，fold1 instance_memory达13/20epoch，主盘5,140,942,848B。未重跑、未改执行源/配置/计划、未读取heldout/official、未新增模型前向；之前权重与bundle清理不重复计数。原任务预计01:10–01:20后进入全CPU，完成后全量文本接收、重聚合、绘图与科学解释。总Goal active/unmet。
+
+### 41.142 PRISM/DSGM原表与发布合同补核（2026-09-08T00:43:32.951016+08:00）
+
+补齐9月6日仅核README的文献缺口：已独立取得并查看PRISM16页、DSGM15页作者预印本，主表对应PRISM RGBNT20180.5/84.0、RGBNT10086.1/97.8、MSVR31047.6/64.8；DSGM分别82.6/87.0、89.4/98.2、64.6/76.0。前者额外语义mask，后者额外GPT-4o文本/SAM2 mask，不作为纯CLIP等资源或本机复现结果。
+
+固定作者HEAD0067f6d/6566f78共31文本及许可证SHA已核。PRISM MSVR论文K8而YAML K4；DSGM RGB201论文60epoch而YAML50epoch，发布BASE_LR也与文中模块LR数值不同，但未执行优化器不能推出每组实际LR。DSGM工厂实际选用RGBNT201_Text并读取train_171，不仅凭141/30/30描述认定论文主表真实训练划分；目录名亦不证明实际身份计数。仅来源与静态代码核查，未接入作者模型、mask或权重。详见docs/PRISM_DSGM_PRIMARY_AND_RELEASE_BOUNDARIES_2026-09-08.md与evidence/prism_dsgm_primary_20260908/。
+
+2026-09-08T00:41:25.149335+08:00原wrapper185622/source186000持续，4/6端完成，fold2 control13/20epoch，主盘5,053,583,360B。执行工具/配置/计划四项SHA不变。仍等六端与全CPU后接收全部文本、完整重聚合和来源正式图；预检图不能替代完整来源。Goal active/unmet。

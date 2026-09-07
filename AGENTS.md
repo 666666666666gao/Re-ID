@@ -1,12 +1,12 @@
 # TriFusion-ReID workspace
 
-## Latest verified state (2026-09-08T00:23:16.002855+08:00, complete preflight figures)
+## Latest verified state (2026-09-08T00:41:25.149335+08:00, primary-reference gap closed)
 
-- Originalrun /root/autodl-tmp/trifusion-v2/artifacts/msvr310_freshness_v1_seed42_ab67d4c remains bound toab67d4c/configf3a0634. Wrapper185622/source186000 live; 3/6 source endpoints complete; fold1 instance_memory 13/20epoch. Full1560/sourceCPU not terminal.
-- Complete preflight72/CPU/text/36plot values verified; fresh same-family provisional figure review. Actual rendered PNG/vectorPDF and caption/binding receipt archived. Source plotting code NOT_EXECUTED; wait for complete source and fullCPU before intake, reaggregation, plotting and actual render review.
-- Source tools/config/EXPERIMENT_PLAN unchanged. Fresh loss diagnostic only; current peers retain gradients, historical stale/fresh candidates detach. PreviousQ1/mining failures sealed. No new model forward, training intervention or official retrieval in this reporting task.
-- Mainfree5,140,942,848B; prior182obsolete bundle cleanup and priorweight cleanup not repeated. Preserve needed checkpoints/data/evidence.
-- Master41.141/results/MSVR310_FRESHNESS_DIAGNOSTIC_PLOTS_2026-09-08.md. Expected source01:10-01:20 thenCPU; observe original handles at180-300seconds or completion milestones. WholeGoal ACTIVE/UNMET.
+- Source run /root/autodl-tmp/trifusion-v2/artifacts/msvr310_freshness_v1_seed42_ab67d4c remains on fixedab67d4c/configf3a0634. Originalwrapper185622/source186000 live; 4/6 source endpoints complete, fold2 control 13/20epoch. Complete1560/sourceCPU pending.
+- All72preflight/36plot values, rendered vectorPDF/PNG and same-family provisional figure review already verified. Source plotting NOT_EXECUTED; complete source/fullCPU before alltext intake, reaggregation and real source render verification.
+- PRISM/DSGM author-preprint tables and31pinned code/config/license texts checked. Record mask/text resources and paper/release discrepancies; no author model installed or trained, no current contract change.
+- Mainfree5,053,583,360B. Priorweight/bundle cleanup remains archived, not repeated. Four frozen freshness source/config/plan SHAs unchanged; fresh loss diagnostic only; source current peers retain gradients/history detach.
+- Master41.142/docs/PRISM_DSGM_PRIMARY_AND_RELEASE_BOUNDARIES_2026-09-08.md. Expected current control end around00:50, fullsource01:10-01:20 thenCPU. Observe original handles at180-300seconds or milestones. WholeGoal ACTIVE/UNMET.
 
 ## Experiment environment
 
