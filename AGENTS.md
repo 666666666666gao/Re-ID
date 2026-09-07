@@ -1,12 +1,12 @@
 # TriFusion-ReID workspace
 
-## Latest verified state (2026-09-08T01:31:03.167516+08:00, new coordinate comparison registered)
+## Latest verified state (2026-09-08T01:36:06.658087+08:00, coordinate-update experiment running)
 
-- Complete freshness diagnosis sealed at9c8c6b7; allsix/1560updates/51,860,992 distances and720 sourceplot fields verified. No original process remains; do not rerun it.
-- New fixed contract configs/MSVR310/TriFusion-fresh-coordinate-paired-v1.json, plan refine-logs/msvr310_fresh_coordinate_v1/EXPERIMENT_PLAN.md. Control uses stale expanded coordinates; fresh_memory uses current role reencoding. Both perform identical reencoding/diagnostic work, history detached.
-- Separate train/verify/check/run_msvr_fresh_coordinate.py; AST/ruff F passed, no new model execution yet. T0 then248update M0/fullCPU, then1560update pairedQ1/fullCPU. Same original two five-gate contracts, no official access.
-- Reuse existing tri_reid environment. Before launch verify GPU idle/mainfree>=3GiB, fixedconfig/commit. Estimated M010–15min plusQ1/CPU2–3h; screen and durablelogs, observe180–300seconds or milestones.
-- Master41.144. Preserve requiredweights, frozenfailedruns and unrelatedlocal modifications. Goal ACTIVE/UNMET.
+- Fixed b4501fa/config32e22d3a, run /root/autodl-tmp/trifusion-v2/artifacts/msvr310_fresh_coordinate_v1_seed42_b4501fa. One screen launch01:32:35; wrapper192704 and currentm0 PID192718 live, exact commandlines verified.
+- T0 passed all780batch admission/age/math, original192706 exit0 at01:32:40. M0 capacity4/6 recorded; all248updates andCPU not terminal, no Q1 results. Do not restart.
+- Control=stale-history updates; fresh_memory=current role reencoded history. Extra reencoding/diagnostics matched, history detached/currentpeergradients retained. No other loss/architecture/budget change; original two5gates maintained.
+- Mainfree4706992128B/GPU6252, 0; same environment, protectedweights unchanged. Estimated M001:43–01:48 thenCPU; Q1/CPU2–3h afterpass. Observe180–300seconds or expectedmilestones.
+- Master41.145, launch report and evidence. Complete prior freshness diagnosis remains sealed. Goal ACTIVE/UNMET.
 
 ## Experiment environment
 

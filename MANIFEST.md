@@ -1403,3 +1403,5 @@
 - 2026-09-08T01:22:40.378147+08:00: Complete six-end source freshness/1560 updates/51,860,992 distance CPU verification, all17text intake and source plots passed; archive full evidence and scientific limits, master41.143. Next single coordinate-update comparison awaits registration; Goal active/unmet.
 
 - 2026-09-08T01:31:03.167516+08:00: Register one compute-matched stale/current historical coordinate update experiment, separate4tools/contract, AST/ruff F passed; not launched yet. M0/fullQ1 original gates, master41.144, Goal active/unmet.
+
+- 2026-09-08T01:36:19.337245+08:00: One fixed coordinate-update launch b4501fa/32e22d3a, T0 all780batches PASS; originalwrapper192704/M0192718 verified live, M0 pending. Master41.145, no newQ1, Goal active/unmet.

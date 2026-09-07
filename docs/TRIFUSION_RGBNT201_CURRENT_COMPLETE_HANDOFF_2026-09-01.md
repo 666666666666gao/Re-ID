@@ -2,7 +2,7 @@
 
 ## 0. 一页结论
 
-当前执行入口：§41.144；MSVR310完整新鲜度诊断已封存，新登记陈旧/当前重编码坐标更新配对实验，T0/M0及完整Q1待执行；保持原门与三数据集长期Goal ACTIVE/UNMET。
+当前执行入口：§41.145；MSVR当前历史坐标更新V1已于01:32启动，T0通过，原wrapper192704/M0192718运行；全部M0/CPU/Q1待终态，三数据集Goal ACTIVE/UNMET。
 
 当前用于已完成MSVR310比较及新登记RGBNT100比较的是原V8平行三角色结构：冻结Signal/CLIP，共享block8之前语义和tail9/10/11参数，三个角色分别运行共享tail；CNN处理局部语义Patch高频，Transformer处理全局CLS/Patch关系，Mamba处理空间与位置级三模态扫描。各角色相对冻结reference形成1536D残差，三角色4608D银行拼接3072D Signal得到7680D fused；完整单角色输出为4608D Signal+角色残差。三条路径均执行，当前没有Router/HFER、V23模态MLP或V24原型。两项车辆训练比较均已完成；RGBNT100内部完整比较支持三角色增益，MSVR310尚未超过Signal。下面V1—V8条目保留历史经过，不代表当前又启用了旧模块。
 
@@ -5789,3 +5789,11 @@ GradCache原论文RepL4NLP2021及作者提交906f03835fbc183132a9db32612a9e8f180
 固定seed42/B64K8/原Signal初始化/20epoch及全部配对六端1560更新。T0后M0六端8步＋两端100步共248更新，全CPU通过才Q1；Q1全部600query、完整gallery、原scene规则、原两组五项门。双方新增计算记入成本，预计M010–15min、Q1及CPU2–3h；启动前检查GPU/磁盘至少3GiB。持久日志，180–300秒或完成里程碑观察，不因超时重启。未重建环境，复用刚完成完整来源诊断的tri_reid。
 
 本节是执行前登记；下一步部署固定提交并启动一次pipeline，记录原PID/命令行再更新状态。官方读取0，旧Q1负结果与全部原门不变；完整长期Goal ACTIVE/UNMET。
+
+### 41.145 当前历史坐标更新V1一次启动与T0通过（2026-09-08T01:36:19.337245+08:00）
+
+固定执行b4501fa795155eb613fb3bcb07a07c5fae4c6a79/config32e22d3a0cd858e96430e4b9f9b0a2093c0fdf30f026d8d334ad92d46cfb94aa。01:32:35一次screen启动，wrapper192704；T0192706于01:32:40退出0，全780batch队列/年龄/数学通过，0模型前向。自动进入M0192718。最近2026-09-08T01:36:06.658087+08:00实查原wrapper192704与m0 PID192718及命令行均存在；M0已写入4/6个capacity端，完整248步与CPU尚不能提前PASS。
+
+run /root/autodl-tmp/trifusion-v2/artifacts/msvr310_fresh_coordinate_v1_seed42_b4501fa，screen msvr_fresh_coordinate_b4501fa。启动主盘4,843,671,552B，最近4706992128B；GPU6252, 0。所有绑定依赖SHA保持，复用原环境，0权重删除。报告results/MSVR310_FRESH_COORDINATE_V1_LAUNCH_2026-09-08.md及证据evidence/msvr310_fresh_coordinate_launch_20260908/。
+
+预计M001:43–01:48后CPU；成功才完整六端Q1，估计再2–3h并按实速修订。两组原五门、source隔离、完整gallery、seed42与停止梯度边界不变。观察原进程180–300秒或里程碑，不因等待超时重启，不提前声称方法有效；长期Goal ACTIVE/UNMET。
