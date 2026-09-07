@@ -2,7 +2,7 @@
 
 ## 0. 一页结论
 
-最新状态：2026-09-07，MSVR style Q1第一端260更新后因CPU距离bitwise检查停止；4/56线程全3折重放已定位差异，56线程全部精确。R3只修复评价CPU路径，保留原终点继续余5端，已登记尚未启动（§41.126）。
+最新状态：2026-09-07，MSVR style R3实际484264e已通过精确CPU距离/原终点全state检查，第一端360gallery/210query正式评价恢复并全量核验；Q1PID170273继续余5端，18:54候选epoch4，完整科学终态未出（§41.127）。
 
 当前用于已完成MSVR310比较及新登记RGBNT100比较的是原V8平行三角色结构：冻结Signal/CLIP，共享block8之前语义和tail9/10/11参数，三个角色分别运行共享tail；CNN处理局部语义Patch高频，Transformer处理全局CLS/Patch关系，Mamba处理空间与位置级三模态扫描。各角色相对冻结reference形成1536D残差，三角色4608D银行拼接3072D Signal得到7680D fused；完整单角色输出为4608D Signal+角色残差。三条路径均执行，当前没有Router/HFER、V23模态MLP或V24原型。两项车辆训练比较均已完成；RGBNT100内部完整比较支持三角色增益，MSVR310尚未超过Signal。下面V1—V8条目保留历史经过，不代表当前又启用了旧模块。
 
@@ -5571,3 +5571,13 @@ R2 Q1PID168456完成fold0control固定20epoch/260更新、保存compact终点后
 原第一端checkpoint SHAeb4f85bf3b0928f4041d8112a34fb62a7a3f79e4dffaa851bbf932e39795ac7d，原训练SHAf68c6d94b53c80fbfd3a936c2c6002f09ab6d20e45e8e5ec7c1e5fcc2a7f9ba7。接续前CPU严格重建全state，正式阶段严格GPU加载后重新完成该端失败的360图库评价；不重训、不重复保存该权重。余5端1300新更新，总比较仍1560；本次2064图库record前向与先前失败已读360分开记账。新持久pipeline CPU修复检查→完整接续Q1→原全量CPU＋额外原260步复用核验，失败即停。
 
 新源码已实现/静态检查，R3登记时尚未启动。证据evidence/msvr310_style_r2_distance_failure_20260907/包含完整真实失败和CPU重放。原T0末位字节失败与已完成M0记录不改。下一步先同步该固定修复再接续，Goal仍active且三数据集目标未达。
+
+## 41.127 MSVR style R3已真实恢复第一端，余五端训练进行中
+
+实际源码484264e，wrapper170083于18:51:45启动；check170085于18:51:52退出0。三折56CPU线程距离全部与原B0 bitwise相等，4线程已测舍入差异保持原记录；原compact control完整state重建SHA00b98730ae428d8f095f2d0fe8a031dc31fe8b86f4a4d3c4f917c9bed485f01f一致。该检查0模型/图像/更新/指标。接续Q1PID170273于18:51:52开始，18:54:15通过/proc及完整命令确认live。
+
+第一端已经严格GPU恢复、完成360gallery/210query五输出评价，Signal features与distances逐位等于原B0；重用原260更新/终点eb4f85bf...95ac7d，不重训也未重复保存权重。7文本5,965,286bytes全部SHA/bytes核对；本地对原训练字段全等（仅style日志路径迁移）以及1050query-output/378000全rank位置重算，最大AP差3.331e-16。此处只证明第一端工程恢复，不能提前判断配对科学成败。
+
+评价后恢复CPU4线程，原训练接口继续。18:54候选fold0epoch4，余5端1300新更新，总比较1560仍不变；新2064与失败阶段旧360图库record前向分开记录。完整原CPU verifier将在56线程运行，并另核验原260步复用/原文件不变。终态本地摘要工具已加必需的resume_verification绑定，不能把缺少接续证据的部分摘要当完成。
+
+报告results/MSVR310_SOURCE_STYLE_R3_DISTANCE_RECOVERY_2026-09-07.md；证据evidence/msvr310_style_r3_first_recovery_20260907/。18:54余9,395,724,288bytes约8.75GiB；约21秒/epoch，粗估全Q1/CPU19:29-19:34，实际以原进程终态为准。下一观察不早于18:59:30。R1/R2错误及完整M0均保留，主Goal仍active未达。

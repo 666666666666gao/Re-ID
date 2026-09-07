@@ -20,9 +20,18 @@ def main(args):
     root=args.directory
     summary=json.loads((root/'q1_summary.json').read_bytes())
     verification=json.loads((root/'q1_cpu.json').read_bytes())
+    resume=json.loads((root/'resume_verification.json').read_bytes())
     protocol=json.loads(args.protocol.read_bytes())
     assert verification['status']=='PASS_COMPLETE_MSVR_STYLE_Q1'
     assert verification['summary_sha256']==sha(root/'q1_summary.json')
+    assert resume['status']=='PASS_FIXED_ORIGINAL_END_REUSE_AND_EXACT_CPU_DISTANCE'
+    assert resume['summary_sha256']==sha(root/'q1_summary.json')
+    assert resume['complete_cpu_verification_sha256']==sha(root/'q1_cpu.json')
+    assert resume['original_training_updates_reused']==summary['original_training_updates_reused']==260
+    assert resume['new_optimizer_steps']==summary['new_optimizer_steps']==1300
+    assert summary['distance_cpu_threads']==56 and summary['training_cpu_threads']==4
+    assert sum(r['training_reused_from_original_run'] for f in summary['folds'] for r in f['endpoints'].values())==1
+    assert summary['folds'][0]['endpoints']['control']['training_reused_from_original_run']
     assert verification['checked_training_steps']==summary['optimizer_steps']==1560
     assert summary['heldout_record_forwards']==2064
     assert summary['official_image_reads']==summary['rgbnt201_dev_image_reads']==0
@@ -93,6 +102,9 @@ def main(args):
                 generated_at=datetime.now().astimezone().isoformat(),summary_sha256=sha(root/'q1_summary.json'),
                 remote_cpu_verification_sha256=sha(root/'q1_cpu.json'),script_sha256=sha(__file__),
                 aggregate_metrics=all_metrics,changes=changes,costs=costs,all600_queries=queries,
+                original_training_updates_reused=260,new_optimizer_steps=1300,
+                original_failed_run_files_unchanged=summary['original_failed_run_files_unchanged'],
+                resume_verification_sha256=sha(root/'resume_verification.json'),
                 scientific_checks=summary['comparison']['paired_checks'],vehicle_checks=summary['comparison']['endpoints']['source_style']['scientific_checks'],
                 boundaries=['Internal full-path identity-isolated comparison, not official or zero-shot transfer.',
                             'All600 queries and60 eligible identities included; no per-test-identity tuning.',

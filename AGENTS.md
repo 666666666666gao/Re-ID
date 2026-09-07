@@ -1,13 +1,14 @@
 # TriFusion-ReID workspace
 
-## Latest verified state (2026-09-07 MSVR style distance repair R3 registration)
+## Latest verified state (2026-09-07T18:54 MSVR style R3 resumed Q1 running)
 
-- R2Q1PID168456 completed fold0control260updates then stopped at Signal distance bitwise check18:36:31; wrapper167448/child ended. No complete scientificQ1 result.
-- Saved B0features replay:4CPUthreads mismatch max2.384e-7;56threads exact across all3folds. Original Signal feature equality already passed. No images/updates for diagnosis.
-- R3 only runs original evaluator/CPU verifier at56threads; training/extraction4 unchanged. Fixed originalcontrolcheckpoint reused, no retraining/duplicate checkpoint; remaining5ends1300newupdates, total1560.
-- R3 config configs/MSVR310/TriFusion-source-style-v1-r3-distance-resume.json and plan refine-logs/msvr310_source_style_v1/R3_EXACT_DISTANCE_RESUME.md. REGISTERED_NOT_LAUNCHED.
-- Next pinned persistent check(CPUall3 + originalfullstate) -> resumedQ1 -> fullCPU+reuse verification. All original failed files immutable, all10scientific conditions unchanged, M0notrerun.
-- Master41.126; Goal active/unmet. No official/dev access, models/arrays remote, compact checkpoint storage. Preserve unrelated dirty files; sync all3masters.
+- ACTIVE R3run /root/autodl-tmp/trifusion-v2/artifacts/msvr310_style_v1_r3_distance_seed42_484264e; code484264e, wrapper170083,Q1PID170273.
+- CPUcheck170085 ended0 at18:51:52:56threads exactB0all3folds + originalcontrolcomplete-state SHA. Registered training4threads unchanged.
+- Originalfold0control260updates/checkpoint reused, first360gallery/210query evaluated successfully, Signalfeatures/distances bitwiseB0. Local1050query-output/378000rank positions and trainingreuse verified.
+- At18:54:15 originalQ1live,candidatefold0epoch4. Remaining5ends1300newupdates, total1560. No complete science result yet. Nextobserve>=18:59:30; fullETA19:29-19:34 rough.
+- FullR2M0/CPU/local already complete. R1plan-byte and R2distance-thread failures preserved; R2originalwrapper/Q1ended. Do not relaunchR2/retraincontrol/M0.
+- Terminal requires originalfullCPU at56threads AND resume_verification.json; prepared intake and local digest require complete6ends/600queries/60IDs and no local model transfer.
+- Master41.127; Goalactive/unmet, disk~8.75GiB. Preserve unrelated dirty files and synchronize all3masters.
 
 ## Experiment environment
 
