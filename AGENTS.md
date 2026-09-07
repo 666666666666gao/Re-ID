@@ -1,13 +1,12 @@
 # TriFusion-ReID workspace
 
-## Latest verified state (2026-09-07T17:32:41.610773+08:00)
+## Latest verified state (2026-09-07T17:38:22.966321+08:00)
 
-- V29 Q1 and complete source diagnosis sealed; source evidence published240cbce, master41.118.
-- New complete source-only joint similarity analysis REGISTERED_NOT_RUN. Read refine-logs/v29_joint_similarity/EXPERIMENT_PLAN.md.
-- Tools analyze_v29_joint_similarity/run_v29_joint_similarity use only existing matrices, no GPU/image/model/update/retrieval.
-- Full3fold/1680batches/two views/all-active-inactive/true relation and allsource identity outputs; math/static PASS.
-- No affine coefficient deployment, b/checkpoint/seed scan or preservation loss. Full three-dataset Goal remains active and unmet.
-- Preserve unrelated dirty files. Master41.119 must sync remote/GitHub/Desktop before single persistent launch.
+- V29 Q1/source terminal remain sealed; source joint-similarity R1 ended1 at legacy arithmetic check, not model failure.
+- Read refine-logs/v29_joint_similarity/ENGINEERING_R2_PLAN.md. R2 REGISTERED_NOT_RUN; exact old FP32 path replayed separately from FP64 decomposition.
+- All3fold observed addition-rounding maximum5.960464477539063e-8. No threshold relaxation, model update or retrieval.
+- Full source-only coverage and original plan unchanged, fixed144/3360/36/3384 CSV rows. R1 evidence preserved.
+- Master41.120 sync required before single R2 CPU launch. Three-dataset Goal active/unmet; preserve unrelated dirty files.
 
 ## Experiment environment
 

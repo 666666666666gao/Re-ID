@@ -130,6 +130,12 @@ def check_math():
         assert np.max(np.abs(my-.8*mx)) < 1e-15
     assert fit(np.zeros(6))["slope"] is None
     assert fit(moments(np.ones(3), np.ones(3)))["slope"] is None
+    fields=rng.uniform(-1,1,size=(3,64,64)).astype(np.float32)
+    legacy=(.5*fields[0]+.5*fields[1]).astype(np.float64)
+    exact=.5*fields[0].astype(np.float64)+.5*fields[1].astype(np.float64)
+    assert np.max(np.abs(legacy-exact))>0
+    assert np.array_equal((fields[2].astype(np.float64)-exact)
+                          -(fields[2].astype(np.float64)-legacy),legacy-exact)
     return {"status":"PASS_AFFINE_MATH_EXPLICIT_PAIRS_AND_RELATIONS", "seed":42}
 
 
@@ -152,6 +158,7 @@ def analyze(args):
     math_check = check_math()
     pair_rows, batch_rows, relation_rows, identity_rows, hashes = [], [], [], [], []
     max_sse_error, max_previous_error, total_cases = 0., 0., 0
+    maximum_rounding, maximum_exact_legacy_difference = 0., 0.
     for fold in summary["folds"]:
         number = fold["fold"]
         for field in ("similarities", "receipts"):
@@ -194,12 +201,17 @@ def analyze(args):
         direct_sse = {k:0. for k in pairs}
         relations = {(vi,st,p):np.zeros(len(RF)) for vi in range(2) for st in STRATA
                      for p in ("identity","cross_camera")}
+        legacy_joint = {key:0. for key in relations}
         identities = {(*key,i):np.zeros(len(RF)) for key in relations for i in ids}
         for case,(labels,cameras,active,masks) in enumerate(cached):
             legal = {p:indices(labels,cameras,p) for p in ("identity","cross_camera")}
             for vi in range(2):
                 z = matrices[case,2,vi].astype(np.float64)
                 x,y = z[14],2*z[1]-z[0]
+                legacy=(.5*matrices[case,2,vi,0]+.5*matrices[case,2,vi,14]).astype(np.float64)
+                rounding=float(np.max(np.abs(legacy-(.5*z[0]+.5*z[14]))))
+                maximum_rounding=max(maximum_rounding,rounding)
+                assert rounding<=np.finfo(np.float32).eps
                 for st in ("all",active):
                     for ki,mask in zip(KINDS,masks,strict=True):
                         f = fits[vi,st,ki]
@@ -210,6 +222,8 @@ def analyze(args):
                     for protocol,(q,p,n) in legal.items():
                         mx,my = x[q,p]-x[q,n], y[q,p]-y[q,n]
                         relations[vi,st,protocol] += relation_sums(mx,my,a)
+                        legacy_joint[vi,st,protocol] += float(((z[1,q,p]-z[1,q,n])
+                                                               -(legacy[q,p]-legacy[q,n])).sum())
                         for identity in np.unique(labels):
                             mask = labels[q]==identity
                             identities[vi,st,protocol,int(identity)] += relation_sums(mx[mask],my[mask],a)
@@ -231,9 +245,12 @@ def analyze(args):
                      and (st=="all" or g["stratum"]==st)]
             assert int(value[0]) == sum(g["triplets"] for g in prior)
             previous = sum(g["joint_changes"][vi][1]-g["joint_changes"][vi][0] for g in prior)
-            error = abs(.5*(value[2]-value[1])-previous)/value[0]
+            error = abs(legacy_joint[vi,st,p]-previous)/value[0]
             max_previous_error = max(max_previous_error,error)
             assert error<1e-10
+            difference=abs(.5*(value[2]-value[1])-previous)/value[0]
+            maximum_exact_legacy_difference=max(maximum_exact_legacy_difference,difference)
+            assert difference<=2*maximum_rounding+1e-10
             relation_rows.append(relation_row((number,VIEWS[vi],st,p),value))
         for (vi,st,p,i),value in identities.items():
             identity_rows.append(relation_row((number,VIEWS[vi],st,p,ids[i]),value,True))
@@ -251,6 +268,8 @@ def analyze(args):
                   source_summary_sha256=contract["source_summary_sha256"],inputs=hashes,math_check=math_check,
                   checked_cases=total_cases,directed_off_diagonal_pairs_per_view=1680*64*63,
                   maximum_direct_sse_mean_error=max_sse_error,maximum_previous_joint_mean_error=max_previous_error,
+                  maximum_fp32_decomposition_rounding=maximum_rounding,
+                  maximum_exact_vs_legacy_joint_mean_difference=maximum_exact_legacy_difference,
                   model_forwards=0,optimizer_updates=0,image_reads=0,retrieval_evaluations=0,exports=exports,
                   interpretation="Descriptive fits only; no deployed score modification, parameter selection, independence or unseen-identity claim.")
     with (args.output_dir/"analysis.json").open("x",encoding="utf-8") as stream:
