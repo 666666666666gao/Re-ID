@@ -1401,3 +1401,5 @@
 - 2026-09-08T00:43:32.951016+08:00: Verify PRISM/DSGM author-preprint tables, extra semantic resources and31pinned release texts; record paper/YAML/loader discrepancies without changing active source contract. OriginalPIDs185622/186000 continue, source4/6 complete; master41.142, Goal active/unmet.
 
 - 2026-09-08T01:22:40.378147+08:00: Complete six-end source freshness/1560 updates/51,860,992 distance CPU verification, all17text intake and source plots passed; archive full evidence and scientific limits, master41.143. Next single coordinate-update comparison awaits registration; Goal active/unmet.
+
+- 2026-09-08T01:31:03.167516+08:00: Register one compute-matched stale/current historical coordinate update experiment, separate4tools/contract, AST/ruff F passed; not launched yet. M0/fullQ1 original gates, master41.144, Goal active/unmet.

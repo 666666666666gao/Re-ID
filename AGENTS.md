@@ -1,12 +1,12 @@
 # TriFusion-ReID workspace
 
-## Latest verified state (2026-09-08T01:22:40.378147+08:00, complete source diagnosis)
+## Latest verified state (2026-09-08T01:31:03.167516+08:00, new coordinate comparison registered)
 
-- Fixed ab67d4c/config f3a0634 freshness run completed all six endpoints/1560 updates and CPU 51,860,992 distances; wrapper/source/CPU exited 0. Do not restart.
-- All17 text files/59,343,243B verified, all120 epoch/960 age/360 role groups and real source PNG/PDF reviewed; 720 fields equal CPU reaggregation. Same-family review is provisional, not retrieval efficacy.
-- Cached historical coordinates materially affect early/mid-training mining and role gradients; terminal differences shrink. Fresh losses made zero updates; historical candidates detach, current peers retain gradients. Old Q1 failures remain sealed.
-- Main free4,926,001,152B at01:19:41, GPU1MiB/0%. Required weights/data preserved; prior cleanups not repeated.
-- Master41.143 and complete-source report. Next: preregister one compute-matched stale-vs-current-reencoded historical coordinate update comparison, M0 then full paired Q1; no new method currently launched. WholeGoal ACTIVE/UNMET.
+- Complete freshness diagnosis sealed at9c8c6b7; allsix/1560updates/51,860,992 distances and720 sourceplot fields verified. No original process remains; do not rerun it.
+- New fixed contract configs/MSVR310/TriFusion-fresh-coordinate-paired-v1.json, plan refine-logs/msvr310_fresh_coordinate_v1/EXPERIMENT_PLAN.md. Control uses stale expanded coordinates; fresh_memory uses current role reencoding. Both perform identical reencoding/diagnostic work, history detached.
+- Separate train/verify/check/run_msvr_fresh_coordinate.py; AST/ruff F passed, no new model execution yet. T0 then248update M0/fullCPU, then1560update pairedQ1/fullCPU. Same original two five-gate contracts, no official access.
+- Reuse existing tri_reid environment. Before launch verify GPU idle/mainfree>=3GiB, fixedconfig/commit. Estimated M010–15min plusQ1/CPU2–3h; screen and durablelogs, observe180–300seconds or milestones.
+- Master41.144. Preserve requiredweights, frozenfailedruns and unrelatedlocal modifications. Goal ACTIVE/UNMET.
 
 ## Experiment environment
 
