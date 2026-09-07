@@ -1,13 +1,13 @@
 # TriFusion-ReID workspace
 
-## Latest verified state (2026-09-07 21:28 MSVR instance memory launched)
+## Latest verified state (2026-09-07 21:36 complete MSVR memory M0 PASS, Q1 running)
 
-- Execution104506b72193b6cdbcd237044be97c2410fd7a45; config40f44b0e6c12771c53a283a5b65ca6a45556e0293b7d48decf5fd518ad771a3d. Source census remains sealed on2a9b618; no rerun.
-- Run /root/autodl-tmp/trifusion-v2/artifacts/msvr310_instance_memory_v1_seed42_104506b; original wrapper178471, M0178485; live21:28. T0 full780batches/math PASS exited0.
-- M0 RUNNING, completeM0/M0CPU/Q1 NOT_AVAILABLE. Original persistent pipeline continues automatically only after complete engineering checks. No restart.
-- Original plainV8, all14weights, only fusedTriplet pool current+512unique sourcehistory/age8/warmup65. Bothends shadowcache/samepixels/drift probes. No newparameter/style/router.
-- M0248updates, then sixendsQ11560updates; exactSignal inference and56CPUdistance retained. All original science gates, fullscene gallery, sourceidentity isolation and noofficial remain.
-- Main free5.34GiB at21:28; no newweight deletion. Text-only local artifacts. Launch evidence and master41.132. Whole Goal active/unmet.
+- Fixed execution104506b/config40f44b0; run /root/autodl-tmp/trifusion-v2/artifacts/msvr310_instance_memory_v1_seed42_104506b. Originalwrapper178471, Q1179387 persistent; do not restart.
+- T0 PASS; M0248updates ended21:33:28 exit0; fullCPU1236480distance elements ended21:33:37 exit0. All27texts/4903487bytes SHA verified, local248step reaggregation PASS.
+- All6capacityends real CNN/T/M delta-parameter gradients; all8trainingends203/203 gradients, zerooverflow, frozenSignal unchanged; compactstrictreload/zero-age replay PASS. Fixedbatch overfit has0historical candidates by true-record exclusion; memorysignal is from multibatchcapacity.
+- Early8update drift~0.56-0.71 mean does not prove postwarmupslowdrift. Q1 warmup65, capacity512/age8 fixed; allactualepochprobes retained. No interim tuning.
+- Q1 at21:36 fold0control epoch8/20; complete6ends1560updates/full600query scene-filter gallery/fiveoutputs/two5gatefamilies still required. No completeQ1 metrics, noofficial.
+- Main free5.26GiB; no newweight deletion. Master41.133/report results/MSVR310_INSTANCE_MEMORY_V1_M0_2026-09-07.md; completeevidencefolder. Whole Goal ACTIVE/UNMET.
 
 ## Experiment environment
 
