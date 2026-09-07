@@ -1150,3 +1150,10 @@
 | 2026-09-07T09:17:53.290164+08:00 | /experiment-audit | docs/TRIFUSION_RGBNT201_CURRENT_COMPLETE_HANDOFF_2026-09-01.md | verification | V28 R2 completeM0 PASS; Q1 running; terminal CPU verifier waiting |
 | 2026-09-07T09:17:53.290164+08:00 | /experiment-audit | AGENTS.md | verification | V28 R2 completeM0 PASS; Q1 running; terminal CPU verifier waiting |
 | 2026-09-07T09:17:53.290164+08:00 | /experiment-audit | tools/wait_v28_fp32_terminal.py | verification | V28 R2 completeM0 PASS; Q1 running; terminal CPU verifier waiting |
+| 2026-09-07T09:27:35.657795+08:00 | /research-lit | evidence/pmkd_author_pdf_primary_verification_20260907.json | verification | PMKD authorPDF primary tables verified; V28 Q1 original process live |
+| 2026-09-07T09:27:35.657795+08:00 | /research-lit | docs/PMKD_AUTHOR_PDF_VERIFICATION_2026-09-07.md | verification | PMKD authorPDF primary tables verified; V28 Q1 original process live |
+| 2026-09-07T09:27:35.657795+08:00 | /research-lit | evidence/v28_fp32_progress_20260907_092553.json | verification | PMKD authorPDF primary tables verified; V28 Q1 original process live |
+| 2026-09-07T09:27:35.657795+08:00 | /research-lit | refine-logs/trifusion_v28_joint_tokens_fp32/EXPERIMENT_TRACKER_20260907_092735.md | verification | PMKD authorPDF primary tables verified; V28 Q1 original process live |
+| 2026-09-07T09:27:35.657795+08:00 | /research-lit | refine-logs/trifusion_v28_joint_tokens_fp32/EXPERIMENT_TRACKER.md | verification | PMKD authorPDF primary tables verified; V28 Q1 original process live |
+| 2026-09-07T09:27:35.657795+08:00 | /research-lit | docs/TRIFUSION_RGBNT201_CURRENT_COMPLETE_HANDOFF_2026-09-01.md | verification | PMKD authorPDF primary tables verified; V28 Q1 original process live |
+| 2026-09-07T09:27:35.657795+08:00 | /research-lit | AGENTS.md | verification | PMKD authorPDF primary tables verified; V28 Q1 original process live |

@@ -1,6 +1,6 @@
 # TriFusion-ReID workspace
 
-## Latest verified state (2026-09-07T09:17:53.290164+08:00)
+## Latest verified state (2026-09-07T09:27:35.657795+08:00)
 
 - V28 R2 bf8de956e685311dd70631395009a2c06a2c8591 fullM0 PASS all12gates.
   116updates;48pairedpreflight/48originalV8/48backbonechecks allcomplete.
@@ -11,18 +11,23 @@
   refine-logs/trifusion_v28_joint_tokens_fp32/EXPERIMENT_TRACKER.md.
   OriginalR1 M0_FAIL116updates and3diagnosticupdates preserved;前置235updates.
   Truefixture AMPdt0/2048→localFP322048/2048; fixture never initializesfolds.
-- Q1 training143321/wrapper143320 active;09:14:20 fold0control281/580updates.
+- Q1 training143321/wrapper143320 live09:25:53;fold0control580/candidate232updates,
+  Q1 812/3360,1/6terminalreceipts. Waiter144462 live, noexit.
   Complete6endpoint3360step terminal NOT YET. No partialfold decision/tuning.
   Actualfixedconfig/plan and original5sciencegates unchanged.
 - Persistent CPU terminalwaiter144462/wrapper144461 started09:15:24,aliveverified.
   tools/wait_v28_fp32_terminal.py waits240s between checks; aftercompleteexit0
   verifies6arraysets/all3360updates/rankings/bootstrap thenrendersallidentities/queries.
   It is WAITING, not completedreview; no newmodel/images/updates/evaluation.
-- Disk09:02:55 data15624220672B/system11129249792B;24deletedpathsstillabsent,
+- Disk09:25:53 data15455375360B; prior system11129249792B;24deletedpathsstillabsent,
   protected12models fullSHA match; earlierrelease24.900344GiB,newdeletions0.
   Preserveanchors/finals/arrays/fixtures;trainingremainsdetached.
 - Single seed/reusedOOF, noexternalindependentaudit,wholemulti-dataset/SOTAgoalunmet.
-  Master41.100; remote/repo/Desktop must stay byteidentical.
+  Master41.101; remote/repo/Desktop must stay byteidentical.
+
+- PMKD authorPDF9pages acquiredandTable1/2 visuallyread:84.7/88.9 RGBNT201,
+  91.6/98.0 RGBNT100,71.9/79.5 WMVeID863; noMSVR310result.
+  See docs/PMKD_AUTHOR_PDF_VERIFICATION_2026-09-07.md. No modelcontractchange.
 
 ## Experiment environment
 
