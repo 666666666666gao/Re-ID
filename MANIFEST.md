@@ -1163,3 +1163,48 @@
 | 2026-09-07T09:41:03.887819+08:00 | /run-experiment | refine-logs/trifusion_v28_joint_tokens_fp32/EXPERIMENT_TRACKER.md | monitoring | Original V28 R2 live; firstcompletepair saved; no interim science decision |
 | 2026-09-07T09:41:03.887819+08:00 | /run-experiment | docs/TRIFUSION_RGBNT201_CURRENT_COMPLETE_HANDOFF_2026-09-01.md | monitoring | Original V28 R2 live; firstcompletepair saved; no interim science decision |
 | 2026-09-07T09:41:03.887819+08:00 | /run-experiment | AGENTS.md | monitoring | Original V28 R2 live; firstcompletepair saved; no interim science decision |
+
+
+## 2026-09-07T10:37:59.144025+08:00 V28 R2 complete Q1 terminal
+
+- evidence/v28_fp32_complete_terminal_20260907/all_identity_comparison.csv
+- evidence/v28_fp32_complete_terminal_20260907/all_query_comparison.csv
+- evidence/v28_fp32_complete_terminal_20260907/complete_comparison.json
+- evidence/v28_fp32_complete_terminal_20260907/complete_comparison.md
+- evidence/v28_fp32_complete_terminal_20260907/complete_m0_verification.json
+- evidence/v28_fp32_complete_terminal_20260907/complete_terminal_verification.json
+- evidence/v28_fp32_complete_terminal_20260907/fold_0_control_all_training_steps.jsonl
+- evidence/v28_fp32_complete_terminal_20260907/fold_0_control_receipt.json
+- evidence/v28_fp32_complete_terminal_20260907/fold_0_joint_tokens_all_training_steps.jsonl
+- evidence/v28_fp32_complete_terminal_20260907/fold_0_joint_tokens_receipt.json
+- evidence/v28_fp32_complete_terminal_20260907/fold_1_control_all_training_steps.jsonl
+- evidence/v28_fp32_complete_terminal_20260907/fold_1_control_receipt.json
+- evidence/v28_fp32_complete_terminal_20260907/fold_1_joint_tokens_all_training_steps.jsonl
+- evidence/v28_fp32_complete_terminal_20260907/fold_1_joint_tokens_receipt.json
+- evidence/v28_fp32_complete_terminal_20260907/fold_2_control_all_training_steps.jsonl
+- evidence/v28_fp32_complete_terminal_20260907/fold_2_control_receipt.json
+- evidence/v28_fp32_complete_terminal_20260907/fold_2_joint_tokens_all_training_steps.jsonl
+- evidence/v28_fp32_complete_terminal_20260907/fold_2_joint_tokens_receipt.json
+- evidence/v28_fp32_complete_terminal_20260907/intake.json
+- evidence/v28_fp32_complete_terminal_20260907/local_terminal_scalar_recomputation.json
+- evidence/v28_fp32_complete_terminal_20260907/m0_complete_summary_snapshot.json
+- evidence/v28_fp32_complete_terminal_20260907/m0_control_capacity_steps.jsonl
+- evidence/v28_fp32_complete_terminal_20260907/m0_joint_tokens_capacity_steps.jsonl
+- evidence/v28_fp32_complete_terminal_20260907/m0_joint_tokens_overfit_steps.jsonl
+- evidence/v28_fp32_complete_terminal_20260907/run_summary.json
+- evidence/v28_fp32_complete_terminal_20260907/terminal_outcome_digest.json
+- evidence/v28_fp32_complete_terminal_20260907/trifusion_v28_joint_tokens_fp32_seed42_bf8de95.log
+- evidence/v28_fp32_complete_terminal_20260907/trifusion_v28_joint_tokens_fp32_seed42_bf8de95_disk_prelaunch.json
+- evidence/v28_fp32_complete_terminal_20260907/trifusion_v28_joint_tokens_fp32_seed42_bf8de95_exit.json
+- evidence/v28_fp32_complete_terminal_20260907/trifusion_v28_joint_tokens_fp32_seed42_bf8de95_launch.json
+- evidence/v28_fp32_complete_terminal_20260907/trifusion_v28_joint_tokens_fp32_seed42_bf8de95_verification_waiter.log
+- evidence/v28_fp32_complete_terminal_20260907/trifusion_v28_joint_tokens_fp32_seed42_bf8de95_verification_waiter_exit.json
+- evidence/v28_fp32_complete_terminal_20260907/trifusion_v28_joint_tokens_fp32_seed42_bf8de95_verification_waiter_launch.json
+- evidence/v28_fp32_complete_terminal_20260907/v28_fp32_terminal_worker_20260907_102630.json
+- tools/recompute_v28_fp32_terminal_scalars.py
+- tools/digest_v28_fp32_terminal_outcome.py
+- results/TRIFUSION_V28_FP32_R2_Q1_2026-09-07.md
+- refine-logs/trifusion_v28_joint_tokens_fp32/EXPERIMENT_TRACKER_20260907_103759.md
+- refine-logs/trifusion_v28_joint_tokens_fp32/EXPERIMENT_TRACKER.md
+- docs/TRIFUSION_RGBNT201_CURRENT_COMPLETE_HANDOFF_2026-09-01.md
+- AGENTS.md

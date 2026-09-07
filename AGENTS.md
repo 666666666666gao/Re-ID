@@ -1,38 +1,29 @@
 # TriFusion-ReID workspace
 
-## Latest verified state (2026-09-07T09:41:03.887819+08:00)
+## Latest verified state (2026-09-07T10:37:59.144025+08:00)
 
-- V28 R2 bf8de956e685311dd70631395009a2c06a2c8591 fullM0 PASS all12gates.
-  116updates;48pairedpreflight/48originalV8/48backbonechecks allcomplete.
-  control203/203; candidatecapacity andfixed100overfit219/219; overflow0.
-  reserved6026/7608MiB, excesslossratio0.013347598525834775.
-  Serverfullreceipt andlocalfull116scalar recomputation PASS; executor,notexternalreview.
-- Read results/TRIFUSION_V28_FP32_R2_M0_2026-09-07.md and
-  refine-logs/trifusion_v28_joint_tokens_fp32/EXPERIMENT_TRACKER.md.
-  OriginalR1 M0_FAIL116updates and3diagnosticupdates preserved;前置235updates.
-  Truefixture AMPdt0/2048→localFP322048/2048; fixture never initializesfolds.
-- Q1 training143321/wrapper143320 live09:39:40;fold0both580updates complete,
-  fold1control285/560;Q1 1445/3360,2/6terminalreceipts. Waiter144462 live,noexit.
-  Complete6endpoint3360step terminal NOT YET. No partialfold decision/tuning.
-  Actualfixedconfig/plan and original5sciencegates unchanged.
-- Persistent CPU terminalwaiter144462/wrapper144461 started09:15:24,aliveverified.
-  tools/wait_v28_fp32_terminal.py waits240s between checks; aftercompleteexit0
-  verifies6arraysets/all3360updates/rankings/bootstrap thenrendersallidentities/queries.
-  It is WAITING, not completedreview; no newmodel/images/updates/evaluation.
-- Disk09:25:53 data15455375360B; prior system11129249792B;24deletedpathsstillabsent,
-  protected12models fullSHA match; earlierrelease24.900344GiB,newdeletions0.
-  Preserveanchors/finals/arrays/fixtures;trainingremainsdetached.
-- Single seed/reusedOOF, noexternalindependentaudit,wholemulti-dataset/SOTAgoalunmet.
-  Master41.102; remote/repo/Desktop must stay byteidentical.
-
-- PMKD authorPDF9pages acquiredandTable1/2 visuallyread:84.7/88.9 RGBNT201,
-  91.6/98.0 RGBNT100,71.9/79.5 WMVeID863; noMSVR310result.
-  See docs/PMKD_AUTHOR_PDF_VERIFICATION_2026-09-07.md. No modelcontractchange.
-
-- Firstpair execution receipts:control715.091922s/candidate744.685403s,
-  overflow0,full203/219gradcoverage,strictreload/read-onlyevaluation true.
-  Estimate trainterminal~10:20; completeCPUaudit canstartafter<=240swait.
-  Theseareexecutionreceipts,notfullarrayaudit or partialsciencepromotion.
+- V28 R2 bf8de956e685311dd70631395009a2c06a2c8591 is SEALED Q1_FAIL,0/5 gates.
+  Full M0 PASS retained; six20epoch endpoints/3360updates completed.
+  fused81.825305665429→81.268873589012;gain-0.556432076417.
+  fold+1.092754438462/-1.487873238871/-1.282261134575;bootstrapLB-2.366968012858.
+  C/T/M gains+0.002070340050/-0.957453055872/-0.435400679632.
+- Original training143321 exited0 at10:21:48; waiter144462 exited0 at10:23:36.
+  No active training/verifier. All30 endpoint-output scores,571queries/21IDs verified.
+  Remote32602260distances/5952790rankpositions errors0; local3360loss maxerror1.8090941012e-7 and metrics0.
+  30source text files31215636B downloaded with matchingSHA/bytes; no local Torch/model/images.
+- Read results/TRIFUSION_V28_FP32_R2_Q1_2026-09-07.md,
+  evidence/v28_fp32_complete_terminal_20260907/ and current tracker.
+  OriginalR1 M0_FAIL116updates+3diagnosticupdates+R2M0116updates=235pre-Q1 updates preserved.
+- New measured concern: original512Dmodal slots unit-normalized; joint correction unbounded before normalize(h+c).
+  Real epoch20 joint meanabs350.844528; averaged scale mismatch is proven, per-slot takeover/causality not yet.
+  Next: separately register complete source-only scale/direction retention diagnostic; NOT yet registered/run.
+  No V28 retuning, restarts, failed-gate promotion, dev/official, pre-success ablations or multi-seed sweep.
+- Disk terminal14604984320B free; newdeletions0; preserveanchors/allfinals/arrays/fixtures.
+  Prior24redundantweights24.900344GiB cleanup preserved.
+- Seed42/reusedOOF and no external independent audit limits remain.
+  RGBNT201/MSVR310/RGBNT100 baseline/SOTA goal NOT achieved. Master41.103;sync all3copies.
+- PMKD authorPDF verified:RGBNT20184.7/88.9,RGBNT10091.6/98.0,WMVeID86371.9/79.5;noMSVR310.
+  See docs/PMKD_AUTHOR_PDF_VERIFICATION_2026-09-07.md.
 
 ## Experiment environment
 
