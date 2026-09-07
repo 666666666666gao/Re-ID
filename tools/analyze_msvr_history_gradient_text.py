@@ -1,11 +1,65 @@
 """Complete text-only aggregation; does not reconstruct parameter gradients."""
 import argparse
+from collections import OrderedDict
 import csv
 import hashlib
 import json
 from pathlib import Path
 
 import numpy as np
+
+
+def queue_coverage(steps, receipt, mode):
+    """Replay queue events; VJP-selection flags remain runtime observations."""
+    assert mode in ('preflight', 'source')
+    warmup = 2 if mode == 'preflight' else 65
+    queue = OrderedDict()
+    result = dict(age_expired_record_exposures=0, capacity_evicted_record_exposures=0,
+                  current_record_duplicate_exposures=0, excluded_current_history_exposures=0,
+                  available_history_group_exposures=0, selected_vjp_group_exposures=0,
+                  zero_upstream_group_skip_exposures=0, batches_with_age_expiry=0,
+                  batches_with_capacity_eviction=0, batches_with_zero_upstream_group_skip=0,
+                  maximum_selected_history_records=0, maximum_selected_history_age=0,
+                  maximum_queue_after_update=0)
+    for step, row in enumerate(steps):
+        assert row['step'] == step+1
+        current = row['record_indices']
+        current_set = set(current)
+        result['current_record_duplicate_exposures'] += len(current)-len(current_set)
+        expired = [i for i, stored in queue.items() if step-stored > 8]
+        result['age_expired_record_exposures'] += len(expired)
+        result['batches_with_age_expiry'] += bool(expired)
+        for index in expired:
+            del queue[index]
+        result['excluded_current_history_exposures'] += len(current_set & set(queue))
+        selected = [i for i in queue if i not in current_set]
+        assert selected == [r['record_index'] for r in row['memory']]
+        assert [(queue[i], step-queue[i]) for i in selected] == [(r['stored_step'], r['age']) for r in row['memory']]
+        available_groups = set(queue[i] for i in selected)
+        vjp_groups = row['candidate_vjp_groups']
+        assert len(set(vjp_groups)) == len(vjp_groups) and set(vjp_groups) <= available_groups
+        skipped = len(available_groups)-len(vjp_groups)
+        result['available_history_group_exposures'] += len(available_groups)
+        result['selected_vjp_group_exposures'] += len(vjp_groups)
+        result['zero_upstream_group_skip_exposures'] += skipped
+        result['batches_with_zero_upstream_group_skip'] += skipped > 0
+        result['maximum_selected_history_records'] = max(result['maximum_selected_history_records'], len(selected))
+        result['maximum_selected_history_age'] = max(result['maximum_selected_history_age'], max((step-queue[i] for i in selected), default=0))
+        direct = 64 if row['step'] == receipt['candidate_gradient_chain_rule']['step'] else 0
+        assert row['extra_role_record_forwards'] == 64*len(vjp_groups)+direct
+        evicted = 0
+        if step >= warmup:
+            for index in current:
+                queue.pop(index, None)
+                queue[index] = step
+            while len(queue) > 512:
+                queue.popitem(last=False)
+                evicted += 1
+        result['capacity_evicted_record_exposures'] += evicted
+        result['batches_with_capacity_eviction'] += evicted > 0
+        result['maximum_queue_after_update'] = max(result['maximum_queue_after_update'], len(queue))
+    result['scope'] = 'Deterministic queue replay and recorded VJP group selections; not independent upstream-gradient reconstruction.'
+    return result
 
 
 def analyze(run, output):
@@ -19,6 +73,7 @@ def analyze(run, output):
         for name,receipt in f['states'].items():
             steps=[json.loads(s) for s in (run/f"fold_{f['fold']}_{name}"/'steps.jsonl').read_text().splitlines()]
             assert len(steps)==receipt['batches']
+            coverage=queue_coverage(steps,receipt,summary['mode'])
             count+=len(steps)
             own=[]
             for r in steps:
@@ -57,6 +112,7 @@ def analyze(run, output):
                 a['history_above_repeat_noise']=sum(r['history_above_repeat_noise'] for r in points)
                 aggregate[role]=a
             states.append(dict(fold=f['fold'],state=name,batches=len(steps),roles=aggregate,
+                               queue_and_vjp_coverage=coverage,
                                extra_role_record_forwards=receipt['extra_role_record_forwards'],
                                chain_rule_relative_error=receipt['candidate_gradient_chain_rule']['relative_l2_error'],
                                peak_allocated_mib=receipt['peak_allocated_mib']))

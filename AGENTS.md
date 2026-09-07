@@ -1,12 +1,12 @@
 # TriFusion-ReID workspace
 
-## Latest verified state (2026-09-08T06:01:53.451454+08:00, full source diagnostic running)
+## Latest verified state (2026-09-08T06:28:21.401529+08:00, full source diagnostic running)
 
-- Fixed eebaaa0/configc99ddcf6: all9-state/72B64 preflight and original CPU PASS;25raw texts805652B received. Additional read-only CPU checks all13memory statistics,936checks/625920distance elements PASS. Never edit the running bound tools/config.
-- Independent same-family/provisional audit WARN;19782 initial deterministic text checks pass. Keep single-history-group direct-graph, missing14-component loss breakdown and remote binary/runtime-gradient limits; source is not complete.
-- Original wrapper3302/source3799 still present with exact commands. GPU17130, 88, free3702099968B. Filled-memory runtime revises full9-state ETA to6–7hours. Observe180–300seconds or estimated milestone; no timeout restart.
-- Finish all2340source batches, original source CPU plus separate all13-statistics postcheck, full text intake/analysis/audit before deciding a new paired-training hypothesis. No new training/Q1 registered; optimizer/heldout/official image forwards0.
-- Seed42 only. Previousfresh-coordinateQ1 remains0/5both. Master41.152; longGoal ACTIVE/UNMET.
+- Fixed eebaaa0/configc99ddcf6: original wrapper3302/source3799 live; fold0 initial260batches complete, control11/20epoch. All9states/2340source batches and sourceCPU still pending. ETA around noon; do not restart or edit bound tools/config/plan.
+- All9-state/72B64 preflight and originalCPU PASS; additional all13-statistics936checks PASS. Original independent audit WARN, same-family/provisional with explicit runtime-gradient and single-group direct-graph limits.
+- Read-only queue/VJP coverage extension replayed all72preflight batches; all original JSON fields and CSV unchanged. Age/capacity/zero-upstream branches unexercised in preflight; report actual complete-source coverage later.
+- Deleted69 verified redundant root-level code bundles,399442735B; retained nonancestor bundle and all model weights. Free4078333952B in latest observation; exact cleanup plan/receipt retained. Master41.153.
+- Complete allsource plus originalCPU, separate all13-statistics postcheck, complete text analysis and fresh-context audit before any new paired-training hypothesis. Seed42 only, priorfresh-coordinateQ1 remains0/5both, longGoal ACTIVE/UNMET.
 
 ## Experiment environment
 

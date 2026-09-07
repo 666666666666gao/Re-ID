@@ -1419,3 +1419,5 @@
 - 2026-09-08T05:20:15.778282+08:00: Launch repaired fixed-state candidate-gradient diagnosis eebaaa0/c99ddcf6 once; T0exit0, originalpreflight3312verifiedlive at2026-09-08T05:18:07.906237+08:00. No optimizer/retrieval, completepreflight/sourceawaited; master41.151.
 
 - 2026-09-08T06:06:01.076635+08:00: Publish complete history-gradient preflight,19782 independent text checks and separate all13-statistics936checks; WARN same-family/provisional with explicit limits. Original source3799continues, no optimizer or newQ1; master41.152.
+
+- 2026-09-08T06:31:09.942944+08:00: Source history-gradient queue/VJP coverage preparation and fullpreflight regression;69 redundant code bundles399442735B removed with exact receipt,0weights. Original3302/3799 continue; master41.153.

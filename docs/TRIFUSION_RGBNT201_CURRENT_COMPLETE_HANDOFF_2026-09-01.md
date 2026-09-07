@@ -2,7 +2,7 @@
 
 ## 0. 一页结论
 
-当前执行入口：§41.152；固定状态候选梯度九状态预检及补充13项统计CPU核验通过，独立审计WARN，原完整来源3799持续；无新训练/Q1，Goal ACTIVE/UNMET。
+当前执行入口：§41.153；原九状态候选梯度来源诊断3799持续，已补队列覆盖只读核验并清理69个冗余代码传输包；无新训练/Q1，Goal ACTIVE/UNMET。
 
 当前用于已完成MSVR310比较及新登记RGBNT100比较的是原V8平行三角色结构：冻结Signal/CLIP，共享block8之前语义和tail9/10/11参数，三个角色分别运行共享tail；CNN处理局部语义Patch高频，Transformer处理全局CLS/Patch关系，Mamba处理空间与位置级三模态扫描。各角色相对冻结reference形成1536D残差，三角色4608D银行拼接3072D Signal得到7680D fused；完整单角色输出为4608D Signal+角色残差。三条路径均执行，当前没有Router/HFER、V23模态MLP或V24原型。两项车辆训练比较均已完成；RGBNT100内部完整比较支持三角色增益，MSVR310尚未超过Signal。下面V1—V8条目保留历史经过，不代表当前又启用了旧模块。
 
@@ -5875,3 +5875,11 @@ AST及ruff F通过，尚未运行真实模型预检；不提前工程PASS。复�
 2026-09-08T06:01:53.451454+08:00实查原wrapper3302/source3799及命令行持续，GPU17130, 88，主盘3702099968B。本轮未删权重，诊断不新增权重。已装满历史后的实际速度约170–180秒/13batch，预计完整九状态约6–7小时，替代早期1–3小时预估；不缩短2340batch合同或重启。当前无optimizer更新、无新增heldout/official图像读取；继承上下文读取既有Q1工件属于来源绑定。
 
 完整预检报告results/MSVR310_HISTORY_CANDIDATE_GRADIENT_PREFLIGHT_2026-09-08.md，证据evidence/msvr310_history_gradient_preflight_20260908/，审计refine-logs/msvr310_history_candidate_gradient_v1/EXPERIMENT_AUDIT_PREFLIGHT.md/json。先完成原全部来源及CPU、全部13项补核、完整文本和独立审计，再决定是否登记只改变历史候选梯度范围的配对训练；当前未登记新训练/Q1。原新鲜坐标Q1两组0/5、seed42-only、三数据集长期Goal ACTIVE/UNMET保持。
+
+### 41.153 终态队列覆盖入口验证与冗余传输包清理（2026-09-08T06:31:09.942944+08:00）
+
+只读analyze_msvr_history_gradient_text新增年龄/容量/重复排除/VJP组及额外前向覆盖统计，已执行原九状态72batch/135角色行预检。去掉新增字段后全部既有JSON值精确相同，原CSV逐字节一致。每状态可用/实际VJP组15/15，最大年龄5；fold0/1/2的最大队列234/225/263、批内重复曝光179/196/162。全部预检年龄过期、容量淘汰、当前历史副本排除和零upstream组跳过均0，保留未覆盖边界。完整来源尚未执行此分析，不将运行时VJP组记录当成独立梯度重算；不改固定probe/CPU/config/计划。
+
+2026-09-08T06:26:20.624778+08:00完成69个根目录旧.bundle清理，逐文件路径/大小/SHA/ref祖先关系先核验，总399442735B约380.94MiB。一个非祖先bundle保留且SHA不变；仓库HEAD及原3302/3799进程前后保持。主盘3687133184→4086722560B，0模型权重删除，旧24个resume清理不重复计数。计划与逐文件收据见evidence/trifusion_root_bundle_cleanup_20260908/。
+
+2026-09-08T06:28:21.401529+08:00实查原source3799持续，1/9状态完整260batch，第0折control11/20epoch，执行eebaaa0/configc99ddcf6不变。预计全部来源约中午前后，仍按全部2340batch和完整CPU收束；未登记新训练。待终态后运行额外13项统计CPU、全文本接收/重聚合/队列覆盖及独立审计，再决定唯一下一项训练假设。报告results/MSVR310_HISTORY_GRADIENT_QUEUE_COVERAGE_AND_DISK_2026-09-08.md，source进度是运行观察而非新科学结果。seed42-only，长期Goal ACTIVE/UNMET。
