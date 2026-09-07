@@ -2,7 +2,7 @@
 
 ## 0. 一页结论
 
-当前执行入口：§41.150；历史候选梯度诊断T0测试夹具缺age停止，已最小修复并实际通过数学检查，真实模型尚未启动；将按修订提交一次接续，Goal ACTIVE/UNMET。
+当前执行入口：§41.151；固定候选梯度诊断修订入口已启动，T0通过、原预检3312运行，完整9状态预检/来源尚未终态，Goal ACTIVE/UNMET。
 
 当前用于已完成MSVR310比较及新登记RGBNT100比较的是原V8平行三角色结构：冻结Signal/CLIP，共享block8之前语义和tail9/10/11参数，三个角色分别运行共享tail；CNN处理局部语义Patch高频，Transformer处理全局CLS/Patch关系，Mamba处理空间与位置级三模态扫描。各角色相对冻结reference形成1536D残差，三角色4608D银行拼接3072D Signal得到7680D fused；完整单角色输出为4608D Signal+角色残差。三条路径均执行，当前没有Router/HFER、V23模态MLP或V24原型。两项车辆训练比较均已完成；RGBNT100内部完整比较支持三角色增益，MSVR310尚未超过Signal。下面V1—V8条目保留历史经过，不代表当前又启用了旧模块。
 
@@ -5851,3 +5851,11 @@ AST及ruff F通过，尚未运行真实模型预检；不提前工程PASS。复�
 仅补测试夹具age=1，未改数学公式、真实队列、梯度机制、0.005工程容差或来源范围；原计划不变。修订脚本已通过AST/ruff F，并在同远端tri_reid以0真实模型前向执行T0：标量/当前侧梯度与原实现逐位同、候选链式VJP精确一致、class0合法。配置新SHA c99ddcf6f6605b2d43725e7fc4f74f0747e774a1110a3d0567c3c42c74a1c0b3。
 
 下一步以修订提交建立新run再次T0→9状态预检→CPU→完整来源，保留原失败run，不以覆盖或重启原PID处理。无新模型成绩或科学结论；长期Goal ACTIVE/UNMET。
+
+### 41.151 固定候选梯度诊断修订入口启动（2026-09-08T05:20:15.778282+08:00）
+
+修订执行eebaaa07708e8f5e5d3e05d246afe5fe5f7abfc6/configc99ddcf6于05:17:55一次screen启动，screen msvr_hist_grad_eebaaa0，run /root/autodl-tmp/trifusion-v2/artifacts/msvr310_history_candidate_gradient_v1_seed42_eebaaa0，wrapper3302。T03304于05:17:57.955969退出0（2.4025秒），进入真实9状态预检3312。2026-09-08T05:18:07.906237+08:00实查两原PID和完整命令行持续，第0fold initial已开始。GPU890MiB/3%、主盘3,730,124,800B；0新权重删除。
+
+原a22aaa1 T0夹具失败run保留，不覆盖；此次只修复math metadata，9固定状态/完整来源、0optimizer、0heldout/official和预定数值门不变。完整预检和CPU未通过前不宣称工程成功；预检CPU通过才自动进入2340来源batch诊断，不自动启动历史反传训练或Q1。原始观察见evidence/msvr310_history_gradient_r1_launch_20260908/。
+
+预计预检5–15min、来源1–3h，以完成状态和速度调整观察里程碑；180–300秒观察原进程，超时不重启。主交接/桌面/GitHub随本提交同步，长期三数据集Goal ACTIVE/UNMET。

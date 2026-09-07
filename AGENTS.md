@@ -1,10 +1,11 @@
 # TriFusion-ReID workspace
 
-## Latest verified state (2026-09-08T05:16:47.288559+08:00, candidate-gradient T0 fixture repaired)
+## Latest verified state (2026-09-08T05:18:07.906237+08:00, candidate-gradient real preflight running)
 
-- Originala22aaa1 wrapper2228/T02230 stopped04:42:26 with missing age in synthetic metadata. No real model forward or optimizer update; rawfailure evidence preserved.
-- Minimal age=1 fixture repair; remote synthetic math now exactPASS, ruff F pass. Fixed9states/2340batches and originalplan unchanged. New configc99ddcf6, repairedpipeline notyetlaunched.
-- Source diagnostic only; allpreviousQ1sealed, seed42, no official/heldout images. Master41.150; Goal ACTIVE/UNMET.
+- Fixed eebaaa0/configc99ddcf6 R1 launched05:17:55, wrapper3302; T03304exit0 at05:17:57, preflight3312live with commandline. Firstfoldinitial started; all9state preflight/CPU pending.
+- Originala22aaa1 fixture failure preserved; R1 onlyadds syntheticage1. No optimizer or heldout/official read. Fullsource9x260 automaticallyaftercompletepreflightCPU, no newtraining/Q1.
+- GPU890MiB/3%, free3730124800B atactualcheck; no newweightdeletion. Plan unchanged; master41.151. Observe180–300seconds or estimatedmilestone, do not restart on timeout.
+- Previousfresh-coordinateQ1sealedFAIL0/5both. Seed42 only; longGoal ACTIVE/UNMET.
 
 ## Experiment environment
 
