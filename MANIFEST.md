@@ -1371,3 +1371,5 @@
 - 2026-09-07T17:38:22.966321+08:00: Archive source joint-similarity R1 arithmetic-check failure; register R2 matching old FP32 path without changing data/science, math PASS, CPU NOT_RUN. Master41.120.
 
 - 2026-09-07T17:48:15.534539+08:00: Complete V29 joint similarity R2 evidence/CSV verification; next MSVR310 source-style paired direction selected with780batch/3Signal readiness, not training launched. Master41.121.
+
+- 2026-09-07T20:18:27.745672+08:00: /experiment-plan /run-experiment register MSVR310 complete source relation census V1; new4tools, fixedcontract, plan/tracker, staticmath/environment/liveevidence. Master41.129; allGPUsource/CPUfullstages NOT_RUN. See refine-logs/msvr310_source_relation_census_v1/EXPERIMENT_PLAN.md.

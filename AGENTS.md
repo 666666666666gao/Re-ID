@@ -1,15 +1,15 @@
 # TriFusion-ReID workspace
 
-## Latest verified state (2026-09-07T19:33 MSVR style complete Q1 FAIL)
+## Latest verified state (2026-09-07T20:18 source census registered, NOT RUN)
 
-- No live R3 training: wrapper170083/Q1PID170273/CPUPID174176 all ended0, complete at19:26:52; originalPIDs absent at19:32.
-- Run /root/autodl-tmp/trifusion-v2/artifacts/msvr310_style_v1_r3_distance_seed42_484264e, execution484264e. Full6ends1560updates=originalcontrol260reused+1300new. Do not rerun any endpoint or M0.
-- Complete engineering/CPU/reuse/local full-ranking PASS; scientificQ1_FAIL, both5gatefamilies0/5. F52.126691->51.824477 (-0.302214), vsSignal53.129381=-1.304904; C-.222331/T+.600893/M-.237235. PairedbootstrapLB-.864710.
-- CandidateF exceeds its3roles but falls belowSignal, which is included in registered strict-best condition. All600queries/60IDs:25improved/29declined/6same, Rank1repair8/new11.
-- Full32textfiles39,513,093B received/SHA-verified; all2,069,520distance/rank positions checked remotely, all600x5x2AP/R1 recomputed locally.6checkpointSHAverified, models/arrays remain remote.
-- Preserve R1/R2 engineering failures and original reused control. Training4CPUthreads, distance56 exactB0, no tolerance relaxation. OriginalRGB201V27 and RGB100 positive evidence preserved separately.
-- Next register a full MSVR310 source relation/margin/instance-coverage census; it has NOT started. Nonzero end-training Triplet is not proof of wrong ranking or complete hard-negative coverage. No official/ablation promotion or failed-setting scan.
-- Report results/MSVR310_SOURCE_STYLE_V1_Q1_2026-09-07.md, master41.128; fullthree-datasetGoalactive/unmet. Disk~8.395GiB at19:32. Keep necessary anchors/finals and unrelated dirty files; sync3masters.
+- MSVRstyleQ1 fully completed/verified/published fb819ef; both5gatefamilies0/5. F52.126691->51.824477, paired-.302214, vsSignal-1.304904. No priorR3process live.
+- Next diagnostic: configs/MSVR310/Source-relation-census-v1.json, plan refine-logs/msvr310_source_relation_census_v1/EXPERIMENT_PLAN.md. Static/math PASS; remote check/extract/CPU NOT_RUN. Do not claim it is already running.
+- Full3sourcefolds xinitial/controlfinal/stylefinal xclean/augmented/coupled_style;18576recordforwards,0optimization,0newcheckpoint,0heldout/officialreads. All1032 source records included through2064foldmemberships.
+- 18outputs; identity_exclude_record and cross_scene, not samecamera filtering. Allnegative distractors retained; complete972conditions/668736queryrows/100440identityrows expected.
+- Styleforcedactive is a newly registered source stress view, NOT originaltraining260step pixel replay or a p0.5 training change. Fullrawpixels paired acrossstates/augmented-style; allmodelstateSHAunchanged.
+- Complete CPU checks exact relation counts, independent alltriplet hinge/AP, prototypesvsinstances, fixedsimilarity decomposition. Seen-source metrics do not prove unknownidentity improvement.
+- Originaltraining/env/failedversions unchanged, no official/ablation promotion or parameter scans. Reuse existing tri_reid after actual19:53freeGPU check; expectedfeatures2.85GB, disk8.32GiB, minimumfree4GiB.
+- Master41.129; fullthree-datasetGoalactive/unmet. Preserve unrelateddirty files; launch persistent ordered check->extract->CPU only after code/contract sync; observe180-300sec orestimatedmilestones.
 
 ## Experiment environment
 

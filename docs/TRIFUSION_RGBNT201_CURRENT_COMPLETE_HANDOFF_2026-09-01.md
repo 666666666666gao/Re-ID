@@ -2,7 +2,7 @@
 
 ## 0. 一页结论
 
-最新状态（2026-09-07 19:33）：MSVR310 source-style R3完整六端Q1及CPU/reuse/本地全量排序核验结束；Q1_FAIL，两组0/5，fused52.126691→51.824477（−0.302214），相对Signal−1.304904。原进程均结束，1560比较更新含原control260复用＋1300新更新；32文字文件39,513,093B完整接收。下一步须先登记MSVR310完整source关系诊断，尚未启动新任务；三数据集Goal active/unmet。详见§41.128。
+最新状态（2026-09-07 20:18登记）：MSVR310完整Q1已封存两组0/5；现登记完整source关系普查V1，静态/数学检查通过，GPU/CPU全量阶段尚未启动。三折×初始化/两终点×clean/增强/强制耦合style，18576冻结记录前向、0更新，区分反序/仅间隔不足/完全满足及原型平均遗漏实例。保留所有source记录与scene过滤；Goal active/unmet。详见§41.129。
 
 当前用于已完成MSVR310比较及新登记RGBNT100比较的是原V8平行三角色结构：冻结Signal/CLIP，共享block8之前语义和tail9/10/11参数，三个角色分别运行共享tail；CNN处理局部语义Patch高频，Transformer处理全局CLS/Patch关系，Mamba处理空间与位置级三模态扫描。各角色相对冻结reference形成1536D残差，三角色4608D银行拼接3072D Signal得到7680D fused；完整单角色输出为4608D Signal+角色残差。三条路径均执行，当前没有Router/HFER、V23模态MLP或V24原型。两项车辆训练比较均已完成；RGBNT100内部完整比较支持三角色增益，MSVR310尚未超过Signal。下面V1—V8条目保留历史经过，不代表当前又启用了旧模块。
 
@@ -5594,3 +5594,14 @@ R2 Q1PID168456完成fold0control固定20epoch/260更新、保存compact终点后
 全部1560步训练日志显示MSVR310增强输入下终点Triplet仍非零；这不等于反序计数，也不能直接沿用RGBNT201来源饱和诊断。下一步先登记MSVR310完整source合法间隔与实例覆盖普查，尚未启动，不扫描本次失败配置或消费official结果。Goal active/unmet。
 
 报告：[results/MSVR310_SOURCE_STYLE_V1_Q1_2026-09-07.md](../results/MSVR310_SOURCE_STYLE_V1_Q1_2026-09-07.md)；完整证据：[evidence/msvr310_style_r3_complete_q1_20260907](../evidence/msvr310_style_r3_complete_q1_20260907/)。19:32空闲8.395GiB，保留必要B0/CLIP和六端角色终点，无新增删除。文献新增[原表刷新](SOTA_PRIMARY_REFRESH_2026-09-07_EVENING.md)，FUSE的50.1/65.7不替代更强MSVR参考；RoDI CLIP/DINOv3分列，内部Q1不能直接对比论文official。
+
+
+### 41.129 MSVR310完整source关系普查V1登记（2026-09-07 20:18）
+
+前置fb819ef完整Q1_FAIL保持，不重训。新诊断合同configs/MSVR310/Source-relation-census-v1.json，SHA 23b3082aeb80ae5766c399ea79965f0ce176c1d7f4864347b9e26652e0392540；计划refine-logs/msvr310_source_relation_census_v1/EXPERIMENT_PLAN.md。此前18576前向尚未启动，此处是登记状态。
+
+三折672/683/709source记录、103/103/104source身份，覆盖全部1032原训练记录；初始化及两个固定epoch20终点各作clean/固定增强/强制耦合统计扰动三视图，总27条件/306batch/18576记录前向。全部18输出、普通同身份排除同记录与跨scene两协议；所有无正例记录保留负例作用。强制style是新登记压力视图，不是原260step像素重放或修改训练p0.5。gallery同模型完整clean source，不跨fold算距离。
+
+0优化器更新/0新checkpoint/0heldout及official图片；保存2,853,273,600B左右FP32特征，完整CPU核对972条件、668736query关系行、100440身份行。区分真实非正排序、仅不足0.3欧氏间隔、完全满足，额外测原型正确但实例错误；不把这些统计当参数梯度或记忆必然有效的证据。静态与独立数学fixture通过，GPU尚未执行。预计GPU10–20min、CPU10–25min，按实际条件速度及180–300秒里程碑观察。
+
+现有tri_reid/PyTorch2.5.1+cu121/CUDA12.1沿用刚完成Q1环境，无重建；独立.aris/compute账本不存在，不虚构新的环境认证。19:53原任务PID均不存在、GPU空闲、空闲8.32GiB。必要初始化、六端终点、复核证据均保留。后续先按合同完成诊断，再依据全量证据登记唯一新干预；Goal active/unmet。
