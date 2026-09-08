@@ -2,7 +2,7 @@
 
 ## 0. 一页结论
 
-当前执行入口：§41.154；第0/1折六固定状态1560batch已完成，原3799继续最后一折；全九状态及CPU待完成，Goal ACTIVE/UNMET。
+当前执行入口：§41.155；原3799继续最后一折，已启动终态后顺序核验/接收/分析任务，本地uv15212。全九状态/CPU/完整分析与审计尚未完成，Goal ACTIVE/UNMET。
 
 当前用于已完成MSVR310比较及新登记RGBNT100比较的是原V8平行三角色结构：冻结Signal/CLIP，共享block8之前语义和tail9/10/11参数，三个角色分别运行共享tail；CNN处理局部语义Patch高频，Transformer处理全局CLS/Patch关系，Mamba处理空间与位置级三模态扫描。各角色相对冻结reference形成1536D残差，三角色4608D银行拼接3072D Signal得到7680D fused；完整单角色输出为4608D Signal+角色残差。三条路径均执行，当前没有Router/HFER、V23模态MLP或V24原型。两项车辆训练比较均已完成；RGBNT100内部完整比较支持三角色增益，MSVR310尚未超过Signal。下面V1—V8条目保留历史经过，不代表当前又启用了旧模块。
 
@@ -5893,3 +5893,13 @@ AST及ruff F通过，尚未运行真实模型预检；不提前工程PASS。复�
 2026-09-08T07:36:42.976107+08:00里程碑观察：第0折initial/control/fresh_memory均完成260batch，共780/2340batch的状态终点已写出；原3302/3799继续第1折initial，日志5/20epoch。整项来源与CPU尚未终态，不分析部分fold选择方案。主盘4043554816B，执行eebaaa0/configc99ddcf6不变。连续五分钟进程观察正常，证据evidence/msvr310_history_gradient_first_fold_observation_20260908.json；无新训练或清理，长期Goal ACTIVE/UNMET。
 
 2026-09-08T09:47:15.629034+08:00里程碑观察：第0/1折六固定状态均完成260batch，合计1560/2340batch的状态终点已写出；原3302/3799已进入最后第2折initial，日志6/20epoch。这里是固定参数重放，optimizer0，整项来源与CPU仍未终态；不根据部分fold指标确定新方案。主盘3964370944B，执行eebaaa0/configc99ddcf6保持。五分钟间隔的原进程观察持续正常，证据evidence/msvr310_history_gradient_two_fold_observation_20260908.json；无新训练或清理，长期Goal ACTIVE/UNMET。
+
+### 41.155 原诊断终态后处理接续（2026-09-08 10:20 北京时间）
+
+原固定eebaaa0/configc99ddcf6诊断未重启、未改模型或合同。10:20:01观察原3302/3799均在，六个状态终点已完成、最后fold2initial17/20epoch，主盘3927789568B。终态尚未获得；没有新训练、权重删除或检索结果。
+
+为避免等待结束后重复人工启动，已将原只读观察及准备好的结果处理接为一个本地持久顺序任务：C:/Users/gb/.codex_tmp/finish_history_gradient_source_20260908.py，uv PID15212，10:19:56启动。旧functions观察cell173已停止；仅替换观察程序，远端任务不受影响。每300秒观察一次，只有原pipeline达到COMPLETE_VERIFIED_SOURCE_ONLY才执行额外13项NumPy统计核验，然后25文本接收/逐文件SHA核对、全部2340batch文本重聚合和完整来源图生成。工具SHA在启动时固定核验。原诊断失败或后处理检查失败将退出并留下日志，不会重训或自动切换方案。
+
+本地stdout/stderr为C:/Users/gb/.codex_tmp/history_gradient_complete_processing_20260908.stdout.log及同名stderr.log；完整接续收据目录history_gradient_complete_processing_20260908/。预计结果目录分别history_gradient_complete_source_20260908/、history_gradient_complete_analysis_20260908/、history_gradient_complete_figures_20260908/，均位于同一.codex_tmp；完成标志completion.json只表示后处理完成、仍待审查，不能当作模型科学成功。全部大型距离矩阵/模型留远端。接续时先查看该进程与日志，勿重复运行断言目标目录不存在的入口。
+
+第一条真实观察及脚本SHA、工具绑定见evidence/msvr310_history_gradient_postprocess_launch_20260908.json。完成后还须核实原终态、查看完整图、独立上下文审计全部来源证据，并同步报告；之后才能依据完整证据登记下一单一干预。历史新鲜坐标Q1两组0/5保持，seed42-only，三数据集Goal ACTIVE/UNMET。

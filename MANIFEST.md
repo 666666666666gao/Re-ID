@@ -1427,3 +1427,5 @@
 - 2026-09-08T07:36:42.976107+08:00: First complete source fold in fixed-state history-gradient diagnostic;3/9states/780state-terminal batches, original3302/3799 continuefold1. No scientific terminal/new training.
 
 - 2026-09-08T09:47:15.629034+08:00: Two complete folds in fixed-state history-gradient diagnostic;6/9states/1560state-terminal batches, original3302/3799 continuefold2. No scientific terminal or new training.
+
+| 2026-09-08 10:20 | execution | evidence/msvr310_history_gradient_postprocess_launch_20260908.json | observation | Persistent terminal-only postcheck/intake/analysis/plot handoff; original diagnostic unchanged, full results pending |
