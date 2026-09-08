@@ -1,11 +1,12 @@
 # TriFusion-ReID workspace
 
-## Latest verified state (2026-09-08T20:55:05.611032+08:00, Q1 milestone)
+## Latest verified state (2026-09-08T21:03:53.756975+08:00, Q1 running)
 
-- Master41.181. Original execution26c9739; run /root/trifusion-storage/artifacts/msvr310_role_set_v1_seed42_26c9739. Wrapper35302/Q136320 live. 3/6 endpoints complete; fold1 role_set epoch5/20. Next observation 21:25 +08:00; no relaunch or partial scientific claim.
-- M0 audit CLOSED_WARN, engineering/deterministic PASS, scope in EXPERIMENT_AUDIT_M0.md and Master41.179. Do not duplicate audit/M0. Full six-end Q1/CPU and independent terminal audit remain pending.
-- After complete terminal intake use analyze_role_set_q1_terminal_v2_20260908.py, checked only on all248 real M0 steps. Master41.180. Pair/gradient-weighting literature and local smooth-region derivation in PAIR_WEIGHTING_BOUNDARY_2026-09-08.md; no training modification or new experiment.
-- Output free10418761728B, keep all needed initialization/final/evidence weights. No cleanup this milestone. Seed42/original gates/full gallery/scene rules unchanged. Goal ACTIVE/UNMET; old V29 paragraph and dated status history are obsolete. Preserve unrelated runner/.aris changes.
+- Master41.182. Execution26c9739, original wrapper35302/Q136320 live; run /root/trifusion-storage/artifacts/msvr310_role_set_v1_seed42_26c9739. Three of six endpoints complete, fold1 role_set epoch9/20. Next observation21:25 +08:00. No relaunch or partial scientific conclusion.
+- M0 audit CLOSED_WARN, engineering/deterministic PASS. Do not rerun M0 or its audit. Complete Q1/CPU and fresh terminal review remain pending.
+- After strict complete terminal intake, use source analyzer v2 (Master41.180) and existing tools/audit_msvr_paired_ranking_text.py with candidate role_set, actual summary SHA, and PASS_COMPLETE_ROLE_SET_Q1. Local uv offline NumPy/Paramiko imports and CLI passed; do not bind to expired temporary Python executables. No terminal execution yet.
+- Disk inventory at 2026-09-08T21:05:41.528329+08:00: main free2621513728B, current output free10391728128B. Zero files deleted; preserve V3 sole resume, initial/final models, and ranking/diagnostic arrays. File extensions alone do not identify redundant weights.
+- Original seed42/full-path isolation/full-gallery/scene rules and scientific gates remain. Goal ACTIVE/UNMET; obsolete V29 continuation and earlier dated status do not define the current task. Preserve unrelated .aris and runner changes.
 
 ## Experiment environment
 
