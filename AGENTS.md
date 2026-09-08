@@ -1,12 +1,12 @@
 # TriFusion-ReID workspace
 
-## Latest verified state (2026-09-08 10:20 Beijing, sequential postprocessing armed)
+## Latest verified state (2026-09-08T12:23:54.298989+08:00, complete source audit)
 
-- Original3302/3799 remain live, fixed eebaaa0/configc99ddcf6; 6/9 states complete, fold2initial17/20epoch. Full source/CPU not terminal.
-- Local uv15212 runs C:/Users/gb/.codex_tmp/finish_history_gradient_source_20260908.py. It polls every300s, then only after COMPLETE_VERIFIED_SOURCE_ONLY runs all13-statistics CPU, complete25text intake, analysis and plots. Old tool observer173 stopped; no remote restart.
-- Inspect C:/Users/gb/.codex_tmp/history_gradient_complete_processing_20260908.stdout.log, stderr.log and processing directory before resuming; do not start duplicate intake/postcheck. completion.json is postprocessing-only, still requires full-source inspection and fresh-context audit.
-- Preflight audit WARN same-family/provisional; single-group direct proof and runtime-gradient boundaries remain. No new training/Q1, no bound-file edits, no new cleanup. Free3927789568B at observation; master41.155.
-- Preserve seed42-only, prior fresh-coordinate Q1 both0/5, three-dataset Goal ACTIVE/UNMET. Select next single training hypothesis only after all complete evidence and audit.
+- Original eebaaa0 source diagnostic and CPU completed all9 states/2340batches, zero optimizer/heldout/official forwards. Original3302/3799/18174 exited; do not restart.
+- All25 raw texts, complete reaggregation,108-cell figures/PDF and fresh-context audit are closed WARN (same-family/provisional). Read results/MSVR310_HISTORY_CANDIDATE_GRADIENT_SOURCE_2026-09-08.md and EXPERIMENT_AUDIT_SOURCE.md in the matching refine-log.
+- Historical partial gradients have full measured coverage, but no retrieval improvement is established. Preserve runtime-only gradient/direct single-history-group limits and23 negative current-versus-combined metric cosines.
+- Next: register one fresh-coordinate history-gradient scope paired experiment; current64anchors, real-ID candidate rules, original14losses and V8 inference fixed. No new training launched yet. GPU idle, disk3891519488B at12:18; compact prior M0+Q1 under1GB. Master41.156.
+- Preserve seed42-only, prior fresh-coordinate Q1 both0/5, protected weights/arrays and Goal ACTIVE/UNMET. Unrelated dirty files must remain untouched.
 
 ## Experiment environment
 

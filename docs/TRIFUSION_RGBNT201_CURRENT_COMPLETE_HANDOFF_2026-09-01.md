@@ -2,7 +2,7 @@
 
 ## 0. 一页结论
 
-当前执行入口：§41.155；原3799继续最后一折，已启动终态后顺序核验/接收/分析任务，本地uv15212。全九状态/CPU/完整分析与审计尚未完成，Goal ACTIVE/UNMET。
+当前执行入口：§41.156；历史候选梯度完整来源2340batch、CPU、全量文本/图表和独立审计均已收束。原进程结束；下一步登记单一历史梯度范围配对实验，尚未启动新训练。Goal ACTIVE/UNMET。
 
 当前用于已完成MSVR310比较及新登记RGBNT100比较的是原V8平行三角色结构：冻结Signal/CLIP，共享block8之前语义和tail9/10/11参数，三个角色分别运行共享tail；CNN处理局部语义Patch高频，Transformer处理全局CLS/Patch关系，Mamba处理空间与位置级三模态扫描。各角色相对冻结reference形成1536D残差，三角色4608D银行拼接3072D Signal得到7680D fused；完整单角色输出为4608D Signal+角色残差。三条路径均执行，当前没有Router/HFER、V23模态MLP或V24原型。两项车辆训练比较均已完成；RGBNT100内部完整比较支持三角色增益，MSVR310尚未超过Signal。下面V1—V8条目保留历史经过，不代表当前又启用了旧模块。
 
@@ -5903,3 +5903,18 @@ AST及ruff F通过，尚未运行真实模型预检；不提前工程PASS。复�
 本地stdout/stderr为C:/Users/gb/.codex_tmp/history_gradient_complete_processing_20260908.stdout.log及同名stderr.log；完整接续收据目录history_gradient_complete_processing_20260908/。预计结果目录分别history_gradient_complete_source_20260908/、history_gradient_complete_analysis_20260908/、history_gradient_complete_figures_20260908/，均位于同一.codex_tmp；完成标志completion.json只表示后处理完成、仍待审查，不能当作模型科学成功。全部大型距离矩阵/模型留远端。接续时先查看该进程与日志，勿重复运行断言目标目录不存在的入口。
 
 第一条真实观察及脚本SHA、工具绑定见evidence/msvr310_history_gradient_postprocess_launch_20260908.json。完成后还须核实原终态、查看完整图、独立上下文审计全部来源证据，并同步报告；之后才能依据完整证据登记下一单一干预。历史新鲜坐标Q1两组0/5保持，seed42-only，三数据集Goal ACTIVE/UNMET。
+
+
+### 41.156 完整来源历史候选梯度诊断与独立审计收束（2026-09-08T12:23:54.298989+08:00）
+
+原eebaaa0/config c99ddcf6的9状态×260=2340batch全部完成；source3799于11:53:48退出0，CPU18174于11:53:52退出0，原wrapper3302结束。后续13统计30420项检查、25原始文本共53366938B接收、全量重聚合和PDF/PNG核验均完成。最新12:18实查GPU空闲、主盘3891519488B；没有重跑原诊断，没有新的optimizer更新或heldout/official图像前向。
+
+5238个含历史角色记录中gV均非零且高于同图重复差异，cos(gU,gV)全部为负，均值−0.812275；||gV||/||gU||均值0.896638。cos(gU,gU+gV)有23条负值，纠正短预检“合成后全部同向”的外推；原14项总梯度与加入历史侧后的余弦全部仍正。它们是同一loss的偏导分解，不证明有害任务冲突、AdamW更新方向或检索增益。
+
+全来源队列/VJP核验：13716可用历史组，12498实际VJP组，1218零上游组跳过；58041年龄过期曝光，51948批内重复，11871当前历史副本排除；容量淘汰0、最大更新后队列408。801024额外角色记录前向，峰值allocated16087.170MiB。每状态直接图证明仅首次单历史组，参数/RNG/状态属于运行时见证；14项逐项loss未保存，不能从包独立重组原总loss。
+
+独立审计WARN，same-family/provisional；完整原始行、全部CSV和108格图表核验收束。详见results/MSVR310_HISTORY_CANDIDATE_GRADIENT_SOURCE_2026-09-08.md、refine-logs/msvr310_history_candidate_gradient_v1/EXPERIMENT_AUDIT_SOURCE.md及evidence/msvr310_history_gradient_complete_source_20260908/。原source summary SHA098ee6cd5edfc273e6f4f6f1d646a2c0685e3ab0a723d7434eac3d3962b3da91，原CPU SHA48a39b40816bd4fc547651d6af07c52222c9145b5fc3e30239019e687cfb8f1a；额外13统计SHA173ef45972bf98fc54f5199db7ce06043fd48bcd0c6f61bcb684572ec68e0127。
+
+下一步：依据覆盖和方向证据，登记只改变历史候选梯度范围的配对主实验。两端均使用新鲜历史坐标、相同当前64anchor/候选池/14项loss/原三角色；对照丢弃候选侧VJP，候选加入对应梯度。先固定合同、实际M0和CPU再完整六端Q1；本次发布未启动该训练。预计沿用紧凑角色checkpoint：上一完整M0+Q1实际994426031B，当前余量允许规划但仍需启动前确认。没有新增删除，旧权重清理不重复计入。
+
+原fresh-coordinate Q1两组0/5及−0.07158042pp保持封存；诊断不改变其检索结论。seed42-only、三数据集和既有完整图库/scene协议、主结果前不消融、官方结果不调参的合同保持。Goal ACTIVE/UNMET。

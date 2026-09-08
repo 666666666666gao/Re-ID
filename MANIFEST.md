@@ -1429,3 +1429,5 @@
 - 2026-09-08T09:47:15.629034+08:00: Two complete folds in fixed-state history-gradient diagnostic;6/9states/1560state-terminal batches, original3302/3799 continuefold2. No scientific terminal or new training.
 
 | 2026-09-08 10:20 | execution | evidence/msvr310_history_gradient_postprocess_launch_20260908.json | observation | Persistent terminal-only postcheck/intake/analysis/plot handoff; original diagnostic unchanged, full results pending |
+
+- 2026-09-08T12:23:54.298989+08:00: Complete fixed-state history-gradient source2340batches/5238role rows; fullCPU,13-statistics,all25texts,108-cell plots and independent audit WARN same-family/provisional. Master41.156; no new training.
