@@ -1,11 +1,11 @@
 # TriFusion-ReID workspace
 
-## Latest verified state (2026-09-08T20:40:41.475565+08:00, Q1 and terminal analysis)
+## Latest verified state (2026-09-08T20:55:05.611032+08:00, Q1 milestone)
 
-- Master41.180. Original execution26c9739, wrapper35302/Q136320 live. Run /root/trifusion-storage/artifacts/msvr310_role_set_v1_seed42_26c9739. First-fold both endpoints complete260 steps, 2/6 total; fold1 control14/20. Next observation20:52 near estimated20:54 endpoint. No restart or partial scientific result.
-- M0 audit CLOSED_WARN, engineering/deterministic PASS; scope/refine-logs/msvr310_role_set_v1/EXPERIMENT_AUDIT_M0.md and Master41.179 unchanged. Do not duplicate M0/audit.
-- Full Q1 intake/CPU/terminal audit still pending. Use analyze_role_set_q1_terminal_v2_20260908.py after complete intake; evidence/role_set_terminal_analysis_v2_20260908 contains scripts and actual248-step M0 function check. Not a Q1 execution. Distinguish warmup65 from first history; replacement beginsstep66 even if history is empty.
-- Output free10514784256B; retain necessary initialization/final/evidence weights. No new cleanup, no official result; Goal ACTIVE/UNMET. Preserve unrelated runner/.aris modifications. Older dated statuses and Goal V29 paragraph are historical.
+- Master41.181. Original execution26c9739; run /root/trifusion-storage/artifacts/msvr310_role_set_v1_seed42_26c9739. Wrapper35302/Q136320 live. 3/6 endpoints complete; fold1 role_set epoch5/20. Next observation 21:25 +08:00; no relaunch or partial scientific claim.
+- M0 audit CLOSED_WARN, engineering/deterministic PASS, scope in EXPERIMENT_AUDIT_M0.md and Master41.179. Do not duplicate audit/M0. Full six-end Q1/CPU and independent terminal audit remain pending.
+- After complete terminal intake use analyze_role_set_q1_terminal_v2_20260908.py, checked only on all248 real M0 steps. Master41.180. Pair/gradient-weighting literature and local smooth-region derivation in PAIR_WEIGHTING_BOUNDARY_2026-09-08.md; no training modification or new experiment.
+- Output free10418761728B, keep all needed initialization/final/evidence weights. No cleanup this milestone. Seed42/original gates/full gallery/scene rules unchanged. Goal ACTIVE/UNMET; old V29 paragraph and dated status history are obsolete. Preserve unrelated runner/.aris changes.
 
 ## Experiment environment
 
