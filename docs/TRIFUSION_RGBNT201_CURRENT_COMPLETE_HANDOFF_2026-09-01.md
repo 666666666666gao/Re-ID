@@ -2,7 +2,7 @@
 
 ## 0. 一页结论
 
-当前执行入口：§41.166；历史候选反传完整六端/CPU/独立审计已收束，Q1_FAIL两组0/5，fused配对+0.672435pp、仍低于Signal0.722653pp。下一项为复用已封存来源数组的角色关系覆盖CPU分析，尚未启动；无新训练或官方结果。Goal ACTIVE/UNMET。
+当前执行入口：§41.167；历史反传Q1完整封存FAIL并三方同步。旧来源角色关系覆盖CPU再分析于17:20:55在c46be4e启动，wrapper31867/analysis31871；54条件、0模型前向/更新，新结果未审计。按预计结束时间接收全量文本并独立核验，勿重复启动。Goal ACTIVE/UNMET。
 
 当前用于已完成MSVR310比较及新登记RGBNT100比较的是原V8平行三角色结构：冻结Signal/CLIP，共享block8之前语义和tail9/10/11参数，三个角色分别运行共享tail；CNN处理局部语义Patch高频，Transformer处理全局CLS/Patch关系，Mamba处理空间与位置级三模态扫描。各角色相对冻结reference形成1536D残差，三角色4608D银行拼接3072D Signal得到7680D fused；完整单角色输出为4608D Signal+角色残差。三条路径均执行，当前没有Router/HFER、V23模态MLP或V24原型。两项车辆训练比较均已完成；RGBNT100内部完整比较支持三角色增益，MSVR310尚未超过Signal。下面V1—V8条目保留历史经过，不代表当前又启用了旧模块。
 
@@ -6010,3 +6010,12 @@ M0于13:10:03.589918写入PASS_ENGINEERING_ONLY、13:10:04原PID19991 exit0；CP
 下一登记仅为来源数组只读再分析：configs/MSVR310/Role-relation-coverage-v1.json、refine-logs/msvr310_role_relation_coverage_v1/EXPERIMENT_PLAN.md、tools/analyze_msvr_role_relation_coverage.py。复用9月7日27状态/视图/fold条件×2来源协议，全37152query成员；0模型前向/0参数更新/0新权重。先测角色极值不同但仍在fused margin内的关系，并验证子集沿用同hardest不能增加全集hard hinge。旧source模型不冒充本轮历史反传终点，固定eval视图不冒充训练队列，间隔证据不冒充参数梯度。此次发布完成后执行，尚未启动。后继训练仍未选择top-k/配额/loss，不用已消费官方结果调参。
 
 正式表无新增：MSVR310仍无本项目正式结果，RGBNT100原增益保留。seed42 only、原门与失败封存、三数据集长期目标继续ACTIVE/UNMET。
+
+
+### 41.167 只读来源角色关系覆盖实际启动（2026-09-08T17:22:22.616190+08:00）
+
+历史反传Q1终态提交c46be4eb6bf8aa096527abb9f45b59282fc09085已推送，117文件远端字节/SHA一致，主交接GitHub/remote/Desktop SHA cecc093644c0bb2d996b650035940ab6a36bad19b54a106b08a64b75968bd6af。完整审计WARN/same-family/provisional与科学FAIL两组0/5保持，原训练/核验进程均结束。
+
+随后按已登记合同启动来源再分析：/root/autodl-tmp/trifusion-v2/artifacts/msvr310_role_relation_coverage_v1_seed42_c46be4e，screen tri_role_coverage_c46be4e，wrapper31867/analysis31871，启动2026-09-08T17:20:55.044692+08:00，17:20:56初查RUNNING。执行提交c46be4e、合同SHA c52c86e49bde1a73d2ea75b4182c4ae5db1c1911e820c3e30f9eba19fe3dd051；只读27个旧source条件×2协议，0模型前向/0优化器更新/0新checkpoint，输出完整37152query成员及54条件。启动盘2898268160B、CPU可用内存753742225408B，4线程；预计1–5分钟，按结束里程碑观察，勿重复启动。
+
+证据evidence/msvr310_role_relation_coverage_launch_20260908/launch.json。下一步读取原pipeline终态、全部文本和输入哈希后独立审计；在这之前不将角色提议或额外hinge关系写成新梯度/新身份收益。此分析是旧source模型上的新关系统计，不是重跑旧普查，不是当前历史反传终点的新特征提取。没有新训练、官方评估或loss/top-k/scene配额选择。Goal ACTIVE/UNMET。

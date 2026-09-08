@@ -1,13 +1,13 @@
 # TriFusion-ReID workspace
 
-## Latest verified state (2026-09-08T17:18:39.670840+08:00, historical-gradient Q1 complete)
+## Latest verified state (2026-09-08T17:22:22.616190+08:00, CPU source relation reanalysis launched)
 
-- Master41.166: all6ends/1560updates/CPU and independent audit complete. Scientific Q1_FAIL, both registered gate groups0/5. Fused51.73429240→52.40672778 (+0.67243538), below Signal53.12938056. Preserve all failures and seed42 limits.
-- Read results/MSVR310_HISTORY_GRADIENT_V1_Q1_2026-09-08.md and refine-logs/msvr310_history_gradient_v1/EXPERIMENT_AUDIT_Q1.md. Audit WARN/same-family/provisional, deterministic replay passed. Old live progress was corrected in current tracker/handoff; historical observations remain.
-- Original wrapper19977/Q120941/CPU29925 and local31404 have finished; never restart intake/watcher/training. Full local intake C:/Users/gb/.codex_tmp/history_gradient_q1_complete_20260908; analyses history_gradient_q1_terminal_processing_20260908. Full published evidence/msvr310_history_gradient_q1_complete_20260908.
-- Next registered action after publication sync: CPU-only existing-source role-relation coverage using configs/MSVR310/Role-relation-coverage-v1.json and tools/analyze_msvr_role_relation_coverage.py. Not launched yet. Read refine-logs/msvr310_role_relation_coverage_v1/EXPERIMENT_PLAN.md. 27sealedsource conditions×2protocols, no model forwards/updates/checkpoints. Do not mistake these older source states for current history-gradient endpoints.
-- No next training, loss/top-k/scene-quota change or official evaluation is registered. First clarify whether role proposals add effective relations beyond full fused hardest mining; a same-pool subset cannot increase the full-pool hinge.
-- 16:59:53 remote free3028090880B, GPU idle, zero deletions this publication. Preserve needed finals/initialization/arrays. New source output budget100MiB. Goal ACTIVE/UNMET; preserve unrelated dirty runner and .aris events.
+- Master41.167. Historical-gradient Q1 all6ends/1560updates/CPU/audit completed and published c46be4e; scientificFAIL0/5×2, integrityWARN/same-family/provisional. Fused+0.672435pp but belowSignal0.722653pp. Read results/MSVR310_HISTORY_GRADIENT_V1_Q1_2026-09-08.md.
+- Next registered read-only source reanalysis ACTUALLY STARTED17:20:55, initialcheck17:20:56 RUNNING. Root /root/autodl-tmp/trifusion-v2/artifacts/msvr310_role_relation_coverage_v1_seed42_c46be4e; screen tri_role_coverage_c46be4e; wrapper31867/analysis31871. ContractSHAc52c86e49bde1a73d2ea75b4182c4ae5db1c1911e820c3e30f9eba19fe3dd051. Do not restart.
+- tools/run_msvr_role_relation_coverage.py launches tools/analyze_msvr_role_relation_coverage.py, 4CPUthreads. Full27oldsource conditions×2protocols,37152query memberships. 0model forwards/updates/checkpoints, no official images. Expected1–5minutes; observe near completion and then collect all text/independent audit. Output is not yet audited and not a retrieval improvement.
+- Read refine-logs/msvr310_role_relation_coverage_v1/EXPERIMENT_PLAN.md. These older initial/control/style source arrays are not current history-gradient endpoints or train-mode queue replay. Same-pool role subset cannot increase full-pool fused hardest hinge; quantify additional non-extreme relationships without claiming new gradients.
+- Original historical-gradient wrapper19977/Q120941/CPU29925/local31404 finished, do not duplicate intake or training. All full texts/independent evidence published; preserve runtime-gradient and seed42/reused-OOF limitations.
+- Startup free2898268160B. No deletion. Preserve all required weights/arrays. No next training/loss/top-k/scene quotas or official evaluation registered. Goal ACTIVE/UNMET; preserve unrelated dirty files.
 
 ## Experiment environment
 
