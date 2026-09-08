@@ -6428,3 +6428,12 @@ fused52.444136→52.787590（+0.343455），CNN+0.513458/T+1.174330/M+0.251933�
 下一步只补来源诊断缺口：六个固定终态的同角色fused目标与其余13项参数梯度，以及同一表示表的训练候选池/完整来源图库排序。设计草案evidence/smooth_ap_q1_closure_support_20260909/smooth_ap_post_q1_diagnostic_design_20260909.md；尚未登记或执行。它不是训练轨迹重建，也不是后继训练，不能先宣称跨scene过滤有效。原seed42、固定门、官方测试与主结果前消融边界保持。
 
 03:47只读资源收据：GPU0%/1MiB，主卷2410942464B、输出卷8776495104B空闲。本轮删除权重0，必需checkpoint/数组保留。上一轮发布认证传输失败及使用现有登录的临时进程环境恢复已记录，不含凭据，无全局配置修改。Goal ACTIVE/UNMET。
+
+
+### 41.203 Smooth-AP固定来源候选覆盖诊断登记（2026-09-09）
+
+执行入口转为refine-logs/msvr310_smooth_ap_source_coverage_v1/DIAGNOSTIC_PLAN.md，配置TriFusion-smooth-ap-source-coverage-v1.json；状态REGISTERED_NOT_RUN。先测来源候选覆盖，参数梯度分解另行实现。六终态×clean/固定seed42增强×全部来源记录，12条件8256前向、0优化更新；原六端checkpoint和失败门不变。
+
+同一表示表构造原batch/history唯一record池与完整来源图库，self记录排除，分别all-ID/cross-scene；无合法正例记录仍保留为其他身份干扰。只在共同合法anchor比较候选/完整AP，单列池缺正例，保留全部120条件及1996800曝光行。Float64稳定距离排序仅用于该诊断，不替换原FP32 Q1。固定单view诊断不等于原训练随机历史重放，不能由AP差单独认定校准故障。
+
+实际纯函数语义检查通过，代码语法通过；真实模型检查待执行。04:08 GPU0%/1MiB，主卷2261106688B、输出8776491008B空闲；tri_reid Python3.10.14/PyTorch2.5.1+cu121/3090与seed42 CUDA内核实测复用，无环境重建。证据evidence/smooth_ap_source_coverage_preparation_20260909。未开启新训练、消融或官方评估，Goal ACTIVE/UNMET。
