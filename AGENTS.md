@@ -1,15 +1,12 @@
 # TriFusion-ReID workspace
 
-## Latest verified state (2026-09-08T19:15:51.474212+08:00, role-set paired training observation)
+## Latest verified state (2026-09-08T19:50:47.916282+08:00, Q1 milestone)
 
-- Master41.176. Actual execution26c9739 launched18:58:24, screen tri_role_set_26c9739; /root/trifusion-storage/artifacts/msvr310_role_set_v1_seed42_26c9739. Current pipeline=RUNNING, last stage=q1; original PID existence {'35302': True, '35308': False, '35385': False, '36247': False, '36320': True}. Follow these original handles, never relaunch on observer timeout.
-- Config configs/MSVR310/TriFusion-role-set-paired-v1.json SHA5e5ad4663f4c3c58e11b81b475048d6ab6c53675ac2dd0ade60c84f07a62986d, fixed T0/M0/CPU/Q1/CPU. Scientific source and contract unchanged; documentation HEAD may advance. Full status in evidence/msvr310_role_set_run_observation_41_176_20260908/observation.json.
-- Both endpoints full fresh historical derivatives; only hardest vs role-set mean loss. Original13otherlosses/seed42/initialization/20epoch/scene rules/gates unchanged. Do not assume M0/Q1 passed without completed receipt; no official result change.
-- Output disk free10888941568B, GPU 6430, 24576MiB. M0 estimate8–20min from startup; Q13–5h after M0_CPU. Observe180–300s or near expected milestones, maintain logs, no old diagnostics reruns.
-- Goal ACTIVE/UNMET. Preserve necessary initial/final/evidence weights, unrelated local runner/.aris changes; main/remote/Desktop handoff synchronized with this publication.
-
-- Next scheduled training observation: around 19:40 +08:00, near estimated first-end completion 19:43–19:50. The 19:15:51 original PID check is live; do not relaunch or change the running contract. Terminal collector is prepared/AST-only, not executed. Related-work boundaries are in refine-logs/msvr310_role_set_v1/RELATED_WORK_BOUNDARY_2026-09-08.md.
-- Older environment/status paragraphs below include historical experiments; use the Latest verified state and current master entry for the active run.
+- Master41.177. Original execution26c9739; /root/trifusion-storage/artifacts/msvr310_role_set_v1_seed42_26c9739; wrapper35302/Q136320 actually live. 1/6 endpoints complete, latest fold0 role_set epoch7/20. No relaunch.
+- Next observation around 2026-09-08 20:15 +08:00, based on actual stage durations; use original PID/logs, not stale Goal V29 paragraph. Full pipeline is T0/M0/CPU/Q1/CPU; M0 completed248 updates, Q1 pending full1560 updates and six-end CPU/independent audit.
+- Output free10711928832B; preserve initial/final/evidence checkpoints. Config and scientific source hashes unchanged. Official results unchanged; no selection from partial folds.
+- Terminal intake and descriptive source analysis scripts are prepared, AST-only, not yet run; see Master41.176 and refine-logs/msvr310_role_set_v1/RELATED_WORK_BOUNDARY_2026-09-08.md. Full M0 evidence atMaster41.175.
+- Goal ACTIVE/UNMET. Main/remote/Desktop handoff synchronized by this publication. Historical status paragraphs below are not the active state; retain unrelated local runner/.aris modifications.
 
 ## Experiment environment
 
