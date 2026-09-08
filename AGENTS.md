@@ -1,12 +1,13 @@
 # TriFusion-ReID workspace
 
-## Latest verified state (2026-09-08T14:57:03.779291+08:00, three historical-gradient endpoints complete)
+## Latest verified state (2026-09-08T15:40:00.483122+08:00, final historical-gradient fold running)
 
-- Remote observation 2026-09-08T14:54:37.664902+08:00: original wrapper19977/Q1 PID20941 live; fold0 both ends and fold1 control each260steps with complete receipt/retrieval records; fold1 history_gradient 61steps.3/6ends complete, no complete scientific terminal or finalCPU yet. Master41.164.
-- Local terminal processor Python31404 confirmed live 2026-09-08T14:55:32.9055042+08:00, statusWAITING_VERIFIED_REMOTE_WRAPPER/poll10. Root C:/Users/gb/.codex_tmp/history_gradient_q1_terminal_processing_20260908; reads remote every300s. Prefer its observations and verify actual localPID; avoid duplicate remote polling.
-- Same remote root /root/autodl-tmp/trifusion-v2/artifacts/msvr310_history_gradient_v1_seed42_a1b4777, screen tri_history_gradient_a1b4777, executiona1b4777/configd03c7be1e738a206bf6db3b55580f53fbf33bfcc9050a46c4ddd0c81d7134c4e.
-- Terminal processor receives29texts only after all5stages/1560updates/CPU, then complete training/ranking analysis. Do not duplicate intake or edit SHA-bound scripts/launch while worker runs. Plan C:/Users/gb/.codex_tmp/history_gradient_terminal_watcher_plan_20260908.json. On COMPLETE_LOCAL_TEXT_AND_RANKING_VERIFIED_AWAITING_INDEPENDENT_AUDIT, perform independent audit,report,push/remote/Desktop sync.
-- Current free3301064704B; no deletion this turn. Seed42/fixed endpoints/two5gates/old failures unchanged. No partial scores for tuning. Main Goal ACTIVE/UNMET; preserve unrelated dirty files.
+- Remote observation 2026-09-08T15:39:54.161557+08:00: original wrapper19977/Q1 PID20941 live; fold0/1 both ends each260steps with complete receipt/retrieval records; fold2control134steps.4/6ends complete; no complete scientific terminal or finalCPU. Master41.165.
+- Local terminal processor Python31404 confirmed live 2026-09-08T15:40:00.483122+08:00, statusWAITING_VERIFIED_REMOTE_WRAPPER. Root C:/Users/gb/.codex_tmp/history_gradient_q1_terminal_processing_20260908; observes remote every300s. Prefer existing observations plus actual localPID checks.
+- Same run /root/autodl-tmp/trifusion-v2/artifacts/msvr310_history_gradient_v1_seed42_a1b4777; screen tri_history_gradient_a1b4777; executiona1b4777/configd03c7be1e738a206bf6db3b55580f53fbf33bfcc9050a46c4ddd0c81d7134c4e. Do not edit SHA-bound scripts/launch or duplicate terminal intake.
+- After all5stages/1560updates/CPU, worker receives29texts and runs training/ranking analysis. On COMPLETE_LOCAL_TEXT_AND_RANKING_VERIFIED_AWAITING_INDEPENDENT_AUDIT, continue independent audit/report/push/remote/Desktop sync.
+- Latest user steering is recorded in refine-logs/msvr310_history_gradient_v1/POST_Q1_RESEARCH_CANDIDATES.md: finish current comparison, then decide whether source evidence supports role-proposed relations. This is pending, not a registered next experiment; do not jointly change proposal/dedup/loss/gradient scope. Seed42 only, main results before ablations.
+- Current free3191824384B; no deletion this turn. Original gates/failures preserved. No partial scores/test tuning. Goal ACTIVE/UNMET. Preserve unrelated dirty files.
 
 ## Experiment environment
 

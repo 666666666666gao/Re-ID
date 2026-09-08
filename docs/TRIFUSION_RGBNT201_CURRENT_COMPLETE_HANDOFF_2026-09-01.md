@@ -2,7 +2,7 @@
 
 ## 0. 一页结论
 
-当前执行入口：§41.164；历史反传Q1已完成3/6端260步、receipt及检索记录，第二折history_gradient已更新61步；原remote20941/local31404继续。完整三折及CPU未结束，Goal ACTIVE/UNMET。
+当前执行入口：§41.165；历史反传Q1前两折4/6端260步、receipt及检索记录齐备，第三折control 134步；原remote20941/local31404继续。用户最新关系学习建议已归档为完整Q1后的候选，当前配置不变。Goal ACTIVE/UNMET。
 
 当前用于已完成MSVR310比较及新登记RGBNT100比较的是原V8平行三角色结构：冻结Signal/CLIP，共享block8之前语义和tail9/10/11参数，三个角色分别运行共享tail；CNN处理局部语义Patch高频，Transformer处理全局CLS/Patch关系，Mamba处理空间与位置级三模态扫描。各角色相对冻结reference形成1536D残差，三角色4608D银行拼接3072D Signal得到7680D fused；完整单角色输出为4608D Signal+角色残差。三条路径均执行，当前没有Router/HFER、V23模态MLP或V24原型。两项车辆训练比较均已完成；RGBNT100内部完整比较支持三角色增益，MSVR310尚未超过Signal。下面V1—V8条目保留历史经过，不代表当前又启用了旧模块。
 
@@ -5988,3 +5988,12 @@ M0于13:10:03.589918写入PASS_ENGINEERING_ONLY、13:10:04原PID19991 exit0；CP
 后台第10次观察2026-09-08T14:54:37.664902+08:00确认原wrapper19977与Q1 PID20941继续：fold0两端及fold1 control均260/260步，receipt_complete和retrieval_recorded均真；fold1 history_gradient已实际61/260步。2026-09-08T14:55:32.9055042+08:00另实查本地PID31404与绑定命令行存在，状态WAITING_VERIFIED_REMOTE_WRAPPER。训练与后台均未重启。这里只确认3/6端记录齐备；不发布局部mAP，不视为完整配对晋级，最终六端CPU核验尚未开始。
 
 阶段证据见evidence/msvr310_history_gradient_half_training_complete_20260908。保持execution a1b4777、原配置、seed42、当前64 anchors、历史候选VJP单一干预及两组五门；继续剩余三端，随后自动接收29文本、全1560步及全部排名分析，再独立审计、报告和同步。最近实查磁盘空闲3301064704B（约3.074GiB），本轮没有删除文件；保存后续端点时继续观察余量。后台SHA绑定脚本未修改。三个数据集baseline/SOTA总体目标仍未完成，Goal ACTIVE/UNMET。
+
+
+### 41.165 前两折齐备、第三折执行及用户最新研究候选归档（2026-09-08T15:40:00.483122+08:00）
+
+原后台观察2026-09-08T15:39:54.161557+08:00确认wrapper19977/Q1 PID20941继续，fold0/1的control/history_gradient四端均260步且receipt_complete、retrieval_recorded齐备；fold2 control已实际134/260步。2026-09-08T15:40:00.483122+08:00另实查本地PID31404及正确命令行，状态WAITING_VERIFIED_REMOTE_WRAPPER。磁盘余量3191824384B，本轮未删除文件。证据evidence/msvr310_history_gradient_user_update_20260908；这是4/6端进度，全六端及最终CPU仍未结束，不使用局部mAP作决策。
+
+用户本次更新基于87f47af的3/6端快照，已将其正文的后继建议记录于refine-logs/msvr310_history_gradient_v1/POST_Q1_RESEARCH_CANDIDATES.md：先完成历史候选反传，再依据完整证据考察角色提议的关系覆盖；身份/场景去重及集合/AP目标分开验证。只用seed42，主结果后再做机制对照。冻结字段缓存、分组VJP及零上游组跳过为已有基础，不重复列为新增贡献；负两侧余弦不自动意味着任务冲突。若本轮未晋级，只限定于本配置，不能直接推导候选侧导数不重要。
+
+该文件是待决策候选清单，不是新训练注册；没有选定top-k、温度、配额、loss替换或新预算，不修改execution a1b4777、EXPERIMENT_PLAN、配置及后台SHA绑定代码。用户PDF/LaTeX链接本轮未打开，文献入口按用户正文归档，未来引用时核原文；正式表依原始结果，仍不将内部Q1或来源诊断填入正式测试。继续完整1560步/六端/CPU/文本排名核验与独立审计，随后报告同步并决定唯一后继，Goal ACTIVE/UNMET。
