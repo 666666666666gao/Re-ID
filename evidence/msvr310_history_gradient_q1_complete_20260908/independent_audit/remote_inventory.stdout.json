@@ -1,0 +1,1003 @@
+{
+  "identity": {
+    "uid": 0,
+    "hostname": "autodl-container-555b4b9409-6aa86278",
+    "cwd": "/root",
+    "python": "3.10.14 | packaged by conda-forge | (main, Mar 20 2024, 12:45:18) [GCC 12.3.0]"
+  },
+  "head": "fdf0515381cd509015cd899e8a48f347bdb12a08",
+  "status": "",
+  "pipeline": {
+    "status": "COMPLETE_VERIFIED_Q1_FAIL",
+    "wrapper_pid": 19977,
+    "code_commit": "a1b4777b62611be2cac33351afdf7789edc59906",
+    "config_sha256": "d03c7be1e738a206bf6db3b55580f53fbf33bfcc9050a46c4ddd0c81d7134c4e",
+    "started_at": "2026-09-08T12:59:44.154620+08:00",
+    "stages": [
+      {
+        "stage": "t0",
+        "original_pid": 19979,
+        "command": [
+          "/root/miniconda3/envs/tri_reid/bin/python",
+          "-u",
+          "-m",
+          "tools.check_msvr_history_gradient",
+          "--config",
+          "/root/autodl-tmp/trifusion-v2/TriFusion-ReID/configs/MSVR310/TriFusion-history-gradient-paired-v1.json",
+          "--output",
+          "/root/autodl-tmp/trifusion-v2/artifacts/msvr310_history_gradient_v1_seed42_a1b4777/t0.json"
+        ],
+        "started_at": "2026-09-08T12:59:44.155163+08:00",
+        "exit_code": 0,
+        "ended_at": "2026-09-08T12:59:48.992966+08:00",
+        "elapsed_seconds": 4.838206494227052
+      },
+      {
+        "stage": "m0",
+        "original_pid": 19991,
+        "command": [
+          "/root/miniconda3/envs/tri_reid/bin/python",
+          "-u",
+          "-m",
+          "tools.train_msvr_history_gradient",
+          "--config",
+          "/root/autodl-tmp/trifusion-v2/TriFusion-ReID/configs/MSVR310/TriFusion-history-gradient-paired-v1.json",
+          "--mode",
+          "m0",
+          "--output-dir",
+          "/root/autodl-tmp/trifusion-v2/artifacts/msvr310_history_gradient_v1_seed42_a1b4777/m0"
+        ],
+        "started_at": "2026-09-08T12:59:48.994503+08:00",
+        "exit_code": 0,
+        "ended_at": "2026-09-08T13:10:04.637469+08:00",
+        "elapsed_seconds": 615.6439546383917
+      },
+      {
+        "stage": "m0_cpu",
+        "original_pid": 20868,
+        "command": [
+          "/root/miniconda3/envs/tri_reid/bin/python",
+          "-u",
+          "-m",
+          "tools.verify_msvr_history_gradient",
+          "--config",
+          "/root/autodl-tmp/trifusion-v2/TriFusion-ReID/configs/MSVR310/TriFusion-history-gradient-paired-v1.json",
+          "--run-dir",
+          "/root/autodl-tmp/trifusion-v2/artifacts/msvr310_history_gradient_v1_seed42_a1b4777/m0",
+          "--output",
+          "/root/autodl-tmp/trifusion-v2/artifacts/msvr310_history_gradient_v1_seed42_a1b4777/m0_cpu.json"
+        ],
+        "started_at": "2026-09-08T13:10:04.639018+08:00",
+        "exit_code": 0,
+        "ended_at": "2026-09-08T13:10:13.338634+08:00",
+        "elapsed_seconds": 8.700446827337146
+      },
+      {
+        "stage": "q1",
+        "original_pid": 20941,
+        "command": [
+          "/root/miniconda3/envs/tri_reid/bin/python",
+          "-u",
+          "-m",
+          "tools.train_msvr_history_gradient",
+          "--config",
+          "/root/autodl-tmp/trifusion-v2/TriFusion-ReID/configs/MSVR310/TriFusion-history-gradient-paired-v1.json",
+          "--mode",
+          "q1",
+          "--output-dir",
+          "/root/autodl-tmp/trifusion-v2/artifacts/msvr310_history_gradient_v1_seed42_a1b4777/q1",
+          "--m0-receipt",
+          "/root/autodl-tmp/trifusion-v2/artifacts/msvr310_history_gradient_v1_seed42_a1b4777/m0/summary.json",
+          "--m0-verification",
+          "/root/autodl-tmp/trifusion-v2/artifacts/msvr310_history_gradient_v1_seed42_a1b4777/m0_cpu.json"
+        ],
+        "started_at": "2026-09-08T13:10:13.340418+08:00",
+        "exit_code": 0,
+        "ended_at": "2026-09-08T16:35:57.045044+08:00",
+        "elapsed_seconds": 12344.602668600157
+      },
+      {
+        "stage": "q1_cpu",
+        "original_pid": 29925,
+        "command": [
+          "/root/miniconda3/envs/tri_reid/bin/python",
+          "-u",
+          "-m",
+          "tools.verify_msvr_history_gradient",
+          "--config",
+          "/root/autodl-tmp/trifusion-v2/TriFusion-ReID/configs/MSVR310/TriFusion-history-gradient-paired-v1.json",
+          "--run-dir",
+          "/root/autodl-tmp/trifusion-v2/artifacts/msvr310_history_gradient_v1_seed42_a1b4777/q1",
+          "--output",
+          "/root/autodl-tmp/trifusion-v2/artifacts/msvr310_history_gradient_v1_seed42_a1b4777/q1_cpu.json"
+        ],
+        "started_at": "2026-09-08T16:35:57.047368+08:00",
+        "exit_code": 0,
+        "ended_at": "2026-09-08T16:36:11.679857+08:00",
+        "elapsed_seconds": 14.633728431537747
+      }
+    ],
+    "ended_at": "2026-09-08T16:36:11.783422+08:00",
+    "terminal_summary_sha256": "b83da794a2fec4f97a2c60656b98e5f9960386e5a5f5adf91e25f1545d91304d",
+    "terminal_cpu_sha256": "f05b87b6b722fa5f21a0e7ac85f553473a86bb1f3cf1862c420382ea37804365"
+  },
+  "process_presence": {
+    "19977": false,
+    "19979": false,
+    "19991": false,
+    "20868": false,
+    "20941": false,
+    "29925": false
+  },
+  "files": {
+    "/root/autodl-tmp/trifusion-v2/artifacts/msvr310_history_gradient_v1_seed42_a1b4777/t0.json": {
+      "bytes": 2751182,
+      "sha256": "6fd40906c3e04e6f1329d73f0316c4c8722e637e91ba72a25c942cc41e8eaf8c"
+    },
+    "/root/autodl-tmp/trifusion-v2/artifacts/msvr310_history_gradient_v1_seed42_a1b4777/m0/summary.json": {
+      "bytes": 715166,
+      "sha256": "31156ee9dbcc195934f7b41427e316b0c190fae8c25d44e73b8bf0ee031f4bc8"
+    },
+    "/root/autodl-tmp/trifusion-v2/artifacts/msvr310_history_gradient_v1_seed42_a1b4777/m0_cpu.json": {
+      "bytes": 13389,
+      "sha256": "3fbd9fe97bf49a99ec4e33cfc44bd305510e26561c8ca5b882dae4d1dc974bab"
+    },
+    "/root/autodl-tmp/trifusion-v2/artifacts/msvr310_history_gradient_v1_seed42_a1b4777/q1/summary.json": {
+      "bytes": 5924589,
+      "sha256": "b83da794a2fec4f97a2c60656b98e5f9960386e5a5f5adf91e25f1545d91304d"
+    },
+    "/root/autodl-tmp/trifusion-v2/artifacts/msvr310_history_gradient_v1_seed42_a1b4777/q1.log": {
+      "bytes": 34177,
+      "sha256": "0c930adc3e39fb0029fa8c73d4379e16e9bedd4f9c6d7469849f2d3b14f98168"
+    },
+    "/root/autodl-tmp/trifusion-v2/artifacts/msvr310_history_gradient_v1_seed42_a1b4777/q1_cpu.log": {
+      "bytes": 640,
+      "sha256": "b013a74ba9d86c2aaaaa16aac3b4cb415cd35123fb41faa46f8c51e5dd3c2d00"
+    },
+    "/root/autodl-tmp/trifusion-v2/artifacts/msvr310_history_gradient_v1_seed42_a1b4777/q1/fold_0_control/roles_epoch20.pth": {
+      "bytes": 32735974,
+      "sha256": "524c925ed4f953a673d510fe8e933cfaf89b11ab77ac9c7a3f9f5937f6aa87b5"
+    },
+    "/root/autodl-tmp/trifusion-v2/artifacts/msvr310_history_gradient_v1_seed42_a1b4777/q1/fold_0_control/receipt.json": {
+      "bytes": 733632,
+      "sha256": "aefa53a3594369ba415f88ed21ebdaf84ababb347ac624f359ea1cf521119038"
+    },
+    "/root/autodl-tmp/trifusion-v2/artifacts/msvr310_history_gradient_v1_seed42_a1b4777/q1/fold_0_control/training.json": {
+      "bytes": 453708,
+      "sha256": "c66f9e9e17e9f1c2164316995c4dcda9822c35422266b209c5bc14d1c9ca0326"
+    },
+    "/root/autodl-tmp/trifusion-v2/artifacts/msvr310_history_gradient_v1_seed42_a1b4777/q1/fold_0_control/memory_steps.jsonl": {
+      "bytes": 6075308,
+      "sha256": "7b2604e156932dcc9fdd60b439a641f37a47afb0133734dfeb0a62456b455fad"
+    },
+    "/root/autodl-tmp/trifusion-v2/artifacts/msvr310_history_gradient_v1_seed42_a1b4777/q1/fold_0_control/memory_distances.f32": {
+      "bytes": 19141888,
+      "sha256": "386c20af844199527e94d98e5afac3ea0668456d72a0b7d342030ecd90de8220"
+    },
+    "/root/autodl-tmp/trifusion-v2/artifacts/msvr310_history_gradient_v1_seed42_a1b4777/q1/fold_0_control/retrieval_arrays.pt": {
+      "bytes": 36906550,
+      "sha256": "273407915b46c7ce21400dad1e741a6d7364bb662026ea65b17e986844590398"
+    },
+    "/root/autodl-tmp/trifusion-v2/artifacts/msvr310_history_gradient_v1_seed42_a1b4777/q1/fold_0_control/rankings.json": {
+      "bytes": 4055200,
+      "sha256": "b8e913ef0ecc8bc6933970845cc558a29c82c57178aa2b61045da8c4c3cafb2e"
+    },
+    "/root/autodl-tmp/trifusion-v2/artifacts/msvr310_history_gradient_v1_seed42_a1b4777/q1/fold_0_history_gradient/roles_epoch20.pth": {
+      "bytes": 32735974,
+      "sha256": "98d82b69604fa9cd6ab7e57cb17224ab1344d361eb0b8d2cf75fcf20fbfdbd34"
+    },
+    "/root/autodl-tmp/trifusion-v2/artifacts/msvr310_history_gradient_v1_seed42_a1b4777/q1/fold_0_history_gradient/receipt.json": {
+      "bytes": 733727,
+      "sha256": "315e4a5aa652317ab7a52611a3b2bad378d4331ef80ba8c0890e051e3476ebe5"
+    },
+    "/root/autodl-tmp/trifusion-v2/artifacts/msvr310_history_gradient_v1_seed42_a1b4777/q1/fold_0_history_gradient/training.json": {
+      "bytes": 453817,
+      "sha256": "4c3589b882109719025b1e3720ccc96d5022e4b3449fa49e95268abfe25436da"
+    },
+    "/root/autodl-tmp/trifusion-v2/artifacts/msvr310_history_gradient_v1_seed42_a1b4777/q1/fold_0_history_gradient/memory_steps.jsonl": {
+      "bytes": 6093208,
+      "sha256": "da303a5d53a085bb8b9e73ee0f79f6f2942c7cb26f8a4f281952aea665cbb129"
+    },
+    "/root/autodl-tmp/trifusion-v2/artifacts/msvr310_history_gradient_v1_seed42_a1b4777/q1/fold_0_history_gradient/memory_distances.f32": {
+      "bytes": 19141888,
+      "sha256": "da71153cfdf1e0e2e8a64eeba7688262e90f45a1c2efbc052dbb29a762d96e9a"
+    },
+    "/root/autodl-tmp/trifusion-v2/artifacts/msvr310_history_gradient_v1_seed42_a1b4777/q1/fold_0_history_gradient/retrieval_arrays.pt": {
+      "bytes": 36906550,
+      "sha256": "3295928330be33b209c310f5fb70123bd7f074802ba015872b4381568d63236b"
+    },
+    "/root/autodl-tmp/trifusion-v2/artifacts/msvr310_history_gradient_v1_seed42_a1b4777/q1/fold_0_history_gradient/rankings.json": {
+      "bytes": 4055200,
+      "sha256": "e51c7244143b5236637f1093a76fdddacb5d134e57f90f31e97d8d18b22a69b4"
+    },
+    "/root/autodl-tmp/trifusion-v2/artifacts/msvr310_history_gradient_v1_seed42_a1b4777/q1/fold_1_control/roles_epoch20.pth": {
+      "bytes": 32735974,
+      "sha256": "a496ee87e0c4a42a2172b58080df6ee747ba1ed16f98195949c69a5bdbe26eb9"
+    },
+    "/root/autodl-tmp/trifusion-v2/artifacts/msvr310_history_gradient_v1_seed42_a1b4777/q1/fold_1_control/receipt.json": {
+      "bytes": 728759,
+      "sha256": "54c55c557f25f41d67d58936dd751e2390680b5cb2f07452695505cb58ddbfa3"
+    },
+    "/root/autodl-tmp/trifusion-v2/artifacts/msvr310_history_gradient_v1_seed42_a1b4777/q1/fold_1_control/training.json": {
+      "bytes": 453317,
+      "sha256": "2cd5692241d403375a93702be86b96a2857a6d830831d55cb6ec126c1b5224df"
+    },
+    "/root/autodl-tmp/trifusion-v2/artifacts/msvr310_history_gradient_v1_seed42_a1b4777/q1/fold_1_control/memory_steps.jsonl": {
+      "bytes": 6194425,
+      "sha256": "6853431469ae07c126d733d32ed5899f6edffdfbaa8acdca973d76d9ee15e33b"
+    },
+    "/root/autodl-tmp/trifusion-v2/artifacts/msvr310_history_gradient_v1_seed42_a1b4777/q1/fold_1_control/memory_distances.f32": {
+      "bytes": 19493120,
+      "sha256": "241ee786c98d2e64f441845b90aaf1125363aa74000c76f55a9f402224cc87c6"
+    },
+    "/root/autodl-tmp/trifusion-v2/artifacts/msvr310_history_gradient_v1_seed42_a1b4777/q1/fold_1_control/retrieval_arrays.pt": {
+      "bytes": 35758006,
+      "sha256": "824aaa4fa2fae475cff6af97d8344b58b682216a90f959e84172be847ec8cc93"
+    },
+    "/root/autodl-tmp/trifusion-v2/artifacts/msvr310_history_gradient_v1_seed42_a1b4777/q1/fold_1_control/rankings.json": {
+      "bytes": 3872035,
+      "sha256": "4b80a3b3df598d279e4e3bcaa26f29f34bd29d4d9fb7989daf48d2b1fade32d0"
+    },
+    "/root/autodl-tmp/trifusion-v2/artifacts/msvr310_history_gradient_v1_seed42_a1b4777/q1/fold_1_history_gradient/roles_epoch20.pth": {
+      "bytes": 32735974,
+      "sha256": "e028ecae8fed0d5c66b26e5f24846eff0ea8a8a3a7d4720b82e71ce380059928"
+    },
+    "/root/autodl-tmp/trifusion-v2/artifacts/msvr310_history_gradient_v1_seed42_a1b4777/q1/fold_1_history_gradient/receipt.json": {
+      "bytes": 728690,
+      "sha256": "75b2db53869c44f71a3f6c48a5abde83ec2ead8f30d458c5cce4b3f65399aa92"
+    },
+    "/root/autodl-tmp/trifusion-v2/artifacts/msvr310_history_gradient_v1_seed42_a1b4777/q1/fold_1_history_gradient/training.json": {
+      "bytes": 453410,
+      "sha256": "4ee0f1e806ca48dd0d2bb0f16eb4b606ab5bafbe262901fcb9a4e649f4c1e355"
+    },
+    "/root/autodl-tmp/trifusion-v2/artifacts/msvr310_history_gradient_v1_seed42_a1b4777/q1/fold_1_history_gradient/memory_steps.jsonl": {
+      "bytes": 6212022,
+      "sha256": "b7ca693c5e0a4b0276604df0cf660b9d3ec8f1337654894551e7cf42d7208392"
+    },
+    "/root/autodl-tmp/trifusion-v2/artifacts/msvr310_history_gradient_v1_seed42_a1b4777/q1/fold_1_history_gradient/memory_distances.f32": {
+      "bytes": 19493120,
+      "sha256": "a60b97bd799a79e164da7335eded3d30ee63d30f999171439aae3766709f858e"
+    },
+    "/root/autodl-tmp/trifusion-v2/artifacts/msvr310_history_gradient_v1_seed42_a1b4777/q1/fold_1_history_gradient/retrieval_arrays.pt": {
+      "bytes": 35758006,
+      "sha256": "89497ee8fab5d17c3fa718eee41ea36691c68b0180067e27b51508496986fed5"
+    },
+    "/root/autodl-tmp/trifusion-v2/artifacts/msvr310_history_gradient_v1_seed42_a1b4777/q1/fold_1_history_gradient/rankings.json": {
+      "bytes": 3872035,
+      "sha256": "32643513a3565a8cda416fb2ca25a5f5c7b751b6676bae392d28ebf0f128a540"
+    },
+    "/root/autodl-tmp/trifusion-v2/artifacts/msvr310_history_gradient_v1_seed42_a1b4777/q1/fold_2_control/roles_epoch20.pth": {
+      "bytes": 32840422,
+      "sha256": "f2fd280eeec7f4b3e3f327b0eb188846000e439a643e291fa7192d61ea113e07"
+    },
+    "/root/autodl-tmp/trifusion-v2/artifacts/msvr310_history_gradient_v1_seed42_a1b4777/q1/fold_2_control/receipt.json": {
+      "bytes": 706777,
+      "sha256": "1924cb83f917332375d99d0ea4112afd6090dbdfe38aa4d9e5e512a940f93c4a"
+    },
+    "/root/autodl-tmp/trifusion-v2/artifacts/msvr310_history_gradient_v1_seed42_a1b4777/q1/fold_2_control/training.json": {
+      "bytes": 453014,
+      "sha256": "7f5ee0cfee2e43e7f45773bfa13abf28e29edd5ca7256f2bc71e44c5244b1541"
+    },
+    "/root/autodl-tmp/trifusion-v2/artifacts/msvr310_history_gradient_v1_seed42_a1b4777/q1/fold_2_control/memory_steps.jsonl": {
+      "bytes": 6233998,
+      "sha256": "cbda7adc1a130d8d3ab454627e1c8640c06294b53b95a44133333fd262a54e99"
+    },
+    "/root/autodl-tmp/trifusion-v2/artifacts/msvr310_history_gradient_v1_seed42_a1b4777/q1/fold_2_control/memory_distances.f32": {
+      "bytes": 19615744,
+      "sha256": "a879540a23d929b575682da4f63476d10fa06f04dc5a2998bdbb43b33ba65479"
+    },
+    "/root/autodl-tmp/trifusion-v2/artifacts/msvr310_history_gradient_v1_seed42_a1b4777/q1/fold_2_control/retrieval_arrays.pt": {
+      "bytes": 32939254,
+      "sha256": "d4b59dbd9da6f7faadb5711b22e92b269b7165310676bae0cf1af97252ba8edf"
+    },
+    "/root/autodl-tmp/trifusion-v2/artifacts/msvr310_history_gradient_v1_seed42_a1b4777/q1/fold_2_control/rankings.json": {
+      "bytes": 3161425,
+      "sha256": "d249f168d4331cdfecccaffb5d01485c38dabb2da3c247352bdeb17038e4e3d7"
+    },
+    "/root/autodl-tmp/trifusion-v2/artifacts/msvr310_history_gradient_v1_seed42_a1b4777/q1/fold_2_history_gradient/roles_epoch20.pth": {
+      "bytes": 32840422,
+      "sha256": "0f669fc2ca288d7251371c9d18573465d0acb03680950a5b447e14e643e9780e"
+    },
+    "/root/autodl-tmp/trifusion-v2/artifacts/msvr310_history_gradient_v1_seed42_a1b4777/q1/fold_2_history_gradient/receipt.json": {
+      "bytes": 706896,
+      "sha256": "bbb5bd8524f61124249dba2e8fad752465f92f7440047960eccbb45c82875c43"
+    },
+    "/root/autodl-tmp/trifusion-v2/artifacts/msvr310_history_gradient_v1_seed42_a1b4777/q1/fold_2_history_gradient/training.json": {
+      "bytes": 453119,
+      "sha256": "ad8ddf91925f203a4a788900615a9f855883e094eb0ac7af526fd5c62efebf39"
+    },
+    "/root/autodl-tmp/trifusion-v2/artifacts/msvr310_history_gradient_v1_seed42_a1b4777/q1/fold_2_history_gradient/memory_steps.jsonl": {
+      "bytes": 6251206,
+      "sha256": "6ac85278a636757a7a2bf8846cacc94269c73268dc65c8a6f5498cd64d13a139"
+    },
+    "/root/autodl-tmp/trifusion-v2/artifacts/msvr310_history_gradient_v1_seed42_a1b4777/q1/fold_2_history_gradient/memory_distances.f32": {
+      "bytes": 19615744,
+      "sha256": "eab6045448fa3ab8c0cdc9050a794f24ed2382d632751dd588e7a1ca97e9eff8"
+    },
+    "/root/autodl-tmp/trifusion-v2/artifacts/msvr310_history_gradient_v1_seed42_a1b4777/q1/fold_2_history_gradient/retrieval_arrays.pt": {
+      "bytes": 32939254,
+      "sha256": "cb48e8c60ec93382ee09e3e311119804c876c1a47135a9fba82db2a1d36777ac"
+    },
+    "/root/autodl-tmp/trifusion-v2/artifacts/msvr310_history_gradient_v1_seed42_a1b4777/q1/fold_2_history_gradient/rankings.json": {
+      "bytes": 3161425,
+      "sha256": "e690899f435dbb9acda0cb1ca48d1970a108479c108bb59bd60609972987c2e9"
+    }
+  },
+  "project_files": {
+    "refine-logs/msvr310_history_gradient_v1/EXPERIMENT_PLAN.md": {
+      "sha256": "152d7568bb985d5ccfb173d86374eec912e9500798488a9863f5a702f5e72be3",
+      "bytes": 6669,
+      "lf_sha256": "152d7568bb985d5ccfb173d86374eec912e9500798488a9863f5a702f5e72be3",
+      "execution_commit_exists": true,
+      "execution_commit_raw_sha256": "152d7568bb985d5ccfb173d86374eec912e9500798488a9863f5a702f5e72be3",
+      "execution_commit_raw_match": true,
+      "execution_commit_match": true
+    },
+    "refine-logs/msvr310_history_gradient_v1/EXPERIMENT_TRACKER.md": {
+      "sha256": "924af38850a7a0d97a1d37de3074685d0f8f0b5218c6065314e931e29643d494",
+      "bytes": 3245,
+      "lf_sha256": "924af38850a7a0d97a1d37de3074685d0f8f0b5218c6065314e931e29643d494",
+      "execution_commit_exists": true,
+      "execution_commit_raw_sha256": "4eda14de768648e10b28220e755e5e386a67bdc767b500c3800db53cbe190730",
+      "execution_commit_raw_match": false,
+      "execution_commit_match": false
+    },
+    "configs/MSVR310/TriFusion-history-gradient-paired-v1.json": {
+      "sha256": "d03c7be1e738a206bf6db3b55580f53fbf33bfcc9050a46c4ddd0c81d7134c4e",
+      "bytes": 2557,
+      "lf_sha256": "9c0f3f63907642ee9d324663b48f2bcd9998c3d268fb681f43d3f0d9c9b1dbc7",
+      "execution_commit_exists": true,
+      "execution_commit_raw_sha256": "d03c7be1e738a206bf6db3b55580f53fbf33bfcc9050a46c4ddd0c81d7134c4e",
+      "execution_commit_raw_match": true,
+      "execution_commit_match": true
+    },
+    "tools/train_msvr_history_gradient.py": {
+      "sha256": "087acdf4b8805f0783a460f5adee0e90227bf20342ae4eda6a033dc27b5869a4",
+      "bytes": 23300,
+      "lf_sha256": "77230f9c5a089a3bdee4db7852039ae4683463f698a66db81a309daea6a15cb8",
+      "execution_commit_exists": true,
+      "execution_commit_raw_sha256": "087acdf4b8805f0783a460f5adee0e90227bf20342ae4eda6a033dc27b5869a4",
+      "execution_commit_raw_match": true,
+      "execution_commit_match": true
+    },
+    "tools/verify_msvr_history_gradient.py": {
+      "sha256": "bea8870dec7355921cf65ab61be68d73d6aab1773d4a60a457f785e91d35636f",
+      "bytes": 23512,
+      "lf_sha256": "1a021fb3bd55c022bfef0483c34ead4bb4e3009d6df9ef0807761119aa5d3051",
+      "execution_commit_exists": true,
+      "execution_commit_raw_sha256": "bea8870dec7355921cf65ab61be68d73d6aab1773d4a60a457f785e91d35636f",
+      "execution_commit_raw_match": true,
+      "execution_commit_match": true
+    },
+    "tools/check_msvr_history_gradient.py": {
+      "sha256": "d2a650240cb4ec5a5cdcbc68224461a815eb4505f263939bca7ae90b3d0cded3",
+      "bytes": 3236,
+      "lf_sha256": "3498893aea55fb44678e4e7be27290177d91df9ee19e841a981bf2e341a97154",
+      "execution_commit_exists": true,
+      "execution_commit_raw_sha256": "d2a650240cb4ec5a5cdcbc68224461a815eb4505f263939bca7ae90b3d0cded3",
+      "execution_commit_raw_match": true,
+      "execution_commit_match": true
+    },
+    "tools/run_msvr_history_gradient.py": {
+      "sha256": "b5412505122721c1ae7b60c27a472c14302b2923d5b6fceb8586c58489f1b593",
+      "bytes": 4257,
+      "lf_sha256": "43455cd36ef8c2012b97a64f6ba8f3d02c4f136129bbe6f4a3b21c647b02b497",
+      "execution_commit_exists": true,
+      "execution_commit_raw_sha256": "b5412505122721c1ae7b60c27a472c14302b2923d5b6fceb8586c58489f1b593",
+      "execution_commit_raw_match": true,
+      "execution_commit_match": true
+    },
+    "AGENTS.md": {
+      "sha256": "b769cf66f18c2e802712b28d5ddb6923bc4d3ddbee028d80856b9882dec314a4",
+      "bytes": 43828,
+      "lf_sha256": "72abd5d941741283c69af04576770e5b45d0ee372f9c6e5729fc708edca21d10",
+      "execution_commit_exists": true,
+      "execution_commit_raw_sha256": "9cd7e6d5115d72be8940ee0e4b58e985b325ffa98ae712c9702cba726e6ff606",
+      "execution_commit_raw_match": false,
+      "execution_commit_match": false
+    },
+    "tools/probe_msvr_history_candidate_gradients.py": {
+      "sha256": "cfa56255f6dd5a471cf3bfbfc99be3d0693f5c9c5dfc29bd8c6e4d15c79090de",
+      "bytes": 17531,
+      "lf_sha256": "cfa56255f6dd5a471cf3bfbfc99be3d0693f5c9c5dfc29bd8c6e4d15c79090de",
+      "execution_commit_exists": true,
+      "execution_commit_raw_sha256": "cfa56255f6dd5a471cf3bfbfc99be3d0693f5c9c5dfc29bd8c6e4d15c79090de",
+      "execution_commit_raw_match": true,
+      "execution_commit_match": true
+    },
+    "tools/msvr_freshness_probe.py": {
+      "sha256": "4542785ace8307dc8a92325f7d52f2542e526f53ad8c3c2c0d9e91e48ed97886",
+      "bytes": 23586,
+      "lf_sha256": "4542785ace8307dc8a92325f7d52f2542e526f53ad8c3c2c0d9e91e48ed97886",
+      "execution_commit_exists": true,
+      "execution_commit_raw_sha256": "4542785ace8307dc8a92325f7d52f2542e526f53ad8c3c2c0d9e91e48ed97886",
+      "execution_commit_raw_match": true,
+      "execution_commit_match": true
+    },
+    "tools/msvr_instance_memory.py": {
+      "sha256": "b645d9ef29b522f0c639991c1d844a41b55f2ba8def82aef0746e94a145f0da3",
+      "bytes": 7747,
+      "lf_sha256": "b645d9ef29b522f0c639991c1d844a41b55f2ba8def82aef0746e94a145f0da3",
+      "execution_commit_exists": true,
+      "execution_commit_raw_sha256": "b645d9ef29b522f0c639991c1d844a41b55f2ba8def82aef0746e94a145f0da3",
+      "execution_commit_raw_match": true,
+      "execution_commit_match": true
+    },
+    "tools/train_msvr_fresh_coordinate.py": {
+      "sha256": "cdffe7378110f788cfc9de0fc7579d6ec5d026621f3634121cf1f7f0162fdb27",
+      "bytes": 20669,
+      "lf_sha256": "cdffe7378110f788cfc9de0fc7579d6ec5d026621f3634121cf1f7f0162fdb27",
+      "execution_commit_exists": true,
+      "execution_commit_raw_sha256": "cdffe7378110f788cfc9de0fc7579d6ec5d026621f3634121cf1f7f0162fdb27",
+      "execution_commit_raw_match": true,
+      "execution_commit_match": true
+    },
+    "tools/train_msvr_instance_memory.py": {
+      "sha256": "c16cdbff37b46decb279aa013e4a53d9273851a59160cda99fbdf0f16cf39f3b",
+      "bytes": 21566,
+      "lf_sha256": "c16cdbff37b46decb279aa013e4a53d9273851a59160cda99fbdf0f16cf39f3b",
+      "execution_commit_exists": true,
+      "execution_commit_raw_sha256": "c16cdbff37b46decb279aa013e4a53d9273851a59160cda99fbdf0f16cf39f3b",
+      "execution_commit_raw_match": true,
+      "execution_commit_match": true
+    },
+    "tools/train_msvr310_source_style.py": {
+      "sha256": "05eca257602a4f2a4707e7952bce8e91060e809d5aec99c53a28e3e12dcd0842",
+      "bytes": 18543,
+      "lf_sha256": "05eca257602a4f2a4707e7952bce8e91060e809d5aec99c53a28e3e12dcd0842",
+      "execution_commit_exists": true,
+      "execution_commit_raw_sha256": "05eca257602a4f2a4707e7952bce8e91060e809d5aec99c53a28e3e12dcd0842",
+      "execution_commit_raw_match": true,
+      "execution_commit_match": true
+    },
+    "tools/train_msvr310_trifusion_oof.py": {
+      "sha256": "a1771c2e16e129f0a1ecdfb1f5fffcc7d83fe2faf5073033efe520a73c800f87",
+      "bytes": 25468,
+      "lf_sha256": "38815d4474ced0c0bd7f5fe4b2cc64a1514f0158bc2b2363c8cbba3363742758",
+      "execution_commit_exists": true,
+      "execution_commit_raw_sha256": "a1771c2e16e129f0a1ecdfb1f5fffcc7d83fe2faf5073033efe520a73c800f87",
+      "execution_commit_raw_match": true,
+      "execution_commit_match": true
+    },
+    "tools/train_msvr310_signal_oof.py": {
+      "sha256": "8262e808c65a6e30cda71cb6c20e969a25609486f435e3b62f2f506b18d2104f",
+      "bytes": 20466,
+      "lf_sha256": "8262e808c65a6e30cda71cb6c20e969a25609486f435e3b62f2f506b18d2104f",
+      "execution_commit_exists": true,
+      "execution_commit_raw_sha256": "8262e808c65a6e30cda71cb6c20e969a25609486f435e3b62f2f506b18d2104f",
+      "execution_commit_raw_match": true,
+      "execution_commit_match": true
+    },
+    "tools/verify_msvr310_source_style.py": {
+      "sha256": "52c3acc4b5e99a38f1e80573f6d835c854d0a3286b15f3ac5481a863bc3ca6c3",
+      "bytes": 16647,
+      "lf_sha256": "52c3acc4b5e99a38f1e80573f6d835c854d0a3286b15f3ac5481a863bc3ca6c3",
+      "execution_commit_exists": true,
+      "execution_commit_raw_sha256": "52c3acc4b5e99a38f1e80573f6d835c854d0a3286b15f3ac5481a863bc3ca6c3",
+      "execution_commit_raw_match": true,
+      "execution_commit_match": true
+    },
+    "tools/run_signal_preserving_v5.py": {
+      "sha256": "e162184f68778b4991db0f97f26c5fda273b2ad2f7c8db2bbb2d53775eb717e5",
+      "bytes": 65190,
+      "lf_sha256": "e162184f68778b4991db0f97f26c5fda273b2ad2f7c8db2bbb2d53775eb717e5",
+      "execution_commit_exists": true,
+      "execution_commit_raw_sha256": "e162184f68778b4991db0f97f26c5fda273b2ad2f7c8db2bbb2d53775eb717e5",
+      "execution_commit_raw_match": true,
+      "execution_commit_match": true
+    },
+    "tools/run_signal_baseline_dev.py": {
+      "sha256": "083967f2a38267415b2992da98c2ad9429ebb793f387b45daac1dbb4eb16f365",
+      "bytes": 12601,
+      "lf_sha256": "083967f2a38267415b2992da98c2ad9429ebb793f387b45daac1dbb4eb16f365",
+      "execution_commit_exists": true,
+      "execution_commit_raw_sha256": "083967f2a38267415b2992da98c2ad9429ebb793f387b45daac1dbb4eb16f365",
+      "execution_commit_raw_match": true,
+      "execution_commit_match": true
+    },
+    "tools/build_v12_complete_path_oof_targets.py": {
+      "sha256": "fc13354b1065c46677122ee9cf63816087facca4e0e98ec5e6e2fb0dece141e4",
+      "bytes": 32723,
+      "lf_sha256": "fc13354b1065c46677122ee9cf63816087facca4e0e98ec5e6e2fb0dece141e4",
+      "execution_commit_exists": true,
+      "execution_commit_raw_sha256": "fc13354b1065c46677122ee9cf63816087facca4e0e98ec5e6e2fb0dece141e4",
+      "execution_commit_raw_match": true,
+      "execution_commit_match": true
+    },
+    "tools/train_signal_preserving_v17.py": {
+      "sha256": "333886d16f73987accddb70b0780661bb9400b8afd04af01b57e188d34e5228d",
+      "bytes": 61124,
+      "lf_sha256": "333886d16f73987accddb70b0780661bb9400b8afd04af01b57e188d34e5228d",
+      "execution_commit_exists": true,
+      "execution_commit_raw_sha256": "333886d16f73987accddb70b0780661bb9400b8afd04af01b57e188d34e5228d",
+      "execution_commit_raw_match": true,
+      "execution_commit_match": true
+    },
+    "tools/msvr310_exact_signal_inference.py": {
+      "sha256": "9b7a3168274266447a1e023cec06c6525499c8ab0357dabf6bbd1b4d5c220ac2",
+      "bytes": 1039,
+      "lf_sha256": "9b7a3168274266447a1e023cec06c6525499c8ab0357dabf6bbd1b4d5c220ac2",
+      "execution_commit_exists": true,
+      "execution_commit_raw_sha256": "9b7a3168274266447a1e023cec06c6525499c8ab0357dabf6bbd1b4d5c220ac2",
+      "execution_commit_raw_match": true,
+      "execution_commit_match": true
+    },
+    "tools/build_msvr310_train_oof_protocol.py": {
+      "sha256": "57684721cac03b1be4dfa08cee1902baeb14986bd7e4d8892ff842221d8c8143",
+      "bytes": 9298,
+      "lf_sha256": "57684721cac03b1be4dfa08cee1902baeb14986bd7e4d8892ff842221d8c8143",
+      "execution_commit_exists": true,
+      "execution_commit_raw_sha256": "57684721cac03b1be4dfa08cee1902baeb14986bd7e4d8892ff842221d8c8143",
+      "execution_commit_raw_match": true,
+      "execution_commit_match": true
+    },
+    "modeling/trifusion/signal_preserving_v8.py": {
+      "sha256": "97a7b5fe6dab882c2ed92ed1db95b9a8f48eae1d99a3a9b145b0cdfc4b8cefbc",
+      "bytes": 28592,
+      "lf_sha256": "97a7b5fe6dab882c2ed92ed1db95b9a8f48eae1d99a3a9b145b0cdfc4b8cefbc",
+      "execution_commit_exists": true,
+      "execution_commit_raw_sha256": "97a7b5fe6dab882c2ed92ed1db95b9a8f48eae1d99a3a9b145b0cdfc4b8cefbc",
+      "execution_commit_raw_match": true,
+      "execution_commit_match": true
+    },
+    "modeling/trifusion/signal_preserving_v8_builder.py": {
+      "sha256": "8afb028957ecff1a0a26497f7d0460bc240b0f8612a3c476b52a9a6667a3049d",
+      "bytes": 3900,
+      "lf_sha256": "8afb028957ecff1a0a26497f7d0460bc240b0f8612a3c476b52a9a6667a3049d",
+      "execution_commit_exists": true,
+      "execution_commit_raw_sha256": "8afb028957ecff1a0a26497f7d0460bc240b0f8612a3c476b52a9a6667a3049d",
+      "execution_commit_raw_match": true,
+      "execution_commit_match": true
+    },
+    "modeling/trifusion/criterion.py": {
+      "sha256": "0b2a6370f434828d885945d1a46dd56f6668133ceed45ef359fe71eeca63740a",
+      "bytes": 6101,
+      "lf_sha256": "0b2a6370f434828d885945d1a46dd56f6668133ceed45ef359fe71eeca63740a",
+      "execution_commit_exists": true,
+      "execution_commit_raw_sha256": "0b2a6370f434828d885945d1a46dd56f6668133ceed45ef359fe71eeca63740a",
+      "execution_commit_raw_match": true,
+      "execution_commit_match": true
+    },
+    "modeling/trifusion/experts/mamba.py": {
+      "sha256": "c516c7ad937e5eee6a4ed1e3ec33c2afe3522b751d296bd2e4910e4f27a20ee5",
+      "bytes": 7270,
+      "lf_sha256": "c516c7ad937e5eee6a4ed1e3ec33c2afe3522b751d296bd2e4910e4f27a20ee5",
+      "execution_commit_exists": true,
+      "execution_commit_raw_sha256": "c516c7ad937e5eee6a4ed1e3ec33c2afe3522b751d296bd2e4910e4f27a20ee5",
+      "execution_commit_raw_match": true,
+      "execution_commit_match": true
+    },
+    "modeling/trifusion/experts/semantic_residual.py": {
+      "sha256": "c8cef9717fd7bd1e5e50b428ac92762455defac2e25857c9e0dfaf82729c2a93",
+      "bytes": 15428,
+      "lf_sha256": "c8cef9717fd7bd1e5e50b428ac92762455defac2e25857c9e0dfaf82729c2a93",
+      "execution_commit_exists": true,
+      "execution_commit_raw_sha256": "c8cef9717fd7bd1e5e50b428ac92762455defac2e25857c9e0dfaf82729c2a93",
+      "execution_commit_raw_match": true,
+      "execution_commit_match": true
+    },
+    "modeling/trifusion/signal_preserving_v13.py": {
+      "sha256": "7b7c4abb220ed234608553c77aeedd5f8ef763abb04cce5b21f1bfce0f4daa62",
+      "bytes": 9347,
+      "lf_sha256": "7b7c4abb220ed234608553c77aeedd5f8ef763abb04cce5b21f1bfce0f4daa62",
+      "execution_commit_exists": true,
+      "execution_commit_raw_sha256": "7b7c4abb220ed234608553c77aeedd5f8ef763abb04cce5b21f1bfce0f4daa62",
+      "execution_commit_raw_match": true,
+      "execution_commit_match": true
+    },
+    "modeling/trifusion/aligned_data.py": {
+      "sha256": "3ea362d17660483b554cb599442b6377ace020fa114969b9bdd58906fbceedd5",
+      "bytes": 10062,
+      "lf_sha256": "3ea362d17660483b554cb599442b6377ace020fa114969b9bdd58906fbceedd5",
+      "execution_commit_exists": true,
+      "execution_commit_raw_sha256": "3ea362d17660483b554cb599442b6377ace020fa114969b9bdd58906fbceedd5",
+      "execution_commit_raw_match": true,
+      "execution_commit_match": true
+    },
+    "modeling/trifusion/state.py": {
+      "sha256": "5fe89c4885507e74ca1833cc18822a4b57e4c2d6fa9a6c6b2e127d1e74b70db9",
+      "bytes": 4854,
+      "lf_sha256": "5fe89c4885507e74ca1833cc18822a4b57e4c2d6fa9a6c6b2e127d1e74b70db9",
+      "execution_commit_exists": true,
+      "execution_commit_raw_sha256": "5fe89c4885507e74ca1833cc18822a4b57e4c2d6fa9a6c6b2e127d1e74b70db9",
+      "execution_commit_raw_match": true,
+      "execution_commit_match": true
+    },
+    "data/datasets/msvr310.py": {
+      "sha256": "72479005b7405afd4162b3a249f09c1c7e3953f01d052e5587833a6b66dfcd93",
+      "bytes": 4457,
+      "lf_sha256": "72479005b7405afd4162b3a249f09c1c7e3953f01d052e5587833a6b66dfcd93",
+      "execution_commit_exists": true,
+      "execution_commit_raw_sha256": "72479005b7405afd4162b3a249f09c1c7e3953f01d052e5587833a6b66dfcd93",
+      "execution_commit_raw_match": true,
+      "execution_commit_match": true
+    },
+    "utils/metrics.py": {
+      "sha256": "8f218e8c6e148d0397c81573858e3df58fc89bb1cf382ccbbf1d8339bf677d31",
+      "bytes": 17912,
+      "lf_sha256": "8f218e8c6e148d0397c81573858e3df58fc89bb1cf382ccbbf1d8339bf677d31",
+      "execution_commit_exists": true,
+      "execution_commit_raw_sha256": "8f218e8c6e148d0397c81573858e3df58fc89bb1cf382ccbbf1d8339bf677d31",
+      "execution_commit_raw_match": true,
+      "execution_commit_match": true
+    },
+    "results/MSVR310_HISTORY_CANDIDATE_GRADIENT_SOURCE_2026-09-08.md": {
+      "sha256": "f422314a8f121ab520f21c4691330ff334ed0077725b53e21ae17b967338a111",
+      "bytes": 13480,
+      "lf_sha256": "27b32462edc08116f8e5cdbf4563b0251f3973fc0828eef232470caf35abbbdd",
+      "execution_commit_exists": true,
+      "execution_commit_raw_sha256": "f422314a8f121ab520f21c4691330ff334ed0077725b53e21ae17b967338a111",
+      "execution_commit_raw_match": true,
+      "execution_commit_match": true
+    },
+    "refine-logs/msvr310_history_candidate_gradient_v1/EXPERIMENT_AUDIT_SOURCE.md": {
+      "sha256": "76c1df91f733817a7638ff3d31a7495cc234eedfa7573bfa75cc1e39bfc3f443",
+      "bytes": 38208,
+      "lf_sha256": "0bc41d29a856c9c350e242b92a55502827b37c632ef8ec6907ab9723df72d2a9",
+      "execution_commit_exists": true,
+      "execution_commit_raw_sha256": "76c1df91f733817a7638ff3d31a7495cc234eedfa7573bfa75cc1e39bfc3f443",
+      "execution_commit_raw_match": true,
+      "execution_commit_match": true
+    },
+    "configs/MSVR310/TriFusion-fresh-coordinate-paired-v1.json": {
+      "sha256": "32e22d3a0cd858e96430e4b9f9b0a2093c0fdf30f026d8d334ad92d46cfb94aa",
+      "bytes": 2072,
+      "lf_sha256": "32e22d3a0cd858e96430e4b9f9b0a2093c0fdf30f026d8d334ad92d46cfb94aa",
+      "execution_commit_exists": true,
+      "execution_commit_raw_sha256": "32e22d3a0cd858e96430e4b9f9b0a2093c0fdf30f026d8d334ad92d46cfb94aa",
+      "execution_commit_raw_match": true,
+      "execution_commit_match": true
+    },
+    "refine-logs/msvr310_history_candidate_gradient_v1/EXPERIMENT_AUDIT_SOURCE.json": {
+      "sha256": "3d288d218f406899d41adfe9227a7022e959b30ae75884ddcbd27561ed249cfe",
+      "bytes": 57094,
+      "lf_sha256": "73dd2ba60445f9ba4cabdbe304d9705c33e3fcb9c1126b6fdc9883097f33dbc2",
+      "execution_commit_exists": true,
+      "execution_commit_raw_sha256": "3d288d218f406899d41adfe9227a7022e959b30ae75884ddcbd27561ed249cfe",
+      "execution_commit_raw_match": true,
+      "execution_commit_match": true
+    },
+    "tools/verify_msvr_fresh_coordinate.py": {
+      "sha256": "543978d257326f5ddee15aa8ef3992fad15b4fd464566c947b93503caba3b98a",
+      "bytes": 23983,
+      "lf_sha256": "543978d257326f5ddee15aa8ef3992fad15b4fd464566c947b93503caba3b98a",
+      "execution_commit_exists": true,
+      "execution_commit_raw_sha256": "543978d257326f5ddee15aa8ef3992fad15b4fd464566c947b93503caba3b98a",
+      "execution_commit_raw_match": true,
+      "execution_commit_match": true
+    },
+    "tools/check_msvr_fresh_coordinate.py": {
+      "sha256": "10a55b78fd1b71cfc783bbbdaf4605bbd93065d83dda1987312a07b60a920d88",
+      "bytes": 3041,
+      "lf_sha256": "10a55b78fd1b71cfc783bbbdaf4605bbd93065d83dda1987312a07b60a920d88",
+      "execution_commit_exists": true,
+      "execution_commit_raw_sha256": "10a55b78fd1b71cfc783bbbdaf4605bbd93065d83dda1987312a07b60a920d88",
+      "execution_commit_raw_match": true,
+      "execution_commit_match": true
+    },
+    "tools/run_msvr_fresh_coordinate.py": {
+      "sha256": "2137be6380b4c64b844ac58c16231cd7ba7326d059ae5e45fb98b533b59e6d37",
+      "bytes": 4182,
+      "lf_sha256": "2137be6380b4c64b844ac58c16231cd7ba7326d059ae5e45fb98b533b59e6d37",
+      "execution_commit_exists": true,
+      "execution_commit_raw_sha256": "2137be6380b4c64b844ac58c16231cd7ba7326d059ae5e45fb98b533b59e6d37",
+      "execution_commit_raw_match": true,
+      "execution_commit_match": true
+    },
+    "refine-logs/msvr310_fresh_coordinate_v1/EXPERIMENT_PLAN.md": {
+      "sha256": "6d247acd84818a07460bc7c3e3e865d21b77386e9858910fa55f94ab6d9731ee",
+      "bytes": 5800,
+      "lf_sha256": "6d247acd84818a07460bc7c3e3e865d21b77386e9858910fa55f94ab6d9731ee",
+      "execution_commit_exists": true,
+      "execution_commit_raw_sha256": "6d247acd84818a07460bc7c3e3e865d21b77386e9858910fa55f94ab6d9731ee",
+      "execution_commit_raw_match": true,
+      "execution_commit_match": true
+    },
+    "configs/MSVR310/TriFusion-instance-memory-paired-v1.json": {
+      "sha256": "40f44b0e6c12771c53a283a5b65ca6a45556e0293b7d48decf5fd518ad771a3d",
+      "bytes": 2474,
+      "lf_sha256": "64f8e101c2ca09b3bd78631c531ff82bf7679be3d70ae94478f019ec91cdc408",
+      "execution_commit_exists": true,
+      "execution_commit_raw_sha256": "40f44b0e6c12771c53a283a5b65ca6a45556e0293b7d48decf5fd518ad771a3d",
+      "execution_commit_raw_match": true,
+      "execution_commit_match": true
+    },
+    "tools/verify_msvr_instance_memory.py": {
+      "sha256": "89a187399e008ab8465dec51dba08f7299e6b7fb042d95ab336ef0654e5db99c",
+      "bytes": 21024,
+      "lf_sha256": "89a187399e008ab8465dec51dba08f7299e6b7fb042d95ab336ef0654e5db99c",
+      "execution_commit_exists": true,
+      "execution_commit_raw_sha256": "89a187399e008ab8465dec51dba08f7299e6b7fb042d95ab336ef0654e5db99c",
+      "execution_commit_raw_match": true,
+      "execution_commit_match": true
+    },
+    "tools/check_msvr_instance_memory.py": {
+      "sha256": "10972fe83ce4f4730899fb037d4d6cf7c265cb9a8e8949b12f69c27e81bb59a6",
+      "bytes": 3039,
+      "lf_sha256": "10972fe83ce4f4730899fb037d4d6cf7c265cb9a8e8949b12f69c27e81bb59a6",
+      "execution_commit_exists": true,
+      "execution_commit_raw_sha256": "10972fe83ce4f4730899fb037d4d6cf7c265cb9a8e8949b12f69c27e81bb59a6",
+      "execution_commit_raw_match": true,
+      "execution_commit_match": true
+    },
+    "tools/run_msvr_instance_memory.py": {
+      "sha256": "8ba9a3b62287da93154eaf78a509577d00dcb2941015bbefc3616a22ba43fa55",
+      "bytes": 4175,
+      "lf_sha256": "8ba9a3b62287da93154eaf78a509577d00dcb2941015bbefc3616a22ba43fa55",
+      "execution_commit_exists": true,
+      "execution_commit_raw_sha256": "8ba9a3b62287da93154eaf78a509577d00dcb2941015bbefc3616a22ba43fa55",
+      "execution_commit_raw_match": true,
+      "execution_commit_match": true
+    },
+    "refine-logs/msvr310_instance_memory_v1/EXPERIMENT_PLAN.md": {
+      "sha256": "b5fdcb587987e8c0b1cd5f0f4e674a4dd7219b6e90bccdd85cf1f82a52541c48",
+      "bytes": 7778,
+      "lf_sha256": "b5fdcb587987e8c0b1cd5f0f4e674a4dd7219b6e90bccdd85cf1f82a52541c48",
+      "execution_commit_exists": true,
+      "execution_commit_raw_sha256": "b5fdcb587987e8c0b1cd5f0f4e674a4dd7219b6e90bccdd85cf1f82a52541c48",
+      "execution_commit_raw_match": true,
+      "execution_commit_match": true
+    },
+    "configs/MSVR310/TriFusion-source-style-paired-v1-r2.json": {
+      "sha256": "848254aab6dc02230a7fd33be0d60fc2560c99fc77cbd320cf0ef2efd655539d",
+      "bytes": 8334,
+      "lf_sha256": "848254aab6dc02230a7fd33be0d60fc2560c99fc77cbd320cf0ef2efd655539d",
+      "execution_commit_exists": true,
+      "execution_commit_raw_sha256": "848254aab6dc02230a7fd33be0d60fc2560c99fc77cbd320cf0ef2efd655539d",
+      "execution_commit_raw_match": true,
+      "execution_commit_match": true
+    },
+    "modeling/trifusion/builder.py": {
+      "sha256": "8b3620e6be3727709253589a9e59b3efd20a611ba0eec4e8f6b4d0d17eeea4eb",
+      "bytes": 18115,
+      "lf_sha256": "8b3620e6be3727709253589a9e59b3efd20a611ba0eec4e8f6b4d0d17eeea4eb",
+      "execution_commit_exists": true,
+      "execution_commit_raw_sha256": "8b3620e6be3727709253589a9e59b3efd20a611ba0eec4e8f6b4d0d17eeea4eb",
+      "execution_commit_raw_match": true,
+      "execution_commit_match": true
+    },
+    "tests/test_msvr310_signal_scene_protocol.py": {
+      "sha256": "f631e9dac38da47ecaf9a9564056b4ba24f8f3bd58a9ebf4c70071e0c3f2320e",
+      "bytes": 1202,
+      "lf_sha256": "f631e9dac38da47ecaf9a9564056b4ba24f8f3bd58a9ebf4c70071e0c3f2320e",
+      "execution_commit_exists": true,
+      "execution_commit_raw_sha256": "f631e9dac38da47ecaf9a9564056b4ba24f8f3bd58a9ebf4c70071e0c3f2320e",
+      "execution_commit_raw_match": true,
+      "execution_commit_match": true
+    },
+    "refine-logs/msvr310_trifusion_v1/EXPERIMENT_PLAN.md": {
+      "sha256": "90f81ce822ee2327163d8a4299e86f14046ceeb51ec17fc8b951acda882c884f",
+      "bytes": 11686,
+      "lf_sha256": "2c0ab63f06d857717d21ccb9cbc9c026e1eff479bd1c02efca0bb55cb6941f83",
+      "execution_commit_exists": true,
+      "execution_commit_raw_sha256": "90f81ce822ee2327163d8a4299e86f14046ceeb51ec17fc8b951acda882c884f",
+      "execution_commit_raw_match": true,
+      "execution_commit_match": true
+    },
+    "evidence/trifusion_msvr310_signal_v1_audit_closure_20260906.json": {
+      "sha256": "d60776e17acb004c2dfc9d73c1d51ea103d1950d7c9e07f03a1f4ca55ac58a4f",
+      "bytes": 19267,
+      "lf_sha256": "e3e443d36969e2edcd73a4c20d2f7aca154f4bcc8cc4c51fb77da19c909f2ca6",
+      "execution_commit_exists": true,
+      "execution_commit_raw_sha256": "d60776e17acb004c2dfc9d73c1d51ea103d1950d7c9e07f03a1f4ca55ac58a4f",
+      "execution_commit_raw_match": true,
+      "execution_commit_match": true
+    },
+    "configs/RGBNT201/TriFusion-signal-preserving-v8-expert-formation-rtx3090.yml": {
+      "sha256": "3f81049ef8d06af88a4da88d6d71b554da263e246cb94dbe007cb4fc2d09eaab",
+      "bytes": 2140,
+      "lf_sha256": "3f81049ef8d06af88a4da88d6d71b554da263e246cb94dbe007cb4fc2d09eaab",
+      "execution_commit_exists": true,
+      "execution_commit_raw_sha256": "3f81049ef8d06af88a4da88d6d71b554da263e246cb94dbe007cb4fc2d09eaab",
+      "execution_commit_raw_match": true,
+      "execution_commit_match": true
+    },
+    "evidence/trifusion_msvr310_trifusion_v1_prelaunch_source_bytes_20260906.json": {
+      "sha256": "e5b4af2456829e96992392d50773ca85faa2aa9f940ec8dc77ab51f8b4299f67",
+      "bytes": 11512,
+      "lf_sha256": "d82071a761e550e43e1bcf772cedec991abdaaed08df56ac50315b43bbd58959",
+      "execution_commit_exists": true,
+      "execution_commit_raw_sha256": "e5b4af2456829e96992392d50773ca85faa2aa9f940ec8dc77ab51f8b4299f67",
+      "execution_commit_raw_match": true,
+      "execution_commit_match": true
+    },
+    "modeling/trifusion/source_style_v27.py": {
+      "sha256": "402b959863222ea4dfa82ea19c4aa63b02dd0aeef8ad3bc18dd00848ce945d8e",
+      "bytes": 5145,
+      "lf_sha256": "402b959863222ea4dfa82ea19c4aa63b02dd0aeef8ad3bc18dd00848ce945d8e",
+      "execution_commit_exists": true,
+      "execution_commit_raw_sha256": "402b959863222ea4dfa82ea19c4aa63b02dd0aeef8ad3bc18dd00848ce945d8e",
+      "execution_commit_raw_match": true,
+      "execution_commit_match": true
+    },
+    "configs/MSVR310/TriFusion-source-oof-v1.json": {
+      "sha256": "49d82696fbf5d0d71431ed8d7f1e5f80d7c13215a8bec6cafe77969ee8e276a5",
+      "bytes": 5286,
+      "lf_sha256": "2e471c752fa125e649ae8eb22b48498736e256c1fd35c6ad3704e489e89ba6d8",
+      "execution_commit_exists": true,
+      "execution_commit_raw_sha256": "49d82696fbf5d0d71431ed8d7f1e5f80d7c13215a8bec6cafe77969ee8e276a5",
+      "execution_commit_raw_match": true,
+      "execution_commit_match": true
+    },
+    "modeling/trifusion/source_style_msvr.py": {
+      "sha256": "734a296e4073595292f1525b5b8a55da07b60a90ba015ec9473f4ddd48c1346d",
+      "bytes": 3396,
+      "lf_sha256": "a44ebc1259080e63b08ec2befe65031dc4fe733abc0a4fdf9a44cd79da636861",
+      "execution_commit_exists": true,
+      "execution_commit_raw_sha256": "734a296e4073595292f1525b5b8a55da07b60a90ba015ec9473f4ddd48c1346d",
+      "execution_commit_raw_match": true,
+      "execution_commit_match": true
+    },
+    "tools/check_msvr310_source_style_contract.py": {
+      "sha256": "f029a5a639baae90b40bb05994d6ce355b8fe27180d0bb5834d404098da6d5b7",
+      "bytes": 3549,
+      "lf_sha256": "f029a5a639baae90b40bb05994d6ce355b8fe27180d0bb5834d404098da6d5b7",
+      "execution_commit_exists": true,
+      "execution_commit_raw_sha256": "f029a5a639baae90b40bb05994d6ce355b8fe27180d0bb5834d404098da6d5b7",
+      "execution_commit_raw_match": true,
+      "execution_commit_match": true
+    },
+    "tools/run_msvr310_source_style.py": {
+      "sha256": "b6df7967f2abec182135696c4ca5f9303ab59c59cdd9b68319f249d8bddd113a",
+      "bytes": 3984,
+      "lf_sha256": "b6df7967f2abec182135696c4ca5f9303ab59c59cdd9b68319f249d8bddd113a",
+      "execution_commit_exists": true,
+      "execution_commit_raw_sha256": "b6df7967f2abec182135696c4ca5f9303ab59c59cdd9b68319f249d8bddd113a",
+      "execution_commit_raw_match": true,
+      "execution_commit_match": true
+    },
+    "refine-logs/msvr310_source_style_v1/EXPERIMENT_PLAN.md": {
+      "sha256": "b988f8e5f852a5edb052dc716f856409d7cf4eb1d723a7082502ec634bf52826",
+      "bytes": 5788,
+      "lf_sha256": "b988f8e5f852a5edb052dc716f856409d7cf4eb1d723a7082502ec634bf52826",
+      "execution_commit_exists": true,
+      "execution_commit_raw_sha256": "b988f8e5f852a5edb052dc716f856409d7cf4eb1d723a7082502ec634bf52826",
+      "execution_commit_raw_match": true,
+      "execution_commit_match": true
+    },
+    "evidence/msvr310_style_readiness_20260907/msvr310_style_prelaunch_source_bytes_20260907.json": {
+      "sha256": "1d2266b05b4a2b6c819f36bb5149f03401c748a9527ccbdbd3e3261c1e3ced51",
+      "bytes": 7969,
+      "lf_sha256": "1d2266b05b4a2b6c819f36bb5149f03401c748a9527ccbdbd3e3261c1e3ced51",
+      "execution_commit_exists": true,
+      "execution_commit_raw_sha256": "1d2266b05b4a2b6c819f36bb5149f03401c748a9527ccbdbd3e3261c1e3ced51",
+      "execution_commit_raw_match": true,
+      "execution_commit_match": true
+    },
+    "evidence/msvr310_style_t0_runtime_binding_20260907/msvr_style_metadata_remote_numpy_20260907.json": {
+      "sha256": "87dd4773b75e6485c545149c5e053a1b4c930b9f8babdc5a49ce1d8165c3d0d4",
+      "bytes": 3946905,
+      "lf_sha256": "87dd4773b75e6485c545149c5e053a1b4c930b9f8babdc5a49ce1d8165c3d0d4",
+      "execution_commit_exists": true,
+      "execution_commit_raw_sha256": "87dd4773b75e6485c545149c5e053a1b4c930b9f8babdc5a49ce1d8165c3d0d4",
+      "execution_commit_raw_match": true,
+      "execution_commit_match": true
+    },
+    "evidence/msvr310_style_t0_runtime_binding_20260907/msvr_style_plan_numpy_difference_20260907.json": {
+      "sha256": "72c09c1aa7572ef90724ce4c37e9dfa02a43ba2e4bdbeaf546b4be9fa413d971",
+      "bytes": 131921,
+      "lf_sha256": "72c09c1aa7572ef90724ce4c37e9dfa02a43ba2e4bdbeaf546b4be9fa413d971",
+      "execution_commit_exists": true,
+      "execution_commit_raw_sha256": "72c09c1aa7572ef90724ce4c37e9dfa02a43ba2e4bdbeaf546b4be9fa413d971",
+      "execution_commit_raw_match": true,
+      "execution_commit_match": true
+    },
+    "evidence/msvr310_style_t0_runtime_binding_20260907/pipeline.json": {
+      "sha256": "a9609f84a346730a580e4ef0936cb4b0cb7924fb24dcf035bfb7109970156263",
+      "bytes": 1002,
+      "lf_sha256": "a9609f84a346730a580e4ef0936cb4b0cb7924fb24dcf035bfb7109970156263",
+      "execution_commit_exists": true,
+      "execution_commit_raw_sha256": "a9609f84a346730a580e4ef0936cb4b0cb7924fb24dcf035bfb7109970156263",
+      "execution_commit_raw_match": true,
+      "execution_commit_match": true
+    },
+    "evidence/msvr310_style_t0_runtime_binding_20260907/t0.log": {
+      "sha256": "f3ba13723b774b18b9c42e093db1afccd59b2492e0947df3d0ce0ef3d8bceebe",
+      "bytes": 646,
+      "lf_sha256": "f3ba13723b774b18b9c42e093db1afccd59b2492e0947df3d0ce0ef3d8bceebe",
+      "execution_commit_exists": true,
+      "execution_commit_raw_sha256": "f3ba13723b774b18b9c42e093db1afccd59b2492e0947df3d0ce0ef3d8bceebe",
+      "execution_commit_raw_match": true,
+      "execution_commit_match": true
+    },
+    "refine-logs/msvr310_source_style_v1/R2_RUNTIME_PLAN_BINDING.md": {
+      "sha256": "72943d00bc6c5a30ad8497a24004b0b475b3e02ea2220045dbff64c5bd5edc22",
+      "bytes": 1146,
+      "lf_sha256": "72943d00bc6c5a30ad8497a24004b0b475b3e02ea2220045dbff64c5bd5edc22",
+      "execution_commit_exists": true,
+      "execution_commit_raw_sha256": "72943d00bc6c5a30ad8497a24004b0b475b3e02ea2220045dbff64c5bd5edc22",
+      "execution_commit_raw_match": true,
+      "execution_commit_match": true
+    },
+    "configs/MSVR310/Signal-source-oof-v1.json": {
+      "sha256": "ebf767f8c704c9886c80335014e571838400e733ce40665847cd1a9ea6783278",
+      "bytes": 4761,
+      "lf_sha256": "127ca73da75f31c359d9308c5f2e55bbe7c35ef8aee14b81205c2f3e01532add",
+      "execution_commit_exists": true,
+      "execution_commit_raw_sha256": "ebf767f8c704c9886c80335014e571838400e733ce40665847cd1a9ea6783278",
+      "execution_commit_raw_match": true,
+      "execution_commit_match": true
+    },
+    "refine-logs/msvr310_signal_v1/EXPERIMENT_PLAN.md": {
+      "sha256": "23594209e6dcfcd451dadb0ba56100db1b4514c845474c54d891c8a7e544bf86",
+      "bytes": 8807,
+      "lf_sha256": "be0ed4c8f4e6ab3012b43343161600f1a86101354bf7403af899abd6df48b3e9",
+      "execution_commit_exists": true,
+      "execution_commit_raw_sha256": "23594209e6dcfcd451dadb0ba56100db1b4514c845474c54d891c8a7e544bf86",
+      "execution_commit_raw_match": true,
+      "execution_commit_match": true
+    },
+    "protocols/msvr310_train_oof_v1.json": {
+      "sha256": "4ff4c60bca3d019929add5788212c526387d93d535a2c52aa7b1c3acfd387cb4",
+      "bytes": 553723,
+      "lf_sha256": "4ff4c60bca3d019929add5788212c526387d93d535a2c52aa7b1c3acfd387cb4",
+      "execution_commit_exists": true,
+      "execution_commit_raw_sha256": "4ff4c60bca3d019929add5788212c526387d93d535a2c52aa7b1c3acfd387cb4",
+      "execution_commit_raw_match": true,
+      "execution_commit_match": true
+    },
+    "evidence/vehicle_query_protocol_labels_20260905.json": {
+      "sha256": "c835d20478b817a54b7710463269186af2619cab3e38850534b01f3aaee6e3c8",
+      "bytes": 3473934,
+      "lf_sha256": "c835d20478b817a54b7710463269186af2619cab3e38850534b01f3aaee6e3c8",
+      "execution_commit_exists": true,
+      "execution_commit_raw_sha256": "c835d20478b817a54b7710463269186af2619cab3e38850534b01f3aaee6e3c8",
+      "execution_commit_raw_match": true,
+      "execution_commit_match": true
+    },
+    "evidence/msvr310_history_gradient_complete_source_20260908/source/summary.json": {
+      "sha256": "098ee6cd5edfc273e6f4f6f1d646a2c0685e3ab0a723d7434eac3d3962b3da91",
+      "bytes": 119709,
+      "lf_sha256": "098ee6cd5edfc273e6f4f6f1d646a2c0685e3ab0a723d7434eac3d3962b3da91",
+      "execution_commit_exists": true,
+      "execution_commit_raw_sha256": "098ee6cd5edfc273e6f4f6f1d646a2c0685e3ab0a723d7434eac3d3962b3da91",
+      "execution_commit_raw_match": true,
+      "execution_commit_match": true
+    },
+    "evidence/msvr310_history_gradient_complete_source_20260908/source/cpu_verification.json": {
+      "sha256": "48a39b40816bd4fc547651d6af07c52222c9145b5fc3e30239019e687cfb8f1a",
+      "bytes": 692494,
+      "lf_sha256": "48a39b40816bd4fc547651d6af07c52222c9145b5fc3e30239019e687cfb8f1a",
+      "execution_commit_exists": true,
+      "execution_commit_raw_sha256": "48a39b40816bd4fc547651d6af07c52222c9145b5fc3e30239019e687cfb8f1a",
+      "execution_commit_raw_match": true,
+      "execution_commit_match": true
+    },
+    "configs/MSVR310/TriFusion-history-candidate-gradient-v1.json": {
+      "sha256": "c99ddcf6f6605b2d43725e7fc4f74f0747e774a1110a3d0567c3c42c74a1c0b3",
+      "bytes": 3316,
+      "lf_sha256": "c99ddcf6f6605b2d43725e7fc4f74f0747e774a1110a3d0567c3c42c74a1c0b3",
+      "execution_commit_exists": true,
+      "execution_commit_raw_sha256": "c99ddcf6f6605b2d43725e7fc4f74f0747e774a1110a3d0567c3c42c74a1c0b3",
+      "execution_commit_raw_match": true,
+      "execution_commit_match": true
+    },
+    "evidence/msvr310_fresh_coordinate_complete_q1_20260908/q1/summary.json": {
+      "sha256": "419c27a0be8d391b6dd1a68e63b7515f72c94124be4695592e6f586160ba1167",
+      "bytes": 6463185,
+      "lf_sha256": "419c27a0be8d391b6dd1a68e63b7515f72c94124be4695592e6f586160ba1167",
+      "execution_commit_exists": true,
+      "execution_commit_raw_sha256": "419c27a0be8d391b6dd1a68e63b7515f72c94124be4695592e6f586160ba1167",
+      "execution_commit_raw_match": true,
+      "execution_commit_match": true
+    }
+  },
+  "read_hashes": {
+    "/root/autodl-tmp/trifusion-v2/artifacts/msvr310_history_gradient_v1_seed42_a1b4777/pipeline.json": {
+      "bytes": 4348,
+      "sha256": "0fe85b4ab00fc379beb31fb557a4593e0cdd494e16e9eeffda03d15527bbe61f"
+    },
+    "/root/autodl-tmp/trifusion-v2/artifacts/msvr310_history_gradient_v1_seed42_a1b4777/q1_cpu.json": {
+      "bytes": 14063,
+      "sha256": "f05b87b6b722fa5f21a0e7ac85f553473a86bb1f3cf1862c420382ea37804365"
+    },
+    "/root/autodl-tmp/trifusion-v2/TriFusion-ReID/configs/MSVR310/TriFusion-history-gradient-paired-v1.json": {
+      "bytes": 2557,
+      "sha256": "d03c7be1e738a206bf6db3b55580f53fbf33bfcc9050a46c4ddd0c81d7134c4e"
+    },
+    "/root/autodl-tmp/trifusion-v2/TriFusion-ReID/evidence/msvr310_history_gradient_training_preexecution_20260908/audited_input_hashes.json": {
+      "bytes": 12204,
+      "sha256": "2e0396c826df91d80e453d082e7387f3db596fb2034747b6bb026b48e94257f5"
+    }
+  }
+}

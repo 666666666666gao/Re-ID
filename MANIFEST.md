@@ -1449,3 +1449,5 @@
 - 2026-09-08T14:57:03.779291+08:00: Historical-gradient Q1 three of six endpoints complete; fold1candidate61steps, original remote/local processes live. No complete Q1 terminal; master41.164.
 
 - 2026-09-08T15:40:00.483122+08:00: Four history-gradient Q1 endpoints complete, lastfoldcontrol134steps; user post-Q1 role-relation candidates archived as pending, no current training change. Master41.165.
+
+- 2026-09-08T17:18:39.670840+08:00: historical-gradient Q1 complete and independently audited WARN; science FAIL0/5×2; full evidence/report/60identities. Master41.166. Registered CPU-only role relation coverage on sealed source arrays; no next training.

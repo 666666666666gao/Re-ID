@@ -47,7 +47,3 @@
 - Multi-Similarity: https://arxiv.org/html/1904.06627
 - Smooth-AP: https://arxiv.org/pdf/2007.12163v2
 - MambaPro: https://arxiv.org/pdf/2412.10707
-
-## 2026-09-08T17:18:39.670840+08:00 完整终态后的接续
-
-历史候选反传六端与独立审计已结束，配对+0.672435pp但两组0/5，封存FAIL。下一项登记为旧来源数组的只读角色关系覆盖分析，见../msvr310_role_relation_coverage_v1/EXPERIMENT_PLAN.md；不是新训练。先核对“角色子集+同fused hardest”可能等价或减少现有关系的机制问题，不直接把Top-k并集称为新增监督。保持未选定后继训练loss/配额/梯度范围。

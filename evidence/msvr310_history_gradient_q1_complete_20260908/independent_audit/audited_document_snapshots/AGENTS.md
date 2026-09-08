@@ -1,13 +1,13 @@
 # TriFusion-ReID workspace
 
-## Latest verified state (2026-09-08T17:18:39.670840+08:00, historical-gradient Q1 complete)
+## Latest verified state (2026-09-08T15:40:00.483122+08:00, final historical-gradient fold running)
 
-- Master41.166: all6ends/1560updates/CPU and independent audit complete. Scientific Q1_FAIL, both registered gate groups0/5. Fused51.73429240→52.40672778 (+0.67243538), below Signal53.12938056. Preserve all failures and seed42 limits.
-- Read results/MSVR310_HISTORY_GRADIENT_V1_Q1_2026-09-08.md and refine-logs/msvr310_history_gradient_v1/EXPERIMENT_AUDIT_Q1.md. Audit WARN/same-family/provisional, deterministic replay passed. Old live progress was corrected in current tracker/handoff; historical observations remain.
-- Original wrapper19977/Q120941/CPU29925 and local31404 have finished; never restart intake/watcher/training. Full local intake C:/Users/gb/.codex_tmp/history_gradient_q1_complete_20260908; analyses history_gradient_q1_terminal_processing_20260908. Full published evidence/msvr310_history_gradient_q1_complete_20260908.
-- Next registered action after publication sync: CPU-only existing-source role-relation coverage using configs/MSVR310/Role-relation-coverage-v1.json and tools/analyze_msvr_role_relation_coverage.py. Not launched yet. Read refine-logs/msvr310_role_relation_coverage_v1/EXPERIMENT_PLAN.md. 27sealedsource conditions×2protocols, no model forwards/updates/checkpoints. Do not mistake these older source states for current history-gradient endpoints.
-- No next training, loss/top-k/scene-quota change or official evaluation is registered. First clarify whether role proposals add effective relations beyond full fused hardest mining; a same-pool subset cannot increase the full-pool hinge.
-- 16:59:53 remote free3028090880B, GPU idle, zero deletions this publication. Preserve needed finals/initialization/arrays. New source output budget100MiB. Goal ACTIVE/UNMET; preserve unrelated dirty runner and .aris events.
+- Remote observation 2026-09-08T15:39:54.161557+08:00: original wrapper19977/Q1 PID20941 live; fold0/1 both ends each260steps with complete receipt/retrieval records; fold2control134steps.4/6ends complete; no complete scientific terminal or finalCPU. Master41.165.
+- Local terminal processor Python31404 confirmed live 2026-09-08T15:40:00.483122+08:00, statusWAITING_VERIFIED_REMOTE_WRAPPER. Root C:/Users/gb/.codex_tmp/history_gradient_q1_terminal_processing_20260908; observes remote every300s. Prefer existing observations plus actual localPID checks.
+- Same run /root/autodl-tmp/trifusion-v2/artifacts/msvr310_history_gradient_v1_seed42_a1b4777; screen tri_history_gradient_a1b4777; executiona1b4777/configd03c7be1e738a206bf6db3b55580f53fbf33bfcc9050a46c4ddd0c81d7134c4e. Do not edit SHA-bound scripts/launch or duplicate terminal intake.
+- After all5stages/1560updates/CPU, worker receives29texts and runs training/ranking analysis. On COMPLETE_LOCAL_TEXT_AND_RANKING_VERIFIED_AWAITING_INDEPENDENT_AUDIT, continue independent audit/report/push/remote/Desktop sync.
+- Latest user steering is recorded in refine-logs/msvr310_history_gradient_v1/POST_Q1_RESEARCH_CANDIDATES.md: finish current comparison, then decide whether source evidence supports role-proposed relations. This is pending, not a registered next experiment; do not jointly change proposal/dedup/loss/gradient scope. Seed42 only, main results before ablations.
+- Current free3191824384B; no deletion this turn. Original gates/failures preserved. No partial scores/test tuning. Goal ACTIVE/UNMET. Preserve unrelated dirty files.
 
 ## Experiment environment
 

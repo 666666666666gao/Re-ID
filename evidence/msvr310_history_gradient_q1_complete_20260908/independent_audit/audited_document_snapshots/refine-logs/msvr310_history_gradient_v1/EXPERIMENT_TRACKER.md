@@ -3,13 +3,13 @@
 | 阶段 | 固定范围 | 状态 |
 |---|---|---|
 | 合同与实现 | 单一历史梯度范围；seed42 | 静态检查通过；独立预审WARN（same-family/provisional） |
-| T0 | 全780batch队列与数学检查 | DONE PASS |
-| M0 | capacity48 + overfit200更新 | DONE PASS_ENGINEERING_ONLY |
-| M0 CPU | 全量矩阵/14loss/应用记录/权重 | DONE PASS |
-| Q1 | 六端1560更新 | DONE Q1_FAIL；两组0/5 |
-| Q1 CPU与审计 | 全图库与全部身份结果 | DONE CPU PASS；独立审计WARN/same-family/provisional |
+| T0 | 全780batch队列与数学检查 | 尚未执行 |
+| M0 | capacity48 + overfit200更新 | 尚未执行 |
+| M0 CPU | 全量矩阵/14loss/应用记录/权重 | 尚未执行 |
+| Q1 | 六端1560更新 | 尚未执行 |
+| Q1 CPU与审计 | 全图库与全部身份结果 | 尚未执行 |
 
-当前实验全部结束并封存；以下时间序列保留历史进度。完整检索见results/MSVR310_HISTORY_GRADIENT_V1_Q1_2026-09-08.md。控制端与候选端均采用当前模型的新鲜历史坐标；唯一学习干预为历史候选侧VJP是否加入已有总梯度。原fresh-coordinate失败保持封存，长期Goal ACTIVE/UNMET。
+新实验尚未启动，无新增检索结果。控制端与候选端均采用当前模型的新鲜历史坐标；唯一学习干预为历史候选侧VJP是否加入已有总梯度。原fresh-coordinate失败保持封存，长期Goal ACTIVE/UNMET。
 
 2026-09-08T12:58:47.525707+08:00: 独立预执行审计收束；代码/合同即将绑定发布。尚无T0/M0/训练结果；计划按T0→M0→CPU→完整Q1→CPU执行。
 
@@ -28,5 +28,3 @@
 2026-09-08T14:57:03.779291+08:00: 远端2026-09-08T14:54:37.664902+08:00确认fold0两端及fold1 control共3/6端260步/receipt/检索记录齐备，fold1 history_gradient 61步。原remote20941/local31404继续，完整CPU/排名分析/独立审计尚待。无局部科学判定。Master41.164。
 
 2026-09-08T15:40:00.483122+08:00: 前两折四端260步/receipt/检索齐备，fold2control134步；remote2026-09-08T15:39:54.161557+08:00。用户最新角色关系候选已归档POST_Q1_RESEARCH_CANDIDATES.md，完整终态前不登记/启动后继。当前execution/config/plan不变。Master41.165。
-
-2026-09-08T17:18:39.670840+08:00: 六端1560更新/完整CPU/全部文本排名及独立审计已完成；fused51.73429240→52.40672778，+0.67243538，低于Signal0.72265278；两组0/5。原进程退出，审计WARN仅按原文限定。本次更新当前状态表，保留历史日志。Master41.166。

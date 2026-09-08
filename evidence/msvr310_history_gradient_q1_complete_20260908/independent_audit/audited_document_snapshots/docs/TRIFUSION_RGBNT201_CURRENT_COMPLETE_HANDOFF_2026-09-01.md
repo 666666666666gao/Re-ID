@@ -2,7 +2,7 @@
 
 ## 0. 一页结论
 
-当前执行入口：§41.166；历史候选反传完整六端/CPU/独立审计已收束，Q1_FAIL两组0/5，fused配对+0.672435pp、仍低于Signal0.722653pp。下一项为复用已封存来源数组的角色关系覆盖CPU分析，尚未启动；无新训练或官方结果。Goal ACTIVE/UNMET。
+当前执行入口：§41.165；历史反传Q1前两折4/6端260步、receipt及检索记录齐备，第三折control 134步；原remote20941/local31404继续。用户最新关系学习建议已归档为完整Q1后的候选，当前配置不变。Goal ACTIVE/UNMET。
 
 当前用于已完成MSVR310比较及新登记RGBNT100比较的是原V8平行三角色结构：冻结Signal/CLIP，共享block8之前语义和tail9/10/11参数，三个角色分别运行共享tail；CNN处理局部语义Patch高频，Transformer处理全局CLS/Patch关系，Mamba处理空间与位置级三模态扫描。各角色相对冻结reference形成1536D残差，三角色4608D银行拼接3072D Signal得到7680D fused；完整单角色输出为4608D Signal+角色残差。三条路径均执行，当前没有Router/HFER、V23模态MLP或V24原型。两项车辆训练比较均已完成；RGBNT100内部完整比较支持三角色增益，MSVR310尚未超过Signal。下面V1—V8条目保留历史经过，不代表当前又启用了旧模块。
 
@@ -5997,16 +5997,3 @@ M0于13:10:03.589918写入PASS_ENGINEERING_ONLY、13:10:04原PID19991 exit0；CP
 用户本次更新基于87f47af的3/6端快照，已将其正文的后继建议记录于refine-logs/msvr310_history_gradient_v1/POST_Q1_RESEARCH_CANDIDATES.md：先完成历史候选反传，再依据完整证据考察角色提议的关系覆盖；身份/场景去重及集合/AP目标分开验证。只用seed42，主结果后再做机制对照。冻结字段缓存、分组VJP及零上游组跳过为已有基础，不重复列为新增贡献；负两侧余弦不自动意味着任务冲突。若本轮未晋级，只限定于本配置，不能直接推导候选侧导数不重要。
 
 该文件是待决策候选清单，不是新训练注册；没有选定top-k、温度、配额、loss替换或新预算，不修改execution a1b4777、EXPERIMENT_PLAN、配置及后台SHA绑定代码。用户PDF/LaTeX链接本轮未打开，文献入口按用户正文归档，未来引用时核原文；正式表依原始结果，仍不将内部Q1或来源诊断填入正式测试。继续完整1560步/六端/CPU/文本排名核验与独立审计，随后报告同步并决定唯一后继，Goal ACTIVE/UNMET。
-
-
-### 41.166 历史候选反传完整终态及角色关系覆盖接续（2026-09-08T17:18:39.670840+08:00）
-
-原a1b4777运行六端1560更新于16:35:57完成，CPU16:36:11退出0，pipeline COMPLETE_VERIFIED_Q1_FAIL。全部29文本72274170B按SHA接收；本地完整训练/排名分析完成。独立gpt-6-astra max新上下文审计WARN/same-family/provisional：自己的远端脚本复算M0+Q1 1808步、30361856训练距离元素、2069520检索距离/排名元素，核查3000query-output/300identity-output及120epoch。运行时梯度见证不等于CPU重做模型反传；模型家族路由非后端认证。审计时旧tracker/handoff尚记进度，本次已改当前状态，审计原文保留。详见results/MSVR310_HISTORY_GRADIENT_V1_Q1_2026-09-08.md、refine-logs/msvr310_history_gradient_v1/EXPERIMENT_AUDIT_Q1.md和evidence/msvr310_history_gradient_q1_complete_20260908。
-
-本次fresh-detach control fused51.73429240→history_gradient52.40672778（+0.67243538）；Signal53.12938056，候选仍低0.72265278。三fold配对+2.03166534/+0.94978599/−1.20106116，CNN−0.54543017、Transformer+0.31736904、Mamba+0.08852474；身份bootstrap下界−0.32277801；两组原五条件均0/5。fused高于三角色但低于Signal，不能把严格最高失败解释为融合低于角色。全query AP312改善/233下降/55不变，Rank1修复13/新增24；60身份34改善/23下降/3不变。不能把平均收益写成稳定晋级，也不能否定所有历史导数/记忆方法。
-
-末五轮三fold合并批内Triplet0.06739036→0.05736792、扩展0.16649096→0.14112846、总loss0.96342135→0.91688884。来源优化改善未满足未知身份门。每角色候选582含历史更新实际加入gV；G为同角色14项总梯度，不与旧gU/gV固定诊断混用。两端干预前66步有已测微小数值差异，报告保留。每端97600新鲜角色记录前向、六端528512历史VJP记录前向；两端规则相同但实际非零组不同，不称严格同FLOPs。16:59:53实查所有原进程退出、GPU1MiB/0%、盘3028090880B，本轮0删除，六最终小checkpoint保留。
-
-下一登记仅为来源数组只读再分析：configs/MSVR310/Role-relation-coverage-v1.json、refine-logs/msvr310_role_relation_coverage_v1/EXPERIMENT_PLAN.md、tools/analyze_msvr_role_relation_coverage.py。复用9月7日27状态/视图/fold条件×2来源协议，全37152query成员；0模型前向/0参数更新/0新权重。先测角色极值不同但仍在fused margin内的关系，并验证子集沿用同hardest不能增加全集hard hinge。旧source模型不冒充本轮历史反传终点，固定eval视图不冒充训练队列，间隔证据不冒充参数梯度。此次发布完成后执行，尚未启动。后继训练仍未选择top-k/配额/loss，不用已消费官方结果调参。
-
-正式表无新增：MSVR310仍无本项目正式结果，RGBNT100原增益保留。seed42 only、原门与失败封存、三数据集长期目标继续ACTIVE/UNMET。
