@@ -2,11 +2,11 @@
 
 ## Latest verified state (2026-09-09 Smooth-AP M0 audit closed)
 
-- 当前执行入口：§41.193；09-09 01:06原wrapper48170/Q1 49157存活，fold0两端各260步完成，2/6端完成，fold1 control5/20epoch。下一端点观察预计01:40附近，完整Q1/CPU终态未结束。M0独立审计已关闭，不重复；seed42/原合同不变，Goal ACTIVE/UNMET。
+- 当前执行入口：§41.194；09-09 01:09原wrapper48170/Q1 49157存活，fold0两端各260步完成，2/6端完成，fold1 control6/20epoch。下一端点观察预计01:40附近，完整Q1/CPU终态未结束。M0独立审计已关闭，不重复；seed42/原合同不变，Goal ACTIVE/UNMET。
 - Read refine-logs/msvr310_smooth_ap_v1/EXPERIMENT_AUDIT_M0.md/.json and evidence/smooth_ap_m0_audit_20260909. Same-family/provisional, reconstruction limits retained. No new model/GPU replay, no change request. Do not repeat M0 or its audit.
 - Run /root/trifusion-storage/artifacts/msvr310_smooth_ap_v1_seed42_2e947a4, screen tri_smooth_ap_2e947a4. Original execution2e947a4 and pinnedconfig unchanged; do not relaunch on timeout. Two five-gate groups fixed.
 - Terminal intake/analyzer/ranking steps are in evidence/smooth_ap_terminal_analysis_preparation_20260909/smooth_ap_terminal_execution_ready_20260909.md, not executed on partial Q1. Complete Q1 and independent terminal review pending.
-- Output9405018112B free01:06; preserve required weights/arrays and unrelated .aris/meta/events.jsonl/tools/run_trifusion_experiment.py. Three-dataset Goal ACTIVE/UNMET.
+- Output9397846016B free01:09; preserve required weights/arrays and unrelated .aris/meta/events.jsonl/tools/run_trifusion_experiment.py. Three-dataset Goal ACTIVE/UNMET.
 
 ## Experiment environment
 
@@ -584,3 +584,5 @@
 - Source-style relation diagnostic is COMPLETE: all1680batches/10080forwards/273297024relations and all18 outputs/72cells verified; all5PIDs ended, original/CPU/report exits0.
 - Statistical-style robustness improved; active fused wrong relations42/8/1 across initial/control/style remain sparse. Preserve original-input tradeoffs and V27Q1_FAIL4/5.
 - Read complete analysis before a new mechanism. Do not auto-combine V26/V27 or treat margin derivatives as encoder gradients; no new training registered.
+
+终态补充：evidence/smooth_ap_positive_derivative_preparation_20260909/README.md；全M0距离上的分析函数检查通过，完整Q1导数描述须等待原六端/CPU终态，不替代模型梯度或完整来源图库测量。
