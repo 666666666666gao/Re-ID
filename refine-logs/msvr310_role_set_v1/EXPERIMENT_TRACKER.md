@@ -1,6 +1,6 @@
 # MSVR310 role-set v1 实现检查
 
-当前：完整role-set训练已启动；2026-09-08T19:10:08.941002+08:00实查pipeline=RUNNING，阶段q1。完整M0/Q1是否完成以最新pipeline和收据为准，不据启动推定通过。
+当前：完整role-set训练已启动；2026-09-08T19:15:51.474212+08:00实查pipeline=RUNNING，阶段q1。完整M0/Q1是否完成以最新pipeline和收据为准，不据启动推定通过。
 
 2026-09-08T18:07:26.639878+08:00: 新增单一均值hinge目标、CPU数学检查与固定wrapper；配置configs/MSVR310/Role-set-math-v1.json。发布同步后运行，0图像/模型/更新。
 
@@ -17,3 +17,5 @@
 2026-09-08T19:10:08.941002+08:00: 实查RUNNING/q1，原PID状态{'35302': True, '35308': False, '35385': False, '36247': False, '36320': True}；完整原始观察见evidence/msvr310_role_set_run_observation_41_175_20260908。Master41.175。
 
 M0完整248更新+CPU通过，29份文本证据已收齐；首历史组四输出逐位检查6/6，直接梯度最大相对误差1.6810499980311218e-05。19:08:52自动进入Q1，报告results/MSVR310_ROLE_SET_V1_M0_2026-09-08.md；无新科学终态。
+
+2026-09-08T19:15:51.474212+08:00: 实查RUNNING/q1，原PID状态{'35302': True, '35308': False, '35385': False, '36247': False, '36320': True}；完整原始观察见evidence/msvr310_role_set_run_observation_41_176_20260908。Master41.176。
