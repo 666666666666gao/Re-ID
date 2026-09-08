@@ -1,13 +1,12 @@
 # TriFusion-ReID workspace
 
-## Latest verified state (2026-09-08T17:57:22.735320+08:00, source coverage audit complete)
+## Latest verified state (2026-09-08T18:07:26.639878+08:00, role-set CPU mathematics registered)
 
-- Master41.169. Source role coverage54conditions/37152members completed and independently audited WARN/same-family/provisional; deterministic full-array/full-field replay PASS. All original jobs ended. Do not restart analysis/intake/reviewer.
-- Read results/MSVR310_ROLE_RELATION_COVERAGE_2026-09-08.md and refine-logs/msvr310_role_relation_coverage_v1/EXPERIMENT_AUDIT.md. All raw evidence plus full audit stored in evidence/msvr310_role_relation_coverage_complete_20260908. Original pipeline UNAUDITED status is historical; audit is a subsequent separate receipt.
-- Role proposals include extra effective relationships, but same-pool role subset cannot increase fused hardest hinge. These are older source initial/control/style eval arrays, not current history-gradient endpoints or training queue/parameter gradients.
-- Next design draft refine-logs/msvr310_role_relation_coverage_v1/NEXT_HYPOTHESIS_DRAFT.md: retain fused hardest positive and average existing hinge across dedup fused+role negative proposals. Not implemented/registered/launched. First mathematical and actual-gradient checks, one clear intervention; no new Router/scene rule/AP loss or official evaluation.
-- Historical-gradient Q1 remains sealed FAIL0/5x2, fused+0.672435pp but belowSignal0.722653pp; full report/audit previously published. No current training.
-- Last live free2849726464B, no weight deletions this round. Preserve needed finals, initialization, source arrays and unrelated dirty runner/.aris events. Goal ACTIVE/UNMET, seed42 only.
+- Master41.170. Role-set objective/tools/check/wrapper and configs/MSVR310/Role-set-math-v1.json are implemented and registered; CPU math check NOT_RUN. After synchronization execute tools.run_msvr_role_set_math with exact commit/config under a new artifacts directory. Zero real-model forwards/updates/images/checkpoints.
+- Read refine-logs/msvr310_role_set_v1/EXPERIMENT_PLAN.md. This tests one mean-hinge negative-relation objective; preserves original hard tie derivative when no extra proposals. No new Router/scene quota/temperature; no claim of novel loss family or role-specific benefit.
+- Real-model gradient check, full M0 and paired Q1 are NOT_REGISTERED/NOT_LAUNCHED. CPU synthetic PASS alone cannot qualify training or retrieval. No current training. Last post-sync free2636963840B; preserve dependencies and check new stage resource budget.
+- Source coverage audit complete WARN/same-family/provisional with deterministic full54conditions/37152rows PASS. Report results/MSVR310_ROLE_RELATION_COVERAGE_2026-09-08.md. Never restart old analysis or reviewers.
+- History-gradient Q1 remains sealed FAIL0/5x2, fused+0.672435pp but belowSignal0.722653pp. No new official results. Goal ACTIVE/UNMET, seed42 only; preserve unrelated runner/.aris changes.
 
 ## Experiment environment
 
