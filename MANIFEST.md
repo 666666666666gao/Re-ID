@@ -1487,3 +1487,5 @@
 - 2026-09-08T21:30:08.087702+08:00: role-set original Q1 four of six endpoints complete, fold2 control5/20; next observation21:58. No scientific terminal or retraining. Master41.183.
 
 - 2026-09-08T22:03:33.840454+08:00: original role-set Q1 five endpoints complete, final fold2 role_set2/20; next observation22:35. No scientific terminal, retraining or deletion. Master41.184.
+
+- 2026-09-08: role-set complete Q1/CPU and full executor replay archived; scientific FAIL0/5 in both gate groups. Fresh independent terminal audit running, no new intervention. Master41.185.

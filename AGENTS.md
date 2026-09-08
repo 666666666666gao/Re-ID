@@ -1,12 +1,13 @@
 # TriFusion-ReID workspace
 
-## Latest verified state (2026-09-08T22:03:33.840454+08:00, five Q1 endpoints complete)
+## Latest verified state (2026-09-08 role-set Q1 complete, independent audit running)
 
-- Master41.184. Execution26c9739; original wrapper35302/Q136320 live. Run /root/trifusion-storage/artifacts/msvr310_role_set_v1_seed42_26c9739. Five of six fixed20epoch/260update endpoints complete, all seven runtime checks true. Final fold2 role_set epoch2/20. Next observation22:35 +08:00; whole training ETA22:35-22:45, followed by automatic CPU verification, not a terminal guarantee.
-- No relaunch or partial scientific conclusion. Full Q1/CPU and fresh independent terminal review remain pending. M0 audit CLOSED_WARN with engineering/deterministic PASS; do not duplicate M0, prior diagnostics, sealed Q1 runs or their audits.
-- Terminal intake/source analyzer v2/complete ranking replay sequence in Master41.182. Use candidate role_set, actual summary SHA and PASS_COMPLETE_ROLE_SET_Q1. Local uv offline NumPy/Paramiko runtime is verified; do not bind to expired temporary executables. No role-set terminal analysis executed yet.
-- Output free10108387328B; zero deletions. Disk retention inventory in Master41.182. Preserve initial/final models and ranking/diagnostic arrays; sole V3 resume has no proven replacement.
-- Seed42, registered gates, full-path identity isolation, full gallery and scene rules unchanged. Goal ACTIVE/UNMET. Old V29 continuation and historical state entries are obsolete; preserve unrelated .aris/runner changes.
+- Master41.185. Execution26c9739; run /root/trifusion-storage/artifacts/msvr310_role_set_v1_seed42_26c9739. Q1 ended22:38:50, CPU22:39:06; all original PIDs absent at22:40. Do not resume/restart this run. All six20epoch/260update endpoints complete; engineering CPU PASS and scientific Q1_FAIL.
+- Complete57-text/81,195,809B intake verified; source analysis v2 and full2069520-position ranking/AP/CMC/bootstrap replay executed. Summary fc6493b643ab378e2941fb335ac5ebf3093c0d31673bdda7d4564db724598de2. Raw text and executor analyses in evidence/role_set_q1_complete_20260908; result results/MSVR310_ROLE_SET_V1_Q1_2026-09-08.md.
+- Fused52.392266 to52.490152, gain0.097886pp; Signal53.129381. Both five-gate groups0/5; preserve FAIL. Candidate is above its roles but below Signal. No official score or SOTA claim.
+- Fresh independent audit /root/audit_msvr_role_set_q1 is RUNNING; gpt-6-astra/max, same-family/provisional. Output C:/Users/gb/.codex_tmp/role_set_q1_independent_audit_20260908; private trace .aris/traces/experiment-audit/2026-09-08_role_set_q1. Preserve all messages/responses, do not duplicate reviewer. Await full audit before selecting next single intervention. M0 and older audits remain closed.
+- Current source analysis separates prewarmup proposals from used role-set relations, position/record/identity exposure, common versus replaced objectives and warmup numerical differences. Exact scalar and runtime-gradient scopes remain limited; do not claim independently replayed training gradients.
+- Last output free9,954,021,376B; no deletion. Preserve initial/final models and all saved arrays. Seed42/full-path isolation/full-gallery/scene/registered gates remain. Goal ACTIVE/UNMET; old V29 continuation is obsolete. Preserve unrelated .aris/runner changes.
 
 ## Experiment environment
 
