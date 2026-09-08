@@ -1,0 +1,147 @@
+{
+  "schema": "msvr310-coupled-source-style-paired-v1",
+  "EXPERIMENT": {
+    "NAME": "msvr310_v27_source_style_paired_v1",
+    "SEED": 42,
+    "SCOPE": "Cross-dataset mechanism validation with fresh independent original roles; not new algorithm or zero-shot transfer"
+  },
+  "BASELINE": {
+    "CONFIG": "configs/MSVR310/Signal-source-oof-v1.json",
+    "CONFIG_SHA256": "ebf767f8c704c9886c80335014e571838400e733ce40665847cd1a9ea6783278",
+    "SUMMARY": "/root/autodl-tmp/trifusion-v2/artifacts/msvr310_signal_source_oof_v1_seed42_bb01d60/baseline/summary.json",
+    "SUMMARY_SHA256": "22a4f3642e88088a8dfcb4acddb610d6566c12d6b765cb7b344b28acdbcea6eb",
+    "EPOCH": 50,
+    "RETRAIN": false
+  },
+  "DATA": {
+    "PROTOCOL": "protocols/msvr310_train_oof_v1.json",
+    "PROTOCOL_SHA256": "4ff4c60bca3d019929add5788212c526387d93d535a2c52aa7b1c3acfd387cb4",
+    "TRAIN_BATCH_SIZE": 64,
+    "NUM_INSTANCES": 8,
+    "NUM_WORKERS": 4,
+    "INPUT_SIZE": [
+      128,
+      256
+    ],
+    "EVAL_BATCH_SIZE": 64
+  },
+  "MODEL": {
+    "ARCHITECTURE": "signal_preserving_collaborative_v8_expert_formation",
+    "FEATURE_WIDTH": 512,
+    "SEMANTIC_WIDTH": 768,
+    "GRID_SIZE": [
+      8,
+      16
+    ],
+    "BRANCH_AFTER_BLOCK": 8,
+    "ADAPTER_WIDTH": 128,
+    "EXPERT_MODAL_WIDTH": 512,
+    "SCALE_INIT": 0.05,
+    "GRADIENT_CHECKPOINTING": true,
+    "RETRIEVAL_OUTPUTS": [
+      "baseline_only",
+      "fused",
+      "cnn",
+      "transformer",
+      "mamba"
+    ]
+  },
+  "OPTIMIZATION": {
+    "OPTIMIZER": "AdamW",
+    "NEW_MODULE_LR": 0.00035,
+    "WEIGHT_DECAY": 0.0001,
+    "MAX_EPOCHS": 20,
+    "WARMUP_EPOCHS": 5,
+    "AMP_INIT_SCALE": 256.0,
+    "CAPACITY_STEPS_PER_FOLD": 8,
+    "OVERFIT_STEPS": 100
+  },
+  "LOSS": {
+    "ID_FUSED": 0.25,
+    "TRIPLET_FUSED": 1.0,
+    "ID_BRANCH": 0.08333333333333333,
+    "TRIPLET_BRANCH": 0.25,
+    "ID_RESIDUAL": 0.08333333333333333,
+    "TRIPLET_RESIDUAL": 0.25,
+    "TRIPLET_MARGIN": 0.3,
+    "LABEL_SMOOTHING": 0.1
+  },
+  "GATES": {
+    "OVERFIT_MAX_EXCESS_RATIO": 0.1,
+    "FUSED_MIN_GAIN_PP": 1.0,
+    "ALL_FOLD_FUSED_NONNEGATIVE": true,
+    "ALL_FULL_BRANCH_MAP_AT_LEAST_SIGNAL": true,
+    "BOOTSTRAP_SEED": 42,
+    "BOOTSTRAP_RESAMPLES": 10000,
+    "BOOTSTRAP_PERCENTILE": 2.5,
+    "BOOTSTRAP_QUANTILE_METHOD": "linear",
+    "BOOTSTRAP_LOWER_STRICTLY_POSITIVE": true,
+    "FUSED_STRICTLY_BEST": true
+  },
+  "PROTOCOL": {
+    "OFFICIAL_TEST_ACCESS": false,
+    "RGBNT201_DEV_ACCESS": false,
+    "RERANKING": false,
+    "MODEL_SELECTION": "fixed_epoch20",
+    "CROSS_FOLD_FEATURE_DISTANCES": false,
+    "M0_WEIGHTS_REUSED": false
+  },
+  "project_source_file_sha256": {
+    "tools/train_msvr310_trifusion_oof.py": "a1771c2e16e129f0a1ecdfb1f5fffcc7d83fe2faf5073033efe520a73c800f87",
+    "tools/train_msvr310_signal_oof.py": "8262e808c65a6e30cda71cb6c20e969a25609486f435e3b62f2f506b18d2104f",
+    "tools/run_signal_preserving_v5.py": "e162184f68778b4991db0f97f26c5fda273b2ad2f7c8db2bbb2d53775eb717e5",
+    "tools/run_signal_baseline_dev.py": "083967f2a38267415b2992da98c2ad9429ebb793f387b45daac1dbb4eb16f365",
+    "tools/build_v12_complete_path_oof_targets.py": "fc13354b1065c46677122ee9cf63816087facca4e0e98ec5e6e2fb0dece141e4",
+    "tools/train_signal_preserving_v17.py": "333886d16f73987accddb70b0780661bb9400b8afd04af01b57e188d34e5228d",
+    "modeling/trifusion/signal_preserving_v8.py": "97a7b5fe6dab882c2ed92ed1db95b9a8f48eae1d99a3a9b145b0cdfc4b8cefbc",
+    "modeling/trifusion/signal_preserving_v8_builder.py": "8afb028957ecff1a0a26497f7d0460bc240b0f8612a3c476b52a9a6667a3049d",
+    "modeling/trifusion/signal_preserving_v13.py": "7b7c4abb220ed234608553c77aeedd5f8ef763abb04cce5b21f1bfce0f4daa62",
+    "modeling/trifusion/aligned_data.py": "3ea362d17660483b554cb599442b6377ace020fa114969b9bdd58906fbceedd5",
+    "modeling/trifusion/criterion.py": "0b2a6370f434828d885945d1a46dd56f6668133ceed45ef359fe71eeca63740a",
+    "modeling/trifusion/state.py": "5fe89c4885507e74ca1833cc18822a4b57e4c2d6fa9a6c6b2e127d1e74b70db9",
+    "modeling/trifusion/builder.py": "8b3620e6be3727709253589a9e59b3efd20a611ba0eec4e8f6b4d0d17eeea4eb",
+    "modeling/trifusion/experts/mamba.py": "c516c7ad937e5eee6a4ed1e3ec33c2afe3522b751d296bd2e4910e4f27a20ee5",
+    "modeling/trifusion/experts/semantic_residual.py": "c8cef9717fd7bd1e5e50b428ac92762455defac2e25857c9e0dfaf82729c2a93",
+    "tests/test_msvr310_signal_scene_protocol.py": "f631e9dac38da47ecaf9a9564056b4ba24f8f3bd58a9ebf4c70071e0c3f2320e",
+    "refine-logs/msvr310_trifusion_v1/EXPERIMENT_PLAN.md": "90f81ce822ee2327163d8a4299e86f14046ceeb51ec17fc8b951acda882c884f",
+    "evidence/trifusion_msvr310_signal_v1_audit_closure_20260906.json": "d60776e17acb004c2dfc9d73c1d51ea103d1950d7c9e07f03a1f4ca55ac58a4f",
+    "configs/RGBNT201/TriFusion-signal-preserving-v8-expert-formation-rtx3090.yml": "3f81049ef8d06af88a4da88d6d71b554da263e246cb94dbe007cb4fc2d09eaab",
+    "evidence/trifusion_msvr310_trifusion_v1_prelaunch_source_bytes_20260906.json": "e5b4af2456829e96992392d50773ca85faa2aa9f940ec8dc77ab51f8b4299f67",
+    "modeling/trifusion/source_style_v27.py": "402b959863222ea4dfa82ea19c4aa63b02dd0aeef8ad3bc18dd00848ce945d8e",
+    "tools/msvr310_exact_signal_inference.py": "9b7a3168274266447a1e023cec06c6525499c8ab0357dabf6bbd1b4d5c220ac2",
+    "configs/MSVR310/TriFusion-source-oof-v1.json": "49d82696fbf5d0d71431ed8d7f1e5f80d7c13215a8bec6cafe77969ee8e276a5",
+    "modeling/trifusion/source_style_msvr.py": "734a296e4073595292f1525b5b8a55da07b60a90ba015ec9473f4ddd48c1346d",
+    "tools/train_msvr310_source_style.py": "05eca257602a4f2a4707e7952bce8e91060e809d5aec99c53a28e3e12dcd0842",
+    "tools/verify_msvr310_source_style.py": "52c3acc4b5e99a38f1e80573f6d835c854d0a3286b15f3ac5481a863bc3ca6c3",
+    "tools/check_msvr310_source_style_contract.py": "f029a5a639baae90b40bb05994d6ce355b8fe27180d0bb5834d404098da6d5b7",
+    "tools/run_msvr310_source_style.py": "b6df7967f2abec182135696c4ca5f9303ab59c59cdd9b68319f249d8bddd113a",
+    "refine-logs/msvr310_source_style_v1/EXPERIMENT_PLAN.md": "b988f8e5f852a5edb052dc716f856409d7cf4eb1d723a7082502ec634bf52826",
+    "evidence/msvr310_style_readiness_20260907/msvr310_style_prelaunch_source_bytes_20260907.json": "1d2266b05b4a2b6c819f36bb5149f03401c748a9527ccbdbd3e3261c1e3ced51"
+  },
+  "source_binding_revision": 2,
+  "source_binding_note": "Five original remote LF bytes pinned individually; local CRLF/AST provenance recorded; no runtime normalization",
+  "STYLE": {
+    "PROBABILITY": 0.5,
+    "BETA_ALPHA": 0.1,
+    "VARIANCE_EPSILON": 1e-06,
+    "CROSS_CAMERA_DONOR": true,
+    "SHARED_MODAL_PLAN": true
+  },
+  "SOURCE_METADATA": {
+    "PATH": "evidence/msvr310_style_readiness_20260907/msvr310_style_source_readiness_20260907.json",
+    "SHA256": "6a9459ecf115ae81899619408cdaac3e40f3901f35ed272a15fd040e0a4ba52c"
+  },
+  "STORAGE": {
+    "MINIMUM_FREE_BYTES": 2147483648,
+    "CHECKPOINT": "non-baseline state plus exact frozen B0 alias mapping",
+    "EXPECTED_TOTAL_GIB_APPROX": 1
+  },
+  "PAIRED_GATES": {
+    "FUSED_MIN_GAIN_PP": 1.0,
+    "ALL_FOLD_FUSED_NONNEGATIVE": true,
+    "ALL_ROLE_GAINS_NONNEGATIVE": true,
+    "BOOTSTRAP_LOWER_STRICTLY_POSITIVE": true,
+    "CANDIDATE_FUSED_STRICTLY_BEST": true,
+    "ALSO_REQUIRE_ORIGINAL_VEHICLE_BASELINE_GATES": true
+  }
+}

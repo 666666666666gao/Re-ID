@@ -1,14 +1,12 @@
 # TriFusion-ReID workspace
 
-## Latest verified state (2026-09-08T20:14:31.502177+08:00, Q1 milestone)
+## Latest verified state (2026-09-08T20:33:30.984781+08:00, M0 audit and Q1 progress)
 
-- Master41.178. Original execution26c9739; /root/trifusion-storage/artifacts/msvr310_role_set_v1_seed42_26c9739; wrapper35302/Q136320 actually live. 1/6 endpoints complete, latest fold0 role_set epoch18/20. No relaunch.
-- Next observation around 2026-09-08 20:23 +08:00, based on actual stage durations; use original PID/logs, not stale Goal V29 paragraph. Full pipeline is T0/M0/CPU/Q1/CPU; M0 completed248 updates, Q1 pending full1560 updates and six-end CPU/independent audit.
-- Output free10657984512B; preserve initial/final/evidence checkpoints. Config and scientific source hashes unchanged. Official results unchanged; no selection from partial folds.
-- Terminal intake and descriptive source analysis scripts are prepared, AST-only, not yet run; see Master41.176 and refine-logs/msvr310_role_set_v1/RELATED_WORK_BOUNDARY_2026-09-08.md. Full M0 evidence atMaster41.175.
-- Goal ACTIVE/UNMET. Main/remote/Desktop handoff synchronized by this publication. Historical status paragraphs below are not the active state; retain unrelated local runner/.aris modifications.
-
-- Complete M0 fresh independent audit /root/audit_msvr_role_set_m0 is RUNNING; no verdict yet. CPU/read-only, no partial Q1 scores or GPU. Keep same-family/provisional scope and collect full outputs on completion; do not duplicate audit.
+- Master41.179. Original execution26c9739; run /root/trifusion-storage/artifacts/msvr310_role_set_v1_seed42_26c9739. At20:21:40 original wrapper35302/Q136320 live, fold0 both endpoints complete260 updates, fold1 control5/20. 2/6 endpoints complete; no partial retrieval claim or restart.
+- M0 independent audit complete WARN, same-family/provisional. Read refine-logs/msvr310_role_set_v1/EXPERIMENT_AUDIT_M0.md/.json and full evidence/role_set_m0_audit_20260908. Do not repeat M0 or this audit; preserve reported reconstruction limitations.
+- Next training observation20:50 +08:00 around expected second-fold control endpoint. Full Q1/CPU/independent terminal audit remain pending. Terminal intake/analysis tools prepared but not invoked. No official result changes.
+- Output free10578055168B at20:21; preserve source initialization, final weights and evidence. No new weight cleanup this turn; science/config unchanged, unrelated runner/.aris modifications retained.
+- Goal ACTIVE/UNMET; older Goal V29 paragraph and dated status history are obsolete. Main/remote/Desktop synchronization is checked with this publication.
 
 ## Experiment environment
 

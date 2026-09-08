@@ -1,0 +1,6 @@
+Command:
+C:/Users/gb/AppData/Roaming/uv/python/cpython-3.13-windows-x86_64-none/python.exe -X utf8 C:/Users/gb/.codex_tmp/role_set_m0_independent_audit_20260908/finalize_checks.py
+
+Failure: AssertionError at finalize_checks.py line 45: assert not snapshot_differences.
+Cause: remote_inventory.py used pathlib.read_text when serializing text snapshots, which normalized CRLF in 22 files. The independently collected original remote byte hashes remained correct, and M0 raw training text/arrays were unaffected.
+Resolution: fetch_raw_text_bytes.py performs read-only binary SFTP intake for those text files, verifies original length and SHA, preserves the prior normalized copies under attempt_03_normalized_snapshots, and writes exact byte snapshots. No scientific files or running processes are changed.

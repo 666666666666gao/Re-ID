@@ -1,0 +1,79 @@
+{
+  "schema": "msvr310-signal-source-oof-v1",
+  "seed": 42,
+  "epochs": 50,
+  "scope": "New dataset Signal baseline only; not V24 promotion or a new TriFusion main method",
+  "dataset_root": "/root/autodl-tmp/trifusion-v2/data/MSVR310",
+  "protocol": "protocols/msvr310_train_oof_v1.json",
+  "protocol_sha256": "4ff4c60bca3d019929add5788212c526387d93d535a2c52aa7b1c3acfd387cb4",
+  "signal_source": "/root/autodl-tmp/trifusion-v2/comparators/Signal-cd1b0a6",
+  "signal_commit": "cd1b0a672d1fe642e7608731cb4899a19dda7d51",
+  "signal_diff_sha256": "b889caca9c4a92689b13eb7e20bd3224067f3e5ed2a3db6825201870ca422741",
+  "signal_source_file_sha256": {
+    "config/defaults.py": "40257d349153e56e345983c99b1638d7c3d77966dfd2f5496fe03c86dc8dbd57",
+    "configs/MSVR310/Signal.yml": "357ca3a989e943ea5348e6206c0d0f69b3c0d35ad9fbadbf68d2786439b8a915",
+    "data/datasets/bases.py": "48f050a7924cebd1e51f8831ba05df78dbccc7049afb0bcf83351d9d1ee23814",
+    "data/datasets/make_dataloader.py": "54c47d798a20955bde224d9c78b42149c3c2ef008b02659141829a553194434f",
+    "data/datasets/msvr310.py": "10b0197e7c97d1067bd63f25afef3cf0c4e64944ff4028c90d1f2f426a200eb9",
+    "engine/processor.py": "aae7afbeed44a9136003f622b5cdfbf17728b8aab236b129f03285f829eb8377",
+    "modeling/make_model.py": "1a88a91d2e5055f5d338996231b16c0e13b2fa7013c74131ca663f16c2655963",
+    "train.py": "243a2f6de57f6113c6f0e35390670ee937bbcea84ab3335eea2b6257b3bcbd8f",
+    "utils/metrics.py": "91604acb7d978462c16904910a645d7d1697c15bf150da529099004c8b5eecb2",
+    "modeling/meta_arch.py": "8b709d5ab4b14ba150a96bbb5e8cc7e6dbbb71dd8bd30cafd7a5cb110ee5a757",
+    "solver/make_optimizer.py": "ada1023a79fcaaed092bce0849a61db9d0253cf8974c494bfb3082d0fd35fee1",
+    "solver/scheduler_factory.py": "c5e20bdffec4b5360faa04f823639c8e5fd8672914813fb96148927c9ee19abc",
+    "data/datasets/sampler.py": "b77902214633a2b06a7c0a80924a737fdb5122984a857f3c6e120a8ad8cce65a",
+    "solver/lr_scheduler310.py": "e15481ca1d40dbab559af1d97367a192d44b9635a1eaf3ce004dcddb14ee7674",
+    "layers/make_loss.py": "7eb7ab953c2bbc52d0c298ef971d0c3ff7000e5e50756fbb5a5fd63ac4c109aa",
+    "modeling/make_model_clipreid.py": "5494c2b7cb9acfb2c727a2cde201ba587184b344667e077eacfe0c3a0c578651",
+    "modeling/AddModule/useA.py": "1f8fef4dcadb89f5097f83b41a699d9f801a23c88ca3eea73b3ad973a56952a9"
+  },
+  "clip_weight": "/root/autodl-tmp/trifusion-v2/pretrained/ViT-B-16.pt",
+  "clip_weight_sha256": "5806e77cd80f8b59890b7e101eabd078d9fb84e6937f9e85e4ecb61988df416f",
+  "train_batch_size": 64,
+  "instances_per_identity": 8,
+  "input_height_width": [
+    128,
+    256
+  ],
+  "grid_height_width": [
+    8,
+    16
+  ],
+  "preflight_steps_per_fold": 8,
+  "preflight_folds": [
+    0,
+    1,
+    2
+  ],
+  "optimizer": "upstream make_optimizer Adam; MSVR classifier base LR x100; remaining parameter groups preserved",
+  "scheduler": "upstream WarmupMultiStepLR; milestones20/40 gamma0.1 warmup_iters0; step(epoch) before each epoch",
+  "stage": "together_CLS_Patch",
+  "amp_init_scale": 256.0,
+  "num_workers": 4,
+  "training_geometry": "shared three-modal flip/crop; independent erasing; existing project transform at128x256",
+  "sampler": "upstream RandomIdentitySampler; actual sampled global record indices saved per step",
+  "checkpoint_selection": "fixed_epoch50; no heldout evaluation until final checkpoint",
+  "retrieval": "3072D direct+SIM, unit normalization, squared Euclidean; same-ID AND same-scene removed",
+  "official_test_access": false,
+  "rgbnt201_dev_access": false,
+  "new_expert_training": false,
+  "project_source_file_sha256": {
+    "tools/train_msvr310_signal_oof.py": "8262e808c65a6e30cda71cb6c20e969a25609486f435e3b62f2f506b18d2104f",
+    "tools/run_signal_baseline_dev.py": "083967f2a38267415b2992da98c2ad9429ebb793f387b45daac1dbb4eb16f365",
+    "tools/run_signal_preserving_v5.py": "e162184f68778b4991db0f97f26c5fda273b2ad2f7c8db2bbb2d53775eb717e5",
+    "tools/build_v12_complete_path_oof_targets.py": "fc13354b1065c46677122ee9cf63816087facca4e0e98ec5e6e2fb0dece141e4",
+    "modeling/trifusion/aligned_data.py": "3ea362d17660483b554cb599442b6377ace020fa114969b9bdd58906fbceedd5",
+    "tests/test_msvr310_signal_scene_protocol.py": "f631e9dac38da47ecaf9a9564056b4ba24f8f3bd58a9ebf4c70071e0c3f2320e",
+    "refine-logs/msvr310_signal_v1/EXPERIMENT_PLAN.md": "23594209e6dcfcd451dadb0ba56100db1b4514c845474c54d891c8a7e544bf86"
+  },
+  "engineering_revision": 2,
+  "upstream_no_gradient_token_selection_frozen": [
+    "SIM.token_selection.W_q.weight",
+    "SIM.token_selection.W_q.bias",
+    "SIM.token_selection.W_k.weight",
+    "SIM.token_selection.W_k.bias",
+    "SIM.token_selection.W_v.weight",
+    "SIM.token_selection.W_v.bias"
+  ]
+}

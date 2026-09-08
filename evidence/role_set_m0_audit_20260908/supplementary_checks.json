@@ -1,0 +1,193 @@
+{
+  "status": "PASS_LABEL_ORIGIN_AND_SYNTHETIC_CPU_OBJECTIVE",
+  "label_evidence_sha256": "c835d20478b817a54b7710463269186af2619cab3e38850534b01f3aaee6e3c8",
+  "protocol_builder_sha256": "57684721cac03b1be4dfa08cee1902baeb14986bd7e4d8892ff842221d8c8143",
+  "all_1032_records_match_original_label_evidence": true,
+  "train_official_identity_sets_disjoint": true,
+  "official_image_reads": 0,
+  "model_forwards": 0,
+  "model_backwards": 0,
+  "synthetic_tensor_autograd_only": true,
+  "isolated_function_receipts": [
+    {
+      "path": "tools/msvr_role_set_relations.py",
+      "sha256": "e311920a08e6bfce426e8a67acf6a9c1b413116d4e906e9ad8ca31dca03800c1",
+      "functions": [
+        "relation_objectives",
+        "fused_distances"
+      ]
+    },
+    {
+      "path": "tools/msvr_instance_memory.py",
+      "sha256": "b645d9ef29b522f0c639991c1d844a41b55f2ba8def82aef0746e94a145f0da3",
+      "functions": [
+        "InstanceMemory",
+        "expanded_triplet",
+        "check_math"
+      ]
+    },
+    {
+      "path": "tools/probe_msvr_history_candidate_gradients.py",
+      "sha256": "cfa56255f6dd5a471cf3bfbfc99be3d0693f5c9c5dfc29bd8c6e4d15c79090de",
+      "functions": [
+        "differentiable_history_loss",
+        "math_check"
+      ]
+    }
+  ],
+  "existing_memory_math": {
+    "status": "PASS_INSTANCE_MEMORY_MATH",
+    "class_zero_valid": true,
+    "duplicate_record_latest_view_only": true,
+    "current_records_excluded": true,
+    "exact_age_expiry": true,
+    "empty_memory_matches_current": true,
+    "brute_hard_triplet_equal": true,
+    "finite_nonzero_anchor_gradient": true,
+    "synthetic_stats": {
+      "memory_records": 4,
+      "memory_positive_pairs": 8,
+      "memory_negative_pairs": 24,
+      "memory_cross_scene_positive_pairs": 4,
+      "memory_negative_violations_against_batch_hard_positive": 23,
+      "harder_positive_anchors": 1,
+      "harder_negative_anchors": 1,
+      "current_wrong_order_anchors": 8,
+      "expanded_wrong_order_anchors": 8,
+      "current_triplet": 0.7158203721046448,
+      "expanded_triplet": 0.7479375004768372,
+      "expanded_hinge_positive_anchors": 8,
+      "maximum_memory_age": 1
+    }
+  },
+  "existing_history_chain_math": {
+    "status": "PASS_SYNTHETIC_CHAIN_RULE",
+    "seed": 42,
+    "legal_class_zero": true,
+    "selected_loss_and_current_gradient_equal": true,
+    "candidate_vjp_exact": true,
+    "optimizer_updates": 0,
+    "model_forwards": 0
+  },
+  "independent_exact_tie_derivative": {
+    "current": [
+      [
+        0.0,
+        0.125,
+        -0.125,
+        0.0
+      ],
+      [
+        0.125,
+        0.0,
+        -0.125,
+        0.0
+      ],
+      [
+        -0.125,
+        0.0,
+        0.0,
+        0.125
+      ],
+      [
+        -0.125,
+        0.0,
+        0.125,
+        0.0
+      ]
+    ],
+    "historical": [
+      [
+        0.125,
+        -0.125
+      ],
+      [
+        0.125,
+        -0.125
+      ],
+      [
+        -0.125,
+        0.125
+      ],
+      [
+        -0.125,
+        0.125
+      ]
+    ],
+    "expected_derivative_magnitude": 0.125,
+    "pass": true
+  },
+  "independent_random_distance_checks": [
+    {
+      "trial": 0,
+      "scalar_error": 0.0,
+      "distance_gradient_max_error": 0.0
+    },
+    {
+      "trial": 1,
+      "scalar_error": 1.1102230246251565e-16,
+      "distance_gradient_max_error": 0.0
+    },
+    {
+      "trial": 2,
+      "scalar_error": 0.0,
+      "distance_gradient_max_error": 0.0
+    },
+    {
+      "trial": 3,
+      "scalar_error": 0.0,
+      "distance_gradient_max_error": 0.0
+    },
+    {
+      "trial": 4,
+      "scalar_error": 0.0,
+      "distance_gradient_max_error": 0.0
+    },
+    {
+      "trial": 5,
+      "scalar_error": 0.0,
+      "distance_gradient_max_error": 0.0
+    },
+    {
+      "trial": 6,
+      "scalar_error": 0.0,
+      "distance_gradient_max_error": 0.0
+    },
+    {
+      "trial": 7,
+      "scalar_error": 0.0,
+      "distance_gradient_max_error": 0.0
+    },
+    {
+      "trial": 8,
+      "scalar_error": 0.0,
+      "distance_gradient_max_error": 0.0
+    },
+    {
+      "trial": 9,
+      "scalar_error": 5.551115123125783e-17,
+      "distance_gradient_max_error": 0.0
+    },
+    {
+      "trial": 10,
+      "scalar_error": 1.1102230246251565e-16,
+      "distance_gradient_max_error": 0.0
+    },
+    {
+      "trial": 11,
+      "scalar_error": 0.0,
+      "distance_gradient_max_error": 0.0
+    }
+  ],
+  "synthetic_candidate_vjp_bitwise_equal": true,
+  "threads": 2,
+  "interop_threads": 2,
+  "cuda_initialized": false,
+  "package_versions": {
+    "torch": "2.5.1+cu121",
+    "numpy": "1.24.4",
+    "torchvision": "0.20.1+cu121",
+    "mamba-ssm": "2.2.6.post3",
+    "causal-conv1d": "1.6.0"
+  }
+}

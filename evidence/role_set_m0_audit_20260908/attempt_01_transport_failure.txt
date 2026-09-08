@@ -1,0 +1,8 @@
+Command:
+C:/Users/gb/AppData/Local/Programs/ClawX/resources/bin/uv.exe run --offline --with paramiko python -X utf8 C:/Users/gb/.codex_tmp/role_set_m0_independent_audit_20260908/remote_transport.py remote_inventory.py remote_inventory
+
+Local transport setup failed before the remote audit script ran:
+AttributeError: '_io.StringIO' object has no attribute 'reconfigure'
+The existing private helper calls stdout.reconfigure. The audit transport's temporary StringIO redirection did not implement that operation.
+
+Correction: use the operating-system null sink with a real TextIOWrapper, preserving suppression of private helper output. No scientific or remote file was changed. No credentials are included here.

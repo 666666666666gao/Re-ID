@@ -1,0 +1,6 @@
+Command:
+C:/Users/gb/AppData/Roaming/uv/python/cpython-3.13-windows-x86_64-none/python.exe -X utf8 C:/Users/gb/.codex_tmp/role_set_m0_independent_audit_20260908/verify_artifacts.py
+
+Failure: AssertionError while comparing verdict_id against the written EXPERIMENT_AUDIT.md bytes.
+Cause: the writer initially hashed the in-memory LF report string; Windows write_text stored CRLF bytes. The report contents and scientific conclusions were unaffected.
+Correction: compute verdict_id from the actual written report file bytes. Final artifact verification also checks exact source reference ranges and response/trace identity.
