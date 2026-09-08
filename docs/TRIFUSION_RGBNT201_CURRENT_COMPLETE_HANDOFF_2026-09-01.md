@@ -2,7 +2,7 @@
 
 ## 0. 一页结论
 
-当前执行入口：§41.163；历史反传Q1第一折两端260步/receipt/检索记录齐备，第二折control已更新16步，原PID20941继续；本地后台31404正常。完整三折及CPU未结束，Goal ACTIVE/UNMET。
+当前执行入口：§41.164；历史反传Q1已完成3/6端260步、receipt及检索记录，第二折history_gradient已更新61步；原remote20941/local31404继续。完整三折及CPU未结束，Goal ACTIVE/UNMET。
 
 当前用于已完成MSVR310比较及新登记RGBNT100比较的是原V8平行三角色结构：冻结Signal/CLIP，共享block8之前语义和tail9/10/11参数，三个角色分别运行共享tail；CNN处理局部语义Patch高频，Transformer处理全局CLS/Patch关系，Mamba处理空间与位置级三模态扫描。各角色相对冻结reference形成1536D残差，三角色4608D银行拼接3072D Signal得到7680D fused；完整单角色输出为4608D Signal+角色残差。三条路径均执行，当前没有Router/HFER、V23模态MLP或V24原型。两项车辆训练比较均已完成；RGBNT100内部完整比较支持三角色增益，MSVR310尚未超过Signal。下面V1—V8条目保留历史经过，不代表当前又启用了旧模块。
 
@@ -5981,3 +5981,10 @@ M0于13:10:03.589918写入PASS_ENGINEERING_ONLY、13:10:04原PID19991 exit0；CP
 后台第3次观察2026-09-08T14:19:25.028328+08:00确认原wrapper19977/Q1 PID20941继续：fold0 control与history_gradient均260/260步，receipt_complete与retrieval_recorded均真；fold1 control已实际16步。2026-09-08T14:21:04.7098100+08:00另外实查本地PID31404及正确命令行存在，状态WAITING_VERIFIED_REMOTE_WRAPPER。原训练与后台均未重启。此处只记录2/6端写入齐备，不发布局部mAP、不将该折称为完整科学晋级；全六端CPU核验尚未运行。
 
 阶段证据evidence/msvr310_history_gradient_first_training_fold_complete_20260908。继续原固定预算与两组五门，等待其余四端后自动接收29文本、全部1560步及完整排名分析，再独立审计/报告/同步。最近实查空闲3402444800B，无新增删除。执行a1b4777、配置及后台绑定脚本保持；当前论文/SOTA目标仍未完成，Goal ACTIVE/UNMET。
+
+
+### 41.164 历史反传Q1完成三个端点、第二折候选端接续（2026-09-08T14:57:03.779291+08:00）
+
+后台第10次观察2026-09-08T14:54:37.664902+08:00确认原wrapper19977与Q1 PID20941继续：fold0两端及fold1 control均260/260步，receipt_complete和retrieval_recorded均真；fold1 history_gradient已实际61/260步。2026-09-08T14:55:32.9055042+08:00另实查本地PID31404与绑定命令行存在，状态WAITING_VERIFIED_REMOTE_WRAPPER。训练与后台均未重启。这里只确认3/6端记录齐备；不发布局部mAP，不视为完整配对晋级，最终六端CPU核验尚未开始。
+
+阶段证据见evidence/msvr310_history_gradient_half_training_complete_20260908。保持execution a1b4777、原配置、seed42、当前64 anchors、历史候选VJP单一干预及两组五门；继续剩余三端，随后自动接收29文本、全1560步及全部排名分析，再独立审计、报告和同步。最近实查磁盘空闲3301064704B（约3.074GiB），本轮没有删除文件；保存后续端点时继续观察余量。后台SHA绑定脚本未修改。三个数据集baseline/SOTA总体目标仍未完成，Goal ACTIVE/UNMET。

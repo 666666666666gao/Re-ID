@@ -1445,3 +1445,5 @@
 - 2026-09-08T14:10:29.259672+08:00: Persistent terminal-only intake/fulltext/ranking processor PID31404 live with verified remote observation,300s cadence; no newscientific result. Master41.162.
 
 - 2026-09-08T14:22:34.505467+08:00: First historical-gradient Q1 fold both endpoints complete, nextfoldcontrol16steps; remote/local original processes live. No global terminal; master41.163.
+
+- 2026-09-08T14:57:03.779291+08:00: Historical-gradient Q1 three of six endpoints complete; fold1candidate61steps, original remote/local processes live. No complete Q1 terminal; master41.164.
