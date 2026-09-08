@@ -2,7 +2,7 @@
 
 ## 0. 一页结论
 
-当前执行入口：§41.187；role-set完整Q1及来源正例补充均已审计关闭，Q1科学FAIL两组0/5不变。下一单一假设为原三角色上的直接Smooth-AP fused排序目标；公式模块合成数学检查通过，真实训练器/M0/Q1尚未登记或启动。不要重跑旧阶段。Goal ACTIVE/UNMET。
+当前执行入口：§41.188；Smooth-AP完整配对合同及train/check/verify/run已登记，等待本次发布同步后首次启动T0→M0→M0_CPU→Q1→Q1_CPU。尚未实际T0/M0，不冒充运行或通过；旧role-set Q1及审计均关闭不重跑。Goal ACTIVE/UNMET。
 
 当前用于已完成MSVR310比较及新登记RGBNT100比较的是原V8平行三角色结构：冻结Signal/CLIP，共享block8之前语义和tail9/10/11参数，三个角色分别运行共享tail；CNN处理局部语义Patch高频，Transformer处理全局CLS/Patch关系，Mamba处理空间与位置级三模态扫描。各角色相对冻结reference形成1536D残差，三角色4608D银行拼接3072D Signal得到7680D fused；完整单角色输出为4608D Signal+角色残差。三条路径均执行，当前没有Router/HFER、V23模态MLP或V24原型。两项车辆训练比较均已完成；RGBNT100内部完整比较支持三角色增益，MSVR310尚未超过Signal。下面V1—V8条目保留历史经过，不代表当前又启用了旧模块。
 
@@ -6244,3 +6244,14 @@ fresh-context审计原文/机器报告已返回：WARN、engineering PASS with r
 根据已封存负关系集合结果与此来源证据，下一项选择直接Smooth-AP主比较，保留原V8、fresh历史完整反传、64当前anchor、候选规则和其余13项，仅研究多正例排序fused目标。原文https://arxiv.org/html/2007.12163v2 的公式与§5.3温度0.01已核对；独立实现，不称原创。详细提案refine-logs/msvr310_smooth_ap_v1/PROPOSAL.md。不能继续将刷新历史坐标/历史反传/role-set说成尚未测试。
 
 tools/msvr_smooth_ap.py已实现标准公式，精确模块SHA5a4873f0e83aa09441505edca8c1418a0f2cc208599a3c3668385b77ba591cac经远端纯CPU合成数学检查：标量误差0、两次有限差分/重排、自匹配梯度、tie、B64×128有限性通过，0图像/模型/更新；证据evidence/smooth_ap_formula_math_20260908。该函数尚未接入真实训练，不声称已有新参数梯度或泛化结果。下一工作是最小训练器与全量核验实现、登记同初始化/seed42/固定终点合同，再按M0→Q1原门推进；不扫描温度、倍率、终点，不叠新Router/风格/scene配额。训练正式配置尚未建立，勿用旧wrapper猜参数启动。
+
+
+### 41.188 Smooth-AP单一主实验完整登记（2026-09-08 23:38）
+
+配置configs/MSVR310/TriFusion-smooth-ap-paired-v1.json，SHA 974328fee25985b19aa36c84f57a557f9120993fecb98b2a902a1b8de8475302；合同refine-logs/msvr310_smooth_ap_v1/TRAINING_PLAN.md。新增train/check/verify/run及数学检查入口，复用已验证的完整fresh-history VJP路径；只替换fused目标，control原hard、candidate直接Smooth-AP tau0.01/weight1，不使用旧role-set提议。模块新增同语义hard helper后文件SHA变化，旧§41.187的5a4873仅指当时公式文件；新T0会实测当前完整模块与原hard标量/导数一致。已AST检查，不当作真实执行。
+
+两端保留seed42/B64K8/65步预热/容量512/年龄8/20epoch260更新，七组监督中的其他13项不变；candidate实际AP仍通过旧加权入口components.triplet_fused存储，每步active_fused_metric和summary明确语义。完整四空间距离、每anchor AP/正例数、hard/AP两标量均保存；独立Float64 NumPy rank sums全量核验，标量/逐anchor容差2e-6。M0首实际历史组的完整图与VJP参数梯度核验、203累计梯度覆盖、冻结基线/重载/原100步过拟合门都保留。两组原五门不改变，不根据局部fold调参。
+
+23:34远端root/autodl-container-555b4b9409-6aa86278实查head09381da、Python3.10.14/PyTorch2.5.1+cu121/RTX3090；GPU1MiB，无compute进程，旧wrapper/Q1 PID均不存在。输出卷9954095104B空闲，主卷2594549760B。环境暖复用、无安装/重建；证据evidence/smooth_ap_registration_20260908。输出仍/root/trifusion-storage/artifacts，4GiB最低/3GiB最大新增预算；启动再次核验。预计M0 10–25min、Q1 3–6h，持久screen/原PID/日志，按阶段预计结束和180–300s观察。
+
+本条仅注册，尚无真实T0/M0或新检索。同步后用固定commit/config SHA首次启动新wrapper，失败阶段封存停止，不自动修改重启；M0/CPU通过才打开heldout。完成后按技能独立审计；旧审计任务不得重复。三数据集完整Goal仍未达到。

@@ -1,13 +1,13 @@
 # TriFusion-ReID workspace
 
-## Latest verified state (2026-09-08 role-set audits closed; next formula implemented)
+## Latest verified state (2026-09-08 Smooth-AP full experiment registered)
 
-- Master41.187. Role-set complete Q1 and both core/supplemental audits CLOSED. Core WARN/same-family/provisional, engineering/deterministic PASS with runtime limits; science FAIL0/5 in both groups. Positive supplement PASS only descriptive source snapshots. All reviewer/training tasks ended; do not duplicate or rerun.
-- Canonical audits refine-logs/msvr310_role_set_v1/EXPERIMENT_AUDIT_Q1.md/.json and EXPERIMENT_AUDIT_POSITIVE_COVERAGE.md/.json. Complete evidence role_set_q1_audit_20260908 and role_set_positive_coverage_20260908. Private full responses/traces only local. Source nonmax positive inversions do not imply zero total encoder gradient or expected new-loss success.
-- Next selected single hypothesis: standard Smooth-AP fused objective on original V8 with fresh historical candidates and full candidate-side gradient. Proposal refine-logs/msvr310_smooth_ap_v1/PROPOSAL.md. Temperature0.01 from paper, weight1; no parameter/temperature/checkpoint scan, no new role-set/router/style/scene quotas. Preserve other13 losses,64current anchors,seed42,old candidate/identity/gallery rules and original gates.
-- tools/msvr_smooth_ap.py exact SHA5a4873f0e83aa09441505edca8c1418a0f2cc208599a3c3668385b77ba591cac passed synthetic-only CPU scalar/gradcheck/permutation/self/tie tests at23:21. Evidence smooth_ap_formula_math_20260908. No real model/parameter-gradient/M0/Q1 execution for this new hypothesis yet. Implement smallest trainer/verifier, then register full contract; do not launch old wrapper with guessed args. This is standard method adaptation, not originality/performance evidence.
-- One invalid interrupted RGBNT100 weight deleted101712000B; logs, SHA and all necessary final/init arrays retained. Main free2594766848B at previous sync; training output retains about9.27GiB, recheck before launch. No broad weight deletion.
-- Goal ACTIVE/UNMET across three datasets. No new official score or SOTA. Preserve unrelated .aris/meta/events.jsonl and tools/run_trifusion_experiment.py modifications.
+- Master41.188. Old role-set Q1/core/positive audits CLOSED, science FAIL0/5. Do not repeat. Goal ACTIVE/UNMET.
+- New Smooth-AP config configs/MSVR310/TriFusion-smooth-ap-paired-v1.json SHA974328fee25985b19aa36c84f57a557f9120993fecb98b2a902a1b8de8475302; TRAINING_PLAN.md and EXPERIMENT_TRACKER.md in refine-logs/msvr310_smooth_ap_v1. New tools train/check/verify/run_msvr_smooth_ap.py, msvr_smooth_ap.py and check_msvr_smooth_ap_math.py AST checked, NOT yet executed as T0/M0.
+- Single change: original hard fused metric vs standard Smooth-AP tau0.01 weight1 after65-step warmup; both fresh current-coordinate historical VJP,64current anchors, other13losses, originalV8/seed42/20epochs260updates. No role-set proposals,router,style,scene quota,temperature scan. Original two five-gate groups unchanged. components.triplet_fused is storage key, active_fused_metric records real meaning.
+- Launch once after sync, fixed commit/config SHA with tools.run_msvr_smooth_ap; pipeline T0→M0→M0_CPU→Q1→Q1_CPU in persistent screen, stop on actual stage failure. M0-only source before heldout. No new result or new live PID yet. Capture actual launch and monitor ETA, do not confuse timeout with termination.
+- 23:34 verified RTX3090 1MiB/no compute process, output9954095104B free/main2594549760B. Warm existing tri_reid Python3.10.14/PyTorch2.5.1+cu121, no rebuild/install. Output/root/trifusion-storage/artifacts,4GiB min/3GiB budget. Recheck at launch. Preserve all necessary weights/arrays, one invalid partial weight already removed.
+- Prior formula-only hash5a4873 belongs to earlier source; current config pins updated helper plus actual new math entry. T0 must run it, AST/import alone not execution proof. Preserve unrelated .aris/meta/events.jsonl and tools/run_trifusion_experiment.py edits.
 
 ## Experiment environment
 

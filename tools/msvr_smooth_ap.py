@@ -8,6 +8,25 @@ import torch
 TAU = 0.01
 
 
+def paired_objectives(current, historical, identities, history_identities):
+    """Original split-max/min hard objective and the fixed Smooth-AP objective."""
+    batch = current.shape[0]
+    ids = torch.as_tensor(identities, device=current.device)
+    mids = torch.as_tensor(history_identities, device=current.device, dtype=ids.dtype)
+    positive = (ids[:, None] == ids[None, :]) & ~torch.eye(batch, device=current.device, dtype=torch.bool)
+    negative = ids[:, None] != ids[None, :]
+    assert positive.any(1).all() and negative.any(1).all()
+    hp = current.masked_fill(~positive, -torch.inf).max(1).values
+    hn = current.masked_fill(~negative, torch.inf).min(1).values
+    if historical.shape[1]:
+        mp = ids[:, None] == mids[None, :]
+        hp = torch.maximum(hp, historical.masked_fill(~mp, -torch.inf).max(1).values)
+        hn = torch.minimum(hn, historical.masked_fill(mp, torch.inf).min(1).values)
+    hard = torch.nn.functional.relu(hp - hn + .3).mean()
+    smooth, per_anchor = smooth_ap_from_distances(current, historical, identities, history_identities)
+    return hard, smooth, per_anchor
+
+
 def smooth_ap_from_distances(current, historical, identities, history_identities):
     """Return mean 1-AP and per-anchor smoothed AP from unit Euclidean distances.
 
