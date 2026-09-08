@@ -1,12 +1,11 @@
 # TriFusion-ReID workspace
 
-## Latest verified state (2026-09-08T18:07:26.639878+08:00, role-set CPU mathematics registered)
+## Latest verified state (2026-09-08T18:17:43.210366+08:00, role-set real-model gradient check registered)
 
-- Master41.170. Role-set objective/tools/check/wrapper and configs/MSVR310/Role-set-math-v1.json are implemented and registered; CPU math check NOT_RUN. After synchronization execute tools.run_msvr_role_set_math with exact commit/config under a new artifacts directory. Zero real-model forwards/updates/images/checkpoints.
-- Read refine-logs/msvr310_role_set_v1/EXPERIMENT_PLAN.md. This tests one mean-hinge negative-relation objective; preserves original hard tie derivative when no extra proposals. No new Router/scene quota/temperature; no claim of novel loss family or role-specific benefit.
-- Real-model gradient check, full M0 and paired Q1 are NOT_REGISTERED/NOT_LAUNCHED. CPU synthetic PASS alone cannot qualify training or retrieval. No current training. Last post-sync free2636963840B; preserve dependencies and check new stage resource budget.
-- Source coverage audit complete WARN/same-family/provisional with deterministic full54conditions/37152rows PASS. Report results/MSVR310_ROLE_RELATION_COVERAGE_2026-09-08.md. Never restart old analysis or reviewers.
-- History-gradient Q1 remains sealed FAIL0/5x2, fused+0.672435pp but belowSignal0.722653pp. No new official results. Goal ACTIVE/UNMET, seed42 only; preserve unrelated runner/.aris changes.
+- Master41.171. CPU math54a7d5a completed PASS, original33264/33266 ended; never rerun. Receipt evidence/msvr310_role_set_math_20260908/math.json SHA167a8d8d873fc1d3ea4fb741266f22520b76121f43979545f3acac563940bd6e. Synthetic checks do not qualify training.
+- Next registered job configs/MSVR310/Role-set-gradient-check-v1.json, tools.run_msvr_role_set_gradients, GRADIENT_CHECK_PLAN.md. After sync run once under exact commit in a new artifact directory. Three fixed source initializations,8 batches each,0optimizer/weights/heldout. GPU gradient witnesses plus CPU replay of all recorded matrices; no full M0/Q1.
+- No current training. Expected5-15min, output<=50MiB; check GPU<500MiB and disk>=256MiB for this zero-weight probe. Preserve all source/initial/final dependencies. Follow specific job handles, do not relaunch on observation timeout.
+- Source role coverage complete/audited WARN, full54conditions/37152rows deterministic PASS. Historical-gradient Q1 still sealed FAIL0/5x2; no official result changes. Goal ACTIVE/UNMET, seed42 only; preserve unrelated runner/.aris events.
 
 ## Experiment environment
 

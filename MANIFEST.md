@@ -1459,3 +1459,5 @@
 - 2026-09-08T17:57:22.735320+08:00: source role relation coverage independent audit complete (WARN), all54conditions/37152rows; complete report and single next hypothesis draft. Master41.169, no new training/official result.
 
 - 2026-09-08T18:07:26.639878+08:00: registered role-set mean-hinge CPU mathematical implementation checks; no model training or official result. Master41.170.
+
+- 2026-09-08T18:17:43.210366+08:00: role-set CPU math PASS; registered three-fold fixed-state real gradient probe with complete CPU distance replay, no training updates. Master41.171.

@@ -2,7 +2,7 @@
 
 ## 0. 一页结论
 
-当前执行入口：§41.170；role-set单一负关系聚合实现与CPU数学检查已登记，发布后执行，尚未运行。旧来源覆盖审计与历史反传Q1已封存；GPU模型梯度/M0/Q1尚未启动。Goal ACTIVE/UNMET。
+当前执行入口：§41.171；role-set CPU数学检查完成PASS，三折×8batch固定初始化真实梯度检查已登记，发布后执行。0训练更新/0新权重，完整M0/Q1尚未启动。旧失败封存，Goal ACTIVE/UNMET。
 
 当前用于已完成MSVR310比较及新登记RGBNT100比较的是原V8平行三角色结构：冻结Signal/CLIP，共享block8之前语义和tail9/10/11参数，三个角色分别运行共享tail；CNN处理局部语义Patch高频，Transformer处理全局CLS/Patch关系，Mamba处理空间与位置级三模态扫描。各角色相对冻结reference形成1536D残差，三角色4608D银行拼接3072D Signal得到7680D fused；完整单角色输出为4608D Signal+角色残差。三条路径均执行，当前没有Router/HFER、V23模态MLP或V24原型。两项车辆训练比较均已完成；RGBNT100内部完整比较支持三角色增益，MSVR310尚未超过Signal。下面V1—V8条目保留历史经过，不代表当前又启用了旧模块。
 
@@ -6046,3 +6046,12 @@ M0于13:10:03.589918写入PASS_ENGINEERING_ONLY、13:10:04原PID19991 exit0；CP
 已实现tools/msvr_role_set_relations.py：保留原fused最难正例与hard项，对三角色不同负例追加hinge后按去重并集大小取均值。原hard项沿用current/history min/max分配；无额外提议时标量和梯度应精确保留，包括并列极值。只由角色选索引，目标在fused空间，不引入新参数/温度/权重或scene规则。均值降低原极端关系权重，不提前声称角色独有贡献。
 
 CPU合成检查tools/check_msvr_role_set_relations.py与wrapper/config/计划已静态解析，尚未执行。登记configs/MSVR310/Role-set-math-v1.json，发布同步后运行。检查class0、去重、无额外项/无历史/精确tie、额外关系导数和历史VJP链式法则；0模型前向/0参数更新/0图像/0新权重。不是M0训练或方法通过。后续真实模型梯度检查仍需绑定执行脚本，长训练亦未启动。旧失败与正式表不变。
+
+
+### 41.171 数学检查通过与三折真实模型梯度检查登记（2026-09-08T18:17:43.210366+08:00）
+
+54a7d5a CPU数学检查18:08:47退出0，18:09:23实查wrapper33264/child33266均结束。class0/mask/去重、无额外项时原标量/梯度精确保留、极值tie原导数、额外负关系非零导数和历史链式法则均通过。math SHA167a8d8d873fc1d3ea4fb741266f22520b76121f43979545f3acac563940bd6e，完整证据evidence/msvr310_role_set_math_20260908，结果results/MSVR310_ROLE_SET_MATH_2026-09-08.md。合成向量检查不是实际角色参数梯度或模型晋级。
+
+下一登记configs/MSVR310/Role-set-gradient-check-v1.json、GRADIENT_CHECK_PLAN.md、probe/verify/run_msvr_role_set_gradients.py：三个原source-only初始化，每折首8个seed42 B64，合计24batch。固定训练模式但0optimizer；原hard与新均值目标均有完整历史导数，再重复新目标测计算差异，首历史组用完整图校验VJP。实际完整角色提议来自同次encoder/fusion，非fused槽位近似重构；保存全部四种距离矩阵/提议/角色统计，CPU全24batch复算。最终state恢复、无heldout/official前向、无新权重。不是全source普查、M0训练或检索结果，不据此自动启动Q1。
+
+新增输出预算50MiB、最低空闲256MiB，仅适用于本零权重探针；长训练预算另核，不改旧3GiB训练合同。环境沿用已核验tri_reid，无安装/重建。预计5–15分钟，screen持久、按180–300秒或完成里程碑观察。发布同步后启动，此刻尚未执行。Goal ACTIVE/UNMET、seed42 only。
