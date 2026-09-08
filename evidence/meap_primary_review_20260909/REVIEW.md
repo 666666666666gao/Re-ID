@@ -1,0 +1,18 @@
+# MEAP: author-code review and limited paper access
+
+2026-09-09. Published paper: [DOI 10.1016/j.compeleceng.2024.109751](https://doi.org/10.1016/j.compeleceng.2024.109751). Publisher/search and [author institution abstract](https://research.hacettepe.edu.tr/en/publications/margin-enhanced-average-precision-optimization-for-visible-infrar-2/) identify inter-class/cross-modality AP margins and horizontal stripe augmentation. Full article retrieval failed (DOI error; direct ScienceDirect429). No full-paper formula, table or result reproduction is claimed.
+
+Author repository pinned by actual git ls-remote main: [45f948894f84d45cc3f6558b7f030a586130ea7e](https://github.com/NihatTekeli/meapnet/tree/45f948894f84d45cc3f6558b7f030a586130ea7e). Five files (35,625 bytes) stored verbatim with MIT license and SHA manifest. No author code imported, installed or executed. Initial API root request returned404, and one web click failed; both are recorded in the manifest. Raw pinned files were obtained successfully.
+
+Verified code facts:
+
+- `meap_loss.py:25–30,96–117` assumes two equal modality halves and fixed identity groups. It builds positive and cross-modality block masks from positions, rather than accepting arbitrary labels and modalities. The full score matrix subtracts margin_i on same-ID blocks and margin_x on cross-modality positive blocks. `140` applies corresponding margins to positive-set scores too.
+- `154–155` sums complete identity blocks and divides by group size. Internal comparison masks are not a direct declaration of TriFusion's current-self exclusion; final block averaging includes diagonal entries. This is a static interface observation, not a numerical reproduction or a claim that the paper's intended protocol is wrong.
+- `train.py:208` uses tau .01 and both margins .25. Lines292–304 combine ID plus MEAP on normalized global features, optionally averaging analogous part losses; the displayed Triplet is not added in that line. Copying this training setup would change more than TriFusion's one fused objective.
+- `utils.py:77–78` samples the same selected identity separately in both modalities. README targets RegDB and SYSU-MM01. Their separate VIS/IR samples are not TriFusion's already-paired RGB/NIR/TIR records. [Pinned loss](https://github.com/NihatTekeli/meapnet/blob/45f948894f84d45cc3f6558b7f030a586130ea7e/meap_loss.py), [training](https://github.com/NihatTekeli/meapnet/blob/45f948894f84d45cc3f6558b7f030a586130ea7e/train.py).
+
+Project inference, not a new registered method: margin-shifting retained same-identity scores differs from removing same-environment positives, environment-balanced averaging or role-conditioned weighting. These must not be conflated. Margins cannot create true cross-scene positives for single-scene identities; the registered source replay already quantifies that support limit. A margin also shifts the sigmoid's active region, so stronger margins cannot be assumed to improve effective derivative coverage without checking actual scores.
+
+Any later direct comparison must independently define dynamic current/history label masks, self/duplicate handling, which positive scores get margins, eligible-anchor normalization and the same historical derivative range. Do not copy fixed index masks into the variable history pool or call a scene adaptation an exact VIS/IR reproduction. Standard margin/AP mechanisms must remain attributed; neither renaming modality as scene nor transplanting .25 establishes novelty.
+
+Current Smooth-AP execution2e947a4/config/seed42/14-loss contract unchanged. No added training, official score access or partial Q1 comparison. Complete current Q1/CPU/source derivative and ranking evidence precedes selecting a single successor hypothesis.
