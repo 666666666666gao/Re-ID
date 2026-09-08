@@ -1,0 +1,4 @@
+First remote CPU audit attempt stopped at independent remote_verify.py line 119: assert len(base_cfgs) == 1.
+Reason: recursive config inventory includes both historical source-style config and its r2 replacement. Selecting by schema presence is ambiguous.
+Correction: select the actual context chain explicitly (previous_config -> coordinate_config -> memory_config -> base_config), matching the inspected context call graph.
+No experiment assertion failed. No model forward, optimizer update or scientific artifact write occurred.

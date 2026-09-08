@@ -1,0 +1,52 @@
+{
+  "status": "COMPLETE_FIXED_STATE_ENGINEERING_CHECK",
+  "wrapper_pid": 33657,
+  "code_commit": "958fb215fb5bd0c5412b1eaa9de96124e279d37f",
+  "config_sha256": "c5b0b772b729b062976f225bad4daa06b0dd4a3ca41dc2df4f629a169de1d3ee",
+  "gpu_before": "0, 1, 24576\n",
+  "free_bytes_before": 2652434432,
+  "started_at": "2026-09-08T18:19:30.801848+08:00",
+  "stages": [
+    {
+      "stage": "probe",
+      "original_pid": 33661,
+      "command": [
+        "/root/miniconda3/envs/tri_reid/bin/python",
+        "-B",
+        "-u",
+        "-m",
+        "tools.probe_msvr_role_set_gradients",
+        "--config",
+        "/root/autodl-tmp/trifusion-v2/TriFusion-ReID/configs/MSVR310/Role-set-gradient-check-v1.json",
+        "--output-dir",
+        "/root/autodl-tmp/trifusion-v2/artifacts/msvr310_role_set_gradient_check_v1_seed42_958fb21/probe"
+      ],
+      "started_at": "2026-09-08T18:19:30.802582+08:00",
+      "exit_code": 0,
+      "ended_at": "2026-09-08T18:22:45.945639+08:00"
+    },
+    {
+      "stage": "cpu",
+      "original_pid": 33899,
+      "command": [
+        "/root/miniconda3/envs/tri_reid/bin/python",
+        "-B",
+        "-u",
+        "-m",
+        "tools.verify_msvr_role_set_gradients",
+        "--config",
+        "/root/autodl-tmp/trifusion-v2/TriFusion-ReID/configs/MSVR310/Role-set-gradient-check-v1.json",
+        "--run-dir",
+        "/root/autodl-tmp/trifusion-v2/artifacts/msvr310_role_set_gradient_check_v1_seed42_958fb21/probe",
+        "--output",
+        "/root/autodl-tmp/trifusion-v2/artifacts/msvr310_role_set_gradient_check_v1_seed42_958fb21/cpu.json"
+      ],
+      "started_at": "2026-09-08T18:22:45.947067+08:00",
+      "exit_code": 0,
+      "ended_at": "2026-09-08T18:22:46.162365+08:00"
+    }
+  ],
+  "ended_at": "2026-09-08T18:22:46.163312+08:00",
+  "cpu_sha256": "2641c95213e2a9fb20afeb4d14afc97ff967678c4d43e9c7248cec61c89f4302",
+  "free_bytes_after": 2648764416
+}

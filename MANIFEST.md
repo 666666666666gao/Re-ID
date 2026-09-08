@@ -1461,3 +1461,5 @@
 - 2026-09-08T18:07:26.639878+08:00: registered role-set mean-hinge CPU mathematical implementation checks; no model training or official result. Master41.170.
 
 - 2026-09-08T18:17:43.210366+08:00: role-set CPU math PASS; registered three-fold fixed-state real gradient probe with complete CPU distance replay, no training updates. Master41.171.
+
+- 2026-09-08T18:49:13.903396+08:00: role-set fixed-state check complete, independent WARN; training drafts AST only, next real M0/Q1 contract; verified38 redundant transport packages removed,0weights. Master41.172.

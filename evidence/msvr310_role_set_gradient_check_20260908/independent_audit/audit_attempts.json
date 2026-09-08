@@ -1,0 +1,43 @@
+[
+  {
+    "attempt": 1,
+    "operation": "SSH audit harness initialization",
+    "status": "ERROR",
+    "experiment_failure": false,
+    "remote_verifier_started": false,
+    "source": "failed_attempts/attempt1_remote_transport.py",
+    "error": "failed_attempts/attempt1_error_sanitized.txt",
+    "fix": "Private stdout capture implements the reconfigure method required by the existing helper."
+  },
+  {
+    "attempt": 2,
+    "operation": "independent remote CPU verification",
+    "status": "ERROR",
+    "experiment_failure": false,
+    "remote_verifier_started": true,
+    "source": "failed_attempts/attempt2_remote_verify.py",
+    "error": "failed_attempts/attempt2_error.txt",
+    "fix": "Traverse the actual previous/coordinate/memory/base config chain instead of ambiguous historical config discovery."
+  },
+  {
+    "attempt": 3,
+    "operation": "independent remote CPU verification",
+    "status": "PASS",
+    "result": "remote_verification.json",
+    "exit_code": 0
+  },
+  {
+    "attempt": 4,
+    "operation": "local intake and claim aggregates",
+    "status": "PASS",
+    "result": "local_verification.json",
+    "exit_code": 0
+  },
+  {
+    "attempt": 5,
+    "operation": "independent synthetic CPU gradients and resource read",
+    "status": "PASS",
+    "result": "remote_math_verification.json",
+    "exit_code": 0
+  }
+]

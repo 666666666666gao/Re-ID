@@ -1,0 +1,133 @@
+{
+  "observed_at": "2026-09-08T18:25:53.661873+08:00",
+  "pipeline": {
+    "status": "COMPLETE_FIXED_STATE_ENGINEERING_CHECK",
+    "wrapper_pid": 33657,
+    "code_commit": "958fb215fb5bd0c5412b1eaa9de96124e279d37f",
+    "config_sha256": "c5b0b772b729b062976f225bad4daa06b0dd4a3ca41dc2df4f629a169de1d3ee",
+    "gpu_before": "0, 1, 24576\n",
+    "free_bytes_before": 2652434432,
+    "started_at": "2026-09-08T18:19:30.801848+08:00",
+    "stages": [
+      {
+        "stage": "probe",
+        "original_pid": 33661,
+        "command": [
+          "/root/miniconda3/envs/tri_reid/bin/python",
+          "-B",
+          "-u",
+          "-m",
+          "tools.probe_msvr_role_set_gradients",
+          "--config",
+          "/root/autodl-tmp/trifusion-v2/TriFusion-ReID/configs/MSVR310/Role-set-gradient-check-v1.json",
+          "--output-dir",
+          "/root/autodl-tmp/trifusion-v2/artifacts/msvr310_role_set_gradient_check_v1_seed42_958fb21/probe"
+        ],
+        "started_at": "2026-09-08T18:19:30.802582+08:00",
+        "exit_code": 0,
+        "ended_at": "2026-09-08T18:22:45.945639+08:00"
+      },
+      {
+        "stage": "cpu",
+        "original_pid": 33899,
+        "command": [
+          "/root/miniconda3/envs/tri_reid/bin/python",
+          "-B",
+          "-u",
+          "-m",
+          "tools.verify_msvr_role_set_gradients",
+          "--config",
+          "/root/autodl-tmp/trifusion-v2/TriFusion-ReID/configs/MSVR310/Role-set-gradient-check-v1.json",
+          "--run-dir",
+          "/root/autodl-tmp/trifusion-v2/artifacts/msvr310_role_set_gradient_check_v1_seed42_958fb21/probe",
+          "--output",
+          "/root/autodl-tmp/trifusion-v2/artifacts/msvr310_role_set_gradient_check_v1_seed42_958fb21/cpu.json"
+        ],
+        "started_at": "2026-09-08T18:22:45.947067+08:00",
+        "exit_code": 0,
+        "ended_at": "2026-09-08T18:22:46.162365+08:00"
+      }
+    ],
+    "ended_at": "2026-09-08T18:22:46.163312+08:00",
+    "cpu_sha256": "2641c95213e2a9fb20afeb4d14afc97ff967678c4d43e9c7248cec61c89f4302",
+    "free_bytes_after": 2648764416
+  },
+  "processes": {
+    "33657": false,
+    "33661": false,
+    "33899": false
+  },
+  "files": [
+    {
+      "name": "cpu.json",
+      "bytes": 990,
+      "sha256": "2641c95213e2a9fb20afeb4d14afc97ff967678c4d43e9c7248cec61c89f4302"
+    },
+    {
+      "name": "cpu.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "pipeline.json",
+      "bytes": 1903,
+      "sha256": "df353a3ab4616b40925af8b4e18bcf41207140d510d817b181dd761ce0240626"
+    },
+    {
+      "name": "probe/fold_0/distances.f32",
+      "bytes": 1084416,
+      "sha256": "fa96a1a5c78db4fd29a972c6f672771a239edec47068fd8ed5fb09a551e5425e"
+    },
+    {
+      "name": "probe/fold_0/receipt.json",
+      "bytes": 4465,
+      "sha256": "fdfad76fa6699d774b26e2e2b888c7dd3511f3accf33bbf6cadfe809ca26a0ad"
+    },
+    {
+      "name": "probe/fold_0/steps.jsonl",
+      "bytes": 72730,
+      "sha256": "46ac1d099711e87660e837676c84707c7d72763c8928667570bd0b5daa0d8028"
+    },
+    {
+      "name": "probe/fold_1/distances.f32",
+      "bytes": 1055744,
+      "sha256": "80bc39c10f6d3c6a8b4ea369d9e319387cba65043fd93e57c302192655ec666e"
+    },
+    {
+      "name": "probe/fold_1/receipt.json",
+      "bytes": 4290,
+      "sha256": "2ac197626d58ee8c23a45e07c2280c3a2054b94141f016e97da2d2a9c4f014d3"
+    },
+    {
+      "name": "probe/fold_1/steps.jsonl",
+      "bytes": 70705,
+      "sha256": "458cb9a64262de64b2f10d25faf9e060e7b3fcd39b90d91c36ea26cc09e2a818"
+    },
+    {
+      "name": "probe/fold_2/distances.f32",
+      "bytes": 1198080,
+      "sha256": "8c756360ed5ee92728b24f7c31bfdd9c70a747cf319f4e1b7d7ccdc42250129b"
+    },
+    {
+      "name": "probe/fold_2/receipt.json",
+      "bytes": 4601,
+      "sha256": "d2532f636f5388f2382ccdd0952e35b8b831d7647dbb9149c1f0a01abae6f0ee"
+    },
+    {
+      "name": "probe/fold_2/steps.jsonl",
+      "bytes": 81760,
+      "sha256": "dbccecf150dec815026abd151370511d37ed3641cf5e8676f0dbfa7df88d0d8e"
+    },
+    {
+      "name": "probe/summary.json",
+      "bytes": 60743,
+      "sha256": "ddc830548194c29f907e3d8a343c14239e8f8197979fd992a1dedd6c56058c3a"
+    },
+    {
+      "name": "probe.log",
+      "bytes": 3417,
+      "sha256": "e4521dc2940ae9d70337311f582db338f20680fb0b1edf673a21a5476cf8ee07"
+    }
+  ],
+  "free_bytes": 2648854528
+}

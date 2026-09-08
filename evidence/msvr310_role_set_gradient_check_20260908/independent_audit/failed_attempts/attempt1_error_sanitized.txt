@@ -1,0 +1,3 @@
+First transport attempt stopped before remote execution: AttributeError: '_io.StringIO' object has no attribute 'reconfigure'.
+Cause: private session recovery configures stdout encoding; io.StringIO used to suppress private helper output lacks reconfigure.
+Resolution: local private-output capture implements reconfigure as a no-op. No helper contents copied; no scientific artifacts modified; no training started.

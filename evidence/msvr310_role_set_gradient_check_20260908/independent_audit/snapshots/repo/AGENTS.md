@@ -1,12 +1,11 @@
 # TriFusion-ReID workspace
 
-## Latest verified state (2026-09-08T18:49:13.903396+08:00, role-set gradient check complete)
+## Latest verified state (2026-09-08T18:17:43.210366+08:00, role-set real-model gradient check registered)
 
-- Master41.172. Probe958fb21 complete at18:22:46, original33657/33661/33899 ended. CPU all24batches/834560elements PASS; independent audit WARN same-family/provisional. Never rerun math/probe/source census or sealed Q1.
-- Coverage limit: all-role bitwise checks only first non-enqueued current batch; historical replay checked fused. Full GPU gradient/RNG replay not independently reconstructed. Metric gradients changed in24/24 batches, not training/retrieval success;0optimizer/weights/heldout.
-- New train/check/verify/run_msvr_role_set.py drafts exist, AST only; NO registered training config, NO T0/M0/Q1 execution. Next finish fixed training contract/bindings and real T0/M0, then full paired six-end Q1. Both endpoints fresh full history gradients; only hardest vs role-set mean objective,13 other losses unchanged. Read TRAINING_IMPLEMENTATION_DRAFT.md.
-- Next new artifacts use existing /root/trifusion-storage/artifacts, independently measured11,129,192,448B free18:28:55; recheck before launch. Proposed3GiB output/4GiB free budget. Root data disk~2.5GiB. All necessary initialization/final/evidence weights retained.38 verified ancestor transport bundles deleted52,406,835B; no new weight deletion. Use screen -dmS, never restart on observer timeout.
-- Goal ACTIVE/UNMET, seed42 only, old gates/FAILs preserved, no official results changed. Preserve unrelated runner/.aris events. Full audit/probe evidence in evidence/msvr310_role_set_gradient_check_20260908.
+- Master41.171. CPU math54a7d5a completed PASS, original33264/33266 ended; never rerun. Receipt evidence/msvr310_role_set_math_20260908/math.json SHA167a8d8d873fc1d3ea4fb741266f22520b76121f43979545f3acac563940bd6e. Synthetic checks do not qualify training.
+- Next registered job configs/MSVR310/Role-set-gradient-check-v1.json, tools.run_msvr_role_set_gradients, GRADIENT_CHECK_PLAN.md. After sync run once under exact commit in a new artifact directory. Three fixed source initializations,8 batches each,0optimizer/weights/heldout. GPU gradient witnesses plus CPU replay of all recorded matrices; no full M0/Q1.
+- No current training. Expected5-15min, output<=50MiB; check GPU<500MiB and disk>=256MiB for this zero-weight probe. Preserve all source/initial/final dependencies. Follow specific job handles, do not relaunch on observation timeout.
+- Source role coverage complete/audited WARN, full54conditions/37152rows deterministic PASS. Historical-gradient Q1 still sealed FAIL0/5x2; no official result changes. Goal ACTIVE/UNMET, seed42 only; preserve unrelated runner/.aris events.
 
 ## Experiment environment
 

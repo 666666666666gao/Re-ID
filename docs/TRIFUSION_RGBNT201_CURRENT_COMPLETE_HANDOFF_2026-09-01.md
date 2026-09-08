@@ -2,7 +2,7 @@
 
 ## 0. 一页结论
 
-当前执行入口：§41.171；role-set CPU数学检查完成PASS，三折×8batch固定初始化真实梯度检查已登记，发布后执行。0训练更新/0新权重，完整M0/Q1尚未启动。旧失败封存，Goal ACTIVE/UNMET。
+当前执行入口：§41.172；role-set三折固定状态梯度检查/CPU复算完成，独立审计WARN，0优化器/新权重/heldout。新配对训练四个草案已写，仅AST验证，尚未登记/启动M0/Q1。下一步完成训练合同并真实执行；原失败不重跑，Goal ACTIVE/UNMET。
 
 当前用于已完成MSVR310比较及新登记RGBNT100比较的是原V8平行三角色结构：冻结Signal/CLIP，共享block8之前语义和tail9/10/11参数，三个角色分别运行共享tail；CNN处理局部语义Patch高频，Transformer处理全局CLS/Patch关系，Mamba处理空间与位置级三模态扫描。各角色相对冻结reference形成1536D残差，三角色4608D银行拼接3072D Signal得到7680D fused；完整单角色输出为4608D Signal+角色残差。三条路径均执行，当前没有Router/HFER、V23模态MLP或V24原型。两项车辆训练比较均已完成；RGBNT100内部完整比较支持三角色增益，MSVR310尚未超过Signal。下面V1—V8条目保留历史经过，不代表当前又启用了旧模块。
 
@@ -6055,3 +6055,16 @@ CPU合成检查tools/check_msvr_role_set_relations.py与wrapper/config/计划已
 下一登记configs/MSVR310/Role-set-gradient-check-v1.json、GRADIENT_CHECK_PLAN.md、probe/verify/run_msvr_role_set_gradients.py：三个原source-only初始化，每折首8个seed42 B64，合计24batch。固定训练模式但0optimizer；原hard与新均值目标均有完整历史导数，再重复新目标测计算差异，首历史组用完整图校验VJP。实际完整角色提议来自同次encoder/fusion，非fused槽位近似重构；保存全部四种距离矩阵/提议/角色统计，CPU全24batch复算。最终state恢复、无heldout/official前向、无新权重。不是全source普查、M0训练或检索结果，不据此自动启动Q1。
 
 新增输出预算50MiB、最低空闲256MiB，仅适用于本零权重探针；长训练预算另核，不改旧3GiB训练合同。环境沿用已核验tri_reid，无安装/重建。预计5–15分钟，screen持久、按180–300秒或完成里程碑观察。发布同步后启动，此刻尚未执行。Goal ACTIVE/UNMET、seed42 only。
+
+
+### 41.172 role-set固定状态检查封存与新训练实施准备（2026-09-08T18:49:13.903396+08:00）
+
+执行958fb215fb5bd0c5412b1eaa9de96124e279d37f，配置c5b0b772b729b062976f225bad4daa06b0dd4a3ca41dc2df4f629a169de1d3ee。18:22:46 GPU/CPU退出0；18:25:53原wrapper33657、GPU33661、CPU33899均结束。三折各8batch，合计24/1536当前视图曝光，0optimizer/0权重/0heldout/official；三折state首尾完全相同。每个角色24/24批、含历史15/15批的新目标导数变化超过同图重复反传噪声；额外active负关系1271次（曝光含重复）。首个历史组完整图/VJP最大相对误差1.2736390029790958e-9。CPU全部834560距离元素重算，最大loss误差2.9802322387695312e-8。峰值allocated11355.1772MiB，产物3643844B。不是M0或检索晋级。
+
+独立审计WARN，same-family/provisional；完整报告refine-logs/msvr310_role_set_v1/EXPERIMENT_AUDIT_GRADIENT.md/.json，结果results/MSVR310_ROLE_SET_GRADIENT_CHECK_2026-09-08.md，完整证据evidence/msvr310_role_set_gradient_check_20260908。审计指出：全部角色逐位比较只在未入队的首batch，历史组仅核fused；原绑定计划全历史角色措辞未被完全覆盖，已作为限制披露，不能修改执行记录或冒充已完成。没有独立GPU全梯度重演；同图反传噪声不代表随机前向噪声。旧probe不重跑。
+
+已完成新tools/train_msvr_role_set.py、check_msvr_role_set.py、verify_msvr_role_set.py、run_msvr_role_set.py草案：两端均fresh历史完整导数，control原hardest，candidate角色提议去重均值；实际三角色输出发现候选，优化仍在fused；其他13项loss和原网络/seed42/初始化/采样不变。增加首历史组实际四输出重编码及总损失直接图检查路径。仅本地AST通过，未注册训练config、未真实导入/T0/M0/Q1；本次审计不覆盖新草案。下一工作应检查草案、固定训练合同/哈希/预算、发布并实际执行M0及完整六端Q1，而非重复来源诊断。见TRAINING_IMPLEMENTATION_DRAFT.md。
+
+18:28:55 /root/trifusion-storage独立文件系统空闲11129192448B，主盘2648854528B。拟用已有备用目录保存下一新artifact，保留所有旧路径/权重；预算草案最大新增3GiB、最低空闲4GiB，启动前重查，不降低旧训练合同。18:34:54清理38个已导入transport bundle，每个引用为HEAD祖先且哈希复核，共52406835B，主盘空闲2701295616B；0权重删除，旧释放量不重复统计。逐项收据在本次evidence，下一同步会新增小传输包。
+
+本地launch由于screen -D -m阻塞及SSH读超时未获得函数末尾回执；远端已正常独立完成，另读pipeline/原PID/退出码验证，未重启。后续使用screen -dmS真实脱离并持久日志。历史反传Q1仍封存FAIL0/5两组，正式成绩无变化。Goal ACTIVE/UNMET；seed42 only、先主结果后消融、完整图库/全路径身份隔离/scene协议保持。
