@@ -1,12 +1,12 @@
 # MSVR310 Smooth-AP v1 完整Q1：执行器核验与来源分析
 
-2026-09-09。科学状态Q1_FAIL；完整独立审计进行中，本报告不是独立审计结论。仅seed42、来源身份隔离内部Q1，非官方测试；三数据集总目标未完成。
+2026-09-09。科学状态Q1_FAIL；独立审计已闭环WARN/确定性PASS，原文另见EXPERIMENT_AUDIT_Q1；本报告为执行器分析。仅seed42、来源身份隔离内部Q1，非官方测试；三数据集总目标未完成。
 
 ## 固定运行与证据
 
 原run /root/trifusion-storage/artifacts/msvr310_smooth_ap_v1_seed42_2e947a4；执行代码2e947a4325144e37fed638105ac954e7e54b5fe5，配置SHA974328fee25985b19aa36c84f57a557f9120993fecb98b2a902a1b8de8475302。Q1原49157于03:26:23退出0，Q1_CPU58836于03:26:44退出0，wrapper48170结束；全部五阶段exit0。6端各20epoch/260更新，总1560。完整文本57份83471329B逐字节/SHA接收，证据evidence/smooth_ap_q1_complete_20260909。summary SHA6502d1bfa1108bffb91dea1a663cdbdfb60975091dd35dfd4223ee45c0d7d32f；CPU SHA2c797e9f50671b761e6d43d73da9306812bd9e37fa9e977a999906a0e051c9cd。
 
-运行期间文档提交推进，summary.project_commit记录3fe8e9c，不能将它替代pipeline.code_commit；实际源码以逐文件SHA绑定核查。当前独立审计将继续核对这一边界。
+运行期间文档提交推进，summary.project_commit记录3fe8e9c，不能将它替代pipeline.code_commit；实际源码以逐文件SHA绑定核查。独立审计已按实际源码哈希核对这一边界。
 
 两端均fresh历史坐标+历史候选VJP；64当前anchor、无历史anchor。候选仅在预热后替换fused hard Triplet为标准Smooth-AP tau0.01，其他13项监督、数据/初始化/预算/推理结构与原门不变。GPU模型/原图/数组仍留远端，未读官方测试。
 
@@ -44,4 +44,11 @@
 
 ## 下一步边界
 
-标准Smooth-AP已有完整结果，不能再作为尚未尝试的建议。它补上了大部分非最远正例直接监督并有正均值，但未稳定超过匹配控制/Signal。先完成独立终态审计，结合来源证据决定唯一后继；协议感知跨scene正例覆盖仍是候选，当前没有登记训练或改变空集合/归一化。已核实后继假设存在4个无跨scene正例batch及仅约41.07%合法anchor，不能将过滤和loss尺度改变混淆。只seed42，主结果前不做消融，不消费官方成绩调参。
+标准Smooth-AP已有完整结果，不能再作为尚未尝试的建议。它补上了大部分非最远正例直接监督并有正均值，但未稳定超过匹配控制/Signal。独立终态审计已闭环；结合来源证据决定唯一后继；协议感知跨scene正例覆盖仍是候选，当前没有登记训练或改变空集合/归一化。已核实后继假设存在4个无跨scene正例batch及仅约41.07%合法anchor，不能将过滤和loss尺度改变混淆。只seed42，主结果前不做消融，不消费官方成绩调参。
+
+
+## 独立审计闭环与数值限定
+
+独立Q1报告refine-logs/msvr310_smooth_ap_v1/EXPERIMENT_AUDIT_Q1.md/.json：总体WARN、确定性核验PASS、科学Q1_FAIL；same-family/provisional。完整排名、已保存距离级目标/导数、源路径隔离、状态张量和日志一致性通过。未独立从图片重建模型features或全程历史参数梯度，这些限制不以距离级导数核对替代。
+
+末段全正例Float32的86990正/7882负属于该dtype实际统计；Float64解析结果94866正/6负。容易正例的极小导数受抵消及精度影响，不能将7882负号均解释为有害更新。严格反序非最远正例974中的973/1及跨scene780/1在两种精度一致。独立统计及完整失败尝试见evidence/smooth_ap_q1_audit_20260909。下一来源诊断尚为草案，没有新训练或官方结果。
