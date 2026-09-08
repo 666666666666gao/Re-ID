@@ -37,3 +37,6 @@
 本地接收脚本receive_role_set_q1_terminal_20260908.py已完成本地和嵌入远端代码的AST语法检查，尚未对Q1终态运行。它要求原pipeline完整结束、原PID退出、五阶段退出0、CPU及summary哈希匹配后才接收全部json/jsonl/log，并逐文件核对字节及SHA。模型权重、原图和距离/检索二进制留远端。
 
 该脚本只支持本次既定成功执行完毕的终态收据，包括科学Q1_PASS或Q1_FAIL；若实际pipeline工程阶段停止，应先读取对应失败日志和原PID状态，不能伪造终态、绕过检查或重启原任务。完整接收后再调用experiment-audit规定的fresh-context reviewer；当前未启动该终态审计。
+
+
+补充：终态来源分析脚本analyze_role_set_q1_terminal_20260908.py已准备，只完成AST检查，未对未结束的Q1运行。完整终态接收后，对六端各260步核对记录/像素配对，分别统计不同位置、不同record和不同负身份的提议曝光，以及预热65步、预热后195步、最后五epoch的共同损失与计算成本。只描述已有日志，不增加晋级门；额外激活hinge总数不能唯一归因于角色，位置/身份独有提议也不是独有泛化能力证明。脚本位于evidence/msvr310_role_set_run_observation_41_176_20260908/，应在终态真实数据上执行后再报告统计值。
