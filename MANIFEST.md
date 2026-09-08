@@ -1467,3 +1467,5 @@
 - 2026-09-08T18:56:51.526517+08:00: registered role-set full paired T0/M0/Q1 on existing secondary remote storage; single relation objective, full historical derivatives in both endpoints. No run yet. Master41.173.
 
 - 2026-09-08T19:01:50.942280+08:00: role-set actual RUNNING/m0 on original26c9739 persistent run; receipts/PIDs archived. Master41.174.
+
+- 2026-09-08T19:10:08.941002+08:00: role-set actual RUNNING/q1 on original26c9739 persistent run; receipts/PIDs archived. Master41.175.

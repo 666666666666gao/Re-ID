@@ -1,0 +1,90 @@
+{
+  "status": "RUNNING",
+  "wrapper_pid": 35302,
+  "code_commit": "26c97390704c629237687d263b4381f5584cbe97",
+  "config_sha256": "5e5ad4663f4c3c58e11b81b475048d6ab6c53675ac2dd0ade60c84f07a62986d",
+  "started_at": "2026-09-08T18:58:24.298476+08:00",
+  "stages": [
+    {
+      "stage": "t0",
+      "original_pid": 35308,
+      "command": [
+        "/root/miniconda3/envs/tri_reid/bin/python",
+        "-u",
+        "-m",
+        "tools.check_msvr_role_set",
+        "--config",
+        "/root/autodl-tmp/trifusion-v2/TriFusion-ReID/configs/MSVR310/TriFusion-role-set-paired-v1.json",
+        "--output",
+        "/root/trifusion-storage/artifacts/msvr310_role_set_v1_seed42_26c9739/t0.json"
+      ],
+      "started_at": "2026-09-08T18:58:24.299496+08:00",
+      "exit_code": 0,
+      "ended_at": "2026-09-08T18:58:29.185944+08:00",
+      "elapsed_seconds": 4.887232994660735
+    },
+    {
+      "stage": "m0",
+      "original_pid": 35385,
+      "command": [
+        "/root/miniconda3/envs/tri_reid/bin/python",
+        "-u",
+        "-m",
+        "tools.train_msvr_role_set",
+        "--config",
+        "/root/autodl-tmp/trifusion-v2/TriFusion-ReID/configs/MSVR310/TriFusion-role-set-paired-v1.json",
+        "--mode",
+        "m0",
+        "--output-dir",
+        "/root/trifusion-storage/artifacts/msvr310_role_set_v1_seed42_26c9739/m0"
+      ],
+      "started_at": "2026-09-08T18:58:29.187434+08:00",
+      "exit_code": 0,
+      "ended_at": "2026-09-08T19:08:43.970800+08:00",
+      "elapsed_seconds": 614.7843318302184
+    },
+    {
+      "stage": "m0_cpu",
+      "original_pid": 36247,
+      "command": [
+        "/root/miniconda3/envs/tri_reid/bin/python",
+        "-u",
+        "-m",
+        "tools.verify_msvr_role_set",
+        "--config",
+        "/root/autodl-tmp/trifusion-v2/TriFusion-ReID/configs/MSVR310/TriFusion-role-set-paired-v1.json",
+        "--run-dir",
+        "/root/trifusion-storage/artifacts/msvr310_role_set_v1_seed42_26c9739/m0",
+        "--output",
+        "/root/trifusion-storage/artifacts/msvr310_role_set_v1_seed42_26c9739/m0_cpu.json"
+      ],
+      "started_at": "2026-09-08T19:08:43.972702+08:00",
+      "exit_code": 0,
+      "ended_at": "2026-09-08T19:08:52.368433+08:00",
+      "elapsed_seconds": 8.396760828793049
+    },
+    {
+      "stage": "q1",
+      "original_pid": 36320,
+      "command": [
+        "/root/miniconda3/envs/tri_reid/bin/python",
+        "-u",
+        "-m",
+        "tools.train_msvr_role_set",
+        "--config",
+        "/root/autodl-tmp/trifusion-v2/TriFusion-ReID/configs/MSVR310/TriFusion-role-set-paired-v1.json",
+        "--mode",
+        "q1",
+        "--output-dir",
+        "/root/trifusion-storage/artifacts/msvr310_role_set_v1_seed42_26c9739/q1",
+        "--m0-receipt",
+        "/root/trifusion-storage/artifacts/msvr310_role_set_v1_seed42_26c9739/m0/summary.json",
+        "--m0-verification",
+        "/root/trifusion-storage/artifacts/msvr310_role_set_v1_seed42_26c9739/m0_cpu.json"
+      ],
+      "started_at": "2026-09-08T19:08:52.370656+08:00"
+    }
+  ],
+  "free_bytes_before": 11129188352,
+  "gpu_before": "0, 1, 24576\n"
+}

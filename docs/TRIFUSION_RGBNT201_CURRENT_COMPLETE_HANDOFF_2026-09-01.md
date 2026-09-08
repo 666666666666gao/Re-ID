@@ -2,7 +2,7 @@
 
 ## 0. 一页结论
 
-当前执行入口：§41.174；role-set配对训练已于18:58:24启动，2026-09-08T19:01:50.942280+08:00实查RUNNING/m0。跟踪/root/trifusion-storage/artifacts/msvr310_role_set_v1_seed42_26c9739的原pipeline/PID，不重复启动。旧失败封存，Goal ACTIVE/UNMET。
+当前执行入口：§41.175；role-set配对训练已于18:58:24启动，2026-09-08T19:10:08.941002+08:00实查RUNNING/q1。跟踪/root/trifusion-storage/artifacts/msvr310_role_set_v1_seed42_26c9739的原pipeline/PID，不重复启动。旧失败封存，Goal ACTIVE/UNMET。
 
 当前用于已完成MSVR310比较及新登记RGBNT100比较的是原V8平行三角色结构：冻结Signal/CLIP，共享block8之前语义和tail9/10/11参数，三个角色分别运行共享tail；CNN处理局部语义Patch高频，Transformer处理全局CLS/Patch关系，Mamba处理空间与位置级三模态扫描。各角色相对冻结reference形成1536D残差，三角色4608D银行拼接3072D Signal得到7680D fused；完整单角色输出为4608D Signal+角色残差。三条路径均执行，当前没有Router/HFER、V23模态MLP或V24原型。两项车辆训练比较均已完成；RGBNT100内部完整比较支持三角色增益，MSVR310尚未超过Signal。下面V1—V8条目保留历史经过，不代表当前又启用了旧模块。
 
@@ -6088,3 +6088,29 @@ T0完整780来源batch队列与新旧合成数学；M0三折两端各8步与两�
 阶段收据摘要（未完成端不补成绩）：{"m0": {"status": "RUNNING", "folds": [{"fold": 0, "endpoints": {"control": {"steps": 8, "checks": {"all_trainable_gradients_live": true, "overflow_zero": true, "frozen_state_unchanged": true, "signal_state_unchanged": true, "role_state_updated": true, "capacity_below_24gib": true, "fixed_training_length": true}, "checkpoint": "/root/trifusion-storage/artifacts/msvr310_role_set_v1_seed42_26c9739/m0/fold_0_control/roles_m0.pth"}, "role_set": {"steps": 8, "checks": {"all_trainable_gradients_live": true, "overflow_zero": true, "frozen_state_unchanged": true, "signal_state_unchanged": true, "role_state_updated": true, "capacity_below_24gib": true, "fixed_training_length": true}, "checkpoint": "/root/trifusion-storage/artifacts/msvr310_role_set_v1_seed42_26c9739/m0/fold_0_role_set/roles_m0.pth"}}}, {"fold": 1, "endpoints": {"control": {"steps": 8, "checks": {"all_trainable_gradients_live": true, "overflow_zero": true, "frozen_state_unchanged": true, "signal_state_unchanged": true, "role_state_updated": true, "capacity_below_24gib": true, "fixed_training_length": true}, "checkpoint": "/root/trifusion-storage/artifacts/msvr310_role_set_v1_seed42_26c9739/m0/fold_1_control/roles_m0.pth"}}}], "overfit": {}}}
 
 原始pipeline/日志尾/进程观察和首次启动证据完整保存在evidence/msvr310_role_set_run_observation_41_174_20260908。科学代码/固定合同见§41.173，不因本文档提交改变。通过M0_CPU才继续既定六端Q1，任何失败以原日志核验，不根据局部端更改方法、不因SSH观察超时重启。正式成绩未更新，Goal仍ACTIVE/UNMET。
+
+
+### 41.175 role-set持久训练实际观察（2026-09-08T19:10:08.941002+08:00）
+
+执行提交26c97390704c629237687d263b4381f5584cbe97，配置SHA5e5ad4663f4c3c58e11b81b475048d6ab6c53675ac2dd0ade60c84f07a62986d；18:58:24 screen tri_role_set_26c9739真实启动，输出/root/trifusion-storage/artifacts/msvr310_role_set_v1_seed42_26c9739。此次实查pipeline=RUNNING、阶段=q1，原PID存在性={'35302': True, '35308': False, '35385': False, '36247': False, '36320': True}。GPU=6398, 24576MiB，输出盘空闲10903097344B。
+
+阶段收据摘要（未完成端不补成绩）：{"m0": {"status": "PASS_ENGINEERING_ONLY", "folds": [{"fold": 0, "endpoints": {"control": {"steps": 8, "checks": {"all_trainable_gradients_live": true, "overflow_zero": true, "frozen_state_unchanged": true, "signal_state_unchanged": true, "role_state_updated": true, "capacity_below_24gib": true, "fixed_training_length": true}, "checkpoint": "/root/trifusion-storage/artifacts/msvr310_role_set_v1_seed42_26c9739/m0/fold_0_control/roles_m0.pth"}, "role_set": {"steps": 8, "checks": {"all_trainable_gradients_live": true, "overflow_zero": true, "frozen_state_unchanged": true, "signal_state_unchanged": true, "role_state_updated": true, "capacity_below_24gib": true, "fixed_training_length": true}, "checkpoint": "/root/trifusion-storage/artifacts/msvr310_role_set_v1_seed42_26c9739/m0/fold_0_role_set/roles_m0.pth"}}}, {"fold": 1, "endpoints": {"control": {"steps": 8, "checks": {"all_trainable_gradients_live": true, "overflow_zero": true, "frozen_state_unchanged": true, "signal_state_unchanged": true, "role_state_updated": true, "capacity_below_24gib": true, "fixed_training_length": true}, "checkpoint": "/root/trifusion-storage/artifacts/msvr310_role_set_v1_seed42_26c9739/m0/fold_1_control/roles_m0.pth"}, "role_set": {"steps": 8, "checks": {"all_trainable_gradients_live": true, "overflow_zero": true, "frozen_state_unchanged": true, "signal_state_unchanged": true, "role_state_updated": true, "capacity_below_24gib": true, "fixed_training_length": true}, "checkpoint": "/root/trifusion-storage/artifacts/msvr310_role_set_v1_seed42_26c9739/m0/fold_1_role_set/roles_m0.pth"}}}, {"fold": 2, "endpoints": {"control": {"steps": 8, "checks": {"all_trainable_gradients_live": true, "overflow_zero": true, "frozen_state_unchanged": true, "signal_state_unchanged": true, "role_state_updated": true, "capacity_below_24gib": true, "fixed_training_length": true}, "checkpoint": "/root/trifusion-storage/artifacts/msvr310_role_set_v1_seed42_26c9739/m0/fold_2_control/roles_m0.pth"}, "role_set": {"steps": 8, "checks": {"all_trainable_gradients_live": true, "overflow_zero": true, "frozen_state_unchanged": true, "signal_state_unchanged": true, "role_state_updated": true, "capacity_below_24gib": true, "fixed_training_length": true}, "checkpoint": "/root/trifusion-storage/artifacts/msvr310_role_set_v1_seed42_26c9739/m0/fold_2_role_set/roles_m0.pth"}}}], "overfit": {"control": {"steps": 100, "checks": {"all_trainable_gradients_live": true, "overflow_zero": true, "frozen_state_unchanged": true, "signal_state_unchanged": true, "role_state_updated": true, "capacity_below_24gib": true, "fixed_100_steps": true, "original_overfit_gate": true}}, "role_set": {"steps": 100, "checks": {"all_trainable_gradients_live": true, "overflow_zero": true, "frozen_state_unchanged": true, "signal_state_unchanged": true, "role_state_updated": true, "capacity_below_24gib": true, "fixed_100_steps": true, "original_overfit_gate": true}}}}, "q1": {"status": "RUNNING", "folds": [], "overfit": {}}}
+
+原始pipeline/日志尾/进程观察和首次启动证据完整保存在evidence/msvr310_role_set_run_observation_41_175_20260908。科学代码/固定合同见§41.173，不因本文档提交改变。通过M0_CPU才继续既定六端Q1，任何失败以原日志核验，不根据局部端更改方法、不因SSH观察超时重启。正式成绩未更新，Goal仍ACTIVE/UNMET。
+
+
+#### §41.175 完整M0证据补充
+
+- 三折两端各8步，另两端固定batch各100步，合计248次实际更新。六容量端203/203训练张量累计收到非零梯度，AMP溢出为0，冻结状态不变，六checkpoint严格重载的全部检索输出逐位相同；不是每步全部参数都非零。
+- 原loss-floor校正的过拟合末首比：control=0.0007014160404，role_set=0.000701652003861，均小于既定0.1。
+- 六容量端首个历史组实际四输出逐位一致；原总目标直接完整图导数与当前导数+历史VJP最大相对L2误差1.68104999803e-05，小于既定0.005。检查域为189个encoder张量，不能与203个全部训练张量混写；此直接比较仅覆盖每端首个历史组。
+- CPU复算4,945,920个保存距离元素、完整248步关系/mask/队列/损失账本和终点；核验历史VJP记录前向计数5,760。CPU本身未重新生成每步模型梯度或其他13项模型前向；运行见证与独立重算范围区分保留。
+- 六容量端峰值allocated显存最高11266.819336MiB。19:10:08输出盘余量10,903,097,344B，约10.154GiB；新训练仅保存必要M0/固定终点权重，既定最大新增3GiB预算。
+
+## 证据与边界
+
+完整29份远端文本合计5,717,997B已按字节SHA接收，见evidence/msvr310_role_set_m0_complete_20260908/intake_manifest.json；六权重与距离二进制留远端，原CPU收据列明哈希。summary SHA256=203f2e572d40e00d0d41842289746ad2c077d8d7e97ada5fe237214f1b161a38。本地附加六端直接导数汇总direct_group_checks.json只汇总原日志。
+
+此处PASS仅为工程；没有新的Q1科学结论或正式测试成绩。完整Q1三折两端、每端20epoch/260步，合计1560更新；预计19:08:52起3–5小时，不能用预热期速度线性推算全程。保持seed42、完整图库/scene规则、两组五项门槛。完成后完整CPU与独立上下文审计，不按中途fold调整方法。
+
+候选同时增加负关系覆盖并软化最极端hinge权重；将来若提升，不能独归因于角色异构。两端均使用新鲜坐标和完整历史侧梯度，推理架构和13项其他损失不变。全项目三数据集Goal仍ACTIVE/UNMET。

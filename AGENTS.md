@@ -1,11 +1,11 @@
 # TriFusion-ReID workspace
 
-## Latest verified state (2026-09-08T19:01:50.942280+08:00, role-set paired training observation)
+## Latest verified state (2026-09-08T19:10:08.941002+08:00, role-set paired training observation)
 
-- Master41.174. Actual execution26c9739 launched18:58:24, screen tri_role_set_26c9739; /root/trifusion-storage/artifacts/msvr310_role_set_v1_seed42_26c9739. Current pipeline=RUNNING, last stage=m0; original PID existence {'35302': True, '35308': False, '35385': True}. Follow these original handles, never relaunch on observer timeout.
-- Config configs/MSVR310/TriFusion-role-set-paired-v1.json SHA5e5ad4663f4c3c58e11b81b475048d6ab6c53675ac2dd0ade60c84f07a62986d, fixed T0/M0/CPU/Q1/CPU. Scientific source and contract unchanged; documentation HEAD may advance. Full status in evidence/msvr310_role_set_run_observation_41_174_20260908/observation.json.
+- Master41.175. Actual execution26c9739 launched18:58:24, screen tri_role_set_26c9739; /root/trifusion-storage/artifacts/msvr310_role_set_v1_seed42_26c9739. Current pipeline=RUNNING, last stage=q1; original PID existence {'35302': True, '35308': False, '35385': False, '36247': False, '36320': True}. Follow these original handles, never relaunch on observer timeout.
+- Config configs/MSVR310/TriFusion-role-set-paired-v1.json SHA5e5ad4663f4c3c58e11b81b475048d6ab6c53675ac2dd0ade60c84f07a62986d, fixed T0/M0/CPU/Q1/CPU. Scientific source and contract unchanged; documentation HEAD may advance. Full status in evidence/msvr310_role_set_run_observation_41_175_20260908/observation.json.
 - Both endpoints full fresh historical derivatives; only hardest vs role-set mean loss. Original13otherlosses/seed42/initialization/20epoch/scene rules/gates unchanged. Do not assume M0/Q1 passed without completed receipt; no official result change.
-- Output disk free11023376384B, GPU 12448, 24576MiB. M0 estimate8–20min from startup; Q13–5h after M0_CPU. Observe180–300s or near expected milestones, maintain logs, no old diagnostics reruns.
+- Output disk free10903097344B, GPU 6398, 24576MiB. M0 estimate8–20min from startup; Q13–5h after M0_CPU. Observe180–300s or near expected milestones, maintain logs, no old diagnostics reruns.
 - Goal ACTIVE/UNMET. Preserve necessary initial/final/evidence weights, unrelated local runner/.aris changes; main/remote/Desktop handoff synchronized with this publication.
 
 ## Experiment environment
