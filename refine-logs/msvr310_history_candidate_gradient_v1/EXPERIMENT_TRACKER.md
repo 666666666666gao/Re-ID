@@ -12,7 +12,7 @@
 
 No optimizer updates, heldout or official image forwards. Fixed seed42. See sealed plan and complete-preflight report. No new training/Q1 registered. The source stage is a fixed-state measurement, not the original optimizer trajectory. Keep all raw artifacts and prior failure gates.
 
-Latest observation: 2026-09-08T07:36:42.976107+08:00; original3302/3799 live, fold0 all3states complete260batches each, fold1initial5/20epoch. Free4043554816B; full9states/sourceCPU still pending. No new hypothesis or training, master41.154.
+Latest observation: 2026-09-08T09:47:15.629034+08:00; original3302/3799 live, folds0/1 all6states complete260batches each, fold2initial6/20epoch. Free3964370944B; full9states/sourceCPU pending. No new hypothesis or training, master41.154.
 
 Historical observations:
 
@@ -27,3 +27,5 @@ Historical observations:
 2026-09-08T06:45:24.787037+08:00: Full-terminal plot entry verified on complete shortpreflight108cells/540values; source path not executed. Original2340batchrun unchanged, fullCPU/13-statistics/audit pending. Master41.154, Goal ACTIVE/UNMET.
 
 2026-09-08T07:36:42.976107+08:00: Verified wait at five-minute intervals reached firstfold complete:3/9states,780state-terminal batches; source continues. Fullsource/CPU and complete analysis remain pending.
+
+2026-09-08T09:47:15.629034+08:00: Five-minute verified waits reached two complete folds:6/9states,1560state-terminal batches; originalsource continuesfold2. Complete-source CPU and analysis still pending.
