@@ -1439,3 +1439,5 @@
 - 2026-09-08T13:14:48.773182+08:00: Complete historical-gradient M0/CPU PASS, full27 text receipts and analysis; Q1 originalPID20941 live, no retrieval terminal. Master41.159.
 
 - 2026-09-08T13:24:23.296169+08:00: Q1 original process live, first129/260; new read-only training text analysis verified on fullM0, terminal-only Q1 intake prepared. Master41.160.
+
+- 2026-09-08T13:48:44.327459+08:00: First Q1 control endpoint complete260steps with checked checkpoint/ranking hashes; original process candidate update81. No full paired terminal; master41.161.

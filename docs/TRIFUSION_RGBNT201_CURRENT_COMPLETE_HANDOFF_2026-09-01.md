@@ -2,7 +2,7 @@
 
 ## 0. 一页结论
 
-当前执行入口：§41.160；历史候选反传V1 Q1原PID20941继续，13:22首端129/260步；完整M0/CPU已通过，新增只读汇总经全部M0实跑，Q1尚无终态。Goal ACTIVE/UNMET。
+当前执行入口：§41.161；历史候选反传V1 Q1首个控制端260步/固定checkpoint/检索文件完成，fold0候选端已更新81步，原PID20941持续。尚无完整配对终态，Goal ACTIVE/UNMET。
 
 当前用于已完成MSVR310比较及新登记RGBNT100比较的是原V8平行三角色结构：冻结Signal/CLIP，共享block8之前语义和tail9/10/11参数，三个角色分别运行共享tail；CNN处理局部语义Patch高频，Transformer处理全局CLS/Patch关系，Mamba处理空间与位置级三模态扫描。各角色相对冻结reference形成1536D残差，三角色4608D银行拼接3072D Signal得到7680D fused；完整单角色输出为4608D Signal+角色残差。三条路径均执行，当前没有Router/HFER、V23模态MLP或V24原型。两项车辆训练比较均已完成；RGBNT100内部完整比较支持三角色增益，MSVR310尚未超过Signal。下面V1—V8条目保留历史经过，不代表当前又启用了旧模块。
 
@@ -5956,3 +5956,12 @@ M0于13:10:03.589918写入PASS_ENGINEERING_ONLY、13:10:04原PID19991 exit0；CP
 新增只读tools/analyze_msvr_history_gradient_training.py，用完整M0的248步真实文本运行通过且pyflakes exit0，记录每端/epoch的14项loss、历史覆盖、同角色G与gV/实际应用梯度及真实前向开销。配对初始化、样本、像素、历史元数据和新鲜前向计数相同；VJP选中组数不预设相同。梯度仍是运行时摘要，G限同角色encoder的14任务梯度，不是整个模型；所有计数为重复曝光，不是独立关系或heldout错误。证据evidence/msvr310_history_gradient_training_analysis_readiness_20260908。
 
 完整Q1接收脚本已静态检查，必须等待pipeline完整五阶段exit0、1560更新及CPU终态后才接收29份文本，矩阵/权重留远端；尚未执行Q1接收或汇总。新增分析代码不在训练调用路径，不改a1b4777绑定文件/环境/模型/目标/门槛。后续先取得完整六端和CPU，再汇总并独立审计。无新删除，旧失败保持，Goal ACTIVE/UNMET。
+
+
+### 41.161 历史反传Q1首控制端完整保存、候选端衔接（2026-09-08T13:48:44.327459+08:00）
+
+2026-09-08T13:48:24.488240+08:00实查：原wrapper19977/Q1 PID20941均在。fold0 control已完成20epoch/260更新（训练循环2037.971674秒）、原工程条件通过、203/203非零梯度、0overflow。固定roles_epoch20.pth 32735974B实际SHA与receipt一致：524c925ed4f953a673d510fe8e933cfaf89b11ab77ac9c7a3f9f5937f6aa87b5；rankings.json SHA与检索receipt一致：b8e913ef0ecc8bc6933970845cc558a29c82c57178aa2b61045da8c4c3cafb2e。完整五输出记录覆盖210合法query和360全图库记录。以上为单端文件及运行时记录核验，完整六端CPU尚未运行，不当作全局科学结果。
+
+候选fold0 history_gradient已实际写出81步，保持原进程/合同/初始化规则继续；不依据首端或部分fold选择配置。首端额外新鲜角色记录前向97600、历史VJP记录前向87232、峰值分配6112.6787MiB，实际训练开销单列。独立训练完整比较与五门仍待其余五端和CPU终态。证据evidence/msvr310_history_gradient_first_training_endpoint_20260908，未输出或利用中间检索分数调参。
+
+当前可用3504787456B，无新增删除。执行a1b4777不变；后续仅观察当前候选端至固定终点并继续两折。Goal ACTIVE/UNMET；旧失败及已消费官方边界保持。

@@ -18,3 +18,5 @@
 2026-09-08T13:14:48.773182+08:00: 完整M0 248步及CPU PASS，summary 31156ee9dbcc195934f7b41427e316b0c190fae8c25d44e73b8bf0ee031f4bc8，CPU 3fbd9fe97bf49a99ec4e33cfc44bd305510e26561c8ca5b882dae4d1dc974bab。原wrapper自动Q1 PID20941，13:12首端72/260。报告results/MSVR310_HISTORY_GRADIENT_V1_M0_2026-09-08.md；无新检索终态。
 
 2026-09-08T13:24:23.296169+08:00: 13:22原Q1 PID20941存活，首端129/260。新增只读训练文本汇总经全部248步M0运行通过；Q1接收/汇总尚未运行。Master41.160，训练合同不变。
+
+2026-09-08T13:48:44.327459+08:00: 首fold0 control260步、固定checkpoint与排名文件SHA核验通过；同原PID候选端已有81步。首端不是完整配对结论；继续剩余五端/CPU。Master41.161。
