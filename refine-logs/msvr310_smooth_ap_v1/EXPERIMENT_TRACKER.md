@@ -1,6 +1,6 @@
 # MSVR310 Smooth-AP v1
 
-当前执行入口：§41.192；Smooth-AP M0独立审计已关闭WARN/确定性PASS，原Q1继续。09-09 00:29原wrapper48170/Q1 49157存活，fold0control固定260步完成，smooth_ap5/20epoch；1/6端完成，无完整检索终态。下一观察约00:40确认候选端后预热耗时。Goal ACTIVE/UNMET。
+当前执行入口：§41.192；M0独立审计已关闭WARN/确定性PASS；09-09 00:40原wrapper48170/Q1 49157存活，1/6端完成，fold0 smooth_ap10/20epoch。候选后预热约143秒/epoch，下一训练观察约01:05。完整Q1/CPU终态未结束，Goal ACTIVE/UNMET。
 
 独立M0审计已完成：总体WARN，工程PASS_WITH_LIMITS，deterministic_checks_status=pass；gpt-6-astra/max新上下文，同模型家族/provisional。178项递归哈希匹配，1032来源triplet/3096模态路径/155身份、全部780batch sampler与真实队列重建通过；248更新、15872anchor AP、4945920四空间距离均独立核验。逐anchor AP最大误差2.3559432371644817e-7；每目标每dtype1236480距离位置，Smooth-AP解析导数对部署实现最大差Float64=3.122502256758253e-17、Float32=1.7623613799214177e-8，hard导数精确一致；14项总和最大误差5.62518835067749e-7。六个checkpoint各472张量完整/冻结状态及三源初始化绑定重建匹配。
 

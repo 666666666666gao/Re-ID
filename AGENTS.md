@@ -2,7 +2,7 @@
 
 ## Latest verified state (2026-09-09 Smooth-AP M0 audit closed)
 
-- 当前执行入口：§41.192；Smooth-AP M0独立审计已关闭WARN/确定性PASS，原Q1继续。09-09 00:29原wrapper48170/Q1 49157存活，fold0control固定260步完成，smooth_ap5/20epoch；1/6端完成，无完整检索终态。下一观察约00:40确认候选端后预热耗时。Goal ACTIVE/UNMET。
+- 当前执行入口：§41.192；M0独立审计已关闭WARN/确定性PASS；09-09 00:40原wrapper48170/Q1 49157存活，1/6端完成，fold0 smooth_ap10/20epoch。候选后预热约143秒/epoch，下一训练观察约01:05。完整Q1/CPU终态未结束，Goal ACTIVE/UNMET。
 - Read refine-logs/msvr310_smooth_ap_v1/EXPERIMENT_AUDIT_M0.md/.json and evidence/smooth_ap_m0_audit_20260909. Same-family/provisional, reconstruction limits retained. No new model/GPU replay, no change request. Do not repeat M0 or its audit.
 - Run /root/trifusion-storage/artifacts/msvr310_smooth_ap_v1_seed42_2e947a4, screen tri_smooth_ap_2e947a4. Original execution2e947a4 and pinnedconfig unchanged; do not relaunch on timeout. Two five-gate groups fixed.
 - Terminal intake/analyzer/ranking steps are in evidence/smooth_ap_terminal_analysis_preparation_20260909/smooth_ap_terminal_execution_ready_20260909.md, not executed on partial Q1. Complete Q1 and independent terminal review pending.

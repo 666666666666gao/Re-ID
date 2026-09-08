@@ -2,7 +2,7 @@
 
 ## 0. 一页结论
 
-当前执行入口：§41.192；Smooth-AP M0独立审计已关闭WARN/确定性PASS，原Q1继续。09-09 00:29原wrapper48170/Q1 49157存活，fold0control固定260步完成，smooth_ap5/20epoch；1/6端完成，无完整检索终态。下一观察约00:40确认候选端后预热耗时。Goal ACTIVE/UNMET。
+当前执行入口：§41.192；M0独立审计已关闭WARN/确定性PASS；09-09 00:40原wrapper48170/Q1 49157存活，1/6端完成，fold0 smooth_ap10/20epoch。候选后预热约143秒/epoch，下一训练观察约01:05。完整Q1/CPU终态未结束，Goal ACTIVE/UNMET。
 
 当前用于已完成MSVR310比较及新登记RGBNT100比较的是原V8平行三角色结构：冻结Signal/CLIP，共享block8之前语义和tail9/10/11参数，三个角色分别运行共享tail；CNN处理局部语义Patch高频，Transformer处理全局CLS/Patch关系，Mamba处理空间与位置级三模态扫描。各角色相对冻结reference形成1536D残差，三角色4608D银行拼接3072D Signal得到7680D fused；完整单角色输出为4608D Signal+角色残差。三条路径均执行，当前没有Router/HFER、V23模态MLP或V24原型。两项车辆训练比较均已完成；RGBNT100内部完整比较支持三角色增益，MSVR310尚未超过Signal。下面V1—V8条目保留历史经过，不代表当前又启用了旧模块。
 
@@ -6313,3 +6313,5 @@ WARN保留：真实图像内容/压缩包未重读；历史字段/RNG/向量和�
 原文、独立脚本/输出、快照及失败尝试归档evidence/smooth_ap_m0_audit_20260909，正式报告refine-logs/msvr310_smooth_ap_v1/EXPERIMENT_AUDIT_M0.md/.json。一次审计transport捕获接口失败和13份副本文本CRLF归一化均已保留/修复，最终232/232远端文本快照、29/29原intake文件字节匹配。私有请求/调用trace留本地.aris与审计目录，公开清单明确排除项。不得重复已关闭M0审计。
 
 00:29:28原wrapper48170/Q1 49157存活，首折control完成20epoch/260步、固定checkpoint存在，全部记录工程检查通过；候选smooth_ap完成5/20epoch，尚在预热边界。1/6端完成，不报告局部检索增益。输出卷9566380032B（8.9094GiB），本轮未删除新权重。候选后预热代价尚待实际观察，不能据约19秒的预热epoch外推；约00:40再查后预热耗时并修正首候选端ETA。固定执行2e947a4/配置974328fee25985b19aa36c84f57a557f9120993fecb98b2a902a1b8de8475302不变。完整六端/CPU/终态分析/独立Q1审计仍待完成，三数据集Goal未达到。
+
+00:40:47追加实查：原wrapper48170/Q1 49157均存活，首控制端固定260步checkpoint存在，候选10/20epoch；最近epoch9/10为143.082/143.255秒，输出卷9539149824B（8.884GiB）。按候选后预热实际速度估计首候选端约01:05结束，下一观察安排该里程碑；不采用约19秒预热速度外推。不读取局部检索分数、不修改训练/门槛，完整收据evidence/smooth_ap_m0_audit_20260909/observe_smooth_ap_q1_0040_20260909.json。
