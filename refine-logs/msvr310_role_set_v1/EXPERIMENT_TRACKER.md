@@ -1,6 +1,6 @@
 # MSVR310 role-set v1 实现检查
 
-当前：CPU数学检查完成PASS；真实模型梯度检查及24批CPU重算完成，独立审计完成WARN（same-family/provisional）。M0/Q1完整合同已登记，发布同步后启动；尚无真实训练结果。
+当前：完整role-set训练已启动；2026-09-08T19:01:50.942280+08:00实查pipeline=RUNNING，阶段m0。完整M0/Q1是否完成以最新pipeline和收据为准，不据启动推定通过。
 
 2026-09-08T18:07:26.639878+08:00: 新增单一均值hinge目标、CPU数学检查与固定wrapper；配置configs/MSVR310/Role-set-math-v1.json。发布同步后运行，0图像/模型/更新。
 
@@ -11,3 +11,5 @@
 2026-09-08T18:49:13.903396+08:00: 独立审计WARN原文/证据收齐，登记计划中的历史全角色逐位检查覆盖不足已披露；旧探针封存不重跑。新train/check/verify/run草案AST通过但未登记/运行。38个冗余transport包已逐项核验删除52406835B，0权重删除；下一新artifact使用已有/root/trifusion-storage，启动前重新核验。Master41.172。
 
 2026-09-08T18:56:51.526517+08:00: 登记TriFusion-role-set-paired-v1.json与TRAINING_PLAN.md，四个训练脚本完成检查，尚未真实T0/M0。两端相同fresh历史完整反传，仅负关系均值目标不同；65步预热前原目标，20epoch固定终点。输出备用盘，4GiB最低/3GiB预算，Master41.173。
+
+2026-09-08T19:01:50.942280+08:00: 实查RUNNING/m0，原PID状态{'35302': True, '35308': False, '35385': True}；完整原始观察见evidence/msvr310_role_set_run_observation_41_174_20260908。Master41.174。
