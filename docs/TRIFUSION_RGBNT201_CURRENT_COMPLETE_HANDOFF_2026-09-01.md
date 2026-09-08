@@ -2,7 +2,7 @@
 
 ## 0. 一页结论
 
-当前执行入口：§41.167；历史反传Q1完整封存FAIL并三方同步。旧来源角色关系覆盖CPU再分析于17:20:55在c46be4e启动，wrapper31867/analysis31871；54条件、0模型前向/更新，新结果未审计。按预计结束时间接收全量文本并独立核验，勿重复启动。Goal ACTIVE/UNMET。
+当前执行入口：§41.168；历史反传Q1完整封存FAIL；角色关系覆盖只读分析54条件/37152query成员全部完成、30061558B文本SHA接收，独立审计/root/audit_msvr_role_relation_coverage进行中。原CPU进程结束，勿重跑/重复接收；无新训练或官方结果。Goal ACTIVE/UNMET。
 
 当前用于已完成MSVR310比较及新登记RGBNT100比较的是原V8平行三角色结构：冻结Signal/CLIP，共享block8之前语义和tail9/10/11参数，三个角色分别运行共享tail；CNN处理局部语义Patch高频，Transformer处理全局CLS/Patch关系，Mamba处理空间与位置级三模态扫描。各角色相对冻结reference形成1536D残差，三角色4608D银行拼接3072D Signal得到7680D fused；完整单角色输出为4608D Signal+角色残差。三条路径均执行，当前没有Router/HFER、V23模态MLP或V24原型。两项车辆训练比较均已完成；RGBNT100内部完整比较支持三角色增益，MSVR310尚未超过Signal。下面V1—V8条目保留历史经过，不代表当前又启用了旧模块。
 
@@ -6019,3 +6019,12 @@ M0于13:10:03.589918写入PASS_ENGINEERING_ONLY、13:10:04原PID19991 exit0；CP
 随后按已登记合同启动来源再分析：/root/autodl-tmp/trifusion-v2/artifacts/msvr310_role_relation_coverage_v1_seed42_c46be4e，screen tri_role_coverage_c46be4e，wrapper31867/analysis31871，启动2026-09-08T17:20:55.044692+08:00，17:20:56初查RUNNING。执行提交c46be4e、合同SHA c52c86e49bde1a73d2ea75b4182c4ae5db1c1911e820c3e30f9eba19fe3dd051；只读27个旧source条件×2协议，0模型前向/0优化器更新/0新checkpoint，输出完整37152query成员及54条件。启动盘2898268160B、CPU可用内存753742225408B，4线程；预计1–5分钟，按结束里程碑观察，勿重复启动。
 
 证据evidence/msvr310_role_relation_coverage_launch_20260908/launch.json。下一步读取原pipeline终态、全部文本和输入哈希后独立审计；在这之前不将角色提议或额外hinge关系写成新梯度/新身份收益。此分析是旧source模型上的新关系统计，不是重跑旧普查，不是当前历史反传终点的新特征提取。没有新训练、官方评估或loss/top-k/scene配额选择。Goal ACTIVE/UNMET。
+
+
+### 41.168 来源角色关系覆盖完成接收，独立审计启动（2026-09-08T17:29:23.529831+08:00）
+
+原c46be4e只读任务于17:21:07退出0，实际12.8378秒；按预计里程碑17:24:13观察确认wrapper31867/analysis31871均已退出。27旧source条件×2协议共54条件和37152query成员，0模型前向、0优化器更新、0新权重。四份原始文本共30061558B逐文件大小/SHA核对，已接收C:/Users/gb/.codex_tmp/msvr_role_relation_coverage_complete_20260908；完整证据evidence/msvr310_role_relation_coverage_complete_20260908。summary SHA f1d98d2e8615e71ca6223c632b16fc9bb80d163e796c4a39b74b924d83468f40，全query JSONL SHA09365b53e73de38c8e9b8f60b393c2f4b73b2d21d71fabda7517a5ec469347c4。
+
+已派发独立新上下文审计/root/audit_msvr_role_relation_coverage，requested gpt-6-astra/max，same-family/provisional；原始请求和trace保留。审计输出C:/Users/gb/.codex_tmp/msvr_role_relation_coverage_independent_audit_20260908，当前尚未出具完整终态。审计需自行从远端原数组复算54条件/37152行及来源/协议/子集目标边界；不读取模型或重训。报告尚不形成晋级、新梯度或未知身份收益结论。root的18条件合并表仅为待审核描述汇总。
+
+17:24:13盘2884214784B；没有删除权重，数组仍在原远端位置。下一步完成独立核验，分析全部状态/视图/协议后决定是否需要训练模式参数梯度诊断；不自动同时改角色提议、scene配额、集合loss和反传范围。历史反传Q1既有完整报告/审计与两组0/5保持，正式表无新增。Goal ACTIVE/UNMET。
