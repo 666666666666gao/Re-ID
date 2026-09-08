@@ -2,7 +2,7 @@
 
 ## 0. 一页结论
 
-当前执行入口：§41.168；历史反传Q1完整封存FAIL；角色关系覆盖只读分析54条件/37152query成员全部完成、30061558B文本SHA接收，独立审计/root/audit_msvr_role_relation_coverage进行中。原CPU进程结束，勿重跑/重复接收；无新训练或官方结果。Goal ACTIVE/UNMET。
+当前执行入口：§41.169；来源角色关系覆盖54条件/37152成员完成独立全数组重算，完整报告与审计收束。存在额外有效角色关系，但角色子集沿用fused hardest不增加目标；下一草案是单一负关系聚合，尚无新代码/训练合同或官方结果。历史反传Q1保持FAIL，Goal ACTIVE/UNMET。
 
 当前用于已完成MSVR310比较及新登记RGBNT100比较的是原V8平行三角色结构：冻结Signal/CLIP，共享block8之前语义和tail9/10/11参数，三个角色分别运行共享tail；CNN处理局部语义Patch高频，Transformer处理全局CLS/Patch关系，Mamba处理空间与位置级三模态扫描。各角色相对冻结reference形成1536D残差，三角色4608D银行拼接3072D Signal得到7680D fused；完整单角色输出为4608D Signal+角色残差。三条路径均执行，当前没有Router/HFER、V23模态MLP或V24原型。两项车辆训练比较均已完成；RGBNT100内部完整比较支持三角色增益，MSVR310尚未超过Signal。下面V1—V8条目保留历史经过，不代表当前又启用了旧模块。
 
@@ -6028,3 +6028,14 @@ M0于13:10:03.589918写入PASS_ENGINEERING_ONLY、13:10:04原PID19991 exit0；CP
 已派发独立新上下文审计/root/audit_msvr_role_relation_coverage，requested gpt-6-astra/max，same-family/provisional；原始请求和trace保留。审计输出C:/Users/gb/.codex_tmp/msvr_role_relation_coverage_independent_audit_20260908，当前尚未出具完整终态。审计需自行从远端原数组复算54条件/37152行及来源/协议/子集目标边界；不读取模型或重训。报告尚不形成晋级、新梯度或未知身份收益结论。root的18条件合并表仅为待审核描述汇总。
 
 17:24:13盘2884214784B；没有删除权重，数组仍在原远端位置。下一步完成独立核验，分析全部状态/视图/协议后决定是否需要训练模式参数梯度诊断；不自动同时改角色提议、scene配额、集合loss和反传范围。历史反传Q1既有完整报告/审计与两组0/5保持，正式表无新增。Goal ACTIVE/UNMET。
+
+
+### 41.169 来源角色关系覆盖完整独立审计与单一后继假设（2026-09-08T17:57:22.735320+08:00）
+
+原c46be4e只读分析及完整接收后，独立/root/audit_msvr_role_relation_coverage已终态，审计WARN / same-family / provisional，确定性全字段复算通过。核查全部27 receipts/108来源数组及54条件/37152成员；自身脚本不导入原分析。所有原始response、audit.json、脚本与全量输出已归档，完整报告results/MSVR310_ROLE_RELATION_COVERAGE_2026-09-08.md，审计refine-logs/msvr310_role_relation_coverage_v1/EXPERIMENT_AUDIT.md。原pipeline保持运行当时UNAUDITED收据，不篡改；后续审计独立记录。当前tracker已纠正终态，旧时间观察保留。
+
+全条件合计29376合法成员、7776不合法成员，角色额外负例30037曝光，其中29283条0.3 hinge违约、7333条非正间隔。20434成员有额外有效关系、5715有额外反序；子集hard hinge27367相同/2009更低/0更高。重复条件曝光不是独立样本。control_final/augmented/cross_scene1200合法成员中886有额外有效负关系、163有额外反序；子集1088相同/112更低。这些是旧来源模型eval数组，不是新历史反传终点或真实训练参数梯度。
+
+由此支持角色提出不同有效关系，但不能只把候选换成角色并集、继续同fused hardest而宣称新监督。后继最小候选见NEXT_HYPOTHESIS_DRAFT.md：固定原fused hardest正例，将原fused及三角色最近负例去重，对它们的既有0.3 hinge取均值；其他13项、网络、scene规则、历史坐标/完整导数均在两端保留。草案未实现/未登记运行，须先数学与真实梯度检查；均值降低极端关系权重，不能未经对照把收益归因为角色互补。MS Loss/Sampling Matters近邻已核读并引用，标准均值、采样与反传不是原创机制。
+
+17:43实际空闲2849726464B，Git对象已主要打包（4packs、670555KiB），本次0权重删除。没有把旧清理量计成新增释放，不删仍依赖的初始化、终点或数组。下一训练需具体资源核查。历史反传Q1两组0/5和正式表保持，无官方新增；seed42 only，三数据集目标ACTIVE/UNMET。
