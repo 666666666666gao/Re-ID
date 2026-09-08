@@ -1495,3 +1495,5 @@
 - 2026-09-08: role-set positive coverage supplemental audit closed PASS descriptive scope. Next standard Smooth-AP formula implemented and synthetic math checked; real trainer/contract not ready, no new training. Master41.187.
 
 - 2026-09-08: Smooth-AP full paired contract/trainer/verifier/runner registered, not yet launched. Master41.188.
+
+- 2026-09-08 23:44: Smooth-AP actually launched2e947a4, T0 PASS, M0 running. Launch/observation evidence in evidence/smooth_ap_launch_20260908; master41.189.

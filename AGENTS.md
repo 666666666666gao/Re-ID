@@ -1,13 +1,13 @@
 # TriFusion-ReID workspace
 
-## Latest verified state (2026-09-08 Smooth-AP full experiment registered)
+## Latest verified state (2026-09-08 23:44 Smooth-AP running)
 
-- Master41.188. Old role-set Q1/core/positive audits CLOSED, science FAIL0/5. Do not repeat. Goal ACTIVE/UNMET.
-- New Smooth-AP config configs/MSVR310/TriFusion-smooth-ap-paired-v1.json SHA974328fee25985b19aa36c84f57a557f9120993fecb98b2a902a1b8de8475302; TRAINING_PLAN.md and EXPERIMENT_TRACKER.md in refine-logs/msvr310_smooth_ap_v1. New tools train/check/verify/run_msvr_smooth_ap.py, msvr_smooth_ap.py and check_msvr_smooth_ap_math.py AST checked, NOT yet executed as T0/M0.
-- Single change: original hard fused metric vs standard Smooth-AP tau0.01 weight1 after65-step warmup; both fresh current-coordinate historical VJP,64current anchors, other13losses, originalV8/seed42/20epochs260updates. No role-set proposals,router,style,scene quota,temperature scan. Original two five-gate groups unchanged. components.triplet_fused is storage key, active_fused_metric records real meaning.
-- Launch once after sync, fixed commit/config SHA with tools.run_msvr_smooth_ap; pipeline T0→M0→M0_CPU→Q1→Q1_CPU in persistent screen, stop on actual stage failure. M0-only source before heldout. No new result or new live PID yet. Capture actual launch and monitor ETA, do not confuse timeout with termination.
-- 23:34 verified RTX3090 1MiB/no compute process, output9954095104B free/main2594549760B. Warm existing tri_reid Python3.10.14/PyTorch2.5.1+cu121, no rebuild/install. Output/root/trifusion-storage/artifacts,4GiB min/3GiB budget. Recheck at launch. Preserve all necessary weights/arrays, one invalid partial weight already removed.
-- Prior formula-only hash5a4873 belongs to earlier source; current config pins updated helper plus actual new math entry. T0 must run it, AST/import alone not execution proof. Preserve unrelated .aris/meta/events.jsonl and tools/run_trifusion_experiment.py edits.
+- Master41.189. Goal ACTIVE/UNMET. Old role-set Q1/core/positive audits CLOSED, science FAIL0/5. Do not repeat.
+- New fixed execution2e947a4325144e37fed638105ac954e7e54b5fe5, config SHA974328fee25985b19aa36c84f57a557f9120993fecb98b2a902a1b8de8475302. TRAINING_PLAN.md/config/science files pinned, do not mutate during run.
+- Actually launched23:40, screen tri_smooth_ap_2e947a4, run /root/trifusion-storage/artifacts/msvr310_smooth_ap_v1_seed42_2e947a4; wrapper48170/M0 48190 live23:44. T0 exit0, PASS_SMOOTH_AP_CPU_CONTRACT, all780source batches. Four capacity endpoints finished, complete M0/CPU pending. No Q1 result. Do not relaunch on observation timeout.
+- T0→M0→M0_CPU→Q1→Q1_CPU persistent wrapper, stop on actual failure. M0 audit may parallel fixed Q1 per contract. Same seed42/64anchors/fresh-history fullVJP/13otherlosses; only fused hard versus Smooth-AP tau.01. Original two five-gate groups unchanged.
+- Output9815351296B free at23:44; maxnew3GiB/minfree4GiB. Existing environment reused, no install. Necessary weights retained. Monitor ETA/180–300s, likely M0 terminal23:50–00:05 subject actual progress.
+- Preserve unrelated .aris/meta/events.jsonl and tools/run_trifusion_experiment.py edits. No official test consumed.
 
 ## Experiment environment
 

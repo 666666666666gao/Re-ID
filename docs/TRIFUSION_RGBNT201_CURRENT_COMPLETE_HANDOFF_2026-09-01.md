@@ -2,7 +2,7 @@
 
 ## 0. 一页结论
 
-当前执行入口：§41.188；Smooth-AP完整配对合同及train/check/verify/run已登记，等待本次发布同步后首次启动T0→M0→M0_CPU→Q1→Q1_CPU。尚未实际T0/M0，不冒充运行或通过；旧role-set Q1及审计均关闭不重跑。Goal ACTIVE/UNMET。
+当前执行入口：§41.189；Smooth-AP固定实验2e947a4已于23:40首次启动，T0通过；23:44原wrapper48170/M0进程48190存活，已见4/6容量端完成，完整M0/CPU尚无终态。不要重复启动或修改固定合同；旧role-set Q1/两项审计已关闭。Goal ACTIVE/UNMET。
 
 当前用于已完成MSVR310比较及新登记RGBNT100比较的是原V8平行三角色结构：冻结Signal/CLIP，共享block8之前语义和tail9/10/11参数，三个角色分别运行共享tail；CNN处理局部语义Patch高频，Transformer处理全局CLS/Patch关系，Mamba处理空间与位置级三模态扫描。各角色相对冻结reference形成1536D残差，三角色4608D银行拼接3072D Signal得到7680D fused；完整单角色输出为4608D Signal+角色残差。三条路径均执行，当前没有Router/HFER、V23模态MLP或V24原型。两项车辆训练比较均已完成；RGBNT100内部完整比较支持三角色增益，MSVR310尚未超过Signal。下面V1—V8条目保留历史经过，不代表当前又启用了旧模块。
 
@@ -6255,3 +6255,14 @@ tools/msvr_smooth_ap.py已实现标准公式，精确模块SHA5a4873f0e83aa09441
 23:34远端root/autodl-container-555b4b9409-6aa86278实查head09381da、Python3.10.14/PyTorch2.5.1+cu121/RTX3090；GPU1MiB，无compute进程，旧wrapper/Q1 PID均不存在。输出卷9954095104B空闲，主卷2594549760B。环境暖复用、无安装/重建；证据evidence/smooth_ap_registration_20260908。输出仍/root/trifusion-storage/artifacts，4GiB最低/3GiB最大新增预算；启动再次核验。预计M0 10–25min、Q1 3–6h，持久screen/原PID/日志，按阶段预计结束和180–300s观察。
 
 本条仅注册，尚无真实T0/M0或新检索。同步后用固定commit/config SHA首次启动新wrapper，失败阶段封存停止，不自动修改重启；M0/CPU通过才打开heldout。完成后按技能独立审计；旧审计任务不得重复。三数据集完整Goal仍未达到。
+
+
+### 41.189 Smooth-AP实际启动与T0通过（2026-09-08 23:44观察）
+
+本次实际执行提交2e947a4325144e37fed638105ac954e7e54b5fe5，配置SHA974328fee25985b19aa36c84f57a557f9120993fecb98b2a902a1b8de8475302。23:40:13首次启动screen tri_smooth_ap_2e947a4，run /root/trifusion-storage/artifacts/msvr310_smooth_ap_v1_seed42_2e947a4。原wrapper PID48170，T0 PID48176于23:40:18退出0（5.558秒），随后M0 PID48190自动启动；不是旧实验重启。
+
+T0状态PASS_SMOOTH_AP_CPU_CONTRACT：新Smooth-AP合成标量参考误差0，两次有限差分、两次原hard值/导数比较、两次置换检查通过，self导数0、tie AP0.5；原memory/历史链式法则检查及全部780来源batch队列规则通过。0模型前向/0优化更新/0 heldout图像读取，不能当作M0或检索成功。
+
+23:44:15原wrapper与M0均存活，日志已完成fold0、fold1的control与smooth_ap四个8步容量端；尚无完整M0 summary及CPU终态。GPU982MiB/4%为瞬时采样，不能据此判断卡住。输出卷9815351296B空闲，启动前9954033664B，仍满足登记预算。固定100步过拟合和其余容量端继续；预计23:50–00:05附近取得M0终态，以实际进度修正，按180–300秒或里程碑观察同一pipeline/PID。禁止观察超时重启。
+
+实际启动脚本/收据、只读观察脚本与完整T0/日志快照归档evidence/smooth_ap_launch_20260908。首次观察输出包含完整780batch队列，终端显示被截断但本地JSON完整保存；不是证据缺失。后续观察只展示必要字段。训练合同/配置/科学脚本不变；M0/CPU通过才由固定wrapper打开Q1，M0独立审计按合同与Q1并行。尚无新检索结果，Goal仍未达到。
