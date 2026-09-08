@@ -1489,3 +1489,5 @@
 - 2026-09-08T22:03:33.840454+08:00: original role-set Q1 five endpoints complete, final fold2 role_set2/20; next observation22:35. No scientific terminal, retraining or deletion. Master41.184.
 
 - 2026-09-08: role-set complete Q1/CPU and full executor replay archived; scientific FAIL0/5 in both gate groups. Fresh independent terminal audit running, no new intervention. Master41.185.
+
+- 2026-09-08: role-set Q1 independent audit CLOSED WARN, deterministic PASS, science FAIL0/5; all attempts archived. Separate positive-coverage supplement pending. One invalid interrupted checkpoint removed101712000B with receipt. Master41.186.

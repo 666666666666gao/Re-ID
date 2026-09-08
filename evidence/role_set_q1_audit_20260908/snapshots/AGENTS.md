@@ -1,13 +1,13 @@
 # TriFusion-ReID workspace
 
-## Latest verified state (2026-09-08 role-set Q1 audit closed)
+## Latest verified state (2026-09-08 role-set Q1 complete, independent audit running)
 
-- Master41.186. Complete role-set Q1 and its fresh independent audit are CLOSED. Engineering/deterministic PASS with runtime witness limits; integrity WARN, same-family/provisional; scientific Q1_FAIL, both original five-gate groups0/5. No restart, rerun or duplicate core reviewer. All training PIDs ended.
-- Canonical review refine-logs/msvr310_role_set_v1/EXPERIMENT_AUDIT_Q1.md/.json; complete non-private evidence evidence/role_set_q1_audit_20260908. Core report hash0fe2eb06b5e78d5b310f51a1d50d03fcc1d00ec64c5ed261208d344c8c2b44c9. Author results and complete texts remain evidence/role_set_q1_complete_20260908.
-- Independent replay covers all1560 rows,116501504 train distances,2069520 retrieval/rank elements,3000 query-output and300 identity-output rows, and both dL/dD objectives. Not full model/parameter/RNG trajectory reconstruction. Preserve all reviewer failed attempts and private full response traces locally.
-- /root/audit_msvr_role_set_q1 is now reviewing only a separate saved-source positive-coverage supplement. Core status must not revert to RUNNING. Supplemental paths C:/Users/gb/.codex_tmp/role_set_source_positive_coverage_20260908.json and role_set_positive_coverage_report_20260908. No new training registered. Do not duplicate reviewer.
-- One confirmed invalid interrupted RGBNT100 checkpoint was deleted101712000B at23:12; logs, SHA and six successor checkpoints retained. Receipt evidence/partial_checkpoint_cleanup_20260908. Main free2617987072B before this publication. Output storage retains roughly9.27GiB; recheck before next training. Do not blindly delete valid final/init/evidence arrays.
-- Full Goal remains ACTIVE/UNMET; no new official score/SOTA. Seed42/full path identity isolation/full gallery/scene protocol/registered gates remain. Preserve unrelated .aris/meta/events.jsonl and tools/run_trifusion_experiment.py changes.
+- Master41.185. Execution26c9739; run /root/trifusion-storage/artifacts/msvr310_role_set_v1_seed42_26c9739. Q1 ended22:38:50, CPU22:39:06; all original PIDs absent at22:40. Do not resume/restart this run. All six20epoch/260update endpoints complete; engineering CPU PASS and scientific Q1_FAIL.
+- Complete57-text/81,195,809B intake verified; source analysis v2 and full2069520-position ranking/AP/CMC/bootstrap replay executed. Summary fc6493b643ab378e2941fb335ac5ebf3093c0d31673bdda7d4564db724598de2. Raw text and executor analyses in evidence/role_set_q1_complete_20260908; result results/MSVR310_ROLE_SET_V1_Q1_2026-09-08.md.
+- Fused52.392266 to52.490152, gain0.097886pp; Signal53.129381. Both five-gate groups0/5; preserve FAIL. Candidate is above its roles but below Signal. No official score or SOTA claim.
+- Fresh independent audit /root/audit_msvr_role_set_q1 is RUNNING; gpt-6-astra/max, same-family/provisional. Output C:/Users/gb/.codex_tmp/role_set_q1_independent_audit_20260908; private trace .aris/traces/experiment-audit/2026-09-08_role_set_q1. Preserve all messages/responses, do not duplicate reviewer. Await full audit before selecting next single intervention. M0 and older audits remain closed.
+- Current source analysis separates prewarmup proposals from used role-set relations, position/record/identity exposure, common versus replaced objectives and warmup numerical differences. Exact scalar and runtime-gradient scopes remain limited; do not claim independently replayed training gradients.
+- Last output free9,954,021,376B; no deletion. Preserve initial/final models and all saved arrays. Seed42/full-path isolation/full-gallery/scene/registered gates remain. Goal ACTIVE/UNMET; old V29 continuation is obsolete. Preserve unrelated .aris/runner changes.
 
 ## Experiment environment
 

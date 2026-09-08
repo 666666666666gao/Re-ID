@@ -2,7 +2,7 @@
 
 ## 0. 一页结论
 
-当前执行入口：§41.185；role-set完整Q1/CPU已结束，所有原PID不存在，执行侧全量文本与排名复算PASS；科学Q1_FAIL，两组五门均0/5。独立终态审计audit_msvr_role_set_q1正在运行，待其完整意见后确定后继；不要重跑。Goal ACTIVE/UNMET。
+当前执行入口：§41.186；role-set完整Q1审计已关闭：工程与确定性PASS，完整性/范围WARN（same-family/provisional），科学FAIL两组0/5。所有训练已结束，不重跑。另行来源正例覆盖诊断正在独立补充审计，新训练未登记；Goal ACTIVE/UNMET。
 
 当前用于已完成MSVR310比较及新登记RGBNT100比较的是原V8平行三角色结构：冻结Signal/CLIP，共享block8之前语义和tail9/10/11参数，三个角色分别运行共享tail；CNN处理局部语义Patch高频，Transformer处理全局CLS/Patch关系，Mamba处理空间与位置级三模态扫描。各角色相对冻结reference形成1536D残差，三角色4608D银行拼接3072D Signal得到7680D fused；完整单角色输出为4608D Signal+角色残差。三条路径均执行，当前没有Router/HFER、V23模态MLP或V24原型。两项车辆训练比较均已完成；RGBNT100内部完整比较支持三角色增益，MSVR310尚未超过Signal。下面V1—V8条目保留历史经过，不代表当前又启用了旧模块。
 
@@ -6220,3 +6220,16 @@ fused control52.392266→role_set52.490152（+0.097886pp），Signal53.129381，
 来源候选预热后37440次anchor曝光增加44205个负位置曝光，21500次anchor包含额外负身份，额外active hinge37730次；是实际训练曝光而非独立图片数。末5epoch同定义expanded_hard control0.141091582→candidate0.141739062，role_set0.130590732→0.131121171；不同定义的实际总loss更低不能替代同目标优化改善。预热两端已存在微小数值差异，step66目标切换与step67首个历史候选分开。历史VJP重算265600→284096次record-forward，fit时间增加约4.0781%，无新增推理参数不代表无训练成本。
 
 完整报告results/MSVR310_ROLE_SET_V1_Q1_2026-09-08.md，原始文本/源分析/全query和身份变化表归档evidence/role_set_q1_complete_20260908。新的独立上下文终态审计/root/audit_msvr_role_set_q1已启动（gpt-6-astra max，same-family/provisional），尚未返回结论；私有完整trace只留本地.aris，不推送。此处是执行侧结果，不能代替独立审计。待完整审计后再确定下一单一假设；不扫参数、选终点或重跑已封存版本。正式结果未新增，三数据集完整Goal未达成。
+
+
+### 41.186 role-set完整Q1独立审计关闭及残缺权重清理（2026-09-08 23:14）
+
+fresh-context审计原文/机器报告已返回：WARN、engineering PASS with runtime-witness boundaries、deterministic PASS、scientific Q1_FAIL，两组原五门0/5。独立复算全部1560行/116501504训练距离元素/2069520检索排名元素，全部3000 query-output与300 identity-output CSV字段一致；另外在全部实际距离上核验两目标dL/dD，最大误差3.10441e-10。该导数检查不是全程模型参数梯度重放。117项递归绑定与当前Q1全部43文件核对；59个科学代码/配置跨执行26c9739、summary23a5b48、审计捕获864a2c9字节一致。
+
+报告refine-logs/msvr310_role_set_v1/EXPERIMENT_AUDIT_Q1.md/.json；完整非私有输入快照/独立程序/实际成功与失败尝试归档evidence/role_set_q1_audit_20260908。完整请求/响应trace仅本地保留。审计读取的tracker/AGENTS是较早运行快照，其滞后问题已由§41.185及本条同步当前终态解决；不得回改审计原文。单seed/反复开发身份、step2起数值轨迹差异、RNG/像素/参数梯度运行见证边界仍保留，WARN不改写成无保留PASS。不需要重跑旧阶段。
+
+审计根据完整四空间数组补充了角色独有且hinge活跃的提议曝光：CNN11831、Transformer12731、Mamba10227；这是位置级数学计数，不是相应角色参数净收益。原+0.097886pp均值、低于Signal0.639228pp及FAIL保持。
+
+另行零更新来源正例覆盖诊断已完成，使用全部已保存来源距离，无新模型/图像/更新；正在由同一独立审计者做单列补充核验，不合并到上述核心审计PASS。后继Smooth-AP只有本地未登记草案，未启动新训练、未选择新终点，待补充核验后决定。
+
+磁盘：核实旧RGBNT100 R2 m0/fold_0/signal_m0.pth为保存中断残片（101712000B，SHA ad2d141c92ff38d40f9b75d8ee98c438a8d419d16ba5f2dde1eb81c0c1da4557，不是完整ZIP），失败terminal退出1、原PID不存在、当前config无引用，后续成功路径六个必要checkpoint仍在。23:12实际删除该1文件并保留日志与清理收据，主卷空闲2516275200→2617987072B。首个清理尝试因误写status.json路径在任何删除前退出，按已存在terminal.json修正后成功；失败stderr保留。必要初始化、最终权重、检索数组均未删除。

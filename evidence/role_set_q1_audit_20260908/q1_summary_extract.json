@@ -1,0 +1,2228 @@
+{
+  "status": "Q1_FAIL",
+  "mode": "q1",
+  "config_sha256": "5e5ad4663f4c3c58e11b81b475048d6ab6c53675ac2dd0ade60c84f07a62986d",
+  "project_commit": "23a5b48d019b7351630bc670d14399d413fc767e",
+  "runner_sha256": "22df1b983b8ce0b487a69f349ab95dea37df9bb72688bd6fb38167d8d72d0a62",
+  "environment": {
+    "signal_commit": "cd1b0a672d1fe642e7608731cb4899a19dda7d51",
+    "signal_diff_sha256": "b889caca9c4a92689b13eb7e20bd3224067f3e5ed2a3db6825201870ca422741"
+  },
+  "seed": 42,
+  "heldout_record_forwards": 2064,
+  "official_image_reads": 0,
+  "training_cpu_threads": 4,
+  "update_rules": {
+    "control": "fresh_history_both_sides_hardest",
+    "role_set": "fresh_history_both_sides_role_set_mean"
+  },
+  "same_candidate_reencoding_and_vjp_algorithm": true,
+  "history_anchors": 0,
+  "role_proposal_indices_detached": true,
+  "other_thirteen_loss_terms_unchanged": true,
+  "evaluation_cpu_threads": 56,
+  "started_at": "2026-09-08T19:08:55.898826+08:00",
+  "optimizer_steps": 1560,
+  "comparison": {
+    "endpoints": {
+      "control": {
+        "metrics": {
+          "baseline_only": {
+            "mAP": 53.1293805608712,
+            "Rank-1": 63.0,
+            "Rank-5": 77.0,
+            "Rank-10": 82.83333333333334
+          },
+          "fused": {
+            "mAP": 52.39226613250049,
+            "Rank-1": 59.833333333333336,
+            "Rank-5": 75.33333333333333,
+            "Rank-10": 84.33333333333334
+          },
+          "cnn": {
+            "mAP": 49.99883196237816,
+            "Rank-1": 59.833333333333336,
+            "Rank-5": 75.66666666666667,
+            "Rank-10": 82.16666666666667
+          },
+          "transformer": {
+            "mAP": 50.38990402731258,
+            "Rank-1": 59.333333333333336,
+            "Rank-5": 76.0,
+            "Rank-10": 83.5
+          },
+          "mamba": {
+            "mAP": 51.00737653368955,
+            "Rank-1": 59.166666666666664,
+            "Rank-5": 77.83333333333333,
+            "Rank-10": 83.16666666666667
+          }
+        },
+        "gains_over_signal_pp": {
+          "baseline_only": 0.0,
+          "fused": -0.7371144283707096,
+          "cnn": -3.1305485984930357,
+          "transformer": -2.7394765335586158,
+          "mamba": -2.122004027181646
+        },
+        "fold_fused_gains_pp": [
+          2.970617040269744,
+          -3.4969033986687776,
+          -1.8701597374570298
+        ],
+        "identity_bootstrap": {
+          "lower_bound_pp": -2.6995519907297543,
+          "seed": 42,
+          "resamples": 10000,
+          "cluster_count": 60,
+          "weighting": "resample whole identities with replacement; retain query weights",
+          "percentile": 2.5,
+          "quantile_method": "linear"
+        },
+        "scientific_checks": {
+          "fused_gain_at_least_1pp": false,
+          "all_fold_fused_gains_nonnegative": false,
+          "all_full_branches_not_below_signal": false,
+          "identity_bootstrap_lower_positive": false,
+          "fused_strictly_best": false
+        },
+        "scientific_passed": false,
+        "per_identity": [
+          {
+            "identity": 1,
+            "query_count": 5,
+            "map_by_output": {
+              "baseline_only": 22.488322964889633,
+              "fused": 25.427705257077072,
+              "cnn": 29.243513079212875,
+              "transformer": 19.97054998963735,
+              "mamba": 26.470176881941587
+            }
+          },
+          {
+            "identity": 5,
+            "query_count": 20,
+            "map_by_output": {
+              "baseline_only": 71.302141368176,
+              "fused": 56.76317553791075,
+              "cnn": 52.95319524323716,
+              "transformer": 55.349156795629305,
+              "mamba": 53.915902047536655
+            }
+          },
+          {
+            "identity": 7,
+            "query_count": 7,
+            "map_by_output": {
+              "baseline_only": 35.72740100091485,
+              "fused": 19.68236676908792,
+              "cnn": 15.09599282523048,
+              "transformer": 22.60032989419674,
+              "mamba": 19.3185832636173
+            }
+          },
+          {
+            "identity": 9,
+            "query_count": 28,
+            "map_by_output": {
+              "baseline_only": 41.79753848505253,
+              "fused": 45.734074264147246,
+              "cnn": 44.955323394829556,
+              "transformer": 42.03183701950351,
+              "mamba": 45.52738890719224
+            }
+          },
+          {
+            "identity": 11,
+            "query_count": 11,
+            "map_by_output": {
+              "baseline_only": 14.288879721793249,
+              "fused": 17.619325874327927,
+              "cnn": 19.35973512154839,
+              "transformer": 13.985085151205887,
+              "mamba": 19.930669853754583
+            }
+          },
+          {
+            "identity": 13,
+            "query_count": 9,
+            "map_by_output": {
+              "baseline_only": 57.32228046201223,
+              "fused": 56.766838955214304,
+              "cnn": 49.163540490621116,
+              "transformer": 52.64268930160036,
+              "mamba": 54.24932389914514
+            }
+          },
+          {
+            "identity": 15,
+            "query_count": 10,
+            "map_by_output": {
+              "baseline_only": 25.15175997298026,
+              "fused": 41.75288538651804,
+              "cnn": 37.68368351323536,
+              "transformer": 37.09992110101368,
+              "mamba": 44.31684274249279
+            }
+          },
+          {
+            "identity": 17,
+            "query_count": 8,
+            "map_by_output": {
+              "baseline_only": 56.69361189971717,
+              "fused": 52.027149957213666,
+              "cnn": 50.10716787979664,
+              "transformer": 46.96255128511096,
+              "mamba": 46.59175595507708
+            }
+          },
+          {
+            "identity": 19,
+            "query_count": 14,
+            "map_by_output": {
+              "baseline_only": 81.26067513888692,
+              "fused": 85.65802911752435,
+              "cnn": 81.11700645694636,
+              "transformer": 74.69738328162646,
+              "mamba": 92.85768875961772
+            }
+          },
+          {
+            "identity": 21,
+            "query_count": 9,
+            "map_by_output": {
+              "baseline_only": 5.976462598226004,
+              "fused": 10.53504960473864,
+              "cnn": 8.086087099935515,
+              "transformer": 21.209124513003083,
+              "mamba": 7.240442679031722
+            }
+          },
+          {
+            "identity": 23,
+            "query_count": 13,
+            "map_by_output": {
+              "baseline_only": 56.02862765632193,
+              "fused": 50.93628619698565,
+              "cnn": 53.16205550351685,
+              "transformer": 45.54513147446491,
+              "mamba": 47.9252545110369
+            }
+          },
+          {
+            "identity": 25,
+            "query_count": 14,
+            "map_by_output": {
+              "baseline_only": 85.64026776861864,
+              "fused": 83.27573635537232,
+              "cnn": 81.81320688264003,
+              "transformer": 80.25389301235668,
+              "mamba": 78.81073457763715
+            }
+          },
+          {
+            "identity": 27,
+            "query_count": 8,
+            "map_by_output": {
+              "baseline_only": 12.758509766525105,
+              "fused": 15.569557766606223,
+              "cnn": 19.946295648172224,
+              "transformer": 10.12638373810812,
+              "mamba": 20.303227862618574
+            }
+          },
+          {
+            "identity": 29,
+            "query_count": 7,
+            "map_by_output": {
+              "baseline_only": 42.38674772234475,
+              "fused": 60.0183119233871,
+              "cnn": 50.59463014006273,
+              "transformer": 48.91791463887558,
+              "mamba": 64.8210717853575
+            }
+          },
+          {
+            "identity": 31,
+            "query_count": 4,
+            "map_by_output": {
+              "baseline_only": 77.08333333333333,
+              "fused": 56.52777777777778,
+              "cnn": 48.73106060606061,
+              "transformer": 53.154761904761905,
+              "mamba": 51.11111111111111
+            }
+          },
+          {
+            "identity": 33,
+            "query_count": 16,
+            "map_by_output": {
+              "baseline_only": 95.17109598609441,
+              "fused": 96.20286942979874,
+              "cnn": 94.12130586602254,
+              "transformer": 97.24397214680369,
+              "mamba": 95.22302887984202
+            }
+          },
+          {
+            "identity": 35,
+            "query_count": 8,
+            "map_by_output": {
+              "baseline_only": 79.62099434451538,
+              "fused": 66.85800401289531,
+              "cnn": 68.32733201312745,
+              "transformer": 69.22156884159556,
+              "mamba": 63.25927274975227
+            }
+          },
+          {
+            "identity": 38,
+            "query_count": 12,
+            "map_by_output": {
+              "baseline_only": 96.94414946814865,
+              "fused": 98.04721836371453,
+              "cnn": 96.76197558114553,
+              "transformer": 96.71099984120818,
+              "mamba": 94.69021169482059
+            }
+          },
+          {
+            "identity": 40,
+            "query_count": 13,
+            "map_by_output": {
+              "baseline_only": 64.4485862428655,
+              "fused": 64.74660120957627,
+              "cnn": 64.0755045421504,
+              "transformer": 62.48069645835652,
+              "mamba": 59.150621753410974
+            }
+          },
+          {
+            "identity": 46,
+            "query_count": 21,
+            "map_by_output": {
+              "baseline_only": 30.780486074941887,
+              "fused": 27.374052196186447,
+              "cnn": 24.714762608190398,
+              "transformer": 30.031793773452858,
+              "mamba": 25.34448269398138
+            }
+          },
+          {
+            "identity": 60,
+            "query_count": 5,
+            "map_by_output": {
+              "baseline_only": 62.770562770562755,
+              "fused": 54.35574229691876,
+              "cnn": 50.12670565302144,
+              "transformer": 59.875320020481304,
+              "mamba": 42.49619914136042
+            }
+          },
+          {
+            "identity": 64,
+            "query_count": 14,
+            "map_by_output": {
+              "baseline_only": 40.96279100161365,
+              "fused": 41.63592630460064,
+              "cnn": 39.3440305448504,
+              "transformer": 42.392879891969756,
+              "mamba": 36.236971856955726
+            }
+          },
+          {
+            "identity": 68,
+            "query_count": 14,
+            "map_by_output": {
+              "baseline_only": 52.833644181512064,
+              "fused": 45.09015120515822,
+              "cnn": 37.018506997507686,
+              "transformer": 44.1551502789298,
+              "mamba": 49.57703075226639
+            }
+          },
+          {
+            "identity": 71,
+            "query_count": 4,
+            "map_by_output": {
+              "baseline_only": 38.19444444444444,
+              "fused": 57.986111111111114,
+              "cnn": 70.55555555555554,
+              "transformer": 27.083333333333332,
+              "mamba": 50.7987382987383
+            }
+          },
+          {
+            "identity": 76,
+            "query_count": 8,
+            "map_by_output": {
+              "baseline_only": 70.92075517075517,
+              "fused": 79.27200924075923,
+              "cnn": 80.5733676046176,
+              "transformer": 68.30513468013469,
+              "mamba": 78.72213203463203
+            }
+          },
+          {
+            "identity": 78,
+            "query_count": 7,
+            "map_by_output": {
+              "baseline_only": 100.0,
+              "fused": 100.0,
+              "cnn": 98.23809523809524,
+              "transformer": 99.52380952380952,
+              "mamba": 100.0
+            }
+          },
+          {
+            "identity": 80,
+            "query_count": 7,
+            "map_by_output": {
+              "baseline_only": 69.25052346469862,
+              "fused": 61.879141209912994,
+              "cnn": 67.73474663851042,
+              "transformer": 49.59588045612605,
+              "mamba": 57.58465870105704
+            }
+          },
+          {
+            "identity": 82,
+            "query_count": 6,
+            "map_by_output": {
+              "baseline_only": 80.92592592592594,
+              "fused": 86.24338624338623,
+              "cnn": 86.01851851851853,
+              "transformer": 88.4920634920635,
+              "mamba": 77.38095238095238
+            }
+          },
+          {
+            "identity": 85,
+            "query_count": 10,
+            "map_by_output": {
+              "baseline_only": 1.469956016499481,
+              "fused": 2.0452778410863632,
+              "cnn": 1.4219178654009939,
+              "transformer": 3.1856648136523655,
+              "mamba": 1.8663802657058974
+            }
+          },
+          {
+            "identity": 87,
+            "query_count": 10,
+            "map_by_output": {
+              "baseline_only": 10.743522386499524,
+              "fused": 8.668912738711356,
+              "cnn": 3.9132245904866734,
+              "transformer": 22.508248093460963,
+              "mamba": 10.051676227773635
+            }
+          },
+          {
+            "identity": 91,
+            "query_count": 5,
+            "map_by_output": {
+              "baseline_only": 46.749702911467615,
+              "fused": 59.88492063492063,
+              "cnn": 64.66544566544566,
+              "transformer": 27.176046176046174,
+              "mamba": 31.630351695569086
+            }
+          },
+          {
+            "identity": 93,
+            "query_count": 4,
+            "map_by_output": {
+              "baseline_only": 22.85201824446011,
+              "fused": 15.716638665237298,
+              "cnn": 36.819923371647505,
+              "transformer": 6.990276748341265,
+              "mamba": 4.685476158039652
+            }
+          },
+          {
+            "identity": 97,
+            "query_count": 16,
+            "map_by_output": {
+              "baseline_only": 62.21582145026443,
+              "fused": 61.57511172671041,
+              "cnn": 57.787832206844335,
+              "transformer": 58.821408505949194,
+              "mamba": 62.75244516394369
+            }
+          },
+          {
+            "identity": 99,
+            "query_count": 31,
+            "map_by_output": {
+              "baseline_only": 80.02600473946376,
+              "fused": 78.40286585323517,
+              "cnn": 75.95217397151265,
+              "transformer": 78.85601687263132,
+              "mamba": 78.00998207367999
+            }
+          },
+          {
+            "identity": 101,
+            "query_count": 10,
+            "map_by_output": {
+              "baseline_only": 62.14745289100285,
+              "fused": 52.58473740692404,
+              "cnn": 45.68350674757979,
+              "transformer": 44.915898748752596,
+              "mamba": 56.120764002581105
+            }
+          },
+          {
+            "identity": 105,
+            "query_count": 10,
+            "map_by_output": {
+              "baseline_only": 81.83948260733975,
+              "fused": 74.05019264893214,
+              "cnn": 72.88481029552459,
+              "transformer": 67.75869975029639,
+              "mamba": 76.66477197286237
+            }
+          },
+          {
+            "identity": 109,
+            "query_count": 3,
+            "map_by_output": {
+              "baseline_only": 3.834799124654197,
+              "fused": 8.173234811165846,
+              "cnn": 18.09964726631393,
+              "transformer": 4.215915874546541,
+              "mamba": 7.439458689458689
+            }
+          },
+          {
+            "identity": 113,
+            "query_count": 5,
+            "map_by_output": {
+              "baseline_only": 15.224864108322752,
+              "fused": 7.992478609174036,
+              "cnn": 4.075620387360585,
+              "transformer": 11.645748987854251,
+              "mamba": 11.544001497348352
+            }
+          },
+          {
+            "identity": 115,
+            "query_count": 4,
+            "map_by_output": {
+              "baseline_only": 100.0,
+              "fused": 100.0,
+              "cnn": 100.0,
+              "transformer": 95.83333333333333,
+              "mamba": 95.83333333333333
+            }
+          },
+          {
+            "identity": 121,
+            "query_count": 9,
+            "map_by_output": {
+              "baseline_only": 40.03140475342948,
+              "fused": 44.10323553987341,
+              "cnn": 42.93936623460466,
+              "transformer": 30.915389163891916,
+              "mamba": 44.47555000878343
+            }
+          },
+          {
+            "identity": 130,
+            "query_count": 12,
+            "map_by_output": {
+              "baseline_only": 63.54396404154833,
+              "fused": 55.199260512264104,
+              "cnn": 46.28506454288605,
+              "transformer": 52.38692765858074,
+              "mamba": 57.04113685006204
+            }
+          },
+          {
+            "identity": 136,
+            "query_count": 8,
+            "map_by_output": {
+              "baseline_only": 21.35827763395126,
+              "fused": 23.30871071438022,
+              "cnn": 20.658796647924035,
+              "transformer": 26.641139632727505,
+              "mamba": 23.73624528122526
+            }
+          },
+          {
+            "identity": 138,
+            "query_count": 6,
+            "map_by_output": {
+              "baseline_only": 53.7247072434412,
+              "fused": 64.5882500749128,
+              "cnn": 63.99492829432065,
+              "transformer": 71.51163432037002,
+              "mamba": 52.53560129527622
+            }
+          },
+          {
+            "identity": 140,
+            "query_count": 9,
+            "map_by_output": {
+              "baseline_only": 34.61347233305913,
+              "fused": 40.58016873843136,
+              "cnn": 37.153682945501465,
+              "transformer": 35.727912821160665,
+              "mamba": 38.29402621878971
+            }
+          },
+          {
+            "identity": 151,
+            "query_count": 3,
+            "map_by_output": {
+              "baseline_only": 83.33333333333334,
+              "fused": 83.33333333333334,
+              "cnn": 100.0,
+              "transformer": 75.0,
+              "mamba": 75.0
+            }
+          },
+          {
+            "identity": 155,
+            "query_count": 5,
+            "map_by_output": {
+              "baseline_only": 100.0,
+              "fused": 100.0,
+              "cnn": 100.0,
+              "transformer": 100.0,
+              "mamba": 100.0
+            }
+          },
+          {
+            "identity": 157,
+            "query_count": 6,
+            "map_by_output": {
+              "baseline_only": 62.483777578117206,
+              "fused": 46.959244459244466,
+              "cnn": 37.42092852267085,
+              "transformer": 56.4247557997558,
+              "mamba": 41.841213099205426
+            }
+          },
+          {
+            "identity": 161,
+            "query_count": 5,
+            "map_by_output": {
+              "baseline_only": 90.19047619047619,
+              "fused": 75.95238095238093,
+              "cnn": 55.64718149646107,
+              "transformer": 84.83333333333333,
+              "mamba": 66.94444444444444
+            }
+          },
+          {
+            "identity": 165,
+            "query_count": 8,
+            "map_by_output": {
+              "baseline_only": 15.408751013895849,
+              "fused": 17.553268562634,
+              "cnn": 14.473431638174233,
+              "transformer": 16.98383706709483,
+              "mamba": 19.20648800412305
+            }
+          },
+          {
+            "identity": 167,
+            "query_count": 5,
+            "map_by_output": {
+              "baseline_only": 32.22859547859548,
+              "fused": 53.7979797979798,
+              "cnn": 37.05429687438076,
+              "transformer": 60.15316067947646,
+              "mamba": 47.65695415695416
+            }
+          },
+          {
+            "identity": 171,
+            "query_count": 16,
+            "map_by_output": {
+              "baseline_only": 89.17266469588536,
+              "fused": 92.05317461175639,
+              "cnn": 91.15048555810654,
+              "transformer": 92.21826670441845,
+              "mamba": 86.25561642533114
+            }
+          },
+          {
+            "identity": 173,
+            "query_count": 6,
+            "map_by_output": {
+              "baseline_only": 100.0,
+              "fused": 100.0,
+              "cnn": 100.0,
+              "transformer": 97.22222222222221,
+              "mamba": 100.0
+            }
+          },
+          {
+            "identity": 175,
+            "query_count": 12,
+            "map_by_output": {
+              "baseline_only": 44.1842210044219,
+              "fused": 54.48486136836442,
+              "cnn": 49.769826231929294,
+              "transformer": 45.52929757839644,
+              "mamba": 59.93071026582014
+            }
+          },
+          {
+            "identity": 179,
+            "query_count": 7,
+            "map_by_output": {
+              "baseline_only": 98.0952380952381,
+              "fused": 100.0,
+              "cnn": 89.04761904761904,
+              "transformer": 100.0,
+              "mamba": 96.5079365079365
+            }
+          },
+          {
+            "identity": 195,
+            "query_count": 9,
+            "map_by_output": {
+              "baseline_only": 3.9606586138138096,
+              "fused": 3.1384339437377666,
+              "cnn": 3.6196066501465314,
+              "transformer": 3.114376690548622,
+              "mamba": 2.393841348321749
+            }
+          },
+          {
+            "identity": 229,
+            "query_count": 12,
+            "map_by_output": {
+              "baseline_only": 81.72333270115645,
+              "fused": 72.81068320987973,
+              "cnn": 53.06194801986687,
+              "transformer": 72.26473420308453,
+              "mamba": 74.59265320996259
+            }
+          },
+          {
+            "identity": 231,
+            "query_count": 12,
+            "map_by_output": {
+              "baseline_only": 28.102833281958134,
+              "fused": 38.627518942396364,
+              "cnn": 41.825911814593056,
+              "transformer": 39.48259707829543,
+              "mamba": 28.29692484131568
+            }
+          },
+          {
+            "identity": 234,
+            "query_count": 11,
+            "map_by_output": {
+              "baseline_only": 0.9757931006944325,
+              "fused": 1.057933371925055,
+              "cnn": 1.0011948636048214,
+              "transformer": 1.06175963940507,
+              "mamba": 1.1653114524527792
+            }
+          },
+          {
+            "identity": 238,
+            "query_count": 13,
+            "map_by_output": {
+              "baseline_only": 16.4984001316154,
+              "fused": 13.5832055191391,
+              "cnn": 12.080176865489992,
+              "transformer": 9.8009095454117,
+              "mamba": 19.222972726087278
+            }
+          },
+          {
+            "identity": 254,
+            "query_count": 16,
+            "map_by_output": {
+              "baseline_only": 26.79409962540583,
+              "fused": 14.848325597135798,
+              "cnn": 15.109557993331382,
+              "transformer": 17.496737894186538,
+              "mamba": 14.139596052400167
+            }
+          }
+        ],
+        "query_changes": {
+          "fused": {
+            "ap_improved": 285,
+            "ap_declined": 265,
+            "ap_unchanged": 50,
+            "rank1_repaired": 24,
+            "rank1_new_errors": 43
+          },
+          "cnn": {
+            "ap_improved": 242,
+            "ap_declined": 320,
+            "ap_unchanged": 38,
+            "rank1_repaired": 32,
+            "rank1_new_errors": 51
+          },
+          "transformer": {
+            "ap_improved": 239,
+            "ap_declined": 319,
+            "ap_unchanged": 42,
+            "rank1_repaired": 27,
+            "rank1_new_errors": 49
+          },
+          "mamba": {
+            "ap_improved": 253,
+            "ap_declined": 308,
+            "ap_unchanged": 39,
+            "rank1_repaired": 27,
+            "rank1_new_errors": 50
+          }
+        }
+      },
+      "role_set": {
+        "metrics": {
+          "baseline_only": {
+            "mAP": 53.1293805608712,
+            "Rank-1": 63.0,
+            "Rank-5": 77.0,
+            "Rank-10": 82.83333333333334
+          },
+          "fused": {
+            "mAP": 52.49015208447321,
+            "Rank-1": 60.333333333333336,
+            "Rank-5": 75.16666666666667,
+            "Rank-10": 84.0
+          },
+          "cnn": {
+            "mAP": 50.004771398767545,
+            "Rank-1": 59.333333333333336,
+            "Rank-5": 75.5,
+            "Rank-10": 81.83333333333334
+          },
+          "transformer": {
+            "mAP": 50.25332221529998,
+            "Rank-1": 58.333333333333336,
+            "Rank-5": 75.83333333333333,
+            "Rank-10": 83.83333333333334
+          },
+          "mamba": {
+            "mAP": 50.97012401011417,
+            "Rank-1": 59.0,
+            "Rank-5": 77.33333333333333,
+            "Rank-10": 83.16666666666667
+          }
+        },
+        "gains_over_signal_pp": {
+          "baseline_only": 0.0,
+          "fused": -0.6392284763979887,
+          "cnn": -3.1246091621036527,
+          "transformer": -2.8760583455712165,
+          "mamba": -2.1592565507570285
+        },
+        "fold_fused_gains_pp": [
+          2.948182246918414,
+          -3.269566707006632,
+          -1.7806286849250696
+        ],
+        "identity_bootstrap": {
+          "lower_bound_pp": -2.579953840221134,
+          "seed": 42,
+          "resamples": 10000,
+          "cluster_count": 60,
+          "weighting": "resample whole identities with replacement; retain query weights",
+          "percentile": 2.5,
+          "quantile_method": "linear"
+        },
+        "scientific_checks": {
+          "fused_gain_at_least_1pp": false,
+          "all_fold_fused_gains_nonnegative": false,
+          "all_full_branches_not_below_signal": false,
+          "identity_bootstrap_lower_positive": false,
+          "fused_strictly_best": false
+        },
+        "scientific_passed": false,
+        "per_identity": [
+          {
+            "identity": 1,
+            "query_count": 5,
+            "map_by_output": {
+              "baseline_only": 22.488322964889633,
+              "fused": 24.965083649294172,
+              "cnn": 28.202881798857028,
+              "transformer": 19.58152097026778,
+              "mamba": 27.133180544945258
+            }
+          },
+          {
+            "identity": 5,
+            "query_count": 20,
+            "map_by_output": {
+              "baseline_only": 71.302141368176,
+              "fused": 57.41540586566723,
+              "cnn": 53.39238996074097,
+              "transformer": 55.61682928929961,
+              "mamba": 54.39798444576781
+            }
+          },
+          {
+            "identity": 7,
+            "query_count": 7,
+            "map_by_output": {
+              "baseline_only": 35.72740100091485,
+              "fused": 20.99270563219251,
+              "cnn": 15.725489106993775,
+              "transformer": 21.624346284740806,
+              "mamba": 19.19452362100084
+            }
+          },
+          {
+            "identity": 9,
+            "query_count": 28,
+            "map_by_output": {
+              "baseline_only": 41.79753848505253,
+              "fused": 45.439560448301634,
+              "cnn": 45.08377765907311,
+              "transformer": 41.42776925203249,
+              "mamba": 45.04461813407068
+            }
+          },
+          {
+            "identity": 11,
+            "query_count": 11,
+            "map_by_output": {
+              "baseline_only": 14.288879721793249,
+              "fused": 17.55221775550588,
+              "cnn": 18.23422245449985,
+              "transformer": 13.746092804084164,
+              "mamba": 19.973444127910483
+            }
+          },
+          {
+            "identity": 13,
+            "query_count": 9,
+            "map_by_output": {
+              "baseline_only": 57.32228046201223,
+              "fused": 58.01025701946483,
+              "cnn": 50.17536978445266,
+              "transformer": 53.40875196962581,
+              "mamba": 55.60862560830617
+            }
+          },
+          {
+            "identity": 15,
+            "query_count": 10,
+            "map_by_output": {
+              "baseline_only": 25.15175997298026,
+              "fused": 40.76336045723325,
+              "cnn": 37.01001267221049,
+              "transformer": 37.18449139821603,
+              "mamba": 43.63633547502731
+            }
+          },
+          {
+            "identity": 17,
+            "query_count": 8,
+            "map_by_output": {
+              "baseline_only": 56.69361189971717,
+              "fused": 52.03941984252369,
+              "cnn": 50.87337822227849,
+              "transformer": 46.37533445313073,
+              "mamba": 45.45197428547827
+            }
+          },
+          {
+            "identity": 19,
+            "query_count": 14,
+            "map_by_output": {
+              "baseline_only": 81.26067513888692,
+              "fused": 85.89475777700682,
+              "cnn": 81.08454011348863,
+              "transformer": 74.91194089951634,
+              "mamba": 93.01028121773166
+            }
+          },
+          {
+            "identity": 21,
+            "query_count": 9,
+            "map_by_output": {
+              "baseline_only": 5.976462598226004,
+              "fused": 10.583645943779334,
+              "cnn": 8.099254347026084,
+              "transformer": 21.27352195302709,
+              "mamba": 7.146159916097826
+            }
+          },
+          {
+            "identity": 23,
+            "query_count": 13,
+            "map_by_output": {
+              "baseline_only": 56.02862765632193,
+              "fused": 50.821108744432706,
+              "cnn": 52.70479638883234,
+              "transformer": 44.98119230128662,
+              "mamba": 47.15622700975947
+            }
+          },
+          {
+            "identity": 25,
+            "query_count": 14,
+            "map_by_output": {
+              "baseline_only": 85.64026776861864,
+              "fused": 83.00700766752202,
+              "cnn": 82.24836970709812,
+              "transformer": 79.75379472442003,
+              "mamba": 78.2064000653617
+            }
+          },
+          {
+            "identity": 27,
+            "query_count": 8,
+            "map_by_output": {
+              "baseline_only": 12.758509766525105,
+              "fused": 15.43370233517955,
+              "cnn": 19.740225327071258,
+              "transformer": 9.530542478621193,
+              "mamba": 20.331996144758158
+            }
+          },
+          {
+            "identity": 29,
+            "query_count": 7,
+            "map_by_output": {
+              "baseline_only": 42.38674772234475,
+              "fused": 60.16606594132892,
+              "cnn": 52.47920547529357,
+              "transformer": 48.59061262355597,
+              "mamba": 66.53865380651095
+            }
+          },
+          {
+            "identity": 31,
+            "query_count": 4,
+            "map_by_output": {
+              "baseline_only": 77.08333333333333,
+              "fused": 55.099206349206355,
+              "cnn": 45.81439393939394,
+              "transformer": 53.154761904761905,
+              "mamba": 51.11111111111111
+            }
+          },
+          {
+            "identity": 33,
+            "query_count": 16,
+            "map_by_output": {
+              "baseline_only": 95.17109598609441,
+              "fused": 96.2508422902716,
+              "cnn": 94.14449703351518,
+              "transformer": 96.93509136308525,
+              "mamba": 95.12793555405017
+            }
+          },
+          {
+            "identity": 35,
+            "query_count": 8,
+            "map_by_output": {
+              "baseline_only": 79.62099434451538,
+              "fused": 67.1220200894114,
+              "cnn": 67.66183195089543,
+              "transformer": 69.61748969371803,
+              "mamba": 62.65363652792495
+            }
+          },
+          {
+            "identity": 38,
+            "query_count": 12,
+            "map_by_output": {
+              "baseline_only": 96.94414946814865,
+              "fused": 97.87742205012736,
+              "cnn": 96.68420314253648,
+              "transformer": 96.71664909164909,
+              "mamba": 94.61772656677991
+            }
+          },
+          {
+            "identity": 40,
+            "query_count": 13,
+            "map_by_output": {
+              "baseline_only": 64.4485862428655,
+              "fused": 64.82324488945707,
+              "cnn": 64.0715062154204,
+              "transformer": 62.92515185621662,
+              "mamba": 59.28191847839226
+            }
+          },
+          {
+            "identity": 46,
+            "query_count": 21,
+            "map_by_output": {
+              "baseline_only": 30.780486074941887,
+              "fused": 27.29017958288804,
+              "cnn": 24.694245133416917,
+              "transformer": 30.285687710519582,
+              "mamba": 25.306209427812064
+            }
+          },
+          {
+            "identity": 60,
+            "query_count": 5,
+            "map_by_output": {
+              "baseline_only": 62.770562770562755,
+              "fused": 54.2869592281357,
+              "cnn": 49.80230880230881,
+              "transformer": 59.78301036934812,
+              "mamba": 43.51817716333845
+            }
+          },
+          {
+            "identity": 64,
+            "query_count": 14,
+            "map_by_output": {
+              "baseline_only": 40.96279100161365,
+              "fused": 41.424440808677936,
+              "cnn": 39.02783176560448,
+              "transformer": 42.75017132548558,
+              "mamba": 36.02257046794327
+            }
+          },
+          {
+            "identity": 68,
+            "query_count": 14,
+            "map_by_output": {
+              "baseline_only": 52.833644181512064,
+              "fused": 44.888692497083646,
+              "cnn": 36.958693560023114,
+              "transformer": 43.938660131175524,
+              "mamba": 48.46544518401919
+            }
+          },
+          {
+            "identity": 71,
+            "query_count": 4,
+            "map_by_output": {
+              "baseline_only": 38.19444444444444,
+              "fused": 57.58928571428571,
+              "cnn": 70.13888888888889,
+              "transformer": 27.083333333333332,
+              "mamba": 50.661375661375665
+            }
+          },
+          {
+            "identity": 76,
+            "query_count": 8,
+            "map_by_output": {
+              "baseline_only": 70.92075517075517,
+              "fused": 79.04879495504495,
+              "cnn": 79.94241522366522,
+              "transformer": 69.62061087061086,
+              "mamba": 79.00892857142856
+            }
+          },
+          {
+            "identity": 78,
+            "query_count": 7,
+            "map_by_output": {
+              "baseline_only": 100.0,
+              "fused": 100.0,
+              "cnn": 98.23809523809524,
+              "transformer": 99.52380952380952,
+              "mamba": 100.0
+            }
+          },
+          {
+            "identity": 80,
+            "query_count": 7,
+            "map_by_output": {
+              "baseline_only": 69.25052346469862,
+              "fused": 62.84770401382244,
+              "cnn": 69.96656543031372,
+              "transformer": 51.37071695720874,
+              "mamba": 57.752710583067724
+            }
+          },
+          {
+            "identity": 82,
+            "query_count": 6,
+            "map_by_output": {
+              "baseline_only": 80.92592592592594,
+              "fused": 86.24338624338623,
+              "cnn": 86.01851851851853,
+              "transformer": 88.4920634920635,
+              "mamba": 77.38095238095238
+            }
+          },
+          {
+            "identity": 85,
+            "query_count": 10,
+            "map_by_output": {
+              "baseline_only": 1.469956016499481,
+              "fused": 1.9946436574194573,
+              "cnn": 1.4253635418589816,
+              "transformer": 3.0428880179847746,
+              "mamba": 1.8374454609578448
+            }
+          },
+          {
+            "identity": 87,
+            "query_count": 10,
+            "map_by_output": {
+              "baseline_only": 10.743522386499524,
+              "fused": 8.484752820155826,
+              "cnn": 3.846666608532636,
+              "transformer": 20.107706052309936,
+              "mamba": 10.800229215863649
+            }
+          },
+          {
+            "identity": 91,
+            "query_count": 5,
+            "map_by_output": {
+              "baseline_only": 46.749702911467615,
+              "fused": 61.5515873015873,
+              "cnn": 64.66544566544566,
+              "transformer": 23.18997668997669,
+              "mamba": 39.38129744651484
+            }
+          },
+          {
+            "identity": 93,
+            "query_count": 4,
+            "map_by_output": {
+              "baseline_only": 22.85201824446011,
+              "fused": 15.671968262215941,
+              "cnn": 36.69053371408515,
+              "transformer": 6.992848536966184,
+              "mamba": 5.035239543933748
+            }
+          },
+          {
+            "identity": 97,
+            "query_count": 16,
+            "map_by_output": {
+              "baseline_only": 62.21582145026443,
+              "fused": 61.74741187274524,
+              "cnn": 57.870866578850965,
+              "transformer": 58.92927729646746,
+              "mamba": 62.661201153646395
+            }
+          },
+          {
+            "identity": 99,
+            "query_count": 31,
+            "map_by_output": {
+              "baseline_only": 80.02600473946376,
+              "fused": 78.22813832788167,
+              "cnn": 75.60152393008676,
+              "transformer": 78.81802279244852,
+              "mamba": 77.89790916565657
+            }
+          },
+          {
+            "identity": 101,
+            "query_count": 10,
+            "map_by_output": {
+              "baseline_only": 62.14745289100285,
+              "fused": 53.26343244687946,
+              "cnn": 46.25242965001924,
+              "transformer": 46.07537827616266,
+              "mamba": 54.78216013831615
+            }
+          },
+          {
+            "identity": 105,
+            "query_count": 10,
+            "map_by_output": {
+              "baseline_only": 81.83948260733975,
+              "fused": 74.97143807017757,
+              "cnn": 73.37684458398745,
+              "transformer": 70.19801710403215,
+              "mamba": 76.76411212605038
+            }
+          },
+          {
+            "identity": 109,
+            "query_count": 3,
+            "map_by_output": {
+              "baseline_only": 3.834799124654197,
+              "fused": 8.443562610229275,
+              "cnn": 18.27777777777778,
+              "transformer": 4.311223501143278,
+              "mamba": 8.518518518518519
+            }
+          },
+          {
+            "identity": 113,
+            "query_count": 5,
+            "map_by_output": {
+              "baseline_only": 15.224864108322752,
+              "fused": 7.943140429595,
+              "cnn": 4.072647280516696,
+              "transformer": 11.468660968660968,
+              "mamba": 11.866598873197479
+            }
+          },
+          {
+            "identity": 115,
+            "query_count": 4,
+            "map_by_output": {
+              "baseline_only": 100.0,
+              "fused": 100.0,
+              "cnn": 100.0,
+              "transformer": 85.41666666666666,
+              "mamba": 95.83333333333333
+            }
+          },
+          {
+            "identity": 121,
+            "query_count": 9,
+            "map_by_output": {
+              "baseline_only": 40.03140475342948,
+              "fused": 44.18330009740633,
+              "cnn": 42.9456615384544,
+              "transformer": 30.92605869101654,
+              "mamba": 44.37325077068059
+            }
+          },
+          {
+            "identity": 130,
+            "query_count": 12,
+            "map_by_output": {
+              "baseline_only": 63.54396404154833,
+              "fused": 55.97299102265766,
+              "cnn": 47.006464729649714,
+              "transformer": 52.32981936322363,
+              "mamba": 57.16775047964148
+            }
+          },
+          {
+            "identity": 136,
+            "query_count": 8,
+            "map_by_output": {
+              "baseline_only": 21.35827763395126,
+              "fused": 23.02418775871956,
+              "cnn": 20.37651443589349,
+              "transformer": 25.99629176322132,
+              "mamba": 22.868119387057696
+            }
+          },
+          {
+            "identity": 138,
+            "query_count": 6,
+            "map_by_output": {
+              "baseline_only": 53.7247072434412,
+              "fused": 64.92923482115212,
+              "cnn": 64.06177006873513,
+              "transformer": 72.44611423339494,
+              "mamba": 54.68295527421273
+            }
+          },
+          {
+            "identity": 140,
+            "query_count": 9,
+            "map_by_output": {
+              "baseline_only": 34.61347233305913,
+              "fused": 41.60185776891791,
+              "cnn": 37.051238171524204,
+              "transformer": 35.76909324171314,
+              "mamba": 38.054400865390846
+            }
+          },
+          {
+            "identity": 151,
+            "query_count": 3,
+            "map_by_output": {
+              "baseline_only": 83.33333333333334,
+              "fused": 83.33333333333334,
+              "cnn": 100.0,
+              "transformer": 58.333333333333336,
+              "mamba": 77.77777777777777
+            }
+          },
+          {
+            "identity": 155,
+            "query_count": 5,
+            "map_by_output": {
+              "baseline_only": 100.0,
+              "fused": 100.0,
+              "cnn": 98.33333333333331,
+              "transformer": 100.0,
+              "mamba": 100.0
+            }
+          },
+          {
+            "identity": 157,
+            "query_count": 6,
+            "map_by_output": {
+              "baseline_only": 62.483777578117206,
+              "fused": 46.85011747511748,
+              "cnn": 37.177068352340086,
+              "transformer": 59.66880341880342,
+              "mamba": 41.579966329966325
+            }
+          },
+          {
+            "identity": 161,
+            "query_count": 5,
+            "map_by_output": {
+              "baseline_only": 90.19047619047619,
+              "fused": 76.9047619047619,
+              "cnn": 52.44350005448404,
+              "transformer": 85.66666666666667,
+              "mamba": 63.96825396825396
+            }
+          },
+          {
+            "identity": 165,
+            "query_count": 8,
+            "map_by_output": {
+              "baseline_only": 15.408751013895849,
+              "fused": 18.98652814063208,
+              "cnn": 12.551576762459321,
+              "transformer": 17.008790309598755,
+              "mamba": 20.12811451306255
+            }
+          },
+          {
+            "identity": 167,
+            "query_count": 5,
+            "map_by_output": {
+              "baseline_only": 32.22859547859548,
+              "fused": 54.75633528265107,
+              "cnn": 37.12179487179487,
+              "transformer": 60.32153032153032,
+              "mamba": 47.7002442002442
+            }
+          },
+          {
+            "identity": 171,
+            "query_count": 16,
+            "map_by_output": {
+              "baseline_only": 89.17266469588536,
+              "fused": 92.01323367393414,
+              "cnn": 90.95692592795731,
+              "transformer": 92.95085342973707,
+              "mamba": 86.01316273428338
+            }
+          },
+          {
+            "identity": 173,
+            "query_count": 6,
+            "map_by_output": {
+              "baseline_only": 100.0,
+              "fused": 100.0,
+              "cnn": 100.0,
+              "transformer": 97.22222222222221,
+              "mamba": 100.0
+            }
+          },
+          {
+            "identity": 175,
+            "query_count": 12,
+            "map_by_output": {
+              "baseline_only": 44.1842210044219,
+              "fused": 54.64063784073592,
+              "cnn": 50.58572004312937,
+              "transformer": 46.85924292077515,
+              "mamba": 59.06829620396036
+            }
+          },
+          {
+            "identity": 179,
+            "query_count": 7,
+            "map_by_output": {
+              "baseline_only": 98.0952380952381,
+              "fused": 100.0,
+              "cnn": 89.72222222222223,
+              "transformer": 99.28571428571429,
+              "mamba": 94.12698412698413
+            }
+          },
+          {
+            "identity": 195,
+            "query_count": 9,
+            "map_by_output": {
+              "baseline_only": 3.9606586138138096,
+              "fused": 3.2850786827084013,
+              "cnn": 3.781551777114662,
+              "transformer": 3.3344213825988214,
+              "mamba": 2.3935009455346252
+            }
+          },
+          {
+            "identity": 229,
+            "query_count": 12,
+            "map_by_output": {
+              "baseline_only": 81.72333270115645,
+              "fused": 73.35716831858977,
+              "cnn": 54.523212969762604,
+              "transformer": 72.98709758893726,
+              "mamba": 74.61400720721629
+            }
+          },
+          {
+            "identity": 231,
+            "query_count": 12,
+            "map_by_output": {
+              "baseline_only": 28.102833281958134,
+              "fused": 38.04115108179573,
+              "cnn": 41.13882894751976,
+              "transformer": 37.127663744582875,
+              "mamba": 28.44706660052888
+            }
+          },
+          {
+            "identity": 234,
+            "query_count": 11,
+            "map_by_output": {
+              "baseline_only": 0.9757931006944325,
+              "fused": 1.0666024064527173,
+              "cnn": 1.0218076565226848,
+              "transformer": 1.0542507713240008,
+              "mamba": 1.1701418939007735
+            }
+          },
+          {
+            "identity": 238,
+            "query_count": 13,
+            "map_by_output": {
+              "baseline_only": 16.4984001316154,
+              "fused": 13.63608304511565,
+              "cnn": 12.475940092214294,
+              "transformer": 9.347370840027146,
+              "mamba": 19.25346392678722
+            }
+          },
+          {
+            "identity": 254,
+            "query_count": 16,
+            "map_by_output": {
+              "baseline_only": 26.79409962540583,
+              "fused": 14.50046672363468,
+              "cnn": 15.575986125169175,
+              "transformer": 17.434959136191804,
+              "mamba": 13.74844286797597
+            }
+          }
+        ],
+        "query_changes": {
+          "fused": {
+            "ap_improved": 287,
+            "ap_declined": 264,
+            "ap_unchanged": 49,
+            "rank1_repaired": 26,
+            "rank1_new_errors": 42
+          },
+          "cnn": {
+            "ap_improved": 240,
+            "ap_declined": 323,
+            "ap_unchanged": 37,
+            "rank1_repaired": 31,
+            "rank1_new_errors": 53
+          },
+          "transformer": {
+            "ap_improved": 246,
+            "ap_declined": 315,
+            "ap_unchanged": 39,
+            "rank1_repaired": 23,
+            "rank1_new_errors": 51
+          },
+          "mamba": {
+            "ap_improved": 256,
+            "ap_declined": 306,
+            "ap_unchanged": 38,
+            "rank1_repaired": 27,
+            "rank1_new_errors": 51
+          }
+        }
+      }
+    },
+    "matched_gains_mAP": {
+      "baseline_only": 0.0,
+      "fused": 0.09788595197272058,
+      "cnn": 0.0059394363894018365,
+      "transformer": -0.1365818120125979,
+      "mamba": -0.037252523575376506
+    },
+    "fold_fused_gains_mAP": [
+      -0.02243479335133003,
+      0.22733669166214554,
+      0.08953105253196014
+    ],
+    "paired_bootstrap_lower_pp": -0.020599879595439345,
+    "paired_checks": {
+      "fused_gain_at_least_1pp": false,
+      "all_fold_fused_nonnegative": false,
+      "all_role_gains_nonnegative": false,
+      "paired_identity_bootstrap_lower_positive": false,
+      "candidate_fused_strictly_best": false
+    },
+    "paired_pass": false,
+    "vehicle_baseline_pass": false,
+    "next_phase_qualified": false,
+    "paired_per_identity": [
+      {
+        "identity": 1,
+        "query_count": 5,
+        "gains_mAP": {
+          "baseline_only": 0.0,
+          "fused": -0.4626216077828979,
+          "cnn": -1.040631280355845,
+          "transformer": -0.3890290193695753,
+          "mamba": 0.6630036630036638
+        }
+      },
+      {
+        "identity": 5,
+        "query_count": 20,
+        "gains_mAP": {
+          "baseline_only": 0.0,
+          "fused": 0.6522303277564837,
+          "cnn": 0.43919471750381767,
+          "transformer": 0.26767249367030205,
+          "mamba": 0.4820823982311646
+        }
+      },
+      {
+        "identity": 7,
+        "query_count": 7,
+        "gains_mAP": {
+          "baseline_only": 0.0,
+          "fused": 1.3103388631045885,
+          "cnn": 0.6294962817632928,
+          "transformer": -0.9759836094559323,
+          "mamba": -0.12405964261645686
+        }
+      },
+      {
+        "identity": 9,
+        "query_count": 28,
+        "gains_mAP": {
+          "baseline_only": 0.0,
+          "fused": -0.29451381584560055,
+          "cnn": 0.12845426424356265,
+          "transformer": -0.6040677674710129,
+          "mamba": -0.4827707731215657
+        }
+      },
+      {
+        "identity": 11,
+        "query_count": 11,
+        "gains_mAP": {
+          "baseline_only": 0.0,
+          "fused": -0.06710811882205202,
+          "cnn": -1.1255126670485414,
+          "transformer": -0.2389923471217237,
+          "mamba": 0.042774274155898774
+        }
+      },
+      {
+        "identity": 13,
+        "query_count": 9,
+        "gains_mAP": {
+          "baseline_only": 0.0,
+          "fused": 1.243418064250517,
+          "cnn": 1.0118292938315445,
+          "transformer": 0.766062668025439,
+          "mamba": 1.359301709161047
+        }
+      },
+      {
+        "identity": 15,
+        "query_count": 10,
+        "gains_mAP": {
+          "baseline_only": 0.0,
+          "fused": -0.9895249292847843,
+          "cnn": -0.673670841024871,
+          "transformer": 0.08457029720234183,
+          "mamba": -0.6805072674654722
+        }
+      },
+      {
+        "identity": 17,
+        "query_count": 8,
+        "gains_mAP": {
+          "baseline_only": 0.0,
+          "fused": 0.012269885310033785,
+          "cnn": 0.766210342481843,
+          "transformer": -0.5872168319802258,
+          "mamba": -1.139781669598813
+        }
+      },
+      {
+        "identity": 19,
+        "query_count": 14,
+        "gains_mAP": {
+          "baseline_only": 0.0,
+          "fused": 0.23672865948245864,
+          "cnn": -0.03246634345773135,
+          "transformer": 0.2145576178898791,
+          "mamba": 0.15259245811394817
+        }
+      },
+      {
+        "identity": 21,
+        "query_count": 9,
+        "gains_mAP": {
+          "baseline_only": 0.0,
+          "fused": 0.048596339040695574,
+          "cnn": 0.013167247090570652,
+          "transformer": 0.06439744002400719,
+          "mamba": -0.09428276293389638
+        }
+      },
+      {
+        "identity": 23,
+        "query_count": 13,
+        "gains_mAP": {
+          "baseline_only": 0.0,
+          "fused": -0.11517745255293654,
+          "cnn": -0.45725911468451125,
+          "transformer": -0.5639391731783064,
+          "mamba": -0.7690275012774163
+        }
+      },
+      {
+        "identity": 25,
+        "query_count": 14,
+        "gains_mAP": {
+          "baseline_only": 0.0,
+          "fused": -0.26872868785030274,
+          "cnn": 0.43516282445809273,
+          "transformer": -0.5000982879366432,
+          "mamba": -0.6043345122754297
+        }
+      },
+      {
+        "identity": 27,
+        "query_count": 8,
+        "gains_mAP": {
+          "baseline_only": 0.0,
+          "fused": -0.1358554314266759,
+          "cnn": -0.20607032110096815,
+          "transformer": -0.5958412594869273,
+          "mamba": 0.028768282139584808
+        }
+      },
+      {
+        "identity": 29,
+        "query_count": 7,
+        "gains_mAP": {
+          "baseline_only": 0.0,
+          "fused": 0.1477540179417976,
+          "cnn": 1.8845753352308248,
+          "transformer": -0.3273020153195983,
+          "mamba": 1.7175820211534476
+        }
+      },
+      {
+        "identity": 31,
+        "query_count": 4,
+        "gains_mAP": {
+          "baseline_only": 0.0,
+          "fused": -1.428571428571429,
+          "cnn": -2.9166666666666674,
+          "transformer": 0.0,
+          "mamba": 0.0
+        }
+      },
+      {
+        "identity": 33,
+        "query_count": 16,
+        "gains_mAP": {
+          "baseline_only": 0.0,
+          "fused": 0.04797286047286131,
+          "cnn": 0.02319116749263661,
+          "transformer": -0.30888078371844735,
+          "mamba": -0.09509332579185487
+        }
+      },
+      {
+        "identity": 35,
+        "query_count": 8,
+        "gains_mAP": {
+          "baseline_only": 0.0,
+          "fused": 0.26401607651607756,
+          "cnn": -0.6655000622319943,
+          "transformer": 0.3959208521224753,
+          "mamba": -0.6056362218273146
+        }
+      },
+      {
+        "identity": 38,
+        "query_count": 12,
+        "gains_mAP": {
+          "baseline_only": 0.0,
+          "fused": -0.16979631358716257,
+          "cnn": -0.07777243860906483,
+          "transformer": 0.005649250440914466,
+          "mamba": -0.07248512804068166
+        }
+      },
+      {
+        "identity": 40,
+        "query_count": 13,
+        "gains_mAP": {
+          "baseline_only": 0.0,
+          "fused": 0.07664367988080908,
+          "cnn": -0.003998326729993844,
+          "transformer": 0.4444553978600987,
+          "mamba": 0.13129672498129846
+        }
+      },
+      {
+        "identity": 46,
+        "query_count": 21,
+        "gains_mAP": {
+          "baseline_only": 0.0,
+          "fused": -0.08387261329840992,
+          "cnn": -0.020517474773485662,
+          "transformer": 0.2538939370667252,
+          "mamba": -0.03827326616930724
+        }
+      },
+      {
+        "identity": 60,
+        "query_count": 5,
+        "gains_mAP": {
+          "baseline_only": 0.0,
+          "fused": -0.06878306878306817,
+          "cnn": -0.32439685071264046,
+          "transformer": -0.09230965113318224,
+          "mamba": 1.0219780219780228
+        }
+      },
+      {
+        "identity": 64,
+        "query_count": 14,
+        "gains_mAP": {
+          "baseline_only": 0.0,
+          "fused": -0.211485495922711,
+          "cnn": -0.3161987792459189,
+          "transformer": 0.35729143351582193,
+          "mamba": -0.21440138901245753
+        }
+      },
+      {
+        "identity": 68,
+        "query_count": 14,
+        "gains_mAP": {
+          "baseline_only": 0.0,
+          "fused": -0.20145870807457308,
+          "cnn": -0.05981343748456784,
+          "transformer": -0.21649014775427322,
+          "mamba": -1.111585568247182
+        }
+      },
+      {
+        "identity": 71,
+        "query_count": 4,
+        "gains_mAP": {
+          "baseline_only": 0.0,
+          "fused": -0.3968253968253968,
+          "cnn": -0.4166666666666666,
+          "transformer": 0.0,
+          "mamba": -0.13736263736263757
+        }
+      },
+      {
+        "identity": 76,
+        "query_count": 8,
+        "gains_mAP": {
+          "baseline_only": 0.0,
+          "fused": -0.22321428571428492,
+          "cnn": -0.6309523809523793,
+          "transformer": 1.3154761904761891,
+          "mamba": 0.2867965367965353
+        }
+      },
+      {
+        "identity": 78,
+        "query_count": 7,
+        "gains_mAP": {
+          "baseline_only": 0.0,
+          "fused": 0.0,
+          "cnn": 0.0,
+          "transformer": 0.0,
+          "mamba": 0.0
+        }
+      },
+      {
+        "identity": 80,
+        "query_count": 7,
+        "gains_mAP": {
+          "baseline_only": 0.0,
+          "fused": 0.968562803909446,
+          "cnn": 2.2318187918033146,
+          "transformer": 1.77483650108269,
+          "mamba": 0.1680518820106899
+        }
+      },
+      {
+        "identity": 82,
+        "query_count": 6,
+        "gains_mAP": {
+          "baseline_only": 0.0,
+          "fused": 0.0,
+          "cnn": 0.0,
+          "transformer": 0.0,
+          "mamba": 0.0
+        }
+      },
+      {
+        "identity": 85,
+        "query_count": 10,
+        "gains_mAP": {
+          "baseline_only": 0.0,
+          "fused": -0.05063418366690589,
+          "cnn": 0.0034456764579873177,
+          "transformer": -0.1427767956675915,
+          "mamba": -0.02893480474805227
+        }
+      },
+      {
+        "identity": 87,
+        "query_count": 10,
+        "gains_mAP": {
+          "baseline_only": 0.0,
+          "fused": -0.18415991855552913,
+          "cnn": -0.06655798195403792,
+          "transformer": -2.4005420411510294,
+          "mamba": 0.7485529880900096
+        }
+      },
+      {
+        "identity": 91,
+        "query_count": 5,
+        "gains_mAP": {
+          "baseline_only": 0.0,
+          "fused": 1.6666666666666674,
+          "cnn": 0.0,
+          "transformer": -3.986069486069485,
+          "mamba": 7.750945750945752
+        }
+      },
+      {
+        "identity": 93,
+        "query_count": 4,
+        "gains_mAP": {
+          "baseline_only": 0.0,
+          "fused": -0.044670403021359294,
+          "cnn": -0.12938965756235724,
+          "transformer": 0.0025717886249201384,
+          "mamba": 0.34976338589409606
+        }
+      },
+      {
+        "identity": 97,
+        "query_count": 16,
+        "gains_mAP": {
+          "baseline_only": 0.0,
+          "fused": 0.17230014603483412,
+          "cnn": 0.08303437200662261,
+          "transformer": 0.10786879051827206,
+          "mamba": -0.09124401029730056
+        }
+      },
+      {
+        "identity": 99,
+        "query_count": 31,
+        "gains_mAP": {
+          "baseline_only": 0.0,
+          "fused": -0.1747275253534969,
+          "cnn": -0.3506500414258989,
+          "transformer": -0.037994080182792996,
+          "mamba": -0.11207290802343456
+        }
+      },
+      {
+        "identity": 101,
+        "query_count": 10,
+        "gains_mAP": {
+          "baseline_only": 0.0,
+          "fused": 0.6786950399554159,
+          "cnn": 0.568922902439443,
+          "transformer": 1.15947952741007,
+          "mamba": -1.3386038642649456
+        }
+      },
+      {
+        "identity": 105,
+        "query_count": 10,
+        "gains_mAP": {
+          "baseline_only": 0.0,
+          "fused": 0.9212454212454212,
+          "cnn": 0.49203428846286146,
+          "transformer": 2.4393173537357544,
+          "mamba": 0.09934015318801225
+        }
+      },
+      {
+        "identity": 109,
+        "query_count": 3,
+        "gains_mAP": {
+          "baseline_only": 0.0,
+          "fused": 0.27032779906343096,
+          "cnn": 0.1781305114638446,
+          "transformer": 0.09530762659673794,
+          "mamba": 1.0790598290598288
+        }
+      },
+      {
+        "identity": 113,
+        "query_count": 5,
+        "gains_mAP": {
+          "baseline_only": 0.0,
+          "fused": -0.04933817957903583,
+          "cnn": -0.0029731068438886704,
+          "transformer": -0.17708801919328193,
+          "mamba": 0.3225973758491236
+        }
+      },
+      {
+        "identity": 115,
+        "query_count": 4,
+        "gains_mAP": {
+          "baseline_only": 0.0,
+          "fused": 0.0,
+          "cnn": 0.0,
+          "transformer": -10.416666666666666,
+          "mamba": 0.0
+        }
+      },
+      {
+        "identity": 121,
+        "query_count": 9,
+        "gains_mAP": {
+          "baseline_only": 0.0,
+          "fused": 0.08006455753292266,
+          "cnn": 0.006295303849750288,
+          "transformer": 0.010669527124621301,
+          "mamba": -0.10229923810283728
+        }
+      },
+      {
+        "identity": 130,
+        "query_count": 12,
+        "gains_mAP": {
+          "baseline_only": 0.0,
+          "fused": 0.7737305103935461,
+          "cnn": 0.7214001867636661,
+          "transformer": -0.057108295357099124,
+          "mamba": 0.12661362957943806
+        }
+      },
+      {
+        "identity": 136,
+        "query_count": 8,
+        "gains_mAP": {
+          "baseline_only": 0.0,
+          "fused": -0.28452295566065977,
+          "cnn": -0.28228221203054316,
+          "transformer": -0.6448478695061887,
+          "mamba": -0.8681258941675609
+        }
+      },
+      {
+        "identity": 138,
+        "query_count": 6,
+        "gains_mAP": {
+          "baseline_only": 0.0,
+          "fused": 0.34098474623929875,
+          "cnn": 0.06684177441448982,
+          "transformer": 0.9344799130249123,
+          "mamba": 2.1473539789365166
+        }
+      },
+      {
+        "identity": 140,
+        "query_count": 9,
+        "gains_mAP": {
+          "baseline_only": 0.0,
+          "fused": 1.021689030486555,
+          "cnn": -0.10244477397726283,
+          "transformer": 0.04118042055248381,
+          "mamba": -0.2396253533988535
+        }
+      },
+      {
+        "identity": 151,
+        "query_count": 3,
+        "gains_mAP": {
+          "baseline_only": 0.0,
+          "fused": 0.0,
+          "cnn": 0.0,
+          "transformer": -16.666666666666664,
+          "mamba": 2.7777777777777772
+        }
+      },
+      {
+        "identity": 155,
+        "query_count": 5,
+        "gains_mAP": {
+          "baseline_only": 0.0,
+          "fused": 0.0,
+          "cnn": -1.6666666666666674,
+          "transformer": 0.0,
+          "mamba": 0.0
+        }
+      },
+      {
+        "identity": 157,
+        "query_count": 6,
+        "gains_mAP": {
+          "baseline_only": 0.0,
+          "fused": -0.10912698412698305,
+          "cnn": -0.24386017033075866,
+          "transformer": 3.244047619047621,
+          "mamba": -0.26124676923909573
+        }
+      },
+      {
+        "identity": 161,
+        "query_count": 5,
+        "gains_mAP": {
+          "baseline_only": 0.0,
+          "fused": 0.9523809523809508,
+          "cnn": -3.2036814419770354,
+          "transformer": 0.8333333333333349,
+          "mamba": -2.9761904761904767
+        }
+      },
+      {
+        "identity": 165,
+        "query_count": 8,
+        "gains_mAP": {
+          "baseline_only": 0.0,
+          "fused": 1.433259577998078,
+          "cnn": -1.9218548757149119,
+          "transformer": 0.024953242503927137,
+          "mamba": 0.9216265089394999
+        }
+      },
+      {
+        "identity": 167,
+        "query_count": 5,
+        "gains_mAP": {
+          "baseline_only": 0.0,
+          "fused": 0.9583554846712727,
+          "cnn": 0.06749799741410822,
+          "transformer": 0.16836964205385496,
+          "mamba": 0.043290043290044045
+        }
+      },
+      {
+        "identity": 171,
+        "query_count": 16,
+        "gains_mAP": {
+          "baseline_only": 0.0,
+          "fused": -0.03994093782226579,
+          "cnn": -0.19355963014923497,
+          "transformer": 0.7325867253186131,
+          "mamba": -0.24245369104776218
+        }
+      },
+      {
+        "identity": 173,
+        "query_count": 6,
+        "gains_mAP": {
+          "baseline_only": 0.0,
+          "fused": 0.0,
+          "cnn": 0.0,
+          "transformer": 0.0,
+          "mamba": 0.0
+        }
+      },
+      {
+        "identity": 175,
+        "query_count": 12,
+        "gains_mAP": {
+          "baseline_only": 0.0,
+          "fused": 0.15577647237149617,
+          "cnn": 0.8158938112000789,
+          "transformer": 1.32994534237871,
+          "mamba": -0.8624140618597861
+        }
+      },
+      {
+        "identity": 179,
+        "query_count": 7,
+        "gains_mAP": {
+          "baseline_only": 0.0,
+          "fused": 0.0,
+          "cnn": 0.6746031746031738,
+          "transformer": -0.714285714285715,
+          "mamba": -2.3809523809523805
+        }
+      },
+      {
+        "identity": 195,
+        "query_count": 9,
+        "gains_mAP": {
+          "baseline_only": 0.0,
+          "fused": 0.14664473897063476,
+          "cnn": 0.16194512696813038,
+          "transformer": 0.22004469205019858,
+          "mamba": -0.00034040278712430867
+        }
+      },
+      {
+        "identity": 229,
+        "query_count": 12,
+        "gains_mAP": {
+          "baseline_only": 0.0,
+          "fused": 0.5464851087100571,
+          "cnn": 1.4612649498957373,
+          "transformer": 0.7223633858527183,
+          "mamba": 0.02135399725371294
+        }
+      },
+      {
+        "identity": 231,
+        "query_count": 12,
+        "gains_mAP": {
+          "baseline_only": 0.0,
+          "fused": -0.5863678606006286,
+          "cnn": -0.6870828670732888,
+          "transformer": -2.3549333337125553,
+          "mamba": 0.1501417592132015
+        }
+      },
+      {
+        "identity": 234,
+        "query_count": 11,
+        "gains_mAP": {
+          "baseline_only": 0.0,
+          "fused": 0.00866903452766246,
+          "cnn": 0.02061279291786349,
+          "transformer": -0.007508868081068733,
+          "mamba": 0.004830441447994441
+        }
+      },
+      {
+        "identity": 238,
+        "query_count": 13,
+        "gains_mAP": {
+          "baseline_only": 0.0,
+          "fused": 0.05287752597655035,
+          "cnn": 0.3957632267242988,
+          "transformer": -0.45353870538455393,
+          "mamba": 0.03049120069994546
+        }
+      },
+      {
+        "identity": 254,
+        "query_count": 16,
+        "gains_mAP": {
+          "baseline_only": 0.0,
+          "fused": -0.3478588735011166,
+          "cnn": 0.46642813183779214,
+          "transformer": -0.061778757994732744,
+          "mamba": -0.39115318442419866
+        }
+      }
+    ]
+  },
+  "m0_receipt_sha256": "203f2e572d40e00d0d41842289746ad2c077d8d7e97ada5fe237214f1b161a38",
+  "m0_verification_sha256": "45cb383225b61c7fcca2b595032e4e257ef4d1006359d41780b58ccead62fe8e",
+  "completed_at": "2026-09-08T22:38:48.222948+08:00"
+}
