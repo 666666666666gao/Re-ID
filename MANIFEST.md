@@ -1433,3 +1433,5 @@
 - 2026-09-08T12:23:54.298989+08:00: Complete fixed-state history-gradient source2340batches/5238role rows; fullCPU,13-statistics,all25texts,108-cell plots and independent audit WARN same-family/provisional. Master41.156; no new training.
 
 - 2026-09-08T12:58:47.525707+08:00: Register MSVR310 history-gradient V1 single intervention, scripts/config/plan and static auditWARN; no runtime result. Master41.157.
+
+- 2026-09-08T13:01:04.585361+08:00: Historical-gradient V1 actually launched on a1b4777, T0 exit0/M0 live; launch and process evidence, master41.158. No new retrieval result.

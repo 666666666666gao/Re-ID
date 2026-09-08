@@ -2,7 +2,7 @@
 
 ## 0. 一页结论
 
-当前执行入口：§41.157；历史候选反传V1合同/代码/独立静态预审已就绪，下一步启动T0→M0→CPU→六端Q1→CPU。尚无该版本训练成绩；旧诊断已封存，Goal ACTIVE/UNMET。
+当前执行入口：§41.158；历史候选反传V1已按a1b4777启动，T0 exit0，M0 PID19991实际运行；仅通过完整M0/CPU后进入六端Q1。尚无新检索成绩，Goal ACTIVE/UNMET。
 
 当前用于已完成MSVR310比较及新登记RGBNT100比较的是原V8平行三角色结构：冻结Signal/CLIP，共享block8之前语义和tail9/10/11参数，三个角色分别运行共享tail；CNN处理局部语义Patch高频，Transformer处理全局CLS/Patch关系，Mamba处理空间与位置级三模态扫描。各角色相对冻结reference形成1536D残差，三角色4608D银行拼接3072D Signal得到7680D fused；完整单角色输出为4608D Signal+角色残差。三条路径均执行，当前没有Router/HFER、V23模态MLP或V24原型。两项车辆训练比较均已完成；RGBNT100内部完整比较支持三角色增益，MSVR310尚未超过Signal。下面V1—V8条目保留历史经过，不代表当前又启用了旧模块。
 
@@ -5931,3 +5931,12 @@ AST及ruff F通过，尚未运行真实模型预检；不提前工程PASS。复�
 复用现有tri_reid/3090，不改环境。预计M0 10–20分钟、Q1/CPU 3–5小时；保守新文件上限1.8GiB、启动至少3GiB。上一紧凑checkpoint约32.7MB，完整旧M0+Q1共994426031B；最新发布后主盘3822964736B。训练和模型原图留远端，代码/文本和主交接三方同步。尚未启动新进程，下一步必须按已发布commit/config SHA启动一次并验证实际PID及T0状态。
 
 本次没有新增删除；已有初始化、终点、全量检索证据继续保护。旧fresh-coordinate Q1两组0/5不变，长期三数据集baseline/SOTA Goal ACTIVE/UNMET。
+
+
+### 41.158 历史候选反传V1实际启动（2026-09-08T13:01:04.585361+08:00）
+
+北京时间2026-09-08T12:59:44.100924+08:00，持久screen tri_history_gradient_a1b4777启动唯一实验实例。执行commit `a1b4777b62611be2cac33351afdf7789edc59906`，config SHA256 `d03c7be1e738a206bf6db3b55580f53fbf33bfcc9050a46c4ddd0c81d7134c4e`；运行目录 `/root/autodl-tmp/trifusion-v2/artifacts/msvr310_history_gradient_v1_seed42_a1b4777`。wrapper PID19977，T0 PID19979已exit0，M0 PID19991于2026-09-08T12:59:48.994503+08:00启动，2026-09-08T12:59:52.324248+08:00已核实两个实际进程及命令行。pipeline RUNNING；M0尚无完整终态，不提前记作通过。后续docs提交不改变绑定训练文件。
+
+两端都刷新历史坐标并计算候选侧VJP；唯一差别为control丢弃/history_gradient加入参数更新。仍是当前64 anchors、原候选/身份规则、原14项损失、seed42、固定20epoch。M0及完整CPU实际通过才自动进入六端Q1；不根据中间检索调参数或重启选点。旧fresh-coordinate FAIL及来源测量边界保持。
+
+启动前可用3825758208B，观察时3822964736B；本轮无新增删除。保护初始化、终点权重与距离/梯度诊断证据。按预计M0 10–20分钟、Q1/CPU 3–5小时安排约300秒观察，异常依真实日志处理，不能将工程中断写成检索失败。启动/实际进程、静态检查与资源凭据见evidence/msvr310_history_gradient_launch_20260908。

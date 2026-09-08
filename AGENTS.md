@@ -1,12 +1,12 @@
 # TriFusion-ReID workspace
 
-## Latest verified state (2026-09-08T12:58:47.525707+08:00, historical-gradient training registered)
+## Latest verified state (2026-09-08T13:01:04.585361+08:00, historical-gradient M0 running)
 
-- Complete fixed-state source diagnosis is archived/audited WARN, no optimizer or retrieval gains. See master41.156 and its complete source report. Do not rerun it.
-- New single hypothesis: fresh history candidate VJP applied versus discarded, same64anchors/pool/14losses/original V8 inference. Config configs/MSVR310/TriFusion-history-gradient-paired-v1.json; plan refine-logs/msvr310_history_gradient_v1/EXPERIMENT_PLAN.md.
-- Four new check/train/verify/run_msvr_history_gradient.py files pass syntax/pyflakes; independent static audit WARN same-family/provisional. No runtime result yet.
-- Next launch once using exact committed HEAD/config SHA, T0→M0→CPU→six-end Q1→CPU; verify actual pipeline/PID before reporting live. Estimated3–5h Q1,300s observation. Compact weights, minimum3GiB; last free3822964736B.
-- Seed42-only, old failures, full-gallery/MSVR scene filtering and protected artifacts unchanged. Goal ACTIVE/UNMET; master41.157. Preserve unrelated dirty files.
+- Registered historical candidate gradient V1 launched once at 2026-09-08T12:59:44.100924+08:00, execution commit a1b4777b62611be2cac33351afdf7789edc59906, config SHA d03c7be1e738a206bf6db3b55580f53fbf33bfcc9050a46c4ddd0c81d7134c4e.
+- Run root /root/autodl-tmp/trifusion-v2/artifacts/msvr310_history_gradient_v1_seed42_a1b4777; screen tri_history_gradient_a1b4777; wrapper PID19977, M0 PID19991. Observed 2026-09-08T12:59:52.324248+08:00: T0 exit0, both live, pipeline RUNNING. M0/Q1 not yet complete. Reuse original processes; do not launch a duplicate.
+- Only history candidate VJP applied versus discarded, both fresh coordinates; same64anchors/pool/14losses/V8 inference, seed42. Full M0/CPU gate precedes six-end Q1/CPU automatically. Runtime receipts required; static audit WARN is not runtime PASS.
+- Check existing pipeline/logs at about300s or estimated milestone. Prelaunch free3825758208B; no new deletion, compact checkpoints and protected evidence.
+- Complete source diagnosis archived/audited; no rerun. Old failures unchanged. Main Goal ACTIVE/UNMET. Master41.158; preserve unrelated dirty files and bound scientific code.
 
 ## Experiment environment
 
