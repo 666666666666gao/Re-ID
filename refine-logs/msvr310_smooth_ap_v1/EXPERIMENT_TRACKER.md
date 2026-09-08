@@ -1,5 +1,5 @@
 # MSVR310 Smooth-AP v1
 
-当前：23:40首次启动，执行2e947a4，T0通过；23:44 M0运行，4/6容量端已见完成，完整M0/CPU未结束。Master41.189。
+当前：完整M0/CPU通过，固定Q1已启动；独立M0审计待完成，无完整Q1结果。Master41.190及results/MSVR310_SMOOTH_AP_V1_M0_2026-09-08.md。
 
-run /root/trifusion-storage/artifacts/msvr310_smooth_ap_v1_seed42_2e947a4；screen tri_smooth_ap_2e947a4，wrapper48170/M0 48190。同一pipeline继续，不重复启动或改变固定合同。Q1尚未开始，无新检索结果。
+当前执行入口：§41.190；Smooth-AP M0248步及完整CPU通过，原wrapper48170已进入固定Q1 PID49157；完整M0证据收齐，独立审计待完成，无新检索终态。禁止重启/改合同，Goal ACTIVE/UNMET。

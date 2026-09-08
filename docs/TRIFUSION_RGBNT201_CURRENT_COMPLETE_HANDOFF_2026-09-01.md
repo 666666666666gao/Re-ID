@@ -2,7 +2,7 @@
 
 ## 0. 一页结论
 
-当前执行入口：§41.189；Smooth-AP固定实验2e947a4已于23:40首次启动，T0通过；23:44原wrapper48170/M0进程48190存活，已见4/6容量端完成，完整M0/CPU尚无终态。不要重复启动或修改固定合同；旧role-set Q1/两项审计已关闭。Goal ACTIVE/UNMET。
+当前执行入口：§41.190；Smooth-AP M0248步及完整CPU通过，原wrapper48170已进入固定Q1 PID49157；完整M0证据收齐，独立审计待完成，无新检索终态。禁止重启/改合同，Goal ACTIVE/UNMET。
 
 当前用于已完成MSVR310比较及新登记RGBNT100比较的是原V8平行三角色结构：冻结Signal/CLIP，共享block8之前语义和tail9/10/11参数，三个角色分别运行共享tail；CNN处理局部语义Patch高频，Transformer处理全局CLS/Patch关系，Mamba处理空间与位置级三模态扫描。各角色相对冻结reference形成1536D残差，三角色4608D银行拼接3072D Signal得到7680D fused；完整单角色输出为4608D Signal+角色残差。三条路径均执行，当前没有Router/HFER、V23模态MLP或V24原型。两项车辆训练比较均已完成；RGBNT100内部完整比较支持三角色增益，MSVR310尚未超过Signal。下面V1—V8条目保留历史经过，不代表当前又启用了旧模块。
 
@@ -6266,3 +6266,24 @@ T0状态PASS_SMOOTH_AP_CPU_CONTRACT：新Smooth-AP合成标量参考误差0，�
 23:44:15原wrapper与M0均存活，日志已完成fold0、fold1的control与smooth_ap四个8步容量端；尚无完整M0 summary及CPU终态。GPU982MiB/4%为瞬时采样，不能据此判断卡住。输出卷9815351296B空闲，启动前9954033664B，仍满足登记预算。固定100步过拟合和其余容量端继续；预计23:50–00:05附近取得M0终态，以实际进度修正，按180–300秒或里程碑观察同一pipeline/PID。禁止观察超时重启。
 
 实际启动脚本/收据、只读观察脚本与完整T0/日志快照归档evidence/smooth_ap_launch_20260908。首次观察输出包含完整780batch队列，终端显示被截断但本地JSON完整保存；不是证据缺失。后续观察只展示必要字段。训练合同/配置/科学脚本不变；M0/CPU通过才由固定wrapper打开Q1，M0独立审计按合同与Q1并行。尚无新检索结果，Goal仍未达到。
+
+
+### 41.190 Smooth-AP完整M0与Q1启动
+
+# MSVR310 Smooth-AP v1 M0完整工程记录
+
+固定执行2e947a4325144e37fed638105ac954e7e54b5fe5，配置SHA974328fee25985b19aa36c84f57a557f9120993fecb98b2a902a1b8de8475302。M0运行HEAD2e947a4325144e37fed638105ac954e7e54b5fe5。训练合同refine-logs/msvr310_smooth_ap_v1/TRAINING_PLAN.md不改变。
+
+M0结束2026-09-08T23:51:18.686093+08:00，CPU结束2026-09-08T23:51:28.873294+08:00，均退出0。原wrapper48170已启动Q1 PID49157，开始2026-09-08T23:51:28.875233+08:00；这只说明固定流程进入Q1，尚无完整科学终态。
+
+三折两端各8更新及两端各100固定batch更新，CPU核验248步。六容量端203/203训练张量累计非零，六次固定checkpoint重载输出逐位相同。AMP/冻结状态/配对像素及初始权重检查保存于原收据；不宣称每步所有张量非零。
+
+过拟合原loss-floor校正末首比：control=0.000701483458532，smooth_ap=0.000699798005237，既定门≤0.1。候选fused目标为AP，其他13项不变，不能把两端总loss直接当作同定义目标改善。固定batch排除历史副本，此过拟合并不证明历史路径全部能力。
+
+六容量端首历史group的四输出逐位一致；完整图总encoder梯度对当前导数加历史VJP最大相对L2误差2.09298683008e-05（门0.005）。域为189个encoder张量；不是全248步参数梯度独立重建。CPU核对4,945,920个保存距离元素及全步AP/原hard/队列/损失账本，记录历史VJP 5,760个记录前向。六容量端最高allocated显存11267.117188MiB。
+
+完整29份远端文本共5,574,687B按SHA接收，见evidence/smooth_ap_m0_complete_20260908/intake_manifest.json。summary SHA64ebb7ef11a80afc19f77a87c16a49c239b3e5022e161d1cd8ad340d2c8699e4。权重、模型、图像、NPY仍留远端。后续独立上下文审计待完成，其结论与训练器/CPU收据区分。
+
+完整Q1仍固定seed42、3折2端/1560更新、完整图库及scene协议、两组原五门；不读局部结果调参，不以工程通过替代检索或三数据集Goal。预计3–6小时，按真实训练时间调整观察。
+
+独立M0审计已实际启动：/root/audit_msvr_smooth_ap_m0，gpt-6-astra/max/fork-none，只读来源M0/代码/原始数组，same-family/provisional。请求与完整调用元信息留私有.aris/traces/experiment-audit/2026-09-08_smooth_ap_m0，不读取局部Q1分数，不中止正在运行的固定Q1。审计尚无结论。

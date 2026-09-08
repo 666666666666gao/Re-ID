@@ -1,13 +1,11 @@
 # TriFusion-ReID workspace
 
-## Latest verified state (2026-09-08 23:44 Smooth-AP running)
+## Latest verified state (Smooth-AP M0 complete; Q1 running)
 
-- Master41.189. Goal ACTIVE/UNMET. Old role-set Q1/core/positive audits CLOSED, science FAIL0/5. Do not repeat.
-- New fixed execution2e947a4325144e37fed638105ac954e7e54b5fe5, config SHA974328fee25985b19aa36c84f57a557f9120993fecb98b2a902a1b8de8475302. TRAINING_PLAN.md/config/science files pinned, do not mutate during run.
-- Actually launched23:40, screen tri_smooth_ap_2e947a4, run /root/trifusion-storage/artifacts/msvr310_smooth_ap_v1_seed42_2e947a4; wrapper48170/M0 48190 live23:44. T0 exit0, PASS_SMOOTH_AP_CPU_CONTRACT, all780source batches. Four capacity endpoints finished, complete M0/CPU pending. No Q1 result. Do not relaunch on observation timeout.
-- T0→M0→M0_CPU→Q1→Q1_CPU persistent wrapper, stop on actual failure. M0 audit may parallel fixed Q1 per contract. Same seed42/64anchors/fresh-history fullVJP/13otherlosses; only fused hard versus Smooth-AP tau.01. Original two five-gate groups unchanged.
-- Output9815351296B free at23:44; maxnew3GiB/minfree4GiB. Existing environment reused, no install. Necessary weights retained. Monitor ETA/180–300s, likely M0 terminal23:50–00:05 subject actual progress.
-- Preserve unrelated .aris/meta/events.jsonl and tools/run_trifusion_experiment.py edits. No official test consumed.
+- 当前执行入口：§41.190；Smooth-AP M0248步及完整CPU通过，原wrapper48170已进入固定Q1 PID49157；完整M0证据收齐，独立审计待完成，无新检索终态。禁止重启/改合同，Goal ACTIVE/UNMET。
+- Execution2e947a4/config974328fee25985b19aa36c84f57a557f9120993fecb98b2a902a1b8de8475302 pinned. Run /root/trifusion-storage/artifacts/msvr310_smooth_ap_v1_seed42_2e947a4, screen tri_smooth_ap_2e947a4. Do not relaunch on timeout or edit science files.
+- Full M0 evidence evidence/smooth_ap_m0_complete_20260908. Standard Smooth-AP only replaces fused metric; other13losses/seed42/fresh-history fullVJP unchanged. Two original five-gate groups preserved.
+- Monitor same PID/ETA and180–300s. Keep weights/data/NPY remote, preserve necessary checkpoints and unrelated .aris/meta/events.jsonl/tools/run_trifusion_experiment.py edits. Goal remains unmet.
 
 ## Experiment environment
 
