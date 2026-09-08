@@ -1,12 +1,12 @@
 # TriFusion-ReID workspace
 
-## Latest verified state (2026-09-08T13:48:44.327459+08:00, first history-gradient training control endpoint complete)
+## Latest verified state (2026-09-08T14:10:29.259672+08:00, persistent terminal processor running)
 
-- Q1 original wrapper19977/PID20941 live at2026-09-08T13:48:24.488240+08:00. Fold0control20epochs/260updates, fixedcheckpoint and rankings SHA match receipts;203/203gradients,0overflow. Single-endpoint runtime/file check, not finalCPU/scientificPASS.
-- Fold0 history_gradient has actually written81steps; same process continues remaining5ends. Do not read partial scores for configuration changes or start duplicate jobs.
-- Root /root/autodl-tmp/trifusion-v2/artifacts/msvr310_history_gradient_v1_seed42_a1b4777; screen tri_history_gradient_a1b4777. Execution a1b4777/config d03c7be1e738a206bf6db3b55580f53fbf33bfcc9050a46c4ddd0c81d7134c4e unchanged. Master41.161; evidence/msvr310_history_gradient_first_training_endpoint_20260908.
-- CompleteM0/CPU alreadyPASS248updates. Q1 terminal-only intake29texts, complete1560step text/ranking analysis and independent audit remain pending; binaries/models stay remote. Ready read-only analyzer passed allM0 texts.
-- Latest free3504787456B, no new deletion. About300s/estimated milestone observations. Seed42/current64anchors/14losses/two original5gates and old failures unchanged. Preserve unrelated dirty files; Main Goal ACTIVE/UNMET.
+- Remote original wrapper19977/Q1 PID20941 continues on a1b4777/config d03c7be1e738a206bf6db3b55580f53fbf33bfcc9050a46c4ddd0c81d7134c4e. Firstcontrol complete, candidate running. No complete scientific terminal.
+- Local Python PID31404, uv launcher18524, verified 2026-09-08T14:10:14.5012848+08:00: WAITING_VERIFIED_REMOTE_WRAPPER, poll_count1. Root C:/Users/gb/.codex_tmp/history_gradient_q1_terminal_processing_20260908; inspect state.json plus actual process. Own observations every300s; no GPU launch/restart.
+- Worker automatically receives complete29texts only after original5stage/1560step/CPU terminal, then runs all training text and complete ranking analyses. Do NOT concurrently call collector, recreate output dirs, or edit SHA-bound observer/collector/analyzer/worker/launch files while it runs. Plan C:/Users/gb/.codex_tmp/history_gradient_terminal_watcher_plan_20260908.json, SHAe4573130687adab1ced95cc82d3ddaab817450d687b989dbbe40fa0eb8bb9430.
+- On success status COMPLETE_LOCAL_TEXT_AND_RANKING_VERIFIED_AWAITING_INDEPENDENT_AUDIT: continue fresh-context audit, report and three-way publication. Observation/process failure requires evidence recheck; never restart training merely because local observation/processing stopped.
+- Master41.162 and evidence/msvr310_history_gradient_terminal_watcher_20260908. Remote environment/scientific configuration unchanged; isolated localtext deps only. Necessary weights/arrays protected, no new deletion. Seed42/two original5gates/old failures unchanged. Main Goal ACTIVE/UNMET; preserve unrelated dirty files.
 
 ## Experiment environment
 

@@ -2,7 +2,7 @@
 
 ## 0. 一页结论
 
-当前执行入口：§41.161；历史候选反传V1 Q1首个控制端260步/固定checkpoint/检索文件完成，fold0候选端已更新81步，原PID20941持续。尚无完整配对终态，Goal ACTIVE/UNMET。
+当前执行入口：§41.162；历史反传Q1原PID20941继续；本地终态接收/分析后台PID31404已核实，300秒观察，完整结束才处理29文本与全量排名。尚无完整Q1结论，Goal ACTIVE/UNMET。
 
 当前用于已完成MSVR310比较及新登记RGBNT100比较的是原V8平行三角色结构：冻结Signal/CLIP，共享block8之前语义和tail9/10/11参数，三个角色分别运行共享tail；CNN处理局部语义Patch高频，Transformer处理全局CLS/Patch关系，Mamba处理空间与位置级三模态扫描。各角色相对冻结reference形成1536D残差，三角色4608D银行拼接3072D Signal得到7680D fused；完整单角色输出为4608D Signal+角色残差。三条路径均执行，当前没有Router/HFER、V23模态MLP或V24原型。两项车辆训练比较均已完成；RGBNT100内部完整比较支持三角色增益，MSVR310尚未超过Signal。下面V1—V8条目保留历史经过，不代表当前又启用了旧模块。
 
@@ -5965,3 +5965,12 @@ M0于13:10:03.589918写入PASS_ENGINEERING_ONLY、13:10:04原PID19991 exit0；CP
 候选fold0 history_gradient已实际写出81步，保持原进程/合同/初始化规则继续；不依据首端或部分fold选择配置。首端额外新鲜角色记录前向97600、历史VJP记录前向87232、峰值分配6112.6787MiB，实际训练开销单列。独立训练完整比较与五门仍待其余五端和CPU终态。证据evidence/msvr310_history_gradient_first_training_endpoint_20260908，未输出或利用中间检索分数调参。
 
 当前可用3504787456B，无新增删除。执行a1b4777不变；后续仅观察当前候选端至固定终点并继续两折。Goal ACTIVE/UNMET；旧失败及已消费官方边界保持。
+
+
+### 41.162 持久终态接收与全量文本分析已启动（2026-09-08T14:10:29.259672+08:00）
+
+本地uv launcher18524/Python PID31404已实际核实，2026-09-08T14:10:14.5012848+08:00状态WAITING_VERIFIED_REMOTE_WRAPPER，首次远端观察2026-09-08T14:09:21.194906+08:00确认原wrapper19977/Q1 PID20941继续。此任务每300秒只读观察，不启动/重启训练，不读取部分结果改配置。独立观察目录避免与手工观察写同一文件。运行目录C:/Users/gb/.codex_tmp/history_gradient_q1_terminal_processing_20260908，state.json及分阶段stdout/stderr持久保存。plan SHA e4573130687adab1ced95cc82d3ddaab817450d687b989dbbe40fa0eb8bb9430。
+
+完整pipeline五阶段exit0、1560更新与CPU终态后，自动执行已准备的29文本SHA接收→tools/analyze_msvr_history_gradient_training.py全更新/epoch汇总→原tools/audit_msvr_paired_ranking_text.py全600query/60身份/五输出排名及原门核验。阶段非零退出或观察无法确认时，记录状态并停止本地处理，不推定远端训练失败、不重启。成功状态为COMPLETE_LOCAL_TEXT_AND_RANKING_VERIFIED_AWAITING_INDEPENDENT_AUDIT；自动流程不发布报告、不替代独立审计，也不标记Goal完成。
+
+绑定接收/观察/分析/worker/launch文件SHA；后台在运行期间不要修改这些文件，否则绑定核验会停止本地处理。Windows隐藏启动，使用隔离uv文本依赖环境（8个包）；远端tri_reid环境、a1b4777训练代码与配置没有变化。原图/权重/二进制矩阵留远端。证据evidence/msvr310_history_gradient_terminal_watcher_20260908；当前没有新增终态或性能结论。下一步按阶段核查后台与原GPU进程，完成后接独立审计/报告/三方同步。Goal ACTIVE/UNMET。
