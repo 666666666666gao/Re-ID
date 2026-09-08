@@ -6386,3 +6386,12 @@ ROADMAP、MEAP、HDC、DiVA为用户提出的后续近邻阅读，尚未在此�
 MEAP出版全文本次未取得（DOI错误/ScienceDirect429），仅出版/作者机构摘要加作者代码，不声称独立核过全文公式/表。Git refs绑定meapnet commit45f948894f84d45cc3f6558b7f030a586130ea7e，五文件35625B、MIT许可及SHA保留evidence/meap_primary_review_20260909。API404和web click失败亦记载，raw固定版本读取成功。没有安装或执行作者代码。
 
 作者实现对固定VIS/IR身份分组的正例分数加margin，保留同模态正例；与后继候选“排除同环境正例”是不同干预。当前动态历史池不能直接沿用固定索引mask，self/分组平均/两个margin/全局分区监督均需明确。对于来源只有一个scene的身份，margin无法补出真实跨scene正例。该核读仅明确直接近邻及复现边界，不登记新训练、不采用作者margin、不改变当前Smooth-AP或原门。下一决策仍等待完整六端/CPU、来源导数/全量排名和独立终态审计；Goal未完成。
+
+
+### 41.199 Smooth-AP前两折完整训练端完成，进入第三折（2026-09-09 02:17）
+
+原进程持续等待观察：01:55候选11/20、02:01到14/20、02:06到16/20、02:11到18/20；02:17:31确认fold1 smooth_ap固定20epoch/260步完成、checkpoint存在，记录工程检查全部通过。现fold0/1各control与smooth_ap四个端均完成，4/6；fold2 control已到5/20epoch。原wrapper48170/Q1 49157均存活，pipeline RUNNING/q1，没有重启。完整观察文本在evidence/smooth_ap_q1_progress_0217_20260909；文件名是预命名，准确时刻以各JSON observed_at为准。
+
+输出卷9084583936B（约8.46GiB），本次未删除权重/数组。依前两控制端后预热约130–138秒/epoch，预计第三控制端约02:50–02:55完成，再观察原流程切换最后候选端；不能用约19秒预热耗时外推完整端。无局部检索分数消费、无门槛/温度/候选/归一化变更。
+
+接续仍需最后两个固定端、Q1_CPU、完整文本接收与排名/来源/正例导数分析、独立终态审计。原执行2e947a4/config974328fee25985b19aa36c84f57a557f9120993fecb98b2a902a1b8de8475302及seed42保持。工程端点不代表完整检索结论，三数据集Goal仍ACTIVE/UNMET。

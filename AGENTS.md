@@ -2,11 +2,11 @@
 
 ## Latest verified state (2026-09-09 Smooth-AP M0 audit closed)
 
-- 当前执行入口：§41.198；09-09 01:48原wrapper48170/Q1 49157存活，fold0两端及fold1 control各260步完成，3/6端完成，fold1 smooth_ap8/20epoch。下一候选端点预计02:15–02:20，完整Q1/CPU终态未结束。M0独立审计已关闭，不重复；seed42/原合同不变，Goal ACTIVE/UNMET。
+- 当前执行入口：§41.199；09-09 02:17原wrapper48170/Q1 49157存活，fold0/1两端各260步完成，4/6端完成，fold2 control5/20epoch。下一控制端点预计02:50–02:55，完整Q1/CPU终态未结束。M0独立审计已关闭，不重复；seed42/原合同不变，Goal ACTIVE/UNMET。
 - Read refine-logs/msvr310_smooth_ap_v1/EXPERIMENT_AUDIT_M0.md/.json and evidence/smooth_ap_m0_audit_20260909. Same-family/provisional, reconstruction limits retained. No new model/GPU replay, no change request. Do not repeat M0 or its audit.
 - Run /root/trifusion-storage/artifacts/msvr310_smooth_ap_v1_seed42_2e947a4, screen tri_smooth_ap_2e947a4. Original execution2e947a4 and pinnedconfig unchanged; do not relaunch on timeout. Two five-gate groups fixed.
 - Terminal intake/analyzer/ranking steps are in evidence/smooth_ap_terminal_analysis_preparation_20260909/smooth_ap_terminal_execution_ready_20260909.md, not executed on partial Q1. Complete Q1 and independent terminal review pending.
-- Output9226153984B free01:48; preserve required weights/arrays and unrelated .aris/meta/events.jsonl/tools/run_trifusion_experiment.py. Three-dataset Goal ACTIVE/UNMET.
+- Output9084583936B free02:17; preserve required weights/arrays and unrelated .aris/meta/events.jsonl/tools/run_trifusion_experiment.py. Three-dataset Goal ACTIVE/UNMET.
 
 ## Experiment environment
 
