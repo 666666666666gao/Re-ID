@@ -1,12 +1,14 @@
 # TriFusion-ReID workspace
 
-## Latest verified state (2026-09-08T19:50:47.916282+08:00, Q1 milestone)
+## Latest verified state (2026-09-08T20:14:31.502177+08:00, Q1 milestone)
 
-- Master41.177. Original execution26c9739; /root/trifusion-storage/artifacts/msvr310_role_set_v1_seed42_26c9739; wrapper35302/Q136320 actually live. 1/6 endpoints complete, latest fold0 role_set epoch7/20. No relaunch.
-- Next observation around 2026-09-08 20:15 +08:00, based on actual stage durations; use original PID/logs, not stale Goal V29 paragraph. Full pipeline is T0/M0/CPU/Q1/CPU; M0 completed248 updates, Q1 pending full1560 updates and six-end CPU/independent audit.
-- Output free10711928832B; preserve initial/final/evidence checkpoints. Config and scientific source hashes unchanged. Official results unchanged; no selection from partial folds.
+- Master41.178. Original execution26c9739; /root/trifusion-storage/artifacts/msvr310_role_set_v1_seed42_26c9739; wrapper35302/Q136320 actually live. 1/6 endpoints complete, latest fold0 role_set epoch18/20. No relaunch.
+- Next observation around 2026-09-08 20:23 +08:00, based on actual stage durations; use original PID/logs, not stale Goal V29 paragraph. Full pipeline is T0/M0/CPU/Q1/CPU; M0 completed248 updates, Q1 pending full1560 updates and six-end CPU/independent audit.
+- Output free10657984512B; preserve initial/final/evidence checkpoints. Config and scientific source hashes unchanged. Official results unchanged; no selection from partial folds.
 - Terminal intake and descriptive source analysis scripts are prepared, AST-only, not yet run; see Master41.176 and refine-logs/msvr310_role_set_v1/RELATED_WORK_BOUNDARY_2026-09-08.md. Full M0 evidence atMaster41.175.
 - Goal ACTIVE/UNMET. Main/remote/Desktop handoff synchronized by this publication. Historical status paragraphs below are not the active state; retain unrelated local runner/.aris modifications.
+
+- Complete M0 fresh independent audit /root/audit_msvr_role_set_m0 is RUNNING; no verdict yet. CPU/read-only, no partial Q1 scores or GPU. Keep same-family/provisional scope and collect full outputs on completion; do not duplicate audit.
 
 ## Experiment environment
 

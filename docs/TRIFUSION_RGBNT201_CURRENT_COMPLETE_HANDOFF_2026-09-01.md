@@ -2,7 +2,7 @@
 
 ## 0. 一页结论
 
-当前执行入口：§41.177；2026-09-08T19:50:47.916282+08:00原role-set Q1进程持续存在，1/6端完成；fold0 role_set 7/20。下次观察2026-09-08 20:15 +08:00附近，跟踪原PID，不重复启动。Goal ACTIVE/UNMET。
+当前执行入口：§41.178；2026-09-08T20:14:31.502177+08:00原role-set Q1进程持续存在，1/6端完成；fold0 role_set 18/20。下次观察2026-09-08 20:23 +08:00附近，跟踪原PID，不重复启动。Goal ACTIVE/UNMET。
 
 当前用于已完成MSVR310比较及新登记RGBNT100比较的是原V8平行三角色结构：冻结Signal/CLIP，共享block8之前语义和tail9/10/11参数，三个角色分别运行共享tail；CNN处理局部语义Patch高频，Transformer处理全局CLS/Patch关系，Mamba处理空间与位置级三模态扫描。各角色相对冻结reference形成1536D残差，三角色4608D银行拼接3072D Signal得到7680D fused；完整单角色输出为4608D Signal+角色残差。三条路径均执行，当前没有Router/HFER、V23模态MLP或V24原型。两项车辆训练比较均已完成；RGBNT100内部完整比较支持三角色增益，MSVR310尚未超过Signal。下面V1—V8条目保留历史经过，不代表当前又启用了旧模块。
 
@@ -6144,3 +6144,14 @@ T0完整780来源batch队列与新旧合成数学；M0三折两端各8步与两�
 输出盘剩余10711928832B（9.9763GiB），GPU当前7412, 24576MiB。下一观察安排2026-09-08 20:15 +08:00附近；预计时间按实际后预热epoch调整，原3–5h全Q1预算不作为保证。不增加每epoch权重，不删除必要初始化/终点/核验产物。
 
 完整原观察保存在evidence/msvr310_role_set_q1_milestone_41_177_20260908。此里程碑不报告单端或局部配对科学增益；完整六端/CPU收据齐全后才执行已准备接收、来源分析与独立审计。M0完整证据见§41.175，终态工具及近邻边界见§41.176，不重复运行。训练配置/源文件/原两组五项门槛未改动，正式成绩未新增，Goal ACTIVE/UNMET。
+
+
+### 41.178 Q1完成端里程碑（2026-09-08T20:14:31.502177+08:00）
+
+原执行26c9739、wrapper35302、Q1 PID36320持续存在。已保存终点的完整端1/6：[{"fold": 0, "endpoint": "control", "steps": 260, "checks": {"all_trainable_gradients_live": true, "overflow_zero": true, "frozen_state_unchanged": true, "signal_state_unchanged": true, "role_state_updated": true, "capacity_below_24gib": true, "fixed_training_length": true}, "checkpoint": "/root/trifusion-storage/artifacts/msvr310_role_set_v1_seed42_26c9739/q1/fold_0_control/roles_epoch20.pth"}]。最新epoch事件为fold0 role_set 18/20，当前epoch实际13步，耗时136.183s。前次19:41实查control已19epoch，19:45实查control固定260步完成并进入role_set第5epoch；同一原任务持续前进，没有重启。
+
+输出盘剩余10657984512B（9.9260GiB），GPU当前7412, 24576MiB。下一观察安排2026-09-08 20:23 +08:00附近；预计时间按实际后预热epoch调整，原3–5h全Q1预算不作为保证。不增加每epoch权重，不删除必要初始化/终点/核验产物。
+
+完整原观察保存在evidence/msvr310_role_set_q1_milestone_41_178_20260908。此里程碑不报告单端或局部配对科学增益；完整六端/CPU收据齐全后才执行已准备接收、来源分析与独立审计。M0完整证据见§41.175，终态工具及近邻边界见§41.176，不重复运行。训练配置/源文件/原两组五项门槛未改动，正式成绩未新增，Goal ACTIVE/UNMET。
+
+独立M0审计另由 /root/audit_msvr_role_set_m0 执行，fresh-context、same-family/provisional、只读CPU不超过2线程，不使用GPU或读取Q1分数。20:14本次观察时审计尚未返回终态。审计输出目录 C:/Users/gb/.codex_tmp/role_set_m0_independent_audit_20260908；完整请求/响应跟踪位于本地 .aris/traces/experiment-audit/2026-09-08_role_set_m0，不提交私有trace。当前仅能记录审计进行中，不能视为PASS；完成后接收完整审计和原始检查输出。不要重复启动审计或M0。
