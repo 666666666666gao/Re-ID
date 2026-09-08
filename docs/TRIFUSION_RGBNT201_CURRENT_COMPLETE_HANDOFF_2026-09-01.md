@@ -2,7 +2,7 @@
 
 ## 0. 一页结论
 
-当前执行入口：§41.156；历史候选梯度完整来源2340batch、CPU、全量文本/图表和独立审计均已收束。原进程结束；下一步登记单一历史梯度范围配对实验，尚未启动新训练。Goal ACTIVE/UNMET。
+当前执行入口：§41.157；历史候选反传V1合同/代码/独立静态预审已就绪，下一步启动T0→M0→CPU→六端Q1→CPU。尚无该版本训练成绩；旧诊断已封存，Goal ACTIVE/UNMET。
 
 当前用于已完成MSVR310比较及新登记RGBNT100比较的是原V8平行三角色结构：冻结Signal/CLIP，共享block8之前语义和tail9/10/11参数，三个角色分别运行共享tail；CNN处理局部语义Patch高频，Transformer处理全局CLS/Patch关系，Mamba处理空间与位置级三模态扫描。各角色相对冻结reference形成1536D残差，三角色4608D银行拼接3072D Signal得到7680D fused；完整单角色输出为4608D Signal+角色残差。三条路径均执行，当前没有Router/HFER、V23模态MLP或V24原型。两项车辆训练比较均已完成；RGBNT100内部完整比较支持三角色增益，MSVR310尚未超过Signal。下面V1—V8条目保留历史经过，不代表当前又启用了旧模块。
 
@@ -5918,3 +5918,16 @@ AST及ruff F通过，尚未运行真实模型预检；不提前工程PASS。复�
 下一步：依据覆盖和方向证据，登记只改变历史候选梯度范围的配对主实验。两端均使用新鲜历史坐标、相同当前64anchor/候选池/14项loss/原三角色；对照丢弃候选侧VJP，候选加入对应梯度。先固定合同、实际M0和CPU再完整六端Q1；本次发布未启动该训练。预计沿用紧凑角色checkpoint：上一完整M0+Q1实际994426031B，当前余量允许规划但仍需启动前确认。没有新增删除，旧权重清理不重复计入。
 
 原fresh-coordinate Q1两组0/5及−0.07158042pp保持封存；诊断不改变其检索结论。seed42-only、三数据集和既有完整图库/scene协议、主结果前不消融、官方结果不调参的合同保持。Goal ACTIVE/UNMET。
+
+
+### 41.157 新鲜坐标下历史候选反传V1登记（2026-09-08T12:58:47.525707+08:00）
+
+完整来源审计已收束，唯一新假设为历史候选侧是否反传。两端同为当前参数新鲜历史坐标、同64anchor与原候选规则；control计算但丢弃候选VJP，history_gradient在统一unscale及唯一AdamW step前加入其原权重梯度。保留原14项loss、模型/推理、seed42、20epoch和两组五门；不加历史anchor、Router、额外loss或扫描。算法规则相同，实际非零VJP组数可能因轨迹而异，分别报告真实开销。
+
+新文件：configs/MSVR310/TriFusion-history-gradient-paired-v1.json，tools/{check,train,verify,run}_msvr_history_gradient.py，refine-logs/msvr310_history_gradient_v1/EXPERIMENT_PLAN.md。静态语法及pyflakes通过；独立预执行审计WARN，same-family/provisional，报告在同目录EXPERIMENT_AUDIT_PREEXECUTION.md。这不是M0通过或新检索成绩。
+
+执行合同：T0全780采样batch准入及synthetic链式检查→M0六端48容量+两端200固定过拟合更新→全CPU→六端1560更新Q1→完整权重/距离/排序/AP/CMC/身份CPU核验。M0首次单历史组直接14项图与分解梯度误差≤0.005；逐组坐标、RNG/buffers、梯度应用检查；14项标量全部保存。参数梯度仍是运行时见证，不宣称独立完整模型重放。
+
+复用现有tri_reid/3090，不改环境。预计M0 10–20分钟、Q1/CPU 3–5小时；保守新文件上限1.8GiB、启动至少3GiB。上一紧凑checkpoint约32.7MB，完整旧M0+Q1共994426031B；最新发布后主盘3822964736B。训练和模型原图留远端，代码/文本和主交接三方同步。尚未启动新进程，下一步必须按已发布commit/config SHA启动一次并验证实际PID及T0状态。
+
+本次没有新增删除；已有初始化、终点、全量检索证据继续保护。旧fresh-coordinate Q1两组0/5不变，长期三数据集baseline/SOTA Goal ACTIVE/UNMET。

@@ -1,12 +1,12 @@
 # TriFusion-ReID workspace
 
-## Latest verified state (2026-09-08T12:23:54.298989+08:00, complete source audit)
+## Latest verified state (2026-09-08T12:58:47.525707+08:00, historical-gradient training registered)
 
-- Original eebaaa0 source diagnostic and CPU completed all9 states/2340batches, zero optimizer/heldout/official forwards. Original3302/3799/18174 exited; do not restart.
-- All25 raw texts, complete reaggregation,108-cell figures/PDF and fresh-context audit are closed WARN (same-family/provisional). Read results/MSVR310_HISTORY_CANDIDATE_GRADIENT_SOURCE_2026-09-08.md and EXPERIMENT_AUDIT_SOURCE.md in the matching refine-log.
-- Historical partial gradients have full measured coverage, but no retrieval improvement is established. Preserve runtime-only gradient/direct single-history-group limits and23 negative current-versus-combined metric cosines.
-- Next: register one fresh-coordinate history-gradient scope paired experiment; current64anchors, real-ID candidate rules, original14losses and V8 inference fixed. No new training launched yet. GPU idle, disk3891519488B at12:18; compact prior M0+Q1 under1GB. Master41.156.
-- Preserve seed42-only, prior fresh-coordinate Q1 both0/5, protected weights/arrays and Goal ACTIVE/UNMET. Unrelated dirty files must remain untouched.
+- Complete fixed-state source diagnosis is archived/audited WARN, no optimizer or retrieval gains. See master41.156 and its complete source report. Do not rerun it.
+- New single hypothesis: fresh history candidate VJP applied versus discarded, same64anchors/pool/14losses/original V8 inference. Config configs/MSVR310/TriFusion-history-gradient-paired-v1.json; plan refine-logs/msvr310_history_gradient_v1/EXPERIMENT_PLAN.md.
+- Four new check/train/verify/run_msvr_history_gradient.py files pass syntax/pyflakes; independent static audit WARN same-family/provisional. No runtime result yet.
+- Next launch once using exact committed HEAD/config SHA, T0→M0→CPU→six-end Q1→CPU; verify actual pipeline/PID before reporting live. Estimated3–5h Q1,300s observation. Compact weights, minimum3GiB; last free3822964736B.
+- Seed42-only, old failures, full-gallery/MSVR scene filtering and protected artifacts unchanged. Goal ACTIVE/UNMET; master41.157. Preserve unrelated dirty files.
 
 ## Experiment environment
 

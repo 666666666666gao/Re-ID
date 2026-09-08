@@ -1431,3 +1431,5 @@
 | 2026-09-08 10:20 | execution | evidence/msvr310_history_gradient_postprocess_launch_20260908.json | observation | Persistent terminal-only postcheck/intake/analysis/plot handoff; original diagnostic unchanged, full results pending |
 
 - 2026-09-08T12:23:54.298989+08:00: Complete fixed-state history-gradient source2340batches/5238role rows; fullCPU,13-statistics,all25texts,108-cell plots and independent audit WARN same-family/provisional. Master41.156; no new training.
+
+- 2026-09-08T12:58:47.525707+08:00: Register MSVR310 history-gradient V1 single intervention, scripts/config/plan and static auditWARN; no runtime result. Master41.157.
