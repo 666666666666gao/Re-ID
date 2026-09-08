@@ -6437,3 +6437,12 @@ fused52.444136→52.787590（+0.343455），CNN+0.513458/T+1.174330/M+0.251933�
 同一表示表构造原batch/history唯一record池与完整来源图库，self记录排除，分别all-ID/cross-scene；无合法正例记录仍保留为其他身份干扰。只在共同合法anchor比较候选/完整AP，单列池缺正例，保留全部120条件及1996800曝光行。Float64稳定距离排序仅用于该诊断，不替换原FP32 Q1。固定单view诊断不等于原训练随机历史重放，不能由AP差单独认定校准故障。
 
 实际纯函数语义检查通过，代码语法通过；真实模型检查待执行。04:08 GPU0%/1MiB，主卷2261106688B、输出8776491008B空闲；tri_reid Python3.10.14/PyTorch2.5.1+cu121/3090与seed42 CUDA内核实测复用，无环境重建。证据evidence/smooth_ap_source_coverage_preparation_20260909。未开启新训练、消融或官方评估，Goal ACTIVE/UNMET。
+
+
+### 41.204 固定来源覆盖诊断已启动，完整CPU核验准备（2026-09-09）
+
+原执行f7a0590，持久wrapper61962、提取62027，04:15:32启动；run /root/trifusion-storage/artifacts/msvr310_smooth_ap_source_coverage_seed42_f7a0590。math退出0。04:16:19实查2/12条件，04:17:45实查8/12，wrapper与提取进程均存在，GPU100%/3112MiB；已完成条件state/无梯度/配对像素与Signal一致通过。第二观察文件名0419为预命名，以observed_at=04:17:45为准。
+
+每个完整条件约11.6–13.0秒，尚需最后四个条件及原CPU分析。当前不是完整终态，无局部AP消费，无新训练。来源全部8256记录前向/0更新范围不变。完整CPU核验脚本及VERIFICATION_PLAN在evidence/smooth_ap_source_coverage_launch_20260909，准备原流程完成后对全部82560完整query行/1996800候选配对行及120汇总核验；尚无核验PASS，不冒充独立审计。
+
+输出卷04:17:45剩余8243306496B；本轮不删依赖权重。下一步完成本来源覆盖分析、数值核验和全部汇总，同时继续实现单独的固定状态参数梯度分解；不得凭当前覆盖诊断替代参数梯度结论。Goal ACTIVE/UNMET。
