@@ -1,4 +1,4 @@
-"""Draft full role-set training/retrieval replay; not yet runtime validated."""
+"""Full saved role-set training/retrieval replay; no GPU gradient re-execution."""
 import argparse
 from collections import OrderedDict
 from datetime import datetime

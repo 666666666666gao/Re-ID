@@ -1,7 +1,7 @@
-"""Draft paired role-set trainer; requires a separately registered config.
+"""Paired role-set trainer governed by the registered fixed training contract.
 
 Both endpoints retain current-coordinate historical candidate derivatives.
-Only the fused negative-relation objective changes. Not yet runtime validated.
+Only the fused negative-relation objective changes; M0 precedes heldout access.
 """
 import argparse
 from datetime import datetime

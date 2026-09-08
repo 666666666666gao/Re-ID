@@ -1,12 +1,12 @@
 # TriFusion-ReID workspace
 
-## Latest verified state (2026-09-08T18:49:13.903396+08:00, role-set gradient check complete)
+## Latest verified state (2026-09-08T18:56:51.526517+08:00, role-set paired training registered)
 
-- Master41.172. Probe958fb21 complete at18:22:46, original33657/33661/33899 ended. CPU all24batches/834560elements PASS; independent audit WARN same-family/provisional. Never rerun math/probe/source census or sealed Q1.
-- Coverage limit: all-role bitwise checks only first non-enqueued current batch; historical replay checked fused. Full GPU gradient/RNG replay not independently reconstructed. Metric gradients changed in24/24 batches, not training/retrieval success;0optimizer/weights/heldout.
-- New train/check/verify/run_msvr_role_set.py drafts exist, AST only; NO registered training config, NO T0/M0/Q1 execution. Next finish fixed training contract/bindings and real T0/M0, then full paired six-end Q1. Both endpoints fresh full history gradients; only hardest vs role-set mean objective,13 other losses unchanged. Read TRAINING_IMPLEMENTATION_DRAFT.md.
-- Next new artifacts use existing /root/trifusion-storage/artifacts, independently measured11,129,192,448B free18:28:55; recheck before launch. Proposed3GiB output/4GiB free budget. Root data disk~2.5GiB. All necessary initialization/final/evidence weights retained.38 verified ancestor transport bundles deleted52,406,835B; no new weight deletion. Use screen -dmS, never restart on observer timeout.
-- Goal ACTIVE/UNMET, seed42 only, old gates/FAILs preserved, no official results changed. Preserve unrelated runner/.aris events. Full audit/probe evidence in evidence/msvr310_role_set_gradient_check_20260908.
+- Master41.173. configs/MSVR310/TriFusion-role-set-paired-v1.json and TRAINING_PLAN.md now register full T0/M0/CPU/Q1/CPU; not launched at this registration. After exact publication sync launch once via tools.run_msvr_role_set, screen -dmS, new execution-commit artifact. No old jobs/diagnostics reruns.
+- Real preflight18:52:28: HEAD9d51a10, clean remote tree, GPU1MiB, no training jobs. New output parent /root/trifusion-storage/artifacts has11,129,192,448B free;4GiB gate/3GiB output budget; root data disk2.51GiB. Preserve old weights and evidence.
+- Both endpoints same source initialization/seed42/64anchors/20epochs and current-coordinate full historical derivatives; only hardest vs deduplicated role-proposed negative mean.65-step warmup,13otherlosses and model unchanged. M0248updates and original gates; Q11560updates only after M0/CPU PASS. Original two groups of5 scientific checks unchanged.
+- M0 ETA8–20min, Q13–5h from prior actual615.6s/12344.6s. Follow specific PID/pipeline, no restart on observer timeout. No new training or retrieval result yet.
+- Prior fixed-state probe958fb21 and CPU complete/audited WARN, limits recorded; no need to repeat. Full Goal ACTIVE/UNMET, seed42 only, no official or ablation claims. Preserve unrelated local runner/.aris events.
 
 ## Experiment environment
 

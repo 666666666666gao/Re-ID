@@ -2,7 +2,7 @@
 
 ## 0. 一页结论
 
-当前执行入口：§41.172；role-set三折固定状态梯度检查/CPU复算完成，独立审计WARN，0优化器/新权重/heldout。新配对训练四个草案已写，仅AST验证，尚未登记/启动M0/Q1。下一步完成训练合同并真实执行；原失败不重跑，Goal ACTIVE/UNMET。
+当前执行入口：§41.173；role-set完整配对训练合同已登记，发布同步后启动T0→M0→完整CPU→Q1→完整CPU。两端均fresh历史完整导数，仅原hardest与角色提议均值不同；当前尚未启动，旧检查/失败不重跑。Goal ACTIVE/UNMET。
 
 当前用于已完成MSVR310比较及新登记RGBNT100比较的是原V8平行三角色结构：冻结Signal/CLIP，共享block8之前语义和tail9/10/11参数，三个角色分别运行共享tail；CNN处理局部语义Patch高频，Transformer处理全局CLS/Patch关系，Mamba处理空间与位置级三模态扫描。各角色相对冻结reference形成1536D残差，三角色4608D银行拼接3072D Signal得到7680D fused；完整单角色输出为4608D Signal+角色残差。三条路径均执行，当前没有Router/HFER、V23模态MLP或V24原型。两项车辆训练比较均已完成；RGBNT100内部完整比较支持三角色增益，MSVR310尚未超过Signal。下面V1—V8条目保留历史经过，不代表当前又启用了旧模块。
 
@@ -6068,3 +6068,14 @@ CPU合成检查tools/check_msvr_role_set_relations.py与wrapper/config/计划已
 18:28:55 /root/trifusion-storage独立文件系统空闲11129192448B，主盘2648854528B。拟用已有备用目录保存下一新artifact，保留所有旧路径/权重；预算草案最大新增3GiB、最低空闲4GiB，启动前重查，不降低旧训练合同。18:34:54清理38个已导入transport bundle，每个引用为HEAD祖先且哈希复核，共52406835B，主盘空闲2701295616B；0权重删除，旧释放量不重复统计。逐项收据在本次evidence，下一同步会新增小传输包。
 
 本地launch由于screen -D -m阻塞及SSH读超时未获得函数末尾回执；远端已正常独立完成，另读pipeline/原PID/退出码验证，未重启。后续使用screen -dmS真实脱离并持久日志。历史反传Q1仍封存FAIL0/5两组，正式成绩无变化。Goal ACTIVE/UNMET；seed42 only、先主结果后消融、完整图库/全路径身份隔离/scene协议保持。
+
+
+### 41.173 role-set完整配对训练合同登记（2026-09-08T18:56:51.526517+08:00）
+
+18:52:28实查远端HEAD9d51a10、工作树干净、无训练进程、GPU1/24576MiB；主盘2697371648B空闲，已有/root/trifusion-storage/artifacts所在独立文件系统11129192448B空闲。前一轮真实梯度检查/审计/同步是已完成进展，Goal中的V29旧接续状态不再用作当前入口。
+
+新合同configs/MSVR310/TriFusion-role-set-paired-v1.json，TRAINING_PLAN.md；tools/train/verify/check/run_msvr_role_set.py独立实现，不修改旧训练源。两端原初始化/seed42/B64/K8/20epoch/65步预热/历史512年龄8/13项其他loss相同，均fresh当前坐标与完整历史VJP，仅control原hardest、role_set去重角色负例均值。仍64anchor，无新网络、scene配额、Router或温度。
+
+T0完整780来源batch队列与新旧合成数学；M0三折两端各8步与两端100步过拟合，沿用所有203训练张量累计覆盖、冻结Signal、AMP/reload及原校正loss比≤0.1；首历史组实际4输出与完整总损失encoder域VJP核对（189张量），不称全训练独立复算。M0/CPU通过后才六端各260步Q1，固定完整图库/scene协议、全部输出/身份/query、两组原五门及bootstrap不变。所有四种距离矩阵和实际关系记入CPU全量重算。
+
+输出新目录/root/trifusion-storage/artifacts/msvr310_role_set_v1_seed42_<执行提交>；最低4GiB、预期最多3GiB，GPU启动<500MiB。原同类M0约615.6s、Q112344.6s，本次预计M08–20分钟、Q13–5小时；screen -dmS、完整pipeline/PID日志，180–300秒或完成里程碑观察。任何子阶段非零退出停止并封存，不改变门槛/选checkpoint救回。本次登记时仅AST检查，尚未运行真实T0/M0，发布后启动。Goal ACTIVE/UNMET，官方成绩无变化。
