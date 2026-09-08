@@ -1,12 +1,12 @@
 # TriFusion-ReID workspace
 
-## Latest verified state (2026-09-09 Smooth-AP M0 audit closed)
+## Latest verified state (2026-09-09 Smooth-AP Q1 complete, independent audit running)
 
-- 当前执行入口：§41.200；09-09 02:51原wrapper48170/Q1 49157存活，五个固定260步端已完成，5/6；fold2 smooth_ap3/20epoch。最后候选训练预计03:25–03:30结束，之后仍需完整Q1_CPU与终态审计。M0独立审计已关闭，不重复；seed42/原合同不变，Goal ACTIVE/UNMET。
+- 当前执行入口：§41.201；Smooth-AP原六端1560更新及Q1_CPU于09-09 03:26结束exit0，Q1_FAIL。执行器全排名重算fused52.444136→52.787590（+0.343455），配对1/5、对Signal0/5；独立Q1审计进行中。来源日志与1560步正例直接导数完成，未登记后继训练，Goal ACTIVE/UNMET。
 - Read refine-logs/msvr310_smooth_ap_v1/EXPERIMENT_AUDIT_M0.md/.json and evidence/smooth_ap_m0_audit_20260909. Same-family/provisional, reconstruction limits retained. No new model/GPU replay, no change request. Do not repeat M0 or its audit.
 - Run /root/trifusion-storage/artifacts/msvr310_smooth_ap_v1_seed42_2e947a4, screen tri_smooth_ap_2e947a4. Original execution2e947a4 and pinnedconfig unchanged; do not relaunch on timeout. Two five-gate groups fixed.
-- Terminal intake/analyzer/ranking steps are in evidence/smooth_ap_terminal_analysis_preparation_20260909/smooth_ap_terminal_execution_ready_20260909.md, not executed on partial Q1. Complete Q1 and independent terminal review pending.
-- Output8931037184B free02:51; preserve required weights/arrays and unrelated .aris/meta/events.jsonl/tools/run_trifusion_experiment.py. Three-dataset Goal ACTIVE/UNMET.
+- Terminal intake/analyzer/ranking steps are in evidence/smooth_ap_terminal_analysis_preparation_20260909/smooth_ap_terminal_execution_ready_20260909.md, executed on complete Q1; see results/MSVR310_SMOOTH_AP_V1_Q1_2026-09-09.md. Independent terminal review pending.
+- Output8776597504B free03:27; preserve required weights/arrays and unrelated .aris/meta/events.jsonl/tools/run_trifusion_experiment.py. Three-dataset Goal ACTIVE/UNMET.
 
 ## Experiment environment
 
