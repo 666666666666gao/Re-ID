@@ -1,13 +1,13 @@
 # TriFusion-ReID workspace
 
-## Latest verified state (2026-09-08 role-set Q1 audit closed)
+## Latest verified state (2026-09-08 role-set audits closed; next formula implemented)
 
-- Master41.186. Complete role-set Q1 and its fresh independent audit are CLOSED. Engineering/deterministic PASS with runtime witness limits; integrity WARN, same-family/provisional; scientific Q1_FAIL, both original five-gate groups0/5. No restart, rerun or duplicate core reviewer. All training PIDs ended.
-- Canonical review refine-logs/msvr310_role_set_v1/EXPERIMENT_AUDIT_Q1.md/.json; complete non-private evidence evidence/role_set_q1_audit_20260908. Core report hash0fe2eb06b5e78d5b310f51a1d50d03fcc1d00ec64c5ed261208d344c8c2b44c9. Author results and complete texts remain evidence/role_set_q1_complete_20260908.
-- Independent replay covers all1560 rows,116501504 train distances,2069520 retrieval/rank elements,3000 query-output and300 identity-output rows, and both dL/dD objectives. Not full model/parameter/RNG trajectory reconstruction. Preserve all reviewer failed attempts and private full response traces locally.
-- /root/audit_msvr_role_set_q1 is now reviewing only a separate saved-source positive-coverage supplement. Core status must not revert to RUNNING. Supplemental paths C:/Users/gb/.codex_tmp/role_set_source_positive_coverage_20260908.json and role_set_positive_coverage_report_20260908. No new training registered. Do not duplicate reviewer.
-- One confirmed invalid interrupted RGBNT100 checkpoint was deleted101712000B at23:12; logs, SHA and six successor checkpoints retained. Receipt evidence/partial_checkpoint_cleanup_20260908. Main free2617987072B before this publication. Output storage retains roughly9.27GiB; recheck before next training. Do not blindly delete valid final/init/evidence arrays.
-- Full Goal remains ACTIVE/UNMET; no new official score/SOTA. Seed42/full path identity isolation/full gallery/scene protocol/registered gates remain. Preserve unrelated .aris/meta/events.jsonl and tools/run_trifusion_experiment.py changes.
+- Master41.187. Role-set complete Q1 and both core/supplemental audits CLOSED. Core WARN/same-family/provisional, engineering/deterministic PASS with runtime limits; science FAIL0/5 in both groups. Positive supplement PASS only descriptive source snapshots. All reviewer/training tasks ended; do not duplicate or rerun.
+- Canonical audits refine-logs/msvr310_role_set_v1/EXPERIMENT_AUDIT_Q1.md/.json and EXPERIMENT_AUDIT_POSITIVE_COVERAGE.md/.json. Complete evidence role_set_q1_audit_20260908 and role_set_positive_coverage_20260908. Private full responses/traces only local. Source nonmax positive inversions do not imply zero total encoder gradient or expected new-loss success.
+- Next selected single hypothesis: standard Smooth-AP fused objective on original V8 with fresh historical candidates and full candidate-side gradient. Proposal refine-logs/msvr310_smooth_ap_v1/PROPOSAL.md. Temperature0.01 from paper, weight1; no parameter/temperature/checkpoint scan, no new role-set/router/style/scene quotas. Preserve other13 losses,64current anchors,seed42,old candidate/identity/gallery rules and original gates.
+- tools/msvr_smooth_ap.py exact SHA5a4873f0e83aa09441505edca8c1418a0f2cc208599a3c3668385b77ba591cac passed synthetic-only CPU scalar/gradcheck/permutation/self/tie tests at23:21. Evidence smooth_ap_formula_math_20260908. No real model/parameter-gradient/M0/Q1 execution for this new hypothesis yet. Implement smallest trainer/verifier, then register full contract; do not launch old wrapper with guessed args. This is standard method adaptation, not originality/performance evidence.
+- One invalid interrupted RGBNT100 weight deleted101712000B; logs, SHA and all necessary final/init arrays retained. Main free2594766848B at previous sync; training output retains about9.27GiB, recheck before launch. No broad weight deletion.
+- Goal ACTIVE/UNMET across three datasets. No new official score or SOTA. Preserve unrelated .aris/meta/events.jsonl and tools/run_trifusion_experiment.py modifications.
 
 ## Experiment environment
 

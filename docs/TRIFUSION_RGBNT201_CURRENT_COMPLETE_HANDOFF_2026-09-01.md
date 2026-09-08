@@ -2,7 +2,7 @@
 
 ## 0. 一页结论
 
-当前执行入口：§41.186；role-set完整Q1审计已关闭：工程与确定性PASS，完整性/范围WARN（same-family/provisional），科学FAIL两组0/5。所有训练已结束，不重跑。另行来源正例覆盖诊断正在独立补充审计，新训练未登记；Goal ACTIVE/UNMET。
+当前执行入口：§41.187；role-set完整Q1及来源正例补充均已审计关闭，Q1科学FAIL两组0/5不变。下一单一假设为原三角色上的直接Smooth-AP fused排序目标；公式模块合成数学检查通过，真实训练器/M0/Q1尚未登记或启动。不要重跑旧阶段。Goal ACTIVE/UNMET。
 
 当前用于已完成MSVR310比较及新登记RGBNT100比较的是原V8平行三角色结构：冻结Signal/CLIP，共享block8之前语义和tail9/10/11参数，三个角色分别运行共享tail；CNN处理局部语义Patch高频，Transformer处理全局CLS/Patch关系，Mamba处理空间与位置级三模态扫描。各角色相对冻结reference形成1536D残差，三角色4608D银行拼接3072D Signal得到7680D fused；完整单角色输出为4608D Signal+角色残差。三条路径均执行，当前没有Router/HFER、V23模态MLP或V24原型。两项车辆训练比较均已完成；RGBNT100内部完整比较支持三角色增益，MSVR310尚未超过Signal。下面V1—V8条目保留历史经过，不代表当前又启用了旧模块。
 
@@ -6233,3 +6233,14 @@ fresh-context审计原文/机器报告已返回：WARN、engineering PASS with r
 另行零更新来源正例覆盖诊断已完成，使用全部已保存来源距离，无新模型/图像/更新；正在由同一独立审计者做单列补充核验，不合并到上述核心审计PASS。后继Smooth-AP只有本地未登记草案，未启动新训练、未选择新终点，待补充核验后决定。
 
 磁盘：核实旧RGBNT100 R2 m0/fold_0/signal_m0.pth为保存中断残片（101712000B，SHA ad2d141c92ff38d40f9b75d8ee98c438a8d419d16ba5f2dde1eb81c0c1da4557，不是完整ZIP），失败terminal退出1、原PID不存在、当前config无引用，后续成功路径六个必要checkpoint仍在。23:12实际删除该1文件并保留日志与清理收据，主卷空闲2516275200→2617987072B。首个清理尝试因误写status.json路径在任何删除前退出，按已存在terminal.json修正后成功；失败stderr保留。必要初始化、最终权重、检索数组均未删除。
+
+
+### 41.187 来源正例补充审计关闭与下一主假设（2026-09-08 23:22）
+
+独立补充审计PASS_DESCRIPTIVE_SAVED_SOURCE_SCOPE，same-family/provisional；明确与核心Q1 WARN/科学FAIL分开。独立逐对比较全部99840个anchor、214672384个正负距离对，读取116501504个四空间元素（其中29125376个fused元素用于正例统计），6端×4阶段及2端×4聚合全部一致。完整证据evidence/role_set_positive_coverage_20260908，审计refine-logs/msvr310_role_set_v1/EXPERIMENT_AUDIT_POSITIVE_COVERAGE.md/.json，报告results/MSVR310_ROLE_SET_POSITIVE_COVERAGE_2026-09-08.md。所有审计任务现已结束，不重复启动。
+
+末65步control/candidate各12480次anchor曝光，受影响正例位置2239/2272；其中非最远1298/1310，非最远跨scene1061/1060。它们是来源训练快照中的重复曝光，不是最终固定模型的全来源评价或新Q1。非最远定义在所有真实正例上取max后再筛cross-scene；所有最大值并列排除。旧反序统计>=与新严格>在本次因正负等距为0而一致，不推广为任意tie数据等价。本anchor该fused项直接正例距离导数为0，不等于图片/角色/encoder总参数梯度为0，亦不证明换loss有效。
+
+根据已封存负关系集合结果与此来源证据，下一项选择直接Smooth-AP主比较，保留原V8、fresh历史完整反传、64当前anchor、候选规则和其余13项，仅研究多正例排序fused目标。原文https://arxiv.org/html/2007.12163v2 的公式与§5.3温度0.01已核对；独立实现，不称原创。详细提案refine-logs/msvr310_smooth_ap_v1/PROPOSAL.md。不能继续将刷新历史坐标/历史反传/role-set说成尚未测试。
+
+tools/msvr_smooth_ap.py已实现标准公式，精确模块SHA5a4873f0e83aa09441505edca8c1418a0f2cc208599a3c3668385b77ba591cac经远端纯CPU合成数学检查：标量误差0、两次有限差分/重排、自匹配梯度、tie、B64×128有限性通过，0图像/模型/更新；证据evidence/smooth_ap_formula_math_20260908。该函数尚未接入真实训练，不声称已有新参数梯度或泛化结果。下一工作是最小训练器与全量核验实现、登记同初始化/seed42/固定终点合同，再按M0→Q1原门推进；不扫描温度、倍率、终点，不叠新Router/风格/scene配额。训练正式配置尚未建立，勿用旧wrapper猜参数启动。

@@ -1491,3 +1491,5 @@
 - 2026-09-08: role-set complete Q1/CPU and full executor replay archived; scientific FAIL0/5 in both gate groups. Fresh independent terminal audit running, no new intervention. Master41.185.
 
 - 2026-09-08: role-set Q1 independent audit CLOSED WARN, deterministic PASS, science FAIL0/5; all attempts archived. Separate positive-coverage supplement pending. One invalid interrupted checkpoint removed101712000B with receipt. Master41.186.
+
+- 2026-09-08: role-set positive coverage supplemental audit closed PASS descriptive scope. Next standard Smooth-AP formula implemented and synthetic math checked; real trainer/contract not ready, no new training. Master41.187.

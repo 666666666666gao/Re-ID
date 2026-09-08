@@ -1,6 +1,6 @@
 # MSVR310 role-set v1 实现检查
 
-当前：完整Q1/CPU及独立终态审计已关闭；工程/确定性PASS，完整性与范围WARN/provisional；科学FAIL两组0/5。Master41.186，EXPERIMENT_AUDIT_Q1.md/.json。来源正例覆盖补充单独审计中，新训练未登记。
+当前：role-set完整Q1及单列正例补充均审计关闭；核心WARN/工程与确定性PASS、科学FAIL两组0/5；补充描述统计PASS/provisional。Master41.187。下一Smooth-AP仅公式已核验，训练器/合同未就绪；勿重跑旧阶段。
 
 2026-09-08T18:07:26.639878+08:00: 新增单一均值hinge目标、CPU数学检查与固定wrapper；配置configs/MSVR310/Role-set-math-v1.json。发布同步后运行，0图像/模型/更新。
 
