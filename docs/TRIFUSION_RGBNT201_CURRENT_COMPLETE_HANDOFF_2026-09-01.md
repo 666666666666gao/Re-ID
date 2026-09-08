@@ -2,7 +2,7 @@
 
 ## 0. 一页结论
 
-当前执行入口：§41.190；Smooth-AP M0248步及完整CPU通过，原wrapper48170已进入固定Q1 PID49157；完整M0证据收齐，独立审计待完成，无新检索终态。禁止重启/改合同，Goal ACTIVE/UNMET。
+当前执行入口：§41.191；Smooth-AP固定Q1原wrapper48170/训练49157于09-09 00:02存活，fold0 control完成9/20epoch；M0/CPU完整通过，独立M0审计运行中。终态分析器已用完整M0248步检查，未执行Q1终态分析。Goal ACTIVE/UNMET。
 
 当前用于已完成MSVR310比较及新登记RGBNT100比较的是原V8平行三角色结构：冻结Signal/CLIP，共享block8之前语义和tail9/10/11参数，三个角色分别运行共享tail；CNN处理局部语义Patch高频，Transformer处理全局CLS/Patch关系，Mamba处理空间与位置级三模态扫描。各角色相对冻结reference形成1536D残差，三角色4608D银行拼接3072D Signal得到7680D fused；完整单角色输出为4608D Signal+角色残差。三条路径均执行，当前没有Router/HFER、V23模态MLP或V24原型。两项车辆训练比较均已完成；RGBNT100内部完整比较支持三角色增益，MSVR310尚未超过Signal。下面V1—V8条目保留历史经过，不代表当前又启用了旧模块。
 
@@ -6287,3 +6287,14 @@ M0结束2026-09-08T23:51:18.686093+08:00，CPU结束2026-09-08T23:51:28.873294+0
 完整Q1仍固定seed42、3折2端/1560更新、完整图库及scene协议、两组原五门；不读局部结果调参，不以工程通过替代检索或三数据集Goal。预计3–6小时，按真实训练时间调整观察。
 
 独立M0审计已实际启动：/root/audit_msvr_smooth_ap_m0，gpt-6-astra/max/fork-none，只读来源M0/代码/原始数组，same-family/provisional。请求与完整调用元信息留私有.aris/traces/experiment-audit/2026-09-08_smooth_ap_m0，不读取局部Q1分数，不中止正在运行的固定Q1。审计尚无结论。
+
+
+### 41.191 Smooth-AP终态分析准备与固定Q1观察（2026-09-09 00:02）
+
+00:02:06原wrapper48170/Q1 PID49157均存活，pipeline RUNNING/q1，fold0 control完成9/20epoch；最近两epoch136.413/137.372秒。输出卷9705930752B，约9.04GiB。以此估算第一端约00:28附近结束，尚未见候选端速度，完整Q1仍预计3–6小时；按里程碑或180–300秒观察，不重复启动，不读取局部成绩调参。
+
+准备纯文本终态来源分析脚本evidence/smooth_ap_terminal_analysis_preparation_20260909/analyze_smooth_ap_q1_terminal_20260909.py，SHA60e1b915b4d113a8a3469713a26b193e44351fe58e995a2b277ac8fc91722ed6。入口要求完整终态pipeline、原进程结束、全部文本intake SHA及完整Q1 CPU收据/1560更新，未满足时不执行。分析区分all/warmup/postwarmup/last65四阶段的共同hard与AP标量、实际14项账本、AP/正例曝光、历史年龄、角色梯度运行见证、重编码/VJP/耗时，并核对配对像素及预历史差异。完整检索和原门仍由既有CPU/独立审计核验，不新增门槛或训练干预。
+
+已在八份完整M0日志248步上执行描述函数/成本加总/配对差异函数检查，PASS_REAL_M0_LOG_FUNCTION_CHECK_ONLY；仅本地文本/0模型/0优化，不能称为Q1终态核验。首版自检漏算training总fresh成本里每端首批独立64条零更新检查，触发AssertionError；依据训练器step0实际encode_all修正自检和成本列，将日志历史刷新与首批64分开。保留失败脚本、失败记录和最终通过收据；未修改任何固定训练代码/配置。
+
+独立M0审计/root/audit_msvr_smooth_ap_m0仍在进行，实际静态读取已完成、正在全248步CPU与递归哈希核查；没有审计结论。私人helper输出捕获器一次失败属于审计执行工具问题，审计员保留记录并继续，未运行新训练或改变原进程。新描述脚本是执行者准备，不计作已被该审计员审查的结果。

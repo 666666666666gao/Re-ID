@@ -2,10 +2,12 @@
 
 ## Latest verified state (Smooth-AP M0 complete; Q1 running)
 
-- 当前执行入口：§41.190；Smooth-AP M0248步及完整CPU通过，原wrapper48170已进入固定Q1 PID49157；完整M0证据收齐，独立审计待完成，无新检索终态。禁止重启/改合同，Goal ACTIVE/UNMET。
+- 当前执行入口：§41.191；Smooth-AP M0248步及完整CPU通过，原wrapper48170已进入固定Q1 PID49157；完整M0证据收齐，独立审计待完成，无新检索终态。禁止重启/改合同，Goal ACTIVE/UNMET。
 - Execution2e947a4/config974328fee25985b19aa36c84f57a557f9120993fecb98b2a902a1b8de8475302 pinned. Run /root/trifusion-storage/artifacts/msvr310_smooth_ap_v1_seed42_2e947a4, screen tri_smooth_ap_2e947a4. Do not relaunch on timeout or edit science files.
 - Full M0 evidence evidence/smooth_ap_m0_complete_20260908. Standard Smooth-AP only replaces fused metric; other13losses/seed42/fresh-history fullVJP unchanged. Two original five-gate groups preserved.
 - Monitor same PID/ETA and180–300s. Keep weights/data/NPY remote, preserve necessary checkpoints and unrelated .aris/meta/events.jsonl/tools/run_trifusion_experiment.py edits. Goal remains unmet.
+
+- 2026-09-09 00:02 live wrapper48170/Q1 49157, fold0 control9/20epochs; output9705930752B free. First endpoint ETA~00:28, full3–6h subject candidate cost. Source terminal analyzer in evidence/smooth_ap_terminal_analysis_preparation_20260909, checked only on complete248-stepM0 logs; do not run on partial Q1.
 
 ## Experiment environment
 

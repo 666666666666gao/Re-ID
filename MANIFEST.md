@@ -1499,3 +1499,5 @@
 - 2026-09-08 23:44: Smooth-AP actually launched2e947a4, T0 PASS, M0 running. Launch/observation evidence in evidence/smooth_ap_launch_20260908; master41.189.
 
 - Smooth-AP M0/CPU complete; fixed Q1 started; master41.190 and full evidence/smooth_ap_m0_complete_20260908. Independent audit pending.
+
+- 2026-09-09: Smooth-AP terminal descriptive analyzer prepared and checked on all248M0 steps only; Q1 running; master41.191.
