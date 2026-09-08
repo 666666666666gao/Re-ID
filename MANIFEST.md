@@ -1437,3 +1437,5 @@
 - 2026-09-08T13:01:04.585361+08:00: Historical-gradient V1 actually launched on a1b4777, T0 exit0/M0 live; launch and process evidence, master41.158. No new retrieval result.
 
 - 2026-09-08T13:14:48.773182+08:00: Complete historical-gradient M0/CPU PASS, full27 text receipts and analysis; Q1 originalPID20941 live, no retrieval terminal. Master41.159.
+
+- 2026-09-08T13:24:23.296169+08:00: Q1 original process live, first129/260; new read-only training text analysis verified on fullM0, terminal-only Q1 intake prepared. Master41.160.

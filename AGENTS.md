@@ -1,12 +1,12 @@
 # TriFusion-ReID workspace
 
-## Latest verified state (2026-09-08T13:14:48.773182+08:00, historical-gradient Q1 running)
+## Latest verified state (2026-09-08T13:24:23.296169+08:00, historical-gradient Q1 continuing)
 
-- Historical candidate gradient V1 complete M0 248 updates PASS, complete CPU PASS (1,236,480 distance elements); see results/MSVR310_HISTORY_GRADIENT_V1_M0_2026-09-08.md and master41.159. Engineering result only.
-- Original wrapper19977 launched Q1 PID20941 at13:10:13 on execution a1b4777b62611be2cac33351afdf7789edc59906/config d03c7be1e738a206bf6db3b55580f53fbf33bfcc9050a46c4ddd0c81d7134c4e. Observed13:12:39: both live, first fold control72/260. No complete Q1 result.
-- Root /root/autodl-tmp/trifusion-v2/artifacts/msvr310_history_gradient_v1_seed42_a1b4777; screen tri_history_gradient_a1b4777. Reuse processes, do not duplicate. Six-end1560 updates then complete CPU verification automatically.
-- Only candidate VJP applied/discarded differs; both fresh history/current64anchors/original14losses/V8 inference/seed42. No tuning from intermediate retrieval; two original five-condition groups unchanged.
-- Latest free3616083968B, no new deletion. About300s observation or estimated milestone. Bound scientific files unchanged; preserve unrelated dirty files. Main Goal ACTIVE/UNMET.
+- Complete M0/CPU PASS remains archived (248updates); master41.160 adds read-only postprocessing readiness. tools/analyze_msvr_history_gradient_training.py executed on allM0 texts, pyflakes0; Q1 not terminal/not analyzed.
+- At13:22:15 original wrapper19977/Q1 PID20941 live, fold0 control129/260. About131s/epoch after warmup; tentative first training endpoint13:44, completeQ1/CPU3–5h. Observe about300s/estimated milestones, never restart because an observation ends.
+- Root /root/autodl-tmp/trifusion-v2/artifacts/msvr310_history_gradient_v1_seed42_a1b4777; screen tri_history_gradient_a1b4777. Execution a1b4777/config d03c7be1e738a206bf6db3b55580f53fbf33bfcc9050a46c4ddd0c81d7134c4e unchanged. No new training logic/environment.
+- New Q1 intake helper must wait all5stages exit0, complete1560steps andCPU;29texts only, binary/model files stay remote. Then fulltext/ranking analysis and fresh-context audit. No partial scientific terminal.
+- Same64anchors/14losses/currentcoordinates, only historyVJP applied/discarded; seed42, two original5gates and old failures unchanged. Latest free3601850368B, no new deletion. Preserve unrelated dirty files. Main Goal ACTIVE/UNMET.
 
 ## Experiment environment
 

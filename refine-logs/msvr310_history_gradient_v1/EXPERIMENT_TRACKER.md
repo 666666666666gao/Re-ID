@@ -16,3 +16,5 @@
 2026-09-08T13:01:04.585361+08:00: 实际启动a1b4777；T0 exit0，wrapper19977/M019991存活，观察2026-09-08T12:59:52.324248+08:00。尚无M0或Q1终态。运行目录/root/autodl-tmp/trifusion-v2/artifacts/msvr310_history_gradient_v1_seed42_a1b4777，约300秒观察；完整M0/CPU通过后才进入Q1。
 
 2026-09-08T13:14:48.773182+08:00: 完整M0 248步及CPU PASS，summary 31156ee9dbcc195934f7b41427e316b0c190fae8c25d44e73b8bf0ee031f4bc8，CPU 3fbd9fe97bf49a99ec4e33cfc44bd305510e26561c8ca5b882dae4d1dc974bab。原wrapper自动Q1 PID20941，13:12首端72/260。报告results/MSVR310_HISTORY_GRADIENT_V1_M0_2026-09-08.md；无新检索终态。
+
+2026-09-08T13:24:23.296169+08:00: 13:22原Q1 PID20941存活，首端129/260。新增只读训练文本汇总经全部248步M0运行通过；Q1接收/汇总尚未运行。Master41.160，训练合同不变。
