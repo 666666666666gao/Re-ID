@@ -1,12 +1,12 @@
 # TriFusion-ReID workspace
 
-## Latest verified state (2026-09-08T13:01:04.585361+08:00, historical-gradient M0 running)
+## Latest verified state (2026-09-08T13:14:48.773182+08:00, historical-gradient Q1 running)
 
-- Registered historical candidate gradient V1 launched once at 2026-09-08T12:59:44.100924+08:00, execution commit a1b4777b62611be2cac33351afdf7789edc59906, config SHA d03c7be1e738a206bf6db3b55580f53fbf33bfcc9050a46c4ddd0c81d7134c4e.
-- Run root /root/autodl-tmp/trifusion-v2/artifacts/msvr310_history_gradient_v1_seed42_a1b4777; screen tri_history_gradient_a1b4777; wrapper PID19977, M0 PID19991. Observed 2026-09-08T12:59:52.324248+08:00: T0 exit0, both live, pipeline RUNNING. M0/Q1 not yet complete. Reuse original processes; do not launch a duplicate.
-- Only history candidate VJP applied versus discarded, both fresh coordinates; same64anchors/pool/14losses/V8 inference, seed42. Full M0/CPU gate precedes six-end Q1/CPU automatically. Runtime receipts required; static audit WARN is not runtime PASS.
-- Check existing pipeline/logs at about300s or estimated milestone. Prelaunch free3825758208B; no new deletion, compact checkpoints and protected evidence.
-- Complete source diagnosis archived/audited; no rerun. Old failures unchanged. Main Goal ACTIVE/UNMET. Master41.158; preserve unrelated dirty files and bound scientific code.
+- Historical candidate gradient V1 complete M0 248 updates PASS, complete CPU PASS (1,236,480 distance elements); see results/MSVR310_HISTORY_GRADIENT_V1_M0_2026-09-08.md and master41.159. Engineering result only.
+- Original wrapper19977 launched Q1 PID20941 at13:10:13 on execution a1b4777b62611be2cac33351afdf7789edc59906/config d03c7be1e738a206bf6db3b55580f53fbf33bfcc9050a46c4ddd0c81d7134c4e. Observed13:12:39: both live, first fold control72/260. No complete Q1 result.
+- Root /root/autodl-tmp/trifusion-v2/artifacts/msvr310_history_gradient_v1_seed42_a1b4777; screen tri_history_gradient_a1b4777. Reuse processes, do not duplicate. Six-end1560 updates then complete CPU verification automatically.
+- Only candidate VJP applied/discarded differs; both fresh history/current64anchors/original14losses/V8 inference/seed42. No tuning from intermediate retrieval; two original five-condition groups unchanged.
+- Latest free3616083968B, no new deletion. About300s observation or estimated milestone. Bound scientific files unchanged; preserve unrelated dirty files. Main Goal ACTIVE/UNMET.
 
 ## Experiment environment
 
