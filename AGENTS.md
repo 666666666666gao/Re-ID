@@ -1,12 +1,12 @@
 # TriFusion-ReID workspace
 
-## Latest verified state (2026-09-08T21:30:08.087702+08:00, four Q1 endpoints complete)
+## Latest verified state (2026-09-08T22:03:33.840454+08:00, five Q1 endpoints complete)
 
-- Master41.183. Execution26c9739; original wrapper35302/Q136320 live. Run /root/trifusion-storage/artifacts/msvr310_role_set_v1_seed42_26c9739. Four of six fixed20epoch/260update endpoints complete, all seven runtime checks true. Fold2 control at epoch5/20. Next observation21:58 +08:00; whole six-end ETA22:35-22:45, not a terminal guarantee.
-- No relaunch, training modification, or partial scientific conclusion. Full Q1/CPU and fresh independent terminal review remain pending. M0 audit CLOSED_WARN with engineering/deterministic PASS; do not duplicate M0 or its audit.
-- Terminal intake/source analyzer v2/complete ranking replay sequence in Master41.182. Use candidate role_set, actual summary SHA and PASS_COMPLETE_ROLE_SET_Q1. Invoke local Python through the verified uv offline NumPy/Paramiko command, not an expired temporary executable. No role-set terminal analysis executed yet.
-- Output free10258788352B; no files deleted. Disk retention inventory in Master41.182. Keep original initialization, final models and ranking/diagnostic arrays; sole V3 resume has no proven replacement.
-- Seed42, registered gates, full-path identity isolation, full gallery and scene rules unchanged. Goal ACTIVE/UNMET. Old V29 continuation and historical entries are obsolete; preserve unrelated .aris/runner changes.
+- Master41.184. Execution26c9739; original wrapper35302/Q136320 live. Run /root/trifusion-storage/artifacts/msvr310_role_set_v1_seed42_26c9739. Five of six fixed20epoch/260update endpoints complete, all seven runtime checks true. Final fold2 role_set epoch2/20. Next observation22:35 +08:00; whole training ETA22:35-22:45, followed by automatic CPU verification, not a terminal guarantee.
+- No relaunch or partial scientific conclusion. Full Q1/CPU and fresh independent terminal review remain pending. M0 audit CLOSED_WARN with engineering/deterministic PASS; do not duplicate M0, prior diagnostics, sealed Q1 runs or their audits.
+- Terminal intake/source analyzer v2/complete ranking replay sequence in Master41.182. Use candidate role_set, actual summary SHA and PASS_COMPLETE_ROLE_SET_Q1. Local uv offline NumPy/Paramiko runtime is verified; do not bind to expired temporary executables. No role-set terminal analysis executed yet.
+- Output free10108387328B; zero deletions. Disk retention inventory in Master41.182. Preserve initial/final models and ranking/diagnostic arrays; sole V3 resume has no proven replacement.
+- Seed42, registered gates, full-path identity isolation, full gallery and scene rules unchanged. Goal ACTIVE/UNMET. Old V29 continuation and historical state entries are obsolete; preserve unrelated .aris/runner changes.
 
 ## Experiment environment
 
