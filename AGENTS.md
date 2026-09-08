@@ -1,12 +1,11 @@
 # TriFusion-ReID workspace
 
-## Latest verified state (2026-09-08T20:33:30.984781+08:00, M0 audit and Q1 progress)
+## Latest verified state (2026-09-08T20:40:41.475565+08:00, Q1 and terminal analysis)
 
-- Master41.179. Original execution26c9739; run /root/trifusion-storage/artifacts/msvr310_role_set_v1_seed42_26c9739. At20:21:40 original wrapper35302/Q136320 live, fold0 both endpoints complete260 updates, fold1 control5/20. 2/6 endpoints complete; no partial retrieval claim or restart.
-- M0 independent audit complete WARN, same-family/provisional. Read refine-logs/msvr310_role_set_v1/EXPERIMENT_AUDIT_M0.md/.json and full evidence/role_set_m0_audit_20260908. Do not repeat M0 or this audit; preserve reported reconstruction limitations.
-- Next training observation20:50 +08:00 around expected second-fold control endpoint. Full Q1/CPU/independent terminal audit remain pending. Terminal intake/analysis tools prepared but not invoked. No official result changes.
-- Output free10578055168B at20:21; preserve source initialization, final weights and evidence. No new weight cleanup this turn; science/config unchanged, unrelated runner/.aris modifications retained.
-- Goal ACTIVE/UNMET; older Goal V29 paragraph and dated status history are obsolete. Main/remote/Desktop synchronization is checked with this publication.
+- Master41.180. Original execution26c9739, wrapper35302/Q136320 live. Run /root/trifusion-storage/artifacts/msvr310_role_set_v1_seed42_26c9739. First-fold both endpoints complete260 steps, 2/6 total; fold1 control14/20. Next observation20:52 near estimated20:54 endpoint. No restart or partial scientific result.
+- M0 audit CLOSED_WARN, engineering/deterministic PASS; scope/refine-logs/msvr310_role_set_v1/EXPERIMENT_AUDIT_M0.md and Master41.179 unchanged. Do not duplicate M0/audit.
+- Full Q1 intake/CPU/terminal audit still pending. Use analyze_role_set_q1_terminal_v2_20260908.py after complete intake; evidence/role_set_terminal_analysis_v2_20260908 contains scripts and actual248-step M0 function check. Not a Q1 execution. Distinguish warmup65 from first history; replacement beginsstep66 even if history is empty.
+- Output free10514784256B; retain necessary initialization/final/evidence weights. No new cleanup, no official result; Goal ACTIVE/UNMET. Preserve unrelated runner/.aris modifications. Older dated statuses and Goal V29 paragraph are historical.
 
 ## Experiment environment
 
