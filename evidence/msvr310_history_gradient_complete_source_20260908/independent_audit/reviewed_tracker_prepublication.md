@@ -12,7 +12,7 @@
 
 No optimizer updates, heldout or official image forwards. Fixed seed42. See sealed plan and complete-preflight report. No new training/Q1 registered. The source stage is a fixed-state measurement, not the original optimizer trajectory. Keep all raw artifacts and prior failure gates.
 
-Latest observation: complete source/originalCPU/all13-statistics/intake/text analysis/plot finished; postprocessing11:55:58 exit0. Fresh-context full-source audit CLOSED_WARN (same-family/provisional); no new training or retrieval result. Previous live observations remain historical.
+Latest observation: complete source/originalCPU/all13-statistics/intake/text analysis/plot finished; postprocessing11:55:58 exit0. Fresh-context full-source audit running; current report has no new training or retrieval result. Previous live observations remain historical.
 
 Historical observations:
 
@@ -31,5 +31,3 @@ Historical observations:
 2026-09-08T09:47:15.629034+08:00: Five-minute verified waits reached two complete folds:6/9states,1560state-terminal batches; originalsource continuesfold2. Complete-source CPU and analysis still pending.
 
 2026-09-08 10:20: sequential terminal-postprocessing process launched and first actual remote observation verified. No change to scientific contract or remote model job. Full audit and next-hypothesis registration remain manual evidence-dependent steps.
-
-2026-09-08T12:23:54.298989+08:00: Complete source audited and archived; original pipeline finished. Next single gradient-scope experiment requires its own registration and M0; not launched by this publication.

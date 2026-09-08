@@ -2,7 +2,7 @@
 
 **Overall verdict: WARN. Deterministic text, queue, binding and plot-number checks PASS.** No fabricated ground truth, score manipulation, missing text row, numerical mismatch or scientific-code change was found in the inspected package. The result is an adequately covered fixed-state source mechanism diagnostic. It is not independently reproduced model backpropagation and does not establish optimizer or retrieval benefit.
 
-Date: 2026-09-08. Reviewer: fresh-context native Codex auditor (`/root/audit_msvr_history_gradient_source`), model **gpt-6-astra**, reasoning effort **max**, same model family; **provisional** assurance. The reviewer wrote only independent analysis and review artifacts in this new audit directory. No experiment code/config/contract/result/tracker was edited; no training, inference, image forward or remote command was launched.
+Date: 2026-09-08. Reviewer: fresh-context native Codex auditor (`/root/audit_msvr_history_gradient_source`), same model family; **provisional** assurance. The reviewer wrote only independent analysis and review artifacts in this new audit directory. No experiment code/config/contract/result/tracker was edited; no training, inference, image forward or remote command was launched.
 
 Paths in evidence references: `R` = `C:/Users/gb/.trifusion_github_publish_22c3bee`; `S` = `C:/Users/gb/.codex_tmp/history_gradient_complete_source_20260908`; `P` = `C:/Users/gb/.codex_tmp/history_gradient_complete_processing_20260908`; `A` = `C:/Users/gb/.codex_tmp/history_gradient_complete_analysis_20260908`; `F` = `C:/Users/gb/.codex_tmp/history_gradient_complete_figures_20260908`. Each `file:line` below is relative to the indicated root. `steps.jsonl` line numbers are batch numbers (1-260), so lines 67-260 contain all history rows in each of the nine streams.
 
@@ -102,7 +102,7 @@ The negative partial-gradient cosine is not evidence of harmful multi-task confl
 
 Every row below uses all194 history batches for that state/role. These are arithmetic means of batch-wise ratios/cosines, not ratios of pooled norms, cosine of a mean gradient, or independent-sample estimates. Initial/control/fresh_memory name fixed checkpoints, not changing coordinates within this probe. Full min/max/quantiles and norm distributions are in `independent_checks.json`.
 
-| Fold | State | Role | mean norm(gV)/norm(gU) | mean cos(U,V) | mean cos(U,U+V) | mean cos(G,G+V) |
+| Fold | State | Role | mean ||gV||/||gU|| | mean cos(U,V) | mean cos(U,U+V) | mean cos(G,G+V) |
 |---|---|---|---:|---:|---:|---:|
 | 0 | initial | cnn | 0.753594612 | -0.915455740 | 0.713943629 | 0.901123422 |
 | 0 | initial | transformer | 0.920883637 | -0.891741753 | 0.395670460 | 0.909111991 |
@@ -157,12 +157,12 @@ Unsupported extrapolations: independently reproduced model gradients; direct pro
 5. G denotes the gradient of all 14 existing task losses restricted to one encoder role block. It excludes trainable classifier/neck blocks from the displayed vector. The 14 components are not recorded separately here, so neither the weighted total scalar nor its gradient can be reconstructed independently from this text package.
 6. The skip count verifies the consistency of recorded group choices; absence of upstream arrays prevents independently proving that each omitted group has exactly zero upstream. Capacity eviction and undefined/zero role-gradient branches are not exercised in the complete source run.
 7. The runtime environment receipt identifies the Signal commit/diff, not full Python/PyTorch/CUDA/Mamba binary identities. The five inherited CRLF/LF differences are byte-level portability limits, not source-equivalence failures.
-8. The initial stale tracker was corrected before final audit. The completed narrative and tracker revisions are preserved as byte-exact audit snapshots. The optional line112 wording edit was resolved before final closure: it now explicitly says recorded role-block gradient direction, consistent with its line33 AdamW limitation.
+8. The initial stale tracker was corrected before final audit. The completed narrative and tracker revisions are preserved as byte-exact audit snapshots. The narrative line112 learning-direction wording is mildly ambiguous; prefer recorded role-block gradient direction, consistent with its line33 AdamW limitation.
 9. No new training, inference, retrieval, image access or scientific-file edit was performed by this audit. This same-family fresh-context review is provisional, not cross-family acceptance.
 
 Required executor handoff actions:
 
-- **before_public_claims**: Keep the completed tracker and fixed-state/source-only status. When appending audit closure, preserve the reviewed report revision and exact hashes; label this native same-family review provisional. Retain the corrected recorded role-block gradient-direction statement.
+- **before_public_claims**: Keep the completed tracker and fixed-state/source-only status. When appending audit closure, preserve the reviewed report revision and exact hashes; label this native same-family review provisional. Prefer recorded role-block gradient direction over learning direction in the final mechanism statement.
 - **claim_qualification**: Preserve runtime-only gradient/state provenance, remote matrix-check attribution, all 194 history batches per state, role-restricted G, no optimizer/retrieval gains, and the single-group direct-proof limit.
 - **if_stronger_reproducibility_is_required**: Provide the nine saved distance binaries to a separate read-only checker, and a pinned runtime/weight package before claiming independently reproduced matrices or model derivatives. This audit does not launch such work.
 - **if_stronger_gradient_validation_is_required**: Separately register a multiple-history-group direct comparison and broader numerical reference before claiming general grouped-backpropagation precision. Same-graph noise must not be treated as independent-run uncertainty.
@@ -206,7 +206,7 @@ The executor supplied `R/results/MSVR310_HISTORY_CANDIDATE_GRADIENT_SOURCE_2026-
 - An independent PyMuPDF1.28.2 reader matched all108 means and108 n labels to the raw-derived row/column position, a stronger check than value-multiset equality. It found one842.4000x597.6000pt page,8 embedded image objects, no out-of-page text spans, and reproduced exactly the supplied render SHA. The reviewer viewed that newly rendered page. This is a mixed vector/raster PDF, as correctly disclosed (report line106).
 - Chronology now agrees: source exit11:53:48.389849, CPU exit11:53:52.275165, postprocessing finish11:55:58.161377 Beijing. The tracker's current rows10-15 are complete/pass and preserve old running observations under Historical observations.
 
-The optional precision edit is resolved: final report line112 now says “实际改变所记录的角色参数块梯度方向”. The final publication revision changes only report lines3/9/112/118 and tracker status/closure text; no scientific number or underlying source artifact changed. Both prepublication and final reviewed snapshots/digests are preserved.
+One optional precision edit remains: report line112 says “实际改变学习方向”. Its detailed definition at line33 already excludes actual AdamW directions, so this is not an integrity failure; “实际改变所记录的角色参数块梯度方向” would remove residual ambiguity.
 
 | Descriptive global metric over all5,238 role/history rows | Mean | Minimum | Maximum | Negative |
 |---|---:|---:|---:|---:|
@@ -215,4 +215,4 @@ The optional precision edit is resolved: final report line112 now says “实际
 | current_both_cosine | 0.480179671 | -0.147206989 | 0.958208680 | 23 |
 | task_total_both_cosine | 0.835166556 | 0.259686333 | 0.992228289 | 0 |
 
-Audited completed report SHA256: `f422314a8f121ab520f21c4691330ff334ed0077725b53e21ae17b967338a111`. Audited updated tracker SHA256: `c884c101b514b39d7aa27fefff13713f10e284fed633f22dc5e17d78a6fe1e4f`. Full additional evidence is in `independent_claim_checks.json`. The final reviewed bytes are retained as `reviewed_source_report.md` and `reviewed_tracker.md`; the initial completed narrative and tracker revisions remain in `reviewed_source_report_prepublication.md` and `reviewed_tracker_prepublication.md`, and the earlier audit revision in the correspondingly named prepublication audit files. Later status-only publication changes must not overwrite these snapshots.
+Audited completed report SHA256: `dcf26b0d2de7dd76ca1351c92459443ae81921de4ec76f2a1a54bc5f4a48fef7`. Audited updated tracker SHA256: `a4bfef092f449833e05103fdb62ff2b16047ea48c6a5cceb73583e7739f1df6a`. Full additional evidence is in `independent_claim_checks.json`. The corresponding unmodified bytes are retained as `reviewed_source_report.md` and `reviewed_tracker.md`; later status-only publication changes must not overwrite these snapshots.

@@ -43,7 +43,7 @@ lines=[
 '',
 '**Overall verdict: WARN. Deterministic text, queue, binding and plot-number checks PASS.** No fabricated ground truth, score manipulation, missing text row, numerical mismatch or scientific-code change was found in the inspected package. The result is an adequately covered fixed-state source mechanism diagnostic. It is not independently reproduced model backpropagation and does not establish optimizer or retrieval benefit.',
 '',
-'Date: 2026-09-08. Reviewer: fresh-context native Codex auditor (`/root/audit_msvr_history_gradient_source`), same model family; **provisional** assurance. The reviewer wrote only independent analysis and review artifacts in this new audit directory. No experiment code/config/contract/result/tracker was edited; no training, inference, image forward or remote command was launched.',
+'Date: 2026-09-08. Reviewer: fresh-context native Codex auditor (`/root/audit_msvr_history_gradient_source`), model **gpt-6-astra**, reasoning effort **max**, same model family; **provisional** assurance. The reviewer wrote only independent analysis and review artifacts in this new audit directory. No experiment code/config/contract/result/tracker was edited; no training, inference, image forward or remote command was launched.',
 '',
 'Paths in evidence references: `R` = `'+R+'`; `S` = `'+S+'`; `P` = `'+P+'`; `A` = `'+A+'`; `F` = `'+F+'`. Each `file:line` below is relative to the indicated root. `steps.jsonl` line numbers are batch numbers (1-260), so lines 67-260 contain all history rows in each of the nine streams.',
 '',
@@ -135,7 +135,7 @@ lines += [
 '',
 'Every row below uses all194 history batches for that state/role. These are arithmetic means of batch-wise ratios/cosines, not ratios of pooled norms, cosine of a mean gradient, or independent-sample estimates. Initial/control/fresh_memory name fixed checkpoints, not changing coordinates within this probe. Full min/max/quantiles and norm distributions are in `independent_checks.json`.',
 '',
-'| Fold | State | Role | mean ||gV||/||gU|| | mean cos(U,V) | mean cos(U,U+V) | mean cos(G,G+V) |','|---|---|---|---:|---:|---:|---:|']
+'| Fold | State | Role | mean norm(gV)/norm(gU) | mean cos(U,V) | mean cos(U,U+V) | mean cos(G,G+V) |','|---|---|---|---:|---:|---:|---:|']
 csv_rows=[]
 for s in d['states']:
  for role,a in s['roles'].items():
@@ -212,6 +212,15 @@ claim_section=['','## Additional completed narrative, mirrored evidence and PDF 
 for field,s in claim_checks['global_statistics'].items():claim_section.append(f"| {field} | {s['mean']:.9f} | {s['minimum']:.9f} | {s['maximum']:.9f} | {s['negative']} |")
 claim_section += ['',f"Audited completed report SHA256: `{claim_checks['report_sha256']}`. Audited updated tracker SHA256: `{claim_checks['tracker_sha256']}`. Full additional evidence is in `independent_claim_checks.json`. The corresponding unmodified bytes are retained as `reviewed_source_report.md` and `reviewed_tracker.md`; later status-only publication changes must not overwrite these snapshots."]
 lines += claim_section
+resolved={
+ 'The narrative line112 learning-direction wording is mildly ambiguous; prefer recorded role-block gradient direction, consistent with its line33 AdamW limitation.':'The optional line112 wording edit was resolved before final closure: it now explicitly says recorded role-block gradient direction, consistent with its line33 AdamW limitation.',
+ 'Prefer recorded role-block gradient direction over learning direction in the final mechanism statement.':'Retain the corrected recorded role-block gradient-direction statement.',
+ 'One optional precision edit remains: report line112 says “实际改变学习方向”. Its detailed definition at line33 already excludes actual AdamW directions, so this is not an integrity failure; “实际改变所记录的角色参数块梯度方向” would remove residual ambiguity.':'The optional precision edit is resolved: final report line112 now says “实际改变所记录的角色参数块梯度方向”. The final publication revision changes only report lines3/9/112/118 and tracker status/closure text; no scientific number or underlying source artifact changed. Both prepublication and final reviewed snapshots/digests are preserved.',
+ 'The corresponding unmodified bytes are retained as `reviewed_source_report.md` and `reviewed_tracker.md`; later status-only publication changes must not overwrite these snapshots.':'The final reviewed bytes are retained as `reviewed_source_report.md` and `reviewed_tracker.md`; the initial completed narrative and tracker revisions remain in `reviewed_source_report_prepublication.md` and `reviewed_tracker_prepublication.md`, and the earlier audit revision in the correspondingly named prepublication audit files. Later status-only publication changes must not overwrite these snapshots.'
+}
+for old,new in resolved.items():
+ lines=[line.replace(old,new) for line in lines];limitations=[x.replace(old,new) for x in limitations]
+ for action in actions:action['action']=action['action'].replace(old,new)
 for source,target in [(Path(R)/'results/MSVR310_HISTORY_CANDIDATE_GRADIENT_SOURCE_2026-09-08.md','reviewed_source_report.md'),(Path(R)/'refine-logs/msvr310_history_candidate_gradient_v1/EXPERIMENT_TRACKER.md','reviewed_tracker.md')]:
  b=source.read_bytes();expected=claim_checks['report_sha256'] if target=='reviewed_source_report.md' else claim_checks['tracker_sha256'];assert hashlib.sha256(b).hexdigest()==expected
  (O/target).write_bytes(b)
@@ -223,6 +232,9 @@ with (O/'verified_state_role_means.csv').open('w',newline='',encoding='utf-8') a
 all_inputs=dict(d['input_hashes']);all_inputs.update(claim_checks['input_hashes'])
 (O/'audited_input_hashes.json').write_text(json.dumps(all_inputs,indent=2,ensure_ascii=False)+'\n',encoding='utf-8')
 report=dict(audit_skill='experiment-audit',verdict='WARN',reason_code='runtime_binary_provenance_and_single_group_direct_proof_limits',summary=lines[2],reviewer='native Codex fresh-context auditor',reviewer_model='gpt-6-astra',reviewer_reasoning='max',reviewer_family='openai',review_independence='same-family',acceptance_status='provisional',agent_id='/root/audit_msvr_history_gradient_source',date='2026-09-08',generated_at=datetime.now(timezone.utc).isoformat(),overall_verdict='warn',integrity_status='warn',deterministic_checks_status='pass',scientific_qualification=None,narrative_claim_check='PASS_COMPLETE_NUMBERS_AND_SCOPE_WITH_MINOR_WORDING_NOTE',checks=checks,limitations=limitations,action_items=actions,totals=d['totals'],audited_input_hashes=all_inputs,audited_input_hashes_path=str(O/'audited_input_hashes.json'),evidence_path=str(O/'independent_checks.json'),claim_evidence_path=str(O/'independent_claim_checks.json'),reviewed_report_sha256=claim_checks['report_sha256'],reviewed_tracker_sha256=claim_checks['tracker_sha256'],read_only_scope=dict(model_forwards=0,model_backwards=0,optimizer_updates=0,remote_commands=0,scientific_files_modified=0),claims=[dict(id='fixed_state_source_candidate_derivative_contribution',impact='supported_with_runtime_witness_qualifier'),dict(id='harmful_task_conflict_or_causal_failure_mechanism',impact='unsupported'),dict(id='optimizer_or_generalization_gain',impact='not_measured'),dict(id='full_multi_group_direct_gradient_reproduction',impact='unsupported'),dict(id='final_narrative_numbers',impact='pass_complete_numeric_check')])
+(O/'EXPERIMENT_AUDIT.json').write_text(json.dumps(report,indent=2,ensure_ascii=False)+'\n',encoding='utf-8')
+report['narrative_claim_check']='PASS_COMPLETE_NUMBERS_AND_SCOPE_WORDING_PRECISION_RESOLVED'
+report['reviewed_prepublication_snapshots']={p.name:hashlib.sha256(p.read_bytes()).hexdigest() for p in O.glob('*prepublication*')}
 (O/'EXPERIMENT_AUDIT.json').write_text(json.dumps(report,indent=2,ensure_ascii=False)+'\n',encoding='utf-8')
 (O/'audit.json').write_text(json.dumps(report,indent=2,ensure_ascii=False)+'\n',encoding='utf-8')
 receipts={p.name:dict(bytes=p.stat().st_size,sha256=hashlib.sha256(p.read_bytes()).hexdigest()) for p in O.iterdir() if p.is_file() and p.name!='audit_artifact_sha256.json'}

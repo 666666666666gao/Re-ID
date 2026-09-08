@@ -108,6 +108,11 @@ q=js(R/'evidence/msvr310_fresh_coordinate_complete_q1_20260908/q1/summary.json')
 prior_report=read(R/'results/MSVR310_FRESH_COORDINATE_V1_Q1_2026-09-08.md').decode('utf-8')
 assert '0/5' in prior_report and '-0.07158042' in prior_report
 assert '−0.07158042pp' in text and '均0/5' in text
+eq(f"{q['comparison']['matched_gains_mAP']['fused']:.8f}",'-0.07158042','inherited_q1_gain_value')
+eq(len(q['comparison']['paired_checks']),5,'inherited_q1_paired_gate_count')
+eq(sum(q['comparison']['paired_checks'].values()),0,'inherited_q1_paired_gate_passes')
+eq(len(q['comparison']['endpoints']['fresh_memory']['scientific_checks']),5,'inherited_q1_signal_gate_count')
+eq(sum(q['comparison']['endpoints']['fresh_memory']['scientific_checks'].values()),0,'inherited_q1_signal_gate_passes')
 
 # Independent PDF extraction compares grid positions, not just the value multiset.
 pdf=M/'figures/msvr310_history_candidate_gradients_source.pdf';pdf_bytes=read(pdf);doc=pymupdf.open(stream=pdf_bytes,filetype='pdf');eq(len(doc),1,'pdf_page_count')
@@ -144,5 +149,10 @@ completion=js(M/'processing/completion.json');eq(completion['finished_at'],'2026
 assert 'Full audit and next-hypothesis registration remain manual evidence-dependent steps.' in tracker
 read(Path(__file__))
 result=dict(status='PASS_COMPLETE_REPORT_MIRROR_AND_POSITIONAL_PDF_CHECKS',generated_at=datetime.now(timezone.utc).isoformat(),counts=dict(counts),report_sha256=hashlib.sha256(read(report_path)).hexdigest(),tracker_sha256=hashlib.sha256(read(tracker_path)).hexdigest(),global_statistics=global_stats,negative_current_both_groups=[dict(fold=k[0],state=k[1],role=k[2],count=v) for k,v in sorted(negative.items())],prose_claim_checks=claims,pdf=dict(pages=1,mean_cells=108,n_cells=108,grid_position_validated=True,embedded_images=8,out_of_page_text_spans=0,independent_render=str(render),pymupdf_version=pymupdf.VersionBind),scope='All four report tables and reported aggregate/prose values checked against raw rows; complete mirrored bytes and positional PDF content independently checked. Inherited prior-Q1 negative gain is referenced, not remeasured.',wording_note='Report line112 uses learning direction; prefer recorded role-block gradient direction to avoid ambiguity with optimizer directions, although line33 already disclaims AdamW update interpretation.',input_hashes=inputs)
+assert '实际改变所记录的角色参数块梯度方向' in lines[111]
+assert 'WARN' in lines[2] and 'provisional' in lines[2]
+assert 'CLOSED_WARN (same-family/provisional)' in tracker
+result['wording_note']='RESOLVED: the final report line112 explicitly says recorded role-block gradient direction. Closure-only publication edits retain WARN/same-family/provisional and do not alter source numbers.'
+result['publication_snapshot_deltas']=dict(report_lines=[3,9,112,118],tracker_lines=[15,35],scientific_number_changes=0,source_artifact_changes=0)
 (O/'independent_claim_checks.json').write_text(json.dumps(result,indent=2,ensure_ascii=False)+'\n',encoding='utf-8')
 print(json.dumps({k:v for k,v in result.items() if k not in ['input_hashes','prose_claim_checks']},indent=2,ensure_ascii=False))
