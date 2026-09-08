@@ -2,7 +2,7 @@
 
 ## 0. 一页结论
 
-当前执行入口：§41.191；Smooth-AP固定Q1原wrapper48170/训练49157于09-09 00:02存活，fold0 control完成9/20epoch；M0/CPU完整通过，独立M0审计运行中。终态分析器已用完整M0248步检查，未执行Q1终态分析。Goal ACTIVE/UNMET。
+当前执行入口：§41.192；Smooth-AP M0独立审计已关闭WARN/确定性PASS，原Q1继续。09-09 00:29原wrapper48170/Q1 49157存活，fold0control固定260步完成，smooth_ap5/20epoch；1/6端完成，无完整检索终态。下一观察约00:40确认候选端后预热耗时。Goal ACTIVE/UNMET。
 
 当前用于已完成MSVR310比较及新登记RGBNT100比较的是原V8平行三角色结构：冻结Signal/CLIP，共享block8之前语义和tail9/10/11参数，三个角色分别运行共享tail；CNN处理局部语义Patch高频，Transformer处理全局CLS/Patch关系，Mamba处理空间与位置级三模态扫描。各角色相对冻结reference形成1536D残差，三角色4608D银行拼接3072D Signal得到7680D fused；完整单角色输出为4608D Signal+角色残差。三条路径均执行，当前没有Router/HFER、V23模态MLP或V24原型。两项车辆训练比较均已完成；RGBNT100内部完整比较支持三角色增益，MSVR310尚未超过Signal。下面V1—V8条目保留历史经过，不代表当前又启用了旧模块。
 
@@ -6302,3 +6302,14 @@ M0结束2026-09-08T23:51:18.686093+08:00，CPU结束2026-09-08T23:51:28.873294+0
 #### §41.191 终态接收执行准备补充（00:06）
 
 同证据目录新增receive_smooth_ap_q1_terminal_20260909.py和smooth_ap_terminal_execution_ready_20260909.md。接收器固定新run/commit/CPU状态，验证完整五阶段退出、原PID结束、1560步及终态SHA，再收全部文本；随后用既有完整ranking工具candidate=smooth_ap重放所有身份/查询及原门。已检查本地和嵌入远端代码AST，未执行终态接收、Q1分析或排名重放。不新增训练/门槛/官方读取，当前Q1和M0独立审计继续。
+
+
+### 41.192 Smooth-AP M0独立审计闭环及首控制端完成（2026-09-09 00:29观察）
+
+独立M0审计已完成：总体WARN，工程PASS_WITH_LIMITS，deterministic_checks_status=pass；gpt-6-astra/max新上下文，同模型家族/provisional。178项递归哈希匹配，1032来源triplet/3096模态路径/155身份、全部780batch sampler与真实队列重建通过；248更新、15872anchor AP、4945920四空间距离均独立核验。逐anchor AP最大误差2.3559432371644817e-7；每目标每dtype1236480距离位置，Smooth-AP解析导数对部署实现最大差Float64=3.122502256758253e-17、Float32=1.7623613799214177e-8，hard导数精确一致；14项总和最大误差5.62518835067749e-7。六个checkpoint各472张量完整/冻结状态及三源初始化绑定重建匹配。
+
+WARN保留：真实图像内容/压缩包未重读；历史字段/RNG/向量和逐步optimizer/参数梯度未保存，不能从距离导数及范数恢复。六次direct-check只覆盖step4首个历史group的189encoder张量，最大相对L2=2.0929868300782436e-5属于运行见证及摘要恒等式核验；strict reload前后输出数组未保存，输出逐位相同仍是执行时断言，完整checkpoint状态则已独立核验。203/203是累计覆盖；固定过拟合只有53独立记录、无历史候选，不证明历史反传过拟合。审计未消费Q1成绩，未要求重训、改合同或改代码。
+
+原文、独立脚本/输出、快照及失败尝试归档evidence/smooth_ap_m0_audit_20260909，正式报告refine-logs/msvr310_smooth_ap_v1/EXPERIMENT_AUDIT_M0.md/.json。一次审计transport捕获接口失败和13份副本文本CRLF归一化均已保留/修复，最终232/232远端文本快照、29/29原intake文件字节匹配。私有请求/调用trace留本地.aris与审计目录，公开清单明确排除项。不得重复已关闭M0审计。
+
+00:29:28原wrapper48170/Q1 49157存活，首折control完成20epoch/260步、固定checkpoint存在，全部记录工程检查通过；候选smooth_ap完成5/20epoch，尚在预热边界。1/6端完成，不报告局部检索增益。输出卷9566380032B（8.9094GiB），本轮未删除新权重。候选后预热代价尚待实际观察，不能据约19秒的预热epoch外推；约00:40再查后预热耗时并修正首候选端ETA。固定执行2e947a4/配置974328fee25985b19aa36c84f57a557f9120993fecb98b2a902a1b8de8475302不变。完整六端/CPU/终态分析/独立Q1审计仍待完成，三数据集Goal未达到。

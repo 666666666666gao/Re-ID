@@ -1,0 +1,13 @@
+Command:
+& 'C:\Users\gb\AppData\Local\Programs\ClawX\resources\bin\uv.exe' run --offline --with paramiko python -X utf8 'C:\Users\gb\.codex_tmp\smooth_ap_m0_independent_audit_20260908\remote_readonly.py' 'C:\Users\gb\.codex_tmp\smooth_ap_m0_independent_audit_20260908\remote_inventory.py'
+
+Exit: 1
+Failure before the remote audit payload ran:
+  File "remote_readonly.py", line 10, in <module>
+    exec(compile(helper.read_bytes(), '<private-ssh-helper>', 'exec'), private)
+  File "<private-ssh-helper>", line 20, in <module>
+  File "<string>", line 2, in <module>
+AttributeError: '_io.StringIO' object has no attribute 'reconfigure'
+
+Cause: the private helper expects standard text-stream reconfigure support.
+Audit-only correction: replace StringIO output capture with TextIOWrapper(BytesIO), retaining private redirection. No helper contents or credentials were output. No repository or process change.

@@ -1,0 +1,90 @@
+{
+  "status": "RUNNING",
+  "wrapper_pid": 48170,
+  "code_commit": "2e947a4325144e37fed638105ac954e7e54b5fe5",
+  "config_sha256": "974328fee25985b19aa36c84f57a557f9120993fecb98b2a902a1b8de8475302",
+  "started_at": "2026-09-08T23:40:13.380310+08:00",
+  "stages": [
+    {
+      "stage": "t0",
+      "original_pid": 48176,
+      "command": [
+        "/root/miniconda3/envs/tri_reid/bin/python",
+        "-u",
+        "-m",
+        "tools.check_msvr_smooth_ap",
+        "--config",
+        "/root/autodl-tmp/trifusion-v2/TriFusion-ReID/configs/MSVR310/TriFusion-smooth-ap-paired-v1.json",
+        "--output",
+        "/root/trifusion-storage/artifacts/msvr310_smooth_ap_v1_seed42_2e947a4/t0.json"
+      ],
+      "started_at": "2026-09-08T23:40:13.381152+08:00",
+      "exit_code": 0,
+      "ended_at": "2026-09-08T23:40:18.938145+08:00",
+      "elapsed_seconds": 5.557589367032051
+    },
+    {
+      "stage": "m0",
+      "original_pid": 48190,
+      "command": [
+        "/root/miniconda3/envs/tri_reid/bin/python",
+        "-u",
+        "-m",
+        "tools.train_msvr_smooth_ap",
+        "--config",
+        "/root/autodl-tmp/trifusion-v2/TriFusion-ReID/configs/MSVR310/TriFusion-smooth-ap-paired-v1.json",
+        "--mode",
+        "m0",
+        "--output-dir",
+        "/root/trifusion-storage/artifacts/msvr310_smooth_ap_v1_seed42_2e947a4/m0"
+      ],
+      "started_at": "2026-09-08T23:40:18.939762+08:00",
+      "exit_code": 0,
+      "ended_at": "2026-09-08T23:51:18.686093+08:00",
+      "elapsed_seconds": 659.7474046330899
+    },
+    {
+      "stage": "m0_cpu",
+      "original_pid": 49082,
+      "command": [
+        "/root/miniconda3/envs/tri_reid/bin/python",
+        "-u",
+        "-m",
+        "tools.verify_msvr_smooth_ap",
+        "--config",
+        "/root/autodl-tmp/trifusion-v2/TriFusion-ReID/configs/MSVR310/TriFusion-smooth-ap-paired-v1.json",
+        "--run-dir",
+        "/root/trifusion-storage/artifacts/msvr310_smooth_ap_v1_seed42_2e947a4/m0",
+        "--output",
+        "/root/trifusion-storage/artifacts/msvr310_smooth_ap_v1_seed42_2e947a4/m0_cpu.json"
+      ],
+      "started_at": "2026-09-08T23:51:18.687587+08:00",
+      "exit_code": 0,
+      "ended_at": "2026-09-08T23:51:28.873294+08:00",
+      "elapsed_seconds": 10.186520289629698
+    },
+    {
+      "stage": "q1",
+      "original_pid": 49157,
+      "command": [
+        "/root/miniconda3/envs/tri_reid/bin/python",
+        "-u",
+        "-m",
+        "tools.train_msvr_smooth_ap",
+        "--config",
+        "/root/autodl-tmp/trifusion-v2/TriFusion-ReID/configs/MSVR310/TriFusion-smooth-ap-paired-v1.json",
+        "--mode",
+        "q1",
+        "--output-dir",
+        "/root/trifusion-storage/artifacts/msvr310_smooth_ap_v1_seed42_2e947a4/q1",
+        "--m0-receipt",
+        "/root/trifusion-storage/artifacts/msvr310_smooth_ap_v1_seed42_2e947a4/m0/summary.json",
+        "--m0-verification",
+        "/root/trifusion-storage/artifacts/msvr310_smooth_ap_v1_seed42_2e947a4/m0_cpu.json"
+      ],
+      "started_at": "2026-09-08T23:51:28.875233+08:00"
+    }
+  ],
+  "free_bytes_before": 9954033664,
+  "gpu_before": "0, 1, 24576\n"
+}

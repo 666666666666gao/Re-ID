@@ -1,0 +1,156 @@
+{
+  "optimizer_updates": 248,
+  "current_anchor_exposures": 15872,
+  "extra_fresh_role_record_forwards": 6272,
+  "extra_history_vjp_record_forwards": 5760,
+  "extra_direct_record_forwards": 384,
+  "historical_candidate_exposures": 3448,
+  "fit_seconds": 482.81478158570826,
+  "max_allocated_mib": 11267.1171875,
+  "max_reserved_mib": 12116.0,
+  "stages": [
+    {
+      "stage": "t0",
+      "original_pid": 48176,
+      "command": [
+        "/root/miniconda3/envs/tri_reid/bin/python",
+        "-u",
+        "-m",
+        "tools.check_msvr_smooth_ap",
+        "--config",
+        "/root/autodl-tmp/trifusion-v2/TriFusion-ReID/configs/MSVR310/TriFusion-smooth-ap-paired-v1.json",
+        "--output",
+        "/root/trifusion-storage/artifacts/msvr310_smooth_ap_v1_seed42_2e947a4/t0.json"
+      ],
+      "started_at": "2026-09-08T23:40:13.381152+08:00",
+      "exit_code": 0,
+      "ended_at": "2026-09-08T23:40:18.938145+08:00",
+      "elapsed_seconds": 5.557589367032051
+    },
+    {
+      "stage": "m0",
+      "original_pid": 48190,
+      "command": [
+        "/root/miniconda3/envs/tri_reid/bin/python",
+        "-u",
+        "-m",
+        "tools.train_msvr_smooth_ap",
+        "--config",
+        "/root/autodl-tmp/trifusion-v2/TriFusion-ReID/configs/MSVR310/TriFusion-smooth-ap-paired-v1.json",
+        "--mode",
+        "m0",
+        "--output-dir",
+        "/root/trifusion-storage/artifacts/msvr310_smooth_ap_v1_seed42_2e947a4/m0"
+      ],
+      "started_at": "2026-09-08T23:40:18.939762+08:00",
+      "exit_code": 0,
+      "ended_at": "2026-09-08T23:51:18.686093+08:00",
+      "elapsed_seconds": 659.7474046330899
+    },
+    {
+      "stage": "m0_cpu",
+      "original_pid": 49082,
+      "command": [
+        "/root/miniconda3/envs/tri_reid/bin/python",
+        "-u",
+        "-m",
+        "tools.verify_msvr_smooth_ap",
+        "--config",
+        "/root/autodl-tmp/trifusion-v2/TriFusion-ReID/configs/MSVR310/TriFusion-smooth-ap-paired-v1.json",
+        "--run-dir",
+        "/root/trifusion-storage/artifacts/msvr310_smooth_ap_v1_seed42_2e947a4/m0",
+        "--output",
+        "/root/trifusion-storage/artifacts/msvr310_smooth_ap_v1_seed42_2e947a4/m0_cpu.json"
+      ],
+      "started_at": "2026-09-08T23:51:18.687587+08:00",
+      "exit_code": 0,
+      "ended_at": "2026-09-08T23:51:28.873294+08:00",
+      "elapsed_seconds": 10.186520289629698
+    }
+  ],
+  "witnesses": [
+    {
+      "fold": 0,
+      "endpoint": "control",
+      "first_history_witness_step": 4,
+      "historical_role_norms": {
+        "cnn": 0.02603919482766632,
+        "transformer": 0.2578401807571023,
+        "mamba": 0.11665742807712336
+      }
+    },
+    {
+      "fold": 0,
+      "endpoint": "smooth_ap",
+      "first_history_witness_step": 4,
+      "historical_role_norms": {
+        "cnn": 0.014173100377046575,
+        "transformer": 0.16107564611262468,
+        "mamba": 0.059589818550936396
+      }
+    },
+    {
+      "fold": 1,
+      "endpoint": "control",
+      "first_history_witness_step": 4,
+      "historical_role_norms": {
+        "cnn": 0.021966923193039493,
+        "transformer": 0.20717030344105605,
+        "mamba": 0.08425423167131858
+      }
+    },
+    {
+      "fold": 1,
+      "endpoint": "smooth_ap",
+      "first_history_witness_step": 4,
+      "historical_role_norms": {
+        "cnn": 0.016242749410684935,
+        "transformer": 0.20186457774891908,
+        "mamba": 0.06827313850331548
+      }
+    },
+    {
+      "fold": 2,
+      "endpoint": "control",
+      "first_history_witness_step": 4,
+      "historical_role_norms": {
+        "cnn": 0.016667838115074562,
+        "transformer": 0.1726922227193255,
+        "mamba": 0.06200348137732967
+      }
+    },
+    {
+      "fold": 2,
+      "endpoint": "smooth_ap",
+      "first_history_witness_step": 4,
+      "historical_role_norms": {
+        "cnn": 0.02206461332880952,
+        "transformer": 0.2247598403192008,
+        "mamba": 0.08189181159428213
+      }
+    }
+  ],
+  "remote_process_snapshot": {
+    "48170": {
+      "exists": true,
+      "stat": "48170 (python) S 48169 48170 48170 34816 48170 4194560 2343 18476603 1 2018317 4 2 76469 12177 20 0 1 0 1058538326 33726464 4051 18446744073709551615 94116943200256 94116945320349 140727837632128 0 0 0 0 16781312 2 1 0 0 17 111 0 0 0 0 0 94116946347984 94116946569984 94117575352320 140727837636355 140727837636752 140727837636752 140727837638606 0\n",
+      "cmdline": "/root/miniconda3/envs/tri_reid/bin/python -u -m tools.run_msvr_smooth_ap --config /root/autodl-tmp/trifusion-v2/TriFusion-ReID/configs/MSVR310/TriFusion-smooth-ap-paired-v1.json --config-sha256 974328fee25985b19aa36c84f57a557f9120993fecb98b2a902a1b8de8475302 --code-commit 2e947a4325144e37fed638105ac954e7e54b5fe5 --output-dir /root/trifusion-storage/artifacts/msvr310_smooth_ap_v1_seed42_2e947a4 ",
+      "cwd": "/root/autodl-tmp/trifusion-v2/TriFusion-ReID"
+    },
+    "48176": {
+      "exists": false
+    },
+    "48190": {
+      "exists": false
+    },
+    "49082": {
+      "exists": false
+    },
+    "49157": {
+      "exists": true,
+      "stat": "49157 (python) S 48170 48170 48170 34816 48170 1077936384 11358953 3640993 60 1916624 49942 9171 10174 1609 20 0 14 0 1058605886 21290557440 1083256 18446744073709551615 94191376171008 94191378291101 140735056924704 0 0 0 0 16781312 65538 0 0 0 17 85 0 0 0 0 0 94191379318736 94191379540736 94192262488064 140735056926345 140735056926820 140735056926820 140735056928718 0\n",
+      "cmdline": "/root/miniconda3/envs/tri_reid/bin/python -u -m tools.train_msvr_smooth_ap --config /root/autodl-tmp/trifusion-v2/TriFusion-ReID/configs/MSVR310/TriFusion-smooth-ap-paired-v1.json --mode q1 --output-dir /root/trifusion-storage/artifacts/msvr310_smooth_ap_v1_seed42_2e947a4/q1 --m0-receipt /root/trifusion-storage/artifacts/msvr310_smooth_ap_v1_seed42_2e947a4/m0/summary.json --m0-verification /root/trifusion-storage/artifacts/msvr310_smooth_ap_v1_seed42_2e947a4/m0_cpu.json ",
+      "cwd": "/root/autodl-tmp/trifusion-v2/TriFusion-ReID"
+    }
+  }
+}
