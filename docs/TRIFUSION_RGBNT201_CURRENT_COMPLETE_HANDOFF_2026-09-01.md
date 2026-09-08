@@ -2,7 +2,7 @@
 
 ## 0. 一页结论
 
-当前执行入口：§41.162；历史反传Q1原PID20941继续；本地终态接收/分析后台PID31404已核实，300秒观察，完整结束才处理29文本与全量排名。尚无完整Q1结论，Goal ACTIVE/UNMET。
+当前执行入口：§41.163；历史反传Q1第一折两端260步/receipt/检索记录齐备，第二折control已更新16步，原PID20941继续；本地后台31404正常。完整三折及CPU未结束，Goal ACTIVE/UNMET。
 
 当前用于已完成MSVR310比较及新登记RGBNT100比较的是原V8平行三角色结构：冻结Signal/CLIP，共享block8之前语义和tail9/10/11参数，三个角色分别运行共享tail；CNN处理局部语义Patch高频，Transformer处理全局CLS/Patch关系，Mamba处理空间与位置级三模态扫描。各角色相对冻结reference形成1536D残差，三角色4608D银行拼接3072D Signal得到7680D fused；完整单角色输出为4608D Signal+角色残差。三条路径均执行，当前没有Router/HFER、V23模态MLP或V24原型。两项车辆训练比较均已完成；RGBNT100内部完整比较支持三角色增益，MSVR310尚未超过Signal。下面V1—V8条目保留历史经过，不代表当前又启用了旧模块。
 
@@ -5974,3 +5974,10 @@ M0于13:10:03.589918写入PASS_ENGINEERING_ONLY、13:10:04原PID19991 exit0；CP
 完整pipeline五阶段exit0、1560更新与CPU终态后，自动执行已准备的29文本SHA接收→tools/analyze_msvr_history_gradient_training.py全更新/epoch汇总→原tools/audit_msvr_paired_ranking_text.py全600query/60身份/五输出排名及原门核验。阶段非零退出或观察无法确认时，记录状态并停止本地处理，不推定远端训练失败、不重启。成功状态为COMPLETE_LOCAL_TEXT_AND_RANKING_VERIFIED_AWAITING_INDEPENDENT_AUDIT；自动流程不发布报告、不替代独立审计，也不标记Goal完成。
 
 绑定接收/观察/分析/worker/launch文件SHA；后台在运行期间不要修改这些文件，否则绑定核验会停止本地处理。Windows隐藏启动，使用隔离uv文本依赖环境（8个包）；远端tri_reid环境、a1b4777训练代码与配置没有变化。原图/权重/二进制矩阵留远端。证据evidence/msvr310_history_gradient_terminal_watcher_20260908；当前没有新增终态或性能结论。下一步按阶段核查后台与原GPU进程，完成后接独立审计/报告/三方同步。Goal ACTIVE/UNMET。
+
+
+### 41.163 历史反传Q1第一折齐备、第二折自动接续（2026-09-08T14:22:34.505467+08:00）
+
+后台第3次观察2026-09-08T14:19:25.028328+08:00确认原wrapper19977/Q1 PID20941继续：fold0 control与history_gradient均260/260步，receipt_complete与retrieval_recorded均真；fold1 control已实际16步。2026-09-08T14:21:04.7098100+08:00另外实查本地PID31404及正确命令行存在，状态WAITING_VERIFIED_REMOTE_WRAPPER。原训练与后台均未重启。此处只记录2/6端写入齐备，不发布局部mAP、不将该折称为完整科学晋级；全六端CPU核验尚未运行。
+
+阶段证据evidence/msvr310_history_gradient_first_training_fold_complete_20260908。继续原固定预算与两组五门，等待其余四端后自动接收29文本、全部1560步及完整排名分析，再独立审计/报告/同步。最近实查空闲3402444800B，无新增删除。执行a1b4777、配置及后台绑定脚本保持；当前论文/SOTA目标仍未完成，Goal ACTIVE/UNMET。
