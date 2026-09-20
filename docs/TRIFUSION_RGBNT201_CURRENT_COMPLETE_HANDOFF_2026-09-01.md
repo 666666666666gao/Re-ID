@@ -2,7 +2,7 @@
 
 ## 0. 一页结论
 
-当前执行入口：§41.215—§41.221（2026-09-21）。原标准Smooth-AP Q1_FAIL与完整来源梯度诊断已封存并独立审计关闭。新跨scene Smooth-AP执行d35864d/配置e5326b52，M0与CPU完整248步通过，独立M0为WARN/CLOSED_WITH_LIMITS、确定性工程PASS。原wrapper16885/Q1 18222持续执行；01:15:49首控制20epoch/260步、checkpoint重载、图库检索及端点收据完成，1/6端；同折候选自动第1epoch。六端及CPU终态未结束，无新增正式成绩。保持seed42和固定合同；后继梯度协作仅文献候选。三数据集Goal ACTIVE/UNMET。下面V1—V8及各节保留历史，不作为当前运行指令。
+当前执行入口：§41.215—§41.222（2026-09-21）。原标准Smooth-AP Q1_FAIL与完整来源梯度诊断已封存并独立审计关闭。新跨scene Smooth-AP执行d35864d/配置e5326b52，M0与CPU完整248步通过，独立M0为WARN/CLOSED_WITH_LIMITS、确定性工程PASS。原wrapper16885/Q1 18222持续执行；01:39:45首控制完整20epoch/260步，候选14/20epoch，1/6端。实际首个零支持第180步符合保存掩码与梯度见证，后续181步继续；全量CPU仍待六端。无新增正式成绩。保持seed42和固定合同；后继梯度协作仅文献候选。三数据集Goal ACTIVE/UNMET。下面V1—V8及各节保留历史，不作为当前运行指令。
 
 当前MSVR310训练及此前两个车辆数据集比较使用原V8平行三角色结构：冻结Signal/CLIP，共享block8之前语义和tail9/10/11参数，三个角色分别运行共享tail；CNN处理局部语义Patch高频，Transformer处理全局CLS/Patch关系，Mamba处理空间与位置级三模态扫描。各角色相对冻结reference形成1536D残差，三角色4608D银行拼接3072D Signal得到7680D fused；完整单角色输出为4608D Signal+角色残差。三条路径均执行，当前没有Router/HFER、V23模态MLP或V24原型。两项车辆训练比较均已完成；RGBNT100内部完整比较支持三角色增益，MSVR310尚未超过Signal。下面V1—V8条目保留历史经过，不代表当前又启用了旧模块。
 
@@ -6637,3 +6637,12 @@ root另核对当前计算图，PROJECT_OBJECTIVE_SCOPE.md与输入SHA保存：O�
 01:15:49直接观察原wrapper16885/Q1 18222存活、cmdline吻合。fold0 control完成20epoch/260更新，fit epoch时间合计2258.3322秒（37.6389分钟），overflow0、累计203/203非零、全部冻结/Signal/角色更新/预算检查true；checkpoint及严格重载记录、完整图库检索和最终receipt均写出。1/6端完成，同折cross_scene已自动完成第1epoch。证据evidence/cross_scene_smooth_ap_q1_progress_20260921/trifusion_cross_scene_observation_0116_20260921.json，实际观察时间以文件字段为准而非文件名分钟。
 
 只读观察器v2将训练完成、checkpoint、检索与receipt分别记录，避免执行器先保存training后尚未检索时被误称完整端；未改变训练器或已绑定配置。全部六端的CPU与科学审计尚未执行，不把单端运行检查扩大为完整检索核验或晋级。输出余6439456768B（约6.00GiB），本轮删除0权重。下一观察约01:24，使用候选历史阶段速度校正全量ETA；当前全六端仍暂估04:30附近，随后CPU/独立审计。Goal ACTIVE/UNMET。
+
+
+### 41.222 首个实际零跨场景支持批次核对（2026-09-21）
+
+01:21:51原wrapper16885/Q1 18222存活，候选第7epoch完成144.6504秒，历史阶段速度与控制接近；该观察留D盘原始记录，无中间检索解读。根据已登记fold0 step180零eligible位置，在预计经过后01:39:45只读核对实际保存行及后续181行。64个anchor跨scene正例均0，每个仍保留395个负身份候选；cross AP/loss存储0，339条历史leaf上游norm全0，历史VJP组与记录重算数0。三个角色当前合成norm为0.29522184/0.24617020/0.34217880，历史贡献0、加入前后差0。原进程直接/proc确认继续存活。
+
+证据evidence/cross_scene_smooth_ap_zero_support_runtime_20260921。这是单个实际保存行的独立mask算术与运行见证，未重生成梯度或测量参数更新差；训练器optimizer调用后写入记录，完整AMP与14项账本仍待完整终点/CPU。既有M0零eligible=0和T0合成边界保持，不把新见证倒写成M0覆盖，也不以单行代替四个预热后零批次的全量核验。
+
+同期首控制完整260步/receipt，候选第14/20epoch，1/6端；GPU7412MiB/96%，输出余6355922944B。下一观察约01:54接近候选固定终点，不改定义/不重启/不删除权重。总Goal ACTIVE/UNMET。
