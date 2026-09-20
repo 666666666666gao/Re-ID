@@ -6587,3 +6587,12 @@ M0原16907于00:25:36自动启动，00:25:44与原wrapper均存活、cmdline匹�
 
 
 §41.216容量阶段补充：00:31:46六容量端各8步均完成，203/203累计非零、overflow0、Signal/冻结状态检查均通过；原wrapper16885与M0原16907存活，GPU7424MiB/100%，输出余6618443776B。尚待两个100步过拟合及完整M0_CPU，不称完整M0通过。evidence/cross_scene_smooth_ap_completion_preparation_20260921保存观察和终态接收/全行分析准备（AST检查而未执行）。新鲜M0独立审计 /root/audit_cross_scene_smooth_ap_m0_20260921 已启动静态/GT阶段，需完整终态才能裁决；私有trace在.aris/traces/experiment-audit/2026-09-21_cross_scene_m0。下一观察约00:36，原任务持续，不改合同/不重启。Goal ACTIVE/UNMET。
+
+
+### 41.217 跨场景 Smooth-AP 完整 M0/CPU通过，原链进入Q1（2026-09-21）
+
+原M0进程16907于00:36:52退出0，675.716秒；M0_CPU18145于00:37:03退出0，10.924秒。PASS_ENGINEERING_ONLY与PASS_COMPLETE_CROSS_SCENE_SMOOTH_AP_M0，summary SHA c59e39cc2192bfb11b12a58f53eb8b3853455bfd41744c74aaf4742272ba1506。完整248步、4945920距离元素与5760历史VJP记录前向的保存账本核对；未重新模型反传，不将运行梯度见证称为独立逐步向量重建。
+
+六容量端各8步，均203/203累计非零、overflow0及全部冻结/Signal/角色更新检查通过。两个固定100步过拟合原超额损失比控制0.0006996800、跨scene0.0007000677，原门槛0.1，均通过。28份原始文本6626715B完整接收且逐文件字节/SHA匹配；inventory/intake及观察另列，证据evidence/cross_scene_smooth_ap_m0_complete_20260921。原图、模型和数组仍仅远端。独立M0审计在同一新鲜上下文继续，完整裁决待返回。
+
+原wrapper16885于00:37:03自动启动Q1原18222。00:39:41二者实际cmdline匹配且存活，首控制完成第5/20epoch，0/6终点；GPU6426MiB/96%，输出余6594674688B。保持执行d35864d/配置e5326b52、seed42、全部六端固定终点；无中途调参或检索结论。后续按历史阶段实际耗时估计完整端点，原CPU链仅六端齐全后执行。未删除权重；原失败判定和正式结果不变，Goal ACTIVE/UNMET。
