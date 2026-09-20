@@ -2,7 +2,7 @@
 
 ## Latest verified state (2026-09-09 Smooth-AP Q1 independent audit closed with limits)
 
-- 当前执行入口：§41.217；cross-scene Smooth-AP执行d35864d/配置e5326b52，screen tri_cross_scene_d35864d。M0与M0_CPU完整248步均退出0/PASS；独立M0审计继续。原wrapper16885/Q1进程18222于00:37启动；00:39首控制5/20epoch、0/6终点，无新检索结果。保持原链/合同；原梯度审计关闭、旧Q1_FAIL保留，Goal ACTIVE/UNMET。
+- 当前执行入口：§41.217补充；cross-scene Smooth-AP执行d35864d/配置e5326b52，screen tri_cross_scene_d35864d。M0/CPU完整248步退出0；独立M0全量算术复算完成、最终报告归档仍待返回。原wrapper16885/Q1 18222存活，00:46首控制8/20epoch、0/6终点。首端暂估01:15、全六端04:30–05:00；下一运行观察约01:12。保持原链/合同；旧Q1_FAIL及Goal ACTIVE/UNMET不变。
 - Read refine-logs/msvr310_smooth_ap_v1/EXPERIMENT_AUDIT_M0.md/.json and evidence/smooth_ap_m0_audit_20260909. Same-family/provisional, reconstruction limits retained. No new model/GPU replay, no change request. Do not repeat M0 or its audit.
 - Run /root/trifusion-storage/artifacts/msvr310_smooth_ap_v1_seed42_2e947a4, screen tri_smooth_ap_2e947a4. Original execution2e947a4 and pinnedconfig unchanged; do not relaunch on timeout. Two five-gate groups fixed.
 - Terminal intake/analyzer/ranking steps are in evidence/smooth_ap_terminal_analysis_preparation_20260909/smooth_ap_terminal_execution_ready_20260909.md, executed on complete Q1; see results/MSVR310_SMOOTH_AP_V1_Q1_2026-09-09.md. Independent terminal review CLOSED_WITH_LIMITS; read EXPERIMENT_AUDIT_Q1.md/.json.
