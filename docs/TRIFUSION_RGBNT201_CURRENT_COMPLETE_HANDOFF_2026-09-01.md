@@ -6482,3 +6482,14 @@ fused52.444136→52.787590（+0.343455），CNN+0.513458/T+1.174330/M+0.251933�
 预检a2dec7f原63156/63157于04:39:08全部exit0：六端48批、0更新。CPU保存距离/loss与3402实际梯度张量核验PASS，18角色/端点全部统计重算；最大loss误差1.1920928955078125e-07、梯度统计误差2.220446049250313e-16。预检summary SHA bc5aa928dc98f0694008d044753718c87877ad14fddc797b37acf8e6abcf98d0；verification SHA 93fd2174c5084e565db65e8a0f09208132836c6a770c4b92726facf73e2d398a。全量文本evidence/smooth_ap_objective_gradient_preflight_complete_20260909，checker与接收脚本在support目录。每端首历史group直接全图/VJP最大相对误差9.931233814409018e-05；此有限范围不扩称全程独立梯度重构。
 
 完整来源FULL_SOURCE_EXECUTION登记READY_NOT_RUN，复用原代码/合同、同六固定终态、65步预热/各260批=1560批、0更新，启动显式核对CPU预检状态和SHA。预检每端56.8–59.0秒，完整历史组更多，首若干epoch实测再细化数小时估计。全部模型/数组保留，输出约6.50GiB，未删权重。来源覆盖独立审计/root/audit_msvr_smooth_ap_source_coverage已启动，待结论。原Q1_FAIL、seed42与官方/消融边界不变，Goal ACTIVE/UNMET。
+
+
+### 41.209 完整来源目标梯度测量恢复执行（2026-09-20）
+
+17:52实时核查远端HEAD仍c6fbfb4，与本地/桌面已同步SHA 7ce4665d798e3d142e42cb422f74c9ef47cc68d2b5b4425693e4bb03b6ab6695一致。无旧诊断进程/完整source目录，GPU空闲；原48批预检与CPU完整核验不重复。核对summary/verification/config SHA及实现与a2dec7f逐字一致后，17:53:00启动原合同完整source：/root/trifusion-storage/artifacts/msvr310_smooth_ap_objective_gradients_source_seed42_c6fbfb4_20260920，wrapper1230/child1231，六端1560批、0更新。
+
+17:55:49实际两进程存活，fold0_control完成42/260批，GPU100%/12390MiB；前三epoch各约47秒，仍在65步预热内，不能据此精确估计历史VJP生效后的全程耗时。输出剩余6981439488B，主卷约2.09GiB；本轮未删除权重，当前所需终态保留。
+
+完整CPU账本核验脚本和范围已准备在evidence/smooth_ap_objective_gradient_source_launch_20260920，状态PREPARED_NOT_RUN。将核对全部1560批及4680角色统计的标量一致性；不会将未保存的全程向量声称独立重构。GPU测量尚无六端终态。
+
+旧来源覆盖审计代理已不可用，当前list_agents仅root，无最终审计文件；已有373份输入快照和未完成脚本保留。按experiment-audit新建/root/audit_smooth_coverage_resume_20260920接续，要求先检查现有完整收据，禁止重做已验证工作。新上下文、请求gpt-6-astra/max、same-family/provisional；工具仅返回task_name，无UUID/后端身份额外验证。待实际终态，不记PASS。原Q1_FAIL及全部科学边界保持，Goal ACTIVE/UNMET。
