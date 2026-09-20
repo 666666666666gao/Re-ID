@@ -1,0 +1,357 @@
+
+FILE D:\Program Files\UserCache\gb\codex\tmp\trifusion_supported_balance_m0_independent_audit_20260921\snapshots\repo\tools\train_msvr310_trifusion_oof.py
+98: def train_roles(model, records, record_indices, config, *, fold, mode, directory):
+99:     import numpy as np
+100:     import torch
+101:     from tools.run_signal_preserving_v5 import (
+102:         _module_state_sha256, _set_seed, _training_batch, learning_rate_multiplier,
+103:         weighted_training_loss,
+104:     )
+105:     from trifusion.signal_preserving_v8 import ExpertFormationV8Criterion
+106: 
+107:     _set_seed(42)
+108:     model.train()
+109:     initial, frozen = _module_state_sha256(model), frozen_state_sha(model)
+110:     signal_initial = _module_state_sha256(model.baseline.signal)
+111:     names = {n for n, p in model.named_parameters() if p.requires_grad}
+112:     optimizer = torch.optim.AdamW([p for p in model.parameters() if p.requires_grad],
+113:                                   lr=config["OPTIMIZATION"]["NEW_MODULE_LR"],
+114:                                   weight_decay=config["OPTIMIZATION"]["WEIGHT_DECAY"])
+115:     scaler = torch.amp.GradScaler("cuda", init_scale=256.0)
+116:     criterion = ExpertFormationV8Criterion(triplet_margin=config["LOSS"]["TRIPLET_MARGIN"],
+117:                                            label_smoothing=config["LOSS"]["LABEL_SMOOTHING"]).cuda()
+118:     loader = loader_for(records, True)
+119:     index_by_name = {Path(row[0][0]).name: index
+120:                      for row, index in zip(records, record_indices, strict=True)}
+121:     assert len(index_by_name) == len(records)
+122:     fixed_raw = next(iter(loader)) if mode == "overfit" else None
+123:     history, steps, live, overflow = [], [], set(), 0
+124:     torch.cuda.reset_peak_memory_stats()
+125:     for epoch in range(1, (20 if mode == "comparison" else 1) + 1):
+126:         started = time.perf_counter()
+127:         lr = config["OPTIMIZATION"]["NEW_MODULE_LR"]
+128:         if mode == "comparison":
+129:             lr *= learning_rate_multiplier(epoch, max_epochs=20, warmup_epochs=5)
+130:         for group in optimizer.param_groups:
+131:             group["lr"] = lr
+132:         if mode == "overfit":
+133:             batches = (fixed_raw for _ in range(100))
+134:         elif mode == "capacity":
+135:             batches = itertools.islice(loader, 8)
+136:         else:
+137:             batches = loader
+138:         epoch_rows = []
+139:         for raw in batches:
+140:             assert all(tuple(x.shape) == (64, 3, 128, 256) for x in raw[0].values())
+141:             assert sorted(torch.unique(raw[1], return_counts=True)[1].tolist()) == [8] * 8
+142:             batch, labels = _training_batch(raw)
+143:             optimizer.zero_grad(set_to_none=True)
+144:             with torch.autocast("cuda", dtype=torch.float16):
+145:                 output = model(batch, return_aux=True)
+146:                 output_mapping(output)
+147:                 components = criterion(output, labels)
+148:                 loss = weighted_training_loss(components, config)
+149:             assert torch.isfinite(loss).item()
+150:             scale = scaler.get_scale()
+151:             scaler.scale(loss).backward()
+152:             scaler.unscale_(optimizer)
+153:             for name, p in model.named_parameters():
+154:                 if p.requires_grad and p.grad is not None:
+155:                     assert torch.isfinite(p.grad).all().item(), name
+156:                     if p.grad.abs().sum().item() > 0:
+157:                         live.add(name)
+158:             scaler.step(optimizer)
+159:             scaler.update()
+160:             overflow += int(scaler.get_scale() < scale)
+161:             row = {"step": len(steps) + 1, "epoch": epoch, "loss": float(loss.detach()),
+162:                    "components": {k: float(v.detach()) for k, v in components.items()},
+163:                    "sampled_record_indices": [index_by_name[p] for p in raw[-1]],
+164:                    "amp_scale_before": scale, "amp_scale_after": scaler.get_scale()}
+165:             steps.append(row)
+166:             epoch_rows.append(row)
+167:         history.append({"epoch": epoch, "optimizer_steps": len(epoch_rows), "learning_rate": lr,
+168:                         "mean_loss": float(np.mean([r["loss"] for r in epoch_rows])),
+169:                         "elapsed_seconds": time.perf_counter() - started})
+170:         print(json.dumps({"event": "msvr310_role_epoch", "fold": fold, "mode": mode,
+171:                           **history[-1]}), flush=True)
+172:     report = {"mode": mode, "epochs": len(history), "optimizer_steps": len(steps),
+173:               "initial_state_sha256": initial, "final_state_sha256": _module_state_sha256(model),
+174:               "frozen_state_before_sha256": frozen, "frozen_state_after_sha256": frozen_state_sha(model),
+175:               "signal_state_before_sha256": signal_initial,
+176:               "signal_state_after_sha256": _module_state_sha256(model.baseline.signal),
+177:               "trainable_tensors": len(names), "nonzero_gradient_tensors": len(live),
+178:               "missing_nonzero_gradients": sorted(names - live), "overflow_events": overflow,
+179:               "peak_allocated_mib": torch.cuda.max_memory_allocated() / 1024**2,
+180:               "peak_reserved_mib": torch.cuda.max_memory_reserved() / 1024**2,
+181:               "history": history, "steps": steps}
+182:     # Preserve the real training record before evaluating the engineering gate.
+183:     write_json(directory / "training.json", report)
+184:     return report
+185: 
+186: 
+187: def engineering_checks(training):
+188:     return {"all_trainable_gradients_live": not training["missing_nonzero_gradients"],
+189:             "overflow_zero": training["overflow_events"] == 0,
+190:             "frozen_state_unchanged": training["frozen_state_before_sha256"] == training["frozen_state_after_sha256"],
+191:             "signal_state_unchanged": training["signal_state_before_sha256"] == training["signal_state_after_sha256"],
+192:             "role_state_updated": training["initial_state_sha256"] != training["final_state_sha256"],
+193:             "capacity_below_24gib": training["peak_reserved_mib"] < 24 * 1024}
+194: 
+195: 
+196: def evaluate(features, protocol, fold, directory, baseline_fold):
+197:     import numpy as np
+198:     import torch
+199:     from utils.metrics import eval_func_msrv
+200: 
+201:     original = torch.load(Path(baseline_fold["checkpoint"]).parent / "retrieval_arrays.pt",
+202:                           map_location="cpu", weights_only=True)
+203:     assert original["gallery_record_indices"] == fold["gallery_record_indices"]
+204:     assert torch.equal(features["baseline_only"], original["features"])
+205:     rows = [protocol["records"][i] for i in fold["gallery_record_indices"]]
+206:     positions = [q["gallery_position"] for q in fold["query_rows"]]
+207:     assert original["query_gallery_positions"] == positions
+208:     assert all(rows[p]["index"] == q["record_index"]
+209:                for p, q in zip(positions, fold["query_rows"], strict=True))
+210:     ids, cameras, scenes = (np.asarray([r[key] for r in rows]) for key in ("identity", "camera", "scene"))
+211:     scores, distances, rankings = {}, {}, {}
+212:     for name, values in features.items():
+213:         normalized = torch.nn.functional.normalize(values.float(), dim=1)
+214:         qf, gf = normalized[positions], normalized
+215:         matrix = qf.square().sum(1, keepdim=True) + gf.square().sum(1)[None]
+216:         matrix.addmm_(qf, gf.T, beta=1, alpha=-2)
+217:         if name == "baseline_only":
+218:             assert torch.equal(matrix, original["distances"])
+219:         scores[name] = scene_scores(matrix.numpy(), ids[positions], ids, scenes[positions], scenes)
+220:         output_dir = directory / name
+221:         output_dir.mkdir()
+222:         os.chdir(output_dir)
+223:         cmc, mean_ap = eval_func_msrv(matrix.numpy(), ids[positions], ids,
+224:                                     cameras[positions], cameras, scenes[positions], scenes)
+225:         difference = {"mAP": abs(scores[name]["metrics"]["mAP"] - float(mean_ap * 100))}
+226:         difference.update({f"Rank-{k}": abs(scores[name]["metrics"][f"Rank-{k}"] - float(cmc[k - 1] * 100))
+227:                            for k in (1, 5, 10)})
+228:         assert difference["mAP"] < 1e-10 and max(difference.values()) < 1e-5
+229:         scores[name]["upstream_metric_difference_pp"] = difference
+230:         rankings[name] = np.argsort(matrix.numpy(), axis=1).tolist()
+231:         distances[name] = matrix
+232:     os.chdir(ROOT)
+233:     assert scores["baseline_only"]["metrics"] == baseline_fold["retrieval"]["metrics"]
+234:     torch.save({"features": features, "distances": distances,
+235:                 "gallery_record_indices": fold["gallery_record_indices"],
+236:                 "query_gallery_positions": positions}, directory / "retrieval_arrays.pt")
+237:     write_json(directory / "rankings.json", rankings)
+238:     return {"outputs": scores, "query_rows": fold["query_rows"], "gallery_manifest": rows,
+239:             "feature_widths": OUTPUT_WIDTHS, "baseline_features_and_distances_bitwise_equal_to_b0": True,
+240:             "retrieval_arrays_sha256": sha256(directory / "retrieval_arrays.pt"),
+241:             "rankings_sha256": sha256(directory / "rankings.json")}
+242: 
+243: 
+244: def comparison_summary(folds):
+245:     import numpy as np
+246:     import torch
+247:     from trifusion.signal_preserving_v13 import identity_cluster_bootstrap_lower_bound
+248: 
+249:     identities = np.asarray([q["identity"] for f in folds for q in f["retrieval"]["query_rows"]])
+250:     aps = {name: np.asarray([v for f in folds for v in f["retrieval"]["outputs"][name]["average_precision"]])
+251:            for name in OUTPUT_WIDTHS}
+252:     first = {name: np.asarray([v for f in folds for v in f["retrieval"]["outputs"][name]["first_match_rank"]])
+253:              for name in OUTPUT_WIDTHS}
+254:     assert len(identities) == 600 and len(np.unique(identities)) == 60
+255:     metrics = {name: {"mAP": float(values.mean() * 100),
+256:                       **{f"Rank-{k}": float(np.mean(first[name] <= k) * 100) for k in (1, 5, 10)}}
+257:                for name, values in aps.items()}
+258:     differences = {name: (values - aps["baseline_only"]) * 100 for name, values in aps.items()}
+259:     bootstrap = identity_cluster_bootstrap_lower_bound(torch.from_numpy(differences["fused"]),
+260:                                                        torch.from_numpy(identities), seed=42, resamples=10000)
+261:     gains = {name: metrics[name]["mAP"] - metrics["baseline_only"]["mAP"] for name in OUTPUT_WIDTHS}
+262:     fold_gains = [f["retrieval"]["outputs"]["fused"]["metrics"]["mAP"] -
+263:                   f["retrieval"]["outputs"]["baseline_only"]["metrics"]["mAP"] for f in folds]
+264:     checks = {"fused_gain_at_least_1pp": gains["fused"] >= 1.0,
+265:               "all_fold_fused_gains_nonnegative": all(x >= 0 for x in fold_gains),
+266:               "all_full_branches_not_below_signal": all(gains[x] >= 0 for x in EXPERTS),
+267:               "identity_bootstrap_lower_positive": bootstrap.lower_bound > 0,
+268:               "fused_strictly_best": all(metrics["fused"]["mAP"] > metrics[x]["mAP"]
+269:                                            for x in ("baseline_only", *EXPERTS))}
+270:     per_identity = [{"identity": int(identity), "query_count": int(np.sum(identities == identity)),
+271:                      "map_by_output": {name: float(values[identities == identity].mean() * 100)
+272:                                        for name, values in aps.items()}}
+273:                     for identity in np.unique(identities)]
+274:     changes = {name: {"ap_improved": int(np.sum(values > 0)), "ap_declined": int(np.sum(values < 0)),
+275:                        "ap_unchanged": int(np.sum(values == 0)),
+276:                        "rank1_repaired": int(np.sum((first["baseline_only"] > 1) & (first[name] == 1))),
+277:                        "rank1_new_errors": int(np.sum((first["baseline_only"] == 1) & (first[name] > 1)))}
+278:                for name, values in differences.items() if name != "baseline_only"}
+279:     return {"metrics": metrics, "gains_over_signal_pp": gains, "fold_fused_gains_pp": fold_gains,
+280:             "identity_bootstrap": {"lower_bound_pp": bootstrap.lower_bound, "seed": 42,
+281:                                    "resamples": 10000, "cluster_count": bootstrap.cluster_count,
+282:                                    "weighting": "resample whole identities with replacement; retain query weights",
+283:                                    "percentile": 2.5, "quantile_method": "linear"},
+284:             "scientific_checks": checks, "scientific_passed": all(checks.values()),
+285:             "per_identity": per_identity, "query_changes": changes}
+286: 
+287: 
+288: def run(args):
+
+FILE D:\Program Files\UserCache\gb\codex\tmp\trifusion_supported_balance_m0_independent_audit_20260921\snapshots\repo\tools\train_msvr310_signal_oof.py
+113: def train_source(model, loader, cfg, record_indices, records, *, preflight):
+114:     import numpy as np
+115:     import torch
+116:     from layers.make_loss import make_loss
+117:     from solver.make_optimizer import make_optimizer
+118:     from solver.lr_scheduler310 import WarmupMultiStepLR
+119:     from tools.build_v12_complete_path_oof_targets import _signal_training_loss
+120:     from tools.run_signal_preserving_v5 import _module_state_sha256
+121: 
+122:     loss_fn, center = make_loss(cfg, num_classes=model.num_classes)
+123:     optimizer, _ = make_optimizer(cfg, model, center)
+124:     scheduler = WarmupMultiStepLR(optimizer, cfg.SOLVER.STEPS, cfg.SOLVER.GAMMA,
+125:                                  cfg.SOLVER.WARMUP_FACTOR, cfg.SOLVER.WARMUP_ITERS,
+126:                                  cfg.SOLVER.WARMUP_METHOD)
+127:     scaler = torch.amp.GradScaler("cuda", init_scale=256.0)
+128:     names = {id(p): name for name, p in model.named_parameters()}
+129:     optimizer_groups = [{"name": names[id(group["params"][0])], "lr": group["lr"],
+130:                          "weight_decay": group["weight_decay"]}
+131:                         for group in optimizer.param_groups]
+132:     name_to_index = {Path(row[0][0]).name: index
+133:                      for row, index in zip(records, record_indices, strict=True)}
+134:     assert len(name_to_index) == len(records)
+135:     initial_state = _module_state_sha256(model)
+136:     selector_initial_state = _module_state_sha256(model.SIM.token_selection)
+137:     trainable_names = {name for name, p in model.named_parameters() if p.requires_grad}
+138:     gradient_names = set()
+139:     history, steps = [], []
+140:     for epoch in range(1, (1 if preflight else 50) + 1):
+141:         started = time.perf_counter()
+142:         scheduler.step(epoch)
+143:         model.train()
+144:         epoch_losses = []
+145:         for images, labels, cameras, scenes, paths in loader:
+146:             assert labels.numel() == 64
+147:             assert all(tuple(value.shape) == (64, 3, 128, 256) for value in images.values())
+148:             assert sorted(torch.unique(labels, return_counts=True)[1].tolist()) == [8] * 8
+149:             optimizer.zero_grad(set_to_none=True)
+150:             images = {key: value.cuda(non_blocking=True) for key, value in images.items()}
+151:             labels, cameras, scenes = (x.cuda(non_blocking=True) for x in (labels, cameras, scenes))
+152:             components = []
+153: 
+154:             def recorded_loss(**kwargs):
+155:                 component = loss_fn(**kwargs)
+156:                 components.append(float(component.detach()))
+157:                 return component
+158: 
+159:             with torch.autocast("cuda", dtype=torch.float16):
+160:                 output = model(images, label=labels, cam_label=cameras, view_label=scenes,
+161:                                training=True, sge=cfg.MODEL.stageName)
+162:                 assert output[0] == 3 and len(output) == 11
+163:                 loss = _signal_training_loss(
+164:                     output, loss_fn=recorded_loss, labels=labels, cameras=cameras,
+165:                     stage=cfg.MODEL.stageName, gram_weight=cfg.MODEL.Gram_Loss_weight,
+166:                     patch_weight=cfg.MODEL.PAT_Loss_weight)
+167:             assert torch.isfinite(loss).item()
+168:             scale_before = scaler.get_scale()
+169:             scaler.scale(loss).backward()
+170:             scaler.unscale_(optimizer)
+171:             for name, parameter in model.named_parameters():
+172:                 if parameter.grad is not None:
+173:                     gradient_names.add(name)
+174:                     if preflight:
+175:                         assert torch.isfinite(parameter.grad).all().item(), name
+176:             scaler.step(optimizer)
+177:             scaler.update()
+178:             assert scaler.get_scale() >= scale_before, "AMP overflow; fixed run stops"
+179:             row = {"step": len(steps) + 1, "epoch": epoch, "loss": float(loss.detach()),
+180:                    "id_triplet_head_losses": components, "gram_loss": float(output[-2].detach()),
+181:                    "patch_loss": float(output[-1].detach()),
+182:                    "sampled_record_indices": [name_to_index[p] for p in paths],
+183:                    "amp_scale_before": scale_before, "amp_scale_after": scaler.get_scale()}
+184:             steps.append(row)
+185:             epoch_losses.append(row["loss"])
+186:             if preflight and len(steps) == 8:
+187:                 break
+188:         history.append({"epoch": epoch, "optimizer_steps": len(epoch_losses),
+189:                         "mean_loss": float(np.mean(epoch_losses)),
+190:                         "learning_rates": sorted({group["lr"] for group in optimizer.param_groups}),
+191:                         "elapsed_seconds": time.perf_counter() - started})
+192:         print(json.dumps({"event": "signal_source_epoch", **history[-1]}), flush=True)
+193:     selector_final_state = _module_state_sha256(model.SIM.token_selection)
+194:     assert selector_final_state == selector_initial_state
+195:     return {"epochs": len(history), "optimizer_steps": len(steps), "overflow_events": 0,
+196:             "frozen_token_selection_initial_sha256": selector_initial_state,
+197:             "frozen_token_selection_final_sha256": selector_final_state,
+198:             "frozen_token_selection_parameters": sum(p.numel() for p in model.SIM.token_selection.parameters()),
+199:             "initial_state_sha256": initial_state, "final_state_sha256": _module_state_sha256(model),
+200:             "total_parameters": sum(p.numel() for p in model.parameters()),
+201:             "trainable_parameters": sum(p.numel() for p in model.parameters() if p.requires_grad),
+202:             "trainable_tensors": len(trainable_names), "gradient_tensors": len(gradient_names),
+203:             "trainable_without_gradient": sorted(trainable_names - gradient_names),
+204:             "optimizer_groups": optimizer_groups, "history": history, "steps": steps}
+205: 
+206: 
+207: def extract(model, records, cfg):
+208:     import torch
+209: 
+210:     model.eval()
+211:     parts = []
+212:     with torch.no_grad():
+213:         for images, _, cameras, scenes, _ in loader_for(records, False):
+214:             images = {key: value.cuda() for key, value in images.items()}
+215:             features = model(images, cam_label=cameras.cuda(), view_label=scenes.cuda(),
+216:                              training=False, sge=cfg.MODEL.stageName)
+217:             assert features.ndim == 2 and features.shape[1] == 3072
+218:             assert torch.isfinite(features).all().item()
+219:             parts.append(features.float().cpu())
+220:     return torch.cat(parts)
+221: 
+222: 
+223: def scene_scores(distances, query_ids, gallery_ids, query_scenes, gallery_scenes):
+224:     import numpy as np
+225: 
+226:     ap, first = [], []
+227:     for index, order in enumerate(np.argsort(distances, axis=1)):
+228:         keep = ~((gallery_ids[order] == query_ids[index]) &
+229:                  (gallery_scenes[order] == query_scenes[index]))
+230:         matches = gallery_ids[order][keep] == query_ids[index]
+231:         positions = np.flatnonzero(matches)
+232:         assert positions.size
+233:         ap.append(float(np.mean(np.cumsum(matches)[positions] / (positions + 1))))
+234:         first.append(int(positions[0] + 1))
+235:     metrics = {"mAP": float(np.mean(ap) * 100)}
+236:     metrics.update({f"Rank-{rank}": float(np.mean(np.asarray(first) <= rank) * 100)
+237:                     for rank in (1, 5, 10)})
+238:     return {"metrics": metrics, "average_precision": ap, "first_match_rank": first}
+239: 
+240: 
+241: def evaluate_gallery(features, protocol, fold, directory):
+242:     import numpy as np
+243:     import torch
+244:     from utils.metrics import eval_func_msrv
+245: 
+246:     rows = [protocol["records"][i] for i in fold["gallery_record_indices"]]
+247:     positions = [row["gallery_position"] for row in fold["query_rows"]]
+248:     for query, position in zip(fold["query_rows"], positions, strict=True):
+249:         assert rows[position]["index"] == query["record_index"]
+250:     ids = np.asarray([r["identity"] for r in rows])
+251:     cameras = np.asarray([r["camera"] for r in rows])
+252:     scenes = np.asarray([r["scene"] for r in rows])
+253:     normalized = torch.nn.functional.normalize(features.float(), dim=1)
+254:     qf, gf = normalized[positions], normalized
+255:     distances = qf.square().sum(1, keepdim=True) + gf.square().sum(1)[None]
+256:     distances.addmm_(qf, gf.T, beta=1, alpha=-2)
+257:     scores = scene_scores(distances.numpy(), ids[positions], ids, scenes[positions], scenes)
+258:     # The upstream evaluator writes re.txt. Its working directory is this new fold artifact directory.
+259:     os.chdir(directory)
+260:     cmc, mean_ap = eval_func_msrv(distances.numpy(), ids[positions], ids, cameras[positions],
+261:                                 cameras, scenes[positions], scenes)
+262:     differences = {"mAP": abs(scores["metrics"]["mAP"] - float(mean_ap * 100))}
+263:     differences.update({f"Rank-{rank}": abs(scores["metrics"][f"Rank-{rank}"] -
+264:                                            float(cmc[rank - 1] * 100)) for rank in (1, 5, 10)})
+265:     assert differences["mAP"] < 1e-10 and max(differences.values()) < 1e-5
+266:     torch.save({"features": features, "distances": distances,
+267:                 "gallery_record_indices": fold["gallery_record_indices"],
+268:                 "query_gallery_positions": positions}, directory / "retrieval_arrays.pt")
+269:     return {**scores, "upstream_metric_difference_pp": differences,
+270:             "gallery_manifest": rows, "query_rows": fold["query_rows"],
+271:             "feature_width": 3072, "retrieval_arrays_sha256": sha256(directory / "retrieval_arrays.pt")}
+272: 
+273: 
+274: def run(args):

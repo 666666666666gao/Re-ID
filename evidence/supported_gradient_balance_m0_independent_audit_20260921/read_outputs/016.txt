@@ -1,0 +1,102 @@
+
+FILE C:\Users\gb\.trifusion_github_publish_22c3bee\evidence\supported_gradient_balance_m0_analysis_20260921\README.md
+1: # 支持感知梯度平衡 R2：完整 M0 运行见证汇总
+2: 
+3: 28份原始文本逐字节和SHA匹配，共7,961,437字节；无模型/数组下载。role_steps.csv含全部248步×3角色=744行；direct_reference_checks.csv含6容量端×3角色×5分量=90项，全部通过，最大相对L2误差9.433501552915618e-05。epochs.csv保留6个容量阶段与2个过拟合阶段的完整记录，不是Q1的120个epoch。
+4: 
+5: 每个容量端8更新、每个过拟合端100更新，全部203/203累计非零及0overflow。容量峰值reserved最大12186MiB。六端各6个支持步，两个过拟合端各98个支持步；总计232支持步，16预热步，真实M0零支持步0。不得声称真实M0已测无支持批；T0合成及全来源合同另列，Q1实际零支持仍待核对。
+6: 
+7: 容量候选的排名系数按角色和步骤不同；详见完整CSV。过拟合后期系数触顶不是调参依据，更不是Q1普遍模式。原控制路径与direct R+A的有限精度差异已逐步记录。实际AdamW参数变化含动量/二阶矩/衰减，不能由这些范数分摊排名更新份额。
+8: 
+9: CPU报告重算全部4945920保存距离元素、248步掩码/目标/支持/EMA/系数及checkpoint绑定。CPU标量复算和这里的文本汇总没有重新生成每步参数梯度；梯度是执行时见证。新的独立M0审计已启动，尚无裁决。此阶段仅工程PASS，没有检索结果。
+
+FILE C:\Users\gb\.trifusion_github_publish_22c3bee\evidence\supported_gradient_balance_m0_analysis_20260921\analyze_trifusion_supported_balance_m0_20260921.py
+1: """Summarize complete saved M0 text witnesses, without inventing gradient replay."""
+2: from pathlib import Path
+3: import csv, hashlib, json, statistics, sys
+4: 
+5: source=Path(sys.argv[1]); output=Path(sys.argv[2])
+6: assert not output.exists()
+7: inventory=json.loads((source/'inventory.json').read_bytes())
+8: for item in inventory['files']:
+9:     data=(source/item['path']).read_bytes()
+10:     assert len(data)==item['bytes'] and hashlib.sha256(data).hexdigest()==item['sha256']
+11: summary=json.loads((source/'m0/summary.json').read_bytes())
+12: cpu=json.loads((source/'m0_cpu.json').read_bytes())
+13: assert summary['status']=='PASS_ENGINEERING_ONLY'
+14: assert cpu['status']=='PASS_COMPLETE_SUPPORTED_GRADIENT_BALANCE_M0'
+15: assert cpu['checked_training_steps']==248
+16: roles=('cnn','transformer','mamba')
+17: rows=[]; endpoints=[]; references=[]; epochs=[]
+18: for path in sorted((source/'m0').glob('*/training.json')):
+19:     training=json.loads(path.read_bytes()); name=path.parent.name
+20:     audits=[json.loads(line) for line in (path.parent/'memory_steps.jsonl').read_text().splitlines()]
+21:     assert len(audits)==len(training['steps'])==training['optimizer_steps']
+22:     supported=zero=0
+23:     for item,step in zip(audits,training['steps'],strict=True):
+24:         assert item['step']==step['step']
+25:         support=item['support']; active=item['replacement_active']
+26:         supported+=int(active and support['eligible_anchors']>0)
+27:         zero+=int(active and support['eligible_anchors']==0)
+28:         for role in roles:
+29:             balance=item['gradient_balance'][role]
+30:             pair=balance['rank_vs_auxiliary']
+31:             sub=balance['subtraction_auxiliary_vs_direct']
+32:             direct=balance['direct_sum_vs_original']
+33:             row=dict(endpoint=name,step=item['step'],epoch=step['epoch'],role=role,
+34:                 active_fused_metric=step['active_fused_metric'],supported=balance['supported'],
+35:                 eligible_anchors=support['eligible_anchors'],eligible_identities=support['eligible_identities'],
+36:                 identity_directed_scene_relations=support['identity_directed_scene_relations'],
+37:                 rank_norm=pair['first_norm'],auxiliary_norm=pair['second_norm'],rank_auxiliary_cosine=pair['cosine'],
+38:                 rank_to_auxiliary_norm=(pair['first_norm']/pair['second_norm'] if pair['second_norm'] else None),
+39:                 proposed_rank_weight=balance['proposed_rank_weight'],applied_rank_weight=balance['applied_rank_weight'],
+40:                 applied_auxiliary_weight=balance['applied_auxiliary_weight'],ratio=balance['ratio'],
+41:                 history_rank_norm=balance['current_rank_vs_history']['second_norm'],
+42:                 current_history_cosine=balance['current_rank_vs_history']['cosine'],
+43:                 original_to_applied_difference=balance['original_sum_vs_applied']['difference_norm'],
+44:                 direct_sum_to_original_difference=direct['difference_norm'],
+45:                 subtraction_to_direct_auxiliary_difference=sub['difference_norm'],
+46:                 actual_adamw_parameter_delta_norm=item['actual_parameter_updates'][role]['difference_norm'],
+47:                 classification_head_gradient_preserved=item['classification_head_gradients_unchanged'])
+48:             rows.append(row)
+49:             for component,check in item['rank_auxiliary_reference_checks'].get(role,{}).items():
+50:                 references.append(dict(endpoint=name,step=item['step'],role=role,component=component,**check))
+51:     endpoints.append(dict(endpoint=name,steps=len(audits),supported_steps=supported,zero_supported_steps=zero,
+52:         warmup_steps=audits[0]['warmup_steps'],live_tensors=training['nonzero_gradient_tensors'],
+53:         overflow=training['overflow_events'],peak_reserved_mib=training['peak_reserved_mib'],
+54:         training_seconds=sum(e['elapsed_seconds'] for e in training['history']),
+55:         current_rank_backward_calls=training['current_rank_backward_calls'],
+56:         current_auxiliary_backward_calls=training['current_auxiliary_backward_calls'],
+57:         direct_component_backward_calls=training['direct_component_backward_calls'],
+58:         extra_fresh_role_record_forwards=training['extra_fresh_role_record_forwards'],
+59:         extra_history_vjp_record_forwards=training['extra_history_vjp_record_forwards']))
+60:     epochs.extend(dict(endpoint=name,**e) for e in training['history'])
+61: assert sum(e['steps'] for e in endpoints)==248 and len(rows)==744
+62: assert len(references)==90 and all(r['passed'] for r in references)
+63: def describe(values):
+64:     values=[v for v in values if v is not None]
+65:     return dict(count=len(values),minimum=min(values),median=statistics.median(values),maximum=max(values)) if values else dict(count=0)
+66: aggregate=[]
+67: for endpoint in endpoints:
+68:     for role in roles:
+69:         selected=[r for r in rows if r['endpoint']==endpoint['endpoint'] and r['role']==role and r['supported']]
+70:         aggregate.append(dict(endpoint=endpoint['endpoint'],role=role,supported_role_steps=len(selected),
+71:             rank_to_auxiliary_norm=describe([r['rank_to_auxiliary_norm'] for r in selected]),
+72:             applied_rank_weight=describe([r['applied_rank_weight'] for r in selected]),
+73:             applied_auxiliary_weight=describe([r['applied_auxiliary_weight'] for r in selected]),
+74:             actual_adamw_parameter_delta_norm=describe([r['actual_adamw_parameter_delta_norm'] for r in selected]),
+75:             negative_rank_auxiliary_cosines=sum(r['rank_auxiliary_cosine'] is not None and r['rank_auxiliary_cosine']<0 for r in selected)))
+76: report=dict(status='COMPLETE_M0_SAVED_TEXT_SUMMARY',seed=42,steps=248,role_step_rows=744,
+77:     source_files_verified=len(inventory['files']),endpoint_summaries=endpoints,role_summaries=aggregate,
+78:     direct_reference_checks=len(references),maximum_direct_reference_relative_l2_error=max(r['relative_l2_error'] or 0 for r in references),
+79:     overfit_gates={k:v['gate'] for k,v in summary['overfit'].items()},
+80:     all_head_gradient_witnesses_preserved=all(r['classification_head_gradient_preserved'] for r in rows),
+81:     scope='Saved M0 runtime witnesses and deterministic text aggregation. No independent parameter-gradient regeneration, no retrieval evidence, no attribution of AdamW update fractions. Capacity and overfit are distinct distributions; not a Q1 trajectory estimate.',
+82:     summary_sha256=hashlib.sha256((source/'m0/summary.json').read_bytes()).hexdigest(),
+83:     cpu_receipt_sha256=hashlib.sha256((source/'m0_cpu.json').read_bytes()).hexdigest())
+84: output.mkdir(parents=True)
+85: for filename,data in [('role_steps.csv',rows),('direct_reference_checks.csv',references),('epochs.csv',epochs)]:
+86:     with (output/filename).open('w',encoding='utf-8',newline='') as file:
+87:         writer=csv.DictWriter(file,fieldnames=list(data[0]));writer.writeheader();writer.writerows(data)
+88: (output/'summary.json').write_text(json.dumps(report,indent=2)+'\n',encoding='utf-8')
+89: print(json.dumps({k:v for k,v in report.items() if k not in ('endpoint_summaries','role_summaries')}))

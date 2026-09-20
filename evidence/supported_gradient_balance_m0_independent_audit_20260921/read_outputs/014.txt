@@ -1,0 +1,411 @@
+
+FILE D:\Program Files\UserCache\gb\codex\tmp\trifusion_supported_balance_m0_independent_audit_20260921\snapshots\repo\tools\msvr_freshness_probe.py
+211:     report=dict(steps=len(steps),history=history,initial_state_sha256=initial,final_state_sha256=_module_state_sha256(model),
+212:                 frozen_state_sha256=frozen,signal_state_sha256=signal,all_trainable_gradients=True,
+213:                 trainable_tensor_count=len(names),overflow_events=overflow,zero_age_reencoding_bitwise=True,
+214:                 extra_role_record_forwards=extra_records,source_input_record_forwards=64*len(steps),
+215:                 peak_allocated_mib=torch.cuda.max_memory_allocated()/1024**2,
+216:                 peak_reserved_mib=torch.cuda.max_memory_reserved()/1024**2,
+217:                 audit_sha256=sha256(directory/'audit.jsonl'),distances_sha256=sha256(directory/'distances.f32'),
+218:                 exact_reproduction_of_original_training_not_claimed=True)
+219:     write_json(directory/'training.json',report)
+220:     return report
+221: 
+222: 
+223: def run(args):
+224:     spec,(memory_spec,(config,base,cfg,environment,protocol,baseline,meta)),previous=context(args.config)
+225:     torch.set_num_threads(4)
+226:     args.output.mkdir()
+227:     summary=dict(status='RUNNING',mode=args.mode,config_sha256=sha256(args.config),source_sha256=sha256(__file__),
+228:                  project_commit=subprocess.check_output(['git','rev-parse','HEAD'],cwd=ROOT,text=True).strip(),
+229:                  started_at=datetime.now().astimezone().isoformat(),endpoints=[],official_reads=0,heldout_image_reads=0,
+230:                  updated_loss_rules=['original_batch','original_stale_memory'],fresh_loss_updates=0)
+231:     def save(): write_json(args.output/'summary.json',summary)
+232:     save()
+233:     for fold,b0,md in zip(protocol['folds'],baseline['folds'],meta['folds'],strict=True):
+234:         records=records_for(base,protocol,fold,True)
+235:         for end in old.ENDPOINTS:
+236:             directory=args.output/f"fold_{fold['fold']}_{end}";directory.mkdir()
+237:             model,binding=build_model(config,cfg,fold,b0)
+238:             old_end=previous['folds'][fold['fold']]['endpoints'][end]
+239:             assert binding==old_end['initialization']
+240:             training=fit(model,records,fold,protocol,config,md,old_end,
+241:                          endpoint=end,mode=args.mode,directory=directory)
+242:             path=directory/'roles_terminal.pth'
+243:             digest=old.prior.checkpoint(model,binding,fold,sha256(args.config),path)
+244:             state=training['final_state_sha256']
+245:             del model;torch.cuda.empty_cache()
+246:             model=old.reload_model(config,cfg,fold,b0,path,binding,state,sha256(args.config))
+247:             assert _module_state_sha256(model)==state and sha256(path)==digest
+248:             row=dict(fold=fold['fold'],endpoint=end,initialization=binding,training=training,
+249:                      checkpoint=str(path),checkpoint_sha256=digest,strict_state_reload=True)
+250:             summary['endpoints'].append(row);save()
+251:             del model;torch.cuda.empty_cache()
+252:     summary.update(status='COMPLETE_SOURCE_FRESHNESS_MEASUREMENT',completed_at=datetime.now().astimezone().isoformat())
+253:     save()
+254: 
+255: 
+256: def verify(args):
+257:     from tools.verify_msvr310_source_style import state_sha
+258:     spec,(memory_spec,(config,_,_,_,protocol,baseline,meta)),previous=context(args.config)
+259:     s=json.loads((args.output/'summary.json').read_bytes())
+260:     assert s['status']=='COMPLETE_SOURCE_FRESHNESS_MEASUREMENT'
+261:     assert s['config_sha256']==sha256(args.config) and len(s['endpoints'])==6
+262:     rows_out=[];count=elements=0;paired={}
+263:     for end in s['endpoints']:
+264:         directory=args.output/f"fold_{end['fold']}_{end['endpoint']}"
+265:         tr=end['training']
+266:         assert tr==json.loads((directory/'training.json').read_bytes())
+267:         assert sha256(directory/'audit.jsonl')==tr['audit_sha256']
+268:         assert sha256(directory/'distances.f32')==tr['distances_sha256']
+269:         assert sha256(end['checkpoint'])==end['checkpoint_sha256'] and end['strict_state_reload']
+270:         payload=torch.load(end['checkpoint'],map_location='cpu',weights_only=True)
+271:         original=torch.load(baseline['folds'][end['fold']]['checkpoint'],map_location='cpu',weights_only=True)['model_state_dict']
+272:         state={name:original[key] for name,key in payload['baseline_aliases'].items()}
+273:         state.update(payload['role_state_dict'])
+274:         assert state_sha(state)==tr['final_state_sha256']
+275:         assert payload['binding']==end['initialization'] and payload['config_sha256']==s['config_sha256']
+276:         del payload,original,state
+277:         audits=[json.loads(x) for x in (directory/'audit.jsonl').read_text().splitlines()]
+278:         assert len(audits)==tr['steps']==(12 if s['mode']=='preflight' else 260)
+279:         paired[(end['fold'],end['endpoint'])]=[(r['record_indices'],r['pixel_sha256']) for r in audits]
+280:         cache=OrderedDict()
+281:         warmup=2 if s['mode']=='preflight' else 65
+282:         with (directory/'distances.f32').open('rb') as f:
+283:             for step,a in enumerate(audits):
+284:                 assert a['step']==step+1 and a['distance_offset_bytes']==f.tell()
+285:                 assert a['record_indices']==meta['folds'][end['fold']]['batches'][step]['record_indices']
+286:                 indices=a['record_indices'];fold=protocol['folds'][end['fold']]
+287:                 assert set(indices)<=set(fold['source_record_indices'])
+288:                 assert a['identities']==[protocol['records'][i]['identity'] for i in indices]
+289:                 for i in [i for i,k in cache.items() if step-k>8]: del cache[i]
+290:                 expected=[dict(record_index=i,identity=protocol['records'][i]['identity'],
+291:                                scene=protocol['records'][i]['scene'],age=step-k,stored_step=k)
+292:                           for i,k in cache.items() if i not in set(indices)]
+293:                 assert expected==a['memory']
+294:                 m=len(a['memory'])
+295:                 raw=np.fromfile(f,dtype=np.float32,count=a['distance_float_count'])
+296:                 assert len(raw)==4096+128*m and np.isfinite(raw).all()
+297:                 elements+=len(raw);count+=1
+298:                 dc=raw[:4096].reshape(64,64)
+299:                 ds=raw[4096:4096+64*m].reshape(64,m);df=raw[4096+64*m:].reshape(64,m)
+300:                 ids=np.array(a['identities']);p=(ids[:,None]==ids[None,:]) & ~np.eye(64,dtype=bool);n=ids[:,None]!=ids[None,:]
+301:                 hp=np.where(p,dc,-np.inf).max(1);hn=np.where(n,dc,np.inf).min(1)
+302:                 base_loss=float(np.maximum(0,hp-hn+np.float32(.3)).mean())
+303:                 fresh_results=[]
+304:                 for key,dm in [('stale',ds),('fresh',df)]:
+305:                     mp=ids[:,None]==np.array([r['identity'] for r in a['memory']])[None,:]
+306:                     allp=np.concatenate([np.where(p,dc,-np.inf),np.where(mp,dm,-np.inf)],axis=1)
+307:                     alln=np.concatenate([np.where(n,dc,np.inf),np.where(~mp,dm,np.inf)],axis=1)
+308:                     up=allp.max(1);un=alln.min(1)
+309:                     loss=float(np.maximum(0,up-un+np.float32(.3)).mean())
+310:                     assert abs(loss-a[key+'_statistics']['expanded_triplet'])<2e-6
+311:                     assert int((up>=un).sum())==a[key+'_statistics']['expanded_wrong_order_anchors']
+312:                     fresh_results.append((loss,up,un,allp.argmax(1),alln.argmin(1),
+313:                                           int(((allp==up[:,None]).sum(1)>1).sum()),
+314:                                           int(((alln==un[:,None]).sum(1)>1).sum())))
+315:                 st,fr=fresh_results
+316:                 assert not a['refreshed_loss_used_for_update']
+317:                 expected_loss=st[0] if end['endpoint']=='instance_memory' and step>=warmup else base_loss
+318:                 assert abs(a['components']['triplet_fused']-expected_loss)<2e-6
+319:                 c=a['components'];w=config['LOSS']
+320:                 total=w['ID_FUSED']*c['id_fused']+w['TRIPLET_FUSED']*c['triplet_fused']
+321:                 total+=sum(w['ID_BRANCH']*c['id_'+e]+w['TRIPLET_BRANCH']*c['triplet_'+e]
+322:                            +w['ID_RESIDUAL']*c['id_residual_'+e]+w['TRIPLET_RESIDUAL']*c['triplet_residual_'+e] for e in EXPERTS)
+323:                 assert abs(total-a['loss'])<1e-5 and a['amp_scale_after']>=a['amp_scale_before']
+324:                 row=dict(fold=end['fold'],endpoint=end['endpoint'],step=step+1,epoch=a['epoch'],memory_records=m,
+325:                          stale_loss=st[0],fresh_loss=fr[0],positive_winner_changes=int((st[3]!=fr[3]).sum()),
+326:                          negative_winner_changes=int((st[4]!=fr[4]).sum()),
+327:                          stale_wrong_fresh_correct=int(((st[1]>=st[2])&(fr[1]<fr[2])).sum()),
+328:                          stale_correct_fresh_wrong=int(((st[1]<st[2])&(fr[1]>=fr[2])).sum()),
+329:                          stale_positive_ties=st[5],stale_negative_ties=st[6],
+330:                          fresh_positive_ties=fr[5],fresh_negative_ties=fr[6],
+331:                          historical_ages=[r['age'] for r in a['memory']],
+332:                          drift=a['cache_l2_drift'],parameter_gradients=a['parameter_gradients'])
+333:                 if m:
+334:                     assert len(a['cache_l2_drift'])==m and set(a['parameter_gradients'])==set(EXPERTS)
+335:                     for expert in a['parameter_gradients'].values():
+336:                         for gradient in expert.values():
+337:                             assert all(np.isfinite(v) for v in gradient.values() if v is not None)
+338:                             assert gradient['stale_norm']>=0 and gradient['comparison_norm']>=0 and gradient['difference_norm']>=0
+339:                             assert gradient['cosine'] is None or -1.00001<=gradient['cosine']<=1.00001
+340:                     drift=np.array(a['cache_l2_drift'])
+341:                     assert np.all(np.abs(ds-df)<=drift[None,:]+2e-6)
+342:                     assert all(r['record_index'] not in set(indices) and 1<=r['age']<=8 for r in a['memory'])
+343:                     row['distance_error_mean']=float(np.abs(ds-df).mean())
+344:                     row['distance_error_max']=float(np.abs(ds-df).max())
+345:                 rows_out.append(row)
+346:                 if step>=warmup:
+347:                     for i in indices:
+348:                         cache.pop(i,None);cache[i]=step
+349:                     while len(cache)>512: cache.popitem(last=False)
+350:             assert f.read(1)==b''
+351:         assert tr['all_trainable_gradients'] and tr['trainable_tensor_count']==203 and tr['overflow_events']==0
+352:         assert tr['extra_role_record_forwards']==64+sum(a['fresh_role_record_forwards'] for a in audits)
+353:     for fold in range(3): assert paired[(fold,'control')]==paired[(fold,'instance_memory')]
+354:     assert count==(72 if s['mode']=='preflight' else 1560)
+355:     write_json(args.output/'cpu_verification.json',dict(status='PASS_COMPLETE_FRESHNESS_'+s['mode'].upper(),
+356:                checked_at=datetime.now().astimezone().isoformat(),summary_sha256=sha256(args.output/'summary.json'),
+357:                all_steps=count,distance_elements=elements,all_rows=rows_out,heldout_image_reads=0,official_reads=0,
+358:                limitations='Runtime parameter-gradient witnesses and strict reload are not independent gradient recomputation; source trajectories are new diagnostic runs, not claimed bitwise copies of the sealed run.'))
+359:     print(json.dumps(dict(status='PASS_COMPLETE_FRESHNESS_'+s['mode'].upper(),steps=count,distance_elements=elements)))
+360: 
+361: 
+362: if __name__=='__main__':
+363:     parser=argparse.ArgumentParser()
+364:     parser.add_argument('--config',type=Path,required=True)
+365:     parser.add_argument('--output',type=Path,required=True)
+366:     parser.add_argument('--mode',choices=['preflight','source','verify'],required=True)
+367:     args=parser.parse_args()
+368:     verify(args) if args.mode=='verify' else run(args)
+
+FILE D:\Program Files\UserCache\gb\codex\tmp\trifusion_supported_balance_m0_independent_audit_20260921\snapshots\repo\tools\train_msvr310_trifusion_oof.py
+288: def run(args):
+289:     import torch
+290:     from tools.run_signal_preserving_v5 import (
+291:         ARCHITECTURE_V8, _module_state_sha256, evaluate_overfit_gate, overfit_loss_floor,
+292:     )
+293: 
+294:     assert torch.cuda.is_available()
+295:     config_path, directory = args.config.resolve(), args.output_dir.resolve()
+296:     config = json.loads(config_path.read_text(encoding="utf-8"))
+297:     assert config["EXPERIMENT"]["SEED"] == 42 and config["MODEL"]["ARCHITECTURE"] == ARCHITECTURE_V8
+298:     assert config["MODEL"]["GRID_SIZE"] == [8, 16]
+299:     assert (config["OPTIMIZATION"]["MAX_EPOCHS"], config["OPTIMIZATION"]["WARMUP_EPOCHS"]) == (20, 5)
+300:     assert not config["PROTOCOL"]["OFFICIAL_TEST_ACCESS"] and not config["PROTOCOL"]["RGBNT201_DEV_ACCESS"]
+301:     for name, expected in config["project_source_file_sha256"].items():
+302:         assert sha256(ROOT / name) == expected, name
+303:     baseline_config_path = ROOT / config["BASELINE"]["CONFIG"]
+304:     assert sha256(baseline_config_path) == config["BASELINE"]["CONFIG_SHA256"]
+305:     baseline_config = json.loads(baseline_config_path.read_text(encoding="utf-8"))
+306:     assert sha256(config["BASELINE"]["SUMMARY"]) == config["BASELINE"]["SUMMARY_SHA256"]
+307:     baseline = json.loads(Path(config["BASELINE"]["SUMMARY"]).read_text(encoding="utf-8"))
+308:     assert baseline["status"] == "COMPLETE_BASELINE_NOT_METHOD_QUALIFICATION"
+309:     assert baseline["config_sha256"] == config["BASELINE"]["CONFIG_SHA256"]
+310:     signal_config, binding = configure(baseline_config)
+311:     protocol = json.loads((ROOT / baseline_config["protocol"]).read_text(encoding="utf-8"))
+312:     assert sha256(ROOT / baseline_config["protocol"]) == baseline_config["protocol_sha256"]
+313:     for fold in baseline["folds"]:
+314:         assert sha256(fold["checkpoint"]) == fold["checkpoint_sha256"]
+315:         assert sha256(Path(fold["checkpoint"]).parent / "retrieval_arrays.pt") == fold["retrieval"]["retrieval_arrays_sha256"]
+316:     assert not directory.exists()
+317:     directory.mkdir(parents=True)
+318:     m0 = args.mode == "m0"
+319:     if not m0:
+320:         preflight = json.loads(args.m0_receipt.read_text(encoding="utf-8"))
+321:         assert preflight["status"] == "PASS_ENGINEERING_ONLY"
+322:         assert preflight["config_sha256"] == sha256(config_path)
+323:         assert preflight["runner_sha256"] == sha256(__file__)
+324:     started = time.perf_counter()
+325:     summary = {"schema": "msvr310-trifusion-source-oof-v1", "mode": args.mode, "status": "RUNNING",
+326:                "config_sha256": sha256(config_path), "runner_sha256": sha256(__file__),
+327:                "baseline_summary_sha256": config["BASELINE"]["SUMMARY_SHA256"],
+328:                "protocol_sha256": baseline_config["protocol_sha256"], "project_source_file_sha256": config["project_source_file_sha256"],
+329:                "project_commit": subprocess.check_output(["git", "-C", str(ROOT), "rev-parse", "HEAD"], text=True).strip(),
+330:                **binding, "folds": [], "seed": 42, "official_test_image_access": 0,
+331:                "rgbnt201_dev_image_access": 0, "source_only_training": True,
+332:                "evaluation_type": "source_only_engineering" if m0 else "train_internal_identity_oof_cross_dataset_comparison",
+333:                "checkpoint_selection": "discarded_m0" if m0 else "fixed_epoch20",
+334:                "m0_weights_reused": False, "rgbnt201_role_weights_reused": False,
+335:                "gpu": torch.cuda.get_device_name(0), "torch_version": str(torch.__version__)}
+336:     write_json(directory / "summary.json", summary)
+337:     for fold, baseline_fold in zip(protocol["folds"], baseline["folds"], strict=True):
+338:         assert fold["fold"] == baseline_fold["fold"]
+339:         assert not set(fold["source_ids"]) & set(fold["heldout_ids"])
+340:         fold_dir = directory / f"fold_{fold['fold']}"
+341:         fold_dir.mkdir()
+342:         records = records_for(baseline_config, protocol, fold, True)
+343:         model, model_binding = build_model(config, signal_config, fold, baseline_fold)
+344:         if not m0:
+345:             assert model_binding["initial_state_sha256"] == preflight["folds"][fold["fold"]]["initialization"]["initial_state_sha256"]
+346:         if m0:
+347:             extract(model, records[:8], signal_config, verify_direct_signal=True)
+348:             assert _module_state_sha256(model) == model_binding["initial_state_sha256"]
+349:         training = train_roles(model, records, fold["source_record_indices"], config,
+350:                                fold=fold["fold"], mode="capacity" if m0 else "comparison", directory=fold_dir)
+351:         checks = engineering_checks(training)
+352:         checks["expected_training_length"] = training["optimizer_steps"] == 8 if m0 else training["epochs"] == 20
+353:         row = {"fold": fold["fold"], "counts": fold["counts"], "initialization": model_binding,
+354:                "training": training, "engineering_checks": checks}
+355:         write_json(fold_dir / "receipt.json", row)
+356:         summary["folds"].append(row)
+357:         if not all(checks.values()):
+358:             summary["status"] = "FAIL_FIXED_M0" if m0 else "FAIL_COMPARISON_ENGINEERING"
+359:         write_json(directory / "summary.json", summary)
+360:         assert all(checks.values()), checks
+361:         checkpoint = fold_dir / ("roles_m0.pth" if m0 else "roles_epoch20.pth")
+362:         torch.save({"model_state_dict": model.state_dict(), "fold": fold["fold"],
+363:                     "source_ids": fold["source_ids"], "heldout_ids": fold["heldout_ids"],
+364:                     "config_sha256": sha256(config_path)}, checkpoint)
+365:         before_reload = extract(model, records[:8], signal_config) if m0 else None
+366:         del model
+367:         torch.cuda.empty_cache()
+368:         model, _ = build_model(config, signal_config, fold, baseline_fold)
+369:         payload = torch.load(checkpoint, map_location="cpu", weights_only=True)
+370:         model.load_state_dict(payload["model_state_dict"], strict=True)
+371:         assert _module_state_sha256(model) == training["final_state_sha256"]
+372:         row.update({"checkpoint": str(checkpoint), "checkpoint_sha256": sha256(checkpoint),
+373:                     "strict_reload_state_sha256": _module_state_sha256(model)})
+374:         if m0:
+375:             after_reload = extract(model, records[:8], signal_config)
+376:             assert all(torch.equal(before_reload[k], after_reload[k]) for k in OUTPUT_WIDTHS)
+377:             row.update({"direct_signal_source_parity": True, "strict_reload_all_outputs_bitwise_equal": True,
+378:                         "clean_role_source_record_forwards": 24, "direct_signal_source_record_forwards": 8,
+379:                         "heldout_record_forwards": 0})
+380:         else:
+381:             gallery = records_for(baseline_config, protocol, fold, False)
+382:             features = extract(model, gallery, signal_config)
+383:             row["retrieval"] = evaluate(features, protocol, fold, fold_dir, baseline_fold)
+384:             row["heldout_record_forwards"] = len(gallery)
+385:         assert _module_state_sha256(model) == training["final_state_sha256"]
+386:         write_json(fold_dir / "receipt.json", row)
+387:         write_json(directory / "summary.json", summary)
+388:         del model, payload
+389:         torch.cuda.empty_cache()
+390:     if m0:
+391:         overfit_dir = directory / "overfit_fold0"
+392:         overfit_dir.mkdir()
+393:         fold = protocol["folds"][0]
+394:         model, initial = build_model(config, signal_config, fold, baseline["folds"][0])
+395:         records = records_for(baseline_config, protocol, fold, True)
+396:         training = train_roles(model, records, fold["source_record_indices"], config,
+397:                                fold=0, mode="overfit", directory=overfit_dir)
+398:         floor = overfit_loss_floor(config, num_classes=len(fold["source_ids"]))
+399:         gate = evaluate_overfit_gate([r["loss"] for r in training["steps"]], max_ratio=0.1, minimum_loss=floor)
+400:         checks = engineering_checks(training)
+401:         checks.update({"fixed_100_updates": training["optimizer_steps"] == 100,
+402:                        "overfit_excess_ratio_at_most_point1": gate["passed"]})
+403:         summary["overfit"] = {"initialization": initial, "training": training, "loss_gate": gate, "checks": checks}
+404:         summary["status"] = "PASS_ENGINEERING_ONLY" if all(checks.values()) else "FAIL_FIXED_M0"
+405:         summary["optimizer_steps"] = 24 + training["optimizer_steps"]
+406:     else:
+407:         summary["comparison"] = comparison_summary(summary["folds"])
+408:         summary["status"] = "COMPLETE_COMPARISON_SUPPORT_PASS" if summary["comparison"]["scientific_passed"] else "COMPLETE_COMPARISON_SUPPORT_FAIL"
+409:         summary["optimizer_steps"] = sum(f["training"]["optimizer_steps"] for f in summary["folds"])
+410:         summary["m0_receipt_sha256"] = sha256(args.m0_receipt)
+411:     summary["elapsed_seconds"] = time.perf_counter() - started
+412:     summary["heldout_record_forwards"] = sum(f["heldout_record_forwards"] for f in summary["folds"])
+413:     write_json(directory / "summary.json", summary)
+414:     print(json.dumps({"event": "complete", "status": summary["status"], "elapsed_seconds": summary["elapsed_seconds"]}), flush=True)
+415: 
+416: 
+417: if __name__ == "__main__":
+418:     parser = argparse.ArgumentParser()
+419:     parser.add_argument("--config", type=Path, required=True)
+420:     parser.add_argument("--output-dir", type=Path, required=True)
+421:     parser.add_argument("--mode", choices=("m0", "comparison"), required=True)
+422:     parser.add_argument("--m0-receipt", type=Path)
+423:     arguments = parser.parse_args()
+424:     assert arguments.mode == "m0" or arguments.m0_receipt is not None
+425:     run(arguments)
+
+FILE D:\Program Files\UserCache\gb\codex\tmp\trifusion_supported_balance_m0_independent_audit_20260921\snapshots\repo\tools\train_msvr310_signal_oof.py
+274: def run(args):
+275:     import torch
+276:     from tools.run_signal_preserving_v5 import _module_state_sha256, _set_seed
+277: 
+278:     assert torch.cuda.is_available()
+279:     config_path, output_dir = args.config.resolve(), args.output_dir.resolve()
+280:     config = json.loads(config_path.read_text(encoding="utf-8"))
+281:     protocol_path = ROOT / config["protocol"]
+282:     assert sha256(protocol_path) == config["protocol_sha256"]
+283:     protocol = json.loads(protocol_path.read_text(encoding="utf-8"))
+284:     assert config["seed"] == 42 and config["epochs"] == 50
+285:     assert (config["train_batch_size"], config["instances_per_identity"],
+286:             config["num_workers"], config["preflight_steps_per_fold"]) == (64, 8, 4, 8)
+287:     assert not output_dir.exists()
+288:     cfg, binding = configure(config)
+289:     output_dir.mkdir(parents=True)
+290:     preflight = args.mode == "preflight"
+291:     if not preflight:
+292:         receipt_path = args.preflight_receipt.resolve()
+293:         preflight_report = json.loads(receipt_path.read_text(encoding="utf-8"))
+294:         assert preflight_report["status"] == "PASS_ENGINEERING_ONLY"
+295:         assert preflight_report["config_sha256"] == sha256(config_path)
+296:         assert preflight_report["runner_sha256"] == sha256(__file__)
+297:     started = time.perf_counter()
+298:     summary = {"schema": "msvr310-signal-source-oof-v1", "mode": args.mode, "status": "RUNNING",
+299:                **binding, "config_sha256": sha256(config_path), "protocol_sha256": sha256(protocol_path),
+300:                "runner_sha256": sha256(__file__), "seed": 42, "folds": [],
+301:                "project_commit": subprocess.check_output(["git", "-C", str(ROOT), "rev-parse", "HEAD"], text=True).strip(),
+302:                "project_source_file_sha256": config["project_source_file_sha256"],
+303:                "evaluation_type": "source_only_engineering" if preflight else "train_internal_identity_oof_baseline",
+304:                "official_test_image_access": 0, "fixed_rgbnt201_dev_image_access": 0,
+305:                "expert_training": 0, "epochs_selected_by_heldout": False,
+306:                "gpu": torch.cuda.get_device_name(0), "torch_version": str(torch.__version__)}
+307:     (output_dir / "signal_effective_config.yml").write_text(cfg.dump(), encoding="utf-8")
+308:     for fold in protocol["folds"]:
+309:         fold_dir = output_dir / f"fold_{fold['fold']}"
+310:         fold_dir.mkdir()
+311:         _set_seed(42)
+312:         source_records = records_for(config, protocol, fold, True)
+313:         assert not set(fold["source_ids"]) & set(fold["heldout_ids"])
+314:         loader = loader_for(source_records, True)
+315:         model = new_model(cfg, fold)
+316:         torch.cuda.reset_peak_memory_stats()
+317:         training = train_source(model, loader, cfg, fold["source_record_indices"], source_records,
+318:                                 preflight=preflight)
+319:         write_json(fold_dir / "training.json", training)
+320:         assert training["epochs"] == (1 if preflight else 50)
+321:         assert not training["trainable_without_gradient"], training["trainable_without_gradient"]
+322:         assert training["initial_state_sha256"] != training["final_state_sha256"]
+323:         checkpoint = fold_dir / ("signal_m0.pth" if preflight else "signal_epoch50.pth")
+324:         torch.save({"model_state_dict": model.state_dict(), "fold": fold["fold"],
+325:                     "source_ids": fold["source_ids"], "heldout_ids": fold["heldout_ids"],
+326:                     "config_sha256": sha256(config_path), "protocol_sha256": sha256(protocol_path)},
+327:                    checkpoint)
+328:         before_reload = extract(model, source_records[:8], cfg) if preflight else None
+329:         del model, loader
+330:         torch.cuda.empty_cache()
+331:         model = new_model(cfg, fold)
+332:         state = torch.load(checkpoint, map_location="cpu", weights_only=True)
+333:         model.load_state_dict(state["model_state_dict"], strict=True)
+334:         assert _module_state_sha256(model) == training["final_state_sha256"]
+335:         row = {"fold": fold["fold"], "source_ids": fold["source_ids"], "heldout_ids": fold["heldout_ids"],
+336:                "counts": fold["counts"], "training": training,
+337:                "checkpoint": str(checkpoint), "checkpoint_sha256": sha256(checkpoint)}
+338:         if preflight:
+339:             after_reload = extract(model, source_records[:8], cfg)
+340:             assert training["optimizer_steps"] == 8 and torch.equal(before_reload, after_reload)
+341:             row.update({"strict_reload_exact_feature_parity": True, "clean_source_feature_forwards": 16,
+342:                         "feature_width": 3072, "heldout_image_forwards": 0})
+343:         else:
+344:             gallery_records = records_for(config, protocol, fold, False)
+345:             features = extract(model, gallery_records, cfg)
+346:             row["retrieval"] = evaluate_gallery(features, protocol, fold, fold_dir)
+347:             row["heldout_image_forwards"] = len(gallery_records)
+348:         assert _module_state_sha256(model) == training["final_state_sha256"]
+349:         row["peak_allocated_mib"] = torch.cuda.max_memory_allocated() / 1024**2
+350:         write_json(fold_dir / "receipt.json", row)
+351:         summary["folds"].append(row)
+352:         write_json(output_dir / "summary.json", summary)
+353:         del model, state
+354:         torch.cuda.empty_cache()
+355:     if not preflight:
+356:         import numpy as np
+357:         ap = [x for row in summary["folds"] for x in row["retrieval"]["average_precision"]]
+358:         first = [x for row in summary["folds"] for x in row["retrieval"]["first_match_rank"]]
+359:         assert len(ap) == 600
+360:         summary["aggregate"] = {"mAP": float(np.mean(ap) * 100),
+361:                                 **{f"Rank-{k}": float(np.mean(np.asarray(first) <= k) * 100)
+362:                                    for k in (1, 5, 10)}}
+363:         summary["preflight_receipt_sha256"] = sha256(receipt_path)
+364:     summary.update({"status": "PASS_ENGINEERING_ONLY" if preflight else "COMPLETE_BASELINE_NOT_METHOD_QUALIFICATION",
+365:                     "elapsed_seconds": time.perf_counter() - started,
+366:                     "optimizer_steps": sum(row["training"]["optimizer_steps"] for row in summary["folds"]),
+367:                     "training_source_only": True, "checkpoint_selection": "fixed_epoch_50" if not preflight else "discarded_m0",
+368:                     "heldout_image_forwards": sum(row["heldout_image_forwards"] for row in summary["folds"])})
+369:     write_json(output_dir / "summary.json", summary)
+370:     print(json.dumps({"event": "complete", "status": summary["status"],
+371:                       "elapsed_seconds": summary["elapsed_seconds"]}), flush=True)
+372: 
+373: 
+374: if __name__ == "__main__":
+375:     parser = argparse.ArgumentParser()
+376:     parser.add_argument("--config", type=Path, required=True)
+377:     parser.add_argument("--output-dir", type=Path, required=True)
+378:     parser.add_argument("--mode", choices=("preflight", "train"), required=True)
+379:     parser.add_argument("--preflight-receipt", type=Path)
+380:     arguments = parser.parse_args()
+381:     assert arguments.mode == "preflight" or arguments.preflight_receipt is not None
+382:     run(arguments)

@@ -1,0 +1,341 @@
+
+FILE D:\Program Files\UserCache\gb\codex\tmp\trifusion_supported_balance_m0_independent_audit_20260921\remote_text\root\autodl-tmp\trifusion-v2\TriFusion-ReID\tools\msvr_smooth_ap.py
+1: """Independent Smooth-AP formula adapter, not a novel loss or a trained model.
+2: 
+3: Brown et al., ECCV 2020, arXiv:2007.12163v2, equations 2/3/6 and section 5.3.
+4: Only current rows are anchors. Historical columns retain caller-defined grads.
+5: """
+6: import torch
+7: 
+8: TAU = 0.01
+9: 
+10: 
+11: def paired_objectives(current, historical, identities, history_identities):
+12:     """Original split-max/min hard objective and the fixed Smooth-AP objective."""
+13:     batch = current.shape[0]
+14:     ids = torch.as_tensor(identities, device=current.device)
+15:     mids = torch.as_tensor(history_identities, device=current.device, dtype=ids.dtype)
+16:     positive = (ids[:, None] == ids[None, :]) & ~torch.eye(batch, device=current.device, dtype=torch.bool)
+17:     negative = ids[:, None] != ids[None, :]
+18:     assert positive.any(1).all() and negative.any(1).all()
+19:     hp = current.masked_fill(~positive, -torch.inf).max(1).values
+20:     hn = current.masked_fill(~negative, torch.inf).min(1).values
+21:     if historical.shape[1]:
+22:         mp = ids[:, None] == mids[None, :]
+23:         hp = torch.maximum(hp, historical.masked_fill(~mp, -torch.inf).max(1).values)
+24:         hn = torch.minimum(hn, historical.masked_fill(mp, torch.inf).min(1).values)
+25:     hard = torch.nn.functional.relu(hp - hn + .3).mean()
+26:     smooth, per_anchor = smooth_ap_from_distances(current, historical, identities, history_identities)
+27:     return hard, smooth, per_anchor
+28: 
+29: 
+30: def smooth_ap_from_distances(current, historical, identities, history_identities):
+31:     """Return mean 1-AP and per-anchor smoothed AP from unit Euclidean distances.
+32: 
+33: All true positive candidate positions except the current self are included.
+34: Other repeated views remain distinct, matching the existing training contract.
+35: This is training-set approximate AP, not an official evaluation metric.
+36: """
+37:     batch = current.shape[0]
+38:     assert current.shape == (batch, batch) and historical.shape[0] == batch
+39:     assert current.dtype in (torch.float32, torch.float64)
+40:     assert historical.dtype == current.dtype and historical.device == current.device
+41:     ids = torch.as_tensor(identities, device=current.device)
+42:     mids = torch.as_tensor(history_identities, device=current.device, dtype=ids.dtype)
+43:     assert len(ids) == batch and len(mids) == historical.shape[1]
+44:     with torch.autocast(current.device.type, enabled=False):
+45:         distance = torch.cat((current, historical), dim=1)
+46:         score = 1 - distance.square() / 2
+47:         candidate_ids = torch.cat((ids, mids))
+48:         positions = torch.arange(len(candidate_ids), device=current.device)
+49:         positive = ids[:, None] == candidate_ids[None, :]
+50:         positive[torch.arange(batch, device=current.device), torch.arange(batch, device=current.device)] = False
+51:         assert positive.any(1).all() and (ids[:, None] != candidate_ids[None, :]).any(1).all()
+52:         aps = []
+53:         for i in range(batch):
+54:             pos = positions[positive[i]]
+55:             comparisons = torch.sigmoid((score[i][None, :] - score[i, pos][:, None]) / TAU)
+56:             valid = (positions[None, :] != i) & (positions[None, :] != pos[:, None])
+57:             comparisons = comparisons.masked_fill(~valid, 0)
+58:             positive_rank = 1 + (comparisons * positive[i][None, :]).sum(1)
+59:             all_rank = 1 + comparisons.sum(1)
+60:             aps.append((positive_rank / all_rank).mean())
+61:         per_anchor = torch.stack(aps)
+62:         return 1 - per_anchor.mean(), per_anchor
+
+FILE D:\Program Files\UserCache\gb\codex\tmp\trifusion_supported_balance_m0_independent_audit_20260921\remote_text\root\autodl-tmp\trifusion-v2\TriFusion-ReID\tools\msvr_role_set_relations.py
+1: """Role-proposed negative relations, optimized only in the fused metric space.
+2: 
+3: This is a mean-hinge adaptation, not a new loss family. Mining indices are
+4: fixed for each backward pass. The original hard term retains its existing
+5: max/min tie derivative, including the current/history split.
+6: """
+7: import torch
+8: import torch.nn.functional as F
+9: 
+10: 
+11: def relation_objectives(current, historical, identities, history_identities,
+12:                         role_distances, margin=.3):
+13:     """Return original hard loss, role-union mean loss and detached selection.
+14: 
+15: current/historical are differentiable fused distance matrices, BxB and BxH.
+16: The three role matrices are Bx(B+H), used only to choose negative indices.
+17: Current sample positions (including repeated sampled views) retain the old
+18: training contract; the caller supplies the already-filtered history queue.
+19: """
+20:     batch, count = historical.shape
+21:     assert current.shape == (batch, batch) and len(role_distances) == 3
+22:     ids = torch.as_tensor(identities, device=current.device)
+23:     mids = torch.as_tensor(history_identities, device=current.device, dtype=ids.dtype)
+24:     assert len(ids) == batch and len(mids) == count
+25:     positive = (ids[:, None] == ids[None, :]) & ~torch.eye(batch, device=current.device, dtype=torch.bool)
+26:     negative = ids[:, None] != ids[None, :]
+27:     assert positive.any(1).all() and negative.any(1).all()
+28:     hp = current.masked_fill(~positive, -torch.inf).max(1).values
+29:     hn = current.masked_fill(~negative, torch.inf).min(1).values
+30:     mp = ids[:, None] == mids[None, :]
+31:     if count:
+32:         hp = torch.maximum(hp, historical.masked_fill(~mp, -torch.inf).max(1).values)
+33:         hn = torch.minimum(hn, historical.masked_fill(mp, torch.inf).min(1).values)
+34:     distance = torch.cat((current, historical), dim=1)
+35:     negatives = torch.cat((negative, ~mp), dim=1)
+36:     hard = F.relu(hp-hn+margin)
+37:     with torch.no_grad():
+38:         first = distance.detach().masked_fill(~negatives, torch.inf).argmin(1)
+39:         proposals = [first]
+40:         for role in role_distances:
+41:             assert role.shape == distance.shape and torch.isfinite(role).all()
+42:             proposals.append(role.detach().masked_fill(~negatives, torch.inf).argmin(1))
+43:         proposals = torch.stack(proposals, dim=1)
+44:         selected = torch.zeros_like(negatives)
+45:         selected.scatter_(1, proposals, True)
+46:         assert (selected & ~negatives).sum() == 0
+47:         extra = selected.clone()
+48:         extra.scatter_(1, first[:, None], False)
+49:         counts = selected.sum(1)
+50:     hinges = F.relu(hp[:, None]-distance+margin)
+51:     # Keep the old hard term rather than changing its tie-gradient convention.
+52:     combined = (hard+(hinges*extra).sum(1))/counts
+53:     return hard.mean(), combined.mean(), dict(
+54:         proposals=proposals, selected=selected, extra=extra,
+55:         counts=counts, extra_active=(hinges.detach()>0) & extra,
+56:         per_anchor_hard=hard.detach(), per_anchor_candidate=combined.detach(),
+57:     )
+58: 
+59: 
+60: def fused_distances(features, history):
+61:     """The same FP32 metric path as the existing history-gradient objective."""
+62:     with torch.autocast(features.device.type, enabled=False):
+63:         unit = F.normalize(features.float(), dim=1)
+64:         return torch.cdist(unit, unit), torch.cdist(unit, history.float())
+
+FILE D:\Program Files\UserCache\gb\codex\tmp\trifusion_supported_balance_m0_independent_audit_20260921\remote_text\root\autodl-tmp\trifusion-v2\TriFusion-ReID\tools\train_msvr_role_set.py
+1: """Paired role-set trainer governed by the registered fixed training contract.
+2: 
+3: Both endpoints retain current-coordinate historical candidate derivatives.
+4: Only the fused negative-relation objective changes; M0 precedes heldout access.
+5: """
+6: import argparse
+7: from datetime import datetime
+8: import itertools
+9: import json
+10: from pathlib import Path
+11: import subprocess
+12: import time
+13: 
+14: import numpy as np
+15: 
+16: from tools import train_msvr310_source_style as prior
+17: from tools import train_msvr_instance_memory as old
+18: from tools.msvr_freshness_probe import ViewFields
+19: from tools.train_msvr310_trifusion_oof import (
+20:     build_model, frozen_state_sha, engineering_checks, output_mapping, evaluate,
+21:     OUTPUT_WIDTHS, EXPERTS,
+22: )
+23: from tools.train_msvr310_signal_oof import loader_for, records_for, sha256, write_json
+24: 
+25: ROOT = Path(__file__).resolve().parents[1]
+26: ENDPOINTS = ('control', 'role_set')
+27: extract, preflight, reload_model = old.extract, old.preflight, old.reload_model
+28: 
+29: 
+30: def context(path):
+31:     from tools.train_msvr_history_gradient import context as previous_context
+32:     spec=json.loads(path.read_bytes())
+33:     assert spec['schema']=='msvr310-role-set-paired-v1' and spec['seed']==42
+34:     for name,digest in spec['project_file_sha256'].items():assert sha256(ROOT/name)==digest,name
+35:     for name,digest in spec['fixed_file_sha256'].items():assert sha256(name)==digest,name
+36:     audit=json.loads((ROOT/spec['gradient_audit']).read_bytes())
+37:     assert audit['verdict'] in ('PASS','WARN') and audit['deterministic_checks_status']=='pass'
+38:     gradient=json.loads(Path(spec['gradient_summary']).read_bytes())
+39:     cpu=json.loads(Path(spec['gradient_cpu']).read_bytes())
+40:     assert gradient['status']=='COMPLETE_ROLE_SET_PARAMETER_GRADIENT_CHECK'
+41:     assert cpu['status']=='PASS_COMPLETE_ROLE_SET_GRADIENT_PROBE_TEXT_AND_ARRAYS'
+42:     assert cpu['summary_sha256']==sha256(spec['gradient_summary'])
+43:     previous,base=previous_context(ROOT/spec['previous_config'])
+44:     assert spec['memory']==previous['memory'] and spec['training_epochs']==20
+45:     return spec,base
+46: 
+47: 
+48: def encode_graph_all(model,item):
+49:     """Replay one historical group with its original role-entry RNG."""
+50:     import torch
+51:     import torch.nn.functional as F
+52:     with torch.random.fork_rng(devices=[torch.cuda.current_device()]):
+53:         torch.set_rng_state(item['cpu_rng']);torch.cuda.set_rng_state(item['cuda_rng'])
+54:         with torch.autocast('cuda',dtype=torch.float16):
+
+FILE D:\Program Files\UserCache\gb\codex\tmp\trifusion_supported_balance_m0_independent_audit_20260921\remote_text\root\autodl-tmp\trifusion-v2\TriFusion-ReID\tools\train_msvr_fresh_coordinate.py
+1: """One intervention: current versus cached historical coordinates in the update."""
+2: import argparse
+3: from datetime import datetime
+4: import itertools
+5: import json
+6: from pathlib import Path
+7: import subprocess
+8: import time
+9: 
+10: import numpy as np
+11: 
+12: from tools import train_msvr310_source_style as prior
+13: from tools import train_msvr_instance_memory as old
+14: from tools.msvr_freshness_probe import ViewFields, parameter_probe
+15: from tools.train_msvr310_trifusion_oof import (
+16:     build_model, frozen_state_sha, engineering_checks, output_mapping, evaluate,
+17:     OUTPUT_WIDTHS, EXPERTS,
+18: )
+19: from tools.train_msvr310_signal_oof import loader_for, records_for, sha256, write_json
+20: 
+21: ROOT = Path(__file__).resolve().parents[1]
+22: ENDPOINTS = ('control', 'fresh_memory')
+23: extract, preflight, reload_model = old.extract, old.preflight, old.reload_model
+24: 
+25: 
+26: def context(path):
+27:     spec = json.loads(path.read_bytes())
+28:     assert spec['schema'] == 'msvr310-fresh-coordinate-paired-v1'
+29:     for name, digest in spec['project_file_sha256'].items():
+30:         assert sha256(ROOT/name) == digest, name
+31:     for name, digest in spec['fixed_file_sha256'].items():
+32:         assert sha256(name) == digest, name
+33:     previous = json.loads(Path(spec['freshness_cpu']).read_bytes())
+34:     assert previous['status'] == 'PASS_COMPLETE_FRESHNESS_SOURCE' and previous['all_steps'] == 1560
+35:     assert previous['summary_sha256'] == sha256(spec['freshness_summary'])
+36:     memory, base = old.context(ROOT/spec['memory_config'])
+37:     assert spec['memory'] == memory['memory'] and spec['seed'] == 42
+38:     return spec, base
+39: 
+40: 
+41: def fit(model, records, fold, protocol, config, spec, md, *, endpoint, mode, directory):
+42:     import torch
+43:     from tools.msvr_instance_memory import InstanceMemory, expanded_triplet, replay_drift
+44:     from tools.run_signal_preserving_v5 import (
+45:         _module_state_sha256, _set_seed, _training_batch, learning_rate_multiplier, weighted_training_loss,
+46:     )
+47:     from trifusion.signal_preserving_v8 import ExpertFormationV8Criterion
+48:     _set_seed(42)
+49:     model.train()
+50:     initial = _module_state_sha256(model)
+51:     frozen = frozen_state_sha(model)
+52:     signal = _module_state_sha256(model.baseline.signal)
+53:     names = {n for n, p in model.named_parameters() if p.requires_grad}
+54:     optimizer = torch.optim.AdamW([p for p in model.parameters() if p.requires_grad],
+55:                                   lr=config['OPTIMIZATION']['NEW_MODULE_LR'],
+
+FILE D:\Program Files\UserCache\gb\codex\tmp\trifusion_supported_balance_m0_independent_audit_20260921\remote_text\root\autodl-tmp\trifusion-v2\TriFusion-ReID\tools\check_msvr_cross_scene_smooth_ap_math.py
+1: """Synthetic protocol and gradient checks, no dataset or model execution."""
+2: import json
+3: import math
+4: import time
+5: 
+6: import numpy as np
+7: import torch
+8: 
+9: from tools.msvr_cross_scene_smooth_ap import cross_scene_ap_from_distances
+10: 
+11: 
+12: def reference(distance, ids, mids, scenes, mscenes):
+13:     candidate_ids, candidate_scenes = ids + mids, scenes + mscenes
+14:     aps, counts = [], []
+15:     for i, row in enumerate(distance):
+16:         positives = [j for j, (y, s) in enumerate(zip(candidate_ids, candidate_scenes))
+17:                      if y == ids[i] and s != scenes[i]]
+18:         valid = [j for j, (y, s) in enumerate(zip(candidate_ids, candidate_scenes))
+19:                  if not (y == ids[i] and s == scenes[i])]
+20:         score = 1 - row * row / 2
+21:         terms = []
+22:         for positive in positives:
+23:             def rank(indices):
+24:                 return 1 + sum(1 / (1 + math.exp(-float(score[j] - score[positive]) / .01))
+25:                                for j in indices if j != positive)
+26:             terms.append(rank(positives) / rank(valid))
+27:         aps.append(sum(terms) / len(terms) if terms else 0.)
+28:         counts.append(len(positives))
+29:     eligible = [ap for ap, count in zip(aps, counts) if count]
+30:     return 1 - sum(eligible) / len(eligible) if eligible else 0., np.array(aps), np.array(counts)
+31: 
+32: 
+33: def checks():
+34:     started = time.monotonic()
+35:     from tools.check_msvr_smooth_ap_math import checks as standard_checks
+36:     standard = standard_checks()
+37:     ids, mids = [0, 0, 1, 1], [0, 1]
+38:     scenes = [0, 1, 0, 0]
+39:     d = torch.tensor([[0,.94,.99,1.02,.98,1.04], [.94,0,1.03,.97,1.01,.99],
+40:                       [.99,1.03,0,.96,1.04,.98], [1.02,.97,.96,0,.99,1.01]], dtype=torch.float64)
+41:     scalar_errors = []
+42:     for count, mscenes in ((0, []), (2, [0, 1]), (2, [0, 0])):
+43:         x = d[:, :4].clone().requires_grad_()
+44:         y = d[:, 4:4+count].clone().requires_grad_()
+45:         hids = mids[:count]
+46:         loss, ap, counts = cross_scene_ap_from_distances(x, y, ids, hids, scenes, mscenes)
+47:         expected, expected_ap, expected_counts = reference(d[:, :4+count].numpy(), ids, hids, scenes, mscenes)
+48:         error = max(abs(loss.item()-expected), float(np.max(np.abs(ap.detach().numpy()-expected_ap))))
+49:         scalar_errors.append(error)
+50:         assert error < 1e-12 and np.array_equal(counts.numpy(), expected_counts)
+51:         assert torch.autograd.gradcheck(lambda a,b: cross_scene_ap_from_distances(a,b,ids,hids,scenes,mscenes)[0],
+52:                                         (x,y), eps=1e-6, atol=1e-6, rtol=1e-4)
+53:         gx, gy = torch.autograd.grad(loss, (x, y))
+54:         both = torch.cat((gx, gy), 1)
+55:         for i in range(4):
+56:             for j, (identity, scene) in enumerate(zip(ids+hids, scenes+mscenes)):
+57:                 if identity == ids[i] and scene == scenes[i]:
+58:                     assert both[i, j] == 0
+59:             if counts[i] == 0:
+60:                 assert torch.count_nonzero(both[i]) == 0
+61:         # ID1 has no legal positive in the no-history fixture, but remains
+62:         # a true negative to eligible ID0, including same-scene negatives.
+63:         if count == 0:
+64:             assert counts.tolist() == [1, 1, 0, 0]
+65:             assert both[0, 2] != 0 and both[1, 3] != 0
+66:         if count and mscenes == [0, 1]:
+67:             assert torch.count_nonzero(gy) > 0
+68:         perm = torch.tensor([2,3,0,1]); hp = torch.arange(count-1, -1, -1)
+69:         perm_loss, _, _ = cross_scene_ap_from_distances(
+70:             x.detach()[perm][:,perm], y.detach()[perm][:,hp],
+71:             [ids[i] for i in perm], [hids[i] for i in hp],
+72:             [scenes[i] for i in perm], [mscenes[i] for i in hp])
+73:         assert torch.allclose(loss, perm_loss, rtol=0, atol=1e-12)
+74:     x = d[:, :4].clone().requires_grad_(); y = d[:, 4:].clone().requires_grad_()
+75:     loss, ap, counts = cross_scene_ap_from_distances(x,y,ids,mids,[0]*4,[0]*2)
+76:     gx, gy = torch.autograd.grad(loss, (x,y))
+77:     assert loss.item() == 0 and counts.sum() == 0 and ap.count_nonzero() == 0
+78:     assert gx.count_nonzero() == gy.count_nonzero() == 0
+79:     # Independent tie arithmetic: one cross-scene positive and two negatives
+80:     # give rank+ = 1 and rank = 2, while ignored same-scene self adds nothing.
+81:     tie = torch.ones(4,4,dtype=torch.float64); tie.fill_diagonal_(0)
+82:     loss, ap, counts = cross_scene_ap_from_distances(tie,torch.empty(4,0,dtype=torch.float64),ids,[],[0,1,0,1],[])
+83:     assert torch.equal(ap,torch.full((4,),.5,dtype=torch.float64)) and loss == .5
+84:     assert not torch.cuda.is_initialized()
+85:     return dict(status='PASS_SYNTHETIC_CROSS_SCENE_SMOOTH_AP_MATH', standard=standard,
+86:                 maximum_scalar_reference_error=max(scalar_errors),finite_difference_checks=3,
+87:                 permutation_checks=3,ignored_same_identity_scene_zero_derivative=True,
+88:                 ineligible_anchor_retained_as_negative=True,whole_ineligible_batch_connected_zero=True,
+89:                 historical_candidate_derivative_nonzero=True,tie_ap=.5,
+90:                 model_forwards=0,optimizer_updates=0,dataset_reads=0,
+91:                 elapsed_seconds=time.monotonic()-started)
+92: 
+93: 
+94: if __name__ == '__main__':
+95:     torch.set_num_threads(4)
+96:     print(json.dumps(checks()))

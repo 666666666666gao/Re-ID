@@ -1,0 +1,35 @@
+
+FILE D:\Program Files\UserCache\gb\codex\tmp\trifusion_supported_balance_m0_independent_audit_20260921\independent_recompute.py
+350:         assert sha(p)==receipt['checkpoint_sha256']
+351:         payload=torch.load(p,map_location='cpu',weights_only=True)
+352:         assert set(payload)=={'role_state_dict','baseline_aliases','binding','fold','source_ids','heldout_ids','config_sha256'}
+353:         assert payload['binding']==receipt['initialization'] and payload['config_sha256']==CFG_SHA
+354:         assert payload['fold']==fold['fold'] and payload['source_ids']==fold['source_ids'] and payload['heldout_ids']==fold['heldout_ids']
+355:         names=payload['binding']['trainable_names'];assert len(names)==len(set(names))==203
+356:         groups={r:[n for n in names if n.startswith('encoder.'+r+'_')] for r in ROLES}
+357:         assert sum(map(len,groups.values()))==189 and len([n for n in names if not n.startswith('encoder.')])==14
+358:         assert not payload['binding']['role_weights_loaded'] and payload['binding']['role_initialization_seed']==42
+359:         assert payload['binding']['signal_checkpoint_sha256']==b0['checkpoint_sha256']
+360:         assert payload['binding']['signal_state_sha256']==state_sha(state0)==tr['signal_state_after_sha256']
+361:         aliases=payload['baseline_aliases'];assert all(k.startswith('baseline.') and v in state0 for k,v in aliases.items())
+362:         role=payload['role_state_dict'];assert all(not k.startswith('baseline.') for k in role)
+363:         state={k:state0[v] for k,v in aliases.items()};state.update(role)
+364:         assert state_sha(state)==tr['final_state_sha256']==receipt['strict_reload_state_sha256']
+365:         buffers={n for n in role if n.endswith(('.running_mean','.running_var','.num_batches_tracked'))}
+366:         frozen={n:v for n,v in state.items() if n.startswith('baseline.') or (n not in names and n not in buffers)}
+367:         assert state_sha(frozen)==tr['frozen_state_after_sha256']
+368:         assert all(torch.isfinite(v).all() for v in state.values())
+369:         for r,ns in groups.items():
+370:             finalnorm=math.sqrt(sum(float(role[n].double().square().sum()) for n in ns))
+371:             assert finalnorm==all_audits[f"fold_{fold['fold']}_{endpoint}"][-1]['actual_parameter_updates'][r]['second_norm']
+372:         checkpoint_results.append(dict(fold=fold['fold'],endpoint=endpoint,checkpoint=str(p),sha256=receipt['checkpoint_sha256'],baseline_checkpoint=str(path),baseline_sha256=b0['checkpoint_sha256'],state_tensors=len(state),baseline_aliases=len(aliases),role_state_tensors=len(role),role_parameter_counts={r:len(v) for r,v in groups.items()},head_tensors=14,frozen_state_sha256=state_sha(frozen),strict_reload_state_sha256=state_sha(state),final_update_parameter_norms_match=True))
+373:         del payload,state,role,frozen
+374:     del baseline,state0;gc.collect()
+375: assert end_counts['steps']==SUMMARY['optimizer_steps']==CPU['checked_training_steps']==248
+376: assert end_counts['distance_elements']==CPU['checked_memory_distance_elements']
+377: assert end_counts['history_vjp_record_forwards']==CPU['checked_history_vjp_record_forwards']
+378: assert CPU['checked_retrieval_distance_and_rank_elements']==0
+379: for path,proof in CPU['files'].items():assert sha(path)==proof['sha256'] and Path(path).stat().st_size==proof['bytes']
+380: assert not torch.cuda.is_initialized()
+381: result=dict(status='PASS_INDEPENDENT_COMPLETE_M0_SAVED_EVIDENCE',generated_at=datetime.datetime.now(datetime.timezone.utc).isoformat(),
+382:     run=str(RUN),execution_commit=COMMIT,config_sha256=CFG_SHA,summary_sha256=sha(RUN/'m0/summary.json'),

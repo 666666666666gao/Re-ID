@@ -1,0 +1,36 @@
+{
+  "verdict": "SUPPORTED_MINIMAL_REPAIR_PENDING_PATCH_REVIEW",
+  "original_execution": "92a75e4ac46cccb79bb6f78f913998c0d0039ce8",
+  "actual_status": "STOPPED_AT_M0",
+  "t0_exit_code": 0,
+  "m0_exit_code": 1,
+  "completed_updates": 3,
+  "failing_update_attempt": 4,
+  "failure_before_optimizer_step": true,
+  "blocking_defect": {
+    "code": "AUXILIARY_SUBTRACTION_REFERENCE_FAIL",
+    "relative_l2_error": 0.006824872357540746,
+    "threshold": 0.005,
+    "source": "tools/train_msvr_supported_gradient_balance.py:277"
+  },
+  "proposed_repair": "Direct gradients of weighted other thirteen current objectives; original control arithmetic preserved",
+  "retained_limits": {
+    "relative_l2": 0.005,
+    "zero_reference_absolute_l2": 1e-08
+  },
+  "necessary_changes": [
+    "Independent auxiliary gradient each step on both endpoints",
+    "Separate M0 reference calls; preserve direct total until control comparison",
+    "Use direct rank/auxiliary combination identities only for supported balanced steps",
+    "Keep direct sum/subtracted auxiliary mismatch as measured diagnostics",
+    "Correct backward cost ledger and preregistered implementation description"
+  ],
+  "patch_reviewed": false,
+  "r2_tensor_tests_run": false,
+  "performance_claim": false,
+  "novelty_claim": false,
+  "review_independence": "same-family",
+  "acceptance_status": "provisional",
+  "context": "continuation_of_original_fresh_reviewer",
+  "backend_attestation": "unavailable"
+}

@@ -1,0 +1,94 @@
+{
+  "scope": "Auditor tooling attempts, separate from the original R1 experimental failure",
+  "experiment_thresholds_changed": false,
+  "attempts": [
+    {
+      "id": "AF1",
+      "state": "FAILED_BEFORE_REMOTE_CONNECT",
+      "request": "remote_intake.json.request.json",
+      "raw_output": "remote_intake.json.transport.txt",
+      "error": "ModuleNotFoundError: No module named 'paramiko'",
+      "resolution": "Used the existing offline uv cache and the same existing transport; no package installation or network dependency resolution.",
+      "terminal_retry": "remote_intake_02.json"
+    },
+    {
+      "id": "AF2",
+      "state": "FAILED_AUDITOR_EXACT_REDUCTION_ASSUMPTION",
+      "script": "independent_recompute.py",
+      "request": "independent_recompute_01.json.request.json",
+      "stdout": "independent_recompute_01.json",
+      "stderr": "independent_recompute_01.json.stderr",
+      "transport": "independent_recompute_01.json.transport.txt",
+      "error": "AssertionError at remote payload line 371: auditor required exact equality between a CPU double reduction and the saved GPU double reduction.",
+      "diagnostic_script": "checkpoint_norm_diagnostic.py",
+      "diagnostic_result": "checkpoint_norm_diagnostic.json",
+      "maximum_absolute_difference": 5.684341886080802e-14,
+      "maximum_relative_difference": 2.0207945872648634e-16,
+      "revision_receipt": "audit_script_revision.json",
+      "resolution": "New script reuses the already existing scalar consistency tolerance (1e-7 times max(1,abs(a),abs(b))) only for this added cross-device final-norm check; full tensor content hashes remain exact. The experimental reference gates 0.005 and 1e-8 and overfit gate 0.1 are unchanged.",
+      "terminal_retry_script": "independent_recompute_02.py",
+      "terminal_retry_result": "independent_recompute_02.json"
+    },
+    {
+      "id": "AF3",
+      "state": "FAILED_LOCAL_INVENTORY_KEY_ASSUMPTION",
+      "script": "check_local_bindings_claims.py",
+      "error": "KeyError: 'local_relative_path' at line 19",
+      "original_attempt_retention": "Original script retained. Original tool stderr was visible in the audit conversation, but was not separately written at the time. The explicitly labeled later reproduction below preserves exact argv/stdout/stderr; it is not represented as the original timestamp.",
+      "reproduction_request": "local_checker_failure_reproduction.request.json",
+      "reproduction_stdout": "local_checker_failure_reproduction.stdout.txt",
+      "reproduction_stderr": "local_checker_failure_reproduction.stderr.txt",
+      "resolution": "Read the actual inventory schema and changed the two uses to the existing path field in a new script; no experiment edits.",
+      "revision_script": "prepare_local_revision.py",
+      "terminal_retry_script": "check_local_bindings_claims_02.py",
+      "terminal_retry_result": "local_bindings_claims.json",
+      "recovered_original_trace": "recovered_failure_tool_trace.json",
+      "retention_resolution": "Exact original request/output event pair subsequently recovered from this reviewer session transcript; the later AF3 reproduction remains labeled separately."
+    },
+    {
+      "id": "AF4",
+      "state": "FAILED_LOCAL_POWERSHELL_INLINE_QUOTING",
+      "error": "SyntaxError: '(' was never closed",
+      "context": "A local inline Python -c attempt to make the AF3 key replacement was incorrectly quoted by PowerShell. It executed no remote code and changed no target script.",
+      "retention_limit": "Tool request/error remains in the conversation; an exact separate raw stderr file was not written at the time. This entry is a factual failure note rather than reconstructed verbatim output.",
+      "resolution": "Used retained prepare_local_revision.py with direct file-based Python execution.",
+      "recovered_original_trace": "recovered_failure_tool_trace.json",
+      "retention_resolution": "Exact original request/output event pair subsequently recovered from this reviewer session transcript; the later AF3 reproduction remains labeled separately."
+    },
+    {
+      "id": "AF5",
+      "state": "READ_ONLY_PATH_LOOKUP_MISSES",
+      "context": "Two exploratory reads used absent paths trifusion/signal_preserving_v8.py and build_msvr310_signal_oof_protocol.py; actual registered paths are modeling/trifusion/signal_preserving_v8.py and tools/build_msvr310_train_oof_protocol.py.",
+      "retention_limit": "Failed tool requests remain in the conversation; later successful numbered reads are archived in read_outputs. No source file was created at the absent path.",
+      "resolution": "Followed registered existing source paths.",
+      "recovered_original_trace": "recovered_failure_tool_trace.json contains the missing protocol-builder lookup; other exploratory lookup context remains in the session."
+    },
+    {
+      "id": "AF6",
+      "state": "RESOLVED_AUDITOR_REPORT_HASH_LABEL_ERROR",
+      "finding": "Draft labeled the locally rendered m0_cpu.json SHA as the raw remote receipt SHA.",
+      "raw_remote_sha256": "910c5c8493059cded0adb02bcbdb5ab0b701b40567b645f3a1ca37014feb21b1",
+      "rendered_copy_sha256": "4f551ff62e64b5352fbd03398b3725c18ecee81b4d0f8ef8efff68013a6a5228",
+      "correction": "Report now uses the independently confirmed raw receipt hash and labels the normalized local text copy separately. Experimental receipts and data were not modified.",
+      "proof": "text_copy_provenance.json",
+      "remote_byte_witness": "verify_cpu_receipt_bytes.json",
+      "retained_wrong_drafts": [
+        {
+          "path": "draft_failures/EXPERIMENT_AUDIT.md.before_raw_receipt_hash_correction",
+          "bytes": 10069,
+          "sha256": "5e971f408af861f1f69e679f072760d379c84c2a40011f9c36d79c11c54f491a"
+        },
+        {
+          "path": "draft_failures/EXPERIMENT_AUDIT.json.before_raw_receipt_hash_correction",
+          "bytes": 15157,
+          "sha256": "f8cc20c6ed7b0a362c705f3b10ef345632240e64518e603da474904f74e59083"
+        },
+        {
+          "path": "draft_failures/AUDIT_DETAILS.md.before_raw_receipt_hash_correction",
+          "bytes": 22874,
+          "sha256": "976209fcd68550ea51c4706cda5c7796588c5f50c65d02456629cca3f0023050"
+        }
+      ]
+    }
+  ]
+}

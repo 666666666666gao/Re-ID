@@ -1,0 +1,441 @@
+
+FILE D:\Program Files\UserCache\gb\codex\tmp\trifusion_supported_balance_m0_independent_audit_20260921\snapshots\repo\tools\train_msvr310_signal_oof.py
+1: #!/usr/bin/env python3
+2: """Fixed-source Signal baselines for the registered MSVR310 identity folds."""
+3: 
+4: from __future__ import annotations
+5: 
+6: import argparse
+7: import hashlib
+8: import json
+9: import os
+10: from pathlib import Path
+11: import subprocess
+12: import sys
+13: import time
+14: 
+15: ROOT = Path(__file__).resolve().parents[1]
+16: sys.path.insert(0, str(ROOT))
+17: 
+18: 
+19: def sha256(path):
+20:     digest = hashlib.sha256()
+21:     with Path(path).open("rb") as handle:
+22:         for chunk in iter(lambda: handle.read(1024 * 1024), b""):
+23:             digest.update(chunk)
+24:     return digest.hexdigest()
+25: 
+26: 
+27: def write_json(path, value):
+28:     Path(path).write_text(json.dumps(value, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
+29: 
+30: 
+31: def configure(config):
+32:     from tools.run_signal_baseline_dev import _configure_signal_source
+33: 
+34:     for name, expected in config["project_source_file_sha256"].items():
+35:         assert sha256(ROOT / name) == expected, name
+36:     source = Path(config["signal_source"])
+37:     commit = _configure_signal_source(source)
+38:     source_diff = hashlib.sha256(subprocess.check_output(
+39:         ["git", "-C", str(source), "diff", "--binary"])).hexdigest()
+40:     assert commit == config["signal_commit"]
+41:     assert source_diff == config["signal_diff_sha256"]
+42:     assert sha256(config["clip_weight"]) == config["clip_weight_sha256"]
+43:     for name, expected in config["signal_source_file_sha256"].items():
+44:         assert sha256(source / name) == expected, name
+45:     from config import cfg
+46:     cfg.merge_from_file(str(source / "configs/MSVR310/Signal.yml"))
+47:     cfg.defrost()
+48:     cfg.MODEL.PRETRAIN_PATH_T = config["clip_weight"]
+49:     cfg.SOLVER.SEED = 42
+50:     cfg.SOLVER.MAX_EPOCHS = 50
+51:     cfg.SOLVER.IMS_PER_BATCH = 64
+52:     cfg.DATALOADER.NUM_INSTANCE = 8
+53:     cfg.DATALOADER.NUM_WORKERS = 4
+54:     cfg.TEST.IMS_PER_BATCH = 64
+55:     cfg.freeze()
+56:     assert cfg.DATASETS.NAMES == "MSVR310"
+57:     assert list(cfg.INPUT.SIZE_TRAIN) == list(cfg.INPUT.SIZE_TEST) == [128, 256]
+58:     assert cfg.MODEL.SIE_CAMERA and not cfg.MODEL.SIE_VIEW
+59:     assert cfg.MODEL.DIRECT == 0 and cfg.MODEL.USE_A and cfg.MODEL.USE_B
+60:     assert not cfg.MODEL.FROZEN and cfg.MODEL.METRIC_LOSS_TYPE == "triplet"
+61:     assert cfg.SOLVER.BASE_LR == 5e-6 and cfg.SOLVER.OPTIMIZER_NAME == "Adam"
+62:     assert list(cfg.SOLVER.STEPS) == [20, 40] and cfg.SOLVER.WARMUP_ITERS == 0
+63:     assert not cfg.SOLVER.LARGE_FC_LR
+64:     sys.path.append(str(ROOT / "modeling"))
+65:     return cfg, {"signal_commit": commit, "signal_diff_sha256": source_diff}
+66: 
+67: 
+68: def records_for(config, protocol, fold, source):
+69:     indices = fold["source_record_indices"] if source else fold["gallery_record_indices"]
+70:     records = []
+71:     for index in indices:
+72:         row = protocol["records"][index]
+73:         label = fold["source_label_map"][str(row["identity"])] if source else row["identity"]
+74:         paths = [str(Path(config["dataset_root"]) / p) for p in row["paths"]]
+75:         assert all(Path(p).is_file() for p in paths)
+76:         records.append((paths, int(label), row["camera"], row["scene"]))
+77:     return records
+78: 
+79: 
+80: def clean_triplet(images):
+81:     from torchvision.transforms import functional as tf
+82:     from torchvision.transforms import InterpolationMode
+83: 
+84:     return [tf.normalize(tf.to_tensor(tf.resize(image, [128, 256],
+85:             interpolation=InterpolationMode.BILINEAR)), [0.5] * 3, [0.5] * 3)
+86:             for image in images]
+87: 
+88: 
+89: def loader_for(records, training):
+90:     from torch.utils.data import DataLoader
+91:     from data.datasets.make_dataloader import train_collate_fn
+92:     from data.datasets.sampler import RandomIdentitySampler
+93:     from trifusion.aligned_data import AlignedTripletImageDataset, SharedGeometryTripletTransform
+94: 
+95:     transform = SharedGeometryTripletTransform(size=(128, 256)) if training else clean_triplet
+96:     dataset = AlignedTripletImageDataset(records, transform=transform)
+97:     sampler = RandomIdentitySampler(records, 64, 8, 42) if training else None
+98:     return DataLoader(dataset, batch_size=64, sampler=sampler, shuffle=False,
+99:                       num_workers=4, collate_fn=train_collate_fn, pin_memory=True)
+100: 
+101: 
+102: def new_model(cfg, fold):
+103:     from tools.build_v12_complete_path_oof_targets import _build_signal_teacher
+104: 
+105:     assert fold["source_camera_values"] == list(range(8))
+106:     model = _build_signal_teacher(cfg, num_classes=len(fold["source_ids"]),
+107:                                   camera_num=8, view_num=0)
+108:     # Upstream Q/K only form discrete masks; W_v is unused. Adam already skips them.
+109:     model.SIM.token_selection.requires_grad_(False)
+110:     return model
+111: 
+112: 
+113: def train_source(model, loader, cfg, record_indices, records, *, preflight):
+
+FILE D:\Program Files\UserCache\gb\codex\tmp\trifusion_supported_balance_m0_independent_audit_20260921\snapshots\repo\tools\train_msvr310_trifusion_oof.py
+1: #!/usr/bin/env python3
+2: """Fixed original three-role training on the audited MSVR310 Signal folds."""
+3: 
+4: from __future__ import annotations
+5: 
+6: import argparse
+7: import itertools
+8: import json
+9: import os
+10: from pathlib import Path
+11: import subprocess
+12: import sys
+13: import time
+14: 
+15: ROOT = Path(__file__).resolve().parents[1]
+16: sys.path.insert(0, str(ROOT))
+17: 
+18: from tools.train_msvr310_signal_oof import (
+19:     configure, loader_for, new_model, records_for, scene_scores, sha256, write_json,
+20: )
+21: 
+22: EXPERTS = ("cnn", "transformer", "mamba")
+23: OUTPUT_WIDTHS = {"baseline_only": 3072, "fused": 7680,
+24:                  "cnn": 4608, "transformer": 4608, "mamba": 4608}
+25: 
+26: 
+27: def build_model(config, signal_config, fold, baseline_fold):
+28:     import torch
+29:     from tools.build_v12_complete_path_oof_targets import _build_v8_experts
+30:     from tools.run_signal_preserving_v5 import _module_state_sha256, _set_seed
+31: 
+32:     _set_seed(42)
+33:     signal = new_model(signal_config, fold)
+34:     payload = torch.load(baseline_fold["checkpoint"], map_location="cpu", weights_only=True)
+35:     assert payload["source_ids"] == fold["source_ids"]
+36:     assert payload["heldout_ids"] == fold["heldout_ids"]
+37:     assert payload["fold"] == fold["fold"]
+38:     signal.load_state_dict(payload["model_state_dict"], strict=True)
+39:     signal_state = _module_state_sha256(signal)
+40:     assert signal_state == baseline_fold["training"]["final_state_sha256"]
+41:     model = _build_v8_experts(
+42:         signal, config, signal_checkpoint_sha256=baseline_fold["checkpoint_sha256"],
+43:         num_classes=len(fold["source_ids"]),
+44:     )
+45:     assert all(not p.requires_grad for p in model.baseline.parameters())
+46:     return model, {
+47:         "initial_state_sha256": _module_state_sha256(model),
+48:         "signal_state_sha256": signal_state,
+49:         "signal_checkpoint_sha256": baseline_fold["checkpoint_sha256"],
+50:         "role_weights_loaded": False, "role_initialization_seed": 42,
+51:         "source_ids": fold["source_ids"], "heldout_ids": fold["heldout_ids"],
+52:         "total_parameters": sum(p.numel() for p in model.parameters()),
+53:         "trainable_parameters": sum(p.numel() for p in model.parameters() if p.requires_grad),
+54:         "trainable_names": [n for n, p in model.named_parameters() if p.requires_grad],
+55:     }
+56: 
+57: 
+58: def frozen_state_sha(model):
+59:     from tools.train_signal_preserving_v17 import _tensor_mapping_sha256
+60: 
+61:     frozen_names = {name for name, p in model.named_parameters() if not p.requires_grad}
+62:     return _tensor_mapping_sha256({
+63:         name: value for name, value in model.state_dict().items()
+64:         if name.startswith("baseline.") or name in frozen_names
+65:     })
+66: 
+67: 
+68: def output_mapping(output):
+69:     assert output.diagnostics["all_finite"] and output.diagnostics["baseline_exact_prefix"]
+70:     values = {"baseline_only": output.baseline_embedding, "fused": output.fused_embedding,
+71:               **dict(output.branch_embeddings)}
+72:     assert {name: value.shape[1] for name, value in values.items()} == OUTPUT_WIDTHS
+73:     return values
+74: 
+75: 
+76: def extract(model, records, signal_config, *, verify_direct_signal=False):
+77:     import torch
+78:     from tools.run_signal_preserving_v5 import _training_batch
+79: 
+80:     model.eval()
+81:     parts = {name: [] for name in OUTPUT_WIDTHS}
+82:     with torch.no_grad():
+83:         for raw in loader_for(records, False):
+84:             batch, _ = _training_batch(raw)
+85:             values = output_mapping(model(batch, return_aux=True))
+86:             if verify_direct_signal:
+87:                 direct = model.baseline.signal(
+88:                     batch["images"], cam_label=batch["camera_ids"], view_label=raw[3].cuda(),
+89:                     training=False, sge=signal_config.MODEL.stageName,
+90:                 )
+91:                 assert torch.equal(direct, values["baseline_only"])
+92:             for name, value in values.items():
+93:                 assert torch.isfinite(value).all().item()
+94:                 parts[name].append(value.float().cpu())
+95:     return {name: torch.cat(rows) for name, rows in parts.items()}
+96: 
+97: 
+98: def train_roles(model, records, record_indices, config, *, fold, mode, directory):
+
+FILE C:\Users\gb\.trifusion_github_publish_22c3bee\tools\train_msvr310_source_style.py
+1: #!/usr/bin/env python3
+2: """Fixed paired MSVR310 source-style comparison using the original role trainer."""
+3: from __future__ import annotations
+4: 
+5: import argparse
+6: from datetime import datetime
+7: import hashlib
+8: import json
+9: from pathlib import Path
+10: import subprocess
+11: import time
+12: 
+13: import numpy as np
+14: 
+15: from tools.train_msvr310_signal_oof import configure, loader_for, new_model, records_for, sha256, write_json
+16: from tools.train_msvr310_trifusion_oof import (
+17:     build_model as original_model, train_roles, engineering_checks, output_mapping,
+18:     evaluate, comparison_summary, OUTPUT_WIDTHS, EXPERTS,
+19: )
+20: 
+21: ROOT=Path(__file__).resolve().parents[1]
+22: ENDPOINTS=('control','source_style')
+23: 
+24: 
+25: def context(path):
+26:     config=json.loads(path.read_bytes())
+27:     assert config['EXPERIMENT']['SEED']==42
+28:     assert config['MODEL']['GRID_SIZE']==[8,16]
+29:     assert config['OPTIMIZATION']['MAX_EPOCHS']==20
+30:     assert config['STYLE']==dict(PROBABILITY=.5,BETA_ALPHA=.1,VARIANCE_EPSILON=1e-6,
+31:                                  CROSS_CAMERA_DONOR=True,SHARED_MODAL_PLAN=True)
+32:     for name,expected in config['project_source_file_sha256'].items():
+33:         assert sha256(ROOT/name)==expected,name
+34:     assert sha256(config['BASELINE']['SUMMARY'])==config['BASELINE']['SUMMARY_SHA256']
+35:     base_path=ROOT/config['BASELINE']['CONFIG']
+36:     assert sha256(base_path)==config['BASELINE']['CONFIG_SHA256']
+37:     base=json.loads(base_path.read_bytes())
+38:     cfg,binding=configure(base)
+39:     assert sha256(ROOT/base['protocol'])==base['protocol_sha256']
+40:     protocol=json.loads((ROOT/base['protocol']).read_bytes())
+41:     baseline=json.loads(Path(config['BASELINE']['SUMMARY']).read_bytes())
+42:     meta_path=ROOT/config['SOURCE_METADATA']['PATH']
+43:     assert sha256(meta_path)==config['SOURCE_METADATA']['SHA256']
+44:     meta=json.loads(meta_path.read_bytes())
+45:     assert meta['status']=='PASS_EXISTING_MSVR310_SOURCE_EXPOSURE_AND_CAMERA_DONOR_SUPPORT'
+46:     for fold,b0,md in zip(protocol['folds'],baseline['folds'],meta['folds'],strict=True):
+47:         assert fold['fold']==b0['fold']==md['fold']
+48:         assert not set(fold['source_ids']) & set(fold['heldout_ids'])
+49:         assert sha256(b0['checkpoint'])==b0['checkpoint_sha256']
+50:         assert sha256(Path(b0['checkpoint']).parent/'retrieval_arrays.pt')==b0['retrieval']['retrieval_arrays_sha256']
+51:     return config,base,cfg,binding,protocol,baseline,meta
+52: 
+53: 
+54: def build(config,cfg,fold,b0):
+55:     from tools.run_signal_preserving_v5 import _module_state_sha256
+56:     from trifusion.source_style_msvr import SourceStyleMSVRBackbone
+57:     model,binding=original_model(config,cfg,fold,b0)
+58:     before=_module_state_sha256(model)
+59:     model.baseline=SourceStyleMSVRBackbone(model.baseline.signal,fold=fold['fold'])
+60:     assert _module_state_sha256(model)==before==binding['initial_state_sha256']
+61:     return model,binding
+62: 
+63: 
+64: def pixels(batch):
+65:     return {name:hashlib.sha256(value.detach().cpu().contiguous().numpy().tobytes()).hexdigest()
+66:             for name,value in batch['images'].items()}
+67: 
+68: 
+
+FILE C:\Users\gb\.trifusion_github_publish_22c3bee\tools\train_msvr_instance_memory.py
+1: """One fixed intervention: expand fused Triplet candidates with source instances."""
+2: import argparse
+3: from datetime import datetime
+4: import itertools
+5: import json
+6: from pathlib import Path
+7: import subprocess
+8: import time
+9: 
+10: import numpy as np
+11: 
+12: from tools import train_msvr310_source_style as prior
+13: from tools.train_msvr310_trifusion_oof import (
+14:     build_model, frozen_state_sha, engineering_checks, output_mapping, evaluate,
+15:     OUTPUT_WIDTHS, EXPERTS,
+16: )
+17: from tools.train_msvr310_signal_oof import loader_for, records_for, sha256, write_json, new_model
+18: 
+19: ROOT = Path(__file__).resolve().parents[1]
+20: ENDPOINTS = ('control', 'instance_memory')
+21: 
+22: 
+23: def context(path):
+24:     spec = json.loads(path.read_bytes())
+25:     assert spec['memory'] == dict(capacity=512, maximum_age=8, warmup_steps=65,
+26:                                  capacity_warmup_steps=2, overfit_warmup_steps=2)
+27:     assert spec['seed'] == 42 and spec['training_epochs'] == 20
+28:     for name, expected in spec['project_file_sha256'].items():
+29:         assert sha256(ROOT/name) == expected, name
+30:     for name, expected in spec['fixed_file_sha256'].items():
+31:         assert sha256(name) == expected, name
+32:     assert sha256(ROOT/spec['base_config']) == spec['base_config_sha256']
+33:     source = json.loads(Path(spec['source_census_verification']).read_bytes())
+34:     assert source['status'] == 'PASS_COMPLETE_SOURCE_RELATION_CENSUS'
+35:     assert len(source['all972_conditions']) == 972
+36:     return spec, prior.context(ROOT/spec['base_config'])
+37: 
+38: 
+39: def extract(model, records):
+40:     import torch
+41:     from tools.msvr310_exact_signal_inference import exact_signal_forward
+42:     from tools.run_signal_preserving_v5 import _training_batch
+43:     model.eval()
+44:     parts = {name: [] for name in OUTPUT_WIDTHS}
+45:     for raw in loader_for(records, False):
+46:         batch, _ = _training_batch(raw)
+47:         values = output_mapping(exact_signal_forward(model, batch))
+48:         for name, value in values.items():
+49:             parts[name].append(value.float().cpu())
+50:     return {name: torch.cat(value) for name, value in parts.items()}
+51: 
+52: 
+53: def preflight(model, records, cfg, fold, b0):
+54:     import torch
+55:     from tools.msvr310_exact_signal_inference import exact_signal_forward
+56:     from tools.msvr_instance_memory import replay_drift
+57:     from tools.run_signal_preserving_v5 import _module_state_sha256, _set_seed, _training_batch
+58:     before = _module_state_sha256(model)
+59:     model.eval()
+60:     raw = next(iter(loader_for(records[:8], False)))
+61:     batch, _ = _training_batch(raw)
+62:     direct = new_model(cfg, fold)
+63:     direct.load_state_dict(torch.load(b0['checkpoint'], map_location='cpu', weights_only=True)['model_state_dict'], strict=True)
+64:     direct.eval()
+65:     with torch.no_grad():
+66:         target = direct(batch['images'], cam_label=batch['camera_ids'], view_label=raw[3].cuda(),
+67:                         training=False, sge=cfg.MODEL.stageName)
+68:         assert torch.equal(target, exact_signal_forward(model, batch).baseline_embedding)
+69:     del direct, target
+70:     buffers = {n: v.clone() for n, v in model.named_buffers()}
+71:     with torch.random.fork_rng(devices=[torch.cuda.current_device()]):
+72:         _set_seed(42)
+73:         raw = next(iter(loader_for(records, True)))
+74:         batch, _ = _training_batch(raw)
+75:         model.train()
+76:         index_by_name = {Path(r[0][0]).name: i for r, i in zip(records, fold['source_record_indices'], strict=True)}
+77:         probe = dict(batch=batch, indices=[index_by_name[n] for n in raw[-1]],
+78:                      cpu_rng=torch.get_rng_state(), cuda_rng=torch.cuda.get_rng_state())
+79:         with torch.autocast('cuda', dtype=torch.float16):
+80:             output = model(batch, return_aux=True)
+81:             probe['feature'] = torch.nn.functional.normalize(output.fused_embedding.float(), dim=1).detach()
+82:         del output
+83:         drift = replay_drift(model, probe)
+84:         assert drift['maximum'] == 0, drift
+85:         for name, value in model.named_buffers():
+86:             value.copy_(buffers[name])
+87:     model.eval()
+88:     assert _module_state_sha256(model) == before
+89:     return dict(standalone_signal_bitwise_equal=True, zero_update_replay_bitwise_equal=True,
+90:                 all_model_state_unchanged=True, source_role_record_forwards=136,
+91:                 standalone_signal_record_forwards=8)
+92: 
+93: 
+94: def reload_model(config, cfg, fold, b0, path, binding, final_state, contract_sha):
+95:     import torch
+96:     from tools.run_signal_preserving_v5 import _module_state_sha256
+97:     model, actual = build_model(config, cfg, fold, b0)
+98:     assert actual == binding
+99:     payload = torch.load(path, map_location='cpu', weights_only=True)
+100:     assert payload['binding'] == binding and payload['config_sha256'] == contract_sha
+101:     assert payload['fold'] == fold['fold'] and payload['source_ids'] == fold['source_ids']
+102:     assert payload['heldout_ids'] == fold['heldout_ids']
+103:     state = model.state_dict()
+104:     assert set(payload['role_state_dict']) == {n for n in state if not n.startswith('baseline.')}
+105:     source = model.baseline.signal.state_dict()
+106:     assert set(payload['baseline_aliases']) == {n for n in state if n.startswith('baseline.')}
+107:     assert all(torch.equal(state[n], source[v]) for n, v in payload['baseline_aliases'].items())
+108:     state.update(payload['role_state_dict'])
+109:     model.load_state_dict(state, strict=True)
+110:     assert _module_state_sha256(model) == final_state
+111:     return model
+112: 
+113: 
+
+FILE C:\Users\gb\.trifusion_github_publish_22c3bee\tools\train_msvr_cross_scene_smooth_ap.py
+25: ROOT = Path(__file__).resolve().parents[1]
+26: ENDPOINTS = ('control', 'cross_scene')
+27: extract, preflight, reload_model = old.extract, old.preflight, old.reload_model
+28: 
+29: 
+30: def context(path):
+31:     from tools.train_msvr_smooth_ap import context as previous_context
+32:     spec=json.loads(path.read_bytes())
+33:     assert spec['schema']=='msvr310-cross-scene-smooth-ap-paired-v1' and spec['seed']==42
+34:     assert spec['temperature']==.01 and spec['fused_metric_weight']==1
+35:     assert spec['candidate_reduction']=='mean_eligible_anchors'
+36:     for name,digest in spec['project_file_sha256'].items():assert sha256(ROOT/name)==digest,name
+37:     previous,base=previous_context(ROOT/spec['previous_config'])
+38:     assert spec['memory']==previous['memory'] and spec['training_epochs']==20
+39:     return spec,base
+40: 
+
+FILE C:\Users\gb\.trifusion_github_publish_22c3bee\tools\train_msvr_smooth_ap.py
+25: ROOT = Path(__file__).resolve().parents[1]
+26: ENDPOINTS = ('control', 'smooth_ap')
+27: extract, preflight, reload_model = old.extract, old.preflight, old.reload_model
+28: 
+29: 
+30: def context(path):
+31:     from tools.train_msvr_role_set import context as previous_context
+32:     spec=json.loads(path.read_bytes())
+33:     assert spec['schema']=='msvr310-smooth-ap-paired-v1' and spec['seed']==42
+34:     assert spec['temperature']==.01 and spec['fused_metric_weight']==1
+35:     for name,digest in spec['project_file_sha256'].items():assert sha256(ROOT/name)==digest,name
+36:     for name in ('core_audit','positive_audit'):
+37:         audit=json.loads((ROOT/spec[name]).read_bytes())
+38:         assert audit['verdict'] in ('PASS','WARN') and audit['deterministic_checks_status']=='pass'
+39:     previous,base=previous_context(ROOT/spec['previous_config'])
+40:     assert spec['memory']==previous['memory'] and spec['training_epochs']==20
+41:     return spec,base
+42: 
+43: 
+44: def encode_graph_all(model,item):
+45:     """Replay one historical group with its original role-entry RNG."""

@@ -1,0 +1,38 @@
+/root/miniconda3/envs/tri_reid/lib/python3.10/site-packages/timm/models/helpers.py:7: FutureWarning: Importing from timm.models.helpers is deprecated, please import via timm.models
+  warnings.warn(f"Importing from {__name__} is deprecated, please import via timm.models", FutureWarning)
+/root/miniconda3/envs/tri_reid/lib/python3.10/site-packages/timm/models/registry.py:4: FutureWarning: Importing from timm.models.registry is deprecated, please import via timm.models
+  warnings.warn(f"Importing from {__name__} is deprecated, please import via timm.models", FutureWarning)
+/root/miniconda3/envs/tri_reid/lib/python3.10/site-packages/timm/models/layers/__init__.py:48: FutureWarning: Importing from timm.models.layers is deprecated, please import via timm.layers
+  warnings.warn(f"Importing from {__name__} is deprecated, please import via timm.layers", FutureWarning)
+建立transformer............
+using Transformer_type: ViT-B-16 as a backbone
+Resized position embedding: %s to %s torch.Size([197, 768]) torch.Size([129, 768])
+Position embedding resize to height:8 width: 16
+Successfully load ckpt!
+<All keys matched successfully>
+Loading pretrained model from CLIP
+camera number is : 8
+===========Building Signal===========
+建立transformer............
+using Transformer_type: ViT-B-16 as a backbone
+Resized position embedding: %s to %s torch.Size([197, 768]) torch.Size([129, 768])
+Position embedding resize to height:8 width: 16
+Successfully load ckpt!
+<All keys matched successfully>
+Loading pretrained model from CLIP
+camera number is : 8
+===========Building Signal===========
+Traceback (most recent call last):
+  File "/root/miniconda3/envs/tri_reid/lib/python3.10/runpy.py", line 196, in _run_module_as_main
+    return _run_code(code, main_globals, None,
+  File "/root/miniconda3/envs/tri_reid/lib/python3.10/runpy.py", line 86, in _run_code
+    exec(code, run_globals)
+  File "/root/autodl-tmp/trifusion-v2/TriFusion-ReID/tools/train_msvr_supported_gradient_balance.py", line 448, in <module>
+    run(parser.parse_args())
+  File "/root/autodl-tmp/trifusion-v2/TriFusion-ReID/tools/train_msvr_supported_gradient_balance.py", line 384, in run
+    tr = fit(model, records, fold, protocol, config, spec, md, endpoint=end,
+  File "/root/autodl-tmp/trifusion-v2/TriFusion-ReID/tools/train_msvr_supported_gradient_balance.py", line 277, in fit
+    auxiliary=check_reference([auxiliary[i]/scale for i in indexes],[direct_parts['auxiliary'][i]/scale for i in indexes]),
+  File "/root/autodl-tmp/trifusion-v2/TriFusion-ReID/tools/msvr_supported_gradient_balance.py", line 61, in check_reference
+    assert result['passed'], result
+AssertionError: {'first_norm': 0.3899933414205923, 'second_norm': 0.3900544174096418, 'difference_norm': 0.0026616547754863508, 'cosine': 0.9999767264664654, 'relative_l2_error': 0.006824872357540746, 'passed': False}

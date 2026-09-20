@@ -1,0 +1,40 @@
+{
+  "verdict": "PASS_WITH_LIMITS",
+  "ready_for_registered_t0_m0": true,
+  "implementation_revision": "r2_direct_auxiliary",
+  "config_sha256": "9ce36299299efbc09ccfb72f5b1c4fed20fc1026bd9fee1bd55a591d6950ec7b",
+  "blocking_findings": [],
+  "unresolved_nonblocking_findings": [],
+  "resolved_findings": [
+    {
+      "id": "R2-T0-01",
+      "title": "Nonadditive fixture initially omitted control and unsupported paths",
+      "original_lines": "tools/check_msvr_supported_gradient_balance_math.py:81-99",
+      "revised_lines": "tools/check_msvr_supported_gradient_balance_math.py:102-122",
+      "status": "SOURCE_REVIEWED_NOT_TENSOR_EXECUTED"
+    }
+  ],
+  "corrected_original_failure": "R1 auxiliary subtraction exceeded the fixed .005 reference threshold; R2 uses independent direct auxiliary gradients",
+  "independent_auxiliary_reference": true,
+  "control_full_direct_loss_reference_preserved": true,
+  "invalid_control_equals_direct_sum_assertion_removed": true,
+  "reference_thresholds": {
+    "relative_l2": 0.005,
+    "zero_reference_absolute_l2": 1e-08
+  },
+  "retained_gates": [
+    "original M0 248 updates and overfit",
+    "Q1 1560 updates, fixed epoch20, seed42",
+    "original paired and Signal scientific gates",
+    "same-config M0 and full CPU before Q1"
+  ],
+  "q1_pass_claim": false,
+  "r2_t0_or_m0_pass_claim": false,
+  "performance_claim": false,
+  "novelty_claim": false,
+  "review_independence": "same-family",
+  "acceptance_status": "provisional",
+  "review_context": "continued_original_fresh_reviewer",
+  "backend_attestation": "unavailable",
+  "full_review": "review_20260921_r2.md"
+}

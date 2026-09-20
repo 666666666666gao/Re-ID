@@ -1,0 +1,232 @@
+
+FILE C:\Users\gb\.trifusion_github_publish_22c3bee\modeling\trifusion\signal_preserving_v8.py
+264: class PretrainedTailTriExpertEncoder(nn.Module):
+265:     """Continue a shared frozen CLIP tail with three role-specific deep paths."""
+266: 
+267:     def __init__(
+268:         self,
+269:         *,
+270:         tail_blocks: Sequence[nn.Module],
+271:         tail_layer_indices: Sequence[int],
+272:         semantic_width: int,
+273:         grid_size: tuple[int, int],
+274:         adapter_width: int,
+275:         expert_modal_width: int,
+276:         mixer_factory: Callable[[int], nn.Module],
+277:         scale_init: float = 0.05,
+278:         gradient_checkpointing: bool = True,
+279:     ) -> None:
+280:         super().__init__()
+281:         if len(tail_blocks) != 3 or len(tail_layer_indices) != 3:
+282:             raise ValueError("V8 encoder requires three pretrained tail stages")
+283:         self._tail_blocks = tuple(tail_blocks)
+284:         self.tail_layer_indices = tuple(int(index) for index in tail_layer_indices)
+285:         self.semantic_width = int(semantic_width)
+286:         self.grid_size = grid_size
+287:         self.expert_modal_width = int(expert_modal_width)
+288:         self.gradient_checkpointing = bool(gradient_checkpointing)
+289:         for block in self._tail_blocks:
+290:             for parameter in block.parameters():
+291:                 parameter.requires_grad_(False)
+292: 
+293:         self.cnn_stages = nn.ModuleList(
+294:             [
+295:                 HighFrequencyResidualBlock(
+296:                     width=semantic_width,
+297:                     adapter_width=adapter_width,
+298:                     grid_size=grid_size,
+299:                     dilation=1 + index % 2,
+300:                     scale_init=scale_init,
+301:                 )
+302:                 for index in range(3)
+303:             ]
+304:         )
+305:         self.transformer_stages = nn.ModuleList(
+306:             [
+307:                 GlobalAttentionResidualBlock(
+308:                     width=semantic_width,
+309:                     adapter_width=adapter_width,
+310:                     scale_init=scale_init,
+311:                 )
+312:                 for _ in range(3)
+313:             ]
+314:         )
+315:         self.mamba_stages = nn.ModuleList(
+316:             [
+317:                 CrossModalMambaResidualStage(
+318:                     width=semantic_width,
+319:                     adapter_width=adapter_width,
+320:                     grid_size=grid_size,
+321:                     mixer_factory=mixer_factory,
+322:                     scale_init=scale_init,
+323:                 )
+324:                 for _ in range(3)
+325:             ]
+326:         )
+327:         self.cnn_head = _CNNRoleHead(
+328:             width=semantic_width,
+329:             grid_size=grid_size,
+330:             output_width=expert_modal_width,
+331:         )
+332:         self.transformer_head = _GlobalRoleHead(
+333:             width=semantic_width,
+334:             output_width=expert_modal_width,
+335:         )
+336:         self.mamba_head = _GlobalRoleHead(
+337:             width=semantic_width,
+338:             output_width=expert_modal_width,
+339:         )
+340: 
+341:     @staticmethod
+342:     def _call_tail_block(
+343:         block: nn.Module,
+344:         sequence: torch.Tensor,
+345:         layer_index: int,
+346:     ) -> torch.Tensor:
+
+FILE C:\Users\gb\.trifusion_github_publish_22c3bee\modeling\trifusion\signal_preserving_v8.py
+468: class ExpertFormationFusionResult:
+469:     fused_embedding: torch.Tensor
+470:     branch_embeddings: Mapping[str, torch.Tensor]
+471:     residual_embeddings: Mapping[str, torch.Tensor]
+472:     modal_residual_embeddings: Mapping[str, torch.Tensor]
+473: 
+474:     def __post_init__(self) -> None:
+475:         for name in (
+476:             "branch_embeddings",
+477:             "residual_embeddings",
+478:             "modal_residual_embeddings",
+479:         ):
+480:             object.__setattr__(self, name, MappingProxyType(dict(getattr(self, name))))
+481: 
+482: 
+483: class ExpertFormationFusion(nn.Module):
+484:     """Expose equal-energy expert capacity without a learned Router in phase A."""
+485: 
+486:     def __init__(self, *, baseline_width: int, expert_width: int) -> None:
+487:         super().__init__()
+488:         self.baseline_width = int(baseline_width)
+489:         self.expert_width = int(expert_width)
+490:         self.branch_embedding_width = self.baseline_width + self.expert_width
+491:         self.residual_bank_width = len(EXPERT_ORDER) * self.expert_width
+492:         self.fused_embedding_width = self.baseline_width + self.residual_bank_width
+493: 
+494:     def forward(
+495:         self,
+496:         baseline_embedding: torch.Tensor,
+497:         representations: ExpertFormationRepresentations,
+498:     ) -> ExpertFormationFusionResult:
+499:         baseline_norm = baseline_embedding.detach().norm(dim=1, keepdim=True)
+500:         residuals = representations.residual_embeddings
+501:         if tuple(residuals) != EXPERT_ORDER:
+502:             raise ValueError(f"expert residuals must follow {EXPERT_ORDER}")
+503:         branch_embeddings = {
+504:             expert: torch.cat(
+505:                 (baseline_embedding, residuals[expert] * baseline_norm),
+506:                 dim=1,
+507:             )
+508:             for expert in EXPERT_ORDER
+509:         }
+510:         bank = torch.cat([residuals[expert] for expert in EXPERT_ORDER], dim=1)
+511:         bank = F.normalize(bank, dim=1) * baseline_norm
+512:         return ExpertFormationFusionResult(
+513:             fused_embedding=torch.cat((baseline_embedding, bank), dim=1),
+514:             branch_embeddings=branch_embeddings,
+515:             residual_embeddings=residuals,
+516:             modal_residual_embeddings=representations.modal_residual_embeddings,
+517:         )
+518: 
+519: 
+520: @dataclass(frozen=True, eq=False)
+
+FILE D:\Program Files\UserCache\gb\codex\tmp\trifusion_supported_balance_m0_independent_audit_20260921\snapshots\repo\evidence\supported_gradient_balance_m0_r1_failure_20260921\remote\m0.log
+1: /root/miniconda3/envs/tri_reid/lib/python3.10/site-packages/timm/models/helpers.py:7: FutureWarning: Importing from timm.models.helpers is deprecated, please import via timm.models
+2:   warnings.warn(f"Importing from {__name__} is deprecated, please import via timm.models", FutureWarning)
+3: /root/miniconda3/envs/tri_reid/lib/python3.10/site-packages/timm/models/registry.py:4: FutureWarning: Importing from timm.models.registry is deprecated, please import via timm.models
+4:   warnings.warn(f"Importing from {__name__} is deprecated, please import via timm.models", FutureWarning)
+5: /root/miniconda3/envs/tri_reid/lib/python3.10/site-packages/timm/models/layers/__init__.py:48: FutureWarning: Importing from timm.models.layers is deprecated, please import via timm.layers
+6:   warnings.warn(f"Importing from {__name__} is deprecated, please import via timm.layers", FutureWarning)
+7: 建立transformer............
+8: using Transformer_type: ViT-B-16 as a backbone
+9: Resized position embedding: %s to %s torch.Size([197, 768]) torch.Size([129, 768])
+10: Position embedding resize to height:8 width: 16
+11: Successfully load ckpt!
+12: <All keys matched successfully>
+13: Loading pretrained model from CLIP
+14: camera number is : 8
+15: ===========Building Signal===========
+16: 建立transformer............
+17: using Transformer_type: ViT-B-16 as a backbone
+18: Resized position embedding: %s to %s torch.Size([197, 768]) torch.Size([129, 768])
+19: Position embedding resize to height:8 width: 16
+20: Successfully load ckpt!
+21: <All keys matched successfully>
+22: Loading pretrained model from CLIP
+23: camera number is : 8
+24: ===========Building Signal===========
+25: Traceback (most recent call last):
+26:   File "/root/miniconda3/envs/tri_reid/lib/python3.10/runpy.py", line 196, in _run_module_as_main
+27:     return _run_code(code, main_globals, None,
+28:   File "/root/miniconda3/envs/tri_reid/lib/python3.10/runpy.py", line 86, in _run_code
+29:     exec(code, run_globals)
+30:   File "/root/autodl-tmp/trifusion-v2/TriFusion-ReID/tools/train_msvr_supported_gradient_balance.py", line 448, in <module>
+31:     run(parser.parse_args())
+32:   File "/root/autodl-tmp/trifusion-v2/TriFusion-ReID/tools/train_msvr_supported_gradient_balance.py", line 384, in run
+33:     tr = fit(model, records, fold, protocol, config, spec, md, endpoint=end,
+34:   File "/root/autodl-tmp/trifusion-v2/TriFusion-ReID/tools/train_msvr_supported_gradient_balance.py", line 277, in fit
+35:     auxiliary=check_reference([auxiliary[i]/scale for i in indexes],[direct_parts['auxiliary'][i]/scale for i in indexes]),
+36:   File "/root/autodl-tmp/trifusion-v2/TriFusion-ReID/tools/msvr_supported_gradient_balance.py", line 61, in check_reference
+37:     assert result['passed'], result
+38: AssertionError: {'first_norm': 0.3899933414205923, 'second_norm': 0.3900544174096418, 'difference_norm': 0.0026616547754863508, 'cosine': 0.9999767264664654, 'relative_l2_error': 0.006824872357540746, 'passed': False}
+
+FILE D:\Program Files\UserCache\gb\codex\tmp\trifusion_supported_balance_m0_independent_audit_20260921\snapshots\repo\evidence\supported_gradient_balance_m0_r1_failure_20260921\remote\pipeline.json
+1: {
+2:   "status": "STOPPED_AT_M0",
+3:   "wrapper_pid": 41216,
+4:   "code_commit": "92a75e4ac46cccb79bb6f78f913998c0d0039ce8",
+5:   "config_sha256": "0b5ff0107e8dda6634e0c060a4b1a87e8e7e2fa117c7beb0cf5792b6ebedc15b",
+6:   "started_at": "2026-09-21T05:35:20.326288+08:00",
+7:   "stages": [
+8:     {
+9:       "stage": "t0",
+10:       "original_pid": 41222,
+11:       "command": [
+12:         "/root/miniconda3/envs/tri_reid/bin/python",
+13:         "-u",
+14:         "-m",
+15:         "tools.check_msvr_supported_gradient_balance",
+16:         "--config",
+17:         "/root/autodl-tmp/trifusion-v2/TriFusion-ReID/configs/MSVR310/TriFusion-supported-gradient-balance-paired-v1.json",
+18:         "--output",
+19:         "/root/trifusion-storage/artifacts/msvr310_supported_gradient_balance_v1_seed42_92a75e4/t0.json"
+20:       ],
+21:       "started_at": "2026-09-21T05:35:20.327295+08:00",
+22:       "exit_code": 0,
+23:       "ended_at": "2026-09-21T05:35:26.351248+08:00",
+24:       "elapsed_seconds": 6.024709580466151
+25:     },
+26:     {
+27:       "stage": "m0",
+28:       "original_pid": 41238,
+29:       "command": [
+30:         "/root/miniconda3/envs/tri_reid/bin/python",
+31:         "-u",
+32:         "-m",
+33:         "tools.train_msvr_supported_gradient_balance",
+34:         "--config",
+35:         "/root/autodl-tmp/trifusion-v2/TriFusion-ReID/configs/MSVR310/TriFusion-supported-gradient-balance-paired-v1.json",
+36:         "--mode",
+37:         "m0",
+38:         "--output-dir",
+39:         "/root/trifusion-storage/artifacts/msvr310_supported_gradient_balance_v1_seed42_92a75e4/m0"
+40:       ],
+41:       "started_at": "2026-09-21T05:35:26.352379+08:00",
+42:       "exit_code": 1,
+43:       "ended_at": "2026-09-21T05:36:03.699870+08:00",
+44:       "elapsed_seconds": 37.34809142164886
+45:     }
+46:   ],
+47:   "free_bytes_before": 5636149248,
+48:   "gpu_before": "0, 1, 24576\n",
+49:   "ended_at": "2026-09-21T05:36:03.699870+08:00"
+50: }

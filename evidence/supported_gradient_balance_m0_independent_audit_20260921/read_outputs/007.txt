@@ -1,0 +1,185 @@
+
+FILE D:\Program Files\UserCache\gb\codex\tmp\trifusion_supported_balance_m0_independent_audit_20260921\snapshots\repo\refine-logs\msvr310_supported_gradient_balance_v1\EXPERIMENT_PLAN.md
+1: # MSVR310 支持感知的角色内梯度平衡：固定配对合同
+2: 
+3: 日期：2026-09-21。实现修订R2：DIRECT_AUXILIARY_PREPARATION_NOT_RUN。R1执行92a75e4已T0通过，但M0第4步辅助梯度减法近似误差0.006824872超过预先登记0.005，原队列停止；仅3次更新，无Q1。原R1源码、合同、配置及失败原文完整封存。R2保持同一科学假设、全部超参数及门槛，每步直接求辅助导数；同族独立复审通过后从原固定初始化重新执行T0/M0，不续训失败的3步。仅seed42。
+4: 
+5: ## 问题、依据与唯一假设
+6: 
+7: 现有跨场景 AP 配对 fused 增益 +0.567183 mAP，三个 fold 非负，但 CNN/Transformer 下降，身份 bootstrap 下界 -0.077239，按原合同未晋级。完整结果参见 results/MSVR310_CROSS_SCENE_SMOOTH_AP_Q1_2026-09-21.md。全量独立审查已完成，WARN/CLOSED_WITH_LIMITS，确定性复核通过，边界见原审计。
+8: 
+9: 此前标准 Smooth-AP 固定终点诊断发现排名梯度通常小于其他目标的合成梯度，且多数方向不冲突。该诊断不是本轮 cross-scene 模型的梯度比例，更不是 AdamW 实际更新份额。当前 cross-scene 训练保存的 total_vs_history 比较的是“当前总梯度与历史排名梯度”，不能把它读成排名/辅助梯度比。
+10: 
+11: 唯一待验证假设：在跨场景关系、完整历史导数和推理结构固定时，按各角色完整排名/辅助梯度的有支持移动统计进行温和、有界的量级平衡，能否改善未知身份检索，并保留原角色能力。不是已经证明辅助目标导致失败，不预设三个角色都缺少排名作用。
+12: 
+13: 最低支持仍是原两组科学门全部通过；来源损失降低、梯度比例接近或控制器运行正常均不能代替检索。若失败，只否定此固定优化规则，不扫描倍率、EMA、终点或重复救回旧版本。
+14: 
+15: ## 两端与不变量
+16: 
+17: - control：原跨场景 Smooth-AP，完整当前/历史排名导数与其他监督直接相加。
+18: - balanced：同一个标量目标与关系集合，仅在三个 encoder 角色参数块上改变排名/辅助梯度的组合系数。
+19: - 两端均从同一折 source-only Signal 与 seed42 角色初始化独立训练，不能从上一轮 epoch20 继续。
+20: - 原 V8 稠密三角色、7680D固定融合、冻结 Signal/tail、七组分类/度量监督、tau=0.01、scene 掩码及 eligible-anchor 均值全部不变。
+21: - 其余13项不是13个独立目标同时作用于每个角色。单角色的直接辅助依赖为 fused ID、自己完整分支 ID/Triplet、自己残差 ID/Triplet，共5项；仍将原其余13项的加权总和定义为辅助目标，不改变其内部权重。
+22: - B64/K8、512唯一历史记录、最大年龄8、65步预热、三折各两端20epoch/260更新、当前64anchor/历史0anchor、当前坐标重编码和完整历史VJP保持。
+23: - 两端都计算同样的分解与控制器统计，只有候选端实际应用新系数。不能让一端省略测量、另一端承担额外反传后宣称等计算。
+24: - 分类 neck/head 的14个可训练张量保持原当前batch总目标梯度；189个 encoder 张量按原 cnn_/transformer_/mamba_ 前缀分组。检查三个集合互斥且覆盖所有 encoder 参数。冻结参数不参与调节。
+25: 
+26: ## 精确候选规则（固定常量，不从 Q1 扫描）
+27: 
+28: 角色 e 的完整排名梯度 R_e = R_current,e + R_history,e，辅助梯度 A_e 来自原其余13项，仅当前batch。两者均在 AMP unscaled 的真实量级上统计，范数是角色全部 encoder 张量共同的 L2 范数，不逐张量各自归一化。
+29: 
+30: 前65个训练步骤两端保留原 hard Triplet 更新，控制器不更新统计、不应用系数。M0 沿用2步预热。
+31: 
+32: AP 生效且 n_valid > 0 时，对每个角色使用：
+33: 
+34: ```
+35: G_R = ||R_e||_2
+36: G_A = ||A_e||_2
+37: 首个有支持步骤：EMA_R = G_R, EMA_A = G_A
+38: 以后有支持步骤：EMA_R = 0.9 * EMA_R + 0.1 * G_R
+39:                    EMA_A = 0.9 * EMA_A + 0.1 * G_A
+40: r = clip(sqrt((EMA_A + 1e-12) / (EMA_R + 1e-12)), 0.25, 4.0)
+41: w_R = 2*r/(1+r)
+42: w_A = 2/(1+r)
+43: 候选 encoder 梯度 = w_R * R_e + w_A * A_e
+44: ```
+45: 
+46: 系数范围均为[0.4,1.6]，和为2；不能把这解释为角色梯度范数或 AdamW 步长不变。平方根使响应比直接逆范数温和。对称范围不预设排名总是较弱。epsilon 只定义零范数处的表达式，系数始终有界；不将小梯度自动解释为有价值的新信号。
+47: 
+48: 已实测存在4个全批无跨scene正例步骤。因此 n_valid == 0 时，两端均按原辅助目标正常更新，原图连接零排名保留；控制器 EMA 不更新，实际系数为1/1。不能用该零值更新“排名收敛”统计，也不构造假正例、改变候选或跳过优化器。
+49: 
+50: 若有支持但 R_e 为零，仍按上述连续有界式处理并明确记录零梯度；不把它伪装成无支持。无额外阈值、按身份标签定制、损失学习速度估计或部署 Router。
+51: 
+52: 这些是普通范数统计与组合工具，不单独主张原创；也不是完整 GradNorm、MMPareto 或 OGM-GE 复现。没有加入方向投影、噪声或额外损失。不同角色系数通常不等价于某个统一标量加权损失，方法应称为参数块梯度调节。
+53: 
+54: ## 当前/历史分解及实际更新
+55: 
+56: 1. 当前前向、候选重编码、三个 AP/hard 统计沿用现实现。
+57: 2. 对当前实际排名项计算 AMP-scaled 当前 encoder 导数，再对原其余13项直接求辅助 encoder 导数，保留当前图；普通总损失 backward 仍产生所有 encoder 与分类头梯度。两端同样增加辅助求导，不增加优化器更新。
+58: 3. 实际A_current使用对其余13项直接求导。R1实测表明combined backward减rank与direct auxiliary不完全相等，差异不只归因于最后一次FP32相减，混合精度反传的累加路径也可能贡献。原相减值保留subtraction_auxiliary_vs_direct诊断，不再作为实际A或近似等式门。M0另外独立调用一次辅助求导作为参考，不能alias本步A到参考。
+59: 4. 释放当前图后，沿用原历史随机状态/分组重放，恢复完整 R_history。历史组的零上游跳过已存在，不作为新设计。
+60: 5. 合并完整 R 后才统计和组合。不能先调当前排名、再追加未加权历史 VJP。
+61: 6. control实际保留原“当前总梯度＋历史梯度”，balanced使用完整R与直接A的上述组合，头部梯度逐位保留。有限精度下direct R+A不强制等于原combined梯度，新增direct_sum_vs_original量化差异；CPU仅在balanced有支持步核验加权direct R/A范数，控制/无支持步核验逐位保持原sum。
+62: 7. 只执行一次 scaler.unscale、finite检查、AdamW step/update。统计与系数无计算图；不改 AdamW 动量或二阶矩。保留 RNG、buffer、重编码一致性检查。
+63: 
+64: 逐步记录：支持 anchor/身份/scene 数、R/A 范数与余弦、current/history 排名范数及余弦、EMA前后状态、系数、组合梯度范数、AMP尺度、实际角色参数更新范数、更新前参数范数、lr、溢出及全部14项。实际更新范数是含AdamW动量/预条件/衰减的观测，不分摊成排名贡献比例。
+65: 
+66: ## 工程与科学验证
+67: 
+68: T0（远端张量运算，本地仅代码/文本）：固定小例验证权重范围、EMA初始化/只在支持步更新、无支持原梯度、分组覆盖、角色交换等变、AMP缩放不改变统计与系数、历史必须纳入R、头部梯度不变。数学测试不表示真实模型性能。
+69: 
+70: M0：仍三折两端8更新及fold0两端100固定batch，共248更新。203/203累计非零、0overflow、冻结路径不变、精简checkpoint严格重载全部输出、原校正overfit比≤0.1。
+71: 
+72: 在六个容量端首个实际历史组，保留原直接完整图/VJP核验，并直接核验current R、历史R、full R、当前直接A与另一独立辅助求导参考，角色相对误差阈值仍≤0.005；零参考要求绝对误差≤1e-8。候选实际组合与direct_rank/direct_aux加权参考比较；control实际组合与原full direct_loss参考比较，不能把它强行当作分开反传的R+A。原R1减法误差保留，门不放宽；任一实际参考核验失败仍停止工程阶段，不修改科学门。
+73: 
+74: M0 CPU 全量重算 AP、掩码、支持数、保存的范数统计→EMA→权重及应用账本。CPU不声称从标量恢复参数梯度；实际梯度见证范围须说明。通过后才能开始完整Q1。
+75: 
+76: Q1：三折两端完整1560更新，固定epoch20，完整图库；保留全部fold/query/身份/角色，Rank-1修复和新增错误、全部120个训练epoch账本。没有逐epoch heldout选模。终态CPU核验后独立审查。
+77: 
+78: 沿用原 paired 与 Signal 两组各五门：fused增益≥1pp、每折≥0、三个角色≥0、身份bootstrap下界>0、candidate fused严格高于对应基线及各角色；10000次身份bootstrap/seed42。两组全通过才晋级。既有检索结果不更名为消融，不挑匹配控制。
+79: 
+80: ## 资源、来源及执行前置
+81: 
+82: 上一轮完整Q1约3.71小时，R2两端均多一次当前排名及一次直接辅助导数，初估M0 15–30分钟、Q1 4–6小时，以实际容量测量修订执行时间估计，不修订训练长度。记录额外反传次数、历史前向数、显存和墙钟时间；新增推理参数0不等于训练无成本。
+83: 
+84: 远端模型/图像/数组保持不下载。沿用tri_reid/RTX3090，不装新环境。启动前实查GPU与空间；至少4GiB可用、最大新增3GiB作为当前预算。保留初始化、终点和复核数组，不因失败删权重。
+85: 
+86: 来源：evidence/support_aware_gradient_neighbours_20260921/PRIMARY_SOURCE_NOTE.md、SOURCE_RECEIPT.json、PROJECT_OBJECTIVE_SCOPE.md。MMPareto/GradNorm/OGM-GE及其限制沿用已核对原文/作者代码，不复制无许可证代码，不宣称新颖性已经成立。
+87: 
+88: 上一轮科学审查已闭环；R1静态审查通过但真实M0按门停止。R2直接辅助修订须独立复审并同步固定源码/配置后，从原初始化执行T0/M0。R2尚未训练，R1没有检索结果。主结果前不做消融、多seed或官方测试。全项目Goal保持ACTIVE/UNMET。
+89: 
+90: 
+91: ## 实现文件与记录边界
+92: 
+93: 控制器 tools/msvr_supported_gradient_balance.py；两端训练器 tools/train_msvr_supported_gradient_balance.py；T0数学 tools/check_msvr_supported_gradient_balance_math.py 及完整来源合同 tools/check_msvr_supported_gradient_balance.py；CPU tools/verify_msvr_supported_gradient_balance.py 和统计重算 tools/verify_msvr_supported_gradient_balance_stats.py；持久队列 tools/run_msvr_supported_gradient_balance.py。cross-scene及更早前置源码保持字节不变；本新实验R1原字节已封存，R2按本节明确修订。
+94: 
+95: R2每步额外1次当前排名和1次直接辅助参数求导；每个容量端首历史组另有4次直接分量求导（当前排名、历史排名、完整排名、辅助），以及沿用的直接总梯度检查。这些是工程测量成本，两端一致。当前/历史求导只针对189个encoder张量，分类头14张量保留原backward结果。
+96: 
+97: 
+98: ## R1失败与R2修订范围
+99: 
+100: R1运行 /root/trifusion-storage/artifacts/msvr310_supported_gradient_balance_v1_seed42_92a75e4，05:36:03 M0退出1，原wrapper STOPPED_AT_M0。fold0 control第4步辅助参考first_norm0.3899933414205923、second_norm0.3900544174096418、difference0.0026616547754863508、cos0.9999767264664654、相对误差0.006824872357540746，超过0.005。T0通过不代表真实混合精度求导等价。
+101: 
+102: 只将实际辅助向量的取得方式改为直接求导；原控制更新路径、科学公式/常量、源关系、历史VJP、optimizer与全部门槛保持。额外开销两端一致并记录current_auxiliary_backward_calls。原减法与direct-sum偏差持续记录，没有把失败抹掉或放宽真实reference门。有限精度下两端除有支持组合系数外，还存在direct分量与combined反传累加的差别，不能声称逐位只差一个标量；同一数学梯度组合的实现修正不构成新科学结果。
+
+FILE D:\Program Files\UserCache\gb\codex\tmp\trifusion_supported_balance_m0_independent_audit_20260921\snapshots\repo\refine-logs\msvr310_supported_gradient_balance_v1\EXPERIMENT_CODE_REVIEW.md
+1: **最终裁决：PASS_WITH_LIMITS。R2 可以进入原登记的 T0/M0；没有剩余 BLOCKING 缺陷。** 这只是代码审查通过，R2 的实际张量测试、CUDA 数值误差及完整 M0 仍未验证。
+2: 
+3: 裁决对象是 `implementation_revision=r2_direct_auxiliary`，最终配置 SHA-256 为 `9ce36299299efbc09ccfb72f5b1c4fed20fc1026bd9fee1bd55a591d6950ec7b`。本次检查时仓库 HEAD 仍是 R1 的 `92a75e4ac46cccb79bb6f78f913998c0d0039ce8`；这份裁决绑定读取到的 R2 文件与配置，不把旧 HEAD 当作 R2 部署证明。
+4: 
+5: 直接读取修订源码后，确认以下关键点已正确处理：
+6: 
+7: - **实际 A 与独立参考分开计算。** [训练器第 175–181 行的起点](C:/Users/gb/.trifusion_github_publish_22c3bee/tools/train_msvr_supported_gradient_balance.py:175) 使用原 components、原权重和同一 scaler scale，独立计算当前排名及其余 13 项的辅助导数。第 203–208 行在首历史组另行构造辅助目标并再次求导作为 M0 参考，没有复用实际 A 的列表或 tensor 作为参考。两者都在总 backward 释放图之前完成；仍只针对 189 个 encoder 张量，14 个 neck/head 梯度保持原总 backward。
+8: - **control 与 candidate 的实际路径、参考路径分清。** [组合函数第 70 行起](C:/Users/gb/.trifusion_github_publish_22c3bee/tools/msvr_supported_gradient_balance.py:70) 先形成完整 `R_current + R_history`。只有 balanced 且有支持时使用完整 R 与直接 A 的加权组合；control、预热、无支持步骤仍逐位使用 `current_total + history`。训练器第 260–288 行保留原完整图总梯度参考至逐角色核验结束；control 使用该参考，candidate 使用独立 full-rank/auxiliary 参考的加权组合，之后才删除 `direct`。没有提前释放或误用 scaled/unscaled 参考的问题。
+9: - **真实 reference 门未放宽。** `check_reference` 继续使用相对误差 0.005，零参考使用绝对误差 1e-8；原全图/VJP、head 保持、RNG/buffer、单次 unscale/AdamW、203/203、零 overflow、严格重载及原 overfit 门均保留。原已失败的减法 A 被替换为直接 A，减法偏差通过 `subtraction_auxiliary_vs_direct` 留作真实诊断，没有把 R1 的 FAIL 改成 PASS。
+10: - **CPU 不再强制 control 等于 direct R+A。** [统计验证器第 69 行起](C:/Users/gb/.trifusion_github_publish_22c3bee/tools/verify_msvr_supported_gradient_balance_stats.py:69) 核对 direct-sum 自身范数与原梯度差异，只有 balanced 有支持步才按实际权重重算组合范数；其余步骤要求 `original_sum_vs_applied.difference_norm == 0`。新增 `current_auxiliary_backward_calls` 按每步 1 次、全程实际步数核对，容量阶段独立参考调用继续单列。
+11: - **本轮 T0 缺口已补齐。** R2 初稿的差异 fixture 仍只覆盖 candidate；我指出后，执行者补充了 [数学检查第 102 行起](C:/Users/gb/.trifusion_github_publish_22c3bee/tools/check_msvr_supported_gradient_balance_math.py:102)。现在同一个 `direct A != total-minus-rank` 固定小例实际调用有支持 control、有支持 balanced、无支持 balanced 三条组合路径；control/无支持断言原梯度逐位保持，并把三类合成行送入真实 `verify_balance`。无支持例明确令 R/H 为零，A 仍与 current 不同，EMA 保持 None；原有非空 EMA 不变例也保留。多张量角色范数、置换、AMP 缩放和头部检查仍在。这个测试覆盖修正已完成源码审阅，尚未运行张量。
+12: 
+13: 固定计划已同步直接辅助求导、两端相同额外成本、独立参考、失效减法恒等式的诊断地位和 R1 失败记录。跨场景及更早前置源码保持绑定不变；M0 仍 248 更新，正式 Q1 仍 1560 更新、固定 seed42/epoch20、完整图库和 paired/Signal 两组原科学门。源码没有新增官方读取、选模、扫描或重启失败状态的路径。
+14: 
+15: 需要保留一个解释边界：有限精度下，分别反传的 direct R+A 与原 combined backward 可以不同，即使系数为 1 也不保证逐位相等。计划末段已明确这一点。未来结果应归属于这个固定的 R2 实现与原控制端的比较，不能声称实际数值更新逐位只差两个乘数；这不构成当前实现缺陷，也不支持任何现阶段性能结论。
+16: 
+17: 本次实际完成的检查为：7 个新文件 AST 解析、全部 5 个 `combine` 调用与新参数签名核对、当前配置 9 项及前置六份配置 58 项项目文件哈希核对、R1 封存的 8 份本地文本对既有 inventory 的长度和哈希核对，全部通过。另用 stdlib 标量模拟核对固定 fixture 的 float32 加乘误差落在现有 CPU 范数恒等式容差内；这不是实际 torch/T0 执行。未重新连接远端核对 inventory 中的远端声明。
+18: 
+19: R1 的真实 M0 失败和 3 次更新保持封存。R2 从原固定初始化进入新 T0/M0；Q1 继续受同配置 M0 与完整 CPU 凭证约束。实际 M0 仍可能揭示尚未观察的数值或容量问题，不能由静态审查预先排除。
+20: 
+21: 裁决与回执已另存，未覆盖初次审查或 R2 救援意见：
+22: 
+23: - [final_response.md](<D:/Program Files/UserCache/gb/codex/tmp/trifusion_supported_balance_code_review_20260921/R2_CODE_REVIEW/final_response.md>)
+24: - [report.json](<D:/Program Files/UserCache/gb/codex/tmp/trifusion_supported_balance_code_review_20260921/R2_CODE_REVIEW/report.json>)
+25: - [receipt.json](<D:/Program Files/UserCache/gb/codex/tmp/trifusion_supported_balance_code_review_20260921/R2_CODE_REVIEW/receipt.json>)
+26: - [static_checks.json](<D:/Program Files/UserCache/gb/codex/tmp/trifusion_supported_balance_code_review_20260921/R2_CODE_REVIEW/static_checks.json>)
+27: 
+28: 审阅者只写入指定审查目录，没有修改仓库，也没有导入 torch、运行张量、模型、优化器或远端命令。R2 是原 fresh reviewer 的继续审查，same-family / provisional；请求路由仍记录为 gpt-6-astra/max，后端独立 attestation 不可用。
+29: 
+30: <oai-mem-citation>
+31: <citation_entries>
+32: MEMORY.md:452-467|note=[preserve failed evidence and bound engineering review claims]
+33: </citation_entries>
+34: <rollout_ids>
+35: 01a06f22-cc0d-7da2-8cae-68a700778767
+36: </rollout_ids>
+37: </oai-mem-citation>
+
+FILE D:\Program Files\UserCache\gb\codex\tmp\trifusion_supported_balance_m0_independent_audit_20260921\snapshots\repo\refine-logs\msvr310_supported_gradient_balance_v1\EXPERIMENT_CODE_REVIEW.json
+1: {
+2:   "verdict": "PASS_WITH_LIMITS",
+3:   "ready_for_registered_t0_m0": true,
+4:   "implementation_revision": "r2_direct_auxiliary",
+5:   "config_sha256": "9ce36299299efbc09ccfb72f5b1c4fed20fc1026bd9fee1bd55a591d6950ec7b",
+6:   "blocking_findings": [],
+7:   "unresolved_nonblocking_findings": [],
+8:   "resolved_findings": [
+9:     {
+10:       "id": "R2-T0-01",
+11:       "title": "Nonadditive fixture initially omitted control and unsupported paths",
+12:       "original_lines": "tools/check_msvr_supported_gradient_balance_math.py:81-99",
+13:       "revised_lines": "tools/check_msvr_supported_gradient_balance_math.py:102-122",
+14:       "status": "SOURCE_REVIEWED_NOT_TENSOR_EXECUTED"
+15:     }
+16:   ],
+17:   "corrected_original_failure": "R1 auxiliary subtraction exceeded the fixed .005 reference threshold; R2 uses independent direct auxiliary gradients",
+18:   "independent_auxiliary_reference": true,
+19:   "control_full_direct_loss_reference_preserved": true,
+20:   "invalid_control_equals_direct_sum_assertion_removed": true,
+21:   "reference_thresholds": {
+22:     "relative_l2": 0.005,
+23:     "zero_reference_absolute_l2": 1e-08
+24:   },
+25:   "retained_gates": [
+26:     "original M0 248 updates and overfit",
+27:     "Q1 1560 updates, fixed epoch20, seed42",
+28:     "original paired and Signal scientific gates",
+29:     "same-config M0 and full CPU before Q1"
+30:   ],
+31:   "q1_pass_claim": false,
+32:   "r2_t0_or_m0_pass_claim": false,
+33:   "performance_claim": false,
+34:   "novelty_claim": false,
+35:   "review_independence": "same-family",
+36:   "acceptance_status": "provisional",
+37:   "review_context": "continued_original_fresh_reviewer",
+38:   "backend_attestation": "unavailable",
+39:   "full_review": "review_20260921_r2.md"
+40: }

@@ -1,0 +1,403 @@
+
+FILE D:\Program Files\UserCache\gb\codex\tmp\trifusion_supported_balance_m0_independent_audit_20260921\independent_recompute_02.py
+1: """Fresh M0 audit. No project imports, model construction, forwards, or updates."""
+2: import os
+3: os.environ.update(CUDA_VISIBLE_DEVICES='',OMP_NUM_THREADS='2',MKL_NUM_THREADS='2',OPENBLAS_NUM_THREADS='2')
+4: os.nice(10)
+5: from pathlib import Path
+6: from collections import Counter,OrderedDict
+7: import hashlib,json,math,re,time,datetime,subprocess,gc
+8: import numpy as np
+9: import torch
+10: torch.set_num_threads(2);torch.set_num_interop_threads(1)
+11: assert not torch.cuda.is_initialized()
+12: START=time.perf_counter()
+13: REPO=Path('/root/autodl-tmp/trifusion-v2/TriFusion-ReID')
+14: RUN=Path('/root/trifusion-storage/artifacts/msvr310_supported_gradient_balance_v1_r2_seed42_1381639')
+15: COMMIT='1381639f778f77f124a2726ee55c07610092a438'
+16: ROLES=('cnn','transformer','mamba')
+17: def read(p):return json.loads(Path(p).read_bytes())
+18: def sha(p):
+19:     h=hashlib.sha256()
+20:     with Path(p).open('rb') as f:
+21:         for b in iter(lambda:f.read(1048576),b''):h.update(b)
+22:     return h.hexdigest()
+23: def state_sha(d):
+24:     h=hashlib.sha256()
+25:     for name,v in sorted(d.items()):h.update(name.encode());h.update(v.detach().contiguous().numpy().tobytes())
+26:     return h.hexdigest()
+27: def close(a,b,tol=1e-7):
+28:     assert math.isfinite(a) and math.isfinite(b),(a,b)
+29:     assert abs(a-b)<=tol*max(1,abs(a),abs(b)),(a,b,tol)
+30: def absolute(a,b,tol):
+31:     error=float(np.max(np.abs(np.asarray(a)-np.asarray(b))))
+32:     assert math.isfinite(error) and error<=tol,(error,tol)
+33:     return error
+34: pair_count=0
+35: def pair(p):
+36:     global pair_count
+37:     a,b,d=p['first_norm'],p['second_norm'],p['difference_norm'];c=p['cosine']
+38:     assert all(math.isfinite(x) and x>=0 for x in (a,b,d))
+39:     assert (c is None)==(not a or not b)
+40:     if c is not None:assert math.isfinite(c) and abs(c)<=1.00001
+41:     close(d*d,a*a+b*b-2*(0 if c is None else a*b*c))
+42:     pair_count+=1
+43: def all_pairs(obj):
+44:     if isinstance(obj,dict):
+45:         if {'first_norm','second_norm','difference_norm','cosine'}<=obj.keys():pair(obj)
+46:         else:
+47:             for value in obj.values():all_pairs(value)
+48:     elif isinstance(obj,list):
+49:         for value in obj:all_pairs(value)
+50: def dot(p):return 0 if p['cosine'] is None else p['first_norm']*p['second_norm']*p['cosine']
+51: CFG_PATH=REPO/'configs/MSVR310/TriFusion-supported-gradient-balance-paired-v1.json'
+52: SPEC=read(CFG_PATH);CFG_SHA=sha(CFG_PATH)
+53: assert hashlib.sha256(subprocess.check_output(['git','show',COMMIT+':'+str(CFG_PATH.relative_to(REPO))],cwd=REPO)).hexdigest()==CFG_SHA
+54: BASE=read(REPO/'configs/MSVR310/TriFusion-source-style-paired-v1-r2.json')
+55: SIGNAL=read(REPO/BASE['BASELINE']['CONFIG'])
+56: PROTOCOL=read(REPO/SIGNAL['protocol']);RECORDS=PROTOCOL['records']
+57: META=read(REPO/BASE['SOURCE_METADATA']['PATH'])
+58: SUPPORT=read(REPO/SPEC['source_support'])
+59: T0=read(RUN/'t0.json');SUMMARY=read(RUN/'m0/summary.json');CPU=read(RUN/'m0_cpu.json')
+60: B0=read(BASE['BASELINE']['SUMMARY'])
+61: assert SUMMARY['status']=='PASS_ENGINEERING_ONLY' and SUMMARY['mode']=='m0'
+62: assert SUMMARY['project_commit']==COMMIT
+63: assert SUMMARY['config_sha256']==T0['config_sha256']==CFG_SHA
+64: assert SUMMARY['runner_sha256']==sha(REPO/'tools/train_msvr_supported_gradient_balance.py')
+65: assert CPU['summary_sha256']==sha(RUN/'m0/summary.json')
+66: assert SUMMARY['seed']==42 and SUMMARY['heldout_record_forwards']==SUMMARY['official_image_reads']==0
+67: assert SUMMARY['gradient_balance']==SPEC['gradient_balance']
+68: assert SPEC['implementation_revision']=='r2_direct_auxiliary'
+69: assert SPEC['gradient_balance']==dict(ema_decay=.9,exponent=.5,ratio_min=.25,ratio_max=4.,epsilon=1e-12,weight_sum=2.)
+70: assert SPEC['memory']==dict(capacity=512,maximum_age=8,warmup_steps=65,capacity_warmup_steps=2,overfit_warmup_steps=2)
+71: assert META['protocol_sha256']==sha(REPO/SIGNAL['protocol'])
+72: for i,r in enumerate(RECORDS):
+73:     assert r['index']==i and len(r['paths'])==3
+74:     for mod,p in zip(('vis','ni','th'),r['paths']):
+75:         parts=Path(p).parts
+76:         assert parts[:3]==('bounding_box_train',f"{r['identity']:04d}",mod)
+77:         match=re.fullmatch(r'(\d+)_s(\d+)_v(\d+)_\d+\.jpg',parts[-1]);assert match
+78:         assert tuple(map(int,match.groups()))==(r['identity'],r['scene'],r['camera'])
+79: ids=sorted({r['identity'] for r in RECORDS})
+80: scene_members={i:{r['scene'] for r in RECORDS if r['identity']==i} for i in ids}
+81: assert PROTOCOL['identity_scene_membership']=={str(i):sorted(s) for i,s in scene_members.items()}
+82: eligible=[i for i in ids if len(scene_members[i])>1];ineligible=[i for i in ids if len(scene_members[i])==1]
+83: assert len(RECORDS)==1032 and (len(ids),len(eligible),len(ineligible))==(155,60,95)
+84: source_coverage=[];t0_totals=Counter()
+85: def queue_read(q,step,current):
+86:     for i in list(q):
+87:         if step-q[i]>8:del q[i]
+88:     return [dict(record_index=i,identity=RECORDS[i]['identity'],scene=RECORDS[i]['scene'],age=step-s,stored_step=s) for i,s in q.items() if i not in set(current)]
+89: def queue_update(q,step,current):
+90:     for i in current:
+91:         q.pop(i,None);q[i]=step
+92:     while len(q)>512:q.popitem(last=False)
+93: def support_values(current,history):
+94:     rows=[RECORDS[i] for i in current];allrows=rows+[RECORDS[r['record_index']] for r in history]
+95:     counts=[sum(c['identity']==r['identity'] and c['scene']!=r['scene'] for c in allrows) for r in rows]
+96:     supported={r['identity'] for r,n in zip(rows,counts) if n}
+97:     pairs={(r['identity'],r['scene'],c['scene']) for r in rows for c in allrows if c['identity']==r['identity'] and c['scene']!=r['scene']}
+98:     return counts,dict(eligible_anchors=sum(n>0 for n in counts),eligible_identities=len(supported),identity_directed_scene_relations=len(pairs))
+99: for fi,(fold,md,tf,sf) in enumerate(zip(PROTOCOL['folds'],META['folds'],T0['folds'],SUPPORT['folds'],strict=True)):
+100:     expected_hold=sorted(eligible[fi::3]+ineligible[fi::3])
+101:     assert fold['heldout_ids']==expected_hold
+102:     assert fold['source_ids']==sorted(set(ids)-set(expected_hold))
+103:     assert not set(fold['source_ids'])&set(fold['heldout_ids'])
+104:     src=[i for i,r in enumerate(RECORDS) if r['identity'] in set(fold['source_ids'])]
+105:     gal=[i for i,r in enumerate(RECORDS) if r['identity'] in set(fold['heldout_ids'])]
+106:     assert src==fold['source_record_indices'] and gal==fold['gallery_record_indices']
+107:     assert fold['source_label_map']=={str(i):n for n,i in enumerate(fold['source_ids'])}
+108:     expected_queries=[];excluded=[]
+109:     for pos,index in enumerate(gal):
+110:         r=RECORDS[index];same=[RECORDS[g] for g in gal if RECORDS[g]['identity']==r['identity']]
+111:         removed=sum(x['scene']==r['scene'] for x in same);n=len(same)-removed
+112:         if not n:excluded.append(index);continue
+113:         expected_queries.append(dict(record_index=index,gallery_position=pos,identity=r['identity'],scene=r['scene'],valid_positives=n,removed_same_identity_same_scene=removed,retained_gallery=len(gal)-removed,negative_identity_distractors=len(gal)-len(same)))
+114:     assert expected_queries==fold['query_rows'] and excluded==fold['excluded_query_record_indices']
+115:     q=OrderedDict();counts=Counter();seen=set();zero=[]
+116:     assert len(md['batches'])==len(tf['steps'])==len(sf['batches'])==260
+117:     for step,(batch,row,registered) in enumerate(zip(md['batches'],tf['steps'],sf['batches'],strict=True)):
+118:         current=batch['record_indices'];seen.update(current)
+119:         assert len(current)==64 and set(current)<=set(src)
+120:         assert sorted(Counter(RECORDS[i]['identity'] for i in current).values())==[8]*8
+121:         history=queue_read(q,step,current);pc,sv=support_values(current,history)
+122:         assert row==dict(step=step+1,historical_records=len(history),ages=[r['age'] for r in history],cross_scene_positive_counts=pc,eligible_anchors=sv['eligible_anchors'])
+123:         cr=[RECORDS[i] for i in current];pool=cr+[RECORDS[r['record_index']] for r in history]
+124:         cc=[sum(c['identity']==r['identity'] and c['scene']!=r['scene'] for c in cr) for r in cr]
+125:         allpos=sum(sum(c['identity']==r['identity'] for c in pool)-1 for r in cr)
+
+FILE D:\Program Files\UserCache\gb\codex\tmp\trifusion_supported_balance_m0_independent_audit_20260921\independent_recompute_02.py
+325:         floor=(-p*math.log(p)-(classes-1)*other*math.log(other))*(BASE['LOSS']['ID_FUSED']+3*BASE['LOSS']['ID_BRANCH']+3*BASE['LOSS']['ID_RESIDUAL'])
+326:         first,last=tr['steps'][0]['loss'],tr['steps'][-1]['loss'];ratio=(last-floor)/(first-floor)
+327:         g=receipt['gate'];assert g==dict(passed=ratio<=.1,initial_loss=first,final_loss=last,minimum_loss=floor,initial_excess_loss=first-floor,final_excess_loss=last-floor,loss_ratio=ratio,maximum_loss_ratio=.1)
+328:         assert all(receipt['checks'].values()) and g['passed']
+329:     all_pixels[directory.name]=[(x['record_indices'],x['pixel_sha256']) for x in rows]
+330:     all_audits[directory.name]=rows
+331:     training_results.append(dict(endpoint=directory.name,counts=dict(stats),unique_source_records=len(seen),unique_source_identities=len({RECORDS[i]['identity'] for i in seen}),gate=receipt.get('gate'),initial_state_sha256=tr['initial_state_sha256'],frozen_state_sha256=tr['frozen_state_after_sha256'],peak_reserved_mib=tr['peak_reserved_mib'],elapsed_training_seconds=hist[0]['elapsed_seconds'],role_statistics={r:{k:dict(minimum=min(v),maximum=max(v)) for k,v in rv.items()} for r,rv in role_values.items()}))
+332:     end_counts.update(stats)
+333: for fi in range(3):
+334:     assert all_pixels[f'fold_{fi}_control']==all_pixels[f'fold_{fi}_balanced']
+335:     pair_end=SUMMARY['folds'][fi]['endpoints'];assert pair_end['control']['initialization']==pair_end['balanced']['initialization']
+336:     assert SUMMARY['folds'][fi]['all_paired_source_pixels_exact']
+337: assert all_pixels['overfit_control']==all_pixels['overfit_balanced']
+338: for endpoint in ('control','balanced'):
+339:     assert SUMMARY['overfit'][endpoint]['initialization']==SUMMARY['folds'][0]['endpoints'][endpoint]['initialization']
+340: 
+341: checkpoint_results=[]
+342: for fold,b0 in zip(PROTOCOL['folds'],B0['folds'],strict=True):
+343:     path=Path(b0['checkpoint']);assert sha(path)==b0['checkpoint_sha256']
+344:     baseline=torch.load(path,map_location='cpu',weights_only=True)
+345:     assert baseline['fold']==fold['fold'] and baseline['source_ids']==fold['source_ids'] and baseline['heldout_ids']==fold['heldout_ids']
+346:     state0=baseline['model_state_dict'];assert state_sha(state0)==b0['training']['final_state_sha256']
+347:     array_path=path.parent/'retrieval_arrays.pt';assert sha(array_path)==b0['retrieval']['retrieval_arrays_sha256']
+348:     for endpoint in ('control','balanced'):
+349:         receipt=SUMMARY['folds'][fold['fold']]['endpoints'][endpoint];tr=receipt['training'];p=Path(receipt['checkpoint'])
+350:         assert sha(p)==receipt['checkpoint_sha256']
+351:         payload=torch.load(p,map_location='cpu',weights_only=True)
+352:         assert set(payload)=={'role_state_dict','baseline_aliases','binding','fold','source_ids','heldout_ids','config_sha256'}
+353:         assert payload['binding']==receipt['initialization'] and payload['config_sha256']==CFG_SHA
+354:         assert payload['fold']==fold['fold'] and payload['source_ids']==fold['source_ids'] and payload['heldout_ids']==fold['heldout_ids']
+355:         names=payload['binding']['trainable_names'];assert len(names)==len(set(names))==203
+356:         groups={r:[n for n in names if n.startswith('encoder.'+r+'_')] for r in ROLES}
+357:         assert sum(map(len,groups.values()))==189 and len([n for n in names if not n.startswith('encoder.')])==14
+358:         assert not payload['binding']['role_weights_loaded'] and payload['binding']['role_initialization_seed']==42
+359:         assert payload['binding']['signal_checkpoint_sha256']==b0['checkpoint_sha256']
+360:         assert payload['binding']['signal_state_sha256']==state_sha(state0)==tr['signal_state_after_sha256']
+361:         aliases=payload['baseline_aliases'];assert all(k.startswith('baseline.') and v in state0 for k,v in aliases.items())
+362:         role=payload['role_state_dict'];assert all(not k.startswith('baseline.') for k in role)
+363:         state={k:state0[v] for k,v in aliases.items()};state.update(role)
+364:         assert state_sha(state)==tr['final_state_sha256']==receipt['strict_reload_state_sha256']
+365:         buffers={n for n in role if n.endswith(('.running_mean','.running_var','.num_batches_tracked'))}
+366:         frozen={n:v for n,v in state.items() if n.startswith('baseline.') or (n not in names and n not in buffers)}
+367:         assert state_sha(frozen)==tr['frozen_state_after_sha256']
+368:         assert all(torch.isfinite(v).all() for v in state.values())
+369:         for r,ns in groups.items():
+370:             finalnorm=math.sqrt(sum(float(role[n].double().square().sum()) for n in ns))
+371:             savednorm=all_audits[f"fold_{fold['fold']}_{endpoint}"][-1]['actual_parameter_updates'][r]['second_norm']
+372:             # Cross-device double reductions are not bitwise guaranteed. Reuse the existing scalar tolerance.
+373:             close(finalnorm,savednorm)
+374:             maxima['final_parameter_norm_cpu_gpu_abs_error']=max(maxima['final_parameter_norm_cpu_gpu_abs_error'],abs(finalnorm-savednorm))
+375:         checkpoint_results.append(dict(fold=fold['fold'],endpoint=endpoint,checkpoint=str(p),sha256=receipt['checkpoint_sha256'],baseline_checkpoint=str(path),baseline_sha256=b0['checkpoint_sha256'],state_tensors=len(state),baseline_aliases=len(aliases),role_state_tensors=len(role),role_parameter_counts={r:len(v) for r,v in groups.items()},head_tensors=14,frozen_state_sha256=state_sha(frozen),strict_reload_state_sha256=state_sha(state),final_update_parameter_norms_match=True))
+376:         del payload,state,role,frozen
+377:     del baseline,state0;gc.collect()
+378: assert end_counts['steps']==SUMMARY['optimizer_steps']==CPU['checked_training_steps']==248
+379: assert end_counts['distance_elements']==CPU['checked_memory_distance_elements']
+380: assert end_counts['history_vjp_record_forwards']==CPU['checked_history_vjp_record_forwards']
+381: assert CPU['checked_retrieval_distance_and_rank_elements']==0
+382: for path,proof in CPU['files'].items():assert sha(path)==proof['sha256'] and Path(path).stat().st_size==proof['bytes']
+383: assert not torch.cuda.is_initialized()
+384: result=dict(status='PASS_INDEPENDENT_COMPLETE_M0_SAVED_EVIDENCE',generated_at=datetime.datetime.now(datetime.timezone.utc).isoformat(),
+385:     run=str(RUN),execution_commit=COMMIT,config_sha256=CFG_SHA,summary_sha256=sha(RUN/'m0/summary.json'),
+386:     source_folds=source_coverage,t0_counts=dict(t0_totals),m0_counts=dict(end_counts),
+387:     training=training_results,checkpoint_checks=checkpoint_results,reference_checks=reference_rows,
+388:     scalar_pair_identities_checked=pair_count,maxima=dict(maxima),
+389:     source_exposures=end_counts['steps']*64,current_rank_backward_calls=248,current_auxiliary_backward_calls=248,
+390:     direct_component_backward_calls=24,extra_direct_total_backward_calls=6,
+391:     actual_m0_unsupported_ap_steps=end_counts['active_zero_support_steps'],
+392:     final_checkpoint_count=len(checkpoint_results),baseline_checkpoint_count=3,
+393:     all_cpu_inventory_files_rehashed=len(CPU['files']),
+394:     runtime_limits=['No saved full per-step gradients or optimizer states; scalar identities do not independently reconstruct gradients or AdamW.',
+395:                     'Historical feature/RNG/buffer/head/strict-output equality are saved runtime assertions; no new model forwards.',
+396:                     'All four saved distance spaces checked for finite values and geometry; raw step embeddings are not saved.',
+397:                     'M0 contains no real active zero-support AP update; this branch is synthetic and queue evidence only.',
+398:                     'No retrieval scores or Q1 partial outputs read.'],
+399:     python_version=__import__('sys').version,torch_version=torch.__version__,numpy_version=np.__version__,cpu_threads=2,interop_threads=1,
+400:     cuda_initialized=False,model_forwards=0,optimizer_updates=0,image_reads=0,q1_result_reads=0,
+401:     elapsed_seconds=time.perf_counter()-START)
+402: print(json.dumps(result,indent=2))
+
+FILE D:\Program Files\UserCache\gb\codex\tmp\trifusion_supported_balance_m0_independent_audit_20260921\remote_intake.py
+1: import os
+2: os.environ.update(CUDA_VISIBLE_DEVICES='',OMP_NUM_THREADS='2',MKL_NUM_THREADS='2',OPENBLAS_NUM_THREADS='2')
+3: os.nice(10)
+4: from pathlib import Path
+5: import hashlib,json,subprocess,datetime
+6: repo=Path('/root/autodl-tmp/trifusion-v2/TriFusion-ReID')
+7: run=Path('/root/trifusion-storage/artifacts/msvr310_supported_gradient_balance_v1_r2_seed42_1381639')
+8: commit='1381639f778f77f124a2726ee55c07610092a438'
+9: def sha(p):
+10:     h=hashlib.sha256()
+11:     with Path(p).open('rb') as f:
+12:         for b in iter(lambda:f.read(1024*1024),b''):h.update(b)
+13:     return h.hexdigest()
+14: checks=[];copies={};visited=set();configs={}
+15: def bind(p,wanted,origin):
+16:     p=Path(p); actual=sha(p)
+17:     checks.append(dict(path=str(p),registered_sha256=wanted,actual_sha256=actual,match=actual==wanted,origin=origin))
+18:     assert actual==wanted,(p,wanted,actual)
+19: def visit(p):
+20:     p=Path(p)
+21:     if p in visited:return
+22:     visited.add(p);d=json.loads(p.read_bytes());configs[str(p)]=d;copies[str(p)]=p.read_text()
+23:     for key in ('project_file_sha256','project_source_file_sha256','fixed_file_sha256'):
+24:         for name,value in d.get(key,{}).items():
+25:             q=repo/name if not name.startswith('/') else Path(name)
+26:             bind(q,value,str(p)+':'+key)
+27:             if q.suffix in ('.py','.json','.md','.yaml','.yml'):copies[str(q)]=q.read_text()
+28:     for key in ('previous_config','coordinate_config','memory_config','base_config'):
+29:         if key in d:visit(repo/d[key])
+30:     if 'BASELINE' in d:
+31:         b=d['BASELINE'];bind(repo/b['CONFIG'],b['CONFIG_SHA256'],str(p));visit(repo/b['CONFIG'])
+32:         bind(b['SUMMARY'],b['SUMMARY_SHA256'],str(p));copies[b['SUMMARY']]=Path(b['SUMMARY']).read_text()
+33:     if 'SOURCE_METADATA' in d:
+34:         m=d['SOURCE_METADATA'];bind(repo/m['PATH'],m['SHA256'],str(p));copies[str(repo/m['PATH'])]=(repo/m['PATH']).read_text()
+35:     if 'protocol' in d:
+36:         bind(repo/d['protocol'],d['protocol_sha256'],str(p));copies[str(repo/d['protocol'])]=(repo/d['protocol']).read_text()
+37:     if 'signal_source_file_sha256' in d:
+38:         for name,value in d['signal_source_file_sha256'].items():
+39:             bind(Path(d['signal_source'])/name,value,str(p));copies[str(Path(d['signal_source'])/name)]=(Path(d['signal_source'])/name).read_text()
+40:         actual=subprocess.check_output(['git','-C',d['signal_source'],'rev-parse','HEAD'],text=True).strip()
+41:         assert actual==d['signal_commit']
+42:         diff=hashlib.sha256(subprocess.check_output(['git','-C',d['signal_source'],'diff','--binary'])).hexdigest()
+43:         assert diff==d['signal_diff_sha256']
+44:         bind(d['clip_weight'],d['clip_weight_sha256'],str(p))
+45: cfg=repo/'configs/MSVR310/TriFusion-supported-gradient-balance-paired-v1.json'
+46: visit(cfg)
+47: support=repo/json.loads(cfg.read_bytes())['source_support'];copies[str(support)]=support.read_text()
+48: for name,wanted in json.loads(support.read_bytes())['input_bindings'].items():bind(repo/name,wanted,str(support))
+49: executed=[]
+50: for p in sorted(set(x['path'] for x in checks)):
+51:     q=Path(p)
+52:     if q.is_relative_to(repo):
+53:         data=subprocess.check_output(['git','show',commit+':'+q.relative_to(repo).as_posix()],cwd=repo)
+54:         actual=sha(q);expected=hashlib.sha256(data).hexdigest()
+55:         executed.append(dict(path=p,current_sha256=actual,executed_blob_sha256=expected,match=actual==expected))
+56: for name in ('t0.json','t0.log','pipeline.json','m0.log','m0_cpu.json','m0_cpu.log','m0/summary.json'):
+57:     copies[str(run/name)]=(run/name).read_text()
+58: for p in sorted((run/'m0').rglob('*')):
+59:     if p.is_file() and p.suffix in ('.json','.jsonl','.log'):copies[str(p)]=p.read_text()
+60: inventory=[dict(path=str(p),bytes=p.stat().st_size,sha256=sha(p)) for p in sorted((run/'m0').rglob('*')) if p.is_file()]
+61: print(json.dumps(dict(timestamp=datetime.datetime.now(datetime.timezone.utc).isoformat(),cwd=str(repo),
+62:     execution_commit=commit,observed_head=subprocess.check_output(['git','rev-parse','HEAD'],cwd=repo,text=True).strip(),
+63:     registered_bindings=checks,executed_bindings=executed,configs=configs,text_inputs=copies,m0_inventory=inventory,
+64:     model_forwards=0,optimizer_updates=0,images_opened=0,cuda_visible_devices=os.environ['CUDA_VISIBLE_DEVICES'],cpu_threads=2)))
+
+FILE D:\Program Files\UserCache\gb\codex\tmp\trifusion_supported_balance_m0_independent_audit_20260921\local_evidence_structure.json
+1: {
+2:   "status": "PASS_ENGINEERING_ONLY",
+3:   "mode": "m0",
+4:   "config_sha256": "9ce36299299efbc09ccfb72f5b1c4fed20fc1026bd9fee1bd55a591d6950ec7b",
+5:   "project_commit": "1381639f778f77f124a2726ee55c07610092a438",
+6:   "runner_sha256": "3ab635f97e08edb439c352a742189a0f82cd8f76d73bd1a34ab1a7eb57da5187",
+7:   "environment": {
+8:     "signal_commit": "cd1b0a672d1fe642e7608731cb4899a19dda7d51",
+9:     "signal_diff_sha256": "b889caca9c4a92689b13eb7e20bd3224067f3e5ed2a3db6825201870ca422741"
+10:   },
+11:   "seed": 42,
+12:   "heldout_record_forwards": 0,
+13:   "official_image_reads": 0,
+14:   "training_cpu_threads": 4,
+15:   "update_rules": {
+16:     "control": "cross_scene_ap_original_gradient_sum",
+17:     "balanced": "cross_scene_ap_supported_role_gradient_balance"
+18:   },
+19:   "gradient_balance": {
+20:     "ema_decay": 0.9,
+21:     "exponent": 0.5,
+22:     "ratio_min": 0.25,
+23:     "ratio_max": 4.0,
+24:     "epsilon": 1e-12,
+25:     "weight_sum": 2.0
+26:   },
+27:   "same_candidate_reencoding_and_vjp_algorithm": true,
+28:   "same_scalar_objectives": true,
+29:   "history_anchors": 0,
+30:   "all_true_positive_positions": false,
+31:   "candidate_positive_rule": "same_identity_different_scene",
+32:   "candidate_reduction": "mean_eligible_anchors",
+33:   "temperature": 0.01,
+34:   "other_thirteen_loss_terms_unchanged": true,
+35:   "fused_metric_storage_key": "triplet_fused",
+36:   "evaluation_cpu_threads": 56,
+37:   "started_at": "2026-09-21T05:52:43.114919+08:00",
+38:   "optimizer_steps": 248,
+39:   "completed_at": "2026-09-21T06:09:35.384126+08:00",
+40:   "endpoints": [
+41:     {
+42:       "folder": "fold_0_balanced",
+43:       "counts": {
+44:         "steps": 8,
+45:         "warmup": 2,
+46:         "supported_active": 6,
+47:         "unsupported_active": 0,
+48:         "zero_eligible_any": 0,
+49:         "eligible_anchors": 200,
+50:         "history_steps": 5,
+51:         "candidates": 547,
+52:         "distance_elements": 271104,
+53:         "history_vjp_groups": 15,
+54:         "fresh_forwards": 960
+55:       },
+56:       "training": {
+57:         "mode": "capacity",
+58:         "epochs": 1,
+59:         "optimizer_steps": 8,
+60:         "initial_state_sha256": "882f4314f4b41f32ab0497b646a289fe0dd7fdd33f551d0977c1126808dd1757",
+61:         "final_state_sha256": "8cc7f70436e57798d9f24c92029e3c7d8cca9a5a03e638bc954a6af77e62f44a",
+62:         "frozen_state_before_sha256": "a2ffa892849c6fdc7010ddf53a7ebbfd3de76a52d25c927935054e774615edde",
+63:         "frozen_state_after_sha256": "a2ffa892849c6fdc7010ddf53a7ebbfd3de76a52d25c927935054e774615edde",
+64:         "signal_state_before_sha256": "1bd8fa7c4f2ad959a1375605abe21b9989bf8ab03b7b55115d6990028bbc8c3a",
+65:         "signal_state_after_sha256": "1bd8fa7c4f2ad959a1375605abe21b9989bf8ab03b7b55115d6990028bbc8c3a",
+66:         "trainable_tensors": 203,
+67:         "nonzero_gradient_tensors": 203,
+68:         "missing_nonzero_gradients": [],
+69:         "overflow_events": 0,
+70:         "peak_allocated_mib": 11378.28173828125,
+71:         "peak_reserved_mib": 12186.0,
+72:         "history": [
+73:           {
+74:             "epoch": 1,
+75:             "optimizer_steps": 8,
+76:             "learning_rate": 0.00035,
+77:             "mean_loss": 3.949254184961319,
+78:             "elapsed_seconds": 47.19522811472416
+79:           }
+80:         ],
+81:         "extra_fresh_role_record_forwards": 1024,
+82:         "extra_history_vjp_record_forwards": 960,
+83:         "history_candidate_vjp_applied": true,
+84:         "extra_direct_check_record_forwards": 64,
+85:         "fresh_history_both_endpoints": true,
+86:         "history_anchor_count": 0,
+87:         "cache_not_in_checkpoint": true,
+88:         "gradient_balance_state": {
+89:           "cnn": {
+90:             "rank": 0.040726224375132555,
+
+FILE D:\Program Files\UserCache\gb\codex\tmp\trifusion_supported_balance_m0_independent_audit_20260921\latest_claims\docs\TRIFUSION_RGBNT201_CURRENT_COMPLETE_HANDOFF_2026-09-01.md
+6750: ### 41.233 支持感知梯度平衡R2完整M0/CPU通过，六端Q1自动启动（2026-09-21）
+6751: 
+6752: 原M0 42784于06:09:36.381退出0，1016.567秒；CPU44719于06:09:45.483退出0，9.101秒。M0 PASS_ENGINEERING_ONLY，CPU PASS_COMPLETE_SUPPORTED_GRADIENT_BALANCE_M0；summary SHA e63fc2ace053952c3775b19e37c0064af890b41f2a96d03a63c6c4237cd01545，CPU SHA 910c5c8493059cded0adb02bcbdb5ab0b701b40567b645f3a1ca37014feb21b1。执行1381639、配置9ce36299，科学合同未改变。
+6753: 
+6754: 6容量端各8步及2过拟合端各100步全部完成，共248更新；各端203/203累计非零、overflow0、冻结/Signal状态不变、角色更新/严格重载通过。两个原超额损失比控制0.000701213786、候选0.000721186408，均低于原0.1门。90项实际独立参考检查全部通过，最大相对误差9.433501552915618e-05，未放宽0.005门。峰值reserved最大12186MiB。
+6755: 
+6756: CPU核对全部4945920距离元素、248步以及5760历史VJP记录前向账本，重算掩码、目标、支持和EMA/系数；没有重新生成每步参数梯度。完整28份原始文本7961437B接收，逐文件字节/SHA匹配，模型/图像/距离数组未下载。证据evidence/supported_gradient_balance_m0_complete_20260921；evidence/supported_gradient_balance_m0_analysis_20260921保留744条角色记录、90参考检查和8条完整阶段epoch记录。
+6757: 
+6758: 实际M0共232支持步、16预热步、零支持步0；无支持语义目前由T0及全来源合同覆盖，不声称真实M0遇到此情形。短容量角色范数和系数确有差别，不能把这些8步观测当成Q1轨迹，更不能用来扫描系数。原combined与direct分量数值差异保留；AdamW参数delta范数不解释为排名更新份额。R1失败完整封存，不因R2通过而删除或改写。
+6759: 
+6760: 原wrapper42758于06:09:45.485自动启动Q1 44804；06:13:21原cmdline核对存活，首控制完成5/20epoch、0/6终点。输出余5398437888B，尚未删除权重。预计完整Q1约4–6小时，按历史生效后的实际速度修订观察时点，不改预算。Q1从固定原初始化开始，不续训M0。独立M0 fresh gpt-6-astra/max审查已启动；same-family/provisional，后端未独立认证，尚无裁决。
+6761: 
+6762: 保持完整六端固定终点、全部图库与原两组五门，不按局部fold改设计。上一轮cross-scene Q1_FAIL及所有正式成绩不变；此处仅新增工程证据。三数据集Goal ACTIVE/UNMET。
+
+FILE D:\Program Files\UserCache\gb\codex\tmp\trifusion_supported_balance_m0_independent_audit_20260921\latest_claims\refine-logs\msvr310_supported_gradient_balance_v1\EXPERIMENT_TRACKER.md
+1: # 支持感知梯度平衡工作记录
+2: 
+3: 2026-09-21。R1_ENGINEERING_STOP / R2_M0_CPU_PASS / R2_Q1_RUNNING，seed42。
+4: 
+5: | 工作 | 状态 | 证据 |
+6: |---|---|---|
+7: | R1 T0 | PASS | 780来源batch及数学检查 |
+8: | R1 M0 | STOPPED | 3更新；第4步辅助相减误差0.006824872>0.005，05:36:03退出1 |
+9: | R1 Q1 | NOT_RUN | 工程阶段停止，没有检索 |
+10: | R2实现与复审 | PASS_WITH_LIMITS | 直接辅助求导，原控制更新保持；同族原reviewer继续审查，0阻断 |
+11: | R2 T0 | PASS | 05:52:39退出0，780来源batch及数学检查 |
+12: | R2 M0 | PASS_ENGINEERING_ONLY | 06:09:36退出0；248更新、90实际独立参考检查通过 |
+13: | R2 M0_CPU | PASS | 06:09:45退出0；248步/4945920距离元素，全量支持与系数重算 |
+14: | R2 M0独立审查 | RUNNING | fresh gpt-6-astra/max，same-family/provisional，待完整裁决 |
+15: | R2 Q1 | RUNNING | 原44804于06:09:45自动启动；06:13:21首控制5/20epoch，0/6终点 |
+16: | R2 Q1_CPU/Audit | NOT_STARTED | 六端齐全后核验；无中间选模或调参 |
+17: 
+18: 执行1381639、配置9ce36299，run /root/trifusion-storage/artifacts/msvr310_supported_gradient_balance_v1_r2_seed42_1381639，wrapper42758。
+19: 完整历史梯度、原网络与cross-scene AP定义不变。仅seed42，先主结果后消融，官方成绩不用于调参。
+20: 完整M0文本和汇总见evidence/supported_gradient_balance_m0_complete_20260921及supported_gradient_balance_m0_analysis_20260921。
+21: 无新增正式结果，Goal ACTIVE/UNMET。

@@ -1,0 +1,434 @@
+
+FILE D:\Program Files\UserCache\gb\codex\tmp\trifusion_supported_balance_m0_independent_audit_20260921\snapshots\repo\tools\train_msvr_supported_gradient_balance.py
+260:                 if direct is not None:
+261:                     decomposed=[(a+weight*b)/scale for a,b in zip(current,history_gradient,strict=True)]
+262:                     direct_check=compare(direct,decomposed)
+263:                     direct_check['relative_l2_error']=direct_check['difference_norm']/max(direct_check['first_norm'],1e-12)
+264:                     direct_check['all_four_reencoded_outputs_bitwise_equal']=True
+265:                     assert direct_check['relative_l2_error']<=.005
+266:                     del decomposed
+267:                 balance,full_rank,auxiliary=combine(parameters,current,current_rank,current_auxiliary,history_gradient,scale,
+268:                     role_groups,controller,supported,endpoint=='balanced')
+269:                 if active and not supported:
+270:                     assert all(not bool(g.abs().sum()) for g in full_rank)
+271:                 head_preserved=all(torch.equal(p.grad,g) for (_,p),g in zip(heads,head_gradients,strict=True))
+272:                 assert head_preserved
+273:                 applied={}
+274:                 reference_checks={}
+275:                 for expert,indexes in role_groups.items():
+276:                     actual=[parameters[i].grad/scale for i in indexes]
+277:                     applied[expert]=compare([current[i]/scale for i in indexes],actual)
+278:                     if direct_parts is not None:
+279:                         wr=balance[expert]['applied_rank_weight'];wa=balance[expert]['applied_auxiliary_weight']
+280:                         reference_checks[expert]=dict(
+281:                             current_rank=check_reference([current_rank[i]/scale for i in indexes],[direct_parts['current'][i]/scale for i in indexes]),
+282:                             historical_rank=check_reference([history_gradient[i]/scale for i in indexes],[direct_parts['history'][i]/scale for i in indexes]),
+283:                             full_rank=check_reference([full_rank[i]/scale for i in indexes],[direct_parts['rank'][i]/scale for i in indexes]),
+284:                             auxiliary=check_reference([auxiliary[i]/scale for i in indexes],[direct_parts['auxiliary'][i]/scale for i in indexes]),
+285:                             applied=check_reference(actual,
+286:                                 [(direct_parts['rank'][i]*wr+direct_parts['auxiliary'][i]*wa)/scale for i in indexes]
+287:                                 if endpoint=='balanced' and supported else [direct[i] for i in indexes]))
+288:                 del direct,direct_parts,full_rank,auxiliary,current_rank,current_auxiliary,head_gradients
+289:                 before_parameters=[p.detach().clone() for p in parameters]
+290:                 scaler.unscale_(optimizer)
+291:                 for name,p in model.named_parameters():
+292:                     if p.requires_grad and p.grad is not None:
+293:                         assert torch.isfinite(p.grad).all(),name
+294:                         if p.grad.abs().sum()>0:live.add(name)
+295:                 scaler.step(optimizer);scaler.update()
+296:                 updates={expert:compare([before_parameters[i] for i in indexes],
+297:                                          [parameters[i].detach() for i in indexes]) for expert,indexes in role_groups.items()}
+298:                 del before_parameters
+299:                 overflow+=int(scaler.get_scale()<scale)
+300:                 row=dict(step=step+1,epoch=epoch,loss=loss_saved,components=components_saved,
+301:                          active_fused_metric='cross_scene_smooth_ap' if active else 'hard_triplet',
+302:                          sampled_record_indices=indices,amp_scale_before=scale,amp_scale_after=scaler.get_scale())
+303:                 audit=dict(step=step+1,zero_based_step=step,record_indices=indices,identities=ids,scenes=scenes,
+304:                            pixel_sha256=pixel_sha,memory=metadata,replacement_active=active,warmup_steps=warmup,
+305:                            original_triplet=original_triplet,statistics=stats,distance_offset_bytes=offset,
+306:                            distance_float_count=4*64*(64+len(metadata)),
+307:                            relation_objective=relation_saved,saved_space_order=['fused',*EXPERTS],coordinate_rule='fresh',current_anchor_count=64,
+308:                            history_candidate_vjp_applied=True,history_anchor_count=0,
+309:                            fresh_role_record_forwards=count,history_vjp_groups=groups,history_vjp_record_forwards=64*len(groups),
+310:                            historical_leaf_upstream_norms=[] if upstream is None else upstream.norm(dim=1).cpu().tolist(),
+311:                            gradient_weight=weight,roles=role_stats,applied_gradients=applied,
+312:                            direct_single_group_check=direct_check,
+313:                            rank_auxiliary_reference_checks=reference_checks,
+314:                            support=support,gradient_balance=balance,actual_parameter_updates=updates,
+315:                            classification_head_gradients_unchanged=head_preserved,
+316:                            current_rank_backward_calls=1,
+317:                            current_auxiliary_backward_calls=1,
+318:                            direct_component_backward_calls=4 if reference_checks else 0,
+319:                            selected_reencoding_bitwise=True,history_rng_buffers_preserved=True,
+320:                            history_vjp_leaves_current_grad_unchanged=True,final_gradient_addition_bitwise=True)
+321:                 stream.write(json.dumps(audit)+'\n');stream.flush()
+322:                 if active:memory.update(step,indices,current_unit);fields.fields[step]=item
+323:                 steps.append(row);epoch_rows.append(row)
+324:                 del stored,fresh,fresh_values,current_unit,current,history_gradient,buffers,upstream,item
+325:             history.append(dict(epoch=epoch,optimizer_steps=len(epoch_rows),learning_rate=lr,
+326:                                 mean_loss=float(np.mean([r['loss'] for r in epoch_rows])),elapsed_seconds=time.perf_counter()-started))
+327:             print(json.dumps(dict(event='supported_balance_epoch',endpoint=endpoint,fold=fold['fold'],mode=mode,**history[-1])),flush=True)
+328:     if mode!='overfit':assert witness
+329:     report=dict(mode=mode,epochs=len(history),optimizer_steps=len(steps),initial_state_sha256=initial,
+330:                 final_state_sha256=_module_state_sha256(model),frozen_state_before_sha256=frozen,
+331:                 frozen_state_after_sha256=frozen_state_sha(model),signal_state_before_sha256=signal,
+332:                 signal_state_after_sha256=_module_state_sha256(model.baseline.signal),trainable_tensors=len(names),
+333:                 nonzero_gradient_tensors=len(live),missing_nonzero_gradients=sorted(names-live),overflow_events=overflow,
+334:                 peak_allocated_mib=torch.cuda.max_memory_allocated()/1024**2,
+335:                 peak_reserved_mib=torch.cuda.max_memory_reserved()/1024**2,history=history,steps=steps,
+336:                 historical_parameter_gradient_witness=witness,extra_fresh_role_record_forwards=fresh_forwards,
+337:                 extra_history_vjp_record_forwards=vjp_forwards,history_candidate_vjp_applied=True,
+338:                 extra_direct_check_record_forwards=direct_forwards,
+339:                 fresh_history_both_endpoints=True,history_anchor_count=0,cache_not_in_checkpoint=True,
+340:                 gradient_balance_state=controller.states,current_rank_backward_calls=len(steps),
+341:                 current_auxiliary_backward_calls=len(steps),
+342:                 direct_component_backward_calls=4 if mode=='capacity' else 0,
+343:                 gradient_balancing_applied=endpoint=='balanced',classification_head_rule='original_current_total_gradient',
+344:                 audit_files={n:dict(bytes=(directory/n).stat().st_size,sha256=sha256(directory/n))
+345:                              for n in ('memory_steps.jsonl','memory_distances.f32')})
+346:     write_json(directory/'training.json',report)
+347:     return report
+348: 
+349: 
+350: def paired_summary(folds):
+351:     translated = [dict(fold=f['fold'], endpoints=dict(control=f['endpoints']['control'],
+352:                   instance_memory=f['endpoints']['balanced'])) for f in folds]
+353:     result = old.paired_summary(translated)
+354:     result['endpoints']['balanced'] = result['endpoints'].pop('instance_memory')
+355:     return result
+356: 
+357: 
+358: def run(args):
+359:     import torch
+360:     from tools.run_signal_preserving_v5 import _module_state_sha256, evaluate_overfit_gate, overfit_loss_floor
+361:     torch.set_num_threads(4)
+362:     spec, (config, base, cfg, environment, protocol, baseline, meta) = context(args.config)
+363:     m0 = args.mode == 'm0'
+364:     old = None
+365:     if not m0:
+366:         old = json.loads(args.m0_receipt.read_bytes())
+367:         proof = json.loads(args.m0_verification.read_bytes())
+368:         assert old['status'] == 'PASS_ENGINEERING_ONLY' and old['config_sha256'] == sha256(args.config)
+369:         assert proof['status'] == 'PASS_COMPLETE_SUPPORTED_GRADIENT_BALANCE_M0' and proof['summary_sha256'] == sha256(args.m0_receipt)
+370:     args.output_dir.mkdir()
+371:     summary = dict(status='RUNNING', mode=args.mode, config_sha256=sha256(args.config),
+372:                    project_commit=subprocess.check_output(['git', 'rev-parse', 'HEAD'], cwd=ROOT, text=True).strip(),
+373:                    runner_sha256=sha256(__file__), environment=environment, seed=42, folds=[], overfit={},
+374:                    heldout_record_forwards=0, official_image_reads=0, training_cpu_threads=4,
+375:                    update_rules=dict(control='cross_scene_ap_original_gradient_sum', balanced='cross_scene_ap_supported_role_gradient_balance'),
+376:                    gradient_balance=spec['gradient_balance'],
+377:                    same_candidate_reencoding_and_vjp_algorithm=True, same_scalar_objectives=True, history_anchors=0,
+378:                    all_true_positive_positions=False,candidate_positive_rule='same_identity_different_scene',candidate_reduction='mean_eligible_anchors',temperature=.01,other_thirteen_loss_terms_unchanged=True,
+379:                    fused_metric_storage_key='triplet_fused',
+380:                    evaluation_cpu_threads=56, started_at=datetime.now().astimezone().isoformat())
+381:     def save(): write_json(args.output_dir/'summary.json', summary)
+382:     save()
+383:     for fold, b0, md in zip(protocol['folds'], baseline['folds'], meta['folds'], strict=True):
+384:         result = dict(fold=fold['fold'], endpoints={})
+385:         summary['folds'].append(result)
+386:         records = records_for(base, protocol, fold, True)
+387:         paired_pixels = []
+388:         for end in ENDPOINTS:
+389:             directory = args.output_dir/f"fold_{fold['fold']}_{end}"
+390:             directory.mkdir()
+391:             model, binding = build_model(config, cfg, fold, b0)
+392:             if not m0:
+393:                 assert binding == old['folds'][fold['fold']]['endpoints'][end]['initialization']
+394:             pre = preflight(model, records, cfg, fold, b0) if m0 else None
+395:             tr = fit(model, records, fold, protocol, config, spec, md, endpoint=end,
+396:                      mode='capacity' if m0 else 'comparison', directory=directory)
+397:             checks = engineering_checks(tr)
+398:             checks['fixed_training_length'] = tr['optimizer_steps'] == (8 if m0 else 260)
+399:             row = dict(fold=fold['fold'], initialization=binding, preflight=pre, training=tr, engineering_checks=checks)
+400:             result['endpoints'][end] = row;save()
+401:             assert all(checks.values()), checks
+402:             path = directory/('roles_m0.pth' if m0 else 'roles_epoch20.pth')
+403:             cksha = prior.checkpoint(model, binding, fold, sha256(args.config), path)
+404:             before = extract(model, records[:8]) if m0 else None
+405:             del model;torch.cuda.empty_cache()
+406:             model = reload_model(config, cfg, fold, b0, path, binding, tr['final_state_sha256'], sha256(args.config))
+407:             row.update(checkpoint=str(path), checkpoint_sha256=cksha, strict_reload_state_sha256=_module_state_sha256(model))
+408:             if m0:
+409:                 after = extract(model, records[:8])
+410:                 assert all(torch.equal(before[k], after[k]) for k in OUTPUT_WIDTHS)
+411:                 row['strict_reload_all_outputs_bitwise_equal'] = True
+412:             else:
+413:                 gallery = records_for(base, protocol, fold, False)
+414:                 features = extract(model, gallery)
+415:                 torch.set_num_threads(56)
+416:                 row['retrieval'] = evaluate(features, protocol, fold, directory, b0)
+417:                 torch.set_num_threads(4)
+418:                 summary['heldout_record_forwards'] += len(gallery)
+419:             assert _module_state_sha256(model) == tr['final_state_sha256'] and sha256(path) == cksha
+420:             audits = [json.loads(line) for line in (directory/'memory_steps.jsonl').read_text().splitlines()]
+421:             paired_pixels.append([(r['record_indices'], r['pixel_sha256']) for r in audits])
+422:             write_json(directory/'receipt.json', row);save()
+423:             del model;torch.cuda.empty_cache()
+424:         assert paired_pixels[0] == paired_pixels[1]
+425:         assert result['endpoints']['control']['initialization'] == result['endpoints']['balanced']['initialization']
+426:         result['all_paired_source_pixels_exact'] = True;save()
+427:     if m0:
+428:         fold = protocol['folds'][0]
+429:         records = records_for(base, protocol, fold, True)
+430:         for end in ENDPOINTS:
+431:             directory = args.output_dir/('overfit_'+end);directory.mkdir()
+432:             model, binding = build_model(config, cfg, fold, baseline['folds'][0])
+433:             tr = fit(model, records, fold, protocol, config, spec, meta['folds'][0],
+434:                      endpoint=end, mode='overfit', directory=directory)
+435:             gate = evaluate_overfit_gate([r['loss'] for r in tr['steps']], max_ratio=.1,
+436:                                          minimum_loss=overfit_loss_floor(config, num_classes=len(fold['source_ids'])))
+437:             checks = engineering_checks(tr)
+438:             checks.update(fixed_100_steps=tr['optimizer_steps']==100, original_overfit_gate=gate['passed'])
+439:             summary['overfit'][end] = dict(initialization=binding, training=tr, gate=gate, checks=checks)
+440:             save();assert all(checks.values()), checks
+441:             del model;torch.cuda.empty_cache()
+442:         summary.update(status='PASS_ENGINEERING_ONLY', optimizer_steps=248)
+443:     else:
+444:         result = paired_summary(summary['folds'])
+445:         summary.update(status='Q1_PASS' if result['next_phase_qualified'] else 'Q1_FAIL',
+446:                        optimizer_steps=1560, comparison=result,
+447:                        m0_receipt_sha256=sha256(args.m0_receipt), m0_verification_sha256=sha256(args.m0_verification))
+448:         assert summary['heldout_record_forwards'] == 2064
+449:     summary['completed_at'] = datetime.now().astimezone().isoformat();save()
+450: 
+451: 
+452: if __name__ == '__main__':
+453:     parser = argparse.ArgumentParser()
+454:     parser.add_argument('--config', type=Path, required=True)
+455:     parser.add_argument('--output-dir', type=Path, required=True)
+456:     parser.add_argument('--mode', choices=('m0', 'q1'), required=True)
+457:     parser.add_argument('--m0-receipt', type=Path)
+458:     parser.add_argument('--m0-verification', type=Path)
+459:     run(parser.parse_args())
+
+FILE D:\Program Files\UserCache\gb\codex\tmp\trifusion_supported_balance_m0_independent_audit_20260921\snapshots\repo\tools\verify_msvr_supported_gradient_balance.py
+1: """Full saved Smooth-AP training/retrieval replay; no GPU gradient re-execution."""
+2: import argparse
+3: from collections import OrderedDict
+4: from datetime import datetime
+5: import json
+6: from pathlib import Path
+7: import time
+8: 
+9: import numpy as np
+10: import torch
+11: 
+12: from tools.train_msvr_supported_gradient_balance import context, ENDPOINTS, OUTPUT_WIDTHS, EXPERTS
+13: from tools.train_msvr310_signal_oof import sha256, write_json
+14: from tools.verify_msvr310_source_style import state_sha, bootstrap
+15: 
+16: 
+17: def independent_smoothed_ap(distance, identities, history_identities):
+18:     # Float64 independent NumPy rank sums; no import of training objective.
+19:     ids=np.asarray(identities);allids=np.asarray(identities+history_identities)
+20:     score=1-distance.astype(np.float64)**2/2
+21:     aps=[]
+22:     for i in range(len(ids)):
+23:         positive=(allids==ids[i]);positive[i]=False
+24:         pos=np.flatnonzero(positive);assert pos.size
+25:         columns=np.arange(len(allids))
+26:         delta=(score[i][None,:]-score[i,pos][:,None])/.01
+27:         comparison=1/(1+np.exp(-delta))
+28:         comparison[(columns[None,:]==i)|(columns[None,:]==pos[:,None])]=0
+29:         rp=1+comparison[:,positive].sum(1)
+30:         ra=1+comparison.sum(1)
+31:         aps.append(float(np.mean(rp/ra)))
+32:     return np.array(aps)
+33: 
+34: 
+35: def independent_cross_scene_ap(distance, identities, history_identities, scenes, history_scenes):
+36:     ids=np.asarray(identities);allids=np.asarray(identities+history_identities)
+37:     scene=np.asarray(scenes);allscene=np.asarray(scenes+history_scenes)
+38:     score=1-distance.astype(np.float64)**2/2
+39:     aps=[];counts=[]
+40:     for i in range(len(ids)):
+41:         positive=(allids==ids[i]) & (allscene!=scene[i])
+42:         valid=~((allids==ids[i]) & (allscene==scene[i]))
+43:         pos=np.flatnonzero(positive);counts.append(len(pos))
+44:         if not len(pos):
+45:             aps.append(0.);continue
+46:         columns=np.arange(len(allids))
+47:         delta=(score[i][None,:]-score[i,pos][:,None])/.01
+48:         comparison=1/(1+np.exp(-delta))
+49:         comparison[(~valid[None,:]) | (columns[None,:]==pos[:,None])]=0
+50:         rp=1+comparison[:,positive].sum(1)
+51:         ra=1+comparison.sum(1)
+52:         aps.append(float(np.mean(rp/ra)))
+53:     aps=np.array(aps);counts=np.array(counts)
+54:     eligible=counts>0
+55:     return float(1-aps[eligible].mean()) if eligible.any() else 0.,aps,counts
+56: 
+57: 
+58: def training(directory,tr,fold,protocol,md,spec,config,endpoint,mode):
+59:     audits=[json.loads(s) for s in (directory/'memory_steps.jsonl').read_text().splitlines()]
+60:     for name,proof in tr['audit_files'].items():
+61:         assert sha256(directory/name)==proof['sha256'] and (directory/name).stat().st_size==proof['bytes']
+62:     assert len(audits)==tr['optimizer_steps']==(260 if mode=='comparison' else 100 if mode=='overfit' else 8)
+63:     assert tr['missing_nonzero_gradients']==[] and tr['nonzero_gradient_tensors']==tr['trainable_tensors']==203
+64:     assert tr['overflow_events']==0
+65:     assert tr['frozen_state_before_sha256']==tr['frozen_state_after_sha256']
+66:     assert tr['signal_state_before_sha256']==tr['signal_state_after_sha256']
+67:     assert tr['fresh_history_both_endpoints'] and tr['history_anchor_count']==0
+68:     assert tr['history_candidate_vjp_applied']
+69:     cache=OrderedDict();matrix_elements=max_error=candidates=harder=active=0
+70:     fresh_forwards=64;vjp_forwards=direct_checks=0
+71:     warmup=spec['memory']['warmup_steps' if mode=='comparison' else mode+'_warmup_steps']
+72:     with (directory/'memory_distances.f32').open('rb') as stream:
+73:         for index,(row,audit) in enumerate(zip(tr['steps'],audits,strict=True)):
+74:             assert row['step']==audit['step']==index+1 and audit['zero_based_step']==index
+75:             indices=row['sampled_record_indices']
+76:             assert indices==audit['record_indices']==md['batches'][0 if mode=='overfit' else index]['record_indices']
+77:             assert set(indices)<=set(fold['source_record_indices'])
+78:             assert audit['identities']==[protocol['records'][i]['identity'] for i in indices]
+79:             assert audit['scenes']==[protocol['records'][i]['scene'] for i in indices]
+80:             for i in [i for i,step in cache.items() if index-step>8]:del cache[i]
+81:             wanted=[dict(record_index=i,identity=protocol['records'][i]['identity'],scene=protocol['records'][i]['scene'],
+82:                          age=index-step,stored_step=step) for i,step in cache.items() if i not in set(indices)]
+83:             assert wanted==audit['memory']
+84:             assert audit['warmup_steps']==warmup and audit['replacement_active']==(index>=warmup)
+85:             assert row['active_fused_metric']==('cross_scene_smooth_ap' if index>=warmup else 'hard_triplet')
+86:             assert audit['coordinate_rule']=='fresh' and audit['current_anchor_count']==64 and audit['history_anchor_count']==0
+87:             assert audit['history_candidate_vjp_applied']
+88:             m=len(wanted)
+89:             assert stream.tell()==audit['distance_offset_bytes']
+90:             raw=np.fromfile(stream,dtype=np.float32,count=4*64*(64+m))
+91:             assert len(raw)==audit['distance_float_count']==4*64*(64+m)
+92:             assert np.isfinite(raw).all() and (raw>=0).all()
+93:             distance=raw.reshape(4,64,64+m)
+94:             dc,dm=distance[0,:,:64],distance[0,:,64:]
+95:             count=64*len({r['stored_step'] for r in wanted})
+96:             assert count==audit['fresh_role_record_forwards'];fresh_forwards+=count
+97:             ids=np.array(audit['identities']);scenes=np.array(audit['scenes'])
+98:             positive=(ids[:,None]==ids[None,:]) & ~np.eye(64,dtype=bool)
+99:             negative=ids[:,None]!=ids[None,:]
+100:             hp=np.where(positive,dc,-np.inf).max(1);hn=np.where(negative,dc,np.inf).min(1)
+101:             mids=np.array([r['identity'] for r in wanted]);msc=np.array([r['scene'] for r in wanted])
+102:             mp=ids[:,None]==mids[None,:];mn=~mp
+103:             if m:
+104:                 mph=np.where(mp,dm,-np.inf).max(1);mnh=np.where(mn,dm,np.inf).min(1)
+105:                 uhp=np.maximum(hp,mph);uhn=np.minimum(hn,mnh)
+106:                 harder_p=int((mph>hp).sum());harder_n=int((mnh<hn).sum())
+107:             else:uhp,uhn=hp,hn;harder_p=harder_n=0
+108:             basic=float(np.maximum(0,hp-hn+np.float32(.3)).mean())
+109:             pooled=float(np.maximum(0,uhp-uhn+np.float32(.3)).mean())
+110:             smoothed_ap=independent_smoothed_ap(distance[0],audit['identities'],[r['identity'] for r in wanted])
+111:             smooth_ap=float(1-smoothed_ap.mean())
+112:             relation=audit['relation_objective']
+113:             assert audit['saved_space_order']==['fused',*EXPERTS] and relation['temperature']==.01
+114:             assert np.allclose(relation['per_anchor_smoothed_ap'],smoothed_ap,rtol=0,atol=2e-6)
+115:             allids=audit['identities']+[r['identity'] for r in wanted]
+116:             assert relation['positive_counts']==[sum(y==x for y in allids)-1 for x in audit['identities']]
+117:             cross_loss,cross_ap,counts=independent_cross_scene_ap(distance[0],audit['identities'],
+118:                 [r['identity'] for r in wanted],audit['scenes'],[r['scene'] for r in wanted])
+119:             assert np.allclose(relation['cross_scene_per_anchor_ap'],cross_ap,rtol=0,atol=2e-6)
+120:             assert relation['cross_scene_positive_counts']==counts.tolist()
+121:             assert relation['cross_scene_eligible_anchors']==int((counts>0).sum())
+122:             assert relation['cross_scene_reduction']=='mean_eligible_anchors' and relation['ineligible_ap_storage_value']==0
+123:             target=cross_loss
+124:             expected=dict(memory_records=m,memory_positive_pairs=int(mp.sum()),memory_negative_pairs=int(mn.sum()),
+125:                           memory_cross_scene_positive_pairs=int((mp & (scenes[:,None]!=msc[None,:])).sum()),
+126:                           memory_negative_violations_against_batch_hard_positive=int((mn & (dm<hp[:,None]+np.float32(.3))).sum()),
+127:                           harder_positive_anchors=harder_p,harder_negative_anchors=harder_n,
+128:                           current_wrong_order_anchors=int((hp>=hn).sum()),expanded_wrong_order_anchors=int((uhp>=uhn).sum()),
+129:                           expanded_hinge_positive_anchors=int((uhp-uhn+np.float32(.3)>0).sum()),
+130:                           maximum_memory_age=max((r['age'] for r in wanted),default=0))
+131:             assert all(expected[k]==audit['statistics'][k] for k in expected)
+132:             for actual,computed in ((audit['original_triplet'],basic),(audit['statistics']['current_triplet'],basic),
+133:                                     (audit['statistics']['expanded_triplet'],pooled),
+134:                                     (relation['hard_loss'],pooled),(relation['smooth_ap_loss'],smooth_ap),(relation['cross_scene_loss'],cross_loss),
+135:                                     (row['components']['triplet_fused'],target if index>=warmup else basic)):
+136:                 error=abs(actual-computed);max_error=max(max_error,error);assert error<2e-6
+137:             c=row['components'];w=config['LOSS']
+138:             assert set(c)=={'id_fused','triplet_fused',*[key+'_'+e for e in EXPERTS for key in ('id','triplet','id_residual','triplet_residual')]}
+139:             total=w['ID_FUSED']*c['id_fused']+w['TRIPLET_FUSED']*c['triplet_fused']
+140:             total+=sum(w['ID_BRANCH']*c['id_'+e]+w['TRIPLET_BRANCH']*c['triplet_'+e]
+141:                        +w['ID_RESIDUAL']*c['id_residual_'+e]+w['TRIPLET_RESIDUAL']*c['triplet_residual_'+e] for e in EXPERTS)
+142:             assert abs(total-row['loss'])<1e-5 and row['amp_scale_after']>=row['amp_scale_before']
+143:             norms=np.array(audit['historical_leaf_upstream_norms'])
+144:             assert len(norms)==m and np.isfinite(norms).all() and (norms>=0).all()
+145:             groups=sorted({r['stored_step'] for i,r in enumerate(wanted) if norms[i]>0})
+146:             assert groups==audit['history_vjp_groups'] and 64*len(groups)==audit['history_vjp_record_forwards']
+147:             vjp_forwards+=64*len(groups)
+148:             assert audit['gradient_weight']==w['TRIPLET_FUSED']==1
+149:             assert all(audit[k] for k in ('selected_reencoding_bitwise','history_rng_buffers_preserved',
+150:                                           'history_vjp_leaves_current_grad_unchanged','final_gradient_addition_bitwise'))
+151:             assert set(audit['roles'])==set(audit['applied_gradients'])==set(EXPERTS)
+152:             for role in EXPERTS:
+153:                 pair=audit['roles'][role]['total_vs_history'];both=audit['roles'][role]['total_vs_both'];applied=audit['applied_gradients'][role]
+154:                 for g in (pair,both,applied):
+155:                     a,b,d=g['first_norm'],g['second_norm'],g['difference_norm'];cos=g['cosine']
+156:                     assert all(np.isfinite(x) and x>=0 for x in (a,b,d))
+157:                     assert (cos is None)==(a==0 or b==0)
+158:                     if cos is not None:
+159:                         assert np.isfinite(cos) and abs(cos)<=1.00001
+160:                         assert abs(d*d-(a*a+b*b-2*a*b*cos))<=1e-7*max(1,a*a+b*b)
+161:                 assert abs(both['difference_norm']-pair['second_norm'])<=1e-6*max(1,pair['second_norm'])
+162:                 if endpoint=='control' or index<warmup or not counts.any():
+163:                     for key in both:
+164:                         a,b=applied[key],both[key]
+165:                         assert a==b if a is None or b is None else abs(a-b)<=1e-6*max(1,abs(a),abs(b))
+166:             direct=audit['direct_single_group_check']
+167:             if direct:
+168:                 assert mode=='capacity' and len({r['stored_step'] for r in wanted})==1
+169:                 assert direct['all_four_reencoded_outputs_bitwise_equal']
+170:                 assert direct['relative_l2_error']<=.005
+171:                 assert abs(direct['relative_l2_error']-direct['difference_norm']/max(direct['first_norm'],1e-12))<1e-12
+172:                 direct_checks+=1
+173:             if index>=warmup:
+174:                 for i in indices:cache.pop(i,None);cache[i]=index
+175:                 while len(cache)>512:cache.popitem(last=False)
+176:             candidates+=m;harder+=harder_p+harder_n;active+=int(m>0);matrix_elements+=len(raw)
+177:         assert stream.read()==b''
+178:     from tools.verify_msvr_supported_gradient_balance_stats import verify_balance
+179:     balance_check=verify_balance(audits,tr,endpoint,warmup)
+180:     assert fresh_forwards==tr['extra_fresh_role_record_forwards'] and vjp_forwards==tr['extra_history_vjp_record_forwards']
+181:     assert direct_checks==(1 if mode=='capacity' else 0) and 64*direct_checks==tr['extra_direct_check_record_forwards']
+182:     for row in tr['history']:
+183:         selected=[r for r in tr['steps'] if r['epoch']==row['epoch']]
+184:         assert len(selected)==row['optimizer_steps']
+185:         assert float(np.mean([r['loss'] for r in selected]))==row['mean_loss']
+186:     if mode!='overfit':
+187:         witness=tr['historical_parameter_gradient_witness']
+188:         assert witness['roles']==audits[witness['step']-1]['roles']
+189:         assert all(x['total_vs_history']['second_norm']>0 for x in witness['roles'].values())
+190:         assert candidates>0 and harder>0 and vjp_forwards>0
+191:     else:assert candidates==0 and vjp_forwards==0
+192:     return dict(steps=len(audits),matrix_elements=matrix_elements,max_loss_error=max_error,gradient_balance=balance_check,
+193:                 extra_fresh_role_record_forwards=fresh_forwards,extra_history_vjp_record_forwards=vjp_forwards,
+194:                 historical_candidates=candidates,harder_anchor_exposures=harder,active_historical_steps=active,
+195:                 direct_single_group_checks=direct_checks,all_record_age_identity_masks_exact=True),[(r['record_indices'],r['pixel_sha256']) for r in audits]
+196: 
+197: 
+198: def run(args):
+199:     started = time.perf_counter()
+200:     spec, (config, _base, _cfg, _env, protocol, baseline, metadata) = context(args.config)
+201:     directory = args.run_dir
+202:     summary = json.loads((directory/'summary.json').read_bytes())
+203:     m0 = summary['mode'] == 'm0'
+204:     torch.set_num_threads(4 if m0 else 56)
+205:     assert summary['status'] in (('PASS_ENGINEERING_ONLY',) if m0 else ('Q1_PASS', 'Q1_FAIL'))
+206:     assert summary['config_sha256'] == sha256(args.config) and summary['optimizer_steps'] == (248 if m0 else 1560)
+207:     assert summary['heldout_record_forwards'] == (0 if m0 else 2064) and summary['official_image_reads'] == 0
+208:     files = {}
+209:     def record(path): files[str(path)] = dict(bytes=Path(path).stat().st_size, sha256=sha256(path))
+210:     record(directory/'summary.json')
+211:     training_checks = []
+212:     distance_elements = 0
+213:     aps = {e: {o: [] for o in OUTPUT_WIDTHS} for e in ENDPOINTS}
+214:     firsts = {e: {o: [] for o in OUTPUT_WIDTHS} for e in ENDPOINTS}
+215:     fold_maps = {e: [] for e in ENDPOINTS}
+216:     query_ids = []
+217:     for fold, row, b0, md in zip(protocol['folds'], summary['folds'], baseline['folds'], metadata['folds'], strict=True):
+218:         assert fold['fold'] == row['fold'] and not set(fold['source_ids']) & set(fold['heldout_ids'])
+219:         original = torch.load(b0['checkpoint'], map_location='cpu', weights_only=True)['model_state_dict']
+220:         paired = []
+221:         for end in ENDPOINTS:
+222:             item = row['endpoints'][end];local = directory/f"fold_{fold['fold']}_{end}"
+223:             assert item == json.loads((local/'receipt.json').read_bytes())
+224:             tr = item['training'];assert tr == json.loads((local/'training.json').read_bytes())
+225:             assert all(item['engineering_checks'].values())
+226:             check, pixels = training(local, tr, fold, protocol, md, spec, config, end, 'capacity' if m0 else 'comparison')
+227:             training_checks.append(dict(fold=fold['fold'], endpoint=end, **check));paired.append(pixels)
+228:             assert tr['initial_state_sha256'] == item['initialization']['initial_state_sha256']
+229:             path = Path(item['checkpoint']);assert sha256(path) == item['checkpoint_sha256']
+230:             payload = torch.load(path, map_location='cpu', weights_only=True)

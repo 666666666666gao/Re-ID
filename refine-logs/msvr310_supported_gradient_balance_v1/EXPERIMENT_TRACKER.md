@@ -11,8 +11,8 @@
 | R2 T0 | PASS | 05:52:39退出0，780来源batch及数学检查 |
 | R2 M0 | PASS_ENGINEERING_ONLY | 06:09:36退出0；248更新、90实际独立参考检查通过 |
 | R2 M0_CPU | PASS | 06:09:45退出0；248步/4945920距离元素，全量支持与系数重算 |
-| R2 M0独立审查 | RUNNING | fresh gpt-6-astra/max，same-family/provisional，待完整裁决 |
-| R2 Q1 | RUNNING | 原44804于06:09:45自动启动；06:13:21首控制5/20epoch，0/6终点 |
+| R2 M0独立审查 | WARN/CLOSED_WITH_LIMITS | 独立CPU全量复算通过，0工程/审计阻断；same-family/provisional；实际M0无支持更新0 |
+| R2 Q1 | RUNNING | 06:59:13原44804持续执行；首控制20epoch/260更新及检查点/检索回执齐全，1/6终点 |
 | R2 Q1_CPU/Audit | NOT_STARTED | 六端齐全后核验；无中间选模或调参 |
 
 执行1381639、配置9ce36299，run /root/trifusion-storage/artifacts/msvr310_supported_gradient_balance_v1_r2_seed42_1381639，wrapper42758。

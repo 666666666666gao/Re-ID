@@ -1,0 +1,247 @@
+
+FILE D:\Program Files\UserCache\gb\codex\tmp\trifusion_supported_balance_m0_independent_audit_20260921\r1_r2.diff
+1: --- R1/configs/MSVR310/TriFusion-supported-gradient-balance-paired-v1.json
+2: +++ R2/configs/MSVR310/TriFusion-supported-gradient-balance-paired-v1.json
+3: @@ -32,15 +32,15 @@
+4:    "zero_eligible_batch": "connected_zero_fused_metric_other_thirteen_unchanged",
+5:    "source_support": "evidence/smooth_ap_cross_scene_support_20260909/smooth_ap_cross_scene_support_20260909.json",
+6:    "project_file_sha256": {
+7: -    "tools/msvr_supported_gradient_balance.py": "2095d7d88d2815dc203a146b0455a3baeacbf05b75e749a6709fc8765617494e",
+8: -    "tools/train_msvr_supported_gradient_balance.py": "b7d2d04ae3c44a762080cd9c30e160cbf032c8fc7e6a068d43df7d56d1d7381a",
+9: -    "tools/check_msvr_supported_gradient_balance_math.py": "b7ef9ee31665eaae6a1955826d8084e4ce886c217b4c272a8699a8a4396c2e6f",
+10: +    "tools/msvr_supported_gradient_balance.py": "27ae6eb74a83d405eabb4a30a60156226d9dc93e70d78847cf24b0f57bd774c0",
+11: +    "tools/train_msvr_supported_gradient_balance.py": "3ab635f97e08edb439c352a742189a0f82cd8f76d73bd1a34ab1a7eb57da5187",
+12: +    "tools/check_msvr_supported_gradient_balance_math.py": "de220190b7c8b9f54890c8d4d0a5750f36a6e3aa71479eb6758385fd48ff24e6",
+13:      "tools/check_msvr_supported_gradient_balance.py": "c86ceddc77b7461b2781a05adad706dde17cd1857685f5a0661d37e74fa1b36c",
+14:      "tools/verify_msvr_supported_gradient_balance.py": "3492cb17f4b0283ada07c8c93b2c0fe9088d24639ccd3580989ff3c993a5c4d7",
+15: -    "tools/verify_msvr_supported_gradient_balance_stats.py": "fe69fd1b6eda9ec7876e6d330d3cd77bf8eae9630f28f86a3f5ed519a11cee00",
+16: +    "tools/verify_msvr_supported_gradient_balance_stats.py": "5f8f157b39a9b11dd6ac5447b2a8619915cf20ddb6815fdc4ac107d7a571b327",
+17:      "tools/run_msvr_supported_gradient_balance.py": "f6ff0065c06b137327cb7fddcd5685de2b473ab20a126d479a889b8dbd1b8e5a",
+18:      "configs/MSVR310/TriFusion-cross-scene-smooth-ap-paired-v1.json": "e5326b52ebb12dced24ebfac788db2e2bb5bdca0b50c6c4dec64e596f1af05a1",
+19: -    "refine-logs/msvr310_supported_gradient_balance_v1/EXPERIMENT_PLAN.md": "b727e7b4c1a5176cbe513a786f9aa36e51b2a926ef1af3111f6355ac858f7602"
+20: +    "refine-logs/msvr310_supported_gradient_balance_v1/EXPERIMENT_PLAN.md": "c55fffb7b5ab5523240139ba95ad50fa8b60f1b7eccbd3abf67c8ca47f2ef62c"
+21:    },
+22:    "gradient_balance": {
+23:      "ema_decay": 0.9,
+24: @@ -54,5 +54,8 @@
+25:    "balanced_parameter_prefix": "encoder.",
+26:    "current_rank_backward_each_step": true,
+27:    "zero_support_ema": "unchanged",
+28: -  "classification_head_rule": "original_current_total_gradient"
+29: +  "classification_head_rule": "original_current_total_gradient",
+30: +  "implementation_revision": "r2_direct_auxiliary",
+31: +  "current_auxiliary_backward_each_step": true,
+32: +  "auxiliary_gradient_definition": "direct_other_thirteen"
+33:  }
+34: --- R1/refine-logs/msvr310_supported_gradient_balance_v1/EXPERIMENT_PLAN.md
+35: +++ R2/refine-logs/msvr310_supported_gradient_balance_v1/EXPERIMENT_PLAN.md
+36: @@ -1,6 +1,6 @@
+37:  # MSVR310 支持感知的角色内梯度平衡：固定配对合同
+38:  
+39: -日期：2026-09-21。状态：REGISTERED_PREPARATION_NOT_RUN。跨场景 Smooth-AP 六端和独立终态审查已闭环，原科学FAIL保持。本文件登记唯一新主假设；实现及配置接受独立代码审查，通过后执行T0/M0。当前未运行新训练，不修改任何已封存合同。仅 seed42。
+40: +日期：2026-09-21。实现修订R2：DIRECT_AUXILIARY_PREPARATION_NOT_RUN。R1执行92a75e4已T0通过，但M0第4步辅助梯度减法近似误差0.006824872超过预先登记0.005，原队列停止；仅3次更新，无Q1。原R1源码、合同、配置及失败原文完整封存。R2保持同一科学假设、全部超参数及门槛，每步直接求辅助导数；同族独立复审通过后从原固定初始化重新执行T0/M0，不续训失败的3步。仅seed42。
+41:  
+42:  ## 问题、依据与唯一假设
+43:  
+44: @@ -54,11 +54,11 @@
+45:  ## 当前/历史分解及实际更新
+46:  
+47:  1. 当前前向、候选重编码、三个 AP/hard 统计沿用现实现。
+48: -2. 对当前实际排名项计算 AMP-scaled 当前 encoder 导数，保留当前图；普通总损失 backward 仍产生所有 encoder 与分类头梯度。
+49: -3. A_current = 当前总梯度 - R_current。该相减存在有限精度误差，不能只验证代数恒等式；M0 必须与独立对其余13项直接反传所得 A_direct 比较。
+50: +2. 对当前实际排名项计算 AMP-scaled 当前 encoder 导数，再对原其余13项直接求辅助 encoder 导数，保留当前图；普通总损失 backward 仍产生所有 encoder 与分类头梯度。两端同样增加辅助求导，不增加优化器更新。
+51: +3. 实际A_current使用对其余13项直接求导。R1实测表明combined backward减rank与direct auxiliary不完全相等，差异不只归因于最后一次FP32相减，混合精度反传的累加路径也可能贡献。原相减值保留subtraction_auxiliary_vs_direct诊断，不再作为实际A或近似等式门。M0另外独立调用一次辅助求导作为参考，不能alias本步A到参考。
+52:  4. 释放当前图后，沿用原历史随机状态/分组重放，恢复完整 R_history。历史组的零上游跳过已存在，不作为新设计。
+53:  5. 合并完整 R 后才统计和组合。不能先调当前排名、再追加未加权历史 VJP。
+54: -6. control 实际保留原“当前总梯度 + 历史梯度”的加法路径，避免用减后加无端改变控制端；balanced 使用上述组合，头部梯度逐位保留。
+55: +6. control实际保留原“当前总梯度＋历史梯度”，balanced使用完整R与直接A的上述组合，头部梯度逐位保留。有限精度下direct R+A不强制等于原combined梯度，新增direct_sum_vs_original量化差异；CPU仅在balanced有支持步核验加权direct R/A范数，控制/无支持步核验逐位保持原sum。
+56:  7. 只执行一次 scaler.unscale、finite检查、AdamW step/update。统计与系数无计算图；不改 AdamW 动量或二阶矩。保留 RNG、buffer、重编码一致性检查。
+57:  
+58:  逐步记录：支持 anchor/身份/scene 数、R/A 范数与余弦、current/history 排名范数及余弦、EMA前后状态、系数、组合梯度范数、AMP尺度、实际角色参数更新范数、更新前参数范数、lr、溢出及全部14项。实际更新范数是含AdamW动量/预条件/衰减的观测，不分摊成排名贡献比例。
+59: @@ -69,7 +69,7 @@
+60:  
+61:  M0：仍三折两端8更新及fold0两端100固定batch，共248更新。203/203累计非零、0overflow、冻结路径不变、精简checkpoint严格重载全部输出、原校正overfit比≤0.1。
+62:  
+63: -在六个容量端首个实际历史组，保留原直接完整图/VJP核验，并直接核验 current R、历史 R、A_direct 与 A_total-minus-R，角色相对误差阈值≤0.005；零参考向量要求绝对误差≤1e-8并单列，不用除零。对候选组合与直接梯度加权的参考组合核验同一阈值。任一失败停止于工程阶段并记录真实失败，不修改科学门。
+64: +在六个容量端首个实际历史组，保留原直接完整图/VJP核验，并直接核验current R、历史R、full R、当前直接A与另一独立辅助求导参考，角色相对误差阈值仍≤0.005；零参考要求绝对误差≤1e-8。候选实际组合与direct_rank/direct_aux加权参考比较；control实际组合与原full direct_loss参考比较，不能把它强行当作分开反传的R+A。原R1减法误差保留，门不放宽；任一实际参考核验失败仍停止工程阶段，不修改科学门。
+65:  
+66:  M0 CPU 全量重算 AP、掩码、支持数、保存的范数统计→EMA→权重及应用账本。CPU不声称从标量恢复参数梯度；实际梯度见证范围须说明。通过后才能开始完整Q1。
+67:  
+68: @@ -79,17 +79,24 @@
+69:  
+70:  ## 资源、来源及执行前置
+71:  
+72: -上一轮完整Q1约3.71小时，新两端均多一次当前排名导数，初估M0 15–30分钟、Q1 4–6小时，以实际容量测量修订执行时间估计，不修订训练长度。记录额外反传次数、历史前向数、显存和墙钟时间；新增推理参数0不等于训练无成本。
+73: +上一轮完整Q1约3.71小时，R2两端均多一次当前排名及一次直接辅助导数，初估M0 15–30分钟、Q1 4–6小时，以实际容量测量修订执行时间估计，不修订训练长度。记录额外反传次数、历史前向数、显存和墙钟时间；新增推理参数0不等于训练无成本。
+74:  
+75:  远端模型/图像/数组保持不下载。沿用tri_reid/RTX3090，不装新环境。启动前实查GPU与空间；至少4GiB可用、最大新增3GiB作为当前预算。保留初始化、终点和复核数组，不因失败删权重。
+76:  
+77:  来源：evidence/support_aware_gradient_neighbours_20260921/PRIMARY_SOURCE_NOTE.md、SOURCE_RECEIPT.json、PROJECT_OBJECTIVE_SCOPE.md。MMPareto/GradNorm/OGM-GE及其限制沿用已核对原文/作者代码，不复制无许可证代码，不宣称新颖性已经成立。
+78:  
+79: -上一轮独立审查已闭环；新实现与配置已准备，执行前须独立代码审查并同步固定源码/配置，然后执行T0/M0。当前没有新模型、新训练或新检索结果。主结果前不做消融、多seed或官方测试。全项目Goal保持ACTIVE/UNMET。
+80: +上一轮科学审查已闭环；R1静态审查通过但真实M0按门停止。R2直接辅助修订须独立复审并同步固定源码/配置后，从原初始化执行T0/M0。R2尚未训练，R1没有检索结果。主结果前不做消融、多seed或官方测试。全项目Goal保持ACTIVE/UNMET。
+81:  
+82:  
+83:  ## 实现文件与记录边界
+84:  
+85: -控制器 tools/msvr_supported_gradient_balance.py；两端训练器 tools/train_msvr_supported_gradient_balance.py；T0数学 tools/check_msvr_supported_gradient_balance_math.py 及完整来源合同 tools/check_msvr_supported_gradient_balance.py；CPU tools/verify_msvr_supported_gradient_balance.py 和统计重算 tools/verify_msvr_supported_gradient_balance_stats.py；持久队列 tools/run_msvr_supported_gradient_balance.py。旧源码全部保持字节不变。
+86: +控制器 tools/msvr_supported_gradient_balance.py；两端训练器 tools/train_msvr_supported_gradient_balance.py；T0数学 tools/check_msvr_supported_gradient_balance_math.py 及完整来源合同 tools/check_msvr_supported_gradient_balance.py；CPU tools/verify_msvr_supported_gradient_balance.py 和统计重算 tools/verify_msvr_supported_gradient_balance_stats.py；持久队列 tools/run_msvr_supported_gradient_balance.py。cross-scene及更早前置源码保持字节不变；本新实验R1原字节已封存，R2按本节明确修订。
+87:  
+88: -每步额外1次当前排名参数求导；每个容量端首历史组另有4次直接分量求导（当前排名、历史排名、完整排名、辅助），以及沿用的直接总梯度检查。这些是工程测量成本，两端一致。当前/历史求导只针对189个encoder张量，分类头14张量保留原backward结果。
+89: +R2每步额外1次当前排名和1次直接辅助参数求导；每个容量端首历史组另有4次直接分量求导（当前排名、历史排名、完整排名、辅助），以及沿用的直接总梯度检查。这些是工程测量成本，两端一致。当前/历史求导只针对189个encoder张量，分类头14张量保留原backward结果。
+90: +
+91: +
+92: +## R1失败与R2修订范围
+93: +
+94: +R1运行 /root/trifusion-storage/artifacts/msvr310_supported_gradient_balance_v1_seed42_92a75e4，05:36:03 M0退出1，原wrapper STOPPED_AT_M0。fold0 control第4步辅助参考first_norm0.3899933414205923、second_norm0.3900544174096418、difference0.0026616547754863508、cos0.9999767264664654、相对误差0.006824872357540746，超过0.005。T0通过不代表真实混合精度求导等价。
+95: +
+96: +只将实际辅助向量的取得方式改为直接求导；原控制更新路径、科学公式/常量、源关系、历史VJP、optimizer与全部门槛保持。额外开销两端一致并记录current_auxiliary_backward_calls。原减法与direct-sum偏差持续记录，没有把失败抹掉或放宽真实reference门。有限精度下两端除有支持组合系数外，还存在direct分量与combined反传累加的差别，不能声称逐位只差一个标量；同一数学梯度组合的实现修正不构成新科学结果。
+97: --- R1/tools/check_msvr_supported_gradient_balance_math.py
+98: +++ R2/tools/check_msvr_supported_gradient_balance_math.py
+99: @@ -32,12 +32,12 @@
+100:          head_before=head.grad.clone()
+101:          for p,g in zip(parameters,current,strict=True):p.grad=g.clone()
+102:          controller=SupportedBalance()
+103: -        control,full,a=combine(parameters,current,r,h,scale,groups,controller,True,False)
+104: +        control,full,a=combine(parameters,current,r,direct_aux,h,scale,groups,controller,True,False)
+105:          assert all(torch.allclose(g,f,rtol=1e-6,atol=1e-6*scale) for g,f in zip(full,direct_rank,strict=True))
+106:          assert all(torch.allclose(g,f,rtol=1e-6,atol=1e-6*scale) for g,f in zip(a,direct_aux,strict=True))
+107:          assert all(torch.allclose(p.grad,f,rtol=1e-6,atol=1e-6*scale) for p,f in zip(parameters,direct_total,strict=True))
+108:          controller=SupportedBalance()
+109: -        rows,_,_=combine(parameters,current,r,h,scale,groups,controller,True,True)
+110: +        rows,_,_=combine(parameters,current,r,direct_aux,h,scale,groups,controller,True,True)
+111:          for role,indexes in groups.items():
+112:              wr=rows[role]['applied_rank_weight'];wa=rows[role]['applied_auxiliary_weight']
+113:              for i in indexes:
+114: @@ -47,7 +47,7 @@
+115:          snapshots.append(copy.deepcopy(controller.states))
+116:          before=copy.deepcopy(controller.states)
+117:          zero=[torch.zeros_like(p) for p in parameters]
+118: -        combine(parameters,current,zero,zero,scale,groups,controller,False,True)
+119: +        combine(parameters,current,zero,current,zero,scale,groups,controller,False,True)
+120:          assert controller.states==before
+121:          assert all(torch.equal(p.grad,g) for p,g in zip(parameters,current,strict=True))
+122:          assert torch.equal(head.grad,head_before)
+123: @@ -77,13 +77,16 @@
+124:      block_current=[v*3 for v in values]
+125:      block_rank=[v*.5 for v in values]
+126:      block_history=[v*.25 for v in values]
+127: -    def block_run(order):
+128: +    block_auxiliary=[v*2.5+torch.tensor([.02,-.01]) for v in values]
+129: +    def block_run(order,apply=True,supported=True):
+130:          ps=[torch.nn.Parameter(values[i].clone()) for i in order]
+131:          for p in ps:p.grad=torch.zeros_like(p)
+132:          controller=SupportedBalance()
+133:          rows,_,_=combine(ps,[block_current[i] for i in order],
+134: -                         [block_rank[i] for i in order],[block_history[i] for i in order],
+135: -                         1.,role_indices([block_names[i] for i in order]),controller,True,True)
+136: +                         [block_rank[i] if supported else torch.zeros_like(block_rank[i]) for i in order],
+137: +                         [block_auxiliary[i] for i in order],
+138: +                         [block_history[i] if supported else torch.zeros_like(block_history[i]) for i in order],
+139: +                         1.,role_indices([block_names[i] for i in order]),controller,supported,apply)
+140:          return {i:p.grad.clone() for i,p in zip(order,ps,strict=True)},rows,controller.states
+141:      original,original_rows,original_state=block_run(list(range(6)))
+142:      permuted,permuted_rows,permuted_state=block_run([4,5,0,1,2,3])
+143: @@ -91,15 +94,40 @@
+144:      assert all(torch.equal(original[i],permuted[i]) for i in original)
+145:      for role,indexes in role_indices(block_names).items():
+146:          expected_rank=math.sqrt(sum(float((block_rank[i]+block_history[i]).double().square().sum()) for i in indexes))
+147: -        expected_aux=math.sqrt(sum(float((block_current[i]-block_rank[i]).double().square().sum()) for i in indexes))
+148: +        expected_aux=math.sqrt(sum(float(block_auxiliary[i].double().square().sum()) for i in indexes))
+149:          assert abs(original_state[role]['rank']-expected_rank)<1e-12
+150:          assert abs(original_state[role]['auxiliary']-expected_aux)<1e-12
+151: +        assert original_rows[role]['subtraction_auxiliary_vs_direct']['difference_norm']>0
+152: +        assert original_rows[role]['direct_sum_vs_original']['difference_norm']>0
+153: +    # Exercise the real CPU scalar verifier when direct and combined gradients differ.
+154: +    from tools.probe_msvr_history_candidate_gradients import compare
+155: +    from tools.verify_msvr_supported_gradient_balance_stats import verify_balance
+156: +    for endpoint,supported in (('control',True),('balanced',True),('balanced',False)):
+157: +        grads,rows,states=block_run(list(range(6)),endpoint=='balanced',supported)
+158: +        if endpoint=='control' or not supported:
+159: +            assert all(torch.equal(grads[i],block_current[i]+(block_history[i] if supported else 0)) for i in grads)
+160: +        ids=[0,0] if supported else [0,1]
+161: +        scenes=[0,1];counts=[1,1] if supported else [0,0]
+162: +        audit=dict(relation_objective=dict(cross_scene_positive_counts=counts),identities=ids,scenes=scenes,
+163: +            memory=[],support=support_counts(ids,scenes,[],counts),classification_head_gradients_unchanged=True,
+164: +            current_rank_backward_calls=1,current_auxiliary_backward_calls=1,gradient_balance=rows,
+165: +            actual_parameter_updates={e:compare([values[i] for i in indexes],[values[i] for i in indexes])
+166: +                                      for e,indexes in role_indices(block_names).items()},
+167: +            applied_gradients={e:rows[e]['rank_vs_applied'] for e in ROLES},
+168: +            rank_auxiliary_reference_checks={},direct_component_backward_calls=0,direct_single_group_check={})
+169: +        training=dict(gradient_balance_state=states,current_rank_backward_calls=1,current_auxiliary_backward_calls=1,
+170: +            direct_component_backward_calls=0,gradient_balancing_applied=endpoint=='balanced',
+171: +            classification_head_rule='original_current_total_gradient')
+172: +        proof=verify_balance([audit],training,endpoint,0)
+173: +        assert proof['supported_steps']==int(supported)
+174:      supported=support_counts([0,0,1],[0,1,0],[dict(identity=1,scene=1)],[1,1,1])
+175:      assert supported==dict(eligible_anchors=3,eligible_identities=2,identity_directed_scene_relations=3)
+176:      assert not torch.cuda.is_initialized()
+177:      return dict(status='PASS_SYNTHETIC_SUPPORTED_GRADIENT_BALANCE',model_forwards=0,optimizer_updates=0,
+178: -                current_history_chain_rule=True,auxiliary_subtraction=True,weighted_direct_reference=True,
+179: +                current_history_chain_rule=True,direct_auxiliary=True,weighted_direct_reference=True,
+180:                  amp_power_of_two_invariance=True,unsupported_state_unchanged=True,
+181:                  unsupported_update_unchanged=True,classification_head_unchanged=True,
+182:                  bounded_coefficients=True,whole_role_grouping=True,explicit_zero_norm_definition=True,
+183: -                multi_tensor_role_norm=True,role_permutation_equivariance=True)
+184: +                multi_tensor_role_norm=True,role_permutation_equivariance=True,
+185: +                direct_auxiliary_distinguished_from_subtraction=True,
+186: +                scalar_verifier_combined_control_direct_candidate_and_zero_support=True)
+187: --- R1/tools/msvr_supported_gradient_balance.py
+188: +++ R2/tools/msvr_supported_gradient_balance.py
+189: @@ -62,13 +62,13 @@
+190:      return result
+191:  
+192:  
+193: -def combine(parameters, current_total, current_rank, historical_rank, scale, groups,
+194: +def combine(parameters, current_total, current_rank, current_auxiliary, historical_rank, scale, groups,
+195:              controller, supported, apply):
+196:      """All input gradients are AMP-scaled; history belongs only to ranking."""
+197:      import torch
+198:      from tools.probe_msvr_history_candidate_gradients import compare
+199:      rank = [a + b for a, b in zip(current_rank, historical_rank, strict=True)]
+200: -    auxiliary = [a - b for a, b in zip(current_total, current_rank, strict=True)]
+201: +    auxiliary = current_auxiliary
+202:      rows = {}
+203:      for role, indexes in groups.items():
+204:          r = [rank[i] / scale for i in indexes]
+205: @@ -85,6 +85,9 @@
+206:              assert torch.equal(parameters[i].grad, expected)
+207:          actual = [parameters[i].grad / scale for i in indexes]
+208:          rows[role] = dict(rank_vs_auxiliary=pair,
+209: +            subtraction_auxiliary_vs_direct=compare([(current_total[i]-current_rank[i])/scale for i in indexes],a),
+210: +            direct_sum_vs_original=compare([(rank[i]+auxiliary[i])/scale for i in indexes],
+211: +                                           [(current_total[i]+historical_rank[i])/scale for i in indexes]),
+212:              current_rank_vs_history=compare([current_rank[i] / scale for i in indexes],
+213:                                               [historical_rank[i] / scale for i in indexes]),
+214:              rank_vs_applied=compare(r, actual), auxiliary_vs_applied=compare(a, actual),
+215: --- R1/tools/train_msvr_supported_gradient_balance.py
+216: +++ R2/tools/train_msvr_supported_gradient_balance.py
+217: @@ -31,6 +31,7 @@
+218:      from tools.train_msvr_cross_scene_smooth_ap import context as previous_context
+219:      spec=json.loads(path.read_bytes())
+220:      assert spec['schema']=='msvr310-supported-gradient-balance-paired-v1' and spec['seed']==42
+221: +    assert spec['implementation_revision']=='r2_direct_auxiliary'
+222:      assert spec['temperature']==.01 and spec['fused_metric_weight']==1
+223:      from tools.msvr_supported_gradient_balance import RULE
+224:      assert spec['candidate_reduction']=='mean_eligible_anchors' and spec['gradient_balance']==RULE
+225: @@ -172,6 +173,12 @@
+226:                  direct=None
+227:                  scale=scaler.get_scale()
+228:                  current_rank=scalar_gradients(weight*components['triplet_fused'],parameters,scale)
+229: +                auxiliary_components=dict(components)
+230: +                auxiliary_components['triplet_fused']=components['triplet_fused']*0
+231: +                with torch.autocast('cuda',dtype=torch.float16):
+232: +                    current_auxiliary_loss=weighted_training_loss(auxiliary_components,config)
+233: +                current_auxiliary=scalar_gradients(current_auxiliary_loss,parameters,scale)
+234: +                del auxiliary_components,current_auxiliary_loss
+235:                  direct_parts=None
+236:                  support=support_counts(ids,scenes,metadata,relation_saved['cross_scene_positive_counts'])
+237:                  supported=active and support['eligible_anchors']>0
+238: @@ -256,8 +263,8 @@
+239:                      direct_check['relative_l2_error']=direct_check['difference_norm']/max(direct_check['first_norm'],1e-12)
+240:                      direct_check['all_four_reencoded_outputs_bitwise_equal']=True
+241:                      assert direct_check['relative_l2_error']<=.005
+242: -                    del direct,decomposed
+243: -                balance,full_rank,auxiliary=combine(parameters,current,current_rank,history_gradient,scale,
+244: +                    del decomposed
+245: +                balance,full_rank,auxiliary=combine(parameters,current,current_rank,current_auxiliary,history_gradient,scale,

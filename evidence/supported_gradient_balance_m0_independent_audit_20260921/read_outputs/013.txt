@@ -1,0 +1,339 @@
+
+FILE D:\Program Files\UserCache\gb\codex\tmp\trifusion_supported_balance_m0_independent_audit_20260921\snapshots\repo\tools\probe_msvr_history_candidate_gradients.py
+161:     loader = loader_for(records,True)
+162:     steps, seen, proof = [], set(), None
+163:     warmup = 2 if mode == 'preflight' else 65
+164:     reference = [json.loads(s) for s in (Path(saved['checkpoint']).parent/'memory_steps.jsonl').read_text().splitlines()]
+165:     torch.cuda.reset_peak_memory_stats()
+166:     started = time.perf_counter()
+167:     with (directory/'steps.jsonl').open('x') as log, (directory/'distances.f32').open('xb') as matrices:
+168:         for epoch in range(1,(1 if mode == 'preflight' else 20)+1):
+169:             batches = itertools.islice(loader,8) if mode == 'preflight' else loader
+170:             for raw in batches:
+171:                 step=len(steps)
+172:                 indices=[lookup[n] for n in raw[-1]];seen.update(indices)
+173:                 assert indices==md['batches'][step]['record_indices']
+174:                 batch,labels=_training_batch(raw)
+175:                 pixels=prior.prior.pixels(batch)
+176:                 assert pixels==reference[step]['pixel_sha256']
+177:                 ids=[protocol['records'][i]['identity'] for i in indices]
+178:                 scenes=[protocol['records'][i]['scene'] for i in indices]
+179:                 history,metadata=memory.read(step,indices,torch.empty((0,7680),device='cuda'))
+180:                 for k in [k for k in fields.fields if step-k > 8]:
+181:                     del fields.fields[k]
+182:                 with torch.autocast('cuda',dtype=torch.float16):
+183:                     output,item=fields.capture(model,batch,indices)
+184:                     components=criterion(output,labels)
+185:                 unit=F.normalize(output.fused_embedding.float(),dim=1)
+186:                 if step==0:
+187:                     assert torch.equal(unit.detach(),fields.encode(model,item))
+188:                 pooled,basic,_,dc,dh,stats=expanded_triplet(output.fused_embedding,ids,scenes,history,metadata)
+189:                 assert torch.equal(basic,components['triplet_fused'])
+190:                 components['triplet_fused']=pooled
+191:                 total_loss=weighted_training_loss(components,config)
+192:                 role_stats={};forward_count=0;groups=[];nonzero_records=0
+193:                 if metadata:
+194:                     leaf=history.detach().requires_grad_(True)
+195:                     new_loss=differentiable_history_loss(output.fused_embedding,ids,leaf,metadata)
+196:                     assert torch.equal(pooled,new_loss)
+197:                     upstream=torch.autograd.grad(new_loss*SCALE,leaf,retain_graph=True)[0].float()/SCALE
+198:                     assert torch.isfinite(upstream).all()
+199:                     nonzero_records=int((upstream.abs().sum(1)>0).sum())
+200:                     current,repeated,total=gradients(pooled,parameters),gradients(pooled,parameters),gradients(total_loss,parameters)
+201:                     before_cpu,before_cuda=torch.get_rng_state(),torch.cuda.get_rng_state()
+202:                     historical,history_repeat,forward_count,groups=candidate_vjp(model,fields,metadata,history,upstream,parameters)
+203:                     if proof is None:
+204:                         assert len({r['stored_step'] for r in metadata})==1
+205:                         key=metadata[0]['stored_step'];encoded=encode_graph(model,fields.fields[key])
+206:                         positions=[fields.fields[key]['positions'][r['record_index']] for r in metadata]
+207:                         direct_loss=differentiable_history_loss(output.fused_embedding,ids,encoded[positions],metadata)
+208:                         assert torch.equal(direct_loss,pooled)
+209:                         direct=gradients(direct_loss,parameters)
+210:                         combined=[a+b for a,b in zip(current,historical,strict=True)]
+211:                         agreement=compare(direct,combined)
+212:                         denominator=max(agreement['first_norm'],agreement['second_norm'])
+213:                         relative=agreement['difference_norm']/denominator if denominator>0 else 0.
+214:                         assert relative<=.005,agreement
+215:                         proof=dict(step=step+1,agreement=agreement,relative_l2_error=relative,tolerance=.005,
+216:                                    direct_graph_record_forwards=64,history_groups=1)
+217:                         forward_count+=64
+218:                         del encoded,direct_loss,direct,combined
+219:                     assert torch.equal(before_cpu,torch.get_rng_state()) and torch.equal(before_cuda,torch.cuda.get_rng_state())
+220:                     role_stats=summarize_roles(names,current,repeated,historical,history_repeat,total,weight)
+221:                     del leaf,new_loss,upstream,current,repeated,total,historical,history_repeat
+222:                 offset=matrices.tell()
+223:                 for values in (dc,dh):matrices.write(values.detach().cpu().contiguous().numpy().tobytes())
+224:                 row=dict(step=step+1,epoch=epoch,record_indices=indices,pixel_sha256=pixels,identities=ids,scenes=scenes,
+225:                          memory=metadata,statistics=stats,roles=role_stats,history_nonzero_gradient_records=nonzero_records,
+226:                          candidate_vjp_groups=groups,extra_role_record_forwards=forward_count,
+227:                          distance_offset_bytes=offset,distance_float_count=dc.numel()+dh.numel(),
+228:                          loss=float(total_loss.detach()),historical_coordinate_mode='fixed_current_parameters',
+229:                          optimizer_updates=0,age_semantics='batch_recency_not_parameter_updates')
+230:                 log.write(json.dumps(row)+'\n');log.flush();steps.append(row)
+231:                 if step>=warmup:
+232:                     memory.update(step,indices,unit);fields.fields[step]=item
+233:                 for name,value in model.named_buffers():value.copy_(buffers[name])
+234:                 assert all(p.grad is None for p in model.parameters())
+235:                 del output,components,unit,pooled,basic,dc,dh,total_loss,history,item
+236:             print(json.dumps(dict(event='candidate_gradient_epoch',epoch=epoch,batches=len(steps),
+237:                                   elapsed_seconds=time.perf_counter()-started)),flush=True)
+238:     assert len(steps)==(8 if mode=='preflight' else 260)
+239:     assert initial==_module_state_sha256(model)
+240:     assert proof is not None
+241:     if mode=='source':assert seen==set(fold['source_record_indices'])
+242:     report=dict(status='PASS_FIXED_STATE_SOURCE_PROBE',batches=len(steps),optimizer_updates=0,
+243:                 initial_state_sha256=initial,final_state_sha256=_module_state_sha256(model),
+244:                 observed_source_records=sorted(seen),history_batches=sum(bool(r['memory']) for r in steps),
+245:                 candidate_gradient_chain_rule=proof,extra_role_record_forwards=sum(r['extra_role_record_forwards'] for r in steps)+64,
+246:                 peak_allocated_mib=torch.cuda.max_memory_allocated()/1024**2,elapsed_seconds=time.perf_counter()-started,
+247:                 files={n:dict(bytes=(directory/n).stat().st_size,sha256=sha256(directory/n)) for n in ('steps.jsonl','distances.f32')},
+248:                 parameter_gradients='runtime_witness_only',heldout_record_forwards=0,official_image_reads=0)
+249:     write_json(directory/'receipt.json',report)
+250:     return report
+251: 
+252: 
+253: def run(args):
+254:     torch.set_num_threads(4)
+255:     spec,(coordinate,(config,base,cfg,environment,protocol,baseline,meta)),saved=context(args.config)
+256:     args.output_dir.mkdir()
+257:     result=dict(status='RUNNING',mode=args.mode,config_sha256=sha256(args.config),
+258:                 project_commit=subprocess.check_output(['git','rev-parse','HEAD'],cwd=ROOT,text=True).strip(),
+259:                 environment=environment,seed=42,optimizer_updates=0,heldout_record_forwards=0,official_image_reads=0,
+260:                 started_at=datetime.now().astimezone().isoformat(),folds=[])
+261:     write_json(args.output_dir/'summary.json',result)
+262:     for fold,b0,md,old_fold in zip(protocol['folds'],baseline['folds'],meta['folds'],saved['folds'],strict=True):
+263:         entry=dict(fold=fold['fold'],states={});result['folds'].append(entry)
+264:         for state in STATES:
+265:             old=old_fold['endpoints']['control' if state=='initial' else state]
+266:             records=records_for(base,protocol,fold,True)
+267:             if state=='initial':model,binding=build_model(config,cfg,fold,b0)
+268:             else:
+269:                 model=prior.reload_model(config,cfg,fold,b0,Path(old['checkpoint']),old['initialization'],
+270:                                          old['training']['final_state_sha256'],sha256(ROOT/spec['coordinate_config']))
+271:                 binding=old['initialization']
+272:             assert binding==old['initialization']
+273:             directory=args.output_dir/f"fold_{fold['fold']}_{state}";directory.mkdir()
+274:             print(json.dumps(dict(event='candidate_gradient_state',fold=fold['fold'],state=state)),flush=True)
+275:             entry['states'][state]=fit_probe(model,records,fold,protocol,config,md,old,mode=args.mode,directory=directory)
+276:             write_json(args.output_dir/'summary.json',result)
+277:             del model;torch.cuda.empty_cache()
+278:     result.update(status='PASS_COMPLETE_FIXED_STATE_PROBE',completed_at=datetime.now().astimezone().isoformat())
+279:     write_json(args.output_dir/'summary.json',result)
+280: 
+281: 
+282: if __name__=='__main__':
+283:     parser=argparse.ArgumentParser()
+284:     parser.add_argument('--config',type=Path)
+285:     parser.add_argument('--output-dir',type=Path,required=True)
+286:     parser.add_argument('--mode',choices=('math','preflight','source'),required=True)
+287:     args=parser.parse_args()
+288:     if args.mode=='math':write_json(args.output_dir,math_check())
+289:     else:run(args)
+
+FILE D:\Program Files\UserCache\gb\codex\tmp\trifusion_supported_balance_m0_independent_audit_20260921\snapshots\repo\tools\probe_msvr_role_set_gradients.py
+91:             with torch.autocast('cuda',dtype=torch.float16):output,item=fields.capture(model,batch,indices)
+92:             unit=F.normalize(output.fused_embedding.float(),dim=1)
+93:             if step==0:
+94:                 reproduced=encode_all(model,item);fresh_count+=64
+95:                 assert torch.equal(unit.detach(),reproduced['fused'])
+96:                 assert all(torch.equal(F.normalize(output.branch_embeddings[e].float(),dim=1),reproduced[e]) for e in EXPERTS)
+97:                 del reproduced
+98:             mids=[r['identity'] for r in metadata]
+99:             role_distances=[]
+100:             with torch.no_grad(),torch.autocast('cuda',enabled=False):
+101:                 for e in EXPERTS:
+102:                     value=F.normalize(output.branch_embeddings[e].float(),dim=1)
+103:                     role_distances.append(torch.cdist(value,torch.cat((value,fresh[e]),dim=0)))
+104:             leaf=fresh['fused'].detach().requires_grad_(True)
+105:             dc,dh=fused_distances(output.fused_embedding,leaf)
+106:             hard,candidate,selection=relation_objectives(dc,dh,ids,mids,role_distances)
+107:             current_hard=gradients(hard,parameters)
+108:             current_candidate=gradients(candidate,parameters)
+109:             repeated=gradients(candidate,parameters)
+110:             upstream=([torch.autograd.grad(loss*256.,leaf,retain_graph=True)[0].float()/256.
+111:                        for loss in (hard,candidate,candidate)] if metadata
+112:                       else [torch.zeros_like(leaf) for _ in range(3)])
+113:             cpu,gpu=torch.get_rng_state(),torch.cuda.get_rng_state()
+114:             hparts,groups=historical_vjps(model,fields,metadata,fresh['fused'],upstream,parameters)
+115:             history_count+=64*len(groups)
+116:             full_hard=[a+b for a,b in zip(current_hard,hparts[0],strict=True)]
+117:             full_candidate=[a+b for a,b in zip(current_candidate,hparts[1],strict=True)]
+118:             full_repeated=[a+b for a,b in zip(repeated,hparts[2],strict=True)]
+119:             if metadata and direct_proof is None:
+120:                 keys={r['stored_step'] for r in metadata};assert len(keys)==1
+121:                 old_item=fields.fields[next(iter(keys))]
+122:                 encoded=encode_graph(model,old_item)
+123:                 positions=[old_item['positions'][r['record_index']] for r in metadata]
+124:                 assert torch.equal(encoded[positions].detach(),fresh['fused'])
+125:                 ec,eh=fused_distances(output.fused_embedding,encoded[positions])
+126:                 _,full_loss,_=relation_objectives(ec,eh,ids,mids,role_distances)
+127:                 assert torch.equal(full_loss,candidate)
+128:                 direct=gradients(full_loss,parameters)
+129:                 check=compare(direct,full_candidate)
+130:                 denominator=max(check['first_norm'],check['second_norm'])
+131:                 relative=check['difference_norm']/denominator if denominator>0 else 0.
+132:                 assert relative<=.005
+133:                 direct_proof=dict(step=step+1,comparison=check,relative_l2_error=relative,tolerance=.005)
+134:                 direct_count+=64
+135:                 del encoded,ec,eh,full_loss,direct
+136:             assert torch.equal(cpu,torch.get_rng_state()) and torch.equal(gpu,torch.cuda.get_rng_state())
+137:             metrics={e:dict(hard_vs_role_set=compare([full_hard[i] for i in ii],[full_candidate[i] for i in ii]),
+138:                             role_set_repeat_noise=compare([full_candidate[i] for i in ii],[full_repeated[i] for i in ii]))
+139:                      for e,ii in role_indexes.items()}
+140:             offset=arrays.tell()
+141:             for value in (torch.cat((dc,dh),dim=1),*role_distances):
+142:                 arrays.write(value.detach().cpu().contiguous().numpy().tobytes())
+143:             row=dict(step=step+1,record_indices=indices,identities=ids,memory=metadata,
+144:                      hard_loss=float(hard.detach()),candidate_loss=float(candidate.detach()),
+145:                      proposals=selection['proposals'].cpu().tolist(),negative_counts=selection['counts'].cpu().tolist(),
+146:                      extra_active_counts=selection['extra_active'].sum(1).cpu().tolist(),roles=metrics,
+147:                      distance_offset_bytes=offset,distance_float_count=4*64*(64+len(metadata)),
+148:                      fresh_role_record_forwards=count,history_vjp_groups=groups,
+149:                      history_role_record_forwards=64*len(groups),optimizer_updates=0,
+150:                      history_age_semantics='batch_recency_not_parameter_updates')
+151:             log.write(json.dumps(row)+'\n');log.flush();rows.append(row)
+152:             if step>=2:memory.update(step,indices,unit.detach());fields.fields[step]=item
+153:             for n,v in model.named_buffers():v.copy_(buffers[n])
+154:             assert all(p.grad is None for p in model.parameters())
+155:             del output,unit,item,stale,fresh,leaf,dc,dh,hard,candidate,selection,role_distances
+156:             del current_hard,current_candidate,repeated,upstream,hparts,full_hard,full_candidate,full_repeated
+157:             print(json.dumps(dict(fold=fold['fold'],step=step+1,elapsed_seconds=time.perf_counter()-started)),flush=True)
+158:     assert len(rows)==8 and direct_proof is not None
+159:     after=_module_state_sha256(model);assert after==before
+160:     support={e:sum(r['roles'][e]['hard_vs_role_set']['difference_norm']>
+161:                    r['roles'][e]['role_set_repeat_noise']['difference_norm'] for r in rows) for e in EXPERTS}
+162:     history_support={e:sum(bool(r['memory']) and r['roles'][e]['hard_vs_role_set']['difference_norm']>
+163:                            r['roles'][e]['role_set_repeat_noise']['difference_norm'] for r in rows) for e in EXPERTS}
+164:     report=dict(status='COMPLETE_FIXED_INITIAL_GRADIENT_CHECK',fold=fold['fold'],batches=8,
+165:                 unique_source_records=sorted(seen),initial_state_sha256=before,final_state_sha256=after,
+166:                 direct_history_chain_rule=direct_proof,changed_gradient_batches_above_repeat_noise=support,
+167:                 changed_gradient_history_batches_above_repeat_noise=history_support,
+168:                 active_extra_negative_exposures=sum(sum(r['extra_active_counts']) for r in rows),
+169:                 current_role_record_forwards=512,extra_fresh_role_record_forwards=fresh_count,
+170:                 history_role_record_forwards=history_count,extra_direct_role_record_forwards=direct_count,
+171:                 peak_allocated_mib=torch.cuda.max_memory_allocated()/1024**2,
+172:                 elapsed_seconds=time.perf_counter()-started,optimizer_updates=0,checkpoint_writes=0,
+173:                 files={n:dict(bytes=(directory/n).stat().st_size,sha256=sha256(directory/n)) for n in ('steps.jsonl','distances.f32')})
+174:     write_json(directory/'receipt.json',report)
+175:     return report
+176: 
+177: 
+178: def run(args):
+179:     torch.set_num_threads(4)
+180:     spec=json.loads(args.config.read_bytes())
+181:     assert spec['schema']=='msvr310-role-set-gradient-check-v1' and spec['seed']==42
+182:     for name,digest in spec['source_sha256'].items():assert sha256(ROOT/name)==digest,name
+183:     math=json.loads(Path(spec['math_receipt']).read_bytes())
+184:     assert sha256(spec['math_receipt'])==spec['math_sha256'] and math['status']=='PASS_ROLE_SET_MATHEMATICS'
+185:     _,(config,base,cfg,environment,protocol,baseline,meta)=previous_context(ROOT/spec['previous_config'])
+186:     assert sha256(spec['protocol'])==spec['protocol_sha256']
+187:     assert protocol==json.loads(Path(spec['protocol']).read_bytes())
+188:     args.output_dir.mkdir()
+189:     result=dict(status='RUNNING',seed=42,config_sha256=sha256(args.config),
+190:                 project_commit=subprocess.check_output(['git','rev-parse','HEAD'],cwd=ROOT,text=True).strip(),
+191:                 environment=environment,folds=[],optimizer_updates=0,heldout_record_forwards=0,official_image_reads=0,
+192:                 started_at=datetime.now().astimezone().isoformat())
+193:     write_json(args.output_dir/'summary.json',result)
+194:     for fold,b0,md in zip(protocol['folds'],baseline['folds'],meta['folds'],strict=True):
+195:         records=records_for(base,protocol,fold,True);model,binding=build_model(config,cfg,fold,b0)
+196:         directory=args.output_dir/f"fold_{fold['fold']}";directory.mkdir()
+197:         report=probe(model,records,fold,protocol,md,directory)
+198:         result['folds'].append(dict(initialization=binding,**report))
+199:         write_json(args.output_dir/'summary.json',result)
+200:         del model;torch.cuda.empty_cache()
+201:     result.update(status='COMPLETE_ROLE_SET_PARAMETER_GRADIENT_CHECK',completed_at=datetime.now().astimezone().isoformat(),
+202:                   scope='Three fixed initial states, 8 source batches per fold. No training updates or retrieval result.')
+203:     write_json(args.output_dir/'summary.json',result)
+204: 
+205: 
+206: if __name__=='__main__':
+207:     parser=argparse.ArgumentParser()
+208:     parser.add_argument('--config',type=Path,required=True)
+209:     parser.add_argument('--output-dir',type=Path,required=True)
+210:     run(parser.parse_args())
+
+FILE D:\Program Files\UserCache\gb\codex\tmp\trifusion_supported_balance_m0_independent_audit_20260921\snapshots\repo\tools\msvr_freshness_probe.py
+128:     memory = InstanceMemory(source, capacity=512, maximum_age=8)
+129:     fields = ViewFields()
+130:     warmup = 2 if mode == 'preflight' else 65
+131:     lookup = {Path(r[0][0]).name:i for r,i in zip(records,fold['source_record_indices'],strict=True)}
+132:     loader = loader_for(records,True)
+133:     history, steps, live = [], [], set()
+134:     extra_records = overflow = 0
+135:     torch.cuda.reset_peak_memory_stats()
+136:     before_sealed = [r['loss'] for r in previous['training']['steps']]
+137:     original_audits = [json.loads(line) for line in (Path(previous['checkpoint']).parent/'memory_steps.jsonl').read_text().splitlines()]
+138:     with (directory/'audit.jsonl').open('x') as log, (directory/'distances.f32').open('xb') as matrices:
+139:         for epoch in range(1, (20 if mode=='source' else 1)+1):
+140:             started = time.perf_counter()
+141:             lr = config['OPTIMIZATION']['NEW_MODULE_LR']
+142:             if mode=='source': lr *= learning_rate_multiplier(epoch,max_epochs=20,warmup_epochs=5)
+143:             for group in optimizer.param_groups: group['lr']=lr
+144:             batches=loader if mode=='source' else itertools.islice(loader,12)
+145:             epoch_rows=[]
+146:             for raw in batches:
+147:                 step=len(steps)
+148:                 indices=[lookup[n] for n in raw[-1]]
+149:                 assert indices==md['batches'][step]['record_indices']
+150:                 batch, labels=_training_batch(raw)
+151:                 pixels=old.prior.pixels(batch)
+152:                 assert indices==original_audits[step]['record_indices'] and pixels==original_audits[step]['pixel_sha256']
+153:                 ids=[protocol['records'][i]['identity'] for i in indices]
+154:                 scenes=[protocol['records'][i]['scene'] for i in indices]
+155:                 optimizer.zero_grad(set_to_none=True)
+156:                 stale,metadata=memory.read(step,indices,torch.empty((0,7680),device='cuda'))
+157:                 fresh, count=fields.refresh(model,metadata,stale,step)
+158:                 extra_records+=count
+159:                 with torch.autocast('cuda',dtype=torch.float16):
+160:                     if step>=warmup or step==0:
+161:                         output,item=fields.capture(model,batch,indices)
+162:                     else:
+163:                         output=model(batch,return_aux=True);item=None
+164:                     old.output_mapping(output)
+165:                     components=criterion(output,labels)
+166:                 unit=F.normalize(output.fused_embedding.float(),dim=1)
+167:                 if step==0:
+168:                     buffers={n:v.clone() for n,v in model.named_buffers()}
+169:                     zero=fields.encode(model,item);extra_records+=64
+170:                     assert torch.equal(unit,zero), float((unit-zero).abs().max())
+171:                     assert all(torch.equal(v,buffers[n]) for n,v in model.named_buffers())
+172:                 ls,basic,_,dc,ds,stats=expanded_triplet(output.fused_embedding,ids,scenes,stale,metadata)
+173:                 lf,fresh_basic,_,fc,df,fstats=expanded_triplet(output.fused_embedding,ids,scenes,fresh,metadata)
+174:                 assert torch.equal(basic,components['triplet_fused']) and torch.equal(basic,fresh_basic)
+175:                 assert torch.equal(dc,fc)
+176:                 diagnostic=parameter_probe(model,ls,lf,scaler.get_scale()) if metadata else {}
+177:                 if endpoint=='instance_memory' and step>=warmup: components['triplet_fused']=ls
+178:                 with torch.autocast('cuda',dtype=torch.float16): loss=weighted_training_loss(components,config)
+179:                 assert torch.isfinite(loss)
+180:                 scale=scaler.get_scale();scaler.scale(loss).backward();scaler.unscale_(optimizer)
+181:                 for n,p in model.named_parameters():
+182:                     if p.requires_grad and p.grad is not None:
+183:                         assert torch.isfinite(p.grad).all(),n
+184:                         if p.grad.abs().sum()>0: live.add(n)
+185:                 scaler.step(optimizer);scaler.update();overflow+=int(scaler.get_scale()<scale)
+186:                 offset=matrices.tell()
+187:                 for values in (dc,ds,df): matrices.write(values.detach().cpu().contiguous().numpy().tobytes())
+188:                 row=dict(step=step+1,epoch=epoch,loss=float(loss.detach()),
+189:                          components={k:float(v.detach()) for k,v in components.items()},
+190:                          record_indices=indices,pixel_sha256=pixels,identities=ids,scenes=scenes,
+191:                          memory=metadata,stale_statistics=stats,fresh_statistics=fstats,
+192:                          cache_l2_drift=(stale-fresh).norm(dim=1).cpu().tolist(),
+193:                          parameter_gradients=diagnostic,distance_offset_bytes=offset,
+194:                          distance_float_count=dc.numel()+ds.numel()+df.numel(),
+195:                          fresh_role_record_forwards=count,amp_scale_before=scale,amp_scale_after=scaler.get_scale(),
+196:                          original_trajectory_loss_difference=float(loss.detach())-before_sealed[step] if mode=='source' else None,
+197:                          refreshed_loss_used_for_update=False)
+198:                 log.write(json.dumps(row)+'\n');log.flush()
+199:                 if step>=warmup:
+200:                     memory.update(step,indices,unit)
+201:                     fields.fields[step]=item
+202:                 steps.append(row);epoch_rows.append(row)
+203:                 del output,components,loss,unit,stale,fresh,ls,lf,basic,fresh_basic,dc,ds,df,fc,item
+204:             h=dict(epoch=epoch,updates=len(epoch_rows),learning_rate=lr,mean_loss=float(np.mean([r['loss'] for r in epoch_rows])),
+205:                    elapsed_seconds=time.perf_counter()-started)
+206:             history.append(h)
+207:             print(json.dumps(dict(event='freshness_epoch',fold=fold['fold'],endpoint=endpoint,mode=mode,**h)),flush=True)
+208:     assert len(steps)==(12 if mode=='preflight' else 260)
+209:     assert names==live and overflow==0
+210:     assert frozen_state_sha(model)==frozen and _module_state_sha256(model.baseline.signal)==signal
+211:     report=dict(steps=len(steps),history=history,initial_state_sha256=initial,final_state_sha256=_module_state_sha256(model),

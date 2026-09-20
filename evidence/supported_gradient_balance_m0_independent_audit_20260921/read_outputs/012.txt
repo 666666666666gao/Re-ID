@@ -1,0 +1,259 @@
+
+FILE C:\Users\gb\.trifusion_github_publish_22c3bee\tools\train_signal_preserving_v17.py
+201: def _tensor_mapping_sha256(tensors: Mapping[str, Any]) -> str:
+202:     digest = hashlib.sha256()
+203:     for name, tensor in sorted(tensors.items()):
+204:         digest.update(name.encode("utf-8"))
+205:         digest.update(tensor.detach().cpu().contiguous().numpy().tobytes())
+206:     return digest.hexdigest()
+207: 
+208: 
+209: def _model_state_sha256(model: Any) -> str:
+210:     return _tensor_mapping_sha256(model.state_dict())
+211: 
+212: 
+213: def _frozen_state_sha256(model: Any) -> str:
+214:     return _tensor_mapping_sha256(
+215:         {
+
+FILE C:\Users\gb\.trifusion_github_publish_22c3bee\tools\build_msvr310_train_oof_protocol.py
+1: #!/usr/bin/env python3
+2: """Prepare the MSVR310 train-only identity protocol from existing label evidence."""
+3: from __future__ import annotations
+4: 
+5: import argparse
+6: from collections import Counter
+7: import hashlib
+8: import json
+9: from pathlib import Path
+10: 
+11: 
+12: def build_protocol(label_file: Path) -> dict:
+13:     label_bytes = label_file.read_bytes()
+14:     assert hashlib.sha256(label_bytes).hexdigest() == (
+15:         "c835d20478b817a54b7710463269186af2619cab3e38850534b01f3aaee6e3c8"
+16:     )
+17:     dataset = next(
+18:         row for row in json.loads(label_bytes)["datasets"]
+19:         if row["dataset"] == "MSVR310"
+20:     )
+21:     train = dataset["record_manifest"]["bounding_box_train"]
+22:     assert len(train) == 1032
+23:     assert train == sorted(train, key=lambda row: row["path"])
+24:     identities = sorted({row["identity"] for row in train})
+25:     assert len(identities) == 155
+26:     scenes = {
+27:         identity: sorted({row["scene"] for row in train if row["identity"] == identity})
+28:         for identity in identities
+29:     }
+30:     eligible = [identity for identity in identities if len(scenes[identity]) > 1]
+31:     ineligible = [identity for identity in identities if len(scenes[identity]) == 1]
+32:     assert (len(eligible), len(ineligible)) == (60, 95)
+33: 
+34:     heldout_sets = [set() for _ in range(3)]
+35:     for group in (eligible, ineligible):
+36:         for index, identity in enumerate(group):
+37:             heldout_sets[index % 3].add(identity)
+38: 
+39:     records = []
+40:     for index, row in enumerate(train):
+41:         path = Path(row["path"])
+42:         assert path.parts[1] == "vis"
+43:         name = path.name
+44:         assert (int(name[:4]), int(name[11]), int(name[6:9])) == (
+45:             row["identity"], row["camera"], row["scene"]
+46:         )
+47:         prefix = Path("bounding_box_train") / path.parts[0]
+48:         records.append({
+49:             "index": index,
+50:             "identity": row["identity"],
+51:             "camera": row["camera"],
+52:             "scene": row["scene"],
+53:             "paths": [(prefix / modality / name).as_posix()
+54:                       for modality in ("vis", "ni", "th")],
+55:         })
+56: 
+57:     folds = []
+58:     for fold_index, heldout_ids in enumerate(heldout_sets):
+59:         source_ids = sorted(set(identities) - heldout_ids)
+60:         source_indices = [row["index"] for row in records
+61:                           if row["identity"] in source_ids]
+62:         gallery_indices = [row["index"] for row in records
+63:                            if row["identity"] in heldout_ids]
+64:         gallery = [records[index] for index in gallery_indices]
+65:         id_counts = Counter(row["identity"] for row in gallery)
+66:         scene_counts = Counter((row["identity"], row["scene"]) for row in gallery)
+67:         query_rows = []
+68:         excluded_query_indices = []
+69:         for position, row in enumerate(gallery):
+70:             removed = scene_counts[(row["identity"], row["scene"])]
+71:             positives = id_counts[row["identity"]] - removed
+72:             if positives == 0:
+73:                 excluded_query_indices.append(row["index"])
+74:                 continue
+75:             query_rows.append({
+76:                 "record_index": row["index"],
+77:                 "gallery_position": position,
+78:                 "identity": row["identity"],
+79:                 "scene": row["scene"],
+80:                 "valid_positives": positives,
+81:                 "removed_same_identity_same_scene": removed,
+82:                 "retained_gallery": len(gallery) - removed,
+83:                 "negative_identity_distractors": len(gallery) - id_counts[row["identity"]],
+84:             })
+85:         source = [records[index] for index in source_indices]
+86:         assert set(source_indices).isdisjoint(gallery_indices)
+87:         assert sorted(source_indices + gallery_indices) == list(range(1032))
+88:         assert len({row["identity"] for row in query_rows}) == 20
+89:         folds.append({
+90:             "fold": fold_index,
+91:             "source_ids": source_ids,
+92:             "source_label_map": {str(identity): local_label
+93:                                  for local_label, identity in enumerate(source_ids)},
+94:             "heldout_ids": sorted(heldout_ids),
+95:             "source_record_indices": source_indices,
+96:             "gallery_record_indices": gallery_indices,
+97:             "query_rows": query_rows,
+98:             "excluded_query_record_indices": excluded_query_indices,
+99:             "counts": {
+100:                 "source_identities": len(source_ids),
+101:                 "source_records": len(source),
+102:                 "source_cross_scene_identities": len(set(source_ids) & set(eligible)),
+103:                 "source_identity_camera_pairs": len({(r["identity"], r["camera"]) for r in source}),
+104:                 "source_identity_scene_pairs": len({(r["identity"], r["scene"]) for r in source}),
+105:                 "heldout_identities": len(heldout_ids),
+106:                 "gallery_records": len(gallery),
+107:                 "query_identities": len({row["identity"] for row in query_rows}),
+108:                 "valid_queries": len(query_rows),
+109:                 "excluded_queries_without_cross_scene_positive": len(excluded_query_indices),
+110:                 "gallery_only_distractor_identities": len(set(heldout_ids) & set(ineligible)),
+111:                 "gallery_only_distractor_records": len(excluded_query_indices),
+112:             },
+113:             "source_camera_values": sorted({row["camera"] for row in source}),
+114:             "source_scene_values": sorted({row["scene"] for row in source}),
+115:             "heldout_scene_values": sorted({row["scene"] for row in gallery}),
+116:         })
+117: 
+118:     heldout_union = [identity for fold in folds for identity in fold["heldout_ids"]]
+119:     gallery_union = [index for fold in folds for index in fold["gallery_record_indices"]]
+120:     query_union = [row["record_index"] for fold in folds for row in fold["query_rows"]]
+121:     assert sorted(heldout_union) == identities
+122:     assert sorted(gallery_union) == list(range(1032))
+123:     assert len(query_union) == len(set(query_union)) == 600
+124:     return {
+125:         "schema": "msvr310-train-identity-oof-v1",
+126:         "status": "DATA_PROTOCOL_FROZEN_TRAINING_CONTRACT_PENDING",
+127:         "scope": "Existing official-training labels only; no image, feature, model, tensor or retrieval execution",
+128:         "dataset": "MSVR310",
+129:         "source_split": "bounding_box_train",
+130:         "dataset_root_at_inventory": dataset["root"],
+131:         "label_evidence_sha256": hashlib.sha256(label_bytes).hexdigest(),
+132:         "builder_sha256": hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),
+133:         "split_rule": (
+134:             "Partition sorted identities by whether they have >=2 distinct scene labels; "
+135:             "round-robin each sorted group into folds 0/1/2. Label-only deterministic rule; "
+136:             "no random draw, feature ranking, hard-identity selection or split scan."
+137:         ),
+138:         "split_rule_source": (
+139:             "tools/build_v8_oof_router_targets.py:19-39 supplies the existing stratified "
+140:             "round-robin pattern; this protocol uses MSVR310 scene eligibility."
+141:         ),
+142:         "training_seed_when_registered": 42,
+143:         "evaluation": {
+144:             "type": "train_internal_identity_oof_not_official_test",
+145:             "gallery": "Every record of every heldout identity in its own fold",
+146:             "query": "Heldout records with at least one same-identity different-scene gallery record",
+147:             "remove": "same identity AND same scene",
+148:             "retain": "All different-identity gallery records, including same-scene negatives and single-scene identities",
+149:             "aggregation": "Pool per-query AP/Rank results after fold-local distances; never compare features across folds",
+150:             "separate_development_split": "None registered in this data protocol",
+151:             "checkpoint_selection": "Future training contract must use fixed source-only endpoints",
+152:             "official_query_and_gallery": "Not used to construct folds, source labels, query masks or scores",
+153:         },
+154:         "records": records,
+155:         "identity_scene_membership": {str(identity): scenes[identity] for identity in identities},
+156:         "folds": folds,
+157:         "aggregate_counts": {
+158:             "unique_training_identities": len(identities),
+159:             "unique_gallery_records": len(gallery_union),
+160:             "unique_query_identities": 60,
+161:             "valid_queries": len(query_union),
+162:             "excluded_query_records_retained_in_gallery": 1032 - len(query_union),
+163:             "gallery_only_distractor_identities": len(ineligible),
+164:         },
+165:         "new_optimizer_steps": 0,
+166:         "new_retrieval_evaluations": 0,
+167:         "new_image_reads": 0,
+168:         "new_checkpoint_loads": 0,
+169:     }
+170: 
+171: 
+172: def main() -> None:
+173:     parser = argparse.ArgumentParser()
+174:     parser.add_argument("--label-evidence", required=True, type=Path)
+175:     parser.add_argument("--output", required=True, type=Path)
+176:     args = parser.parse_args()
+177:     report = build_protocol(args.label_evidence)
+178:     args.output.write_bytes((json.dumps(report, ensure_ascii=False, indent=2) + "\n").encode())
+179:     print(json.dumps({
+180:         "status": report["status"],
+181:         "folds": [{"fold": row["fold"], **row["counts"]} for row in report["folds"]],
+182:         "aggregate_counts": report["aggregate_counts"],
+183:         "output_sha256": hashlib.sha256(args.output.read_bytes()).hexdigest(),
+184:         "new_optimizer_steps": 0,
+185:         "new_retrieval_evaluations": 0,
+186:     }, indent=2))
+187: 
+188: 
+189: if __name__ == "__main__":
+190:     main()
+
+FILE D:\Program Files\UserCache\gb\codex\tmp\trifusion_supported_balance_m0_independent_audit_20260921\snapshots\repo\tools\msvr_freshness_probe.py
+80:         assert all(torch.equal(v, before[n]) for n, v in model.named_buffers())
+81:         assert torch.equal(cpu_rng, torch.get_rng_state()) and torch.equal(cuda_rng, torch.cuda.get_rng_state())
+82:         values = [encoded[r['stored_step']][self.fields[r['stored_step']]['positions'][r['record_index']]] for r in metadata]
+83:         result = torch.stack(values) if values else prototype.new_empty((0, 7680))
+84:         assert not result.requires_grad and torch.isfinite(result).all()
+85:         return result, 64*len(groups)
+86: 
+87: 
+88: def grad_comparison(a, b):
+89:     x = torch.cat([v.float().reshape(-1) for v in a])
+90:     y = torch.cat([v.float().reshape(-1) for v in b])
+91:     assert torch.isfinite(x).all() and torch.isfinite(y).all()
+92:     nx, ny = float(x.norm()), float(y.norm())
+93:     return dict(stale_norm=nx, comparison_norm=ny, difference_norm=float((x-y).norm()),
+94:                 cosine=float(torch.dot(x, y)/(x.norm()*y.norm())) if nx > 0 and ny > 0 else None)
+95: 
+96: 
+97: def parameter_probe(model, stale, fresh, scale):
+98:     selected = [(n,p) for n,p in model.named_parameters() if p.requires_grad and n.startswith('encoder.')]
+99:     def gradient(loss):
+100:         values = torch.autograd.grad(loss*scale, [p for _,p in selected], retain_graph=True, allow_unused=True)
+101:         return {name: value.float()/scale for (name,_), value in zip(selected,values,strict=True) if value is not None}
+102:     first, repeated, current = gradient(stale), gradient(stale), gradient(fresh)
+103:     assert first.keys() == repeated.keys() == current.keys()
+104:     result = {}
+105:     for expert in EXPERTS:
+106:         names = [n for n in first if n.startswith('encoder.'+expert+'_')]
+107:         assert names
+108:         result[expert] = dict(
+109:             fresh=grad_comparison([first[n] for n in names], [current[n] for n in names]),
+110:             duplicate_noise=grad_comparison([first[n] for n in names], [repeated[n] for n in names]))
+111:     assert all(p.grad is None for _,p in selected)
+112:     return result
+113: 
+114: 
+115: def fit(model, records, fold, protocol, config, md, previous, *, endpoint, mode, directory):
+116:     from trifusion.signal_preserving_v8 import ExpertFormationV8Criterion
+117:     _set_seed(42);model.train()
+118:     initial = _module_state_sha256(model)
+119:     frozen = frozen_state_sha(model)
+120:     signal = _module_state_sha256(model.baseline.signal)
+121:     names = {n for n,p in model.named_parameters() if p.requires_grad}
+122:     optimizer = torch.optim.AdamW([p for p in model.parameters() if p.requires_grad],
+123:                                  lr=config['OPTIMIZATION']['NEW_MODULE_LR'],
+124:                                  weight_decay=config['OPTIMIZATION']['WEIGHT_DECAY'])
+125:     scaler = torch.amp.GradScaler('cuda', init_scale=256.)
+126:     criterion = ExpertFormationV8Criterion(triplet_margin=.3, label_smoothing=.1).cuda()
+127:     source = [protocol['records'][i] for i in fold['source_record_indices']]

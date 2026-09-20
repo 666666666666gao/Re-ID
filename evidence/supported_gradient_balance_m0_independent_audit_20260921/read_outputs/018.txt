@@ -1,0 +1,419 @@
+
+FILE D:\Program Files\UserCache\gb\codex\tmp\trifusion_supported_balance_m0_independent_audit_20260921\r1_r2.diff
+245: +                balance,full_rank,auxiliary=combine(parameters,current,current_rank,current_auxiliary,history_gradient,scale,
+246:                      role_groups,controller,supported,endpoint=='balanced')
+247:                  if active and not supported:
+248:                      assert all(not bool(g.abs().sum()) for g in full_rank)
+249: @@ -275,8 +282,10 @@
+250:                              historical_rank=check_reference([history_gradient[i]/scale for i in indexes],[direct_parts['history'][i]/scale for i in indexes]),
+251:                              full_rank=check_reference([full_rank[i]/scale for i in indexes],[direct_parts['rank'][i]/scale for i in indexes]),
+252:                              auxiliary=check_reference([auxiliary[i]/scale for i in indexes],[direct_parts['auxiliary'][i]/scale for i in indexes]),
+253: -                            applied=check_reference(actual,[(direct_parts['rank'][i]*wr+direct_parts['auxiliary'][i]*wa)/scale for i in indexes]))
+254: -                del direct_parts,full_rank,auxiliary,current_rank,head_gradients
+255: +                            applied=check_reference(actual,
+256: +                                [(direct_parts['rank'][i]*wr+direct_parts['auxiliary'][i]*wa)/scale for i in indexes]
+257: +                                if endpoint=='balanced' and supported else [direct[i] for i in indexes]))
+258: +                del direct,direct_parts,full_rank,auxiliary,current_rank,current_auxiliary,head_gradients
+259:                  before_parameters=[p.detach().clone() for p in parameters]
+260:                  scaler.unscale_(optimizer)
+261:                  for name,p in model.named_parameters():
+262: @@ -305,6 +314,7 @@
+263:                             support=support,gradient_balance=balance,actual_parameter_updates=updates,
+264:                             classification_head_gradients_unchanged=head_preserved,
+265:                             current_rank_backward_calls=1,
+266: +                           current_auxiliary_backward_calls=1,
+267:                             direct_component_backward_calls=4 if reference_checks else 0,
+268:                             selected_reencoding_bitwise=True,history_rng_buffers_preserved=True,
+269:                             history_vjp_leaves_current_grad_unchanged=True,final_gradient_addition_bitwise=True)
+270: @@ -328,6 +338,7 @@
+271:                  extra_direct_check_record_forwards=direct_forwards,
+272:                  fresh_history_both_endpoints=True,history_anchor_count=0,cache_not_in_checkpoint=True,
+273:                  gradient_balance_state=controller.states,current_rank_backward_calls=len(steps),
+274: +                current_auxiliary_backward_calls=len(steps),
+275:                  direct_component_backward_calls=4 if mode=='capacity' else 0,
+276:                  gradient_balancing_applied=endpoint=='balanced',classification_head_rule='original_current_total_gradient',
+277:                  audit_files={n:dict(bytes=(directory/n).stat().st_size,sha256=sha256(directory/n))
+278: --- R1/tools/verify_msvr_supported_gradient_balance_stats.py
+279: +++ R2/tools/verify_msvr_supported_gradient_balance_stats.py
+280: @@ -39,11 +39,13 @@
+281:          supported_steps+=int(supported)
+282:          zero_supported_steps+=int(index>=warmup and not supported)
+283:          assert row['classification_head_gradients_unchanged'] and row['current_rank_backward_calls']==1
+284: +        assert row['current_auxiliary_backward_calls']==1
+285:          assert set(row['gradient_balance'])==set(row['actual_parameter_updates'])==set(ROLES)
+286:          for role in ROLES:
+287:              b=row['gradient_balance'][role]
+288:              for key in ('rank_vs_auxiliary','current_rank_vs_history','rank_vs_applied',
+289: -                        'auxiliary_vs_applied','original_sum_vs_applied'):
+290: +                        'auxiliary_vs_applied','original_sum_vs_applied',
+291: +                        'subtraction_auxiliary_vs_direct','direct_sum_vs_original'):
+292:                  pair(b[key])
+293:              pair(row['actual_parameter_updates'][role])
+294:              p=b['rank_vs_auxiliary'];r,a=p['first_norm'],p['second_norm']
+295: @@ -68,10 +70,13 @@
+296:              close(actual,b['auxiliary_vs_applied']['second_norm'])
+297:              close(actual,b['original_sum_vs_applied']['second_norm'])
+298:              close(actual,row['applied_gradients'][role]['second_norm'])
+299: -            close(actual**2,wr*wr*r*r+wa*wa*a*a+2*wr*wa*ra)
+300: -            close(b['original_sum_vs_applied']['first_norm']**2,r*r+a*a+2*ra)
+301: -            close(b['original_sum_vs_applied']['difference_norm']**2,
+302: -                  (wr-1)**2*r*r+(wa-1)**2*a*a+2*(wr-1)*(wa-1)*ra)
+303: +            close(b['subtraction_auxiliary_vs_direct']['second_norm'],a)
+304: +            close(b['direct_sum_vs_original']['first_norm']**2,r*r+a*a+2*ra)
+305: +            close(b['direct_sum_vs_original']['second_norm'],b['original_sum_vs_applied']['first_norm'])
+306: +            if endpoint=='balanced' and supported:
+307: +                close(actual**2,wr*wr*r*r+wa*wa*a*a+2*wr*wa*ra)
+308: +            else:
+309: +                assert b['original_sum_vs_applied']['difference_norm']==0
+310:              history=b['current_rank_vs_history'];u,v=history['first_norm'],history['second_norm']
+311:              uv=0 if history['cosine'] is None else u*v*history['cosine']
+312:              close(r*r,u*u+v*v+2*uv)
+313: @@ -94,6 +99,7 @@
+314:          assert bool(row['rank_auxiliary_reference_checks'])==bool(row['direct_single_group_check'])
+315:      assert training['gradient_balance_state']==states
+316:      assert training['current_rank_backward_calls']==len(audits)
+317: +    assert training['current_auxiliary_backward_calls']==len(audits)
+318:      assert training['direct_component_backward_calls']==4*reference_steps
+319:      assert training['gradient_balancing_applied']==(endpoint=='balanced')
+320:      assert training['classification_head_rule']=='original_current_total_gradient'
+
+FILE D:\Program Files\UserCache\gb\codex\tmp\trifusion_supported_balance_m0_independent_audit_20260921\001-request.md
+1: # Fresh M0 integrity audit
+2: 
+3: Use experiment-audit. Judge primary artifacts yourself; do not accept executor summaries or a green verifier as proof. Review M0 engineering integrity and permitted claim scope, not new retrieval effectiveness.
+4: 
+5: Repository: C:/Users/gb/.trifusion_github_publish_22c3bee
+6: Remote repository: /root/autodl-tmp/trifusion-v2/TriFusion-ReID
+7: Execution: 1381639f778f77f124a2726ee55c07610092a438
+8: Remote run: /root/trifusion-storage/artifacts/msvr310_supported_gradient_balance_v1_r2_seed42_1381639
+9: 
+10: Read these exact paths and their called dependencies:
+11: - configs/MSVR310/TriFusion-supported-gradient-balance-paired-v1.json
+12: - refine-logs/msvr310_supported_gradient_balance_v1/EXPERIMENT_PLAN.md
+13: - refine-logs/msvr310_supported_gradient_balance_v1/EXPERIMENT_TRACKER.md
+14: - refine-logs/msvr310_supported_gradient_balance_v1/IMPLEMENTATION_NOTES.md
+15: - refine-logs/msvr310_supported_gradient_balance_v1/EXPERIMENT_CODE_REVIEW.md and .json
+16: - tools/msvr_supported_gradient_balance.py
+17: - tools/train_msvr_supported_gradient_balance.py
+18: - tools/check_msvr_supported_gradient_balance_math.py
+19: - tools/check_msvr_supported_gradient_balance.py
+20: - tools/verify_msvr_supported_gradient_balance.py
+21: - tools/verify_msvr_supported_gradient_balance_stats.py
+22: - tools/run_msvr_supported_gradient_balance.py
+23: - tools/msvr_cross_scene_smooth_ap.py
+24: - tools/msvr_instance_memory.py
+25: - tools/probe_msvr_history_candidate_gradients.py
+26: - tools/probe_msvr_role_set_gradients.py
+27: - tools/msvr_freshness_probe.py
+28: - tools/train_msvr310_trifusion_oof.py
+29: - tools/train_msvr310_signal_oof.py
+30: - docs/TRIFUSION_RGBNT201_CURRENT_COMPLETE_HANDOFF_2026-09-01.md (current entry and latest sections)
+31: - evidence/supported_gradient_balance_m0_r1_failure_20260921/** (original failure and executed snapshots)
+32: - evidence/supported_gradient_balance_r2_review_20260921/**
+33: - evidence/supported_gradient_balance_r2_start_20260921/**
+34: - D:/Program Files/UserCache/gb/codex/tmp/trifusion_supported_balance_m0_complete_20260921/** (complete text intake, inventory and receipt)
+35: - Remote run/t0.json, t0.log, pipeline.json, m0.log, m0_cpu.json, m0_cpu.log, m0/summary.json, all m0 endpoint/overfit receipts, training reports, memory_steps.jsonl, memory_distances.f32 and checkpoints.
+36: 
+37: Audit A–F: ground truth provenance, score normalization, actual result existence/numbers/status, executed metric paths, scope, and real_gt/simulation/engineering-proxy classification. Fully inspect actual code and artifacts, not selected convenient rows. Check original source identity isolation, complete source queue/candidate masks, other thirteen loss ledger, fixed seed/init/budget, all M0 gates, all six capacities and both overfits, frozen path and strict checkpoint reload, historical current-coordinate replay/RNG/buffer checks, no official data use. Follow registered input bindings already present; do not invent a new hash framework.
+38: 
+39: Specifically check the R1/R2 distinction from evidence: independent direct auxiliary calls versus subtraction; current/historical/full ranking references; actual control's original total+history path versus supported candidate's weighted direct parts; reference lifetime/scaling; zero-support and warmup EMA; head gradients; actual AdamW update norms and backward cost. CPU scalar identities must match the actual path. Distinguish saved runtime witness from independently regenerated parameter gradients. M0 support cases must be counted, not assumed from T0. Engineering ratios/normalization must not be called retrieval metrics. R1 failures and actual spent work must remain visible; do not modify thresholds or convert failure into success.
+40: 
+41: Independently recompute all feasible saved M0 distance/metric/mask/scalar-state relationships on remote CPU and verify all source/config/checkpoint bindings. Do not launch new model forwards, optimizer updates, GPU work, official/heldout image access, install packages, edit source/config/data, delete checkpoints or interrupt the live queue. Tensor/model/array files stay remote. Only text/code/reports may be copied locally. Live Q1, if it starts, is outside this M0 audit; do not consume its partial metrics for design.
+42: 
+43: Remote connection helper C:/Users/gb/.codex_tmp/trifusion_ssh_session_recovery_20260908.py contains secrets: execute privately, never display/copy/publish its content. Existing remote command transport C:/Users/gb/.codex_tmp/role_set_remote_command_20260908.py accepts a local Python payload and a new stdout path. Reuse tri_reid Python and current numpy/torch on remote with CUDA_VISIBLE_DEVICES empty, CPU threads bounded. Observation timeout is not terminal and never authorizes a restart. Local stdlib Python C:/Users/gb/AppData/Roaming/uv/python/cpython-3.13-windows-x86_64-none/python.exe. New helpers/output under D:/Program Files/UserCache/gb/codex/tmp.
+44: 
+45: Save all scripts, exact requests, stdout/stderr, failed attempts and verbatim final response under a NEW D:/Program Files/UserCache/gb/codex/tmp/trifusion_supported_balance_m0_independent_audit_20260921. Do not alter repository. Final report .md/.json must contain A–F PASS/WARN/FAIL, exact evidence paths/lines, actual coverage counts, deterministic versus runtime limits, closure status, remaining blockers and claim scope. Record requested gpt-6-astra/max/fresh-none, same-family/provisional, backend attestation unavailable. No author-provided verdict is supplied.
+
+FILE C:\Users\gb\.codex\skills\experiment-audit\SKILL.md
+1: ---
+2: name: experiment-audit
+3: description: "Audit ML result integrity, ground truth, evaluation scope, and reported evidence before claims."
+4: allowed-tools: Bash(*), Read, Write, Edit, Grep, Glob
+5: metadata:
+6:   argument-hint: '[experiment-dir-or-results-path]'
+7: ---
+8: 
+9: > For delegated writing or review, use the [installed Codex execution policy](../shared-references/local-codex-policy.md). It defines Astra routing, native tool calls, and honest review attribution.
+10: 
+11: # Experiment Audit: Fresh-Agent Integrity Verification
+12: 
+13: > **Codex assurance:** base semantic audit results record
+14: > `review_independence: same-family` and `acceptance_status: provisional`.
+15: > Deterministic evidence checks may be accepted; unavailable reviewer calls emit
+16: > BLOCKED/ERROR rather than a provisional PASS.
+17: 
+18: Audit experiment integrity for: **$ARGUMENTS**
+19: 
+20: ## Why This Exists
+21: 
+22: LLM agents can produce fraudulent experimental results through:
+23: 1. **Fake ground truth** — creating synthetic "reference" from model outputs, then reporting high agreement as performance
+24: 2. **Score normalization** — dividing metrics by the model's own max to get 0.99+
+25: 3. **Phantom results** — claiming numbers from files that don't exist or functions never called
+26: 4. **Insufficient scope** — reporting 2-scene pilots as "comprehensive evaluation"
+27: 
+28: These are NOT intentional deception — they are failure modes of optimizing agents that lack integrity constraints. This skill adds that constraint.
+29: 
+30: ## Core Principle
+31: 
+32: **The executor (Codex) collects file paths. A fresh Codex reviewer reads code and judges integrity. The executor does NOT participate in integrity judgment; this base route is same-family/provisional.**
+33: 
+34: This follows `shared-references/reviewer-independence.md` and `shared-references/experiment-integrity.md`.
+35: 
+36: ## Constants
+37: 
+38: - **REVIEWER_MODEL = `gpt-6-astra`**
+39: - **REVIEWER_REASONING_EFFORT = `max`** — Pass as a separate field; preserve historical audit model attribution.
+40: - **REVIEWER_BACKEND = `codex`** — Native Codex agents only; model `gpt-6-astra`, reasoning effort `max`. See `shared-references/local-codex-policy.md`.
+41: 
+42: ## Workflow
+43: 
+44: ### Step 1: Collect Artifacts (Executor — Codex)
+45: 
+46: Locate and list these files WITHOUT reading or summarizing their content:
+47: 
+48: ```
+49: Scan project directory for:
+50: 1. Evaluation scripts:    *eval*.py, *metric*.py, *test*.py, *benchmark*.py
+51: 2. Result files:          *.json, *.csv in results/, outputs/, logs/
+52: 3. Ground truth paths:    look in eval scripts for data loading (dataset paths, GT references)
+53: 4. Experiment tracker:    EXPERIMENT_TRACKER.md, EXPERIMENT_LOG.md
+54: 5. Paper claims:          NARRATIVE_REPORT.md, paper/sections/*.tex, PAPER_PLAN.md
+55: 6. Config files:          *.yaml, *.toml, *.json configs with metric definitions
+56: ```
+57: 
+58: **DO NOT summarize, interpret, or explain any file content.** Only collect paths.
+59: 
+60: ### Step 2: Send to Reviewer (gpt-6-astra via Codex MCP)
+61: 
+62: Pass ONLY file paths and the audit checklist to the reviewer. The reviewer reads everything directly.
+63: 
+64: ```text
+65: spawn_agent:
+66:   fork_turns: none
+67:   model: gpt-6-astra
+68:   reasoning_effort: max
+69:   message: |
+70:     You are an experiment integrity auditor. Start from the assumption that the
+71:     evaluation is compromised somewhere — your job is to find where. Be
+72:     adversarial. Trust nothing the author tells you — verify everything
+73:     yourself. Read ALL files listed below and check for the following fraud
+74:     patterns.
+75: 
+76:     Files to read:
+77:     - Evaluation scripts: [list paths]
+78:     - Result files: [list paths]
+79:     - Experiment tracker: [list paths]
+80:     - Paper claims: [list paths]
+81:     - Config files: [list paths]
+82: 
+83:     ## Audit Checklist
+84: 
+85:     ### A. Ground Truth Provenance
+86:     For each evaluation script:
+87:     1. Where does "ground truth" / "reference" / "target" come from?
+88:     2. Is it loaded from the DATASET, or generated/derived from MODEL OUTPUTS?
+89:     3. If derived: is it explicitly labeled as proxy evaluation?
+90:     4. Are official eval scripts used when available for this benchmark?
+91:     FAIL if: GT is derived from model outputs without explicit proxy labeling.
+92: 
+93:     ### B. Score Normalization
+94:     For each metric computation:
+95:     1. Is any metric divided by max/min/mean of the model's OWN output?
+96:     2. Are raw scores reported alongside any normalized scores?
+97:     3. Are any scores suspiciously close to 1.0 or 100%?
+98:     FAIL if: Normalization denominator comes from prediction statistics.
+99: 
+100:     ### C. Result File Existence
+101:     For each claim in the paper/narrative:
+102:     1. Does the referenced result file actually exist?
+103:     2. Does the claimed metric key exist in that file?
+104:     3. Does the claimed NUMBER match what's in the file?
+105:     4. Is the experiment tracker status DONE (not TODO/IN_PROGRESS)?
+106:     FAIL if: Claimed results reference nonexistent files or mismatched numbers.
+107: 
+108:     ### D. Dead Code Detection
+109:     For each metric function defined in eval scripts:
+110:     1. Is it actually CALLED in any evaluation pipeline?
+111:     2. Does its output appear in any result file?
+112:     WARN if: Metric functions exist but are never called.
+113: 
+114:     ### E. Scope Assessment
+115:     1. How many scenes/datasets/configurations were actually tested?
+116:     2. How many seeds/runs per configuration?
+117:     3. Does the paper use words like "comprehensive", "extensive", "robust"?
+118:     4. Is the actual scope sufficient for those claims?
+119:     WARN if: Scope language exceeds actual evidence.
+120: 
+121:     ### F. Evaluation Type Classification
+122:     Classify each evaluation as:
+123:     - real_gt: uses dataset-provided ground truth
+124:     - synthetic_proxy: uses model-generated reference
+125:     - self_supervised_proxy: no GT by design
+126:     - simulation_only: simulated environment
+127:     - human_eval: human judges
+128: 
+129:     ## Output Format
+130: 
+131:     For each check (A-F), report:
+132:     - Status: PASS | WARN | FAIL
+133:     - Evidence: exact file:line references
+134:     - Details: what specifically was found
+135: 
+136:     Overall verdict: PASS | WARN | FAIL
+137:     
+138:     Be thorough. Read every eval script line by line.
+139: ```
+140: 
+141: ### Step 3: Parse and Write Report (Executor — Codex)
+142: 
+143: Parse the reviewer's response and write `EXPERIMENT_AUDIT.md`:
+144: 
+145: ```markdown
+146: # Experiment Audit Report
+147: 
+148: **Date**: [today]
+149: **Auditor**: gpt-6-astra max (fresh same-family agent, read-only, provisional)
+150: **Project**: [project name]
+151: 
+152: ## Overall Verdict: [PASS | WARN | FAIL]
+153: 
+154: ## Integrity Status: [pass | warn | fail]
+155: 
+156: ## Checks
+157: 
+158: ### A. Ground Truth Provenance: [PASS|WARN|FAIL]
+159: [details + file:line evidence]
+160: 
+161: ### B. Score Normalization: [PASS|WARN|FAIL]
+162: [details]
+163: 
+164: ### C. Result File Existence: [PASS|WARN|FAIL]
+165: [details]
+166: 
+167: ### D. Dead Code Detection: [PASS|WARN|FAIL]
+168: [details]
+169: 
+170: ### E. Scope Assessment: [PASS|WARN|FAIL]
+171: [details]
+172: 
+173: ### F. Evaluation Type: [real_gt | synthetic_proxy | ...]
+174: [classification + evidence]
+175: 
+176: ## Action Items
+177: - [specific fixes if WARN or FAIL]
+178: 
+179: ## Claim Impact
+180: - Claim 1: [supported | needs qualifier | unsupported]
+181: - Claim 2: ...
+182: ```
+183: 
+184: Also write `EXPERIMENT_AUDIT.json` for machine consumption:
+185: 
+186: ```json
+187: {
+188:   "audit_skill": "experiment-audit",
+189:   "verdict": "WARN",
+190:   "reason_code": "scope_exceeds_evidence",
+191:   "summary": "Two-scene evaluation supports a qualified claim only.",
+192:   "audited_input_hashes": {"results/eval.json": "sha256:<hash>"},
+193:   "trace_path": ".aris/traces/experiment-audit/2026-04-10_run01/",
+194:   "agent_id": "agent_019f...",
+195:   "verdict_id": "agent_019f...",
+196:   "executor_model": "codex-gpt-6-astra",
+197:   "executor_family": "openai",
+198:   "reviewer_model": "gpt-6-astra",
+199:   "reviewer_family": "openai",
+200:   "reviewer_reasoning": "max",
+201:   "review_independence": "same-family",
+202:   "acceptance_status": "provisional",
+203:   "generated_at": "2026-04-10T00:00:00Z",
+204:   "date": "2026-04-10",
+205:   "auditor": "gpt-6-astra-max",
+206:   "overall_verdict": "warn",
+207:   "integrity_status": "warn",
+208:   "checks": {
+209:     "gt_provenance": {"status": "pass", "details": "..."},
+210:     "score_normalization": {"status": "warn", "details": "..."},
+211:     "result_existence": {"status": "pass", "details": "..."},
+212:     "dead_code": {"status": "pass", "details": "..."},
+213:     "scope": {"status": "warn", "details": "..."},
+214:     "eval_type": "real_gt"
+215:   },
+216:   "claims": [
+217:     {"id": "C1", "impact": "supported"},
+218:     {"id": "C2", "impact": "needs_qualifier"}
+219:   ]
+220: }
+221: ```
+222: 
+223: ### Step 4: Print Summary
+224: 
+225: ```
+226: 🔬 Experiment Audit Complete
+227: 
+228:   GT Provenance:      ✅ PASS — real dataset GT used
+229:   Score Normalization: ⚠️ WARN — boundary metric uses self-reference
+230:   Result Existence:    ✅ PASS — all files exist, numbers match
+231:   Dead Code:           ✅ PASS — all metric functions called
+232:   Scope:               ⚠️ WARN — 2 scenes, paper says "comprehensive"
+233: 
+234:   Overall: ⚠️ WARN
+235:   
+236:   See EXPERIMENT_AUDIT.md for details.
+237: ```
+238: 
+239: ## Integration with Other Skills
+240: 
+241: ### Automatic in /research-pipeline (advisory, never blocks)
+242: 
+243: When integrated into the pipeline, this skill runs automatically after `/experiment-bridge` and before `/auto-review-loop`:
+244: 
+245: ```
+246: /experiment-bridge → results ready
+247:     ↓
+248: /experiment-audit (automatic, advisory)
+249:     ├── PASS  → continue normally
+250:     ├── WARN  → print ⚠️ warning, continue, tag claims as [INTEGRITY: WARN]
+251:     └── FAIL  → print 🔴 alert, continue, tag claims as [INTEGRITY CONCERN]
+252:     ↓
+253: /auto-review-loop → proceeds with integrity tags visible to reviewer
+254: ```
+255: 
+256: **Never blocks the pipeline.** Even on FAIL, the pipeline continues — but claims carry visible integrity tags.
+257: 
+258: ### Read by /result-to-claim (if exists)
+259: 
+260: ```
+261: if EXPERIMENT_AUDIT.json exists:
+262:     read integrity_status
+263:     attach to verdict: {claim_supported: "yes", integrity_status: "warn"}
+264:     if integrity_status == "fail":
+265:         downgrade verdict display: "yes [INTEGRITY CONCERN]"
+266: else:
+267:     verdict as normal, integrity_status = "unavailable"
+268:     mark as "provisional — no integrity audit"
+269: ```
+270: 
+271: ### Read by /paper-write (if exists)
+272: 
+273: ```
+274: if EXPERIMENT_AUDIT.json exists AND integrity_status == "fail":
+275:     add footnote to affected claims: "Note: integrity audit flagged concerns with this evaluation"
+276: ```
+277: 
+278: ## Key Rules
+279: 
+280: - **Reviewer independence**: executor collects paths, reviewer judges. Period.
+281: - **Never block**: warn loudly, never halt the pipeline.
+282: - **File-as-switch**: no EXPERIMENT_AUDIT.md = skill was never run = zero impact on existing behavior.
+283: - **Review class**: base Codex is same-family provisional; only an overlay may claim cross-family accepted.
+284: - **Honest about limits**: the audit catches common patterns, not all possible fraud. It is a safety net, not a guarantee.
+285: 
+286: ## Acknowledgements
+287: 
+288: Motivated by community-reported integrity issues (#57, #131) where executor agents created fake ground truth and self-normalized scores.
+289: 
+290: ## Review Tracing
+291: 
+292: After each reviewer agent call, save the trace following `shared-references/review-tracing.md` (Policy C — forensic; never silently skip). Use `save_trace.sh` (resolved per the chain in `shared-references/integration-contract.md` §2) or write files directly to `.aris/traces/<skill>/<date>_run<NN>/`. Respect the `--- trace:` parameter (default: `full`).

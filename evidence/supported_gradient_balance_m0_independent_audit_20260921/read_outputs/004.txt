@@ -1,0 +1,545 @@
+
+FILE D:\Program Files\UserCache\gb\codex\tmp\trifusion_supported_balance_m0_independent_audit_20260921\snapshots\repo\tools\verify_msvr_supported_gradient_balance.py
+230:             payload = torch.load(path, map_location='cpu', weights_only=True)
+231:             assert payload['config_sha256'] == sha256(args.config) and payload['binding'] == item['initialization']
+232:             assert payload['source_ids'] == fold['source_ids'] and payload['heldout_ids'] == fold['heldout_ids']
+233:             state = {k: original[n] for k, n in payload['baseline_aliases'].items()};state.update(payload['role_state_dict'])
+234:             assert state_sha(state) == tr['final_state_sha256'] == item['strict_reload_state_sha256']
+235:             for p in (path, local/'receipt.json', local/'training.json', local/'memory_steps.jsonl', local/'memory_distances.f32'): record(p)
+236:             if m0:
+237:                 assert all(item['preflight'][k] for k in ('standalone_signal_bitwise_equal', 'zero_update_replay_bitwise_equal', 'all_model_state_unchanged'))
+238:                 assert item['strict_reload_all_outputs_bitwise_equal']
+239:                 continue
+240:             retrieval = item['retrieval']
+241:             arrays = torch.load(local/'retrieval_arrays.pt', map_location='cpu', weights_only=True)
+242:             ref = torch.load(Path(b0['checkpoint']).parent/'retrieval_arrays.pt', map_location='cpu', weights_only=True)
+243:             ranks = json.loads((local/'rankings.json').read_bytes())
+244:             assert sha256(local/'retrieval_arrays.pt') == retrieval['retrieval_arrays_sha256']
+245:             assert sha256(local/'rankings.json') == retrieval['rankings_sha256']
+246:             positions = [q['gallery_position'] for q in fold['query_rows']]
+247:             assert arrays['query_gallery_positions'] == positions and arrays['gallery_record_indices'] == fold['gallery_record_indices']
+248:             gallery = [protocol['records'][i] for i in fold['gallery_record_indices']]
+249:             ids = np.array([r['identity'] for r in gallery]);scenes = np.array([r['scene'] for r in gallery])
+250:             if end == 'control': query_ids.extend(ids[positions])
+251:             assert torch.equal(arrays['features']['baseline_only'], ref['features'])
+252:             assert torch.equal(arrays['distances']['baseline_only'], ref['distances'])
+253:             assert torch.equal(arrays['features']['fused'][:, :3072], arrays['features']['baseline_only'])
+254:             maps = {}
+255:             for name, width in OUTPUT_WIDTHS.items():
+256:                 values = arrays['features'][name];distance = arrays['distances'][name]
+257:                 assert values.shape == (len(gallery), width) and torch.isfinite(values).all()
+258:                 unit = torch.nn.functional.normalize(values.float(), dim=1);q = unit[positions]
+259:                 actual = q.square().sum(1, keepdim=True)+unit.square().sum(1)[None]
+260:                 actual.addmm_(q, unit.T, beta=1, alpha=-2)
+261:                 assert torch.equal(actual, distance)
+262:                 order = np.argsort(distance.numpy(), axis=1);assert order.tolist() == ranks[name]
+263:                 ap, first = [], []
+264:                 for qi, indices in enumerate(order):
+265:                     qpos = positions[qi]
+266:                     legal = [g for g in indices if not (ids[g] == ids[qpos] and scenes[g] == scenes[qpos])]
+267:                     positive = [rank+1 for rank, g in enumerate(legal) if ids[g] == ids[qpos]]
+268:                     assert positive
+269:                     ap.append(sum((k+1)/rank for k, rank in enumerate(positive))/len(positive));first.append(positive[0])
+270:                 score = retrieval['outputs'][name]
+271:                 assert np.allclose(ap, score['average_precision'], rtol=0, atol=1e-14) and first == score['first_match_rank']
+272:                 maps[name] = float(np.mean(ap)*100)
+273:                 assert abs(maps[name]-score['metrics']['mAP']) < 1e-10
+274:                 for k in (1, 5, 10): assert abs(float(np.mean(np.array(first) <= k)*100)-score['metrics'][f'Rank-{k}']) < 1e-10
+275:                 aps[end][name].extend(ap);firsts[end][name].extend(first);distance_elements += distance.numel()
+276:             fold_maps[end].append(maps)
+277:             record(local/'retrieval_arrays.pt');record(local/'rankings.json')
+278:         assert paired[0] == paired[1] and row['all_paired_source_pixels_exact']
+279:         assert row['endpoints']['control']['initialization'] == row['endpoints']['balanced']['initialization']
+280:     if m0:
+281:         pair = []
+282:         for end in ENDPOINTS:
+283:             row = summary['overfit'][end];tr = row['training'];local = directory/('overfit_'+end)
+284:             check, pixels = training(local, tr, protocol['folds'][0], protocol, metadata['folds'][0], spec, config, end, 'overfit')
+285:             training_checks.append(dict(fold=0, endpoint=end, mode='overfit', **check));pair.append(pixels)
+286:             assert all(row['checks'].values())
+287:             from tools.run_signal_preserving_v5 import overfit_loss_floor
+288:             floor = overfit_loss_floor(config, num_classes=len(protocol['folds'][0]['source_ids']))
+289:             ratio = (tr['steps'][-1]['loss']-floor)/(tr['steps'][0]['loss']-floor)
+290:             assert row['gate']['minimum_loss'] == floor and abs(ratio-row['gate']['loss_ratio']) < 1e-12 and ratio <= .1
+291:             for p in local.iterdir(): record(p)
+292:         assert pair[0] == pair[1]
+293:     else:
+294:         assert len(query_ids) == 600 and len(set(query_ids)) == 60
+295:         ids = np.array(query_ids);comparison = summary['comparison']
+296:         maps = {e: {o: float(np.mean(aps[e][o])*100) for o in OUTPUT_WIDTHS} for e in ENDPOINTS}
+297:         for end in ENDPOINTS:
+298:             recorded = comparison['endpoints'][end]
+299:             gains = {o: maps[end][o]-maps[end]['baseline_only'] for o in OUTPUT_WIDTHS}
+300:             fg = [r['fused']-r['baseline_only'] for r in fold_maps[end]]
+301:             lower = bootstrap((np.array(aps[end]['fused'])-np.array(aps[end]['baseline_only']))*100, ids)
+302:             checks = dict(fused_gain_at_least_1pp=gains['fused'] >= 1,
+303:                           all_fold_fused_gains_nonnegative=all(g >= 0 for g in fg),
+304:                           all_full_branches_not_below_signal=all(gains[e] >= 0 for e in EXPERTS),
+305:                           identity_bootstrap_lower_positive=lower > 0,
+306:                           fused_strictly_best=all(maps[end]['fused'] > maps[end][e] for e in ('baseline_only', *EXPERTS)))
+307:             assert checks == recorded['scientific_checks'] and all(checks.values()) == recorded['scientific_passed']
+308:             assert abs(lower-recorded['identity_bootstrap']['lower_bound_pp']) < 1e-10
+309:             assert np.allclose(fg, recorded['fold_fused_gains_pp'], rtol=0, atol=1e-10)
+310:             for output in OUTPUT_WIDTHS:
+311:                 assert abs(maps[end][output]-recorded['metrics'][output]['mAP']) < 1e-10
+312:                 assert abs(gains[output]-recorded['gains_over_signal_pp'][output]) < 1e-10
+313:                 for k in (1, 5, 10): assert abs(float(np.mean(np.array(firsts[end][output]) <= k)*100)-recorded['metrics'][output][f'Rank-{k}']) < 1e-10
+314:                 for r in recorded['per_identity']:
+315:                     mask = ids == r['identity'];assert int(mask.sum()) == r['query_count']
+316:                     assert abs(float(np.array(aps[end][output])[mask].mean()*100)-r['map_by_output'][output]) < 1e-10
+317:                 if output != 'baseline_only':
+318:                     delta = (np.array(aps[end][output])-np.array(aps[end]['baseline_only']))*100
+319:                     a = np.array(firsts[end][output]);b = np.array(firsts[end]['baseline_only'])
+320:                     changed = dict(ap_improved=int((delta > 0).sum()), ap_declined=int((delta < 0).sum()),
+321:                                    ap_unchanged=int((delta == 0).sum()), rank1_repaired=int(((b > 1) & (a == 1)).sum()),
+322:                                    rank1_new_errors=int(((b == 1) & (a > 1)).sum()))
+323:                     assert changed == recorded['query_changes'][output]
+324:         gain = {o: float(((np.array(aps['balanced'][o])-np.array(aps['control'][o]))*100).mean()) for o in OUTPUT_WIDTHS}
+325:         lower = bootstrap((np.array(aps['balanced']['fused'])-np.array(aps['control']['fused']))*100, ids)
+326:         fg = [b['fused']-a['fused'] for a, b in zip(fold_maps['control'], fold_maps['balanced'], strict=True)]
+327:         candidate = maps['balanced']
+328:         checks = dict(fused_gain_at_least_1pp=gain['fused'] >= 1, all_fold_fused_nonnegative=all(g >= 0 for g in fg),
+329:                       all_role_gains_nonnegative=all(gain[e] >= 0 for e in EXPERTS), paired_identity_bootstrap_lower_positive=lower > 0,
+330:                       candidate_fused_strictly_best=all(candidate['fused'] > candidate[e] for e in ('baseline_only', *EXPERTS)))
+331:         assert checks == comparison['paired_checks'] and abs(lower-comparison['paired_bootstrap_lower_pp']) < 1e-10
+332:         assert np.allclose(fg, comparison['fold_fused_gains_mAP'], rtol=0, atol=1e-10)
+333:         assert comparison['paired_pass'] == all(checks.values())
+334:         assert comparison['vehicle_baseline_pass'] == comparison['endpoints']['balanced']['scientific_passed']
+335:         assert all(abs(gain[o]-comparison['matched_gains_mAP'][o]) < 1e-10 for o in OUTPUT_WIDTHS)
+336:         for r in comparison['paired_per_identity']:
+337:             mask = ids == r['identity'];assert int(mask.sum()) == r['query_count']
+338:             for o in OUTPUT_WIDTHS:
+339:                 d = (np.array(aps['balanced'][o])-np.array(aps['control'][o]))*100
+340:                 assert abs(float(d[mask].mean())-r['gains_mAP'][o]) < 1e-10
+341:         passed = all(checks.values()) and comparison['endpoints']['balanced']['scientific_passed']
+342:         assert comparison['next_phase_qualified'] == passed and summary['status'] == ('Q1_PASS' if passed else 'Q1_FAIL')
+343:     assert sum(r['steps'] for r in training_checks) == (248 if m0 else 1560)
+344:     result = dict(status='PASS_COMPLETE_SUPPORTED_GRADIENT_BALANCE_M0' if m0 else 'PASS_COMPLETE_SUPPORTED_GRADIENT_BALANCE_Q1',
+345:                   verified_at=datetime.now().astimezone().isoformat(), summary_sha256=sha256(directory/'summary.json'),
+346:                   training_checks=training_checks, checked_training_steps=sum(r['steps'] for r in training_checks),
+347:                   checked_memory_distance_elements=sum(r['matrix_elements'] for r in training_checks),
+348:                   checked_history_vjp_record_forwards=sum(r['extra_history_vjp_record_forwards'] for r in training_checks),
+349:                   checked_retrieval_distance_and_rank_elements=distance_elements, files=files,
+350:                   model_forwards=0, optimizer_updates=0, elapsed_seconds=time.perf_counter()-started,
+351:                   scope='Complete saved distance/mask/loss and final checkpoint/retrieval replay; per-step feature and parameter gradients are runtime witnesses, not independently regenerated training.')
+352:     assert not args.output.exists();write_json(args.output, result)
+353:     print(json.dumps({k: v for k, v in result.items() if k not in ('files', 'training_checks')}), flush=True)
+354: 
+355: 
+356: if __name__ == '__main__':
+357:     parser = argparse.ArgumentParser()
+358:     parser.add_argument('--config', type=Path, required=True)
+359:     parser.add_argument('--run-dir', type=Path, required=True)
+360:     parser.add_argument('--output', type=Path, required=True)
+361:     run(parser.parse_args())
+
+FILE D:\Program Files\UserCache\gb\codex\tmp\trifusion_supported_balance_m0_independent_audit_20260921\snapshots\repo\tools\verify_msvr_supported_gradient_balance_stats.py
+1: """Replay controller statistics from saved scalars, not parameter gradients."""
+2: import math
+3: 
+4: ROLES=('cnn','transformer','mamba')
+5: 
+6: 
+7: def close(a,b):
+8:     assert math.isfinite(a) and math.isfinite(b)
+9:     assert abs(a-b)<=1e-7*max(1,abs(a),abs(b)), (a,b)
+10: 
+11: 
+12: def pair(p):
+13:     a,b,d=p['first_norm'],p['second_norm'],p['difference_norm']
+14:     c=p['cosine']
+15:     assert all(math.isfinite(x) and x>=0 for x in (a,b,d))
+16:     assert (c is None)==(a==0 or b==0)
+17:     if c is not None:
+18:         assert abs(c)<=1.00001
+19:         close(d*d,a*a+b*b-2*a*b*c)
+20:     else:
+21:         close(d*d,a*a+b*b)
+22: 
+23: 
+24: def verify_balance(audits,training,endpoint,warmup):
+25:     states={e:None for e in ROLES}
+26:     supported_steps=reference_steps=zero_supported_steps=0
+27:     for index,row in enumerate(audits):
+28:         counts=row['relation_objective']['cross_scene_positive_counts']
+29:         ids=row['identities'];scenes=row['scenes']
+30:         candidates=list(zip(ids,scenes))+[(r['identity'],r['scene']) for r in row['memory']]
+31:         positive_ids={identity for identity,n in zip(ids,counts,strict=True) if n>0}
+32:         relations={(identity,scene,other_scene)
+33:                    for identity,scene,n in zip(ids,scenes,counts,strict=True) if n>0
+34:                    for other_id,other_scene in candidates if identity==other_id and scene!=other_scene}
+35:         expected=dict(eligible_anchors=sum(n>0 for n in counts),eligible_identities=len(positive_ids),
+36:                       identity_directed_scene_relations=len(relations))
+37:         assert row['support']==expected
+38:         supported=index>=warmup and expected['eligible_anchors']>0
+39:         supported_steps+=int(supported)
+40:         zero_supported_steps+=int(index>=warmup and not supported)
+41:         assert row['classification_head_gradients_unchanged'] and row['current_rank_backward_calls']==1
+42:         assert row['current_auxiliary_backward_calls']==1
+43:         assert set(row['gradient_balance'])==set(row['actual_parameter_updates'])==set(ROLES)
+44:         for role in ROLES:
+45:             b=row['gradient_balance'][role]
+46:             for key in ('rank_vs_auxiliary','current_rank_vs_history','rank_vs_applied',
+47:                         'auxiliary_vs_applied','original_sum_vs_applied',
+48:                         'subtraction_auxiliary_vs_direct','direct_sum_vs_original'):
+49:                 pair(b[key])
+50:             pair(row['actual_parameter_updates'][role])
+51:             p=b['rank_vs_auxiliary'];r,a=p['first_norm'],p['second_norm']
+52:             ra=0 if p['cosine'] is None else r*a*p['cosine']
+53:             assert b['supported']==supported and b['before']==states[role]
+54:             before=states[role]
+55:             ratio=None;wr=wa=1.0
+56:             if supported:
+57:                 states[role]=(dict(rank=r,auxiliary=a,supported_steps=1) if before is None else
+58:                     dict(rank=.9*before['rank']+.1*r,auxiliary=.9*before['auxiliary']+.1*a,
+59:                          supported_steps=before['supported_steps']+1))
+60:                 ratio=min(4.,max(.25,((states[role]['auxiliary']+1e-12)/(states[role]['rank']+1e-12))**.5))
+61:                 wr=2*ratio/(1+ratio);wa=2/(1+ratio)
+62:             assert b['after']==states[role]
+63:             assert b['ratio']==ratio
+64:             close(wr,b['proposed_rank_weight']);close(wa,b['proposed_auxiliary_weight'])
+65:             if endpoint=='control' or not supported:wr=wa=1.
+66:             close(wr,b['applied_rank_weight']);close(wa,b['applied_auxiliary_weight'])
+67:             assert .4<=wr<=1.6 and .4<=wa<=1.6
+68:             close(wr+wa,2.)
+69:             actual=b['rank_vs_applied']['second_norm']
+70:             close(actual,b['auxiliary_vs_applied']['second_norm'])
+71:             close(actual,b['original_sum_vs_applied']['second_norm'])
+72:             close(actual,row['applied_gradients'][role]['second_norm'])
+73:             close(b['subtraction_auxiliary_vs_direct']['second_norm'],a)
+74:             close(b['direct_sum_vs_original']['first_norm']**2,r*r+a*a+2*ra)
+75:             close(b['direct_sum_vs_original']['second_norm'],b['original_sum_vs_applied']['first_norm'])
+76:             if endpoint=='balanced' and supported:
+77:                 close(actual**2,wr*wr*r*r+wa*wa*a*a+2*wr*wa*ra)
+78:             else:
+79:                 assert b['original_sum_vs_applied']['difference_norm']==0
+80:             history=b['current_rank_vs_history'];u,v=history['first_norm'],history['second_norm']
+81:             uv=0 if history['cosine'] is None else u*v*history['cosine']
+82:             close(r*r,u*u+v*v+2*uv)
+83:             if index>=warmup and not supported:
+84:                 assert r==u==v==0
+85:             checks=row['rank_auxiliary_reference_checks']
+86:             if checks:
+87:                 assert set(checks)==set(ROLES)
+88:                 assert set(checks[role])=={'current_rank','historical_rank','full_rank','auxiliary','applied'}
+89:                 for ref in checks[role].values():
+90:                     pair(ref)
+91:                     assert ref['passed']
+92:                     if ref['first_norm']:
+93:                         close(ref['relative_l2_error'],ref['difference_norm']/ref['first_norm'])
+94:                         assert ref['relative_l2_error']<=.005
+95:                     else:
+96:                         assert ref['relative_l2_error'] is None and ref['difference_norm']<=1e-8
+97:         reference_steps+=int(bool(row['rank_auxiliary_reference_checks']))
+98:         assert row['direct_component_backward_calls']==(4 if row['rank_auxiliary_reference_checks'] else 0)
+99:         assert bool(row['rank_auxiliary_reference_checks'])==bool(row['direct_single_group_check'])
+100:     assert training['gradient_balance_state']==states
+101:     assert training['current_rank_backward_calls']==len(audits)
+102:     assert training['current_auxiliary_backward_calls']==len(audits)
+103:     assert training['direct_component_backward_calls']==4*reference_steps
+104:     assert training['gradient_balancing_applied']==(endpoint=='balanced')
+105:     assert training['classification_head_rule']=='original_current_total_gradient'
+106:     return dict(steps=len(audits),supported_steps=supported_steps,zero_supported_steps=zero_supported_steps,
+107:                 direct_reference_steps=reference_steps,all_scalar_state_updates_replayed=True,
+108:                 parameter_gradient_scope='runtime witnesses; full per-step gradient vectors not regenerated')
+
+FILE D:\Program Files\UserCache\gb\codex\tmp\trifusion_supported_balance_m0_independent_audit_20260921\snapshots\repo\tools\check_msvr_supported_gradient_balance_math.py
+1: """Synthetic CPU differentiation checks; not model or retrieval evidence."""
+2: import copy
+3: import math
+4: 
+5: import torch
+6: 
+7: from tools.msvr_supported_gradient_balance import (
+8:     ROLES, SupportedBalance, role_indices, scalar_gradients, combine, support_counts,
+9: )
+10: 
+11: 
+12: def checks():
+13:     names=['encoder.'+e+'_fixture.weight' for e in ROLES]
+14:     groups=role_indices(names)
+15:     snapshots=[]
+16:     for scale in (1.,256.):
+17:         parameters=[torch.nn.Parameter(torch.tensor([.3+i*.1,-.4+i*.03])) for i in range(3)]
+18:         head=torch.nn.Parameter(torch.tensor([.2]))
+19:         x=torch.tensor([.7,-1.2]);y=torch.tensor([-.1,.9]);target=torch.tensor([.8,-.2])
+20:         u=[p*x for p in parameters];v=[p*y for p in parameters]
+21:         rank=sum((a-b).square().sum() for a,b in zip(u,v,strict=True))
+22:         rank_current=sum((a-b.detach()).square().sum() for a,b in zip(u,v,strict=True))
+23:         rank_history=sum((a.detach()-b).square().sum() for a,b in zip(u,v,strict=True))
+24:         auxiliary=sum((a-target).square().sum() for a in u)+head.square().sum()
+25:         r=scalar_gradients(rank_current,parameters,scale)
+26:         h=scalar_gradients(rank_history,parameters,scale)
+27:         current=scalar_gradients(rank_current+auxiliary,parameters,scale)
+28:         direct_rank=scalar_gradients(rank,parameters,scale)
+29:         direct_aux=scalar_gradients(auxiliary,parameters,scale)
+30:         direct_total=scalar_gradients(rank+auxiliary,parameters,scale)
+31:         head.grad=torch.autograd.grad((rank_current+auxiliary)*scale,head,retain_graph=True)[0]
+32:         head_before=head.grad.clone()
+33:         for p,g in zip(parameters,current,strict=True):p.grad=g.clone()
+34:         controller=SupportedBalance()
+35:         control,full,a=combine(parameters,current,r,direct_aux,h,scale,groups,controller,True,False)
+36:         assert all(torch.allclose(g,f,rtol=1e-6,atol=1e-6*scale) for g,f in zip(full,direct_rank,strict=True))
+37:         assert all(torch.allclose(g,f,rtol=1e-6,atol=1e-6*scale) for g,f in zip(a,direct_aux,strict=True))
+38:         assert all(torch.allclose(p.grad,f,rtol=1e-6,atol=1e-6*scale) for p,f in zip(parameters,direct_total,strict=True))
+39:         controller=SupportedBalance()
+40:         rows,_,_=combine(parameters,current,r,direct_aux,h,scale,groups,controller,True,True)
+41:         for role,indexes in groups.items():
+42:             wr=rows[role]['applied_rank_weight'];wa=rows[role]['applied_auxiliary_weight']
+43:             for i in indexes:
+44:                 expected=wr*direct_rank[i]+wa*direct_aux[i]
+45:                 assert torch.allclose(parameters[i].grad,expected,rtol=1e-6,atol=1e-6*scale)
+46:         assert torch.equal(head.grad,head_before)
+47:         snapshots.append(copy.deepcopy(controller.states))
+48:         before=copy.deepcopy(controller.states)
+49:         zero=[torch.zeros_like(p) for p in parameters]
+50:         combine(parameters,current,zero,current,zero,scale,groups,controller,False,True)
+51:         assert controller.states==before
+52:         assert all(torch.equal(p.grad,g) for p,g in zip(parameters,current,strict=True))
+53:         assert torch.equal(head.grad,head_before)
+54:     assert snapshots[0]==snapshots[1]
+55: 
+56:     c=SupportedBalance()
+57:     for role in ROLES:
+58:         no=c.observe(role,0.,2.,False)
+59:         assert no['before'] is no['after'] is None and no['proposed_rank_weight']==1
+60:         first=c.observe(role,4.,16.,True)
+61:         assert first['after']==dict(rank=4.,auxiliary=16.,supported_steps=1)
+62:         assert abs(first['ratio']-math.sqrt((16+1e-12)/(4+1e-12)))<1e-15
+63:         c.observe(role,0.,999.,False)
+64:         second=c.observe(role,8.,8.,True)
+65:         assert second['after']==dict(rank=.9*4+.1*8,auxiliary=.9*16+.1*8,supported_steps=2)
+66:     assert c.states['cnn']==c.states['transformer']==c.states['mamba']
+67:     for r,a,wanted in ((0.,1.,4.),(1.,0.,.25),(0.,0.,1.)):
+68:         result=SupportedBalance().observe('cnn',r,a,True)
+69:         assert result['ratio']==wanted
+70:         assert .4<=result['proposed_rank_weight']<=1.6
+71:         assert .4<=result['proposed_auxiliary_weight']<=1.6
+72:         assert result['proposed_rank_weight']+result['proposed_auxiliary_weight']==2.
+73:     assert role_indices(list(reversed(names)))==dict(cnn=[2],transformer=[1],mamba=[0])
+74:     # Multiple tensors per role and a real permutation of the same update.
+75:     block_names=['encoder.'+e+'_'+part for e in ROLES for part in ('weight','bias')]
+76:     values=[torch.tensor([i+.5,1.-i*.2]) for i in range(6)]
+77:     block_current=[v*3 for v in values]
+78:     block_rank=[v*.5 for v in values]
+79:     block_history=[v*.25 for v in values]
+80:     block_auxiliary=[v*2.5+torch.tensor([.02,-.01]) for v in values]
+81:     def block_run(order,apply=True,supported=True):
+82:         ps=[torch.nn.Parameter(values[i].clone()) for i in order]
+83:         for p in ps:p.grad=torch.zeros_like(p)
+84:         controller=SupportedBalance()
+85:         rows,_,_=combine(ps,[block_current[i] for i in order],
+86:                          [block_rank[i] if supported else torch.zeros_like(block_rank[i]) for i in order],
+87:                          [block_auxiliary[i] for i in order],
+88:                          [block_history[i] if supported else torch.zeros_like(block_history[i]) for i in order],
+89:                          1.,role_indices([block_names[i] for i in order]),controller,supported,apply)
+90:         return {i:p.grad.clone() for i,p in zip(order,ps,strict=True)},rows,controller.states
+91:     original,original_rows,original_state=block_run(list(range(6)))
+92:     permuted,permuted_rows,permuted_state=block_run([4,5,0,1,2,3])
+93:     assert original_state==permuted_state and original_rows==permuted_rows
+94:     assert all(torch.equal(original[i],permuted[i]) for i in original)
+95:     for role,indexes in role_indices(block_names).items():
+96:         expected_rank=math.sqrt(sum(float((block_rank[i]+block_history[i]).double().square().sum()) for i in indexes))
+97:         expected_aux=math.sqrt(sum(float(block_auxiliary[i].double().square().sum()) for i in indexes))
+98:         assert abs(original_state[role]['rank']-expected_rank)<1e-12
+99:         assert abs(original_state[role]['auxiliary']-expected_aux)<1e-12
+100:         assert original_rows[role]['subtraction_auxiliary_vs_direct']['difference_norm']>0
+101:         assert original_rows[role]['direct_sum_vs_original']['difference_norm']>0
+102:     # Exercise the real CPU scalar verifier when direct and combined gradients differ.
+103:     from tools.probe_msvr_history_candidate_gradients import compare
+104:     from tools.verify_msvr_supported_gradient_balance_stats import verify_balance
+105:     for endpoint,supported in (('control',True),('balanced',True),('balanced',False)):
+106:         grads,rows,states=block_run(list(range(6)),endpoint=='balanced',supported)
+107:         if endpoint=='control' or not supported:
+108:             assert all(torch.equal(grads[i],block_current[i]+(block_history[i] if supported else 0)) for i in grads)
+109:         ids=[0,0] if supported else [0,1]
+110:         scenes=[0,1];counts=[1,1] if supported else [0,0]
+111:         audit=dict(relation_objective=dict(cross_scene_positive_counts=counts),identities=ids,scenes=scenes,
+112:             memory=[],support=support_counts(ids,scenes,[],counts),classification_head_gradients_unchanged=True,
+113:             current_rank_backward_calls=1,current_auxiliary_backward_calls=1,gradient_balance=rows,
+114:             actual_parameter_updates={e:compare([values[i] for i in indexes],[values[i] for i in indexes])
+115:                                       for e,indexes in role_indices(block_names).items()},
+116:             applied_gradients={e:rows[e]['rank_vs_applied'] for e in ROLES},
+117:             rank_auxiliary_reference_checks={},direct_component_backward_calls=0,direct_single_group_check={})
+118:         training=dict(gradient_balance_state=states,current_rank_backward_calls=1,current_auxiliary_backward_calls=1,
+119:             direct_component_backward_calls=0,gradient_balancing_applied=endpoint=='balanced',
+120:             classification_head_rule='original_current_total_gradient')
+121:         proof=verify_balance([audit],training,endpoint,0)
+122:         assert proof['supported_steps']==int(supported)
+123:     supported=support_counts([0,0,1],[0,1,0],[dict(identity=1,scene=1)],[1,1,1])
+124:     assert supported==dict(eligible_anchors=3,eligible_identities=2,identity_directed_scene_relations=3)
+125:     assert not torch.cuda.is_initialized()
+126:     return dict(status='PASS_SYNTHETIC_SUPPORTED_GRADIENT_BALANCE',model_forwards=0,optimizer_updates=0,
+127:                 current_history_chain_rule=True,direct_auxiliary=True,weighted_direct_reference=True,
+128:                 amp_power_of_two_invariance=True,unsupported_state_unchanged=True,
+129:                 unsupported_update_unchanged=True,classification_head_unchanged=True,
+130:                 bounded_coefficients=True,whole_role_grouping=True,explicit_zero_norm_definition=True,
+131:                 multi_tensor_role_norm=True,role_permutation_equivariance=True,
+132:                 direct_auxiliary_distinguished_from_subtraction=True,
+133:                 scalar_verifier_combined_control_direct_candidate_and_zero_support=True)
+
+FILE D:\Program Files\UserCache\gb\codex\tmp\trifusion_supported_balance_m0_independent_audit_20260921\snapshots\repo\tools\check_msvr_supported_gradient_balance.py
+1: """CPU-only contract, full sampler admission replay and exact synthetic math."""
+2: import argparse
+3: from collections import OrderedDict
+4: from datetime import datetime
+5: import json
+6: from pathlib import Path
+7: 
+8: import torch
+9: 
+10: from tools.train_msvr_supported_gradient_balance import context
+11: from tools.msvr_instance_memory import InstanceMemory, check_math
+12: from tools.train_msvr310_signal_oof import sha256, write_json
+13: 
+14: 
+15: def run(args):
+16:     spec, (_config, _base, _cfg, environment, protocol, _b0, metadata) = context(args.config)
+17:     root = Path(__file__).resolve().parents[1]
+18:     support = json.loads((root/spec['source_support']).read_bytes())
+19:     assert support['status']=='COMPLETE_REGISTERED_SOURCE_QUEUE_CROSS_SCENE_SUPPORT_REPLAY'
+20:     for name,digest in support['input_bindings'].items():assert sha256(root/name)==digest,name
+21:     math = check_math()
+22:     from tools.probe_msvr_history_candidate_gradients import math_check
+23:     gradient_math = math_check()
+24:     from tools.check_msvr_cross_scene_smooth_ap_math import checks
+25:     smooth_ap_math = checks()
+26:     from tools.check_msvr_supported_gradient_balance_math import checks as balance_checks
+27:     gradient_balance_math=balance_checks()
+28:     folds = []
+29:     for fold, md in zip(protocol['folds'], metadata['folds'], strict=True):
+30:         source = [protocol['records'][i] for i in fold['source_record_indices']]
+31:         memory = InstanceMemory(source)
+32:         expected = OrderedDict()
+33:         dummy = torch.zeros(64, 2)
+34:         counts = [];steps = []
+35:         for step, row in enumerate(md['batches']):
+36:             indices = row['record_indices']
+37:             assert len(indices) == 64 and set(indices) <= set(fold['source_record_indices'])
+38:             values, actual = memory.read(step, indices, dummy)
+39:             for i in [i for i, age in expected.items() if step-age > 8]:
+40:                 del expected[i]
+41:             wanted = [dict(record_index=i, identity=protocol['records'][i]['identity'],
+42:                            scene=protocol['records'][i]['scene'], age=step-age, stored_step=age)
+43:                       for i, age in expected.items() if i not in indices]
+44:             assert actual == wanted and values.shape == (len(wanted), 2)
+45:             current_records = [protocol['records'][i] for i in indices]
+46:             candidates = current_records + actual
+47:             positive_counts = [sum(r['identity']==q['identity'] and r['scene']!=q['scene']
+48:                                    for r in candidates) for q in current_records]
+49:             registered = support['folds'][fold['fold']]['batches'][step]
+50:             assert registered['step']==step+1 and registered['history_records']==len(actual)
+51:             assert registered['counts']['cross_positive_positions']==sum(positive_counts)
+52:             assert registered['counts']['anchors_with_pool_cross']==sum(n>0 for n in positive_counts)
+53:             assert registered['counts']['batches_without_legal_anchor']==int(not any(positive_counts))
+54:             counts.append(len(actual))
+55:             steps.append(dict(step=step+1, historical_records=len(actual), ages=[r['age'] for r in actual],
+56:                               cross_scene_positive_counts=positive_counts,
+57:                               eligible_anchors=sum(n>0 for n in positive_counts)))
+58:             if step >= 65:
+59:                 memory.update(step, indices, dummy)
+60:                 for i in indices:
+61:                     expected.pop(i, None);expected[i] = step
+62:                 while len(expected) > 512:
+63:                     expected.popitem(last=False)
+64:         assert len(counts) == 260 and sum(counts[:66]) == 0 and max(counts) <= 512
+65:         assert sum(counts) > 0
+66:         folds.append(dict(fold=fold['fold'], steps=steps, total_historical_candidate_records=sum(counts),
+67:                           maximum_historical_records=max(counts), active_steps=sum(x > 0 for x in counts)))
+68:     assert not torch.cuda.is_initialized()
+69:     result = dict(status='PASS_SUPPORTED_GRADIENT_BALANCE_CPU_CONTRACT', config_sha256=sha256(args.config),
+70:                   verified_at=datetime.now().astimezone().isoformat(), math=math, gradient_math=gradient_math, smooth_ap_math=smooth_ap_math, gradient_balance_math=gradient_balance_math, folds=folds,
+71:                   full_source_batches=780, source_only_identity_filter=True, model_forwards=0,
+72:                   optimizer_updates=0, heldout_image_reads=0, environment=environment)
+73:     assert not args.output.exists();write_json(args.output, result)
+74:     print({k: v for k, v in result.items() if k != 'folds'}, flush=True)
+75: 
+76: 
+77: if __name__ == '__main__':
+78:     parser = argparse.ArgumentParser()
+79:     parser.add_argument('--config', type=Path, required=True)
+80:     parser.add_argument('--output', type=Path, required=True)
+81:     run(parser.parse_args())
+
+FILE D:\Program Files\UserCache\gb\codex\tmp\trifusion_supported_balance_m0_independent_audit_20260921\snapshots\repo\tools\run_msvr_supported_gradient_balance.py
+1: """Persistent fixed T0, M0, complete CPU checks, Q1, complete CPU checks."""
+2: import argparse
+3: from datetime import datetime
+4: import json
+5: import os
+6: from pathlib import Path
+7: import shutil
+8: import subprocess
+9: import time
+10: 
+11: from tools.train_msvr310_signal_oof import sha256, write_json
+12: 
+13: 
+14: def run(args):
+15:     repo = Path.cwd().resolve();root = args.output_dir.resolve();config = args.config.resolve()
+16:     assert repo == Path('/root/autodl-tmp/trifusion-v2/TriFusion-ReID')
+17:     assert root.parent == Path('/root/trifusion-storage/artifacts')
+18:     assert subprocess.check_output(['git', 'rev-parse', 'HEAD'], text=True).strip() == args.code_commit
+19:     assert sha256(config) == args.config_sha256
+20:     spec = json.loads(config.read_bytes())
+21:     assert sha256(__file__) == spec['project_file_sha256']['tools/run_msvr_supported_gradient_balance.py']
+22:     free_before=shutil.disk_usage(root.parent).free
+23:     assert free_before >= spec['minimum_free_bytes']
+24:     gpu_before=subprocess.check_output(['nvidia-smi','--query-gpu=index,memory.used,memory.total',
+25:                                         '--format=csv,noheader,nounits'],text=True)
+26:     assert len(gpu_before.strip().splitlines())==1
+27:     assert int(gpu_before.strip().split(',')[1])<500
+28:     root.mkdir()
+29:     common = ['--config', str(config)]
+30:     m0 = root/'m0';q1 = root/'q1'
+31:     stages = [
+32:         ('t0', 'tools.check_msvr_supported_gradient_balance', common+['--output', str(root/'t0.json')], False),
+33:         ('m0', 'tools.train_msvr_supported_gradient_balance', common+['--mode', 'm0', '--output-dir', str(m0)], True),
+34:         ('m0_cpu', 'tools.verify_msvr_supported_gradient_balance', common+['--run-dir', str(m0), '--output', str(root/'m0_cpu.json')], False),
+35:         ('q1', 'tools.train_msvr_supported_gradient_balance', common+['--mode', 'q1', '--output-dir', str(q1),
+36:              '--m0-receipt', str(m0/'summary.json'), '--m0-verification', str(root/'m0_cpu.json')], True),
+37:         ('q1_cpu', 'tools.verify_msvr_supported_gradient_balance', common+['--run-dir', str(q1), '--output', str(root/'q1_cpu.json')], False),
+38:     ]
+39:     receipt = dict(status='RUNNING', wrapper_pid=os.getpid(), code_commit=args.code_commit,
+40:                    config_sha256=args.config_sha256, started_at=datetime.now().astimezone().isoformat(), stages=[],
+41:                    free_bytes_before=free_before,gpu_before=gpu_before)
+42:     def save(): write_json(root/'pipeline.json', receipt)
+43:     save()
+44:     for name, module, arguments, gpu in stages:
+45:         command = ['/root/miniconda3/envs/tri_reid/bin/python', '-u', '-m', module, *arguments]
+46:         environment = dict(os.environ, CUDA_VISIBLE_DEVICES='0' if gpu else '', OMP_NUM_THREADS='4',
+47:                            MKL_NUM_THREADS='4', OPENBLAS_NUM_THREADS='4',
+48:                            PYTHONPATH=str(repo/'modeling')+':'+str(repo))
+49:         # Preserve the independently measured B0 distance execution path.
+50:         if name == 'q1_cpu':
+51:             environment.update(OMP_NUM_THREADS='56', MKL_NUM_THREADS='56')
+52:         started = time.monotonic()
+53:         with (root/(name+'.log')).open('x') as log:
+54:             child = subprocess.Popen(command, env=environment, stdin=subprocess.DEVNULL,
+55:                                      stdout=log, stderr=subprocess.STDOUT)
+56:             row = dict(stage=name, original_pid=child.pid, command=command,
+57:                        started_at=datetime.now().astimezone().isoformat())
+58:             receipt['stages'].append(row);save()
+59:             code = child.wait()
+60:         row.update(exit_code=code, ended_at=datetime.now().astimezone().isoformat(),
+61:                    elapsed_seconds=time.monotonic()-started)
+62:         save()
+63:         if code:
+64:             receipt.update(status='STOPPED_AT_'+name.upper(), ended_at=row['ended_at']);save()
+65:             return code
+66:     result = json.loads((q1/'summary.json').read_bytes())
+67:     proof = json.loads((root/'q1_cpu.json').read_bytes())
+68:     assert proof['status'] == 'PASS_COMPLETE_SUPPORTED_GRADIENT_BALANCE_Q1' and proof['summary_sha256'] == sha256(q1/'summary.json')
+69:     receipt.update(status='COMPLETE_VERIFIED_'+result['status'], ended_at=datetime.now().astimezone().isoformat(),
+70:                    terminal_summary_sha256=sha256(q1/'summary.json'), terminal_cpu_sha256=sha256(root/'q1_cpu.json'))
+71:     save()
+72:     return 0
+73: 
+74: 
+75: if __name__ == '__main__':
+76:     parser = argparse.ArgumentParser()
+77:     parser.add_argument('--config', type=Path, required=True)
+78:     parser.add_argument('--config-sha256', required=True)
+79:     parser.add_argument('--code-commit', required=True)
+80:     parser.add_argument('--output-dir', type=Path, required=True)
+81:     raise SystemExit(run(parser.parse_args()))

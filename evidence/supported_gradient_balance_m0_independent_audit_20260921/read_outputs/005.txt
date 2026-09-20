@@ -1,0 +1,488 @@
+
+FILE D:\Program Files\UserCache\gb\codex\tmp\trifusion_supported_balance_m0_independent_audit_20260921\snapshots\repo\tools\probe_msvr_history_candidate_gradients.py
+1: """Source-only candidate-side VJPs at fixed, already qualified model states."""
+2: import argparse
+3: from datetime import datetime
+4: import itertools
+5: import json
+6: from pathlib import Path
+7: import subprocess
+8: import time
+9: 
+10: import numpy as np
+11: import torch
+12: import torch.nn.functional as F
+13: 
+14: from tools import train_msvr_fresh_coordinate as prior
+15: from tools.msvr_freshness_probe import ViewFields
+16: from tools.msvr_instance_memory import InstanceMemory, expanded_triplet
+17: from tools.run_signal_preserving_v5 import _module_state_sha256, _set_seed, _training_batch, weighted_training_loss
+18: from tools.train_msvr310_signal_oof import loader_for, records_for, sha256, write_json
+19: from tools.train_msvr310_trifusion_oof import build_model, EXPERTS
+20: 
+21: ROOT = Path(__file__).resolve().parents[1]
+22: STATES = ('initial', 'control', 'fresh_memory')
+23: SCALE = 256.
+24: 
+25: 
+26: def differentiable_history_loss(features, identities, history, metadata):
+27:     """Same current anchors and real-ID mining; history is allowed to differentiate."""
+28:     with torch.autocast(features.device.type, enabled=False):
+29:         unit = F.normalize(features.float(), dim=1)
+30:         ids = torch.as_tensor(identities, device=unit.device)
+31:         mids = torch.as_tensor([r['identity'] for r in metadata], device=unit.device)
+32:         dc, dh = torch.cdist(unit, unit), torch.cdist(unit, history.float())
+33:         positive = (ids[:, None] == ids[None, :]) & ~torch.eye(len(ids), device=unit.device, dtype=torch.bool)
+34:         negative = ids[:, None] != ids[None, :]
+35:         hp = dc.masked_fill(~positive, -torch.inf).max(1).values
+36:         hn = dc.masked_fill(~negative, torch.inf).min(1).values
+37:         mp = ids[:, None] == mids[None, :]
+38:         hp = torch.maximum(hp, dh.masked_fill(~mp, -torch.inf).max(1).values)
+39:         hn = torch.minimum(hn, dh.masked_fill(mp, torch.inf).min(1).values)
+40:         return F.relu(hp-hn+.3).mean()
+41: 
+42: 
+43: def encode_graph(model, item):
+44:     with torch.random.fork_rng(devices=[torch.cuda.current_device()]):
+45:         torch.set_rng_state(item['cpu_rng'])
+46:         torch.cuda.set_rng_state(item['cuda_rng'])
+47:         with torch.autocast('cuda', dtype=torch.float16):
+48:             representation = model.encoder(item['anchor'].cuda(), item['reference'].cuda())
+49:             fused = model.fusion(item['baseline'].cuda(), representation)
+50:             return F.normalize(fused.fused_embedding.float(), dim=1)
+51: 
+52: 
+53: def gradients(loss, parameters):
+54:     values = torch.autograd.grad(loss*SCALE, parameters, retain_graph=True, allow_unused=True)
+55:     return [torch.zeros_like(p, dtype=torch.float32) if g is None else g.float()/SCALE
+56:             for p, g in zip(parameters, values, strict=True)]
+57: 
+58: 
+59: def compare(x, y):
+60:     xx = sum(float(a.double().square().sum()) for a in x)
+61:     yy = sum(float(a.double().square().sum()) for a in y)
+62:     xy = sum(float((a.double()*b.double()).sum()) for a,b in zip(x,y,strict=True))
+63:     difference = sum(float((a.double()-b.double()).square().sum()) for a,b in zip(x,y,strict=True))**.5
+64:     assert all(np.isfinite(v) for v in (xx, yy, xy, difference))
+65:     return dict(first_norm=xx**.5, second_norm=yy**.5, difference_norm=difference,
+66:                 cosine=xy/(xx*yy)**.5 if xx > 0 and yy > 0 else None)
+67: 
+68: 
+69: def summarize_roles(names, current, repeated, historical, historical_repeat, total, weight):
+70:     result = {}
+71:     for expert in EXPERTS:
+72:         index = [i for i,n in enumerate(names) if n.startswith('encoder.'+expert+'_')]
+73:         u, v = [current[i] for i in index], [historical[i] for i in index]
+74:         full = [a+b for a,b in zip(u,v,strict=True)]
+75:         base_total = [total[i] for i in index]
+76:         full_total = [a+weight*b for a,b in zip(base_total,v,strict=True)]
+77:         result[expert] = dict(current_vs_history=compare(u,v), current_vs_both=compare(u,full),
+78:                              total_vs_both=compare(base_total,full_total),
+79:                              current_repeat_noise=compare(u,[repeated[i] for i in index]),
+80:                              history_repeat_noise=compare(v,[historical_repeat[i] for i in index]))
+81:     return result
+82: 
+83: 
+84: def candidate_vjp(model, fields, metadata, history, upstream, parameters):
+85:     accumulated = [torch.zeros_like(p, dtype=torch.float32) for p in parameters]
+86:     duplicate = [torch.zeros_like(p, dtype=torch.float32) for p in parameters]
+87:     record_forwards = 0
+88:     selected_groups = []
+89:     for key in sorted({r['stored_step'] for r in metadata}):
+90:         rows = [i for i,r in enumerate(metadata) if r['stored_step'] == key]
+91:         if not bool(upstream[rows].abs().sum() > 0):
+92:             continue
+93:         item = fields.fields[key]
+94:         unit = encode_graph(model, item)
+95:         positions = [item['positions'][metadata[i]['record_index']] for i in rows]
+96:         assert torch.equal(unit[positions].detach(), history[rows])
+97:         coefficients = torch.zeros_like(unit)
+98:         coefficients[positions] = upstream[rows]
+99:         loss = (unit*coefficients.detach()).sum()
+100:         first, second = gradients(loss, parameters), gradients(loss, parameters)
+101:         for target, noise, a, b in zip(accumulated,duplicate,first,second,strict=True):
+102:             target.add_(a);noise.add_(b)
+103:         selected_groups.append(key)
+104:         record_forwards += len(unit)
+105:         del unit, coefficients, loss, first, second
+106:     return accumulated, duplicate, record_forwards, selected_groups
+107: 
+108: 
+109: def math_check():
+110:     torch.manual_seed(42)
+111:     current = torch.randn(8,16,requires_grad=True)
+112:     ids = [0,0,1,1,2,2,3,3]
+113:     scenes = [0,1]*4
+114:     raw = torch.randn(4,16)
+115:     transform = torch.randn(16,16,requires_grad=True)
+116:     history = F.normalize(raw@transform,dim=1)
+117:     metadata = [dict(identity=i, scene=1, age=1) for i in (0,1,4,5)]
+118:     old = expanded_triplet(current,ids,scenes,history.detach(),metadata)[0]
+119:     new = differentiable_history_loss(current,ids,history,metadata)
+120:     assert torch.equal(old,new)
+121:     first = torch.autograd.grad(old,current,retain_graph=True)[0]
+122:     second = torch.autograd.grad(new,current,retain_graph=True)[0]
+123:     assert torch.equal(first,second)
+124:     direct = torch.autograd.grad(new,transform,retain_graph=True)[0]
+125:     leaf = history.detach().requires_grad_(True)
+126:     partial = torch.autograd.grad(differentiable_history_loss(current.detach(),ids,leaf,metadata),leaf)[0]
+127:     reconstructed = torch.autograd.grad(history,transform,grad_outputs=partial)[0]
+128:     assert torch.equal(direct,reconstructed) and bool(direct.abs().sum() > 0)
+129:     return dict(status='PASS_SYNTHETIC_CHAIN_RULE', seed=42, legal_class_zero=True,
+130:                 selected_loss_and_current_gradient_equal=True, candidate_vjp_exact=True,
+131:                 optimizer_updates=0, model_forwards=0)
+132: 
+133: 
+134: def context(path):
+135:     spec = json.loads(path.read_bytes())
+136:     assert spec['schema'] == 'msvr310-fixed-state-history-gradient-v1' and spec['seed'] == 42
+137:     for name,digest in spec['project_file_sha256'].items():
+138:         assert sha256(ROOT/name) == digest,name
+139:     for name,digest in spec['fixed_file_sha256'].items():
+140:         assert sha256(name) == digest,name
+141:     saved = json.loads(Path(spec['q1_summary']).read_bytes())
+142:     assert saved['status'] == 'Q1_FAIL'
+143:     cpu = json.loads(Path(spec['q1_cpu']).read_bytes())
+144:     assert cpu['summary_sha256'] == sha256(spec['q1_summary'])
+145:     assert cpu['status'] == 'PASS_COMPLETE_FRESH_COORDINATE_Q1'
+146:     return spec, prior.context(ROOT/spec['coordinate_config']), saved
+147: 
+148: 
+149: def fit_probe(model, records, fold, protocol, config, md, saved, *, mode, directory):
+150:     from trifusion.signal_preserving_v8 import ExpertFormationV8Criterion
+151:     _set_seed(42);model.train()
+152:     initial = _module_state_sha256(model)
+153:     buffers = {n:v.clone() for n,v in model.named_buffers()}
+154:     selected = [(n,p) for n,p in model.named_parameters() if p.requires_grad and n.startswith('encoder.')]
+155:     names, parameters = [n for n,_ in selected], [p for _,p in selected]
+156:     criterion = ExpertFormationV8Criterion(triplet_margin=.3,label_smoothing=.1).cuda()
+157:     weight = float(config['LOSS']['TRIPLET_FUSED'])
+158:     source = [protocol['records'][i] for i in fold['source_record_indices']]
+159:     memory, fields = InstanceMemory(source,capacity=512,maximum_age=8), ViewFields()
+160:     lookup = {Path(r[0][0]).name:i for r,i in zip(records,fold['source_record_indices'],strict=True)}
+
+FILE D:\Program Files\UserCache\gb\codex\tmp\trifusion_supported_balance_m0_independent_audit_20260921\snapshots\repo\tools\probe_msvr_role_set_gradients.py
+1: """Three-source-fold, fixed-initial-state checks of role-set parameter gradients.
+2: 
+3: Eight source batches per fold, no optimizer or checkpoint writes. This is an
+4: engineering probe, not a full source census or a retrieval experiment.
+5: """
+6: import argparse
+7: from datetime import datetime
+8: import itertools
+9: import json
+10: from pathlib import Path
+11: import subprocess
+12: import time
+13: 
+14: import torch
+15: import torch.nn.functional as F
+16: 
+17: from tools.train_msvr_history_gradient import context as previous_context
+18: from tools.msvr_freshness_probe import ViewFields
+19: from tools.msvr_instance_memory import InstanceMemory
+20: from tools.msvr_role_set_relations import relation_objectives, fused_distances
+21: from tools.probe_msvr_history_candidate_gradients import gradients, compare, encode_graph
+22: from tools.run_signal_preserving_v5 import _module_state_sha256, _set_seed, _training_batch
+23: from tools.train_msvr310_signal_oof import loader_for, records_for, sha256, write_json
+24: from tools.train_msvr310_trifusion_oof import build_model, EXPERTS
+25: 
+26: ROOT=Path(__file__).resolve().parents[1]
+27: 
+28: 
+29: def encode_all(model,item):
+30:     with torch.random.fork_rng(devices=[torch.cuda.current_device()]):
+31:         torch.set_rng_state(item['cpu_rng']);torch.cuda.set_rng_state(item['cuda_rng'])
+32:         with torch.no_grad(),torch.autocast('cuda',dtype=torch.float16):
+33:             representations=model.encoder(item['anchor'].cuda(),item['reference'].cuda())
+34:             fusion=model.fusion(item['baseline'].cuda(),representations)
+35:             values={'fused':fusion.fused_embedding,**fusion.branch_embeddings}
+36:             return {k:F.normalize(v.float(),dim=1) for k,v in values.items()}
+37: 
+38: 
+39: def refresh_all(model,fields,metadata,step):
+40:     for key in [k for k in fields.fields if step-k>8]:del fields.fields[key]
+41:     before={n:v.clone() for n,v in model.named_buffers()}
+42:     cpu,gpu=torch.get_rng_state(),torch.cuda.get_rng_state()
+43:     groups=sorted({r['stored_step'] for r in metadata})
+44:     encoded={k:encode_all(model,fields.fields[k]) for k in groups}
+45:     values={name:torch.stack([encoded[r['stored_step']][name][fields.fields[r['stored_step']]['positions'][r['record_index']]] for r in metadata])
+46:             if metadata else torch.empty((0,7680 if name=='fused' else 4608),device='cuda')
+47:             for name in ('fused',*EXPERTS)}
+48:     assert torch.equal(cpu,torch.get_rng_state()) and torch.equal(gpu,torch.cuda.get_rng_state())
+49:     assert all(torch.equal(v,before[n]) for n,v in model.named_buffers())
+50:     return values,64*len(groups)
+51: 
+52: 
+53: def historical_vjps(model,fields,metadata,fresh,upstreams,parameters):
+54:     totals=[[torch.zeros_like(p,dtype=torch.float32) for p in parameters] for _ in upstreams]
+55:     groups=[]
+56:     for key in sorted({r['stored_step'] for r in metadata}):
+57:         rows=[i for i,r in enumerate(metadata) if r['stored_step']==key]
+58:         if not any(bool(u[rows].abs().sum()>0) for u in upstreams):continue
+59:         item=fields.fields[key];unit=encode_graph(model,item)
+60:         positions=[item['positions'][metadata[i]['record_index']] for i in rows]
+61:         assert torch.equal(unit[positions].detach(),fresh[rows])
+62:         for target,u in zip(totals,upstreams,strict=True):
+63:             coefficients=torch.zeros_like(unit);coefficients[positions]=u[rows]
+64:             values=gradients((unit*coefficients.detach()).sum(),parameters)
+65:             for out,value in zip(target,values,strict=True):out.add_(value)
+66:         groups.append(key)
+67:         del unit,values,coefficients
+68:     return totals,groups
+69: 
+70: 
+71: def probe(model,records,fold,protocol,md,directory):
+72:     _set_seed(42);model.train()
+73:     before=_module_state_sha256(model)
+74:     buffers={n:v.clone() for n,v in model.named_buffers()}
+75:     selected=[(n,p) for n,p in model.named_parameters() if p.requires_grad and n.startswith('encoder.')]
+76:     names,parameters=zip(*selected)
+77:     role_indexes={e:[i for i,n in enumerate(names) if n.startswith('encoder.'+e+'_')] for e in EXPERTS}
+78:     source=[protocol['records'][i] for i in fold['source_record_indices']]
+79:     memory=InstanceMemory(source,capacity=512,maximum_age=8);fields=ViewFields()
+80:     lookup={Path(r[0][0]).name:i for r,i in zip(records,fold['source_record_indices'],strict=True)}
+81:     rows=[];seen=set();fresh_count=history_count=direct_count=0;direct_proof=None
+82:     started=time.perf_counter();torch.cuda.reset_peak_memory_stats()
+83:     with (directory/'steps.jsonl').open('x') as log,(directory/'distances.f32').open('xb') as arrays:
+84:         for step,raw in enumerate(itertools.islice(loader_for(records,True),8)):
+85:             indices=[lookup[n] for n in raw[-1]];seen.update(indices)
+86:             assert indices==md['batches'][step]['record_indices']
+87:             batch,_labels=_training_batch(raw)
+88:             ids=[protocol['records'][i]['identity'] for i in indices]
+89:             stale,metadata=memory.read(step,indices,torch.empty((0,7680),device='cuda'))
+90:             fresh,count=refresh_all(model,fields,metadata,step);fresh_count+=count
+
+FILE D:\Program Files\UserCache\gb\codex\tmp\trifusion_supported_balance_m0_independent_audit_20260921\snapshots\repo\tools\msvr_freshness_probe.py
+1: """Direct stale/current-coordinate diagnostics on source-only training paths."""
+2: import argparse
+3: from collections import OrderedDict
+4: from datetime import datetime
+5: import itertools
+6: import json
+7: from pathlib import Path
+8: import subprocess
+9: import time
+10: 
+11: import numpy as np
+12: import torch
+13: import torch.nn.functional as F
+14: 
+15: from tools import train_msvr_instance_memory as old
+16: from tools.msvr_instance_memory import InstanceMemory, expanded_triplet
+17: from tools.train_msvr310_trifusion_oof import build_model, frozen_state_sha, EXPERTS
+18: from tools.train_msvr310_signal_oof import loader_for, records_for, sha256, write_json
+19: from tools.run_signal_preserving_v5 import (
+20:     _module_state_sha256, _set_seed, _training_batch, learning_rate_multiplier,
+21:     weighted_training_loss,
+22: )
+23: 
+24: ROOT = Path(__file__).resolve().parents[1]
+25: 
+26: 
+27: def context(path):
+28:     spec = json.loads(path.read_bytes())
+29:     for name, digest in spec['project_files'].items():
+30:         assert sha256(ROOT/name) == digest, name
+31:     for name, digest in spec['fixed_files'].items():
+32:         assert sha256(name) == digest, name
+33:     assert spec['seed'] == 42 and spec['source_steps_per_end'] == 260
+34:     assert spec['preflight_steps_per_end'] == 12
+35:     previous = json.loads(Path(spec['old_summary']).read_bytes())
+36:     cpu = json.loads(Path(spec['old_cpu']).read_bytes())
+37:     assert previous['status'] == 'Q1_FAIL'
+38:     assert cpu['status'] == 'PASS_COMPLETE_INSTANCE_MEMORY_Q1'
+39:     assert cpu['summary_sha256'] == sha256(spec['old_summary'])
+40:     return spec, old.context(ROOT/spec['memory_config']), previous
+41: 
+42: 
+43: class ViewFields:
+44:     """Keep the original frozen field and role RNG for at most eight updates."""
+45:     def __init__(self):
+46:         self.fields = {}
+47: 
+48:     def capture(self, model, batch, indices):
+49:         holder = {}
+50:         def baseline_hook(_module, _args, field):
+51:             holder['anchor'] = field.anchor_sequence.detach().cpu().clone()
+52:             holder['reference'] = field.reference_sequence.detach().cpu().clone()
+53:             holder['baseline'] = field.baseline_embedding.detach().cpu().clone()
+54:         def encoder_hook(_module, _args):
+55:             holder['cpu_rng'] = torch.get_rng_state()
+56:             holder['cuda_rng'] = torch.cuda.get_rng_state()
+57:         with model.baseline.register_forward_hook(baseline_hook), model.encoder.register_forward_pre_hook(encoder_hook):
+58:             output = model(batch, return_aux=True)
+59:         holder['positions'] = {int(index): i for i, index in enumerate(indices)}
+60:         return output, holder
+61: 
+62:     @staticmethod
+63:     def encode(model, item):
+64:         with torch.random.fork_rng(devices=[torch.cuda.current_device()]):
+65:             torch.set_rng_state(item['cpu_rng'])
+66:             torch.cuda.set_rng_state(item['cuda_rng'])
+67:             with torch.no_grad(), torch.autocast('cuda', dtype=torch.float16):
+68:                 representations = model.encoder(item['anchor'].cuda(), item['reference'].cuda())
+69:                 fusion = model.fusion(item['baseline'].cuda(), representations)
+70:                 unit = F.normalize(fusion.fused_embedding.float(), dim=1)
+71:         return unit.detach()
+72: 
+73:     def refresh(self, model, metadata, prototype, step):
+74:         for key in [k for k in self.fields if step-k > 8]:
+75:             del self.fields[key]
+76:         groups = sorted(set(row['stored_step'] for row in metadata))
+77:         before = {n: v.clone() for n, v in model.named_buffers()}
+78:         cpu_rng, cuda_rng = torch.get_rng_state(), torch.cuda.get_rng_state()
+79:         encoded = {k: self.encode(model, self.fields[k]) for k in groups}
+80:         assert all(torch.equal(v, before[n]) for n, v in model.named_buffers())
+81:         assert torch.equal(cpu_rng, torch.get_rng_state()) and torch.equal(cuda_rng, torch.cuda.get_rng_state())
+82:         values = [encoded[r['stored_step']][self.fields[r['stored_step']]['positions'][r['record_index']]] for r in metadata]
+83:         result = torch.stack(values) if values else prototype.new_empty((0, 7680))
+84:         assert not result.requires_grad and torch.isfinite(result).all()
+85:         return result, 64*len(groups)
+86: 
+87: 
+88: def grad_comparison(a, b):
+89:     x = torch.cat([v.float().reshape(-1) for v in a])
+90:     y = torch.cat([v.float().reshape(-1) for v in b])
+91:     assert torch.isfinite(x).all() and torch.isfinite(y).all()
+92:     nx, ny = float(x.norm()), float(y.norm())
+93:     return dict(stale_norm=nx, comparison_norm=ny, difference_norm=float((x-y).norm()),
+94:                 cosine=float(torch.dot(x, y)/(x.norm()*y.norm())) if nx > 0 and ny > 0 else None)
+95: 
+96: 
+97: def parameter_probe(model, stale, fresh, scale):
+98:     selected = [(n,p) for n,p in model.named_parameters() if p.requires_grad and n.startswith('encoder.')]
+99:     def gradient(loss):
+100:         values = torch.autograd.grad(loss*scale, [p for _,p in selected], retain_graph=True, allow_unused=True)
+101:         return {name: value.float()/scale for (name,_), value in zip(selected,values,strict=True) if value is not None}
+102:     first, repeated, current = gradient(stale), gradient(stale), gradient(fresh)
+103:     assert first.keys() == repeated.keys() == current.keys()
+104:     result = {}
+105:     for expert in EXPERTS:
+106:         names = [n for n in first if n.startswith('encoder.'+expert+'_')]
+107:         assert names
+108:         result[expert] = dict(
+109:             fresh=grad_comparison([first[n] for n in names], [current[n] for n in names]),
+110:             duplicate_noise=grad_comparison([first[n] for n in names], [repeated[n] for n in names]))
+111:     assert all(p.grad is None for _,p in selected)
+112:     return result
+113: 
+114: 
+115: def fit(model, records, fold, protocol, config, md, previous, *, endpoint, mode, directory):
+116:     from trifusion.signal_preserving_v8 import ExpertFormationV8Criterion
+117:     _set_seed(42);model.train()
+118:     initial = _module_state_sha256(model)
+119:     frozen = frozen_state_sha(model)
+120:     signal = _module_state_sha256(model.baseline.signal)
+121:     names = {n for n,p in model.named_parameters() if p.requires_grad}
+122:     optimizer = torch.optim.AdamW([p for p in model.parameters() if p.requires_grad],
+123:                                  lr=config['OPTIMIZATION']['NEW_MODULE_LR'],
+124:                                  weight_decay=config['OPTIMIZATION']['WEIGHT_DECAY'])
+125:     scaler = torch.amp.GradScaler('cuda', init_scale=256.)
+126:     criterion = ExpertFormationV8Criterion(triplet_margin=.3, label_smoothing=.1).cuda()
+127:     source = [protocol['records'][i] for i in fold['source_record_indices']]
+128:     memory = InstanceMemory(source, capacity=512, maximum_age=8)
+129:     fields = ViewFields()
+130:     warmup = 2 if mode == 'preflight' else 65
+131:     lookup = {Path(r[0][0]).name:i for r,i in zip(records,fold['source_record_indices'],strict=True)}
+132:     loader = loader_for(records,True)
+133:     history, steps, live = [], [], set()
+134:     extra_records = overflow = 0
+135:     torch.cuda.reset_peak_memory_stats()
+136:     before_sealed = [r['loss'] for r in previous['training']['steps']]
+137:     original_audits = [json.loads(line) for line in (Path(previous['checkpoint']).parent/'memory_steps.jsonl').read_text().splitlines()]
+138:     with (directory/'audit.jsonl').open('x') as log, (directory/'distances.f32').open('xb') as matrices:
+139:         for epoch in range(1, (20 if mode=='source' else 1)+1):
+140:             started = time.perf_counter()
+141:             lr = config['OPTIMIZATION']['NEW_MODULE_LR']
+142:             if mode=='source': lr *= learning_rate_multiplier(epoch,max_epochs=20,warmup_epochs=5)
+143:             for group in optimizer.param_groups: group['lr']=lr
+144:             batches=loader if mode=='source' else itertools.islice(loader,12)
+145:             epoch_rows=[]
+146:             for raw in batches:
+147:                 step=len(steps)
+148:                 indices=[lookup[n] for n in raw[-1]]
+149:                 assert indices==md['batches'][step]['record_indices']
+150:                 batch, labels=_training_batch(raw)
+151:                 pixels=old.prior.pixels(batch)
+152:                 assert indices==original_audits[step]['record_indices'] and pixels==original_audits[step]['pixel_sha256']
+153:                 ids=[protocol['records'][i]['identity'] for i in indices]
+154:                 scenes=[protocol['records'][i]['scene'] for i in indices]
+155:                 optimizer.zero_grad(set_to_none=True)
+156:                 stale,metadata=memory.read(step,indices,torch.empty((0,7680),device='cuda'))
+157:                 fresh, count=fields.refresh(model,metadata,stale,step)
+158:                 extra_records+=count
+159:                 with torch.autocast('cuda',dtype=torch.float16):
+160:                     if step>=warmup or step==0:
+161:                         output,item=fields.capture(model,batch,indices)
+162:                     else:
+163:                         output=model(batch,return_aux=True);item=None
+164:                     old.output_mapping(output)
+165:                     components=criterion(output,labels)
+166:                 unit=F.normalize(output.fused_embedding.float(),dim=1)
+167:                 if step==0:
+168:                     buffers={n:v.clone() for n,v in model.named_buffers()}
+169:                     zero=fields.encode(model,item);extra_records+=64
+170:                     assert torch.equal(unit,zero), float((unit-zero).abs().max())
+171:                     assert all(torch.equal(v,buffers[n]) for n,v in model.named_buffers())
+172:                 ls,basic,_,dc,ds,stats=expanded_triplet(output.fused_embedding,ids,scenes,stale,metadata)
+173:                 lf,fresh_basic,_,fc,df,fstats=expanded_triplet(output.fused_embedding,ids,scenes,fresh,metadata)
+174:                 assert torch.equal(basic,components['triplet_fused']) and torch.equal(basic,fresh_basic)
+175:                 assert torch.equal(dc,fc)
+176:                 diagnostic=parameter_probe(model,ls,lf,scaler.get_scale()) if metadata else {}
+177:                 if endpoint=='instance_memory' and step>=warmup: components['triplet_fused']=ls
+178:                 with torch.autocast('cuda',dtype=torch.float16): loss=weighted_training_loss(components,config)
+179:                 assert torch.isfinite(loss)
+180:                 scale=scaler.get_scale();scaler.scale(loss).backward();scaler.unscale_(optimizer)
+181:                 for n,p in model.named_parameters():
+182:                     if p.requires_grad and p.grad is not None:
+183:                         assert torch.isfinite(p.grad).all(),n
+184:                         if p.grad.abs().sum()>0: live.add(n)
+185:                 scaler.step(optimizer);scaler.update();overflow+=int(scaler.get_scale()<scale)
+186:                 offset=matrices.tell()
+187:                 for values in (dc,ds,df): matrices.write(values.detach().cpu().contiguous().numpy().tobytes())
+188:                 row=dict(step=step+1,epoch=epoch,loss=float(loss.detach()),
+189:                          components={k:float(v.detach()) for k,v in components.items()},
+190:                          record_indices=indices,pixel_sha256=pixels,identities=ids,scenes=scenes,
+191:                          memory=metadata,stale_statistics=stats,fresh_statistics=fstats,
+192:                          cache_l2_drift=(stale-fresh).norm(dim=1).cpu().tolist(),
+193:                          parameter_gradients=diagnostic,distance_offset_bytes=offset,
+194:                          distance_float_count=dc.numel()+ds.numel()+df.numel(),
+195:                          fresh_role_record_forwards=count,amp_scale_before=scale,amp_scale_after=scaler.get_scale(),
+196:                          original_trajectory_loss_difference=float(loss.detach())-before_sealed[step] if mode=='source' else None,
+197:                          refreshed_loss_used_for_update=False)
+198:                 log.write(json.dumps(row)+'\n');log.flush()
+199:                 if step>=warmup:
+200:                     memory.update(step,indices,unit)
+201:                     fields.fields[step]=item
+202:                 steps.append(row);epoch_rows.append(row)
+203:                 del output,components,loss,unit,stale,fresh,ls,lf,basic,fresh_basic,dc,ds,df,fc,item
+204:             h=dict(epoch=epoch,updates=len(epoch_rows),learning_rate=lr,mean_loss=float(np.mean([r['loss'] for r in epoch_rows])),
+205:                    elapsed_seconds=time.perf_counter()-started)
+206:             history.append(h)
+207:             print(json.dumps(dict(event='freshness_epoch',fold=fold['fold'],endpoint=endpoint,mode=mode,**h)),flush=True)
+208:     assert len(steps)==(12 if mode=='preflight' else 260)
+209:     assert names==live and overflow==0
+210:     assert frozen_state_sha(model)==frozen and _module_state_sha256(model.baseline.signal)==signal
+
+FILE D:\Program Files\UserCache\gb\codex\tmp\trifusion_supported_balance_m0_independent_audit_20260921\snapshots\repo\tools\check_msvr_supported_gradient_balance_math.py
+1: """Synthetic CPU differentiation checks; not model or retrieval evidence."""
+2: import copy
+3: import math
+4: 
+5: import torch
+6: 
+7: from tools.msvr_supported_gradient_balance import (
+8:     ROLES, SupportedBalance, role_indices, scalar_gradients, combine, support_counts,
+9: )
+10: 
+11: 
+12: def checks():
+13:     names=['encoder.'+e+'_fixture.weight' for e in ROLES]
+14:     groups=role_indices(names)
+15:     snapshots=[]
+16:     for scale in (1.,256.):
+17:         parameters=[torch.nn.Parameter(torch.tensor([.3+i*.1,-.4+i*.03])) for i in range(3)]
+18:         head=torch.nn.Parameter(torch.tensor([.2]))
+19:         x=torch.tensor([.7,-1.2]);y=torch.tensor([-.1,.9]);target=torch.tensor([.8,-.2])
+20:         u=[p*x for p in parameters];v=[p*y for p in parameters]

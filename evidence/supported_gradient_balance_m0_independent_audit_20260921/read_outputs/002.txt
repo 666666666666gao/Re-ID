@@ -1,0 +1,464 @@
+
+FILE D:\Program Files\UserCache\gb\codex\tmp\trifusion_supported_balance_m0_independent_audit_20260921\snapshots\repo\tools\train_msvr_supported_gradient_balance.py
+1: """Paired Smooth-AP trainer governed by the registered fixed training contract.
+2: 
+3: Both endpoints use cross-scene AP and full historical derivatives.
+4: Only the role-block gradient combination changes; M0 precedes heldout access.
+5: """
+6: import argparse
+7: from datetime import datetime
+8: import itertools
+9: import json
+10: from pathlib import Path
+11: import subprocess
+12: import time
+13: 
+14: import numpy as np
+15: 
+16: from tools import train_msvr310_source_style as prior
+17: from tools import train_msvr_instance_memory as old
+18: from tools.msvr_freshness_probe import ViewFields
+19: from tools.train_msvr310_trifusion_oof import (
+20:     build_model, frozen_state_sha, engineering_checks, output_mapping, evaluate,
+21:     OUTPUT_WIDTHS, EXPERTS,
+22: )
+23: from tools.train_msvr310_signal_oof import loader_for, records_for, sha256, write_json
+24: 
+25: ROOT = Path(__file__).resolve().parents[1]
+26: ENDPOINTS = ('control', 'balanced')
+27: extract, preflight, reload_model = old.extract, old.preflight, old.reload_model
+28: 
+29: 
+30: def context(path):
+31:     from tools.train_msvr_cross_scene_smooth_ap import context as previous_context
+32:     spec=json.loads(path.read_bytes())
+33:     assert spec['schema']=='msvr310-supported-gradient-balance-paired-v1' and spec['seed']==42
+34:     assert spec['implementation_revision']=='r2_direct_auxiliary'
+35:     assert spec['temperature']==.01 and spec['fused_metric_weight']==1
+36:     from tools.msvr_supported_gradient_balance import RULE
+37:     assert spec['candidate_reduction']=='mean_eligible_anchors' and spec['gradient_balance']==RULE
+38:     for name,digest in spec['project_file_sha256'].items():assert sha256(ROOT/name)==digest,name
+39:     previous,base=previous_context(ROOT/spec['previous_config'])
+40:     assert spec['memory']==previous['memory'] and spec['training_epochs']==20
+41:     return spec,base
+42: 
+43: 
+44: def encode_graph_all(model,item):
+45:     """Replay one historical group with its original role-entry RNG."""
+46:     import torch
+47:     import torch.nn.functional as F
+48:     with torch.random.fork_rng(devices=[torch.cuda.current_device()]):
+49:         torch.set_rng_state(item['cpu_rng']);torch.cuda.set_rng_state(item['cuda_rng'])
+50:         with torch.autocast('cuda',dtype=torch.float16):
+51:             representations=model.encoder(item['anchor'].cuda(),item['reference'].cuda())
+52:             output=model.fusion(item['baseline'].cuda(),representations)
+53:         return {k:F.normalize(v.float(),dim=1) for k,v in
+54:                 {'fused':output.fused_embedding,**output.branch_embeddings}.items()}
+55: 
+56: 
+57: def fit(model, records, fold, protocol, config, spec, md, *, endpoint, mode, directory):
+58:     import torch
+59:     import torch.nn.functional as F
+60:     from tools.msvr_cross_scene_smooth_ap import objectives
+61:     from tools.msvr_supported_gradient_balance import (SupportedBalance, role_indices, scalar_gradients, combine, check_reference, support_counts)
+62:     from tools.msvr_role_set_relations import fused_distances
+63:     from tools.probe_msvr_role_set_gradients import refresh_all, encode_all
+64:     from tools.msvr_instance_memory import InstanceMemory, expanded_triplet
+65:     from tools.run_signal_preserving_v5 import (
+66:         _module_state_sha256, _set_seed, _training_batch, learning_rate_multiplier, weighted_training_loss,
+67:     )
+68:     from tools.probe_msvr_history_candidate_gradients import encode_graph, compare
+69:     from trifusion.signal_preserving_v8 import ExpertFormationV8Criterion
+70:     _set_seed(42);model.train()
+71:     initial = _module_state_sha256(model)
+72:     frozen = frozen_state_sha(model)
+73:     signal = _module_state_sha256(model.baseline.signal)
+74:     names = {n for n,p in model.named_parameters() if p.requires_grad}
+75:     selected = [(n,p) for n,p in model.named_parameters() if p.requires_grad and n.startswith('encoder.')]
+76:     parameters = [p for _,p in selected]
+77:     assert len(parameters)==189 and len(names)==203
+78:     role_groups=role_indices([n for n,_ in selected])
+79:     heads=[(n,p) for n,p in model.named_parameters() if p.requires_grad and not n.startswith('encoder.')]
+80:     assert len(heads)==14
+81:     controller=SupportedBalance()
+82:     assert not any(p.requires_grad for p in model.fusion.parameters())
+83:     optimizer = torch.optim.AdamW([p for p in model.parameters() if p.requires_grad],
+84:                                   lr=config['OPTIMIZATION']['NEW_MODULE_LR'],
+85:                                   weight_decay=config['OPTIMIZATION']['WEIGHT_DECAY'])
+86:     scaler = torch.amp.GradScaler('cuda', init_scale=256.)
+87:     criterion = ExpertFormationV8Criterion(triplet_margin=.3,label_smoothing=.1).cuda()
+88:     source = [protocol['records'][i] for i in fold['source_record_indices']]
+89:     memory = InstanceMemory(source,capacity=512,maximum_age=8)
+90:     fields = ViewFields()
+91:     warmup = spec['memory']['warmup_steps' if mode=='comparison' else mode+'_warmup_steps']
+92:     index_by_name = {Path(r[0][0]).name:i for r,i in zip(records,fold['source_record_indices'],strict=True)}
+93:     loader = loader_for(records,True)
+94:     fixed = next(iter(loader)) if mode=='overfit' else None
+95:     steps,history,live = [],[],set()
+96:     fresh_forwards = vjp_forwards = direct_forwards = overflow = 0
+97:     witness = {}
+98:     weight = config['LOSS']['TRIPLET_FUSED']
+99:     assert weight == 1.
+100:     torch.cuda.reset_peak_memory_stats()
+101:     with (directory/'memory_steps.jsonl').open('x',encoding='utf-8') as stream, \
+102:          (directory/'memory_distances.f32').open('xb') as matrices:
+103:         for epoch in range(1,(20 if mode=='comparison' else 1)+1):
+104:             started=time.perf_counter()
+105:             lr=config['OPTIMIZATION']['NEW_MODULE_LR']
+106:             if mode=='comparison':lr*=learning_rate_multiplier(epoch,max_epochs=20,warmup_epochs=5)
+107:             for group in optimizer.param_groups:group['lr']=lr
+108:             batches=(fixed for _ in range(100)) if mode=='overfit' else itertools.islice(loader,8) if mode=='capacity' else loader
+109:             epoch_rows=[]
+110:             for raw in batches:
+111:                 step=len(steps)
+112:                 indices=[index_by_name[n] for n in raw[-1]]
+113:                 assert indices==md['batches'][0 if mode=='overfit' else step]['record_indices']
+114:                 assert sorted(torch.unique(raw[1],return_counts=True)[1].tolist())==[8]*8
+115:                 batch,labels=_training_batch(raw)
+116:                 ids=[protocol['records'][i]['identity'] for i in indices]
+117:                 scenes=[protocol['records'][i]['scene'] for i in indices]
+118:                 pixel_sha=prior.pixels(batch)
+119:                 optimizer.zero_grad(set_to_none=True)
+120:                 stored,metadata=memory.read(step,indices,torch.empty((0,7680),device='cuda'))
+121:                 fresh_values,count=refresh_all(model,fields,metadata,step)
+122:                 fresh=fresh_values['fused']
+123:                 fresh_forwards+=count
+124:                 with torch.autocast('cuda',dtype=torch.float16):
+125:                     output,item=fields.capture(model,batch,indices)
+126:                     output_mapping(output)
+127:                     components=criterion(output,labels)
+128:                 pooled,basic,unit,dc,dm,stats=expanded_triplet(output.fused_embedding,ids,scenes,fresh,metadata)
+129:                 assert torch.equal(basic,components['triplet_fused'])
+130:                 role_distances=[]
+131:                 with torch.no_grad(),torch.autocast('cuda',enabled=False):
+132:                     for expert in EXPERTS:
+133:                         value=F.normalize(output.branch_embeddings[expert].float(),dim=1)
+134:                         role_distances.append(torch.cdist(value,torch.cat((value,fresh_values[expert]),dim=0)))
+135:                 mids=[r['identity'] for r in metadata]
+136:                 mscenes=[r['scene'] for r in metadata]
+137:                 hard,smooth_ap,cross_ap,per_anchor_ap,cross_per_anchor,positive_counts=objectives(dc,dm,ids,mids,scenes,mscenes)
+138:                 assert torch.equal(hard,pooled)
+139:                 selected_objective=cross_ap
+140:                 relation_saved=dict(hard_loss=float(hard.detach()),smooth_ap_loss=float(smooth_ap.detach()),
+141:                     per_anchor_smoothed_ap=per_anchor_ap.detach().cpu().tolist(),temperature=.01,
+142:                     positive_counts=[sum(y==identity for y in ids+mids)-1 for identity in ids],
+143:                     cross_scene_loss=float(cross_ap.detach()),
+144:                     cross_scene_per_anchor_ap=cross_per_anchor.detach().cpu().tolist(),
+145:                     cross_scene_positive_counts=positive_counts.detach().cpu().tolist(),
+146:                     cross_scene_eligible_anchors=int((positive_counts>0).sum()),
+147:                     cross_scene_reduction='mean_eligible_anchors',ineligible_ap_storage_value=0)
+148:                 if step==0:
+149:                     buffers={n:v.clone() for n,v in model.named_buffers()}
+150:                     zero=encode_all(model,item);fresh_forwards+=64
+151:                     assert torch.equal(unit,zero['fused'])
+152:                     assert all(torch.equal(F.normalize(output.branch_embeddings[e].float(),dim=1),zero[e]) for e in EXPERTS)
+153:                     assert all(torch.equal(v,buffers[n]) for n,v in model.named_buffers())
+154:                     del zero,buffers
+155:                 active=step>=warmup
+156:                 upstream=None
+157:                 if metadata:
+158:                     assert active
+159:                     leaf=fresh.detach().requires_grad_(True)
+160:                     # Current coordinates are fixed only for the candidate partial.
+161:                     uc,uh=fused_distances(output.fused_embedding.detach(),leaf)
+162:                     old_partial,new_partial,cross_partial,partial_ap,partial_cross_ap,partial_counts=objectives(uc,uh,ids,mids,scenes,mscenes)
+163:                     candidate_loss=cross_partial
+164:                     assert torch.equal(candidate_loss.detach(),selected_objective.detach())
+165:                     upstream=torch.autograd.grad(candidate_loss,leaf)[0].detach()
+166:                     del candidate_loss,leaf,uc,uh,old_partial,new_partial,cross_partial,partial_ap,partial_cross_ap,partial_counts
+167:                 original_triplet=float(basic.detach())
+168:                 if active:components['triplet_fused']=selected_objective
+169:                 with torch.autocast('cuda',dtype=torch.float16):loss=weighted_training_loss(components,config)
+170:                 assert torch.isfinite(loss)
+171:                 components_saved={k:float(v.detach()) for k,v in components.items()}
+172:                 loss_saved=float(loss.detach())
+173:                 direct=None
+174:                 scale=scaler.get_scale()
+175:                 current_rank=scalar_gradients(weight*components['triplet_fused'],parameters,scale)
+176:                 auxiliary_components=dict(components)
+177:                 auxiliary_components['triplet_fused']=components['triplet_fused']*0
+178:                 with torch.autocast('cuda',dtype=torch.float16):
+179:                     current_auxiliary_loss=weighted_training_loss(auxiliary_components,config)
+180:                 current_auxiliary=scalar_gradients(current_auxiliary_loss,parameters,scale)
+181:                 del auxiliary_components,current_auxiliary_loss
+182:                 direct_parts=None
+183:                 support=support_counts(ids,scenes,metadata,relation_saved['cross_scene_positive_counts'])
+184:                 supported=active and support['eligible_anchors']>0
+185:                 if mode=='capacity' and metadata and direct_forwards==0:
+186:                     keys={r['stored_step'] for r in metadata};assert len(keys)==1
+187:                     old_item=fields.fields[next(iter(keys))]
+188:                     direct_outputs=encode_graph_all(model,old_item)
+189:                     encoded=direct_outputs['fused']
+190:                     positions=[old_item['positions'][r['record_index']] for r in metadata]
+191:                     assert torch.equal(encoded[positions].detach(),fresh)
+192:                     assert all(torch.equal(direct_outputs[e][positions].detach(),fresh_values[e]) for e in EXPERTS)
+193:                     ec,eh=fused_distances(output.fused_embedding,encoded[positions])
+194:                     full_old,full_new,full_cross,direct_ap,direct_cross_ap,direct_counts=objectives(ec,eh,ids,mids,scenes,mscenes)
+195:                     full=full_cross
+196:                     assert torch.equal(full.detach(),selected_objective.detach())
+197:                     # Independent direct current/history/ranking/auxiliary references.
+198:                     direct_rank=scalar_gradients(weight*full,parameters,scale)
+199:                     rc,rh=fused_distances(output.fused_embedding,encoded[positions].detach())
+200:                     direct_current=scalar_gradients(weight*objectives(rc,rh,ids,mids,scenes,mscenes)[2],parameters,scale)
+201:                     hc,hh=fused_distances(output.fused_embedding.detach(),encoded[positions])
+202:                     direct_history=scalar_gradients(weight*objectives(hc,hh,ids,mids,scenes,mscenes)[2],parameters,scale)
+203:                     aux_components=dict(components)
+204:                     aux_components['triplet_fused']=components['triplet_fused']*0
+205:                     with torch.autocast('cuda',dtype=torch.float16):
+206:                         auxiliary_loss=weighted_training_loss(aux_components,config)
+207:                     direct_auxiliary=scalar_gradients(auxiliary_loss,parameters,scale)
+208:                     direct_parts=dict(rank=direct_rank,current=direct_current,history=direct_history,auxiliary=direct_auxiliary)
+209:                     del rc,rh,hc,hh,aux_components,auxiliary_loss,direct_rank,direct_current,direct_history,direct_auxiliary
+210:                     # Replace only this scalar's gradient, preserving all13 other terms.
+211:                     direct_loss=loss+weight*(full-selected_objective)
+212:                     values=torch.autograd.grad(direct_loss*scale,parameters,retain_graph=True,allow_unused=True)
+213:                     direct=[torch.zeros_like(p,dtype=torch.float32) if g is None else g.float()/scale
+214:                             for p,g in zip(parameters,values,strict=True)]
+215:                     direct_forwards+=64
+216:                     del encoded,full,direct_loss,values,ec,eh,full_old,full_new,full_cross,direct_outputs,direct_ap,direct_cross_ap,direct_counts
+217:                 offset=matrices.tell()
+218:                 for distance in (torch.cat((dc,dm),dim=1),*role_distances):
+219:                     matrices.write(distance.detach().cpu().contiguous().numpy().tobytes())
+220:                 del distance
+221:                 # Release the current graph before history replay; update is still once.
+222:                 scaler.scale(loss).backward()
+223:                 current=[p.grad.detach().float().clone() for p in parameters]
+224:                 head_gradients=[p.grad.detach().clone() for _,p in heads]
+225:                 current_unit=unit.detach()
+226:                 del output,components,loss,pooled,basic,unit,dc,dm,hard,smooth_ap,cross_ap,selected_objective,per_anchor_ap,cross_per_anchor,positive_counts,role_distances
+227:                 history_gradient=[torch.zeros_like(p,dtype=torch.float32) for p in parameters]
+228:                 buffers={n:v.clone() for n,v in model.named_buffers()}
+229:                 cpu_rng,cuda_rng=torch.get_rng_state(),torch.cuda.get_rng_state()
+230:                 groups=[]
+231:                 if metadata:
+232:                     for key in sorted({r['stored_step'] for r in metadata}):
+233:                         rows=[i for i,r in enumerate(metadata) if r['stored_step']==key]
+234:                         if not bool(upstream[rows].abs().sum()>0):continue
+235:                         history_item=fields.fields[key]
+236:                         encoded=encode_graph(model,history_item)
+237:                         positions=[history_item['positions'][metadata[i]['record_index']] for i in rows]
+238:                         assert torch.equal(encoded[positions].detach(),fresh[rows])
+239:                         coefficients=torch.zeros_like(encoded)
+240:                         coefficients[positions]=upstream[rows]
+241:                         surrogate=(encoded*coefficients).sum()*scale
+242:                         values=torch.autograd.grad(surrogate,parameters,allow_unused=True)
+243:                         for target,value in zip(history_gradient,values,strict=True):
+244:                             if value is not None:target.add_(value.float())
+245:                         groups.append(key);vjp_forwards+=64
+246:                         del encoded,coefficients,surrogate,values
+247:                 assert torch.equal(cpu_rng,torch.get_rng_state()) and torch.equal(cuda_rng,torch.cuda.get_rng_state())
+248:                 assert all(torch.equal(v,buffers[n]) for n,v in model.named_buffers())
+249:                 assert all(torch.equal(p.grad,a) for p,a in zip(parameters,current,strict=True))
+250:                 role_stats={}
+251:                 for expert in EXPERTS:
+252:                     indexes=[i for i,(n,_) in enumerate(selected) if n.startswith('encoder.'+expert+'_')]
+253:                     base=[current[i]/scale for i in indexes]
+254:                     extra=[history_gradient[i]/scale for i in indexes]
+255:                     role_stats[expert]=dict(total_vs_history=compare(base,extra),
+256:                                            total_vs_both=compare(base,[a+weight*b for a,b in zip(base,extra,strict=True)]))
+257:                 if metadata and not witness and all(r['total_vs_history']['second_norm']>0 for r in role_stats.values()):
+258:                     witness=dict(step=step+1,roles=role_stats)
+259:                 direct_check={}
+260:                 if direct is not None:
+
+FILE D:\Program Files\UserCache\gb\codex\tmp\trifusion_supported_balance_m0_independent_audit_20260921\snapshots\repo\tools\msvr_cross_scene_smooth_ap.py
+1: """Protocol-defined Smooth-AP for the registered MSVR310 source comparison.
+2: 
+3: Same-ID/same-scene candidates are ignored, never relabelled as negatives.
+4: The original all-identity objective remains in tools.msvr_smooth_ap.
+5: """
+6: import torch
+7: 
+8: from tools.msvr_smooth_ap import paired_objectives, TAU
+9: 
+10: 
+11: def cross_scene_ap_from_distances(current, historical, identities,
+12:                                   history_identities, scenes, history_scenes):
+13:     """Return eligible-anchor mean loss, per-anchor AP, and positive counts.
+14: 
+15: AP=0 is a storage placeholder for ineligible anchors; it is excluded from
+16: the loss mean. Whole batches without eligible anchors actually occur in the
+17: registered source sequence and return a graph-connected exact zero.
+18: """
+19:     batch = current.shape[0]
+20:     assert current.shape == (batch, batch) and historical.shape[0] == batch
+21:     assert current.dtype in (torch.float32, torch.float64)
+22:     assert historical.dtype == current.dtype and historical.device == current.device
+23:     ids = torch.as_tensor(identities, device=current.device)
+24:     mids = torch.as_tensor(history_identities, device=current.device, dtype=ids.dtype)
+25:     env = torch.as_tensor(scenes, device=current.device)
+26:     menv = torch.as_tensor(history_scenes, device=current.device, dtype=env.dtype)
+27:     assert len(ids) == len(env) == batch
+28:     assert len(mids) == len(menv) == historical.shape[1]
+29:     with torch.autocast(current.device.type, enabled=False):
+30:         distance = torch.cat((current, historical), dim=1)
+31:         score = 1 - distance.square() / 2
+32:         same_id = ids[:, None] == torch.cat((ids, mids))[None, :]
+33:         same_scene = env[:, None] == torch.cat((env, menv))[None, :]
+34:         positive = same_id & ~same_scene
+35:         valid = ~(same_id & same_scene)
+36:         counts = positive.sum(1)
+37:         eligible = counts > 0
+38:         assert (~same_id).any(1).all()
+39:         positions = torch.arange(distance.shape[1], device=current.device)
+40:         aps = []
+41:         for i in range(batch):
+42:             pos = positions[positive[i]]
+43:             if pos.numel() == 0:
+44:                 aps.append(score[i].sum() * 0)
+45:                 continue
+46:             comparisons = torch.sigmoid((score[i][None, :] - score[i, pos][:, None]) / TAU)
+47:             comparison_valid = valid[i][None, :] & (positions[None, :] != pos[:, None])
+48:             comparisons = comparisons.masked_fill(~comparison_valid, 0)
+49:             positive_rank = 1 + (comparisons * positive[i][None, :]).sum(1)
+50:             all_rank = 1 + comparisons.sum(1)
+51:             aps.append((positive_rank / all_rank).mean())
+52:         per_anchor = torch.stack(aps)
+53:         loss = 1 - per_anchor[eligible].mean() if bool(eligible.any()) else distance.sum() * 0
+54:         return loss, per_anchor, counts
+55: 
+56: 
+57: def objectives(current, historical, identities, history_identities, scenes, history_scenes):
+58:     """Same three scalar definitions for current, historical leaf, and full graph."""
+59:     hard, standard, standard_ap = paired_objectives(current, historical, identities, history_identities)
+60:     cross, cross_ap, counts = cross_scene_ap_from_distances(
+61:         current, historical, identities, history_identities, scenes, history_scenes)
+62:     return hard, standard, cross, standard_ap, cross_ap, counts
+
+FILE D:\Program Files\UserCache\gb\codex\tmp\trifusion_supported_balance_m0_independent_audit_20260921\snapshots\repo\tools\msvr_instance_memory.py
+1: """Source-instance XBM mechanics, independently implemented from the paper idea."""
+2: from collections import OrderedDict
+3: 
+4: import torch
+5: import torch.nn.functional as F
+6: 
+7: 
+8: class InstanceMemory:
+9:     def __init__(self, records, *, capacity=512, maximum_age=8):
+10:         self.records = {int(r['index']): r for r in records}
+11:         self.capacity = capacity
+12:         self.maximum_age = maximum_age
+13:         self.entries = OrderedDict()
+14: 
+15:     def read(self, step, current_indices, prototype):
+16:         expired = [i for i, x in self.entries.items() if step-x['step'] > self.maximum_age]
+17:         for i in expired:
+18:             del self.entries[i]
+19:         current = set(current_indices)
+20:         selected = [(i, x) for i, x in self.entries.items() if i not in current]
+21:         metadata = [dict(record_index=i, identity=int(self.records[i]['identity']),
+22:                          scene=int(self.records[i]['scene']), age=step-x['step'],
+23:                          stored_step=x['step']) for i, x in selected]
+24:         assert all(1 <= x['age'] <= self.maximum_age for x in metadata)
+25:         values = torch.stack([x['feature'] for _, x in selected]) if selected else prototype.new_empty((0, prototype.shape[1]))
+26:         assert not values.requires_grad and len(set(x['record_index'] for x in metadata)) == len(metadata)
+27:         return values, metadata
+28: 
+29:     def update(self, step, indices, features):
+30:         assert features.ndim == 2 and len(indices) == len(features)
+31:         for index, feature in zip(indices, features.detach(), strict=True):
+32:             index = int(index)
+33:             assert index in self.records
+34:             self.entries.pop(index, None)
+35:             self.entries[index] = dict(step=step, feature=feature.clone())
+36:         while len(self.entries) > self.capacity:
+37:             self.entries.popitem(last=False)
+38: 
+39: 
+40: def expanded_triplet(features, identities, scenes, memory, metadata, margin=.3):
+41:     """Current peers retain gradients; unique historical candidates are detached."""
+42:     with torch.autocast(features.device.type, enabled=False):
+43:         unit = F.normalize(features.float(), dim=1)
+44:         ids = torch.as_tensor(identities, device=features.device)
+45:         sc = torch.as_tensor(scenes, device=features.device)
+46:         current = torch.cdist(unit, unit, p=2)
+47:         positive = ids[:, None] == ids[None, :]
+48:         positive &= ~torch.eye(len(ids), device=features.device, dtype=torch.bool)
+49:         negative = ids[:, None] != ids[None, :]
+50:         assert positive.any(1).all() and negative.any(1).all()
+51:         hp = current.masked_fill(~positive, -torch.inf).max(1).values
+52:         hn = current.masked_fill(~negative, torch.inf).min(1).values
+53:         basic = F.relu(hp-hn+margin).mean()
+54:         cached = torch.cdist(unit, memory.detach().float(), p=2)
+55:         mids = torch.tensor([r['identity'] for r in metadata], device=features.device, dtype=ids.dtype)
+56:         msc = torch.tensor([r['scene'] for r in metadata], device=features.device, dtype=sc.dtype)
+57:         mp = ids[:, None] == mids[None, :]
+58:         mn = ~mp
+59:         if len(metadata):
+60:             mph = cached.masked_fill(~mp, -torch.inf).max(1).values
+61:             mnh = cached.masked_fill(~mn, torch.inf).min(1).values
+62:             union_hp = torch.maximum(hp, mph)
+63:             union_hn = torch.minimum(hn, mnh)
+64:             harder_positive = int((mph > hp).sum())
+65:             harder_negative = int((mnh < hn).sum())
+66:         else:
+67:             union_hp, union_hn = hp, hn
+68:             harder_positive = harder_negative = 0
+69:         loss = F.relu(union_hp-union_hn+margin).mean()
+70:         stats = dict(memory_records=len(metadata), memory_positive_pairs=int(mp.sum()),
+71:                      memory_negative_pairs=int(mn.sum()),
+72:                      memory_cross_scene_positive_pairs=int((mp & (sc[:, None] != msc[None, :])).sum()),
+73:                      memory_negative_violations_against_batch_hard_positive=int((mn & (cached < hp[:, None]+margin)).sum()),
+74:                      harder_positive_anchors=harder_positive, harder_negative_anchors=harder_negative,
+75:                      current_wrong_order_anchors=int((hp >= hn).sum()),
+76:                      expanded_wrong_order_anchors=int((union_hp >= union_hn).sum()),
+77:                      current_triplet=float(basic.detach()), expanded_triplet=float(loss.detach()),
+78:                      expanded_hinge_positive_anchors=int((union_hp-union_hn+margin > 0).sum()),
+79:                      maximum_memory_age=max((x['age'] for x in metadata), default=0))
+80:     return loss, basic, unit, current, cached, stats
+81: 
+82: 
+83: def replay_drift(model, probe):
+84:     """Replay the exact stored training batch and RNG without changing buffers/RNG."""
+85:     buffers = {name: value.detach().clone() for name, value in model.named_buffers()}
+86:     with torch.random.fork_rng(devices=[torch.cuda.current_device()]):
+87:         torch.set_rng_state(probe['cpu_rng'])
+88:         torch.cuda.set_rng_state(probe['cuda_rng'])
+89:         with torch.no_grad(), torch.autocast('cuda', dtype=torch.float16):
+90:             output = model(probe['batch'], return_aux=True)
+91:             current = F.normalize(output.fused_embedding.float(), dim=1)
+92:         for name, value in model.named_buffers():
+93:             value.copy_(buffers[name])
+94:     distances = (current-probe['feature']).norm(dim=1).detach().cpu().tolist()
+95:     assert all(torch.equal(value, buffers[name]) for name, value in model.named_buffers())
+96:     return dict(record_indices=probe['indices'], feature_l2_drift=distances,
+97:                 same_pixels_and_rng=True, model_buffers_restored=True,
+98:                 minimum=float(min(distances)), maximum=float(max(distances)),
+99:                 mean=float(sum(distances)/len(distances)))
+100: 
+101: 
+102: def check_math():
+103:     generator = torch.Generator().manual_seed(42)
+104:     features = torch.randn(8, 12, generator=generator, requires_grad=True)
+105:     ids = [0, 0, 1, 1, 2, 2, 3, 3]
+106:     scenes = [0, 1]*4
+107:     records = [dict(index=i, identity=ids[i], scene=scenes[i]) for i in range(8)]
+108:     memory = InstanceMemory(records, capacity=3, maximum_age=2)
+109:     memory.update(0, [0, 1, 0, 2], F.normalize(features[[0, 1, 0, 2]].detach(), dim=1))
+110:     assert list(memory.entries) == [1, 0, 2]
+111:     values, meta = memory.read(1, [0], features)
+112:     assert [r['record_index'] for r in meta] == [1, 2]
+113:     assert meta[0]['identity'] == 0 and not values.requires_grad
+114:     memory.read(3, [], features)
+115:     assert not memory.entries
+116:     empty = features.detach().new_empty((0, features.shape[1]))
+117:     loss, base, _, current, _, _ = expanded_triplet(features, ids, scenes, empty, [])
+118:     assert torch.equal(loss, base)
+119:     refs = F.normalize(torch.randn(4, 12, generator=generator), dim=1)
+120:     metadata = [dict(record_index=10+i, identity=i, scene=1, age=1, stored_step=0) for i in range(4)]
+121:     expanded, _, _, _, cached, stats = expanded_triplet(features, ids, scenes, refs, metadata)
+122:     brute = []
+123:     for i in range(8):
+124:         positive = [current[i, j] for j in range(8) if ids[i] == ids[j] and i != j]
+125:         negative = [current[i, j] for j in range(8) if ids[i] != ids[j]]
+126:         positive += [cached[i, j] for j in range(4) if ids[i] == j]
+127:         negative += [cached[i, j] for j in range(4) if ids[i] != j]
+128:         brute.append(F.relu(torch.stack(positive).max()-torch.stack(negative).min()+.3))
+129:     assert torch.equal(expanded, torch.stack(brute).mean())
+130:     gradient = torch.autograd.grad(expanded, features)[0]
+131:     assert torch.isfinite(gradient).all() and gradient.norm() > 0
+132:     return dict(status='PASS_INSTANCE_MEMORY_MATH',class_zero_valid=True,
+133:                 duplicate_record_latest_view_only=True,current_records_excluded=True,
+134:                 exact_age_expiry=True,empty_memory_matches_current=True,
+135:                 brute_hard_triplet_equal=True,finite_nonzero_anchor_gradient=True,
+136:                 synthetic_stats=stats)

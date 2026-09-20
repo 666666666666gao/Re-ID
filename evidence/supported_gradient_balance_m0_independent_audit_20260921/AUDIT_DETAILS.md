@@ -1,0 +1,120 @@
+# MSVR310 supported gradient balance R2 — fresh M0 integrity audit
+
+Date: 2026-09-21. Verdict: **WARN**. Integrity: **warn**. Engineering: **PASS_ENGINEERING_ONLY**. Deterministic checks: **pass**. Closure: **CLOSED_WITH_LIMITS**. Remaining M0 engineering/audit blockers: **none**.
+
+The completed M0 supports the registered engineering claim only. This reviewer independently checked primary source, all saved M0 steps and remote CPU-feasible relationships. It does not establish a retrieval gain or promotion, and does not independently regenerate the original parameter gradients. The requested route was fresh-none / gpt-6-astra / max; this is **same-family / provisional**, with backend attestation **unavailable**. The reviewer is `/root/audit_supported_gradient_balance_m0_20260921`; no additional agent was used.
+
+## Evidence and identity
+
+Execution remains `1381639f778f77f124a2726ee55c07610092a438`. The observed documentation publication HEAD was `dd6a0970e2294d2566454175ce49cc73d712978f`; the 97 bound repository blobs still equal the execution commit. Config SHA-256: `9ce36299299efbc09ccfb72f5b1c4fed20fc1026bd9fee1bd55a591d6950ec7b`. M0 summary SHA-256: `e63fc2ace053952c3775b19e37c0064af890b41f2a96d03a63c6c4237cd01545`. Original M0 CPU receipt SHA-256: `910c5c8493059cded0adb02bcbdb5ab0b701b40567b645f3a1ca37014feb21b1`.
+
+For portable path references below, **R** means `snapshots/repo/`, **X** means `remote_text/root/autodl-tmp/trifusion-v2/TriFusion-ReID/`, and **M** means `remote_text/root/trifusion-storage/artifacts/msvr310_supported_gradient_balance_v1_r2_seed42_1381639/`, all relative to this audit directory. These are retained copies, not unrecorded live files. `snapshot_inventory.json`, `remote_text_inventory.json` and the final `artifact_manifest.json` record the paths and hashes. `001-request.md` is the exact audit request. Source-file line numbers below refer to those copies.
+
+The remote intake validated 143 registered binding rows over 125 unique paths, including the existing config dependency chain, Signal source commit/diff, CLIP weight, source metadata and B0 bindings; 97 repository paths were also compared to the execution Git blobs. The config itself was independently compared to the execution blob. No replacement provenance framework was imposed. The independent CPU script has no project imports, model construction, image access, forward passes or optimizer updates. It completed in 26.964874 s using two CPU threads, one interop thread, nice +10, CUDA disabled and uninitialized. All tensor, checkpoint and array files stayed remote. Local work used text and Python stdlib only. No repository edits or live Q1 metric reads were performed by this reviewer.
+
+**Text-copy provenance correction:** `remote_text/` contains 154 local text renderings, not byte-exact copies: Windows `Path.write_text` converted LF to CRLF. Their line numbers and parsed content are unchanged; all 154 transformations were checked exactly. Raw M0 texts remain byte-exact under `snapshots/intake/`. A draft mislabeled the rendered CPU receipt hash as raw. Live remote byte verification confirms the raw receipt is 16,016 bytes/SHA `910c5c8493059cded0adb02bcbdb5ab0b701b40567b645f3a1ca37014feb21b1`; its rendering is 16,359 bytes/SHA `4f551ff62e64b5352fbd03398b3725c18ecee81b4d0f8ef8efff68013a6a5228`, with exactly 343 inserted carriage returns. `text_copy_provenance.json`, `verify_cpu_receipt_bytes.json` and `draft_failures/` retain the correction. Remote source/config/file bindings were hashed directly on remote bytes, not on these renderings.
+
+## A–F findings
+
+### A. Ground truth provenance — PASS
+
+The ground truth is the registered **official TRAIN split** metadata, not model outputs. I rederived identity/scene/camera from the filenames of all three modalities for every one of the 1,032 triplet records; the metadata contains 155 identities (60 multi-scene, 95 single-scene), 30 scene labels and 8 camera labels. I rebuilt all three stratified identity partitions, source label maps, source/gallery records and the query eligibility masks. Source/heldout identities are disjoint in every fold. This inspects heldout metadata only; no heldout image was opened.
+
+Fold 0/1/2 contain 103/103/104 source identities and 672/683/709 source records, respectively. Their heldout metadata contain 52/52/51 identities, 360/349/323 gallery records and 210/207/183 eligible queries. These counts define the protocol; they are not M0 retrieval evaluations. The full 260-batch source schedule per fold covers every source record. All 780 batches, 49,920 anchor exposures, 177,622 historical candidate occurrences and 107,608 cross-scene-positive positions were independently reconstructed from the immutable text metadata.
+
+The queue has capacity 512, maximum age 8, latest occurrence per record, and excludes current record IDs. A legal positive has the same identity and a different scene; same-identity/same-scene positions are ignored and never relabeled as negatives. Different-identity negatives remain valid. Ineligible anchors contribute no cross-scene AP average, while their columns can remain negatives to eligible anchors. The all-ineligible loss is a connected zero.
+
+Evidence: X `tools/build_msvr310_train_oof_protocol.py:12–116`; R `tools/train_msvr310_signal_oof.py:68–99`; R `tools/msvr_cross_scene_smooth_ap.py:11–54`; R `tools/msvr_instance_memory.py:8–37`; `independent_recompute_02.py:72–150`; `independent_recompute_02.json:8–110`.
+
+### B. Score normalization — PASS
+
+The loss uses normalized feature vectors and `score = 1 - distance² / 2`, with fixed temperature 0.01. This is the stated cosine-space training loss. It is not a normalization of a reported benchmark number by the model's maximum, mean or best output. The standard AP diagnostic, hard-triplet diagnostic and cross-scene AP term are distinguishable in every saved row. All actual loss scalars, including the original other thirteen terms, remain in the ledger.
+
+Three forms of self-referential arithmetic are correctly limited to engineering use: the controller's EMA gradient-norm ratio, relative derivative-reference error, and the registered overfit excess-loss ratio `(last - analytic_floor)/(first - analytic_floor)`. The latter is not an AP or retrieval score. Its analytic floor is 0.5857136327437849, derived from 103-class label smoothing 0.1 and the fixed identity-loss weights; neither the floor nor the 0.1 gate was fitted after seeing results. Both endpoints started with loss 4.122129917144775. Control ended at 0.588193416595459 with ratio 0.0007012137860048812; balanced ended at 0.5882640480995178 with ratio 0.0007211864075456174. Both pass the unchanged engineering gate, and their difference does not establish superiority.
+
+Evidence: X `tools/msvr_role_set_relations.py:60–64`; R `tools/msvr_cross_scene_smooth_ap.py:26–54`; R `tools/msvr_supported_gradient_balance.py:23–43`; X `tools/run_signal_preserving_v5.py:1580–1618`; `independent_recompute_02.py:319–328`.
+
+### C. Result existence, numbers and state — PASS after one wording correction
+
+The six capacity runs and two overfits all exist with complete logs and reports: **248 optimizer updates** in total, not a partial pilot relabeled complete. Each run records cumulative nonzero gradients for all 203 trainable tensors and zero overflow events. The 37 remote M0 inventory files were rehashed, including all eight distance arrays and six final capacity checkpoints. The 28 intake text files total 7,961,437 bytes and match their retained remote hashes. The published descriptive CSVs were compared field by field with the raw records: 744 role-step rows, 90 direct-reference rows and 8 stage-epoch rows. Those 8 rows are the actual M0 stages, not the planned Q1 epochs.
+
+Six capacity checkpoints were loaded on remote CPU. Their role states plus pinned baseline aliases reconstruct the exact saved final state hashes, strict-reload state hashes and frozen subset hashes. Three B0 checkpoint files, source/heldout identity bindings and saved B0 full-state hashes were independently checked; their registered retrieval-array hashes were checked without loading retrieval scores. There are **189 role encoder tensors and 14 neck/head tensors**. The two overfit runs intentionally have no final checkpoint and no strict reload; their final state and freeze claims are saved runtime witnesses only.
+
+Finding **C-01**: the originally published master §41.233:6754 placed “strict reload passed” after language about all eight runs, which could overstate reload coverage. The executor corrected it to explicitly name six capacity checkpoints and explicitly exclude both overfits. I independently reread the current file and verified the exact two documented text replacements against the archived prior bytes. Original and corrected snapshots remain retained. Corrected master SHA-256: `63df3e03a80a346351c34f6029d14490d75f84c94ca6960d213530d946f81b8d`. `claim_correction_check.json` records closure. An accompanying opening-overview correction concerns an earlier sealed experiment; its retrieval result is not reaudited or used as M0 evidence here.
+
+Original R1 remains a failure: 3 completed optimizer updates; step 4 failed before its optimizer update; relative auxiliary-reference error **0.006824872357540746 > 0.005**; exit 1 and `STOPPED_AT_M0`; elapsed 37.34809142164886 s. The stale initial `RUNNING` M0 summary is not evidence of a live or complete R1. Eight raw R1 text artifacts and ten execution snapshots were verified against the retained inventory and R1 Git blobs. R2 did not resume those three updates. Original failed work is not erased by R2 completion.
+
+Evidence: `local_bindings_claims.json:1–25`; `independent_recompute_02.json:111–124,879–1000,2098–2106`; R `tools/train_msvr_supported_gradient_balance.py:395–440`; R `evidence/supported_gradient_balance_m0_r1_failure_20260921/remote/m0.log:25–38`; the same archive's `remote/pipeline.json:2,42–44`; `claim_correction_check.json`; `corrected_claims/docs/TRIFUSION_RGBNT201_CURRENT_COMPLETE_HANDOFF_2026-09-01.md:6752–6758`.
+
+### D. Executed paths and R1/R2 distinction — PASS
+
+The training path actually calls the loss functions and writes their results. It constructs current and historical distances in the same metric coordinates, applies the active cross-scene fused term, and preserves the other thirteen loss terms. In R2 the auxiliary encoder derivative is a **separate direct call over those thirteen terms**, not `current_total - current_rank`. Every endpoint incurs that call. Both endpoints retain the same current-coordinate historical replay and candidate VJP algorithm. The full ranking block is current ranking plus historical ranking; historical rows are candidates only, never anchors.
+
+For supported balanced updates, the actual encoder gradient is the weighted sum of direct full ranking and direct auxiliary gradients. Control, warmup and unsupported updates use the original `current_total + history` path. The scalar verifier respects this finite-precision distinction. The old subtraction-versus-direct and direct-sum-versus-original discrepancies are retained as diagnostics, not forced to zero or repurposed as the passed reference. This preserves the real R1 failure instead of relaxing the 0.005 gate.
+
+At the first historical-group reference of each capacity endpoint (step 4), the code independently encodes the selected historical group and forms current, historical, full-ranking, auxiliary and applied references for all three roles: 6 × 3 × 5 = **90 comparisons**. Auxiliary is called again for its reference; control applied is compared with the original direct total objective, whereas supported balanced applied is compared with the independent weighted direct parts. All actual gradients use the same AMP scale, unscale once, and perform one AdamW step. Reference tensors stay alive until after checks and are then released. The actual neck/head gradients are copied from the original total derivative and checked unchanged. The 90 saved reference comparisons all satisfy the original relative gate 0.005 (zero reference absolute gate 1e-8); maximum observed relative error is **9.433501552915618e-05**. These are runtime witnesses whose scalar relationships I checked, not an independent regeneration of the 90 gradient vectors.
+
+I recomputed all **4,945,920 float32 distance elements**, offsets, shapes, finite checks and EOFs in fused/CNN/Transformer/Mamba spaces; complete per-anchor standard/cross-scene AP and hard objectives; 248 × 14 component ledgers; support/EMA/clipping/weight states; and **8,280 norm/cosine/difference scalar identities**, including all 744 saved AdamW parameter-update norm pairs. The final capacity checkpoint parameter norms also agree with the final saved update endpoints within cross-device reduction precision. AdamW delta norms do not decompose the step into a ranking “share”: momentum, variance and weight decay prevent that interpretation.
+
+Maximum observed errors: standard AP 2.2182630954326044e-7; cross-scene AP 2.4798321118790767e-7; hard objective 2.9802322387695312e-8; weighted total loss 5.45134147600379e-7. Current-distance symmetry residual is 5.21540641784668e-7 and fused squared distance versus mean branch squared distance residual is 1.2031691151159762e-6. Those last two are recorded diagnostics, not newly invented pass gates. Raw step embeddings are not saved, so distance consistency is not a fresh encoder-forward proof.
+
+The controller parameters remain EMA 0.9, exponent 0.5, epsilon 1e-12, ratio bounds [0.25,4], and weight sum 2 with individual weights [0.4,1.6]. Warmup leaves EMA untouched; actual supported steps update it even when ranking norm is exactly zero. Unsupported active behavior has code and synthetic coverage, but no actual M0 instance (see E).
+
+History replay restores the original role-entry RNG in a fork and restores buffers; fresh reencoding, source-pixel equality, no change to current gradients during historical VJPs, frozen baseline, head preservation and strict five-output reload checks are evidenced by the saved runtime assertions and their real call sites. No new forwards were authorized, so I did not reexecute these tensor assertions. The retrieval function exists for Q1 and is intentionally bypassed in M0; absence of M0 retrieval output is consistent with the claimed engineering scope, not fabricated invocation.
+
+Evidence: R `tools/train_msvr_supported_gradient_balance.py:44–54,110–154,155–181,185–299,303–347,358–442`; R `tools/msvr_supported_gradient_balance.py:46–106`; R `tools/probe_msvr_role_set_gradients.py:29–50`; R `tools/msvr_freshness_probe.py:43–85`; R `tools/train_msvr310_trifusion_oof.py:27–73,187–241`; X `tools/train_msvr_instance_memory.py:94–111`; `r1_r2.diff:245–320`; `independent_recompute_02.py:151–382`; `independent_recompute_02.json:2083–2130`.
+
+### E. Scope and coverage — WARN
+
+This is **one dataset, one seed (42), two fixed update rules and three predefined identity folds**, with short capacity runs and fixed-batch overfits. M0 observed source records across 30 scene labels, but did not evaluate retrieval across them. No scientific claim of comprehensive effectiveness, robustness, multiple-seed evidence, multi-dataset generalization or official benchmark improvement is supported.
+
+| Run | Updates | Unique records / identities / scene labels | Warmup / supported / active unsupported | Distance elements | Maximum saved reference relative error | Overfit excess-loss ratio | Peak reserved MiB |
+|---|---:|---:|---:|---:|---:|---:|---:|
+| fold_0_balanced | 8 | 333 / 63 / 27 | 2 / 6 / 0 | 271,104 | 2.085262039e-06 | — | 12186 |
+| fold_0_control | 8 | 333 / 63 / 27 | 2 / 6 / 0 | 271,104 | 3.02243019e-06 | — | 11930 |
+| fold_1_balanced | 8 | 316 / 61 / 28 | 2 / 6 / 0 | 263,936 | 5.746277367e-09 | — | 12138 |
+| fold_1_control | 8 | 316 / 61 / 28 | 2 / 6 / 0 | 263,936 | 6.117778015e-05 | — | 12138 |
+| fold_2_balanced | 8 | 350 / 62 / 28 | 2 / 6 / 0 | 299,520 | 9.433501553e-05 | — | 12134 |
+| fold_2_control | 8 | 350 / 62 / 28 | 2 / 6 / 0 | 299,520 | 6.40842802e-09 | — | 12160 |
+| overfit_balanced | 100 | 53 / 8 / 11 | 2 / 98 / 0 | 1,638,400 | — | 0.000721186407546 | 7254 |
+| overfit_control | 100 | 53 / 8 / 11 | 2 / 98 / 0 | 1,638,400 | — | 0.000701213786005 | 7254 |
+
+Actual M0 coverage is **16 warmup + 232 supported active + 0 active unsupported steps**. There are 9,296 eligible anchor exposures (including warmup), 15,872 current record exposures, 30 historical-candidate steps, 3,448 historical candidate occurrences and 90 replay groups. The full source metadata census has 9 zero-eligible batches, including 4 after its 65-step warmup: fold 0 step 180, fold 1 step 221, fold 2 steps 133 and 232. The remaining 5 are warmup batches. These 1-based positions establish future schedule opportunities, not actual M0 or Q1 runtime execution of the branch.
+
+The overfits include **557 supported role-step cases with exactly zero ranking norm** (control 279; balanced 278), among 588 supported overfit role-step cases. These remain supported and update the EMA; they cannot be counted as unsupported/no-EMA-update tests. No capacity role has zero ranking norm. Proposed ratios hit the upper bound during overfit only: control CNN/Transformer/Mamba 91/52/62 times, balanced 93/54/62; no lower-bound hits. Control still applies unit weights. These trajectories are overfit diagnostics and provide no basis to tune Q1 coefficients.
+
+Parameter-reference runtime coverage is six capacity steps, not every one of the 248 updates, and no direct historical reference exists in the fixed-batch overfits because they have no history. The original 203/203 condition is cumulative per run, not a claim that every tensor has a nonzero derivative on every step. No step gradient vectors or optimizer states were retained, so full parameter-gradient and AdamW reexecution is unavailable within this evidence. Strict checkpoint content can be independently checked for six capacity endpoints; strict forward-output equality remains a saved runtime witness.
+
+Evidence: `audit_scope_census.json`; `independent_recompute_02.json:8–124,2107–2113`; `local_bindings_claims.json:26–209`; R `tools/train_msvr_supported_gradient_balance.py:185–216,435–440`.
+
+### F. Evaluation type — PASS, mixed types explicitly separated
+
+| Evidence | Classification | Permitted meaning |
+|---|---|---|
+| Source supervision and source queue/mask census | `real_gt` | Uses registered dataset identity/scene labels; metadata coverage is not retrieval effectiveness. |
+| T0 controller/loss/AMP/permutation finite fixtures | `simulation_only` | Mathematical and implementation sanity checks with no model training or dataset image read. |
+| Direct derivative references, frozen state, reload and saved scalar identities | `engineering_proxy` (internal model/derivative reference) | Tests algorithm/state consistency; the internal reference is not a benchmark ground truth. |
+| Fixed-batch overfit | `real_gt` supervised fitting plus `engineering_proxy` loss-ratio gate | Shows the registered training path can fit the source batch; it is not a generalization score. |
+| Retrieval effectiveness or official benchmark | Not performed by M0 | No new such claim is supported. |
+
+Evidence: R `tools/check_msvr_supported_gradient_balance_math.py`; X `tools/check_msvr_cross_scene_smooth_ap_math.py:33–91`; R `tools/train_msvr_supported_gradient_balance.py:185–216,358–442`; `independent_recompute_02.json:2107–2130`.
+
+## Actual work and failed attempts retained
+
+R2 original M0 took 1016.5666994191706 s and its original CPU verifier 9.100542893633246 s. This independent remote CPU pass took 26.964874 s; it is a separate execution, not the original verifier's green flag. All 248 original current-total backward calls are accompanied by 248 current-ranking derivative calls and **248 direct-auxiliary derivative calls**. Six capacity reference steps add 24 direct component calls and six direct-total reference calls. Saved forward counters total 6,272 extra fresh role record forwards (5,760 history refresh + 512 zero-age replay), 5,760 history-VJP record forwards and 384 direct-check record forwards. These counters exclude initialization, unchanged current forward/backward, preflight and strict reload; they are not a wall-clock cost decomposition. Peak reserved memory is 12,186 MiB, below the unchanged 24 GiB engineering limit.
+
+The original R1's three updates and failed fourth step remain separate spent work. The failed fourth step reached its gradient reference check, so counting only completed optimizer updates would understate its cost. No Q1 runtime or metric was used to select or modify this M0 audit.
+
+Auditor failures are retained in `audit_failures.json`, their original scripts, raw outputs and request receipts. An initial transport failed before remote connection because the selected local stdlib runtime had no Paramiko; the retry used the existing offline uv cache. The first independent CPU script demanded exact CPU/GPU double-reduction equality for a final role parameter norm. Its saved failure and follow-up diagnostic show a maximum absolute difference of 5.684341886080802e-14 (relative 2.0207945872648634e-16), with exact checkpoint content hashes already matching. The revised script only applies the already-existing scalar consistency tolerance to this added cross-device comparison. The experimental 0.005/1e-8 reference gates, 0.1 overfit gate and all thresholds in source/config were unchanged. A local inventory-key assumption and inline PowerShell quoting failure were also preserved; they had no effect on remote training or experimental data.
+
+## Closure, blockers and allowed wording
+
+**CLOSED_WITH_LIMITS** is the terminal audit state. No M0 engineering defect or missing required M0 evidence remains within the authorized read-only CPU audit. C-01 is resolved. The A/B/C/D/F statuses are PASS and E is WARN; overall WARN preserves the coverage and assurance limits rather than treating them as missing engineering work.
+
+Supported wording: “For MSVR310 official TRAIN, seed42 and the registered R2 configuration, all six short capacity runs and two fixed-batch overfits passed M0 engineering gates; an independent bounded-CPU review reproduced all saved-distance, mask, loss-ledger and scalar-state checks. Six capacity checkpoints have verified saved content and recorded strict-reload checks.”
+
+Required qualifiers: no real active unsupported M0 update occurred; no saved per-step parameter-gradient/optimizer replay was independently regenerated; runtime tensor assertions remain runtime witnesses; the two overfits have no final checkpoint/reload; same-family reviewer acceptance is provisional and the requested backend is not independently attested.
+
+Unsupported wording: “The audit independently reproduced all training gradients”, “M0 covered real no-support updates”, “all eight runs passed strict reload”, “the candidate improves retrieval”, or any Q1/scientific promotion/official benchmark claim. Completing Q1's original fixed endpoints, full retrieval gallery, registered gates and terminal independent audit remains outside this audit. No new run or threshold change is requested merely to remove these honest scope limits.
+
+Machine-readable verdict: `EXPERIMENT_AUDIT.json`. Full archive manifest: `artifact_manifest.json`. Receipt: `audit_receipt.json`. Verbatim final response: `final_response.md`.

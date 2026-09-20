@@ -1,0 +1,112 @@
+
+FILE C:\Users\gb\.trifusion_github_publish_22c3bee\modeling\trifusion\signal_preserving_v8.py
+690: class ExpertFormationV8Criterion(nn.Module):
+691:     def __init__(self, *, triplet_margin: float, label_smoothing: float) -> None:
+692:         super().__init__()
+693:         self.triplet_margin = float(triplet_margin)
+694:         self.label_smoothing = float(label_smoothing)
+695: 
+696:     def _identity_losses(
+697:         self,
+698:         logits: torch.Tensor,
+699:         embedding: torch.Tensor,
+700:         labels: torch.Tensor,
+701:     ) -> tuple[torch.Tensor, torch.Tensor]:
+702:         identity = F.cross_entropy(
+703:             logits,
+704:             labels,
+705:             label_smoothing=self.label_smoothing,
+706:         )
+707:         triplet = _batch_hard_triplet(
+708:             F.normalize(embedding, dim=1),
+709:             labels,
+710:             self.triplet_margin,
+711:         )
+712:         return identity, triplet
+713: 
+714:     def forward(
+715:         self,
+716:         output: SignalPreservingV8Output,
+717:         labels: torch.Tensor,
+718:     ) -> dict[str, torch.Tensor]:
+719:         if output.fused_logits is None:
+720:             raise ValueError("V8 expert formation requires identity classifiers")
+721:         id_fused, triplet_fused = self._identity_losses(
+722:             output.fused_logits,
+723:             output.fused_embedding,
+724:             labels,
+725:         )
+726:         losses = {"id_fused": id_fused, "triplet_fused": triplet_fused}
+727:         for expert in EXPERT_ORDER:
+728:             losses[f"id_{expert}"], losses[f"triplet_{expert}"] = (
+729:                 self._identity_losses(
+730:                     output.branch_logits[expert],
+731:                     output.branch_embeddings[expert],
+732:                     labels,
+733:                 )
+734:             )
+735:             losses[f"id_residual_{expert}"], losses[f"triplet_residual_{expert}"] = (
+736:                 self._identity_losses(
+737:                     output.residual_logits[expert],
+738:                     output.residual_embeddings[expert],
+739:                     labels,
+740:                 )
+741:             )
+742:         return losses
+743: 
+744: 
+745: __all__ = [
+746:     "CrossModalMambaResidualStage",
+747:     "ExpertFormationFusion",
+
+FILE C:\Users\gb\.trifusion_github_publish_22c3bee\tools\msvr310_exact_signal_inference.py
+1: """Preserve the measured B0 SIM matmul dispatch during frozen-model inference."""
+2: 
+3: 
+4: def exact_signal_forward(model, batch):
+5:     import torch
+6: 
+7:     assert not model.training
+8:     name = "baseline.signal.SIM.modal_interactive.cross_attn.in_proj_weight"
+9:     weight = model.baseline.signal.SIM.modal_interactive.cross_attn.in_proj_weight
+10:     assert not weight.requires_grad
+11:     # PyTorch 2.5.1 should_fold inspects the small operand's requires_grad even
+12:     # under no_grad. A detached view restores B0's mm dispatch without unfreezing
+13:     # the registered parameter or building an autograd graph.
+14:     with torch.no_grad():
+15:         dispatch_view = weight.detach().requires_grad_(True)
+16:         output = torch.func.functional_call(
+17:             model, {name: dispatch_view}, (batch,), {"return_aux": True},
+18:         )
+19:     assert model.baseline.signal.SIM.modal_interactive.cross_attn.in_proj_weight is weight
+20:     assert not weight.requires_grad and dispatch_view.grad is None
+21:     assert not output.baseline_embedding.requires_grad
+22:     return output
+
+FILE C:\Users\gb\.trifusion_github_publish_22c3bee\tools\train_signal_preserving_v17.py
+95:             bootstrap,
+96:             aggregate_branches,
+97:             envelope,
+98:             integrity_passed,
+99:         )
+100:     )
+101:     return {
+102:         "passed": passed,
+103:         "per_fold_fused_nonnegative_passed": per_fold_fused,
+104:         "weighted_fused_gain_passed": weighted,
+105:         "fused_bootstrap_lower_bound_passed": bootstrap,
+106:         "aggregate_branch_gains_passed": aggregate_branches,
+107:         "fused_envelope_improvement_passed": envelope,
+108:         "integrity_passed": integrity_passed,
+109:     }
+110: 
+111: 
+112: def evaluate_v17_d1_gate(
+113:     *,
+114:     metrics_percent: Mapping[str, Mapping[str, float]],
+115:     minimum_fused_map: float,
+116:     v8_phase_b_map: float,
+117:     strict_reload: bool,
+118:     frozen_state_unchanged: bool,
+119:     exact_signal_prefix: bool,
+120:     official_test_access_count: int,

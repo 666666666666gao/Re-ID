@@ -1,0 +1,322 @@
+{
+  "audit_skill": "experiment-audit",
+  "verdict": "WARN",
+  "overall_verdict": "WARN",
+  "integrity_status": "warn",
+  "reason_code": "engineering_complete_with_runtime_and_scope_limits",
+  "summary": "Complete M0 engineering evidence passes independently feasible deterministic checks. Scope/runtime limits remain; no retrieval or promotion conclusion.",
+  "deterministic_checks_status": "pass",
+  "engineering_status": "PASS_ENGINEERING_ONLY",
+  "closure_status": "CLOSED_WITH_LIMITS",
+  "remaining_engineering_blockers": [],
+  "remaining_audit_blockers": [],
+  "scientific_claim_blockers": [
+    "Complete paired Q1 and its registered CPU checks and fresh terminal audit are outside this audit.",
+    "M0 cannot establish retrieval superiority, generalization, robustness or benchmark promotion."
+  ],
+  "agent_id": "/root/audit_supported_gradient_balance_m0_20260921",
+  "verdict_id": "supported_balance_m0_20260921_fresh_audit_final",
+  "reviewer_session_id": "01a0c0e2-1f03-7e23-b627-9bb872213eec",
+  "executor_family": "openai",
+  "reviewer_family": "openai",
+  "reviewer_model": "gpt-6-astra",
+  "reviewer_reasoning": "max",
+  "requested_reviewer_model": "gpt-6-astra",
+  "requested_reasoning_effort": "max",
+  "requested_fork_turns": "none",
+  "reviewer_backend": "native Codex agent",
+  "backend_attestation": "unavailable",
+  "review_independence": "same-family",
+  "acceptance_status": "provisional",
+  "attribution_note": "Model and reasoning fields record the requested routing; they are not independently attested backend identity. The fresh reviewer derived the verdict from primary artifacts. No additional reviewer agent was spawned.",
+  "trace_path": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\trifusion_supported_balance_m0_independent_audit_20260921",
+  "request_path": "001-request.md",
+  "generated_at": "2026-09-20T22:52:21.899885+00:00",
+  "date": "2026-09-21",
+  "execution_commit": "1381639f778f77f124a2726ee55c07610092a438",
+  "observed_publication_head": "dd6a0970e2294d2566454175ce49cc73d712978f",
+  "audited_input_hashes": {
+    "execution_commit": "1381639f778f77f124a2726ee55c07610092a438",
+    "registered_config": "9ce36299299efbc09ccfb72f5b1c4fed20fc1026bd9fee1bd55a591d6950ec7b",
+    "m0_summary": "e63fc2ace053952c3775b19e37c0064af890b41f2a96d03a63c6c4237cd01545",
+    "m0_cpu_receipt": "4f551ff62e64b5352fbd03398b3725c18ecee81b4d0f8ef8efff68013a6a5228",
+    "audit_request": "ca085e4a22602dd83ffd4fd86a4cde2dac1421d9d98d1ead6d25294054b9fa8f",
+    "remote_primary_intake": "fd7c45ccd6f3942f3f8b9a47c42255aaefb3c94b91d0211c9be6b7dec7656672",
+    "independent_recompute_script": "60edb2fd774c93f31196024a3ff6967b25b54adf7296fb73c20ecc8ffdafbb22",
+    "independent_recompute_output": "29781f6140a1b37d7182b04bb3e015690e94ed870e97c82a24723d97463f5734",
+    "corrected_master": "63df3e03a80a346351c34f6029d14490d75f84c94ca6960d213530d946f81b8d"
+  },
+  "checks": {
+    "A": {
+      "name": "Ground truth provenance",
+      "status": "PASS",
+      "details": "Source supervision uses registered official TRAIN identity/scene/camera metadata. Reconstructed all 1,032 triplet labels from filenames, all three identity-isolated folds and all 780 source batches/candidate masks. No model-generated labels or heldout/official images are used by M0.",
+      "evidence": [
+        "remote_text/root/autodl-tmp/trifusion-v2/TriFusion-ReID/tools/build_msvr310_train_oof_protocol.py:12-116",
+        "snapshots/repo/tools/train_msvr310_signal_oof.py:68-99",
+        "snapshots/repo/tools/msvr_cross_scene_smooth_ap.py:11-54",
+        "independent_recompute_02.py:72-150",
+        "independent_recompute_02.json:8-110"
+      ]
+    },
+    "B": {
+      "name": "Score normalization",
+      "status": "PASS",
+      "details": "Feature normalization and score=1-d^2/2 implement the stated cosine-space loss; no claimed retrieval result is divided by model prediction statistics. EMA norm ratios, relative derivative errors and the registered excess-loss ratio are explicitly engineering measures. Overfit denominator uses initial excess loss, with an analytic label-smoothing floor; it is not a retrieval score.",
+      "evidence": [
+        "remote_text/root/autodl-tmp/trifusion-v2/TriFusion-ReID/tools/msvr_role_set_relations.py:60-64",
+        "snapshots/repo/tools/msvr_cross_scene_smooth_ap.py:26-54",
+        "snapshots/repo/tools/msvr_supported_gradient_balance.py:23-43",
+        "remote_text/root/autodl-tmp/trifusion-v2/TriFusion-ReID/tools/run_signal_preserving_v5.py:1580-1618",
+        "independent_recompute_02.py:319-328"
+      ]
+    },
+    "C": {
+      "name": "Result existence, numbers and status",
+      "status": "PASS",
+      "details": "Complete evidence supports six 8-step capacity endpoints and two 100-step overfits, 248 updates, 90 saved component references, and six final capacity checkpoints. Rehashed all 37 M0 inventory files remotely and 28 local intake texts. All 744 role CSV rows, 90 reference rows and 8 epoch rows match raw records. The overbroad strict-reload wording was corrected and independently reread; original wording remains archived. R1 remains STOPPED_AT_M0 after 3 updates and failed step 4.",
+      "evidence": [
+        "independent_recompute_02.json:111-124",
+        "independent_recompute_02.json:879-1000",
+        "local_bindings_claims.json:1-25",
+        "claim_correction_check.json:1-11",
+        "corrected_claims/docs/TRIFUSION_RGBNT201_CURRENT_COMPLETE_HANDOFF_2026-09-01.md:6752-6758",
+        "snapshots/repo/evidence/supported_gradient_balance_m0_r1_failure_20260921/remote/m0.log:25-38"
+      ]
+    },
+    "D": {
+      "name": "Executed metric and update paths",
+      "status": "PASS",
+      "details": "Actual M0 calls the cross-scene objectives, direct current ranking and independent direct auxiliary derivatives, historical candidate VJPs, balanced/control combination, fixed reference checks, unscale and one AdamW step. Saved distance ledgers independently reproduce the claimed losses and support/EMA state. Retrieval functions are intentionally outside M0 and generate no M0 retrieval claim. Runtime gradient witnesses are not represented as independently regenerated gradients.",
+      "evidence": [
+        "snapshots/repo/tools/train_msvr_supported_gradient_balance.py:110-299",
+        "snapshots/repo/tools/msvr_supported_gradient_balance.py:46-106",
+        "snapshots/repo/tools/train_msvr_supported_gradient_balance.py:358-442",
+        "independent_recompute_02.py:151-318",
+        "independent_recompute_02.json:2083-2130"
+      ]
+    },
+    "E": {
+      "name": "Scope and coverage",
+      "status": "WARN",
+      "details": "One dataset and one seed (MSVR310, seed42), with 3 folds, 6 short capacity runs and 2 fixed-batch overfits. Actual M0 has 16 warmup steps, 232 supported active steps and 0 active unsupported steps. Full source metadata predicts 4 active zero-support batches, but this is not M0 runtime coverage. 557 supported overfit role-steps have zero ranking norm; those are not unsupported steps. Parameter reference witnesses occur only at step 4 of each capacity endpoint. No scientific efficacy, robustness, benchmark superiority or promotion claim follows.",
+      "evidence": [
+        "independent_recompute_02.json:8-124",
+        "audit_scope_census.json",
+        "local_bindings_claims.json:26-209",
+        "snapshots/repo/tools/train_msvr_supported_gradient_balance.py:185-216",
+        "independent_recompute_02.json:2107-2113"
+      ]
+    },
+    "F": {
+      "name": "Evaluation type classification",
+      "status": "PASS",
+      "details": "Mixed but labeled: real_gt source-training and real_gt metadata census; simulation_only synthetic T0 controller/loss tests; engineering_proxy direct-gradient/reload/frozen-state/overfit diagnostics. The direct reference is an internal derivative-equivalence reference, not ground-truth retrieval performance. M0 includes no new retrieval evaluation.",
+      "evidence": [
+        "snapshots/repo/tools/check_msvr_supported_gradient_balance_math.py",
+        "remote_text/root/autodl-tmp/trifusion-v2/TriFusion-ReID/tools/check_msvr_cross_scene_smooth_ap_math.py:33-91",
+        "snapshots/repo/tools/train_msvr_supported_gradient_balance.py:185-216",
+        "snapshots/repo/tools/train_msvr_supported_gradient_balance.py:358-442",
+        "independent_recompute_02.json:2107-2130"
+      ]
+    }
+  },
+  "coverage": {
+    "dataset": "MSVR310 official TRAIN split",
+    "seeds": [
+      42
+    ],
+    "folds": 3,
+    "source_records": 1032,
+    "source_identities": 155,
+    "multi_scene_identities": 60,
+    "single_scene_identities": 95,
+    "protocol_scene_labels": [
+      0,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19,
+      20,
+      21,
+      22,
+      23,
+      24,
+      25,
+      26,
+      27,
+      28,
+      29,
+      30
+    ],
+    "protocol_camera_labels": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7
+    ],
+    "t0_metadata": {
+      "batches": 780,
+      "anchor_exposures": 49920,
+      "candidates": 177622,
+      "positive_positions": 107608,
+      "zero_eligible": 9,
+      "active_zero_eligible": 4
+    },
+    "m0": {
+      "steps": 248,
+      "warmup_steps": 16,
+      "supported_steps": 232,
+      "active_zero_support_steps": 0,
+      "eligible_anchors": 9296,
+      "history_steps": 30,
+      "candidates": 3448,
+      "distance_elements": 4945920,
+      "history_vjp_groups": 90,
+      "history_vjp_record_forwards": 5760,
+      "fresh_role_record_forwards": 5760,
+      "direct_reference_steps": 6
+    },
+    "source_exposures": 15872,
+    "scalar_pair_identities": 8280,
+    "saved_parameter_reference_comparisons": 90,
+    "saved_reference_maximum_relative_error": 9.433501552915618e-05,
+    "supported_zero_rank_role_steps": 557,
+    "final_capacity_checkpoints": 6,
+    "overfit_final_checkpoints": 0,
+    "baseline_checkpoints": 3,
+    "raw_m0_inventory_files": 37,
+    "local_raw_intake_files": 28,
+    "local_raw_intake_bytes": 7961437,
+    "registered_binding_rows": 143,
+    "unique_registered_paths": 125,
+    "execution_commit_blob_rows": 97,
+    "numerical_maxima": {
+      "distance_max": 1.3555576801300049,
+      "current_distance_symmetry_error": 5.21540641784668e-07,
+      "fused_squared_vs_mean_branch_squared_error": 1.2031691151159762e-06,
+      "standard_ap_error": 2.2182630954326044e-07,
+      "cross_ap_error": 2.4798321118790767e-07,
+      "current_hard_error": 1.4901161193847656e-08,
+      "hard_loss_error": 2.9802322387695312e-08,
+      "standard_loss_error": 1.1258060417240756e-07,
+      "cross_loss_error": 1.203131286819925e-07,
+      "fused_component_error": 1.203131286819925e-07,
+      "weighted_loss_error": 5.45134147600379e-07,
+      "final_parameter_norm_cpu_gpu_abs_error": 5.684341886080802e-14
+    },
+    "training_costs": {
+      "extra_fresh_role_record_forwards": 6272,
+      "extra_history_vjp_record_forwards": 5760,
+      "extra_direct_check_record_forwards": 384,
+      "current_rank_backward_calls": 248,
+      "current_auxiliary_backward_calls": 248,
+      "direct_component_backward_calls": 24,
+      "optimizer_steps": 248
+    }
+  },
+  "deterministic_checks": [
+    "Registered source/config/Signal/CLIP/B0/final-checkpoint and intake hashes",
+    "All source identity/scene masks, queue age/capacity/current exclusion and deterministic fold assignment",
+    "All saved distance elements, standard/cross-scene AP and hard-loss scalars",
+    "All 14 weighted loss ledger entries, support counts, EMA and clipping/weight states for 248 updates",
+    "8,280 saved scalar norm/cosine identities and all 90 saved reference thresholds",
+    "Six capacity checkpoint tensor-content and frozen subset hashes, plus three B0 checkpoint hashes",
+    "All descriptive CSV fields/aggregates and corrected reload claim"
+  ],
+  "runtime_only": [
+    "Actual original image reads and augmentation pixel equality are code/counter/hash runtime witnesses; images were not reopened.",
+    "No saved full per-step parameter gradient vectors or AdamW optimizer states; these were not regenerated.",
+    "Historical reencoding bitwise equality, RNG/buffer restoration, classification head preservation and strict output reload are retained runtime assertions.",
+    "Raw step embeddings are not saved; four distance-space consistency does not prove a fresh embedding forward.",
+    "Both overfits have no terminal checkpoint or strict reload."
+  ],
+  "no_new_work": {
+    "gpu_work": 0,
+    "model_forwards": 0,
+    "optimizer_updates": 0,
+    "image_reads": 0,
+    "q1_result_reads": 0,
+    "tensor_array_downloads": 0,
+    "repository_edits_by_reviewer": 0
+  },
+  "reviewer_cpu": {
+    "seconds": 26.964874420315027,
+    "threads": 2,
+    "interop_threads": 1,
+    "nice_increment": 10,
+    "cuda_initialized": false,
+    "python": "3.10.14 | packaged by conda-forge | (main, Mar 20 2024, 12:45:18) [GCC 12.3.0]",
+    "torch": "2.5.1+cu121",
+    "numpy": "1.24.4"
+  },
+  "original_r1_failure": {
+    "status": "STOPPED_AT_M0",
+    "completed_optimizer_steps": 3,
+    "failed_step": 4,
+    "elapsed_seconds": 37.34809142164886,
+    "reference": {
+      "first_norm": 0.3899933414205923,
+      "second_norm": 0.3900544174096418,
+      "difference_norm": 0.0026616547754863508,
+      "cosine": 0.9999767264664654,
+      "relative_l2_error": 0.006824872357540746,
+      "passed": false
+    },
+    "execution_snapshot_files": 10,
+    "archived_raw_files": 8
+  },
+  "resolved_findings": [
+    {
+      "id": "C-01",
+      "status": "RESOLVED",
+      "finding": "Original master wording could imply strict reload for all eight runs.",
+      "resolution": "Only six capacity checkpoint reloads are now stated; the two overfit runs are explicitly excluded.",
+      "proof": "claim_correction_check.json"
+    }
+  ],
+  "claims": [
+    {
+      "id": "M0_ENGINEERING",
+      "impact": "supported",
+      "text": "Registered R2 source-only M0 engineering checks and feasible independent saved-evidence recomputation pass."
+    },
+    {
+      "id": "FULL_PARAMETER_GRADIENT_REGENERATION",
+      "impact": "unsupported",
+      "text": "Saved scalar/reference checks do not establish independent reexecution of every parameter gradient or AdamW update."
+    },
+    {
+      "id": "REAL_M0_UNSUPPORTED_UPDATE",
+      "impact": "unsupported",
+      "text": "There are zero real active unsupported M0 steps."
+    },
+    {
+      "id": "RETRIEVAL_GAIN_OR_PROMOTION",
+      "impact": "unsupported",
+      "text": "No new retrieval efficacy or promotion result follows from M0."
+    }
+  ],
+  "failure_ledger": "audit_failures.json",
+  "artifact_manifest": "artifact_manifest.json",
+  "receipt": "audit_receipt.json",
+  "verbatim_response": "final_response.md"
+}

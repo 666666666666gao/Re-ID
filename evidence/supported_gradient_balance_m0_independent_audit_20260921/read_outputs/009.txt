@@ -1,0 +1,320 @@
+
+FILE C:\Users\gb\.trifusion_github_publish_22c3bee\tools\run_signal_preserving_v5.py
+99: def weighted_training_loss(
+100:     losses: dict[str, Any], config: dict[str, Any], *, phase: str = "joint"
+101: ) -> Any:
+102:     weights = config["LOSS"]
+103:     architecture = config["MODEL"]["ARCHITECTURE"]
+104:     if architecture == ARCHITECTURE_V7 and phase == "router_warmup":
+105:         return (
+106:             losses["peer_logits"] * float(weights["PEER_LOGITS"])
+107:             + losses["alpha"] * float(weights["ALPHA"])
+108:             + losses["reliability"] * float(weights["RELIABILITY"])
+109:         )
+110:     branch_id = sum(losses[f"id_{expert}"] for expert in ("cnn", "transformer", "mamba"))
+111:     branch_triplet = sum(
+112:         losses[f"triplet_{expert}"] for expert in ("cnn", "transformer", "mamba")
+113:     )
+114:     total = (
+115:         losses["id_fused"] * float(weights["ID_FUSED"])
+116:         + losses["triplet_fused"] * float(weights["TRIPLET_FUSED"])
+117:         + branch_id * float(weights["ID_BRANCH"])
+118:         + branch_triplet * float(weights["TRIPLET_BRANCH"])
+119:     )
+120:     if architecture != ARCHITECTURE_V8:
+121:         total = total + losses["peer_logits"] * float(weights["PEER_LOGITS"])
+122:     if architecture in (ARCHITECTURE_V6, ARCHITECTURE_V7, ARCHITECTURE_V8):
+123:         residual_id = sum(
+124:             losses[f"id_residual_{expert}"]
+125:             for expert in ("cnn", "transformer", "mamba")
+126:         )
+127:         residual_triplet = sum(
+128:             losses[f"triplet_residual_{expert}"]
+129:             for expert in ("cnn", "transformer", "mamba")
+130:         )
+131:         total = (
+132:             total
+133:             + residual_id * float(weights["ID_RESIDUAL"])
+134:             + residual_triplet * float(weights["TRIPLET_RESIDUAL"])
+135:         )
+136:     if architecture == ARCHITECTURE_V7:
+137:         total = (
+138:             total
+139:             + losses["alpha"] * float(weights["ALPHA"])
+140:             + losses["reliability"] * float(weights["RELIABILITY"])
+141:         )
+142:     return total
+143: 
+144: 
+145: def apply_controlled_modality_degradation(
+146:     images: dict[str, Any],
+147:     *,
+148:     selected_modalities: Any,
+149:     selected_samples: Any,
+150:     degraded_quality: float,
+
+FILE C:\Users\gb\.trifusion_github_publish_22c3bee\tools\run_signal_preserving_v5.py
+515:     }
+516:     (output_dir / "preflight.json").write_text(
+517:         json.dumps(result, indent=2, sort_keys=True) + "\n",
+518:         encoding="utf-8",
+519:     )
+520:     return result
+521: 
+522: 
+523: def _module_state_sha256(module: Any) -> str:
+524:     digest = hashlib.sha256()
+525:     for name, tensor in sorted(module.state_dict().items()):
+526:         digest.update(name.encode("utf-8"))
+527:         digest.update(tensor.detach().cpu().contiguous().numpy().tobytes())
+528:     return digest.hexdigest()
+529: 
+530: 
+531: def _criterion_class(config: dict[str, Any]) -> Any:
+532:     architecture = str(config["MODEL"]["ARCHITECTURE"])
+533:     if architecture == ARCHITECTURE_V5:
+534:         from trifusion.signal_preserving_v5 import SignalPreservingV5Criterion
+535: 
+536:         return SignalPreservingV5Criterion
+537:     if architecture == ARCHITECTURE_V6:
+538:         from trifusion.signal_preserving_v6 import ComplementarityActivatedV6Criterion
+539: 
+540:         return ComplementarityActivatedV6Criterion
+541:     raise ValueError(f"unsupported Signal-preserving architecture: {architecture}")
+542: 
+
+FILE C:\Users\gb\.trifusion_github_publish_22c3bee\tools\run_signal_preserving_v5.py
+1580: def overfit_loss_floor(config: dict[str, Any], *, num_classes: int) -> float:
+1581:     """Return the analytic weighted CE floor introduced by label smoothing."""
+1582: 
+1583:     if str(config["MODEL"]["ARCHITECTURE"]) not in (
+1584:         ARCHITECTURE_V7,
+1585:         ARCHITECTURE_V8,
+1586:     ):
+1587:         return 0.0
+1588:     smoothing = float(config["LOSS"]["LABEL_SMOOTHING"])
+1589:     correct_probability = 1.0 - smoothing + smoothing / num_classes
+1590:     other_probability = smoothing / num_classes
+1591:     entropy = -correct_probability * math.log(correct_probability)
+1592:     entropy -= (num_classes - 1) * other_probability * math.log(other_probability)
+1593:     identity_weight = (
+1594:         float(config["LOSS"]["ID_FUSED"])
+1595:         + 3.0 * float(config["LOSS"]["ID_BRANCH"])
+1596:         + 3.0 * float(config["LOSS"]["ID_RESIDUAL"])
+1597:     )
+1598:     return identity_weight * entropy
+1599: 
+1600: 
+1601: def evaluate_overfit_gate(
+1602:     losses: list[float], *, max_ratio: float, minimum_loss: float = 0.0
+1603: ) -> dict[str, Any]:
+1604:     initial_loss = float(losses[0])
+1605:     final_loss = float(losses[-1])
+1606:     initial_excess = initial_loss - minimum_loss
+1607:     final_excess = final_loss - minimum_loss
+1608:     loss_ratio = final_excess / initial_excess
+1609:     return {
+1610:         "passed": loss_ratio <= max_ratio,
+1611:         "initial_loss": initial_loss,
+1612:         "final_loss": final_loss,
+1613:         "minimum_loss": float(minimum_loss),
+1614:         "initial_excess_loss": initial_excess,
+1615:         "final_excess_loss": final_excess,
+1616:         "loss_ratio": loss_ratio,
+1617:         "maximum_loss_ratio": float(max_ratio),
+1618:     }
+1619: 
+1620: 
+1621: def learning_rate_multiplier(
+1622:     epoch: int, *, max_epochs: int, warmup_epochs: int
+1623: ) -> float:
+1624:     if epoch <= warmup_epochs:
+1625:         return epoch / warmup_epochs
+1626:     progress = (epoch - warmup_epochs - 1) / (max_epochs - warmup_epochs)
+1627:     return 0.5 * (1.0 + math.cos(math.pi * progress))
+1628: 
+1629: 
+1630: def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
+1631:     parser = argparse.ArgumentParser(description=__doc__)
+1632:     parser.add_argument(
+1633:         "--mode",
+1634:         required=True,
+1635:         choices=("preflight", "capacity", "overfit", "formation_probe", "dev"),
+1636:     )
+1637:     parser.add_argument("--config", required=True, type=Path)
+1638:     parser.add_argument("--output-dir", required=True, type=Path)
+1639:     return parser.parse_args(argv)
+1640: 
+1641: 
+1642: def run(args: argparse.Namespace) -> dict[str, Any]:
+1643:     config_path = args.config.resolve()
+
+FILE C:\Users\gb\.trifusion_github_publish_22c3bee\tools\verify_msvr310_source_style.py
+1: #!/usr/bin/env python3
+2: """Full saved-checkpoint, exposure and ranking verification; CPU only."""
+3: import argparse
+4: from datetime import datetime
+5: import hashlib
+6: import json
+7: from pathlib import Path
+8: import time
+9: 
+10: import numpy as np
+11: import torch
+12: 
+13: from tools.train_msvr310_source_style import context,ENDPOINTS,OUTPUT_WIDTHS,EXPERTS
+14: from tools.train_msvr310_signal_oof import sha256
+15: 
+16: 
+17: def state_sha(state):
+18:     digest=hashlib.sha256()
+19:     for name,tensor in sorted(state.items()):
+20:         digest.update(name.encode());digest.update(tensor.contiguous().numpy().tobytes())
+21:     return digest.hexdigest()
+22: 
+23: 
+24: def bootstrap(differences,identities):
+25:     unique=np.unique(identities)
+26:     sums=np.array([differences[identities==i].sum() for i in unique])
+27:     counts=np.array([(identities==i).sum() for i in unique])
+28:     rng=np.random.default_rng(42)
+29:     selected=rng.integers(0,len(unique),size=(10000,len(unique)))
+30:     return float(np.quantile(sums[selected].sum(1)/counts[selected].sum(1),.025,method='linear'))
+31: 
+32: 
+33: def verify(args):
+34:     started=time.time()
+
+FILE C:\Users\gb\.trifusion_github_publish_22c3bee\tools\build_v12_complete_path_oof_targets.py
+384: def _build_v8_experts(
+385:     signal_model: Any,
+386:     config: dict[str, Any],
+387:     *,
+388:     signal_checkpoint_sha256: str,
+389:     num_classes: int,
+390: ) -> Any:
+391:     project_modeling = str(Path(__file__).resolve().parents[1] / "modeling")
+392:     if project_modeling not in sys.path:
+393:         sys.path.append(project_modeling)
+394:     from trifusion.signal_preserving_v8_builder import (
+395:         build_signal_preserving_trifusion_v8_expert_formation,
+396:     )
+397: 
+398:     model_config = config["MODEL"]
+399:     return build_signal_preserving_trifusion_v8_expert_formation(
+400:         signal_model,
+401:         signal_checkpoint_sha256=signal_checkpoint_sha256,
+402:         num_classes=num_classes,
+403:         feature_width=int(model_config["FEATURE_WIDTH"]),
+404:         grid_size=tuple(model_config["GRID_SIZE"]),
+405:         adapter_width=int(model_config["ADAPTER_WIDTH"]),
+406:         semantic_width=int(model_config["SEMANTIC_WIDTH"]),
+407:         branch_after_block=int(model_config["BRANCH_AFTER_BLOCK"]),
+408:         expert_modal_width=int(model_config["EXPERT_MODAL_WIDTH"]),
+409:         scale_init=float(model_config["SCALE_INIT"]),
+410:         gradient_checkpointing=bool(model_config["GRADIENT_CHECKPOINTING"]),
+411:     ).model.cuda()
+412: 
+413: 
+414: def _metric_summary(scores: Any) -> dict[str, float]:
+415:     return {
+416:         "mAP": float(scores.average_precision.mean() * 100.0),
+417:         "Rank-1": float(scores.rank1_correct.mean() * 100.0),
+418:     }
+419: 
+420: 
+421: def _run_preflight(
+422:     config: dict[str, Any],
+423:     config_path: Path,
+424:     output_dir: Path,
+425: ) -> dict[str, Any]:
+426:     import torch
+427:     project_modeling = str(Path(__file__).resolve().parents[1] / "modeling")
+428:     if project_modeling not in sys.path:
+429:         sys.path.append(project_modeling)
+430:     from trifusion.aligned_data import build_aligned_train_loader
+431:     from tools.build_v8_oof_router_targets import build_identity_folds
+432:     from tools.run_signal_preserving_v5 import _set_seed
+433: 
+434:     started = time.time()
+435:     signal_cfg, source_commit, source_diff_sha256 = _configure_signal(config)
+436:     records = _load_records(config)
+437:     folds = build_identity_folds(records, num_folds=EXPECTED_FOLDS)
+438:     split = build_complete_path_fold_records(records, heldout_ids=folds[0])
+439:     loader = build_aligned_train_loader(
+440:         split["train_records"],
+441:         batch_size=int(config["DATA"]["TRAIN_BATCH_SIZE"]),
+442:         num_instances=int(config["DATA"]["NUM_INSTANCES"]),
+443:         num_workers=int(config["DATA"]["NUM_WORKERS"]),
+444:         seed=int(config["EXPERIMENT"]["SEED"]),
+445:     )
+446:     _set_seed(int(config["EXPERIMENT"]["SEED"]))
+447:     torch.cuda.reset_peak_memory_stats()
+448:     model = _build_signal_teacher(
+
+FILE C:\Users\gb\.trifusion_github_publish_22c3bee\tools\train_msvr310_source_style.py
+164: def checkpoint(model,binding,fold,config_hash,path):
+165:     import torch
+166:     state=model.state_dict()
+167:     source=model.baseline.signal.state_dict()
+168:     aliases={(t.data_ptr(),tuple(t.shape),str(t.dtype)):k for k,t in source.items()}
+169:     mapping={k:aliases[t.data_ptr(),tuple(t.shape),str(t.dtype)] for k,t in state.items() if k.startswith('baseline.')}
+170:     assert not path.exists()
+171:     torch.save(dict(role_state_dict={k:t.detach().cpu() for k,t in state.items() if not k.startswith('baseline.')},
+172:                     baseline_aliases=mapping,binding=binding,fold=fold['fold'],source_ids=fold['source_ids'],
+173:                     heldout_ids=fold['heldout_ids'],config_sha256=config_hash),path)
+174:     return sha256(path)
+175: 
+176: 
+177: def reload_model(config,cfg,fold,b0,path,binding,final_state,config_hash):
+178:     import torch
+179:     from tools.run_signal_preserving_v5 import _module_state_sha256
+180:     model,actual=build(config,cfg,fold,b0)
+181:     assert actual==binding
+182:     payload=torch.load(path,map_location='cpu',weights_only=True)
+183:     assert payload['config_sha256']==config_hash
+184:     assert payload['binding']==binding and payload['fold']==fold['fold']
+185:     assert payload['source_ids']==fold['source_ids'] and payload['heldout_ids']==fold['heldout_ids']
+186:     state=model.state_dict()
+187:     assert set(payload['role_state_dict'])=={k for k in state if not k.startswith('baseline.')}
+188:     assert set(payload['baseline_aliases'])=={k for k in state if k.startswith('baseline.')}
+189:     source=model.baseline.signal.state_dict()
+190:     assert all(torch.equal(state[k],source[v]) for k,v in payload['baseline_aliases'].items())
+191:     state.update(payload['role_state_dict']);model.load_state_dict(state,strict=True)
+192:     assert _module_state_sha256(model)==final_state
+193:     return model
+194: 
+195: 
+
+FILE D:\Program Files\UserCache\gb\codex\tmp\trifusion_supported_balance_m0_independent_audit_20260921\snapshots\repo\docs\TRIFUSION_RGBNT201_CURRENT_COMPLETE_HANDOFF_2026-09-01.md
+6717: ### 41.230 支持感知角色梯度平衡固定实现及独立代码审查完成（2026-09-21）
+6718: 
+6719: 唯一新假设登记于refine-logs/msvr310_supported_gradient_balance_v1/EXPERIMENT_PLAN.md；配置configs/MSVR310/TriFusion-supported-gradient-balance-paired-v1.json，SHA 0b5ff0107e8dda6634e0c060a4b1a87e8e7e2fa117c7beb0cf5792b6ebedc15b。7个新Python文件另建，原绑定代码不改。两端均cross-scene AP、相同初始化/候选/full history VJP，仅balanced按三角色完整排名R与其余监督A组合梯度；EMA0.9、比值平方根、r限制[0.25,4]、权重和2且各[0.4,1.6]。无支持时EMA保持、原辅助更新继续；分类14张量保持原梯度，encoder189张量调节。不新增推理参数/新loss/新结构，不将已有范数工具称为原创。
+6720: 
+6721: fresh代码审查review_supported_gradient_balance_20260921结论PASS_WITH_LIMITS，无剩余BLOCKING；same-family/provisional，所请求gpt-6-astra/max/fresh-none不作为后端attestation。审查直接阅读7源码、计划/配置、旧训练及核验依赖；AST7、本地新9项及前6配置58项绑定通过，来源元数据证明三折M0第4步直接参考分支可达。没有执行张量、模型或远端命令，不能当作T0/M0通过。初版T0仅重排名字的缺口已由执行者补充实际多张量角色置换与整块范数检查，最终补丁已独立复读；保留修改和运行未验证边界。
+6722: 
+6723: 原审查文本与回执归档evidence/supported_gradient_balance_preparation_20260921，计划目录保存EXPERIMENT_CODE_REVIEW.md/.json。M0需实际验证R_current/R_history/full R、直接辅助与总减R、组合梯度，保留原203/203、0overflow、冻结/严格重载和overfit≤0.1。CPU只重算保存标量与距离，不声称恢复逐步参数向量。记录实际AdamW更新范数，不将R/A比解释为更新份额。
+6724: 
+6725: 05:10:42实查前序全部原PID结束、GPU1MiB/0%；输出余5640347648B，仓库余1650192384B。本轮尚未删除权重；执行前再查至少4GiB和空闲GPU，当前预计新增不超过3GiB。远端数据/模型/数组保持不下载。新T0/M0/Q1尚未执行；下一步同步本次源码、启动固定持久队列，失败读原日志再处理，不重启未结束任务、不修改科学门。Goal ACTIVE/UNMET。
+6726: 
+6727: 
+6728: ### 41.231 首轮M0实际数值门停止，直接辅助导数修订已审查（2026-09-21）
+6729: 
+6730: R1执行92a75e4ac46cccb79bb6f78f913998c0d0039ce8/配置0b5ff010，05:35:20启动screen tri_supported_balance_92a75e4，wrapper41216。T0 41222于05:35:26退出0，完整780来源batch及新增数学检查通过。M0 41238于05:36:03退出1、耗时37.348秒；原pipeline STOPPED_AT_M0，全部原进程结束。M0 summary残留RUNNING是失败前写入的初始文件，不代表任务存活。fold0 control只完成3更新，第4步在optimizer更新前的auxiliary参考检查失败；无balanced端、完整M0或Q1结果。
+6731: 
+6732: 原辅助相减梯度与直接辅助参考：first_norm0.3899933414205923、second_norm0.3900544174096418、difference0.0026616547754863508、cos0.9999767264664654、relative0.006824872357540746>固定0.005。证据只证明combined backward减rank未在门内还原direct auxiliary；混合精度不同回传累加与末次相减均可能贡献，不能只归因于FP32减法。R1源代码、配置、合同、T0与失败文本封存evidence/supported_gradient_balance_m0_r1_failure_20260921，8份远端原文3613063B已逐一远端SHA核对，模型/数组下载0，原3次更新和失败第4步成本保留。
+6733: 
+6734: R2唯一实现修正为每步直接求原其余13项encoder辅助导数，两端同算；候选用完整R与direct A组合，控制/预热/无支持仍原current_total+history。原subtraction_auxiliary_vs_direct和direct_sum_vs_original继续量化差异；不再把已失效的AMP可加性当作CPU恒等式。M0实际A与独立再次求导的参考比较；control applied用原完整direct_loss参考，candidate用独立R/A加权参考，阈值仍0.005/零参考1e-8。固定EMA/权重/数据/optimizer/科学门不变，不构成新性能结果。记录两端新增一次auxiliary求导成本，保留有限精度上direct与combined路径差异。
+6735: 
+6736: 原fresh审阅者继续检查R1原文与R2源码，最终PASS_WITH_LIMITS，无剩余BLOCKING；不是第二个独立fresh agent，same-family/provisional且backend未独立认证。7源码AST及当前/前置67项目绑定、R1本地文本与inventory核对通过。新增T0差异fixture覆盖control、candidate、active无支持并调用实际CPU标量核验器；目前仅源码审阅，尚未实际运行R2张量或模型。意见与最终代码审查归档evidence/supported_gradient_balance_r2_review_20260921，计划目录EXPERIMENT_CODE_REVIEW.md/.json已指向R2。
+6737: 
+6738: R2固定配置SHA9ce36299299efbc09ccfb72f5b1c4fed20fc1026bd9fee1bd55a591d6950ec7b，implementation_revision=r2_direct_auxiliary。下一步同步后新目录重新T0/M0，从原初始化开始，不续训R1。05:39输出盘余5632225280B，GPU1MiB/0%；未删除权重。没有新检索、官方或晋级结论。Goal ACTIVE/UNMET。
+6739: 
+6740: 
+6741: ### 41.232 R2实际T0通过、M0越过首轮失败位置（2026-09-21）
+6742: 
+6743: 05:52:33 screen tri_supported_balance_r2_1381639启动；执行1381639f778f77f124a2726ee55c07610092a438，配置9ce36299299efbc09ccfb72f5b1c4fed20fc1026bd9fee1bd55a591d6950ec7b；run /root/trifusion-storage/artifacts/msvr310_supported_gradient_balance_v1_r2_seed42_1381639。wrapper42758，T0 42764于05:52:39退出0（6.3110秒），M0 42784随后自动开始。R2从原固定初始化开始，没有恢复R1的3个更新。
+6744: 
+6745: 实际T0完整780来源batch及合成检查通过，包括direct辅助与减法不同的control/candidate/active无支持三路径、实际CPU标量验证器、整块范数/置换/AMP/head保持。T0仍是模型前向0/更新0/heldout图像0。2026-09-21T05:56:41.949639+08:00通过/proc核对原wrapper/M0命令行存活；已保存首历史组中current/history/full R、直接辅助、实际组合的全部可见独立参考通过，当前最大相对误差6.11777801523e-05，低于原0.005。只说明这些已完成位置通过，尚未完成全部六容量端、两个过拟合端和CPU，不把局部见证写成M0 PASS。
+6746: 
+6747: 证据evidence/supported_gradient_balance_r2_start_20260921含原T0/启动/观察及逐角色参考数值。原R1减法失败保持；R2两端原控制路径与直接分量有限精度差异继续记录，系数/误差阈值/预算未改。当前输出盘余5525925888B；未删除权重、模型/数组下载0。下一步让原队列完成248更新M0及完整CPU，成功后自动Q1；不重启、不挑局部结果。尚无新检索/正式成绩，Goal ACTIVE/UNMET。
