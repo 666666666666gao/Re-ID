@@ -1,0 +1,5 @@
+# Partial Q1 runtime coverage of unsupported updates
+
+Read-only inspection of complete JSONL prefixes from the unchanged run. This is not terminal Q1, a new experiment, gradient regeneration or a retrieval result. Both fold-0 endpoints record their registered active zero-support update at step 180: full ranking gradient zero, EMA unchanged, coefficients 1/1, original-to-applied gradient difference zero, preserved heads, and nonzero actual parameter updates. The raw saved record is included. No models, images or arrays were loaded; no optimizer update was added. This supplements Q1 engineering coverage while the sealed M0 limitation (zero actual unsupported updates) remains true.
+
+The original live Q1 handle was checked through /proc at each observation. The final incomplete JSONL fragment, if any, is excluded and its byte count reported; every included record ends with the writer's newline. Full six-endpoint CPU checks and independent terminal audit remain required. No partial retrieval metric was read or used for tuning.

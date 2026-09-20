@@ -6782,3 +6782,10 @@ fresh-none gpt-6-astra/max独立M0审查终态WARN/CLOSED_WITH_LIMITS：A/B/C/D/
 07:08:31原wrapper42758/Q1 44804持续运行，首候选完成9/20epoch、1/6完整端点，GPU7578MiB/100%，输出盘5207883776B。未改变训练。检查终态工具发现文本接收清单仅嵌入pipeline对象，通用排名复算却要求独立pipeline.json；已补接收该原始文件并解析本地/嵌入远端Python语法。原排名复算可直接指定candidate=balanced及PASS_COMPLETE_SUPPORTED_GRADIENT_BALANCE_Q1，等待完整终态后执行，不重复实现指标，不把接口准备当成核验通过。
 
 磁盘盘点48个已同步Git bundle，共104067074B；全部具备本地相同SHA副本、引用提交在远端HEAD11678ca祖先链内，GitHub HEAD相同。删除前再次核对精确绝对路径位于transport、非符号链接、大小/SHA、提交存在与祖先关系，仅删除这48个明确文件。07:10:33完成，主卷1472622592→1576755200B；权重删除0、训练输出未动。逐文件计划/回执及执行脚本归档evidence/transport_cleanup_20260921。三数据集Goal保持ACTIVE/UNMET。
+
+
+### 41.235 支持梯度平衡：真实无支持步骤的运行覆盖（2026-09-21T07:20:32.059431+08:00）
+
+原Q1进程44804通过/proc再次确认存活。仅读完整JSONL前缀，不加载模型/图像/数组，不新增更新，不读局部检索分数。fold0控制与候选均已执行第180步：真实跨scene正例支持为0，三个角色完整排名梯度0、EMA before/after相同、应用系数1/1、原梯度与实际应用梯度差0，分类头保持，实际参数更新均非零。首轮07:17仅控制覆盖，第二轮候选也覆盖；原始记录、前缀SHA和脚本归档evidence/supported_gradient_balance_zero_support_runtime_20260921。
+
+这是Q1运行中的工程分支见证，不是独立参数梯度重生成或完整终态；M0的0个活动无支持更新限制仍原样保留，不追溯改写审查。候选已写183步、控制260步，完整六端/CPU/检索审查仍待完成。无新性能结论、不调参，Goal ACTIVE/UNMET。
