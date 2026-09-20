@@ -6584,3 +6584,6 @@ Signal公开HEAD仍cd1b0a672d1fe642e7608731cb4899a19dda7d51，RGBNT100 YAML与�
 M0原16907于00:25:36自动启动，00:25:44与原wrapper均存活、cmdline匹配，RUNNING尚无完整容量端。GPU614MiB、输出余6823510016B。M0预计10–25分钟，按实际阶段更新；下一观察约00:29，非观察失败不重启。固定T0→M0→M0_CPU→Q1→Q1_CPU链，前阶段失败立即封存。完整248步M0与CPU通过前不进入heldout。证据evidence/cross_scene_smooth_ap_launch_20260921。
 
 本轮仅新训练合同，不修改旧Q1结果、温度、倍率或终点；不做官方测试/多seed/消融，不删除无明确冗余证据的权重。三数据集Goal ACTIVE/UNMET。
+
+
+§41.216容量阶段补充：00:31:46六容量端各8步均完成，203/203累计非零、overflow0、Signal/冻结状态检查均通过；原wrapper16885与M0原16907存活，GPU7424MiB/100%，输出余6618443776B。尚待两个100步过拟合及完整M0_CPU，不称完整M0通过。evidence/cross_scene_smooth_ap_completion_preparation_20260921保存观察和终态接收/全行分析准备（AST检查而未执行）。新鲜M0独立审计 /root/audit_cross_scene_smooth_ap_m0_20260921 已启动静态/GT阶段，需完整终态才能裁决；私有trace在.aris/traces/experiment-audit/2026-09-21_cross_scene_m0。下一观察约00:36，原任务持续，不改合同/不重启。Goal ACTIVE/UNMET。
