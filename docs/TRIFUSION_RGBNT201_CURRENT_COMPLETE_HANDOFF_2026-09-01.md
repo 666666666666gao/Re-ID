@@ -2,7 +2,7 @@
 
 ## 0. 一页结论
 
-当前执行入口：§41.215—§41.223（2026-09-21）。标准Smooth-AP Q1_FAIL及完整来源梯度诊断已封存。跨scene Smooth-AP执行d35864d/配置e5326b52，M0/CPU通过，独立M0 WARN/CLOSED_WITH_LIMITS。2026-09-21T01:54:23.727569+08:00原wrapper16885/Q1 18222存活；fold0两端均20epoch/260步且checkpoint、检索、receipt齐全，2/6端，fold1控制自动继续。实际零支持第180步符合已登记分支；完整六端和CPU尚未结束，无新增正式成绩。保持seed42及固定合同，后继梯度协作仅候选。三数据集Goal ACTIVE/UNMET。以下历史章节不作为当前运行指令。
+当前执行入口：§41.215—§41.224（2026-09-21）。标准Smooth-AP Q1_FAIL及完整来源梯度诊断已封存。跨scene Smooth-AP执行d35864d/配置e5326b52，M0/CPU及独立M0已关闭（工程PASS、WARN/CLOSED_WITH_LIMITS）。2026-09-21T02:31:12.240044+08:00原wrapper16885/Q1 18222存活；3/6端固定20epoch/260步、checkpoint/检索/receipt齐全；fold1 cross_scene自动完成第4epoch。六端/CPU/独立科学核验尚未结束，无新增正式成绩。保持seed42及固定合同，后继梯度协作仅候选。三数据集Goal ACTIVE/UNMET。以下历史章节不作为当前运行指令。
 
 当前MSVR310训练及此前两个车辆数据集比较使用原V8平行三角色结构：冻结Signal/CLIP，共享block8之前语义和tail9/10/11参数，三个角色分别运行共享tail；CNN处理局部语义Patch高频，Transformer处理全局CLS/Patch关系，Mamba处理空间与位置级三模态扫描。各角色相对冻结reference形成1536D残差，三角色4608D银行拼接3072D Signal得到7680D fused；完整单角色输出为4608D Signal+角色残差。三条路径均执行，当前没有Router/HFER、V23模态MLP或V24原型。两项车辆训练比较均已完成；RGBNT100内部完整比较支持三角色增益，MSVR310尚未超过Signal。下面V1—V8条目保留历史经过，不代表当前又启用了旧模块。
 
@@ -6655,3 +6655,12 @@ root另核对当前计算图，PROJECT_OBJECTIVE_SCOPE.md与输入SHA保存：O�
 观察证据：evidence/cross_scene_smooth_ap_q1_progress_20260921/trifusion_cross_scene_observation_0154_20260921.json。这里只核对完成状态，不根据首折成绩决定后继设计；原六端CPU、完整配对统计和独立科学审查仍待结束后执行。单端工程标志不替代这些核验。执行代码d35864d、配置e5326b52、seed42、固定终点和原门槛均未变。
 
 输出盘余6270742528B（5.840GiB），本轮删除0权重。继续原队列，依据约38分钟/端的实测速率在下一端预计完成前观察；全六端仍预计04:30附近，实际完成后再进行CPU和文本证据接收。Goal ACTIVE/UNMET。
+
+
+### 41.224 跨场景 Smooth-AP 完成3/6端，原队列继续（2026-09-21）
+
+2026-09-21T02:31:12.240044+08:00原wrapper16885/Q1 18222存活；3/6端固定20epoch/260步、checkpoint/检索/receipt齐全；fold1 cross_scene自动完成第4epoch。本次新增完成fold1 control，fit epoch累计2212.8621秒；overflow0、累计203/203非零梯度张量，所有已记录工程检查true。通过/proc核对原命令行，未重启、未改执行代码、配置或合同。
+
+只读观察证据：evidence/cross_scene_smooth_ap_q1_progress_20260921/trifusion_cross_scene_observation_0231_20260921.json。本次只登记完整端点回执及继续运行证据，不解读局部fold分数；全部六端、CPU重算和独立科学审查完成后才判断原门槛。单端已记录的工程标志不是完整审计的替代品。
+
+输出盘剩余6115622912B（5.696GiB），本轮删除0权重。继续按约38分钟/端的实测速率在接近下一终点时观察；全六端仍暂估04:30附近，终态后接收文本并核验。Goal ACTIVE/UNMET。
