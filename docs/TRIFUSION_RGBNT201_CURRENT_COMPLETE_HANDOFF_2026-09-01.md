@@ -2,13 +2,13 @@
 
 ## 0. 一页结论
 
-当前执行入口：§41.201；Smooth-AP原六端1560更新及Q1_CPU于09-09 03:26结束exit0，Q1_FAIL。执行器全排名重算fused52.444136→52.787590（+0.343455），配对1/5、对Signal0/5；独立Q1审计进行中。来源日志与1560步正例直接导数完成，未登记后继训练，Goal ACTIVE/UNMET。
+当前执行入口：§41.215—§41.220（2026-09-21）。原标准Smooth-AP Q1_FAIL与完整来源梯度诊断已封存并独立审计关闭。新跨scene Smooth-AP执行d35864d/配置e5326b52，M0与CPU完整248步通过，独立M0为WARN/CLOSED_WITH_LIMITS、确定性工程PASS。原wrapper16885/Q1 18222于00:37启动；01:09实查首控制17/20epoch、0/6终点。六端与CPU终态尚未结束，无新增正式成绩。保持seed42和固定合同；后继梯度协作仅文献候选。三数据集Goal ACTIVE/UNMET。下面V1—V8及各节保留历史，不作为当前运行指令。
 
-当前用于已完成MSVR310比较及新登记RGBNT100比较的是原V8平行三角色结构：冻结Signal/CLIP，共享block8之前语义和tail9/10/11参数，三个角色分别运行共享tail；CNN处理局部语义Patch高频，Transformer处理全局CLS/Patch关系，Mamba处理空间与位置级三模态扫描。各角色相对冻结reference形成1536D残差，三角色4608D银行拼接3072D Signal得到7680D fused；完整单角色输出为4608D Signal+角色残差。三条路径均执行，当前没有Router/HFER、V23模态MLP或V24原型。两项车辆训练比较均已完成；RGBNT100内部完整比较支持三角色增益，MSVR310尚未超过Signal。下面V1—V8条目保留历史经过，不代表当前又启用了旧模块。
+当前MSVR310训练及此前两个车辆数据集比较使用原V8平行三角色结构：冻结Signal/CLIP，共享block8之前语义和tail9/10/11参数，三个角色分别运行共享tail；CNN处理局部语义Patch高频，Transformer处理全局CLS/Patch关系，Mamba处理空间与位置级三模态扫描。各角色相对冻结reference形成1536D残差，三角色4608D银行拼接3072D Signal得到7680D fused；完整单角色输出为4608D Signal+角色残差。三条路径均执行，当前没有Router/HFER、V23模态MLP或V24原型。两项车辆训练比较均已完成；RGBNT100内部完整比较支持三角色增益，MSVR310尚未超过Signal。下面V1—V8条目保留历史经过，不代表当前又启用了旧模块。
 
-本工程是在 DeMo 代码基座上实现的 RGB–NIR–TIR 多模态目标重识别研究分支。V17完整训练和完整gallery补评已封存为失败；其全部查询/图像/分区诊断见§30。V18完整三折两端20epoch主实验已结束（§33）：fused增益+0.921504 mAP，bootstrap下界-0.117338，未通过固定晋级条件；无D1/dev/official。MSVR310、RGBNT100均已安装核验（§32）。V17 fused相对matched weight0为-0.328915 mAP，没有D1/dev/official结果。当前最高可部署结果仍是V8 Phase-B：冻结dev fused=`58.4050 mAP / 59.3939 Rank-1`，比exact Signal高`0.3941 mAP / 1.9394 Rank-1`并超过三个专家，但仍比65 mAP门低`6.5950`，不能声称SOTA。
+本工程是在 DeMo 代码基座上实现的 RGB–NIR–TIR 多模态目标重识别研究分支。V17完整训练和完整gallery补评已封存为失败；其全部查询/图像/分区诊断见§30。V18完整三折两端20epoch主实验已结束（§33）：fused增益+0.921504 mAP，bootstrap下界-0.117338，未通过固定晋级条件；无D1/dev/official。MSVR310、RGBNT100均已安装核验（§32）。V17 fused相对matched weight0为-0.328915 mAP，没有D1/dev/official结果。RGBNT201固定dev保留结果为V8 Phase-B：冻结dev fused=`58.4050 mAP / 59.3939 Rank-1`，比exact Signal高`0.3941 mAP / 1.9394 Rank-1`并超过三个专家，但仍比65 mAP门低`6.5950`，不能声称SOTA。
 
-V6 的三个候选论文级主创新点已经落到核心代码、专项测试和完整 dev 运行中；性能主门仍然失败：
+以下三项是V6历史方案，当时完成了代码与dev运行但性能主门失败；它们不代表当前V8启用了HFER或Router：
 
 1. **Signal-preserving shared semantic expertization**：完整冻结 Signal，三专家共享其 patch/global 强语义场；`baseline_only` 保持原始 3072D 路径，专家训练不能改写 baseline 参数或输出。
 2. **Stagewise bidirectional heterogeneous feature exchange**：CNN、Transformer、Mamba 都是三阶段完整专家；阶段 1/2 后进行双向 HFER，可靠性在阶段 1/2/3 分别刷新，使下一阶段能使用其他专家的互补信息。
@@ -6623,3 +6623,10 @@ D项WARN保留：逐步参数梯度与重载输出是运行见证；六首历史
 root另核对当前计算图，PROJECT_OBJECTIVE_SCOPE.md与输入SHA保存：O在全局含7ID+6Triplet；但单角色encoder直接依赖的O项仅fused ID及自身完整/纯残差两组ID/Triplet，共5项，其他角色8项没有直接图路径。这是静态依赖推断，不保证各项每步非零，未做新的逐项梯度测量。既有F/O诊断定义不变，不能从13项数量推出13倍压制；角色各自调权也不能未经证明称为统一标量loss的梯度。
 
 当前不确定倍率、EMA规则或新方向处理，不实施控制器或新增消融。冻结Signal/原三角色/完整历史导数/seed42等条件保持，Q1执行d35864d不变。原任务下一端点观察约01:12，全部终态前不解读检索收益；三数据集Goal ACTIVE/UNMET。
+
+
+### 41.220 当前入口纠正及Q1末段运行观察（2026-09-21）
+
+01:09:13直接核对/proc确认原wrapper16885与Q1 18222存活且cmdline吻合；首控制第17/20epoch完成，0/6完整端点。最近第14—17epoch分别146.3926/146.5988/145.9451/145.8543秒，GPU6502MiB/94%，输出余6525530112B。证据evidence/cross_scene_smooth_ap_q1_progress_20260921；预计首端01:15左右训练结束后检索，下一观察约01:17。未读部分结果决定干预、未重启或修改合同。
+
+修正首页仍指向旧§41.201的过期入口，将V6模块列表明确标记为历史，并将V8 Phase-B范围限定为RGBNT201固定dev。AGENTS最新标题同步为跨scene Q1；原Smooth-AP条目标为已封存历史。只修正文档导航，不覆盖旧结果/门槛，不将当前内部Q1写入正式表。Goal ACTIVE/UNMET。
