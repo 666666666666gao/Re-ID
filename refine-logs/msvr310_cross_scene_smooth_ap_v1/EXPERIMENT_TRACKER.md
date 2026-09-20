@@ -7,7 +7,8 @@
 | M0 | 三折两端容量与固定过拟合 | PASS_ENGINEERING_ONLY | 00:36:52退出0，完整248步；六端203/203梯度张量、overflow0，两个原过拟合门通过 |
 | M0_CPU | 完整保存目标重算 | PASS | 00:37:03退出0；248步/4945920距离元素，summary SHA c59e39cc2192bfb11b12a58f53eb8b3853455bfd41744c74aaf4742272ba1506 |
 | M0_Audit | 独立完整工程核验 | WARN / CLOSED_WITH_LIMITS | 确定性工程PASS，0阻断；248步及六checkpoint全量复核，逐步反传仍为运行见证 |
-| Q1 | 三折两端固定20epoch | RUNNING | 2026-09-21T03:46:03.864528+08:00原wrapper16885/Q1 18222存活；5/6端固定20epoch/260步、checkpoint/检索/receipt齐全；fold2 cross_scene自动完成第5epoch。待完整六端与CPU核验 |
-| Q1_CPU/Audit | 全量核验与独立终态审计 | NOT_STARTED | 不使用中间fold判定 |
+| Q1 | 三折两端固定20epoch | Q1_FAIL / AUDIT_PENDING | 六端1560更新及完整CPU通过；配对2/5、Signal1/5；fused +0.567183，独立审查进行中 |
+| Q1_CPU | 完整终态重算 | PASS | 04:20:11退出0，1560步/116501504保存距离元素/2069520检索元素；反传为运行见证 |
+| Q1_Audit | 独立完整终态审查 | RUNNING | fresh Codex同族provisional，完整证据已接收，尚无审计终态 |
 
-seed42固定；当前无新检索成绩。其他13项、历史VJP、候选池及固定终点不变。原Smooth-AP Q1_FAIL保持。
+seed42固定；当前已有内部Q1，尚无新官方检索成绩。其他13项、历史VJP、候选池及固定终点不变。原Smooth-AP Q1_FAIL保持。

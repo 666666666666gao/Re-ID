@@ -2,7 +2,7 @@
 
 ## 0. 一页结论
 
-当前执行入口：§41.215—§41.226（2026-09-21）。标准Smooth-AP Q1_FAIL及完整来源梯度诊断已封存。跨scene Smooth-AP执行d35864d/配置e5326b52，M0/CPU及独立M0已关闭（工程PASS、WARN/CLOSED_WITH_LIMITS）。2026-09-21T03:46:03.864528+08:00原wrapper16885/Q1 18222存活；5/6端固定20epoch/260步、checkpoint/检索/receipt齐全；fold2 cross_scene自动完成第5epoch。六端/CPU/独立科学核验尚未结束，无新增正式成绩。保持seed42及固定合同，后继梯度协作仅候选。三数据集Goal ACTIVE/UNMET。以下历史章节不作为当前运行指令。
+当前执行入口：§41.215—§41.227（2026-09-21）。跨scene Smooth-AP六端1560更新已完成，04:19:46训练退出0，04:20:11完整CPU核验退出0；原Q1_FAIL，配对2/5、对Signal1/5。fused 52.838309→53.405492（+0.567183），三折正增益，但CNN/Transformer下降且配对bootstrap下界-0.077239；候选高于Signal 0.276111。30份原始文本全部哈希核对，完整分析已生成，独立Q1审查进行中。原进程均结束，不重启、不扫参数、不进入官方测试。后继支持感知梯度协作仍为候选；三数据集Goal ACTIVE/UNMET。以下历史章节不作为当前运行指令。
 
 当前MSVR310训练及此前两个车辆数据集比较使用原V8平行三角色结构：冻结Signal/CLIP，共享block8之前语义和tail9/10/11参数，三个角色分别运行共享tail；CNN处理局部语义Patch高频，Transformer处理全局CLS/Patch关系，Mamba处理空间与位置级三模态扫描。各角色相对冻结reference形成1536D残差，三角色4608D银行拼接3072D Signal得到7680D fused；完整单角色输出为4608D Signal+角色残差。三条路径均执行，当前没有Router/HFER、V23模态MLP或V24原型。两项车辆训练比较均已完成；RGBNT100内部完整比较支持三角色增益，MSVR310尚未超过Signal。下面V1—V8条目保留历史经过，不代表当前又启用了旧模块。
 
@@ -6682,3 +6682,18 @@ root另核对当前计算图，PROJECT_OBJECTIVE_SCOPE.md与输入SHA保存：O�
 只读观察证据：evidence/cross_scene_smooth_ap_q1_progress_20260921/trifusion_cross_scene_observation_0346_20260921.json。本次只登记完整端点回执及继续运行证据，不解读局部fold分数；全部六端、CPU重算和独立科学审查完成后才判断原门槛。单端已记录的工程标志不是完整审计的替代品。
 
 输出盘剩余5788823552B（5.391GiB），本轮删除0权重。继续按约38分钟/端的实测速率在接近下一终点时观察；全六端仍暂估04:30附近，终态后接收文本并核验。Goal ACTIVE/UNMET。
+
+
+### 41.227 跨场景 Smooth-AP 全六端与CPU结束，原Q1_FAIL封存，独立审查进行中（2026-09-21）
+
+04:23:20直接观察原wrapper16885/Q1 18222/CPU 34603均结束，GPU空闲。原pipeline COMPLETE_VERIFIED_Q1_FAIL：训练04:19:46退出0，CPU04:20:11退出0；六端各20epoch/260更新，共1560。CPU覆盖116501504保存距离元素、583168历史VJP record前向计数、2069520检索距离/排名元素；不是全程重新运行模型或生成参数梯度。summary SHA 3aa13b43b4a3c6d665486077dcd64daf0b9693a78aae75b3c92de04c3dd0879f；CPU SHA 905d44f4eaea5f5a9c43fc2c5029af22c896f33d50cfb51c252031bf81dd9fff。
+
+匹配fused 52.838309→53.405492，+0.567183mAP；三折+1.335700/+0.026182/+0.297229。CNN -0.265296、Transformer -0.137895、Mamba +0.593532。候选fused比Signal53.129381高0.276111，且高于三角色；但增益门、全角色非负门、bootstrap下界（-0.077239）未过，配对2/5；对Signal1/5。原Q1_FAIL保留，不将局部正证据写成晋级。fused R1 61.166667→62.000000；相对本次control修复11、新增6，其中1个同scene；28身份改善/26下降/6不变，全部60身份与600query均保留。
+
+末65步、三折等步数均值：同定义cross-scene AP loss 0.029118386→0.014568746，standard AP loss 0.006668543→0.005573188；但batch hard 0.062468318→0.064545732、expanded hard 0.158681301→0.161146010。实际total目标定义不同，不能直接比较绝对total。来源候选AP不是完整图库mAP；不能据其下降推出未知身份稳定收益。
+
+所有实际零支持步骤已在完整账本中确认：fold0/180、fold1/221、fold2/133及232，活动排名项与历史上游为0、VJP组跳过；原其余监督与更新继续。预热仍有小幅浮点差异，三折total最大约0.001278/0.001623/0.002021，不声称逐位训练轨迹一致。保留全部120个epoch和1560步14项标量CSV；原合同仅固定epoch20检索，无逐epoch检索结果。
+
+30份原文本共86277717B已核对哈希，inventory SHA e8fb10ec3cad2cd3b70f921f7c06ce977edc76b136dcdfbcfa9bfda401aa1952；本地下载二进制0。证据evidence/cross_scene_smooth_ap_q1_complete_20260921，完整分析evidence/cross_scene_smooth_ap_q1_analysis_20260921，报告results/MSVR310_CROSS_SCENE_SMOOTH_AP_Q1_2026-09-21.md。本地报告首次读取query-only排名表时误用gallery位置，被断言截获；失败脚本保留，修正为query行号后在新目录全量完成，未改变原训练或排名。
+
+独立审查audit_cross_scene_smooth_ap_q1_20260921已按fresh-none、gpt-6-astra/max请求启动，属于同家族provisional，尚无终态审计判定。审查关闭后再依据完整证据确定唯一后继假设。无新官方成绩、不扫描失败配置、seed42不变。04:23输出盘余5640167424B，本轮删除0权重。Goal ACTIVE/UNMET。
