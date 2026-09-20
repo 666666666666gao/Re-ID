@@ -6551,3 +6551,6 @@ Signal公开HEAD仍cd1b0a672d1fe642e7608731cb4899a19dda7d51，RGBNT100 YAML与�
 
 
 §41.214首折完整补充：19:51:45确认fold_0_control与fold_0_smooth_ap各260批，分别3422.2201/3632.5508秒，均模型状态未变、残留梯度为空、optimizer_updates/heldout_record_forwards/official_image_reads为0。登记第67步单历史组direct/VJP相对误差1.56888267e-9/1.48044926e-9，只限单组运行核对，完整CPU核验尚未执行。fold_1_control自动接续12批，合计532/1560，原1230/1231及1706/2251存活且cmdline吻合。证据evidence/smooth_ap_objective_gradient_first_pair_20260920。19:48输出盘剩6928113664B；未删除文件或修改运行定义。下一观察约20:45，接近第二折控制终点；六端暂估23:45—23:50，之后核验和分析。无首折科学解释或新训练登记，Goal ACTIVE/UNMET。
+
+
+§41.214半程补充：20:49:02第二折控制完整260批/3409.2512秒，已完成3/6端；第二折候选自动18批，合计798/1560。三个完整端均模型状态未变、残留梯度为空、零优化器更新/留出前向/官方读取；本端第67步单历史组direct/VJP相对误差5.64200775e-5<原0.005，未扩大为全source独立向量核验。原1230/1231/1706/2251存活且cmdline吻合，完整CPU与72组分析仍待六端。20:45输出余6907330560B、GPU100%。证据evidence/smooth_ap_objective_gradient_half_complete_20260920；下一观察约21:44，六端暂估23:45—23:50。未据局部梯度选方法，未改实验或删除权重，Goal ACTIVE/UNMET。
