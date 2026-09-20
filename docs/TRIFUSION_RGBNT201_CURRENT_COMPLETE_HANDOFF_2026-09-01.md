@@ -6493,3 +6493,12 @@ fused52.444136→52.787590（+0.343455），CNN+0.513458/T+1.174330/M+0.251933�
 完整CPU账本核验脚本和范围已准备在evidence/smooth_ap_objective_gradient_source_launch_20260920，状态PREPARED_NOT_RUN。将核对全部1560批及4680角色统计的标量一致性；不会将未保存的全程向量声称独立重构。GPU测量尚无六端终态。
 
 旧来源覆盖审计代理已不可用，当前list_agents仅root，无最终审计文件；已有373份输入快照和未完成脚本保留。按experiment-audit新建/root/audit_smooth_coverage_resume_20260920接续，要求先检查现有完整收据，禁止重做已验证工作。新上下文、请求gpt-6-astra/max、same-family/provisional；工具仅返回task_name，无UUID/后端身份额外验证。待实际终态，不记PASS。原Q1_FAIL及全部科学边界保持，Goal ACTIVE/UNMET。
+
+
+### 41.210 完整来源测量进入历史阶段，终态CPU核验已持久排队（2026-09-20）
+
+17:58:44确认原source wrapper1230/child1231均存在，fold0_control74/260批（总74/1560），第6epoch且65步预热已结束。GPU79%/17366MiB，输出剩余6980050944B；当前仍无完整端点或科学结论。保留原执行c6fbfb4，实现/合同哈希不变。
+
+CPU核验依赖队列1706于17:58:24启动，17:58:44确认存活，WAITING_FOR_SOURCE；每300秒观察原任务。仅在原pipeline COMPLETE/exit0及完整summary成立后启动已登记CPU checker，SHA79802db8ef471e8fc495f625aa15321f2d9c1034b13afd82a8f08b1541fb2ef4。原任务失败或句柄消失则记录未核验并退出，绝不自动重训/重测。wrapper、日志和退出码均写独立路径；收据及脚本evidence/smooth_ap_objective_gradient_verification_queue_20260920。源诊断、CPU核验、独立审计状态分开记录。
+
+来源覆盖接续审计已实际检查旧文件，未找到独立终态回执或存活旧审计进程；正在本次独立目录执行CPU全数组/全行检查，尚无最终判定。下一步取得完整梯度测量和CPU终态、独立覆盖审计，再综合全部来源证据登记唯一后继假设；不按中间端点改实验。未新删权重或访问官方图像，三数据集baseline/SOTA Goal仍ACTIVE/UNMET。
