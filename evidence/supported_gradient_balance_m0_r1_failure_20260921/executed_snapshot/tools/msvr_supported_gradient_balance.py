@@ -62,13 +62,13 @@ def check_reference(actual, reference):
     return result
 
 
-def combine(parameters, current_total, current_rank, current_auxiliary, historical_rank, scale, groups,
+def combine(parameters, current_total, current_rank, historical_rank, scale, groups,
             controller, supported, apply):
     """All input gradients are AMP-scaled; history belongs only to ranking."""
     import torch
     from tools.probe_msvr_history_candidate_gradients import compare
     rank = [a + b for a, b in zip(current_rank, historical_rank, strict=True)]
-    auxiliary = current_auxiliary
+    auxiliary = [a - b for a, b in zip(current_total, current_rank, strict=True)]
     rows = {}
     for role, indexes in groups.items():
         r = [rank[i] / scale for i in indexes]
@@ -85,9 +85,6 @@ def combine(parameters, current_total, current_rank, current_auxiliary, historic
             assert torch.equal(parameters[i].grad, expected)
         actual = [parameters[i].grad / scale for i in indexes]
         rows[role] = dict(rank_vs_auxiliary=pair,
-            subtraction_auxiliary_vs_direct=compare([(current_total[i]-current_rank[i])/scale for i in indexes],a),
-            direct_sum_vs_original=compare([(rank[i]+auxiliary[i])/scale for i in indexes],
-                                           [(current_total[i]+historical_rank[i])/scale for i in indexes]),
             current_rank_vs_history=compare([current_rank[i] / scale for i in indexes],
                                              [historical_rank[i] / scale for i in indexes]),
             rank_vs_applied=compare(r, actual), auxiliary_vs_applied=compare(a, actual),

@@ -1,6 +1,6 @@
 # MSVR310 支持感知的角色内梯度平衡：固定配对合同
 
-日期：2026-09-21。实现修订R2：DIRECT_AUXILIARY_PREPARATION_NOT_RUN。R1执行92a75e4已T0通过，但M0第4步辅助梯度减法近似误差0.006824872超过预先登记0.005，原队列停止；仅3次更新，无Q1。原R1源码、合同、配置及失败原文完整封存。R2保持同一科学假设、全部超参数及门槛，每步直接求辅助导数；同族独立复审通过后从原固定初始化重新执行T0/M0，不续训失败的3步。仅seed42。
+日期：2026-09-21。状态：REGISTERED_PREPARATION_NOT_RUN。跨场景 Smooth-AP 六端和独立终态审查已闭环，原科学FAIL保持。本文件登记唯一新主假设；实现及配置接受独立代码审查，通过后执行T0/M0。当前未运行新训练，不修改任何已封存合同。仅 seed42。
 
 ## 问题、依据与唯一假设
 
@@ -54,11 +54,11 @@ w_A = 2/(1+r)
 ## 当前/历史分解及实际更新
 
 1. 当前前向、候选重编码、三个 AP/hard 统计沿用现实现。
-2. 对当前实际排名项计算 AMP-scaled 当前 encoder 导数，再对原其余13项直接求辅助 encoder 导数，保留当前图；普通总损失 backward 仍产生所有 encoder 与分类头梯度。两端同样增加辅助求导，不增加优化器更新。
-3. 实际A_current使用对其余13项直接求导。R1实测表明combined backward减rank与direct auxiliary不完全相等，差异不只归因于最后一次FP32相减，混合精度反传的累加路径也可能贡献。原相减值保留subtraction_auxiliary_vs_direct诊断，不再作为实际A或近似等式门。M0另外独立调用一次辅助求导作为参考，不能alias本步A到参考。
+2. 对当前实际排名项计算 AMP-scaled 当前 encoder 导数，保留当前图；普通总损失 backward 仍产生所有 encoder 与分类头梯度。
+3. A_current = 当前总梯度 - R_current。该相减存在有限精度误差，不能只验证代数恒等式；M0 必须与独立对其余13项直接反传所得 A_direct 比较。
 4. 释放当前图后，沿用原历史随机状态/分组重放，恢复完整 R_history。历史组的零上游跳过已存在，不作为新设计。
 5. 合并完整 R 后才统计和组合。不能先调当前排名、再追加未加权历史 VJP。
-6. control实际保留原“当前总梯度＋历史梯度”，balanced使用完整R与直接A的上述组合，头部梯度逐位保留。有限精度下direct R+A不强制等于原combined梯度，新增direct_sum_vs_original量化差异；CPU仅在balanced有支持步核验加权direct R/A范数，控制/无支持步核验逐位保持原sum。
+6. control 实际保留原“当前总梯度 + 历史梯度”的加法路径，避免用减后加无端改变控制端；balanced 使用上述组合，头部梯度逐位保留。
 7. 只执行一次 scaler.unscale、finite检查、AdamW step/update。统计与系数无计算图；不改 AdamW 动量或二阶矩。保留 RNG、buffer、重编码一致性检查。
 
 逐步记录：支持 anchor/身份/scene 数、R/A 范数与余弦、current/history 排名范数及余弦、EMA前后状态、系数、组合梯度范数、AMP尺度、实际角色参数更新范数、更新前参数范数、lr、溢出及全部14项。实际更新范数是含AdamW动量/预条件/衰减的观测，不分摊成排名贡献比例。
@@ -69,7 +69,7 @@ T0（远端张量运算，本地仅代码/文本）：固定小例验证权重�
 
 M0：仍三折两端8更新及fold0两端100固定batch，共248更新。203/203累计非零、0overflow、冻结路径不变、精简checkpoint严格重载全部输出、原校正overfit比≤0.1。
 
-在六个容量端首个实际历史组，保留原直接完整图/VJP核验，并直接核验current R、历史R、full R、当前直接A与另一独立辅助求导参考，角色相对误差阈值仍≤0.005；零参考要求绝对误差≤1e-8。候选实际组合与direct_rank/direct_aux加权参考比较；control实际组合与原full direct_loss参考比较，不能把它强行当作分开反传的R+A。原R1减法误差保留，门不放宽；任一实际参考核验失败仍停止工程阶段，不修改科学门。
+在六个容量端首个实际历史组，保留原直接完整图/VJP核验，并直接核验 current R、历史 R、A_direct 与 A_total-minus-R，角色相对误差阈值≤0.005；零参考向量要求绝对误差≤1e-8并单列，不用除零。对候选组合与直接梯度加权的参考组合核验同一阈值。任一失败停止于工程阶段并记录真实失败，不修改科学门。
 
 M0 CPU 全量重算 AP、掩码、支持数、保存的范数统计→EMA→权重及应用账本。CPU不声称从标量恢复参数梯度；实际梯度见证范围须说明。通过后才能开始完整Q1。
 
@@ -79,24 +79,17 @@ Q1：三折两端完整1560更新，固定epoch20，完整图库；保留全部f
 
 ## 资源、来源及执行前置
 
-上一轮完整Q1约3.71小时，R2两端均多一次当前排名及一次直接辅助导数，初估M0 15–30分钟、Q1 4–6小时，以实际容量测量修订执行时间估计，不修订训练长度。记录额外反传次数、历史前向数、显存和墙钟时间；新增推理参数0不等于训练无成本。
+上一轮完整Q1约3.71小时，新两端均多一次当前排名导数，初估M0 15–30分钟、Q1 4–6小时，以实际容量测量修订执行时间估计，不修订训练长度。记录额外反传次数、历史前向数、显存和墙钟时间；新增推理参数0不等于训练无成本。
 
 远端模型/图像/数组保持不下载。沿用tri_reid/RTX3090，不装新环境。启动前实查GPU与空间；至少4GiB可用、最大新增3GiB作为当前预算。保留初始化、终点和复核数组，不因失败删权重。
 
 来源：evidence/support_aware_gradient_neighbours_20260921/PRIMARY_SOURCE_NOTE.md、SOURCE_RECEIPT.json、PROJECT_OBJECTIVE_SCOPE.md。MMPareto/GradNorm/OGM-GE及其限制沿用已核对原文/作者代码，不复制无许可证代码，不宣称新颖性已经成立。
 
-上一轮科学审查已闭环；R1静态审查通过但真实M0按门停止。R2直接辅助修订须独立复审并同步固定源码/配置后，从原初始化执行T0/M0。R2尚未训练，R1没有检索结果。主结果前不做消融、多seed或官方测试。全项目Goal保持ACTIVE/UNMET。
+上一轮独立审查已闭环；新实现与配置已准备，执行前须独立代码审查并同步固定源码/配置，然后执行T0/M0。当前没有新模型、新训练或新检索结果。主结果前不做消融、多seed或官方测试。全项目Goal保持ACTIVE/UNMET。
 
 
 ## 实现文件与记录边界
 
-控制器 tools/msvr_supported_gradient_balance.py；两端训练器 tools/train_msvr_supported_gradient_balance.py；T0数学 tools/check_msvr_supported_gradient_balance_math.py 及完整来源合同 tools/check_msvr_supported_gradient_balance.py；CPU tools/verify_msvr_supported_gradient_balance.py 和统计重算 tools/verify_msvr_supported_gradient_balance_stats.py；持久队列 tools/run_msvr_supported_gradient_balance.py。cross-scene及更早前置源码保持字节不变；本新实验R1原字节已封存，R2按本节明确修订。
+控制器 tools/msvr_supported_gradient_balance.py；两端训练器 tools/train_msvr_supported_gradient_balance.py；T0数学 tools/check_msvr_supported_gradient_balance_math.py 及完整来源合同 tools/check_msvr_supported_gradient_balance.py；CPU tools/verify_msvr_supported_gradient_balance.py 和统计重算 tools/verify_msvr_supported_gradient_balance_stats.py；持久队列 tools/run_msvr_supported_gradient_balance.py。旧源码全部保持字节不变。
 
-R2每步额外1次当前排名和1次直接辅助参数求导；每个容量端首历史组另有4次直接分量求导（当前排名、历史排名、完整排名、辅助），以及沿用的直接总梯度检查。这些是工程测量成本，两端一致。当前/历史求导只针对189个encoder张量，分类头14张量保留原backward结果。
-
-
-## R1失败与R2修订范围
-
-R1运行 /root/trifusion-storage/artifacts/msvr310_supported_gradient_balance_v1_seed42_92a75e4，05:36:03 M0退出1，原wrapper STOPPED_AT_M0。fold0 control第4步辅助参考first_norm0.3899933414205923、second_norm0.3900544174096418、difference0.0026616547754863508、cos0.9999767264664654、相对误差0.006824872357540746，超过0.005。T0通过不代表真实混合精度求导等价。
-
-只将实际辅助向量的取得方式改为直接求导；原控制更新路径、科学公式/常量、源关系、历史VJP、optimizer与全部门槛保持。额外开销两端一致并记录current_auxiliary_backward_calls。原减法与direct-sum偏差持续记录，没有把失败抹掉或放宽真实reference门。有限精度下两端除有支持组合系数外，还存在direct分量与combined反传累加的差别，不能声称逐位只差一个标量；同一数学梯度组合的实现修正不构成新科学结果。
+每步额外1次当前排名参数求导；每个容量端首历史组另有4次直接分量求导（当前排名、历史排名、完整排名、辅助），以及沿用的直接总梯度检查。这些是工程测量成本，两端一致。当前/历史求导只针对189个encoder张量，分类头14张量保留原backward结果。

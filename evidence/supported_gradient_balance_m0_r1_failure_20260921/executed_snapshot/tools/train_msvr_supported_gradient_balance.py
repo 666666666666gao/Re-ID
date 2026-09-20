@@ -31,7 +31,6 @@ def context(path):
     from tools.train_msvr_cross_scene_smooth_ap import context as previous_context
     spec=json.loads(path.read_bytes())
     assert spec['schema']=='msvr310-supported-gradient-balance-paired-v1' and spec['seed']==42
-    assert spec['implementation_revision']=='r2_direct_auxiliary'
     assert spec['temperature']==.01 and spec['fused_metric_weight']==1
     from tools.msvr_supported_gradient_balance import RULE
     assert spec['candidate_reduction']=='mean_eligible_anchors' and spec['gradient_balance']==RULE
@@ -173,12 +172,6 @@ def fit(model, records, fold, protocol, config, spec, md, *, endpoint, mode, dir
                 direct=None
                 scale=scaler.get_scale()
                 current_rank=scalar_gradients(weight*components['triplet_fused'],parameters,scale)
-                auxiliary_components=dict(components)
-                auxiliary_components['triplet_fused']=components['triplet_fused']*0
-                with torch.autocast('cuda',dtype=torch.float16):
-                    current_auxiliary_loss=weighted_training_loss(auxiliary_components,config)
-                current_auxiliary=scalar_gradients(current_auxiliary_loss,parameters,scale)
-                del auxiliary_components,current_auxiliary_loss
                 direct_parts=None
                 support=support_counts(ids,scenes,metadata,relation_saved['cross_scene_positive_counts'])
                 supported=active and support['eligible_anchors']>0
@@ -263,8 +256,8 @@ def fit(model, records, fold, protocol, config, spec, md, *, endpoint, mode, dir
                     direct_check['relative_l2_error']=direct_check['difference_norm']/max(direct_check['first_norm'],1e-12)
                     direct_check['all_four_reencoded_outputs_bitwise_equal']=True
                     assert direct_check['relative_l2_error']<=.005
-                    del decomposed
-                balance,full_rank,auxiliary=combine(parameters,current,current_rank,current_auxiliary,history_gradient,scale,
+                    del direct,decomposed
+                balance,full_rank,auxiliary=combine(parameters,current,current_rank,history_gradient,scale,
                     role_groups,controller,supported,endpoint=='balanced')
                 if active and not supported:
                     assert all(not bool(g.abs().sum()) for g in full_rank)
@@ -282,10 +275,8 @@ def fit(model, records, fold, protocol, config, spec, md, *, endpoint, mode, dir
                             historical_rank=check_reference([history_gradient[i]/scale for i in indexes],[direct_parts['history'][i]/scale for i in indexes]),
                             full_rank=check_reference([full_rank[i]/scale for i in indexes],[direct_parts['rank'][i]/scale for i in indexes]),
                             auxiliary=check_reference([auxiliary[i]/scale for i in indexes],[direct_parts['auxiliary'][i]/scale for i in indexes]),
-                            applied=check_reference(actual,
-                                [(direct_parts['rank'][i]*wr+direct_parts['auxiliary'][i]*wa)/scale for i in indexes]
-                                if endpoint=='balanced' and supported else [direct[i] for i in indexes]))
-                del direct,direct_parts,full_rank,auxiliary,current_rank,current_auxiliary,head_gradients
+                            applied=check_reference(actual,[(direct_parts['rank'][i]*wr+direct_parts['auxiliary'][i]*wa)/scale for i in indexes]))
+                del direct_parts,full_rank,auxiliary,current_rank,head_gradients
                 before_parameters=[p.detach().clone() for p in parameters]
                 scaler.unscale_(optimizer)
                 for name,p in model.named_parameters():
@@ -314,7 +305,6 @@ def fit(model, records, fold, protocol, config, spec, md, *, endpoint, mode, dir
                            support=support,gradient_balance=balance,actual_parameter_updates=updates,
                            classification_head_gradients_unchanged=head_preserved,
                            current_rank_backward_calls=1,
-                           current_auxiliary_backward_calls=1,
                            direct_component_backward_calls=4 if reference_checks else 0,
                            selected_reencoding_bitwise=True,history_rng_buffers_preserved=True,
                            history_vjp_leaves_current_grad_unchanged=True,final_gradient_addition_bitwise=True)
@@ -338,7 +328,6 @@ def fit(model, records, fold, protocol, config, spec, md, *, endpoint, mode, dir
                 extra_direct_check_record_forwards=direct_forwards,
                 fresh_history_both_endpoints=True,history_anchor_count=0,cache_not_in_checkpoint=True,
                 gradient_balance_state=controller.states,current_rank_backward_calls=len(steps),
-                current_auxiliary_backward_calls=len(steps),
                 direct_component_backward_calls=4 if mode=='capacity' else 0,
                 gradient_balancing_applied=endpoint=='balanced',classification_head_rule='original_current_total_gradient',
                 audit_files={n:dict(bytes=(directory/n).stat().st_size,sha256=sha256(directory/n))

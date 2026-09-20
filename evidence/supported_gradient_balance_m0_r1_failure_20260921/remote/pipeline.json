@@ -1,0 +1,50 @@
+{
+  "status": "STOPPED_AT_M0",
+  "wrapper_pid": 41216,
+  "code_commit": "92a75e4ac46cccb79bb6f78f913998c0d0039ce8",
+  "config_sha256": "0b5ff0107e8dda6634e0c060a4b1a87e8e7e2fa117c7beb0cf5792b6ebedc15b",
+  "started_at": "2026-09-21T05:35:20.326288+08:00",
+  "stages": [
+    {
+      "stage": "t0",
+      "original_pid": 41222,
+      "command": [
+        "/root/miniconda3/envs/tri_reid/bin/python",
+        "-u",
+        "-m",
+        "tools.check_msvr_supported_gradient_balance",
+        "--config",
+        "/root/autodl-tmp/trifusion-v2/TriFusion-ReID/configs/MSVR310/TriFusion-supported-gradient-balance-paired-v1.json",
+        "--output",
+        "/root/trifusion-storage/artifacts/msvr310_supported_gradient_balance_v1_seed42_92a75e4/t0.json"
+      ],
+      "started_at": "2026-09-21T05:35:20.327295+08:00",
+      "exit_code": 0,
+      "ended_at": "2026-09-21T05:35:26.351248+08:00",
+      "elapsed_seconds": 6.024709580466151
+    },
+    {
+      "stage": "m0",
+      "original_pid": 41238,
+      "command": [
+        "/root/miniconda3/envs/tri_reid/bin/python",
+        "-u",
+        "-m",
+        "tools.train_msvr_supported_gradient_balance",
+        "--config",
+        "/root/autodl-tmp/trifusion-v2/TriFusion-ReID/configs/MSVR310/TriFusion-supported-gradient-balance-paired-v1.json",
+        "--mode",
+        "m0",
+        "--output-dir",
+        "/root/trifusion-storage/artifacts/msvr310_supported_gradient_balance_v1_seed42_92a75e4/m0"
+      ],
+      "started_at": "2026-09-21T05:35:26.352379+08:00",
+      "exit_code": 1,
+      "ended_at": "2026-09-21T05:36:03.699870+08:00",
+      "elapsed_seconds": 37.34809142164886
+    }
+  ],
+  "free_bytes_before": 5636149248,
+  "gpu_before": "0, 1, 24576\n",
+  "ended_at": "2026-09-21T05:36:03.699870+08:00"
+}

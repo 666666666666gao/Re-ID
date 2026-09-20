@@ -2,7 +2,7 @@
 
 ## 0. 一页结论
 
-当前执行入口：§41.228—§41.230（2026-09-21）。cross-scene Smooth-AP完整Q1及独立审计已闭环，原科学FAIL保留。后继支持感知角色梯度平衡已登记代码/配置并通过独立静态审查PASS_WITH_LIMITS，尚未部署、T0/M0/Q1均未执行；下一步按固定阶段门启动，不重跑已封存实验。两端同cross-scene AP和完整历史导数，仅候选组合角色R/A；seed42、完整图库、原两组五门不变。三数据集Goal ACTIVE/UNMET；以下历史章节不作为当前运行指令。
+当前执行入口：§41.230—§41.231（2026-09-21）。支持感知梯度平衡R1执行92a75e4已T0通过但M0第4步辅助近似误差0.006824872>0.005停止，仅3更新、无Q1。原失败完整保留。R2改为直接辅助求导，独立复审PASS_WITH_LIMITS，配置9ce36299；尚未部署R2，下一步从原初始化T0/M0。原控制路径、全部系数与门槛保持，不放宽数值门、不扫参。前序cross-scene科学FAIL封存；seed42、三数据集Goal ACTIVE/UNMET。以下历史章节不作为当前运行指令。
 
 当前MSVR310训练及此前两个车辆数据集比较使用原V8平行三角色结构：冻结Signal/CLIP，共享block8之前语义和tail9/10/11参数，三个角色分别运行共享tail；CNN处理局部语义Patch高频，Transformer处理全局CLS/Patch关系，Mamba处理空间与位置级三模态扫描。各角色相对冻结reference形成1536D残差，三角色4608D银行拼接3072D Signal得到7680D fused；完整单角色输出为4608D Signal+角色残差。三条路径均执行，当前没有Router/HFER、V23模态MLP或V24原型。两项车辆训练比较均已完成；RGBNT100内部完整比较支持三角色增益，MSVR310尚未超过Signal。下面V1—V8条目保留历史经过，不代表当前又启用了旧模块。
 
@@ -6723,3 +6723,16 @@ fresh代码审查review_supported_gradient_balance_20260921结论PASS_WITH_LIMIT
 原审查文本与回执归档evidence/supported_gradient_balance_preparation_20260921，计划目录保存EXPERIMENT_CODE_REVIEW.md/.json。M0需实际验证R_current/R_history/full R、直接辅助与总减R、组合梯度，保留原203/203、0overflow、冻结/严格重载和overfit≤0.1。CPU只重算保存标量与距离，不声称恢复逐步参数向量。记录实际AdamW更新范数，不将R/A比解释为更新份额。
 
 05:10:42实查前序全部原PID结束、GPU1MiB/0%；输出余5640347648B，仓库余1650192384B。本轮尚未删除权重；执行前再查至少4GiB和空闲GPU，当前预计新增不超过3GiB。远端数据/模型/数组保持不下载。新T0/M0/Q1尚未执行；下一步同步本次源码、启动固定持久队列，失败读原日志再处理，不重启未结束任务、不修改科学门。Goal ACTIVE/UNMET。
+
+
+### 41.231 首轮M0实际数值门停止，直接辅助导数修订已审查（2026-09-21）
+
+R1执行92a75e4ac46cccb79bb6f78f913998c0d0039ce8/配置0b5ff010，05:35:20启动screen tri_supported_balance_92a75e4，wrapper41216。T0 41222于05:35:26退出0，完整780来源batch及新增数学检查通过。M0 41238于05:36:03退出1、耗时37.348秒；原pipeline STOPPED_AT_M0，全部原进程结束。M0 summary残留RUNNING是失败前写入的初始文件，不代表任务存活。fold0 control只完成3更新，第4步在optimizer更新前的auxiliary参考检查失败；无balanced端、完整M0或Q1结果。
+
+原辅助相减梯度与直接辅助参考：first_norm0.3899933414205923、second_norm0.3900544174096418、difference0.0026616547754863508、cos0.9999767264664654、relative0.006824872357540746>固定0.005。证据只证明combined backward减rank未在门内还原direct auxiliary；混合精度不同回传累加与末次相减均可能贡献，不能只归因于FP32减法。R1源代码、配置、合同、T0与失败文本封存evidence/supported_gradient_balance_m0_r1_failure_20260921，8份远端原文3613063B已逐一远端SHA核对，模型/数组下载0，原3次更新和失败第4步成本保留。
+
+R2唯一实现修正为每步直接求原其余13项encoder辅助导数，两端同算；候选用完整R与direct A组合，控制/预热/无支持仍原current_total+history。原subtraction_auxiliary_vs_direct和direct_sum_vs_original继续量化差异；不再把已失效的AMP可加性当作CPU恒等式。M0实际A与独立再次求导的参考比较；control applied用原完整direct_loss参考，candidate用独立R/A加权参考，阈值仍0.005/零参考1e-8。固定EMA/权重/数据/optimizer/科学门不变，不构成新性能结果。记录两端新增一次auxiliary求导成本，保留有限精度上direct与combined路径差异。
+
+原fresh审阅者继续检查R1原文与R2源码，最终PASS_WITH_LIMITS，无剩余BLOCKING；不是第二个独立fresh agent，same-family/provisional且backend未独立认证。7源码AST及当前/前置67项目绑定、R1本地文本与inventory核对通过。新增T0差异fixture覆盖control、candidate、active无支持并调用实际CPU标量核验器；目前仅源码审阅，尚未实际运行R2张量或模型。意见与最终代码审查归档evidence/supported_gradient_balance_r2_review_20260921，计划目录EXPERIMENT_CODE_REVIEW.md/.json已指向R2。
+
+R2固定配置SHA9ce36299299efbc09ccfb72f5b1c4fed20fc1026bd9fee1bd55a591d6950ec7b，implementation_revision=r2_direct_auxiliary。下一步同步后新目录重新T0/M0，从原初始化开始，不续训R1。05:39输出盘余5632225280B，GPU1MiB/0%；未删除权重。没有新检索、官方或晋级结论。Goal ACTIVE/UNMET。

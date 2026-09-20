@@ -39,13 +39,11 @@ def verify_balance(audits,training,endpoint,warmup):
         supported_steps+=int(supported)
         zero_supported_steps+=int(index>=warmup and not supported)
         assert row['classification_head_gradients_unchanged'] and row['current_rank_backward_calls']==1
-        assert row['current_auxiliary_backward_calls']==1
         assert set(row['gradient_balance'])==set(row['actual_parameter_updates'])==set(ROLES)
         for role in ROLES:
             b=row['gradient_balance'][role]
             for key in ('rank_vs_auxiliary','current_rank_vs_history','rank_vs_applied',
-                        'auxiliary_vs_applied','original_sum_vs_applied',
-                        'subtraction_auxiliary_vs_direct','direct_sum_vs_original'):
+                        'auxiliary_vs_applied','original_sum_vs_applied'):
                 pair(b[key])
             pair(row['actual_parameter_updates'][role])
             p=b['rank_vs_auxiliary'];r,a=p['first_norm'],p['second_norm']
@@ -70,13 +68,10 @@ def verify_balance(audits,training,endpoint,warmup):
             close(actual,b['auxiliary_vs_applied']['second_norm'])
             close(actual,b['original_sum_vs_applied']['second_norm'])
             close(actual,row['applied_gradients'][role]['second_norm'])
-            close(b['subtraction_auxiliary_vs_direct']['second_norm'],a)
-            close(b['direct_sum_vs_original']['first_norm']**2,r*r+a*a+2*ra)
-            close(b['direct_sum_vs_original']['second_norm'],b['original_sum_vs_applied']['first_norm'])
-            if endpoint=='balanced' and supported:
-                close(actual**2,wr*wr*r*r+wa*wa*a*a+2*wr*wa*ra)
-            else:
-                assert b['original_sum_vs_applied']['difference_norm']==0
+            close(actual**2,wr*wr*r*r+wa*wa*a*a+2*wr*wa*ra)
+            close(b['original_sum_vs_applied']['first_norm']**2,r*r+a*a+2*ra)
+            close(b['original_sum_vs_applied']['difference_norm']**2,
+                  (wr-1)**2*r*r+(wa-1)**2*a*a+2*(wr-1)*(wa-1)*ra)
             history=b['current_rank_vs_history'];u,v=history['first_norm'],history['second_norm']
             uv=0 if history['cosine'] is None else u*v*history['cosine']
             close(r*r,u*u+v*v+2*uv)
@@ -99,7 +94,6 @@ def verify_balance(audits,training,endpoint,warmup):
         assert bool(row['rank_auxiliary_reference_checks'])==bool(row['direct_single_group_check'])
     assert training['gradient_balance_state']==states
     assert training['current_rank_backward_calls']==len(audits)
-    assert training['current_auxiliary_backward_calls']==len(audits)
     assert training['direct_component_backward_calls']==4*reference_steps
     assert training['gradient_balancing_applied']==(endpoint=='balanced')
     assert training['classification_head_rule']=='original_current_total_gradient'
