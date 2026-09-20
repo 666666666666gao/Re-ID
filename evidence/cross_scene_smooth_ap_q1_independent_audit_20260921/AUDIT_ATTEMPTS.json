@@ -1,0 +1,37 @@
+[
+  {
+    "attempt": "11_finalize_evidence",
+    "status": "FAILED_AUDIT_SNAPSHOT_HELPER",
+    "error": "Normalized text snapshot SHA did not equal original source SHA",
+    "reason": "Remote read_text normalizes CRLF in source_style_msvr.py, while original remote file and execution blob match byte for byte.",
+    "resolution": "Retained partial remote_source directory; attempt 12 writes new remote_source_r2 and records original source SHA separately from LF text snapshot SHA. No source changed."
+  },
+  {
+    "attempt": "01_remote_intake",
+    "status": "FAILED_AUDIT_HELPER",
+    "error": "KeyError: BASELINE",
+    "reason": "Audit helper omitted the coordinate_config link.",
+    "resolution": "Preserved; explicit actual config chain followed in attempt 03."
+  },
+  {
+    "attempt": "02_remote_intake",
+    "status": "FAILED_AUDIT_HELPER",
+    "error": "KeyError: BASELINE",
+    "reason": "Audit helper omitted the memory_config link.",
+    "resolution": "Preserved; explicit actual config chain followed in attempt 03."
+  },
+  {
+    "attempt": "06_remote_arithmetic",
+    "status": "FAILED_ADDITIONAL_CHECK",
+    "error": "AssertionError at line 257: paired warmup step records exact",
+    "reason": "Actual paired common-objective trajectories differ despite exact initial and input bindings.",
+    "resolution": "Retained as WARN evidence. Attempt 07 quantifies all differences; original protocol did not require bitwise warmup trajectories. No experiment gate changed."
+  },
+  {
+    "attempt": "executor terminal report v1",
+    "status": "FAILED_EXECUTOR_REPORT_HELPER",
+    "error": "Wrong query-only ranking index based on gallery position",
+    "reason": "Documented in supplied FAILURE.md and failed_v1.py.",
+    "resolution": "Executor corrected indexing into a new v2 output directory. Every v2 CSV row independently checked."
+  }
+]

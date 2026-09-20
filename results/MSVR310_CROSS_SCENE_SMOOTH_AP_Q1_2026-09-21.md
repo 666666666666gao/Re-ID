@@ -1,6 +1,6 @@
 # MSVR310 跨场景 Smooth-AP 完整 Q1（2026-09-21）
 
-**状态：原合同 Q1_FAIL；完整 CPU 核验通过；独立审查进行中。**
+**状态：原合同 Q1_FAIL；完整 CPU 及独立确定性核验通过；独立审查 WARN/CLOSED_WITH_LIMITS。**
 
 执行 d35864d6411591e05c8ac3e5164ebae48063ad99；配置 SHA-256 e5326b52ebb12dced24ebfac788db2e2bb5bdca0b50c6c4dec64e596f1af05a1。仅 seed42。三折两端各20epoch/260更新，共1560更新。此为训练内部身份隔离、完整图库比较，不是官方测试。
 
@@ -60,3 +60,8 @@ summary.project_commit记录Q1开始时工作树HEAD fdc6305，wrapper.code_comm
 ## 后续边界
 
 本配置封存Q1_FAIL，等待独立审查关闭；不进入官方测试、不扫描温度/分母/终点，不将本次增益与旧版本相加。跨场景目标具有平均正证据，但还未证明三角色均获益或身份稳定性。后继支持感知优化仍为待登记候选，须结合完整证据和已核近邻再确定唯一干预。三数据集总Goal ACTIVE/UNMET。
+
+
+## 独立审查闭环
+
+独立报告：refine-logs/msvr310_cross_scene_smooth_ap_v1/EXPERIMENT_AUDIT_Q1.md/.json。全部1560步、116501504训练距离元素、30组检索输出、2069520检索距离/排名元素重算通过；报告/CSV及来源统计57813个数值独立核对。确定性复核支持上述数值和原FAIL结论，不能替代逐步参数梯度重建。保留same-family/provisional、非逐位预热、seed42及反复开发限制。全部原文、失败辅助尝试及哈希清单见 evidence/cross_scene_smooth_ap_q1_independent_audit_20260921。

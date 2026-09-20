@@ -6697,3 +6697,18 @@ root另核对当前计算图，PROJECT_OBJECTIVE_SCOPE.md与输入SHA保存：O�
 30份原文本共86277717B已核对哈希，inventory SHA e8fb10ec3cad2cd3b70f921f7c06ce977edc76b136dcdfbcfa9bfda401aa1952；本地下载二进制0。证据evidence/cross_scene_smooth_ap_q1_complete_20260921，完整分析evidence/cross_scene_smooth_ap_q1_analysis_20260921，报告results/MSVR310_CROSS_SCENE_SMOOTH_AP_Q1_2026-09-21.md。本地报告首次读取query-only排名表时误用gallery位置，被断言截获；失败脚本保留，修正为query行号后在新目录全量完成，未改变原训练或排名。
 
 独立审查audit_cross_scene_smooth_ap_q1_20260921已按fresh-none、gpt-6-astra/max请求启动，属于同家族provisional，尚无终态审计判定。审查关闭后再依据完整证据确定唯一后继假设。无新官方成绩、不扫描失败配置、seed42不变。04:23输出盘余5640167424B，本轮删除0权重。Goal ACTIVE/UNMET。
+
+
+### 41.228 跨场景 Smooth-AP 独立Q1审计闭环（2026-09-21）
+
+fresh独立审查audit_cross_scene_smooth_ap_q1_20260921完成，WARN/CLOSED_WITH_LIMITS；same-family/provisional，所请求gpt-6-astra/max不冒充后端认证。原执行d35864d、配置e5326b52、summary3aa13b43及CPU905d44f4均不变。审计原文refine-logs/msvr310_cross_scene_smooth_ap_v1/EXPERIMENT_AUDIT_Q1.md/.json，MD SHA 0fff8f52997cdd8e42433ffc693181868eada003e58a1cd98eedb041dd21c989；原始脚本、输出、失败尝试、manifest/receipt完整归档evidence/cross_scene_smooth_ap_q1_independent_audit_20260921。主线逐条字节/SHA复核，原生完整回复另存私有trace，模型/图像/数组下载0。
+
+审计独立核对134注册绑定、88执行源码、3096训练模态文件名、1950个B0训练步骤及六Q1 checkpoint各472状态张量。独立全量数值重算1560步/116501504训练距离元素、30组检索输出/2069520检索距离与排名元素、6000查询输出行及300身份输出变化；v2报告、5份CSV及来源描述统计另核对57813数值，最大差4.44e-14。配对fused+0.5671825364，bootstrap下界-0.07723931035；原配对2/5、Signal1/5、科学Q1_FAIL保持，不以工程审计通过晋级。
+
+WARN边界保留：未重新生成全部逐步参数导数，部分冻结/重载与梯度仍为运行见证；两端预热不是逐位同轨迹；仅seed42、内部重复开发身份、非官方。审计配置链KeyError及过严预热断言失败均原样保留，后者改为完整量化差异，没有修改原训练、原门槛或原结果。所有训练与CPU进程已经结束，不重新启动。
+
+### 41.229 后继支持感知梯度平衡草案，尚未登记或训练（2026-09-21）
+
+依据完整结果与已核对MMPareto/GradNorm/OGM-GE近邻，形成refine-logs/msvr310_supported_gradient_balance_v1/EXPERIMENT_PLAN_DRAFT.md及tracker。唯一候选干预是在相同cross-scene AP、候选与完整历史VJP下，对三个encoder角色分别组合完整排名R和原辅助A。草案固定EMA0.9、范数比平方根、r范围[0.25,4]、系数和2；无合法跨scene支持时EMA不更新、原辅助训练继续；不加入方向投影/新loss/新网络。
+
+R必须含当前和历史，分类头保留原梯度；不能用total_vs_history当作R/A。当前total减rank得到A的有限精度误差需与直接辅助反传核验，真实AdamW参数更新也要记录。草案不声称已经测出当前cross-scene梯度失衡，不把已有统计工具包装为原创。尚无新执行代码/配置/T0/M0/Q1；下一步代码化、登记与审查后按原阶段门推进。seed42、先主结果后消融、官方禁调参及三数据集Goal ACTIVE/UNMET不变。本轮未删权重。
