@@ -2,7 +2,7 @@
 
 ## 0. 一页结论
 
-当前执行入口：§41.230—§41.231（2026-09-21）。支持感知梯度平衡R1执行92a75e4已T0通过但M0第4步辅助近似误差0.006824872>0.005停止，仅3更新、无Q1。原失败完整保留。R2改为直接辅助求导，独立复审PASS_WITH_LIMITS，配置9ce36299；尚未部署R2，下一步从原初始化T0/M0。原控制路径、全部系数与门槛保持，不放宽数值门、不扫参。前序cross-scene科学FAIL封存；seed42、三数据集Goal ACTIVE/UNMET。以下历史章节不作为当前运行指令。
+当前执行入口：§41.231—§41.232（2026-09-21）。支持感知梯度平衡R1辅助减法误差工程失败保留；R2直接辅助求导执行1381639/配置9ce36299已启动，T0实际通过，M0原PID42784运行，wrapper42758。首历史组实际独立梯度参考已通过，但完整M0/CPU尚未结束；其后才自动六端Q1。系数/阈值/科学门/seed42保持，不续训R1、不扫参、不读官方测试。没有新检索结果，Goal ACTIVE/UNMET。以下历史章节不作为当前运行指令。
 
 当前MSVR310训练及此前两个车辆数据集比较使用原V8平行三角色结构：冻结Signal/CLIP，共享block8之前语义和tail9/10/11参数，三个角色分别运行共享tail；CNN处理局部语义Patch高频，Transformer处理全局CLS/Patch关系，Mamba处理空间与位置级三模态扫描。各角色相对冻结reference形成1536D残差，三角色4608D银行拼接3072D Signal得到7680D fused；完整单角色输出为4608D Signal+角色残差。三条路径均执行，当前没有Router/HFER、V23模态MLP或V24原型。两项车辆训练比较均已完成；RGBNT100内部完整比较支持三角色增益，MSVR310尚未超过Signal。下面V1—V8条目保留历史经过，不代表当前又启用了旧模块。
 
@@ -6736,3 +6736,12 @@ R2唯一实现修正为每步直接求原其余13项encoder辅助导数，两端
 原fresh审阅者继续检查R1原文与R2源码，最终PASS_WITH_LIMITS，无剩余BLOCKING；不是第二个独立fresh agent，same-family/provisional且backend未独立认证。7源码AST及当前/前置67项目绑定、R1本地文本与inventory核对通过。新增T0差异fixture覆盖control、candidate、active无支持并调用实际CPU标量核验器；目前仅源码审阅，尚未实际运行R2张量或模型。意见与最终代码审查归档evidence/supported_gradient_balance_r2_review_20260921，计划目录EXPERIMENT_CODE_REVIEW.md/.json已指向R2。
 
 R2固定配置SHA9ce36299299efbc09ccfb72f5b1c4fed20fc1026bd9fee1bd55a591d6950ec7b，implementation_revision=r2_direct_auxiliary。下一步同步后新目录重新T0/M0，从原初始化开始，不续训R1。05:39输出盘余5632225280B，GPU1MiB/0%；未删除权重。没有新检索、官方或晋级结论。Goal ACTIVE/UNMET。
+
+
+### 41.232 R2实际T0通过、M0越过首轮失败位置（2026-09-21）
+
+05:52:33 screen tri_supported_balance_r2_1381639启动；执行1381639f778f77f124a2726ee55c07610092a438，配置9ce36299299efbc09ccfb72f5b1c4fed20fc1026bd9fee1bd55a591d6950ec7b；run /root/trifusion-storage/artifacts/msvr310_supported_gradient_balance_v1_r2_seed42_1381639。wrapper42758，T0 42764于05:52:39退出0（6.3110秒），M0 42784随后自动开始。R2从原固定初始化开始，没有恢复R1的3个更新。
+
+实际T0完整780来源batch及合成检查通过，包括direct辅助与减法不同的control/candidate/active无支持三路径、实际CPU标量验证器、整块范数/置换/AMP/head保持。T0仍是模型前向0/更新0/heldout图像0。2026-09-21T05:56:41.949639+08:00通过/proc核对原wrapper/M0命令行存活；已保存首历史组中current/history/full R、直接辅助、实际组合的全部可见独立参考通过，当前最大相对误差6.11777801523e-05，低于原0.005。只说明这些已完成位置通过，尚未完成全部六容量端、两个过拟合端和CPU，不把局部见证写成M0 PASS。
+
+证据evidence/supported_gradient_balance_r2_start_20260921含原T0/启动/观察及逐角色参考数值。原R1减法失败保持；R2两端原控制路径与直接分量有限精度差异继续记录，系数/误差阈值/预算未改。当前输出盘余5525925888B；未删除权重、模型/数组下载0。下一步让原队列完成248更新M0及完整CPU，成功后自动Q1；不重启、不挑局部结果。尚无新检索/正式成绩，Goal ACTIVE/UNMET。

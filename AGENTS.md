@@ -1,8 +1,8 @@
 # TriFusion-ReID workspace
 
-## Latest verified state (2026-09-21 balance R1 engineering stop; R2 reviewed)
+## Latest verified state (2026-09-21 balance R2 T0 passed; M0 running)
 
-- 当前执行入口：§41.230–41.231。支持感知梯度平衡R1执行92a75e4已停止M0：3更新，第4步辅助相减误差0.006824872>0.005，无Q1。原失败封存。R2直接辅助实现已复审PASS_WITH_LIMITS，配置9ce36299，尚未启动；下一步新目录从原初始化T0/M0，原阈值/科学门/seed42不变。原PID41216/41238已结束，不恢复R1。Goal ACTIVE/UNMET。
+- 当前执行入口：§41.231–41.232。R1工程失败封存；R2执行1381639/配置9ce36299，T0实际通过、M0首参考通过且原进程42784运行，wrapper42758。run /root/trifusion-storage/artifacts/msvr310_supported_gradient_balance_v1_r2_seed42_1381639。完整M0/CPU通过后队列自动Q1，尚无M0/Q1结论。保持seed42/原门槛，不因观察超时重启；Goal ACTIVE/UNMET。
 ## Archived standard Smooth-AP comparison (sealed; do not relaunch)
 
 - Read refine-logs/msvr310_smooth_ap_v1/EXPERIMENT_AUDIT_M0.md/.json and evidence/smooth_ap_m0_audit_20260909. Same-family/provisional, reconstruction limits retained. No new model/GPU replay, no change request. Do not repeat M0 or its audit.
