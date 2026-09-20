@@ -4,7 +4,7 @@
 
 当前执行入口：§41.233（2026-09-21）。支持感知梯度平衡R1工程失败封存；R2执行1381639/配置9ce36299的完整M0和CPU于06:09通过，248步/90独立梯度参考检查完成。原wrapper42758自动进入Q1原44804，06:13首控制5/20epoch、0/6终点；独立M0审计正在进行。保持seed42/原门槛/固定终点，尚无本新实验检索结论。Goal ACTIVE/UNMET。以下历史章节不作为当前运行指令。
 
-当前MSVR310训练及此前两个车辆数据集比较使用原V8平行三角色结构：冻结Signal/CLIP，共享block8之前语义和tail9/10/11参数，三个角色分别运行共享tail；CNN处理局部语义Patch高频，Transformer处理全局CLS/Patch关系，Mamba处理空间与位置级三模态扫描。各角色相对冻结reference形成1536D残差，三角色4608D银行拼接3072D Signal得到7680D fused；完整单角色输出为4608D Signal+角色残差。三条路径均执行，当前没有Router/HFER、V23模态MLP或V24原型。两项车辆训练比较均已完成；RGBNT100内部完整比较支持三角色增益，MSVR310尚未超过Signal。下面V1—V8条目保留历史经过，不代表当前又启用了旧模块。
+当前MSVR310训练及此前两个车辆数据集比较使用原V8平行三角色结构：冻结Signal/CLIP，共享block8之前语义和tail9/10/11参数，三个角色分别运行共享tail；CNN处理局部语义Patch高频，Transformer处理全局CLS/Patch关系，Mamba处理空间与位置级三模态扫描。各角色相对冻结reference形成1536D残差，三角色4608D银行拼接3072D Signal得到7680D fused；完整单角色输出为4608D Signal+角色残差。三条路径均执行，当前没有Router/HFER、V23模态MLP或V24原型。两项原V8车辆训练比较均已完成：RGBNT100内部完整比较支持三角色增益，MSVR310原V8比较未超过Signal；后续跨scene Smooth-AP的完整内部Q1 fused已比Signal高0.2761pp，但仍未通过原晋级条件。下面V1—V8条目保留历史经过，不代表当前又启用了旧模块。
 
 本工程是在 DeMo 代码基座上实现的 RGB–NIR–TIR 多模态目标重识别研究分支。V17完整训练和完整gallery补评已封存为失败；其全部查询/图像/分区诊断见§30。V18完整三折两端20epoch主实验已结束（§33）：fused增益+0.921504 mAP，bootstrap下界-0.117338，未通过固定晋级条件；无D1/dev/official。MSVR310、RGBNT100均已安装核验（§32）。V17 fused相对matched weight0为-0.328915 mAP，没有D1/dev/official结果。RGBNT201固定dev保留结果为V8 Phase-B：冻结dev fused=`58.4050 mAP / 59.3939 Rank-1`，比exact Signal高`0.3941 mAP / 1.9394 Rank-1`并超过三个专家，但仍比65 mAP门低`6.5950`，不能声称SOTA。
 
@@ -6751,7 +6751,7 @@ R2固定配置SHA9ce36299299efbc09ccfb72f5b1c4fed20fc1026bd9fee1bd55a591d6950ec7
 
 原M0 42784于06:09:36.381退出0，1016.567秒；CPU44719于06:09:45.483退出0，9.101秒。M0 PASS_ENGINEERING_ONLY，CPU PASS_COMPLETE_SUPPORTED_GRADIENT_BALANCE_M0；summary SHA e63fc2ace053952c3775b19e37c0064af890b41f2a96d03a63c6c4237cd01545，CPU SHA 910c5c8493059cded0adb02bcbdb5ab0b701b40567b645f3a1ca37014feb21b1。执行1381639、配置9ce36299，科学合同未改变。
 
-6容量端各8步及2过拟合端各100步全部完成，共248更新；各端203/203累计非零、overflow0、冻结/Signal状态不变、角色更新/严格重载通过。两个原超额损失比控制0.000701213786、候选0.000721186408，均低于原0.1门。90项实际独立参考检查全部通过，最大相对误差9.433501552915618e-05，未放宽0.005门。峰值reserved最大12186MiB。
+6容量端各8步及2过拟合端各100步全部完成，共248更新；八个运行均203/203累计非零、overflow0、冻结/Signal状态不变及角色更新检查通过。六个容量端检查点严格重载通过；两个过拟合运行未保存终点检查点，也没有执行严格重载。两个原超额损失比控制0.000701213786、候选0.000721186408，均低于原0.1门。90项实际独立参考检查全部通过，最大相对误差9.433501552915618e-05，未放宽0.005门。峰值reserved最大12186MiB。
 
 CPU核对全部4945920距离元素、248步以及5760历史VJP记录前向账本，重算掩码、目标、支持和EMA/系数；没有重新生成每步参数梯度。完整28份原始文本7961437B接收，逐文件字节/SHA匹配，模型/图像/距离数组未下载。证据evidence/supported_gradient_balance_m0_complete_20260921；evidence/supported_gradient_balance_m0_analysis_20260921保留744条角色记录、90参考检查和8条完整阶段epoch记录。
 
