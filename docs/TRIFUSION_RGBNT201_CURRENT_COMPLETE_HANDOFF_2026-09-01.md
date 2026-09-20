@@ -6789,3 +6789,8 @@ fresh-none gpt-6-astra/max独立M0审查终态WARN/CLOSED_WITH_LIMITS：A/B/C/D/
 原Q1进程44804通过/proc再次确认存活。仅读完整JSONL前缀，不加载模型/图像/数组，不新增更新，不读局部检索分数。fold0控制与候选均已执行第180步：真实跨scene正例支持为0，三个角色完整排名梯度0、EMA before/after相同、应用系数1/1、原梯度与实际应用梯度差0，分类头保持，实际参数更新均非零。首轮07:17仅控制覆盖，第二轮候选也覆盖；原始记录、前缀SHA和脚本归档evidence/supported_gradient_balance_zero_support_runtime_20260921。
 
 这是Q1运行中的工程分支见证，不是独立参数梯度重生成或完整终态；M0的0个活动无支持更新限制仍原样保留，不追溯改写审查。候选已写183步、控制260步，完整六端/CPU/检索审查仍待完成。无新性能结论、不调参，Goal ACTIVE/UNMET。
+
+
+#### §41.235 首个完整配对里程碑（07:42）
+
+07:42:08真实观察：原wrapper42758/Q1 44804存活，fold0 control/balanced均完成20epoch/260更新，端点回执、检查点和检索记录齐全，2/6完整端点；fold1 control完成6/20epoch。两端203/203累计非零、overflow0、冻结Signal/基座不变及全部训练工程检查通过。训练epoch耗时合计2595.407/2569.485秒；这些不包括所有初始化/重载/检索成本。GPU7578MiB/100%，输出盘5065076736B。未用局部检索分数调参；完整Q1/CPU/审查未结束。原始观察归档evidence/supported_gradient_balance_q1_progress_20260921/observation_0742.json，以文件内observed_at为实际时间，不以本地预设文件名推断时间。Goal ACTIVE/UNMET。
