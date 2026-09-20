@@ -2,7 +2,7 @@
 
 ## 0. 一页结论
 
-当前执行入口：§41.215—§41.225（2026-09-21）。标准Smooth-AP Q1_FAIL及完整来源梯度诊断已封存。跨scene Smooth-AP执行d35864d/配置e5326b52，M0/CPU及独立M0已关闭（工程PASS、WARN/CLOSED_WITH_LIMITS）。2026-09-21T03:08:17.845631+08:00原wrapper16885/Q1 18222存活；4/6端固定20epoch/260步、checkpoint/检索/receipt齐全；fold2 control自动完成第5epoch。六端/CPU/独立科学核验尚未结束，无新增正式成绩。保持seed42及固定合同，后继梯度协作仅候选。三数据集Goal ACTIVE/UNMET。以下历史章节不作为当前运行指令。
+当前执行入口：§41.215—§41.226（2026-09-21）。标准Smooth-AP Q1_FAIL及完整来源梯度诊断已封存。跨scene Smooth-AP执行d35864d/配置e5326b52，M0/CPU及独立M0已关闭（工程PASS、WARN/CLOSED_WITH_LIMITS）。2026-09-21T03:46:03.864528+08:00原wrapper16885/Q1 18222存活；5/6端固定20epoch/260步、checkpoint/检索/receipt齐全；fold2 cross_scene自动完成第5epoch。六端/CPU/独立科学核验尚未结束，无新增正式成绩。保持seed42及固定合同，后继梯度协作仅候选。三数据集Goal ACTIVE/UNMET。以下历史章节不作为当前运行指令。
 
 当前MSVR310训练及此前两个车辆数据集比较使用原V8平行三角色结构：冻结Signal/CLIP，共享block8之前语义和tail9/10/11参数，三个角色分别运行共享tail；CNN处理局部语义Patch高频，Transformer处理全局CLS/Patch关系，Mamba处理空间与位置级三模态扫描。各角色相对冻结reference形成1536D残差，三角色4608D银行拼接3072D Signal得到7680D fused；完整单角色输出为4608D Signal+角色残差。三条路径均执行，当前没有Router/HFER、V23模态MLP或V24原型。两项车辆训练比较均已完成；RGBNT100内部完整比较支持三角色增益，MSVR310尚未超过Signal。下面V1—V8条目保留历史经过，不代表当前又启用了旧模块。
 
@@ -6673,3 +6673,12 @@ root另核对当前计算图，PROJECT_OBJECTIVE_SCOPE.md与输入SHA保存：O�
 只读观察证据：evidence/cross_scene_smooth_ap_q1_progress_20260921/trifusion_cross_scene_observation_0308_20260921.json。本次只登记完整端点回执及继续运行证据，不解读局部fold分数；全部六端、CPU重算和独立科学审查完成后才判断原门槛。单端已记录的工程标志不是完整审计的替代品。
 
 输出盘剩余5949620224B（5.541GiB），本轮删除0权重。继续按约38分钟/端的实测速率在接近下一终点时观察；全六端仍暂估04:30附近，终态后接收文本并核验。Goal ACTIVE/UNMET。
+
+
+### 41.226 跨场景 Smooth-AP 完成5/6端，原队列继续（2026-09-21）
+
+2026-09-21T03:46:03.864528+08:00原wrapper16885/Q1 18222存活；5/6端固定20epoch/260步、checkpoint/检索/receipt齐全；fold2 cross_scene自动完成第5epoch。本次新增完成fold2 control，fit epoch累计2193.6746秒；overflow0、累计203/203非零梯度张量，所有已记录工程检查true。通过/proc核对原命令行，未重启、未改执行代码、配置或合同。
+
+只读观察证据：evidence/cross_scene_smooth_ap_q1_progress_20260921/trifusion_cross_scene_observation_0346_20260921.json。本次只登记完整端点回执及继续运行证据，不解读局部fold分数；全部六端、CPU重算和独立科学审查完成后才判断原门槛。单端已记录的工程标志不是完整审计的替代品。
+
+输出盘剩余5788823552B（5.391GiB），本轮删除0权重。继续按约38分钟/端的实测速率在接近下一终点时观察；全六端仍暂估04:30附近，终态后接收文本并核验。Goal ACTIVE/UNMET。
