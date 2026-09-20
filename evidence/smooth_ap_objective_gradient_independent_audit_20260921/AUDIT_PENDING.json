@@ -1,0 +1,101 @@
+{
+  "status": "STATIC_REVIEW_COMPLETE_AWAITING_SOURCE_VERIFICATION_ANALYSIS_TERMINALS",
+  "generated_at": "2026-09-20T15:09:10.282775+00:00",
+  "agent_id": "/root/audit_smooth_objective_source_20260920",
+  "review_independence": "same-family",
+  "acceptance_status": "provisional",
+  "final_verdict_issued": false,
+  "completed": {
+    "scientific_bindings": 157,
+    "remote_text_snapshots": 117,
+    "dataset_records": 1032,
+    "dataset_identities": 155,
+    "folds": [
+      {
+        "fold": 0,
+        "source_ids": 103,
+        "heldout_ids": 52,
+        "source_records": 672,
+        "heldout_records": 360
+      },
+      {
+        "fold": 1,
+        "source_ids": 103,
+        "heldout_ids": 52,
+        "source_records": 683,
+        "heldout_records": 349
+      },
+      {
+        "fold": 2,
+        "source_ids": 104,
+        "heldout_ids": 51,
+        "source_records": 709,
+        "heldout_records": 323
+      }
+    ],
+    "checkpoint_conditions": 6,
+    "checkpoint_state_tensors_per_condition": 472,
+    "retained_preflight_gradient_tensors": 3402,
+    "preflight_scalar_max_error": 5.551115123125783e-16
+  },
+  "local_remote_byte_differences": [
+    {
+      "path": "modeling/trifusion/criterion.py",
+      "local_sha256": "9a028e5711981123310f5e0d441a35b7dbecaf33f9edcec4fd3773d070cf877f",
+      "remote_sha256": "0b2a6370f434828d885945d1a46dd56f6668133ceed45ef359fe71eeca63740a",
+      "byte_equal": false,
+      "newline_only": true,
+      "ast_equal": true
+    },
+    {
+      "path": "modeling/trifusion/state.py",
+      "local_sha256": "d6491db289e68e0b97a8d532edc933252ab60fdaad963af85f603dec9002e2b9",
+      "remote_sha256": "5fe89c4885507e74ca1833cc18822a4b57e4c2d6fa9a6c6b2e127d1e74b70db9",
+      "byte_equal": false,
+      "newline_only": true,
+      "ast_equal": true
+    },
+    {
+      "path": "modeling/trifusion/builder.py",
+      "local_sha256": "70a94158fca9424b6ca35e4d64adbf2d4329d03d898e63a723a6ebf1ab6068e6",
+      "remote_sha256": "8b3620e6be3727709253589a9e59b3efd20a611ba0eec4e8f6b4d0d17eeea4eb",
+      "byte_equal": false,
+      "newline_only": true,
+      "ast_equal": true
+    },
+    {
+      "path": "modeling/trifusion/experts/mamba.py",
+      "local_sha256": "8b9cb420c42e4d70f8de7e4608637c81c505b97ca54228175462a7e92fdfcc83",
+      "remote_sha256": "c516c7ad937e5eee6a4ed1e3ec33c2afe3522b751d296bd2e4910e4f27a20ee5",
+      "byte_equal": false,
+      "newline_only": true,
+      "ast_equal": true
+    },
+    {
+      "path": "modeling/trifusion/experts/semantic_residual.py",
+      "local_sha256": "c1831a3de031be033624420791cecf2e7a3945e009655089cb48ee4b9912edd6",
+      "remote_sha256": "c8cef9717fd7bd1e5e50b428ac92762455defac2e25857c9e0dfaf82729c2a93",
+      "byte_equal": false,
+      "newline_only": true,
+      "ast_equal": true
+    }
+  ],
+  "terminal_verifier_sha256": "04a30cb001a47f8e8f8ca4fbd107505bcaf3c875eaa80223dcb8a0995e8141c1",
+  "pending": [
+    "Wait for original source/verification/analysis COMPLETE exit0",
+    "Run independent NumPy saved-distance, all-row and full-aggregation verifier",
+    "Snapshot complete terminal text inputs and record exact hash scope",
+    "Issue EXPERIMENT_AUDIT.md and EXPERIMENT_AUDIT.json with A-F verdicts"
+  ],
+  "exclusions": [
+    "No model forward/backward or optimizer run",
+    "No experiment code/config changes",
+    "No full-source parameter-vector reconstruction"
+  ],
+  "preserved_audit_side_failures": [
+    "static_inventory_r1.prelude_failure.json",
+    "execute_remote_readonly_r1.py",
+    "verifier_selfcheck_r1.failure.json",
+    "verify_checker_selfcheck_r1.py"
+  ]
+}

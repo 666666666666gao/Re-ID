@@ -1,0 +1,199 @@
+{
+  "schema": "msvr310-cross-scene-smooth-ap-static-code-review-v1",
+  "review_date": "2026-09-21",
+  "reviewer_canonical_id": "/root/review_cross_scene_smooth_ap_20260921",
+  "reviewer_role": "fresh delegated source-code reviewer",
+  "requested_model": "gpt-6-astra",
+  "requested_reasoning_effort": "max",
+  "requested_fork_turns": "none",
+  "request_metadata_source": "Parent agent confirmed actual spawn request; backend model identity not independently attested.",
+  "review_independence": "same-family",
+  "acceptance_status": "provisional",
+  "verdict": "PASS_WITH_LIMITS",
+  "code_review_status": "NO_BLOCKING_STATIC_DEFECT_FOUND",
+  "runtime_validation_status": "NOT_EXECUTED_BY_REVIEWER",
+  "next_stage_assessment": "The reviewed implementation may proceed to the registered T0 and M0. Q1 remains conditional on complete T0, M0 and M0_CPU passes; this report is not an engineering pass or scientific qualification.",
+  "repo": "C:/Users/gb/.trifusion_github_publish_22c3bee",
+  "observed_head": "d32845ad975bd2de96eb1e9d4a45043aeb65f03c",
+  "reviewed_config": "configs/MSVR310/TriFusion-cross-scene-smooth-ap-paired-v1.json",
+  "reviewed_config_sha256": "e5326b52ebb12dced24ebfac788db2e2bb5bdca0b50c6c4dec64e596f1af05a1",
+  "plan": "refine-logs/msvr310_cross_scene_smooth_ap_v1/EXPERIMENT_PLAN.md",
+  "tracker": "refine-logs/msvr310_cross_scene_smooth_ap_v1/EXPERIMENT_TRACKER.md",
+  "tracker_note": "Task shorthand TRACKER.md resolved to the existing EXPERIMENT_TRACKER.md. No missing protocol document finding.",
+  "final_version_note": "Reviewed final T0 source-support binding added during review; corresponding config SHA was refreshed by the executor. Other new implementation files were unchanged.",
+  "methods": [
+    "Read-only line-by-line source inspection of all six new Python files, config, plan, tracker, and relevant inherited paths.",
+    "Compared new trainer, verifier, T0 and wrapper with the pinned standard Smooth-AP versions.",
+    "Checked existing local SHA contracts: nine entries in new config, ten entries in prior Smooth-AP config, three input bindings in archived source-support JSON.",
+    "Read-only Git status/diff and JSON inspection. No Python module, formula test, model or remote command was executed."
+  ],
+  "reviewer_execution": {
+    "python_tests": 0,
+    "tensor_computations": 0,
+    "model_forwards": 0,
+    "optimizer_updates": 0,
+    "dataset_image_reads": 0,
+    "remote_commands": 0,
+    "source_edits": 0,
+    "experiments_launched": 0
+  },
+  "existing_bindings": {
+    "new_config_entries_checked": 9,
+    "new_config_entries_matched": 9,
+    "prior_smooth_ap_entries_checked": 10,
+    "prior_smooth_ap_entries_matched": 10,
+    "source_support_input_bindings_checked": 3,
+    "source_support_input_bindings_matched": 3,
+    "original_six_smooth_ap_scripts_and_config_git_diff_empty": true,
+    "remote_recursive_bindings_verified": false,
+    "note": "These are checks of registered invariants already present in the repository, not a new binding mechanism."
+  },
+  "blocking_findings": [],
+  "nonblocking_findings": [],
+  "verified_static_behavior": [
+    {
+      "topic": "Single intervention and positive/negative masks",
+      "conclusion": "Control selects original all-identity Smooth-AP. Cross-scene positives require same ID and different scene; same ID/same scene is absent from numerator and denominator. Every different ID remains valid, including same scene; current self is excluded by the same-scene rule.",
+      "evidence": [
+        "tools/msvr_cross_scene_smooth_ap.py:31-53",
+        "tools/train_msvr_cross_scene_smooth_ap.py:127-160"
+      ]
+    },
+    {
+      "topic": "Eligible-anchor reduction and exact zero branch",
+      "conclusion": "Cross-scene loss is 1 minus the conditional mean AP for counts > 0. Per-anchor zero placeholders are excluded from the mean. Whole-ineligible batches use distance.sum()*0, connected to current and historical distance graphs. Trainer still executes all other thirteen losses, backward, optimizer and queue update.",
+      "evidence": [
+        "tools/msvr_cross_scene_smooth_ap.py:36-54",
+        "tools/train_msvr_cross_scene_smooth_ap.py:159-161",
+        "tools/train_msvr_cross_scene_smooth_ap.py:190-248",
+        "tools/train_msvr_cross_scene_smooth_ap.py:266"
+      ]
+    },
+    {
+      "topic": "Three objective call sites",
+      "conclusion": "Current loss, historical-leaf partial, and direct complete graph all call objectives with the same IDs/scenes and choose standard versus cross_scene consistently. Current cdist retains both current-feature positions; historical leaf derivative is propagated through current-parameter replay. Historical candidates never become anchors.",
+      "evidence": [
+        "tools/train_msvr_cross_scene_smooth_ap.py:129-178",
+        "tools/train_msvr_cross_scene_smooth_ap.py:199-242",
+        "tools/msvr_role_set_relations.py:60-64",
+        "tools/msvr_instance_memory.py:40-80"
+      ]
+    },
+    {
+      "topic": "Fresh history and complete historical VJP",
+      "conclusion": "refresh_all reencodes original frozen fields using saved role-entry RNG at current parameters; encode_graph replay matches selected fresh values. History gradients are accumulated with one fixed weight and original scaler before the single optimizer update. Zero upstream groups are skipped mathematically without changing optimizer execution.",
+      "evidence": [
+        "tools/probe_msvr_role_set_gradients.py:29-50",
+        "tools/probe_msvr_history_candidate_gradients.py:43-50",
+        "tools/train_msvr_cross_scene_smooth_ap.py:112-157",
+        "tools/train_msvr_cross_scene_smooth_ap.py:199-248"
+      ]
+    },
+    {
+      "topic": "Pairing, fixed settings and isolation",
+      "conclusion": "Both endpoints build fresh seed42 role models from fold-local source-only Signal, retain B64/K8 and 20 epochs/260 updates, AdamW and inherited augmentation/schedule. Comparison warmup remains 65 updates; enqueue starts at zero-based 65 and history can first participate at zero-based 66. Current scenes come from protocol.scene. Source and heldout identities remain disjoint.",
+      "evidence": [
+        "tools/train_msvr_cross_scene_smooth_ap.py:30-39",
+        "tools/train_msvr_cross_scene_smooth_ap.py:67-109",
+        "tools/train_msvr_cross_scene_smooth_ap.py:322-365",
+        "tools/train_msvr310_trifusion_oof.py:27-54",
+        "tools/train_msvr310_source_style.py:25-51",
+        "tools/train_msvr310_signal_oof.py:68-99"
+      ]
+    },
+    {
+      "topic": "Synthetic checks and registered source support",
+      "conclusion": "T0 code includes scalar references, finite differences, permutations, ignored-pair zero derivatives, ineligible anchors as negative candidates, whole-zero connected derivatives and ties. Revised T0 compares all 780 registered source batches against archived history count, cross-positive total, eligible count and zero-batch flag; it does not claim per-position archived count vectors where only summaries are archived.",
+      "evidence": [
+        "tools/check_msvr_cross_scene_smooth_ap_math.py:12-90",
+        "tools/check_msvr_cross_scene_smooth_ap.py:18-65"
+      ]
+    },
+    {
+      "topic": "Saved data and independent CPU arithmetic",
+      "conclusion": "All four distance spaces, true source ID/scene/queue metadata, standard and cross AP/counts/eligible counts, fourteen components and active objective are logged. Independent NumPy code recomputes hard, standard and cross objectives and conditional mean, with AP/loss tolerance 2e-6; weight ledger, queue reconstruction and pairing are checked.",
+      "evidence": [
+        "tools/train_msvr_cross_scene_smooth_ap.py:132-139",
+        "tools/train_msvr_cross_scene_smooth_ap.py:186-264",
+        "tools/verify_msvr_cross_scene_smooth_ap.py:17-55",
+        "tools/verify_msvr_cross_scene_smooth_ap.py:58-193"
+      ]
+    },
+    {
+      "topic": "M0 gates and heldout order",
+      "conclusion": "Wrapper orders T0, M0, M0_CPU, Q1 and Q1_CPU and stops on nonzero stage exit. Q1 trainer requires matching successful M0 and CPU proof before any gallery forward. M0 retains all six 8-step capacity stages plus two 100-step overfit stages, 203/203 accumulated nonzero gradients, zero overflow, frozen Signal, strict reload, original corrected overfit ratio <= 0.1, and one direct/VJP check <= 0.005 for each capacity endpoint.",
+      "evidence": [
+        "tools/run_msvr_cross_scene_smooth_ap.py:31-65",
+        "tools/train_msvr_cross_scene_smooth_ap.py:167-185",
+        "tools/train_msvr_cross_scene_smooth_ap.py:228-248",
+        "tools/train_msvr_cross_scene_smooth_ap.py:305-381",
+        "tools/verify_msvr_cross_scene_smooth_ap.py:63-68",
+        "tools/verify_msvr_cross_scene_smooth_ap.py:178-288"
+      ]
+    },
+    {
+      "topic": "Ground truth and unchanged scientific gates",
+      "conclusion": "Retrieval uses dataset identity and scene ground truth, with all different-identity gallery distractors retained. Candidate-versus-control and candidate-versus-Signal each retain all five original gates. Bootstrap is identity-clustered with seed42 and 10000 resamples. Final epoch20 only; all three folds and five outputs feed qualification.",
+      "evidence": [
+        "tools/train_msvr310_trifusion_oof.py:196-284",
+        "tools/train_msvr310_source_style.py:196-221",
+        "tools/train_msvr_cross_scene_smooth_ap.py:290-295",
+        "tools/verify_msvr_cross_scene_smooth_ap.py:238-340"
+      ]
+    }
+  ],
+  "nonblocking_boundaries": [
+    {
+      "id": "L1",
+      "statement": "Fresh context but same model family and provisional acceptance. Requested model/effort are spawn metadata, not independent backend identity authentication."
+    },
+    {
+      "id": "L2",
+      "statement": "No synthetic or runtime test was executed by this reviewer. Local SHA/source checks do not establish remote environment availability, numerical parity, gradient finiteness, capacity, disk sufficiency or any new retrieval result."
+    },
+    {
+      "id": "L3",
+      "statement": "Saved-distance CPU replay independently checks fused objective arithmetic and recorded gradient-summary consistency. All four distance spaces are saved and checked for shape/finiteness; the other thirteen terms are verified as a weighted scalar ledger, not regenerated from logits/features. It does not regenerate every per-step feature graph or parameter gradient; direct equality is limited to the first actual history group of each M0 capacity endpoint."
+    },
+    {
+      "id": "L4",
+      "statement": "Eligibility is conditional on the current candidate pool. The intervention changes both relations and the anchor denominator; a future effect cannot be attributed solely to deletion of easy positives. Source candidate AP and repeated anchor exposures do not establish unknown-identity full-gallery improvement."
+    },
+    {
+      "id": "L5",
+      "statement": "Per-step eligible count and all positive counts retain zero-batch evidence, but terminal training_checks does not aggregate those cross-scene exposure totals. Reporting should derive them from complete saved rows, distinguishing diagnostic cross loss in control from the selected cross_scene objective.",
+      "evidence": [
+        "tools/train_msvr_cross_scene_smooth_ap.py:135-139",
+        "tools/verify_msvr_cross_scene_smooth_ap.py:190-193"
+      ]
+    }
+  ],
+  "required_checks": [
+    {
+      "stage": "T0",
+      "status": "PENDING_RUNTIME",
+      "requirements": "Execute registered synthetic scalar/finite-difference/zero/permutation checks and all 780 source queue rows in intended environment. Confirm standard and cross objectives, scene masks and existing recursive runtime bindings."
+    },
+    {
+      "stage": "M0",
+      "status": "PENDING_RUNTIME",
+      "requirements": "Complete all 248 registered source updates. Confirm paired initializations/pixels, first-history direct/VJP error <= 0.005, historical role contributions, all 203 trainable tensors cumulatively nonzero, finite gradients, no AMP overflow, unchanged Signal, strict reload, capacity and both fixed overfit ratios <= 0.1."
+    },
+    {
+      "stage": "M0_CPU",
+      "status": "PENDING_RUNTIME",
+      "requirements": "Verify all 248 saved rows, distances, GT masks/counts, hard/standard/cross AP, fourteen-term weighted ledger, source queue, paired inputs and checkpoint evidence. Do not launch Q1 unless this and M0 pass for the exact config."
+    },
+    {
+      "stage": "Q1 and terminal CPU/audit",
+      "status": "CONDITIONAL_PENDING",
+      "requirements": "After prerequisites, complete six fresh fold/endpoint models at fixed epoch20, 1560 updates, all 600 queries and 1032 gallery records per endpoint (2064 gallery record forwards across both endpoints), five outputs and both fixed five-gate groups. Preserve failures and negative rows. Report active cross_scene zero-eligible batches separately; archived post-warmup sequence predicts 1/1/2 across folds, with eligible exposures 5144/5176/5056 per endpoint. CPU completion and independent terminal audit remain required before conclusions."
+    }
+  ],
+  "review_changes": "Only isolated review outputs written. No patch is required from this static review.",
+  "memory_used": {
+    "purpose": "Background orientation on local publication worktree and prior protocol boundaries; no current diagnostic status was inferred from old memory.",
+    "citation": "MEMORY.md:375-377",
+    "rollout_id": "01a06f22-cc0d-7da2-8cae-68a700778767"
+  }
+}

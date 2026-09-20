@@ -1503,3 +1503,17 @@
 - 2026-09-09: Smooth-AP terminal descriptive analyzer prepared and checked on all248M0 steps only; Q1 running; master41.191.
 
 - 2026-09-09: Smooth-AP M0 independent audit CLOSED_WARN, deterministicPASS; Q1 1/6 complete, original process continues. Master41.192.
+| 2026-09-21T00:04:53.827382+08:00 | /experiment-plan | refine-logs/msvr310_cross_scene_smooth_ap_v1/EXPERIMENT_PLAN.md | implementation | Cross-scene AP preparation, not run |
+| 2026-09-21T00:04:53.827382+08:00 | /experiment-plan | refine-logs/msvr310_cross_scene_smooth_ap_v1/EXPERIMENT_TRACKER.md | implementation | Cross-scene AP preparation, not run |
+| 2026-09-21T00:04:53.827382+08:00 | /experiment-plan | tools/msvr_cross_scene_smooth_ap.py | implementation | Cross-scene AP preparation, not run |
+| 2026-09-21T00:21:19.935106+08:00 | /experiment-bridge | tools/check_msvr_cross_scene_smooth_ap.py | implementation | Static reviewed; runtime pending |
+| 2026-09-21T00:21:19.935162+08:00 | /experiment-bridge | tools/check_msvr_cross_scene_smooth_ap_math.py | implementation | Static reviewed; runtime pending |
+| 2026-09-21T00:21:19.935169+08:00 | /experiment-bridge | tools/msvr_cross_scene_smooth_ap.py | implementation | Static reviewed; runtime pending |
+| 2026-09-21T00:21:19.935174+08:00 | /experiment-bridge | tools/run_msvr_cross_scene_smooth_ap.py | implementation | Static reviewed; runtime pending |
+| 2026-09-21T00:21:19.935178+08:00 | /experiment-bridge | tools/train_msvr_cross_scene_smooth_ap.py | implementation | Static reviewed; runtime pending |
+| 2026-09-21T00:21:19.935182+08:00 | /experiment-bridge | tools/verify_msvr_cross_scene_smooth_ap.py | implementation | Static reviewed; runtime pending |
+| 2026-09-21T00:21:19.935185+08:00 | /experiment-bridge | configs/MSVR310/TriFusion-cross-scene-smooth-ap-paired-v1.json | implementation | Static reviewed; runtime pending |
+| 2026-09-21T00:21:19.935189+08:00 | /experiment-bridge | refine-logs/msvr310_cross_scene_smooth_ap_v1/EXPERIMENT_PLAN.md | implementation | Static reviewed; runtime pending |
+| 2026-09-21T00:21:19.935193+08:00 | /experiment-bridge | refine-logs/msvr310_cross_scene_smooth_ap_v1/EXPERIMENT_TRACKER.md | implementation | Static reviewed; runtime pending |
+| 2026-09-21T00:21:19.935197+08:00 | /experiment-bridge | refine-logs/msvr310_cross_scene_smooth_ap_v1/EXPERIMENT_CODE_REVIEW.md | implementation | Static reviewed; runtime pending |
+| 2026-09-21T00:21:19.935201+08:00 | /experiment-bridge | refine-logs/msvr310_cross_scene_smooth_ap_v1/EXPERIMENT_CODE_REVIEW.json | implementation | Static reviewed; runtime pending |

@@ -6560,3 +6560,16 @@ Signal公开HEAD仍cd1b0a672d1fe642e7608731cb4899a19dda7d51，RGBNT100 YAML与�
 
 
 §41.214末端接续：22:47:11第三折控制完成260批/3401.3633秒，5/6端齐全；最后候选自动35批，总1335/1560。新端模型状态/梯度清空/零更新及数据范围记录正常，单组direct/VJP误差6.38014354e-5<原0.005。原1230/1231/1706/2251存活；22:42输出余6852833280B。证据evidence/smooth_ap_objective_gradient_five_complete_20260920。下一观察约23:42，等待完整源终态→CPU核验→分析，尚无全量梯度结论或新训练，Goal ACTIVE/UNMET。
+
+
+### 41.215 固定来源目标梯度全量完成及独立关闭（2026-09-21）
+
+执行c6fbfb4六端1560批已全部完成，原source1230/1231于9月20日23:45:14退出0；原CPU1706/14798于23:48:51退出0；分析2251/15038于23:50:59退出0。三pipeline COMPLETE。全量4680角色行、72组、29125376保存距离值；零模型更新、零heldout/official读取。原Smooth-AP Q1_FAIL不改变。
+
+原文本33份/37743954B完整接收逐文件SHA核对；inventory/intake另2份，不混入33份原始数。evidence/smooth_ap_objective_gradient_source_complete_20260920保留全部原始文本及派生pooled统计。结果报告results/MSVR310_SMOOTH_AP_SOURCE_OBJECTIVE_GRADIENTS_2026-09-20.md。
+
+新鲜同族审计为WARN/CLOSED_WITH_LIMITS，确定性PASS、工程PASS_WITH_LIMITS；见refine-logs/msvr310_smooth_ap_objective_gradients_v1/EXPERIMENT_AUDIT_SOURCE.md/.json及evidence/smooth_ap_objective_gradient_independent_audit_20260921。独立NumPy/stdlib核验全部1560步/4680角色/72组及全部CSV，损失最大差1.52116e-7；原current/full分解最大误差.00160712/.00171668<登记.005。完整source参数向量未保存，不能把标量核验、预检3402向量统计复算或每端单组direct检查称为1560步独立模型反传重建。审计失败夹具与连接prelude记录保留，私有连接执行助手与trace不公开。
+
+活动位置66—260中，各fold-role九组Smooth-AP F/O范数比中位数.105537—.174304，控制.603683—.787887。每端1755条角色-批次记录中，Smooth-AP F/O负余弦115、F/total负余弦37；控制12/0。所有F非零且高于各条重复反传差异。比较限于同一角色参数块内部；未比较不同角色异义坐标。不同端点加载各自固定终态，不恢复原训练/AdamW历史，不推导loss倍率或泛化贡献。窗口/来源曝光相关，非多seed证据。
+
+00:14资源实查GPU1MiB/0%，输出余6827118592B，主卷2222432256B；本轮删除0权重。既有失败和所需初始化/终态保留。后继唯一主假设准备为标准Smooth-AP到合法跨scene正例/eligible-anchor均值定义，保持其余13项、fresh历史/VJP及seed42；已有来源支持中4/585后预热batch无合法anchor，必须本项图连接零并保留其他监督和全部负身份候选。新合同refine-logs/msvr310_cross_scene_smooth_ap_v1/EXPERIMENT_PLAN.md及六个独立版本入口已实现；新鲜静态代码审查PASS_WITH_LIMITS/0阻断，同族provisional，配置e5326b52。T0/M0尚未执行，不称工程或Q1通过，不重复旧Q1。下一步提交部署后按T0→M0→M0_CPU→Q1→Q1_CPU固定链执行，非零退出封存。Goal ACTIVE/UNMET。
