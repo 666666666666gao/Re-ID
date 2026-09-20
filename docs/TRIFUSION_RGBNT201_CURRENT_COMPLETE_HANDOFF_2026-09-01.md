@@ -6534,3 +6534,6 @@ CPU核验依赖队列1706于17:58:24启动，17:58:44确认存活，WAITING_FOR_
 终态文本接收脚本与合同在evidence/smooth_ap_objective_gradient_terminal_preparation_20260920。仅源测量、CPU核验、全量分析三个pipeline全部COMPLETE/exit0，六端1560批/4680角色行/72组及summary/verification哈希绑定通过后，接收文本并逐文件校验字节/SHA。当前仅AST语法检查通过，未执行终态接收；模型、原图、距离矩阵和梯度张量仍留远端。这是接收准备，不是源诊断或科学条件PASS。
 
 18:30:19原1230/1231与核验1706/分析2251实际存活，187/1560批；18:31:47保存193批。诊断目录仅16721801字节，按当前批数线性估计全1560批约135160671字节（不是严格上限），输出盘剩余6960398336字节；主盘18:30剩余2225176576字节。完整pt/pth/ckpt盘点361文件包含模型及诊断/检索数组，不能称为361个模型。现存唯一.resume是早期V3失败现场generation-0000，未确认冗余故保留。本轮删除0文件，当前诊断空间足够。首端粗估18:50，后续按完整端点观察，不重启/不改定义。Goal ACTIVE/UNMET。
+
+
+§41.213端点补充：18:51:36确认fold_0_control完整260批，3422.2201秒（57.0370分钟），model_state_unchanged/gradients_absent为true，optimizer_updates/heldout_record_forwards/official_image_reads均0。登记的单历史组direct/VJP核对相对误差1.56888267e-09，限于该组，不扩大为全source向量重算。fold_0_smooth_ap已自动接续20批，合计280/1560；1230/1231/1706/2251实际cmdline均对应原任务且存活。证据evidence/smooth_ap_objective_gradient_first_endpoint_20260920。全量测量、CPU核验和72组分析仍待完成，未解释中间梯度作方法选择；下一观察约19:05，用候选端历史阶段速度更新ETA。无新训练、无权重删除、Goal ACTIVE/UNMET。
