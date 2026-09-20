@@ -6601,3 +6601,14 @@ M0原16907于00:25:36自动启动，00:25:44与原wrapper均存活、cmdline匹�
 §41.217运行与接收工具补充：00:46:28原wrapper16885/Q1 18222存活，首控制8/20epoch，0/6终点；第7/8epoch分别145.6974/145.9499秒，输出余6568394752B。首端训练暂估01:15附近，六端暂估04:30–05:00，候选端速度和终点检索耗时尚需实际校正；下一运行观察约01:12接近端点，非短间隔轮询。evidence/cross_scene_smooth_ap_completion_preparation_20260921保存观察与真实M0八组248步上的描述函数检查PASS。完整Q1 main/六端断言/最终统计尚未执行，不将函数检查称为科学核验。
 
 独立M0审计已报告248步/4945920距离元素数值复算完成，最终A–F报告与归档清单仍在封存；必须接收最终报告后再关闭审计，不由root替代审计裁决。当前无新heldout终态；固定合同、旧失败及Goal ACTIVE/UNMET不变。
+
+
+### 41.218 跨场景 Smooth-AP 独立M0审计闭环（2026-09-21）
+
+独立审计/root/audit_cross_scene_smooth_ap_m0_20260921完成，WARN/CLOSED_WITH_LIMITS、确定性工程PASS、0阻断、same-family/provisional。报告refine-logs/msvr310_cross_scene_smooth_ap_v1/EXPERIMENT_AUDIT_M0.md/.json；审计30项文本54984634B及manifest/receipt完整归档evidence/cross_scene_smooth_ap_m0_independent_audit_20260921，逐项SHA/字节匹配，未下载二进制或私有连接助手。报告SHA6b63624beecbffe5cc2ff7dc3af353eb661d865eb2f51954ff8d1261a952f458。
+
+独立NumPy/标准库复算248步、15872次当前anchor曝光、4945920距离值；standard/cross AP最大差1.85272663e-7/2.59938854e-7，14项总账最大差5.58793545e-7。六容量checkpoint各241B0别名+231角色状态，共472张量重组SHA一致；1032GT/155身份/3096文件名、三B0的1950来源步及119文件156绑定核对。两过拟合比与label-smoothing解析下界复算通过。
+
+D项WARN保留：逐步参数梯度与重载输出是运行见证；六首历史组在step4，direct/VJP最大相对误差2.17581631e-5，仅独立复核标量而未重生成。203/203是累计非零而非每步；十项分类/残差只核对保存标量与加权账本，缺少完整logit/距离用于重建。M0实际零eligible批次0，零分支图连接由T0合成与静态调用支撑；全来源9个零批次中预热后4个保留。审计本地长路径解包失败及扁平名修复留证，未重跑实验。
+
+原Q1保持d35864d/配置e5326b52与wrapper16885/child18222，不因审计闭环重启。最近00:46首控制8/20epoch、尚无完整端；下一观察约01:12。新收到的MMPareto/GradNorm/OGM-GE建议仅开展主源阅读，不注册或加入当前训练。原Q1失败、正式结果及三数据集Goal ACTIVE/UNMET保持。

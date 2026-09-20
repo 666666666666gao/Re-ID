@@ -6,7 +6,7 @@
 | Review | 新合同与实现独立代码审查 | PASS_WITH_LIMITS | 同族静态审查，0阻断；不能替代实际运行核验 |
 | M0 | 三折两端容量与固定过拟合 | PASS_ENGINEERING_ONLY | 00:36:52退出0，完整248步；六端203/203梯度张量、overflow0，两个原过拟合门通过 |
 | M0_CPU | 完整保存目标重算 | PASS | 00:37:03退出0；248步/4945920距离元素，summary SHA c59e39cc2192bfb11b12a58f53eb8b3853455bfd41744c74aaf4742272ba1506 |
-| M0_Audit | 独立完整工程核验 | RUNNING | 新鲜同族上下文，同一审计继续；裁决待返回 |
+| M0_Audit | 独立完整工程核验 | WARN / CLOSED_WITH_LIMITS | 确定性工程PASS，0阻断；248步及六checkpoint全量复核，逐步反传仍为运行见证 |
 | Q1 | 三折两端固定20epoch | RUNNING | 原18222于00:37:03自动启动，00:39:41首控制5/20epoch，0/6终点 |
 | Q1_CPU/Audit | 全量核验与独立终态审计 | NOT_STARTED | 不使用中间fold判定 |
 

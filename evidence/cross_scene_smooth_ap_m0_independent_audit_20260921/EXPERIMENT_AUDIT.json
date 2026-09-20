@@ -1,0 +1,635 @@
+{
+  "audit_skill": "experiment-audit",
+  "audit_status": "CLOSED_WITH_LIMITS",
+  "verdict": "WARN",
+  "overall_verdict": "WARN",
+  "integrity_status": "warn",
+  "reason_code": "runtime_witness_reconstruction_limits",
+  "deterministic_checks_status": "pass",
+  "m0_engineering_status": "PASS",
+  "summary": "Complete independent saved M0 arithmetic and checkpoint evidence pass. Runtime gradient/reload witnesses remain qualified; this is not a retrieval or Q1 scientific result.",
+  "date": "2026-09-21",
+  "generated_at": "2026-09-20T16:53:27.920317+00:00",
+  "agent_id": "/root/audit_cross_scene_smooth_ap_m0_20260921",
+  "verdict_id": "/root/audit_cross_scene_smooth_ap_m0_20260921:M0:2026-09-21",
+  "reviewer_model": "gpt-6-astra",
+  "reviewer_reasoning": "max",
+  "reviewer_model_identity_basis": "requested route; backend identity not independently attested",
+  "reviewer_family": "openai",
+  "executor_family": "openai",
+  "review_independence": "same-family",
+  "acceptance_status": "provisional",
+  "requested_fork_turns": "none",
+  "trace_path": null,
+  "trace_handoff": "Parent /root records the native invocation and complete reviewer response; this auditor does not edit project .aris.",
+  "repo": "/root/autodl-tmp/trifusion-v2/TriFusion-ReID",
+  "run_dir": "/root/trifusion-storage/artifacts/msvr310_cross_scene_smooth_ap_v1_seed42_d35864d",
+  "execution_commit": "d35864d6411591e05c8ac3e5164ebae48063ad99",
+  "final_observed_head": "fbd5600551446065d21ab7bded92a33c54c352e0",
+  "config_sha256": "e5326b52ebb12dced24ebfac788db2e2bb5bdca0b50c6c4dec64e596f1af05a1",
+  "summary_sha256": "c59e39cc2192bfb11b12a58f53eb8b3853455bfd41744c74aaf4742272ba1506",
+  "m0_cpu_sha256": "80f52c03337e0c497efe25f9a888de9dae299717733f0de19114ee90052aa1d8",
+  "checks": {
+    "A_ground_truth_provenance": {
+      "status": "PASS",
+      "evaluation_type": "real_gt",
+      "details": "Dataset filename labels, not model outputs. All 1032 protocol records agree with the frozen label manifest and loader parsing; the current source directory has the exact 3096 modality filenames. Three folds are identity-disjoint; all 1950 recorded B0 source steps and all 248 M0 steps use their registered source indices. Three B0 checkpoint payloads and six M0 payloads bind source/heldout identities exactly.",
+      "evidence": [
+        "tools/audit_vehicle_query_protocol_labels.py:13-18",
+        "tools/build_msvr310_train_oof_protocol.py:12-55",
+        "tools/build_msvr310_train_oof_protocol.py:57-123",
+        "tools/train_msvr310_signal_oof.py:68-99",
+        "tools/train_msvr310_trifusion_oof.py:27-55",
+        "ground_truth_disk.stdout",
+        "provenance.stdout",
+        "independent_m0.stdout"
+      ],
+      "limits": "Image content and historical archive CRC were not rerun; source image filenames were read, not images. The verified source-only training record is a saved execution record, not a retrained baseline."
+    },
+    "B_score_and_reduction": {
+      "status": "PASS",
+      "details": "All 248 rows independently reconstruct pooled hard loss, standard Smooth-AP, cross-scene Smooth-AP, eligible masks/counts, active selection, three branch current hard losses, and the 14-term weighted scalar ledger. Cross-scene AP removes same-ID/same-scene positions from both rank sums, retains every different-ID negative, excludes each positive self-comparison, and averages only eligible anchors. The overfit denominator is explicitly initial excess loss above an analytic label-smoothing entropy floor; raw initial/final losses are retained. It is an engineering ratio, not normalized retrieval performance.",
+      "evidence": [
+        "tools/msvr_cross_scene_smooth_ap.py:11-54",
+        "tools/msvr_smooth_ap.py:30-62",
+        "tools/train_msvr_cross_scene_smooth_ap.py:129-164",
+        "tools/run_signal_preserving_v5.py:99-135",
+        "tools/run_signal_preserving_v5.py:1580-1617",
+        "independent_m0.stdout"
+      ],
+      "limits": "The ten classification/residual scalar terms have no saved logits/residual distances for fresh per-term reconstruction; all 14 recorded scalars and their weights are independently recombined."
+    },
+    "C_result_files_and_completion": {
+      "status": "PASS",
+      "details": "Authoritative pipeline records T0, M0 and M0_CPU exit 0; M0 is PASS_ENGINEERING_ONLY with 248 updates. All eight training files, eight complete distance/JSONL pairs, six receipts and six role checkpoints exist and match registered terminal hashes. Six final 472-tensor states reconstruct exactly from 241 B0 aliases plus 231 role tensors. The current tracker records M0 and M0_CPU complete while this independent audit is running. No pending Q1 result is called complete.",
+      "evidence": [
+        "tools/run_msvr_cross_scene_smooth_ap.py:31-65",
+        "tools/train_msvr_cross_scene_smooth_ap.py:322-388",
+        "tools/train_msvr310_source_style.py:164-174",
+        "terminal_intake.stdout",
+        "independent_m0.stdout",
+        "final_document_state.stdout"
+      ],
+      "limits": "The initial 00:32:46 snapshot was RUNNING and is retained. Latest source HEAD is documentation/evidence-only relative to execution d35864d; source/config/protocol paths did not change."
+    },
+    "D_real_call_paths": {
+      "status": "WARN",
+      "details": "The live trainer invokes the same objective adapter for current graphs (line 129), historical leaf partials (154) and direct full graphs (176); endpoint selection is consistent. Historical candidate VJPs are added before one optimizer step. Complete saved rows show the intended selections and accounting. However the six direct/VJP comparisons, 203/203 cumulative nonzero gradients, frozen-start hashes, RNG/buffer equality and strict reload outputs are runtime witnesses. Independent CPU arithmetic validates their scalar consistency; no saved per-step parameter gradients or inputs exist here for independent reconstruction of the full gradient trajectory.",
+      "evidence": [
+        "tools/train_msvr_cross_scene_smooth_ap.py:112-264",
+        "tools/msvr_freshness_probe.py:43-85",
+        "tools/probe_msvr_role_set_gradients.py:29-50",
+        "tools/probe_msvr_history_candidate_gradients.py:43-66",
+        "independent_m0.stdout"
+      ],
+      "limits": "No dead objective was found on the M0 path. Q1 retrieval branches were read statically but are outside this performance audit. The one-group witness per capacity endpoint must not be promoted to all-step independent gradient validation."
+    },
+    "E_scope": {
+      "status": "PASS",
+      "details": "Exactly one dataset and one seed, three folds by two capacity endpoints at 8 updates, plus fold0 two fixed-batch endpoints at 100 updates: 248 total. These are source-only engineering checks. M0 has zero heldout forwards and zero official image reads. The 780-batch T0/support text replay is a separate registered source sequence, not 780 model executions. M0 observed no zero-eligible batches; all nine zero-eligible support rows, including four after warmup, remain in the evidence.",
+      "evidence": [
+        "refine-logs/msvr310_cross_scene_smooth_ap_v1/EXPERIMENT_PLAN.md:11-24",
+        "refine-logs/msvr310_cross_scene_smooth_ap_v1/EXPERIMENT_PLAN.md:34-50",
+        "tools/train_msvr_cross_scene_smooth_ap.py:325-381",
+        "provenance.stdout",
+        "independent_m0.stdout"
+      ],
+      "limits": "No causal ranking gain, unseen-identity generalization, Q1 qualification, official result, multiple-seed robustness or SOTA claim is supported by M0."
+    },
+    "F_evaluation_type": {
+      "status": "PASS",
+      "classifications": {
+        "M0_training_masks_and_losses": "real_gt, source-only engineering",
+        "T0_saved_source_support_replay": "real_gt, label-only accounting",
+        "T0_numerical_fixtures": "simulation_only, synthetic deterministic unit fixtures",
+        "checkpoint_and_scalar_checks": "engineering consistency, not retrieval evaluation"
+      },
+      "details": "Dataset identities/scenes are the target source. Neither the baseline embedding nor model predictions generate GT. T0 synthetic arrays are explicitly numerical tests; no model-derived proxy is presented as benchmark performance.",
+      "evidence": [
+        "tools/check_msvr_cross_scene_smooth_ap.py:15-70",
+        "tools/check_msvr_cross_scene_smooth_ap_math.py:12-91",
+        "tools/train_msvr_cross_scene_smooth_ap.py:108-139",
+        "t0.json in terminal_intake.stdout"
+      ]
+    }
+  },
+  "coverage": {
+    "registered_steps": 248,
+    "checked_steps": 248,
+    "current_anchor_exposures": 15872,
+    "distance_elements": 4945920,
+    "training_endpoints": 8,
+    "capacity_checkpoints": 6,
+    "baseline_checkpoints": 3,
+    "baseline_source_training_steps_checked": 1950,
+    "protocol_records": 1032,
+    "source_image_filenames": 3096,
+    "protocol_identities": 155,
+    "source_support_batches": 780,
+    "source_support_anchor_exposures": 49920,
+    "recursive_static_unique_files": 119,
+    "recursive_static_bindings": 156,
+    "additional_baseline_file_bindings": 6,
+    "direct_single_group_runtime_witnesses": 6,
+    "m0_zero_eligible_batches": 0,
+    "support_zero_eligible_batches_total": 9,
+    "support_zero_eligible_batches_post_warmup": 4,
+    "saved_objective_losses_checked": 744,
+    "weighted_component_scalars_checked": 3472,
+    "current_branch_hard_scalars_checked": 744,
+    "independently_regenerated_parameter_gradients": 0,
+    "audit_model_forwards": 0,
+    "audit_backwards": 0,
+    "audit_optimizer_updates": 0,
+    "audit_image_content_reads": 0
+  },
+  "max_errors": {
+    "standard_anchor_ap": 1.852726629336665e-07,
+    "cross_anchor_ap": 2.599388542745551e-07,
+    "standard_objective": 1.1046979586648575e-07,
+    "cross_objective": 1.3980532531654433e-07,
+    "hard_objective": 3.241002560772088e-08,
+    "basic_hard_objective": 2.2165477259195043e-08,
+    "active_fused_objective": 1.3980532531654433e-07,
+    "fourteen_term_ledger": 5.587935447692871e-07,
+    "branch_current_hard": 1.5487894414190073e-07,
+    "statistics_basic": 2.2165477259195043e-08,
+    "statistics_hard": 3.241002560772088e-08,
+    "gradient_norm_identity": 1.0658141036401503e-14,
+    "history_addition_norm": 6.467049118441537e-12,
+    "applied_gradient_statistics": 0,
+    "direct_relative_l2_scalar": 0,
+    "epoch_mean_loss": 0,
+    "overfit_floor": 0,
+    "overfit_ratio": 0,
+    "overfit_initial_excess": 0,
+    "overfit_final_excess": 0
+  },
+  "runs": [
+    {
+      "run": "fold_0_control",
+      "steps": 8,
+      "distance_elements": 271104,
+      "historical_records": 547,
+      "active_objective_steps": 6,
+      "fresh_role_record_forwards": 1024,
+      "vjp_record_forwards": 960,
+      "direct_checks": 1
+    },
+    {
+      "run": "fold_0_cross_scene",
+      "steps": 8,
+      "distance_elements": 271104,
+      "historical_records": 547,
+      "active_objective_steps": 6,
+      "fresh_role_record_forwards": 1024,
+      "vjp_record_forwards": 960,
+      "direct_checks": 1
+    },
+    {
+      "run": "fold_1_control",
+      "steps": 8,
+      "distance_elements": 263936,
+      "historical_records": 519,
+      "active_objective_steps": 6,
+      "fresh_role_record_forwards": 1024,
+      "vjp_record_forwards": 960,
+      "direct_checks": 1
+    },
+    {
+      "run": "fold_1_cross_scene",
+      "steps": 8,
+      "distance_elements": 263936,
+      "historical_records": 519,
+      "active_objective_steps": 6,
+      "fresh_role_record_forwards": 1024,
+      "vjp_record_forwards": 960,
+      "direct_checks": 1
+    },
+    {
+      "run": "fold_2_control",
+      "steps": 8,
+      "distance_elements": 299520,
+      "historical_records": 658,
+      "active_objective_steps": 6,
+      "fresh_role_record_forwards": 1024,
+      "vjp_record_forwards": 960,
+      "direct_checks": 1
+    },
+    {
+      "run": "fold_2_cross_scene",
+      "steps": 8,
+      "distance_elements": 299520,
+      "historical_records": 658,
+      "active_objective_steps": 6,
+      "fresh_role_record_forwards": 1024,
+      "vjp_record_forwards": 960,
+      "direct_checks": 1
+    },
+    {
+      "run": "overfit_control",
+      "steps": 100,
+      "distance_elements": 1638400,
+      "historical_records": 0,
+      "active_objective_steps": 98,
+      "fresh_role_record_forwards": 64,
+      "vjp_record_forwards": 0,
+      "direct_checks": 0
+    },
+    {
+      "run": "overfit_cross_scene",
+      "steps": 100,
+      "distance_elements": 1638400,
+      "historical_records": 0,
+      "active_objective_steps": 98,
+      "fresh_role_record_forwards": 64,
+      "vjp_record_forwards": 0,
+      "direct_checks": 0
+    }
+  ],
+  "overfit": [
+    {
+      "endpoint": "control",
+      "initial_loss": 4.122129917144775,
+      "final_loss": 0.5881879925727844,
+      "analytic_floor": 0.5857136327437849,
+      "corrected_loss_ratio": 0.0006996800235068162
+    },
+    {
+      "endpoint": "cross_scene",
+      "initial_loss": 4.122129917144775,
+      "final_loss": 0.5881893634796143,
+      "analytic_floor": 0.5857136327437849,
+      "corrected_loss_ratio": 0.0007000676777645688
+    }
+  ],
+  "direct_runtime_witnesses": [
+    {
+      "run": "fold_0_control",
+      "step": 4,
+      "relative_l2_error": 9.840290740302274e-10
+    },
+    {
+      "run": "fold_0_cross_scene",
+      "step": 4,
+      "relative_l2_error": 1.1253188912069268e-05
+    },
+    {
+      "run": "fold_1_control",
+      "step": 4,
+      "relative_l2_error": 8.507363205276085e-10
+    },
+    {
+      "run": "fold_1_cross_scene",
+      "step": 4,
+      "relative_l2_error": 2.175816305864426e-05
+    },
+    {
+      "run": "fold_2_control",
+      "step": 4,
+      "relative_l2_error": 7.776398751757566e-07
+    },
+    {
+      "run": "fold_2_cross_scene",
+      "step": 4,
+      "relative_l2_error": 9.659360695552267e-07
+    }
+  ],
+  "source_support_zero_rows": [
+    {
+      "fold": 0,
+      "step": 57,
+      "post_warmup": false
+    },
+    {
+      "fold": 0,
+      "step": 180,
+      "post_warmup": true
+    },
+    {
+      "fold": 1,
+      "step": 40,
+      "post_warmup": false
+    },
+    {
+      "fold": 1,
+      "step": 54,
+      "post_warmup": false
+    },
+    {
+      "fold": 1,
+      "step": 221,
+      "post_warmup": true
+    },
+    {
+      "fold": 2,
+      "step": 32,
+      "post_warmup": false
+    },
+    {
+      "fold": 2,
+      "step": 58,
+      "post_warmup": false
+    },
+    {
+      "fold": 2,
+      "step": 133,
+      "post_warmup": true
+    },
+    {
+      "fold": 2,
+      "step": 232,
+      "post_warmup": true
+    }
+  ],
+  "checkpoints": [
+    {
+      "fold": 0,
+      "endpoint": "control",
+      "path": "/root/trifusion-storage/artifacts/msvr310_cross_scene_smooth_ap_v1_seed42_d35864d/m0/fold_0_control/roles_m0.pth",
+      "sha256": "f72a38b2f723a5116b95b68d376e518a59a25c914ce54aeedef315a1839c61c8",
+      "final_state_sha256": "79c0aa34a3e69fc4e31b3f2a0f00169db202bce079664f23aee1c5bfef11348a",
+      "state_tensors": 472,
+      "baseline_alias_tensors": 241,
+      "role_state_tensors": 231,
+      "all_finite": true,
+      "source_binding_exact": true
+    },
+    {
+      "fold": 0,
+      "endpoint": "cross_scene",
+      "path": "/root/trifusion-storage/artifacts/msvr310_cross_scene_smooth_ap_v1_seed42_d35864d/m0/fold_0_cross_scene/roles_m0.pth",
+      "sha256": "4df29e5ebab7b4e049f7b0db97e4cbed99e1526153cf4c77ddf606a5078a3245",
+      "final_state_sha256": "009d76ccda02fca3107ac74ce9786721ae1f02f47af3f830a88d2bd23b0bb40c",
+      "state_tensors": 472,
+      "baseline_alias_tensors": 241,
+      "role_state_tensors": 231,
+      "all_finite": true,
+      "source_binding_exact": true
+    },
+    {
+      "fold": 1,
+      "endpoint": "control",
+      "path": "/root/trifusion-storage/artifacts/msvr310_cross_scene_smooth_ap_v1_seed42_d35864d/m0/fold_1_control/roles_m0.pth",
+      "sha256": "c7229abaa9121cb745749465ce0cc5d4d4cd43ccc53c290101e84f5705738d69",
+      "final_state_sha256": "c8b96252c03a63c7a45eb5b2ddd7d3c882f8fcc8ad8f1439dc4662cd7246d763",
+      "state_tensors": 472,
+      "baseline_alias_tensors": 241,
+      "role_state_tensors": 231,
+      "all_finite": true,
+      "source_binding_exact": true
+    },
+    {
+      "fold": 1,
+      "endpoint": "cross_scene",
+      "path": "/root/trifusion-storage/artifacts/msvr310_cross_scene_smooth_ap_v1_seed42_d35864d/m0/fold_1_cross_scene/roles_m0.pth",
+      "sha256": "1b3d5c127b45e8c7f67c7cb53ce0b8ea425a4a61add156c73fe401c55ee0ed6f",
+      "final_state_sha256": "07c797c918b76430b68259fd8d313f3a48f7cea41c00b301107d9761bd060407",
+      "state_tensors": 472,
+      "baseline_alias_tensors": 241,
+      "role_state_tensors": 231,
+      "all_finite": true,
+      "source_binding_exact": true
+    },
+    {
+      "fold": 2,
+      "endpoint": "control",
+      "path": "/root/trifusion-storage/artifacts/msvr310_cross_scene_smooth_ap_v1_seed42_d35864d/m0/fold_2_control/roles_m0.pth",
+      "sha256": "7403a9673df8aa3e8f37b6350f2edd9a9da69da82668bf0dd679720e7afca923",
+      "final_state_sha256": "0f422fde655338e7759036f3a1d3d268b64639f9fb20760ca85804214444e42d",
+      "state_tensors": 472,
+      "baseline_alias_tensors": 241,
+      "role_state_tensors": 231,
+      "all_finite": true,
+      "source_binding_exact": true
+    },
+    {
+      "fold": 2,
+      "endpoint": "cross_scene",
+      "path": "/root/trifusion-storage/artifacts/msvr310_cross_scene_smooth_ap_v1_seed42_d35864d/m0/fold_2_cross_scene/roles_m0.pth",
+      "sha256": "d2404d460498126006ee2549a689e9a2407d8bc0b0d4e258e3139b735bb96c9e",
+      "final_state_sha256": "25b191ac8bc4ed51db1257f22246179c8ba802ae0288a00e55f7ea22eec8fa4f",
+      "state_tensors": 472,
+      "baseline_alias_tensors": 241,
+      "role_state_tensors": 231,
+      "all_finite": true,
+      "source_binding_exact": true
+    }
+  ],
+  "blocking_issues": [],
+  "warnings": [
+    "Only saved distances determine independent losses; per-step feature generation is not regenerated.",
+    "Fourteen recorded scalar terms are recombined; logits/residual distances are not stored for ten other per-term recomputations.",
+    "Gradient norms, direct/VJP checks, frozen-start states and strict-reload outputs are runtime witnesses; no parameter gradient tensors or initial role checkpoint are reconstructed.",
+    "Six capacity role checkpoints and three source Signal checkpoints are CPU-deserialized; no model is instantiated.",
+    "M0 engineering evidence makes no retrieval or Q1 performance claim.",
+    "The reviewer is a fresh context in the same model family. Requested route gpt-6-astra/max is recorded; backend model identity is not independently attested.",
+    "The official test is not part of this audit. Image-content provenance and system-call-level proof of every historical read are outside the available saved evidence.",
+    "Supplemental static text capture normalizes line endings; its stored raw-file SHA values refer to actual remote bytes. The initial intake retains exact decoded bytes for the six new source files."
+  ],
+  "action_items": [
+    "Archive this report with raw receipts and parent review trace; update M0_Audit tracker to CLOSED_WITH_LIMITS/WARN after recording the verdict.",
+    "Keep all six runtime direct/VJP witnesses and the zero-eligible source-support rows; do not relabel them as full independent gradient regeneration.",
+    "Assess Q1 only after all registered endpoint, complete-gallery and independent terminal evidence exists; this report gives no Q1 verdict."
+  ],
+  "claims": [
+    {
+      "id": "M0_248_step_engineering_completion",
+      "impact": "supported_with_runtime_witness_limits"
+    },
+    {
+      "id": "complete_saved_distance_mask_objective_arithmetic",
+      "impact": "supported"
+    },
+    {
+      "id": "all_step_parameter_gradient_independent_reconstruction",
+      "impact": "unsupported"
+    },
+    {
+      "id": "unseen_identity_retrieval_gain_or_Q1_promotion",
+      "impact": "unsupported_by_M0"
+    }
+  ],
+  "audited_input_hashes": {
+    "/root/autodl-tmp/trifusion-v2/TriFusion-ReID/configs/MSVR310/TriFusion-cross-scene-smooth-ap-paired-v1.json": "e5326b52ebb12dced24ebfac788db2e2bb5bdca0b50c6c4dec64e596f1af05a1",
+    "/root/autodl-tmp/trifusion-v2/TriFusion-ReID/protocols/msvr310_train_oof_v1.json": "4ff4c60bca3d019929add5788212c526387d93d535a2c52aa7b1c3acfd387cb4",
+    "/root/autodl-tmp/trifusion-v2/TriFusion-ReID/refine-logs/msvr310_cross_scene_smooth_ap_v1/EXPERIMENT_TRACKER.md": "bf075b98ba8a7589cdc0b6fb3552d0c1687c4860c2c096f69088ca46956aa96e",
+    "/root/autodl-tmp/trifusion-v2/TriFusion-ReID/evidence/smooth_ap_cross_scene_support_20260909/smooth_ap_cross_scene_support_20260909.json": "1b8f7f063867ab28057889b1db9b46d6b6dc132380eeceb88bc19899f218e759",
+    "/root/autodl-tmp/trifusion-v2/TriFusion-ReID/tools/msvr_cross_scene_smooth_ap.py": "aba6985f3242d190037088b7753d7baa0ae1e0ec05eb7294c0aa8a35823ccedd",
+    "/root/autodl-tmp/trifusion-v2/TriFusion-ReID/tools/check_msvr_cross_scene_smooth_ap_math.py": "99afda7bdf88106922e37fbb25c46ed3ce03c18840d72e72d177fbdbed4c8831",
+    "/root/autodl-tmp/trifusion-v2/TriFusion-ReID/tools/train_msvr_cross_scene_smooth_ap.py": "cf7279cb428fac8920252a369d8032ce6bd2e48de09f66fdeb849fe3b147bd04",
+    "/root/autodl-tmp/trifusion-v2/TriFusion-ReID/tools/verify_msvr_cross_scene_smooth_ap.py": "5986518221fd64cdb9621bbc3f15108ce5be19e9b70b4a60588af65fa7c6eeba",
+    "/root/autodl-tmp/trifusion-v2/TriFusion-ReID/tools/check_msvr_cross_scene_smooth_ap.py": "6ec509da5dd11138a7852ea1281ad5cc5fcb8f33203d5b2907a3cdcf1d3ed564",
+    "/root/autodl-tmp/trifusion-v2/TriFusion-ReID/tools/run_msvr_cross_scene_smooth_ap.py": "877acbbe9f8ae58de7a3de849f049f296d7ab4019c10869e1843af01104ce899",
+    "/root/autodl-tmp/trifusion-v2/TriFusion-ReID/configs/MSVR310/TriFusion-smooth-ap-paired-v1.json": "974328fee25985b19aa36c84f57a557f9120993fecb98b2a902a1b8de8475302",
+    "/root/autodl-tmp/trifusion-v2/TriFusion-ReID/refine-logs/msvr310_cross_scene_smooth_ap_v1/EXPERIMENT_PLAN.md": "7f519970fc39497692a411969107888bfdd15e347eab15c57d554a85bae615db",
+    "/root/autodl-tmp/trifusion-v2/TriFusion-ReID/evidence/msvr310_style_t0_runtime_binding_20260907/msvr_style_metadata_remote_numpy_20260907.json": "87dd4773b75e6485c545149c5e053a1b4c930b9f8babdc5a49ce1d8165c3d0d4",
+    "/root/autodl-tmp/trifusion-v2/TriFusion-ReID/tools/msvr_smooth_ap.py": "9d7c01830493233183b2cc9366ec8742caab1f782208870badc8dc93a94b3b68",
+    "/root/autodl-tmp/trifusion-v2/TriFusion-ReID/tools/check_msvr_smooth_ap_math.py": "1e7ffb8cbc3fbc44fb5e42a18dbdf369c39bf4aa9f44e1541efdc9a357210dcc",
+    "/root/autodl-tmp/trifusion-v2/TriFusion-ReID/tools/train_msvr_smooth_ap.py": "67e25e4e5a6ccc97f1973778141baabc53cc9a1f4ccf7e5b0491d3977178c5b4",
+    "/root/autodl-tmp/trifusion-v2/TriFusion-ReID/tools/verify_msvr_smooth_ap.py": "7d06aee0042d95d06d8e38987ae7988d7e40260b9611e26a68febfed32385b0b",
+    "/root/autodl-tmp/trifusion-v2/TriFusion-ReID/tools/check_msvr_smooth_ap.py": "61331cae8208b196b837300bcaaeffbb5a379afb9a0e37d461273732fd3c49ea",
+    "/root/autodl-tmp/trifusion-v2/TriFusion-ReID/tools/run_msvr_smooth_ap.py": "5eba888f65f51c1a135ae5eb0e440e242e8f10f208f4549ad850c4378f52e119",
+    "/root/autodl-tmp/trifusion-v2/TriFusion-ReID/configs/MSVR310/TriFusion-role-set-paired-v1.json": "5e5ad4663f4c3c58e11b81b475048d6ab6c53675ac2dd0ade60c84f07a62986d",
+    "/root/autodl-tmp/trifusion-v2/TriFusion-ReID/refine-logs/msvr310_role_set_v1/EXPERIMENT_AUDIT_Q1.json": "80eaf3e9f89cf17bf5985c603f2887a100003761ef7c1fce1b816edd6e27e0af",
+    "/root/autodl-tmp/trifusion-v2/TriFusion-ReID/refine-logs/msvr310_role_set_v1/EXPERIMENT_AUDIT_POSITIVE_COVERAGE.json": "91d611203758ffff4e470c0138f2efd9140efb37de568003b90bbd0b2089a443",
+    "/root/autodl-tmp/trifusion-v2/TriFusion-ReID/refine-logs/msvr310_smooth_ap_v1/TRAINING_PLAN.md": "4179f45419daa9ac5473a3c78ff2dba638eb23ed945c42c22bab7ca7ddb09da6",
+    "/root/autodl-tmp/trifusion-v2/TriFusion-ReID/tools/train_msvr_role_set.py": "22df1b983b8ce0b487a69f349ab95dea37df9bb72688bd6fb38167d8d72d0a62",
+    "/root/autodl-tmp/trifusion-v2/TriFusion-ReID/tools/verify_msvr_role_set.py": "ff7b82247c8adfa9d8ab061604eac088cb48022be527a51c00fa49794c836588",
+    "/root/autodl-tmp/trifusion-v2/TriFusion-ReID/tools/check_msvr_role_set.py": "26f95518917ce1dccd10b6a22390e55d315197e154e073336bef0bbce8340781",
+    "/root/autodl-tmp/trifusion-v2/TriFusion-ReID/tools/run_msvr_role_set.py": "8c98c3a8551641228efb7a91c47cb9601c920830f8594570b9adcea72436df39",
+    "/root/autodl-tmp/trifusion-v2/TriFusion-ReID/tools/msvr_role_set_relations.py": "e311920a08e6bfce426e8a67acf6a9c1b413116d4e906e9ad8ca31dca03800c1",
+    "/root/autodl-tmp/trifusion-v2/TriFusion-ReID/tools/check_msvr_role_set_relations.py": "a0f0a2c52276f534d740642bbbff12e762460bc3d08930fa725eaf1059040c65",
+    "/root/autodl-tmp/trifusion-v2/TriFusion-ReID/tools/probe_msvr_role_set_gradients.py": "134bece8c5bc21a899dcce16b540b8983b9dce8131df181fb106600367247fae",
+    "/root/autodl-tmp/trifusion-v2/TriFusion-ReID/tools/msvr_freshness_probe.py": "4542785ace8307dc8a92325f7d52f2542e526f53ad8c3c2c0d9e91e48ed97886",
+    "/root/autodl-tmp/trifusion-v2/TriFusion-ReID/tools/probe_msvr_history_candidate_gradients.py": "cfa56255f6dd5a471cf3bfbfc99be3d0693f5c9c5dfc29bd8c6e4d15c79090de",
+    "/root/autodl-tmp/trifusion-v2/TriFusion-ReID/tools/msvr_instance_memory.py": "b645d9ef29b522f0c639991c1d844a41b55f2ba8def82aef0746e94a145f0da3",
+    "/root/autodl-tmp/trifusion-v2/TriFusion-ReID/tools/train_msvr_history_gradient.py": "087acdf4b8805f0783a460f5adee0e90227bf20342ae4eda6a033dc27b5869a4",
+    "/root/autodl-tmp/trifusion-v2/TriFusion-ReID/configs/MSVR310/TriFusion-history-gradient-paired-v1.json": "d03c7be1e738a206bf6db3b55580f53fbf33bfcc9050a46c4ddd0c81d7134c4e",
+    "/root/autodl-tmp/trifusion-v2/TriFusion-ReID/refine-logs/msvr310_role_set_v1/EXPERIMENT_AUDIT_GRADIENT.json": "5b079844d928683f96a816476e7dd75ec417fdcf2428966484317feba3e8c2ef",
+    "/root/autodl-tmp/trifusion-v2/TriFusion-ReID/refine-logs/msvr310_role_set_v1/TRAINING_PLAN.md": "da22560fc811127cf21e24c2ece879249a18fcefca23aefadbdd05058cb56c51",
+    "/root/autodl-tmp/trifusion-v2/TriFusion-ReID/tools/verify_msvr_history_gradient.py": "bea8870dec7355921cf65ab61be68d73d6aab1773d4a60a457f785e91d35636f",
+    "/root/autodl-tmp/trifusion-v2/TriFusion-ReID/tools/check_msvr_history_gradient.py": "d2a650240cb4ec5a5cdcbc68224461a815eb4505f263939bca7ae90b3d0cded3",
+    "/root/autodl-tmp/trifusion-v2/TriFusion-ReID/tools/run_msvr_history_gradient.py": "b5412505122721c1ae7b60c27a472c14302b2923d5b6fceb8586c58489f1b593",
+    "/root/autodl-tmp/trifusion-v2/TriFusion-ReID/configs/MSVR310/TriFusion-fresh-coordinate-paired-v1.json": "32e22d3a0cd858e96430e4b9f9b0a2093c0fdf30f026d8d334ad92d46cfb94aa",
+    "/root/autodl-tmp/trifusion-v2/TriFusion-ReID/refine-logs/msvr310_history_gradient_v1/EXPERIMENT_PLAN.md": "152d7568bb985d5ccfb173d86374eec912e9500798488a9863f5a702f5e72be3",
+    "/root/autodl-tmp/trifusion-v2/TriFusion-ReID/refine-logs/msvr310_history_candidate_gradient_v1/EXPERIMENT_AUDIT_SOURCE.json": "3d288d218f406899d41adfe9227a7022e959b30ae75884ddcbd27561ed249cfe",
+    "/root/autodl-tmp/trifusion-v2/TriFusion-ReID/tools/train_msvr_fresh_coordinate.py": "cdffe7378110f788cfc9de0fc7579d6ec5d026621f3634121cf1f7f0162fdb27",
+    "/root/autodl-tmp/trifusion-v2/TriFusion-ReID/tools/verify_msvr_fresh_coordinate.py": "543978d257326f5ddee15aa8ef3992fad15b4fd464566c947b93503caba3b98a",
+    "/root/autodl-tmp/trifusion-v2/TriFusion-ReID/tools/check_msvr_fresh_coordinate.py": "10a55b78fd1b71cfc783bbbdaf4605bbd93065d83dda1987312a07b60a920d88",
+    "/root/autodl-tmp/trifusion-v2/TriFusion-ReID/tools/run_msvr_fresh_coordinate.py": "2137be6380b4c64b844ac58c16231cd7ba7326d059ae5e45fb98b533b59e6d37",
+    "/root/autodl-tmp/trifusion-v2/TriFusion-ReID/refine-logs/msvr310_fresh_coordinate_v1/EXPERIMENT_PLAN.md": "6d247acd84818a07460bc7c3e3e865d21b77386e9858910fa55f94ab6d9731ee",
+    "/root/autodl-tmp/trifusion-v2/TriFusion-ReID/configs/MSVR310/TriFusion-instance-memory-paired-v1.json": "40f44b0e6c12771c53a283a5b65ca6a45556e0293b7d48decf5fd518ad771a3d",
+    "/root/autodl-tmp/trifusion-v2/TriFusion-ReID/tools/train_msvr_instance_memory.py": "c16cdbff37b46decb279aa013e4a53d9273851a59160cda99fbdf0f16cf39f3b",
+    "/root/autodl-tmp/trifusion-v2/TriFusion-ReID/tools/verify_msvr_instance_memory.py": "89a187399e008ab8465dec51dba08f7299e6b7fb042d95ab336ef0654e5db99c",
+    "/root/autodl-tmp/trifusion-v2/TriFusion-ReID/tools/check_msvr_instance_memory.py": "10972fe83ce4f4730899fb037d4d6cf7c265cb9a8e8949b12f69c27e81bb59a6",
+    "/root/autodl-tmp/trifusion-v2/TriFusion-ReID/tools/run_msvr_instance_memory.py": "8ba9a3b62287da93154eaf78a509577d00dcb2941015bbefc3616a22ba43fa55",
+    "/root/autodl-tmp/trifusion-v2/TriFusion-ReID/refine-logs/msvr310_instance_memory_v1/EXPERIMENT_PLAN.md": "b5fdcb587987e8c0b1cd5f0f4e674a4dd7219b6e90bccdd85cf1f82a52541c48",
+    "/root/autodl-tmp/trifusion-v2/TriFusion-ReID/tools/msvr310_exact_signal_inference.py": "9b7a3168274266447a1e023cec06c6525499c8ab0357dabf6bbd1b4d5c220ac2",
+    "/root/autodl-tmp/trifusion-v2/TriFusion-ReID/tools/train_msvr310_source_style.py": "05eca257602a4f2a4707e7952bce8e91060e809d5aec99c53a28e3e12dcd0842",
+    "/root/autodl-tmp/trifusion-v2/TriFusion-ReID/tools/verify_msvr310_source_style.py": "52c3acc4b5e99a38f1e80573f6d835c854d0a3286b15f3ac5481a863bc3ca6c3",
+    "/root/autodl-tmp/trifusion-v2/TriFusion-ReID/configs/MSVR310/TriFusion-source-style-paired-v1-r2.json": "848254aab6dc02230a7fd33be0d60fc2560c99fc77cbd320cf0ef2efd655539d",
+    "/root/autodl-tmp/trifusion-v2/TriFusion-ReID/tools/build_msvr310_train_oof_protocol.py": "57684721cac03b1be4dfa08cee1902baeb14986bd7e4d8892ff842221d8c8143",
+    "/root/autodl-tmp/trifusion-v2/artifacts/msvr310_role_set_gradient_check_v1_seed42_958fb21/probe/summary.json": "ddc830548194c29f907e3d8a343c14239e8f8197979fd992a1dedd6c56058c3a",
+    "/root/autodl-tmp/trifusion-v2/artifacts/msvr310_role_set_gradient_check_v1_seed42_958fb21/cpu.json": "2641c95213e2a9fb20afeb4d14afc97ff967678c4d43e9c7248cec61c89f4302",
+    "/root/autodl-tmp/trifusion-v2/artifacts/msvr310_history_candidate_gradient_v1_seed42_eebaaa0/source/summary.json": "098ee6cd5edfc273e6f4f6f1d646a2c0685e3ab0a723d7434eac3d3962b3da91",
+    "/root/autodl-tmp/trifusion-v2/artifacts/msvr310_history_candidate_gradient_v1_seed42_eebaaa0/source/cpu_verification.json": "48a39b40816bd4fc547651d6af07c52222c9145b5fc3e30239019e687cfb8f1a",
+    "/root/autodl-tmp/trifusion-v2/artifacts/msvr310_freshness_v1_seed42_ab67d4c/source/summary.json": "b1b074a993b0da4468aac5ebd4dc8a3af18c999299f0d45c04e3e52398d97401",
+    "/root/autodl-tmp/trifusion-v2/artifacts/msvr310_freshness_v1_seed42_ab67d4c/source/cpu_verification.json": "98c1daf42a90f065151496eaf9625f336c008b91c0054c35b0587609e1a40ce6",
+    "/root/autodl-tmp/trifusion-v2/artifacts/msvr310_source_relations_v1_seed42_4e57e54/cpu_verification.json": "b392f4ccce6c0b033cf556e4976b20ff2cd515d55e932e89dd856a43cebec85c",
+    "/root/autodl-tmp/trifusion-v2/artifacts/msvr310_source_relations_v1_seed42_4e57e54/summary.json": "617a2fea2a361185a9c767a9103cee24a0290ba08f26b56ad9b03e5532747658",
+    "/root/autodl-tmp/trifusion-v2/artifacts/msvr310_source_relations_v1_seed42_4e57e54/pipeline.json": "da680f8380779f4d79db6712b12ba5568e05d911e6eda626d4e5d04c24862b14",
+    "/root/autodl-tmp/trifusion-v2/TriFusion-ReID/tools/train_msvr310_trifusion_oof.py": "a1771c2e16e129f0a1ecdfb1f5fffcc7d83fe2faf5073033efe520a73c800f87",
+    "/root/autodl-tmp/trifusion-v2/TriFusion-ReID/tools/train_msvr310_signal_oof.py": "8262e808c65a6e30cda71cb6c20e969a25609486f435e3b62f2f506b18d2104f",
+    "/root/autodl-tmp/trifusion-v2/TriFusion-ReID/tools/run_signal_preserving_v5.py": "e162184f68778b4991db0f97f26c5fda273b2ad2f7c8db2bbb2d53775eb717e5",
+    "/root/autodl-tmp/trifusion-v2/TriFusion-ReID/tools/run_signal_baseline_dev.py": "083967f2a38267415b2992da98c2ad9429ebb793f387b45daac1dbb4eb16f365",
+    "/root/autodl-tmp/trifusion-v2/TriFusion-ReID/tools/build_v12_complete_path_oof_targets.py": "fc13354b1065c46677122ee9cf63816087facca4e0e98ec5e6e2fb0dece141e4",
+    "/root/autodl-tmp/trifusion-v2/TriFusion-ReID/tools/train_signal_preserving_v17.py": "333886d16f73987accddb70b0780661bb9400b8afd04af01b57e188d34e5228d",
+    "/root/autodl-tmp/trifusion-v2/TriFusion-ReID/modeling/trifusion/signal_preserving_v8.py": "97a7b5fe6dab882c2ed92ed1db95b9a8f48eae1d99a3a9b145b0cdfc4b8cefbc",
+    "/root/autodl-tmp/trifusion-v2/TriFusion-ReID/modeling/trifusion/signal_preserving_v8_builder.py": "8afb028957ecff1a0a26497f7d0460bc240b0f8612a3c476b52a9a6667a3049d",
+    "/root/autodl-tmp/trifusion-v2/TriFusion-ReID/modeling/trifusion/signal_preserving_v13.py": "7b7c4abb220ed234608553c77aeedd5f8ef763abb04cce5b21f1bfce0f4daa62",
+    "/root/autodl-tmp/trifusion-v2/TriFusion-ReID/modeling/trifusion/aligned_data.py": "3ea362d17660483b554cb599442b6377ace020fa114969b9bdd58906fbceedd5",
+    "/root/autodl-tmp/trifusion-v2/TriFusion-ReID/modeling/trifusion/criterion.py": "0b2a6370f434828d885945d1a46dd56f6668133ceed45ef359fe71eeca63740a",
+    "/root/autodl-tmp/trifusion-v2/TriFusion-ReID/modeling/trifusion/state.py": "5fe89c4885507e74ca1833cc18822a4b57e4c2d6fa9a6c6b2e127d1e74b70db9",
+    "/root/autodl-tmp/trifusion-v2/TriFusion-ReID/modeling/trifusion/builder.py": "8b3620e6be3727709253589a9e59b3efd20a611ba0eec4e8f6b4d0d17eeea4eb",
+    "/root/autodl-tmp/trifusion-v2/TriFusion-ReID/modeling/trifusion/experts/mamba.py": "c516c7ad937e5eee6a4ed1e3ec33c2afe3522b751d296bd2e4910e4f27a20ee5",
+    "/root/autodl-tmp/trifusion-v2/TriFusion-ReID/modeling/trifusion/experts/semantic_residual.py": "c8cef9717fd7bd1e5e50b428ac92762455defac2e25857c9e0dfaf82729c2a93",
+    "/root/autodl-tmp/trifusion-v2/TriFusion-ReID/tests/test_msvr310_signal_scene_protocol.py": "f631e9dac38da47ecaf9a9564056b4ba24f8f3bd58a9ebf4c70071e0c3f2320e",
+    "/root/autodl-tmp/trifusion-v2/TriFusion-ReID/refine-logs/msvr310_trifusion_v1/EXPERIMENT_PLAN.md": "90f81ce822ee2327163d8a4299e86f14046ceeb51ec17fc8b951acda882c884f",
+    "/root/autodl-tmp/trifusion-v2/TriFusion-ReID/evidence/trifusion_msvr310_signal_v1_audit_closure_20260906.json": "d60776e17acb004c2dfc9d73c1d51ea103d1950d7c9e07f03a1f4ca55ac58a4f",
+    "/root/autodl-tmp/trifusion-v2/TriFusion-ReID/configs/RGBNT201/TriFusion-signal-preserving-v8-expert-formation-rtx3090.yml": "3f81049ef8d06af88a4da88d6d71b554da263e246cb94dbe007cb4fc2d09eaab",
+    "/root/autodl-tmp/trifusion-v2/TriFusion-ReID/evidence/trifusion_msvr310_trifusion_v1_prelaunch_source_bytes_20260906.json": "e5b4af2456829e96992392d50773ca85faa2aa9f940ec8dc77ab51f8b4299f67",
+    "/root/autodl-tmp/trifusion-v2/TriFusion-ReID/modeling/trifusion/source_style_v27.py": "402b959863222ea4dfa82ea19c4aa63b02dd0aeef8ad3bc18dd00848ce945d8e",
+    "/root/autodl-tmp/trifusion-v2/TriFusion-ReID/configs/MSVR310/TriFusion-source-oof-v1.json": "49d82696fbf5d0d71431ed8d7f1e5f80d7c13215a8bec6cafe77969ee8e276a5",
+    "/root/autodl-tmp/trifusion-v2/TriFusion-ReID/modeling/trifusion/source_style_msvr.py": "734a296e4073595292f1525b5b8a55da07b60a90ba015ec9473f4ddd48c1346d",
+    "/root/autodl-tmp/trifusion-v2/TriFusion-ReID/tools/check_msvr310_source_style_contract.py": "f029a5a639baae90b40bb05994d6ce355b8fe27180d0bb5834d404098da6d5b7",
+    "/root/autodl-tmp/trifusion-v2/TriFusion-ReID/tools/run_msvr310_source_style.py": "b6df7967f2abec182135696c4ca5f9303ab59c59cdd9b68319f249d8bddd113a",
+    "/root/autodl-tmp/trifusion-v2/TriFusion-ReID/refine-logs/msvr310_source_style_v1/EXPERIMENT_PLAN.md": "b988f8e5f852a5edb052dc716f856409d7cf4eb1d723a7082502ec634bf52826",
+    "/root/autodl-tmp/trifusion-v2/TriFusion-ReID/evidence/msvr310_style_readiness_20260907/msvr310_style_prelaunch_source_bytes_20260907.json": "1d2266b05b4a2b6c819f36bb5149f03401c748a9527ccbdbd3e3261c1e3ced51",
+    "/root/autodl-tmp/trifusion-v2/TriFusion-ReID/evidence/msvr310_style_t0_runtime_binding_20260907/msvr_style_plan_numpy_difference_20260907.json": "72c09c1aa7572ef90724ce4c37e9dfa02a43ba2e4bdbeaf546b4be9fa413d971",
+    "/root/autodl-tmp/trifusion-v2/TriFusion-ReID/evidence/msvr310_style_t0_runtime_binding_20260907/pipeline.json": "a9609f84a346730a580e4ef0936cb4b0cb7924fb24dcf035bfb7109970156263",
+    "/root/autodl-tmp/trifusion-v2/TriFusion-ReID/evidence/msvr310_style_t0_runtime_binding_20260907/t0.log": "f3ba13723b774b18b9c42e093db1afccd59b2492e0947df3d0ce0ef3d8bceebe",
+    "/root/autodl-tmp/trifusion-v2/TriFusion-ReID/refine-logs/msvr310_source_style_v1/R2_RUNTIME_PLAN_BINDING.md": "72943d00bc6c5a30ad8497a24004b0b475b3e02ea2220045dbff64c5bd5edc22",
+    "/root/autodl-tmp/trifusion-v2/TriFusion-ReID/configs/MSVR310/Signal-source-oof-v1.json": "ebf767f8c704c9886c80335014e571838400e733ce40665847cd1a9ea6783278",
+    "/root/autodl-tmp/trifusion-v2/artifacts/msvr310_signal_source_oof_v1_seed42_bb01d60/baseline/summary.json": "22a4f3642e88088a8dfcb4acddb610d6566c12d6b765cb7b344b28acdbcea6eb",
+    "/root/autodl-tmp/trifusion-v2/TriFusion-ReID/refine-logs/msvr310_signal_v1/EXPERIMENT_PLAN.md": "23594209e6dcfcd451dadb0ba56100db1b4514c845474c54d891c8a7e544bf86",
+    "/root/autodl-tmp/trifusion-v2/pretrained/ViT-B-16.pt": "5806e77cd80f8b59890b7e101eabd078d9fb84e6937f9e85e4ecb61988df416f",
+    "/root/autodl-tmp/trifusion-v2/comparators/Signal-cd1b0a6/config/defaults.py": "40257d349153e56e345983c99b1638d7c3d77966dfd2f5496fe03c86dc8dbd57",
+    "/root/autodl-tmp/trifusion-v2/comparators/Signal-cd1b0a6/configs/MSVR310/Signal.yml": "357ca3a989e943ea5348e6206c0d0f69b3c0d35ad9fbadbf68d2786439b8a915",
+    "/root/autodl-tmp/trifusion-v2/comparators/Signal-cd1b0a6/data/datasets/bases.py": "48f050a7924cebd1e51f8831ba05df78dbccc7049afb0bcf83351d9d1ee23814",
+    "/root/autodl-tmp/trifusion-v2/comparators/Signal-cd1b0a6/data/datasets/make_dataloader.py": "54c47d798a20955bde224d9c78b42149c3c2ef008b02659141829a553194434f",
+    "/root/autodl-tmp/trifusion-v2/comparators/Signal-cd1b0a6/data/datasets/msvr310.py": "10b0197e7c97d1067bd63f25afef3cf0c4e64944ff4028c90d1f2f426a200eb9",
+    "/root/autodl-tmp/trifusion-v2/comparators/Signal-cd1b0a6/engine/processor.py": "aae7afbeed44a9136003f622b5cdfbf17728b8aab236b129f03285f829eb8377",
+    "/root/autodl-tmp/trifusion-v2/comparators/Signal-cd1b0a6/modeling/make_model.py": "1a88a91d2e5055f5d338996231b16c0e13b2fa7013c74131ca663f16c2655963",
+    "/root/autodl-tmp/trifusion-v2/comparators/Signal-cd1b0a6/train.py": "243a2f6de57f6113c6f0e35390670ee937bbcea84ab3335eea2b6257b3bcbd8f",
+    "/root/autodl-tmp/trifusion-v2/comparators/Signal-cd1b0a6/utils/metrics.py": "91604acb7d978462c16904910a645d7d1697c15bf150da529099004c8b5eecb2",
+    "/root/autodl-tmp/trifusion-v2/comparators/Signal-cd1b0a6/modeling/meta_arch.py": "8b709d5ab4b14ba150a96bbb5e8cc7e6dbbb71dd8bd30cafd7a5cb110ee5a757",
+    "/root/autodl-tmp/trifusion-v2/comparators/Signal-cd1b0a6/solver/make_optimizer.py": "ada1023a79fcaaed092bce0849a61db9d0253cf8974c494bfb3082d0fd35fee1",
+    "/root/autodl-tmp/trifusion-v2/comparators/Signal-cd1b0a6/solver/scheduler_factory.py": "c5e20bdffec4b5360faa04f823639c8e5fd8672914813fb96148927c9ee19abc",
+    "/root/autodl-tmp/trifusion-v2/comparators/Signal-cd1b0a6/data/datasets/sampler.py": "b77902214633a2b06a7c0a80924a737fdb5122984a857f3c6e120a8ad8cce65a",
+    "/root/autodl-tmp/trifusion-v2/comparators/Signal-cd1b0a6/solver/lr_scheduler310.py": "e15481ca1d40dbab559af1d97367a192d44b9635a1eaf3ce004dcddb14ee7674",
+    "/root/autodl-tmp/trifusion-v2/comparators/Signal-cd1b0a6/layers/make_loss.py": "7eb7ab953c2bbc52d0c298ef971d0c3ff7000e5e50756fbb5a5fd63ac4c109aa",
+    "/root/autodl-tmp/trifusion-v2/comparators/Signal-cd1b0a6/modeling/make_model_clipreid.py": "5494c2b7cb9acfb2c727a2cde201ba587184b344667e077eacfe0c3a0c578651",
+    "/root/autodl-tmp/trifusion-v2/comparators/Signal-cd1b0a6/modeling/AddModule/useA.py": "1f8fef4dcadb89f5097f83b41a699d9f801a23c88ca3eea73b3ad973a56952a9",
+    "/root/autodl-tmp/trifusion-v2/TriFusion-ReID/evidence/vehicle_query_protocol_labels_20260905.json": "c835d20478b817a54b7710463269186af2619cab3e38850534b01f3aaee6e3c8",
+    "/root/autodl-tmp/trifusion-v2/TriFusion-ReID/tools/audit_vehicle_query_protocol_labels.py": "6a936532f693832e76f479e381c7204129b87e59347423529087fa8ad7c9a772",
+    "/root/autodl-tmp/trifusion-v2/TriFusion-ReID/evidence/msvr310_dataset_install_20260905.json": "1b61ac080591cb76d6d2ad393f452f9338870be54cde25db772a7b08bc6edc4a",
+    "/root/trifusion-storage/artifacts/msvr310_cross_scene_smooth_ap_v1_seed42_d35864d/m0/summary.json": "c59e39cc2192bfb11b12a58f53eb8b3853455bfd41744c74aaf4742272ba1506",
+    "/root/trifusion-storage/artifacts/msvr310_cross_scene_smooth_ap_v1_seed42_d35864d/m0_cpu.json": "80f52c03337e0c497efe25f9a888de9dae299717733f0de19114ee90052aa1d8",
+    "/root/autodl-tmp/trifusion-v2/artifacts/msvr310_signal_source_oof_v1_seed42_bb01d60/baseline/fold_0/signal_epoch50.pth": "fd17dd2e4c1a5576bf02b70e2b7faced979794d955a4e510cb76fd144d9c4b00",
+    "/root/trifusion-storage/artifacts/msvr310_cross_scene_smooth_ap_v1_seed42_d35864d/m0/fold_0_control/receipt.json": "e95581e607b2f5b7312dd3b54a4170963f1643c25c3cdbef5b52c17aefe03649",
+    "/root/trifusion-storage/artifacts/msvr310_cross_scene_smooth_ap_v1_seed42_d35864d/m0/fold_0_control/training.json": "d3439d0628bacb1f33e8a33fed278f3c340487b60698caede64ece3946fe750a",
+    "/root/trifusion-storage/artifacts/msvr310_cross_scene_smooth_ap_v1_seed42_d35864d/m0/fold_0_control/memory_steps.jsonl": "735118032852bd0343a375001731387041955a225ed6c58e4f5d6964f61c0652",
+    "/root/trifusion-storage/artifacts/msvr310_cross_scene_smooth_ap_v1_seed42_d35864d/m0/fold_0_control/memory_distances.f32": "3cfac64defc25c8e20f0c881a81ddaacf2d237ab22296e1f00b6ccbe85c5bcbf",
+    "/root/trifusion-storage/artifacts/msvr310_cross_scene_smooth_ap_v1_seed42_d35864d/m0/fold_0_control/roles_m0.pth": "f72a38b2f723a5116b95b68d376e518a59a25c914ce54aeedef315a1839c61c8",
+    "/root/trifusion-storage/artifacts/msvr310_cross_scene_smooth_ap_v1_seed42_d35864d/m0/fold_0_cross_scene/receipt.json": "ed05c8dcaaff7ba0bc6005c1ecdbad94b9e28efd4b6497577631f9d0fabe58c2",
+    "/root/trifusion-storage/artifacts/msvr310_cross_scene_smooth_ap_v1_seed42_d35864d/m0/fold_0_cross_scene/training.json": "1b62d58b7b4e782f336ca37f2eb4258fbab1aabcae7da5339130c8c7e0707597",
+    "/root/trifusion-storage/artifacts/msvr310_cross_scene_smooth_ap_v1_seed42_d35864d/m0/fold_0_cross_scene/memory_steps.jsonl": "0577d09e69dac44c83e34cec92c90e1a986e3e8597f7da4bcecbf75bce4587ce",
+    "/root/trifusion-storage/artifacts/msvr310_cross_scene_smooth_ap_v1_seed42_d35864d/m0/fold_0_cross_scene/memory_distances.f32": "6065b7236607996f31986290dc0fbd030ff433300212c66bc05ecc0d8cdf8545",
+    "/root/trifusion-storage/artifacts/msvr310_cross_scene_smooth_ap_v1_seed42_d35864d/m0/fold_0_cross_scene/roles_m0.pth": "4df29e5ebab7b4e049f7b0db97e4cbed99e1526153cf4c77ddf606a5078a3245",
+    "/root/autodl-tmp/trifusion-v2/artifacts/msvr310_signal_source_oof_v1_seed42_bb01d60/baseline/fold_1/signal_epoch50.pth": "a11e0fd6c531ea55e43040285671e8adbd3481c7dc5510309fe0d9ea0c974253",
+    "/root/trifusion-storage/artifacts/msvr310_cross_scene_smooth_ap_v1_seed42_d35864d/m0/fold_1_control/receipt.json": "dc0f7a1289c41ae904a902436d874cc53f0b6ef6e76feb7bad238d32606e9fe3",
+    "/root/trifusion-storage/artifacts/msvr310_cross_scene_smooth_ap_v1_seed42_d35864d/m0/fold_1_control/training.json": "1243233e8e7752ed3cabdd40a908750d8cfb468f4eb18468138be6ad9994162b",
+    "/root/trifusion-storage/artifacts/msvr310_cross_scene_smooth_ap_v1_seed42_d35864d/m0/fold_1_control/memory_steps.jsonl": "af550ea9223ad8826cad416a595d2032221f9b948aa5285da14a13aa507da4ec",
+    "/root/trifusion-storage/artifacts/msvr310_cross_scene_smooth_ap_v1_seed42_d35864d/m0/fold_1_control/memory_distances.f32": "9bc1e5f282524cedbf218aca46dcde3e54934da5abd1e5a85371ec2ef06fcde8",
+    "/root/trifusion-storage/artifacts/msvr310_cross_scene_smooth_ap_v1_seed42_d35864d/m0/fold_1_control/roles_m0.pth": "c7229abaa9121cb745749465ce0cc5d4d4cd43ccc53c290101e84f5705738d69",
+    "/root/trifusion-storage/artifacts/msvr310_cross_scene_smooth_ap_v1_seed42_d35864d/m0/fold_1_cross_scene/receipt.json": "9d176884f765a41117c00b45bed527a05cf2ac4012eb264f5b58e558e9275d23",
+    "/root/trifusion-storage/artifacts/msvr310_cross_scene_smooth_ap_v1_seed42_d35864d/m0/fold_1_cross_scene/training.json": "3019e551e1a9a2628dc0ccf056967f842fad7a229c3197c9110d7d05d8ad4821",
+    "/root/trifusion-storage/artifacts/msvr310_cross_scene_smooth_ap_v1_seed42_d35864d/m0/fold_1_cross_scene/memory_steps.jsonl": "a06751f7e7de35dc464d4f018032a77a45ccb95f6285b6ee2c28d882166a7563",
+    "/root/trifusion-storage/artifacts/msvr310_cross_scene_smooth_ap_v1_seed42_d35864d/m0/fold_1_cross_scene/memory_distances.f32": "a22eaf0fdd10c182ee28310b03a70325ac2216da9ee5eca4359bb45029043b62",
+    "/root/trifusion-storage/artifacts/msvr310_cross_scene_smooth_ap_v1_seed42_d35864d/m0/fold_1_cross_scene/roles_m0.pth": "1b3d5c127b45e8c7f67c7cb53ce0b8ea425a4a61add156c73fe401c55ee0ed6f",
+    "/root/autodl-tmp/trifusion-v2/artifacts/msvr310_signal_source_oof_v1_seed42_bb01d60/baseline/fold_2/signal_epoch50.pth": "fa7531cc3de677cec99852e588dcaa0851d0c1b5dc34bb65e0d4cc23ff95c06b",
+    "/root/trifusion-storage/artifacts/msvr310_cross_scene_smooth_ap_v1_seed42_d35864d/m0/fold_2_control/receipt.json": "af5bf4db8067e3b587ceeb374fae4a142e309e2b46c7ca15b04917e91502483d",
+    "/root/trifusion-storage/artifacts/msvr310_cross_scene_smooth_ap_v1_seed42_d35864d/m0/fold_2_control/training.json": "2c746c15139796000f58616c51d99e9fe21dcca0cfeabb27469ac5ecb9378222",
+    "/root/trifusion-storage/artifacts/msvr310_cross_scene_smooth_ap_v1_seed42_d35864d/m0/fold_2_control/memory_steps.jsonl": "ac614619b224845f591da2a07efb14ddb5434313d41a809b1b1298d8d9d63029",
+    "/root/trifusion-storage/artifacts/msvr310_cross_scene_smooth_ap_v1_seed42_d35864d/m0/fold_2_control/memory_distances.f32": "1b52f2a7d760ec013f5cd3926e4b53b82c17da39992d35fbe5bbb0ed8b5d6e2d",
+    "/root/trifusion-storage/artifacts/msvr310_cross_scene_smooth_ap_v1_seed42_d35864d/m0/fold_2_control/roles_m0.pth": "7403a9673df8aa3e8f37b6350f2edd9a9da69da82668bf0dd679720e7afca923",
+    "/root/trifusion-storage/artifacts/msvr310_cross_scene_smooth_ap_v1_seed42_d35864d/m0/fold_2_cross_scene/receipt.json": "17990fbb6bc8ec0228d4cbe65de85acbfca94ea49e2b2b1e48844aea5e1d0882",
+    "/root/trifusion-storage/artifacts/msvr310_cross_scene_smooth_ap_v1_seed42_d35864d/m0/fold_2_cross_scene/training.json": "0fea88dee0fe60050d6cc4713832fa9d6f9ad04689690fbc68d89872fdd69a48",
+    "/root/trifusion-storage/artifacts/msvr310_cross_scene_smooth_ap_v1_seed42_d35864d/m0/fold_2_cross_scene/memory_steps.jsonl": "35a3a0a2edd7cbb0aa303166a20e8160f3ab12ae5b5876dce1a51e9bfa77c372",
+    "/root/trifusion-storage/artifacts/msvr310_cross_scene_smooth_ap_v1_seed42_d35864d/m0/fold_2_cross_scene/memory_distances.f32": "f5ea6b9d4af97efccd57a6ed6b05db24e2c6aad34919bc9541789c7ad885356d",
+    "/root/trifusion-storage/artifacts/msvr310_cross_scene_smooth_ap_v1_seed42_d35864d/m0/fold_2_cross_scene/roles_m0.pth": "d2404d460498126006ee2549a689e9a2407d8bc0b0d4e258e3139b735bb96c9e",
+    "/root/trifusion-storage/artifacts/msvr310_cross_scene_smooth_ap_v1_seed42_d35864d/m0/overfit_control/training.json": "40eeef2eb4bc5e6793b2adc489af754c6cafba4ac49becbcf7d0a986f72d5eba",
+    "/root/trifusion-storage/artifacts/msvr310_cross_scene_smooth_ap_v1_seed42_d35864d/m0/overfit_control/memory_steps.jsonl": "fa197007708937bce0b7c7fbb6861ec239a1858dda0aad782c77e485b934d10c",
+    "/root/trifusion-storage/artifacts/msvr310_cross_scene_smooth_ap_v1_seed42_d35864d/m0/overfit_control/memory_distances.f32": "84b668d84acbd91c892d87274e5ac4b3cdae0cf04664a99a3f70c29379b0899d",
+    "/root/trifusion-storage/artifacts/msvr310_cross_scene_smooth_ap_v1_seed42_d35864d/m0/overfit_cross_scene/training.json": "7d10a4419a11a5c70495e3bd8bcb227f4afe6aa2ddd83035aaf94635d547b0ef",
+    "/root/trifusion-storage/artifacts/msvr310_cross_scene_smooth_ap_v1_seed42_d35864d/m0/overfit_cross_scene/memory_steps.jsonl": "94193960e301447eb8a99a4436ea7b94e236f477ae2761625cd48a8c1dec6f92",
+    "/root/trifusion-storage/artifacts/msvr310_cross_scene_smooth_ap_v1_seed42_d35864d/m0/overfit_cross_scene/memory_distances.f32": "861a3c1b86845ad0679929ff23b73e5eb330c5bcf9e27aebba6462ce38eb2bb8"
+  },
+  "raw_receipts": [
+    "intake_01.stdout",
+    "static_dependencies.stdout",
+    "static_bindings_receipt.json",
+    "provenance.stdout",
+    "terminal_intake.stdout",
+    "independent_m0.stdout",
+    "ground_truth_disk.stdout",
+    "final_document_state.stdout",
+    "audit_helper_failure_01.json"
+  ],
+  "helper_incidents": [
+    "One local snapshot unpack path-length failure, corrected by flat numbered filenames without any experiment rerun. See audit_helper_failure_01.json."
+  ],
+  "no_project_environment_process_edits": true,
+  "no_binary_downloads": true
+}
