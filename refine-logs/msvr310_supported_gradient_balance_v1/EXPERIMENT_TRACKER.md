@@ -1,16 +1,21 @@
 # 支持感知梯度平衡工作记录
 
-2026-09-21。R1_ENGINEERING_STOP / R2_T0_PASS_M0_RUNNING，seed42。
+2026-09-21。R1_ENGINEERING_STOP / R2_M0_CPU_PASS / R2_Q1_RUNNING，seed42。
 
 | 工作 | 状态 | 证据 |
 |---|---|---|
 | R1 T0 | PASS | 780来源batch及数学检查 |
 | R1 M0 | STOPPED | 3更新；第4步辅助相减误差0.006824872>0.005，05:36:03退出1 |
 | R1 Q1 | NOT_RUN | 工程阶段停止，没有检索 |
-| R2实现 | PREPARED | 每步直接辅助求导，原控制更新保持；不放宽门 |
-| R2独立复审 | PASS_WITH_LIMITS | 原fresh reviewer继续审查，剩余阻断0；未运行张量 |
-| R2 T0/M0/Q1 | T0_PASS / M0_RUNNING / Q1_NOT_RUN | 执行1381639，原初始化重开R2；原系数及门槛保持 |
+| R2实现与复审 | PASS_WITH_LIMITS | 直接辅助求导，原控制更新保持；同族原reviewer继续审查，0阻断 |
+| R2 T0 | PASS | 05:52:39退出0，780来源batch及数学检查 |
+| R2 M0 | PASS_ENGINEERING_ONLY | 06:09:36退出0；248更新、90实际独立参考检查通过 |
+| R2 M0_CPU | PASS | 06:09:45退出0；248步/4945920距离元素，全量支持与系数重算 |
+| R2 M0独立审查 | RUNNING | fresh gpt-6-astra/max，same-family/provisional，待完整裁决 |
+| R2 Q1 | RUNNING | 原44804于06:09:45自动启动；06:13:21首控制5/20epoch，0/6终点 |
+| R2 Q1_CPU/Audit | NOT_STARTED | 六端齐全后核验；无中间选模或调参 |
 
-完整历史梯度、原网络与cross-scene AP定义不变。仅seed42，先主结果后消融，官方成绩不用于调参。Goal ACTIVE/UNMET。
-
-2026-09-21T05:56:41.949639+08:00直接观察wrapper42758/M0 42784仍存活；已保存的首历史组独立梯度参考全部通过，当前最大相对误差6.11777801523e-05。这是局部运行见证，完整M0/CPU仍待结束。
+执行1381639、配置9ce36299，run /root/trifusion-storage/artifacts/msvr310_supported_gradient_balance_v1_r2_seed42_1381639，wrapper42758。
+完整历史梯度、原网络与cross-scene AP定义不变。仅seed42，先主结果后消融，官方成绩不用于调参。
+完整M0文本和汇总见evidence/supported_gradient_balance_m0_complete_20260921及supported_gradient_balance_m0_analysis_20260921。
+无新增正式结果，Goal ACTIVE/UNMET。
