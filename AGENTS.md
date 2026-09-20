@@ -1,8 +1,8 @@
 # TriFusion-ReID workspace
 
-## Latest verified state (2026-09-21 cross-scene Q1 audit closed; next hypothesis draft)
+## Latest verified state (2026-09-21 supported gradient balance reviewed; not run)
 
-- 当前执行入口：§41.228–41.229。cross-scene Smooth-AP六端、CPU与独立审查已闭环；科学Q1_FAIL（配对2/5、Signal1/5），审计WARN/CLOSED_WITH_LIMITS。原进程结束，不重启/扫参/读官方测试。后继仅有支持感知角色梯度平衡草案，尚无执行代码、配置或新训练；先代码化登记审查，再按原阶段门执行。三数据集Goal ACTIVE/UNMET。
+- 当前执行入口：§41.228–41.230。cross-scene Q1/CPU/独立审查已闭环，科学FAIL保持。新支持感知角色梯度平衡代码/固定配置已审查PASS_WITH_LIMITS，配置0b5ff010，尚未部署或训练；下一步T0→M0→完整CPU通过后Q1，不重跑旧实验。仅seed42，原两组五门与完整图库不变。模型/数组留远端，保留必要权重；Goal ACTIVE/UNMET。
 ## Archived standard Smooth-AP comparison (sealed; do not relaunch)
 
 - Read refine-logs/msvr310_smooth_ap_v1/EXPERIMENT_AUDIT_M0.md/.json and evidence/smooth_ap_m0_audit_20260909. Same-family/provisional, reconstruction limits retained. No new model/GPU replay, no change request. Do not repeat M0 or its audit.

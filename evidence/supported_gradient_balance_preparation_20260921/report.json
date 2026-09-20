@@ -1,0 +1,37 @@
+{
+  "verdict": "PASS_WITH_LIMITS",
+  "review_type": "fresh_static_implementation_review",
+  "review_independence": "same-family",
+  "acceptance_status": "provisional",
+  "blocking_findings": [],
+  "unresolved_nonblocking_findings": [],
+  "addressed_nonblocking_findings": [
+    {
+      "id": "N1",
+      "title": "T0 did not exercise role-block permutation or multi-tensor role norms",
+      "original_evidence": "tools/check_msvr_supported_gradient_balance_math.py:13-17,73",
+      "original_file_sha256": "3631b61f0e06df2476b473a4b26426f6e75c4bc9508dc1ef292a1ebf8d116504",
+      "corrected_evidence": "tools/check_msvr_supported_gradient_balance_math.py:74-96",
+      "corrected_file_sha256": "b7ef9ee31665eaae6a1955826d8084e4ce886c217b4c272a8699a8a4396c2e6f",
+      "status": "REVIEWED_NOT_EXECUTED",
+      "changed_by": "executor; not reviewer"
+    }
+  ],
+  "requested_route": {
+    "model": "gpt-6-astra",
+    "reasoning_effort": "max",
+    "fork_turns": "none"
+  },
+  "backend_attestation": "unavailable",
+  "performance_claim": false,
+  "novelty_claim": false,
+  "full_review": "review_20260921_0530.md",
+  "verbatim_final_response": "final_response.md",
+  "config_sha256": "0b5ff0107e8dda6634e0c060a4b1a87e8e7e2fa117c7beb0cf5792b6ebedc15b",
+  "limits": [
+    "No tensor/model/remote execution; T0/M0 runtime gates pending.",
+    "Scalar replay checks reported norms and relations, not independent per-step parameter gradients.",
+    "Runtime disk growth/time caps are not implemented by the existing runner; actual usage remains unmeasured.",
+    "New sources/config are untracked at reviewed HEAD; commit alone is not a deployment receipt."
+  ]
+}

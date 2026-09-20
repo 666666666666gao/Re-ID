@@ -2,7 +2,7 @@
 
 ## 0. 一页结论
 
-当前执行入口：§41.215—§41.227（2026-09-21）。跨scene Smooth-AP六端1560更新已完成，04:19:46训练退出0，04:20:11完整CPU核验退出0；原Q1_FAIL，配对2/5、对Signal1/5。fused 52.838309→53.405492（+0.567183），三折正增益，但CNN/Transformer下降且配对bootstrap下界-0.077239；候选高于Signal 0.276111。30份原始文本全部哈希核对，完整分析已生成，独立Q1审查进行中。原进程均结束，不重启、不扫参数、不进入官方测试。后继支持感知梯度协作仍为候选；三数据集Goal ACTIVE/UNMET。以下历史章节不作为当前运行指令。
+当前执行入口：§41.228—§41.230（2026-09-21）。cross-scene Smooth-AP完整Q1及独立审计已闭环，原科学FAIL保留。后继支持感知角色梯度平衡已登记代码/配置并通过独立静态审查PASS_WITH_LIMITS，尚未部署、T0/M0/Q1均未执行；下一步按固定阶段门启动，不重跑已封存实验。两端同cross-scene AP和完整历史导数，仅候选组合角色R/A；seed42、完整图库、原两组五门不变。三数据集Goal ACTIVE/UNMET；以下历史章节不作为当前运行指令。
 
 当前MSVR310训练及此前两个车辆数据集比较使用原V8平行三角色结构：冻结Signal/CLIP，共享block8之前语义和tail9/10/11参数，三个角色分别运行共享tail；CNN处理局部语义Patch高频，Transformer处理全局CLS/Patch关系，Mamba处理空间与位置级三模态扫描。各角色相对冻结reference形成1536D残差，三角色4608D银行拼接3072D Signal得到7680D fused；完整单角色输出为4608D Signal+角色残差。三条路径均执行，当前没有Router/HFER、V23模态MLP或V24原型。两项车辆训练比较均已完成；RGBNT100内部完整比较支持三角色增益，MSVR310尚未超过Signal。下面V1—V8条目保留历史经过，不代表当前又启用了旧模块。
 
@@ -6712,3 +6712,14 @@ WARN边界保留：未重新生成全部逐步参数导数，部分冻结/重载
 依据完整结果与已核对MMPareto/GradNorm/OGM-GE近邻，形成refine-logs/msvr310_supported_gradient_balance_v1/EXPERIMENT_PLAN_DRAFT.md及tracker。唯一候选干预是在相同cross-scene AP、候选与完整历史VJP下，对三个encoder角色分别组合完整排名R和原辅助A。草案固定EMA0.9、范数比平方根、r范围[0.25,4]、系数和2；无合法跨scene支持时EMA不更新、原辅助训练继续；不加入方向投影/新loss/新网络。
 
 R必须含当前和历史，分类头保留原梯度；不能用total_vs_history当作R/A。当前total减rank得到A的有限精度误差需与直接辅助反传核验，真实AdamW参数更新也要记录。草案不声称已经测出当前cross-scene梯度失衡，不把已有统计工具包装为原创。尚无新执行代码/配置/T0/M0/Q1；下一步代码化、登记与审查后按原阶段门推进。seed42、先主结果后消融、官方禁调参及三数据集Goal ACTIVE/UNMET不变。本轮未删权重。
+
+
+### 41.230 支持感知角色梯度平衡固定实现及独立代码审查完成（2026-09-21）
+
+唯一新假设登记于refine-logs/msvr310_supported_gradient_balance_v1/EXPERIMENT_PLAN.md；配置configs/MSVR310/TriFusion-supported-gradient-balance-paired-v1.json，SHA 0b5ff0107e8dda6634e0c060a4b1a87e8e7e2fa117c7beb0cf5792b6ebedc15b。7个新Python文件另建，原绑定代码不改。两端均cross-scene AP、相同初始化/候选/full history VJP，仅balanced按三角色完整排名R与其余监督A组合梯度；EMA0.9、比值平方根、r限制[0.25,4]、权重和2且各[0.4,1.6]。无支持时EMA保持、原辅助更新继续；分类14张量保持原梯度，encoder189张量调节。不新增推理参数/新loss/新结构，不将已有范数工具称为原创。
+
+fresh代码审查review_supported_gradient_balance_20260921结论PASS_WITH_LIMITS，无剩余BLOCKING；same-family/provisional，所请求gpt-6-astra/max/fresh-none不作为后端attestation。审查直接阅读7源码、计划/配置、旧训练及核验依赖；AST7、本地新9项及前6配置58项绑定通过，来源元数据证明三折M0第4步直接参考分支可达。没有执行张量、模型或远端命令，不能当作T0/M0通过。初版T0仅重排名字的缺口已由执行者补充实际多张量角色置换与整块范数检查，最终补丁已独立复读；保留修改和运行未验证边界。
+
+原审查文本与回执归档evidence/supported_gradient_balance_preparation_20260921，计划目录保存EXPERIMENT_CODE_REVIEW.md/.json。M0需实际验证R_current/R_history/full R、直接辅助与总减R、组合梯度，保留原203/203、0overflow、冻结/严格重载和overfit≤0.1。CPU只重算保存标量与距离，不声称恢复逐步参数向量。记录实际AdamW更新范数，不将R/A比解释为更新份额。
+
+05:10:42实查前序全部原PID结束、GPU1MiB/0%；输出余5640347648B，仓库余1650192384B。本轮尚未删除权重；执行前再查至少4GiB和空闲GPU，当前预计新增不超过3GiB。远端数据/模型/数组保持不下载。新T0/M0/Q1尚未执行；下一步同步本次源码、启动固定持久队列，失败读原日志再处理，不重启未结束任务、不修改科学门。Goal ACTIVE/UNMET。
