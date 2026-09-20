@@ -6537,3 +6537,14 @@ CPU核验依赖队列1706于17:58:24启动，17:58:44确认存活，WAITING_FOR_
 
 
 §41.213端点补充：18:51:36确认fold_0_control完整260批，3422.2201秒（57.0370分钟），model_state_unchanged/gradients_absent为true，optimizer_updates/heldout_record_forwards/official_image_reads均0。登记的单历史组direct/VJP核对相对误差1.56888267e-09，限于该组，不扩大为全source向量重算。fold_0_smooth_ap已自动接续20批，合计280/1560；1230/1231/1706/2251实际cmdline均对应原任务且存活。证据evidence/smooth_ap_objective_gradient_first_endpoint_20260920。全量测量、CPU核验和72组分析仍待完成，未解释中间梯度作方法选择；下一观察约19:05，用候选端历史阶段速度更新ETA。无新训练、无权重删除、Goal ACTIVE/UNMET。
+
+
+### 41.214 公开参照增量核查与目标梯度解释边界（2026-09-20）
+
+等待完整梯度端点期间完成限定范围主源刷新，evidence/trifusion_reference_boundaries_20260920保存三项说明及来源回执。公开方法后台research仅同族上下文隔离，不称实验独立审计。本轮未核得足以替换既有RoDI/PMKD/CoT代表主表的新结果，不称穷尽排行榜；保留CLIP、DINOv2/v3、额外文本/mask、测试适配/重排序条件。RoDI当前2f38911仓库仍README/assets、PMKD0f597fa仍仅README；两者release/tag均0，不当作完整可运行训练实现。Hyper-ReID仅README无主表、CCL官方页可读但OpenReview PDF仍验证页/API403，继续未知，不从摘要补数字。旧表值明确沿用此前原表核验，未冒充本日逐篇复现。
+
+Signal公开HEAD仍cd1b0a672d1fe642e7608731cb4899a19dda7d51，RGBNT100 YAML与原归档字节一致。作者B128/K16与本机B64/K8配置均每批8身份，两者30epoch；不能将大batch直接解释成更多负身份，也不能声称epoch数不同。几何增强、best选择/固定终点、实际更新数及Gram数值定义仍需分别限定，不能将公开差距归因给单一因素。没有重训baseline或以已消费官方结果选参数。
+
+代码级解释补充：当前诊断仅189个encoder参数的固定终态局部导数，无优化器；真实训练将历史VJP相加后一次AdamW更新，保存函数未含动量/平方动量或GradScaler状态。官方PyTorch2.5.1实现支持逐坐标矩预条件及独立weight decay。因此F/O原始梯度范数比不是AdamW更新份额或泛化贡献百分比。补充说明未修改诊断/已绑定分析器，也不据此引入loss倍率或梯度投影。
+
+19:05:21实查原1230/1231存活，控制260批完成、候选106批，合计366/1560；1706核验/2251分析存活等待。候选历史阶段第7/8epoch分别231.3924/231.1775秒，预计第一候选约19:51、全六端约23:45–23:50（后续速度可能变化）；下一观察约19:48。输出剩余6946988032字节。以上均非新的检索结果；原Q1_FAIL、完整梯度尚未结束、三数据集Goal ACTIVE/UNMET。
