@@ -6573,3 +6573,14 @@ Signal公开HEAD仍cd1b0a672d1fe642e7608731cb4899a19dda7d51，RGBNT100 YAML与�
 活动位置66—260中，各fold-role九组Smooth-AP F/O范数比中位数.105537—.174304，控制.603683—.787887。每端1755条角色-批次记录中，Smooth-AP F/O负余弦115、F/total负余弦37；控制12/0。所有F非零且高于各条重复反传差异。比较限于同一角色参数块内部；未比较不同角色异义坐标。不同端点加载各自固定终态，不恢复原训练/AdamW历史，不推导loss倍率或泛化贡献。窗口/来源曝光相关，非多seed证据。
 
 00:14资源实查GPU1MiB/0%，输出余6827118592B，主卷2222432256B；本轮删除0权重。既有失败和所需初始化/终态保留。后继唯一主假设准备为标准Smooth-AP到合法跨scene正例/eligible-anchor均值定义，保持其余13项、fresh历史/VJP及seed42；已有来源支持中4/585后预热batch无合法anchor，必须本项图连接零并保留其他监督和全部负身份候选。新合同refine-logs/msvr310_cross_scene_smooth_ap_v1/EXPERIMENT_PLAN.md及六个独立版本入口已实现；新鲜静态代码审查PASS_WITH_LIMITS/0阻断，同族provisional，配置e5326b52。T0/M0尚未执行，不称工程或Q1通过，不重复旧Q1。下一步提交部署后按T0→M0→M0_CPU→Q1→Q1_CPU固定链执行，非零退出封存。Goal ACTIVE/UNMET。
+
+
+### 41.216 跨场景正例 Smooth-AP 正式启动，T0通过（2026-09-21）
+
+完整梯度关闭与新实验代码已发布d35864d6411591e05c8ac3e5164ebae48063ad99，306发布文件逐项字节/SHA一致；主交接三方SHA114fa62b56b3b02e963a156705dc5dce0da32ad928762bc1c4bb2e9f0471f4dd。新实验执行绑定d35864d，配置e5326b52ebb12dced24ebfac788db2e2bb5bdca0b50c6c4dec64e596f1af05a1，run /root/trifusion-storage/artifacts/msvr310_cross_scene_smooth_ap_v1_seed42_d35864d，screen tri_cross_scene_d35864d。
+
+00:25:28持久wrapper16885启动。T0原16891于00:25:36退出0，用8.132秒，PASS_CROSS_SCENE_SMOOTH_AP_CPU_CONTRACT；标准与跨scene独立标量误差0，跨scene有限差分3/置换3、同ID同scene导数零、无正例anchor负候选保留、全零eligible图连接零、历史候选非零导数均通过。完整780来源队列关系与已有support一致，0模型/图像/优化更新。此为CPU公式与合同检查，不是模型性能。
+
+M0原16907于00:25:36自动启动，00:25:44与原wrapper均存活、cmdline匹配，RUNNING尚无完整容量端。GPU614MiB、输出余6823510016B。M0预计10–25分钟，按实际阶段更新；下一观察约00:29，非观察失败不重启。固定T0→M0→M0_CPU→Q1→Q1_CPU链，前阶段失败立即封存。完整248步M0与CPU通过前不进入heldout。证据evidence/cross_scene_smooth_ap_launch_20260921。
+
+本轮仅新训练合同，不修改旧Q1结果、温度、倍率或终点；不做官方测试/多seed/消融，不删除无明确冗余证据的权重。三数据集Goal ACTIVE/UNMET。
