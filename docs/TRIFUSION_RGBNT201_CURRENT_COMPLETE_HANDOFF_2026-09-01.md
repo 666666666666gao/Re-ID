@@ -2,7 +2,7 @@
 
 ## 0. 一页结论
 
-当前执行入口：§41.215—§41.220（2026-09-21）。原标准Smooth-AP Q1_FAIL与完整来源梯度诊断已封存并独立审计关闭。新跨scene Smooth-AP执行d35864d/配置e5326b52，M0与CPU完整248步通过，独立M0为WARN/CLOSED_WITH_LIMITS、确定性工程PASS。原wrapper16885/Q1 18222于00:37启动；01:09实查首控制17/20epoch、0/6终点。六端与CPU终态尚未结束，无新增正式成绩。保持seed42和固定合同；后继梯度协作仅文献候选。三数据集Goal ACTIVE/UNMET。下面V1—V8及各节保留历史，不作为当前运行指令。
+当前执行入口：§41.215—§41.221（2026-09-21）。原标准Smooth-AP Q1_FAIL与完整来源梯度诊断已封存并独立审计关闭。新跨scene Smooth-AP执行d35864d/配置e5326b52，M0与CPU完整248步通过，独立M0为WARN/CLOSED_WITH_LIMITS、确定性工程PASS。原wrapper16885/Q1 18222持续执行；01:15:49首控制20epoch/260步、checkpoint重载、图库检索及端点收据完成，1/6端；同折候选自动第1epoch。六端及CPU终态未结束，无新增正式成绩。保持seed42和固定合同；后继梯度协作仅文献候选。三数据集Goal ACTIVE/UNMET。下面V1—V8及各节保留历史，不作为当前运行指令。
 
 当前MSVR310训练及此前两个车辆数据集比较使用原V8平行三角色结构：冻结Signal/CLIP，共享block8之前语义和tail9/10/11参数，三个角色分别运行共享tail；CNN处理局部语义Patch高频，Transformer处理全局CLS/Patch关系，Mamba处理空间与位置级三模态扫描。各角色相对冻结reference形成1536D残差，三角色4608D银行拼接3072D Signal得到7680D fused；完整单角色输出为4608D Signal+角色残差。三条路径均执行，当前没有Router/HFER、V23模态MLP或V24原型。两项车辆训练比较均已完成；RGBNT100内部完整比较支持三角色增益，MSVR310尚未超过Signal。下面V1—V8条目保留历史经过，不代表当前又启用了旧模块。
 
@@ -6630,3 +6630,10 @@ root另核对当前计算图，PROJECT_OBJECTIVE_SCOPE.md与输入SHA保存：O�
 01:09:13直接核对/proc确认原wrapper16885与Q1 18222存活且cmdline吻合；首控制第17/20epoch完成，0/6完整端点。最近第14—17epoch分别146.3926/146.5988/145.9451/145.8543秒，GPU6502MiB/94%，输出余6525530112B。证据evidence/cross_scene_smooth_ap_q1_progress_20260921；预计首端01:15左右训练结束后检索，下一观察约01:17。未读部分结果决定干预、未重启或修改合同。
 
 修正首页仍指向旧§41.201的过期入口，将V6模块列表明确标记为历史，并将V8 Phase-B范围限定为RGBNT201固定dev。AGENTS最新标题同步为跨scene Q1；原Smooth-AP条目标为已封存历史。只修正文档导航，不覆盖旧结果/门槛，不将当前内部Q1写入正式表。Goal ACTIVE/UNMET。
+
+
+### 41.221 跨场景 Smooth-AP 首控制固定终点完成（2026-09-21）
+
+01:15:49直接观察原wrapper16885/Q1 18222存活、cmdline吻合。fold0 control完成20epoch/260更新，fit epoch时间合计2258.3322秒（37.6389分钟），overflow0、累计203/203非零、全部冻结/Signal/角色更新/预算检查true；checkpoint及严格重载记录、完整图库检索和最终receipt均写出。1/6端完成，同折cross_scene已自动完成第1epoch。证据evidence/cross_scene_smooth_ap_q1_progress_20260921/trifusion_cross_scene_observation_0116_20260921.json，实际观察时间以文件字段为准而非文件名分钟。
+
+只读观察器v2将训练完成、checkpoint、检索与receipt分别记录，避免执行器先保存training后尚未检索时被误称完整端；未改变训练器或已绑定配置。全部六端的CPU与科学审计尚未执行，不把单端运行检查扩大为完整检索核验或晋级。输出余6439456768B（约6.00GiB），本轮删除0权重。下一观察约01:24，使用候选历史阶段速度校正全量ETA；当前全六端仍暂估04:30附近，随后CPU/独立审计。Goal ACTIVE/UNMET。

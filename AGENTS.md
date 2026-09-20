@@ -2,7 +2,7 @@
 
 ## Latest verified state (2026-09-21 cross-scene Smooth-AP Q1 running)
 
-- 当前执行入口：§41.215–41.220；cross-scene Smooth-AP执行d35864d/配置e5326b52。01:09直接/proc核对原wrapper16885/Q1 18222存活，首控制17/20epoch、0/6终点，输出余6525530112B；下一观察约01:17。M0/CPU及独立M0已关闭（工程PASS、WARN/CLOSED_WITH_LIMITS）。完整六端/CPU前不改合同、不评价晋级。后继梯度协作仅候选；三数据集Goal ACTIVE/UNMET。
+- 当前执行入口：§41.215–41.221；cross-scene Smooth-AP执行d35864d/配置e5326b52。01:15:49原wrapper16885/Q1 18222存活；首控制20epoch/260步及checkpoint重载/检索/receipt完成，1/6端；同折候选自动第1epoch。输出余6439456768B，下一观察约01:24。M0/CPU及独立M0已关闭（工程PASS、WARN/CLOSED_WITH_LIMITS）。完整六端/CPU前不改合同、不评价晋级；三数据集Goal ACTIVE/UNMET。
 ## Archived standard Smooth-AP comparison (sealed; do not relaunch)
 
 - Read refine-logs/msvr310_smooth_ap_v1/EXPERIMENT_AUDIT_M0.md/.json and evidence/smooth_ap_m0_audit_20260909. Same-family/provisional, reconstruction limits retained. No new model/GPU replay, no change request. Do not repeat M0 or its audit.
