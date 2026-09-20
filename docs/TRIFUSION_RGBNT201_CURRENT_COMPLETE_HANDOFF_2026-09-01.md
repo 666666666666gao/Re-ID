@@ -6612,3 +6612,14 @@ M0原16907于00:25:36自动启动，00:25:44与原wrapper均存活、cmdline匹�
 D项WARN保留：逐步参数梯度与重载输出是运行见证；六首历史组在step4，direct/VJP最大相对误差2.17581631e-5，仅独立复核标量而未重生成。203/203是累计非零而非每步；十项分类/残差只核对保存标量与加权账本，缺少完整logit/距离用于重建。M0实际零eligible批次0，零分支图连接由T0合成与静态调用支撑；全来源9个零批次中预热后4个保留。审计本地长路径解包失败及扁平名修复留证，未重跑实验。
 
 原Q1保持d35864d/配置e5326b52与wrapper16885/child18222，不因审计闭环重启。最近00:46首控制8/20epoch、尚无完整端；下一观察约01:12。新收到的MMPareto/GradNorm/OGM-GE建议仅开展主源阅读，不注册或加入当前训练。原Q1失败、正式结果及三数据集Goal ACTIVE/UNMET保持。
+
+
+### 41.219 用户新复核的优化近邻核读与目标范围（2026-09-21）
+
+用户新复核基于较早8effade/§41.216；以§41.218的完整M0审计关闭与Q1正在运行状态接续。未读取或声称重新生成其sandbox PDF/LaTeX。原正式表无新增成绩。新建议“支持感知的排名—身份协作”仅候选，必须先完成当前六端/CPU/审计，不加入当前Q1。
+
+按research技能后台完成MMPareto/GradNorm/OGM-GE有界主源阅读，保存evidence/support_aware_gradient_neighbours_20260921/PRIMARY_SOURCE_NOTE.md和SOURCE_RECEIPT.json；这是文献阅读，不是实验独立审计。MMPareto官方a339db39：论文整体encoder范数恢复，代码逐参数张量max(1,原和范数/组合范数)并乘gamma1.5；非冲突分别>=0与>0。纯数学二维反例说明全局共同下降性质不能无条件继承到逐张量缩放，不是作者运行失败率或项目观测。GradNorm需要训练进度与选定共享参数块；未确认作者官方代码，不编造实现/许可证。OGM-GE官方43aa7332仅处理audio/visual四维梯度，噪声使用张量元素std，非完整跨batch协方差；与论文tie定义差别保留。MMPareto API license null/无LICENSE文件，OGM-GE MIT；未复制作者实现到项目。
+
+root另核对当前计算图，PROJECT_OBJECTIVE_SCOPE.md与输入SHA保存：O在全局含7ID+6Triplet；但单角色encoder直接依赖的O项仅fused ID及自身完整/纯残差两组ID/Triplet，共5项，其他角色8项没有直接图路径。这是静态依赖推断，不保证各项每步非零，未做新的逐项梯度测量。既有F/O诊断定义不变，不能从13项数量推出13倍压制；角色各自调权也不能未经证明称为统一标量loss的梯度。
+
+当前不确定倍率、EMA规则或新方向处理，不实施控制器或新增消融。冻结Signal/原三角色/完整历史导数/seed42等条件保持，Q1执行d35864d不变。原任务下一端点观察约01:12，全部终态前不解读检索收益；三数据集Goal ACTIVE/UNMET。
