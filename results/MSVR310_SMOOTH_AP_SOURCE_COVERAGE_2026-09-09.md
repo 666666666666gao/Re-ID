@@ -1,6 +1,6 @@
 # Smooth-AP固定终态来源候选覆盖
 
-状态：原提取/分析COMPLETE，执行器全量数值核验PASS；新上下文独立审计待进行。0模型更新、0heldout/official图像读取，不是Q1或官方结果。实际执行f7a0590，核验代码efb1d04，固定六个已封存Q1的epoch20模型。
+状态：原提取/分析COMPLETE，执行器全量数值核验PASS；2026-09-20新上下文独立审计CLOSED_WITH_LIMITS / 数值PASS / same-family provisional，见refine-logs/msvr310_smooth_ap_source_coverage_v1/EXPERIMENT_AUDIT.md及evidence/smooth_ap_source_coverage_independent_audit_20260920。未重做图像到特征前向，限制保留。0模型更新、0heldout/official图像读取，不是Q1或官方结果。实际执行f7a0590，核验代码efb1d04，固定六个已封存Q1的epoch20模型。
 
 完整12条件/8256来源记录前向；原提取04:18:37退出0、分析04:21:13退出0、逐行核验04:33:51完成。核验全部82560完整query记录、1996800批次anchor曝光、120输出/过滤汇总，AP重算最大误差0；特征直接差平方和与矩阵代数距离误差在1e-12内，排序使用已固定矩阵距离及稳定全局record序。全部159份文本13715377B接收并SHA核对。大候选明细/NPY留远端。
 

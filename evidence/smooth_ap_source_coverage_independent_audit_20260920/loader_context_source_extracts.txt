@@ -1,0 +1,356 @@
+
+tools/train_msvr_role_set.py
+30:def context(path):
+31:    from tools.train_msvr_history_gradient import context as previous_context
+32:    spec=json.loads(path.read_bytes())
+33:    assert spec['schema']=='msvr310-role-set-paired-v1' and spec['seed']==42
+34:    for name,digest in spec['project_file_sha256'].items():assert sha256(ROOT/name)==digest,name
+35:    for name,digest in spec['fixed_file_sha256'].items():assert sha256(name)==digest,name
+36:    audit=json.loads((ROOT/spec['gradient_audit']).read_bytes())
+37:    assert audit['verdict'] in ('PASS','WARN') and audit['deterministic_checks_status']=='pass'
+38:    gradient=json.loads(Path(spec['gradient_summary']).read_bytes())
+39:    cpu=json.loads(Path(spec['gradient_cpu']).read_bytes())
+40:    assert gradient['status']=='COMPLETE_ROLE_SET_PARAMETER_GRADIENT_CHECK'
+41:    assert cpu['status']=='PASS_COMPLETE_ROLE_SET_GRADIENT_PROBE_TEXT_AND_ARRAYS'
+42:    assert cpu['summary_sha256']==sha256(spec['gradient_summary'])
+43:    previous,base=previous_context(ROOT/spec['previous_config'])
+44:    assert spec['memory']==previous['memory'] and spec['training_epochs']==20
+45:    return spec,base
+
+tools/train_msvr_history_gradient.py
+26:def context(path):
+27:    from tools import train_msvr_fresh_coordinate as coordinate
+28:    spec=json.loads(path.read_bytes())
+29:    assert spec['schema']=='msvr310-history-gradient-paired-v1' and spec['seed']==42
+30:    for name,digest in spec['project_file_sha256'].items():assert sha256(ROOT/name)==digest,name
+31:    for name,digest in spec['fixed_file_sha256'].items():assert sha256(name)==digest,name
+32:    audit=json.loads((ROOT/spec['source_audit']).read_bytes())
+33:    assert audit['verdict'] in ('PASS','WARN') and audit['deterministic_checks_status']=='pass'
+34:    source=json.loads(Path(spec['source_summary']).read_bytes())
+35:    cpu=json.loads(Path(spec['source_cpu']).read_bytes())
+36:    assert source['status']=='PASS_COMPLETE_FIXED_STATE_PROBE'
+37:    assert cpu['summary_sha256']==sha256(spec['source_summary'])
+38:    previous,base=coordinate.context(ROOT/spec['coordinate_config'])
+39:    assert spec['memory']==previous['memory'] and spec['training_epochs']==20
+40:    return spec,base
+
+tools/train_msvr_fresh_coordinate.py
+26:def context(path):
+27:    spec = json.loads(path.read_bytes())
+28:    assert spec['schema'] == 'msvr310-fresh-coordinate-paired-v1'
+29:    for name, digest in spec['project_file_sha256'].items():
+30:        assert sha256(ROOT/name) == digest, name
+31:    for name, digest in spec['fixed_file_sha256'].items():
+32:        assert sha256(name) == digest, name
+33:    previous = json.loads(Path(spec['freshness_cpu']).read_bytes())
+34:    assert previous['status'] == 'PASS_COMPLETE_FRESHNESS_SOURCE' and previous['all_steps'] == 1560
+35:    assert previous['summary_sha256'] == sha256(spec['freshness_summary'])
+36:    memory, base = old.context(ROOT/spec['memory_config'])
+37:    assert spec['memory'] == memory['memory'] and spec['seed'] == 42
+38:    return spec, base
+
+tools/train_msvr_instance_memory.py
+23:def context(path):
+24:    spec = json.loads(path.read_bytes())
+25:    assert spec['memory'] == dict(capacity=512, maximum_age=8, warmup_steps=65,
+26:                                 capacity_warmup_steps=2, overfit_warmup_steps=2)
+27:    assert spec['seed'] == 42 and spec['training_epochs'] == 20
+28:    for name, expected in spec['project_file_sha256'].items():
+29:        assert sha256(ROOT/name) == expected, name
+30:    for name, expected in spec['fixed_file_sha256'].items():
+31:        assert sha256(name) == expected, name
+32:    assert sha256(ROOT/spec['base_config']) == spec['base_config_sha256']
+33:    source = json.loads(Path(spec['source_census_verification']).read_bytes())
+34:    assert source['status'] == 'PASS_COMPLETE_SOURCE_RELATION_CENSUS'
+35:    assert len(source['all972_conditions']) == 972
+36:    return spec, prior.context(ROOT/spec['base_config'])
+
+tools/train_msvr_instance_memory.py
+94:def reload_model(config, cfg, fold, b0, path, binding, final_state, contract_sha):
+95:    import torch
+96:    from tools.run_signal_preserving_v5 import _module_state_sha256
+97:    model, actual = build_model(config, cfg, fold, b0)
+98:    assert actual == binding
+99:    payload = torch.load(path, map_location='cpu', weights_only=True)
+100:    assert payload['binding'] == binding and payload['config_sha256'] == contract_sha
+101:    assert payload['fold'] == fold['fold'] and payload['source_ids'] == fold['source_ids']
+102:    assert payload['heldout_ids'] == fold['heldout_ids']
+103:    state = model.state_dict()
+104:    assert set(payload['role_state_dict']) == {n for n in state if not n.startswith('baseline.')}
+105:    source = model.baseline.signal.state_dict()
+106:    assert set(payload['baseline_aliases']) == {n for n in state if n.startswith('baseline.')}
+107:    assert all(torch.equal(state[n], source[v]) for n, v in payload['baseline_aliases'].items())
+108:    state.update(payload['role_state_dict'])
+109:    model.load_state_dict(state, strict=True)
+110:    assert _module_state_sha256(model) == final_state
+111:    return model
+
+tools/train_msvr310_source_style.py
+25:def context(path):
+26:    config=json.loads(path.read_bytes())
+27:    assert config['EXPERIMENT']['SEED']==42
+28:    assert config['MODEL']['GRID_SIZE']==[8,16]
+29:    assert config['OPTIMIZATION']['MAX_EPOCHS']==20
+30:    assert config['STYLE']==dict(PROBABILITY=.5,BETA_ALPHA=.1,VARIANCE_EPSILON=1e-6,
+31:                                 CROSS_CAMERA_DONOR=True,SHARED_MODAL_PLAN=True)
+32:    for name,expected in config['project_source_file_sha256'].items():
+33:        assert sha256(ROOT/name)==expected,name
+34:    assert sha256(config['BASELINE']['SUMMARY'])==config['BASELINE']['SUMMARY_SHA256']
+35:    base_path=ROOT/config['BASELINE']['CONFIG']
+36:    assert sha256(base_path)==config['BASELINE']['CONFIG_SHA256']
+37:    base=json.loads(base_path.read_bytes())
+38:    cfg,binding=configure(base)
+39:    assert sha256(ROOT/base['protocol'])==base['protocol_sha256']
+40:    protocol=json.loads((ROOT/base['protocol']).read_bytes())
+41:    baseline=json.loads(Path(config['BASELINE']['SUMMARY']).read_bytes())
+42:    meta_path=ROOT/config['SOURCE_METADATA']['PATH']
+43:    assert sha256(meta_path)==config['SOURCE_METADATA']['SHA256']
+44:    meta=json.loads(meta_path.read_bytes())
+45:    assert meta['status']=='PASS_EXISTING_MSVR310_SOURCE_EXPOSURE_AND_CAMERA_DONOR_SUPPORT'
+46:    for fold,b0,md in zip(protocol['folds'],baseline['folds'],meta['folds'],strict=True):
+47:        assert fold['fold']==b0['fold']==md['fold']
+48:        assert not set(fold['source_ids']) & set(fold['heldout_ids'])
+49:        assert sha256(b0['checkpoint'])==b0['checkpoint_sha256']
+50:        assert sha256(Path(b0['checkpoint']).parent/'retrieval_arrays.pt')==b0['retrieval']['retrieval_arrays_sha256']
+51:    return config,base,cfg,binding,protocol,baseline,meta
+
+tools/train_msvr310_source_style.py
+64:def pixels(batch):
+65:    return {name:hashlib.sha256(value.detach().cpu().contiguous().numpy().tobytes()).hexdigest()
+66:            for name,value in batch['images'].items()}
+
+tools/train_msvr310_signal_oof.py
+31:def configure(config):
+32:    from tools.run_signal_baseline_dev import _configure_signal_source
+33:
+34:    for name, expected in config["project_source_file_sha256"].items():
+35:        assert sha256(ROOT / name) == expected, name
+36:    source = Path(config["signal_source"])
+37:    commit = _configure_signal_source(source)
+38:    source_diff = hashlib.sha256(subprocess.check_output(
+39:        ["git", "-C", str(source), "diff", "--binary"])).hexdigest()
+40:    assert commit == config["signal_commit"]
+41:    assert source_diff == config["signal_diff_sha256"]
+42:    assert sha256(config["clip_weight"]) == config["clip_weight_sha256"]
+43:    for name, expected in config["signal_source_file_sha256"].items():
+44:        assert sha256(source / name) == expected, name
+45:    from config import cfg
+46:    cfg.merge_from_file(str(source / "configs/MSVR310/Signal.yml"))
+47:    cfg.defrost()
+48:    cfg.MODEL.PRETRAIN_PATH_T = config["clip_weight"]
+49:    cfg.SOLVER.SEED = 42
+50:    cfg.SOLVER.MAX_EPOCHS = 50
+51:    cfg.SOLVER.IMS_PER_BATCH = 64
+52:    cfg.DATALOADER.NUM_INSTANCE = 8
+53:    cfg.DATALOADER.NUM_WORKERS = 4
+54:    cfg.TEST.IMS_PER_BATCH = 64
+55:    cfg.freeze()
+56:    assert cfg.DATASETS.NAMES == "MSVR310"
+57:    assert list(cfg.INPUT.SIZE_TRAIN) == list(cfg.INPUT.SIZE_TEST) == [128, 256]
+58:    assert cfg.MODEL.SIE_CAMERA and not cfg.MODEL.SIE_VIEW
+59:    assert cfg.MODEL.DIRECT == 0 and cfg.MODEL.USE_A and cfg.MODEL.USE_B
+60:    assert not cfg.MODEL.FROZEN and cfg.MODEL.METRIC_LOSS_TYPE == "triplet"
+61:    assert cfg.SOLVER.BASE_LR == 5e-6 and cfg.SOLVER.OPTIMIZER_NAME == "Adam"
+62:    assert list(cfg.SOLVER.STEPS) == [20, 40] and cfg.SOLVER.WARMUP_ITERS == 0
+63:    assert not cfg.SOLVER.LARGE_FC_LR
+64:    sys.path.append(str(ROOT / "modeling"))
+65:    return cfg, {"signal_commit": commit, "signal_diff_sha256": source_diff}
+
+tools/train_msvr310_signal_oof.py
+68:def records_for(config, protocol, fold, source):
+69:    indices = fold["source_record_indices"] if source else fold["gallery_record_indices"]
+70:    records = []
+71:    for index in indices:
+72:        row = protocol["records"][index]
+73:        label = fold["source_label_map"][str(row["identity"])] if source else row["identity"]
+74:        paths = [str(Path(config["dataset_root"]) / p) for p in row["paths"]]
+75:        assert all(Path(p).is_file() for p in paths)
+76:        records.append((paths, int(label), row["camera"], row["scene"]))
+77:    return records
+
+tools/train_msvr310_signal_oof.py
+80:def clean_triplet(images):
+81:    from torchvision.transforms import functional as tf
+82:    from torchvision.transforms import InterpolationMode
+83:
+84:    return [tf.normalize(tf.to_tensor(tf.resize(image, [128, 256],
+85:            interpolation=InterpolationMode.BILINEAR)), [0.5] * 3, [0.5] * 3)
+86:            for image in images]
+
+tools/train_msvr310_signal_oof.py
+89:def loader_for(records, training):
+90:    from torch.utils.data import DataLoader
+91:    from data.datasets.make_dataloader import train_collate_fn
+92:    from data.datasets.sampler import RandomIdentitySampler
+93:    from trifusion.aligned_data import AlignedTripletImageDataset, SharedGeometryTripletTransform
+94:
+95:    transform = SharedGeometryTripletTransform(size=(128, 256)) if training else clean_triplet
+96:    dataset = AlignedTripletImageDataset(records, transform=transform)
+97:    sampler = RandomIdentitySampler(records, 64, 8, 42) if training else None
+98:    return DataLoader(dataset, batch_size=64, sampler=sampler, shuffle=False,
+99:                      num_workers=4, collate_fn=train_collate_fn, pin_memory=True)
+
+tools/train_msvr310_signal_oof.py
+102:def new_model(cfg, fold):
+103:    from tools.build_v12_complete_path_oof_targets import _build_signal_teacher
+104:
+105:    assert fold["source_camera_values"] == list(range(8))
+106:    model = _build_signal_teacher(cfg, num_classes=len(fold["source_ids"]),
+107:                                  camera_num=8, view_num=0)
+108:    # Upstream Q/K only form discrete masks; W_v is unused. Adam already skips them.
+109:    model.SIM.token_selection.requires_grad_(False)
+110:    return model
+
+tools/train_msvr310_signal_oof.py
+223:def scene_scores(distances, query_ids, gallery_ids, query_scenes, gallery_scenes):
+224:    import numpy as np
+225:
+226:    ap, first = [], []
+227:    for index, order in enumerate(np.argsort(distances, axis=1)):
+228:        keep = ~((gallery_ids[order] == query_ids[index]) &
+229:                 (gallery_scenes[order] == query_scenes[index]))
+230:        matches = gallery_ids[order][keep] == query_ids[index]
+231:        positions = np.flatnonzero(matches)
+232:        assert positions.size
+233:        ap.append(float(np.mean(np.cumsum(matches)[positions] / (positions + 1))))
+234:        first.append(int(positions[0] + 1))
+235:    metrics = {"mAP": float(np.mean(ap) * 100)}
+236:    metrics.update({f"Rank-{rank}": float(np.mean(np.asarray(first) <= rank) * 100)
+237:                    for rank in (1, 5, 10)})
+238:    return {"metrics": metrics, "average_precision": ap, "first_match_rank": first}
+
+tools/train_msvr310_trifusion_oof.py
+27:def build_model(config, signal_config, fold, baseline_fold):
+28:    import torch
+29:    from tools.build_v12_complete_path_oof_targets import _build_v8_experts
+30:    from tools.run_signal_preserving_v5 import _module_state_sha256, _set_seed
+31:
+32:    _set_seed(42)
+33:    signal = new_model(signal_config, fold)
+34:    payload = torch.load(baseline_fold["checkpoint"], map_location="cpu", weights_only=True)
+35:    assert payload["source_ids"] == fold["source_ids"]
+36:    assert payload["heldout_ids"] == fold["heldout_ids"]
+37:    assert payload["fold"] == fold["fold"]
+38:    signal.load_state_dict(payload["model_state_dict"], strict=True)
+39:    signal_state = _module_state_sha256(signal)
+40:    assert signal_state == baseline_fold["training"]["final_state_sha256"]
+41:    model = _build_v8_experts(
+42:        signal, config, signal_checkpoint_sha256=baseline_fold["checkpoint_sha256"],
+43:        num_classes=len(fold["source_ids"]),
+44:    )
+45:    assert all(not p.requires_grad for p in model.baseline.parameters())
+46:    return model, {
+47:        "initial_state_sha256": _module_state_sha256(model),
+48:        "signal_state_sha256": signal_state,
+49:        "signal_checkpoint_sha256": baseline_fold["checkpoint_sha256"],
+50:        "role_weights_loaded": False, "role_initialization_seed": 42,
+51:        "source_ids": fold["source_ids"], "heldout_ids": fold["heldout_ids"],
+52:        "total_parameters": sum(p.numel() for p in model.parameters()),
+53:        "trainable_parameters": sum(p.numel() for p in model.parameters() if p.requires_grad),
+54:        "trainable_names": [n for n, p in model.named_parameters() if p.requires_grad],
+55:    }
+
+tools/train_msvr310_trifusion_oof.py
+68:def output_mapping(output):
+69:    assert output.diagnostics["all_finite"] and output.diagnostics["baseline_exact_prefix"]
+70:    values = {"baseline_only": output.baseline_embedding, "fused": output.fused_embedding,
+71:              **dict(output.branch_embeddings)}
+72:    assert {name: value.shape[1] for name, value in values.items()} == OUTPUT_WIDTHS
+73:    return values
+
+tools/run_signal_baseline_dev.py
+57:def _configure_signal_source(source: Path) -> str:
+58:    commit = subprocess.check_output(
+59:        ["git", "-C", str(source), "rev-parse", "HEAD"], text=True
+60:    ).strip()
+61:    if commit != EXPECTED_SIGNAL_COMMIT:
+62:        raise ValueError(f"Signal source commit is {commit}, expected {EXPECTED_SIGNAL_COMMIT}")
+63:    sys.path.insert(0, str(source))
+64:    return commit
+
+tools/build_v12_complete_path_oof_targets.py
+244:def _build_signal_teacher(
+245:    signal_cfg: Any,
+246:    *,
+247:    num_classes: int,
+248:    camera_num: int,
+249:    view_num: int,
+250:) -> Any:
+251:    from modeling import make_frame
+252:
+253:    return make_frame(
+254:        signal_cfg,
+255:        num_class=num_classes,
+256:        camera_num=camera_num,
+257:        view_num=view_num,
+258:    ).cuda()
+
+tools/build_v12_complete_path_oof_targets.py
+384:def _build_v8_experts(
+385:    signal_model: Any,
+386:    config: dict[str, Any],
+387:    *,
+388:    signal_checkpoint_sha256: str,
+389:    num_classes: int,
+390:) -> Any:
+391:    project_modeling = str(Path(__file__).resolve().parents[1] / "modeling")
+392:    if project_modeling not in sys.path:
+393:        sys.path.append(project_modeling)
+394:    from trifusion.signal_preserving_v8_builder import (
+395:        build_signal_preserving_trifusion_v8_expert_formation,
+396:    )
+397:
+398:    model_config = config["MODEL"]
+399:    return build_signal_preserving_trifusion_v8_expert_formation(
+400:        signal_model,
+401:        signal_checkpoint_sha256=signal_checkpoint_sha256,
+402:        num_classes=num_classes,
+403:        feature_width=int(model_config["FEATURE_WIDTH"]),
+404:        grid_size=tuple(model_config["GRID_SIZE"]),
+405:        adapter_width=int(model_config["ADAPTER_WIDTH"]),
+406:        semantic_width=int(model_config["SEMANTIC_WIDTH"]),
+407:        branch_after_block=int(model_config["BRANCH_AFTER_BLOCK"]),
+408:        expert_modal_width=int(model_config["EXPERT_MODAL_WIDTH"]),
+409:        scale_init=float(model_config["SCALE_INIT"]),
+410:        gradient_checkpointing=bool(model_config["GRADIENT_CHECKPOINTING"]),
+411:    ).model.cuda()
+
+tools/run_signal_preserving_v5.py
+257:def _set_seed(seed: int) -> None:
+258:    import numpy as np
+259:    import torch
+260:
+261:    random.seed(seed)
+262:    np.random.seed(seed)
+263:    torch.manual_seed(seed)
+264:    torch.cuda.manual_seed(seed)
+265:    torch.cuda.manual_seed_all(seed)
+266:    torch.backends.cudnn.deterministic = True
+267:    torch.backends.cudnn.benchmark = True
+
+tools/run_signal_preserving_v5.py
+523:def _module_state_sha256(module: Any) -> str:
+524:    digest = hashlib.sha256()
+525:    for name, tensor in sorted(module.state_dict().items()):
+526:        digest.update(name.encode("utf-8"))
+527:        digest.update(tensor.detach().cpu().contiguous().numpy().tobytes())
+528:    return digest.hexdigest()
+
+tools/run_signal_preserving_v5.py
+568:def _training_batch(raw_batch: Any) -> tuple[dict[str, Any], Any]:
+569:    import torch
+570:
+571:    images, labels, camera_ids, _view_ids, _paths = raw_batch
+572:    images = {name: tensor.cuda(non_blocking=True) for name, tensor in images.items()}
+573:    labels = labels.cuda(non_blocking=True)
+574:    camera_ids = camera_ids.cuda(non_blocking=True)
+575:    return (
+576:        {
+577:            "images": images,
+578:            "modality_mask": torch.ones(
+579:                labels.shape[0], 3, dtype=torch.bool, device="cuda"
+580:            ),
+581:            "camera_ids": camera_ids,
+582:        },
+583:        labels,
+584:    )
