@@ -22,6 +22,7 @@ assert proof['summary_sha256']==hashlib.sha256((root/mode/'summary.json').read_b
 if mode=='q1':assert pipeline['status']=='COMPLETE_VERIFIED_'+summary['status']
 paths=[p for p in (root/mode).rglob('*') if p.is_file() and p.suffix in ('.json','.jsonl','.csv','.md','.log')]
 paths += [root/'t0.json',root/'t0.log',root/(mode+'.log'),root/(mode+'_cpu.json'),root/(mode+'_cpu.log')]
+if mode=='q1':paths.append(root/'pipeline.json')
 rows=[]
 for p in sorted(paths):
     data=p.read_bytes();data.decode('utf-8')

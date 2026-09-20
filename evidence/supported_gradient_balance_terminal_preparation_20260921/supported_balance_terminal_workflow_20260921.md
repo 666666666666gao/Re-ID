@@ -23,3 +23,9 @@ Original wrapper 42758; Q1 44804. Live processes must be checked before assuming
 7. Publish complete text/code/reports, update current master entry and append next section, sync desktop and remote by SHA. Preserve unrelated dirty files and all required remote checkpoints/arrays. Document commits need not equal wrapper execution commit; verify actual source bindings.
 
 Keep original seed42, initialization, source queue, candidate rules, fixed endpoint, 13 auxiliary objectives and all gates. Do not use partial results for design. M0 audit and Q1 scientific qualification are separate. Official results are unchanged until a separately authorized qualifying official run actually finishes. Goal remains ACTIVE/UNMET.
+
+## Terminal intake correction (2026-09-21 07:10)
+
+The Q1 intake now also copies the byte-exact terminal `pipeline.json`; the generic all-ranking replay requires that file and its terminal summary/CPU hashes. Previously only its parsed object was embedded in the inventory. Both helper and embedded payload parse successfully; no incomplete Q1 intake or ranking replay was run.
+
+After complete intake, run the unchanged `tools/audit_msvr_paired_ranking_text.py` with `--candidate balanced --cpu-status PASS_COMPLETE_SUPPORTED_GRADIENT_BALANCE_Q1`, the actual complete summary SHA, the intake root, and a new output directory. It checks all 600 queries/60 identities, 2,069,520 ranking positions, both registered gate groups, and writes 3000 query-output plus 300 identity-output rows. This text replay does not load arrays/models and is executor verification, not independent review.
