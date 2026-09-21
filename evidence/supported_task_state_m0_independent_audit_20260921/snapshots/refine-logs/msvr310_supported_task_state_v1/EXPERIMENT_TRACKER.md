@@ -1,6 +1,6 @@
 # Supported task-state V1 tracker
 
-2026-09-21 current status: M0_ENGINEERING_VERIFIED; full Q1 RUNNING. Seed42 only. Independent M0 audit WARN with no engineering blockers, same-family/provisional/backend unattested. No completed Q1 or new official result.
+2026-09-21. IMPLEMENTATION_IN_PROGRESS. Seed42 only. No model training, no heldout or official access.
 
 | Stage | Current state | Evidence |
 |---|---|---|
@@ -9,12 +9,10 @@
 | Remote CPU synthetic arithmetic | PASS_SYNTHETIC_CPU_ONLY | Native torch2.5.1+cu121; CUDA not initialized; 12 steps per arm, 24 exact save/load continuations |
 | Fresh kernel review | PASS_KERNEL_ONLY | Zero blockers; same-family/provisional, backend unattested; not trainer integration clearance |
 | Trainer/AMP/state logging integration | IMPLEMENTED_CODE_REVIEW_PASS | Must retain complete current+history R and direct A, original heads, new optimizer/scaler state checkpoint |
-| Config/T0/complete CPU verifier | T0_AND_M0_CPU_PASS | Original stage exits 0; complete M0 evidence and independent artifact audit |
-| Real-source M0 | PASS_ENGINEERING_ONLY | 248 steps; full original CPU verification; independent audit WARN with scope limits |
-| Full six-end Q1 | RUNNING | Original launch 12:13:58, PID 80455; no complete terminal result |
+| Config/T0/complete CPU verifier | IMPLEMENTED_NOT_RUN | Fixed config and runner; full review PASS, remote preflight pending |
+| Real-source M0 | NOT_RUN | Synthetic arithmetic does not substitute |
+| Full six-end Q1 | NOT_RUN | Requires complete engineering gates and integration review |
 | Official evaluation | NOT_RUN | No new official result |
-
-## Historical implementation notes (retained; current state is above)
 
 Shared synthetic arm equals native AdamW exactly for tested parameters. Split maximum parameter error2.980232238769531e-7 versus summing independently stepped native task directions; arithmetic summation order differs. Unsupported steps preserve rank moments and suppress its direction, observed-zero rank advances moments, decay occurs once, heads match native, nonfinite task buffer rejected before all state/parameter mutation. No retrieval or real-model conclusion follows.
 
@@ -45,8 +43,3 @@ Integration review PASS_INTEGRATION_CODE_REVIEW, same-family/provisional/backend
 ## 2026-09-21 12:14 runtime milestone
 
 Original M0 and M0_CPU exited 0; complete 248-step text intake and analysis archived. Original Q1 PID 80455 started 12:13:58; wrapper 78254 verified live. Independent full M0 audit pending. No completed Q1 or new official result. See master section 41.244.
-
-
-## Independent M0 audit closure
-
-WARN / PASS_ENGINEERING_ONLY, no engineering blocker. Full original gates retained. Deterministic checks cover 248 rows, 90 component references, 4760 saved moment tensors and six saved capacity model state reconstructions. No real unsupported M0 step occurred. Actual update logs provide before/after parameter geometry, not task-specific update directions. First-step Mamba scalar gradient witnesses differ slightly across arms (maximum 4.0325888398760066e-7); no bitwise gradient-vector equality is claimed. Full Q1 needs its own complete evidence and audit. Preregistered plan and bound execution files remain unchanged.

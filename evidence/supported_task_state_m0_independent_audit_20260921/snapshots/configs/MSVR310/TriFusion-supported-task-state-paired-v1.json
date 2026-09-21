@@ -1,0 +1,59 @@
+{
+  "seed": 42,
+  "temperature": 0.01,
+  "fused_metric_weight": 1,
+  "memory": {
+    "capacity": 512,
+    "maximum_age": 8,
+    "warmup_steps": 65,
+    "capacity_warmup_steps": 2,
+    "overfit_warmup_steps": 2
+  },
+  "training_epochs": 20,
+  "minimum_free_bytes": 4294967296,
+  "maximum_expected_additional_disk_bytes": 3221225472,
+  "output_parent": "/root/trifusion-storage/artifacts",
+  "estimated_m0_minutes": [
+    15,
+    30
+  ],
+  "estimated_q1_gpu_hours": [
+    4,
+    6
+  ],
+  "official_test_access": false,
+  "heldout_access_only_after_m0": true,
+  "new_trainable_parameters": 0,
+  "whole_goal_achieved": false,
+  "schema": "msvr310-supported-task-state-paired-v1",
+  "previous_config": "configs/MSVR310/TriFusion-cross-scene-smooth-ap-paired-v1.json",
+  "candidate_reduction": "mean_eligible_anchors",
+  "candidate_positive_rule": "same_identity_different_scene",
+  "zero_eligible_batch": "connected_zero_fused_metric_other_thirteen_unchanged",
+  "source_support": "evidence/smooth_ap_cross_scene_support_20260909/smooth_ap_cross_scene_support_20260909.json",
+  "project_file_sha256": {
+    "tools/msvr_task_state_optimizer.py": "754d8ff6a315e4389f1d5d64c231c440fe179b52e02a87157d838840b8db28f4",
+    "tools/msvr_task_state_records.py": "426411a2d10de5841abd40226651a433b83c512ce462fa1e6516e819eca1c010",
+    "tools/train_msvr_supported_task_state.py": "0e6237cd97d545d84fff8f03772c9ea7a2efb82e768ecf0024d80aefc7f71d92",
+    "tools/check_msvr_task_state_math.py": "540bc77f801560b161f87fdf4ed7f97ddec1fce4c7d72ad1f1b063fb28f3eaa1",
+    "tools/check_msvr_supported_task_state.py": "a1a792e63ebdf2ec07006a7c9239e47e9e97993ee374c4d734de637ccda3b618",
+    "tools/verify_msvr_task_state_records.py": "bcf2c6877f1de70c347544c43282c964ca53195ec9772e8cbdc3971cf466843c",
+    "tools/verify_msvr_supported_task_state.py": "79d042691338fd5702124f4ae4ec687b1c4ec7a34a7f2686e292c47524a021c6",
+    "tools/run_msvr_supported_task_state.py": "55db0eb16da408772ac67dbb67843a5256e24edc468a6437f29e5bd60f0847ee",
+    "configs/MSVR310/TriFusion-cross-scene-smooth-ap-paired-v1.json": "e5326b52ebb12dced24ebfac788db2e2bb5bdca0b50c6c4dec64e596f1af05a1",
+    "refine-logs/msvr310_supported_task_state_v1/EXPERIMENT_PLAN.md": "eff715493bc5423f64769a841fcfe6002f951ca9c67a629cac98495dbcd855fb",
+    "tools/msvr_supported_gradient_balance.py": "27ae6eb74a83d405eabb4a30a60156226d9dc93e70d78847cf24b0f57bd774c0",
+    "tools/verify_msvr_supported_gradient_balance_stats.py": "5f8f157b39a9b11dd6ac5447b2a8619915cf20ddb6815fdc4ac107d7a571b327"
+  },
+  "task_state_rule": "equal_direct_ra_supported_split_adamw_v1",
+  "both_endpoint_objective": "cross_scene_smooth_ap",
+  "both_endpoint_role_input": "direct_rank_plus_direct_auxiliary",
+  "rank_state_support": "warmup_or_eligible_cross_scene_anchor",
+  "rank_state_transition": "preserve_triplet_moments_at_ap_activation",
+  "task_preconditioned_update_reduction": "sum",
+  "role_task_weights": [
+    1,
+    1
+  ],
+  "classification_head_rule": "original_current_total_gradient"
+}
