@@ -1,0 +1,127 @@
+{
+  "date": "2026-09-21",
+  "verdict": "PASS_INTEGRATION_CODE_REVIEW",
+  "initial_verdict": "FIXES_REQUIRED",
+  "review_independence": "same-family",
+  "acceptance_status": "provisional",
+  "reviewer_backend_identity": "unattested",
+  "reviewer_delegated_further": false,
+  "repo_modified_by_reviewer": false,
+  "remote_workloads_started_by_reviewer": 0,
+  "reviewer_model_forwards": 0,
+  "reviewer_optimizer_updates": 0,
+  "repo": "C:/Users/gb/.trifusion_github_publish_22c3bee",
+  "git_head_at_final_review": "1058f63b43deea7ae9c1133694d4384864e4e816",
+  "reviewed_config": "configs/MSVR310/TriFusion-supported-task-state-paired-v1.json",
+  "reviewed_config_sha256": "4ebedda4a10d5e535d6820aa05684b7f707f7a0b8308d454b2316e9b3a61f3c3",
+  "current_config_bound_files_checked": 12,
+  "current_config_bound_files_match": true,
+  "blocking_findings": [],
+  "nonblocking_code_defects": [],
+  "resolved_findings": [
+    {
+      "id": "V1",
+      "severity": "BLOCKING_FOR_REVIEW_CLOSURE",
+      "status": "RESOLVED_BY_EXECUTOR_AND_RECHECKED",
+      "title": "Support clocks were not bound to independently reconstructed source eligibility",
+      "before_location": "tools/verify_msvr_task_state_records.py:11-12 (original 68-line revision)",
+      "evidence": "The original verifier derived wanted from audit.support.eligible_anchors and checked the resulting rank clock. It did not compare that support object against identities, scenes, historical candidates, or the independently replayed cross_scene_positive_counts. The sealed R2 verify_balance did make that comparison.",
+      "impact": "A consistently wrong support flag and rank clock could pass the new scalar-state checks despite real cross-scene positive support. Support is the treatment-defining state transition.",
+      "minimal_fix": "Reconstruct cross-scene positive counts and the support dictionary from already-recorded identities/scenes/memory, bind the relation counts, and derive wanted from those reconstructed values.",
+      "after_location": "tools/verify_msvr_task_state_records.py:11-23",
+      "validation": "Independent stdlib audit-prefix regression: wrong_support_consistent_wrong_clock was accepted before and rejected after."
+    },
+    {
+      "id": "V2",
+      "severity": "BLOCKING_FOR_REVIEW_CLOSURE",
+      "status": "RESOLVED_BY_EXECUTOR_AND_RECHECKED",
+      "title": "Required direct-component references and update witnesses were optional to the verifier",
+      "before_location": "tools/verify_msvr_task_state_records.py:14-35 and tools/verify_msvr_supported_task_state.py:162-177",
+      "evidence": "The top-level verifier required one capacity direct-total check, but verify_states allowed all per-role direct R/A component references to be empty. It also did not validate actual_parameter_updates or total backward counters. These checks existed in the sealed R2 scalar verifier.",
+      "impact": "An M0 record could omit the required five component references for each of three roles and still satisfy this verifier's audit portion. Missing/nonfinite update witnesses and wrong aggregate backward counts were not rejected.",
+      "minimal_fix": "Require references exactly when the direct-total check exists, require all three roles and five components, enforce 15 component checks and four direct backward calls per capacity, check per-step/total counters, and validate the existing update-pair witnesses.",
+      "after_location": "tools/verify_msvr_task_state_records.py:25-57",
+      "validation": "Independent stdlib audit-prefix regression: missing_direct_component_references, missing_role_update_witnesses, nonfinite_role_update_witness, and wrong_total_backward_count were accepted before and rejected after; valid fixture accepted both."
+    }
+  ],
+  "required_code_patches": [],
+  "launch_assessment": {
+    "t0_m0": "Code-review gate satisfied provisionally; fixed T0/M0 may proceed after the existing remote GPU/disk/environment preflight.",
+    "q1": "Conditional on actual fixed M0 engineering PASS and its complete CPU verifier PASS under the same final config. This review is not M0 or Q1 evidence.",
+    "full_pipeline": "The registered T0 -> M0 -> M0 CPU -> Q1 -> Q1 CPU sequence can be used with its existing fail-stop gates; no gate bypass, partial promotion, or failed-study rerun.",
+    "scientific_reporting": "Requires complete six-endpoint results, full CPU replay, and the registered independent integrity review; no scientific qualification is established here."
+  },
+  "reviewed_files": [
+    "refine-logs/msvr310_supported_task_state_v1/EXPERIMENT_PLAN.md",
+    "configs/MSVR310/TriFusion-supported-task-state-paired-v1.json",
+    "tools/msvr_task_state_optimizer.py",
+    "tools/msvr_task_state_records.py",
+    "tools/train_msvr_supported_task_state.py",
+    "tools/verify_msvr_task_state_records.py",
+    "tools/verify_msvr_supported_task_state.py",
+    "tools/check_msvr_supported_task_state.py",
+    "tools/run_msvr_supported_task_state.py",
+    "tools/check_msvr_task_state_math.py"
+  ],
+  "assessments": {
+    "direct_rank_current_plus_history": "PASS_STATIC",
+    "direct_auxiliary_other_thirteen": "PASS_STATIC",
+    "both_arms_equal_direct_ra": "PASS_STATIC; new control is intentionally not exact sealed R2 replay",
+    "amp_unscale_and_gradscaler_kwargs": "PASS_STATIC_AND_SUPPLIED_CPU_INTERFACE_EVIDENCE; CUDA model execution pending M0",
+    "pre_mutation_nonfinite_stop": "PASS_STATIC; p.grad and separate R/A checked before kernel mutation",
+    "warmup_task_states_from_first_update": "PASS_STATIC",
+    "warmup_to_ap_state_preservation": "PASS_STATIC",
+    "absent_rank_support_and_observed_zero": "PASS_STATIC_AND_KERNEL_SYNTHETIC_EVIDENCE",
+    "head_total_gradient_path": "PASS_STATIC_AND_KERNEL_NATIVE_COMPARISON",
+    "weight_decay_once": "PASS_STATIC_AND_KERNEL_NATIVE_COMPARISON",
+    "state_disk_save_reload": "PASS_STATIC_AND_EXECUTOR_SUPPLIED_SYNTHETIC_FULL_VERIFIER_RECEIPT",
+    "source_support_clock_binding": "PASS_AFTER_V1_FIX",
+    "m0_reference_and_update_witness_coverage": "PASS_AFTER_V2_FIX",
+    "final_only_full_gallery_identity_and_scene_protocol": "UNCHANGED_IN_REVIEWED_EXECUTION_AND_REPLAY_PATHS",
+    "complete_training_records": "Per-step components/support/counters and every epoch mean retained; actual future records not yet available"
+  },
+  "validation": {
+    "independent_reviewer_execution": {
+      "artifact": "verifier_audit_prefix_regression.json",
+      "script": "check_verifier_audit_prefix.py",
+      "status": "PASS_NARROW_REGRESSION",
+      "valid_fixture_accepted_before_and_after": true,
+      "invalid_variants_accepted_before_rejected_after": 5,
+      "scope": "Verbatim audit-validation AST prefix before disk loading, synthetic scalar fixtures, stdlib only. Not a full verifier run or actual tensor/model training.",
+      "runtime": "C:/Users/gb/AppData/Roaming/uv/python/cpython-3.13-windows-x86_64-none/python.exe"
+    },
+    "supplied_kernel_evidence": {
+      "review": "evidence/supported_task_state_kernel_20260921/review/REVIEW.json",
+      "verdict": "PASS_KERNEL_ONLY",
+      "native_reference_steps_per_arm": 12,
+      "split_max_native_parameter_error": 2.980232238769531e-7,
+      "gradscaler_cpu_steps_per_arm": 6,
+      "cuda_initialized": false,
+      "independently_reexecuted_by_this_reviewer": false
+    },
+    "supplied_disk_serialization_evidence": {
+      "receipt": "D:/Program Files/UserCache/gb/codex/tmp/task_state_serialization_check_r2_20260921.json",
+      "status": "PASS_SYNTHETIC_DISK_STATE_CHECK",
+      "execution_owner": "parent_executor",
+      "parameters": 203,
+      "control_moment_tensors": 406,
+      "split_moment_tensors": 784,
+      "control_and_split_exact_disk_payload_and_reload": true,
+      "corrupted_support_rejected": true,
+      "scope": "203 small synthetic tensors; no CUDA initialization, model forwards, images, or actual training.",
+      "independently_reexecuted_by_this_reviewer": false
+    },
+    "sealed_r2_comparison": "Compared trainer and complete verifier against evidence/supported_gradient_balance_q1_independent_audit_20260921/snapshots/repo/tools; consulted original support/reference scalar verifier and unchanged model/evaluation helpers."
+  },
+  "limitations": [
+    "No real-source M0, real-model CUDA AMP step, measured GPU peak, or new Q1 was executed by this reviewer.",
+    "Final large optimizer states, model checkpoints, and retrieval arrays do not yet exist for this run.",
+    "CPU serialization receipt was produced by the parent executor and reviewed as supplied evidence.",
+    "Per-step gradient vectors and the complete parameter trajectory are not independently regenerated by the saved-record verifier.",
+    "actual_parameter_updates contains scalar before/after parameter geometry and change norm; it does not retain full per-task preconditioned update vectors.",
+    "The retained constructor endpoint and parameter/role ordering remain necessary when reconstructing this optimizer; the current save/reload path preserves them.",
+    "Independent integrity review and complete endpoint CPU verification still precede scientific reporting.",
+    "Same-family review and unattested backend identity remain provisional."
+  ]
+}
+

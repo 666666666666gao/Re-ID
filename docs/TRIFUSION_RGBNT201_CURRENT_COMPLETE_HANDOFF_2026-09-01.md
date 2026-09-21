@@ -6892,3 +6892,14 @@ R2完整审查封存后，选择单一后继假设：等权完整排名/辅助�
 证据evidence/supported_task_state_kernel_20260921含合成输出、脚本、空间估算与独立kernel审查。仅核心审查，不等于完整训练集成许可。训练器、启动配置、完整CPU核验器尚未接入，M0/Q1均NOT_RUN。下一步完成这些接口及完整代码审查，然后按原阶段门执行；不得把合成PASS记作M0。
 
 空间实查：输出卷4430852096字节空闲，GPU无计算进程。上一轮M0/Q1产物按扩展名统计，新增14份优化器状态采用保守估算；启动前再检查总预算与磁盘。没有删除任何权重，没有读官方图像。原Goal ACTIVE/UNMET，正式结果不变。
+
+
+## §41.241 任务状态 V1 完整集成与启动前审查（2026-09-21）
+
+训练器、CPU核验器、T0和持久runner已实现，配置configs/MSVR310/TriFusion-supported-task-state-paired-v1.json。两端相同直接R/A，完整历史导数先合入R再unscale，head保持总梯度；split按任务预条件后相加。新增每步任务矩范数/时钟、实际参数变化、最终optimizer/scaler保存与磁盘精确恢复。原网络、完整图库、三折和科学门槛未变。
+
+新鲜独立集成审查PASS_INTEGRATION_CODE_REVIEW，same-family/provisional/backend未独立证明。首次审查发现支持标志未绑定真实来源关系、分项参考/更新日志可缺省；已在训练前修复。独立局部回归证实五类错误见证此前可通过、修复后均拒绝。没有放宽阈值。审查与修复记录evidence/supported_task_state_integration_20260921/review。
+
+实际远端CPU合成203小参数磁盘往返检查通过：control406/split784矩张量、任务计数和scaler精确，错误支持拒绝。修复后重新通过。没有CUDA初始化、模型前向、训练或官方图像访问；合成检查不替代M0。
+
+当前READY_FOR_T0_M0，尚未启动。持久runner按T0→M0→完整M0_CPU→Q1→完整Q1_CPU固定执行，任何非零退出停止。Q1只在原工程门和全量CPU门通过后允许，仍固定seed42/六端终点，不据中间检索改设计。预计M0 15–30分钟、Q1 4–6小时，随后按实际进度调整观察时间。启动前重新核对GPU空闲、输出卷最低4GiB空间和绑定提交。Goal ACTIVE/UNMET。
