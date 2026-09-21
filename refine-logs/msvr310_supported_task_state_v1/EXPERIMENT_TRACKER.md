@@ -29,3 +29,12 @@ Integration review PASS_INTEGRATION_CODE_REVIEW, same-family/provisional/backend
 
 
 11:59启动核对：T0于11:57:24退出0，用时7.39秒。M0进程78282与wrapper78254经ps确认存活，fold0 control已完成8步capacity（46.28秒）。全M0未结束、M0_CPU与Q1尚未执行；不能据此宣称工程门通过。下一次按预计M0结束窗口观察，不重复启动。
+
+
+## §41.243 M0 五端容量完成及完整接收准备（2026-09-21 12:03）
+
+12:03:26实查wrapper78254及M0进程78282存活，六个容量端已有5端完成8步，fold2 split记录1步。T0已退出0，完整M0未结束，尚无M0_CPU/Q1终态。输出卷3846840320字节空闲，GPU7284MiB/42%使用率；没有保存失败证据。未重启、未改执行配置。
+
+完整M0接收/分析脚本已准备并通过本地AST检查，尚未执行。接收要求m0及m0_cpu原阶段均退出0、248步与CPU凭据匹配，仅读取全部文本，checkpoint/optimizer/距离数组留远端。汇总预计覆盖248步、744角色记录和90分项参考，并明确工程结果不等于检索收益。脚本与本次观测见evidence/supported_task_state_m0_preparation_20260921。
+
+剩余容量及两个100步overfit按原合同继续，下一重点观测预计12:10左右的完整M0/CPU阶段，随后按实际退出凭据接收，不从中间损失认定成功。Goal ACTIVE/UNMET，正式成绩不变。
