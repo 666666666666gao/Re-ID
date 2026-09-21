@@ -1,0 +1,173 @@
+{
+  "observed_at": "2026-09-21T12:19:59.232179+08:00",
+  "pipeline": {
+    "status": "RUNNING",
+    "wrapper_pid": 78254,
+    "code_commit": "cb4f4c37fbedd357ccc0ae4768161d049a280c5d",
+    "config_sha256": "4ebedda4a10d5e535d6820aa05684b7f707f7a0b8308d454b2316e9b3a61f3c3",
+    "started_at": "2026-09-21T11:57:17.039690+08:00",
+    "stages": [
+      {
+        "stage": "t0",
+        "original_pid": 78258,
+        "command": [
+          "/root/miniconda3/envs/tri_reid/bin/python",
+          "-u",
+          "-m",
+          "tools.check_msvr_supported_task_state",
+          "--config",
+          "/root/autodl-tmp/trifusion-v2/TriFusion-ReID/configs/MSVR310/TriFusion-supported-task-state-paired-v1.json",
+          "--output",
+          "/root/trifusion-storage/artifacts/msvr310_supported_task_state_v1_seed42_cb4f4c3/t0.json"
+        ],
+        "started_at": "2026-09-21T11:57:17.040492+08:00",
+        "exit_code": 0,
+        "ended_at": "2026-09-21T11:57:24.427468+08:00",
+        "elapsed_seconds": 7.387555131688714
+      },
+      {
+        "stage": "m0",
+        "original_pid": 78282,
+        "command": [
+          "/root/miniconda3/envs/tri_reid/bin/python",
+          "-u",
+          "-m",
+          "tools.train_msvr_supported_task_state",
+          "--config",
+          "/root/autodl-tmp/trifusion-v2/TriFusion-ReID/configs/MSVR310/TriFusion-supported-task-state-paired-v1.json",
+          "--mode",
+          "m0",
+          "--output-dir",
+          "/root/trifusion-storage/artifacts/msvr310_supported_task_state_v1_seed42_cb4f4c3/m0"
+        ],
+        "started_at": "2026-09-21T11:57:24.429004+08:00",
+        "exit_code": 0,
+        "ended_at": "2026-09-21T12:13:46.682995+08:00",
+        "elapsed_seconds": 982.2549995183945
+      },
+      {
+        "stage": "m0_cpu",
+        "original_pid": 80369,
+        "command": [
+          "/root/miniconda3/envs/tri_reid/bin/python",
+          "-u",
+          "-m",
+          "tools.verify_msvr_supported_task_state",
+          "--config",
+          "/root/autodl-tmp/trifusion-v2/TriFusion-ReID/configs/MSVR310/TriFusion-supported-task-state-paired-v1.json",
+          "--run-dir",
+          "/root/trifusion-storage/artifacts/msvr310_supported_task_state_v1_seed42_cb4f4c3/m0",
+          "--output",
+          "/root/trifusion-storage/artifacts/msvr310_supported_task_state_v1_seed42_cb4f4c3/m0_cpu.json"
+        ],
+        "started_at": "2026-09-21T12:13:46.685053+08:00",
+        "exit_code": 0,
+        "ended_at": "2026-09-21T12:13:58.523311+08:00",
+        "elapsed_seconds": 11.839360797777772
+      },
+      {
+        "stage": "q1",
+        "original_pid": 80455,
+        "command": [
+          "/root/miniconda3/envs/tri_reid/bin/python",
+          "-u",
+          "-m",
+          "tools.train_msvr_supported_task_state",
+          "--config",
+          "/root/autodl-tmp/trifusion-v2/TriFusion-ReID/configs/MSVR310/TriFusion-supported-task-state-paired-v1.json",
+          "--mode",
+          "q1",
+          "--output-dir",
+          "/root/trifusion-storage/artifacts/msvr310_supported_task_state_v1_seed42_cb4f4c3/q1",
+          "--m0-receipt",
+          "/root/trifusion-storage/artifacts/msvr310_supported_task_state_v1_seed42_cb4f4c3/m0/summary.json",
+          "--m0-verification",
+          "/root/trifusion-storage/artifacts/msvr310_supported_task_state_v1_seed42_cb4f4c3/m0_cpu.json"
+        ],
+        "started_at": "2026-09-21T12:13:58.525608+08:00"
+      }
+    ],
+    "free_bytes_before": 4430852096,
+    "gpu_before": "0, 1, 24576\n"
+  },
+  "processes": "   PID STAT     ELAPSED COMMAND\n 78254 Ss         22:43 /root/miniconda3/envs/tri_reid/bin/python -u -m tools.run_msvr_supported_task_state --config /root/autodl-tmp/trifusion-v2/TriFusion-ReID/configs/MSVR310/TriFusion-supported-task-state-paired-v1.json --config-sha256 4ebedda4a10d5e535d6820aa05684b7f707f7a0b8308d454b2316e9b3a61f3c3 --code-commit cb4f4c37fbedd357ccc0ae4768161d049a280c5d --output-dir /root/trifusion-storage/artifacts/msvr310_supported_task_state_v1_seed42_cb4f4c3\n 80455 Rl         06:01 /root/miniconda3/envs/tri_reid/bin/python -u -m tools.train_msvr_supported_task_state --config /root/autodl-tmp/trifusion-v2/TriFusion-ReID/configs/MSVR310/TriFusion-supported-task-state-paired-v1.json --mode q1 --output-dir /root/trifusion-storage/artifacts/msvr310_supported_task_state_v1_seed42_cb4f4c3/q1 --m0-receipt /root/trifusion-storage/artifacts/msvr310_supported_task_state_v1_seed42_cb4f4c3/m0/summary.json --m0-verification /root/trifusion-storage/artifacts/msvr310_supported_task_state_v1_seed42_cb4f4c3/m0_cpu.json\n",
+  "q1_endpoints": [
+    {
+      "endpoint": "fold_0_control",
+      "complete_step_records": 81,
+      "training_complete": false,
+      "receipt_complete": false
+    }
+  ],
+  "epoch_records": [
+    {
+      "event": "supported_task_state_epoch",
+      "endpoint": "control",
+      "fold": 0,
+      "mode": "comparison",
+      "epoch": 1,
+      "optimizer_steps": 13,
+      "learning_rate": 7.000000000000001e-05,
+      "mean_loss": 4.000792136559119,
+      "elapsed_seconds": 39.840587951242924
+    },
+    {
+      "event": "supported_task_state_epoch",
+      "endpoint": "control",
+      "fold": 0,
+      "mode": "comparison",
+      "epoch": 2,
+      "optimizer_steps": 13,
+      "learning_rate": 0.00014000000000000001,
+      "mean_loss": 3.4807573648599477,
+      "elapsed_seconds": 37.63544441573322
+    },
+    {
+      "event": "supported_task_state_epoch",
+      "endpoint": "control",
+      "fold": 0,
+      "mode": "comparison",
+      "epoch": 3,
+      "optimizer_steps": 13,
+      "learning_rate": 0.00020999999999999998,
+      "mean_loss": 2.7775227289933424,
+      "elapsed_seconds": 37.23511002212763
+    },
+    {
+      "event": "supported_task_state_epoch",
+      "endpoint": "control",
+      "fold": 0,
+      "mode": "comparison",
+      "epoch": 4,
+      "optimizer_steps": 13,
+      "learning_rate": 0.00028000000000000003,
+      "mean_loss": 2.123962328984187,
+      "elapsed_seconds": 37.290362467989326
+    },
+    {
+      "event": "supported_task_state_epoch",
+      "endpoint": "control",
+      "fold": 0,
+      "mode": "comparison",
+      "epoch": 5,
+      "optimizer_steps": 13,
+      "learning_rate": 0.00035,
+      "mean_loss": 1.6741246718626757,
+      "elapsed_seconds": 37.354338547214866
+    },
+    {
+      "event": "supported_task_state_epoch",
+      "endpoint": "control",
+      "fold": 0,
+      "mode": "comparison",
+      "epoch": 6,
+      "optimizer_steps": 13,
+      "learning_rate": 0.00035,
+      "mean_loss": 1.4221159036342914,
+      "elapsed_seconds": 118.40460872091353
+    }
+  ],
+  "output_free_bytes": 3499171840,
+  "project_free_bytes": 1479544832,
+  "gpu": "7396, 100\n"
+}
