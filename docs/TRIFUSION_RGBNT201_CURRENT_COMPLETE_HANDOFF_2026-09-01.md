@@ -6835,3 +6835,8 @@ fresh-none gpt-6-astra/max独立M0审查终态WARN/CLOSED_WITH_LIMITS：A/B/C/D/
 #### §41.237 执行绑定完整保留的复核入口
 
 第一次修复复核q1_cpu_sqrt_recheck在context被原project_file_sha256拦截，未进入完整统计核验，失败记录保留。恢复原verify_msvr_supported_gradient_balance_stats.py精确执行字节；新增tools/recheck_msvr_supported_balance_sqrt.py独立事后核验入口，先验证原文件SHA，再在进程内仅替换x**0.5为math.sqrt并记录修改前后源码SHA，保留精确比较和所有原检查。原训练配置、全部绑定文件和原pipeline保持；不将失败stage重写为PASS。新的复核仍待完成。
+
+
+#### §41.237 加权梯度范数标量检查未闭环
+
+独立入口q1_cpu_bound_sqrt_recheck通过原配置绑定与ratio精确重放，随后停在原stats第77行：balanced加权后范数平方与wR²||R||²+wA²||A||²+2wRwA<R,A>比较。全六端1560步标量诊断执行95343次close比较，唯一超限为fold0 balanced第71步Mamba，5.0530119215775136与5.05301246766921，差5.460916963073714e-7，原阈值5.053012467669209e-7。诊断仅收集原失败，不是验证PASS；所有失败保留。已由experiment-audit要求的新鲜同族审查agent audit_supported_balance_cpu_replay_failure_20260921独立检查实际FP32运算与标量等式、允许的修正范围；尚无最终意见。没有放宽容差、没有训练重启、没有宣告完整Q1科学结论。原CPU与后续复核分别记录，不改写原pipeline。
