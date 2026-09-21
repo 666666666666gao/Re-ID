@@ -26,3 +26,10 @@
 已开始全量基线/协议清点；RGBNT100权重实际SHA复核通过。接下来补全RGBNT201/MSVR310全量Signal入口，以及三个数据集统一方法的完整训练/评价入口。完成工程检查后排入持久队列。交付5输出×3数据集的mAP/R1/R5/R10、训练与评价绑定、CSV/JSON/PDF/LaTeX，负结果同样完整交付。
 
 完整历史报告：results/MSVR310_SUPPORTED_GRADIENT_BALANCE_R2_Q1_2026-09-21.md、MSVR310_CROSS_SCENE_SMOOTH_AP_Q1_2026-09-21.md、TRIFUSION_V27_COMPLETE_COMPARISON_2026-09-07.md、MSVR310_SOURCE_STYLE_V1_Q1_2026-09-07.md、TRIFUSION_RGBNT100_OFFICIAL_COMPARISON_2026-09-06.md。
+
+
+## 用户追加：R2完成后再做V27三数据集正式实验
+
+2026-09-21 用户明确“V27也可以都会做完再试一次”。正式交付扩展为两套独立方法×三个数据集：先完成所选R2在RGBNT201、RGBNT100、MSVR310的完整训练/官方评估，再完成V27来源统计扰动在同三数据集的完整训练/官方评估。适用的全量Signal初始化共用；角色模型分别从登记初始化训练，不将R2与V27混合，不用第一套的官方成绩改变第二套配置。两套都只用seed42，固定终点，全部5路输出的mAP/R1/R5/R10。V27在MSVR310已有内部负结果保持原结论；本次是全量正式测量，不改旧门槛挽救旧版本。
+
+V27复用实际已测的CLIP stem耦合统计扰动（供体与混合系数跨模态共用、统计各自计算、anchor/reference匹配、Signal基线路径不变）；不额外叠加R2的排名/历史/梯度平衡机制。明确区分原方法与各数据集必要输入几何适配。准确配置及数据映射在启动前登记。
