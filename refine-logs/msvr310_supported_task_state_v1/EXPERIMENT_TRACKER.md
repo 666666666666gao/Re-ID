@@ -38,3 +38,8 @@ Integration review PASS_INTEGRATION_CODE_REVIEW, same-family/provisional/backend
 完整M0接收/分析脚本已准备并通过本地AST检查，尚未执行。接收要求m0及m0_cpu原阶段均退出0、248步与CPU凭据匹配，仅读取全部文本，checkpoint/optimizer/距离数组留远端。汇总预计覆盖248步、744角色记录和90分项参考，并明确工程结果不等于检索收益。脚本与本次观测见evidence/supported_task_state_m0_preparation_20260921。
 
 剩余容量及两个100步overfit按原合同继续，下一重点观测预计12:10左右的完整M0/CPU阶段，随后按实际退出凭据接收，不从中间损失认定成功。Goal ACTIVE/UNMET，正式成绩不变。
+
+
+## 2026-09-21 12:14 runtime milestone
+
+Original M0 and M0_CPU exited 0; complete 248-step text intake and analysis archived. Original Q1 PID 80455 started 12:13:58; wrapper 78254 verified live. Independent full M0 audit pending. No completed Q1 or new official result. See master section 41.244.
