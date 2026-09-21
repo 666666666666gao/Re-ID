@@ -180,7 +180,11 @@ def train_roles_r2(model, records, config, directory, *, epochs=20):
 def run(args):
     import torch
 
-    config, baseline, protocol, signal_config, binding, fold, records = load_inputs(args.config.resolve())
+    registered = json.loads(args.config.resolve().read_text(encoding="utf-8"))
+    assert registered["schema"] == "rgbnt100-r2-fixed-full-v1"
+    base_config = (ROOT / registered["base_config"]).resolve()
+    assert _sha256(base_config) == registered["base_config_sha256"]
+    config, baseline, protocol, signal_config, binding, fold, records = load_inputs(base_config)
     assert torch.cuda.is_available()
     assert args.mode in ("main",)
     output_dir = args.output_dir.resolve()
@@ -214,6 +218,7 @@ def run(args):
     summary = {"schema": "rgbnt100-r2-fixed-full-v1", "status": "COMPLETE_R2_FIXED_EPOCH20",
                "dataset": "RGBNT100", "seed": 42, "method": "R2_supported_role_gradient_balance",
                "config": str(args.config.resolve()), "config_sha256": _sha256(args.config.resolve()),
+               "base_config": str(base_config), "base_config_sha256": _sha256(base_config),
                "code_commit": subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=ROOT, text=True).strip(),
                "training_endpoint": 20, "initialization": initialization, "training": training,
                "engineering_checks": checks, "checkpoint": str(checkpoint),
