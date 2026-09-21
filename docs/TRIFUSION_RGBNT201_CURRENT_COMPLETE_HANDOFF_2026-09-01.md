@@ -6910,3 +6910,6 @@ R2完整审查封存后，选择单一后继假设：等权完整排名/辅助�
 执行提交cb4f4c37fbedd357ccc0ae4768161d049a280c5d；配置4ebedda4a10d5e535d6820aa05684b7f707f7a0b8308d454b2316e9b3a61f3c3。run /root/trifusion-storage/artifacts/msvr310_supported_task_state_v1_seed42_cb4f4c3；wrapper78254，启动观察T0子进程78258存活、退出码未产生。GPU启动时空闲，输出卷4430852096字节。
 
 初始状态T0_RUNNING，未获得真实M0/Q1终态。持久pipeline按固定门执行；预计M0 15–30分钟后核对，Q1估计4–6小时。观测超时不重启。启动凭据与脚本evidence/supported_task_state_launch_20260921。正式结果仍无新增，Goal ACTIVE/UNMET。
+
+
+11:59启动核对：T0于11:57:24退出0，用时7.39秒。M0进程78282与wrapper78254经ps确认存活，fold0 control已完成8步capacity（46.28秒）。全M0未结束、M0_CPU与Q1尚未执行；不能据此宣称工程门通过。下一次按预计M0结束窗口观察，不重复启动。
