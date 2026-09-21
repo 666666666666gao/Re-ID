@@ -6840,3 +6840,8 @@ fresh-none gpt-6-astra/max独立M0审查终态WARN/CLOSED_WITH_LIMITS：A/B/C/D/
 #### §41.237 加权梯度范数标量检查未闭环
 
 独立入口q1_cpu_bound_sqrt_recheck通过原配置绑定与ratio精确重放，随后停在原stats第77行：balanced加权后范数平方与wR²||R||²+wA²||A||²+2wRwA<R,A>比较。全六端1560步标量诊断执行95343次close比较，唯一超限为fold0 balanced第71步Mamba，5.0530119215775136与5.05301246766921，差5.460916963073714e-7，原阈值5.053012467669209e-7。诊断仅收集原失败，不是验证PASS；所有失败保留。已由experiment-audit要求的新鲜同族审查agent audit_supported_balance_cpu_replay_failure_20260921独立检查实际FP32运算与标量等式、允许的修正范围；尚无最终意见。没有放宽容差、没有训练重启、没有宣告完整Q1科学结论。原CPU与后续复核分别记录，不改写原pipeline。
+
+
+#### §41.237 独立算术审查与最小修正
+
+新鲜gpt-6-astra/max同族审查支持仅修事后核验：开方使用math.sqrt；第77行加权范数预期值使用实际张量乘法转换后的FP32系数。出错行wR由1.0421102637890658转为1.0421102046966553，wA由0.9578897362109341转为0.9578897356987，修正后范数平方残差4.67142147e-9，小于原阈值。PyTorch2.5.1+cu121 CPU实际转换检查9360次；完整六端1560步的原verify_balance断言在两处修正后全部通过；close容差、控制器精确检查与M0参考门槛均未放宽。合成单元素反例仅验证运算语义，不冒充模型实验。证据evidence/supported_gradient_balance_cpu_equations_audit_20260921。独立审查为same-family/provisional，只批准算术核验修正；完整CPU/Q1审查仍待完成。原执行文件、配置、训练、检查点与pipeline保持不变。
