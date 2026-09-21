@@ -6799,3 +6799,14 @@ fresh-none gpt-6-astra/max独立M0审查终态WARN/CLOSED_WITH_LIMITS：A/B/C/D/
 #### §41.235 三端完成（08:21）
 
 08:21:27原wrapper42758/Q1 44804仍运行。fold0两端及fold1 control已完成，各20epoch/260更新、203/203累计非零、overflow0、固定长度与冻结路径检查通过，检查点/检索/端点回执齐全，3/6终点；fold1 balanced自动进入2/20epoch。fold1控制训练epoch耗时2565.730秒，不含全部端点成本。输出盘4915871744B。原始观察evidence/supported_gradient_balance_q1_progress_20260921/observation_0821.json。未读取局部分数作方法选择，完整Q1/CPU/审查仍待结束，Goal ACTIVE/UNMET。
+
+
+### §41.236 用户新复核接续：单角色五项辅助依赖、AdaTask 边界与 R2 原合同继续（2026-09-21 08:40）
+
+用户补充的53e0c26/07:43快照之后，08:40:02实查原wrapper42758/Q1 44804继续运行，3/6端完整，fold1 balanced完成11/20epoch，GPU7578MiB/100%，输出盘4871094272B。原始文本evidence/supported_gradient_balance_q1_progress_20260921/observation_0840.json。完整六端/CPU/独立审查尚未结束，没有新增正式成绩，不据部分端点选方法或改训练。执行仍1381639/配置9ce36299；Goal ACTIVE/UNMET。
+
+本轮静态核对四个相关代码文件与执行1381639 Git blob逐字一致。全模型除fused排名外确有十三项辅助标量，但单个角色直接连接的辅助只有五项：fused ID、自己的完整分支ID/Triplet、自己的纯残差ID/Triplet；另两角色八项没有到该角色可训练编码器的路径。现行直接求十三项和的导数会自然遵守这项依赖，不需要改训练器。不能用“1对13”替代同角色实际梯度测量。详见refine-logs/msvr310_supported_gradient_balance_v1/ROLE_LOSS_DEPENDENCY_NOTE_20260921.md；本轮没有新张量或GPU试验。
+
+按research技能进行有界原文/作者代码核查，笔记ADATASK_PRIMARY_SOURCE_NOTE_20260921.md。AdaTask论文Algorithm2和作者固定84853de代码已经分别维护任务一/二阶矩、各任务预条件更新求和；作者实现每参数只有一个共同step，零梯度仍推进状态并可能应用旧动量，weight_decay虽接受但step未应用。因此用户提出的无支持冻结排名矩/独立有效时钟、不应用旧排名动量、只做一次AdamW解耦衰减，属于待登记验证的适配，不能写成原版已有规则或已证创新。用户引用Cityscapes三行指标原表一致，论文三种子/末十epoch平均是作者协议；本项目仍仅seed42固定终点，不据此增加种子。
+
+后继选择继续等待R2完整结果。现行有界EMA组合后进入同一套AdamW状态；范数比与记录的实际总参数变化都不足以分摊任务更新贡献，尚未证明共享优化器历史是失分原因。无支持开关、任务时钟、角色依赖和历史导数各有边界，不为了叙事同时叠加。原始权重/数组继续留远端，当前没有确认可删的依赖权重。
