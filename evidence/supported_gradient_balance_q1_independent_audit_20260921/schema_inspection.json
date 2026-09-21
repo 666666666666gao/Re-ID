@@ -1,0 +1,1197 @@
+{
+  "configs": {
+    "configs\\MSVR310\\TriFusion-supported-gradient-balance-paired-v1.json": {
+      "seed": 42,
+      "temperature": 0.01,
+      "fused_metric_weight": 1,
+      "memory": {
+        "capacity": 512,
+        "maximum_age": 8,
+        "warmup_steps": 65,
+        "capacity_warmup_steps": 2,
+        "overfit_warmup_steps": 2
+      },
+      "training_epochs": 20,
+      "minimum_free_bytes": 4294967296,
+      "maximum_expected_additional_disk_bytes": 3221225472,
+      "output_parent": "/root/trifusion-storage/artifacts",
+      "estimated_m0_minutes": [
+        15,
+        30
+      ],
+      "estimated_q1_gpu_hours": [
+        4,
+        6
+      ],
+      "official_test_access": false,
+      "heldout_access_only_after_m0": true,
+      "new_trainable_parameters": 0,
+      "whole_goal_achieved": false,
+      "schema": "msvr310-supported-gradient-balance-paired-v1",
+      "previous_config": "configs/MSVR310/TriFusion-cross-scene-smooth-ap-paired-v1.json",
+      "candidate_reduction": "mean_eligible_anchors",
+      "candidate_positive_rule": "same_identity_different_scene",
+      "zero_eligible_batch": "connected_zero_fused_metric_other_thirteen_unchanged",
+      "source_support": "evidence/smooth_ap_cross_scene_support_20260909/smooth_ap_cross_scene_support_20260909.json",
+      "project_file_sha256": {
+        "tools/msvr_supported_gradient_balance.py": "27ae6eb74a83d405eabb4a30a60156226d9dc93e70d78847cf24b0f57bd774c0",
+        "tools/train_msvr_supported_gradient_balance.py": "3ab635f97e08edb439c352a742189a0f82cd8f76d73bd1a34ab1a7eb57da5187",
+        "tools/check_msvr_supported_gradient_balance_math.py": "de220190b7c8b9f54890c8d4d0a5750f36a6e3aa71479eb6758385fd48ff24e6",
+        "tools/check_msvr_supported_gradient_balance.py": "c86ceddc77b7461b2781a05adad706dde17cd1857685f5a0661d37e74fa1b36c",
+        "tools/verify_msvr_supported_gradient_balance.py": "3492cb17f4b0283ada07c8c93b2c0fe9088d24639ccd3580989ff3c993a5c4d7",
+        "tools/verify_msvr_supported_gradient_balance_stats.py": "5f8f157b39a9b11dd6ac5447b2a8619915cf20ddb6815fdc4ac107d7a571b327",
+        "tools/run_msvr_supported_gradient_balance.py": "f6ff0065c06b137327cb7fddcd5685de2b473ab20a126d479a889b8dbd1b8e5a",
+        "configs/MSVR310/TriFusion-cross-scene-smooth-ap-paired-v1.json": "e5326b52ebb12dced24ebfac788db2e2bb5bdca0b50c6c4dec64e596f1af05a1",
+        "refine-logs/msvr310_supported_gradient_balance_v1/EXPERIMENT_PLAN.md": "c55fffb7b5ab5523240139ba95ad50fa8b60f1b7eccbd3abf67c8ca47f2ef62c"
+      },
+      "gradient_balance": {
+        "ema_decay": 0.9,
+        "exponent": 0.5,
+        "ratio_min": 0.25,
+        "ratio_max": 4.0,
+        "epsilon": 1e-12,
+        "weight_sum": 2.0
+      },
+      "both_endpoint_objective": "cross_scene_smooth_ap",
+      "balanced_parameter_prefix": "encoder.",
+      "current_rank_backward_each_step": true,
+      "zero_support_ema": "unchanged",
+      "classification_head_rule": "original_current_total_gradient",
+      "implementation_revision": "r2_direct_auxiliary",
+      "current_auxiliary_backward_each_step": true,
+      "auxiliary_gradient_definition": "direct_other_thirteen"
+    },
+    "configs\\MSVR310\\TriFusion-cross-scene-smooth-ap-paired-v1.json": {
+      "seed": 42,
+      "temperature": 0.01,
+      "fused_metric_weight": 1,
+      "memory": {
+        "capacity": 512,
+        "maximum_age": 8,
+        "warmup_steps": 65,
+        "capacity_warmup_steps": 2,
+        "overfit_warmup_steps": 2
+      },
+      "training_epochs": 20,
+      "minimum_free_bytes": 4294967296,
+      "maximum_expected_additional_disk_bytes": 3221225472,
+      "output_parent": "/root/trifusion-storage/artifacts",
+      "estimated_m0_minutes": [
+        10,
+        25
+      ],
+      "estimated_q1_gpu_hours": [
+        3,
+        6
+      ],
+      "official_test_access": false,
+      "heldout_access_only_after_m0": true,
+      "new_trainable_parameters": 0,
+      "whole_goal_achieved": false,
+      "schema": "msvr310-cross-scene-smooth-ap-paired-v1",
+      "previous_config": "configs/MSVR310/TriFusion-smooth-ap-paired-v1.json",
+      "candidate_reduction": "mean_eligible_anchors",
+      "candidate_positive_rule": "same_identity_different_scene",
+      "zero_eligible_batch": "connected_zero_fused_metric_other_thirteen_unchanged",
+      "source_support": "evidence/smooth_ap_cross_scene_support_20260909/smooth_ap_cross_scene_support_20260909.json",
+      "project_file_sha256": {
+        "tools/msvr_cross_scene_smooth_ap.py": "aba6985f3242d190037088b7753d7baa0ae1e0ec05eb7294c0aa8a35823ccedd",
+        "tools/check_msvr_cross_scene_smooth_ap_math.py": "99afda7bdf88106922e37fbb25c46ed3ce03c18840d72e72d177fbdbed4c8831",
+        "tools/train_msvr_cross_scene_smooth_ap.py": "cf7279cb428fac8920252a369d8032ce6bd2e48de09f66fdeb849fe3b147bd04",
+        "tools/verify_msvr_cross_scene_smooth_ap.py": "5986518221fd64cdb9621bbc3f15108ce5be19e9b70b4a60588af65fa7c6eeba",
+        "tools/check_msvr_cross_scene_smooth_ap.py": "6ec509da5dd11138a7852ea1281ad5cc5fcb8f33203d5b2907a3cdcf1d3ed564",
+        "tools/run_msvr_cross_scene_smooth_ap.py": "877acbbe9f8ae58de7a3de849f049f296d7ab4019c10869e1843af01104ce899",
+        "configs/MSVR310/TriFusion-smooth-ap-paired-v1.json": "974328fee25985b19aa36c84f57a557f9120993fecb98b2a902a1b8de8475302",
+        "refine-logs/msvr310_cross_scene_smooth_ap_v1/EXPERIMENT_PLAN.md": "7f519970fc39497692a411969107888bfdd15e347eab15c57d554a85bae615db",
+        "evidence/smooth_ap_cross_scene_support_20260909/smooth_ap_cross_scene_support_20260909.json": "1b8f7f063867ab28057889b1db9b46d6b6dc132380eeceb88bc19899f218e759"
+      }
+    },
+    "configs\\MSVR310\\TriFusion-smooth-ap-paired-v1.json": {
+      "schema": "msvr310-smooth-ap-paired-v1",
+      "seed": 42,
+      "temperature": 0.01,
+      "fused_metric_weight": 1,
+      "memory": {
+        "capacity": 512,
+        "maximum_age": 8,
+        "warmup_steps": 65,
+        "capacity_warmup_steps": 2,
+        "overfit_warmup_steps": 2
+      },
+      "training_epochs": 20,
+      "previous_config": "configs/MSVR310/TriFusion-role-set-paired-v1.json",
+      "core_audit": "refine-logs/msvr310_role_set_v1/EXPERIMENT_AUDIT_Q1.json",
+      "positive_audit": "refine-logs/msvr310_role_set_v1/EXPERIMENT_AUDIT_POSITIVE_COVERAGE.json",
+      "minimum_free_bytes": 4294967296,
+      "maximum_expected_additional_disk_bytes": 3221225472,
+      "output_parent": "/root/trifusion-storage/artifacts",
+      "estimated_m0_minutes": [
+        10,
+        25
+      ],
+      "estimated_q1_gpu_hours": [
+        3,
+        6
+      ],
+      "official_test_access": false,
+      "heldout_access_only_after_m0": true,
+      "new_trainable_parameters": 0,
+      "whole_goal_achieved": false,
+      "project_file_sha256": {
+        "tools/msvr_smooth_ap.py": "9d7c01830493233183b2cc9366ec8742caab1f782208870badc8dc93a94b3b68",
+        "tools/check_msvr_smooth_ap_math.py": "1e7ffb8cbc3fbc44fb5e42a18dbdf369c39bf4aa9f44e1541efdc9a357210dcc",
+        "tools/train_msvr_smooth_ap.py": "67e25e4e5a6ccc97f1973778141baabc53cc9a1f4ccf7e5b0491d3977178c5b4",
+        "tools/verify_msvr_smooth_ap.py": "7d06aee0042d95d06d8e38987ae7988d7e40260b9611e26a68febfed32385b0b",
+        "tools/check_msvr_smooth_ap.py": "61331cae8208b196b837300bcaaeffbb5a379afb9a0e37d461273732fd3c49ea",
+        "tools/run_msvr_smooth_ap.py": "5eba888f65f51c1a135ae5eb0e440e242e8f10f208f4549ad850c4378f52e119",
+        "configs/MSVR310/TriFusion-role-set-paired-v1.json": "5e5ad4663f4c3c58e11b81b475048d6ab6c53675ac2dd0ade60c84f07a62986d",
+        "refine-logs/msvr310_role_set_v1/EXPERIMENT_AUDIT_Q1.json": "80eaf3e9f89cf17bf5985c603f2887a100003761ef7c1fce1b816edd6e27e0af",
+        "refine-logs/msvr310_role_set_v1/EXPERIMENT_AUDIT_POSITIVE_COVERAGE.json": "91d611203758ffff4e470c0138f2efd9140efb37de568003b90bbd0b2089a443",
+        "refine-logs/msvr310_smooth_ap_v1/TRAINING_PLAN.md": "4179f45419daa9ac5473a3c78ff2dba638eb23ed945c42c22bab7ca7ddb09da6"
+      }
+    },
+    "configs\\MSVR310\\TriFusion-role-set-paired-v1.json": {
+      "schema": "msvr310-role-set-paired-v1",
+      "seed": 42,
+      "memory": {
+        "capacity": 512,
+        "maximum_age": 8,
+        "warmup_steps": 65,
+        "capacity_warmup_steps": 2,
+        "overfit_warmup_steps": 2
+      },
+      "training_epochs": 20,
+      "previous_config": "configs/MSVR310/TriFusion-history-gradient-paired-v1.json",
+      "gradient_audit": "refine-logs/msvr310_role_set_v1/EXPERIMENT_AUDIT_GRADIENT.json",
+      "gradient_summary": "/root/autodl-tmp/trifusion-v2/artifacts/msvr310_role_set_gradient_check_v1_seed42_958fb21/probe/summary.json",
+      "gradient_cpu": "/root/autodl-tmp/trifusion-v2/artifacts/msvr310_role_set_gradient_check_v1_seed42_958fb21/cpu.json",
+      "minimum_free_bytes": 4294967296,
+      "maximum_expected_additional_disk_bytes": 3221225472,
+      "output_parent": "/root/trifusion-storage/artifacts",
+      "estimated_m0_minutes": [
+        8,
+        20
+      ],
+      "estimated_q1_gpu_hours": [
+        3,
+        5
+      ],
+      "official_test_access": false,
+      "heldout_access_only_after_m0": true,
+      "new_trainable_parameters": 0,
+      "whole_goal_achieved": false,
+      "project_file_sha256": {
+        "tools/train_msvr_role_set.py": "22df1b983b8ce0b487a69f349ab95dea37df9bb72688bd6fb38167d8d72d0a62",
+        "tools/verify_msvr_role_set.py": "ff7b82247c8adfa9d8ab061604eac088cb48022be527a51c00fa49794c836588",
+        "tools/check_msvr_role_set.py": "26f95518917ce1dccd10b6a22390e55d315197e154e073336bef0bbce8340781",
+        "tools/run_msvr_role_set.py": "8c98c3a8551641228efb7a91c47cb9601c920830f8594570b9adcea72436df39",
+        "tools/msvr_role_set_relations.py": "e311920a08e6bfce426e8a67acf6a9c1b413116d4e906e9ad8ca31dca03800c1",
+        "tools/check_msvr_role_set_relations.py": "a0f0a2c52276f534d740642bbbff12e762460bc3d08930fa725eaf1059040c65",
+        "tools/probe_msvr_role_set_gradients.py": "134bece8c5bc21a899dcce16b540b8983b9dce8131df181fb106600367247fae",
+        "tools/msvr_freshness_probe.py": "4542785ace8307dc8a92325f7d52f2542e526f53ad8c3c2c0d9e91e48ed97886",
+        "tools/probe_msvr_history_candidate_gradients.py": "cfa56255f6dd5a471cf3bfbfc99be3d0693f5c9c5dfc29bd8c6e4d15c79090de",
+        "tools/msvr_instance_memory.py": "b645d9ef29b522f0c639991c1d844a41b55f2ba8def82aef0746e94a145f0da3",
+        "tools/train_msvr_history_gradient.py": "087acdf4b8805f0783a460f5adee0e90227bf20342ae4eda6a033dc27b5869a4",
+        "configs/MSVR310/TriFusion-history-gradient-paired-v1.json": "d03c7be1e738a206bf6db3b55580f53fbf33bfcc9050a46c4ddd0c81d7134c4e",
+        "refine-logs/msvr310_role_set_v1/EXPERIMENT_AUDIT_GRADIENT.json": "5b079844d928683f96a816476e7dd75ec417fdcf2428966484317feba3e8c2ef",
+        "refine-logs/msvr310_role_set_v1/TRAINING_PLAN.md": "da22560fc811127cf21e24c2ece879249a18fcefca23aefadbdd05058cb56c51"
+      },
+      "fixed_file_sha256": {
+        "/root/autodl-tmp/trifusion-v2/artifacts/msvr310_role_set_gradient_check_v1_seed42_958fb21/probe/summary.json": "ddc830548194c29f907e3d8a343c14239e8f8197979fd992a1dedd6c56058c3a",
+        "/root/autodl-tmp/trifusion-v2/artifacts/msvr310_role_set_gradient_check_v1_seed42_958fb21/cpu.json": "2641c95213e2a9fb20afeb4d14afc97ff967678c4d43e9c7248cec61c89f4302"
+      }
+    },
+    "configs\\MSVR310\\TriFusion-history-gradient-paired-v1.json": {
+      "schema": "msvr310-history-gradient-paired-v1",
+      "seed": 42,
+      "memory": {
+        "capacity": 512,
+        "maximum_age": 8,
+        "warmup_steps": 65,
+        "capacity_warmup_steps": 2,
+        "overfit_warmup_steps": 2
+      },
+      "training_epochs": 20,
+      "coordinate_config": "configs/MSVR310/TriFusion-fresh-coordinate-paired-v1.json",
+      "source_audit": "refine-logs/msvr310_history_candidate_gradient_v1/EXPERIMENT_AUDIT_SOURCE.json",
+      "source_summary": "/root/autodl-tmp/trifusion-v2/artifacts/msvr310_history_candidate_gradient_v1_seed42_eebaaa0/source/summary.json",
+      "source_cpu": "/root/autodl-tmp/trifusion-v2/artifacts/msvr310_history_candidate_gradient_v1_seed42_eebaaa0/source/cpu_verification.json",
+      "minimum_free_bytes": 3221225472,
+      "maximum_expected_additional_disk_bytes": 1932735283,
+      "estimated_gpu_hours": [
+        3,
+        5
+      ],
+      "official_test_access": false,
+      "heldout_access_only_after_m0": true,
+      "new_trainable_parameters": 0,
+      "whole_goal_achieved": false,
+      "project_file_sha256": {
+        "tools/train_msvr_history_gradient.py": "087acdf4b8805f0783a460f5adee0e90227bf20342ae4eda6a033dc27b5869a4",
+        "tools/verify_msvr_history_gradient.py": "bea8870dec7355921cf65ab61be68d73d6aab1773d4a60a457f785e91d35636f",
+        "tools/check_msvr_history_gradient.py": "d2a650240cb4ec5a5cdcbc68224461a815eb4505f263939bca7ae90b3d0cded3",
+        "tools/run_msvr_history_gradient.py": "b5412505122721c1ae7b60c27a472c14302b2923d5b6fceb8586c58489f1b593",
+        "tools/probe_msvr_history_candidate_gradients.py": "cfa56255f6dd5a471cf3bfbfc99be3d0693f5c9c5dfc29bd8c6e4d15c79090de",
+        "tools/msvr_freshness_probe.py": "4542785ace8307dc8a92325f7d52f2542e526f53ad8c3c2c0d9e91e48ed97886",
+        "configs/MSVR310/TriFusion-fresh-coordinate-paired-v1.json": "32e22d3a0cd858e96430e4b9f9b0a2093c0fdf30f026d8d334ad92d46cfb94aa",
+        "refine-logs/msvr310_history_gradient_v1/EXPERIMENT_PLAN.md": "152d7568bb985d5ccfb173d86374eec912e9500798488a9863f5a702f5e72be3",
+        "refine-logs/msvr310_history_candidate_gradient_v1/EXPERIMENT_AUDIT_SOURCE.json": "3d288d218f406899d41adfe9227a7022e959b30ae75884ddcbd27561ed249cfe"
+      },
+      "fixed_file_sha256": {
+        "/root/autodl-tmp/trifusion-v2/artifacts/msvr310_history_candidate_gradient_v1_seed42_eebaaa0/source/summary.json": "098ee6cd5edfc273e6f4f6f1d646a2c0685e3ab0a723d7434eac3d3962b3da91",
+        "/root/autodl-tmp/trifusion-v2/artifacts/msvr310_history_candidate_gradient_v1_seed42_eebaaa0/source/cpu_verification.json": "48a39b40816bd4fc547651d6af07c52222c9145b5fc3e30239019e687cfb8f1a"
+      }
+    },
+    "configs\\MSVR310\\TriFusion-fresh-coordinate-paired-v1.json": {
+      "schema": "msvr310-fresh-coordinate-paired-v1",
+      "seed": 42,
+      "memory": {
+        "capacity": 512,
+        "maximum_age": 8,
+        "warmup_steps": 65,
+        "capacity_warmup_steps": 2,
+        "overfit_warmup_steps": 2
+      },
+      "memory_config": "configs/MSVR310/TriFusion-instance-memory-paired-v1.json",
+      "freshness_summary": "/root/autodl-tmp/trifusion-v2/artifacts/msvr310_freshness_v1_seed42_ab67d4c/source/summary.json",
+      "freshness_cpu": "/root/autodl-tmp/trifusion-v2/artifacts/msvr310_freshness_v1_seed42_ab67d4c/source/cpu_verification.json",
+      "minimum_free_bytes": 3221225472,
+      "maximum_expected_additional_disk_bytes": 1932735283,
+      "estimated_gpu_hours": [
+        2,
+        3
+      ],
+      "training_epochs": 20,
+      "official_test_access": false,
+      "heldout_access_only_after_m0": true,
+      "new_trainable_parameters": 0,
+      "whole_goal_achieved": false,
+      "project_file_sha256": {
+        "tools/train_msvr_fresh_coordinate.py": "cdffe7378110f788cfc9de0fc7579d6ec5d026621f3634121cf1f7f0162fdb27",
+        "tools/verify_msvr_fresh_coordinate.py": "543978d257326f5ddee15aa8ef3992fad15b4fd464566c947b93503caba3b98a",
+        "tools/check_msvr_fresh_coordinate.py": "10a55b78fd1b71cfc783bbbdaf4605bbd93065d83dda1987312a07b60a920d88",
+        "tools/run_msvr_fresh_coordinate.py": "2137be6380b4c64b844ac58c16231cd7ba7326d059ae5e45fb98b533b59e6d37",
+        "tools/msvr_freshness_probe.py": "4542785ace8307dc8a92325f7d52f2542e526f53ad8c3c2c0d9e91e48ed97886",
+        "refine-logs/msvr310_fresh_coordinate_v1/EXPERIMENT_PLAN.md": "6d247acd84818a07460bc7c3e3e865d21b77386e9858910fa55f94ab6d9731ee",
+        "configs/MSVR310/TriFusion-instance-memory-paired-v1.json": "40f44b0e6c12771c53a283a5b65ca6a45556e0293b7d48decf5fd518ad771a3d"
+      },
+      "fixed_file_sha256": {
+        "/root/autodl-tmp/trifusion-v2/artifacts/msvr310_freshness_v1_seed42_ab67d4c/source/summary.json": "b1b074a993b0da4468aac5ebd4dc8a3af18c999299f0d45c04e3e52398d97401",
+        "/root/autodl-tmp/trifusion-v2/artifacts/msvr310_freshness_v1_seed42_ab67d4c/source/cpu_verification.json": "98c1daf42a90f065151496eaf9625f336c008b91c0054c35b0587609e1a40ce6"
+      }
+    },
+    "configs\\MSVR310\\TriFusion-instance-memory-paired-v1.json": {
+      "schema": "msvr310-source-instance-memory-paired-v1",
+      "seed": 42,
+      "training_epochs": 20,
+      "base_config": "configs/MSVR310/TriFusion-source-style-paired-v1-r2.json",
+      "base_config_sha256": "848254aab6dc02230a7fd33be0d60fc2560c99fc77cbd320cf0ef2efd655539d",
+      "memory": {
+        "capacity": 512,
+        "maximum_age": 8,
+        "warmup_steps": 65,
+        "capacity_warmup_steps": 2,
+        "overfit_warmup_steps": 2
+      },
+      "source_census_verification": "/root/autodl-tmp/trifusion-v2/artifacts/msvr310_source_relations_v1_seed42_4e57e54/cpu_verification.json",
+      "fixed_file_sha256": {
+        "/root/autodl-tmp/trifusion-v2/artifacts/msvr310_source_relations_v1_seed42_4e57e54/cpu_verification.json": "b392f4ccce6c0b033cf556e4976b20ff2cd515d55e932e89dd856a43cebec85c",
+        "/root/autodl-tmp/trifusion-v2/artifacts/msvr310_source_relations_v1_seed42_4e57e54/summary.json": "617a2fea2a361185a9c767a9103cee24a0290ba08f26b56ad9b03e5532747658",
+        "/root/autodl-tmp/trifusion-v2/artifacts/msvr310_source_relations_v1_seed42_4e57e54/pipeline.json": "da680f8380779f4d79db6712b12ba5568e05d911e6eda626d4e5d04c24862b14"
+      },
+      "project_file_sha256": {
+        "tools/msvr_instance_memory.py": "b645d9ef29b522f0c639991c1d844a41b55f2ba8def82aef0746e94a145f0da3",
+        "tools/train_msvr_instance_memory.py": "c16cdbff37b46decb279aa013e4a53d9273851a59160cda99fbdf0f16cf39f3b",
+        "tools/verify_msvr_instance_memory.py": "89a187399e008ab8465dec51dba08f7299e6b7fb042d95ab336ef0654e5db99c",
+        "tools/check_msvr_instance_memory.py": "10972fe83ce4f4730899fb037d4d6cf7c265cb9a8e8949b12f69c27e81bb59a6",
+        "tools/run_msvr_instance_memory.py": "8ba9a3b62287da93154eaf78a509577d00dcb2941015bbefc3616a22ba43fa55",
+        "refine-logs/msvr310_instance_memory_v1/EXPERIMENT_PLAN.md": "b5fdcb587987e8c0b1cd5f0f4e674a4dd7219b6e90bccdd85cf1f82a52541c48",
+        "tools/msvr310_exact_signal_inference.py": "9b7a3168274266447a1e023cec06c6525499c8ab0357dabf6bbd1b4d5c220ac2",
+        "tools/train_msvr310_source_style.py": "05eca257602a4f2a4707e7952bce8e91060e809d5aec99c53a28e3e12dcd0842",
+        "tools/verify_msvr310_source_style.py": "52c3acc4b5e99a38f1e80573f6d835c854d0a3286b15f3ac5481a863bc3ca6c3"
+      },
+      "minimum_free_bytes": 3221225472,
+      "extra_trainable_parameters": 0,
+      "official_test_access": false,
+      "whole_goal_achieved": false,
+      "prior_method": "Cross-Batch Memory, CVPR2020; independent formula implementation",
+      "original_source": "https://arxiv.org/html/1912.06798"
+    },
+    "configs\\MSVR310\\TriFusion-source-style-paired-v1-r2.json": {
+      "schema": "msvr310-coupled-source-style-paired-v1-r2-runtime-binding",
+      "EXPERIMENT": {
+        "NAME": "msvr310_v27_source_style_paired_v1",
+        "SEED": 42,
+        "SCOPE": "Cross-dataset mechanism validation with fresh independent original roles; not new algorithm or zero-shot transfer"
+      },
+      "BASELINE": {
+        "CONFIG": "configs/MSVR310/Signal-source-oof-v1.json",
+        "CONFIG_SHA256": "ebf767f8c704c9886c80335014e571838400e733ce40665847cd1a9ea6783278",
+        "SUMMARY": "/root/autodl-tmp/trifusion-v2/artifacts/msvr310_signal_source_oof_v1_seed42_bb01d60/baseline/summary.json",
+        "SUMMARY_SHA256": "22a4f3642e88088a8dfcb4acddb610d6566c12d6b765cb7b344b28acdbcea6eb",
+        "EPOCH": 50,
+        "RETRAIN": false
+      },
+      "DATA": {
+        "PROTOCOL": "protocols/msvr310_train_oof_v1.json",
+        "PROTOCOL_SHA256": "4ff4c60bca3d019929add5788212c526387d93d535a2c52aa7b1c3acfd387cb4",
+        "TRAIN_BATCH_SIZE": 64,
+        "NUM_INSTANCES": 8,
+        "NUM_WORKERS": 4,
+        "INPUT_SIZE": [
+          128,
+          256
+        ],
+        "EVAL_BATCH_SIZE": 64
+      },
+      "MODEL": {
+        "ARCHITECTURE": "signal_preserving_collaborative_v8_expert_formation",
+        "FEATURE_WIDTH": 512,
+        "SEMANTIC_WIDTH": 768,
+        "GRID_SIZE": [
+          8,
+          16
+        ],
+        "BRANCH_AFTER_BLOCK": 8,
+        "ADAPTER_WIDTH": 128,
+        "EXPERT_MODAL_WIDTH": 512,
+        "SCALE_INIT": 0.05,
+        "GRADIENT_CHECKPOINTING": true,
+        "RETRIEVAL_OUTPUTS": [
+          "baseline_only",
+          "fused",
+          "cnn",
+          "transformer",
+          "mamba"
+        ]
+      },
+      "OPTIMIZATION": {
+        "OPTIMIZER": "AdamW",
+        "NEW_MODULE_LR": 0.00035,
+        "WEIGHT_DECAY": 0.0001,
+        "MAX_EPOCHS": 20,
+        "WARMUP_EPOCHS": 5,
+        "AMP_INIT_SCALE": 256.0,
+        "CAPACITY_STEPS_PER_FOLD": 8,
+        "OVERFIT_STEPS": 100
+      },
+      "LOSS": {
+        "ID_FUSED": 0.25,
+        "TRIPLET_FUSED": 1.0,
+        "ID_BRANCH": 0.08333333333333333,
+        "TRIPLET_BRANCH": 0.25,
+        "ID_RESIDUAL": 0.08333333333333333,
+        "TRIPLET_RESIDUAL": 0.25,
+        "TRIPLET_MARGIN": 0.3,
+        "LABEL_SMOOTHING": 0.1
+      },
+      "GATES": {
+        "OVERFIT_MAX_EXCESS_RATIO": 0.1,
+        "FUSED_MIN_GAIN_PP": 1.0,
+        "ALL_FOLD_FUSED_NONNEGATIVE": true,
+        "ALL_FULL_BRANCH_MAP_AT_LEAST_SIGNAL": true,
+        "BOOTSTRAP_SEED": 42,
+        "BOOTSTRAP_RESAMPLES": 10000,
+        "BOOTSTRAP_PERCENTILE": 2.5,
+        "BOOTSTRAP_QUANTILE_METHOD": "linear",
+        "BOOTSTRAP_LOWER_STRICTLY_POSITIVE": true,
+        "FUSED_STRICTLY_BEST": true
+      },
+      "PROTOCOL": {
+        "OFFICIAL_TEST_ACCESS": false,
+        "RGBNT201_DEV_ACCESS": false,
+        "RERANKING": false,
+        "MODEL_SELECTION": "fixed_epoch20",
+        "CROSS_FOLD_FEATURE_DISTANCES": false,
+        "M0_WEIGHTS_REUSED": false
+      },
+      "project_source_file_sha256": {
+        "tools/train_msvr310_trifusion_oof.py": "a1771c2e16e129f0a1ecdfb1f5fffcc7d83fe2faf5073033efe520a73c800f87",
+        "tools/train_msvr310_signal_oof.py": "8262e808c65a6e30cda71cb6c20e969a25609486f435e3b62f2f506b18d2104f",
+        "tools/run_signal_preserving_v5.py": "e162184f68778b4991db0f97f26c5fda273b2ad2f7c8db2bbb2d53775eb717e5",
+        "tools/run_signal_baseline_dev.py": "083967f2a38267415b2992da98c2ad9429ebb793f387b45daac1dbb4eb16f365",
+        "tools/build_v12_complete_path_oof_targets.py": "fc13354b1065c46677122ee9cf63816087facca4e0e98ec5e6e2fb0dece141e4",
+        "tools/train_signal_preserving_v17.py": "333886d16f73987accddb70b0780661bb9400b8afd04af01b57e188d34e5228d",
+        "modeling/trifusion/signal_preserving_v8.py": "97a7b5fe6dab882c2ed92ed1db95b9a8f48eae1d99a3a9b145b0cdfc4b8cefbc",
+        "modeling/trifusion/signal_preserving_v8_builder.py": "8afb028957ecff1a0a26497f7d0460bc240b0f8612a3c476b52a9a6667a3049d",
+        "modeling/trifusion/signal_preserving_v13.py": "7b7c4abb220ed234608553c77aeedd5f8ef763abb04cce5b21f1bfce0f4daa62",
+        "modeling/trifusion/aligned_data.py": "3ea362d17660483b554cb599442b6377ace020fa114969b9bdd58906fbceedd5",
+        "modeling/trifusion/criterion.py": "0b2a6370f434828d885945d1a46dd56f6668133ceed45ef359fe71eeca63740a",
+        "modeling/trifusion/state.py": "5fe89c4885507e74ca1833cc18822a4b57e4c2d6fa9a6c6b2e127d1e74b70db9",
+        "modeling/trifusion/builder.py": "8b3620e6be3727709253589a9e59b3efd20a611ba0eec4e8f6b4d0d17eeea4eb",
+        "modeling/trifusion/experts/mamba.py": "c516c7ad937e5eee6a4ed1e3ec33c2afe3522b751d296bd2e4910e4f27a20ee5",
+        "modeling/trifusion/experts/semantic_residual.py": "c8cef9717fd7bd1e5e50b428ac92762455defac2e25857c9e0dfaf82729c2a93",
+        "tests/test_msvr310_signal_scene_protocol.py": "f631e9dac38da47ecaf9a9564056b4ba24f8f3bd58a9ebf4c70071e0c3f2320e",
+        "refine-logs/msvr310_trifusion_v1/EXPERIMENT_PLAN.md": "90f81ce822ee2327163d8a4299e86f14046ceeb51ec17fc8b951acda882c884f",
+        "evidence/trifusion_msvr310_signal_v1_audit_closure_20260906.json": "d60776e17acb004c2dfc9d73c1d51ea103d1950d7c9e07f03a1f4ca55ac58a4f",
+        "configs/RGBNT201/TriFusion-signal-preserving-v8-expert-formation-rtx3090.yml": "3f81049ef8d06af88a4da88d6d71b554da263e246cb94dbe007cb4fc2d09eaab",
+        "evidence/trifusion_msvr310_trifusion_v1_prelaunch_source_bytes_20260906.json": "e5b4af2456829e96992392d50773ca85faa2aa9f940ec8dc77ab51f8b4299f67",
+        "modeling/trifusion/source_style_v27.py": "402b959863222ea4dfa82ea19c4aa63b02dd0aeef8ad3bc18dd00848ce945d8e",
+        "tools/msvr310_exact_signal_inference.py": "9b7a3168274266447a1e023cec06c6525499c8ab0357dabf6bbd1b4d5c220ac2",
+        "configs/MSVR310/TriFusion-source-oof-v1.json": "49d82696fbf5d0d71431ed8d7f1e5f80d7c13215a8bec6cafe77969ee8e276a5",
+        "modeling/trifusion/source_style_msvr.py": "734a296e4073595292f1525b5b8a55da07b60a90ba015ec9473f4ddd48c1346d",
+        "tools/train_msvr310_source_style.py": "05eca257602a4f2a4707e7952bce8e91060e809d5aec99c53a28e3e12dcd0842",
+        "tools/verify_msvr310_source_style.py": "52c3acc4b5e99a38f1e80573f6d835c854d0a3286b15f3ac5481a863bc3ca6c3",
+        "tools/check_msvr310_source_style_contract.py": "f029a5a639baae90b40bb05994d6ce355b8fe27180d0bb5834d404098da6d5b7",
+        "tools/run_msvr310_source_style.py": "b6df7967f2abec182135696c4ca5f9303ab59c59cdd9b68319f249d8bddd113a",
+        "refine-logs/msvr310_source_style_v1/EXPERIMENT_PLAN.md": "b988f8e5f852a5edb052dc716f856409d7cf4eb1d723a7082502ec634bf52826",
+        "evidence/msvr310_style_readiness_20260907/msvr310_style_prelaunch_source_bytes_20260907.json": "1d2266b05b4a2b6c819f36bb5149f03401c748a9527ccbdbd3e3261c1e3ced51",
+        "evidence/msvr310_style_t0_runtime_binding_20260907/msvr_style_metadata_remote_numpy_20260907.json": "87dd4773b75e6485c545149c5e053a1b4c930b9f8babdc5a49ce1d8165c3d0d4",
+        "evidence/msvr310_style_t0_runtime_binding_20260907/msvr_style_plan_numpy_difference_20260907.json": "72c09c1aa7572ef90724ce4c37e9dfa02a43ba2e4bdbeaf546b4be9fa413d971",
+        "evidence/msvr310_style_t0_runtime_binding_20260907/pipeline.json": "a9609f84a346730a580e4ef0936cb4b0cb7924fb24dcf035bfb7109970156263",
+        "evidence/msvr310_style_t0_runtime_binding_20260907/t0.log": "f3ba13723b774b18b9c42e093db1afccd59b2492e0947df3d0ce0ef3d8bceebe",
+        "refine-logs/msvr310_source_style_v1/R2_RUNTIME_PLAN_BINDING.md": "72943d00bc6c5a30ad8497a24004b0b475b3e02ea2220045dbff64c5bd5edc22"
+      },
+      "source_binding_revision": 2,
+      "source_binding_note": "Five original remote LF bytes pinned individually; local CRLF/AST provenance recorded; no runtime normalization",
+      "STYLE": {
+        "PROBABILITY": 0.5,
+        "BETA_ALPHA": 0.1,
+        "VARIANCE_EPSILON": 1e-06,
+        "CROSS_CAMERA_DONOR": true,
+        "SHARED_MODAL_PLAN": true
+      },
+      "SOURCE_METADATA": {
+        "PATH": "evidence/msvr310_style_t0_runtime_binding_20260907/msvr_style_metadata_remote_numpy_20260907.json",
+        "SHA256": "87dd4773b75e6485c545149c5e053a1b4c930b9f8babdc5a49ce1d8165c3d0d4"
+      },
+      "STORAGE": {
+        "MINIMUM_FREE_BYTES": 2147483648,
+        "CHECKPOINT": "non-baseline state plus exact frozen B0 alias mapping",
+        "EXPECTED_TOTAL_GIB_APPROX": 1
+      },
+      "PAIRED_GATES": {
+        "FUSED_MIN_GAIN_PP": 1.0,
+        "ALL_FOLD_FUSED_NONNEGATIVE": true,
+        "ALL_ROLE_GAINS_NONNEGATIVE": true,
+        "BOOTSTRAP_LOWER_STRICTLY_POSITIVE": true,
+        "CANDIDATE_FUSED_STRICTLY_BEST": true,
+        "ALSO_REQUIRE_ORIGINAL_VEHICLE_BASELINE_GATES": true
+      },
+      "RUNTIME_BINDING_REVISION": {
+        "REVISION": 2,
+        "REASON": "31 Float64 least-bit differences; zero applied Float32 differences; exact runtime plan binding",
+        "ORIGINAL_CONFIG": "configs/MSVR310/TriFusion-source-style-paired-v1.json",
+        "ORIGINAL_CONFIG_SHA256": "e7fa4276617ae68b21b050091580d448226daee858ac6f150fe57943b30e66d4"
+      }
+    },
+    "configs\\MSVR310\\Signal-source-oof-v1.json": {
+      "schema": "msvr310-signal-source-oof-v1",
+      "seed": 42,
+      "epochs": 50,
+      "scope": "New dataset Signal baseline only; not V24 promotion or a new TriFusion main method",
+      "dataset_root": "/root/autodl-tmp/trifusion-v2/data/MSVR310",
+      "protocol": "protocols/msvr310_train_oof_v1.json",
+      "protocol_sha256": "4ff4c60bca3d019929add5788212c526387d93d535a2c52aa7b1c3acfd387cb4",
+      "signal_source": "/root/autodl-tmp/trifusion-v2/comparators/Signal-cd1b0a6",
+      "signal_commit": "cd1b0a672d1fe642e7608731cb4899a19dda7d51",
+      "signal_diff_sha256": "b889caca9c4a92689b13eb7e20bd3224067f3e5ed2a3db6825201870ca422741",
+      "signal_source_file_sha256": {
+        "config/defaults.py": "40257d349153e56e345983c99b1638d7c3d77966dfd2f5496fe03c86dc8dbd57",
+        "configs/MSVR310/Signal.yml": "357ca3a989e943ea5348e6206c0d0f69b3c0d35ad9fbadbf68d2786439b8a915",
+        "data/datasets/bases.py": "48f050a7924cebd1e51f8831ba05df78dbccc7049afb0bcf83351d9d1ee23814",
+        "data/datasets/make_dataloader.py": "54c47d798a20955bde224d9c78b42149c3c2ef008b02659141829a553194434f",
+        "data/datasets/msvr310.py": "10b0197e7c97d1067bd63f25afef3cf0c4e64944ff4028c90d1f2f426a200eb9",
+        "engine/processor.py": "aae7afbeed44a9136003f622b5cdfbf17728b8aab236b129f03285f829eb8377",
+        "modeling/make_model.py": "1a88a91d2e5055f5d338996231b16c0e13b2fa7013c74131ca663f16c2655963",
+        "train.py": "243a2f6de57f6113c6f0e35390670ee937bbcea84ab3335eea2b6257b3bcbd8f",
+        "utils/metrics.py": "91604acb7d978462c16904910a645d7d1697c15bf150da529099004c8b5eecb2",
+        "modeling/meta_arch.py": "8b709d5ab4b14ba150a96bbb5e8cc7e6dbbb71dd8bd30cafd7a5cb110ee5a757",
+        "solver/make_optimizer.py": "ada1023a79fcaaed092bce0849a61db9d0253cf8974c494bfb3082d0fd35fee1",
+        "solver/scheduler_factory.py": "c5e20bdffec4b5360faa04f823639c8e5fd8672914813fb96148927c9ee19abc",
+        "data/datasets/sampler.py": "b77902214633a2b06a7c0a80924a737fdb5122984a857f3c6e120a8ad8cce65a",
+        "solver/lr_scheduler310.py": "e15481ca1d40dbab559af1d97367a192d44b9635a1eaf3ce004dcddb14ee7674",
+        "layers/make_loss.py": "7eb7ab953c2bbc52d0c298ef971d0c3ff7000e5e50756fbb5a5fd63ac4c109aa",
+        "modeling/make_model_clipreid.py": "5494c2b7cb9acfb2c727a2cde201ba587184b344667e077eacfe0c3a0c578651",
+        "modeling/AddModule/useA.py": "1f8fef4dcadb89f5097f83b41a699d9f801a23c88ca3eea73b3ad973a56952a9"
+      },
+      "clip_weight": "/root/autodl-tmp/trifusion-v2/pretrained/ViT-B-16.pt",
+      "clip_weight_sha256": "5806e77cd80f8b59890b7e101eabd078d9fb84e6937f9e85e4ecb61988df416f",
+      "train_batch_size": 64,
+      "instances_per_identity": 8,
+      "input_height_width": [
+        128,
+        256
+      ],
+      "grid_height_width": [
+        8,
+        16
+      ],
+      "preflight_steps_per_fold": 8,
+      "preflight_folds": [
+        0,
+        1,
+        2
+      ],
+      "optimizer": "upstream make_optimizer Adam; MSVR classifier base LR x100; remaining parameter groups preserved",
+      "scheduler": "upstream WarmupMultiStepLR; milestones20/40 gamma0.1 warmup_iters0; step(epoch) before each epoch",
+      "stage": "together_CLS_Patch",
+      "amp_init_scale": 256.0,
+      "num_workers": 4,
+      "training_geometry": "shared three-modal flip/crop; independent erasing; existing project transform at128x256",
+      "sampler": "upstream RandomIdentitySampler; actual sampled global record indices saved per step",
+      "checkpoint_selection": "fixed_epoch50; no heldout evaluation until final checkpoint",
+      "retrieval": "3072D direct+SIM, unit normalization, squared Euclidean; same-ID AND same-scene removed",
+      "official_test_access": false,
+      "rgbnt201_dev_access": false,
+      "new_expert_training": false,
+      "project_source_file_sha256": {
+        "tools/train_msvr310_signal_oof.py": "8262e808c65a6e30cda71cb6c20e969a25609486f435e3b62f2f506b18d2104f",
+        "tools/run_signal_baseline_dev.py": "083967f2a38267415b2992da98c2ad9429ebb793f387b45daac1dbb4eb16f365",
+        "tools/run_signal_preserving_v5.py": "e162184f68778b4991db0f97f26c5fda273b2ad2f7c8db2bbb2d53775eb717e5",
+        "tools/build_v12_complete_path_oof_targets.py": "fc13354b1065c46677122ee9cf63816087facca4e0e98ec5e6e2fb0dece141e4",
+        "modeling/trifusion/aligned_data.py": "3ea362d17660483b554cb599442b6377ace020fa114969b9bdd58906fbceedd5",
+        "tests/test_msvr310_signal_scene_protocol.py": "f631e9dac38da47ecaf9a9564056b4ba24f8f3bd58a9ebf4c70071e0c3f2320e",
+        "refine-logs/msvr310_signal_v1/EXPERIMENT_PLAN.md": "23594209e6dcfcd451dadb0ba56100db1b4514c845474c54d891c8a7e544bf86"
+      },
+      "engineering_revision": 2,
+      "upstream_no_gradient_token_selection_frozen": [
+        "SIM.token_selection.W_q.weight",
+        "SIM.token_selection.W_q.bias",
+        "SIM.token_selection.W_k.weight",
+        "SIM.token_selection.W_k.bias",
+        "SIM.token_selection.W_v.weight",
+        "SIM.token_selection.W_v.bias"
+      ]
+    },
+    "configs\\MSVR310\\TriFusion-source-oof-v1.json": {
+      "schema": "msvr310-trifusion-source-oof-v1",
+      "EXPERIMENT": {
+        "NAME": "msvr310_original_three_role_source_oof_v1",
+        "SEED": 42,
+        "SCOPE": "Independently trained full three-role system on a new dataset; not zero-shot transfer, RGBNT201 promotion or ablation"
+      },
+      "BASELINE": {
+        "CONFIG": "configs/MSVR310/Signal-source-oof-v1.json",
+        "CONFIG_SHA256": "ebf767f8c704c9886c80335014e571838400e733ce40665847cd1a9ea6783278",
+        "SUMMARY": "/root/autodl-tmp/trifusion-v2/artifacts/msvr310_signal_source_oof_v1_seed42_bb01d60/baseline/summary.json",
+        "SUMMARY_SHA256": "22a4f3642e88088a8dfcb4acddb610d6566c12d6b765cb7b344b28acdbcea6eb",
+        "EPOCH": 50,
+        "RETRAIN": false
+      },
+      "DATA": {
+        "PROTOCOL": "protocols/msvr310_train_oof_v1.json",
+        "PROTOCOL_SHA256": "4ff4c60bca3d019929add5788212c526387d93d535a2c52aa7b1c3acfd387cb4",
+        "TRAIN_BATCH_SIZE": 64,
+        "NUM_INSTANCES": 8,
+        "NUM_WORKERS": 4,
+        "INPUT_SIZE": [
+          128,
+          256
+        ],
+        "EVAL_BATCH_SIZE": 64
+      },
+      "MODEL": {
+        "ARCHITECTURE": "signal_preserving_collaborative_v8_expert_formation",
+        "FEATURE_WIDTH": 512,
+        "SEMANTIC_WIDTH": 768,
+        "GRID_SIZE": [
+          8,
+          16
+        ],
+        "BRANCH_AFTER_BLOCK": 8,
+        "ADAPTER_WIDTH": 128,
+        "EXPERT_MODAL_WIDTH": 512,
+        "SCALE_INIT": 0.05,
+        "GRADIENT_CHECKPOINTING": true,
+        "RETRIEVAL_OUTPUTS": [
+          "baseline_only",
+          "fused",
+          "cnn",
+          "transformer",
+          "mamba"
+        ]
+      },
+      "OPTIMIZATION": {
+        "OPTIMIZER": "AdamW",
+        "NEW_MODULE_LR": 0.00035,
+        "WEIGHT_DECAY": 0.0001,
+        "MAX_EPOCHS": 20,
+        "WARMUP_EPOCHS": 5,
+        "AMP_INIT_SCALE": 256.0,
+        "CAPACITY_STEPS_PER_FOLD": 8,
+        "OVERFIT_STEPS": 100
+      },
+      "LOSS": {
+        "ID_FUSED": 0.25,
+        "TRIPLET_FUSED": 1.0,
+        "ID_BRANCH": 0.08333333333333333,
+        "TRIPLET_BRANCH": 0.25,
+        "ID_RESIDUAL": 0.08333333333333333,
+        "TRIPLET_RESIDUAL": 0.25,
+        "TRIPLET_MARGIN": 0.3,
+        "LABEL_SMOOTHING": 0.1
+      },
+      "GATES": {
+        "OVERFIT_MAX_EXCESS_RATIO": 0.1,
+        "FUSED_MIN_GAIN_PP": 1.0,
+        "ALL_FOLD_FUSED_NONNEGATIVE": true,
+        "ALL_FULL_BRANCH_MAP_AT_LEAST_SIGNAL": true,
+        "BOOTSTRAP_SEED": 42,
+        "BOOTSTRAP_RESAMPLES": 10000,
+        "BOOTSTRAP_PERCENTILE": 2.5,
+        "BOOTSTRAP_QUANTILE_METHOD": "linear",
+        "BOOTSTRAP_LOWER_STRICTLY_POSITIVE": true,
+        "FUSED_STRICTLY_BEST": true
+      },
+      "PROTOCOL": {
+        "OFFICIAL_TEST_ACCESS": false,
+        "RGBNT201_DEV_ACCESS": false,
+        "RERANKING": false,
+        "MODEL_SELECTION": "fixed_epoch20",
+        "CROSS_FOLD_FEATURE_DISTANCES": false,
+        "M0_WEIGHTS_REUSED": false
+      },
+      "project_source_file_sha256": {
+        "tools/train_msvr310_trifusion_oof.py": "a1771c2e16e129f0a1ecdfb1f5fffcc7d83fe2faf5073033efe520a73c800f87",
+        "tools/train_msvr310_signal_oof.py": "8262e808c65a6e30cda71cb6c20e969a25609486f435e3b62f2f506b18d2104f",
+        "tools/run_signal_preserving_v5.py": "e162184f68778b4991db0f97f26c5fda273b2ad2f7c8db2bbb2d53775eb717e5",
+        "tools/run_signal_baseline_dev.py": "083967f2a38267415b2992da98c2ad9429ebb793f387b45daac1dbb4eb16f365",
+        "tools/build_v12_complete_path_oof_targets.py": "fc13354b1065c46677122ee9cf63816087facca4e0e98ec5e6e2fb0dece141e4",
+        "tools/train_signal_preserving_v17.py": "333886d16f73987accddb70b0780661bb9400b8afd04af01b57e188d34e5228d",
+        "modeling/trifusion/signal_preserving_v8.py": "97a7b5fe6dab882c2ed92ed1db95b9a8f48eae1d99a3a9b145b0cdfc4b8cefbc",
+        "modeling/trifusion/signal_preserving_v8_builder.py": "8afb028957ecff1a0a26497f7d0460bc240b0f8612a3c476b52a9a6667a3049d",
+        "modeling/trifusion/signal_preserving_v13.py": "7b7c4abb220ed234608553c77aeedd5f8ef763abb04cce5b21f1bfce0f4daa62",
+        "modeling/trifusion/aligned_data.py": "3ea362d17660483b554cb599442b6377ace020fa114969b9bdd58906fbceedd5",
+        "modeling/trifusion/criterion.py": "0b2a6370f434828d885945d1a46dd56f6668133ceed45ef359fe71eeca63740a",
+        "modeling/trifusion/state.py": "5fe89c4885507e74ca1833cc18822a4b57e4c2d6fa9a6c6b2e127d1e74b70db9",
+        "modeling/trifusion/builder.py": "8b3620e6be3727709253589a9e59b3efd20a611ba0eec4e8f6b4d0d17eeea4eb",
+        "modeling/trifusion/experts/mamba.py": "c516c7ad937e5eee6a4ed1e3ec33c2afe3522b751d296bd2e4910e4f27a20ee5",
+        "modeling/trifusion/experts/semantic_residual.py": "c8cef9717fd7bd1e5e50b428ac92762455defac2e25857c9e0dfaf82729c2a93",
+        "tests/test_msvr310_signal_scene_protocol.py": "f631e9dac38da47ecaf9a9564056b4ba24f8f3bd58a9ebf4c70071e0c3f2320e",
+        "refine-logs/msvr310_trifusion_v1/EXPERIMENT_PLAN.md": "90f81ce822ee2327163d8a4299e86f14046ceeb51ec17fc8b951acda882c884f",
+        "evidence/trifusion_msvr310_signal_v1_audit_closure_20260906.json": "d60776e17acb004c2dfc9d73c1d51ea103d1950d7c9e07f03a1f4ca55ac58a4f",
+        "configs/RGBNT201/TriFusion-signal-preserving-v8-expert-formation-rtx3090.yml": "3f81049ef8d06af88a4da88d6d71b554da263e246cb94dbe007cb4fc2d09eaab",
+        "evidence/trifusion_msvr310_trifusion_v1_prelaunch_source_bytes_20260906.json": "e5b4af2456829e96992392d50773ca85faa2aa9f940ec8dc77ab51f8b4299f67"
+      },
+      "source_binding_revision": 2,
+      "source_binding_note": "Five original remote LF bytes pinned individually; local CRLF/AST provenance recorded; no runtime normalization"
+    }
+  },
+  "summary_keys": [
+    "status",
+    "mode",
+    "config_sha256",
+    "project_commit",
+    "runner_sha256",
+    "environment",
+    "seed",
+    "folds",
+    "overfit",
+    "heldout_record_forwards",
+    "official_image_reads",
+    "training_cpu_threads",
+    "update_rules",
+    "gradient_balance",
+    "same_candidate_reencoding_and_vjp_algorithm",
+    "same_scalar_objectives",
+    "history_anchors",
+    "all_true_positive_positions",
+    "candidate_positive_rule",
+    "candidate_reduction",
+    "temperature",
+    "other_thirteen_loss_terms_unchanged",
+    "fused_metric_storage_key",
+    "evaluation_cpu_threads",
+    "started_at",
+    "optimizer_steps",
+    "comparison",
+    "m0_receipt_sha256",
+    "m0_verification_sha256",
+    "completed_at"
+  ],
+  "verification": {
+    "status": "PASS_COMPLETE_SUPPORTED_GRADIENT_BALANCE_Q1",
+    "verified_at": "2026-09-21T10:51:18.771555+08:00",
+    "summary_sha256": "6f2d7a919dcb492348198dced490c92665a7dec381dd9644f0130d77792bde2f",
+    "training_checks": [
+      {
+        "fold": 0,
+        "endpoint": "control",
+        "steps": 260,
+        "matrix_elements": 19141888,
+        "max_loss_error": 1.509460679782748e-07,
+        "gradient_balance": {
+          "steps": 260,
+          "supported_steps": 194,
+          "zero_supported_steps": 1,
+          "direct_reference_steps": 0,
+          "all_scalar_state_updates_replayed": true,
+          "parameter_gradient_scope": "runtime witnesses; full per-step gradient vectors not regenerated"
+        },
+        "extra_fresh_role_record_forwards": 97600,
+        "extra_history_vjp_record_forwards": 97024,
+        "historical_candidates": 58133,
+        "harder_anchor_exposures": 11572,
+        "active_historical_steps": 194,
+        "direct_single_group_checks": 0,
+        "all_record_age_identity_masks_exact": true
+      },
+      {
+        "fold": 0,
+        "endpoint": "balanced",
+        "steps": 260,
+        "matrix_elements": 19141888,
+        "max_loss_error": 1.2600176957366926e-07,
+        "gradient_balance": {
+          "steps": 260,
+          "supported_steps": 194,
+          "zero_supported_steps": 1,
+          "direct_reference_steps": 0,
+          "all_scalar_state_updates_replayed": true,
+          "parameter_gradient_scope": "runtime witnesses; full per-step gradient vectors not regenerated"
+        },
+        "extra_fresh_role_record_forwards": 97600,
+        "extra_history_vjp_record_forwards": 97024,
+        "historical_candidates": 58133,
+        "harder_anchor_exposures": 11578,
+        "active_historical_steps": 194,
+        "direct_single_group_checks": 0,
+        "all_record_age_identity_masks_exact": true
+      },
+      {
+        "fold": 1,
+        "endpoint": "control",
+        "steps": 260,
+        "matrix_elements": 19493120,
+        "max_loss_error": 1.3256287179075343e-07,
+        "gradient_balance": {
+          "steps": 260,
+          "supported_steps": 194,
+          "zero_supported_steps": 1,
+          "direct_reference_steps": 0,
+          "all_scalar_state_updates_replayed": true,
+          "parameter_gradient_scope": "runtime witnesses; full per-step gradient vectors not regenerated"
+        },
+        "extra_fresh_role_record_forwards": 97600,
+        "extra_history_vjp_record_forwards": 97024,
+        "historical_candidates": 59505,
+        "harder_anchor_exposures": 11846,
+        "active_historical_steps": 194,
+        "direct_single_group_checks": 0,
+        "all_record_age_identity_masks_exact": true
+      },
+      {
+        "fold": 1,
+        "endpoint": "balanced",
+        "steps": 260,
+        "matrix_elements": 19493120,
+        "max_loss_error": 1.1976314395756305e-07,
+        "gradient_balance": {
+          "steps": 260,
+          "supported_steps": 194,
+          "zero_supported_steps": 1,
+          "direct_reference_steps": 0,
+          "all_scalar_state_updates_replayed": true,
+          "parameter_gradient_scope": "runtime witnesses; full per-step gradient vectors not regenerated"
+        },
+        "extra_fresh_role_record_forwards": 97600,
+        "extra_history_vjp_record_forwards": 97024,
+        "historical_candidates": 59505,
+        "harder_anchor_exposures": 11849,
+        "active_historical_steps": 194,
+        "direct_single_group_checks": 0,
+        "all_record_age_identity_masks_exact": true
+      },
+      {
+        "fold": 2,
+        "endpoint": "control",
+        "steps": 260,
+        "matrix_elements": 19615744,
+        "max_loss_error": 1.2483526035111936e-07,
+        "gradient_balance": {
+          "steps": 260,
+          "supported_steps": 193,
+          "zero_supported_steps": 2,
+          "direct_reference_steps": 0,
+          "all_scalar_state_updates_replayed": true,
+          "parameter_gradient_scope": "runtime witnesses; full per-step gradient vectors not regenerated"
+        },
+        "extra_fresh_role_record_forwards": 97600,
+        "extra_history_vjp_record_forwards": 96512,
+        "historical_candidates": 59984,
+        "harder_anchor_exposures": 11443,
+        "active_historical_steps": 194,
+        "direct_single_group_checks": 0,
+        "all_record_age_identity_masks_exact": true
+      },
+      {
+        "fold": 2,
+        "endpoint": "balanced",
+        "steps": 260,
+        "matrix_elements": 19615744,
+        "max_loss_error": 1.284415817037754e-07,
+        "gradient_balance": {
+          "steps": 260,
+          "supported_steps": 193,
+          "zero_supported_steps": 2,
+          "direct_reference_steps": 0,
+          "all_scalar_state_updates_replayed": true,
+          "parameter_gradient_scope": "runtime witnesses; full per-step gradient vectors not regenerated"
+        },
+        "extra_fresh_role_record_forwards": 97600,
+        "extra_history_vjp_record_forwards": 96512,
+        "historical_candidates": 59984,
+        "harder_anchor_exposures": 11454,
+        "active_historical_steps": 194,
+        "direct_single_group_checks": 0,
+        "all_record_age_identity_masks_exact": true
+      }
+    ],
+    "checked_training_steps": 1560,
+    "checked_memory_distance_elements": 116501504,
+    "checked_history_vjp_record_forwards": 581120,
+    "checked_retrieval_distance_and_rank_elements": 2069520,
+    "files": {
+      "/root/trifusion-storage/artifacts/msvr310_supported_gradient_balance_v1_r2_seed42_1381639/q1/summary.json": {
+        "bytes": 6027318,
+        "sha256": "6f2d7a919dcb492348198dced490c92665a7dec381dd9644f0130d77792bde2f"
+      },
+      "/root/trifusion-storage/artifacts/msvr310_supported_gradient_balance_v1_r2_seed42_1381639/q1/fold_0_control/roles_epoch20.pth": {
+        "bytes": 32735974,
+        "sha256": "4fee97298b318c5183ce5cf60880382480487546bf0c561976fd24a511adfdb9"
+      },
+      "/root/trifusion-storage/artifacts/msvr310_supported_gradient_balance_v1_r2_seed42_1381639/q1/fold_0_control/receipt.json": {
+        "bytes": 748341,
+        "sha256": "0c2126edfcda075129c45135a76ca79948533298354212fa3a8b0c13770307b3"
+      },
+      "/root/trifusion-storage/artifacts/msvr310_supported_gradient_balance_v1_r2_seed42_1381639/q1/fold_0_control/training.json": {
+        "bytes": 468000,
+        "sha256": "b3c7fec9c1cc2790503cce304521b40060180b365c9f460a46c1341922974139"
+      },
+      "/root/trifusion-storage/artifacts/msvr310_supported_gradient_balance_v1_r2_seed42_1381639/q1/fold_0_control/memory_steps.jsonl": {
+        "bytes": 9125950,
+        "sha256": "7eb70933193230a089e8a763146a079d17e2268a23f3461b7f116fc8e337bec4"
+      },
+      "/root/trifusion-storage/artifacts/msvr310_supported_gradient_balance_v1_r2_seed42_1381639/q1/fold_0_control/memory_distances.f32": {
+        "bytes": 76567552,
+        "sha256": "357db21e4733c2d6be8a8929bfc6f91e859e866f47ba9357b46f0962a077a32e"
+      },
+      "/root/trifusion-storage/artifacts/msvr310_supported_gradient_balance_v1_r2_seed42_1381639/q1/fold_0_control/retrieval_arrays.pt": {
+        "bytes": 36906550,
+        "sha256": "9dc8adea07b9459290347c632cf365788c681c4a070a329167f169ad4f8c1241"
+      },
+      "/root/trifusion-storage/artifacts/msvr310_supported_gradient_balance_v1_r2_seed42_1381639/q1/fold_0_control/rankings.json": {
+        "bytes": 4055200,
+        "sha256": "f32d34f3057be17aac98fe3fedf71453b4e63b45285e91615d5c8edd6a2b9fac"
+      },
+      "/root/trifusion-storage/artifacts/msvr310_supported_gradient_balance_v1_r2_seed42_1381639/q1/fold_0_balanced/roles_epoch20.pth": {
+        "bytes": 32735974,
+        "sha256": "91ade9a0c7dacfab41f7f62519b1f2bb54465fded4481f28896965791b483bfb"
+      },
+      "/root/trifusion-storage/artifacts/msvr310_supported_gradient_balance_v1_r2_seed42_1381639/q1/fold_0_balanced/receipt.json": {
+        "bytes": 748321,
+        "sha256": "eb55e6be9114fa1d90617dbdca4a8f0e041c23ce4e8ad27316f241bc48356dd4"
+      },
+      "/root/trifusion-storage/artifacts/msvr310_supported_gradient_balance_v1_r2_seed42_1381639/q1/fold_0_balanced/training.json": {
+        "bytes": 467943,
+        "sha256": "758dc56a401206a4180002a2061b8128273203993b4b502b4bcac929d4953d1f"
+      },
+      "/root/trifusion-storage/artifacts/msvr310_supported_gradient_balance_v1_r2_seed42_1381639/q1/fold_0_balanced/memory_steps.jsonl": {
+        "bytes": 9163613,
+        "sha256": "c28241f7740ce249bb4818f8a6ec607dcef85b7cd66a72689a18acb43051e362"
+      },
+      "/root/trifusion-storage/artifacts/msvr310_supported_gradient_balance_v1_r2_seed42_1381639/q1/fold_0_balanced/memory_distances.f32": {
+        "bytes": 76567552,
+        "sha256": "147f87afa6edbd9ecab9c739775399d9221c73582a9a993ef4837e142f78d1e5"
+      },
+      "/root/trifusion-storage/artifacts/msvr310_supported_gradient_balance_v1_r2_seed42_1381639/q1/fold_0_balanced/retrieval_arrays.pt": {
+        "bytes": 36906550,
+        "sha256": "5f019314ac5be8447e404dc6312abc805c074d0d396eba8ca55cf4826aa930d0"
+      },
+      "/root/trifusion-storage/artifacts/msvr310_supported_gradient_balance_v1_r2_seed42_1381639/q1/fold_0_balanced/rankings.json": {
+        "bytes": 4055200,
+        "sha256": "bacb22e8e4f23ce2a7d32e2a7a0b5b5241decf237b84aecb076766a8b5592e0f"
+      },
+      "/root/trifusion-storage/artifacts/msvr310_supported_gradient_balance_v1_r2_seed42_1381639/q1/fold_1_control/roles_epoch20.pth": {
+        "bytes": 32735974,
+        "sha256": "866c8aca5606b6c2f20c8a406745bf0f97d9d8464b857210b47dca72d50fadcb"
+      },
+      "/root/trifusion-storage/artifacts/msvr310_supported_gradient_balance_v1_r2_seed42_1381639/q1/fold_1_control/receipt.json": {
+        "bytes": 743441,
+        "sha256": "1177ef835020738bba5d8eefd387a1e0b2e5671e7d7771a25262eb61d9d13faa"
+      },
+      "/root/trifusion-storage/artifacts/msvr310_supported_gradient_balance_v1_r2_seed42_1381639/q1/fold_1_control/training.json": {
+        "bytes": 467551,
+        "sha256": "a2d7bbb577416c7008108b26160af86bfe068a6543263ee7ee7808e976c2fe0d"
+      },
+      "/root/trifusion-storage/artifacts/msvr310_supported_gradient_balance_v1_r2_seed42_1381639/q1/fold_1_control/memory_steps.jsonl": {
+        "bytes": 9288740,
+        "sha256": "7b994cadb80376eab186b689f804bb2b2693bec2d61b1bc71ff269eadd464e02"
+      },
+      "/root/trifusion-storage/artifacts/msvr310_supported_gradient_balance_v1_r2_seed42_1381639/q1/fold_1_control/memory_distances.f32": {
+        "bytes": 77972480,
+        "sha256": "56745b7fb23587bde66b54386f4da8d0ea5f635d63a8edcfc1d12f5aff9cf6c9"
+      },
+      "/root/trifusion-storage/artifacts/msvr310_supported_gradient_balance_v1_r2_seed42_1381639/q1/fold_1_control/retrieval_arrays.pt": {
+        "bytes": 35758006,
+        "sha256": "66d13b82eedad9654266edfe90e2af8f4aeed9eb454cab2023821d2ddb48de99"
+      },
+      "/root/trifusion-storage/artifacts/msvr310_supported_gradient_balance_v1_r2_seed42_1381639/q1/fold_1_control/rankings.json": {
+        "bytes": 3872035,
+        "sha256": "785c7af5ef1685e15b0cdc363ac9a87d06b0b0ab4aac4cc33da14d950d4d5447"
+      },
+      "/root/trifusion-storage/artifacts/msvr310_supported_gradient_balance_v1_r2_seed42_1381639/q1/fold_1_balanced/roles_epoch20.pth": {
+        "bytes": 32735974,
+        "sha256": "616fce2a903e1f10c3b414ea29f11da99dc86188cdd4238453cfd48bd090761c"
+      },
+      "/root/trifusion-storage/artifacts/msvr310_supported_gradient_balance_v1_r2_seed42_1381639/q1/fold_1_balanced/receipt.json": {
+        "bytes": 743569,
+        "sha256": "3f112fc3f15c7505d32e976a9a243a780d15b5c0a990c1764df5fc7749583d0c"
+      },
+      "/root/trifusion-storage/artifacts/msvr310_supported_gradient_balance_v1_r2_seed42_1381639/q1/fold_1_balanced/training.json": {
+        "bytes": 467524,
+        "sha256": "445e38e5d66b7aadea26f828d20b8b4675d371c9387f98901dd632eedb5e4860"
+      },
+      "/root/trifusion-storage/artifacts/msvr310_supported_gradient_balance_v1_r2_seed42_1381639/q1/fold_1_balanced/memory_steps.jsonl": {
+        "bytes": 9325157,
+        "sha256": "39da1af0892d2d13636a0e783681bbbd6be63dc30b924d91e9daaae4fa095bf9"
+      },
+      "/root/trifusion-storage/artifacts/msvr310_supported_gradient_balance_v1_r2_seed42_1381639/q1/fold_1_balanced/memory_distances.f32": {
+        "bytes": 77972480,
+        "sha256": "09d39e9731e8ff899bce51e0fa7778dce1e2eb4394dfa27eb49528809b305ff1"
+      },
+      "/root/trifusion-storage/artifacts/msvr310_supported_gradient_balance_v1_r2_seed42_1381639/q1/fold_1_balanced/retrieval_arrays.pt": {
+        "bytes": 35758006,
+        "sha256": "713f0588713ec20b8047ba40bfd3465ca1024141e998f5d3fb474d3e74a221aa"
+      },
+      "/root/trifusion-storage/artifacts/msvr310_supported_gradient_balance_v1_r2_seed42_1381639/q1/fold_1_balanced/rankings.json": {
+        "bytes": 3872035,
+        "sha256": "6dfb1a34f5f95cba6a641691c3d428ca5bad30b84d6da11cc7f6d357cb58637e"
+      },
+      "/root/trifusion-storage/artifacts/msvr310_supported_gradient_balance_v1_r2_seed42_1381639/q1/fold_2_control/roles_epoch20.pth": {
+        "bytes": 32840422,
+        "sha256": "e92f34334cd8ebb082ed6fcce2a2b00e0df0e9a32a4e602ff141ed745dfd7444"
+      },
+      "/root/trifusion-storage/artifacts/msvr310_supported_gradient_balance_v1_r2_seed42_1381639/q1/fold_2_control/receipt.json": {
+        "bytes": 721851,
+        "sha256": "dc6801b953ebbe1245e1d42442aed3abf4f10d12b6761fd0e5d5d6e8e3b584c8"
+      },
+      "/root/trifusion-storage/artifacts/msvr310_supported_gradient_balance_v1_r2_seed42_1381639/q1/fold_2_control/training.json": {
+        "bytes": 467351,
+        "sha256": "b175faa6ece7b42fb1675d23683be1c1df1ba2e2aff0ff1e87d480d909954109"
+      },
+      "/root/trifusion-storage/artifacts/msvr310_supported_gradient_balance_v1_r2_seed42_1381639/q1/fold_2_control/memory_steps.jsonl": {
+        "bytes": 9317807,
+        "sha256": "fa46f44cda5559804ae40db4513ad319d6912518de8b02d589efed258199d6d7"
+      },
+      "/root/trifusion-storage/artifacts/msvr310_supported_gradient_balance_v1_r2_seed42_1381639/q1/fold_2_control/memory_distances.f32": {
+        "bytes": 78462976,
+        "sha256": "dbf5c1a45c89e47e52a92f2402abed23210ede40e126a2e4c89e1610d00cf254"
+      },
+      "/root/trifusion-storage/artifacts/msvr310_supported_gradient_balance_v1_r2_seed42_1381639/q1/fold_2_control/retrieval_arrays.pt": {
+        "bytes": 32939254,
+        "sha256": "bc49cc6b283eccdb122b05295cfe0456b58edd40b956bacff0eb1fe85255e46e"
+      },
+      "/root/trifusion-storage/artifacts/msvr310_supported_gradient_balance_v1_r2_seed42_1381639/q1/fold_2_control/rankings.json": {
+        "bytes": 3161425,
+        "sha256": "51f975c03c9cba90ec12cdc69f9079fe5533b26b3e05f37429061f7c2883582c"
+      },
+      "/root/trifusion-storage/artifacts/msvr310_supported_gradient_balance_v1_r2_seed42_1381639/q1/fold_2_balanced/roles_epoch20.pth": {
+        "bytes": 32840422,
+        "sha256": "93a1a9de31381193606ab83a984e7d95357e096fd06334c334862a3780fe3b42"
+      },
+      "/root/trifusion-storage/artifacts/msvr310_supported_gradient_balance_v1_r2_seed42_1381639/q1/fold_2_balanced/receipt.json": {
+        "bytes": 721739,
+        "sha256": "67236ef2b1dfb953a8f8e74d336a33d9d21a3cd46f4ad0f17428922111afba1e"
+      },
+      "/root/trifusion-storage/artifacts/msvr310_supported_gradient_balance_v1_r2_seed42_1381639/q1/fold_2_balanced/training.json": {
+        "bytes": 467265,
+        "sha256": "bb6a6f8c9a049ba5e59bae279f9baed2ee552400945f370305051f98d55e89e1"
+      },
+      "/root/trifusion-storage/artifacts/msvr310_supported_gradient_balance_v1_r2_seed42_1381639/q1/fold_2_balanced/memory_steps.jsonl": {
+        "bytes": 9354486,
+        "sha256": "4a28a46aa357c9ee1b4cc7f026cb450193fdd4ccd2a9414f59326ff52f8e31a4"
+      },
+      "/root/trifusion-storage/artifacts/msvr310_supported_gradient_balance_v1_r2_seed42_1381639/q1/fold_2_balanced/memory_distances.f32": {
+        "bytes": 78462976,
+        "sha256": "3d788c80f9b007774f9e384165b541d912a8d812c79b82fd685e2aa1c914a49a"
+      },
+      "/root/trifusion-storage/artifacts/msvr310_supported_gradient_balance_v1_r2_seed42_1381639/q1/fold_2_balanced/retrieval_arrays.pt": {
+        "bytes": 32939254,
+        "sha256": "c2215ca64b92bbb9c347451a38515169d3ccd2a8ce453e91081fcae30e384f54"
+      },
+      "/root/trifusion-storage/artifacts/msvr310_supported_gradient_balance_v1_r2_seed42_1381639/q1/fold_2_balanced/rankings.json": {
+        "bytes": 3161425,
+        "sha256": "477a9454435f8236091eca65255b525556b586726fef9dbdef4b1ff9c67e58be"
+      }
+    },
+    "model_forwards": 0,
+    "optimizer_updates": 0,
+    "elapsed_seconds": 23.964346209540963,
+    "scope": "Complete saved distance/mask/loss and final checkpoint/retrieval replay; per-step feature and parameter gradients are runtime witnesses, not independently regenerated training."
+  },
+  "folds": [
+    {
+      "fold": 0,
+      "endpoint_keys": [
+        "fold",
+        "initialization",
+        "preflight",
+        "training",
+        "engineering_checks",
+        "checkpoint",
+        "checkpoint_sha256",
+        "strict_reload_state_sha256",
+        "retrieval"
+      ],
+      "training_keys": [
+        "mode",
+        "epochs",
+        "optimizer_steps",
+        "initial_state_sha256",
+        "final_state_sha256",
+        "frozen_state_before_sha256",
+        "frozen_state_after_sha256",
+        "signal_state_before_sha256",
+        "signal_state_after_sha256",
+        "trainable_tensors",
+        "nonzero_gradient_tensors",
+        "missing_nonzero_gradients",
+        "overflow_events",
+        "peak_allocated_mib",
+        "peak_reserved_mib",
+        "history",
+        "steps",
+        "historical_parameter_gradient_witness",
+        "extra_fresh_role_record_forwards",
+        "extra_history_vjp_record_forwards",
+        "history_candidate_vjp_applied",
+        "extra_direct_check_record_forwards",
+        "fresh_history_both_endpoints",
+        "history_anchor_count",
+        "cache_not_in_checkpoint",
+        "gradient_balance_state",
+        "current_rank_backward_calls",
+        "current_auxiliary_backward_calls",
+        "direct_component_backward_calls",
+        "gradient_balancing_applied",
+        "classification_head_rule",
+        "audit_files"
+      ],
+      "retrieval_keys": [
+        "outputs",
+        "query_rows",
+        "gallery_manifest",
+        "feature_widths",
+        "baseline_features_and_distances_bitwise_equal_to_b0",
+        "retrieval_arrays_sha256",
+        "rankings_sha256"
+      ]
+    },
+    {
+      "fold": 1,
+      "endpoint_keys": [
+        "fold",
+        "initialization",
+        "preflight",
+        "training",
+        "engineering_checks",
+        "checkpoint",
+        "checkpoint_sha256",
+        "strict_reload_state_sha256",
+        "retrieval"
+      ],
+      "training_keys": [
+        "mode",
+        "epochs",
+        "optimizer_steps",
+        "initial_state_sha256",
+        "final_state_sha256",
+        "frozen_state_before_sha256",
+        "frozen_state_after_sha256",
+        "signal_state_before_sha256",
+        "signal_state_after_sha256",
+        "trainable_tensors",
+        "nonzero_gradient_tensors",
+        "missing_nonzero_gradients",
+        "overflow_events",
+        "peak_allocated_mib",
+        "peak_reserved_mib",
+        "history",
+        "steps",
+        "historical_parameter_gradient_witness",
+        "extra_fresh_role_record_forwards",
+        "extra_history_vjp_record_forwards",
+        "history_candidate_vjp_applied",
+        "extra_direct_check_record_forwards",
+        "fresh_history_both_endpoints",
+        "history_anchor_count",
+        "cache_not_in_checkpoint",
+        "gradient_balance_state",
+        "current_rank_backward_calls",
+        "current_auxiliary_backward_calls",
+        "direct_component_backward_calls",
+        "gradient_balancing_applied",
+        "classification_head_rule",
+        "audit_files"
+      ],
+      "retrieval_keys": [
+        "outputs",
+        "query_rows",
+        "gallery_manifest",
+        "feature_widths",
+        "baseline_features_and_distances_bitwise_equal_to_b0",
+        "retrieval_arrays_sha256",
+        "rankings_sha256"
+      ]
+    },
+    {
+      "fold": 2,
+      "endpoint_keys": [
+        "fold",
+        "initialization",
+        "preflight",
+        "training",
+        "engineering_checks",
+        "checkpoint",
+        "checkpoint_sha256",
+        "strict_reload_state_sha256",
+        "retrieval"
+      ],
+      "training_keys": [
+        "mode",
+        "epochs",
+        "optimizer_steps",
+        "initial_state_sha256",
+        "final_state_sha256",
+        "frozen_state_before_sha256",
+        "frozen_state_after_sha256",
+        "signal_state_before_sha256",
+        "signal_state_after_sha256",
+        "trainable_tensors",
+        "nonzero_gradient_tensors",
+        "missing_nonzero_gradients",
+        "overflow_events",
+        "peak_allocated_mib",
+        "peak_reserved_mib",
+        "history",
+        "steps",
+        "historical_parameter_gradient_witness",
+        "extra_fresh_role_record_forwards",
+        "extra_history_vjp_record_forwards",
+        "history_candidate_vjp_applied",
+        "extra_direct_check_record_forwards",
+        "fresh_history_both_endpoints",
+        "history_anchor_count",
+        "cache_not_in_checkpoint",
+        "gradient_balance_state",
+        "current_rank_backward_calls",
+        "current_auxiliary_backward_calls",
+        "direct_component_backward_calls",
+        "gradient_balancing_applied",
+        "classification_head_rule",
+        "audit_files"
+      ],
+      "retrieval_keys": [
+        "outputs",
+        "query_rows",
+        "gallery_manifest",
+        "feature_widths",
+        "baseline_features_and_distances_bitwise_equal_to_b0",
+        "retrieval_arrays_sha256",
+        "rankings_sha256"
+      ]
+    }
+  ]
+}

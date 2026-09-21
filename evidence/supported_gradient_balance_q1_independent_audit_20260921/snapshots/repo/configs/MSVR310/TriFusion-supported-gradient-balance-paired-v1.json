@@ -1,0 +1,61 @@
+{
+  "seed": 42,
+  "temperature": 0.01,
+  "fused_metric_weight": 1,
+  "memory": {
+    "capacity": 512,
+    "maximum_age": 8,
+    "warmup_steps": 65,
+    "capacity_warmup_steps": 2,
+    "overfit_warmup_steps": 2
+  },
+  "training_epochs": 20,
+  "minimum_free_bytes": 4294967296,
+  "maximum_expected_additional_disk_bytes": 3221225472,
+  "output_parent": "/root/trifusion-storage/artifacts",
+  "estimated_m0_minutes": [
+    15,
+    30
+  ],
+  "estimated_q1_gpu_hours": [
+    4,
+    6
+  ],
+  "official_test_access": false,
+  "heldout_access_only_after_m0": true,
+  "new_trainable_parameters": 0,
+  "whole_goal_achieved": false,
+  "schema": "msvr310-supported-gradient-balance-paired-v1",
+  "previous_config": "configs/MSVR310/TriFusion-cross-scene-smooth-ap-paired-v1.json",
+  "candidate_reduction": "mean_eligible_anchors",
+  "candidate_positive_rule": "same_identity_different_scene",
+  "zero_eligible_batch": "connected_zero_fused_metric_other_thirteen_unchanged",
+  "source_support": "evidence/smooth_ap_cross_scene_support_20260909/smooth_ap_cross_scene_support_20260909.json",
+  "project_file_sha256": {
+    "tools/msvr_supported_gradient_balance.py": "27ae6eb74a83d405eabb4a30a60156226d9dc93e70d78847cf24b0f57bd774c0",
+    "tools/train_msvr_supported_gradient_balance.py": "3ab635f97e08edb439c352a742189a0f82cd8f76d73bd1a34ab1a7eb57da5187",
+    "tools/check_msvr_supported_gradient_balance_math.py": "de220190b7c8b9f54890c8d4d0a5750f36a6e3aa71479eb6758385fd48ff24e6",
+    "tools/check_msvr_supported_gradient_balance.py": "c86ceddc77b7461b2781a05adad706dde17cd1857685f5a0661d37e74fa1b36c",
+    "tools/verify_msvr_supported_gradient_balance.py": "3492cb17f4b0283ada07c8c93b2c0fe9088d24639ccd3580989ff3c993a5c4d7",
+    "tools/verify_msvr_supported_gradient_balance_stats.py": "5f8f157b39a9b11dd6ac5447b2a8619915cf20ddb6815fdc4ac107d7a571b327",
+    "tools/run_msvr_supported_gradient_balance.py": "f6ff0065c06b137327cb7fddcd5685de2b473ab20a126d479a889b8dbd1b8e5a",
+    "configs/MSVR310/TriFusion-cross-scene-smooth-ap-paired-v1.json": "e5326b52ebb12dced24ebfac788db2e2bb5bdca0b50c6c4dec64e596f1af05a1",
+    "refine-logs/msvr310_supported_gradient_balance_v1/EXPERIMENT_PLAN.md": "c55fffb7b5ab5523240139ba95ad50fa8b60f1b7eccbd3abf67c8ca47f2ef62c"
+  },
+  "gradient_balance": {
+    "ema_decay": 0.9,
+    "exponent": 0.5,
+    "ratio_min": 0.25,
+    "ratio_max": 4.0,
+    "epsilon": 1e-12,
+    "weight_sum": 2.0
+  },
+  "both_endpoint_objective": "cross_scene_smooth_ap",
+  "balanced_parameter_prefix": "encoder.",
+  "current_rank_backward_each_step": true,
+  "zero_support_ema": "unchanged",
+  "classification_head_rule": "original_current_total_gradient",
+  "implementation_revision": "r2_direct_auxiliary",
+  "current_auxiliary_backward_each_step": true,
+  "auxiliary_gradient_definition": "direct_other_thirteen"
+}

@@ -1,6 +1,6 @@
 # MSVR310 supported gradient balance R2 — complete Q1
 
-Status: Q1_FAIL; full repaired CPU and executor text replay complete; fresh Q1 integrity audit WARN / CLOSED_WITH_LIMITS; deterministic checks PASS. Seed42, three identity folds, six fixed 20-epoch endpoints. Internal Q1 only; official table unchanged. Execution 1381639f778f77f124a2726ee55c07610092a438.
+Status: Q1_FAIL; full repaired CPU and executor text replay complete; fresh Q1 integrity audit IN_PROGRESS. Seed42, three identity folds, six fixed 20-epoch endpoints. Internal Q1 only; official table unchanged. Execution 1381639f778f77f124a2726ee55c07610092a438.
 
 | Output | Control mAP | Balanced mAP | Delta | Control R1 | Balanced R1 |
 |---|---:|---:|---:|---:|---:|
@@ -29,13 +29,11 @@ Paired source records/pixels match, but warmup numeric trajectories already diff
 
 - All 1560 step records, 120 epoch records and 4680 role-step records retained. Epoch tables contain real training objectives, not invented heldout epoch scores.
 - Q1 current-rank and direct-aux backward each run1560 times across both arms; Q1 direct-reference vector checks0. M0 reference checks are separate engineering evidence. Saved norm/cosine witnesses cannot reconstruct full parameter gradients or task-specific AdamW contributions.
-- Original CPU stopped on sqrt exactness; first repair stopped on execution binding; bound repair stopped on weighted norm using double coefficients. All failures remain. Fresh same-family/provisional arithmetic audit supports only sqrt plus FP32 coefficient formula fixes, with all thresholds unchanged. The stats verifier was temporarily edited during the first posthoc repair, triggering its registered hash check; it was then restored byte-identically. Final replay verified the execution-bound source hashes. Training, config and checkpoint contents were not changed by the posthoc repair.
+- Original CPU stopped on sqrt exactness; first repair stopped on execution binding; bound repair stopped on weighted norm using double coefficients. All failures remain. Fresh same-family/provisional arithmetic audit supports only sqrt plus FP32 coefficient formula fixes, with all thresholds unchanged. Original execution files/config/checkpoints unchanged.
 - Full final CPU receipt q1_cpu_arithmetic_recheck/verification.json: 1560 steps,116501504 memory distances,581120 historical-VJP record forwards,2069520 retrieval/rank elements,0 model forwards,0 updates. Original pipeline remains STOPPED_AT_Q1_CPU, not rewritten.
 - Final verification rechecks stored arrays/checkpoint hashes; it does not independently regenerate every training gradient. AdamW moment/scaler states were not saved, so exact original task-state attribution is unavailable.
-- Full Q1 independent audit closed WARN / CLOSED_WITH_LIMITS, deterministic checks PASS and scientific Q1_FAIL; same-family/provisional reviewer, backend unattested. No next experiment launched, no gate changes, no official-test access.
+- Full Q1 independent audit pending; do not confuse arithmetic review with full scientific closure. No next experiment launched, no gate changes, no official-test access.
 
 ## Location
 
 Raw evidence: evidence/supported_gradient_balance_q1_complete_20260921. Training tables, gradient summary and all-query/all-identity ranking tables have adjacent dedicated evidence directories. Arithmetic audit: evidence/supported_gradient_balance_cpu_equations_audit_20260921.
-
-Full independent audit: evidence/supported_gradient_balance_q1_independent_audit_20260921. All six endpoints, 600 queries, 60 query identities, 1560 steps, 120 epochs and remote arrays independently checked. No remaining computation blocker. Training-seed uncertainty, repeated-development selection and unavailable AdamW states remain limitations.

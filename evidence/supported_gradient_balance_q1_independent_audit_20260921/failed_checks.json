@@ -1,0 +1,149 @@
+[
+  {
+    "id": "AF01",
+    "class_": "auditor_runtime",
+    "status": "FAILED_ATTEMPT_PRESERVED",
+    "check": "Default python executable usable",
+    "observed": "No pyvenv.cfg file",
+    "resolution": "Used existing uv cached numpy/paramiko environment; no environment installed."
+  },
+  {
+    "id": "AF02",
+    "class_": "auditor_path",
+    "status": "FAILED_ATTEMPT_PRESERVED",
+    "check": "Initial snapshot path trifusion/signal_preserving_v8.py",
+    "observed": "Path assertion failed; actual file is modeling/trifusion/signal_preserving_v8.py",
+    "script": "prepare_local_attempt1.py",
+    "resolution": "Corrected to actual repository path; partial snapshots were verified byte-identical before continuing."
+  },
+  {
+    "id": "AF03",
+    "class_": "auditor_assumption",
+    "status": "FAILED_ASSUMPTION_REPLACED_WITH_EVIDENCE",
+    "check": "Q1 observed project_commit equals pipeline launch code_commit",
+    "observed": {
+      "q1": "4bb1a7f6fe7b82a05632d8119d8b0c5fbd552815",
+      "pipeline": "1381639f778f77f124a2726ee55c07610092a438"
+    },
+    "script": "replay_text_attempt1.py",
+    "resolution": "Preserved both commit fields; all98 bound repository paths matched both Git blobs and current remote bytes. No source identity inferred from a mutable publication HEAD."
+  },
+  {
+    "id": "AF04",
+    "class_": "actual_evidence_limit",
+    "status": "FAIL_BITWISE_WARMUP_EQUIVALENCE",
+    "check": "Both endpoints have bitwise-identical warmup trajectories",
+    "observed": [
+      {
+        "fold": 0,
+        "matched_current_input_steps": 260,
+        "exact_warmup_training_rows": 1,
+        "exact_warmup_audit_rows": 0,
+        "first_differing_training_step": 2,
+        "max_warmup_loss_difference": 0.0011240243911743164,
+        "max_warmup_component_difference": 0.0020127296447753906
+      },
+      {
+        "fold": 1,
+        "matched_current_input_steps": 260,
+        "exact_warmup_training_rows": 1,
+        "exact_warmup_audit_rows": 0,
+        "first_differing_training_step": 2,
+        "max_warmup_loss_difference": 0.0014045238494873047,
+        "max_warmup_component_difference": 0.0029206275939941406
+      },
+      {
+        "fold": 2,
+        "matched_current_input_steps": 260,
+        "exact_warmup_training_rows": 1,
+        "exact_warmup_audit_rows": 0,
+        "first_differing_training_step": 2,
+        "max_warmup_loss_difference": 0.0017092227935791016,
+        "max_warmup_component_difference": 0.0021528899669647217
+      }
+    ],
+    "script": "replay_text_attempt2.py",
+    "resolution": "Removed unsupported equality claim. Input records/pixels and initialization match; original arithmetic branch is preserved in each run, but exact paired trajectories are not established."
+  },
+  {
+    "id": "AF05",
+    "class_": "auditor_shape",
+    "status": "FAILED_ATTEMPT_PRESERVED",
+    "check": "Assumed full role output width1536",
+    "observed": "remote_arrays_attempt1.json.stderr: line61 shape assertion",
+    "script": "remote_arrays_attempt1.py",
+    "resolution": "Corrected to source-declared4608D (3072D Signal prefix plus1536D role). Second complete remote audit passed; original experiment unmodified."
+  },
+  {
+    "id": "PF01",
+    "class_": "original_experiment_verifier",
+    "status": "FAIL_PRESERVED",
+    "check": "Original Q1 CPU scalar exact ratio",
+    "evidence": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\trifusion_supported_balance_q1_complete_20260921\\q1_cpu.log",
+    "observed": "math.sqrt controller versus **.5 verifier differs at6 supported role records on remote Python3.10.14",
+    "resolution": "Original pipeline remains STOPPED_AT_Q1_CPU; separate hash-guarded posthoc replay uses actual sqrt operation."
+  },
+  {
+    "id": "PF02",
+    "class_": "posthoc_failed_attempt",
+    "status": "FAIL_PRESERVED",
+    "check": "First sqrt repair execution-source binding",
+    "evidence": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\trifusion_supported_balance_q1_complete_20260921\\q1_cpu_sqrt_recheck\\verification.log",
+    "observed": "AssertionError: tools/verify_msvr_supported_gradient_balance_stats.py",
+    "resolution": "Current bound source is restored to exact original bytes. Never characterize all historical posthoc source states as unchanged."
+  },
+  {
+    "id": "PF03",
+    "class_": "posthoc_failed_attempt",
+    "status": "FAIL_PRESERVED",
+    "check": "Bound sqrt-only weighted-norm formula",
+    "evidence": "D:\\Program Files\\UserCache\\gb\\codex\\tmp\\trifusion_supported_balance_q1_complete_20260921\\q1_cpu_bound_sqrt_recheck\\verification.log",
+    "observed": [
+      {
+        "kind": "original_fp64_weighted_norm",
+        "fold": 0,
+        "endpoint": "balanced",
+        "step": 71,
+        "role": "mamba",
+        "left": 5.0530119215775136,
+        "right": 5.05301246766921,
+        "absolute_error": 5.460916963073714e-07,
+        "threshold": 5.053012467669209e-07,
+        "ratio": 1.0807250126561945
+      }
+    ],
+    "resolution": "Separate final replay converts only formula coefficients to IEEE FP32; original1e-7 threshold retained. All1743 balanced supported role combinations pass."
+  },
+  {
+    "id": "PF04",
+    "class_": "sealed_r1_engineering",
+    "status": "FAIL_RETAINED_NOT_RERUN",
+    "check": "R1 auxiliary subtraction-reference error",
+    "observed": "0.006824872357540746 >0.005 at fold0 control step4;3 completed updates; noQ1",
+    "evidence": "snapshots/repo/refine-logs/msvr310_supported_gradient_balance_v1/EXPERIMENT_PLAN.md:100",
+    "resolution": "R2 direct auxiliary is separately registered. This audit does not relabel or rerun R1."
+  },
+  {
+    "id": "SF01",
+    "class_": "scientific",
+    "status": "FAIL",
+    "check": "Registered paired and Signal gate groups",
+    "observed": {
+      "paired": {
+        "fused_gain_at_least_1pp": false,
+        "all_fold_fused_nonnegative": false,
+        "all_role_gains_nonnegative": false,
+        "paired_identity_bootstrap_lower_positive": false,
+        "candidate_fused_strictly_best": true
+      },
+      "signal": {
+        "fused_gain_at_least_1pp": false,
+        "all_fold_fused_gains_nonnegative": false,
+        "all_full_branches_not_below_signal": false,
+        "identity_bootstrap_lower_positive": false,
+        "fused_strictly_best": true
+      }
+    },
+    "resolution": "Q1_FAIL; no threshold changes or promotion."
+  }
+]
