@@ -6825,3 +6825,8 @@ fresh-none gpt-6-astra/max独立M0审查终态WARN/CLOSED_WITH_LIMITS：A/B/C/D/
 #### §41.236 五端完成（09:46）
 
 09:46:28原wrapper42758/Q1 44804仍运行。fold0、fold1两端及fold2 control已完整结束，各20epoch/260更新、203/203累计非零、overflow0，检查点/检索/端点回执齐全、固定长度与冻结路径检查通过，5/6终点。fold2控制训练epoch耗时2572.413秒，不含全部端点成本。输出盘4589674496B。原始观察evidence/supported_gradient_balance_q1_progress_20260921/observation_0946.json。尚未取得最后候选端及完整Q1/CPU/独立审查，不据前五端选择方法，Goal ACTIVE/UNMET。
+
+
+### §41.237 R2六端训练完成，CPU精确标量重放差异（2026-09-21 10:32）
+
+原Q1 44804于10:29:22退出0，六端20epoch/260更新全部结束。原CPU 69196于10:29:28退出1，pipeline保留STOPPED_AT_Q1_CPU。失败在verify_balance的ratio精确相等；训练math.sqrt与核验x**0.5在六条记录相差1ULP（2.220446049250313e-16）。全1560步/3486有支持角色记录的保存ratio均精确匹配运行math.sqrt。核验器仅将幂运算改为同一math.sqrt，精确相等及原所有阈值不放宽；训练/config/checkpoint不改、不重训。原失败日志、pipeline、全量差异诊断归档evidence/supported_gradient_balance_q1_cpu_failure_20260921。完整修复后CPU核验、六端分析及独立审查仍待完成，暂不宣布科学结论。输出卷4430831616B，GPU已空闲；保留所有必要权重。Goal ACTIVE/UNMET。
