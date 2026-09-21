@@ -6820,3 +6820,8 @@ fresh-none gpt-6-astra/max独立M0审查终态WARN/CLOSED_WITH_LIMITS：A/B/C/D/
 #### §41.236 优化器历史可恢复性边界补核
 
 本轮读取R2实际checkpoint调用及保存函数，保存函数与执行1381639 Git blob逐字一致。终点只保存role模型状态、baseline别名和绑定/身份/配置信息，不保存AdamW state_dict或一/二阶矩；gradient_balance_state是范数EMA，actual_parameter_updates是比较统计。因而当前合同支持终点检索重载及已登记更新统计，不支持仅从这些产物精确恢复原AdamW历史或分解任务更新。未额外读取模型、未更改运行中的保存规则、未重跑已结束端点。后继如需真实状态的反事实分析，必须在新来源流程预先登记捕获；不能用新建空优化器代替原状态。详见refine-logs/msvr310_supported_gradient_balance_v1/ROLE_LOSS_DEPENDENCY_NOTE_20260921.md。该限制不改变当前Q1合同及已完成终点检索的有效性。
+
+
+#### §41.236 五端完成（09:46）
+
+09:46:28原wrapper42758/Q1 44804仍运行。fold0、fold1两端及fold2 control已完整结束，各20epoch/260更新、203/203累计非零、overflow0，检查点/检索/端点回执齐全、固定长度与冻结路径检查通过，5/6终点。fold2控制训练epoch耗时2572.413秒，不含全部端点成本。输出盘4589674496B。原始观察evidence/supported_gradient_balance_q1_progress_20260921/observation_0946.json。尚未取得最后候选端及完整Q1/CPU/独立审查，不据前五端选择方法，Goal ACTIVE/UNMET。
