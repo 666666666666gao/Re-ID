@@ -11,7 +11,7 @@
 | Trainer/AMP/state logging integration | IMPLEMENTED_CODE_REVIEW_PASS | Must retain complete current+history R and direct A, original heads, new optimizer/scaler state checkpoint |
 | Config/T0/complete CPU verifier | T0_AND_M0_CPU_PASS | Original stage exits 0; complete M0 evidence and independent artifact audit |
 | Real-source M0 | PASS_ENGINEERING_ONLY | 248 steps; full original CPU verification; independent audit WARN with scope limits |
-| Full six-end Q1 | RUNNING_1_OF_6 | 12:58:59: fold0 control receipt complete; fold0 split 44/260; no complete paired result |
+| Full six-end Q1 | RUNNING_2_OF_6 | 13:39:26: both fold0 endpoints complete; fold1 control 2/260; no full three-fold result |
 | Official evaluation | NOT_RUN | No new official result |
 
 ## Historical implementation notes (retained; current state is above)
