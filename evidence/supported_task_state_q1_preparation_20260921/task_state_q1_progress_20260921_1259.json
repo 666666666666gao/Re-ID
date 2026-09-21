@@ -1,0 +1,366 @@
+{
+  "observed_at": "2026-09-21T12:58:59.632458+08:00",
+  "pipeline": {
+    "status": "RUNNING",
+    "wrapper_pid": 78254,
+    "code_commit": "cb4f4c37fbedd357ccc0ae4768161d049a280c5d",
+    "config_sha256": "4ebedda4a10d5e535d6820aa05684b7f707f7a0b8308d454b2316e9b3a61f3c3",
+    "started_at": "2026-09-21T11:57:17.039690+08:00",
+    "stages": [
+      {
+        "stage": "t0",
+        "original_pid": 78258,
+        "command": [
+          "/root/miniconda3/envs/tri_reid/bin/python",
+          "-u",
+          "-m",
+          "tools.check_msvr_supported_task_state",
+          "--config",
+          "/root/autodl-tmp/trifusion-v2/TriFusion-ReID/configs/MSVR310/TriFusion-supported-task-state-paired-v1.json",
+          "--output",
+          "/root/trifusion-storage/artifacts/msvr310_supported_task_state_v1_seed42_cb4f4c3/t0.json"
+        ],
+        "started_at": "2026-09-21T11:57:17.040492+08:00",
+        "exit_code": 0,
+        "ended_at": "2026-09-21T11:57:24.427468+08:00",
+        "elapsed_seconds": 7.387555131688714
+      },
+      {
+        "stage": "m0",
+        "original_pid": 78282,
+        "command": [
+          "/root/miniconda3/envs/tri_reid/bin/python",
+          "-u",
+          "-m",
+          "tools.train_msvr_supported_task_state",
+          "--config",
+          "/root/autodl-tmp/trifusion-v2/TriFusion-ReID/configs/MSVR310/TriFusion-supported-task-state-paired-v1.json",
+          "--mode",
+          "m0",
+          "--output-dir",
+          "/root/trifusion-storage/artifacts/msvr310_supported_task_state_v1_seed42_cb4f4c3/m0"
+        ],
+        "started_at": "2026-09-21T11:57:24.429004+08:00",
+        "exit_code": 0,
+        "ended_at": "2026-09-21T12:13:46.682995+08:00",
+        "elapsed_seconds": 982.2549995183945
+      },
+      {
+        "stage": "m0_cpu",
+        "original_pid": 80369,
+        "command": [
+          "/root/miniconda3/envs/tri_reid/bin/python",
+          "-u",
+          "-m",
+          "tools.verify_msvr_supported_task_state",
+          "--config",
+          "/root/autodl-tmp/trifusion-v2/TriFusion-ReID/configs/MSVR310/TriFusion-supported-task-state-paired-v1.json",
+          "--run-dir",
+          "/root/trifusion-storage/artifacts/msvr310_supported_task_state_v1_seed42_cb4f4c3/m0",
+          "--output",
+          "/root/trifusion-storage/artifacts/msvr310_supported_task_state_v1_seed42_cb4f4c3/m0_cpu.json"
+        ],
+        "started_at": "2026-09-21T12:13:46.685053+08:00",
+        "exit_code": 0,
+        "ended_at": "2026-09-21T12:13:58.523311+08:00",
+        "elapsed_seconds": 11.839360797777772
+      },
+      {
+        "stage": "q1",
+        "original_pid": 80455,
+        "command": [
+          "/root/miniconda3/envs/tri_reid/bin/python",
+          "-u",
+          "-m",
+          "tools.train_msvr_supported_task_state",
+          "--config",
+          "/root/autodl-tmp/trifusion-v2/TriFusion-ReID/configs/MSVR310/TriFusion-supported-task-state-paired-v1.json",
+          "--mode",
+          "q1",
+          "--output-dir",
+          "/root/trifusion-storage/artifacts/msvr310_supported_task_state_v1_seed42_cb4f4c3/q1",
+          "--m0-receipt",
+          "/root/trifusion-storage/artifacts/msvr310_supported_task_state_v1_seed42_cb4f4c3/m0/summary.json",
+          "--m0-verification",
+          "/root/trifusion-storage/artifacts/msvr310_supported_task_state_v1_seed42_cb4f4c3/m0_cpu.json"
+        ],
+        "started_at": "2026-09-21T12:13:58.525608+08:00"
+      }
+    ],
+    "free_bytes_before": 4430852096,
+    "gpu_before": "0, 1, 24576\n"
+  },
+  "processes": "   PID STAT     ELAPSED COMMAND\n 78254 Ss      01:01:43 /root/miniconda3/envs/tri_reid/bin/python -u -m tools.run_msvr_supported_task_state --config /root/autodl-tmp/trifusion-v2/TriFusion-ReID/configs/MSVR310/TriFusion-supported-task-state-paired-v1.json --config-sha256 4ebedda4a10d5e535d6820aa05684b7f707f7a0b8308d454b2316e9b3a61f3c3 --code-commit cb4f4c37fbedd357ccc0ae4768161d049a280c5d --output-dir /root/trifusion-storage/artifacts/msvr310_supported_task_state_v1_seed42_cb4f4c3\n 80455 Sl         45:01 /root/miniconda3/envs/tri_reid/bin/python -u -m tools.train_msvr_supported_task_state --config /root/autodl-tmp/trifusion-v2/TriFusion-ReID/configs/MSVR310/TriFusion-supported-task-state-paired-v1.json --mode q1 --output-dir /root/trifusion-storage/artifacts/msvr310_supported_task_state_v1_seed42_cb4f4c3/q1 --m0-receipt /root/trifusion-storage/artifacts/msvr310_supported_task_state_v1_seed42_cb4f4c3/m0/summary.json --m0-verification /root/trifusion-storage/artifacts/msvr310_supported_task_state_v1_seed42_cb4f4c3/m0_cpu.json\n",
+  "q1_endpoints": [
+    {
+      "endpoint": "fold_0_control",
+      "complete_step_records": 260,
+      "training_complete": true,
+      "receipt_complete": true
+    },
+    {
+      "endpoint": "fold_0_split",
+      "complete_step_records": 44,
+      "training_complete": false,
+      "receipt_complete": false
+    }
+  ],
+  "epoch_records": [
+    {
+      "event": "supported_task_state_epoch",
+      "endpoint": "control",
+      "fold": 0,
+      "mode": "comparison",
+      "epoch": 1,
+      "optimizer_steps": 13,
+      "learning_rate": 7.000000000000001e-05,
+      "mean_loss": 4.000792136559119,
+      "elapsed_seconds": 39.840587951242924
+    },
+    {
+      "event": "supported_task_state_epoch",
+      "endpoint": "control",
+      "fold": 0,
+      "mode": "comparison",
+      "epoch": 2,
+      "optimizer_steps": 13,
+      "learning_rate": 0.00014000000000000001,
+      "mean_loss": 3.4807573648599477,
+      "elapsed_seconds": 37.63544441573322
+    },
+    {
+      "event": "supported_task_state_epoch",
+      "endpoint": "control",
+      "fold": 0,
+      "mode": "comparison",
+      "epoch": 3,
+      "optimizer_steps": 13,
+      "learning_rate": 0.00020999999999999998,
+      "mean_loss": 2.7775227289933424,
+      "elapsed_seconds": 37.23511002212763
+    },
+    {
+      "event": "supported_task_state_epoch",
+      "endpoint": "control",
+      "fold": 0,
+      "mode": "comparison",
+      "epoch": 4,
+      "optimizer_steps": 13,
+      "learning_rate": 0.00028000000000000003,
+      "mean_loss": 2.123962328984187,
+      "elapsed_seconds": 37.290362467989326
+    },
+    {
+      "event": "supported_task_state_epoch",
+      "endpoint": "control",
+      "fold": 0,
+      "mode": "comparison",
+      "epoch": 5,
+      "optimizer_steps": 13,
+      "learning_rate": 0.00035,
+      "mean_loss": 1.6741246718626757,
+      "elapsed_seconds": 37.354338547214866
+    },
+    {
+      "event": "supported_task_state_epoch",
+      "endpoint": "control",
+      "fold": 0,
+      "mode": "comparison",
+      "epoch": 6,
+      "optimizer_steps": 13,
+      "learning_rate": 0.00035,
+      "mean_loss": 1.4221159036342914,
+      "elapsed_seconds": 118.40460872091353
+    },
+    {
+      "event": "supported_task_state_epoch",
+      "endpoint": "control",
+      "fold": 0,
+      "mode": "comparison",
+      "epoch": 7,
+      "optimizer_steps": 13,
+      "learning_rate": 0.000346175830128416,
+      "mean_loss": 1.253768728329585,
+      "elapsed_seconds": 160.2775867562741
+    },
+    {
+      "event": "supported_task_state_epoch",
+      "endpoint": "control",
+      "fold": 0,
+      "mode": "comparison",
+      "epoch": 8,
+      "optimizer_steps": 13,
+      "learning_rate": 0.0003348704550874551,
+      "mean_loss": 1.1203250793310313,
+      "elapsed_seconds": 160.53439382836223
+    },
+    {
+      "event": "supported_task_state_epoch",
+      "endpoint": "control",
+      "fold": 0,
+      "mode": "comparison",
+      "epoch": 9,
+      "optimizer_steps": 13,
+      "learning_rate": 0.0003165779740156158,
+      "mean_loss": 0.9974128237137427,
+      "elapsed_seconds": 160.1230278816074
+    },
+    {
+      "event": "supported_task_state_epoch",
+      "endpoint": "control",
+      "fold": 0,
+      "mode": "comparison",
+      "epoch": 10,
+      "optimizer_steps": 13,
+      "learning_rate": 0.0002920978561128002,
+      "mean_loss": 0.9349485131410452,
+      "elapsed_seconds": 160.31908898055553
+    },
+    {
+      "event": "supported_task_state_epoch",
+      "endpoint": "control",
+      "fold": 0,
+      "mode": "comparison",
+      "epoch": 11,
+      "optimizer_steps": 13,
+      "learning_rate": 0.0002625,
+      "mean_loss": 0.8954675014202411,
+      "elapsed_seconds": 160.4259873908013
+    },
+    {
+      "event": "supported_task_state_epoch",
+      "endpoint": "control",
+      "fold": 0,
+      "mode": "comparison",
+      "epoch": 12,
+      "optimizer_steps": 13,
+      "learning_rate": 0.0002290779740156158,
+      "mean_loss": 0.8730622484133794,
+      "elapsed_seconds": 160.46255610138178
+    },
+    {
+      "event": "supported_task_state_epoch",
+      "endpoint": "control",
+      "fold": 0,
+      "mode": "comparison",
+      "epoch": 13,
+      "optimizer_steps": 13,
+      "learning_rate": 0.00019329248107183937,
+      "mean_loss": 0.8427309852380019,
+      "elapsed_seconds": 159.71929400600493
+    },
+    {
+      "event": "supported_task_state_epoch",
+      "endpoint": "control",
+      "fold": 0,
+      "mode": "comparison",
+      "epoch": 14,
+      "optimizer_steps": 13,
+      "learning_rate": 0.00015670751892816066,
+      "mean_loss": 0.8239618173012366,
+      "elapsed_seconds": 153.42621461488307
+    },
+    {
+      "event": "supported_task_state_epoch",
+      "endpoint": "control",
+      "fold": 0,
+      "mode": "comparison",
+      "epoch": 15,
+      "optimizer_steps": 13,
+      "learning_rate": 0.00012092202598438422,
+      "mean_loss": 0.8067865234154922,
+      "elapsed_seconds": 160.4023760575801
+    },
+    {
+      "event": "supported_task_state_epoch",
+      "endpoint": "control",
+      "fold": 0,
+      "mode": "comparison",
+      "epoch": 16,
+      "optimizer_steps": 13,
+      "learning_rate": 8.750000000000004e-05,
+      "mean_loss": 0.8047432899475098,
+      "elapsed_seconds": 160.50116487964988
+    },
+    {
+      "event": "supported_task_state_epoch",
+      "endpoint": "control",
+      "fold": 0,
+      "mode": "comparison",
+      "epoch": 17,
+      "optimizer_steps": 13,
+      "learning_rate": 5.7902143887199866e-05,
+      "mean_loss": 0.8028348409212552,
+      "elapsed_seconds": 160.7182134371251
+    },
+    {
+      "event": "supported_task_state_epoch",
+      "endpoint": "control",
+      "fold": 0,
+      "mode": "comparison",
+      "epoch": 18,
+      "optimizer_steps": 13,
+      "learning_rate": 3.342202598438421e-05,
+      "mean_loss": 0.7837913128045889,
+      "elapsed_seconds": 160.9861650802195
+    },
+    {
+      "event": "supported_task_state_epoch",
+      "endpoint": "control",
+      "fold": 0,
+      "mode": "comparison",
+      "epoch": 19,
+      "optimizer_steps": 13,
+      "learning_rate": 1.5129544912544829e-05,
+      "mean_loss": 0.7846742226527288,
+      "elapsed_seconds": 160.02070900425315
+    },
+    {
+      "event": "supported_task_state_epoch",
+      "endpoint": "control",
+      "fold": 0,
+      "mode": "comparison",
+      "epoch": 20,
+      "optimizer_steps": 13,
+      "learning_rate": 3.824169871584004e-06,
+      "mean_loss": 0.7789441117873559,
+      "elapsed_seconds": 159.91647157631814
+    },
+    {
+      "event": "supported_task_state_epoch",
+      "endpoint": "split",
+      "fold": 0,
+      "mode": "comparison",
+      "epoch": 1,
+      "optimizer_steps": 13,
+      "learning_rate": 7.000000000000001e-05,
+      "mean_loss": 3.97589478125939,
+      "elapsed_seconds": 36.53463076800108
+    },
+    {
+      "event": "supported_task_state_epoch",
+      "endpoint": "split",
+      "fold": 0,
+      "mode": "comparison",
+      "epoch": 2,
+      "optimizer_steps": 13,
+      "learning_rate": 0.00014000000000000001,
+      "mean_loss": 3.448241949081421,
+      "elapsed_seconds": 36.21086716465652
+    },
+    {
+      "event": "supported_task_state_epoch",
+      "endpoint": "split",
+      "fold": 0,
+      "mode": "comparison",
+      "epoch": 3,
+      "optimizer_steps": 13,
+      "learning_rate": 0.00020999999999999998,
+      "mean_loss": 2.775094013947707,
+      "elapsed_seconds": 36.2799218557775
+    }
+  ],
+  "output_free_bytes": 3286294528,
+  "project_free_bytes": 1468633088,
+  "gpu": "7576, 100\n"
+}
