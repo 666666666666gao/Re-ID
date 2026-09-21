@@ -1,0 +1,31 @@
+{
+  "rgbnt201.py": {
+    "exists": false
+  },
+  "msvr310.py": {
+    "exists": true,
+    "text": "# encoding: utf-8\n\"\"\"\n@author:  sherlock\n@contact: sherlockliao01@gmail.com\n\"\"\"\n\nimport glob\nimport re\nimport pdb\nimport os\nimport os.path as osp\nimport numpy as np\nfrom .bases import BaseImageDataset\n\n\nclass MSVR310(BaseImageDataset):\n    \"\"\"\n    Market1501\n    Reference:\n    Zheng et al. Scalable Person Re-identification: A Benchmark. ICCV 2015.\n    URL: http://www.liangzheng.org/Project/project_reid.html\n\n    Dataset statistics:\n    # identities: 1501 (+1 for background)\n    # images: 12936 (train) + 3368 (query) + 15913 (gallery)\n    \"\"\"\n    dataset_dir = '512/data/MSVR310'\n\n    def __init__(self, root='', verbose=True, **kwargs):\n        super(MSVR310, self).__init__()\n        root = osp.abspath(osp.expanduser(root))\n        self.dataset_dir = osp.join(root, self.dataset_dir)\n        self.train_dir = osp.join(self.dataset_dir, 'bounding_box_train')\n        self.query_dir = osp.join(self.dataset_dir, 'query3')\n        self.gallery_dir = osp.join(self.dataset_dir, 'bounding_box_test')\n        self._check_before_run()\n\n        train = self._process_dir(self.train_dir, relabel=True)\n        query = self._process_dir(self.query_dir, relabel=False)\n        gallery = self._process_dir(self.gallery_dir, relabel=False)\n        if verbose:\n            print(\"=> RGB_NIR_TIR loaded\")\n            self.print_dataset_statistics(train, query, gallery)\n\n        self.train = train\n        self.query = query\n        self.gallery = gallery\n\n        self.num_train_pids, self.num_train_imgs, self.num_train_cams, self.num_train_vids = self.get_imagedata_info(\n            self.train)\n        self.num_query_pids, self.num_query_imgs, self.num_query_cams, self.num_query_vids = self.get_imagedata_info(\n            self.query)\n        self.num_gallery_pids, self.num_gallery_imgs, self.num_gallery_cams, self.num_gallery_vids = self.get_imagedata_info(\n            self.gallery)\n\n    def _check_before_run(self):\n        \"\"\"Check if all files are available before going deeper\"\"\"\n        if not osp.exists(self.dataset_dir):\n            raise RuntimeError(\"'{}' is not available\".format(self.dataset_dir))\n        if not osp.exists(self.train_dir):\n            raise RuntimeError(\"'{}' is not available\".format(self.train_dir))\n        if not osp.exists(self.query_dir):\n            raise RuntimeError(\"'{}' is not available\".format(self.query_dir))\n        if not osp.exists(self.gallery_dir):\n            raise RuntimeError(\"'{}' is not available\".format(self.gallery_dir))\n\n    def _process_dir(self, dir_path, relabel=False):\n        vid_container = set()\n        for vid in os.listdir(dir_path):\n            vid_container.add(int(vid))\n        vid2label = {vid: label for label, vid in enumerate(vid_container)}\n\n        dataset = []\n        for vid in os.listdir(dir_path):\n            vid_path = osp.join(dir_path, vid)\n            r_data = os.listdir(osp.join(vid_path, 'vis'))\n            for img in r_data:\n                r_img_path = osp.join(vid_path, 'vis', img)\n                n_img_path = osp.join(vid_path, 'ni', img)\n                t_img_path = osp.join(vid_path, 'th', img)\n                vid = int(img[0:4])\n                camid = int(img[11])\n                sceneid = int(img[6:9])  # scene id\n                assert 0 <= camid <= 7\n                if relabel:\n                    vid = vid2label[vid]\n                dataset.append(((r_img_path, n_img_path, t_img_path), vid, camid, sceneid))\n        return dataset"
+  },
+  "rgbnt201_dev_identity": {
+    "batch_size": 64,
+    "clip_sha256": "5806e77cd80f8b59890b7e101eabd078d9fb84e6937f9e85e4ecb61988df416f",
+    "dev_gallery_triplets": 825,
+    "dev_query_triplets": 825,
+    "epochs": 50,
+    "fit_triplets": 3126,
+    "num_instances": 8,
+    "official_test_access_count": 0,
+    "protocol_sha256": "d916e7daaa1d55b179c1ec77e93128b6e6a8d1526adc9eac060ea8e733881946",
+    "schema_version": "signal-baseline-dev-v1",
+    "seed": 42,
+    "signal_source_commit": "cd1b0a672d1fe642e7608731cb4899a19dda7d51",
+    "signal_source_diff_sha256": "b889caca9c4a92689b13eb7e20bd3224067f3e5ed2a3db6825201870ca422741"
+  },
+  "rgbnt201_dev_files": [
+    "Signal_50.pth",
+    "Signalbest.pth",
+    "run_identity.json",
+    "run_summary.json",
+    "train_log.txt"
+  ]
+}

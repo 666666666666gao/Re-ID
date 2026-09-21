@@ -6978,3 +6978,10 @@ R2完整审查封存后，选择单一后继假设：等权完整排名/辅助�
 实查原wrapper78254/Q1 80455存活；fold0 control与split均260/260、20epoch及终态回执齐全，fold1 control进入2/260。完整端点2/6，无全三折检索结论，不根据单折挑选方法。输出卷空闲3021389824字节。进度凭据 `evidence/supported_task_state_q1_preparation_20260921/task_state_q1_progress_20260921_1341.json`。
 
 按用户§41.249要求，同步核查正式训练入口，见 `refine-logs/official_three_dataset_campaign_20260921/READINESS_INVENTORY.md`：RGBNT100有固定全量训练/官方评价代码与基线摘要绑定；MSVR310当前所见Signal是来源三折，须补核全量基线；RGBNT201旧V8引用dev best，不直接冒充固定全量终点。当前仅代码与归档文本清点，远端权重存在/SHA与数据全量划分下一步实查。选型仍待当前六端核验，之后直接完成三数据集正式指标，不开新机制搜索。
+
+
+### 41.251 正式全量基线与数据入口远端核查（2026-09-21 13:41）
+
+RGBNT100原完整50身份/8675记录/30epoch Signal checkpoint现存363314827字节，权重SHA f173efd1eb43193b4012b6165be451161b31163684a65759bfdaa7085b240bee，摘要与核验SHA亦全部匹配。可保留作为正式角色训练初始化候选，不重复下载或删除。此为文件/归档核对，不是重新训练或新正式指标。
+
+RGBNT201旧Signal开发记录确认fit3126/dev825，不能作为本次完整train_171固定终点训练。作者RGBNT201.py使用train_171与test/test；MSVR310作者msvr310.py使用bounding_box_train/query3/bounding_box_test，scene字段明确。详情与剩余全量清单核对见refine-logs/official_three_dataset_campaign_20260921/READINESS_INVENTORY.md，证据evidence/official_campaign_readiness_20260921。此次无GPU前向/优化器更新，不影响正在进行的Q1。用户要求仍为当前训练结束后选一个现有方法，完成三个数据集正式完整指标。
