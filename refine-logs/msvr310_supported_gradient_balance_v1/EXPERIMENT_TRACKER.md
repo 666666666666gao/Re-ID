@@ -12,7 +12,7 @@
 | R2 M0 | PASS_ENGINEERING_ONLY | 06:09:36退出0；248更新、90实际独立参考检查通过 |
 | R2 M0_CPU | PASS | 06:09:45退出0；248步/4945920距离元素，全量支持与系数重算 |
 | R2 M0独立审查 | WARN/CLOSED_WITH_LIMITS | 独立CPU全量复算通过，0工程/审计阻断；same-family/provisional；实际M0无支持更新0 |
-| R2 Q1 | RUNNING | 08:40:02原44804持续执行；fold0两端及fold1控制完整，3/6终点；fold1候选11/20epoch |
+| R2 Q1 | RUNNING | 09:02:56原44804持续执行；fold0、fold1两端检查点/检索/端点回执齐全，4/6终点；第三折及终态核验待完成 |
 | R2 Q1_CPU/Audit | NOT_STARTED | 六端齐全后核验；无中间选模或调参 |
 
 执行1381639、配置9ce36299，run /root/trifusion-storage/artifacts/msvr310_supported_gradient_balance_v1_r2_seed42_1381639，wrapper42758。
