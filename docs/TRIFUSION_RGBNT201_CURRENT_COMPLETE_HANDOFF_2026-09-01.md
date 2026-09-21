@@ -6856,3 +6856,8 @@ MSVR310内部Q1：fused53.39938365→53.45264937，+0.05326572；R1 62.166667→
 末65步跨场景AP目标各折下降，但批内与扩展hard目标各折上升。系数确实改变，候选有支持角色的排名系数中位数1.074397—1.156140；未形成所需稳定未知身份收益。配对记录/像素一致，但warmup第2步已有数值差异，最大总loss差约0.00112/0.00140/0.00171；不将+0.0533解释为精确隔离的系数因果贡献。AdamW历史状态未保存，不能反推任务更新份额。
 
 结果报告results/MSVR310_SUPPORTED_GRADIENT_BALANCE_R2_Q1_2026-09-21.md。原始、梯度、epoch、排名证据分别归档evidence/supported_gradient_balance_q1_*_20260921。新鲜gpt-6-astra/max全Q1独立审查audit_supported_gradient_balance_q1_20260921进行中；算术审查已WARN/same-family/provisional，不能替代终态完整审查。暂不启动后继，Goal ACTIVE/UNMET。
+
+
+#### §41.238 11:07归档后磁盘整理
+
+在远端HEAD与GitHub9ea4025一致、本地同名副本SHA/字节一致且bundle全部引用已合入当前HEAD的条件下，删除/root/autodl-tmp/trifusion-v2/transport内13个冗余.bundle，逻辑17721502B，目录无符号链接越界；原逐文件清单和删除回执保存evidence/transport_cleanup_postq1_20260921。项目卷空闲1405218816→1422946304B；输出卷盘点4430852096B。权重删除0，初始化、终点、数组和审查证据保留。完整Q1独立审查仍进行中，不启动后继训练。
