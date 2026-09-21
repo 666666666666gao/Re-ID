@@ -6830,3 +6830,8 @@ fresh-none gpt-6-astra/max独立M0审查终态WARN/CLOSED_WITH_LIMITS：A/B/C/D/
 ### §41.237 R2六端训练完成，CPU精确标量重放差异（2026-09-21 10:32）
 
 原Q1 44804于10:29:22退出0，六端20epoch/260更新全部结束。原CPU 69196于10:29:28退出1，pipeline保留STOPPED_AT_Q1_CPU。失败在verify_balance的ratio精确相等；训练math.sqrt与核验x**0.5在六条记录相差1ULP（2.220446049250313e-16）。全1560步/3486有支持角色记录的保存ratio均精确匹配运行math.sqrt。核验器仅将幂运算改为同一math.sqrt，精确相等及原所有阈值不放宽；训练/config/checkpoint不改、不重训。原失败日志、pipeline、全量差异诊断归档evidence/supported_gradient_balance_q1_cpu_failure_20260921。完整修复后CPU核验、六端分析及独立审查仍待完成，暂不宣布科学结论。输出卷4430831616B，GPU已空闲；保留所有必要权重。Goal ACTIVE/UNMET。
+
+
+#### §41.237 执行绑定完整保留的复核入口
+
+第一次修复复核q1_cpu_sqrt_recheck在context被原project_file_sha256拦截，未进入完整统计核验，失败记录保留。恢复原verify_msvr_supported_gradient_balance_stats.py精确执行字节；新增tools/recheck_msvr_supported_balance_sqrt.py独立事后核验入口，先验证原文件SHA，再在进程内仅替换x**0.5为math.sqrt并记录修改前后源码SHA，保留精确比较和所有原检查。原训练配置、全部绑定文件和原pipeline保持；不将失败stage重写为PASS。新的复核仍待完成。

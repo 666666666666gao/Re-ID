@@ -57,7 +57,7 @@ def verify_balance(audits,training,endpoint,warmup):
                 states[role]=(dict(rank=r,auxiliary=a,supported_steps=1) if before is None else
                     dict(rank=.9*before['rank']+.1*r,auxiliary=.9*before['auxiliary']+.1*a,
                          supported_steps=before['supported_steps']+1))
-                ratio=min(4.,max(.25,math.sqrt((states[role]['auxiliary']+1e-12)/(states[role]['rank']+1e-12))))
+                ratio=min(4.,max(.25,((states[role]['auxiliary']+1e-12)/(states[role]['rank']+1e-12))**.5))
                 wr=2*ratio/(1+ratio);wa=2/(1+ratio)
             assert b['after']==states[role]
             assert b['ratio']==ratio
