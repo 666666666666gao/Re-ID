@@ -2,7 +2,7 @@
 
 ## Latest verified state (2026-09-21 balance R2 Q1 five endpoints complete)
 
-- 当前执行入口：§41.236。支持梯度平衡R2执行1381639/配置9ce36299，M0/CPU及独立审查闭环，限制保留。10:29六端训练完整结束，原CPU因sqrt与幂运算1ULP精确比较差异停止；仅修核验器，待完整重核和独立审查，不重训；真实无支持步骤180两端均覆盖。run /root/trifusion-storage/artifacts/msvr310_supported_gradient_balance_v1_r2_seed42_1381639。不改源码/合同，不使用中间分数选方法，不因观察超时重启。Goal ACTIVE/UNMET。
+- 当前执行入口：§41.236。支持梯度平衡R2执行1381639/配置9ce36299，M0/CPU及独立审查闭环，限制保留。R2六端完整Q1_FAIL，fused+0.053266、配对1/5；10:51事后CPU全量通过、原失败保留；完整独立审查中，见§41.238，不启动后继；真实无支持步骤180两端均覆盖。run /root/trifusion-storage/artifacts/msvr310_supported_gradient_balance_v1_r2_seed42_1381639。不改源码/合同，不使用中间分数选方法，不因观察超时重启。Goal ACTIVE/UNMET。
 ## Archived standard Smooth-AP comparison (sealed; do not relaunch)
 
 - Read refine-logs/msvr310_smooth_ap_v1/EXPERIMENT_AUDIT_M0.md/.json and evidence/smooth_ap_m0_audit_20260909. Same-family/provisional, reconstruction limits retained. No new model/GPU replay, no change request. Do not repeat M0 or its audit.

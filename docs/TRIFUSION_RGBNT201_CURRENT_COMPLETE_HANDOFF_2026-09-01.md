@@ -6845,3 +6845,14 @@ fresh-none gpt-6-astra/max独立M0审查终态WARN/CLOSED_WITH_LIMITS：A/B/C/D/
 #### §41.237 独立算术审查与最小修正
 
 新鲜gpt-6-astra/max同族审查支持仅修事后核验：开方使用math.sqrt；第77行加权范数预期值使用实际张量乘法转换后的FP32系数。出错行wR由1.0421102637890658转为1.0421102046966553，wA由0.9578897362109341转为0.9578897356987，修正后范数平方残差4.67142147e-9，小于原阈值。PyTorch2.5.1+cu121 CPU实际转换检查9360次；完整六端1560步的原verify_balance断言在两处修正后全部通过；close容差、控制器精确检查与M0参考门槛均未放宽。合成单元素反例仅验证运算语义，不冒充模型实验。证据evidence/supported_gradient_balance_cpu_equations_audit_20260921。独立审查为same-family/provisional，只批准算术核验修正；完整CPU/Q1审查仍待完成。原执行文件、配置、训练、检查点与pipeline保持不变。
+
+
+### §41.238 R2完整Q1未晋级，CPU核验已闭环，独立审查进行中
+
+原训练六端10:29完成。10:51:19事后算术复核退出0，完整1560步/116501504记忆距离/2069520检索排名通过。原失败pipeline和各次失败日志未改写。43份文本94652953B逐份SHA接收，模型/数组/原图均未下载。全部120epoch、1560步及4680角色记录已归档。
+
+MSVR310内部Q1：fused53.39938365→53.45264937，+0.05326572；R1 62.166667→62.333333。CNN+0.01821327、Transformer−0.14394053、Mamba+0.12282911。三折fused+0.12996671/−0.10721385/+0.14677428，身份bootstrap下界−0.12614131。配对1/5、相对Signal1/5，Q1_FAIL不变。候选比Signal高0.32326881但三角色均低于Signal；fused修复3条Rank1、新增2条。正式成绩不变。
+
+末65步跨场景AP目标各折下降，但批内与扩展hard目标各折上升。系数确实改变，候选有支持角色的排名系数中位数1.074397—1.156140；未形成所需稳定未知身份收益。配对记录/像素一致，但warmup第2步已有数值差异，最大总loss差约0.00112/0.00140/0.00171；不将+0.0533解释为精确隔离的系数因果贡献。AdamW历史状态未保存，不能反推任务更新份额。
+
+结果报告results/MSVR310_SUPPORTED_GRADIENT_BALANCE_R2_Q1_2026-09-21.md。原始、梯度、epoch、排名证据分别归档evidence/supported_gradient_balance_q1_*_20260921。新鲜gpt-6-astra/max全Q1独立审查audit_supported_gradient_balance_q1_20260921进行中；算术审查已WARN/same-family/provisional，不能替代终态完整审查。暂不启动后继，Goal ACTIVE/UNMET。

@@ -1,6 +1,6 @@
 # 支持感知梯度平衡工作记录
 
-2026-09-21。R1_ENGINEERING_STOP / R2_M0_CPU_PASS / R2_Q1_RUNNING，seed42。
+2026-09-21。R1_ENGINEERING_STOP / R2_M0_CPU_PASS / R2_Q1_FAIL / FULL_AUDIT_IN_PROGRESS，seed42。
 
 | 工作 | 状态 | 证据 |
 |---|---|---|
@@ -12,8 +12,8 @@
 | R2 M0 | PASS_ENGINEERING_ONLY | 06:09:36退出0；248更新、90实际独立参考检查通过 |
 | R2 M0_CPU | PASS | 06:09:45退出0；248步/4945920距离元素，全量支持与系数重算 |
 | R2 M0独立审查 | WARN/CLOSED_WITH_LIMITS | 独立CPU全量复算通过，0工程/审计阻断；same-family/provisional；实际M0无支持更新0 |
-| R2 Q1 | RUNNING | 六端训练完整；独立sqrt复核通过执行绑定，现加权范数恒等式1/95343标量比较超限；全量诊断归档、独立审查中，未宣告CPU通过 |
-| R2 Q1_CPU/Audit | NOT_STARTED | 六端齐全后核验；无中间选模或调参 |
+| R2 Q1 | Q1_FAIL | 六端/1560步齐全；fused53.399384→53.452649，+0.053266；配对1/5，Signal1/5 |
+| R2 Q1_CPU/Audit | CPU_PASS / AUDIT_IN_PROGRESS | 10:51事后算术修正全量核验通过，原失败保留；新鲜Q1独立审查进行中 |
 
 执行1381639、配置9ce36299，run /root/trifusion-storage/artifacts/msvr310_supported_gradient_balance_v1_r2_seed42_1381639，wrapper42758。
 完整历史梯度、原网络与cross-scene AP定义不变。仅seed42，先主结果后消融，官方成绩不用于调参。
