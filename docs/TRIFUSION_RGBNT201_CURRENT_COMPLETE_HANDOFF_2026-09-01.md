@@ -6903,3 +6903,10 @@ R2完整审查封存后，选择单一后继假设：等权完整排名/辅助�
 实际远端CPU合成203小参数磁盘往返检查通过：control406/split784矩张量、任务计数和scaler精确，错误支持拒绝。修复后重新通过。没有CUDA初始化、模型前向、训练或官方图像访问；合成检查不替代M0。
 
 当前READY_FOR_T0_M0，尚未启动。持久runner按T0→M0→完整M0_CPU→Q1→完整Q1_CPU固定执行，任何非零退出停止。Q1只在原工程门和全量CPU门通过后允许，仍固定seed42/六端终点，不据中间检索改设计。预计M0 15–30分钟、Q1 4–6小时，随后按实际进度调整观察时间。启动前重新核对GPU空闲、输出卷最低4GiB空间和绑定提交。Goal ACTIVE/UNMET。
+
+
+## §41.242 任务状态 V1 已持久启动（2026-09-21 11:57）
+
+执行提交cb4f4c37fbedd357ccc0ae4768161d049a280c5d；配置4ebedda4a10d5e535d6820aa05684b7f707f7a0b8308d454b2316e9b3a61f3c3。run /root/trifusion-storage/artifacts/msvr310_supported_task_state_v1_seed42_cb4f4c3；wrapper78254，启动观察T0子进程78258存活、退出码未产生。GPU启动时空闲，输出卷4430852096字节。
+
+初始状态T0_RUNNING，未获得真实M0/Q1终态。持久pipeline按固定门执行；预计M0 15–30分钟后核对，Q1估计4–6小时。观测超时不重启。启动凭据与脚本evidence/supported_task_state_launch_20260921。正式结果仍无新增，Goal ACTIVE/UNMET。
