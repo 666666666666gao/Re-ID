@@ -6794,3 +6794,8 @@ fresh-none gpt-6-astra/max独立M0审查终态WARN/CLOSED_WITH_LIMITS：A/B/C/D/
 #### §41.235 首个完整配对里程碑（07:42）
 
 07:42:08真实观察：原wrapper42758/Q1 44804存活，fold0 control/balanced均完成20epoch/260更新，端点回执、检查点和检索记录齐全，2/6完整端点；fold1 control完成6/20epoch。两端203/203累计非零、overflow0、冻结Signal/基座不变及全部训练工程检查通过。训练epoch耗时合计2595.407/2569.485秒；这些不包括所有初始化/重载/检索成本。GPU7578MiB/100%，输出盘5065076736B。未用局部检索分数调参；完整Q1/CPU/审查未结束。原始观察归档evidence/supported_gradient_balance_q1_progress_20260921/observation_0742.json，以文件内observed_at为实际时间，不以本地预设文件名推断时间。Goal ACTIVE/UNMET。
+
+
+#### §41.235 三端完成（08:21）
+
+08:21:27原wrapper42758/Q1 44804仍运行。fold0两端及fold1 control已完成，各20epoch/260更新、203/203累计非零、overflow0、固定长度与冻结路径检查通过，检查点/检索/端点回执齐全，3/6终点；fold1 balanced自动进入2/20epoch。fold1控制训练epoch耗时2565.730秒，不含全部端点成本。输出盘4915871744B。原始观察evidence/supported_gradient_balance_q1_progress_20260921/observation_0821.json。未读取局部分数作方法选择，完整Q1/CPU/审查仍待结束，Goal ACTIVE/UNMET。
