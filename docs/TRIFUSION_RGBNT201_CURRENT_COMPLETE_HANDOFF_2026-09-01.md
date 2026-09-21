@@ -6985,3 +6985,12 @@ R2完整审查封存后，选择单一后继假设：等权完整排名/辅助�
 RGBNT100原完整50身份/8675记录/30epoch Signal checkpoint现存363314827字节，权重SHA f173efd1eb43193b4012b6165be451161b31163684a65759bfdaa7085b240bee，摘要与核验SHA亦全部匹配。可保留作为正式角色训练初始化候选，不重复下载或删除。此为文件/归档核对，不是重新训练或新正式指标。
 
 RGBNT201旧Signal开发记录确认fit3126/dev825，不能作为本次完整train_171固定终点训练。作者RGBNT201.py使用train_171与test/test；MSVR310作者msvr310.py使用bounding_box_train/query3/bounding_box_test，scene字段明确。详情与剩余全量清单核对见refine-logs/official_three_dataset_campaign_20260921/READINESS_INVENTORY.md，证据evidence/official_campaign_readiness_20260921。此次无GPU前向/优化器更新，不影响正在进行的Q1。用户要求仍为当前训练结束后选一个现有方法，完成三个数据集正式完整指标。
+
+
+### 41.252 按用户再次要求锁定R2并转向完整训练（2026-09-21）
+
+用户再次明确不要继续只有多种尝试而缺完整指标。现锁定原V8三角色＋跨环境Smooth-AP＋完整历史导数＋支持感知梯度平衡R2（1381639，balanced端），详见refine-logs/official_three_dataset_campaign_20260921/METHOD_SELECTION.md。已完成同协议MSVR候选中fused53.452649/62.333333；相对cross-scene差距很小，R2原Q1_FAIL、配对+0.053266和负bootstrap下界均保留，不宣称普遍最佳或显著胜出。V27的RGBNT201收益、V8的RGBNT100收益保留，不混搭各数据集赢家。
+
+直接准备三个数据集统一配方全量训练与官方评估，seed42/固定终点/全部5输出。当前task-state实验继续完成归档，不再追加新方法或用科学晋级门推迟正式指标。这个选型替代§41.249尚待当前终态再选型的安排；运行中的训练定义不动。没有提前生成正式分数。
+
+13:45完成三数据集全量标签普查，0模型前向/更新：RGBNT201训练3951/171ID，query/gallery836/836、30测试身份；RGBNT100训练8675/50ID，query/gallery1715/8575、50测试身份；MSVR310训练1032/155ID，query/gallery591/1055，query52身份但gallery155身份必须完整保留。所有query有合法正例，训练测试身份隔离。MSVR310的516条query若误改camera过滤会改变正例数量。完整4208073字节标签清单留远端，摘要见evidence/official_campaign_readiness_20260921/official_three_dataset_label_summary_20260921.json。仅文件名与标签核验，不冒充图像内容完整性或模型结果。

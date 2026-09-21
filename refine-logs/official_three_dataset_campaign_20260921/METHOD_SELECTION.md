@@ -1,0 +1,28 @@
+# 正式三数据集方法选型锁定
+
+2026-09-21。用户再次明确：从历次已尝试方法中挑一个最好的，完成所有训练和评估，交付完整指标，不继续只做内部尝试。
+
+## 选定方法
+
+**原V8异构残差三角色 + 新鲜实例历史/完整历史反传 + 跨环境Smooth-AP + 支持感知角色梯度平衡R2。**
+
+来源执行 `1381639f778f77f124a2726ee55c07610092a438`，当前配置 `configs/MSVR310/TriFusion-supported-gradient-balance-paired-v1.json` 内 implementation_revision=r2_direct_auxiliary；选 balanced端。不是R1相减近似，不是仍运行的task-state分离优化器。
+
+此选择以已有完整内部检索与工程闭环为依据。完成同一MSVR310协议的候选中，R2 fused 53.452649/62.333333，高于cross-scene 53.405492/62.000000、标准AP52.7876、history-gradient52.4067、role-set52.4902及原V8 52.117390；Signal53.129381/63.000000。不同运行候选数值可用于有限的开发选择，不能当成匹配单因素差。R2自己的配对增益仅+0.053266、bootstrap下界-0.126141、Transformer下降、Q1_FAIL保留；没有显著胜过cross-scene或普遍最优的结论。
+
+其他主要正证据仍保留：V27在RGBNT201 +1.338944且三角色/三折正，但对应MSVR310 source-style -0.302214；原V8在RGBNT100正式 +2.572608。它们不能拼成一个已验证统一方法，不能把RGBNT201的81与MSVR310的53跨数据集排序。早期Router、交互、容量、适配、原型、联合头等没有提供更强的完整跨任务候选证据。此选择是必须选一个进行正式测量时的工作判断，不声称穷尽证明三数据集最优。
+
+## 锁定范围
+
+- 三个数据集统一使用上述方法；MSVR310环境键为scene，RGBNT201/RGBNT100为各自camera。仅进行已定义跨环境目标的数据字段适配，不根据官方表现挑选不同方法。
+- 保留三角色、固定拼接、tau=.01、memory512/age8、当前64anchor/历史0anchor、新鲜历史坐标与完整历史导数、其他13项及R2直接辅助求导、EMA=.9、平方根范数比截断[.25,4]与权重和2。不加V27、Router、联合头、AdaTask/任务状态分离。
+- seed42、角色固定20epoch，保留已定义5epoch LR warmup；历史目标预热65更新先按原实现保留，不为全量数据大小重新搜索比例。
+- 全量Signal基线：RGBNT100复用已核验50ID/30epoch；RGBNT201和MSVR310依据原同源配置准备完整官方训练身份的固定50epoch终点，启动前进行对应正确性检查，不能复用内部fold/dev模型冒充全量。
+- 正式训练实现单独入口、配置及证据；原Q1执行源和合同保持不动。当前已启动task-state六端继续到终态归档，正式任务不并抢GPU；不再以其结果作为是否交付正式指标的条件。
+- 此方法现在已选定，不等待新实验来决定是否继续方法搜索。正式结果不用于回调配方。
+
+## 当前执行工作
+
+已开始全量基线/协议清点；RGBNT100权重实际SHA复核通过。接下来补全RGBNT201/MSVR310全量Signal入口，以及三个数据集统一方法的完整训练/评价入口。完成工程检查后排入持久队列。交付5输出×3数据集的mAP/R1/R5/R10、训练与评价绑定、CSV/JSON/PDF/LaTeX，负结果同样完整交付。
+
+完整历史报告：results/MSVR310_SUPPORTED_GRADIENT_BALANCE_R2_Q1_2026-09-21.md、MSVR310_CROSS_SCENE_SMOOTH_AP_Q1_2026-09-21.md、TRIFUSION_V27_COMPLETE_COMPARISON_2026-09-07.md、MSVR310_SOURCE_STYLE_V1_Q1_2026-09-07.md、TRIFUSION_RGBNT100_OFFICIAL_COMPARISON_2026-09-06.md。
