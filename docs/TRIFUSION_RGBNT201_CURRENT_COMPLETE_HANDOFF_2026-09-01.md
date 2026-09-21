@@ -6881,3 +6881,14 @@ fused 53.3993836457→53.4526493704，配对+0.0532657247；三折+0.1299667070/
 完整审查位于evidence/supported_gradient_balance_q1_independent_audit_20260921；正式审查副本refine-logs/msvr310_supported_gradient_balance_v1/EXPERIMENT_AUDIT_Q1.md/.json。审阅归属same-family/provisional，backend未独立证明。报告、所有脚本、失败尝试、文本与远端复算凭据均归档。
 
 R2封存，不扫权重或选checkpoint救回。下一候选为借鉴AdaTask的任务状态分离；目前仅接口和存储预算准备，尚未登记或启动。必须先明确warmup状态、有效任务时钟、组合步幅、AMP及单次权重衰减等合同，再单一干预推进。Goal保持ACTIVE/UNMET；已有初始化、最终权重及审查依赖继续保留。
+
+
+## §41.240 任务状态分离 V1：合同、核心与合成核验（2026-09-21）
+
+R2完整审查封存后，选择单一后继假设：等权完整排名/辅助导数，共用AdamW状态对比分任务状态后相加。新计划refine-logs/msvr310_supported_task_state_v1/EXPERIMENT_PLAN.md已明确；两端均直接R/A，不沿用R2 EMA。Split从首步生效，预热hard Triplet状态在AP切换时保留；无合法AP支持时排名状态/时钟保持且不应用旧动量，有支持零梯度正常观测。单次decay、原heads、原LR/协议/seed42保持。分任务预条件可能改变总步幅，不能宣称纯状态隔离因果效果。
+
+最小核心tools/msvr_task_state_optimizer.py及合成检查已实现。实际远端torch2.5.1+cu121 CPU检查通过：每端12步、24次严格参数恢复续算、缺失与零支持、单次衰减、head、非有限任务缓冲提前停止；shared对原生AdamW参数差0，split与独立原生任务方向相加最大差2.980232238769531e-7。另12步CPU GradScaler kwargs/unscale接口检查逐位匹配。没有CUDA初始化、模型前向或训练更新；这些不替代真实AMP/M0。
+
+证据evidence/supported_task_state_kernel_20260921含合成输出、脚本、空间估算与独立kernel审查。仅核心审查，不等于完整训练集成许可。训练器、启动配置、完整CPU核验器尚未接入，M0/Q1均NOT_RUN。下一步完成这些接口及完整代码审查，然后按原阶段门执行；不得把合成PASS记作M0。
+
+空间实查：输出卷4430852096字节空闲，GPU无计算进程。上一轮M0/Q1产物按扩展名统计，新增14份优化器状态采用保守估算；启动前再检查总预算与磁盘。没有删除任何权重，没有读官方图像。原Goal ACTIVE/UNMET，正式结果不变。

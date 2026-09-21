@@ -1,0 +1,107 @@
+{
+  "date": "2026-09-21",
+  "verdict": "PASS_KERNEL_ONLY",
+  "review_independence": "same-family",
+  "acceptance_status": "provisional",
+  "reviewer_backend_identity": "unattested",
+  "reviewer_delegated_further": false,
+  "repo_modified_by_reviewer": false,
+  "remote_workloads_started_by_reviewer": 0,
+  "blocking_findings": [],
+  "nonblocking_code_defects": [],
+  "required_kernel_patches": [],
+  "training_launch_clearance": false,
+  "scientific_qualification": "NOT_ASSESSED",
+  "repo": "C:/Users/gb/.trifusion_github_publish_22c3bee",
+  "reviewed_files": [
+    "refine-logs/msvr310_supported_task_state_v1/EXPERIMENT_PLAN.md",
+    "tools/msvr_task_state_optimizer.py",
+    "tools/check_msvr_task_state_math.py"
+  ],
+  "reviewed_line_counts": {
+    "plan": 33,
+    "kernel": 64,
+    "checker": 119
+  },
+  "assessments": {
+    "adamw_formula": "PASS_STATIC_AND_SUPPLIED_NATIVE_REFERENCE_RECEIPT",
+    "adatask_attribution": "PASS_AS_INSPIRED_ADAPTATION",
+    "absent_rank_freezes_moments_and_clock": "PASS",
+    "absent_rank_does_not_apply_old_rank_momentum": "PASS",
+    "supported_zero_advances_rank_state": "PASS",
+    "shared_arm_uses_total_gradient": "PASS_WITH_CALLER_BUFFER_CONTRACT",
+    "head_total_gradient_adamw": "PASS_NATIVE_TOLERANCE_CHECK",
+    "once_per_update_weight_decay": "PASS",
+    "changing_group_learning_rate": "PASS",
+    "in_memory_state_load_next_parameter_update": "PASS_EXACT_24_CHECKS",
+    "amp_keyword_interface": "PASS_STATIC_PYTORCH_2_5_1_SOURCE",
+    "cpu_grad_scaler_execution": "PASS_6_STEPS_PER_ARM_EXACT_UNSCALED_REFERENCE_PARAMETERS",
+    "cuda_real_model_amp_execution": "NOT_EXECUTED",
+    "pre_mutation_finite_validation": "PASS",
+    "causal_claim_boundaries": "PASS"
+  },
+  "synthetic_evidence": {
+    "receipt": "D:/Program Files/UserCache/gb/codex/tmp/task_state_cpu_check_amp_20260921.json",
+    "receipt_status": "PASS_SYNTHETIC_CPU_ONLY",
+    "execution_owner": "parent_executor",
+    "independently_rerun_by_reviewer": false,
+    "torch": "2.5.1+cu121",
+    "cuda_initialized": false,
+    "seed": 42,
+    "model_forwards": 0,
+    "training_updates": 0,
+    "rows": [
+      {
+        "split": false,
+        "steps": 12,
+        "observed_rank_steps": 8,
+        "max_native_role_parameter_error": 0.0,
+        "exact_next_parameter_update_resume_checks": 12,
+        "nonfinite_atomic_stop": true
+      },
+      {
+        "split": true,
+        "steps": 12,
+        "observed_rank_steps": 8,
+        "max_native_role_parameter_error": 2.980232238769531e-7,
+        "exact_next_parameter_update_resume_checks": 12,
+        "nonfinite_atomic_stop": true
+      }
+    ],
+    "grad_scaler_kwargs_checks": [
+      {
+        "split": false,
+        "steps": 6,
+        "scaler_device": "cpu",
+        "scale": 256.0,
+        "exact_parameter_match": true
+      },
+      {
+        "split": true,
+        "steps": 6,
+        "scaler_device": "cpu",
+        "scale": 256.0,
+        "exact_parameter_match": true
+      }
+    ],
+    "head_comparison": "within rtol=2e-6, atol=2e-7; maximum head error not recorded",
+    "resume_scope": "in-memory state_dict load followed by exact next-step parameter equality; full post-step state equality and disk roundtrip not independently asserted"
+  },
+  "limitations": [
+    "No trainer integration or real-source data/gradient decomposition was reviewed.",
+    "CPU GradScaler evidence was reviewed; CUDA, real-model AMP, and overflow-driven scaler skips were not executed within this review.",
+    "R/A unscaling and support flags remain caller responsibilities under the plan.",
+    "Optimizer reconstruction must preserve arm and parameter/role ordering.",
+    "No real-source M0 or complete Q1 result exists within this review scope.",
+    "No actual role tensor count, peak GPU memory, disk restoration, or storage-budget clearance is established.",
+    "Prior R2 scientific result was accepted as supplied context and not independently re-audited.",
+    "Same-family review with unattested backend identity remains provisional."
+  ],
+  "primary_sources": [
+    "https://github.com/pytorch/pytorch/blob/v2.5.1/torch/optim/adamw.py",
+    "https://github.com/pytorch/pytorch/blob/v2.5.1/torch/optim/optimizer.py",
+    "https://github.com/pytorch/pytorch/blob/v2.5.1/torch/amp/grad_scaler.py",
+    "https://ojs.aaai.org/index.php/AAAI/article/download/26275/26047",
+    "https://github.com/EnnengYang/AdaTask/blob/master/adatask.py"
+  ]
+}
