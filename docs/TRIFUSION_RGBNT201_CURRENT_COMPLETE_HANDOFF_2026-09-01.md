@@ -7038,3 +7038,11 @@ RGBNT201旧Signal开发记录确认fit3126/dev825，不能作为本次完整trai
 按用户磁盘要求，远端两个 artifacts 根目录内已确认的自行训练 `.pth` 共277个、24,016,657,028字节已删除，预训练CLIP文件及结果JSON/日志/检索数组保留。清单保存在 `evidence/self_trained_weight_cleanup_20260923.json` 及远端同名回执。删除后 `/root/autodl-tmp` 可用约16GB，根卷可用约9.5GB；新输出不得写入已消费的旧目录。
 
 审阅发现刚提交的 RGBNT100 “R2” 入口只平衡普通Triplet/ID梯度，缺少正式锁定R2的新鲜实例历史、完整历史反传与跨camera Smooth-AP，因此该入口及其误导性配置已移除，未启动为正式实验。需完成统一正确入口和M0检查后再训练。当前R2/V27三数据集正式角色训练和官方评估均未开始；训练耗时尚不能从作者权重与正确入口的实测吞吐估计。按用户要求，正常启动后仅做初始、训练中途与终态三次检查，不持续轮询。
+
+### 41.256 作者权重到位与统一正式入口部署（2026-09-23 07:50 北京时间）
+
+用户已将三份作者 Signal checkpoint 下载到本机 `E:\BaiduNetdiskDownload`，要求直接使用，不再训练 Signal；本机原文件保持不动。已核得：MSVR310 `Signal_50.pth` 364603450 字节、SHA256 `b3888e7ec7b9290abcde76915ebf9d9ce87129e759586fd7deb3e9cf7d1d807a`；RGBNT100 `Signal_30.pth` 363308835 字节、SHA256 `09df46735a3427169ea65b9e4110dc834b99de859657bf589c9fb30ad4d4f860`；RGBNT201 `Signal_50.pth` 364776839 字节、SHA256 `ec09a4f68bce95f645fde3fd2e29f81c944d1f5816adc00ab107e3daf6e38b7c`。MSVR310 已上传到远端 `/root/autodl-tmp/trifusion-v2/author_signal_pretrained_20260923/` 并在远端核对 SHA；另两份仍在续传，不得提前标记远端完整。MSVR310 checkpoint 为217键的原始 `OrderedDict`，与155类、8 camera 的原 Signal 模型键名及形状完全匹配，`strict=True` 加载通过。
+
+统一入口代码已作为 GitHub 提交 `cc2ab63ab039cb153a08fcfe5769c4856dc451fb` 推送，并快进同步到远端仓库同一提交。新增五个 `tools/*official_three_dataset*` / `tools/train_official_three_dataset_roles.py` 入口文件：三数据集各自的原图像读取与采样；R2 的跨环境 Smooth-AP、512条实例记忆、65步预热、新鲜历史坐标、完整历史候选 VJP 与角色级支持感知梯度平衡；V27 的耦合统计扰动；两者都是20 epoch、seed42、各自独立从作者 Signal 初始化。车辆正式评估沿用已有精确 Signal 前向；RGBNT201 保留原验证批次读取；五路输出使用完整官方 query/gallery 和对应 camera/scene 过滤。独立静态复核通过，发现的路径比较、验证批字段、Signal 数值前向、评估模块来源及RGBNT100 sampler导入顺序问题已在提交前修复；这仅证明入口已过代码审查，不是模型性能结果。
+
+远端完整协议已生成于 `/root/autodl-tmp/trifusion-v2/artifacts/official_three_dataset_protocols_20260923/`：RGBNT201 `3951/836/836` SHA256 `6a17eda0ee2c6fdcdf84f345b0829ed507cadd6e9bd1123d626bb6692e64e5d8`；RGBNT100 `8675/1715/8575` SHA256 `9f899cbbf9fdbb69f5ef68e318506af623324e43e482c7ad00c3e672c8b246e2`；MSVR310 `1032/591/1055` SHA256 `3314a905174b7564079e11b0b4bbd7dd0efac74dd81043a059d21d1b6908c2bf`。该步骤逐条确认图像文件存在、身份隔离及所有 query 有合法正例，但没有 GPU 前向或正式指标。远端 RTX3090 当前空闲，`/root/autodl-tmp` 尚有约22GB 可用。MSVR310 R2 的8步 M0 已于约07:48启动，仍在运行；完整20 epoch训练尚未启动，尚无可报告正式成绩或可靠耗时估计。
