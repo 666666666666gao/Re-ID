@@ -55,6 +55,9 @@ def build_model(protocol, source, clip_weight, checkpoint, expected_sha256):
     signal = _build_signal_teacher(cfg, num_classes=len(protocol["train_label_map"]),
                                    camera_num=len(cameras), view_num=0)
     state = torch.load(path, map_location="cpu", weights_only=True)
+    if name == "RGBNT100":
+        assert all(key.startswith("module.") for key in state)
+        state = {key.removeprefix("module."): value for key, value in state.items()}
     assert set(state) == set(signal.state_dict())
     signal.load_state_dict(state, strict=True)
     signal_hash = _module_state_sha256(signal)
