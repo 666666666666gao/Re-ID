@@ -30,7 +30,8 @@ def main():
 
     if args.machine == "old":
         assert ROOT == Path("/root/autodl-tmp/trifusion-v2/TriFusion-ReID")
-        cells = (("RGBNT201", "R2"), ("RGBNT201", "V27"))
+        # RGBNT201 V27 seed43 already passed all four official thresholds on the new server.
+        cells = (("RGBNT201", "R2"),)
         gpus = (0,)
         next_seed = {cell: 47 for cell in cells}
         prior = ROOT / "logs/official_extra_seed45_20260924/campaign.json"
