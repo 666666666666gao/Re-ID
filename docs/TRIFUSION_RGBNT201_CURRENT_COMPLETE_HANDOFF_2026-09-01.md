@@ -7249,3 +7249,13 @@ GitHub、本地及新机代码锁定`aaddb1c3a951f6149145dfb023d8e750d7a5c177`�
 RGBNT201正式836 query/836 gallery的完整四指标（mAP/Rank-1/Rank-5/Rank-10，%）：Signal `80.3029/85.1675/91.3876/93.6603`，R2 fused `82.4254/86.7225/92.5837/94.0191`，V27 fused `81.8916/85.5263/91.9856/93.6603`。两份`official_metrics.json`状态`COMPLETE`且`independent_upstream_metrics_equal=True`。R2相对Signal为`+2.1225 mAP/+1.5550 Rank-1`，V27为`+1.5887/+0.3588`；这支持RGBNT201的单seed正式增益，**不能外推到RGBNT100/MSVR310或称为三seed稳定结果**。RGBNT100作者Signal与旧自行训练Signal初始化不同，历史V8 `83.2848`不能代入本组控制端。
 
 新四卡`:2026`队列PID`2696049`仍`RUNNING`，23:56四卡实际训练/显存正常、`/data`约124GiB可用。新增MSVR310固定终点正式结果（mAP/Rank-1，作者Signal仍`53.2424/72.4196`）：R2 seed43 fused `53.2391/70.8968`，V27 seed43 `51.6667/68.3587`，V27 seed44 `49.7506/66.4975`；三项各自评价状态`COMPLETE`、query591/gallery1055、`independent_upstream_metrics_equal=True`。R2 seed43 mAP几乎持平但Rank-1下降，V27两种子均下降。四卡未完成项：RGBNT100 R2 seed43训练epoch10/step1207、R2 seed44 epoch5/step607、MSVR310 R2 seed44 epoch10/step200、RGBNT201 R2 seed43 epoch3/step133；RGBNT201其余三项仍待队列。未完成的正式指标继续记为`-`，不拿训练loss或部分种子填补。
+
+### 41.285 新增seed45/46与权重留存规则（2026-09-24 00:23 北京时间）
+
+用户要求在当前seed42/43/44之外再试几个随机种子，让可用GPU继续工作，并最终每个方法、每个数据集只保留表现最好的一个训练权重。新增种子在启动前固定为**45和46**，范围为R2/V27 × RGBNT100/MSVR310/RGBNT201，各自仍从对应作者Signal预训练权重初始化，固定epoch20，逐项M0→训练→原Signal query/gallery完整正式评价；不选中间epoch、不改网络、损失、数据或评估掩码。正式指标原始回执和日志保留所有种子，RGBNT201报告mAP/Rank-1/5/10，其余两数据集重点报告mAP/Rank-1。
+
+新增入口`tools/queue_official_extra_seed.py`与原多种子入口共用`tools/run_official_three_dataset_roles.py`及同三份协议，代码提交`9fd5fdf89b666cb443ec44f884ebf1bc61d1b549`已推送GitHub并同步两台服务器。旧单卡`:19873`此前HEAD`5faf76a`不支持`--seed`；同步前核对其交接文档SHA与当前GitHub完全一致，随后快进到`9fd5fdf`，文档SHA仍一致；新入口及正式训练入口通过Python编译，`--help`显示`--seed`。旧机作者权重、CLIP、Signal源码和协议路径均与原seed42一致。
+
+旧单卡服务器seed45队列于00:21:08启动，首项RGBNT100–R2在00:22:07通过M0并进入20轮训练，GPU0约7370MiB、存在实际利用率；依次完成六项，状态文件`/root/autodl-tmp/trifusion-v2/TriFusion-ReID/logs/official_extra_seed45_20260924/campaign.json`。四卡`:2026`此时原seed43/44队列仍在运行；seed46等待进程PID`3014828`已启动，每240秒只检查原`campaign.json`是否`COMPLETE`，随后自动使用GPU0—3领取六项，不抢占现有训练，输出到`/data/gaob/Re-ID/Trifusion/{logs,trained-model}/official_extra_seed46_20260924`。00:18旧机数据盘约20GiB可用、新机`/data`约124GiB可用；当前新增权重预计每个约26—38MiB，没有删掉尚未评价的权重。
+
+所有新增实验正式评价完成后，以**同一方法、同一数据集内的fused mAP最高，Rank-1仅在mAP并列时决胜**选出一个保留权重；其余种子的已验证训练权重才清理，原始指标、训练回执、代码/协议/作者权重哈希和日志都保留。seed42/43/44/45/46的完整种子分布是性能报告主体；按已消费正式测试选出的单一最高种子仅是存储与部署选择，**不能把该最大值报告成无偏的跨种子泛化估计**。截至本节seed45尚无正式指标、seed46尚未开始训练，不能提前宣布赢家或删除仍需评价的权重。
