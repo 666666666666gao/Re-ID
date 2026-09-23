@@ -7151,3 +7151,13 @@ GPU 0及其上游桥的当前只读AER计数均为0，这不能排除未记录�
 为进一步排除PyTorch包自身，已在`CUDA_VISIBLE_DEVICES=1`的新进程里直接调用系统`libcuda.so.1`的`cuInit(0)`，返回`999 / CUDA_ERROR_UNKNOWN`；此前三张卡各自的单元素PyTorch CUDA初始化也均失败。新机GPU 1–3的PCIe配置仍可读，GPU 2/3原V27进程具有故障前建立的上下文并继续运算；新进程必须重新初始化驱动，故当前表现为三卡虽未掉PCIe、却均无法接新训练或评价。`CUDA_VISIBLE_DEVICES`只控制应用可见设备，不能代替在主机PCIe/驱动层恢复GPU 0（NVIDIA文档：https://docs.nvidia.com/deploy/topics/topic_5_2_1.html）。这属于结合本机探针和文档的运行时解释，具体驱动内部失效路径仍待管理员日志确认。
 
 近固定终点的只读检查显示V27–RGBNT100 seed43/44均已到第19/20 epoch；两份`training.json`仍是`RUNNING`、目录下尚无`.pth`，所以目前不能说权重已保存。继续让现有进程完成并保全文件，不在此刻重启节点。故障恢复前不重启失败R2或开展后续数据集训练。
+
+### 41.271 四卡队列终态、V27权重保全与CUDA恢复条件（2026-09-23 14:33 北京时间）
+
+故障前已建立CUDA上下文的V27–RGBNT100 seed43/44均完成固定第20轮并保存权重；两个新开的正式评估进程都在CUDA初始化时失败，**没有生成`official_metrics.json`，不得报告正式检索指标**。seed43权重为`/data/gb/Re-ID/pretained/official_r2_v27_four_gpu_20260923/RGBNT100_V27_seed43/roles_epoch20.pth`，SHA256 `23295bbea5dd47b25799ebc4e7a7a6bf7ca435d06263f4d46d0f13691226598c`；seed44同目录对应文件SHA256 `fcf9aaa23d93e5357a1a3545ded37791fbbef5f905a366bd296eefa14718e7f5`。两份训练回执均为`FIXED_EPOCH20_TRAINING_COMPLETE`。不删除或重训这两个有效终点；主机恢复后直接依锁定作者评估入口完成五路正式评价。
+
+原四卡队列进程已退出，`/data/gb/artifacts/official_r2_v27_four_gpu_20260923/campaign.json`已按文件和日志核实后标记`INTERRUPTED_GPU0_PCIE_CUDA_INIT`：RGBNT100 R2 seed43/44是`CUDA_FAILED_NO_ENDPOINT`，V27 seed43/44是`TRAINED_EVAL_BLOCKED_CUDA_INIT`，后续MSVR310、RGBNT201共八项仍`PENDING`。三卡恢复V1在使用GPU前被V2取代；V2的GPU1 M0在模型更新前同样因CUDA初始化失败，回执`STOPPED_NEW_CUDA_CONTEXT_FAILURE`。新机目前没有继续运行的训练/评价队列。`/data`按字节统计仍可用`62059896832`字节，约57.8 GiB；两份有效权重和三份作者Signal权重保留。旧单卡seed42队列独立，未因本次新机故障被中断。
+
+最新的逐卡独立单元素PyTorch测试在GPU 1、2、3的新进程中全部于CUDA初始化失败；GPU 0的PCIe配置空间厂商ID为`ffff`，其余三卡为`10de`。直接在仅选择GPU 1的新进程调用`libcuda.so.1`的`cuInit(0)`也返回`999 / CUDA_ERROR_UNKNOWN`。因此目前可以确认的是**GPU 0 PCIe不可访问，且这台主机的CUDA驱动运行时无法为其余三卡建立新进程上下文**；其余三卡没有各自PCIe失联的证据。GPU 0故障是否由并行负载触发，以及驱动内部为何使所有新上下文失败，仍需管理员的内核NVRM/Xid、PCIe AER和硬件日志，不能由训练日志或`nvidia-smi`单独确定。我们未执行GPU reset、驱动更改、PCIe热移除或主机重启；四卡正常训练负载与故障有时间关系，但没有证据证明软件操作直接损坏显卡，也不能排除负载暴露潜在供电、散热或链路问题。
+
+下一步需管理员核查约13:30起的内核/硬件日志并恢复主机GPU状态。恢复验收依次为：GPU 0 `setpci`厂商ID恢复`10de`、`nvidia-smi -L`识别四张卡、每张卡的独立单元素PyTorch CUDA分配成功。只有这些通过后，先评估现存V27 seed43/44权重，再从作者Signal权重重跑两个无有效终点的R2任务，按RGBNT100→MSVR310→RGBNT201原顺序完成其余训练与作者流程正式评价。当前无须根据训练loss猜测成绩，也不在主机故障期间反复启动会失败的GPU进程。
