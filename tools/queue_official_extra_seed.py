@@ -41,6 +41,8 @@ def main():
     parser.add_argument("--dataset", choices=DATASETS)
     parser.add_argument("--method", choices=METHODS)
     parser.add_argument("--gpu", type=int)
+    parser.add_argument("--skip-cell", action="append",
+                        choices=[f"{dataset}:{method}" for dataset in DATASETS for method in METHODS])
     args = parser.parse_args()
     assert args.seed >= 45
 
@@ -83,11 +85,15 @@ def main():
     assert not campaign.exists() and not train_root.exists()
     campaign.mkdir(parents=True)
     train_root.mkdir(parents=True)
+    skipped = set(args.skip_cell or ())
     jobs = [dict(dataset=dataset, method=method, seed=args.seed, status="PENDING")
-            for dataset in datasets for method in methods]
+            for dataset in datasets for method in methods
+            if f"{dataset}:{method}" not in skipped]
+    assert jobs
     status = dict(schema="trifusion-official-extra-seed-v1", status="RUNNING",
                   seed=args.seed, machine=args.machine, fixed_epoch=20,
                   started_at=stamp(), dataset_order=datasets,
+                  skipped_cells=sorted(skipped),
                   commit=subprocess.check_output(["git", "rev-parse", "HEAD"],
                                                  cwd=ROOT, text=True).strip(), jobs=jobs)
 
