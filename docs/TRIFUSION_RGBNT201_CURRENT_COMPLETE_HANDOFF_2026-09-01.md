@@ -7205,3 +7205,13 @@ Xid 154是其他错误所需恢复动作的摘要；四张卡同时标记`Node R
 GitHub直连克隆在传输中停滞、HTTP/1.1局部克隆在签出时发生GnuTLS连接中断；将本地已核验且与GitHub `main`相同的`60c5869`完整Git包传入后恢复工作树，再将两卡队列及精确忽略规则提交到GitHub，当前本地/GitHub/新机均为`f7294e1`。队列入口`tools/queue_official_three_dataset_two_gpu.py`固定顺序为RGBNT100→MSVR310→RGBNT201，每数据集先seed43再seed44，每轮GPU 0运行R2、GPU 1运行V27；各任务先M0，再20轮固定终点训练，最后按原完整query/gallery协议评估。不启用GPU 2/3；旧单卡seed42队列不变。与旧seed42训练核心的差异仅为随机种子参数向初始化、采样、回执的传递，没有改变R2/V27目标或作者评价定义。
 
 三份作者Signal权重已放入`pertrained-model`，SHA256依次为RGBNT100 `09df46735a3427169ea65b9e4110dc834b99de859657bf589c9fb30ad4d4f860`、MSVR310 `b3888e7ec7b9290abcde76915ebf9d9ce87129e759586fd7deb3e9cf7d1d807a`、RGBNT201 `ec09a4f68bce95f645fde3fd2e29f81c944d1f5816adc00ab107e3daf6e38b7c`。CLIP `ViT-B-16.pt`校验为`5806e77cd80f8b59890b7e101eabd078d9fb84e6937f9e85e4ecb61988df416f`；Signal源码提交`cd1b0a6`，工作树补丁SHA256 `b889caca9c4a92689b13eb7e20bd3224067f3e5ed2a3db6825201870ca422741`，与旧机对照一致。三套官方协议已复制到`Trifusion/logs/official_three_dataset_protocols_20260923`，只将`dataset_root`指向新机目录；完整路径核验须待数据复制结束。此时三套数据集仍在从旧机传输，锁定依赖仍在安装，**尚未启动M0、训练或评估，也没有新正式指标**。下一步是完成数据/环境、分别对GPU 0/1执行CUDA及Mamba前反向冒烟，再启动两卡队列；`/data`可用空间约128GiB。
+
+### 41.280 两卡新机环境验收与固定队列启动（2026-09-23 19:31 北京时间）
+
+`gaob@172.19.9.245:2026`的新机已完成三套数据复制：RGBNT201、RGBNT100、MSVR310合计110990个文件，与旧单卡服务器来源文件数一致；官方协议引用的RGBNT100 18965、MSVR310 8034、RGBNT201 14361个唯一路径全部存在。协议JSON与旧机逐字段相同，只有`dataset_root`指向`/data/gaob/Re-ID/dataset`。三份作者Signal及CLIP权重沿§41.279的SHA保持不变，均存`/data/gaob/Re-ID/Trifusion/pertrained-model`，不使用本项目自行训练的Signal权重。
+
+Conda环境`/data/gaob/Re-ID/conda-envs/tri_reid`安装锁定依赖成功；`pip check`显示`No broken requirements found`，PyTorch `2.5.1+cu121`、torchvision `0.20.1+cu121`、transformers `4.45.2`、mamba-ssm `2.2.6.post3`、causal-conv1d `1.6.0`。GPU 0与1分别独立运行`tools/smoke_mamba.py`，均为RTX3090/sm86、输出及输入/全部参数梯度有限、全部参数梯度存在，退出码0。GPU 2/3未分配任务。清除安装完成后的pip缓存558个文件，释放约3034.9MB；`/data`启动时可用约125GiB。
+
+GitHub、本地及新机代码锁定`aaddb1c3a951f6149145dfb023d8e750d7a5c177`。北京时间19:27:28启动后台队列PID`2404577`，状态文件`/data/gaob/Re-ID/Trifusion/logs/official_r2_v27_two_gpu_20260923/campaign.json`，队列stdout同级`official_r2_v27_two_gpu_queue_20260923.log`。固定顺序RGBNT100→MSVR310→RGBNT201，每数据集seed43后seed44；每轮GPU 0=R2、GPU 1=V27，两端各自M0→固定20轮训练→作者Signal完整query/gallery正式评价。19:31首组RGBNT100 seed43的R2/V27均为`M0_PASS`并进入`TRAINING`：各8次真实更新，冻结参数未改变、无缺失非零梯度、无溢出；GPU0/1占用约7385/6337MiB且100%活动，GPU2/3空闲。**训练刚开始，无本轮正式检索结果**；M0的loss不是mAP。
+
+全队列初步预计约30—33小时（约9月25日01:30—04:30），以首个完整训练epoch的实测吞吐修正。按用户要求，启动验收后只计划约训练中点与全队列终态两次集中检查，不按分钟反复监视、不以中间loss挑checkpoint。旧单卡seed42队列保持独立，本节不触碰故障的`:2028`主机；所有训练权重和日志留在新机Trifusion内，不提交GitHub。
