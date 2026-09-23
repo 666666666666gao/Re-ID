@@ -12,6 +12,7 @@ import sys
 from threading import Lock
 
 ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(ROOT))
 BASE = Path("/data/gb")
 CAMPAIGN = BASE / "artifacts/official_r2_v27_four_gpu_20260923"
 SOURCE = BASE / "comparators/Signal-cd1b0a6"
