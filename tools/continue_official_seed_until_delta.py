@@ -25,10 +25,12 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--machine", choices=("old", "new"), required=True)
     parser.add_argument("--min-gain", type=float, required=True)
+    parser.add_argument("--early-msvr-r2", action="store_true")
     args = parser.parse_args()
     assert 0 < args.min_gain <= 1.0
 
     if args.machine == "old":
+        assert not args.early_msvr_r2
         assert ROOT == Path("/root/autodl-tmp/trifusion-v2/TriFusion-ReID")
         cells = (("RGBNT201", "R2"), ("RGBNT201", "V27"))
         gpus = (0,)
@@ -39,9 +41,9 @@ def main():
         baseline_paths = {"RGBNT201": historic / "RGBNT201_R2/official_metrics.json"}
     else:
         assert ROOT == Path("/data/gaob/Re-ID/Trifusion")
-        cells = (("RGBNT100", "R2"), ("RGBNT100", "V27"),
-                 ("MSVR310", "R2"), ("MSVR310", "V27"))
-        gpus = (0, 1, 2, 3)
+        cells = (("MSVR310", "R2"),) if args.early_msvr_r2 else (
+            ("RGBNT100", "R2"), ("RGBNT100", "V27"), ("MSVR310", "V27"))
+        gpus = (2,) if args.early_msvr_r2 else (0, 1, 3)
         next_seed = {cell: 48 for cell in cells}
         prior = ROOT / "logs/official_extra_seed46_20260924/campaign.json"
         historic = ROOT / "trained-model/official_r2_v27_two_gpu_20260923"
@@ -51,9 +53,19 @@ def main():
             "MSVR310": historic / "MSVR310_R2_seed43/official_metrics.json",
         }
 
-    status_path = ROOT / f"logs/official_target_continuation_{args.machine}_20260924.json"
+    suffix = "_msvr_r2" if args.early_msvr_r2 else ""
+    status_path = ROOT / f"logs/official_target_continuation_{args.machine}{suffix}_20260924.json"
     assert not status_path.exists()
-    while not prior.exists() or json.loads(prior.read_text(encoding="utf-8"))["status"] != "COMPLETE":
+    while True:
+        if prior.exists():
+            previous = json.loads(prior.read_text(encoding="utf-8"))
+            if args.early_msvr_r2:
+                row = next(row for row in previous["jobs"]
+                           if row["dataset"] == "MSVR310" and row["method"] == "R2")
+                if row["status"] == "COMPLETE":
+                    break
+            elif previous["status"] == "COMPLETE":
+                break
         time.sleep(240)
 
     names = {"RGBNT201": ("mAP", "Rank-1", "Rank-5", "Rank-10"),
@@ -101,6 +113,8 @@ def main():
         command = [sys.executable, "-u", str(ROOT / "tools/queue_official_extra_seed.py"),
                    "--machine", args.machine, "--seed", str(seed),
                    "--dataset", dataset, "--method", method, "--gpu", str(gpu)]
+        if args.early_msvr_r2:
+            command.append("--overlap-previous")
         log = ROOT / f"logs/official_extra_seed{seed}_{dataset}_{method}_20260924.launch.log"
         with log.open("x", encoding="utf-8") as handle:
             subprocess.run(command, cwd=ROOT, stdout=handle, stderr=subprocess.STDOUT, check=True)
