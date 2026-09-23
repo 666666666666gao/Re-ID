@@ -15,7 +15,7 @@ ROOT = Path(__file__).resolve().parents[1]
 BASE = Path("/data/gb")
 CAMPAIGN = BASE / "artifacts/official_r2_v27_four_gpu_20260923"
 SOURCE = BASE / "comparators/Signal-cd1b0a6"
-CLIP = BASE / "pretrained/ViT-B-16.pt"
+CLIP = ROOT / "pretained/ViT-B-16.pt"
 WEIGHTS = {
     "RGBNT100": ("RGBNT100_Signal_30.pth", "09df46735a3427169ea65b9e4110dc834b99de859657bf589c9fb30ad4d4f860"),
     "MSVR310": ("MSVR310_Signal_50.pth", "b3888e7ec7b9290abcde76915ebf9d9ce87129e759586fd7deb3e9cf7d1d807a"),
@@ -35,7 +35,7 @@ def command(row, mode, directory):
             "--dataset", row["dataset"], "--method", row["method"], "--mode", mode,
             "--protocol", str(BASE / "artifacts/official_three_dataset_protocols_20260923" / f"{row['dataset']}.json"),
             "--signal-source", str(SOURCE), "--clip-weight", str(CLIP),
-            "--signal-checkpoint", str(BASE / "author_signal_pretrained" / weight),
+            "--signal-checkpoint", str(ROOT / "pretained" / weight),
             "--signal-sha256", digest, "--output-dir", str(directory),
             "--seed", str(row["seed"])]
 
@@ -72,7 +72,7 @@ def run_job(status, row):
     run_command(row, "m0", m0)
     m0_receipt = json.loads((m0 / "training.json").read_text(encoding="utf-8"))
     assert m0_receipt["status"] == "M0_PASS" and m0_receipt["seed"] == row["seed"]
-    directory = CAMPAIGN / "train" / tag
+    directory = ROOT / "pretained/official_r2_v27_four_gpu_20260923" / tag
     set_status(status, row, "TRAINING", m0_at=stamp())
     run_command(row, "train", directory)
     training = json.loads((directory / "training.json").read_text(encoding="utf-8"))
@@ -89,12 +89,12 @@ def run_job(status, row):
 
 def main():
     assert not CAMPAIGN.exists()
-    assert ROOT == BASE / "TriFusion-ReID"
+    assert ROOT == BASE / "Re-ID"
     from tools.official_three_dataset_model import sha256
 
     for dataset in DATASETS:
         weight, digest = WEIGHTS[dataset]
-        assert sha256(BASE / "author_signal_pretrained" / weight) == digest
+        assert sha256(ROOT / "pretained" / weight) == digest
         assert (BASE / "artifacts/official_three_dataset_protocols_20260923" / f"{dataset}.json").is_file()
     assert CLIP.is_file() and (SOURCE / "utils/metrics.py").is_file()
     assert shutil.disk_usage(BASE).free > 3 * 1024**3
