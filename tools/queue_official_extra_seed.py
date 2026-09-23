@@ -72,12 +72,13 @@ def main():
                 assert all(row["status"] != "PENDING" for row in prior["jobs"])
             else:
                 assert args.seed >= 48
-                assert (args.dataset, args.method, args.gpu) == ("MSVR310", "R2", 2)
+                allowed = {("RGBNT100", "R2", 0), ("RGBNT100", "V27", 1),
+                           ("MSVR310", "R2", 2), ("MSVR310", "V27", 3)}
+                assert (args.dataset, args.method, args.gpu) in allowed
                 seed46 = json.loads((ROOT / "logs/official_extra_seed46_20260924/campaign.json").read_text(encoding="utf-8"))
-                row = next(row for row in seed46["jobs"]
-                           if row["dataset"] == "MSVR310" and row["method"] == "R2")
-                assert row["status"] == "COMPLETE" and row["gpu"] == 2
-                assert all(row["status"] == "COMPLETE" for row in prior["jobs"] if row.get("gpu") == 2)
+                gpu_rows = [row for row in seed46["jobs"] if row.get("gpu") == args.gpu]
+                assert gpu_rows and all(row["status"] == "COMPLETE" for row in gpu_rows)
+                assert all(row["status"] == "COMPLETE" for row in prior["jobs"] if row.get("gpu") == args.gpu)
         else:
             while json.loads(previous.read_text(encoding="utf-8"))["status"] != "COMPLETE":
                 time.sleep(240)

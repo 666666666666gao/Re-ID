@@ -26,11 +26,13 @@ def main():
     parser.add_argument("--machine", choices=("old", "new"), required=True)
     parser.add_argument("--min-gain", type=float, required=True)
     parser.add_argument("--early-msvr-r2", action="store_true")
+    parser.add_argument("--new-cell", choices=("rgbnt100_r2", "rgbnt100_v27", "msvr310_v27"))
     args = parser.parse_args()
     assert 0 < args.min_gain <= 1.0
+    assert not (args.early_msvr_r2 and args.new_cell)
 
     if args.machine == "old":
-        assert not args.early_msvr_r2
+        assert not args.early_msvr_r2 and not args.new_cell
         assert ROOT == Path("/root/autodl-tmp/trifusion-v2/TriFusion-ReID")
         cells = (("RGBNT201", "R2"), ("RGBNT201", "V27"))
         gpus = (0,)
@@ -41,9 +43,17 @@ def main():
         baseline_paths = {"RGBNT201": historic / "RGBNT201_R2/official_metrics.json"}
     else:
         assert ROOT == Path("/data/gaob/Re-ID/Trifusion")
-        cells = (("MSVR310", "R2"),) if args.early_msvr_r2 else (
-            ("RGBNT100", "R2"), ("RGBNT100", "V27"), ("MSVR310", "V27"))
-        gpus = (2,) if args.early_msvr_r2 else (0, 1, 3)
+        assignments = {"rgbnt100_r2": (("RGBNT100", "R2"), 0),
+                       "rgbnt100_v27": (("RGBNT100", "V27"), 1),
+                       "msvr310_v27": (("MSVR310", "V27"), 3)}
+        if args.early_msvr_r2:
+            cells, gpus = (("MSVR310", "R2"),), (2,)
+        elif args.new_cell:
+            cell, gpu = assignments[args.new_cell]
+            cells, gpus = (cell,), (gpu,)
+        else:
+            cells = (("RGBNT100", "R2"), ("RGBNT100", "V27"), ("MSVR310", "V27"))
+            gpus = (0, 1, 3)
         next_seed = {cell: 48 for cell in cells}
         prior = ROOT / "logs/official_extra_seed46_20260924/campaign.json"
         historic = ROOT / "trained-model/official_r2_v27_two_gpu_20260923"
@@ -53,16 +63,17 @@ def main():
             "MSVR310": historic / "MSVR310_R2_seed43/official_metrics.json",
         }
 
-    suffix = "_msvr_r2" if args.early_msvr_r2 else ""
+    suffix = "_msvr_r2" if args.early_msvr_r2 else (f"_{args.new_cell}" if args.new_cell else "")
     status_path = ROOT / f"logs/official_target_continuation_{args.machine}{suffix}_20260924.json"
     assert not status_path.exists()
+    watch_gpu = gpus[0] if args.early_msvr_r2 or args.new_cell else None
     while True:
         if prior.exists():
             previous = json.loads(prior.read_text(encoding="utf-8"))
-            if args.early_msvr_r2:
-                row = next(row for row in previous["jobs"]
-                           if row["dataset"] == "MSVR310" and row["method"] == "R2")
-                if row["status"] == "COMPLETE":
+            if watch_gpu is not None:
+                rows = [row for row in previous["jobs"] if row.get("gpu") == watch_gpu]
+                assert rows
+                if all(row["status"] == "COMPLETE" for row in rows):
                     break
             elif previous["status"] == "COMPLETE":
                 break
@@ -113,7 +124,7 @@ def main():
         command = [sys.executable, "-u", str(ROOT / "tools/queue_official_extra_seed.py"),
                    "--machine", args.machine, "--seed", str(seed),
                    "--dataset", dataset, "--method", method, "--gpu", str(gpu)]
-        if args.early_msvr_r2:
+        if watch_gpu is not None:
             command.append("--overlap-previous")
         log = ROOT / f"logs/official_extra_seed{seed}_{dataset}_{method}_20260924.launch.log"
         with log.open("x", encoding="utf-8") as handle:
