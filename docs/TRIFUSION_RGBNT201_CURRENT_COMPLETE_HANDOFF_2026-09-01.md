@@ -7330,3 +7330,18 @@ RGBNT201正式836 query/836 gallery的完整四指标（mAP/Rank-1/Rank-5/Rank-1
 | MSVR310 | R2 seed43 | 53.2391 / 70.8968 | 64.1 / 77.2 | 10.8609 / 6.3032 |
 
 RoDI–CLIP与本项目均涉及CLIP，但初始化、训练与选择资源并非完全匹配；本表不把跨论文差值解释为三角色的因果损失，更不以已测种子最高值充当无偏泛化估计。RGBNT201在本轮的Rank-5/Rank-10仍以作者Signal同协议四项增益及本轮`+0.8`停止线判断；上述RoDI参照只核入mAP/Rank-1，未拼造其未列指标。更强预训练或额外语义资源另列：RoDI–DINOv3为RGBNT201 `85.3/87.9`、RGBNT100 `89.0/99.1`、MSVR310 `71.8/84.8`；[PMKD作者PDF](https://aihuazheng.github.io/publications/pdf/2026/2026-Progressive_Multi-modal_Knowledge_Distillation.pdf)的RGBNT100为`91.6/98.0`且使用DINOv2；[CoT-ReID论文PDF](https://openaccess.thecvf.com/content/CVPR2026/papers/Gao_Chain-of-Thought_Guided_Multi-Modal_Object_Re-Identification_CVPR_2026_paper.pdf)的RGBNT100 `89.9/99.3`依赖DINOv3与MLLM文本。来源数值及表间差异已经在§34、§41.101和`docs/SOTA_PRIMARY_REFRESH_2026-09-07_EVENING.md`核读。当前固定epoch20种子队列继续按原合同运行；六组`+0.8`即使达标，也不自动完成跨资源SOTA目标。
+
+### 41.293 MSVR310六个正式种子的全查询排序变化（2026-09-24 01:57 北京时间）
+
+从R2、V27各自seed42/43/44的原始`COMPLETE`回执读取全部591条合法query的AP和首个正确匹配名次，逐一与同回执的作者Signal输出配对；均为固定epoch20、完整1055 gallery正式协议。AP变动阈值为绝对差`1e-12`，Rank-1修复/新增按首个正确匹配是否处于名次1判定，未按身份或中途epoch挑选：
+
+| 方法/seed | fused − Signal mAP | fused − Signal Rank-1 | AP改善/下降/持平query | Rank-1修复/新增错误 |
+|---|---:|---:|---:|---:|
+| R2/42 | −0.9608 | −3.0457 | 287/291/13 | 26/44 |
+| R2/43 | −0.0033 | −1.5228 | 300/275/16 | 35/44 |
+| R2/44 | −1.9824 | −3.3841 | 260/314/17 | 23/43 |
+| V27/42 | −2.7206 | −5.0761 | 249/328/14 | 20/50 |
+| V27/43 | −1.5757 | −4.0609 | 274/301/16 | 23/47 |
+| V27/44 | −3.4918 | −5.9222 | 222/351/18 | 16/51 |
+
+这六个固定种子均出现首位新错误多于修复。R2 seed43的mAP几乎持平，同时仍有44条新首位错误、35条修复，说明均值相近并不等于逐查询排序被保留；该模型的fused `53.2391/70.8968`高于自己的CNN、Transformer、Mamba完整分支，却低于同协议Signal `53.2424/72.4196`，本例不能简单归因于末端没有选中最强角色。上述只是已消费正式测试的总体记账，不证明具体场景、外观或训练机制原因，也不用于修改当前锁定的R2/V27、选择超参数或针对测试身份设计增强。seed45及后续仍按原队列完成，新增正式结果再独立判定。
