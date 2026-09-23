@@ -7412,3 +7412,5 @@ RGBNT100作者Signal：mAP/Rank-1=`86.3242/97.5510`；MSVR310作者Signal：`53.
 §41.297的跨机结果引用不同的协议文件SHA，因此逐字段比较旧机`artifacts/official_three_dataset_protocols_20260923/{dataset}.json`与新机`logs/official_three_dataset_protocols_20260923/{dataset}.json`。三个数据集各自的`inventory_sha256`完全一致；JSON中唯一不同的顶层字段均为机器上的绝对`dataset_root`，将各自根目录统一替换为同一占位符后，整个JSON对象逐字段完全相等，包含train标签映射、记录顺序、query行、正例计数及camera/scene过滤定义。原始文件SHA不相同是绝对路径造成的，不能据此称为不同评价协议。
 
 再从每个数据集的旧机和新机各取一份`COMPLETE`正式回执，对独立作者Signal的全部query逐项比较：RGBNT201 836条、RGBNT100 1715条、MSVR310 591条的`average_precision`均逐元素精确相同，`first_match_rank`差异均为0，四项汇总指标也完全相同。这证明当前两台机器的**已测作者Signal正式输出**一致，支持§41.297按同数据集跨机汇总；它不证明不同种子角色输出应相同，也不抵消连续在正式测试上选种子的选择偏差。训练队列和固定epoch20合同未因该核验改变。
+
+另对上述13份已完成回执按数据集、方法分组检查：每组seed标签互不重复，有多个已完成种子的组，其`model_state_sha256`与`role_checkpoint_sha256`均逐种子不同，而同组`author_checkpoint_sha256`只有一个值。这排除了当前账本将同一终点摘要重复登记为不同种子的情况；摘要不同本身不是跨种子稳定收益的证据。
