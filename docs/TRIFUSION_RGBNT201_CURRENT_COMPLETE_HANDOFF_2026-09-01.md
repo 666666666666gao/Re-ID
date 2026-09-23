@@ -7235,3 +7235,17 @@ GitHub、本地及新机代码锁定`aaddb1c3a951f6149145dfb023d8e750d7a5c177`�
 用户按需询问是否已有训练完成。23:04核对确认RGBNT100–V27 seed44已完成固定20轮训练、保存权重，随后进入原作者完整query/gallery正式评价；23:08评估JSON状态`COMPLETE`，query1715、gallery8575、无reranking、同身份同环境过滤，GPU2自动继续领取MSVR310–V27 seed43。seed44的mAP/Rank-1（%）：作者Signal `86.3242/97.5510`，V27 fused `86.3835/97.3761`，CNN `85.7227/97.4344`，Transformer `85.6552/96.9679`，Mamba `84.8056/97.1429`。本种子fused相对匹配Signal为`+0.0593 mAP/-0.1749 Rank-1`；此前seed43为`85.9465/96.7930`，相对Signal mAP下降，**不能将seed44微弱的单项正值写成跨种子稳定改进**。两种子尚未完成R2配对，不据此选择方法或更改训练合同。
 
 同刻四卡续跑PID`2696049`仍存活：GPU0 RGBNT100–R2 seed43训练epoch8/step998，GPU1 RGBNT100–R2 seed44训练epoch3/step395，GPU3 MSVR310–R2 seed43训练epoch18/step360，GPU2 MSVR310–V27 seed43已通过M0并训练epoch1/step20。除上述V27 seed43/44两项，新机其余任务暂无正式检索终态；训练loss不作为mAP。当前仍按已固定20轮及作者评估流程继续，不中途选权重。
+
+### 41.284 按需进度：旧单卡seed42六项正式终态及四卡新增结果（2026-09-23 23:57 北京时间）
+
+旧单卡`:19873`的`official_r2_v27_campaign_20260923/campaign.json`现为`COMPLETE`，PID10763已退出；R2和V27在RGBNT201、RGBNT100、MSVR310各自固定20轮及完整Signal原协议评价均完成。以下为各自正式fused mAP/Rank-1（%，不是内部Q1；同一数据集Signal从相同作者权重得到）：
+
+| 数据集 | 作者Signal | R2 seed42 fused | V27 seed42 fused |
+|---|---:|---:|---:|
+| RGBNT201 | 80.3029/85.1675 | 82.4254/86.7225 | 81.8916/85.5263 |
+| RGBNT100 | 86.3242/97.5510 | 86.3156/97.4927 | 85.5703/96.6181 |
+| MSVR310 | 53.2424/72.4196 | 52.2816/69.3739 | 50.5218/67.3435 |
+
+RGBNT201正式836 query/836 gallery的完整四指标（mAP/Rank-1/Rank-5/Rank-10，%）：Signal `80.3029/85.1675/91.3876/93.6603`，R2 fused `82.4254/86.7225/92.5837/94.0191`，V27 fused `81.8916/85.5263/91.9856/93.6603`。两份`official_metrics.json`状态`COMPLETE`且`independent_upstream_metrics_equal=True`。R2相对Signal为`+2.1225 mAP/+1.5550 Rank-1`，V27为`+1.5887/+0.3588`；这支持RGBNT201的单seed正式增益，**不能外推到RGBNT100/MSVR310或称为三seed稳定结果**。RGBNT100作者Signal与旧自行训练Signal初始化不同，历史V8 `83.2848`不能代入本组控制端。
+
+新四卡`:2026`队列PID`2696049`仍`RUNNING`，23:56四卡实际训练/显存正常、`/data`约124GiB可用。新增MSVR310固定终点正式结果（mAP/Rank-1，作者Signal仍`53.2424/72.4196`）：R2 seed43 fused `53.2391/70.8968`，V27 seed43 `51.6667/68.3587`，V27 seed44 `49.7506/66.4975`；三项各自评价状态`COMPLETE`、query591/gallery1055、`independent_upstream_metrics_equal=True`。R2 seed43 mAP几乎持平但Rank-1下降，V27两种子均下降。四卡未完成项：RGBNT100 R2 seed43训练epoch10/step1207、R2 seed44 epoch5/step607、MSVR310 R2 seed44 epoch10/step200、RGBNT201 R2 seed43 epoch3/step133；RGBNT201其余三项仍待队列。未完成的正式指标继续记为`-`，不拿训练loss或部分种子填补。
