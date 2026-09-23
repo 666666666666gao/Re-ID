@@ -138,6 +138,7 @@ def main():
             score = result["outputs"]["fused"]["metrics"]
             path = Path(training["checkpoint"])
             assert path == directory / "roles_epoch20.pth"
+            assert sha256(path) == training["checkpoint_sha256"]
             better = rank(cell, score) > rank(cell, selected[cell]["metrics"])
             if better:
                 if cell in adaptive_winner:
@@ -148,7 +149,6 @@ def main():
                 selected[cell] = dict(seed=seed, metrics=score,
                                       receipt=str(directory / "official_metrics.json"))
             else:
-                assert sha256(path) == training["checkpoint_sha256"]
                 path.unlink()
             row = dict(dataset=cell[0], method=cell[1], seed=seed, gpu=gpu,
                        metrics=score, checkpoint_retained=better, completed_at=stamp())
