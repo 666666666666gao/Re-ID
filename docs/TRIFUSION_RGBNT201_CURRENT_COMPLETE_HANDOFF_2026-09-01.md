@@ -7134,3 +7134,10 @@ R2 fused相对同次作者Signal为 `-0.960810` mAP、`-3.045685` Rank-1；Rank-
 §41.266所列恢复队列在GPU 1上重跑R2 seed44的M0时，**尚未进入模型前向或优化更新**，即于Signal构建阶段`clip_model.to("cuda")`发生`RuntimeError: CUDA unknown error`；该M0没有通过。队列PID`153392`经命令行与状态核对后停止，状态标记`STOPPED_NEW_CUDA_CONTEXT_FAILURE`，seed44标记`CUDA_INIT_FAILED_M0`，seed43仍未上GPU，后续八项未启动。没有把失败的M0误记为性能结果，也没有触动旧机seed42任务。
 
 独立于TriFusion代码，在新机空闲但`nvidia-smi`仍能列出的GPU 1上，以`CUDA_VISIBLE_DEVICES=1`运行最小PyTorch探针`torch.ones(1, device='cuda')`，结果`torch.cuda.is_available()==False`、`device_count()==0`，并在CUDA初始化阶段报同样的`CUDA unknown error`及`Can't initialize NVML`。同时`nvidia-smi`对GPU 0的PCI`0000:17:00.0`持续报告`Unable to determine the device handle`，对GPU 1仍可查询；驱动为`580.178.04`。这些证据把当前**新进程无法建立CUDA上下文**定位到新服务器GPU/驱动运行时状态，而不是R2损失公式或训练入口；具体硬件/驱动根因尚无内核日志权限，不能进一步断言。旧机seed42使用独立GPU与运行环境，且已正常训练至RGBNT100第10轮，因此两机表现不同。原已建立CUDA上下文的GPU 2/3 V27训练进程仍在运行，但其训练结束后新开的正式评价进程也可能被同一故障阻断；应先保留固定epoch20 checkpoint和完整日志，待主机GPU/驱动恢复后再严格按作者流程评价，不能据训练loss填正式表。新机不再发起新GPU训练，避免重复失败；用户要求的三数据集完整指标仍未齐备。
+### 41.268 新机PCIe只读故障定位（2026-09-23 约14:21 北京时间）
+
+按用户要求继续诊断，没有重启/重置GPU，也没有中断已运行的V27。与模型无关的最小CUDA探针见§41.267；新增的**PCIe配置空间交叉检查**进一步缩小故障层级：`setpci -s 17:00.0 0.w`和`setpci -s 17:00.1 0.w`对GPU 0的显卡/音频两个功能均返回`ffff`，直接读取`/sys/bus/pci/devices/0000:17:00.0/config`前16字节也全是`ff`；作为同机对照，GPU 1 `31:00.0`返回NVIDIA厂商ID`10de`，配置字节正常。`lspci`仍列出GPU 0的旧设备身份与`nvidia`绑定关系，但当前配置空间不可读；`nvidia-smi`也持续无法取得其设备句柄。上游`16:02.0`PCIe桥的Secondary Status有`<MAbort+`，与下游设备请求未被正常响应一致。因此当前最具体的定位是**GPU 0从可访问的PCIe设备路径中掉线/不再响应**；这一设备/驱动状态使新进程即使只选择GPU 1，也无法完成CUDA初始化。并非TriFusion的R2损失、数据、权重或一般CUDA版本不兼容：同环境四卡M0先前已通过，而故障后独立一元素PyTorch分配也失败。
+
+GPU 0及其上游桥的当前只读AER计数均为0，这不能排除未记录或不可见的瞬时错误。账号`gaob`不在`adm/systemd-journal`组，`journalctl -k`只返回无权查看系统消息，`/var/log/kern.log`为`syslog:adm 0640`，故目前读不到事故时的`NVRM Xid`、PCIe AER或电源事件；`sudo -n`也未获授权。**尚不能证明是显卡本体、供电、插槽/线缆、主板根端口或驱动的哪一项物理诱因**，也不能据其它卡运行时温度推断过热是原因。需由管理员读取约13:35起的内核日志并在现有V27固定终点落盘后安排GPU/主机恢复，再用`setpci`厂商ID、`nvidia-smi`和最小CUDA分配复测。只在复测通过后重跑受影响任务及原作者正式评价，不沿用失败的半轮训练。
+
+只读进度核验：新机V27–RGBNT100 seed43/44分别完成17/20、16/20 epoch，最近平均loss约`0.533087/0.533627`；两个原训练进程仍存活，新机`/data`可用约58GB。它们尚无固定终点checkpoint及正式检索指标；其后的独立评价进程在当前CUDA状态下可能失败。旧机seed42不受此新机PCIe事件影响。
