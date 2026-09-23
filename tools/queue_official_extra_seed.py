@@ -36,9 +36,13 @@ def stamp():
 
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument("--seed", type=int, choices=(45, 46), required=True)
+    parser.add_argument("--seed", type=int, required=True)
     parser.add_argument("--machine", choices=("old", "new"), required=True)
+    parser.add_argument("--dataset", choices=DATASETS)
+    parser.add_argument("--method", choices=METHODS)
+    parser.add_argument("--gpu", type=int)
     args = parser.parse_args()
+    assert args.seed >= 45
 
     if args.machine == "old":
         assert ROOT == Path("/root/autodl-tmp/trifusion-v2/TriFusion-ReID")
@@ -60,23 +64,30 @@ def main():
         while json.loads(previous.read_text(encoding="utf-8"))["status"] != "COMPLETE":
             time.sleep(240)
 
+    if args.gpu is not None:
+        assert args.gpu in gpus
+        gpus = (args.gpu,)
+    datasets = (args.dataset,) if args.dataset else DATASETS
+    methods = (args.method,) if args.method else METHODS
+
     assert (source / "utils/metrics.py").is_file() and clip.is_file()
-    for dataset in DATASETS:
+    for dataset in datasets:
         name, digest = WEIGHTS[dataset]
         assert sha256(weights / name) == digest
         assert (protocols / f"{dataset}.json").is_file()
     assert shutil.disk_usage(base).free > 3 * 1024**3
 
-    campaign = ROOT / f"logs/official_extra_seed{args.seed}_20260924"
-    train_root = ROOT / f"trained-model/official_extra_seed{args.seed}_20260924"
+    suffix = f"_{args.dataset}_{args.method}" if args.dataset and args.method else ""
+    campaign = ROOT / f"logs/official_extra_seed{args.seed}{suffix}_20260924"
+    train_root = ROOT / f"trained-model/official_extra_seed{args.seed}{suffix}_20260924"
     assert not campaign.exists() and not train_root.exists()
     campaign.mkdir(parents=True)
     train_root.mkdir(parents=True)
     jobs = [dict(dataset=dataset, method=method, seed=args.seed, status="PENDING")
-            for dataset in DATASETS for method in METHODS]
+            for dataset in datasets for method in methods]
     status = dict(schema="trifusion-official-extra-seed-v1", status="RUNNING",
                   seed=args.seed, machine=args.machine, fixed_epoch=20,
-                  started_at=stamp(), dataset_order=DATASETS,
+                  started_at=stamp(), dataset_order=datasets,
                   commit=subprocess.check_output(["git", "rev-parse", "HEAD"],
                                                  cwd=ROOT, text=True).strip(), jobs=jobs)
 
