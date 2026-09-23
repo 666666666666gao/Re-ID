@@ -7221,3 +7221,11 @@ GitHub、本地及新机代码锁定`aaddb1c3a951f6149145dfb023d8e750d7a5c177`�
 用户询问当前进展，进行一次按需只读核查，不修改训练合同。新机`:2026`两卡队列PID`2404577`仍`RUNNING`。RGBNT100 seed43两端M0通过后持续训练：R2已完成第1轮130步（该轮1051.64秒、平均训练loss1.42388），核对时进入第2轮，最新step157、loss0.68928、AMP scale256、合法anchor64、历史记录512；V27已完成第8轮，第9轮step1157、loss0.55181、AMP scale256。GPU0/1利用率均100%、显存约7567/6337MiB，GPU2/3没有本轮计算任务；`/data`可用约125GiB。瞬时GPU0/1温度82/83℃、风扇76/100%，当前无CUDA错误日志或队列退出；这只是运行观测，不能由瞬时温度推断长期稳定性。新机没有完成任何本轮正式评价，训练loss不能写成mAP。seed44和后续MSVR310、RGBNT201仍待顺序队列。
 
 旧单卡服务器seed42队列PID`10763`同时保持`RUNNING`，与新机seed43/44互不替代。新确认RGBNT100 R2固定epoch20完整作者协议评价`official_metrics.json`状态`COMPLETE`，query1715、gallery8575、无reranking、同身份同环境过滤、其他身份全保留；本机直接加载作者Signal权重。结果按mAP/Rank-1（%）：Signal `86.3242/97.5510`，R2 fused `86.3156/97.4927`，CNN `85.3468/97.7843`，Transformer `85.8561/97.0262`，Mamba `85.2197/97.7843`。R2 fused相对匹配Signal为约`-0.0086 mAP/-0.0583 Rank-1`，不能报告成超越。此前V8正式`83.2848`对应本机自行训练Signal `80.7122`，是不同初始化/运行，不与本次作者Signal结果拼成同一受控消融。旧队列已完成R2–MSVR310与R2–RGBNT100；R2–RGBNT201训练到epoch11/step583，其余V27三任务待运行。RGBNT201正式四指标仍未产生。
+
+### 41.282 用户改用四卡：保留已完成V27并续接R2（2026-09-23 21:54 北京时间）
+
+用户明确将新服务器`:2026`的本轮分配由两卡改为四卡。切换前，两卡队列中RGBNT100–V27 seed43已经完成固定20轮与作者原完整query1715/gallery8575正式评价，`official_metrics.json`状态`COMPLETE`：作者Signal `86.3242/97.5510`、V27 fused `85.9465/96.7930`、CNN `85.0802/97.3761`、Transformer `84.8915/96.4431`、Mamba `84.6947/96.5015`（mAP/Rank-1，%）。V27 fused相对Signal为`-0.3777 mAP/-0.7580 Rank-1`，不得称为正收益。RGBNT100–R2 seed43仍在GPU0训练，第5轮后继续推进；不重启或重训这两项。
+
+新增续跑入口`tools/queue_official_three_dataset_four_gpu_resume.py`已提交GitHub `c005f14`并同步新机。北京时间21:49:35启动新调度PID`2696049`，接管现有R2训练进程PID`2408556`及V27完整结果，沿用原`trained-model/official_r2_v27_two_gpu_20260923`权重目录和`logs/official_r2_v27_two_gpu_20260923/campaign.json`以保留原回执，不因目录名中的`two_gpu`误读现时并发。验证新调度已启动三个不同待做任务后，仅向旧队列父PID`2404577`发`SIGTERM`；旧父进程退出，原R2子训练进程仍存活。新调度只在原R2固定终点落盘后补其正式评价，不重复其训练。新调度最多四个worker，每个空闲GPU领取一个尚未开始的任务；为满足用户四卡并行要求，MSVR310可与RGBNT100重叠，原逐数据集串行次序不再适用；每项仍固定M0→20轮→原Signal完整query/gallery评价、seed43/44、无中途选权重。
+
+21:53按需启动验收：GPU0 RGBNT100–R2 seed43训练epoch6/step681；GPU1 RGBNT100–R2 seed44、GPU2 RGBNT100–V27 seed44、GPU3 MSVR310–R2 seed43的M0均通过并已进入真实训练，分别到step29、124、40。四卡分别占用约7567/7387/6339/7469MiB并有GPU计算活动；`/data`仍约125GiB可用，未观察到新CUDA错误。其余任务保持PENDING，由四卡续跑入口按空闲卡领取，不启动重复项。四卡完成时间仅能暂估为9月24日上午至下午初，须根据此并发阶段的实际训练/评价速度修正；目前除了上述V27 seed43，没有新机其它正式结果。
