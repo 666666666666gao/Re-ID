@@ -43,10 +43,12 @@ def main():
     parser.add_argument("--gpu", type=int)
     parser.add_argument("--skip-cell", action="append",
                         choices=[f"{dataset}:{method}" for dataset in DATASETS for method in METHODS])
+    parser.add_argument("--overlap-previous", action="store_true")
     args = parser.parse_args()
     assert args.seed >= 45
 
     if args.machine == "old":
+        assert not args.overlap_previous
         assert ROOT == Path("/root/autodl-tmp/trifusion-v2/TriFusion-ReID")
         base = ROOT.parent
         source = base / "comparators/Signal-cd1b0a6"
@@ -63,8 +65,14 @@ def main():
         protocols = ROOT / "logs/official_three_dataset_protocols_20260923"
         gpus = (0, 1, 2, 3)
         previous = ROOT / "logs/official_r2_v27_two_gpu_20260923/campaign.json"
-        while json.loads(previous.read_text(encoding="utf-8"))["status"] != "COMPLETE":
-            time.sleep(240)
+        if args.overlap_previous:
+            assert args.seed == 46 and args.dataset is None and args.method is None
+            assert args.gpu is None
+            prior = json.loads(previous.read_text(encoding="utf-8"))
+            assert all(row["status"] != "PENDING" for row in prior["jobs"])
+        else:
+            while json.loads(previous.read_text(encoding="utf-8"))["status"] != "COMPLETE":
+                time.sleep(240)
 
     if args.gpu is not None:
         assert args.gpu in gpus
@@ -151,6 +159,10 @@ def main():
                     return
                 row["gpu"] = gpu
                 save()
+            if args.overlap_previous:
+                while any(previous_row.get("gpu") == gpu and previous_row["status"] != "COMPLETE"
+                          for previous_row in json.loads(previous.read_text(encoding="utf-8"))["jobs"]):
+                    time.sleep(240)
             run_job(row)
 
     save()
