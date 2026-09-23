@@ -7181,3 +7181,7 @@ Xid 154是其他错误所需恢复动作的摘要；四张卡同时标记`Node R
 用户询问根因和重启方式。14:48只读检查：新机没有TriFusion训练、正式评价或`nvidia-bug-report`进程；`/data/gb/nvidia-bug-report.log.gz`尚不存在；`/data`仍有约58GiB空闲。可确定的直接故障是GPU 0在13:39:23失去PCIe访问（Xid 79），随即四卡均被标记`Node Reboot Required`（Xid 154），与整机新CUDA上下文失败一致；日志尚不能区分过热、供电、PCIe链路、GPU本体或驱动的根本诱因，也不能把其余三张卡认定为分别损坏。
 
 具备管理员权限且已确认没有其他用户重要任务时，从交互SSH登录`gaob@172.19.9.245:2028`，先运行`cd /data/gb`及`sudo nvidia-bug-report.sh`，核实`/data/gb/nvidia-bug-report.log.gz`已生成并留在服务器；之后执行`sudo systemctl reboot`。此交接只给出用户/管理员操作命令，当前助手没有执行重启。SSH连接断开是正常重启表现。主机回来后先验收`setpci -s 17:00.0 0.w`为`10de`、`nvidia-smi -L`列出四卡及每卡独立新进程CUDA分配；若GPU 0仍为`ffff`或任何卡初始化失败，保持正式任务停止，由管理员安排断电重上和硬件/供电/PCIe检查。两份V27权重、作者Signal权重和实验日志均在`/data/gb`保留。
+
+### 41.275 NVIDIA崩溃报告已保全，等待管理员重启（2026-09-23 14:50 北京时间）
+
+用户已在新服务器的`/data/gb`运行`sudo nvidia-bug-report.sh`，脚本输出`complete`，报告`/data/gb/nvidia-bug-report.log.gz`为约2.9MB。随后只读核验`gzip -t`通过，SHA256为`287fc1680b66c9463afca6ed2d22788f826a66b11778aa8a0798afd9a8794e0e`；报告中再次找到`13:39:23.253810+08:00`的GPU 0 Xid 79及四卡同秒Xid 154。脚本列出的`glxinfo`、`vulkaninfo`等缺失是可选采集组件跳过，不是本次主报告失败。该压缩包包含主机诊断信息，仅留服务器，不同步GitHub或桌面。按事故时间及`NVRM|Xid|AER|PCIe|thermal|overheat|power`过滤报告日志，只命中已知Xid和crash dump提示，没有得到事故前温度/供电/AER前驱记录；**不能由此证明或排除过热**。当前崩溃报告已经满足重启前保全条件；仍需先确认主机无其他用户重要任务，再由管理员执行节点重启及§41.274所列逐卡验收。助手尚未执行重启，正式评价仍待恢复。
