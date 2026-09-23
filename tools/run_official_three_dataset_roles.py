@@ -46,7 +46,7 @@ def initialize(args, protocol):
     from tools.run_signal_preserving_v5 import _module_state_sha256
 
     model, cfg, config, binding = build_model(protocol, args.signal_source, args.clip_weight,
-                                               args.signal_checkpoint, args.signal_sha256)
+                                               args.signal_checkpoint, args.signal_sha256, seed=args.seed)
     before = _module_state_sha256(model)
     model = configure_style(model, args.dataset, args.method)
     assert _module_state_sha256(model) == before
@@ -65,12 +65,13 @@ def train(args, protocol):
                    started_at=datetime.now().astimezone().isoformat(),
                    commit=subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=ROOT, text=True).strip(),
                    protocol=str(args.protocol), protocol_sha256=sha256(args.protocol),
-                   source_count=protocol["counts"]["train"], seed=42,
+                   source_count=protocol["counts"]["train"], seed=args.seed,
                    initializer=binding, official_model_forwards=0)
     (args.output_dir / "training.json").write_text(json.dumps(receipt, indent=2) + "\n", encoding="utf-8")
     records = records_for(protocol, "train")
     method = train_r2 if args.method == "R2" else train_v27
-    result = method(model, protocol, records, config, m0=args.mode == "m0", directory=args.output_dir)
+    result = method(model, protocol, records, config, m0=args.mode == "m0",
+                    directory=args.output_dir, seed=args.seed)
     receipt["training"] = result
     receipt["status"] = "M0_PASS" if args.mode == "m0" else "FIXED_EPOCH20_TRAINING_COMPLETE"
     if args.mode == "train":
@@ -141,6 +142,7 @@ def evaluate(args, protocol):
     summary = json.loads(summary_path.read_text(encoding="utf-8"))
     assert summary["status"] == "FIXED_EPOCH20_TRAINING_COMPLETE"
     assert summary["dataset"] == args.dataset and summary["method"] == args.method
+    assert summary["seed"] == args.seed
     assert summary["protocol_sha256"] == sha256(args.protocol)
     assert summary["initializer"]["author_checkpoint_sha256"] == args.signal_sha256
     assert sha256(summary["checkpoint"]) == summary["checkpoint_sha256"]
@@ -197,7 +199,7 @@ def evaluate(args, protocol):
                   role_checkpoint_sha256=summary["checkpoint_sha256"],
                   protocol_sha256=summary["protocol_sha256"],
                   model_state_sha256=summary["training"]["final_state_sha256"],
-                  fixed_epoch=20, seed=42, reranking=False,
+                  fixed_epoch=20, seed=args.seed, reranking=False,
                   filter=protocol["filter"], outputs=scores,
                   distance_arrays=str(path), distance_arrays_sha256=sha256(path),
                   independent_upstream_metrics_equal=True,
@@ -219,6 +221,7 @@ def main():
     parser.add_argument("--signal-checkpoint", type=Path, required=True)
     parser.add_argument("--signal-sha256", required=True)
     parser.add_argument("--output-dir", type=Path, required=True)
+    parser.add_argument("--seed", type=int, default=42)
     args = parser.parse_args()
     for name in ("protocol", "signal_source", "clip_weight", "signal_checkpoint", "output_dir"):
         setattr(args, name, getattr(args, name).resolve())

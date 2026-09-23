@@ -18,13 +18,13 @@ def records_for(protocol, split):
     return records
 
 
-def loader_for(protocol, records, *, training, method):
+def loader_for(protocol, records, *, training, method, seed=42):
     name = protocol["dataset"]
     if name == "RGBNT100":
-        return rgbnt100_loader(records, training)
+        return rgbnt100_loader(records, training, seed=seed)
     if name == "MSVR310":
         from tools.train_msvr310_signal_oof import loader_for as existing_loader
-        return existing_loader(records, training)
+        return existing_loader(records, training, seed=seed)
     assert name == "RGBNT201"
     if training:
         if method == "V27":
@@ -34,6 +34,6 @@ def loader_for(protocol, records, *, training, method):
             assert method == "R2"
             from trifusion.aligned_data import build_aligned_train_loader
             factory = build_aligned_train_loader
-        return factory(records, batch_size=64, num_instances=8, num_workers=4, seed=42)
+        return factory(records, batch_size=64, num_instances=8, num_workers=4, seed=seed)
     from tools.train_signal_preserving_v18 import loader_for as existing_loader
     return existing_loader(records, {"DATA": {"EVAL_BATCH_SIZE": 64, "NUM_WORKERS": 4}})

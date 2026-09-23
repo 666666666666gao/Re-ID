@@ -20,7 +20,7 @@ def sha256(path):
     return digest.hexdigest()
 
 
-def build_model(protocol, source, clip_weight, checkpoint, expected_sha256):
+def build_model(protocol, source, clip_weight, checkpoint, expected_sha256, *, seed=42):
     import torch
 
     from tools.build_v12_complete_path_oof_targets import _build_signal_teacher, _build_v8_experts
@@ -28,7 +28,7 @@ def build_model(protocol, source, clip_weight, checkpoint, expected_sha256):
     from tools.run_signal_preserving_v5 import _module_state_sha256, _set_seed
 
     name = protocol["dataset"]
-    _set_seed(42)
+    _set_seed(seed)
     source = Path(source)
     _configure_signal_source(source)
     from config import cfg
@@ -36,7 +36,7 @@ def build_model(protocol, source, clip_weight, checkpoint, expected_sha256):
     cfg.merge_from_file(str(source / "configs" / name / "Signal.yml"))
     cfg.defrost()
     cfg.MODEL.PRETRAIN_PATH_T = str(clip_weight)
-    cfg.SOLVER.SEED = 42
+    cfg.SOLVER.SEED = seed
     cfg.freeze()
     assert cfg.DATASETS.NAMES == name
     assert list(cfg.INPUT.SIZE_TRAIN) == list(cfg.INPUT.SIZE_TEST) == (

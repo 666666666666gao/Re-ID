@@ -30,7 +30,7 @@ def _v27_loss(parts, config):
     return common.float() + residual.float()
 
 
-def train_v27(model, protocol, records, config, *, m0, directory):
+def train_v27(model, protocol, records, config, *, m0, directory, seed=42):
     import torch
     import numpy as np
     from tools.official_three_dataset_data import loader_for
@@ -40,11 +40,11 @@ def train_v27(model, protocol, records, config, *, m0, directory):
     from tools.train_msvr310_trifusion_oof import frozen_state_sha, output_mapping
     from trifusion.source_style_v27 import make_style_plan
 
-    _set_seed(42)
+    _set_seed(seed)
     model.train()
     initial, frozen = _module_state_sha256(model), frozen_state_sha(model)
     optimizer, scaler, criterion = _setup(model, config)
-    loader = loader_for(protocol, records, training=True, method="V27")
+    loader = loader_for(protocol, records, training=True, method="V27", seed=seed)
     epochs = 1 if m0 else 20
     history, live, steps, overflow = [], set(), 0, 0
     with (directory / "training_steps.jsonl").open("x", encoding="utf-8") as log:
@@ -97,7 +97,7 @@ def train_v27(model, protocol, records, config, *, m0, directory):
                 frozen_state_unchanged=True, missing_nonzero_gradients=[], overflow_events=0)
 
 
-def train_r2(model, protocol, records, config, *, m0, directory):
+def train_r2(model, protocol, records, config, *, m0, directory, seed=42):
     import torch
     import torch.nn.functional as F
     import numpy as np
@@ -117,7 +117,7 @@ def train_r2(model, protocol, records, config, *, m0, directory):
     )
     from tools.train_msvr310_trifusion_oof import frozen_state_sha, output_mapping
 
-    _set_seed(42)
+    _set_seed(seed)
     model.train()
     initial, frozen = _module_state_sha256(model), frozen_state_sha(model)
     optimizer, scaler, criterion = _setup(model, config)
@@ -135,7 +135,7 @@ def train_r2(model, protocol, records, config, *, m0, directory):
     lookup = {Path(row[0] if isinstance(row[0], str) else row[0][0]).name: index
               for index, row in enumerate(records)}
     assert len(lookup) == len(records)
-    loader = loader_for(protocol, records, training=True, method="R2")
+    loader = loader_for(protocol, records, training=True, method="R2", seed=seed)
     epochs, warmup = (1, 2) if m0 else (20, 65)
     history, live, steps, overflow, supported_steps, historical_vjp_groups = [], set(), 0, 0, 0, 0
     with (directory / "training_steps.jsonl").open("x", encoding="utf-8") as log:

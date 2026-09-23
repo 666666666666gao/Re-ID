@@ -110,7 +110,7 @@ class RGBNT100AlignedDataset:
         return images, identity, camera, view, Path(path).name
 
 
-def loader_for(records, training):
+def loader_for(records, training, *, seed=42):
     from torch.utils.data import DataLoader
     from data.datasets.make_dataloader import train_collate_fn
     from data.datasets.sampler import RandomIdentitySampler
@@ -118,7 +118,7 @@ def loader_for(records, training):
 
     transform = SharedGeometryTripletTransform(size=(128, 256)) if training else clean_triplet
     dataset = RGBNT100AlignedDataset(records, transform)
-    sampler = RandomIdentitySampler(records, 64, 8, 42) if training else None
+    sampler = RandomIdentitySampler(records, 64, 8, seed) if training else None
     return DataLoader(dataset, batch_size=64, sampler=sampler, shuffle=False,
                       num_workers=4, collate_fn=train_collate_fn, pin_memory=True)
 
