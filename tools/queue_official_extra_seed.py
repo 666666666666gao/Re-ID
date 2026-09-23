@@ -1,0 +1,151 @@
+#!/usr/bin/env python3
+"""Run one additional fixed-epoch seed under the existing official protocol."""
+
+import argparse
+from concurrent.futures import ThreadPoolExecutor
+from datetime import datetime
+import json
+import os
+from pathlib import Path
+import shutil
+import subprocess
+import sys
+from threading import Lock
+import time
+
+
+ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(ROOT))
+
+from tools.official_three_dataset_model import sha256
+
+
+DATASETS = ("RGBNT100", "MSVR310", "RGBNT201")
+METHODS = ("R2", "V27")
+WEIGHTS = {
+    "RGBNT100": ("RGBNT100_Signal_30.pth", "09df46735a3427169ea65b9e4110dc834b99de859657bf589c9fb30ad4d4f860"),
+    "MSVR310": ("MSVR310_Signal_50.pth", "b3888e7ec7b9290abcde76915ebf9d9ce87129e759586fd7deb3e9cf7d1d807a"),
+    "RGBNT201": ("RGBNT201_Signal_50.pth", "ec09a4f68bce95f645fde3fd2e29f81c944d1f5816adc00ab107e3daf6e38b7c"),
+}
+LOCK = Lock()
+
+
+def stamp():
+    return datetime.now().astimezone().isoformat()
+
+
+def main():
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--seed", type=int, choices=(45, 46), required=True)
+    parser.add_argument("--machine", choices=("old", "new"), required=True)
+    args = parser.parse_args()
+
+    if args.machine == "old":
+        assert ROOT == Path("/root/autodl-tmp/trifusion-v2/TriFusion-ReID")
+        base = ROOT.parent
+        source = base / "comparators/Signal-cd1b0a6"
+        weights = base / "author_signal_pretrained_20260923"
+        clip = base / "pretrained/ViT-B-16.pt"
+        protocols = base / "artifacts/official_three_dataset_protocols_20260923"
+        gpus = (0,)
+    else:
+        assert ROOT == Path("/data/gaob/Re-ID/Trifusion")
+        base = ROOT
+        source = ROOT / "comparators/Signal-cd1b0a6"
+        weights = ROOT / "pertrained-model"
+        clip = weights / "ViT-B-16.pt"
+        protocols = ROOT / "logs/official_three_dataset_protocols_20260923"
+        gpus = (0, 1, 2, 3)
+        previous = ROOT / "logs/official_r2_v27_two_gpu_20260923/campaign.json"
+        while json.loads(previous.read_text(encoding="utf-8"))["status"] != "COMPLETE":
+            time.sleep(240)
+
+    assert (source / "utils/metrics.py").is_file() and clip.is_file()
+    for dataset in DATASETS:
+        name, digest = WEIGHTS[dataset]
+        assert sha256(weights / name) == digest
+        assert (protocols / f"{dataset}.json").is_file()
+    assert shutil.disk_usage(base).free > 3 * 1024**3
+
+    campaign = ROOT / f"logs/official_extra_seed{args.seed}_20260924"
+    train_root = ROOT / f"trained-model/official_extra_seed{args.seed}_20260924"
+    assert not campaign.exists() and not train_root.exists()
+    campaign.mkdir(parents=True)
+    train_root.mkdir(parents=True)
+    jobs = [dict(dataset=dataset, method=method, seed=args.seed, status="PENDING")
+            for dataset in DATASETS for method in METHODS]
+    status = dict(schema="trifusion-official-extra-seed-v1", status="RUNNING",
+                  seed=args.seed, machine=args.machine, fixed_epoch=20,
+                  started_at=stamp(), dataset_order=DATASETS,
+                  commit=subprocess.check_output(["git", "rev-parse", "HEAD"],
+                                                 cwd=ROOT, text=True).strip(), jobs=jobs)
+
+    def save():
+        (campaign / "campaign.json").write_text(json.dumps(status, indent=2) + "\n",
+                                                  encoding="utf-8")
+
+    def set_status(row, value, **fields):
+        with LOCK:
+            row.update(status=value, **fields)
+            save()
+
+    def run_command(row, mode, directory):
+        name, digest = WEIGHTS[row["dataset"]]
+        tag = f'{row["dataset"]}_{row["method"]}_seed{args.seed}'
+        command = [sys.executable, "-B", str(ROOT / "tools/run_official_three_dataset_roles.py"),
+                   "--dataset", row["dataset"], "--method", row["method"], "--mode", mode,
+                   "--protocol", str(protocols / f'{row["dataset"]}.json'),
+                   "--signal-source", str(source), "--clip-weight", str(clip),
+                   "--signal-checkpoint", str(weights / name), "--signal-sha256", digest,
+                   "--output-dir", str(directory), "--seed", str(args.seed)]
+        env = os.environ.copy()
+        env["CUDA_VISIBLE_DEVICES"] = str(row["gpu"])
+        with (campaign / f"{tag}.{mode}.log").open("x", encoding="utf-8") as log:
+            subprocess.run(command, cwd=ROOT, env=env, stdout=log,
+                           stderr=subprocess.STDOUT, check=True)
+
+    def run_job(row):
+        assert shutil.disk_usage(base).free > 3 * 1024**3
+        tag = f'{row["dataset"]}_{row["method"]}_seed{args.seed}'
+        m0 = campaign / "m0" / tag
+        set_status(row, "M0", started_at=stamp())
+        run_command(row, "m0", m0)
+        receipt = json.loads((m0 / "training.json").read_text(encoding="utf-8"))
+        assert receipt["status"] == "M0_PASS" and receipt["seed"] == args.seed
+        directory = train_root / tag
+        set_status(row, "TRAINING", m0_at=stamp())
+        run_command(row, "train", directory)
+        training = json.loads((directory / "training.json").read_text(encoding="utf-8"))
+        assert training["status"] == "FIXED_EPOCH20_TRAINING_COMPLETE"
+        assert training["seed"] == args.seed
+        set_status(row, "EVALUATING", trained_at=stamp())
+        run_command(row, "evaluate", directory)
+        retrieval = json.loads((directory / "official_metrics.json").read_text(encoding="utf-8"))
+        assert retrieval["status"] == "COMPLETE" and retrieval["seed"] == args.seed
+        set_status(row, "COMPLETE", completed_at=stamp(),
+                   metrics_path=str(directory / "official_metrics.json"),
+                   free_disk_bytes=shutil.disk_usage(base).free)
+
+    def worker(gpu, pending):
+        while True:
+            with LOCK:
+                row = next(pending, None)
+                if row is None:
+                    return
+                row["gpu"] = gpu
+                save()
+            run_job(row)
+
+    save()
+    pending = iter(jobs)
+    with ThreadPoolExecutor(max_workers=len(gpus)) as pool:
+        futures = [pool.submit(worker, gpu, pending) for gpu in gpus]
+        for future in futures:
+            future.result()
+    status["status"] = "COMPLETE"
+    status["completed_at"] = stamp()
+    save()
+
+
+if __name__ == "__main__":
+    main()
