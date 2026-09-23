@@ -7318,3 +7318,15 @@ RGBNT201正式836 query/836 gallery的完整四指标（mAP/Rank-1/Rank-5/Rank-1
 检查新增自适应控制器发现实际调度缺口：原`continue_official_seed_until_delta.py`一整波四卡任务全部完成后才开启下一波，短任务卡会等最慢的R2训练。现有日志显示新机RGBNT100–R2每epoch约1700—1844秒，RGBNT201–R2每epoch约590—853秒，V27此前20轮已更快完成；故此处并非假设性空转风险。代码提交`5bb6c879e73be7409f9c81fdd9004890932a6d74`将后续调度改为每个future完成、正式评价及权重核验落盘后，**立即由释放的同一GPU领取尚未达标组合的下一独立种子**，不等待其它GPU；种子仍唯一递增，当前端原M0→epoch20→作者正式评价、排名选优、SHA核验及磁盘清理规则不变。该修改只影响新增自适应控制器，不改变目前已运行训练或seed46固定队列。
 
 本地及两机conda环境Python编译通过。新机旧等待控制器PID`3105665`经`/proc`确认仅在等待`seed46 COMPLETE`且目标状态文件不存在后停止；以相同`--machine new --min-gain 0.8`重启新代码PID`3167680`，2秒后核对准确命令行、进程存活，仍在等待。旧机PID`48091`为单卡，旧调度不会造成跨卡空等，保持不动。新机四卡当前正式训练、seed46等待PID`3158106`均不受干扰。**实际“完成即补位”尚须seed46结束后观察第一轮自适应运行回执，当前只有静态代码/启动核验，不把它写成已经完成的训练收益。**
+
+### 41.292 当前正式种子与分资源文献参照的距离（2026-09-24 01:50 北京时间）
+
+重新读取三个数据集当前已完成种子中fused mAP最高者的原始`official_metrics.json`：均为`COMPLETE`，对应作者Signal独立上游评价相同。与[RoDI作者原表](https://github.com/lsh-ahu/RoDI/blob/main/assets/RoDI.pdf)的CLIP ViT-B/16版本按mAP/Rank-1作**数值参照**如下（单位：百分点；正差值表示本项目仍低于该文献值）：
+
+| 数据集 | 当前已测fused种子 | 本项目mAP / Rank-1 | RoDI–CLIP作者值 | 相差mAP / Rank-1 |
+|---|---|---:|---:|---:|
+| RGBNT201 | V27 seed43 | 83.0005 / 87.5598 | 84.1 / 87.2 | 1.0995 / −0.3598 |
+| RGBNT100 | R2 seed42 | 86.3156 / 97.4927 | 88.5 / 97.6 | 2.1844 / 0.1073 |
+| MSVR310 | R2 seed43 | 53.2391 / 70.8968 | 64.1 / 77.2 | 10.8609 / 6.3032 |
+
+RoDI–CLIP与本项目均涉及CLIP，但初始化、训练与选择资源并非完全匹配；本表不把跨论文差值解释为三角色的因果损失，更不以已测种子最高值充当无偏泛化估计。RGBNT201在本轮的Rank-5/Rank-10仍以作者Signal同协议四项增益及本轮`+0.8`停止线判断；上述RoDI参照只核入mAP/Rank-1，未拼造其未列指标。更强预训练或额外语义资源另列：RoDI–DINOv3为RGBNT201 `85.3/87.9`、RGBNT100 `89.0/99.1`、MSVR310 `71.8/84.8`；[PMKD作者PDF](https://aihuazheng.github.io/publications/pdf/2026/2026-Progressive_Multi-modal_Knowledge_Distillation.pdf)的RGBNT100为`91.6/98.0`且使用DINOv2；[CoT-ReID论文PDF](https://openaccess.thecvf.com/content/CVPR2026/papers/Gao_Chain-of-Thought_Guided_Multi-Modal_Object_Re-Identification_CVPR_2026_paper.pdf)的RGBNT100 `89.9/99.3`依赖DINOv3与MLLM文本。来源数值及表间差异已经在§34、§41.101和`docs/SOTA_PRIMARY_REFRESH_2026-09-07_EVENING.md`核读。当前固定epoch20种子队列继续按原合同运行；六组`+0.8`即使达标，也不自动完成跨资源SOTA目标。
