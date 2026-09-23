@@ -12,7 +12,7 @@ import time
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 
-from tools.queue_official_three_dataset_campaign import BASE, CAMPAIGN as FIRST_CAMPAIGN, JOBS, command
+from tools.queue_official_three_dataset_campaign import BASE, CAMPAIGN as FIRST_CAMPAIGN, command
 
 CAMPAIGN = BASE / "artifacts/official_r2_v27_seeds43_44_20260923"
 FIRST_PID = 10763
@@ -36,7 +36,8 @@ def main():
     assert not CAMPAIGN.exists()
     CAMPAIGN.mkdir(parents=True)
     jobs = [dict(seed=seed, method=method, dataset=dataset, status="PENDING")
-            for seed in (43, 44) for method, dataset in JOBS]
+            for dataset in ("RGBNT100", "MSVR310", "RGBNT201")
+            for method in ("R2", "V27") for seed in (43, 44)]
     status = dict(schema="trifusion-official-additional-seeds-campaign-v1",
                   status="WAITING_FOR_SEED42", started_at=stamp(),
                   commit=subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=ROOT, text=True).strip(),
