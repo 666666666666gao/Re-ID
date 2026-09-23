@@ -2,7 +2,7 @@
 """Continue official seeds until each assigned cell meets every required metric."""
 
 import argparse
-from concurrent.futures import ThreadPoolExecutor
+from concurrent.futures import ThreadPoolExecutor, as_completed
 from datetime import datetime
 import json
 from pathlib import Path
@@ -115,42 +115,49 @@ def main():
 
     save()
     rotation = 0
-    while True:
-        active = [cell for cell in cells if not rank(cell, selected[cell]["metrics"])[0]]
-        if not active:
-            break
-        jobs = []
-        for index, gpu in enumerate(gpus):
-            cell = active[(rotation + index) % len(active)]
+    with ThreadPoolExecutor(max_workers=len(gpus)) as pool:
+        running = {}
+
+        def schedule(gpu):
+            nonlocal rotation
+            active = [cell for cell in cells if not rank(cell, selected[cell]["metrics"])[0]]
+            if not active:
+                return
+            cell = active[rotation % len(active)]
+            rotation += 1
             seed = next_seed[cell]
             next_seed[cell] += 2
-            jobs.append((cell, seed, gpu))
-        rotation += len(gpus)
-        with ThreadPoolExecutor(max_workers=len(gpus)) as pool:
-            futures = [pool.submit(run_job, *job) for job in jobs]
-            for (cell, seed, gpu), future in zip(jobs, futures):
-                result, training, directory = future.result()
-                score = result["outputs"]["fused"]["metrics"]
-                path = Path(training["checkpoint"])
-                assert path == directory / "roles_epoch20.pth"
-                better = rank(cell, score) > rank(cell, selected[cell]["metrics"])
-                if better:
-                    if cell in adaptive_winner:
-                        old_path, old_sha, old_row = adaptive_winner[cell]
-                        assert sha256(old_path) == old_sha
-                        old_path.unlink()
-                        old_row["checkpoint_retained"] = False
-                    selected[cell] = dict(seed=seed, metrics=score,
-                                          receipt=str(directory / "official_metrics.json"))
-                else:
-                    assert sha256(path) == training["checkpoint_sha256"]
-                    path.unlink()
-                row = dict(dataset=cell[0], method=cell[1], seed=seed, gpu=gpu,
-                           metrics=score, checkpoint_retained=better, completed_at=stamp())
-                if better:
-                    adaptive_winner[cell] = (path, training["checkpoint_sha256"], row)
-                status["jobs"].append(row)
-                save()
+            future = pool.submit(run_job, cell, seed, gpu)
+            running[future] = (cell, seed, gpu)
+
+        for gpu in gpus:
+            schedule(gpu)
+        while running:
+            future = next(as_completed(tuple(running)))
+            cell, seed, gpu = running.pop(future)
+            result, training, directory = future.result()
+            score = result["outputs"]["fused"]["metrics"]
+            path = Path(training["checkpoint"])
+            assert path == directory / "roles_epoch20.pth"
+            better = rank(cell, score) > rank(cell, selected[cell]["metrics"])
+            if better:
+                if cell in adaptive_winner:
+                    old_path, old_sha, old_row = adaptive_winner[cell]
+                    assert sha256(old_path) == old_sha
+                    old_path.unlink()
+                    old_row["checkpoint_retained"] = False
+                selected[cell] = dict(seed=seed, metrics=score,
+                                      receipt=str(directory / "official_metrics.json"))
+            else:
+                assert sha256(path) == training["checkpoint_sha256"]
+                path.unlink()
+            row = dict(dataset=cell[0], method=cell[1], seed=seed, gpu=gpu,
+                       metrics=score, checkpoint_retained=better, completed_at=stamp())
+            if better:
+                adaptive_winner[cell] = (path, training["checkpoint_sha256"], row)
+            status["jobs"].append(row)
+            save()
+            schedule(gpu)
     status["status"] = "TARGET_MET"
     status["completed_at"] = stamp()
     save()
