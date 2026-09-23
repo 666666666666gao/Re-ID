@@ -7215,3 +7215,9 @@ Conda环境`/data/gaob/Re-ID/conda-envs/tri_reid`安装锁定依赖成功；`pip
 GitHub、本地及新机代码锁定`aaddb1c3a951f6149145dfb023d8e750d7a5c177`。北京时间19:27:28启动后台队列PID`2404577`，状态文件`/data/gaob/Re-ID/Trifusion/logs/official_r2_v27_two_gpu_20260923/campaign.json`，队列stdout同级`official_r2_v27_two_gpu_queue_20260923.log`。固定顺序RGBNT100→MSVR310→RGBNT201，每数据集seed43后seed44；每轮GPU 0=R2、GPU 1=V27，两端各自M0→固定20轮训练→作者Signal完整query/gallery正式评价。19:31首组RGBNT100 seed43的R2/V27均为`M0_PASS`并进入`TRAINING`：各8次真实更新，冻结参数未改变、无缺失非零梯度、无溢出；GPU0/1占用约7385/6337MiB且100%活动，GPU2/3空闲。**训练刚开始，无本轮正式检索结果**；M0的loss不是mAP。
 
 全队列初步预计约30—33小时（约9月25日01:30—04:30），以首个完整训练epoch的实测吞吐修正。按用户要求，启动验收后只计划约训练中点与全队列终态两次集中检查，不按分钟反复监视、不以中间loss挑checkpoint。旧单卡seed42队列保持独立，本节不触碰故障的`:2028`主机；所有训练权重和日志留在新机Trifusion内，不提交GitHub。
+
+### 41.281 按需进度核对：两卡首轮训练与旧单卡RGBNT100正式终态（2026-09-23 19:54 北京时间）
+
+用户询问当前进展，进行一次按需只读核查，不修改训练合同。新机`:2026`两卡队列PID`2404577`仍`RUNNING`。RGBNT100 seed43两端M0通过后持续训练：R2已完成第1轮130步（该轮1051.64秒、平均训练loss1.42388），核对时进入第2轮，最新step157、loss0.68928、AMP scale256、合法anchor64、历史记录512；V27已完成第8轮，第9轮step1157、loss0.55181、AMP scale256。GPU0/1利用率均100%、显存约7567/6337MiB，GPU2/3没有本轮计算任务；`/data`可用约125GiB。瞬时GPU0/1温度82/83℃、风扇76/100%，当前无CUDA错误日志或队列退出；这只是运行观测，不能由瞬时温度推断长期稳定性。新机没有完成任何本轮正式评价，训练loss不能写成mAP。seed44和后续MSVR310、RGBNT201仍待顺序队列。
+
+旧单卡服务器seed42队列PID`10763`同时保持`RUNNING`，与新机seed43/44互不替代。新确认RGBNT100 R2固定epoch20完整作者协议评价`official_metrics.json`状态`COMPLETE`，query1715、gallery8575、无reranking、同身份同环境过滤、其他身份全保留；本机直接加载作者Signal权重。结果按mAP/Rank-1（%）：Signal `86.3242/97.5510`，R2 fused `86.3156/97.4927`，CNN `85.3468/97.7843`，Transformer `85.8561/97.0262`，Mamba `85.2197/97.7843`。R2 fused相对匹配Signal为约`-0.0086 mAP/-0.0583 Rank-1`，不能报告成超越。此前V8正式`83.2848`对应本机自行训练Signal `80.7122`，是不同初始化/运行，不与本次作者Signal结果拼成同一受控消融。旧队列已完成R2–MSVR310与R2–RGBNT100；R2–RGBNT201训练到epoch11/step583，其余V27三任务待运行。RGBNT201正式四指标仍未产生。
