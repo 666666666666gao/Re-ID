@@ -68,8 +68,7 @@ def main():
         dataset, _ = cell
         gains = [metrics[name] - baseline[dataset][name] for name in names[dataset]]
         passed = all(gain >= args.min_gain for gain in gains)
-        return (passed, metrics["mAP"] if passed else min(gains),
-                metrics["mAP"], metrics["Rank-1"])
+        return (passed, metrics["mAP"], metrics["Rank-1"])
 
     selected = {}
     for root in roots:
