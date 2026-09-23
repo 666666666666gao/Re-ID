@@ -7122,3 +7122,10 @@ R2 fused相对同次作者Signal为 `-0.960810` mAP、`-3.045685` Rank-1；Rank-
 已针对该**实测故障**新增最小恢复入口`tools/recover_official_three_dataset_gpu0.py`并推送GitHub提交`7c04eb539771e271f3229298b15a2448ea2ee35c`，新机仓库已快进到该提交，AST及模块导入检查通过。恢复队列PID`152715`，回执`/data/gb/artifacts/official_r2_v27_three_gpu_recovery_20260923/campaign.json`，当前`WAITING_FOR_GPU2`：待V27 seed43在GPU 2完成**正式评价**后，从相同作者Signal权重在GPU 2重新开始R2 seed43的M0、固定epoch20训练及完整作者评价；失败的GPU 0日志保留，不从中间状态续训。待原波另外三端完成、原队列退出且R2 seed43补跑完成，再把MSVR310、RGBNT201按原数据集顺序分别用GPU 1/2/3执行剩余八项，V27两个种子在GPU 3顺序执行。新恢复任务的权重写入`/data/gb/Re-ID/pretained/official_r2_v27_three_gpu_recovery_20260923/`，其他日志与回执仍只在`/data/gb`。旧单卡seed42六项不变。
 
 已复核旧机输出盘约21.94GB可用、新机`/data`约58GB可用；无正式权重被清理。现有速度给出的**临时**全套完成窗口为北京时间9月24日凌晨至上午，需待新机R2第1个完整epoch实测后重新估算；这不是已完成结果。用户要求的正常中途与终态检查仍保留，今天这次为用户主动状态询问和实际GPU故障排查，不将工程M0或训练loss填入正式指标表。
+### 41.266 第二个R2 CUDA退出与恢复队列修正（2026-09-23 约13:50 北京时间）
+
+在§41.265恢复入口部署后的健康复核中，原队列RGBNT100 R2 seed44进程PID`149981`也于第1个epoch内退出；其日志报`RuntimeError: CUDA error: unknown error`，没有完整epoch、训练终点或正式评价。与GPU 0不同，GPU 1此时仍被`nvidia-smi`正常列出，进程退出后显存回到约1 MiB，不能把第二次退出直接写成GPU 1硬件消失。V27 seed43/44在GPU 2/3继续训练。首个恢复队列PID`152715`尚处`WAITING_FOR_GPU2`、九项均未进入GPU，已明确标记`SUPERSEDED_BEFORE_GPU_BY_RECOVERY_V2`并停止；其尝试日志保留。
+
+已在GitHub提交`b810f95d9b14f5855268003cb66d6ec90af2ce60`修正恢复入口，新机仓库同步到该提交。新的恢复队列PID`153392`使用`/data/gb/artifacts/official_r2_v27_three_gpu_recovery_v2_20260923/campaign.json`，共10项：RGBNT100 R2 seed44立即在空闲且可识别的GPU 1从作者Signal权重重做M0及固定训练；seed43待V27 seed43在GPU 2完成正式评价后于GPU 2同样从头重做。两项都完成后，仍按MSVR310→RGBNT201，每个数据集使用GPU 1/2/3执行R2 seed43/44与V27 seed43/44，V27两种子在GPU 3顺序执行。恢复队列初检为`RUNNING`，R2 seed44处`M0`，seed43处`WAITING_FOR_GPU2`；**此时M0未宣布通过，seed43/44均无正式检索结果**。恢复权重保存在`/data/gb/Re-ID/pretained/official_r2_v27_three_gpu_recovery_v2_20260923/`。原四卡队列在V27两端完成后将因两项R2错误退出，其成功端与失败日志不会被覆盖；恢复队列会在核对原端点后记录中断状态。旧机seed42队列仍独立运行。
+
+第二次失败表明不能继续以“四卡全部正常”或仅“一张卡失效”描述状态。两次R2错误是否由共同驱动/硬件事件触发，当前证据不足；只允许把重跑后的M0、训练终态及作者评估当成新有效结果。全套完成窗口仍暂估9月24日凌晨至上午，等待R2新机首轮实际耗时收窄。
