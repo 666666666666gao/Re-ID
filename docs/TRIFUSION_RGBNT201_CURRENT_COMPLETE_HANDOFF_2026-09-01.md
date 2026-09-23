@@ -7197,3 +7197,11 @@ Xid 154是其他错误所需恢复动作的摘要；四张卡同时标记`Node R
 ### 41.278 用户收窄监测范围：只看旧单卡服务器（2026-09-23 17:13 北京时间）
 
 用户明确要求“四卡服务器暂时不用管，只看旧服务器单卡那个”；后续不再主动探测四卡机或安排其恢复，待用户重新要求。17:13旧机只读回执：队列PID`10763`仍`RUNNING`，R2–MSVR310正式结果不变；R2–RGBNT100已完成第18轮日志，最新训练记录step`2361/2625`、loss`0.531611`、AMP scale`512`、合法anchor`64`、历史实例`512`，训练进程PID`14151`占GPU约`7544MiB`。按剩余264步及近几轮约12.2秒/步估计，固定第20轮训练约在18:05前后结束，随后进入作者完整query/gallery评价；**目前没有RGBNT100正式指标**，不能把loss当mAP。R2–RGBNT201和V27三数据集仍待顺序队列；旧机输出盘仍约21GiB可用。用户主动问进度属于按需检查，不改变固定训练设置或已有正式评估口径。
+
+### 41.279 另一台3090服务器的两卡部署准备（2026-09-23 18:12 北京时间）
+
+用户随后提供`gaob@172.19.9.245:2026`，要求在`/data/gaob/Re-ID`安装独立环境、数据集及GitHub项目，并进一步明确**只用两张卡，不占四卡**。此端口对应主机`ubuntu-WS-C621E-SAGE-Series`，与§41.267—41.276故障的`:2028`主机不同；本节未对`:2028`执行恢复或训练操作。新机`/data`初始可用`145820893184`字节（约136GiB），建立了`/data/gaob/Re-ID/Trifusion/{pertrained-model,trained-model,logs}`、`/data/gaob/Re-ID/dataset`和`/data/gaob/Re-ID/conda-envs/tri_reid`，Miniconda安装在`/data/gaob/Re-ID/miniconda3`。GPU 0/1各为24GiB 3090且初始空闲；GPU 2/3不分配本轮任务。
+
+GitHub直连克隆在传输中停滞、HTTP/1.1局部克隆在签出时发生GnuTLS连接中断；将本地已核验且与GitHub `main`相同的`60c5869`完整Git包传入后恢复工作树，再将两卡队列及精确忽略规则提交到GitHub，当前本地/GitHub/新机均为`f7294e1`。队列入口`tools/queue_official_three_dataset_two_gpu.py`固定顺序为RGBNT100→MSVR310→RGBNT201，每数据集先seed43再seed44，每轮GPU 0运行R2、GPU 1运行V27；各任务先M0，再20轮固定终点训练，最后按原完整query/gallery协议评估。不启用GPU 2/3；旧单卡seed42队列不变。与旧seed42训练核心的差异仅为随机种子参数向初始化、采样、回执的传递，没有改变R2/V27目标或作者评价定义。
+
+三份作者Signal权重已放入`pertrained-model`，SHA256依次为RGBNT100 `09df46735a3427169ea65b9e4110dc834b99de859657bf589c9fb30ad4d4f860`、MSVR310 `b3888e7ec7b9290abcde76915ebf9d9ce87129e759586fd7deb3e9cf7d1d807a`、RGBNT201 `ec09a4f68bce95f645fde3fd2e29f81c944d1f5816adc00ab107e3daf6e38b7c`。CLIP `ViT-B-16.pt`校验为`5806e77cd80f8b59890b7e101eabd078d9fb84e6937f9e85e4ecb61988df416f`；Signal源码提交`cd1b0a6`，工作树补丁SHA256 `b889caca9c4a92689b13eb7e20bd3224067f3e5ed2a3db6825201870ca422741`，与旧机对照一致。三套官方协议已复制到`Trifusion/logs/official_three_dataset_protocols_20260923`，只将`dataset_root`指向新机目录；完整路径核验须待数据复制结束。此时三套数据集仍在从旧机传输，锁定依赖仍在安装，**尚未启动M0、训练或评估，也没有新正式指标**。下一步是完成数据/环境、分别对GPU 0/1执行CUDA及Mamba前反向冒烟，再启动两卡队列；`/data`可用空间约128GiB。
