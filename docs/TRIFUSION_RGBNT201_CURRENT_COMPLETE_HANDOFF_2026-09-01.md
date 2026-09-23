@@ -7175,3 +7175,9 @@ GPU 0及其上游桥的当前只读AER计数均为0，这不能排除未记录�
 Xid 154是其他错误所需恢复动作的摘要；四张卡同时标记`Node Reboot Required`，与逐卡新进程均无法初始化CUDA一致，**不是四张卡分别物理损坏的证据**。已确定的起点是GPU 0失去PCIe访问；其根本诱因仍未由这段日志确定。片段中没有事故前GPU 0温度、显存温度或供电/风扇遥测，也没有可归因的thermal/AER前驱事件；因此“过热造成掉卡”目前仍是假设，须结合完整事故窗口内核日志及BMC硬件事件确认。NVIDIA Xid目录说明Xid 79表示驱动经PCIe无法访问GPU，可能涉及链路、GPU硬件或驱动；Xid 154明确标识所需恢复动作。参照`https://docs.nvidia.com/deploy/xid-errors/analyzing-xid-catalog.html`。
 
 建议管理员先在`/data/gb`运行`sudo nvidia-bug-report.sh`保全当次crash dump及系统日志，报告文件只留在服务器，不提交GitHub；再按主机维护流程重启节点。当前新机无训练/评价进程，两份V27固定epoch20权重已保存。重启后核对GPU 0 `setpci -s 17:00.0 0.w`是否恢复`10de`、`nvidia-smi -L`是否识别四卡，并逐卡运行独立单元素CUDA测试；全部通过才恢复待完成的正式评估和训练。若重启后GPU 0仍不可访问，应交管理员检查该卡、PCIe链路及供电，而不是改TriFusion代码或在未验收主机状态下反复提交任务。
+
+### 41.274 重启前状态与可执行操作（2026-09-23 14:48 北京时间）
+
+用户询问根因和重启方式。14:48只读检查：新机没有TriFusion训练、正式评价或`nvidia-bug-report`进程；`/data/gb/nvidia-bug-report.log.gz`尚不存在；`/data`仍有约58GiB空闲。可确定的直接故障是GPU 0在13:39:23失去PCIe访问（Xid 79），随即四卡均被标记`Node Reboot Required`（Xid 154），与整机新CUDA上下文失败一致；日志尚不能区分过热、供电、PCIe链路、GPU本体或驱动的根本诱因，也不能把其余三张卡认定为分别损坏。
+
+具备管理员权限且已确认没有其他用户重要任务时，从交互SSH登录`gaob@172.19.9.245:2028`，先运行`cd /data/gb`及`sudo nvidia-bug-report.sh`，核实`/data/gb/nvidia-bug-report.log.gz`已生成并留在服务器；之后执行`sudo systemctl reboot`。此交接只给出用户/管理员操作命令，当前助手没有执行重启。SSH连接断开是正常重启表现。主机回来后先验收`setpci -s 17:00.0 0.w`为`10de`、`nvidia-smi -L`列出四卡及每卡独立新进程CUDA分配；若GPU 0仍为`ffff`或任何卡初始化失败，保持正式任务停止，由管理员安排断电重上和硬件/供电/PCIe检查。两份V27权重、作者Signal权重和实验日志均在`/data/gb`保留。
