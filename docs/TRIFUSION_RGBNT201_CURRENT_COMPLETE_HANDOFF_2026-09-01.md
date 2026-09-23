@@ -7167,3 +7167,11 @@ GPU 0及其上游桥的当前只读AER计数均为0，这不能排除未记录�
 用户怀疑GPU 0过热，另问其他卡的CUDA初始化失败是否为独立故障。14:38只读复测中，`setpci`对GPU 0/1/2/3依次返回`ffff/10de/10de/10de`；GPU 1/2/3空闲温度为`35/38/38°C`，当前`HW Thermal Slowdown`、`SW Thermal Slowdown`及`HW Power Brake Slowdown`均未激活。这些是**故障后的其余三卡瞬时值**，不能回推GPU 0在13:30左右的核心/显存/供电温度；GPU 0已不可查询。`nvidia-smi -q`虽给出其余三卡的累计降频计时，但没有事故时刻，因此也不能据此归因。当前存在两个不同层级的症状：GPU 0 PCIe不可访问，以及全主机新CUDA上下文无法初始化；后者可能是前者引发的驱动级连锁，也可能存在另一个共同原因，现有普通用户权限下不能确认它们是否为两个独立故障。
 
 `gaob`账号无法读取系统内核日志；管理员应在重启/重置前保存事故窗口日志，例如执行`sudo journalctl -k --since '2026-09-23 13:20:00' --until '2026-09-23 14:10:00' --no-pager | grep -Ei 'NVRM|Xid|AER|PCIe|thermal|overheat|power'`，并查看主机BMC/供电/风扇历史（如有）。重点核对GPU 0 `0000:17:00.0`和上游桥的首次事件时间及错误码；不能把文档中引用的NVIDIA Xid 79示例写成本机已发生的Xid。保全日志后由管理员恢复主机，再逐卡验收PCIe、`nvidia-smi`及新进程CUDA。恢复前不通过调训练代码或仅设置`CUDA_VISIBLE_DEVICES`来“绕开”该主机状态。
+
+### 41.273 管理员内核日志确认Xid 79及全节点重启要求（2026-09-23）
+
+用户取得的主机内核日志已将§41.268—§41.272的未确认项推进为**实际证据**：北京时间`2026-09-23 13:39:23`，GPU 0 `PCI:0000:17:00`出现`NVRM: Xid ...: 79, GPU has fallen off the bus`；同秒该卡出现`Xid 154 ... Node Reboot Required`，随后GPU 1 `31:00`、GPU 2 `4b:00`、GPU 3 `b1:00`也各自出现`Xid 154 ... Node Reboot Required`。内核明确提示已经产生GPU crash dump，建议在卸载NVIDIA内核模块前以root运行`nvidia-bug-report.sh`收集。先前“尚未观察到Xid 79”的表述只适用于取得此日志之前的时点，**现在已确认本机实际发生Xid 79**。
+
+Xid 154是其他错误所需恢复动作的摘要；四张卡同时标记`Node Reboot Required`，与逐卡新进程均无法初始化CUDA一致，**不是四张卡分别物理损坏的证据**。已确定的起点是GPU 0失去PCIe访问；其根本诱因仍未由这段日志确定。片段中没有事故前GPU 0温度、显存温度或供电/风扇遥测，也没有可归因的thermal/AER前驱事件；因此“过热造成掉卡”目前仍是假设，须结合完整事故窗口内核日志及BMC硬件事件确认。NVIDIA Xid目录说明Xid 79表示驱动经PCIe无法访问GPU，可能涉及链路、GPU硬件或驱动；Xid 154明确标识所需恢复动作。参照`https://docs.nvidia.com/deploy/xid-errors/analyzing-xid-catalog.html`。
+
+建议管理员先在`/data/gb`运行`sudo nvidia-bug-report.sh`保全当次crash dump及系统日志，报告文件只留在服务器，不提交GitHub；再按主机维护流程重启节点。当前新机无训练/评价进程，两份V27固定epoch20权重已保存。重启后核对GPU 0 `setpci -s 17:00.0 0.w`是否恢复`10de`、`nvidia-smi -L`是否识别四卡，并逐卡运行独立单元素CUDA测试；全部通过才恢复待完成的正式评估和训练。若重启后GPU 0仍不可访问，应交管理员检查该卡、PCIe链路及供电，而不是改TriFusion代码或在未验收主机状态下反复提交任务。
