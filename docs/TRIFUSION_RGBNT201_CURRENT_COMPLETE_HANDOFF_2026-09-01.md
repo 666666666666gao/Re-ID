@@ -7463,3 +7463,18 @@ RGBNT100作者Signal：mAP/Rank-1=`86.3242/97.5510`；MSVR310作者Signal：`53.
 新增核读2026-09-21提交的[INSPI作者预印本](https://arxiv.org/pdf/2609.24539)（*Incentive Noise and Structural Prior Infusion for Multi-modal Object Re-Identification*，作者标注已接收ECCV 2026，但当前核到的是arXiv v1而非后续正式版本）。其Table 1/2完整RGB/NIR/TIR主行报告：RGBNT201 `80.6/83.9/91.6/93.4`（mAP/Rank-1/5/10），RGBNT100 `89.9/98.2`，MSVR310 `65.0/77.2`（mAP/Rank-1）。其中MSVR310 mAP数值比§41.292的RoDI–CLIP `64.1`高`0.9`个百分点；但Rank-1仍低于§41.302已核UGG `78.0`，三数据集亦未整体超过原节所列更强资源参照，不能因其论文内“最佳”标记将其写成截至当前的绝对SOTA。
 
 资源标注必须保留：INSPI用CLIP视觉/文本编码器，图中有GPT-4o caption生成流程；DINOv3全局Token仅用于初始化可学习结构提示，作者称训练和推理均不继续运行该DINOv3模块；三数据集训练50轮，RGBNT100 batch128，另两组batch64。它因此不属于本项目仅以三份Signal作者权重初始化、固定20轮、没有外部文本/结构教师的同资源对照，也不能与RoDI–CLIP称为完全相同的“CLIP-only”组。本轮只更新公开参照，未用它改动任何已启动实验或正式测试选优规则。
+
+### 41.304 RGBNT201–R2 seed43 固定终点正式结果（2026-09-24 04:01 北京时间）
+
+新四卡服务器的`RGBNT201_R2_seed43`已完成第20轮训练与作者Signal原协议正式检索，回执为`trained-model/official_r2_v27_two_gpu_20260923/RGBNT201_R2_seed43/official_metrics.json`。训练时间为9月23日23:34:42至9月24日04:00:15，正式评估于04:01:13完成。回执状态`COMPLETE`，训练状态`FIXED_EPOCH20_TRAINING_COMPLETE`；836个query/836个gallery，完整camera过滤、无重排序。执行代码提交`18f0e2ae55d07e75a8c4d103a5efdb4de5305f52`，协议SHA256=`e63be5d9f8bd41df365264ad8f459dcd063d088023a2d2ed525a49a72f61161e`，作者Signal初始化权重SHA256=`ec09a4f68bce95f645fde3fd2e29f81c944d1f5816adc00ab107e3daf6e38b7c`。实存`roles_epoch20.pth`、训练回执和正式回执登记的角色权重SHA256均为`99dd3ac4ab563fda54bceb54829db6e7a208216740f56a6aaf7c0b6504846616`；正式距离数组的实存SHA也与回执相等。
+
+| 输出 | mAP | Rank-1 | Rank-5 | Rank-10 |
+| --- | ---: | ---: | ---: | ---: |
+| 同回执作者Signal | 80.3029 | 85.1675 | 91.3876 | 93.6603 |
+| CNN完整分支 | 82.1907 | 87.4402 | 92.4641 | 94.0191 |
+| Transformer完整分支 | 80.7685 | 86.1244 | 91.7464 | 93.8995 |
+| Mamba完整分支 | 81.2269 | 85.5263 | 91.5072 | 93.6603 |
+| **R2 seed43 fused** | **82.5826** | **87.4402** | **91.8660** | **94.2584** |
+| fused相对同回执Signal | **+2.2797** | **+2.2727** | **+0.4785** | **+0.5981** |
+
+按未四舍五入的回执判定，fused的Rank-5、Rank-10增益均未达`+0.8`个百分点，故**该种子未通过RGBNT201四指标同时达标的停止线**。它将§41.297的已完成正式种子总数从13增至14，但六个方法×数据集组合仍只有`RGBNT201–V27 seed43`通过，即`1/6`。相较R2 seed42，seed43的mAP更高而Rank-5更低；不可拼接两种子的单项最好值，也不可将正式测试上筛出的种子称为无偏泛化估计。其余已启动训练与自动接续队列维持原合同，暂不清理仍可能被队列引用的旧权重；下一次仅在预计终态附近检查并按实存SHA、回执和磁盘空间执行留存规则。
