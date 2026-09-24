@@ -7786,3 +7786,11 @@ seed46 fused相对同回执作者Signal的原始差值为mAP `−0.1725445011`�
 | Mamba | 84.8260 | 96.7930 |
 
 fused相对同回执完整Signal为mAP `−0.3327`、Rank-1 `−0.5248`，双指标`≥+0.8`均未通过。连续控制器`logs/official_target_continuation_new_rgbnt100_v27_20260924.json`记载seed48为非赢家、`checkpoint_retained=false`；实查seed48的`roles_epoch20.pth`已不存在，现有seed44仍为临时赢家。GPU1已接续下一种子。这里的完整Signal参照与§41.324正在训练的**纯CLIP baseline**不同，不能合并或替代。
+
+### 41.326 Signal纯baseline运行修复及MSVR310固定终点评价（2026-09-24 10:05 CST）
+
+§41.324启动的首个后台队列在原GPU3任务完成后开始MSVR310训练，但在约10个batch后停在作者源码`engine/processor.py:146`的日志读取`scheduler._get_lr(epoch)[0]`：当前`WarmupMultiStepLR`没有该私有方法，未产生纯baseline权重或检索结果。这是学习率**打印语句**的兼容问题，不是模型前向、损失或优化器更新失败。仅将该日志读取改为`optimizer.param_groups[0]['lr']`；作者源码`cd1b0a672d1fe642e7608731cb4899a19dda7d51`的修改以仓库`comparators/signal_cd1b0a6_lr_log.patch`记录，`git apply --unidiff-zero -R --check`在实际已修改源码上通过。原失败日志保留，新的独立队列`logs/signal_plain_baseline_20260924_r2/`于09:55:42启动；没有续用失败运行的参数或checkpoint，也没有改变作者训练目标、优化器和学习率调度。
+
+新队列GPU3以`MSVR310→RGBNT201→RGBNT100`运行。MSVR310从公开`ViT-B-16.pt`初始化，不含TriFusion模块且`USE_A=False`、`USE_B=False`，固定第50轮终点；10:03:44训练完成，10:04:10独立重载checkpoint评价完成。纯模型为1536D、86,387,712总参数；591 query/1055 gallery，同身份同scene过滤、无重排序。实存权重与评价回执SHA256一致：`69c5e71b75036d7216ece3ff84450f0052f5e70dfaba46bf73f3e1d40992bb37`。正式指标为**mAP 50.5220、Rank-1 67.6819**；辅助记录Rank-5 81.3875、Rank-10 86.1252。回执在`logs/signal_plain_baseline_20260924_r2/MSVR310/metrics.json`，训练与独立评价日志同目录。这里的纯baseline不同于作者完整Signal权重`53.2424/72.4196`，也不同于论文报告值，不能混列为同一模型。
+
+10:04:10已自动开始RGBNT201纯baseline训练，首轮54 batch、约0.53秒/batch，50轮训练粗估约25分钟；其后RGBNT100 30轮，待首轮测速再确定结束时间。四卡GPU均在执行各自任务，`/data`剩余约123GiB。RGBNT201与RGBNT100此时尚无纯baseline终态指标。
