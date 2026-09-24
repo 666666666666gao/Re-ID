@@ -97,12 +97,12 @@ def train_v27(model, protocol, records, config, *, m0, directory, seed=42):
                 frozen_state_unchanged=True, missing_nonzero_gradients=[], overflow_events=0)
 
 
-def train_r2(model, protocol, records, config, *, m0, directory, seed=42):
+def train_r2(model, protocol, records, config, *, m0, directory, seed=42, top1=False):
     import torch
     import torch.nn.functional as F
     import numpy as np
     from tools.official_three_dataset_data import loader_for
-    from tools.msvr_cross_scene_smooth_ap import objectives
+    from tools.msvr_cross_scene_smooth_ap import objectives, cross_environment_top1_from_distances
     from tools.msvr_freshness_probe import ViewFields
     from tools.msvr_instance_memory import InstanceMemory, expanded_triplet
     from tools.msvr_role_set_relations import fused_distances
@@ -169,9 +169,17 @@ def train_r2(model, protocol, records, config, *, m0, directory, seed=42):
                 _, _, cross_ap, _, _, positive_counts = objectives(
                     current_distances, history_distances, identities, history_ids,
                     environments, history_environments)
+                if top1:
+                    top1_loss, top1_count = cross_environment_top1_from_distances(
+                        current_distances, history_distances, identities, history_ids,
+                        environments, history_environments)
+                    assert int(top1_count) == int((positive_counts > 0).sum())
+                    rank_objective = cross_ap + top1_loss
+                else:
+                    rank_objective = cross_ap
                 active = steps >= warmup
                 if active:
-                    components["triplet_fused"] = cross_ap
+                    components["triplet_fused"] = rank_objective
                 with torch.autocast("cuda", dtype=torch.float16):
                     loss = weighted_training_loss(components, config)
                 scale = scaler.get_scale()
@@ -187,7 +195,12 @@ def train_r2(model, protocol, records, config, *, m0, directory, seed=42):
                     partial_current, partial_history = fused_distances(output.fused_embedding.detach(), leaf)
                     partial = objectives(partial_current, partial_history, identities, history_ids,
                                          environments, history_environments)[2]
-                    assert torch.equal(partial.detach(), cross_ap.detach())
+                    if top1:
+                        partial_top1, _ = cross_environment_top1_from_distances(
+                            partial_current, partial_history, identities, history_ids,
+                            environments, history_environments)
+                        partial = partial + partial_top1
+                    assert torch.equal(partial.detach(), rank_objective.detach())
                     upstream = torch.autograd.grad(partial, leaf)[0].detach()
                 scaler.scale(loss).backward()
                 current = [parameter.grad.detach().float().clone() for parameter in parameters]
@@ -232,7 +245,9 @@ def train_r2(model, protocol, records, config, *, m0, directory, seed=42):
                 steps += 1
                 losses.append(float(loss.detach()))
                 log.write(json.dumps(dict(step=steps, epoch=epoch, loss=losses[-1],
-                                          active_fused_metric="cross_environment_smooth_ap" if active else "hard_triplet",
+                                          active_fused_metric=("cross_environment_smooth_ap_plus_top1" if top1
+                                                               else "cross_environment_smooth_ap") if active else "hard_triplet",
+                                          top1_loss=float(top1_loss.detach()) if top1 else None,
                                           eligible_anchors=support["eligible_anchors"],
                                           memory_records=len(metadata),
                                           historical_vjp_groups=historical_vjp_groups,
@@ -247,7 +262,7 @@ def train_r2(model, protocol, records, config, *, m0, directory, seed=42):
     trainable = {name for name, parameter in model.named_parameters() if parameter.requires_grad}
     assert live == trainable and overflow == 0 and frozen == frozen_state_sha(model)
     assert supported_steps > 0 and historical_vjp_groups > 0
-    return dict(method="R2", epochs=epochs, optimizer_steps=steps, history=history,
+    return dict(method="R2_TOP1" if top1 else "R2", epochs=epochs, optimizer_steps=steps, history=history,
                 initial_state_sha256=initial, final_state_sha256=_module_state_sha256(model),
                 frozen_state_unchanged=True, missing_nonzero_gradients=[], overflow_events=0,
                 supported_steps=supported_steps, historical_vjp_groups=historical_vjp_groups,

@@ -4,6 +4,7 @@ Same-ID/same-scene candidates are ignored, never relabelled as negatives.
 The original all-identity objective remains in tools.msvr_smooth_ap.
 """
 import torch
+import torch.nn.functional as F
 
 from tools.msvr_smooth_ap import paired_objectives, TAU
 
@@ -60,3 +61,29 @@ def objectives(current, historical, identities, history_identities, scenes, hist
     cross, cross_ap, counts = cross_scene_ap_from_distances(
         current, historical, identities, history_identities, scenes, history_scenes)
     return hard, standard, cross, standard_ap, cross_ap, counts
+
+
+def cross_environment_top1_from_distances(current, historical, identities,
+                                          history_identities, environments, history_environments,
+                                          tau=0.01):
+    """Softplus on best legal positive versus strongest negative, for current anchors."""
+    batch = current.shape[0]
+    assert current.shape == (batch, batch) and historical.shape[0] == batch
+    ids = torch.as_tensor(identities, device=current.device)
+    mids = torch.as_tensor(history_identities, device=current.device, dtype=ids.dtype)
+    env = torch.as_tensor(environments, device=current.device)
+    menv = torch.as_tensor(history_environments, device=current.device, dtype=env.dtype)
+    with torch.autocast(current.device.type, enabled=False):
+        score = 1 - torch.cat((current, historical), dim=1).float().square() / 2
+        same_id = ids[:, None] == torch.cat((ids, mids))[None, :]
+        same_env = env[:, None] == torch.cat((env, menv))[None, :]
+        positive = same_id & ~same_env
+        negative = ~same_id
+        eligible = positive.any(dim=1)
+        assert negative.any(dim=1).all()
+        if not bool(eligible.any()):
+            return score.sum() * 0, eligible.sum()
+        best_positive = score.masked_fill(~positive, -torch.inf).max(dim=1).values[eligible]
+        best_negative = score.masked_fill(~negative, -torch.inf).max(dim=1).values[eligible]
+        loss = (tau * F.softplus((best_negative - best_positive) / tau)).mean()
+        return loss, eligible.sum()

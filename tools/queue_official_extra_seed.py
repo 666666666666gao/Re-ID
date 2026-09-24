@@ -39,13 +39,17 @@ def main():
     parser.add_argument("--seed", type=int, required=True)
     parser.add_argument("--machine", choices=("old", "new"), required=True)
     parser.add_argument("--dataset", choices=DATASETS)
-    parser.add_argument("--method", choices=METHODS)
+    parser.add_argument("--method", choices=(*METHODS, "R2_TOP1"))
     parser.add_argument("--gpu", type=int)
+    parser.add_argument("--top1-pair", action="store_true")
     parser.add_argument("--skip-cell", action="append",
                         choices=[f"{dataset}:{method}" for dataset in DATASETS for method in METHODS])
     parser.add_argument("--overlap-previous", action="store_true")
     args = parser.parse_args()
-    assert args.seed >= 45
+    assert args.seed >= 42
+    if args.top1_pair:
+        assert args.machine == "new" and args.dataset is None and args.method is None
+        assert args.gpu is None and not args.skip_cell and not args.overlap_previous
 
     if args.machine == "old":
         assert not args.overlap_previous
@@ -86,8 +90,9 @@ def main():
     if args.gpu is not None:
         assert args.gpu in gpus
         gpus = (args.gpu,)
-    datasets = (args.dataset,) if args.dataset else DATASETS
-    methods = (args.method,) if args.method else METHODS
+    datasets = (args.dataset,) if args.dataset else (("MSVR310", "RGBNT201", "RGBNT100")
+                                                  if args.top1_pair else DATASETS)
+    methods = (args.method,) if args.method else (("R2", "R2_TOP1") if args.top1_pair else METHODS)
 
     assert (source / "utils/metrics.py").is_file() and clip.is_file()
     for dataset in datasets:
@@ -96,7 +101,8 @@ def main():
         assert (protocols / f"{dataset}.json").is_file()
     assert shutil.disk_usage(base).free > 3 * 1024**3
 
-    suffix = f"_{args.dataset}_{args.method}" if args.dataset and args.method else ""
+    suffix = ("_top1_pair" if args.top1_pair else
+              f"_{args.dataset}_{args.method}" if args.dataset and args.method else "")
     campaign = ROOT / f"logs/official_extra_seed{args.seed}{suffix}_20260924"
     train_root = ROOT / f"trained-model/official_extra_seed{args.seed}{suffix}_20260924"
     assert not campaign.exists() and not train_root.exists()

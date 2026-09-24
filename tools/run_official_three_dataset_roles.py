@@ -69,9 +69,13 @@ def train(args, protocol):
                    initializer=binding, official_model_forwards=0)
     (args.output_dir / "training.json").write_text(json.dumps(receipt, indent=2) + "\n", encoding="utf-8")
     records = records_for(protocol, "train")
-    method = train_r2 if args.method == "R2" else train_v27
-    result = method(model, protocol, records, config, m0=args.mode == "m0",
-                    directory=args.output_dir, seed=args.seed)
+    if args.method == "V27":
+        result = train_v27(model, protocol, records, config, m0=args.mode == "m0",
+                           directory=args.output_dir, seed=args.seed)
+    else:
+        result = train_r2(model, protocol, records, config, m0=args.mode == "m0",
+                          directory=args.output_dir, seed=args.seed,
+                          top1=args.method == "R2_TOP1")
     receipt["training"] = result
     receipt["status"] = "M0_PASS" if args.mode == "m0" else "FIXED_EPOCH20_TRAINING_COMPLETE"
     if args.mode == "train":
@@ -213,7 +217,7 @@ def evaluate(args, protocol):
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--dataset", choices=("RGBNT201", "RGBNT100", "MSVR310"), required=True)
-    parser.add_argument("--method", choices=("R2", "V27"), required=True)
+    parser.add_argument("--method", choices=("R2", "V27", "R2_TOP1"), required=True)
     parser.add_argument("--mode", choices=("m0", "train", "evaluate"), required=True)
     parser.add_argument("--protocol", type=Path, required=True)
     parser.add_argument("--signal-source", type=Path, required=True)
