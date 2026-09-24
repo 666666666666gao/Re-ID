@@ -7772,3 +7772,17 @@ seed46 fused相对同回执作者Signal的原始差值为mAP `−0.1725445011`�
 预检：作者数据加载器与现有正式协议的三数据集train首模态图片集合相同；query/gallery每条的图片真实路径、身份、camera及MSVR310 scene字段逐项相同，计数分别为RGBNT201 `3951/836/836`、RGBNT100 `8675/1715/8575`、MSVR310 `1032/591/1055`（train/query/gallery）。CPU实例化三套纯模型均无`SIM`、`AlignM`或SIM分类头，输出设计为1536D；总参数依次为`86,409,216`、`86,226,432`、`86,387,712`，RGBNT201与论文86.41M四舍五入吻合。新机`/data`尚余约123GiB；三份终点权重预计约1.1GiB，现有自训R2/V27任务依旧在GPU0/1/2运行，GPU3当前RGBNT201–R2 seed46已至第18/20轮，不抢占。
 
 已部署`tools/queue_signal_plain_baseline.py`和`tools/evaluate_signal_plain_baseline.py`，远端与本地代码SHA256分别相同（`c00d808a8e90f2751c27bd9b67cbee9293951fdd704376269eddcd2cd9f68579`、`27ce510fbbc962ebf54b8d950f6838268d561e09a14c9d2ca21a27851dcdedb4`）。原等待GPU3的MSVR310–V27连续控制器PID3771928在无子进程、无状态文件时停止；当前GPU3任务不变，另三卡连续任务不变，MSVR310–V27后续种子暂缓，纯baseline完毕再恢复。纯baseline后台队列PID4092603已于09:21:23启动，状态文件`logs/signal_plain_baseline_20260924/campaign.json`当前`WAITING`；仅在原GPU3任务连同正式评估显示`COMPLETE`后，按`MSVR310→RGBNT201→RGBNT100`顺序使用GPU3训练与固定终点评价。训练权重保存在`trained-model/signal_plain_baseline_20260924/<dataset>/Signalbest.pth`；日志、精确四项指标回执保存在`logs/signal_plain_baseline_20260924/<dataset>/`。截至本节**尚无任何新纯baseline检索指标**，不得把当前完整Signal作者权重的`80.3029/86.3242/53.2424` mAP写成纯基线。
+
+### 41.325 RGBNT100–V27 seed48正式终态与连续队列（2026-09-24 09:34 CST）
+
+新机`trained-model/official_extra_seed48_RGBNT100_V27_20260924/RGBNT100_V27_seed48/`已完成固定第20轮训练及原Signal全量正式query/gallery评估；`training.json`为`FIXED_EPOCH20_TRAINING_COMPLETE`，`official_metrics.json`为`COMPLETE`，各自文件SHA256分别为`1391d2ce9e922f4fb3f1db5a43d466284e99a9322bc142a6a8cc62aff2334101`和`0012bd17cdfed1f8203854c80407f4fb091814932467558dfe437c08f3edc9d4`。两份回执的角色checkpoint SHA256同为`f681af9ff0b42bde6ff4d3f88c5a93a9e8f21d720e6ecf6a2b6c0ddd5ecaeda7`，协议SHA256同为`12d8afe5cf6e537b69ccf753481dd5fd651f14b7672e1e6411a4d4e9d88cc956`；1715 query/8575 gallery，`independent_upstream_metrics_equal=true`，同身份同camera过滤、无重排序。完整输出如下，单位百分点：
+
+| 输出 | mAP | Rank-1 |
+| --- | ---: | ---: |
+| 作者完整Signal | 86.3242 | 97.5510 |
+| fused | 85.9915 | 97.0262 |
+| CNN | 85.3981 | 97.3178 |
+| Transformer | 84.8836 | 96.3848 |
+| Mamba | 84.8260 | 96.7930 |
+
+fused相对同回执完整Signal为mAP `−0.3327`、Rank-1 `−0.5248`，双指标`≥+0.8`均未通过。连续控制器`logs/official_target_continuation_new_rgbnt100_v27_20260924.json`记载seed48为非赢家、`checkpoint_retained=false`；实查seed48的`roles_epoch20.pth`已不存在，现有seed44仍为临时赢家。GPU1已接续下一种子。这里的完整Signal参照与§41.324正在训练的**纯CLIP baseline**不同，不能合并或替代。
