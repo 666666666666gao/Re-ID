@@ -48,6 +48,31 @@ def main():
         by_id[str(identity)].append(float(delta[i]))
     identity_deltas = {identity: float(np.mean(values) * 100) for identity, values in by_id.items()}
 
+    pair_counts = dict(both_correct=0, repaired=0, broken=0, both_wrong=0, tied=0)
+    query_pair_deltas = []
+    for q in range(len(qids)):
+        positive = (gids == qids[q]) & (genv != qenv[q])
+        negative = gids != qids[q]
+        base = distances["baseline_only"][q]
+        fused = distances["fused"][q]
+        base_margin = base[negative][None, :] - base[positive][:, None]
+        fused_margin = fused[negative][None, :] - fused[positive][:, None]
+        comparable = (base_margin != 0) & (fused_margin != 0)
+        base_correct = base_margin > 0
+        fused_correct = fused_margin > 0
+        counts = {
+            "both_correct": int((comparable & base_correct & fused_correct).sum()),
+            "repaired": int((comparable & ~base_correct & fused_correct).sum()),
+            "broken": int((comparable & base_correct & ~fused_correct).sum()),
+            "both_wrong": int((comparable & ~base_correct & ~fused_correct).sum()),
+            "tied": int((~comparable).sum()),
+        }
+        assert sum(counts.values()) == int(positive.sum() * negative.sum())
+        for key, value in counts.items():
+            pair_counts[key] += value
+        query_pair_deltas.append((counts["repaired"] - counts["broken"]) /
+                                 (sum(counts.values()) - counts["tied"]))
+
     def ordered(q, name):
         valid = ~((gids == qids[q]) & (genv == qenv[q]))
         indices = np.argsort(distances[name][q])
@@ -103,6 +128,10 @@ def main():
         "identities_improved": sum(value > 1e-12 for value in identity_deltas.values()),
         "identities_declined": sum(value < -1e-12 for value in identity_deltas.values()),
         "identities_unchanged": sum(abs(value) <= 1e-12 for value in identity_deltas.values()),
+        "positive_negative_pair_transitions": pair_counts,
+        "mean_query_pair_accuracy_change_pp": float(np.mean(query_pair_deltas) * 100),
+        "queries_pair_accuracy_improved": int((np.asarray(query_pair_deltas) > 0).sum()),
+        "queries_pair_accuracy_declined": int((np.asarray(query_pair_deltas) < 0).sum()),
         "worst_identity_delta_pp": sorted(identity_deltas.items(), key=lambda pair: pair[1])[:3],
         "best_identity_delta_pp": sorted(identity_deltas.items(), key=lambda pair: pair[1], reverse=True)[:3],
         "illustrative_new_rank1_errors": examples,
