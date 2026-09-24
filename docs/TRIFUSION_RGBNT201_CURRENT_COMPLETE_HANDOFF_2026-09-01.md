@@ -8091,3 +8091,17 @@ V27/54 fused           ....................
 原正式训练入口`tools/run_official_three_dataset_roles.py`只在固定20轮全部结束后保存`roles_epoch20.pth`，没有中途模型/优化器状态；因此无法把四卡机已执行的15轮迁到旧机续训。旧单卡机已有同一作者RGBNT100 Signal预训练权重、CLIP权重、协议与conda环境，数据盘可用`20,716,167,168`字节。已在旧机`logs/launch_rgbnt100_r2_seed46_after_seed45.py`部署一次性等待器PID`87339`，它按240秒间隔等待现有RGBNT201–R2 seed45队列PID`45727`退出，仅当该任务的正式回执为`COMPLETE`时，调用现有`queue_official_extra_seed.py --seed 46 --machine old --dataset RGBNT100 --method R2 --gpu 0`从作者预训练权重**全新训练20轮并正式评估**。旧机新任务目录此前不存在；不与当前GPU训练抢占，也不启动其他新种子。
 
 13:05左右只读日志：旧机RGBNT201–R2 seed45完成`10/20`轮，最近每轮约10.5分钟，连同正式评估预计北京时间约`15:00–15:20`验收。旧机先前同规格RGBNT100–R2 seed45从第2轮起每轮约1600秒；新seed46从头训练预计约9小时，另需正式评估，若前项按时结束，粗估`2026-09-25 00:00–01:00`取得正式回执。预计时间不是结果，后续应按实际日志和正式回执核验。四卡机可继续作为项目代码/交接文档镜像，但不再安排GPU训练。
+
+### 41.341 最新37份正式种子与公开CLIP参照的数值距离（2026-09-24）
+
+§41.292的公开差距表基于当时较少的已完成种子，不能当作目前最好成绩。本节仅从§41.333已经完成正式query/gallery评价的37份回执中，按各数据集fused mAP列出当前已测最高者；在途RGBNT201–R2 seed45与转到旧单卡重训的RGBNT100–R2 seed46均未计入。RGBNT201四项、其余两项的报告列数保持用户指定口径，单位均为%。
+
+| 数据集 | 当前已测fused mAP最高种子 | 本项目正式指标 | 同协议作者完整Signal | RoDI–CLIP作者mAP/R1 | 相对RoDI–CLIP的mAP差距 |
+| --- | --- | --- | --- | --- | ---: |
+| RGBNT201 | V27/43 | 83.0005/87.5598/92.9426/94.4976 | 80.3029/85.1675/91.3876/93.6603 | 84.1/87.2 | 1.0995 |
+| RGBNT100 | R2/44 | 87.1200/97.8426 | 86.3242/97.5510 | 88.5/97.6 | 1.3800 |
+| MSVR310 | R2/46 | 53.4216/70.5584 | 53.2424/72.4196 | 64.1/77.2 | 10.6784 |
+
+[RoDI作者原表](https://github.com/lsh-ahu/RoDI/blob/main/assets/RoDI.pdf)的CLIP版仅作公开值参照；同协议直接作用量应读本项目各行与其作者完整Signal的配对差：RGBNT201为`+2.6976/+2.3923/+1.5550/+0.8373`，RGBNT100为`+0.7958/+0.2916`，MSVR310为`+0.1792/−1.8612`。三个数据集的最高mAP来自不同方法或种子，不能合成一个已共同验证的“最新模型”，也不能从不同运行挑各指标最大值拼成单个结果。按已消费正式测试筛出的最高值是**描述性上界**，不是新测试集上的无偏泛化估计。
+
+更强资源参照见§41.292与§41.323：[RoDI–DINOv3](https://github.com/lsh-ahu/RoDI/blob/main/assets/RoDI.pdf)在MSVR310报告`71.8/84.8`，[CoT-ReID](https://openaccess.thecvf.com/content/CVPR2026/papers/Gao_Chain-of-Thought_Guided_Multi-Modal_Object_Re-Identification_CVPR_2026_paper.pdf)报告`71.7/85.3`且使用DINOv3和MLLM文本；[PMKD作者论文](https://aihuazheng.github.io/publications/pdf/2026/2026-Progressive_Multi-modal_Knowledge_Distillation.pdf)在RGBNT100报告`91.6/98.0`且使用DINOv2。各论文的预训练、额外文本/分割资源和训练选择预算不同，差距只是公开数字，不是等资源因果对照。当前已测结果尚未支持“三数据集均超过作者Signal”或“达到公开SOTA”；尤其MSVR310的Rank-1仍低于作者Signal。
