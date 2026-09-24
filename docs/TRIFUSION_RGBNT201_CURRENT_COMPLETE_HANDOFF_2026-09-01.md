@@ -7762,3 +7762,13 @@ seed46 fused相对同回执作者Signal的原始差值为mAP `−0.1725445011`�
 | 同文DINOv3基线 | 77.5/78.9/85.8/88.9 | 87.0/98.5 | 68.2/83.3/93.5/94.4 |
 
 论文§4.1说明以API调用Qwen-VL为**训练与测试图像**的各模态生成描述和推理链；§3.2使用预训练DINOv3视觉主干及冻结CLIP文本编码器。因此CoT-ReID不是仅靠RGB/NIR/TIR图像和本项目三份作者Signal预训练权重的同资源结果。相对于§41.292已核的RoDI–DINOv3，CoT-ReID在RGBNT201的mAP/R1更低（83.3/86.1对85.3/87.9），RGBNT100的R1更高（99.3对99.1），MSVR310的mAP略低而R1更高（71.7/85.3对71.8/84.8）；§41.292另有PMKD的RGBNT100 mAP 91.6，故不能凭CoT论文自身表格的粗体宣称其三个数据集绝对SOTA。这里是不同论文公开值对照，**不是本项目同协议、等资源、等训练预算的因果比较**。本项目六组合目标仍依各自作者Signal正式回执的逐项`+0.8`判断；没有用上述公开值挑种子、改训练或新增正式测试成绩。
+
+### 41.324 Signal论文纯baseline三数据集独立训练启动（2026-09-24 09:21 CST）
+
+用户明确要求的是**去掉TriFusion全部模块，且去掉Signal的SIM/GAM/LAM之后，Signal论文使用的纯baseline**，而不是对已经训练好的完整Signal作者checkpoint关闭模块做事后消融。依据[Signal原论文Table 3](https://arxiv.org/pdf/2511.17965)及作者公开代码`cd1b0a6`，该基线为共享CLIP ViT-B/16提取RGB/NIR/TIR各自CLS，拼接成1536D检索表示；作者仅报告RGBNT201纯基线`70.3 mAP/71.8 Rank-1`，未报告RGBNT100和MSVR310对应的纯基线。故本轮必须从公开`ViT-B-16.pt`初始化，三个数据集分别独立训练；已有三份`*_Signal_*.pth`包含Signal模块，不能充当纯基线结果或初始化。
+
+在新机`/data/gaob/Re-ID/Trifusion/comparators/Signal-cd1b0a6`保持作者源码和三份公开YAML，命令行仅覆盖`MODEL.USE_A=False`、`MODEL.USE_B=False`、CLIP权重路径、数据集绝对路径、输出路径和仅在固定末轮评价/保存。RGBNT201保持`DIRECT=1`、B64/K8、50轮；RGBNT100保持`DIRECT=0`、B128/K16、30轮；MSVR310保持`DIRECT=0`、B64/K4、50轮。保留各自原始增强、优化器与学习率、原始query/gallery和无重排序规则；不按正式测试挑中间checkpoint。固定终点与作者可能采用的best-epoch选择不同，最终应称为**按发布代码/配置的本机复现**，不能冒充论文Table 3的精确重跑。
+
+预检：作者数据加载器与现有正式协议的三数据集train首模态图片集合相同；query/gallery每条的图片真实路径、身份、camera及MSVR310 scene字段逐项相同，计数分别为RGBNT201 `3951/836/836`、RGBNT100 `8675/1715/8575`、MSVR310 `1032/591/1055`（train/query/gallery）。CPU实例化三套纯模型均无`SIM`、`AlignM`或SIM分类头，输出设计为1536D；总参数依次为`86,409,216`、`86,226,432`、`86,387,712`，RGBNT201与论文86.41M四舍五入吻合。新机`/data`尚余约123GiB；三份终点权重预计约1.1GiB，现有自训R2/V27任务依旧在GPU0/1/2运行，GPU3当前RGBNT201–R2 seed46已至第18/20轮，不抢占。
+
+已部署`tools/queue_signal_plain_baseline.py`和`tools/evaluate_signal_plain_baseline.py`，远端与本地代码SHA256分别相同（`c00d808a8e90f2751c27bd9b67cbee9293951fdd704376269eddcd2cd9f68579`、`27ce510fbbc962ebf54b8d950f6838268d561e09a14c9d2ca21a27851dcdedb4`）。原等待GPU3的MSVR310–V27连续控制器PID3771928在无子进程、无状态文件时停止；当前GPU3任务不变，另三卡连续任务不变，MSVR310–V27后续种子暂缓，纯baseline完毕再恢复。纯baseline后台队列PID4092603已于09:21:23启动，状态文件`logs/signal_plain_baseline_20260924/campaign.json`当前`WAITING`；仅在原GPU3任务连同正式评估显示`COMPLETE`后，按`MSVR310→RGBNT201→RGBNT100`顺序使用GPU3训练与固定终点评价。训练权重保存在`trained-model/signal_plain_baseline_20260924/<dataset>/Signalbest.pth`；日志、精确四项指标回执保存在`logs/signal_plain_baseline_20260924/<dataset>/`。截至本节**尚无任何新纯baseline检索指标**，不得把当前完整Signal作者权重的`80.3029/86.3242/53.2424` mAP写成纯基线。
