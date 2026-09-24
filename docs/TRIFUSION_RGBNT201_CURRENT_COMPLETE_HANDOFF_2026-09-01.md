@@ -7794,3 +7794,9 @@ fused相对同回执完整Signal为mAP `−0.3327`、Rank-1 `−0.5248`，双指
 新队列GPU3以`MSVR310→RGBNT201→RGBNT100`运行。MSVR310从公开`ViT-B-16.pt`初始化，不含TriFusion模块且`USE_A=False`、`USE_B=False`，固定第50轮终点；10:03:44训练完成，10:04:10独立重载checkpoint评价完成。纯模型为1536D、86,387,712总参数；591 query/1055 gallery，同身份同scene过滤、无重排序。实存权重与评价回执SHA256一致：`69c5e71b75036d7216ece3ff84450f0052f5e70dfaba46bf73f3e1d40992bb37`。正式指标为**mAP 50.5220、Rank-1 67.6819**；辅助记录Rank-5 81.3875、Rank-10 86.1252。回执在`logs/signal_plain_baseline_20260924_r2/MSVR310/metrics.json`，训练与独立评价日志同目录。这里的纯baseline不同于作者完整Signal权重`53.2424/72.4196`，也不同于论文报告值，不能混列为同一模型。
 
 10:04:10已自动开始RGBNT201纯baseline训练，首轮54 batch、约0.53秒/batch，50轮训练粗估约25分钟；其后RGBNT100 30轮，待首轮测速再确定结束时间。四卡GPU均在执行各自任务，`/data`剩余约123GiB。RGBNT201与RGBNT100此时尚无纯baseline终态指标。
+
+### 41.327 Signal纯baseline RGBNT201固定终点与RGBNT100接续（2026-09-24 10:32 CST）
+
+同一纯baseline队列的RGBNT201端从公开`ViT-B-16.pt`重新初始化，无TriFusion模块、无Signal SIM/GAM/LAM，按作者RGBNT201配置训练50轮；10:30:10独立重载终点权重后的全量评价完成。1536D纯CLS拼接模型有86,409,216总参数，正式836 query/836 gallery、同身份同camera过滤、无重排序。实存终点权重SHA256=`789e5e14aacd74ad122aad701389eb216ca5b4fda92687e27351a513023b4407`，与训练队列及独立评估回执一致。回执`logs/signal_plain_baseline_20260924_r2/RGBNT201/metrics.json`给出：**mAP 69.6415、Rank-1 71.4115、Rank-5 80.1435、Rank-10 85.6459**（百分点）。论文Table 3的RGBNT201纯baseline只列`70.3 mAP/71.8 Rank-1`；本机固定终点分别低约0.6585、0.3885点，不能把两个不同运行称为逐位复现，也不能将本轮完整作者Signal`80.3029/85.1675/91.3876/93.6603`错写成纯baseline。
+
+RGBNT100于10:30:10自动开始独立纯baseline训练，作者配置30轮、B128/K16；首轮65 batch、约0.99秒/batch，预计约11:03完成训练，后续全量评估另需数分钟。`/data`约剩122GiB，其余GPU上的R2/V27正式种子队列未因这项测试中断。
