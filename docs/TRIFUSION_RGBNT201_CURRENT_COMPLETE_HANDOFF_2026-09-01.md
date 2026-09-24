@@ -7723,3 +7723,17 @@ RGBNT100原V8三角色内部Q1为Signal `89.5242/96.8300`→fused `91.3165/97.93
 用户询问作者预训练模型是否测过：本轮三数据集均已分别加载对应**作者发布的Signal checkpoint**，单独完成原正式query/gallery、camera/scene过滤和无重排序评价；结果为RGBNT201 `80.3029/85.1675/91.3876/93.6603`（mAP/R1/R5/R10）、RGBNT100 `86.3242/97.5510`、MSVR310 `53.2424/72.4196`（后两者mAP/R1）。20份已完成R2/V27正式回执各自记录`baseline_only`五路之一，且同数据集作者权重SHA、query/gallery数量、过滤字段、固定第20轮、无重排序及`independent_upstream_metrics_equal=true`一致。这里的作者Signal只作预训练初始化与独立基线，未在本轮重新训练；RGBNT100旧本机Signal `80.7122/94.2274`不是这份权重，不作为当前配对分母。
 
 跨服务器逐字段读取三份旧机与新机正式协议JSON发现：每个数据集的两份文件**仅`dataset_root`绝对路径不同**（旧机`/root/autodl-tmp/trifusion-v2/data/<dataset>`、新机`/data/gaob/Re-ID/dataset/<dataset>`）；`records`、`query_rows`、`counts`、`train_label_map`、`inventory_sha256`、过滤定义及其余所有顶层字段逐项相等。因此seed42旧机的原始协议文件SHA与新机seed43及后续的SHA不同是路径字段所致，不是此次发现了数据划分或评分规则变化。正式回执仍各自绑定自己实际读取的协议文件SHA；不把两个不同字节文件谎称同一SHA。本次只读核对，没有改训练或评价代码、权重、队列及`+0.8`停止线。
+
+### 41.321 MSVR310–R2 seed48正式终态与连续队列（2026-09-24 08:13 CST）
+
+新机`trained-model/official_extra_seed48_MSVR310_R2_20260924/MSVR310_R2_seed48/`的`training.json`记录06:30:46至08:08:24完成固定20轮、400次优化器更新，状态`FIXED_EPOCH20_TRAINING_COMPLETE`；`official_metrics.json`于08:09:35达到`COMPLETE`。训练执行提交`1c48007f6fb28a56c113d36e5b6bbe20d5697ad2`。对应作者Signal权重SHA256=`b3888e7ec7b9290abcde76915ebf9d9ce87129e759586fd7deb3e9cf7d1d807a`，新机协议文件SHA256=`7f2b35f9a7e00433558c1e723db0e3ff0ea9daa7144eeeb972139d1502945cbc`；591 query/1055 gallery、同身份同scene过滤、无重排序，`independent_upstream_metrics_equal=true`。训练记录显示冻结权重未变、缺失非零梯度项为空、溢出0次。正式权重SHA256由训练与评价回执共同记录为`fa7e03054b756a6429fa40c78f8dc6c42812c00c8fec10f275c2099ccc49320e`；距离文件实存SHA256=`bbffd971ff72602ca1445e774244f60fa114d0041d13a122e2e0a69020fa51ec`，与正式回执相等。
+
+| 输出 | mAP | Rank-1 | 相对同回执作者Signal |
+| --- | ---: | ---: | --- |
+| 作者Signal | 53.2424 | 72.4196 | 基准 |
+| fused | 53.2476 | 72.0812 | mAP `+0.0052`，Rank-1 `−0.3384` |
+| CNN | 50.8805 | 68.1895 | — |
+| Transformer | 50.3771 | 68.1895 | — |
+| Mamba | 50.2143 | 69.7124 | — |
+
+原始差值为mAP `+0.0052277341`、Rank-1 `−0.3384094755`个百分点，双指标`≥+0.8`停止条件**未通过**。按原先登记的`(全项达标,mAP,Rank-1)`存储顺序，seed46的`53.4216/70.5584`仍是MSVR310–R2当前临时赢家；这并不表示其Rank-1更好。连续控制器`official_target_continuation_new_msvr_r2_20260924.json`记录seed48 `checkpoint_retained=false`，实查seed48的`roles_epoch20.pth`已不存在，而seed46赢家实存权重SHA256仍为`d8a2becc180d21cab9c771a6ca6b2e5fcb696cd77fc10bbad58a0584c4800ca9`。seed48的正式回执、距离数组、训练步骤和日志保留；回执中的checkpoint路径只作历史来源记录。控制器PID3667962仍在运行，已在GPU2启动独立的MSVR310–R2 seed50；其他GPU及旧机原训练继续，无需重启或修改方法。此时正式完成种子增至21项，六组合仍仅RGBNT201–V27 seed43一项满足停止线；新机`/data`约余123 GiB，旧机`/root/autodl-tmp`约余20 GiB。
