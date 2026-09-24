@@ -1,0 +1,8 @@
+--- a/engine/processor.py
++++ b/engine/processor.py
+@@ -143,7 +143,7 @@ def do_train(cfg,
+             if (n_iter + 1) % log_period == 0:
+                 logger.info("Epoch[{}] Iteration[{}/{}] Loss: {:.3f}, Acc: {:.3f}, Base Lr: {:.2e}"
+                             .format(epoch, (n_iter + 1), len(train_loader),
+-                                    loss_meter.avg, acc_meter.avg, scheduler._get_lr(epoch)[0]))
++                                    loss_meter.avg, acc_meter.avg, optimizer.param_groups[0]['lr']))

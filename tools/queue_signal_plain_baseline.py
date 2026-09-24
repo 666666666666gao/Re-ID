@@ -15,8 +15,8 @@ ROOT = Path(__file__).resolve().parents[1]
 SOURCE = ROOT / 'comparators/Signal-cd1b0a6'
 DATASET_ROOT = ROOT / 'artifacts/signal_backbone_dataset_root'
 CLIP = ROOT / 'pertrained-model/ViT-B-16.pt'
-OUTPUT_ROOT = ROOT / 'trained-model/signal_plain_baseline_20260924'
-LOG_ROOT = ROOT / 'logs/signal_plain_baseline_20260924'
+OUTPUT_ROOT = ROOT / 'trained-model/signal_plain_baseline_20260924_r2'
+LOG_ROOT = ROOT / 'logs/signal_plain_baseline_20260924_r2'
 CAMPAIGN = ROOT / 'logs/official_extra_seed46_20260924/campaign.json'
 EPOCHS = {'MSVR310': 50, 'RGBNT201': 50, 'RGBNT100': 30}
 
