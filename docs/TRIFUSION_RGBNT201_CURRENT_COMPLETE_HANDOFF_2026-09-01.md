@@ -7737,3 +7737,17 @@ RGBNT100原V8三角色内部Q1为Signal `89.5242/96.8300`→fused `91.3165/97.93
 | Mamba | 50.2143 | 69.7124 | — |
 
 原始差值为mAP `+0.0052277341`、Rank-1 `−0.3384094755`个百分点，双指标`≥+0.8`停止条件**未通过**。按原先登记的`(全项达标,mAP,Rank-1)`存储顺序，seed46的`53.4216/70.5584`仍是MSVR310–R2当前临时赢家；这并不表示其Rank-1更好。连续控制器`official_target_continuation_new_msvr_r2_20260924.json`记录seed48 `checkpoint_retained=false`，实查seed48的`roles_epoch20.pth`已不存在，而seed46赢家实存权重SHA256仍为`d8a2becc180d21cab9c771a6ca6b2e5fcb696cd77fc10bbad58a0584c4800ca9`。seed48的正式回执、距离数组、训练步骤和日志保留；回执中的checkpoint路径只作历史来源记录。控制器PID3667962仍在运行，已在GPU2启动独立的MSVR310–R2 seed50；其他GPU及旧机原训练继续，无需重启或修改方法。此时正式完成种子增至21项，六组合仍仅RGBNT201–V27 seed43一项满足停止线；新机`/data`约余123 GiB，旧机`/root/autodl-tmp`约余20 GiB。
+
+### 41.322 RGBNT100–V27 seed46正式终态、非赢家权重清理与GPU1接续（2026-09-24 08:30 CST）
+
+新机`trained-model/official_extra_seed46_20260924/RGBNT100_V27_seed46/`的`training.json`记录07:24:12至08:21:27完成固定20轮、2626次优化器更新；`official_metrics.json`于08:24:25达到`COMPLETE`。训练执行代码提交`ce187eb1c4feae2aebe2343b74dcd8457a9bf292`。作者Signal初始化权重SHA256=`09df46735a3427169ea65b9e4110dc834b99de859657bf589c9fb30ad4d4f860`，协议SHA256=`12d8afe5cf6e537b69ccf753481dd5fd651f14b7672e1e6411a4d4e9d88cc956`；1715 query/8575 gallery，按同身份同camera过滤、保留其他身份图库、无重排序，独立Signal上游指标一致。训练回执记录冻结状态不变、缺失非零梯度项为空、溢出0次。训练与正式回执的角色权重SHA256均为`7a0e0e18126aa3887b5f6dc56e2f67fc474102b25c6ba9c07345659e7f32850e`；本次清理前重新计算实存文件得到相同SHA。实存距离文件SHA256=`70e1b776f34d236d5ceb5cc84535334581b8be66b4515e42522adc2e25c53c21`，与正式回执一致。
+
+| 输出 | mAP | Rank-1 |
+| --- | ---: | ---: |
+| 作者Signal | 86.3242 | 97.5510 |
+| fused | 86.1517 | 97.3178 |
+| CNN | 85.8277 | 97.6676 |
+| Transformer | 85.0405 | 97.0262 |
+| Mamba | 85.0296 | 97.2595 |
+
+seed46 fused相对同回执作者Signal的原始差值为mAP `−0.1725445011`、Rank-1 `−0.2332361516`个百分点，双指标停止线未过。此前seed44正式fused为`86.3835/97.3761`，两项均高于seed46；按已登记的存储顺序，它仍是本组合临时赢家，但seed44本身也未达双指标`+0.8`。在核对两份训练／正式回执、两份实存权重SHA、控制器所选seed44及新种子独立初始化后，仅删除seed46的`roles_epoch20.pth`（`27,157,478`字节），确认已不存在；seed44实存赢家SHA256=`4e2caf8b97548b4d4a6fe1869b429e3dc5527a39e8e7da2c04e4030513fa0188`。seed46正式回执、距离文件和训练日志保留，回执中的旧checkpoint路径只作历史记录。GPU1连续控制器PID3771925仍在，`official_extra_seed48_RGBNT100_V27_20260924/campaign.json`显示seed48 `TRAINING`，GPU1重新占用；旧机及新机另外三卡也在训练。当前唯一完成的正式种子增至22项，六组合仍为1/6达标；训练与评估口径、固定终点、种子顺序、停止线均未修改。
