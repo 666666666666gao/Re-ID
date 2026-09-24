@@ -7800,3 +7800,19 @@ fused相对同回执完整Signal为mAP `−0.3327`、Rank-1 `−0.5248`，双指
 同一纯baseline队列的RGBNT201端从公开`ViT-B-16.pt`重新初始化，无TriFusion模块、无Signal SIM/GAM/LAM，按作者RGBNT201配置训练50轮；10:30:10独立重载终点权重后的全量评价完成。1536D纯CLS拼接模型有86,409,216总参数，正式836 query/836 gallery、同身份同camera过滤、无重排序。实存终点权重SHA256=`789e5e14aacd74ad122aad701389eb216ca5b4fda92687e27351a513023b4407`，与训练队列及独立评估回执一致。回执`logs/signal_plain_baseline_20260924_r2/RGBNT201/metrics.json`给出：**mAP 69.6415、Rank-1 71.4115、Rank-5 80.1435、Rank-10 85.6459**（百分点）。论文Table 3的RGBNT201纯baseline只列`70.3 mAP/71.8 Rank-1`；本机固定终点分别低约0.6585、0.3885点，不能把两个不同运行称为逐位复现，也不能将本轮完整作者Signal`80.3029/85.1675/91.3876/93.6603`错写成纯baseline。
 
 RGBNT100于10:30:10自动开始独立纯baseline训练，作者配置30轮、B128/K16；首轮65 batch、约0.99秒/batch，预计约11:03完成训练，后续全量评估另需数分钟。`/data`约剩122GiB，其余GPU上的R2/V27正式种子队列未因这项测试中断。
+
+### 41.328 Signal论文纯baseline三数据集完整终态（2026-09-24 11:12 CST）
+
+`logs/signal_plain_baseline_20260924_r2/campaign.json`于11:06:33达到`COMPLETE`，三端均独立从公开`ViT-B-16.pt`初始化并按作者对应YAML训练至固定终轮（RGBNT201/MSVR310第50轮，RGBNT100第30轮），`USE_A=False`、`USE_B=False`，无TriFusion模块及Signal SIM/GAM/LAM。仅作者源码学习率**日志读取**的一行修复见§41.326；不改变前向、损失、优化器或学习率调度。独立评估逐端严格重载各自终点checkpoint，均为1536D三模态CLS拼接，保留原query/gallery、同身份同camera/scene过滤及无重排序。三个实存checkpoint的SHA256均与队列、独立评估回执一致。
+
+| 数据集 | 纯baseline mAP | Rank-1 | Rank-5 | Rank-10 | query/gallery | 过滤 |
+| --- | ---: | ---: | ---: | ---: | ---: | --- |
+| RGBNT201 | **69.6415** | **71.4115** | **80.1435** | **85.6459** | 836/836 | 同身份同camera |
+| RGBNT100 | **83.7042** | **95.0437** | 回执95.6851 | 回执95.8601 | 1715/8575 | 同身份同camera |
+| MSVR310 | **50.5220** | **67.6819** | 回执81.3875 | 回执86.1252 | 591/1055 | 同身份同scene |
+
+按用户汇报范围，RGBNT201主报四项，RGBNT100/MSVR310主报mAP与Rank-1；车辆Rank-5/10仅为独立回执中保存的补充数值。三份终点权重均保存在`trained-model/signal_plain_baseline_20260924_r2/<dataset>/Signalbest.pth`，每份约330MiB；对应SHA256依表顺序为`789e5e14aacd74ad122aad701389eb216ca5b4fda92687e27351a513023b4407`、`299a28bfb3e3180eeae0736cf8638cd162525dce0f2192a940b62b97f6e67dcd`、`69c5e71b75036d7216ece3ff84450f0052f5e70dfaba46bf73f3e1d40992bb37`。三份`metrics.json`和训练/独立评价日志同在`logs/signal_plain_baseline_20260924_r2/<dataset>/`；完整队列回执SHA256=`e9575f451752640dc8314877eb9819de69db392f2bab82669e31cece1c94bbe1`。
+
+同正式协议的**作者完整Signal发布权重**分别为RGBNT201 `80.3029/85.1675/91.3876/93.6603`、RGBNT100 `86.3242/97.5510`、MSVR310 `53.2424/72.4196`。纯baseline与完整发布权重的mAP/R1数值差分别是RGBNT201 `10.6614/13.7560`、RGBNT100 `2.6200/2.5073`、MSVR310 `2.7204/4.7377`个百分点；两套权重的训练来源与选点不完全相同，这些是**同评价协议的数值距离，不是仅开关Signal模块的严格控制变量效应**。Signal论文Table 3另报告RGBNT201纯baseline `70.3/71.8`，本轮固定终点复现相应低`0.6585/0.3885`点；车辆两个纯baseline没有论文对应行。RGBNT201 R2/V27种子搜索原`+0.8`停止线仍相对作者**完整**Signal，不以本轮较低的纯baseline偷换目标。
+
+纯baseline队列终态后，GPU3于11:10:37恢复此前让出的MSVR310–V27连续种子控制器PID216084；确认新控制器状态`RUNNING`、子队列启动seed48，GPU3已重新计算。其他三个GPU的原任务没有中断。`/data`当前约余122GiB；三份纯baseline终点权重是用户所需的复核证据，予以保留。
