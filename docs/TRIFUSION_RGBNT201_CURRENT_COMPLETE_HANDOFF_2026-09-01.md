@@ -8517,3 +8517,9 @@ fused的mAP高于本端三个完整角色，但CNN的R1/R5更高、R10与fused�
 本端训练/正式指标/角色权重/诊断SHA256依次为`547c12079080e5f6466008bb048d974c0c66363aee3632aea9fcc9ad8d8b8747`、`b4ab216e1e6f72967656609f38f668c79063c76c3d60f5b2402fb60ae15ad48c`、`8151402a8c2c35b3e0acbf8a64fd070a391c8e0667ea2c8c49ea11879c1211a9`、`655e9238bf420b42c168366d1d7530a8716d56171e3935fb5712b3dbd23b3d88`，保存在`trained-model/official_extra_seed43_RGBNT201_SIGNAL_V8_20260925/RGBNT201_SIGNAL_V8_seed43/`与`logs/official_extra_seed43_RGBNT201_SIGNAL_V8_20260925/diagnostics/`。
 
 本端结束后GPU3释放。为执行§41.368**事先登记**的同方法seed44而不让卡空闲，先核对原GPU2末端等待器PID`1978866`确实只等待启动`RGBNT201–SIGNAL_V8–seed44`、该端campaign和输出目录均尚不存在，再终止此等待器并在GPU3启动同一参数的持久队列PID`2127246`。13:13实查原等待PID已消失，新campaign=`RUNNING/M0`且绑定GPU3；GPU2既有R2_UNIFORM→PLAIN_V8 seed42→PLAIN_V8 seed44→SIGNAL_V8 seed42链保持不变，避免稍后重复seed44。这只是更换空闲GPU执行位置，不修改种子、方法、训练轮次或正式评价。GPU0/1/2其余预登记任务仍继续，`/data`约余119GiB。
+
+### 41.379 纯baseline比较口径及GPU3接续队列（2026-09-25 13:20 CST）
+
+用户指出纯baseline相对之前偏低。应区分三种起点：RGBNT201独立训练的纯CLIP baseline为`69.6415 mAP/71.4115 Rank-1`，接近Signal论文同类消融的`70.3/71.8`；作者完整Signal为`80.3029/85.1675`，包含SIM/GAM/LAM相关训练及表示收益。RGBNT100纯baseline为`83.7042/95.0437`，实际上高于旧本机Signal固定终点`80.7122/94.2274`，但低于当前作者发布的完整Signal权重`86.3242/97.5510`。MSVR310纯baseline为`50.5220/67.6819`，作者完整Signal为`53.2424/72.4196`。纯baseline与完整Signal之间的差值不能记作TriFusion的增益；纯起点角色实验应相对其匹配纯baseline，完整Signal起点角色实验应相对作者完整Signal。三份纯权重继续保留，作为独立的预训练起点。
+
+13:19前核对GPU0–3均有训练进程，`/data`尚余约119GiB。原GPU1后继等待器PID`1793701`只计划启动`RGBNT100–PLAIN_V8–seed43`，再下游等待器PID`1935245`只计划启动`RGBNT100–SIGNAL_V8–seed43`；两个目标campaign与训练输出目录均不存在。为避免GPU3完成`RGBNT201–SIGNAL_V8–seed44`后空闲，终止**仅这两个尚未启动训练的等待器**，保留GPU1正在训练的`RGBNT100–R2_UNIFORM–seed42`。将同一预登记seed43的PLAIN_V8→SIGNAL_V8顺序改接GPU3：新等待器PID`2140669`等待GPU3的RGBNT201 seed44完整`COMPLETE`，下游PID`2141330`等待PLAIN_V8 seed43完整`COMPLETE`。核验四个相关进程存在、两个目标campaign仍未启动；方法、种子、20轮终点与作者正式评价协议均未改变，也没有按正式成绩挑选权重。该队列转移不产生新的性能指标。
