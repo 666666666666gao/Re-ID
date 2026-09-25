@@ -9133,3 +9133,22 @@ GPU3的`logs/official_extra_seed42_MSVR310_SIGNAL_SIM_JOINT_20260925/campaign.js
 ### 41.438 最小SIM联合训练三数据集已固定队列，中段只证实优化正常（2026-09-25 21:01 CST）
 
 MSVR310的`SIGNAL_SIM_JOINT`第9/20轮完成，近五轮来源平均loss为1.7737、1.4746、1.3134、1.1783、1.0353，约26～27秒/轮；`/data`余115.37GiB。此为训练中检查，不填正式指标。为避免根据MSVR310第一个正式分数决定是否试其余数据集，现已**预先固定同一方法seed42的三数据集完整比较**：GPU3的RGBNT201联合SIM任务等待MSVR310联合SIM campaign完成；GPU1的RGBNT100联合SIM任务等待该GPU已在运行的RGBNT100 PLAIN_V27 seed44 campaign完成。两项等待队列都指向已存在的campaign，未创建结果、未占用额外GPU，训练仍固定第20轮、各自原Signal完整query/gallery及camera过滤；RGBNT201报告mAP/R1/R5/R10，RGBNT100与MSVR310报告mAP/R1。方法配置不随MSVR中途loss或正式测试结果改变。该对照仍属于已消费正式集后的探索性完整验证，不能宣称未触碰测试的模型选择。
+
+### 41.439 MSVR310最小SIM联合训练正式结账：改善原V8，但未保住原Signal（2026-09-25 21:16 CST）
+
+GPU3的`SIGNAL_SIM_JOINT`固定20轮／400次更新于21:04完成，AMP溢出0，冻结CLIP及其他Signal字段不变，checkpoint`trained-model/official_extra_seed42_MSVR310_SIGNAL_SIM_JOINT_20260925/MSVR310_SIGNAL_SIM_JOINT_seed42/joint_epoch20.pth`SHA256=`6247cca27afd5d8f7c737fa279f62231fb827adcc9d8e562effef20a32461e06`。第一次正式评价在现有`exact_signal_forward`的`assert not weight.requires_grad`处停止：该数值路径原本只适用于冻结Signal，本方法特意使SIM交互权重可训练；断言发生在query特征提取前，**没有产生指标**。证据是`MSVR310_SIGNAL_SIM_JOINT_seed42.evaluate.log`的栈追踪，不是训练NaN或模型失效。只在`tools/run_official_three_dataset_roles.py`把此方法评价改为直接前向，原冻结V8仍走原`exact_signal_forward`；修复提交`5f721bd`已推送并在远端通过语法检查。然后从**同一个**已保存第20轮权重重新评价，未重训、未选点。
+
+重评`official_metrics.json`于21:12:34记录COMPLETE，严格state_dict回载、终态SHA一致、原作者591 query／1055 gallery、scene过滤、无reranking、独立作者评价指标逐项一致；正式回执SHA256=`e8b305bafdce7653d18ac95447b8ea389a54795511eda4881402fc33bc7eb834`，完整模型终态SHA=`4e3e8a48aa5ba894f4000c73a3f09e713969a9c9e5c10f9b4a88111867c8b5d1`，距离数组SHA=`b4d061195b400744368bf1a3c3bd6422cb2a58efb5e31159d739dc097799429c`。原队列进程因断言退出，campaign曾停留`RUNNING/EVALUATING`；核对训练、权重、数组和回执SHA后，将其恢复为COMPLETE并记录实际评价提交`5f721bd79b35c63957fbe8a055173c5edb1c5753`。此处理不改变指标。
+
+| MSVR310，同作者发布Signal起点／seed42 | mAP | Rank-1 |
+| --- | ---: | ---: |
+| 作者完整Signal，冻结原权重 | **53.2424** | **72.4196** |
+| 冻结Signal＋原V8，fused | 50.7388 | 67.5127 |
+| 联合训练后Signal部分单独输出 | 51.1839 | 66.6667 |
+| 联合SIM＋三角色，fused | 52.9249 | 68.8663 |
+| 联合fused−冻结V8 fused | +2.1860 | +1.3536 |
+| 联合fused−原作者Signal | **−0.3175** | **−3.5533** |
+
+联合CNN/Transformer/Mamba完整分支mAP/R1分别为52.5253/68.3587、51.2244/65.9898、51.9497/68.0203，fused高于三者。**共同优化确实改善了冻结外挂V8的角色结果，却把原Signal自身输出从53.2424/72.4196降到51.1839/66.6667，最终仍低于原Signal。**这项单次完整正式比较支持“无保留约束的SIM共同更新不足以同时获得新增量与保住基线”这一限定结论，不足以否定所有联合训练或断言是SIM唯一失分因素。新方法推理时的`baseline_only`是**更新后的SIM**，不能误标为原冻结作者Signal。
+
+只读跨回执诊断`logs/official_extra_seed42_MSVR310_SIGNAL_SIM_JOINT_20260925/diagnostics/frozen_vs_joint.json`SHA256=`fb8642fc1e6312616ec97cfbb1d95d8d88f3f5e36cc4ff94375954a973e7cf84`，先核对两份正式回执同protocol SHA及query/gallery身份、camera、scene顺序一致，再比较591条合法query：原Signal→更新后Signal AP改善276／下降300，R1修复22／新增56；原Signal→联合fused AP改善314／下降258，R1修复25／新增46；冻结V8 fused→联合fused AP改善367／下降204，R1修复22／新增14。诊断只用于解释已消费正式集，不用于修改后两数据集已登记方法或权重。
