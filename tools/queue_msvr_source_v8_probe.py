@@ -10,8 +10,8 @@ import time
 
 
 ROOT = Path(__file__).resolve().parents[1]
-PRIOR = ROOT / "logs/official_extra_seed47_RGBNT100_R2_20260924/campaign.json"
-OUTPUT = ROOT / "logs/msvr_source_v8_probe_20260925"
+PRIOR = ROOT / "logs/official_extra_seed42_RGBNT201_PLAIN_V27_20260925/campaign.json"
+OUTPUT = ROOT / "logs/msvr_source_v8_probe_gpu3_20260925"
 PYTHON = Path("/data/gaob/Re-ID/conda-envs/tri_reid/bin/python")
 
 
@@ -24,7 +24,7 @@ def main():
     assert not OUTPUT.exists()
     OUTPUT.mkdir()
     status_path = OUTPUT / "campaign.json"
-    status = {"status": "WAITING", "created_at": stamp(), "gpu": 0,
+    status = {"status": "WAITING", "created_at": stamp(), "gpu": 3,
               "after_campaign": str(PRIOR), "jobs": []}
 
     def save():
@@ -42,7 +42,7 @@ def main():
     save()
 
     env = os.environ.copy()
-    env["CUDA_VISIBLE_DEVICES"] = "0"
+    env["CUDA_VISIBLE_DEVICES"] = "3"
     for method in ("PLAIN_V8", "SIGNAL_V8"):
         for seed in (42, 43, 44):
             tag = f"MSVR310_{method}_seed{seed}"
