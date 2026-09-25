@@ -97,7 +97,8 @@ def train_v27(model, protocol, records, config, *, m0, directory, seed=42):
                 frozen_state_unchanged=True, missing_nonzero_gradients=[], overflow_events=0)
 
 
-def train_r2(model, protocol, records, config, *, m0, directory, seed=42, top1=False):
+def train_r2(model, protocol, records, config, *, m0, directory, seed=42, top1=False,
+             balanced=True):
     import torch
     import torch.nn.functional as F
     import numpy as np
@@ -227,7 +228,7 @@ def train_r2(model, protocol, records, config, *, m0, directory, seed=42, top1=F
                 if supported:
                     supported_steps += 1
                 balance, _, _ = combine(parameters, current, rank, auxiliary, historical,
-                                        scale, groups, controller, supported, True)
+                                        scale, groups, controller, supported, balanced)
                 assert all(torch.equal(parameter.grad, gradient)
                            for parameter, gradient in zip(heads, head_gradients, strict=True))
                 scaler.unscale_(optimizer)
@@ -262,8 +263,10 @@ def train_r2(model, protocol, records, config, *, m0, directory, seed=42, top1=F
     trainable = {name for name, parameter in model.named_parameters() if parameter.requires_grad}
     assert live == trainable and overflow == 0 and frozen == frozen_state_sha(model)
     assert supported_steps > 0 and historical_vjp_groups > 0
-    return dict(method="R2_TOP1" if top1 else "R2", epochs=epochs, optimizer_steps=steps, history=history,
+    return dict(method="R2_TOP1" if top1 else "R2" if balanced else "R2_UNIFORM",
+                epochs=epochs, optimizer_steps=steps, history=history,
                 initial_state_sha256=initial, final_state_sha256=_module_state_sha256(model),
                 frozen_state_unchanged=True, missing_nonzero_gradients=[], overflow_events=0,
                 supported_steps=supported_steps, historical_vjp_groups=historical_vjp_groups,
+                gradient_balance_applied=balanced,
                 gradient_balance_state=controller.states)

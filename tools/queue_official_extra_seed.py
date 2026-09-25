@@ -39,7 +39,7 @@ def main():
     parser.add_argument("--seed", type=int, required=True)
     parser.add_argument("--machine", choices=("old", "new"), required=True)
     parser.add_argument("--dataset", choices=DATASETS)
-    parser.add_argument("--method", choices=(*METHODS, "R2_TOP1"))
+    parser.add_argument("--method", choices=(*METHODS, "R2_TOP1", "R2_UNIFORM"))
     parser.add_argument("--gpu", type=int)
     parser.add_argument("--top1-pair", action="store_true")
     parser.add_argument("--skip-cell", action="append",

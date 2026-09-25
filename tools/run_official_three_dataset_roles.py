@@ -75,7 +75,8 @@ def train(args, protocol):
     else:
         result = train_r2(model, protocol, records, config, m0=args.mode == "m0",
                           directory=args.output_dir, seed=args.seed,
-                          top1=args.method == "R2_TOP1")
+                          top1=args.method == "R2_TOP1",
+                          balanced=args.method != "R2_UNIFORM")
     receipt["training"] = result
     receipt["status"] = "M0_PASS" if args.mode == "m0" else "FIXED_EPOCH20_TRAINING_COMPLETE"
     if args.mode == "train":
@@ -217,7 +218,7 @@ def evaluate(args, protocol):
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--dataset", choices=("RGBNT201", "RGBNT100", "MSVR310"), required=True)
-    parser.add_argument("--method", choices=("R2", "V27", "R2_TOP1"), required=True)
+    parser.add_argument("--method", choices=("R2", "V27", "R2_TOP1", "R2_UNIFORM"), required=True)
     parser.add_argument("--mode", choices=("m0", "train", "evaluate"), required=True)
     parser.add_argument("--protocol", type=Path, required=True)
     parser.add_argument("--signal-source", type=Path, required=True)
