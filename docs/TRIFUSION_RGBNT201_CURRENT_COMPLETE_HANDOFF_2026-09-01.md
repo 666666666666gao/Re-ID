@@ -9364,3 +9364,15 @@ RGBNT100–R2 seed47旧入口执行提交`4f477d9`，固定20轮／2626次更新
 新逐轮评价任务使用同一公开CLIP、seed1234、作者完整SIM/GAM/LAM训练日程50轮；官方591 query／1055 gallery和same-ID/same-scene过滤每轮均运行。作者训练器按mAP逐轮覆盖一个`Signalbest.pth`，最终checkpoint修改时间`01:35:14`对应日志第**31轮**，而后仍训练到第50轮并完成严格重载独立评价。选中第31轮的mAP/R1为`53.3314/71.4044`，第50轮日志为`52.6/70.6`（一位小数），此前单独固定末轮严格评价为`52.6199/70.0508`；同一次逐轮评价run中，第31轮mAP高于第50轮；相对另一次独立固定末轮回执，数值为`+0.7115 mAP/+1.3536 R1`，但训练运行不同，这个跨运行差值不能全部归因于选点。作者发布checkpoint同协议实测`53.2424/72.4196`；本机best的mAP略高约`0.0890`，Rank-1仍低约`1.0152`，不能说各项已完全复现。
 
 该best回执`logs/signal_full_best_map_20260926/MSVR310/metrics.json`SHA256=`bbcba6987d349ca9d913e2243e97248e6726edbd3bdcdc94b435f559a052ad4b`；`trained-model/signal_full_best_map_20260926/MSVR310/Signalbest.pth`SHA256=`d106dc90b7fa0d141cc5b71d0252727c7607100e55f3ca850de650b250db64b0`，仅保留这一best权重。这里的“best”以**已消费官方测试集mAP**选择，只作探索性选点结果；不能把它和未选择的固定末轮、发布权重或后续TriFusion结果混成无偏消融链。RGBNT201、RGBNT100相同新协议仍在跑，结果待完整回执。
+
+### 41.466 RGBNT201完整Signal逐轮best落在第16轮，仍未追回作者发布权重（2026-09-26 01:59 CST）
+
+新任务从公开CLIP、seed1234独立训练完整Signal 50轮，每轮按作者原836 query／836 gallery、same-ID/same-camera过滤计算正式mAP并覆盖唯一`Signalbest.pth`；最终文件修改时间`01:33:06`对应日志第**16轮**，训练后续照常完成到50轮。严格重载该best为`72.4708 mAP／75.0000 R1／85.0478 R5／89.8325 R10`；同次训练第50轮日志约`72.2/75.8/84.2/88.3`，故选择mAP并非四项分别挑最高。此前**另一次**固定末轮回执为`69.0710/71.1722/81.4593/87.3206`，不能把跨运行数字差全归因于选点。作者发布Signal同协议实测`80.3029/85.1675/91.3876/93.6603`，此次best仍低`7.8321 mAP`和`10.1675 R1`；末轮选点解释了部分报告差距，但不能解释全部高性能复现缺口。这里的best已按正式测试集选点，不当作独立验证结果。
+
+回执`logs/signal_full_best_map_20260926/RGBNT201/metrics.json`SHA256=`d056e4b5919b7106173aa93a555b11ce029287b8f05ae6d9255cefdd246b77e5`；唯一权重`trained-model/signal_full_best_map_20260926/RGBNT201/Signalbest.pth`SHA256=`310f44065187039a4b929aeb6b561585bc1400e59328b6aa923acc0a7f301e25`。RGBNT100逐轮best仍在训练，三数据集同协议对照尚待其终态。
+
+### 41.467 RGBNT100低学习率联合端完成，三数据集低学习率对照闭环（2026-09-26 02:04 CST）
+
+`SIGNAL_SIM_JOINT_LOWLR` RGBNT100 seed42完成固定20轮／2625更新，AMP溢出0、冻结字段未变、无缺失非零梯度；严格重载，作者1715 query／8575 gallery和camera过滤，独立作者评价一致。更新后的Signal单独输出`86.3110 mAP／97.4927 R1`，fused`86.3526／97.5510`，CNN／Transformer／Mamba完整分支分别`85.2742／97.5510`、`86.1507／97.4344`、`85.0121／98.1924`。与作者原Signal`86.3242／97.5510`接近；fused较同seed冻结Signal＋V8 `86.1378／97.5510`提高`0.2148 mAP`，Rank-1相同。改善远小于原高学习率联合端导致的Signal损失，因此它是能力保留的证据，不是显著超越强基线或SOTA。回执`trained-model/official_extra_seed42_RGBNT100_SIGNAL_SIM_JOINT_LOWLR_20260926/RGBNT100_SIGNAL_SIM_JOINT_LOWLR_seed42/official_metrics.json`SHA256=`2f62427200c4b517494f8700031d6d004f63535a71a2e66b2195f19871fd1058`；checkpoint SHA256=`f844a6c42ed86d4f2ca88c929d3fed4b664dfa14333b8aec64c5834adc40d955`；距离数组SHA256=`b061348c05d4bf2875616ba503772e178fe953d78db9303022b2790e54de45b2`。
+
+本轮预登记三数据集结果现在都齐全：RGBNT201 fused`81.9839/86.6029/91.9856/94.0191`，RGBNT100 fused`86.3526/97.5510`，MSVR310 fused`50.8867/67.3435`。三端被更新的Signal单独输出相对原作者权重都基本保住；但仅RGBNT100 fused相对同seed冻结V8有`+0.2148 mAP/0 R1`，RGBNT201为`−0.1111/−0.3589`，MSVR310虽较其弱冻结V8微增，却依旧低原Signal约`2.3557 mAP/5.0761 R1`。故“预训练SIM单独用较低学习率”有效控制此三端的原能力退化，却**不足以使联合角色稳定增强强Signal**；不继续基于已消费正式集扫描学习率。三端均属固定末轮选点，不能与新逐轮best协议直接拼接成单变量比较。
