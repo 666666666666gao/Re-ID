@@ -8620,3 +8620,19 @@ GPU2原队列`RGBNT201–PLAIN_V8–seed44`在15:08:50完成固定第20轮、105
 完整Signal起点三个预登记V8种子的同一checkpoint fused四项依次为：seed42 `82.0950/86.9617/91.9856/94.0191`、seed43 `82.4937/87.0813/92.4641/94.0191`、seed44 `82.6129/87.0813/92.8230/94.2584`。三端四项均高于匹配完整Signal，但都没有达到四项各`+0.8`的项目线，且seed42的Mamba mAP比fused高`0.0268`。由此，原V8在RGBNT201的两种冻结起点上均有正增量，但纯起点即使seed44为`73.1193`，也未追回完整Signal的`80.3029`；两条消融链不能相减合并成TriFusion独立的十点增益。其他两个数据集的完整Signal起点矩阵仍待RGBNT100 seed43结束，R2_UNIFORM另待RGBNT100 seed42。
 
 本端只读诊断：相对完整Signal的逐query AP改善/下降/持平`338/195/303`，Rank-1修复`32`、新增错误`17`，其中`16/17`条新增错误的最近负例与query同camera；30身份平均AP改善/下降/持平`20/9/1`。正负关系修复`28,849`、翻错`16,634`为重复实例对，不当作独立query数。这些正式集合上的事后现象只用于解释，不作新方法调参。训练、正式指标、角色权重、距离和诊断SHA256依次为`431425e6b783b780afd287191cb93ce113d838983bff1ab9191424aa68b3af94`、`fceb476b848b588acdab5237bd53637980a0e3cbcae20f9645fd148db802ce9b`、`35c2bbc28c5227ebdbe16f4a57c22d14e8873e89e08c67b1d49b6d73a0a153e2`、`408634aa32266a2b58fc17f2de6d832cfd2a5bf63b5052bfb235a95cb5f60a6d`、`ce35a747e6bedb2b40ee9e54e5289cb35c5d9d2f03dfd5f9d299b08ba9b01fea`。位置`trained-model/official_extra_seed42_RGBNT201_SIGNAL_V8_20260925/RGBNT201_SIGNAL_V8_seed42/`及对应`logs/.../diagnostics/`。本端退出后GPU0空闲，核对`RGBNT100–R2–seed47`的campaign/训练目录均不存在且数据盘尚余`126,238,511,104`字节，遂以相同固定合同在GPU0启动持久队列PID`2259485`；该新端只有启动证据，M0与正式结果仍待回执。
+
+### 41.384 R2两端通过M0，GPU3后继种子提前串接（2026-09-25 15:27 CST）
+
+15:21:44复核GPU0的`RGBNT100–R2–seed47`已`M0_PASS`并进入固定20轮训练，PID`2259485`实存；GPU1的`RGBNT100–R2_UNIFORM–seed42` PID`1728531`和GPU2的`RGBNT201–R2–seed47` PID`2252645`也仍在训练，GPU3的`RGBNT100–SIGNAL_V8–seed43` PID`2141330`完成第15轮后继续，四卡均有计算进程。此时R2 seed47两端均无正式指标。按最近完整轮速估计，GPU3的原V8端约15:40—15:45完成完整评价，GPU1/2的R2端约19:20—19:45，GPU0新R2端需更久；时间仅用于决定检查窗口，以真实回执为准，不依据训练loss推断检索结果。
+
+MSVR310的R2尚未通过两项各`+0.8`停止线；为接续GPU3而不改变当前任务，核对新`seed56`的campaign、权重目录和启动日志均不存在，确认前序seed43训练队列PID`2141330`实存后，登记一次性等待器PID`2264930`。等待器每240秒只读前序`campaign.json`及其PID；仅当`RGBNT100–SIGNAL_V8–seed43`的campaign和该端均为`COMPLETE`后，才调用原`tools/queue_official_extra_seed.py`在GPU3启动`MSVR310–R2–seed56`。目标路径`logs/official_extra_seed56_MSVR310_R2_20260924/`、`trained-model/official_extra_seed56_MSVR310_R2_20260924/`，等待日志`logs/official_wait_MSVR310_R2_seed56_after_RGBNT100_SIGNAL_V8_seed43_20260925.log`。15:27复核等待PID存在、前序仍`TRAINING`、目标尚未创建；**等待器不是训练已开始，更不是检索结果**。seed56仍须独立M0、固定20轮、全量作者scene过滤评价和全部两项指标，不能因已消费正式集合上的某个较高种子就称为无偏稳定性证据。`/data`仍约118GiB可用，三份纯baseline和作者完整Signal初始化权重均保留。
+
+### 41.385 当前SOTA资源核查的执行边界（2026-09-25）
+
+[CoT-ReID作者仓库](https://github.com/Gaoya615/CoT-ReID)已公开训练/评价代码，但README明确数据集、CoT文本标注与预训练权重均未随仓库分发，需要单独准备；其路径列出CLIP与DINOv3 ViT-B权重。[Meta DINOv3官方仓库](https://github.com/facebookresearch/dinov3)说明官方权重须申请访问，接受后通过邮件提供下载URL；现四卡`pertrained-model/`实查仅有现用CLIP、三份Signal及三份纯baseline权重，没有DINOv3。故§41.377的CoT-ReID数值仍只是不同预训练/额外文本资源的公开参照；当前不能直接把它视为在同一CLIP资源下仅换训练目标即可达到的结果，也不能声称已复现其可用的DINOv3基础。若以后开辟DINOv3路线，应先取得合法权重、确定文本资源或登记视觉-only对照，并与现有CLIP/Signal路线分开报告；本节不改变四张卡上已登记实验。
+
+### 41.386 纯baseline“比之前低”的口径核对（2026-09-25）
+
+RGBNT201纯baseline `69.6415/71.4115/80.1435/85.6459`是从公开CLIP独立训练、去掉Signal的SIM/GAM/LAM及全部TriFusion角色后的1536D三模态CLS拼接；Signal论文Table 3的相应纯baseline为`70.3/71.8`（只报mAP/R1），本机固定终点分别低`0.6585/0.3885`点。此前常见的RGBNT201 `80.3029/85.1675/91.3876/93.6603`是**作者完整Signal发布权重**，不是同一纯baseline；两者mAP相差`10.6614`点，包含Signal方法与不同训练/选点来源，不能全算成TriFusion损失，也不能把关闭完整Signal checkpoint的模块等同于重新训练纯baseline。
+
+另两个数据集对照为：RGBNT100本轮纯baseline `83.7042/95.0437`、作者完整Signal `86.3242/97.5510`、早期本机自行训练Signal `80.7122/94.2274`；MSVR310本轮纯baseline `50.5220/67.6819`、作者完整Signal `53.2424/72.4196`。RGBNT100的纯baseline实际上比早期本机Signal高`2.9920 mAP/0.8163 R1`，因此“纯baseline都比以前低”不成立。三个数据集分别是三套权重和协议，不能跨数据集比较绝对数值。方法增量只按**同一起点、同一数据集、同一评价协议**看：RGBNT201纯baseline→PLAIN_V8 seed44为`69.6415→73.1193` mAP；作者完整Signal→SIGNAL_V8 seed42为`80.3029→82.0950` mAP。前者显示去掉Signal模块后原三角色有独立贡献，但尚未达到完整Signal；后者检验在强起点上的额外贡献。两条增益不得相加或拼成“我们提升十点”。
