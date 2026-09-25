@@ -9189,3 +9189,7 @@ GPU3的`SIGNAL_SIM_JOINT` seed42固定20轮／1060次更新完成，AMP溢出0�
 ### 41.445 RGBNT100本机匹配Signal＋V8重试通过M0并进入训练（2026-09-25 22:01 CST）
 
 修复提交`c8a20b3`已推送GitHub并同步四卡服务器与指定本地交接文件。新任务`logs/official_extra_seed42_RGBNT100_SIGNAL_V8_matched_local_full_retry_20260925/campaign.json`用同一原权重SHA和seed42启动；M0严格加载通过，8次真实优化器更新、AMP溢出0、冻结字段哈希不变，随后进入固定20轮正式训练。22:00四卡分别执行：GPU0 RGBNT100 R2 seed47第13轮、GPU1 RGBNT100 SIGNAL_SIM_JOINT seed42第4轮、GPU2 RGBNT100 PLAIN_V27 seed43第6轮、GPU3本机匹配完整Signal＋V8第1轮执行中，均有CUDA利用率。按已记录单轮时间和完整图库评价预算，后三项大约22:45～23:05完成，GPU0 R2约次日01:30～01:45完成；此为预计时间，均以后续固定终点和正式回执为准。当前M0不填正式指标。
+
+### 41.446 MSVR310基线正确首位关系的间隔分布只读诊断（2026-09-25 22:07 CST）
+
+从§41.439联合SIM与同种子`SIGNAL_V8`的完整正式距离数组取相同591条query，先逐项核对protocol SHA、query/gallery身份、camera、scene顺序一致。对每条query按官方scene过滤保留合法同身份正例，定义平方欧氏距离间隔`m = min_{不同身份图库} d(q,n) − min_{同身份且不同scene图库} d(q,p)`；`m>0`对应首位正确。原作者Signal首位正确428条，将其原`m`按四分位等分，每组107条；边界约0.00026、0.02181、0.04250、0.06524、0.12999。原冻结Signal＋V8在四组中分别新增**41/8/2/0**条首位错误；最小SIM联合训练的fused分别新增**39/6/1/0**条。于是原V8的51条新错误中41条、联合端的46条中39条落在原Signal正确关系的最低间隔四分位。这说明这些被翻转的原正确首位关系多数原本边际较小；也说明本次联合更新只略减少新错误，没有解决该集中现象。它不证明只要保护低间隔关系就能改善未知身份，也不能从已消费正式身份选择阈值。原始复算记录为`logs/official_extra_seed42_MSVR310_SIGNAL_SIM_JOINT_20260925/diagnostics/teacher_margin_quartiles.json`，SHA256=`d6117e7e94c26e0dc193855d100c00adef1c83a9bd3b37d302d35ae223aefc42`；内含输入回执及距离数组SHA和精确分位边界，仅用于事后机制解释。
