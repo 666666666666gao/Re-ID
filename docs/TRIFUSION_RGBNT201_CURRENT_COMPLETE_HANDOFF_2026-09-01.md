@@ -9156,3 +9156,28 @@ GPU3的`SIGNAL_SIM_JOINT`固定20轮／400次更新于21:04完成，AMP溢出0�
 ### 41.440 补齐RGBNT100本机匹配完整Signal＋原V8的控制格（2026-09-25 21:24 CST）
 
 §41.426—430已完成三个数据集的本机同公开CLIP起点、同seed1234及固定终点的完整Signal权重；其上原V8角色扩展已经覆盖RGBNT201和MSVR310，**RGBNT100尚缺**。为使三数据集“本机匹配完整Signal→冻结加原V8”的比较完整，仅把`tools/queue_official_extra_seed.py`对显式本机Signal权重的白名单加入RGBNT100；不改变训练器、模型、损失、学习率、固定20轮或评价器。新增实验预定为RGBNT100 `SIGNAL_V8` seed42，初始化于本机匹配第30轮完整Signal权重`trained-model/signal_full_matched_20260925/RGBNT100/Signalbest.pth`（SHA256=`33746bc098cbd5c01d168dfe9cfd7858cce44e31956950e4b4a2e4e91ba04609`），固定第20轮评价1715 query／8575 gallery、camera过滤，报告mAP/Rank-1；它排在GPU3正在执行的RGBNT201 `SIGNAL_SIM_JOINT`之后，不抢卡。匹配完整Signal基线为83.6082/96.0933，纯CLIP ReID基线为83.7042/95.0437；作者发布Signal是另一权重，86.3242/97.5510。此格完成前不填任何V8数值，也不将不同权重来源的差拼成同一受控消融。
+
+### 41.441 RGBNT100纯基线V27首颗正式结果及SIM漂移诊断（2026-09-25 21:39 CST）
+
+`PLAIN_V27` RGBNT100 seed42固定20轮／2625次更新完成，AMP溢出0、纯基线冻结哈希不变。正式回执`trained-model/official_extra_seed42_RGBNT100_PLAIN_V27_20260925/RGBNT100_PLAIN_V27_seed42/official_metrics.json`SHA256=`f861d79bc06272cab2bd3b6a6e3d8c51f796d0b10c89f47e997a3215a22ed96b`：1715 query／8575 gallery、camera过滤、无reranking、作者评价器独立复算一致，fused **82.7779 mAP／95.2187 Rank-1**。同种子纯基线原V8为84.0387／95.6851，即V27整套训练定义相对V8 **−1.2608 mAP／−0.4664 Rank-1**；纯基线权重为83.7042／95.0437，即V27相对纯基线−0.9263／+0.1749。两种车辆方法同loader，故这里不受RGBNT201 loader差异影响。seed43、44仍在训练，不能据seed42推断三种子总体。只读正式诊断中，原V8对纯基线的AP改善/下降query为720/641、Rank-1修复/新增错误28/17；V27为574/798、27/24。这是已消费正式集的事后解释，不用于改后续种子配置。
+
+MSVR310首颗`SIGNAL_SIM_JOINT`保存的SIM交互层与作者原权重逐张量比较，cross-attn `in_proj_weight`和`out_proj.weight`的相对L2变化分别为31.93%、21.32%，FFN第0/2层权重为25.55%、32.01%；bias因初始范数近零，不使用其相对百分比作解释。当前SIM与新角色共用`NEW_MODULE_LR=0.00035`，且14项训练损失没有独立的Signal基线保留项。连同§41.439更新后Signal本身的正式退化，这构成“预训练SIM更新过大或缺少基线保留约束”的**待检验线索**，不能仅由权重变化断定两者的因果贡献；后继应按一个变量一轮比较，不改已固定的RGBNT201/RGBNT100联合SIM任务。
+
+### 41.442 RGBNT201最小SIM联合训练正式结账（2026-09-25 21:44 CST）
+
+GPU3的`SIGNAL_SIM_JOINT` seed42固定20轮／1060次更新完成，AMP溢出0、冻结字段哈希不变；独立重载第20轮checkpoint、原作者836 query／836 gallery、camera过滤、无reranking和作者评价器逐项一致。回执`trained-model/official_extra_seed42_RGBNT201_SIGNAL_SIM_JOINT_20260925/RGBNT201_SIGNAL_SIM_JOINT_seed42/official_metrics.json`SHA256=`e4275a770bf3d83ef444de49f93314f3686c44165e46667232a3110c25bbebfb`，checkpoint SHA256=`3ae0cd9cd43e0d8ad16aeafc896a65bb4421d53121b49e0d3fbcb607946d546e`，距离数组SHA256=`0e96b8dd56020b492ec481be29c8b971ac02b6ec3589a715c2076949851360d0`。
+
+| RGBNT201，作者发布完整Signal起点／seed42 | mAP | Rank-1 | Rank-5 | Rank-10 |
+| --- | ---: | ---: | ---: | ---: |
+| 原作者完整Signal，冻结原权重 | 80.3029 | 85.1675 | 91.3876 | 93.6603 |
+| 冻结Signal＋原V8 fused | **82.0950** | **86.9617** | 91.9856 | **94.0191** |
+| 联合训练后Signal部分单独输出 | 76.5113 | 81.6986 | 90.6699 | 93.4211 |
+| 联合SIM＋三角色 fused | 80.5003 | 85.2871 | **92.2249** | 93.8995 |
+
+联合fused相对原作者Signal为+0.1974 mAP／+0.1196 Rank-1／+0.8373 Rank-5／+0.2392 Rank-10；相对同种子冻结Signal＋原V8则是−1.5947 mAP／−1.6746 Rank-1。更新后的Signal自身相对原作者权重为−3.7916 mAP／−3.4689 Rank-1。联合CNN/Transformer/Mamba完整分支mAP/R1分别为79.5719/84.9282、78.6587/83.4928、80.8362/86.2440；Mamba这一支高于fused。与§41.439的MSVR310方向一致：这一**最小SIM共同更新**没有稳定保留强Signal，也未超过冻结组合的RGBNT201结果；并非所有共同学习均无效的证明。此次仅使SIM交互层与角色共享优化目标，角色输入仍来自冻结CLIP block8，尚未实现“角色反馈到SIM Token选择”的结构性交互。RGBNT100同方法seed42尚待GPU1前序V27任务完成，不能提前填结果。
+
+### 41.443 RGBNT100纯基线V27第二颗正式结果及GPU接续（2026-09-25 21:50 CST）
+
+`PLAIN_V27` RGBNT100 seed44也完成固定20轮／2625次更新，AMP溢出0、冻结字段不变；正式1715 query／8575 gallery、原camera过滤和作者评价器独立复算通过。回执SHA256=`ab594e06c23c33dc22b801de70dfbca6888964dfea8de4f0a10c0a60c2c11b32`，fused为**82.7540 mAP／95.2187 Rank-1**。同种子`PLAIN_V8`为83.8656／96.2099，V27整套训练定义相对V8为−1.1116 mAP／−0.9913 Rank-1。相对固定纯基线83.7042／95.0437则为−0.9502 mAP／+0.1749 Rank-1。只读正式诊断在纯基线对照下记录AP改善/下降query为548/823、Rank-1修复/新增错误28/25；与§41.441的seed42一起显示当前两颗均未使车辆mAP获益，但预定seed43仍在训练，三种子结论尚未产生。
+
+截至21:49，GPU1已从该seed44任务接续`RGBNT100 SIGNAL_SIM_JOINT` seed42训练；GPU3在RGBNT201联合SIM完成后接续§41.440的本机匹配完整Signal＋V8 `RGBNT100 SIGNAL_V8` seed42，已进入M0；GPU2执行RGBNT100 PLAIN_V27 seed43，GPU0执行RGBNT100 R2 seed47。四卡持续有任务，GPU3匹配实验与GPU1联合SIM使用不同Signal权重来源，结果需各自对其匹配基线解释。`/data`在21:38余约115.01GiB，无须删除必要checkpoint。
