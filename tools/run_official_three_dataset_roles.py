@@ -55,7 +55,8 @@ def initialize(args, protocol):
 
     model, cfg, config, binding = build_model(protocol, args.signal_source, args.clip_weight,
                                                args.signal_checkpoint, args.signal_sha256, seed=args.seed,
-                                               plain_baseline=args.method in ("PLAIN_V8", "PLAIN_V27"))
+                                               plain_baseline=args.method in ("PLAIN_V8", "PLAIN_V27"),
+                                               sim_feedback=args.method == "SIGNAL_SIM_FEEDBACK")
     if args.method == "SIGNAL_SIM_JOINT":
         names = []
         for name, parameter in model.baseline.signal.SIM.modal_interactive.named_parameters():
@@ -77,6 +78,7 @@ def train(args, protocol):
     model, _cfg, config, binding = initialize(args, protocol)
     receipt = dict(schema=("trifusion-official-plain-v8-training-v1" if args.method in ("PLAIN_V8", "PLAIN_V27")
                            else "trifusion-official-signal-sim-joint-training-v1" if args.method == "SIGNAL_SIM_JOINT"
+                           else "trifusion-official-signal-sim-feedback-training-v1" if args.method == "SIGNAL_SIM_FEEDBACK"
                            else "trifusion-official-signal-v8-training-v1" if args.method == "SIGNAL_V8"
                            else "trifusion-official-r2-v27-training-v1"), dataset=args.dataset,
                    method=args.method, mode=args.mode, status="RUNNING",
@@ -87,12 +89,13 @@ def train(args, protocol):
                    initializer=binding, official_model_forwards=0)
     (args.output_dir / "training.json").write_text(json.dumps(receipt, indent=2) + "\n", encoding="utf-8")
     records = records_for(protocol, "train")
-    if args.method in ("V27", "PLAIN_V27", "PLAIN_V8", "SIGNAL_V8", "SIGNAL_SIM_JOINT"):
+    if args.method in ("V27", "PLAIN_V27", "PLAIN_V8", "SIGNAL_V8", "SIGNAL_SIM_JOINT", "SIGNAL_SIM_FEEDBACK"):
         result = train_v27(model, protocol, records, config, m0=args.mode == "m0",
                            directory=args.output_dir, seed=args.seed,
                            style=args.method in ("V27", "PLAIN_V27"),
                            plain_baseline=args.method in ("PLAIN_V8", "PLAIN_V27"),
-                           joint_sim=args.method == "SIGNAL_SIM_JOINT")
+                           joint_sim=args.method == "SIGNAL_SIM_JOINT",
+                           sim_feedback=args.method == "SIGNAL_SIM_FEEDBACK")
     else:
         result = train_r2(model, protocol, records, config, m0=args.mode == "m0",
                           directory=args.output_dir, seed=args.seed,
@@ -144,7 +147,7 @@ def extract(model, protocol, split, method, *, baseline_only=False):
                 values = {"baseline_only": model(batch, retrieval_output="baseline_only")}
             else:
                 output = (model(batch, return_aux=True)
-                          if protocol["dataset"] == "RGBNT201" or method in ("PLAIN_V8", "PLAIN_V27", "SIGNAL_SIM_JOINT")
+                          if protocol["dataset"] == "RGBNT201" or method in ("PLAIN_V8", "PLAIN_V27", "SIGNAL_SIM_JOINT", "SIGNAL_SIM_FEEDBACK")
                           else exact_signal_forward(model, batch))
                 values = output_mapping(output, widths=widths)
             for name, value in values.items():
@@ -279,6 +282,7 @@ def evaluate(args, protocol):
                     protocol_sha256=summary["protocol_sha256"]), path)
     result = dict(schema=("trifusion-official-plain-v8-retrieval-v1" if args.method in ("PLAIN_V8", "PLAIN_V27")
                           else "trifusion-official-signal-sim-joint-retrieval-v1" if args.method == "SIGNAL_SIM_JOINT"
+                          else "trifusion-official-signal-sim-feedback-retrieval-v1" if args.method == "SIGNAL_SIM_FEEDBACK"
                           else "trifusion-official-signal-v8-retrieval-v1" if args.method == "SIGNAL_V8"
                           else "trifusion-official-r2-v27-retrieval-v1"), status="COMPLETE",
                   dataset=args.dataset, method=args.method,
@@ -301,7 +305,7 @@ def evaluate(args, protocol):
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--dataset", choices=("RGBNT201", "RGBNT100", "MSVR310"), required=True)
-    parser.add_argument("--method", choices=("R2", "V27", "R2_TOP1", "R2_UNIFORM", "PLAIN_V8", "PLAIN_V27", "SIGNAL_V8", "SIGNAL_SIM_JOINT"), required=True)
+    parser.add_argument("--method", choices=("R2", "V27", "R2_TOP1", "R2_UNIFORM", "PLAIN_V8", "PLAIN_V27", "SIGNAL_V8", "SIGNAL_SIM_JOINT", "SIGNAL_SIM_FEEDBACK"), required=True)
     parser.add_argument("--mode", choices=("preflight", "m0", "train", "evaluate"), required=True)
     parser.add_argument("--protocol", type=Path, required=True)
     parser.add_argument("--signal-source", type=Path, required=True)

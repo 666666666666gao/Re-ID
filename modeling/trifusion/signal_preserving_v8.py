@@ -563,6 +563,7 @@ class SignalPreservingExpertFormationV8(nn.Module):
         self.fusion = fusion
         self.num_classes = int(num_classes)
         self.baseline_embedding_width = fusion.baseline_width
+        self.sim_to_token: nn.Linear | None = None
         self.fused_embedding_width = fusion.fused_embedding_width
         self.branch_embedding_width = fusion.branch_embedding_width
         self.residual_embedding_width = fusion.expert_width
@@ -628,8 +629,20 @@ class SignalPreservingExpertFormationV8(nn.Module):
         field = self.baseline(batch)
         if retrieval_output == "baseline_only" and not return_aux:
             return field.baseline_embedding
+        anchor_sequence = field.anchor_sequence
+        if self.sim_to_token is not None:
+            sim_modal = field.baseline_embedding[:, -3 * self.baseline.feature_width:].reshape(
+                -1, 3, self.baseline.feature_width
+            )
+            sim_modal = F.normalize(sim_modal, dim=-1) * anchor_sequence[:, :, 0].norm(
+                dim=-1, keepdim=True
+            ).detach()
+            token_delta = self.sim_to_token(sim_modal).unsqueeze(2)
+            anchor_sequence = torch.cat(
+                (anchor_sequence[:, :, :1] + token_delta, anchor_sequence[:, :, 1:]), dim=2
+            )
         representations = self.encoder(
-            field.anchor_sequence,
+            anchor_sequence,
             field.reference_sequence,
         )
         fusion = self.fusion(field.baseline_embedding, representations)

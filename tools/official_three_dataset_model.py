@@ -21,7 +21,7 @@ def sha256(path):
 
 
 def build_model(protocol, source, clip_weight, checkpoint, expected_sha256, *, seed=42,
-                plain_baseline=False):
+                plain_baseline=False, sim_feedback=False):
     import torch
 
     from tools.build_v12_complete_path_oof_targets import _build_signal_teacher, _build_v8_experts
@@ -80,10 +80,17 @@ def build_model(protocol, source, clip_weight, checkpoint, expected_sha256, *, s
     model = _build_v8_experts(signal, role_config, signal_checkpoint_sha256=digest,
                               num_classes=len(protocol["train_label_map"]),
                               use_sim=not plain_baseline)
+    if sim_feedback:
+        assert not plain_baseline and model.baseline.use_sim
+        model.sim_to_token = torch.nn.Linear(model.baseline.feature_width,
+                                             model.encoder.semantic_width, bias=False).cuda()
+        torch.nn.init.zeros_(model.sim_to_token.weight)
     assert all(not parameter.requires_grad for parameter in model.baseline.parameters())
     binding = dict(author_checkpoint=str(path), author_checkpoint_sha256=digest,
                    signal_state_sha256=signal_hash,
                    initial_role_state_sha256=_module_state_sha256(model))
+    if sim_feedback:
+        binding["sim_feedback"] = "zero_initialized_sim_modal_to_block8_cls_projection"
     if plain_baseline:
         binding["baseline_kind"] = "independently_trained_module_free_cls"
     return model, cfg, role_config, binding
