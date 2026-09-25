@@ -144,7 +144,7 @@ def extract(model, protocol, split, method, *, baseline_only=False):
                 values = {"baseline_only": model(batch, retrieval_output="baseline_only")}
             else:
                 output = (model(batch, return_aux=True)
-                          if protocol["dataset"] == "RGBNT201" or method in ("PLAIN_V8", "PLAIN_V27")
+                          if protocol["dataset"] == "RGBNT201" or method in ("PLAIN_V8", "PLAIN_V27", "SIGNAL_SIM_JOINT")
                           else exact_signal_forward(model, batch))
                 values = output_mapping(output, widths=widths)
             for name, value in values.items():
