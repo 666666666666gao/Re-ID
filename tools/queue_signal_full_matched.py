@@ -11,6 +11,7 @@ import re
 import shutil
 import subprocess
 import sys
+import time
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -36,21 +37,22 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('--gpu', type=int, required=True)
     parser.add_argument('--dataset', choices=tuple(EPOCHS), required=True)
+    parser.add_argument('--after-campaign', type=Path, required=True)
     args = parser.parse_args()
     assert ROOT == Path('/data/gaob/Re-ID/Trifusion')
     assert args.gpu in (0, 1, 2, 3)
     assert CLIP.is_file() and SOURCE.is_dir() and DATASET_ROOT.is_dir()
-    assert shutil.disk_usage('/data').free > 3 * 1024**3
     log_dir = LOG_ROOT / args.dataset
     assert not log_dir.exists() and not (OUTPUT_ROOT / args.dataset).exists()
     log_dir.mkdir(parents=True)
     OUTPUT_ROOT.mkdir(parents=True, exist_ok=True)
     datasets = (args.dataset,)
     status_path = log_dir / 'campaign.json'
-    status = {'schema': 'signal-full-matched-campaign-v1', 'status': 'RUNNING',
-              'started_at': stamp(), 'gpu': args.gpu, 'seed': 1234,
+    status = {'schema': 'signal-full-matched-campaign-v1', 'status': 'WAITING',
+              'created_at': stamp(), 'gpu': args.gpu, 'seed': 1234,
               'dataset_order': datasets, 'public_clip': str(CLIP),
-              'source': str(SOURCE), 'jobs': []}
+              'source': str(SOURCE), 'after_campaign': str(args.after_campaign),
+              'jobs': []}
 
     def save():
         status_path.write_text(json.dumps(status, indent=2) + '\n', encoding='utf-8')
@@ -74,6 +76,16 @@ def main():
         finite_training_log(log_path)
 
     save()
+    while True:
+        prior = json.loads(args.after_campaign.read_text(encoding='utf-8'))
+        if prior['status'] == 'COMPLETE':
+            break
+        assert prior['status'] == 'RUNNING'
+        time.sleep(240)
+    status['status'] = 'RUNNING'
+    status['started_at'] = stamp()
+    save()
+    assert shutil.disk_usage('/data').free > 3 * 1024**3
     for dataset in datasets:
         epochs = EPOCHS[dataset]
         job = {'dataset': dataset, 'epochs': epochs, 'seed': 1234,
