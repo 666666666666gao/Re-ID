@@ -9103,3 +9103,25 @@ seed44完整分支mAP/R1：CNN73.8082/75.4785，Transformer72.4710/74.1627，Mam
 代码提交`0c987cc`已推送GitHub并在远端快进，远端conda Python语法检查通过。训练入口为`tools/queue_official_extra_seed.py --seed 42 --machine new --dataset MSVR310 --method SIGNAL_SIM_JOINT --gpu 3`，严格等待`logs/official_extra_seed44_MSVR310_PLAIN_V27_20260925/campaign.json`为COMPLETE后才占GPU3。新checkpoint名为`joint_epoch20.pth`，除原角色状态外只保存已训练的SIM交互层；独立评价重建作者Signal、严格加载合并状态并核验终态模型SHA。冻结权重哈希现在只排除实际可训练的SIM张量；一个全冻结小模型的旧／新哈希相等。CPU无GPU烟测已通过：只解冻SIM交互层12个张量、CLIP全冻结；改变SIM后冻结字段SHA不变、模型SHA变化，内存checkpoint重新构建和严格加载后的全模型SHA与保存前一致（243个被保存张量，约46.5MB）。这些只证实入口和保存定义，**不代表M0或正式性能通过**。20:48队列仍在等待，`logs/official_extra_seed42_MSVR310_SIGNAL_SIM_JOINT_20260925/`尚未生成正式回执。
 
 此外，RGBNT100纯V27 seed44的第一次等待进程在前置MSVR seed43 campaign尚未创建时读取路径并退出，只留下`logs/launch_plain_v27_rgbnt100_seed44_20260925.log`，没有M0、训练、权重或正式成绩；在前置campaign创建后已经用`logs/launch_plain_v27_rgbnt100_seed44_20260925_requeued.log`重新排队并核对等待进程存活。这个实际调度失误与模型性能无关，不应填成失败实验。
+
+### 41.436 PLAIN_V27的MSVR310三种子正式结账（2026-09-25 20:55 CST）
+
+`logs/official_extra_seed43_MSVR310_PLAIN_V27_20260925/campaign.json`于20:47:11、`logs/official_extra_seed44_MSVR310_PLAIN_V27_20260925/campaign.json`于20:52后分别记录COMPLETE；同§41.433的seed42构成预定三种子。三者均为纯CLIP ReID冻结基线、原MSVR数据loader、固定20轮／400次更新、预检parity及M0通过、AMP溢出0、冻结权重不变；正式591 query／1055 gallery、scene过滤、无reranking、作者评价器独立复算一致。没有按某个正式分数选择seed或改变配置。
+
+| MSVR310方法／seed，fused正式值 | mAP | Rank-1 |
+| --- | ---: | ---: |
+| 独立纯CLIP ReID基线 | 50.5220 | 67.6819 |
+| PLAIN_V8 seed42 | 52.6782 | 68.6971 |
+| PLAIN_V27 seed42 | 52.7679 | 68.5279 |
+| PLAIN_V8 seed43 | **53.6260** | **69.7124** |
+| PLAIN_V27 seed43 | 53.2082 | 69.3739 |
+| PLAIN_V8 seed44 | 53.3232 | 69.8816 |
+| PLAIN_V27 seed44 | **53.3313** | **70.2200** |
+| PLAIN_V8三种子描述均值 | **53.2091** | **69.4303** |
+| PLAIN_V27三种子描述均值 | 53.1025 | 69.3739 |
+| V27−V8同种子差值均值，未舍入回执 | −0.1067 | −0.0564 |
+| 作者发布完整Signal，另一路权重 | 53.2424 | 72.4196 |
+
+同seed的未舍入差值：seed42约`+0.0896/−0.1692`，seed43`−0.4178/−0.3384`，seed44`+0.0081/+0.3384`（mAP/R1）。§41.433用四位显示值相减得seed42 +0.0897，与这里按未舍入回执先相减再四舍五入相差0.0001，不影响判断。三种子V27相对纯基线均值约+2.5805/+1.6920，但对比同种子原V8没有稳定额外收益；纯路线mAP接近作者完整Signal，R1仍低约3.05点。seed44的完整CNN为53.1957/71.9120、Transformer50.6754/66.8359、Mamba50.0589/68.1895；fused mAP最高而R1低于CNN，仍需区分后部排序和首位匹配。三种子只重复**角色训练随机性**，纯基线权重固定，且正式测试已被消费，不能写成未见测试分布的无偏选模证据。
+
+seed43正式回执、角色权重、距离数组、只读诊断SHA256依次为`5e1745c6953d32c8c2145ae28230357ff663b0efd0a6933d14a4b5d36963a878`、`653a50e03ca76c1514eb6c576d460e605b0559b6867c5b1fb28512118de4172f`、`2d9d0d8244d261124f7ed1ddc1e8c04370bf1bbcf8bc69c9f34753a309c7653f`、`afe1656c4fd4993099d62d7518dfd71b21928b6e3e9082f4fa34965144f87ac0`；seed44依次为`1755f8803469f1d154e1ca6ffb9ecafcff5bfff9ca435dae4e7ae298250487fe`、`af518ab32424f3780a07a83461f2b349a4b71c013bb685ec33b9340224aa1349`、`abcd233720b4fa29bf76eb5b2428050192153717e588268a4c92254481dce777`、`738c60b9b8681894cf59d5b5f1b0b90e3d1f33b616d58edea512dd13c1b1f634`。只读诊断seed43 AP改善353／下降221、R1修复37／新增27；seed44 AP改善349／下降222、R1修复43／新增28。诊断不用于更改本批训练。
