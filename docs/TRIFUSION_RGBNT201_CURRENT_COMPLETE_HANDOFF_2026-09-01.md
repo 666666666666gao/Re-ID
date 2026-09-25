@@ -8939,3 +8939,32 @@ GPU3原V27训练PID退出是正常终态。迁移后的等待进程PID`2450403`�
 资源条件必须同表说明：STMI除CLIP图文预训练外，使用GPT-4o为每个三模态样本生成文本、SAM2为每组生成前景mask；论文报告A800训练，RGBNT201 B72/K8、MSVR310 B64/K8、RGBNT100 B128/K16。其SFM借助额外mask突出前景，STR进行token重分配，CHI做跨模态超图交互。因此它是“较弱CLIP起点＋额外文本/mask资源＋共同构建表示”的参照，不是本项目“冻结已训练Signal后外挂三角色”的同资源、同优化预算因果控制。本项目可借鉴其让交互参与表示形成的思路；若将来引用性能，必须同时披露额外标注生成资源，且不要称其为2026-09-25所有后续方法中的无条件SOTA。
 
 随后直接取得并核读[CoT-ReID的CVPR 2026原文PDF](https://openaccess.thecvf.com/content/CVPR2026/papers/Gao_Chain-of-Thought_Guided_Multi-Modal_Object_Re-Identification_CVPR_2026_paper.pdf) Table 1–2及方法/实验段：作者`CoT◦`报告RGBNT201 `83.3/86.1/93.3/94.8`，RGBNT100 `89.9/99.3`，MSVR310 `71.7/85.3`。该行明确标为**DINOv3-based**；同文DINOv3基线为RGBNT201 `77.5/78.9/85.8/88.9`、RGBNT100 `87.0/98.5`、MSVR310 `68.2/83.3`，所以MSVR310同文条件增益为`+3.5 mAP/+2.0 Rank-1`，不是`50.5220→71.7`这种跨起点差值。作者使用DINOv3-B视觉主干、冻结CLIP文本编码器，并用Qwen-VL API为**训练和测试图像**生成逐模态推理链及属性文本，报告120轮训练；[作者仓库](https://github.com/Gaoya615/CoT-ReID)亦要求另外准备DINOv3、CLIP和CoT文本文件。这个资源/推理输入条件与本项目仅使用三张光谱图及作者Signal/CLIP权重不同。数字可以列为作者报告参照，不能写成同资源、同起点的受控差距，也不能从单一论文表声称已穷尽2026年SOTA。
+
+### 41.423 RGBNT201纯基线＋V27 seed42正式终点与排序诊断（2026-09-25 19:38 CST）
+
+GPU3 `logs/official_extra_seed42_RGBNT201_PLAIN_V27_20260925/campaign.json`于19:34:32记录`COMPLETE`。训练回执固定第20轮、1060次优化、冻结纯基线不变、无AMP overflow；初始完整模型状态SHA256=`8091026634ec428c04bd6dc3604992236faff284c17b71f12725ad4ce16690c9`，角色权重SHA256=`410d9de3ea6b0ea8f53d88f01d764ca57bcee45eaf6a18b48e9e74cd621298f7`，终态完整模型状态SHA256=`7ea6b654d3b3dff6971ee62ec88e7d1f91d700cb5391ed9cdd07465e43624241`。完整836 query／836 gallery、原camera排除、无reranking的`official_metrics.json`为`COMPLETE`且作者上游独立评价一致，距离数组SHA256=`e3edc1be43974752403af83b167cc9d5f14c82582613cf7cf03f860d4b804515`。
+
+| RGBNT201同一checkpoint | mAP | Rank-1 | Rank-5 | Rank-10 |
+| --- | ---: | ---: | ---: | ---: |
+| 冻结纯CLIP ReID基线 | 69.6415 | 71.4115 | 80.1435 | 85.6459 |
+| PLAIN_V27 seed42 fused | 73.2083 | 74.7608 | 84.2105 | 87.5598 |
+| CNN完整分支 | 71.2221 | 72.2488 | 81.3397 | 86.6029 |
+| Transformer完整分支 | 72.2154 | 72.8469 | 81.8182 | 87.3206 |
+| Mamba完整分支 | **74.4235** | **76.6746** | **85.7656** | **89.2344** |
+
+与**同seed的PLAIN_V8**完整终点`70.9622/71.7703/83.1340/88.0383`比较，PLAIN_V27 fused四项变化依次为`+2.2461/+2.9905/+1.0765/−0.4785`。两端协议SHA、纯基线checkpoint SHA、初始完整模型状态SHA与1060步预算完全相同；但V27同时更改耦合统计扰动和RGBNT201训练loader，所以这仍是整套V27训练定义的配对效果，不能把差值全归给统计混合。相对纯基线，PLAIN_V27的四项均为正，却没有达到完整Signal的绝对成绩，也未超过其自身Mamba完整分支；当前仅完成这一个PLAIN_V27正式种子，不能宣称跨种子稳定。
+
+只读`tools/diagnose_official_retrieval.py`从同一正式距离重建指标，报告`logs/official_plain_v27_rgbnt201_seed42_diagnosis_20260925.json`，SHA256=`b92d01b90511880eb1afd4fd9b293460e96729108fd15b59c562f08e2412c2f9`。相对纯基线，836条query的AP改善/下降/持平为`370/191/275`，Rank-1修复`49`条、新增`21`条；合法正负关系修复`67,972`对、破坏`29,111`对。新增首位错误中`15/21`条的最近负例与query同camera，这是**正式集事后关联**，不据此修改采样或参数。GPU3于该训练结束后已自动进入预登记的MSVR310六端来源探针，当前只是来源诊断，不产生正式成绩。
+
+### 41.424 RGBNT100固定1/1梯度对照全部完成（2026-09-25 19:38 CST）
+
+GPU1 `RGBNT100–R2_UNIFORM–seed42` campaign于19:29:32记录`COMPLETE`；训练固定20轮、2625次优化、2560个有合法跨camera关系的步骤、20444个历史VJP组，冻结Signal未变、AMP overflow 0。角色权重SHA256=`7c46745785e9ee111da25861098d1a18c264ef0df4c7069f7c788f85cbf81ab1`，终态模型状态SHA256=`31e4d6c3bb5a6e5266be55f615d4ae5b735bf1ce5f8ca1774613f71995d128e4`。正式完整1715 query／8575 gallery、原camera过滤、无reranking、独立作者评价一致；距离数组SHA256=`14969a9cef9f5e75c24eee332b270bae99c22747e7d16976bfd40e19c7a61fcd`。
+
+| RGBNT100同初始模型、同2625步 | mAP | Rank-1 |
+| --- | ---: | ---: |
+| 同回执完整Signal | 86.3242 | 97.5510 |
+| 原R2 seed42 | 86.2613 | 97.4344 |
+| R2_UNIFORM seed42 | 86.3162 | 97.6093 |
+| 固定1/1减原R2 | +0.0549 | +0.1749 |
+
+两端协议SHA、作者权重SHA、初始完整模型状态SHA完全相同；固定1/1在本数据集略高于R2，但差值很小，不能据此宣称动态R2有普遍益处，也不能以单数据集判其必然有害。此前RGBNT201与MSVR310的同类固定1/1对照分别低于R2约`0.1906/0.2392`和`0.1665/0.5076`（mAP/Rank-1）；至此三数据集R2_UNIFORM对照已完整，呈现不同方向。只读报告`logs/official_r2_uniform_rgbnt100_seed42_diagnosis_20260925.json` SHA256=`1bdcf6493300cd1979a2472ef36093397f99c46f121d3472cb929502018af22e`核验正式回执；相对Signal，AP改善/下降/持平`666/644/405`，首位修复`12`、新增`11`，符合小幅R1净增。该诊断为已消费正式集的描述，不用于选择新的系数。GPU1后续匹配完整Signal RGBNT100训练已自动占卡，下一次按其预计epoch/终点核验。
