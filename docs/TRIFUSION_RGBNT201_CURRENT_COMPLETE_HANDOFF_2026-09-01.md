@@ -8666,3 +8666,7 @@ seed43同一回执的完整分支为CNN`85.1069/96.9679`、Transformer`86.6916/9
 ### 41.390 匹配完整Signal三数据集接续队列已建立，尚未开始GPU训练（2026-09-25 16:04 CST）
 
 `tools/queue_signal_full_matched.py`现按数据集隔离回执和输出目录，只有指定的前序campaign为`COMPLETE`才接管其GPU，等待间隔240秒。三条一对一依赖均已按实际dataset/method/seed/GPU字段核对，队列进程及`campaign.json`均实查为`WAITING`、`jobs=[]`，因此**此时没有完整Signal的M0、正式训练或评价指标**：GPU3的MSVR310完整Signal接在`MSVR310–R2–seed56`后；GPU2的RGBNT201完整Signal接在`RGBNT201–R2–seed47`后；GPU1的RGBNT100完整Signal接在`RGBNT100–R2_UNIFORM–seed42`后。三条已有训练保持原样；匹配完整Signal分别从公开CLIP、seed1234起跑，纯baseline三份权重保持不动。作者原训练保存逻辑已核对：`EVAL_PERIOD`设为固定末轮、`CHECKPOINT_PERIOD=1000`，因此`Signalbest.pth`只在固定末轮生成；M0仅1轮且不读取正式query/gallery。新入口已经远端`py_compile`和`--help`通过，代码同步GitHub与四卡服务器至`7c6c1a6498cb8d6f2b08adca4d2980c8ceae0141`。接续后的真实数值、每轮耗时与最终预计结束时间须以M0和首轮实测更新，不用等待状态推测性能。
+
+### 41.391 MSVR310纯／完整起点V8差异的训练入口核对（2026-09-25）
+
+对照`tools/official_three_dataset_model.py`、`tools/official_three_dataset_data.py`、`tools/train_official_three_dataset_roles.py`及`tools/run_official_three_dataset_roles.py`：MSVR310的`PLAIN_V8`与`SIGNAL_V8`都调用同一个`train_v27(..., style=False)`，使用同一角色配置、AdamW参数规则、14项V8监督、原MSVR训练loader及固定20轮；没有按这两个方法名切换采样器或训练预算。`plain_baseline`主要改变冻结checkpoint、`USE_A/USE_B`、是否带SIM及相应输出宽度（纯1536D前缀／6144D融合，完整3072D前缀／7680D融合），所以这不是仅将同一训练好的模型关闭三个推理开关的消融。已完成三种子中，纯起点fused相对自己的baseline平均`+2.6871 mAP/+1.7484 Rank-1`，完整Signal起点相对自己的baseline平均`−2.3165/−4.7377`；两套数值各自匹配，不能相减成某一个Signal模块的因果作用。现有工程回执及作者评估一致性没有支持“完整起点使用了不同loader／少训练轮次／评估漏算”的解释；更具体的表示或关系机制仍须用来源侧受控诊断验证，不能凭正式失败身份调参。
