@@ -395,11 +395,13 @@ class PretrainedTailTriExpertEncoder(nn.Module):
         )
 
     def reference_from_anchor(self, anchor_sequence: torch.Tensor) -> torch.Tensor:
-        batch_size, modality_count = anchor_sequence.shape[:2]
-        sequence = self._to_lbd(anchor_sequence)
-        for block, layer_index in zip(self._tail_blocks, self.tail_layer_indices, strict=True):
-            sequence = self._run_tail_block(block, sequence, layer_index)
-        return self._from_lbd(sequence, batch_size=batch_size, modality_count=modality_count)
+        references = []
+        for modality in range(len(MODALITY_ORDER)):
+            sequence = anchor_sequence[:, modality].permute(1, 0, 2)
+            for block, layer_index in zip(self._tail_blocks, self.tail_layer_indices, strict=True):
+                sequence = self._run_tail_block(block, sequence, layer_index)
+            references.append(sequence.permute(1, 0, 2))
+        return torch.stack(references, dim=1)
 
     def forward(
         self,
