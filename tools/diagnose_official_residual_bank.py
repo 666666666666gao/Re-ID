@@ -34,7 +34,7 @@ def main():
     receipt = json.loads(args.receipt.read_text(encoding="utf-8"))
     assert receipt["status"] == "COMPLETE"
     assert receipt["dataset"] in ("RGBNT201", "RGBNT100", "MSVR310")
-    assert receipt["method"] in ("PLAIN_V8", "SIGNAL_V8")
+    assert receipt["method"] in ("PLAIN_V8", "SIGNAL_V8", "SIGNAL_SIM_FEEDBACK")
     distance_path = Path(receipt["distance_arrays"])
     assert digest(distance_path) == receipt["distance_arrays_sha256"]
     saved = torch.load(distance_path, map_location="cpu", weights_only=False)
