@@ -9182,6 +9182,10 @@ GPU3的`SIGNAL_SIM_JOINT` seed42固定20轮／1060次更新完成，AMP溢出0�
 
 截至21:49，GPU1已从该seed44任务接续`RGBNT100 SIGNAL_SIM_JOINT` seed42训练；GPU3在RGBNT201联合SIM完成后接续§41.440的本机匹配完整Signal＋V8 `RGBNT100 SIGNAL_V8` seed42，已进入M0；GPU2执行RGBNT100 PLAIN_V27 seed43，GPU0执行RGBNT100 R2 seed47。四卡持续有任务，GPU3匹配实验与GPU1联合SIM使用不同Signal权重来源，结果需各自对其匹配基线解释。`/data`在21:38余约115.01GiB，无须删除必要checkpoint。
 
-### 41.444 RGBNT100本机匹配Signal＋V8在M0的权重键名前缀修复（2026-09-25 21:58 CST）
+### 41.444 RGBNT100本机匹配Signal＋V8在M0的权重键名前缀修复（2026-09-25 21:56 CST）
 
 §41.440的任务在**M0模型初始化**处退出，尚未做8步M0更新、正式20轮训练或评价，不能填指标。栈追踪落在`tools/official_three_dataset_model.py`原有的`assert all(key.startswith("module.") for key in state)`。实际逐键核验：作者RGBNT100发布checkpoint有217个键，**217/217带`module.`前缀**；本机匹配训练的`Signalbest.pth`也有217键，**0/217带前缀**。两种格式均为本项目正在使用的真实权重，并非假设边界。只把原RGBNT100前缀处理改为“当前217键全部带前缀时去掉前缀”；随后原有`assert set(state)==set(signal.state_dict())`和`strict=True`加载照常执行，不增加宽松加载或新容错。原作者带前缀路径行为保持相同。本机M0重试使用**新run label**，保留失败现场和日志，不覆盖失败campaign；其完成前仍无本机匹配V8成绩。
+
+### 41.445 RGBNT100本机匹配Signal＋V8重试通过M0并进入训练（2026-09-25 22:01 CST）
+
+修复提交`c8a20b3`已推送GitHub并同步四卡服务器与指定本地交接文件。新任务`logs/official_extra_seed42_RGBNT100_SIGNAL_V8_matched_local_full_retry_20260925/campaign.json`用同一原权重SHA和seed42启动；M0严格加载通过，8次真实优化器更新、AMP溢出0、冻结字段哈希不变，随后进入固定20轮正式训练。22:00四卡分别执行：GPU0 RGBNT100 R2 seed47第13轮、GPU1 RGBNT100 SIGNAL_SIM_JOINT seed42第4轮、GPU2 RGBNT100 PLAIN_V27 seed43第6轮、GPU3本机匹配完整Signal＋V8第1轮执行中，均有CUDA利用率。按已记录单轮时间和完整图库评价预算，后三项大约22:45～23:05完成，GPU0 R2约次日01:30～01:45完成；此为预计时间，均以后续固定终点和正式回执为准。当前M0不填正式指标。
