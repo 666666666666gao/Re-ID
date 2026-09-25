@@ -9429,3 +9429,15 @@ RGBNT100–`SIGNAL_V8` seed42完整训练20轮／2625次更新、0 AMP溢出；�
 正式回执`trained-model/official_extra_seed42_RGBNT100_SIGNAL_V8_bestmap_20260926/RGBNT100_SIGNAL_V8_seed42/official_metrics.json`SHA256=`f54dd0acf411b2d35a5083bc0a2ee735ef7eb269a437330de7f30f6636dc69a1`；唯一角色权重SHA256=`89fd4cd8f3142b2fa2638e06415c855be1ac9884edf78641c8e62ca604307ae3`；完整距离数组SHA256=`dfd95a297098a412626498bf4233e36a5104911e5e99b99d60bbcb3a6cf6c073`；campaign SHA256=`582328335674fe4ac41cbcdc7e374967ecf468e4ce1eff566c04453e7717e574`。只读诊断JSON SHA256=`a4b5f8e3089c82ced77383135487eebba3d67930aa1254da4c88115a30dc9eae`；相对同一Signal，1715 query的AP改善／下降／持平`714/589/412`，首位修复`11`、新增错误`8`，身份均值AP改善／下降／持平`25/22/3`。合法正负实例关系修复`8,414,496`对、翻错`2,419,290`对，这些含重复实例关系，不能作为独立query数量或新方法选点依据。
 
 至此同一新规则的`SIGNAL_V8` seed42三数据集均完整闭环，所列多指标均来自**各自同一个mAP最佳epoch权重**：RGBNT201第7/20轮fused`83.2014/87.3206/92.8230/94.7368`，相对作者Signal四项`+2.8985/+2.1531/+1.4354/+1.0766`；RGBNT100第5/20轮`86.7349/97.7259`，相对Signal`+0.4107/+0.1749`；MSVR310第13/20轮`50.6194/67.3435`，相对Signal`−2.6230/−5.0761`。选best使RGBNT201满足四项约+0.8的项目线，未解决RGBNT100增量小或MSVR310退化。三个campaign都`COMPLETE`，`/data`仍约112GiB可用，不需清理训练权重。这是**已消费官方测试集逐轮mAP选点**的探索性完整结果，不可称为独立留出验证；将来新训练须显式声明`best_official_map`/`best_map`，既有固定末轮回执继续保留原协议标签。
+
+### 41.474 纠正三份逐轮best回执中的模型状态SHA元数据（2026-09-26 05:03 CST）
+
+收尾核验发现`tools/run_official_three_dataset_roles.py`正式评价回执把`model_state_sha256`误写为训练**第20轮**状态，尽管评价函数已严格从best checkpoint重载、核对所选状态SHA后才提取距离并计算指标。三端的`training.json`中`checkpoint_state_sha256`与`training.final_state_sha256`确实不同，因此该元数据错误可直接证实。提交`f9d20b3`把回执字段改为评价阶段已有且已断言通过的`expected_state`，未改训练、选点、checkpoint、距离数组、标签或指标。对三份已完成回执只替换此一个字段；修改前的原始文件以`official_metrics.before_selected_state_hash_fix.json`保留，原诊断也保留带`before_selected_state_hash_fix`的副本；随后从原距离数组重新运行只读诊断，诊断记录的新回执SHA均一致。**§41.471/473所列旧回执与诊断SHA现指向保留的修改前副本，不再是当前主文件的SHA；所有数值结果保持原样。**
+
+| 数据集 | best epoch | 实际评估状态SHA256 | 当前主回执SHA256 | 当前主诊断SHA256 |
+| --- | ---: | --- | --- | --- |
+| RGBNT201 | 7 | `69dabdc9754e745329045dfe45bdd92d6c21dc7466c273455f1019477cd10373` | `24bfd4c68d310840f997aa7997c007abf6601f86ae43e7036d8d618f28618784` | `a86d44eae0bc1945f127aeed783226f9bd4357857a240670bfc64c86ea6a6c5b` |
+| RGBNT100 | 5 | `6c012d1b92737aa4af63099bd6976c239c247f5d9981668a6abb1d6b8f9cfaa5` | `a158bb4facfe1e6eb775d7f5ad23858271de216210832db4beabe73abd268730` | `82a84643238135e68c079c62a7c58c978708374aab297460f551ea1ceec7f77f` |
+| MSVR310 | 13 | `043ae239bd4e8b4ea8e1ef644e70e9cf586390cfb46f511b9082d0b113db533f` | `0313aedb847ed785f23b77611bb5ce0aef739d2bb239c353b390b62691d81119` | `b41482eab68a2b14d99c4e0c2607fc9006f6f20743ac27178160c672ec8f2a3b` |
+
+原文件SHA依次为RGBNT201`cf63e2071facd02afa1a2eb42893f3643ebd01712a28228d52435a3c20a63cb5`、RGBNT100`f54dd0acf411b2d35a5083bc0a2ee735ef7eb269a437330de7f30f6636dc69a1`、MSVR310`e9ba08f99ed2ac7dc2419032a4e704b3c39473fc79f3f1ada6f9a722fceb3575`，与§41.471/473先前报告一致；它们的metric数值与当前主回执一致。三个campaign仍为`COMPLETE`，旧训练轨迹、权重及评价时间均未重写。
