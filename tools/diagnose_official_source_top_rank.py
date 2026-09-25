@@ -32,8 +32,9 @@ def summarize(features, rows, environment_key):
     assert negative.any(dim=1).all()
     signal_scores = signal @ signal.T
     fused_scores = fused @ fused.T
+    bank_scores = 2 * fused_scores - signal_scores
     margins = {}
-    for name, scores in (("signal", signal_scores), ("fused", fused_scores)):
+    for name, scores in (("signal", signal_scores), ("bank", bank_scores), ("fused", fused_scores)):
         best_positive = scores.masked_fill(~positive, -torch.inf).max(dim=1).values
         best_negative = scores.masked_fill(~negative, -torch.inf).max(dim=1).values
         margins[name] = (best_positive - best_negative)[eligible]
@@ -49,6 +50,7 @@ def summarize(features, rows, environment_key):
     same_pair_candidate = (fused_scores[position, positive_index]
                            - fused_scores[position, negative_index])[eligible]
     correct = base > 0
+    bank_correct = margins["bank"] > 0
     candidate_correct = candidate > 0
     sigmoid = torch.sigmoid(-candidate / 0.01)
     return {
@@ -57,7 +59,10 @@ def summarize(features, rows, environment_key):
         "eligible_queries": int(eligible.sum()),
         "eligible_identities": len(set(identities[eligible].tolist())),
         "signal_top1_correct": int(correct.sum()),
+        "residual_bank_top1_correct": int(bank_correct.sum()),
         "fused_top1_correct": int(candidate_correct.sum()),
+        "signal_correct_residual_bank_wrong": int((correct & ~bank_correct).sum()),
+        "residual_bank_wrong_fused_correct": int((~bank_correct & candidate_correct).sum()),
         "signal_correct_fused_wrong": int((correct & ~candidate_correct).sum()),
         "signal_wrong_fused_correct": int((~correct & candidate_correct).sum()),
         "signal_correct_same_pair_fused_wrong": int((correct & (same_pair_candidate <= 0)).sum()),
@@ -71,8 +76,9 @@ def summarize(features, rows, environment_key):
         "top1_margin_sensitivity_gt_0_01": int((sigmoid > 0.01).sum()),
         "top1_margin_sensitivity_gt_0_1": int((sigmoid > 0.1).sum()),
         "signal_margin_quantiles": torch.quantile(base, torch.tensor([0., .1, .5, .9, 1.])).tolist(),
+        "residual_bank_margin_quantiles": torch.quantile(margins["bank"], torch.tensor([0., .1, .5, .9, 1.])).tolist(),
         "fused_margin_quantiles": torch.quantile(candidate, torch.tensor([0., .1, .5, .9, 1.])).tolist(),
-        "boundary": "Training identities only; author Signal has seen these identities. No official query/gallery scores or gradients are used.",
+        "boundary": "Training identities only; the frozen reference has seen these identities. No official query/gallery scores or gradients are used.",
     }
 
 
@@ -114,8 +120,10 @@ def main():
         assert _module_state_sha256(model) == receipt["training"]["initial_state_sha256"]
     features = extract(model, protocol, "train", receipt["method"])
     result = {
-        "schema": "trifusion-msvr310-source-top-rank-probe-v4",
+        "schema": "trifusion-msvr310-source-top-rank-probe-v5",
         "method": receipt["method"],
+        "frozen_reference": ("pure_module_free_cls" if receipt["method"] == "PLAIN_V8"
+                             else "complete_signal"),
         "seed": receipt["seed"],
         "completed_at": datetime.now().astimezone().isoformat(),
         "role_state": args.role_state,
