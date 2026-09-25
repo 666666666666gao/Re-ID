@@ -9193,3 +9193,7 @@ GPU3的`SIGNAL_SIM_JOINT` seed42固定20轮／1060次更新完成，AMP溢出0�
 ### 41.446 MSVR310基线正确首位关系的间隔分布只读诊断（2026-09-25 22:07 CST）
 
 从§41.439联合SIM与同种子`SIGNAL_V8`的完整正式距离数组取相同591条query，先逐项核对protocol SHA、query/gallery身份、camera、scene顺序一致。对每条query按官方scene过滤保留合法同身份正例，定义平方欧氏距离间隔`m = min_{不同身份图库} d(q,n) − min_{同身份且不同scene图库} d(q,p)`；`m>0`对应首位正确。原作者Signal首位正确428条，将其原`m`按四分位等分，每组107条；边界约0.00026、0.02181、0.04250、0.06524、0.12999。原冻结Signal＋V8在四组中分别新增**41/8/2/0**条首位错误；最小SIM联合训练的fused分别新增**39/6/1/0**条。于是原V8的51条新错误中41条、联合端的46条中39条落在原Signal正确关系的最低间隔四分位。这说明这些被翻转的原正确首位关系多数原本边际较小；也说明本次联合更新只略减少新错误，没有解决该集中现象。它不证明只要保护低间隔关系就能改善未知身份，也不能从已消费正式身份选择阈值。原始复算记录为`logs/official_extra_seed42_MSVR310_SIGNAL_SIM_JOINT_20260925/diagnostics/teacher_margin_quartiles.json`，SHA256=`d6117e7e94c26e0dc193855d100c00adef1c83a9bd3b37d302d35ae223aefc42`；内含输入回执及距离数组SHA和精确分位边界，仅用于事后机制解释。
+
+### 41.447 同定义RGBNT201间隔诊断：弱原优势易翻转，联合SIM比冻结V8更常翻转（2026-09-25 22:10 CST）
+
+独立使用RGBNT201 `SIGNAL_V8`与`SIGNAL_SIM_JOINT` seed42正式距离数组，核对相同protocol SHA及836条query/gallery的身份、camera、scene顺序；将上节合法正例改为**同身份且不同camera**，其余平方欧氏距离定义不变。原作者Signal首位正确712条，按其原正间隔分四组，各178条，精确边界约0.00078、0.08497、0.16253、0.23894、0.43797。冻结V8在四组新增首位错误为**17/0/0/0**；联合SIM fused为**24/1/0/0**，联合更新后的Signal单独输出为**43/5/0/0**。因此低原优势位置更易被翻转的现象并非MSVR310独有；但本轮联合SIM在RGBNT201把冻结V8的17条新错误增加到25条，符合§41.442的性能退化。分组只作固定正式终态事后描述，不能用这712条已消费身份的分位边界作为新方法阈值。复算记录`logs/official_extra_seed42_RGBNT201_SIGNAL_SIM_JOINT_20260925/diagnostics/teacher_margin_quartiles.json`SHA256=`50e0e9d28c1a053d204bb33ef7bb73dc843bc78996c53640961bc5e0cce0858d`，记录输入回执及距离数组SHA供核查。
