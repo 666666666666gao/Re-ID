@@ -63,6 +63,7 @@ def train(args, protocol):
     args.output_dir.mkdir(parents=True)
     model, _cfg, config, binding = initialize(args, protocol)
     receipt = dict(schema=("trifusion-official-plain-v8-training-v1" if args.method == "PLAIN_V8"
+                           else "trifusion-official-signal-v8-training-v1" if args.method == "SIGNAL_V8"
                            else "trifusion-official-r2-v27-training-v1"), dataset=args.dataset,
                    method=args.method, mode=args.mode, status="RUNNING",
                    started_at=datetime.now().astimezone().isoformat(),
@@ -72,10 +73,11 @@ def train(args, protocol):
                    initializer=binding, official_model_forwards=0)
     (args.output_dir / "training.json").write_text(json.dumps(receipt, indent=2) + "\n", encoding="utf-8")
     records = records_for(protocol, "train")
-    if args.method in ("V27", "PLAIN_V8"):
+    if args.method in ("V27", "PLAIN_V8", "SIGNAL_V8"):
         result = train_v27(model, protocol, records, config, m0=args.mode == "m0",
                            directory=args.output_dir, seed=args.seed,
-                           style=args.method == "V27")
+                           style=args.method == "V27",
+                           plain_baseline=args.method == "PLAIN_V8")
     else:
         result = train_r2(model, protocol, records, config, m0=args.mode == "m0",
                           directory=args.output_dir, seed=args.seed,
@@ -254,6 +256,7 @@ def evaluate(args, protocol):
                     query_scenes=qscenes, gallery_scenes=gscenes,
                     protocol_sha256=summary["protocol_sha256"]), path)
     result = dict(schema=("trifusion-official-plain-v8-retrieval-v1" if args.method == "PLAIN_V8"
+                          else "trifusion-official-signal-v8-retrieval-v1" if args.method == "SIGNAL_V8"
                           else "trifusion-official-r2-v27-retrieval-v1"), status="COMPLETE",
                   dataset=args.dataset, method=args.method,
                   query_count=len(qrows), gallery_count=len(grows),
@@ -275,7 +278,7 @@ def evaluate(args, protocol):
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--dataset", choices=("RGBNT201", "RGBNT100", "MSVR310"), required=True)
-    parser.add_argument("--method", choices=("R2", "V27", "R2_TOP1", "R2_UNIFORM", "PLAIN_V8"), required=True)
+    parser.add_argument("--method", choices=("R2", "V27", "R2_TOP1", "R2_UNIFORM", "PLAIN_V8", "SIGNAL_V8"), required=True)
     parser.add_argument("--mode", choices=("preflight", "m0", "train", "evaluate"), required=True)
     parser.add_argument("--protocol", type=Path, required=True)
     parser.add_argument("--signal-source", type=Path, required=True)

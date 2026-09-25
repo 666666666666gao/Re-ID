@@ -44,7 +44,7 @@ def main():
     parser.add_argument("--seed", type=int, required=True)
     parser.add_argument("--machine", choices=("old", "new"), required=True)
     parser.add_argument("--dataset", choices=DATASETS)
-    parser.add_argument("--method", choices=(*METHODS, "R2_TOP1", "R2_UNIFORM", "PLAIN_V8"))
+    parser.add_argument("--method", choices=(*METHODS, "R2_TOP1", "R2_UNIFORM", "PLAIN_V8", "SIGNAL_V8"))
     parser.add_argument("--gpu", type=int)
     parser.add_argument("--top1-pair", action="store_true")
     parser.add_argument("--skip-cell", action="append",
@@ -108,7 +108,7 @@ def main():
 
     suffix = ("_top1_pair" if args.top1_pair else
               f"_{args.dataset}_{args.method}" if args.dataset and args.method else "")
-    date_suffix = "20260925" if args.method == "PLAIN_V8" else "20260924"
+    date_suffix = "20260925" if args.method in ("PLAIN_V8", "SIGNAL_V8") else "20260924"
     campaign = ROOT / f"logs/official_extra_seed{args.seed}{suffix}_{date_suffix}"
     train_root = ROOT / f"trained-model/official_extra_seed{args.seed}{suffix}_{date_suffix}"
     assert not campaign.exists() and not train_root.exists()
@@ -177,7 +177,7 @@ def main():
         retrieval = json.loads((directory / "official_metrics.json").read_text(encoding="utf-8"))
         assert retrieval["status"] == "COMPLETE" and retrieval["seed"] == args.seed
         diagnostics = None
-        if row["method"] == "PLAIN_V8":
+        if row["method"] in ("PLAIN_V8", "SIGNAL_V8"):
             diagnostics = campaign / "diagnostics" / f"{tag}.json"
             subprocess.run([sys.executable, "-B", str(ROOT / "tools/diagnose_official_retrieval.py"),
                             "--receipt", str(directory / "official_metrics.json"),

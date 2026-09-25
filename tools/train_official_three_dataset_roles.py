@@ -35,7 +35,8 @@ def _v27_loss(parts, config):
     return common.float() + residual.float()
 
 
-def train_v27(model, protocol, records, config, *, m0, directory, seed=42, style=True):
+def train_v27(model, protocol, records, config, *, m0, directory, seed=42, style=True,
+              plain_baseline=False):
     import torch
     import numpy as np
     from tools.official_three_dataset_data import loader_for
@@ -49,8 +50,8 @@ def train_v27(model, protocol, records, config, *, m0, directory, seed=42, style
     model.train()
     initial, frozen = _module_state_sha256(model), frozen_state_sha(model)
     optimizer, scaler, criterion = _setup(model, config)
-    loader = loader_for(protocol, records, training=True,
-                        method="V27" if style else "PLAIN_V8", seed=seed)
+    method = "V27" if style else "PLAIN_V8" if plain_baseline else "SIGNAL_V8"
+    loader = loader_for(protocol, records, training=True, method=method, seed=seed)
     epochs = 1 if m0 else 20
     history, live, steps, overflow = [], set(), 0, 0
     with (directory / "training_steps.jsonl").open("x", encoding="utf-8") as log:
@@ -71,7 +72,7 @@ def train_v27(model, protocol, records, config, *, m0, directory, seed=42, style
                 optimizer.zero_grad(set_to_none=True)
                 with torch.autocast("cuda", dtype=torch.float16):
                     output = model(batch, return_aux=True)
-                    output_mapping(output, widths=OUTPUT_WIDTHS if style else PLAIN_WIDTHS)
+                    output_mapping(output, widths=PLAIN_WIDTHS if plain_baseline else OUTPUT_WIDTHS)
                     components = criterion(output, labels)
                     loss = _v27_loss(components, config)
                 scale = scaler.get_scale()
@@ -95,13 +96,13 @@ def train_v27(model, protocol, records, config, *, m0, directory, seed=42, style
             row = dict(epoch=epoch, steps=len(losses), mean_loss=float(np.mean(losses)),
                        seconds=time.perf_counter() - started)
             history.append(row)
-            print(json.dumps(dict(event="official_v27_epoch" if style else "official_plain_v8_epoch",
+            print(json.dumps(dict(event=f"official_{method.lower()}_epoch",
                                   dataset=protocol["dataset"], **row)), flush=True)
     if style:
         model.baseline.style_plan = None
     trainable = {name for name, parameter in model.named_parameters() if parameter.requires_grad}
     assert live == trainable and overflow == 0 and frozen == frozen_state_sha(model)
-    return dict(method="V27" if style else "PLAIN_V8", epochs=epochs, optimizer_steps=steps, history=history,
+    return dict(method=method, epochs=epochs, optimizer_steps=steps, history=history,
                 initial_state_sha256=initial, final_state_sha256=_module_state_sha256(model),
                 frozen_state_unchanged=True, missing_nonzero_gradients=[], overflow_events=0)
 
