@@ -8287,3 +8287,9 @@ GPU0的RGBNT100–`PLAIN_V8` seed42固定第1/2轮均完整结束，各`130/131`
 ### 41.358 RGBNT100纯基线角色端点的单次终态诊断已登记（2026-09-25 10:48 CST）
 
 10:47实查四个训练队列PID`1780627/1728531/1728532/1728452`均存活，GPU0—3均有实际CUDA利用，`/data`可用`128553492480`字节；`PLAIN_V8`仍为`TRAINING`，无正式角色指标。单次只读诊断等待器PID`1809831`及其`tail --pid=1780627`子进程PID`1809832`已启动，只有RGBNT100–`PLAIN_V8`队列实际退出且campaign与单端均`COMPLETE`，才调用现有`tools/diagnose_official_retrieval.py`对纯baseline/fused的AP、首位修复与新增错误、正负关系翻转做事后分析，输出到该campaign的`diagnostics/RGBNT100_PLAIN_V8_seed42.json`。脚本现有字段名`signal_metrics`在该端应读作**纯baseline指标**，不代表使用完整Signal权重；诊断不参与中间选点或训练更新。若队列失败，该诊断不会产出成功报告。下一次运行指标检查应按约11:30固定终点里程碑进行，避免重复轮询。
+
+### 41.359 纯baseline四卡接续与近期公开参照口径（2026-09-25 10:58 CST）
+
+10:56再次核对GPU0—3利用率分别为`100/92/100/100%`，原四个训练队列PID`1780627/1728531/1728532/1728452`仍存活；GPU0的RGBNT100–`PLAIN_V8`仍为`TRAINING`，无正式角色成绩，`/data`可用`128552968192`字节。为了避免该端点结束后GPU0空闲，新增一个仅等待其campaign真实`COMPLETE`才启动的接续进程PID`1825859`（子`tail` PID`1825860`），届时在GPU0运行RGBNT201–`PLAIN_V8` seed43的同一固定20轮入口。GPU1/2/3原有接续分别仍为RGBNT100 seed43、RGBNT201 seed42、MSVR310 seed42；所有接续均先做纯baseline正式指标复核与8步M0，再训练和完整评价。不因当前某个种子表现选择中间轮次；纯baseline三份初始化权重继续保留。
+
+2026年公开参照需按资源条件分列：AAAI 2026 [ProxyTTT原论文Table 1](https://ojs.aaai.org/index.php/AAAI/article/download/38337/42299)报告RGBNT201 `85.0/88.5/92.1/93.7`、RGBNT100 `89.3/97.7`、MSVR310 `63.6/72.1`；其**不做测试时训练**的一行分别为`82.3/84.7/90.6/92.7`、`88.4/97.9`、`62.1/71.7`。论文使用CLIP视觉编码器，并在完整方法中通过目标域样本做测试时训练；因此这两行不能与本项目固定权重、无测试时适配的正式数值混成同资源的直接因果对照。CVPR 2026 [CoT-ReID官方页面](https://openaccess.thecvf.com/content/CVPR2026/html/Gao_Chain-of-Thought_Guided_Multi-Modal_Object_Re-Identification_CVPR_2026_paper.html)明确使用额外MLLM推理文本；本轮没有取得其逐数据集数值，不填猜测值。上述文献更新不改变正在运行的训练协议，也不构成纯baseline＋角色能涨十点的证据。
