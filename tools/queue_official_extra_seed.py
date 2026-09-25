@@ -51,8 +51,14 @@ def main():
                         choices=[f"{dataset}:{method}" for dataset in DATASETS for method in METHODS])
     parser.add_argument("--overlap-previous", action="store_true")
     parser.add_argument("--after-campaign", type=Path)
+    parser.add_argument("--signal-checkpoint", type=Path)
+    parser.add_argument("--signal-sha256")
+    parser.add_argument("--run-label")
     args = parser.parse_args()
     assert args.seed >= 42
+    if args.signal_checkpoint is not None:
+        assert args.signal_sha256 and args.run_label
+        assert args.dataset == "MSVR310" and args.method == "SIGNAL_V8"
     if args.after_campaign is not None:
         while json.loads(args.after_campaign.read_text(encoding="utf-8"))["status"] != "COMPLETE":
             time.sleep(240)
@@ -106,12 +112,16 @@ def main():
     assert (source / "utils/metrics.py").is_file() and clip.is_file()
     for dataset in datasets:
         name, digest = (PLAIN_WEIGHTS if args.method == "PLAIN_V8" else WEIGHTS)[dataset]
-        assert sha256(weights / name) == digest
+        checkpoint = args.signal_checkpoint if args.signal_checkpoint is not None else weights / name
+        expected = args.signal_sha256 if args.signal_checkpoint is not None else digest
+        assert sha256(checkpoint) == expected
         assert (protocols / f"{dataset}.json").is_file()
     assert shutil.disk_usage(base).free > 3 * 1024**3
 
     suffix = ("_top1_pair" if args.top1_pair else
               f"_{args.dataset}_{args.method}" if args.dataset and args.method else "")
+    if args.run_label:
+        suffix += f"_{args.run_label}"
     date_suffix = "20260925" if args.method in ("PLAIN_V8", "SIGNAL_V8") else "20260924"
     campaign = ROOT / f"logs/official_extra_seed{args.seed}{suffix}_{date_suffix}"
     train_root = ROOT / f"trained-model/official_extra_seed{args.seed}{suffix}_{date_suffix}"
@@ -141,12 +151,14 @@ def main():
 
     def run_command(row, mode, directory):
         name, digest = (PLAIN_WEIGHTS if row["method"] == "PLAIN_V8" else WEIGHTS)[row["dataset"]]
+        checkpoint = args.signal_checkpoint if args.signal_checkpoint is not None else weights / name
+        expected = args.signal_sha256 if args.signal_checkpoint is not None else digest
         tag = f'{row["dataset"]}_{row["method"]}_seed{args.seed}'
         command = [sys.executable, "-B", str(ROOT / "tools/run_official_three_dataset_roles.py"),
                    "--dataset", row["dataset"], "--method", row["method"], "--mode", mode,
                    "--protocol", str(protocols / f'{row["dataset"]}.json'),
                    "--signal-source", str(source), "--clip-weight", str(clip),
-                   "--signal-checkpoint", str(weights / name), "--signal-sha256", digest,
+                   "--signal-checkpoint", str(checkpoint), "--signal-sha256", expected,
                    "--output-dir", str(directory), "--seed", str(args.seed)]
         if row["method"] == "PLAIN_V8":
             command.extend(["--baseline-receipt", str(ROOT / "logs/signal_plain_baseline_20260924_r2" /
