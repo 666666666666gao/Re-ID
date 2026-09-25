@@ -176,8 +176,15 @@ def main():
         run_command(row, "evaluate", directory)
         retrieval = json.loads((directory / "official_metrics.json").read_text(encoding="utf-8"))
         assert retrieval["status"] == "COMPLETE" and retrieval["seed"] == args.seed
+        diagnostics = None
+        if row["method"] == "PLAIN_V8":
+            diagnostics = campaign / "diagnostics" / f"{tag}.json"
+            subprocess.run([sys.executable, "-B", str(ROOT / "tools/diagnose_official_retrieval.py"),
+                            "--receipt", str(directory / "official_metrics.json"),
+                            "--output", str(diagnostics)], cwd=ROOT, check=True)
         set_status(row, "COMPLETE", completed_at=stamp(),
                    metrics_path=str(directory / "official_metrics.json"),
+                   diagnostics_path=str(diagnostics) if diagnostics is not None else None,
                    free_disk_bytes=shutil.disk_usage(base).free)
 
     def worker(gpu, pending):
