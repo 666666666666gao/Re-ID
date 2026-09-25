@@ -8822,3 +8822,7 @@ RGBNT201的残差银行在两种起点上均有身份判别能力，完整起点
 远端CPU轻量接口核查：同一个V27包装器在无SIM的最小冻结视觉结构下给出`use_sim=False`、`baseline_width=1536`，加入SIM后给出`use_sim=True`、`baseline_width=3072`，两条断言通过；它仅验证包装器结构参数，不等于实际RGBNT201纯权重初始化、训练前向或M0通过。完整模型构建代码显式调用CUDA，因此真实模型留待既有队列在GPU0空闲后执行预检，不另开任务占用正在训练的GPU。
 
 检查待运行六端MSVR310来源身份探针时，发现原报告只列冻结参考与fused的首位关系，无法单独说明三角色残差银行是否具有来源首位判别能力。对现有V8等能量归一化拼接，已知`相似度_fused=(相似度_reference+相似度_bank)/2`；因此在**同一次已计划的来源特征提取**中增加`相似度_bank=2×相似度_fused−相似度_reference`，按同一真实identity/scene过滤报告bank正确首位数、间隔分位数和参考／bank／fused补偿计数。报告显式区分纯CLIP参考与完整Signal参考，schema升级为v5。该改动不新增GPU前向、不触及正式query/gallery、不改变训练、权重或选点；结果尚未生成，不能提前判断哪一种参考的bank更好。来源身份已被各自冻结参考训练过，探针不是独立身份泛化证据。
+
+### 41.409 文献中不同“纯baseline”的定义核查（2026-09-25）
+
+核读[RoDI作者论文与仓库](https://github.com/lsh-ahu/RoDI/blob/main/assets/RoDI.pdf)：其RGBNT201 CLIP消融从`76.0 mAP/77.6 Rank-1`的Baseline到完整RoDI的`84.1/87.2`；但该Baseline仍以三模态CLIP token为输入，按固定模态顺序用cross-attention逐次融合，并非本项目关闭Signal SIM/GAM/LAM及全部TriFusion角色后、三个CLS直接拼接的`69.6415/71.4115`。RoDI还使用其自己的身份分类/Triplet训练、B64/K8、10轮warmup等配置。因此`76.0−69.6415`不是相同模型或同训练预算下的复现误差，也不能把RoDI的`+8.1`或Signal完整模型的约`+10`记为本项目角色模块的增益。目前与本机纯模型定义最接近的已核查公开数字仍是Signal论文Table 3的`70.3/71.8`；本机固定终点低`0.6585/0.3885`，九个纯起点角色端的封装前向与作者评价核验均通过。RoDI原论文在完整方法上还使用证据融合、模态滚动及局部去噪；这些机制不能通过仅比较其Baseline数字判断本项目哪一模块应被修改。
