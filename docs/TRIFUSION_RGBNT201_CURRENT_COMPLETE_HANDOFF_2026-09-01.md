@@ -9059,3 +9059,18 @@ RGBNT201三个完整角色mAP为CNN70.7311、Transformer69.3669、Mamba71.8380�
 ### 41.432 纯车辆基线＋V27两项固定终点已启动（2026-09-25 20:27 CST）
 
 §41.431的最小代码适配已作为提交`fe7764f`推送GitHub、远端快进并通过远端conda Python语法检查；唯一交接文档在GitHub、远端与本地指定路径SHA256一致。GPU1从20:23开始`logs/official_extra_seed42_MSVR310_PLAIN_V27_20260925/`，GPU2从20:23开始`logs/official_extra_seed42_RGBNT100_PLAIN_V27_20260925/`。两项均从已保存的对应**纯CLIP ReID基线**权重起步，seed42、预检baseline parity=`PASS`、M0通过、已经进入固定20轮训练；仅当前任务完整终点后才用原Signal作者评价器评价正式完整query/gallery，MSVR按scene、RGBNT100按camera过滤，无reranking。没有新正式指标。车辆V8和V27使用相同数据loader，这次单一主要变化是训练时耦合统计扰动；推理关闭风格扰动。GPU1 MSVR前3轮约25.9秒/轮，按当时速率约20:34～20:36可验收；GPU2 RGBNT100历史同配置约169秒/轮，从20:25训练起预计21:22～21:25评价结束，均以实际终态回执为准。20:26快照GPU0 RGBNT100–R2 seed47、GPU3 RGBNT201 PLAIN_V27 seed44也均在训练，四卡有实际进程；`/data`剩约115.6GiB。此扩展是在已消费正式结果后的探索性验证，后续不能称为未碰测试的无偏方法选择证据。
+
+### 41.433 纯基线＋V27的MSVR310 seed42正式结果（2026-09-25 20:36 CST）
+
+`logs/official_extra_seed42_MSVR310_PLAIN_V27_20260925/campaign.json`于20:34:42记录COMPLETE，纯CLIP ReID基线冻结、seed42、20轮／400次优化器更新、AMP溢出0、预检parity及M0通过、冻结权重不变，原作者完整591 query／1055 gallery、scene过滤、无reranking，独立作者指标复算一致。正式回执SHA256=`2ed849c496a447879f0a68b8bc06759fc549c83320dc6412ae2e37efc3bdff56`，纯基线权重SHA=`69c5e71b75036d7216ece3ff84450f0052f5e70dfaba46bf73f3e1d40992bb37`，角色权重SHA=`0d0d10f36f057581fabb28237c324673414e811caad8b8b4e7a138b43317212e`，距离数组SHA=`776f459f9ceeedce5f9e3ba14dff366d55627010aef45afd3aa9ab9e4d7c834b`。
+
+| MSVR310 seed42 | mAP | Rank-1 |
+| --- | ---: | ---: |
+| 独立纯CLIP ReID基线 | 50.5220 | 67.6819 |
+| PLAIN_V8 | 52.6782 | 68.6971 |
+| PLAIN_V27 fused | **52.7679** | **68.5279** |
+| PLAIN_V27相对同seed PLAIN_V8 | +0.0897 | −0.1692 |
+| PLAIN_V27相对纯基线 | +2.2459 | +0.8460 |
+| 作者发布完整Signal，另一路权重 | 53.2424 | 72.4196 |
+
+本次V27的三个完整角色：CNN49.2899/65.8206，Transformer50.3746/66.1591，Mamba52.1551/71.0660（mAP/R1）；fused mAP高于各角色但R1低于Mamba。这说明纯起点的三角色正增量仍在，**尚未观察到V27相对同seed PLAIN_V8有清楚额外收益**。与§41.430匹配本机完整Signal＋V8的MSVR负增量相比，角色增量的起点依赖继续成立；不能由此单独断言SIM、GAM或LAM哪个模块导致。只读正式诊断SHA=`6ce00e1997a27dd05bc373db049cb03cee82983c82656717497c8d31e45fd45f`，记录AP改善340／下降233／持平18、Rank-1修复40／新增35、合法正负对修复94941／翻错72004；此为已消费正式集解释，不作训练选择。MSVR纯V27 seed43/44已提前按固定合同排队，不因本次微小差值撤销或改参。
