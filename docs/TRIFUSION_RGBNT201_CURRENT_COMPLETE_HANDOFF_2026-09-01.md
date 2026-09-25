@@ -9441,3 +9441,11 @@ RGBNT100–`SIGNAL_V8` seed42完整训练20轮／2625次更新、0 AMP溢出；�
 | MSVR310 | 13 | `043ae239bd4e8b4ea8e1ef644e70e9cf586390cfb46f511b9082d0b113db533f` | `0313aedb847ed785f23b77611bb5ce0aef739d2bb239c353b390b62691d81119` | `b41482eab68a2b14d99c4e0c2607fc9006f6f20743ac27178160c672ec8f2a3b` |
 
 原文件SHA依次为RGBNT201`cf63e2071facd02afa1a2eb42893f3643ebd01712a28228d52435a3c20a63cb5`、RGBNT100`f54dd0acf411b2d35a5083bc0a2ee735ef7eb269a437330de7f30f6636dc69a1`、MSVR310`e9ba08f99ed2ac7dc2419032a4e704b3c39473fc79f3f1ada6f9a722fceb3575`，与§41.471/473先前报告一致；它们的metric数值与当前主回执一致。三个campaign仍为`COMPLETE`，旧训练轨迹、权重及评价时间均未重写。
+
+### 41.475 条件匹配残差参照的直接对照已在四卡启动（2026-09-26 05:13 CST）
+
+针对§41.456—458的单向SIM反馈固定实现，登记单变量新假设：原反馈令角色处理`a+c`却仍减旧参照`T(a)`；候选改为同一反馈条件下的`T_e(a+c)−T(a+c)`，只替换冻结尾部参照的输入，不改变Signal权重、反馈投影、三角色、14项监督、loader、seed42、20轮预算或固定融合。直接反馈`SIGNAL_SIM_FEEDBACK`是配对control，新方法名`SIGNAL_SIM_FEEDBACK_MATCHED`。两端均按**每轮官方完整图库fused mAP保存唯一best权重**，20轮照常完成并重载所选权重评价所有输出；每行结果只和同dataset、同seed、同选点规则的control比较，旧固定末轮反馈不作单变量control。新增同条件冻结tail反传路径允许梯度回到可训练`sim_to_token`投影，冻结Signal本身仍不更新；额外tail重算及运行时长要记录。
+
+代码提交`83a36ed`初版把三模态打包调用冻结tail；真实MSVR310作者权重的零反馈GPU预检发现，此路径相对原逐模态Signal参照最大绝对差`0.03125`，fused前向最大差`0.04366`，不适合作为干净起点。修正提交`fe0605b`按Signal原顺序逐模态经过同一冻结tail；同一真实GPU/AMP预检得到参照最大差`0`、零投影时matched与unmatched fused最大差`0`。CPU假模型单元检查验证零起点一致及投影非零梯度，远端pytest通过`1 passed`；真实MSVR310独立8步M0为`M0_PASS`、0溢出、冻结权重不变、可训练参数均见非零梯度。这里的`T(a+c)`需要逐模态重算，是由**本项目实测数值差异**要求的路径，不能以打包加速替代后再把结果归于参照定义。
+
+05:11四卡已分别启动MSVR310 matched/control在GPU0/1、RGBNT201 matched/control在GPU2/3，四端各8步M0均`M0_PASS`、0溢出；同数据集两端初始模型状态SHA严格相同：MSVR310为`7f54c0bd77d4dae3e802029beffcb37148a13031e7a441d005ed57f0cb23baa1`，RGBNT201为`b9a8b41c71474e25c99678f3d783252ef17efea3e8a665d3aa7f4943fe9bc660`。四端现在为`RUNNING/TRAINING`，**无完整正式指标**。另有RGBNT100 matched/control队列PID`3196185/3196187`分别等待对应MSVR310配对campaign完成，届时占用释放的GPU0/1运行相同8步M0＋20轮逐轮best；等待器每240秒检查一次，不提前占卡。六端目录统一在`logs/official_extra_seed42_{dataset}_{method}_matchedref_pair_v1_bestmap_20260926`和对应`trained-model`路径；所有权重、日志与原图留在服务器`/data/gaob/Re-ID/Trifusion`，`/data`当前约112GiB可用。完整比较前不得因中间某一轮官方值更改反馈强度、参照算法或训练长度，亦不得将工程M0通过写成性能提升。
