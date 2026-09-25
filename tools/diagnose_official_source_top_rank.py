@@ -86,7 +86,8 @@ def main():
     args = parser.parse_args()
     receipt = json.loads(args.training_receipt.read_text(encoding="utf-8"))
     assert receipt["status"] == "FIXED_EPOCH20_TRAINING_COMPLETE"
-    assert receipt["dataset"] == "MSVR310" and receipt["method"] == "R2"
+    assert receipt["dataset"] == "MSVR310"
+    assert receipt["method"] in ("R2", "PLAIN_V8", "SIGNAL_V8")
     protocol_path = Path(receipt["protocol"])
     protocol = read_protocol(protocol_path, receipt["dataset"])
     assert sha256(protocol_path) == receipt["protocol_sha256"]
@@ -113,7 +114,9 @@ def main():
         assert _module_state_sha256(model) == receipt["training"]["initial_state_sha256"]
     features = extract(model, protocol, "train", receipt["method"])
     result = {
-        "schema": "trifusion-msvr310-source-top-rank-probe-v3",
+        "schema": "trifusion-msvr310-source-top-rank-probe-v4",
+        "method": receipt["method"],
+        "seed": receipt["seed"],
         "completed_at": datetime.now().astimezone().isoformat(),
         "role_state": args.role_state,
         "commit": subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=ROOT, text=True).strip(),
