@@ -9274,3 +9274,16 @@ RGBNT201只有51/171个训练身份提供跨camera合法正例，因此1396并�
 实现提交`618f9b6`已推送GitHub并快进同步四卡服务器；本地指定交接文件与仓库/远端字节SHA核对一致。用MSVR310来源训练批64个三光谱样本、同一个seed42模型在反馈映射开/关两种状态下做无更新前向：新增`sim_to_token.weight`形状`[768,512]`且全零；原冻结Signal、fused及CNN/Transformer/Mamba三个完整分支输出均`torch.equal=True`。这是第0步数值等价，不是新机制有效性的证据。
 
 三数据集各自的`logs/official_extra_seed42_{dataset}_SIGNAL_SIM_FEEDBACK_20260925`队列已在GPU1/MSVR310、GPU2/RGBNT201、GPU3/RGBNT100启动，均完成真实8步M0并进入正式训练：三个M0均`M0_PASS`、8次优化器更新、AMP溢出0、冻结Signal状态不变、包括新增映射在内全部可训练参数都有非零梯度。GPU0继续既定RGBNT100–R2 seed47；当前四卡有任务。正式20轮和完整query/gallery尚未完成，不能填指标。按既有单轮速度估计MSVR310约23:30～23:40、RGBNT201约23:40～23:50、RGBNT100约次日00:15～00:30验收，实际以回执为准；只在估计里程碑复查，不中途按loss调方法。
+
+### 41.456 MSVR310单向SIM反馈正式负结果及实际注入量（2026-09-25 23:32 CST）
+
+`SIGNAL_SIM_FEEDBACK` MSVR310 seed42固定20轮／400次更新完成，AMP溢出0、冻结Signal状态不变、严格重载终点；正式591 query／1055 gallery、scene过滤、无reranking，独立作者评价器逐项一致。回执`trained-model/official_extra_seed42_MSVR310_SIGNAL_SIM_FEEDBACK_20260925/MSVR310_SIGNAL_SIM_FEEDBACK_seed42/official_metrics.json`SHA256=`383e6dd563fa7604c390215a91aa7e0668ad960b564a18523eae6d268a838b22`；checkpoint SHA256=`ec9531c7783c7693c45aab377052b4d6c2bf1391dd4a6281fdc90d0677dae72d`；距离数组SHA256=`e7d14c09b874c1666f9f4d1a33fb4ad3d8739f5894caf194ca0bf2dce1d8f3d2`。
+
+| MSVR310，作者发布Signal起点、同seed42 | mAP | Rank-1 |
+| --- | ---: | ---: |
+| 原冻结Signal单独输出 | **53.2424** | **72.4196** |
+| 原冻结Signal＋V8 fused | 50.7388 | 67.5127 |
+| 冻结Signal＋SIM反馈到角色CLS，fused | 47.6793 | 62.2673 |
+| 反馈端−原V8 | **−3.0595** | **−5.2454** |
+
+反馈端的CNN/Transformer/Mamba完整分支mAP/R1分别为44.3930/58.3756、47.6514/64.6362、47.6765/64.1286，均低于原Signal。此处原Signal自身严格不变，负结果来自新增角色表示/其固定融合，而非§41.439那样原SIM权重被训练坏。来源训练集固定一批64图的终态只读注入量：映射权重L2范数2.3933，加入CLS的向量平均范数1.6247，原CLS平均范数6.4839，比值平均**0.2519**、最大0.3027，加入方向与原CLS余弦均值−0.0615。诊断`logs/official_extra_seed42_MSVR310_SIGNAL_SIM_FEEDBACK_20260925/diagnostics/feedback_scale_source64.json`SHA256=`b23906ffef16fefd85897cc07c3cd13073034e13fe000dc5baf8ef0df4aee8db`。它证实反馈既不是零作用，也不是几倍于原Token的极端量级；**不能单凭幅度证明退化的唯一原因**。RGBNT201/RGBNT100同一预定方法仍在运行，绝不因MSVR这个负结果改其参数、提前停机或删掉正式结果。
