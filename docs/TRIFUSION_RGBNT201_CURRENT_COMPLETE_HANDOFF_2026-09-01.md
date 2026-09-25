@@ -9095,3 +9095,11 @@ RGBNT201三个完整角色mAP为CNN70.7311、Transformer69.3669、Mamba71.8380�
 V27−V8同seed差值分别：seed42 `+2.2461/+2.9904/+1.0766/−0.4785`，seed43 `+1.5234/+2.5120/+1.7943/+0.8373`，seed44 `+0.7191/+1.3158/+0.8373/−0.5981`（按mAP/R1/R5/R10）。前三项三次均正，Rank-10两次负；这支持RGBNT201纯基线上整套V27训练定义的部分稳定正收益，**不支持四项全面稳定改善**。V27 fused三种子均值较纯基线约`+3.7490/+3.5486/+3.8278/+1.9937`，但仍远低于作者发布完整Signal的`80.3029/85.1675/91.3876/93.6603`；不能拿完整Signal＋角色的82～83分减去这个纯基线，算成我们独立模块的十余点收益。这里三次变化描述固定基线权重条件下的角色种子，不涵盖基线重训波动；且V27在RGBNT201同时改变扰动和训练loader。
 
 seed44完整分支mAP/R1：CNN73.8082/75.4785，Transformer72.4710/74.1627，Mamba73.0406/75.1196，fused73.8384/75.2392。fused的mAP略高于CNN0.0302，但R1低于CNN0.2393。只读正式诊断SHA256=`ff8d2b199c2003c35bcaab17ec0ee6415793f39682f6361d24ee368a764e19cd`，相对纯基线AP改善401／下降158／持平277、R1修复53／新增21、合法正负对修复68038／翻错24850；不能据这些已消费正式query调参。
+
+### 41.435 最小SIM—三角色联合训练对照已实现并排队，尚无检索结果（2026-09-25 20:49 CST）
+
+围绕§41.430在MSVR310再次出现的完整Signal＋原V8负增量，登记一个**只改变优化边界**的探索性对照`SIGNAL_SIM_JOINT`。起点仍是作者发布的MSVR310完整Signal权重SHA256=`b3888e7ec7b9290abcde76915ebf9d9ce87129e759586fd7deb3e9cf7d1d807a`，原CLIP主干和Signal其他参数冻结，三角色结构、14项V8 ID／Triplet监督、batch与loader、seed42、固定20轮、等能量融合及正式scene评价协议不变；仅让`baseline.signal.SIM.modal_interactive`的12个参数张量与角色共同更新。Signal `TokenSelection`的硬Top-k没有可微Q/K选择路径且V投影未使用，故本次**没有**声称这些参数参与了训练；角色也没有反向影响TokenSelection索引或新增角色条件化交互。本对照是检验少量共享语义交互共同优化是否改善适配，不是已经形成的新方法贡献或全CLIP微调。
+
+代码提交`0c987cc`已推送GitHub并在远端快进，远端conda Python语法检查通过。训练入口为`tools/queue_official_extra_seed.py --seed 42 --machine new --dataset MSVR310 --method SIGNAL_SIM_JOINT --gpu 3`，严格等待`logs/official_extra_seed44_MSVR310_PLAIN_V27_20260925/campaign.json`为COMPLETE后才占GPU3。新checkpoint名为`joint_epoch20.pth`，除原角色状态外只保存已训练的SIM交互层；独立评价重建作者Signal、严格加载合并状态并核验终态模型SHA。冻结权重哈希现在只排除实际可训练的SIM张量；一个全冻结小模型的旧／新哈希相等。CPU无GPU烟测已通过：只解冻SIM交互层12个张量、CLIP全冻结；改变SIM后冻结字段SHA不变、模型SHA变化，内存checkpoint重新构建和严格加载后的全模型SHA与保存前一致（243个被保存张量，约46.5MB）。这些只证实入口和保存定义，**不代表M0或正式性能通过**。20:48队列仍在等待，`logs/official_extra_seed42_MSVR310_SIGNAL_SIM_JOINT_20260925/`尚未生成正式回执。
+
+此外，RGBNT100纯V27 seed44的第一次等待进程在前置MSVR seed43 campaign尚未创建时读取路径并退出，只留下`logs/launch_plain_v27_rgbnt100_seed44_20260925.log`，没有M0、训练、权重或正式成绩；在前置campaign创建后已经用`logs/launch_plain_v27_rgbnt100_seed44_20260925_requeued.log`重新排队并核对等待进程存活。这个实际调度失误与模型性能无关，不应填成失败实验。
