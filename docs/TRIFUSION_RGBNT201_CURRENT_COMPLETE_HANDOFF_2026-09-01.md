@@ -8906,3 +8906,18 @@ GPU3原V27训练PID退出是正常终态。迁移后的等待进程PID`2450403`�
 为使§41.393预登记的两种起点×seed42/43/44来源训练身份首位探针更早得到结果，实查其原GPU0等待进程PID`2300098`仍存活、**无子进程**，原`logs/msvr_source_v8_probe_20260925/campaign.json`仅为`WAITING`、`jobs=[]`，没有开始任何GPU前向或产生探针报告；GPU0的`RGBNT100–R2–seed47`仍在训练。已只将`tools/queue_msvr_source_v8_probe.py`中的前序campaign改为GPU3正在执行的`RGBNT201–PLAIN_V27–seed42`，输出目录改为`logs/msvr_source_v8_probe_gpu3_20260925/`，目标设备从0改为3；六个既定训练回执、来源关系/scene过滤、诊断脚本及方法顺序完全不变。执行代码提交`43ae1f5`已推送GitHub并在四卡仓库快进，远端AST解析通过，脚本SHA256=`70f5a6230c9a90e7868f6a052ab2a9fee2724a92799a80d41b9a7619fbf74d13`。
 
 原等待PID经过命令行与空子进程核对后收到TERM且退出，其旧回执只标`SUPERSEDED`并指向新回执，未删除原证据。新等待PID`2468298`实查存活；新campaign为`WAITING`、`gpu=3`、`jobs=[]`，以240秒间隔等待PLAIN_V27完整campaign为`COMPLETE`后才开始六端只读探针。此时PLAIN_V27已通过纯baseline逐位等价预检和M0，正在固定20轮训练；**探针仍没有结果**。GPU0/1/2的现有训练及后续匹配Signal控制队列未被抢占或改动。迁移只缩短等待，不改变科学比较或正式测试指标。
+
+### 41.419 RGBNT201–R2 seed47固定终点与正式四指标（2026-09-25 19:17 CST）
+
+四卡GPU2的`logs/official_extra_seed47_RGBNT201_R2_20260924/campaign.json`于19:16:26记录`COMPLETE`。训练回执为固定20轮、1059次优化、950次有跨camera支持的步骤、7568个历史VJP组、冻结Signal未变化、AMP overflow 0；第20轮角色权重SHA256=`69579c746a05a5af8332c201e534c46a0351449c1b6555953989235143c7e6ab`，终态模型状态SHA256=`342f7d1254bdd3162cce55c0392a8c618830e9d1b418538e2d27ba428f91fd52`。完整836 query／836 gallery、原camera过滤、无reranking的正式回执`trained-model/official_extra_seed47_RGBNT201_R2_20260924/RGBNT201_R2_seed47/official_metrics.json`为`COMPLETE`，作者上游独立指标复算一致；距离数组SHA256=`91fb43f76ad83228d080a616d520604d6160eebc72fb22439ba501827ffa96d8`。
+
+| RGBNT201固定第20轮 | mAP | Rank-1 | Rank-5 | Rank-10 |
+| --- | ---: | ---: | ---: | ---: |
+| 同回执作者完整Signal | 80.3029 | 85.1675 | 91.3876 | 93.6603 |
+| R2 seed47 fused | 80.7245 | 85.1675 | 90.5502 | 93.4211 |
+| CNN完整分支 | 80.5734 | 85.2871 | 91.2679 | 93.6603 |
+| Transformer完整分支 | 78.0534 | 81.4593 | 89.1148 | 93.0622 |
+| Mamba完整分支 | 80.4806 | 83.4928 | 90.9091 | 92.8230 |
+| R2相对Signal | +0.4216 | 0.0000 | −0.8373 | −0.2392 |
+
+这是一个**完整正式负验收结果**：仅mAP小幅上升，Rank-1持平，Rank-5/10下降；不能根据单项正值宣布四指标达标。只读`tools/diagnose_official_retrieval.py`复核正式距离与指标，报告`logs/official_r2_rgbnt201_seed47_diagnosis_20260925.json`，SHA256=`0d207ba62d5867caa9ce931a61e28648bc81117b07f990d456f993cf69b75568`。836条合法query中AP改善293、下降242、持平301；首位错误修复19、新增19，解释Rank-1净持平；合法正负关系修复20,854、破坏23,136。它是已消费正式集的事后描述，不能以失败身份、query或这次第20轮指标改方法/选点。GPU2的同公开CLIP起点完整Signal控制等待进程PID`2291474`在19:17实查仍存活，其后继是否启动须看自身campaign与进程，不把暂时GPU空闲当作队列失败。
