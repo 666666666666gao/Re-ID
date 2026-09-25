@@ -14,6 +14,7 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 
 from tools.train_msvr310_signal_oof import scene_scores
+from tools.train_rgbnt100_signal_oof import camera_scores
 
 
 ROLES = ("cnn", "transformer", "mamba")
@@ -31,7 +32,8 @@ def main():
     assert not args.output.exists()
 
     receipt = json.loads(args.receipt.read_text(encoding="utf-8"))
-    assert receipt["status"] == "COMPLETE" and receipt["dataset"] == "MSVR310"
+    assert receipt["status"] == "COMPLETE"
+    assert receipt["dataset"] in ("RGBNT201", "RGBNT100", "MSVR310")
     assert receipt["method"] in ("PLAIN_V8", "SIGNAL_V8")
     distance_path = Path(receipt["distance_arrays"])
     assert digest(distance_path) == receipt["distance_arrays_sha256"]
@@ -52,9 +54,15 @@ def main():
     assert bank_error < 1e-5
 
     def metrics(matrix):
-        values = scene_scores(matrix, saved["query_ids"], saved["gallery_ids"],
-                              saved["query_scenes"], saved["gallery_scenes"])["metrics"]
-        return {name: values[name] for name in ("mAP", "Rank-1")}
+        if receipt["dataset"] == "MSVR310":
+            values = scene_scores(matrix, saved["query_ids"], saved["gallery_ids"],
+                                  saved["query_scenes"], saved["gallery_scenes"])["metrics"]
+        else:
+            values = camera_scores(matrix, saved["query_ids"], saved["gallery_ids"],
+                                   saved["query_cameras"], saved["gallery_cameras"])["metrics"]
+        names = (("mAP", "Rank-1", "Rank-5", "Rank-10") if receipt["dataset"] == "RGBNT201"
+                 else ("mAP", "Rank-1"))
+        return {name: values[name] for name in names}
 
     for name, matrix in (("baseline_only", baseline), ("fused", fused)):
         for metric, value in metrics(matrix).items():
