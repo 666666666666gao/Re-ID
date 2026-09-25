@@ -8582,3 +8582,20 @@ RGBNT100完整Signal起点的seed42 fused变化为`−0.1864/0.0000`，seed44为
 `R2_UNIFORM`与已封存的同seed42原R2使用同一初始角色状态SHA`a367d697...0985`、同一作者Signal权重和协议、均为1060次更新；原R2正式fused `82.4387/86.7225/92.4641/94.0191`，相对固定1/1无梯度平衡的R2_UNIFORM为`+0.1907/+0.2392/+0.3589/−0.1196`。这只是单seed完整正式比较，不能写成R2控制器在三个数据集稳定有效，RGBNT100的固定1/1端仍在训练。鉴于该正式集合已多次用于比较，后续新机制不能用本表挑权重或增补有利seed。
 
 为保持四卡运行：14:55实查GPU0空闲，GPU1训练RGBNT100–R2_UNIFORM seed42、GPU2训练RGBNT201–PLAIN_V8 seed44、GPU3训练RGBNT100–SIGNAL_V8 seed43；原GPU2末端等待器PID`1935334`尚未启动RGBNT201–SIGNAL_V8 seed42，目标campaign与输出目录都不存在。终止**仅该等待器**，于GPU0用原登记的同方法、同seed、同epoch和协议启动队列PID`2236807`，14:56:28回执=`RUNNING/M0`。GPU2的PLAIN_V8 seed44继续运行且无重复队列。`/data`约余118GiB。前述六项虽已验收，18端纯/完整Signal矩阵和R2_UNIFORM三数据集尚未全部结束，不把本节部分成绩写成完整方法结论。
+
+### 41.381 RGBNT201纯baseline＋原V8第三种子完成，纯起点三种子结账（2026-09-25 15:10 CST）
+
+GPU2原队列`RGBNT201–PLAIN_V8–seed44`在15:08:50完成固定第20轮、1059次更新，15:09:46完成独立重载、完整836 query/836 gallery的作者正式评价和只读诊断，campaign=`COMPLETE`。训练回执记录冻结纯baseline状态不变、可训练参数无缺失非零梯度、AMP溢出0；正式回执`independent_upstream_metrics_equal=true`，排除同身份同camera，保留全部异身份干扰，无reranking。训练、评价和诊断三份回执与实存权重/距离的SHA链一致。该端的纯baseline前向由启动前preflight与作者原路径逐位核对，纯权重仍保留在`pertrained-model/`。
+
+| RGBNT201纯起点，同一seed44正式输出 | mAP | Rank-1 | Rank-5 | Rank-10 |
+| --- | ---: | ---: | ---: | ---: |
+| 独立纯CLIP baseline | 69.6415 | 71.4115 | 80.1435 | 85.6459 |
+| CNN完整分支 | 73.4437 | 74.6411 | 83.8517 | 89.2344 |
+| Transformer完整分支 | 70.5511 | 71.5311 | 81.8182 | 87.3206 |
+| Mamba完整分支 | 72.8642 | 74.8804 | 84.3301 | 88.5167 |
+| **PLAIN_V8 fused** | **73.1193** | **73.9234** | **83.8517** | **88.6364** |
+| fused－匹配纯baseline | **+3.4778** | **+2.5120** | **+3.7081** | **+2.9904** |
+
+纯起点三个预登记角色种子的同一checkpoint四项分别为：seed42 `70.9622/71.7703/83.1340/88.0383`，seed43 `71.6014/72.3684/81.2201/86.4833`，seed44 `73.1193/73.9234/83.8517/88.6364`。三端fused均高于各自匹配的同一纯baseline mAP/R1；只有seed44四项均超过纯baseline至少`0.8`个百分点。seed44的mAP和R1虽为本组三种子最高，但其fused mAP低于本模型CNN `0.3244`、R1低于Mamba `0.9569`；这不能证明三角色末端融合稳定胜过最强分支，也不能把作者完整Signal的约十点收益计入TriFusion。其对照作者完整Signal `80.3029/85.1675/91.3876/93.6603`属于不同冻结起点，不是纯baseline角色的配对因果差值。
+
+只读逐query诊断：相对纯baseline，AP改善/下降/持平`399/163/274`，Rank-1修复`43`条、新增错误`22`条；30个身份的平均AP改善/下降/持平`22/7/1`。21/22条新增首位错误的最近负例与query同camera；这是正式集合上的事后关联，不据此调角色或采样。正负关系修复`67,628`、翻错`20,120`为重复实例对计数，不能替代逐query mAP/R1。训练回执、正式指标、角色权重、距离和诊断SHA256依次为`db4770a0a1e884243e7bd969d351604ae53b3ad22c7ac2640b7fb6823d08be10`、`1abefcfba27c7794376d874a98404b2e17206c2d2e01d192586e68817ee38a24`、`8966e13ec9f6ed7ca0064817adb537101f7ed380c802bb46bb642dd6f8f4df51`、`457df7bd3fba6999bbdf8b87e724114162f8ea99a2568224e27ca876a5819179`、`6648dc797b9a646ad0b5b106c367ccfa0c67b4110f76b5b560b499d13e674e5c`。文件位于`trained-model/official_extra_seed44_RGBNT201_PLAIN_V8_20260925/RGBNT201_PLAIN_V8_seed44/`与对应`logs/.../diagnostics/`。截至本节，GPU0的RGBNT201–SIGNAL_V8 seed42、GPU1的RGBNT100–R2_UNIFORM seed42、GPU3的RGBNT100–SIGNAL_V8 seed43均有实存队列进程继续训练；GPU2本端已释放。三数据集SOTA及长期Goal仍未达。
