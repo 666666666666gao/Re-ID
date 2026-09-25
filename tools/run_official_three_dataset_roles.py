@@ -362,7 +362,7 @@ def evaluate(args, protocol):
                   author_checkpoint_sha256=args.signal_sha256,
                   role_checkpoint_sha256=summary["checkpoint_sha256"],
                   protocol_sha256=summary["protocol_sha256"],
-                  model_state_sha256=summary["training"]["final_state_sha256"],
+                  model_state_sha256=expected_state,
                   fixed_epoch=20 if args.checkpoint_policy == "fixed_final_epoch" else None,
                   checkpoint_policy=args.checkpoint_policy,
                   selected_epoch=summary["selected_epoch"] if args.checkpoint_policy == "best_official_map" else None,
