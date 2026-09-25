@@ -8487,3 +8487,14 @@ seed44训练/正式指标/角色权重/诊断SHA256依次为`0164b5a463aa8b53003
 静态核查现行`tools/official_three_dataset_model.py`、`tools/train_official_three_dataset_roles.py`、`tools/run_official_three_dataset_roles.py`及`modeling/trifusion/signal_preserving_v8.py`：`_build_v8_experts`传入现成Signal或纯baseline模型；`HierarchicalFrozenSignalBackbone.__init__`对整个Signal设置`requires_grad_(False)`，CLIP前向还在`torch.no_grad()`内，`train()`强制Signal保持eval。当前`SIGNAL_V8`只是**冻结作者完整Signal权重＋训练原V8角色**；`PLAIN_V8`则是**冻结独立训练纯baseline权重＋训练原V8角色**。前者的SIM输出参与检索表示，但其参数及CLIP权重不会被角色损失更新；GAM/LAM对作者checkpoint的既有影响也不是推理时一个可以直接打开/关闭的选项。现行固定20轮的14项V8角色监督、优化器仅包含`requires_grad=True`参数；训练终点只保存非`baseline.*`状态。
 
 因此用户提出的“若兼容则融合Signal创新点”在**冻结表示组合**层面已有明确实现并正在逐数据集检验；在**从同一纯起点联合训练Signal模块和三角色**层面尚未实现，不能把`SIGNAL_V8`或`PLAIN_V8`称作该实验。真正联合训练须另设匹配的初始化、Signal自身对齐监督、训练预算/优化器、基线参数checkpoint和官方评价合同，并与对应单独训练端匹配对照；单改`requires_grad`会违背当前冻结前向与权重保存约束。当前预登记九端矩阵尚在执行，不为这一未验证方向抢占训练或修改既有队列。
+
+### 41.377 CVPR 2026 CoT-ReID原论文正式数值和资源口径核对（2026-09-25 13:06 CST）
+
+对§41.375“尚未逐项核实数值”的状态作增量更新：现已直接读取[CVF公开的CoT-ReID原论文PDF](https://openaccess.thecvf.com/content/CVPR2026/papers/Gao_Chain-of-Thought_Guided_Multi-Modal_Object_Re-Identification_CVPR_2026_paper.pdf) Table 1（两车辆数据集）和Table 2（RGBNT201）。下表为**论文作者报告值，单位%**，不是本项目复现或同资源对照；其DINOv3基线也是该论文内部的基线，不能与本机独立训练的CLIP纯baseline互换。
+
+| 论文条件 | RGBNT201 mAP | R1 | R5 | R10 | RGBNT100 mAP | R1 | MSVR310 mAP | R1 |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| 作者DINOv3基线 | 77.5 | 78.9 | 85.8 | 88.9 | 87.0 | 98.5 | 68.2 | 83.3 |
+| 作者CoT-ReID，DINOv3＋文本 | **83.3** | **86.1** | **93.3** | **94.8** | **89.9** | **99.3** | **71.7** | **85.3** |
+
+原论文说明用Qwen-VL为每个模态图像生成CoT推理链和属性文本，模型使用DINOv3视觉预训练与CLIP文本编码；作者仓库列明需单独准备DINOv3、CLIP和文本标注，正文写总训练120轮。相比本项目冻结作者Signal/CLIP并训练角色20轮，预训练来源、额外文本、更新范围和预算都不同。尤其MSVR310，论文内部DINOv3基线`68.2/83.3`已远高于本机作者Signal `53.2424/72.4196`，不能把跨论文最终分数差单独归咎于我们的三角色。当前项目不达到该论文车辆数值；RGBNT201历史V27/43的`83.0005/87.5598/92.9426/94.4976`与CoT数值接近且R1较高，但同样不是等资源配对，也不能据此宣布当前全面SOTA。后续总表应保留作者报告、资源标注与本机正式结果三种口径，不拼接各自优势列。
