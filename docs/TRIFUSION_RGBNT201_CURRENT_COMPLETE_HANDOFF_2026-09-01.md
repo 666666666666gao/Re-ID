@@ -9020,3 +9020,17 @@ GPU1的`logs/signal_full_matched_20260925/RGBNT100/campaign.json`于20:05:56记�
 | MSVR310 mAP/R1 | 50.5220/67.6819 | 52.6199/70.0508 | +2.0980/+2.3689 | 53.2424/72.4196 |
 
 纯／完整本机行均从`pertrained-model/ViT-B-16.pt`出发，使用作者对应数据集配置、seed1234、RGBNT201/MSVR310 50轮、RGBNT100 30轮，选择固定末轮；纯基线关闭SIM/GAM/LAM，完整端开启。结果明确否定“只要把三个Signal模块按当前本机末轮训练加回去，RGBNT201就自动多10点”。这**不是**对作者论文结果造假、模块本身无效的证明：作者发布权重训练和选点历史未被本机完整复现；原配置逐轮按官方评价mAP保留best，而本机只看固定末轮，该选择口径确有差异但差距来源仍未单独分解。三组本机匹配控制是独立科学结果，应与作者发布权重扩展实验并列报告，不可串成一条未经控制的消融链。GPU1其后的匹配MSVR310 Signal＋V8已有等待队列，仅在本控制campaign完成后启动；当前不能提前填其正式指标。
+
+### 41.429 纯基线＋V27的RGBNT201 seed43正式终点完成（2026-09-25 20:10 CST）
+
+`logs/official_extra_seed43_RGBNT201_PLAIN_V27_20260925/campaign.json`于20:08:59记录`COMPLETE`。公开CLIP来源的独立纯基线冻结不变、seed43、原V27统计扰动及其RGBNT201 loader、固定20轮／1060次更新；M0通过、AMP溢出0、冻结权重不变、作者评价器独立复算一致。正式836 query／836 gallery，按原camera过滤，无reranking。角色权重SHA256=`43df3b801775f8cc0b4a9a9d6b372107b1f86c107dfd3f99befa3cfe7b7349c2`，终态模型SHA256=`dff1c8aae597278addc00ff50d1681eb66465a74a9399c4ada6b77835ba9fbb5`，距离数组SHA256=`3fecd9af21abe35d09b11e63e93baf1ab9d16689137feebed5899628ea197007`；正式回执`trained-model/official_extra_seed43_RGBNT201_PLAIN_V27_20260925/RGBNT201_PLAIN_V27_seed43/official_metrics.json`的SHA256=`8a0d11aba3df4d529446ced65db6c4c4b24c1dab7ec3712ef230b8e53c7d2e6f`。
+
+| RGBNT201 seed43，固定第20轮 | mAP | Rank-1 | Rank-5 | Rank-10 |
+| --- | ---: | ---: | ---: | ---: |
+| 独立纯CLIP ReID基线 | 69.6415 | 71.4115 | 80.1435 | 85.6459 |
+| PLAIN_V8 | 71.6014 | 72.3684 | 81.2201 | 86.4833 |
+| PLAIN_V27 fused | **73.1248** | **74.8804** | **83.0144** | **87.3206** |
+| PLAIN_V27 CNN／Transformer／Mamba mAP | 73.4006／71.8357／72.4494 | 75.3589／74.0431／74.6411 | 82.8947／82.5359／82.1770 | 87.4402／86.8421／87.5598 |
+| PLAIN_V27相对同seed PLAIN_V8 | +1.5234 | +2.5120 | +1.7943 | +0.8373 |
+
+这是第二个完成的PLAIN_V27正式种子；seed42见§41.423，seed44已登记等待，不提前计算三种子均值。seed43的fused mAP/R1略低于其CNN完整分支，故不能声称融合全面胜出。只读逐查询诊断`logs/official_extra_seed43_RGBNT201_PLAIN_V27_20260925/diagnostics/RGBNT201_PLAIN_V27_seed43.json`（SHA256=`4e7871774585b2cd141bd06090ce8bdf34f82e137b427b79c094859910e83986`）记录相对纯基线AP改善382／下降175／持平279条，Rank-1修复48／新增错误19，其中新增错误15条的首位负例与query同camera；合法正负对修复66509／翻错30833。这是**已消费正式集的解释性分析**，不可按这些query或identity调模型。V27与V8的训练定义同时涉及扰动和RGBNT201 loader，本差值属于整套V27条件的效果，不单独归于扰动。20:09快照中GPU1的本机匹配完整Signal＋V8 MSVR310已通过M0并开始训练，GPU2的RGBNT201匹配完整Signal＋V8仍在训练；两者没有正式终态。
