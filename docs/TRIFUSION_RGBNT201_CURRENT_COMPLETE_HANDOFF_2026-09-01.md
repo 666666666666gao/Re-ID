@@ -9449,3 +9449,19 @@ RGBNT100–`SIGNAL_V8` seed42完整训练20轮／2625次更新、0 AMP溢出；�
 代码提交`83a36ed`初版把三模态打包调用冻结tail；真实MSVR310作者权重的零反馈GPU预检发现，此路径相对原逐模态Signal参照最大绝对差`0.03125`，fused前向最大差`0.04366`，不适合作为干净起点。修正提交`fe0605b`按Signal原顺序逐模态经过同一冻结tail；同一真实GPU/AMP预检得到参照最大差`0`、零投影时matched与unmatched fused最大差`0`。CPU假模型单元检查验证零起点一致及投影非零梯度，远端pytest通过`1 passed`；真实MSVR310独立8步M0为`M0_PASS`、0溢出、冻结权重不变、可训练参数均见非零梯度。这里的`T(a+c)`需要逐模态重算，是由**本项目实测数值差异**要求的路径，不能以打包加速替代后再把结果归于参照定义。
 
 05:11四卡已分别启动MSVR310 matched/control在GPU0/1、RGBNT201 matched/control在GPU2/3，四端各8步M0均`M0_PASS`、0溢出；同数据集两端初始模型状态SHA严格相同：MSVR310为`7f54c0bd77d4dae3e802029beffcb37148a13031e7a441d005ed57f0cb23baa1`，RGBNT201为`b9a8b41c71474e25c99678f3d783252ef17efea3e8a665d3aa7f4943fe9bc660`。四端现在为`RUNNING/TRAINING`，**无完整正式指标**。另有RGBNT100 matched/control队列PID`3196185/3196187`分别等待对应MSVR310配对campaign完成，届时占用释放的GPU0/1运行相同8步M0＋20轮逐轮best；等待器每240秒检查一次，不提前占卡。六端目录统一在`logs/official_extra_seed42_{dataset}_{method}_matchedref_pair_v1_bestmap_20260926`和对应`trained-model`路径；所有权重、日志与原图留在服务器`/data/gaob/Re-ID/Trifusion`，`/data`当前约112GiB可用。完整比较前不得因中间某一轮官方值更改反馈强度、参照算法或训练长度，亦不得将工程M0通过写成性能提升。
+
+### 41.476 MSVR310条件匹配参照完整配对：mAP回升但远未保住强Signal（2026-09-26 05:42 CST）
+
+MSVR310直接反馈control与条件匹配candidate均用同一作者发布Signal、同seed42、同原loader、20轮和每轮完整591 query／1055 gallery的scene过滤按**fused mAP**选best；两端初始模型状态SHA与首步loss`4.4465203285`完全一致，M0均通过。20轮及严格重载、独立作者评价和只读诊断现均完成，两个campaign均`COMPLETE`。control选第**1轮**、candidate选第**13轮**，所以表内各行的mAP/R1来自各自所选的**同一权重**，没有跨轮拼列。
+
+| MSVR310，seed42逐轮best | mAP | Rank-1 |
+| --- | ---: | ---: |
+| 冻结原Signal，两端完全相同 | **53.2424** | **72.4196** |
+| 直接SIM反馈，control fused | 48.5371 | 66.6667 |
+| 条件匹配参照，candidate fused | **49.8118** | 66.4975 |
+| candidate－control | **+1.2747** | **−0.1692** |
+| candidate－Signal | **−3.4306** | **−5.9222** |
+
+candidate的CNN/Transformer/Mamba完整分支分别为`49.0624/67.8511`、`45.5895/62.9442`、`49.5643/67.1743`（mAP/R1）；control分别为`51.3527/70.0508`、`44.8195/63.2826`、`50.2511/69.2047`。因此不能说三个角色都因匹配参照变好。相对Signal的只读诊断，control的query AP改善／下降`139/425`、首位修复／新增错误`9/43`；candidate为`241/335`、`18/53`。candidate修复更多AP与首位旧错，却也制造更多新首位错，整体R1仍低。两者相比说明参照定义确实影响mAP，但**单独修正参照不充分**；又因各自按正式集选到不同epoch，这仍是用户指定选点协议下的探索性比较，不是未经选择的因果泛化估计。
+
+当前主回执／单best权重／距离数组／只读诊断SHA256：control依次为`930cb0479eafda57df48b6d9cd1522a027ce81e2314ad5dad73cdfa3abcdb1a9`、`a308f50c87bd52ba815bd23ebcfbd1d19f1692030eeede79247e782d8ce0861a`、`59be41c3a1486c6f15718bc3d4d31943dbe3f1d006fd68eaf0b102d0ce9c3f5b`、`51eae6aa9192af7c46e610f0503d26703438fbc01118289aead96806fb54ea45`；candidate依次为`2eb1623ac03e1a41dde575b5184da77e612f66354c78a079579dfcf31b9eb252`、`1b70cf4531b37dd8c80c4a174990159a699005ca83d976fcfec16cc63c0ae35e`、`83fb07dd639fa8eccfb81aabe7fc735b5af44046b5921211d4c24a029df3769d`、`792ad5a3bd13ee10a6914564db7027708fd8164c96212f5ec0a6e425ee8fd0ca`。RGBNT201配对仍在训练；RGBNT100配对已按等待条件在释放的GPU0/1启动，尚无终态。
