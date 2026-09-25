@@ -2,7 +2,7 @@
 
 ## 0. 一页结论
 
-当前执行入口：§41.352（2026-09-25）。三数据集先前已验收的39份正式种子指标在§41.333；四卡前列排名干预的六端配对中五端已完成，RGBNT100–R2_TOP1仍训练，终态诊断未执行。用户同意该批结束后继续新方法或新种子，并要求利用空闲GPU；下一项为R2角色级梯度调权的固定1/1直接对照，见§41.352。旧单卡已停止，RGBNT100–R2 seed46没有可核验终态或新指标。Goal ACTIVE/UNMET。
+当前执行入口：§41.353（2026-09-25）。三数据集先前已验收的39份正式种子指标在§41.333；四卡前列排名干预六端配对中五端已完成，RGBNT100–R2_TOP1仍训练，终态诊断未执行。另三张卡已启动R2固定1/1对照；用户还要求用三份已训练的纯CLIP baseline权重开展独立完整消融，权重已核对并保留，见§41.353。旧单卡已停止，RGBNT100–R2 seed46没有可核验终态或新指标。Goal ACTIVE/UNMET。
 
 当前MSVR310训练及此前两个车辆数据集比较使用原V8平行三角色结构：冻结Signal/CLIP，共享block8之前语义和tail9/10/11参数，三个角色分别运行共享tail；CNN处理局部语义Patch高频，Transformer处理全局CLS/Patch关系，Mamba处理空间与位置级三模态扫描。各角色相对冻结reference形成1536D残差，三角色4608D银行拼接3072D Signal得到7680D fused；完整单角色输出为4608D Signal+角色残差。三条路径均执行，当前没有Router/HFER、V23模态MLP或V24原型。两项原V8车辆训练比较均已完成：RGBNT100内部完整比较支持三角色增益，MSVR310原V8比较未超过Signal；后续跨scene Smooth-AP的完整内部Q1 fused已比Signal高0.2761pp，但仍未通过原晋级条件。下面V1—V8条目保留历史经过，不代表当前又启用了旧模块。
 
@@ -8245,3 +8245,11 @@ fused相对同回执Signal为`+2.5330/+1.5550/+0.7177/+0.5981`个百分点；mAP
 下一项锁定单因素对照`R2_UNIFORM`：保留原R2三角色、对应作者Signal初始化、训练数据与采样、当前坐标历史实例、跨环境Smooth-AP、历史候选完整VJP、其他13项监督、AMP/AdamW及固定第20轮，只将角色参数块上排名/辅助梯度组合由有支持时的EMA自适应系数改为固定`1/1`。其余训练分类头保持原路径，推理向量及原Signal完整query/gallery评价不变。代码复用`combine(..., apply=False)`的既有未调权原始总梯度路径；源记录中RGBNT100的R2系数有`6776/6776`个有支持角色步骤触及`1.6/0.4`上限，内部Q1的R2控制器增益仅`+0.0533 mAP`，因此检验调权是否真正有用是有证据的，不预设固定1/1一定更好。此对照不是原创算法，也不是把其他失败版本重命名。
 
 计划先将seed42三个数据集的完整`R2_UNIFORM`端点分配到空闲GPU1/2/3；已有本批同seed42 R2端点可作匹配control，均按固定20轮、原作者Signal官方协议评价。当前仅在本地准备入口并通过3个文件的Python AST检查，**尚未部署或启动R2_UNIFORM**。部署前须确保正在训练的GPU0进程已加载原方法代码，且后续正式评价入口行为不变；新端点先通过真实M0，再开始完整训练。所有正式结果和失败端均保留原回执，不根据已消费官方成绩挑权重或修改本轮方法定义。
+
+### 41.353 四卡新对照已运行；纯baseline权重保留与独立消融边界（2026-09-25 10:20 CST）
+
+`R2_UNIFORM`入口以最小改动加入`train_official_three_dataset_roles.py`、`run_official_three_dataset_roles.py`和`queue_official_extra_seed.py`，提交`c570ee70c7dbca4a5f35bfafa816dd0d9c9d8f8b`已推送GitHub并由bundle快进四卡机；原GPU0 `R2_TOP1`训练进程在同步前已独立载入原方法，后续正式评价代码没有行为变更。三项新任务均以seed42启动：GPU1 RGBNT100队列PID`1728531`，GPU2 RGBNT201 PID`1728532`，GPU3 MSVR310 PID`1728452`。队列分别写入`logs/official_extra_seed42_<DATASET>_R2_UNIFORM_20260924/`与对应`trained-model/`目录；三项均已通过自身M0并进入`TRAINING`，GPU0/1/2/3实测显存约`7.57/7.39/7.50/7.52GiB`、利用率`100/91/100/100%`。**M0和GPU占用不是检索结果**；每端须到固定第20轮、完整正式评价和权重/协议SHA核验后才能比较。`/data`仍约余`121GiB`。
+
+用户新增要求：以**去掉TriFusion全部角色及Signal SIM/GAM/LAM后独立训练的纯CLIP三模态CLS baseline**为初始化，开展“纯baseline＋我们三角色”的完整训练/评价；可以在明确兼容和可归因时另行融合Signal模块，不为制造十点增益直接拿完整Signal＋角色减弱基线。§41.328已有三份纯baseline正式结果与终点权重，本次重新计算实存SHA256依次为RGBNT201 `789e5e14aacd74ad122aad701389eb216ca5b4fda92687e27351a513023b4407`、RGBNT100 `299a28bfb3e3180eeae0736cf8638cd162525dce0f2192a940b62b97f6e67dcd`、MSVR310 `69c5e71b75036d7216ece3ff84450f0052f5e70dfaba46bf73f3e1d40992bb37`，各约345MB。原件仍在`trained-model/signal_plain_baseline_20260924_r2/<DATASET>/Signalbest.pth`；在同一`/data`文件系统内增加`pertrained-model/RGBNT201_PlainBaseline_50.pth`、`RGBNT100_PlainBaseline_30.pth`、`MSVR310_PlainBaseline_50.pth`三个硬链接，链接数均为2，避免复制约1GB，并防止只清理原路径即丢失初始化。三份均纳入保留清单，不参与非赢家角色权重清理。
+
+兼容性已确认到结构层面：作者纯baseline checkpoint无`SIM`参数，作者前向在`USE_A=False`时返回三模态CLS拼接1536D；当前V8冻结基座却强制要求SIM并构造3072D前缀，所以**不能直接把纯权重塞进现有完整Signal入口，也不能以关闭完整Signal checkpoint的开关冒充纯baseline**。下一步只为这条干净消融增加一个1536D direct-only冻结入口，保留相同CLIP block8分叉和三角色残差，再先核对纯baseline完整正式输出与§41.328一致，随后固定训练预算和官方query/gallery协议进行完整训练。此纯baseline路线与正在运行的完整Signal扩展路线分别报告，现阶段没有“纯baseline＋角色”的检索成绩。
