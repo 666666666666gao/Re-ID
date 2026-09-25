@@ -9055,3 +9055,7 @@ RGBNT201三个完整角色mAP为CNN70.7311、Transformer69.3669、Mamba71.8380�
 ### 41.431 PLAIN_V27车辆入口做最小适配以验证纯起点条件（2026-09-25 20:23 CST）
 
 完成§41.430后GPU1空闲，下一项单一假设是：MSVR310中原V27在完整Signal起点为负，换成已经独立训练的纯CLIP基线后，是否保留原V8的正增量。现有入口`queue_official_extra_seed.py`、`run_official_three_dataset_roles.py`均显式把`PLAIN_V27`限制于RGBNT201；`SourceStyleMSVRBackbone`则固定`use_sim=True`，而纯基线没有SIM。实际代码已证实这会在MSVR310纯起点构造时失败，因此只删除两处数据集限制，并令车辆风格包装器像已经运行的RGBNT201版本一样使用`use_sim=hasattr(signal, "SIM")`。不修改扰动公式、loader、训练目标、评价掩码、轮次和checkpoint规则；M0先验证本机同纯基线parity与数值，随后固定第20轮完整正式评价。PLAIN_V27与PLAIN_V8仍是“风格扰动＋对应loader”的训练定义比较，不能只把差值归于风格本身。该适配无新增正式结果，待队列回执填入。
+
+### 41.432 纯车辆基线＋V27两项固定终点已启动（2026-09-25 20:27 CST）
+
+§41.431的最小代码适配已作为提交`fe7764f`推送GitHub、远端快进并通过远端conda Python语法检查；唯一交接文档在GitHub、远端与本地指定路径SHA256一致。GPU1从20:23开始`logs/official_extra_seed42_MSVR310_PLAIN_V27_20260925/`，GPU2从20:23开始`logs/official_extra_seed42_RGBNT100_PLAIN_V27_20260925/`。两项均从已保存的对应**纯CLIP ReID基线**权重起步，seed42、预检baseline parity=`PASS`、M0通过、已经进入固定20轮训练；仅当前任务完整终点后才用原Signal作者评价器评价正式完整query/gallery，MSVR按scene、RGBNT100按camera过滤，无reranking。没有新正式指标。车辆V8和V27使用相同数据loader，这次单一主要变化是训练时耦合统计扰动；推理关闭风格扰动。GPU1 MSVR前3轮约25.9秒/轮，按当时速率约20:34～20:36可验收；GPU2 RGBNT100历史同配置约169秒/轮，从20:25训练起预计21:22～21:25评价结束，均以实际终态回执为准。20:26快照GPU0 RGBNT100–R2 seed47、GPU3 RGBNT201 PLAIN_V27 seed44也均在训练，四卡有实际进程；`/data`剩约115.6GiB。此扩展是在已消费正式结果后的探索性验证，后续不能称为未碰测试的无偏方法选择证据。
