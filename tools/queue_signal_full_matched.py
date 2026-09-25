@@ -38,20 +38,24 @@ def main():
     parser.add_argument('--gpu', type=int, required=True)
     parser.add_argument('--dataset', choices=tuple(EPOCHS), required=True)
     parser.add_argument('--after-campaign', type=Path, required=True)
+    parser.add_argument('--selection', choices=('fixed', 'best_map'), default='fixed')
     args = parser.parse_args()
     assert ROOT == Path('/data/gaob/Re-ID/Trifusion')
     assert args.gpu in (0, 1, 2, 3)
     assert CLIP.is_file() and SOURCE.is_dir() and DATASET_ROOT.is_dir()
-    log_dir = LOG_ROOT / args.dataset
-    assert not log_dir.exists() and not (OUTPUT_ROOT / args.dataset).exists()
+    log_root = LOG_ROOT if args.selection == 'fixed' else ROOT / 'logs/signal_full_best_map_20260926'
+    output_root = OUTPUT_ROOT if args.selection == 'fixed' else ROOT / 'trained-model/signal_full_best_map_20260926'
+    log_dir = log_root / args.dataset
+    assert not log_dir.exists() and not (output_root / args.dataset).exists()
     log_dir.mkdir(parents=True)
-    OUTPUT_ROOT.mkdir(parents=True, exist_ok=True)
+    output_root.mkdir(parents=True, exist_ok=True)
     datasets = (args.dataset,)
     status_path = log_dir / 'campaign.json'
     status = {'schema': 'signal-full-matched-campaign-v1', 'status': 'WAITING',
               'created_at': stamp(), 'gpu': args.gpu, 'seed': 1234,
               'dataset_order': datasets, 'public_clip': str(CLIP),
               'source': str(SOURCE), 'after_campaign': str(args.after_campaign),
+              'selection': args.selection,
               'jobs': []}
 
     def save():
@@ -65,7 +69,7 @@ def main():
                    'DATASETS.ROOT_DIR', str(DATASET_ROOT),
                    'SOLVER.SEED', '1234',
                    'SOLVER.MAX_EPOCHS', str(1 if m0 else epochs),
-                   'SOLVER.EVAL_PERIOD', str(epochs),
+                   'SOLVER.EVAL_PERIOD', str(1 if args.selection == 'best_map' and not m0 else epochs),
                    'SOLVER.CHECKPOINT_PERIOD', '1000',
                    'OUTPUT_DIR', str(directory), 'ckpt_save_path', dataset]
         env = os.environ.copy()
@@ -90,15 +94,15 @@ def main():
         epochs = EPOCHS[dataset]
         job = {'dataset': dataset, 'epochs': epochs, 'seed': 1234,
                'status': 'M0', 'started_at': stamp(),
-               'checkpoint_policy': 'fixed_final_epoch'}
+               'checkpoint_policy': 'official_mAP_each_epoch' if args.selection == 'best_map' else 'fixed_final_epoch'}
         status['jobs'].append(job)
         save()
         run_train(dataset, epochs, log_dir / 'm0', log_dir / 'm0.log', m0=True)
         job['status'] = 'TRAINING'
         job['m0_at'] = stamp()
         save()
-        run_train(dataset, epochs, OUTPUT_ROOT, log_dir / 'train.log', m0=False)
-        checkpoint = OUTPUT_ROOT / dataset / 'Signalbest.pth'
+        run_train(dataset, epochs, output_root, log_dir / 'train.log', m0=False)
+        checkpoint = output_root / dataset / 'Signalbest.pth'
         assert checkpoint.is_file()
         job['status'] = 'EVALUATING'
         job['trained_at'] = stamp()
