@@ -9152,3 +9152,7 @@ GPU3的`SIGNAL_SIM_JOINT`固定20轮／400次更新于21:04完成，AMP溢出0�
 联合CNN/Transformer/Mamba完整分支mAP/R1分别为52.5253/68.3587、51.2244/65.9898、51.9497/68.0203，fused高于三者。**共同优化确实改善了冻结外挂V8的角色结果，却把原Signal自身输出从53.2424/72.4196降到51.1839/66.6667，最终仍低于原Signal。**这项单次完整正式比较支持“无保留约束的SIM共同更新不足以同时获得新增量与保住基线”这一限定结论，不足以否定所有联合训练或断言是SIM唯一失分因素。新方法推理时的`baseline_only`是**更新后的SIM**，不能误标为原冻结作者Signal。
 
 只读跨回执诊断`logs/official_extra_seed42_MSVR310_SIGNAL_SIM_JOINT_20260925/diagnostics/frozen_vs_joint.json`SHA256=`fb8642fc1e6312616ec97cfbb1d95d8d88f3f5e36cc4ff94375954a973e7cf84`，先核对两份正式回执同protocol SHA及query/gallery身份、camera、scene顺序一致，再比较591条合法query：原Signal→更新后Signal AP改善276／下降300，R1修复22／新增56；原Signal→联合fused AP改善314／下降258，R1修复25／新增46；冻结V8 fused→联合fused AP改善367／下降204，R1修复22／新增14。诊断只用于解释已消费正式集，不用于修改后两数据集已登记方法或权重。
+
+### 41.440 补齐RGBNT100本机匹配完整Signal＋原V8的控制格（2026-09-25 21:24 CST）
+
+§41.426—430已完成三个数据集的本机同公开CLIP起点、同seed1234及固定终点的完整Signal权重；其上原V8角色扩展已经覆盖RGBNT201和MSVR310，**RGBNT100尚缺**。为使三数据集“本机匹配完整Signal→冻结加原V8”的比较完整，仅把`tools/queue_official_extra_seed.py`对显式本机Signal权重的白名单加入RGBNT100；不改变训练器、模型、损失、学习率、固定20轮或评价器。新增实验预定为RGBNT100 `SIGNAL_V8` seed42，初始化于本机匹配第30轮完整Signal权重`trained-model/signal_full_matched_20260925/RGBNT100/Signalbest.pth`（SHA256=`33746bc098cbd5c01d168dfe9cfd7858cce44e31956950e4b4a2e4e91ba04609`），固定第20轮评价1715 query／8575 gallery、camera过滤，报告mAP/Rank-1；它排在GPU3正在执行的RGBNT201 `SIGNAL_SIM_JOINT`之后，不抢卡。匹配完整Signal基线为83.6082/96.0933，纯CLIP ReID基线为83.7042/95.0437；作者发布Signal是另一权重，86.3242/97.5510。此格完成前不填任何V8数值，也不将不同权重来源的差拼成同一受控消融。
