@@ -35,17 +35,18 @@ def finite_training_log(path):
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('--gpu', type=int, required=True)
-    parser.add_argument('--dataset', choices=tuple(EPOCHS))
+    parser.add_argument('--dataset', choices=tuple(EPOCHS), required=True)
     args = parser.parse_args()
     assert ROOT == Path('/data/gaob/Re-ID/Trifusion')
     assert args.gpu in (0, 1, 2, 3)
     assert CLIP.is_file() and SOURCE.is_dir() and DATASET_ROOT.is_dir()
     assert shutil.disk_usage('/data').free > 3 * 1024**3
-    assert not LOG_ROOT.exists() and not OUTPUT_ROOT.exists()
-    LOG_ROOT.mkdir(parents=True)
-    OUTPUT_ROOT.mkdir(parents=True)
-    datasets = (args.dataset,) if args.dataset else tuple(EPOCHS)
-    status_path = LOG_ROOT / 'campaign.json'
+    log_dir = LOG_ROOT / args.dataset
+    assert not log_dir.exists() and not (OUTPUT_ROOT / args.dataset).exists()
+    log_dir.mkdir(parents=True)
+    OUTPUT_ROOT.mkdir(parents=True, exist_ok=True)
+    datasets = (args.dataset,)
+    status_path = log_dir / 'campaign.json'
     status = {'schema': 'signal-full-matched-campaign-v1', 'status': 'RUNNING',
               'started_at': stamp(), 'gpu': args.gpu, 'seed': 1234,
               'dataset_order': datasets, 'public_clip': str(CLIP),
@@ -75,8 +76,6 @@ def main():
     save()
     for dataset in datasets:
         epochs = EPOCHS[dataset]
-        log_dir = LOG_ROOT / dataset
-        log_dir.mkdir()
         job = {'dataset': dataset, 'epochs': epochs, 'seed': 1234,
                'status': 'M0', 'started_at': stamp(),
                'checkpoint_policy': 'fixed_final_epoch'}
