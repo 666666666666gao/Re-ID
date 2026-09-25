@@ -8678,3 +8678,7 @@ seed43同一回执的完整分支为CNN`85.1069/96.9679`、Transformer`86.6916/9
 ### 41.393 MSVR310纯／完整起点V8来源首位诊断预登记（2026-09-25）
 
 为分清§41.392的来源总损失下降是否同时伴随来源跨scene首位关系改善，扩展已在§41.345用于R2的只读`tools/diagnose_official_source_top_rank.py`，允许加载已封存的`PLAIN_V8`和`SIGNAL_V8`角色终点，不改变其同一训练身份、scene过滤、全量异身份负例、固定首位间隔或作者指标交叉核对。预先固定两种起点×seed42/43/44共六个第20轮checkpoint，分别报告基线／fused首位正确数、修复数、翻错数与相同正负对间隔变化；只读取MSVR310的1032条**训练**记录，不读取正式query/gallery，也不做优化器更新或生成新权重。Signal作者权重已见这些训练身份，因此该诊断仅解释来源拟合，不能称为身份外验证。新`tools/queue_msvr_source_v8_probe.py`登记在GPU0的`RGBNT100–R2–seed47`真实campaign `COMPLETE`后执行六端，等待间隔240秒；当前仅代码准备，**尚无V8来源诊断结果**，不能提前用其决定正式测试阈值或宣称找到退化因果。
+
+### 41.394 GPU0来源V8探针队列已核对并接续等待（2026-09-25 16:13 CST）
+
+六份预登记的`PLAIN_V8/SIGNAL_V8×seed42/43/44`训练回执均实查为`FIXED_EPOCH20_TRAINING_COMPLETE`且角色checkpoint存在；GPU0前序`RGBNT100–R2–seed47`实查仍为`RUNNING/TRAINING`。新探针远端`py_compile`及CLI导入通过、项目代码和本地／远端交接文档已同步；使用`setsid`建立的持久等待进程PID`2300098`实存，回执`logs/msvr_source_v8_probe_20260925/campaign.json`为`WAITING`、`jobs=[]`，**没有启动GPU前向或产生诊断分数**。前序真实完成后才运行六个只读全来源训练身份探针；训练与正式指标均不因此修改。执行代码提交`c1532ee256b93893051ed5da5e1e9834fa81987a`，结果将留在同一远端日志目录并在终态后逐项核验。
