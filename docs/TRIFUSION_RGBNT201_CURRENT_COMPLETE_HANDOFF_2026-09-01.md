@@ -8855,3 +8855,15 @@ RGBNT201的残差银行在两种起点上均有身份判别能力，完整起点
 核读[ICPL-ReID作者论文](https://aihuazheng.github.io/publications/pdf/2025/2025-ICPL-ReID-Identity-Conditional_Prompt_Learning_for_Multi-Spectral_Object_Re-Identification.pdf) Table V：其三光谱CLIP视觉基线在RGBNT201为`71.0/71.5/81.3/86.4`，RGBNT100为`85.3/96.6`，MSVR310为`49.1/65.5`；对应完整ICPL为`75.1/77.4/84.2/87.9`、`87.0/98.6`、`56.9/77.7`。这与本机纯基线RGBNT201`69.6415/71.4115`处于相近量级，但并非同协议复现：ICPL采用其自己的三流CLIP结构、16身份×4实例的B64训练、120轮及10轮warmup，并引入可训练文本提示和视觉适配。尤其其RGBNT100纯基线mAP比本机高、MSVR310纯基线反而更低，不能挑其中一个差值归因于本项目角色是否有效。该参照进一步限定了“纯baseline低”这一讨论：必须逐项说明基线定义、训练预算与额外预训练资源，不能为制造较大消融增益而换分母。
 
 核读[ProxyTTT作者论文](https://ojs.aaai.org/index.php/AAAI/article/view/38337/42299) Table 1，还需将**测试时适配**单列：其不做TTT为RGBNT201`82.3/84.7/90.6/92.7`、RGBNT100`88.4/97.9`、MSVR310`62.1/71.7`；做TTT后分别为`85.0/88.5/92.1/93.7`、`89.3/97.7`、`63.6/72.1`。TTT使用目标域数据进行选择性适配，与本项目固定模型、无测试时更新的正式回执存在资源/过程差异；其中RGBNT100的Rank-1并未随TTT上升。论文数值是作者报告值，不能作为本机同训练预算的因果对照，也不应把测试时适配后的结果与不适配方法混成无条件同协议SOTA目标。
+
+### 41.413 MSVR310–R2 seed57固定终点与正式验收（2026-09-25 18:50 CST）
+
+四卡GPU3原队列`logs/official_extra_seed57_MSVR310_R2_20260924/campaign.json`已于18:47:29记录`COMPLETE`；训练回执为`FIXED_EPOCH20_TRAINING_COMPLETE`、400次优化、冻结状态未变、AMP overflow 0，第20轮权重SHA256=`08843b54732e43c6ec0b00e36d5b705dc672dc7b6e934d43245ab11401f03e34`，最终模型状态SHA256=`2c215b8cf5dda535720747839ac47e077b52c8d16c3c102babe66bdda0372b4a`。完整591 query／1055 gallery、同身份同scene排除的正式回执`trained-model/official_extra_seed57_MSVR310_R2_20260924/MSVR310_R2_seed57/official_metrics.json`为`COMPLETE`，作者上游独立评价完全一致，距离数组SHA256=`cb86b18280e0ea702a914f0fdea6051380afe6a111aa225f66dbbcd59ab0904c`。
+
+| MSVR310正式固定第20轮 | mAP | Rank-1 |
+| --- | ---: | ---: |
+| 同回执作者完整Signal | 53.2424 | 72.4196 |
+| R2 seed57 fused | 52.6158 | 69.5431 |
+| R2相对Signal | −0.6266 | −2.8765 |
+
+这只是新增的**一个完整训练种子结果**，不能用中段loss代替，也不能把它与内部Q1相减。该训练链已结束，原PID`2374695`不再运行是正常终态，不需要重启。18:50实查后继`MSVR310–V27–seed54`等待PID`2386074`仍存活；它按已登记的240秒等待间隔读取前序campaign，未见自身campaign目录时不能记为开始训练。数据盘此时约117GiB可用，权重和距离回执保留供复核。
