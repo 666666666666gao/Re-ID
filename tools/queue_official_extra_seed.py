@@ -50,8 +50,12 @@ def main():
     parser.add_argument("--skip-cell", action="append",
                         choices=[f"{dataset}:{method}" for dataset in DATASETS for method in METHODS])
     parser.add_argument("--overlap-previous", action="store_true")
+    parser.add_argument("--after-campaign", type=Path)
     args = parser.parse_args()
     assert args.seed >= 42
+    if args.after_campaign is not None:
+        while json.loads(args.after_campaign.read_text(encoding="utf-8"))["status"] != "COMPLETE":
+            time.sleep(240)
     if args.top1_pair:
         assert args.machine == "new" and args.dataset is None and args.method is None
         assert args.gpu is None and not args.skip_cell and not args.overlap_previous
