@@ -8656,3 +8656,9 @@ seed43同一回执的完整分支为CNN`85.1069/96.9679`、Transformer`86.6916/9
 ### 41.388 MSVR310–R2 seed56通过M0并实训；四卡任务持续（2026-09-25 15:46 CST）
 
 15:46:20按预计窗口只读复核：新`MSVR310–R2–seed56`的8步M0回执为`M0_PASS`，正式campaign=`RUNNING/TRAINING`且训练起于15:44:05；首轮20步已完成、耗时65.63秒，**尚无固定第20轮权重或正式检索结果**。同一时刻GPU0/1/2分别仍运行`RGBNT100–R2–seed47`、`RGBNT100–R2_UNIFORM–seed42`、`RGBNT201–R2–seed47`，四个任务均为`RUNNING/TRAINING`，M0回执各为`M0_PASS`；`nvidia-smi`实查四张3090分别有约`7542/7544/7504/7336MiB`的CUDA训练进程。`/data`余`117.27GiB`，暂不触发权重清理。参考同方法MSVR310–R2 seed54完整20轮耗时`5305.78`秒（末轮291.38秒，不能据seed56首轮65.63秒线性外推），seed56训练粗估到17:12左右、评价稍后完成；仅作下一次检查窗口，不据训练loss预测mAP/R1。GPU1/2长任务仍按先前约19:20—19:45窗口核对，GPU0任务更晚；实际状态以各自进程、正式回执和实存权重为准。
+
+### 41.389 同公开CLIP起点完整Signal控制端：入口准备，尚未训练（2026-09-25）
+
+§41.386中纯baseline与作者发布完整Signal的约`10.66/2.62/2.72`点mAP距离仍含训练来源和终点选择差异。为形成更干净的Signal自身消融链，准备一个**单独的控制实验**：对RGBNT201、MSVR310、RGBNT100分别从同一公开`ViT-B-16.pt`初始化，使用与§41.324—41.328纯baseline相同的作者数据目录、发布YAML、seed1234、50/50/30轮、原增强及优化器，只启用发布配置中的SIM/GAM/LAM，并都仅在固定末轮评价/保存；三项正式指标按作者原query/gallery和camera/scene过滤重算。这样比较的是相同训练起点与日程下“完整Signal训练配置对纯baseline训练配置”的整体效果，**仍不能把差值分配给SIM、GAM、LAM三个单模块，也不是TriFusion的独立增益**。
+
+新增`tools/train_signal_full_author.py`仅以原`train.py`运行发布训练路径；RGBNT100沿用已经有真实Gram零行列式/AMP NaN证据并通过数值验证的`signal_gram_volume_stable`替换该局部计算，其他两个数据集不使用这项修复。`tools/evaluate_signal_plain_baseline.py`增加显式`--full-signal`分支，纯baseline默认路径保持原样；新`tools/queue_signal_full_matched.py`在每个数据集先跑不读取正式测试的1轮工程检查，再从公开CLIP重新初始化做全程训练及独立重载评价，日志和权重均留四卡项目的`logs/signal_full_matched_20260925/`与`trained-model/signal_full_matched_20260925/`。当前只是代码准备，**尚无M0、训练或正式成绩**；不能在已有GPU任务未退出前抢占，后续先核对空闲GPU、入口实际数值及磁盘，再启动该受控端。作者发布Signal权重与纯baseline三份原权重均保留；已消费正式结果不用于选完整Signal的中间轮次。
