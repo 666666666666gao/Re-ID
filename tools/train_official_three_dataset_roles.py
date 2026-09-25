@@ -50,7 +50,7 @@ def train_v27(model, protocol, records, config, *, m0, directory, seed=42, style
     model.train()
     initial, frozen = _module_state_sha256(model), frozen_state_sha(model)
     optimizer, scaler, criterion = _setup(model, config)
-    method = "V27" if style else "PLAIN_V8" if plain_baseline else "SIGNAL_V8"
+    method = "PLAIN_V27" if style and plain_baseline else "V27" if style else "PLAIN_V8" if plain_baseline else "SIGNAL_V8"
     loader = loader_for(protocol, records, training=True, method=method, seed=seed)
     epochs = 1 if m0 else 20
     history, live, steps, overflow = [], set(), 0, 0

@@ -19,7 +19,7 @@ from tools.train_official_three_dataset_roles import PLAIN_WIDTHS
 
 
 def configure_style(model, dataset, method):
-    if method == "V27":
+    if method in ("V27", "PLAIN_V27"):
         if dataset == "RGBNT201":
             from trifusion.source_style_v27 import SourceStyleFrozenSignalBackbone
             wrapper = SourceStyleFrozenSignalBackbone
@@ -48,7 +48,7 @@ def initialize(args, protocol):
 
     model, cfg, config, binding = build_model(protocol, args.signal_source, args.clip_weight,
                                                args.signal_checkpoint, args.signal_sha256, seed=args.seed,
-                                               plain_baseline=args.method == "PLAIN_V8")
+                                               plain_baseline=args.method in ("PLAIN_V8", "PLAIN_V27"))
     before = _module_state_sha256(model)
     model = configure_style(model, args.dataset, args.method)
     assert _module_state_sha256(model) == before
@@ -62,7 +62,7 @@ def train(args, protocol):
     assert not args.output_dir.exists()
     args.output_dir.mkdir(parents=True)
     model, _cfg, config, binding = initialize(args, protocol)
-    receipt = dict(schema=("trifusion-official-plain-v8-training-v1" if args.method == "PLAIN_V8"
+    receipt = dict(schema=("trifusion-official-plain-v8-training-v1" if args.method in ("PLAIN_V8", "PLAIN_V27")
                            else "trifusion-official-signal-v8-training-v1" if args.method == "SIGNAL_V8"
                            else "trifusion-official-r2-v27-training-v1"), dataset=args.dataset,
                    method=args.method, mode=args.mode, status="RUNNING",
@@ -73,11 +73,11 @@ def train(args, protocol):
                    initializer=binding, official_model_forwards=0)
     (args.output_dir / "training.json").write_text(json.dumps(receipt, indent=2) + "\n", encoding="utf-8")
     records = records_for(protocol, "train")
-    if args.method in ("V27", "PLAIN_V8", "SIGNAL_V8"):
+    if args.method in ("V27", "PLAIN_V27", "PLAIN_V8", "SIGNAL_V8"):
         result = train_v27(model, protocol, records, config, m0=args.mode == "m0",
                            directory=args.output_dir, seed=args.seed,
-                           style=args.method == "V27",
-                           plain_baseline=args.method == "PLAIN_V8")
+                           style=args.method in ("V27", "PLAIN_V27"),
+                           plain_baseline=args.method in ("PLAIN_V8", "PLAIN_V27"))
     else:
         result = train_r2(model, protocol, records, config, m0=args.mode == "m0",
                           directory=args.output_dir, seed=args.seed,
@@ -109,9 +109,9 @@ def extract(model, protocol, split, method, *, baseline_only=False):
 
     records = records_for(protocol, split)
     model.eval()
-    if method == "V27":
+    if method in ("V27", "PLAIN_V27"):
         model.baseline.style_plan = None
-    widths = PLAIN_WIDTHS if method == "PLAIN_V8" else OUTPUT_WIDTHS
+    widths = PLAIN_WIDTHS if method in ("PLAIN_V8", "PLAIN_V27") else OUTPUT_WIDTHS
     parts = {name: [] for name in (("baseline_only",) if baseline_only else widths)}
     context = torch.inference_mode() if protocol["dataset"] == "RGBNT201" else torch.no_grad()
     with context:
@@ -125,7 +125,7 @@ def extract(model, protocol, split, method, *, baseline_only=False):
                 values = {"baseline_only": model(batch, retrieval_output="baseline_only")}
             else:
                 output = (model(batch, return_aux=True)
-                          if protocol["dataset"] == "RGBNT201" or method == "PLAIN_V8"
+                          if protocol["dataset"] == "RGBNT201" or method in ("PLAIN_V8", "PLAIN_V27")
                           else exact_signal_forward(model, batch))
                 values = output_mapping(output, widths=widths)
             for name, value in values.items():
@@ -155,7 +155,7 @@ def preflight_plain(args, protocol):
     from tools.train_msvr310_signal_oof import scene_scores
     from tools.train_rgbnt100_signal_oof import camera_scores
 
-    assert args.method == "PLAIN_V8" and args.baseline_receipt is not None
+    assert args.method in ("PLAIN_V8", "PLAIN_V27") and args.baseline_receipt is not None
     model, cfg, _config, binding = initialize(args, protocol)
     model.eval()
     assert model.baseline.baseline_width == 1536
@@ -234,7 +234,7 @@ def evaluate(args, protocol):
     qscenes, gscenes = [np.asarray([row["scene"] for row in rows]) for rows in (qrows, grows)]
     scores, arrays = {}, {}
     os.chdir(args.output_dir)
-    for name in (PLAIN_WIDTHS if args.method == "PLAIN_V8" else OUTPUT_WIDTHS):
+    for name in (PLAIN_WIDTHS if args.method in ("PLAIN_V8", "PLAIN_V27") else OUTPUT_WIDTHS):
         distances = distance_matrix(query[name], gallery[name])
         assert distances.shape == (len(qrows), len(grows))
         if args.dataset == "MSVR310":
@@ -255,7 +255,7 @@ def evaluate(args, protocol):
                     query_cameras=qcameras, gallery_cameras=gcameras,
                     query_scenes=qscenes, gallery_scenes=gscenes,
                     protocol_sha256=summary["protocol_sha256"]), path)
-    result = dict(schema=("trifusion-official-plain-v8-retrieval-v1" if args.method == "PLAIN_V8"
+    result = dict(schema=("trifusion-official-plain-v8-retrieval-v1" if args.method in ("PLAIN_V8", "PLAIN_V27")
                           else "trifusion-official-signal-v8-retrieval-v1" if args.method == "SIGNAL_V8"
                           else "trifusion-official-r2-v27-retrieval-v1"), status="COMPLETE",
                   dataset=args.dataset, method=args.method,
@@ -278,7 +278,7 @@ def evaluate(args, protocol):
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--dataset", choices=("RGBNT201", "RGBNT100", "MSVR310"), required=True)
-    parser.add_argument("--method", choices=("R2", "V27", "R2_TOP1", "R2_UNIFORM", "PLAIN_V8", "SIGNAL_V8"), required=True)
+    parser.add_argument("--method", choices=("R2", "V27", "R2_TOP1", "R2_UNIFORM", "PLAIN_V8", "PLAIN_V27", "SIGNAL_V8"), required=True)
     parser.add_argument("--mode", choices=("preflight", "m0", "train", "evaluate"), required=True)
     parser.add_argument("--protocol", type=Path, required=True)
     parser.add_argument("--signal-source", type=Path, required=True)
@@ -289,6 +289,8 @@ def main():
     parser.add_argument("--output-dir", type=Path, required=True)
     parser.add_argument("--seed", type=int, default=42)
     args = parser.parse_args()
+    if args.method == "PLAIN_V27":
+        assert args.dataset == "RGBNT201"
     for name in ("protocol", "signal_source", "clip_weight", "signal_checkpoint", "output_dir"):
         setattr(args, name, getattr(args, name).resolve())
     protocol = read_protocol(args.protocol, args.dataset)

@@ -44,7 +44,7 @@ def main():
     parser.add_argument("--seed", type=int, required=True)
     parser.add_argument("--machine", choices=("old", "new"), required=True)
     parser.add_argument("--dataset", choices=DATASETS)
-    parser.add_argument("--method", choices=(*METHODS, "R2_TOP1", "R2_UNIFORM", "PLAIN_V8", "SIGNAL_V8"))
+    parser.add_argument("--method", choices=(*METHODS, "R2_TOP1", "R2_UNIFORM", "PLAIN_V8", "PLAIN_V27", "SIGNAL_V8"))
     parser.add_argument("--gpu", type=int)
     parser.add_argument("--top1-pair", action="store_true")
     parser.add_argument("--skip-cell", action="append",
@@ -56,6 +56,8 @@ def main():
     parser.add_argument("--run-label")
     args = parser.parse_args()
     assert args.seed >= 42
+    if args.method == "PLAIN_V27":
+        assert args.dataset == "RGBNT201"
     if args.signal_checkpoint is not None:
         assert args.signal_sha256 and args.run_label
         assert args.dataset == "MSVR310" and args.method == "SIGNAL_V8"
@@ -111,7 +113,7 @@ def main():
 
     assert (source / "utils/metrics.py").is_file() and clip.is_file()
     for dataset in datasets:
-        name, digest = (PLAIN_WEIGHTS if args.method == "PLAIN_V8" else WEIGHTS)[dataset]
+        name, digest = (PLAIN_WEIGHTS if args.method in ("PLAIN_V8", "PLAIN_V27") else WEIGHTS)[dataset]
         checkpoint = args.signal_checkpoint if args.signal_checkpoint is not None else weights / name
         expected = args.signal_sha256 if args.signal_checkpoint is not None else digest
         assert sha256(checkpoint) == expected
@@ -122,7 +124,7 @@ def main():
               f"_{args.dataset}_{args.method}" if args.dataset and args.method else "")
     if args.run_label:
         suffix += f"_{args.run_label}"
-    date_suffix = "20260925" if args.method in ("PLAIN_V8", "SIGNAL_V8") else "20260924"
+    date_suffix = "20260925" if args.method in ("PLAIN_V8", "PLAIN_V27", "SIGNAL_V8") else "20260924"
     campaign = ROOT / f"logs/official_extra_seed{args.seed}{suffix}_{date_suffix}"
     train_root = ROOT / f"trained-model/official_extra_seed{args.seed}{suffix}_{date_suffix}"
     assert not campaign.exists() and not train_root.exists()
@@ -150,7 +152,7 @@ def main():
             save()
 
     def run_command(row, mode, directory):
-        name, digest = (PLAIN_WEIGHTS if row["method"] == "PLAIN_V8" else WEIGHTS)[row["dataset"]]
+        name, digest = (PLAIN_WEIGHTS if row["method"] in ("PLAIN_V8", "PLAIN_V27") else WEIGHTS)[row["dataset"]]
         checkpoint = args.signal_checkpoint if args.signal_checkpoint is not None else weights / name
         expected = args.signal_sha256 if args.signal_checkpoint is not None else digest
         tag = f'{row["dataset"]}_{row["method"]}_seed{args.seed}'
@@ -160,7 +162,7 @@ def main():
                    "--signal-source", str(source), "--clip-weight", str(clip),
                    "--signal-checkpoint", str(checkpoint), "--signal-sha256", expected,
                    "--output-dir", str(directory), "--seed", str(args.seed)]
-        if row["method"] == "PLAIN_V8":
+        if row["method"] in ("PLAIN_V8", "PLAIN_V27"):
             command.extend(["--baseline-receipt", str(ROOT / "logs/signal_plain_baseline_20260924_r2" /
                                                         row["dataset"] / "metrics.json")])
         env = os.environ.copy()
@@ -172,7 +174,7 @@ def main():
     def run_job(row):
         assert shutil.disk_usage(base).free > 3 * 1024**3
         tag = f'{row["dataset"]}_{row["method"]}_seed{args.seed}'
-        if row["method"] == "PLAIN_V8":
+        if row["method"] in ("PLAIN_V8", "PLAIN_V27"):
             preflight = campaign / "preflight" / tag
             set_status(row, "PREFLIGHT", started_at=stamp())
             run_command(row, "preflight", preflight)
@@ -193,7 +195,7 @@ def main():
         retrieval = json.loads((directory / "official_metrics.json").read_text(encoding="utf-8"))
         assert retrieval["status"] == "COMPLETE" and retrieval["seed"] == args.seed
         diagnostics = None
-        if row["method"] in ("PLAIN_V8", "SIGNAL_V8"):
+        if row["method"] in ("PLAIN_V8", "PLAIN_V27", "SIGNAL_V8"):
             diagnostics = campaign / "diagnostics" / f"{tag}.json"
             subprocess.run([sys.executable, "-B", str(ROOT / "tools/diagnose_official_retrieval.py"),
                             "--receipt", str(directory / "official_metrics.json"),

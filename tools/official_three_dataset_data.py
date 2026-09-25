@@ -27,7 +27,7 @@ def loader_for(protocol, records, *, training, method, seed=42):
         return existing_loader(records, training, seed=seed)
     assert name == "RGBNT201"
     if training:
-        if method == "V27":
+        if method in ("V27", "PLAIN_V27"):
             from trifusion.aligned_data import build_cross_camera_train_loader
             factory = build_cross_camera_train_loader
         else:
