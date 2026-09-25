@@ -8454,3 +8454,20 @@ seed44的三个完整角色CNN `47.9838/66.1591`、Transformer `47.2151/63.4518`
 与§41.369的**另一条**纯baseline＋V8三种子均值`53.2091/69.4303`相比，本条结果清楚表明“纯弱起点可学到正增量”不能外推为“作者完整Signal强起点也受益”。两条链的冻结权重、特征维度和既有训练经历不同，不能把两条fused均值相减归因于某个单独的Signal模块。纯baseline较低并非入口漏算：三份纯权重从公开CLIP独立训练且同批前向/正式指标均有独立核验；完整Signal则包含作者已经学到的SIM/GAM/LAM相关能力。三份纯baseline权重继续作为预训练权重保留；论文消融使用纯起点配对增量，性能主张使用完整Signal起点配对增量，不混用分母。
 
 GPU3于MSVR端结束后自动接续`RGBNT201–SIGNAL_V8–seed43`，12:46:20 M0结束并进入`TRAINING`；其他三张卡继续既定纯baseline/固定权重对照队列，未依据正式分数改训练。`/data`可用`127820124160`字节。RGBNT201和RGBNT100的`PLAIN_V8`/`SIGNAL_V8`未完成端点仍须按预登记完整报告。
+
+### 41.373 RGBNT100纯baseline＋原V8 seed44正式结果（2026-09-25 12:53 CST）
+
+预登记的`RGBNT100–PLAIN_V8–seed44`于12:52:14完成第20轮固定终点、2625次更新、独立重载的作者正式query/gallery评价及只读诊断。M0与纯baseline逐位前向预检通过，冻结状态不变、可训练参数无缺失非零梯度、AMP溢出0；1715条query/8575条gallery，同身份同camera过滤，无reranking。下表只列此前约定的两项主指标，四项原始回执仍完整保存。
+
+| RGBNT100，同seed44/同纯baseline权重 | mAP | Rank-1 |
+| --- | ---: | ---: |
+| 纯baseline | 83.7042 | 95.0437 |
+| CNN完整分支 | 82.8454 | 95.6851 |
+| Transformer完整分支 | 83.1856 | 94.2274 |
+| Mamba完整分支 | 82.4682 | 95.8601 |
+| **fused** | **83.8656** | **96.2099** |
+| fused－纯baseline | **+0.1614** | **+1.1662** |
+
+fused虽高于同模型三个完整角色分支，但mAP仅比匹配纯baseline高`0.1614`，没有达到该数据集两项均至少`+0.8`的项目线；作者**另一路完整Signal** `86.3242/97.5510`仍更高，跨起点差距不能归因于一个模块。逐query AP改善/下降/持平`648/726/341`，Rank-1修复`32`、新增错误`12`；50身份平均AP改善/下降/持平`17/30/3`。因此首位匹配净改善并不表示大部分query或身份的AP也改善。正负关系修复`8,204,648`、翻错`3,871,311`含大量重复实例对，不能当作独立query证据。此前同方法seed42为`84.0387/95.6851`，两次结果均应报告；预登记seed43尚待GPU1当前任务结束，不能把seed42的较高mAP与seed44的较高Rank-1拼成一个checkpoint。
+
+seed44训练/正式指标/角色权重/诊断SHA256依次为`0164b5a463aa8b530035062a20e91c42fb278e7a7cc3d40ed4e574e2cbfc2156`、`c8de846e583d56ef554824864440d21a610318295c11469946f3d827fe62b386`、`fc2aa319c6fa04b247df258f7853fa375359d1fa15c5161afd5e2ef16de3ad25`、`c0fb7bc14c649f92b6f9a7dfb2281004c16914ce19a2d5aa034aef46e244e828`，保存在`trained-model/official_extra_seed44_RGBNT100_PLAIN_V8_20260925/RGBNT100_PLAIN_V8_seed44/`与`logs/official_extra_seed44_RGBNT100_PLAIN_V8_20260925/diagnostics/RGBNT100_PLAIN_V8_seed44.json`。GPU0在本端完整结束后自动接续`RGBNT100–SIGNAL_V8–seed42`且当前为`M0`；GPU3的`RGBNT201–SIGNAL_V8–seed43`处于训练，GPU1/2仍执行前序固定对照。三份纯baseline预训练权重继续保留。
