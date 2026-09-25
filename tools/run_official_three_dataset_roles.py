@@ -39,6 +39,20 @@ def checkpoint_names(model, method):
              name.startswith("baseline.signal.SIM.modal_interactive."))}
 
 
+def save_role_checkpoint(path, model, args, receipt, state_sha256):
+    import torch
+
+    names = checkpoint_names(model, args.method)
+    state = {name: tensor.detach().cpu() for name, tensor in model.state_dict().items()
+             if name in names}
+    torch.save(dict(schema=("trifusion-official-sim-joint-checkpoint-v1"
+                            if args.method in SIM_JOINT_METHODS
+                            else "trifusion-official-role-checkpoint-v1"), dataset=args.dataset,
+                    method=args.method, protocol_sha256=receipt["protocol_sha256"],
+                    author_checkpoint_sha256=args.signal_sha256,
+                    final_state_sha256=state_sha256, role_state_dict=state), path)
+
+
 def read_protocol(path, dataset):
     protocol = json.loads(path.read_text(encoding="utf-8"))
     assert protocol["schema"] == "trifusion-official-three-dataset-protocol-v1"
@@ -74,8 +88,8 @@ def initialize(args, protocol):
 
 
 def train(args, protocol):
-    import torch
     from tools.train_official_three_dataset_roles import train_r2, train_v27
+    from tools.run_signal_preserving_v5 import _module_state_sha256
 
     assert not args.output_dir.exists()
     args.output_dir.mkdir(parents=True)
@@ -90,9 +104,30 @@ def train(args, protocol):
                    commit=subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=ROOT, text=True).strip(),
                    protocol=str(args.protocol), protocol_sha256=sha256(args.protocol),
                    source_count=protocol["counts"]["train"], seed=args.seed,
-                   initializer=binding, official_model_forwards=0)
+                   initializer=binding, official_model_forwards=0,
+                   checkpoint_policy=args.checkpoint_policy)
     (args.output_dir / "training.json").write_text(json.dumps(receipt, indent=2) + "\n", encoding="utf-8")
     records = records_for(protocol, "train")
+    best = dict(mAP=-1.0, epoch=None, checkpoint_state_sha256=None)
+
+    def select_epoch(model, epoch):
+        metrics = official_fused_metrics(model, protocol, args.method, args.signal_source)
+        row = dict(epoch=epoch, metrics=metrics)
+        with (args.output_dir / "epoch_official_metrics.jsonl").open("a", encoding="utf-8") as handle:
+            handle.write(json.dumps(row) + "\n")
+        if metrics["mAP"] >= best["mAP"]:
+            state_sha256 = _module_state_sha256(model)
+            path = args.output_dir / ("joint_best_map.pth" if args.method in SIM_JOINT_METHODS
+                                      else "roles_best_map.pth")
+            save_role_checkpoint(path, model, args, receipt, state_sha256)
+            best.update(mAP=metrics["mAP"], epoch=epoch,
+                        checkpoint_state_sha256=state_sha256, checkpoint=str(path))
+        print(json.dumps(dict(event="official_epoch_selection", dataset=args.dataset,
+                              method=args.method, **row, best_epoch=best["epoch"],
+                              best_mAP=best["mAP"])), flush=True)
+
+    on_epoch_end = (select_epoch if args.mode == "train" and
+                    args.checkpoint_policy == "best_official_map" else None)
     if args.method in ("V27", "PLAIN_V27", "PLAIN_V8", "SIGNAL_V8", *SIM_JOINT_METHODS, "SIGNAL_SIM_FEEDBACK"):
         result = train_v27(model, protocol, records, config, m0=args.mode == "m0",
                            directory=args.output_dir, seed=args.seed,
@@ -100,26 +135,29 @@ def train(args, protocol):
                            plain_baseline=args.method in ("PLAIN_V8", "PLAIN_V27"),
                            joint_sim=args.method in SIM_JOINT_METHODS,
                            joint_sim_low_lr=args.method == "SIGNAL_SIM_JOINT_LOWLR",
-                           sim_feedback=args.method == "SIGNAL_SIM_FEEDBACK")
+                           sim_feedback=args.method == "SIGNAL_SIM_FEEDBACK",
+                           on_epoch_end=on_epoch_end)
     else:
         result = train_r2(model, protocol, records, config, m0=args.mode == "m0",
                           directory=args.output_dir, seed=args.seed,
                           top1=args.method == "R2_TOP1",
-                          balanced=args.method != "R2_UNIFORM")
+                          balanced=args.method != "R2_UNIFORM",
+                          on_epoch_end=on_epoch_end)
     receipt["training"] = result
-    receipt["status"] = "M0_PASS" if args.mode == "m0" else "FIXED_EPOCH20_TRAINING_COMPLETE"
+    receipt["status"] = ("M0_PASS" if args.mode == "m0" else
+                         "BEST_OFFICIAL_MAP_TRAINING_COMPLETE" if on_epoch_end else
+                         "FIXED_EPOCH20_TRAINING_COMPLETE")
     if args.mode == "train":
-        names = checkpoint_names(model, args.method)
-        state = {name: tensor.detach().cpu() for name, tensor in model.state_dict().items()
-                 if name in names}
-        path = args.output_dir / ("joint_epoch20.pth" if args.method in SIM_JOINT_METHODS
-                                  else "roles_epoch20.pth")
-        torch.save(dict(schema=("trifusion-official-sim-joint-checkpoint-v1"
-                                if args.method in SIM_JOINT_METHODS
-                                else "trifusion-official-role-checkpoint-v1"), dataset=args.dataset,
-                        method=args.method, protocol_sha256=receipt["protocol_sha256"],
-                        author_checkpoint_sha256=args.signal_sha256,
-                        final_state_sha256=result["final_state_sha256"], role_state_dict=state), path)
+        if on_epoch_end:
+            assert best["epoch"] is not None
+            path = Path(best["checkpoint"])
+            receipt["selected_epoch"] = best["epoch"]
+            receipt["selected_mAP"] = best["mAP"]
+            receipt["checkpoint_state_sha256"] = best["checkpoint_state_sha256"]
+        else:
+            path = args.output_dir / ("joint_epoch20.pth" if args.method in SIM_JOINT_METHODS
+                                      else "roles_epoch20.pth")
+            save_role_checkpoint(path, model, args, receipt, result["final_state_sha256"])
         receipt["checkpoint"] = str(path)
         receipt["checkpoint_sha256"] = sha256(path)
     receipt["completed_at"] = datetime.now().astimezone().isoformat()
@@ -172,6 +210,29 @@ def distance_matrix(query, gallery):
     result.addmm_(query, gallery.T, beta=1, alpha=-2)
     assert torch.isfinite(result).all()
     return result
+
+
+def official_fused_metrics(model, protocol, method, signal_source):
+    import numpy as np
+    from utils import metrics as upstream_metrics
+
+    assert Path(upstream_metrics.__file__).resolve() == (
+        signal_source / "utils" / "metrics.py").resolve()
+    query = extract(model, protocol, "query", method)["fused"]
+    gallery = extract(model, protocol, "gallery", method)["fused"]
+    qrows, grows = protocol["records"]["query"], protocol["records"]["gallery"]
+    qids, gids = [np.asarray([row["identity"] for row in rows]) for rows in (qrows, grows)]
+    qcameras, gcameras = [np.asarray([row["camera"] for row in rows]) for rows in (qrows, grows)]
+    distances = distance_matrix(query, gallery).numpy()
+    if protocol["dataset"] == "MSVR310":
+        qscenes, gscenes = [np.asarray([row["scene"] for row in rows]) for rows in (qrows, grows)]
+        cmc, mean_ap = upstream_metrics.eval_func_msrv(
+            distances, qids, gids, qcameras, gcameras, qscenes, gscenes)
+    else:
+        cmc, mean_ap = upstream_metrics.eval_func(
+            distances, qids, gids, qcameras, gcameras)
+    return {"mAP": 100 * float(mean_ap), "Rank-1": 100 * float(cmc[0]),
+            "Rank-5": 100 * float(cmc[4]), "Rank-10": 100 * float(cmc[9])}
 
 
 def preflight_plain(args, protocol):
@@ -230,7 +291,9 @@ def evaluate(args, protocol):
 
     summary_path = args.output_dir / "training.json"
     summary = json.loads(summary_path.read_text(encoding="utf-8"))
-    assert summary["status"] == "FIXED_EPOCH20_TRAINING_COMPLETE"
+    assert summary["status"] == ("BEST_OFFICIAL_MAP_TRAINING_COMPLETE"
+                                  if args.checkpoint_policy == "best_official_map"
+                                  else "FIXED_EPOCH20_TRAINING_COMPLETE")
     assert summary["dataset"] == args.dataset and summary["method"] == args.method
     assert summary["seed"] == args.seed
     assert summary["protocol_sha256"] == sha256(args.protocol)
@@ -254,10 +317,14 @@ def evaluate(args, protocol):
     assert set(payload["role_state_dict"]) == checkpoint_names(model, args.method)
     state.update(payload["role_state_dict"])
     model.load_state_dict(state, strict=True)
-    assert _module_state_sha256(model) == summary["training"]["final_state_sha256"]
+    expected_state = (summary["checkpoint_state_sha256"]
+                      if args.checkpoint_policy == "best_official_map"
+                      else summary["training"]["final_state_sha256"])
+    assert payload["final_state_sha256"] == expected_state
+    assert _module_state_sha256(model) == expected_state
     query = extract(model, protocol, "query", args.method)
     gallery = extract(model, protocol, "gallery", args.method)
-    assert _module_state_sha256(model) == summary["training"]["final_state_sha256"]
+    assert _module_state_sha256(model) == expected_state
     qrows, grows = protocol["records"]["query"], protocol["records"]["gallery"]
     qids, gids = [np.asarray([row["identity"] for row in rows]) for rows in (qrows, grows)]
     qcameras, gcameras = [np.asarray([row["camera"] for row in rows]) for rows in (qrows, grows)]
@@ -296,7 +363,10 @@ def evaluate(args, protocol):
                   role_checkpoint_sha256=summary["checkpoint_sha256"],
                   protocol_sha256=summary["protocol_sha256"],
                   model_state_sha256=summary["training"]["final_state_sha256"],
-                  fixed_epoch=20, seed=args.seed, reranking=False,
+                  fixed_epoch=20 if args.checkpoint_policy == "fixed_final_epoch" else None,
+                  checkpoint_policy=args.checkpoint_policy,
+                  selected_epoch=summary["selected_epoch"] if args.checkpoint_policy == "best_official_map" else None,
+                  seed=args.seed, reranking=False,
                   filter=protocol["filter"], outputs=scores,
                   distance_arrays=str(path), distance_arrays_sha256=sha256(path),
                   independent_upstream_metrics_equal=True,
@@ -320,6 +390,8 @@ def main():
     parser.add_argument("--baseline-receipt", type=Path)
     parser.add_argument("--output-dir", type=Path, required=True)
     parser.add_argument("--seed", type=int, default=42)
+    parser.add_argument("--checkpoint-policy", choices=("fixed_final_epoch", "best_official_map"),
+                        default="fixed_final_epoch")
     args = parser.parse_args()
     for name in ("protocol", "signal_source", "clip_weight", "signal_checkpoint", "output_dir"):
         setattr(args, name, getattr(args, name).resolve())

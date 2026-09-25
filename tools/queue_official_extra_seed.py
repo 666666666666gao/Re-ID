@@ -54,6 +54,8 @@ def main():
     parser.add_argument("--signal-checkpoint", type=Path)
     parser.add_argument("--signal-sha256")
     parser.add_argument("--run-label")
+    parser.add_argument("--checkpoint-policy", choices=("fixed_final_epoch", "best_official_map"),
+                        default="fixed_final_epoch")
     args = parser.parse_args()
     assert args.seed >= 42
     if args.signal_checkpoint is not None:
@@ -122,7 +124,9 @@ def main():
               f"_{args.dataset}_{args.method}" if args.dataset and args.method else "")
     if args.run_label:
         suffix += f"_{args.run_label}"
-    date_suffix = ("20260926" if args.method == "SIGNAL_SIM_JOINT_LOWLR" else
+    if args.checkpoint_policy == "best_official_map":
+        suffix += "_bestmap"
+    date_suffix = ("20260926" if args.checkpoint_policy == "best_official_map" or args.method == "SIGNAL_SIM_JOINT_LOWLR" else
                    "20260925" if args.method in ("PLAIN_V8", "PLAIN_V27", "SIGNAL_V8", "SIGNAL_SIM_JOINT", "SIGNAL_SIM_FEEDBACK") else "20260924")
     campaign = ROOT / f"logs/official_extra_seed{args.seed}{suffix}_{date_suffix}"
     train_root = ROOT / f"trained-model/official_extra_seed{args.seed}{suffix}_{date_suffix}"
@@ -135,7 +139,9 @@ def main():
             if f"{dataset}:{method}" not in skipped]
     assert jobs
     status = dict(schema="trifusion-official-extra-seed-v1", status="RUNNING",
-                  seed=args.seed, machine=args.machine, fixed_epoch=20,
+                  seed=args.seed, machine=args.machine,
+                  fixed_epoch=20 if args.checkpoint_policy == "fixed_final_epoch" else None,
+                  checkpoint_policy=args.checkpoint_policy,
                   started_at=stamp(), dataset_order=datasets,
                   skipped_cells=sorted(skipped),
                   commit=subprocess.check_output(["git", "rev-parse", "HEAD"],
@@ -160,7 +166,8 @@ def main():
                    "--protocol", str(protocols / f'{row["dataset"]}.json'),
                    "--signal-source", str(source), "--clip-weight", str(clip),
                    "--signal-checkpoint", str(checkpoint), "--signal-sha256", expected,
-                   "--output-dir", str(directory), "--seed", str(args.seed)]
+                   "--output-dir", str(directory), "--seed", str(args.seed),
+                   "--checkpoint-policy", args.checkpoint_policy]
         if row["method"] in ("PLAIN_V8", "PLAIN_V27"):
             command.extend(["--baseline-receipt", str(ROOT / "logs/signal_plain_baseline_20260924_r2" /
                                                         row["dataset"] / "metrics.json")])
@@ -187,7 +194,9 @@ def main():
         set_status(row, "TRAINING", m0_at=stamp())
         run_command(row, "train", directory)
         training = json.loads((directory / "training.json").read_text(encoding="utf-8"))
-        assert training["status"] == "FIXED_EPOCH20_TRAINING_COMPLETE"
+        assert training["status"] == ("BEST_OFFICIAL_MAP_TRAINING_COMPLETE"
+                                      if args.checkpoint_policy == "best_official_map"
+                                      else "FIXED_EPOCH20_TRAINING_COMPLETE")
         assert training["seed"] == args.seed
         set_status(row, "EVALUATING", trained_at=stamp())
         run_command(row, "evaluate", directory)

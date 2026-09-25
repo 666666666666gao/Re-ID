@@ -46,7 +46,7 @@ def _v27_loss(parts, config):
 
 def train_v27(model, protocol, records, config, *, m0, directory, seed=42, style=True,
               plain_baseline=False, joint_sim=False, joint_sim_low_lr=False,
-              sim_feedback=False):
+              sim_feedback=False, on_epoch_end=None):
     import torch
     import numpy as np
     from tools.official_three_dataset_data import loader_for
@@ -114,6 +114,9 @@ def train_v27(model, protocol, records, config, *, m0, directory, seed=42, style
             history.append(row)
             print(json.dumps(dict(event=f"official_{method.lower()}_epoch",
                                   dataset=protocol["dataset"], **row)), flush=True)
+            if on_epoch_end is not None:
+                on_epoch_end(model, epoch)
+                model.train()
     if style:
         model.baseline.style_plan = None
     trainable = {name for name, parameter in model.named_parameters() if parameter.requires_grad}
@@ -127,7 +130,7 @@ def train_v27(model, protocol, records, config, *, m0, directory, seed=42, style
 
 
 def train_r2(model, protocol, records, config, *, m0, directory, seed=42, top1=False,
-             balanced=True):
+             balanced=True, on_epoch_end=None):
     import torch
     import torch.nn.functional as F
     import numpy as np
@@ -289,6 +292,9 @@ def train_r2(model, protocol, records, config, *, m0, directory, seed=42, top1=F
                        seconds=time.perf_counter() - started)
             history.append(row)
             print(json.dumps(dict(event="official_r2_epoch", dataset=protocol["dataset"], **row)), flush=True)
+            if on_epoch_end is not None:
+                on_epoch_end(model, epoch)
+                model.train()
     trainable = {name for name, parameter in model.named_parameters() if parameter.requires_grad}
     assert live == trainable and overflow == 0 and frozen == frozen_state_sha(model)
     assert supported_steps > 0 and historical_vjp_groups > 0
