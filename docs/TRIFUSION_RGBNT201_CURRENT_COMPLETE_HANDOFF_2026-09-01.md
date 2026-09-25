@@ -8931,3 +8931,11 @@ GPU3原V27训练PID退出是正常终态。迁移后的等待进程PID`2450403`�
 ### 41.421 跨环境字段的只读协议核对（2026-09-25）
 
 检查当前正式协议生成器`tools/build_official_three_dataset_protocols.py`及服务器上三份实际训练记录：RGBNT201全部3951条、RGBNT100全部8675条记录均有`scene==camera`，分别覆盖4、8个相机；MSVR310的1032条来源记录则有30个scene、8个camera，二者不能替代。当前R2训练器虽统一从记录读取`scene`作为环境，在两个RGBNT数据集上该字段正是协议写入的camera副本；MSVR310仍读取真实scene。正式评价另按协议`environment_key`调用作者camera/scene过滤。因此本轮没有发现“RGBNT201训练时误用不相干scene标签”这项实现问题；这项只读检查不能解释seed47排名下降，也不改变既有训练或正式指标。
+
+### 41.422 新近邻STMI的原论文口径与资源边界（2026-09-25）
+
+核读[STMI原论文](https://arxiv.org/pdf/2603.00695)的Table 1–3及实现说明：作者报告RGBNT201 `81.2/83.4/90.2/91.6`（mAP/Rank-1/5/10），RGBNT100 `89.1/97.1`、MSVR310 `64.8/76.1`（mAP/Rank-1）。其RGBNT201消融按`70.3/72.1`纯基线→加入SFM `76.1/78.1`→再加STR `78.1/80.9`→完整CHI `81.2/83.4`；总`+10.9` mAP来自从较弱基线到整套方法，不能归为一个三角色模块的条件增量，也不能将此数加到本项目已经训练好的完整Signal上。
+
+资源条件必须同表说明：STMI除CLIP图文预训练外，使用GPT-4o为每个三模态样本生成文本、SAM2为每组生成前景mask；论文报告A800训练，RGBNT201 B72/K8、MSVR310 B64/K8、RGBNT100 B128/K16。其SFM借助额外mask突出前景，STR进行token重分配，CHI做跨模态超图交互。因此它是“较弱CLIP起点＋额外文本/mask资源＋共同构建表示”的参照，不是本项目“冻结已训练Signal后外挂三角色”的同资源、同优化预算因果控制。本项目可借鉴其让交互参与表示形成的思路；若将来引用性能，必须同时披露额外标注生成资源，且不要称其为2026-09-25所有后续方法中的无条件SOTA。
+
+[CoT-ReID的CVPR 2026论文页面](https://openaccess.thecvf.com/content/CVPR2026/html/Gao_Chain-of-Thought_Guided_Multi-Modal_Object_Re-Identification_CVPR_2026_paper.html)及[作者仓库](https://github.com/Gaoya615/CoT-ReID)已核实其使用多模态大模型生成的推理文本，并提供CLIP、DINOv3及文本路径；本轮未取得可逐项复核的原文结果表，故不在正式对比表填入二手数值。它进一步说明近期方法的文本/视觉预训练资源并不统一，后续比较须逐项列清。
