@@ -8392,3 +8392,9 @@ GPU0的`RGBNT201–PLAIN_V8–seed43`已完成固定20轮、1060次优化更新�
 这是第二个预登记纯baseline种子，seed42与seed43的fused两项都高于同一纯baseline，不能只选较高的seed43报告。seed43 fused mAP比另一路作者完整Signal `53.2424`高`0.3836`，但Rank-1比完整Signal `72.4196`低`2.7072`；两路权重来源不同，不构成Signal模块负贡献的单因素证明。fused mAP高于三完整分支，Rank-1略低于CNN/Mamba的`69.8816`。只读排序诊断：AP改善/下降/持平`357/217/17`条query，Rank-1修复`40`、新增错误`28`，52身份的平均AP改善/下降为`32/20`；合法正负关系修复`100,259`、翻错`61,907`，后者是重复实例对计数，不替代query评价。两种种子仍不能视为训练随机性的充分估计，第三个预登记seed44正在运行。
 
 训练/正式指标/角色权重/诊断SHA256依次为`09a221ab65e32d4f042cfcd04b8c96a49171913fd7ffc3db6a48c03d2663811b`、`45c6631141480aa31f1e618e3c0a9581bdf8628c6fba65b3837f00b943f895e5`、`a08ed40f3e82c5c66a9abdffc37ffa06e8d22a54e49fbd64a4671e1176c05213`、`b77297455563667ad44e4d7188d64f67d4f9a765e1bd4dcef5ca0fd30dff7be4`，分别在`trained-model/official_extra_seed43_MSVR310_PLAIN_V8_20260925/MSVR310_PLAIN_V8_seed43/`和`logs/official_extra_seed43_MSVR310_PLAIN_V8_20260925/diagnostics/`。GPU3在该端结束后自动接上MSVR310–PLAIN_V8 seed44；之后由§41.364的等待器接上完整Signal＋V8 seed42，不按已有seed43官方成绩更改方法。
+
+### 41.368 完整Signal＋V8扩展为预登记三数据集三种子对照（2026-09-25 12:06 CST）
+
+在任何`SIGNAL_V8`正式结果或M0产生之前，将§41.364已固定的四个端点补成与纯baseline消融对齐的**三个数据集×seed42/43/44九端矩阵**；全部第20轮与完整官方评价均须报告，不根据中途或已消费正式分数只选赢家。原四个等待器保持不变；再登记五个串接等待器：MSVR310 seed43在该数据集SIGNAL_V8 seed42后启动（PID`1978549`），MSVR310 seed44在seed43后启动（PID`1979604`）；RGBNT100 seed44在该数据集SIGNAL_V8 seed42后启动（PID`1978778`）；RGBNT201 seed44在该数据集SIGNAL_V8 seed42后启动（PID`1978866`），RGBNT201 seed43在GPU3的MSVR310 SIGNAL_V8 seed44后启动（PID`1980289`）。RGBNT100 seed43仍由GPU1原等待器承担。每个等待器只等待其直接前序的真实进程结束并核验campaign=`COMPLETE`，不会与前序同时占卡；若前序失败，后续不会错误启动为成功实验。
+
+这九端检验**作者完整Signal冻结起点上原V8三角色的增量和种子变化**，与`PLAIN_V8`九端形成两条分别配对baseline的消融链；跨链fused数值差含原Signal模块训练经历、冻结维度和初始表征差异，不作单因素因果解释。部署代码仍为`8065fb1`；新增的是远端持久任务编排，不修改训练目标或运行中的模型。12:05实查四卡利用率`100/99/100/100%`，`/data`可用`128049610752`字节（约119.3GiB），三份纯baseline与三份作者完整Signal权重均保留。此时`SIGNAL_V8`尚未进入M0或训练；后继启动时间以各前序回执为准，等待进程存在不等于完整结果已产生。
