@@ -5,6 +5,11 @@ import json
 from pathlib import Path
 import time
 
+from tools.train_msvr310_trifusion_oof import OUTPUT_WIDTHS
+
+PLAIN_WIDTHS = {"baseline_only": 1536, "fused": 6144,
+                "cnn": 3072, "transformer": 3072, "mamba": 3072}
+
 
 def _setup(model, config):
     import torch
@@ -30,7 +35,7 @@ def _v27_loss(parts, config):
     return common.float() + residual.float()
 
 
-def train_v27(model, protocol, records, config, *, m0, directory, seed=42):
+def train_v27(model, protocol, records, config, *, m0, directory, seed=42, style=True):
     import torch
     import numpy as np
     from tools.official_three_dataset_data import loader_for
@@ -44,7 +49,8 @@ def train_v27(model, protocol, records, config, *, m0, directory, seed=42):
     model.train()
     initial, frozen = _module_state_sha256(model), frozen_state_sha(model)
     optimizer, scaler, criterion = _setup(model, config)
-    loader = loader_for(protocol, records, training=True, method="V27", seed=seed)
+    loader = loader_for(protocol, records, training=True,
+                        method="V27" if style else "PLAIN_V8", seed=seed)
     epochs = 1 if m0 else 20
     history, live, steps, overflow = [], set(), 0, 0
     with (directory / "training_steps.jsonl").open("x", encoding="utf-8") as log:
@@ -59,12 +65,13 @@ def train_v27(model, protocol, records, config, *, m0, directory, seed=42):
             for raw in batches:
                 assert sorted(torch.unique(raw[1], return_counts=True)[1].tolist()) == [8] * 8
                 batch, labels = _training_batch(raw)
-                model.baseline.style_enabled = True
-                model.baseline.style_plan = make_style_plan(raw[2].numpy(), fold=0, step=steps)
+                if style:
+                    model.baseline.style_enabled = True
+                    model.baseline.style_plan = make_style_plan(raw[2].numpy(), fold=0, step=steps)
                 optimizer.zero_grad(set_to_none=True)
                 with torch.autocast("cuda", dtype=torch.float16):
                     output = model(batch, return_aux=True)
-                    output_mapping(output)
+                    output_mapping(output, widths=OUTPUT_WIDTHS if style else PLAIN_WIDTHS)
                     components = criterion(output, labels)
                     loss = _v27_loss(components, config)
                 scale = scaler.get_scale()
@@ -81,18 +88,20 @@ def train_v27(model, protocol, records, config, *, m0, directory, seed=42):
                 steps += 1
                 losses.append(float(loss.detach()))
                 log.write(json.dumps(dict(step=steps, epoch=epoch, loss=losses[-1],
-                                          style_active=model.baseline.last_style_stats["style_active"],
-                                          style_plan=model.baseline.style_plan,
+                                          style_active=model.baseline.last_style_stats["style_active"] if style else False,
+                                          style_plan=model.baseline.style_plan if style else None,
                                           amp_scale_after=scaler.get_scale())) + "\n")
             log.flush()
             row = dict(epoch=epoch, steps=len(losses), mean_loss=float(np.mean(losses)),
                        seconds=time.perf_counter() - started)
             history.append(row)
-            print(json.dumps(dict(event="official_v27_epoch", dataset=protocol["dataset"], **row)), flush=True)
-    model.baseline.style_plan = None
+            print(json.dumps(dict(event="official_v27_epoch" if style else "official_plain_v8_epoch",
+                                  dataset=protocol["dataset"], **row)), flush=True)
+    if style:
+        model.baseline.style_plan = None
     trainable = {name for name, parameter in model.named_parameters() if parameter.requires_grad}
     assert live == trainable and overflow == 0 and frozen == frozen_state_sha(model)
-    return dict(method="V27", epochs=epochs, optimizer_steps=steps, history=history,
+    return dict(method="V27" if style else "PLAIN_V8", epochs=epochs, optimizer_steps=steps, history=history,
                 initial_state_sha256=initial, final_state_sha256=_module_state_sha256(model),
                 frozen_state_unchanged=True, missing_nonzero_gradients=[], overflow_events=0)
 

@@ -15,6 +15,7 @@ sys.path.insert(0, str(ROOT))
 from tools.official_three_dataset_data import records_for, loader_for
 from tools.official_three_dataset_model import build_model, sha256
 from tools.train_msvr310_trifusion_oof import OUTPUT_WIDTHS, output_mapping
+from tools.train_official_three_dataset_roles import PLAIN_WIDTHS
 
 
 def configure_style(model, dataset, method):
@@ -46,7 +47,8 @@ def initialize(args, protocol):
     from tools.run_signal_preserving_v5 import _module_state_sha256
 
     model, cfg, config, binding = build_model(protocol, args.signal_source, args.clip_weight,
-                                               args.signal_checkpoint, args.signal_sha256, seed=args.seed)
+                                               args.signal_checkpoint, args.signal_sha256, seed=args.seed,
+                                               plain_baseline=args.method == "PLAIN_V8")
     before = _module_state_sha256(model)
     model = configure_style(model, args.dataset, args.method)
     assert _module_state_sha256(model) == before
@@ -60,7 +62,8 @@ def train(args, protocol):
     assert not args.output_dir.exists()
     args.output_dir.mkdir(parents=True)
     model, _cfg, config, binding = initialize(args, protocol)
-    receipt = dict(schema="trifusion-official-r2-v27-training-v1", dataset=args.dataset,
+    receipt = dict(schema=("trifusion-official-plain-v8-training-v1" if args.method == "PLAIN_V8"
+                           else "trifusion-official-r2-v27-training-v1"), dataset=args.dataset,
                    method=args.method, mode=args.mode, status="RUNNING",
                    started_at=datetime.now().astimezone().isoformat(),
                    commit=subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=ROOT, text=True).strip(),
@@ -69,9 +72,10 @@ def train(args, protocol):
                    initializer=binding, official_model_forwards=0)
     (args.output_dir / "training.json").write_text(json.dumps(receipt, indent=2) + "\n", encoding="utf-8")
     records = records_for(protocol, "train")
-    if args.method == "V27":
+    if args.method in ("V27", "PLAIN_V8"):
         result = train_v27(model, protocol, records, config, m0=args.mode == "m0",
-                           directory=args.output_dir, seed=args.seed)
+                           directory=args.output_dir, seed=args.seed,
+                           style=args.method == "V27")
     else:
         result = train_r2(model, protocol, records, config, m0=args.mode == "m0",
                           directory=args.output_dir, seed=args.seed,
@@ -95,7 +99,7 @@ def train(args, protocol):
                           training=result, checkpoint=receipt.get("checkpoint"))), flush=True)
 
 
-def extract(model, protocol, split, method):
+def extract(model, protocol, split, method, *, baseline_only=False):
     import torch
     from tools.msvr310_exact_signal_inference import exact_signal_forward
     from tools.run_signal_preserving_v5 import _training_batch
@@ -105,7 +109,8 @@ def extract(model, protocol, split, method):
     model.eval()
     if method == "V27":
         model.baseline.style_plan = None
-    parts = {name: [] for name in OUTPUT_WIDTHS}
+    widths = PLAIN_WIDTHS if method == "PLAIN_V8" else OUTPUT_WIDTHS
+    parts = {name: [] for name in (("baseline_only",) if baseline_only else widths)}
     context = torch.inference_mode() if protocol["dataset"] == "RGBNT201" else torch.no_grad()
     with context:
         for raw in loader_for(protocol, records, training=False, method=method):
@@ -114,13 +119,17 @@ def extract(model, protocol, split, method):
                 batch = image_batch(images, camera_ids)
             else:
                 batch, _ = _training_batch(raw)
-            output = (model(batch, return_aux=True) if protocol["dataset"] == "RGBNT201"
-                      else exact_signal_forward(model, batch))
-            values = output_mapping(output)
+            if baseline_only:
+                values = {"baseline_only": model(batch, retrieval_output="baseline_only")}
+            else:
+                output = (model(batch, return_aux=True)
+                          if protocol["dataset"] == "RGBNT201" or method == "PLAIN_V8"
+                          else exact_signal_forward(model, batch))
+                values = output_mapping(output, widths=widths)
             for name, value in values.items():
                 parts[name].append(value.float().cpu())
     result = {name: torch.cat(values) for name, values in parts.items()}
-    assert all(value.shape == (protocol["counts"][split], OUTPUT_WIDTHS[name])
+    assert all(value.shape == (protocol["counts"][split], widths[name])
                for name, value in result.items())
     return result
 
@@ -134,6 +143,53 @@ def distance_matrix(query, gallery):
     result.addmm_(query, gallery.T, beta=1, alpha=-2)
     assert torch.isfinite(result).all()
     return result
+
+
+def preflight_plain(args, protocol):
+    import numpy as np
+    import torch
+    from tools.run_signal_preserving_v5 import _training_batch
+    from tools.train_signal_preserving_v18 import image_batch
+    from tools.train_msvr310_signal_oof import scene_scores
+    from tools.train_rgbnt100_signal_oof import camera_scores
+
+    assert args.method == "PLAIN_V8" and args.baseline_receipt is not None
+    model, cfg, _config, binding = initialize(args, protocol)
+    model.eval()
+    assert model.baseline.baseline_width == 1536
+    reference = json.loads(args.baseline_receipt.read_text(encoding="utf-8"))
+    assert reference["dataset"] == args.dataset
+    assert reference["checkpoint_sha256"] == args.signal_sha256
+    raw = next(iter(loader_for(protocol, records_for(protocol, "query"),
+                               training=False, method=args.method)))
+    batch = (image_batch(raw[0], raw[3]) if args.dataset == "RGBNT201"
+             else _training_batch(raw)[0])
+    with torch.no_grad():
+        author = model.baseline.signal(batch["images"], cam_label=batch["camera_ids"],
+                                       training=False, sge=cfg.MODEL.stageName)
+        wrapped = model(batch, retrieval_output="baseline_only")
+    assert torch.equal(author, wrapped)
+    query = extract(model, protocol, "query", args.method, baseline_only=True)["baseline_only"]
+    gallery = extract(model, protocol, "gallery", args.method, baseline_only=True)["baseline_only"]
+    qrows, grows = protocol["records"]["query"], protocol["records"]["gallery"]
+    qids, gids = [np.asarray([row["identity"] for row in rows]) for rows in (qrows, grows)]
+    if args.dataset == "MSVR310":
+        qenv, genv = [np.asarray([row["scene"] for row in rows]) for rows in (qrows, grows)]
+        result = scene_scores(distance_matrix(query, gallery).numpy(), qids, gids, qenv, genv)
+    else:
+        qenv, genv = [np.asarray([row["camera"] for row in rows]) for rows in (qrows, grows)]
+        result = camera_scores(distance_matrix(query, gallery).numpy(), qids, gids, qenv, genv)
+    errors = {name: result["metrics"][name] - value for name, value in reference["metrics"].items()}
+    assert all(abs(value) < 1e-4 for value in errors.values()), errors
+    args.output_dir.mkdir(parents=True)
+    (args.output_dir / "baseline_parity.json").write_text(json.dumps(dict(
+        status="PASS", dataset=args.dataset, seed=args.seed,
+        checkpoint_sha256=args.signal_sha256, baseline_receipt=str(args.baseline_receipt),
+        baseline_receipt_sha256=sha256(args.baseline_receipt),
+        initializer=binding, single_batch_author_forward_bitwise_equal=True,
+        metrics=result["metrics"], errors=errors), indent=2) + "\n",
+        encoding="utf-8")
+    print(json.dumps(dict(status="PASS", dataset=args.dataset, metrics=result["metrics"])), flush=True)
 
 
 def evaluate(args, protocol):
@@ -176,7 +232,7 @@ def evaluate(args, protocol):
     qscenes, gscenes = [np.asarray([row["scene"] for row in rows]) for rows in (qrows, grows)]
     scores, arrays = {}, {}
     os.chdir(args.output_dir)
-    for name in OUTPUT_WIDTHS:
+    for name in (PLAIN_WIDTHS if args.method == "PLAIN_V8" else OUTPUT_WIDTHS):
         distances = distance_matrix(query[name], gallery[name])
         assert distances.shape == (len(qrows), len(grows))
         if args.dataset == "MSVR310":
@@ -197,7 +253,8 @@ def evaluate(args, protocol):
                     query_cameras=qcameras, gallery_cameras=gcameras,
                     query_scenes=qscenes, gallery_scenes=gscenes,
                     protocol_sha256=summary["protocol_sha256"]), path)
-    result = dict(schema="trifusion-official-r2-v27-retrieval-v1", status="COMPLETE",
+    result = dict(schema=("trifusion-official-plain-v8-retrieval-v1" if args.method == "PLAIN_V8"
+                          else "trifusion-official-r2-v27-retrieval-v1"), status="COMPLETE",
                   dataset=args.dataset, method=args.method,
                   query_count=len(qrows), gallery_count=len(grows),
                   author_checkpoint_sha256=args.signal_sha256,
@@ -218,20 +275,23 @@ def evaluate(args, protocol):
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--dataset", choices=("RGBNT201", "RGBNT100", "MSVR310"), required=True)
-    parser.add_argument("--method", choices=("R2", "V27", "R2_TOP1", "R2_UNIFORM"), required=True)
-    parser.add_argument("--mode", choices=("m0", "train", "evaluate"), required=True)
+    parser.add_argument("--method", choices=("R2", "V27", "R2_TOP1", "R2_UNIFORM", "PLAIN_V8"), required=True)
+    parser.add_argument("--mode", choices=("preflight", "m0", "train", "evaluate"), required=True)
     parser.add_argument("--protocol", type=Path, required=True)
     parser.add_argument("--signal-source", type=Path, required=True)
     parser.add_argument("--clip-weight", type=Path, required=True)
     parser.add_argument("--signal-checkpoint", type=Path, required=True)
     parser.add_argument("--signal-sha256", required=True)
+    parser.add_argument("--baseline-receipt", type=Path)
     parser.add_argument("--output-dir", type=Path, required=True)
     parser.add_argument("--seed", type=int, default=42)
     args = parser.parse_args()
     for name in ("protocol", "signal_source", "clip_weight", "signal_checkpoint", "output_dir"):
         setattr(args, name, getattr(args, name).resolve())
     protocol = read_protocol(args.protocol, args.dataset)
-    if args.mode == "evaluate":
+    if args.mode == "preflight":
+        preflight_plain(args, protocol)
+    elif args.mode == "evaluate":
         evaluate(args, protocol)
     else:
         train(args, protocol)

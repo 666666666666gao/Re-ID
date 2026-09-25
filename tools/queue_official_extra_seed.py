@@ -27,6 +27,11 @@ WEIGHTS = {
     "MSVR310": ("MSVR310_Signal_50.pth", "b3888e7ec7b9290abcde76915ebf9d9ce87129e759586fd7deb3e9cf7d1d807a"),
     "RGBNT201": ("RGBNT201_Signal_50.pth", "ec09a4f68bce95f645fde3fd2e29f81c944d1f5816adc00ab107e3daf6e38b7c"),
 }
+PLAIN_WEIGHTS = {
+    "RGBNT201": ("RGBNT201_PlainBaseline_50.pth", "789e5e14aacd74ad122aad701389eb216ca5b4fda92687e27351a513023b4407"),
+    "RGBNT100": ("RGBNT100_PlainBaseline_30.pth", "299a28bfb3e3180eeae0736cf8638cd162525dce0f2192a940b62b97f6e67dcd"),
+    "MSVR310": ("MSVR310_PlainBaseline_50.pth", "69c5e71b75036d7216ece3ff84450f0052f5e70dfaba46bf73f3e1d40992bb37"),
+}
 LOCK = Lock()
 
 
@@ -39,7 +44,7 @@ def main():
     parser.add_argument("--seed", type=int, required=True)
     parser.add_argument("--machine", choices=("old", "new"), required=True)
     parser.add_argument("--dataset", choices=DATASETS)
-    parser.add_argument("--method", choices=(*METHODS, "R2_TOP1", "R2_UNIFORM"))
+    parser.add_argument("--method", choices=(*METHODS, "R2_TOP1", "R2_UNIFORM", "PLAIN_V8"))
     parser.add_argument("--gpu", type=int)
     parser.add_argument("--top1-pair", action="store_true")
     parser.add_argument("--skip-cell", action="append",
@@ -96,15 +101,16 @@ def main():
 
     assert (source / "utils/metrics.py").is_file() and clip.is_file()
     for dataset in datasets:
-        name, digest = WEIGHTS[dataset]
+        name, digest = (PLAIN_WEIGHTS if args.method == "PLAIN_V8" else WEIGHTS)[dataset]
         assert sha256(weights / name) == digest
         assert (protocols / f"{dataset}.json").is_file()
     assert shutil.disk_usage(base).free > 3 * 1024**3
 
     suffix = ("_top1_pair" if args.top1_pair else
               f"_{args.dataset}_{args.method}" if args.dataset and args.method else "")
-    campaign = ROOT / f"logs/official_extra_seed{args.seed}{suffix}_20260924"
-    train_root = ROOT / f"trained-model/official_extra_seed{args.seed}{suffix}_20260924"
+    date_suffix = "20260925" if args.method == "PLAIN_V8" else "20260924"
+    campaign = ROOT / f"logs/official_extra_seed{args.seed}{suffix}_{date_suffix}"
+    train_root = ROOT / f"trained-model/official_extra_seed{args.seed}{suffix}_{date_suffix}"
     assert not campaign.exists() and not train_root.exists()
     campaign.mkdir(parents=True)
     train_root.mkdir(parents=True)
@@ -130,7 +136,7 @@ def main():
             save()
 
     def run_command(row, mode, directory):
-        name, digest = WEIGHTS[row["dataset"]]
+        name, digest = (PLAIN_WEIGHTS if row["method"] == "PLAIN_V8" else WEIGHTS)[row["dataset"]]
         tag = f'{row["dataset"]}_{row["method"]}_seed{args.seed}'
         command = [sys.executable, "-B", str(ROOT / "tools/run_official_three_dataset_roles.py"),
                    "--dataset", row["dataset"], "--method", row["method"], "--mode", mode,
@@ -138,6 +144,9 @@ def main():
                    "--signal-source", str(source), "--clip-weight", str(clip),
                    "--signal-checkpoint", str(weights / name), "--signal-sha256", digest,
                    "--output-dir", str(directory), "--seed", str(args.seed)]
+        if row["method"] == "PLAIN_V8":
+            command.extend(["--baseline-receipt", str(ROOT / "logs/signal_plain_baseline_20260924_r2" /
+                                                        row["dataset"] / "metrics.json")])
         env = os.environ.copy()
         env["CUDA_VISIBLE_DEVICES"] = str(row["gpu"])
         with (campaign / f"{tag}.{mode}.log").open("x", encoding="utf-8") as log:
@@ -147,6 +156,11 @@ def main():
     def run_job(row):
         assert shutil.disk_usage(base).free > 3 * 1024**3
         tag = f'{row["dataset"]}_{row["method"]}_seed{args.seed}'
+        if row["method"] == "PLAIN_V8":
+            preflight = campaign / "preflight" / tag
+            set_status(row, "PREFLIGHT", started_at=stamp())
+            run_command(row, "preflight", preflight)
+            assert json.loads((preflight / "baseline_parity.json").read_text(encoding="utf-8"))["status"] == "PASS"
         m0 = campaign / "m0" / tag
         set_status(row, "M0", started_at=stamp())
         run_command(row, "m0", m0)

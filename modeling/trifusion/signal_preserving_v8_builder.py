@@ -30,6 +30,7 @@ def build_signal_preserving_trifusion_v8_expert_formation(
     expert_modal_width: int = 512,
     scale_init: float = 0.05,
     gradient_checkpointing: bool = True,
+    use_sim: bool = True,
     mamba_mixer_factory: Callable[[int], nn.Module] = production_mamba_factory,
 ) -> TriFusionBuildResult:
     if len(signal_checkpoint_sha256) != 64:
@@ -38,6 +39,7 @@ def build_signal_preserving_trifusion_v8_expert_formation(
         signal_model,
         feature_width=feature_width,
         branch_after_block=branch_after_block,
+        use_sim=use_sim,
     )
     encoder = PretrainedTailTriExpertEncoder(
         tail_blocks=baseline.tail_blocks,
@@ -70,6 +72,7 @@ def build_signal_preserving_trifusion_v8_expert_formation(
         "phase": "A_expert_formation",
         "signal_checkpoint_sha256": signal_checkpoint_sha256,
         "signal_baseline_width": baseline.baseline_width,
+        "signal_sim_enabled": use_sim,
         "baseline_parameters_frozen": True,
         "branch_after_pretrained_clip_block": int(branch_after_block),
         "pretrained_tail_layers": list(baseline.tail_layer_indices),

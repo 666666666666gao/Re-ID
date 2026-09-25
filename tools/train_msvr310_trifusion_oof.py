@@ -65,11 +65,11 @@ def frozen_state_sha(model):
     })
 
 
-def output_mapping(output):
+def output_mapping(output, widths=OUTPUT_WIDTHS):
     assert output.diagnostics["all_finite"] and output.diagnostics["baseline_exact_prefix"]
     values = {"baseline_only": output.baseline_embedding, "fused": output.fused_embedding,
               **dict(output.branch_embeddings)}
-    assert {name: value.shape[1] for name, value in values.items()} == OUTPUT_WIDTHS
+    assert {name: value.shape[1] for name, value in values.items()} == widths
     return values
 
 

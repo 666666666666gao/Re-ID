@@ -20,7 +20,8 @@ def sha256(path):
     return digest.hexdigest()
 
 
-def build_model(protocol, source, clip_weight, checkpoint, expected_sha256, *, seed=42):
+def build_model(protocol, source, clip_weight, checkpoint, expected_sha256, *, seed=42,
+                plain_baseline=False):
     import torch
 
     from tools.build_v12_complete_path_oof_targets import _build_signal_teacher, _build_v8_experts
@@ -37,12 +38,15 @@ def build_model(protocol, source, clip_weight, checkpoint, expected_sha256, *, s
     cfg.defrost()
     cfg.MODEL.PRETRAIN_PATH_T = str(clip_weight)
     cfg.SOLVER.SEED = seed
+    if plain_baseline:
+        cfg.MODEL.USE_A = False
+        cfg.MODEL.USE_B = False
     cfg.freeze()
     assert cfg.DATASETS.NAMES == name
     assert list(cfg.INPUT.SIZE_TRAIN) == list(cfg.INPUT.SIZE_TEST) == (
         [256, 128] if name == "RGBNT201" else [128, 256])
     assert cfg.MODEL.SIE_CAMERA and not cfg.MODEL.SIE_VIEW
-    if name == "RGBNT100":
+    if name == "RGBNT100" and not plain_baseline:
         from modeling.AddModule import useB
         from tools.signal_gram_stable import signal_gram_volume_stable
         useB.volume_computation3 = signal_gram_volume_stable
@@ -54,8 +58,10 @@ def build_model(protocol, source, clip_weight, checkpoint, expected_sha256, *, s
     assert cameras == list(range(4 if name == "RGBNT201" else 8))
     signal = _build_signal_teacher(cfg, num_classes=len(protocol["train_label_map"]),
                                    camera_num=len(cameras), view_num=0)
+    if plain_baseline:
+        assert not hasattr(signal, "SIM") and not hasattr(signal, "AlignM")
     state = torch.load(path, map_location="cpu", weights_only=True)
-    if name == "RGBNT100":
+    if name == "RGBNT100" and not plain_baseline:
         assert all(key.startswith("module.") for key in state)
         state = {key.removeprefix("module."): value for key, value in state.items()}
     assert set(state) == set(signal.state_dict())
@@ -71,9 +77,12 @@ def build_model(protocol, source, clip_weight, checkpoint, expected_sha256, *, s
     assert role_config["MODEL"]["GRID_SIZE"] == expected_grid
     assert role_config["OPTIMIZATION"]["MAX_EPOCHS"] == 20
     model = _build_v8_experts(signal, role_config, signal_checkpoint_sha256=digest,
-                              num_classes=len(protocol["train_label_map"]))
+                              num_classes=len(protocol["train_label_map"]),
+                              use_sim=not plain_baseline)
     assert all(not parameter.requires_grad for parameter in model.baseline.parameters())
-    return model, cfg, role_config, dict(author_checkpoint=str(path),
-                                          author_checkpoint_sha256=digest,
-                                          signal_state_sha256=signal_hash,
-                                          initial_role_state_sha256=_module_state_sha256(model))
+    binding = dict(author_checkpoint=str(path), author_checkpoint_sha256=digest,
+                   signal_state_sha256=signal_hash,
+                   initial_role_state_sha256=_module_state_sha256(model))
+    if plain_baseline:
+        binding["baseline_kind"] = "independently_trained_module_free_cls"
+    return model, cfg, role_config, binding

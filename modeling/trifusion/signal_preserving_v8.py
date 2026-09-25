@@ -39,10 +39,11 @@ class HierarchicalFrozenSignalBackbone(nn.Module):
         *,
         feature_width: int = 512,
         branch_after_block: int = 8,
+        use_sim: bool = True,
     ) -> None:
         super().__init__()
-        if not hasattr(signal, "clip_vision_encoder") or not hasattr(signal, "SIM"):
-            raise ValueError("Signal model must expose clip_vision_encoder and SIM")
+        if not hasattr(signal, "clip_vision_encoder") or (use_sim and not hasattr(signal, "SIM")):
+            raise ValueError("Signal model must expose the configured frozen features")
         vision = signal.clip_vision_encoder
         if not hasattr(vision, "base") or not hasattr(vision.base, "transformer"):
             raise ValueError("Signal CLIP encoder must expose base.transformer")
@@ -53,8 +54,9 @@ class HierarchicalFrozenSignalBackbone(nn.Module):
             raise ValueError("feature width must be positive")
 
         self.signal = signal
+        self.use_sim = bool(use_sim)
         self.feature_width = int(feature_width)
-        self.baseline_width = len(MODALITY_ORDER) * 2 * self.feature_width
+        self.baseline_width = len(MODALITY_ORDER) * (2 if self.use_sim else 1) * self.feature_width
         self.branch_after_block = int(branch_after_block)
         self.tail_layer_indices = tuple(range(self.branch_after_block + 1, len(blocks)))
         self._tail_blocks = tuple(blocks[index] for index in self.tail_layer_indices)
@@ -127,9 +129,13 @@ class HierarchicalFrozenSignalBackbone(nn.Module):
 
         if len(anchors) != len(MODALITY_ORDER) or len(references) != len(MODALITY_ORDER):
             raise RuntimeError("Signal CLIP hooks did not capture all three modalities")
-        sim = self.signal.SIM(*patches, *globals_by_modality)
+        if self.use_sim:
+            sim = self.signal.SIM(*patches, *globals_by_modality)
         direct_modal = torch.stack(globals_by_modality, dim=1)
-        baseline_embedding = torch.cat((direct_modal.flatten(1), sim), dim=1)
+        if self.use_sim:
+            baseline_embedding = torch.cat((direct_modal.flatten(1), sim), dim=1)
+        else:
+            baseline_embedding = direct_modal.flatten(1)
         expected = (modality_mask.shape[0], self.baseline_width)
         if baseline_embedding.shape != expected:
             raise ValueError(f"Signal baseline feature must have shape {expected}")

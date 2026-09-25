@@ -387,6 +387,7 @@ def _build_v8_experts(
     *,
     signal_checkpoint_sha256: str,
     num_classes: int,
+    use_sim: bool = True,
 ) -> Any:
     project_modeling = str(Path(__file__).resolve().parents[1] / "modeling")
     if project_modeling not in sys.path:
@@ -408,6 +409,7 @@ def _build_v8_experts(
         expert_modal_width=int(model_config["EXPERT_MODAL_WIDTH"]),
         scale_init=float(model_config["SCALE_INIT"]),
         gradient_checkpointing=bool(model_config["GRADIENT_CHECKPOINTING"]),
+        use_sim=use_sim,
     ).model.cuda()
 
 
