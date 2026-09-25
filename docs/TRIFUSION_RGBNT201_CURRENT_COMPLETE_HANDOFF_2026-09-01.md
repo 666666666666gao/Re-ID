@@ -8690,3 +8690,33 @@ seed43同一回执的完整分支为CNN`85.1069/96.9679`、Transformer`86.6916/9
 ### 41.396 新增三数据集公开参照STMI的资源口径（2026-09-25）
 
 复核[STMI原始预印本](https://arxiv.org/html/2603.00695)：其Table 1报告RGBNT201 `81.2 mAP / 83.4 Rank-1 / 90.2 Rank-5 / 91.6 Rank-10`，Table 2报告RGBNT100 `89.1/97.1`、MSVR310 `64.8/76.1`（后两者为mAP/Rank-1，单位均为%）。这是**作者报告值**，不是本项目复现。该方法除了CLIP，还为各图像三元组准备GPT-4o文本描述与SAM2分割mask；因此不能与本项目当前纯视觉CLIP／Signal初始化视作同资源配对。其MSVR310 mAP低于已核的RoDI–DINOv3 `71.8`与CoT-ReID `71.7`，RGBNT100 mAP也低于已核的PMKD `91.6`，不能沿用论文表内“最佳”标记，把STMI称为截至本次核查的三个数据集绝对SOTA。此文献核查不修改任何已登记训练、验收线或正式指标。
+
+### 41.397 MSVR310–R2 seed56固定终点正式结果及只读排序诊断（2026-09-25 17:15 CST）
+
+四卡GPU3的`MSVR310–R2–seed56`于17:06:23完成固定第20轮、400次优化更新，17:07:21完成原作者全量query/gallery正式评价；campaign、训练与评价回执均为`COMPLETE`。训练中冻结状态不变、无缺失非零参数梯度、AMP溢出0；评价为591个query/1055个gallery，按原scene规则排除同身份同scene，保留全部异身份干扰，无reranking，`independent_upstream_metrics_equal=true`。角色权重与距离数组实存SHA256分别与回执一致：`196fc1d4e08e613dfed2e84ac0ad854b477981ea14249464229eae09e5de7fe9`、`94f6ab0674cc342472d924655e1ff7b218de4adba0ee45800a09c160e48f04a6`；正式指标回执SHA256=`f332e0e57fb2c599f78ec13e6f88edaa4163545d965b86af10f01a05dd27b2d3`。文件位于`trained-model/official_extra_seed56_MSVR310_R2_20260924/MSVR310_R2_seed56/`，不能用同种子的局部训练loss代替此结果。
+
+| MSVR310 seed56正式输出 | mAP | Rank-1 |
+| --- | ---: | ---: |
+| 匹配作者Signal | 53.2424 | 72.4196 |
+| CNN完整分支 | 50.4305 | 69.2047 |
+| Transformer完整分支 | 49.1824 | 66.1591 |
+| Mamba完整分支 | 49.6305 | 68.6971 |
+| **R2 fused** | **52.8694** | **70.8968** |
+
+fused相对匹配Signal为`−0.3730 mAP/−1.5228 Rank-1`，两项均不达`+0.8`停止线，本种子**未晋级**。复用已有`tools/diagnose_official_retrieval.py`对保存距离做终态只读诊断：591个query中AP改善/下降/持平`291/283/17`，Rank-1修复`31`条而新增错误`40`条；全部合法正负对的修复/翻错曝光为`78,536/63,602`。这些是不同统计单位，说明更广义的成对关系净改善仍可伴随mAP和首位准确率下降，不证明某个训练组件为唯一原因。诊断只作为**已消费正式集的事后解释**，不据具体身份、错误图库或此seed结果改训练规则。GPU3在本端结束后已自动接上同公开CLIP起点的完整Signal匹配控制；该控制截至本节尚无正式结果。
+
+### 41.398 MSVR310纯baseline与匹配训练完整Signal的正式比较（2026-09-25 17:18 CST）
+
+前节所述的GPU3完整Signal控制已完成。两端均从本机保存的同一公开`ViT-B-16.pt`起步、seed1234、作者MSVR310配置与数据、固定第50轮终点；纯baseline关闭Signal的SIM/GAM/LAM且没有TriFusion，完整端启用SIM/GAM/LAM且同样没有TriFusion。两者均按原scene过滤规则对591个query、1055个gallery做一次全量正式评价，无reranking；纯baseline输出1536D，完整Signal输出3072D。两份campaign及metrics状态均为`COMPLETE`，第1～50轮训练日志、终点权重及评价回执均实存；checkpoint SHA256分别为`69c5e71b75036d7216ece3ff84450f0052f5e70dfaba46bf73f3e1d40992bb37`和`d40585bfacf790d51cebed664d5391d66611f2ef46b14cf2a5bbada482a3439c`。原始回执分别为`logs/signal_plain_baseline_20260924_r2/MSVR310/metrics.json`与`logs/signal_full_matched_20260925/MSVR310/metrics.json`，权重分别为对应`trained-model/.../MSVR310/Signalbest.pth`；纯baseline权重另以硬链接保留在`pertrained-model/MSVR310_PlainBaseline_50.pth`。
+
+| MSVR310正式输出，同起点seed1234 | mAP | Rank-1 |
+| --- | ---: | ---: |
+| 纯CLIP baseline，无Signal扩展及TriFusion | 50.5220 | 67.6819 |
+| 匹配训练的完整Signal，无TriFusion | **52.6199** | **70.0508** |
+| 完整端－纯baseline | **+2.0980** | **+2.3689** |
+
+这一配对只支持**完整Signal模块组合**在当前固定训练协议下带来上述增量；不能拆成SIM、GAM、LAM各自的因果贡献，更不能把其他继承作者发布Signal权重的TriFusion分数减去此纯baseline，称为“我们模块的十几点增益”。当前匹配训练完整Signal又比作者发布的MSVR310权重`53.2424/72.4196`低`0.6225 mAP/2.3689 Rank-1`；后者是另一个训练与checkpoint来源，不能作为这对消融的匹配控制。纯baseline绝对值偏低的问题，现在至少可以明确区分“相对完整Signal本来缺少的模块增益”与“本机固定终点相对作者发布权重的剩余差距”。其余RGBNT201、RGBNT100匹配完整Signal控制仍按已登记队列等待，不预填指标。
+
+### 41.399 四卡续训状态（2026-09-25 17:24 CST）
+
+GPU3在上述完整Signal控制完成后，于17:21:58按既有正式入口启动顺序新增的`MSVR310–R2–seed57`；其M0于17:23:12通过，campaign处于`RUNNING/TRAINING`，训练子进程实际存在，GPU3约7.5GiB显存且利用率100%。GPU0继续`RGBNT100–R2–seed47`，GPU1继续`RGBNT100–R2_UNIFORM–seed42`，GPU2继续`RGBNT201–R2–seed47`，同次快照四卡均实际运行。seed57继续固定第20轮与原正式scene评价；本节**没有seed57检索结果**。同机器前一MSVR310–R2 seed56从M0到完整评价约83分钟，因此仅以此预估seed57约18:45～18:55 CST完成，不按中间loss挑终点或改方法。GPU0/1/2的既有等待任务保留，不能为满足GPU占用而重复启动同一单元。历史正式集已被多次用于追加种子，这些新种子结果必须完整记录，不能仅挑最高seed作为无选择偏差估计。
