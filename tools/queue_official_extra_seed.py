@@ -56,8 +56,6 @@ def main():
     parser.add_argument("--run-label")
     args = parser.parse_args()
     assert args.seed >= 42
-    if args.method == "PLAIN_V27":
-        assert args.dataset == "RGBNT201"
     if args.signal_checkpoint is not None:
         assert args.signal_sha256 and args.run_label
         assert args.dataset in ("MSVR310", "RGBNT201") and args.method == "SIGNAL_V8"

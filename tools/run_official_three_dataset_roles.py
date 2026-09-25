@@ -289,8 +289,6 @@ def main():
     parser.add_argument("--output-dir", type=Path, required=True)
     parser.add_argument("--seed", type=int, default=42)
     args = parser.parse_args()
-    if args.method == "PLAIN_V27":
-        assert args.dataset == "RGBNT201"
     for name in ("protocol", "signal_source", "clip_weight", "signal_checkpoint", "output_dir"):
         setattr(args, name, getattr(args, name).resolve())
     protocol = read_protocol(args.protocol, args.dataset)

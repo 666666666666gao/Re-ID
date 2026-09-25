@@ -14,7 +14,8 @@ class SourceStyleMSVRBackbone(HierarchicalFrozenSignalBackbone):
     """Keep the original Signal field, re-encode only the role field during training."""
 
     def __init__(self, signal, *, fold):
-        super().__init__(signal, feature_width=512, branch_after_block=8)
+        super().__init__(signal, feature_width=512, branch_after_block=8,
+                         use_sim=hasattr(signal, "SIM"))
         self.fold = int(fold)
         self.style_enabled = False
         self.style_plan = None

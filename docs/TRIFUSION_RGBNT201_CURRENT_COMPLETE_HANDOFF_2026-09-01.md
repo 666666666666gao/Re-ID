@@ -9034,3 +9034,24 @@ GPU1的`logs/signal_full_matched_20260925/RGBNT100/campaign.json`于20:05:56记�
 | PLAIN_V27相对同seed PLAIN_V8 | +1.5234 | +2.5120 | +1.7943 | +0.8373 |
 
 这是第二个完成的PLAIN_V27正式种子；seed42见§41.423，seed44已登记等待，不提前计算三种子均值。seed43的fused mAP/R1略低于其CNN完整分支，故不能声称融合全面胜出。只读逐查询诊断`logs/official_extra_seed43_RGBNT201_PLAIN_V27_20260925/diagnostics/RGBNT201_PLAIN_V27_seed43.json`（SHA256=`4e7871774585b2cd141bd06090ce8bdf34f82e137b427b79c094859910e83986`）记录相对纯基线AP改善382／下降175／持平279条，Rank-1修复48／新增错误19，其中新增错误15条的首位负例与query同camera；合法正负对修复66509／翻错30833。这是**已消费正式集的解释性分析**，不可按这些query或identity调模型。V27与V8的训练定义同时涉及扰动和RGBNT201 loader，本差值属于整套V27条件的效果，不单独归于扰动。20:09快照中GPU1的本机匹配完整Signal＋V8 MSVR310已通过M0并开始训练，GPU2的RGBNT201匹配完整Signal＋V8仍在训练；两者没有正式终态。
+
+### 41.430 同公开CLIP起点的完整Signal＋原V8两项正式终点完成（2026-09-25 20:22 CST）
+
+与§41.426、§41.428本机从同公开CLIP和seed1234训练得到的完整Signal checkpoint配套，固定该Signal后由seed42训练原V8三角色20轮；不启用R2记忆、V27风格或其他新头。RGBNT201 `logs/official_extra_seed42_RGBNT201_SIGNAL_V8_matched_clip1234_20260925/campaign.json`于20:19:24记录COMPLETE，20轮／1060次优化器更新；MSVR310 `logs/official_extra_seed42_MSVR310_SIGNAL_V8_matched_clip1234_20260925/campaign.json`于20:17:57记录COMPLETE，20轮／400次更新。两者M0均通过、训练AMP溢出0、冻结Signal权重不变、正式评价独立复算原Signal口径一致；不选中途权重。RGBNT201正式836 query／836 gallery按camera过滤，MSVR310正式591／1055按scene过滤；无reranking。
+
+| 同起点对照 | mAP | Rank-1 | Rank-5 | Rank-10 |
+| --- | ---: | ---: | ---: | ---: |
+| RGBNT201，本机完整Signal固定第50轮 | 69.0710 | 71.1722 | 81.4593 | 87.3206 |
+| RGBNT201，同权重＋V8 seed42固定第20轮 | **71.6763** | **73.4450** | **82.5359** | **88.1579** |
+| RGBNT201三角色增量 | +2.6053 | +2.2727 | +1.0766 | +0.8373 |
+| MSVR310，本机完整Signal固定第50轮 | 52.6203 | 70.0508 | — | — |
+| MSVR310，同权重＋V8 seed42固定第20轮 | **50.1955** | **66.6667** | — | — |
+| MSVR310三角色增量 | **−2.4248** | **−3.3841** | — | — |
+
+RGBNT201三个完整角色mAP为CNN70.7311、Transformer69.3669、Mamba71.8380；fused低于Mamba0.1616。MSVR310三个完整角色mAP/R1分别为CNN48.6670/66.1591、Transformer46.4926/61.9289、Mamba47.6114/64.4670，fused虽高于三角色，仍低于其冻结Signal。RGBNT201正式回执SHA256=`34ab13a073c4bd335549aa918fc53387199b7452be1cb6bc95ef4b5eff44f575`，角色权重=`310e5d2c6f1eeab12e3a12d3610871e490e6ee8bdb32f09689cecc13ab4cdc32`；MSVR310正式回执=`5da65fc4bfb398d0fc3a57c44d58d9a34d657012690979f0da681938757d187c`，角色权重=`f4fcb7617808bb59c86ab570797005eb0c0bb133121df03b25bc484ca56c4bf3`。可复核距离数组和模型状态SHA分别保存在各自`official_metrics.json`。
+
+只读正式诊断：RGBNT201相对本机完整Signal AP改善401／下降191／持平244条、R1修复42／新增23，合法正负对修复48405／翻错29648；MSVR310 AP改善261／下降316／持平14，R1修复23／新增43，合法正负对修复72657／翻错86673。诊断SHA分别=`72c9261a2a12947bc0b02e4b7f538c57ed75ee518a2f9e91ecc3d00b602275bc`与`6cacaebb2ffbeb2602c9a934f5089f7249e361ae5f74c9179d4ef4f033516b61`。这些仅解释已消费的正式查询，不能用于调参。与作者发布完整Signal上的SIGNAL_V8三种子相比，**MSVR310的负增量在本机匹配训练得到的完整Signal上也出现**；因此“只是作者权重来源不兼容”不再是充分解释。不过本机匹配完整Signal的RGBNT201本身未复现作者发布性能，而且本比较只有角色seed42，不能声称已经定位SIM/GAM/LAM中某一个因果因素。
+
+### 41.431 PLAIN_V27车辆入口做最小适配以验证纯起点条件（2026-09-25 20:23 CST）
+
+完成§41.430后GPU1空闲，下一项单一假设是：MSVR310中原V27在完整Signal起点为负，换成已经独立训练的纯CLIP基线后，是否保留原V8的正增量。现有入口`queue_official_extra_seed.py`、`run_official_three_dataset_roles.py`均显式把`PLAIN_V27`限制于RGBNT201；`SourceStyleMSVRBackbone`则固定`use_sim=True`，而纯基线没有SIM。实际代码已证实这会在MSVR310纯起点构造时失败，因此只删除两处数据集限制，并令车辆风格包装器像已经运行的RGBNT201版本一样使用`use_sim=hasattr(signal, "SIM")`。不修改扰动公式、loader、训练目标、评价掩码、轮次和checkpoint规则；M0先验证本机同纯基线parity与数值，随后固定第20轮完整正式评价。PLAIN_V27与PLAIN_V8仍是“风格扰动＋对应loader”的训练定义比较，不能只把差值归于风格本身。该适配无新增正式结果，待队列回执填入。
