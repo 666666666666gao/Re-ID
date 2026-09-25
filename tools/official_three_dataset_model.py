@@ -61,8 +61,9 @@ def build_model(protocol, source, clip_weight, checkpoint, expected_sha256, *, s
     if plain_baseline:
         assert not hasattr(signal, "SIM") and not hasattr(signal, "AlignM")
     state = torch.load(path, map_location="cpu", weights_only=True)
-    if name == "RGBNT100" and not plain_baseline:
-        assert all(key.startswith("module.") for key in state)
+    if name == "RGBNT100" and not plain_baseline and all(
+        key.startswith("module.") for key in state
+    ):
         state = {key.removeprefix("module."): value for key, value in state.items()}
     assert set(state) == set(signal.state_dict())
     signal.load_state_dict(state, strict=True)
