@@ -8342,3 +8342,19 @@ fused相对匹配纯baseline为 **`+0.3345 mAP / +0.6414 Rank-1`**，mAP高于�
 为了分别量化“三角色对纯baseline的增量”和“三角色对完整Signal的增量”，新增最小方法入口`SIGNAL_V8`，代码提交`8065fb19ed4ee32b2509b3f80ace4ffbf01da7e1`已推送GitHub、通过bundle快进四卡机，并以远端同conda解释器完成四个改动文件的Python编译检查。`SIGNAL_V8`加载对应数据集作者**完整Signal**冻结权重，保持3072D direct＋SIM、原V8三角色4608D残差、7680D fused、14项原V8 ID/Triplet监督和固定第20轮；不启用V27统计扰动、R2记忆或梯度调节。RGBNT201使用与`PLAIN_V8`相同的标准aligned来源loader，因此二者在角色训练形式上更接近；但两组初始化权重、冻结表示维度、分类头维度及Signal原有训练经历不同，**不能把两组fused分数直接相减归因为SIM/GAM/LAM的单项贡献**。各自只与本组对应的冻结baseline作增量比较。`SIGNAL_V8`每端均由队列先做8步M0、再训练20轮、最后独立重载并按原作者完整query/gallery协议评价；目前**尚无其M0或正式成绩**。
 
 在`PLAIN_V8`三数据集seed42/43/44矩阵完成之前，预先固定四个后继端点：GPU0在RGBNT100–PLAIN_V8 seed44完成后执行RGBNT100–SIGNAL_V8 seed42（等待PID`1935082`）；GPU1在RGBNT100–PLAIN_V8 seed43完成后执行同数据集SIGNAL_V8 seed43（PID`1935245`）；GPU2在RGBNT201–PLAIN_V8 seed44完成后执行RGBNT201–SIGNAL_V8 seed42（PID`1935334`）；GPU3在MSVR310–PLAIN_V8 seed44完成后执行MSVR310–SIGNAL_V8 seed42（PID`1934789`）。等待脚本`logs/trifusion_signal_v8_after_plain_20260925.sh`只在前序队列进程退出且前序campaign=`COMPLETE`时启动新端点；不抢占当前训练。11:47四个等待进程均实存，GPU0—3利用率约`96/100/100/100%`，`/data`可用`128195485696`字节（约119.4GiB）。四端及前序纯baseline矩阵所有种子都要完整报告，不按正式成绩挑选某一端或中间epoch。作者完整Signal与纯baseline三份checkpoint继续保留；此处“兼容”只指结构和训练入口已接通，性能是否受益仍待真实M0及完整评价。
+
+### 41.365 MSVR310纯baseline＋V8首个正式结果（2026-09-25 11:51 CST）
+
+`MSVR310–PLAIN_V8–seed42`于11:48:41完成固定第20轮、11:49:46前完成独立重载后的完整query/gallery正式评价和只读诊断，队列、训练、指标回执均为`COMPLETE`。预检中作者纯baseline同批前向与冻结前缀逐位相等，四项纯baseline正式指标与§41.328独立回执误差均小于`3e-6`个百分点；20轮合计400次优化更新，冻结状态不变、可训练参数无缺失非零梯度、AMP溢出0。评价为591条合法query/1055条gallery、作者scene过滤、无reranking、独立作者指标实现相等。
+
+| MSVR310，同seed42/同纯baseline权重 | mAP | Rank-1 |
+| --- | ---: | ---: |
+| 纯baseline | 50.5220 | 67.6819 |
+| CNN完整分支 | 48.6787 | 66.3283 |
+| Transformer完整分支 | 49.2869 | 64.9746 |
+| Mamba完整分支 | 52.1909 | **71.9120** |
+| **fused** | **52.6782** | 68.6971 |
+
+fused相对匹配纯baseline为 **`+2.1562 mAP / +1.0152 Rank-1`**，该单种子两项均过此前`+0.8`项目线；但fused Rank-1低于Mamba完整分支`3.2149`个百分点。它与另一路作者完整Signal `53.2424/72.4196`相比仍低`0.5642/3.7225`个百分点，**不同冻结起点的这个差值不是角色的单因素效应**。事后诊断：591条query的AP改善/下降/持平为`337/237/17`，Rank-1修复`42`条、新增错误`36`条；52个身份的平均AP改善/下降为`32/20`。正负关系修复`98,659`、翻错`66,465`均含重复实例对，不能替代独立query统计。这显示纯起点上角色具有实际正增量，同时也暴露固定融合未把Mamba的首位优势保留下来；一个种子的结果不代表稳定性或完整Signal起点上的同样增益。
+
+本端训练/正式指标/角色权重/诊断回执SHA256依次为`cfcdf70c9d4f8254dc753f7cd3cb7f1340b81a4b5b396b7990d6ab3eb01296e4`、`acb851c15070610d75f2867ca0411fa1fde81f8d99cfe569b792c68d070ba5f2`、`c1b978bc37a84bbf4544acfac9260bc303dd3aa37ce1fae868b1a71c6c70838b`、`a219eded4c0474c737f3a1894e9de81d69d81275a503cc1f37817bde966a9a27`，分别在`trained-model/official_extra_seed42_MSVR310_PLAIN_V8_20260925/MSVR310_PLAIN_V8_seed42/`及`logs/official_extra_seed42_MSVR310_PLAIN_V8_20260925/diagnostics/`。GPU3已自动接续MSVR310纯baseline＋V8 seed43的预检，后面还有seed44和§41.364预登记完整Signal＋V8；其余三卡仍在原任务。三份纯baseline预训练权重继续保留。
