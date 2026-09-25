@@ -9402,3 +9402,11 @@ RGBNT201–`SIGNAL_V8` seed42按新协议20轮全部训练、每轮用作者完�
 MSVR310–`SIGNAL_V8` seed42同样训练20轮并每轮用591 query／1055 gallery、scene过滤选mAP；最高在第**13轮**。所选终点原Signal`53.2424 mAP／72.4196 R1`，fused`50.6194／67.3435`，CNN／Transformer／Mamba完整分支分别`49.3576／67.0051`、`46.3962／63.2826`、`49.2441／68.1895`。fused比原Signal仍低`2.6230 mAP／5.0761 R1`；新run第20轮当轮fused mAP约`49.9769`，故best对同run末轮有帮助，却没有解决强起点车辆退化。旧固定终点为`50.7388／67.5127`，来自另一run，不能拿它作同轨迹改进值。官方回执`trained-model/official_extra_seed42_MSVR310_SIGNAL_V8_bestmap_20260926/MSVR310_SIGNAL_V8_seed42/official_metrics.json`SHA256=`e9ba08f99ed2ac7dc2419032a4e704b3c39473fc79f3f1ada6f9a722fceb3575`；角色权重SHA256=`3acf528e3c646d960b1078ab3ca86ba646c0aea9bed6e61cf36a927152c37cbb`；距离数组SHA256=`5b7ad216095f9fb7222ece3864eb39a9f3a3ff642ca0acc6a9ebfc020f1a624a`，独立作者评价一致。
 
 两项都是**已消费正式测试集按mAP选checkpoint**的探索性报告；RGBNT201所有四项同一第7轮权重，MSVR310两个主指标同一第13轮权重，没有跨轮拼最大列。RGBNT100同方法仍在训练，三数据集新选点面板待其回执闭环。
+
+### 41.472 逐轮best的正式指标已核验，训练后诊断入口修复并补跑（2026-09-26 03:32 CST）
+
+RGBNT201与MSVR310的20轮训练、best权重保存、严格重载和独立作者指标核验均已完成；原队列随后在**只读正式逐query诊断**中因旧断言仅接受`fixed_epoch==20`而退出。该错误不在训练或官方评价路径，§41.471回执与checkpoint未改动。最小修复提交`c754863`允许诊断读取新回执的`checkpoint_policy=best_official_map`与`selected_epoch`，保留旧固定终点回执；远端通过语法检查后，使用现存距离数组重跑只读诊断，并在核对诊断与原正式回执SHA一致后将两个campaign恢复为`COMPLETE`，**没有重训、重选或重新计算正式成绩**。RGBNT201/MSVR310诊断JSON SHA256分别为`1b5c666e55cccd41a5a2e9cd6dc5387fa858a14fc28582f718bbacfe3a8b8c8e`、`1ad37a5fb76909098ccadf483b8a65c373158f1c7ad77ddcdf8a46f5f5d6fcef`；campaign SHA256分别为`c1a710802413cff5d557fa35b3ac0208a9030f944db00e7c5cff8a2b7081b61d`、`2570ce99a579639305c371f6884c4ca3ab2d4a2bde1e3260127d89091372f403`。
+
+同一best权重、原Signal对照、完整官方图库下，RGBNT201的query AP改善／下降／持平为`366/158/312`，首位修复`35`、新增错误`17`，合法正负实例对修复`34,762`、翻错`10,042`，身份均值AP改善／下降／持平`22/7/1`。MSVR310对应为`251/323/17`、首位修复`21`、新增错误`51`，关系修复`72,384`、翻错`70,802`，身份改善／下降`17/35`。MSVR虽净修复更多实例关系，仍有更多query丢掉正确首位，说明逐轮mAP选best没有解决强Signal起点上的车辆排名负翻转。以上是已消费正式集的**事后只读诊断**，不能用于挑具体query、阈值或继续调本轮权重。
+
+RGBNT100同一预登记`SIGNAL_V8` seed42逐轮best训练截至03:32已完成第`5/20`轮，队列仍`RUNNING/TRAINING`；第5轮当轮fused约`86.7349 mAP/97.7259 R1`，仅为中间值，不填终态或跨轮拼接。每轮完整1715 query／8575 gallery比另外两端耗时更长，当前估计约05:00前后完成加严格重载与只读诊断，以实际回执为准。`/data`约112GiB可用，一个best角色权重逐轮覆盖，未堆积20份；无需清理旧权重。此前失败的后诊断代码已在当前远端HEAD修好，RGBNT100训练入口和运行进程未更改。
