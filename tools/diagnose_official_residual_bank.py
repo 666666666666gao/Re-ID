@@ -53,30 +53,53 @@ def main():
     bank_error = float(np.max(np.abs(bank - sum(residuals.values()) / len(ROLES))))
     assert bank_error < 1e-5
 
-    def metrics(matrix):
+    def scores(matrix):
         if receipt["dataset"] == "MSVR310":
-            values = scene_scores(matrix, saved["query_ids"], saved["gallery_ids"],
-                                  saved["query_scenes"], saved["gallery_scenes"])["metrics"]
+            return scene_scores(matrix, saved["query_ids"], saved["gallery_ids"],
+                                saved["query_scenes"], saved["gallery_scenes"])
         else:
-            values = camera_scores(matrix, saved["query_ids"], saved["gallery_ids"],
-                                   saved["query_cameras"], saved["gallery_cameras"])["metrics"]
+            return camera_scores(matrix, saved["query_ids"], saved["gallery_ids"],
+                                 saved["query_cameras"], saved["gallery_cameras"])
+
+    def metrics(values):
         names = (("mAP", "Rank-1", "Rank-5", "Rank-10") if receipt["dataset"] == "RGBNT201"
                  else ("mAP", "Rank-1"))
-        return {name: values[name] for name in names}
+        return {name: values["metrics"][name] for name in names}
+
+    rankings = {"baseline_only": scores(baseline), "residual_bank": scores(bank),
+                "fused": scores(fused)}
+    top1 = {name: np.asarray(value["first_match_rank"]) == 1
+            for name, value in rankings.items()}
+    base, residual, combined = (top1[name] for name in rankings)
 
     for name, matrix in (("baseline_only", baseline), ("fused", fused)):
-        for metric, value in metrics(matrix).items():
+        for metric, value in metrics(rankings[name]).items():
             assert abs(value - receipt["outputs"][name]["metrics"][metric]) < 1e-4
 
     result = {
+        "schema": "trifusion-official-residual-bank-posthoc-v2",
         "scope": "posthoc official test diagnosis; not a model-selection metric",
         "dataset": receipt["dataset"], "method": receipt["method"], "seed": receipt["seed"],
         "receipt_sha256": digest(args.receipt),
         "distance_arrays_sha256": receipt["distance_arrays_sha256"],
         "fusion_identity_max_error": fusion_error,
         "bank_identity_max_error": bank_error,
-        "baseline": metrics(baseline), "residual_bank": metrics(bank), "fused": metrics(fused),
-        "role_residuals": {name: metrics(matrix) for name, matrix in residuals.items()},
+        "baseline": metrics(rankings["baseline_only"]),
+        "residual_bank": metrics(rankings["residual_bank"]),
+        "fused": metrics(rankings["fused"]),
+        "role_residuals": {name: metrics(scores(matrix)) for name, matrix in residuals.items()},
+        "top1_query_counts": {
+            "total": int(len(base)),
+            "baseline_correct": int(base.sum()),
+            "bank_correct": int(residual.sum()),
+            "fused_correct": int(combined.sum()),
+            "baseline_correct_bank_wrong": int((base & ~residual).sum()),
+            "baseline_wrong_bank_correct": int((~base & residual).sum()),
+            "baseline_correct_fused_wrong": int((base & ~combined).sum()),
+            "baseline_wrong_fused_correct": int((~base & combined).sum()),
+            "bank_wrong_fused_correct": int((~residual & combined).sum()),
+            "bank_correct_fused_wrong": int((residual & ~combined).sum()),
+        },
     }
     args.output.parent.mkdir(parents=True, exist_ok=True)
     args.output.write_text(json.dumps(result, indent=2) + "\n", encoding="utf-8")
