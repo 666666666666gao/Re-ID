@@ -31,7 +31,7 @@ def loader_for(protocol, records, *, training, method, seed=42):
             from trifusion.aligned_data import build_cross_camera_train_loader
             factory = build_cross_camera_train_loader
         else:
-            assert method in ("R2", "R2_TOP1", "R2_UNIFORM", "PLAIN_V8", "SIGNAL_V8")
+            assert method in ("R2", "R2_TOP1", "R2_UNIFORM", "PLAIN_V8", "SIGNAL_V8", "SIGNAL_SIM_JOINT")
             from trifusion.aligned_data import build_aligned_train_loader
             factory = build_aligned_train_loader
         return factory(records, batch_size=64, num_instances=8, num_workers=4, seed=seed)

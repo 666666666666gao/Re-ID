@@ -59,9 +59,10 @@ def frozen_state_sha(model):
     from tools.train_signal_preserving_v17 import _tensor_mapping_sha256
 
     frozen_names = {name for name, p in model.named_parameters() if not p.requires_grad}
+    trainable_names = {name for name, p in model.named_parameters() if p.requires_grad}
     return _tensor_mapping_sha256({
         name: value for name, value in model.state_dict().items()
-        if name.startswith("baseline.") or name in frozen_names
+        if name not in trainable_names and (name.startswith("baseline.") or name in frozen_names)
     })
 
 
