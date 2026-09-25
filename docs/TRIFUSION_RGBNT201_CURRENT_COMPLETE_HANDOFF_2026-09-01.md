@@ -8481,3 +8481,9 @@ seed44训练/正式指标/角色权重/诊断SHA256依次为`0164b5a463aa8b53003
 ### 41.375 近期公开参照的资源边界（2026-09-25 13:00 CST）
 
 核对到CVPR 2026已发表的[CoT-ReID论文页面](https://openaccess.thecvf.com/content/CVPR2026/html/Gao_Chain-of-Thought_Guided_Multi-Modal_Object_Re-Identification_CVPR_2026_paper.html)与[作者代码仓库](https://github.com/Gaoya615/CoT-ReID)。作者说明覆盖RGBNT201、RGBNT100、MSVR310等任务；仓库列出CLIP ViT-B/16、DINOv3 ViT-B/16及单独准备的CoT文本标注，数据、文本与预训练权重不在仓库内分发。它应进入后续最新方法和资源条件核查，不能只沿用旧RoDI/Signal表就宣布达到当前SOTA。此次仅确认论文身份、任务与资源口径，**没有从原论文逐项核实它的正式数值，也没有在本机按其协议复现**；因此不向项目正式成绩表填入猜测指标，更不能把额外文本/DINOv3资源的结果当作与当前CLIP＋Signal权重等资源的直接因果对照。现有已登记训练不因这一文献核查而更改。
+
+### 41.376 纯baseline与完整Signal的“融合”代码边界（2026-09-25 13:03 CST）
+
+静态核查现行`tools/official_three_dataset_model.py`、`tools/train_official_three_dataset_roles.py`、`tools/run_official_three_dataset_roles.py`及`modeling/trifusion/signal_preserving_v8.py`：`_build_v8_experts`传入现成Signal或纯baseline模型；`HierarchicalFrozenSignalBackbone.__init__`对整个Signal设置`requires_grad_(False)`，CLIP前向还在`torch.no_grad()`内，`train()`强制Signal保持eval。当前`SIGNAL_V8`只是**冻结作者完整Signal权重＋训练原V8角色**；`PLAIN_V8`则是**冻结独立训练纯baseline权重＋训练原V8角色**。前者的SIM输出参与检索表示，但其参数及CLIP权重不会被角色损失更新；GAM/LAM对作者checkpoint的既有影响也不是推理时一个可以直接打开/关闭的选项。现行固定20轮的14项V8角色监督、优化器仅包含`requires_grad=True`参数；训练终点只保存非`baseline.*`状态。
+
+因此用户提出的“若兼容则融合Signal创新点”在**冻结表示组合**层面已有明确实现并正在逐数据集检验；在**从同一纯起点联合训练Signal模块和三角色**层面尚未实现，不能把`SIGNAL_V8`或`PLAIN_V8`称作该实验。真正联合训练须另设匹配的初始化、Signal自身对齐监督、训练预算/优化器、基线参数checkpoint和官方评价合同，并与对应单独训练端匹配对照；单改`requires_grad`会违背当前冻结前向与权重保存约束。当前预登记九端矩阵尚在执行，不为这一未验证方向抢占训练或修改既有队列。
