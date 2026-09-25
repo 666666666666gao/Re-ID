@@ -18,6 +18,7 @@ from tools.official_three_dataset_model import sha256
 from tools.run_official_three_dataset_roles import extract, initialize, read_protocol
 from tools.run_signal_preserving_v5 import _module_state_sha256
 from tools.train_msvr310_signal_oof import scene_scores
+from tools.train_rgbnt100_signal_oof import camera_scores
 
 
 def summarize(features, rows, environment_key):
@@ -39,8 +40,9 @@ def summarize(features, rows, environment_key):
         best_negative = scores.masked_fill(~negative, -torch.inf).max(dim=1).values
         margins[name] = (best_positive - best_negative)[eligible]
         distance = (2 - 2 * scores)[eligible].numpy()
-        checked = scene_scores(distance, identities[eligible].numpy(), identities.numpy(),
-                               environments[eligible].numpy(), environments.numpy())
+        score_fn = scene_scores if environment_key == "scene" else camera_scores
+        checked = score_fn(distance, identities[eligible].numpy(), identities.numpy(),
+                           environments[eligible].numpy(), environments.numpy())
         assert abs(checked["metrics"]["Rank-1"]
                    - 100 * int((margins[name] > 0).sum()) / int(eligible.sum())) < 1e-10
     base, candidate = margins["signal"], margins["fused"]
@@ -92,7 +94,7 @@ def main():
     args = parser.parse_args()
     receipt = json.loads(args.training_receipt.read_text(encoding="utf-8"))
     assert receipt["status"] == "FIXED_EPOCH20_TRAINING_COMPLETE"
-    assert receipt["dataset"] == "MSVR310"
+    assert receipt["dataset"] in ("RGBNT201", "RGBNT100", "MSVR310")
     assert receipt["method"] in ("R2", "PLAIN_V8", "SIGNAL_V8")
     protocol_path = Path(receipt["protocol"])
     protocol = read_protocol(protocol_path, receipt["dataset"])
@@ -120,7 +122,7 @@ def main():
         assert _module_state_sha256(model) == receipt["training"]["initial_state_sha256"]
     features = extract(model, protocol, "train", receipt["method"])
     result = {
-        "schema": "trifusion-msvr310-source-top-rank-probe-v5",
+        "schema": "trifusion-three-dataset-source-top-rank-probe-v1",
         "method": receipt["method"],
         "frozen_reference": ("pure_module_free_cls" if receipt["method"] == "PLAIN_V8"
                              else "complete_signal"),
