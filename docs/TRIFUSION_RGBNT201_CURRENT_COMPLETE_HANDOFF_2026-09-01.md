@@ -9465,3 +9465,18 @@ MSVR310直接反馈control与条件匹配candidate均用同一作者发布Signal
 candidate的CNN/Transformer/Mamba完整分支分别为`49.0624/67.8511`、`45.5895/62.9442`、`49.5643/67.1743`（mAP/R1）；control分别为`51.3527/70.0508`、`44.8195/63.2826`、`50.2511/69.2047`。因此不能说三个角色都因匹配参照变好。相对Signal的只读诊断，control的query AP改善／下降`139/425`、首位修复／新增错误`9/43`；candidate为`241/335`、`18/53`。candidate修复更多AP与首位旧错，却也制造更多新首位错，整体R1仍低。两者相比说明参照定义确实影响mAP，但**单独修正参照不充分**；又因各自按正式集选到不同epoch，这仍是用户指定选点协议下的探索性比较，不是未经选择的因果泛化估计。
 
 当前主回执／单best权重／距离数组／只读诊断SHA256：control依次为`930cb0479eafda57df48b6d9cd1522a027ce81e2314ad5dad73cdfa3abcdb1a9`、`a308f50c87bd52ba815bd23ebcfbd1d19f1692030eeede79247e782d8ce0861a`、`59be41c3a1486c6f15718bc3d4d31943dbe3f1d006fd68eaf0b102d0ce9c3f5b`、`51eae6aa9192af7c46e610f0503d26703438fbc01118289aead96806fb54ea45`；candidate依次为`2eb1623ac03e1a41dde575b5184da77e612f66354c78a079579dfcf31b9eb252`、`1b70cf4531b37dd8c80c4a174990159a699005ca83d976fcfec16cc63c0ae35e`、`83fb07dd639fa8eccfb81aabe7fc735b5af44046b5921211d4c24a029df3769d`、`792ad5a3bd13ee10a6914564db7027708fd8164c96212f5ec0a6e425ee8fd0ca`。RGBNT201配对仍在训练；RGBNT100配对已按等待条件在释放的GPU0/1启动，尚无终态。
+
+### 41.477 RGBNT201条件匹配参照完整配对：修复直接反馈损害，但仍低于无反馈V8（2026-09-26 05:54 CST）
+
+RGBNT201直接反馈control与条件匹配candidate均完整训练20轮、seed42、作者发布Signal起点，每轮以相同836 query／836 gallery及camera过滤选fused mAP，之后严格重载单一best并经独立作者评价核对。两端初始状态SHA与首步训练loss`4.1485481262`相同，M0均通过，两个campaign及只读诊断均`COMPLETE`；control选第**2轮**、candidate选第**7轮**。每行四项都来自该行一个权重，没有按列挑轮。
+
+| RGBNT201，逐轮best | mAP | Rank-1 | Rank-5 | Rank-10 |
+| --- | ---: | ---: | ---: | ---: |
+| 冻结原Signal，两端相同 | 80.3029 | 85.1675 | 91.3876 | 93.6603 |
+| 直接SIM反馈，control fused | 80.9612 | 85.8852 | 92.5837 | **94.9761** |
+| 条件匹配参照，candidate fused | **82.4707** | **86.2440** | **92.5837** | 94.1388 |
+| candidate－control | **+1.5095** | **+0.3589** | 0 | **−0.8373** |
+
+candidate相对原Signal四项为`+2.1678/+1.0766/+1.1962/+0.4785`，其中Rank-10未到原约+0.8线；无反馈V8同一新选点协议seed42为`83.2014/87.3206/92.8230/94.7368`，candidate四项仍分别低约`0.7307/1.0766/0.2392/0.5981`。candidate的CNN/Transformer/Mamba完整分支mAP分别`81.1733/81.1565/81.7552`；control为`78.8193/81.1595/80.5406`，结构影响因角色而异。相对原Signal的只读诊断，control的query AP改善／下降`284/261`、首位修复／新增错误`30/24`；candidate为`348/179`、`23/14`。**匹配参照降低直接反馈的部分损害，但当前反馈路线仍未超过更简单的无反馈V8；不能把“修正参照”当成完整增益证明。**
+
+当前主回执／唯一best权重／距离数组／只读诊断SHA256：control依次为`6d6f0127862238b7b99eaf19d6a13c198654542ca9bfb9e77faae515a31266b6`、`bb14c4f4d07bf6980fbf3da4adc25a643fc8f45923ef2f24a244c24aad1ee863`、`6ccef2879a8310e17ab16526099888031e8b79a1b1999361c8da0446b29784cd`、`1ec2f297ca93ef490cf40168f03e777f6065fce771e56afbe307a6b5564e8425`；candidate依次为`d542bd667095055c45e597b44fa2d6f36af50127ac1969356bff8e62fcfe2dc9`、`186db37c653a216c22d46a8054d218b6c6b968df4095957a981dedec70f1fd0a`、`0727965c2a833f30027311e57f9b3044269e69f46a5d47bf8d7880e557a753be`、`26a7ff4eb5d22aeaf8605cf82616f3c84c220a2fb2a56814c220762bf509f1fc`。RGBNT100 matched/control均仍在训练，三数据集总判断等待它们完成；已消费正式集选点与诊断均不充当独立留出证明。
