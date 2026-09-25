@@ -9388,3 +9388,9 @@ RGBNT100使用同一公开CLIP、seed1234和作者完整Signal配置独立训练
 用户“按每轮官方评价mAP保存best”的要求也已在三角色正式入口实现，提交`be59526`已推送GitHub并同步四卡服务器。新`--checkpoint-policy best_official_map`仅在完整训练每轮结束后，使用**同一模型当前状态**抽取完整官方query/gallery，并调用Signal作者原`eval_func`或`eval_func_msrv`对fused计算mAP；本轮mAP大于等于旧最佳时覆盖一个角色权重，记录选中轮次、当轮四项指标、实际checkpoint状态SHA。20轮仍全部训练，结束后严格重载选中权重完成所有分支的正式评价；RGBNT201报告四项、车辆数据集报告mAP/R1。既有训练入口默认仍为`fixed_final_epoch`，已封存R2/V27/原V8/SIM系列不会被重写成best结果。新选点改变了每轮评价与checkpoint规则，与旧固定末轮实验不构成纯粹“方法模块”的单变量比较；而且选点使用已消费官方测试集，必须明确标注探索性选点偏差。
 
 02:53先在空闲GPU0启动一个`SIGNAL_V8`、RGBNT201、seed42的逐轮best流程作完整端到端核验；当前campaign`logs/official_extra_seed42_RGBNT201_SIGNAL_V8_bestmap_20260926/campaign.json`为`RUNNING/M0`，**尚无任何新正式成绩**。先检查8步M0、第一轮全量评价、最优权重覆盖与最终严格重载；该端闭环前不把另两个数据集同一新入口称为已经跑通。
+
+### 41.470 原V8在三数据集的逐轮best完整对照已启动，M0均通过（2026-09-26 03:05 CST）
+
+新选点入口提交`be59526`的首批受控端固定为作者发布Signal初始化、原V8三角色、seed42、原20轮训练和各数据集原loader；**网络、14项监督、角色学习率、正式图库均不变**，只新增每轮fused官方mAP评价与单一best checkpoint。RGBNT201／RGBNT100／MSVR310分别在GPU0／GPU2／GPU1启动，campaign为`logs/official_extra_seed42_{dataset}_SIGNAL_V8_bestmap_20260926`。三份真实8步M0全部`M0_PASS`、0 AMP溢出、冻结Signal未变，`training.json`SHA256分别`f92e7f1ce1493c2cb2cbe30393045cf00dead245087003c25cfcdb34b662ea56`、`cbbad7f749c9896217733f67974faf722147b08206c8e0be9d10e269846e8c4b`、`9140d24795a8c8d26c769de3fed012b0f94dcc7f2229cfe561d02067943f3352`。03:05完整训练及每轮评价均已实际运行，RGBNT201和MSVR310各完成到第7轮，RGBNT100到第1轮；这些中间分数不填正式终态。按目前轮时估计MSVR310约03:20、RGBNT201约03:25、RGBNT100约04:50以后完成加严格重载，实际以回执为准。`/data`尚有约112GiB，逐轮覆盖一个约40MB的角色权重，不堆积20份。
+
+这里的best由**官方测试集**选择，只能作为用户指定选点协议下的探索性完整结果；它不是独立验证集选点，更不能把旧固定第20轮数值当成同一训练轨迹的末轮消融。三个数据集必须报告各自选中轮次、该同一checkpoint的所有要求指标、Signal单独输出、角色和fused，以及独立作者评价一致性。若新选点提高总指标，只能说明这套训练与选择协议取得较好终点，不能自动证明新增结构机制解决了此前观察到的跨身份负翻转。
