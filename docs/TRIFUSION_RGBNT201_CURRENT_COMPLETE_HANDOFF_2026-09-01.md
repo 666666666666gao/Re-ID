@@ -9289,3 +9289,15 @@ RGBNT201只有51/171个训练身份提供跨camera合法正例，因此1396并�
 反馈端的CNN/Transformer/Mamba完整分支mAP/R1分别为44.3930/58.3756、47.6514/64.6362、47.6765/64.1286，均低于原Signal。此处原Signal自身严格不变，负结果来自新增角色表示/其固定融合，而非§41.439那样原SIM权重被训练坏。来源训练集固定一批64图的终态只读注入量：映射权重L2范数2.3933，加入CLS的向量平均范数1.6247，原CLS平均范数6.4839，比值平均**0.2519**、最大0.3027，加入方向与原CLS余弦均值−0.0615。诊断`logs/official_extra_seed42_MSVR310_SIGNAL_SIM_FEEDBACK_20260925/diagnostics/feedback_scale_source64.json`SHA256=`b23906ffef16fefd85897cc07c3cd13073034e13fe000dc5baf8ef0df4aee8db`。它证实反馈既不是零作用，也不是几倍于原Token的极端量级；**不能单凭幅度证明退化的唯一原因**。RGBNT201/RGBNT100同一预定方法仍在运行，绝不因MSVR这个负结果改其参数、提前停机或删掉正式结果。
 
 从这份**已消费正式集**回执做只读逐query诊断：591条合法query中AP改善211、下降365、持平15；原Signal Rank-1错误修复16条，却新增**76条**首位错误（原冻结V8的同口径是修复22／新增51）；新增76条中22条的错误首位图库与query同scene，不能把其余错误统一归因于同场景捷径。52个身份的平均AP改善14、下降38；全部合法正负实例关系修复71,875对、翻错93,884对，含重复实例对。诊断`logs/official_extra_seed42_MSVR310_SIGNAL_SIM_FEEDBACK_20260925/diagnostics/official_posthoc.json`SHA256=`d0b96c5bdad7228b00b3a424205f9e5624dda2af334099d62bfec6cc8bdca797`。这是事后解释，不用于针对任何正式query或身份选参数。
+
+### 41.457 RGBNT201单向SIM反馈正式结果：平均关系略增仍未保住首位（2026-09-25 23:47 CST）
+
+同一预登记方法RGBNT201 seed42固定20轮／1060次更新完成，AMP溢出0、冻结Signal状态不变；严格重载终点，正式836 query／836 gallery、camera过滤、无reranking，独立作者评价器逐项一致。回执`trained-model/official_extra_seed42_RGBNT201_SIGNAL_SIM_FEEDBACK_20260925/RGBNT201_SIGNAL_SIM_FEEDBACK_seed42/official_metrics.json`SHA256=`3bc644310da988d2736191dd1257d5a3d2a51366f6c85fc4c386c8062059e4ab`；checkpoint SHA256=`c44ff0a74e1a1d9d8644d1ac0f6623e7a4bca2479b65cadf072d1f367a6675fe`；距离数组SHA256=`4dfe0cbb72912f80cfecf48f6a17702c953e75d5e29f44c6daccf95bf486a167`。
+
+| RGBNT201，作者发布Signal起点、同seed42 | mAP | Rank-1 | Rank-5 | Rank-10 |
+| --- | ---: | ---: | ---: | ---: |
+| 原冻结Signal单独输出 | 80.3029 | 85.1675 | 91.3876 | 93.6603 |
+| 原冻结Signal＋V8 fused | **82.0950** | **86.9617** | **91.9856** | **94.0191** |
+| 冻结Signal＋SIM反馈到角色CLS，fused | 79.7656 | 84.0909 | 91.5072 | 93.8995 |
+
+反馈端相对原V8分别为**−2.3294/−2.8708/−0.4785/−0.1196**个百分点。CNN/Transformer/Mamba完整分支mAP/R1为79.4434/84.3301、77.4566/82.0574、80.4147/84.5694；Mamba单支mAP高于原Signal和fused，但仍低于原V8 fused。只读正式诊断中，原Signal→反馈fused修复20条Rank-1错误、新增29条；合法正负关系修复24,689对、翻错23,167对（含重复实例关系），净关系数略正而mAP/R1仍下降，重现“平均关系与关键首位不一致”。诊断`logs/official_extra_seed42_RGBNT201_SIGNAL_SIM_FEEDBACK_20260925/diagnostics/official_posthoc.json`SHA256=`26655c66078b6611080898bb6c960eeca00450a0d7e65b9629e281501568ed86`。这是正式集事后解释，不能用这些query调新投影。RGBNT100预定端仍在训练，三数据集总判断等待其终态。
