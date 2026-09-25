@@ -9129,3 +9129,7 @@ seed43正式回执、角色权重、距离数组、只读诊断SHA256依次为`5
 ### 41.437 MSVR310最小SIM联合训练M0通过并进入20轮（2026-09-25 20:57 CST）
 
 GPU3的`logs/official_extra_seed42_MSVR310_SIGNAL_SIM_JOINT_20260925/campaign.json`已进入`RUNNING/TRAINING`，M0于20:55:24通过，8次优化器更新、AMP溢出0、冻结字段哈希不变、所有声明可训练参数均有非零梯度，包括`baseline.signal.SIM.modal_interactive`的12个张量；M0模型SHA从`148c83e668c440338f1e953f4a529f1079ec8813e5e86cf7ab1504bbf7fce759`变化为`148cd0342ebae69a2df863c46245416a684b6a0c9b477aeb6d0eb13931f8360b`。固定20轮的第1轮有限loss约4.3519、用时28.49秒，按此速率估计21:05～21:07完成全量正式评价，实际回执为准。M0只说明真实梯度和冻结边界符合§41.435，**没有证明联合训练提高MSVR310 mAP或Rank-1**。同期GPU1 RGBNT100 PLAIN_V27 seed44第2轮、GPU2同方法seed42第9轮、GPU0 RGBNT100 R2 seed47继续；四卡均有训练进程。
+
+### 41.438 最小SIM联合训练三数据集已固定队列，中段只证实优化正常（2026-09-25 21:01 CST）
+
+MSVR310的`SIGNAL_SIM_JOINT`第9/20轮完成，近五轮来源平均loss为1.7737、1.4746、1.3134、1.1783、1.0353，约26～27秒/轮；`/data`余115.37GiB。此为训练中检查，不填正式指标。为避免根据MSVR310第一个正式分数决定是否试其余数据集，现已**预先固定同一方法seed42的三数据集完整比较**：GPU3的RGBNT201联合SIM任务等待MSVR310联合SIM campaign完成；GPU1的RGBNT100联合SIM任务等待该GPU已在运行的RGBNT100 PLAIN_V27 seed44 campaign完成。两项等待队列都指向已存在的campaign，未创建结果、未占用额外GPU，训练仍固定第20轮、各自原Signal完整query/gallery及camera过滤；RGBNT201报告mAP/R1/R5/R10，RGBNT100与MSVR310报告mAP/R1。方法配置不随MSVR中途loss或正式测试结果改变。该对照仍属于已消费正式集后的探索性完整验证，不能宣称未触碰测试的模型选择。
