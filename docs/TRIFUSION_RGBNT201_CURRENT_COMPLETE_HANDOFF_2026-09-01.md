@@ -8321,3 +8321,18 @@ GPU0的RGBNT100–`PLAIN_V8` seed42固定第1/2轮均完整结束，各`130/131`
 fused相对匹配纯baseline为 **`+0.3345 mAP / +0.6414 Rank-1`**，mAP高于三个完整分支，但Rank-1低于Mamba；并未达到主指标各`+0.8`的项目目标。作者**完整**Signal `86.3242/97.5510`仍高于本端fused约`2.2855/1.8659`点，这只是不同冻结初始模型之间的数值距离，不能解释成某一模块的单因素因果作用。只读正式排序诊断：1715条query的AP改善/下降/持平为`720/641/354`；Rank-1修复`28`条、产生新错误`17`条；50个身份的平均AP改善/下降/持平为`25/21/4`。正负关系修复`8,323,038`、翻错`4,045,810`是大量重复实例对，不能当成独立样本或替代query指标。
 
 本端角色权重`roles_epoch20.pth` SHA256=`8cbe2681eed0a0dfbec713b36c45f8336de3ab4559c57fbafc464faae4dab0ff`；训练/正式指标/诊断回执SHA256依次为`0278181f30caeec1df1ef8be7969ea4f1ffb8816e0594dda0931b087d5cd4ac2`、`484f581560312b3b08593be23f9495556b7bfcd9499b92b172e8e1863ec78e0f`、`5a905d728fcb4962d8efd7b8992e4db361c8b5aa2b4a4b9f18d3d5e735f5b11c`。初始化纯baseline权重SHA仍为`299a28bf...bd`，原件与`pertrained-model/`硬链接均保留；本端角色权重也暂保留以供复核。后处理入口的只读诊断自动执行已在代码提交`156266b`部署，**不影响本端已运行代码**；本端使用先前登记的单次诊断等待器。GPU0于本端结束后已自动接续RGBNT201–`PLAIN_V8` seed43且状态`TRAINING`；GPU1/2/3的`R2_UNIFORM`固定任务继续，之后按§41.361接续纯baseline三种子矩阵。尚未完成的八个纯baseline＋角色端点不填正式指标。
+
+### 41.363 MSVR310固定1/1梯度对照终态，GPU3自动接续纯baseline（2026-09-25 11:42 CST）
+
+`MSVR310–R2_UNIFORM–seed42`在11:37:19结束固定第20轮、11:38:19完成独立重载后的正式完整query/gallery评估；队列与指标回执均为`COMPLETE`、`independent_upstream_metrics_equal=true`，591条合法query、1055条gallery，按作者scene规则过滤同身份同scene、保留所有异身份干扰，无reranking。它只将角色参数块上的排名/辅助梯度组合固定为`1/1`，与同seed42原R2的作者完整Signal初始化、协议SHA、训练终点和其余方法合同相同；这是R2控制器的对照，**不是纯baseline消融端点**。
+
+| MSVR310，同seed42完整Signal起点 | mAP | Rank-1 |
+| --- | ---: | ---: |
+| 冻结作者Signal | 53.2424 | 72.4196 |
+| 原R2 | 52.3211 | 69.0355 |
+| 固定1/1 R2_UNIFORM | 52.1545 | 68.5279 |
+| 固定1/1相对原R2 | **−0.1665** | **−0.5076** |
+
+事后只读诊断中，R2_UNIFORM相对冻结Signal的逐query AP改善/下降/持平为`288/287/16`，Rank-1修复`22`条、产生新错误`45`条；52个身份中平均AP改善/下降为`24/28`。合法正负关系修复`78,123`、翻错`63,344`，属于大量重复实例对，不能据其净修复推断首位或mAP必然提高。本端fused低于作者Signal`1.0879 mAP/3.8917 Rank-1`个百分点；原R2也低于作者Signal，因此本结果只说明固定1/1在该MSVR310端点没有优于原R2，不能单凭一端证明EMA动态控制在所有数据集有效。
+
+本端训练回执、正式指标、角色权重与诊断SHA256分别为`be9d7f3869f329300b2ae42727a8855a8fc1f8f8029a75bd2459156721ef33c8`、`7fb9a763dc66f2d1b09662be54c817c49c0034b1bde799884277cdf0c6a84d5b`、`d10820d0f656685f9af8b712469b075201320147006f2c73d06c13e712f4bd56`、`3ec7e442a1ca7d444d1c25b9e4c82f383a7eeb0c6150c3540a244bd94aac2fa9`，分别保存在`trained-model/official_extra_seed42_MSVR310_R2_UNIFORM_20260924/MSVR310_R2_UNIFORM_seed42/`和`logs/official_extra_seed42_MSVR310_R2_UNIFORM_20260924/diagnostics/`。本端训练代码由队列记录为`c570ee70`，诊断仅在终态后读取保存的正式距离数组，不参与训练、调权或选点。GPU3于11:38:54自动启动`MSVR310–PLAIN_V8–seed42`，11:39:31通过自身预检与8步M0并进入`TRAINING`；后面仍排同数据集seed43/44。GPU0的RGBNT201纯baseline角色、GPU1/2的RGBNT100/RGBNT201 R2_UNIFORM仍在训练；四张GPU均有实训任务，`/data`约余119.4GiB。纯baseline MSVR端目前**尚无正式角色指标**。
