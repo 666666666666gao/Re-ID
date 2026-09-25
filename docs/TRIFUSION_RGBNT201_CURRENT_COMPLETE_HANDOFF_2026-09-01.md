@@ -8523,3 +8523,62 @@ fused的mAP高于本端三个完整角色，但CNN的R1/R5更高、R10与fused�
 用户指出纯baseline相对之前偏低。应区分三种起点：RGBNT201独立训练的纯CLIP baseline为`69.6415 mAP/71.4115 Rank-1`，接近Signal论文同类消融的`70.3/71.8`；作者完整Signal为`80.3029/85.1675`，包含SIM/GAM/LAM相关训练及表示收益。RGBNT100纯baseline为`83.7042/95.0437`，实际上高于旧本机Signal固定终点`80.7122/94.2274`，但低于当前作者发布的完整Signal权重`86.3242/97.5510`。MSVR310纯baseline为`50.5220/67.6819`，作者完整Signal为`53.2424/72.4196`。纯baseline与完整Signal之间的差值不能记作TriFusion的增益；纯起点角色实验应相对其匹配纯baseline，完整Signal起点角色实验应相对作者完整Signal。三份纯权重继续保留，作为独立的预训练起点。
 
 13:19前核对GPU0–3均有训练进程，`/data`尚余约119GiB。原GPU1后继等待器PID`1793701`只计划启动`RGBNT100–PLAIN_V8–seed43`，再下游等待器PID`1935245`只计划启动`RGBNT100–SIGNAL_V8–seed43`；两个目标campaign与训练输出目录均不存在。为避免GPU3完成`RGBNT201–SIGNAL_V8–seed44`后空闲，终止**仅这两个尚未启动训练的等待器**，保留GPU1正在训练的`RGBNT100–R2_UNIFORM–seed42`。将同一预登记seed43的PLAIN_V8→SIGNAL_V8顺序改接GPU3：新等待器PID`2140669`等待GPU3的RGBNT201 seed44完整`COMPLETE`，下游PID`2141330`等待PLAIN_V8 seed43完整`COMPLETE`。核验四个相关进程存在、两个目标campaign仍未启动；方法、种子、20轮终点与作者正式评价协议均未改变，也没有按正式成绩挑选权重。该队列转移不产生新的性能指标。
+
+### 41.380 短暂SSH观测中断后的六项正式终点复核（2026-09-25 15:00 CST）
+
+13:37附近两次连接`172.19.12.128:2026`超时；**没有因此重启任何训练**。14:55连接恢复后，原`RGBNT201–SIGNAL_V8–seed44`队列回执显示固定第20轮13:37:07完成、正式评价13:38:00完成，原下游等待器如约自动接续。随后核查在断连期间完成的六个端点：每端campaign、训练回执、正式指标均`COMPLETE`，固定epoch20；训练记录均报告冻结状态不变、可训练参数无缺失非零梯度、AMP溢出0；官方完整query/gallery指标与作者独立实现相等。对应RGBNT201为836/836、RGBNT100为1715/8575，合法同身份同环境过滤，无reranking。各端的权重文件SHA与训练、指标回执中的绑定相等；五个已有只读诊断的`receipt_sha256`也与正式指标文件实存SHA相等。`RGBNT201–R2_UNIFORM–seed42`原队列未自动产诊断，15:00使用现有只读脚本对其保存的正式距离回执补做诊断，未训练或选权重。
+
+下表是**完整正式测试**；不同起点分开列，单位%。`SIGNAL_V8`与`R2_UNIFORM`相对冻结作者完整Signal，`PLAIN_V8`相对独立训练的纯CLIP baseline，不能跨起点把数值差归因于某个模块。
+
+| RGBNT201 条件／输出 | mAP | Rank-1 | Rank-5 | Rank-10 |
+| --- | ---: | ---: | ---: | ---: |
+| 作者完整Signal | 80.3029 | 85.1675 | 91.3876 | 93.6603 |
+| SIGNAL_V8 seed44／CNN | 81.6736 | 86.1244 | 92.5837 | 94.3780 |
+| SIGNAL_V8 seed44／Transformer | 79.8761 | 83.8517 | 91.3876 | 93.7799 |
+| SIGNAL_V8 seed44／Mamba | **82.7419** | 86.7225 | 92.2249 | 94.1388 |
+| **SIGNAL_V8 seed44／fused** | **82.6129** | **87.0813** | **92.8230** | **94.2584** |
+| R2_UNIFORM seed42／CNN | 80.4660 | 85.5263 | 91.3876 | 93.5407 |
+| R2_UNIFORM seed42／Transformer | 80.7094 | 85.6459 | 91.8660 | 93.7799 |
+| R2_UNIFORM seed42／Mamba | 82.0699 | 86.8421 | 91.9856 | 93.6603 |
+| **R2_UNIFORM seed42／fused** | **82.2481** | **86.4833** | **92.1053** | **94.1388** |
+| 独立纯CLIP baseline | 69.6415 | 71.4115 | 80.1435 | 85.6459 |
+| PLAIN_V8 seed42／CNN | 70.7797 | 71.6507 | 82.1770 | 87.4402 |
+| PLAIN_V8 seed42／Transformer | 68.5124 | 70.9330 | 81.4593 | 86.7225 |
+| PLAIN_V8 seed42／Mamba | **71.4939** | **73.6842** | 83.4928 | 88.2775 |
+| **PLAIN_V8 seed42／fused** | **70.9622** | **71.7703** | **83.1340** | **88.0383** |
+
+`SIGNAL_V8` seed44 fused相对其完整Signal为`+2.3100/+1.9139/+1.4354/+0.5981`，四项均正但Rank-10仍低于事先规定的`+0.8`线，且Mamba的mAP高于fused `0.1290`。`PLAIN_V8` seed42 fused相对**自己的纯baseline**为`+1.3207/+0.3589/+2.9904/+2.3923`，R1增益较薄且Mamba mAP较高；它不能被写成从纯baseline增长十点。`R2_UNIFORM` seed42 fused相对完整Signal为`+1.9452/+1.3158/+0.7177/+0.4785`，同样未通过RGBNT201四项各`+0.8`。
+
+| RGBNT100 条件／输出 | mAP | Rank-1 |
+| --- | ---: | ---: |
+| 作者完整Signal | 86.3242 | 97.5510 |
+| SIGNAL_V8 seed42／CNN | 84.7218 | 97.5510 |
+| SIGNAL_V8 seed42／Transformer | 85.8543 | 96.7347 |
+| SIGNAL_V8 seed42／Mamba | 85.1446 | **98.0758** |
+| **SIGNAL_V8 seed42／fused** | **86.1378** | **97.5510** |
+| SIGNAL_V8 seed44／CNN | 85.1081 | 97.3178 |
+| SIGNAL_V8 seed44／Transformer | 85.7297 | 96.1516 |
+| SIGNAL_V8 seed44／Mamba | 85.0115 | 97.3761 |
+| **SIGNAL_V8 seed44／fused** | **86.3911** | **97.1429** |
+| 独立纯CLIP baseline | 83.7042 | 95.0437 |
+| PLAIN_V8 seed43／CNN | 82.6816 | 95.6268 |
+| PLAIN_V8 seed43／Transformer | 83.3326 | 94.4023 |
+| PLAIN_V8 seed43／Mamba | 82.8359 | **96.1516** |
+| **PLAIN_V8 seed43／fused** | **83.8111** | **95.2187** |
+
+RGBNT100完整Signal起点的seed42 fused变化为`−0.1864/0.0000`，seed44为`+0.0669/−0.4081`，均不满足两项同步增益；纯起点seed43 fused仅`+0.1069/+0.1750`。纯起点已完成seed42/43/44的mAP都比匹配纯baseline略高，但并未接近作者完整Signal `86.3242/97.5510`。正式逐query诊断也显示收益与损害并存：RGBNT100的SIGNAL_V8 seed42首位修复／新增错误`12/12`，seed44为`10/17`，PLAIN_V8 seed43为`23/20`；RGBNT201的SIGNAL_V8 seed44为`28/12`，PLAIN_V8 seed42为`34/31`。这些是同一正式集合上的事后解释，不据此调参或挑新seed。
+
+六端训练／指标／权重／诊断文件SHA256按此顺序保存在下表；文件路径均为`trained-model/official_extra_seed<seed>_<dataset>_<method>_<date>/<dataset>_<method>_seed<seed>/`的`training.json`、`official_metrics.json`、`roles_epoch20.pth`，诊断为对应`logs/.../diagnostics/<dataset>_<method>_seed<seed>.json`。R2_UNIFORM日期`20260924`，其他均`20260925`。
+
+| 端点 | 训练SHA256 | 指标SHA256 | 权重SHA256 | 诊断SHA256 |
+| --- | --- | --- | --- | --- |
+| RGBNT201 SIGNAL_V8 44 | `b061890ffaae70699f51b469a8b91c6daae8d921b422d9fea4422c06580bebc8` | `dbb00e57dc96b0d4455627408c84efa32b728643efdb3fc58fb6a0bb8bcad354` | `040878c7c62bf442d918c56c814972f3c88ad7cd601883aeb6119b0aa6de0395` | `e1de54ae4ded6d6e541a17b61ef2234f62bd25a1b1f44fc1844c5f498d0e8a4f` |
+| RGBNT100 SIGNAL_V8 42 | `b2b94c45f66ef42e961c9fd1743073feb8a9b708d16492ca1a076884e48b8a25` | `93d7b65190276939cefcd1ac734822ec02d8ac9e2244bbe911f09a77cb6beddc` | `7bef66f73150badb9842510bb67a766875b12edda44a1aef5dba8032b4fc914e` | `6abb5f2ef2a6e7d0f88a6cf6a6517b719de31b35ba3eb7b162dd81bd5da75de5` |
+| RGBNT100 SIGNAL_V8 44 | `0a18f14ed8633b044355561322c814a13f5405935b5ec167a0604de8540214dd` | `f5a76869e7c033774e74982c22f24b03b17406f27ee7795f42c1d72ea1008935` | `9112d4feb3977bed3ed85253be0a6dc47386ebe00ac703ea19e0c662ddedc595` | `3583db1077ff029b2fb714d8ef90e63d2ed2926ae821a3335f7e59907a4d8602` |
+| RGBNT201 PLAIN_V8 42 | `c4b138b221d927c16a6d1452944df9c1aa3869adfe986ff70a9ca6d5b7b089b2` | `e21f4dce3ffd378a0b04fddce36e264137bb129afabe7770eaca6d7c7362b1ed` | `a9fa9255cdc3e3088fab14f88530bf26808076bb333b4e9daec1521f0d0b2612` | `f8bfafea46016f33a14afc8a477a1151f3eabf65cc2f3afc0ab920e8a77d7d5d` |
+| RGBNT100 PLAIN_V8 43 | `4c19cd940807ddb747b8f9524db337bfe2ca5b831e85864cfe5d8b2673137e06` | `be817e717f669d38c8852fc8e3142000f891bd9bf074987265ffc338026ab361` | `fe63519c2d85e7afc5de392184fab1c34e06751ceeed91f180dc5da73c25becb` | `b24dbecb27b1a95c3e28746f6a4ff364dd09932a8cc1fd86d826acc73e088d2e` |
+| RGBNT201 R2_UNIFORM 42 | `ef05b9d16ff35b4474fd40e8451a9ee0c4a8d2947b07fa1316fadc5569f67fa8` | `5107b204ce708169227aea5d7dd33b3742a4c12a3f37b748dd02ad8afc5438d8` | `640c5880bff2a36ae2cdcdfb179ffb99561835a5112eac3a283e247eafe8fcb3` | `914e74f8dab4efa9fd510fe5c9ef9b3ecf3313001ec4859399fbe1f8f23386eb` |
+
+`R2_UNIFORM`与已封存的同seed42原R2使用同一初始角色状态SHA`a367d697...0985`、同一作者Signal权重和协议、均为1060次更新；原R2正式fused `82.4387/86.7225/92.4641/94.0191`，相对固定1/1无梯度平衡的R2_UNIFORM为`+0.1907/+0.2392/+0.3589/−0.1196`。这只是单seed完整正式比较，不能写成R2控制器在三个数据集稳定有效，RGBNT100的固定1/1端仍在训练。鉴于该正式集合已多次用于比较，后续新机制不能用本表挑权重或增补有利seed。
+
+为保持四卡运行：14:55实查GPU0空闲，GPU1训练RGBNT100–R2_UNIFORM seed42、GPU2训练RGBNT201–PLAIN_V8 seed44、GPU3训练RGBNT100–SIGNAL_V8 seed43；原GPU2末端等待器PID`1935334`尚未启动RGBNT201–SIGNAL_V8 seed42，目标campaign与输出目录都不存在。终止**仅该等待器**，于GPU0用原登记的同方法、同seed、同epoch和协议启动队列PID`2236807`，14:56:28回执=`RUNNING/M0`。GPU2的PLAIN_V8 seed44继续运行且无重复队列。`/data`约余118GiB。前述六项虽已验收，18端纯/完整Signal矩阵和R2_UNIFORM三数据集尚未全部结束，不把本节部分成绩写成完整方法结论。
