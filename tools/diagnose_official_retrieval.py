@@ -25,7 +25,13 @@ def main():
     args = parser.parse_args()
     assert not args.output.exists()
     receipt = json.loads(args.receipt.read_text(encoding="utf-8"))
-    assert receipt["status"] == "COMPLETE" and receipt["fixed_epoch"] == 20
+    assert receipt["status"] == "COMPLETE"
+    checkpoint_policy = receipt.get("checkpoint_policy", "fixed_final_epoch")
+    if checkpoint_policy == "best_official_map":
+        assert receipt["fixed_epoch"] is None
+        assert 1 <= receipt["selected_epoch"] <= 20
+    else:
+        assert checkpoint_policy == "fixed_final_epoch" and receipt["fixed_epoch"] == 20
     distance_path = Path(receipt["distance_arrays"])
     assert sha256(distance_path) == receipt["distance_arrays_sha256"]
     saved = torch.load(distance_path, map_location="cpu", weights_only=False)
@@ -112,7 +118,9 @@ def main():
                                       (describe(int(q)) for q in broken))
     report = {
         "status": "COMPLETE_OFFICIAL_POSTHOC_DIAGNOSIS",
-        "scope": "Fixed official test receipt, no training, no model selection or parameter update",
+        "scope": "Official test receipt, read-only posthoc diagnosis",
+        "checkpoint_policy": checkpoint_policy,
+        "selected_epoch": receipt["selected_epoch"] if checkpoint_policy == "best_official_map" else None,
         "dataset": receipt["dataset"], "method": receipt["method"], "seed": receipt["seed"],
         "receipt_sha256": sha256(args.receipt),
         "distance_arrays_sha256": receipt["distance_arrays_sha256"],
