@@ -62,6 +62,7 @@ def train_v27(model, protocol, records, config, *, m0, directory, seed=42, style
     sim_lr = SIM_JOINT_LOWLR if joint_sim_low_lr else None
     optimizer, scaler, criterion = _setup(model, config, sim_lr=sim_lr)
     method = ("SIGNAL_SIM_JOINT_LOWLR" if joint_sim_low_lr else
+              "SIGNAL_SIM_FEEDBACK_MATCHED" if model.matched_feedback_reference else
               "SIGNAL_SIM_FEEDBACK" if sim_feedback else "SIGNAL_SIM_JOINT" if joint_sim
               else "PLAIN_V27" if style and plain_baseline
               else "V27" if style else "PLAIN_V8" if plain_baseline else "SIGNAL_V8")

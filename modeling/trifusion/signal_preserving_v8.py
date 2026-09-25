@@ -394,6 +394,13 @@ class PretrainedTailTriExpertEncoder(nn.Module):
             1, 2, 0, 3
         )
 
+    def reference_from_anchor(self, anchor_sequence: torch.Tensor) -> torch.Tensor:
+        batch_size, modality_count = anchor_sequence.shape[:2]
+        sequence = self._to_lbd(anchor_sequence)
+        for block, layer_index in zip(self._tail_blocks, self.tail_layer_indices, strict=True):
+            sequence = self._run_tail_block(block, sequence, layer_index)
+        return self._from_lbd(sequence, batch_size=batch_size, modality_count=modality_count)
+
     def forward(
         self,
         anchor_sequence: torch.Tensor,
@@ -564,6 +571,7 @@ class SignalPreservingExpertFormationV8(nn.Module):
         self.num_classes = int(num_classes)
         self.baseline_embedding_width = fusion.baseline_width
         self.sim_to_token: nn.Linear | None = None
+        self.matched_feedback_reference = False
         self.fused_embedding_width = fusion.fused_embedding_width
         self.branch_embedding_width = fusion.branch_embedding_width
         self.residual_embedding_width = fusion.expert_width
@@ -630,6 +638,7 @@ class SignalPreservingExpertFormationV8(nn.Module):
         if retrieval_output == "baseline_only" and not return_aux:
             return field.baseline_embedding
         anchor_sequence = field.anchor_sequence
+        reference_sequence = field.reference_sequence
         if self.sim_to_token is not None:
             sim_modal = field.baseline_embedding[:, -3 * self.baseline.feature_width:].reshape(
                 -1, 3, self.baseline.feature_width
@@ -641,9 +650,11 @@ class SignalPreservingExpertFormationV8(nn.Module):
             anchor_sequence = torch.cat(
                 (anchor_sequence[:, :, :1] + token_delta, anchor_sequence[:, :, 1:]), dim=2
             )
+            if self.matched_feedback_reference:
+                reference_sequence = self.encoder.reference_from_anchor(anchor_sequence)
         representations = self.encoder(
             anchor_sequence,
-            field.reference_sequence,
+            reference_sequence,
         )
         fusion = self.fusion(field.baseline_embedding, representations)
         if not return_aux:

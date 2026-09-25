@@ -177,6 +177,35 @@ def test_v8_builder_emits_three_role_disjoint_pretrained_experts() -> None:
     )
 
 
+def test_matched_feedback_reference_preserves_zero_start_and_projection_gradient() -> None:
+    from modeling.trifusion.experts.mamba import TinySequenceMixer
+    from modeling.trifusion.signal_preserving_v8_builder import (
+        build_signal_preserving_trifusion_v8_expert_formation,
+    )
+
+    model = build_signal_preserving_trifusion_v8_expert_formation(
+        _FakeSignal(), signal_checkpoint_sha256="8" * 64, num_classes=2,
+        feature_width=4, semantic_width=6, grid_size=(2, 2),
+        branch_after_block=0, adapter_width=4, expert_modal_width=8,
+        mamba_mixer_factory=TinySequenceMixer,
+    ).model
+    model.eval()
+    model.sim_to_token = nn.Linear(4, 6, bias=False)
+    nn.init.zeros_(model.sim_to_token.weight)
+    batch = _batch()
+    field = model.baseline(batch)
+    matched_reference = model.encoder.reference_from_anchor(field.anchor_sequence)
+    assert torch.allclose(matched_reference, field.reference_sequence, atol=1e-6)
+
+    unmatched = model(batch, return_aux=True).fused_embedding.detach()
+    model.matched_feedback_reference = True
+    matched = model(batch, return_aux=True).fused_embedding
+    assert torch.allclose(matched, unmatched, atol=1e-6)
+    matched[:, -1].sum().backward()
+    assert model.sim_to_token.weight.grad is not None
+    assert torch.count_nonzero(model.sim_to_token.weight.grad) > 0
+
+
 def test_v16_builder_reuses_v8_experts_without_inference_collaboration() -> None:
     from modeling.trifusion.experts.mamba import TinySequenceMixer
     from modeling.trifusion.signal_preserving_v16_builder import (
