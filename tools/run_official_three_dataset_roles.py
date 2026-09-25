@@ -15,7 +15,9 @@ sys.path.insert(0, str(ROOT))
 from tools.official_three_dataset_data import records_for, loader_for
 from tools.official_three_dataset_model import build_model, sha256
 from tools.train_msvr310_trifusion_oof import OUTPUT_WIDTHS, output_mapping
-from tools.train_official_three_dataset_roles import PLAIN_WIDTHS
+from tools.train_official_three_dataset_roles import PLAIN_WIDTHS, SIM_JOINT_LOWLR
+
+SIM_JOINT_METHODS = ("SIGNAL_SIM_JOINT", "SIGNAL_SIM_JOINT_LOWLR")
 
 
 def configure_style(model, dataset, method):
@@ -33,7 +35,7 @@ def configure_style(model, dataset, method):
 def checkpoint_names(model, method):
     return {name for name in model.state_dict()
             if not name.startswith("baseline.") or
-            (method == "SIGNAL_SIM_JOINT" and
+            (method in SIM_JOINT_METHODS and
              name.startswith("baseline.signal.SIM.modal_interactive."))}
 
 
@@ -57,12 +59,14 @@ def initialize(args, protocol):
                                                args.signal_checkpoint, args.signal_sha256, seed=args.seed,
                                                plain_baseline=args.method in ("PLAIN_V8", "PLAIN_V27"),
                                                sim_feedback=args.method == "SIGNAL_SIM_FEEDBACK")
-    if args.method == "SIGNAL_SIM_JOINT":
+    if args.method in SIM_JOINT_METHODS:
         names = []
         for name, parameter in model.baseline.signal.SIM.modal_interactive.named_parameters():
             parameter.requires_grad_(True)
             names.append(f"baseline.signal.SIM.modal_interactive.{name}")
         binding["joint_signal_parameters"] = names
+        if args.method == "SIGNAL_SIM_JOINT_LOWLR":
+            binding["joint_signal_base_lr"] = SIM_JOINT_LOWLR
     before = _module_state_sha256(model)
     model = configure_style(model, args.dataset, args.method)
     assert _module_state_sha256(model) == before
@@ -77,7 +81,7 @@ def train(args, protocol):
     args.output_dir.mkdir(parents=True)
     model, _cfg, config, binding = initialize(args, protocol)
     receipt = dict(schema=("trifusion-official-plain-v8-training-v1" if args.method in ("PLAIN_V8", "PLAIN_V27")
-                           else "trifusion-official-signal-sim-joint-training-v1" if args.method == "SIGNAL_SIM_JOINT"
+                           else "trifusion-official-signal-sim-joint-training-v1" if args.method in SIM_JOINT_METHODS
                            else "trifusion-official-signal-sim-feedback-training-v1" if args.method == "SIGNAL_SIM_FEEDBACK"
                            else "trifusion-official-signal-v8-training-v1" if args.method == "SIGNAL_V8"
                            else "trifusion-official-r2-v27-training-v1"), dataset=args.dataset,
@@ -89,12 +93,13 @@ def train(args, protocol):
                    initializer=binding, official_model_forwards=0)
     (args.output_dir / "training.json").write_text(json.dumps(receipt, indent=2) + "\n", encoding="utf-8")
     records = records_for(protocol, "train")
-    if args.method in ("V27", "PLAIN_V27", "PLAIN_V8", "SIGNAL_V8", "SIGNAL_SIM_JOINT", "SIGNAL_SIM_FEEDBACK"):
+    if args.method in ("V27", "PLAIN_V27", "PLAIN_V8", "SIGNAL_V8", *SIM_JOINT_METHODS, "SIGNAL_SIM_FEEDBACK"):
         result = train_v27(model, protocol, records, config, m0=args.mode == "m0",
                            directory=args.output_dir, seed=args.seed,
                            style=args.method in ("V27", "PLAIN_V27"),
                            plain_baseline=args.method in ("PLAIN_V8", "PLAIN_V27"),
-                           joint_sim=args.method == "SIGNAL_SIM_JOINT",
+                           joint_sim=args.method in SIM_JOINT_METHODS,
+                           joint_sim_low_lr=args.method == "SIGNAL_SIM_JOINT_LOWLR",
                            sim_feedback=args.method == "SIGNAL_SIM_FEEDBACK")
     else:
         result = train_r2(model, protocol, records, config, m0=args.mode == "m0",
@@ -107,10 +112,10 @@ def train(args, protocol):
         names = checkpoint_names(model, args.method)
         state = {name: tensor.detach().cpu() for name, tensor in model.state_dict().items()
                  if name in names}
-        path = args.output_dir / ("joint_epoch20.pth" if args.method == "SIGNAL_SIM_JOINT"
+        path = args.output_dir / ("joint_epoch20.pth" if args.method in SIM_JOINT_METHODS
                                   else "roles_epoch20.pth")
         torch.save(dict(schema=("trifusion-official-sim-joint-checkpoint-v1"
-                                if args.method == "SIGNAL_SIM_JOINT"
+                                if args.method in SIM_JOINT_METHODS
                                 else "trifusion-official-role-checkpoint-v1"), dataset=args.dataset,
                         method=args.method, protocol_sha256=receipt["protocol_sha256"],
                         author_checkpoint_sha256=args.signal_sha256,
@@ -147,7 +152,7 @@ def extract(model, protocol, split, method, *, baseline_only=False):
                 values = {"baseline_only": model(batch, retrieval_output="baseline_only")}
             else:
                 output = (model(batch, return_aux=True)
-                          if protocol["dataset"] == "RGBNT201" or method in ("PLAIN_V8", "PLAIN_V27", "SIGNAL_SIM_JOINT", "SIGNAL_SIM_FEEDBACK")
+                          if protocol["dataset"] == "RGBNT201" or method in ("PLAIN_V8", "PLAIN_V27", *SIM_JOINT_METHODS, "SIGNAL_SIM_FEEDBACK")
                           else exact_signal_forward(model, batch))
                 values = output_mapping(output, widths=widths)
             for name, value in values.items():
@@ -240,7 +245,7 @@ def evaluate(args, protocol):
     assert binding == summary["initializer"]
     payload = torch.load(summary["checkpoint"], map_location="cpu", weights_only=True)
     assert payload["schema"] == ("trifusion-official-sim-joint-checkpoint-v1"
-                                 if args.method == "SIGNAL_SIM_JOINT"
+                                 if args.method in SIM_JOINT_METHODS
                                  else "trifusion-official-role-checkpoint-v1")
     assert payload["dataset"] == args.dataset and payload["method"] == args.method
     assert payload["protocol_sha256"] == summary["protocol_sha256"]
@@ -281,7 +286,7 @@ def evaluate(args, protocol):
                     query_scenes=qscenes, gallery_scenes=gscenes,
                     protocol_sha256=summary["protocol_sha256"]), path)
     result = dict(schema=("trifusion-official-plain-v8-retrieval-v1" if args.method in ("PLAIN_V8", "PLAIN_V27")
-                          else "trifusion-official-signal-sim-joint-retrieval-v1" if args.method == "SIGNAL_SIM_JOINT"
+                          else "trifusion-official-signal-sim-joint-retrieval-v1" if args.method in SIM_JOINT_METHODS
                           else "trifusion-official-signal-sim-feedback-retrieval-v1" if args.method == "SIGNAL_SIM_FEEDBACK"
                           else "trifusion-official-signal-v8-retrieval-v1" if args.method == "SIGNAL_V8"
                           else "trifusion-official-r2-v27-retrieval-v1"), status="COMPLETE",
@@ -305,7 +310,7 @@ def evaluate(args, protocol):
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--dataset", choices=("RGBNT201", "RGBNT100", "MSVR310"), required=True)
-    parser.add_argument("--method", choices=("R2", "V27", "R2_TOP1", "R2_UNIFORM", "PLAIN_V8", "PLAIN_V27", "SIGNAL_V8", "SIGNAL_SIM_JOINT", "SIGNAL_SIM_FEEDBACK"), required=True)
+    parser.add_argument("--method", choices=("R2", "V27", "R2_TOP1", "R2_UNIFORM", "PLAIN_V8", "PLAIN_V27", "SIGNAL_V8", *SIM_JOINT_METHODS, "SIGNAL_SIM_FEEDBACK"), required=True)
     parser.add_argument("--mode", choices=("preflight", "m0", "train", "evaluate"), required=True)
     parser.add_argument("--protocol", type=Path, required=True)
     parser.add_argument("--signal-source", type=Path, required=True)

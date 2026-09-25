@@ -9,13 +9,22 @@ from tools.train_msvr310_trifusion_oof import OUTPUT_WIDTHS
 
 PLAIN_WIDTHS = {"baseline_only": 1536, "fused": 6144,
                 "cnn": 3072, "transformer": 3072, "mamba": 3072}
+SIM_JOINT_LOWLR = 5e-6
 
 
-def _setup(model, config):
+def _setup(model, config, *, sim_lr=None):
     import torch
     from trifusion.signal_preserving_v8 import ExpertFormationV8Criterion
 
-    optimizer = torch.optim.AdamW([p for p in model.parameters() if p.requires_grad],
+    parameters = [p for p in model.parameters() if p.requires_grad]
+    if sim_lr is not None:
+        sim = [p for name, p in model.named_parameters()
+               if name.startswith("baseline.signal.SIM.modal_interactive.") and p.requires_grad]
+        assert len(sim) == 12
+        sim_ids = {id(p) for p in sim}
+        parameters = [{"params": [p for p in parameters if id(p) not in sim_ids]},
+                      {"params": sim, "lr": sim_lr}]
+    optimizer = torch.optim.AdamW(parameters,
                                   lr=config["OPTIMIZATION"]["NEW_MODULE_LR"],
                                   weight_decay=config["OPTIMIZATION"]["WEIGHT_DECAY"])
     scaler = torch.amp.GradScaler("cuda", init_scale=256.0)
@@ -36,7 +45,8 @@ def _v27_loss(parts, config):
 
 
 def train_v27(model, protocol, records, config, *, m0, directory, seed=42, style=True,
-              plain_baseline=False, joint_sim=False, sim_feedback=False):
+              plain_baseline=False, joint_sim=False, joint_sim_low_lr=False,
+              sim_feedback=False):
     import torch
     import numpy as np
     from tools.official_three_dataset_data import loader_for
@@ -49,8 +59,10 @@ def train_v27(model, protocol, records, config, *, m0, directory, seed=42, style
     _set_seed(seed)
     model.train()
     initial, frozen = _module_state_sha256(model), frozen_state_sha(model)
-    optimizer, scaler, criterion = _setup(model, config)
-    method = ("SIGNAL_SIM_FEEDBACK" if sim_feedback else "SIGNAL_SIM_JOINT" if joint_sim
+    sim_lr = SIM_JOINT_LOWLR if joint_sim_low_lr else None
+    optimizer, scaler, criterion = _setup(model, config, sim_lr=sim_lr)
+    method = ("SIGNAL_SIM_JOINT_LOWLR" if joint_sim_low_lr else
+              "SIGNAL_SIM_FEEDBACK" if sim_feedback else "SIGNAL_SIM_JOINT" if joint_sim
               else "PLAIN_V27" if style and plain_baseline
               else "V27" if style else "PLAIN_V8" if plain_baseline else "SIGNAL_V8")
     loader = loader_for(protocol, records, training=True, method=method, seed=seed)
@@ -59,10 +71,10 @@ def train_v27(model, protocol, records, config, *, m0, directory, seed=42, style
     with (directory / "training_steps.jsonl").open("x", encoding="utf-8") as log:
         for epoch in range(1, epochs + 1):
             started = time.perf_counter()
-            lr = config["OPTIMIZATION"]["NEW_MODULE_LR"] * (
-                1 if m0 else learning_rate_multiplier(epoch, max_epochs=20, warmup_epochs=5))
-            for group in optimizer.param_groups:
-                group["lr"] = lr
+            multiplier = 1 if m0 else learning_rate_multiplier(epoch, max_epochs=20, warmup_epochs=5)
+            lr = config["OPTIMIZATION"]["NEW_MODULE_LR"] * multiplier
+            for index, group in enumerate(optimizer.param_groups):
+                group["lr"] = (sim_lr * multiplier if index == 1 else lr)
             losses = []
             batches = itertools.islice(loader, 8) if m0 else loader
             for raw in batches:
@@ -97,6 +109,8 @@ def train_v27(model, protocol, records, config, *, m0, directory, seed=42, style
             log.flush()
             row = dict(epoch=epoch, steps=len(losses), mean_loss=float(np.mean(losses)),
                        seconds=time.perf_counter() - started)
+            if joint_sim_low_lr:
+                row["learning_rates"] = [group["lr"] for group in optimizer.param_groups]
             history.append(row)
             print(json.dumps(dict(event=f"official_{method.lower()}_epoch",
                                   dataset=protocol["dataset"], **row)), flush=True)
@@ -104,9 +118,12 @@ def train_v27(model, protocol, records, config, *, m0, directory, seed=42, style
         model.baseline.style_plan = None
     trainable = {name for name, parameter in model.named_parameters() if parameter.requires_grad}
     assert live == trainable and overflow == 0 and frozen == frozen_state_sha(model)
-    return dict(method=method, epochs=epochs, optimizer_steps=steps, history=history,
-                initial_state_sha256=initial, final_state_sha256=_module_state_sha256(model),
-                frozen_state_unchanged=True, missing_nonzero_gradients=[], overflow_events=0)
+    result = dict(method=method, epochs=epochs, optimizer_steps=steps, history=history,
+                  initial_state_sha256=initial, final_state_sha256=_module_state_sha256(model),
+                  frozen_state_unchanged=True, missing_nonzero_gradients=[], overflow_events=0)
+    if joint_sim_low_lr:
+        result["sim_base_lr"] = sim_lr
+    return result
 
 
 def train_r2(model, protocol, records, config, *, m0, directory, seed=42, top1=False,
