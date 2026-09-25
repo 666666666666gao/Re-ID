@@ -9201,3 +9201,18 @@ GPU3的`SIGNAL_SIM_JOINT` seed42固定20轮／1060次更新完成，AMP溢出0�
 ### 41.448 联合训练中预训练SIM的实际参数变化（2026-09-25 22:13 CST）
 
 从两个已完成联合端的第20轮checkpoint与各自作者发布Signal原权重严格同名配对，只读计算12个`SIM.modal_interactive`参数张量的L2范数、相对变化和向量余弦；所有输入权重及正式回执SHA写在诊断JSON。`cross_attn.in_proj_weight`在RGBNT201原范数12.0016、终态17.4483、变化范数12.3208，即相对变化**102.66%**、余弦0.7084；MSVR310对应27.4521、29.0428、8.7657，即**31.93%**、余弦0.9534。RGBNT201的`out_proj.weight`、FFN第0/2层权重相对变化为34.71%、31.98%、37.36%；MSVR310对应21.32%、25.55%、32.01%。偏置的初始范数接近零，不以其相对百分比判断重要性。RGBNT201记录`logs/official_extra_seed42_RGBNT201_SIGNAL_SIM_JOINT_20260925/diagnostics/joint_sim_parameter_drift.json`SHA256=`710ebc6545d62b1e607cf208a5088e3651634d0bd221be600c888bc4679fdce6`；MSVR310记录同名文件SHA256=`aca979e7c2e852ce1afb82678c197cfaf0c7cdc992d65227173fab12564879c5`。这证明该共同优化对预训练交互层产生了显著实际更新，结合两数据集更新后Signal自身掉分值得研究；**仅凭权重距离不能证明大更新是唯一因果原因，也不能据正式成绩扫描一个更低学习率**。RGBNT100联合端仍在预登记训练中，不提前决定后继干预。
+
+### 41.449 RGBNT100最小SIM联合训练正式结账，三数据集同一干预均完成（2026-09-25 22:45 CST）
+
+`SIGNAL_SIM_JOINT` RGBNT100 seed42固定20轮／2625次更新、AMP溢出0、冻结字段不变，严格重载最终checkpoint；正式1715 query／8575 gallery、camera过滤、无reranking、作者评价器独立复算一致。回执`trained-model/official_extra_seed42_RGBNT100_SIGNAL_SIM_JOINT_20260925/RGBNT100_SIGNAL_SIM_JOINT_seed42/official_metrics.json`SHA256=`c4b68ce40a58a3237c5710fab7ff1f8a499882ca429a5fc6a28c66a96e2ae0ed`；checkpoint SHA256=`481f8649381cf619c99f4b820fa5fe1fed3a02098d91197599e0b325cd9f2eed`，距离数组SHA256=`55db247b2107912114c5523d3cbd9189ae043b7c29975651e953e43dea944d51`。
+
+| RGBNT100，作者发布完整Signal起点／seed42 | mAP | Rank-1 |
+| --- | ---: | ---: |
+| 原作者完整Signal，冻结原权重 | **86.3242** | **97.5510** |
+| 冻结Signal＋原V8 fused | 86.1378 | **97.5510** |
+| 联合训练后Signal部分单独输出 | 77.4554 | 93.3528 |
+| 联合SIM＋三角色 fused | 83.3223 | 97.2012 |
+
+联合fused相对原作者Signal为**−3.0019 mAP／−0.3499 Rank-1**，相对同种子冻结V8为**−2.8155／−0.3499**；更新后的Signal自身相对原权重为**−8.8688／−4.1983**。联合CNN/Transformer/Mamba完整分支为81.4760/96.2682、83.2854/95.9184、81.8487/97.4927，fused mAP最高但Mamba Rank-1更高。与§41.439、§41.442合并，预登记同一最小SIM共同更新seed42已完成三数据集：RGBNT201 fused相对原Signal +0.1974 mAP、但低于冻结V8 1.5947；MSVR310相对原Signal −0.3175、却高于冻结V8 2.1860；RGBNT100相对原Signal −3.0019、也低于冻结V8 2.8155。**三个数据集的更新后Signal单独输出都退化**，但融合相对冻结V8的方向并不一致。此实验仅训练SIM交互层与角色的共享目标，没有让角色特征反向进入SIM Token选择；不能将该负结果扩大为所有联合训练失败，也不能只靠筛数据集或重选终点宣称成功。
+
+同一只读权重诊断在RGBNT100的12个SIM交互张量上完成：`cross_attn.in_proj_weight`相对作者权重的L2变化**77.61%**、向量余弦0.7847；`out_proj.weight`、FFN第0/2层权重变化42.12%、45.96%、40.89%。输入含`module.`前缀的217键作者权重先按原训练入口规则对应到无前缀键，再与保存的联合checkpoint逐张量比较；诊断文件`logs/official_extra_seed42_RGBNT100_SIGNAL_SIM_JOINT_20260925/diagnostics/joint_sim_parameter_drift.json`SHA256=`1590ced014796ee94e32b2f6904d22aa482448ea903251f9618e1618fc9322f1`。这与RGBNT201、MSVR310都出现明显SIM变化及更新后原基线输出下降相容，但仍不能单独证明是哪项损失、学习率或表示路径造成性能变化。
