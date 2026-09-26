@@ -106,7 +106,7 @@ def train(args, protocol):
                    commit=subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=ROOT, text=True).strip(),
                    protocol=str(args.protocol), protocol_sha256=sha256(args.protocol),
                    source_count=protocol["counts"]["train"], seed=args.seed,
-                   initializer=binding, official_model_forwards=0,
+                   initializer=binding, official_epoch_evaluations=0,
                    checkpoint_policy=args.checkpoint_policy)
     (args.output_dir / "training.json").write_text(json.dumps(receipt, indent=2) + "\n", encoding="utf-8")
     records = records_for(protocol, "train")
@@ -114,6 +114,7 @@ def train(args, protocol):
 
     def select_epoch(model, epoch):
         metrics = official_fused_metrics(model, protocol, args.method, args.signal_source)
+        receipt["official_epoch_evaluations"] += 1
         row = dict(epoch=epoch, metrics=metrics)
         with (args.output_dir / "epoch_official_metrics.jsonl").open("a", encoding="utf-8") as handle:
             handle.write(json.dumps(row) + "\n")
