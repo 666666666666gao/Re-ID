@@ -9540,3 +9540,19 @@ V27主回执`trained-model/official_extra_seed42_MSVR310_V27_existing_method_rec
 新增提交`d3f3b7c`为原生wrapper增加可选`--amp-audit-output`及queue的`--amp-audit`：记录每次尝试的loss scale、学习率范围，并通过optimizer公开post-step hook统计**实际执行**的更新；不修改loss、梯度、optimizer、scheduler、Gram计算或随机数。CPU参考测试在四次Adam尝试中人为注入一次无穷梯度，原生与记录器的最终参数、完整Adam状态和scale逐项相同；记录器正确给出`3`次真实更新、`1`次跳过、跳过位置第`2`步。独立临时代码目录和部署后真实工作树各运行该测试均`1 passed`，部署后用时2.83秒；语法检查通过。记录器SHA256=`b8d93944dfdcc016c1262be96d3270d744b3d3b04e1f8dfcabf36dafab0e508f`，测试SHA256=`05e811b66678c76f2406ea4bd36062914cfbd67049c0277ed2c4135d931a6c3d`。测试没有占用训练GPU，也不算任何检索收益。
 
 完整诊断固定为RGBNT201、公开CLIP起点、seed1234、原生完整Signal、同50轮预算与每轮官方mAP best；先一轮原生M0，再从同初始化独立跑完50轮并严格重载best评价四项，保存`m0_amp.jsonl`／`train_amp.jsonl`及汇总。日志根目录`logs/signal_full_amp_audit_20260926/RGBNT201`，权重根目录`trained-model/signal_full_amp_audit_20260926/RGBNT201`，只保留一个Signalbest权重。09:57依赖队列PID`3405421`实存，campaign为`WAITING`，每240秒检查RGBNT100–V27完成状态后使用GPU1；**尚未开始GPU诊断、M0或完整训练，没有新指标或跳步结论**。其余四卡训练均活跃，`/data`约111GiB可用。此观察性重训也按已消费官方集选点，不用它追加调参或挑有利重跑替换前次结果。
+
+### 41.484 同一次原生Signal训练的best／末轮核对；补齐逐轮完整精度日志（2026-09-26 10:06 CST）
+
+本节只读重查§41.469以来已完成的`logs/signal_full_best_map_20260926/{dataset}/train.log`，不重新训练、不用旧固定终点运行代替同run末轮。原生日志分别包含RGBNT201／RGBNT100／MSVR310的50／30／50次完整官方评价。三个单best权重的文件修改时间分别为01:33:06.030845、02:02:42.107070、01:35:14.215901，与本run第16／12／31轮评价及保存时间对应；RGBNT100第11和12轮打印mAP同为86.1，**仅用四舍五入日志无法分清两者**，本次同时核对实存权重时间和最终严格重载回执。
+
+| 本机完整Signal，公开CLIP起点、seed1234 | 单best严格重载mAP | 同run末轮日志mAP（仅一位小数） | 选中轮／总轮 |
+| --- | ---: | ---: | ---: |
+| RGBNT201 | 72.4708 | 72.2 | 16／50 |
+| RGBNT100 | 86.1058 | 84.6 | 12／30 |
+| MSVR310 | 53.3314 | 52.6 | 31／50 |
+
+RGBNT201同run的最佳与末轮只差约0.27 mAP，明显小于best对发布权重80.3029的7.8321点缺口。因此，**在本次已完成轨迹中，末轮选择不是该复现缺口的主要解释**；这不等于已经定位到AMP、增强、学习率或某个Signal模块。末轮训练日志分类Acc为1.000、Loss约0.683，只证明被记录的来源前向标量，不能替代真实optimizer更新证据。RGBNT100与MSVR310的best选择分别比各自末轮约高1.51／0.73 mAP，但末轮仅有一位小数，禁止补写成四位精确值。三份完整训练日志SHA256依次为`89794fb86cff099933bc7805dbbe9a4f5b89c78b396a638e9ec2dff29d1788b2`、`bd9b9649284902227f74be65bf43a0a884c9ff27b96e893e40c671173c7c2a2c`、`12311e5df72ca64b92f40f93fdd2a3a47a6c985a068a4b368feb435be23ec426`。
+
+为解决实际出现的逐轮精度歧义，提交`f487477`只在本机原生训练wrapper中包裹作者`training_neat_eval`：原函数每轮仍只调用一次，原返回对象不变，额外在原日志写入`SIGNAL_EPOCH_METRICS`，包含epoch及未按一位小数截断的mAP/R1/R5/R10百分数。原作者模型、loss、训练、评估及`mAP >= best_mAP`保存规则均未修改；不从不同epoch拼指标。未来车辆日志可保留完整原始诊断列，但对用户正式表仍只汇报mAP/R1。本地Python入口报`No pyvenv.cfg file`，所以本地语法与参考执行未成功；改在既有远端conda的独立代码目录完成参考检查：评价函数调用恰为一次、返回tuple保持同一对象、stage与return_pattern完整传递、日志保留原始浮点精度，均PASS；部署后原文件py_compile通过。部署wrapper SHA256=`e7bb9c88be7aeba91c2f9d6ee0c64f393038a5bf73ed6cd645cd75187899b36a`。不改写历史四舍五入日志，也不对正在运行的TriFusion角色任务注入修改。
+
+10:05—10:06实时进程与step文件共同核对：GPU0 RGBNT100–R2 seed42第2轮／step232，GPU1 RGBNT100–V27 seed42第10轮／step1248（第9轮评价已完成），GPU2 RGBNT201–R2 seed42第5轮／step237，GPU3 MSVR310–R2 seed43第6轮／step120；四个训练PID仍为3372616／3371453／3372615／3393246，末次记录loss均有限。四端仍为`RUNNING/TRAINING`，不将途中best填为终态。§41.483 Signal AMP诊断等待器3405421仍存活、`WAITING`，待RGBNT100–V27结束后自然启动并使用已部署的精确日志wrapper，无须重启等待器或当前训练。最近磁盘核验仍111GiB可用；继续按预计完成窗口接收结果。
