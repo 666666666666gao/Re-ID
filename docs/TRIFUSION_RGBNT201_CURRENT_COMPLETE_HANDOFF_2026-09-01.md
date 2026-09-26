@@ -9571,3 +9571,13 @@ RGBNT201同run的最佳与末轮只差约0.27 mAP，明显小于best对发布权
 
 诊断工具SHA256=`11c82fc0d708641b8cbced43347c4de2a956dc9942c5adc6e55df588e6d64a62`；依赖队列SHA256=`7e9c9c9fa97b2776485244f6796325bfae47236a20c3620f8c5dc2a7daed5ced`；测试SHA256=`3d0d4dc43bdecbfec40e2cce300cd6a162b5b9019475e2ff68b778ee87755569`。队列计划使用GPU3，仅在当前MSVR310–R2 seed43的20轮训练及best重载验收campaign为`COMPLETE`后执行，每240秒读一次依赖状态；不会抢占现有四个训练。粗估九面板约20—40分钟，需按实际首面板速度修订。当前仅CPU性质检查通过，**没有真实来源梯度结果，更没有新的正式性能结论**。
 10:15实际启动核验：九面板等待器PID`3418532`为`Ss`且campaign为`WAITING`，依赖仍为MSVR310–R2 seed43，`jobs=[]`；只创建了日志／等待状态，没有占用GPU或产生真实来源结论。四个训练PID继续存活：RGBNT100–V27已完成第11轮评价，RGBNT201–R2第5轮，MSVR310–R2 seed43第8轮，RGBNT100–R2第2轮；四卡利用率66—100%、约7.3—8.9GiB显存，温度77—83°C，没有训练退出证据。基于10:05至10:15间V27只完成两次含完整评价的轮次，修正RGBNT100–V27训练加终态验收预计到**10:55—11:10**，而非§41.482的10:30—10:45；其后原Signal AMP队列3405421仍会自动接续GPU1。其余原ETA暂保留，均不当成完成事实。Goal仍ACTIVE，三数据集性能目标未达成。
+
+### 41.486 Signal公开环境与训练入口的只读核查（2026-09-26 10:23 CST）
+
+核对作者GitHub当前main及提交历史，最新仍为本项目固定的`cd1b0a672d1fe642e7608731cb4899a19dda7d51`（2025-12-08，更新metrics.py），没有取得更晚的作者训练修复。针对本次检查的优化器、训练入口、配置修改：`49bab596`仅加入MSVR310分类头学习率／衰减规则；`f94a0dcf`为MSVR310切换调度器；`8130299c`、`7b42eada`、`97ee4045`也修改MSVR310配置。这些均已包含在当前固定源码中，不能据此解释RGBNT201复现缺口，亦不回退到某个旧提交挑分数。来源为作者[提交历史](https://github.com/010129/Signal/commits/main/)、[优化器修改](https://github.com/010129/Signal/commit/49bab596b8c7bf59b89749971f974452ecd7758c)及当前远端源码。
+
+确认存在但尚未分离因果的环境差异：作者README列Python3.10.13／CUDA11.8，requirements固定torch2.1.1+cu118、torchvision0.16.1+cu118、numpy1.26.3、Pillow10.2.0、timm0.4.12；当前既有环境实际为Python3.10.14、torch2.5.1+cu121、torchvision0.20.1+cu121、numpy1.24.4、Pillow10.4.0、timm1.0.15。版本不一致不能直接写成掉点原因。进一步读源码确认，Signal使用仓库内的`solver/scheduler_factory.py`、`cosine_lr.py`和`scheduler.py`，没有调用当前安装timm的学习率调度器，因此不能仅因timm版本变化就认定日程已被替换。本轮没有升级或降级正在训练的环境，没有新增环境重训。公开[依赖清单](https://github.com/010129/Signal/blob/cd1b0a672d1fe642e7608731cb4899a19dda7d51/requirements.txt)保留作后续受控复现依据。
+
+作者论文实现段写使用两张RTX3090，但公开`config/defaults.py`中`DIST_TRAIN=False`、`DEVICE_ID='0'`，RGBNT201配置没有启用分布式，README命令也未声明分布式覆盖。只有显式开启DIST_TRAIN，loader才将全局batch除以world_size，processor才构建DDP；当前原生RGBNT201回执实载DIST_TRAIN=False。因此，**不能从论文的硬件数量反推发布checkpoint必定用两卡分割B64，更不能把该推测作为复现差距的确定原因**。作者实际生成发布权重的进程启动参数尚无直接回执。继续先完成§41.483真实AMP更新测量，不在当前运行中同时改卡数、环境、采样或loss。
+
+10:20:09实查四个训练PID仍存活、GPU利用率均100%、温度79—82°C，`/data`可用111GiB。已完成逐轮评价数：RGBNT100–R2 seed42为2／20，RGBNT100–V27 seed42为12／20，RGBNT201–R2 seed42为5／20，MSVR310–R2 seed43为9／20；均RUNNING，没有新增终态指标。AMP队列3405421和来源尺度导数队列3418532均WAITING。继续训练完整预算，以**每轮完整官方评价的fused mAP选同一个best**，结束后严格重载并按各数据集规定列数验收；不中途改温度、学习率或终点，不将途中最高值填成已完成结果。官方集已用于选点的探索性边界保持。
