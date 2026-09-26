@@ -9812,6 +9812,8 @@ GPU0／2现有R2不抢占、不重启。队列按240秒检查依赖，GPU1等待
 
 **环境构建启动回执：** 规格／登记提交725de43先推送同步；11:44:49启动独立CPU安装进程3568104，conda子进程3568106。规格按JSON排序键、紧凑分隔符规范化SHA256=`179481326d69bc2793e4402b20ac071638942bde0e129b4dc5903c16e2c15a1b`（短键17948132）；构建ledger为远端机器可读`logs/signal_author_core_env_20260926/build.json`，11:45仍BUILDING／conda_create阶段。安装不占GPU；导入、GPU见证、独立命令审查和完整训练均尚未通过。该条不是环境ready声明。
 
+**11:48构建故障与明确修正：** 首次安装11:45:30在`conda_create`退出1，默认repo.anaconda.com连接超时且触发`CondaToSNonInteractiveError`，未建立可用环境；失败build.json和conda_create.log原样保留。改为显式`--override-channels --strict-channel-priority -c https://conda.anaconda.org/conda-forge`，规格新增锁定该channel，重新规范化哈希；不是接受条款或在程序里增加自动fallback。conda-forge提供独立环境和单channel的官方说明见[文档](https://conda-forge.org/docs/user/introduction/)。服务器对该源repodata实际HEAD返回200。用户旧配置中的本地7897端口当前未监听，故未建立指向空端口的转发，采用已证实可达的直连；此前“使用代理”的计划以此实查修正。修复构建写入独立`logs/signal_author_core_env_20260926_r2/`，不覆盖原失败证据；Python／Torch及其他科学依赖目标版本保持不变。
+
 ### 41.495 原生Signal完整AMP诊断验收：2650次尝试只有初始5次跳步（2026-09-26 11:45 CST）
 
 §41.483／490登记的RGBNT201完整Signal，从公开CLIP、seed1234开始的50轮于11:43:18结束，best严格重载于11:43:43完成。11:44:44独立只读审计PASS：逐轮精度日志恰好1—50；mAP最高轮为**第16轮**，所选四项与重载一致；真实权重SHA与训练后回执一致；原SIM／GAM／LAM启用，3072D、836 query／836 gallery、原camera过滤，无TriFusion及reranking。
