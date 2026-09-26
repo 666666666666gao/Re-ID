@@ -46,7 +46,7 @@ def _v27_loss(parts, config):
 
 def train_v27(model, protocol, records, config, *, m0, directory, seed=42, style=True,
               plain_baseline=False, joint_sim=False, joint_sim_low_lr=False,
-              sim_feedback=False, on_epoch_end=None):
+              sim_feedback=False, full_norm_gradient=False, on_epoch_end=None):
     import torch
     import numpy as np
     from tools.official_three_dataset_data import loader_for
@@ -61,7 +61,10 @@ def train_v27(model, protocol, records, config, *, m0, directory, seed=42, style
     initial, frozen = _module_state_sha256(model), frozen_state_sha(model)
     sim_lr = SIM_JOINT_LOWLR if joint_sim_low_lr else None
     optimizer, scaler, criterion = _setup(model, config, sim_lr=sim_lr)
-    method = ("SIGNAL_SIM_JOINT_LOWLR" if joint_sim_low_lr else
+    if full_norm_gradient:
+        assert joint_sim and joint_sim_low_lr and not model.fusion.detach_baseline_scale
+    method = ("SIGNAL_SIM_JOINT_FULLNORM" if full_norm_gradient else
+              "SIGNAL_SIM_JOINT_LOWLR" if joint_sim_low_lr else
               "SIGNAL_SIM_FEEDBACK_MATCHED" if model.matched_feedback_reference else
               "SIGNAL_SIM_FEEDBACK" if sim_feedback else "SIGNAL_SIM_JOINT" if joint_sim
               else "PLAIN_V27" if style and plain_baseline
@@ -127,6 +130,8 @@ def train_v27(model, protocol, records, config, *, m0, directory, seed=42, style
                   frozen_state_unchanged=True, missing_nonzero_gradients=[], overflow_events=0)
     if joint_sim_low_lr:
         result["sim_base_lr"] = sim_lr
+    if full_norm_gradient:
+        result["fusion_scale_gradient"] = "complete_baseline_norm_derivative"
     return result
 
 

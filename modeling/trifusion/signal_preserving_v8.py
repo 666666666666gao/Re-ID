@@ -498,8 +498,10 @@ class ExpertFormationFusionResult:
 class ExpertFormationFusion(nn.Module):
     """Expose equal-energy expert capacity without a learned Router in phase A."""
 
-    def __init__(self, *, baseline_width: int, expert_width: int) -> None:
+    def __init__(self, *, baseline_width: int, expert_width: int,
+                 detach_baseline_scale: bool = True) -> None:
         super().__init__()
+        self.detach_baseline_scale = bool(detach_baseline_scale)
         self.baseline_width = int(baseline_width)
         self.expert_width = int(expert_width)
         self.branch_embedding_width = self.baseline_width + self.expert_width
@@ -511,7 +513,8 @@ class ExpertFormationFusion(nn.Module):
         baseline_embedding: torch.Tensor,
         representations: ExpertFormationRepresentations,
     ) -> ExpertFormationFusionResult:
-        baseline_norm = baseline_embedding.detach().norm(dim=1, keepdim=True)
+        scale_input = baseline_embedding.detach() if self.detach_baseline_scale else baseline_embedding
+        baseline_norm = scale_input.norm(dim=1, keepdim=True)
         residuals = representations.residual_embeddings
         if tuple(residuals) != EXPERT_ORDER:
             raise ValueError(f"expert residuals must follow {EXPERT_ORDER}")

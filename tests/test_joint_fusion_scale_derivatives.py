@@ -55,3 +55,27 @@ def test_frozen_baseline_has_unchanged_role_derivatives():
     right = torch.autograd.grad((F.normalize(reference, dim=1) * direction).sum(), tuple(raw.values()))
     for a, b in zip(left, right):
         torch.testing.assert_close(a, b, atol=1e-12, rtol=0)
+
+
+def test_production_full_scale_gradient_matches_reference_and_finite_difference():
+    baseline, raw, representations, fusion, direction = fixture()
+    baseline.requires_grad_()
+    fusion.detach_baseline_scale = False
+    constant_residuals = {name: value.detach() for name, value in representations.residual_embeddings.items()}
+    constant = ExpertFormationRepresentations(constant_residuals, constant_residuals)
+    assert torch.autograd.gradcheck(
+        lambda value: F.normalize(fusion(value, constant).fused_embedding, dim=1),
+        (baseline,), eps=1e-6, atol=1e-5, rtol=1e-4)
+    current = fusion(baseline, representations)
+    reference, branches = differentiable_scale_embeddings(baseline, representations.residual_embeddings)
+    assert torch.equal(current.fused_embedding, reference)
+    assert all(torch.equal(current.branch_embeddings[name], branches[name]) for name in EXPERT_ORDER)
+    left = (F.normalize(current.fused_embedding, dim=1) * direction).sum()
+    right = (F.normalize(reference, dim=1) * direction).sum()
+    for name in EXPERT_ORDER:
+        left = left + (F.normalize(current.branch_embeddings[name], dim=1) * direction[:, :9]).sum()
+        right = right + (F.normalize(branches[name], dim=1) * direction[:, :9]).sum()
+    actual = torch.autograd.grad(left, (baseline, *raw.values()), retain_graph=True)
+    expected = torch.autograd.grad(right, (baseline, *raw.values()))
+    for a, b in zip(actual, expected):
+        torch.testing.assert_close(a, b, atol=1e-12, rtol=0)
