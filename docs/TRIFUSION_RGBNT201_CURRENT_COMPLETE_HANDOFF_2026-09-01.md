@@ -10421,3 +10421,19 @@ GPU3的lane已将此端标为COMPLETE并自动启动RGBNT100–V27 seed42 50轮�
 真实复现diagnose_official_retrieval.py对MSVR310–V27已验收bestE24在selected_epoch<=20处退出1，尚未写报告；这是旧诊断入口预算限制，不是模型训练失败。修改仅将best政策上限读取为回执training_epochs，并验证属于已支持的20或50；已核对旧20轮bestE13回执没有该字段，保留其原20轮含义。固定末轮分支及所有距离SHA、协议、完整query/gallery、AP/CMC复算不变。
 
 同一实际命令修改后对50轮bestE24退出0；另对旧20轮bestE13完整执行退出0。均仅CPU读取已保存数组，没有模型更新。报告位于50轮campaign下official_retrieval_diagnosis.json及previous20_retrieval_diagnosis.json，绑定原始回执和距离SHA。50轮相对Signal修复73789条正负关系、破坏80827条；逐query关系准确率变化均值+0.1209563个百分点，而Rank-1仍净少11条正确。这两个汇总权重不同，不矛盾，也不能把关系均值提高解释成最终检索提高。旧20轮对应修复70140／破坏79167、逐query均值−0.0412195。首位与身份统计完全重现§41.536中50轮相对Signal的30修复／41新增、25身份改善／27下降。没有据此挑新温度或融合权重，继续完整六项50轮比较。
+### 41.539 RGBNT201–R2 seed44完整验收及50轮自动接续（2026-09-26 22:44 CST）
+
+前序20轮best官方mAP实验完整结束；逐轮记录严格1—20，最高fused mAP选择第7轮，training与独立evaluate均E7，重载mAP差0。训练1059次优化、0 AMP overflow、冻结上游不变；选中checkpoint文件SHA与两份回执相符，payload final_state_sha256与training checkpoint_state_sha256及evaluate model_state_sha256一致，独立Signal输出核对PASS。原训练终点state与被选中第7轮state不同，未混用。正式回执SHA256=535b78e2d082f9c27af51eee64cea82794eec9b42e044fe0e5f7a3992af2f50f；checkpointSHA256=67f8b67ba7a5d44a9e9d1eac8ab98ace2e3ccb25f7a0ac772fc2f39d979c4ab0；选中stateSHA256=076bda1addcc7b00703465314061ce13be0f5b655fcbffc656c899477a856023。
+
+| RGBNT201 seed44同一E7正式权重输出 | mAP | Rank-1 | Rank-5 | Rank-10 |
+| --- | ---: | ---: | ---: | ---: |
+| 作者Signal | 80.3029 | 85.1675 | 91.3876 | 93.6603 |
+| **R2 fused** | **83.1591** | **88.6364** | **92.9426** | **94.6172** |
+| CNN完整分支 | 82.2947 | 87.7990 | 93.6603 | 94.8565 |
+| Transformer完整分支 | 80.3148 | 86.3636 | 91.0287 | 93.7799 |
+| Mamba完整分支 | 83.0982 | 86.9617 | 92.9426 | 94.3780 |
+| fused相对Signal | +2.8562 | +3.4689 | +1.5550 | +0.9569 |
+
+这组在用户最新授权的逐轮官方mAP选best政策下，四项均达到+0.8。它不是固定第20轮结果，也不能与旧fixed-final成绩混写；正式集已用于选点及历史追加种子，属于探索性结果，不是无偏估计或SOTA证明。停止为RGBNT201–R2新增达线种子；用户单独要求的六格50轮预算比较继续，不能因20轮达线取消已登记50轮端。
+
+原训练PID3962196正常退出后，GPU2 lane于22:40:36自动启动RGBNT201–V27 seed42 50轮，22:44实查train PID4147762在对应GPU存活、已有53个连续训练step且loss有限，说明前序等待已释放。之后仍接RGBNT201–R2 50轮。MSVR310–R2已完整评价26/50，保存520个训练step，loss全有限、记录间AMP scale无下降；RGBNT100–V27已完整评价11/50，保存1574步同样数值正常。此为中途检查，不填最终成绩。四卡各有独立训练；/data约101.00GiB空闲。六格50轮面板1项完成、3项实际训练、2项排队，整体Goal仍ACTIVE／UNMET。
