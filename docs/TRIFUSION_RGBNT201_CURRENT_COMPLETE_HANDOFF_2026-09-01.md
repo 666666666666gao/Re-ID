@@ -2,7 +2,7 @@
 
 ## 0. 一页结论
 
-**当前执行入口：§41.498，核对2026-09-26 12:08 CST。** 本页为当前摘要，后面的原始阶段记录保留其当时规则与数值；旧单卡地址、只用seed42、固定末轮和官方集只评一次等历史限制，不覆盖用户后续已经明确修改的安排。Goal仍为 **ACTIVE／UNMET**，不能因某一数据集达标或工程检查通过而结束。
+**当前执行入口：§41.499，核对2026-09-26 12:16 CST。** 本页为当前摘要，后面的原始阶段记录保留其当时规则与数值；旧单卡地址、只用seed42、固定末轮和官方集只评一次等历史限制，不覆盖用户后续已经明确修改的安排。Goal仍为 **ACTIVE／UNMET**，不能因某一数据集达标或工程检查通过而结束。
 
 **当前规则：** 新完整角色训练跑满20轮，每轮按作者完整query/gallery与camera／scene过滤评价，以**fused官方mAP最高的同一个checkpoint**报告所有输出与指标，结束后严格重载；不固定最后一轮、不跨种子／epoch拼接列。原生Signal按对应作者完整日程训练，同样逐轮mAP选best。官方测试已参与选择，必须披露探索性选择边界；旧固定终点实验原回执与权重不改写。RGBNT201汇报mAP／R1／R5／R10，RGBNT100和MSVR310主表只汇报mAP／R1。六个R2／V27×数据集组合各自以要求指标均较同协议发布Signal提高至少0.8个百分点为种子搜索停止线；RGBNT201–V27已达线，不再为它追加种子。SOTA目标尚未实现。
 
@@ -10,9 +10,9 @@
 
 | 当前任务（以最新实际进程／回执为准） | 状态与接续 |
 | --- | --- |
-| GPU0：RGBNT100–R2 seed42，逐轮best | 11:55已完成5／20轮评价，完整训练中；按实际速度约19:45验收，尚无终态 |
+| GPU0：RGBNT100–R2 seed42，逐轮best | 12:15正在第6轮，已完成5／20轮评价；暂估约19:45验收，尚无终态 |
 | GPU1：FULLNORM–RGBNT100候选端 | MSVR310已完整验收50.7095／68.1895；12:07 RGBNT100的M0 PASS后进入完整20轮，随后RGBNT201接续 |
-| GPU2：RGBNT201–R2 seed42，逐轮best | 11:55已完成12／20轮评价，按实际速度约13:40验收，尚无终态 |
+| GPU2：RGBNT201–R2 seed42，逐轮best | 12:11已完成14／20轮评价，暂估约13:40验收，尚无终态；完整结束后接作者核心环境验证 |
 | GPU3：联合SIM尺度导数LOWLR control | MSVR310完整best已验收50.6929／67.6819；11:57 RGBNT100的M0 PASS后完整训练，随后RGBNT201接续 |
 
 最新完整结果见§41.487—491：先前12端及新增2端的逐轮best选点独立核验通过；RGBNT201–V27 seed42选第5轮`83.1234/88.0383/93.5407/94.9761`，四项均达+0.8线；RGBNT100–V27 seed42选第6轮`86.8096/97.3761`，相对Signal为`+0.4854/−0.1749`，未达线。MSVR310新协议R2 seed42为`52.0717/69.3739`，新增seed43选第4轮为`53.5517/71.9120`，后者较Signal`53.2424/72.4196`为`+0.3093/−0.5076`，仍未达线；V27 seed42为`51.0747/68.3587`。以上每行来自同一best权重，未完成的训练不填写终态数值。
@@ -9889,3 +9889,56 @@ FULLNORM候选端12:05:33完成20轮／400步，12:06:31完成best严格重载�
 候选campaign为`logs/official_extra_seed42_MSVR310_SIGNAL_SIM_JOINT_FULLNORM_joint_scale_pair_v1_bestmap_20260926`。正式回执SHA256=`1b673e27ff8437373225db238bf68d11cec88e66cb2f7a668038267bb6df9ed6`，唯一joint best=`e32f32b79a82516319ab6a3d8753bbb14373015f5a918faab7c66b41f691aa6d`，距离数组=`ed00b500cd3717dd7aa054a4aaa604ff6bf44dbe52a153e7e8e477bfcc2380bc`，training回执=`3ca5d922bf4c57b5c17746080f74b19e1915031c546e95d28baaa0b91f62bd38`，M0=`98a23f448ca8f46bb7e68dec1bf44ba450010ff8477838bcf32a72625d689ba5`；独立`best_selection_terminal_audit.json`=`7dfd131059bb55ca7ff68aa609ed0313f6f45c4a6d00a2f91bd26158175d234e`。只读`diagnostics/MSVR310_SIGNAL_SIM_JOINT_FULLNORM_seed42_original_signal.json`=`ce218d61ffa3fa0bf0f2429f266cbf884ea292a6f1323cd68e0538b4a7dfa4f3`。未修改旧正式回执或距离。
 
 既有串行驱动已自动接续：GPU3 LOWLR–RGBNT100于11:56:33启动、11:57:12 M0 PASS；GPU1 FULLNORM–RGBNT100于12:06:32启动、12:07:09 M0 PASS。两端都进入独立重新初始化的完整20轮，随后各自RGBNT201。GPU0／2原R2继续，不根据首个配对的微小收益中途换配置。12:07:37作者核心环境pip实际wheel为734,789,632字节且mtime实时更新，仍正常下载，未重启；/data可用约108.44GiB。环境尚未完成CPU导入、GPU见证与独立命令核验，环境对照训练仍未启动。Goal继续ACTIVE／UNMET。
+
+
+### 41.499 作者环境对照的实际输入核验与待执行验证命令（2026-09-26 12:16 CST）
+
+继续执行既定环境对照，不改变四个在训端。12:14以现有环境、CPU只读运行原Signal RGBNT201数据解析器，逐记录检查与正式protocol的三模态路径、原身份、camera和view完全对应；训练3951条／171身份，query与gallery各836条／30身份，训练与测试身份不相交。完整读取并散列14,361个去重图像文件，保存原生loader实际行顺序和训练标签映射；没有将glob顺序改成排序，也没有改变训练采样。当前原生训练顺序SHA=`b4d35afcf6ec128c8100f04d5c7d160003a3e653827619569a1a9ce8342eac7a`，query／gallery顺序SHA均=`4eb30e1001eab1354c884f808603dfd45b18829c208038a5a6051b03e77fc245`。
+
+公开CLIP实存SHA=`5806e77cd80f8b59890b7e101eabd078d9fb84e6937f9e85e4ecb61988df416f`；104个原生Python／YAML文件的路径—SHA规范清单哈希=`8b19efb876c220cc212a1f2609c48f2ebc88a6b97e01b42724ecb9568033db37`，图像路径—大小—SHA规范清单哈希=`2f592cc03759c53a3424c969011149b604dff7687f38373cdd640066dd096680`。两次已完成原生best训练的完整打印配置经解析、仅移除各自OUTPUT_DIR后逐项相等，规范配置哈希=`f97c502c3a270c3a4e34eae90fde800533651170b664108a0e686714926560e3`。因此两次结果差异不能由日志中明确记录的配置差异解释；**本快照不重建历史图像字节、历史loader顺序或每步GPU随机轨迹，不能据此宣称两次运行逐位确定或把差值归给AMP记录器**。
+
+唯一机器可读证据在远端`logs/signal_author_core_env_20260926_r3/input_contract.json`，SHA256=`1d1ef1bb1021124686a08cd049925a7017d9504c6df8ba35c1892a57174fb682`；包含完整行记录、图像哈希、源码与四个wrapper哈希、旧日志配置及证据边界，原图未传回本地。正式protocol SHA=`e63be5d9f8bd41df365264ad8f459dcd063d088023a2d2ed525a49a72f61161e`。该核验零GPU／零更新，不是新模型精度。
+
+环境r3于12:15:34仍由实际pip PID3578741下载，torch wheel已1,224,408,944字节且mtime持续推进；/data可用107.95GiB。不是卡死或构建完成，不启动第二份安装。RGBNT201–R2已完成14轮正式评价，RGBNT100–R2处于第6轮，GPU3／GPU1的RGBNT100联合控制／候选均正常推进。后继空闲GPU2在原R2完整验收后用于环境见证及完整原生Signal50轮；若届时环境未准备完，不把未通过的环境用于训练。
+
+**待执行的环境验证命令（当前尚未通过）：** 只在r3 CPU导入／版本阶段已成功且GPU2原R2已完整结束后执行下面原文。它检查核心版本、来源文件与初始化权重，确认该卡低占用，再执行spec内固定seed的CUDA前向／反向；不写模型、不调整环境、不启动训练。第一次由执行者运行保存终端证据，第二次依据run-experiment的compute-env-contract由新独立上下文代理原样执行，记录same-family／provisional，不称跨模型独立审查。若命令报错，按实际错误修正并留存，不暗中绕过断言。
+
+```bash
+cd /data/gaob/Re-ID/Trifusion
+CUDA_VISIBLE_DEVICES=2 OMP_NUM_THREADS=2 OPENBLAS_NUM_THREADS=2 MKL_NUM_THREADS=2 XDG_CACHE_HOME=/data/gaob/Re-ID/.cache /data/gaob/Re-ID/conda-envs/signal_author_core_py31013_cu118/bin/python -B - <<'PY'
+from pathlib import Path
+import hashlib, importlib, importlib.metadata, json, subprocess, sys
+root = Path('/data/gaob/Re-ID/Trifusion')
+folder = root / 'logs/signal_author_core_env_20260926_r3'
+spec = json.loads((root / 'configs/signal_author_core_env_20260926.json').read_text())
+build = json.loads((folder / 'build.json').read_text())
+assert build['status'] == 'BUILT_CPU_CHECKED_AWAITING_GPU_VALIDATION'
+assert hashlib.sha256(json.dumps(spec, sort_keys=True, separators=(',', ':')).encode()).hexdigest() == build['spec_canonical_sha256']
+assert sys.version.split()[0] == spec['python']
+for phase in spec['pip_phases']:
+    for requirement in phase['packages']:
+        name, version = requirement.split('==')
+        assert importlib.metadata.version(name) == version, name
+for name in spec['smoke']['import_names']:
+    importlib.import_module(name)
+contract = json.loads((folder / 'input_contract.json').read_text())
+def sha(path):
+    h = hashlib.sha256()
+    with Path(path).open('rb') as f:
+        for chunk in iter(lambda: f.read(1024 * 1024), b''):
+            h.update(chunk)
+    return h.hexdigest()
+assert sha(contract['clip']) == contract['clip_sha256']
+assert sha(contract['protocol']) == contract['protocol_sha256']
+for relative, expected in contract['source_files'].items():
+    assert sha(root / 'comparators/Signal-cd1b0a6' / relative) == expected, relative
+for relative, expected in contract['wrapper_files'].items():
+    assert sha(root / relative) == expected, relative
+used = int(subprocess.check_output(['nvidia-smi', '-i', '2', '--query-gpu=memory.used', '--format=csv,noheader,nounits']).decode().strip())
+assert used < 500, used
+exec(spec['smoke']['gpu_test_code'])
+print('ENV_INPUT_AND_GPU_WITNESS_PASS', sys.executable, build['spec_canonical_sha256'])
+PY
+```
+
+此命令只验证当前已散列的源码／配置／权重没有变；图像完整哈希在input_contract中保留，不能把这里未逐文件重算图像SHA说成新的全图像复查。CPU导入成功仍不足以宣称完整训练可用；后续按§41.496已经登记的原生命令独立M0、重置后完整50轮、每轮官方mAP选best及严格重载。该计划与当前两张卡的联合尺度导数完整配对分开，不将依赖版本、loss、学习率同时改变。
