@@ -9528,3 +9528,15 @@ V27主回执`trained-model/official_extra_seed42_MSVR310_V27_existing_method_rec
 按用户“本批之后继续新种子、尽量保持四卡运转”的后续授权，GPU3在09:40接续已有较接近Signal的`MSVR310–R2` **seed43**，沿用作者发布Signal初始化、现有R2代码、20轮预算和逐轮fused官方mAP选单best；新campaign为`logs/official_extra_seed43_MSVR310_R2_existing_method_seed43_recheck_v1_bestmap_20260926`。09:41实查`RUNNING/M0`、GPU3约7530MiB且100%计算，**尚无M0结论或正式成绩**；不能重启重复任务。GPU0/1/2分别仍运行RGBNT100–R2/V27与RGBNT201–R2的seed42新协议复核，`/data`可用约111GiB。此seed43继续使用已消费官方集选点，只补充描述性结果，不作为未接触测试集的统计保证。
 
 09:49补充实际进度：MSVR310–R2 seed43独立8步M0已`M0_PASS`，0 AMP溢出、冻结Signal不变、无缺失参数梯度，并进入完整训练；前三轮当轮评价已出现，但**尚无完整终态**。其余三端分别为RGBNT100–R2第1轮完成、RGBNT100–V27第6轮执行中、RGBNT201–R2第3轮完成，GPU0/1/2/3均有真实计算，`/data`仍约111GiB可用。依据已测轮时粗估：RGBNT100–V27约10:30—10:45，MSVR310–R2 seed43约11:00—11:30，RGBNT201–R2约13:00—14:00，RGBNT100–R2因约132步/轮且历史VJP耗时，可能到19:00—21:00；这些是排程估计，均以最终回执为准。为免GPU1在RGBNT100–V27完成后空置，已启动**不占GPU的依赖等待器**PID`3398569`，每240秒读该campaign，仅在它`COMPLETE`后运行`RGBNT201–V27` seed43的同一逐轮best完整复核；等待期新campaign目录尚未建立，不能称该seed43已训练或产生M0。该seed属于已有方法稳定性补充，正式集选择偏差必须继续披露，不拿单个更优seed替代全部结果。
+
+### 41.483 完整Signal复现的实际更新诊断登记；撤下已达标组合的未启动重复种子（2026-09-26 09:57 CST）
+
+纠正§41.482的接续排程：RGBNT201–V27已在§41.479满足四项各+0.8的项目线，按既定“组合达标即停止为其新增种子”要求，不再继续该组合的seed43重复搜索。核实PID`3398569`确为尚在等待RGBNT100–V27的队列，且对应新campaign／权重目录均不存在后，仅停止此等待器；09:57 PID已不存在。**没有停止任何训练，也没有删除完成结果。** GPU1仍由RGBNT100–V27 seed42使用，后续空档改为下述完整Signal诊断。
+
+只读核对当前原生Signal复现流程：`train_signal_full_author.py`经`runpy`实际调用作者`train.py`，RGBNT201不加载RGBNT100专用Gram稳定化补丁。作者工作树相对`cd1b0a6`仅两项已知差异：CLIP硬编码绝对路径改读`MODEL.PRETRAIN_PATH_T`；训练日志的学习率读取改为实际optimizer第一组。源码SHA256：`engine/processor.py`为`968aa8bc6304ce6f92410d7e8550b5a0a8c64142dce0aa584089477ba169878b`，`modeling/make_model_clipreid.py`为`5494c2b7cb9acfb2c727a2cde201ba587184b344667e077eacfe0c3a0c578651`。最新RGBNT201原生训练日志实载171个训练身份／3951组三光谱样本、4个训练camera，正式query/gallery各836；完整SIM与AlignM启用，B64/K8、seed1234、50轮、Adam与作者调度，每轮正式评价。当前没有证据将7.8321 mAP复现差距归因于漏模块、错误数据根目录或本机替换了作者训练器。
+
+尚缺一个实际证据：原生训练器仅记录loss数值与分类准确率，未保存AMP缩放或真实optimizer调用次数。有限loss不能证明每步均完成更新；本项目此前已在RGBNT100同一Gram开方路径确认过非有限反传，因此登记一次**观察性完整训练**，检验RGBNT201是否也存在持续AMP跳步。此时只是假设，不能将正常初期loss-scale回退、或任何一次跳步直接判为性能损失原因。
+
+新增提交`d3f3b7c`为原生wrapper增加可选`--amp-audit-output`及queue的`--amp-audit`：记录每次尝试的loss scale、学习率范围，并通过optimizer公开post-step hook统计**实际执行**的更新；不修改loss、梯度、optimizer、scheduler、Gram计算或随机数。CPU参考测试在四次Adam尝试中人为注入一次无穷梯度，原生与记录器的最终参数、完整Adam状态和scale逐项相同；记录器正确给出`3`次真实更新、`1`次跳过、跳过位置第`2`步。独立临时代码目录和部署后真实工作树各运行该测试均`1 passed`，部署后用时2.83秒；语法检查通过。记录器SHA256=`b8d93944dfdcc016c1262be96d3270d744b3d3b04e1f8dfcabf36dafab0e508f`，测试SHA256=`05e811b66678c76f2406ea4bd36062914cfbd67049c0277ed2c4135d931a6c3d`。测试没有占用训练GPU，也不算任何检索收益。
+
+完整诊断固定为RGBNT201、公开CLIP起点、seed1234、原生完整Signal、同50轮预算与每轮官方mAP best；先一轮原生M0，再从同初始化独立跑完50轮并严格重载best评价四项，保存`m0_amp.jsonl`／`train_amp.jsonl`及汇总。日志根目录`logs/signal_full_amp_audit_20260926/RGBNT201`，权重根目录`trained-model/signal_full_amp_audit_20260926/RGBNT201`，只保留一个Signalbest权重。09:57依赖队列PID`3405421`实存，campaign为`WAITING`，每240秒检查RGBNT100–V27完成状态后使用GPU1；**尚未开始GPU诊断、M0或完整训练，没有新指标或跳步结论**。其余四卡训练均活跃，`/data`约111GiB可用。此观察性重训也按已消费官方集选点，不用它追加调参或挑有利重跑替换前次结果。
