@@ -2,7 +2,7 @@
 
 ## 0. 一页结论
 
-**当前执行入口：§41.495，核对2026-09-26 11:45 CST。** 本页为当前摘要，后面的原始阶段记录保留其当时规则与数值；旧单卡地址、只用seed42、固定末轮和官方集只评一次等历史限制，不覆盖用户后续已经明确修改的安排。Goal仍为 **ACTIVE／UNMET**，不能因某一数据集达标或工程检查通过而结束。
+**当前执行入口：§41.496，核对2026-09-26 11:52 CST。** 本页为当前摘要，后面的原始阶段记录保留其当时规则与数值；旧单卡地址、只用seed42、固定末轮和官方集只评一次等历史限制，不覆盖用户后续已经明确修改的安排。Goal仍为 **ACTIVE／UNMET**，不能因某一数据集达标或工程检查通过而结束。
 
 **当前规则：** 新完整角色训练跑满20轮，每轮按作者完整query/gallery与camera／scene过滤评价，以**fused官方mAP最高的同一个checkpoint**报告所有输出与指标，结束后严格重载；不固定最后一轮、不跨种子／epoch拼接列。原生Signal按对应作者完整日程训练，同样逐轮mAP选best。官方测试已参与选择，必须披露探索性选择边界；旧固定终点实验原回执与权重不改写。RGBNT201汇报mAP／R1／R5／R10，RGBNT100和MSVR310主表只汇报mAP／R1。六个R2／V27×数据集组合各自以要求指标均较同协议发布Signal提高至少0.8个百分点为种子搜索停止线；RGBNT201–V27已达线，不再为它追加种子。SOTA目标尚未实现。
 
@@ -11,7 +11,7 @@
 | 当前任务（以最新实际进程／回执为准） | 状态与接续 |
 | --- | --- |
 | GPU0：RGBNT100–R2 seed42，逐轮best | 完整20轮训练进行中；此前估计19:00—21:00验收，尚无终态 |
-| GPU1：FULLNORM三个数据集候选端等待器 | 原生Signal50轮已完成及核验，best第16轮75.3042／77.7512／87.4402／91.0287；候选端按240秒依赖周期接续，实际启动待核验 |
+| GPU1：FULLNORM–MSVR310候选端 | 原生Signal50轮已完整验收；11:47候选端M0 PASS后进入完整20轮，随后RGBNT100、RGBNT201串行接续 |
 | GPU2：RGBNT201–R2 seed42，逐轮best | 完整20轮训练进行中，粗估13:00—14:00验收，尚无终态 |
 | GPU3：联合SIM尺度导数LOWLR control | 九面板已完成；11:35首个MSVR310端M0通过并开始完整训练，随后RGBNT100、RGBNT201串行接续 |
 
@@ -9840,3 +9840,5 @@ GPU1的FULLNORM–MSVR310按原240秒周期于11:47:21接续，11:47:58独立8�
 作者核心环境第一次构建失败按§41.494封存，明确改channel的第二次CPU构建PID3572673／conda子PID3572674，11:48:57启动，新的规范规格SHA256=`cb4e432342e9c589245708f8c162089a5a7c53c129bd0d78e64169f5feb67ea1`。11:50:20进程实际存活、正在取conda-forge元数据；观察到源请求超时与连接关闭后的conda自身重试，**未退出，不据观察超时重启**。仍未进入GPU见证、M0或完整环境对照。
 
 为复用原生Signal完整入口并分开存放新环境证据，`queue_signal_full_matched.py`仅增加`--run-label`独立日志／权重命名空间，回执记执行Python路径；指定label时仍强制best_map＋AMP审计，不改模型、采样、日程、loss、选点或训练长度。CPU `--help`实际通过。新环境验证通过后拟用该环境Python执行`tools/queue_signal_full_matched.py --gpu 2 --dataset RGBNT201 --after-campaign /data/gaob/Re-ID/Trifusion/logs/official_extra_seed42_RGBNT201_R2_existing_method_recheck_v1_bestmap_20260926/campaign.json --selection best_map --amp-audit --run-label author_core_20260926`，完整产物放`logs/signal_full_author_core_20260926`及`trained-model/signal_full_author_core_20260926`。这是记录待执行的具体命令，不是已启动声明；须先完成新环境验证并确认GPU2原R2已完整验收。
+
+**安装网络补充：** 11:51通过本机实际监听进程核对，Clash的HTTP代理端口为7899，而非旧配置7897；7899向PyPI的CONNECT与目标响应均200，7898的HTTP CONNECT失败。因此建立隐藏SSH辅助进程7740，将服务器仅loopback的`127.0.0.1:7897`转发至本机`127.0.0.1:7899`；无公共监听。服务器Python requests经此代理实际下载conda-forge noarch shards元数据973,520字节、HTTP200、约0.90秒，解决了“只验证HEAD可达、真实元数据请求却超时”的证据不足。11:52:17第二次安装子进程3572674仍活着且仍处在原直连metadata阶段，环境prefix尚不存在；没有仅因等待而重启它。若该次明确失败，后继安装可以明确使用已验证的HTTP(S)_PROXY通路，必须另存运行回执，不能覆盖前两次记录；此时尚未启动代理版第三次安装。
