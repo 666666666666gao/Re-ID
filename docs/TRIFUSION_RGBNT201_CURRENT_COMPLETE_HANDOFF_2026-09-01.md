@@ -9614,3 +9614,70 @@ RGBNT201同run的最佳与末轮只差约0.27 mAP，明显小于best对发布权
 发现并更正一项**元数据错误**：上述训练回执还沿用固定末轮入口的`official_model_forwards=0`，与本轮实际20次官方评价不符。它不是“官方集没有被用过”的证据，也不是某个前向实际未运行。对后续新训练，删除该未计数旧字段，改为`official_epoch_evaluations`，每次完整官方query/gallery评价成功返回后加1；M0和固定末轮训练为0，完整逐轮best训练为20。该两处修改只影响终态回执计数，不改变前向、loss、随机数、优化器、评价或保存规则；正在运行的4个已加载旧入口进程不会热更新，后续接收它们时同样按逐轮原始记录披露旧字段失效。现有12份回执原字节和SHA继续保留，避免悄悄改写封存证据。
 
 独立只读审计报告保存在远端`logs/official_best_selection_audit_20260926.json`，SHA256=`b767a84f067a6a24609f0ef95e1c24975900671d6f8596bbed8f326c08463cb1`；包含全部源文件路径／SHA、实存权重SHA、轮号、同run末轮、逐轮R1最大值及重载差异，`status=PASS`、`original_files_modified=false`。原生Signal选点已在§41.484独立核查，此报告不重复计算。全部结果继续注明官方测试参与逐轮选择，不作为未消费验证集上的无偏估计。
+
+### 41.488 三个已完成best终点的失败排序可视化（2026-09-26 10:32 CST）
+
+本节在三个完整seed42终点中各取一个例子：RGBNT201–V27第5轮、RGBNT100–SIGNAL_V8第5轮、MSVR310–R2第6轮。选择规则一致，均为该run中“Signal首位正确、fused首位错误”的query里**AP下降最大者**，不是随机样本或总体发生率。先核对原正式回执、距离数组与既有诊断SHA，再从保存的全图库距离按原camera／scene规则重新排序；未前向图片、未训练、未改变权重。query／gallery索引从0起，检索名次从1起。图是可编辑的排序关系图，不是原图目视诊断；不补写外观、遮挡或背景原因，也不以这几个官方身份制定后续训练规则。
+
+先给出总体分母，避免极端案例掩盖整体结果：
+
+| 完整run | 合法query数 | 修复Signal首位错误 | 新增首位错误 | 净修复 | 新增错误率（占全部query） | 新错误中同camera／scene负例 |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: |
+| RGBNT201–V27，best第5轮 | 836 | 36 | 12 | +24 | 1.4354% | 9／12 |
+| RGBNT100–SIGNAL_V8，best第5轮 | 1715 | 11 | 8 | +3 | 0.4665% | 2／8 |
+| MSVR310–R2，best第6轮 | 591 | 20 | 38 | −18 | 6.4298% | 10／38 |
+
+前两行的整体Rank-1确实有正增量，同时仍会制造新的错误；第三行新增错误多于修复。MSVR所选极端例子恰好与错误负例同scene，但全run中28／38个新增首位错误的负例**不同scene**，不能由这张图概括成“全部是同场景捷径”。
+
+**例一：RGBNT201，q775／身份295／camera1。** AP由92.6412%降到55.5490%，最先出现的合法正例从第1退到第3。下列每格是前20名：`P`为合法同身份正例，`.`为异身份负例。
+
+```text
+rank    12345678901234567890
+Signal  PPPPPPPPPPP.PP.PP...
+fused   ..PP.PPP.PPPP..P.PP.
+```
+
+固定比较原Signal的首位正例P=g754（身份295，camera0）与fused首位负例N=g684（身份292，camera1），用归一化向量**平方欧氏距离**定义间隔Δ=D(q,N)−D(q,P)，正值表示P领先N。Signal／CNN完整支／Transformer完整支／Mamba完整支／fused的Δ依次为`+0.08455／−0.09467／+0.02985／−0.15139／−0.07207`。Transformer仍保住该关系，其他两支把它翻转，平均后的fused也翻转。这里固定P=g754在fused排第12，**不是**最先正例第3；最先正例已变成g748，不能把两种名次混写。
+
+**例二：RGBNT100，q929／身份556／camera4。** AP由92.7411%降到70.6694%，最先合法正例从第1退到第2。
+
+```text
+rank    12345678901234567890
+Signal  PPPPPPPPPPPPPPPPPPPP
+fused   .PPPP.P.PP.PPPP.PP..
+```
+
+固定P=g4710（身份556，camera7）、N=g3119（身份538，camera6），五种输出的同一Δ依次为`+0.04442／−0.03299／+0.04313／−0.06250／−0.01745`。Signal中该负例排第72，fused中变第1；固定P在fused排第18，最先正例则是第2的g4672。CNN和Transformer各自的首位仍是某个正确正例，fused却首位错误：**平均相似度／距离不等于对各分支首位正确性进行多数投票**，也不能把某一固定正例对的Δ直接当成整个query的Rank-1。
+
+**例三：MSVR310，q486／身份152／scene18。** 唯一合法正例P=g563（身份152，scene16）从第1退到第73，AP由100%降到1.3699%。固定错误负例N=g612（身份172，scene18）从Signal第7升到fused第1。下图所有节点都比较**同一个P与N**；CNN／Transformer／Mamba节点为完整“Signal＋该角色”输出，不是独立重训的单骨干模型。
+
+```mermaid
+flowchart TB
+    Q["MSVR310 · R2<br/>seed42 · epoch6<br/>q486: ID152, S18<br/>P563: ID152, S16<br/>N612: ID172, S18"]
+    S["Original Signal<br/>P:1 / N:7<br/>margin +0.01983"]
+    C["CNN branch<br/>P:78 / N:1<br/>margin -0.10510"]
+    T["Transformer branch<br/>P:37 / N:3<br/>margin -0.09041"]
+    M["Mamba branch<br/>P:158 / N:2<br/>margin -0.19276"]
+    F["Fused (mean D)<br/>P:73 / N:1<br/>margin -0.12942"]
+    Q --> S
+    Q --> C
+    Q --> T
+    Q --> M
+    C --> F
+    T --> F
+    M --> F
+    classDef correct fill:#e6f2eb,stroke:#337558,color:#173d2d;
+    classDef flipped fill:#fff0ed,stroke:#ba6658,color:#65332b;
+    classDef fused fill:#f9dfd9,stroke:#a74236,color:#59261f,stroke-width:2px;
+    classDef query fill:#eef2f7,stroke:#63748a,color:#253549;
+    class S correct;
+    class C,T,M flipped;
+    class F fused;
+    class Q query;
+```
+
+图例：ID为身份，S为scene，P/N后数字为各自名次。箭头表达同一输入下的分支测量及最终距离平均，不表示把Signal的单独输出额外再加一次。三完整分支同一正负对的距离间隔均值与fused间隔一致（浮点误差小于1e-4）；名次本身不做平均。此例的真实距离为Signal的P/N=`0.2417113/0.2615443`，fused的P/N=`0.5237540/0.3943326`。因此可以确认正确关系被角色组合翻转，不能仅凭它认定某个训练因素是唯一原因。此处第73名来自**本次逐轮best的R2第6轮**，与旧固定末轮／其他seed中q486的第15、37等名次属于不同模型，不能混用。
+
+三个原只读诊断分别在对应campaign的`diagnostics/RGBNT201_V27_seed42.json`、`diagnostics/RGBNT100_SIGNAL_V8_seed42.json`、`diagnostics/MSVR310_R2_seed42.json`；SHA256依次为`ce0cb1283628904d059c1b29fe9af5dbf926278bbe3f9525aa2285ca1fcac34d`、`82a84643238135e68c079c62a7c58c978708374aab297460f551ea1ceec7f77f`、`2a4f23ec69cd79664ffbf1b7889922989e5da3bece05eed285fae6c38cf394a9`。图与前20名字符图直接保存在本交接中，未另建交接／说明文件，未将训练图片或距离张量下载到本地。
+
+图形验证：用Mermaid CLI12.0.0及本机Chrome成功渲染，图源码与本段Mermaid代码逐字核对一致；PNG仅用于临时目视检查，正式可编辑内容仍只有本交接。首版标签换行过多，缩短为统一ID／scene及P/N记法后重新渲染。最终目视检查箭头均到正确目标，Signal单独输出未被额外连入fused，五种间隔／名次与真实数组一致，文字无截断、颜色与正负含义一致；人工版式评估9／10，接受。该评分只是可视化检查，不是模型性能或实验置信度。
