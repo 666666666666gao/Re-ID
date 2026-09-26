@@ -2,16 +2,16 @@
 
 ## 0. 一页结论
 
-**当前执行入口：§41.509，核对2026-09-26 14:34 CST。** 本页为当前摘要，后面的原始阶段记录保留其当时规则与数值；旧单卡地址、只用seed42、固定末轮和官方集只评一次等历史限制，不覆盖用户后续已经明确修改的安排。Goal仍为 **ACTIVE／UNMET**，不能因某一数据集达标或工程检查通过而结束。
+**当前执行入口：§41.510，核对2026-09-26 14:40 CST。** 本页为当前摘要，后面的原始阶段记录保留其当时规则与数值；旧单卡地址、只用seed42、固定末轮和官方集只评一次等历史限制，不覆盖用户后续已经明确修改的安排。Goal仍为 **ACTIVE／UNMET**，不能因某一数据集达标或工程检查通过而结束。
 
 **当前规则：** 新完整角色训练跑满20轮，每轮按作者完整query/gallery与camera／scene过滤评价，以**fused官方mAP最高的同一个checkpoint**报告所有输出与指标，结束后严格重载；不固定最后一轮、不跨种子／epoch拼接列。原生Signal按对应作者完整日程训练，同样逐轮mAP选best。官方测试已参与选择，必须披露探索性选择边界；旧固定终点实验原回执与权重不改写。RGBNT201汇报mAP／R1／R5／R10，RGBNT100和MSVR310主表只汇报mAP／R1。六个R2／V27×数据集组合各自以要求指标均较同协议发布Signal提高至少0.8个百分点为种子搜索停止线；RGBNT201–V27已达线，不再为它追加种子。SOTA目标尚未实现。
 
-**当前机器与位置：** 四卡服务器`172.19.12.128:2026`、用户`gaob`，代码`/data/gaob/Re-ID/Trifusion`，环境`/data/gaob/Re-ID/conda-envs/tri_reid`，作者及纯baseline预训练权重`Trifusion/pertrained-model`，训练权重`Trifusion/trained-model`，日志`Trifusion/logs`；原图、模型和距离数组留远端。旧单卡已由用户停止，RGBNT100–R2 seed46无可核验终态。说明只维护本文件，并同步指定Desktop同名文件、远端和GitHub；不在别处新建交接。13:38 /data可用约104.34GiB；原tri_reid环境未改动，新增作者核心依赖环境单独存放。
+**当前机器与位置：** 四卡服务器`172.19.12.128:2026`、用户`gaob`，代码`/data/gaob/Re-ID/Trifusion`，环境`/data/gaob/Re-ID/conda-envs/tri_reid`，作者及纯baseline预训练权重`Trifusion/pertrained-model`，训练权重`Trifusion/trained-model`，日志`Trifusion/logs`；原图、模型和距离数组留远端。旧单卡已由用户停止，RGBNT100–R2 seed46无可核验终态。说明只维护本文件，并同步指定Desktop同名文件、远端和GitHub；不在别处新建交接。14:38 /data可用约104GiB；原tri_reid环境未改动，新增作者核心依赖环境单独存放。
 
 | 当前任务（以最新实际进程／回执为准） | 状态与接续 |
 | --- | --- |
-| GPU0：RGBNT100–R2 seed42，逐轮best | 14:03已完成9／20轮评价，完整训练和重载验收待定 |
-| GPU1：MSVR310–V27 seed43，逐轮best | FULLNORM–RGBNT201已完整20轮、best第7轮83.1162／87.2010／92.5837／94.2584并审计；队列自动接MSVR310–V27 |
+| GPU0：RGBNT100–R2 seed42，逐轮best | 14:30已完成10／20轮评价，完整训练和重载验收待定 |
+| GPU1：MSVR310–V27 seed44，逐轮best | seed43完整验收，best第2轮51.5958／68.8663，未达线；14:40空卡后接seed44，预计15:00—15:05验收 |
 | GPU2：RGBNT201–R2 seed43，逐轮best | 作者核心环境原生Signal完整50轮、best第22轮73.6258／76.6746／85.8852／90.0718已审计；14:20接R2 seed43且已进入正式训练 |
 | GPU3：RGBNT100–V27 seed43，逐轮best | LOWLR–RGBNT201已完整20轮、best第7轮83.2131／87.3206／92.8230／94.4976并审计；队列自动接RGBNT100–V27 |
 
@@ -10084,3 +10084,21 @@ GPU2在原生Signal完整终态之后、空卡核对后，14:20:55用现有入�
 因此§41.507的LOWLR较Signal +2.9102 mAP及四项过线，不能全部归于联合SIM：RGBNT201冻结V8本身已提供几乎全部mAP增量，且Rank-10更高。车辆的额外mAP增量也有限，MSVR310两种联合版本仍低于发布Signal。现有完整结果支持“低学习率保留原能力”，尚不支持“联合SIM显著解决增量泛化”。后续方法须与冻结V8直接比较，不仅与Signal比较；不再将低学习率或完整尺度导数本身作为待试的新主假设。
 
 统一报告logs/joint_scale_pair_launch_20260926/frozen_v8_vs_joint_best_summary.json绑定九份正式回执SHA，报告SHA256=d4e2b04ba28b657eb25d2e2939f5277dd116c07ddb0503ef858b2789b7e93e37。没有修改模型、重新评价、换选点或覆盖旧结果。关于原生Signal复现，前文已经排查输入顺序、评分、初期AMP跳步和核心依赖，本节没有新增证据可将剩余缺口归为某一个原因，继续保留未解决状态。
+
+### 41.510 MSVR310–V27 seed43逐轮best验收及seed44接续（2026-09-26 14:40 CST）
+
+seed43已跑满20轮、400个优化器更新，20轮完整官方query/gallery评价齐全；M0通过后重新初始化正式训练，0 overflow、无缺失非零梯度、冻结Signal保持不变。按fused官方mAP最高选第2轮并严格重载，独立评价与该轮一致（最大绝对差小于0.000003个百分点）。不是挑最高Rank-1轮，也不是固定最后一轮。
+
+| MSVR310，同一个best第2轮checkpoint | mAP | Rank-1 |
+| --- | ---: | ---: |
+| 发布Signal | 53.2424 | 72.4196 |
+| V27 seed43 fused | 51.5958 | 68.8663 |
+| CNN完整分支 | 52.9395 | 72.2504 |
+| Transformer完整分支 | 50.1556 | 68.6971 |
+| Mamba完整分支 | 49.1512 | 68.3587 |
+
+fused相对Signal为−1.6466 mAP／−3.5533 R1，未达两项均+0.8停止线；固定第20轮为51.3226／68.0203。按best选择有所改善，仍没有消除退化。来源方法、初始化和预算未修改。只读正式诊断覆盖591条query、1055条gallery：修复12条原Signal首位错误、新增33条，其中同scene仅7条；AP改善239条、下降326条、持平26条。正负关系修复47220对、破坏78007对。不能把所有退化归为同场景捷径，也不能将该种子视为新算法改进；官方测试已参与选点，这些属于探索性与事后诊断证据。
+
+终态审计PASS在logs/official_extra_seed43_MSVR310_V27_existing_method_recheck_v1_bestmap_20260926/best_selection_terminal_audit.json，SHA256=176680738db555a6fb1176937e10aa7c5779b0001e6200df25b40366a24cf486；正式回执SHA=da98786a20556e1cb09cdc1eb311235c9da08cc868ade1a723a6b34d2eb419e0，best权重SHA=ce24c2c0d7d525f5d44d0ba39b6700937da85ce6ee619f46979fefdf2f2db877，距离数组SHA=f649a21ff09677216cf85fe9e08f2d31c8be9264957440c90204edaad790c56a；official_retrieval_diagnostic.json SHA=362aa760028f9f7a2fa9cfff98d3f9fe661e90a0280fa87cd0c256d9a2c3d491。所有原始指标及失败结果保留。
+
+确认seed43训练／重载完成、GPU1仅23MiB占用、seed44目标目录不存在后，于14:40:09用原入口提交MSVR310–V27 seed44：仍20轮、best_official_map、existing_method_recheck_v1，持久队列PID3787189。启动manifest logs/bestmap_seed44_followup_20260926/gpu1_msvr310_v27_seed44_launch.json SHA=6b42cb7b5b52f3765dac6eee4dfa15831352f3a82a2b0b87ec081299b1d2966f。参考seed43约20分钟含M0与独立评价，预计15:00—15:05验收；该时间为估计，不冒充结果。其余GPU0 RGBNT100–R2 seed42、GPU2 RGBNT201–R2 seed43、GPU3 RGBNT100–V27 seed43继续，未重启或抢占。/data尚余约104GiB，未删除依赖权重。Goal保持ACTIVE／UNMET。
