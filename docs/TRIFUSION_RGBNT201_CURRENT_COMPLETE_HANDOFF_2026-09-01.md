@@ -10462,3 +10462,21 @@ GPU3的lane已将此端标为COMPLETE并自动启动RGBNT100–V27 seed42 50轮�
 同一正式回执的CPU只读诊断：AP改善359 query、下降171、持平306；首位修复37、新增12；30身份23改善、6下降、1持平；正负关系修复38387、破坏11368。报告logs/official_extra_seed42_RGBNT201_V27_horizon50_v1_bestmap_e50_20260926/official_retrieval_diagnosis.json，绑定正式回执与距离SHA。该正式集已被用于选点，收益只能描述这次探索性结果。第5轮最优也提醒后续不能只报告更漂亮的best而隐去末轮退化。
 
 GPU2 lane将此端标为COMPLETE并于00:14:03自动启动下一端RGBNT201–R2 seed42 50轮；00:16实查PID21101运行，M0通过并进入TRAINING。面板当时2/6完整，其余4端继续。/data剩余约101GiB，未删必要权重。
+### 41.542 第三项50轮完整验收：MSVR310–R2 seed42（2026-09-27 01:30 CST）
+
+按已登记的独立50轮配方，MSVR310–R2以作者发布Signal、fresh角色seed42训练。训练记录为连续50轮、1000个优化step；每轮对完整官方query591/gallery1055执行原scene过滤及无reranking评价，fused mAP最高第24轮。training选中的bestE24与独立evaluate重载E24一致，selected_mAP=52.6796853174，checkpoint文件SHA、选中state SHA、正式回执SHA均核对。冻结上游保持不变，AMP overflow为0，合法跨scene排名监督支持926步，历史VJP组7372，角色级梯度平衡实际启用；这些是工程与训练事实，不替代检索结论。正式回执SHA256=b158a226a2815ac5d004fa5f2616a6a8c1d31620e4e4562441c33a3068871d89；checkpointSHA256=54953a2be8437413f9f0a6246db3ddcf93722a8fde8863fd29da52f2441addd8；选中stateSHA256=f7487f920f491abb8d4cca87a0e809e5efa036803330a0e686dc4afe59b46fda。
+
+| MSVR310正式输出／同一bestE24权重 | mAP | Rank-1 |
+| --- | ---: | ---: |
+| 作者Signal | 53.2424 | 72.4196 |
+| R2 seed42原20轮bestE6 fused | 52.0717 | 69.3739 |
+| **R2 seed42新50轮bestE24 fused** | **52.6797** | **70.3892** |
+| 新50轮CNN完整分支 | 48.8304 | 67.1743 |
+| 新50轮Transformer完整分支 | 50.2936 | 69.2047 |
+| 新50轮Mamba完整分支 | 50.4682 | 68.3587 |
+
+新50轮相对原20轮同seed正式best提高+0.6080153881 mAP、+1.0152284264 Rank-1；相对同回执作者Signal仍为−0.5627066095 mAP、−2.0304568528 Rank-1，未达到本项目两项各约+0.8的验收目标。新轨迹第50轮50.5510286/68.1895077，低于bestE24。20与50轮各自的cosine日程总长不同，跨运行变化只可解释为预算与日程的联合差异。best由已消费的官方测试逐轮挑选，属探索性选择，不把它写成独立无偏测试。
+
+同一50轮bestE24回执只读复算：591条query中AP改善290、下降282、持平19；首位修复30条、新增42条，净少12条，与Rank-1差−2.0304569吻合。52个身份中22改善、30下降；修复正负关系75389对、翻错71585对，逐query关系准确率均值变化+0.2319115百分点，却未保住首位正确数。42条新增首位错误中10条首位负例与query同scene，不能一概归因于同scene捷径，也没有读取原图推断颜色或遮挡。只读报告logs/official_extra_seed42_MSVR310_R2_horizon50_v1_bestmap_e50_20260926/official_retrieval_diagnosis.json，SHA256=53e793d55f8ef0c509ced8e3683239ce4bebd21d1cc2d8831eb58ed8087fccee，绑定正式回执和距离SHA。由此目前50轮面板3/6项已完整，车辆MSVR两方案均尚低于Signal。
+
+前序RGBNT100–SIGNAL_V8_BRANCH_ONLY第8轮中断后保留原失败回执及部分日志；拆分原合取断言仅改报错信息、未放宽判定，GPU1于01:23:51启动同seed同20轮合同的独立重试。M0通过，01:25实查训练PID66639在GPU1运行；这是补齐旧消融第三端，不属于六项50轮面板，也未生成正式结果。GPU0正在跑RGBNT100–R2旧20轮seed43，完成后既定lane接50轮R2；GPU2正在跑RGBNT201–R2 50轮；GPU3正在跑RGBNT100–V27 50轮。01:25四卡均有独立计算进程，/data空闲约100.9GiB，必要best权重均保留。
