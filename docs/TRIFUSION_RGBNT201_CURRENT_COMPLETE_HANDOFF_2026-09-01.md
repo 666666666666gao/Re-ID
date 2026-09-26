@@ -10367,3 +10367,10 @@ RGBNT100–V27 seed44同样完整1—20、best第8轮，独立重载fused=87.111
 原追加种子seed44的MSVR310–R2已完整训练20轮，epoch_official_metrics.jsonl严格连续1—20；按原合同fused mAP选择第7轮，training／evaluate回执同为第7轮，独立重载mAP差0，实存checkpoint文件SHA和模型state SHA匹配，independent_upstream_metrics_equal=true。该同一权重fused=52.1466949722 mAP／69.2047377327 Rank-1，同回执作者Signal=53.2423919269／72.4196277496，分别−1.0956969547／−3.2148900169个百分点；不得将R5/R10改善替代车辆要求的mAP/R1。回执SHA256=5dd950e90fa2cc5d2a256e4f0c3099513105a3bf84d76c9e9362831f27a0a756。是正式完整图库已消费test选点的探索性结果，不属于50轮。
 
 前序campaign COMPLETE后，GPU1 BRANCH_ONLY driver已从WAITING转RUNNING，当前首项MSVR310状态M0_AND_FULL_TRAINING，GPU1有实际计算进程PID3985380。50轮lane1仍WAITING，按已登记顺序先让BRANCH_ONLY三数据集全部验收再接续MSVR310–R2 50轮，不抢占。19:06其它三GPU仍有计算进程，/data约101.83GiB空余；Goal仍ACTIVE／UNMET。
+### 41.533 RGBNT100–R2 seed42终态与GPU0等待器字段故障修复（2026-09-26 20:00 CST）
+
+RGBNT100–R2 seed42原20轮已完整结束，官方epoch序列1—20，fused mAP选第5轮；training／evaluate同轮，独立重载mAP差0、checkpoint实存SHA与模型state SHA一致、作者Signal独立上游评价一致。同一权重fused=86.9594833216／97.9591836735，对应Signal=86.3241986244／97.5510204082，分别+0.6352846972／+0.4081632653，未达到车辆两项各+0.8的原停止线。回执SHA256=a88e4757a2a622fed5ecb5f0a1029ae240ad59922a0c05991210a12b5900805d。此为已消费正式测试逐轮选best的20轮结果，不混作50轮。
+
+19:58发现GPU0实际无计算进程，而logs/rgbnt100_r2_seed43_wait_20260926/status.json仍WAITING；核对原等待PID3900467已消失，driver.log保留原Traceback：waiter.py第18行读取training.json的official_epoch_evaluations触发KeyError。该seed42训练回执实际字段为official_model_forwards，且训练轮数在training.epochs，原始epoch_official_metrics.jsonl完整1—20；因此是等待器旧字段错误，不是模型训练或正式评价失败。核对seed43目标logs／trained-model均不存在后，仅生成waiter_v2.py，将第18行改为直接检查training.epochs=20和原始epoch序列1—20，其余命令、种子、方法、GPU及停止线不改。旧waiter.py及失败日志保留，不覆盖。
+
+新脚本内存compile通过，SHA256=f7e2ff377b386f59205e0eac461eb0aeaa35716cdb7f2d4e46297ec04e8b2e3f；20:00持久PID4027757启动并实查存活，status=RUNNING、driver_v2.log当时无异常。它将按原GPU0空闲及磁盘门执行seed43 M0→20轮→best重载；GPU0的50轮lane仍等此完整前序终态，不抢占。失败修复发生在调度验收代码而非训练／评价实现，不改变已封存seed42指标。Goal仍ACTIVE／UNMET。
