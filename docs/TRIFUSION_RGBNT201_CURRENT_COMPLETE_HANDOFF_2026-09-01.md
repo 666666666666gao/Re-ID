@@ -2,7 +2,7 @@
 
 ## 0. 一页结论
 
-**当前执行入口：§41.496，核对2026-09-26 11:52 CST。** 本页为当前摘要，后面的原始阶段记录保留其当时规则与数值；旧单卡地址、只用seed42、固定末轮和官方集只评一次等历史限制，不覆盖用户后续已经明确修改的安排。Goal仍为 **ACTIVE／UNMET**，不能因某一数据集达标或工程检查通过而结束。
+**当前执行入口：§41.497，核对2026-09-26 12:01 CST。** 本页为当前摘要，后面的原始阶段记录保留其当时规则与数值；旧单卡地址、只用seed42、固定末轮和官方集只评一次等历史限制，不覆盖用户后续已经明确修改的安排。Goal仍为 **ACTIVE／UNMET**，不能因某一数据集达标或工程检查通过而结束。
 
 **当前规则：** 新完整角色训练跑满20轮，每轮按作者完整query/gallery与camera／scene过滤评价，以**fused官方mAP最高的同一个checkpoint**报告所有输出与指标，结束后严格重载；不固定最后一轮、不跨种子／epoch拼接列。原生Signal按对应作者完整日程训练，同样逐轮mAP选best。官方测试已参与选择，必须披露探索性选择边界；旧固定终点实验原回执与权重不改写。RGBNT201汇报mAP／R1／R5／R10，RGBNT100和MSVR310主表只汇报mAP／R1。六个R2／V27×数据集组合各自以要求指标均较同协议发布Signal提高至少0.8个百分点为种子搜索停止线；RGBNT201–V27已达线，不再为它追加种子。SOTA目标尚未实现。
 
@@ -10,10 +10,10 @@
 
 | 当前任务（以最新实际进程／回执为准） | 状态与接续 |
 | --- | --- |
-| GPU0：RGBNT100–R2 seed42，逐轮best | 完整20轮训练进行中；此前估计19:00—21:00验收，尚无终态 |
+| GPU0：RGBNT100–R2 seed42，逐轮best | 11:55已完成5／20轮评价，完整训练中；按实际速度约19:45验收，尚无终态 |
 | GPU1：FULLNORM–MSVR310候选端 | 原生Signal50轮已完整验收；11:47候选端M0 PASS后进入完整20轮，随后RGBNT100、RGBNT201串行接续 |
-| GPU2：RGBNT201–R2 seed42，逐轮best | 完整20轮训练进行中，粗估13:00—14:00验收，尚无终态 |
-| GPU3：联合SIM尺度导数LOWLR control | 九面板已完成；11:35首个MSVR310端M0通过并开始完整训练，随后RGBNT100、RGBNT201串行接续 |
+| GPU2：RGBNT201–R2 seed42，逐轮best | 11:55已完成12／20轮评价，按实际速度约13:40验收，尚无终态 |
+| GPU3：联合SIM尺度导数LOWLR control | MSVR310完整best已验收50.6929／67.6819；原驱动继续RGBNT100、RGBNT201，候选MSVR仍进行中 |
 
 最新完整结果见§41.487—491：先前12端及新增2端的逐轮best选点独立核验通过；RGBNT201–V27 seed42选第5轮`83.1234/88.0383/93.5407/94.9761`，四项均达+0.8线；RGBNT100–V27 seed42选第6轮`86.8096/97.3761`，相对Signal为`+0.4854/−0.1749`，未达线。MSVR310新协议R2 seed42为`52.0717/69.3739`，新增seed43选第4轮为`53.5517/71.9120`，后者较Signal`53.2424/72.4196`为`+0.3093/−0.5076`，仍未达线；V27 seed42为`51.0747/68.3587`。以上每行来自同一best权重，未完成的训练不填写终态数值。
 
@@ -9842,3 +9842,27 @@ GPU1的FULLNORM–MSVR310按原240秒周期于11:47:21接续，11:47:58独立8�
 为复用原生Signal完整入口并分开存放新环境证据，`queue_signal_full_matched.py`仅增加`--run-label`独立日志／权重命名空间，回执记执行Python路径；指定label时仍强制best_map＋AMP审计，不改模型、采样、日程、loss、选点或训练长度。CPU `--help`实际通过。新环境验证通过后拟用该环境Python执行`tools/queue_signal_full_matched.py --gpu 2 --dataset RGBNT201 --after-campaign /data/gaob/Re-ID/Trifusion/logs/official_extra_seed42_RGBNT201_R2_existing_method_recheck_v1_bestmap_20260926/campaign.json --selection best_map --amp-audit --run-label author_core_20260926`，完整产物放`logs/signal_full_author_core_20260926`及`trained-model/signal_full_author_core_20260926`。这是记录待执行的具体命令，不是已启动声明；须先完成新环境验证并确认GPU2原R2已完整验收。
 
 **安装网络补充：** 11:51通过本机实际监听进程核对，Clash的HTTP代理端口为7899，而非旧配置7897；7899向PyPI的CONNECT与目标响应均200，7898的HTTP CONNECT失败。因此建立隐藏SSH辅助进程7740，将服务器仅loopback的`127.0.0.1:7897`转发至本机`127.0.0.1:7899`；无公共监听。服务器Python requests经此代理实际下载conda-forge noarch shards元数据973,520字节、HTTP200、约0.90秒，解决了“只验证HEAD可达、真实元数据请求却超时”的证据不足。11:52:17第二次安装子进程3572674仍活着且仍处在原直连metadata阶段，环境prefix尚不存在；没有仅因等待而重启它。若该次明确失败，后继安装可以明确使用已验证的HTTP(S)_PROXY通路，必须另存运行回执，不能覆盖前两次记录；此时尚未启动代理版第三次安装。
+
+### 41.497 首个联合尺度配对control完整验收与环境网络修复（2026-09-26 12:01 CST）
+
+MSVR310–SIGNAL_SIM_JOINT_LOWLR seed42于11:55:31完成20轮／400步，11:56:32完成best严格重载。11:59独立审计检查完整20条官方评价、所选epoch、权重／protocol／距离SHA、全部step有限性、0overflow、12个SIM参数确实存入joint checkpoint、仍冻结子集不变，PASS。fused mAP最高在**第13轮**；其他指标及输出一律来自该权重。FULLNORM candidate尚未完成，此处不做候选收益判断。
+
+| MSVR310，同一control best第13轮 | mAP | Rank-1 |
+| --- | ---: | ---: |
+| 未更新的作者Signal（独立参照） | 53.2424 | 72.4196 |
+| 更新后Signal学生单独输出 | 53.2824 | 72.7580 |
+| CNN完整分支 | 49.6471 | 67.3435 |
+| Transformer完整分支 | 46.5998 | 62.9442 |
+| Mamba完整分支 | 49.3998 | 68.5279 |
+| fused | **50.6929** | **67.6819** |
+| fused－原作者Signal | **−2.5494** | **−4.7377** |
+
+学生Signal较原参照略高`+0.0400/+0.3384`，而fused仍明显为负；说明这个端没有重演大幅破坏SIM原能力，却仍未获得可靠角色增量。fused mAP高于各角色，R1低于Mamba，不能写成所有指标融合最高。同run末轮fused为50.0679／67.0051，第13轮best比末轮约+0.6251 mAP；全20轮中的最高fused R1为69.8816，仍低于原Signal，不能把它拼到第13轮报告中。
+
+显式以**未更新的作者Signal**为参照的只读距离诊断：591个query的AP改善／下降／持平为254／320／17；首位修复20条、新增48条，净少28条正确首位，吻合R1下降4.7377个百分点；48个新错误中16个负例同scene、32个不同scene。52个身份AP为17改善、35下降。实例正负关系修复71,664对、破坏69,318对，关系净改善仍未保住首位。该报告另存更新后学生Signal的指标，未将学生当成原teacher；不使用这些正式身份调阈值。
+
+campaign=`logs/official_extra_seed42_MSVR310_SIGNAL_SIM_JOINT_LOWLR_joint_scale_pair_v1_bestmap_20260926`。正式回执SHA256=`90f934a5631ea8584bd83c5aa8e63929daf8ca8d5cf46b3a3bd430371df67bf2`，唯一joint best=`7ca9155d84296a4331b2d038b4cac7f38e0fa9a5530fcfc1b4d8d5a5f2b004a8`，距离数组=`4e2e25caf5707fbc91a079baf7178453585258cf9b9a9b7bab0bab35e4953636`，训练回执=`922247013c925b9dd1262abdc3f7402cc72dd3bd38a43ef7e2c54ebdcce28c1a`，M0=`12f7f1c2a428cbe1e1a452416249c11c071bd40889c241fe0eccab70d7116cfd`。独立`best_selection_terminal_audit.json`SHA256=`22a592c76bf16e80a0a62c5373ea267cd6c9bf5ca85ba1ff66b8d62c25906283`；显式原Signal诊断`diagnostics/MSVR310_SIGNAL_SIM_JOINT_LOWLR_seed42_original_signal.json`SHA256=`1347153ceff9b27eab46b7ee9b089403f9eaa258b55839e77011fa576ce6635b`。逐轮选点仍属官方集参与选择的探索性结果。
+
+**安装的实际处置：** 11:54:28再次确认direct conda进程3572674仍活着、处在失败重试的metadata阶段，目标prefix不存在。在已验证同元数据代理下载成功的依据下，11:54:47人工只终止该明确安装子进程以切换网络；不是把它误判为已经自然退出，不涉及训练／已有环境／权重。原构建记录退出码−15，并在原r2目录`network_remediation.json`保存取消原因。确认进程消失、父回执FAILED后，11:55:05启动代理版构建3578054，日志`logs/signal_author_core_env_20260926_r3`；科学规格哈希仍cb4e4323…67ea1，仅HTTP(S)_PROXY指向已验证的loopback7897。此次conda_create于11:55:39退出0，成功创建Python3.10.13；11:59 pip子进程3578741仍在下载官方torch2.1.1+cu118的2325.9MB wheel。环境尚未装完，也未声明通过导入／GPU／独立命令核验，未启动环境对照训练。首次与第二次安装记录均保留。
+
+11:55实际吞吐估计：RGBNT100–R2已完成5／20轮，预计约19:45；RGBNT201–R2已完成12／20轮，预计约13:40；FULLNORM–MSVR预计12:08完成并接续RGBNT100。这些含官方评价开销的估计随完整运行速度更新，不当成已完成事实；当前四卡训练持续，最近/data可用约109GiB。后续仍先收齐§41.493六端，不能凭control失败就宣布候选成功或临时换配方。
