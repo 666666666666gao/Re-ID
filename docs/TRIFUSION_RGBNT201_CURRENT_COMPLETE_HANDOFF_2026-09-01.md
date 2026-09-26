@@ -10362,3 +10362,8 @@ experiment-bridge要求的fresh审查由同家族Codex max reviewer完成，PASS
 RGBNT201–R2 seed43的20条epoch_official_metrics原始记录连续1—20，选best第5轮，独立重载fused=82.9387136211／86.9617224880／92.4641148325／94.1387559809；同回执作者Signal=80.3028927692／85.1674641148／91.3875598086／93.6602870813。mAP、R1、R5达到+0.8，但R10仅+0.4784688995，故原多指标停止条件未达；预置seed44等待器会在完整验收后占GPU2训练，50轮lane继续等待其终态。回执SHA256=c9dfdd09ed5dc2bd973dcea55bf63c8e3f625db8ca09e37f376cb8652bfc0f03。
 
 RGBNT100–V27 seed44同样完整1—20、best第8轮，独立重载fused=87.1114999355／97.7842565598；同回执Signal=86.3241986244／97.5510204082。mAP+0.7873013111、R1+0.2332361516，均不足同时≥+0.8，预置seed45等待器会占GPU3，50轮lane后继接续。回执SHA256=ca074cc9fd0be2c2425b1eba28a13aca68a48dac947667bc66f384fd5b1137d5。两项的epoch选点与training／evaluate回执同为第5／8轮、fused mAP重现差0、checkpoint文件SHA与模型state SHA一致、独立Signal上游指标相等，campaign均COMPLETE。它们属于原20轮追加种子结果，不是本次50轮六格结果；全部正式test已用于选择，按探索性终点报告。
+### 41.532 MSVR310–R2 seed44原20轮完整验收与GPU1接续（2026-09-26 19:07 CST）
+
+原追加种子seed44的MSVR310–R2已完整训练20轮，epoch_official_metrics.jsonl严格连续1—20；按原合同fused mAP选择第7轮，training／evaluate回执同为第7轮，独立重载mAP差0，实存checkpoint文件SHA和模型state SHA匹配，independent_upstream_metrics_equal=true。该同一权重fused=52.1466949722 mAP／69.2047377327 Rank-1，同回执作者Signal=53.2423919269／72.4196277496，分别−1.0956969547／−3.2148900169个百分点；不得将R5/R10改善替代车辆要求的mAP/R1。回执SHA256=5dd950e90fa2cc5d2a256e4f0c3099513105a3bf84d76c9e9362831f27a0a756。是正式完整图库已消费test选点的探索性结果，不属于50轮。
+
+前序campaign COMPLETE后，GPU1 BRANCH_ONLY driver已从WAITING转RUNNING，当前首项MSVR310状态M0_AND_FULL_TRAINING，GPU1有实际计算进程PID3985380。50轮lane1仍WAITING，按已登记顺序先让BRANCH_ONLY三数据集全部验收再接续MSVR310–R2 50轮，不抢占。19:06其它三GPU仍有计算进程，/data约101.83GiB空余；Goal仍ACTIVE／UNMET。
