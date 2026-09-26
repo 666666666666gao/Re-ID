@@ -1,0 +1,31 @@
+{
+  "name": "signal_author_core_py31013_cu118",
+  "python": "3.10.13",
+  "pip_phases": [
+    {
+      "index_url": "https://download.pytorch.org/whl/cu118",
+      "packages": ["torch==2.1.1+cu118", "torchvision==0.16.1+cu118", "torchaudio==2.1.1+cu118"]
+    },
+    {
+      "index_url": "https://pypi.org/simple",
+      "packages": [
+        "numpy==1.26.3", "pillow==10.2.0", "timm==0.4.12",
+        "einops==0.7.0", "ftfy==6.2.3", "fvcore==0.1.5.post20221221",
+        "matplotlib==3.8.3", "regex==2023.12.25", "scipy==1.12.0",
+        "seaborn==0.13.2", "scikit-learn==1.5.1", "tqdm==4.66.2",
+        "yacs==0.1.8", "PyYAML==6.0.1", "filelock==3.9.0",
+        "fsspec==2024.9.0", "huggingface-hub==0.21.4", "iopath==0.1.10",
+        "Jinja2==3.1.2", "joblib==1.4.2", "MarkupSafe==2.1.3",
+        "mpmath==1.3.0", "networkx==3.2.1", "packaging==24.0",
+        "pandas==2.2.1", "portalocker==2.8.2", "requests==2.28.1",
+        "sympy==1.12", "tabulate==0.9.0", "termcolor==2.4.0",
+        "threadpoolctl==3.5.0", "typing_extensions==4.8.0", "gdown==5.2.0"
+      ]
+    }
+  ],
+  "smoke": {
+    "import_names": ["torch", "torchvision", "torchaudio", "numpy", "PIL", "timm", "einops", "ftfy", "fvcore", "matplotlib", "regex", "scipy", "seaborn", "sklearn", "tqdm", "yacs", "yaml", "gdown"],
+    "gpu_test_code": "import torch; torch.manual_seed(42); torch.cuda.manual_seed_all(42); x=torch.randn(8,16,64,device='cuda',requires_grad=True); m=torch.nn.MultiheadAttention(64,4,batch_first=True).cuda(); y=m(x,x,x,need_weights=False)[0]; y.square().mean().backward(); torch.cuda.synchronize(); assert y.shape==(8,16,64) and torch.isfinite(y).all() and torch.isfinite(x.grad).all() and x.grad.abs().sum()>0; print('WITNESS',tuple(y.shape),torch.cuda.get_device_name(),torch.__version__,float(x.grad.norm()))"
+  },
+  "scope": "Author-pinned core training stack, not the entire published environment. gdown 5.2.0 is an imported loader utility absent from the author requirements; it matches the existing environment. The unpublished local grad-cam path and unused visualization packages are excluded. Transitive packages are recorded after resolution."
+}

@@ -9797,3 +9797,15 @@ GPU0／2现有R2不抢占、不重启。队列按240秒检查依赖，GPU1等待
 两驱动仅在前一个端完整训练、评价成功后调用原队列，出现非零退出码会记录失败并退出，未新增重试／fallback。每条卡内顺序固定MSVR310→RGBNT100→RGBNT201，实际显存检查GPU3无其他任务，启动时/data可用109.48GiB。依据M0与旧同结构速度，首个MSVR310约11:50—12:00验收，六端整组暂估14:00—15:30完成；待完整首轮的训练和官方评价耗时再修正。原生Signal11:35已完成39／50轮，预计11:45—11:50验收。上述均为预计，不是已完成记录；GPU0／2原R2继续。
 
 为避免联合训练的诊断基准混淆，现有只读`diagnose_official_retrieval.py`增加显式`--reference-receipt`：只允许同数据集、同protocol／作者权重／过滤与reranking的冻结SIGNAL_V8回执提供原Signal距离；逐项核对距离SHA、query／gallery身份与环境排列，报告明确写出reference路径／SHA，并另列学生`baseline_only`指标。没有该参数时保持旧行为。CPU检查用既有完整MSVR310–SIGNAL_V8同回执做参考，新增路径与默认路径所有既有诊断字段完全相等，且默认结果与封存旧诊断逐项相等。原距离、回执与模型未修改，未运行GPU；该诊断接口不进入训练或选点。
+
+### 41.494 原生Signal复现：准备独立作者核心依赖环境（2026-09-26 11:44 CST）
+
+§41.486已确认作者公开核心依赖与当前环境不一致；原生best协议已完整得到72.4708 mAP，尚不能复现发布Signal的80.3029。当前AMP完整诊断仍在最后阶段，最近累计记录只发现启动前5次跳步，不能据此提前解释全部差距。这里独立准备软件环境对照，不改动当前`tri_reid`环境或四个GPU任务。
+
+唯一声明规格为仓库`configs/signal_author_core_env_20260926.json`：Python3.10.13，torch2.1.1+cu118／torchvision0.16.1+cu118／torchaudio2.1.1+cu118，numpy1.26.3、Pillow10.2.0、timm0.4.12，以及作者固定的实际原生训练导入依赖。**这是作者核心训练栈，不是完整原机器镜像**：作者requirements含无法移植的`grad-cam @ file:///media/zpp2/Datamy/lyy/512/pytorch-grad-cam`；原生训练不导入它，未添加替代模块。源码导入gdown但作者清单未锁定，使用与现有环境一致的5.2.0，明确单列。其余解析出的传递依赖将保存实际freeze，不能声称全部与作者机器一致。
+
+环境目标`/data/gaob/Re-ID/conda-envs/signal_author_core_py31013_cu118`，conda包缓存只指向`/data/gaob/Re-ID/miniconda3/pkgs`，安装临时目录与日志都在Re-ID下；作者和纯baseline权重复用原位置。现有环境清单只有`tri_reid`与miniconda根环境，没有相同环境可复用。安装前可用约109GiB，预计新增环境／依赖占用数GiB到十余GiB，后续按实际磁盘核对。
+
+验证顺序：CPU实际导入及逐项版本检查；空闲GPU上的固定seed42多头注意力前向／反向有限性见证（命令原文在spec）；按同一记录命令由新的独立审查代理实跑核对；原生Signal独立一轮M0；再安排RGBNT201公开CLIP seed1234、原配置完整50轮、每轮官方mAP选best及严格重载。GPU见证／M0／完整训练均须等空闲卡，不抢占当前训练；此时尚未构建或宣称环境可用。完整训练启动另行记录，不能将环境成功导入填成检索结果。
+
+环境对照使用相同公开CLIP、数据与原Signal配置、同样的AMP记录与选点规则，比较整套软件栈差异；不同时改loss、学习率、batch、增强或SIM结构。若结果改变，也不能从一个环境级干预直接归因于某一个包。作者源码实存两个既有补丁已核对：公开CLIP路径改读配置；日志学习率改读optimizer当前LR；无其他tracked改动。原`_get_lr`为无随机数的显式余弦公式，这项打印修复没有引入新的训练日程。作者`cudnn.deterministic=True`同时`benchmark=True`，未启用全算子确定性；相同seed的独立轨迹不能预先假定逐位相同，不能把AMP观察run与旧run的差值宣称为“加日志的收益”。本节及后续环境状态只记在本交接，不建立新的环境说明Markdown。
