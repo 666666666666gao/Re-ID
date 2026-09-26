@@ -2,7 +2,7 @@
 
 ## 0. 一页结论
 
-**当前执行入口：§41.507，核对2026-09-26 14:27 CST。** 本页为当前摘要，后面的原始阶段记录保留其当时规则与数值；旧单卡地址、只用seed42、固定末轮和官方集只评一次等历史限制，不覆盖用户后续已经明确修改的安排。Goal仍为 **ACTIVE／UNMET**，不能因某一数据集达标或工程检查通过而结束。
+**当前执行入口：§41.508，核对2026-09-26 14:31 CST。** 本页为当前摘要，后面的原始阶段记录保留其当时规则与数值；旧单卡地址、只用seed42、固定末轮和官方集只评一次等历史限制，不覆盖用户后续已经明确修改的安排。Goal仍为 **ACTIVE／UNMET**，不能因某一数据集达标或工程检查通过而结束。
 
 **当前规则：** 新完整角色训练跑满20轮，每轮按作者完整query/gallery与camera／scene过滤评价，以**fused官方mAP最高的同一个checkpoint**报告所有输出与指标，结束后严格重载；不固定最后一轮、不跨种子／epoch拼接列。原生Signal按对应作者完整日程训练，同样逐轮mAP选best。官方测试已参与选择，必须披露探索性选择边界；旧固定终点实验原回执与权重不改写。RGBNT201汇报mAP／R1／R5／R10，RGBNT100和MSVR310主表只汇报mAP／R1。六个R2／V27×数据集组合各自以要求指标均较同协议发布Signal提高至少0.8个百分点为种子搜索停止线；RGBNT201–V27已达线，不再为它追加种子。SOTA目标尚未实现。
 
@@ -10064,3 +10064,9 @@ LOWLR相对发布Signal为**+2.9102／+2.1531／+1.4354／+0.8373**，四项均�
 只读正式排序诊断：LOWLR相对发布Signal修复34条首位错误、新增16条；FULLNORM修复34条、新增17条。LOWLR的query AP改善368条、下降155条；FULLNORM改善366条、下降158条。新增错误中同camera分别14／16和15／17，这是排序标签统计，不是已证实的视觉成因，已消费官方身份不用于新阈值选择。LOWLR终态审计SHA256=51739d8298c2250fd1f4d37140f3a1c3da77b803036eef51a22a897abdda53df，回执SHA=3467d45ad40bdfb6b630b5bef675d2157b5d8fb2a2e3ca75d8fcb3d9be004099，诊断SHA=b95b3c59a5dae4cdf2bcaa086cae3872555cc97cd5ac7a7483acd4161e296e8b；FULLNORM审计SHA=154698ad6faabe56e211a8b73527d19a839ed94c50c49ed343a4725449027bb0，回执SHA=b2469bb7cbea00326e5baee867fe896fd4d69b1c1616874fb2d00468a104fed0，诊断SHA=41b3e889e894f13e7e928905e55734d6edb772206be548e9ad441120726d17aa。两端训练1060步、0 overflow，原正式权重和曲线保留。
 
 GPU2在原生Signal完整终态之后、空卡核对后，14:20:55用现有入口提交RGBNT201–R2 seed43，完整20轮、逐轮best、原官方协议，持久PID3769440；launch manifest在logs/bestmap_seed43_followup_20260926/gpu2_rgbnt201_r2_seed43_launch.json，SHA256=6c04ea4fcdb681dcf6c20d754675607194452fe8669839bd27fb5ecfa90fae2b。14:26已过M0进入正式训练。GPU1自动接MSVR310–V27 seed43，GPU3自动接RGBNT100–V27 seed43且处于M0，GPU0 RGBNT100–R2 seed42继续，/data约104GiB可用。所有未完成端点只报告进度不填完整指标；Goal保持ACTIVE／UNMET。
+
+### 41.508 六端尺度导数比较汇总与当前队列复核（2026-09-26 14:31 CST）
+
+已从六份PASS终态审计与六条完整20轮官方曲线生成统一只读报告logs/joint_scale_pair_launch_20260926/three_dataset_best_pair_summary.json，SHA256=3dff058d548386f1e04a9f8e9d97c2e96c8fad840a442d08629f8a116e79a38a。逐数据集核对初始状态SHA相同、全部20个epoch齐全，报告绑定12份输入文件SHA。FULLNORM相对LOWLR的各自best变化：RGBNT201四项−0.0969／−0.1196／−0.2392／−0.2392；RGBNT100两项+0.1763／+0.1166；MSVR310两项+0.0166／+0.5076。跨数据集方向混合且车辆mAP收益很小，现有证据不支持把完整尺度导数作为普遍有效的主改进，也不足以将原车辆退化归因于这一处停止梯度。保留这条完整负／弱正对照，后续不重复将“试一下完整范数导数”当新建议。
+
+14:30进程表再次确认四个真实训练PID：GPU0 3372616 RGBNT100–R2 seed42（10／20次评价），GPU1 3767296 MSVR310–V27 seed43（11／20），GPU2 3770885 RGBNT201–R2 seed43（1／20），GPU3 3776593 RGBNT100–V27 seed43（正式训练中，首轮尚未评价）。命令均显式best_official_map，/data空闲103.26GiB；没有重启或抢占。MSVR310–V27预计约14:40—14:45进入完整验收，先等终态再填表；其余任务按各自完整日程继续。总Goal保持ACTIVE／UNMET，六端小规模差异不能代替SOTA或六cell目标。
