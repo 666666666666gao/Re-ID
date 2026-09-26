@@ -10315,3 +10315,14 @@ RGBNT100审计logs/official_extra_seed42_RGBNT100_SIGNAL_SIM_JOINT_STAGED_staged
 当前seed44训练PID3872330及队列PID3871277均实查存活，17:40完成12次官方评价。目标seed45的best协议logs／trained-model及同类等待器均不存在，故按既有未达标续种子授权登记单项接续。等待seed44完整20轮、best重载COMPLETE；直接核对原始epoch_official_metrics.jsonl的epoch序列为1—20、方法／数据集／seed、best政策、训练与重载权重SHA字段一致及独立上游评价一致。若同一个best权重mAP与Rank-1相对同回执Signal均≥+0.8则SKIPPED_TARGET_MET；否则待GPU3真实空闲、磁盘>10GiB及目标路径不存在，经既有入口M0→fresh完整20轮→逐轮官方mAP选best→严格重载。每240秒核对前序队列实际存活，无抢占、无自动重试，不修改方法。
 
 等待器logs/rgbnt100_v27_seed45_wait_20260926/waiter.py SHA256=6855c82923a162140b5b8ce6d3a407c4828c811b3825cc2def32720d44751e4f；来源HEADfa16ee871fa07aa0e4ff34cbc2b0141c4a3a1757。17:41:28启动PID3923601，编译通过；随后等待器与前序两PID均存活，status=WAITING、driver.log无错误。后继campaign为official_extra_seed45_RGBNT100_V27_existing_method_recheck_v1_bestmap_20260926，尚未启动训练。按seed43实测约121分钟，若seed44约18:30验收并未达线，seed45暂估20:30左右验收。当前磁盘102.28GiB，无删除必要；其他三卡任务保持。此节仅补队列连续性，不是新算法结果，全部种子保留并披露官方选择边界。
+### 41.525 后继单变量训练职责对照登记：SIGNAL_V8_BRANCH_ONLY（2026-09-26，实施前）
+
+§41.523阶段式三数据集已完整结束，低学习率与阶段顺序基本保住Signal，但没有一致改善角色融合。静态核对modeling/trifusion/signal_preserving_v8.py::ExpertFormationV8Criterion及tools/train_official_three_dataset_roles.py::_v27_loss：当前同时监督fused、三条Signal＋角色完整分支、三个纯残差，共14项。三个正式数据集ROLE_CONFIGS均为ID_FUSED=.25、TRIPLET_FUSED=1、ID_BRANCH=1/12、TRIPLET_BRANCH=.25、ID_RESIDUAL=1/12、TRIPLET_RESIDUAL=.25，不能称14项等权。历史V15/V16降低过残差权重并改变其他机制，不是同当前V8配置取消纯残差任务的控制；早期V5还同时存在很弱的残差能量和不同融合定义，不能直接替代本项。
+
+研究假设是：纯残差必须单独重建完整身份能力，可能限制它相对强基线的补充职责。只把它作为待检验解释，不认定已证明重复学习或它是全部车辆失分原因。登记方法SIGNAL_V8_BRANCH_ONLY，直接对照已完成的同协议SIGNAL_V8 seed42 best终态。唯一训练定义变化：ID_RESIDUAL与TRIPLET_RESIDUAL两类权重置零，共六项不再参与目标；保留fused及三个完整分支的8项原权重，不重新归一化总权重和、不调整学习率补偿。停用仅服务残差分类的residual_necks／residual_classifiers可训练参数，避免把无任务头列入梯度覆盖要求；残差编码器、固定融合与推理输出仍完整保留。残差分类BN缓冲的训练行为与保存须如实说明，不能宣称这会改变检索BN路径。该改动也会改变合成梯度量级，若有收益不能直接全归于“互补性”，后续需要相应机制证据。
+
+三数据集各seed42，从对应作者完整Signal重新初始化原角色，Signal／CLIP全冻结，7680D固定等能量fusion不改；相同loader、增强、B64/K8、14项原计算定义中的有效8项、Triplet margin .3、label smoothing .1、角色LR3.5e-4、原AdamW及完整20轮日程。每轮原作者完整query/gallery及camera／scene过滤按fused mAP选best，最终严格重载并报告同一权重全部输出；201四指标、车辆两指标，不跨轮拼列。无R2记忆与调权、无V27统计扰动、无SIM解冻／反馈、无新Router。官方选择边界继续披露。
+
+依experiment-bridge完成最小实现、fresh同家族Codex max审查、来源M0后，才启动fresh完整训练。检查初始检索表示与V8一致、实际目标中仅六项为零、有效角色及保留分类参数获得有限非零梯度、停用头参数不更新、冻结Signal不变、权重保存／严格重载一致。先MSVR310，再RGBNT201、RGBNT100，拟复用GPU1当前R2 seed44完整验收后释放的时隙，不抢占；各自来源M0→fresh20轮→独立重载→只读检索与残差银行诊断。按原V8同类运行暂估合计约2.5—3小时，实际由首项校正。性能判断是三数据集相对匹配V8的全部正式指标及相对发布Signal的变化，全部结果保留；这不是R2／V27达标格，也不是已经验证的原创方法。若角色学习变弱或无收益，原负结果保留，不在中途修改权重救实验。
+
+登记时尚未实现、审查或启动本项，暂无M0／检索结果。新代码、审核和运行状态继续只追加本文件，不新建说明Markdown。现有四卡种子与条件接续不改。
