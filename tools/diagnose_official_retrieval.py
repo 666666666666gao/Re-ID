@@ -31,7 +31,9 @@ def main():
     checkpoint_policy = receipt.get("checkpoint_policy", "fixed_final_epoch")
     if checkpoint_policy == "best_official_map":
         assert receipt["fixed_epoch"] is None
-        assert 1 <= receipt["selected_epoch"] <= 20
+        training_epochs = receipt.get("training_epochs", 20)
+        assert training_epochs in (20, 50)
+        assert 1 <= receipt["selected_epoch"] <= training_epochs
     else:
         assert checkpoint_policy == "fixed_final_epoch" and receipt["fixed_epoch"] == 20
     distance_path = Path(receipt["distance_arrays"])
