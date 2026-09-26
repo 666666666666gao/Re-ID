@@ -10383,3 +10383,19 @@ BRANCH_ONLY此前MSVR310和RGBNT201两端均完成完整20轮、逐轮官方选b
 第三端RGBNT100 BRANCH_ONLY没有完整终态：来源初始见证PASS、M0_PASS，正式训练第1—7轮有完整官方评价并只保存best；在第8轮第962次优化后的下一次前向，tools/train_msvr310_trifusion_oof.py::output_mapping触发 `all_finite && baseline_exact_prefix` 断言。最后一个已记录loss0.36495149、AMP scale256；日志尚未分别指出两个条件中哪项为false，不能擅自认定是NaN、残差监督删除的因果效果或GPU故障。原queue/driver随后因子进程非零退出，GPU1无计算进程；不存在正式official_metrics.json，故本端指标仍为“-”，不能用第7轮临时best当正式结果。
 
 已保存原driver_status／campaign JSON快照及原Traceback，再把当前两个状态如实标为FAILED（RGBNT100完成官方epoch7、已记录optimizer step962，附原train.log），没有伪造COMPLETE。原GPU1 50轮lane只接受COMPLETE，因而永久等待；证据证明这是当前真实阻塞后，仅对GPU1且确认BRANCH_ONLY末项FAILED的情形允许接续，方法训练和指标入口均未改，代码GitHub／远端提交98154f4。核对原lane PID3958200命令身份后终止该无训练等待进程，原WAITING状态文件保留改名，20:43新持久lane PID4058789实查存活，job=MSVR310–R2 50轮RUNNING。它将从独立M0重新启动50轮，不从失败BRANCH_ONLY状态继续；另外三张卡原任务保持。后续需只读诊断BRANCH_ONLY第8轮断言具体条件，再决定是否值得相同配方重跑；不能通过跳过断言填补缺失第三端。Goal仍ACTIVE／UNMET。
+### 41.535 首项50轮完整正式验收：MSVR310–V27 seed42（2026-09-26 21:36 CST）
+
+按§41.529既定配方，MSVR310–V27从作者Signal和fresh角色seed42独立训练50轮，1000次优化、0 AMP overflow、冻结上游SHA不变。epoch_official_metrics.jsonl恰50条、epoch严格1—50，每轮使用完整官方query591／gallery1055及原scene合法过滤；原始fused mAP最高第24轮52.0586460537，training选点与最终evaluate重载均第24轮，重载mAP差0、实存checkpoint SHA与模型state SHA匹配、独立Signal上游指标相等。campaign/job均COMPLETE，训练状态BEST_OFFICIAL_MAP_TRAINING_COMPLETE。checkpointSHA256=91c05e4b661925d6c63a4cc9f75e585ea03cbe4f89a5bd84083db863a688419d；正式回执SHA256=614bc33afdec3a9d4c137d4c1d0f04095ae2052b08c3d9f82420c96f5286222c。只报告同一best权重指标，不从别的轮次拼接。
+
+| MSVR310正式输出／版本 | mAP | Rank-1 |
+| --- | ---: | ---: |
+| 同回执作者Signal | 53.2424 | 72.4196 |
+| V27 seed42原20轮bestE13 | 51.0747 | 68.3587 |
+| **V27 seed42新50轮bestE24 fused** | **52.0586** | **70.5584** |
+| 50轮bestE24 CNN完整分支 | 49.3687 | 67.0051 |
+| 50轮bestE24 Transformer完整分支 | 49.1909 | 66.8359 |
+| 50轮bestE24 Mamba完整分支 | 48.9657 | 67.3435 |
+
+新50轮相对原20轮同seed最佳终点为+0.9839131305 mAP、+2.1996615905 Rank-1；相对同回执作者Signal仍−1.1837458732／−1.8612521151，未达到两项各+0.8的验收目标。新50轮单条轨迹前20轮bestE13 mAP51.8124620052，后30轮bestE24为52.0586460537（同轨迹+0.2461840485）；第50轮只剩50.4930055310／68.0203020573，说明不能用固定末轮替代预登记best。原20轮与新50轮的余弦日程长度不同，跨实验增益属于总预算与日程的联合改变，不能单独归因为多30轮。正式测试逐轮选点属于已消费test的探索性结果，不称无偏独立泛化估计。
+
+GPU3的lane已将此端标为COMPLETE并自动启动RGBNT100–V27 seed42 50轮，21:35 campaign=TRAINING；GPU1的MSVR310–R2 50轮已通过M0并完成12/50次官方评价。其余两卡仍跑20轮前序；/data空闲约101.02GiB，无需删权重。六格面板当前仅1/6完整，不能以这一项代表整体结论。
