@@ -68,7 +68,10 @@ def main():
     save()
     while True:
         previous = json.loads(prerequisite.read_text(encoding="utf-8"))
-        if previous["status"] in ("COMPLETE", "SKIPPED_TARGET_MET"):
+        if previous["status"] in ("COMPLETE", "SKIPPED_TARGET_MET") or (
+                gpu == 1 and previous["status"] == "FAILED"
+                and previous["jobs"][-1]["dataset"] == "RGBNT100"
+                and previous["jobs"][-1]["status"] == "FAILED"):
             break
         assert previous["status"] in ("WAITING", "RUNNING", "TRAINING", "EVALUATING")
         time.sleep(240)
