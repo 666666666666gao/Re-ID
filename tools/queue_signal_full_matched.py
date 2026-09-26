@@ -39,12 +39,17 @@ def main():
     parser.add_argument('--dataset', choices=tuple(EPOCHS), required=True)
     parser.add_argument('--after-campaign', type=Path, required=True)
     parser.add_argument('--selection', choices=('fixed', 'best_map'), default='fixed')
+    parser.add_argument('--amp-audit', action='store_true')
     args = parser.parse_args()
     assert ROOT == Path('/data/gaob/Re-ID/Trifusion')
     assert args.gpu in (0, 1, 2, 3)
     assert CLIP.is_file() and SOURCE.is_dir() and DATASET_ROOT.is_dir()
     log_root = LOG_ROOT if args.selection == 'fixed' else ROOT / 'logs/signal_full_best_map_20260926'
     output_root = OUTPUT_ROOT if args.selection == 'fixed' else ROOT / 'trained-model/signal_full_best_map_20260926'
+    if args.amp_audit:
+        assert args.selection == 'best_map'
+        log_root = ROOT / 'logs/signal_full_amp_audit_20260926'
+        output_root = ROOT / 'trained-model/signal_full_amp_audit_20260926'
     log_dir = log_root / args.dataset
     assert not log_dir.exists() and not (output_root / args.dataset).exists()
     log_dir.mkdir(parents=True)
@@ -56,14 +61,17 @@ def main():
               'dataset_order': datasets, 'public_clip': str(CLIP),
               'source': str(SOURCE), 'after_campaign': str(args.after_campaign),
               'selection': args.selection,
+              'amp_audit': args.amp_audit,
               'jobs': []}
 
     def save():
         status_path.write_text(json.dumps(status, indent=2) + '\n', encoding='utf-8')
 
     def run_train(dataset, epochs, directory, log_path, *, m0):
-        command = [sys.executable, '-B', '-u', str(ROOT / 'tools/train_signal_full_author.py'), dataset,
-                   '--config_file', str(SOURCE / f'configs/{dataset}/Signal.yml'),
+        command = [sys.executable, '-B', '-u', str(ROOT / 'tools/train_signal_full_author.py'), dataset]
+        if args.amp_audit:
+            command += ['--amp-audit-output', str(log_dir / ('m0_amp.jsonl' if m0 else 'train_amp.jsonl'))]
+        command += ['--config_file', str(SOURCE / f'configs/{dataset}/Signal.yml'),
                    'MODEL.USE_A', 'True', 'MODEL.USE_B', 'True',
                    'MODEL.PRETRAIN_PATH_T', str(CLIP),
                    'DATASETS.ROOT_DIR', str(DATASET_ROOT),
@@ -78,6 +86,12 @@ def main():
             subprocess.run(command, cwd=log_path.parent, env=env, stdout=handle,
                            stderr=subprocess.STDOUT, check=True)
         finite_training_log(log_path)
+        if args.amp_audit:
+            from signal_amp_audit import summarize_amp_audit
+            audit_path = log_dir / ('m0_amp.jsonl' if m0 else 'train_amp.jsonl')
+            summary = summarize_amp_audit(audit_path)
+            (log_dir / ('m0_amp_summary.json' if m0 else 'train_amp_summary.json')).write_text(
+                json.dumps(summary, indent=2) + '\n', encoding='utf-8')
 
     save()
     while True:
