@@ -21,6 +21,8 @@ def sha256(path):
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--receipt", type=Path, required=True)
+    parser.add_argument("--reference-receipt", type=Path,
+                        help="Frozen SIGNAL_V8 receipt supplying the original author Signal reference")
     parser.add_argument("--output", type=Path, required=True)
     args = parser.parse_args()
     assert not args.output.exists()
@@ -43,9 +45,25 @@ def main():
     assert len(qids) == receipt["query_count"] and len(gids) == receipt["gallery_count"]
     ap = {name: np.asarray(receipt["outputs"][name]["average_precision"]) for name in OUTPUTS}
     first = {name: np.asarray(receipt["outputs"][name]["first_match_rank"]) for name in OUTPUTS}
+    baseline_receipt = receipt
+    if args.reference_receipt is not None:
+        baseline_receipt = json.loads(args.reference_receipt.read_text(encoding="utf-8"))
+        assert baseline_receipt["status"] == "COMPLETE" and baseline_receipt["method"] == "SIGNAL_V8"
+        for key in ("dataset", "protocol_sha256", "author_checkpoint_sha256", "filter", "reranking"):
+            assert baseline_receipt[key] == receipt[key], key
+        reference_path = Path(baseline_receipt["distance_arrays"])
+        assert sha256(reference_path) == baseline_receipt["distance_arrays_sha256"]
+        reference = torch.load(reference_path, map_location="cpu", weights_only=False)
+        assert reference["protocol_sha256"] == saved["protocol_sha256"]
+        for key in ("query_ids", "gallery_ids", "query_" + environment, "gallery_" + environment):
+            assert np.array_equal(reference[key], saved[key]), key
+        distances["baseline_only"] = reference["distances"]["baseline_only"].numpy()
+        ap["baseline_only"] = np.asarray(baseline_receipt["outputs"]["baseline_only"]["average_precision"])
+        first["baseline_only"] = np.asarray(baseline_receipt["outputs"]["baseline_only"]["first_match_rank"])
     for name in OUTPUTS:
-        assert abs(ap[name].mean() * 100 - receipt["outputs"][name]["metrics"]["mAP"]) < 1e-8
-        assert abs((first[name] == 1).mean() * 100 - receipt["outputs"][name]["metrics"]["Rank-1"]) < 1e-8
+        metrics = (baseline_receipt if name == "baseline_only" else receipt)["outputs"][name]["metrics"]
+        assert abs(ap[name].mean() * 100 - metrics["mAP"]) < 1e-8
+        assert abs((first[name] == 1).mean() * 100 - metrics["Rank-1"]) < 1e-8
     delta = ap["fused"] - ap["baseline_only"]
     repaired = np.flatnonzero((first["baseline_only"] > 1) & (first["fused"] == 1))
     broken = np.flatnonzero((first["baseline_only"] == 1) & (first["fused"] > 1))
@@ -125,7 +143,7 @@ def main():
         "receipt_sha256": sha256(args.receipt),
         "distance_arrays_sha256": receipt["distance_arrays_sha256"],
         "query_count": int(len(qids)), "gallery_count": int(len(gids)),
-        "signal_metrics": receipt["outputs"]["baseline_only"]["metrics"],
+        "signal_metrics": baseline_receipt["outputs"]["baseline_only"]["metrics"],
         "fused_metrics": receipt["outputs"]["fused"]["metrics"],
         "ap_improved_queries": int((delta > 1e-12).sum()),
         "ap_declined_queries": int((delta < -1e-12).sum()),
@@ -144,6 +162,14 @@ def main():
         "best_identity_delta_pp": sorted(identity_deltas.items(), key=lambda pair: pair[1], reverse=True)[:3],
         "illustrative_new_rank1_errors": examples,
     }
+    if args.reference_receipt is not None:
+        report["reference"] = {
+            "kind": "original_frozen_author_signal",
+            "receipt": str(args.reference_receipt),
+            "receipt_sha256": sha256(args.reference_receipt),
+            "distance_arrays_sha256": baseline_receipt["distance_arrays_sha256"],
+        }
+        report["student_baseline_metrics"] = receipt["outputs"]["baseline_only"]["metrics"]
     args.output.parent.mkdir(parents=True, exist_ok=True)
     args.output.write_text(json.dumps(report, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     print(json.dumps({key: value for key, value in report.items()
