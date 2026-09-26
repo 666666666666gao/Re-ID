@@ -56,7 +56,9 @@ def main():
     parser.add_argument("--run-label")
     parser.add_argument("--checkpoint-policy", choices=("fixed_final_epoch", "best_official_map"),
                         default="fixed_final_epoch")
+    parser.add_argument("--epochs", type=int, choices=(20, 50), default=20)
     args = parser.parse_args()
+    assert args.epochs == 20 or args.checkpoint_policy == "best_official_map"
     assert args.seed >= 42
     if args.signal_checkpoint is not None:
         assert args.signal_sha256 and args.run_label
@@ -126,6 +128,8 @@ def main():
         suffix += f"_{args.run_label}"
     if args.checkpoint_policy == "best_official_map":
         suffix += "_bestmap"
+    if args.epochs == 50:
+        suffix += "_e50"
     date_suffix = ("20260926" if args.checkpoint_policy == "best_official_map" or args.method in ("SIGNAL_SIM_JOINT_LOWLR", "SIGNAL_SIM_JOINT_FULLNORM") else
                    "20260925" if args.method in ("PLAIN_V8", "PLAIN_V27", "SIGNAL_V8", "SIGNAL_SIM_JOINT", "SIGNAL_SIM_FEEDBACK") else "20260924")
     campaign = ROOT / f"logs/official_extra_seed{args.seed}{suffix}_{date_suffix}"
@@ -142,6 +146,7 @@ def main():
                   seed=args.seed, machine=args.machine,
                   fixed_epoch=20 if args.checkpoint_policy == "fixed_final_epoch" else None,
                   checkpoint_policy=args.checkpoint_policy,
+                  training_epochs=args.epochs,
                   started_at=stamp(), dataset_order=datasets,
                   skipped_cells=sorted(skipped),
                   commit=subprocess.check_output(["git", "rev-parse", "HEAD"],
@@ -167,7 +172,8 @@ def main():
                    "--signal-source", str(source), "--clip-weight", str(clip),
                    "--signal-checkpoint", str(checkpoint), "--signal-sha256", expected,
                    "--output-dir", str(directory), "--seed", str(args.seed),
-                   "--checkpoint-policy", args.checkpoint_policy]
+                   "--checkpoint-policy", args.checkpoint_policy,
+                   "--epochs", str(args.epochs)]
         if row["method"] in ("PLAIN_V8", "PLAIN_V27"):
             command.extend(["--baseline-receipt", str(ROOT / "logs/signal_plain_baseline_20260924_r2" /
                                                         row["dataset"] / "metrics.json")])
@@ -198,10 +204,18 @@ def main():
                                       if args.checkpoint_policy == "best_official_map"
                                       else "FIXED_EPOCH20_TRAINING_COMPLETE")
         assert training["seed"] == args.seed
+        assert training["training"]["epochs"] == args.epochs
+        if args.checkpoint_policy == "best_official_map":
+            epoch_rows = [json.loads(line) for line in
+                          (directory / "epoch_official_metrics.jsonl").read_text().splitlines()]
+            assert [line["epoch"] for line in epoch_rows] == list(range(1, args.epochs + 1))
+            assert training["selected_epoch"] == max(epoch_rows,
+                                                      key=lambda line: (line["metrics"]["mAP"], line["epoch"]))["epoch"]
         set_status(row, "EVALUATING", trained_at=stamp())
         run_command(row, "evaluate", directory)
         retrieval = json.loads((directory / "official_metrics.json").read_text(encoding="utf-8"))
         assert retrieval["status"] == "COMPLETE" and retrieval["seed"] == args.seed
+        assert retrieval["training_epochs"] == args.epochs
         diagnostics = None
         if row["method"] in ("PLAIN_V8", "PLAIN_V27", "SIGNAL_V8", "SIGNAL_V8_BRANCH_ONLY", "SIGNAL_SIM_FEEDBACK", "SIGNAL_SIM_FEEDBACK_MATCHED"):
             diagnostics = campaign / "diagnostics" / f"{tag}.json"

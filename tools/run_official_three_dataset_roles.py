@@ -160,12 +160,14 @@ def train(args, protocol):
                            staged_sim=args.method == "SIGNAL_SIM_JOINT_STAGED",
                            branch_only=args.method == "SIGNAL_V8_BRANCH_ONLY",
                            sim_feedback=args.method in FEEDBACK_METHODS,
+                           training_epochs=args.epochs,
                            on_epoch_end=on_epoch_end)
     else:
         result = train_r2(model, protocol, records, config, m0=args.mode == "m0",
                           directory=args.output_dir, seed=args.seed,
                           top1=args.method == "R2_TOP1",
                           balanced=args.method != "R2_UNIFORM",
+                          training_epochs=args.epochs,
                           on_epoch_end=on_epoch_end)
     receipt["training"] = result
     receipt["status"] = ("M0_PASS" if args.mode == "m0" else
@@ -320,6 +322,7 @@ def evaluate(args, protocol):
                                   else "FIXED_EPOCH20_TRAINING_COMPLETE")
     assert summary["dataset"] == args.dataset and summary["method"] == args.method
     assert summary["seed"] == args.seed
+    assert summary["training"]["epochs"] == args.epochs
     assert summary["protocol_sha256"] == sha256(args.protocol)
     assert summary["initializer"]["author_checkpoint_sha256"] == args.signal_sha256
     assert sha256(summary["checkpoint"]) == summary["checkpoint_sha256"]
@@ -389,6 +392,7 @@ def evaluate(args, protocol):
                   model_state_sha256=expected_state,
                   fixed_epoch=20 if args.checkpoint_policy == "fixed_final_epoch" else None,
                   checkpoint_policy=args.checkpoint_policy,
+                  training_epochs=args.epochs,
                   selected_epoch=summary["selected_epoch"] if args.checkpoint_policy == "best_official_map" else None,
                   seed=args.seed, reranking=False,
                   filter=protocol["filter"], outputs=scores,
@@ -416,7 +420,9 @@ def main():
     parser.add_argument("--seed", type=int, default=42)
     parser.add_argument("--checkpoint-policy", choices=("fixed_final_epoch", "best_official_map"),
                         default="fixed_final_epoch")
+    parser.add_argument("--epochs", type=int, choices=(20, 50), default=20)
     args = parser.parse_args()
+    assert args.epochs == 20 or args.checkpoint_policy == "best_official_map"
     for name in ("protocol", "signal_source", "clip_weight", "signal_checkpoint", "output_dir"):
         setattr(args, name, getattr(args, name).resolve())
     protocol = read_protocol(args.protocol, args.dataset)

@@ -47,7 +47,7 @@ def _v27_loss(parts, config):
 def train_v27(model, protocol, records, config, *, m0, directory, seed=42, style=True,
               plain_baseline=False, joint_sim=False, joint_sim_low_lr=False,
               sim_feedback=False, full_norm_gradient=False, staged_sim=False,
-              branch_only=False, on_epoch_end=None):
+              branch_only=False, training_epochs=20, on_epoch_end=None):
     import torch
     import numpy as np
     from tools.official_three_dataset_data import loader_for
@@ -83,12 +83,13 @@ def train_v27(model, protocol, records, config, *, m0, directory, seed=42, style
               else "PLAIN_V27" if style and plain_baseline
               else "V27" if style else "PLAIN_V8" if plain_baseline else "SIGNAL_V8")
     loader = loader_for(protocol, records, training=True, method=method, seed=seed)
-    epochs = 1 if m0 else 20
+    assert training_epochs in (20, 50)
+    epochs = 1 if m0 else training_epochs
     history, live, steps, overflow = [], set(), 0, 0
     with (directory / "training_steps.jsonl").open("x", encoding="utf-8") as log:
         for epoch in range(1, epochs + 1):
             started = time.perf_counter()
-            multiplier = 1 if m0 else learning_rate_multiplier(epoch, max_epochs=20, warmup_epochs=5)
+            multiplier = 1 if m0 else learning_rate_multiplier(epoch, max_epochs=training_epochs, warmup_epochs=5)
             lr = config["OPTIMIZATION"]["NEW_MODULE_LR"] * multiplier
             for index, group in enumerate(optimizer.param_groups):
                 group["lr"] = (sim_lr * multiplier if index == 1 else lr)
@@ -175,7 +176,7 @@ def train_v27(model, protocol, records, config, *, m0, directory, seed=42, style
 
 
 def train_r2(model, protocol, records, config, *, m0, directory, seed=42, top1=False,
-             balanced=True, on_epoch_end=None):
+             balanced=True, training_epochs=20, on_epoch_end=None):
     import torch
     import torch.nn.functional as F
     import numpy as np
@@ -214,13 +215,14 @@ def train_r2(model, protocol, records, config, *, m0, directory, seed=42, top1=F
               for index, row in enumerate(records)}
     assert len(lookup) == len(records)
     loader = loader_for(protocol, records, training=True, method="R2", seed=seed)
-    epochs, warmup = (1, 2) if m0 else (20, 65)
+    assert training_epochs in (20, 50)
+    epochs, warmup = (1, 2) if m0 else (training_epochs, 65)
     history, live, steps, overflow, supported_steps, historical_vjp_groups = [], set(), 0, 0, 0, 0
     with (directory / "training_steps.jsonl").open("x", encoding="utf-8") as log:
         for epoch in range(1, epochs + 1):
             started = time.perf_counter()
             lr = config["OPTIMIZATION"]["NEW_MODULE_LR"] * (
-                1 if m0 else learning_rate_multiplier(epoch, max_epochs=20, warmup_epochs=5))
+                1 if m0 else learning_rate_multiplier(epoch, max_epochs=training_epochs, warmup_epochs=5))
             for group in optimizer.param_groups:
                 group["lr"] = lr
             losses = []
