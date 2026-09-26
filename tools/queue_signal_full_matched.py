@@ -40,6 +40,7 @@ def main():
     parser.add_argument('--after-campaign', type=Path, required=True)
     parser.add_argument('--selection', choices=('fixed', 'best_map'), default='fixed')
     parser.add_argument('--amp-audit', action='store_true')
+    parser.add_argument('--run-label', help='Separate artifact namespace for a registered complete run')
     args = parser.parse_args()
     assert ROOT == Path('/data/gaob/Re-ID/Trifusion')
     assert args.gpu in (0, 1, 2, 3)
@@ -50,6 +51,10 @@ def main():
         assert args.selection == 'best_map'
         log_root = ROOT / 'logs/signal_full_amp_audit_20260926'
         output_root = ROOT / 'trained-model/signal_full_amp_audit_20260926'
+    if args.run_label is not None:
+        assert args.selection == 'best_map' and args.amp_audit
+        log_root = ROOT / f'logs/signal_full_{args.run_label}'
+        output_root = ROOT / f'trained-model/signal_full_{args.run_label}'
     log_dir = log_root / args.dataset
     assert not log_dir.exists() and not (output_root / args.dataset).exists()
     log_dir.mkdir(parents=True)
@@ -62,6 +67,7 @@ def main():
               'source': str(SOURCE), 'after_campaign': str(args.after_campaign),
               'selection': args.selection,
               'amp_audit': args.amp_audit,
+              'run_label': args.run_label, 'python_executable': sys.executable,
               'jobs': []}
 
     def save():

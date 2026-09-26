@@ -9832,3 +9832,11 @@ GPU0／2现有R2不抢占、不重启。队列按240秒检查依赖，GPU1等待
 证据目录`logs/signal_full_amp_audit_20260926/RGBNT201`：正式metrics SHA256=`50deef973502b99dffe7b3ad40e1cc0ef8c0b619f7bb1421912222680e025534`；train.log=`3eedaae3539e6c0ba7a74bab8a36ca69bd7098796a8def7b50b724e4f2069440`；逐步AMP=`80f2b20629751756814086b63263fc5a4d30622be60cfe442f05b894c4dc84e1`；AMP汇总=`8e5e1c77f7dbb090c140bc9c36fec4b406605f39ac76f6bb06b98d190a29c8f8`。唯一best权重在`trained-model/signal_full_amp_audit_20260926/RGBNT201/Signalbest.pth`，SHA256=`88f2e4cad4a5e7312a155781ec6c39277278f39e2e3ef9e4ca8385dd9b3b7b66`；独立`terminal_amp_selection_audit.json`SHA256=`5a02876b03baa67fcecb2f49de6e255ee9f776ea1dc9de346681abedcc45c57c`。原文件未改写，没有第二次训练来替换该结果。
 
 下一步保持§41.493完整配对，GPU1依赖已满足，由既有等待器接续；另按§41.494准备作者核心依赖对照。不是再调整AMP初始scale、挑不同epoch规则或换一个纯基线去掩盖复现差距。Goal保持ACTIVE，三数据集总体性能要求尚未达到。
+
+### 41.496 配对两端均已进入完整训练，独立环境仍在构建（2026-09-26 11:50 CST）
+
+GPU1的FULLNORM–MSVR310按原240秒周期于11:47:21接续，11:47:58独立8步M0 PASS后重新初始化完整训练，真实训练PID3571078。两端M0的作者权重、Signal状态、角色初始状态、protocol、seed、12个SIM参数名及SIM LR逐项相等；全模型初始SHA均为`148c83e668c440338f1e953f4a529f1079ec8813e5e86cf7ab1504bbf7fce759`，第一步loss均为4.4465203285，0overflow、无缺失非零梯度。candidate明确回执`complete_baseline_norm_derivative`，control沿原停止梯度；这验证配对初始条件及新导数实际启用，不构成性能提升。GPU0／2两个R2、GPU3 LOWLR control、GPU1 FULLNORM candidate四个训练PID均在实际GPU进程表中，未因短时低利用率重启。
+
+作者核心环境第一次构建失败按§41.494封存，明确改channel的第二次CPU构建PID3572673／conda子PID3572674，11:48:57启动，新的规范规格SHA256=`cb4e432342e9c589245708f8c162089a5a7c53c129bd0d78e64169f5feb67ea1`。11:50:20进程实际存活、正在取conda-forge元数据；观察到源请求超时与连接关闭后的conda自身重试，**未退出，不据观察超时重启**。仍未进入GPU见证、M0或完整环境对照。
+
+为复用原生Signal完整入口并分开存放新环境证据，`queue_signal_full_matched.py`仅增加`--run-label`独立日志／权重命名空间，回执记执行Python路径；指定label时仍强制best_map＋AMP审计，不改模型、采样、日程、loss、选点或训练长度。CPU `--help`实际通过。新环境验证通过后拟用该环境Python执行`tools/queue_signal_full_matched.py --gpu 2 --dataset RGBNT201 --after-campaign /data/gaob/Re-ID/Trifusion/logs/official_extra_seed42_RGBNT201_R2_existing_method_recheck_v1_bestmap_20260926/campaign.json --selection best_map --amp-audit --run-label author_core_20260926`，完整产物放`logs/signal_full_author_core_20260926`及`trained-model/signal_full_author_core_20260926`。这是记录待执行的具体命令，不是已启动声明；须先完成新环境验证并确认GPU2原R2已完整验收。
