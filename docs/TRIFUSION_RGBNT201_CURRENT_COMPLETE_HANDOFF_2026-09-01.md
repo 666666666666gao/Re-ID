@@ -2,7 +2,7 @@
 
 ## 0. 一页结论
 
-**当前执行入口：§41.505，核对2026-09-26 13:38 CST。** 本页为当前摘要，后面的原始阶段记录保留其当时规则与数值；旧单卡地址、只用seed42、固定末轮和官方集只评一次等历史限制，不覆盖用户后续已经明确修改的安排。Goal仍为 **ACTIVE／UNMET**，不能因某一数据集达标或工程检查通过而结束。
+**当前执行入口：§41.506，核对2026-09-26 13:55 CST。** 本页为当前摘要，后面的原始阶段记录保留其当时规则与数值；旧单卡地址、只用seed42、固定末轮和官方集只评一次等历史限制，不覆盖用户后续已经明确修改的安排。Goal仍为 **ACTIVE／UNMET**，不能因某一数据集达标或工程检查通过而结束。
 
 **当前规则：** 新完整角色训练跑满20轮，每轮按作者完整query/gallery与camera／scene过滤评价，以**fused官方mAP最高的同一个checkpoint**报告所有输出与指标，结束后严格重载；不固定最后一轮、不跨种子／epoch拼接列。原生Signal按对应作者完整日程训练，同样逐轮mAP选best。官方测试已参与选择，必须披露探索性选择边界；旧固定终点实验原回执与权重不改写。RGBNT201汇报mAP／R1／R5／R10，RGBNT100和MSVR310主表只汇报mAP／R1。六个R2／V27×数据集组合各自以要求指标均较同协议发布Signal提高至少0.8个百分点为种子搜索停止线；RGBNT201–V27已达线，不再为它追加种子。SOTA目标尚未实现。
 
@@ -11,9 +11,9 @@
 | 当前任务（以最新实际进程／回执为准） | 状态与接续 |
 | --- | --- |
 | GPU0：RGBNT100–R2 seed42，逐轮best | 13:38已完成8／20轮评价，完整训练和重载验收待定 |
-| GPU1：FULLNORM–RGBNT100候选端 | 13:38已完成18／20轮评价，完整验收后接RGBNT201；MSVR310已完整验收50.7095／68.1895 |
-| GPU2：作者核心环境原生Signal–RGBNT201 | R2完整20轮及best重载已通过；新环境CUDA、fresh-agent均通过，13:37 M0通过后重置初始化，50轮训练已开始 |
-| GPU3：联合SIM尺度导数LOWLR control | 13:38已完成18／20轮评价，完整验收后接RGBNT201；MSVR310已完整验收50.6929／67.6819 |
+| GPU1：FULLNORM–RGBNT201候选端 | RGBNT100完整20轮、best重载与终态审计通过，fused 87.0314／97.9009；13:54自动接RGBNT201训练 |
+| GPU2：作者核心环境原生Signal–RGBNT201 | 新环境CUDA、fresh-agent、独立M0均通过；13:53已完成18／50轮官方评价，完整结果与best重载待定 |
+| GPU3：LOWLR–RGBNT201 control | RGBNT100完整20轮、best重载与终态审计通过，fused 86.8551／97.7843；13:54自动接RGBNT201训练 |
 
 最新完整结果见§41.487—491与§41.505：先前12端及新增2端的逐轮best选点独立核验通过；RGBNT201–V27 seed42选第5轮`83.1234/88.0383/93.5407/94.9761`，四项均达+0.8线；RGBNT100–V27 seed42选第6轮`86.8096/97.3761`，相对Signal为`+0.4854/−0.1749`，未达线。MSVR310新协议R2 seed42为`52.0717/69.3739`，新增seed43选第4轮为`53.5517/71.9120`，后者较Signal`53.2424/72.4196`为`+0.3093/−0.5076`，仍未达线；V27 seed42为`51.0747/68.3587`。以上每行来自同一best权重，未完成的训练不填写终态数值。
 
@@ -10028,3 +10028,19 @@ fused相对同协议Signal的四项变化依次为**+3.1252／+1.6746／+1.0766�
 13:37:16用新环境启动既定原生Signal队列：GPU2、RGBNT201、selection=best_map、amp_audit开启、run_label=author_core_20260926；前序R2 campaign及终态审计均先通过，GPU2启动前15MiB。持久队列PID3653171，启动manifest logs/signal_author_core_env_20260926_r3/queue_launch_gpu2.json SHA=3d57b150acb2e375fb6bb8deb07821f60329bf9c4abccd23cac2354dbd5d24a7。独立1轮M0已完成：53次AMP更新尝试、44次实际优化器更新、9次跳步，日志loss有限；M0仅为工程验证，不报告检索指标。随后**从公开CLIP重新初始化**开始正式50轮，每轮原作者完整评价按mAP保存Signalbest，最后单独重载；13:38正式训练日志到第1轮30／54个iteration，尚无完整模型新指标。该环境对照只改变预登记依赖栈，与旧环境结果分别报告，不将M0或中途loss当作性能结论。
 
 13:38其余三卡仍在真实训练：GPU0 RGBNT100–R2完成8／20轮评价；GPU1 FULLNORM–RGBNT100、GPU3 LOWLR–RGBNT100各完成18／20轮，结束后按各自三数据集driver接RGBNT201。两份V27 seed43等待器仍等**整组driver**完成。/data剩余约104.34GiB，未删除初始化或已封存权重。完整Goal仍ACTIVE／UNMET；上述R2单种子mAP增益和环境工程PASS均不能代替三数据集达标或公开SOTA。
+
+### 41.506 RGBNT100小学习率联合SIM的尺度导数配对best终态（2026-09-26 13:55 CST）
+
+GPU3 LOWLR与GPU1 FULLNORM按原定同一作者Signal权重、同一seed42、同一原始训练日程各自跑满20轮；两份M0初始状态SHA一致，唯一登记的尺度导数区别是FULLNORM保留可训练Signal基线范数的完整导数。各轮均用原作者完整RGBNT100 query/gallery、camera过滤计算fused mAP，严格选各自最高mAP后重载独立评价。两个主指标来自各自同一个checkpoint，不取逐列最大值：
+
+| 终点 | 选中轮次 | Signal单独mAP／R1 | fused mAP／R1 | fused较发布Signal变化 |
+| --- | ---: | ---: | ---: | ---: |
+| 发布Signal参照 | — | 86.3242／97.5510 | — | — |
+| LOWLR control | 5 | 86.3111／97.5510 | 86.8551／97.7843 | +0.5309／+0.2332 |
+| FULLNORM candidate | 6 | 86.3052／97.4927 | **87.0314／97.9009** | +0.7072／+0.3499 |
+
+FULLNORM比LOWLR的各自best高**0.1763 mAP、0.1166 R1**，但两者都未达到mAP与R1分别较发布Signal至少+0.8的目标。R2、V27的六cell停止线不能由这个联合SIM方法代填。FULLNORM第20轮为86.5422／97.8426，LOWLR第20轮为86.6274／97.7259；按用户新规则选best与固定末轮确有区别。20个对应epoch的只读曲线比较：FULLNORM－LOWLR的mAP差均值**−0.0660**，6轮正／14轮负，范围−0.5506至+0.2493；R1差均值+0.0933，15轮正／3轮负／2轮相同。对应epoch高度相关，不能把20轮当作20个独立实验；各自best略正，不证明整个训练过程mAP稳定获益。
+
+同一正式图库上的只读排序诊断：LOWLR相对原发布Signal修复9条首位错误、新增5条；FULLNORM修复12条、新增6条。LOWLR有734条query的AP改善、565条下降；FULLNORM为692条改善、619条下降。两端Signal单独输出均约86.31 mAP，说明小SIM学习率保住了大部分已发布性能，但也没有证据称完整范数导数解决了所有增量泛化问题。以上为已消费官方测试的事后解释，不用这些query或身份调新阈值。两套20轮训练记录、官方距离数组及失败身份均保留。
+
+终态审计均PASS，且训练20轮、2625个优化步骤、0 overflow、梯度非零、仅仍冻结参数不变、选中权重SHA／重载指标一致。LOWLR审计SHA256=b14ae8396ef36b848daba1efd8f918ecf1db8a3c5ac2ed27e2e3eee53c18f003，正式回执SHA=0a60bcc4cfce585a647cfcbb76a29e5da03e5a3a4efa67e0474c367efd03f1de，诊断SHA=62a1fac426e89bd579a1d035561fc52e9b50d35c82d562a5cfb0598356091804；FULLNORM审计SHA=8c82230f82432c8851b621b3de4f3eff91e0c3143705e5c28da0b06b625588a6，正式回执SHA=6307755fd404d73f9fdd28f4ed69916de5cded136240e26fb1cff8e4e2e2ae25，诊断SHA=25ea7f146f1adcf04510ac80e26909165882236707ad633fabba6806edcb6645。原始文件分别在logs/official_extra_seed42_RGBNT100_SIGNAL_SIM_JOINT_LOWLR_joint_scale_pair_v1_bestmap_20260926与对应FULLNORM目录，权重在trained-model同名目录。两条三数据集串行driver已自动接RGBNT201，不提前启动等待中的V27 seed43；13:54四张卡均有训练进程。GPU0 RGBNT100–R2和GPU2原生Signal仍运行，均不把中间最好值写成终态。
