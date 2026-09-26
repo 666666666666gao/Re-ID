@@ -2,7 +2,7 @@
 
 ## 0. 一页结论
 
-**当前执行入口：§41.503，核对2026-09-26 12:46 CST。** 本页为当前摘要，后面的原始阶段记录保留其当时规则与数值；旧单卡地址、只用seed42、固定末轮和官方集只评一次等历史限制，不覆盖用户后续已经明确修改的安排。Goal仍为 **ACTIVE／UNMET**，不能因某一数据集达标或工程检查通过而结束。
+**当前执行入口：§41.504，核对2026-09-26 12:52 CST。** 本页为当前摘要，后面的原始阶段记录保留其当时规则与数值；旧单卡地址、只用seed42、固定末轮和官方集只评一次等历史限制，不覆盖用户后续已经明确修改的安排。Goal仍为 **ACTIVE／UNMET**，不能因某一数据集达标或工程检查通过而结束。
 
 **当前规则：** 新完整角色训练跑满20轮，每轮按作者完整query/gallery与camera／scene过滤评价，以**fused官方mAP最高的同一个checkpoint**报告所有输出与指标，结束后严格重载；不固定最后一轮、不跨种子／epoch拼接列。原生Signal按对应作者完整日程训练，同样逐轮mAP选best。官方测试已参与选择，必须披露探索性选择边界；旧固定终点实验原回执与权重不改写。RGBNT201汇报mAP／R1／R5／R10，RGBNT100和MSVR310主表只汇报mAP／R1。六个R2／V27×数据集组合各自以要求指标均较同协议发布Signal提高至少0.8个百分点为种子搜索停止线；RGBNT201–V27已达线，不再为它追加种子。SOTA目标尚未实现。
 
@@ -9995,3 +9995,16 @@ PY
 全部证据位于`logs/signal_author_core_env_20260926_r3/`：探针源码`source_loader_cpu_witness.py` SHA256=`6e396f38536d0e179f0de3944eff4a28b9b5e22fc0fa7a4b26ff1b38137cd4c7`；现有环境报告`source_loader_cpu_current.json`=`b5b22d885b7299b3b253719e3f3f7a2a7591d51eb50c693969043507aadb1859`；作者核心环境报告`source_loader_cpu_author_core.json`=`53efe40ae6c131bcc11e3f7cdd28072e06bfb633a43e0333551c7ef3bd49da08`；统一比较`source_loader_cpu_comparison.json`=`6343f63a91abb326b307f8ff83f964fb2a48775ba15d40b065f496c954a7754b`，保存53条完整比较和原日志SHA。比较状态为COMPLETE_READONLY_CPU_INPUT_COMPARISON，差异列表为空；这不是新检索指标或训练验收PASS。
 
 12:45实际四个GPU训练PID仍为3372616、3590172、3372615、3580612；/data仍余约104.36GiB，未重启／抢占／删权重。GPU2原R2未结束，新环境尚未完成§41.499 CUDA见证、fresh-agent命令核验或完整Signal训练；不得把本节CPU通过扩大为环境完全就绪。
+
+
+### 41.504 新旧环境的作者官方计分对照：微小差异来自精确距离并列（2026-09-26 12:52 CST）
+
+完成输入核验后，使用已封存的三个数据集`SIGNAL_V8 seed42 best`完整距离数组，在两套环境中原样调用作者`eval_func`／`eval_func_msrv`，覆盖Signal、fused、CNN、Transformer、Mamba共15组输出。逐份核对原回执、距离及protocol SHA，不重新读取官方图片、不提取特征、不重选checkpoint、不训练。MSVR原函数写出的`re.txt`限定在本次各环境的独立诊断目录，未覆盖原训练文件。
+
+15组的Rank-1／5／10在两环境中全部相同；RGBNT201和MSVR310的mAP也完全相同。RGBNT100五个输出的mAP存在极小变化，最大绝对差约`3.1706682e-6`个百分点（Transformer）；fused差`+1.7866373e-6`，Signal差`+9.0299797e-7`。这些差异没有改变本组四位小数展示值，不能解释历史数个百分点的性能差距。另有原作者CMC使用float32汇总与本机回执按计数汇总之间约几百万分之一个百分点的既有差异，未把它混成新训练收益。
+
+初始检查发现15组完整排序索引SHA均不完全相同，故没有直接声明逐位一致。后续对相同矩阵再次核对：两环境都按非降序排列，**所有15组排序后的距离数值数组SHA完全相同**，索引差异因此只可能发生在精确相等距离的候选之间。过滤后的正负标记序列在RGBNT201／MSVR310各5组完全相同，在RGBNT100各5组不同，吻合仅后者出现微小AP变化。RGBNT100各矩阵约9089—10666个相邻精确并列位置；这是query×gallery排序中的重复位置，不是独立错误图片数。保持作者原排序函数，未为抹掉小数差异改成新的排序协议。
+
+只读完整计分比较报告`logs/signal_author_core_env_20260926_r3/scorer_cpu_comparison.json` SHA256=`f37f5487d8e6abba096b4f99c11e19e1d9b3479786c3f0b896645299bb615bfc`；当前／作者核心环境原始报告分别为子目录`scorer_cpu_current/report.json`（`f58c02ec3193d98cb0ab09b25c5acb704e817bfbe4ae4742f69f0280cd133750`）和`scorer_cpu_author_core/report.json`（`6919123c2a8e58329c37b476d6b1355f229469cfc22413c88815d92cca8fb0d2`）。探针脚本SHA=`e1136aeefe66bbb609eb05dfedc70fbf5d63e0ae66a7b6dc7fb2d619b2e11a3a`，所调用作者metrics源码SHA=`91604acb7d978462c16904910a645d7d1697c15bf150da529099004c8b5eecb2`。后继`scorer_sort_tie_comparison.json` SHA=`ffe70140351fe2d96f3c591adcde02e35d1b3eec076b7349767b65ff39613f3f`，含两环境tie_diagnosis报告SHA和每组统计，状态EXACT_TIES_ONLY_ORDER_DIFFERENCE_CONFIRMED。
+
+这限定了计分端的环境影响，不代表特征提取、CUDA反传或50轮优化相同。GPU2仍有原R2训练进程3372615，不因12:50一次瞬时0%利用率就认定停训／抢卡。其余三卡进程也持续运行，/data余104.36GiB；本节没有新增模型成绩。后续仍先验收GPU2的完整R2，再做新环境CUDA／fresh-agent验证和完整Signal对照，不继续重复已通过的CPU探针。
