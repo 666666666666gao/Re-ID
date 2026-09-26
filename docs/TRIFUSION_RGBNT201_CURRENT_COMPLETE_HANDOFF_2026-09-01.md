@@ -10444,3 +10444,21 @@ GPU3的lane已将此端标为COMPLETE并自动启动RGBNT100–V27 seed42 50轮�
 按每身份query数加权计算其对总体mAP的贡献，全部身份贡献之和严格重现+2.8561983722。贡献最高的身份284（26条query）和286（23条query）分别贡献+0.6784827538和+0.5611187042，总计+1.2396014580，占净增益43.4004%；其余28个身份合计仍贡献+1.6165969142。因此收益部分集中，但不是仅靠这两个身份使其他身份整体负收益转正。不用官方身份名单定制后续训练或采样。
 
 报告位于logs/official_extra_seed44_RGBNT201_R2_existing_method_recheck_v1_bestmap_20260926/，official_retrieval_diagnosis.json SHA256=af7f02086ee0eda17927eafead1fbf65043eb10f2cb012b06a6a4dcab22b73a9；identity_contribution_diagnosis.json SHA256=575b599f073e0113576f1921e9c7ff7c7d2b7bcef4ea55a62c6ef9a275913a3e，后者保存全部30身份贡献并绑定正式回执SHA。属于已消费正式集的描述性诊断，不是完整路径身份隔离的新验证，不宣称多种子稳定或SOTA。
+### 41.541 第二项50轮完整验收：RGBNT201–V27 seed42（2026-09-27 00:20 CST）
+
+用户登记的RGBNT201–V27独立50轮训练已完整结束。逐轮官方query836／gallery836评价恰有1—50连续50条，fused mAP最高为第5轮；training所选bestE5与evaluate独立重载E5一致、mAP差小于1e-8，checkpoint文件SHA、payload state SHA和回执绑定一致，独立作者Signal复算相等。2650次优化、0 AMP overflow、冻结上游不变。正式回执SHA256=404d2194e4a143cda560fd81967c33f9c83e812699e87a4a39381c90dbdda356；checkpointSHA256=aff7a76c883ca73393095ac02654ac36e49c6866faf4bed6829b4b755ab87650；选中stateSHA256=96d4abb5f3d656b009c01889af52a2bb78d9eaf5c23673d8acf38f48f3b9b421。
+
+| RGBNT201正式输出／同一bestE5权重 | mAP | Rank-1 | Rank-5 | Rank-10 |
+| --- | ---: | ---: | ---: | ---: |
+| 作者Signal | 80.3029 | 85.1675 | 91.3876 | 93.6603 |
+| **V27 50轮 fused** | **83.1930** | **88.1579** | **93.5407** | **95.0957** |
+| CNN完整分支 | 80.9180 | 85.4067 | 92.5837 | 94.4976 |
+| Transformer完整分支 | 82.7373 | 87.7990 | 93.4211 | 94.4976 |
+| Mamba完整分支 | 81.2678 | 84.9282 | 93.0622 | 94.6172 |
+| fused相对Signal | +2.8901 | +2.9904 | +2.1531 | +1.4354 |
+
+同seed原20轮bestE5 fused=83.1233991／88.0382775／93.5406699／94.9760766；新50轮仅高+0.069608 mAP、+0.119617 R1、R5相同、R10+0.119617。两轨迹相同初始化SHA与协议SHA，但从第1轮loss已有微小数值差，且调度总长不同；不声称50轮比原20轮存在有意义的额外收益，更不能把提升归因于第21—50轮。新50轮最终第50轮仅80.2140759／83.2535863／90.3110027／92.3444986，甚至mAP低于同回执Signal80.3028928；逐轮选best显著不同于固定末轮。
+
+同一正式回执的CPU只读诊断：AP改善359 query、下降171、持平306；首位修复37、新增12；30身份23改善、6下降、1持平；正负关系修复38387、破坏11368。报告logs/official_extra_seed42_RGBNT201_V27_horizon50_v1_bestmap_e50_20260926/official_retrieval_diagnosis.json，绑定正式回执与距离SHA。该正式集已被用于选点，收益只能描述这次探索性结果。第5轮最优也提醒后续不能只报告更漂亮的best而隐去末轮退化。
+
+GPU2 lane将此端标为COMPLETE并于00:14:03自动启动下一端RGBNT201–R2 seed42 50轮；00:16实查PID21101运行，M0通过并进入TRAINING。面板当时2/6完整，其余4端继续。/data剩余约101GiB，未删必要权重。
