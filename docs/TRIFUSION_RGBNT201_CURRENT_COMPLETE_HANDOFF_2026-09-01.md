@@ -9681,3 +9681,32 @@ flowchart TB
 三个原只读诊断分别在对应campaign的`diagnostics/RGBNT201_V27_seed42.json`、`diagnostics/RGBNT100_SIGNAL_V8_seed42.json`、`diagnostics/MSVR310_R2_seed42.json`；SHA256依次为`ce0cb1283628904d059c1b29fe9af5dbf926278bbe3f9525aa2285ca1fcac34d`、`82a84643238135e68c079c62a7c58c978708374aab297460f551ea1ceec7f77f`、`2a4f23ec69cd79664ffbf1b7889922989e5da3bece05eed285fae6c38cf394a9`。图与前20名字符图直接保存在本交接中，未另建交接／说明文件，未将训练图片或距离张量下载到本地。
 
 图形验证：用Mermaid CLI12.0.0及本机Chrome成功渲染，图源码与本段Mermaid代码逐字核对一致；PNG仅用于临时目视检查，正式可编辑内容仍只有本交接。首版标签换行过多，缩短为统一ID／scene及P/N记法后重新渲染。最终目视检查箭头均到正确目标，Signal单独输出未被额外连入fused，五种间隔／名次与真实数组一致，文字无截断、颜色与正负含义一致；人工版式评估9／10，接受。该评分只是可视化检查，不是模型性能或实验置信度。
+
+### 41.489 RGBNT100–V27逐轮best完整结果：mAP提高，首位仍小幅下降（2026-09-26 11:07 CST）
+
+作者发布完整Signal起点、seed42的V27复核在11:00完成20轮训练，11:03完成单best严格重载与全量正式评价，campaign为`COMPLETE`。实际2625次更新、0 AMP溢出、冻结Signal状态未变、声明训练参数无缺失非零梯度；独立8步M0为`M0_PASS`。完整1715 query／8575 gallery、原camera过滤、无reranking，每轮以fused官方mAP选点，最高出现在第**6轮**。以下每行指标来自同一个所选checkpoint的对应输出，不是分支各自重新选点。
+
+| RGBNT100，V27 seed42，第6轮best | mAP | Rank-1 |
+| --- | ---: | ---: |
+| 冻结原Signal | 86.3242 | 97.5510 |
+| CNN完整分支 | 85.6572 | 96.9679 |
+| Transformer完整分支 | 86.5722 | 97.4344 |
+| Mamba完整分支 | 85.3156 | 96.5598 |
+| fused | **86.8096** | **97.3761** |
+| fused－Signal | **+0.4854** | **−0.1749** |
+
+fused的mAP高于三个完整分支，但Rank-1略低于Transformer；两个项目主指标没有同时达到相对Signal各+0.8，不能将该组合记为达标。同一run第20轮当轮为`85.7065/97.3178`，best相对末轮提高约`1.1030 mAP/0.0583 R1`。20轮内最高Rank-1为97.7259，但不是所选mAP-best的Rank-1，继续遵守用户的mAP选点规则，不拼列、不更改选择目标。旧固定末轮V27结果来自另一运行，不能替代本run末轮作选点消融。
+
+独立终态核验重新检查连续1—20轮、2625条逐步记录与更新计数、最高mAP轮号、真实checkpoint／protocol／距离数组SHA以及所选模型状态。全部`PASS`，重载与第6轮原始评价四指标最大差小于`3e-6`个百分点，独立作者评价一致。原回执仍保留旧`official_model_forwards=0`字段；按§41.487，它是已失效的计数字段，不能据此声称未使用官方集，完整20条官方评价记录及新只读审计均明确记录20次。原回执未被改写。
+
+事后只读诊断：1715条query的AP改善／下降／持平为`698/621/396`，首位错误修复`12`、新增`15`，净少3条正确首位，与Rank-1下降一致；50个身份的AP改善／下降／持平为`26/22/2`。新增错误只有3／15的负例与query同camera，不能统一解释成同相机捷径。正负关系修复`9,047,581`对、翻错`2,858,348`对，较多关系净修复仍未保证首位改善；关系对数量不是独立样本量或显著性证据。完整官方集已经用于每轮选点，以上均是探索性正式协议结果与事后解释，不是未消费验证集上的泛化证明。
+
+campaign为`logs/official_extra_seed42_RGBNT100_V27_existing_method_recheck_v1_bestmap_20260926`，正式回执位于同名`trained-model/.../RGBNT100_V27_seed42/official_metrics.json`。主回执SHA256=`1d2c5848069d42bbe6fb5aa4cf9fe896632c003739da9d8aa063c20b59573c3b`，唯一best权重=`009d65a8e72a00b9cacdb081edea547da9c0f32919cd6780e241cd83ec0b4b4c`，距离数组=`6490bf58c35adae538be12c9693a3e4d5543b6ed25c81613b54ae82f60084178`；训练回执=`eb6b199b11a40aea7868a6a0960a339568c6a6877700b3d5432dab0ce2c9b2f3`，M0回执=`5fc428d2c11ac1112c18c3d502fea75e45c355ab87619ac31379fe2e195e4e12`。同campaign下`best_selection_terminal_audit.json`SHA256=`9796b0c24169349f507bde3e2de7ff97996b8b25d7b2eb5ce8724e14092527c0`；`diagnostics/RGBNT100_V27_seed42.json`SHA256=`04c7b3e122081d38a67e23d3d436d5e5a693de07de48fa1f5296279c2b23c82f`。模型和距离数组继续仅留远端。
+
+### 41.490 Signal真实AMP更新诊断已接续GPU1（2026-09-26 11:07 CST）
+
+依赖RGBNT100–V27完整验收后，队列3405421于11:05:19自行开始§41.483登记的原生Signal诊断，没有抢占或重启任何训练。独立一轮M0于11:06:02结束，记录53次尝试、48次实际optimizer更新、5次跳步；跳步恰为第1—5次，loss scale由65536降到2048，其后保持。该记录只是AMP初期缩放调整的直接证据，**不能将5次跳步认定为性能复现差距的原因**，也不据此中途修改初始scale、学习率或Gram计算。
+
+随后从公开CLIP、seed1234重新独立启动完整50轮训练，进程PID`3454273`实存，camera/query/gallery、作者训练器、每轮官方mAP best和最终重载规则不变。11:07:16读到完整训练81次尝试、76次实际更新，当前scale2048且最近一次实际更新成功，已完成第1轮正式评价；完整终态、完整AMP汇总尚未产生。日志与回执仍在`logs/signal_full_amp_audit_20260926/RGBNT201`，唯一best权重留`trained-model/signal_full_amp_audit_20260926/RGBNT201`。按首轮含完整评价约57秒粗估，50轮和重载验收约在**11:50—12:00**，以实际回执为准。
+
+另外三卡当前继续RGBNT100–R2 seed42、RGBNT201–R2 seed42、MSVR310–R2 seed43；来源尺度导数九面板等待器3418532仍活着，等待MSVR310 seed43完成后使用GPU3。最近`/data`可用约110GiB，没有删除所需权重或改写封存结果。Goal保持ACTIVE，三数据集完整性能目标尚未实现。
