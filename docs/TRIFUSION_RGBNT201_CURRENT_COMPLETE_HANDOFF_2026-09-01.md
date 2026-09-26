@@ -10246,3 +10246,11 @@ seed43相对Signal+0.2146 mAP／−0.1749 R1，未达两项+0.8；fused mAP高�
 16:32六组合汇总更新：当前逐轮best协议下R2／V27完整审计终点共9项；RGBNT201 R2／V27分别1／1项，RGBNT100 R2／V27为0／2项，MSVR310 R2／V27为2／3项。六组仍仅RGBNT201–V27达标；RGBNT100–R2为未完成，不是0分。新增seed44–MSVR V27及seed43–RGBNT100 V27均未改变该状态。新汇总保留全部9个种子，并为每格列mAP最高的同一个权重及全套所需指标，不跨列拼接；是否达标根据该格所有完整记录检查，不只看最高mAP行。逐项重验正式回执SHA、COMPLETE、best政策和fused数值与审计一致。旧fixed-last及其他方法不混入这9项。报告logs/bestmap_six_cell_summary_20260926_1632.json SHA256=38e9836c740c74d7599488e037cb6e6f218e097ad98705700ccea3ec6c1e76d3，继承14:42汇总并加入新增独立审计，旧报告不改写。此为已消费官方选择结果的完整描述，非无偏泛化或SOTA证明。
 
 16:39静态路径核对：modeling/trifusion/signal_preserving_v8.py的CNN／Global role heads使用LayerNorm；forward先形成fusion，在非aux检索直接返回fusion.fused_embedding／branch_embeddings，aux结果中的这些字段也不经过BNNeck。fused_neck／branch_necks／residual_necks只连接对应分类logits；tools/train_msvr310_trifusion_oof.py::output_mapping及正式入口均读取上述pre-neck向量。因此没有代码依据把当前正式检索退化直接解释成BN running_mean／running_var评价偏移，也不启动BN重校准实验。这是当前路径的静态结论，不代表分类BN对训练梯度没有影响，也不外推到作者Signal其他路径。初次按导入包名trifusion/检索本地路径不存在，随后定位真实modeling/trifusion/并核读，未修改源码或训练。
+
+### 41.520 RGBNT201–R2条件接续seed44（2026-09-26 17:08 CST）
+
+17:07实查seed43队列PID3769440与训练PID3770885均存活，已完成13次官方评价；logs及trained-model下没有该组合seed44的best协议记录，也没有既存等待器。依据持续多种子与达标停种子的授权，复用§41.517单项条件等待逻辑，仅替换数据集、方法、GPU、前序PID及四指标条件，不修改训练入口：等待seed43完整20轮及独立重载COMPLETE，核对方法／数据集／seed、20次评价、best政策、训练与回执权重SHA字段一致及独立上游评价一致；若同一best权重的mAP／Rank-1／Rank-5／Rank-10相对同回执Signal均≥+0.8，记SKIPPED_TARGET_MET。否则待GPU2实查无计算进程且磁盘>10GiB、目标路径未创建，再通过既有队列启动seed44的M0→fresh完整20轮→每轮官方fused mAP选best→独立重载。无抢占、无自动重试、不复跑已达标的RGBNT201–V27。
+
+等待器logs/rgbnt201_r2_seed44_wait_20260926/waiter.py，SHA256=b9608afe875656fc92571b04d1f89402131df15741446f684053bad32735af1f；来源HEAD37fc31b8fe04c8cf6ea2c3440905bf358fd3ce97。17:08:01启动PID3898651，编译通过；启动后等待器、前序队列、训练三PID均实查存活，status=WAITING，driver.log无错误。每240秒检查一次前序，不依据状态文件单独断言进程存活。后继campaign固定official_extra_seed44_RGBNT201_R2_existing_method_recheck_v1_bestmap_20260926，目前尚未启动训练。seed43预计18:20左右完整验收；若未达线而接seed44，预计再约4小时至22:20左右，最终以实测进度为准。
+
+17:07其他实存训练PID3372616／3846689／3872330仍正常，RGBNT100 R2和STAGED各完成15次评价，V27 seed44完成6次评价。STAGED第三数据集尚未完整终态，不提前形成方法结论。Goal保持ACTIVE／UNMET；旧固定第20轮选点条款按用户最新指令由逐轮best协议覆盖，训练仍完整20轮，旧结果不覆写。
