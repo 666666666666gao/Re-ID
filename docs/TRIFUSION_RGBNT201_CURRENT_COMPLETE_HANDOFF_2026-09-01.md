@@ -10254,3 +10254,10 @@ seed43相对Signal+0.2146 mAP／−0.1749 R1，未达两项+0.8；fused mAP高�
 等待器logs/rgbnt201_r2_seed44_wait_20260926/waiter.py，SHA256=b9608afe875656fc92571b04d1f89402131df15741446f684053bad32735af1f；来源HEAD37fc31b8fe04c8cf6ea2c3440905bf358fd3ce97。17:08:01启动PID3898651，编译通过；启动后等待器、前序队列、训练三PID均实查存活，status=WAITING，driver.log无错误。每240秒检查一次前序，不依据状态文件单独断言进程存活。后继campaign固定official_extra_seed44_RGBNT201_R2_existing_method_recheck_v1_bestmap_20260926，目前尚未启动训练。seed43预计18:20左右完整验收；若未达线而接seed44，预计再约4小时至22:20左右，最终以实测进度为准。
 
 17:07其他实存训练PID3372616／3846689／3872330仍正常，RGBNT100 R2和STAGED各完成15次评价，V27 seed44完成6次评价。STAGED第三数据集尚未完整终态，不提前形成方法结论。Goal保持ACTIVE／UNMET；旧固定第20轮选点条款按用户最新指令由逐轮best协议覆盖，训练仍完整20轮，旧结果不覆写。
+### 41.521 RGBNT100–R2条件接续seed43（2026-09-26 17:10 CST）
+
+实查当前seed42训练PID3372616及队列PID3369183存活，目标seed43的best协议logs／trained-model路径与等待器均不存在。复用§41.517相同双指标条件，登记单项接续：等待seed42完整20轮及独立重载，核对COMPLETE、方法／数据集／seed、20次官方评价、best政策、训练与评价权重SHA字段一致及独立上游评价一致；同一个best权重的mAP、Rank-1相对同回执Signal均≥+0.8则SKIPPED_TARGET_MET，否则待GPU0实际空闲、磁盘>10GiB与目标路径不存在后启动seed43。经既有入口执行M0、fresh完整20轮、逐轮fused官方mAP选best、独立重载，其他配置不变，无抢占或失败重试。
+
+等待器logs/rgbnt100_r2_seed43_wait_20260926/waiter.py，SHA256=5a4adee0216c29280dedd81f157aa20cfd153d2dd09d92385a7d0dbf00dfb976，来源HEADba3d3be1894dd2b3819f5a42f32d3a149ea181a8；17:10:14启动PID3900467，编译通过。随后实查等待器、前序队列及训练三PID全部存活，status=WAITING，driver.log无错误，命令核对为RGBNT100／R2／seed43／GPU0／best_official_map。每240秒检查前序。后继campaign为official_extra_seed43_RGBNT100_R2_existing_method_recheck_v1_bestmap_20260926，现在尚未训练，不能填任何指标。
+
+当前seed42预计19:45—20:00验收。按当前已用约7小时50分完成15轮评价的速度，后继若执行需约10—10.5小时，暂估次日06:00—06:30验收，实际以日志进度校正。R2历史重编码与完整反传使其显著慢于同数据集V27，不能套用V27约两小时估计。当前没有查看中途分数调参；此节仅补调度连续性，Goal仍ACTIVE／UNMET。
