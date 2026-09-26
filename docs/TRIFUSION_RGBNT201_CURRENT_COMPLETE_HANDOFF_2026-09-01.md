@@ -10333,3 +10333,8 @@ RGBNT100审计logs/official_extra_seed42_RGBNT100_SIGNAL_SIM_JOINT_STAGED_staged
 experiment-bridge要求的fresh审查由同家族Codex max reviewer完成，PASS、acceptance_status=provisional。五文件主实现无阻塞；见证初版发现Criterion在初始化前导入导致模块路径尚未建立，以及车辆见证未使用正式exact_signal_forward，两处均按实际代码修复后复核PASS。未运行GPU，不冒称实测通过。六个文件在远端既有Python3.10逐份内存compile通过，git diff --check通过；没有安装环境或改动当前训练参数。
 
 后继driver必须显式传--checkpoint-policy best_official_map；按MSVR310→RGBNT201→RGBNT100逐项调用，先来源见证PASS，再原入口8步M0，再fresh完整20轮逐轮官方评价。队列本身只对PLAIN自动preflight，所以本项独立见证不可省略；检索诊断后还需显式调用残差银行诊断。等待GPU1当前R2 seed44全20轮及最佳权重重载完成，核对原始20条epoch序列、fused mAP选点、回执/权重SHA、冻结上游一致及GPU实际空闲、磁盘>10GiB。每240秒检查，不抢占、不自动重试，失败保留记录。此节尚无新方法来源见证／M0／正式成绩。
+### 41.527 BRANCH_ONLY三数据集后继队列已启动等待（2026-09-26 18:03 CST）
+
+代码6cc8e8986fe3a287cb8d6c902eec2ba7e31ca244已推送GitHub并通过bundle快进同步远端；见证CLI导入／--help在现有Python环境通过，不占GPU。logs/branch_only_launch_20260926/driver.py编译通过并以持久进程PID3939234启动，source SHA256=3f9e50a4415eaedc3471d73eb0b48594fde472362b3ba7b59eda84c10db8d424。18:02:54实查PID存活、driver_status=WAITING、jobs为空、日志无错误，等待GPU1当前MSVR310–R2 seed44完整验收；没有把排队写成已训练。先核对前序真实完整20轮／best重载，再依§41.526依次来源见证→M0→fresh20轮逐轮官方mAP最佳选点→同一checkpoint全部指标→原V8参照诊断及银行诊断。训练模式全部非零梯度与冻结状态由M0核验；分类BN缓冲沿原模式变化，未设置额外检索校准。
+
+三项后继campaign分别为official_extra_seed42_{MSVR310,RGBNT201,RGBNT100}_SIGNAL_V8_BRANCH_ONLY_branch_only_v1_bestmap_20260926，尚不存在。暂估19:15—19:30接续，约22:00完成整个面板，需按实际速度更新。18:03另两项RGBNT201–R2 seed43已有18轮正式评价，RGBNT100–V27 seed44已有16轮正式评价；仍RUNNING，不能用中途best冒充完整终态。四GPU均在原任务运行，磁盘空闲102.27GiB，不执行删除。下一检查按18:20／18:30两个前序预计验收里程碑，不进行秒级轮询；它们的未达线接续等待器保持。统一Goal仍ACTIVE／UNMET，官方best选择为用户明确要求的探索协议，旧固定末轮结果不覆盖。
