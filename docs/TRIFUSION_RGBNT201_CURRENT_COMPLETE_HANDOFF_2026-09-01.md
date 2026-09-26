@@ -10350,3 +10350,10 @@ experiment-bridge要求的fresh审查由同家族Codex max reviewer完成，PASS
 实测20轮训练墙钟参考：RGBNT201 R2约250.4分钟、V27约36.9分钟；RGBNT100 V27约102.8分钟、R2 seed42尚未结束；MSVR310 R2约92.7分钟、V27约20.2分钟。粗按2.5倍预算估算50轮分别约10.5h/1.5h、RGBNT100 R2约25h与V27约4.3h、MSVR R2约3.9h与V27约0.8h；实际官方评价、负载和排队改变耗时，以首项实测修正。总约46 GPU小时，四卡并行墙钟由最慢RGBNT100–R2及前序队列决定，不能承诺六项当晚结束。磁盘现约102GiB空余，50轮仍各只保留同一best模型，训练日志及完整回执不删。
 
 实现将仅给现有训练入口增加明确--epochs 20/50，并保持20为默认；50要求best_official_map。覆盖两套训练器的总轮数及余弦日程、队列独立_e50命名、回执实际轮数与50条官方评价核验。先静态审查与来源M0，再排六项fresh训练。当前此节是登记，无50轮M0或正式分数。
+### 41.530 六格50轮训练入口已发布、四卡接续已持久启动（2026-09-26 18:29 CST）
+
+用户确认R2、V27各在RGBNT201、RGBNT100、MSVR310运行50轮，共六项，固定seed42，全部沿§41.529预登记定义。三处最小入口改动（tools/train_official_three_dataset_roles.py、tools/run_official_three_dataset_roles.py、tools/queue_official_extra_seed.py）已由同家族Codex max fresh reviewer只读复核PASS：两训练器总轮数与余弦日程均进入50，原20默认保持，M0仍1轮8步；完整训练每轮官方全query/gallery评价、按fused mAP最高选同一checkpoint（相同mAP取较晚轮）、最后严格重载。远端Python3.10静态编译、git diff --check及20/50学习率日程核对PASS；这些不是GPU检索结果。代码GitHub提交f4e23a1，远端bundle快进一致。
+
+为避免当前四张卡上已有20轮任务、条件接续及BRANCH_ONLY诊断冲突，增加tools/launch_official_50_epoch_panel.py（GitHub／远端提交0c8a22e，SHA256=ff704d1b00e5835936e41115b7d53fc464fadb8588ac11d6824b9e791b0bb614）。四条独立持久lane先等各自真实前序链终态及准确GPU UUID无计算进程，再按每项来源M0→fresh50轮→逐轮官方评价→独立严格重载运行：GPU0先等RGBNT100–R2 seed43条件接续，做RGBNT100–R2；GPU1先等三数据集BRANCH_ONLY完整面板，做MSVR310–R2；GPU2先等RGBNT201–R2 seed44条件接续，依次做RGBNT201–V27和RGBNT201–R2；GPU3先等RGBNT100–V27 seed45条件接续，依次做MSVR310–V27和RGBNT100–V27。接续每240秒核对、仅在GPU真正空闲时启动，不抢占或覆盖已有训练。新campaign根含horizon50_v1_bestmap_e50，独立于20轮；队列要求50条连续官方epoch记录和best轮次核验，且只保存单份最佳权重。每项启动前/data空闲须>10GiB，用户关注磁盘，当前约103GiB，无删除必要。
+
+18:28实启四个lane PID分别3958198／3958200／3958201／3958202，status均WAITING，前序任务均仍在运行；此刻六项50轮没有M0、没有训练、没有正式分数，不能把排队写成已训。队列和checkpoint只有完成相应来源M0后才会出现。按最近20轮实测近似推算，50轮RGBNT201 R2/V27约10.5h/1.5h，RGBNT100 R2/V27约25h/4.3h，MSVR310 R2/V27约3.9h/0.8h；四卡各有前序任务，整组六项最慢可能至9月28日早晨，实际依前序接续和首个50轮测时修正。每项最终验收完整50轮、best选点／严格重载、对应Signal权重及官方过滤、201四指标及车辆两指标，保留全部六格结果和官方test已用于选择的披露；目标仍ACTIVE／UNMET。
