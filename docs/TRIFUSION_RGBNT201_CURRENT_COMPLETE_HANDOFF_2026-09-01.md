@@ -10508,3 +10508,8 @@ RGBNT100–V27以作者发布完整Signal、fresh角色seed42独立训练50轮�
 同一bestE8正式回执只读诊断：相对Signal，AP改善719条query、下降608、持平388；Rank-1修复9条、新增8条，净增1条与+0.058309个百分点一致；50身份中25改善、24下降、1持平。新首位错误8条中3条首位负例与query同camera，无法统一解释为同camera捷径。正负关系修复9393753、翻错3180591，和mAP/R1的改善幅度不可直接等同。报告logs/official_extra_seed42_RGBNT100_V27_horizon50_v1_bestmap_e50_20260926/official_retrieval_diagnosis.json SHA256=14c2ccb6df1b709188004cf062fc3a1dab94108bf359fb4f9af34cfdb64527c0；正式集逐轮用于选点，仍按探索性结果披露。至此用户指定50轮面板4/6已完成，RGBNT201–R2及RGBNT100–R2尚在运行或前序接续。
 
 GPU3的V27任务终态已COMPLETE且该GPU计算列表为空。为延续§41.543的纯基线可比较路线、让空闲卡承担有解释性的完整训练，预登记第二组配对：MSVR310–PLAIN_V8和MSVR310–PLAIN_V27各自从同一已保存纯CLIP ReID权重fresh初始化角色seed42、独立完整训练50轮，逐轮官方完整591 query／1055 gallery按scene过滤的fused mAP选单一best、最终严格重载，报告mAP/R1及分支；原两方法各自loader、监督和扰动保持，20轮仅作为独立历史参照。先V8后V27，只有前项完整退出才接后项，M0和预检保留；此刻二者尚无50轮成绩。与纯基线以及两端之间的比较只能解释各自完整训练定义，不与作者Signal起点六格面板混成同一方法。
+### 41.546 纯基线50轮三数据集配对补齐的预登记与当前接续（2026-09-27 02:42 CST）
+
+§41.543/545的纯CLIP ReID基线50轮配对现已实际启动：GPU1于02:24通过RGBNT201–PLAIN_V8的baseline parity预检和M0进入完整训练，成功后同一持久队列接PLAIN_V27；GPU3于02:36通过MSVR310–PLAIN_V8的预检/M0进入完整训练，成功后接PLAIN_V27。02:40四张GPU均有计算进程，另两张仍执行原Signal起点主面板或其前序。两对都还没有任何50轮完整终态，不填正式结果。
+
+为把已明确要求的纯基线独立方法路线覆盖三个核心数据集，现预先固定第三对RGBNT100–PLAIN_V8、PLAIN_V27，同一已保存纯CLIP ReID基线权重、角色seed42，每方法独立完整50轮，原训练loader／损失／V27扰动保持；每轮按作者完整1715 query／8575 gallery、camera过滤和无reranking评价，fused mAP选一个best权重，严格重载同权重报告mAP/R1及分支。两端和原20轮、纯基线分别比较；纯与完整Signal起点不混成一条消融；V8/V27对比解释为整套训练定义。待GPU3的MSVR310纯基线配对两端均COMPLETE且GPU3真实空闲后，GPU3依次执行这一对；不抢占。该预登记在两项纯MSVR正式结果产生之前完成，不按其分数改RGBNT100配方。这里仅是独立后继配对，不替代用户指定的R2/V27六项50轮主面板。
