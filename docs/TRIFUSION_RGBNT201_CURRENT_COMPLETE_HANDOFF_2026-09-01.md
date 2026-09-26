@@ -9492,3 +9492,27 @@ RGBNT100反馈matched/control仍占GPU0/1，GPU2/3空出后依用户“本批后
 `V27`、作者发布Signal起点、seed42完成20轮／1060真实更新，AMP溢出0、冻结Signal状态未变；每轮作者原836 query／836 gallery与camera过滤对fused按mAP选点，最高在第**5轮**。唯一best权重严格重载、全部五输出完整评价且独立作者评价一致，campaign为`COMPLETE`。同一权重各项：原Signal`80.3029/85.1675/91.3876/93.6603`，fused`83.1234/88.0383/93.5407/94.9761`（mAP/R1/R5/R10），四项各高`2.8205/2.8708/2.1531/1.3158`个百分点，满足原RGBNT201四项各约+0.8的项目线。CNN/Transformer/Mamba完整分支mAP分别`80.8015/82.6452/81.2239`，fused mAP高于三者。只读正式诊断中query AP改善／下降`361/169`，Rank-1修复`36`、新增错误`12`，身份AP改善／下降`23/6`，但这是已消费正式集的事后解释，不用于选方法参数。
 
 本次逐轮best主回执`trained-model/official_extra_seed42_RGBNT201_V27_existing_method_recheck_v1_bestmap_20260926/RGBNT201_V27_seed42/official_metrics.json`SHA256=`e1fad18a2708fb6dd1fa0802f297a5ae59205effea33350942a8968a7511fbe1`；唯一角色best权重SHA256=`fa19b89ef14f534c3ebf3f0f778040ce6d96b44e03bb7cf4f463e43bfcb5d588`，全距离数组SHA256=`ed8b5a2e589effc2a045ccba7efe2dbdd30cd63d684508ce1be63bc7094ee37d`；只读诊断`logs/official_extra_seed42_RGBNT201_V27_existing_method_recheck_v1_bestmap_20260926/diagnostics/RGBNT201_V27_seed42.json`SHA256=`ce0cb1283628904d059c1b29fe9af5dbf926278bbe3f9525aa2285ca1fcac34d`。此前固定第20轮V27 seed42正式`81.8916/85.5263/91.9856/93.6603`来自**另一运行与另一选点协议**，不能将两次差值全归因于选best。相同新协议的无反馈V8 seed42为`83.2014/87.3206/92.8230/94.7368`：V27的mAP较V8低约`0.0780`，R1/R5/R10较高，不能把各自最高列拼成虚构的单一终点。MSVR310–R2逐轮best和RGBNT100反馈配对仍在训练。
+
+### 41.480 RGBNT100条件匹配参照完整配对：mAP微升，Rank-1与角色均未保住（2026-09-26 09:24 CST）
+
+`SIGNAL_SIM_FEEDBACK`直接反馈control与`SIGNAL_SIM_FEEDBACK_MATCHED`同条件参照candidate都以作者发布完整Signal、seed42、同一RGBNT100 loader训练完整20轮／2625步；两端8步M0均`M0_PASS`，初始角色状态SHA同为`684c334913c2e46284c6a027176a0e4e395e5197ed01ac388f08cffd0f1aa62a`，首步loss同为`3.0641870499`。训练均0 AMP溢出、冻结Signal不变、声明训练参数无缺失梯度。每轮用作者原1715 query／8575 gallery、camera过滤、无reranking的fused mAP覆盖单个best；20轮后严格重载，独立作者评价一致。两端campaign及只读诊断均`COMPLETE`，control选第**1轮**、candidate选第**7轮**；表内每行两指标来自本行同一权重。
+
+| RGBNT100，seed42逐轮best | mAP | Rank-1 |
+| --- | ---: | ---: |
+| 冻结原Signal，两端相同 | **86.3242** | **97.5510** |
+| 直接SIM反馈，control fused | 86.1889 | 97.0845 |
+| 条件匹配参照，candidate fused | **86.3609** | 96.7347 |
+| candidate－control | **+0.1720** | **−0.3499** |
+| candidate－Signal | **+0.0367** | **−0.8163** |
+
+candidate的CNN／Transformer／Mamba完整分支为`85.4410/96.7347`、`85.6483/96.6764`、`85.7873/96.7930`（mAP/R1）；control分别为`84.0862/95.9184`、`86.7818/97.3761`、`85.2201/96.7930`，所以不能说匹配参照让全部角色改善。相对同一Signal的只读诊断：control query AP改善／下降／持平`619/683/413`，首位修复`5`、新增错误`13`；candidate为`627/674/414`，首位修复`4`、新增错误`18`。相同逐轮best协议的**无反馈**V8 seed42 fused为`86.7349/97.7259`，仍高于candidate约`0.3740 mAP/0.9913 R1`。三数据集配对至此全部完成：匹配参照相对直接反馈的mAP在201、100、MSVR分别`+1.5095/+0.1720/+1.2747`，但R1分别`+0.3589/−0.3499/−0.1692`；它修正了参照条件定义，却没有形成稳定的首位检索或强Signal增益。三组都使用**已消费官方测试集逐轮选mAP**，仅为探索性完整结果。
+
+本端主回执／单best权重／距离数组／只读诊断SHA256，control依次为`e33a6491da9d4e63a52949993990f7784204a550d8d3a8d0a5543ade0017989d`、`686e39768e9cf93114cdc04cf6eeadc168e82de3ec6439d66f25721e0a645709`、`369b8a1f7314b27c6b9f4898e7936dfa46cbcd160d246893cb3aea6db25ed89f`、`8c0198394dc4f992aa11cf79876f2c4e7c2f1173b80f3bce8666715454a6c59c`；candidate依次为`2bcfeb91da2e69225e7b4376beb57ed04596f395576eb8f51d5823e15c5da636`、`142d189982a3323d70ae1fdfa42a49e6d71f60fcc09e0dcaac6571b08dd5607b`、`56a11f8f8efc35e2c8e4d98824f0d06eb4ff28f8ffc7806c8a5120caaf2d42d5`、`a206d5a6abc4245f8190f630af0ab290fe4a359fc7b76cc784d8bad5d910a01b`。回执位于`trained-model/official_extra_seed42_RGBNT100_{method}_matchedref_pair_v1_bestmap_20260926/RGBNT100_{method}_seed42/official_metrics.json`，诊断位于对应`logs/.../diagnostics/`。
+
+### 41.481 MSVR310–R2逐轮best复核：选点仍低于原Signal（2026-09-26 09:24 CST）
+
+作者发布Signal起点、seed42的既有`R2`新运行完成20轮／400步，0 AMP溢出，冻结Signal不变、参数梯度无缺项；排名历史侧梯度确实参与，正式训练记录`335`个有支持步与`2644`组历史VJP。M0为`M0_PASS`。每轮完整591 query／1055 gallery、scene过滤、无reranking选fused mAP，唯一best出现在第**6轮**；第20轮当轮约`51.3927/69.0355`，第6轮严格重载为`52.0717/69.3739`（mAP/R1），两项均较同run末轮高，但仍低于同一冻结Signal `53.2424/72.4196`，差`−1.1707/−3.0457`个百分点。CNN／Transformer／Mamba完整分支为`49.6562/69.2047`、`49.1745/66.1591`、`49.6805/68.3587`。独立作者评价一致，campaign `COMPLETE`。
+
+只读事后诊断显示，相对Signal的591条合法query，AP改善／下降／持平`263/311/17`，Rank-1修复`20`、新增错误`38`；身份AP改善／下降`22/30`，正负实例对修复`70,729`、翻错`50,365`。净修复更多关系仍未阻止首位退化，不能仅看关系对总数判断R1。此复核与旧固定末轮R2 seed42属于不同运行与选点协议，不把跨run差值解释为纯选点效果；与新协议原V8/MSVR `50.6194/67.3435`相比数值较好，但并非匹配单变量配对。官方集已用于每轮选点，不能称为独立验证。
+
+主回执`trained-model/official_extra_seed42_MSVR310_R2_existing_method_recheck_v1_bestmap_20260926/MSVR310_R2_seed42/official_metrics.json`SHA256=`731e1f9685347ecfcbb0f062d90e2ca9976c5ae54d064f8aa25639af18e8f500`；唯一best权重SHA256=`24755cc735b7c87af4763d81f6e06abe27ef1c696b185343ab70312ff3386145`，模型所选状态SHA256=`7193aaaf8539c55b07fc675f7e3d1885d3c6bf20ecef43965b164487f9ae2d64`，距离数组SHA256=`510b7a8eb2ba686d471acec1ead6d88f1932fdc90940e893a7bed8b4b63163e8`。只读诊断`logs/official_extra_seed42_MSVR310_R2_existing_method_recheck_v1_bestmap_20260926/diagnostics/MSVR310_R2_seed42.json`SHA256=`2a4f23ec69cd79664ffbf1b7889922989e5da3bece05eed285fae6c38cf394a9`。其余四个已排队best复核为RGBNT201–R2、RGBNT100–R2/V27、MSVR310–V27；截至此节核对时均在真实训练中，尚无终态回执，不提前填指标。
