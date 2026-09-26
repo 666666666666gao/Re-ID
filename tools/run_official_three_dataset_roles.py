@@ -76,6 +76,18 @@ def initialize(args, protocol):
                                                plain_baseline=args.method in ("PLAIN_V8", "PLAIN_V27"),
                                                sim_feedback=args.method in FEEDBACK_METHODS,
                                                matched_feedback_reference=args.method == "SIGNAL_SIM_FEEDBACK_MATCHED")
+    if args.method == "SIGNAL_V8_BRANCH_ONLY":
+        config["LOSS"]["ID_RESIDUAL"] = 0.0
+        config["LOSS"]["TRIPLET_RESIDUAL"] = 0.0
+        disabled = []
+        for name, parameter in model.named_parameters():
+            if name.startswith(("residual_necks.", "residual_classifiers.")):
+                if parameter.requires_grad:
+                    disabled.append(name)
+                parameter.requires_grad_(False)
+        assert len(disabled) == 6
+        binding["disabled_residual_aux_parameters"] = disabled
+        binding["loss_weights"] = dict(config["LOSS"])
     if args.method in SIM_JOINT_METHODS:
         names = []
         for name, parameter in model.baseline.signal.SIM.modal_interactive.named_parameters():
@@ -105,7 +117,7 @@ def train(args, protocol):
     receipt = dict(schema=("trifusion-official-plain-v8-training-v1" if args.method in ("PLAIN_V8", "PLAIN_V27")
                            else "trifusion-official-signal-sim-joint-training-v1" if args.method in SIM_JOINT_METHODS
                            else "trifusion-official-signal-sim-feedback-training-v1" if args.method in FEEDBACK_METHODS
-                           else "trifusion-official-signal-v8-training-v1" if args.method == "SIGNAL_V8"
+                           else "trifusion-official-signal-v8-training-v1" if args.method in ("SIGNAL_V8", "SIGNAL_V8_BRANCH_ONLY")
                            else "trifusion-official-r2-v27-training-v1"), dataset=args.dataset,
                    method=args.method, mode=args.mode, status="RUNNING",
                    started_at=datetime.now().astimezone().isoformat(),
@@ -137,7 +149,7 @@ def train(args, protocol):
 
     on_epoch_end = (select_epoch if args.mode == "train" and
                     args.checkpoint_policy == "best_official_map" else None)
-    if args.method in ("V27", "PLAIN_V27", "PLAIN_V8", "SIGNAL_V8", *SIM_JOINT_METHODS, *FEEDBACK_METHODS):
+    if args.method in ("V27", "PLAIN_V27", "PLAIN_V8", "SIGNAL_V8", "SIGNAL_V8_BRANCH_ONLY", *SIM_JOINT_METHODS, *FEEDBACK_METHODS):
         result = train_v27(model, protocol, records, config, m0=args.mode == "m0",
                            directory=args.output_dir, seed=args.seed,
                            style=args.method in ("V27", "PLAIN_V27"),
@@ -146,6 +158,7 @@ def train(args, protocol):
                            joint_sim_low_lr=args.method in SIM_LOWLR_METHODS,
                            full_norm_gradient=args.method == "SIGNAL_SIM_JOINT_FULLNORM",
                            staged_sim=args.method == "SIGNAL_SIM_JOINT_STAGED",
+                           branch_only=args.method == "SIGNAL_V8_BRANCH_ONLY",
                            sim_feedback=args.method in FEEDBACK_METHODS,
                            on_epoch_end=on_epoch_end)
     else:
@@ -366,7 +379,7 @@ def evaluate(args, protocol):
     result = dict(schema=("trifusion-official-plain-v8-retrieval-v1" if args.method in ("PLAIN_V8", "PLAIN_V27")
                           else "trifusion-official-signal-sim-joint-retrieval-v1" if args.method in SIM_JOINT_METHODS
                           else "trifusion-official-signal-sim-feedback-retrieval-v1" if args.method in FEEDBACK_METHODS
-                          else "trifusion-official-signal-v8-retrieval-v1" if args.method == "SIGNAL_V8"
+                          else "trifusion-official-signal-v8-retrieval-v1" if args.method in ("SIGNAL_V8", "SIGNAL_V8_BRANCH_ONLY")
                           else "trifusion-official-r2-v27-retrieval-v1"), status="COMPLETE",
                   dataset=args.dataset, method=args.method,
                   query_count=len(qrows), gallery_count=len(grows),
@@ -391,7 +404,7 @@ def evaluate(args, protocol):
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--dataset", choices=("RGBNT201", "RGBNT100", "MSVR310"), required=True)
-    parser.add_argument("--method", choices=("R2", "V27", "R2_TOP1", "R2_UNIFORM", "PLAIN_V8", "PLAIN_V27", "SIGNAL_V8", *SIM_JOINT_METHODS, *FEEDBACK_METHODS), required=True)
+    parser.add_argument("--method", choices=("R2", "V27", "R2_TOP1", "R2_UNIFORM", "PLAIN_V8", "PLAIN_V27", "SIGNAL_V8", "SIGNAL_V8_BRANCH_ONLY", *SIM_JOINT_METHODS, *FEEDBACK_METHODS), required=True)
     parser.add_argument("--mode", choices=("preflight", "m0", "train", "evaluate"), required=True)
     parser.add_argument("--protocol", type=Path, required=True)
     parser.add_argument("--signal-source", type=Path, required=True)

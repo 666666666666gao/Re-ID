@@ -44,7 +44,7 @@ def main():
     parser.add_argument("--seed", type=int, required=True)
     parser.add_argument("--machine", choices=("old", "new"), required=True)
     parser.add_argument("--dataset", choices=DATASETS)
-    parser.add_argument("--method", choices=(*METHODS, "R2_TOP1", "R2_UNIFORM", "PLAIN_V8", "PLAIN_V27", "SIGNAL_V8", "SIGNAL_SIM_JOINT", "SIGNAL_SIM_JOINT_LOWLR", "SIGNAL_SIM_JOINT_FULLNORM", "SIGNAL_SIM_JOINT_STAGED", "SIGNAL_SIM_FEEDBACK", "SIGNAL_SIM_FEEDBACK_MATCHED"))
+    parser.add_argument("--method", choices=(*METHODS, "R2_TOP1", "R2_UNIFORM", "PLAIN_V8", "PLAIN_V27", "SIGNAL_V8", "SIGNAL_V8_BRANCH_ONLY", "SIGNAL_SIM_JOINT", "SIGNAL_SIM_JOINT_LOWLR", "SIGNAL_SIM_JOINT_FULLNORM", "SIGNAL_SIM_JOINT_STAGED", "SIGNAL_SIM_FEEDBACK", "SIGNAL_SIM_FEEDBACK_MATCHED"))
     parser.add_argument("--gpu", type=int)
     parser.add_argument("--top1-pair", action="store_true")
     parser.add_argument("--skip-cell", action="append",
@@ -203,7 +203,7 @@ def main():
         retrieval = json.loads((directory / "official_metrics.json").read_text(encoding="utf-8"))
         assert retrieval["status"] == "COMPLETE" and retrieval["seed"] == args.seed
         diagnostics = None
-        if row["method"] in ("PLAIN_V8", "PLAIN_V27", "SIGNAL_V8", "SIGNAL_SIM_FEEDBACK", "SIGNAL_SIM_FEEDBACK_MATCHED"):
+        if row["method"] in ("PLAIN_V8", "PLAIN_V27", "SIGNAL_V8", "SIGNAL_V8_BRANCH_ONLY", "SIGNAL_SIM_FEEDBACK", "SIGNAL_SIM_FEEDBACK_MATCHED"):
             diagnostics = campaign / "diagnostics" / f"{tag}.json"
             subprocess.run([sys.executable, "-B", str(ROOT / "tools/diagnose_official_retrieval.py"),
                             "--receipt", str(directory / "official_metrics.json"),

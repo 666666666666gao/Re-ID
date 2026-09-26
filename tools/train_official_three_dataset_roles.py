@@ -46,7 +46,8 @@ def _v27_loss(parts, config):
 
 def train_v27(model, protocol, records, config, *, m0, directory, seed=42, style=True,
               plain_baseline=False, joint_sim=False, joint_sim_low_lr=False,
-              sim_feedback=False, full_norm_gradient=False, staged_sim=False, on_epoch_end=None):
+              sim_feedback=False, full_norm_gradient=False, staged_sim=False,
+              branch_only=False, on_epoch_end=None):
     import torch
     import numpy as np
     from tools.official_three_dataset_data import loader_for
@@ -58,6 +59,11 @@ def train_v27(model, protocol, records, config, *, m0, directory, seed=42, style
 
     _set_seed(seed)
     model.train()
+    if branch_only:
+        assert not any((style, plain_baseline, joint_sim, sim_feedback, full_norm_gradient, staged_sim))
+        assert config["LOSS"]["ID_RESIDUAL"] == config["LOSS"]["TRIPLET_RESIDUAL"] == 0.0
+        assert not any(p.requires_grad for name, p in model.named_parameters()
+                       if name.startswith(("residual_necks.", "residual_classifiers.")))
     initial, frozen = _module_state_sha256(model), frozen_state_sha(model)
     sim_lr = SIM_JOINT_LOWLR if joint_sim_low_lr else None
     optimizer, scaler, criterion = _setup(model, config, sim_lr=sim_lr)
@@ -68,7 +74,8 @@ def train_v27(model, protocol, records, config, *, m0, directory, seed=42, style
         sim_update_steps = 0
     if full_norm_gradient:
         assert joint_sim and joint_sim_low_lr and not model.fusion.detach_baseline_scale
-    method = ("SIGNAL_SIM_JOINT_STAGED" if staged_sim else
+    method = ("SIGNAL_V8_BRANCH_ONLY" if branch_only else
+              "SIGNAL_SIM_JOINT_STAGED" if staged_sim else
               "SIGNAL_SIM_JOINT_FULLNORM" if full_norm_gradient else
               "SIGNAL_SIM_JOINT_LOWLR" if joint_sim_low_lr else
               "SIGNAL_SIM_FEEDBACK_MATCHED" if model.matched_feedback_reference else
@@ -161,6 +168,9 @@ def train_v27(model, protocol, records, config, *, m0, directory, seed=42, style
         result["sim_m0_frozen_batches"] = 4 if m0 else None
     if full_norm_gradient:
         result["fusion_scale_gradient"] = "complete_baseline_norm_derivative"
+    if branch_only:
+        result["loss_weights"] = dict(config["LOSS"])
+        result["residual_aux_parameters_frozen"] = True
     return result
 
 

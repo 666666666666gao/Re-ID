@@ -10326,3 +10326,10 @@ RGBNT100审计logs/official_extra_seed42_RGBNT100_SIGNAL_SIM_JOINT_STAGED_staged
 依experiment-bridge完成最小实现、fresh同家族Codex max审查、来源M0后，才启动fresh完整训练。检查初始检索表示与V8一致、实际目标中仅六项为零、有效角色及保留分类参数获得有限非零梯度、停用头参数不更新、冻结Signal不变、权重保存／严格重载一致。先MSVR310，再RGBNT201、RGBNT100，拟复用GPU1当前R2 seed44完整验收后释放的时隙，不抢占；各自来源M0→fresh20轮→独立重载→只读检索与残差银行诊断。按原V8同类运行暂估合计约2.5—3小时，实际由首项校正。性能判断是三数据集相对匹配V8的全部正式指标及相对发布Signal的变化，全部结果保留；这不是R2／V27达标格，也不是已经验证的原创方法。若角色学习变弱或无收益，原负结果保留，不在中途修改权重救实验。
 
 登记时尚未实现、审查或启动本项，暂无M0／检索结果。新代码、审核和运行状态继续只追加本文件，不新建说明Markdown。现有四卡种子与条件接续不改。
+### 41.526 BRANCH_ONLY最小实现与独立复核（2026-09-26，排队前）
+
+§41.525已实现：官方三数据集初始化、训练分派、RGBNT201同V8 loader、队列与残差银行诊断识别新方法；原方法默认行为不改。仅残差ID／Triplet系数置零，冻结六个停用头参数，保存布局不变，BN缓冲仍按原训练前向更新，检索不使用这些分类BN。新增tools/check_branch_only_supervision.py，在真实来源批次核对V8与候选初始完整state及五种正式检索前向一致、八项原系数／六项零系数的实际标量导数、移除损失差、严格保存重载及有限梯度；这是eval模式零更新见证，不代替训练模式M0或学习后完整重载。
+
+experiment-bridge要求的fresh审查由同家族Codex max reviewer完成，PASS、acceptance_status=provisional。五文件主实现无阻塞；见证初版发现Criterion在初始化前导入导致模块路径尚未建立，以及车辆见证未使用正式exact_signal_forward，两处均按实际代码修复后复核PASS。未运行GPU，不冒称实测通过。六个文件在远端既有Python3.10逐份内存compile通过，git diff --check通过；没有安装环境或改动当前训练参数。
+
+后继driver必须显式传--checkpoint-policy best_official_map；按MSVR310→RGBNT201→RGBNT100逐项调用，先来源见证PASS，再原入口8步M0，再fresh完整20轮逐轮官方评价。队列本身只对PLAIN自动preflight，所以本项独立见证不可省略；检索诊断后还需显式调用残差银行诊断。等待GPU1当前R2 seed44全20轮及最佳权重重载完成，核对原始20条epoch序列、fused mAP选点、回执/权重SHA、冻结上游一致及GPU实际空闲、磁盘>10GiB。每240秒检查，不抢占、不自动重试，失败保留记录。此节尚无新方法来源见证／M0／正式成绩。
