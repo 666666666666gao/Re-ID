@@ -10490,3 +10490,21 @@ GPU2 lane将此端标为COMPLETE并于00:14:03自动启动下一端RGBNT201–R2
 §41.542的RGBNT100–SIGNAL_V8_BRANCH_ONLY同seed独立重试通过来源M0并完成第1—7轮全量官方评价，但在随后第8轮前向再次触发同一原通过条件；已拆分断言准确报告`all_finite=False`，而`baseline_exact_prefix=True`、`baseline_frozen=True`、`pretrained_tail_frozen=True`。原combined断言未知条件现在定位到模型输出非有限，不是基线前缀被改坏。训练异常退出、queue进程退出，GPU1 nvidia-smi计算列表无进程；campaign.json停留RUNNING／TRAINING是异常退出的陈旧状态，不代表仍在训练。此端仍没有完整20轮或正式回执，正式指标为“-”；第7轮临时官方mAP不能当最终成绩。第二次相同断点提示可重复的数值问题，但尚未定位非有限值最先出现在哪个张量或为何出现，不跳过断言、不再原样第三次重跑。
 
 §41.543的纯基线50轮配对原拟等GPU3；目前GPU3的RGBNT100–V27仍有计算进程，而GPU1已空闲，故只改执行卡位和先后依赖：经nvidia-smi及进程核对GPU1无计算任务、空间超过10GiB后，在GPU1依次运行RGBNT201–PLAIN_V8和PLAIN_V27，各自seed42、fresh50轮、逐轮官方mAP选best，其他合同不变。后继任务与原50轮六格面板互不代替，GPU3原任务不停。此节只记录调度与故障，不提前填写纯基线配对成绩。
+### 41.545 第四项50轮完整验收：RGBNT100–V27 seed42；GPU3后继MSVR纯基线配对预登记（2026-09-27 02:40 CST）
+
+RGBNT100–V27以作者发布完整Signal、fresh角色seed42独立训练50轮；官方epoch记录严格1—50、每轮完整1715 query／8575 gallery、原camera过滤与无reranking评价，fused mAP最高第8轮。training与独立evaluate重载同为E8，selected_mAP=86.5596295894且重载差0；实存checkpoint SHA和模型state SHA匹配，独立作者Signal评价相同。训练6559步、0 AMP overflow、冻结上游不变、声明参数无缺失非零梯度。正式回执SHA256=390cd5561d455422dad9d56b75b5f9e58fbc744abd34f3f1c52eae7c80dc0f48；checkpointSHA256=9e8ffd55fd11564fb7856f42f38089800d8534e5a1e50eb866adda4ce691680d；选中stateSHA256=1a60b87b811e140e0f244e6e68ce3ed2e8ac565d3e2bc0db8d79613205b05d2f。
+
+| RGBNT100正式输出／同一bestE8权重 | mAP | Rank-1 |
+| --- | ---: | ---: |
+| 作者Signal | 86.3242 | 97.5510 |
+| V27 seed42原20轮bestE6 fused | 86.8096 | 97.3761 |
+| **V27 seed42新50轮bestE8 fused** | **86.5596** | **97.6093** |
+| 新50轮CNN完整分支 | 85.1188 | 96.5598 |
+| 新50轮Transformer完整分支 | 86.2821 | 96.6181 |
+| 新50轮Mamba完整分支 | 85.4955 | 97.6676 |
+
+新50轮相对同回执作者Signal为+0.2354309651 mAP、+0.0583090379 Rank-1，未达到本项目两项各+0.8。相对原20轮同seed的独立best，mAP反而−0.249928、Rank-1 +0.233236；两次cosine总日程不同，不能解释为单纯多30轮的因果效果。新50轮本轨迹第21—50轮最佳仅第22轮86.1903069351 mAP，低于全程E8的86.5596295894；第50轮85.6729396899／97.0262408257，也低于best。延长训练不能保证更好的选择终点。
+
+同一bestE8正式回执只读诊断：相对Signal，AP改善719条query、下降608、持平388；Rank-1修复9条、新增8条，净增1条与+0.058309个百分点一致；50身份中25改善、24下降、1持平。新首位错误8条中3条首位负例与query同camera，无法统一解释为同camera捷径。正负关系修复9393753、翻错3180591，和mAP/R1的改善幅度不可直接等同。报告logs/official_extra_seed42_RGBNT100_V27_horizon50_v1_bestmap_e50_20260926/official_retrieval_diagnosis.json SHA256=14c2ccb6df1b709188004cf062fc3a1dab94108bf359fb4f9af34cfdb64527c0；正式集逐轮用于选点，仍按探索性结果披露。至此用户指定50轮面板4/6已完成，RGBNT201–R2及RGBNT100–R2尚在运行或前序接续。
+
+GPU3的V27任务终态已COMPLETE且该GPU计算列表为空。为延续§41.543的纯基线可比较路线、让空闲卡承担有解释性的完整训练，预登记第二组配对：MSVR310–PLAIN_V8和MSVR310–PLAIN_V27各自从同一已保存纯CLIP ReID权重fresh初始化角色seed42、独立完整训练50轮，逐轮官方完整591 query／1055 gallery按scene过滤的fused mAP选单一best、最终严格重载，报告mAP/R1及分支；原两方法各自loader、监督和扰动保持，20轮仅作为独立历史参照。先V8后V27，只有前项完整退出才接后项，M0和预检保留；此刻二者尚无50轮成绩。与纯基线以及两端之间的比较只能解释各自完整训练定义，不与作者Signal起点六格面板混成同一方法。
