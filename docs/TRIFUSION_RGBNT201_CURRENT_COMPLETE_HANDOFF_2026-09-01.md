@@ -2,7 +2,7 @@
 
 ## 0. 一页结论
 
-**当前执行入口：§41.513，核对2026-09-26 15:03 CST。** 本页为当前摘要，后面的原始阶段记录保留其当时规则与数值；旧单卡地址、只用seed42、固定末轮和官方集只评一次等历史限制，不覆盖用户后续已经明确修改的安排。Goal仍为 **ACTIVE／UNMET**，不能因某一数据集达标或工程检查通过而结束。
+**当前执行入口：§41.514，核对2026-09-26 15:11 CST。** 本页为当前摘要，后面的原始阶段记录保留其当时规则与数值；旧单卡地址、只用seed42、固定末轮和官方集只评一次等历史限制，不覆盖用户后续已经明确修改的安排。Goal仍为 **ACTIVE／UNMET**，不能因某一数据集达标或工程检查通过而结束。
 
 **当前规则：** 新完整角色训练跑满20轮，每轮按作者完整query/gallery与camera／scene过滤评价，以**fused官方mAP最高的同一个checkpoint**报告所有输出与指标，结束后严格重载；不固定最后一轮、不跨种子／epoch拼接列。原生Signal按对应作者完整日程训练，同样逐轮mAP选best。官方测试已参与选择，必须披露探索性选择边界；旧固定终点实验原回执与权重不改写。RGBNT201汇报mAP／R1／R5／R10，RGBNT100和MSVR310主表只汇报mAP／R1。六个R2／V27×数据集组合各自以要求指标均较同协议发布Signal提高至少0.8个百分点为种子搜索停止线；RGBNT201–V27已达线，不再为它追加种子。SOTA目标尚未实现。
 
@@ -10151,3 +10151,11 @@ seed44审计logs/official_extra_seed44_MSVR310_V27_existing_method_recheck_v1_be
 **阶段式SIM已经通过真实来源见证和M0，并进入完整训练。** driver于15:00:35确认前序完整完成和GPU1空闲后运行checker：来源train的64条batch、0更新，五种输出特征及距离在保存／重载后逐元素完全相同，12个SIM键和全state一致；witness.json SHA=107c6bef762ef642700a72d7ddf10b21982d5dd72362d4668307e196a3e15948。该见证限新鲜初始化，不等于已训练best权重验证。
 
 独立8步M0于15:01:49通过；原始步骤日志核对前4条sim_update_enabled=False、后4条True，前4步SIM精确不变且无AdamW状态，后4步所有需训张量有非零梯度，SIM每张量optimizer step=4，0 overflow；M0回执SHA=a0995dcf3fb40d0b7c4f6f76435005e0dc923eb3fdb56e2aebb1cdf502e4d4fc。随后从同一作者Signal重新初始化正式20轮，15:02真实训练PID3806073、GPU1约6320MiB；campaign logs/official_extra_seed42_MSVR310_SIGNAL_SIM_JOINT_STAGED_staged_sim_v1_bestmap_20260926。该执行包含32d7f33代码，回执记录HEAD88aba1f（后者仅文档）。不继承M0参数或状态。下一检查关注完整日程第5／6轮的冻结→放开切换，约15:08—15:10；最终预计15:25前后。GPU0、2、3仍分别由3372616、3770885、3776593训练，未抢占或改其日程。尚无新方法完整检索结果，Goal继续ACTIVE／UNMET。
+
+### 41.514 阶段切换中途核验、方法来源与V27重复错误（2026-09-26 15:11 CST）
+
+阶段式SIM–MSVR310的前10个完整训练epoch共200步已只读核对：1—100步（epoch1—5）sim_update_enabled全部False；101—200步（epoch6—10）全部True，首次激活确为第6轮。训练代码在冻结步检查参数精确不变及优化器状态未建立；完整终态仍须核对SIM实际AdamW累计更新步数，本次不提前替代该终态断言或性能验收。回执logs/staged_sim_launch_20260926/MSVR310/first_ten_epochs_transition_check.json SHA256=5433147e5f09c51a4577fc3b8917d8ead160f855e8f57e4462c641c90f1c23b7，绑定步骤日志前200行SHA=e299b49813e4c0bc6ab567d3adda834ac2ad12123f297f4f08a854699cd665c3（是前缀，不是持续增长文件的最终SHA）。15:10训练PID3806073仍在，未改切换点或日程。其余GPU0 RGBNT100–R2 seed42已有11轮正式评价，GPU2 RGBNT201–R2 seed43有4轮，GPU3 RGBNT100–V27 seed43有7轮；四个实际进程均活着，未完成结果不填终态表。
+
+方法来源补充：本轮核读Kumar等《Fine-Tuning can Distort Pretrained Features and Underperform Out-of-Distribution》的作者[arXiv原文](https://arxiv.org/pdf/2202.10054)；OpenReview链接触发浏览器验证，未将该网页当作已读全文。其LP-FT先训练线性头，再完整微调；理论分析有双层线性模型等设定。当前实验只借鉴阶段顺序：第一阶段训练非线性三角色，第二阶段仅放开12个SIM张量，CLIP仍冻结，因此不是LP-FT原样复现，也不继承其泛化保证。代码中角色block8输入来自冻结CLIP并detach，SIM在该输入生成后另行计算；当前SIM更新不改变角色上游Token，只通过联合输出与损失耦合。不能把本实验描述为共享CLIP语义端到端共同更新。训练顺序属于既有思想的项目化对照，不冒称新的结构创新。
+
+另从V27三份同协议best回执的first_match_rank逐query核对：Signal原正确428／591条；seed42／43／44分别新增47／33／46条错误、修复23／12／14条。三次共同新增错误13条，共同修复6条；任一次新增错误的并集74条，修复并集31条。说明部分负翻转跨种子重复，但不据此识别视觉原因、不围绕这些官方query定制训练。原始索引只保留远端只读报告logs/msvr_v27_three_best_rank1_overlap_20260926.json，SHA=b2a460cc85d20052d16152c9614365b95660ee8c7be876ad01083d07326fc1cc；源三种子汇总SHA与§41.513一致。总目标仍ACTIVE／UNMET，下一GPU1终态约15:20—15:25，再按登记顺序接RGBNT201与RGBNT100。
