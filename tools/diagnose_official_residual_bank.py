@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Reconstruct the frozen-baseline/residual-bank split from saved official distances."""
+"""Reconstruct the checkpoint's baseline/residual-bank split from saved distances."""
 
 import argparse
 import hashlib
@@ -34,7 +34,7 @@ def main():
     receipt = json.loads(args.receipt.read_text(encoding="utf-8"))
     assert receipt["status"] == "COMPLETE"
     assert receipt["dataset"] in ("RGBNT201", "RGBNT100", "MSVR310")
-    assert receipt["method"] in ("PLAIN_V8", "SIGNAL_V8", "SIGNAL_SIM_FEEDBACK")
+    assert receipt["method"] in ("PLAIN_V8", "SIGNAL_V8", "SIGNAL_SIM_FEEDBACK", "SIGNAL_SIM_JOINT_STAGED")
     distance_path = Path(receipt["distance_arrays"])
     assert digest(distance_path) == receipt["distance_arrays_sha256"]
     saved = torch.load(distance_path, map_location="cpu", weights_only=False)
@@ -46,7 +46,7 @@ def main():
     fusion_error = float(np.max(np.abs(fused - sum(role_distances) / len(ROLES))))
     assert fusion_error < 1e-5
 
-    # Both the frozen baseline and the normalized three-role bank have half of
+    # Both the checkpoint's baseline and the normalized three-role bank have half of
     # the final squared-Euclidean distance: d_fused^2 = (d_base^2 + d_bank^2)/2.
     bank = 2 * fused - baseline
     residuals = {name: 2 * distances[name] - baseline for name in ROLES}

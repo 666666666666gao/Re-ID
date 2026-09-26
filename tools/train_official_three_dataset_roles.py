@@ -46,7 +46,7 @@ def _v27_loss(parts, config):
 
 def train_v27(model, protocol, records, config, *, m0, directory, seed=42, style=True,
               plain_baseline=False, joint_sim=False, joint_sim_low_lr=False,
-              sim_feedback=False, full_norm_gradient=False, on_epoch_end=None):
+              sim_feedback=False, full_norm_gradient=False, staged_sim=False, on_epoch_end=None):
     import torch
     import numpy as np
     from tools.official_three_dataset_data import loader_for
@@ -61,9 +61,15 @@ def train_v27(model, protocol, records, config, *, m0, directory, seed=42, style
     initial, frozen = _module_state_sha256(model), frozen_state_sha(model)
     sim_lr = SIM_JOINT_LOWLR if joint_sim_low_lr else None
     optimizer, scaler, criterion = _setup(model, config, sim_lr=sim_lr)
+    if staged_sim:
+        assert joint_sim and joint_sim_low_lr and not full_norm_gradient
+        sim_parameters = list(model.baseline.signal.SIM.modal_interactive.parameters())
+        sim_initial = [p.detach().clone() for p in sim_parameters]
+        sim_update_steps = 0
     if full_norm_gradient:
         assert joint_sim and joint_sim_low_lr and not model.fusion.detach_baseline_scale
-    method = ("SIGNAL_SIM_JOINT_FULLNORM" if full_norm_gradient else
+    method = ("SIGNAL_SIM_JOINT_STAGED" if staged_sim else
+              "SIGNAL_SIM_JOINT_FULLNORM" if full_norm_gradient else
               "SIGNAL_SIM_JOINT_LOWLR" if joint_sim_low_lr else
               "SIGNAL_SIM_FEEDBACK_MATCHED" if model.matched_feedback_reference else
               "SIGNAL_SIM_FEEDBACK" if sim_feedback else "SIGNAL_SIM_JOINT" if joint_sim
@@ -81,7 +87,13 @@ def train_v27(model, protocol, records, config, *, m0, directory, seed=42, style
                 group["lr"] = (sim_lr * multiplier if index == 1 else lr)
             losses = []
             batches = itertools.islice(loader, 8) if m0 else loader
-            for raw in batches:
+            for batch_index, raw in enumerate(batches):
+                if staged_sim:
+                    sim_active = batch_index >= 4 if m0 else epoch > 5
+                    for parameter in sim_parameters:
+                        parameter.requires_grad_(sim_active)
+                    if not sim_active:
+                        assert all(p not in optimizer.state for p in sim_parameters)
                 assert sorted(torch.unique(raw[1], return_counts=True)[1].tolist()) == [8] * 8
                 batch, labels = _training_batch(raw)
                 if style:
@@ -103,22 +115,33 @@ def train_v27(model, protocol, records, config, *, m0, directory, seed=42, style
                             live.add(name)
                 scaler.step(optimizer)
                 scaler.update()
+                if staged_sim:
+                    sim_update_steps += int(sim_active)
+                    if not sim_active:
+                        assert all(torch.equal(p, initial) for p, initial in zip(sim_parameters, sim_initial))
                 overflow += int(scaler.get_scale() < scale)
                 steps += 1
                 losses.append(float(loss.detach()))
                 log.write(json.dumps(dict(step=steps, epoch=epoch, loss=losses[-1],
                                           style_active=model.baseline.last_style_stats["style_active"] if style else False,
                                           style_plan=model.baseline.style_plan if style else None,
-                                          amp_scale_after=scaler.get_scale())) + "\n")
+                                          amp_scale_after=scaler.get_scale(),
+                                          **({"sim_update_enabled": sim_active} if staged_sim else {}))) + "\n")
             log.flush()
             row = dict(epoch=epoch, steps=len(losses), mean_loss=float(np.mean(losses)),
                        seconds=time.perf_counter() - started)
             if joint_sim_low_lr:
                 row["learning_rates"] = [group["lr"] for group in optimizer.param_groups]
+            if staged_sim:
+                row["sim_update_steps_cumulative"] = sim_update_steps
             history.append(row)
             print(json.dumps(dict(event=f"official_{method.lower()}_epoch",
                                   dataset=protocol["dataset"], **row)), flush=True)
             if on_epoch_end is not None:
+                if staged_sim:
+                    # Match initialize()/evaluate() even when the selected epoch precedes unfreezing.
+                    for parameter in sim_parameters:
+                        parameter.requires_grad_(True)
                 on_epoch_end(model, epoch)
                 model.train()
     if style:
@@ -130,6 +153,12 @@ def train_v27(model, protocol, records, config, *, m0, directory, seed=42, style
                   frozen_state_unchanged=True, missing_nonzero_gradients=[], overflow_events=0)
     if joint_sim_low_lr:
         result["sim_base_lr"] = sim_lr
+    if staged_sim:
+        assert sim_update_steps > 0
+        assert all(int(optimizer.state[p]["step"].item()) == sim_update_steps for p in sim_parameters)
+        result["sim_frozen_epochs"] = 5
+        result["sim_update_steps"] = sim_update_steps
+        result["sim_m0_frozen_batches"] = 4 if m0 else None
     if full_norm_gradient:
         result["fusion_scale_gradient"] = "complete_baseline_norm_derivative"
     return result

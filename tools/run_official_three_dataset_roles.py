@@ -17,7 +17,7 @@ from tools.official_three_dataset_model import build_model, sha256
 from tools.train_msvr310_trifusion_oof import OUTPUT_WIDTHS, output_mapping
 from tools.train_official_three_dataset_roles import PLAIN_WIDTHS, SIM_JOINT_LOWLR
 
-SIM_LOWLR_METHODS = ("SIGNAL_SIM_JOINT_LOWLR", "SIGNAL_SIM_JOINT_FULLNORM")
+SIM_LOWLR_METHODS = ("SIGNAL_SIM_JOINT_LOWLR", "SIGNAL_SIM_JOINT_FULLNORM", "SIGNAL_SIM_JOINT_STAGED")
 SIM_JOINT_METHODS = ("SIGNAL_SIM_JOINT", *SIM_LOWLR_METHODS)
 FEEDBACK_METHODS = ("SIGNAL_SIM_FEEDBACK", "SIGNAL_SIM_FEEDBACK_MATCHED")
 
@@ -84,6 +84,8 @@ def initialize(args, protocol):
         binding["joint_signal_parameters"] = names
         if args.method in SIM_LOWLR_METHODS:
             binding["joint_signal_base_lr"] = SIM_JOINT_LOWLR
+        if args.method == "SIGNAL_SIM_JOINT_STAGED":
+            binding["sim_frozen_epochs"] = 5
         if args.method == "SIGNAL_SIM_JOINT_FULLNORM":
             model.fusion.detach_baseline_scale = False
             binding["fusion_scale_gradient"] = "complete_baseline_norm_derivative"
@@ -143,6 +145,7 @@ def train(args, protocol):
                            joint_sim=args.method in SIM_JOINT_METHODS,
                            joint_sim_low_lr=args.method in SIM_LOWLR_METHODS,
                            full_norm_gradient=args.method == "SIGNAL_SIM_JOINT_FULLNORM",
+                           staged_sim=args.method == "SIGNAL_SIM_JOINT_STAGED",
                            sim_feedback=args.method in FEEDBACK_METHODS,
                            on_epoch_end=on_epoch_end)
     else:
