@@ -2,22 +2,22 @@
 
 ## 0. 一页结论
 
-**当前执行入口：§41.504，核对2026-09-26 12:52 CST。** 本页为当前摘要，后面的原始阶段记录保留其当时规则与数值；旧单卡地址、只用seed42、固定末轮和官方集只评一次等历史限制，不覆盖用户后续已经明确修改的安排。Goal仍为 **ACTIVE／UNMET**，不能因某一数据集达标或工程检查通过而结束。
+**当前执行入口：§41.505，核对2026-09-26 13:38 CST。** 本页为当前摘要，后面的原始阶段记录保留其当时规则与数值；旧单卡地址、只用seed42、固定末轮和官方集只评一次等历史限制，不覆盖用户后续已经明确修改的安排。Goal仍为 **ACTIVE／UNMET**，不能因某一数据集达标或工程检查通过而结束。
 
 **当前规则：** 新完整角色训练跑满20轮，每轮按作者完整query/gallery与camera／scene过滤评价，以**fused官方mAP最高的同一个checkpoint**报告所有输出与指标，结束后严格重载；不固定最后一轮、不跨种子／epoch拼接列。原生Signal按对应作者完整日程训练，同样逐轮mAP选best。官方测试已参与选择，必须披露探索性选择边界；旧固定终点实验原回执与权重不改写。RGBNT201汇报mAP／R1／R5／R10，RGBNT100和MSVR310主表只汇报mAP／R1。六个R2／V27×数据集组合各自以要求指标均较同协议发布Signal提高至少0.8个百分点为种子搜索停止线；RGBNT201–V27已达线，不再为它追加种子。SOTA目标尚未实现。
 
-**当前机器与位置：** 四卡服务器`172.19.12.128:2026`、用户`gaob`，代码`/data/gaob/Re-ID/Trifusion`，环境`/data/gaob/Re-ID/conda-envs/tri_reid`，作者及纯baseline预训练权重`Trifusion/pertrained-model`，训练权重`Trifusion/trained-model`，日志`Trifusion/logs`；原图、模型和距离数组留远端。旧单卡已由用户停止，RGBNT100–R2 seed46无可核验终态。说明只维护本文件，并同步指定Desktop同名文件、远端和GitHub；不在别处新建交接。12:40 /data可用约104.36GiB，已有训练环境未改动。
+**当前机器与位置：** 四卡服务器`172.19.12.128:2026`、用户`gaob`，代码`/data/gaob/Re-ID/Trifusion`，环境`/data/gaob/Re-ID/conda-envs/tri_reid`，作者及纯baseline预训练权重`Trifusion/pertrained-model`，训练权重`Trifusion/trained-model`，日志`Trifusion/logs`；原图、模型和距离数组留远端。旧单卡已由用户停止，RGBNT100–R2 seed46无可核验终态。说明只维护本文件，并同步指定Desktop同名文件、远端和GitHub；不在别处新建交接。13:38 /data可用约104.34GiB；原tri_reid环境未改动，新增作者核心依赖环境单独存放。
 
 | 当前任务（以最新实际进程／回执为准） | 状态与接续 |
 | --- | --- |
-| GPU0：RGBNT100–R2 seed42，逐轮best | 12:40已完成6／20轮评价，暂估约20:00验收，尚无终态 |
-| GPU1：FULLNORM–RGBNT100候选端 | 12:40已完成6／20轮评价，暂估13:45—14:00验收后接RGBNT201；MSVR310已完整验收50.7095／68.1895 |
-| GPU2：RGBNT201–R2 seed42，逐轮best | 12:40已完成16／20轮评价，暂估13:30—13:45验收，尚无终态；完整结束后接作者核心环境验证 |
-| GPU3：联合SIM尺度导数LOWLR control | 12:40已完成7／20轮评价，暂估13:45—14:00验收后接RGBNT201；MSVR310已完整验收50.6929／67.6819 |
+| GPU0：RGBNT100–R2 seed42，逐轮best | 13:38已完成8／20轮评价，完整训练和重载验收待定 |
+| GPU1：FULLNORM–RGBNT100候选端 | 13:38已完成18／20轮评价，完整验收后接RGBNT201；MSVR310已完整验收50.7095／68.1895 |
+| GPU2：作者核心环境原生Signal–RGBNT201 | R2完整20轮及best重载已通过；新环境CUDA、fresh-agent均通过，13:37 M0通过后重置初始化，50轮训练已开始 |
+| GPU3：联合SIM尺度导数LOWLR control | 13:38已完成18／20轮评价，完整验收后接RGBNT201；MSVR310已完整验收50.6929／67.6819 |
 
-最新完整结果见§41.487—491：先前12端及新增2端的逐轮best选点独立核验通过；RGBNT201–V27 seed42选第5轮`83.1234/88.0383/93.5407/94.9761`，四项均达+0.8线；RGBNT100–V27 seed42选第6轮`86.8096/97.3761`，相对Signal为`+0.4854/−0.1749`，未达线。MSVR310新协议R2 seed42为`52.0717/69.3739`，新增seed43选第4轮为`53.5517/71.9120`，后者较Signal`53.2424/72.4196`为`+0.3093/−0.5076`，仍未达线；V27 seed42为`51.0747/68.3587`。以上每行来自同一best权重，未完成的训练不填写终态数值。
+最新完整结果见§41.487—491与§41.505：先前12端及新增2端的逐轮best选点独立核验通过；RGBNT201–V27 seed42选第5轮`83.1234/88.0383/93.5407/94.9761`，四项均达+0.8线；RGBNT100–V27 seed42选第6轮`86.8096/97.3761`，相对Signal为`+0.4854/−0.1749`，未达线。MSVR310新协议R2 seed42为`52.0717/69.3739`，新增seed43选第4轮为`53.5517/71.9120`，后者较Signal`53.2424/72.4196`为`+0.3093/−0.5076`，仍未达线；V27 seed42为`51.0747/68.3587`。以上每行来自同一best权重，未完成的训练不填写终态数值。
 
-**不要重复立项：** 纯／发布Signal起点V8三种子面板、纯起点V27面板、本机完整Signal及其V8、R2_TOP1／R2_UNIFORM、最小SIM联合训练、小SIM学习率联合训练、直接SIM反馈／条件匹配反馈，都已有完整结果或后续逐轮best复核记录。匹配参照降低了直接反馈的一部分损害，但尚未稳定超过无反馈V8；小SIM学习率保住部分旧能力，也没有证明稳定fused增益。来源尺度导数609批诊断已完成；§41.493完整配对的MSVR310已结束，FULLNORM较control为+0.0166 mAP／+0.5076 R1，仍明显低于原Signal，其余两数据集待完整验收。原生Signal完整AMP诊断已结束：best第16轮75.3042／77.7512／87.4402／91.0287，2650次尝试仅前5次跳步；作者核心依赖环境已安装并通过CPU导入及原生数据顺序核验，CUDA见证、独立命令核验与完整训练尚未进行，不能称为环境完全就绪。§41.501两个车辆V27 seed43等待器已启动，依赖各自整组三数据集驱动完成，不抢占。§41.488有三个按明确规则选择的失败排序可视化，不能据此定制官方身份。
+**不要重复立项：** 纯／发布Signal起点V8三种子面板、纯起点V27面板、本机完整Signal及其V8、R2_TOP1／R2_UNIFORM、最小SIM联合训练、小SIM学习率联合训练、直接SIM反馈／条件匹配反馈，都已有完整结果或后续逐轮best复核记录。匹配参照降低了直接反馈的一部分损害，但尚未稳定超过无反馈V8；小SIM学习率保住部分旧能力，也没有证明稳定fused增益。来源尺度导数609批诊断已完成；§41.493完整配对的MSVR310已结束，FULLNORM较control为+0.0166 mAP／+0.5076 R1，仍明显低于原Signal，其余两数据集待完整验收。原生Signal完整AMP诊断已结束：best第16轮75.3042／77.7512／87.4402／91.0287，2650次尝试仅前5次跳步；作者核心依赖环境已通过CPU输入、作者计分、CUDA见证和fresh-agent原文核验；RGBNT201原生Signal的独立M0已通过，完整50轮仍在训练，不能把环境见证当作性能结论。§41.501两个车辆V27 seed43等待器已启动，依赖各自整组三数据集驱动完成，不抢占。§41.488有三个按明确规则选择的失败排序可视化，不能据此定制官方身份。
 
 当前R2／V27仍使用原V8平行三角色：冻结完整Signal／CLIP，block8后分叉，三个角色分别执行共享参数的tail9/10/11；CNN处理局部Patch，Transformer处理CLS／Patch关系，Mamba处理空间与位置级三模态扫描。三份1536D残差组成4608D银行，与3072D Signal等能量拼接成7680D fused；完整单角色为Signal＋该角色的4608D输出，不是独立重训的单骨干。当前训练没有Router／HFER。SIM联合、反馈及纯起点是单独实验，不能混称一个“最新网络”。
 
@@ -10008,3 +10008,23 @@ PY
 只读完整计分比较报告`logs/signal_author_core_env_20260926_r3/scorer_cpu_comparison.json` SHA256=`f37f5487d8e6abba096b4f99c11e19e1d9b3479786c3f0b896645299bb615bfc`；当前／作者核心环境原始报告分别为子目录`scorer_cpu_current/report.json`（`f58c02ec3193d98cb0ab09b25c5acb704e817bfbe4ae4742f69f0280cd133750`）和`scorer_cpu_author_core/report.json`（`6919123c2a8e58329c37b476d6b1355f229469cfc22413c88815d92cca8fb0d2`）。探针脚本SHA=`e1136aeefe66bbb609eb05dfedc70fbf5d63e0ae66a7b6dc7fb2d619b2e11a3a`，所调用作者metrics源码SHA=`91604acb7d978462c16904910a645d7d1697c15bf150da529099004c8b5eecb2`。后继`scorer_sort_tie_comparison.json` SHA=`ffe70140351fe2d96f3c591adcde02e35d1b3eec076b7349767b65ff39613f3f`，含两环境tie_diagnosis报告SHA和每组统计，状态EXACT_TIES_ONLY_ORDER_DIFFERENCE_CONFIRMED。
 
 这限定了计分端的环境影响，不代表特征提取、CUDA反传或50轮优化相同。GPU2仍有原R2训练进程3372615，不因12:50一次瞬时0%利用率就认定停训／抢卡。其余三卡进程也持续运行，/data余104.36GiB；本节没有新增模型成绩。后续仍先验收GPU2的完整R2，再做新环境CUDA／fresh-agent验证和完整Signal对照，不继续重复已通过的CPU探针。
+
+### 41.505 RGBNT201–R2 best正式终态与作者核心环境GPU验收（2026-09-26 13:38 CST）
+
+**RGBNT201–R2 seed42已完整结束。** GPU2原训练进程退出，campaign／job均为COMPLETE；20／20轮各有原官方完整query/gallery评价，1060次优化、0 overflow、冻结部分状态不变，历史候选完整反传与角色梯度平衡记录齐全。按预登记的fused官方mAP最高选择第12轮，严格重载独立评价同一权重如下：
+
+| 输出 | mAP | Rank-1 | Rank-5 | Rank-10 |
+| --- | ---: | ---: | ---: | ---: |
+| 发布Signal，同回执 | 80.3029 | 85.1675 | 91.3876 | 93.6603 |
+| R2 fused，seed42，第12轮best | **83.4281** | **86.8421** | **92.4641** | **94.2584** |
+| CNN完整分支 | 82.1208 | 86.3636 | 92.8230 | 94.7368 |
+| Transformer完整分支 | 82.2191 | 85.6459 | 92.1053 | 93.6603 |
+| Mamba完整分支 | 82.4703 | 87.0813 | 92.4641 | 93.8995 |
+
+fused相对同协议Signal的四项变化依次为**+3.1252／+1.6746／+1.0766／+0.5981**个百分点，因此四项均至少+0.8的种子停止线**尚未达到**；不能改选另一轮拼接Rank-10。第20轮自身mAP82.2762／R1 85.4067／R5 91.8660／R10 93.7799，体现按best选点的实际差异。正式测试参与选点，此回执属于探索性模型选择，不能视为未接触测试集的无偏估计。完整终态审计在 logs/official_extra_seed42_RGBNT201_R2_existing_method_recheck_v1_bestmap_20260926/best_selection_terminal_audit.json，SHA256=090b7b9151bcbacbf350bb7290375798bc6a62be127f3381221011344bde6967；官方回执SHA=5a4e2d03a681d8aeaabdac34ff3bc96f66e5e62ee0a2cecff401acfb9e97c46d，权重SHA=7e7aa800d65af5ffb63b22a4219031c7851993d204ea0c1e89eb6756dd897ba2，距离数组SHA=f5809a9a35fd814d9975cc142ccb8cc940b5bf4f9fb3ebde966316355e75c3ed。完整输出和20轮曲线仍留远端。
+
+**作者核心环境在空闲GPU2上完成GPU验收。** 第一次从Windows管道送入§41.499命令时，CUDA前反向见证实际打印通过，但CRLF使heredoc结尾PY被Python当变量读取，命令最终退出1；这属于传输错误，该次不计PASS。改为从远端同SHA主文档读取原文并以LF送入bash后，原命令退出0，见证为RTX3090、torch2.1.1+cu118、有限且非零的梯度；执行者回执 logs/signal_author_core_env_20260926_r3/gpu_witness_root.json SHA=f031cec347a59952f595aadfb64e811e7e449ac47636e6f5e797975f91d39442。按run-experiment环境合同，新独立上下文gpt-6-astra／max、fork none再次从§41.499原文逐字执行同一命令，退出0、stderr空、无文档／现实差异；回执 agent_follows_doc_validation_20260926T053514Z.json SHA=cbee0cdbf0705a9047badbfd2a65cb64962d53f7cf94b9ca318e37afcc436fd6，审查独立性标记same-family／provisional。两次成功命令内容SHA均为b5c6cc75ca11fc5922cf60f4d882b1018ab98a9875711f1aa6823bb86c2353e2。该见证只证明登记环境与CUDA小算子可用，不是50轮精度验证。
+
+13:37:16用新环境启动既定原生Signal队列：GPU2、RGBNT201、selection=best_map、amp_audit开启、run_label=author_core_20260926；前序R2 campaign及终态审计均先通过，GPU2启动前15MiB。持久队列PID3653171，启动manifest logs/signal_author_core_env_20260926_r3/queue_launch_gpu2.json SHA=3d57b150acb2e375fb6bb8deb07821f60329bf9c4abccd23cac2354dbd5d24a7。独立1轮M0已完成：53次AMP更新尝试、44次实际优化器更新、9次跳步，日志loss有限；M0仅为工程验证，不报告检索指标。随后**从公开CLIP重新初始化**开始正式50轮，每轮原作者完整评价按mAP保存Signalbest，最后单独重载；13:38正式训练日志到第1轮30／54个iteration，尚无完整模型新指标。该环境对照只改变预登记依赖栈，与旧环境结果分别报告，不将M0或中途loss当作性能结论。
+
+13:38其余三卡仍在真实训练：GPU0 RGBNT100–R2完成8／20轮评价；GPU1 FULLNORM–RGBNT100、GPU3 LOWLR–RGBNT100各完成18／20轮，结束后按各自三数据集driver接RGBNT201。两份V27 seed43等待器仍等**整组driver**完成。/data剩余约104.34GiB，未删除初始化或已封存权重。完整Goal仍ACTIVE／UNMET；上述R2单种子mAP增益和环境工程PASS均不能代替三数据集达标或公开SOTA。
