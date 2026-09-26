@@ -2,7 +2,7 @@
 
 ## 0. 一页结论
 
-**当前执行入口：§41.512，核对2026-09-26 14:56 CST。** 本页为当前摘要，后面的原始阶段记录保留其当时规则与数值；旧单卡地址、只用seed42、固定末轮和官方集只评一次等历史限制，不覆盖用户后续已经明确修改的安排。Goal仍为 **ACTIVE／UNMET**，不能因某一数据集达标或工程检查通过而结束。
+**当前执行入口：§41.513，核对2026-09-26 15:03 CST。** 本页为当前摘要，后面的原始阶段记录保留其当时规则与数值；旧单卡地址、只用seed42、固定末轮和官方集只评一次等历史限制，不覆盖用户后续已经明确修改的安排。Goal仍为 **ACTIVE／UNMET**，不能因某一数据集达标或工程检查通过而结束。
 
 **当前规则：** 新完整角色训练跑满20轮，每轮按作者完整query/gallery与camera／scene过滤评价，以**fused官方mAP最高的同一个checkpoint**报告所有输出与指标，结束后严格重载；不固定最后一轮、不跨种子／epoch拼接列。原生Signal按对应作者完整日程训练，同样逐轮mAP选best。官方测试已参与选择，必须披露探索性选择边界；旧固定终点实验原回执与权重不改写。RGBNT201汇报mAP／R1／R5／R10，RGBNT100和MSVR310主表只汇报mAP／R1。六个R2／V27×数据集组合各自以要求指标均较同协议发布Signal提高至少0.8个百分点为种子搜索停止线；RGBNT201–V27已达线，不再为它追加种子。SOTA目标尚未实现。
 
@@ -11,7 +11,7 @@
 | 当前任务（以最新实际进程／回执为准） | 状态与接续 |
 | --- | --- |
 | GPU0：RGBNT100–R2 seed42，逐轮best | 14:30已完成10／20轮评价，完整训练和重载验收待定 |
-| GPU1：MSVR310–V27 seed44，逐轮best | seed43完整验收，best第2轮51.5958／68.8663，未达线；14:40空卡后接seed44，预计15:00—15:05验收 |
+| GPU1：MSVR310–SIGNAL_SIM_JOINT_STAGED seed42 | V27 seed44已完整验收；新方法来源重载见证与8步M0通过，15:01重新初始化进入完整20轮，预计15:25前后验收 |
 | GPU2：RGBNT201–R2 seed43，逐轮best | 作者核心环境原生Signal完整50轮、best第22轮73.6258／76.6746／85.8852／90.0718已审计；14:20接R2 seed43且已进入正式训练 |
 | GPU3：RGBNT100–V27 seed43，逐轮best | LOWLR–RGBNT201已完整20轮、best第7轮83.2131／87.3206／92.8230／94.4976并审计；队列自动接RGBNT100–V27 |
 
@@ -10131,3 +10131,23 @@ fused相对Signal为−1.6466 mAP／−3.5533 R1，未达两项均+0.8停止线�
 §41.512实现与审查：experiment-bridge指定的新鲜上下文审查者/root/review_staged_sim（gpt-6-astra／max，fork none）发现冻结期评价requires_grad标志与重载不同，已按现有数值路径证据修正；复核及补审结论PASS，无剩余代码阻断项，same-family／provisional，未冒称跨模型或运行验证。另补tools/check_staged_sim_reload.py：仅新鲜初始化、来源train batch、0更新，模拟冻结阶段后统一评价标志，保存含12个SIM张量的联合checkpoint、重新初始化strict reload、全state与五种输出特征及距离精确一致；此为启动硬门，不代表已学习SIM权重的检验。后者仍需完整best终态闭合。扩展角色银行诊断白名单仅接纳STAGED，银行采用当前joint baseline_only距离；排序诊断另以原冻结SIGNAL_V8回执作发布Signal参照。六份相关Python源码已在远端现有解释器内存compile通过，git diff检查通过；先前一次Windows SSH -c引号传输错误未执行源码，修正引号后编译退出0。当前四卡任务未受改动；来源见证和M0尚未执行，不记PASS。代码仅增加显式新方法，原方法分支、既有权重及参数日程不变。
 
 14:56:35已提交§41.512持久串行driver，PID3800176，当前状态WAITING_FOR_V27_SEED44；14:57实查该PID活着且等待，V27 seed44训练PID3787989已到第18轮，因此没有抢占。启动回执logs/staged_sim_launch_20260926/launch.json，SHA256=7c9501c1c427c71678ca79b2014a3edc092e4d4b9518faa71a7fc94b85ab8a65；driver.py SHA=55b163d88264cb63cf70d2776c12f35a1a75bfb7635ef84a7003f688459e0d14，执行源码提交32d7f339333c225a5e7f74b5471f950b63ac39f4。等待器每240秒读取前序完整campaign，随后核对GPU1空闲及磁盘，再以MSVR310→RGBNT201→RGBNT100顺序显式单卡、seed42、best_official_map执行；每项来源重载见证成功后才进入自带M0及fresh full20，完整后调用两项诊断。任何子命令失败会停止driver，不重试或跳门。预计首项约15:00后进入见证／训练，约15:25前后接收MSVR终态，后三数据集整体预计17:00—17:30（按实际首项耗时再校正）。此时只证明队列已持久等待，不能写成M0或新方法训练已通过。原R2／V27三个其余GPU任务保持不变，六组合目标及总Goal仍未完成。
+
+### 41.513 MSVR310 V27三种子best结果与阶段式SIM实际启动（2026-09-26 15:03 CST）
+
+V27 seed44于15:00:08完成全部20轮及严格重载；20次官方评价、400步更新、0 overflow，冻结Signal保持不变，梯度覆盖完整。按fused mAP选中第11轮，mAP **50.7517**、R1 **67.0051**；相对同回执Signal为−2.4906／−5.4146，仍未达线。第20轮自身为49.9613／66.3283，不用末轮代替best。CNN完整分支48.5967／68.1895，Transformer48.2582／64.4670，Mamba48.3805／65.3130；均来自同一个best checkpoint。fused并非所有指标高于所有角色，CNN R1略高。只读诊断：首位修复14条、新增46条（同scene 11条），AP改善229／下降337／持平25；关系修复67955对、破坏83823对。上述为正式测试事后统计，不推断未查看原图的视觉成因。
+
+| MSVR310 V27，逐轮官方mAP选best | 选中轮次 | mAP | Rank-1 |
+| --- | ---: | ---: | ---: |
+| seed42 | 13 | 51.0747 | 68.3587 |
+| seed43 | 2 | 51.5958 | 68.8663 |
+| seed44 | 11 | 50.7517 | 67.0051 |
+| 三种子均值±样本标准差 | — | 51.1407±0.4259 | 68.0767±0.9621 |
+| 同协议发布Signal | — | 53.2424 | 72.4196 |
+
+三个best均低于Signal，均值差−2.1016／−4.3429；因此“只要不固定末轮就能消除V27车辆退化”不受这组结果支持。三种子只改变角色训练随机性，固定同一作者基线；又使用官方选点，均值／标准差仅为已完成探索性实验描述，不代表独立未消费测试估计。来源协议SHA与作者权重SHA三份一致。汇总logs/msvr_v27_three_best_seeds_20260926.json SHA256=47bf3c11164578ec5ca62479e317d30952bb0c3f6222a5d76f2f1f00b1719994。
+
+seed44审计logs/official_extra_seed44_MSVR310_V27_existing_method_recheck_v1_bestmap_20260926/best_selection_terminal_audit.json SHA=4ed6aaaa3a83769a2092ff01ca8f85217589b7d211e6fac6947625fb713d07af；正式回执SHA=1fb26acea468a709d933c52bb224b9d72b159f33709c05dc86685c17022ac1a7，best权重SHA=5621520e5a3f461d4a60520f50f353d0c6352aa5c6f44c054b034bc780481fe2，距离数组SHA=3fc9e7eedf61f26cf874ec283e4124dbb72615e90e1cc4ba80b14118110fbce8；诊断SHA=6a7e504baa0c9f0cb80d1a60a5cbd781c6074150cf31a848fa18db8c98135422。
+
+**阶段式SIM已经通过真实来源见证和M0，并进入完整训练。** driver于15:00:35确认前序完整完成和GPU1空闲后运行checker：来源train的64条batch、0更新，五种输出特征及距离在保存／重载后逐元素完全相同，12个SIM键和全state一致；witness.json SHA=107c6bef762ef642700a72d7ddf10b21982d5dd72362d4668307e196a3e15948。该见证限新鲜初始化，不等于已训练best权重验证。
+
+独立8步M0于15:01:49通过；原始步骤日志核对前4条sim_update_enabled=False、后4条True，前4步SIM精确不变且无AdamW状态，后4步所有需训张量有非零梯度，SIM每张量optimizer step=4，0 overflow；M0回执SHA=a0995dcf3fb40d0b7c4f6f76435005e0dc923eb3fdb56e2aebb1cdf502e4d4fc。随后从同一作者Signal重新初始化正式20轮，15:02真实训练PID3806073、GPU1约6320MiB；campaign logs/official_extra_seed42_MSVR310_SIGNAL_SIM_JOINT_STAGED_staged_sim_v1_bestmap_20260926。该执行包含32d7f33代码，回执记录HEAD88aba1f（后者仅文档）。不继承M0参数或状态。下一检查关注完整日程第5／6轮的冻结→放开切换，约15:08—15:10；最终预计15:25前后。GPU0、2、3仍分别由3372616、3770885、3776593训练，未抢占或改其日程。尚无新方法完整检索结果，Goal继续ACTIVE／UNMET。
