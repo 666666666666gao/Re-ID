@@ -10782,3 +10782,9 @@ GPU1当前按既定队列完整执行RGBNT201–R2 seed43及44各50轮，之后�
 ### 41.575 RGBNT100 BRANCH_ONLY非有限输出的静态定位边界（2026-09-27 15:58 CST）
 
 复核两次中止的训练入口与`modeling/trifusion/signal_preserving_v8.py`：第8轮失败触发于前向返回后、损失计算前的`output_mapping`。其`all_finite`仅合并检查10个表示张量，即fused、三个完整分支、三个纯残差和三个逐模态残差；分类logits不在这个布尔值内。重试回执为`all_finite=False`、`baseline_exact_prefix=True`、冻结Signal及预训练tail均为真，因此可确定至少一个上述表示非有限，不能把错误写成分类头logits异常或基线前缀被改写。现有布尔值未记录首个异常张量，也没有失败步的输入、参数和优化器状态；第980步之前的有限loss与AMP scale 256不能证明下一次前向的非有限值产生于哪层或哪次更新。第7轮中途best不作正式终态，不再原样第三次重跑。若以后有资源重启该消融，应先在独立入口记录首次非有限的张量名及失败步状态，再决定最小修复；当前四卡既定50轮任务及其源码不修改。
+
+### 41.576 DCG-ReID公开车辆分数的进一步协议核对（2026-09-27 16:05 CST）
+
+核读[DCG-ReID作者原文](https://arxiv.org/pdf/2601.02924)Table I与§IV.A/B：其MSVR310报告`62.9 mAP／77.5 Rank-1`，明确使用155个训练车辆身份／1032组三光谱样本，以及155个测试身份／1055 gallery；query为52个身份、591组三光谱样本。四卡服务器当前`MSVR310.json`协议清单实际为1032 train、591 query、1055 gallery，`query_rows`有52个不同身份；这比仅凭数据集同名更具体地支持了评价集合**数量**一致。DCG的RGBNT100也写明8675 train、8575 gallery、1715 query；使用CLIP ViT-B/16视觉骨干、128×256车辆图像和Adam优化，与本项目冻结作者Signal权重＋新角色AdamW的训练资源/过程仍不同。
+
+该论文只写遵循既有mAP/CMC协议，没有列出query/gallery逐项索引或同身份同scene的过滤代码。[作者当前公开仓库](https://github.com/Gaoya615/DCG-ReID)仅有README，故目前仍**不能证明**两者逐项集合及合法正例掩码完全相同，也不能将`62.9−52.6797`等公开数值差归咎于某一TriFusion模块。这个参照只帮助界定MSVR310当前绝对差距和可比性，不改任何正在执行的50轮实验、best选择或内部来源隔离计划。
