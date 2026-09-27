@@ -10788,3 +10788,9 @@ GPU1当前按既定队列完整执行RGBNT201–R2 seed43及44各50轮，之后�
 核读[DCG-ReID作者原文](https://arxiv.org/pdf/2601.02924)Table I与§IV.A/B：其MSVR310报告`62.9 mAP／77.5 Rank-1`，明确使用155个训练车辆身份／1032组三光谱样本，以及155个测试身份／1055 gallery；query为52个身份、591组三光谱样本。四卡服务器当前`MSVR310.json`协议清单实际为1032 train、591 query、1055 gallery，`query_rows`有52个不同身份；这比仅凭数据集同名更具体地支持了评价集合**数量**一致。DCG的RGBNT100也写明8675 train、8575 gallery、1715 query；使用CLIP ViT-B/16视觉骨干、128×256车辆图像和Adam优化，与本项目冻结作者Signal权重＋新角色AdamW的训练资源/过程仍不同。
 
 该论文只写遵循既有mAP/CMC协议，没有列出query/gallery逐项索引或同身份同scene的过滤代码。[作者当前公开仓库](https://github.com/Gaoya615/DCG-ReID)仅有README，故目前仍**不能证明**两者逐项集合及合法正例掩码完全相同，也不能将`62.9−52.6797`等公开数值差归咎于某一TriFusion模块。这个参照只帮助界定MSVR310当前绝对差距和可比性，不改任何正在执行的50轮实验、best选择或内部来源隔离计划。
+
+### 41.577 MSVR310原始基准的时间标签与本项目评价过滤（2026-09-27 16:12 CST）
+
+核读[MSVR310原始基准论文](https://arxiv.org/pdf/2208.00632)§4.2—4.3：作者按采集时间顺序标注time label，Table 1记载全数据集有28种time label，并明确**同身份、同time label的样本禁止互相匹配**；这与RGBNT100按视角过滤是两种不同协议。本仓库沿用的Signal数据读取器`data/datasets/msvr310.py`将文件名中的`_s###_`字段（`img[6:9]`）解为`sceneid`，将`_v#_`字段（`img[11]`）解为`camid`；`utils/metrics.py`的`eval_func_msrv`实际过滤`同身份且同sceneid`。本项目正式协议生成器`tools/audit_vehicle_query_protocol_labels.py`读取相同的`s###`字段，`tools/build_official_three_dataset_protocols.py`把它写为`scene`，正式评价入口`tools/run_official_three_dataset_roles.py`用该字段调用原scene评价器，并保留所有不同身份gallery。因此，本项目所说的`scene`在当前数据和评价代码中承担原论文**时间段标签**的角色，不应解释成camera/viewpoint；`_v#_`才是视角字段。
+
+这一核查确认了本项目的过滤**规则与原始MSVR310基准定义一致**，并把§41.576的数量比对扩展到标签语义与本机执行路径；它仍不证明DCG、RoDI等外部论文使用与本项目逐项完全相同的query索引、gallery排序和评价实现。跨论文公开分数继续只作带资源说明的参照，同作者Signal权重的本机配对仍是判断R2、V27增减的直接证据。本项只读核查未修改训练、checkpoint选择或正在运行的队列。
