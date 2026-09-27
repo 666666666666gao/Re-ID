@@ -2,7 +2,7 @@
 
 ## 0. 一页结论
 
-**本页更新至§41.580，核对2026-09-27 17:08 CST；更晚的实时状态以文末新增记录和服务器回执为准。** 后面的阶段记录保留当时规则与数值，不能把旧单卡地址、20轮固定终点或早期只用seed42的安排当成现行合同。Goal仍为 **ACTIVE／UNMET**：RGBNT201已有增益，RGBNT100增益薄、MSVR310仍未超过发布Signal，更未达到经资源与协议核实的三数据集SOTA。
+**本页更新至§41.585，核对2026-09-27 17:40 CST；更晚的实时状态以文末新增记录和服务器回执为准。** 后面的阶段记录保留当时规则与数值，不能把旧单卡地址、20轮固定终点或早期只用seed42的安排当成现行合同。Goal仍为 **ACTIVE／UNMET**：RGBNT201已有增益，RGBNT100增益薄、MSVR310仍未超过发布Signal，更未达到经资源与协议核实的三数据集SOTA。
 
 **现行50轮合同：** R2与V27各在三个数据集从对应作者发布Signal权重独立初始化角色，跑满50轮；每轮依作者完整query/gallery与camera／scene过滤评价，以**fused官方mAP最高的同一个checkpoint**报告全部输出和指标，结束后严格重载。不从不同epoch、种子或角色拼列；已封存20轮终点保持其原合同。RGBNT201报告mAP／R1／R5／R10，RGBNT100和MSVR310主要报告mAP／R1。官方测试已用于逐轮选点及历史方法、种子比较，故这些成绩是已消费官方集上的探索性结果，不能称未参与选择的无偏测试。当前六格完成5格，RGBNT100–R2 seed42仍在训练；三数据集发布Signal＋原V8的同预算50轮对照已登记并排队，不能用旧20轮V8直接归因R2／V27的额外收益。
 
@@ -51,7 +51,7 @@
 - 独立 result-to-claim 为 `partial/medium`；V8 专属完整性审计为 `WARN`，GT、指标归一化、活代码与 dev 泄漏检查均 PASS，警告只来自大 checkpoint/history/run identity 仍按 SHA/path 留在远端。下一步仅授权冻结专家、fit-only 的层级 Router 可行性阶段；Router 未证明可部署增益前不得启用 HFER，也不做 official test、消融或多种子。
 - V8 Phase-B 已完成：连续 OOF margin 的 expert/modality winner 均不塌缩，但 learned-vs-fixed OOF margin 只高 `0.000314`；三种单模态模糊均使自身质量下降，missing modality 权重严格为 0。冻结 dev fused=`58.4050/59.3939`，超过 baseline 和三个固定专家，但主门仍失败。独立 result-to-claim=`partial/medium`、完整性审计=`WARN`（仅 remote-only 大 artifact 封装警告）。Phase-B 已封存，不启动 HFER、消融、多种子、official test 或 Router 超参数扫描。
 - 原正式启动在官方指标写出后的路由校准审计因缺失导入失败；`repair-0002` 仅重算训练集路由审计，`optimizer_steps=0`、`training_reexecuted=false`、`official_test_reexecuted=false`，公开 verifier 返回 PASS。
-- 用户最新指令：只做 seed 42；现在优先完成远端 Signal baseline 保底；主实验达到目标以后才考虑消融；所有训练、评估、数据和环境只在云端 GPU，Windows/WSL 仅作传输和文档存档。
+- 当时阶段指令：只做 seed 42，先完成远端 Signal baseline，再考虑消融。后续多种子及50轮best规则已覆盖这一历史安排，现行合同见第0节。
 
 ## 1. 权威位置
 
@@ -109,7 +109,7 @@ E:\调研综述趋势_2026-08-31_01-59.md
 evidence/rgbnt201_audit_20260831.json
 ```
 
-协议边界：
+早期V1阶段协议边界（非现行50轮规则）：
 
 - 开发阶段只使用 `train_171` 内部的 141-fit / 30-dev 身份隔离划分。
 - CIRC 三折生成器的目标身份与生成器训练身份重叠为 0。
