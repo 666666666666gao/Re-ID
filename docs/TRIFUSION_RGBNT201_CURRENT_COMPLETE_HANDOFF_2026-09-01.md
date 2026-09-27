@@ -10714,3 +10714,9 @@ GPU2于13:47启动`PLAIN_V8` seed43→44顺序队列，GPU3于14:00启动`PLAIN_
 ### 41.563 原V8三数据集50轮等待队列已启动（2026-09-27 14:30 CST）
 
 为使已有实验退出后GPU不长期空闲，四卡服务器在`logs/signal_v8_50_after_existing_20260927/`创建三个最小等待脚本并启动：RGBNT201→GPU2等待现有RGBNT100–PLAIN_V8 seed44完整队列，MSVR310→GPU3等待RGBNT100–PLAIN_V27 seed44完整队列，RGBNT100→GPU0等待RGBNT100–R2 seed42主面板。三个等待进程PID分别为611446、611447、611448，均已实际存活；先每240秒等待前序campaign文件存在，再由现有队列入口的`--after-campaign`等待状态`COMPLETE`，随后执行对应`SIGNAL_V8` seed42／50轮、M0→训练→独立评价和只读诊断。启动核查时三个新V8 campaign均尚不存在、没有新权重或正式成绩，四张卡仍由原训练占用；等待进程不应误写成新V8已经开训。若前序任务未完成，不能越过其回执抢卡；后续以实际campaign、PID、50轮记录及最佳权重SHA验收。
+
+### 41.564 MSVR310旧完整路径身份隔离B0的静态复原就绪（2026-09-27 14:40 CST）
+
+在独立`.worktrees/msvr310_b0_bb01d60`中检出历史执行提交`bb01d60`，该快照登记的7份项目源码／计划文件均逐SHA匹配；工作树单独增加旧计划目录，不改主训练仓库的稀疏检出。把现服务器16MiB的Signal比较器复制到该独立目录，只将`engine/processor.py`恢复为已归档的2026-09-06原字节；17份Signal源码SHA全部与旧合同相同，比较器commit仍为`cd1b0a6`，`git diff --binary` SHA也恢复为原登记`b889caca9c4a92689b13eb7e20bd3224067f3e5ed2a3db6825201870ca422741`。新配置`configs/MSVR310/Signal-source-oof-four-gpu-v1.json`只把旧配置的dataset根目录、Signal比较器路径、CLIP权重路径迁到四卡服务器，其他训练、协议、掩码与固定epoch50定义不变；配置SHA256=`3627c2fde196c6cfc892887ce79bd57c0d3834bde8e2404f555872d72c30ee3d`。
+
+静态入口`configure()`已在当前conda环境通过：协议SHA及CLIP权重SHA与旧合同一致，比较器commit／diff及全部源码SHA通过；协议1032条来源记录的3096个三模态图片路径在`/data/gaob/Re-ID/dataset/MSVR310`全部存在，模型配置仍为MSVR310、50轮、B64。**这里只完成源码和数据绑定，无CUDA前向、M0、训练、checkpoint或新的OOF指标。**四张GPU仍执行现有50轮主面板和配对队列，旧B0只作为以后确需完整路径身份隔离时的可运行基础；不能把它当成当前官方发布Signal的可替代权重，也不越过§41.562已排队的同预算V8对照。
