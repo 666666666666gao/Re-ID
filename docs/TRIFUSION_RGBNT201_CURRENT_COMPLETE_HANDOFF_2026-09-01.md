@@ -10574,3 +10574,16 @@ RGBNT201–R2按用户指定的独立50轮从作者发布Signal、fresh角色see
 RGBNT100和MSVR310的mAP相对作者Signal分别约+1.4791、+1.8387，但R1分别−0.1166、约0；RGBNT201的mAP/R1均下降。固定集成提示在两个车辆任务中，两个已训练表示有可利用的排序互补，同时首位收益并未跟上，且不跨数据集稳定。它要求同时执行两套模型和两份表示，不能当成原单模型TriFusion参数／推理成本或联合训练收益。两个组件best本来都使用已消费官方集挑选；这个只读组合亦在同一集评价，因此只作为探索性机制诊断，不写入单模型正式主表、SOTA或无偏验证。
 
 三份报告`logs/fixed_cross_baseline_ensemble_20260927/{RGBNT201,RGBNT100,MSVR310}.json`的SHA256依次为`9d1d9c9956c039bcca352e00953fcbbd8617dc69768c70d07a11e5d375fdebd0`、`2608d215e2e650db29f2e35a757d2e82390b1e758f95cf642e78a6c39d00a8c5`、`22b1f3926bc4a7d3865a4f6060d4d7713293451c71b6c595297a0f44146e2f98`，分别绑定组件回执和距离SHA。当前仍优先等RGBNT100–R2 50轮主面板最后一端和已固定纯基线多种子完整结束，再基于全证据设计单模型机制，不据此在官方集调集成系数。
+
+### 41.551 2026公开强参照与50轮任务里程碑（2026-09-27 10:50 CST）
+
+在本轮六格50轮训练期间，重新核对了2026年CVPR原论文《Chain-of-Thought Guided Multi-Modal Object Re-Identification》主文Table 1/2（https://openaccess.thecvf.com/content/CVPR2026/papers/Gao_Chain-of-Thought_Guided_Multi-Modal_Object_Re-Identification_CVPR_2026_paper.pdf）和2026-09-21 arXiv原文《Incentive Noise and Structural Prior Infusion for Multi-modal Object Re-Identification》Table 1/2（https://arxiv.org/pdf/2609.24539）。这些是作者公开报告值，不是本仓库同训练预算复现；尤其CoT使用DINOv3视觉基础和额外MLLM生成的推理／描述文本，INSPI使用CLIP与生成文本，不能仅凭终点差推断三角色结构的因果优劣。当前可确认的强参照如下，不宣称已穷尽所有2026论文：
+
+| 公开论文方法 | RGBNT201 mAP/R1/R5/R10 | RGBNT100 mAP/R1 | MSVR310 mAP/R1 | 资源区别 |
+| --- | --- | --- | --- | --- |
+| INSPI（2026预印本） | 80.6/83.9/91.6/93.4 | 89.9/98.2 | 65.0/77.2 | CLIP＋生成文本／结构提示 |
+| CoT-ReID（CVPR2026） | 83.3/86.1/93.3/94.8 | 89.9/99.3 | 71.7/85.3 | DINOv3＋MLLM推理文本，论文训练120轮 |
+
+本项目RGBNT201–R2 seed42/50轮bestE12为83.4284/87.6794/92.7033/94.4976：其mAP、R1高于上述CoT数值，R5、R10低于CoT；本项目已消费官方集多次用于方法／种子／best轮选择，不把这个局部数值写成无偏SOTA。两个车辆任务离上述公开强参照仍有显著差距，尤其MSVR310，不能用对作者Signal的局部收益代替三数据集目标。旧交接中只列到2025参照的段落为历史快照，当前判断须同时考虑本节新核对论文的预训练资源与公开成绩。
+
+本轮用户确认R2、V27各做三个数据集、50轮、每轮按作者完整query/gallery和camera/scene规则计算fused官方mAP并保存best，不以固定末轮替代。至10:45 CST六格主面板5/6完整核验；RGBNT100–R2 seed42在GPU0已完成8/50轮、现行bestE7 mAP86.9861（仅中途记录，不作最终验收）。训练日志近期每轮约1760秒再加官方评价，剩余42轮预计至9月28日约08:00–09:00 CST完成，实际以50轮退出、best重载回执及SHA为准。GPU1的MSVR310纯起点V8 seed43/44队列、GPU2的RGBNT201纯起点V27 seed43/44队列和GPU3的RGBNT100纯起点V27 seed42/50轮均正常运行；各正在训练的端点不预填正式终态。10:45四张GPU都有真实计算进程，/data余约100GiB。继续只在预估里程碑或180–300秒必要检查，不以中途官方成绩改变合同或取消已登记种子。
