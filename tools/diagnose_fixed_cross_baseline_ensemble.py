@@ -5,6 +5,7 @@ import hashlib
 import importlib.util
 import json
 from pathlib import Path
+import sys
 
 import numpy as np
 import torch
@@ -41,6 +42,7 @@ def main():
     assert reference["protocol_sha256"] == signal["protocol_sha256"]
     assert student["protocol_sha256"] == plain["protocol_sha256"]
 
+    sys.path.insert(0, str(args.author_metrics.parents[1]))
     spec = importlib.util.spec_from_file_location("signal_author_metrics", args.author_metrics)
     metrics = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(metrics)
