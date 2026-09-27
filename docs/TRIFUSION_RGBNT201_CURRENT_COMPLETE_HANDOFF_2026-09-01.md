@@ -10513,3 +10513,24 @@ GPU3的V27任务终态已COMPLETE且该GPU计算列表为空。为延续§41.543
 §41.543/545的纯CLIP ReID基线50轮配对现已实际启动：GPU1于02:24通过RGBNT201–PLAIN_V8的baseline parity预检和M0进入完整训练，成功后同一持久队列接PLAIN_V27；GPU3于02:36通过MSVR310–PLAIN_V8的预检/M0进入完整训练，成功后接PLAIN_V27。02:40四张GPU均有计算进程，另两张仍执行原Signal起点主面板或其前序。两对都还没有任何50轮完整终态，不填正式结果。
 
 为把已明确要求的纯基线独立方法路线覆盖三个核心数据集，现预先固定第三对RGBNT100–PLAIN_V8、PLAIN_V27，同一已保存纯CLIP ReID基线权重、角色seed42，每方法独立完整50轮，原训练loader／损失／V27扰动保持；每轮按作者完整1715 query／8575 gallery、camera过滤和无reranking评价，fused mAP选一个best权重，严格重载同权重报告mAP/R1及分支。两端和原20轮、纯基线分别比较；纯与完整Signal起点不混成一条消融；V8/V27对比解释为整套训练定义。待GPU3的MSVR310纯基线配对两端均COMPLETE且GPU3真实空闲后，GPU3依次执行这一对；不抢占。该预登记在两项纯MSVR正式结果产生之前完成，不按其分数改RGBNT100配方。这里仅是独立后继配对，不替代用户指定的R2/V27六项50轮主面板。
+### 41.547 纯CLIP起点50轮已完成五端验收；MSVR V8固定补两种子（2026-09-27 10:20 CST）
+
+§41.543—546已登记的纯CLIP ReID冻结基线50轮配对，RGBNT201的PLAIN_V8/V27、MSVR310的PLAIN_V8/V27、RGBNT100的PLAIN_V8五端现均`COMPLETE`；RGBNT100–PLAIN_V27仍在训练。每个完成端都是fresh角色seed42独立从相应纯基线权重初始化、完整训练50轮、每轮官方全图库fused mAP选单一best并严格重载。同一端training/evaluate的best epoch和mAP一致，epoch原始序列连续1—50、实存checkpoint SHA匹配训练回执、选中state SHA匹配evaluate、独立上游纯基线复算一致。五端均0 AMP overflow、冻结基线未改。RGBNT201使用836 query/gallery及camera过滤；MSVR310使用591/1055及scene过滤；RGBNT100使用1715/8575及camera过滤；均无reranking。表内每行是该行同一best权重的正式输出，不拼不同轮/种子。
+
+| 纯基线条件／方法 | best epoch | mAP | R1 | R5 | R10 |
+| --- | ---: | ---: | ---: | ---: | ---: |
+| RGBNT201纯CLIP ReID基线 | - | 69.6415 | 71.4115 | 80.1435 | 85.6459 |
+| RGBNT201 PLAIN_V8 seed42／50轮 | 12 | 73.1818 | 74.5215 | 82.1770 | 88.1579 |
+| RGBNT201 PLAIN_V27 seed42／50轮 | 30 | **75.1827** | **75.3589** | **85.1675** | **88.6364** |
+| MSVR310纯CLIP ReID基线 | - | 50.5220 | 67.6819 | - | - |
+| MSVR310 PLAIN_V8 seed42／50轮 | 24 | **53.7422** | **71.9120** | - | - |
+| MSVR310 PLAIN_V27 seed42／50轮 | 13 | 53.3491 | 69.5431 | - | - |
+| RGBNT100纯CLIP ReID基线 | - | 83.7042 | 95.0437 | - | - |
+| RGBNT100 PLAIN_V8 seed42／50轮 | 5 | **84.6170** | **96.0933** | - | - |
+| RGBNT100 PLAIN_V27 seed42／50轮 | - | - | - | - | - |
+
+RGBNT201的PLAIN_V27相对纯基线为+5.5412 mAP、+3.9474 R1、+5.0239 R5、+2.9904 R10；MSVR310的PLAIN_V8相对纯基线+3.2202 mAP、+4.2301 R1；RGBNT100的PLAIN_V8相对纯基线+0.9128 mAP、+1.0496 R1。PLAIN_V27与PLAIN_V8在RGBNT201的差约+2.0008 mAP，但V27同时改变统计扰动与loader，不能把差值全归于扰动。MSVR310的PLAIN_V27低于PLAIN_V8约0.3931 mAP、2.3689 R1。MSVR310–PLAIN_V8的mAP53.7422略高于另一路作者Signal53.2424，但R1低0.5076，且两者起点和训练过程不同，不能称同起点受控增益。RGBNT201纯起点V27仍低于作者Signal80.3029；不能把冻结Signal已有能力归给三角色。
+
+对应正式回执／best权重SHA256：RGBNT201–PLAIN_V8 `78f6641e60bfa2631f748cbe5a0c504b17d559d5dd00675377126cf136436760`／`75aabb1d4844df85cb69f621c9b9c9c7969078c98e5724448320685521453b59`；RGBNT201–PLAIN_V27 `851101bfb739fb3c870fc95430959405712beffbd71db3e57028e2981002833a`／`d0f0a248d5650c43718758d7a3ff37da71520a6edb3a1e6d65ce71f9a2c2069e`；MSVR310–PLAIN_V8 `d4db0c3dcf85890017c8bc69a90cd80c973df188a6df024ea4aba0dc8ca3dd45`／`34fec83d009fe9750fb44a262c1a38a90182493611d068e9bb23b7fb56e6d413`；MSVR310–PLAIN_V27 `aba5d6ab947b7bdb91ca4fcb5ec1e70eb10bc765405c0539d4dda64baa06a6ed`／`897cf72b758dc3768ce513fdcb2251ab27a47eb13108a5b568446f972d63e443`；RGBNT100–PLAIN_V8 `c58e23da92439033a023fa685f38480d8c2cbac316ba74f5e4fb5a420742f5dd`／`858fe7c2b02bef843f8ac77b0fdc92eaffb7ae7b5f93699d9201e2440404fde4`。五项只读逐查询报告均位于各自campaign的`official_retrieval_diagnosis.json`，同样绑定原回执SHA。MSVR310–PLAIN_V8相对纯基线修复53条首位错误、新增28条；RGBNT201–PLAIN_V27修复57、新增24；这些是已消费正式集的排序诊断，不用于定制下一组权重或规则。
+
+为检验MSVR310纯起点V8的+3.22 mAP是否只是seed42的单次结果，现固定同一方法和50轮合同再完整运行seed43与seed44，均从相同纯基线权重fresh初始化角色、原loader/监督/日程、每轮官方mAP选best并严格重载，两个结果全部报告，不因seed43成绩取消seed44，也不跨种子拼指标。seed42结果已经看过正式集，故这属于探索性稳定性复核，不能称预先独立的无偏多种子评估。使用当前空闲GPU1，其他三个任务及R2/V27六格主面板继续，不抢占。截止本节写入时43/44尚未启动、没有M0或成绩。
