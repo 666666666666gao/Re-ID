@@ -10762,3 +10762,9 @@ GPU1当前按既定队列完整执行RGBNT201–R2 seed43及44各50轮，之后�
 为避免在当前四卡正式训练工作树修改历史OOF源码，在服务器另建独立工作树`.worktrees/msvr310_role_oof_1c444cd`，固定提交`1c444cdf72e13fd041afd0c641dc8f522faa5844`。历史三角色配置登记的20份项目源码／计划文件在该提交逐字节SHA全部一致；稀疏检出未物化的三份计划／证据文件，已从**同一提交**恢复原字节后再核对，未改训练代码。新B0配置从§41.564工作树原字节复制入此隔离工作树，SHA仍为`18d6d32704547a2b706fc8f8a414cbd6b755230a8502c1b5862403bc4317a112`，其7份项目源码SHA和Signal比较器commit／diff均通过当前conda环境的静态`configure()`检查。
 
 旧三角色配置仍绑定已停止服务器的旧B0 summary，不能直接运行；只有§41.566新三折B0完成并验收后，才可用其实际`summary.json` SHA重新登记三角色配置并执行来源隔离比较。历史角色OOF为固定20轮协议，**不是**当前官方R2/V27和原V8的50轮best面板；两类结果不可混表。15:02核查时新B0的M0与正式summary均不存在；四GPU仍分别执行RGBNT100–R2 seed42、RGBNT201–R2 seed43、RGBNT100–PLAIN_V8 seed43和PLAIN_V27 seed43，逐轮评价数为16/50、17/50、11/50、9/50，利用率100/87/96/100%，`/data`空闲约99.2GiB。等待器均存活，没有新增训练结果。
+
+### 41.572 新B0完成后只读首位关系诊断入口（2026-09-27 15:12 CST）
+
+新增`tools/analyze_msvr310_signal_oof_margins.py`，源码SHA256=`99df4c23530392f38e25a759c0e1b57275d3dbfb11843489d8d3920fad28d853`。它仅接受状态为`COMPLETE_BASELINE_NOT_METHOD_QUALIFICATION`的MSVR310三折Signal来源隔离B0 summary，逐折核对`retrieval_arrays.pt` SHA、完整gallery清单、query位置和已保存的首个合法正例名次；按原scene协议忽略同身份同scene、保留全部异身份干扰，再记录600条合法来源留出query的最近跨scene正例与最近异身份负例。所报余量为`(D_nearest_negative-D_nearest_legal_positive)/2`，因保存的是单位向量平方欧氏距离，该数值等于相应余弦相似度差；同时记录合法正例数、不同正例scene数、Rank-1正确/错误数量和余量分位数。三个fold内各自算距离、汇总统计，不跨fold混合特征。
+
+入口已在四卡conda环境用临时构造的600 query／1032 gallery三折数据通过合法掩码、Rank-1回执和余弦余量换算的合成检查；临时测试目录自动清理。这只验证脚本计算路径，**不是实际B0诊断结果**。真实脚本需待§41.566的新B0完成且回执与文件SHA通过后才运行；输出应标为来源内部只读诊断，不进入正式指标表。该完整gallery首位余量不同于V17**训练batch内最难跨camera正例**的活跃覆盖，不能把两者混同或据此直接改保护阈值。当前未启动新损失、新训练或GPU作业。
