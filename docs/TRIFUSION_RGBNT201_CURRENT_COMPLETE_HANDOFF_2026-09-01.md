@@ -10703,4 +10703,14 @@ GPU2于13:47启动`PLAIN_V8` seed43→44顺序队列，GPU3于14:00启动`PLAIN_
 
 为后续方法避免重复V11的上游身份泄漏，只读核查四卡服务器的旧MSVR310三折Signal OOF资产。历史B0确曾在2026-09-06完成独立三折、每折50轮与600条留出来源query／1032条完整gallery；结果53.1294 mAP／63.0000 Rank-1，详见§41.22—23。这是内部身份隔离指标，不是本轮正式MSVR310指标。当前四卡服务器`artifacts/`、`trained-model/`、`pertrained-model/`下没有相应OOF `.pth`／`.pt`二进制，不能把只在Git/文档中的回执当成可直接加载的模型。
 
-旧`configs/MSVR310/Signal-source-oof-v1.json`所绑定的协议文件与CLIP权重SHA在现服务器仍一致，Signal比较器commit也存在；但旧配置的数据根目录是已停止单卡的`/root/autodl-tmp/trifusion-v2/data/MSVR310`，当前数据根目录为`/data/gaob/Re-ID/dataset/MSVR310`。现工作树中的`tools/train_msvr310_signal_oof.py`、`tools/build_v12_complete_path_oof_targets.py`与该配置登记SHA不符，且登记的`refine-logs/msvr310_signal_v1/EXPERIMENT_PLAN.md`现工作树不存在；所以不能仅改数据路径就声称复现旧B0。已核对历史Git提交`bb01d60`中上述三份文件的SHA均与登记值相同，后续若确需新的完整路径身份隔离配对，应先从该快照建立独立执行目录、按当前数据根目录重新绑定并核验所有输入，再执行必要训练；不在正在运行的50轮任务中替换共享代码或冒用作者已见来源身份的官方权重。该核查只涉及文件、SHA与进程，不新增模型结果，也不改变当前六格50轮合同。
+旧`configs/MSVR310/Signal-source-oof-v1.json`所绑定的协议文件与CLIP权重SHA在现服务器仍一致，Signal比较器commit也存在；但旧配置的数据根目录是已停止单卡的`/root/autodl-tmp/trifusion-v2/data/MSVR310`，当前数据根目录为`/data/gaob/Re-ID/dataset/MSVR310`。现工作树中的`tools/train_msvr310_signal_oof.py`、`tools/build_v12_complete_path_oof_targets.py`与该配置登记SHA不符，且登记的`refine-logs/msvr310_signal_v1/EXPERIMENT_PLAN.md`现工作树不存在；所以不能仅改数据路径就声称复现旧B0。已核对历史Git提交`bb01d60`中上述三份文件的SHA均与登记值相同。当前Signal比较器另有`engine/processor.py`的SHA与旧合同不符；原字节可从已归档的`evidence/smooth_ap_q1_audit_20260909/snapshots/local_text/msvr310_signal_source_text_20260906/engine/processor.py`的Git blob恢复，其SHA与旧合同相同。后续若确需新的完整路径身份隔离配对，应先从该快照建立独立执行目录、按当前数据根目录重新绑定并核验所有输入，再执行必要训练；不在正在运行的50轮任务中替换共享代码或冒用作者已见来源身份的官方权重。该核查只涉及文件、SHA与进程，不新增模型结果，也不改变当前六格50轮合同。现已创建独立Git worktree `.worktrees/msvr310_b0_bb01d60`，仅完成源码检出，尚未配置、M0或训练。
+
+### 41.562 发布Signal起点原V8的同日程50轮对照登记（2026-09-27 14:25 CST）
+
+当前R2/V27六格50轮主面板已经完成五格、RGBNT100–R2仍运行；历史发布Signal＋V8三数据集只具20轮结果，不能把20轮V8和50轮R2/V27的差完全解释为新方法收益。按用户提出的先完成现有50轮、再补同预算原V8对照，现**启动前登记**三个发布Signal＋原V8 seed42端点：RGBNT201、RGBNT100、MSVR310各独立加载对应作者发布Signal权重，基线冻结；沿用现有三角色、七组ID/Triplet监督、原V8 loader与增强，不加入R2记忆/跨环境AP/梯度平衡或V27耦合统计扰动。每端50轮并逐轮按原Signal完整官方query/gallery、对应camera或scene过滤、无reranking的fused mAP保存**一个**best权重；最终严格重载，报告该权重的RGBNT201四项mAP/R1/R5/R10或车辆两项mAP/R1，以及三个完整角色、逐query诊断、训练时间和权重/回执SHA。三端均完整执行，不根据某一数据集或中途epoch成绩取消其余端点。
+
+该对照统一了作者发布Signal起点、角色50轮训练上限和best官方mAP选点口径，能够回答原V8在这一预算下能达到什么程度。它**不是R2或V27的单因素消融**：R2改变历史关系/目标/反传/调权，V27在RGBNT201还使用不同loader。旧20轮与新50轮余弦日程不同；正式集已经用于多次方法、种子与epoch选择，这些新结果只作已消费官方集上的探索性比较，不能称独立无偏测试。三个入口使用现有`SIGNAL_V8`与`best_official_map`、`--epochs 50`，先M0后训练和独立评价；等现有GPU2、GPU3、GPU0对应队列完整退出且回执通过再依次占用空卡，不抢占四个正在训练的端点。此处仅登记，尚无这三项50轮新权重或指标。
+
+### 41.563 原V8三数据集50轮等待队列已启动（2026-09-27 14:30 CST）
+
+为使已有实验退出后GPU不长期空闲，四卡服务器在`logs/signal_v8_50_after_existing_20260927/`创建三个最小等待脚本并启动：RGBNT201→GPU2等待现有RGBNT100–PLAIN_V8 seed44完整队列，MSVR310→GPU3等待RGBNT100–PLAIN_V27 seed44完整队列，RGBNT100→GPU0等待RGBNT100–R2 seed42主面板。三个等待进程PID分别为611446、611447、611448，均已实际存活；先每240秒等待前序campaign文件存在，再由现有队列入口的`--after-campaign`等待状态`COMPLETE`，随后执行对应`SIGNAL_V8` seed42／50轮、M0→训练→独立评价和只读诊断。启动核查时三个新V8 campaign均尚不存在、没有新权重或正式成绩，四张卡仍由原训练占用；等待进程不应误写成新V8已经开训。若前序任务未完成，不能越过其回执抢卡；后续以实际campaign、PID、50轮记录及最佳权重SHA验收。
