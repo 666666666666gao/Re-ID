@@ -10800,3 +10800,9 @@ GPU1当前按既定队列完整执行RGBNT201–R2 seed43及44各50轮，之后�
 核读[CoT-ReID当前公开数据读取器](https://raw.githubusercontent.com/Gaoya615/CoT-ReID/main/data/datasets/msvr310_Text.py)、[检索指标代码](https://raw.githubusercontent.com/Gaoya615/CoT-ReID/main/utils/metrics.py)、[训练与测试入口](https://raw.githubusercontent.com/Gaoya615/CoT-ReID/main/engine/processor.py)及[MSVR310配置](https://raw.githubusercontent.com/Gaoya615/CoT-ReID/main/configs/MSVR310/cot-reid.yml)：其数据入口使用`bounding_box_train`、`query3`、`bounding_box_test`，文件名`img[6:9]`为scene、`img[11]`为camera；MSVR310评价器对每条query删除且只删除`gallery身份相同且scene相同`记录，再计算全部剩余合法正例的mAP/CMC。当前公开代码的MSVR310配置为每轮评价、按mAP保存`teacher_best.pth`、无reranking、最大60轮；评价器的`FEAT_NORM: no`表示它本身不额外L2归一化特征，本项目正式入口则显式归一化后算平方欧氏距离。后者属于模型表示／计分选择差异，不改变身份/scene过滤定义。
 
 因此，§41.323/§41.377所列CoT-ReID公开MSVR310`71.7 mAP／85.3 Rank-1`，现在可明确标注为**公开实现使用同名拆分目录、同字段标签和同类合法匹配掩码**，比仅凭论文表格的协议可比性更强；但尚未逐文件核对两边实际数据副本、测试图像顺序及作者论文报告所用代码版本，也没有复现其权重或文本输入。CoT-ReID依赖DINOv3及额外推理文本，当前仓库配置与论文训练预算记录亦不能未经回执就视为同一次运行；所以该分数仍是带资源与版本边界的公开参照，不是本项目的等预算对照。此核查只读，不修改四卡50轮队列。
+
+### 41.579 MSVR310来源身份隔离协议的逐记录静态核验（2026-09-27 17:00 CST）
+
+在四卡服务器当前待执行的三折B0协议`protocols/msvr310_train_oof_v1.json`上，逐记录核查每折`source_ids`与`heldout_ids`互斥且并集为全部155个来源身份；各自训练记录与留出图库记录互斥且并集为全部1032条来源记录。三个fold的留出图库分别为360、349、323条，合计1032条，**每条来源记录恰好在一个fold的留出图库中**；合法query分别为210、207、183条，合计600条，每条query均属于该折留出身份且至少有一个同身份、不同scene的图库正例。1032条记录的三模态相对路径均以`bounding_box_train/`开头，没有引用官方`query3`或`bounding_box_test`。核验脚本逐项断言全部通过，退出码0。
+
+这确认了**已冻结的划分清单**没有把留出身份记录送进对应fold的训练索引，并覆盖全部来源身份及合法query；它是静态协议检查，不能替代随后真实训练时的完整路径隔离、50轮回执、权重重载及检索评价。GPU3仍须等RGBNT100–PLAIN_V27两种子及MSVR310–SIGNAL_V8同预算对照完整退出后，才由已启动等待器执行M0和三折B0；此处没有新增模型分数，也没有修改运行中的训练入口。
