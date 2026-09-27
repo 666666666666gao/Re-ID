@@ -10744,3 +10744,9 @@ R2_TOP1也已经对每个有合法跨环境正例的anchor使用`0.01·softplus(
 GPU1当前按既定队列完整执行RGBNT201–R2 seed43及44各50轮，之后尚无后继任务。为使同预算原V8参照不只依赖一个角色随机种子，现于**启动前**固定RGBNT201–SIGNAL_V8 seed43：仍从同一份作者发布Signal权重独立初始化角色、冻结基线，使用原V8训练入口和loader、50轮、每轮原Signal完整836 query/gallery与camera过滤、无reranking，以fused mAP保存一个best checkpoint，最后严格重载并报告该checkpoint的mAP、Rank-1、Rank-5、Rank-10及完整三角色和诊断。它将在GPU1的R2 seed44 campaign确认为`COMPLETE`后才使用GPU1，不抢占现有训练；无论先运行的V8 seed42或R2 seed43成绩如何，都完整执行本端。目标campaign及权重目录已核对不存在，当前没有本端M0、训练或检索结果。
 
 本端与已排队的RGBNT201–V8 seed42共同描述原方法在50轮best协议下的角色种子波动，也可与同seed的R2/43对照，但R2同时改变历史候选、目标与梯度规则，故仍非单因素消融。正式集已经多次用于训练中选轮和历史方法选择，后续两种子的分布只作探索性描述，不称独立无偏泛化估计；不据其结果补选更多V8种子。若需要完整路径身份外方法开发，继续使用§41.565的来源OOF路线，不拿官方查询调新机制。
+
+### 41.569 GPU1原V8 seed43条件队列已启动（2026-09-27 14:52 CST）
+
+§41.568预登记后，在四卡机写入最小等待脚本`logs/signal_v8_50_after_existing_20260927/RGBNT201_seed43_gpu1.sh`，SHA256=`607bf8ed54fc0dcef8661aea29d2370c1c1ffaed9e5aeedcb182eb8184b7123a`，`bash -n`通过。后台PID`629786`已由`ps`核实存活；它每240秒等待RGBNT201–R2 seed44 campaign文件出现，再由现有队列入口的`--after-campaign`等待该campaign状态`COMPLETE`，才在GPU1执行RGBNT201–SIGNAL_V8 seed43的M0、50轮训练、best重载正式评价与只读诊断。原R2 seed43→44驱动PID`498562`仍存活；新V8 seed43 campaign尚不存在，故此刻只是条件排队，**没有占用GPU1训练、没有新检索成绩**。新任务结束后核对50条逐轮评价、同一best checkpoint的四指标、权重/回执SHA及相同Signal权重与完整gallery协议。
+
+同次静态核查还确认§41.566的MSVR310 OOF等待脚本所引用的历史runner确实写入`m0/summary.json`的`PASS_ENGINEERING_ONLY`与`b0/summary.json`的`COMPLETE_BASELINE_NOT_METHOD_QUALIFICATION`，且正式B0要求已通过M0回执；没有因此改动历史训练源码或启动额外GPU任务。四卡先完成现有和同预算V8对照，再从完整路径隔离来源诊断确定新的单一方法干预。
