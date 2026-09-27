@@ -10692,3 +10692,9 @@ MSVR310的三方法共同新增26条错误中，分别有V8的16条、R2的10条
 ### 41.559 RGBNT100纯起点V8/V27配对已实际启动（2026-09-27 14:05 CST）
 
 GPU2于13:47启动`PLAIN_V8` seed43→44顺序队列，GPU3于14:00启动`PLAIN_V27` seed43→44顺序队列；两队都通过各自纯基线parity预检和8步M0，seed43均进入50轮正式训练，seed44仍待前端完整退出后启动。14:05实查四卡GPU都有计算进程；GPU0继续RGBNT100–R2 seed42主面板，GPU1继续RGBNT201–R2 seed43→44，不抢占。GPU2的V8 seed43已完成2次逐轮官方评价，GPU3的V27 seed43仍在首轮；这些均非完整终态，不预填正式指标。/data空闲约100GiB，没有触发删除必要权重。历史RGBNT100 seed42单端50轮训练约4.6—4.9小时，故两个顺序种子的粗略完成窗口为9月27日23:00—28日00:30，实际按50轮、独立重载和回执验收；不为中间指标改预算或取消seed44。
+
+### 41.560 同CLIP资源的车辆语义近邻补核：DEEP（2026-09-27，文献证据）
+
+核读作者公开的IEEE TMM 2026录用稿《DEEP: Decoupled Semantic Prompt Learning, Guiding and Embedding for Multi-Spectral Object Re-Identification》（作者版本：https://aihuazheng.github.io/publications/pdf/2025/2025-DEEP_Decoupled_Semantic_Prompt_Learning_Guiding_and_Embedding_for_Multi-Spectral_Object_Re-Identification.pdf，DOI 10.1109/TMM.2026.3660160）Table I、IV、VI及实现段。其报告RGBNT201 **79.6/84.2/89.4/91.5**（mAP/R1/R5/R10）、RGBNT100 **88.5/97.6**、MSVR310 **66.0/82.1**。RGBNT201低于本项目部分已消费官方best数值，MSVR310和RGBNT100明显高于当前多数本项目终点；但不是当前已核读2026论文中的全部数据集最强值，不能称它就是三集SOTA。DEEP使用CLIP ViT-B/16视觉编码器与冻结文本支路，训练可学习光谱提示和视觉支路60轮；与本项目冻结已训Signal/纯CLIP ReID权重再训练三角色的资源与更新路径不同。作者MSVR310的严格同身份同时间段过滤与本项目scene字段的精确映射尚未逐项核对，公开分数只作外部参照，不当等预算因果对照。
+
+其内部消融在MSVR310由三路CLIP视觉基线49.1/65.5，到只加入其DSP提示模块55.2/74.5，再到完整DSP+SGSF+SSE的66.0/82.1；这些是论文内部配置的整体条件增益，不能移植成TriFusion新增提示必涨同样点数。与当前纯起点V27在RGBNT201持续提高、车辆数据集增益有限的证据并看，**可研究**的下一主问题是：角色在车辆身份上是否缺少可迁移的语义内容监督，而非仅缺少更多统计扰动或训练轮次。此处只是文献支持的候选假设，未实现、无新检索结果，不据论文表格中间数值更改正在运行的配对实验。作者GitHub仓库https://github.com/lsh-ahu/DEEP-ReID当前公开主页仅见README、assets和许可文件，未在本次核查到可直接运行的训练源码；不能宣称已复现其代码或性能。
