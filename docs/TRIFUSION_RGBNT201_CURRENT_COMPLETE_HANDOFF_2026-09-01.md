@@ -10768,3 +10768,9 @@ GPU1当前按既定队列完整执行RGBNT201–R2 seed43及44各50轮，之后�
 新增`tools/analyze_msvr310_signal_oof_margins.py`，源码SHA256=`99df4c23530392f38e25a759c0e1b57275d3dbfb11843489d8d3920fad28d853`。它仅接受状态为`COMPLETE_BASELINE_NOT_METHOD_QUALIFICATION`的MSVR310三折Signal来源隔离B0 summary，逐折核对`retrieval_arrays.pt` SHA、完整gallery清单、query位置和已保存的首个合法正例名次；按原scene协议忽略同身份同scene、保留全部异身份干扰，再记录600条合法来源留出query的最近跨scene正例与最近异身份负例。所报余量为`(D_nearest_negative-D_nearest_legal_positive)/2`，因保存的是单位向量平方欧氏距离，该数值等于相应余弦相似度差；同时记录合法正例数、不同正例scene数、Rank-1正确/错误数量和余量分位数。三个fold内各自算距离、汇总统计，不跨fold混合特征。
 
 入口已在四卡conda环境用临时构造的600 query／1032 gallery三折数据通过合法掩码、Rank-1回执和余弦余量换算的合成检查；临时测试目录自动清理。这只验证脚本计算路径，**不是实际B0诊断结果**。真实脚本需待§41.566的新B0完成且回执与文件SHA通过后才运行；输出应标为来源内部只读诊断，不进入正式指标表。该完整gallery首位余量不同于V17**训练batch内最难跨camera正例**的活跃覆盖，不能把两者混同或据此直接改保护阈值。当前未启动新损失、新训练或GPU作业。
+
+### 41.573 当前50轮R2中途梯度系数与训练健康核查（2026-09-27 15:18 CST）
+
+只读分析四卡服务器的`trained-model/official_extra_seed42_RGBNT100_R2_horizon50_v1_bestmap_e50_20260926/RGBNT100_R2_seed42/training_steps.jsonl`与`trained-model/official_extra_seed43_RGBNT201_R2_r2_horizon50_stability_v1_bestmap_e50_20260926/RGBNT201_R2_seed43/training_steps.jsonl`，**只纳入已经完成逐轮官方评价的轮次**，分别为RGBNT100前16轮、RGBNT201前18轮；正在执行的下一轮不纳入统计。RGBNT100共2097步，预热后的2032个合法跨环境排名步骤中，CNN/Transformer/Mamba的排名／辅助系数各2032次均为`1.6/0.4`，没有无合法anchor的后预热步骤。RGBNT201共954步，后预热853个有支持步骤中，三角色触及`1.6/0.4`上限分别827／795／829次，即96.95%／93.20%／97.19%；另有36个后预热步骤无合法anchor，须与有支持但小梯度区分。两端这些已记录步骤的loss均有限，AMP scale没有回退；主训练进程和四卡GPU计算进程仍存活，`/data`空闲约99.1GiB。
+
+这再次证明当前R2的实际系数行为在RGBNT100完全、在RGBNT201绝大多数有支持步骤**近似固定权重**；但只有中途训练统计，尚不能将其换算成AdamW实际更新份额，也不能判断该控制器最终好坏。不中止既定50轮、不因中途官方分数调权或更改后继队列；完整回执出来后再与固定1/1及同预算原V8等已登记对照解释。
