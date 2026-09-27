@@ -10717,6 +10717,6 @@ GPU2于13:47启动`PLAIN_V8` seed43→44顺序队列，GPU3于14:00启动`PLAIN_
 
 ### 41.564 MSVR310旧完整路径身份隔离B0的静态复原就绪（2026-09-27 14:40 CST）
 
-在独立`.worktrees/msvr310_b0_bb01d60`中检出历史执行提交`bb01d60`，该快照登记的7份项目源码／计划文件均逐SHA匹配；工作树单独增加旧计划目录，不改主训练仓库的稀疏检出。把现服务器16MiB的Signal比较器复制到该独立目录，只将`engine/processor.py`恢复为已归档的2026-09-06原字节；17份Signal源码SHA全部与旧合同相同，比较器commit仍为`cd1b0a6`，`git diff --binary` SHA也恢复为原登记`b889caca9c4a92689b13eb7e20bd3224067f3e5ed2a3db6825201870ca422741`。新配置`configs/MSVR310/Signal-source-oof-four-gpu-v1.json`只把旧配置的dataset根目录、Signal比较器路径、CLIP权重路径迁到四卡服务器，其他训练、协议、掩码与固定epoch50定义不变；配置SHA256=`3627c2fde196c6cfc892887ce79bd57c0d3834bde8e2404f555872d72c30ee3d`。
+在独立`.worktrees/msvr310_b0_bb01d60`中检出历史执行提交`bb01d60`，该快照登记的7份项目源码／计划文件均逐SHA匹配；工作树单独增加旧计划目录，不改主训练仓库的稀疏检出。把现服务器16MiB的Signal比较器复制到该独立目录，只将`engine/processor.py`恢复为已归档的2026-09-06原字节；17份Signal源码SHA全部与旧合同相同，比较器commit仍为`cd1b0a6`，`git diff --binary` SHA也恢复为原登记`b889caca9c4a92689b13eb7e20bd3224067f3e5ed2a3db6825201870ca422741`。新配置`configs/MSVR310/Signal-source-oof-four-gpu-v1.json`只把旧配置的dataset根目录、Signal比较器路径、CLIP权重路径迁到四卡服务器，其他训练、协议、掩码与固定epoch50定义不变；Git及远端实际执行文件SHA256=`18d6d32704547a2b706fc8f8a414cbd6b755230a8502c1b5862403bc4317a112`。
 
 静态入口`configure()`已在当前conda环境通过：协议SHA及CLIP权重SHA与旧合同一致，比较器commit／diff及全部源码SHA通过；协议1032条来源记录的3096个三模态图片路径在`/data/gaob/Re-ID/dataset/MSVR310`全部存在，模型配置仍为MSVR310、50轮、B64。**这里只完成源码和数据绑定，无CUDA前向、M0、训练、checkpoint或新的OOF指标。**四张GPU仍执行现有50轮主面板和配对队列，旧B0只作为以后确需完整路径身份隔离时的可运行基础；不能把它当成当前官方发布Signal的可替代权重，也不越过§41.562已排队的同预算V8对照。
