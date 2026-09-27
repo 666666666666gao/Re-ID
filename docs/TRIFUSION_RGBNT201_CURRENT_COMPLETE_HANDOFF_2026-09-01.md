@@ -10750,3 +10750,9 @@ GPU1当前按既定队列完整执行RGBNT201–R2 seed43及44各50轮，之后�
 §41.568预登记后，在四卡机写入最小等待脚本`logs/signal_v8_50_after_existing_20260927/RGBNT201_seed43_gpu1.sh`，SHA256=`607bf8ed54fc0dcef8661aea29d2370c1c1ffaed9e5aeedcb182eb8184b7123a`，`bash -n`通过。后台PID`629786`已由`ps`核实存活；它每240秒等待RGBNT201–R2 seed44 campaign文件出现，再由现有队列入口的`--after-campaign`等待该campaign状态`COMPLETE`，才在GPU1执行RGBNT201–SIGNAL_V8 seed43的M0、50轮训练、best重载正式评价与只读诊断。原R2 seed43→44驱动PID`498562`仍存活；新V8 seed43 campaign尚不存在，故此刻只是条件排队，**没有占用GPU1训练、没有新检索成绩**。新任务结束后核对50条逐轮评价、同一best checkpoint的四指标、权重/回执SHA及相同Signal权重与完整gallery协议。
 
 同次静态核查还确认§41.566的MSVR310 OOF等待脚本所引用的历史runner确实写入`m0/summary.json`的`PASS_ENGINEERING_ONLY`与`b0/summary.json`的`COMPLETE_BASELINE_NOT_METHOD_QUALIFICATION`，且正式B0要求已通过M0回执；没有因此改动历史训练源码或启动额外GPU任务。四卡先完成现有和同预算V8对照，再从完整路径隔离来源诊断确定新的单一方法干预。
+
+### 41.570 关系保护后继的可检验差异：先查身份隔离支持（2026-09-27 15:00 CST）
+
+把现有代码与已封存的排序诊断直接对照：V17使用每个批内query的**最难跨camera正例**和最强负例，只在冻结Signal余弦间隔≥`0.30`时保护；§41.439、§41.442的已消费正式集事后诊断则按**最近合法正例**与最近负例的首位平方距离间隔分组，MSVR310原V8的51条新增首位错误有41条落在Signal原正确query的最低间隔四分位，RGBNT201的17条均在最低四分位。两者所选正例、协议环境及数值尺度不同，不能把正式分位边界直接转换成新训练阈值，也不能据此断言V17保护项活跃覆盖为零；V17完整结果还同时包含关系包络，无法从其负增益单独判保护机制无效。
+
+历史MSVR310 OOF runner的`evaluate_gallery`会为每折保存`retrieval_arrays.pt`，内含完整gallery的3072D特征、合法query距离矩阵及位置索引；回执还保存身份、scene、camera清单和上游指标一致性核对。待§41.566的三折B0真正完成且回执/权重SHA通过后，先在**完整路径未见的600条来源query和1032条完整gallery**上只读量化Signal正确/错误首位关系的间隔分布及合法跨scene正例支持。V17式**训练批次**选择的覆盖是另一个统计，需用B0保存的来源采样索引和模型对相应来源图片重新前向，不能仅凭留出图库距离数组代替。此诊断不从正式错误query反选阈值，也不是新方法性能结果；若来源侧几乎没有目标关系或有效梯度，则不启动换名的保护loss训练。当前四卡仍执行已登记任务，新诊断没有提前读取未完成B0或启动GPU。
