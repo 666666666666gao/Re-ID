@@ -10774,3 +10774,7 @@ GPU1当前按既定队列完整执行RGBNT201–R2 seed43及44各50轮，之后�
 只读分析四卡服务器的`trained-model/official_extra_seed42_RGBNT100_R2_horizon50_v1_bestmap_e50_20260926/RGBNT100_R2_seed42/training_steps.jsonl`与`trained-model/official_extra_seed43_RGBNT201_R2_r2_horizon50_stability_v1_bestmap_e50_20260926/RGBNT201_R2_seed43/training_steps.jsonl`，**只纳入已经完成逐轮官方评价的轮次**，分别为RGBNT100前16轮、RGBNT201前18轮；正在执行的下一轮不纳入统计。RGBNT100共2097步，预热后的2032个合法跨环境排名步骤中，CNN/Transformer/Mamba的排名／辅助系数各2032次均为`1.6/0.4`，没有无合法anchor的后预热步骤。RGBNT201共954步，后预热853个有支持步骤中，三角色触及`1.6/0.4`上限分别827／795／829次，即96.95%／93.20%／97.19%；另有36个后预热步骤无合法anchor，须与有支持但小梯度区分。两端这些已记录步骤的loss均有限，AMP scale没有回退；主训练进程和四卡GPU计算进程仍存活，`/data`空闲约99.1GiB。
 
 这再次证明当前R2的实际系数行为在RGBNT100完全、在RGBNT201绝大多数有支持步骤**近似固定权重**；但只有中途训练统计，尚不能将其换算成AdamW实际更新份额，也不能判断该控制器最终好坏。不中止既定50轮、不因中途官方分数调权或更改后继队列；完整回执出来后再与固定1/1及同预算原V8等已登记对照解释。
+
+### 41.574 RoDI公开MSVR310分数的协议可核查边界（2026-09-27 15:47 CST）
+
+重读[RoDI作者发布PDF](https://github.com/lsh-ahu/RoDI/blob/main/assets/RoDI.pdf)§4.1与主表：其MSVR310的CLIP版为`64.1 mAP／77.2 Rank-1`，DINOv3版为`71.8／84.8`；论文说明采用既有标准mAP/CMC协议，并写明数据集有2087组三光谱样本、310个车辆身份。但正文**没有给出**本项目官方回执所用的`591 query／1055 gallery`清单或同身份同scene过滤实现；[作者当前公开仓库](https://github.com/lsh-ahu/RoDI)仅有README和论文资产，未公开可逐行核对的训练／评估代码。因此当前只能把上述数值列为**同名基准上的作者报告参照**，不能声称已验证与本项目完全相同的query/gallery索引及过滤实现，更不能将跨论文差值归因于三角色。DINOv3版另有不同预训练资源。本文既有同作者Signal权重、同一评价入口的本机配对结论不受此限制；现有50轮任务与等待队列不改变。
