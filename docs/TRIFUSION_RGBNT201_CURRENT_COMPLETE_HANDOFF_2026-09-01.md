@@ -10587,3 +10587,20 @@ RGBNT100和MSVR310的mAP相对作者Signal分别约+1.4791、+1.8387，但R1分�
 本项目RGBNT201–R2 seed42/50轮bestE12为83.4284/87.6794/92.7033/94.4976：其mAP、R1高于上述CoT数值，R5、R10低于CoT；本项目已消费官方集多次用于方法／种子／best轮选择，不把这个局部数值写成无偏SOTA。两个车辆任务离上述公开强参照仍有显著差距，尤其MSVR310，不能用对作者Signal的局部收益代替三数据集目标。旧交接中只列到2025参照的段落为历史快照，当前判断须同时考虑本节新核对论文的预训练资源与公开成绩。
 
 本轮用户确认R2、V27各做三个数据集、50轮、每轮按作者完整query/gallery和camera/scene规则计算fused官方mAP并保存best，不以固定末轮替代。至10:45 CST六格主面板5/6完整核验；RGBNT100–R2 seed42在GPU0已完成8/50轮、现行bestE7 mAP86.9861（仅中途记录，不作最终验收）。训练日志近期每轮约1760秒再加官方评价，剩余42轮预计至9月28日约08:00–09:00 CST完成，实际以50轮退出、best重载回执及SHA为准。GPU1的MSVR310纯起点V8 seed43/44队列、GPU2的RGBNT201纯起点V27 seed43/44队列和GPU3的RGBNT100纯起点V27 seed42/50轮均正常运行；各正在训练的端点不预填正式终态。10:45四张GPU都有真实计算进程，/data余约100GiB。继续只在预估里程碑或180–300秒必要检查，不以中途官方成绩改变合同或取消已登记种子。
+
+### 41.552 MSVR310纯起点V8的50轮三种子验收；RGBNT201–R2稳定性补两种子预登记（2026-09-27 11:50 CST）
+
+§41.547登记的MSVR310–PLAIN_V8 seed43/44在GPU1依次完成，和seed42一样，固定同一纯CLIP ReID基线权重、V8入口、50轮、全部官方query/gallery与scene过滤、每轮以fused官方mAP选best，并对best重载独立评价。三个训练回执均含恰好1—50轮、训练1000步、AMP overflow0、冻结基线不变；selected epoch／selected mAP、最佳权重文件SHA、state SHA与正式回执全部一致。种子42、43、44是角色初始化／训练随机性，纯基线权重固定，不是重训三份基线。正式集合已用于挑轮与实验选择，以下为探索性稳定性描述，不能称无偏泛化估计。
+
+| MSVR310完整正式评价 | mAP | Rank-1 | 最佳epoch |
+| --- | ---: | ---: | ---: |
+| 固定纯CLIP ReID基线 | 50.5220 | 67.6819 | - |
+| PLAIN_V8 seed42／50轮 | 53.7422 | 71.9120 | 24 |
+| PLAIN_V8 seed43／50轮 | 55.2573 | 71.4044 | 25 |
+| PLAIN_V8 seed44／50轮 | 54.7492 | 70.8968 | 29 |
+| 三角色种子描述均值 | 54.5829 | 71.4044 | - |
+| 另一路作者完整Signal参照 | 53.2424 | 72.4196 | 作者发布权重 |
+
+三种子均高于匹配的纯基线，说明纯起点三角色的正mAP作用不是seed42独有；但三次Rank-1均低于另一路更强Signal。mAP和R1均值只描述固定基线上这三份角色训练，不能把与另一路Signal的差额解释为受控模块增益。逐query只读诊断：seed43修复45条基线首位错误、新增23条；seed44修复48、新增29；在确认三份距离回执的query/gallery身份、camera、scene顺序完全相同后，三个种子共同修复28条、共同新增15条首位错误，272条query在三种子AP均改善、100条均下降。重复错误值得解释，但不能按已消费正式query定制新规则。seed43/44正式回执SHA依次为945bb79220cd9634a61ac838fa74f751aaac6523d783492618b2894f31d9c0c9／9091f86da75b6ce33252849f59640223c866fa6946dd6501e9ca06cae4a66ff4，最佳权重SHA为14e7c64f4e8b7386ffc665f40868ac919ae868afad3c451850a636ca61f89d7c／ec3e217182aa2e088a9b022c8785eeffe571265b2ce9b4d2e14f719021f2a7e4，只读诊断SHA为ed5a5d7c18b156ec840b2f7d86cfd1a8ee5edc3f0df5188c6dc2c9673d8fa3ae／d2cb786abcb26202d39efb38250b52e7e87fe608898af3b23695bcbde0dfbf40。文件均在各自trained-model/official_extra_seed{seed}_MSVR310_PLAIN_V8_plain_v8_horizon50_stability_v1_bestmap_e50_20260926/MSVR310_PLAIN_V8_seed{seed}/；原队列status COMPLETE，GPU1已释放。
+
+为核验RGBNT201–R2 seed42/50轮四指标达线是否有角色训练稳定性，现**执行前**固定同一作者Signal发布权重、原R2网络／历史512候选及完整反传／跨camera AP／角色梯度平衡、原loader与增强、50轮和逐轮官方fused mAP选best，补seed43与44，GPU1顺序运行。两个种子均需完成、重载、报告四指标和全部身份／query变化；不能根据seed43分数取消seed44，也不从两份checkpoint拼列最佳。R2 seed42此前已经在官方集选轮，本补充只能是探索性稳定性证据；不提高现有方法的无偏性。预估每端约10小时、两端合计约20小时，权重留远端，/data现余约100GiB。当前主面板RGBNT100–R2仍在GPU0，GPU2/3原固定纯起点任务继续；本补充不抢占。
