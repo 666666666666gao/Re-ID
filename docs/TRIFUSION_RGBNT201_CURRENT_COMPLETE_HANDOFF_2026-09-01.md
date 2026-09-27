@@ -10821,3 +10821,9 @@ RGBNT201三角色触及排名权重上限1.6的比例约为93.9%、90.6%、94.0%
 MSVR310的有支持步骤中，CNN／Transformer／Mamba排名系数中位数在第1—24轮分别为1.1721／1.1625／1.1823，第25—50轮为1.4787／1.4453／1.4613。该端正式fused的best为第24轮52.6797 mAP／70.3892 Rank-1，末轮为50.5510／68.1895：**系数后期上升与陌生身份检索下降同时出现，但这只是时间关联**，不能认定调权导致退化，也不能把原始系数换算成AdamW真实更新份额。要判断自适应规则是否带来收益，仍需同预算、同初始化的固定系数对照；现有固定1／1的20轮对照不能直接回答50轮后期行为。当前不据这项已消费正式集的时间趋势更改正在训练的R2或新方法。
 
 原始训练步日志SHA256：RGBNT201=`fc447013fbbee98845b04f9019902ddea1e0e9461c52712dc033e3546d9eddac`；MSVR310=`896b1be1e98632d337830af3273af94ea8598dc63e6f1fcb021b29a912f634ac`，均位于各自`trained-model/official_extra_seed42_*_R2_horizon50_v1_bestmap_e50_20260926/*_R2_seed42/`。本项只读诊断，没有重算正式检索或产生新checkpoint。
+
+### 41.581 五份50轮主面板回执的跨端一致性复核（2026-09-27 17:14 CST）
+
+用现有`campaign.json`、`training.json`、逐轮`epoch_official_metrics.jsonl`、`official_metrics.json`和实际`roles_best_map.pth`，对已完成的RGBNT201–R2/V27、RGBNT100–V27、MSVR310–R2/V27五格再作一次只读CPU核验：每个campaign及唯一job均为`COMPLETE`，逐轮epoch恰为1—50，训练与独立评价所记的best epoch相同且等于按`(fused mAP, epoch)`取最大的一轮；该轮mAP与最终独立重载的fused mAP逐值一致。每个实存best权重的文件SHA256等于训练及评价回执所记SHA，协议SHA也一致；相同数据集的R2/V27两端绑定同一份作者Signal权重、同一协议SHA与完全相同的Signal-only四项或两项基线分数。正式query/gallery数分别为RGBNT201 `836/836`、RGBNT100 `1715/8575`、MSVR310 `591/1055`；五份均`reranking=false`，独立上游评价一致标志为真。全部断言退出码0，五格best epoch仍分别为12、5、8、24、24，对应fused mAP/R1与本页一页结论一致。
+
+这只是对**已完成五格**的回执、文件和评价口径交叉验收，不增加一次模型前向、不替代未完成的RGBNT100–R2第六格，也不把作者发布Signal与不同训练来源的纯CLIP基线混作同一控制。原V8的50轮同预算三端仍需等各自排队实际完成后再按相同口径比较；现有`queue_official_extra_seed.py`已核查会检查50条连续epoch、fused mAP选点和最终独立评价，足以直接复用，不新增重复的汇总入口。
