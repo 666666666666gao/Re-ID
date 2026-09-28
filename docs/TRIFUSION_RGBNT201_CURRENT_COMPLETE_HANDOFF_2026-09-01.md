@@ -2,7 +2,7 @@
 
 ## 0. 一页结论
 
-**本页更新至§41.625，文档同步2026-09-28 21:27 CST；24端完整验收20:34:41，两项global-only严格验收21:01:42，进程实查21:20。** 历史规则和数字保留原样，当前合同以后文登记和服务器回执为准。研究目标仍 **ACTIVE／UNMET**；工程通过、单数据集增量不代替三数据集强基线与SOTA要求。
+**本页更新至§41.626，文档同步2026-09-28 21:46 CST；24端完整验收20:34:41，两项global-only严格验收21:01:42，进程实查21:20。** 历史规则和数字保留原样，当前合同以后文登记和服务器回执为准。研究目标仍 **ACTIVE／UNMET**；工程通过、单数据集增量不代替三数据集强基线与SOTA要求。
 
 **现行合同：** 每个正式候选完整50轮，使用作者完整query/gallery及camera／MSVR时间段过滤，以官方fused mAP最高的同一checkpoint报告全部指标，随后严格重载。RGBNT201报告mAP／R1／R5／R10，RGBNT100及MSVR310报告mAP／R1；不跨epoch或seed拼列。官方集已参与逐轮选点和历史方法选择，属于已消费基准上的探索性结果。
 
@@ -15,6 +15,8 @@
 **独立global-only已2/3正式验收：** 201 E2为72.4944/74.0431/82.4163/87.9187，MSVR E10为51.9480/67.3435。加入完整角色路径的100相对独立global-only：201仅+0.1124 mAP／R1不变，首位修复1／新增1；MSVR +0.6816／+1.0152，修复12／新增6。111相对global-only：201 +0.0566 mAP／−0.2392 R1，MSVR +0.3939／+1.1844。这是真正独立训练对照，但尚未控制额外容量；进一步支持角色读出增量在201很薄，不能用同权重global分解替代独立训练结果。两个无角色／无M2/M3的global-only也出现loss下降、末轮检索退化，因此后期下降不能全部归因于M3。RGBNT100仍完整训练，三端全通过后再进入M2，见§41.624。
 
 **监督诊断已收齐：** 24端共81,664条step标量完整重构，最大总loss误差4.55×10^-7以内；M3开启时三项预测在每个记录step均非零。RGBNT100八个配置共52,472步Triplet全部0，这说明该数据集当前来源度量项未激活，不直接证明正式掉点的唯一原因。M3已有适配器及角色EMA教师；受控CPU同内容、不同地址会产生回归／关系loss并改变local-mask支持，见§41.622，不能把toy结果冒称真实图片或掉点归因。
+
+**公开评价核查：** CoT-ReID固定公开提交的原始计分函数，在本机201/MSVR的完整111距离上四指标差均为0；完整本地文件集合、身份及camera／时间段字段也符合公开目录规则。这只证明当前代码的过滤／计分及本地清单一致，不是CoT模型或论文数字复现；作者原始文件清单、历史训练及额外资源仍未受控。RoDI当前树仍无评价代码，保持作者数值参照，见§41.626。
 
 **当前服务器：** `gaob@172.19.12.138:2026`，项目`/data/gaob/Re-ID/Trifusion`，环境`/data/gaob/Re-ID/conda-envs/tri_reid`。纯baseline、作者权重保留于`pertrained-model`，best与原图／距离留远端；MSVR完整路径来源OOF三折已重建保留。20:32可用空间约94.08GiB，各新端启动前要求≥10GiB，未删除必要权重。旧单卡停用，只维护本MD并与指定Desktop、远端、GitHub核对同字节。
 
@@ -11844,3 +11846,17 @@ M3后继应至少区分四种条件：现行各自地址＋直接回归；只匹
 原生环境关闭CUDA可见设备后，CLI导入通过；用真实尚未完成的两global验收快照调用，明确在global完整性assert处退出1，未创建结果目录。guard外层成功，记录 `logs/correspondence_m2_analysis_incomplete_guard_20260928.json`，源码SHA `364297dbf5cfc65c9e81adfe8e2a666de42b3d333abaab47e435bfd823e7c934`；输入快照SHA仍5c7388bf…，原24矩阵f1b7d364…。没有真实已完成M2面板可测，所以只声称原生导入与拒绝不完整面板通过，不声称七个M2配对已有结果；远端暂存.git独立脚本，正式源码随本节同步，所有在训科学入口保持原SHA。
 
 边界：query和structured仍改变M3输入／目标，教师与学生仍独立预测地址；这里不能把配置差解释为完全隔离的对应语义机制。相同参数初始化不保证后续数值路径相同，固定官方best单seed配对和身份bootstrap也不代表未选择测试或训练seed显著性。当前完整24、global2/3及§624科学结论不变；仅完成分析接收准备，研究Goal ACTIVE／UNMET。
+
+### 41.626 公开CoT-ReID计分及本地完整清单核查（2026-09-28 21:46 CST）
+
+等待100原训练期间，针对尚未完全核实的公开强参照做只读协议核查，不改变训练、候选或选点。[RoDI当前公开仓库](https://github.com/lsh-ahu/RoDI)的完整未截断树SHA `2f38911c49d42d4ca259d440a851b8d77dddccbe`仍只有README、assets/RoDI.pdf和poster，未提供可逐行核对的训练／评价代码；此前将其CLIP/DINOv3数字限于作者数值参照的边界继续保留。
+
+固定[CoT-ReID公开提交](https://github.com/Gaoya615/CoT-ReID/tree/db215273d6ee68b9c324fdf36e3d6800370fa21e) `db215273d6ee68b9c324fdf36e3d6800370fa21e`，下载11份公开文本代码／配置并绑定SHA。[RGBNT201 loader](https://github.com/Gaoya615/CoT-ReID/blob/db215273d6ee68b9c324fdf36e3d6800370fa21e/data/datasets/RGBNT201_Text_cot.py)用test同时作query/gallery；[MSVR loader](https://github.com/Gaoya615/CoT-ReID/blob/db215273d6ee68b9c324fdf36e3d6800370fa21e/data/datasets/msvr310_Text.py)用query3/bounding_box_test，文件名前4位取身份、第11字符取view/camera、6:9取时间段。其[实际processor](https://github.com/Gaoya615/CoT-ReID/blob/db215273d6ee68b9c324fdf36e3d6800370fa21e/engine/processor.py)在MSVR选择R1_mAP、把第四字段传给scene；[当前utils/metrics.py](https://github.com/Gaoya615/CoT-ReID/blob/db215273d6ee68b9c324fdf36e3d6800370fa21e/utils/metrics.py)的活跃函数排除同身份同scene，201则排除同身份同camera。检查的是当前活跃实现，不把文件后部的注释代码或engine/metrics.py当实际入口。
+
+21:42:55原生CPU核查完成：根据公开目录／文件名规则独立枚举本机两集完整query/gallery三模态路径集合，检查所有文件存在及身份／camera／MSVR时间段字段；201为836/836，MSVR591/1055，与冻结protocol逐项一致。没有加载CoT文本标注或实例化其完整dataset，不声称运行过作者完整loader。再从已人工核读源码AST仅抽取两个纯计分函数，对本机已经接受的原111完整distance调用；201为72.5509908670/73.8038301468/83.1339716911/87.7990424633，MSVR52.3419281407/68.5279190540/82.5719118118/86.8020296097，mAP/R1/R5/R10与原回执差全部0。没有GPU推理、权重更新、新归一化或新的检索成绩；这些数字属于本机原111，不能记为CoT复现成绩。支持当前公开过滤／计分层面的可比性，但作者原始图片版本、完整文件清单与历史论文执行仍不可核实。
+
+当前两集[公开配置](https://github.com/Gaoya615/CoT-ReID/tree/db215273d6ee68b9c324fdf36e3d6800370fa21e/configs)均60轮、RE_RANKING=no，201 FEAT_NORM=yes，MSVR FEAT_NORM=no；所以在同一距离上计分相同，不证明特征构造／归一化、预训练资源或训练预算相同。首版报告boundary把FEAT_NORM=no笼统用于configs，已根据两个实际配置在v2明确分开，保留v1及其源码；不重算已正确的数值。CPU函数一致也不能直接将论文与本机成绩之差唯一归到某个结构或训练因素。
+
+11份原文和sources.json位于remote `logs/cot_protocol_audit_20260928_2140`及本地同名.codex_tmp目录，sources SHA `537ebbb3be3f4a2b912daeb20ab01ab686e2d049f2d7c14151ec7f43039b4787`。实际driver归档audit_driver.py SHA `c025e8ec05d9d4be42fc0799691bab3bd10eac4ea7daece562124655f8fceb80`；原报告 `cot_public_protocol_parity_20260928.json` SHA `a591fc4bb781f72f07795ec887f988ef4de43a101495f0f98ca727dab4b31f9c`；现用v2报告SHA `dc4226c6cf1cbef7e60fcb8c07e183154091fd722b60644423a21aa032c8da54`，记录仅boundary修正及配置SHA，correction driver SHA `52103f92091dad0a9dee624ddfd3548915ef28880221cbb58b2a6674f8c5aa39`，没有覆盖旧数值／旧证据。
+
+本节是完成的公开协议核查，未新增实验或改变24→global→15M2→M3的顺序。100仍等待原21:58定时观察，不凭预计时间补完整终态；global完整2/3及此前科学结论保持，Goal ACTIVE／UNMET。
