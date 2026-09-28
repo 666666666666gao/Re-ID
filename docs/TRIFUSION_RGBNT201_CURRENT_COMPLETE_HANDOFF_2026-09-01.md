@@ -2,7 +2,7 @@
 
 ## 0. 一页结论
 
-**本页更新至§41.630，文档同步2026-09-28 23:11 CST；24端和三项global-only全部验收，15端M2已3项正式接收，四卡实查23:07:02继续训练。** 历史规则和数字保留原样，当前合同以后文登记和服务器回执为准。研究目标仍 **ACTIVE／UNMET**；工程通过、单数据集增量不代替三数据集强基线与SOTA要求。
+**本页更新至§41.631，文档同步2026-09-28 23:33 CST；24端和三项global-only全部验收，15端M2已4项正式接收，四卡实查23:29:03继续训练。** 历史规则和数字保留原样，当前合同以后文登记和服务器回执为准。研究目标仍 **ACTIVE／UNMET**；工程通过、单数据集增量不代替三数据集强基线与SOTA要求。
 
 **现行合同：** 每个正式候选完整50轮，使用作者完整query/gallery及camera／MSVR时间段过滤，以官方fused mAP最高的同一checkpoint报告全部指标，随后严格重载。RGBNT201报告mAP／R1／R5／R10，RGBNT100及MSVR310报告mAP／R1；不跨epoch或seed拼列。官方集已参与逐轮选点和历史方法选择，属于已消费基准上的探索性结果。
 
@@ -20,18 +20,18 @@
 
 **训练成本账本：** 24消融及3独立global共27端的实际训练／逐轮评价时间已绑定日志重建。M3四条件平均开启／关闭耗时比分别201 2.0452、100 1.9192、MSVR 1.4695，对应平均ΔmAP −0.4828、+0.1065、+0.2943。记录包含逐轮评价且并行负载不同，非受控测速；参数仅可训练部分，不是总参数/FLOPs。进一步支持检验预测任务的职责和成本，不据此取消正在运行的15端或改日程，见§41.628。
 
-**当前服务器：** `gaob@172.19.12.138:2026`，项目`/data/gaob/Re-ID/Trifusion`，环境`/data/gaob/Re-ID/conda-envs/tri_reid`。纯baseline、作者权重保留于`pertrained-model`，best与原图／距离留远端；MSVR完整路径来源OOF三折已重建保留。23:07可用空间约93.8GiB，各新端启动前要求≥10GiB，未删除必要权重。旧单卡停用，只维护本MD并与指定Desktop、远端、GitHub核对同字节。
+**当前服务器：** `gaob@172.19.12.138:2026`，项目`/data/gaob/Re-ID/Trifusion`，环境`/data/gaob/Re-ID/conda-envs/tri_reid`。纯baseline、作者权重保留于`pertrained-model`，best与原图／距离留远端；MSVR完整路径来源OOF三折已重建保留。23:29可用空间约93.8GiB，各新端启动前要求≥10GiB，未删除必要权重。旧单卡停用，只维护本MD并与指定Desktop、远端、GitHub核对同字节。
 
-| 当前卡与真实任务（23:07:02实查） | 持久后继 |
+| 当前卡与真实任务（23:29:03实查） | 持久后继 |
 | --- | --- |
-| GPU0：M2 query_pooled／MSVR310，PID2146200，17/50 | 完整50轮后严格重载 |
-| GPU1：M2 single_pooled／RGBNT100，PID2097361，22/50 | 完整50轮后严格重载 |
-| GPU2：M2 query_pooled／RGBNT100，PID2129539，6/50 | 完整50轮后严格重载 |
-| GPU3：M2 single_regions／RGBNT201，PID2154361，1/50 | pooled两端完成后自动接续；新M0 PASS |
+| GPU0：M2 single_regions／RGBNT100，PID2174558，0/50 | MSVR query完成后自动接续；新M0 PASS |
+| GPU1：M2 single_pooled／RGBNT100，PID2097361，30/50 | 完整50轮后严格重载 |
+| GPU2：M2 query_pooled／RGBNT100，PID2129539，11/50 | 完整50轮后严格重载 |
+| GPU3：M2 single_regions／RGBNT201，PID2154361，20/50 | 完整50轮后严格重载 |
 
-接续器1979848实际命令存在，RUNNING/m2；十五M2为3 COMPLETE、4 RUNNING、8 PENDING、0 FAILED，四张3090实际GPU进程均对应上述训练器，显存约18—19GiB。三份完整M2为MSVR single_pooled E10 52.4341／67.5127，以及201 single_pooled E2 72.5370／73.8038／83.1340／87.7990、query_pooled E2 72.5413／73.8038／83.0144／87.9187；均已50轮best重载与全图库CPU复算，尚未达到强基线或十点目标。新MSVR query及201 single_regions真实M0均118/118参数张量非零梯度、冻结基线不变、重载差0；资格不等于检索收益。下一观察预计23:24，接近MSVR query当前预计23:27训练终点；ETA不代替完成回执。
+接续器1979848实际命令存在，RUNNING/m2；十五M2为4 COMPLETE、4 RUNNING、7 PENDING、0 FAILED，四张3090实际GPU进程均对应上述训练器，显存约18—19GiB。新增MSVR query_pooled E15为52.4521／67.6819，完整50轮、best重载与全图库CPU复算通过；其与此前三端均尚未达到强基线或十点目标。RGBNT100 single_regions第八份真实M0为118/118参数张量非零梯度、冻结基线不变、重载差0；资格不等于检索收益。下一观察2026-09-29 00:02，接近201 single_regions当前预计00:05训练终点；ETA不代替完成回执。
 
-**执行顺序不变：** 24矩阵已收齐→三独立global-only已完整验收（3/3）→M2内容查询与结构化读出五配置×三集，共十五端→再依据结果落实M3同地址／预测器四条件。M2五配置为single_pooled、query_pooled、single_regions、query_regions、uniform_pooled，已有七份真实M0 PASS、三个完整M2官方终态；其余完整跑满50轮。持久队列240秒观察，不抢占、不跳断言、不自动重试；任一失败停止新端，已启动端收尾。完整接收后以同数据集五端齐备为七组配对分析门，不因单端成绩选择或改日程。后继只读collector绑定来源、best权重、协议与全图库CPU复算，见§41.620—621、625、629—630。M3后继尚未实现／排队，不把V17保持式、SIM低LR／STAGED／匹配反馈／FULLNORM重复改名立项。
+**执行顺序不变：** 24矩阵已收齐→三独立global-only已完整验收（3/3）→M2内容查询与结构化读出五配置×三集，共十五端→再依据结果落实M3同地址／预测器四条件。M2五配置为single_pooled、query_pooled、single_regions、query_regions、uniform_pooled，已有八份真实M0 PASS、四个完整M2官方终态；其余完整跑满50轮。持久队列240秒观察，不抢占、不跳断言、不自动重试；任一失败停止新端，已启动端收尾。完整接收后以同数据集五端齐备为七组配对分析门，不因单端成绩选择或改日程。后继只读collector绑定来源、best权重、协议与全图库CPU复算，见§41.620—621、625、629—631。M3后继尚未实现／排队，不把V17保持式、SIM低LR／STAGED／匹配反馈／FULLNORM重复改名立项。
 
 ### 0.1 历史阶段摘要（保留原始结论，不作为当前执行指令）
 
@@ -11978,3 +11978,23 @@ CPU四指标复算差最大2.94×10^-6个百分点。新增文本绑定：
 - 最新实查 `logs/correspondence_m2_progress_630_230702_20260928.json` SHA `6a4bf5ff07048bcadedd12faed851ae50ec5dbf248a8601a0aae61c7f906a8d5`；第七实际M0记录 `logs/correspondence_m2_seventh_actual_m0_630_20260928.json` SHA `5ebdb768e0f8bc28b26d260f07de294f43837d74e8d0fc421e70487d474f52ec`，观察／资格接收driver SHA `d9f6f445474010c45cb6abcfe20ac875b8bb9ecc890f3b08cca780d1d7122168`。22:55和23:02原始实查快照亦保留，十三份文本已本地镜像。
 
 科学模型／入口／队列／collector／分析器源码和固定15端合同未改变，继续完整收齐本批再分离内容选择与读出作用；M3后继保持待登记实现，Goal ACTIVE／UNMET。
+
+### 41.631 MSVR310内容查询完整接收及RGBNT100结构化读出接续（2026-09-28 23:33 CST）
+
+现有collector新增核验MSVR310／query_pooled的全部50轮、单一官方mAP best、严格重载、来源／初始化／科学源码及baseline SHA、完整query/gallery与时间段过滤和全图库CPU复算。最新快照7/18 VERIFIED_COMPLETE为三global及四M2；M2累计4/15，201、MSVR各2/5，100暂无完整新端。两组的剩余structured及uniform端继续执行，尚不进行七组配对、选方案或改日程。
+
+| 新正式端 | best轮 | mAP | Rank-1 | Rank-5 | Rank-10 | 可训练参数 | 训练及逐轮评价（秒） |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| MSVR310／query_pooled | 15 | 52.4521 | 67.6819 | 82.7411 | 87.1404 | 2,396,170 | 1,753.54 |
+
+该端仍低于发布Signal53.2424／72.4196及旧纯V8 seed42的53.7422／71.9120。其结果仅是本批一个完整条件，不能据此宣布内容对应或三角色协作有效／无效。只读审计新端1,000条step：Triplet非零975步，local／relation／cross_modal各1,000步非零，总loss重构最大误差4.606×10^-7。E15→E50总loss1.0571→0.9721，但正式mAP/R1 52.4521／67.6819→49.5510／65.9898；预测加权和0.02890→0.06614。保留完整轨迹；标量不同步不等于实际梯度／优化器更新份额或唯一掉点因果。
+
+23:29:03实查四卡自动接续，主协调器1979848为4 COMPLETE、4 RUNNING、7 PENDING、0 FAILED。GPU0已接续RGBNT100 single_regions，worker2173721、trainer2174558，23:28:46开始；其真实M0为118/118张量非零梯度、冻结baseline不变、reload差0，回执SHA `0275f049254aa0b66245fd115c4ca16108be158e282455da04e2d54bc7a7a629`，累计八份M2资格通过。其它三卡为100 single30/50、100 query11/50、201 single_regions20/50，实际PID2097361、2129539、2154361。约93.8GiB空闲，下一观察9月29日00:02靠近最早201预计00:05终点；未删除／重启任何任务。
+
+新增权重SHA `aea6ec740814cbac0c27f9fa367593e0e29a0c01feb81cd513cafa291486f8f9`，完整距离SHA `1ebb3f0fbb1727b7cb2429648f7b05549c7e22f9aaf822a2e27cb7164e31a940`，正式回执SHA `24233b1a1c50b1ecc9445d66010e7e48f0826bc7f271f663a164e4d1672f3edb`。CPU四指标差最大1.60×10^-6个百分点。五份新文本已镜像并绑定：
+
+- collector快照 `logs/correspondence_refinement_accepted_fourth_m2_MSVR310_query_631_20260928.json` SHA `15ab3a68c0784e20502a7ac204a4c62e9f6b28c82d1704b0883b48b2998ccea8`。
+- 完整loss报告 `logs/correspondence_m2_query_MSVR310_losses_631_20260928.json` SHA `f8463a11d3876d74fe243ddf9de08e2969135765d643ed6b63f8e14e15068b36`；原training／steps SHA `56da64c36a4c2b88ebceaacd4c1bf4b7894d7d5bbe4f13c1e4030e1da7578d8d`／`201a04eb720efcb2062ea40a3d4be734e5b4fff24551fff16235a9b308da4345`。
+- 实查快照 `logs/correspondence_m2_progress_631_232903_20260928.json` SHA `d69e91cbb893fa3ce76d655bee0c82a73d072abc225eb106509c47086dc4909e`；接收报告 `logs/correspondence_m2_fourth_acceptance_631_20260928.json` SHA `069825931440168446626fc61928f51d3697468577f1e43e26504c48bee237b2`；只读driver SHA `dfc7fa8178095236dbb7560e057b07c988cd99658b26392bc8ff1f1b1954b724`。
+
+科学源码、固定seed42、50轮best和15端合同未改变；待每数据集五端完整后再按登记七配对分析，M3同地址／独立预测器后继尚未实现／排队。Goal ACTIVE／UNMET。
