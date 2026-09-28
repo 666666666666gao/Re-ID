@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
-"""Plot the completed RGBNT201 000/011/111 trajectories without new inference."""
+"""Plot completed 000/011/111 trajectories without new inference."""
 
+import argparse
 import json
 from pathlib import Path
 
@@ -14,9 +15,14 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 def main():
-    matrix = json.loads((ROOT / "logs/correspondence_roles_matrix_011_window_20260928.json").read_text())
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--dataset", choices=("RGBNT201", "MSVR310"), default="RGBNT201")
+    parser.add_argument("--matrix", type=Path,
+                        default=ROOT / "logs/correspondence_roles_matrix_011_window_20260928.json")
+    args = parser.parse_args()
+    matrix = json.loads(args.matrix.read_text())
     rows = {row["variant"]: row for row in matrix["rows"]
-            if row["dataset"] == "RGBNT201" and row["status"] == "VERIFIED_COMPLETE"}
+            if row["dataset"] == args.dataset and row["status"] == "VERIFIED_COMPLETE"}
     colors = {"000": "#566573", "011": "#d97732", "111": "#2475b5"}
     labels = {"000": "000: role core, all modules off", "011": "011: M2 + M3",
               "111": "111: M1 + M2 + M3"}
@@ -39,11 +45,14 @@ def main():
                     for epoch in range(1, 51)]
         assert np.isfinite(id_means).all()
         axes[1].plot(range(1, 51), id_means, color=colors[bits], linewidth=1.6)
-    axes[0].axhline(69.64150314770879, linestyle="--", linewidth=1, color="#8c8c8c",
+    baseline = {"RGBNT201": 69.64150314770879, "MSVR310": 50.52198102035894}[args.dataset]
+    axes[0].axhline(baseline, linestyle="--", linewidth=1, color="#8c8c8c",
                     label="Frozen pure CLIP ReID baseline")
     axes[0].set_ylabel("Official mAP (%)")
-    axes[0].set_title("RGBNT201 | seed 42 | all 50 epochs completed")
-    axes[0].legend(fontsize=8, loc="upper right", frameon=False)
+    axes[0].set_title(f"{args.dataset} | seed 42 | all 50 epochs completed")
+    legend = {"RGBNT201": {"loc": "upper right"},
+              "MSVR310": {"loc": "upper left", "bbox_to_anchor": (1.01, 1)}}
+    axes[0].legend(fontsize=8, frameon=False, **legend[args.dataset])
     axes[1].set_ylabel("Mean identity loss")
     axes[1].set_xlabel("Training epoch")
     axes[1].set_yscale("log")
@@ -51,7 +60,7 @@ def main():
     for ax in axes:
         ax.grid(alpha=0.2)
         ax.spines[["top", "right"]].set_visible(False)
-    path = ROOT / "docs/assets/correspondence_roles_RGBNT201_trajectories_20260928.png"
+    path = ROOT / f"docs/assets/correspondence_roles_{args.dataset}_trajectories_20260928.png"
     path.parent.mkdir(exist_ok=True)
     fig.savefig(path, dpi=180)
     plt.close(fig)
