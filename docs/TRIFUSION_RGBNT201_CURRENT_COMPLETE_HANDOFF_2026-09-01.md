@@ -2,7 +2,7 @@
 
 ## 0. 一页结论
 
-**本页更新至§41.624，文档同步2026-09-28 21:05 CST；24端完整验收20:34:41，两项global-only严格验收21:01:42，进程实查21:01:34。** 历史规则和数字保留原样，当前合同以后文登记和服务器回执为准。研究目标仍 **ACTIVE／UNMET**；工程通过、单数据集增量不代替三数据集强基线与SOTA要求。
+**本页更新至§41.625，文档同步2026-09-28 21:27 CST；24端完整验收20:34:41，两项global-only严格验收21:01:42，进程实查21:20。** 历史规则和数字保留原样，当前合同以后文登记和服务器回执为准。研究目标仍 **ACTIVE／UNMET**；工程通过、单数据集增量不代替三数据集强基线与SOTA要求。
 
 **现行合同：** 每个正式候选完整50轮，使用作者完整query/gallery及camera／MSVR时间段过滤，以官方fused mAP最高的同一checkpoint报告全部指标，随后严格重载。RGBNT201报告mAP／R1／R5／R10，RGBNT100及MSVR310报告mAP／R1；不跨epoch或seed拼列。官方集已参与逐轮选点和历史方法选择，属于已消费基准上的探索性结果。
 
@@ -21,11 +21,11 @@
 | 当前卡与真实任务 | 持久后继 |
 | --- | --- |
 | GPU0：独立global-only／RGBNT201已50轮及重载完成 | E2为72.4944/74.0431/82.4163/87.9187；原进程正常结束 |
-| GPU1：独立global-only／RGBNT100仍训练，PID2026769，20:53已11/50 | 控制器2024658；预计22:06附近训练结束，尚须重载验收 |
+| GPU1：独立global-only／RGBNT100仍训练，PID2026769，21:09已21/50 | 控制器2024658；按21:09估计22:01附近训练结束，尚须重载验收 |
 | GPU2：独立global-only／MSVR310已50轮及重载完成 | E10为51.9480/67.3435；原进程正常结束 |
 | GPU3：当前阶段仅三个global-only，暂无训练 | 三global全部验收后进入十五M2端、最多四卡并行 |
 
-接续器1979848仍RUNNING/global。201和MSVR的三模式M0／train／evaluate全部COMPLETE、exit0，collector对源码／baseline／协议／权重及完整图库CPU计分真实验收；21:01:34实际仅RGBNT100原训练器2026769与控制器2024658仍在GPU1运行，另三卡等待统一阶段门。十五M2端全部PENDING，没有新M2真实M0或训练。三个global M0的56/56非零梯度、冻结基线及重载0证据已归档；完成对照不代表三集SOTA目标完成。
+接续器1979848仍RUNNING/global。201和MSVR的三模式M0／train／evaluate全部COMPLETE、exit0，collector对源码／baseline／协议／权重及完整图库CPU计分真实验收；21:20实际ps确认RGBNT100原训练器2026769与控制器2024658同原启动命令仍存活，另三卡等待统一阶段门。十五M2端全部PENDING，没有新M2真实M0或训练。三个global M0的56/56非零梯度、冻结基线及重载0证据已归档；完成对照不代表三集SOTA目标完成。
 
 **执行顺序不变：** 24矩阵已收齐→三独立global-only完整验收（2/3）→M2内容查询与结构化读出五配置×三集，共十五端→再依据结果落实M3同地址／预测器四条件。M2五配置为single_pooled、query_pooled、single_regions、query_regions、uniform_pooled，已完成CPU初始化／梯度／重载与独立review准备；真实新M2 M0／训练尚未开始。持久队列240秒观察，不抢占、不跳断言、不自动重试；任一失败停止新端，已启动端收尾。后继只读collector绑定来源、best权重、协议与全图库CPU复算，见§41.620—621。M3后继尚未实现／排队，不把V17保持式、SIM低LR／STAGED／匹配反馈／FULLNORM重复改名立项。
 
@@ -11834,3 +11834,13 @@ M3后继应至少区分四种条件：现行各自地址＋直接回归；只匹
 **证据与复现：** 首次单端快照 `logs/correspondence_refinement_global_accepted_20260928.json` SHA `406f60f35282c08b3c804f106c79119a0a9471aa4929405e3500e022c39f0835`；两端快照 `correspondence_refinement_global_accepted_RGBNT201_20260928.json` SHA `5c7388bf19ce1b31ece2b74642e694451e18d5dd71f0b5d9e40bceb3393f8321`。四配对为 `correspondence_global_{RGBNT201,MSVR310}_to_{100,111}_20260928.json`，另有 `correspondence_global_losses_two_endpoints_20260928.json` 与两次acceptance JSON，全在logs并镜像本地.codex_tmp。使用原 `collect_correspondence_refinement.collect`／`analyze_correspondence_distances.compare`／标量audit，未新增模型推理；调用driver完整源码v1/v2归档logs，SHA分别7280514168…与12ac920908…。v2按目标dataset只处理新完成端，用独立dataset快照名保留首次证据，不重算／覆盖MSVR既有两配对。
 
 21:01实际只剩100原训练器2026769／控制器2024658，接续1979848仍活；GPU0/2/3因当前三global阶段门等待。100预计训练22:06附近完成，须再重载／验收，估计不是完成证据；先让三端完整验收，再自动放行五配置×三集十五M2端、最多四卡并行。当前M2仍15/15 PENDING，不因201的小增量取消任何登记配置，也不追加种子或同时重写M3。M3后继仍以地址和预测职责四条件分离，不把无角色的后期退化强行归给M3。单seed、各自官方best的所有比较均为描述性，固定模型身份bootstrap不是训练seed不确定性。只追加主MD并三处同步，Goal ACTIVE／UNMET。
+
+### 41.625 M2五配置的完整结果配对接收工具（2026-09-28 21:27 CST）
+
+上一目标轮为verified wait：21:20通过实际ps核对接续1979848、100控制2024658、训练2026769仍存活，没有根据状态文件重启；本轮21:21再确认同三个句柄。训练轮次继续引用21:09的21/50，没有提前读取或采用新的中途best。已安排21:58预计终点前窗口观察；线性预计22:01不是完成回执。三global统一阶段门仍有效，十五M2没有被此工具启动。
+
+新增只读 `tools/analyze_correspondence_refinement.py`，复用已经验证的 `analyze_correspondence_distances.compare`。每次只接收某数据集完整五配置面板，要求三global先已正式验收、该集五M2全部VERIFIED_COMPLETE、原24矩阵完整；核对同协议、baseline、seed42、50轮、mAP best规则、宽度、参数量、初始参数SHA、LR、weight decay、M1/M2/M3及预测权重。新目录保存七个逐query／逐身份完整图库CPU配对及summary，不修改模型、距离、选点或训练文件。固定对照为single→uniform（局部候选均值）、uniform→query（相同九候选上的内容选择）、single→query（候选和选择组合）、single_pooled→single_regions（单点下结构化读出）、query_pooled→query_regions（内容选择下结构化读出）、single_regions→query_regions（区域读出下候选和选择组合）、原111→single_pooled（不变forward复现控制）。这是原十五端的接收与解释工具，不新增候选或种子。
+
+原生环境关闭CUDA可见设备后，CLI导入通过；用真实尚未完成的两global验收快照调用，明确在global完整性assert处退出1，未创建结果目录。guard外层成功，记录 `logs/correspondence_m2_analysis_incomplete_guard_20260928.json`，源码SHA `364297dbf5cfc65c9e81adfe8e2a666de42b3d333abaab47e435bfd823e7c934`；输入快照SHA仍5c7388bf…，原24矩阵f1b7d364…。没有真实已完成M2面板可测，所以只声称原生导入与拒绝不完整面板通过，不声称七个M2配对已有结果；远端暂存.git独立脚本，正式源码随本节同步，所有在训科学入口保持原SHA。
+
+边界：query和structured仍改变M3输入／目标，教师与学生仍独立预测地址；这里不能把配置差解释为完全隔离的对应语义机制。相同参数初始化不保证后续数值路径相同，固定官方best单seed配对和身份bootstrap也不代表未选择测试或训练seed显著性。当前完整24、global2/3及§624科学结论不变；仅完成分析接收准备，研究Goal ACTIVE／UNMET。
