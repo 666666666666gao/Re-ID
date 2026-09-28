@@ -2,7 +2,7 @@
 
 ## 0. 一页结论
 
-**本页更新至§41.623，文档同步2026-09-28 20:38 CST；24端完整验收20:34:41，三global-only真实M0／训练实查20:35:06。** 历史规则和数字保留原样，当前合同以后文登记和服务器回执为准。研究目标仍 **ACTIVE／UNMET**；工程通过、单数据集增量不代替三数据集强基线与SOTA要求。
+**本页更新至§41.624，文档同步2026-09-28 21:05 CST；24端完整验收20:34:41，两项global-only严格验收21:01:42，进程实查21:01:34。** 历史规则和数字保留原样，当前合同以后文登记和服务器回执为准。研究目标仍 **ACTIVE／UNMET**；工程通过、单数据集增量不代替三数据集强基线与SOTA要求。
 
 **现行合同：** 每个正式候选完整50轮，使用作者完整query/gallery及camera／MSVR时间段过滤，以官方fused mAP最高的同一checkpoint报告全部指标，随后严格重载。RGBNT201报告mAP／R1／R5／R10，RGBNT100及MSVR310报告mAP／R1；不跨epoch或seed拼列。官方集已参与逐轮选点和历史方法选择，属于已消费基准上的探索性结果。
 
@@ -12,20 +12,22 @@
 
 **完整模块结论：** 四个其他模块条件的平均ΔmAP：201 M1 +1.1421、M2 −0.1172、M3 −0.4828；100 M1 +1.1655、M2 +0.0398、M3 +0.1065；MSVR M1 +0.2133、M2 +0.0597、M3 +0.2943。201与100的M1四种条件mAP全部提高，但MSVR的M1四种条件R1全部下降，平均−1.0575。201 M2×M3 mAP交互−1.0986，MSVR M1×M3 −0.9418；不能把某模块一概称有效或有害，也不能把平均配置差当作唯一因果。容量、预测输入和随机数消耗不同，只有一个训练seed，所有指标都各自选官方best。
 
+**独立global-only已2/3正式验收：** 201 E2为72.4944/74.0431/82.4163/87.9187，MSVR E10为51.9480/67.3435。加入完整角色路径的100相对独立global-only：201仅+0.1124 mAP／R1不变，首位修复1／新增1；MSVR +0.6816／+1.0152，修复12／新增6。111相对global-only：201 +0.0566 mAP／−0.2392 R1，MSVR +0.3939／+1.1844。这是真正独立训练对照，但尚未控制额外容量；进一步支持角色读出增量在201很薄，不能用同权重global分解替代独立训练结果。两个无角色／无M2/M3的global-only也出现loss下降、末轮检索退化，因此后期下降不能全部归因于M3。RGBNT100仍完整训练，三端全通过后再进入M2，见§41.624。
+
 **监督诊断已收齐：** 24端共81,664条step标量完整重构，最大总loss误差4.55×10^-7以内；M3开启时三项预测在每个记录step均非零。RGBNT100八个配置共52,472步Triplet全部0，这说明该数据集当前来源度量项未激活，不直接证明正式掉点的唯一原因。M3已有适配器及角色EMA教师；受控CPU同内容、不同地址会产生回归／关系loss并改变local-mask支持，见§41.622，不能把toy结果冒称真实图片或掉点归因。
 
 **当前服务器：** `gaob@172.19.12.138:2026`，项目`/data/gaob/Re-ID/Trifusion`，环境`/data/gaob/Re-ID/conda-envs/tri_reid`。纯baseline、作者权重保留于`pertrained-model`，best与原图／距离留远端；MSVR完整路径来源OOF三折已重建保留。20:32可用空间约94.08GiB，各新端启动前要求≥10GiB，未删除必要权重。旧单卡停用，只维护本MD并与指定Desktop、远端、GitHub核对同字节。
 
 | 当前卡与真实任务 | 持久后继 |
 | --- | --- |
-| GPU0：独立global-only／RGBNT201，训练PID2026770，20:35已4/50 | 当前控制器2024657；按50轮、重载完成 |
-| GPU1：独立global-only／RGBNT100，训练PID2026769，20:35已1/50 | 当前控制器2024658；按50轮、重载完成 |
-| GPU2：独立global-only／MSVR310，训练PID2026643，20:35已5/50 | 当前控制器2024659；按50轮、重载完成 |
+| GPU0：独立global-only／RGBNT201已50轮及重载完成 | E2为72.4944/74.0431/82.4163/87.9187；原进程正常结束 |
+| GPU1：独立global-only／RGBNT100仍训练，PID2026769，20:53已11/50 | 控制器2024658；预计22:06附近训练结束，尚须重载验收 |
+| GPU2：独立global-only／MSVR310已50轮及重载完成 | E10为51.9480/67.3435；原进程正常结束 |
 | GPU3：当前阶段仅三个global-only，暂无训练 | 三global全部验收后进入十五M2端、最多四卡并行 |
 
-接续器1979848于20:32已从WAITING_MATRIX进入global阶段。三个真实CLIP／CUDA／AMP M0都完成8批，56/56可训练参数张量有非零梯度、冻结基线未变、严格重载最大差0；三个独立训练已启动，但尚无完整正式终点。共同初始化与原100的backbone／neck／classifier SHA匹配，角色路径完全移除，不能用同一模型global输出分解代替本控制。现阶段只登记三端，第四卡等待统一阶段门。
+接续器1979848仍RUNNING/global。201和MSVR的三模式M0／train／evaluate全部COMPLETE、exit0，collector对源码／baseline／协议／权重及完整图库CPU计分真实验收；21:01:34实际仅RGBNT100原训练器2026769与控制器2024658仍在GPU1运行，另三卡等待统一阶段门。十五M2端全部PENDING，没有新M2真实M0或训练。三个global M0的56/56非零梯度、冻结基线及重载0证据已归档；完成对照不代表三集SOTA目标完成。
 
-**执行顺序不变：** 24矩阵已收齐→三独立global-only完整验收→M2内容查询与结构化读出五配置×三集，共十五端→再依据结果落实M3同地址／预测器四条件。M2五配置为single_pooled、query_pooled、single_regions、query_regions、uniform_pooled，已完成CPU初始化／梯度／重载与独立review准备；真实新M2 M0／训练尚未开始。持久队列240秒观察，不抢占、不跳断言、不自动重试；任一失败停止新端，已启动端收尾。后继只读collector绑定来源、best权重、协议与全图库CPU复算，见§41.620—621。M3后继尚未实现／排队，不把V17保持式、SIM低LR／STAGED／匹配反馈／FULLNORM重复改名立项。
+**执行顺序不变：** 24矩阵已收齐→三独立global-only完整验收（2/3）→M2内容查询与结构化读出五配置×三集，共十五端→再依据结果落实M3同地址／预测器四条件。M2五配置为single_pooled、query_pooled、single_regions、query_regions、uniform_pooled，已完成CPU初始化／梯度／重载与独立review准备；真实新M2 M0／训练尚未开始。持久队列240秒观察，不抢占、不跳断言、不自动重试；任一失败停止新端，已启动端收尾。后继只读collector绑定来源、best权重、协议与全图库CPU复算，见§41.620—621。M3后继尚未实现／排队，不把V17保持式、SIM低LR／STAGED／匹配反馈／FULLNORM重复改名立项。
 
 ### 0.1 历史阶段摘要（保留原始结论，不作为当前执行指令）
 
@@ -11805,3 +11807,30 @@ M3后继应至少区分四种条件：现行各自地址＋直接回归；只匹
 当前global阶段只有三个预登记端，GPU3不插入提前M2；三集各自跑满50轮并重载后，持久接续器再放行十五M2端、最多四卡并行。后续仍按240秒或预计终点里程碑观察；中途best不补主表，不因观察超时重启。M3地址／预测器四条件仍留下一阶段，不与本次内容查询／区域读出同时重写。
 
 **证据路径：** `logs/correspondence_roles_matrix_full24_20260928.json`（SHA `f1b7d364dc30a9e46ed9d8c704fce9ef4e00cff9b91faf97316fa992498cbfa1`），`correspondence_roles_modules_full24_20260928.json`、`correspondence_roles_losses_full24_20260928.json`、`correspondence_roles_RGBNT100_000_001_full24_20260928.json`、`..._001_011_...json`、`..._001_101_...json`及`correspondence_roles_full24_and_global_m0_20260928.json`同在logs，已镜像本地.codex_tmp。使用既有collect_correspondence_roles／summarize_correspondence_modules／audit_correspondence_training_losses／analyze_correspondence_distances四个只读工具；科学训练源码未改。只追加主MD并更新首页、三处同步；Goal仍ACTIVE／UNMET。
+
+### 41.624 两项独立global-only完整结果及角色路径额外贡献（2026-09-28 21:05 CST）
+
+上一目标轮为verified wait：20:44:02通过实际ps确认接续1979848、三控制器与三训练器均存活，不只依赖JSON；20:53按原定窗口观察。20:53:23 MSVR已48/50、201已39/50、100已11/50，沿同一进程等待完整终点，没有重启或改科学定义。20:57:32 MSVR三模式正常完成，20:57:40只读collector首次验收1/18；21:01:34新增201正常完成，21:01:42独立验收2/18。两端均满50轮、同一最高mAP checkpoint严格重载，未用临时best补表。
+
+**独立训练结果与原角色控制：** global-only仅保留M1共享backbone／neck／classifier，移除全部角色核、角色联合读出和预测教师；100保留角色、关闭M2/M3；111全部开启。公共部分初始SHA按100匹配，loader、优化器、日程、纯baseline、protocol及1536D输出保持；角色容量和随机数消耗并未完全控制，所以这是完整路径配置对照，不是单一角色算子的因果分离。global-only不是旧纯CLIP baseline，也不是同一111权重取出的global分量。
+
+| 数据集 | 独立训练配置 | best轮 | mAP | R1 | R5 | R10 |
+| --- | --- | ---: | ---: | ---: | ---: | ---: |
+| RGBNT201 | M1 global-only | 2 | 72.4944 | 74.0431 | 82.4163 | 87.9187 |
+| RGBNT201 | 100 | 2 | 72.6068 | 74.0431 | 82.6555 | 87.9187 |
+| RGBNT201 | 111 | 2 | 72.5510 | 73.8038 | 83.1340 | 87.7990 |
+| MSVR310 | M1 global-only | 10 | 51.9480 | 67.3435 | - | - |
+| MSVR310 | 100 | 10 | 52.6296 | 68.3587 | - | - |
+| MSVR310 | 111 | 15 | 52.3419 | 68.5279 | - | - |
+
+**RGBNT201角色路径增量很薄。** global-only→100仅+0.1124 mAP／R1不变／+0.2392 R5／R10不变，修复1条首位、新增1条；query AP改善280、下降151，身份改善16、下降9，身份宏均值+0.1103点，固定模型身份bootstrap[−0.0212,0.2442]。global-only→111为+0.0566 mAP／−0.2392 R1／+0.7177 R5／−0.1196 R10，修复1、新增3，身份宏均值+0.0539，区间[−0.1315,0.2374]。此前同一111的global/fused分解提示角色读出作用小，本次独立训练对照给出同方向的更直接证据；但不否定其它角色输入／读出方案，也不把正负微差作稳定泛化结论。
+
+**MSVR角色路径有正增量。** global-only→100提高0.6816 mAP／1.0152 R1，首位修复12、新增6，query AP改善335、下降201，身份改善33、下降17，身份宏均值+0.5782，固定模型身份bootstrap[0.1582,1.0088]。global-only→111提高0.3939 mAP／1.1844 R1，修复25、新增18；query AP改善291、下降272，身份宏均值反为−0.1597，区间[−1.5576,1.3792]。全开相对100的mAP仍−0.2876、R1+0.1692。因此角色核不是在MSVR完全无信息，但原M2/M3组合未保住100的全部mAP收益，身份等权与query等权也不同。当前新框架仍未达到旧纯V8 seed42的53.7422/71.9120或发布Signal的53.2424/72.4196；不提前作SOTA或三角色必要性主张。
+
+**去掉角色和预测，后期退化仍存在。** 两个global-only完整3,649步标量复核通过，201 Triplet非零1,449/2,649步，MSVR988/1,000；最大loss重构误差2.3842×10^-7，没有M3项。201 E2→E50 loss 4.1726→0.8557，mAP/R1 72.4944/74.0431→69.1212/69.4976；MSVR E10→E50 loss 1.1759→0.9154，mAP/R1 51.9480/67.3435→48.4215/64.1286。这使“后期下降全由角色交换或遮蔽预测造成”的解释不充分；仍需区分共同适配、来源目标和训练日程，不能凭趋势确定唯一原因。保留50轮best规则，不据已消费官方曲线改当前十五M2端的LR／loss／采样。
+
+两global可训练参数分别1,170,240（201）和1,145,664（MSVR），训练＋逐轮评价1,534.649865秒、1,261.581208秒，重载另计；并发负载不同，不把墙钟差当公平GPU计算量因果。201 best权重SHA `685eabd8c7c251a4fe5b58cb4b27107b07a2633bf7405a9f911b9fc99196b99a`，distance `d7be9c0c389d4434158882fbadf12433a6c29fe7b41262f8890655d8f2619080`，receipt `85c28b477fa29fd80828ba20ff42bf20e88d198d837695ed1f13e19ef792e411`；MSVR best `87960408ba6eb73c6a0f59611ee3d966c3c3f4bb5c68b0a38e06d1baeac8cff6`，distance `bf7292595baa0c4b2f9b4cd8b03a512f48e37ad8effdf096146c582f1552341e`，receipt `249ffce96ee707c5af9d30da97db6c9e85194a1a7ce557e4bf2dd52ec0ab38fd`。三模式各exit0、完整query/gallery及身份/camera/时间段顺序绑定通过、全图库CPU指标差<1e−5；同身份同时间段过滤保留MSVR所有合法负例。
+
+**证据与复现：** 首次单端快照 `logs/correspondence_refinement_global_accepted_20260928.json` SHA `406f60f35282c08b3c804f106c79119a0a9471aa4929405e3500e022c39f0835`；两端快照 `correspondence_refinement_global_accepted_RGBNT201_20260928.json` SHA `5c7388bf19ce1b31ece2b74642e694451e18d5dd71f0b5d9e40bceb3393f8321`。四配对为 `correspondence_global_{RGBNT201,MSVR310}_to_{100,111}_20260928.json`，另有 `correspondence_global_losses_two_endpoints_20260928.json` 与两次acceptance JSON，全在logs并镜像本地.codex_tmp。使用原 `collect_correspondence_refinement.collect`／`analyze_correspondence_distances.compare`／标量audit，未新增模型推理；调用driver完整源码v1/v2归档logs，SHA分别7280514168…与12ac920908…。v2按目标dataset只处理新完成端，用独立dataset快照名保留首次证据，不重算／覆盖MSVR既有两配对。
+
+21:01实际只剩100原训练器2026769／控制器2024658，接续1979848仍活；GPU0/2/3因当前三global阶段门等待。100预计训练22:06附近完成，须再重载／验收，估计不是完成证据；先让三端完整验收，再自动放行五配置×三集十五M2端、最多四卡并行。当前M2仍15/15 PENDING，不因201的小增量取消任何登记配置，也不追加种子或同时重写M3。M3后继仍以地址和预测职责四条件分离，不把无角色的后期退化强行归给M3。单seed、各自官方best的所有比较均为描述性，固定模型身份bootstrap不是训练seed不确定性。只追加主MD并三处同步，Goal ACTIVE／UNMET。
