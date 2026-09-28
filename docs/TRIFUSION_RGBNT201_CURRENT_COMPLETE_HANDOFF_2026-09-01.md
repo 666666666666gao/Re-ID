@@ -2,7 +2,7 @@
 
 ## 0. 一页结论
 
-**本页更新至§41.634，文档同步2026-09-29 00:46 CST；24端和三项global-only全部验收，15端M2已7项正式接收，四卡实查00:44:03继续训练。** 历史规则和数字保留原样，当前合同以后文登记和服务器回执为准。研究目标仍 **ACTIVE／UNMET**；工程通过、单数据集增量不代替三数据集强基线与SOTA要求。
+**本页更新至§41.635，文档同步2026-09-29 01:26 CST；24端和三项global-only全部验收，15端M2已8项正式接收，四卡实查01:22:03继续训练。** 历史规则和数字保留原样，当前合同以后文登记和服务器回执为准。研究目标仍 **ACTIVE／UNMET**；工程通过、单数据集增量不代替三数据集强基线与SOTA要求。
 
 **现行合同：** 每个正式候选完整50轮，使用作者完整query/gallery及camera／MSVR时间段过滤，以官方fused mAP最高的同一checkpoint报告全部指标，随后严格重载。RGBNT201报告mAP／R1／R5／R10，RGBNT100及MSVR310报告mAP／R1；不跨epoch或seed拼列。官方集已参与逐轮选点和历史方法选择，属于已消费基准上的探索性结果。
 
@@ -20,18 +20,18 @@
 
 **训练成本账本：** 24消融及3独立global共27端的实际训练／逐轮评价时间已绑定日志重建。M3四条件平均开启／关闭耗时比分别201 2.0452、100 1.9192、MSVR 1.4695，对应平均ΔmAP −0.4828、+0.1065、+0.2943。记录包含逐轮评价且并行负载不同，非受控测速；参数仅可训练部分，不是总参数/FLOPs。进一步支持检验预测任务的职责和成本，不据此取消正在运行的15端或改日程，见§41.628。
 
-**当前服务器：** `gaob@172.19.12.138:2026`，项目`/data/gaob/Re-ID/Trifusion`，环境`/data/gaob/Re-ID/conda-envs/tri_reid`。纯baseline、作者权重保留于`pertrained-model`，best与原图／距离留远端；MSVR完整路径来源OOF三折已重建保留。00:44可用空间约93.7GiB，各新端启动前要求≥10GiB，未删除必要权重。旧单卡停用，只维护本MD并与指定Desktop、远端、GitHub核对同字节。
+**当前服务器：** `gaob@172.19.12.138:2026`，项目`/data/gaob/Re-ID/Trifusion`，环境`/data/gaob/Re-ID/conda-envs/tri_reid`。纯baseline、作者权重保留于`pertrained-model`，best与原图／距离留远端；MSVR完整路径来源OOF三折已重建保留。01:22可用空间约93.6GiB，各新端启动前要求≥10GiB，未删除必要权重。旧单卡停用，只维护本MD并与指定Desktop、远端、GitHub核对同字节。
 
-| 当前卡与真实任务（00:44:03实查） | 持久后继 |
+| 当前卡与真实任务（01:22:03实查） | 持久后继 |
 | --- | --- |
-| GPU0：M2 single_regions／RGBNT100，PID2174558，23/50 | 完整50轮后严格重载 |
-| GPU1：M2 query_regions／RGBNT201，PID2222344，15/50 | 完整50轮后严格重载 |
-| GPU2：M2 query_pooled／RGBNT100，PID2129539，29/50 | 完整50轮后严格重载 |
-| GPU3：M2 query_regions／RGBNT100，PID2233283，0/50 | MSVR single_regions完成后自动接续，新M0 PASS |
+| GPU0：M2 single_regions／RGBNT100，PID2174558，35/50 | 完整50轮后严格重载 |
+| GPU1：M2 query_regions／MSVR310，PID2262749，2/50 | 201 query_regions正式完成后自动接续，新M0 PASS |
+| GPU2：M2 query_pooled／RGBNT100，PID2129539，38/50 | 完整50轮后严格重载 |
+| GPU3：M2 query_regions／RGBNT100，PID2233283，10/50 | 完整50轮后严格重载 |
 
-接续器1979848实际命令存在，RUNNING/m2；十五M2为7 COMPLETE、4 RUNNING、4 PENDING、0 FAILED，四张3090实际GPU进程均对应上述训练器。新增MSVR single_regions E8为52.1684／67.3435／82.5719／86.9712，完整50轮、best重载与全图库CPU复算通过。最新10/18已验收为三global加七M2，201为3/5、MSVR3/5、100为1/5。100 query_regions第十一份真实M0为118/118参数张量非零梯度、冻结基线不变、重载差0；资格不等于检索收益。下一观察01:16，靠近201 query_regions预计01:19训练终点；其它100端约02:12／02:16或尚未形成稳定ETA，均不代替完成回执。
+接续器1979848实际命令存在，RUNNING/m2；十五M2为8 COMPLETE、4 RUNNING、3 PENDING、0 FAILED，四张3090实际GPU进程均对应上述训练器。新增201 query_regions E2为72.6081／73.9234／83.0144／87.9187，完整50轮、best重载与全图库CPU复算通过。最新11/18已验收为三global加八M2，201为4/5、MSVR3/5、100为1/5。MSVR query_regions第十二份真实M0为118/118参数张量非零梯度、冻结基线不变、重载差0；资格不等于检索收益。下一观察01:46，靠近MSVR query_regions预计01:49:49训练终点；其它100端约02:10／02:14／04:07，均为线性估计，不代替完成回执。
 
-**执行顺序不变：** 24矩阵已收齐→三独立global-only已完整验收（3/3）→M2内容查询与结构化读出五配置×三集，共十五端→再依据结果落实M3同地址／预测器四条件。M2五配置为single_pooled、query_pooled、single_regions、query_regions、uniform_pooled，已有十一份真实M0 PASS、七个完整M2官方终态；其余完整跑满50轮。持久队列240秒观察，不抢占、不跳断言、不自动重试；任一失败停止新端，已启动端收尾。完整接收后以同数据集五端齐备为七组配对分析门，不因单端成绩选择或改日程。后继只读collector绑定来源、best权重、协议与全图库CPU复算，见§41.620—621、625、629—634。M3后继尚未实现／排队，不把V17保持式、SIM低LR／STAGED／匹配反馈／FULLNORM重复改名立项。
+**执行顺序不变：** 24矩阵已收齐→三独立global-only已完整验收（3/3）→M2内容查询与结构化读出五配置×三集，共十五端→再依据结果落实M3同地址／预测器四条件。M2五配置为single_pooled、query_pooled、single_regions、query_regions、uniform_pooled，已有十二份真实M0 PASS、八个完整M2官方终态；其余完整跑满50轮。持久队列240秒观察，不抢占、不跳断言、不自动重试；任一失败停止新端，已启动端收尾。完整接收后以同数据集五端齐备为七组配对分析门，不因单端成绩选择或改日程。后继只读collector绑定来源、best权重、协议与全图库CPU复算，见§41.620—621、625、629—635。M3后继尚未实现／排队，不把V17保持式、SIM低LR／STAGED／匹配反馈／FULLNORM重复改名立项。
 
 ### 0.1 历史阶段摘要（保留原始结论，不作为当前执行指令）
 
@@ -12066,3 +12066,28 @@ CPU四指标复算差最大2.94×10^-6个百分点。新增文本绑定：
 - `logs/correspondence_refinement_accepted_seventh_m2_MSVR310_regions_634_20260929.json` SHA `a86841361a6225079c3b197b332913303822a9261c490b3a45297472a1913b89`。
 
 本次只接收新端、实际M0与两个实查窗口，既有24端／三global／六M2不重跑。13项科学源码、seed42、50轮best、loader及15端合同不变，27端成本账暂不合并新M2；M3四条件仍待本批证据后落实。Goal ACTIVE／UNMET。
+
+### 41.635 RGBNT201内容查询及区域读出正式接收，MSVR自动接续（2026-09-29 01:26 CST）
+
+01:17:22实查201 query_regions已完成50轮，并于01:17:19进入最佳权重严格重载；此时尚无完成评价回执。01:22:03该端train/evaluate及子队列已COMPLETE，18端collector于01:22:39核对完整50轮、最高官方fused mAP同一权重、严格重载、来源／初始化／科学源码／baseline及protocol SHA与完整query/gallery同身份同camera过滤CPU复算，新增第八项M2验收。两个观察窗口在覆盖前分别留存，未把后续完成状态倒填到01:17。最新11/18 VERIFIED_COMPLETE为三global及八M2；十五M2为8/15，201为4/5、MSVR3/5、100为1/5。201仍缺uniform_pooled，尚无任一数据集五端齐备，继续固定矩阵，不提前做七配对或选择配置。
+
+| 新正式端 | best轮 | mAP | Rank-1 | Rank-5 | Rank-10 | 可训练参数 | 训练及逐轮评价（秒） |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| RGBNT201／query_regions | 2 | 72.6081 | 73.9234 | 83.0144 | 87.9187 | 2,420,746 | 2,907.88 |
+
+该端仍明显低于发布Signal的80.3029 mAP／85.1675 R1。只读审计新增全部2,649条step：Triplet非零1,364步，local／relation／cross_modal各2,649步非零，总loss重构最大误差4.296×10^-7。E2→E50总loss4.2056→0.8836，而正式mAP/R1 72.6081／73.9234→69.0772／68.7799；预测加权和0.03514→0.02966，relation 0.005318→0.010122，local 0.12026→0.10306、cross-modal 0.22581→0.18339。不能以总loss、预测标量趋势认定某个角色、读出或预测任务为唯一原因，也不将非零标量换算为有效更新份额。
+
+GPU1自动接续MSVR query_regions：worker2261776／trainer2262749，01:20:54开始完整训练，01:22为2/50。第十二份真实M2 M0为118/118张量非零梯度、冻结baseline不变、reload差0，01:24:00绑定回执SHA `1a6e4efc69c79167a420e9d5c32003b2bcc7cec276e06f4e89964db122670524`。主协调器1979848为8 COMPLETE、4 RUNNING、3 PENDING、0 FAILED；其它三卡为100 single_regions35/50、query_pooled38/50、query_regions10/50。全部实际命令与GPU进程核对；约93.6GiB空闲。唯一下一观察01:46，靠近最早MSVR预计01:49:49训练终点，不反复读取临时best、不抢占或跳过完整训练。
+
+新增best SHA `435f5b1905ee744b89ee3e059a4525a9eccd373a0fcadf57bcf94a26f742c542`，完整距离SHA `a4d428f96a5ca3ba686ee89816942b8adee3cd3e31e58a3bf0623fe02aecca14`，正式回执SHA `50ed47a68ddcb69ffac4fd1990c7c50783d9064db82d33a23edf945274a103e6`；全图库CPU四指标差最大2.938×10^-6个百分点。原training／steps SHA `0dc3dfd53a197dc30c42da8dcead4215dcea263a78a6075ebb7f035e5be86f71`／`c54b96356df70fbb8903fde1af7628ba9f99f7b465d050deea43ec8e3eb310d1`。八份新增文本均镜像并逐项绑定：
+
+- `logs/correspondence_m2_eighth_acceptance_635_20260929.json` SHA `75e37aafca2a79fb2e6939fc03014bb7cfc98b4f6102dc4cf170529a9da27079`。
+- `logs/correspondence_m2_eighth_acceptance_driver_635.py` SHA `ae0ed166c858f8f45dc58bccd2db103a59a674ce0aa4f1ab7d0bcd2c9ca10721`。
+- `logs/correspondence_m2_progress_635_011722_20260929.json` SHA `d354f7c8251faa60dad9b2e43c6440e6fce7fb80f56aab98f804380c9f696a66`。
+- `logs/correspondence_m2_progress_635_012203_20260929.json` SHA `0aa6a3051d7adc4419a865a1dd62a84e68e507a039e01be2026b0ba9725b4a17`。
+- `logs/correspondence_m2_query_regions_RGBNT201_losses_635_20260929.json` SHA `a4f19a2077f3af7ffe6ce4b7894093b9f668dedb429c6962d337724037baf328`。
+- `logs/correspondence_m2_twelfth_actual_m0_635_20260929.json` SHA `e2a7fe70d349be44ecde857dace4246bdae1b351a9e1426f2e77011d9921c1c5`。
+- `logs/correspondence_m2_twelfth_actual_m0_driver_635.py` SHA `9cc48fdafd01990f56161414cd890b5cf0d93bfe5126ac69f7ff78774505b802`。
+- `logs/correspondence_refinement_accepted_eighth_m2_RGBNT201_query_regions_635_20260929.json` SHA `e048167c4983d81e6942c3c128b1a95aa725f5c0259bf065d4745d39108a3ff9`。
+
+本次只接收新端、实际M0与两个实查窗口，既有24端／三global／七M2不重跑。13项科学源码、seed42、50轮best、loader及15端合同不变，27端成本账暂不合并新M2；M3四条件仍待本批证据后落实。Goal ACTIVE／UNMET。
