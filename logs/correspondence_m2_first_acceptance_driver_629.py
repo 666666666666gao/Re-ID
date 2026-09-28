@@ -1,0 +1,56 @@
+from datetime import datetime
+import hashlib
+import json
+from pathlib import Path
+import sys
+
+root = Path('/data/gaob/Re-ID/Trifusion')
+sys.path.insert(0, str(root))
+from tools.audit_correspondence_training_losses import audit
+from tools.queue_correspondence_refinement import child_campaign
+
+logs = root / 'logs'
+snapshot = logs / 'correspondence_refinement_accepted_first_m2_MSVR310_629_20260928.json'
+matrix = json.loads(snapshot.read_text())
+assert matrix['expected_endpoints'] == 18 and matrix['verified_complete'] == 4
+rows = [row for row in matrix['rows'] if row['phase'] == 'm2' and row['status'] == 'VERIFIED_COMPLETE']
+assert len(rows) == 1 and rows[0]['dataset'] == 'MSVR310' and rows[0]['variant'] == 'single_pooled'
+row = rows[0]
+loss = audit(row)
+loss_path = logs / 'correspondence_m2_first_MSVR310_losses_629_20260928.json'
+loss_path.write_text(json.dumps(loss, indent=2) + '\n')
+progress_path = logs / 'correspondence_m2_progress_627_20260928.json'
+progress = json.loads(progress_path.read_text())
+assert progress['at'].startswith('2026-09-28T22:38:03')
+progress_archive = logs / 'correspondence_m2_progress_629_223803_20260928.json'
+progress_archive.write_bytes(progress_path.read_bytes())
+directory = child_campaign(logs / 'correspondence_refinement_20260928', 'm2', 'RGBNT100', 'query_pooled')
+state = json.loads((directory / 'campaign.json').read_text())
+qualification = state['jobs'][0]
+assert qualification['mode'] == 'm0' and qualification['status'] == 'COMPLETE' and qualification['exit_code'] == 0
+m0_path = Path(qualification['output_dir']) / 'training.json'
+m0 = json.loads(m0_path.read_text())
+assert m0['status'] == 'M0_PASS'
+assert m0['m0']['frozen_signal_unchanged']
+assert m0['m0']['nonzero_gradient_parameters'] == m0['m0']['trainable_parameters']
+assert m0['m0']['reload_max_abs_difference'] <= 1e-5
+def sha(path):
+    return hashlib.sha256(path.read_bytes()).hexdigest()
+report = {
+    'status': 'FIRST_COMPLETE_M2_ENDPOINT_BOUND_AND_FULL_LOG_LOSS_AUDITED',
+    'at': datetime.now().astimezone().isoformat(),
+    'snapshot': str(snapshot), 'snapshot_sha256': sha(snapshot),
+    'accepted_row': row,
+    'loss_report': str(loss_path), 'loss_report_sha256': sha(loss_path),
+    'progress_archive': str(progress_archive), 'progress_sha256': sha(progress_archive),
+    'new_actual_m0': {'dataset': 'RGBNT100', 'variant': 'query_pooled', 'receipt': str(m0_path),
+                      'receipt_sha256': sha(m0_path), 'checks': m0['m0']},
+    'boundary': 'Full 50 epochs, single official mAP best, strict reload and full-gallery CPU scoring. One of five MSVR310 M2 cells is complete; no seven-pair comparison or configuration selection is performed.'
+}
+report_path = logs / 'correspondence_m2_first_acceptance_629_20260928.json'
+report_path.write_text(json.dumps(report, indent=2) + '\n')
+driver_archive = logs / 'correspondence_m2_first_acceptance_driver_629.py'
+driver_archive.write_bytes(Path(__file__).read_bytes())
+print(json.dumps({'row': row, 'loss_summary': {key: loss[key] for key in ('logged_steps', 'nonzero_triplet_steps', 'nonzero_prediction_steps', 'maximum_loss_reconstruction_error', 'training_sha256', 'steps_sha256', 'first', 'best', 'last')},
+                  'new_actual_m0': report['new_actual_m0'],
+                  'artifacts': {str(path.relative_to(root)): sha(path) for path in (snapshot, loss_path, progress_archive, report_path, driver_archive)}}))
