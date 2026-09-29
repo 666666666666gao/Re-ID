@@ -1,0 +1,53 @@
+{
+  "schema": "trifusion-fresh-agent-code-review-v1",
+  "reviewed_at": "2026-09-29T08:59:23.9647385+08:00",
+  "agent": "/root/review_m3_prediction_640",
+  "requested_model": "gpt-6-astra",
+  "requested_reasoning_effort": "max",
+  "fork_turns": "none",
+  "actual_serving_identity": "unverified",
+  "review_independence": "same-family",
+  "acceptance_status": "provisional",
+  "verdict": "PASS",
+  "blocking": [],
+  "files_reviewed": [
+    "modeling/trifusion/correspondence_role_prediction.py",
+    "tools/run_correspondence_role_prediction.py",
+    "tools/check_correspondence_role_prediction.py",
+    "tools/queue_correspondence_role_prediction.py",
+    "tools/collect_correspondence_role_prediction.py"
+  ],
+  "source_sha256": {
+    "tools/run_correspondence_role_prediction.py": "6aac5bde7c65f91954298a749782a86fa344c6cdd063fa830e899d1350671b9b",
+    "tools/collect_correspondence_refinement.py": "01f5d29c411e5da6c914f4bc2c7f13791fdd70ac4ae8a0cb1347a6a6e2e47981",
+    "tools/collect_correspondence_roles.py": "f81af437fe5ccfea4361c1ed182cb9b8841b362214d2a5220309a0fd2c78fff8",
+    "tools/queue_correspondence_refinement.py": "5256afe78d02d9bfea3103daa00d488b94c05e839c955f00355098f69ecbd84a",
+    "tools/collect_correspondence_role_prediction.py": "ddfe4f84016c6da3bafe4ba7357ae2dfdbf4ef06dd81d18a3b80ff0ff4ea7f73",
+    "tools/check_correspondence_role_prediction.py": "f2c7dec456b90ef2c1c13ad0b814029038f788a643941699bce05d13d1416a13",
+    "modeling/trifusion/correspondence_role_prediction.py": "7c80d7aa86ac5bd0d07ab7f6df7b2e93f708a2407bfee03fb078ff2bb182787d",
+    "tools/audit_correspondence_training_losses.py": "7c6d4c7c4b1ee90f98b4f015cf0a4a16a98edc85b0915f0423802d42ea5cb406",
+    "tools/transfer_correspondence_variant.py": "b2f99787bf6e258efe3135e238124ce68c88eae6663d94df8319e9c00285fafd",
+    "tools/queue_correspondence_role_prediction.py": "d26ccd9f1ee89443cead1847829004086dc214d042c45860d2bb0f29cc306ce6",
+    "tools/run_correspondence_roles.py": "e50865fb923297cd61cf38b33ec2bc95154f8c503b5dfe5de9823cad3f03d7ef",
+    "tools/queue_correspondence_global_only.py": "70607054856a47084901bb1e35ec9cfd487456c7097db631284ad59a0f68eebd",
+    "tools/run_correspondence_evidence_readout.py": "ae7f5b0600f56c430c9179a9f618e338ce866943de509a83ef6088eb3a5fd037",
+    "tools/run_correspondence_global_only.py": "1048afc22ec36588b49e34af1ffd3db63a042ad9fd26d0f544508fb131f404ae",
+    "modeling/trifusion/correspondence_evidence_readout.py": "e737a977d39ccbe09a5509118e5b5333d653f7f13381e65e84af1a13e5c28dc4",
+    "tools/analyze_correspondence_refinement.py": "364297dbf5cfc65c9e81adfe8e2a666de42b3d333abaab47e435bfd823e7c934",
+    "modeling/trifusion/correspondence_roles.py": "e2a51154b5b327341f35e453dd32a821b091a49a669b49a7c70e79e6e2f2591b",
+    "modeling/trifusion/correspondence_global_only.py": "cb0cc4c1d0f6a2c0cad3d310ce3df74845fd17bdbfa3b66dfa64632f5cbd08c3"
+  },
+  "reviewer_checks": [
+    "13/13 prior scientific files unchanged",
+    "All five new sources compile",
+    "CPU-report source bindings match current model and checker",
+    "Prior accepted matrix ed3c488ecf4ae106ab257eb657c4a65cc6b90245bec239a19aacacf37ffdab71 has 18/18 VERIFIED_COMPLETE"
+  ],
+  "boundaries": [
+    "Read-only review; no GPU, SSH, install or file writes by reviewer",
+    "Existing CPU tests use synthetic CLIP/mixer; they do not establish production CUDA, AMP, Mamba or compact runner checkpoint reload",
+    "Standalone production matched/predictor RGBNT201 M0 is required before full suite",
+    "Each formal cell retains its own M0"
+  ],
+  "response": "Verdict: PASS for code review; production M0 remains required before the full suite.\nBLOCKING: None found.\nNON-BLOCKING: No additional code defect identified. Existing CPU evidence uses synthetic CLIP/mixer and full-module reload; it does not establish production CUDA/AMP/Mamba or the runner's compact-checkpoint reload. The planned standalone matched/predictor-RGBNT201 M0 covers that remaining gate.\nVerified correctness: Matched addresses are detached clean-teacher coordinates used only for masked prediction. Clean retrieval retains the original student sampling path and offset gradients. Three independent prediction heads add 100,608 trainable parameters in predictor cells; direct cells freeze them. Initialization preserves common weights and RNG; inference bypasses all heads. EMA updates adapters and roles after successful optimizer steps; teacher and frozen Signal receive no gradients. The unchanged runner evaluates every epoch, selects one highest-mAP checkpoint, strictly reloads it, and reports all four metrics from that checkpoint. Retrieval evaluates complete query/gallery embeddings against protocol identity labels, with camera or scene filtering; teacher outputs are not evaluation ground truth. Queue order is the fixed variant-first 12 cells, each m0 -> train -> evaluate, using the existing 240-second four-GPU scheduler without retries or preemption. The new collector checks condition/source bindings, complete 50-epoch history, latest tied maximum-mAP selection, checkpoint/receipt agreement, ordered gallery metadata, and CPU metric recomputation.\nIndependent read-only checks passed: 13/13 prior scientific files unchanged, all five new sources compile, CPU-report source bindings match current files, and the prior matrix matches the supplied ed3c...dab71 digest with 18/18 VERIFIED_COMPLETE.\nMinimal next check: run the already planned standalone production M0 and require its finite-gradient, all-trainable-tensors-active, frozen-Signal and compact-reload checks to pass; retain each formal cell's own M0.\nAttribution: requested reviewer gpt-6-astra / max / fresh context; actual serving identity unverified. review_independence: same-family; acceptance_status: provisional. No files modified, GPU/SSH execution, or installations performed."
+}
