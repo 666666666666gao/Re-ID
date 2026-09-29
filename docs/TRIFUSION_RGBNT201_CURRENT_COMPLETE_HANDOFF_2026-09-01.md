@@ -2,7 +2,7 @@
 
 ## 0. 一页结论
 
-**本页更新至§41.654，2026-09-29 14:00新context/local面板正式2/15：static_none201与MSVR全50／best重载／三路完整图库CPU验收；其余13端继续，未选择新配方。原M3仍11/12，最后100原PID2699844为35/50。context_none201真实M0通过且train5/50，100进入M0；四卡非抢占自动接续。** 历史规则和数字保留原样，当前合同以后文登记和服务器回执为准。研究目标仍 **ACTIVE／UNMET**；工程通过、局部增量不代替三数据集强基线与SOTA要求。
+**本页更新至§41.655：新context/local面板正式3/15，新增201 context_none全50／best重载／三路完整图库CPU验收；相对静态查询仅+0.0130 mAP／+0.1196 R1，未选新配方。14:35四卡自动接续：static_none100为35/50、context_none100为16/50、context_noneMSVR为5/50，原M3最后100为45/50。context_none三个数据集各自真实M0全部通过，其余12正式端继续。** 历史规则和数字保留原样，当前合同以后文登记和服务器回执为准。研究目标仍 **ACTIVE／UNMET**；工程通过、局部增量不代替三数据集强基线与SOTA要求。
 
 **现行合同：** 每个正式候选完整50轮，使用作者完整query/gallery及camera／MSVR时间段过滤，以官方fused mAP最高的同一checkpoint报告全部指标，随后严格重载。RGBNT201报告mAP／R1／R5／R10，RGBNT100及MSVR310报告mAP／R1；不跨epoch或seed拼列。官方集已参与逐轮选点和历史方法选择，属于已消费基准上的探索性结果。
 
@@ -12771,3 +12771,37 @@ MSVR相对纯baseline50.5220／67.6819为mAP+1.7406、R1−0.1692；相对发布
 18旧科学源和9个新运行源保持冻结，原两个controller继续。盘余99545133056字节，无需删除权重。next单次观察预计14:23，接近context_none201按已观测日程估算的训练终点；该估计不是完成证据。15端全部full50／每轮fused-mAP best／独立重载，原12/12与新15/15终态门不变；没有新seed、配方选择或指标拼接。Goal ACTIVE／UNMET。
 
 证据：accepted654 SHA cd21fc9a6ba419707657b5323d09618c9d33935a7e53be7bbf1244b889d511e7；accepted655 SHA 864d904ff0031ff396eeb77031edb43cda6a870baaba5c0aa694be2de1c939ca；readout_MSVR310_static_none_654 SHA 08a7c9783f99969b05e47ace3f8f15f8427768eead3a7bf2541b4bfcb6415932；progress654/655/656、context_none201真实M0及两份完整training.json／official_metrics.json／training_steps.jsonl。只读分析driver SHA d558f7d1c9ab97113efc83af95175685b33c29d9032860d7ef5c8a0f41d0b3f1，没有模型forward、GPU计算、重加权或新训练。历史十一M3接受端和旧结果均未改写。
+
+### 41.655 RGBNT201语义条件查询首个完整配对：微小净收益，剩余条件继续（2026-09-29）
+
+上一轮为VERIFIED WAIT：既有cell5388按计划14:23实查四trainer，随后cell5402在14:30执行既有observer658。context_none201 child已COMPLETE，父RUNNING仅240秒状态更新滞后，不重启。collector实际2026-09-29T14:31:21.170918+08:00验收3/15；原两条正式接受行完全不变。新增端为context_none（全局语义条件查询、没有辅助ID、M3关闭），不是完整context_local方法已经成功。
+
+| RGBNT201，同seed42／50轮／各自一份最高fused mAP | best轮 | mAP | R1 | R5 | R10 |
+|---|---:|---:|---:|---:|---:|
+| static_none | 2 | 72.5957 | 74.0431 | 82.8947 | 88.0383 |
+| context_none | 2 | 72.6087 | 74.1627 | 83.0144 | 88.0383 |
+
+两端完整初始化state SHA相同：595e5d6ebab9eb4a5d5cf930b4328f22200d038a9f0c0e4ddf97756be9989a92；可训练参数均2,617,354。新增checkpoint SHA 81d1f6d82588a6d7536a61415801d0de166f1eb5c8b827893807cab357562668，完整distance SHA c3b9c6a60719e98b0cbaa017fd98f3529119fbca3cb0f37ac625ce11bca64fc8。全部50轮、同一mAP-best严格重载、fused/global/local三路完整query/gallery顺序及camera过滤、CPU复算均通过，最大CMC差2.93745378599e-6个百分点，mAP差0。物理GPU及运行时调度不同；固定一个训练seed、官方逐轮选点，不能把微小差值当成训练方差外的稳定显著收益。
+
+#### 完整距离的配对解释
+
+CPU只读分析实际2026-09-29T14:33:36.310813+08:00，调用既有analyze_correspondence_distances.py，无模型forward／GPU／重加权：mAP+0.0130435393、R1/R5各+0.1196172249、R10不变；首位修复1／新增0，query AP改善171／下降156，身份改善11／下降12，身份等权ΔAP+0.0124161个百分点。固定模型身份bootstrap区间[-0.0148817,+0.0398788]包含0，仅用于已选模型的解释，不是训练种子置信区间或独立测试显著性。通用分析器写有容量／RNG边界；本配对已经额外核对参数量和完整初始化相同，但样本条件化改变有效函数空间，不能称两者能力完全等价。
+
+| 查询条件 | 同best输出 | mAP | R1 |
+|---|---|---:|---:|
+| static_none | shared_global | 72.4186 | 73.8038 |
+| static_none | joint_local | 47.2481 | 53.2297 |
+| context_none | shared_global | 72.4150 | 73.8038 |
+| context_none | joint_local | 45.6767 | 52.8708 |
+
+context_none的fused相对其同best global为+0.1938 mAP／+0.3588 R1；联合local分数低于静态端，却有微小fused净增量，再次说明local单独质量与互补收益不是简单单调关系。上述是同权重输出分解，不是独立训练的单角色消融。该结果不能证明全局内容指导完全无效，也未提供明显的独立角色收益；后续static_local、context_local、context_global保持既定合同，不调整权重、seed、遮蔽率或取消负端。
+
+代码复核：context只通过三模态global均值的归一化向量影响九候选选择权重，不直接加到候选value或角色消息；其梯度可以沿query条件路径回到共享适配。static使用同参数投影的固定单位向量。额外身份监督作用于joint_local或global的独立BN/classifier，已有global额外CE控制，M3全关闭；不能把local分量写成完全不受global条件影响的纯局部骨干。
+
+新增端2649完整步：Triplet非零1126，aux全部0，loss=ID+Triplet+aux逐步重构最大误差2.35624611378e-7。best→末轮loss4.166927→0.851648，mAP72.6087→69.2638、R1末轮70.0957；没有M3仍后期退化。标量支持不是梯度份额或AdamW更新贡献。新增训练＋每轮评价1953.573333秒，与静态1738.855141秒属于实际运行成本，未隔离调度影响，不声称差值全部来自query计算。
+
+14:35实际新3COMPLETE／3RUNNING／9PENDING／0FAILED：GPU0 context_none100为16/50，GPU1 static_none100为35/50，GPU2自动接context_noneMSVR为5/50，GPU3原M3 matched/predictor100原PID2699844继续45/50。context_none三数据集自己的生产M0各119/119可训练参数张量有支持、冻结baseline不变、重载最大差0，完整初始state各与对应static控制相同。瞬时GPU利用率不替代phase进程证据；原12端仍11/12，100四因素等最后完整回执，已封存201/MSVR四因素不重复。
+
+18旧科学源／9新运行源／两manifest保持冻结。盘余99500740608字节，无清理需求。下一唯一里程碑观察14:50，按原100剩5轮的实际日程估计，不把预计完成当成绩。全部剩余端继续full50／同一fused-mAP-best／独立重载，原12与新15终态门保持。RGBNT201新候选72.6087相对历史纯baseline69.6415仅+2.9672，距79.6415仍差7.0328，未达到强baseline/SOTA目标；Goal ACTIVE／UNMET。
+
+证据：accepted658 SHA 409985b75c0b2b8043a67ee84a48bca7cf306e5e8db0a312711a2282832bb22f；query配对诊断 SHA aaf0bac540234e98e8712815f65285ba2099f400896f68f3354fcf149f428fdc；progress657/658/659；新增原始training.json／official_metrics.json／training_steps.jsonl；archive_context_receipt_658_20260929.py。三路距离和checkpoint仍远端，未将旧Signal增强的83分转写到本方法。既有正式结果及文档历史保持。
