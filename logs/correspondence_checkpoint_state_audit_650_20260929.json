@@ -1,0 +1,126 @@
+{
+  "status": "SEALED_INFERENCE_CHECKPOINT_STATE_RETENTION_AUDIT_COMPLETE",
+  "at": "2026-09-29T12:15:35.836466+08:00",
+  "matrix_sha256": "2d6db04a1e36658ca54b75a5c4b4a43310e5e071b81f5b6784c3a0cfbb77bdf2",
+  "driver_sha256": "337b3d2304936b8d59ce4f543c44007bb01ea7d200ee538744c059c521a3ddef",
+  "source_sha256": {
+    "tools/run_correspondence_roles.py": "e50865fb923297cd61cf38b33ec2bc95154f8c503b5dfe5de9823cad3f03d7ef",
+    "tools/run_correspondence_role_prediction.py": "6aac5bde7c65f91954298a749782a86fa344c6cdd063fa830e899d1350671b9b",
+    "modeling/trifusion/correspondence_role_prediction.py": "7c80d7aa86ac5bd0d07ab7f6df7b2e93f708a2407bfee03fb078ff2bb182787d"
+  },
+  "rows": [
+    {
+      "dataset": "RGBNT201",
+      "variant": "own_direct",
+      "best_epoch": 2,
+      "checkpoint_sha256": "7e518414b5f1e64bb6aa0b7cf1e2afbeff2bc1e4326b6d184003b980fa73f203",
+      "stored_state_entries": 195,
+      "retained_prefix_counts": {
+        "roles.": 61,
+        "teacher.": 0,
+        "backbone.adapters.": 54,
+        "teacher_adapters.": 54,
+        "predictors.": 18,
+        "backbone.signal.": 0
+      },
+      "historical_role_ema_teacher_restorable_from_this_checkpoint": false
+    },
+    {
+      "dataset": "RGBNT100",
+      "variant": "own_direct",
+      "best_epoch": 1,
+      "checkpoint_sha256": "9464b4e34e5eb5964b1c21ab1f945ef58705c88f5525cdda4f1c0e463f50c2a3",
+      "stored_state_entries": 195,
+      "retained_prefix_counts": {
+        "roles.": 61,
+        "teacher.": 0,
+        "backbone.adapters.": 54,
+        "teacher_adapters.": 54,
+        "predictors.": 18,
+        "backbone.signal.": 0
+      },
+      "historical_role_ema_teacher_restorable_from_this_checkpoint": false
+    },
+    {
+      "dataset": "MSVR310",
+      "variant": "own_direct",
+      "best_epoch": 10,
+      "checkpoint_sha256": "dd97bbba4db0fc01775d9ec39bca16dd8dc0d7d37df949dbb3b30d8f1fc5551d",
+      "stored_state_entries": 195,
+      "retained_prefix_counts": {
+        "roles.": 61,
+        "teacher.": 0,
+        "backbone.adapters.": 54,
+        "teacher_adapters.": 54,
+        "predictors.": 18,
+        "backbone.signal.": 0
+      },
+      "historical_role_ema_teacher_restorable_from_this_checkpoint": false
+    },
+    {
+      "dataset": "RGBNT201",
+      "variant": "matched_direct",
+      "best_epoch": 2,
+      "checkpoint_sha256": "568d2da219a2a0647c89b00d179b5e6dff27058e0d796ba31c345a64c62b8ac1",
+      "stored_state_entries": 195,
+      "retained_prefix_counts": {
+        "roles.": 61,
+        "teacher.": 0,
+        "backbone.adapters.": 54,
+        "teacher_adapters.": 54,
+        "predictors.": 18,
+        "backbone.signal.": 0
+      },
+      "historical_role_ema_teacher_restorable_from_this_checkpoint": false
+    },
+    {
+      "dataset": "MSVR310",
+      "variant": "matched_direct",
+      "best_epoch": 10,
+      "checkpoint_sha256": "c65ec0cf681ded7f56e9bfac0f2a3bd314544e8a57ba28a779065325bd067db3",
+      "stored_state_entries": 195,
+      "retained_prefix_counts": {
+        "roles.": 61,
+        "teacher.": 0,
+        "backbone.adapters.": 54,
+        "teacher_adapters.": 54,
+        "predictors.": 18,
+        "backbone.signal.": 0
+      },
+      "historical_role_ema_teacher_restorable_from_this_checkpoint": false
+    },
+    {
+      "dataset": "RGBNT201",
+      "variant": "own_predictor",
+      "best_epoch": 2,
+      "checkpoint_sha256": "da414acd255d9edf798c353ab2d4bd4897f1cffcb62413989dd50c6655ba778e",
+      "stored_state_entries": 195,
+      "retained_prefix_counts": {
+        "roles.": 61,
+        "teacher.": 0,
+        "backbone.adapters.": 54,
+        "teacher_adapters.": 54,
+        "predictors.": 18,
+        "backbone.signal.": 0
+      },
+      "historical_role_ema_teacher_restorable_from_this_checkpoint": false
+    },
+    {
+      "dataset": "MSVR310",
+      "variant": "own_predictor",
+      "best_epoch": 15,
+      "checkpoint_sha256": "b897093796102d2d3c9ae4adc9f7a700c908d737df9747f8d32ebfd1a906abd9",
+      "stored_state_entries": 195,
+      "retained_prefix_counts": {
+        "roles.": 61,
+        "teacher.": 0,
+        "backbone.adapters.": 54,
+        "teacher_adapters.": 54,
+        "predictors.": 18,
+        "backbone.signal.": 0
+      },
+      "historical_role_ema_teacher_restorable_from_this_checkpoint": false
+    }
+  ],
+  "boundary": "All seven sealed checkpoints retain inference student state and teacher adapters but omit teacher role state by the existing compact checkpoint contract. Normal retrieval does not use the teacher; accepted retrieval scores remain valid. A newly constructed/reloaded model cannot reproduce the historical M3 teacher or M3 gradient from this checkpoint alone. No teacher reset, substitution, model construction, images, inference, gradients, metrics or training executed."
+}

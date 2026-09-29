@@ -2,7 +2,7 @@
 
 ## 0. 一页结论
 
-**本页更新至§41.649，2026-09-29 11:56七个封存best权重的CPU读出参数核对；M3正式验收仍7/12，最新训练快照仍11:46四train。读出倍率已更新到0.112—0.143，未归零；整体平均读出的直接身份梯度对同角色48个位置相同。未量测真实梯度或证明掉点因果，下一计划观察12:22。** 历史规则和数字保留原样，当前合同以后文登记和服务器回执为准。研究目标仍 **ACTIVE／UNMET**；工程通过、局部增量不代替三数据集强基线与SOTA要求。
+**本页更新至§41.650，2026-09-29 12:15七个封存compact checkpoint的状态保留CPU核对；正式验收仍7/12，实际12:23:36四卡训练，RGBNT201 matched_predictor完成49/50轮。推理权重完整，但EMA角色教师不在compact中，不能据重载模型复算历史M3梯度；正式检索不使用教师，既有指标保持。下一计划观察12:29。** 历史规则和数字保留原样，当前合同以后文登记和服务器回执为准。研究目标仍 **ACTIVE／UNMET**；工程通过、局部增量不代替三数据集强基线与SOTA要求。
 
 **现行合同：** 每个正式候选完整50轮，使用作者完整query/gallery及camera／MSVR时间段过滤，以官方fused mAP最高的同一checkpoint报告全部指标，随后严格重载。RGBNT201报告mAP／R1／R5／R10，RGBNT100及MSVR310报告mAP／R1；不跨epoch或seed拼列。官方集已参与逐轮选点和历史方法选择，属于已消费基准上的探索性结果。
 
@@ -12575,3 +12575,17 @@ u=g+\gamma W[\overline H_C,\overline H_A,\overline H_M],\qquad z=\operatorname{N
 这项新证据排除了读出倍率仍停在初始值／归零的简单解释，并把整体平均读出的直接身份梯度同质性落实到准确前向公式和封存参数。仍不能证明这是额外角色收益薄的主因；后继需要区分最终读出、局部身份证据和角色学习路径，当前12端按原合同完成，不凭参数幅度修改倍率、选择M3条件或新增种子。
 
 CPU报告logs/correspondence_readout_parameter_audit_649_20260929.json SHA f92b8f4cc0ed3beefd90afff39a638a77fd2da5ef45cc27035de5955769fc636；driver logs/audit_correspondence_readout_649_20260929.py SHA aeca97c5bf749ca8c094a003fcd550019257e81b5a835190528caf5e1a65d841。driver与report归档字节绑定、source18及runtime8继续保持。正式结果仍7/12，服务器运行状态仍以11:46:03 snapshot657为准，下一observer658计划12:22，不把未来观察或CPU检查计为新正式终点。Goal ACTIVE／UNMET。
+
+### 41.650 compact推理权重与历史M3梯度复算的边界（2026-09-29）
+
+前一goalturn的七个sealed best读出参数审计及§649同步为PROGRESS。本turn准备后继真实梯度测量时，重新读取现行保存／加载及模型构造代码，发现compact仅保留推理学生状态，不能恢复当时的完整EMA角色教师。该发现改变诊断方式：不能用新构造后重载的模型直接计算预测loss／梯度，并把它冒称历史训练任务强度。
+
+源代码事实：tools/run_correspondence_roles.py的checkpoint_state明确排除backbone.signal.*和teacher.*；tools/run_correspondence_role_prediction.py的save_checkpoint直接复用该函数，load_checkpoint将compact状态覆盖到新构造模型的state_dict。RolePredictionTriFusion构造时的teacher为初始角色deepcopy，compact未保存的teacher.*不会因load覆盖成已训练EMA角色。当前训练循环每个优化步后调用update_teacher，运行中的教师会持续EMA更新；“未存入推理权重”不等于“训练没有EMA”。
+
+CPU实际2026-09-29T12:15:35.836466+08:00核查七个已经验收的best checkpoint，全部SHA与accepted649及selected epoch绑定，195个保存state条目均包含学生角色roles.*61项、学生适配backbone.adapters.*54项、教师适配teacher_adapters.*54项、predictors.*18项；EMA角色teacher.*0项、外部冻结baseline backbone.signal.*0项。teacher_adapters.*存在不能当作完整EMA教师已保存。没有构造模型、读取图片、forward／反向／新检索或训练；未读取未完成权重。
+
+这是推理checkpoint合同的范围，而非正式检索故障。正常完整模态推理不用EMA教师和预测器，学生推理参数已经按当前compact键集严格重载，已保存的完整query/gallery距离和CPU四指标验收仍有效。训练source loss账本是在真实运行教师下写入，也保持有效；目前缺失的是事后恢复历史完整教师并测量M3梯度所需的状态。不能把教师替换为学生／初始教师而不说明，再用得到的梯度解释旧结果。
+
+后继真实主身份／Triplet路径诊断可针对固定已选学生权重重新定义清楚的来源测量；若需要比较当时M3预测梯度，应在新完整候选的实际训练过程中测量或保留对应EMA角色、输入和随机状态。当前12端及8文件运行manifest继续冻结，不修改现行保存／训练代码、不重跑已经完成的端；该工程边界也不包装成新的算法贡献。
+
+证据：logs/correspondence_checkpoint_state_audit_650_20260929.json SHA b4f71068c5994c5cc131f71fcd2cea1226a7bde602775d1926373987e8d14a95；driver logs/audit_correspondence_checkpoint_state_650_20260929.py SHA 337b3d2304936b8d59ce4f543c44007bb01ea7d200ee538744c059c521a3ddef。三份关联源SHA在报告内核对，base runner精确SHA为e50865fb923297cd61cf38b33ec2bc95154f8c503b5dfe5de9823cad3f03d7ef（以实存文件为准，避免摘要中漏抄字符）。正式仍7/12，各集四条件尚未齐，不跑完整因素／交互或选择配置。原cell5246／observer658已完成，实际观察时间12:23:36：四卡train、1pending、7complete，201 matched_predictor49/50，100 own_predictor35/50、matched_direct38/50、matched_predictor10/50；四卡利用率100%，未把中间best记为正式结果。下一计划观察12:29，不增加提前状态查询；当前Goal ACTIVE／UNMET。
