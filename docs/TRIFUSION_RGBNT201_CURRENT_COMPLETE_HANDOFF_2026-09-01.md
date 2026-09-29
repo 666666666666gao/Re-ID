@@ -2,7 +2,7 @@
 
 ## 0. 一页结论
 
-**本页更新至§41.640，2026-09-29 09:00 CST；原24端、三global及十五M2均已验收，M3四条件已实现并通过CPU、独立复核与真实GPU小批检查，正式12端尚未启动。** 历史规则和数字保留原样，当前合同以后文登记和服务器回执为准。研究目标仍 **ACTIVE／UNMET**；工程通过、局部增量不代替三数据集强基线与SOTA要求。
+**本页更新至§41.641，2026-09-29；原24端、三global及十五M2均已验收，M3四条件×三数据集固定12端已启动，首批四项真实M0通过并在四卡执行正式50轮训练。** 历史规则和数字保留原样，当前合同以后文登记和服务器回执为准。研究目标仍 **ACTIVE／UNMET**；工程通过、局部增量不代替三数据集强基线与SOTA要求。
 
 **现行合同：** 每个正式候选完整50轮，使用作者完整query/gallery及camera／MSVR时间段过滤，以官方fused mAP最高的同一checkpoint报告全部指标，随后严格重载。RGBNT201报告mAP／R1／R5／R10，RGBNT100及MSVR310报告mAP／R1；不跨epoch或seed拼列。官方集已参与逐轮选点和历史方法选择，属于已消费基准上的探索性结果。
 
@@ -28,7 +28,7 @@
 
 **当前M3：** 五个新文件实现“各自地址／匹配教师地址×直接回归／独立预测器”，固定原M1／M2／M3开启、单点采样、整体池化、seed42、预测系数0.1和50轮best合同，不从M2最高分选择配置。两网格CPU合同通过，own/direct与旧前向及预测loss精确相同；公共初始参数及RNG一致。匹配地址仅用于训练遮蔽预测并停止教师坐标梯度，正常检索仍使用学生地址并更新offset。预测器额外100608可训练参数，推理不使用，容量差异必须披露。独立fresh Astra/max复核PASS，实际serving身份未核验，same-family/provisional，不等于跨模型独立验收。
 
-08:57:48真实matched/predictor RGBNT201八批M0启动，08:58:23完成M0_PASS：136/136可训练张量有非零梯度，冻结纯baseline不变，compact checkpoint重载输出误差0，实际可训练2521354个参数。此项不是正式50轮结果。下一步在代码与文档同步后启动三数据集×四条件共12端；每端仍先做自己的真实M0，再完整50轮、逐轮官方mAP选单一best并严格重载。当前还不能声称四卡已正式训练。Goal ACTIVE／UNMET。
+08:57:48真实matched/predictor RGBNT201八批M0启动，08:58:23 M0_PASS：136/136可训练张量非零梯度，冻结纯baseline不变，compact checkpoint重载误差0，实际可训练2521354参数；此项不是正式成绩。09:07:26固定12端协调器PID2566593启动。实际观察2026-09-29 09:10:41.726 CST，首批四项自己的M0均通过并执行正式50轮，四GPU实际进程已核验；剩余八项按既定顺序自动补位。尚无新的完整M3终点，不把中途best填入正式表。所有源码在运行期保持冻结，240秒调度、不重试／抢占／调参。Goal ACTIVE／UNMET。
 ### 0.1 历史阶段摘要（保留原始结论，不作为当前执行指令）
 
 本工程是在 DeMo 代码基座上实现的 RGB–NIR–TIR 多模态目标重识别研究分支。V17完整训练和完整gallery补评已封存为失败；其全部查询/图像/分区诊断见§30。V18完整三折两端20epoch主实验已结束（§33）：fused增益+0.921504 mAP，bootstrap下界-0.117338，未通过固定晋级条件；无D1/dev/official。MSVR310、RGBNT100均已安装核验（§32）。V17 fused相对matched weight0为-0.328915 mAP，没有D1/dev/official结果。RGBNT201固定dev保留结果为V8 Phase-B：冻结dev fused=`58.4050 mAP / 59.3939 Rank-1`，比exact Signal高`0.3941 mAP / 1.9394 Rank-1`并超过三个专家，但仍比65 mAP门低`6.5950`，不能声称SOTA。
@@ -12305,3 +12305,20 @@ M3后继仍为各自地址＋直接回归、匹配地址＋直接回归、各自
 **真实生产M0。** 08:57:48.197 GPU0 PID2557455，RGBNT201 matched/predictor，输出`trained-model/correspondence_m3_sanity_matched_predictor_RGBNT201_seed42_m0_20260929`。08:58:02.799进入训练，08:58:23.718 M0_PASS，真实CLIP、生产mamba_ssm、CUDA/AMP路径完成8个optimizer steps；136/136可训练张量出现有限非零梯度、frozen_signal_unchanged=true、compact checkpoint reload_max_abs_difference=0。可训练参数2521354，含新增100608预测器参数；CPUfixture参数数不用于生产成本。probe SHA `1861e73a4cb494344bd4434434294d261e72b26e56aeb256be4f773b8553fdf9`，权重留远端。训练回执镜像`logs/correspondence_m3_sanity_training_640_20260929.json` SHA `b4668ea0761a99bd9bb298fdb7e02ed6f4fa9cc46b9d527bb63ccdcd83ecc742`；启动命令及全部源码记录在`logs/correspondence_m3_sanity_launch_640_20260929.json`，原始stdout在`logs/correspondence_m3_sanity_640_20260929.log`。这只是小批梯度／冻结／保存／重载验证，不是官方指标，不等于其余11个条件的M0已经通过。
 
 **正式启动边界。** 12端尚未正式启动。代码与文档归档同步后，用既有四GPU240秒调度逐项执行。所有正式端均完整50轮，以一份最高官方fused mAP checkpoint报告各指标，严格重载并保存完整距离。官方集已被逐轮选点和历史比较消费，本阶段仍是探索性基准结果；无跨epoch／seed拼列。前序accepted matrix SHA `ed3c488ecf4ae106ab257eb657c4a65cc6b90245bec239a19aacacf37ffdab71`，18/18（三global、十五M2）作为启动前提。没有新的正式成绩，十点增益、强基线可靠增强与三角色必要性仍未达到。Goal ACTIVE／UNMET。
+
+### 41.641 固定12项M3正式面板及四卡实际执行（2026-09-29）
+
+**归档同步已完成。** §640五个新M3文件、CPU／独立复核／生产M0文本和主MD提交955cf4d；JSON的Git LF换行规范化导致复核文件原raw SHA与Gitblob不同，815a75e仅校正文档的回执digest，不改科学代码。服务器既有稀疏检出排除了新log归档，前序post-merge检查因稀疏log缺失及换行字节差异退出；保存了原helper与错误，不重复FF、不改稀疏规则、不重跑M0。最终直接从815a75e的Gitblob读取封存回执，18科学源码及主MD另外核对实际worktree字节，原生产M0回执也在trained-model原路径验证，24项通过。复核canonical LF SHA ccddcfb21c10af9c68a813c039d5666a3e30fad22f331c523fdb6afca4dd6896；旧raw文件留本地tmp，不冒称同字节。logs/correspondence_roles_sync_640_20260929.json保留完整同步范围与限制。
+
+**启动。** 09:07:26.532协调器PID2566593，campaign logs/correspondence_m3_prediction_20260929，持久独立session，四GPU启动前均无计算进程。前序18/18 accepted matrix原封不动从Gitblob镜像到.git/correspondence_refinement_accepted_m2_complete_639_20260929.json，SHA仍ed3c488ecf4ae106ab257eb657c4a65cc6b90245bec239a19aacacf37ffdab71，避免运行依赖被稀疏检出移除。启动receipt logs/correspondence_m3_panel_launch_641_20260929.json包含完整命令、18源码及生产sanity绑定。manifest logs/correspondence_m3_manifest_641_20260929.json登记12端、固定seed42／50轮／single-pooled／M1M2M3／0.1预测系数／EMA0.996，源码冻结8文件。不是从M2最有利分数挑配置，不扩充seed或额外模块。
+
+**实际运行观察。** 2026-09-29 09:10:41.726 CST，协调器状态RUNNING且实际进程存在。全部12项中4 RUNNING／8 PENDING／0 COMPLETE／0 FAILED；首批4项均已完成自己的8批生产M0并进入mode=train，其训练PID与nvidia-smi compute PID逐项一致。
+
+- GPU0 RGBNT201/own_direct：实际trainer PID2568811，已完成2/50轮，正式mode=train；独立M0 118/118非零梯度张量、冻结baseline不变、重载误差0。
+- GPU1 RGBNT100/own_direct：实际trainer PID2568968，已完成0/50轮，正式mode=train；独立M0 118/118非零梯度张量、冻结baseline不变、重载误差0。
+- GPU2 MSVR310/own_direct：实际trainer PID2568969，已完成3/50轮，正式mode=train；独立M0 118/118非零梯度张量、冻结baseline不变、重载误差0。
+- GPU3 RGBNT201/matched_direct：实际trainer PID2569037，已完成1/50轮，正式mode=train；独立M0 118/118非零梯度张量、冻结baseline不变、重载误差0。
+
+可用数据盘100114464768字节，纯baseline／作者／来源OOF及必要best继续保留，无删除。GPU瞬时负载只作实际占用证据，不换算FLOPs或受控推理性能。每端仍是M0→完整50轮→同一官方mAP-best严格重载；后续子任务自动填空卡，调度240秒检查。当前零项完整M3结果，因此正式表不新增中途分数。
+
+**后继验收。** 用已冻结collector逐项核对完整50轮、真实最高mAP同一checkpoint、地址／预测器条件及源码绑定、身份／camera／时间段字段、完整query/gallery与CPU指标复算。四条件全部完成后才进行地址因素／预测器因素及其交互分析；额外100608可训练参数和teacher-address指导只在训练出现，必须如实记录。不临时改M1、M2、读出、loader、预测系数或学习率，不只保留最高一次。官方基准已参与选点和历史比较，结果仍属于探索性比较。三角色超global-only的可靠增量、纯起点十点目标及MSVR强参照差距仍未解决；Goal ACTIVE／UNMET。
