@@ -2,7 +2,7 @@
 
 ## 0. 一页结论
 
-**本页更新至§41.650，2026-09-29 12:15七个封存compact checkpoint的状态保留CPU核对；正式验收仍7/12，实际12:23:36四卡训练，RGBNT201 matched_predictor完成49/50轮。推理权重完整，但EMA角色教师不在compact中，不能据重载模型复算历史M3梯度；正式检索不使用教师，既有指标保持。下一计划观察12:29。** 历史规则和数字保留原样，当前合同以后文登记和服务器回执为准。研究目标仍 **ACTIVE／UNMET**；工程通过、局部增量不代替三数据集强基线与SOTA要求。
+**本页更新至§41.651，2026-09-29 12:29正式验收8/12；RGBNT201四条件及六配对已完整分析，匹配位置平均+0.0131 mAP、预测器平均−0.0739 mAP，尚无明显角色增量。12:29实际四卡train：三项RGBNT100与自动接续的MSVR最后一项，0pending／0failed；下一预计终态观察12:58。** 历史规则和数字保留原样，当前合同以后文登记和服务器回执为准。研究目标仍 **ACTIVE／UNMET**；工程通过、局部增量不代替三数据集强基线与SOTA要求。
 
 **现行合同：** 每个正式候选完整50轮，使用作者完整query/gallery及camera／MSVR时间段过滤，以官方fused mAP最高的同一checkpoint报告全部指标，随后严格重载。RGBNT201报告mAP／R1／R5／R10，RGBNT100及MSVR310报告mAP／R1；不跨epoch或seed拼列。官方集已参与逐轮选点和历史方法选择，属于已消费基准上的探索性结果。
 
@@ -28,7 +28,7 @@
 
 **当前M3：** 五个新文件实现“各自地址／匹配教师地址×直接回归／独立预测器”，固定原M1／M2／M3开启、单点采样、整体池化、seed42、预测系数0.1和50轮best合同，不从M2最高分选择配置。两网格CPU合同通过，own/direct与旧前向及预测loss精确相同；公共初始参数及RNG一致。匹配地址仅用于训练遮蔽预测并停止教师坐标梯度，正常检索仍使用学生地址并更新offset。预测器额外100608可训练参数，推理不使用，容量差异必须披露。独立fresh Astra/max复核PASS，实际serving身份未核验，same-family/provisional，不等于跨模型独立验收。
 
-M3已验收7/12；新增RGBNT100/own_direct best1 85.1447/95.0437；MSVR310/own_predictor best15 52.6838/68.5279。RGBNT100 own/direct6559步Triplet全0，重复来源hinge饱和，不能独自解释检索下降。实际11:46:03有4项train：GPU0 own_predictor/RGBNT100 23/50；GPU1 matched_predictor/RGBNT201 9/50；GPU2 matched_direct/RGBNT100 29/50；GPU3 matched_predictor/RGBNT100 0/50；其余阶段及父／子队列状态以progress回执分开记录。240秒自动非抢占补位、无失败、不把短暂空卡视为停止。各集四条件尚未齐，不跑完整因素／交互或选择配方。
+M3已验收8/12，RGBNT201四条件全部full50/best2/reload：own/direct72.5574、matched/direct72.5795、own/predictor72.4925、matched/predictor72.4965 mAP。完整六配对与平均因素已执行；三集整体结论仍等待另外四端，保持原12端合同，不按当前分数挑配置。12:29:02实查四train：100 own/predictor36/50、matched/direct40/50、matched/predictor11/50，MSVR matched/predictor0/50且真实M0通过；全部自动非抢占接续，无失败，原18科学源和8文件运行manifest保持。
 
 **分析准备：** 新只读入口tools/analyze_correspondence_role_prediction.py复用既有完整图库CPU比较。每数据集四项均VERIFIED_COMPLETE才生成四个因素条件差、两个平均效应和交互；另列旧111复现及独立global诊断。fresh Astra/max复核PASS，same-family/provisional，实际serving身份未核验；root CPU非对称与加性算术、反序输入及未验收条件拒绝检查PASS。都是代码检查，不是新检索成绩。不改变18科学训练／评价源码或运行8文件合同，不触发新推理／训练／调参。Goal ACTIVE／UNMET。
 ### 0.1 历史阶段摘要（保留原始结论，不作为当前执行指令）
@@ -12589,3 +12589,54 @@ CPU实际2026-09-29T12:15:35.836466+08:00核查七个已经验收的best checkpo
 后继真实主身份／Triplet路径诊断可针对固定已选学生权重重新定义清楚的来源测量；若需要比较当时M3预测梯度，应在新完整候选的实际训练过程中测量或保留对应EMA角色、输入和随机状态。当前12端及8文件运行manifest继续冻结，不修改现行保存／训练代码、不重跑已经完成的端；该工程边界也不包装成新的算法贡献。
 
 证据：logs/correspondence_checkpoint_state_audit_650_20260929.json SHA b4f71068c5994c5cc131f71fcd2cea1226a7bde602775d1926373987e8d14a95；driver logs/audit_correspondence_checkpoint_state_650_20260929.py SHA 337b3d2304936b8d59ce4f543c44007bb01ea7d200ee538744c059c521a3ddef。三份关联源SHA在报告内核对，base runner精确SHA为e50865fb923297cd61cf38b33ec2bc95154f8c503b5dfe5de9823cad3f03d7ef（以实存文件为准，避免摘要中漏抄字符）。正式仍7/12，各集四条件尚未齐，不跑完整因素／交互或选择配置。原cell5246／observer658已完成，实际观察时间12:23:36：四卡train、1pending、7complete，201 matched_predictor49/50，100 own_predictor35/50、matched_direct38/50、matched_predictor10/50；四卡利用率100%，未把中间best记为正式结果。下一计划观察12:29，不增加提前状态查询；当前Goal ACTIVE／UNMET。
+
+### 41.651 RGBNT201 M3四条件完整结果与六配对（2026-09-29）
+
+上一turn及本turn前半段完成§650 compact状态保留边界诊断，未改变任何训练源。原12:29单次observer659实际2026-09-29T12:29:02.894231+08:00确认201 matched/predictor已经全50轮并独立重载完毕，GPU1由原240秒队列自动接给MSVR matched/predictor，真实M0通过。不因短暂显存变化／父子状态滞后重启，不读取中间best补终点。
+
+collector650实际2026-09-29T12:29:34.707139+08:00验收8/12，§648／649原七个VERIFIED_COMPLETE行逐项保持；新增201 matched/predictor best2为72.4965／73.9234／82.6555／87.7990，所有指标来自同一最高官方mAP权重。全query/gallery顺序、身份、camera过滤逐项一致；CPU mAP复算差0，最大CMC差1.02668286672e-06个百分点。best权重SHA 9a85cfdf39d03288e23260624bb5ae35e8ec3d2b9653d04b0399e7fcd0ee1a47；距离SHA 552fe0565140b43b91d5b5b2d10ac620e67d14f899692c92a60338f32937b380；official receipt SHA 08c632bcf0c4cf7a979f0e97efc3450eb4ab3237f8ee4b804e890b0404f98e43。
+
+既有只读四条件analyzer首次对RGBNT201执行，实际2026-09-29T12:30:13.884921+08:00完成，六个预登记配对都由已保存完整距离CPU复算，没有新GPU推理、训练、阈值修改或选择配置。四端同公开纯baseline权重、seed42、50轮日程、共同初始student状态与prediction head初始化，direct两端容量一致；预测器两端各多100608训练参数，推理不用预测器。
+
+| RGBNT201条件 | best轮 | mAP | R1 | R5 | R10 |
+|---|---:|---:|---:|---:|---:|
+| 各自位置／直接回归 | 2 | 72.5574 | 73.8038 | 83.1340 | 87.7990 |
+| 匹配位置／直接回归 | 2 | 72.5795 | 73.9234 | 83.1340 | 87.7990 |
+| 各自位置／预测器 | 2 | 72.4925 | 73.9234 | 82.6555 | 87.7990 |
+| 匹配位置／预测器 | 2 | 72.4965 | 73.9234 | 82.6555 | 87.7990 |
+
+独立global-only为72.4944／74.0431／82.4163／87.9187；四端相对它的mAP依次+0.0630、+0.0850、−0.0020、+0.0021，R1均未超过它。不同容量的global控制是角色增量的描述参照，不是某一算子的严格因果。当前四个M3定义没有补出明显额外身份证据，更不能声称突破纯基线十点目标。
+
+| 平均条件差／交互，百分点 | ΔmAP | ΔR1 | ΔR5 | ΔR10 |
+|---|---:|---:|---:|---:|
+| 匹配位置平均条件差 | +0.0131 | +0.0598 | +0.0000 | +0.0000 |
+| 独立预测器平均条件差 | -0.0739 | +0.0598 | -0.4785 | +0.0000 |
+| 位置×预测器交互 | -0.0180 | -0.1196 | +0.0000 | +0.0000 |
+
+平均位置作用按0.5[(MD−OD)+(MP−OP)]；平均预测器作用按0.5[(OP−OD)+(MP−MD)]；交互按(MP−OP)−(MD−OD)。这是四份各自mAP-best结果的条件差，不能将平均各列组合成一份模型。匹配地址不仅改变位置，还改变局部mask支持、截断student偏移的预测梯度；独立预测器也增加参数。结果不支持把“位置错配”认定为201检索不足的主要已定位原因，也不证明所有位置一致学习／预测任务都无效。
+
+| 六个固定配对 | ΔmAP | 首位修复 | 新增首位错 | 身份等权ΔAP | 固定模型身份bootstrap95%区间 |
+|---|---:|---:|---:|---:|---:|
+| own_direct→matched_direct | +0.0221 | 2 | 1 | +0.0246 | [-0.0086, +0.0628] |
+| own_predictor→matched_predictor | +0.0041 | 0 | 0 | +0.0038 | [-0.0098, +0.0155] |
+| own_direct→own_predictor | -0.0649 | 3 | 2 | -0.0612 | [-0.2297, +0.0917] |
+| matched_direct→matched_predictor | -0.0830 | 3 | 3 | -0.0819 | [-0.2488, +0.0724] |
+| original_111→own_direct | +0.0064 | 0 | 0 | +0.0044 | [-0.0128, +0.0217] |
+| global_only→own_direct | +0.0630 | 1 | 3 | +0.0583 | [-0.1279, +0.2429] |
+
+六个区间均包含0，身份bootstrap只重采样已选模型的身份，不是训练seed方差或未参与选择测试的显著性。原111→own/direct是同原定义复现控制，mAP仅+0.0064且没有首位翻转；global→own/direct修复1条却新增3条，净少2条首位正确，mAP虽+0.0630但不能称全指标增益。own/predictor→matched/predictor仅+0.0041 mAP，首位修复与新错均0；不能再把两者结合当作“尚未测、预计大涨”的建议。
+
+新增matched/predictor共2649步，Triplet非零1329步，三预测标量各2649步为正。best2→50总loss 4.261519→0.925071、ID 4.163507→0.853594，正式mAP 72.4965→69.8628；local 0.449989→0.156474，relation 0.006335→0.004074，cross 0.460023→0.551695。最后一项上升，不能概括为所有预测loss下降。累计八端20155步完整重构最大误差4.61190938772e-07；标量仍不代表梯度或AdamW更新份额。§650完整教师状态缺失边界保持，不用新初始化教师事后测历史M3梯度。
+
+实际2026-09-29T12:29:02.894231+08:00仍四个train，全部生产M0_PASS，/proc实际train命令与nvidia PID相符；8complete／4running／0pending／0failed。GPU1新MSVR在0/50表示尚无第一完整epoch，不是训练停止。固定240秒控制器2566593仍自动接续。
+
+| GPU | 实际数据集／条件 | trainer PID | 已完成轮次 |
+|---|---|---:|---:|
+| 0 | RGBNT100/own_predictor | 2642515 | 36/50 |
+| 1 | MSVR310/matched_predictor | 2733047 | 0/50 |
+| 2 | RGBNT100/matched_direct | 2600421 | 40/50 |
+| 3 | RGBNT100/matched_predictor | 2699844 | 11/50 |
+
+盘余99803095040字节约92.95GiB，无需退役当前依赖权重。按已完成MSVR预测器约1870秒训练＋逐轮评价估计，新matched/predictor约13:00附近训练结束，另需实际重载；下一单次观察12:58、完成前几分钟。100各端还在训练，不提前采纳中间best，也不把预计时刻当完成事实。剩余四端完整结束后才形成三集结论；不取消已登记任务、不扫描系数或换种子。
+
+证据：logs/correspondence_m3_accepted_650_20260929.json SHA 13e4b8b9e1783c83483b79a48cfb2f223daf24ad3ef72724f2342e5ac4fa3634；loss_audit_650 SHA 4b49214b759353fbb8ce354686ff114180b7be8cb776b0599c0514b7f169d76d；factor目录summary SHA 350c20c7c7b7a0eebbddcbfb6a0c62902dfbbee52a6c59b22eda517b48a9bd5b及六份单配对原件SHA均核对；progress659为实际12:29观察。运行18源及8文件manifest不改，文本镜像至Desktop／服务器／GitHub。Goal ACTIVE／UNMET；完成四条件证据不是完成三数据集性能目标，201当前更支持下一步研究身份上下文与角色证据的形成及利用，而非继续在相同预测接口上小幅换系数。
