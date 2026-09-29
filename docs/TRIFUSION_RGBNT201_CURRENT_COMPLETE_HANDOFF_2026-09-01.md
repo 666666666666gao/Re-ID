@@ -2,7 +2,7 @@
 
 ## 0. 一页结论
 
-**本页更新至§41.645，2026-09-29 10:36正式验收／实际训练快照；M3已验收4/12。MSVR直接回归的匹配位置版本为52.5223／67.5127，相对各自位置略低；两数据集尚无明显位置匹配增益。两个独立预测器任务接续训练，四卡自动补位。** 历史规则和数字保留原样，当前合同以后文登记和服务器回执为准。研究目标仍 **ACTIVE／UNMET**；工程通过、局部增量不代替三数据集强基线与SOTA要求。
+**本页更新至§41.646，2026-09-29 10:49CPU训练接口核对；最近训练快照10:36；M3已验收4/12。MSVR直接回归的匹配位置版本为52.5223／67.5127，相对各自位置略低；两数据集尚无明显位置匹配增益。两个独立预测器任务接续训练，四卡自动补位。** 历史规则和数字保留原样，当前合同以后文登记和服务器回执为准。研究目标仍 **ACTIVE／UNMET**；工程通过、局部增量不代替三数据集强基线与SOTA要求。
 
 **现行合同：** 每个正式候选完整50轮，使用作者完整query/gallery及camera／MSVR时间段过滤，以官方fused mAP最高的同一checkpoint报告全部指标，随后严格重载。RGBNT201报告mAP／R1／R5／R10，RGBNT100及MSVR310报告mAP／R1；不跨epoch或seed拼列。官方集已参与逐轮选点和历史方法选择，属于已消费基准上的探索性结果。
 
@@ -12442,3 +12442,23 @@ matched−own在直接回归条件下mAP -0.0432、R1 -0.1692，R5 +0.3384、R10
 18科学文件与八文件运行manifest保持不变。原24、global3及M2十五已封存，不重跑。盘余99975880704字节约93.11GiB，无需删除依赖权重。用同一201 predictor trainer在10:25→10:36的14→24完整epoch估计67.83秒／轮，预计训练结束11:05:45，之后仍有独立重载与240秒补位延迟；下一观察11:00。该时间是估计，不把预计结束记成已完成。
 
 证据：logs/correspondence_m3_accepted_646_20260929.json SHA 02f1ed35fed8464c769e308a0f83bed460b0ae49db57520bfdb3fde08b522a65；logs/correspondence_m3_loss_audit_646_20260929.json SHA 3d2acf909f3841cf52a38cf22acad7ecdfbeada5b6ad210042ae49e66f114675；logs/correspondence_m3_first_vehicle_predictor_m0_645_20260929.json SHA 987f8df1bbee7853a22e4b79e7171b05879ac806b79d6748fd5100a522f1bf6c；progress649／650为实际10:25／10:36快照。完整权重、距离和源步日志留远端，文本及正文同步。当前三数据集baseline／SOTA目标仍未完成，Goal ACTIVE／UNMET。
+
+### 41.646 纯基线分类接口及全训练标签顺序CPU核对（2026-09-29）
+
+等待已登记11:00观察期间，仅检查既有代码、三份纯baseline权重及作者当前全部训练目录；没有构建模型、解码图片、forward、gradient、GPU推理、新评价、选checkpoint或改训练。上一turn为PROGRESS：第四正式端与§645同步完成。本turn核对当前worktree HEAD a9765c8及原两项无关dirty，均保持；11:00单次observer651/cell5164原样续接，不新建重复轮询。
+
+源代码事实：Signal的RGBNT201配置DIRECT=1，训练对未归一化的三模态global拼接执行bottleneck/classifier；RGBNT100和MSVR配置DIRECT=0，分别对三份512D global执行独立BN/classifier。纯baseline推理仅返回原global拼接。新框架三集均对L2归一化的1536D fused执行新初始化neck/classifier，正常检索返回pre-neck向量。因而当前差异不是简单“只丢掉了一份可直接复制的同型头”，也不能把BN运行统计差直接当成推理打分原因。
+
+CPU按作者当前原始_process_dir的精确AST处理所有训练路径，对照固定protocol同路径identity、camera及view字段；没有重写parser或根据官方指标筛样本。三份权重SHA逐一符合已封存baseline，201存储classifier.weight为171×1536，100为三个50×512分类头，MSVR为三个155×512分类头。记录所有分类／BN状态形状、dtype和范数，未由范数推断性能。
+
+| 数据集 | 全训练记录 | 标签顺序不同的身份数 | 标签顺序不同的记录数 | baseline分类布局 |
+|---|---:|---:|---:|---|
+| RGBNT201 | 3951 | 0 | 0 | concat |
+| RGBNT100 | 8675 | 50 | 8675 | three_per_modality_heads |
+| MSVR310 | 1032 | 0 | 0 | three_per_modality_heads |
+
+RGBNT100的作者当前set枚举与固定protocol的排序标签在全部50身份上不同；201和MSVR本次映射一致。该核查重建的是当前源代码／目录标签，不能单凭它保证历史baseline实际使用的类序。当前新头从头按固定protocol标签学习，未使用作者分类logits，因此这不是已确认的当前训练标签bug，更不是201涨分小或车辆退化的根因。它明确限制一个可能的后继操作：直接复制RGBNT100旧分类头却不处理类别行次序会错配；三独立头也不等同于单一concat头，加上归一化输入不同，不能仅凭1536总宽度相同就声称行为保持。未据此启动复制头或新增训练。
+
+初版只读探针误假设三集都有classifier.weight，在第二集KeyError中止且未生成验收报告；核读实际cfg及权重后按已确认DIRECT布局纠正并完成三集。该中止不是M3训练失败，不加fallback／捕获后继续，也未改任一运行科学源码。 归档驱动的Windows CRLF与Git LF首次暂存核对不一致，统一仅这个新驱动的行尾并更新引用SHA；历史MD字节不全局规范化。此核查作为接口边界，不包装成方法创新；三角色的新增身份证据是否不足仍由完整实验和后续机制验证判断。
+
+报告logs/correspondence_head_source_audit_646_20260929.json SHA 444ab80c129044a7903bb1c9605b213cd12278757fafbc50efea0d2bee7449d6；完整可复核CPU驱动logs/audit_correspondence_heads_646_20260929.py SHA 2876c124496309b93458bc1eddc1ad639fae67a9e70d0d4e3fb073957737f14e，作者make_model.py SHA 1a88a91d2e5055f5d338996231b16c0e13b2fa7013c74131ca663f16c2655963。18科学源及M3八文件manifest不变，训练状态仍以10:36实际快照4 RUNNING／4 PENDING／4 COMPLETE为准，不把10:49CPU完成当成新训练观察。11:00后按实际子队列及严格重载接收，完整目标仍ACTIVE／UNMET。
