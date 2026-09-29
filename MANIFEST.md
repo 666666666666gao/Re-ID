@@ -1536,3 +1536,7 @@
 | 2026-09-29T13:20:00+08:00 | /experiment-bridge | tools/audit_correspondence_context_identity_losses.py | implementation | Context/local controls; source review and CPU synthetic PASS; production M0 NOT RUN |
 | 2026-09-29T13:20:00+08:00 | /experiment-bridge | logs/context_identity_cpu_652_20260929.json | implementation | Context/local controls; source review and CPU synthetic PASS; production M0 NOT RUN |
 | 2026-09-29T13:20:00+08:00 | /experiment-bridge | logs/check_context_identity_cpu_652_20260929.py | implementation | Context/local controls; source review and CPU synthetic PASS; production M0 NOT RUN |
+| 2026-09-30T00:48:00+08:00 | /experiment-plan | refine-logs/prompt_role_state_v1/EXPERIMENT_PLAN_20260930_0048.md | implementation | Six-end reset/carry role-prompt comparison, planned only |
+| 2026-09-30T00:48:00+08:00 | /experiment-plan | refine-logs/prompt_role_state_v1/EXPERIMENT_PLAN.md | implementation | Latest copy of role-prompt experiment plan |
+| 2026-09-30T00:48:00+08:00 | /experiment-plan | refine-logs/prompt_role_state_v1/EXPERIMENT_TRACKER_20260930_0048.md | implementation | Six-end registered tracker, no runs yet |
+| 2026-09-30T00:48:00+08:00 | /experiment-plan | refine-logs/prompt_role_state_v1/EXPERIMENT_TRACKER.md | implementation | Latest copy of role-prompt tracker |
