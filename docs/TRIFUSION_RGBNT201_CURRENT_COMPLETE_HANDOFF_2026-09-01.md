@@ -2,7 +2,7 @@
 
 ## 0. 一页结论
 
-**本页更新至§41.662：跨深度三条件×三集7/9端完整50轮／单mAP-best／严格重载／CPU全图库验收。新增100 mixed E1=85.1237／95.0437；MSVR recurrent E8=52.0987／67.3435，相对mean −.6246mAP／−1.3536R1，修复16条、新增24条首位错误。201持续状态的小幅正收益不适用于当前MSVR条件。22:58仅100 mean/recurrent仍训练，两卡已空闲；下一观察9月30日00:02。初始化与MambaPro的静态来源差异单列，无新模型／配置／任务。目标ACTIVE/UNMET。** 历史规则和数字保留原样，当前合同以后文登记和服务器回执为准。研究目标仍 **ACTIVE／UNMET**；工程通过、局部增量不代替三数据集强基线与SOTA要求。
+**本页更新至§41.663：跨深度三条件×三集仍7/9完整验收；本轮仅补齐205份冻结文件原始字节及CPU pair helper、三集协议供最终fresh审查，不新增指标／模型／训练任务。生产文件与冻结SHA全部相符；这不是独立语义审查PASS。最后100 mean/recurrent以22:58实查为准，既定9月30日00:02观察未提前查询。目标ACTIVE/UNMET。** 历史规则和数字保留原样，当前合同以后文登记和服务器回执为准。研究目标仍 **ACTIVE／UNMET**；工程通过、局部增量不代替三数据集强基线与SOTA要求。
 
 **现行合同：** 每个正式候选完整50轮，使用作者完整query/gallery及camera／MSVR时间段过滤，以官方fused mAP最高的同一checkpoint报告全部指标，随后严格重载。RGBNT201报告mAP／R1／R5／R10，RGBNT100及MSVR310报告mAP／R1；不跨epoch或seed拼列。官方集已参与逐轮选点和历史方法选择，属于已消费基准上的探索性结果。
 
@@ -13096,3 +13096,18 @@ recurrent同权重global=52.6002／68.6971、joint local=5.7293／11.6751；fuse
 按22:58实际总体吞吐，最后100两端终点估计9月30日00:07–00:09；估计不作完成证据。一次observer PID3231729于2026-09-29T23:01:31.566338+08:00启动，00:02前不读进度；父和两个trainer及observer完整进程身份已核验。后台240秒sleep，原训练队列不重启、不抢占。原三个纯baseline和必要权重继续保留，Goal ACTIVE/UNMET。
 
 证据：cross_depth_progress／accepted／archive_666_20260929.json，两端full三文本与campaign，cross_depth_pair_msvr310_recurrent_666_20260929.json；cross_depth_formal_sync_665_20260929.json（上次15blob／205source／52live验收）；initialization_source_summary_666_20260929.json与refine-logs/cross_depth_role_state_v1/initialization_source_check_666_20260929自写资料。既有first-three fresh审查范围不扩展至第6／7端。
+
+
+### 41.663 最终审查的完整冻结源码证据准备（2026-09-29）
+
+当前仍为7/9正式验收。本轮不查询GPU或训练进度，不据估计填最后两端分数；一次observer667仍按9月30日00:02安排。预登记模型、205份冻结运行文件和50轮／单fused mAP-best规则不变。
+
+此前first-three fresh审查记载71份原字节一致、27份仅换行归一后相符、107份本地缺失。现从生产路径依据启动manifest逐份读取205个文件，前后核对SHA；实际远端2026-09-29T23:26:59.643218+08:00打包成功，本地2026-09-29T23:27:36.906615+08:00完成207个成员逐字节校验和保存（205文件＋原manifest＋单独绑定的CPU pair helper）。冻结清单包括三集协议JSON、作者数据解析与计分源码。压缩包782240字节，SHA `08883eb638a08796ab07adcc4a86256743fdfea0891d9b12ce620a145c288d08`。原文本不重写换行，不改变冻结清单；pair helper继续单独绑定，不追溯添加进启动manifest。
+
+原始证据保存在本地scratch `C:/Users/gb/.codex_tmp/cross_depth_source_evidence_668_20260929`，不将整份原始第三方源码副本重复发布到Git。日志 `logs/cross_depth_source_evidence_668_20260929.json`记录远端来源、每文件SHA及本地证据地址。系统目录解析到D盘缓存属现有workspace映射，不是额外数据搬迁。仅复制源码／配置／协议文字，没有复制权重、原图或距离数组。
+
+远端包元数据记录torch2.5.1+cu121、numpy1.24.4、mamba-ssm2.2.6.post3、timm1.0.15；这是已安装包版本记录，不保证第三方包内部所有字节或运行行为已由独立审查重放。首次读取本地归档别名在远端sparse目录缺失，改为实际生产 `logs/cross_depth_role_state_20260929/manifest.json`并与本地归档原SHA核对后退出0；该准备失败不涉及训练失败、重启或兼容fallback。
+
+这解决审查输入缺失／换行差异，不构成新的完整实验审查PASS，也不自动把旧first-three报告扩大为7端／9端。全9终态后仍由fresh、同family、provisional reviewer直接读取原始文件和结果；checkpoint、距离数组及真实数据留远端，可在原环境进行只读CPU复核。recurrent状态carry与最后层／平均读出的混杂、仅seed42、官方逐轮选点等边界继续保留。
+
+上次同步证据 `logs/cross_depth_formal_sync_666_20260929.json`同时归档：23:07:53.770758的62eb8c0提交、22份原始blob、205冻结文件、62个必要存活证据校验完成。该时间点／回执不冒充本轮实时训练查询。目标ACTIVE/UNMET；完整结果未齐前无新科学假设、训练入口或任务。

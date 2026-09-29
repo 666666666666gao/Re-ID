@@ -13,3 +13,5 @@ MSVR recurrent52.0987/67.3435 versus mean52.7232/68.6971, primary delta−.6246m
 Seven author source files pinned to MambaPro f9ee6f60...; source differences in origin/freeze/prompt placement/capacity/budget documented, no author weight/runtime replay and no new experiment. External rawcode stays local, own analysis/URLs/hashes archived. Source205 and original contracts unchanged; first3 fresh review scope remains3.
 
 Observer667 PID3231729 due2026-09-30 00:02CST, expected remaining finals around00:07-00:09 based22:58 overall rates. Parent3133064,trainer3163388/3192088 andobserver were identity-verified afterschedule. Do notearlypoll/duplicateobserver/restart or accept interim scores. Goal ACTIVE/UNMET.
+
+2026-09-29 23:27 evidence preparation: all205 frozen source/config/protocol bytes plus separately bound pair helper andmanifest copied tolocal scratch, rawSHA matched before/after. Sourceevidence668 records exactpaths/hashes. No new training observation or metric; sevenendpoint state remains last22:59 collector. Fresh finalsemanticreview notyetperformed; sourcecopy is not reviewerPASS. Observer66700:02 unchanged.
