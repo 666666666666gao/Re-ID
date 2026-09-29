@@ -2,7 +2,7 @@
 
 ## 0. 一页结论
 
-**本页更新至§41.661：跨深度三条件×三集已有5/9端完整50轮／单mAP-best／重载／CPU全图库验收。新增201持续状态E2为72.7638／74.2823／83.1340／88.0383，相对逐层独立平均+.2311mAP／+.3589R1，修复3条首位错误、未新增；这是单seed整套设计的局部正证据，状态传递与最终层读出未分离。22:32快照四卡仍训练，九端真实M0均已通过，剩余四个formal未验收；下一次只读观察22:58。首三端fresh审查范围仍为3端，目标ACTIVE/UNMET。** 历史规则和数字保留原样，当前合同以后文登记和服务器回执为准。研究目标仍 **ACTIVE／UNMET**；工程通过、局部增量不代替三数据集强基线与SOTA要求。
+**本页更新至§41.662：跨深度三条件×三集7/9端完整50轮／单mAP-best／严格重载／CPU全图库验收。新增100 mixed E1=85.1237／95.0437；MSVR recurrent E8=52.0987／67.3435，相对mean −.6246mAP／−1.3536R1，修复16条、新增24条首位错误。201持续状态的小幅正收益不适用于当前MSVR条件。22:58仅100 mean/recurrent仍训练，两卡已空闲；下一观察9月30日00:02。初始化与MambaPro的静态来源差异单列，无新模型／配置／任务。目标ACTIVE/UNMET。** 历史规则和数字保留原样，当前合同以后文登记和服务器回执为准。研究目标仍 **ACTIVE／UNMET**；工程通过、局部增量不代替三数据集强基线与SOTA要求。
 
 **现行合同：** 每个正式候选完整50轮，使用作者完整query/gallery及camera／MSVR时间段过滤，以官方fused mAP最高的同一checkpoint报告全部指标，随后严格重载。RGBNT201报告mAP／R1／R5／R10，RGBNT100及MSVR310报告mAP／R1；不跨epoch或seed拼列。官方集已参与逐轮选点和历史方法选择，属于已消费基准上的探索性结果。
 
@@ -13065,3 +13065,34 @@ collector实际2026-09-29T22:32:55.692945+08:00退出0，5/9完整验收；此�
 新增证据：logs/cross_depth_accepted_665_20260929.json、cross_depth_progress_665_20260929.json、cross_depth_archive_665_20260929.json、cross_depth_pair_rgbnt201_recurrent_665_20260929.json、recurrent201终态campaign和三份full文本、recurrentMSVR两份M0文本。pair helper单独绑定SHA833ebeb47cb5840422710fc00df1a974338cb04078249720d867f18b945f997a，不补写205份运行冻结manifest。§660三方同步证据cross_depth_formal_sync_659_20260929.json一并归档；原first-three fresh报告和主张副本不改写、不扩大审查范围。
 
 新一次只读observer PID3216915于2026-09-29T22:43:44.755852+08:00启动，22:58后观察预估mixed100／recurrentMSVR终点附近；进程身份与原父控制器均已实际核验。不在此前重复查训练，不重启或取消登记端，不在全9证据前改训练／模型源码。三个纯baseline预训练权重继续保留。Goal ACTIVE/UNMET。
+
+
+### 41.662 跨深度7/9验收、MSVR持续状态负配对与训练起点核查（2026-09-29）
+
+一次预定观察实际22:58:00.169911：父controller3133064存活，100 mean25/50和recurrent19/50的真实trainer仍运行（3163388／3192088）。100 mixed与MSVR recurrent子campaign已COMPLETE、训练和独立评价均退出0；父表仍显示RUNNING是240秒刷新滞后，没有据此重启。GPU0／2利用率99／92%，GPU1／3为0%；后两张卡已完成其登记工作，并非故障。没有未登记任务以填空，也没有取消剩余两端。
+
+collector实际2026-09-29T22:59:22.438468+08:00退出0，7/9完整验收，前五端对象逐字段相等。新两端各50轮、单一fused mAP-best重载、三个输出全query/gallery CPU复算及全步标量重构已通过；车辆主表继续只报告mAP／R1：
+
+| MSVR310定义 | best轮 | mAP | Rank-1 |
+|---|---:|---:|---:|
+| mixed_once | 15 | 53.0317 | 68.1895 |
+| depth_mean | 15 | 52.7232 | 68.6971 |
+| depth_recurrent | 8 | 52.0987 | 67.3435 |
+
+预登记主配对recurrent−mean：ΔmAP／R1=-0.6246／-1.3536pp；R5不变、R10−.8460pp。CPU helper实际2026-09-29T23:00:04.706220+08:00退出0，修复16条首位错误、新增24条，净少8条正确query。query AP改善251／下降313，identity改善25／下降26。身份等权宏平均+.1651pp而query加权mAP下降，固定模型身份bootstrap区间[−1.6645,1.9957]包含0；两种加权与收益分布不能混淆，更不能将区间解读为多seed证据。
+
+recurrent同权重global=52.6002／68.6971、joint local=5.7293／11.6751；fused相对自身global−.5015mAP／−1.3536R1。这是该权重的输出分解，不是独立global-only消融。相对mixed也下降约.9330mAP／.8460R1。201 recurrent对mean的+.2311／+.3589只是一组局部正证据，当前MSVR为负；整套持续状态设计未形成跨数据集一致增益。状态carry与最终层／平均聚合依旧未分离。
+
+新增100 mixed完整结果E1=85.1237／95.0437，自身global85.1009／95.0437、joint local58.2764／79.9417；fused-global仅+.0228mAP／0R1。与对应保存纯基线83.7042／95.0437相比+1.4195mAP／0R1，仍低于发布Signal86.3242／97.5510。基线阶段与新增50轮角色阶段必须分别计成本，不能称总共只训练50轮；当前使用的100保存纯基线文件为RGBNT100_PlainBaseline_30.pth。
+
+新100的6559条标量Triplet与auxiliary_id全部0，E1→E50 loss2.5203→.7061，mAP85.1237→81.8272、R1至93.4111；来源hinge无活动支持是观察，不自动构成唯一原因。MSVR新1000步Triplet971步非零、aux0，loss重构误差最大2.3842e−7；E8→E50 loss1.4753→.9043，mAP52.0987→47.6814、R1至62.6058。总7端17506条formal标量、84项计分差最大2.8642503e-06pp。训练加逐轮评价100为5613.726977秒、MSVR1356.270337秒，含并行负载差异，不当孤立计算速度证明。
+
+新100权重SHA1b24630f9ea00c5695b4473b911bfd31fed0b48b99e216c80cc9be203825857a，距离65abdb30b4c99d495c3e6a13af5d61ec7593136956cd5fa381e3dbbe80446690，receipt91b401307714b643a8fdf95b6fbb8e85242331eb833740171782be5fa4788ced；新MSVR相应为effa10f164def3cb6c9fe451ab8c688fcfc28cc1c908a4bbeedce395ff045873、f3613ae3b9155af4aee7f72386f0978ba3aeb2cf35e3f50b06ebf8a9e2c5e968、fe913b1a06497a665abf8b40a1fe0575b119cc6369bb5eb24c5d37e0cc2825e9。两个完整三文本及终态campaign已保存，原始字节不重写。CPU pair继续单独绑定原helper，无额外GPU推理、不调尺度／阈值／seed。
+
+本轮另完成只读训练起点来源核查，作者MambaPro固定commit f9ee6f60e58f21f3da1c8fd0e659fcc8db9ab149的七份源码原始字节已本地保存并绑定SHA。我们的构造先加载公开CLIP，再strict覆盖对应数据集训练过的纯ReID全状态并冻结，属于二阶段；作者常规入口加载相对CLIP文件、无显式纯ReID重载，prompt参数名被adapter冻结规则保留，外部camera embedding在visual冻结后创建。其实际权重bytes和运行optimizer未重放，不从文件名保证公开权重身份。状态进入所有visual block的prompt路径也不等于本次4/8/12锚点state路径。
+
+源码按ViT-B/16的768宽／12层推算，作者声明的visual adapter／prompt参数为56816640，当前九个M1适配器906048、当前201全模型trainable2617345。这是静态模块声明计数，不是作者完整运行参数／梯度审查、计算公平控制或“加大就涨分”的证明。初始化、camera可训练范围、状态位置、容量、轮数是不同变量，不能同时改变后全部归功于某一个模块。七份外部原始代码及详细摘录仅留本地；自写SOURCE_FINDINGS、SOURCE_BINDINGS、STATIC_ADAPTER_COUNTS及日志summary公开归档。没有新初始化／模型／科学合同／训练任务，本9端未齐前仍不立新训练假设。
+
+按22:58实际总体吞吐，最后100两端终点估计9月30日00:07–00:09；估计不作完成证据。一次observer PID3231729于2026-09-29T23:01:31.566338+08:00启动，00:02前不读进度；父和两个trainer及observer完整进程身份已核验。后台240秒sleep，原训练队列不重启、不抢占。原三个纯baseline和必要权重继续保留，Goal ACTIVE/UNMET。
+
+证据：cross_depth_progress／accepted／archive_666_20260929.json，两端full三文本与campaign，cross_depth_pair_msvr310_recurrent_666_20260929.json；cross_depth_formal_sync_665_20260929.json（上次15blob／205source／52live验收）；initialization_source_summary_666_20260929.json与refine-logs/cross_depth_role_state_v1/initialization_source_check_666_20260929自写资料。既有first-three fresh审查范围不扩展至第6／7端。
