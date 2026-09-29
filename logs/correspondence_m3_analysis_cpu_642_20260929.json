@@ -1,0 +1,78 @@
+{
+  "status": "M3_FACTOR_ARITHMETIC_AND_INCOMPLETE_CELL_REFUSAL_PASS",
+  "source_sha256": "ba17c51c5d4bd954845e3da80119c4ec15c5fb0dc956f353597653a71fafa480",
+  "arithmetic_checks": [
+    {
+      "input_values": [
+        2,
+        5,
+        7,
+        13
+      ],
+      "expected_address_predictor_interaction": [
+        4.5,
+        6.5,
+        3
+      ],
+      "computed": {
+        "mean_address_effect": {
+          "mAP": 4.5,
+          "Rank-1": 9.0,
+          "Rank-5": 13.5,
+          "Rank-10": 18.0
+        },
+        "mean_predictor_effect": {
+          "mAP": 6.5,
+          "Rank-1": 13.0,
+          "Rank-5": 19.5,
+          "Rank-10": 26.0
+        },
+        "address_predictor_interaction": {
+          "mAP": 3,
+          "Rank-1": 6,
+          "Rank-5": 9,
+          "Rank-10": 12
+        }
+      },
+      "reversed_input_rows": true
+    },
+    {
+      "input_values": [
+        2,
+        5,
+        7,
+        10
+      ],
+      "expected_address_predictor_interaction": [
+        3,
+        5,
+        0
+      ],
+      "computed": {
+        "mean_address_effect": {
+          "mAP": 3.0,
+          "Rank-1": 6.0,
+          "Rank-5": 9.0,
+          "Rank-10": 12.0
+        },
+        "mean_predictor_effect": {
+          "mAP": 5.0,
+          "Rank-1": 10.0,
+          "Rank-5": 15.0,
+          "Rank-10": 20.0
+        },
+        "address_predictor_interaction": {
+          "mAP": 0,
+          "Rank-1": 0,
+          "Rank-5": 0,
+          "Rank-10": 0
+        }
+      },
+      "reversed_input_rows": true
+    }
+  ],
+  "incomplete_cell_refusal_line": "assert all(r['status'] == 'VERIFIED_COMPLETE' for r in rows)",
+  "incomplete_cell_refusal_lineno": 55,
+  "created_result_directory": false,
+  "boundary": "Synthetic metric arithmetic and one unaccepted-cell gate only. No experiment distance, checkpoint, prediction, GPU, bootstrap or real completed M3 endpoint was analyzed."
+}

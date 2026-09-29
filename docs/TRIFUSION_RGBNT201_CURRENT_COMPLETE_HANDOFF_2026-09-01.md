@@ -2,7 +2,7 @@
 
 ## 0. 一页结论
 
-**本页更新至§41.641，2026-09-29；原24端、三global及十五M2均已验收，M3四条件×三数据集固定12端已启动，首批四项真实M0通过并在四卡执行正式50轮训练。** 历史规则和数字保留原样，当前合同以后文登记和服务器回执为准。研究目标仍 **ACTIVE／UNMET**；工程通过、局部增量不代替三数据集强基线与SOTA要求。
+**本页更新至§41.642，2026-09-29 09:31实际快照；原24端、三global及十五M2已验收，M3固定12端首批四项训练推进，四条件完整验收后的只读因素分析入口已完成复核与CPU检查。** 历史规则和数字保留原样，当前合同以后文登记和服务器回执为准。研究目标仍 **ACTIVE／UNMET**；工程通过、局部增量不代替三数据集强基线与SOTA要求。
 
 **现行合同：** 每个正式候选完整50轮，使用作者完整query/gallery及camera／MSVR时间段过滤，以官方fused mAP最高的同一checkpoint报告全部指标，随后严格重载。RGBNT201报告mAP／R1／R5／R10，RGBNT100及MSVR310报告mAP／R1；不跨epoch或seed拼列。官方集已参与逐轮选点和历史方法选择，属于已消费基准上的探索性结果。
 
@@ -28,7 +28,9 @@
 
 **当前M3：** 五个新文件实现“各自地址／匹配教师地址×直接回归／独立预测器”，固定原M1／M2／M3开启、单点采样、整体池化、seed42、预测系数0.1和50轮best合同，不从M2最高分选择配置。两网格CPU合同通过，own/direct与旧前向及预测loss精确相同；公共初始参数及RNG一致。匹配地址仅用于训练遮蔽预测并停止教师坐标梯度，正常检索仍使用学生地址并更新offset。预测器额外100608可训练参数，推理不使用，容量差异必须披露。独立fresh Astra/max复核PASS，实际serving身份未核验，same-family/provisional，不等于跨模型独立验收。
 
-08:57:48真实matched/predictor RGBNT201八批M0启动，08:58:23 M0_PASS：136/136可训练张量非零梯度，冻结纯baseline不变，compact checkpoint重载误差0，实际可训练2521354参数；此项不是正式成绩。09:07:26固定12端协调器PID2566593启动。实际观察2026-09-29 09:10:41.726 CST，首批四项自己的M0均通过并执行正式50轮，四GPU实际进程已核验；剩余八项按既定顺序自动补位。尚无新的完整M3终点，不把中途best填入正式表。所有源码在运行期保持冻结，240秒调度、不重试／抢占／调参。Goal ACTIVE／UNMET。
+08:57:48独立生产matched/predictor RGBNT201小批M0开始，08:58:23 PASS；09:07:26固定12端协调器PID2566593启动。实际观察2026-09-29T09:31:04.098707+08:00，四个正式train进程及GPUcompute PID均在：GPU0 own_direct201 22/50、GPU1 own_direct100 7/50、GPU2 own_directMSVR 35/50、GPU3 matched_direct201 20/50，4 RUNNING／8 PENDING／0 COMPLETE／0 FAILED。已有独立M0通过，不重跑；无完整M3正式终点。MSVR训练结束估计09:40:37，尚需独立重载及最多240秒补位，09:38按预计完成前里程碑观察。
+
+**分析准备：** 新只读入口tools/analyze_correspondence_role_prediction.py复用既有完整图库CPU比较。每数据集四项均VERIFIED_COMPLETE才生成四个因素条件差、两个平均效应和交互；另列旧111复现及独立global诊断。fresh Astra/max复核PASS，same-family/provisional，实际serving身份未核验；root CPU非对称与加性算术、反序输入及未验收条件拒绝检查PASS。都是代码检查，不是新检索成绩。不改变18科学训练／评价源码或运行8文件合同，不触发新推理／训练／调参。Goal ACTIVE／UNMET。
 ### 0.1 历史阶段摘要（保留原始结论，不作为当前执行指令）
 
 本工程是在 DeMo 代码基座上实现的 RGB–NIR–TIR 多模态目标重识别研究分支。V17完整训练和完整gallery补评已封存为失败；其全部查询/图像/分区诊断见§30。V18完整三折两端20epoch主实验已结束（§33）：fused增益+0.921504 mAP，bootstrap下界-0.117338，未通过固定晋级条件；无D1/dev/official。MSVR310、RGBNT100均已安装核验（§32）。V17 fused相对matched weight0为-0.328915 mAP，没有D1/dev/official结果。RGBNT201固定dev保留结果为V8 Phase-B：冻结dev fused=`58.4050 mAP / 59.3939 Rank-1`，比exact Signal高`0.3941 mAP / 1.9394 Rank-1`并超过三个专家，但仍比65 mAP门低`6.5950`，不能声称SOTA。
@@ -12322,3 +12324,26 @@ M3后继仍为各自地址＋直接回归、匹配地址＋直接回归、各自
 可用数据盘100114464768字节，纯baseline／作者／来源OOF及必要best继续保留，无删除。GPU瞬时负载只作实际占用证据，不换算FLOPs或受控推理性能。每端仍是M0→完整50轮→同一官方mAP-best严格重载；后续子任务自动填空卡，调度240秒检查。当前零项完整M3结果，因此正式表不新增中途分数。
 
 **后继验收。** 用已冻结collector逐项核对完整50轮、真实最高mAP同一checkpoint、地址／预测器条件及源码绑定、身份／camera／时间段字段、完整query/gallery与CPU指标复算。四条件全部完成后才进行地址因素／预测器因素及其交互分析；额外100608可训练参数和teacher-address指导只在训练出现，必须如实记录。不临时改M1、M2、读出、loader、预测系数或学习率，不只保留最高一次。官方基准已参与选点和历史比较，结果仍属于探索性比较。三角色超global-only的可靠增量、纯起点十点目标及MSVR强参照差距仍未解决；Goal ACTIVE／UNMET。
+
+### 41.642 M3因素分析入口与09:31实际训练进展（2026-09-29）
+
+**上一turn与当前动作。** §641实现、真实M0、正式12端四卡启动及三方同步是PROGRESS。当前恢复原cell5099，不新建重复远端训练轮询；09:31:04.098707完成已登记的一次observer642并返回0，旧cell已terminal，四个实际进程与8文件manifest仍验证通过。另完成待用只读分析入口及复核／CPU程序检查，不调整运行实验。
+
+**分析范围。** 新`tools/analyze_correspondence_role_prediction.py` SHA `ba17c51c5d4bd954845e3da80119c4ec15c5fb0dc956f353597653a71fafa480`读取M3 accepted matrix和封存前序18/18、原24/24。一个数据集必须有own_direct（OD）、matched_direct（MD）、own_predictor（OP）、matched_predictor（MP）四项VERIFIED_COMPLETE，其他数据集可以继续训练。核对共同初始化和训练合同、预测器额外100608及两direct容量相同；不按中途best补分数。复用既有compare的receipt／距离绑定、完整配对metadata、真实身份标签CPU计分、修复／新增首位错误、身份macro AP及fixed-model identity bootstrap。
+
+固定四个因素对照：OD→MD、OP→MP、OD→OP、MD→MP。平均地址效应为[(MD−OD)+(MP−OP)]/2；平均预测器效应为[(OP−OD)+(MP−MD)]/2；交互为(MP−OP)−(MD−OD)。每项保留自己最高mAP checkpoint的全部指标，不把不同CP拼成模型。另固定旧111→OD的复现诊断，以及独立global→OD的角色增量诊断；所有四项另给相对global的主指标差。global／原111的容量和存储布局不同，不冒称严格容量匹配因果实验。地址因素包含教师坐标指导、local-mask支持变化及学生offset预测梯度移除；预测器因素包含额外训练容量。不平均bootstrap区间、不声称训练seed显著性或独立未消费测试。当前没有运行任何真实M3因素／距离分析。
+
+**独立复核。** `/root/review_m3_factor_analysis_642`fresh context请求gpt-6-astra/max，actual serving未暴露，same-family/provisional。PASS，无blocking／nonblocking；以已安装CPython3.12.12只读编译12文件，AST核对OD/MD/OP/MP及六对照，反序输入10/13/17/23实算地址4.5／预测器8.5／交互3正确。未写文件、安装、SSH、GPU／模型执行；未执行main或生产距离，其两个检查环境缺NumPy／PyTorch。review归档`logs/correspondence_m3_factor_review_642_20260929.json` SHA `32885ed32eef7a247c5b30f16c98e4fd506bca1f20333f840de3285df2ac3ff8`。不是M3终点验收，也不是独立生产复现。
+
+**root CPU检查。** 既有远端Python环境只导入只读分析模块，不GPU前向。非对称2/5/7/13期望效应4.5／6.5／3；加性2/5/7/10期望3／5／0；各指标独立缩放及逆序输入都通过。synthetic输入中一项UNACCEPTED时，在四项完整要求处assert拒绝，未生成结果目录。`logs/correspondence_m3_analysis_cpu_642_20260929.json` SHA `d03988e48392b724d7f94e3366b435eef67f26be2505d701f9f3c56d9bb808c5`，driver `logs/correspondence_m3_factor_check_driver_642.py`。这些数字只是算术fixture，不是模型mAP／R1，不读取权重／预测／真实距离或bootstrap。不增加生产fallback、try/except或兼容层。
+
+**真实进展。** `logs/correspondence_m3_progress_642_20260929.json`原观察记录在09:31:04.098707，controller2566593及四trainer真实cmdline仍存在，GPUcompute PID逐项一致；四项均mode=train／receipt RUNNING，前序每端M0 PASS保持，root队列4 RUNNING／8 PENDING／0 COMPLETE／0 FAILED。下面吞吐用同PID在09:10:41与09:31:04两次保存完整epoch数之差，包含逐轮评价和实际并行负载。
+
+| GPU | 数据集／条件 | 实际trainer PID | 已完成轮次 | 两次观察秒／完整轮 | 训练结束中心估计CST |
+|---|---|---:|---:|---:|---:|
+| 0 | RGBNT201/own_direct | 2568811 | 22/50 | 61.12 | 09:59:35 |
+| 1 | RGBNT100/own_direct | 2568968 | 7/50 | 174.62 | 11:36:12 |
+| 2 | MSVR310/own_direct | 2568969 | 35/50 | 38.2 | 09:40:37 |
+| 3 | RGBNT201/matched_direct | 2569037 | 20/50 | 64.34 | 10:03:14 |
+
+估计不保证结束时间，不包含随后独立best重载评价、排队及240秒空卡发现延迟，未按中途分数停止。MSVR下一观察09:38，在预计训练结束前几分钟；其他端按实际进度再估。GPU2瞬时util=0但进程仍真实存活、占约19GiB且完成轮次3→35，不能视作停训／重启原因。可用数据盘100099698688字节，无需删依赖baseline／作者／OOF／best。原24、三global、十五M2及21配对封存不重跑。当前仍零完整M3终点，三数据集性能目标及十点增益未达到；Goal ACTIVE／UNMET。
