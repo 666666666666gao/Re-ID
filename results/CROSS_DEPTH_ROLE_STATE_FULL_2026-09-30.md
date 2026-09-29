@@ -1,6 +1,6 @@
 # Cross-depth role state: full registered panel
 
-All nine registered seed42 endpoints completed 50 epochs. Each row uses one checkpoint selected by highest official fused mAP, then strictly reloaded for full query/gallery scoring. This is a second training stage over a frozen dataset-trained pure CLIP ReID baseline. Fresh complete numerical audit is PENDING.
+All nine registered seed42 endpoints completed 50 epochs. Each row uses one checkpoint selected by highest official fused mAP, then strictly reloaded for full query/gallery scoring. This is a second training stage over a frozen dataset-trained pure CLIP ReID baseline. The [fresh full-panel audit](../refine-logs/cross_depth_role_state_v1/REVIEW_FULL_PANEL_672_20260930.md) returned WARN / same-family / provisional: 27 saved full-gallery matrices and all reported metrics independently replayed, with provenance, execution and official-selection limits retained.
 
 | Dataset | Condition | Best epoch | mAP | R1 | R5 | R10 |
 |---|---|---:|---:|---:|---:|---:|

@@ -1,0 +1,1983 @@
+{
+  "audit_skill": "experiment-audit",
+  "verdict": "WARN",
+  "overall_verdict": "warn",
+  "integrity_status": "warn",
+  "reason_code": "verified_saved_metrics_with_provenance_selection_and_execution_limits",
+  "summary": "All nine registered endpoints and 27 full-gallery saved-distance scores verify. No arithmetic or registered-artifact mismatch was found. Source/image provenance, original-execution attestation, one second-stage seed and recurrence/aggregation confounding limit scientific acceptance.",
+  "date": "2026-09-30",
+  "generated_at": "2026-09-30T00:34:59.807306+08:00",
+  "auditor": "fresh native Codex reviewer; requested gpt-6-astra / max",
+  "agent_id": "/root/audit_cross_depth_full_panel_672",
+  "verdict_id": "audit_cross_depth_full_panel_672_20260930",
+  "executor_model": "codex (not independently attested by reviewer)",
+  "executor_family": "openai",
+  "reviewer_model": "gpt-6-astra",
+  "reviewer_model_requested": "gpt-6-astra",
+  "reviewer_family": "openai",
+  "reviewer_reasoning": "max",
+  "reviewer_reasoning_requested": "max",
+  "reviewer_backend_route": "native Codex agent",
+  "actual_backend_attestation": "unavailable; backend model/version and reasoning were not exposed to this reviewer",
+  "actual_backend_model": null,
+  "actual_backend_reasoning": null,
+  "review_independence": "same-family",
+  "acceptance_status": "provisional",
+  "trace_path": "C:/Users/gb/.trifusion_github_publish_22c3bee/.aris/traces/experiment-audit/2026-09-30_full_panel_672/",
+  "trace_handling": "Parent-managed full native prompt/response trace. Native spawn API exposed canonical task name only; opaque agent ID and actual backend attestation are unavailable.",
+  "scope": {
+    "endpoints": 9,
+    "second_stage_seed": 42,
+    "formal_epochs": 450,
+    "formal_steps": 30624,
+    "m0_steps": 72,
+    "matrices": 27,
+    "metrics_per_matrix": 4,
+    "max_discrepancy_pp": 1.4210854715202004e-14,
+    "training_plus_epoch_eval_seconds": 29545.260235999995
+  },
+  "checks": {
+    "A": {
+      "title": "Ground-truth provenance and full split coverage",
+      "status": "WARN",
+      "deterministic_result": "PASS: all 27,266 protocol rows match filename-derived identity/camera/scene/view labels; complete image catalogue and array metadata order match.",
+      "details": [
+        "Live directory path, size and mtime metadata match the supplied catalogue. All protocol image paths exactly cover the JPG files of the registered physical splits. RGBNT201 has two ancillary non-JPG files; they do not enter scoring.",
+        "Train/evaluation identities are disjoint. All 836/1715/591 registered queries have valid positives. Gallery sizes are 836/8575/1055, respectively. MSVR310 retains 103 gallery-only identities.",
+        "RGBNT201 and RGBNT100 exclude only same-identity/same-camera pairs. MSVR310 excludes same-identity/same-time-period pairs; its scene field is that period. Other identities remain distractors.",
+        "This checks catalogue and source semantics, not image bytes, pixel content, visual identity correctness or authenticity of an official image release. No images were downloaded or inspected."
+      ],
+      "evidence": [
+        {
+          "file": "C:\\Users\\gb\\.codex_tmp\\cross_depth_source_evidence_668_20260929\\comparators\\Signal-cd1b0a6\\data\\datasets\\RGBNT201.py",
+          "line": 26
+        },
+        {
+          "file": "C:\\Users\\gb\\.codex_tmp\\cross_depth_source_evidence_668_20260929\\comparators\\Signal-cd1b0a6\\data\\datasets\\RGBNT201.py",
+          "line": 61
+        },
+        {
+          "file": "C:\\Users\\gb\\.codex_tmp\\cross_depth_source_evidence_668_20260929\\comparators\\Signal-cd1b0a6\\data\\datasets\\RGBNT100.py",
+          "line": 63
+        },
+        {
+          "file": "C:\\Users\\gb\\.codex_tmp\\cross_depth_source_evidence_668_20260929\\comparators\\Signal-cd1b0a6\\data\\datasets\\msvr310.py",
+          "line": 67
+        },
+        {
+          "file": "C:\\Users\\gb\\.codex_tmp\\cross_depth_source_evidence_668_20260929\\comparators\\Signal-cd1b0a6\\utils\\metrics.py",
+          "line": 68
+        },
+        {
+          "file": "C:\\Users\\gb\\.codex_tmp\\cross_depth_source_evidence_668_20260929\\comparators\\Signal-cd1b0a6\\utils\\metrics.py",
+          "line": 137
+        },
+        {
+          "file": "C:\\Users\\gb\\.codex_tmp\\cross_depth_fresh_full_audit_672_20260930\\auditor_672a_review_evidence.json",
+          "line": 76
+        }
+      ]
+    },
+    "B": {
+      "title": "Independent numerical replay and normalization",
+      "status": "PASS",
+      "deterministic_result": "PASS within the saved-distance boundary: all 27 matrices and 108 reported metric values reproduced.",
+      "details": [
+        "A reviewer-written NumPy scorer reads every saved matrix on CPU, sorts every full-gallery row using the upstream default NumPy ordering, applies the author filter, computes AP from correct-match ranks and CMC from the first correct rank. It does not import or call the executor collector/scorers.",
+        "All matrix shapes, finite values and six metadata vectors match the complete protocols. Author float32 CMC accumulation is reproduced, with float64 count-based values also retained. Maximum absolute discrepancy is 1.4210854715202004e-14 percentage points.",
+        "Raw unit-interval metrics and ordinary x100 percentage scaling are recorded. L2 embedding normalization followed by squared Euclidean distance is standard feature processing, not normalization by a model-specific performance maximum.",
+        "Saved distances range from -1.1324882507324219e-6 to 3.7508623600006104. Small negative self-distances are float32 cancellation in the documented squared-distance computation; values were neither clipped nor rescaled by the audit.",
+        "This is numerical replay of saved distances. It does not regenerate embeddings or distances from checkpoint/image inference."
+      ],
+      "evidence": [
+        {
+          "file": "C:\\Users\\gb\\.codex_tmp\\cross_depth_fresh_full_audit_672_20260930\\auditor_672a_remote_verify.py",
+          "line": 144
+        },
+        {
+          "file": "C:\\Users\\gb\\.codex_tmp\\cross_depth_fresh_full_audit_672_20260930\\auditor_672a_remote_journal.jsonl",
+          "line": 14
+        },
+        {
+          "file": "C:\\Users\\gb\\.codex_tmp\\cross_depth_source_evidence_668_20260929\\tools\\run_official_three_dataset_roles.py",
+          "line": 230
+        },
+        {
+          "file": "C:\\Users\\gb\\.codex_tmp\\cross_depth_source_evidence_668_20260929\\tools\\run_correspondence_context_identity.py",
+          "line": 207
+        },
+        {
+          "file": "C:\\Users\\gb\\.codex_tmp\\cross_depth_source_evidence_668_20260929\\tools\\run_correspondence_context_identity.py",
+          "line": 215
+        },
+        {
+          "file": "C:\\Users\\gb\\.codex_tmp\\cross_depth_source_evidence_668_20260929\\comparators\\Signal-cd1b0a6\\utils\\metrics.py",
+          "line": 93
+        },
+        {
+          "file": "C:\\Users\\gb\\.codex_tmp\\cross_depth_source_evidence_668_20260929\\comparators\\Signal-cd1b0a6\\utils\\metrics.py",
+          "line": 153
+        }
+      ]
+    },
+    "C": {
+      "title": "Completion, selection, checkpoints, M0 and scalar evidence",
+      "status": "WARN",
+      "deterministic_result": "PASS for extant artifacts, recorded histories, hashes, schemas and arithmetic; original execution is not newly replayed.",
+      "details": [
+        "Nine registered endpoints contain all epochs 1-50; 450 history entries match original train stdout. Every selected epoch is the maximum recorded official fused mAP with latest-epoch tie handling; all observed maxima are unique. All 36 rounded public table metrics, nine best epochs and nine displayed comparison numbers match.",
+        "All 54 supplied local full/M0/campaign text artifacts are byte-identical to their remote originals. The live parent campaign is COMPLETE at 2026-09-30T00:03:04.978340+08:00, all nine child exits are zero, and all 27 m0/train/evaluate exits are zero. A ps check at 00:23:07 found none of the recorded PIDs or cross-depth runner/queue commands active.",
+        "All nine best checkpoints and nine M0 probes load on CPU. Schema, dataset, seed, depth_mode, variants, condition, baseline and protocol hashes, epoch, metrics, state keys/shapes and finite values pass. Each has 131 stored tensors. Independent schema accounting yields 118 trainable tensors and 2,617,345/2,431,489/2,592,769 trainable parameters for RGBNT201/RGBNT100/MSVR310.",
+        "The nine eight-batch M0 receipts report nonzero-gradient observations covering all 118 trainable tensors, unchanged frozen Signal and zero reload difference; the active training code asserts gradient finiteness before each update. Probe hashes and eight step records per run match. This is evidence of prior M0 execution; no fresh gradients or model reload forward were performed.",
+        "All 30,624 formal and 72 M0 scalar records are finite, sequential and consistent with epoch means. Loss equals identity plus triplet plus inactive auxiliary loss within 2.384185791015625e-7. Auxiliary loss is exactly zero throughout. Each RGBNT100 condition has 6,559 zero-triplet steps, so its observed objective contribution is identity-only.",
+        "Within each dataset, recorded initial tensor-state hashes, parameter counts, 50 epochs, total steps, learning rate and weight decay agree across all three conditions and M0/full starts. Initial model snapshots are not saved, so matching initializations are verified as matching records plus seeded build code, not independently reconstructed initial models.",
+        "Checkpoint-to-distance hashes and the active strict-reload code support the binding. The arrays contain metadata vectors, not per-image paths or embeddings. Unselected epoch distances, original gradients and final frozen backbone tensors are not stored in these checkpoints; their execution-level truth cannot be independently reconstructed under the no-inference boundary."
+      ],
+      "evidence": [
+        {
+          "file": "C:\\Users\\gb\\.codex_tmp\\cross_depth_source_evidence_668_20260929\\tools\\run_cross_depth_role_state.py",
+          "line": 35
+        },
+        {
+          "file": "C:\\Users\\gb\\.codex_tmp\\cross_depth_source_evidence_668_20260929\\tools\\run_cross_depth_role_state.py",
+          "line": 44
+        },
+        {
+          "file": "C:\\Users\\gb\\.codex_tmp\\cross_depth_source_evidence_668_20260929\\tools\\run_correspondence_context_identity.py",
+          "line": 112
+        },
+        {
+          "file": "C:\\Users\\gb\\.codex_tmp\\cross_depth_source_evidence_668_20260929\\tools\\run_correspondence_context_identity.py",
+          "line": 140
+        },
+        {
+          "file": "C:\\Users\\gb\\.codex_tmp\\cross_depth_source_evidence_668_20260929\\tools\\run_correspondence_context_identity.py",
+          "line": 147
+        },
+        {
+          "file": "C:\\Users\\gb\\.codex_tmp\\cross_depth_source_evidence_668_20260929\\tools\\run_correspondence_context_identity.py",
+          "line": 175
+        },
+        {
+          "file": "C:\\Users\\gb\\.codex_tmp\\cross_depth_source_evidence_668_20260929\\tools\\run_correspondence_roles.py",
+          "line": 111
+        },
+        {
+          "file": "C:\\Users\\gb\\.codex_tmp\\cross_depth_fresh_full_audit_672_20260930\\auditor_672a_review_evidence.json",
+          "line": 314
+        },
+        {
+          "file": "C:\\Users\\gb\\.codex_tmp\\cross_depth_fresh_full_audit_672_20260930\\auditor_672a_review_evidence.json",
+          "line": 538
+        },
+        {
+          "file": "C:\\Users\\gb\\.codex_tmp\\cross_depth_fresh_full_audit_672_20260930\\auditor_672a_supplement_result.json",
+          "line": 130
+        }
+      ]
+    },
+    "D": {
+      "title": "Active code, condition meaning and source coverage",
+      "status": "WARN",
+      "deterministic_result": "PASS for the 205 launch-bound bytes, active dispatch and current supplemental bytes; execution-time dependency closure remains incomplete.",
+      "details": [
+        "The depth entry replaces the model class, build, evaluator, save and reload functions; the context entry then patches the shared runner. Active training calls the official fused scorer each epoch and final evaluation calls both the upstream author scorer and the separate project parity scorer for all three paths.",
+        "All 205 launch-bound source/config/protocol files match the local snapshot and live remote bytes, including a second remote hash check after replay. The separately bound paired-analysis helper also matches its recorded SHA256.",
+        "Three imported dependencies were not in the launch manifest: tools/train_msvr310_trifusion_oof.py, tools/train_official_three_dataset_roles.py and tools/audit_v17_full_gallery.py. Their current supplemental hashes match, but later capture cannot prove their execution-time bytes. Package version metadata is not a historical binary attestation.",
+        "mixed_once averages normalized depth evidence before the nonlinear role processing. depth_mean independently processes depths and averages outputs. depth_recurrent carries role outputs into the next depth and returns only the final output. Thus recurrence and final-depth-versus-mean aggregation change together.",
+        "The backbone is one shared frozen CLIP visual encoder evaluated for three modalities with trainable role adapters at blocks 4/8/12. Adapter outputs alter downstream shared_global; frozen Signal weights do not make shared_global an independent fixed baseline. Address generation is structurally common and shared across depths, not guaranteed numerically identical across separately trained endpoints.",
+        "M3/teacher prediction, auxiliary identity, static-context, old generic role-training objectives and the imported legacy full_gallery_scores path are dormant for this panel. Their presence is not evidence of a performed performance evaluation. The actual retrieval metric functions are called."
+      ],
+      "evidence": [
+        {
+          "file": "C:\\Users\\gb\\.codex_tmp\\cross_depth_source_evidence_668_20260929\\tools\\run_cross_depth_role_state.py",
+          "line": 73
+        },
+        {
+          "file": "C:\\Users\\gb\\.codex_tmp\\cross_depth_source_evidence_668_20260929\\tools\\run_correspondence_context_identity.py",
+          "line": 249
+        },
+        {
+          "file": "C:\\Users\\gb\\.codex_tmp\\cross_depth_source_evidence_668_20260929\\tools\\run_official_three_dataset_roles.py",
+          "line": 17
+        },
+        {
+          "file": "C:\\Users\\gb\\.codex_tmp\\cross_depth_source_evidence_668_20260929\\tools\\train_signal_preserving_v18.py",
+          "line": 16
+        },
+        {
+          "file": "C:\\Users\\gb\\.trifusion_github_publish_22c3bee\\logs\\cross_depth_additional_sources_670_20260929.json",
+          "line": 6
+        },
+        {
+          "file": "C:\\Users\\gb\\.trifusion_github_publish_22c3bee\\logs\\cross_depth_additional_sources_670_20260929.json",
+          "line": 28
+        },
+        {
+          "file": "C:\\Users\\gb\\.codex_tmp\\cross_depth_source_evidence_668_20260929\\modeling\\trifusion\\cross_depth_role_state.py",
+          "line": 49
+        },
+        {
+          "file": "C:\\Users\\gb\\.codex_tmp\\cross_depth_source_evidence_668_20260929\\modeling\\trifusion\\cross_depth_role_state.py",
+          "line": 66
+        },
+        {
+          "file": "C:\\Users\\gb\\.codex_tmp\\cross_depth_source_evidence_668_20260929\\modeling\\trifusion\\correspondence_roles.py",
+          "line": 64
+        },
+        {
+          "file": "C:\\Users\\gb\\.codex_tmp\\cross_depth_source_evidence_668_20260929\\modeling\\trifusion\\correspondence_context_identity.py",
+          "line": 87
+        }
+      ]
+    },
+    "E": {
+      "title": "Registered scope, cost and scientific claims",
+      "status": "WARN",
+      "deterministic_result": "PASS for full registered panel coverage and the current qualified table; consistent persistence, untouched-test and multi-seed claims are unsupported.",
+      "details": [
+        "The full preregistered scope is three conditions by three datasets at second-stage seed 42, with 450 second-stage epochs. There are no omitted registered endpoints and no evidence of substituted seed/retry rows in this panel.",
+        "The reused baseline weights bind to three earlier local fixed-final runs at upstream seed 1234, with RGBNT201/MSVR310 trained for 50 epochs and RGBNT100 for 30. Their original and copied checkpoint hashes match; CPU recomputation of all three tensor-state hashes matches the initializer records. These are dataset-trained module-free baselines, not untouched pretrained CLIP or author-release weights.",
+        "Second-stage training plus epoch-evaluation receipt time totals 29,545.260236 seconds (8.2070167322 summed hours). Complete child m0/train/evaluate wall times total 30,576.126899 seconds (8.4933685831 summed hours). Upstream baseline training adds 4,101.664515 seconds; with its final evaluation, 4,251.812489 seconds. These are recorded wall times, not measured GPU utilization or isolated FLOPs. Prior method search and original CLIP pretraining are excluded.",
+        "Recurrent minus mean fused mAP/Rank-1 is +0.2310896/+0.3588498 points on RGBNT201, -0.0064717/0 on RGBNT100 and -0.6245549/-1.3536394 on MSVR310. Rank-1 repairs/new errors are 3/0, 0/0 and 16/24. The registered consistent-positive criterion is not met.",
+        "The official evaluation labels guide all 50 epoch selections and prior method choices. No untouched test, training-seed variance or broad generalization is established. Any identity-level resampling would concern these fixed selected models only.",
+        "The current result document already states the aggregation confound, dependent global/local diagnostics, official selection and image/source provenance limits. It is suitable as a qualified development result, not as proof of reliable recurrent-role benefit. Its pending-audit status and the tracker can be replaced with a link to this bounded WARN report."
+      ],
+      "evidence": [
+        {
+          "file": "C:\\Users\\gb\\.trifusion_github_publish_22c3bee\\refine-logs\\cross_depth_role_state_v1\\EXPERIMENT_PLAN.md",
+          "line": 23
+        },
+        {
+          "file": "C:\\Users\\gb\\.trifusion_github_publish_22c3bee\\refine-logs\\cross_depth_role_state_v1\\EXPERIMENT_PLAN.md",
+          "line": 25
+        },
+        {
+          "file": "C:\\Users\\gb\\.trifusion_github_publish_22c3bee\\refine-logs\\cross_depth_role_state_v1\\EXPERIMENT_PLAN.md",
+          "line": 35
+        },
+        {
+          "file": "C:\\Users\\gb\\.trifusion_github_publish_22c3bee\\results\\CROSS_DEPTH_ROLE_STATE_FULL_2026-09-30.md",
+          "line": 17
+        },
+        {
+          "file": "C:\\Users\\gb\\.trifusion_github_publish_22c3bee\\results\\CROSS_DEPTH_ROLE_STATE_FULL_2026-09-30.md",
+          "line": 23
+        },
+        {
+          "file": "C:\\Users\\gb\\.trifusion_github_publish_22c3bee\\tools\\queue_signal_plain_baseline.py",
+          "line": 60
+        },
+        {
+          "file": "C:\\Users\\gb\\.trifusion_github_publish_22c3bee\\tools\\queue_signal_plain_baseline.py",
+          "line": 70
+        },
+        {
+          "file": "C:\\Users\\gb\\.codex_tmp\\cross_depth_fresh_full_audit_672_20260930\\auditor_672a_review_evidence.json",
+          "line": 341
+        },
+        {
+          "file": "C:\\Users\\gb\\.codex_tmp\\cross_depth_fresh_full_audit_672_20260930\\auditor_672a_supplement_result.json",
+          "line": 5
+        },
+        {
+          "file": "C:\\Users\\gb\\.codex_tmp\\cross_depth_fresh_full_audit_672_20260930\\auditor_672a_supplement_result.json",
+          "line": 270
+        }
+      ]
+    },
+    "F": {
+      "title": "Evaluation type and proxy/phantom-result check",
+      "status": "PASS",
+      "evaluation_type": "real_gt",
+      "deterministic_result": "PASS at the dataset-catalogue label level; M0 and hash/schema checks are engineering diagnostics.",
+      "details": [
+        "Retrieval identities and camera/period exclusions come from dataset records independently cross-checked against filenames. Predictions supply only distances, not targets. No self-normalized performance denominator, substituted model-derived GT or phantom registered result was found.",
+        "The M0 gradient/reload probes, tensor hashes and synthetic operator checks are engineering consistency evidence, not ReID performance. Dormant M3 teacher targets are not used by the active context/depth objective.",
+        "real_gt describes the source of evaluated labels. It does not remove the catalogue-versus-image-authenticity limitation in A or the official-selection limitation in E."
+      ],
+      "evidence": [
+        {
+          "file": "C:\\Users\\gb\\.codex_tmp\\cross_depth_source_evidence_668_20260929\\tools\\official_three_dataset_data.py",
+          "line": 8
+        },
+        {
+          "file": "C:\\Users\\gb\\.codex_tmp\\cross_depth_source_evidence_668_20260929\\tools\\run_correspondence_context_identity.py",
+          "line": 207
+        },
+        {
+          "file": "C:\\Users\\gb\\.codex_tmp\\cross_depth_source_evidence_668_20260929\\tools\\run_correspondence_context_identity.py",
+          "line": 112
+        },
+        {
+          "file": "C:\\Users\\gb\\.codex_tmp\\cross_depth_source_evidence_668_20260929\\modeling\\trifusion\\correspondence_context_identity.py",
+          "line": 92
+        },
+        {
+          "file": "C:\\Users\\gb\\.codex_tmp\\cross_depth_fresh_full_audit_672_20260930\\auditor_672a_review_evidence.json",
+          "line": 76
+        }
+      ]
+    }
+  },
+  "execution": {
+    "remote_executable": "/data/gaob/Re-ID/conda-envs/tri_reid/bin/python",
+    "python": "3.10.14 | packaged by conda-forge | (main, Mar 20 2024, 12:45:18) [GCC 12.3.0]",
+    "numpy": "1.24.4",
+    "torch": "2.5.1+cu121",
+    "main_cpu_verifier": {
+      "script": "C:\\Users\\gb\\.codex_tmp\\cross_depth_fresh_full_audit_672_20260930\\auditor_672a_remote_verify.py",
+      "script_sha256": "bf286e80e667850af57ea5934db197583c871dbc93d9f4980171f8b202d3e170",
+      "python_exit_code": 0,
+      "ssh_exit_code": 0,
+      "started_at": "2026-09-30T00:22:37.519965+08:00",
+      "completed_at": "2026-09-30T00:23:07.678236+08:00",
+      "wall_seconds": 30.15832505200524
+    },
+    "supplement_cpu_verifier": {
+      "script": "C:\\Users\\gb\\.codex_tmp\\cross_depth_fresh_full_audit_672_20260930\\auditor_672a_supplement_verify.py",
+      "script_sha256": "07e46fa025932bc7fc298c14eeb94249a83faaa12733d0693f545dd0eaab1750",
+      "python_and_ssh_exit_code": 0,
+      "at": "2026-09-30T00:27:45.246326+08:00"
+    },
+    "local_executable": "C:\\Users\\gb\\AppData\\Roaming\\uv\\python\\cpython-3.13-windows-x86_64-none\\python.exe",
+    "local_inventory_and_claim_checks_exit_code": 0,
+    "cuda_visible_devices": "",
+    "new_model_inference": false,
+    "training": false,
+    "package_installation": false,
+    "initial_inventory_invocation_error": {
+      "executable": "E:\\Scripts\\python.exe",
+      "exit_code": 1,
+      "error": "No pyvenv.cfg file",
+      "effect": "Inventory did not run; later successful inventory used the existing uv-managed interpreter with no environment change."
+    }
+  },
+  "missing_requested_primary_artifacts": [],
+  "primary_matrix_sha256": "5bbe27b41feb9a4b2ea5f863d07e18159cce934c191fcad2e7eeb8c55ae51aec",
+  "artifact_evidence": {
+    "summary": "C:\\Users\\gb\\.codex_tmp\\cross_depth_fresh_full_audit_672_20260930\\auditor_672a_review_evidence.json",
+    "full_cpu_replay": "C:\\Users\\gb\\.codex_tmp\\cross_depth_fresh_full_audit_672_20260930\\auditor_672a_remote_result.json",
+    "supplement": "C:\\Users\\gb\\.codex_tmp\\cross_depth_fresh_full_audit_672_20260930\\auditor_672a_supplement_result.json",
+    "journal": "C:\\Users\\gb\\.codex_tmp\\cross_depth_fresh_full_audit_672_20260930\\auditor_672a_remote_journal.jsonl"
+  },
+  "audited_input_hashes": {
+    "C:\\Users\\gb\\.trifusion_github_publish_22c3bee\\logs\\cross_depth_accepted_671_20260930.json": "sha256:5bbe27b41feb9a4b2ea5f863d07e18159cce934c191fcad2e7eeb8c55ae51aec",
+    "C:\\Users\\gb\\.trifusion_github_publish_22c3bee\\results\\CROSS_DEPTH_ROLE_STATE_FULL_2026-09-30.md": "sha256:0e022fe40b1ee255a43595f1b7ad79f602b8110831a4d27fc0ae130c8da290a2",
+    "C:\\Users\\gb\\.trifusion_github_publish_22c3bee\\refine-logs\\cross_depth_role_state_v1\\EXPERIMENT_TRACKER.md": "sha256:39cfdeae97add5fe4d48416c5e94e67b70ce2b516d15f5c13297b9afaf7a49cc",
+    "C:\\Users\\gb\\.trifusion_github_publish_22c3bee\\refine-logs\\cross_depth_role_state_v1\\EXPERIMENT_PLAN.md": "sha256:06aadabfa79bfdb2022e9bd88c14a788649ab2050217f8317110c4ef8747cc0b",
+    "C:\\Users\\gb\\.trifusion_github_publish_22c3bee\\logs\\cross_depth_source_evidence_668_20260929.json": "sha256:bafb0d7093637012b15f2ffd5f2d896256a5a240220c0068b04e2ee1a6880f35",
+    "C:\\Users\\gb\\.trifusion_github_publish_22c3bee\\logs\\cross_depth_additional_sources_670_20260929.json": "sha256:ef8dd33e3d9fe79a2beab1de2afd12bd6b79a77b2946b6035f4d463c37d9ac9c",
+    "C:\\Users\\gb\\.codex_tmp\\collect_cross_depth_ground_truth_paths_669.py": "sha256:fe904ba9d0904ec5a8c425d20b5780e8663e0f01bcf7e32ddfcb7f64364e3d39",
+    "C:\\Users\\gb\\.codex_tmp\\cross_depth_ground_truth_paths_669_20260929.json": "sha256:72e68631b6d1a84e8374f1cd6b081d8e519be46d5b4804e6652406ff5927819c",
+    "C:\\Users\\gb\\.codex_tmp\\cross_depth_source_evidence_668_20260929\\evidence_manifest.json": "sha256:67e383e88f5151d12cbf3eae38111df42f7e1279ba7118b2a6f2cc4ca6044b14",
+    "C:\\Users\\gb\\.trifusion_github_publish_22c3bee\\logs\\cross_depth_full_depth_mean_MSVR310_664_20260929\\training.json": "sha256:161b5f6c0c758d9720cf9b0482f07725ccb09ab3dd580bcaa2e7d50d9435aa00",
+    "C:\\Users\\gb\\.trifusion_github_publish_22c3bee\\logs\\cross_depth_full_depth_mean_MSVR310_664_20260929\\training_steps.jsonl": "sha256:faea50180de0abdc2fd6fd2e8b14dcc6efe8ae741859f7b03c9ab77c2ea009b5",
+    "C:\\Users\\gb\\.trifusion_github_publish_22c3bee\\logs\\cross_depth_full_depth_mean_MSVR310_664_20260929\\official_metrics.json": "sha256:5678d4f2d4a70a769faf506c6c76d07738197afdec6249dce41566972a978db7",
+    "C:\\Users\\gb\\.trifusion_github_publish_22c3bee\\logs\\cross_depth_full_depth_mean_RGBNT100_671_20260930\\training.json": "sha256:3a5152790d7917b8d0f1892115b7fac3503a462fdc9489743478b536b88d10d4",
+    "C:\\Users\\gb\\.trifusion_github_publish_22c3bee\\logs\\cross_depth_full_depth_mean_RGBNT100_671_20260930\\training_steps.jsonl": "sha256:440a46e80efada8fe792e6ae6ab4c3260fd5abbeca0ba1f7eb888ea36dc7b9a4",
+    "C:\\Users\\gb\\.trifusion_github_publish_22c3bee\\logs\\cross_depth_full_depth_mean_RGBNT100_671_20260930\\official_metrics.json": "sha256:81d844c233130a892d6332c92026e17285d446633852bc16eff8541726f4bf8e",
+    "C:\\Users\\gb\\.trifusion_github_publish_22c3bee\\logs\\cross_depth_full_depth_mean_RGBNT201_663_20260929\\training.json": "sha256:650d417ce1b8b941ae58fe32d9186cbb22f2236547daf3c8e71cd770ec5e869b",
+    "C:\\Users\\gb\\.trifusion_github_publish_22c3bee\\logs\\cross_depth_full_depth_mean_RGBNT201_663_20260929\\training_steps.jsonl": "sha256:485ea7a3ab8db7e1b159eafcd70d17eba815468447bcc33c4d0ef7fd62a8f199",
+    "C:\\Users\\gb\\.trifusion_github_publish_22c3bee\\logs\\cross_depth_full_depth_mean_RGBNT201_663_20260929\\official_metrics.json": "sha256:7ba280f26f01f9b320a60035f9093507ece042ef19aaf3d92cb5dfc312329086",
+    "C:\\Users\\gb\\.trifusion_github_publish_22c3bee\\logs\\cross_depth_full_depth_recurrent_MSVR310_666_20260929\\training.json": "sha256:55a3d60922451321b4de12f5cb3cd256b408d3b56c13d10ab31f8ffa8a32423c",
+    "C:\\Users\\gb\\.trifusion_github_publish_22c3bee\\logs\\cross_depth_full_depth_recurrent_MSVR310_666_20260929\\training_steps.jsonl": "sha256:91346aef537454697883ef84943f4e206ca5cf30d63232c64f393f53cc62d1ad",
+    "C:\\Users\\gb\\.trifusion_github_publish_22c3bee\\logs\\cross_depth_full_depth_recurrent_MSVR310_666_20260929\\official_metrics.json": "sha256:fe913b1a06497a665abf8b40a1fe0575b119cc6369bb5eb24c5d37e0cc2825e9",
+    "C:\\Users\\gb\\.trifusion_github_publish_22c3bee\\logs\\cross_depth_full_depth_recurrent_RGBNT100_671_20260930\\training.json": "sha256:724dbd20aa954bcd38dda63e9fa18b0ef46c3f6679203af343e3e1c7bb2b583a",
+    "C:\\Users\\gb\\.trifusion_github_publish_22c3bee\\logs\\cross_depth_full_depth_recurrent_RGBNT100_671_20260930\\training_steps.jsonl": "sha256:b9a5f3a1e2f6050ea3f09aede25048ac90806d58b12602a7ed26a70fc99d4461",
+    "C:\\Users\\gb\\.trifusion_github_publish_22c3bee\\logs\\cross_depth_full_depth_recurrent_RGBNT100_671_20260930\\official_metrics.json": "sha256:32e0858df48bfb520228ee5a589dc4193f4278e1af14edd329166292fd2ba820",
+    "C:\\Users\\gb\\.trifusion_github_publish_22c3bee\\logs\\cross_depth_full_depth_recurrent_RGBNT201_665_20260929\\training.json": "sha256:62f33af16272249a184e9f6bbc31a4b6485d103ba8e80374047e5e96f79cc60e",
+    "C:\\Users\\gb\\.trifusion_github_publish_22c3bee\\logs\\cross_depth_full_depth_recurrent_RGBNT201_665_20260929\\training_steps.jsonl": "sha256:e7bf00e1e7c6f68d6daf20a6ba32bad02537aa2c9df7f8ca126f0ca82861b627",
+    "C:\\Users\\gb\\.trifusion_github_publish_22c3bee\\logs\\cross_depth_full_depth_recurrent_RGBNT201_665_20260929\\official_metrics.json": "sha256:25f79086104c0e26f51fe0ed3b6bb32d32b8e4cb2035b7340b92fa8969f8b828",
+    "C:\\Users\\gb\\.trifusion_github_publish_22c3bee\\logs\\cross_depth_full_mixed_once_MSVR310_662_20260929\\training.json": "sha256:d221201b6d479e7ca2f0392c9c14b19b416d94fc9451097bacacb8253e38c745",
+    "C:\\Users\\gb\\.trifusion_github_publish_22c3bee\\logs\\cross_depth_full_mixed_once_MSVR310_662_20260929\\training_steps.jsonl": "sha256:21a85b3d45eaf18379de1bf4e1b7ddf6ba50d85aaa99caa06917dc89d789fd00",
+    "C:\\Users\\gb\\.trifusion_github_publish_22c3bee\\logs\\cross_depth_full_mixed_once_MSVR310_662_20260929\\official_metrics.json": "sha256:cc5a9d8b6bb39016116a361b7d1cc4a6b9f721545acda9159db882c946635389",
+    "C:\\Users\\gb\\.trifusion_github_publish_22c3bee\\logs\\cross_depth_full_mixed_once_RGBNT100_666_20260929\\training.json": "sha256:7aa89f80a0189b49bd76d2b0fb5e9ad446d62d5681aae7e76a07560560b5305b",
+    "C:\\Users\\gb\\.trifusion_github_publish_22c3bee\\logs\\cross_depth_full_mixed_once_RGBNT100_666_20260929\\training_steps.jsonl": "sha256:d4332f8653921dee5ad03852847aed4580d5f95060bd26edaa9c2cb7d72212a7",
+    "C:\\Users\\gb\\.trifusion_github_publish_22c3bee\\logs\\cross_depth_full_mixed_once_RGBNT100_666_20260929\\official_metrics.json": "sha256:91b401307714b643a8fdf95b6fbb8e85242331eb833740171782be5fa4788ced",
+    "C:\\Users\\gb\\.trifusion_github_publish_22c3bee\\logs\\cross_depth_full_mixed_once_RGBNT201_663_20260929\\training.json": "sha256:b5e01aaed9819cbfc1c98036dca54b2d40588ba1554928960c52a8dc934673af",
+    "C:\\Users\\gb\\.trifusion_github_publish_22c3bee\\logs\\cross_depth_full_mixed_once_RGBNT201_663_20260929\\training_steps.jsonl": "sha256:c99a424e84dd6e02c037534a0136dd8ccca026affbbf8b2718ce7d94475ed44b",
+    "C:\\Users\\gb\\.trifusion_github_publish_22c3bee\\logs\\cross_depth_full_mixed_once_RGBNT201_663_20260929\\official_metrics.json": "sha256:7f0f1d98315d265fa3345e75b123ea153b95256ddd6c094a826e297927e74407",
+    "C:\\Users\\gb\\.trifusion_github_publish_22c3bee\\logs\\cross_depth_m0_depth_mean_MSVR310_663_20260929\\training.json": "sha256:ad39e61c6d8f99bb18a25275d52720d437d660356c2cc501bad73b2a1eee77d0",
+    "C:\\Users\\gb\\.trifusion_github_publish_22c3bee\\logs\\cross_depth_m0_depth_mean_MSVR310_663_20260929\\training_steps.jsonl": "sha256:d6d9fdf46f0b683e98c98e4bf43115891ada4549b35263b4e4b220d5d37f98db",
+    "C:\\Users\\gb\\.trifusion_github_publish_22c3bee\\logs\\cross_depth_m0_depth_mean_RGBNT100_663_20260929\\training.json": "sha256:d24c301fd871e5e8bfb3d45d063818bd3efbf5808285f553e0158151699057f0",
+    "C:\\Users\\gb\\.trifusion_github_publish_22c3bee\\logs\\cross_depth_m0_depth_mean_RGBNT100_663_20260929\\training_steps.jsonl": "sha256:c73142a46f473c6880c44f9d9f7a31927ef0cee02c0be5215e4b637938b5ecbf",
+    "C:\\Users\\gb\\.trifusion_github_publish_22c3bee\\logs\\cross_depth_m0_depth_mean_RGBNT201_658_20260929\\training.json": "sha256:881da2600de68ea5a7792ffa94e219eccd327a9fcba21495693dc7c44acbbab6",
+    "C:\\Users\\gb\\.trifusion_github_publish_22c3bee\\logs\\cross_depth_m0_depth_mean_RGBNT201_658_20260929\\training_steps.jsonl": "sha256:16d395e02556bd9cd93c9d0ceb635e51fb2ee08833b63132ee99d3de433e08d1",
+    "C:\\Users\\gb\\.trifusion_github_publish_22c3bee\\logs\\cross_depth_m0_depth_recurrent_MSVR310_665_20260929\\training.json": "sha256:a3bd6eb734a46df928d96939a94f80a13b550d6986c85b80e9fbf4ea532761b5",
+    "C:\\Users\\gb\\.trifusion_github_publish_22c3bee\\logs\\cross_depth_m0_depth_recurrent_MSVR310_665_20260929\\training_steps.jsonl": "sha256:0896566a83aea733052b0638be2a4a4d8b370b6914fce650dc3d136893349a28",
+    "C:\\Users\\gb\\.trifusion_github_publish_22c3bee\\logs\\cross_depth_m0_depth_recurrent_RGBNT100_664_20260929\\training.json": "sha256:2237b1b9cbc3af2d49558ca7ef62eff7f6ad29b1f0e0f5d57fe4380aac78ee10",
+    "C:\\Users\\gb\\.trifusion_github_publish_22c3bee\\logs\\cross_depth_m0_depth_recurrent_RGBNT100_664_20260929\\training_steps.jsonl": "sha256:f849f2c299b45799ee0af7941c0792e7fceae23e278474720322e10aa7dd3c52",
+    "C:\\Users\\gb\\.trifusion_github_publish_22c3bee\\logs\\cross_depth_m0_depth_recurrent_RGBNT201_664_20260929\\training.json": "sha256:682ee2a00fe572e99fd4930e76d0bc4e2d76eef8e3ce4f6bc73560dfec2831dd",
+    "C:\\Users\\gb\\.trifusion_github_publish_22c3bee\\logs\\cross_depth_m0_depth_recurrent_RGBNT201_664_20260929\\training_steps.jsonl": "sha256:f2799425903ccb92410ad1f284703ec2832821744a9e01b1a2517cc60705ace6",
+    "C:\\Users\\gb\\.trifusion_github_publish_22c3bee\\logs\\cross_depth_m0_mixed_once_MSVR310_658_20260929\\training.json": "sha256:7917ac225b5f052a8e711a097e914f08c59bec96a80a9e16046072031ac3e42d",
+    "C:\\Users\\gb\\.trifusion_github_publish_22c3bee\\logs\\cross_depth_m0_mixed_once_MSVR310_658_20260929\\training_steps.jsonl": "sha256:4b33dca6cd21c8a4ae2d1889c063f3be202db8dcf5599149eb529dffb6134e5d",
+    "C:\\Users\\gb\\.trifusion_github_publish_22c3bee\\logs\\cross_depth_m0_mixed_once_RGBNT100_658_20260929\\training.json": "sha256:778cee7ccad9ddd72c2521c19d5b747a89dc1c702a9116cb489c488272fb8cd0",
+    "C:\\Users\\gb\\.trifusion_github_publish_22c3bee\\logs\\cross_depth_m0_mixed_once_RGBNT100_658_20260929\\training_steps.jsonl": "sha256:42fb3285b92298265c810c2b2a4a2e5f51df16ce3660ebc590dba6d61b55fc20",
+    "C:\\Users\\gb\\.trifusion_github_publish_22c3bee\\logs\\cross_depth_m0_mixed_once_RGBNT201_658_20260929\\training.json": "sha256:cb054d7303bec03c5c076c4dfa7e11cf4e7247be7bb195311b12d34ca67c6af9",
+    "C:\\Users\\gb\\.trifusion_github_publish_22c3bee\\logs\\cross_depth_m0_mixed_once_RGBNT201_658_20260929\\training_steps.jsonl": "sha256:9917289314f3156b7ab340a55bb6feb128792f0f0e009d69712e87edc868e03a",
+    "C:\\Users\\gb\\.trifusion_github_publish_22c3bee\\logs\\cross_depth_campaign_depth_mean_MSVR310_664_20260929.json": "sha256:746baba7a1b5fa8bfc4ac4c8c903b14a4e72b4d1bbed7ba4a6311afd0f8ac7ec",
+    "C:\\Users\\gb\\.trifusion_github_publish_22c3bee\\logs\\cross_depth_campaign_depth_mean_RGBNT100_671_20260930.json": "sha256:0bb4249128de689d4f44c150d4cd7a9e69f3f7f1c963b68d3e91350ba9bcce13",
+    "C:\\Users\\gb\\.trifusion_github_publish_22c3bee\\logs\\cross_depth_campaign_depth_mean_RGBNT201_659_20260929.json": "sha256:d886f325a130411f0bb5c0306b909456db8852d70f218ed496f7447b56642e2a",
+    "C:\\Users\\gb\\.trifusion_github_publish_22c3bee\\logs\\cross_depth_campaign_depth_recurrent_MSVR310_666_20260929.json": "sha256:a02be04275308e18c6f68c16657ce03e9e0f4a7c3fec6071972564501a86a17b",
+    "C:\\Users\\gb\\.trifusion_github_publish_22c3bee\\logs\\cross_depth_campaign_depth_recurrent_RGBNT100_671_20260930.json": "sha256:658ab9b315771b3dee78b6d8d0e106b851ad8e452b35bc2884e2d82db1a3a2cc",
+    "C:\\Users\\gb\\.trifusion_github_publish_22c3bee\\logs\\cross_depth_campaign_depth_recurrent_RGBNT201_665_20260929.json": "sha256:ca29126b6bed7a03eb81512baf78c3064954b25bb05e4c1776bb87f7669c192a",
+    "C:\\Users\\gb\\.trifusion_github_publish_22c3bee\\logs\\cross_depth_campaign_mixed_once_MSVR310_659_20260929.json": "sha256:9cb1fd5cd37f21bd0275559f7754fbb2866c9446429c68d2a421b8597730c94b",
+    "C:\\Users\\gb\\.trifusion_github_publish_22c3bee\\logs\\cross_depth_campaign_mixed_once_RGBNT100_666_20260929.json": "sha256:329cfd925405b825fba44ce18c9c1139a93606411e023ceadd94b1ea84dd5274",
+    "C:\\Users\\gb\\.trifusion_github_publish_22c3bee\\logs\\cross_depth_campaign_mixed_once_RGBNT201_659_20260929.json": "sha256:fda442d6aa26eeb6476b0ce9af88b72dddfba41fdf11ddec112f2f84a6571b5f",
+    "C:\\Users\\gb\\.codex_tmp\\cross_depth_source_evidence_668_20260929\\tools\\official_three_dataset_data.py": "sha256:c3180a88d12440709319d2025928fc699ff3b7c020b11697d468453fbfc68062",
+    "C:\\Users\\gb\\.codex_tmp\\cross_depth_source_evidence_668_20260929\\tools\\official_three_dataset_model.py": "sha256:e103ea0f4d6342b0dc129dc2dace0e8c0d0e6c956cfe94729ccb70d9588cf0f9",
+    "C:\\Users\\gb\\.codex_tmp\\cross_depth_source_evidence_668_20260929\\tools\\run_cross_depth_role_state.py": "sha256:937bf84151002e4b6e62a3a8875981e680ebd99a1f93c14ab937e07a06f13184",
+    "C:\\Users\\gb\\.codex_tmp\\cross_depth_source_evidence_668_20260929\\tools\\collect_cross_depth_role_state.py": "sha256:99e404637d186f297a35f337a46ef2950e2215fb4db6b7a5d719ab15e0cf8aca",
+    "C:\\Users\\gb\\.codex_tmp\\cross_depth_source_evidence_668_20260929\\tools\\queue_cross_depth_role_state.py": "sha256:4cce880fcc81240613ad1c1266f5a780e108a7d423426c02103a8884682432d2",
+    "C:\\Users\\gb\\.codex_tmp\\cross_depth_source_evidence_668_20260929\\tools\\run_correspondence_context_identity.py": "sha256:9f4cc9f11998819d4a927a32f4e47baf0c4ff9d14c4bc93b0dc35b0153ebc142",
+    "C:\\Users\\gb\\.codex_tmp\\cross_depth_source_evidence_668_20260929\\tools\\run_correspondence_roles.py": "sha256:e50865fb923297cd61cf38b33ec2bc95154f8c503b5dfe5de9823cad3f03d7ef",
+    "C:\\Users\\gb\\.codex_tmp\\cross_depth_source_evidence_668_20260929\\tools\\train_msvr310_signal_oof.py": "sha256:c25579d931df34481fef321558f0b9a1f9179d72a25d6047dbbfd3682d4ae60f",
+    "C:\\Users\\gb\\.codex_tmp\\cross_depth_source_evidence_668_20260929\\tools\\train_rgbnt100_signal_oof.py": "sha256:4462b73139e034d450d955c5b4a994aaa967548e9cc503d97bb753a14ea03b22",
+    "C:\\Users\\gb\\.codex_tmp\\cross_depth_source_evidence_668_20260929\\tools\\run_official_three_dataset_roles.py": "sha256:f30bb00a0b71429e9d11dd196cd1d543202a133c663ad66e175d2f82e28d448d",
+    "C:\\Users\\gb\\.codex_tmp\\cross_depth_source_evidence_668_20260929\\tools\\analyze_correspondence_distances.py": "sha256:833ebeb47cb5840422710fc00df1a974338cb04078249720d867f18b945f997a",
+    "C:\\Users\\gb\\.codex_tmp\\cross_depth_source_evidence_668_20260929\\tools\\audit_correspondence_context_identity_losses.py": "sha256:bcc15e568c6a14efdaca1df5268c5abdec716287d3b6efb2482804add724abf1",
+    "C:\\Users\\gb\\.codex_tmp\\cross_depth_source_evidence_668_20260929\\modeling\\trifusion\\cross_depth_role_state.py": "sha256:8e18c7c9d397fbe3eff6f7360a5ab890ebbeecf1404628da6979ade47544b7ba",
+    "C:\\Users\\gb\\.codex_tmp\\cross_depth_source_evidence_668_20260929\\modeling\\trifusion\\correspondence_roles.py": "sha256:e2a51154b5b327341f35e453dd32a821b091a49a669b49a7c70e79e6e2f2591b",
+    "C:\\Users\\gb\\.codex_tmp\\cross_depth_source_evidence_668_20260929\\modeling\\trifusion\\correspondence_context_identity.py": "sha256:eda3d1473496b33e4b69402dba7770e67d23b33b07afd41d23105b7f148d63af",
+    "C:\\Users\\gb\\.codex_tmp\\cross_depth_source_evidence_668_20260929\\comparators\\Signal-cd1b0a6\\utils\\metrics.py": "sha256:91604acb7d978462c16904910a645d7d1697c15bf150da529099004c8b5eecb2",
+    "C:\\Users\\gb\\.codex_tmp\\cross_depth_source_evidence_668_20260929\\comparators\\Signal-cd1b0a6\\data\\datasets\\RGBNT201.py": "sha256:7b2b30b339123e92bbead5c092afa7570a06f423570c4249acfdd39294fc4a88",
+    "C:\\Users\\gb\\.codex_tmp\\cross_depth_source_evidence_668_20260929\\comparators\\Signal-cd1b0a6\\data\\datasets\\RGBNT100.py": "sha256:fe38cdb9d0905b4637f215b804e933a226aefcd9a865e9f73e564a84ef2393ac",
+    "C:\\Users\\gb\\.codex_tmp\\cross_depth_source_evidence_668_20260929\\comparators\\Signal-cd1b0a6\\data\\datasets\\msvr310.py": "sha256:10b0197e7c97d1067bd63f25afef3cf0c4e64944ff4028c90d1f2f426a200eb9",
+    "C:\\Users\\gb\\.codex_tmp\\cross_depth_source_evidence_668_20260929\\logs\\official_three_dataset_protocols_20260923\\RGBNT201.json": "sha256:e63be5d9f8bd41df365264ad8f459dcd063d088023a2d2ed525a49a72f61161e",
+    "C:\\Users\\gb\\.codex_tmp\\cross_depth_source_evidence_668_20260929\\logs\\official_three_dataset_protocols_20260923\\RGBNT100.json": "sha256:12d8afe5cf6e537b69ccf753481dd5fd651f14b7672e1e6411a4d4e9d88cc956",
+    "C:\\Users\\gb\\.codex_tmp\\cross_depth_source_evidence_668_20260929\\logs\\official_three_dataset_protocols_20260923\\MSVR310.json": "sha256:7f2b35f9a7e00433558c1e723db0e3ff0ea9daa7144eeeb972139d1502945cbc",
+    "C:\\Users\\gb\\.codex_tmp\\cross_depth_additional_sources_670_20260929\\tools\\train_msvr310_trifusion_oof.py": "sha256:6e4185f539931a7af05ce56252249c06472e459b6ac7818051d00de1c48e2fa5",
+    "C:\\Users\\gb\\.codex_tmp\\cross_depth_additional_sources_670_20260929\\tools\\train_official_three_dataset_roles.py": "sha256:d9bf51873f4f4692bed05a5fbd5654a3e6a2e14e104b166b74395c0de0fa39cd",
+    "C:\\Users\\gb\\.codex_tmp\\cross_depth_additional_sources_670_20260929\\tools\\audit_v17_full_gallery.py": "sha256:856881f984ab8793788d291018a60046a47e309c625a65394b1a3ff4e670d8a9",
+    "C:\\Users\\gb\\.codex_tmp\\cross_depth_source_evidence_668_20260929\\modeling\\trifusion\\correspondence_evidence_readout.py": "sha256:e737a977d39ccbe09a5509118e5b5333d653f7f13381e65e84af1a13e5c28dc4",
+    "C:\\Users\\gb\\.codex_tmp\\cross_depth_source_evidence_668_20260929\\tools\\queue_correspondence_refinement.py": "sha256:5256afe78d02d9bfea3103daa00d488b94c05e839c955f00355098f69ecbd84a",
+    "C:\\Users\\gb\\.codex_tmp\\cross_depth_source_evidence_668_20260929\\tools\\queue_correspondence_context_identity.py": "sha256:5ac2395413c7ce744ac18be40be2e29039f2039b74b13896e48ca8bed8d4bb0f",
+    "C:\\Users\\gb\\.codex_tmp\\cross_depth_source_evidence_668_20260929\\tools\\collect_correspondence_context_identity.py": "sha256:bdc3a70eb31c94fd43acae2e490ae0c596ee7e1408d22d103ec68e9c293cd472",
+    "C:\\Users\\gb\\.codex_tmp\\cross_depth_source_evidence_668_20260929\\tools\\queue_correspondence_roles.py": "sha256:746fbdb8bdad04290a9ef22c0550e873c9dce9de74c2c3c3767fea9278be69bf",
+    "C:\\Users\\gb\\.codex_tmp\\cross_depth_source_evidence_668_20260929\\tools\\collect_correspondence_roles.py": "sha256:f81af437fe5ccfea4361c1ed182cb9b8841b362214d2a5220309a0fd2c78fff8",
+    "C:\\Users\\gb\\.codex_tmp\\cross_depth_source_evidence_668_20260929\\tools\\run_signal_preserving_v5.py": "sha256:e162184f68778b4991db0f97f26c5fda273b2ad2f7c8db2bbb2d53775eb717e5",
+    "C:\\Users\\gb\\.codex_tmp\\cross_depth_source_evidence_668_20260929\\tools\\build_v12_complete_path_oof_targets.py": "sha256:999356e18d489dce99042f1e7873eac15b811b64255f1aee9550c52ae1c7ee06",
+    "C:\\Users\\gb\\.codex_tmp\\cross_depth_source_evidence_668_20260929\\tools\\run_signal_baseline_dev.py": "sha256:083967f2a38267415b2992da98c2ad9429ebb793f387b45daac1dbb4eb16f365",
+    "C:\\Users\\gb\\.codex_tmp\\cross_depth_source_evidence_668_20260929\\tools\\train_signal_preserving_v18.py": "sha256:f6bdda4631d710d0b6db5fe2a8df124d8dcbd294cb54adcf3ec261d523e96cf8",
+    "C:\\Users\\gb\\.codex_tmp\\cross_depth_source_evidence_668_20260929\\tools\\train_signal_preserving_v17.py": "sha256:333886d16f73987accddb70b0780661bb9400b8afd04af01b57e188d34e5228d",
+    "C:\\Users\\gb\\.codex_tmp\\cross_depth_source_evidence_668_20260929\\modeling\\trifusion\\aligned_data.py": "sha256:3ea362d17660483b554cb599442b6377ace020fa114969b9bdd58906fbceedd5",
+    "C:\\Users\\gb\\.codex_tmp\\cross_depth_source_evidence_668_20260929\\modeling\\trifusion\\criterion.py": "sha256:0b2a6370f434828d885945d1a46dd56f6668133ceed45ef359fe71eeca63740a",
+    "C:\\Users\\gb\\.codex_tmp\\cross_depth_source_evidence_668_20260929\\modeling\\trifusion\\experts\\mamba.py": "sha256:c516c7ad937e5eee6a4ed1e3ec33c2afe3522b751d296bd2e4910e4f27a20ee5",
+    "C:\\Users\\gb\\.codex_tmp\\cross_depth_source_evidence_668_20260929\\configs\\RGBNT201\\TriFusion-signal-preserving-v27-source-style-rtx3090.json": "sha256:6f3161985f3a3831ffa890a163a510c6fa463ce4fd933793f0ce79db2c07677a",
+    "C:\\Users\\gb\\.codex_tmp\\cross_depth_source_evidence_668_20260929\\configs\\RGBNT100\\TriFusion-main-v1.json": "sha256:68b091dd48f086a29319dc853f9eb48bd38aabc72391e0187421efc5e1496aaf",
+    "C:\\Users\\gb\\.codex_tmp\\cross_depth_source_evidence_668_20260929\\configs\\MSVR310\\TriFusion-source-style-paired-v1-r2.json": "sha256:848254aab6dc02230a7fd33be0d60fc2560c99fc77cbd320cf0ef2efd655539d",
+    "C:\\Users\\gb\\.codex_tmp\\cross_depth_source_evidence_668_20260929\\modeling\\trifusion\\__init__.py": "sha256:ad617b86663e319f7702e9231fdec9c5f079f4d39ec5dabb90ced469414d910c",
+    "C:\\Users\\gb\\.codex_tmp\\cross_depth_source_evidence_668_20260929\\modeling\\trifusion\\builder.py": "sha256:8b3620e6be3727709253589a9e59b3efd20a611ba0eec4e8f6b4d0d17eeea4eb",
+    "C:\\Users\\gb\\.codex_tmp\\cross_depth_source_evidence_668_20260929\\modeling\\trifusion\\camera_coverage_v25.py": "sha256:341bacc189c3782d72c3f7c5b7c5bdde8e966f0eddb32966d90b3fd154ff75b5",
+    "C:\\Users\\gb\\.codex_tmp\\cross_depth_source_evidence_668_20260929\\modeling\\trifusion\\camera_negative_v22.py": "sha256:38b6ccc4e495d55af7e68617cdb6b54fdede9e3f177fa3c54a7f8d0db4465f97",
+    "C:\\Users\\gb\\.codex_tmp\\cross_depth_source_evidence_668_20260929\\modeling\\trifusion\\cascade_v2.py": "sha256:a1753a8dff2d6ab9f8d78810e941fef3949d5d07cce4877fb956b5889bc46c5a",
+    "C:\\Users\\gb\\.codex_tmp\\cross_depth_source_evidence_668_20260929\\modeling\\trifusion\\cascade_v2_builder.py": "sha256:1821068cfafe1bfc6d54e65323cd2469f9fc922829ec7ebf6c47af83125c1b0d",
+    "C:\\Users\\gb\\.codex_tmp\\cross_depth_source_evidence_668_20260929\\modeling\\trifusion\\circ_scoring.py": "sha256:db9ae624446674812618ff8c6f7e8d773a576ea31ab1ecb0d41bc3c33ca2da3e",
+    "C:\\Users\\gb\\.codex_tmp\\cross_depth_source_evidence_668_20260929\\modeling\\trifusion\\correspondence_global_only.py": "sha256:cb0cc4c1d0f6a2c0cad3d310ce3df74845fd17bdbfa3b66dfa64632f5cbd08c3",
+    "C:\\Users\\gb\\.codex_tmp\\cross_depth_source_evidence_668_20260929\\modeling\\trifusion\\correspondence_role_prediction.py": "sha256:7c80d7aa86ac5bd0d07ab7f6df7b2e93f708a2407bfee03fb078ff2bb182787d",
+    "C:\\Users\\gb\\.codex_tmp\\cross_depth_source_evidence_668_20260929\\modeling\\trifusion\\cross_modal_identity_v20.py": "sha256:c02e14c4731aba33ebb41d5efdae1b2a077c4b80622691e68014fe5ac280337e",
+    "C:\\Users\\gb\\.codex_tmp\\cross_depth_source_evidence_668_20260929\\modeling\\trifusion\\data.py": "sha256:d0795f8c74e1a35d44d50b408f41c585e90fb57f9267915923f9de5a7aa850be",
+    "C:\\Users\\gb\\.codex_tmp\\cross_depth_source_evidence_668_20260929\\modeling\\trifusion\\dual_view_data_v24.py": "sha256:68de48892c217bdeb143d041b56520822cc9785dea05cd37f7b30328a6f3b560",
+    "C:\\Users\\gb\\.codex_tmp\\cross_depth_source_evidence_668_20260929\\modeling\\trifusion\\encoder.py": "sha256:80fd6adc6d80b232296412ff8647a3d7c6a66d64bda699f545e477b94e72a46b",
+    "C:\\Users\\gb\\.codex_tmp\\cross_depth_source_evidence_668_20260929\\modeling\\trifusion\\experts\\__init__.py": "sha256:49709dfc6fd4ca781fa6d24f81476596f716163222ab01fe5d9eae105d8fc286",
+    "C:\\Users\\gb\\.codex_tmp\\cross_depth_source_evidence_668_20260929\\modeling\\trifusion\\experts\\cnn.py": "sha256:f823cfd59589e7fa8dbe066b26eec662d93a9d01b2376f05e7a4b6f43409996a",
+    "C:\\Users\\gb\\.codex_tmp\\cross_depth_source_evidence_668_20260929\\modeling\\trifusion\\experts\\semantic_residual.py": "sha256:c8cef9717fd7bd1e5e50b428ac92762455defac2e25857c9e0dfaf82729c2a93",
+    "C:\\Users\\gb\\.codex_tmp\\cross_depth_source_evidence_668_20260929\\modeling\\trifusion\\experts\\tiny.py": "sha256:d5462c7259e5a17f7e50b87d29f44e2ecb49c4a50ccf5b59f34e8870c3e1cf90",
+    "C:\\Users\\gb\\.codex_tmp\\cross_depth_source_evidence_668_20260929\\modeling\\trifusion\\experts\\transformer.py": "sha256:8580c6e761a2fbfd54a70d0bd231fef0695cccecbec328f643a6c5112deb674e",
+    "C:\\Users\\gb\\.codex_tmp\\cross_depth_source_evidence_668_20260929\\modeling\\trifusion\\fusion.py": "sha256:58d3672fb571e9acce8e7a8e82c8cd355fdb0f831f5439aa2d5b6e918b491a8d",
+    "C:\\Users\\gb\\.codex_tmp\\cross_depth_source_evidence_668_20260929\\modeling\\trifusion\\intervention_targets.py": "sha256:dcfab01a167411e98b148caeb55a9e29cd1eae453bae5a2cfe2ae9166c866f38",
+    "C:\\Users\\gb\\.codex_tmp\\cross_depth_source_evidence_668_20260929\\modeling\\trifusion\\interventions.py": "sha256:b32386352edc6f37a0ef62cf4140eb22d5e400b9eefc580e649447b10cc549e1",
+    "C:\\Users\\gb\\.codex_tmp\\cross_depth_source_evidence_668_20260929\\modeling\\trifusion\\joint_geometry_v29.py": "sha256:cf439edf017d3b5e1695521052161bde66082bcc59fb1acd2bab6d0f2fbb4d71",
+    "C:\\Users\\gb\\.codex_tmp\\cross_depth_source_evidence_668_20260929\\modeling\\trifusion\\joint_tokens_v28.py": "sha256:95de3c39fb86c1d574204eb507ca1fd7b84c7ed27eb8e63de87e905310b01656",
+    "C:\\Users\\gb\\.codex_tmp\\cross_depth_source_evidence_668_20260929\\modeling\\trifusion\\joint_tokens_v28_fp32.py": "sha256:fdfa64109973fb5ddeaba6db27e4dc0ef9bb014710d7c6813185ba6535346d0b",
+    "C:\\Users\\gb\\.codex_tmp\\cross_depth_source_evidence_668_20260929\\modeling\\trifusion\\model.py": "sha256:02e08b4ef6102431808bf850c98117e2169330fc954999086241693a22d92bf5",
+    "C:\\Users\\gb\\.codex_tmp\\cross_depth_source_evidence_668_20260929\\modeling\\trifusion\\peer_teaching.py": "sha256:d5ec38a6ebb26d8012be7fa5ebced3dcd5e16de4576e29fef2e89d92dc970b3b",
+    "C:\\Users\\gb\\.codex_tmp\\cross_depth_source_evidence_668_20260929\\modeling\\trifusion\\protocol.py": "sha256:519ff4386addb3b83a0416bca25f75ed5a54029a4fcd949231b5eb96db4ef3bc",
+    "C:\\Users\\gb\\.codex_tmp\\cross_depth_source_evidence_668_20260929\\modeling\\trifusion\\relay.py": "sha256:a24194bc81b72444dcbf3cea3450ee27f7d541787b77fd5d5cf4bdf13799d645",
+    "C:\\Users\\gb\\.codex_tmp\\cross_depth_source_evidence_668_20260929\\modeling\\trifusion\\reliability.py": "sha256:eb9fbed2994ef31038bd31cd129af0b0761c5adc88902ca918d20a05ae431207",
+    "C:\\Users\\gb\\.codex_tmp\\cross_depth_source_evidence_668_20260929\\modeling\\trifusion\\role_modal_responsibility_v26.py": "sha256:ce56ffb40089fad3131958045f9c6d12a11d48ec84123da840eb38e7ad12177b",
+    "C:\\Users\\gb\\.codex_tmp\\cross_depth_source_evidence_668_20260929\\modeling\\trifusion\\sam_training_v21.py": "sha256:9233e8f806914eed623976c7f30830ecac80af274f842214c73055ded9009b56",
+    "C:\\Users\\gb\\.codex_tmp\\cross_depth_source_evidence_668_20260929\\modeling\\trifusion\\semantic_tokenizer.py": "sha256:ea5e2181aaf20be10802b626a17a5dcd6de59ba88d44fa5e833827f8a5931278",
+    "C:\\Users\\gb\\.codex_tmp\\cross_depth_source_evidence_668_20260929\\modeling\\trifusion\\signal_preserving_v13.py": "sha256:7b7c4abb220ed234608553c77aeedd5f8ef763abb04cce5b21f1bfce0f4daa62",
+    "C:\\Users\\gb\\.codex_tmp\\cross_depth_source_evidence_668_20260929\\modeling\\trifusion\\signal_preserving_v14.py": "sha256:168ccc065c50f1ea1dd65d82247b89d664baa67881a8c2ff19c039a7ba740b0e",
+    "C:\\Users\\gb\\.codex_tmp\\cross_depth_source_evidence_668_20260929\\modeling\\trifusion\\signal_preserving_v15.py": "sha256:bba418acfc67c939b06a1285e0e711616beaf8432532237499bc339edcbf890a",
+    "C:\\Users\\gb\\.codex_tmp\\cross_depth_source_evidence_668_20260929\\modeling\\trifusion\\signal_preserving_v15_builder.py": "sha256:7173f0afeecdef3fdf8f7185bef1253ef4193a0a4f03e31dff5d5f79a9416b74",
+    "C:\\Users\\gb\\.codex_tmp\\cross_depth_source_evidence_668_20260929\\modeling\\trifusion\\signal_preserving_v16.py": "sha256:eba55a9001a13f5dba287ba5397377f105f1f83cfe3fd24c705185a7c13cf31c",
+    "C:\\Users\\gb\\.codex_tmp\\cross_depth_source_evidence_668_20260929\\modeling\\trifusion\\signal_preserving_v16_builder.py": "sha256:ebb7e87b3ea03798bde54cda75a6e9e95f805f1f472baafb05d34e3ea7960235",
+    "C:\\Users\\gb\\.codex_tmp\\cross_depth_source_evidence_668_20260929\\modeling\\trifusion\\signal_preserving_v17.py": "sha256:b095383fb619c8e8377cd95a82ef88c0726d3a3a0cecd8211ae2fd3e5493c800",
+    "C:\\Users\\gb\\.codex_tmp\\cross_depth_source_evidence_668_20260929\\modeling\\trifusion\\signal_preserving_v17_builder.py": "sha256:26f68c627656a0f539f1704ac54d865e63cf7c9049a80f2789a7e42d1a424411",
+    "C:\\Users\\gb\\.codex_tmp\\cross_depth_source_evidence_668_20260929\\modeling\\trifusion\\signal_preserving_v18.py": "sha256:c81f1c76c253b297501af6c1cba4d47ecc31a1320101ae2637abf5bff7a11455",
+    "C:\\Users\\gb\\.codex_tmp\\cross_depth_source_evidence_668_20260929\\modeling\\trifusion\\signal_preserving_v19.py": "sha256:69989cced25950ff476759bc93df945b167e8ce88a4340676e8adbbd9f88918e",
+    "C:\\Users\\gb\\.codex_tmp\\cross_depth_source_evidence_668_20260929\\modeling\\trifusion\\signal_preserving_v23.py": "sha256:89816298baedf6ab5d3f122fe16db69035420df8cc91b65e0bb0c8c6f9cde1af",
+    "C:\\Users\\gb\\.codex_tmp\\cross_depth_source_evidence_668_20260929\\modeling\\trifusion\\signal_preserving_v5.py": "sha256:126c98ea869f5b48e2b0873ecf4639a3f4d3671812f898376732d1dc93850426",
+    "C:\\Users\\gb\\.codex_tmp\\cross_depth_source_evidence_668_20260929\\modeling\\trifusion\\signal_preserving_v5_builder.py": "sha256:45a2250e79266abc801cc62b9500bade732183ac23cd4d0921cac56ae85f98e2",
+    "C:\\Users\\gb\\.codex_tmp\\cross_depth_source_evidence_668_20260929\\modeling\\trifusion\\signal_preserving_v6.py": "sha256:09bbd25ae3ef6a209e924b55f6a84bc53146907611c4fa0ab262fd96f348360d",
+    "C:\\Users\\gb\\.codex_tmp\\cross_depth_source_evidence_668_20260929\\modeling\\trifusion\\signal_preserving_v6_builder.py": "sha256:a86e7a2ae87a5e4df08bf4c4bbe6a7cd6b08d597a13435ca654de5bb54396ebf",
+    "C:\\Users\\gb\\.codex_tmp\\cross_depth_source_evidence_668_20260929\\modeling\\trifusion\\signal_preserving_v7.py": "sha256:d238087bbb64111a41ec726732b28eacbdc9ef503ec175b16107228212347963",
+    "C:\\Users\\gb\\.codex_tmp\\cross_depth_source_evidence_668_20260929\\modeling\\trifusion\\signal_preserving_v7_builder.py": "sha256:2a6295288be5a2303ba5485204bccf1035432dd6feb5c213bc71fdb335c6f873",
+    "C:\\Users\\gb\\.codex_tmp\\cross_depth_source_evidence_668_20260929\\modeling\\trifusion\\signal_preserving_v8.py": "sha256:70f79990af4a4a9b784e286635d1b78a1abf367306fe5945fbdcc1ed6f3d6159",
+    "C:\\Users\\gb\\.codex_tmp\\cross_depth_source_evidence_668_20260929\\modeling\\trifusion\\signal_preserving_v8_builder.py": "sha256:6ed1ae8981d5b2f192d196784e26d5f8f13b0611837fc24accbc57f0792ddbf7",
+    "C:\\Users\\gb\\.codex_tmp\\cross_depth_source_evidence_668_20260929\\modeling\\trifusion\\signal_preserving_v8_router.py": "sha256:79c683784c0c2bc9c7484fa10c141afcdcca9edf8a5913e4e352b1fa3a9efb57",
+    "C:\\Users\\gb\\.codex_tmp\\cross_depth_source_evidence_668_20260929\\modeling\\trifusion\\signal_preserving_v9.py": "sha256:48cfff021abf68854ae06443efad4259752a591f492473e25447533fb6691246",
+    "C:\\Users\\gb\\.codex_tmp\\cross_depth_source_evidence_668_20260929\\modeling\\trifusion\\signal_preserving_v9_builder.py": "sha256:88f78dbd7361a555bf304e04c77ff06995d1886690bc8f573e7ecb0a608dbcaa",
+    "C:\\Users\\gb\\.codex_tmp\\cross_depth_source_evidence_668_20260929\\modeling\\trifusion\\source_prototype_v24.py": "sha256:703f2393aaec83a2276497ededddb6ad888f305cb5b93f3bdf600953b5e6ebf7",
+    "C:\\Users\\gb\\.codex_tmp\\cross_depth_source_evidence_668_20260929\\modeling\\trifusion\\source_style_msvr.py": "sha256:57c54142a0617d1ca5c4e1d68a63e31537a10c203eb08056b92971605749092f",
+    "C:\\Users\\gb\\.codex_tmp\\cross_depth_source_evidence_668_20260929\\modeling\\trifusion\\source_style_v27.py": "sha256:aee2f1d40e2362690f704a154f13a0c9e5696ab05ce44837818defe1725d58c5",
+    "C:\\Users\\gb\\.codex_tmp\\cross_depth_source_evidence_668_20260929\\modeling\\trifusion\\standalone.py": "sha256:2017048e0a2493acd76da3946793a02707f9dd543a96cc30994b38887506d8e2",
+    "C:\\Users\\gb\\.codex_tmp\\cross_depth_source_evidence_668_20260929\\modeling\\trifusion\\state.py": "sha256:5fe89c4885507e74ca1833cc18822a4b57e4c2d6fa9a6c6b2e127d1e74b70db9",
+    "C:\\Users\\gb\\.codex_tmp\\cross_depth_source_evidence_668_20260929\\modeling\\trifusion\\task_anchor_v3.py": "sha256:cead5c736ae014a5855c0481e31c3e73ea32a76e7b4ebed9b97abe9541b1a5f0",
+    "C:\\Users\\gb\\.codex_tmp\\cross_depth_source_evidence_668_20260929\\modeling\\trifusion\\task_anchor_v3_builder.py": "sha256:18e84eb2365589bd9cdd16e7113aa012ef9f63b965afe3d8a0f27bb8748733c6",
+    "C:\\Users\\gb\\.codex_tmp\\cross_depth_source_evidence_668_20260929\\modeling\\trifusion\\task_anchor_v4.py": "sha256:d6280a25e21acd2dca10aab51e686a820ee18a2def3341692850fa28ca7057cb",
+    "C:\\Users\\gb\\.codex_tmp\\cross_depth_source_evidence_668_20260929\\modeling\\trifusion\\task_anchor_v4_builder.py": "sha256:1ceeae572c0273ceb4f6fde601dc1a3d717a34ff9b94f35f9ccf1a258d529736",
+    "C:\\Users\\gb\\.codex_tmp\\cross_depth_source_evidence_668_20260929\\modeling\\trifusion\\tokenizer.py": "sha256:ff180350cea3ea8c5a9a7c57e4f4c9b1d7f30cc70dde5405037270be2392c306",
+    "C:\\Users\\gb\\.codex_tmp\\cross_depth_source_evidence_668_20260929\\modeling\\trifusion\\training_phases.py": "sha256:66a7666ad04d7e32392864227df967b86d8aeeba9a62b6ebeff280c96dd89dee",
+    "C:\\Users\\gb\\.codex_tmp\\cross_depth_source_evidence_668_20260929\\modeling\\trifusion\\variants.py": "sha256:ca456227c5249e28461dafb67a68f7103a9b1fea292dcd2f214fb92bab1b91ef",
+    "C:\\Users\\gb\\.codex_tmp\\cross_depth_source_evidence_668_20260929\\modeling\\trifusion\\warm_start.py": "sha256:68591452f89d6303baf81b9957c30b48135a33ce9e7a5544a40ede2b92f5a05d",
+    "C:\\Users\\gb\\.codex_tmp\\cross_depth_source_evidence_668_20260929\\comparators\\Signal-cd1b0a6\\config\\__init__.py": "sha256:ff27847384f82ad53a61a80147c38a8282d9bd5af852593aef7c653e48a5d11b",
+    "C:\\Users\\gb\\.codex_tmp\\cross_depth_source_evidence_668_20260929\\comparators\\Signal-cd1b0a6\\config\\defaults.py": "sha256:40257d349153e56e345983c99b1638d7c3d77966dfd2f5496fe03c86dc8dbd57",
+    "C:\\Users\\gb\\.codex_tmp\\cross_depth_source_evidence_668_20260929\\comparators\\Signal-cd1b0a6\\data\\__init__.py": "sha256:3e55e3cdaf53a8e97673876c9ad5d2b316bbc82e500e0e318d127e88129be22f",
+    "C:\\Users\\gb\\.codex_tmp\\cross_depth_source_evidence_668_20260929\\comparators\\Signal-cd1b0a6\\data\\datasets\\MSVWild863.py": "sha256:261f7ed87c78a44274502627415dd6cf88c636e69a98cdc30fdfb20db5f66870",
+    "C:\\Users\\gb\\.codex_tmp\\cross_depth_source_evidence_668_20260929\\comparators\\Signal-cd1b0a6\\data\\datasets\\__init__.py": "sha256:82d38047efcac536c237306029bc2354b89d1b64f4a6316f70884a723ba665a5",
+    "C:\\Users\\gb\\.codex_tmp\\cross_depth_source_evidence_668_20260929\\comparators\\Signal-cd1b0a6\\data\\datasets\\bases.py": "sha256:48f050a7924cebd1e51f8831ba05df78dbccc7049afb0bcf83351d9d1ee23814",
+    "C:\\Users\\gb\\.codex_tmp\\cross_depth_source_evidence_668_20260929\\comparators\\Signal-cd1b0a6\\data\\datasets\\dukemtmcreid.py": "sha256:d4ddd8fbf7df3432b1af079c3bf7f86d62181bed06ac59de12fd9210ad11945c",
+    "C:\\Users\\gb\\.codex_tmp\\cross_depth_source_evidence_668_20260929\\comparators\\Signal-cd1b0a6\\data\\datasets\\make_dataloader.py": "sha256:54c47d798a20955bde224d9c78b42149c3c2ef008b02659141829a553194434f",
+    "C:\\Users\\gb\\.codex_tmp\\cross_depth_source_evidence_668_20260929\\comparators\\Signal-cd1b0a6\\data\\datasets\\market1501.py": "sha256:6b7642f048a36dde3c99af37b91a20560946bcdeab937cfcfe15b263da4319d8",
+    "C:\\Users\\gb\\.codex_tmp\\cross_depth_source_evidence_668_20260929\\comparators\\Signal-cd1b0a6\\data\\datasets\\msmt17.py": "sha256:d38552fb167fd6c76b369bac14d43170f7ae93849b6144d3846f75b72ee59640",
+    "C:\\Users\\gb\\.codex_tmp\\cross_depth_source_evidence_668_20260929\\comparators\\Signal-cd1b0a6\\data\\datasets\\sampler.py": "sha256:b77902214633a2b06a7c0a80924a737fdb5122984a857f3c6e120a8ad8cce65a",
+    "C:\\Users\\gb\\.codex_tmp\\cross_depth_source_evidence_668_20260929\\comparators\\Signal-cd1b0a6\\data\\datasets\\sampler_ddp.py": "sha256:c707f1c3e0163ce6bed42780cecfe4fa1bb948f3aec6779edac41e79a69d5983",
+    "C:\\Users\\gb\\.codex_tmp\\cross_depth_source_evidence_668_20260929\\comparators\\Signal-cd1b0a6\\engine\\processor.py": "sha256:968aa8bc6304ce6f92410d7e8550b5a0a8c64142dce0aa584089477ba169878b",
+    "C:\\Users\\gb\\.codex_tmp\\cross_depth_source_evidence_668_20260929\\comparators\\Signal-cd1b0a6\\layers\\__init__.py": "sha256:48ef0154cc20c04e1e81a6a97895fdf38e7a21695a4386124d79f522c389bd2b",
+    "C:\\Users\\gb\\.codex_tmp\\cross_depth_source_evidence_668_20260929\\comparators\\Signal-cd1b0a6\\layers\\center_loss.py": "sha256:c2e23be80b1b3e54503c704dda45ddc4a86f23647fcc8c37c63dbac47d003d89",
+    "C:\\Users\\gb\\.codex_tmp\\cross_depth_source_evidence_668_20260929\\comparators\\Signal-cd1b0a6\\layers\\cluster_loss.py": "sha256:699f7357d702ea433a5ef02597a1268471875c9b83908b9f10069fae7e92b477",
+    "C:\\Users\\gb\\.codex_tmp\\cross_depth_source_evidence_668_20260929\\comparators\\Signal-cd1b0a6\\layers\\hcloss.py": "sha256:f179d7b00e1206af853098114e3ea0d744c6b7feeb032a280424182914a28908",
+    "C:\\Users\\gb\\.codex_tmp\\cross_depth_source_evidence_668_20260929\\comparators\\Signal-cd1b0a6\\layers\\make_loss.py": "sha256:7eb7ab953c2bbc52d0c298ef971d0c3ff7000e5e50756fbb5a5fd63ac4c109aa",
+    "C:\\Users\\gb\\.codex_tmp\\cross_depth_source_evidence_668_20260929\\comparators\\Signal-cd1b0a6\\layers\\metric_learning.py": "sha256:262cd6a003028e8c11eadf3ed4e43096adae8e9d89d50dc61b1e9bd4fad94246",
+    "C:\\Users\\gb\\.codex_tmp\\cross_depth_source_evidence_668_20260929\\comparators\\Signal-cd1b0a6\\layers\\mutilmargin.py": "sha256:627685f7bfbb31a22b7483942914f0e9f0dad47eae0231915ba26e0a3fb82727",
+    "C:\\Users\\gb\\.codex_tmp\\cross_depth_source_evidence_668_20260929\\comparators\\Signal-cd1b0a6\\layers\\range_loss.py": "sha256:e35e1b4eb5287f25dd4cb38ea7450264d386a5c98f2ca8d9d337c8eb03be60c5",
+    "C:\\Users\\gb\\.codex_tmp\\cross_depth_source_evidence_668_20260929\\comparators\\Signal-cd1b0a6\\layers\\softmax_loss.py": "sha256:92192d9c3ff4e2fd3920c6e9a9637e0caa1e66cffbbc0be8b4049e5dcdb0bf24",
+    "C:\\Users\\gb\\.codex_tmp\\cross_depth_source_evidence_668_20260929\\comparators\\Signal-cd1b0a6\\layers\\supcontrast.py": "sha256:bc21c9763cc795b623089894b711aedaf0cde0c01fd8a1c5d641982513b10f6b",
+    "C:\\Users\\gb\\.codex_tmp\\cross_depth_source_evidence_668_20260929\\comparators\\Signal-cd1b0a6\\layers\\triplet_loss.py": "sha256:f502c44bec642bbf72ce6d0f58c9f9a0084beef9cbb451c2d2786bb13f94960a",
+    "C:\\Users\\gb\\.codex_tmp\\cross_depth_source_evidence_668_20260929\\comparators\\Signal-cd1b0a6\\modeling\\AddModule\\DAS.py": "sha256:55b98cb11a22ece7a422eed565f68e1ca8ffa1b448dca616f9a3e243311644ea",
+    "C:\\Users\\gb\\.codex_tmp\\cross_depth_source_evidence_668_20260929\\comparators\\Signal-cd1b0a6\\modeling\\AddModule\\useA.py": "sha256:1f8fef4dcadb89f5097f83b41a699d9f801a23c88ca3eea73b3ad973a56952a9",
+    "C:\\Users\\gb\\.codex_tmp\\cross_depth_source_evidence_668_20260929\\comparators\\Signal-cd1b0a6\\modeling\\AddModule\\useB.py": "sha256:39a65f82d59048745663d891a1c4c012eb1cc404ef8c8084f942702aeef46fec",
+    "C:\\Users\\gb\\.codex_tmp\\cross_depth_source_evidence_668_20260929\\comparators\\Signal-cd1b0a6\\modeling\\__init__.py": "sha256:c1962dec3f8aa828bd7237baf6edd7b4862cdbd8e9f710170f37f3d61bf1d1c0",
+    "C:\\Users\\gb\\.codex_tmp\\cross_depth_source_evidence_668_20260929\\comparators\\Signal-cd1b0a6\\modeling\\backbones\\__init__.py": "sha256:cb7a2fb6a8f54e83ff3c6293317a3d043b7dccd24501784de644cf8d15af78b9",
+    "C:\\Users\\gb\\.codex_tmp\\cross_depth_source_evidence_668_20260929\\comparators\\Signal-cd1b0a6\\modeling\\backbones\\basic_cnn_params\\__init__.py": "sha256:e1625a0f2d541b9a8e6d470d4ad0fd151034bb26ca02d602f05336ed9de2201c",
+    "C:\\Users\\gb\\.codex_tmp\\cross_depth_source_evidence_668_20260929\\comparators\\Signal-cd1b0a6\\modeling\\backbones\\basic_cnn_params\\cal.py": "sha256:2b2a5cf892e0afd43714fe062e5188f2db60311b34feb53f4247de2803f284ac",
+    "C:\\Users\\gb\\.codex_tmp\\cross_depth_source_evidence_668_20260929\\comparators\\Signal-cd1b0a6\\modeling\\backbones\\basic_cnn_params\\densenet.py": "sha256:a681ab2026ad388a332caee0cc7766cf324d71615281983971a9dd72cf396936",
+    "C:\\Users\\gb\\.codex_tmp\\cross_depth_source_evidence_668_20260929\\comparators\\Signal-cd1b0a6\\modeling\\backbones\\basic_cnn_params\\flops.py": "sha256:954e233730eb5ad868b85b2021d5a9381db6e67a21c1627fae144bdb0fc2107c",
+    "C:\\Users\\gb\\.codex_tmp\\cross_depth_source_evidence_668_20260929\\comparators\\Signal-cd1b0a6\\modeling\\backbones\\basic_cnn_params\\hacnn.py": "sha256:cd83408cc6f8891759116a0ec84237e19473dc42eb9bd72c3f928d1de2bd313c",
+    "C:\\Users\\gb\\.codex_tmp\\cross_depth_source_evidence_668_20260929\\comparators\\Signal-cd1b0a6\\modeling\\backbones\\basic_cnn_params\\inceptionresnetv2.py": "sha256:de17492a6c1801ae56ba989073667a1b8f1577c140be490a2a88eb60842c73ac",
+    "C:\\Users\\gb\\.codex_tmp\\cross_depth_source_evidence_668_20260929\\comparators\\Signal-cd1b0a6\\modeling\\backbones\\basic_cnn_params\\inceptionv4.py": "sha256:aa301ffdcdbcdd25408c65dc7fe5573de1983b7fa94e1562023f9d914dea6fde",
+    "C:\\Users\\gb\\.codex_tmp\\cross_depth_source_evidence_668_20260929\\comparators\\Signal-cd1b0a6\\modeling\\backbones\\basic_cnn_params\\mlfn.py": "sha256:1ae1196d103345a13c60502d2e4f14cf31f05a00f30cdd193eb61f74f19fe8a4",
+    "C:\\Users\\gb\\.codex_tmp\\cross_depth_source_evidence_668_20260929\\comparators\\Signal-cd1b0a6\\modeling\\backbones\\basic_cnn_params\\mobilenetv2.py": "sha256:f9e1c2a3b8a469f343b47812b13367d150880d38758eab14670e52d60fa72ba3",
+    "C:\\Users\\gb\\.codex_tmp\\cross_depth_source_evidence_668_20260929\\comparators\\Signal-cd1b0a6\\modeling\\backbones\\basic_cnn_params\\mudeep.py": "sha256:82b24f86064538abf5d85ba147f67e0d950ee07b6406547e12fd11393ff947f4",
+    "C:\\Users\\gb\\.codex_tmp\\cross_depth_source_evidence_668_20260929\\comparators\\Signal-cd1b0a6\\modeling\\backbones\\basic_cnn_params\\nasnet.py": "sha256:20e762521082698eafe9d3db4553d1aa731a5364b15c9d217636a44a6b9bc3af",
+    "C:\\Users\\gb\\.codex_tmp\\cross_depth_source_evidence_668_20260929\\comparators\\Signal-cd1b0a6\\modeling\\backbones\\basic_cnn_params\\osnet.py": "sha256:34b8b7a4ceb54625a29c1952d665061ae235efdd695fc999a8cd928107435bc4",
+    "C:\\Users\\gb\\.codex_tmp\\cross_depth_source_evidence_668_20260929\\comparators\\Signal-cd1b0a6\\modeling\\backbones\\basic_cnn_params\\osnet_ain.py": "sha256:a43b495866a4b1645cd134a30c3011592e8c6826ba4781955a135588cf46cd25",
+    "C:\\Users\\gb\\.codex_tmp\\cross_depth_source_evidence_668_20260929\\comparators\\Signal-cd1b0a6\\modeling\\backbones\\basic_cnn_params\\pcb.py": "sha256:76246a0f6b6438566f26f307ec9ab3f378f38885eefa9e58aaf23df2b90410e4",
+    "C:\\Users\\gb\\.codex_tmp\\cross_depth_source_evidence_668_20260929\\comparators\\Signal-cd1b0a6\\modeling\\backbones\\basic_cnn_params\\resnet.py": "sha256:6b871338b477421bbc23bc7b3028735fc67ab4f551d979c5ae8b2edf2d02c168",
+    "C:\\Users\\gb\\.codex_tmp\\cross_depth_source_evidence_668_20260929\\comparators\\Signal-cd1b0a6\\modeling\\backbones\\basic_cnn_params\\resnet_ibn_a.py": "sha256:8459ffb25de797b755c7ded64527ab664491b0c50aaf66c259a7cb530577ec10",
+    "C:\\Users\\gb\\.codex_tmp\\cross_depth_source_evidence_668_20260929\\comparators\\Signal-cd1b0a6\\modeling\\backbones\\basic_cnn_params\\resnet_ibn_b.py": "sha256:b26f408850d5e6b6ad34f576536004d392db8f6c26d738b3d8e5a71ab56ca60b",
+    "C:\\Users\\gb\\.codex_tmp\\cross_depth_source_evidence_668_20260929\\comparators\\Signal-cd1b0a6\\modeling\\backbones\\basic_cnn_params\\resnetmid.py": "sha256:97886e2906f107a7fdb7913ae49db08e326e26dea3aeb76b06cba75f8e63dd83",
+    "C:\\Users\\gb\\.codex_tmp\\cross_depth_source_evidence_668_20260929\\comparators\\Signal-cd1b0a6\\modeling\\backbones\\basic_cnn_params\\senet.py": "sha256:062339e75c5137987371b761428c74bc7cfa3d3d219bce1f5f1ffff7e39291da",
+    "C:\\Users\\gb\\.codex_tmp\\cross_depth_source_evidence_668_20260929\\comparators\\Signal-cd1b0a6\\modeling\\backbones\\basic_cnn_params\\shufflenet.py": "sha256:0db745f384bee5daacce335de41a4f841a367d1302c80245d453d21ae8aa64b3",
+    "C:\\Users\\gb\\.codex_tmp\\cross_depth_source_evidence_668_20260929\\comparators\\Signal-cd1b0a6\\modeling\\backbones\\basic_cnn_params\\shufflenetv2.py": "sha256:8ce02f3e59da5db8f50ecb2af1d79d742a9499d87734a30ff53326c0fe945767",
+    "C:\\Users\\gb\\.codex_tmp\\cross_depth_source_evidence_668_20260929\\comparators\\Signal-cd1b0a6\\modeling\\backbones\\basic_cnn_params\\squeezenet.py": "sha256:8d42e650ddb6a65000081bf233fd343585db422b29f4d79a16211b1d514aa94e",
+    "C:\\Users\\gb\\.codex_tmp\\cross_depth_source_evidence_668_20260929\\comparators\\Signal-cd1b0a6\\modeling\\backbones\\basic_cnn_params\\xception.py": "sha256:2b11ac064b1fb8dbc5ed7e900475347eb61b1376c4a8a7992188596757b1cdbf",
+    "C:\\Users\\gb\\.codex_tmp\\cross_depth_source_evidence_668_20260929\\comparators\\Signal-cd1b0a6\\modeling\\backbones\\t2t.py": "sha256:f8cd394abc8b2d650310968e14a4ae978063fee55d545658aa3e90676f996159",
+    "C:\\Users\\gb\\.codex_tmp\\cross_depth_source_evidence_668_20260929\\comparators\\Signal-cd1b0a6\\modeling\\backbones\\token_performer.py": "sha256:3e3dfa33523e3d090d9e639d8b442a7883860a650e1af241786d1e4561f136d3",
+    "C:\\Users\\gb\\.codex_tmp\\cross_depth_source_evidence_668_20260929\\comparators\\Signal-cd1b0a6\\modeling\\backbones\\token_transformer.py": "sha256:6dc55462e5ff1138a2b19883aec86d43591494efdb65bce383152dcdc0fdfc6a",
+    "C:\\Users\\gb\\.codex_tmp\\cross_depth_source_evidence_668_20260929\\comparators\\Signal-cd1b0a6\\modeling\\backbones\\transformer_block.py": "sha256:7d4da490e811af278eafb7fe768622a68de6ab8fcc78adce36c59db307ca96a4",
+    "C:\\Users\\gb\\.codex_tmp\\cross_depth_source_evidence_668_20260929\\comparators\\Signal-cd1b0a6\\modeling\\backbones\\vit_pytorch.py": "sha256:6821875c278d1999dc6841b599abc8368651ef5cf6e8c507c323f02dbf334fa9",
+    "C:\\Users\\gb\\.codex_tmp\\cross_depth_source_evidence_668_20260929\\comparators\\Signal-cd1b0a6\\modeling\\clip\\LoRA.py": "sha256:c3f085ba05071701235bf4f0f3f87caaa3823bc1e17883ca85f1a2f690133365",
+    "C:\\Users\\gb\\.codex_tmp\\cross_depth_source_evidence_668_20260929\\comparators\\Signal-cd1b0a6\\modeling\\clip\\__init__.py": "sha256:d7930eb290ebed432116795c91473200d098451a94c0aedd4ae0f934f97955e8",
+    "C:\\Users\\gb\\.codex_tmp\\cross_depth_source_evidence_668_20260929\\comparators\\Signal-cd1b0a6\\modeling\\clip\\clip.py": "sha256:4898d0e683126fbc83d450465593042159ca7162de3199c5e9e89e0e0d1d5d3d",
+    "C:\\Users\\gb\\.codex_tmp\\cross_depth_source_evidence_668_20260929\\comparators\\Signal-cd1b0a6\\modeling\\clip\\model.py": "sha256:2c2ca81815830fad2ab13bb8bb4ba0d41f0625477af6505815f0982d96df4e73",
+    "C:\\Users\\gb\\.codex_tmp\\cross_depth_source_evidence_668_20260929\\comparators\\Signal-cd1b0a6\\modeling\\clip\\simple_tokenizer.py": "sha256:d1b09f10ed3d1e2c343619cb98cbfacb92363dd8607526a43aa7fe2d60d15bad",
+    "C:\\Users\\gb\\.codex_tmp\\cross_depth_source_evidence_668_20260929\\comparators\\Signal-cd1b0a6\\modeling\\make_model.py": "sha256:1a88a91d2e5055f5d338996231b16c0e13b2fa7013c74131ca663f16c2655963",
+    "C:\\Users\\gb\\.codex_tmp\\cross_depth_source_evidence_668_20260929\\comparators\\Signal-cd1b0a6\\modeling\\make_model_clipreid.py": "sha256:5494c2b7cb9acfb2c727a2cde201ba587184b344667e077eacfe0c3a0c578651",
+    "C:\\Users\\gb\\.codex_tmp\\cross_depth_source_evidence_668_20260929\\comparators\\Signal-cd1b0a6\\modeling\\meta_arch.py": "sha256:8b709d5ab4b14ba150a96bbb5e8cc7e6dbbb71dd8bd30cafd7a5cb110ee5a757",
+    "C:\\Users\\gb\\.codex_tmp\\cross_depth_source_evidence_668_20260929\\comparators\\Signal-cd1b0a6\\scripts\\auto_tests_docs\\auto_docs.py": "sha256:e3132d7b5d7f2ba1c4ea6069ce5396d813606d9c609735d1a636e905aeb6c009",
+    "C:\\Users\\gb\\.codex_tmp\\cross_depth_source_evidence_668_20260929\\comparators\\Signal-cd1b0a6\\scripts\\auto_tests_docs\\auto_docs_functions.py": "sha256:bf6603819ade241c60ab67c8fb23b2baf63032008886b6115d1aaf8ed4b8ae30",
+    "C:\\Users\\gb\\.codex_tmp\\cross_depth_source_evidence_668_20260929\\comparators\\Signal-cd1b0a6\\scripts\\auto_tests_docs\\auto_tests.py": "sha256:553e8393d20a0d8b6669b28c1384f74e0362daedead9a31cedcaaa461037fed2",
+    "C:\\Users\\gb\\.codex_tmp\\cross_depth_source_evidence_668_20260929\\comparators\\Signal-cd1b0a6\\scripts\\auto_tests_docs\\auto_tests_functions.py": "sha256:b5d5ac1d5780c944f13af959766ab06a3533929492e56d5df9524ae5621ac2d7",
+    "C:\\Users\\gb\\.codex_tmp\\cross_depth_source_evidence_668_20260929\\comparators\\Signal-cd1b0a6\\scripts\\auto_tests_docs\\docs.py": "sha256:24c5bddb8e81ead8a609e7068c99ab7dbdf6e6f9e3cceefa262429c31af4ce74",
+    "C:\\Users\\gb\\.codex_tmp\\cross_depth_source_evidence_668_20260929\\comparators\\Signal-cd1b0a6\\scripts\\auto_tests_docs\\mkdocs_handler.py": "sha256:fc9e0aaf11b4338abd3deb1cd818dd5d248c2402f85c475ff0e06f7f87d23849",
+    "C:\\Users\\gb\\.codex_tmp\\cross_depth_source_evidence_668_20260929\\comparators\\Signal-cd1b0a6\\scripts\\delpycache.py": "sha256:2af16df38b78eac2bc716c9b1baa1aff2bb91463cdddf05a9c532088a8640cc8",
+    "C:\\Users\\gb\\.codex_tmp\\cross_depth_source_evidence_668_20260929\\comparators\\Signal-cd1b0a6\\scripts\\get_package_requirements.py": "sha256:959cc0cf202faa3739395912ce20356dadd554b8d11dbae4b1a21ab7a328f836",
+    "C:\\Users\\gb\\.codex_tmp\\cross_depth_source_evidence_668_20260929\\comparators\\Signal-cd1b0a6\\scripts\\requirementstxt_to_pyproject.py": "sha256:f2b7c530272db869827272f8bbc1915e9adcf9f86ebbc7e35f6ad2673d0ddaa5",
+    "C:\\Users\\gb\\.codex_tmp\\cross_depth_source_evidence_668_20260929\\comparators\\Signal-cd1b0a6\\solver\\cosine_lr.py": "sha256:d3db6e30c1666c5af71200086f33c644d476310b6c5dc7ed98097cc989bdad4d",
+    "C:\\Users\\gb\\.codex_tmp\\cross_depth_source_evidence_668_20260929\\comparators\\Signal-cd1b0a6\\solver\\lr_scheduler.py": "sha256:6b7ea85e2c66ab5fb76560ba55b12bd0f2b3ab6eca2a6c9603e45648bfffbeba",
+    "C:\\Users\\gb\\.codex_tmp\\cross_depth_source_evidence_668_20260929\\comparators\\Signal-cd1b0a6\\solver\\lr_scheduler310.py": "sha256:e15481ca1d40dbab559af1d97367a192d44b9635a1eaf3ce004dcddb14ee7674",
+    "C:\\Users\\gb\\.codex_tmp\\cross_depth_source_evidence_668_20260929\\comparators\\Signal-cd1b0a6\\solver\\make_optimizer.py": "sha256:ada1023a79fcaaed092bce0849a61db9d0253cf8974c494bfb3082d0fd35fee1",
+    "C:\\Users\\gb\\.codex_tmp\\cross_depth_source_evidence_668_20260929\\comparators\\Signal-cd1b0a6\\solver\\scheduler.py": "sha256:b7517bb0f79a3334e2a3ac5ecb14bdcf69cb28c62dd3c734c4e3d212d0955228",
+    "C:\\Users\\gb\\.codex_tmp\\cross_depth_source_evidence_668_20260929\\comparators\\Signal-cd1b0a6\\solver\\scheduler_factory.py": "sha256:c5e20bdffec4b5360faa04f823639c8e5fd8672914813fb96148927c9ee19abc",
+    "C:\\Users\\gb\\.codex_tmp\\cross_depth_source_evidence_668_20260929\\comparators\\Signal-cd1b0a6\\test.py": "sha256:9e6f2a190e02f25be97c599922c43554de1d2efb3916a5bebe1c4cce30b6ae4a",
+    "C:\\Users\\gb\\.codex_tmp\\cross_depth_source_evidence_668_20260929\\comparators\\Signal-cd1b0a6\\tests\\test_benchmarks.py": "sha256:ce4ef25c55057e674647415a8af010c40d3dd6e3c547955cf0e294761ebb624f",
+    "C:\\Users\\gb\\.codex_tmp\\cross_depth_source_evidence_668_20260929\\comparators\\Signal-cd1b0a6\\tests\\test_blocks.py": "sha256:cac136da29ddc8a93853e368f4e5ca71ad2fc458dc79d19677580b1c21dbacdb",
+    "C:\\Users\\gb\\.codex_tmp\\cross_depth_source_evidence_668_20260929\\comparators\\Signal-cd1b0a6\\tests\\test_model.py": "sha256:28fd57c2c82e9da22484a734adbedecd92e5c26dd59778e46b65bb2e437dd783",
+    "C:\\Users\\gb\\.codex_tmp\\cross_depth_source_evidence_668_20260929\\comparators\\Signal-cd1b0a6\\train.py": "sha256:243a2f6de57f6113c6f0e35390670ee937bbcea84ab3335eea2b6257b3bcbd8f",
+    "C:\\Users\\gb\\.codex_tmp\\cross_depth_source_evidence_668_20260929\\comparators\\Signal-cd1b0a6\\utils\\iotools.py": "sha256:05e59eac76140ec28c87f606283baae9cdc260b250d3088d9624e08e3cacf3d7",
+    "C:\\Users\\gb\\.codex_tmp\\cross_depth_source_evidence_668_20260929\\comparators\\Signal-cd1b0a6\\utils\\logger.py": "sha256:5a732f76d567609ec1054e1e705dccbec871b71795189d80d0fb3538b28583b0",
+    "C:\\Users\\gb\\.codex_tmp\\cross_depth_source_evidence_668_20260929\\comparators\\Signal-cd1b0a6\\utils\\meter.py": "sha256:0245aa40c9a6ade9a9ac0a0f882d1a1d7b06260c667ea43e2ecb3ba846311796",
+    "C:\\Users\\gb\\.codex_tmp\\cross_depth_source_evidence_668_20260929\\comparators\\Signal-cd1b0a6\\utils\\ranklist_vehicle.py": "sha256:ca4b544911256a95f45ff924f006973828bc3972cfdbbf4ea96f724229244394",
+    "C:\\Users\\gb\\.codex_tmp\\cross_depth_source_evidence_668_20260929\\comparators\\Signal-cd1b0a6\\utils\\reranking.py": "sha256:1d55aa0227630a56a34931f9aded128987807d358ae9d5365dd83f28bc459fb9",
+    "C:\\Users\\gb\\.codex_tmp\\cross_depth_source_evidence_668_20260929\\comparators\\Signal-cd1b0a6\\utils\\volume.py": "sha256:a154f65e5f4483446748e216b7b03672617efb02004e14e9940446c1013b8ccb",
+    "C:\\Users\\gb\\.codex_tmp\\cross_depth_source_evidence_668_20260929\\comparators\\Signal-cd1b0a6\\visualize\\GradCAM.py": "sha256:d3c9f88b3ce4e18e20e10521f0d19d2ee6a15e2eaff3fb08a32c8a18fffd63fc",
+    "C:\\Users\\gb\\.codex_tmp\\cross_depth_source_evidence_668_20260929\\comparators\\Signal-cd1b0a6\\zablation\\CAM.py": "sha256:9bc131a4643848d6a7af4b80347a24726727a57c6e9e969da8454395680b5bfb",
+    "C:\\Users\\gb\\.codex_tmp\\cross_depth_source_evidence_668_20260929\\comparators\\Signal-cd1b0a6\\zablation\\offestvisual.py": "sha256:8af7f3c8511d076373014b4de269317800dc7edd686a6acdec6f4d342ec01661",
+    "C:\\Users\\gb\\.codex_tmp\\cross_depth_source_evidence_668_20260929\\comparators\\Signal-cd1b0a6\\zablation\\tiaoxing.py": "sha256:efa278cc4ad099ba62979d8f4de4146a26a2552c3ea3863ec919e60389da4f6c",
+    "C:\\Users\\gb\\.codex_tmp\\cross_depth_source_evidence_668_20260929\\comparators\\Signal-cd1b0a6\\zablation\\token_visual.py": "sha256:b07ae0a3a3d2c18be520a0878c8980196727da04f15e85bcce5b04bf676d4994",
+    "C:\\Users\\gb\\.codex_tmp\\cross_depth_source_evidence_668_20260929\\comparators\\Signal-cd1b0a6\\zablation\\zhexian.py": "sha256:b9486f3fe80e96679ba09b4b7ee995fb2433e198eec489c680bd7a87c44d13be",
+    "C:\\Users\\gb\\.codex_tmp\\cross_depth_source_evidence_668_20260929\\comparators\\Signal-cd1b0a6\\configs\\RGBNT201\\Signal.yml": "sha256:a13bd5169a4c710fa79efc87db909409015a0b2611086c0fbf4c1842f0cfcc44",
+    "C:\\Users\\gb\\.codex_tmp\\cross_depth_source_evidence_668_20260929\\comparators\\Signal-cd1b0a6\\configs\\RGBNT100\\Signal.yml": "sha256:02641ce2941dcd50df77d379aab54650cae4a2a6b15ba1bcd43deba970b6900f",
+    "C:\\Users\\gb\\.codex_tmp\\cross_depth_source_evidence_668_20260929\\comparators\\Signal-cd1b0a6\\configs\\MSVR310\\Signal.yml": "sha256:357ca3a989e943ea5348e6206c0d0f69b3c0d35ad9fbadbf68d2786439b8a915",
+    "C:\\Users\\gb\\.codex_tmp\\cross_depth_fresh_full_audit_672_20260930\\auditor_672a_launch.sh": "sha256:cf499fb211aa9cc29e98a0138227d71f740d960dc297494d409fd200dc505f46",
+    "C:\\Users\\gb\\.codex_tmp\\cross_depth_fresh_full_audit_672_20260930\\auditor_672a_local_inventory.json": "sha256:cf9e81f9629f220b77ac9d8a84903e43ce5d8c283bbd451b21352b6fdc5751c2",
+    "C:\\Users\\gb\\.codex_tmp\\cross_depth_fresh_full_audit_672_20260930\\auditor_672a_local_inventory.py": "sha256:9ba41e45439b190b7f3ac6e1c9bbbdac4badf40e7fff46e42f11ba57b12bbcef",
+    "C:\\Users\\gb\\.codex_tmp\\cross_depth_fresh_full_audit_672_20260930\\auditor_672a_prepare_input.py": "sha256:ad0c63a0dd0486dff68892c232ddb9a2c8865945878e5d01354fb9748bc52cdf",
+    "C:\\Users\\gb\\.codex_tmp\\cross_depth_fresh_full_audit_672_20260930\\auditor_672a_remote_exit.txt": "sha256:9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "C:\\Users\\gb\\.codex_tmp\\cross_depth_fresh_full_audit_672_20260930\\auditor_672a_remote_input.json": "sha256:5d2f6eab46435d56dafb595e813e98103436103d8d0229453377a4039f3d4129",
+    "C:\\Users\\gb\\.codex_tmp\\cross_depth_fresh_full_audit_672_20260930\\auditor_672a_remote_journal.jsonl": "sha256:af2bef9da0ced75a8c6b1d039c6cb7de84de50334f75dcedbe66935767760c96",
+    "C:\\Users\\gb\\.codex_tmp\\cross_depth_fresh_full_audit_672_20260930\\auditor_672a_remote_result.json": "sha256:e4afab1238c2a343612e191784ac7cf4b5a88759276d73af5bcdace654c264fd",
+    "C:\\Users\\gb\\.codex_tmp\\cross_depth_fresh_full_audit_672_20260930\\auditor_672a_remote_stdout.txt": "sha256:af2bef9da0ced75a8c6b1d039c6cb7de84de50334f75dcedbe66935767760c96",
+    "C:\\Users\\gb\\.codex_tmp\\cross_depth_fresh_full_audit_672_20260930\\auditor_672a_remote_verify.py": "sha256:bf286e80e667850af57ea5934db197583c871dbc93d9f4980171f8b202d3e170",
+    "C:\\Users\\gb\\.codex_tmp\\cross_depth_fresh_full_audit_672_20260930\\auditor_672a_review_evidence.json": "sha256:7b340203bec93392c038158f9f22af5e7ca3acebc63962c9d6b734b5d0447058",
+    "C:\\Users\\gb\\.codex_tmp\\cross_depth_fresh_full_audit_672_20260930\\auditor_672a_summarize.py": "sha256:1e9c7691b9afab886157a7d2ef96a10d0562b357b5b8761011ce9b30e288f4ca",
+    "C:\\Users\\gb\\.codex_tmp\\cross_depth_fresh_full_audit_672_20260930\\auditor_672a_supplement_result.json": "sha256:723bc807975c55a6e2a672ad10cf35651ab0dd43c52903cec6f8fc9de62e96cc",
+    "C:\\Users\\gb\\.codex_tmp\\cross_depth_fresh_full_audit_672_20260930\\auditor_672a_supplement_verify.py": "sha256:07e46fa025932bc7fc298c14eeb94249a83faaa12733d0693f545dd0eaab1750",
+    "C:\\Users\\gb\\.codex_tmp\\cross_depth_fresh_full_audit_672_20260930\\auditor_672a_write_reports.py": "sha256:a900c9a4aba8e43c7e08429e9cb9181817349d6402d63e58922b76c5b4527f45"
+  },
+  "remote_primary_artifact_hashes": {
+    "/data/gaob/Re-ID/Trifusion/trained-model/cross_depth_role_state_20260929_depth_mixed_once_RGBNT201_seed42_full/training.json": "b5e01aaed9819cbfc1c98036dca54b2d40588ba1554928960c52a8dc934673af",
+    "/data/gaob/Re-ID/Trifusion/trained-model/cross_depth_role_state_20260929_depth_mixed_once_RGBNT201_seed42_full/training_steps.jsonl": "c99a424e84dd6e02c037534a0136dd8ccca026affbbf8b2718ce7d94475ed44b",
+    "/data/gaob/Re-ID/Trifusion/trained-model/cross_depth_role_state_20260929_depth_mixed_once_RGBNT201_seed42_full/official_metrics.json": "7f0f1d98315d265fa3345e75b123ea153b95256ddd6c094a826e297927e74407",
+    "/data/gaob/Re-ID/Trifusion/trained-model/cross_depth_role_state_20260929_depth_mixed_once_RGBNT201_seed42_m0/training.json": "cb054d7303bec03c5c076c4dfa7e11cf4e7247be7bb195311b12d34ca67c6af9",
+    "/data/gaob/Re-ID/Trifusion/trained-model/cross_depth_role_state_20260929_depth_mixed_once_RGBNT201_seed42_m0/training_steps.jsonl": "9917289314f3156b7ab340a55bb6feb128792f0f0e009d69712e87edc868e03a",
+    "/data/gaob/Re-ID/Trifusion/logs/cross_depth_role_state_20260929/cross_depth_role_state_20260929_depth_mixed_once_RGBNT201/campaign.json": "fda442d6aa26eeb6476b0ce9af88b72dddfba41fdf11ddec112f2f84a6571b5f",
+    "/data/gaob/Re-ID/Trifusion/trained-model/cross_depth_role_state_20260929_depth_mixed_once_RGBNT100_seed42_full/training.json": "7aa89f80a0189b49bd76d2b0fb5e9ad446d62d5681aae7e76a07560560b5305b",
+    "/data/gaob/Re-ID/Trifusion/trained-model/cross_depth_role_state_20260929_depth_mixed_once_RGBNT100_seed42_full/training_steps.jsonl": "d4332f8653921dee5ad03852847aed4580d5f95060bd26edaa9c2cb7d72212a7",
+    "/data/gaob/Re-ID/Trifusion/trained-model/cross_depth_role_state_20260929_depth_mixed_once_RGBNT100_seed42_full/official_metrics.json": "91b401307714b643a8fdf95b6fbb8e85242331eb833740171782be5fa4788ced",
+    "/data/gaob/Re-ID/Trifusion/trained-model/cross_depth_role_state_20260929_depth_mixed_once_RGBNT100_seed42_m0/training.json": "778cee7ccad9ddd72c2521c19d5b747a89dc1c702a9116cb489c488272fb8cd0",
+    "/data/gaob/Re-ID/Trifusion/trained-model/cross_depth_role_state_20260929_depth_mixed_once_RGBNT100_seed42_m0/training_steps.jsonl": "42fb3285b92298265c810c2b2a4a2e5f51df16ce3660ebc590dba6d61b55fc20",
+    "/data/gaob/Re-ID/Trifusion/logs/cross_depth_role_state_20260929/cross_depth_role_state_20260929_depth_mixed_once_RGBNT100/campaign.json": "329cfd925405b825fba44ce18c9c1139a93606411e023ceadd94b1ea84dd5274",
+    "/data/gaob/Re-ID/Trifusion/trained-model/cross_depth_role_state_20260929_depth_mixed_once_MSVR310_seed42_full/training.json": "d221201b6d479e7ca2f0392c9c14b19b416d94fc9451097bacacb8253e38c745",
+    "/data/gaob/Re-ID/Trifusion/trained-model/cross_depth_role_state_20260929_depth_mixed_once_MSVR310_seed42_full/training_steps.jsonl": "21a85b3d45eaf18379de1bf4e1b7ddf6ba50d85aaa99caa06917dc89d789fd00",
+    "/data/gaob/Re-ID/Trifusion/trained-model/cross_depth_role_state_20260929_depth_mixed_once_MSVR310_seed42_full/official_metrics.json": "cc5a9d8b6bb39016116a361b7d1cc4a6b9f721545acda9159db882c946635389",
+    "/data/gaob/Re-ID/Trifusion/trained-model/cross_depth_role_state_20260929_depth_mixed_once_MSVR310_seed42_m0/training.json": "7917ac225b5f052a8e711a097e914f08c59bec96a80a9e16046072031ac3e42d",
+    "/data/gaob/Re-ID/Trifusion/trained-model/cross_depth_role_state_20260929_depth_mixed_once_MSVR310_seed42_m0/training_steps.jsonl": "4b33dca6cd21c8a4ae2d1889c063f3be202db8dcf5599149eb529dffb6134e5d",
+    "/data/gaob/Re-ID/Trifusion/logs/cross_depth_role_state_20260929/cross_depth_role_state_20260929_depth_mixed_once_MSVR310/campaign.json": "9cb1fd5cd37f21bd0275559f7754fbb2866c9446429c68d2a421b8597730c94b",
+    "/data/gaob/Re-ID/Trifusion/trained-model/cross_depth_role_state_20260929_depth_depth_mean_RGBNT201_seed42_full/training.json": "650d417ce1b8b941ae58fe32d9186cbb22f2236547daf3c8e71cd770ec5e869b",
+    "/data/gaob/Re-ID/Trifusion/trained-model/cross_depth_role_state_20260929_depth_depth_mean_RGBNT201_seed42_full/training_steps.jsonl": "485ea7a3ab8db7e1b159eafcd70d17eba815468447bcc33c4d0ef7fd62a8f199",
+    "/data/gaob/Re-ID/Trifusion/trained-model/cross_depth_role_state_20260929_depth_depth_mean_RGBNT201_seed42_full/official_metrics.json": "7ba280f26f01f9b320a60035f9093507ece042ef19aaf3d92cb5dfc312329086",
+    "/data/gaob/Re-ID/Trifusion/trained-model/cross_depth_role_state_20260929_depth_depth_mean_RGBNT201_seed42_m0/training.json": "881da2600de68ea5a7792ffa94e219eccd327a9fcba21495693dc7c44acbbab6",
+    "/data/gaob/Re-ID/Trifusion/trained-model/cross_depth_role_state_20260929_depth_depth_mean_RGBNT201_seed42_m0/training_steps.jsonl": "16d395e02556bd9cd93c9d0ceb635e51fb2ee08833b63132ee99d3de433e08d1",
+    "/data/gaob/Re-ID/Trifusion/logs/cross_depth_role_state_20260929/cross_depth_role_state_20260929_depth_depth_mean_RGBNT201/campaign.json": "d886f325a130411f0bb5c0306b909456db8852d70f218ed496f7447b56642e2a",
+    "/data/gaob/Re-ID/Trifusion/trained-model/cross_depth_role_state_20260929_depth_depth_mean_RGBNT100_seed42_full/training.json": "3a5152790d7917b8d0f1892115b7fac3503a462fdc9489743478b536b88d10d4",
+    "/data/gaob/Re-ID/Trifusion/trained-model/cross_depth_role_state_20260929_depth_depth_mean_RGBNT100_seed42_full/training_steps.jsonl": "440a46e80efada8fe792e6ae6ab4c3260fd5abbeca0ba1f7eb888ea36dc7b9a4",
+    "/data/gaob/Re-ID/Trifusion/trained-model/cross_depth_role_state_20260929_depth_depth_mean_RGBNT100_seed42_full/official_metrics.json": "81d844c233130a892d6332c92026e17285d446633852bc16eff8541726f4bf8e",
+    "/data/gaob/Re-ID/Trifusion/trained-model/cross_depth_role_state_20260929_depth_depth_mean_RGBNT100_seed42_m0/training.json": "d24c301fd871e5e8bfb3d45d063818bd3efbf5808285f553e0158151699057f0",
+    "/data/gaob/Re-ID/Trifusion/trained-model/cross_depth_role_state_20260929_depth_depth_mean_RGBNT100_seed42_m0/training_steps.jsonl": "c73142a46f473c6880c44f9d9f7a31927ef0cee02c0be5215e4b637938b5ecbf",
+    "/data/gaob/Re-ID/Trifusion/logs/cross_depth_role_state_20260929/cross_depth_role_state_20260929_depth_depth_mean_RGBNT100/campaign.json": "0bb4249128de689d4f44c150d4cd7a9e69f3f7f1c963b68d3e91350ba9bcce13",
+    "/data/gaob/Re-ID/Trifusion/trained-model/cross_depth_role_state_20260929_depth_depth_mean_MSVR310_seed42_full/training.json": "161b5f6c0c758d9720cf9b0482f07725ccb09ab3dd580bcaa2e7d50d9435aa00",
+    "/data/gaob/Re-ID/Trifusion/trained-model/cross_depth_role_state_20260929_depth_depth_mean_MSVR310_seed42_full/training_steps.jsonl": "faea50180de0abdc2fd6fd2e8b14dcc6efe8ae741859f7b03c9ab77c2ea009b5",
+    "/data/gaob/Re-ID/Trifusion/trained-model/cross_depth_role_state_20260929_depth_depth_mean_MSVR310_seed42_full/official_metrics.json": "5678d4f2d4a70a769faf506c6c76d07738197afdec6249dce41566972a978db7",
+    "/data/gaob/Re-ID/Trifusion/trained-model/cross_depth_role_state_20260929_depth_depth_mean_MSVR310_seed42_m0/training.json": "ad39e61c6d8f99bb18a25275d52720d437d660356c2cc501bad73b2a1eee77d0",
+    "/data/gaob/Re-ID/Trifusion/trained-model/cross_depth_role_state_20260929_depth_depth_mean_MSVR310_seed42_m0/training_steps.jsonl": "d6d9fdf46f0b683e98c98e4bf43115891ada4549b35263b4e4b220d5d37f98db",
+    "/data/gaob/Re-ID/Trifusion/logs/cross_depth_role_state_20260929/cross_depth_role_state_20260929_depth_depth_mean_MSVR310/campaign.json": "746baba7a1b5fa8bfc4ac4c8c903b14a4e72b4d1bbed7ba4a6311afd0f8ac7ec",
+    "/data/gaob/Re-ID/Trifusion/trained-model/cross_depth_role_state_20260929_depth_depth_recurrent_RGBNT201_seed42_full/training.json": "62f33af16272249a184e9f6bbc31a4b6485d103ba8e80374047e5e96f79cc60e",
+    "/data/gaob/Re-ID/Trifusion/trained-model/cross_depth_role_state_20260929_depth_depth_recurrent_RGBNT201_seed42_full/training_steps.jsonl": "e7bf00e1e7c6f68d6daf20a6ba32bad02537aa2c9df7f8ca126f0ca82861b627",
+    "/data/gaob/Re-ID/Trifusion/trained-model/cross_depth_role_state_20260929_depth_depth_recurrent_RGBNT201_seed42_full/official_metrics.json": "25f79086104c0e26f51fe0ed3b6bb32d32b8e4cb2035b7340b92fa8969f8b828",
+    "/data/gaob/Re-ID/Trifusion/trained-model/cross_depth_role_state_20260929_depth_depth_recurrent_RGBNT201_seed42_m0/training.json": "682ee2a00fe572e99fd4930e76d0bc4e2d76eef8e3ce4f6bc73560dfec2831dd",
+    "/data/gaob/Re-ID/Trifusion/trained-model/cross_depth_role_state_20260929_depth_depth_recurrent_RGBNT201_seed42_m0/training_steps.jsonl": "f2799425903ccb92410ad1f284703ec2832821744a9e01b1a2517cc60705ace6",
+    "/data/gaob/Re-ID/Trifusion/logs/cross_depth_role_state_20260929/cross_depth_role_state_20260929_depth_depth_recurrent_RGBNT201/campaign.json": "ca29126b6bed7a03eb81512baf78c3064954b25bb05e4c1776bb87f7669c192a",
+    "/data/gaob/Re-ID/Trifusion/trained-model/cross_depth_role_state_20260929_depth_depth_recurrent_RGBNT100_seed42_full/training.json": "724dbd20aa954bcd38dda63e9fa18b0ef46c3f6679203af343e3e1c7bb2b583a",
+    "/data/gaob/Re-ID/Trifusion/trained-model/cross_depth_role_state_20260929_depth_depth_recurrent_RGBNT100_seed42_full/training_steps.jsonl": "b9a5f3a1e2f6050ea3f09aede25048ac90806d58b12602a7ed26a70fc99d4461",
+    "/data/gaob/Re-ID/Trifusion/trained-model/cross_depth_role_state_20260929_depth_depth_recurrent_RGBNT100_seed42_full/official_metrics.json": "32e0858df48bfb520228ee5a589dc4193f4278e1af14edd329166292fd2ba820",
+    "/data/gaob/Re-ID/Trifusion/trained-model/cross_depth_role_state_20260929_depth_depth_recurrent_RGBNT100_seed42_m0/training.json": "2237b1b9cbc3af2d49558ca7ef62eff7f6ad29b1f0e0f5d57fe4380aac78ee10",
+    "/data/gaob/Re-ID/Trifusion/trained-model/cross_depth_role_state_20260929_depth_depth_recurrent_RGBNT100_seed42_m0/training_steps.jsonl": "f849f2c299b45799ee0af7941c0792e7fceae23e278474720322e10aa7dd3c52",
+    "/data/gaob/Re-ID/Trifusion/logs/cross_depth_role_state_20260929/cross_depth_role_state_20260929_depth_depth_recurrent_RGBNT100/campaign.json": "658ab9b315771b3dee78b6d8d0e106b851ad8e452b35bc2884e2d82db1a3a2cc",
+    "/data/gaob/Re-ID/Trifusion/trained-model/cross_depth_role_state_20260929_depth_depth_recurrent_MSVR310_seed42_full/training.json": "55a3d60922451321b4de12f5cb3cd256b408d3b56c13d10ab31f8ffa8a32423c",
+    "/data/gaob/Re-ID/Trifusion/trained-model/cross_depth_role_state_20260929_depth_depth_recurrent_MSVR310_seed42_full/training_steps.jsonl": "91346aef537454697883ef84943f4e206ca5cf30d63232c64f393f53cc62d1ad",
+    "/data/gaob/Re-ID/Trifusion/trained-model/cross_depth_role_state_20260929_depth_depth_recurrent_MSVR310_seed42_full/official_metrics.json": "fe913b1a06497a665abf8b40a1fe0575b119cc6369bb5eb24c5d37e0cc2825e9",
+    "/data/gaob/Re-ID/Trifusion/trained-model/cross_depth_role_state_20260929_depth_depth_recurrent_MSVR310_seed42_m0/training.json": "a3bd6eb734a46df928d96939a94f80a13b550d6986c85b80e9fbf4ea532761b5",
+    "/data/gaob/Re-ID/Trifusion/trained-model/cross_depth_role_state_20260929_depth_depth_recurrent_MSVR310_seed42_m0/training_steps.jsonl": "0896566a83aea733052b0638be2a4a4d8b370b6914fce650dc3d136893349a28",
+    "/data/gaob/Re-ID/Trifusion/logs/cross_depth_role_state_20260929/cross_depth_role_state_20260929_depth_depth_recurrent_MSVR310/campaign.json": "a02be04275308e18c6f68c16657ce03e9e0f4a7c3fec6071972564501a86a17b",
+    "/data/gaob/Re-ID/Trifusion/trained-model/cross_depth_role_state_20260929_depth_mixed_once_RGBNT201_seed42_full/best_map.pth": "e436ef9a0f7bea191b5e44066cfe81dddafb5095330b09ba72072afb32734359",
+    "/data/gaob/Re-ID/Trifusion/trained-model/cross_depth_role_state_20260929_depth_mixed_once_RGBNT201_seed42_full/official_distances.pt": "1e13e4f50357175c9ddff8a6fe4758d9cd228916aeb978ba19a018f0d4d8086d",
+    "/data/gaob/Re-ID/Trifusion/trained-model/cross_depth_role_state_20260929_depth_mixed_once_RGBNT201_seed42_m0/m0_reload_probe.pth": "da661ae7f0ad4f4faf4d084bbdb3aa598434ce9a44b26295c897e146aa157e35",
+    "/data/gaob/Re-ID/Trifusion/logs/cross_depth_role_state_20260929/cross_depth_role_state_20260929_depth_mixed_once_RGBNT201/train.log": "d8c9e5a7a10c63148a231090b40f1d6c1d3019f3932baf19cab35c4334069b7c",
+    "/data/gaob/Re-ID/Trifusion/logs/cross_depth_role_state_20260929/cross_depth_role_state_20260929_depth_mixed_once_RGBNT201/m0.log": "1b16692f361632ed07330b4af7db90671976eecc878aa18a6b85bae243d27690",
+    "/data/gaob/Re-ID/Trifusion/logs/cross_depth_role_state_20260929/cross_depth_role_state_20260929_depth_mixed_once_RGBNT201/evaluate.log": "82152765675deb3f196f7cfa4e6726ee7e777eae57c80e8efe4611e3edde18e2",
+    "/data/gaob/Re-ID/Trifusion/trained-model/cross_depth_role_state_20260929_depth_mixed_once_RGBNT100_seed42_full/best_map.pth": "1b24630f9ea00c5695b4473b911bfd31fed0b48b99e216c80cc9be203825857a",
+    "/data/gaob/Re-ID/Trifusion/trained-model/cross_depth_role_state_20260929_depth_mixed_once_RGBNT100_seed42_full/official_distances.pt": "65abdb30b4c99d495c3e6a13af5d61ec7593136956cd5fa381e3dbbe80446690",
+    "/data/gaob/Re-ID/Trifusion/trained-model/cross_depth_role_state_20260929_depth_mixed_once_RGBNT100_seed42_m0/m0_reload_probe.pth": "da3aa75c6f4997a9eaa2c0577aba776e90a4ac1d155eeba3b2be34bc9acdf0dc",
+    "/data/gaob/Re-ID/Trifusion/logs/cross_depth_role_state_20260929/cross_depth_role_state_20260929_depth_mixed_once_RGBNT100/train.log": "55220e4afb3bbc8209bf3afea6f06f2131e1d58645d37eabf832ea09ceafa620",
+    "/data/gaob/Re-ID/Trifusion/logs/cross_depth_role_state_20260929/cross_depth_role_state_20260929_depth_mixed_once_RGBNT100/m0.log": "207907bb4cfe87018f7ded6d7133b95aa59a1262486ea0f5ef472159c341b5db",
+    "/data/gaob/Re-ID/Trifusion/logs/cross_depth_role_state_20260929/cross_depth_role_state_20260929_depth_mixed_once_RGBNT100/evaluate.log": "fddbfcf973a51994cde2672b24994f67a5a7c92117c2ccef3f7d50c4869025a8",
+    "/data/gaob/Re-ID/Trifusion/trained-model/cross_depth_role_state_20260929_depth_mixed_once_MSVR310_seed42_full/best_map.pth": "0bc5b586532d18fc925aab2286fbcf782365c0fb43ca4bbfca29aac71ff8f836",
+    "/data/gaob/Re-ID/Trifusion/trained-model/cross_depth_role_state_20260929_depth_mixed_once_MSVR310_seed42_full/official_distances.pt": "d585502dd6676026edc95b663faf146ed59f343a8da67190faa24aedc7f5c704",
+    "/data/gaob/Re-ID/Trifusion/trained-model/cross_depth_role_state_20260929_depth_mixed_once_MSVR310_seed42_m0/m0_reload_probe.pth": "249faa5993a2ce7796d5111417a882581937371c273c28f401e47785f5a645bd",
+    "/data/gaob/Re-ID/Trifusion/logs/cross_depth_role_state_20260929/cross_depth_role_state_20260929_depth_mixed_once_MSVR310/train.log": "e22d1be9440977387f067349ec55b891a1d28703e98ab0d6be5fe469e3cc0bce",
+    "/data/gaob/Re-ID/Trifusion/logs/cross_depth_role_state_20260929/cross_depth_role_state_20260929_depth_mixed_once_MSVR310/m0.log": "3d01abbf2bce62c9d009eb30434b36f551e44fcd000fd90bffe512e67dfed7ef",
+    "/data/gaob/Re-ID/Trifusion/logs/cross_depth_role_state_20260929/cross_depth_role_state_20260929_depth_mixed_once_MSVR310/evaluate.log": "3df4fffec5b4a41a376557ac58b750847f9cdf82eb8b581d61ddbfa4a35cf3aa",
+    "/data/gaob/Re-ID/Trifusion/trained-model/cross_depth_role_state_20260929_depth_depth_mean_RGBNT201_seed42_full/best_map.pth": "b4d187ff22d4da70ba3beff72ef8979ed9779b75b147a206c6c0f65207c9b010",
+    "/data/gaob/Re-ID/Trifusion/trained-model/cross_depth_role_state_20260929_depth_depth_mean_RGBNT201_seed42_full/official_distances.pt": "cd8ab45c7c4ad0689645e155ce4cbdc34ffc9ad187282d77aa79915fc5c6e565",
+    "/data/gaob/Re-ID/Trifusion/trained-model/cross_depth_role_state_20260929_depth_depth_mean_RGBNT201_seed42_m0/m0_reload_probe.pth": "01d56af0af471b5004be2a5989c8d169752e25e2c24d5f2d11415f0240e8d9ea",
+    "/data/gaob/Re-ID/Trifusion/logs/cross_depth_role_state_20260929/cross_depth_role_state_20260929_depth_depth_mean_RGBNT201/train.log": "78a5145c647046b63b91c9d1dcd4332bf667feb3d3593db4018794e9716e2901",
+    "/data/gaob/Re-ID/Trifusion/logs/cross_depth_role_state_20260929/cross_depth_role_state_20260929_depth_depth_mean_RGBNT201/m0.log": "2a1c63de5077f9f8e97bf6db7908d2671761a9b69aba38d41e2f6e3fc34bd021",
+    "/data/gaob/Re-ID/Trifusion/logs/cross_depth_role_state_20260929/cross_depth_role_state_20260929_depth_depth_mean_RGBNT201/evaluate.log": "969ec204dbafdbac2f9bf52516601e500aec9111eae40a96fc963bcf5dc01660",
+    "/data/gaob/Re-ID/Trifusion/trained-model/cross_depth_role_state_20260929_depth_depth_mean_RGBNT100_seed42_full/best_map.pth": "80a0767734bc1847afc16710a01ecb5cba5f055228acaeaf584e4b6a9423bb67",
+    "/data/gaob/Re-ID/Trifusion/trained-model/cross_depth_role_state_20260929_depth_depth_mean_RGBNT100_seed42_full/official_distances.pt": "801c701ff91bfa48ba639c39e2206d7ea358e2ae5558f5c2f73d1d10eab377d0",
+    "/data/gaob/Re-ID/Trifusion/trained-model/cross_depth_role_state_20260929_depth_depth_mean_RGBNT100_seed42_m0/m0_reload_probe.pth": "466d3282a99a86a634dca6e6f7e8608a3cefe7e049ca554706a31d090a3ccc3c",
+    "/data/gaob/Re-ID/Trifusion/logs/cross_depth_role_state_20260929/cross_depth_role_state_20260929_depth_depth_mean_RGBNT100/train.log": "b99a8c3851ade890f3d06d72aa4b311c57c141d9835271d0fc833a2c43bc2caf",
+    "/data/gaob/Re-ID/Trifusion/logs/cross_depth_role_state_20260929/cross_depth_role_state_20260929_depth_depth_mean_RGBNT100/m0.log": "e5f49c1c1551ba41ffd870314c1249876b0cd4ec1a37545048e48bd0de29ec72",
+    "/data/gaob/Re-ID/Trifusion/logs/cross_depth_role_state_20260929/cross_depth_role_state_20260929_depth_depth_mean_RGBNT100/evaluate.log": "db12345439fb128aa661b5bf88946dd7d9a8fda2398e164560da2511da0ed552",
+    "/data/gaob/Re-ID/Trifusion/trained-model/cross_depth_role_state_20260929_depth_depth_mean_MSVR310_seed42_full/best_map.pth": "e81919628921277daeccb949651859e0d56b4fae39827e751737d459a2b1ba5e",
+    "/data/gaob/Re-ID/Trifusion/trained-model/cross_depth_role_state_20260929_depth_depth_mean_MSVR310_seed42_full/official_distances.pt": "7f474e777aeb30db6dcd03c8ff0e5a688953dade28ea57cdeb0dc990290c7871",
+    "/data/gaob/Re-ID/Trifusion/trained-model/cross_depth_role_state_20260929_depth_depth_mean_MSVR310_seed42_m0/m0_reload_probe.pth": "356c59eb5bfb985b86bd555380888452c30e104080f9be2bc54b82eeb319d7cf",
+    "/data/gaob/Re-ID/Trifusion/logs/cross_depth_role_state_20260929/cross_depth_role_state_20260929_depth_depth_mean_MSVR310/train.log": "09e2e666c6ed9dad1a00405ebfc4a5475ea48327a0b57cdf5b22837dad27225f",
+    "/data/gaob/Re-ID/Trifusion/logs/cross_depth_role_state_20260929/cross_depth_role_state_20260929_depth_depth_mean_MSVR310/m0.log": "b5fcdc6083cfe4656840f0a64719a0cf9afaff640194bdb8856c1a9d2d7c56c9",
+    "/data/gaob/Re-ID/Trifusion/logs/cross_depth_role_state_20260929/cross_depth_role_state_20260929_depth_depth_mean_MSVR310/evaluate.log": "cdf42ba9803acc55bb19aa2cb4e8855bea92bf9b5da3e331103b8d2d3d64c4dc",
+    "/data/gaob/Re-ID/Trifusion/trained-model/cross_depth_role_state_20260929_depth_depth_recurrent_RGBNT201_seed42_full/best_map.pth": "2b18f1b0f29958c93b295048e7e68fe4243b7577768faeabf2b3ef4b9eddc5fd",
+    "/data/gaob/Re-ID/Trifusion/trained-model/cross_depth_role_state_20260929_depth_depth_recurrent_RGBNT201_seed42_full/official_distances.pt": "8d152db4bc3f3bf013b7674b3a83b94dbef039a289a5dabadcbf898cbfe1f377",
+    "/data/gaob/Re-ID/Trifusion/trained-model/cross_depth_role_state_20260929_depth_depth_recurrent_RGBNT201_seed42_m0/m0_reload_probe.pth": "ad8f0f11aa6a93739cfba9c3ad7f03f7a216e717de18336b8b58c6af91488cbc",
+    "/data/gaob/Re-ID/Trifusion/logs/cross_depth_role_state_20260929/cross_depth_role_state_20260929_depth_depth_recurrent_RGBNT201/train.log": "5afea4b7b23e84d15a412e5eb2c06964b5647ed798acddaa8427f45d0ea0ca2a",
+    "/data/gaob/Re-ID/Trifusion/logs/cross_depth_role_state_20260929/cross_depth_role_state_20260929_depth_depth_recurrent_RGBNT201/m0.log": "e2052afb2489a77b5ecba4bf2afb13cb37dc036f3232508114ea43158271a8d4",
+    "/data/gaob/Re-ID/Trifusion/logs/cross_depth_role_state_20260929/cross_depth_role_state_20260929_depth_depth_recurrent_RGBNT201/evaluate.log": "fb65f1ee3d1fafca25370945cda34254204a3d9d52bf2127a19d5821c6e2ff4c",
+    "/data/gaob/Re-ID/Trifusion/trained-model/cross_depth_role_state_20260929_depth_depth_recurrent_RGBNT100_seed42_full/best_map.pth": "f8950bb720353c635befc323e523b5969086efa326d1f9d40e161bbb873c7c49",
+    "/data/gaob/Re-ID/Trifusion/trained-model/cross_depth_role_state_20260929_depth_depth_recurrent_RGBNT100_seed42_full/official_distances.pt": "69c41a0d381c0b995e618237203170c39b2fd648bf089b72e433913291e7b2d0",
+    "/data/gaob/Re-ID/Trifusion/trained-model/cross_depth_role_state_20260929_depth_depth_recurrent_RGBNT100_seed42_m0/m0_reload_probe.pth": "69a40a6f3782545947dd2051da278b70626a19b9ec413a15b3e0105bf4aa0e07",
+    "/data/gaob/Re-ID/Trifusion/logs/cross_depth_role_state_20260929/cross_depth_role_state_20260929_depth_depth_recurrent_RGBNT100/train.log": "f91f41c3288fc579acdb89c01be85fb6c0ee46795ba36337ad0ee54e35a44c0e",
+    "/data/gaob/Re-ID/Trifusion/logs/cross_depth_role_state_20260929/cross_depth_role_state_20260929_depth_depth_recurrent_RGBNT100/m0.log": "8459dce85304c662ea59eac52ff025de00d6cfb26e2fe34925464b452f46fe80",
+    "/data/gaob/Re-ID/Trifusion/logs/cross_depth_role_state_20260929/cross_depth_role_state_20260929_depth_depth_recurrent_RGBNT100/evaluate.log": "3a14f084a9666b3ec3adf58683dede8693da139e2cf999fcf75aaefebe5efb3e",
+    "/data/gaob/Re-ID/Trifusion/trained-model/cross_depth_role_state_20260929_depth_depth_recurrent_MSVR310_seed42_full/best_map.pth": "effa10f164def3cb6c9fe451ab8c688fcfc28cc1c908a4bbeedce395ff045873",
+    "/data/gaob/Re-ID/Trifusion/trained-model/cross_depth_role_state_20260929_depth_depth_recurrent_MSVR310_seed42_full/official_distances.pt": "f3613ae3b9155af4aee7f72386f0978ba3aeb2cf35e3f50b06ebf8a9e2c5e968",
+    "/data/gaob/Re-ID/Trifusion/trained-model/cross_depth_role_state_20260929_depth_depth_recurrent_MSVR310_seed42_m0/m0_reload_probe.pth": "976694bbcf1269a4f31dde28d0cac0c76a720a3a690858fccea791375c94bc72",
+    "/data/gaob/Re-ID/Trifusion/logs/cross_depth_role_state_20260929/cross_depth_role_state_20260929_depth_depth_recurrent_MSVR310/train.log": "83d4994b613c99d4edf1e92cbec4f174f927cb794355c03fc0c835f28b1bcd83",
+    "/data/gaob/Re-ID/Trifusion/logs/cross_depth_role_state_20260929/cross_depth_role_state_20260929_depth_depth_recurrent_MSVR310/m0.log": "25d6d2e1c6bdfcc90af15d630b07873bf2e1f808a3dd4801ca404e080e1be170",
+    "/data/gaob/Re-ID/Trifusion/logs/cross_depth_role_state_20260929/cross_depth_role_state_20260929_depth_depth_recurrent_MSVR310/evaluate.log": "06fdaa5c13080fa6ad1dad0190cfeb7828f1d1b92f1c08927b19a7b03d3f6f76",
+    "/data/gaob/Re-ID/Trifusion/pertrained-model/RGBNT201_PlainBaseline_50.pth": "789e5e14aacd74ad122aad701389eb216ca5b4fda92687e27351a513023b4407",
+    "/data/gaob/Re-ID/Trifusion/pertrained-model/RGBNT100_PlainBaseline_30.pth": "299a28bfb3e3180eeae0736cf8638cd162525dce0f2192a940b62b97f6e67dcd",
+    "/data/gaob/Re-ID/Trifusion/pertrained-model/MSVR310_PlainBaseline_50.pth": "69c5e71b75036d7216ece3ff84450f0052f5e70dfaba46bf73f3e1d40992bb37",
+    "/data/gaob/Re-ID/Trifusion/logs/cross_depth_role_state_20260929/campaign.json": "74e8bed19db9a8a530dbd564c7a9b475989179cbfecba07d641dbb736dc810fb",
+    "/data/gaob/Re-ID/Trifusion/logs/cross_depth_role_state_20260929/manifest.json": "67e383e88f5151d12cbf3eae38111df42f7e1279ba7118b2a6f2cc4ca6044b14"
+  },
+  "endpoint_summary": [
+    {
+      "dataset": "RGBNT201",
+      "variant": "mixed_once",
+      "best_epoch": 2,
+      "maximum_map_tied_epochs": [
+        2
+      ],
+      "selected_metrics": {
+        "mAP": 72.58888174963909,
+        "Rank-1": 74.16267991065979,
+        "Rank-5": 82.8947365283966,
+        "Rank-10": 88.0382776260376
+      },
+      "last_epoch_metrics": {
+        "mAP": 69.01144908085543,
+        "Rank-1": 70.57416439056396,
+        "Rank-5": 78.58851552009583,
+        "Rank-10": 83.25358629226685
+      },
+      "checkpoints": {
+        "best_sha256": "e436ef9a0f7bea191b5e44066cfe81dddafb5095330b09ba72072afb32734359",
+        "probe_sha256": "da661ae7f0ad4f4faf4d084bbdb3aa598434ce9a44b26295c897e146aa157e35",
+        "array_sha256": "1e13e4f50357175c9ddff8a6fe4758d9cd228916aeb978ba19a018f0d4d8086d",
+        "best_tensor_count": 131,
+        "state_schema_sha256": "5e6ced74c53eba97d47d252a996afb8829a9673673f09b8f5a746d4775eeebcb",
+        "best_and_probe_keys_shapes_match": true
+      },
+      "initial_model_state_sha256": "595e5d6ebab9eb4a5d5cf930b4328f22200d038a9f0c0e4ddf97756be9989a92",
+      "m0": {
+        "nonzero_gradient_parameters": 118,
+        "trainable_parameters": 118,
+        "frozen_signal_unchanged": true,
+        "reload_max_abs_difference": 0.0,
+        "reload_probe_sha256": "da661ae7f0ad4f4faf4d084bbdb3aa598434ce9a44b26295c897e146aa157e35"
+      },
+      "seconds": 1735.132744,
+      "loss_checks": {
+        "steps": 2649,
+        "maximum_reconstruction_error": 2.384185791015625e-07,
+        "nonzero_triplet": 1139,
+        "nonzero_auxiliary": 0
+      },
+      "numerical": {
+        "fused": {
+          "shape": [
+            836,
+            836
+          ],
+          "dtype": "float32",
+          "minimum": -9.5367431640625e-07,
+          "maximum": 2.3757176399230957,
+          "all_finite": true,
+          "absolute_difference_pp": {
+            "mAP": 0.0,
+            "Rank-1": 0.0,
+            "Rank-5": 0.0,
+            "Rank-10": 0.0
+          }
+        },
+        "shared_global": {
+          "shape": [
+            836,
+            836
+          ],
+          "dtype": "float32",
+          "minimum": -8.344650268554688e-07,
+          "maximum": 2.339040756225586,
+          "all_finite": true,
+          "absolute_difference_pp": {
+            "mAP": 0.0,
+            "Rank-1": 0.0,
+            "Rank-5": 0.0,
+            "Rank-10": 0.0
+          }
+        },
+        "joint_local": {
+          "shape": [
+            836,
+            836
+          ],
+          "dtype": "float32",
+          "minimum": -9.5367431640625e-07,
+          "maximum": 3.0224108695983887,
+          "all_finite": true,
+          "absolute_difference_pp": {
+            "mAP": 0.0,
+            "Rank-1": 0.0,
+            "Rank-5": 0.0,
+            "Rank-10": 0.0
+          }
+        }
+      }
+    },
+    {
+      "dataset": "RGBNT100",
+      "variant": "mixed_once",
+      "best_epoch": 1,
+      "maximum_map_tied_epochs": [
+        1
+      ],
+      "selected_metrics": {
+        "mAP": 85.12372795566539,
+        "Rank-1": 95.04373073577881,
+        "Rank-5": 95.74344158172607,
+        "Rank-10": 96.03498578071594
+      },
+      "last_epoch_metrics": {
+        "mAP": 81.82724982387425,
+        "Rank-1": 93.41107606887817,
+        "Rank-5": 94.11078691482544,
+        "Rank-10": 94.63557004928589
+      },
+      "checkpoints": {
+        "best_sha256": "1b24630f9ea00c5695b4473b911bfd31fed0b48b99e216c80cc9be203825857a",
+        "probe_sha256": "da3aa75c6f4997a9eaa2c0577aba776e90a4ac1d155eeba3b2be34bc9acdf0dc",
+        "array_sha256": "65abdb30b4c99d495c3e6a13af5d61ec7593136956cd5fa381e3dbbe80446690",
+        "best_tensor_count": 131,
+        "state_schema_sha256": "f3a63d4382064b2b625b1748d7db35f988c129c9ad94071b952e230ea8554d14",
+        "best_and_probe_keys_shapes_match": true
+      },
+      "initial_model_state_sha256": "c2fbd7a6212a3eb2cf7a888d21b94196cae7a9371057650a267e818df5694066",
+      "m0": {
+        "nonzero_gradient_parameters": 118,
+        "trainable_parameters": 118,
+        "frozen_signal_unchanged": true,
+        "reload_max_abs_difference": 0.0,
+        "reload_probe_sha256": "da3aa75c6f4997a9eaa2c0577aba776e90a4ac1d155eeba3b2be34bc9acdf0dc"
+      },
+      "seconds": 5613.726977,
+      "loss_checks": {
+        "steps": 6559,
+        "maximum_reconstruction_error": 0.0,
+        "nonzero_triplet": 0,
+        "nonzero_auxiliary": 0
+      },
+      "numerical": {
+        "fused": {
+          "shape": [
+            1715,
+            8575
+          ],
+          "dtype": "float32",
+          "minimum": 8.07642936706543e-05,
+          "maximum": 2.4965596199035645,
+          "all_finite": true,
+          "absolute_difference_pp": {
+            "mAP": 1.4210854715202004e-14,
+            "Rank-1": 0.0,
+            "Rank-5": 0.0,
+            "Rank-10": 0.0
+          }
+        },
+        "shared_global": {
+          "shape": [
+            1715,
+            8575
+          ],
+          "dtype": "float32",
+          "minimum": 8.243322372436523e-05,
+          "maximum": 2.486150026321411,
+          "all_finite": true,
+          "absolute_difference_pp": {
+            "mAP": 0.0,
+            "Rank-1": 0.0,
+            "Rank-5": 0.0,
+            "Rank-10": 0.0
+          }
+        },
+        "joint_local": {
+          "shape": [
+            1715,
+            8575
+          ],
+          "dtype": "float32",
+          "minimum": 1.5169382095336914e-05,
+          "maximum": 3.7508623600006104,
+          "all_finite": true,
+          "absolute_difference_pp": {
+            "mAP": 0.0,
+            "Rank-1": 0.0,
+            "Rank-5": 0.0,
+            "Rank-10": 0.0
+          }
+        }
+      }
+    },
+    {
+      "dataset": "MSVR310",
+      "variant": "mixed_once",
+      "best_epoch": 15,
+      "maximum_map_tied_epochs": [
+        15
+      ],
+      "selected_metrics": {
+        "mAP": 53.03167502586884,
+        "Rank-1": 68.18950772285461,
+        "Rank-5": 82.23350048065186,
+        "Rank-10": 87.64805197715759
+      },
+      "last_epoch_metrics": {
+        "mAP": 49.343029326815255,
+        "Rank-1": 65.3130292892456,
+        "Rank-5": 80.7106614112854,
+        "Rank-10": 86.6328239440918
+      },
+      "checkpoints": {
+        "best_sha256": "0bc5b586532d18fc925aab2286fbcf782365c0fb43ca4bbfca29aac71ff8f836",
+        "probe_sha256": "249faa5993a2ce7796d5111417a882581937371c273c28f401e47785f5a645bd",
+        "array_sha256": "d585502dd6676026edc95b663faf146ed59f343a8da67190faa24aedc7f5c704",
+        "best_tensor_count": 131,
+        "state_schema_sha256": "85aaac322d9c19a75a677694520eae7932ab682af2d39957b025335aae6ec8ec",
+        "best_and_probe_keys_shapes_match": true
+      },
+      "initial_model_state_sha256": "60972e9d789c62c18a8f3c0deabdf27fd2138f12f7a6d7d8636ae3809f8d9548",
+      "m0": {
+        "nonzero_gradient_parameters": 118,
+        "trainable_parameters": 118,
+        "frozen_signal_unchanged": true,
+        "reload_max_abs_difference": 0.0,
+        "reload_probe_sha256": "249faa5993a2ce7796d5111417a882581937371c273c28f401e47785f5a645bd"
+      },
+      "seconds": 1377.478853,
+      "loss_checks": {
+        "steps": 1000,
+        "maximum_reconstruction_error": 2.3096799850463867e-07,
+        "nonzero_triplet": 963,
+        "nonzero_auxiliary": 0
+      },
+      "numerical": {
+        "fused": {
+          "shape": [
+            591,
+            1055
+          ],
+          "dtype": "float32",
+          "minimum": -9.98377799987793e-07,
+          "maximum": 2.8436801433563232,
+          "all_finite": true,
+          "absolute_difference_pp": {
+            "mAP": 0.0,
+            "Rank-1": 0.0,
+            "Rank-5": 0.0,
+            "Rank-10": 0.0
+          }
+        },
+        "shared_global": {
+          "shape": [
+            591,
+            1055
+          ],
+          "dtype": "float32",
+          "minimum": -8.046627044677734e-07,
+          "maximum": 2.285214900970459,
+          "all_finite": true,
+          "absolute_difference_pp": {
+            "mAP": 0.0,
+            "Rank-1": 0.0,
+            "Rank-5": 0.0,
+            "Rank-10": 0.0
+          }
+        },
+        "joint_local": {
+          "shape": [
+            591,
+            1055
+          ],
+          "dtype": "float32",
+          "minimum": -8.344650268554688e-07,
+          "maximum": 0.4599355459213257,
+          "all_finite": true,
+          "absolute_difference_pp": {
+            "mAP": 0.0,
+            "Rank-1": 0.0,
+            "Rank-5": 0.0,
+            "Rank-10": 0.0
+          }
+        }
+      }
+    },
+    {
+      "dataset": "RGBNT201",
+      "variant": "depth_mean",
+      "best_epoch": 2,
+      "maximum_map_tied_epochs": [
+        2
+      ],
+      "selected_metrics": {
+        "mAP": 72.53275820092384,
+        "Rank-1": 73.9234447479248,
+        "Rank-5": 82.77512192726135,
+        "Rank-10": 88.0382776260376
+      },
+      "last_epoch_metrics": {
+        "mAP": 69.8682307291014,
+        "Rank-1": 70.57416439056396,
+        "Rank-5": 78.82775068283081,
+        "Rank-10": 83.49282145500183
+      },
+      "checkpoints": {
+        "best_sha256": "b4d187ff22d4da70ba3beff72ef8979ed9779b75b147a206c6c0f65207c9b010",
+        "probe_sha256": "01d56af0af471b5004be2a5989c8d169752e25e2c24d5f2d11415f0240e8d9ea",
+        "array_sha256": "cd8ab45c7c4ad0689645e155ce4cbdc34ffc9ad187282d77aa79915fc5c6e565",
+        "best_tensor_count": 131,
+        "state_schema_sha256": "5e6ced74c53eba97d47d252a996afb8829a9673673f09b8f5a746d4775eeebcb",
+        "best_and_probe_keys_shapes_match": true
+      },
+      "initial_model_state_sha256": "595e5d6ebab9eb4a5d5cf930b4328f22200d038a9f0c0e4ddf97756be9989a92",
+      "m0": {
+        "nonzero_gradient_parameters": 118,
+        "trainable_parameters": 118,
+        "frozen_signal_unchanged": true,
+        "reload_max_abs_difference": 0.0,
+        "reload_probe_sha256": "01d56af0af471b5004be2a5989c8d169752e25e2c24d5f2d11415f0240e8d9ea"
+      },
+      "seconds": 2037.563269,
+      "loss_checks": {
+        "steps": 2649,
+        "maximum_reconstruction_error": 2.3655593395233154e-07,
+        "nonzero_triplet": 1275,
+        "nonzero_auxiliary": 0
+      },
+      "numerical": {
+        "fused": {
+          "shape": [
+            836,
+            836
+          ],
+          "dtype": "float32",
+          "minimum": -9.238719940185547e-07,
+          "maximum": 2.374746084213257,
+          "all_finite": true,
+          "absolute_difference_pp": {
+            "mAP": 1.4210854715202004e-14,
+            "Rank-1": 0.0,
+            "Rank-5": 0.0,
+            "Rank-10": 0.0
+          }
+        },
+        "shared_global": {
+          "shape": [
+            836,
+            836
+          ],
+          "dtype": "float32",
+          "minimum": -1.0728836059570312e-06,
+          "maximum": 2.3375701904296875,
+          "all_finite": true,
+          "absolute_difference_pp": {
+            "mAP": 0.0,
+            "Rank-1": 0.0,
+            "Rank-5": 0.0,
+            "Rank-10": 0.0
+          }
+        },
+        "joint_local": {
+          "shape": [
+            836,
+            836
+          ],
+          "dtype": "float32",
+          "minimum": -1.0728836059570312e-06,
+          "maximum": 2.817117691040039,
+          "all_finite": true,
+          "absolute_difference_pp": {
+            "mAP": 0.0,
+            "Rank-1": 0.0,
+            "Rank-5": 0.0,
+            "Rank-10": 0.0
+          }
+        }
+      }
+    },
+    {
+      "dataset": "RGBNT100",
+      "variant": "depth_mean",
+      "best_epoch": 1,
+      "maximum_map_tied_epochs": [
+        1
+      ],
+      "selected_metrics": {
+        "mAP": 85.16999191141127,
+        "Rank-1": 95.04373073577881,
+        "Rank-5": 95.68513035774231,
+        "Rank-10": 95.97667455673218
+      },
+      "last_epoch_metrics": {
+        "mAP": 82.3918730953772,
+        "Rank-1": 93.99417042732239,
+        "Rank-5": 94.51894760131836,
+        "Rank-10": 94.98542547225952
+      },
+      "checkpoints": {
+        "best_sha256": "80a0767734bc1847afc16710a01ecb5cba5f055228acaeaf584e4b6a9423bb67",
+        "probe_sha256": "466d3282a99a86a634dca6e6f7e8608a3cefe7e049ca554706a31d090a3ccc3c",
+        "array_sha256": "801c701ff91bfa48ba639c39e2206d7ea358e2ae5558f5c2f73d1d10eab377d0",
+        "best_tensor_count": 131,
+        "state_schema_sha256": "f3a63d4382064b2b625b1748d7db35f988c129c9ad94071b952e230ea8554d14",
+        "best_and_probe_keys_shapes_match": true
+      },
+      "initial_model_state_sha256": "c2fbd7a6212a3eb2cf7a888d21b94196cae7a9371057650a267e818df5694066",
+      "m0": {
+        "nonzero_gradient_parameters": 118,
+        "trainable_parameters": 118,
+        "frozen_signal_unchanged": true,
+        "reload_max_abs_difference": 0.0,
+        "reload_probe_sha256": "466d3282a99a86a634dca6e6f7e8608a3cefe7e049ca554706a31d090a3ccc3c"
+      },
+      "seconds": 7796.564253,
+      "loss_checks": {
+        "steps": 6559,
+        "maximum_reconstruction_error": 0.0,
+        "nonzero_triplet": 0,
+        "nonzero_auxiliary": 0
+      },
+      "numerical": {
+        "fused": {
+          "shape": [
+            1715,
+            8575
+          ],
+          "dtype": "float32",
+          "minimum": 8.195638656616211e-05,
+          "maximum": 2.496185779571533,
+          "all_finite": true,
+          "absolute_difference_pp": {
+            "mAP": 0.0,
+            "Rank-1": 0.0,
+            "Rank-5": 0.0,
+            "Rank-10": 0.0
+          }
+        },
+        "shared_global": {
+          "shape": [
+            1715,
+            8575
+          ],
+          "dtype": "float32",
+          "minimum": 8.33272933959961e-05,
+          "maximum": 2.485405206680298,
+          "all_finite": true,
+          "absolute_difference_pp": {
+            "mAP": 0.0,
+            "Rank-1": 0.0,
+            "Rank-5": 0.0,
+            "Rank-10": 0.0
+          }
+        },
+        "joint_local": {
+          "shape": [
+            1715,
+            8575
+          ],
+          "dtype": "float32",
+          "minimum": 3.933906555175781e-06,
+          "maximum": 3.7036757469177246,
+          "all_finite": true,
+          "absolute_difference_pp": {
+            "mAP": 1.4210854715202004e-14,
+            "Rank-1": 0.0,
+            "Rank-5": 0.0,
+            "Rank-10": 0.0
+          }
+        }
+      }
+    },
+    {
+      "dataset": "MSVR310",
+      "variant": "depth_mean",
+      "best_epoch": 15,
+      "maximum_map_tied_epochs": [
+        15
+      ],
+      "selected_metrics": {
+        "mAP": 52.72323711731152,
+        "Rank-1": 68.69712471961975,
+        "Rank-5": 83.07952880859375,
+        "Rank-10": 87.47885227203369
+      },
+      "last_epoch_metrics": {
+        "mAP": 48.729540808574086,
+        "Rank-1": 64.80541229248047,
+        "Rank-5": 80.20304441452026,
+        "Rank-10": 86.29441857337952
+      },
+      "checkpoints": {
+        "best_sha256": "e81919628921277daeccb949651859e0d56b4fae39827e751737d459a2b1ba5e",
+        "probe_sha256": "356c59eb5bfb985b86bd555380888452c30e104080f9be2bc54b82eeb319d7cf",
+        "array_sha256": "7f474e777aeb30db6dcd03c8ff0e5a688953dade28ea57cdeb0dc990290c7871",
+        "best_tensor_count": 131,
+        "state_schema_sha256": "85aaac322d9c19a75a677694520eae7932ab682af2d39957b025335aae6ec8ec",
+        "best_and_probe_keys_shapes_match": true
+      },
+      "initial_model_state_sha256": "60972e9d789c62c18a8f3c0deabdf27fd2138f12f7a6d7d8636ae3809f8d9548",
+      "m0": {
+        "nonzero_gradient_parameters": 118,
+        "trainable_parameters": 118,
+        "frozen_signal_unchanged": true,
+        "reload_max_abs_difference": 0.0,
+        "reload_probe_sha256": "356c59eb5bfb985b86bd555380888452c30e104080f9be2bc54b82eeb319d7cf"
+      },
+      "seconds": 1290.613949,
+      "loss_checks": {
+        "steps": 1000,
+        "maximum_reconstruction_error": 2.384185791015625e-07,
+        "nonzero_triplet": 973,
+        "nonzero_auxiliary": 0
+      },
+      "numerical": {
+        "fused": {
+          "shape": [
+            591,
+            1055
+          ],
+          "dtype": "float32",
+          "minimum": -9.834766387939453e-07,
+          "maximum": 2.8895063400268555,
+          "all_finite": true,
+          "absolute_difference_pp": {
+            "mAP": 0.0,
+            "Rank-1": 0.0,
+            "Rank-5": 0.0,
+            "Rank-10": 0.0
+          }
+        },
+        "shared_global": {
+          "shape": [
+            591,
+            1055
+          ],
+          "dtype": "float32",
+          "minimum": -9.5367431640625e-07,
+          "maximum": 2.1687021255493164,
+          "all_finite": true,
+          "absolute_difference_pp": {
+            "mAP": 0.0,
+            "Rank-1": 0.0,
+            "Rank-5": 0.0,
+            "Rank-10": 0.0
+          }
+        },
+        "joint_local": {
+          "shape": [
+            591,
+            1055
+          ],
+          "dtype": "float32",
+          "minimum": -1.0132789611816406e-06,
+          "maximum": 0.2985805869102478,
+          "all_finite": true,
+          "absolute_difference_pp": {
+            "mAP": 0.0,
+            "Rank-1": 0.0,
+            "Rank-5": 0.0,
+            "Rank-10": 0.0
+          }
+        }
+      }
+    },
+    {
+      "dataset": "RGBNT201",
+      "variant": "depth_recurrent",
+      "best_epoch": 2,
+      "maximum_map_tied_epochs": [
+        2
+      ],
+      "selected_metrics": {
+        "mAP": 72.76384783352677,
+        "Rank-1": 74.28229451179504,
+        "Rank-5": 83.13397169113159,
+        "Rank-10": 88.0382776260376
+      },
+      "last_epoch_metrics": {
+        "mAP": 69.33449788400614,
+        "Rank-1": 70.21530866622925,
+        "Rank-5": 79.30622100830078,
+        "Rank-10": 83.13397169113159
+      },
+      "checkpoints": {
+        "best_sha256": "2b18f1b0f29958c93b295048e7e68fe4243b7577768faeabf2b3ef4b9eddc5fd",
+        "probe_sha256": "ad8f0f11aa6a93739cfba9c3ad7f03f7a216e717de18336b8b58c6af91488cbc",
+        "array_sha256": "8d152db4bc3f3bf013b7674b3a83b94dbef039a289a5dabadcbf898cbfe1f377",
+        "best_tensor_count": 131,
+        "state_schema_sha256": "5e6ced74c53eba97d47d252a996afb8829a9673673f09b8f5a746d4775eeebcb",
+        "best_and_probe_keys_shapes_match": true
+      },
+      "initial_model_state_sha256": "595e5d6ebab9eb4a5d5cf930b4328f22200d038a9f0c0e4ddf97756be9989a92",
+      "m0": {
+        "nonzero_gradient_parameters": 118,
+        "trainable_parameters": 118,
+        "frozen_signal_unchanged": true,
+        "reload_max_abs_difference": 0.0,
+        "reload_probe_sha256": "ad8f0f11aa6a93739cfba9c3ad7f03f7a216e717de18336b8b58c6af91488cbc"
+      },
+      "seconds": 2015.528645,
+      "loss_checks": {
+        "steps": 2649,
+        "maximum_reconstruction_error": 2.3562461137771606e-07,
+        "nonzero_triplet": 1288,
+        "nonzero_auxiliary": 0
+      },
+      "numerical": {
+        "fused": {
+          "shape": [
+            836,
+            836
+          ],
+          "dtype": "float32",
+          "minimum": -9.238719940185547e-07,
+          "maximum": 2.382784366607666,
+          "all_finite": true,
+          "absolute_difference_pp": {
+            "mAP": 0.0,
+            "Rank-1": 0.0,
+            "Rank-5": 0.0,
+            "Rank-10": 0.0
+          }
+        },
+        "shared_global": {
+          "shape": [
+            836,
+            836
+          ],
+          "dtype": "float32",
+          "minimum": -1.0132789611816406e-06,
+          "maximum": 2.3418517112731934,
+          "all_finite": true,
+          "absolute_difference_pp": {
+            "mAP": 0.0,
+            "Rank-1": 0.0,
+            "Rank-5": 0.0,
+            "Rank-10": 0.0
+          }
+        },
+        "joint_local": {
+          "shape": [
+            836,
+            836
+          ],
+          "dtype": "float32",
+          "minimum": -1.1324882507324219e-06,
+          "maximum": 2.762451648712158,
+          "all_finite": true,
+          "absolute_difference_pp": {
+            "mAP": 0.0,
+            "Rank-1": 0.0,
+            "Rank-5": 0.0,
+            "Rank-10": 0.0
+          }
+        }
+      }
+    },
+    {
+      "dataset": "RGBNT100",
+      "variant": "depth_recurrent",
+      "best_epoch": 1,
+      "maximum_map_tied_epochs": [
+        1
+      ],
+      "selected_metrics": {
+        "mAP": 85.16352019899422,
+        "Rank-1": 95.04373073577881,
+        "Rank-5": 95.68513035774231,
+        "Rank-10": 95.91836929321289
+      },
+      "last_epoch_metrics": {
+        "mAP": 82.20301205162995,
+        "Rank-1": 93.81924271583557,
+        "Rank-5": 94.51894760131836,
+        "Rank-10": 94.8104977607727
+      },
+      "checkpoints": {
+        "best_sha256": "f8950bb720353c635befc323e523b5969086efa326d1f9d40e161bbb873c7c49",
+        "probe_sha256": "69a40a6f3782545947dd2051da278b70626a19b9ec413a15b3e0105bf4aa0e07",
+        "array_sha256": "69c41a0d381c0b995e618237203170c39b2fd648bf089b72e433913291e7b2d0",
+        "best_tensor_count": 131,
+        "state_schema_sha256": "f3a63d4382064b2b625b1748d7db35f988c129c9ad94071b952e230ea8554d14",
+        "best_and_probe_keys_shapes_match": true
+      },
+      "initial_model_state_sha256": "c2fbd7a6212a3eb2cf7a888d21b94196cae7a9371057650a267e818df5694066",
+      "m0": {
+        "nonzero_gradient_parameters": 118,
+        "trainable_parameters": 118,
+        "frozen_signal_unchanged": true,
+        "reload_max_abs_difference": 0.0,
+        "reload_probe_sha256": "69a40a6f3782545947dd2051da278b70626a19b9ec413a15b3e0105bf4aa0e07"
+      },
+      "seconds": 6322.381209,
+      "loss_checks": {
+        "steps": 6559,
+        "maximum_reconstruction_error": 0.0,
+        "nonzero_triplet": 0,
+        "nonzero_auxiliary": 0
+      },
+      "numerical": {
+        "fused": {
+          "shape": [
+            1715,
+            8575
+          ],
+          "dtype": "float32",
+          "minimum": 8.189678192138672e-05,
+          "maximum": 2.497016668319702,
+          "all_finite": true,
+          "absolute_difference_pp": {
+            "mAP": 0.0,
+            "Rank-1": 0.0,
+            "Rank-5": 0.0,
+            "Rank-10": 0.0
+          }
+        },
+        "shared_global": {
+          "shape": [
+            1715,
+            8575
+          ],
+          "dtype": "float32",
+          "minimum": 8.243322372436523e-05,
+          "maximum": 2.480759620666504,
+          "all_finite": true,
+          "absolute_difference_pp": {
+            "mAP": 0.0,
+            "Rank-1": 0.0,
+            "Rank-5": 0.0,
+            "Rank-10": 0.0
+          }
+        },
+        "joint_local": {
+          "shape": [
+            1715,
+            8575
+          ],
+          "dtype": "float32",
+          "minimum": 2.086162567138672e-06,
+          "maximum": 3.7506935596466064,
+          "all_finite": true,
+          "absolute_difference_pp": {
+            "mAP": 0.0,
+            "Rank-1": 0.0,
+            "Rank-5": 0.0,
+            "Rank-10": 0.0
+          }
+        }
+      }
+    },
+    {
+      "dataset": "MSVR310",
+      "variant": "depth_recurrent",
+      "best_epoch": 8,
+      "maximum_map_tied_epochs": [
+        8
+      ],
+      "selected_metrics": {
+        "mAP": 52.098682186126446,
+        "Rank-1": 67.3434853553772,
+        "Rank-5": 83.07952880859375,
+        "Rank-10": 86.6328239440918
+      },
+      "last_epoch_metrics": {
+        "mAP": 47.6814209987802,
+        "Rank-1": 62.6057505607605,
+        "Rank-5": 79.6954333782196,
+        "Rank-10": 85.95600724220276
+      },
+      "checkpoints": {
+        "best_sha256": "effa10f164def3cb6c9fe451ab8c688fcfc28cc1c908a4bbeedce395ff045873",
+        "probe_sha256": "976694bbcf1269a4f31dde28d0cac0c76a720a3a690858fccea791375c94bc72",
+        "array_sha256": "f3613ae3b9155af4aee7f72386f0978ba3aeb2cf35e3f50b06ebf8a9e2c5e968",
+        "best_tensor_count": 131,
+        "state_schema_sha256": "85aaac322d9c19a75a677694520eae7932ab682af2d39957b025335aae6ec8ec",
+        "best_and_probe_keys_shapes_match": true
+      },
+      "initial_model_state_sha256": "60972e9d789c62c18a8f3c0deabdf27fd2138f12f7a6d7d8636ae3809f8d9548",
+      "m0": {
+        "nonzero_gradient_parameters": 118,
+        "trainable_parameters": 118,
+        "frozen_signal_unchanged": true,
+        "reload_max_abs_difference": 0.0,
+        "reload_probe_sha256": "976694bbcf1269a4f31dde28d0cac0c76a720a3a690858fccea791375c94bc72"
+      },
+      "seconds": 1356.270337,
+      "loss_checks": {
+        "steps": 1000,
+        "maximum_reconstruction_error": 2.384185791015625e-07,
+        "nonzero_triplet": 971,
+        "nonzero_auxiliary": 0
+      },
+      "numerical": {
+        "fused": {
+          "shape": [
+            591,
+            1055
+          ],
+          "dtype": "float32",
+          "minimum": -8.344650268554688e-07,
+          "maximum": 2.96993350982666,
+          "all_finite": true,
+          "absolute_difference_pp": {
+            "mAP": 0.0,
+            "Rank-1": 0.0,
+            "Rank-5": 0.0,
+            "Rank-10": 0.0
+          }
+        },
+        "shared_global": {
+          "shape": [
+            591,
+            1055
+          ],
+          "dtype": "float32",
+          "minimum": -8.940696716308594e-07,
+          "maximum": 2.2286126613616943,
+          "all_finite": true,
+          "absolute_difference_pp": {
+            "mAP": 0.0,
+            "Rank-1": 0.0,
+            "Rank-5": 0.0,
+            "Rank-10": 0.0
+          }
+        },
+        "joint_local": {
+          "shape": [
+            591,
+            1055
+          ],
+          "dtype": "float32",
+          "minimum": -8.940696716308594e-07,
+          "maximum": 0.22793471813201904,
+          "all_finite": true,
+          "absolute_difference_pp": {
+            "mAP": 0.0,
+            "Rank-1": 0.0,
+            "Rank-5": 0.0,
+            "Rank-10": 0.0
+          }
+        }
+      }
+    }
+  ],
+  "paired_diagnostics": [
+    {
+      "dataset": "RGBNT201",
+      "recurrent_minus_mean_pp": {
+        "mAP": 0.2310896326029308,
+        "Rank-1": 0.35884976387023926,
+        "Rank-5": 0.35884976387023926,
+        "Rank-10": 0.0
+      },
+      "recurrent_fused_minus_own_global_map_pp": 0.23011846502156175,
+      "rank1_repairs": 3,
+      "rank1_new_errors": 0,
+      "query_ap_improved": 316,
+      "query_ap_worsened": 93,
+      "query_ap_unchanged": 427,
+      "identity_ap_improved": 21,
+      "identity_ap_worsened": 4,
+      "identity_count": 30,
+      "identity_delta_map_pp": {
+        "258": 0.023521840478362515,
+        "260": 0.3927970341912686,
+        "269": -0.12810457579874002,
+        "270": 0.0,
+        "271": 0.07369690586426823,
+        "272": 0.306950195967028,
+        "273": 0.0,
+        "274": -0.02851216202566731,
+        "275": 0.8788103119309443,
+        "276": 0.18639676285739615,
+        "277": -0.1992102045687454,
+        "278": 0.23651293684323377,
+        "279": 0.0,
+        "280": 0.10547286916363355,
+        "282": 0.0,
+        "283": 0.5897450319027642,
+        "284": 1.2389119444898493,
+        "285": 0.668801081166194,
+        "286": 0.15725418198255464,
+        "287": 0.05599464819666111,
+        "288": 0.5195559858456591,
+        "289": 0.20370319998390166,
+        "290": 0.30521414999103685,
+        "291": 0.0,
+        "292": -0.15266648556122217,
+        "293": 0.08602833870984185,
+        "294": 0.9012204875527596,
+        "295": 0.22109181383672608,
+        "298": 0.21267190336146177,
+        "299": 0.039758083815948364
+      },
+      "interpretation": "Fixed selected-model paired diagnosis; not independent seeds or unbiased test generalization."
+    },
+    {
+      "dataset": "RGBNT100",
+      "recurrent_minus_mean_pp": {
+        "mAP": -0.0064717124170527995,
+        "Rank-1": 0.0,
+        "Rank-5": 0.0,
+        "Rank-10": -0.05830526351928711
+      },
+      "recurrent_fused_minus_own_global_map_pp": 0.0006206309826524148,
+      "rank1_repairs": 0,
+      "rank1_new_errors": 0,
+      "query_ap_improved": 665,
+      "query_ap_worsened": 607,
+      "query_ap_unchanged": 443,
+      "identity_ap_improved": 25,
+      "identity_ap_worsened": 22,
+      "identity_count": 50,
+      "identity_delta_map_pp": {
+        "502": -0.12259006429845205,
+        "504": -0.21862574260551032,
+        "506": 0.131022440225196,
+        "508": 0.007452775126670086,
+        "510": 0.39981519479740324,
+        "512": 0.28162859617004266,
+        "514": 0.04970059537938415,
+        "516": 0.0,
+        "518": -0.6495275541693798,
+        "520": -0.0014818619022923965,
+        "522": 0.10047155904181401,
+        "524": 0.18798682688230456,
+        "526": -0.2834156811659779,
+        "528": -0.2244055198435973,
+        "530": 0.02162460751348976,
+        "532": 0.2578061729928041,
+        "534": 0.0,
+        "536": -0.014435045030904425,
+        "538": -0.02811131844291548,
+        "540": 0.1736252702526142,
+        "542": -0.2712495982294258,
+        "544": -0.28320496713155713,
+        "546": -0.06773012953317614,
+        "548": 0.020057387542808013,
+        "550": -0.23665929588536777,
+        "552": 0.0522334058670515,
+        "554": -0.13368537254891605,
+        "556": -0.02827053325084608,
+        "558": -0.022024109610628007,
+        "560": 0.0,
+        "562": -0.3159033517059129,
+        "564": 0.00924795529001773,
+        "566": -0.06031992963265287,
+        "568": 0.3333729328632444,
+        "570": 0.017961993155195217,
+        "572": 0.05687150419979414,
+        "574": 0.09004660605457808,
+        "576": -0.035536561827255966,
+        "578": -0.08736715351509577,
+        "580": 0.20129159882653808,
+        "582": 0.29872660739865137,
+        "584": -0.14544031388256523,
+        "586": -0.04408730650385606,
+        "588": 0.053858553581019875,
+        "590": 0.0397375774191341,
+        "592": 0.029696646983796704,
+        "594": 0.0671684497843277,
+        "596": 0.01851306290548721,
+        "598": -0.50792268220094,
+        "600": 0.013769811593987158
+      },
+      "interpretation": "Fixed selected-model paired diagnosis; not independent seeds or unbiased test generalization."
+    },
+    {
+      "dataset": "MSVR310",
+      "recurrent_minus_mean_pp": {
+        "mAP": -0.6245549311850738,
+        "Rank-1": -1.3536393642425537,
+        "Rank-5": 0.0,
+        "Rank-10": -0.8460283279418945
+      },
+      "recurrent_fused_minus_own_global_map_pp": -0.5015172405670825,
+      "rank1_repairs": 16,
+      "rank1_new_errors": 24,
+      "query_ap_improved": 251,
+      "query_ap_worsened": 313,
+      "query_ap_unchanged": 27,
+      "identity_ap_improved": 25,
+      "identity_ap_worsened": 26,
+      "identity_count": 52,
+      "identity_delta_map_pp": {
+        "2": 24.900793650793652,
+        "4": 0.5531165784675237,
+        "6": 0.060042480633752254,
+        "8": -3.3872878323667877,
+        "10": 9.851546963910492,
+        "12": -2.6857035514535363,
+        "14": -6.997433425125739,
+        "16": 6.024503711008982,
+        "20": -0.7159419311456902,
+        "22": -6.7928241062017785,
+        "24": -5.559307936945156,
+        "26": -3.7455329653868614,
+        "30": -1.7119317990909602,
+        "34": -14.095987405935604,
+        "36": 1.2252470418951718,
+        "45": 0.0,
+        "47": -0.3948412698412687,
+        "59": -0.36669264402455753,
+        "63": 6.499544896319581,
+        "69": 1.6825128774198619,
+        "75": 5.4068716929894425,
+        "79": 6.602753103928942,
+        "88": -0.9966137811117871,
+        "90": 3.9692834838641513,
+        "92": -0.22479934826907547,
+        "94": -2.5907799515175394,
+        "96": -6.584731412351167,
+        "100": 3.4488769570073594,
+        "110": 3.928064618308521,
+        "112": -14.50408998796219,
+        "114": 7.936897703278534,
+        "116": -16.006708238851097,
+        "122": 4.613877239262228,
+        "127": 1.3066270344030195,
+        "129": -3.9762914784530827,
+        "139": -7.548704273024654,
+        "141": -3.557449494949488,
+        "143": -1.149029982363318,
+        "145": -4.932654231111065,
+        "150": 0.04741883581060623,
+        "152": -4.166666666666666,
+        "160": 3.472303708143466,
+        "170": 8.263816310309922,
+        "176": 3.004279711438402,
+        "178": 7.592592592592593,
+        "196": 6.290896506676042,
+        "204": 7.939774644173027,
+        "220": -2.8107140733592404,
+        "228": 5.8669717157819266,
+        "239": 0.019178121573761187,
+        "241": -4.622672718548717,
+        "253": -1.7983576079774621
+      },
+      "interpretation": "Fixed selected-model paired diagnosis; not independent seeds or unbiased test generalization."
+    }
+  ],
+  "baseline_scope": [
+    {
+      "dataset": "MSVR310",
+      "seed": 1234,
+      "epochs": 50,
+      "checkpoint_policy": "fixed_final_epoch",
+      "checkpoint": "/data/gaob/Re-ID/Trifusion/trained-model/signal_plain_baseline_20260924_r2/MSVR310/Signalbest.pth",
+      "checkpoint_sha256": "69c5e71b75036d7216ece3ff84450f0052f5e70dfaba46bf73f3e1d40992bb37",
+      "second_stage_baseline": "/data/gaob/Re-ID/Trifusion/pertrained-model/MSVR310_PlainBaseline_50.pth",
+      "signal_state_sha256_recomputed": "b64e8827028042012bed9a9fc2ffd0bc29122dc1077815b4773626c6a41a087c",
+      "state_tensor_count": 171,
+      "finite_cpu_state": true,
+      "training_wall_seconds": 482.414119,
+      "training_and_final_eval_wall_seconds": 508.686889,
+      "train_log": "/data/gaob/Re-ID/Trifusion/trained-model/signal_plain_baseline_20260924_r2/MSVR310/train_log.txt",
+      "train_log_sha256": "6bc096fae2ebef0e7e938cd5ad7bec87af6fb037f6feba5d581dc66a6c669d2b",
+      "final_epoch_lines": [
+        [
+          414,
+          "2026-09-24 10:03:23,190 Signal.train INFO: Epoch[50] Iteration[10/16] Loss: 2.389, Acc: 0.991, Base Lr: 5.00e-08"
+        ],
+        [
+          419,
+          "2026-09-24 10:03:42,253 Signal.train INFO: Validation Results - Epoch: 50"
+        ]
+      ],
+      "metrics_path": "/data/gaob/Re-ID/Trifusion/logs/signal_plain_baseline_20260924_r2/MSVR310/metrics.json",
+      "metrics_sha256": "8fe57fcdde947c9bce1b015425bb61d9300867c64b2b447f8876190b2e985c51",
+      "score_replayed_in_this_supplement": false
+    },
+    {
+      "dataset": "RGBNT201",
+      "seed": 1234,
+      "epochs": 50,
+      "checkpoint_policy": "fixed_final_epoch",
+      "checkpoint": "/data/gaob/Re-ID/Trifusion/trained-model/signal_plain_baseline_20260924_r2/RGBNT201/Signalbest.pth",
+      "checkpoint_sha256": "789e5e14aacd74ad122aad701389eb216ca5b4fda92687e27351a513023b4407",
+      "second_stage_baseline": "/data/gaob/Re-ID/Trifusion/pertrained-model/RGBNT201_PlainBaseline_50.pth",
+      "signal_state_sha256_recomputed": "4d5cf3d7bb445199b6d2a0d3492c4fcf8ae5263f240bb6b6a322933695abd89d",
+      "state_tensor_count": 159,
+      "finite_cpu_state": true,
+      "training_wall_seconds": 1533.234426,
+      "training_and_final_eval_wall_seconds": 1559.467211,
+      "train_log": "/data/gaob/Re-ID/Trifusion/trained-model/signal_plain_baseline_20260924_r2/RGBNT201/train_log.txt",
+      "train_log_sha256": "6842abae2cb1a809ef2f9d456abbd468621c0a078288000022a9f74a900374a1",
+      "final_epoch_lines": [
+        [
+          604,
+          "2026-09-24 10:29:00,120 Signal.train INFO: Epoch[50] Iteration[10/54] Loss: 0.227, Acc: 1.000, Base Lr: 3.50e-07"
+        ],
+        [
+          605,
+          "2026-09-24 10:29:05,519 Signal.train INFO: Epoch[50] Iteration[20/54] Loss: 0.227, Acc: 1.000, Base Lr: 3.50e-07"
+        ],
+        [
+          606,
+          "2026-09-24 10:29:10,952 Signal.train INFO: Epoch[50] Iteration[30/54] Loss: 0.226, Acc: 1.000, Base Lr: 3.50e-07"
+        ],
+        [
+          607,
+          "2026-09-24 10:29:16,222 Signal.train INFO: Epoch[50] Iteration[40/54] Loss: 0.226, Acc: 1.000, Base Lr: 3.50e-07"
+        ],
+        [
+          608,
+          "2026-09-24 10:29:21,585 Signal.train INFO: Epoch[50] Iteration[50/54] Loss: 0.226, Acc: 1.000, Base Lr: 3.50e-07"
+        ],
+        [
+          613,
+          "2026-09-24 10:29:41,784 Signal.train INFO: Validation Results - Epoch: 50"
+        ]
+      ],
+      "metrics_path": "/data/gaob/Re-ID/Trifusion/logs/signal_plain_baseline_20260924_r2/RGBNT201/metrics.json",
+      "metrics_sha256": "8fa8b0797255bbe1d7a495b407a2b189886785ffa788650ca6a728792218fb35",
+      "score_replayed_in_this_supplement": false
+    },
+    {
+      "dataset": "RGBNT100",
+      "seed": 1234,
+      "epochs": 30,
+      "checkpoint_policy": "fixed_final_epoch",
+      "checkpoint": "/data/gaob/Re-ID/Trifusion/trained-model/signal_plain_baseline_20260924_r2/RGBNT100/Signalbest.pth",
+      "checkpoint_sha256": "299a28bfb3e3180eeae0736cf8638cd162525dce0f2192a940b62b97f6e67dcd",
+      "second_stage_baseline": "/data/gaob/Re-ID/Trifusion/pertrained-model/RGBNT100_PlainBaseline_30.pth",
+      "signal_state_sha256_recomputed": "68cea6c9ae4246ec9d0394b8b5e0dec53d70bd6af55d92c3140ac268e60e3174",
+      "state_tensor_count": 171,
+      "finite_cpu_state": true,
+      "training_wall_seconds": 2086.01597,
+      "training_and_final_eval_wall_seconds": 2183.658389,
+      "train_log": "/data/gaob/Re-ID/Trifusion/trained-model/signal_plain_baseline_20260924_r2/RGBNT100/train_log.txt",
+      "train_log_sha256": "b3f37893d162f8c460b13794cf159a3718c0790bf4631de0555e7677d0fb29be",
+      "final_epoch_lines": [
+        [
+          517,
+          "2026-09-24 11:02:22,994 Signal.train INFO: Epoch[30] Iteration[10/65] Loss: 0.563, Acc: 1.000, Base Lr: 7.00e-07"
+        ],
+        [
+          518,
+          "2026-09-24 11:02:33,270 Signal.train INFO: Epoch[30] Iteration[20/65] Loss: 0.563, Acc: 1.000, Base Lr: 7.00e-07"
+        ],
+        [
+          519,
+          "2026-09-24 11:02:43,438 Signal.train INFO: Epoch[30] Iteration[30/65] Loss: 0.564, Acc: 1.000, Base Lr: 7.00e-07"
+        ],
+        [
+          520,
+          "2026-09-24 11:02:53,452 Signal.train INFO: Epoch[30] Iteration[40/65] Loss: 0.563, Acc: 1.000, Base Lr: 7.00e-07"
+        ],
+        [
+          521,
+          "2026-09-24 11:03:03,652 Signal.train INFO: Epoch[30] Iteration[50/65] Loss: 0.564, Acc: 1.000, Base Lr: 7.00e-07"
+        ],
+        [
+          522,
+          "2026-09-24 11:03:13,788 Signal.train INFO: Epoch[30] Iteration[60/65] Loss: 0.563, Acc: 1.000, Base Lr: 7.00e-07"
+        ],
+        [
+          527,
+          "2026-09-24 11:04:54,550 Signal.train INFO: Validation Results - Epoch: 30"
+        ]
+      ],
+      "metrics_path": "/data/gaob/Re-ID/Trifusion/logs/signal_plain_baseline_20260924_r2/RGBNT100/metrics.json",
+      "metrics_sha256": "14c9288d489d730fcca6c5d8d41a0ed853ee9fef13ac0e172f8384790f3fff3a",
+      "score_replayed_in_this_supplement": false
+    }
+  ],
+  "cost": {
+    "upstream_unique_epochs": 130,
+    "upstream_training_wall_seconds": 4101.664515,
+    "upstream_training_plus_final_eval_wall_seconds": 4251.812489,
+    "second_stage_child_wall_seconds_by_mode": {
+      "m0": 353.467353,
+      "train": 29717.838301,
+      "evaluate": 504.821245
+    }
+  },
+  "claims": [
+    {
+      "id": "C1",
+      "claim": "All nine registered seed42 second-stage endpoints completed full50 and have one recorded mAP-best selected checkpoint.",
+      "impact": "supported_with_recorded_execution_boundary"
+    },
+    {
+      "id": "C2",
+      "claim": "The reported fused/global/local metrics are the author-semantics scores of the complete saved distance arrays.",
+      "impact": "supported_by_independent_deterministic_replay"
+    },
+    {
+      "id": "C3",
+      "claim": "Persistent role state gives a consistent cross-dataset benefit.",
+      "impact": "unsupported_by_registered_primary_comparison"
+    },
+    {
+      "id": "C4",
+      "claim": "Recurrent versus mean isolates state carry.",
+      "impact": "unsupported_aggregation_also_changes"
+    },
+    {
+      "id": "C5",
+      "claim": "Untouched-test generalization or multi-seed stability.",
+      "impact": "unsupported"
+    },
+    {
+      "id": "C6",
+      "claim": "All execution dependencies and original image bytes are proven frozen/authentic.",
+      "impact": "unsupported"
+    },
+    {
+      "id": "C7",
+      "claim": "The existing qualified full-panel development table can be reported.",
+      "impact": "supported_with_all_listed_qualifiers"
+    }
+  ],
+  "action_items": [
+    "Replace only the pending-audit label in the current result/tracker with this WARN report and same-family/provisional status; retain all nine results and existing qualifications.",
+    "Describe seed 42 as the second-stage development seed and include the reused seed1234 baseline stage and measured wall-time boundary in cost descriptions.",
+    "Do not claim reliable persistence, isolated recurrence, independent global/local controls, untouched-test generalization or multi-seed stability.",
+    "Treat absent launch-time dependency/pixel/initial-state evidence as historical limits; do not rewrite old manifests or receipts to imply retroactive proof."
+  ],
+  "markdown_report_sha256": "001e9bc62c6fcb47ecc3a4d65d3ec96dd558ff9208b924e78eb502e729eff1a4"
+}

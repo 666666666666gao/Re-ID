@@ -1,10 +1,12 @@
 # Cross-depth role state tracker
 
-CURRENT: all nine formal endpoints VERIFIED_COMPLETE by collector671 at 2026-09-30T00:07:51.462110+08:00. Full50/single mAP-best/strict reload/complete gallery; fresh full numerical audit PENDING. No new training condition registered. Goal ACTIVE/UNMET.
+CURRENT: all nine formal endpoints VERIFIED_COMPLETE by collector671 at 2026-09-30T00:07:51.462110+08:00. Full50/single mAP-best/strict reload/complete gallery; fresh full numerical audit672 WARN / same-family / provisional after independent CPU replay of 27 distance matrices and 108 metrics. No new training condition registered. Goal ACTIVE/UNMET.
 
 [Current full matrix](../../../results/CROSS_DEPTH_ROLE_STATE_FULL_2026-09-30.md)
 
 The source/protocol audit669 is complete with WARN, same-family/provisional. Historical launch-boundary and aggregation qualifications remain.
+
+The [full-panel audit672](REVIEW_FULL_PANEL_672_20260930.md) found no registered-artifact or arithmetic mismatch. It does not establish image-to-embedding replay, execution-time bytes for three later-captured imports, untouched official testing, multi-seed stability, or an isolated state-carry effect. The reused pure ReID baselines were trained at upstream seed1234 before the seed42 role stage (50/50/30 epochs for RGBNT201/MSVR310/RGBNT100).
 
 ## Historical timeline (superseded progress snapshots)
 

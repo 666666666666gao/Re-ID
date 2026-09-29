@@ -2,7 +2,7 @@
 
 ## 0. 一页结论
 
-**本页更新至§41.664：跨深度三条件×三集9/9完整50轮、单mAP-best重载及全图库收集器核验完成；最后100 mean/recurrent为85.1700／95.0437和85.1635／95.0437。完整数值fresh审查672正在进行，不以收集器通过代替审查。源码／标签fresh669为WARN，同family／provisional：目录不能认证像素，三份依赖未启动冻结；状态carry与读出汇总混杂继续保留。无新模型／训练条件登记，目标ACTIVE/UNMET。** 历史规则和数字保留原样，当前合同以后文登记和服务器回执为准。研究目标仍 **ACTIVE／UNMET**；工程通过、局部增量不代替三数据集强基线与SOTA要求。
+**本页更新至§41.665：跨深度三条件×三集9/9完整50轮，27份全图库距离的108项指标经fresh CPU独立复算；完整数值审查672为WARN、same-family／provisional，未发现已登记端的算术或文件不一致。201状态传递相对逐层均值+0.2311 mAP，100为−0.0065，MSVR为−0.6246，跨集稳定收益不成立；carry与末层／均值汇总仍混杂。源码／标签审查669也为WARN，历史来源、官方选点和单种子限制保留。尚无新训练条件登记，目标ACTIVE/UNMET。** 历史规则和数字保留原样，当前合同以后文登记和服务器回执为准。研究目标仍 **ACTIVE／UNMET**；工程通过、局部增量不代替三数据集强基线与SOTA要求。
 
 **现行合同：** 每个正式候选完整50轮，使用作者完整query/gallery及camera／MSVR时间段过滤，以官方fused mAP最高的同一checkpoint报告全部指标，随后严格重载。RGBNT201报告mAP／R1／R5／R10，RGBNT100及MSVR310报告mAP／R1；不跨epoch或seed拼列。官方集已参与逐轮选点和历史方法选择，属于已消费基准上的探索性结果。
 
@@ -13151,3 +13151,11 @@ fresh审查发现实际模块导入的三份项目依赖不在205启动清单：
 所有审查原生请求／回应原文在project-local .aris/traces/experiment-audit/保存，不发布私有trace或覆盖无关events。完整九端数值审查672已按experiment-audit技能要求以fresh gpt-6-astra、max、forknone启动，只给原始文件路径与checklist，允许原环境只读CPU checkpoint／全数组复算；不允许GPU／新训练／重推理／旧证据改写。实际模型路由证明未暴露，仍同family／provisional。目前审查RUNNING，不把first-three659或source-only669扩大成全9性能PASS。
 
 本轮若干本地证据路径准备错误（published-tree协议别名缺失、M0目录glob包含archive JSON、不存在HYPOTHESIS.md）均已用实际原始协议路径／训练文件父目录／已有EXPERIMENT_PLAN.md更正并保存exit证据，没有训练重启、fallback或虚构占位证据。最后完整正式collector、原始文本接收与100配对均退出0。前序proof668、目录摘要669及补充导入670一并归档。无新科学假设或训练入口；完整审查后再决定下一最小干预，不能把工程9/9当成性能目标完成。Goal ACTIVE／UNMET。
+
+### 41.665 九端完整数值fresh复核与主张边界（2026-09-30）
+
+fresh审查672已结束，报告为refine-logs/cross_depth_role_state_v1/REVIEW_FULL_PANEL_672_20260930.md/.json，整体WARN、same-family／provisional。审查者在原环境只用CPU另写NumPy计分器，独立重算9端×fused／shared_global／joint_local共27份完整图库距离、108项mAP／CMC；与正式原作者口径最大差1.42108547152e−14个百分点。九端各50轮、单份最高fused mAP权重、全部30624正式标量步与72个M0标量步、18份best／M0 checkpoint的schema和SHA、205份启动绑定源码、54份原始镜像文本及父／子队列终态均核对；正式九端已退出，无跨深度训练进程。复核不重新从原图跑模型，也不重现原训练梯度。
+
+主比较recurrent减depth_mean的mAP／R1：RGBNT201为+0.2311／+0.3588，RGBNT100为−0.0065／0，MSVR310为−0.6246／−1.3536。审查未发现收集器数值矛盾，但原登记的“各集一致正收益”不成立。它们的训练权重来自各数据集先前seed1234的纯CLIP ReID固定终点（201／MSVR各50轮、100为30轮），之后才以seed42训练本面板第二阶段50轮；不能称整个系统从公开CLIP只训练50轮。状态carry和最后层输出／三层输出均值同时变化，不能单独归因于carry。官方标签已用于每轮选点和历史方法选择，单种子结果不证明未参与选择的泛化或训练稳定性。
+
+WARN另外保留三份导入依赖没有启动时冻结、目录不能认证像素和官方数据发布真实性、保存距离的CPU复算不能重新证明图像→checkpoint→embedding全链条、初始状态以相同seed／记录哈希而非独立初始快照匹配等边界。实际后端模型路由不可证明；原生请求／三条中途回报／最终回应保存在本地不发布的.aris/traces/experiment-audit/2026-09-30_full_panel_672。完整9端结果和限制已更新到results/CROSS_DEPTH_ROLE_STATE_FULL_2026-09-30.md及当前tracker；负结果原样保存，不把201单端小幅正差写为可靠的新方法。下一项科学干预仍需单独登记，不能把审查通过或9/9工程完成称为Goal完成。Goal ACTIVE／UNMET。
