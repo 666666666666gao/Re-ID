@@ -1,0 +1,2121 @@
+{
+  "audit_skill": "experiment-audit",
+  "verdict": "WARN",
+  "overall_verdict": "warn",
+  "integrity_status": "warn",
+  "reason_code": "partial_endpoints_remote_replay_unavailable",
+  "summary": "Three formal endpoint text bundles, all three terminal child campaigns, and six production M0 text bundles are internally consistent. Full50 selection, nine zero phase exits and all supplied scalar logs were independently checked from local files. Remote checkpoint/probe/array replay, primary protocol payloads and producer diagnostic attribution remain limited. No demonstrated numeric contradiction or fabricated-GT path was found.",
+  "date": "2026-09-29",
+  "agent_id": null,
+  "agent_task_path": "/root/audit_cross_depth_first_formal_659",
+  "verdict_id": "first-formal-659-20260929",
+  "reviewer_model_requested": "gpt-6-astra",
+  "reviewer_reasoning_requested": "max",
+  "reviewer_route_requested": "native Codex",
+  "actual_backend_model_attestation": "unavailable",
+  "reviewer_model_actual": null,
+  "reviewer_reasoning_actual": null,
+  "review_independence": "same-family",
+  "acceptance_status": "provisional",
+  "executor_model": null,
+  "trace_path": null,
+  "trace_note": "This task was restricted to exactly two new report files. No separate trace directory was written. The parent owns preservation of the native reviewer request/response trace; no opaque agent identifier or actual backend attestation was available to this agent.",
+  "primary_claim_input": "refine-logs/cross_depth_role_state_v1/first_formal_audit_input_659/HANDOFF_REVIEW_INPUT.md",
+  "primary_claim_input_scope": [
+    "line 5",
+    "line 7",
+    "section 41.659 (lines 13000-13020)"
+  ],
+  "live_claim_document_observed_versions": [
+    {
+      "path": "docs/TRIFUSION_RGBNT201_CURRENT_COMPLETE_HANDOFF_2026-09-01.md",
+      "sha256": "f069b7ebf501ba837ae140d2124e45624066e5f6137cab382b9370cd100b77d5",
+      "status": "earlier observed version; superseded before report"
+    },
+    {
+      "path": "docs/TRIFUSION_RGBNT201_CURRENT_COMPLETE_HANDOFF_2026-09-01.md",
+      "sha256": "97f4bd986aa151290b5deeeaf6ae39fe3d8690ae4005b1b82d1f44199706e50a",
+      "status": "reviewed selected sections; identical to primary immutable claim copy"
+    }
+  ],
+  "scope": {
+    "formal_endpoints": 3,
+    "expected_endpoints": 9,
+    "formal_datasets": [
+      "RGBNT201",
+      "MSVR310"
+    ],
+    "seeds": [
+      42
+    ],
+    "raw_m0_endpoints": 6,
+    "raw_m0_steps": 48,
+    "formal_training_steps": 6298,
+    "remote_access": false,
+    "ssh_used": false,
+    "training_or_inference_run": false,
+    "checkpoint_replay": false,
+    "array_metric_replay": false,
+    "bootstrap_replay": false,
+    "bootstrap_replay_note": "Identity arithmetic was reconstructed using the complete stored identity_changes vector. NumPy was unavailable in the local inspected interpreters; no package/environment change was made. The precise PCG64 bootstrap interval was not re-executed.",
+    "original_sources_or_receipts_modified": false,
+    "write_scope": "Only REVIEW_FIRST_FORMAL_659_20260929.md and REVIEW_FIRST_FORMAL_659_20260929.json."
+  },
+  "checks": {
+    "gt_provenance": {
+      "status": "WARN",
+      "details": "Static pipeline uses protocol identity/camera/scene fields and dataset train labels, not predictions. Camera and time-period filters are correct in the inspected scorer definitions. Actual protocol JSONs, upstream scorer, data, and distance arrays are absent locally, so dataset authenticity and observed full-gallery order cannot be independently replayed.",
+      "evidence": [
+        "tools/official_three_dataset_data.py:8-18",
+        "tools/run_correspondence_roles.py:79-108",
+        "tools/run_correspondence_context_identity.py:194-224",
+        "tools/train_rgbnt100_signal_oof.py:253-268",
+        "tools/train_msvr310_signal_oof.py:223-238",
+        "logs/cross_depth_manifest_658_20260929.json:254-269"
+      ]
+    },
+    "score_normalization": {
+      "status": "PASS",
+      "details": "AP averages precision at dataset-positive ranks; CMC is the fraction of queries with first match within rank k. Output scaling is 100 percentage points. Feature L2 normalization, candidate softmax and role layer normalization are representation operations, not self-normalization of reported metrics.",
+      "evidence": [
+        "tools/train_rgbnt100_signal_oof.py:253-268",
+        "tools/train_msvr310_signal_oof.py:223-238",
+        "tools/run_official_three_dataset_roles.py:230-238",
+        "tools/run_correspondence_context_identity.py:222-225"
+      ]
+    },
+    "result_existence": {
+      "status": "WARN",
+      "details": "All requested text inputs exist. Numeric tracker/handoff claims match the actual metric receipts and independently recomputed history/scalar arithmetic. All three terminal child campaigns record COMPLETE with m0/train/evaluate exit0. Checkpoint/probe/array existence and content are represented by remote paths and SHA receipts; a separate collector command/exit receipt is not supplied.",
+      "evidence": [
+        "refine-logs/cross_depth_role_state_v1/EXPERIMENT_TRACKER.md:3-14",
+        "refine-logs/cross_depth_role_state_v1/first_formal_audit_input_659/HANDOFF_REVIEW_INPUT.md:13002-13018",
+        "logs/cross_depth_first_archive_662_20260929.json:113-119",
+        "logs/cross_depth_archive_663_20260929.json:5-56",
+        "logs/cross_depth_progress_663_20260929.json:4152-4196",
+        "logs/cross_depth_campaign_depth_mean_RGBNT201_659_20260929.json:2-153",
+        "logs/cross_depth_campaign_mixed_once_RGBNT201_659_20260929.json:2-153",
+        "logs/cross_depth_campaign_mixed_once_MSVR310_659_20260929.json:2-153"
+      ]
+    },
+    "dead_code": {
+      "status": "PASS",
+      "details": "The active wrapper patches context build/train/evaluate/checkpoint globals and reaches both scorer functions and scalar audit. Three-path diagnostic metrics are present. OOF evaluate_gallery functions have their own run call sites but are not this campaign's full50 trainer. M3 teacher/prediction and auxiliary identity branches are intentionally disabled by the registered condition.",
+      "evidence": [
+        "tools/run_cross_depth_role_state.py:67-77",
+        "tools/run_correspondence_context_identity.py:244-254",
+        "tools/run_correspondence_context_identity.py:137-142",
+        "tools/run_correspondence_context_identity.py:214-240",
+        "tools/collect_cross_depth_role_state.py:93-114",
+        "tools/train_rgbnt100_signal_oof.py:389-391",
+        "tools/train_msvr310_signal_oof.py:344-346"
+      ]
+    },
+    "scope": {
+      "status": "WARN",
+      "details": "Only three formal endpoints on two datasets at seed42 are supplied, with no completed recurrent endpoint or formal RGBNT100 endpoint. The claims appropriately say 3/9 and hypothesis unproven. Official metrics selected each epoch are consumed development evidence, not untouched generalization or seed variance. Recurrent versus mean also changes final-depth versus averaged-depth output aggregation.",
+      "evidence": [
+        "refine-logs/cross_depth_role_state_v1/EXPERIMENT_PLAN.md:23-35",
+        "refine-logs/cross_depth_role_state_v1/EXPERIMENT_TRACKER.md:7-11",
+        "logs/cross_depth_accepted_663_20260929.json:341-377",
+        "modeling/trifusion/cross_depth_role_state.py:60-71",
+        "refine-logs/cross_depth_role_state_v1/first_formal_audit_input_659/HANDOFF_REVIEW_INPUT.md:7"
+      ]
+    },
+    "eval_type": {
+      "status": "PASS",
+      "classification": "real_gt",
+      "details": "Formal fused/global/local retrieval and paired diagnosis use registered dataset labels in code. The classification describes the inspected evaluation route, not independent attestation of unavailable dataset bytes. M0 is real-data supervised engineering validation, not a retrieval endpoint. No active synthetic reference or M3 teacher metric is reported.",
+      "evidence": [
+        "tools/run_correspondence_context_identity.py:105-116",
+        "tools/run_correspondence_context_identity.py:207-224",
+        "tools/analyze_correspondence_distances.py:28-75",
+        "modeling/trifusion/correspondence_context_identity.py:69-90"
+      ]
+    }
+  },
+  "additional_checks": {
+    "phase_exits": {
+      "status": "PASS",
+      "details": "All three final child campaign files explicitly record ordered m0/train/evaluate phases COMPLETE with exit0; train/evaluate output directories and mode/dataset/seed/epoch commands agree. Their verification objects exactly equal corresponding accepted-row fields. mean201 evaluate exit0 is at 21:54:13.594352 and child completion at 21:54:16.060450, after the older 21:54:00 RUNNING snapshot and before the 21:54:54 collector. Standalone collector shell exit is not separately captured.",
+      "evidence": [
+        "logs/cross_depth_campaign_depth_mean_RGBNT201_659_20260929.json:2",
+        "logs/cross_depth_campaign_depth_mean_RGBNT201_659_20260929.json:53-54",
+        "logs/cross_depth_campaign_depth_mean_RGBNT201_659_20260929.json:100-101",
+        "logs/cross_depth_campaign_depth_mean_RGBNT201_659_20260929.json:147-153",
+        "logs/cross_depth_campaign_mixed_once_RGBNT201_659_20260929.json:2",
+        "logs/cross_depth_campaign_mixed_once_RGBNT201_659_20260929.json:53-54",
+        "logs/cross_depth_campaign_mixed_once_RGBNT201_659_20260929.json:100-101",
+        "logs/cross_depth_campaign_mixed_once_RGBNT201_659_20260929.json:147-153",
+        "logs/cross_depth_campaign_mixed_once_MSVR310_659_20260929.json:2",
+        "logs/cross_depth_campaign_mixed_once_MSVR310_659_20260929.json:53-54",
+        "logs/cross_depth_campaign_mixed_once_MSVR310_659_20260929.json:100-101",
+        "logs/cross_depth_campaign_mixed_once_MSVR310_659_20260929.json:147-153"
+      ]
+    },
+    "full50_single_best": {
+      "status": "PASS",
+      "details": "All 150 epoch rows are consecutive 1..50. Independently selected maxima with latest tie policy are mixed201=2, mean201=2, mixedMSVR=15. All four formal metrics equal that one row and the receipts. mean201 Rank-5 maximum is epoch1 and MSVR rank maxima are elsewhere; neither is spliced into formal rows.",
+      "evidence": [
+        "tools/run_correspondence_context_identity.py:140-142",
+        "tools/collect_cross_depth_role_state.py:65-85",
+        "logs/cross_depth_full_mixed_once_RGBNT201_663_20260929/training.json:42-646",
+        "logs/cross_depth_full_depth_mean_RGBNT201_663_20260929/training.json:42-646",
+        "logs/cross_depth_full_mixed_once_MSVR310_662_20260929/training.json:42-646"
+      ]
+    },
+    "mode_checkpoint_source_binding": {
+      "status": "WARN",
+      "details": "Distinct schema and explicit depth_mode are saved/validated in addition to strict state keys, dataset/seed/protocol/baseline/condition. All supplied active source hashes and all text bindings agree. No raw checkpoint/probe was loaded here. Local manifest comparison is only 71 byte matches plus 27 CRLF-only differences and 107 absent remote files; exact full runtime/source/environment identity is not independently attested.",
+      "evidence": [
+        "tools/run_cross_depth_role_state.py:24-55",
+        "tools/collect_cross_depth_role_state.py:34-79",
+        "logs/cross_depth_manifest_658_20260929.json:64-269",
+        "logs/cross_depth_launch_sync_658_20260929.json:7-21"
+      ]
+    },
+    "complete_gallery_scoring": {
+      "status": "WARN",
+      "details": "Static extraction uses full protocol query/gallery, asserts shape, checks all metadata, and recomputes fused/global/local with the appropriate filter. The 36 stored parity differences are internally consistent and max 2.395593384107997e-6 pp. These are producer receipts, not array replay by this reviewer.",
+      "evidence": [
+        "tools/run_official_three_dataset_roles.py:58-68",
+        "tools/run_correspondence_context_identity.py:194-230",
+        "tools/collect_cross_depth_role_state.py:86-102",
+        "logs/cross_depth_accepted_663_20260929.json:48-65",
+        "logs/cross_depth_accepted_663_20260929.json:164-181",
+        "logs/cross_depth_accepted_663_20260929.json:272-289"
+      ]
+    },
+    "scalar_reconstruction": {
+      "status": "PASS",
+      "details": "Re-executed the supplied pure-stdlib scalar auditor on every formal line and independently checked the six M0 log pairs. All counts/order/means/finite scalars match. Maximum formal reconstruction error 2.384185791015625e-7. All 6298 formal and 48 M0 auxiliary values are exactly zero. Scalar evidence cannot establish tensor gradients or update contribution.",
+      "evidence": [
+        "tools/audit_correspondence_context_identity_losses.py:11-45",
+        "tools/run_correspondence_context_identity.py:110-133",
+        "logs/cross_depth_full_mixed_once_RGBNT201_663_20260929/training_steps.jsonl:1-2649",
+        "logs/cross_depth_full_depth_mean_RGBNT201_663_20260929/training_steps.jsonl:1-2649",
+        "logs/cross_depth_full_mixed_once_MSVR310_662_20260929/training_steps.jsonl:1-1000"
+      ]
+    },
+    "parameter_initialization_cost": {
+      "status": "PASS",
+      "details": "Text evidence matches: mixed/mean share each dataset-specific initialization hash and trainable count (201 2617345, 100 2431489, MSVR 2592769). Six M0 receipts report 118/118 parameter tensors with nonzero gradients across 8 updates. 201 mean/mixed elapsed ratio is 1.1742982063163694. This is measured training+epoch-evaluation wall time, excluding M0/model build/final evaluate, not controlled inference latency.",
+      "evidence": [
+        "modeling/trifusion/cross_depth_role_state.py:8-18",
+        "modeling/trifusion/cross_depth_role_state.py:74-85",
+        "tools/run_correspondence_roles.py:39-56",
+        "tools/run_correspondence_context_identity.py:87",
+        "tools/run_correspondence_context_identity.py:135-170",
+        "logs/cross_depth_accepted_663_20260929.json:42-44",
+        "logs/cross_depth_accepted_663_20260929.json:266-268"
+      ]
+    },
+    "pair_diagnosis": {
+      "status": "WARN",
+      "details": "Pair checkpoint/distance/receipt strings match accepted rows, and pair file hash matches archive. Metric deltas, 836-query weighting, 30-identity macro mean, 11/13/6 identity signs and net -2 first-place outcomes reconcile arithmetically. Individual query flips/AP and bootstrap interval were not reproduced from arrays. Producer script SHA and input matrix SHA are not saved by the pair helper and the helper is absent from the campaign manifest.",
+      "evidence": [
+        "tools/analyze_correspondence_distances.py:28-75",
+        "tools/analyze_correspondence_distances.py:78-88",
+        "logs/cross_depth_pair_rgbnt201_mean_663_20260929.json:7-51",
+        "logs/cross_depth_pair_rgbnt201_mean_663_20260929.json:52-204",
+        "logs/cross_depth_archive_663_20260929.json:5-6",
+        "logs/cross_depth_manifest_658_20260929.json:64-269"
+      ]
+    },
+    "recurrent_isolation": {
+      "status": "WARN",
+      "details": "depth_mean returns the average of three independent role outputs, whereas depth_recurrent returns only the last recurrent output. Therefore a future recurrent-minus-mean difference compares two registered designs and does not uniquely isolate persistence from aggregation. Do not change the running experiment to resolve this within this audit.",
+      "evidence": [
+        "modeling/trifusion/cross_depth_role_state.py:60-71",
+        "refine-logs/cross_depth_role_state_v1/EXPERIMENT_PLAN.md:13-17",
+        "refine-logs/cross_depth_role_state_v1/EXPERIMENT_PLAN.md:35"
+      ]
+    }
+  },
+  "blockers": [
+    {
+      "id": "B1",
+      "type": "independent_runtime_acceptance",
+      "required": "Provide/access the exact frozen protocol JSONs and upstream scorer source, baseline and selected checkpoints, M0 probes and full three-path distance arrays matching archived hashes before claiming independent end-to-end replay.",
+      "status": "unavailable_in_this_task"
+    },
+    {
+      "id": "B2",
+      "type": "collector_exit_provenance",
+      "required": "If retaining the exact standalone collector-exit-0 claim, archive its command/exit receipt or attribute it explicitly to the producer. All three child phase-exit gaps are closed by the supplied final campaign files.",
+      "status": "collector_exit_not_separately_supplied"
+    },
+    {
+      "id": "B3",
+      "type": "performance_claim",
+      "required": "Do not claim recurrent effectiveness, three-dataset success, SOTA, training-seed robustness or unbiased generalization from 3/9 single-seed endpoints; the preregistered recurrent comparisons are uncompleted in this snapshot.",
+      "status": "incomplete_evidence"
+    },
+    {
+      "id": "B4",
+      "type": "pair_provenance",
+      "required": "For future diagnostic acceptance, bind the producer script hash and exact input matrix hash in a new companion receipt and replay query-level results from the same distance hashes. Preserve the existing receipt.",
+      "status": "missing_producer_binding"
+    },
+    {
+      "id": "B5",
+      "type": "mechanism_claim",
+      "required": "Interpret recurrent-versus-mean as a compound design contrast including different depth aggregation, unless a future controlled comparison isolates that factor. This is a claim limit, not an instruction to add or alter running jobs.",
+      "status": "design_confound"
+    }
+  ],
+  "claims": [
+    {
+      "id": "C1",
+      "source": "EXPERIMENT_TRACKER.md:3-11; HANDOFF_REVIEW_INPUT.md:5,13002-13010",
+      "claim": "Three of nine formal endpoints accepted; six real eight-batch M0 receipts archived.",
+      "impact": "supported_as_producer_text_evidence",
+      "qualification": "3/9 means collector-labelled endpoints; this fresh review does not attest remote replay. All six M0 raw text pairs now supplied and checked."
+    },
+    {
+      "id": "C2",
+      "source": "EXPERIMENT_TRACKER.md:11; HANDOFF_REVIEW_INPUT.md:13006-13008",
+      "claim": "Reported best epochs and metric values.",
+      "impact": "supported",
+      "qualification": "Exact local receipt/history equality; same selected epoch supplies all four metrics."
+    },
+    {
+      "id": "C3",
+      "source": "HANDOFF_REVIEW_INPUT.md:13012",
+      "claim": "Mean201 yields -0.0561 mAP and -0.2392 R1 pp at 17.43% higher training+evaluation wall time.",
+      "impact": "supported",
+      "qualification": "Single seed, exploratory official-best control comparison; no general speed or causal claim."
+    },
+    {
+      "id": "C4",
+      "source": "HANDOFF_REVIEW_INPUT.md:13012-13014",
+      "claim": "Pair flips/identity diagnosis and fused/global/local output decomposition.",
+      "impact": "needs_qualifier",
+      "qualification": "Stored arithmetic and hashes agree; raw query outcomes/array/bootstrap replay unavailable. Fused-minus-global is a same-weight output decomposition, not independent trained ablation."
+    },
+    {
+      "id": "C5",
+      "source": "HANDOFF_REVIEW_INPUT.md:13016",
+      "claim": "6298 scalars, maximum loss error <=2.39e-7; 36 stored parity differences <=2.40e-6 pp.",
+      "impact": "supported_with_split_provenance",
+      "qualification": "Scalars independently recomputed; parity numbers only aggregated from producer receipts."
+    },
+    {
+      "id": "C6",
+      "source": "EXPERIMENT_TRACKER.md:14; HANDOFF_REVIEW_INPUT.md:13002,13016",
+      "claim": "All 205 runtime sources/environment remain unchanged; collector exited 0.",
+      "impact": "needs_qualifier",
+      "qualification": "All nine terminal child phase exits are locally documented. Source checks in code and prior launch-sync assertions exist; all remote bytes/environment and standalone collector exit were not independently observed here. Local mirrors have 27 CRLF-only raw-hash differences."
+    },
+    {
+      "id": "C7",
+      "source": "EXPERIMENT_PLAN.md:9,35; HANDOFF_REVIEW_INPUT.md:13014",
+      "claim": "Persistent-state hypothesis is not yet established.",
+      "impact": "supported",
+      "qualification": "No completed recurrent formal/M0 evidence in accepted snapshot; additionally note final-output versus average-output design contrast."
+    },
+    {
+      "id": "C8",
+      "source": "EXPERIMENT_PLAN.md:5; HANDOFF_REVIEW_INPUT.md:13020",
+      "claim": "Historical context-panel effects, prior panels, observer timing and SOTA comparison.",
+      "impact": "not_adjudicated",
+      "qualification": "Their underlying artifacts are outside supplied audit scope; no new performance claim inferred from them."
+    }
+  ],
+  "audited_input_hashes": {
+    "tools/run_cross_depth_role_state.py": "sha256:937bf84151002e4b6e62a3a8875981e680ebd99a1f93c14ab937e07a06f13184",
+    "tools/collect_cross_depth_role_state.py": "sha256:99e404637d186f297a35f337a46ef2950e2215fb4db6b7a5d719ab15e0cf8aca",
+    "tools/queue_cross_depth_role_state.py": "sha256:4cce880fcc81240613ad1c1266f5a780e108a7d423426c02103a8884682432d2",
+    "tools/run_correspondence_context_identity.py": "sha256:9f4cc9f11998819d4a927a32f4e47baf0c4ff9d14c4bc93b0dc35b0153ebc142",
+    "tools/run_correspondence_roles.py": "sha256:e50865fb923297cd61cf38b33ec2bc95154f8c503b5dfe5de9823cad3f03d7ef",
+    "tools/audit_correspondence_context_identity_losses.py": "sha256:bcc15e568c6a14efdaca1df5268c5abdec716287d3b6efb2482804add724abf1",
+    "tools/analyze_correspondence_distances.py": "sha256:833ebeb47cb5840422710fc00df1a974338cb04078249720d867f18b945f997a",
+    "tools/train_rgbnt100_signal_oof.py": "sha256:4462b73139e034d450d955c5b4a994aaa967548e9cc503d97bb753a14ea03b22",
+    "tools/train_msvr310_signal_oof.py": "sha256:c25579d931df34481fef321558f0b9a1f9179d72a25d6047dbbfd3682d4ae60f",
+    "modeling/trifusion/cross_depth_role_state.py": "sha256:8e18c7c9d397fbe3eff6f7360a5ab890ebbeecf1404628da6979ade47544b7ba",
+    "modeling/trifusion/correspondence_context_identity.py": "sha256:eda3d1473496b33e4b69402dba7770e67d23b33b07afd41d23105b7f148d63af",
+    "modeling/trifusion/correspondence_evidence_readout.py": "sha256:e737a977d39ccbe09a5509118e5b5333d653f7f13381e65e84af1a13e5c28dc4",
+    "modeling/trifusion/correspondence_roles.py": "sha256:e2a51154b5b327341f35e453dd32a821b091a49a669b49a7c70e79e6e2f2591b",
+    "logs/cross_depth_manifest_658_20260929.json": "sha256:67e383e88f5151d12cbf3eae38111df42f7e1279ba7118b2a6f2cc4ca6044b14",
+    "logs/cross_depth_accepted_662_20260929.json": "sha256:7b59d6d7f48efd574fcf76524591f6611c7a4aacd4384f3b5393100a8e3bcf5b",
+    "logs/cross_depth_accepted_663_20260929.json": "sha256:c6fa3a9d0f4ed32a292b6ccb28251f365a751b7182685a793119987374010908",
+    "logs/cross_depth_progress_663_20260929.json": "sha256:1bc73da96265b17035281a0014066c2a0a9ed77233ac94b998ed3b562ef3feef",
+    "logs/cross_depth_first_archive_662_20260929.json": "sha256:77fba1d9d137bc1580ec63a4cdd46d974c0e6cf340cec461caae811a92514dee",
+    "logs/cross_depth_archive_663_20260929.json": "sha256:f1842992bc9ecfa89b6643f8048f67aebaf9a28fcb5b253b6b35601f8ec9582a",
+    "logs/cross_depth_pair_rgbnt201_mean_663_20260929.json": "sha256:1d111f0b9195ec4a8e2695dbd098b04e5efb62dc99fccdfa19fc85c28fed9e47",
+    "logs/cross_depth_full_mixed_once_MSVR310_662_20260929/training.json": "sha256:d221201b6d479e7ca2f0392c9c14b19b416d94fc9451097bacacb8253e38c745",
+    "logs/cross_depth_full_mixed_once_MSVR310_662_20260929/training_steps.jsonl": "sha256:21a85b3d45eaf18379de1bf4e1b7ddf6ba50d85aaa99caa06917dc89d789fd00",
+    "logs/cross_depth_full_mixed_once_MSVR310_662_20260929/official_metrics.json": "sha256:cc5a9d8b6bb39016116a361b7d1cc4a6b9f721545acda9159db882c946635389",
+    "logs/cross_depth_full_mixed_once_RGBNT201_663_20260929/training.json": "sha256:b5e01aaed9819cbfc1c98036dca54b2d40588ba1554928960c52a8dc934673af",
+    "logs/cross_depth_full_mixed_once_RGBNT201_663_20260929/training_steps.jsonl": "sha256:c99a424e84dd6e02c037534a0136dd8ccca026affbbf8b2718ce7d94475ed44b",
+    "logs/cross_depth_full_mixed_once_RGBNT201_663_20260929/official_metrics.json": "sha256:7f0f1d98315d265fa3345e75b123ea153b95256ddd6c094a826e297927e74407",
+    "logs/cross_depth_full_depth_mean_RGBNT201_663_20260929/training.json": "sha256:650d417ce1b8b941ae58fe32d9186cbb22f2236547daf3c8e71cd770ec5e869b",
+    "logs/cross_depth_full_depth_mean_RGBNT201_663_20260929/training_steps.jsonl": "sha256:485ea7a3ab8db7e1b159eafcd70d17eba815468447bcc33c4d0ef7fd62a8f199",
+    "logs/cross_depth_full_depth_mean_RGBNT201_663_20260929/official_metrics.json": "sha256:7ba280f26f01f9b320a60035f9093507ece042ef19aaf3d92cb5dfc312329086",
+    "logs/cross_depth_m0_depth_mean_RGBNT100_663_20260929/training.json": "sha256:d24c301fd871e5e8bfb3d45d063818bd3efbf5808285f553e0158151699057f0",
+    "logs/cross_depth_m0_depth_mean_RGBNT100_663_20260929/training_steps.jsonl": "sha256:c73142a46f473c6880c44f9d9f7a31927ef0cee02c0be5215e4b637938b5ecbf",
+    "logs/cross_depth_m0_depth_mean_MSVR310_663_20260929/training.json": "sha256:ad39e61c6d8f99bb18a25275d52720d437d660356c2cc501bad73b2a1eee77d0",
+    "logs/cross_depth_m0_depth_mean_MSVR310_663_20260929/training_steps.jsonl": "sha256:d6d9fdf46f0b683e98c98e4bf43115891ada4549b35263b4e4b220d5d37f98db",
+    "logs/cross_depth_m0_mixed_once_RGBNT201_658_20260929/training.json": "sha256:cb054d7303bec03c5c076c4dfa7e11cf4e7247be7bb195311b12d34ca67c6af9",
+    "logs/cross_depth_m0_mixed_once_RGBNT201_658_20260929/training_steps.jsonl": "sha256:9917289314f3156b7ab340a55bb6feb128792f0f0e009d69712e87edc868e03a",
+    "logs/cross_depth_m0_mixed_once_MSVR310_658_20260929/training.json": "sha256:7917ac225b5f052a8e711a097e914f08c59bec96a80a9e16046072031ac3e42d",
+    "logs/cross_depth_m0_mixed_once_MSVR310_658_20260929/training_steps.jsonl": "sha256:4b33dca6cd21c8a4ae2d1889c063f3be202db8dcf5599149eb529dffb6134e5d",
+    "logs/cross_depth_m0_depth_mean_RGBNT201_658_20260929/training.json": "sha256:881da2600de68ea5a7792ffa94e219eccd327a9fcba21495693dc7c44acbbab6",
+    "logs/cross_depth_m0_depth_mean_RGBNT201_658_20260929/training_steps.jsonl": "sha256:16d395e02556bd9cd93c9d0ceb635e51fb2ee08833b63132ee99d3de433e08d1",
+    "refine-logs/cross_depth_role_state_v1/EXPERIMENT_PLAN.md": "sha256:06aadabfa79bfdb2022e9bd88c14a788649ab2050217f8317110c4ef8747cc0b",
+    "refine-logs/cross_depth_role_state_v1/EXPERIMENT_TRACKER.md": "sha256:9c97a772a4fb153b66aba6132f3bc33bcfe0ced5ff504f233208f087527496b8",
+    "logs/cross_depth_m0_mixed_once_RGBNT100_658_20260929/training.json": "sha256:778cee7ccad9ddd72c2521c19d5b747a89dc1c702a9116cb489c488272fb8cd0",
+    "logs/cross_depth_m0_mixed_once_RGBNT100_658_20260929/training_steps.jsonl": "sha256:42fb3285b92298265c810c2b2a4a2e5f51df16ce3660ebc590dba6d61b55fc20",
+    "tools/queue_correspondence_roles.py": "sha256:746fbdb8bdad04290a9ef22c0550e873c9dce9de74c2c3c3767fea9278be69bf",
+    "tools/collect_correspondence_roles.py": "sha256:f81af437fe5ccfea4361c1ed182cb9b8841b362214d2a5220309a0fd2c78fff8",
+    "logs/cross_depth_launch_sync_658_20260929.json": "sha256:6a101190080502f484b60651320755698bdfe2fab6aa3b5a8a3f15c88dbf7d2d",
+    "logs/cross_depth_campaign_depth_mean_RGBNT201_659_20260929.json": "sha256:d886f325a130411f0bb5c0306b909456db8852d70f218ed496f7447b56642e2a",
+    "logs/cross_depth_campaign_mixed_once_RGBNT201_659_20260929.json": "sha256:fda442d6aa26eeb6476b0ce9af88b72dddfba41fdf11ddec112f2f84a6571b5f",
+    "logs/cross_depth_campaign_mixed_once_MSVR310_659_20260929.json": "sha256:9cb1fd5cd37f21bd0275559f7754fbb2866c9446429c68d2a421b8597730c94b",
+    "tools/official_three_dataset_data.py": "sha256:c3180a88d12440709319d2025928fc699ff3b7c020b11697d468453fbfc68062",
+    "tools/official_three_dataset_model.py": "sha256:e103ea0f4d6342b0dc129dc2dace0e8c0d0e6c956cfe94729ccb70d9588cf0f9",
+    "tools/run_official_three_dataset_roles.py": "sha256:f30bb00a0b71429e9d11dd196cd1d543202a133c663ad66e175d2f82e28d448d",
+    "refine-logs/cross_depth_role_state_v1/first_formal_audit_input_659/HANDOFF_REVIEW_INPUT.md": "sha256:97f4bd986aa151290b5deeeaf6ae39fe3d8690ae4005b1b82d1f44199706e50a"
+  },
+  "audited_input_count": 53,
+  "generated_at": "2026-09-29T14:21:02.354Z",
+  "runtime_source_hash_only_comparison": {
+    "manifest_count": 205,
+    "counts": {
+      "raw_byte_match": 71,
+      "crlf_only_difference": 27,
+      "absent_from_local_mirror": 107,
+      "mismatch_unexplained": 0
+    },
+    "note": "Raw hashes are preserved. LF normalization only explains differences and is not substituted for raw-byte acceptance. No remote runtime or package environment was inspected.",
+    "entries": [
+      {
+        "path": "modeling/trifusion/correspondence_roles.py",
+        "runtime_manifest_sha256": "e2a51154b5b327341f35e453dd32a821b091a49a669b49a7c70e79e6e2f2591b",
+        "local_raw_sha256": "e2a51154b5b327341f35e453dd32a821b091a49a669b49a7c70e79e6e2f2591b",
+        "status": "raw_byte_match"
+      },
+      {
+        "path": "modeling/trifusion/correspondence_evidence_readout.py",
+        "runtime_manifest_sha256": "e737a977d39ccbe09a5509118e5b5333d653f7f13381e65e84af1a13e5c28dc4",
+        "local_raw_sha256": "e737a977d39ccbe09a5509118e5b5333d653f7f13381e65e84af1a13e5c28dc4",
+        "status": "raw_byte_match"
+      },
+      {
+        "path": "tools/run_correspondence_roles.py",
+        "runtime_manifest_sha256": "e50865fb923297cd61cf38b33ec2bc95154f8c503b5dfe5de9823cad3f03d7ef",
+        "local_raw_sha256": "e50865fb923297cd61cf38b33ec2bc95154f8c503b5dfe5de9823cad3f03d7ef",
+        "status": "raw_byte_match"
+      },
+      {
+        "path": "tools/queue_correspondence_refinement.py",
+        "runtime_manifest_sha256": "5256afe78d02d9bfea3103daa00d488b94c05e839c955f00355098f69ecbd84a",
+        "local_raw_sha256": "5256afe78d02d9bfea3103daa00d488b94c05e839c955f00355098f69ecbd84a",
+        "status": "raw_byte_match"
+      },
+      {
+        "path": "modeling/trifusion/correspondence_context_identity.py",
+        "runtime_manifest_sha256": "eda3d1473496b33e4b69402dba7770e67d23b33b07afd41d23105b7f148d63af",
+        "local_raw_sha256": "eda3d1473496b33e4b69402dba7770e67d23b33b07afd41d23105b7f148d63af",
+        "status": "raw_byte_match"
+      },
+      {
+        "path": "tools/run_correspondence_context_identity.py",
+        "runtime_manifest_sha256": "9f4cc9f11998819d4a927a32f4e47baf0c4ff9d14c4bc93b0dc35b0153ebc142",
+        "local_raw_sha256": "9f4cc9f11998819d4a927a32f4e47baf0c4ff9d14c4bc93b0dc35b0153ebc142",
+        "status": "raw_byte_match"
+      },
+      {
+        "path": "tools/queue_correspondence_context_identity.py",
+        "runtime_manifest_sha256": "5ac2395413c7ce744ac18be40be2e29039f2039b74b13896e48ca8bed8d4bb0f",
+        "local_raw_sha256": "5ac2395413c7ce744ac18be40be2e29039f2039b74b13896e48ca8bed8d4bb0f",
+        "status": "raw_byte_match"
+      },
+      {
+        "path": "tools/collect_correspondence_context_identity.py",
+        "runtime_manifest_sha256": "bdc3a70eb31c94fd43acae2e490ae0c596ee7e1408d22d103ec68e9c293cd472",
+        "local_raw_sha256": "bdc3a70eb31c94fd43acae2e490ae0c596ee7e1408d22d103ec68e9c293cd472",
+        "status": "raw_byte_match"
+      },
+      {
+        "path": "tools/audit_correspondence_context_identity_losses.py",
+        "runtime_manifest_sha256": "bcc15e568c6a14efdaca1df5268c5abdec716287d3b6efb2482804add724abf1",
+        "local_raw_sha256": "bcc15e568c6a14efdaca1df5268c5abdec716287d3b6efb2482804add724abf1",
+        "status": "raw_byte_match"
+      },
+      {
+        "path": "modeling/trifusion/cross_depth_role_state.py",
+        "runtime_manifest_sha256": "8e18c7c9d397fbe3eff6f7360a5ab890ebbeecf1404628da6979ade47544b7ba",
+        "local_raw_sha256": "8e18c7c9d397fbe3eff6f7360a5ab890ebbeecf1404628da6979ade47544b7ba",
+        "status": "raw_byte_match"
+      },
+      {
+        "path": "tools/run_cross_depth_role_state.py",
+        "runtime_manifest_sha256": "937bf84151002e4b6e62a3a8875981e680ebd99a1f93c14ab937e07a06f13184",
+        "local_raw_sha256": "937bf84151002e4b6e62a3a8875981e680ebd99a1f93c14ab937e07a06f13184",
+        "status": "raw_byte_match"
+      },
+      {
+        "path": "tools/collect_cross_depth_role_state.py",
+        "runtime_manifest_sha256": "99e404637d186f297a35f337a46ef2950e2215fb4db6b7a5d719ab15e0cf8aca",
+        "local_raw_sha256": "99e404637d186f297a35f337a46ef2950e2215fb4db6b7a5d719ab15e0cf8aca",
+        "status": "raw_byte_match"
+      },
+      {
+        "path": "tools/queue_cross_depth_role_state.py",
+        "runtime_manifest_sha256": "4cce880fcc81240613ad1c1266f5a780e108a7d423426c02103a8884682432d2",
+        "local_raw_sha256": "4cce880fcc81240613ad1c1266f5a780e108a7d423426c02103a8884682432d2",
+        "status": "raw_byte_match"
+      },
+      {
+        "path": "tools/queue_correspondence_roles.py",
+        "runtime_manifest_sha256": "746fbdb8bdad04290a9ef22c0550e873c9dce9de74c2c3c3767fea9278be69bf",
+        "local_raw_sha256": "746fbdb8bdad04290a9ef22c0550e873c9dce9de74c2c3c3767fea9278be69bf",
+        "status": "raw_byte_match"
+      },
+      {
+        "path": "tools/collect_correspondence_roles.py",
+        "runtime_manifest_sha256": "f81af437fe5ccfea4361c1ed182cb9b8841b362214d2a5220309a0fd2c78fff8",
+        "local_raw_sha256": "f81af437fe5ccfea4361c1ed182cb9b8841b362214d2a5220309a0fd2c78fff8",
+        "status": "raw_byte_match"
+      },
+      {
+        "path": "tools/train_msvr310_signal_oof.py",
+        "runtime_manifest_sha256": "c25579d931df34481fef321558f0b9a1f9179d72a25d6047dbbfd3682d4ae60f",
+        "local_raw_sha256": "c25579d931df34481fef321558f0b9a1f9179d72a25d6047dbbfd3682d4ae60f",
+        "status": "raw_byte_match"
+      },
+      {
+        "path": "tools/train_rgbnt100_signal_oof.py",
+        "runtime_manifest_sha256": "4462b73139e034d450d955c5b4a994aaa967548e9cc503d97bb753a14ea03b22",
+        "local_raw_sha256": "4462b73139e034d450d955c5b4a994aaa967548e9cc503d97bb753a14ea03b22",
+        "status": "raw_byte_match"
+      },
+      {
+        "path": "tools/official_three_dataset_data.py",
+        "runtime_manifest_sha256": "c3180a88d12440709319d2025928fc699ff3b7c020b11697d468453fbfc68062",
+        "local_raw_sha256": "c3180a88d12440709319d2025928fc699ff3b7c020b11697d468453fbfc68062",
+        "status": "raw_byte_match"
+      },
+      {
+        "path": "tools/official_three_dataset_model.py",
+        "runtime_manifest_sha256": "e103ea0f4d6342b0dc129dc2dace0e8c0d0e6c956cfe94729ccb70d9588cf0f9",
+        "local_raw_sha256": "e103ea0f4d6342b0dc129dc2dace0e8c0d0e6c956cfe94729ccb70d9588cf0f9",
+        "status": "raw_byte_match"
+      },
+      {
+        "path": "tools/run_official_three_dataset_roles.py",
+        "runtime_manifest_sha256": "f30bb00a0b71429e9d11dd196cd1d543202a133c663ad66e175d2f82e28d448d",
+        "local_raw_sha256": "f30bb00a0b71429e9d11dd196cd1d543202a133c663ad66e175d2f82e28d448d",
+        "status": "raw_byte_match"
+      },
+      {
+        "path": "tools/run_signal_preserving_v5.py",
+        "runtime_manifest_sha256": "e162184f68778b4991db0f97f26c5fda273b2ad2f7c8db2bbb2d53775eb717e5",
+        "local_raw_sha256": "e162184f68778b4991db0f97f26c5fda273b2ad2f7c8db2bbb2d53775eb717e5",
+        "status": "raw_byte_match"
+      },
+      {
+        "path": "tools/build_v12_complete_path_oof_targets.py",
+        "runtime_manifest_sha256": "999356e18d489dce99042f1e7873eac15b811b64255f1aee9550c52ae1c7ee06",
+        "local_raw_sha256": "999356e18d489dce99042f1e7873eac15b811b64255f1aee9550c52ae1c7ee06",
+        "status": "raw_byte_match"
+      },
+      {
+        "path": "tools/run_signal_baseline_dev.py",
+        "runtime_manifest_sha256": "083967f2a38267415b2992da98c2ad9429ebb793f387b45daac1dbb4eb16f365",
+        "local_raw_sha256": "083967f2a38267415b2992da98c2ad9429ebb793f387b45daac1dbb4eb16f365",
+        "status": "raw_byte_match"
+      },
+      {
+        "path": "tools/train_signal_preserving_v18.py",
+        "runtime_manifest_sha256": "f6bdda4631d710d0b6db5fe2a8df124d8dcbd294cb54adcf3ec261d523e96cf8",
+        "local_raw_sha256": "f6bdda4631d710d0b6db5fe2a8df124d8dcbd294cb54adcf3ec261d523e96cf8",
+        "status": "raw_byte_match"
+      },
+      {
+        "path": "tools/train_signal_preserving_v17.py",
+        "runtime_manifest_sha256": "333886d16f73987accddb70b0780661bb9400b8afd04af01b57e188d34e5228d",
+        "local_raw_sha256": "333886d16f73987accddb70b0780661bb9400b8afd04af01b57e188d34e5228d",
+        "status": "raw_byte_match"
+      },
+      {
+        "path": "modeling/trifusion/aligned_data.py",
+        "runtime_manifest_sha256": "3ea362d17660483b554cb599442b6377ace020fa114969b9bdd58906fbceedd5",
+        "local_raw_sha256": "3ea362d17660483b554cb599442b6377ace020fa114969b9bdd58906fbceedd5",
+        "status": "raw_byte_match"
+      },
+      {
+        "path": "modeling/trifusion/criterion.py",
+        "runtime_manifest_sha256": "0b2a6370f434828d885945d1a46dd56f6668133ceed45ef359fe71eeca63740a",
+        "local_raw_sha256": "9a028e5711981123310f5e0d441a35b7dbecaf33f9edcec4fd3773d070cf877f",
+        "lf_normalized_sha256": "0b2a6370f434828d885945d1a46dd56f6668133ceed45ef359fe71eeca63740a",
+        "crlf_count": 130,
+        "status": "crlf_only_difference"
+      },
+      {
+        "path": "modeling/trifusion/experts/mamba.py",
+        "runtime_manifest_sha256": "c516c7ad937e5eee6a4ed1e3ec33c2afe3522b751d296bd2e4910e4f27a20ee5",
+        "local_raw_sha256": "8b9cb420c42e4d70f8de7e4608637c81c505b97ca54228175462a7e92fdfcc83",
+        "lf_normalized_sha256": "c516c7ad937e5eee6a4ed1e3ec33c2afe3522b751d296bd2e4910e4f27a20ee5",
+        "crlf_count": 209,
+        "status": "crlf_only_difference"
+      },
+      {
+        "path": "configs/RGBNT201/TriFusion-signal-preserving-v27-source-style-rtx3090.json",
+        "runtime_manifest_sha256": "6f3161985f3a3831ffa890a163a510c6fa463ce4fd933793f0ce79db2c07677a",
+        "local_raw_sha256": "6f3161985f3a3831ffa890a163a510c6fa463ce4fd933793f0ce79db2c07677a",
+        "status": "raw_byte_match"
+      },
+      {
+        "path": "configs/RGBNT100/TriFusion-main-v1.json",
+        "runtime_manifest_sha256": "68b091dd48f086a29319dc853f9eb48bd38aabc72391e0187421efc5e1496aaf",
+        "local_raw_sha256": "68b091dd48f086a29319dc853f9eb48bd38aabc72391e0187421efc5e1496aaf",
+        "status": "raw_byte_match"
+      },
+      {
+        "path": "configs/MSVR310/TriFusion-source-style-paired-v1-r2.json",
+        "runtime_manifest_sha256": "848254aab6dc02230a7fd33be0d60fc2560c99fc77cbd320cf0ef2efd655539d",
+        "local_raw_sha256": "848254aab6dc02230a7fd33be0d60fc2560c99fc77cbd320cf0ef2efd655539d",
+        "status": "raw_byte_match"
+      },
+      {
+        "path": "modeling/trifusion/__init__.py",
+        "runtime_manifest_sha256": "ad617b86663e319f7702e9231fdec9c5f079f4d39ec5dabb90ced469414d910c",
+        "local_raw_sha256": "5d50f2288fdb623810dc9b80f83c17525f888ff3565745430538b262ffd02da8",
+        "lf_normalized_sha256": "ad617b86663e319f7702e9231fdec9c5f079f4d39ec5dabb90ced469414d910c",
+        "crlf_count": 31,
+        "status": "crlf_only_difference"
+      },
+      {
+        "path": "modeling/trifusion/builder.py",
+        "runtime_manifest_sha256": "8b3620e6be3727709253589a9e59b3efd20a611ba0eec4e8f6b4d0d17eeea4eb",
+        "local_raw_sha256": "70a94158fca9424b6ca35e4d64adbf2d4329d03d898e63a723a6ebf1ab6068e6",
+        "lf_normalized_sha256": "8b3620e6be3727709253589a9e59b3efd20a611ba0eec4e8f6b4d0d17eeea4eb",
+        "crlf_count": 494,
+        "status": "crlf_only_difference"
+      },
+      {
+        "path": "modeling/trifusion/camera_coverage_v25.py",
+        "runtime_manifest_sha256": "341bacc189c3782d72c3f7c5b7c5bdde8e966f0eddb32966d90b3fd154ff75b5",
+        "local_raw_sha256": "341bacc189c3782d72c3f7c5b7c5bdde8e966f0eddb32966d90b3fd154ff75b5",
+        "status": "raw_byte_match"
+      },
+      {
+        "path": "modeling/trifusion/camera_negative_v22.py",
+        "runtime_manifest_sha256": "38b6ccc4e495d55af7e68617cdb6b54fdede9e3f177fa3c54a7f8d0db4465f97",
+        "local_raw_sha256": "38b6ccc4e495d55af7e68617cdb6b54fdede9e3f177fa3c54a7f8d0db4465f97",
+        "status": "raw_byte_match"
+      },
+      {
+        "path": "modeling/trifusion/cascade_v2.py",
+        "runtime_manifest_sha256": "a1753a8dff2d6ab9f8d78810e941fef3949d5d07cce4877fb956b5889bc46c5a",
+        "local_raw_sha256": "a1753a8dff2d6ab9f8d78810e941fef3949d5d07cce4877fb956b5889bc46c5a",
+        "status": "raw_byte_match"
+      },
+      {
+        "path": "modeling/trifusion/cascade_v2_builder.py",
+        "runtime_manifest_sha256": "1821068cfafe1bfc6d54e65323cd2469f9fc922829ec7ebf6c47af83125c1b0d",
+        "local_raw_sha256": "1821068cfafe1bfc6d54e65323cd2469f9fc922829ec7ebf6c47af83125c1b0d",
+        "status": "raw_byte_match"
+      },
+      {
+        "path": "modeling/trifusion/circ_scoring.py",
+        "runtime_manifest_sha256": "db9ae624446674812618ff8c6f7e8d773a576ea31ab1ecb0d41bc3c33ca2da3e",
+        "local_raw_sha256": "bf73f0aac908addf4d2428c1a7aa443c6f9a279780808acbfc167145303d252c",
+        "lf_normalized_sha256": "db9ae624446674812618ff8c6f7e8d773a576ea31ab1ecb0d41bc3c33ca2da3e",
+        "crlf_count": 937,
+        "status": "crlf_only_difference"
+      },
+      {
+        "path": "modeling/trifusion/correspondence_global_only.py",
+        "runtime_manifest_sha256": "cb0cc4c1d0f6a2c0cad3d310ce3df74845fd17bdbfa3b66dfa64632f5cbd08c3",
+        "local_raw_sha256": "cb0cc4c1d0f6a2c0cad3d310ce3df74845fd17bdbfa3b66dfa64632f5cbd08c3",
+        "status": "raw_byte_match"
+      },
+      {
+        "path": "modeling/trifusion/correspondence_role_prediction.py",
+        "runtime_manifest_sha256": "7c80d7aa86ac5bd0d07ab7f6df7b2e93f708a2407bfee03fb078ff2bb182787d",
+        "local_raw_sha256": "7c80d7aa86ac5bd0d07ab7f6df7b2e93f708a2407bfee03fb078ff2bb182787d",
+        "status": "raw_byte_match"
+      },
+      {
+        "path": "modeling/trifusion/cross_modal_identity_v20.py",
+        "runtime_manifest_sha256": "c02e14c4731aba33ebb41d5efdae1b2a077c4b80622691e68014fe5ac280337e",
+        "local_raw_sha256": "c02e14c4731aba33ebb41d5efdae1b2a077c4b80622691e68014fe5ac280337e",
+        "status": "raw_byte_match"
+      },
+      {
+        "path": "modeling/trifusion/data.py",
+        "runtime_manifest_sha256": "d0795f8c74e1a35d44d50b408f41c585e90fb57f9267915923f9de5a7aa850be",
+        "local_raw_sha256": "e66d526aa94f85c1c5dbd694019171531f3331305e757ceca0933a7c22a36c75",
+        "lf_normalized_sha256": "d0795f8c74e1a35d44d50b408f41c585e90fb57f9267915923f9de5a7aa850be",
+        "crlf_count": 555,
+        "status": "crlf_only_difference"
+      },
+      {
+        "path": "modeling/trifusion/dual_view_data_v24.py",
+        "runtime_manifest_sha256": "68de48892c217bdeb143d041b56520822cc9785dea05cd37f7b30328a6f3b560",
+        "local_raw_sha256": "68de48892c217bdeb143d041b56520822cc9785dea05cd37f7b30328a6f3b560",
+        "status": "raw_byte_match"
+      },
+      {
+        "path": "modeling/trifusion/encoder.py",
+        "runtime_manifest_sha256": "80fd6adc6d80b232296412ff8647a3d7c6a66d64bda699f545e477b94e72a46b",
+        "local_raw_sha256": "a2e83b4c042979c9a88b0d8c993426840b56b58f18b9336c0923022bb9df68f8",
+        "lf_normalized_sha256": "80fd6adc6d80b232296412ff8647a3d7c6a66d64bda699f545e477b94e72a46b",
+        "crlf_count": 220,
+        "status": "crlf_only_difference"
+      },
+      {
+        "path": "modeling/trifusion/experts/__init__.py",
+        "runtime_manifest_sha256": "49709dfc6fd4ca781fa6d24f81476596f716163222ab01fe5d9eae105d8fc286",
+        "local_raw_sha256": "19a4e48d170b2ebb97ff239c10106333a541b8c80b7ea5b71addc9460d20a164",
+        "lf_normalized_sha256": "49709dfc6fd4ca781fa6d24f81476596f716163222ab01fe5d9eae105d8fc286",
+        "crlf_count": 1,
+        "status": "crlf_only_difference"
+      },
+      {
+        "path": "modeling/trifusion/experts/cnn.py",
+        "runtime_manifest_sha256": "f823cfd59589e7fa8dbe066b26eec662d93a9d01b2376f05e7a4b6f43409996a",
+        "local_raw_sha256": "e207c9b81171b83e5a6d09aa92123d1fd50b2e415cadd1311769bc77ca279df1",
+        "lf_normalized_sha256": "f823cfd59589e7fa8dbe066b26eec662d93a9d01b2376f05e7a4b6f43409996a",
+        "crlf_count": 160,
+        "status": "crlf_only_difference"
+      },
+      {
+        "path": "modeling/trifusion/experts/semantic_residual.py",
+        "runtime_manifest_sha256": "c8cef9717fd7bd1e5e50b428ac92762455defac2e25857c9e0dfaf82729c2a93",
+        "local_raw_sha256": "c1831a3de031be033624420791cecf2e7a3945e009655089cb48ee4b9912edd6",
+        "lf_normalized_sha256": "c8cef9717fd7bd1e5e50b428ac92762455defac2e25857c9e0dfaf82729c2a93",
+        "crlf_count": 454,
+        "status": "crlf_only_difference"
+      },
+      {
+        "path": "modeling/trifusion/experts/tiny.py",
+        "runtime_manifest_sha256": "d5462c7259e5a17f7e50b87d29f44e2ecb49c4a50ccf5b59f34e8870c3e1cf90",
+        "local_raw_sha256": "56b81761bb935ca5c5f24f71e57791bcf5312c7f6bcade9c355fca4d90b6699f",
+        "lf_normalized_sha256": "d5462c7259e5a17f7e50b87d29f44e2ecb49c4a50ccf5b59f34e8870c3e1cf90",
+        "crlf_count": 53,
+        "status": "crlf_only_difference"
+      },
+      {
+        "path": "modeling/trifusion/experts/transformer.py",
+        "runtime_manifest_sha256": "8580c6e761a2fbfd54a70d0bd231fef0695cccecbec328f643a6c5112deb674e",
+        "local_raw_sha256": "0497bf0c6f0eb8da42e0319fb2894f70db6aae49d060ddab6b21ae04df3897c2",
+        "lf_normalized_sha256": "8580c6e761a2fbfd54a70d0bd231fef0695cccecbec328f643a6c5112deb674e",
+        "crlf_count": 152,
+        "status": "crlf_only_difference"
+      },
+      {
+        "path": "modeling/trifusion/fusion.py",
+        "runtime_manifest_sha256": "58d3672fb571e9acce8e7a8e82c8cd355fdb0f831f5439aa2d5b6e918b491a8d",
+        "local_raw_sha256": "4910991148534cd2f3e138d022ec42c7025a233eb498cd3d6d9c4e46d8c5af8c",
+        "lf_normalized_sha256": "58d3672fb571e9acce8e7a8e82c8cd355fdb0f831f5439aa2d5b6e918b491a8d",
+        "crlf_count": 158,
+        "status": "crlf_only_difference"
+      },
+      {
+        "path": "modeling/trifusion/intervention_targets.py",
+        "runtime_manifest_sha256": "dcfab01a167411e98b148caeb55a9e29cd1eae453bae5a2cfe2ae9166c866f38",
+        "local_raw_sha256": "398704988eb15dcd5acab8b7e1094e287e5e3616651c7aff66c07e8a582dea7b",
+        "lf_normalized_sha256": "dcfab01a167411e98b148caeb55a9e29cd1eae453bae5a2cfe2ae9166c866f38",
+        "crlf_count": 822,
+        "status": "crlf_only_difference"
+      },
+      {
+        "path": "modeling/trifusion/interventions.py",
+        "runtime_manifest_sha256": "b32386352edc6f37a0ef62cf4140eb22d5e400b9eefc580e649447b10cc549e1",
+        "local_raw_sha256": "08a37c74be6c189ba45a9d48a37d37f5f76440a3b33f3f9fa70c3265ad3c1b90",
+        "lf_normalized_sha256": "b32386352edc6f37a0ef62cf4140eb22d5e400b9eefc580e649447b10cc549e1",
+        "crlf_count": 118,
+        "status": "crlf_only_difference"
+      },
+      {
+        "path": "modeling/trifusion/joint_geometry_v29.py",
+        "runtime_manifest_sha256": "cf439edf017d3b5e1695521052161bde66082bcc59fb1acd2bab6d0f2fbb4d71",
+        "local_raw_sha256": "cf439edf017d3b5e1695521052161bde66082bcc59fb1acd2bab6d0f2fbb4d71",
+        "status": "raw_byte_match"
+      },
+      {
+        "path": "modeling/trifusion/joint_tokens_v28.py",
+        "runtime_manifest_sha256": "95de3c39fb86c1d574204eb507ca1fd7b84c7ed27eb8e63de87e905310b01656",
+        "local_raw_sha256": "95de3c39fb86c1d574204eb507ca1fd7b84c7ed27eb8e63de87e905310b01656",
+        "status": "raw_byte_match"
+      },
+      {
+        "path": "modeling/trifusion/joint_tokens_v28_fp32.py",
+        "runtime_manifest_sha256": "fdfa64109973fb5ddeaba6db27e4dc0ef9bb014710d7c6813185ba6535346d0b",
+        "local_raw_sha256": "fdfa64109973fb5ddeaba6db27e4dc0ef9bb014710d7c6813185ba6535346d0b",
+        "status": "raw_byte_match"
+      },
+      {
+        "path": "modeling/trifusion/model.py",
+        "runtime_manifest_sha256": "02e08b4ef6102431808bf850c98117e2169330fc954999086241693a22d92bf5",
+        "local_raw_sha256": "af577e82d2778132ec35a06c91c984c796d6fe051543177a6c509f141f651fde",
+        "lf_normalized_sha256": "02e08b4ef6102431808bf850c98117e2169330fc954999086241693a22d92bf5",
+        "crlf_count": 158,
+        "status": "crlf_only_difference"
+      },
+      {
+        "path": "modeling/trifusion/peer_teaching.py",
+        "runtime_manifest_sha256": "d5ec38a6ebb26d8012be7fa5ebced3dcd5e16de4576e29fef2e89d92dc970b3b",
+        "local_raw_sha256": "2c15e9e74a9256980413226bdc603a8c35be0620a40cae616d1ef27f885f9014",
+        "lf_normalized_sha256": "d5ec38a6ebb26d8012be7fa5ebced3dcd5e16de4576e29fef2e89d92dc970b3b",
+        "crlf_count": 204,
+        "status": "crlf_only_difference"
+      },
+      {
+        "path": "modeling/trifusion/protocol.py",
+        "runtime_manifest_sha256": "519ff4386addb3b83a0416bca25f75ed5a54029a4fcd949231b5eb96db4ef3bc",
+        "local_raw_sha256": "f942938909ec328ac8522c0504b6dd8a4d1355b8346e99fe44dbfc8fc450fa54",
+        "lf_normalized_sha256": "519ff4386addb3b83a0416bca25f75ed5a54029a4fcd949231b5eb96db4ef3bc",
+        "crlf_count": 80,
+        "status": "crlf_only_difference"
+      },
+      {
+        "path": "modeling/trifusion/relay.py",
+        "runtime_manifest_sha256": "a24194bc81b72444dcbf3cea3450ee27f7d541787b77fd5d5cf4bdf13799d645",
+        "local_raw_sha256": "51bc192d543eb8770068f9f5beb34d1d5724d43efbf6fe1c98cff4b9afc2ad5e",
+        "lf_normalized_sha256": "a24194bc81b72444dcbf3cea3450ee27f7d541787b77fd5d5cf4bdf13799d645",
+        "crlf_count": 236,
+        "status": "crlf_only_difference"
+      },
+      {
+        "path": "modeling/trifusion/reliability.py",
+        "runtime_manifest_sha256": "eb9fbed2994ef31038bd31cd129af0b0761c5adc88902ca918d20a05ae431207",
+        "local_raw_sha256": "469cba5e7f67cd3757df71c920a1dd103768b29ebfeddd1d713cf04752e7745c",
+        "lf_normalized_sha256": "eb9fbed2994ef31038bd31cd129af0b0761c5adc88902ca918d20a05ae431207",
+        "crlf_count": 189,
+        "status": "crlf_only_difference"
+      },
+      {
+        "path": "modeling/trifusion/role_modal_responsibility_v26.py",
+        "runtime_manifest_sha256": "ce56ffb40089fad3131958045f9c6d12a11d48ec84123da840eb38e7ad12177b",
+        "local_raw_sha256": "ce56ffb40089fad3131958045f9c6d12a11d48ec84123da840eb38e7ad12177b",
+        "status": "raw_byte_match"
+      },
+      {
+        "path": "modeling/trifusion/sam_training_v21.py",
+        "runtime_manifest_sha256": "9233e8f806914eed623976c7f30830ecac80af274f842214c73055ded9009b56",
+        "local_raw_sha256": "9233e8f806914eed623976c7f30830ecac80af274f842214c73055ded9009b56",
+        "status": "raw_byte_match"
+      },
+      {
+        "path": "modeling/trifusion/semantic_tokenizer.py",
+        "runtime_manifest_sha256": "ea5e2181aaf20be10802b626a17a5dcd6de59ba88d44fa5e833827f8a5931278",
+        "local_raw_sha256": "1f9d0213ecc04c7ec75d5cb2c8485eb6f5e8f5343e62d2a953ecf081b1831a12",
+        "lf_normalized_sha256": "ea5e2181aaf20be10802b626a17a5dcd6de59ba88d44fa5e833827f8a5931278",
+        "crlf_count": 109,
+        "status": "crlf_only_difference"
+      },
+      {
+        "path": "modeling/trifusion/signal_preserving_v13.py",
+        "runtime_manifest_sha256": "7b7c4abb220ed234608553c77aeedd5f8ef763abb04cce5b21f1bfce0f4daa62",
+        "local_raw_sha256": "7b7c4abb220ed234608553c77aeedd5f8ef763abb04cce5b21f1bfce0f4daa62",
+        "status": "raw_byte_match"
+      },
+      {
+        "path": "modeling/trifusion/signal_preserving_v14.py",
+        "runtime_manifest_sha256": "168ccc065c50f1ea1dd65d82247b89d664baa67881a8c2ff19c039a7ba740b0e",
+        "local_raw_sha256": "168ccc065c50f1ea1dd65d82247b89d664baa67881a8c2ff19c039a7ba740b0e",
+        "status": "raw_byte_match"
+      },
+      {
+        "path": "modeling/trifusion/signal_preserving_v15.py",
+        "runtime_manifest_sha256": "bba418acfc67c939b06a1285e0e711616beaf8432532237499bc339edcbf890a",
+        "local_raw_sha256": "bba418acfc67c939b06a1285e0e711616beaf8432532237499bc339edcbf890a",
+        "status": "raw_byte_match"
+      },
+      {
+        "path": "modeling/trifusion/signal_preserving_v15_builder.py",
+        "runtime_manifest_sha256": "7173f0afeecdef3fdf8f7185bef1253ef4193a0a4f03e31dff5d5f79a9416b74",
+        "local_raw_sha256": "7173f0afeecdef3fdf8f7185bef1253ef4193a0a4f03e31dff5d5f79a9416b74",
+        "status": "raw_byte_match"
+      },
+      {
+        "path": "modeling/trifusion/signal_preserving_v16.py",
+        "runtime_manifest_sha256": "eba55a9001a13f5dba287ba5397377f105f1f83cfe3fd24c705185a7c13cf31c",
+        "local_raw_sha256": "eba55a9001a13f5dba287ba5397377f105f1f83cfe3fd24c705185a7c13cf31c",
+        "status": "raw_byte_match"
+      },
+      {
+        "path": "modeling/trifusion/signal_preserving_v16_builder.py",
+        "runtime_manifest_sha256": "ebb7e87b3ea03798bde54cda75a6e9e95f805f1f472baafb05d34e3ea7960235",
+        "local_raw_sha256": "ebb7e87b3ea03798bde54cda75a6e9e95f805f1f472baafb05d34e3ea7960235",
+        "status": "raw_byte_match"
+      },
+      {
+        "path": "modeling/trifusion/signal_preserving_v17.py",
+        "runtime_manifest_sha256": "b095383fb619c8e8377cd95a82ef88c0726d3a3a0cecd8211ae2fd3e5493c800",
+        "local_raw_sha256": "b095383fb619c8e8377cd95a82ef88c0726d3a3a0cecd8211ae2fd3e5493c800",
+        "status": "raw_byte_match"
+      },
+      {
+        "path": "modeling/trifusion/signal_preserving_v17_builder.py",
+        "runtime_manifest_sha256": "26f68c627656a0f539f1704ac54d865e63cf7c9049a80f2789a7e42d1a424411",
+        "local_raw_sha256": "26f68c627656a0f539f1704ac54d865e63cf7c9049a80f2789a7e42d1a424411",
+        "status": "raw_byte_match"
+      },
+      {
+        "path": "modeling/trifusion/signal_preserving_v18.py",
+        "runtime_manifest_sha256": "c81f1c76c253b297501af6c1cba4d47ecc31a1320101ae2637abf5bff7a11455",
+        "local_raw_sha256": "c81f1c76c253b297501af6c1cba4d47ecc31a1320101ae2637abf5bff7a11455",
+        "status": "raw_byte_match"
+      },
+      {
+        "path": "modeling/trifusion/signal_preserving_v19.py",
+        "runtime_manifest_sha256": "69989cced25950ff476759bc93df945b167e8ce88a4340676e8adbbd9f88918e",
+        "local_raw_sha256": "69989cced25950ff476759bc93df945b167e8ce88a4340676e8adbbd9f88918e",
+        "status": "raw_byte_match"
+      },
+      {
+        "path": "modeling/trifusion/signal_preserving_v23.py",
+        "runtime_manifest_sha256": "89816298baedf6ab5d3f122fe16db69035420df8cc91b65e0bb0c8c6f9cde1af",
+        "local_raw_sha256": "89816298baedf6ab5d3f122fe16db69035420df8cc91b65e0bb0c8c6f9cde1af",
+        "status": "raw_byte_match"
+      },
+      {
+        "path": "modeling/trifusion/signal_preserving_v5.py",
+        "runtime_manifest_sha256": "126c98ea869f5b48e2b0873ecf4639a3f4d3671812f898376732d1dc93850426",
+        "local_raw_sha256": "126c98ea869f5b48e2b0873ecf4639a3f4d3671812f898376732d1dc93850426",
+        "status": "raw_byte_match"
+      },
+      {
+        "path": "modeling/trifusion/signal_preserving_v5_builder.py",
+        "runtime_manifest_sha256": "45a2250e79266abc801cc62b9500bade732183ac23cd4d0921cac56ae85f98e2",
+        "local_raw_sha256": "45a2250e79266abc801cc62b9500bade732183ac23cd4d0921cac56ae85f98e2",
+        "status": "raw_byte_match"
+      },
+      {
+        "path": "modeling/trifusion/signal_preserving_v6.py",
+        "runtime_manifest_sha256": "09bbd25ae3ef6a209e924b55f6a84bc53146907611c4fa0ab262fd96f348360d",
+        "local_raw_sha256": "09bbd25ae3ef6a209e924b55f6a84bc53146907611c4fa0ab262fd96f348360d",
+        "status": "raw_byte_match"
+      },
+      {
+        "path": "modeling/trifusion/signal_preserving_v6_builder.py",
+        "runtime_manifest_sha256": "a86e7a2ae87a5e4df08bf4c4bbe6a7cd6b08d597a13435ca654de5bb54396ebf",
+        "local_raw_sha256": "a86e7a2ae87a5e4df08bf4c4bbe6a7cd6b08d597a13435ca654de5bb54396ebf",
+        "status": "raw_byte_match"
+      },
+      {
+        "path": "modeling/trifusion/signal_preserving_v7.py",
+        "runtime_manifest_sha256": "d238087bbb64111a41ec726732b28eacbdc9ef503ec175b16107228212347963",
+        "local_raw_sha256": "d238087bbb64111a41ec726732b28eacbdc9ef503ec175b16107228212347963",
+        "status": "raw_byte_match"
+      },
+      {
+        "path": "modeling/trifusion/signal_preserving_v7_builder.py",
+        "runtime_manifest_sha256": "2a6295288be5a2303ba5485204bccf1035432dd6feb5c213bc71fdb335c6f873",
+        "local_raw_sha256": "2a6295288be5a2303ba5485204bccf1035432dd6feb5c213bc71fdb335c6f873",
+        "status": "raw_byte_match"
+      },
+      {
+        "path": "modeling/trifusion/signal_preserving_v8.py",
+        "runtime_manifest_sha256": "70f79990af4a4a9b784e286635d1b78a1abf367306fe5945fbdcc1ed6f3d6159",
+        "local_raw_sha256": "70f79990af4a4a9b784e286635d1b78a1abf367306fe5945fbdcc1ed6f3d6159",
+        "status": "raw_byte_match"
+      },
+      {
+        "path": "modeling/trifusion/signal_preserving_v8_builder.py",
+        "runtime_manifest_sha256": "6ed1ae8981d5b2f192d196784e26d5f8f13b0611837fc24accbc57f0792ddbf7",
+        "local_raw_sha256": "6ed1ae8981d5b2f192d196784e26d5f8f13b0611837fc24accbc57f0792ddbf7",
+        "status": "raw_byte_match"
+      },
+      {
+        "path": "modeling/trifusion/signal_preserving_v8_router.py",
+        "runtime_manifest_sha256": "79c683784c0c2bc9c7484fa10c141afcdcca9edf8a5913e4e352b1fa3a9efb57",
+        "local_raw_sha256": "79c683784c0c2bc9c7484fa10c141afcdcca9edf8a5913e4e352b1fa3a9efb57",
+        "status": "raw_byte_match"
+      },
+      {
+        "path": "modeling/trifusion/signal_preserving_v9.py",
+        "runtime_manifest_sha256": "48cfff021abf68854ae06443efad4259752a591f492473e25447533fb6691246",
+        "local_raw_sha256": "48cfff021abf68854ae06443efad4259752a591f492473e25447533fb6691246",
+        "status": "raw_byte_match"
+      },
+      {
+        "path": "modeling/trifusion/signal_preserving_v9_builder.py",
+        "runtime_manifest_sha256": "88f78dbd7361a555bf304e04c77ff06995d1886690bc8f573e7ecb0a608dbcaa",
+        "local_raw_sha256": "88f78dbd7361a555bf304e04c77ff06995d1886690bc8f573e7ecb0a608dbcaa",
+        "status": "raw_byte_match"
+      },
+      {
+        "path": "modeling/trifusion/source_prototype_v24.py",
+        "runtime_manifest_sha256": "703f2393aaec83a2276497ededddb6ad888f305cb5b93f3bdf600953b5e6ebf7",
+        "local_raw_sha256": "703f2393aaec83a2276497ededddb6ad888f305cb5b93f3bdf600953b5e6ebf7",
+        "status": "raw_byte_match"
+      },
+      {
+        "path": "modeling/trifusion/source_style_msvr.py",
+        "runtime_manifest_sha256": "57c54142a0617d1ca5c4e1d68a63e31537a10c203eb08056b92971605749092f",
+        "local_raw_sha256": "57c54142a0617d1ca5c4e1d68a63e31537a10c203eb08056b92971605749092f",
+        "status": "raw_byte_match"
+      },
+      {
+        "path": "modeling/trifusion/source_style_v27.py",
+        "runtime_manifest_sha256": "aee2f1d40e2362690f704a154f13a0c9e5696ab05ce44837818defe1725d58c5",
+        "local_raw_sha256": "aee2f1d40e2362690f704a154f13a0c9e5696ab05ce44837818defe1725d58c5",
+        "status": "raw_byte_match"
+      },
+      {
+        "path": "modeling/trifusion/standalone.py",
+        "runtime_manifest_sha256": "2017048e0a2493acd76da3946793a02707f9dd543a96cc30994b38887506d8e2",
+        "local_raw_sha256": "2509beda00e153b09cd9ae850aa352662b7db091e9f2989c9aa1b95eb41bfeb8",
+        "lf_normalized_sha256": "2017048e0a2493acd76da3946793a02707f9dd543a96cc30994b38887506d8e2",
+        "crlf_count": 164,
+        "status": "crlf_only_difference"
+      },
+      {
+        "path": "modeling/trifusion/state.py",
+        "runtime_manifest_sha256": "5fe89c4885507e74ca1833cc18822a4b57e4c2d6fa9a6c6b2e127d1e74b70db9",
+        "local_raw_sha256": "d6491db289e68e0b97a8d532edc933252ab60fdaad963af85f603dec9002e2b9",
+        "lf_normalized_sha256": "5fe89c4885507e74ca1833cc18822a4b57e4c2d6fa9a6c6b2e127d1e74b70db9",
+        "crlf_count": 136,
+        "status": "crlf_only_difference"
+      },
+      {
+        "path": "modeling/trifusion/task_anchor_v3.py",
+        "runtime_manifest_sha256": "cead5c736ae014a5855c0481e31c3e73ea32a76e7b4ebed9b97abe9541b1a5f0",
+        "local_raw_sha256": "cead5c736ae014a5855c0481e31c3e73ea32a76e7b4ebed9b97abe9541b1a5f0",
+        "status": "raw_byte_match"
+      },
+      {
+        "path": "modeling/trifusion/task_anchor_v3_builder.py",
+        "runtime_manifest_sha256": "18e84eb2365589bd9cdd16e7113aa012ef9f63b965afe3d8a0f27bb8748733c6",
+        "local_raw_sha256": "18e84eb2365589bd9cdd16e7113aa012ef9f63b965afe3d8a0f27bb8748733c6",
+        "status": "raw_byte_match"
+      },
+      {
+        "path": "modeling/trifusion/task_anchor_v4.py",
+        "runtime_manifest_sha256": "d6280a25e21acd2dca10aab51e686a820ee18a2def3341692850fa28ca7057cb",
+        "local_raw_sha256": "d6280a25e21acd2dca10aab51e686a820ee18a2def3341692850fa28ca7057cb",
+        "status": "raw_byte_match"
+      },
+      {
+        "path": "modeling/trifusion/task_anchor_v4_builder.py",
+        "runtime_manifest_sha256": "1ceeae572c0273ceb4f6fde601dc1a3d717a34ff9b94f35f9ccf1a258d529736",
+        "local_raw_sha256": "1ceeae572c0273ceb4f6fde601dc1a3d717a34ff9b94f35f9ccf1a258d529736",
+        "status": "raw_byte_match"
+      },
+      {
+        "path": "modeling/trifusion/tokenizer.py",
+        "runtime_manifest_sha256": "ff180350cea3ea8c5a9a7c57e4f4c9b1d7f30cc70dde5405037270be2392c306",
+        "local_raw_sha256": "de2cfee1d6c5f274e34492f3eb55628f7522f303ec32717a8a29426fb18a005d",
+        "lf_normalized_sha256": "ff180350cea3ea8c5a9a7c57e4f4c9b1d7f30cc70dde5405037270be2392c306",
+        "crlf_count": 99,
+        "status": "crlf_only_difference"
+      },
+      {
+        "path": "modeling/trifusion/training_phases.py",
+        "runtime_manifest_sha256": "66a7666ad04d7e32392864227df967b86d8aeeba9a62b6ebeff280c96dd89dee",
+        "local_raw_sha256": "3f012311d50adead08425230a7f0befaa6a58872ae8588814cfcf1fb062b06a0",
+        "lf_normalized_sha256": "66a7666ad04d7e32392864227df967b86d8aeeba9a62b6ebeff280c96dd89dee",
+        "crlf_count": 81,
+        "status": "crlf_only_difference"
+      },
+      {
+        "path": "modeling/trifusion/variants.py",
+        "runtime_manifest_sha256": "ca456227c5249e28461dafb67a68f7103a9b1fea292dcd2f214fb92bab1b91ef",
+        "local_raw_sha256": "61826544395a48a62f43bf5e997b4fef0ab91d4b13e664e919ff9262bd325b69",
+        "lf_normalized_sha256": "ca456227c5249e28461dafb67a68f7103a9b1fea292dcd2f214fb92bab1b91ef",
+        "crlf_count": 104,
+        "status": "crlf_only_difference"
+      },
+      {
+        "path": "modeling/trifusion/warm_start.py",
+        "runtime_manifest_sha256": "68591452f89d6303baf81b9957c30b48135a33ce9e7a5544a40ede2b92f5a05d",
+        "local_raw_sha256": "62a01fa8a80cb25b6880538cf58d00f0f063545e4228edc9869f03835e064a79",
+        "lf_normalized_sha256": "68591452f89d6303baf81b9957c30b48135a33ce9e7a5544a40ede2b92f5a05d",
+        "crlf_count": 91,
+        "status": "crlf_only_difference"
+      },
+      {
+        "path": "comparators/Signal-cd1b0a6/config/__init__.py",
+        "runtime_manifest_sha256": "ff27847384f82ad53a61a80147c38a8282d9bd5af852593aef7c653e48a5d11b",
+        "status": "absent_from_local_mirror"
+      },
+      {
+        "path": "comparators/Signal-cd1b0a6/config/defaults.py",
+        "runtime_manifest_sha256": "40257d349153e56e345983c99b1638d7c3d77966dfd2f5496fe03c86dc8dbd57",
+        "status": "absent_from_local_mirror"
+      },
+      {
+        "path": "comparators/Signal-cd1b0a6/data/__init__.py",
+        "runtime_manifest_sha256": "3e55e3cdaf53a8e97673876c9ad5d2b316bbc82e500e0e318d127e88129be22f",
+        "status": "absent_from_local_mirror"
+      },
+      {
+        "path": "comparators/Signal-cd1b0a6/data/datasets/MSVWild863.py",
+        "runtime_manifest_sha256": "261f7ed87c78a44274502627415dd6cf88c636e69a98cdc30fdfb20db5f66870",
+        "status": "absent_from_local_mirror"
+      },
+      {
+        "path": "comparators/Signal-cd1b0a6/data/datasets/RGBNT100.py",
+        "runtime_manifest_sha256": "fe38cdb9d0905b4637f215b804e933a226aefcd9a865e9f73e564a84ef2393ac",
+        "status": "absent_from_local_mirror"
+      },
+      {
+        "path": "comparators/Signal-cd1b0a6/data/datasets/RGBNT201.py",
+        "runtime_manifest_sha256": "7b2b30b339123e92bbead5c092afa7570a06f423570c4249acfdd39294fc4a88",
+        "status": "absent_from_local_mirror"
+      },
+      {
+        "path": "comparators/Signal-cd1b0a6/data/datasets/__init__.py",
+        "runtime_manifest_sha256": "82d38047efcac536c237306029bc2354b89d1b64f4a6316f70884a723ba665a5",
+        "status": "absent_from_local_mirror"
+      },
+      {
+        "path": "comparators/Signal-cd1b0a6/data/datasets/bases.py",
+        "runtime_manifest_sha256": "48f050a7924cebd1e51f8831ba05df78dbccc7049afb0bcf83351d9d1ee23814",
+        "status": "absent_from_local_mirror"
+      },
+      {
+        "path": "comparators/Signal-cd1b0a6/data/datasets/dukemtmcreid.py",
+        "runtime_manifest_sha256": "d4ddd8fbf7df3432b1af079c3bf7f86d62181bed06ac59de12fd9210ad11945c",
+        "status": "absent_from_local_mirror"
+      },
+      {
+        "path": "comparators/Signal-cd1b0a6/data/datasets/make_dataloader.py",
+        "runtime_manifest_sha256": "54c47d798a20955bde224d9c78b42149c3c2ef008b02659141829a553194434f",
+        "status": "absent_from_local_mirror"
+      },
+      {
+        "path": "comparators/Signal-cd1b0a6/data/datasets/market1501.py",
+        "runtime_manifest_sha256": "6b7642f048a36dde3c99af37b91a20560946bcdeab937cfcfe15b263da4319d8",
+        "status": "absent_from_local_mirror"
+      },
+      {
+        "path": "comparators/Signal-cd1b0a6/data/datasets/msmt17.py",
+        "runtime_manifest_sha256": "d38552fb167fd6c76b369bac14d43170f7ae93849b6144d3846f75b72ee59640",
+        "status": "absent_from_local_mirror"
+      },
+      {
+        "path": "comparators/Signal-cd1b0a6/data/datasets/msvr310.py",
+        "runtime_manifest_sha256": "10b0197e7c97d1067bd63f25afef3cf0c4e64944ff4028c90d1f2f426a200eb9",
+        "status": "absent_from_local_mirror"
+      },
+      {
+        "path": "comparators/Signal-cd1b0a6/data/datasets/sampler.py",
+        "runtime_manifest_sha256": "b77902214633a2b06a7c0a80924a737fdb5122984a857f3c6e120a8ad8cce65a",
+        "status": "absent_from_local_mirror"
+      },
+      {
+        "path": "comparators/Signal-cd1b0a6/data/datasets/sampler_ddp.py",
+        "runtime_manifest_sha256": "c707f1c3e0163ce6bed42780cecfe4fa1bb948f3aec6779edac41e79a69d5983",
+        "status": "absent_from_local_mirror"
+      },
+      {
+        "path": "comparators/Signal-cd1b0a6/engine/processor.py",
+        "runtime_manifest_sha256": "968aa8bc6304ce6f92410d7e8550b5a0a8c64142dce0aa584089477ba169878b",
+        "status": "absent_from_local_mirror"
+      },
+      {
+        "path": "comparators/Signal-cd1b0a6/layers/__init__.py",
+        "runtime_manifest_sha256": "48ef0154cc20c04e1e81a6a97895fdf38e7a21695a4386124d79f522c389bd2b",
+        "status": "absent_from_local_mirror"
+      },
+      {
+        "path": "comparators/Signal-cd1b0a6/layers/center_loss.py",
+        "runtime_manifest_sha256": "c2e23be80b1b3e54503c704dda45ddc4a86f23647fcc8c37c63dbac47d003d89",
+        "status": "absent_from_local_mirror"
+      },
+      {
+        "path": "comparators/Signal-cd1b0a6/layers/cluster_loss.py",
+        "runtime_manifest_sha256": "699f7357d702ea433a5ef02597a1268471875c9b83908b9f10069fae7e92b477",
+        "status": "absent_from_local_mirror"
+      },
+      {
+        "path": "comparators/Signal-cd1b0a6/layers/hcloss.py",
+        "runtime_manifest_sha256": "f179d7b00e1206af853098114e3ea0d744c6b7feeb032a280424182914a28908",
+        "status": "absent_from_local_mirror"
+      },
+      {
+        "path": "comparators/Signal-cd1b0a6/layers/make_loss.py",
+        "runtime_manifest_sha256": "7eb7ab953c2bbc52d0c298ef971d0c3ff7000e5e50756fbb5a5fd63ac4c109aa",
+        "status": "absent_from_local_mirror"
+      },
+      {
+        "path": "comparators/Signal-cd1b0a6/layers/metric_learning.py",
+        "runtime_manifest_sha256": "262cd6a003028e8c11eadf3ed4e43096adae8e9d89d50dc61b1e9bd4fad94246",
+        "status": "absent_from_local_mirror"
+      },
+      {
+        "path": "comparators/Signal-cd1b0a6/layers/mutilmargin.py",
+        "runtime_manifest_sha256": "627685f7bfbb31a22b7483942914f0e9f0dad47eae0231915ba26e0a3fb82727",
+        "status": "absent_from_local_mirror"
+      },
+      {
+        "path": "comparators/Signal-cd1b0a6/layers/range_loss.py",
+        "runtime_manifest_sha256": "e35e1b4eb5287f25dd4cb38ea7450264d386a5c98f2ca8d9d337c8eb03be60c5",
+        "status": "absent_from_local_mirror"
+      },
+      {
+        "path": "comparators/Signal-cd1b0a6/layers/softmax_loss.py",
+        "runtime_manifest_sha256": "92192d9c3ff4e2fd3920c6e9a9637e0caa1e66cffbbc0be8b4049e5dcdb0bf24",
+        "status": "absent_from_local_mirror"
+      },
+      {
+        "path": "comparators/Signal-cd1b0a6/layers/supcontrast.py",
+        "runtime_manifest_sha256": "bc21c9763cc795b623089894b711aedaf0cde0c01fd8a1c5d641982513b10f6b",
+        "status": "absent_from_local_mirror"
+      },
+      {
+        "path": "comparators/Signal-cd1b0a6/layers/triplet_loss.py",
+        "runtime_manifest_sha256": "f502c44bec642bbf72ce6d0f58c9f9a0084beef9cbb451c2d2786bb13f94960a",
+        "status": "absent_from_local_mirror"
+      },
+      {
+        "path": "comparators/Signal-cd1b0a6/modeling/AddModule/DAS.py",
+        "runtime_manifest_sha256": "55b98cb11a22ece7a422eed565f68e1ca8ffa1b448dca616f9a3e243311644ea",
+        "status": "absent_from_local_mirror"
+      },
+      {
+        "path": "comparators/Signal-cd1b0a6/modeling/AddModule/useA.py",
+        "runtime_manifest_sha256": "1f8fef4dcadb89f5097f83b41a699d9f801a23c88ca3eea73b3ad973a56952a9",
+        "status": "absent_from_local_mirror"
+      },
+      {
+        "path": "comparators/Signal-cd1b0a6/modeling/AddModule/useB.py",
+        "runtime_manifest_sha256": "39a65f82d59048745663d891a1c4c012eb1cc404ef8c8084f942702aeef46fec",
+        "status": "absent_from_local_mirror"
+      },
+      {
+        "path": "comparators/Signal-cd1b0a6/modeling/__init__.py",
+        "runtime_manifest_sha256": "c1962dec3f8aa828bd7237baf6edd7b4862cdbd8e9f710170f37f3d61bf1d1c0",
+        "status": "absent_from_local_mirror"
+      },
+      {
+        "path": "comparators/Signal-cd1b0a6/modeling/backbones/__init__.py",
+        "runtime_manifest_sha256": "cb7a2fb6a8f54e83ff3c6293317a3d043b7dccd24501784de644cf8d15af78b9",
+        "status": "absent_from_local_mirror"
+      },
+      {
+        "path": "comparators/Signal-cd1b0a6/modeling/backbones/basic_cnn_params/__init__.py",
+        "runtime_manifest_sha256": "e1625a0f2d541b9a8e6d470d4ad0fd151034bb26ca02d602f05336ed9de2201c",
+        "status": "absent_from_local_mirror"
+      },
+      {
+        "path": "comparators/Signal-cd1b0a6/modeling/backbones/basic_cnn_params/cal.py",
+        "runtime_manifest_sha256": "2b2a5cf892e0afd43714fe062e5188f2db60311b34feb53f4247de2803f284ac",
+        "status": "absent_from_local_mirror"
+      },
+      {
+        "path": "comparators/Signal-cd1b0a6/modeling/backbones/basic_cnn_params/densenet.py",
+        "runtime_manifest_sha256": "a681ab2026ad388a332caee0cc7766cf324d71615281983971a9dd72cf396936",
+        "status": "absent_from_local_mirror"
+      },
+      {
+        "path": "comparators/Signal-cd1b0a6/modeling/backbones/basic_cnn_params/flops.py",
+        "runtime_manifest_sha256": "954e233730eb5ad868b85b2021d5a9381db6e67a21c1627fae144bdb0fc2107c",
+        "status": "absent_from_local_mirror"
+      },
+      {
+        "path": "comparators/Signal-cd1b0a6/modeling/backbones/basic_cnn_params/hacnn.py",
+        "runtime_manifest_sha256": "cd83408cc6f8891759116a0ec84237e19473dc42eb9bd72c3f928d1de2bd313c",
+        "status": "absent_from_local_mirror"
+      },
+      {
+        "path": "comparators/Signal-cd1b0a6/modeling/backbones/basic_cnn_params/inceptionresnetv2.py",
+        "runtime_manifest_sha256": "de17492a6c1801ae56ba989073667a1b8f1577c140be490a2a88eb60842c73ac",
+        "status": "absent_from_local_mirror"
+      },
+      {
+        "path": "comparators/Signal-cd1b0a6/modeling/backbones/basic_cnn_params/inceptionv4.py",
+        "runtime_manifest_sha256": "aa301ffdcdbcdd25408c65dc7fe5573de1983b7fa94e1562023f9d914dea6fde",
+        "status": "absent_from_local_mirror"
+      },
+      {
+        "path": "comparators/Signal-cd1b0a6/modeling/backbones/basic_cnn_params/mlfn.py",
+        "runtime_manifest_sha256": "1ae1196d103345a13c60502d2e4f14cf31f05a00f30cdd193eb61f74f19fe8a4",
+        "status": "absent_from_local_mirror"
+      },
+      {
+        "path": "comparators/Signal-cd1b0a6/modeling/backbones/basic_cnn_params/mobilenetv2.py",
+        "runtime_manifest_sha256": "f9e1c2a3b8a469f343b47812b13367d150880d38758eab14670e52d60fa72ba3",
+        "status": "absent_from_local_mirror"
+      },
+      {
+        "path": "comparators/Signal-cd1b0a6/modeling/backbones/basic_cnn_params/mudeep.py",
+        "runtime_manifest_sha256": "82b24f86064538abf5d85ba147f67e0d950ee07b6406547e12fd11393ff947f4",
+        "status": "absent_from_local_mirror"
+      },
+      {
+        "path": "comparators/Signal-cd1b0a6/modeling/backbones/basic_cnn_params/nasnet.py",
+        "runtime_manifest_sha256": "20e762521082698eafe9d3db4553d1aa731a5364b15c9d217636a44a6b9bc3af",
+        "status": "absent_from_local_mirror"
+      },
+      {
+        "path": "comparators/Signal-cd1b0a6/modeling/backbones/basic_cnn_params/osnet.py",
+        "runtime_manifest_sha256": "34b8b7a4ceb54625a29c1952d665061ae235efdd695fc999a8cd928107435bc4",
+        "status": "absent_from_local_mirror"
+      },
+      {
+        "path": "comparators/Signal-cd1b0a6/modeling/backbones/basic_cnn_params/osnet_ain.py",
+        "runtime_manifest_sha256": "a43b495866a4b1645cd134a30c3011592e8c6826ba4781955a135588cf46cd25",
+        "status": "absent_from_local_mirror"
+      },
+      {
+        "path": "comparators/Signal-cd1b0a6/modeling/backbones/basic_cnn_params/pcb.py",
+        "runtime_manifest_sha256": "76246a0f6b6438566f26f307ec9ab3f378f38885eefa9e58aaf23df2b90410e4",
+        "status": "absent_from_local_mirror"
+      },
+      {
+        "path": "comparators/Signal-cd1b0a6/modeling/backbones/basic_cnn_params/resnet.py",
+        "runtime_manifest_sha256": "6b871338b477421bbc23bc7b3028735fc67ab4f551d979c5ae8b2edf2d02c168",
+        "status": "absent_from_local_mirror"
+      },
+      {
+        "path": "comparators/Signal-cd1b0a6/modeling/backbones/basic_cnn_params/resnet_ibn_a.py",
+        "runtime_manifest_sha256": "8459ffb25de797b755c7ded64527ab664491b0c50aaf66c259a7cb530577ec10",
+        "status": "absent_from_local_mirror"
+      },
+      {
+        "path": "comparators/Signal-cd1b0a6/modeling/backbones/basic_cnn_params/resnet_ibn_b.py",
+        "runtime_manifest_sha256": "b26f408850d5e6b6ad34f576536004d392db8f6c26d738b3d8e5a71ab56ca60b",
+        "status": "absent_from_local_mirror"
+      },
+      {
+        "path": "comparators/Signal-cd1b0a6/modeling/backbones/basic_cnn_params/resnetmid.py",
+        "runtime_manifest_sha256": "97886e2906f107a7fdb7913ae49db08e326e26dea3aeb76b06cba75f8e63dd83",
+        "status": "absent_from_local_mirror"
+      },
+      {
+        "path": "comparators/Signal-cd1b0a6/modeling/backbones/basic_cnn_params/senet.py",
+        "runtime_manifest_sha256": "062339e75c5137987371b761428c74bc7cfa3d3d219bce1f5f1ffff7e39291da",
+        "status": "absent_from_local_mirror"
+      },
+      {
+        "path": "comparators/Signal-cd1b0a6/modeling/backbones/basic_cnn_params/shufflenet.py",
+        "runtime_manifest_sha256": "0db745f384bee5daacce335de41a4f841a367d1302c80245d453d21ae8aa64b3",
+        "status": "absent_from_local_mirror"
+      },
+      {
+        "path": "comparators/Signal-cd1b0a6/modeling/backbones/basic_cnn_params/shufflenetv2.py",
+        "runtime_manifest_sha256": "8ce02f3e59da5db8f50ecb2af1d79d742a9499d87734a30ff53326c0fe945767",
+        "status": "absent_from_local_mirror"
+      },
+      {
+        "path": "comparators/Signal-cd1b0a6/modeling/backbones/basic_cnn_params/squeezenet.py",
+        "runtime_manifest_sha256": "8d42e650ddb6a65000081bf233fd343585db422b29f4d79a16211b1d514aa94e",
+        "status": "absent_from_local_mirror"
+      },
+      {
+        "path": "comparators/Signal-cd1b0a6/modeling/backbones/basic_cnn_params/xception.py",
+        "runtime_manifest_sha256": "2b11ac064b1fb8dbc5ed7e900475347eb61b1376c4a8a7992188596757b1cdbf",
+        "status": "absent_from_local_mirror"
+      },
+      {
+        "path": "comparators/Signal-cd1b0a6/modeling/backbones/t2t.py",
+        "runtime_manifest_sha256": "f8cd394abc8b2d650310968e14a4ae978063fee55d545658aa3e90676f996159",
+        "status": "absent_from_local_mirror"
+      },
+      {
+        "path": "comparators/Signal-cd1b0a6/modeling/backbones/token_performer.py",
+        "runtime_manifest_sha256": "3e3dfa33523e3d090d9e639d8b442a7883860a650e1af241786d1e4561f136d3",
+        "status": "absent_from_local_mirror"
+      },
+      {
+        "path": "comparators/Signal-cd1b0a6/modeling/backbones/token_transformer.py",
+        "runtime_manifest_sha256": "6dc55462e5ff1138a2b19883aec86d43591494efdb65bce383152dcdc0fdfc6a",
+        "status": "absent_from_local_mirror"
+      },
+      {
+        "path": "comparators/Signal-cd1b0a6/modeling/backbones/transformer_block.py",
+        "runtime_manifest_sha256": "7d4da490e811af278eafb7fe768622a68de6ab8fcc78adce36c59db307ca96a4",
+        "status": "absent_from_local_mirror"
+      },
+      {
+        "path": "comparators/Signal-cd1b0a6/modeling/backbones/vit_pytorch.py",
+        "runtime_manifest_sha256": "6821875c278d1999dc6841b599abc8368651ef5cf6e8c507c323f02dbf334fa9",
+        "status": "absent_from_local_mirror"
+      },
+      {
+        "path": "comparators/Signal-cd1b0a6/modeling/clip/LoRA.py",
+        "runtime_manifest_sha256": "c3f085ba05071701235bf4f0f3f87caaa3823bc1e17883ca85f1a2f690133365",
+        "status": "absent_from_local_mirror"
+      },
+      {
+        "path": "comparators/Signal-cd1b0a6/modeling/clip/__init__.py",
+        "runtime_manifest_sha256": "d7930eb290ebed432116795c91473200d098451a94c0aedd4ae0f934f97955e8",
+        "status": "absent_from_local_mirror"
+      },
+      {
+        "path": "comparators/Signal-cd1b0a6/modeling/clip/clip.py",
+        "runtime_manifest_sha256": "4898d0e683126fbc83d450465593042159ca7162de3199c5e9e89e0e0d1d5d3d",
+        "status": "absent_from_local_mirror"
+      },
+      {
+        "path": "comparators/Signal-cd1b0a6/modeling/clip/model.py",
+        "runtime_manifest_sha256": "2c2ca81815830fad2ab13bb8bb4ba0d41f0625477af6505815f0982d96df4e73",
+        "status": "absent_from_local_mirror"
+      },
+      {
+        "path": "comparators/Signal-cd1b0a6/modeling/clip/simple_tokenizer.py",
+        "runtime_manifest_sha256": "d1b09f10ed3d1e2c343619cb98cbfacb92363dd8607526a43aa7fe2d60d15bad",
+        "status": "absent_from_local_mirror"
+      },
+      {
+        "path": "comparators/Signal-cd1b0a6/modeling/make_model.py",
+        "runtime_manifest_sha256": "1a88a91d2e5055f5d338996231b16c0e13b2fa7013c74131ca663f16c2655963",
+        "status": "absent_from_local_mirror"
+      },
+      {
+        "path": "comparators/Signal-cd1b0a6/modeling/make_model_clipreid.py",
+        "runtime_manifest_sha256": "5494c2b7cb9acfb2c727a2cde201ba587184b344667e077eacfe0c3a0c578651",
+        "status": "absent_from_local_mirror"
+      },
+      {
+        "path": "comparators/Signal-cd1b0a6/modeling/meta_arch.py",
+        "runtime_manifest_sha256": "8b709d5ab4b14ba150a96bbb5e8cc7e6dbbb71dd8bd30cafd7a5cb110ee5a757",
+        "status": "absent_from_local_mirror"
+      },
+      {
+        "path": "comparators/Signal-cd1b0a6/scripts/auto_tests_docs/auto_docs.py",
+        "runtime_manifest_sha256": "e3132d7b5d7f2ba1c4ea6069ce5396d813606d9c609735d1a636e905aeb6c009",
+        "status": "absent_from_local_mirror"
+      },
+      {
+        "path": "comparators/Signal-cd1b0a6/scripts/auto_tests_docs/auto_docs_functions.py",
+        "runtime_manifest_sha256": "bf6603819ade241c60ab67c8fb23b2baf63032008886b6115d1aaf8ed4b8ae30",
+        "status": "absent_from_local_mirror"
+      },
+      {
+        "path": "comparators/Signal-cd1b0a6/scripts/auto_tests_docs/auto_tests.py",
+        "runtime_manifest_sha256": "553e8393d20a0d8b6669b28c1384f74e0362daedead9a31cedcaaa461037fed2",
+        "status": "absent_from_local_mirror"
+      },
+      {
+        "path": "comparators/Signal-cd1b0a6/scripts/auto_tests_docs/auto_tests_functions.py",
+        "runtime_manifest_sha256": "b5d5ac1d5780c944f13af959766ab06a3533929492e56d5df9524ae5621ac2d7",
+        "status": "absent_from_local_mirror"
+      },
+      {
+        "path": "comparators/Signal-cd1b0a6/scripts/auto_tests_docs/docs.py",
+        "runtime_manifest_sha256": "24c5bddb8e81ead8a609e7068c99ab7dbdf6e6f9e3cceefa262429c31af4ce74",
+        "status": "absent_from_local_mirror"
+      },
+      {
+        "path": "comparators/Signal-cd1b0a6/scripts/auto_tests_docs/mkdocs_handler.py",
+        "runtime_manifest_sha256": "fc9e0aaf11b4338abd3deb1cd818dd5d248c2402f85c475ff0e06f7f87d23849",
+        "status": "absent_from_local_mirror"
+      },
+      {
+        "path": "comparators/Signal-cd1b0a6/scripts/delpycache.py",
+        "runtime_manifest_sha256": "2af16df38b78eac2bc716c9b1baa1aff2bb91463cdddf05a9c532088a8640cc8",
+        "status": "absent_from_local_mirror"
+      },
+      {
+        "path": "comparators/Signal-cd1b0a6/scripts/get_package_requirements.py",
+        "runtime_manifest_sha256": "959cc0cf202faa3739395912ce20356dadd554b8d11dbae4b1a21ab7a328f836",
+        "status": "absent_from_local_mirror"
+      },
+      {
+        "path": "comparators/Signal-cd1b0a6/scripts/requirementstxt_to_pyproject.py",
+        "runtime_manifest_sha256": "f2b7c530272db869827272f8bbc1915e9adcf9f86ebbc7e35f6ad2673d0ddaa5",
+        "status": "absent_from_local_mirror"
+      },
+      {
+        "path": "comparators/Signal-cd1b0a6/solver/cosine_lr.py",
+        "runtime_manifest_sha256": "d3db6e30c1666c5af71200086f33c644d476310b6c5dc7ed98097cc989bdad4d",
+        "status": "absent_from_local_mirror"
+      },
+      {
+        "path": "comparators/Signal-cd1b0a6/solver/lr_scheduler.py",
+        "runtime_manifest_sha256": "6b7ea85e2c66ab5fb76560ba55b12bd0f2b3ab6eca2a6c9603e45648bfffbeba",
+        "status": "absent_from_local_mirror"
+      },
+      {
+        "path": "comparators/Signal-cd1b0a6/solver/lr_scheduler310.py",
+        "runtime_manifest_sha256": "e15481ca1d40dbab559af1d97367a192d44b9635a1eaf3ce004dcddb14ee7674",
+        "status": "absent_from_local_mirror"
+      },
+      {
+        "path": "comparators/Signal-cd1b0a6/solver/make_optimizer.py",
+        "runtime_manifest_sha256": "ada1023a79fcaaed092bce0849a61db9d0253cf8974c494bfb3082d0fd35fee1",
+        "status": "absent_from_local_mirror"
+      },
+      {
+        "path": "comparators/Signal-cd1b0a6/solver/scheduler.py",
+        "runtime_manifest_sha256": "b7517bb0f79a3334e2a3ac5ecb14bdcf69cb28c62dd3c734c4e3d212d0955228",
+        "status": "absent_from_local_mirror"
+      },
+      {
+        "path": "comparators/Signal-cd1b0a6/solver/scheduler_factory.py",
+        "runtime_manifest_sha256": "c5e20bdffec4b5360faa04f823639c8e5fd8672914813fb96148927c9ee19abc",
+        "status": "absent_from_local_mirror"
+      },
+      {
+        "path": "comparators/Signal-cd1b0a6/test.py",
+        "runtime_manifest_sha256": "9e6f2a190e02f25be97c599922c43554de1d2efb3916a5bebe1c4cce30b6ae4a",
+        "status": "absent_from_local_mirror"
+      },
+      {
+        "path": "comparators/Signal-cd1b0a6/tests/test_benchmarks.py",
+        "runtime_manifest_sha256": "ce4ef25c55057e674647415a8af010c40d3dd6e3c547955cf0e294761ebb624f",
+        "status": "absent_from_local_mirror"
+      },
+      {
+        "path": "comparators/Signal-cd1b0a6/tests/test_blocks.py",
+        "runtime_manifest_sha256": "cac136da29ddc8a93853e368f4e5ca71ad2fc458dc79d19677580b1c21dbacdb",
+        "status": "absent_from_local_mirror"
+      },
+      {
+        "path": "comparators/Signal-cd1b0a6/tests/test_model.py",
+        "runtime_manifest_sha256": "28fd57c2c82e9da22484a734adbedecd92e5c26dd59778e46b65bb2e437dd783",
+        "status": "absent_from_local_mirror"
+      },
+      {
+        "path": "comparators/Signal-cd1b0a6/train.py",
+        "runtime_manifest_sha256": "243a2f6de57f6113c6f0e35390670ee937bbcea84ab3335eea2b6257b3bcbd8f",
+        "status": "absent_from_local_mirror"
+      },
+      {
+        "path": "comparators/Signal-cd1b0a6/utils/iotools.py",
+        "runtime_manifest_sha256": "05e59eac76140ec28c87f606283baae9cdc260b250d3088d9624e08e3cacf3d7",
+        "status": "absent_from_local_mirror"
+      },
+      {
+        "path": "comparators/Signal-cd1b0a6/utils/logger.py",
+        "runtime_manifest_sha256": "5a732f76d567609ec1054e1e705dccbec871b71795189d80d0fb3538b28583b0",
+        "status": "absent_from_local_mirror"
+      },
+      {
+        "path": "comparators/Signal-cd1b0a6/utils/meter.py",
+        "runtime_manifest_sha256": "0245aa40c9a6ade9a9ac0a0f882d1a1d7b06260c667ea43e2ecb3ba846311796",
+        "status": "absent_from_local_mirror"
+      },
+      {
+        "path": "comparators/Signal-cd1b0a6/utils/metrics.py",
+        "runtime_manifest_sha256": "91604acb7d978462c16904910a645d7d1697c15bf150da529099004c8b5eecb2",
+        "status": "absent_from_local_mirror"
+      },
+      {
+        "path": "comparators/Signal-cd1b0a6/utils/ranklist_vehicle.py",
+        "runtime_manifest_sha256": "ca4b544911256a95f45ff924f006973828bc3972cfdbbf4ea96f724229244394",
+        "status": "absent_from_local_mirror"
+      },
+      {
+        "path": "comparators/Signal-cd1b0a6/utils/reranking.py",
+        "runtime_manifest_sha256": "1d55aa0227630a56a34931f9aded128987807d358ae9d5365dd83f28bc459fb9",
+        "status": "absent_from_local_mirror"
+      },
+      {
+        "path": "comparators/Signal-cd1b0a6/utils/volume.py",
+        "runtime_manifest_sha256": "a154f65e5f4483446748e216b7b03672617efb02004e14e9940446c1013b8ccb",
+        "status": "absent_from_local_mirror"
+      },
+      {
+        "path": "comparators/Signal-cd1b0a6/visualize/GradCAM.py",
+        "runtime_manifest_sha256": "d3c9f88b3ce4e18e20e10521f0d19d2ee6a15e2eaff3fb08a32c8a18fffd63fc",
+        "status": "absent_from_local_mirror"
+      },
+      {
+        "path": "comparators/Signal-cd1b0a6/zablation/CAM.py",
+        "runtime_manifest_sha256": "9bc131a4643848d6a7af4b80347a24726727a57c6e9e969da8454395680b5bfb",
+        "status": "absent_from_local_mirror"
+      },
+      {
+        "path": "comparators/Signal-cd1b0a6/zablation/offestvisual.py",
+        "runtime_manifest_sha256": "8af7f3c8511d076373014b4de269317800dc7edd686a6acdec6f4d342ec01661",
+        "status": "absent_from_local_mirror"
+      },
+      {
+        "path": "comparators/Signal-cd1b0a6/zablation/tiaoxing.py",
+        "runtime_manifest_sha256": "efa278cc4ad099ba62979d8f4de4146a26a2552c3ea3863ec919e60389da4f6c",
+        "status": "absent_from_local_mirror"
+      },
+      {
+        "path": "comparators/Signal-cd1b0a6/zablation/token_visual.py",
+        "runtime_manifest_sha256": "b07ae0a3a3d2c18be520a0878c8980196727da04f15e85bcce5b04bf676d4994",
+        "status": "absent_from_local_mirror"
+      },
+      {
+        "path": "comparators/Signal-cd1b0a6/zablation/zhexian.py",
+        "runtime_manifest_sha256": "b9486f3fe80e96679ba09b4b7ee995fb2433e198eec489c680bd7a87c44d13be",
+        "status": "absent_from_local_mirror"
+      },
+      {
+        "path": "logs/official_three_dataset_protocols_20260923/RGBNT201.json",
+        "runtime_manifest_sha256": "e63be5d9f8bd41df365264ad8f459dcd063d088023a2d2ed525a49a72f61161e",
+        "status": "absent_from_local_mirror"
+      },
+      {
+        "path": "comparators/Signal-cd1b0a6/configs/RGBNT201/Signal.yml",
+        "runtime_manifest_sha256": "a13bd5169a4c710fa79efc87db909409015a0b2611086c0fbf4c1842f0cfcc44",
+        "status": "absent_from_local_mirror"
+      },
+      {
+        "path": "logs/official_three_dataset_protocols_20260923/RGBNT100.json",
+        "runtime_manifest_sha256": "12d8afe5cf6e537b69ccf753481dd5fd651f14b7672e1e6411a4d4e9d88cc956",
+        "status": "absent_from_local_mirror"
+      },
+      {
+        "path": "comparators/Signal-cd1b0a6/configs/RGBNT100/Signal.yml",
+        "runtime_manifest_sha256": "02641ce2941dcd50df77d379aab54650cae4a2a6b15ba1bcd43deba970b6900f",
+        "status": "absent_from_local_mirror"
+      },
+      {
+        "path": "logs/official_three_dataset_protocols_20260923/MSVR310.json",
+        "runtime_manifest_sha256": "7f2b35f9a7e00433558c1e723db0e3ff0ea9daa7144eeeb972139d1502945cbc",
+        "status": "absent_from_local_mirror"
+      },
+      {
+        "path": "comparators/Signal-cd1b0a6/configs/MSVR310/Signal.yml",
+        "runtime_manifest_sha256": "357ca3a989e943ea5348e6206c0d0f69b3c0d35ad9fbadbf68d2786439b8a915",
+        "status": "absent_from_local_mirror"
+      }
+    ]
+  },
+  "all_pinned_inputs_unchanged_at_write": true,
+  "policy_input_hashes": {
+    "C:\\Users\\gb\\.codex\\skills\\experiment-audit\\SKILL.md": "sha256:0ab77f219f554cbe42f22b79d780528e61c5e58169af4c2f56acf59596ab8db7",
+    "C:\\Users\\gb\\.codex\\skills\\shared-references\\local-codex-policy.md": "sha256:b0249bfccd48ff79a5976afa7a54c64a3cfb65a5496a2105c5bb21069d197783",
+    "C:\\Users\\gb\\.codex\\skills\\shared-references\\reviewer-independence.md": "sha256:1aa1756a99dc47009072f0ee7bf570d797bf7e2cc84439401e2a9312d73659b0",
+    "C:\\Users\\gb\\.codex\\skills\\shared-references\\experiment-integrity.md": "sha256:22150fbdc5867e7790c88f968bccb367079c2db4c190ddce980709aea7e76f60",
+    "C:\\Users\\gb\\.codex\\skills\\shared-references\\review-tracing.md": "sha256:7f556fb9ef8922cfd0d047e5a2d857b0c7f9408492b8c8dcec00207e76405395"
+  },
+  "deterministic_results": {
+    "formal": [
+      {
+        "run": "logs/cross_depth_full_mixed_once_MSVR310_662_20260929",
+        "dataset": "MSVR310",
+        "depth_mode": "mixed_once",
+        "verified_epoch_sequence": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10,
+          11,
+          12,
+          13,
+          14,
+          15,
+          16,
+          17,
+          18,
+          19,
+          20,
+          21,
+          22,
+          23,
+          24,
+          25,
+          26,
+          27,
+          28,
+          29,
+          30,
+          31,
+          32,
+          33,
+          34,
+          35,
+          36,
+          37,
+          38,
+          39,
+          40,
+          41,
+          42,
+          43,
+          44,
+          45,
+          46,
+          47,
+          48,
+          49,
+          50
+        ],
+        "best_epoch": 15,
+        "metrics": {
+          "mAP": 53.03167502586884,
+          "Rank-1": 68.18950772285461,
+          "Rank-5": 82.23350048065186,
+          "Rank-10": 87.64805197715759
+        },
+        "diagnostic_metrics": {
+          "shared_global": {
+            "mAP": 52.30260631889847,
+            "Rank-1": 68.358713388443,
+            "Rank-5": 82.40270614624023,
+            "Rank-10": 87.64805197715759
+          },
+          "joint_local": {
+            "mAP": 10.634303177345933,
+            "Rank-1": 25.211507081985474,
+            "Rank-5": 41.28595590591431,
+            "Rank-10": 49.91539716720581
+          }
+        },
+        "initial_model_state_sha256": "60972e9d789c62c18a8f3c0deabdf27fd2138f12f7a6d7d8636ae3809f8d9548",
+        "trainable_parameter_elements": 2592769,
+        "training_and_epoch_eval_seconds": 1377.478853,
+        "sum_training_epoch_timers_seconds": 473.14981046586763,
+        "fused_minus_shared_global_pp": {
+          "mAP": 0.7290687069703736,
+          "Rank-1": -0.1692056655883789,
+          "Rank-5": -0.1692056655883789,
+          "Rank-10": 0.0
+        },
+        "checkpoint_sha256_from_receipt": "0bc5b586532d18fc925aab2286fbcf782365c0fb43ca4bbfca29aac71ff8f836",
+        "distance_sha256_from_receipt": "d585502dd6676026edc95b663faf146ed59f343a8da67190faa24aedc7f5c704",
+        "checkpoint_or_array_replayed": false,
+        "logged_steps": 1000,
+        "maximum_loss_reconstruction_error": 2.3096799850463867e-07,
+        "nonzero_triplet_steps": 963,
+        "nonzero_auxiliary_id_steps": 0
+      },
+      {
+        "run": "logs/cross_depth_full_mixed_once_RGBNT201_663_20260929",
+        "dataset": "RGBNT201",
+        "depth_mode": "mixed_once",
+        "verified_epoch_sequence": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10,
+          11,
+          12,
+          13,
+          14,
+          15,
+          16,
+          17,
+          18,
+          19,
+          20,
+          21,
+          22,
+          23,
+          24,
+          25,
+          26,
+          27,
+          28,
+          29,
+          30,
+          31,
+          32,
+          33,
+          34,
+          35,
+          36,
+          37,
+          38,
+          39,
+          40,
+          41,
+          42,
+          43,
+          44,
+          45,
+          46,
+          47,
+          48,
+          49,
+          50
+        ],
+        "best_epoch": 2,
+        "metrics": {
+          "mAP": 72.58888174963909,
+          "Rank-1": 74.16267991065979,
+          "Rank-5": 82.8947365283966,
+          "Rank-10": 88.0382776260376
+        },
+        "diagnostic_metrics": {
+          "shared_global": {
+            "mAP": 72.38707870164058,
+            "Rank-1": 73.80383014678955,
+            "Rank-5": 82.53588676452637,
+            "Rank-10": 88.0382776260376
+          },
+          "joint_local": {
+            "mAP": 45.421270742616734,
+            "Rank-1": 52.272725105285645,
+            "Rank-5": 69.0191388130188,
+            "Rank-10": 76.19616985321045
+          }
+        },
+        "initial_model_state_sha256": "595e5d6ebab9eb4a5d5cf930b4328f22200d038a9f0c0e4ddf97756be9989a92",
+        "trainable_parameter_elements": 2617345,
+        "training_and_epoch_eval_seconds": 1735.132744,
+        "sum_training_epoch_timers_seconds": 1042.4415051186807,
+        "fused_minus_shared_global_pp": {
+          "mAP": 0.20180304799851,
+          "Rank-1": 0.35884976387023926,
+          "Rank-5": 0.35884976387023926,
+          "Rank-10": 0.0
+        },
+        "checkpoint_sha256_from_receipt": "e436ef9a0f7bea191b5e44066cfe81dddafb5095330b09ba72072afb32734359",
+        "distance_sha256_from_receipt": "1e13e4f50357175c9ddff8a6fe4758d9cd228916aeb978ba19a018f0d4d8086d",
+        "checkpoint_or_array_replayed": false,
+        "logged_steps": 2649,
+        "maximum_loss_reconstruction_error": 2.384185791015625e-07,
+        "nonzero_triplet_steps": 1139,
+        "nonzero_auxiliary_id_steps": 0
+      },
+      {
+        "run": "logs/cross_depth_full_depth_mean_RGBNT201_663_20260929",
+        "dataset": "RGBNT201",
+        "depth_mode": "depth_mean",
+        "verified_epoch_sequence": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10,
+          11,
+          12,
+          13,
+          14,
+          15,
+          16,
+          17,
+          18,
+          19,
+          20,
+          21,
+          22,
+          23,
+          24,
+          25,
+          26,
+          27,
+          28,
+          29,
+          30,
+          31,
+          32,
+          33,
+          34,
+          35,
+          36,
+          37,
+          38,
+          39,
+          40,
+          41,
+          42,
+          43,
+          44,
+          45,
+          46,
+          47,
+          48,
+          49,
+          50
+        ],
+        "best_epoch": 2,
+        "metrics": {
+          "mAP": 72.53275820092384,
+          "Rank-1": 73.9234447479248,
+          "Rank-5": 82.77512192726135,
+          "Rank-10": 88.0382776260376
+        },
+        "diagnostic_metrics": {
+          "shared_global": {
+            "mAP": 72.42420473618401,
+            "Rank-1": 73.9234447479248,
+            "Rank-5": 82.29665160179138,
+            "Rank-10": 88.0382776260376
+          },
+          "joint_local": {
+            "mAP": 27.258586191512084,
+            "Rank-1": 31.937798857688904,
+            "Rank-5": 47.248804569244385,
+            "Rank-10": 55.62201142311096
+          }
+        },
+        "initial_model_state_sha256": "595e5d6ebab9eb4a5d5cf930b4328f22200d038a9f0c0e4ddf97756be9989a92",
+        "trainable_parameter_elements": 2617345,
+        "training_and_epoch_eval_seconds": 2037.563269,
+        "sum_training_epoch_timers_seconds": 1198.1682019439177,
+        "fused_minus_shared_global_pp": {
+          "mAP": 0.10855346473982763,
+          "Rank-1": 0.0,
+          "Rank-5": 0.4784703254699707,
+          "Rank-10": 0.0
+        },
+        "checkpoint_sha256_from_receipt": "b4d187ff22d4da70ba3beff72ef8979ed9779b75b147a206c6c0f65207c9b010",
+        "distance_sha256_from_receipt": "cd8ab45c7c4ad0689645e155ce4cbdc34ffc9ad187282d77aa79915fc5c6e565",
+        "checkpoint_or_array_replayed": false,
+        "logged_steps": 2649,
+        "maximum_loss_reconstruction_error": 2.3655593395233154e-07,
+        "nonzero_triplet_steps": 1275,
+        "nonzero_auxiliary_id_steps": 0
+      }
+    ],
+    "m0": [
+      {
+        "run": "logs/cross_depth_m0_depth_mean_RGBNT100_663_20260929",
+        "dataset": "RGBNT100",
+        "depth_mode": "depth_mean",
+        "steps": 8,
+        "maximum_loss_reconstruction_error": 0.0,
+        "nonzero_triplet_steps": 0,
+        "m0_producer_tensor_assertions": {
+          "nonzero_gradient_parameters": 118,
+          "trainable_parameters": 118,
+          "frozen_signal_unchanged": true,
+          "reload_max_abs_difference": 0.0,
+          "reload_probe_sha256": "466d3282a99a86a634dca6e6f7e8608a3cefe7e049ca554706a31d090a3ccc3c"
+        },
+        "initial_model_state_sha256": "c2fbd7a6212a3eb2cf7a888d21b94196cae7a9371057650a267e818df5694066",
+        "trainable_parameter_elements": 2431489,
+        "snapshot_matches": true,
+        "tensor_assertions_replayed": false
+      },
+      {
+        "run": "logs/cross_depth_m0_depth_mean_MSVR310_663_20260929",
+        "dataset": "MSVR310",
+        "depth_mode": "depth_mean",
+        "steps": 8,
+        "maximum_loss_reconstruction_error": 2.2351741790771484e-07,
+        "nonzero_triplet_steps": 8,
+        "m0_producer_tensor_assertions": {
+          "nonzero_gradient_parameters": 118,
+          "trainable_parameters": 118,
+          "frozen_signal_unchanged": true,
+          "reload_max_abs_difference": 0.0,
+          "reload_probe_sha256": "356c59eb5bfb985b86bd555380888452c30e104080f9be2bc54b82eeb319d7cf"
+        },
+        "initial_model_state_sha256": "60972e9d789c62c18a8f3c0deabdf27fd2138f12f7a6d7d8636ae3809f8d9548",
+        "trainable_parameter_elements": 2592769,
+        "snapshot_matches": true,
+        "tensor_assertions_replayed": false
+      },
+      {
+        "run": "logs/cross_depth_m0_mixed_once_RGBNT201_658_20260929",
+        "dataset": "RGBNT201",
+        "depth_mode": "mixed_once",
+        "steps": 8,
+        "maximum_loss_reconstruction_error": 2.337619662284851e-07,
+        "nonzero_triplet_steps": 7,
+        "m0_producer_tensor_assertions": {
+          "nonzero_gradient_parameters": 118,
+          "trainable_parameters": 118,
+          "frozen_signal_unchanged": true,
+          "reload_max_abs_difference": 0.0,
+          "reload_probe_sha256": "da661ae7f0ad4f4faf4d084bbdb3aa598434ce9a44b26295c897e146aa157e35"
+        },
+        "initial_model_state_sha256": "595e5d6ebab9eb4a5d5cf930b4328f22200d038a9f0c0e4ddf97756be9989a92",
+        "trainable_parameter_elements": 2617345,
+        "snapshot_matches": true,
+        "tensor_assertions_replayed": false
+      },
+      {
+        "run": "logs/cross_depth_m0_mixed_once_MSVR310_658_20260929",
+        "dataset": "MSVR310",
+        "depth_mode": "mixed_once",
+        "steps": 8,
+        "maximum_loss_reconstruction_error": 2.2351741790771484e-07,
+        "nonzero_triplet_steps": 8,
+        "m0_producer_tensor_assertions": {
+          "nonzero_gradient_parameters": 118,
+          "trainable_parameters": 118,
+          "frozen_signal_unchanged": true,
+          "reload_max_abs_difference": 0.0,
+          "reload_probe_sha256": "249faa5993a2ce7796d5111417a882581937371c273c28f401e47785f5a645bd"
+        },
+        "initial_model_state_sha256": "60972e9d789c62c18a8f3c0deabdf27fd2138f12f7a6d7d8636ae3809f8d9548",
+        "trainable_parameter_elements": 2592769,
+        "snapshot_matches": true,
+        "tensor_assertions_replayed": false
+      },
+      {
+        "run": "logs/cross_depth_m0_depth_mean_RGBNT201_658_20260929",
+        "dataset": "RGBNT201",
+        "depth_mode": "depth_mean",
+        "steps": 8,
+        "maximum_loss_reconstruction_error": 2.207234501838684e-07,
+        "nonzero_triplet_steps": 7,
+        "m0_producer_tensor_assertions": {
+          "nonzero_gradient_parameters": 118,
+          "trainable_parameters": 118,
+          "frozen_signal_unchanged": true,
+          "reload_max_abs_difference": 0.0,
+          "reload_probe_sha256": "01d56af0af471b5004be2a5989c8d169752e25e2c24d5f2d11415f0240e8d9ea"
+        },
+        "initial_model_state_sha256": "595e5d6ebab9eb4a5d5cf930b4328f22200d038a9f0c0e4ddf97756be9989a92",
+        "trainable_parameter_elements": 2617345,
+        "snapshot_matches": true,
+        "tensor_assertions_replayed": false
+      },
+      {
+        "run": "logs/cross_depth_m0_mixed_once_RGBNT100_658_20260929",
+        "dataset": "RGBNT100",
+        "depth_mode": "mixed_once",
+        "steps": 8,
+        "maximum_loss_reconstruction_error": 0.0,
+        "nonzero_triplet_steps": 0,
+        "m0_producer_tensor_assertions": {
+          "nonzero_gradient_parameters": 118,
+          "trainable_parameters": 118,
+          "frozen_signal_unchanged": true,
+          "reload_max_abs_difference": 0.0,
+          "reload_probe_sha256": "da3aa75c6f4997a9eaa2c0577aba776e90a4ac1d155eeba3b2be34bc9acdf0dc"
+        },
+        "initial_model_state_sha256": "c2fbd7a6212a3eb2cf7a888d21b94196cae7a9371057650a267e818df5694066",
+        "trainable_parameter_elements": 2431489,
+        "snapshot_matches": true,
+        "tensor_assertions_replayed": false
+      }
+    ],
+    "terminal_campaigns": [
+      {
+        "path": "logs/cross_depth_campaign_depth_mean_RGBNT201_659_20260929.json",
+        "dataset": "RGBNT201",
+        "depth_mode": "depth_mean",
+        "status": "COMPLETE",
+        "completed_at": "2026-09-29T21:54:16.060450+08:00",
+        "jobs": [
+          {
+            "mode": "m0",
+            "status": "COMPLETE",
+            "exit_code": 0,
+            "started_at": "2026-09-29T21:18:38.777386+08:00",
+            "completed_at": "2026-09-29T21:19:20.901341+08:00",
+            "pid": 3133082,
+            "output_dir": "/data/gaob/Re-ID/Trifusion/trained-model/cross_depth_role_state_20260929_depth_depth_mean_RGBNT201_seed42_m0"
+          },
+          {
+            "mode": "train",
+            "status": "COMPLETE",
+            "exit_code": 0,
+            "started_at": "2026-09-29T21:19:20.936889+08:00",
+            "completed_at": "2026-09-29T21:53:40.406672+08:00",
+            "pid": 3135277,
+            "output_dir": "/data/gaob/Re-ID/Trifusion/trained-model/cross_depth_role_state_20260929_depth_depth_mean_RGBNT201_seed42_full"
+          },
+          {
+            "mode": "evaluate",
+            "status": "COMPLETE",
+            "exit_code": 0,
+            "started_at": "2026-09-29T21:53:40.457397+08:00",
+            "completed_at": "2026-09-29T21:54:13.594352+08:00",
+            "pid": 3170903,
+            "output_dir": "/data/gaob/Re-ID/Trifusion/trained-model/cross_depth_role_state_20260929_depth_depth_mean_RGBNT201_seed42_full"
+          }
+        ],
+        "verification_matches_accepted": true
+      },
+      {
+        "path": "logs/cross_depth_campaign_mixed_once_RGBNT201_659_20260929.json",
+        "dataset": "RGBNT201",
+        "depth_mode": "mixed_once",
+        "status": "COMPLETE",
+        "completed_at": "2026-09-29T21:49:12.203345+08:00",
+        "jobs": [
+          {
+            "mode": "m0",
+            "status": "COMPLETE",
+            "exit_code": 0,
+            "started_at": "2026-09-29T21:18:38.770457+08:00",
+            "completed_at": "2026-09-29T21:19:22.180876+08:00",
+            "pid": 3133080,
+            "output_dir": "/data/gaob/Re-ID/Trifusion/trained-model/cross_depth_role_state_20260929_depth_mixed_once_RGBNT201_seed42_m0"
+          },
+          {
+            "mode": "train",
+            "status": "COMPLETE",
+            "exit_code": 0,
+            "started_at": "2026-09-29T21:19:22.215416+08:00",
+            "completed_at": "2026-09-29T21:48:38.271343+08:00",
+            "pid": 3135407,
+            "output_dir": "/data/gaob/Re-ID/Trifusion/trained-model/cross_depth_role_state_20260929_depth_mixed_once_RGBNT201_seed42_full"
+          },
+          {
+            "mode": "evaluate",
+            "status": "COMPLETE",
+            "exit_code": 0,
+            "started_at": "2026-09-29T21:48:38.321601+08:00",
+            "completed_at": "2026-09-29T21:49:09.801683+08:00",
+            "pid": 3165134,
+            "output_dir": "/data/gaob/Re-ID/Trifusion/trained-model/cross_depth_role_state_20260929_depth_mixed_once_RGBNT201_seed42_full"
+          }
+        ],
+        "verification_matches_accepted": true
+      },
+      {
+        "path": "logs/cross_depth_campaign_mixed_once_MSVR310_659_20260929.json",
+        "dataset": "MSVR310",
+        "depth_mode": "mixed_once",
+        "status": "COMPLETE",
+        "completed_at": "2026-09-29T21:43:21.317908+08:00",
+        "jobs": [
+          {
+            "mode": "m0",
+            "status": "COMPLETE",
+            "exit_code": 0,
+            "started_at": "2026-09-29T21:18:38.777388+08:00",
+            "completed_at": "2026-09-29T21:19:21.835160+08:00",
+            "pid": 3133083,
+            "output_dir": "/data/gaob/Re-ID/Trifusion/trained-model/cross_depth_role_state_20260929_depth_mixed_once_MSVR310_seed42_m0"
+          },
+          {
+            "mode": "train",
+            "status": "COMPLETE",
+            "exit_code": 0,
+            "started_at": "2026-09-29T21:19:21.870439+08:00",
+            "completed_at": "2026-09-29T21:42:40.047834+08:00",
+            "pid": 3135343,
+            "output_dir": "/data/gaob/Re-ID/Trifusion/trained-model/cross_depth_role_state_20260929_depth_mixed_once_MSVR310_seed42_full"
+          },
+          {
+            "mode": "evaluate",
+            "status": "COMPLETE",
+            "exit_code": 0,
+            "started_at": "2026-09-29T21:42:40.099432+08:00",
+            "completed_at": "2026-09-29T21:43:19.135974+08:00",
+            "pid": 3158865,
+            "output_dir": "/data/gaob/Re-ID/Trifusion/trained-model/cross_depth_role_state_20260929_depth_mixed_once_MSVR310_seed42_full"
+          }
+        ],
+        "verification_matches_accepted": true
+      }
+    ],
+    "formal_step_count": 6298,
+    "m0_step_count": 48,
+    "maximum_formal_scalar_error": 2.384185791015625e-07,
+    "all_archive_hash_bindings_match": true,
+    "launch_initial_four_m0_text_hashes_match": true,
+    "first_accepted_row_exactly_preserved": true,
+    "rgbnt201_mean_over_mixed_time_ratio": 1.1742982063163694,
+    "stored_cpu_parity_maximum_pp": 2.395593384107997e-06,
+    "stored_cpu_parity_count": 36,
+    "stored_cpu_parity_replayed": false,
+    "pair": {
+      "query_count_from_identity_counts": 836,
+      "identity_count": 30,
+      "weighted_delta_map_pp": -0.05612354871527553,
+      "identity_macro_delta_ap_pp": -0.04945238940888117,
+      "identity_improved": 11,
+      "identity_worsened": 13,
+      "identity_tied": 6,
+      "rank1_net_delta_from_stored_counts_pp": -0.23923444976076555,
+      "metric_and_hash_bindings_match": true,
+      "query_arrays_replayed": false,
+      "bootstrap_replayed": false,
+      "producer_script_in_campaign_manifest": false
+    }
+  }
+}
