@@ -2,7 +2,7 @@
 
 ## 0. 一页结论
 
-**本页更新至§41.643，2026-09-29 09:45验收；原24端、三global及十五M2已完成，M3固定12端首项MSVR own/direct完成50轮、严格重载与CPU完整图库复算，四卡队列继续。** 历史规则和数字保留原样，当前合同以后文登记和服务器回执为准。研究目标仍 **ACTIVE／UNMET**；工程通过、局部增量不代替三数据集强基线与SOTA要求。
+**本页更新至§41.644，2026-09-29 10:08验收／10:12实际训练快照；M3已完整验收3/12，RGBNT201直接回归的两种地址都在第2轮best，匹配位置只带来很小条件差。独立预测器已通过真实M0并进入正式训练，四卡继续自动补位。** 历史规则和数字保留原样，当前合同以后文登记和服务器回执为准。研究目标仍 **ACTIVE／UNMET**；工程通过、局部增量不代替三数据集强基线与SOTA要求。
 
 **现行合同：** 每个正式候选完整50轮，使用作者完整query/gallery及camera／MSVR时间段过滤，以官方fused mAP最高的同一checkpoint报告全部指标，随后严格重载。RGBNT201报告mAP／R1／R5／R10，RGBNT100及MSVR310报告mAP／R1；不跨epoch或seed拼列。官方集已参与逐轮选点和历史方法选择，属于已消费基准上的探索性结果。
 
@@ -28,7 +28,7 @@
 
 **当前M3：** 五个新文件实现“各自地址／匹配教师地址×直接回归／独立预测器”，固定原M1／M2／M3开启、单点采样、整体池化、seed42、预测系数0.1和50轮best合同，不从M2最高分选择配置。两网格CPU合同通过，own/direct与旧前向及预测loss精确相同；公共初始参数及RNG一致。匹配地址仅用于训练遮蔽预测并停止教师坐标梯度，正常检索仍使用学生地址并更新offset。预测器额外100608可训练参数，推理不使用，容量差异必须披露。独立fresh Astra/max复核PASS，实际serving身份未核验，same-family/provisional，不等于跨模型独立验收。
 
-09:44:03实际观察：own/direct MSVR已完成50轮及独立best评价，09:45:09 collector验收1/12，best10为52.5655 mAP／67.6819 R1。这是原M3复现控制，不是新预测器效果。GPU0 own/direct201 35/50、GPU1 own/direct100 12/50、GPU3 matched/direct201 31/50继续正式训练；GPU2自动接续matched/direct100的M0。队列4 RUNNING／7 PENDING／1 COMPLETE／0 FAILED，运行八文件SHA合同不变。下一观察09:57，约在own/direct201预计训练结束09:59前几分钟；仍须等重载及完整验收。
+M3已验收3/12：RGBNT201 own/direct 72.5574／73.8038／83.1340／87.7990、matched/direct 72.5795／73.9234／83.1340／87.7990（均best2），MSVR own/direct 52.5655／67.6819（best10）。只匹配地址的当前直接回归条件差为+0.0221 mAP／+0.1196 R1；不能扩大为预测器或完整M3成功。10:12四个实际train进程在GPU0 matched/directMSVR 20/50、GPU1 own/direct100 22/50、GPU2 matched/direct100 6/50、GPU3 own/predictor201 3/50。首个正式own/predictor自己的M0 PASS：136/136非零梯度、冻结baseline不变、重载误差0。4 RUNNING／5 PENDING／3 COMPLETE／0 FAILED。下一观察10:25，约在matched/directMSVR预计结束10:28:45前几分钟。
 
 **分析准备：** 新只读入口tools/analyze_correspondence_role_prediction.py复用既有完整图库CPU比较。每数据集四项均VERIFIED_COMPLETE才生成四个因素条件差、两个平均效应和交互；另列旧111复现及独立global诊断。fresh Astra/max复核PASS，same-family/provisional，实际serving身份未核验；root CPU非对称与加性算术、反序输入及未验收条件拒绝检查PASS。都是代码检查，不是新检索成绩。不改变18科学训练／评价源码或运行8文件合同，不触发新推理／训练／调参。Goal ACTIVE／UNMET。
 ### 0.1 历史阶段摘要（保留原始结论，不作为当前执行指令）
@@ -12365,3 +12365,45 @@ best checkpoint SHA `dd97bbba4db0fc01775d9ec39bca16dd8dc0d7d37df949dbb3b30d8f1fc
 只读源步账本完整重建1000步，970步Triplet非零，local／relation／cross_modal各1000步正标量，最大loss重建误差3.97581606748e-07。第10→50轮训练loss 1.205775→0.971425，检索mAP 52.5655→49.3231、R1 67.6819→64.4670；关系与跨模态回归均值上升，不能把所有预测项概括为持续下降。非零标量不等于有效梯度／AdamW更新份额或性能因果。
 
 证据：`logs/correspondence_m3_accepted_643_20260929.json` SHA `76649b1705baf1a25fdbd1c4a6fd9d484d49b01e404c5cc94302723cd81bba3d`、`logs/correspondence_m3_loss_audit_643_20260929.json` SHA `ccca3377aa90d5fff3b33a380237e55a39633b93ddb8ac0d10de991ba8842bb3`、`logs/correspondence_m3_progress_643_20260929.json`（09:38）和`logs/correspondence_m3_progress_644_20260929.json`（09:44）。原24封存矩阵已在本地.codex_tmp核对f1b7d364…，不是当前Git已跟踪文件；后继因素分析使用同SHA的远端.git文本镜像，不重跑原24。十八科学文件及运行八文件合同不变，§642只读因素入口待四项完整。预计own/direct201训练结束约09:59，下一登记观察09:57，不保证结束时间、不取消其余条件。Goal ACTIVE／UNMET。
+
+### 41.644 RGBNT201两种地址直接回归完整验收，独立预测器接续（2026-09-29）
+
+上一turn为PROGRESS：首项MSVR控制、只读因素入口及§642—643三方同步完成。本turn恢复原cell5134，09:57实际观察正常并terminal；按预计结束节点续接10:02、10:07、10:12各一次观察，cells5137／5140／5143均返回0并terminal，未重建训练或重跑M0。10:02:49验收增至2/12，10:08:56增至3/12，前一MSVR权重／距离／回执SHA与§643完全一致。
+
+两项新增RGBNT201均完整50轮、同seed42／纯baseline、单一官方mAP-best严格重载；既有collector核对全部query/gallery顺序及真实身份／camera字段，CPU mAP复算差0，全部已验收三端CMC最大差2.39559338411e-06个百分点。没有新GPU推理、重排或跨轮拼指标。
+
+| 数据集／条件 | best轮 | mAP | Rank-1 | Rank-5 | Rank-10 |
+|---|---:|---:|---:|---:|---:|
+| RGBNT201/own_direct | 2 | 72.5574 | 73.8038 | 83.1340 | 87.7990 |
+| RGBNT201/matched_direct | 2 | 72.5795 | 73.9234 | 83.1340 | 87.7990 |
+
+两端各2420746可训练参数，训练＋逐轮评价耗时3025.521275／3364.051256秒；不含M0及独立重载，不是受控FLOPs比较。matched−own的当前直接回归条件差为+0.0221 mAP、+0.1196 R1，R5／R10不变，幅度很小；不能由此宣布所有匹配地址无效或预测器有效。四条件未齐，不执行六配对／平均因素／交互或显著性分析，不依据已消费官方成绩改系数／选择后继配置。
+
+独立global-only为72.4944／74.0431，本次own/direct额外+0.0630 mAP／-0.2392 R1，仍未形成明显角色增量。该比较不是严格容量匹配，own/direct与原111的微小复现差不能算新算法收益。两种地址均仍低于Signal及79.6415纯起点十点目标。
+
+| RGBNT201条件 | best checkpoint SHA | distance SHA | official receipt SHA |
+|---|---|---|---|
+| own_direct | 7e518414b5f1e64bb6aa0b7cf1e2afbeff2bc1e4326b6d184003b980fa73f203 | a5220e3645cbd8ceec20ad2602aaebb5be540cb9d8017f73baf5dd9332808a15 | 41c0944310d09bc345ad7a1f8bb87f933998ac474eb0c183f36be134a5f7bdf8 |
+| matched_direct | 568d2da219a2a0647c89b00d179b5e6dff27058e0d796ba31c345a64c62b8ac1 | 63e934e31a96cad98231f2ae56f29d4733ee8827dfecd0e8397d4d1c3d177938 | 205809df0fbafe50eaeab144164ef6f5883ca9d459ee4ef29be0dee95c6d3ffa |
+
+只读账本绑定最新3端验收矩阵，合计6298步重建PASS，最大误差4.39956783893e-07；本次两201端各2649步，三种预测标量各2649步为正。下面是完整轨迹，标量活动不能换算为有效梯度／优化器份额／性能因果。
+
+| 201条件 | 源步 | Triplet非零步 | best→末轮loss | best→末轮mAP |
+|---|---:|---:|---:|---:|
+| own_direct | 2649 | 1402 | 4.218274→0.880267 | 72.5574→69.3987 |
+| matched_direct | 2649 | 1403 | 4.219458→0.880571 | 72.5795→69.3627 |
+
+两201端局部／跨光谱MSE下降而关系MSE上升，整体检索继续退化；不把后期下降都归罪于位置或M3。完整50轮及同一mAP-best规则保持。
+
+10:07观察时matched/direct201子任务已经COMPLETE而父队列尚记RUNNING，GPU3当时已释放；controller真实存活，属于240秒状态发现延迟，不是失败。10:12:04.060685自动补位已完成：首个own/predictor201八批M0 PASS，2521354参数，136/136可训练张量累计非零梯度、冻结纯baseline不变、compact重载误差0，probe SHA `bfe57c3ab6fb96cc7259fffbdebb1e84401bb723fc729bea3d843f2a4b3db716`。这只是工程门，正常推理仍用学生地址，不启用预测头，不作正式成绩。
+
+| GPU | 实际数据集／条件 | trainer PID | 已完成轮次 |
+|---|---|---:|---:|
+| 0 | MSVR310/matched_direct | 2615256 | 20/50 |
+| 1 | RGBNT100/own_direct | 2568968 | 22/50 |
+| 2 | RGBNT100/matched_direct | 2600421 | 6/50 |
+| 3 | RGBNT201/own_predictor | 2622995 | 3/50 |
+
+四GPU compute PID及cmdline吻合，4 RUNNING／5 PENDING／3 COMPLETE／0 FAILED，18科学文件和运行八文件manifest未改，原24、global3、M2十五及旧已完成M0均不重跑。数据盘余100006363136字节，不删依赖权重。用同一MSVR trainer在10:02→10:12的2→20完整epoch估计33.39秒／轮，预计训练结束10:28:45，尚有重载评价和补位延迟；下一观察10:25，按结束前里程碑查看。
+
+证据：`logs/correspondence_m3_accepted_645_20260929.json` SHA `3217697d7d90611cf6aaf31a197248464f6da0dd2a60deada5cbdb546eb1f647`、`logs/correspondence_m3_loss_audit_645_20260929.json` SHA `f3970bddc6b5f21cd2351e79fc34b3499274b82dccb3fa5a50f4bc1996eba8f6`、`logs/correspondence_m3_first_own_predictor_m0_644_20260929.json` SHA `bda43fadd695e85b53c90acae332ad395ef75d6098fa91a036ed475c863d2ab8`，10:02／10:07／10:12实际观察分别为progress646／647／648 JSON。模型、完整距离和源步日志留远端，正文与文本证据同步；三数据集强基线／SOTA目标仍未实现，Goal ACTIVE／UNMET。
