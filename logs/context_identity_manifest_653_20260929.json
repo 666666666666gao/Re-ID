@@ -1,0 +1,126 @@
+{
+  "schema": "trifusion-correspondence-context-identity-panel-v1",
+  "seed": 42,
+  "epochs": 50,
+  "poll_seconds": 240,
+  "after_campaign": "/data/gaob/Re-ID/Trifusion/logs/correspondence_m3_prediction_20260929",
+  "after_manifest_sha256": "df7b3498db1b1dd423fe643681dec2f8dce495525c6eaa52b4721ecbadbba3db",
+  "after_pid": 2566593,
+  "jobs": [
+    {
+      "phase": "context",
+      "dataset": "RGBNT201",
+      "variant": "static_none",
+      "status": "PENDING"
+    },
+    {
+      "phase": "context",
+      "dataset": "RGBNT100",
+      "variant": "static_none",
+      "status": "PENDING"
+    },
+    {
+      "phase": "context",
+      "dataset": "MSVR310",
+      "variant": "static_none",
+      "status": "PENDING"
+    },
+    {
+      "phase": "context",
+      "dataset": "RGBNT201",
+      "variant": "context_none",
+      "status": "PENDING"
+    },
+    {
+      "phase": "context",
+      "dataset": "RGBNT100",
+      "variant": "context_none",
+      "status": "PENDING"
+    },
+    {
+      "phase": "context",
+      "dataset": "MSVR310",
+      "variant": "context_none",
+      "status": "PENDING"
+    },
+    {
+      "phase": "context",
+      "dataset": "RGBNT201",
+      "variant": "static_local",
+      "status": "PENDING"
+    },
+    {
+      "phase": "context",
+      "dataset": "RGBNT100",
+      "variant": "static_local",
+      "status": "PENDING"
+    },
+    {
+      "phase": "context",
+      "dataset": "MSVR310",
+      "variant": "static_local",
+      "status": "PENDING"
+    },
+    {
+      "phase": "context",
+      "dataset": "RGBNT201",
+      "variant": "context_local",
+      "status": "PENDING"
+    },
+    {
+      "phase": "context",
+      "dataset": "RGBNT100",
+      "variant": "context_local",
+      "status": "PENDING"
+    },
+    {
+      "phase": "context",
+      "dataset": "MSVR310",
+      "variant": "context_local",
+      "status": "PENDING"
+    },
+    {
+      "phase": "context",
+      "dataset": "RGBNT201",
+      "variant": "context_global",
+      "status": "PENDING"
+    },
+    {
+      "phase": "context",
+      "dataset": "RGBNT100",
+      "variant": "context_global",
+      "status": "PENDING"
+    },
+    {
+      "phase": "context",
+      "dataset": "MSVR310",
+      "variant": "context_global",
+      "status": "PENDING"
+    }
+  ],
+  "source_sha256": {
+    "modeling/trifusion/correspondence_roles.py": "e2a51154b5b327341f35e453dd32a821b091a49a669b49a7c70e79e6e2f2591b",
+    "modeling/trifusion/correspondence_evidence_readout.py": "e737a977d39ccbe09a5509118e5b5333d653f7f13381e65e84af1a13e5c28dc4",
+    "tools/run_correspondence_roles.py": "e50865fb923297cd61cf38b33ec2bc95154f8c503b5dfe5de9823cad3f03d7ef",
+    "tools/queue_correspondence_refinement.py": "5256afe78d02d9bfea3103daa00d488b94c05e839c955f00355098f69ecbd84a",
+    "modeling/trifusion/correspondence_context_identity.py": "eda3d1473496b33e4b69402dba7770e67d23b33b07afd41d23105b7f148d63af",
+    "tools/run_correspondence_context_identity.py": "9f4cc9f11998819d4a927a32f4e47baf0c4ff9d14c4bc93b0dc35b0153ebc142",
+    "tools/queue_correspondence_context_identity.py": "5ac2395413c7ce744ac18be40be2e29039f2039b74b13896e48ca8bed8d4bb0f",
+    "tools/collect_correspondence_context_identity.py": "bdc3a70eb31c94fd43acae2e490ae0c596ee7e1408d22d103ec68e9c293cd472",
+    "tools/audit_correspondence_context_identity_losses.py": "bcc15e568c6a14efdaca1df5268c5abdec716287d3b6efb2482804add724abf1"
+  },
+  "fixed_contract": {
+    "m1": true,
+    "m2": true,
+    "m3": false,
+    "width": 128,
+    "fused_width": 1536,
+    "selection": "query",
+    "readout": "regions",
+    "auxiliary_id_weight": 1.0,
+    "context_width": 512,
+    "seed": 42,
+    "checkpoint_policy": "best_official_map"
+  },
+  "boundary": "All twelve original M3 jobs have started before new jobs use free GPUs; no preemption. Five controls on all three datasets; real M0 precedes each full50/best/reload. Original M3 full12 verification is required again at final completion. No retry, loss scan, seed search or automatic configuration selection."
+}

@@ -2,7 +2,7 @@
 
 ## 0. 一页结论
 
-**本页更新至§41.652，2026-09-29 13:17正式验收11/12；RGBNT201、MSVR310四条件均完整分析，预测器没有解决强参照差距。原最后一项RGBNT100继续；新身份上下文查询／联合局部身份出口五条件×三集代码及CPU检查完成，尚无生产M0或新正式结果，原12全部已启动，新任务在空卡非抢占接续，终态同时保留原12验收。** 历史规则和数字保留原样，当前合同以后文登记和服务器回执为准。研究目标仍 **ACTIVE／UNMET**；工程通过、局部增量不代替三数据集强基线与SOTA要求。
+**本页更新至§41.653，2026-09-29 13:30真实四卡train：新static_none201/100/MSVR已通过真实M0并进入full50，原M3最后100 matched/predictor保持原PID2699844、27/50。原M3正式验收11/12；新15端0正式终点、3running/12pending。每轮官方fused mAP选同一best、严格重载；原12和新15最终都完整验收，不取消负端。** 历史规则和数字保留原样，当前合同以后文登记和服务器回执为准。研究目标仍 **ACTIVE／UNMET**；工程通过、局部增量不代替三数据集强基线与SOTA要求。
 
 **现行合同：** 每个正式候选完整50轮，使用作者完整query/gallery及camera／MSVR时间段过滤，以官方fused mAP最高的同一checkpoint报告全部指标，随后严格重载。RGBNT201报告mAP／R1／R5／R10，RGBNT100及MSVR310报告mAP／R1；不跨epoch或seed拼列。官方集已参与逐轮选点和历史方法选择，属于已消费基准上的探索性结果。
 
@@ -12703,3 +12703,32 @@ CPU合成检查实际2026-09-29T12:52:04.397006+08:00通过：五条件完整初
 | own_predictor | 1 | 85.1936 | 95.1020 | 675a4734e7bc5eca1adc9898cf19cd263e949d702b02463d325bcca49bfdc182 |
 
 累计十一端34273步loss完整重构，最大误差4.61190938772e-07。新增两个100端各6559步Triplet均0、三预测标量各6559步正。100四条件最后一端未完，不执行四因素、不用中途best、不挑新配方。accepted652 SHA bf76ccad33324401548fa33dceb75892f3a6c8d5d0c80cdecda06b4cf40010f3；loss652 SHA 0e1e2fb88ea8d5d64b6fffdf275b931e95a0dc8ffd65a699ebd8bab10165e2e5；实际progress661作为独立时刻证据。新方法生产M0未执行，当前源码准备／后继非抢占启动规则不是新方法成绩。
+
+### 41.653 新context/local控制队列实际部署、三集首批真实M0通过、四卡训练（2026-09-29）
+
+§652源码／计划／fresh复核与十一M3正式端已以7af2afd73f6e8a81348aa609b43e6a2277b78363推送GitHub，并fast-forward安装到原服务器。同步receipt实际核对51个Gitblob（18旧科学源＋33新artifact），18旧科学worktree、原M3八源manifest保持；新增五源从精确commit安装，未修改旧actor代码、原日程或权重。MD／Desktop／server一致SHA14d7b3a6d9e164172438c550b10c5b0b86863591183f2e942cb003c237c93aa5。
+
+真实conda环境的CPU导入／AST／四个CLI --help和45个已登记命令合同实际2026-09-29T13:27:08.363010+08:00通过；没有构建模型或训练，不计M0。随后实际2026-09-29T13:27:25.681911+08:00启动新controller2779171，campaign=logs/correspondence_context_identity_20260929，共5条件×3集15端。首个GPU子进程前等待该卡旧worker COMPLETE，故旧训练→evaluate的瞬时显存释放不能被用来抢占；原13:15只有最后100在GPU3，新三端使用0/1/2。启动时parent_matrix_at_launch记录原11已验收、最后一端未完；新终态必须再验收原12/12和新15/15，含跨条件初始state核对。
+
+计划单次观察（启动185秒后）实际2026-09-29T13:30:33.801514+08:00确认新三端生产M0均PASS：从真实冻结纯ReID baseline和production_mamba_factory构建，八批累计119/119个应训练参数张量有非零／有限梯度、冻结Signal/CLIP原baseline状态完全不变，独立新模型加载紧凑student权重后输出最大绝对差0。**119是参数张量数，不是标量参数量。** 首批只验证static_none；其余12个条件各自还要过真实M0，不能将这三份PASS转移给其它条件。
+
+| 首批真实M0 | GPU | 可训练标量参数量 | 非零梯度张量 | 重载最大差 | M0 receipt SHA |
+|---|---:|---:|---:|---:|---|
+| RGBNT201 | 0 | 2617354 | 119/119 | 0 | 60047d9cafb8184e24bcb2fc9efc5860e01367e682721f755370c4dd8844bd2d |
+| RGBNT100 | 1 | 2431498 | 119/119 | 0 | 3b4a4a6f97fb8ba6d5b3a0748ac01f89e689f3db7196cd1a811173ab2a5f1705 |
+| MSVR310 | 2 | 2592778 | 119/119 | 0 | 5dbcb2ce32b3a72d8929af647e0bacf903fa1edcd79cd15f427013559bc9c55a |
+
+首批三份M0完整training.json已归档，initializer中的同公开baseline／协议／条件／源SHA与实际source逐项吻合。M0不进行正式检索，不是新方法性能证据。正式train重新初始化，不延续M0八批权重；原50轮、每轮官方fused mAP保存同一个best、末尾独立严格重载与三路完整Q/G距离／作者和CPU复算保持。所有新15端必须完整结束，不按中途best换seed、取消配置或扫描loss。
+
+| 13:30实际GPU | 队列／条件 | trainer PID | 已完整轮次 |
+|---|---|---:|---:|
+| 0 | 新context：RGBNT201/static_none | 2781318 | 3/50 |
+| 1 | 新context：RGBNT100/static_none | 2781382 | 1/50 |
+| 2 | 新context：MSVR310/static_none | 2781447 | 4/50 |
+| 3 | 原M3：RGBNT100/matched_predictor | 2699844 | 27/50 |
+
+实际nvidia：GPU0 10209MiB/86%，GPU1 10209/100%，GPU2 10865/100%，GPU3 19183/100%；四个trainer实际/proc命令与nvidia compute PID吻合。原GPU3 PID2699844仍原entry、原config、27/50，没有中止或重启。此时新队列3running／12pending／0complete，原M3仍11正式接受端，不把第一轮分数写进正式表。盘余99596677120字节无需删权重。M3关闭后第一批新模型显存较低，是实际快照，不是控制推理效率或速度结论。
+
+GitHub代码已部署和真实M0已通过仍不等于新方法成功；source-only/same-family/provisional复核边界保留，历史CPU玩具报告也保持原scope。新方法的身份证据、首位负翻转与纯baseline十点／强参照目标，都须由完成15端和完整三路诊断判断。原M3最后端及其100完整四因素将在实际全50＋重载后分析，201/MSVR已封存四因素不重复执行。
+
+本节证据：context_identity_launch_653_20260929.json，context_identity_progress_653_20260929.json，context_identity_manifest_653_20260929.json SHA8ea9c7d9306e024b08e162b6d800ec0e402a6a19bfa411e28332fc61c4bd8d0d；三个context_identity_m0_static_none_*_653_20260929.json原回执；context_identity_cli_652_20260929.json和correspondence_roles_sync_652_20260929.json。启动／导入驱动与本节源码同时归档。下一训练观察按本次3/1/4及原27轮预算估算，先关注新MSVR首个完整终态约13:55附近，另需reload/CPU验收；不提前反复SSH查中间best。Goal ACTIVE／UNMET，自动非抢占接续继续。
