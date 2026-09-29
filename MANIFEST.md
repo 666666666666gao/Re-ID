@@ -1540,3 +1540,5 @@
 | 2026-09-30T00:48:00+08:00 | /experiment-plan | refine-logs/prompt_role_state_v1/EXPERIMENT_PLAN.md | implementation | Latest copy of role-prompt experiment plan |
 | 2026-09-30T00:48:00+08:00 | /experiment-plan | refine-logs/prompt_role_state_v1/EXPERIMENT_TRACKER_20260930_0048.md | implementation | Six-end registered tracker, no runs yet |
 | 2026-09-30T00:48:00+08:00 | /experiment-plan | refine-logs/prompt_role_state_v1/EXPERIMENT_TRACKER.md | implementation | Latest copy of role-prompt tracker |
+| 2026-09-30T01:03:00+08:00 | /experiment-plan | refine-logs/prompt_role_state_v1/EXPERIMENT_TRACKER_20260930_0103.md | implementation | Four real M0 complete; four training active, two pending |
+| 2026-09-30T01:03:00+08:00 | /experiment-plan | refine-logs/prompt_role_state_v1/EXPERIMENT_TRACKER.md | implementation | Latest prompt-role panel progress snapshot |
