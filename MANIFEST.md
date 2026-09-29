@@ -1517,3 +1517,22 @@
 | 2026-09-21T00:21:19.935193+08:00 | /experiment-bridge | refine-logs/msvr310_cross_scene_smooth_ap_v1/EXPERIMENT_TRACKER.md | implementation | Static reviewed; runtime pending |
 | 2026-09-21T00:21:19.935197+08:00 | /experiment-bridge | refine-logs/msvr310_cross_scene_smooth_ap_v1/EXPERIMENT_CODE_REVIEW.md | implementation | Static reviewed; runtime pending |
 | 2026-09-21T00:21:19.935201+08:00 | /experiment-bridge | refine-logs/msvr310_cross_scene_smooth_ap_v1/EXPERIMENT_CODE_REVIEW.json | implementation | Static reviewed; runtime pending |
+
+| 2026-09-29T13:20:00+08:00 | /experiment-bridge | refine-logs/correspondence_context_identity_v1/EXPERIMENT_PLAN.md | implementation | Context/local controls; source review and CPU synthetic PASS; production M0 NOT RUN |
+| 2026-09-29T13:20:00+08:00 | /experiment-bridge | refine-logs/correspondence_context_identity_v1/EXPERIMENT_PLAN_20260929_1246.md | implementation | Context/local controls; source review and CPU synthetic PASS; production M0 NOT RUN |
+| 2026-09-29T13:20:00+08:00 | /experiment-bridge | refine-logs/correspondence_context_identity_v1/EXPERIMENT_PLAN_20260929_1320.md | implementation | Context/local controls; source review and CPU synthetic PASS; production M0 NOT RUN |
+| 2026-09-29T13:20:00+08:00 | /experiment-bridge | refine-logs/correspondence_context_identity_v1/EXPERIMENT_TRACKER.md | implementation | Context/local controls; source review and CPU synthetic PASS; production M0 NOT RUN |
+| 2026-09-29T13:20:00+08:00 | /experiment-bridge | refine-logs/correspondence_context_identity_v1/EXPERIMENT_TRACKER_20260929_1246.md | implementation | Context/local controls; source review and CPU synthetic PASS; production M0 NOT RUN |
+| 2026-09-29T13:20:00+08:00 | /experiment-bridge | refine-logs/correspondence_context_identity_v1/EXPERIMENT_TRACKER_20260929_1320.md | implementation | Context/local controls; source review and CPU synthetic PASS; production M0 NOT RUN |
+| 2026-09-29T13:20:00+08:00 | /experiment-bridge | refine-logs/correspondence_context_identity_v1/REVIEW_DRAFT.md | implementation | Context/local controls; source review and CPU synthetic PASS; production M0 NOT RUN |
+| 2026-09-29T13:20:00+08:00 | /experiment-bridge | refine-logs/correspondence_context_identity_v1/REVIEW_DRAFT_20260929_1300.md | implementation | Context/local controls; source review and CPU synthetic PASS; production M0 NOT RUN |
+| 2026-09-29T13:20:00+08:00 | /experiment-bridge | refine-logs/correspondence_context_identity_v1/REVIEW_EXECUTION.md | implementation | Context/local controls; source review and CPU synthetic PASS; production M0 NOT RUN |
+| 2026-09-29T13:20:00+08:00 | /experiment-bridge | refine-logs/correspondence_context_identity_v1/REVIEW_EXECUTION_20260929_1308.md | implementation | Context/local controls; source review and CPU synthetic PASS; production M0 NOT RUN |
+| 2026-09-29T13:20:00+08:00 | /experiment-bridge | refine-logs/correspondence_context_identity_v1/REVIEW_EXECUTION_20260929_1320.md | implementation | Context/local controls; source review and CPU synthetic PASS; production M0 NOT RUN |
+| 2026-09-29T13:20:00+08:00 | /experiment-bridge | modeling/trifusion/correspondence_context_identity.py | implementation | Context/local controls; source review and CPU synthetic PASS; production M0 NOT RUN |
+| 2026-09-29T13:20:00+08:00 | /experiment-bridge | tools/run_correspondence_context_identity.py | implementation | Context/local controls; source review and CPU synthetic PASS; production M0 NOT RUN |
+| 2026-09-29T13:20:00+08:00 | /experiment-bridge | tools/queue_correspondence_context_identity.py | implementation | Context/local controls; source review and CPU synthetic PASS; production M0 NOT RUN |
+| 2026-09-29T13:20:00+08:00 | /experiment-bridge | tools/collect_correspondence_context_identity.py | implementation | Context/local controls; source review and CPU synthetic PASS; production M0 NOT RUN |
+| 2026-09-29T13:20:00+08:00 | /experiment-bridge | tools/audit_correspondence_context_identity_losses.py | implementation | Context/local controls; source review and CPU synthetic PASS; production M0 NOT RUN |
+| 2026-09-29T13:20:00+08:00 | /experiment-bridge | logs/context_identity_cpu_652_20260929.json | implementation | Context/local controls; source review and CPU synthetic PASS; production M0 NOT RUN |
+| 2026-09-29T13:20:00+08:00 | /experiment-bridge | logs/check_context_identity_cpu_652_20260929.py | implementation | Context/local controls; source review and CPU synthetic PASS; production M0 NOT RUN |

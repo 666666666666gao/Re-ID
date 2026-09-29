@@ -1,0 +1,447 @@
+{
+  "status": "COMPLETE_FOUR_CELL_M3_FACTOR_DIAGNOSIS",
+  "at": "2026-09-29T13:08:21.854339+08:00",
+  "dataset": "MSVR310",
+  "source_sha256": "ba17c51c5d4bd954845e3da80119c4ec15c5fb0dc956f353597653a71fafa480",
+  "matrix": ".git/correspondence_m3_accepted_651_20260929.json",
+  "matrix_sha256": "b5423eb41a8e1c4a17d98833f5755f128ca604b7706a0d8c194a1e1ff97043cf",
+  "prior_matrix": ".git/correspondence_refinement_accepted_m2_complete_639_20260929.json",
+  "prior_matrix_sha256": "ed3c488ecf4ae106ab257eb657c4a65cc6b90245bec239a19aacacf37ffdab71",
+  "original_matrix": ".git/correspondence_roles_matrix_full24_20260928.json",
+  "original_matrix_sha256": "f1b7d364dc30a9e46ed9d8c704fce9ef4e00cff9b91faf97316fa992498cbfa1",
+  "factor_metrics_pp": {
+    "mean_address_effect": {
+      "mAP": 0.017903474158533328,
+      "Rank-1": -0.08460283279418945,
+      "Rank-5": 0.1692056655883789,
+      "Rank-10": -0.25380849838256836
+    },
+    "mean_predictor_effect": {
+      "mAP": 0.17940956943871456,
+      "Rank-1": 0.9306252002716064,
+      "Rank-5": -0.1692056655883789,
+      "Rank-10": -1.7766475677490234
+    },
+    "address_predictor_interaction": {
+      "mAP": 0.12214710274820817,
+      "Rank-1": 0.1692056655883789,
+      "Rank-5": -0.3384113311767578,
+      "Rank-10": -0.5076169967651367
+    }
+  },
+  "cells": [
+    {
+      "variant": "own_direct",
+      "best_epoch": 10,
+      "metrics": {
+        "mAP": 52.565483303730986,
+        "Rank-1": 67.68189668655396,
+        "Rank-5": 82.23350048065186,
+        "Rank-10": 88.83248567581177
+      },
+      "trainable_parameters": 2396170,
+      "training_and_epoch_eval_seconds": 1931.062896
+    },
+    {
+      "variant": "matched_direct",
+      "best_epoch": 10,
+      "metrics": {
+        "mAP": 52.522313226515415,
+        "Rank-1": 67.51269102096558,
+        "Rank-5": 82.57191181182861,
+        "Rank-10": 88.83248567581177
+      },
+      "trainable_parameters": 2396170,
+      "training_and_epoch_eval_seconds": 1721.493157
+    },
+    {
+      "variant": "own_predictor",
+      "best_epoch": 15,
+      "metrics": {
+        "mAP": 52.683819321795596,
+        "Rank-1": 68.52791905403137,
+        "Rank-5": 82.23350048065186,
+        "Rank-10": 87.30964660644531
+      },
+      "trainable_parameters": 2496778,
+      "training_and_epoch_eval_seconds": 1870.213934
+    },
+    {
+      "variant": "matched_predictor",
+      "best_epoch": 15,
+      "metrics": {
+        "mAP": 52.76279634732823,
+        "Rank-1": 68.52791905403137,
+        "Rank-5": 82.23350048065186,
+        "Rank-10": 86.80202960968018
+      },
+      "trainable_parameters": 2496778,
+      "training_and_epoch_eval_seconds": 1644.85587
+    }
+  ],
+  "delta_from_global_only_pp": {
+    "own_direct": {
+      "mAP": 0.617479863088576,
+      "Rank-1": 0.3384113311767578,
+      "Rank-5": -1.3536393642425537,
+      "Rank-10": -0.3384113311767578
+    },
+    "matched_direct": {
+      "mAP": 0.5743097858730053,
+      "Rank-1": 0.1692056655883789,
+      "Rank-5": -1.015228033065796,
+      "Rank-10": -0.3384113311767578
+    },
+    "own_predictor": {
+      "mAP": 0.7358158811531865,
+      "Rank-1": 1.1844336986541748,
+      "Rank-5": -1.3536393642425537,
+      "Rank-10": -1.861250400543213
+    },
+    "matched_predictor": {
+      "mAP": 0.8147929066858239,
+      "Rank-1": 1.1844336986541748,
+      "Rank-5": -1.3536393642425537,
+      "Rank-10": -2.3688673973083496
+    }
+  },
+  "pairs": [
+    {
+      "status": "CPU_ARRAY_PARITY_AND_PAIRED_DIAGNOSIS_COMPLETE",
+      "dataset": "MSVR310",
+      "control": "own_direct",
+      "candidate": "matched_direct",
+      "time": "2026-09-29T13:08:22.019279+08:00",
+      "bindings": {
+        "own_direct": {
+          "best_epoch": 10,
+          "checkpoint_sha256": "dd97bbba4db0fc01775d9ec39bca16dd8dc0d7d37df949dbb3b30d8f1fc5551d",
+          "distance_sha256": "a063a7e1d80242d15702e6ebdebc5d2f4e25161f88e322dd66be45364dd599b0",
+          "receipt_sha256": "dff71cd0b1d41fc59ab97f20501ed5dd8d5f70da715b458d4fbae1841deacb0c"
+        },
+        "matched_direct": {
+          "best_epoch": 10,
+          "checkpoint_sha256": "c65ec0cf681ded7f56e9bfac0f2a3bd314544e8a57ba28a779065325bd067db3",
+          "distance_sha256": "ceb9e596b2136fc854fac5a834d3caaf33dd3894f055047c545efc7b19629b6f",
+          "receipt_sha256": "33fc8039a755f9a594a606dcec843c498a2f288706f731e9326348c6b868e1a9"
+        }
+      },
+      "metrics": {
+        "own_direct": {
+          "mAP": 52.565483303730986,
+          "Rank-1": 67.68189509306261,
+          "Rank-5": 82.23350253807106,
+          "Rank-10": 88.83248730964468
+        },
+        "matched_direct": {
+          "mAP": 52.52231322651541,
+          "Rank-1": 67.51269035532995,
+          "Rank-5": 82.57191201353638,
+          "Rank-10": 88.83248730964468
+        }
+      },
+      "delta_metrics": {
+        "mAP": -0.04317007721557786,
+        "Rank-1": -0.16920473773265599,
+        "Rank-5": 0.33840947546531197,
+        "Rank-10": 0.0
+      },
+      "rank1_repairs": 1,
+      "rank1_new_errors": 2,
+      "query_ap_improved": 242,
+      "query_ap_worsened": 248,
+      "identity_ap_improved": 21,
+      "identity_ap_worsened": 25,
+      "identity_macro_mean_delta_ap_points": -0.07635271897740994,
+      "identity_bootstrap_95_percentile_interval": [
+        -0.23820286909298852,
+        0.08905066936682832
+      ],
+      "boundary": "Official post-selection diagnosis, not new inference or selection. Different capacity and possibly random-number consumption. Bootstrap resamples fixed-model identities, not training seeds.",
+      "question": "address_matching_with_direct_regression",
+      "report": ".git/correspondence_m3_factor_MSVR310_652_20260929/own_direct_to_matched_direct.json",
+      "report_sha256": "341e74a2f4095ef4eb4d14579ad8071cb2fef9b5f94037ffea7d9a2c2b3973e3"
+    },
+    {
+      "status": "CPU_ARRAY_PARITY_AND_PAIRED_DIAGNOSIS_COMPLETE",
+      "dataset": "MSVR310",
+      "control": "own_predictor",
+      "candidate": "matched_predictor",
+      "time": "2026-09-29T13:08:22.180331+08:00",
+      "bindings": {
+        "own_predictor": {
+          "best_epoch": 15,
+          "checkpoint_sha256": "b897093796102d2d3c9ae4adc9f7a700c908d737df9747f8d32ebfd1a906abd9",
+          "distance_sha256": "76a352abcbeaf3bfecc246ba262d05a42e45d163397216c5852b5978e8268dc6",
+          "receipt_sha256": "6c14c918fc568a29186b5729e2221f1afa6be88285bb6e520d7dc2cda57e2cfe"
+        },
+        "matched_predictor": {
+          "best_epoch": 15,
+          "checkpoint_sha256": "6e4ed9094d3020a79646961d941d70850a7d4ce229ecf59f82f34482f8c8b60c",
+          "distance_sha256": "3b4a3e6147b079be1a515f303f9c5f82f13b8f1c53e94e5b98b9eb122ed2cdbf",
+          "receipt_sha256": "521fa7ceb076b36ab86d3e4fa4d682b7c779857b8ff86292368e27ff88ca0b16"
+        }
+      },
+      "metrics": {
+        "own_predictor": {
+          "mAP": 52.683819321795596,
+          "Rank-1": 68.52791878172589,
+          "Rank-5": 82.23350253807106,
+          "Rank-10": 87.30964467005076
+        },
+        "matched_predictor": {
+          "mAP": 52.76279634732823,
+          "Rank-1": 68.52791878172589,
+          "Rank-5": 82.23350253807106,
+          "Rank-10": 86.80203045685279
+        }
+      },
+      "delta_metrics": {
+        "mAP": 0.07897702553263741,
+        "Rank-1": 0.0,
+        "Rank-5": 0.0,
+        "Rank-10": -0.507614213197968
+      },
+      "rank1_repairs": 2,
+      "rank1_new_errors": 2,
+      "query_ap_improved": 259,
+      "query_ap_worsened": 259,
+      "identity_ap_improved": 27,
+      "identity_ap_worsened": 22,
+      "identity_macro_mean_delta_ap_points": 0.13736090061594022,
+      "identity_bootstrap_95_percentile_interval": [
+        -0.0035959616187126488,
+        0.2951418980238645
+      ],
+      "boundary": "Official post-selection diagnosis, not new inference or selection. Different capacity and possibly random-number consumption. Bootstrap resamples fixed-model identities, not training seeds.",
+      "question": "address_matching_with_predictors",
+      "report": ".git/correspondence_m3_factor_MSVR310_652_20260929/own_predictor_to_matched_predictor.json",
+      "report_sha256": "f65c80411281cd462f36f23eda2f9316d42b1df83ce7b56d9ea7a3b83df43b70"
+    },
+    {
+      "status": "CPU_ARRAY_PARITY_AND_PAIRED_DIAGNOSIS_COMPLETE",
+      "dataset": "MSVR310",
+      "control": "own_direct",
+      "candidate": "own_predictor",
+      "time": "2026-09-29T13:08:22.341243+08:00",
+      "bindings": {
+        "own_direct": {
+          "best_epoch": 10,
+          "checkpoint_sha256": "dd97bbba4db0fc01775d9ec39bca16dd8dc0d7d37df949dbb3b30d8f1fc5551d",
+          "distance_sha256": "a063a7e1d80242d15702e6ebdebc5d2f4e25161f88e322dd66be45364dd599b0",
+          "receipt_sha256": "dff71cd0b1d41fc59ab97f20501ed5dd8d5f70da715b458d4fbae1841deacb0c"
+        },
+        "own_predictor": {
+          "best_epoch": 15,
+          "checkpoint_sha256": "b897093796102d2d3c9ae4adc9f7a700c908d737df9747f8d32ebfd1a906abd9",
+          "distance_sha256": "76a352abcbeaf3bfecc246ba262d05a42e45d163397216c5852b5978e8268dc6",
+          "receipt_sha256": "6c14c918fc568a29186b5729e2221f1afa6be88285bb6e520d7dc2cda57e2cfe"
+        }
+      },
+      "metrics": {
+        "own_direct": {
+          "mAP": 52.565483303730986,
+          "Rank-1": 67.68189509306261,
+          "Rank-5": 82.23350253807106,
+          "Rank-10": 88.83248730964468
+        },
+        "own_predictor": {
+          "mAP": 52.683819321795596,
+          "Rank-1": 68.52791878172589,
+          "Rank-5": 82.23350253807106,
+          "Rank-10": 87.30964467005076
+        }
+      },
+      "delta_metrics": {
+        "mAP": 0.11833601806461047,
+        "Rank-1": 0.8460236886632799,
+        "Rank-5": 0.0,
+        "Rank-10": -1.522842639593918
+      },
+      "rank1_repairs": 23,
+      "rank1_new_errors": 18,
+      "query_ap_improved": 291,
+      "query_ap_worsened": 272,
+      "identity_ap_improved": 28,
+      "identity_ap_worsened": 23,
+      "identity_macro_mean_delta_ap_points": -0.2945695996576196,
+      "identity_bootstrap_95_percentile_interval": [
+        -1.801793182910459,
+        1.2899579818632627
+      ],
+      "boundary": "Official post-selection diagnosis, not new inference or selection. Different capacity and possibly random-number consumption. Bootstrap resamples fixed-model identities, not training seeds.",
+      "question": "predictors_with_own_addresses",
+      "report": ".git/correspondence_m3_factor_MSVR310_652_20260929/own_direct_to_own_predictor.json",
+      "report_sha256": "5a945466937677a4ebd00453e830a273a452d73ffe2a9ef52e7cd56894831bee"
+    },
+    {
+      "status": "CPU_ARRAY_PARITY_AND_PAIRED_DIAGNOSIS_COMPLETE",
+      "dataset": "MSVR310",
+      "control": "matched_direct",
+      "candidate": "matched_predictor",
+      "time": "2026-09-29T13:08:22.498692+08:00",
+      "bindings": {
+        "matched_direct": {
+          "best_epoch": 10,
+          "checkpoint_sha256": "c65ec0cf681ded7f56e9bfac0f2a3bd314544e8a57ba28a779065325bd067db3",
+          "distance_sha256": "ceb9e596b2136fc854fac5a834d3caaf33dd3894f055047c545efc7b19629b6f",
+          "receipt_sha256": "33fc8039a755f9a594a606dcec843c498a2f288706f731e9326348c6b868e1a9"
+        },
+        "matched_predictor": {
+          "best_epoch": 15,
+          "checkpoint_sha256": "6e4ed9094d3020a79646961d941d70850a7d4ce229ecf59f82f34482f8c8b60c",
+          "distance_sha256": "3b4a3e6147b079be1a515f303f9c5f82f13b8f1c53e94e5b98b9eb122ed2cdbf",
+          "receipt_sha256": "521fa7ceb076b36ab86d3e4fa4d682b7c779857b8ff86292368e27ff88ca0b16"
+        }
+      },
+      "metrics": {
+        "matched_direct": {
+          "mAP": 52.52231322651541,
+          "Rank-1": 67.51269035532995,
+          "Rank-5": 82.57191201353638,
+          "Rank-10": 88.83248730964468
+        },
+        "matched_predictor": {
+          "mAP": 52.76279634732823,
+          "Rank-1": 68.52791878172589,
+          "Rank-5": 82.23350253807106,
+          "Rank-10": 86.80203045685279
+        }
+      },
+      "delta_metrics": {
+        "mAP": 0.24048312081282575,
+        "Rank-1": 1.015228426395936,
+        "Rank-5": -0.33840947546531197,
+        "Rank-10": -2.030456852791886
+      },
+      "rank1_repairs": 23,
+      "rank1_new_errors": 17,
+      "query_ap_improved": 288,
+      "query_ap_worsened": 272,
+      "identity_ap_improved": 28,
+      "identity_ap_worsened": 23,
+      "identity_macro_mean_delta_ap_points": -0.08085598006426957,
+      "identity_bootstrap_95_percentile_interval": [
+        -1.5738011724448833,
+        1.5667192013562397
+      ],
+      "boundary": "Official post-selection diagnosis, not new inference or selection. Different capacity and possibly random-number consumption. Bootstrap resamples fixed-model identities, not training seeds.",
+      "question": "predictors_with_matched_addresses",
+      "report": ".git/correspondence_m3_factor_MSVR310_652_20260929/matched_direct_to_matched_predictor.json",
+      "report_sha256": "690cd4d4b9c94975b45226522f54c79f513e91afaaa06dafda54fa1037b15034"
+    },
+    {
+      "status": "CPU_ARRAY_PARITY_AND_PAIRED_DIAGNOSIS_COMPLETE",
+      "dataset": "MSVR310",
+      "control": "original_111",
+      "candidate": "own_direct",
+      "time": "2026-09-29T13:08:22.653476+08:00",
+      "bindings": {
+        "original_111": {
+          "best_epoch": 15,
+          "checkpoint_sha256": "2c5aaadbf13a0c0c61ccf54875470cc8336e32cb5bda64e98e41ee8c34b32ef1",
+          "distance_sha256": "e32dafa2be3b96d32979414d0ef554e7624e23c23f68837310fb343662e056a3",
+          "receipt_sha256": "85ac1043519b048c1af81891301adb3ecbcc0879a05fc54154f69b48674d3e2a"
+        },
+        "own_direct": {
+          "best_epoch": 10,
+          "checkpoint_sha256": "dd97bbba4db0fc01775d9ec39bca16dd8dc0d7d37df949dbb3b30d8f1fc5551d",
+          "distance_sha256": "a063a7e1d80242d15702e6ebdebc5d2f4e25161f88e322dd66be45364dd599b0",
+          "receipt_sha256": "dff71cd0b1d41fc59ab97f20501ed5dd8d5f70da715b458d4fbae1841deacb0c"
+        }
+      },
+      "metrics": {
+        "original_111": {
+          "mAP": 52.34192814070874,
+          "Rank-1": 68.52791878172589,
+          "Rank-5": 82.57191201353638,
+          "Rank-10": 86.80203045685279
+        },
+        "own_direct": {
+          "mAP": 52.565483303730986,
+          "Rank-1": 67.68189509306261,
+          "Rank-5": 82.23350253807106,
+          "Rank-10": 88.83248730964468
+        }
+      },
+      "delta_metrics": {
+        "mAP": 0.22355516302224743,
+        "Rank-1": -0.8460236886632799,
+        "Rank-5": -0.33840947546531197,
+        "Rank-10": 2.030456852791886
+      },
+      "rank1_repairs": 17,
+      "rank1_new_errors": 22,
+      "query_ap_improved": 292,
+      "query_ap_worsened": 272,
+      "identity_ap_improved": 29,
+      "identity_ap_worsened": 21,
+      "identity_macro_mean_delta_ap_points": 0.6608175943880121,
+      "identity_bootstrap_95_percentile_interval": [
+        -0.9115561244194251,
+        2.0924728393888485
+      ],
+      "boundary": "Official post-selection diagnosis, not new inference or selection. Different capacity and possibly random-number consumption. Bootstrap resamples fixed-model identities, not training seeds.",
+      "question": "unchanged_forward_and_loss_replication",
+      "report": ".git/correspondence_m3_factor_MSVR310_652_20260929/original_111_to_own_direct.json",
+      "report_sha256": "65dd814157ef2f67e9374c63baf5e428610888f4a26787182112b6703ed40fb6"
+    },
+    {
+      "status": "CPU_ARRAY_PARITY_AND_PAIRED_DIAGNOSIS_COMPLETE",
+      "dataset": "MSVR310",
+      "control": "global_only",
+      "candidate": "own_direct",
+      "time": "2026-09-29T13:08:22.808806+08:00",
+      "bindings": {
+        "global_only": {
+          "best_epoch": 10,
+          "checkpoint_sha256": "87960408ba6eb73c6a0f59611ee3d966c3c3f4bb5c68b0a38e06d1baeac8cff6",
+          "distance_sha256": "bf7292595baa0c4b2f9b4cd8b03a512f48e37ad8effdf096146c582f1552341e",
+          "receipt_sha256": "249ffce96ee707c5af9d30da97db6c9e85194a1a7ce557e4bf2dd52ec0ab38fd"
+        },
+        "own_direct": {
+          "best_epoch": 10,
+          "checkpoint_sha256": "dd97bbba4db0fc01775d9ec39bca16dd8dc0d7d37df949dbb3b30d8f1fc5551d",
+          "distance_sha256": "a063a7e1d80242d15702e6ebdebc5d2f4e25161f88e322dd66be45364dd599b0",
+          "receipt_sha256": "dff71cd0b1d41fc59ab97f20501ed5dd8d5f70da715b458d4fbae1841deacb0c"
+        }
+      },
+      "metrics": {
+        "global_only": {
+          "mAP": 51.94800344064241,
+          "Rank-1": 67.34348561759728,
+          "Rank-5": 83.58714043993231,
+          "Rank-10": 89.17089678510999
+        },
+        "own_direct": {
+          "mAP": 52.565483303730986,
+          "Rank-1": 67.68189509306261,
+          "Rank-5": 82.23350253807106,
+          "Rank-10": 88.83248730964468
+        }
+      },
+      "delta_metrics": {
+        "mAP": 0.617479863088576,
+        "Rank-1": 0.3384094754653262,
+        "Rank-5": -1.3536379018612479,
+        "Rank-10": -0.33840947546531197
+      },
+      "rank1_repairs": 9,
+      "rank1_new_errors": 7,
+      "query_ap_improved": 339,
+      "query_ap_worsened": 203,
+      "identity_ap_improved": 30,
+      "identity_ap_worsened": 20,
+      "identity_macro_mean_delta_ap_points": 0.5011603536367434,
+      "identity_bootstrap_95_percentile_interval": [
+        -0.00650400706502894,
+        1.0566289072347268
+      ],
+      "boundary": "Official post-selection diagnosis, not new inference or selection. Different capacity and possibly random-number consumption. Bootstrap resamples fixed-model identities, not training seeds.",
+      "question": "role_path_beyond_independent_global_control",
+      "report": ".git/correspondence_m3_factor_MSVR310_652_20260929/global_only_to_own_direct.json",
+      "report_sha256": "64097760a19ff8b8d68c4e7454afbbfab1aacb0862d48a2abbcff825b9f12e85"
+    }
+  ],
+  "boundary": "Only a dataset with all four accepted full50/best/reload endpoints is analyzed. Exploratory single-seed official post-selection comparison; not independent test or training-seed uncertainty. Each cell keeps all metrics from its own one mAP-best. Address matching also changes local-mask support and removes prediction gradients to student offsets. Predictors add 100608 trainable parameters. Global/original controls have different capacity or saved state layout. Identity bootstrap uses fixed-model identities; no averaged confidence bounds or significance claim. No reweighting, new inference, training or configuration selection."
+}
