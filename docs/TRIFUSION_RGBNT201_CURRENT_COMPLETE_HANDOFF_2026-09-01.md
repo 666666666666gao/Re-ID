@@ -2,7 +2,7 @@
 
 ## 0. 一页结论
 
-**本页更新至§41.663：跨深度三条件×三集仍7/9完整验收；本轮仅补齐205份冻结文件原始字节及CPU pair helper、三集协议供最终fresh审查，不新增指标／模型／训练任务。生产文件与冻结SHA全部相符；这不是独立语义审查PASS。最后100 mean/recurrent以22:58实查为准，既定9月30日00:02观察未提前查询。目标ACTIVE/UNMET。** 历史规则和数字保留原样，当前合同以后文登记和服务器回执为准。研究目标仍 **ACTIVE／UNMET**；工程通过、局部增量不代替三数据集强基线与SOTA要求。
+**本页更新至§41.664：跨深度三条件×三集9/9完整50轮、单mAP-best重载及全图库收集器核验完成；最后100 mean/recurrent为85.1700／95.0437和85.1635／95.0437。完整数值fresh审查672正在进行，不以收集器通过代替审查。源码／标签fresh669为WARN，同family／provisional：目录不能认证像素，三份依赖未启动冻结；状态carry与读出汇总混杂继续保留。无新模型／训练条件登记，目标ACTIVE/UNMET。** 历史规则和数字保留原样，当前合同以后文登记和服务器回执为准。研究目标仍 **ACTIVE／UNMET**；工程通过、局部增量不代替三数据集强基线与SOTA要求。
 
 **现行合同：** 每个正式候选完整50轮，使用作者完整query/gallery及camera／MSVR时间段过滤，以官方fused mAP最高的同一checkpoint报告全部指标，随后严格重载。RGBNT201报告mAP／R1／R5／R10，RGBNT100及MSVR310报告mAP／R1；不跨epoch或seed拼列。官方集已参与逐轮选点和历史方法选择，属于已消费基准上的探索性结果。
 
@@ -13111,3 +13111,43 @@ recurrent同权重global=52.6002／68.6971、joint local=5.7293／11.6751；fuse
 这解决审查输入缺失／换行差异，不构成新的完整实验审查PASS，也不自动把旧first-three报告扩大为7端／9端。全9终态后仍由fresh、同family、provisional reviewer直接读取原始文件和结果；checkpoint、距离数组及真实数据留远端，可在原环境进行只读CPU复核。recurrent状态carry与最后层／平均读出的混杂、仅seed42、官方逐轮选点等边界继续保留。
 
 上次同步证据 `logs/cross_depth_formal_sync_666_20260929.json`同时归档：23:07:53.770758的62eb8c0提交、22份原始blob、205冻结文件、62个必要存活证据校验完成。该时间点／回执不冒充本轮实时训练查询。目标ACTIVE/UNMET；完整结果未齐前无新科学假设、训练入口或任务。
+
+
+### 41.664 跨深度九端完整终态与源码／标签fresh审查（2026-09-30）
+
+实际00:02:00.094859的一次observer667已按约定取回：100 mean的三个子phase COMPLETE，100 recurrent训练50轮完成、最终evaluate运行中，父队列仍RUNNING。父控制器240秒刷新造成已完成子端仍记RUNNING，未因此重启。随后完整收集器在2026-09-30T00:07:51.462110+08:00退出0，9/9验收；原七行对象严格不变。九端均各自固定seed42、50轮、官方fused mAP最高的一份checkpoint，其他指标随该份权重；不是跨模型／轮次拼列。
+
+RGBNT201：
+
+|条件|best轮|mAP|R1|R5|R10|
+|---|---:|---:|---:|---:|---:|
+|mixed_once|2|72.5889|74.1627|82.8947|88.0383|
+|depth_mean|2|72.5328|73.9234|82.7751|88.0383|
+|depth_recurrent|2|72.7638|74.2823|83.1340|88.0383|
+
+车辆主指标：
+
+|数据集|条件|best轮|mAP|R1|
+|---|---|---:|---:|---:|
+|RGBNT100|mixed_once|1|85.1237|95.0437|
+|MSVR310|mixed_once|15|53.0317|68.1895|
+|RGBNT100|depth_mean|1|85.1700|95.0437|
+|MSVR310|depth_mean|15|52.7232|68.6971|
+|RGBNT100|depth_recurrent|1|85.1635|95.0437|
+|MSVR310|depth_recurrent|8|52.0987|67.3435|
+
+最后100两个新端best均第1轮，各6559步，Triplet与auxiliary各步均0。mean末轮82.3919／93.9942、recurrent末轮82.2030／93.8192，而mean loss分别下降至0.7060868和0.7060922。三种条件全部完成后，100共19677个正式步Triplet均0；这是当前来源hinge目标没有活跃关系的事实，不据此认定唯一泛化原因。所有九端共30624正式标量步、450训练epoch；九M0共72个真实更新batch仍原样保留。
+
+收集器复算九端fused／shared_global／joint_local的108项指标，最大作者float32 CMC与CPU计数差为2.86425027696e-06个百分点，要求小于1e-5；每份保存距离包含完整协议顺序／全部合法图库，训练／best／重载／schema／depth_mode及源SHA绑定通过。该收集器运行证据不等于独立fresh结论，也不等于重新做模型GPU推理。
+
+100 mean→recurrent的单独CPU配对于2026-09-30T00:12:15.940020+08:00退出0，mAP差-0.0064717124、R1差0，首位修复0／新增0；query AP改善665／下降607，身份改善25／下降22，身份宏平均-0.0173661192个百分点，固定模型身份bootstrap95%区间[-0.06894959308614264, 0.03525298634277784]含0。它不估计训练seed方差。结合已封存201 +0.2311 mAP／+0.3589 R1和MSVR −0.6246／−1.3536，状态传递没有一致的跨数据集正收益；mean与recurrent同时改变最后层／三层平均汇总，不能隔离carry的因果。不会据201小幅正差移除车辆负结果。
+
+同权重读出分解中，100 mean的fused比global仅+0.0197 mAP，recurrent仅+0.0006；recurrent的纯local为31.5470／49.6210。这些不是独立global-only或单角色训练。九端相同数据集内匹配初始化与参数量，但计算图／调用次数不同；耗时含同期负载，不能作为无负载公平速度比较。新结果见results/CROSS_DEPTH_ROLE_STATE_FULL_2026-09-30.md及logs/cross_depth_accepted_671_20260930.json；两份新checkpoint／距离数组和三份纯baseline均留远端，不删除。
+
+源码与GT目录证据的fresh审查669已完整结束，report为refine-logs/cross_depth_role_state_v1/REVIEW_GT_SOURCE_669_20260929.md/.json，整体WARN、same-family／provisional。reviewer独立核对205份原字节哈希、27,266条协议记录、3,142条查询过滤记录与真实物理目录／文件名；没有观察到以预测统计量归一化检索指标或用模型输出替代真实标签。目录原始JSON5873849字节、SHA72e68631b6d1a84e8374f1cd6b081d8e519be46d5b4804e6652406ff5927819c，仅本地scratch保存，不复制原图。目录／size／mtime不能认证图像像素身份、内容重复、公开发布真实性或历史执行时数据字节。MSVR完整155身份gallery保留，52个合法query身份不意味着gallery缩成52；scene为时间段。
+
+fresh审查发现实际模块导入的三份项目依赖不在205启动清单：tools/train_msvr310_trifusion_oof.py、tools/train_official_three_dataset_roles.py、tools/audit_v17_full_gallery.py。随后只读保存其生产原字节，当前SHA与Git blob一致且历史提交早于panel；这不能补证其执行时已冻结。其旧训练／OOF／gallery函数不在当前计分调用路径，补充检查的导入／常量未继续引出缺失项目文件。原manifest不追溯更改；下一新实验完整冻结应前瞻加入这三份已知导入。补充包SHA097af86de8dbd9fa86b2a67ac674f26c6500d400e178785c6611943907aa2dd6，来源见logs/cross_depth_additional_sources_670_20260929.json。
+
+所有审查原生请求／回应原文在project-local .aris/traces/experiment-audit/保存，不发布私有trace或覆盖无关events。完整九端数值审查672已按experiment-audit技能要求以fresh gpt-6-astra、max、forknone启动，只给原始文件路径与checklist，允许原环境只读CPU checkpoint／全数组复算；不允许GPU／新训练／重推理／旧证据改写。实际模型路由证明未暴露，仍同family／provisional。目前审查RUNNING，不把first-three659或source-only669扩大成全9性能PASS。
+
+本轮若干本地证据路径准备错误（published-tree协议别名缺失、M0目录glob包含archive JSON、不存在HYPOTHESIS.md）均已用实际原始协议路径／训练文件父目录／已有EXPERIMENT_PLAN.md更正并保存exit证据，没有训练重启、fallback或虚构占位证据。最后完整正式collector、原始文本接收与100配对均退出0。前序proof668、目录摘要669及补充导入670一并归档。无新科学假设或训练入口；完整审查后再决定下一最小干预，不能把工程9/9当成性能目标完成。Goal ACTIVE／UNMET。

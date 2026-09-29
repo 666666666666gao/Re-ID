@@ -1,5 +1,15 @@
 # Cross-depth role state tracker
 
+CURRENT: all nine formal endpoints VERIFIED_COMPLETE by collector671 at 2026-09-30T00:07:51.462110+08:00. Full50/single mAP-best/strict reload/complete gallery; fresh full numerical audit PENDING. No new training condition registered. Goal ACTIVE/UNMET.
+
+[Current full matrix](../../../results/CROSS_DEPTH_ROLE_STATE_FULL_2026-09-30.md)
+
+The source/protocol audit669 is complete with WARN, same-family/provisional. Historical launch-boundary and aggregation qualifications remain.
+
+## Historical timeline (superseded progress snapshots)
+
+# Cross-depth role state tracker
+
 Actual22:59:22 collector7/9 formal verified; prior5 objects unchanged. All9 realM0 and7 full50/best/reload/full-gallery bundles archived. Actual22:58 mean10025/50, recurrent10019/50 remain train, child100mixed/recurrentMSVR complete before parent240s refresh. Two GPUs active, two have finished the registered work.
 
 | Condition | RGBNT201 | RGBNT100 | MSVR310 |
