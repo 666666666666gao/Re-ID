@@ -2,7 +2,7 @@
 
 ## 0. 一页结论
 
-**本页更新至§41.648，2026-09-29正式验收7/12，实际训练快照11:46:03；新增RGBNT100/own_direct best1 85.1447/95.0437；MSVR310/own_predictor best15 52.6838/68.5279。完整四条件尚未齐，维持原12端，不挑配置。** 历史规则和数字保留原样，当前合同以后文登记和服务器回执为准。研究目标仍 **ACTIVE／UNMET**；工程通过、局部增量不代替三数据集强基线与SOTA要求。
+**本页更新至§41.649，2026-09-29 11:56七个封存best权重的CPU读出参数核对；M3正式验收仍7/12，最新训练快照仍11:46四train。读出倍率已更新到0.112—0.143，未归零；整体平均读出的直接身份梯度对同角色48个位置相同。未量测真实梯度或证明掉点因果，下一计划观察12:22。** 历史规则和数字保留原样，当前合同以后文登记和服务器回执为准。研究目标仍 **ACTIVE／UNMET**；工程通过、局部增量不代替三数据集强基线与SOTA要求。
 
 **现行合同：** 每个正式候选完整50轮，使用作者完整query/gallery及camera／MSVR时间段过滤，以官方fused mAP最高的同一checkpoint报告全部指标，随后严格重载。RGBNT201报告mAP／R1／R5／R10，RGBNT100及MSVR310报告mAP／R1；不跨epoch或seed拼列。官方集已参与逐轮选点和历史方法选择，属于已消费基准上的探索性结果。
 
@@ -12545,3 +12545,33 @@ best权重SHA b897093796102d2d3c9ae4adc9f7a700c908d737df9747f8d32ebfd1a906abd9�
 完整父／子阶段和全部M0记录见logs/correspondence_m3_progress_657_20260929.json；盘余99836923904字节约92.98GiB，无需删除依赖权重。预计时刻不当作完成事实，使用新不可覆盖observer在预计后继终态观察。三个数据集各四条件均未齐，不执行完整六配对／平均因素／交互，不据当前官方成绩选择新方法、种子或重写配置。
 
 累计正式证据logs/correspondence_m3_accepted_649_20260929.json SHA 2d6db04a1e36658ca54b75a5c4b4a43310e5e071b81f5b6784c3a0cfbb77bdf2；完整标量证据logs/correspondence_m3_loss_audit_649_20260929.json SHA a251981a154cd3a75fdb59ee587ce257fbef8a6499c8d2243adeaea60d23cee0；本turn progress654／655及选定最新progress记录实际时间，未回填预定时刻。权重、完整距离、步日志继续留远端，正文和小型文本镜像至Desktop／服务器／GitHub。Goal ACTIVE／UNMET；当前角色未取得明显额外增量，未满足纯基线十点或完整SOTA要求。
+
+### 41.649 封存权重的读出缩放与直接身份路径CPU核对（2026-09-29）
+
+上一turn为PROGRESS：两个新完整端和§648同步完成。原observer658/cell5246确认为live，固定12:22观察，未另起计时器或提前SSH查询训练进度。本turn使用七个已正式验收的best权重做CPU参数读取，实际2026-09-29T11:56:26.580435+08:00完成，单线程；不构建模型、不读取图片、不执行forward／梯度／新检索计分／训练，也没有读取未完成端权重。
+
+各权重SHA及selected epoch与accepted649逐项绑定；同一冻结模型源码和M3源码SHA核对。正常推理仍沿用：
+
+\[
+u=g+\gamma W[\overline H_C,\overline H_A,\overline H_M],\qquad z=\operatorname{Norm}(u),\qquad \overline H_e=\frac1{48}\sum_{m,k}H_{e,m,k}.
+\]
+
+因此在最终读出这一条边上，\(\partial u/\partial H_{e,m,k}=\gamma W_e/48\)，\(\partial u/\partial g=I\)。对于只通过fused输出计算的任一loss，将整体归一化、BN、分类头和loss的上游导数包含在\(v=\nabla_u L\)后，\(\nabla_{H_{e,m,k}}L=\gamma W_e^Tv/48\)：同一角色的48个模态—锚点向量接收相同直接cotangent。前面的卷积、注意力、状态传播、共享适配和M3辅助路径仍可以产生不同的参数梯度，不能扩大成“全部角色／所有参数梯度一样”。
+
+| 封存条件 | best轮 | 可学习gamma | 池化三角色到u的线性算子范数 | 单锚点到u的三角色算子范数范围 |
+|---|---:|---:|---:|---:|
+| RGBNT201/own_direct | 2 | 0.116021 | 0.138954 | 0.001635—0.001715 |
+| RGBNT100/own_direct | 1 | 0.111764 | 0.107424 | 0.001262—0.001632 |
+| MSVR310/own_direct | 10 | 0.140217 | 0.447758 | 0.004967—0.005952 |
+| RGBNT201/matched_direct | 2 | 0.116024 | 0.139028 | 0.001640—0.001719 |
+| MSVR310/matched_direct | 10 | 0.139925 | 0.448612 | 0.004989—0.005894 |
+| RGBNT201/own_predictor | 2 | 0.116038 | 0.144060 | 0.001691—0.001768 |
+| MSVR310/own_predictor | 15 | 0.142972 | 0.486858 | 0.005140—0.006488 |
+
+七个gamma均已离开源码初始化0.1，没有停在初始化或归零。池化角色的算子范数为\(|\gamma|\sigma_{max}(W)\)，单锚点为\(|\gamma|\sigma_{max}(W_e)/48\)，这里是预归一化向量在单位特征扰动下的确定性线性增益。它们不是角色的距离占比、准确率贡献比例或真实梯度份额；参数梯度还包含各角色自身Jacobian。不同数据集best轮次不同、仅一个seed，不将跨数据集数值差解释为对象类型规律。
+
+报告另外给出由各输出LayerNorm的scale／bias推导的角色修正范数上界：\(\|H_e\|\le\sqrt{128}\|a_e\|_\infty+\|b_e\|\)。结合平均池化三角不等式和\(|\gamma|\sigma_{max}(W)\)得到全加性修正上界；这是数学上界，未观察真实图片上的\(\|\gamma W\overline H\|/\|g\|\)，也不证明排序安全或任何实际身份关系将怎样变化。
+
+这项新证据排除了读出倍率仍停在初始值／归零的简单解释，并把整体平均读出的直接身份梯度同质性落实到准确前向公式和封存参数。仍不能证明这是额外角色收益薄的主因；后继需要区分最终读出、局部身份证据和角色学习路径，当前12端按原合同完成，不凭参数幅度修改倍率、选择M3条件或新增种子。
+
+CPU报告logs/correspondence_readout_parameter_audit_649_20260929.json SHA f92b8f4cc0ed3beefd90afff39a638a77fd2da5ef45cc27035de5955769fc636；driver logs/audit_correspondence_readout_649_20260929.py SHA aeca97c5bf749ca8c094a003fcd550019257e81b5a835190528caf5e1a65d841。driver与report归档字节绑定、source18及runtime8继续保持。正式结果仍7/12，服务器运行状态仍以11:46:03 snapshot657为准，下一observer658计划12:22，不把未来观察或CPU检查计为新正式终点。Goal ACTIVE／UNMET。
