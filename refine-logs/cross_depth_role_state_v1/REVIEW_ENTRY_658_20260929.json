@@ -1,0 +1,201 @@
+{
+  "schema": "trifusion-cross-depth-entry-review-v1",
+  "audit_skill": "experiment-audit",
+  "date": "2026-09-29",
+  "agent_id": "/root/audit_cross_depth_entry_658",
+  "verdict_id": "/root/audit_cross_depth_entry_658",
+  "reviewer_backend": "native_codex",
+  "reviewer_model_requested": "gpt-6-astra",
+  "reviewer_reasoning_requested": "max",
+  "reviewer_model_actual": null,
+  "reviewer_reasoning_actual": null,
+  "actual_model_attestation": "not independently exposed by runtime",
+  "reviewer_family": "openai",
+  "review_independence": "same-family",
+  "acceptance_status": "provisional",
+  "fresh_source_review": true,
+  "verdict": "WARN",
+  "overall_verdict": "warn",
+  "integrity_status": "warn",
+  "source_logic_status": "PASS_WITH_LIMITS",
+  "reason_code": "production_evidence_pending",
+  "summary": "No current source blocker found. Constructor dispatch, explicit mode binding, differentiable recurrent state and preregistered M0/terminal checks are present. Production M0 and all nine formal endpoints remain unverified.",
+  "concrete_code_blockers": [],
+  "required_code_fixes": [],
+  "checks": {
+    "gt_provenance": {
+      "status": "WARN",
+      "details": "Source routes dataset protocol identities/cameras/scenes into official and independent scoring; actual protocol files and upstream evaluator are absent from the local checkout.",
+      "evidence": [
+        "tools/official_three_dataset_data.py:8-18",
+        "tools/run_correspondence_context_identity.py:207-224",
+        "tools/run_correspondence_roles.py:79-102"
+      ]
+    },
+    "score_normalization": {
+      "status": "PASS",
+      "scope": "source only",
+      "details": "Feature L2 normalization and percent conversion are standard; AP/CMC are not scaled by prediction extrema.",
+      "evidence": [
+        "tools/run_official_three_dataset_roles.py:230-238",
+        "tools/train_rgbnt100_signal_oof.py:253-268",
+        "tools/train_msvr310_signal_oof.py:223-238"
+      ]
+    },
+    "result_existence": {
+      "status": "WARN",
+      "details": "No cross-depth result is claimed; all nine are NOT_STARTED. Historical query effects and 15 cells match existing local receipts exactly; remote binaries not reverified.",
+      "evidence": [
+        "refine-logs/cross_depth_role_state_v1/EXPERIMENT_TRACKER.md:3-11",
+        "refine-logs/cross_depth_role_state_v1/EXPERIMENT_PLAN.md:5",
+        "logs/context_identity_factor_complete_657_20260929/summary.json:11-16,171-176,331-336"
+      ]
+    },
+    "dead_code": {
+      "status": "PASS",
+      "scope": "static reachability only",
+      "details": "Patched constructor/build/train/save/load/evaluate paths connect; official metrics and scalar audits are called by registered execution paths.",
+      "evidence": [
+        "tools/run_cross_depth_role_state.py:18,67-77",
+        "tools/run_correspondence_context_identity.py:137-142,244-254",
+        "tools/collect_cross_depth_role_state.py:86-114"
+      ]
+    },
+    "scope": {
+      "status": "WARN",
+      "details": "Nine planned endpoints, seed42, full50, official-best; zero completed. Limits are disclosed and are not permission blockers.",
+      "evidence": [
+        "refine-logs/cross_depth_role_state_v1/EXPERIMENT_PLAN.md:23-35",
+        "refine-logs/cross_depth_role_state_v1/EXPERIMENT_TRACKER.md:3-11"
+      ]
+    },
+    "eval_type": {
+      "status": "PASS",
+      "classification": "real_gt",
+      "scope": "intended retrieval protocol; no new completed retrieval",
+      "synthetic_structure": "unit_check_not_retrieval_or_production_m0",
+      "evidence": [
+        "tools/run_correspondence_context_identity.py:207-224",
+        "logs/cross_depth_structure_658_20260929.json"
+      ]
+    }
+  },
+  "structural_checks": {
+    "constructor_dispatch": "PASS_SOURCE",
+    "monkeypatched_build_train_save_load_evaluate": "PASS_SOURCE",
+    "explicit_depth_mode_binding": "PASS_SOURCE",
+    "matched_parameter_structure": "PASS_SOURCE",
+    "initialized_tensor_equality": "CODE_AND_COLLECTOR_PRESENT; ACTUAL_PRODUCTION_HASHES_PENDING",
+    "recurrent_no_detach": "PASS_SOURCE",
+    "actual_production_gradients": "PENDING",
+    "cnn_recurrence_location": "sampled anchor evidence after current-depth convolution, before output normalization",
+    "checkpoint_binding": "distinct schema; depth_mode in payload/request/model; exact keys and strict loading",
+    "auxiliary": "allocated but frozen and unused for none; coefficient1.0 preserved; logged auxiliary0"
+  },
+  "production_m0": {
+    "status": "PENDING_NOT_EXECUTED_BY_REVIEWER",
+    "code_contract_status": "PASS_SOURCE",
+    "actual_gpu_batches_verified": 0,
+    "required_batches": 8,
+    "gradient_contract": "finite present gradients each update and nonzero named-tensor union across all eight",
+    "frozen_contract": "exact Signal tensor/buffer state hash; adapted shared_global may change",
+    "reload_contract": "fresh binding equality; strict explicit-mode load; queue max_abs<=1e-5 before full training",
+    "worker_gates": "tools/queue_cross_depth_role_state.py:89-96",
+    "collector_gates": "tools/collect_cross_depth_role_state.py:54-64",
+    "formal_training_reuses_m0_weights": false
+  },
+  "pending_runtime_evidence": [
+    "Nine real CUDA/production-Mamba M0 runs and actual gradient/AMP/frozen/reload receipts.",
+    "Actual full-model initialized tensor hashes and trainable counts matched across controls within each dataset.",
+    "Runtime protocol/upstream/config/source manifest hashes and baseline byte verification.",
+    "All nine complete50 histories, exact best checkpoints, strict reloads, full metadata and three complete-gallery CPU recomputations.",
+    "Registered persistence comparisons, harmful flips and identity-level analysis; no benefit or robustness claim yet."
+  ],
+  "historical_validation": {
+    "accepted_matrix_verified_complete": 15,
+    "cells_compared": 15,
+    "metrics_per_cell": 4,
+    "maximum_metric_difference_pp": 0,
+    "summary_matrix_sha_matches": true,
+    "mean_query_effect_pp": {
+      "RGBNT201": 0.020999111887185506,
+      "RGBNT100": 0.0022817453653800612,
+      "MSVR310": 0.021399504644012524
+    },
+    "remote_binaries_rehashed": false
+  },
+  "synthetic_cpu_receipt": {
+    "path": "logs/cross_depth_structure_658_20260929.json",
+    "status_in_file": "SYNTHETIC_CPU_STRUCTURE_PASS",
+    "model_source_hash_matches": true,
+    "reviewer_independently_reran": false,
+    "production_m0": false,
+    "reid_performance": false,
+    "limitations": "Existing TinySequenceMixer and synthetic inputs; records depth input gradients, not native CUDA/Mamba or full-model M0."
+  },
+  "claims": [
+    {
+      "id": "historical_query_effects",
+      "impact": "supported_by_matching_local_records"
+    },
+    {
+      "id": "cross_depth_structural_control",
+      "impact": "supported_by_source; production evidence pending"
+    },
+    {
+      "id": "persistent_role_retrieval_benefit",
+      "impact": "unsupported_until_registered_completed_results"
+    },
+    {
+      "id": "unbiased_generalization_or_training_variance",
+      "impact": "unsupported_by_single_seed_official_best_protocol"
+    }
+  ],
+  "restrictions_observed": {
+    "ssh": false,
+    "gpu_jobs": false,
+    "runtime_source_edits": false,
+    "external_model_calls": false,
+    "unrelated_writes": false
+  },
+  "trace_mode": "embedded in the two requested outputs; no separate trace-directory write permitted by task",
+  "trace_path": "refine-logs/cross_depth_role_state_v1/REVIEW_ENTRY_658_20260929.md",
+  "validation_actions": [
+    "Read all eleven requested files directly, rereading final revised bytes.",
+    "Read directly imported initialization/data/scoring/M0/queue/scalar-audit functions.",
+    "Recomputed historical query effects and checked all fifteen cells against accepted matrix.",
+    "Hashed final review inputs."
+  ],
+  "local_optional_python_probe": {
+    "status": "UNAVAILABLE",
+    "message": "No pyvenv.cfg file",
+    "runtime_or_production_failure_inferred": false
+  },
+  "audited_input_hashes": {
+    "modeling/trifusion/cross_depth_role_state.py": "sha256:8e18c7c9d397fbe3eff6f7360a5ab890ebbeecf1404628da6979ade47544b7ba",
+    "modeling/trifusion/correspondence_context_identity.py": "sha256:eda3d1473496b33e4b69402dba7770e67d23b33b07afd41d23105b7f148d63af",
+    "modeling/trifusion/correspondence_evidence_readout.py": "sha256:e737a977d39ccbe09a5509118e5b5333d653f7f13381e65e84af1a13e5c28dc4",
+    "modeling/trifusion/correspondence_roles.py": "sha256:e2a51154b5b327341f35e453dd32a821b091a49a669b49a7c70e79e6e2f2591b",
+    "tools/run_cross_depth_role_state.py": "sha256:937bf84151002e4b6e62a3a8875981e680ebd99a1f93c14ab937e07a06f13184",
+    "tools/run_correspondence_context_identity.py": "sha256:9f4cc9f11998819d4a927a32f4e47baf0c4ff9d14c4bc93b0dc35b0153ebc142",
+    "tools/run_correspondence_roles.py": "sha256:e50865fb923297cd61cf38b33ec2bc95154f8c503b5dfe5de9823cad3f03d7ef",
+    "tools/collect_cross_depth_role_state.py": "sha256:99e404637d186f297a35f337a46ef2950e2215fb4db6b7a5d719ab15e0cf8aca",
+    "tools/queue_cross_depth_role_state.py": "sha256:4cce880fcc81240613ad1c1266f5a780e108a7d423426c02103a8884682432d2",
+    "refine-logs/cross_depth_role_state_v1/EXPERIMENT_PLAN.md": "sha256:06aadabfa79bfdb2022e9bd88c14a788649ab2050217f8317110c4ef8747cc0b",
+    "refine-logs/cross_depth_role_state_v1/EXPERIMENT_TRACKER.md": "sha256:e23974aff447a10341cea12d98521dabe95d2b5ffd1b14afda2a027e4cfd0e63",
+    "tools/official_three_dataset_data.py": "sha256:c3180a88d12440709319d2025928fc699ff3b7c020b11697d468453fbfc68062",
+    "tools/official_three_dataset_model.py": "sha256:e103ea0f4d6342b0dc129dc2dace0e8c0d0e6c956cfe94729ccb70d9588cf0f9",
+    "tools/audit_correspondence_context_identity_losses.py": "sha256:bcc15e568c6a14efdaca1df5268c5abdec716287d3b6efb2482804add724abf1",
+    "tools/run_official_three_dataset_roles.py": "sha256:f30bb00a0b71429e9d11dd196cd1d543202a133c663ad66e175d2f82e28d448d",
+    "tools/run_signal_preserving_v5.py": "sha256:e162184f68778b4991db0f97f26c5fda273b2ad2f7c8db2bbb2d53775eb717e5",
+    "tools/queue_correspondence_refinement.py": "sha256:5256afe78d02d9bfea3103daa00d488b94c05e839c955f00355098f69ecbd84a",
+    "tools/queue_correspondence_roles.py": "sha256:746fbdb8bdad04290a9ef22c0550e873c9dce9de74c2c3c3767fea9278be69bf",
+    "tools/train_rgbnt100_signal_oof.py": "sha256:4462b73139e034d450d955c5b4a994aaa967548e9cc503d97bb753a14ea03b22",
+    "tools/train_msvr310_signal_oof.py": "sha256:c25579d931df34481fef321558f0b9a1f9179d72a25d6047dbbfd3682d4ae60f",
+    "modeling/trifusion/experts/mamba.py": "sha256:8b9cb420c42e4d70f8de7e4608637c81c505b97ca54228175462a7e92fdfcc83",
+    "logs/context_identity_factor_complete_657_20260929/summary.json": "sha256:4aba5bd1e354fc5fa508c42892baaf5b71e40092d8c35fd19e72b7a00e6572d7",
+    "logs/context_identity_accepted_complete_670_20260929.json": "sha256:7fd21fa6398578ff22aba2f1812ca2c6a163287ae2447263811941b53180f958",
+    "logs/cross_depth_structure_658_20260929.json": "sha256:b8f97801f89b35efb3e61b11e6309807acdf7a7bc1fd0c394316efd4eeb995f6"
+  },
+  "generated_at": "2026-09-29T13:17:23.4524909+00:00"
+}
