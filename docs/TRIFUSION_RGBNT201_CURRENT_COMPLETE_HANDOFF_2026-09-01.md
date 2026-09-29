@@ -2,7 +2,7 @@
 
 ## 0. 一页结论
 
-**本页更新至§41.644，2026-09-29 10:08验收／10:12实际训练快照；M3已完整验收3/12，RGBNT201直接回归的两种地址都在第2轮best，匹配位置只带来很小条件差。独立预测器已通过真实M0并进入正式训练，四卡继续自动补位。** 历史规则和数字保留原样，当前合同以后文登记和服务器回执为准。研究目标仍 **ACTIVE／UNMET**；工程通过、局部增量不代替三数据集强基线与SOTA要求。
+**本页更新至§41.645，2026-09-29 10:36正式验收／实际训练快照；M3已验收4/12。MSVR直接回归的匹配位置版本为52.5223／67.5127，相对各自位置略低；两数据集尚无明显位置匹配增益。两个独立预测器任务接续训练，四卡自动补位。** 历史规则和数字保留原样，当前合同以后文登记和服务器回执为准。研究目标仍 **ACTIVE／UNMET**；工程通过、局部增量不代替三数据集强基线与SOTA要求。
 
 **现行合同：** 每个正式候选完整50轮，使用作者完整query/gallery及camera／MSVR时间段过滤，以官方fused mAP最高的同一checkpoint报告全部指标，随后严格重载。RGBNT201报告mAP／R1／R5／R10，RGBNT100及MSVR310报告mAP／R1；不跨epoch或seed拼列。官方集已参与逐轮选点和历史方法选择，属于已消费基准上的探索性结果。
 
@@ -28,7 +28,7 @@
 
 **当前M3：** 五个新文件实现“各自地址／匹配教师地址×直接回归／独立预测器”，固定原M1／M2／M3开启、单点采样、整体池化、seed42、预测系数0.1和50轮best合同，不从M2最高分选择配置。两网格CPU合同通过，own/direct与旧前向及预测loss精确相同；公共初始参数及RNG一致。匹配地址仅用于训练遮蔽预测并停止教师坐标梯度，正常检索仍使用学生地址并更新offset。预测器额外100608可训练参数，推理不使用，容量差异必须披露。独立fresh Astra/max复核PASS，实际serving身份未核验，same-family/provisional，不等于跨模型独立验收。
 
-M3已验收3/12：RGBNT201 own/direct 72.5574／73.8038／83.1340／87.7990、matched/direct 72.5795／73.9234／83.1340／87.7990（均best2），MSVR own/direct 52.5655／67.6819（best10）。只匹配地址的当前直接回归条件差为+0.0221 mAP／+0.1196 R1；不能扩大为预测器或完整M3成功。10:12四个实际train进程在GPU0 matched/directMSVR 20/50、GPU1 own/direct100 22/50、GPU2 matched/direct100 6/50、GPU3 own/predictor201 3/50。首个正式own/predictor自己的M0 PASS：136/136非零梯度、冻结baseline不变、重载误差0。4 RUNNING／5 PENDING／3 COMPLETE／0 FAILED。下一观察10:25，约在matched/directMSVR预计结束10:28:45前几分钟。
+M3已验收4/12：201两地址结果保持§644，MSVR own/direct 52.5655／67.6819、matched/direct 52.5223／67.5127（均best10）。MSVR直接回归条件的matched−own为−0.0432 mAP／−0.1692 R1；四条件仍未齐，不做完整因素结论。10:36四个实际train进程：GPU0 own/predictor100 1/50、GPU1 own/direct100 30/50、GPU2 matched/direct100 12/50、GPU3 own/predictor201 24/50。首个车辆predictor真实M0 PASS：136/136非零梯度、冻结baseline不变、重载误差0。4 RUNNING／4 PENDING／4 COMPLETE／0 FAILED。下一观察11:00，约在own/predictor201预计训练结束11:05:45前几分钟。
 
 **分析准备：** 新只读入口tools/analyze_correspondence_role_prediction.py复用既有完整图库CPU比较。每数据集四项均VERIFIED_COMPLETE才生成四个因素条件差、两个平均效应和交互；另列旧111复现及独立global诊断。fresh Astra/max复核PASS，same-family/provisional，实际serving身份未核验；root CPU非对称与加性算术、反序输入及未验收条件拒绝检查PASS。都是代码检查，不是新检索成绩。不改变18科学训练／评价源码或运行8文件合同，不触发新推理／训练／调参。Goal ACTIVE／UNMET。
 ### 0.1 历史阶段摘要（保留原始结论，不作为当前执行指令）
@@ -12407,3 +12407,38 @@ best checkpoint SHA `dd97bbba4db0fc01775d9ec39bca16dd8dc0d7d37df949dbb3b30d8f1fc
 四GPU compute PID及cmdline吻合，4 RUNNING／5 PENDING／3 COMPLETE／0 FAILED，18科学文件和运行八文件manifest未改，原24、global3、M2十五及旧已完成M0均不重跑。数据盘余100006363136字节，不删依赖权重。用同一MSVR trainer在10:02→10:12的2→20完整epoch估计33.39秒／轮，预计训练结束10:28:45，尚有重载评价和补位延迟；下一观察10:25，按结束前里程碑查看。
 
 证据：`logs/correspondence_m3_accepted_645_20260929.json` SHA `3217697d7d90611cf6aaf31a197248464f6da0dd2a60deada5cbdb546eb1f647`、`logs/correspondence_m3_loss_audit_645_20260929.json` SHA `f3970bddc6b5f21cd2351e79fc34b3499274b82dccb3fa5a50f4bc1996eba8f6`、`logs/correspondence_m3_first_own_predictor_m0_644_20260929.json` SHA `bda43fadd695e85b53c90acae332ad395ef75d6098fa91a036ed475c863d2ab8`，10:02／10:07／10:12实际观察分别为progress646／647／648 JSON。模型、完整距离和源步日志留远端，正文与文本证据同步；三数据集强基线／SOTA目标仍未实现，Goal ACTIVE／UNMET。
+
+### 41.645 MSVR匹配位置直接回归完整验收，车辆预测器自动接续（2026-09-29）
+
+上一turn为PROGRESS：RGBNT201两端与真实预测器M0、§644三方同步完成。本turn恢复原cell5151，实际10:25:03观察返回0并terminal：matched/directMSVR 42/50，其余三训练正常。根据原预计结束10:28:45，下一次观察实际在10:36:22，未倒填为10:31或连续重复查询。MSVR子任务完整结束，父队列已自动补位车辆own/predictor。10:36:47 collector验收增至4/12；此前三端整个接受行及全部SHA原样保持，没有重复模型训练／推理。
+
+新增端完整50轮、单一官方mAP-best严格重载，best10；原完整query/gallery、真实身份及时间段过滤复算mAP差7.1054273576e-15个百分点，CMC差均小于1e-5。没有跨epoch拼列或以中途best冒充终态。
+
+| 数据集／条件 | best轮 | mAP | Rank-1 |
+|---|---:|---:|---:|
+| MSVR310/own_direct | 10 | 52.5655 | 67.6819 |
+| MSVR310/matched_direct | 10 | 52.5223 | 67.5127 |
+
+matched−own在直接回归条件下mAP -0.0432、R1 -0.1692，R5 +0.3384、R10 +0.0000。与§644的201位置条件差一起看，尚未显示明显位置匹配收益；这是单seed、已消费官方best的描述性条件差，不代表所有对应机制无效，也不能判断尚未完成的独立预测器或完整地址×预测方式交互。四条件未齐，不执行固定六配对／平均因素／bootstrap分析，不据官方局部结果更改当前12端。
+
+新增端2396170可训练参数，训练及逐轮评价1721.493157秒；对照为1931.062896秒，负载及评价耗时不同，不是受控测速。matched/direct仍低于发布Signal 53.2424／72.4196，没有达成MSVR强基线增强。
+
+| MSVR条件 | best checkpoint SHA | distance SHA | official receipt SHA |
+|---|---|---|---|
+| own_direct | dd97bbba4db0fc01775d9ec39bca16dd8dc0d7d37df949dbb3b30d8f1fc5551d | a063a7e1d80242d15702e6ebdebc5d2f4e25161f88e322dd66be45364dd599b0 | dff71cd0b1d41fc59ab97f20501ed5dd8d5f70da715b458d4fbae1841deacb0c |
+| matched_direct | c65ec0cf681ded7f56e9bfac0f2a3bd314544e8a57ba28a779065325bd067db3 | ceb9e596b2136fc854fac5a834d3caaf33dd3894f055047c545efc7b19629b6f | 33fc8039a755f9a594a606dcec843c498a2f288706f731e9326348c6b868e1a9 |
+
+只读loss审计绑定新增4端验收矩阵，共7298步重建PASS、最大误差4.39956783893e-07。新增matched/directMSVR 1000步、Triplet非零973步，三种预测标量均1000步为正。best10→50的训练loss 1.205520→0.970798，mAP 52.5223→49.3012，R1 67.5127→64.9746。local MSE 0.158021→0.135576，relation 0.006588→0.012612，cross 0.222446→0.498191；不称所有预测项下降，也不把标量活动解释为梯度、更新份额或掉点唯一原因。
+
+10:36:22实际snapshot四卡都有训练compute PID及匹配cmdline；4 RUNNING／4 PENDING／4 COMPLETE／0 FAILED，controller2566593，240秒非抢占调度继续。新车辆own/predictor100正式8批M0 PASS：2335498参数，136/136张量累计非零梯度、冻结纯baseline不变、compact重载误差0，probe SHA 91c1f67d1bb82778bf6bdf8bd0cfcff82ec4182cb213e1f1e766db023ec808cd；只是工程门，无正式指标。不是复用之前的201 M0，也未为本条件重复预检。
+
+| GPU | 实际数据集／条件 | trainer PID | 已完成轮次 |
+|---|---|---:|---:|
+| 0 | RGBNT100/own_predictor | 2642515 | 1/50 |
+| 1 | RGBNT100/own_direct | 2568968 | 30/50 |
+| 2 | RGBNT100/matched_direct | 2600421 | 12/50 |
+| 3 | RGBNT201/own_predictor | 2622995 | 24/50 |
+
+18科学文件与八文件运行manifest保持不变。原24、global3及M2十五已封存，不重跑。盘余99975880704字节约93.11GiB，无需删除依赖权重。用同一201 predictor trainer在10:25→10:36的14→24完整epoch估计67.83秒／轮，预计训练结束11:05:45，之后仍有独立重载与240秒补位延迟；下一观察11:00。该时间是估计，不把预计结束记成已完成。
+
+证据：logs/correspondence_m3_accepted_646_20260929.json SHA 02f1ed35fed8464c769e308a0f83bed460b0ae49db57520bfdb3fde08b522a65；logs/correspondence_m3_loss_audit_646_20260929.json SHA 3d2acf909f3841cf52a38cf22acad7ecdfbeada5b6ad210042ae49e66f114675；logs/correspondence_m3_first_vehicle_predictor_m0_645_20260929.json SHA 987f8df1bbee7853a22e4b79e7171b05879ac806b79d6748fd5100a522f1bf6c；progress649／650为实际10:25／10:36快照。完整权重、距离和源步日志留远端，文本及正文同步。当前三数据集baseline／SOTA目标仍未完成，Goal ACTIVE／UNMET。
