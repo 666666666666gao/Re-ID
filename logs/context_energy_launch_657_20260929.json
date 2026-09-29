@@ -1,0 +1,62 @@
+{
+  "status": "READ_ONLY_ENERGY_DIAGNOSTICS_STARTED",
+  "at": "2026-09-29T17:50:21.766061+08:00",
+  "source_sha256": "dba46b8f73460191318e7ba5d42a4bb191409b3ed639d5bf6eb1f7aff3ffb8e6",
+  "matrix_sha256": "beaeaa1db722df30832ca3d58de2dde1319e61949b356ebe105bd1eff982dae9",
+  "gpu_memory_before": {
+    "0": 10919,
+    "1": 23,
+    "2": 15,
+    "3": 157
+  },
+  "runtime_source_sha256": {
+    "modeling/trifusion/correspondence_roles.py": "e2a51154b5b327341f35e453dd32a821b091a49a669b49a7c70e79e6e2f2591b",
+    "modeling/trifusion/correspondence_evidence_readout.py": "e737a977d39ccbe09a5509118e5b5333d653f7f13381e65e84af1a13e5c28dc4",
+    "tools/run_correspondence_roles.py": "e50865fb923297cd61cf38b33ec2bc95154f8c503b5dfe5de9823cad3f03d7ef",
+    "tools/queue_correspondence_refinement.py": "5256afe78d02d9bfea3103daa00d488b94c05e839c955f00355098f69ecbd84a",
+    "modeling/trifusion/correspondence_context_identity.py": "eda3d1473496b33e4b69402dba7770e67d23b33b07afd41d23105b7f148d63af",
+    "tools/run_correspondence_context_identity.py": "9f4cc9f11998819d4a927a32f4e47baf0c4ff9d14c4bc93b0dc35b0153ebc142",
+    "tools/queue_correspondence_context_identity.py": "5ac2395413c7ce744ac18be40be2e29039f2039b74b13896e48ca8bed8d4bb0f",
+    "tools/collect_correspondence_context_identity.py": "bdc3a70eb31c94fd43acae2e490ae0c596ee7e1408d22d103ec68e9c293cd472",
+    "tools/audit_correspondence_context_identity_losses.py": "bcc15e568c6a14efdaca1df5268c5abdec716287d3b6efb2482804add724abf1"
+  },
+  "jobs": [
+    {
+      "gpu": 1,
+      "dataset": "RGBNT201",
+      "pid": 3004039,
+      "command": [
+        "/data/gaob/Re-ID/conda-envs/tri_reid/bin/python",
+        "-B",
+        "/data/gaob/Re-ID/Trifusion/tools/diagnose_correspondence_context_energy.py",
+        "--matrix",
+        "/data/gaob/Re-ID/Trifusion/.git/context_identity_accepted_667_20260929.json",
+        "--dataset",
+        "RGBNT201",
+        "--output-dir",
+        "/data/gaob/Re-ID/Trifusion/.git/context_energy_RGBNT201_657_20260929"
+      ],
+      "output_dir": "/data/gaob/Re-ID/Trifusion/.git/context_energy_RGBNT201_657_20260929",
+      "log": "/data/gaob/Re-ID/Trifusion/.git/context_energy_RGBNT201_657_20260929.log"
+    },
+    {
+      "gpu": 2,
+      "dataset": "MSVR310",
+      "pid": 3004040,
+      "command": [
+        "/data/gaob/Re-ID/conda-envs/tri_reid/bin/python",
+        "-B",
+        "/data/gaob/Re-ID/Trifusion/tools/diagnose_correspondence_context_energy.py",
+        "--matrix",
+        "/data/gaob/Re-ID/Trifusion/.git/context_identity_accepted_667_20260929.json",
+        "--dataset",
+        "MSVR310",
+        "--output-dir",
+        "/data/gaob/Re-ID/Trifusion/.git/context_energy_MSVR310_657_20260929"
+      ],
+      "output_dir": "/data/gaob/Re-ID/Trifusion/.git/context_energy_MSVR310_657_20260929",
+      "log": "/data/gaob/Re-ID/Trifusion/.git/context_energy_MSVR310_657_20260929.log"
+    }
+  ],
+  "boundary": "Ten predeclared accepted best checkpoints, normal full query/gallery only. No training, checkpoint/weight search or overwrite of official outputs."
+}

@@ -5,10 +5,10 @@
 | 条件 | RGBNT201 | RGBNT100 | MSVR310 |
 |---|---|---|---|
 | static_none | VERIFIED_COMPLETE E2 72.5957/74.0431 | VERIFIED_COMPLETE E1 85.1254/94.9854 | VERIFIED_COMPLETE E10 52.2626/67.5127 |
-| context_none | VERIFIED_COMPLETE E2 72.6087/74.1627 | VERIFIED_COMPLETE E1 85.1208/95.0437 | VERIFIED_COMPLETE E15 52.9824/68.0203 |
-| static_local | VERIFIED_COMPLETE E2 71.9962/73.0861 | VERIFIED_COMPLETE E1 84.5033/94.9271 | VERIFIED_COMPLETE E15 53.1429/69.8816 |
-| context_local | VERIFIED_COMPLETE E2 72.0252/72.9665 | VERIFIED_COMPLETE E1 84.5125/94.9271 | VERIFIED_COMPLETE E12 52.4659/68.0203 |
-| context_global | VERIFIED_COMPLETE E2 72.2687/73.0861 | VERIFIED_COMPLETE E1 85.3363/95.5685 | VERIFIED_COMPLETE E15 52.0858/67.8511 |
+| context_none | VERIFIED_COMPLETE E2 72.6087/74.1627 | M0_PASS / TRAINING_35/50 | VERIFIED_COMPLETE E15 52.9824/68.0203 |
+| static_local | M0_PASS / TRAINING_19/50 | M0_PASS / TRAINING_4/50 | M0_PASS / TRAINING_10/50 |
+| context_local | READY_NOT_RUN | READY_NOT_RUN | READY_NOT_RUN |
+| context_global | READY_NOT_RUN | READY_NOT_RUN | READY_NOT_RUN |
 
 15:06实际新5/15正式接受；原M3已全12/12完成。三个trainer活跃，一卡完成端等待父队列接续；READY_NOT_RUN不等于M0或正式结果。
 
@@ -27,5 +27,3 @@
 实际2026-09-29T15:12:55.555311+08:00：四卡自动接续，GPU0 context_none/RGBNT100 35/50，GPU1 static_local/MSVR310 10/50，GPU2 static_local/RGBNT100 4/50，GPU3 static_local/RGBNT201 19/50；全部生产M0通过。新正式仍5/15，剩余10继续。
 
 2026-09-29 17:33完整13/15：collector actual 2026-09-29T17:33:35.975938+08:00，原5条正式接受对象不变，新8端文本training/official/steps归档和receipt SHA核对。剩余RGBNT100 context_local/context_global未完成，未接受中途best。actual progress666为17:33:12而不是原15:31预期；15:31本地观察句柄失效、未写回执，确认后在17:33执行同一observer一次，未重启训练。新最终分析工具待fresh复核，只有完整15/15才运行；partial5 gate拒绝证据保留。17:50 durable一次观察PID3001005，减少轮询。能量诊断source-only审查中，尚无GPU诊断结果，不改原runtime九源。
-
-2026-09-29 18:00完整15/15：父队列2026-09-29T18:00:24.400838+08:00 COMPLETE，原13正式行不变。统一CPU条件分析15配对完成、显式复用2封存报告；10权重能量诊断完整数组一致性通过。完整正负结果和限制均保留；不能称三数据集目标完成。跨层角色结构仅source准备、未训练。

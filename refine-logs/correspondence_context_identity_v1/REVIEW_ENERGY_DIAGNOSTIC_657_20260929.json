@@ -1,0 +1,467 @@
+{
+  "audit_skill": "experiment-audit",
+  "verdict": "WARN",
+  "overall_verdict": "warn",
+  "integrity_status": "warn",
+  "reason_code": "source_pass_runtime_parity_not_run",
+  "summary": "No source-level launch blocker found. Read-only forward, accepted binding, complete scope and parity gates pass source review; remote artifacts, live preflight and actual parity remain unverified here.",
+  "date": "2026-09-29",
+  "generated_at": "2026-09-29T17:53:36.2101069+08:00",
+  "project_dir": "C:/Users/gb/.trifusion_github_publish_22c3bee",
+  "agent_id": "/root/audit_context_energy_657",
+  "verdict_id": "/root/audit_context_energy_657:20260929:initial",
+  "reviewer_backend": "native-codex",
+  "reviewer_model": "gpt-6-astra",
+  "reviewer_reasoning": "max",
+  "reviewer_route_attribution": "Local Codex policy route; backend identity is not independently attested by this reviewer. The caller owns the actual spawn metadata and trace.",
+  "reviewer_family": "openai",
+  "review_independence": "same-family",
+  "acceptance_status": "provisional",
+  "review_mode": "local_source_and_artifact_review_only",
+  "source_verdict": "PASS",
+  "runtime_verdict": "NOT_RUN",
+  "requires_code_change": false,
+  "launch_blockers": [],
+  "launch_readiness": "SOURCE_PASS_CONDITIONAL_ON_EXISTING_LIVE_PREFLIGHT",
+  "launch_preconditions": {
+    "status": "NOT_VERIFIED_BY_THIS_REVIEW",
+    "evidence": [
+      "refine-logs/correspondence_context_identity_v1/ENERGY_DIAGNOSTIC_PLAN_20260929.md:13",
+      "tools/diagnose_correspondence_context_energy.py:31"
+    ],
+    "requirements": [
+      "GPU1 and GPU2 each below 500 MiB before launch",
+      "Original 15-job queue has no pending or failed jobs",
+      "All original M3 endpoints complete",
+      "Use the reviewed diagnostic and accepted_667 matrix; remote existing sources, protocols, checkpoint/distance/receipt artifacts must pass the program's binding gates"
+    ],
+    "note": "The diagnostic does not enforce live GPU/queue occupancy. The existing plan assigns these external checks; no evidence here shows they fail."
+  },
+  "checks": {
+    "A_gt_provenance": {
+      "status": "PASS",
+      "details": "Activation statistics have no identity target. Saved model distances are an explicitly disclosed reproducibility reference, not fabricated identity ground truth. Original retrieval identities/cameras/scenes are protocol-provided. Raw remote protocols and data were not independently inspected.",
+      "evidence": [
+        "tools/diagnose_correspondence_context_energy.py:81",
+        "tools/diagnose_correspondence_context_energy.py:109",
+        "tools/diagnose_correspondence_context_energy.py:136",
+        "tools/run_correspondence_context_identity.py:207",
+        "tools/collect_correspondence_context_identity.py:74"
+      ]
+    },
+    "B_score_normalization": {
+      "status": "PASS",
+      "details": "Raw norms accompany the explicitly named relative correction norm, cosines and normalized-vector L2. No mAP/Rank is divided by own-output statistics and no new retrieval scoring is called.",
+      "evidence": [
+        "tools/diagnose_correspondence_context_energy.py:91",
+        "tools/diagnose_correspondence_context_energy.py:93",
+        "tools/diagnose_correspondence_context_energy.py:125",
+        "tools/diagnose_correspondence_context_energy.py:136"
+      ]
+    },
+    "C_result_existence": {
+      "status": "WARN",
+      "details": "Accepted matrix and archived manifest exist locally; all 9/9 manifest sources match local hashes. Ten requested accepted rows are present. New energy runtime output is not part of the input evidence and the plan explicitly says not run. Remote checkpoint, receipt, distance and protocol bytes, live preflight and numerical parity were not replayed here.",
+      "evidence": [
+        "logs/context_identity_accepted_667_20260929.json:5",
+        "logs/context_identity_accepted_667_20260929.json:15",
+        "logs/context_identity_accepted_667_20260929.json:229",
+        "logs/context_identity_manifest_653_20260929.json:101",
+        "refine-logs/correspondence_context_identity_v1/ENERGY_DIAGNOSTIC_PLAN_20260929.md:3"
+      ]
+    },
+    "D_dead_code_and_read_only_hooks": {
+      "status": "PASS",
+      "details": "Hooks return None via dict.update and leave outputs unchanged. The second structured readout is stateless. eval/inference_mode wraps all forwards; the default forward skips heads, M3 is false, and no training/optimizer/backward/official-file-write path is called. All statistics and all three parity comparisons are reachable and saved.",
+      "evidence": [
+        "tools/diagnose_correspondence_context_energy.py:67",
+        "tools/diagnose_correspondence_context_energy.py:69",
+        "tools/diagnose_correspondence_context_energy.py:72",
+        "tools/diagnose_correspondence_context_energy.py:75",
+        "tools/diagnose_correspondence_context_energy.py:106",
+        "tools/diagnose_correspondence_context_energy.py:115",
+        "modeling/trifusion/correspondence_evidence_readout.py:65",
+        "modeling/trifusion/correspondence_context_identity.py:102"
+      ]
+    },
+    "E_scope": {
+      "status": "PASS",
+      "details": "Exactly five accepted conditions per selected dataset, both complete ordered splits, fixed existing best checkpoint, seed 42. Embedding and statistic counts are asserted; no short sampling, early break, new epoch/weight/metric selection or excluded RGBNT100 rows. Full scope is planned, not observed runtime completion.",
+      "evidence": [
+        "tools/diagnose_correspondence_context_energy.py:33",
+        "tools/diagnose_correspondence_context_energy.py:38",
+        "tools/diagnose_correspondence_context_energy.py:60",
+        "tools/diagnose_correspondence_context_energy.py:76",
+        "tools/diagnose_correspondence_context_energy.py:104",
+        "tools/run_official_three_dataset_roles.py:58",
+        "tools/train_signal_preserving_v18.py:33",
+        "tools/train_msvr310_signal_oof.py:89"
+      ]
+    },
+    "F_eval_type": {
+      "status": "PASS",
+      "classification": "self_supervised_proxy",
+      "underlying_accepted_retrieval_classification": "real_gt",
+      "details": "Descriptive activation/reproducibility diagnostic without a GT target; existing retrieval uses dataset identities. Official post-selection, no causal inference, gradient/update-share attribution, independently trained role claim or new retrieval score.",
+      "evidence": [
+        "tools/diagnose_correspondence_context_energy.py:136",
+        "refine-logs/correspondence_context_identity_v1/ENERGY_DIAGNOSTIC_PLAN_20260929.md:15",
+        "tools/run_correspondence_context_identity.py:207"
+      ]
+    }
+  },
+  "binding_review": {
+    "status": "PASS_SOURCE_ONLY",
+    "checks": [
+      "training completion and epochs 1 through 50",
+      "accepted checkpoint/distance/official-receipt SHA",
+      "original initializer equality",
+      "strict schema/dataset/seed/protocol/baseline/condition/state-key checks",
+      "accepted best epoch equality",
+      "archived nine-source hash match"
+    ],
+    "evidence": [
+      "tools/diagnose_correspondence_context_energy.py:41",
+      "tools/diagnose_correspondence_context_energy.py:57",
+      "tools/diagnose_correspondence_context_energy.py:63",
+      "tools/run_correspondence_context_identity.py:32",
+      "tools/run_correspondence_context_identity.py:53",
+      "tools/official_three_dataset_model.py:53",
+      "tools/collect_correspondence_context_identity.py:54"
+    ]
+  },
+  "runtime_parity": {
+    "status": "NOT_RUN",
+    "reconstruction_source_match": true,
+    "maximum_forward_reconstruction_error": null,
+    "maximum_saved_distance_difference": null,
+    "required_strict_upper_bound": 1E-05,
+    "distance_paths": [
+      "fused",
+      "shared_global",
+      "joint_local"
+    ],
+    "evidence": [
+      "tools/diagnose_correspondence_context_energy.py:88",
+      "tools/diagnose_correspondence_context_energy.py:108",
+      "tools/diagnose_correspondence_context_energy.py:111",
+      "modeling/trifusion/correspondence_context_identity.py:99"
+    ],
+    "note": "Source implementation of a gate is not evidence that the gate passed at runtime."
+  },
+  "scope": {
+    "seed": 42,
+    "accepted_snapshot_total_rows": 15,
+    "accepted_snapshot_verified_complete": 13,
+    "selected_rows": 10,
+    "conditions": [
+      "static_none",
+      "context_none",
+      "static_local",
+      "context_local",
+      "context_global"
+    ],
+    "datasets": {
+      "RGBNT201": {
+        "accepted_rows": 5,
+        "query": 836,
+        "gallery": 836,
+        "best_epochs": [
+          2,
+          2,
+          2,
+          2,
+          2
+        ]
+      },
+      "MSVR310": {
+        "accepted_rows": 5,
+        "query": 591,
+        "gallery": 1055,
+        "best_epochs": [
+          10,
+          15,
+          15,
+          12,
+          15
+        ]
+      }
+    },
+    "count_source": "tools/run_official_three_dataset_roles.py:58",
+    "counts_are_runtime_contract_not_new_execution": true
+  },
+  "deterministic_checks": {
+    "local_manifest_sources_checked": 9,
+    "local_manifest_sources_matched": 9,
+    "selected_condition_sets_exact": true,
+    "selected_rows_all_verified_complete": true,
+    "selected_hash_fields_well_formed": true,
+    "live_manifest_present_in_local_checkout": false,
+    "RGBNT201_protocol_present_in_local_checkout": false,
+    "MSVR310_protocol_present_in_local_checkout": false,
+    "note": "Local absence is not an assertion of absence on the intended remote server."
+  },
+  "interpretation_limits": [
+    "shared_global is the adapted backbone output, not the untouched frozen Signal-only output",
+    "joint_local is the combined structured correction, not separate causal contributions from the three roles",
+    "raw correction cosine uses the unscaled correction; signed gain is separately reported and must be retained in interpretation",
+    "one seed, two datasets, official mAP post-selection; no three-dataset completion or generalization claim",
+    "underlying accepted tensor checks are supplied historical evidence, not a new independent replay"
+  ],
+  "claims": [
+    {
+      "id": "source_ready_for_existing_plan",
+      "impact": "supported_with_live_preflight_condition"
+    },
+    {
+      "id": "local_nine_source_hash_match",
+      "impact": "supported_deterministically"
+    },
+    {
+      "id": "full_energy_diagnostic_complete",
+      "impact": "unsupported_until_runtime_receipts"
+    },
+    {
+      "id": "reconstruction_and_saved_distance_parity_passed",
+      "impact": "unsupported_until_runtime_receipts"
+    },
+    {
+      "id": "energy_explains_causal_failure_or_optimizer_share",
+      "impact": "unsupported_by_this_diagnostic"
+    }
+  ],
+  "audited_input_hashes": {
+    "tools/diagnose_correspondence_context_energy.py": "sha256:dba46b8f73460191318e7ba5d42a4bb191409b3ed639d5bf6eb1f7aff3ffb8e6",
+    "modeling/trifusion/correspondence_context_identity.py": "sha256:eda3d1473496b33e4b69402dba7770e67d23b33b07afd41d23105b7f148d63af",
+    "modeling/trifusion/correspondence_evidence_readout.py": "sha256:e737a977d39ccbe09a5509118e5b5333d653f7f13381e65e84af1a13e5c28dc4",
+    "tools/run_correspondence_context_identity.py": "sha256:9f4cc9f11998819d4a927a32f4e47baf0c4ff9d14c4bc93b0dc35b0153ebc142",
+    "tools/run_correspondence_roles.py": "sha256:e50865fb923297cd61cf38b33ec2bc95154f8c503b5dfe5de9823cad3f03d7ef",
+    "tools/queue_correspondence_context_identity.py": "sha256:5ac2395413c7ce744ac18be40be2e29039f2039b74b13896e48ca8bed8d4bb0f",
+    "refine-logs/correspondence_context_identity_v1/ENERGY_DIAGNOSTIC_PLAN_20260929.md": "sha256:8da924deb12a1e5b2484bcfa0e512d39f330db7b7b34cf13c4713579689985ac",
+    "logs/context_identity_accepted_667_20260929.json": "sha256:beaeaa1db722df30832ca3d58de2dde1319e61949b356ebe105bd1eff982dae9",
+    "logs/context_identity_manifest_653_20260929.json": "sha256:8ea9c7d9306e024b08e162b6d800ec0e402a6a19bfa411e28332fc61c4bd8d0d",
+    "modeling/trifusion/correspondence_roles.py": "sha256:e2a51154b5b327341f35e453dd32a821b091a49a669b49a7c70e79e6e2f2591b",
+    "tools/official_three_dataset_data.py": "sha256:c3180a88d12440709319d2025928fc699ff3b7c020b11697d468453fbfc68062",
+    "tools/official_three_dataset_model.py": "sha256:e103ea0f4d6342b0dc129dc2dace0e8c0d0e6c956cfe94729ccb70d9588cf0f9",
+    "tools/queue_correspondence_roles.py": "sha256:746fbdb8bdad04290a9ef22c0550e873c9dce9de74c2c3c3767fea9278be69bf",
+    "tools/collect_correspondence_context_identity.py": "sha256:bdc3a70eb31c94fd43acae2e490ae0c596ee7e1408d22d103ec68e9c293cd472",
+    "tools/run_official_three_dataset_roles.py": "sha256:f30bb00a0b71429e9d11dd196cd1d543202a133c663ad66e175d2f82e28d448d",
+    "tools/train_signal_preserving_v18.py": "sha256:f6bdda4631d710d0b6db5fe2a8df124d8dcbd294cb54adcf3ec261d523e96cf8",
+    "tools/train_msvr310_signal_oof.py": "sha256:c25579d931df34481fef321558f0b9a1f9179d72a25d6047dbbfd3682d4ae60f",
+    "tools/run_signal_preserving_v5.py": "sha256:e162184f68778b4991db0f97f26c5fda273b2ad2f7c8db2bbb2d53775eb717e5"
+  },
+  "manifest_source_checks": [
+    {
+      "path": "modeling/trifusion/correspondence_roles.py",
+      "expected_sha256": "e2a51154b5b327341f35e453dd32a821b091a49a669b49a7c70e79e6e2f2591b",
+      "actual_sha256": "e2a51154b5b327341f35e453dd32a821b091a49a669b49a7c70e79e6e2f2591b",
+      "match": true
+    },
+    {
+      "path": "modeling/trifusion/correspondence_evidence_readout.py",
+      "expected_sha256": "e737a977d39ccbe09a5509118e5b5333d653f7f13381e65e84af1a13e5c28dc4",
+      "actual_sha256": "e737a977d39ccbe09a5509118e5b5333d653f7f13381e65e84af1a13e5c28dc4",
+      "match": true
+    },
+    {
+      "path": "tools/run_correspondence_roles.py",
+      "expected_sha256": "e50865fb923297cd61cf38b33ec2bc95154f8c503b5dfe5de9823cad3f03d7ef",
+      "actual_sha256": "e50865fb923297cd61cf38b33ec2bc95154f8c503b5dfe5de9823cad3f03d7ef",
+      "match": true
+    },
+    {
+      "path": "tools/queue_correspondence_refinement.py",
+      "expected_sha256": "5256afe78d02d9bfea3103daa00d488b94c05e839c955f00355098f69ecbd84a",
+      "actual_sha256": "5256afe78d02d9bfea3103daa00d488b94c05e839c955f00355098f69ecbd84a",
+      "match": true
+    },
+    {
+      "path": "modeling/trifusion/correspondence_context_identity.py",
+      "expected_sha256": "eda3d1473496b33e4b69402dba7770e67d23b33b07afd41d23105b7f148d63af",
+      "actual_sha256": "eda3d1473496b33e4b69402dba7770e67d23b33b07afd41d23105b7f148d63af",
+      "match": true
+    },
+    {
+      "path": "tools/run_correspondence_context_identity.py",
+      "expected_sha256": "9f4cc9f11998819d4a927a32f4e47baf0c4ff9d14c4bc93b0dc35b0153ebc142",
+      "actual_sha256": "9f4cc9f11998819d4a927a32f4e47baf0c4ff9d14c4bc93b0dc35b0153ebc142",
+      "match": true
+    },
+    {
+      "path": "tools/queue_correspondence_context_identity.py",
+      "expected_sha256": "5ac2395413c7ce744ac18be40be2e29039f2039b74b13896e48ca8bed8d4bb0f",
+      "actual_sha256": "5ac2395413c7ce744ac18be40be2e29039f2039b74b13896e48ca8bed8d4bb0f",
+      "match": true
+    },
+    {
+      "path": "tools/collect_correspondence_context_identity.py",
+      "expected_sha256": "bdc3a70eb31c94fd43acae2e490ae0c596ee7e1408d22d103ec68e9c293cd472",
+      "actual_sha256": "bdc3a70eb31c94fd43acae2e490ae0c596ee7e1408d22d103ec68e9c293cd472",
+      "match": true
+    },
+    {
+      "path": "tools/audit_correspondence_context_identity_losses.py",
+      "expected_sha256": "bcc15e568c6a14efdaca1df5268c5abdec716287d3b6efb2482804add724abf1",
+      "actual_sha256": "bcc15e568c6a14efdaca1df5268c5abdec716287d3b6efb2482804add724abf1",
+      "match": true
+    }
+  ],
+  "accepted_endpoint_bindings": [
+    {
+      "dataset": "RGBNT201",
+      "variant": "static_none",
+      "status": "VERIFIED_COMPLETE",
+      "best_epoch": 2,
+      "condition": {
+        "query_mode": "static",
+        "auxiliary_target": "none"
+      },
+      "run_dir": "/data/gaob/Re-ID/Trifusion/trained-model/correspondence_context_identity_20260929_context_static_none_RGBNT201_seed42_full",
+      "checkpoint_sha256": "74e61dd0d726a4f8bda06d701dabbbf2de2cd76090511157324ba66254eeebea",
+      "distance_sha256": "e052bafa87ced3aebbb99c02f6d1bfb2ce257b2e7bae3d660b9558267fc63ae9",
+      "receipt_sha256": "7a7e4a156a50edb1ba4a8c708b7d1e1ab411c3b9609cf7b57aca86bcb8737251"
+    },
+    {
+      "dataset": "MSVR310",
+      "variant": "static_none",
+      "status": "VERIFIED_COMPLETE",
+      "best_epoch": 10,
+      "condition": {
+        "query_mode": "static",
+        "auxiliary_target": "none"
+      },
+      "run_dir": "/data/gaob/Re-ID/Trifusion/trained-model/correspondence_context_identity_20260929_context_static_none_MSVR310_seed42_full",
+      "checkpoint_sha256": "13cbc636fd0e31b1012eef34f11863395bab57efd25915711f87cd5d61a659ac",
+      "distance_sha256": "0ab6f0ba714d92cdecfc6ffd2ec48e546376ff0b54cb6c49a09df2b6b16ef101",
+      "receipt_sha256": "f7aafc24b0a6f812f36a0ce1ac0cb0dcda91176f7daa78b5abe88f5d13208e30"
+    },
+    {
+      "dataset": "RGBNT201",
+      "variant": "context_none",
+      "status": "VERIFIED_COMPLETE",
+      "best_epoch": 2,
+      "condition": {
+        "query_mode": "context",
+        "auxiliary_target": "none"
+      },
+      "run_dir": "/data/gaob/Re-ID/Trifusion/trained-model/correspondence_context_identity_20260929_context_context_none_RGBNT201_seed42_full",
+      "checkpoint_sha256": "81d1f6d82588a6d7536a61415801d0de166f1eb5c8b827893807cab357562668",
+      "distance_sha256": "c3b9c6a60719e98b0cbaa017fd98f3529119fbca3cb0f37ac625ce11bca64fc8",
+      "receipt_sha256": "488e0869b3bbaef53b4d0aa542126ff066af7f7e428dc2c41082a2088a9158a5"
+    },
+    {
+      "dataset": "MSVR310",
+      "variant": "context_none",
+      "status": "VERIFIED_COMPLETE",
+      "best_epoch": 15,
+      "condition": {
+        "query_mode": "context",
+        "auxiliary_target": "none"
+      },
+      "run_dir": "/data/gaob/Re-ID/Trifusion/trained-model/correspondence_context_identity_20260929_context_context_none_MSVR310_seed42_full",
+      "checkpoint_sha256": "48b4a248cab15592255f05b59f4812a8d66c57e5468f7cd0964cac3c7f1bed74",
+      "distance_sha256": "92e9d842c14a5ad5285008fd0d2e136361e7ca344decc60875be62e3bcdd8b8b",
+      "receipt_sha256": "f2549293ebc4be2735dfe3f4657a5651cf58a010da4e9e4da6a26998ebf3599c"
+    },
+    {
+      "dataset": "RGBNT201",
+      "variant": "static_local",
+      "status": "VERIFIED_COMPLETE",
+      "best_epoch": 2,
+      "condition": {
+        "query_mode": "static",
+        "auxiliary_target": "local"
+      },
+      "run_dir": "/data/gaob/Re-ID/Trifusion/trained-model/correspondence_context_identity_20260929_context_static_local_RGBNT201_seed42_full",
+      "checkpoint_sha256": "3d75dbf51f63592edbc5491ca9dde16c0fb2f3cc61361ffcf9449e21966c54ac",
+      "distance_sha256": "cc51e724fce80b683ca8df27e525731c1311812825d9459215765709db0b2950",
+      "receipt_sha256": "3c70046c40b58d62ceb17047c51ce2b7a2a954202119c51841a0024736ca548c"
+    },
+    {
+      "dataset": "MSVR310",
+      "variant": "static_local",
+      "status": "VERIFIED_COMPLETE",
+      "best_epoch": 15,
+      "condition": {
+        "query_mode": "static",
+        "auxiliary_target": "local"
+      },
+      "run_dir": "/data/gaob/Re-ID/Trifusion/trained-model/correspondence_context_identity_20260929_context_static_local_MSVR310_seed42_full",
+      "checkpoint_sha256": "7c39b49c184ea04a42986505d74b0da9d242dbcf73abce45eade43d2b383334a",
+      "distance_sha256": "994dfe5e839e5efb1e53ca436de30c3e192ef5bafb5ed09913f92d3f2997b14b",
+      "receipt_sha256": "c5af2dd847c6b4bd3ae8fe2942781f32d009146645e33d299dcf5d1a0936d8f3"
+    },
+    {
+      "dataset": "RGBNT201",
+      "variant": "context_local",
+      "status": "VERIFIED_COMPLETE",
+      "best_epoch": 2,
+      "condition": {
+        "query_mode": "context",
+        "auxiliary_target": "local"
+      },
+      "run_dir": "/data/gaob/Re-ID/Trifusion/trained-model/correspondence_context_identity_20260929_context_context_local_RGBNT201_seed42_full",
+      "checkpoint_sha256": "6d458e717c51238ab26c145b0a802659a902d0721ad4bf4eab01625299603798",
+      "distance_sha256": "223ea661d2a21881cde4f831e2633cdcf79b264154a43dfc747289c6e013730b",
+      "receipt_sha256": "3b9097d38315e8134a6428e2f8990f52705bdb6e0309f1c2fbb85ef28b28ee2f"
+    },
+    {
+      "dataset": "MSVR310",
+      "variant": "context_local",
+      "status": "VERIFIED_COMPLETE",
+      "best_epoch": 12,
+      "condition": {
+        "query_mode": "context",
+        "auxiliary_target": "local"
+      },
+      "run_dir": "/data/gaob/Re-ID/Trifusion/trained-model/correspondence_context_identity_20260929_context_context_local_MSVR310_seed42_full",
+      "checkpoint_sha256": "75167decc435031a6d3111e7cf18851751fbc29c742a08fea3cd0f4ce77c421e",
+      "distance_sha256": "0e0519d6dafa874d0c2d7f8c0c584954ba91914cbcb5e55eca5a26fe34e33083",
+      "receipt_sha256": "66330da842ab92ea93dc6cc407075a2553b48ef6dabb0edcdb07991eceaa9a0f"
+    },
+    {
+      "dataset": "RGBNT201",
+      "variant": "context_global",
+      "status": "VERIFIED_COMPLETE",
+      "best_epoch": 2,
+      "condition": {
+        "query_mode": "context",
+        "auxiliary_target": "global"
+      },
+      "run_dir": "/data/gaob/Re-ID/Trifusion/trained-model/correspondence_context_identity_20260929_context_context_global_RGBNT201_seed42_full",
+      "checkpoint_sha256": "5ddb5aa943671c911efcda5f5eff2bffa495e2b493a6696fa73ebb91829287d1",
+      "distance_sha256": "4be502fe0f50a905fbfab3155bafdcf6b000c9ee4bc682d77240d33a276a93e3",
+      "receipt_sha256": "dcdb4d522f1c7fb9e5b57a9bbfde5231e6c3718e571406c943cce902334332f2"
+    },
+    {
+      "dataset": "MSVR310",
+      "variant": "context_global",
+      "status": "VERIFIED_COMPLETE",
+      "best_epoch": 15,
+      "condition": {
+        "query_mode": "context",
+        "auxiliary_target": "global"
+      },
+      "run_dir": "/data/gaob/Re-ID/Trifusion/trained-model/correspondence_context_identity_20260929_context_context_global_MSVR310_seed42_full",
+      "checkpoint_sha256": "bb49ba5460b929a15f6181f8297813ed04fbc8bcba1c0bfab43870bdbc05653f",
+      "distance_sha256": "0b550fae3ac961c8b93a3c2994375bf25e54690614834a5e77c1c67e53dfa62c",
+      "receipt_sha256": "b65dd4085fc6beaedb91e2a3b43220a909cad208582d59c47d06b91892eef220"
+    }
+  ],
+  "report_path": "refine-logs/correspondence_context_identity_v1/REVIEW_ENERGY_DIAGNOSTIC_657_20260929.md",
+  "trace_status": "Caller owns the full native spawn request/response trace under shared review-tracing policy; this reviewer writes only the two requested artifacts.",
+  "actions_performed": [
+    "local text inspection",
+    "local SHA256 recomputation",
+    "local JSON field/count checks",
+    "write requested Markdown and JSON review artifacts"
+  ],
+  "actions_not_performed": [
+    "SSH",
+    "GPU launch",
+    "model inference",
+    "training",
+    "code changes",
+    "remote binary verification"
+  ]
+}

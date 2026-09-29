@@ -2,7 +2,7 @@
 
 ## 0. 一页结论
 
-**本页更新至§41.656：原M3四条件×三数据集12/12全50／best重载／CPU验收闭合；RGBNT100预测器平均仅+0.0643 mAP，matched_predictor比独立global-only仅+0.0103且R1不变。新context/local正式5/15；MSVR静态→语义查询+0.7198 mAP／+0.5076 R1、修复24／新增21，身份等权AP略降。15:12四卡已自动接续训练；没有更改配方或取消剩余10端。** 历史规则和数字保留原样，当前合同以后文登记和服务器回执为准。研究目标仍 **ACTIVE／UNMET**；工程通过、局部增量不代替三数据集强基线与SOTA要求。
+**本页更新至§41.657：新context/local五条件×三集15/15全50／best／重载／CPU验收闭合。查询平均ΔmAP三集仅+0.0210/+0.0023/+0.0214；局部身份监督201/100为−0.5915/−0.6152，MSVR+0.1819且与query负交互。10份已选权重的完整Q/G诊断通过原forward及三路距离一致性：局部监督提高local-alone，却使角色缩放修正能量比201约6%→1.1%、MSVR约49%→3.6%。没有据此调倍率、选seed或取消负端；下一项跨层持续角色结构仅源码准备，未训练。** 历史规则和数字保留原样，当前合同以后文登记和服务器回执为准。研究目标仍 **ACTIVE／UNMET**；工程通过、局部增量不代替三数据集强基线与SOTA要求。
 
 **现行合同：** 每个正式候选完整50轮，使用作者完整query/gallery及camera／MSVR时间段过滤，以官方fused mAP最高的同一checkpoint报告全部指标，随后严格重载。RGBNT201报告mAP／R1／R5／R10，RGBNT100及MSVR310报告mAP／R1；不跨epoch或seed拼列。官方集已参与逐轮选点和历史方法选择，属于已消费基准上的探索性结果。
 
@@ -12877,3 +12877,81 @@ actual loader代码复核：三个数据集三光谱均共享一次水平翻转�
 
 
 §41.656执行补记：实际2026-09-29T15:12:55.555311+08:00再次核对四卡均有真实trainer，GPU0 context_none/RGBNT100 35/50，GPU1 static_local/MSVR310 10/50，GPU2 static_local/RGBNT100 4/50，GPU3 static_local/RGBNT201 19/50；每端自己的M0已通过。原父COMPLETE，9个新运行源未变；GPU1正常自动接static_localMSVR，未加重试或修改guard。新正式仍5/15，不采纳上述中途best。下一完整终点估计15:30附近，随后按估时检查；保存progress664，不在同步中重复轮询。
+
+
+### 41.657 全局条件查询×联合局部身份职责完整15端闭合与实际融合能量诊断（2026-09-29）
+
+父队列实际2026-09-29T18:00:24.400838+08:00正常COMPLETE：15 COMPLETE/0 RUNNING/0 PENDING/0 FAILED。父队列自己的collector于2026-09-29T18:00:24.397859+08:00完整验收15/15；本次摄取该accepted_matrix原始字节、重核checkpoint/receipt SHA与已有CPU三路全图库差值，不重复旧13端的训练或评价。此前13条VERIFIED_COMPLETE对象完全不变，最后两条100的training/official/steps文本另行归档。当前只是这批实验闭合，统一研究目标仍ACTIVE/UNMET。
+
+#### 同协议、同初始化、full50单mAP-best的完整五条件
+
+| 条件 | RGBNT201 mAP/R1/R5/R10 | RGBNT100 mAP/R1 | MSVR310 mAP/R1 |
+|---|---|---|---|
+| static_none | E2 72.5957/74.0431/82.8947/88.0383 | E1 85.1254/94.9854 | E10 52.2626/67.5127 |
+| context_none | E2 72.6087/74.1627/83.0144/88.0383 | E1 85.1208/95.0437 | E15 52.9824/68.0203 |
+| static_local | E2 71.9962/73.0861/81.2201/86.7225 | E1 84.5033/94.9271 | E15 53.1429/69.8816 |
+| context_local | E2 72.0252/72.9665/81.3397/86.8421 | E1 84.5125/94.9271 | E12 52.4659/68.0203 |
+| context_global | E2 72.2687/73.0861/82.1770/87.0813 | E1 85.3363/95.5685 | E15 52.0858/67.8511 |
+
+五条件全部M1/M2开、M3关，输出1536D，固定纯CLIP ReID起点和seed42；每数据集五端初始完整state SHA相同。static/context无aux两端参数相同，三种有aux端参数相同；同存储参数不等于同有效函数容量。不同数据集分类头宽度由来源身份数决定，不能跨数据集比较参数数或绝对分数判断难度。新结果不继承旧Signal增强路线的83分，不将其减去纯baseline69.64冒算新模块贡献。
+
+最后100 context_local与context_global均选E1；local的shared_global 84.5111/94.9271，joint_local 74.3882/87.6968，fused84.5125/94.9271。global辅助监督对应global85.3237/95.6851、local59.1912/79.5918、fused85.3363/95.5685；单模型global/local分解不是独立训练角色消融。15端总51,040步骤标量重构、最大误差7.12461769581e-07；100五端Triplet全部0，所有有aux端其aux ID非零。任务标量不等于梯度或AdamW更新份额。
+
+#### 全因素和合法首位关系：没有“查询＋局部职责”稳定的大幅增量
+
+| 数据集 | query平均ΔmAP/R1 | local ID平均ΔmAP/R1 | query×local交互ΔmAP/R1 | local vs global额外ID ΔmAP/R1 |
+|---|---:|---:|---:|---:|
+| RGBNT201 | +0.0210/+0.0000 | -0.5915/-1.0766 | +0.0159/-0.2392 | -0.2436/-0.1196 |
+| RGBNT100 | +0.0023/+0.0292 | -0.6152/-0.0875 | +0.0138/-0.0583 | -0.8238/-0.6414 |
+| MSVR310 | +0.0214/-0.6768 | +0.1819/+1.1844 | -1.3968/-2.3689 | +0.3802/+0.1692 |
+
+这是两个因素四条件的平均作用与差中差，不是可顺次叠加的模块贡献。201/100条件查询作用很薄，局部监督在两种查询下都降低mAP；MSVR查询在无aux时+.7198 mAP，而有local ID时−.6770，交互−1.3968。MSVR static_local53.1429/69.8816虽改善其同结构控制，仍低于发布Signal53.2424/72.4196；context_local在201/100低于同结构static_none，并未解决global-only之外的可靠角色增量。不同已选best的条件比较不是同训练步状态的唯一因果分离。
+
+| 完整距离配对 | 条件 | ΔmAP/R1 | 首位修复/新增 | 身份等权ΔAP百分点 |
+|---|---|---:|---:|---:|
+| RGBNT201 | static_none→context_none | +0.0130/+0.1196 | 1/0 | +0.0124 |
+| RGBNT201 | static_local→context_local | +0.0290/-0.1196 | 0/1 | +0.0335 |
+| RGBNT201 | static_none→static_local | -0.5995/-0.9569 | 3/11 | -0.5969 |
+| RGBNT201 | context_none→context_local | -0.5836/-1.1962 | 2/12 | -0.5758 |
+| RGBNT201 | context_global→context_local | -0.2436/-0.1196 | 9/10 | -0.2457 |
+| RGBNT100 | static_none→context_none | -0.0046/+0.0583 | 1/0 | -0.0043 |
+| RGBNT100 | static_local→context_local | +0.0092/+0.0000 | 0/0 | +0.0053 |
+| RGBNT100 | static_none→static_local | -0.6221/-0.0583 | 12/13 | -0.7349 |
+| RGBNT100 | context_none→context_local | -0.6083/-0.1166 | 11/13 | -0.7254 |
+| RGBNT100 | context_global→context_local | -0.8238/-0.6414 | 8/19 | -0.9206 |
+| MSVR310 | static_none→context_none | +0.7198/+0.5076 | 24/21 | -0.0396 |
+| MSVR310 | static_local→context_local | -0.6770/-1.8613 | 16/27 | -0.3768 |
+| MSVR310 | static_none→static_local | +0.8803/+2.3689 | 28/14 | +0.7640 |
+| MSVR310 | context_none→context_local | -0.5164/+0.0000 | 20/20 | +0.4268 |
+| MSVR310 | context_global→context_local | +0.3802/+0.1692 | 23/22 | +1.0195 |
+
+统一分析工具SHA91ccb8995f98624a42c2e08c4afc391e651aa4a535d345430497894dc477cb77，于2026-09-29T18:01:26.485287+08:00开始、实际CLI退出0，15配对和三个因素表完整生成；只用保存的完整距离与合法camera/时间段标签，不新推理、不重加权。13份新配对JSON＋summary一次归档；之前201§655、MSVR§656两份static_none→context_none报告显式--sealed-pair复用，原字节与绑定SHA保留。单训练seed，官方基准逐轮选点及历史选择，固定权重的身份bootstrap不是训练seed方差或未消费测试上的泛化保证。
+
+#### 首次读取实际修正能量与方向，完整原forward及三路距离通过
+
+诊断于17:50:21在空GPU1/2启动，201/MSVR各固定五份已接受的best，正常eval/inference_mode全query/gallery，禁止使用能量结果挑倍率、位置、身份或权重。仅hook读取backbone global与role evidence，角色区域读出额外计算一次；教师与分类头不运行。10个模型原forward重构最大差0，三个完整距离最大差5.960464477539062e-7（201 static_local的joint_local），其它均0，阈值1e-5。201 summary实际2026-09-29T17:52:19.749449+08:00，MSVR为2026-09-29T17:52:24.383136+08:00；保存remote逐样本标量和协议绑定，local只归档12份JSON。
+
+| 数据集 | 条件 | 学习gain | query平均abs(gain)·norm(c)/norm(g) | gallery同量 | query平均cos(g,c) |
+|---|---|---:|---:|---:|---:|
+| RGBNT201 | static_none | 0.11570 | 0.06047 | 0.06047 | -0.01533 |
+| RGBNT201 | context_none | 0.11569 | 0.06074 | 0.06074 | -0.02126 |
+| RGBNT201 | static_local | 0.09802 | 0.01108 | 0.01108 | -0.00543 |
+| RGBNT201 | context_local | 0.09800 | 0.01110 | 0.01110 | -0.00734 |
+| RGBNT201 | context_global | 0.11583 | 0.06209 | 0.06209 | -0.05498 |
+| MSVR310 | static_none | 0.13719 | 0.47831 | 0.48243 | -0.44223 |
+| MSVR310 | context_none | 0.14423 | 0.48965 | 0.49531 | -0.42843 |
+| MSVR310 | static_local | 0.05936 | 0.03709 | 0.03717 | -0.01067 |
+| MSVR310 | context_local | 0.05735 | 0.03588 | 0.03586 | -0.00237 |
+| MSVR310 | context_global | 0.13846 | 0.37147 | 0.37596 | -0.26089 |
+
+local CE令角色单独检索更可辨识，却没有令它在最终表示中承担更大作用：201缩放修正范数比由约6%降为1.1%，MSVR由约48%–49%降为3.6%–3.7%。这同时伴随global成绩变化，不能据此宣布范数是唯一原因或放大倍率就会涨分；局部空间的较好mAP也不保证与global在加性融合中形成有效判别互补。余弦近0不是身份互补的证明，MSVR其它端负余弦也不自动代表有害。测量仅针对每端已选best，不能冒充全训练轨迹或参数更新比例。
+
+代码可确定：aux local直接监督Normalize(c)，不经过gain；其直接gain导数为0，但仍经角色、M1共享适配和context查询回传。fused身份梯度包含gain与归一化Jacobian，却不能从该系数换算角色梯度或实际更新份额。保留此边界，不把“global捷径”当成已经唯一证明的根因。
+
+#### 审查、执行证据与后继边界
+
+final analyzer和energy source均经fresh native Codex Astra max/fork none只读审查，无具体源码启动阻塞；source审查时只有13/15或没有runtime，原WARN报告保留，不改为事后PASS。后续runtime审查读取完整15和10份诊断JSON，仍same-family/provisional，远端原张量不在local独立重放范围，九份runtime manifest也不是全部依赖的传递锁。能量诊断的OS退出码没有由持久父进程记录，不能从成功summary和PID消失补造exit0；仅完整分析CLI退出0是实际工具返回。原GPU/队列启动条件由17:50 snapshot及启动器核对支持。报告见refine-logs/correspondence_context_identity_v1/REVIEW_*657_20260929，caller调用转录见logs/context_identity_review_invocations_657_20260929.json，不独立证明backend身份。
+
+观察更正：原本计划15:31的本地等待句柄丢失且没有写回执，确认后17:33才执行observer666一次，不能把其filename当成15:31实查。后续17:50/17:57使用remote持久一次observer；两次在预定时间之前取文件出现不存在，不代表训练失败，未重启队列。能量启动器的嵌套换行在local py_compile时发现并修正，原诊断还未启动；不涉及正式训练失败或阈值变更。
+
+下一项回到角色证据形成：当前三层快照先混合再执行角色，新的跨层角色状态源码已开始准备。拟比较mixed_once、三层独立角色处理后平均、角色状态按第4→8→12层持续传递；共享CLIP/M1路径、采样地址、query/读出与角色参数保持明确控制，以区分更多层证据/计算与持续状态。不开M3和已失败的local辅助头，不扫描倍率。当前只有新增模型源码语法检查，没有完整入口、生产M0、队列或成绩，不能写为已实现成功方法；原15端和原M3全12结果封存不改。

@@ -1,0 +1,778 @@
+{
+  "audit_skill": "experiment-audit",
+  "date": "2026-09-29",
+  "generated_at": "2026-09-29T18:04:19.1033368+08:00",
+  "verdict": "WARN",
+  "overall_verdict": "warn",
+  "integrity_status": "warn",
+  "reason_code": "reported_runtime_gates_pass_independent_binary_replay_and_exit_codes_unavailable",
+  "summary": "All local runtime JSON hashes, accepted bindings, scope and aggregate arithmetic checks pass. Receipts report reconstruction max 0 and saved-distance max 5.960464477539062e-7, below 1e-5. Raw binary replay was not performed and OS exit codes/measured process durations are unavailable.",
+  "agent_id": "/root/audit_context_energy_657",
+  "verdict_id": "/root/audit_context_energy_657:20260929:runtime",
+  "reviewer_backend": "native-codex",
+  "reviewer_model": "gpt-6-astra",
+  "reviewer_reasoning": "max",
+  "reviewer_family": "openai",
+  "review_independence": "same-family",
+  "acceptance_status": "provisional",
+  "reviewer_route_evidence": "logs/context_identity_review_invocations_657_20260929.json:23",
+  "reviewer_route_limit": "Caller transcription of native arguments/result; not independent backend identity attestation. This is a continuation of the same reviewer.",
+  "review_mode": "local_runtime_artifact_and_source_review",
+  "local_artifact_verdict": "PASS",
+  "reported_runtime_gate_verdict": "PASS",
+  "independent_binary_replay": "NOT_PERFORMED",
+  "os_exit_code_verdict": "UNKNOWN",
+  "code_blockers": [],
+  "requires_rerun": false,
+  "checks": {
+    "A_gt_provenance": {
+      "status": "PASS",
+      "details": "The new values describe activations and same-checkpoint distance reproducibility; they are not prediction-derived identity GT or a new retrieval score.",
+      "evidence": [
+        "tools/diagnose_correspondence_context_energy.py:83",
+        "tools/diagnose_correspondence_context_energy.py:93",
+        "tools/diagnose_correspondence_context_energy.py:111",
+        "logs/context_energy_RGBNT201_657_20260929/summary.json:805",
+        "logs/context_energy_MSVR310_657_20260929/summary.json:805"
+      ]
+    },
+    "B_score_normalization_and_arithmetic": {
+      "status": "PASS",
+      "scope": "available_json_aggregates_and_source_formula",
+      "details": "120 distributions have expected counts, finite/ordered quantiles and means within extrema. Cosine/norm ranges, ratio-extrema bounds and cosine/L2 aggregate relations are consistent. The relative norm is averaged per sample; a ratio of means is not substituted. Exact raw-array mean/quantile recomputation is unavailable.",
+      "evidence": [
+        "tools/diagnose_correspondence_context_energy.py:23",
+        "tools/diagnose_correspondence_context_energy.py:94",
+        "logs/context_energy_RGBNT201_657_20260929/static_local.json:19",
+        "logs/context_energy_RGBNT201_657_20260929/static_local.json:41",
+        "logs/context_energy_MSVR310_657_20260929/context_local.json:63",
+        "logs/context_energy_MSVR310_657_20260929/context_local.json:74"
+      ]
+    },
+    "C_result_existence_and_bindings": {
+      "status": "WARN",
+      "details": "12/12 archive hashes, 10/10 summary/per-condition objects, 60/60 accepted binding fields and 9/9 frozen local source hashes match. Ten raw per-sample tensors and original binaries remain remote. No supplied OS exit-code or measured per-process duration evidence exists.",
+      "evidence": [
+        "logs/context_energy_archive_657_20260929.json:7",
+        "logs/context_energy_archive_657_20260929.json:19",
+        "logs/context_energy_RGBNT201_657_20260929/static_local.json:7",
+        "logs/context_energy_RGBNT201_657_20260929/static_local.json:155",
+        "C:/Users/gb/.codex_tmp/launch_context_energy_657.py:38",
+        "C:/Users/gb/.codex_tmp/launch_context_energy_657.py:42"
+      ]
+    },
+    "D_reachability_and_runtime_parity": {
+      "status": "PASS",
+      "scope": "reported_runtime_receipts_not_independent_replay",
+      "details": "All 10 reconstruction and 30 saved-distance maxima are reported. Source computes actual tensor differences before saving the report; maximum reconstruction is 0 and maximum saved-distance difference is 5.960464477539062e-7. Numeric receipts support runtime-reported gate completion, not independently rerun parity.",
+      "evidence": [
+        "tools/diagnose_correspondence_context_energy.py:89",
+        "tools/diagnose_correspondence_context_energy.py:108",
+        "tools/diagnose_correspondence_context_energy.py:111",
+        "tools/diagnose_correspondence_context_energy.py:118",
+        "logs/context_energy_RGBNT201_657_20260929/static_local.json:11"
+      ]
+    },
+    "E_scope_and_selection": {
+      "status": "PASS",
+      "details": "Exactly five fixed accepted best checkpoints per dataset, seed 42, with both complete splits and all six statistics. No RGBNT100 energy result or new checkpoint/gain/condition/metric search. Counts imply 16,590 record-forward instances across conditions and splits, not unique images.",
+      "evidence": [
+        "logs/context_energy_RGBNT201_657_20260929/summary.json:23",
+        "logs/context_energy_RGBNT201_657_20260929/summary.json:180",
+        "logs/context_energy_RGBNT201_657_20260929/summary.json:337",
+        "logs/context_energy_RGBNT201_657_20260929/summary.json:494",
+        "logs/context_energy_RGBNT201_657_20260929/summary.json:651",
+        "logs/context_energy_MSVR310_657_20260929/context_local.json:20",
+        "logs/context_energy_MSVR310_657_20260929/context_local.json:88",
+        "tools/diagnose_correspondence_context_energy.py:38"
+      ]
+    },
+    "F_evaluation_type": {
+      "status": "PASS",
+      "classification": "self_supervised_proxy",
+      "underlying_accepted_retrieval_classification": "real_gt",
+      "details": "Descriptive activation/reproducibility analysis of official-selected checkpoints. Does not prove causal failure, optimizer-update shares, separate independent role contributions or a new retrieval score.",
+      "evidence": [
+        "tools/diagnose_correspondence_context_energy.py:136",
+        "refine-logs/correspondence_context_identity_v1/ENERGY_DIAGNOSTIC_PLAN_20260929.md:15"
+      ]
+    }
+  },
+  "deterministic_checks": {
+    "archive_json_files_checked": 12,
+    "archive_json_files_matched": 12,
+    "summary_per_condition_objects_checked": 10,
+    "summary_per_condition_objects_matched": 10,
+    "accepted_fields_checked": 60,
+    "accepted_fields_matched": 60,
+    "frozen_sources_checked": 9,
+    "frozen_sources_matched": 9,
+    "summary_source_maps_match_launch_manifest_and_local": true,
+    "condition_sets_exact": true,
+    "statistic_distributions_checked": 120,
+    "distribution_count_finite_order_mean_bounds_checks_passed": true,
+    "norm_cosine_ranges_passed": true,
+    "ratio_extrema_bound_checks": 20,
+    "ratio_extrema_bounds_passed": true,
+    "mean_l2_jensen_bounds_passed": true,
+    "reversed_cosine_l2_quantile_pairs": 100,
+    "maximum_reversed_cosine_l2_quantile_residual": 1.392440256431371E-07,
+    "quantile_check_limit": "Aggregate consistency only; interpolation and float arithmetic prevent exact pointwise interpretation.",
+    "local_per_sample_pt_files": 0,
+    "source_review_bytes_preserved": true
+  },
+  "reported_parity": {
+    "reconstruction_comparisons": 10,
+    "distance_comparisons": 30,
+    "maximum_forward_reconstruction_error": 0.0,
+    "maximum_saved_distance_difference": 5.960464477539062E-07,
+    "strict_gate": 1E-05,
+    "all_reported_gates_passed": true,
+    "only_nonzero_distance_row": {
+      "dataset": "RGBNT201",
+      "variant": "static_local",
+      "fused": 2.384185791015625E-07,
+      "shared_global": 0.0,
+      "joint_local": 5.960464477539062E-07
+    },
+    "provenance_level": "runtime_reported_numeric_maxima_with_independently_checked_local_receipt_hashes",
+    "independent_tensor_replay": false,
+    "raw_scalar_stats_recomputed": false,
+    "fresh_embedding_matrices_saved_by_diagnostic": false,
+    "note": "Remote scalar PT payloads alone cannot replay distance matrices; the diagnostic saves energies/records/checkpoint hash rather than fresh embeddings."
+  },
+  "scope": {
+    "seed": 42,
+    "datasets": {
+      "RGBNT201": {
+        "conditions": 5,
+        "query_per_condition": 836,
+        "gallery_per_condition": 836,
+        "record_forward_instances": 8360,
+        "best_epochs": [
+          2,
+          2,
+          2,
+          2,
+          2
+        ]
+      },
+      "MSVR310": {
+        "conditions": 5,
+        "query_per_condition": 591,
+        "gallery_per_condition": 1055,
+        "record_forward_instances": 8230,
+        "best_epochs": [
+          10,
+          15,
+          15,
+          12,
+          15
+        ]
+      }
+    },
+    "condition_order": [
+      "static_none",
+      "context_none",
+      "static_local",
+      "context_local",
+      "context_global"
+    ],
+    "total_record_forward_instances": 16590,
+    "unique_image_count_claimed": false,
+    "new_retrieval_scores": false,
+    "new_weight_or_checkpoint_selection": false
+  },
+  "launch_evidence": {
+    "status": "SUPPORTED_BY_LOCAL_OBSERVATION_RECEIPT_AND_LAUNCHER_SOURCE",
+    "launch_at": "2026-09-29T17:50:21.766061+08:00",
+    "prelaunch_snapshot_at": "2026-09-29T17:50:00.143433+08:00",
+    "original_queue_jobs": 15,
+    "original_queue_complete": 14,
+    "original_queue_running": 1,
+    "original_queue_pending_or_failed": 0,
+    "old_m3_status": "COMPLETE",
+    "old_active_count": 0,
+    "remaining_original_job": {
+      "dataset": "RGBNT100",
+      "variant": "context_global",
+      "gpu": 0,
+      "pid": 2932020
+    },
+    "gpu_memory_before_mib": {
+      "1": 23,
+      "2": 15
+    },
+    "jobs": [
+      {
+        "dataset": "RGBNT201",
+        "gpu": 1,
+        "pid": 3004039,
+        "os_exit_code": null,
+        "measured_process_elapsed_seconds": null,
+        "launch_receipt_to_summary_timestamp_span_seconds": 117.983388
+      },
+      {
+        "dataset": "MSVR310",
+        "gpu": 2,
+        "pid": 3004040,
+        "os_exit_code": null,
+        "measured_process_elapsed_seconds": null,
+        "launch_receipt_to_summary_timestamp_span_seconds": 122.617075
+      }
+    ],
+    "evidence": [
+      "logs/context_identity_progress_668_20260929.json:7",
+      "logs/context_identity_progress_668_20260929.json:660",
+      "logs/context_identity_progress_668_20260929.json:760",
+      "logs/context_energy_launch_657_20260929.json:6",
+      "logs/context_energy_launch_657_20260929.json:25",
+      "logs/context_energy_launch_657_20260929.json:43",
+      "C:/Users/gb/.codex_tmp/launch_context_energy_657.py:18",
+      "C:/Users/gb/.codex_tmp/launch_context_energy_657.py:22"
+    ],
+    "process_closure_limit": "Popen children are detached and the supplied launcher does not wait or persist return codes. Completion summaries and vanished PIDs cannot determine OS exit codes. Timestamp spans are not measured process runtimes."
+  },
+  "numeric_observations": [
+    {
+      "dataset": "RGBNT201",
+      "variant": "static_none",
+      "split": "query",
+      "count": 836,
+      "readout_gain": 0.11569751054048538,
+      "mean_global_norm": 17.23917192933662,
+      "mean_correction_norm": 8.9998168848348,
+      "mean_scaled_correction_to_global_norm": 0.06047049789961303,
+      "mean_global_correction_cosine": -0.015333008181535455,
+      "mean_global_fused_cosine": 0.9981668564406309,
+      "mean_global_fused_l2": 0.06035722225334085
+    },
+    {
+      "dataset": "RGBNT201",
+      "variant": "static_none",
+      "split": "gallery",
+      "count": 836,
+      "readout_gain": 0.11569751054048538,
+      "mean_global_norm": 17.23917192933662,
+      "mean_correction_norm": 8.9998168848348,
+      "mean_scaled_correction_to_global_norm": 0.06047049789961303,
+      "mean_global_correction_cosine": -0.015333008181535455,
+      "mean_global_fused_cosine": 0.9981668564406309,
+      "mean_global_fused_l2": 0.06035722225334085
+    },
+    {
+      "dataset": "RGBNT201",
+      "variant": "context_none",
+      "split": "query",
+      "count": 836,
+      "readout_gain": 0.11568623781204224,
+      "mean_global_norm": 17.24467230413519,
+      "mean_correction_norm": 9.04399031885503,
+      "mean_scaled_correction_to_global_norm": 0.06074353113645715,
+      "mean_global_correction_cosine": -0.021263661535354285,
+      "mean_global_fused_cosine": 0.9981489212176446,
+      "mean_global_fused_l2": 0.06064506310916118
+    },
+    {
+      "dataset": "RGBNT201",
+      "variant": "context_none",
+      "split": "gallery",
+      "count": 836,
+      "readout_gain": 0.11568623781204224,
+      "mean_global_norm": 17.24467230413519,
+      "mean_correction_norm": 9.04399031885503,
+      "mean_scaled_correction_to_global_norm": 0.06074353113645715,
+      "mean_global_correction_cosine": -0.021263661535354285,
+      "mean_global_fused_cosine": 0.9981489212176446,
+      "mean_global_fused_l2": 0.06064506310916118
+    },
+    {
+      "dataset": "RGBNT201",
+      "variant": "static_local",
+      "split": "query",
+      "count": 836,
+      "readout_gain": 0.09801995754241943,
+      "mean_global_norm": 17.79235433277331,
+      "mean_correction_norm": 2.0088316818173424,
+      "mean_scaled_correction_to_global_norm": 0.011084720901209131,
+      "mean_global_correction_cosine": -0.005427774513958013,
+      "mean_global_fused_cosine": 0.9999382454527622,
+      "mean_global_fused_l2": 0.01108158256248103
+    },
+    {
+      "dataset": "RGBNT201",
+      "variant": "static_local",
+      "split": "gallery",
+      "count": 836,
+      "readout_gain": 0.09801995754241943,
+      "mean_global_norm": 17.79235433277331,
+      "mean_correction_norm": 2.0088316818173424,
+      "mean_scaled_correction_to_global_norm": 0.011084720901209131,
+      "mean_global_correction_cosine": -0.005427774513958013,
+      "mean_global_fused_cosine": 0.9999382454527622,
+      "mean_global_fused_l2": 0.01108158256248103
+    },
+    {
+      "dataset": "RGBNT201",
+      "variant": "context_local",
+      "split": "query",
+      "count": 836,
+      "readout_gain": 0.09800271689891815,
+      "mean_global_norm": 17.83157441262423,
+      "mean_correction_norm": 2.0164586707735745,
+      "mean_scaled_correction_to_global_norm": 0.011100864114738894,
+      "mean_global_correction_cosine": -0.007341011465637405,
+      "mean_global_fused_cosine": 0.9999380643573104,
+      "mean_global_fused_l2": 0.011097838442647856
+    },
+    {
+      "dataset": "RGBNT201",
+      "variant": "context_local",
+      "split": "gallery",
+      "count": 836,
+      "readout_gain": 0.09800271689891815,
+      "mean_global_norm": 17.83157441262423,
+      "mean_correction_norm": 2.0164586707735745,
+      "mean_scaled_correction_to_global_norm": 0.011100864114738894,
+      "mean_global_correction_cosine": -0.007341011465637405,
+      "mean_global_fused_cosine": 0.9999380643573104,
+      "mean_global_fused_l2": 0.011097838442647856
+    },
+    {
+      "dataset": "RGBNT201",
+      "variant": "context_global",
+      "split": "query",
+      "count": 836,
+      "readout_gain": 0.11583323031663895,
+      "mean_global_norm": 17.632446108822617,
+      "mean_correction_norm": 9.442156495089737,
+      "mean_scaled_correction_to_global_norm": 0.06209153736803378,
+      "mean_global_correction_cosine": -0.05497622769437374,
+      "mean_global_fused_cosine": 0.9980633726530668,
+      "mean_global_fused_l2": 0.062042862506645716
+    },
+    {
+      "dataset": "RGBNT201",
+      "variant": "context_global",
+      "split": "gallery",
+      "count": 836,
+      "readout_gain": 0.11583323031663895,
+      "mean_global_norm": 17.632446108822617,
+      "mean_correction_norm": 9.442156495089737,
+      "mean_scaled_correction_to_global_norm": 0.06209153736803378,
+      "mean_global_correction_cosine": -0.05497622769437374,
+      "mean_global_fused_cosine": 0.9980633726530668,
+      "mean_global_fused_l2": 0.062042862506645716
+    },
+    {
+      "dataset": "MSVR310",
+      "variant": "static_none",
+      "split": "query",
+      "count": 591,
+      "readout_gain": 0.13719484210014343,
+      "mean_global_norm": 9.742657790530957,
+      "mean_correction_norm": 33.89411492839884,
+      "mean_scaled_correction_to_global_norm": 0.47831382459997124,
+      "mean_global_correction_cosine": -0.44222897820666357,
+      "mean_global_fused_cosine": 0.8782808231016505,
+      "mean_global_fused_l2": 0.4926515326988072
+    },
+    {
+      "dataset": "MSVR310",
+      "variant": "static_none",
+      "split": "gallery",
+      "count": 1055,
+      "readout_gain": 0.13719484210014343,
+      "mean_global_norm": 9.700893393060042,
+      "mean_correction_norm": 34.03224980503462,
+      "mean_scaled_correction_to_global_norm": 0.4824264214502127,
+      "mean_global_correction_cosine": -0.4441417981521778,
+      "mean_global_fused_cosine": 0.8760389151731374,
+      "mean_global_fused_l2": 0.49706520155707806
+    },
+    {
+      "dataset": "MSVR310",
+      "variant": "context_none",
+      "split": "query",
+      "count": 591,
+      "readout_gain": 0.1442260593175888,
+      "mean_global_norm": 9.43511481696579,
+      "mean_correction_norm": 31.984122991158475,
+      "mean_scaled_correction_to_global_norm": 0.4896494770413123,
+      "mean_global_correction_cosine": -0.4284323637457265,
+      "mean_global_fused_cosine": 0.8723289342297716,
+      "mean_global_fused_l2": 0.5043068811070496
+    },
+    {
+      "dataset": "MSVR310",
+      "variant": "context_none",
+      "split": "gallery",
+      "count": 1055,
+      "readout_gain": 0.1442260593175888,
+      "mean_global_norm": 9.405090258810757,
+      "mean_correction_norm": 32.24731853177762,
+      "mean_scaled_correction_to_global_norm": 0.4953129163003081,
+      "mean_global_correction_cosine": -0.4341532458626263,
+      "mean_global_fused_cosine": 0.8690761997801433,
+      "mean_global_fused_l2": 0.5105209105387684
+    },
+    {
+      "dataset": "MSVR310",
+      "variant": "static_local",
+      "split": "query",
+      "count": 591,
+      "readout_gain": 0.059362661093473434,
+      "mean_global_norm": 9.85698567146779,
+      "mean_correction_norm": 6.152061590688483,
+      "mean_scaled_correction_to_global_norm": 0.03708579767867293,
+      "mean_global_correction_cosine": -0.010671673074298477,
+      "mean_global_fused_cosine": 0.9993102450661248,
+      "mean_global_fused_l2": 0.03706676896201374
+    },
+    {
+      "dataset": "MSVR310",
+      "variant": "static_local",
+      "split": "gallery",
+      "count": 1055,
+      "readout_gain": 0.059362661093473434,
+      "mean_global_norm": 9.832065017302455,
+      "mean_correction_norm": 6.148353131913461,
+      "mean_scaled_correction_to_global_norm": 0.037169457315268675,
+      "mean_global_correction_cosine": -0.010794027034034379,
+      "mean_global_fused_cosine": 0.9993068402977351,
+      "mean_global_fused_l2": 0.037151093034170815
+    },
+    {
+      "dataset": "MSVR310",
+      "variant": "context_local",
+      "split": "query",
+      "count": 591,
+      "readout_gain": 0.057352300733327866,
+      "mean_global_norm": 10.258319953169718,
+      "mean_correction_norm": 6.407799571500414,
+      "mean_scaled_correction_to_global_norm": 0.03587601435971139,
+      "mean_global_correction_cosine": -0.0023675640147138395,
+      "mean_global_fused_cosine": 0.9993548022107223,
+      "mean_global_fused_l2": 0.03584825835945542
+    },
+    {
+      "dataset": "MSVR310",
+      "variant": "context_local",
+      "split": "gallery",
+      "count": 1055,
+      "readout_gain": 0.057352300733327866,
+      "mean_global_norm": 10.250164904300636,
+      "mean_correction_norm": 6.397927137347759,
+      "mean_scaled_correction_to_global_norm": 0.03585797550236162,
+      "mean_global_correction_cosine": -0.0029358911037807005,
+      "mean_global_fused_cosine": 0.9993549906812008,
+      "mean_global_fused_l2": 0.03583141630294764
+    },
+    {
+      "dataset": "MSVR310",
+      "variant": "context_global",
+      "split": "query",
+      "count": 591,
+      "readout_gain": 0.13845857977867126,
+      "mean_global_norm": 9.595485603345429,
+      "mean_correction_norm": 25.703541282873267,
+      "mean_scaled_correction_to_global_norm": 0.37146741741804906,
+      "mean_global_correction_cosine": -0.2608922878548175,
+      "mean_global_fused_cosine": 0.9293435806953766,
+      "mean_global_fused_l2": 0.3750148692409399
+    },
+    {
+      "dataset": "MSVR310",
+      "variant": "context_global",
+      "split": "gallery",
+      "count": 1055,
+      "readout_gain": 0.13845857977867126,
+      "mean_global_norm": 9.561346109218507,
+      "mean_correction_norm": 25.917360087028612,
+      "mean_scaled_correction_to_global_norm": 0.37596263317700246,
+      "mean_global_correction_cosine": -0.2631742144436068,
+      "mean_global_fused_cosine": 0.9275341814163172,
+      "mean_global_fused_l2": 0.3796193808458428
+    }
+  ],
+  "parity_rows": [
+    {
+      "dataset": "RGBNT201",
+      "variant": "static_none",
+      "best_epoch": 2,
+      "maximum_forward_reconstruction_error": 0.0,
+      "maximum_saved_distance_difference": {
+        "fused": 0.0,
+        "shared_global": 0.0,
+        "joint_local": 0.0
+      },
+      "checkpoint_sha256": "74e61dd0d726a4f8bda06d701dabbbf2de2cd76090511157324ba66254eeebea",
+      "distance_sha256": "e052bafa87ced3aebbb99c02f6d1bfb2ce257b2e7bae3d660b9558267fc63ae9",
+      "receipt_sha256": "7a7e4a156a50edb1ba4a8c708b7d1e1ab411c3b9609cf7b57aca86bcb8737251",
+      "per_sample_path": "/data/gaob/Re-ID/Trifusion/.git/context_energy_RGBNT201_657_20260929/static_none_per_sample.pt",
+      "per_sample_sha256": "2cebbe1352b9272d80863523957a0e53991558d12df3839076cedd21819e3445"
+    },
+    {
+      "dataset": "RGBNT201",
+      "variant": "context_none",
+      "best_epoch": 2,
+      "maximum_forward_reconstruction_error": 0.0,
+      "maximum_saved_distance_difference": {
+        "fused": 0.0,
+        "shared_global": 0.0,
+        "joint_local": 0.0
+      },
+      "checkpoint_sha256": "81d1f6d82588a6d7536a61415801d0de166f1eb5c8b827893807cab357562668",
+      "distance_sha256": "c3b9c6a60719e98b0cbaa017fd98f3529119fbca3cb0f37ac625ce11bca64fc8",
+      "receipt_sha256": "488e0869b3bbaef53b4d0aa542126ff066af7f7e428dc2c41082a2088a9158a5",
+      "per_sample_path": "/data/gaob/Re-ID/Trifusion/.git/context_energy_RGBNT201_657_20260929/context_none_per_sample.pt",
+      "per_sample_sha256": "45aff8552e1a22e9e308161b6d45141206092daf09b98dca6c3984fbf81a9bd5"
+    },
+    {
+      "dataset": "RGBNT201",
+      "variant": "static_local",
+      "best_epoch": 2,
+      "maximum_forward_reconstruction_error": 0.0,
+      "maximum_saved_distance_difference": {
+        "fused": 2.384185791015625E-07,
+        "shared_global": 0.0,
+        "joint_local": 5.960464477539062E-07
+      },
+      "checkpoint_sha256": "3d75dbf51f63592edbc5491ca9dde16c0fb2f3cc61361ffcf9449e21966c54ac",
+      "distance_sha256": "cc51e724fce80b683ca8df27e525731c1311812825d9459215765709db0b2950",
+      "receipt_sha256": "3c70046c40b58d62ceb17047c51ce2b7a2a954202119c51841a0024736ca548c",
+      "per_sample_path": "/data/gaob/Re-ID/Trifusion/.git/context_energy_RGBNT201_657_20260929/static_local_per_sample.pt",
+      "per_sample_sha256": "97b1948199372e679bfcab465a36c51cba7067f790115eeb55682a99f2c6fc01"
+    },
+    {
+      "dataset": "RGBNT201",
+      "variant": "context_local",
+      "best_epoch": 2,
+      "maximum_forward_reconstruction_error": 0.0,
+      "maximum_saved_distance_difference": {
+        "fused": 0.0,
+        "shared_global": 0.0,
+        "joint_local": 0.0
+      },
+      "checkpoint_sha256": "6d458e717c51238ab26c145b0a802659a902d0721ad4bf4eab01625299603798",
+      "distance_sha256": "223ea661d2a21881cde4f831e2633cdcf79b264154a43dfc747289c6e013730b",
+      "receipt_sha256": "3b9097d38315e8134a6428e2f8990f52705bdb6e0309f1c2fbb85ef28b28ee2f",
+      "per_sample_path": "/data/gaob/Re-ID/Trifusion/.git/context_energy_RGBNT201_657_20260929/context_local_per_sample.pt",
+      "per_sample_sha256": "33e581d012496863b07e3b4ad263dd98a5f85751b9b932fbba0605e4b4187c02"
+    },
+    {
+      "dataset": "RGBNT201",
+      "variant": "context_global",
+      "best_epoch": 2,
+      "maximum_forward_reconstruction_error": 0.0,
+      "maximum_saved_distance_difference": {
+        "fused": 0.0,
+        "shared_global": 0.0,
+        "joint_local": 0.0
+      },
+      "checkpoint_sha256": "5ddb5aa943671c911efcda5f5eff2bffa495e2b493a6696fa73ebb91829287d1",
+      "distance_sha256": "4be502fe0f50a905fbfab3155bafdcf6b000c9ee4bc682d77240d33a276a93e3",
+      "receipt_sha256": "dcdb4d522f1c7fb9e5b57a9bbfde5231e6c3718e571406c943cce902334332f2",
+      "per_sample_path": "/data/gaob/Re-ID/Trifusion/.git/context_energy_RGBNT201_657_20260929/context_global_per_sample.pt",
+      "per_sample_sha256": "366bca0c01a278157385bae2f7eb9d766d47ce724545a1c9ffc49c63d0653877"
+    },
+    {
+      "dataset": "MSVR310",
+      "variant": "static_none",
+      "best_epoch": 10,
+      "maximum_forward_reconstruction_error": 0.0,
+      "maximum_saved_distance_difference": {
+        "fused": 0.0,
+        "shared_global": 0.0,
+        "joint_local": 0.0
+      },
+      "checkpoint_sha256": "13cbc636fd0e31b1012eef34f11863395bab57efd25915711f87cd5d61a659ac",
+      "distance_sha256": "0ab6f0ba714d92cdecfc6ffd2ec48e546376ff0b54cb6c49a09df2b6b16ef101",
+      "receipt_sha256": "f7aafc24b0a6f812f36a0ce1ac0cb0dcda91176f7daa78b5abe88f5d13208e30",
+      "per_sample_path": "/data/gaob/Re-ID/Trifusion/.git/context_energy_MSVR310_657_20260929/static_none_per_sample.pt",
+      "per_sample_sha256": "7b2ae59cbde81235854a6b257f762fc1ece3e9628482087751ffdbe0dd09f383"
+    },
+    {
+      "dataset": "MSVR310",
+      "variant": "context_none",
+      "best_epoch": 15,
+      "maximum_forward_reconstruction_error": 0.0,
+      "maximum_saved_distance_difference": {
+        "fused": 0.0,
+        "shared_global": 0.0,
+        "joint_local": 0.0
+      },
+      "checkpoint_sha256": "48b4a248cab15592255f05b59f4812a8d66c57e5468f7cd0964cac3c7f1bed74",
+      "distance_sha256": "92e9d842c14a5ad5285008fd0d2e136361e7ca344decc60875be62e3bcdd8b8b",
+      "receipt_sha256": "f2549293ebc4be2735dfe3f4657a5651cf58a010da4e9e4da6a26998ebf3599c",
+      "per_sample_path": "/data/gaob/Re-ID/Trifusion/.git/context_energy_MSVR310_657_20260929/context_none_per_sample.pt",
+      "per_sample_sha256": "eb655dc789a3afad12141218c009e3edc625118d2bd7dff4cdc42a6b4a84092e"
+    },
+    {
+      "dataset": "MSVR310",
+      "variant": "static_local",
+      "best_epoch": 15,
+      "maximum_forward_reconstruction_error": 0.0,
+      "maximum_saved_distance_difference": {
+        "fused": 0.0,
+        "shared_global": 0.0,
+        "joint_local": 0.0
+      },
+      "checkpoint_sha256": "7c39b49c184ea04a42986505d74b0da9d242dbcf73abce45eade43d2b383334a",
+      "distance_sha256": "994dfe5e839e5efb1e53ca436de30c3e192ef5bafb5ed09913f92d3f2997b14b",
+      "receipt_sha256": "c5af2dd847c6b4bd3ae8fe2942781f32d009146645e33d299dcf5d1a0936d8f3",
+      "per_sample_path": "/data/gaob/Re-ID/Trifusion/.git/context_energy_MSVR310_657_20260929/static_local_per_sample.pt",
+      "per_sample_sha256": "9a2edc960ddd28d35a8ecbed5851c42d69ae84703c4ef13ef179324867dc6a5f"
+    },
+    {
+      "dataset": "MSVR310",
+      "variant": "context_local",
+      "best_epoch": 12,
+      "maximum_forward_reconstruction_error": 0.0,
+      "maximum_saved_distance_difference": {
+        "fused": 0.0,
+        "shared_global": 0.0,
+        "joint_local": 0.0
+      },
+      "checkpoint_sha256": "75167decc435031a6d3111e7cf18851751fbc29c742a08fea3cd0f4ce77c421e",
+      "distance_sha256": "0e0519d6dafa874d0c2d7f8c0c584954ba91914cbcb5e55eca5a26fe34e33083",
+      "receipt_sha256": "66330da842ab92ea93dc6cc407075a2553b48ef6dabb0edcdb07991eceaa9a0f",
+      "per_sample_path": "/data/gaob/Re-ID/Trifusion/.git/context_energy_MSVR310_657_20260929/context_local_per_sample.pt",
+      "per_sample_sha256": "89dfa19b7831a4d3e15a6643cf77f0e512616288893f8891058a81c479f241ea"
+    },
+    {
+      "dataset": "MSVR310",
+      "variant": "context_global",
+      "best_epoch": 15,
+      "maximum_forward_reconstruction_error": 0.0,
+      "maximum_saved_distance_difference": {
+        "fused": 0.0,
+        "shared_global": 0.0,
+        "joint_local": 0.0
+      },
+      "checkpoint_sha256": "bb49ba5460b929a15f6181f8297813ed04fbc8bcba1c0bfab43870bdbc05653f",
+      "distance_sha256": "0b550fae3ac961c8b93a3c2994375bf25e54690614834a5e77c1c67e53dfa62c",
+      "receipt_sha256": "b65dd4085fc6beaedb91e2a3b43220a909cad208582d59c47d06b91892eef220",
+      "per_sample_path": "/data/gaob/Re-ID/Trifusion/.git/context_energy_MSVR310_657_20260929/context_global_per_sample.pt",
+      "per_sample_sha256": "392b3c7e6a3efb108161af35aaa669b1a924dc8b241eba5add3b4fdb9512fbd9"
+    }
+  ],
+  "arithmetic_comparisons": [
+    {
+      "dataset": "RGBNT201",
+      "before": "static_none",
+      "after": "static_local",
+      "query_scaled_norm_reduction_percent": 81.66920847979314
+    },
+    {
+      "dataset": "RGBNT201",
+      "before": "context_none",
+      "after": "context_local",
+      "query_scaled_norm_reduction_percent": 81.72502667024513
+    },
+    {
+      "dataset": "MSVR310",
+      "before": "static_none",
+      "after": "static_local",
+      "query_scaled_norm_reduction_percent": 92.24655534267927
+    },
+    {
+      "dataset": "MSVR310",
+      "before": "context_none",
+      "after": "context_local",
+      "query_scaled_norm_reduction_percent": 92.67312311319299
+    }
+  ],
+  "interpretation_limits": [
+    "Ratios describe norm amplitude, not squared-energy or gradient/update shares.",
+    "Shared global is an adapted-backbone output, not the untouched Signal-only baseline.",
+    "Joint local is a combined structured correction, not separate independent roles.",
+    "Compared models are separately selected checkpoints; MSVR310 selected epochs differ.",
+    "Smaller correction and closer global/fused direction do not isolate retrieval causality or authorize selecting a new gain.",
+    "No three-dataset completion or scientific mechanism promotion follows from these ten diagnostics."
+  ],
+  "claims": [
+    {
+      "claim": "Archived runtime receipts report full-scope numerical gates below 1e-5",
+      "impact": "supported_at_receipt_level"
+    },
+    {
+      "claim": "Independent local hash, binding and summary consistency checks pass",
+      "impact": "supported_deterministically"
+    },
+    {
+      "claim": "Reviewer independently replayed raw tensors and statistics",
+      "impact": "unsupported_not_performed"
+    },
+    {
+      "claim": "Both diagnostic processes exited with OS code 0",
+      "impact": "unsupported_exit_codes_unknown"
+    },
+    {
+      "claim": "Local-supervised retained checkpoints have smaller additive corrections and closer fused/global directions",
+      "impact": "supported_descriptively"
+    },
+    {
+      "claim": "Energy values explain causal failure or optimizer-update allocation",
+      "impact": "unsupported"
+    }
+  ],
+  "actions": [
+    "Preserve unknown OS exit codes; link any already-existing independent terminal receipt without rerunning.",
+    "Retain JSON/remote-binary evidence boundary and same-family/provisional attribution."
+  ],
+  "audited_input_hashes": {
+    "tools/diagnose_correspondence_context_energy.py": "sha256:dba46b8f73460191318e7ba5d42a4bb191409b3ed639d5bf6eb1f7aff3ffb8e6",
+    "refine-logs/correspondence_context_identity_v1/ENERGY_DIAGNOSTIC_PLAN_20260929.md": "sha256:8da924deb12a1e5b2484bcfa0e512d39f330db7b7b34cf13c4713579689985ac",
+    "logs/context_energy_launch_657_20260929.json": "sha256:b284f4afa8ae5d10a3e7181ca643b0ebb64daa5b09d6c6167a56da091c6a7d31",
+    "logs/context_energy_archive_657_20260929.json": "sha256:b5213ede3a7aab3e3637177c9e981237a45d36dcc90a7d242e168379cfba7b6b",
+    "logs/context_identity_review_invocations_657_20260929.json": "sha256:f29a446b7078ccb55438021f449832737ae7fbfd06d283789e40baa0457db405",
+    "logs/context_identity_accepted_667_20260929.json": "sha256:beaeaa1db722df30832ca3d58de2dde1319e61949b356ebe105bd1eff982dae9",
+    "logs/context_identity_manifest_653_20260929.json": "sha256:8ea9c7d9306e024b08e162b6d800ec0e402a6a19bfa411e28332fc61c4bd8d0d",
+    "logs/context_identity_progress_668_20260929.json": "sha256:4d7725c13fce1d155686903d8ca62046ce26d06709daa93c670c9fd5b1fc43d1",
+    "C:/Users/gb/.codex_tmp/launch_context_energy_657.py": "sha256:d80f9911ea5a1ba5b75afba91735db2946c651a3a312f8f4910deaf1b7a9db26",
+    "logs/context_energy_RGBNT201_657_20260929/summary.json": "sha256:751435938f4d9b8bcf55b6e6b8988423a397f0368f33e2fe933a0de42df885df",
+    "logs/context_energy_RGBNT201_657_20260929/static_none.json": "sha256:dbf7f76d9af3d344a17e6d82f8b3d505228cdc62ce40d1bec09633a5657d505b",
+    "logs/context_energy_RGBNT201_657_20260929/context_none.json": "sha256:b32a6af28c5553f629883c6dd3eddc878fbfc0739bab9095099e6f4a852add99",
+    "logs/context_energy_RGBNT201_657_20260929/static_local.json": "sha256:b389f0d5421d131fda955a576d31c9891a6d48ad31a0d70ebc32b5fe81b29b8f",
+    "logs/context_energy_RGBNT201_657_20260929/context_local.json": "sha256:ea2af22c8766b8a2e7f83f549d90627ad0620e7a641b1a7f7f15db0295deb4ec",
+    "logs/context_energy_RGBNT201_657_20260929/context_global.json": "sha256:ae093a62b4a1ca465dfe2c0fec86db4e9e2e2c87d52b05c26b2c2bcd8a5217cf",
+    "logs/context_energy_MSVR310_657_20260929/summary.json": "sha256:d329de5c8ae5c7697790966373610bf4130987b567dea9f68b5a3353009c3115",
+    "logs/context_energy_MSVR310_657_20260929/static_none.json": "sha256:bb60365365c56deb1f22f79dae39ee42a97ca0fd1af7f7ffba5581f85cb4f9c2",
+    "logs/context_energy_MSVR310_657_20260929/context_none.json": "sha256:94e9728c49f931601b3a27bc944d0cb46e59c65813350ccda4dfc28f2049771d",
+    "logs/context_energy_MSVR310_657_20260929/static_local.json": "sha256:9fe75c63fdf1a38d25602f8f21d229e4b3fe36321f6eb50e6f1d4b66be156a47",
+    "logs/context_energy_MSVR310_657_20260929/context_local.json": "sha256:b0fd86f82c97dcb1f55a06263e4a6a823a96f32a021085c34e65b7f261ea18af",
+    "logs/context_energy_MSVR310_657_20260929/context_global.json": "sha256:a1c454e95bb1718ece5e1aae11e3d89d6b21f5b2e0dabc377a643df611f87346",
+    "modeling/trifusion/correspondence_roles.py": "sha256:e2a51154b5b327341f35e453dd32a821b091a49a669b49a7c70e79e6e2f2591b",
+    "modeling/trifusion/correspondence_evidence_readout.py": "sha256:e737a977d39ccbe09a5509118e5b5333d653f7f13381e65e84af1a13e5c28dc4",
+    "tools/run_correspondence_roles.py": "sha256:e50865fb923297cd61cf38b33ec2bc95154f8c503b5dfe5de9823cad3f03d7ef",
+    "tools/queue_correspondence_refinement.py": "sha256:5256afe78d02d9bfea3103daa00d488b94c05e839c955f00355098f69ecbd84a",
+    "modeling/trifusion/correspondence_context_identity.py": "sha256:eda3d1473496b33e4b69402dba7770e67d23b33b07afd41d23105b7f148d63af",
+    "tools/run_correspondence_context_identity.py": "sha256:9f4cc9f11998819d4a927a32f4e47baf0c4ff9d14c4bc93b0dc35b0153ebc142",
+    "tools/queue_correspondence_context_identity.py": "sha256:5ac2395413c7ce744ac18be40be2e29039f2039b74b13896e48ca8bed8d4bb0f",
+    "tools/collect_correspondence_context_identity.py": "sha256:bdc3a70eb31c94fd43acae2e490ae0c596ee7e1408d22d103ec68e9c293cd472",
+    "tools/audit_correspondence_context_identity_losses.py": "sha256:bcc15e568c6a14efdaca1df5268c5abdec716287d3b6efb2482804add724abf1",
+    "refine-logs/correspondence_context_identity_v1/REVIEW_ENERGY_DIAGNOSTIC_657_20260929.md": "sha256:55bc5128ab7931559d0377276def12395fe6934f9ed13a3e70bb9fb3efed7c70",
+    "refine-logs/correspondence_context_identity_v1/REVIEW_ENERGY_DIAGNOSTIC_657_20260929.json": "sha256:e73e0b25ec1944ececc77f44e9e3436ca6d78fe5c830b9459827e27cd99f973e"
+  },
+  "preserved_source_review_hashes": {
+    "refine-logs/correspondence_context_identity_v1/REVIEW_ENERGY_DIAGNOSTIC_657_20260929.md": "sha256:55bc5128ab7931559d0377276def12395fe6934f9ed13a3e70bb9fb3efed7c70",
+    "refine-logs/correspondence_context_identity_v1/REVIEW_ENERGY_DIAGNOSTIC_657_20260929.json": "sha256:e73e0b25ec1944ececc77f44e9e3436ca6d78fe5c830b9459827e27cd99f973e"
+  },
+  "report_path": "refine-logs/correspondence_context_identity_v1/REVIEW_ENERGY_RUNTIME_657_20260929.md",
+  "trace_status": "Caller owns native continuation request/response tracing; only the two requested runtime review artifacts were written.",
+  "actions_performed": [
+    "local text/JSON inspection",
+    "local SHA256 recomputation",
+    "local JSON and aggregate arithmetic checks",
+    "write requested runtime review Markdown and JSON"
+  ],
+  "actions_not_performed": [
+    "SSH",
+    "GPU/model inference",
+    "training",
+    "code changes",
+    "remote binary replay",
+    "source review modification"
+  ]
+}
