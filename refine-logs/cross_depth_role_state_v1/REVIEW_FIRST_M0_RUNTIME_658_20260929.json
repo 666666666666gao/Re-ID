@@ -1,0 +1,281 @@
+{
+  "schema": "trifusion-cross-depth-first-m0-artifact-review-v1",
+  "audit_skill": "experiment-audit",
+  "date": "2026-09-29",
+  "snapshot_at": "2026-09-29T21:19:26.383950+08:00",
+  "agent_id": "/root/audit_cross_depth_entry_658",
+  "reviewer_continuation": true,
+  "fresh_reviewer": false,
+  "reviewer_backend": "native_codex",
+  "reviewer_model_requested": "gpt-6-astra",
+  "reviewer_reasoning_requested": "max",
+  "reviewer_model_actual": null,
+  "reviewer_reasoning_actual": null,
+  "actual_model_attestation": "not independently exposed by runtime",
+  "reviewer_family": "openai",
+  "review_independence": "same-family",
+  "acceptance_status": "provisional",
+  "verdict": "WARN",
+  "overall_verdict": "warn",
+  "integrity_status": "warn",
+  "artifact_contract_status": "PASS_WITH_RECEIPT_AND_REPLAY_LIMITS",
+  "reason_code": "partial_m0_text_evidence_without_tensor_checkpoint_replay",
+  "concrete_blockers": [],
+  "contradictions_found": [],
+  "required_repairs": [],
+  "summary": "Four archived eight-step M0 receipts and recorded exit0-to-train ordering are internally consistent. All four report 118/118 union gradient tensors, unchanged frozen Signal tensors and a reload difference of 0. No recurrent M0 or formal retrieval endpoint is evidenced.",
+  "checks": {
+    "gt_provenance": {
+      "status": "WARN",
+      "details": "Protocol and baseline hashes are bound consistently, but actual dataset/batch content and B64/K8 membership cannot be replayed from text artifacts.",
+      "evidence": [
+        "logs/cross_depth_manifest_658_20260929.json:264-269",
+        "all four supplied training.json:8-12"
+      ]
+    },
+    "score_normalization": {
+      "status": "PASS",
+      "scope": "logged M0 scalars only",
+      "details": "No retrieval metric exists. All32 finite logged losses reconstruct as ID+triplet+auxiliary; auxiliary is zero."
+    },
+    "result_existence": {
+      "status": "PASS",
+      "details": "13 requested artifacts exist; eight archive text SHAs and manifest SHA match. Probe binaries unavailable.",
+      "evidence": [
+        "logs/cross_depth_m0_archive_658_20260929.json:5-47",
+        "logs/cross_depth_progress_659_20260929.json:7"
+      ]
+    },
+    "dead_code_or_execution": {
+      "status": "WARN",
+      "details": "Recorded M0 subprocesses completed exit0. Full training is RUNNING without terminal exits or evaluation. No tensor replay or live remote observation performed."
+    },
+    "scope": {
+      "status": "WARN",
+      "completed_m0_text_receipts": 4,
+      "planned_m0": 9,
+      "recorded_running_training_chains": 4,
+      "pending_chains": 5,
+      "completed_formal_endpoints": 0,
+      "recurrent_mode_m0_receipts": 0
+    },
+    "eval_type": {
+      "status": "WARN",
+      "current": "supervised_train_only_engineering_M0",
+      "intended_retrieval": "real_gt",
+      "retrieval_evaluations_evidenced": 0
+    }
+  },
+  "artifact_validation": {
+    "status": "ARTIFACT_CHECKS_PASS",
+    "manifest_hash_verified": true,
+    "manifest_source_paths": 205,
+    "archive_file_hashes_verified": 8,
+    "snapshot_at": "2026-09-29T21:19:26.383950+08:00",
+    "recorded_running": 4,
+    "recorded_pending": 5,
+    "recorded_completed_endpoints": 0,
+    "total_m0_steps": 32,
+    "rows": [
+      {
+        "dataset": "RGBNT201",
+        "depth_mode": "mixed_once",
+        "steps": 8,
+        "mean_loss": 5.129286706447601,
+        "mean_loss_error": 0,
+        "maximum_task_reconstruction_error": 2.337619662284851E-07,
+        "nonzero_triplet_steps": 7,
+        "nonzero_auxiliary_steps": 0,
+        "trainable_parameter_scalars": 2617345,
+        "nonzero_gradient_tensors": 118,
+        "total_trainable_tensors": 118,
+        "initial_model_state_sha256": "595e5d6ebab9eb4a5d5cf930b4328f22200d038a9f0c0e4ddf97756be9989a92",
+        "reload_probe_sha256": "da661ae7f0ad4f4faf4d084bbdb3aa598434ce9a44b26295c897e146aa157e35",
+        "m0_pid": 3133080,
+        "recorded_m0_exit_code": 0,
+        "train_pid": 3135407,
+        "train_status": "RUNNING",
+        "seconds_m0_completion_to_train_start": 0.03454,
+        "m0_probe_locally_available": false
+      },
+      {
+        "dataset": "RGBNT100",
+        "depth_mode": "mixed_once",
+        "steps": 8,
+        "mean_loss": 3.8579018115997314,
+        "mean_loss_error": 0,
+        "maximum_task_reconstruction_error": 0,
+        "nonzero_triplet_steps": 0,
+        "nonzero_auxiliary_steps": 0,
+        "trainable_parameter_scalars": 2431489,
+        "nonzero_gradient_tensors": 118,
+        "total_trainable_tensors": 118,
+        "initial_model_state_sha256": "c2fbd7a6212a3eb2cf7a888d21b94196cae7a9371057650a267e818df5694066",
+        "reload_probe_sha256": "da3aa75c6f4997a9eaa2c0577aba776e90a4ac1d155eeba3b2be34bc9acdf0dc",
+        "m0_pid": 3133081,
+        "recorded_m0_exit_code": 0,
+        "train_pid": 3135278,
+        "train_status": "RUNNING",
+        "seconds_m0_completion_to_train_start": 0.035576,
+        "m0_probe_locally_available": false
+      },
+      {
+        "dataset": "MSVR310",
+        "depth_mode": "mixed_once",
+        "steps": 8,
+        "mean_loss": 5.222078323364258,
+        "mean_loss_error": 0,
+        "maximum_task_reconstruction_error": 2.2351741790771484E-07,
+        "nonzero_triplet_steps": 8,
+        "nonzero_auxiliary_steps": 0,
+        "trainable_parameter_scalars": 2592769,
+        "nonzero_gradient_tensors": 118,
+        "total_trainable_tensors": 118,
+        "initial_model_state_sha256": "60972e9d789c62c18a8f3c0deabdf27fd2138f12f7a6d7d8636ae3809f8d9548",
+        "reload_probe_sha256": "249faa5993a2ce7796d5111417a882581937371c273c28f401e47785f5a645bd",
+        "m0_pid": 3133083,
+        "recorded_m0_exit_code": 0,
+        "train_pid": 3135343,
+        "train_status": "RUNNING",
+        "seconds_m0_completion_to_train_start": 0.035279,
+        "m0_probe_locally_available": false
+      },
+      {
+        "dataset": "RGBNT201",
+        "depth_mode": "depth_mean",
+        "steps": 8,
+        "mean_loss": 5.129377961158752,
+        "mean_loss_error": 0,
+        "maximum_task_reconstruction_error": 2.207234501838684E-07,
+        "nonzero_triplet_steps": 7,
+        "nonzero_auxiliary_steps": 0,
+        "trainable_parameter_scalars": 2617345,
+        "nonzero_gradient_tensors": 118,
+        "total_trainable_tensors": 118,
+        "initial_model_state_sha256": "595e5d6ebab9eb4a5d5cf930b4328f22200d038a9f0c0e4ddf97756be9989a92",
+        "reload_probe_sha256": "01d56af0af471b5004be2a5989c8d169752e25e2c24d5f2d11415f0240e8d9ea",
+        "m0_pid": 3133082,
+        "recorded_m0_exit_code": 0,
+        "train_pid": 3135277,
+        "train_status": "RUNNING",
+        "seconds_m0_completion_to_train_start": 0.035548,
+        "m0_probe_locally_available": false
+      }
+    ]
+  },
+  "source_binding": {
+    "manifest_sha256": "67e383e88f5151d12cbf3eae38111df42f7e1279ba7118b2a6f2cc4ca6044b14",
+    "manifest_entries": 205,
+    "new_source_contract_files_exactly_match_sync_launch_manifest_prior_review": 4,
+    "initializer_source_fields_checked_per_receipt": 7,
+    "receipt_protocol_hashes_match_manifest": true,
+    "baseline_paths_and_hashes_match_commands": true,
+    "prior_review_runtime_file_overlap": 19,
+    "overlap_raw_hash_matches": 18,
+    "overlap_local_bytes_unchanged_since_prior_review": 19,
+    "overlap_lf_only_matches": [
+      {
+        "path": "modeling/trifusion/experts/mamba.py",
+        "local_and_prior_sha256": "8b9cb420c42e4d70f8de7e4608637c81c505b97ca54228175462a7e92fdfcc83",
+        "manifest_sha256": "c516c7ad937e5eee6a4ed1e3ec33c2afe3522b751d296bd2e4910e4f27a20ee5",
+        "readonly_crlf_to_lf_hash_matches": true,
+        "raw_bytes_equal": false
+      }
+    ],
+    "remaining_manifest_entries_not_independently_matched_to_remote": 186,
+    "remote_live_byte_verification": false,
+    "sync_aggregate_counts_independently_replayed": false
+  },
+  "phase_ordering": {
+    "status": "PASS_RECORDED_ARTIFACTS",
+    "sync_before_launch": true,
+    "controller_pid_and_command_match": true,
+    "manifest_progress_job_order_matches": true,
+    "all_m0_completed_before_corresponding_train_start": true,
+    "training_exit_codes_supplied": false,
+    "no_evaluate_phase_evidenced": true,
+    "live_at_review_time_verified": false
+  },
+  "initialization": {
+    "rgbnt201_mixed_once_and_depth_mean_recorded_hash_equal": true,
+    "rgbnt201_pair_parameter_scalars_equal": true,
+    "all_three_modes_all_datasets_verified": false,
+    "formal_training_initialized_tensor_receipts_available": false
+  },
+  "limitations": [
+    "Four M0 checkpoint probe binaries absent from supplied local archive; hashes/schema/modes/tensors/reload outputs not replayed.",
+    "Gradient tensors or per-name records, optimizer state, AMP scale history, frozen before/after tensors and actual batches are not archived; receipt assertions cannot be independently reconstructed.",
+    "Recorded production command/source binding does not independently attest compiled Mamba/CUDA binary provenance.",
+    "Only four M0s covered; no depth_recurrent runtime evidence or all-nine matched initialization.",
+    "Snapshot reports training child launches; no formal epoch completion, training terminal exit or retrieval metrics provided.",
+    "One previously reviewed Mamba source file matches the runtime manifest only after read-only CRLF-to-LF conversion.",
+    "Same reviewer follow-up; not fresh-context or cross-family acceptance."
+  ],
+  "claims": [
+    {
+      "id": "first_four_m0_recorded_engineering_gates",
+      "impact": "supported_by_internally_consistent_receipts_with_replay_limits"
+    },
+    {
+      "id": "m0_exit0_before_full_child_start",
+      "impact": "supported_by_recorded_phase_timestamps"
+    },
+    {
+      "id": "all_nine_m0_pass",
+      "impact": "unsupported"
+    },
+    {
+      "id": "recurrent_production_state_gradients",
+      "impact": "not_yet_evidenced"
+    },
+    {
+      "id": "formal_endpoint_or_retrieval_benefit",
+      "impact": "unsupported"
+    },
+    {
+      "id": "process_currently_live",
+      "impact": "not_checked"
+    }
+  ],
+  "immutable_prior_review_hashes": {
+    "refine-logs/cross_depth_role_state_v1/REVIEW_ENTRY_658_20260929.md": "73336c4728718fd934d63f8cbf707604c177589de2d485ba9e285a9b9d2d329b",
+    "refine-logs/cross_depth_role_state_v1/REVIEW_ENTRY_658_20260929.json": "3862d639800eabcd074c6aea94559ec6609d642ac96b72365a5467352072bfb1"
+  },
+  "restrictions_observed": {
+    "ssh": false,
+    "gpu_jobs": false,
+    "retraining": false,
+    "tensor_replay": false,
+    "earlier_review_rewritten": false,
+    "runtime_sources_edited": false,
+    "executor_narration_used_as_evidence": false
+  },
+  "validation_notes": [
+    "Read every supplied runtime artifact directly.",
+    "Verified text bytes, all32 finite loss decompositions and exact receipt means.",
+    "Compared receipt/source/protocol/baseline/command/mode/phase bindings.",
+    "Preserved fractional-second timestamp strings when validating subsecond phase ordering.",
+    "Investigated raw Mamba source hash mismatch as read-only CRLF/LF equivalence; did not rewrite either form."
+  ],
+  "trace_mode": "embedded in new MD/JSON outputs only",
+  "trace_path": "refine-logs/cross_depth_role_state_v1/REVIEW_FIRST_M0_RUNTIME_658_20260929.md",
+  "audited_input_hashes": {
+    "logs/cross_depth_launch_658_20260929.json": "sha256:88af5150ec6e2ba6cb84fa0e85dcd25f105e925f7039c84b6d7ce8b373c47bec",
+    "logs/cross_depth_sync_658_20260929.json": "sha256:92d6fcca1d0e290b679e03fc16fecd91192004c815d6a51ae5b4297a7d82c106",
+    "logs/cross_depth_manifest_658_20260929.json": "sha256:67e383e88f5151d12cbf3eae38111df42f7e1279ba7118b2a6f2cc4ca6044b14",
+    "logs/cross_depth_progress_659_20260929.json": "sha256:51088dbdee04f50b5fd411e3ff29a356b6439fba1c90f56fc1f0cd2220d53d94",
+    "logs/cross_depth_m0_archive_658_20260929.json": "sha256:a81301b03f0d858d5b41a6774a683f346f88adfb9c43088c7669cb2e8f7e9fc5",
+    "logs/cross_depth_m0_mixed_once_RGBNT201_658_20260929/training.json": "sha256:cb054d7303bec03c5c076c4dfa7e11cf4e7247be7bb195311b12d34ca67c6af9",
+    "logs/cross_depth_m0_mixed_once_RGBNT201_658_20260929/training_steps.jsonl": "sha256:9917289314f3156b7ab340a55bb6feb128792f0f0e009d69712e87edc868e03a",
+    "logs/cross_depth_m0_mixed_once_RGBNT100_658_20260929/training.json": "sha256:778cee7ccad9ddd72c2521c19d5b747a89dc1c702a9116cb489c488272fb8cd0",
+    "logs/cross_depth_m0_mixed_once_RGBNT100_658_20260929/training_steps.jsonl": "sha256:42fb3285b92298265c810c2b2a4a2e5f51df16ce3660ebc590dba6d61b55fc20",
+    "logs/cross_depth_m0_mixed_once_MSVR310_658_20260929/training.json": "sha256:7917ac225b5f052a8e711a097e914f08c59bec96a80a9e16046072031ac3e42d",
+    "logs/cross_depth_m0_mixed_once_MSVR310_658_20260929/training_steps.jsonl": "sha256:4b33dca6cd21c8a4ae2d1889c063f3be202db8dcf5599149eb529dffb6134e5d",
+    "logs/cross_depth_m0_depth_mean_RGBNT201_658_20260929/training.json": "sha256:881da2600de68ea5a7792ffa94e219eccd327a9fcba21495693dc7c44acbbab6",
+    "logs/cross_depth_m0_depth_mean_RGBNT201_658_20260929/training_steps.jsonl": "sha256:16d395e02556bd9cd93c9d0ceb635e51fb2ee08833b63132ee99d3de433e08d1",
+    "refine-logs/cross_depth_role_state_v1/REVIEW_ENTRY_658_20260929.md": "sha256:73336c4728718fd934d63f8cbf707604c177589de2d485ba9e285a9b9d2d329b",
+    "refine-logs/cross_depth_role_state_v1/REVIEW_ENTRY_658_20260929.json": "sha256:3862d639800eabcd074c6aea94559ec6609d642ac96b72365a5467352072bfb1",
+    "modeling/trifusion/experts/mamba.py": "sha256:8b9cb420c42e4d70f8de7e4608637c81c505b97ca54228175462a7e92fdfcc83"
+  },
+  "generated_at": "2026-09-29T13:31:07.7750995+00:00"
+}

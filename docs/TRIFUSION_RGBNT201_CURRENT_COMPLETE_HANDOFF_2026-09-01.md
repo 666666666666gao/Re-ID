@@ -2,7 +2,7 @@
 
 ## 0. 一页结论
 
-**本页更新至§41.657：新context/local五条件×三集15/15全50／best／重载／CPU验收闭合。查询平均ΔmAP三集仅+0.0210/+0.0023/+0.0214；局部身份监督201/100为−0.5915/−0.6152，MSVR+0.1819且与query负交互。10份已选权重的完整Q/G诊断通过原forward及三路距离一致性：局部监督提高local-alone，却使角色缩放修正能量比201约6%→1.1%、MSVR约49%→3.6%。没有据此调倍率、选seed或取消负端；下一项跨层持续角色结构仅源码准备，未训练。** 历史规则和数字保留原样，当前合同以后文登记和服务器回执为准。研究目标仍 **ACTIVE／UNMET**；工程通过、局部增量不代替三数据集强基线与SOTA要求。
+**本页更新至§41.658：context/local完整15端与能量10端已归档；下一项跨深度角色状态三条件×三集9端正式队列已启动。当前4项真实生产M0通过后进入full50训练、5项待队列接续；新结构正式终点0/9，不能填写中途best为正式指标。旧18/新9源码不变；新入口明确绑定depth_mode，205份实际源码/协议/配置冻结。完整50／单mAP-best／严格重载／完整gallery规则继续执行，研究目标ACTIVE/UNMET。** 历史规则和数字保留原样，当前合同以后文登记和服务器回执为准。研究目标仍 **ACTIVE／UNMET**；工程通过、局部增量不代替三数据集强基线与SOTA要求。
 
 **现行合同：** 每个正式候选完整50轮，使用作者完整query/gallery及camera／MSVR时间段过滤，以官方fused mAP最高的同一checkpoint报告全部指标，随后严格重载。RGBNT201报告mAP／R1／R5／R10，RGBNT100及MSVR310报告mAP／R1；不跨epoch或seed拼列。官方集已参与逐轮选点和历史方法选择，属于已消费基准上的探索性结果。
 
@@ -12955,3 +12955,43 @@ final analyzer和energy source均经fresh native Codex Astra max/fork none只读
 观察更正：原本计划15:31的本地等待句柄丢失且没有写回执，确认后17:33才执行observer666一次，不能把其filename当成15:31实查。后续17:50/17:57使用remote持久一次observer；两次在预定时间之前取文件出现不存在，不代表训练失败，未重启队列。能量启动器的嵌套换行在local py_compile时发现并修正，原诊断还未启动；不涉及正式训练失败或阈值变更。
 
 下一项回到角色证据形成：当前三层快照先混合再执行角色，新的跨层角色状态源码已开始准备。拟比较mixed_once、三层独立角色处理后平均、角色状态按第4→8→12层持续传递；共享CLIP/M1路径、采样地址、query/读出与角色参数保持明确控制，以区分更多层证据/计算与持续状态。不开M3和已失败的local辅助头，不扫描倍率。当前只有新增模型源码语法检查，没有完整入口、生产M0、队列或成绩，不能写为已实现成功方法；原15端和原M3全12结果封存不改。
+
+
+### 41.658 跨深度角色证据处理与持续状态对照：源码复核、真实M0及四卡正式启动（2026-09-29）
+
+上一批context/local15/15及其完整因子分析已按§657全部归档，不能继续用其中某个正差宣称条件query或local身份监督稳定有效。新批次单独登记mixed_once / depth_mean / depth_recurrent三种结构×三数据集，共9个seed42正式端，不改写任何旧结果。
+
+#### 只改变证据形成，保留训练目标和读出
+
+| 条件 | 三层证据怎样处理 | 要排除的解释 |
+|---|---|---|
+| mixed_once | 统一三层混合后，原角色算子执行一次 | 共同结构控制 |
+| depth_mean | 每一深度分别执行同一角色算子，再平均三份输出 | 更早加工／三次计算本身 |
+| depth_recurrent | 第4→8→12层依次处理并传递同角色锚点状态，读出末状态 | 持续证据相对独立三次处理是否有效 |
+
+三条件共用参数、全局条件query、采样地址和1536D区域读出；均为M1/M2开启、M3关闭、auxiliary_target=none，统一冻结layer logits为均匀值。历史query-only仍训练该logit，因此新mixed_once需重新训练，不能替换成旧context_none终点。没有增加分类/重建loss、教师、倍率扫描或新seed。CNN上一状态加在该深度卷积和采样后的锚点，Transformer/Mamba上一状态进入序列处理；这不是三套CLIP，也不是角色状态贯穿全部CLIP block。共享CLIP仍由M1适配改变输出；冻结检查只保证Signal张量不变。
+
+新checkpoint使用trifusion-cross-depth-role-state-v1并显式记录depth_mode，加载与collector必须匹配模式。因为三条件tensor key相同，仅strict state_dict不能区分执行图。源码修正只发生于新文件：复用入口的辅助系数1.0处于停用状态且每步auxiliary_id=0；旧任务审计器不变。生产队列在M0退出后、full50前校验8步／非零梯度覆盖／冻结／重载误差／probe SHA。实际数据入口、计分器、训练配置、上游Signal以及本地模型构造依赖共205份文件纳入manifest冻结。
+
+#### 分开记录代码、合成检查与真实生产证据
+
+两份fresh native Codex source review请求gpt-6-astra/max/forknone，最终均WARN / source PASS_WITH_LIMITS、无当前代码阻塞；归属same-family/provisional，未独立证明底层服务身份，未执行GPU。所有报告保留原始请求／hash与单seed官方选点限制。
+
+21:12的CPU合成检查使用已有TinySequenceMixer，旧路径与mixed_once四输出最大差0，共同地址、相同参数边界和三个深度的非零输入梯度通过。它不使用生产Mamba，不是ReID指标，也不能替代M0。
+
+正式控制器PID3133064于2026-09-29T21:18:38.471873+08:00启动。实际快照2026-09-29T21:22:40.084511+08:00，4 RUNNING / 5 PENDING / 0 COMPLETE / 0 FAILED：四项均已通过真实mamba_ssm.Mamba、真实训练loader的8批M0，118/118可训练张量在八次更新中观察到非零梯度、Signal张量不变、重载最大误差0；并不宣称每个张量在每批均非零。
+
+| 数据集 | 条件 | 卡 | M0批数／梯度覆盖／重载差 | 快照已记录训练epoch |
+|---|---|---|---|---|
+| RGBNT201 | mixed_once | GPU0 | 8 / 118/118 / 0 | 5/50 |
+| RGBNT100 | mixed_once | GPU1 | 8 / 118/118 / 0 | 1/50 |
+| MSVR310 | mixed_once | GPU2 | 8 / 118/118 / 0 | 6/50 |
+| RGBNT201 | depth_mean | GPU3 | 8 / 118/118 / 0 | 4/50 |
+
+GPU即时数据：0, 9509, 86；1, 10199, 99；2, 10217, 100；3, 10673, 76（index,MiB,util%，仅快照）。其余五端由父队列按空闲卡自动接续；poll_seconds=240，无抢占、无失败重试、无按中途成绩取消登记端。当前正式终点0/9，不报告新结构正式分数。
+
+每端完整50轮后，以官方fused mAP选一份权重，三路完整Q/G独立重载、作者计分＋CPU复算后才能入表。205份冻结来源和三个保存纯baseline权重留存，旧发布Signal/V8/R2/V27仍为不同研究线。官方集参与epoch选择，one-seed不能支持无偏泛化或稳定性结论。该批试验只能回答跨层角色证据是否有增量；目标十点／强基线性能尚未实现。
+
+证据：logs/cross_depth_manifest_658_20260929.json、cross_depth_launch_658_20260929.json、cross_depth_sync_658_20260929.json、cross_depth_progress_659/660_20260929.json、cross_depth_m0_archive_658_20260929.json及其8份原始M0文本，refine-logs/cross_depth_role_state_v1计划/源代码review；remote logs/cross_depth_role_state_20260929保存全部生产日志与权重。
+
+同一entry reviewer的独立artifact follow-up另存REVIEW_FIRST_M0_RUNTIME_658_20260929.md/json，未改写原source review。四份M0回执、32行真实loss和M0→train顺序核对通过，无当前阻塞；仍为same-reviewer/same-family/provisional WARN，未独立重放远端checkpoint/tensor、未验证尚待执行的recurrent生产端或正式检索。18份已审运行文件与manifest原始字节hash一致；experts/mamba.py的本地与远端只在CRLF/LF字节上不同，只读换行归一化可复现manifest SHA，不能写成19份原始hash全部相同。没有据此修改任何实际运行文件。
