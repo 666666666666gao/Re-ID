@@ -1,15 +1,15 @@
 # Cross-depth role state tracker
 
-Actual22:19:17 collector:4/9 formal endpoints verified. Actual22:18 process snapshot:4 COMPLETE,4 RUNNING,1 PENDING,0 FAILED; all four GPUs show100% utilization. Epochs below belong to that snapshot, not current completion estimates.
+Actual22:32:55 collector:5/9 formal verified, prior4 objects unchanged. Actual22:32 snapshot:5 COMPLETE/4 RUNNING/0 PENDING/0 FAILED, all four GPUs99-100% utilized. These epochs are historical snapshot values.
 
 | Condition | RGBNT201 | RGBNT100 | MSVR310 |
 |---|---|---|---|
-| mixed_once | VERIFIED_COMPLETE / best2 | M0_PASS / TRAIN31/50 | VERIFIED_COMPLETE / best15 |
-| depth_mean | VERIFIED_COMPLETE / best2 | M0_PASS / TRAIN10/50 | VERIFIED_COMPLETE / best15 |
-| depth_recurrent | M0_PASS / TRAIN33/50 | M0_PASS / TRAIN1/50 | PENDING |
+| mixed_once | VERIFIED_COMPLETE / best2 | M0_PASS / TRAIN38/50 | VERIFIED_COMPLETE / best15 |
+| depth_mean | VERIFIED_COMPLETE / best2 | M0_PASS / TRAIN15/50 | VERIFIED_COMPLETE / best15 |
+| depth_recurrent | VERIFIED_COMPLETE / best2 | M0_PASS / TRAIN7/50 | M0_PASS / TRAIN0/50 |
 
-All9 conditions retain seed42, complete50, official fused mAP-best, strict reload and complete gallery. Four formal endpoints and eight M0 endpoints are distinct counts. Previous three accepted row objects remain exactly unchanged; old tracker2154 and immutable handoff review input retain the first-formal audit bindings.
+All9 production M0 bundles archived with8 batches each, frozen Signal, reload0 and118/118 gradient union. Five formal bundles have complete50, a single official mAP-best checkpoint, strict reload and full-gallery CPU parity. Total9947 formal scalar rows. No active-endpoint temporary score is accepted.
 
-RGBNT201 mixed/mean:72.5888817496/74.1626799107 and72.5327582009/73.9234447479. MSVR mixed/mean:53.0316750259/68.1895077229 and52.7232371173/68.6971247196. No recurrent formal benefit, multi-seed generalization or SOTA claim. Recurrent vs mean changes both state transfer and last/mean readout; it does not isolate state transfer alone.
+RGBNT201 mixed/mean/recurrent mAP-R1:72.5889/74.1627,72.5328/73.9234,72.7638/74.2823. Primary recurrent-minus-mean+.2311mAP/+.3589R1, repair3/new0, identity21up/4down. State carry and last-depth versus mean readout both change; no isolated carry cause, multi-seed stability or three-dataset gain claim. Fixedmodel identity bootstrap does not provide training variance or untouched-test inference.
 
-Evidence: logs/cross_depth_accepted_663/664_20260929.json, progress664, archive664, pair_msvr310_mean664; four full bundles and eight raw M0 bundles. First-three formal fresh review is WARN/same-family/provisional; it did not replay remote payloads or review the fourth endpoint. Parent3133064 and205 frozen runtime files unchanged. Observer665 PID3198355 is scheduled for22:32; no early repeated checks or training restarts.
+Evidence: accepted665, progress665, archive665, primary pair_rgbnt201_recurrent665, five full bundles/nine raw M0 bundles. First3 fresh review remains WARN/same-family/provisional and did not replay remote payloads. Original first-formal handoff/tracker preserved. Parent3133064 and205 frozen runtime files unchanged. Observer666 PID3216915 is scheduled22:58; no early repeated progress reads or trainer restarts. Goal ACTIVE/UNMET.
