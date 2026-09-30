@@ -1558,3 +1558,7 @@
 | 2026-10-01T00:30:00+08:00 | /run-experiment | refine-logs/patch_memory_roles_v1/RECOVERY_PLAN_20261001.md | implementation | Two completed50 evaluation recoveries and four original-definition fresh endpoints |
 | 2026-10-01T00:30:00+08:00 | /run-experiment | refine-logs/patch_memory_roles_v1/RECOVER_PANEL_20261001.py | implementation | Reuse existing dispatcher and unchanged endpoint verifier; preserve failed original campaign |
 | 2026-10-01T00:23:52+08:00 | /run-experiment | logs/patch_memory_resumed_device_check_20261001.json | implementation | Actual seeded Mamba forward/backward PASS on all four recovered GPUs |
+| 2026-10-01T00:43:00+08:00 | /monitor-experiment | refine-logs/patch_memory_roles_v1/EXPERIMENT_TRACKER_20261001_0043.md | implementation | Two verified full50 endpoints; four actual GPU trainers and matching paired initializations |
+| 2026-10-01T00:38:00+08:00 | /run-experiment | logs/patch_memory_recovery_intake_20261001_0038/ | implementation | Original recovery evaluation commands/exits, two official receipts, full-gallery CPU verification and frozen source manifest |
+| 2026-10-01T00:43:00+08:00 | /run-experiment | logs/patch_memory_recovery_m0_20261001_0043/ | implementation | Four actual8-batch production M0 receipts/steps/stdout; probe SHA and paired initial-state check |
+| 2026-10-01T00:43:00+08:00 | /monitor-experiment | logs/patch_memory_recovery_observer_20261001_0043.json | implementation | Actual four running trainer states and GPU use, not terminal retrieval results |

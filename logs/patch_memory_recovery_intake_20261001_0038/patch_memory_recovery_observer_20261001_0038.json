@@ -1,0 +1,461 @@
+{
+  "observed_at": "2026-10-01T00:38:03.849815+08:00",
+  "collector_returncode": 0,
+  "collector_stdout": "",
+  "collector_stderr": "",
+  "campaign": {
+    "status": "RUNNING",
+    "controller_pid": 1050794,
+    "started_at": "2026-10-01T00:33:30.575627+08:00",
+    "jobs": [
+      {
+        "phase": "patch_memory",
+        "dataset": "MSVR310",
+        "variant": "local_memory",
+        "action": "evaluate_existing",
+        "status": "COMPLETE",
+        "gpu": 0,
+        "started_at": "2026-10-01T00:33:30.650410+08:00",
+        "command": [
+          "/data/gaob/Re-ID/conda-envs/tri_reid/bin/python",
+          "-B",
+          "/data/gaob/Re-ID/Trifusion/refine-logs/patch_memory_roles_v1/RECOVER_PANEL_20261001.py",
+          "--evaluate-existing",
+          "--campaign",
+          "/data/gaob/Re-ID/Trifusion/logs/patch_memory_roles_recovery_20261001",
+          "--original",
+          "/data/gaob/Re-ID/Trifusion/logs/patch_memory_roles_20260930",
+          "--dataset",
+          "MSVR310",
+          "--variant",
+          "local_memory",
+          "--gpu",
+          "0"
+        ],
+        "pid": 1050805,
+        "result": {
+          "dataset": "MSVR310",
+          "variant": "local_memory",
+          "run_dir": "/data/gaob/Re-ID/Trifusion/trained-model/patch_memory_roles_20260930_patch_memory_local_memory_MSVR310_seed42_full",
+          "m0_run_dir": "/data/gaob/Re-ID/Trifusion/trained-model/patch_memory_roles_20260930_patch_memory_local_memory_MSVR310_seed42_m0",
+          "campaign_dir": "/data/gaob/Re-ID/Trifusion/logs/patch_memory_roles_recovery_20261001/patch_memory_roles_recovery_20261001_patch_memory_local_memory_MSVR310",
+          "recovery_action": "evaluate_existing",
+          "status": "VERIFIED_COMPLETE",
+          "best_epoch": 10,
+          "metrics": {
+            "mAP": 52.36224352082647,
+            "Rank-1": 67.85110235214233,
+            "Rank-5": 83.41793417930603,
+            "Rank-10": 89.17089700698853
+          },
+          "diagnostic_metrics": {
+            "shared_global": {
+              "mAP": 52.394868728402734,
+              "Rank-1": 68.69712471961975,
+              "Rank-5": 82.74111747741699,
+              "Rank-10": 88.32487463951111
+            },
+            "joint_local": {
+              "mAP": 11.908662421086898,
+              "Rank-1": 24.703891575336456,
+              "Rank-5": 42.131978273391724,
+              "Rank-10": 51.9458532333374
+            }
+          },
+          "condition": {
+            "query_mode": "context",
+            "auxiliary_target": "none"
+          },
+          "memory_mode": "local",
+          "initial_model_state_sha256": "e9c47306249d8f1e835e873d9663859de5aeb8d14a184ae035482f6199da0f0e",
+          "trainable_parameters": 2781130,
+          "training_and_epoch_eval_seconds": 1238.03434,
+          "checkpoint_sha256": "8b70501480d000400e0a7be2228182c157dd9a39a57f3c18f22ba34dd0aee8b2",
+          "distance_sha256": "7583e3654e328f050b5d399132e7aeb9bf5b961a206813a680c42bc9f8b6b7c6",
+          "receipt_sha256": "f05a0bb3e34cd09414aa2878493b44f9aad227d874f84d2cd5f326ebb5f83202",
+          "full_gallery_recomputed_metric_difference_pp": {
+            "fused": {
+              "mAP": 0.0,
+              "Rank-1": 2.5213470706830776e-06,
+              "Rank-5": 1.5228936263156356e-06,
+              "Rank-10": 2.2187853687682946e-07
+            },
+            "shared_global": {
+              "mAP": 0.0,
+              "Rank-1": 1.2001612077483514e-06,
+              "Rank-5": 7.261479595399578e-07,
+              "Rank-10": 1.5430644140224103e-06
+            },
+            "joint_local": {
+              "mAP": 0.0,
+              "Rank-1": 1.336313957267521e-07,
+              "Rank-5": 1.422039744625181e-06,
+              "Rank-10": 1.2505881414881515e-06
+            }
+          },
+          "task_scalars": {
+            "logged_steps": 1000,
+            "maximum_loss_reconstruction_error": 2.384185791015625e-07,
+            "nonzero_triplet_steps": 971,
+            "nonzero_auxiliary_id_steps": 0,
+            "first": {
+              "epoch": 1,
+              "steps": 20,
+              "loss": 5.204626607894897,
+              "id": 5.036901140213013,
+              "triplet": 0.16772543601691722,
+              "auxiliary_id": 0.0,
+              "official_fused": {
+                "mAP": 50.95413753210074,
+                "Rank-1": 68.86633038520813,
+                "Rank-5": 81.04906678199768,
+                "Rank-10": 85.78680157661438
+              }
+            },
+            "best": {
+              "epoch": 10,
+              "steps": 20,
+              "loss": 1.1680452466011046,
+              "id": 1.1053177654743194,
+              "triplet": 0.06272747595794499,
+              "auxiliary_id": 0.0,
+              "official_fused": {
+                "mAP": 52.36224352082647,
+                "Rank-1": 67.85110235214233,
+                "Rank-5": 83.41793417930603,
+                "Rank-10": 89.17089700698853
+              }
+            },
+            "last": {
+              "epoch": 50,
+              "steps": 20,
+              "loss": 0.9039956033229828,
+              "id": 0.893548309803009,
+              "triplet": 0.010447291610762476,
+              "auxiliary_id": 0.0,
+              "official_fused": {
+                "mAP": 48.134691559703555,
+                "Rank-1": 64.29780125617981,
+                "Rank-5": 80.7106614112854,
+                "Rank-10": 87.30964660644531
+              }
+            }
+          }
+        },
+        "exit_code": 0,
+        "completed_at": "2026-10-01T00:37:32.888076+08:00"
+      },
+      {
+        "phase": "patch_memory",
+        "dataset": "RGBNT201",
+        "variant": "full_memory",
+        "action": "evaluate_existing",
+        "status": "COMPLETE",
+        "gpu": 1,
+        "started_at": "2026-10-01T00:33:30.651894+08:00",
+        "command": [
+          "/data/gaob/Re-ID/conda-envs/tri_reid/bin/python",
+          "-B",
+          "/data/gaob/Re-ID/Trifusion/refine-logs/patch_memory_roles_v1/RECOVER_PANEL_20261001.py",
+          "--evaluate-existing",
+          "--campaign",
+          "/data/gaob/Re-ID/Trifusion/logs/patch_memory_roles_recovery_20261001",
+          "--original",
+          "/data/gaob/Re-ID/Trifusion/logs/patch_memory_roles_20260930",
+          "--dataset",
+          "RGBNT201",
+          "--variant",
+          "full_memory",
+          "--gpu",
+          "1"
+        ],
+        "pid": 1050806,
+        "result": {
+          "dataset": "RGBNT201",
+          "variant": "full_memory",
+          "run_dir": "/data/gaob/Re-ID/Trifusion/trained-model/patch_memory_roles_20260930_patch_memory_full_memory_RGBNT201_seed42_full",
+          "m0_run_dir": "/data/gaob/Re-ID/Trifusion/trained-model/patch_memory_roles_20260930_patch_memory_full_memory_RGBNT201_seed42_m0",
+          "campaign_dir": "/data/gaob/Re-ID/Trifusion/logs/patch_memory_roles_recovery_20261001/patch_memory_roles_recovery_20261001_patch_memory_full_memory_RGBNT201",
+          "recovery_action": "evaluate_existing",
+          "status": "VERIFIED_COMPLETE",
+          "best_epoch": 2,
+          "metrics": {
+            "mAP": 72.53354683816251,
+            "Rank-1": 73.9234447479248,
+            "Rank-5": 82.65550136566162,
+            "Rank-10": 87.91866302490234
+          },
+          "diagnostic_metrics": {
+            "shared_global": {
+              "mAP": 72.45519223215828,
+              "Rank-1": 73.80383014678955,
+              "Rank-5": 82.77512192726135,
+              "Rank-10": 88.0382776260376
+            },
+            "joint_local": {
+              "mAP": 33.517977936954985,
+              "Rank-1": 33.85167419910431,
+              "Rank-5": 50.0,
+              "Rank-10": 59.21052694320679
+            }
+          },
+          "condition": {
+            "query_mode": "context",
+            "auxiliary_target": "none"
+          },
+          "memory_mode": "full",
+          "initial_model_state_sha256": "4ea93f5e584ec9f0a1691edd65fa142844bfaf8665f25855e8e633497b1d0ad3",
+          "trainable_parameters": 2805706,
+          "training_and_epoch_eval_seconds": 1788.525496,
+          "checkpoint_sha256": "c39520d660b1a31fa73ce3c12811fd4c13317d98b7a0c1a82df9d58bc3a0a444",
+          "distance_sha256": "1d9c98af60804596318a19fe61d7c41adb44d00f3a4fee18f22a5c8aab46cf17",
+          "receipt_sha256": "c43dfa0138e2c2ed2ce86053001cc4dd638107af186f1ebc744169b69f5224ec",
+          "full_gallery_recomputed_metric_difference_pp": {
+            "fused": {
+              "mAP": 0.0,
+              "Rank-1": 2.281517481605988e-07,
+              "Rank-5": 1.0266828667226946e-06,
+              "Rank-10": 2.737821006348895e-06
+            },
+            "shared_global": {
+              "mAP": 0.0,
+              "Rank-1": 2.395593384107997e-06,
+              "Rank-5": 2.3100364785477723e-06,
+              "Rank-10": 1.140758740802994e-07
+            },
+            "joint_local": {
+              "mAP": 0.0,
+              "Rank-1": 4.4204401916658753e-07,
+              "Rank-5": 0.0,
+              "Rank-10": 6.274173216525014e-07
+            }
+          },
+          "task_scalars": {
+            "logged_steps": 2649,
+            "maximum_loss_reconstruction_error": 2.3189932107925415e-07,
+            "nonzero_triplet_steps": 1112,
+            "nonzero_auxiliary_id_steps": 0,
+            "first": {
+              "epoch": 1,
+              "steps": 53,
+              "loss": 5.002587633312873,
+              "id": 4.994699091281531,
+              "triplet": 0.007888558057119261,
+              "auxiliary_id": 0.0,
+              "official_fused": {
+                "mAP": 72.04960543126396,
+                "Rank-1": 73.32535982131958,
+                "Rank-5": 82.8947365283966,
+                "Rank-10": 87.91866302490234
+              }
+            },
+            "best": {
+              "epoch": 2,
+              "steps": 53,
+              "loss": 4.165337211680862,
+              "id": 4.158584468769577,
+              "triplet": 0.006752751433764989,
+              "auxiliary_id": 0.0,
+              "official_fused": {
+                "mAP": 72.53354683816251,
+                "Rank-1": 73.9234447479248,
+                "Rank-5": 82.65550136566162,
+                "Rank-10": 87.91866302490234
+              }
+            },
+            "last": {
+              "epoch": 50,
+              "steps": 53,
+              "loss": 0.8521772049508005,
+              "id": 0.8520905341742173,
+              "triplet": 8.667061843399731e-05,
+              "auxiliary_id": 0.0,
+              "official_fused": {
+                "mAP": 70.05776547410181,
+                "Rank-1": 71.53109908103943,
+                "Rank-5": 79.66507077217102,
+                "Rank-10": 83.61244201660156
+              }
+            }
+          }
+        },
+        "exit_code": 0,
+        "completed_at": "2026-10-01T00:37:33.385799+08:00"
+      },
+      {
+        "phase": "patch_memory",
+        "dataset": "RGBNT201",
+        "variant": "local_memory",
+        "action": "fresh_full50",
+        "status": "RUNNING",
+        "gpu": 2,
+        "started_at": "2026-10-01T00:33:30.653143+08:00",
+        "command": [
+          "/data/gaob/Re-ID/conda-envs/tri_reid/bin/python",
+          "-B",
+          "/data/gaob/Re-ID/Trifusion/tools/queue_patch_memory_roles.py",
+          "--worker",
+          "--campaign",
+          "/data/gaob/Re-ID/Trifusion/logs/patch_memory_roles_recovery_20261001",
+          "--dataset",
+          "RGBNT201",
+          "--variant",
+          "local_memory",
+          "--gpu",
+          "2"
+        ],
+        "pid": 1050807
+      },
+      {
+        "phase": "patch_memory",
+        "dataset": "RGBNT100",
+        "variant": "local_memory",
+        "action": "fresh_full50",
+        "status": "RUNNING",
+        "gpu": 3,
+        "started_at": "2026-10-01T00:33:30.654573+08:00",
+        "command": [
+          "/data/gaob/Re-ID/conda-envs/tri_reid/bin/python",
+          "-B",
+          "/data/gaob/Re-ID/Trifusion/tools/queue_patch_memory_roles.py",
+          "--worker",
+          "--campaign",
+          "/data/gaob/Re-ID/Trifusion/logs/patch_memory_roles_recovery_20261001",
+          "--dataset",
+          "RGBNT100",
+          "--variant",
+          "local_memory",
+          "--gpu",
+          "3"
+        ],
+        "pid": 1050808
+      },
+      {
+        "phase": "patch_memory",
+        "dataset": "RGBNT100",
+        "variant": "full_memory",
+        "action": "fresh_full50",
+        "status": "RUNNING",
+        "gpu": 0,
+        "started_at": "2026-10-01T00:37:33.456626+08:00",
+        "command": [
+          "/data/gaob/Re-ID/conda-envs/tri_reid/bin/python",
+          "-B",
+          "/data/gaob/Re-ID/Trifusion/tools/queue_patch_memory_roles.py",
+          "--worker",
+          "--campaign",
+          "/data/gaob/Re-ID/Trifusion/logs/patch_memory_roles_recovery_20261001",
+          "--dataset",
+          "RGBNT100",
+          "--variant",
+          "full_memory",
+          "--gpu",
+          "0"
+        ],
+        "pid": 1060404
+      },
+      {
+        "phase": "patch_memory",
+        "dataset": "MSVR310",
+        "variant": "full_memory",
+        "action": "fresh_full50",
+        "status": "RUNNING",
+        "gpu": 1,
+        "started_at": "2026-10-01T00:37:33.458672+08:00",
+        "command": [
+          "/data/gaob/Re-ID/conda-envs/tri_reid/bin/python",
+          "-B",
+          "/data/gaob/Re-ID/Trifusion/tools/queue_patch_memory_roles.py",
+          "--worker",
+          "--campaign",
+          "/data/gaob/Re-ID/Trifusion/logs/patch_memory_roles_recovery_20261001",
+          "--dataset",
+          "MSVR310",
+          "--variant",
+          "full_memory",
+          "--gpu",
+          "1"
+        ],
+        "pid": 1060405
+      }
+    ],
+    "phase": "patch_memory",
+    "updated_at": "2026-10-01T00:37:33.460224+08:00"
+  },
+  "processes": {
+    "1050794": {
+      "state": "State:\tS (sleeping)",
+      "cmdline": "/data/gaob/Re-ID/conda-envs/tri_reid/bin/python -B /data/gaob/Re-ID/Trifusion/refine-logs/patch_memory_roles_v1/RECOVER_PANEL_20261001.py --original /data/gaob/Re-ID/Trifusion/logs/patch_memory_roles_20260930 --campaign /data/gaob/Re-ID/Trifusion/logs/patch_memory_roles_recovery_20261001 "
+    },
+    "1050805": {
+      "state": "absent"
+    },
+    "1050806": {
+      "state": "absent"
+    },
+    "1050807": {
+      "state": "State:\tS (sleeping)",
+      "cmdline": "/data/gaob/Re-ID/conda-envs/tri_reid/bin/python -B /data/gaob/Re-ID/Trifusion/tools/queue_patch_memory_roles.py --worker --campaign /data/gaob/Re-ID/Trifusion/logs/patch_memory_roles_recovery_20261001 --dataset RGBNT201 --variant local_memory --gpu 2 "
+    },
+    "1050808": {
+      "state": "State:\tS (sleeping)",
+      "cmdline": "/data/gaob/Re-ID/conda-envs/tri_reid/bin/python -B /data/gaob/Re-ID/Trifusion/tools/queue_patch_memory_roles.py --worker --campaign /data/gaob/Re-ID/Trifusion/logs/patch_memory_roles_recovery_20261001 --dataset RGBNT100 --variant local_memory --gpu 3 "
+    },
+    "1060404": {
+      "state": "State:\tS (sleeping)",
+      "cmdline": "/data/gaob/Re-ID/conda-envs/tri_reid/bin/python -B /data/gaob/Re-ID/Trifusion/tools/queue_patch_memory_roles.py --worker --campaign /data/gaob/Re-ID/Trifusion/logs/patch_memory_roles_recovery_20261001 --dataset RGBNT100 --variant full_memory --gpu 0 "
+    },
+    "1060405": {
+      "state": "State:\tS (sleeping)",
+      "cmdline": "/data/gaob/Re-ID/conda-envs/tri_reid/bin/python -B /data/gaob/Re-ID/Trifusion/tools/queue_patch_memory_roles.py --worker --campaign /data/gaob/Re-ID/Trifusion/logs/patch_memory_roles_recovery_20261001 --dataset MSVR310 --variant full_memory --gpu 1 "
+    },
+    "1054535": {
+      "state": "State:\tR (running)"
+    },
+    "1054538": {
+      "state": "State:\tR (running)"
+    }
+  },
+  "training": {
+    "patch_memory_roles_recovery_20261001_patch_memory_local_memory_RGBNT201": {
+      "status": "RUNNING",
+      "completed_epochs": 5,
+      "trainer_pid": 1054535,
+      "last_epoch": {
+        "epoch": 5,
+        "steps": 53,
+        "mean_loss": 1.0869227872704559,
+        "seconds": 21.462056716001825,
+        "official_fused": {
+          "mAP": 69.95063272331255,
+          "Rank-1": 70.095694065094,
+          "Rank-5": 79.66507077217102,
+          "Rank-10": 84.56937670707703
+        }
+      }
+    },
+    "patch_memory_roles_recovery_20261001_patch_memory_local_memory_RGBNT100": {
+      "status": "RUNNING",
+      "completed_epochs": 1,
+      "trainer_pid": 1054538,
+      "last_epoch": {
+        "epoch": 1,
+        "steps": 130,
+        "mean_loss": 2.5191301015707164,
+        "seconds": 51.41470186299557,
+        "official_fused": {
+          "mAP": 85.1030304484693,
+          "Rank-1": 95.10204195976257,
+          "Rank-5": 95.68513035774231,
+          "Rank-10": 95.97667455673218
+        }
+      }
+    }
+  },
+  "nvml": {
+    "returncode": 0,
+    "stdout": "0, GPU-6a0b725d-15aa-9ec3-a292-1367f3c33f8f, 44 %, 10207 MiB\n1, GPU-bc13d99e-845a-f985-262e-1918d2a39d6b, 0 %, 10248 MiB\n2, GPU-442835f1-3e38-07d1-c823-57f7b12ad5bd, 63 %, 10183 MiB\n3, GPU-a594c014-6f57-08e1-3b65-06e99b6e312a, 99 %, 11024 MiB\n",
+    "stderr": ""
+  },
+  "accepted_count": 2
+}

@@ -13229,3 +13229,22 @@ MSVR最终权重SHA256为`8b70501480d000400e0a7be2228182c157dd9a39a57f3c18f22ba3
 上一轮是PROGRESS：接收两端完整50轮、核查全部3649步及保存权重，并完成§41.672与17份文本/代码文件的GitHub和远端同步。11:30再次实测GPU0无法由NVML读取，另外三卡分别用UUID启动新进程，均在CUDA初始化时退出1，尚未进入真实Mamba前向。两端training receipt仍为50轮完成，checkpoint存在；worker父进程仍暂停、训练子进程已结束。原campaign保持FAILED，正式验收0/6。证据为`logs/patch_memory_blocked_check_20260930.json`，SHA256 `de744eda69dac2472f77870a323d8d50ccda20b4a0f721d7d2fca7d1ef41c727`。
 
 同一设备/CUDA阻碍从首次发生至今连续三轮存在；前两轮可完成训练和归档，本轮已无可继续执行的预登记GPU训练或严格评价，需管理员修复外部状态。Goal工具已返回`blocked`，目标没有达成，也不是用户请求暂停。所有训练、失败、权重、初始化和门槛保持。待用户确认设备维护结果后，先验证新进程CUDA及真实kernel，再按§41.672恢复评价及缺失四端。当前/data约90.19GiB可用，没有删除权重或修改环境。
+
+### §41.674 2026-10-01：四卡真实kernel恢复；两端严格评价成功，另外四端继续50轮
+
+00:23对四张RTX3090分别启动新进程，真实Mamba前向/反向均通过，旧controller/worker/train PID均已不存在；两份原50轮best权重SHA与§41.672封存值完全相同。恢复证据`logs/patch_memory_resumed_device_check_20261001.json`，SHA `c19d2d71190ac746cdc773126032bf6fbfb2027a0a778dfcdf51250769e37f2d`。没有重建conda或修改依赖。Goal由继续指令恢复ACTIVE，原性能目标仍UNMET。
+
+恢复执行层登记在`refine-logs/patch_memory_roles_v1/RECOVERY_PLAN_20261001.md`及`RECOVER_PANEL_20261001.py`，部署提交`2cb19006dc8bddc05ac52d5213afe3503b6edca2`；210份运行源字节不变。00:33:32恢复controller `1050794`启动，目录`logs/patch_memory_roles_recovery_20261001`。先为MSVR local/201 full运行独立严格评价，同时为原中止201 local/100 local建立新目录完整M0/50轮；评价释放GPU后，已按240秒队列周期派发100 full/MSVR full。原campaign与两个故障中止端仍FAILED，不伪造旧训练退出码、不将无optimizer状态的中途best冒充同日程续训。
+
+00:38两条恢复评价均实际退出0，复用原`collect_patch_memory_roles.verify`的schema、SHA、最高fused mAP、严格重载和完整query/gallery/camera或MSVR时间段过滤，三种输出空间共24项CPU计分复算通过。正式验收2/6；两行均来自各自完整50轮同一最高mAP checkpoint：
+
+| 已完成端 | best轮 | mAP | Rank-1 | Rank-5 | Rank-10 |
+|---|---:|---:|---:|---:|---:|
+| RGBNT201 full_memory | 2 | 72.5335 | 73.9234 | 82.6555 | 87.9187 |
+| MSVR310 local_memory | 10 | 52.3622 | 67.8511 | — | — |
+
+车辆主表仍只报mAP/R1，原回执保留四指标。证据原字节封存在`logs/patch_memory_recovery_intake_20261001_0038/`；原权重、全距离和probe保留远端。此时尚无完整local/full数据集配对，不能据两端成绩改变初始化、读出、loss、seed或已登记门槛。两行也未达到原强基线/SOTA目标。
+
+00:43实查四个新真实M0全部通过，各8批、127/127个可训练张量有非零梯度、冻结基线不变、重载差0；32批文本封存在`logs/patch_memory_recovery_m0_20261001_0043/`。三数据集的local/full初始模型SHA分别完全匹配：201 `4ea93f5e584ec9f0a1691edd65fa142844bfaf8665f25855e8e633497b1d0ad3`；100 `7b882dbf9e482586e20e8b0c3da8ca1c6bb0c3cd7d79b79252ef6aa2083a79fe`；MSVR `e9c47306249d8f1e835e873d9663859de5aeb8d14a184ae035482f6199da0f0e`。四个实际trainer均R(running)：201 local/GPU2/PID1054535为13/50；100 local/GPU3/PID1054538为3/50；100 full/GPU0/PID1062431为2/50；MSVR full/GPU1/PID1062597为11/50。当次四卡利用率93/100/100/100%，不能把之后的短暂低利用率直接当停止。
+
+按整轮墙钟粗估MSVR约01:00、201约01:06，100约02:35—02:55，均只是估计。持久单次observer `1080242`已创建，首次01:03只检查201 local/MSVR full实际进程及终态；未完成时每240秒检查，二者真实完成后再收全量partial collector。不要提前重复查询或因观察超时重启。下一步先补齐六端与完整诊断，再按预登记门判断Patch读取支持是否有用，不能用工程通过或两端成绩代替完整研究目标。
