@@ -13348,3 +13348,13 @@ R2部署提交`a885302abd9b5be9eb4d0bf012ecaa52b5eb6558`，controller1394231于0
 真实launch、M0首波与source binding见`logs/slot_competition_fp32_launch_20261001_r2.json`、`logs/slot_competition_fp32_first_wave_20261001_r2.json`；三段启动/检查源封存于同计划目录。独立配对、完整50轮、同一官方mAP-best、严格全图库重载与CPU复算依旧；当前0/6新正式端验收，不填中途指标或声称提高。
 
 observer1400686于04:14:35真实启动，首查06:35 CST，未结束才240秒继续，源SHA `bd1ca17580997c52385baf4d85ba661aae3eb048222086f601f237efca009ca6`。预计完整面板约06:30–07:00，只是按旧墙钟与当前首轮粗估；观察超时不重启。旧R1失败记录、三个控制完整终态和新R2结果以后分别归档，不能合成一次成功实验。Goal ACTIVE／UNMET。
+
+## §41.682 — 2026-10-01：强参照的原始表格、资源与公开实现边界补核
+
+本次仅在已登记六端训练等待期间完成原始来源核查。RoDI的作者PDF与CVF正式主表六组CLIP/DINOv3指标一致，作者PDF SHA与历史记录完全相同；正式发表信息为CVPR 2026 Findings。DSGM的arXiv/作者记录及实验室公告标明TCSVT已接收，不继续笼统称未接收预印本。DEEP作者稿为TMM 2026已接收版本，DOI和60轮训练定义已经核清。各原始表格保持各自行配对，不跨主表/补充表拼接最大值。
+
+可读报告与三项固定版本目录/源码SHA清单位于 `refine-logs/slot_competition_roles_v1/reference_source_check_682_20261001/`。DEEP与RoDI被核查的公开默认分支均没有训练/评价实现，因此精确query/gallery清单与完整执行口径未闭合。DSGM当前public HEAD的活动MSVR数值过滤为同身份且同sceneid；三项随附配置DA=False时，入口返回global视觉/文本六分量，融合LOCAL不进入该返回读出。CLI可以覆盖配置；论文实际launch/checkpoint/readout未提供，不能据此认定论文执行或主表错误。报告区分了缓存文本/mask及不同骨干资源，没有声称同预算本机复现或全领域SOTA穷尽核查。
+
+父进程实际复核77个DSGM源文件和10个RoDI检索产物SHA，两个fresh只读取证分片没有执行作者代码或访问服务器；这不是当前实验的独立科学验收。完整论文/PDF/作者源码保留本地scratch，不重复发布全文。
+
+当前训练定义、213个绑定源文件、六端50轮、同一官方fused mAP-best、严格全图库重放及冻结验收门均未改变。最近训练快照仍为§41.681的04:16:51，不能将其epoch数冒称当前值；本次没有读取中途指标。既有controller1394231/observer1400686在04:33:37实际存活；observer首查06:35，未完成则240秒间隔。既有functions等待cell424仅在06:38读取该观察结果，不创建重复队列或观察器。整体目标仍ACTIVE / UNMET；六端收齐后再进行成对机制诊断和下一项假设判断。
