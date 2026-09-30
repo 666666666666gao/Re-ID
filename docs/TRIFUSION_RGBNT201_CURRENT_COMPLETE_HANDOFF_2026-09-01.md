@@ -13389,3 +13389,33 @@ CPU诊断实际退出0，仅加载已完整验收的Patch-memory六端原始距�
 §41.101的作者原表数值保留。本次原生curl直接取得[AAAI出版方PDF](https://ojs.aaai.org/index.php/AAAI/article/download/38338/42300)，实际exit0，12,158,023字节，SHA与原作者PDF同为`73086d4c318d610fd44e3d7a875462c5ed797cf8c6c2970820291259037eb094`；此前PowerShell提前断流／缺文件记录保留，不能把其非终止错误后的exit0和空SHA记成成功。第5—6页原表图像重新实读，RGBNT201为84.7／88.9／91.0／92.2，RGBNT100为91.6／98.0，未报告MSVR310。DINOv2与文中50轮须单列，阶段总成本及有效清单／选点仍未取得。公开仓库固定`0f597faad5b1432ce37b8be52e9bfac80b259f1f`，递归树只有README，无可执行训练／评价释放。
 
 来源记录`refine-logs/slot_competition_roles_v1/reference_source_check_682_20261001/PMKD_PUBLISHER_SOURCE_BINDINGS.json`并入现有参考表；全文留scratch，不复制到训练盘或重新发布。此为来源完整性进展，不是新的算法成绩，也不是穷尽SOTA排名。现有六端50轮R2合同、06:35远端观察及06:38本地cell424读取不变；没有读取中途成绩，统一目标仍ACTIVE／UNMET。
+
+
+### 41.686 槽位竞争 FP32 六端完整终态、全图库诊断与复核（2026-10-01）
+
+06:38:47 实际核查确认 `slot_competition_fp32_roles_20261001_r2` 六端全部 COMPLETE；每端均完成 seed42、50 轮角色阶段训练，以官方 fused mAP 选择同一份 best checkpoint，严格重载后评价。18 个 M0／train／evaluate 子进程的实际等待退出码均为 0，213 份绑定运行源不变。原 R1 的真实 M0 失败保留，未降低梯度门、自动重试或把历史控制替换成本次控制。当前实验只改变独立归一化与槽位竞争归一化，双方注意力子图均为 FP32，其余 AMP、初始化、数据、监督、预算和读出合同相同。
+
+| 数据集／归一化 | best epoch | mAP | Rank-1 | Rank-5 | Rank-10 |
+|---|---:|---:|---:|---:|---:|
+| RGBNT201 independent | 2 | 72.5114 | 73.8038 | 82.6555 | 87.9187 |
+| RGBNT201 competitive | 2 | 72.5997 | 74.0431 | 83.1340 | 87.9187 |
+| RGBNT100 independent | 1 | 85.1076 | 95.0437 | — | — |
+| RGBNT100 competitive | 1 | 85.1405 | 95.1603 | — | — |
+| MSVR310 independent | 15 | 52.0319 | 67.5127 | — | — |
+| MSVR310 competitive | 10 | 52.1479 | 67.1743 | — | — |
+
+车辆 Rank-5／10 仍完整保存于原始回执。competitive 相对 independent 的 mAP／Rank-1 变化分别为 RGBNT201 +0.0883／+0.2392、RGBNT100 +0.0329／+0.1166、MSVR310 +0.1161／−0.3384 个百分点；首位修复／新增错误为 3／1、2／0、22／24。原预登记推进门 **FAIL**：201、MSVR 未达到 +0.5 mAP，MSVR 的 Rank-1 还下降。RGBNT100 单独通过不等于全板通过；不触发该合同后续 global-only、稳定性种子或系数搜索，不修改门槛补救。
+
+完整 query／gallery 数量为 836／836、1715／8575、591／1055，保留全部干扰图库和 camera／MSVR 时间段过滤。68 份原始文本回执本地逐项 SHA 验证，模型、图像与距离数组仍留远端。接受矩阵 SHA `e3433db691dbb1070595386c542f27782cd88b45f5f6faa8660b246e7c2fd4b8`，归档为 `logs/slot_competition_fp32_complete_intake_20261001/`。
+
+06:39:31 启动的一次只读全图库槽位诊断实际在 06:42:10 全部退出 0；六端模型状态不变，hook 返回原始结果，首批 query／gallery 仪器差异均为零，完整指标一致。竞争使注意力槽位重叠降低、不同首位 Patch 增多，但选取内容的相似度并非三个数据集都下降：201 为 0.9813→0.9768，100 为 0.9593→0.9747，MSVR 为 0.9727→0.8825。这不是物理部件对应或最终角色冗余的真值，也不能单独确定掉点原因。
+
+**测量阶段勘误：**槽位统计在锚点加入、跨角色桥接之前采集；CNN 的空间卷积已经执行，Transformer／Mamba 的后续混合尚未执行。原始 SUMMARY 和原执行分析源码中“所有角色算子之前”的措辞对 CNN 过宽，原件不改；新报告及后续工具已修正。原执行源码保存为 `logs/slot_competition_fp32_analysis_source_20261001.py`，SHA `2fbe37c00e83672e56e3321cf6f4405dd3d9890b34cecf90ff735b9b5eb825fe`；当前工具 SHA `ba6eda47062dd7df1b90886a7afcb0df513a01dbcc3f2128bed1559a5ca3fec2`。数值与推进门未变，没有为措辞修正重跑数值实验。
+
+同 checkpoint 的 global 为已适配 M1 global，不是冻结纯基线；local 为投影后的角色修正，不是独立训练模型。competitive 的 fused 相对自身 global 仅增加 0.1298、0.0443、−0.4259 mAP，首位修复／新增为 4／2、2／1、4／15。MSVR 的 competitive global 比其控制更强，但加回角色后损失更大。弱 local 单独排名不意味着每次修正都无效；该端四条修复均发生在 local 单独首位错误时。旧 V8 等能量距离平均恒等式不适用于当前加性读出。
+
+完整 50 轮轨迹中，六端 best 后训练均值损失下降、末轮检索 mAP 却下降。RGBNT100 两端第 1 轮之后 6429 个记录步骤 Triplet 均为零；MSVR 两端 post-best 的非零步骤为 669／700、759／800。标量活动不等于 AdamW 更新份额，也不能给出性能因果归因。一次 CPU 分析于 06:43:57 完成，原生执行会话退出 0；收条明确为执行者工具观察，并非独立复核员观察的 OS 退出。完整报告和实际查看的 50 轮曲线在 `results/SLOT_COMPETITION_FP32_COMPLETE_2026-10-01.md`，原始 SUMMARY SHA `94179e2b2ca8810a0a6ee2d7aed5eca001c8aad7b77681fa77a4d4ea3d1c3950`。
+
+fresh native reviewer 按 experiment-audit 流程给出 **WARN（same-family／provisional）**，数值／回执完整性 PASS，推进门 FAIL。独立核验 18 个实际退出码、213 源绑定、18 矩阵／72 指标，最大复算差 2.94×10⁻⁶ 个百分点；全路径与标签顺序一致。六端完整初始状态成对相同，12 份 best／M0 checkpoint 在明确记录的 CPU 设备重定向下严格加载。第一次 CPU 检查因上游硬编码 `.to("cuda")` 退出 1，失败与后续工具处理均保留；复核没有运行神经前向、梯度、优化或新训练。M0 127／127 指的是八批累计有效梯度覆盖，不能说每批所有张量都有非零梯度。详细边界见 `results/slot_competition_fp32_audit_20261001/AUDIT.md`、`AUDIT.json`。
+
+这是一个研发种子、先训练纯 ReID 起点再训练角色 50 轮，官方集参与逐轮选点和历史方法选择；固定模型 bootstrap 不是多种子稳定性或未消费测试显著性。本地镜像不是完整独立运行环境，权威远端绑定通过，不把本地缺失比较器／协议副本当成虚假的全环境复现。仍未达到三个数据集的 baseline／SOTA 完整 Goal，不证明三个角色必要性。当前训练、等待器和诊断均已结束；健康卡后续利用须由新的明确假设登记，不能用重复种子挽救这一失败版本。尚未登记下一训练干预。

@@ -1,0 +1,256 @@
+{
+  "status": "COMPLETE",
+  "dataset": "RGBNT100",
+  "variant": "competitive",
+  "gpu": 2,
+  "controller_pid": 1394244,
+  "started_at": "2026-10-01T04:11:53.775093+08:00",
+  "jobs": [
+    {
+      "mode": "m0",
+      "status": "COMPLETE",
+      "started_at": "2026-10-01T04:11:53.810900+08:00",
+      "output_dir": "/data/gaob/Re-ID/Trifusion/trained-model/slot_competition_fp32_roles_20261001_r2_slot_competition_fp32_competitive_RGBNT100_seed42_m0",
+      "command": [
+        "/data/gaob/Re-ID/conda-envs/tri_reid/bin/python",
+        "-B",
+        "/data/gaob/Re-ID/Trifusion/tools/run_slot_competition_fp32_roles.py",
+        "--dataset",
+        "RGBNT100",
+        "--mode",
+        "m0",
+        "--protocol",
+        "/data/gaob/Re-ID/Trifusion/logs/official_three_dataset_protocols_20260923/RGBNT100.json",
+        "--signal-source",
+        "/data/gaob/Re-ID/Trifusion/comparators/Signal-cd1b0a6",
+        "--clip-weight",
+        "/data/gaob/Re-ID/Trifusion/pertrained-model/ViT-B-16.pt",
+        "--baseline-checkpoint",
+        "/data/gaob/Re-ID/Trifusion/pertrained-model/RGBNT100_PlainBaseline_30.pth",
+        "--baseline-sha256",
+        "299a28bfb3e3180eeae0736cf8638cd162525dce0f2192a940b62b97f6e67dcd",
+        "--output-dir",
+        "/data/gaob/Re-ID/Trifusion/trained-model/slot_competition_fp32_roles_20261001_r2_slot_competition_fp32_competitive_RGBNT100_seed42_m0",
+        "--seed",
+        "42",
+        "--epochs",
+        "50",
+        "--width",
+        "128",
+        "--pred-weight",
+        "0.1",
+        "--m1",
+        "--m2",
+        "--no-m3",
+        "--query-mode",
+        "context",
+        "--auxiliary-target",
+        "none",
+        "--attention-normalization",
+        "competitive"
+      ],
+      "pid": 1394247,
+      "exit_code": 0,
+      "completed_at": "2026-10-01T04:12:29.673512+08:00"
+    },
+    {
+      "mode": "train",
+      "status": "COMPLETE",
+      "started_at": "2026-10-01T04:12:29.709715+08:00",
+      "output_dir": "/data/gaob/Re-ID/Trifusion/trained-model/slot_competition_fp32_roles_20261001_r2_slot_competition_fp32_competitive_RGBNT100_seed42_full",
+      "command": [
+        "/data/gaob/Re-ID/conda-envs/tri_reid/bin/python",
+        "-B",
+        "/data/gaob/Re-ID/Trifusion/tools/run_slot_competition_fp32_roles.py",
+        "--dataset",
+        "RGBNT100",
+        "--mode",
+        "train",
+        "--protocol",
+        "/data/gaob/Re-ID/Trifusion/logs/official_three_dataset_protocols_20260923/RGBNT100.json",
+        "--signal-source",
+        "/data/gaob/Re-ID/Trifusion/comparators/Signal-cd1b0a6",
+        "--clip-weight",
+        "/data/gaob/Re-ID/Trifusion/pertrained-model/ViT-B-16.pt",
+        "--baseline-checkpoint",
+        "/data/gaob/Re-ID/Trifusion/pertrained-model/RGBNT100_PlainBaseline_30.pth",
+        "--baseline-sha256",
+        "299a28bfb3e3180eeae0736cf8638cd162525dce0f2192a940b62b97f6e67dcd",
+        "--output-dir",
+        "/data/gaob/Re-ID/Trifusion/trained-model/slot_competition_fp32_roles_20261001_r2_slot_competition_fp32_competitive_RGBNT100_seed42_full",
+        "--seed",
+        "42",
+        "--epochs",
+        "50",
+        "--width",
+        "128",
+        "--pred-weight",
+        "0.1",
+        "--m1",
+        "--m2",
+        "--no-m3",
+        "--query-mode",
+        "context",
+        "--auxiliary-target",
+        "none",
+        "--attention-normalization",
+        "competitive"
+      ],
+      "pid": 1396301,
+      "exit_code": 0,
+      "completed_at": "2026-10-01T06:33:27.039244+08:00"
+    },
+    {
+      "mode": "evaluate",
+      "status": "COMPLETE",
+      "started_at": "2026-10-01T06:33:27.088872+08:00",
+      "output_dir": "/data/gaob/Re-ID/Trifusion/trained-model/slot_competition_fp32_roles_20261001_r2_slot_competition_fp32_competitive_RGBNT100_seed42_full",
+      "command": [
+        "/data/gaob/Re-ID/conda-envs/tri_reid/bin/python",
+        "-B",
+        "/data/gaob/Re-ID/Trifusion/tools/run_slot_competition_fp32_roles.py",
+        "--dataset",
+        "RGBNT100",
+        "--mode",
+        "evaluate",
+        "--protocol",
+        "/data/gaob/Re-ID/Trifusion/logs/official_three_dataset_protocols_20260923/RGBNT100.json",
+        "--signal-source",
+        "/data/gaob/Re-ID/Trifusion/comparators/Signal-cd1b0a6",
+        "--clip-weight",
+        "/data/gaob/Re-ID/Trifusion/pertrained-model/ViT-B-16.pt",
+        "--baseline-checkpoint",
+        "/data/gaob/Re-ID/Trifusion/pertrained-model/RGBNT100_PlainBaseline_30.pth",
+        "--baseline-sha256",
+        "299a28bfb3e3180eeae0736cf8638cd162525dce0f2192a940b62b97f6e67dcd",
+        "--output-dir",
+        "/data/gaob/Re-ID/Trifusion/trained-model/slot_competition_fp32_roles_20261001_r2_slot_competition_fp32_competitive_RGBNT100_seed42_full",
+        "--seed",
+        "42",
+        "--epochs",
+        "50",
+        "--width",
+        "128",
+        "--pred-weight",
+        "0.1",
+        "--m1",
+        "--m2",
+        "--no-m3",
+        "--query-mode",
+        "context",
+        "--auxiliary-target",
+        "none",
+        "--attention-normalization",
+        "competitive"
+      ],
+      "pid": 1632435,
+      "exit_code": 0,
+      "completed_at": "2026-10-01T06:35:15.440234+08:00"
+    }
+  ],
+  "completed_at": "2026-10-01T06:35:21.240280+08:00",
+  "verification": {
+    "status": "VERIFIED_COMPLETE",
+    "best_epoch": 1,
+    "metrics": {
+      "mAP": 85.14047165885388,
+      "Rank-1": 95.16034722328186,
+      "Rank-5": 95.68513035774231,
+      "Rank-10": 96.03498578071594
+    },
+    "diagnostic_metrics": {
+      "shared_global": {
+        "mAP": 85.09616339910644,
+        "Rank-1": 95.10204195976257,
+        "Rank-5": 95.62682509422302,
+        "Rank-10": 96.03498578071594
+      },
+      "joint_local": {
+        "mAP": 55.96565498753695,
+        "Rank-1": 73.99417161941528,
+        "Rank-5": 78.54227423667908,
+        "Rank-10": 79.88338470458984
+      }
+    },
+    "condition": {
+      "query_mode": "context",
+      "auxiliary_target": "none"
+    },
+    "memory_mode": "full",
+    "attention_normalization": "competitive",
+    "initial_model_state_sha256": "7b882dbf9e482586e20e8b0c3da8ca1c6bb0c3cd7d79b79252ef6aa2083a79fe",
+    "trainable_parameters": 2619850,
+    "training_and_epoch_eval_seconds": 8439.322627,
+    "checkpoint_sha256": "ac7936ec06d98b38b29bbfc59377af81331dc5f1d8a2241c60416a93da13b921",
+    "distance_sha256": "cedeb1e963975a87a09d102066692bb7d144398456b4d50205ee719ebea4dd49",
+    "receipt_sha256": "561bb2e86b11627368a0efccc1ddc1a58249d7cf21bfeab3d898b9700d5652fd",
+    "full_gallery_recomputed_metric_difference_pp": {
+      "fused": {
+        "mAP": 1.4210854715202004e-14,
+        "Rank-1": 2.630945544979113e-06,
+        "Rank-5": 8.375929780868319e-07,
+        "Rank-10": 3.5797540931525873e-07
+      },
+      "shared_global": {
+        "mAP": 0.0,
+        "Rank-1": 1.1434360516204833e-06,
+        "Rank-5": 2.9367886185127645e-06,
+        "Rank-10": 3.5797540931525873e-07
+      },
+      "joint_local": {
+        "mAP": 1.4210854715202004e-14,
+        "Rank-1": 2.5232053673107657e-06,
+        "Rank-5": 1.842009424990465e-07,
+        "Rank-10": 2.780391596957088e-06
+      }
+    },
+    "task_scalars": {
+      "logged_steps": 6559,
+      "maximum_loss_reconstruction_error": 0.0,
+      "nonzero_triplet_steps": 0,
+      "nonzero_auxiliary_id_steps": 0,
+      "first": {
+        "epoch": 1,
+        "steps": 130,
+        "loss": 2.5180605549078723,
+        "id": 2.5180605549078723,
+        "triplet": 0.0,
+        "auxiliary_id": 0.0,
+        "official_fused": {
+          "mAP": 85.14047165885388,
+          "Rank-1": 95.16034722328186,
+          "Rank-5": 95.68513035774231,
+          "Rank-10": 96.03498578071594
+        }
+      },
+      "best": {
+        "epoch": 1,
+        "steps": 130,
+        "loss": 2.5180605549078723,
+        "id": 2.5180605549078723,
+        "triplet": 0.0,
+        "auxiliary_id": 0.0,
+        "official_fused": {
+          "mAP": 85.14047165885388,
+          "Rank-1": 95.16034722328186,
+          "Rank-5": 95.68513035774231,
+          "Rank-10": 96.03498578071594
+        }
+      },
+      "last": {
+        "epoch": 50,
+        "steps": 130,
+        "loss": 0.7060715056382693,
+        "id": 0.7060715056382693,
+        "triplet": 0.0,
+        "auxiliary_id": 0.0,
+        "official_fused": {
+          "mAP": 81.4920549471126,
+          "Rank-1": 93.06122660636902,
+          "Rank-5": 93.23615431785583,
+          "Rank-10": 94.05247569084167
+        }
+      }
+    }
+  }
+}
