@@ -1553,3 +1553,5 @@
 | 2026-09-30T11:24:00+08:00 | /monitor-experiment | refine-logs/patch_memory_roles_v1/CHECK_TRAINING_ONLY_20260930.py | implementation | Independent CPU audit of actual full50 training and saved checkpoint bytes; not retrieval acceptance |
 | 2026-09-30T11:24:00+08:00 | /monitor-experiment | logs/patch_memory_training_complete_20260930/ | implementation | Original-byte complete training records, two checkpoint audit receipts and SHA snapshot |
 | 2026-09-30T11:24:00+08:00 | /monitor-experiment | logs/patch_memory_post_training_device_check_20260930.json | implementation | Three fresh-process CUDA initialization failures before real Mamba forward |
+| 2026-09-30T11:30:00+08:00 | /monitor-experiment | refine-logs/patch_memory_roles_v1/EXPERIMENT_TRACKER_20260930_1130.md | implementation | Goal BLOCKED after third consecutive confirmed CUDA/device obstruction |
+| 2026-09-30T11:30:00+08:00 | /monitor-experiment | logs/patch_memory_blocked_check_20260930.json | implementation | Fresh CUDA checks on all three NVML-accessible UUIDs and actual held worker process states |
