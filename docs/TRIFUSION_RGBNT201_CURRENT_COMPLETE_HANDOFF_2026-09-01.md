@@ -13383,3 +13383,9 @@ CPU诊断实际退出0，仅加载已完整验收的Patch-memory六端原始距�
 四份取得文件逐字节SHA已记录到`refine-logs/slot_competition_roles_v1/reference_source_check_682_20261001/MSVR310_PROTOCOL_SOURCE_BINDINGS.json`；PDF及完整作者代码仅留本地scratch，不重新发布、不执行作者代码。原代码SHA：读取器`54e26cdcbccd4356aa27a742c5945e98c2feb37761756d67e22372c714284f7d`，评价器`e9ed334364d6e0e2021904a4e1457a3ec2065030100956a23a316d57188ef22a`。当前DSGM公共代码的数值过滤与这个时间协议一致；这仍不证明各论文采用相同图像字节、清单、有效启动配置或特征读出，亦不构成等资源复现。
 
 六端R2正式验收仍等待既有观察任务：远端1400686首次06:35、其后240秒；本地cell424于06:38读取。没有提前查询epoch／中途成绩，没有新的模型、损失、系数、种子或门槛变化。统一研究目标保持ACTIVE／UNMET。
+
+### 41.685 PMKD出版方全文字节与公开资源补证（2026-10-01）
+
+§41.101的作者原表数值保留。本次原生curl直接取得[AAAI出版方PDF](https://ojs.aaai.org/index.php/AAAI/article/download/38338/42300)，实际exit0，12,158,023字节，SHA与原作者PDF同为`73086d4c318d610fd44e3d7a875462c5ed797cf8c6c2970820291259037eb094`；此前PowerShell提前断流／缺文件记录保留，不能把其非终止错误后的exit0和空SHA记成成功。第5—6页原表图像重新实读，RGBNT201为84.7／88.9／91.0／92.2，RGBNT100为91.6／98.0，未报告MSVR310。DINOv2与文中50轮须单列，阶段总成本及有效清单／选点仍未取得。公开仓库固定`0f597faad5b1432ce37b8be52e9bfac80b259f1f`，递归树只有README，无可执行训练／评价释放。
+
+来源记录`refine-logs/slot_competition_roles_v1/reference_source_check_682_20261001/PMKD_PUBLISHER_SOURCE_BINDINGS.json`并入现有参考表；全文留scratch，不复制到训练盘或重新发布。此为来源完整性进展，不是新的算法成绩，也不是穷尽SOTA排名。现有六端50轮R2合同、06:35远端观察及06:38本地cell424读取不变；没有读取中途成绩，统一目标仍ACTIVE／UNMET。

@@ -5,6 +5,7 @@ This is a source check during the registered six-end FP32 attention experiment. 
 | Author report | RGBNT201 mAP / R1 | RGBNT100 mAP / R1 | MSVR310 mAP / R1 |
 |---|---:|---:|---:|
 | DEEP, CLIP | 79.6 / 84.2 | 88.5 / 97.6 | 66.0 / 82.1 |
+| PMKD, DINOv2 | 84.7 / 88.9 | 91.6 / 98.0 | Not reported |
 | DSGM, CLIP plus cached priors | 82.6 / 87.0 | 89.4 / 98.2 | 64.6 / 76.0 |
 | RoDI, CLIP | 84.1 / 87.2 | 88.5 / 97.6 | 64.1 / 77.2 |
 | RoDI, distilled DINOv3 | 85.3 / 87.9 | 89.0 / 99.1 | 71.8 / 84.8 |
@@ -14,6 +15,10 @@ All values are percentages. Each pair remains from one author table row. These s
 ## DEEP
 
 The [author manuscript](https://aihuazheng.github.io/publications/pdf/2025/2025-DEEP_Decoupled_Semantic_Prompt_Learning_Guiding_and_Embedding_for_Multi-Spectral_Object_Re-Identification.pdf) identifies an accepted TMM 2026 version, DOI `10.1109/TMM.2026.3660160`. Its standard-resolution table supplies the row above; its higher-resolution experiment is separate. It states 60 epochs, a trainable CLIP visual encoder, frozen text encoder, and semantic inversion at inference. MSVR310 excludes same-identity, same-time-span gallery items. The inspected [public default branch](https://github.com/lsh-ahu/DEEP-ReID/tree/cc177306528dd8f8c468de2bb2eeba22978a9fb7) has ten files, consisting of metadata and images. Training/evaluation implementation and exact query/gallery manifests cannot be checked from that inventory.
+
+## PMKD
+
+The [publisher PDF](https://ojs.aaai.org/index.php/AAAI/article/download/38338/42300) is byte-identical to the previously verified author PDF. Tables 1/2 confirm the row above; RGBNT201 R5/R10 are 91.0/92.2. Its other vehicle benchmark is WMVeID863, not MSVR310. It specifies DINOv2, 224x224, batch32 and 50 epochs; total multistage cost remains unclear. The pinned public tree contains only README. `PMKD_PUBLISHER_SOURCE_BINDINGS.json` preserves the first failed transfer and subsequent successful native download. This strengthens source provenance, not experiment performance or equal-budget reproducibility.
 
 ## DSGM
 
