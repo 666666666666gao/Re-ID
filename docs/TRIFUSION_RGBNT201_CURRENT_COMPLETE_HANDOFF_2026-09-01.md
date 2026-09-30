@@ -13290,3 +13290,11 @@ full模式所读槽位内容高度相似，201 Mamba采样内容均值余弦0.99
 16件JSON/stdout原字节与汇总收条归档在`logs/patch_memory_pair_diagnosis_20261001/`、`logs/patch_memory_slot_diagnosis_20261001/`及`logs/patch_memory_diagnosis_intake_20261001.json`；全部SHA本地复核，权重和数组留远端。只读源码SHA `af6c92ab77dd702b5e1b4eae46eb099889952fb01b66929c41d8e9ff955e2b32`，210原训练源SHA仍匹配。首次CPU启动错误把诊断helper当成210个运行依赖之一，在计算前KeyError退出且没有启动子任务；原记录保留为FAILED_SOURCE_BINDING.json，后用实际Git源码与本地SHA绑定，没有修改训练manifest或验收门。
 
 两对结果已改变对扩大支持范围的机制认识，但六端正式结论及100槽位诊断仍待完成；02:35结束observer1119184保持。先完成全六端与全三数据集机制分析，再决定后继，不重复已封存失败或依靠官方失败query定义新训练规则。Goal ACTIVE / UNMET。
+
+## §41.677 — 2026-10-01 02:31：四端完整轨迹与槽位竞争近邻，未改变当前六端训练
+
+本节仅使用四项已验收端的原始50轮记录和逐步日志，没有提前读取RGBNT100中途成绩。绑定数据与来源SHA在`results/PATCH_MEMORY_ARCHIVED_TRAJECTORY_2026-10-01.json`，可读表在同名.md。四项best→末轮mAP变化分别为：RGBNT201 local −3.3664pp、full −2.4758pp；MSVR310 local −4.2276pp、full −3.7031pp。训练loss均下降；best之后正Triplet步分别1061/2543、1012/2543、771/800、766/800，最后正值仍在第50轮。这排除了“这两项MSVR后期Triplet完全为零”的说法，但loss正值不是实际AdamW更新份额，也不能单独确认泛化退化的根因。正式best指标没有变。
+
+`refine-logs/patch_memory_roles_v1/SLOT_COMPETITION_PRIOR_ART_20261001.md`封存三项按arXiv ID去重的原始论文／作者源码核读。当前score形状B×模态×16槽位×128Patch，softmax对Patch维独立归一化；原Slot Attention及PLOT先让每个输入在槽位间竞争，再按输入做加权均值，并有迭代更新。DINOSAUR提供冻结特征分组与特征重建先例；PLOT已有图文行人检索的共享初始槽位、部件检索／身份目标及特征重建，不能把竞争归一化或共享槽位宣称为本项目原创。PLOT官方HEAD的额外目标、分类拼接、推理尺度与学习率脚本不逐项等同论文；图文证据也不等同RGB/NIR/TIR或MSVR时间段协议的有效性。仅换归一化轴不保证不同内容、部件对应或检索收益。
+
+0226实际PID检查确认现有观察器1119184仍为Ss，命令与02:35首次观察合同一致。已有恢复证明四卡真实CUDA/Mamba前后向通过，不能继续将9月30日的旧故障当作当前持续故障；硬件根因／管理员修复方式仍未取得证据。4/6正式结果不变，100两端待完整验收，观察器02:35之后未完成才按240秒继续。未新启训练、未更改模型、loss、参数、门槛或210份冻结运行源。六端全部完成后复用同一CPU计分及GPU槽位诊断，再判断预登记门槛。Goal ACTIVE／UNMET，不以本节诊断或文献核读代替性能目标。

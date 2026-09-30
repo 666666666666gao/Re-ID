@@ -44,3 +44,7 @@ Read-only complete-query/gallery inference additionally measured all three roles
 These are query-split means across3roles×3modalities; full gallery and per-role/per-modality tables are retained. Full support samples more similar content. Local masks mechanically limit attention overlap. Sampled-content statistics precede anchor-vector addition, role bridging and role operators; they do not establish final-role redundancy, physical-part correspondence or a unique causal explanation.
 
 Source tools/diagnose_patch_memory_slots.py SHAaf6c92ab77dd702b5e1b4eae46eb099889952fb01b66929c41d8e9ff955e2b32. Plan SLOT_DIAGNOSTIC_PLAN_20261001.md and16 original JSON/log files plus intake receipt are archived. CPU diagnostics captured actualexit0. GPU workers produced COMPLETE reports and were absent on observation, with no retained wait parent; no GPU OS exit code is asserted. An initial source-binding error before CPU jobs is retained separately; it did not alter training or the verifier. RGBNT100 is not included until its pair is formally accepted. This is not a successful six-end algorithm gate or a SOTA claim.
+
+## Archived trajectories and prior-art review,02:31 CST
+
+See [four-end trajectory analysis](PATCH_MEMORY_ARCHIVED_TRAJECTORY_2026-10-01.md) and [primary-source slot review](../refine-logs/patch_memory_roles_v1/SLOT_COMPETITION_PRIOR_ART_20261001.md). No active training progress or new endpoint is included. Existing observer1119184 was verified Ss with the original02:35 schedule. Formal scope remains4/6; full gate pending.
