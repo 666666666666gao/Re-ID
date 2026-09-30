@@ -13167,3 +13167,19 @@ WARN另外保留三份导入依赖没有启动时冻结、目录不能认证像�
 计划及门槛预先固定在refine-logs/prompt_role_state_v1/EXPERIMENT_PLAN.md：reset_roles、carry_roles×RGBNT201／RGBNT100／MSVR310共六端，各seed42、真实八批M0→完整50轮→每轮官方fused mAP选择一份best→严格重载完整query/gallery；其余指标随同一权重。三个数据集mAP都正、R1不降且201和MSVR的mAP各至少+0.5个百分点才视为值得下一项独立global-only控制的候选；这不是显著性门槛。正式标签已参加历史方法与本轮逐轮选点，单种子不证明未触碰测试泛化。旧九端和三份纯ReID权重不删、不把其成绩移到新方法。
 
 源码与队列已提交GitHub及服务器，head7cb851a9d457936c06f098e6887474c998f2fc80。CPU结构检查使用简化视觉块通过形状、相同初始张量、两种计算图输出不同、提示梯度非零、冻结Signal和hook清理；它不是正式检索。生产控制器3314702于2026-09-30T00:58:29.700414+08:00启动logs/prompt_role_state_20260930，使用四GPU持续调度，磁盘启动时约91GiB空闲。约01:03只读里程碑：四个首发端M0各exit0，reset201训练7/50、reset100 2/50、resetMSVR 9/50、carry201 6/50；carry100／MSVR排队，四GPU瞬时利用率74／100／100／100%。无完整训练／正式评价终态，绝不填中途best。源码manifest本次前瞻纳入旧审查指出的三份真实导入；旧205文件manifest不追溯修改。完整结果出来后按已登记六端一起判断。Goal ACTIVE／UNMET。
+
+### 41.667 视觉主干内角色提示状态六端正式终态（2026-09-30）
+
+原队列于2026-09-30 03:54:51北京时间完成，控制器PID3314702已正常退出；六个child的真实八批M0、完整50轮训练和正式重载评价均exit0，parent COMPLETE，六端项目collector均VERIFIED_COMPLETE。远端原始`logs/prompt_role_state_20260930/accepted_matrix.json` SHA256 `1405d73124e7a1776de521edefb14620457f7b6e0691787bb18e2f2a8e0af7f9`，完整checkpoint、距离、原始训练步骤留远端，文本归档到本地scratch。四张GPU已空闲，磁盘约91GiB可用；没有观察超时重启或删除初始化/终点权重。
+
+同数据集、同纯CLIP ReID权重、相同初始化参数哈希和训练定义，仅比较提示在每层重置或跨视觉block传递。每端按官方fused mAP选唯一best权重，严格重载、完整query/gallery和原camera／MSVR时间段过滤；四项／两项指标均来自该权重：
+
+| 数据集 | reset best／mAP／R1 | carry best／mAP／R1 | carry−reset mAP／R1 |
+|---|---|---|---|
+| RGBNT201 | 18／71.2650／72.0096 | 30／70.6509／72.3684 | −0.6141／+0.3589 |
+| RGBNT100 | 1／85.6486／95.8601 | 1／85.7429／96.3265 | +0.0943／+0.4665 |
+| MSVR310 | 15／53.0499／69.0355 | 24／54.2272／70.2200 | +1.1773／+1.1844 |
+
+201的R5/R10，reset为81.4593／86.0048、carry为81.5789／86.6029；100和MSVR车辆主表只用mAP/R1。已有已保存距离的配对CPU诊断退出0：201首位修复35、新增错误32；100为18/10；MSVR为27/20。按身份宏平均AP的carry−reset分别为−0.4410、+0.0523、+1.6010个百分点。201同权重local-alone mAP从55.9051升到60.7334，但shared global从70.9412降到69.7404，fused仍下降；这是输出分解，不是独立消融或唯一因果。100两端mAP-best均为第1轮，末轮分别降到81.8579、82.5807，训练loss继续下降；来源Triplet非零步数仅0/6559与5/6559。MSVR carry的54.2272 mAP高于发布Signal checkpoint的53.2424，但R1 70.2200仍低于Signal的72.4196；不能称双指标超过强基线，更非当前强方法SOTA。
+
+预登记进入独立carry-global-only的跨集门槛要求三个数据集mAP均正、R1不降，且201/MSVR mAP至少+0.5；201 mAP为−0.6141，因此FAIL，不启动该后继。完整原始值、训练成本约6.13端小时、证据与限制见`results/PROMPT_ROLE_STATE_FULL_2026-09-30.md`和更新的prompt tracker；fresh独立experiment-audit已启动、尚未返回，当前项目collector通过不等于fresh审计完成。此为seed42二阶段开发结果；官方集参与逐轮选点，不能宣称未触碰测试或跨种子可靠性。Goal ACTIVE／UNMET，下一研究假设需基于全六端和审计结果另行登记，不能仅取MSVR正差改写本次预设失败。
