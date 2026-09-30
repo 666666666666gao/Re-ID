@@ -1548,3 +1548,8 @@
 | 2026-09-30 10:38:10 | /experiment-plan | refine-logs/patch_memory_roles_v1/EXPERIMENT_TRACKER.md | implementation | Latest preregistered plan/tracker |
 | 2026-09-30 10:56:14 | /run-experiment | refine-logs/patch_memory_roles_v1/EXPERIMENT_TRACKER_20260930_105614.md | implementation | Four production M0 pass; device incident, two full runs continue |
 | 2026-09-30 10:56:14 | /run-experiment | refine-logs/patch_memory_roles_v1/EXPERIMENT_TRACKER.md | implementation | Latest device incident and launch status |
+| 2026-09-30T11:24:00+08:00 | /monitor-experiment | refine-logs/patch_memory_roles_v1/EXPERIMENT_TRACKER_20260930_1124.md | implementation | Two full50 training/checkpoint-only checks passed; strict retrieval pending CUDA repair |
+| 2026-09-30T11:24:00+08:00 | /monitor-experiment | refine-logs/patch_memory_roles_v1/EXPERIMENT_TRACKER.md | implementation | Latest hardware and six-end status snapshot |
+| 2026-09-30T11:24:00+08:00 | /monitor-experiment | refine-logs/patch_memory_roles_v1/CHECK_TRAINING_ONLY_20260930.py | implementation | Independent CPU audit of actual full50 training and saved checkpoint bytes; not retrieval acceptance |
+| 2026-09-30T11:24:00+08:00 | /monitor-experiment | logs/patch_memory_training_complete_20260930/ | implementation | Original-byte complete training records, two checkpoint audit receipts and SHA snapshot |
+| 2026-09-30T11:24:00+08:00 | /monitor-experiment | logs/patch_memory_post_training_device_check_20260930.json | implementation | Three fresh-process CUDA initialization failures before real Mamba forward |

@@ -13211,3 +13211,15 @@ carry 相对 reset 的 mAP 仍为 RGBNT201 −0.614069、RGBNT100 +0.094292、MS
 现有2号MSVR local与3号201 full的旧CUDA上下文仍正常，10:53分别22/50、15/50，预计11:10～11:20完成50轮。为避免未恢复的CUDA让最终独立评价再度退出，暂停的是worker调度父进程`3680054`/`3680055`，真实train子进程`3681858`/`3681847`继续执行，未暂停训练。设备维护/新进程真实Mamba检查通过后，对上述worker发SIGCONT完成严格重载评价；此时再登记缺失四端的新尝试目录，全部从相同seed/权重完整50轮，不能用没有优化器状态的中途best续训冒充相同日程。原controller`3680049`已记FAILED并停止新增派发，不改写失败状态。正式验收当前0/6。
 
 用户已回复“我先检查一下”。没有请求或执行整机重启、杀死其余训练、修改loss/学习率/种子，亦未调整预登记后继门。旧提示门失败继续封存。硬件/驱动故障是执行问题，不成为方法负结果或论文motivation。下一步先保存两端50轮训练，再等设备恢复补齐评价和其余完整端。
+
+### §41.672 2026-09-30 11:19：两端已完整50轮并封存；严格重载评价等待设备恢复
+
+MSVR310 local_memory与RGBNT201 full_memory都已完成50轮，分别记录1000与2649个真实训练步骤。训练-only CPU核查确认50轮顺序、全部批次、有限loss、ID+Triplet算术、auxiliary=0、最高fused mAP checkpoint元数据一致、144个保存状态张量全部有限，并逐份确认210个冻结源文件SHA不变；选中轮次分别为第10轮与第2轮。此检查没有新神经前向、严格模型重载或完整gallery复算，正式验收仍为0/6，不把训练中的best分数提前填为终态指标。
+
+MSVR最终权重SHA256为`8b70501480d000400e0a7be2228182c157dd9a39a57f3c18f22ba34dd0aee8b2`；201为`c39520d660b1a31fa73ce3c12811fd4c13317d98b7a0c1a82df9d58bc3a0a444`。权重保留远端，完整训练receipt、步骤和stdout原字节封存在`logs/patch_memory_training_complete_20260930/`；独立检查代码在`refine-logs/patch_memory_roles_v1/CHECK_TRAINING_ONLY_20260930.py`。归档第一次错误查找trained-model/train.log而退出；定位到实际campaign子目录后补齐归档，没有改动训练、权重或任何失败回执。
+
+11:17实查GPU0仍无法访问。11:19对NVML可读的另外三卡分别以UUID启动新的真实Mamba检查，均在torch CUDA初始化时退出1，尚未进入Mamba算子，证据为`logs/patch_memory_post_training_device_check_20260930.json`，SHA256 `2f2ddd4efd43b8f13fa1084683c6f5e88de16c1a679a8e216d208df729bb4912`。不能将此解释为Mamba数值失败，也不能凭NVML显示空闲就重新派发训练。内核日志权限不足，实际Xid/根因未知。
+
+两条训练子进程已结束；父worker `3680054`/`3680055`仍暂停在新进程严格评价之前，原controller保持FAILED。当前没有训练在运行，checkpoint及原日志已保留。用户正在检查设备，没有要求暂停研究Goal，也没有授权本代理重启服务器。设备恢复后先核验新CUDA/真实kernel，若原父进程仍在则SIGCONT补原评价；若维护终止父进程，则用原checkpoint、源代码和同一评价定义保存单独恢复回执。之后继续补L201/L100的全50轮新尝试及尚未启动的F100/FMSVR，不从无optimizer状态的中途best冒充同日程续训，不修改seed、损失、门槛或失败记录。
+
+本轮完成两端全训练证据接收与检查；设备问题是执行阻碍，不是算法结论。下一步仍是补齐预登记六端及严格评价后再判断Patch读取支持的作用。Goal ACTIVE / UNMET。
