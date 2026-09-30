@@ -57,3 +57,15 @@ RGBNT201 的角色局部表示单独 mAP 上升约 4.83 点，但 shared global 
 审计员在不调用项目评分器的条件下，以 CPU 独立复算六端的 18 张完整距离矩阵和 72 个正式指标，最大误差为 1.42e-14 个百分点。六端均有完整 50 轮、合计 20,416 个训练步骤；48 个真实 M0 步和 207 份已登记源码文件的 SHA 核对通过。真实模型在 CPU 上重新构建后，六端初始状态 SHA 一致，六份 M0 probe 和六份 mAP-best checkpoint 均严格重载成功，冻结基线张量未改变。该审计没有重新运行神经前向或 GPU 训练。
 
 审计结论为 **WARN（same-family / provisional）**，没有发现结果完整性 FAIL。限制包括单一 seed、官方集逐轮选点并曾用于历史方法选择，以及 shared global / joint local 同权重诊断不能当独立训练消融。它确认科学上的预登记跨数据集晋级门槛失败；审计通过不意味着性能目标完成。完整证据见 [独立审计报告](../refine-logs/prompt_role_state_v1/REVIEW_FULL_PANEL_20260930.md)、[机器记录](../refine-logs/prompt_role_state_v1/REVIEW_FULL_PANEL_20260930.json)和[模型归属说明](../refine-logs/prompt_role_state_v1/REVIEW_ATTRIBUTION_20260930.md)。
+
+## 只读补充：M1 global-only 与纯起点 V8 的固定距离集成
+
+该探索性诊断不训练新模型，只在各自已经按官方 mAP 选好的 seed42、50轮端点上，计算 `0.5 * D_global + 0.5 * D_PLAIN_V8`。三数据集的协议 SHA、query/gallery 顺序、身份和环境标签逐项一致，两个原端点的 mAP/CMC 用独立 AP/CMC 计算复核。输入距离文件 SHA 为 RGBNT201 `d7be9c0c389d4434158882fbadf12433a6c29fe7b41262f8890655d8f2619080` / `89b935f7e472128c7a4f9f8c2cde8201a78d58e9439336bb1732de6d9ff94b62`，RGBNT100 `b23903fdeb0b5ffc1c245485b72c76ecedf8cec6f3182d72ff5ffeca66a14fa3` / `ec7934becabc553c25332cd2f4681013c8697cc9af566a89f657407da79f1c66`，MSVR310 `bf7292595baa0c4b2f9b4cd8b03a512f48e37ad8effdf096146c582f1552341e` / `2a5e1b4b5d352685a4c6fbb1a455f1c8900d0c361454cc9a49d0706b9f4fd958`。
+
+| 数据集 | M1 global-only mAP/R1 | PLAIN_V8 mAP/R1 | 固定1:1距离结果 mAP/R1 |
+|---|---:|---:|---:|
+| RGBNT201 | 72.4944 / 74.0431 | 73.1818 / 74.5215 | 73.3310 / 74.5215 |
+| RGBNT100 | 85.1884 / 95.1020 | 84.6170 / 96.0933 | 85.5247 / 96.3265 |
+| MSVR310 | 51.9480 / 67.3435 | 53.7422 / 71.9120 | 53.8289 / 69.7124 |
+
+相对各数据集两端中更高的 mAP，固定集成仅增加约 0.1492、0.3363、0.0867 点；MSVR310 的 R1 比 PLAIN_V8 低约 2.1997 点。官方集先前已参与模型和轮次选择，因此这里只作为已有表示的互补诊断；不是单模型成绩、无偏验证或新的方法候选，也不据此调集成权重。
