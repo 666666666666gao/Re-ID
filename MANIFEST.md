@@ -1555,3 +1555,6 @@
 | 2026-09-30T11:24:00+08:00 | /monitor-experiment | logs/patch_memory_post_training_device_check_20260930.json | implementation | Three fresh-process CUDA initialization failures before real Mamba forward |
 | 2026-09-30T11:30:00+08:00 | /monitor-experiment | refine-logs/patch_memory_roles_v1/EXPERIMENT_TRACKER_20260930_1130.md | implementation | Goal BLOCKED after third consecutive confirmed CUDA/device obstruction |
 | 2026-09-30T11:30:00+08:00 | /monitor-experiment | logs/patch_memory_blocked_check_20260930.json | implementation | Fresh CUDA checks on all three NVML-accessible UUIDs and actual held worker process states |
+| 2026-10-01T00:30:00+08:00 | /run-experiment | refine-logs/patch_memory_roles_v1/RECOVERY_PLAN_20261001.md | implementation | Two completed50 evaluation recoveries and four original-definition fresh endpoints |
+| 2026-10-01T00:30:00+08:00 | /run-experiment | refine-logs/patch_memory_roles_v1/RECOVER_PANEL_20261001.py | implementation | Reuse existing dispatcher and unchanged endpoint verifier; preserve failed original campaign |
+| 2026-10-01T00:23:52+08:00 | /run-experiment | logs/patch_memory_resumed_device_check_20261001.json | implementation | Actual seeded Mamba forward/backward PASS on all four recovered GPUs |
