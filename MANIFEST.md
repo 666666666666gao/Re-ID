@@ -1542,3 +1542,7 @@
 | 2026-09-30T00:48:00+08:00 | /experiment-plan | refine-logs/prompt_role_state_v1/EXPERIMENT_TRACKER.md | implementation | Latest copy of role-prompt tracker |
 | 2026-09-30T01:03:00+08:00 | /experiment-plan | refine-logs/prompt_role_state_v1/EXPERIMENT_TRACKER_20260930_0103.md | implementation | Four real M0 complete; four training active, two pending |
 | 2026-09-30T01:03:00+08:00 | /experiment-plan | refine-logs/prompt_role_state_v1/EXPERIMENT_TRACKER.md | implementation | Latest prompt-role panel progress snapshot |
+| 2026-09-30 10:38:10 | /experiment-plan | refine-logs/patch_memory_roles_v1/EXPERIMENT_PLAN_20260930_103810.md | implementation | Registered matched local/full Patch memory panel |
+| 2026-09-30 10:38:10 | /experiment-plan | refine-logs/patch_memory_roles_v1/EXPERIMENT_PLAN.md | implementation | Latest preregistered plan/tracker |
+| 2026-09-30 10:38:10 | /experiment-plan | refine-logs/patch_memory_roles_v1/EXPERIMENT_TRACKER_20260930_103810.md | implementation | Registered matched local/full Patch memory panel |
+| 2026-09-30 10:38:10 | /experiment-plan | refine-logs/patch_memory_roles_v1/EXPERIMENT_TRACKER.md | implementation | Latest preregistered plan/tracker |
