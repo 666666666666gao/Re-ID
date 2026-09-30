@@ -1,0 +1,72 @@
+/data/gaob/Re-ID/conda-envs/tri_reid/lib/python3.10/site-packages/timm/models/helpers.py:7: FutureWarning: Importing from timm.models.helpers is deprecated, please import via timm.models
+  warnings.warn(f"Importing from {__name__} is deprecated, please import via timm.models", FutureWarning)
+/data/gaob/Re-ID/conda-envs/tri_reid/lib/python3.10/site-packages/timm/models/registry.py:4: FutureWarning: Importing from timm.models.registry is deprecated, please import via timm.models
+  warnings.warn(f"Importing from {__name__} is deprecated, please import via timm.models", FutureWarning)
+/data/gaob/Re-ID/conda-envs/tri_reid/lib/python3.10/site-packages/timm/models/layers/__init__.py:48: FutureWarning: Importing from timm.models.layers is deprecated, please import via timm.layers
+  warnings.warn(f"Importing from {__name__} is deprecated, please import via timm.layers", FutureWarning)
+建立transformer............
+using Transformer_type: ViT-B-16 as a backbone
+Resized position embedding: %s to %s torch.Size([197, 768]) torch.Size([129, 768])
+Position embedding resize to height:16 width: 8
+Successfully load ckpt!
+<All keys matched successfully>
+Loading pretrained model from CLIP
+camera number is : 4
+===========Building Signal===========
+{"event": "epoch", "dataset": "RGBNT201", "epoch": 1, "steps": 53, "mean_loss": 5.002732537827402, "seconds": 22.756012246012688, "official_fused": {"mAP": 72.07914606952107, "Rank-1": 73.32535982131958, "Rank-5": 82.8947365283966, "Rank-10": 87.79904246330261}, "best_epoch": 1}
+{"event": "epoch", "dataset": "RGBNT201", "epoch": 2, "steps": 53, "mean_loss": 4.166232783839388, "seconds": 20.642882137966808, "official_fused": {"mAP": 72.53710738252079, "Rank-1": 73.9234447479248, "Rank-5": 83.13397169113159, "Rank-10": 88.0382776260376}, "best_epoch": 2}
+Traceback (most recent call last):
+  File "/data/gaob/Re-ID/Trifusion/tools/run_patch_memory_roles.py", line 86, in <module>
+    main()
+  File "/data/gaob/Re-ID/Trifusion/tools/run_patch_memory_roles.py", line 82, in main
+    entry.main()
+  File "/data/gaob/Re-ID/Trifusion/tools/run_correspondence_context_identity.py", line 254, in main
+    runner.main()
+  File "/data/gaob/Re-ID/Trifusion/tools/run_correspondence_roles.py", line 295, in main
+    train(args, protocol)
+  File "/data/gaob/Re-ID/Trifusion/tools/run_correspondence_context_identity.py", line 138, in train
+    metrics = official_metrics(model, protocol, args.signal_source)
+  File "/data/gaob/Re-ID/Trifusion/tools/run_correspondence_roles.py", line 85, in official_metrics
+    query = extract(model, protocol, "query")
+  File "/data/gaob/Re-ID/Trifusion/tools/run_correspondence_roles.py", line 73, in extract
+    rows.append(model(batch).float().cpu())
+RuntimeError: CUDA error: unspecified launch failure
+CUDA kernel errors might be asynchronously reported at some other API call, so the stacktrace below might be incorrect.
+For debugging consider passing CUDA_LAUNCH_BLOCKING=1
+Compile with `TORCH_USE_CUDA_DSA` to enable device-side assertions.
+
+terminate called after throwing an instance of 'c10::Error'
+  what():  CUDA error: unspecified launch failure
+CUDA kernel errors might be asynchronously reported at some other API call, so the stacktrace below might be incorrect.
+For debugging consider passing CUDA_LAUNCH_BLOCKING=1
+Compile with `TORCH_USE_CUDA_DSA` to enable device-side assertions.
+
+Exception raised from c10_cuda_check_implementation at ../c10/cuda/CUDAException.cpp:43 (most recent call first):
+frame #0: c10::Error::Error(c10::SourceLocation, std::string) + 0x96 (0x720c06eb9446 in /data/gaob/Re-ID/conda-envs/tri_reid/lib/python3.10/site-packages/torch/lib/libc10.so)
+frame #1: c10::detail::torchCheckFail(char const*, char const*, unsigned int, std::string const&) + 0x64 (0x720c06e636e4 in /data/gaob/Re-ID/conda-envs/tri_reid/lib/python3.10/site-packages/torch/lib/libc10.so)
+frame #2: c10::cuda::c10_cuda_check_implementation(int, char const*, char const*, int, bool) + 0x118 (0x720c06fa5a18 in /data/gaob/Re-ID/conda-envs/tri_reid/lib/python3.10/site-packages/torch/lib/libc10_cuda.so)
+frame #3: <unknown function> + 0x1055d1c (0x720bbc255d1c in /data/gaob/Re-ID/conda-envs/tri_reid/lib/python3.10/site-packages/torch/lib/libtorch_cuda.so)
+frame #4: <unknown function> + 0x105ea65 (0x720bbc25ea65 in /data/gaob/Re-ID/conda-envs/tri_reid/lib/python3.10/site-packages/torch/lib/libtorch_cuda.so)
+frame #5: <unknown function> + 0x5faf70 (0x720c05bfaf70 in /data/gaob/Re-ID/conda-envs/tri_reid/lib/python3.10/site-packages/torch/lib/libtorch_python.so)
+frame #6: <unknown function> + 0x6f69f (0x720c06e9a69f in /data/gaob/Re-ID/conda-envs/tri_reid/lib/python3.10/site-packages/torch/lib/libc10.so)
+frame #7: c10::TensorImpl::~TensorImpl() + 0x21b (0x720c06e9337b in /data/gaob/Re-ID/conda-envs/tri_reid/lib/python3.10/site-packages/torch/lib/libc10.so)
+frame #8: c10::TensorImpl::~TensorImpl() + 0x9 (0x720c06e93529 in /data/gaob/Re-ID/conda-envs/tri_reid/lib/python3.10/site-packages/torch/lib/libc10.so)
+frame #9: <unknown function> + 0x8c1a98 (0x720c05ec1a98 in /data/gaob/Re-ID/conda-envs/tri_reid/lib/python3.10/site-packages/torch/lib/libtorch_python.so)
+frame #10: THPVariable_subclass_dealloc(_object*) + 0x2c6 (0x720c05ec1de6 in /data/gaob/Re-ID/conda-envs/tri_reid/lib/python3.10/site-packages/torch/lib/libtorch_python.so)
+frame #11: <unknown function> + 0x124633 (0x61bee0eda633 in /data/gaob/Re-ID/conda-envs/tri_reid/bin/python)
+frame #12: <unknown function> + 0x13d697 (0x61bee0ef3697 in /data/gaob/Re-ID/conda-envs/tri_reid/bin/python)
+frame #13: <unknown function> + 0x14dcf6 (0x61bee0f03cf6 in /data/gaob/Re-ID/conda-envs/tri_reid/bin/python)
+frame #14: <unknown function> + 0x14dd53 (0x61bee0f03d53 in /data/gaob/Re-ID/conda-envs/tri_reid/bin/python)
+frame #15: <unknown function> + 0x14dd53 (0x61bee0f03d53 in /data/gaob/Re-ID/conda-envs/tri_reid/bin/python)
+frame #16: <unknown function> + 0x14dd53 (0x61bee0f03d53 in /data/gaob/Re-ID/conda-envs/tri_reid/bin/python)
+frame #17: <unknown function> + 0x14dd53 (0x61bee0f03d53 in /data/gaob/Re-ID/conda-envs/tri_reid/bin/python)
+frame #18: <unknown function> + 0x125caf (0x61bee0edbcaf in /data/gaob/Re-ID/conda-envs/tri_reid/bin/python)
+frame #19: PyDict_SetItemString + 0x51 (0x61bee0edf4a1 in /data/gaob/Re-ID/conda-envs/tri_reid/bin/python)
+frame #20: <unknown function> + 0x208726 (0x61bee0fbe726 in /data/gaob/Re-ID/conda-envs/tri_reid/bin/python)
+frame #21: Py_FinalizeEx + 0x146 (0x61bee0fbd936 in /data/gaob/Re-ID/conda-envs/tri_reid/bin/python)
+frame #22: Py_RunMain + 0x106 (0x61bee0fb0506 in /data/gaob/Re-ID/conda-envs/tri_reid/bin/python)
+frame #23: Py_BytesMain + 0x37 (0x61bee0f811f7 in /data/gaob/Re-ID/conda-envs/tri_reid/bin/python)
+frame #24: <unknown function> + 0x2a1ca (0x720c0802a1ca in /lib/x86_64-linux-gnu/libc.so.6)
+frame #25: __libc_start_main + 0x8b (0x720c0802a28b in /lib/x86_64-linux-gnu/libc.so.6)
+frame #26: <unknown function> + 0x1cb0f1 (0x61bee0f810f1 in /data/gaob/Re-ID/conda-envs/tri_reid/bin/python)
+

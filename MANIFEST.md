@@ -1546,3 +1546,5 @@
 | 2026-09-30 10:38:10 | /experiment-plan | refine-logs/patch_memory_roles_v1/EXPERIMENT_PLAN.md | implementation | Latest preregistered plan/tracker |
 | 2026-09-30 10:38:10 | /experiment-plan | refine-logs/patch_memory_roles_v1/EXPERIMENT_TRACKER_20260930_103810.md | implementation | Registered matched local/full Patch memory panel |
 | 2026-09-30 10:38:10 | /experiment-plan | refine-logs/patch_memory_roles_v1/EXPERIMENT_TRACKER.md | implementation | Latest preregistered plan/tracker |
+| 2026-09-30 10:56:14 | /run-experiment | refine-logs/patch_memory_roles_v1/EXPERIMENT_TRACKER_20260930_105614.md | implementation | Four production M0 pass; device incident, two full runs continue |
+| 2026-09-30 10:56:14 | /run-experiment | refine-logs/patch_memory_roles_v1/EXPERIMENT_TRACKER.md | implementation | Latest device incident and launch status |

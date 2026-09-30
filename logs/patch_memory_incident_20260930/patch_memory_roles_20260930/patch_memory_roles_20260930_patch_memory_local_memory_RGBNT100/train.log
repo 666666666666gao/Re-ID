@@ -1,0 +1,59 @@
+/data/gaob/Re-ID/conda-envs/tri_reid/lib/python3.10/site-packages/timm/models/helpers.py:7: FutureWarning: Importing from timm.models.helpers is deprecated, please import via timm.models
+  warnings.warn(f"Importing from {__name__} is deprecated, please import via timm.models", FutureWarning)
+/data/gaob/Re-ID/conda-envs/tri_reid/lib/python3.10/site-packages/timm/models/registry.py:4: FutureWarning: Importing from timm.models.registry is deprecated, please import via timm.models
+  warnings.warn(f"Importing from {__name__} is deprecated, please import via timm.models", FutureWarning)
+/data/gaob/Re-ID/conda-envs/tri_reid/lib/python3.10/site-packages/timm/models/layers/__init__.py:48: FutureWarning: Importing from timm.models.layers is deprecated, please import via timm.layers
+  warnings.warn(f"Importing from {__name__} is deprecated, please import via timm.layers", FutureWarning)
+建立transformer............
+using Transformer_type: ViT-B-16 as a backbone
+Resized position embedding: %s to %s torch.Size([197, 768]) torch.Size([129, 768])
+Position embedding resize to height:8 width: 16
+Successfully load ckpt!
+<All keys matched successfully>
+Loading pretrained model from CLIP
+camera number is : 8
+===========Building Signal===========
+Traceback (most recent call last):
+  File "/data/gaob/Re-ID/Trifusion/tools/run_patch_memory_roles.py", line 86, in <module>
+    main()
+  File "/data/gaob/Re-ID/Trifusion/tools/run_patch_memory_roles.py", line 82, in main
+    entry.main()
+  File "/data/gaob/Re-ID/Trifusion/tools/run_correspondence_context_identity.py", line 254, in main
+    runner.main()
+  File "/data/gaob/Re-ID/Trifusion/tools/run_correspondence_roles.py", line 295, in main
+    train(args, protocol)
+  File "/data/gaob/Re-ID/Trifusion/tools/run_correspondence_context_identity.py", line 138, in train
+    metrics = official_metrics(model, protocol, args.signal_source)
+  File "/data/gaob/Re-ID/Trifusion/tools/run_correspondence_roles.py", line 86, in official_metrics
+    gallery = extract(model, protocol, "gallery")
+  File "/data/gaob/Re-ID/Trifusion/tools/run_correspondence_roles.py", line 73, in extract
+    rows.append(model(batch).float().cpu())
+  File "/data/gaob/Re-ID/conda-envs/tri_reid/lib/python3.10/site-packages/torch/nn/modules/module.py", line 1736, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+  File "/data/gaob/Re-ID/conda-envs/tri_reid/lib/python3.10/site-packages/torch/nn/modules/module.py", line 1747, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "/data/gaob/Re-ID/Trifusion/modeling/trifusion/correspondence_context_identity.py", line 93, in forward
+    stages, shared_global = self.backbone(batch["images"], batch["camera_ids"])
+  File "/data/gaob/Re-ID/conda-envs/tri_reid/lib/python3.10/site-packages/torch/nn/modules/module.py", line 1736, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+  File "/data/gaob/Re-ID/conda-envs/tri_reid/lib/python3.10/site-packages/torch/nn/modules/module.py", line 1747, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "/data/gaob/Re-ID/Trifusion/modeling/trifusion/correspondence_roles.py", line 77, in forward
+    _, global_feature = self.signal.clip_vision_encoder(
+  File "/data/gaob/Re-ID/conda-envs/tri_reid/lib/python3.10/site-packages/torch/nn/modules/module.py", line 1736, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+  File "/data/gaob/Re-ID/conda-envs/tri_reid/lib/python3.10/site-packages/torch/nn/modules/module.py", line 1747, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "/data/gaob/Re-ID/Trifusion/comparators/Signal-cd1b0a6/modeling/meta_arch.py", line 107, in forward
+    x = self.base(x, cv_embed, modality) 
+  File "/data/gaob/Re-ID/conda-envs/tri_reid/lib/python3.10/site-packages/torch/nn/modules/module.py", line 1736, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+  File "/data/gaob/Re-ID/conda-envs/tri_reid/lib/python3.10/site-packages/torch/nn/modules/module.py", line 1747, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "/data/gaob/Re-ID/Trifusion/comparators/Signal-cd1b0a6/modeling/clip/model.py", line 451, in forward
+    x = torch.cat(
+RuntimeError: CUDA error: unknown error
+CUDA kernel errors might be asynchronously reported at some other API call, so the stacktrace below might be incorrect.
+For debugging consider passing CUDA_LAUNCH_BLOCKING=1
+Compile with `TORCH_USE_CUDA_DSA` to enable device-side assertions.
+
