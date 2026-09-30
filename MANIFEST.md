@@ -1562,3 +1562,7 @@
 | 2026-10-01T00:38:00+08:00 | /run-experiment | logs/patch_memory_recovery_intake_20261001_0038/ | implementation | Original recovery evaluation commands/exits, two official receipts, full-gallery CPU verification and frozen source manifest |
 | 2026-10-01T00:43:00+08:00 | /run-experiment | logs/patch_memory_recovery_m0_20261001_0043/ | implementation | Four actual8-batch production M0 receipts/steps/stdout; probe SHA and paired initial-state check |
 | 2026-10-01T00:43:00+08:00 | /monitor-experiment | logs/patch_memory_recovery_observer_20261001_0043.json | implementation | Actual four running trainer states and GPU use, not terminal retrieval results |
+| 2026-10-01T01:13:00+08:00 | /monitor-experiment | refine-logs/patch_memory_roles_v1/EXPERIMENT_TRACKER_20261001_0113.md | implementation | Four full50 endpoints verified; remaining RGBNT100 two running |
+| 2026-10-01T01:11:00+08:00 | /monitor-experiment | logs/patch_memory_recovery_intake_20261001_0111/ | implementation | Original partial4/6, two new complete training/evaluation raw records, 48 CPU metrics, frozen source witness |
+| 2026-10-01T01:13:00+08:00 | /monitor-experiment | results/PATCH_MEMORY_PARTIAL_2026-10-01.md | implementation | Completed paired201/MSVR numbers and explicit pending six-end gate |
+| 2026-10-01T01:10:53+08:00 | /monitor-experiment | refine-logs/patch_memory_roles_v1/OBSERVE_RECOVERY_FINAL_20261001.py | implementation | Durable observer first02:35,240sec interval; observes existing panel only |

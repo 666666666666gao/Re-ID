@@ -13248,3 +13248,22 @@ MSVR最终权重SHA256为`8b70501480d000400e0a7be2228182c157dd9a39a57f3c18f22ba3
 00:43实查四个新真实M0全部通过，各8批、127/127个可训练张量有非零梯度、冻结基线不变、重载差0；32批文本封存在`logs/patch_memory_recovery_m0_20261001_0043/`。三数据集的local/full初始模型SHA分别完全匹配：201 `4ea93f5e584ec9f0a1691edd65fa142844bfaf8665f25855e8e633497b1d0ad3`；100 `7b882dbf9e482586e20e8b0c3da8ca1c6bb0c3cd7d79b79252ef6aa2083a79fe`；MSVR `e9c47306249d8f1e835e873d9663859de5aeb8d14a184ae035482f6199da0f0e`。四个实际trainer均R(running)：201 local/GPU2/PID1054535为13/50；100 local/GPU3/PID1054538为3/50；100 full/GPU0/PID1062431为2/50；MSVR full/GPU1/PID1062597为11/50。当次四卡利用率93/100/100/100%，不能把之后的短暂低利用率直接当停止。
 
 按整轮墙钟粗估MSVR约01:00、201约01:06，100约02:35—02:55，均只是估计。持久单次observer `1080242`已创建，首次01:03只检查201 local/MSVR full实际进程及终态；未完成时每240秒检查，二者真实完成后再收全量partial collector。不要提前重复查询或因观察超时重启。下一步先补齐六端与完整诊断，再按预登记门判断Patch读取支持是否有用，不能用工程通过或两端成绩代替完整研究目标。
+
+### §41.675 2026-10-01 01:13：恢复面板4/6正式验收；201/MSVR读取范围配对齐全
+
+01:11原定时observer完成第三次检查，统一partial collector实际退出0，原verify()接受4/6。新201 local和MSVR full均完成真实M0、完整50轮和严格重载评价，各阶段真实exit0；原失败campaign没有被改写。两对均使用匹配初始化与参数量、原ID+Triplet/无M3/无局部辅助头，50轮逐轮官方fused mAP选择一份best，其余指标随该权重：
+
+| 数据集 | 模式 | best轮 | mAP | Rank-1 | Rank-5 | Rank-10 |
+|---|---|---:|---:|---:|---:|---:|
+| RGBNT201 | local_memory | 2 | 72.5442 | 73.9234 | 83.1340 | 88.0383 |
+| RGBNT201 | full_memory | 2 | 72.5335 | 73.9234 | 82.6555 | 87.9187 |
+| MSVR310 | local_memory | 10 | 52.3622 | 67.8511 | — | — |
+| MSVR310 | full_memory | 10 | 52.2919 | 67.8511 | — | — |
+
+full−local mAP为201 −0.0106882、MSVR −0.0703241个百分点，R1均不变。当前两对不支持将候选Patch从9扩展到128带来增量。六端统一判断仍待RGBNT100，不改预登记门、loss、种子或学习率。对应checkpoint的joint-local mAP从39.7552到33.5180、11.9087到6.6501；这是输出诊断，不是独立角色训练或唯一因果定位。详细partial报告为`results/PATCH_MEMORY_PARTIAL_2026-10-01.md`。
+
+新201 local best SHA `0fb8d66e8e3ea9d6ad65d339ee123bf31a4826bcf051d6d633cb7417d8306b27`，MSVR full为`ed4d47204df376401411438f70e47e1a01df8756647536bfc9a034998642c92f`；原另外两份已完成权重保持。全query/gallery顺序、camera/MSVR时间段过滤及48项三空间CPU计分均复核，最大差2.7378210063489e-6个百分点，小于1e-5。210个冻结源SHA不变，17件原字节文本与INTAKE位于`logs/patch_memory_recovery_intake_20261001_0111/`，权重、probe及距离数组留远端。
+
+01:13实际trainer1054538/1062431仍为R(running)，RGBNT100 local/full分别15/50、16/50，GPU3/0利用率100%；GPU1/2已完成本面板相应训练后释放，暂时空闲，不是新设备故障。恢复controller1050794继续运行。没有中止正常训练、用中途best填终态或加入未登记的填充实验。
+
+结束observer `1119184`于01:10:53实际启动，首查2026-10-01 02:35 CST，未完成时每240秒读取同一campaign，终态后核对原accepted_matrix的6/6。脚本`refine-logs/patch_memory_roles_v1/OBSERVE_RECOVERY_FINAL_20261001.py`，SHA `6003ce476260ef6be513b4097bb4f31ce04ca73e9cd72082464bc4bc9b6f4652`；只是执行观察层，没有模型/环境改动或自动重试。预计时刻不是完成证据。先完整收齐剩余两端再分析、判断后继；Goal ACTIVE / UNMET。
