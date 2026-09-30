@@ -13375,3 +13375,11 @@ CPU诊断实际退出0，仅加载已完整验收的Patch-memory六端原始距�
 这里global也含已训练M1，不是原冻结baseline；三个输出来自同一份按fused选出的权重，不是独立训练消融。MSVR身份等权AP变化也为负（local −0.2629、full −0.4884个百分点），因此当前负增量不只是query权重平均造成，但不能断言所有身份受损或确定视觉根因。部分joint-local正确关系仍被fused排错；反过来100的两条fused修复、MSVR的所有修复，其joint-local单独首位均错误。说明加性向量读出与独立局部排名不是同一个判别过程，不能把局部正确条数换算成可部署Oracle收益、最优混合分数或选择器保证。
 
 本诊断补足的是修复与新增错误的实际数量，不唯一归罪于读出或证明局部信息无效。原六端科学门FAIL仍封存；已完成global-only/context/辅助监督对照不重复立项。当前FP32竞争六端及213源绑定保持原定义，仍等既有observer1400686于06:35统一观察、cell424于06:38读取；没有新假设或系数搜索。Goal ACTIVE / UNMET。
+
+### 41.684 MSVR310原始协议的固定来源补证（2026-10-01）
+
+本节只修正§41.682参考核查中“物理含义仍需原始数据集文档”的证据边界。§41.594已核查过原始协议，未改变任何训练、过滤或选点规则，不重复立项。重新取得[原始基准v2](https://arxiv.org/pdf/2208.00632v2)与[Information Fusion正式作者PDF](https://aihuazheng.github.io/publications/pdf/2023/2023-Cross-directional_consistency_network_with_adaptive_layer_normalization_for_multi-spectral_vehicle_re-identification_and_a_high-quality_benchmark.pdf)，并把原作者读取器／评价器固定到提交`0821f289207f0bd367b9296fa4fbdeb9114e4e5a`。论文§4.2—4.3和Table 1区分8种视角与28种时间标签；活动代码解析`s###`为`sceneid`、`v#`为视角，过滤同身份且同时间标签。不同身份的同时间图库干扰项保留。旧camera说明文字不替代活动过滤表达式。
+
+四份取得文件逐字节SHA已记录到`refine-logs/slot_competition_roles_v1/reference_source_check_682_20261001/MSVR310_PROTOCOL_SOURCE_BINDINGS.json`；PDF及完整作者代码仅留本地scratch，不重新发布、不执行作者代码。原代码SHA：读取器`54e26cdcbccd4356aa27a742c5945e98c2feb37761756d67e22372c714284f7d`，评价器`e9ed334364d6e0e2021904a4e1457a3ec2065030100956a23a316d57188ef22a`。当前DSGM公共代码的数值过滤与这个时间协议一致；这仍不证明各论文采用相同图像字节、清单、有效启动配置或特征读出，亦不构成等资源复现。
+
+六端R2正式验收仍等待既有观察任务：远端1400686首次06:35、其后240秒；本地cell424于06:38读取。没有提前查询epoch／中途成绩，没有新的模型、损失、系数、种子或门槛变化。统一研究目标保持ACTIVE／UNMET。
