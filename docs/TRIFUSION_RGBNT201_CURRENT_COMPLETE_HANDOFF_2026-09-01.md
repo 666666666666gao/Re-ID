@@ -13298,3 +13298,17 @@ full模式所读槽位内容高度相似，201 Mamba采样内容均值余弦0.99
 `refine-logs/patch_memory_roles_v1/SLOT_COMPETITION_PRIOR_ART_20261001.md`封存三项按arXiv ID去重的原始论文／作者源码核读。当前score形状B×模态×16槽位×128Patch，softmax对Patch维独立归一化；原Slot Attention及PLOT先让每个输入在槽位间竞争，再按输入做加权均值，并有迭代更新。DINOSAUR提供冻结特征分组与特征重建先例；PLOT已有图文行人检索的共享初始槽位、部件检索／身份目标及特征重建，不能把竞争归一化或共享槽位宣称为本项目原创。PLOT官方HEAD的额外目标、分类拼接、推理尺度与学习率脚本不逐项等同论文；图文证据也不等同RGB/NIR/TIR或MSVR时间段协议的有效性。仅换归一化轴不保证不同内容、部件对应或检索收益。
 
 0226实际PID检查确认现有观察器1119184仍为Ss，命令与02:35首次观察合同一致。已有恢复证明四卡真实CUDA/Mamba前后向通过，不能继续将9月30日的旧故障当作当前持续故障；硬件根因／管理员修复方式仍未取得证据。4/6正式结果不变，100两端待完整验收，观察器02:35之后未完成才按240秒继续。未新启训练、未更改模型、loss、参数、门槛或210份冻结运行源。六端全部完成后复用同一CPU计分及GPU槽位诊断，再判断预登记门槛。Goal ACTIVE／UNMET，不以本节诊断或文献核读代替性能目标。
+
+## §41.678 — 2026-10-01 03:18：Patch读取六端完整结束；预登记收益门失败
+
+结束观察器1119184按02:35、02:39、02:43实际检查，在02:43:00记录6/6验收COMPLETE后结束；恢复controller及全部child campaign正常结束。新增RGBNT100 local/full均完整50轮、严格重载同一官方fused mAP-best：两端都选E1，分别85.103030/95.102042、85.104798/95.102042。其余四端指标保持。完整面板、所有轨迹及图见`results/PATCH_MEMORY_COMPLETE_2026-10-01.md`、`results/patch_memory_complete_20261001/SUMMARY.json`，原accepted_matrix SHA `35067bce6690e86e43a08f963ddc259ade704549d899f8b2ce58cfb1dcb3aa56`。
+
+full−local mAP/R1为201 −0.010688/0、100 +0.001768/0、MSVR −0.070324/0个百分点，原收益门FAIL。保持原门、原seed及一份best全部指标规则；不启动门条件下的full-memory独立global-only或多seed，不将极小100差值称稳定收益。接受的300个角色epoch共20,416步，M0共48步；原硬件中止端及额外失败步仍保留，不用恢复终态回填历史退出码。
+
+02:45:10启动RGBNT100全query/gallery CPU配对与只读GPU槽位诊断，实际wait退出均0，02:47:45全部完成。覆盖1715/8575、完整camera过滤，首位修复/新增0/0；query AP改善/下降591/667、身份18/28，身份等权AP差−0.00309个百分点。full/local所选内容余弦0.9800/0.7387、注意力余弦0.9426/0.0364、有效Patch数96.9999/7.7031。三数据集full槽位读取均高度相似，但对象仍是角色算子前采样内容；不推断最终角色冗余、真实部件对应或唯一退化原因。模型state不变、首批hook差0、全量检索复现；旧201/MSVR GPU诊断没有retained OS wait，仍不编造退出码。
+
+六条loss都下降而best→末轮mAP下降；100两模式6559步Triplet全0，MSVR后best仍771/800、766/800步为正。因此不能将来源hinge饱和作为三个数据集的统一原因。完整图的两列分别为逐轮官方mAP和训练loss，不更改选点。
+
+按experiment-audit由fresh `gpt-6-astra`/max、fork none、same-family/provisional审计，记录在`refine-logs/patch_memory_roles_v1/INTEGRITY_AUDIT_678_20261001.md`及JSON/trace。241项主CPU与226项补充检查通过，独立复算18完整矩阵/72指标最大差2.73782100635e-6pp；实际三CPU生产factory退出0，六初始hash匹配、12个best/M0严格加载通过。未进行fresh GPU神经重放，不能提升为PASS；总WARN主要限定single seed、官方集已参与选择、缺失历史退出码和本地镜像。远端210/210源SHA精确一致；本地103份存在源中27份仅CRLF/LF字节差、107份依赖未检出，68件intake原字节一致。审计helper两次自身schema/镜像检查失败及修正证据保持，不算训练失败，不修改旧运行源。
+
+原故障campaign保持FAILED，恢复只复用两个已完成50轮训练并另作严格评价，其余四端fresh full50；旧权重、probe、距离矩阵均留远端。complete intake29件与收条、100诊断11件与收条保存原字节；同模型global/local是输出分解，不能替代独立训练控制。下一项结构干预拟检验槽位竞争归一化，尚未登记或实现，本节不声称新方法成功。Goal ACTIVE／UNMET。

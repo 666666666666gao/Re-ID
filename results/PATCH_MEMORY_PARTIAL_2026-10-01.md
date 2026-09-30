@@ -48,3 +48,7 @@ Source tools/diagnose_patch_memory_slots.py SHAaf6c92ab77dd702b5e1b4eae46eb09988
 ## Archived trajectories and prior-art review,02:31 CST
 
 See [four-end trajectory analysis](PATCH_MEMORY_ARCHIVED_TRAJECTORY_2026-10-01.md) and [primary-source slot review](../refine-logs/patch_memory_roles_v1/SLOT_COMPETITION_PRIOR_ART_20261001.md). No active training progress or new endpoint is included. Existing observer1119184 was verified Ss with the original02:35 schedule. Formal scope remains4/6; full gate pending.
+
+## Closure: all six endpoints complete, 2026-10-01
+
+This partial snapshot remains historical. The observer accepted six endpoints at02:43; see [complete results and diagnostics](PATCH_MEMORY_COMPLETE_2026-10-01.md). The registered advancement gate failed. No partial score or missing historical process exit was rewritten.

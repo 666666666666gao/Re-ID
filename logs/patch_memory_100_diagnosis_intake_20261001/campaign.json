@@ -1,0 +1,56 @@
+{
+  "status": "COMPLETE",
+  "started_at": "2026-10-01T02:45:10.565031+08:00",
+  "controller_pid": 1259503,
+  "matrix_sha256": "35067bce6690e86e43a08f963ddc259ade704549d899f8b2ce58cfb1dcb3aa56",
+  "source_sha256": {
+    "tools/diagnose_patch_memory_slots.py": "af6c92ab77dd702b5e1b4eae46eb099889952fb01b66929c41d8e9ff955e2b32",
+    "tools/analyze_correspondence_distances.py": "833ebeb47cb5840422710fc00df1a974338cb04078249720d867f18b945f997a"
+  },
+  "launcher_sha256": "348673ca758c454f01c06cc36f1dc1d8d2c06d04ac35bf87bb8c54faeac6b640",
+  "jobs": [
+    {
+      "name": "cpu",
+      "gpu": "",
+      "command": [
+        "/data/gaob/Re-ID/conda-envs/tri_reid/bin/python",
+        "-B",
+        "/data/gaob/Re-ID/Trifusion/tools/analyze_correspondence_distances.py",
+        "--matrix",
+        "/data/gaob/Re-ID/Trifusion/logs/patch_memory_roles_recovery_20261001/accepted_matrix.json",
+        "--dataset",
+        "RGBNT100",
+        "--control",
+        "local_memory",
+        "--candidate",
+        "full_memory",
+        "--output",
+        "/data/gaob/Re-ID/Trifusion/logs/patch_memory_100_diagnosis_20261001/cpu/RGBNT100.json"
+      ],
+      "pid": 1259515,
+      "status": "COMPLETE",
+      "exit_code": 0,
+      "waited_at": "2026-10-01T02:45:15.821519+08:00"
+    },
+    {
+      "name": "slots",
+      "gpu": "1",
+      "command": [
+        "/data/gaob/Re-ID/conda-envs/tri_reid/bin/python",
+        "-B",
+        "/data/gaob/Re-ID/Trifusion/tools/diagnose_patch_memory_slots.py",
+        "--matrix",
+        "/data/gaob/Re-ID/Trifusion/logs/patch_memory_roles_recovery_20261001/accepted_matrix.json",
+        "--dataset",
+        "RGBNT100",
+        "--output-dir",
+        "/data/gaob/Re-ID/Trifusion/logs/patch_memory_100_diagnosis_20261001/slots"
+      ],
+      "pid": 1259516,
+      "status": "COMPLETE",
+      "exit_code": 0,
+      "waited_at": "2026-10-01T02:47:45.140541+08:00"
+    }
+  ],
+  "completed_at": "2026-10-01T02:47:45.141351+08:00"
+}

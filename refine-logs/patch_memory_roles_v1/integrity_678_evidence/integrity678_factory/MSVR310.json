@@ -1,0 +1,90 @@
+{
+  "dataset": "MSVR310",
+  "started_at": "2026-09-30T18:57:12.916768+00:00",
+  "matrix_sha256": "35067bce6690e86e43a08f963ddc259ade704549d899f8b2ce58cfb1dcb3aa56",
+  "script_sha256": "a68c25820c7e0b6f1a4a3da776cb857435a230c18ff4f41bcf063041fea2cf7d",
+  "neural_forward_executed": false,
+  "gpu_use": false,
+  "device_redirection": "process-only Module.cuda, Tensor.cuda, Module.to(cuda) to CPU",
+  "endpoints": [
+    {
+      "variant": "local_memory",
+      "initial_model_state_sha256": "e9c47306249d8f1e835e873d9663859de5aeb8d14a184ae035482f6199da0f0e",
+      "initialization_binding_exact": true,
+      "trainable_parameters": 2781130,
+      "trainable_parameter_tensors": 127,
+      "signal_state_sha256": "b64e8827028042012bed9a9fc2ffd0bc29122dc1077815b4773626c6a41a087c",
+      "signal_frozen": true,
+      "model_state_tensors": 315,
+      "mamba_class": "mamba_ssm.modules.mamba_simple.Mamba",
+      "mamba_source": "/data/gaob/Re-ID/conda-envs/tri_reid/lib/python3.10/site-packages/mamba_ssm/modules/mamba_simple.py",
+      "mamba_source_sha256": "a17e4c51b582dc0d4d690a649eba521cd0c1ee3dc8f0473a0967cdc9ec0874e3",
+      "loads": [
+        {
+          "kind": "best",
+          "path": "/data/gaob/Re-ID/Trifusion/trained-model/patch_memory_roles_20260930_patch_memory_local_memory_MSVR310_seed42_full/best_map.pth",
+          "sha256": "8b70501480d000400e0a7be2228182c157dd9a39a57f3c18f22ba34dd0aee8b2",
+          "strict_load": "PASS",
+          "loaded_state_keys": 144,
+          "full_model_after_load_sha256": "1527995bccb08eeeb1371b1a13c32d41d8f5bf2dc773d0ca124188a8bc2f0e8c",
+          "frozen_baseline_unchanged": true
+        },
+        {
+          "kind": "m0",
+          "path": "/data/gaob/Re-ID/Trifusion/trained-model/patch_memory_roles_20260930_patch_memory_local_memory_MSVR310_seed42_m0/m0_reload_probe.pth",
+          "sha256": "85b438b1f86193e9a8e6122bb19f36e8296dea4beec8df76aec9357c67f7da11",
+          "strict_load": "PASS",
+          "loaded_state_keys": 144,
+          "full_model_after_load_sha256": "d2bfc6f225ac10800ed6722f60f1faa9bda0a9a4434ab2ac5e923603a568ddef",
+          "frozen_baseline_unchanged": true
+        }
+      ]
+    },
+    {
+      "variant": "full_memory",
+      "initial_model_state_sha256": "e9c47306249d8f1e835e873d9663859de5aeb8d14a184ae035482f6199da0f0e",
+      "initialization_binding_exact": true,
+      "trainable_parameters": 2781130,
+      "trainable_parameter_tensors": 127,
+      "signal_state_sha256": "b64e8827028042012bed9a9fc2ffd0bc29122dc1077815b4773626c6a41a087c",
+      "signal_frozen": true,
+      "model_state_tensors": 315,
+      "mamba_class": "mamba_ssm.modules.mamba_simple.Mamba",
+      "mamba_source": "/data/gaob/Re-ID/conda-envs/tri_reid/lib/python3.10/site-packages/mamba_ssm/modules/mamba_simple.py",
+      "mamba_source_sha256": "a17e4c51b582dc0d4d690a649eba521cd0c1ee3dc8f0473a0967cdc9ec0874e3",
+      "loads": [
+        {
+          "kind": "best",
+          "path": "/data/gaob/Re-ID/Trifusion/trained-model/patch_memory_roles_recovery_20261001_patch_memory_full_memory_MSVR310_seed42_full/best_map.pth",
+          "sha256": "ed4d47204df376401411438f70e47e1a01df8756647536bfc9a034998642c92f",
+          "strict_load": "PASS",
+          "loaded_state_keys": 144,
+          "full_model_after_load_sha256": "2e06f5eb0713e63c7fec960651a1eaf8686f7f14579b33d224aae89ff4f90a51",
+          "frozen_baseline_unchanged": true
+        },
+        {
+          "kind": "m0",
+          "path": "/data/gaob/Re-ID/Trifusion/trained-model/patch_memory_roles_recovery_20261001_patch_memory_full_memory_MSVR310_seed42_m0/m0_reload_probe.pth",
+          "sha256": "6ed4e762de864d38f45f7407e7e9cb5c733a4aa87713c09a832599bc848453d1",
+          "strict_load": "PASS",
+          "loaded_state_keys": 144,
+          "full_model_after_load_sha256": "dfac8c8fb0d56552473eb781f975a04d9a492b3b897c15f207a3bf87f077d40b",
+          "frozen_baseline_unchanged": true
+        }
+      ]
+    }
+  ],
+  "device_moves": [
+    "CLIP.to(cuda)",
+    "Signal.cuda",
+    "SignalPreservingExpertFormationV8.cuda",
+    "PatchMemoryTriFusion.cuda",
+    "CLIP.to(cuda)",
+    "Signal.cuda",
+    "SignalPreservingExpertFormationV8.cuda",
+    "PatchMemoryTriFusion.cuda"
+  ],
+  "cuda_initialized": false,
+  "status": "CPU_PRODUCTION_FACTORY_INIT_AND_STRICT_LOAD_COMPLETE",
+  "completed_at": "2026-09-30T18:57:43.855132+00:00"
+}
