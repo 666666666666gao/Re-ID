@@ -13332,3 +13332,19 @@ full−local mAP/R1为201 −0.010688/0、100 +0.001768/0、MSVR −0.070324/0�
 33件原字节源/JSON/log/step文件及收条位于`logs/slot_competition_m0_failure_intake_20261001/`，tar SHA `239c3fa963ac4690ab7331cbcc8a6c6e844ab2dbc5e94861cd835545bcc1d1b3`；根campaign及child为明确时刻snapshot，仍运行的控制终态以后单独收取。初次launch观察helper因controller状态已FAILED而断言退出，属于观察假设不符，不是额外训练失败。
 
 R2在`FP32_PLAN_20261001.md`单独登记，新增FP32 module/entry/queue/collector与新schema/dtype字段，不改R1或旧210源；两归一化端都用FP32注意力，六端fresh M0/full50，原正常控制不抢占，不以R1控制替换R2控制。先排competitive100/201/MSVR，再同顺序independent以降低长任务临界路径，实际空卡才启动。实际R2代数CPUexit0，两网格状态匹配/控制差0，仍不代表真实M0。没有加epsilon/clamp/fallback、改loss/seed/门或安装依赖。本节R2生产M0与训练尚未执行，整体Goal ACTIVE／UNMET。
+
+## §41.681 — 2026-10-01 04:17：FP32新候选三数据集M0实际通过；四卡继续完整训练
+
+R2部署提交`a885302abd9b5be9eb4d0bf012ecaa52b5eb6558`，controller1394231于04:11:53.462启动，campaign为`logs/slot_competition_fp32_roles_20261001_r2`。04:16:51生产首波检查确认213份运行源SHA一致，三个competitive数据集M0均实际exit0、8批、127/127非零梯度、冻结基线不变、严格重载差0；这次是独立生产入口，不是§680临时hook反事实。
+
+| R2候选 | GPU | 此刻完整正式epoch |
+|---|---:|---:|
+| RGBNT100 competitive | 2 | 1/50 |
+| RGBNT201 competitive | 3 | 6/50 |
+| MSVR310 competitive | 0 | 已启动，尚未保存完整epoch |
+
+三independent R2排队，按100/201/MSVR在释放卡上运行相同预算；尚不声称这三端M0通过或参数对完成。GPU1继续原R1 RGBNT100正常控制；0/1/2/3显存10197/10934/10887/10316MiB，利用率5/85/100/100%。GPU0短时5%不等于停止，三个新任务及原控制均在执行。没有原正常任务抢占或训练中源修改；旧设备故障原因仍未取得管理员/内核证据。
+
+真实launch、M0首波与source binding见`logs/slot_competition_fp32_launch_20261001_r2.json`、`logs/slot_competition_fp32_first_wave_20261001_r2.json`；三段启动/检查源封存于同计划目录。独立配对、完整50轮、同一官方mAP-best、严格全图库重载与CPU复算依旧；当前0/6新正式端验收，不填中途指标或声称提高。
+
+observer1400686于04:14:35真实启动，首查06:35 CST，未结束才240秒继续，源SHA `bd1ca17580997c52385baf4d85ba661aae3eb048222086f601f237efca009ca6`。预计完整面板约06:30–07:00，只是按旧墙钟与当前首轮粗估；观察超时不重启。旧R1失败记录、三个控制完整终态和新R2结果以后分别归档，不能合成一次成功实验。Goal ACTIVE／UNMET。
