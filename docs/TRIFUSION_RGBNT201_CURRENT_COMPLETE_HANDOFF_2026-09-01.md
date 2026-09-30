@@ -13267,3 +13267,26 @@ full−local mAP为201 −0.0106882、MSVR −0.0703241个百分点，R1均不�
 01:13实际trainer1054538/1062431仍为R(running)，RGBNT100 local/full分别15/50、16/50，GPU3/0利用率100%；GPU1/2已完成本面板相应训练后释放，暂时空闲，不是新设备故障。恢复controller1050794继续运行。没有中止正常训练、用中途best填终态或加入未登记的填充实验。
 
 结束observer `1119184`于01:10:53实际启动，首查2026-10-01 02:35 CST，未完成时每240秒读取同一campaign，终态后核对原accepted_matrix的6/6。脚本`refine-logs/patch_memory_roles_v1/OBSERVE_RECOVERY_FINAL_20261001.py`，SHA `6003ce476260ef6be513b4097bb4f31ce04ca73e9cd72082464bc4bc9b6f4652`；只是执行观察层，没有模型/环境改动或自动重试。预计时刻不是完成证据。先完整收齐剩余两端再分析、判断后继；Goal ACTIVE / UNMET。
+
+### §41.676 2026-10-01 01:44：已完成两对的全查询配对与真实槽位诊断
+
+不查询未到02:35里程碑的100训练进度，先对已接受201/MSVR两对做预定义全图库CPU比较。现有`analyze_correspondence_distances.py`在两个独立CPU进程实际exit0；full相对local首位修复/新增错误为201 1/1、MSVR 5/5，R1均无净变化。query AP改善/下降分别235/195、236/305；身份改善/下降16/9、19/31，身份等权AP均差−0.00323、+0.11418个百分点。总query mAP差仍为−0.01069、−0.07032；身份bootstrap仅描述固定模型的身份重采样，不能作训练种子或未消费测试显著性。
+
+为检验全Patch读取是否令槽位内容同质，在只读计划`SLOT_DIAGNOSTIC_PLAN_20261001.md`登记6个统计后，用实测空闲GPU1/2执行`tools/diagnose_patch_memory_slots.py`。01:36:24启动MSVR PID1157249、201 PID1157250；01:37:25/01:37:23写完各自两端COMPLETE，01:39实际PID均不存在且日志以COMPLETE结束。启动器没有保留wait父进程，因此不编造GPU诊断OS exit code；完成报告、完整模型状态对比、原始stdout与复算可复核。
+
+两个split首批挂钩前后fused输出最大差均为0；全部query/gallery覆盖201 836/836、MSVR 591/1055，每个角色覆盖数与协议完全一致；模型state前后SHA相同，四端完整检索计分最大差2.7378210063489e-6个百分点。hook原样返回sample_context的原输出，只额外重算相同Q/K注意力，没有优化器、参数更新、读出修改、重新选点或覆写正式回执。
+
+以下是**全部query上的三角色×三光谱等权均值**；gallery同方向原表全部保留：
+
+| 数据集 | 模式 | 有效Patch数exp熵 | 槽位注意力余弦 | 所选内容余弦 | 16槽位top1不同Patch数 |
+|---|---|---:|---:|---:|---:|
+| RGBNT201 | local | 7.8569 | 0.0378 | 0.6265 | 14.0860 |
+| RGBNT201 | full | 112.8362 | 0.9507 | 0.9864 | 8.4514 |
+| MSVR310 | local | 5.1862 | 0.0312 | 0.6554 | 13.8825 |
+| MSVR310 | full | 67.2323 | 0.9648 | 0.9857 | 3.2023 |
+
+full模式所读槽位内容高度相似，201 Mamba采样内容均值余弦0.99929；这与宽范围读出趋近共同汇总相容。注意力支持集合在local条件下本就受到不同空间mask约束，低注意力余弦不全是学到的分工；统计对象是加槽位向量/桥接/角色算子之前的sample_context输出，不是最终角色embedding。它们不能单独证明最终角色任务冗余、真实语义部件匹配、唯一掉点原因或新方法已经成功。
+
+16件JSON/stdout原字节与汇总收条归档在`logs/patch_memory_pair_diagnosis_20261001/`、`logs/patch_memory_slot_diagnosis_20261001/`及`logs/patch_memory_diagnosis_intake_20261001.json`；全部SHA本地复核，权重和数组留远端。只读源码SHA `af6c92ab77dd702b5e1b4eae46eb099889952fb01b66929c41d8e9ff955e2b32`，210原训练源SHA仍匹配。首次CPU启动错误把诊断helper当成210个运行依赖之一，在计算前KeyError退出且没有启动子任务；原记录保留为FAILED_SOURCE_BINDING.json，后用实际Git源码与本地SHA绑定，没有修改训练manifest或验收门。
+
+两对结果已改变对扩大支持范围的机制认识，但六端正式结论及100槽位诊断仍待完成；02:35结束observer1119184保持。先完成全六端与全三数据集机制分析，再决定后继，不重复已封存失败或依靠官方失败query定义新训练规则。Goal ACTIVE / UNMET。

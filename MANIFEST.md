@@ -1566,3 +1566,7 @@
 | 2026-10-01T01:11:00+08:00 | /monitor-experiment | logs/patch_memory_recovery_intake_20261001_0111/ | implementation | Original partial4/6, two new complete training/evaluation raw records, 48 CPU metrics, frozen source witness |
 | 2026-10-01T01:13:00+08:00 | /monitor-experiment | results/PATCH_MEMORY_PARTIAL_2026-10-01.md | implementation | Completed paired201/MSVR numbers and explicit pending six-end gate |
 | 2026-10-01T01:10:53+08:00 | /monitor-experiment | refine-logs/patch_memory_roles_v1/OBSERVE_RECOVERY_FINAL_20261001.py | implementation | Durable observer first02:35,240sec interval; observes existing panel only |
+| 2026-10-01T01:36:24+08:00 | /analyze-results | tools/diagnose_patch_memory_slots.py | implementation | Read-only full-query/gallery attention statistics; original sample returned, selected-checkpoint scoring and state parity |
+| 2026-10-01T01:36:00+08:00 | /analyze-results | refine-logs/patch_memory_roles_v1/SLOT_DIAGNOSTIC_PLAN_20261001.md | implementation | Predefined six slot statistics; completed pairs first,100 only after acceptance |
+| 2026-10-01T01:27:43+08:00 | /analyze-results | logs/patch_memory_pair_diagnosis_20261001/ | implementation | Two all-query CPU comparisons, true subprocess exits and preserved initial source-binding error |
+| 2026-10-01T01:37:25+08:00 | /analyze-results | logs/patch_memory_slot_diagnosis_20261001/ | implementation | Four full-gallery slot reports, original stdout, exact first-batch output/state parity; no unrecorded OS exit claim |
