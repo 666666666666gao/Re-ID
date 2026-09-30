@@ -13312,3 +13312,13 @@ full−local mAP/R1为201 −0.010688/0、100 +0.001768/0、MSVR −0.070324/0�
 按experiment-audit由fresh `gpt-6-astra`/max、fork none、same-family/provisional审计，记录在`refine-logs/patch_memory_roles_v1/INTEGRITY_AUDIT_678_20261001.md`及JSON/trace。241项主CPU与226项补充检查通过，独立复算18完整矩阵/72指标最大差2.73782100635e-6pp；实际三CPU生产factory退出0，六初始hash匹配、12个best/M0严格加载通过。未进行fresh GPU神经重放，不能提升为PASS；总WARN主要限定single seed、官方集已参与选择、缺失历史退出码和本地镜像。远端210/210源SHA精确一致；本地103份存在源中27份仅CRLF/LF字节差、107份依赖未检出，68件intake原字节一致。审计helper两次自身schema/镜像检查失败及修正证据保持，不算训练失败，不修改旧运行源。
 
 原故障campaign保持FAILED，恢复只复用两个已完成50轮训练并另作严格评价，其余四端fresh full50；旧权重、probe、距离矩阵均留远端。complete intake29件与收条、100诊断11件与收条保存原字节；同模型global/local是输出分解，不能替代独立训练控制。下一项结构干预拟检验槽位竞争归一化，尚未登记或实现，本节不声称新方法成功。Goal ACTIVE／UNMET。
+
+## §41.679 — 2026-10-01 03:36：槽位竞争新配对已登记、代数检查通过；尚未正式训练
+
+新计划`refine-logs/slot_competition_roles_v1/EXPERIMENT_PLAN.md`将唯一干预限定为完整128Patch支持下的independent/competitive注意力分配：前者各槽位沿Patch softmax，后者每Patch沿槽位softmax再按Patch归一化加权均值。两端FP32归一化、相同初始state/参数、Q/K/V/out、固定位置、角色桥接和模态×槽位组读出；global仍仅条件查询。无GRU迭代、重建、新辅助头、M3、epsilon/clamp或fallback。共享每Patch logit偏移的消除是已有竞争机制性质，不是原创，也不保证部件对应或收益。
+
+新module、入口、队列、collector、CPU合同位于`slot_competition_roles.py`及相应四个tools文件，未更改旧210运行源。checkpoint显式保存新schema和attention_normalization，禁止模式串用。fresh六端均完整50轮、seed42和同一官方fused mAP-best；原Patch门FAIL保持，新门预登记为三数据集mAP正/R1不降且201/MSVR至少+.5pp，失败不调门或追加seed。
+
+真实remote现有tri_reid执行CPU合同exit0，收条`CPU_CHECK_20261001.json`：两种网格初始state匹配，independent与原full输出最大差0；共享Patch偏移不变性误差1.11758709e-8、权重和/梯度/角色形状有限。CPU的线性Mamba替身只检验代数，不是生产Mamba前后向证据。新正式执行仍须每端真实loader8批M0、127参数梯度/基线冻结/严格重载。当前四卡显存15/60/15/154MiB，无compute PID，/data空闲96,381,353,984B；这是预部署时刻，不能代替实际launch。
+
+环境台账`.aris/compute/tri_reid_four_gpu.md`明确warm reuse现有quad host/env，不新装依赖；原过时单卡AGENTS地址不作为当前访问目标。部署前同步冻结源码与计划；队列按240秒轮询。当前已实现/登记/CPU通过，M0、正式训练和新指标均尚无。原三数据集总体性能目标仍ACTIVE／UNMET。
