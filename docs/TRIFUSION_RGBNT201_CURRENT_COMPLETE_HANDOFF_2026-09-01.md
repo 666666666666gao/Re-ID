@@ -13322,3 +13322,13 @@ full−local mAP/R1为201 −0.010688/0、100 +0.001768/0、MSVR −0.070324/0�
 真实remote现有tri_reid执行CPU合同exit0，收条`CPU_CHECK_20261001.json`：两种网格初始state匹配，independent与原full输出最大差0；共享Patch偏移不变性误差1.11758709e-8、权重和/梯度/角色形状有限。CPU的线性Mamba替身只检验代数，不是生产Mamba前后向证据。新正式执行仍须每端真实loader8批M0、127参数梯度/基线冻结/严格重载。当前四卡显存15/60/15/154MiB，无compute PID，/data空闲96,381,353,984B；这是预部署时刻，不能代替实际launch。
 
 环境台账`.aris/compute/tri_reid_four_gpu.md`明确warm reuse现有quad host/env，不新装依赖；原过时单卡AGENTS地址不作为当前访问目标。部署前同步冻结源码与计划；队列按240秒轮询。当前已实现/登记/CPU通过，M0、正式训练和新指标均尚无。原三数据集总体性能目标仍ACTIVE／UNMET。
+
+## §41.680 — 2026-10-01 04:09：竞争端M0未过；明确定位与FP32注意力反事实，R2待部署
+
+原R1已在部署提交`1432c1bf543719a88d5d86dc7a3c5a6beecfd866`于03:41:44实际启动controller1337376。四个初始worker分别GPU0/1/2三个independent、GPU3 competitive201。三个控制M0均8批、127/127非零梯度、冻结基线和严格重载差0，继续原完整50轮。竞争201于03:42:14 M0实际exit1，八批之后`live_parameters`断言失败，未进入正式训练；controller在03:45观察周期标FAILED但继续等待已有三个正常worker，不派发剩余两个候选。没有停止正常控制或伪造六端收益。
+
+独立目录重复八步诊断保持原断言，实际exit1，125/127缺少非零梯度，精确名称`roles.key_projections.2.weight`、`roles.query_projections.2.weight`；有限loss/梯度断言此前已过，因此不是NaN或硬件故障。随后仅在临时方法hook中将Q/K/V、score、weights、加权和/out整个注意力子图FP32，其余AMP/data/seed/loop保留，恢复127/127、重载差0且实际exit0。该反事实有8个真实optimizer步，但不是未修改生产M0或正式候选成绩；损失有微小运行差，不能声称底层唯一underflow算子或全部不确定性已解决。原失败保留、未绕过检查。
+
+33件原字节源/JSON/log/step文件及收条位于`logs/slot_competition_m0_failure_intake_20261001/`，tar SHA `239c3fa963ac4690ab7331cbcc8a6c6e844ab2dbc5e94861cd835545bcc1d1b3`；根campaign及child为明确时刻snapshot，仍运行的控制终态以后单独收取。初次launch观察helper因controller状态已FAILED而断言退出，属于观察假设不符，不是额外训练失败。
+
+R2在`FP32_PLAN_20261001.md`单独登记，新增FP32 module/entry/queue/collector与新schema/dtype字段，不改R1或旧210源；两归一化端都用FP32注意力，六端fresh M0/full50，原正常控制不抢占，不以R1控制替换R2控制。先排competitive100/201/MSVR，再同顺序independent以降低长任务临界路径，实际空卡才启动。实际R2代数CPUexit0，两网格状态匹配/控制差0，仍不代表真实M0。没有加epsilon/clamp/fallback、改loss/seed/门或安装依赖。本节R2生产M0与训练尚未执行，整体Goal ACTIVE／UNMET。
