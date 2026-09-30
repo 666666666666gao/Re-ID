@@ -1,0 +1,557 @@
+{
+  "observed_at": "2026-10-01T07:53:33.119099+08:00",
+  "head": "a451711156319d7923b517761a40ad1cb0a771eb",
+  "launch": {
+    "launched_at": "2026-10-01T07:49:32.875619+08:00",
+    "pid": 1739616,
+    "command": [
+      "/data/gaob/Re-ID/conda-envs/tri_reid/bin/python",
+      "-B",
+      "/data/gaob/Re-ID/Trifusion/tools/queue_role_global_tokens.py",
+      "--campaign",
+      "/data/gaob/Re-ID/Trifusion/logs/role_global_tokens_20261001_v1",
+      "--after-campaign",
+      "/data/gaob/Re-ID/Trifusion/logs/slot_competition_fp32_roles_20261001_r2",
+      "--after-matrix-sha256",
+      "e3433db691dbb1070595386c542f27782cd88b45f5f6faa8660b246e7c2fd4b8"
+    ],
+    "head": "a451711156319d7923b517761a40ad1cb0a771eb",
+    "review_sha256": "79581dca5158d1246c6497ef31599fdf84bb38efe5c78b9c80a58cd24e902430",
+    "source_sha256": {
+      "modeling/trifusion/role_global_tokens.py": "f41ff1af1fb1b6303a9af63cf039263e2572c16b23813f92a0297f014e71dd4f",
+      "tools/run_role_global_tokens.py": "dba04e72a4d3b81583b7c5c2e26aa0204618736a2c57280340313e50674f63cb",
+      "tools/check_role_global_tokens_cpu.py": "c639efd6039affe9762209f6f968984b183d98689d2f7f116521f33da91f8214",
+      "tools/queue_role_global_tokens.py": "a577264d1d2214b9e7dcc012e9bcbe0f602d95d969433eea0209eb6e80d71a14",
+      "tools/collect_role_global_tokens.py": "845e4353ebb2751184f478a4117f96f443c9670e5934d667a6dbb470b508a8c6",
+      "refine-logs/role_global_tokens_v1/EXPERIMENT_PLAN.md": "d8f2dfc64268267734f6aaff6ce9d53d3533a8517a903c6a52e40d9b352d2776"
+    },
+    "gpu_inventory": "0, 15\n1, 60\n2, 15\n3, 153\n",
+    "campaign": "/data/gaob/Re-ID/Trifusion/logs/role_global_tokens_20261001_v1",
+    "controller_log": "/data/gaob/Re-ID/Trifusion/logs/role_global_tokens_controller_20261001_v1.log",
+    "expected_endpoints": 9,
+    "seed": 42,
+    "epochs": 50,
+    "status": "DISPATCHED_NOT_ACCEPTED",
+    "poll_seconds": 240
+  },
+  "controller": {
+    "pid": 1739616,
+    "exists": true,
+    "state": "S",
+    "live": true,
+    "command": "/data/gaob/Re-ID/conda-envs/tri_reid/bin/python -B /data/gaob/Re-ID/Trifusion/tools/queue_role_global_tokens.py --campaign /data/gaob/Re-ID/Trifusion/logs/role_global_tokens_20261001_v1 --after-campaign /data/gaob/Re-ID/Trifusion/logs/slot_competition_fp32_roles_20261001_r2 --after-matrix-sha256 e3433db691dbb1070595386c542f27782cd88b45f5f6faa8660b246e7c2fd4b8 "
+  },
+  "campaign_status": "RUNNING",
+  "source_count_verified": 215,
+  "rows": [
+    {
+      "dataset": "RGBNT100",
+      "variant": "token",
+      "status": "RUNNING",
+      "worker": {
+        "pid": 1739628,
+        "exists": true,
+        "state": "S",
+        "live": true,
+        "command": "/data/gaob/Re-ID/conda-envs/tri_reid/bin/python -B /data/gaob/Re-ID/Trifusion/tools/queue_role_global_tokens.py --worker --campaign /data/gaob/Re-ID/Trifusion/logs/role_global_tokens_20261001_v1 --dataset RGBNT100 --variant token --gpu 0 "
+      },
+      "gpu": 0,
+      "child_status": "RUNNING",
+      "stages": [
+        {
+          "mode": "m0",
+          "status": "COMPLETE",
+          "started_at": "2026-10-01T07:49:33.221893+08:00",
+          "pid": 1739633,
+          "output_dir": "/data/gaob/Re-ID/Trifusion/trained-model/role_global_tokens_20261001_v1_role_global_tokens_token_RGBNT100_seed42_m0",
+          "exit_code": 0,
+          "completed_at": "2026-10-01T07:50:16.828577+08:00",
+          "process": {
+            "pid": 1739633,
+            "exists": false,
+            "live": false
+          },
+          "receipt_sha256": "612acdd9a4e58bb1c58ba554514ddc09b0ea4f6cf8d97ed1f46d4d241197397b",
+          "receipt_status": "M0_PASS",
+          "history": [
+            {
+              "epoch": 1,
+              "steps": 8,
+              "mean_loss": 3.8578509986400604,
+              "seconds": 7.058447321993299
+            }
+          ],
+          "initializer": {
+            "initial_model_state_sha256": "2f943b51cfbcad0bf8d2a0cc552a94eeb81b04a5a24035218e5e9b1df6a82688",
+            "trainable_parameters": 2685386,
+            "architecture": "role_global_tokens_v1",
+            "token_mode": "token",
+            "transformer_sequence_length": 17,
+            "attention_subgraph_dtype": "float32"
+          },
+          "m0": {
+            "nonzero_gradient_parameters": 128,
+            "trainable_parameters": 128,
+            "frozen_signal_unchanged": true,
+            "reload_max_abs_difference": 0.0,
+            "reload_probe_sha256": "8fb266c825a8768dff3e60ef6d0cba26c1e26c15cb80ead40f9e0c0bbd1c0f32"
+          }
+        },
+        {
+          "mode": "train",
+          "status": "RUNNING",
+          "started_at": "2026-10-01T07:50:16.864573+08:00",
+          "pid": 1742468,
+          "output_dir": "/data/gaob/Re-ID/Trifusion/trained-model/role_global_tokens_20261001_v1_role_global_tokens_token_RGBNT100_seed42_full",
+          "process": {
+            "pid": 1742468,
+            "exists": true,
+            "state": "R",
+            "live": true,
+            "command": "/data/gaob/Re-ID/conda-envs/tri_reid/bin/python -B /data/gaob/Re-ID/Trifusion/tools/run_role_global_tokens.py --dataset RGBNT100 --mode train --protocol /data/gaob/Re-ID/Trifusion/logs/official_three_dataset_protocols_20260923/RGBNT100.json --signal-source /data/gaob/Re-ID/Trifusion/comparators/Signal-cd1b0a6 --clip-weight /data/gaob/Re-ID/Trifusion/pertrained-model/ViT-B-16.pt --baseline-checkpoint /data/gaob/Re-ID/Trifusion/pertrained-model/RGBNT100_PlainBaseline_30.pth --baseline-sha256 299a28bfb3e3180eeae0736cf8638cd162525dce0f2192a940b62b97f6e67dcd --output-dir /data/gaob/Re-ID/Trifusion/trained-model/role_global_tokens_20261001_v1_role_global_tokens_token_RGBNT100_seed42_full --seed 42 --epochs 50 --width 128 --pred-weight 0.1 --m1 --m2 --no-m3 --query-mode context --auxiliary-target none --token-mode token "
+          },
+          "receipt_sha256": "97c79d33eff255f20e093a92eaf521798d2eaa042f20e51ecfbf638f88c2985c",
+          "receipt_status": "RUNNING",
+          "history": [
+            {
+              "epoch": 1,
+              "steps": 130,
+              "mean_loss": 2.5170826407579274,
+              "seconds": 51.13355647599383,
+              "official_fused": {
+                "mAP": 85.11777892299018,
+                "Rank-1": 94.98542547225952,
+                "Rank-5": 95.68513035774231,
+                "Rank-10": 95.97667455673218
+              }
+            }
+          ],
+          "initializer": {
+            "initial_model_state_sha256": "2f943b51cfbcad0bf8d2a0cc552a94eeb81b04a5a24035218e5e9b1df6a82688",
+            "trainable_parameters": 2685386,
+            "architecture": "role_global_tokens_v1",
+            "token_mode": "token",
+            "transformer_sequence_length": 17,
+            "attention_subgraph_dtype": "float32"
+          }
+        }
+      ]
+    },
+    {
+      "dataset": "RGBNT201",
+      "variant": "token",
+      "status": "RUNNING",
+      "worker": {
+        "pid": 1739629,
+        "exists": true,
+        "state": "S",
+        "live": true,
+        "command": "/data/gaob/Re-ID/conda-envs/tri_reid/bin/python -B /data/gaob/Re-ID/Trifusion/tools/queue_role_global_tokens.py --worker --campaign /data/gaob/Re-ID/Trifusion/logs/role_global_tokens_20261001_v1 --dataset RGBNT201 --variant token --gpu 1 "
+      },
+      "gpu": 1,
+      "child_status": "RUNNING",
+      "stages": [
+        {
+          "mode": "m0",
+          "status": "COMPLETE",
+          "started_at": "2026-10-01T07:49:33.221913+08:00",
+          "pid": 1739634,
+          "output_dir": "/data/gaob/Re-ID/Trifusion/trained-model/role_global_tokens_20261001_v1_role_global_tokens_token_RGBNT201_seed42_m0",
+          "exit_code": 0,
+          "completed_at": "2026-10-01T07:50:17.465425+08:00",
+          "process": {
+            "pid": 1739634,
+            "exists": false,
+            "live": false
+          },
+          "receipt_sha256": "a5acd1424aca48f1effd9c966046c33ed0b3d75802d63966e9ec5af7ad8668b8",
+          "receipt_status": "M0_PASS",
+          "history": [
+            {
+              "epoch": 1,
+              "steps": 8,
+              "mean_loss": 5.129229485988617,
+              "seconds": 7.139811796005233
+            }
+          ],
+          "initializer": {
+            "initial_model_state_sha256": "0296d6a9b8ba817d50e880c1e533bccace1e0ba4d32ff6c27a5fc6cf8730adaf",
+            "trainable_parameters": 2871242,
+            "architecture": "role_global_tokens_v1",
+            "token_mode": "token",
+            "transformer_sequence_length": 17,
+            "attention_subgraph_dtype": "float32"
+          },
+          "m0": {
+            "nonzero_gradient_parameters": 128,
+            "trainable_parameters": 128,
+            "frozen_signal_unchanged": true,
+            "reload_max_abs_difference": 0.0,
+            "reload_probe_sha256": "53b9304ef0e435fef85223b5e518872e18059e92d145b4f9d9b3fb74f69eaf7c"
+          }
+        },
+        {
+          "mode": "train",
+          "status": "RUNNING",
+          "started_at": "2026-10-01T07:50:17.501707+08:00",
+          "pid": 1742473,
+          "output_dir": "/data/gaob/Re-ID/Trifusion/trained-model/role_global_tokens_20261001_v1_role_global_tokens_token_RGBNT201_seed42_full",
+          "process": {
+            "pid": 1742473,
+            "exists": true,
+            "state": "R",
+            "live": true,
+            "command": "/data/gaob/Re-ID/conda-envs/tri_reid/bin/python -B /data/gaob/Re-ID/Trifusion/tools/run_role_global_tokens.py --dataset RGBNT201 --mode train --protocol /data/gaob/Re-ID/Trifusion/logs/official_three_dataset_protocols_20260923/RGBNT201.json --signal-source /data/gaob/Re-ID/Trifusion/comparators/Signal-cd1b0a6 --clip-weight /data/gaob/Re-ID/Trifusion/pertrained-model/ViT-B-16.pt --baseline-checkpoint /data/gaob/Re-ID/Trifusion/pertrained-model/RGBNT201_PlainBaseline_50.pth --baseline-sha256 789e5e14aacd74ad122aad701389eb216ca5b4fda92687e27351a513023b4407 --output-dir /data/gaob/Re-ID/Trifusion/trained-model/role_global_tokens_20261001_v1_role_global_tokens_token_RGBNT201_seed42_full --seed 42 --epochs 50 --width 128 --pred-weight 0.1 --m1 --m2 --no-m3 --query-mode context --auxiliary-target none --token-mode token "
+          },
+          "receipt_sha256": "87c2faec3ae696e0cf632517701c38b37093201c08f59d58abde5e3cfeef7f61",
+          "receipt_status": "RUNNING",
+          "history": [
+            {
+              "epoch": 1,
+              "steps": 53,
+              "mean_loss": 5.002559499920539,
+              "seconds": 22.279351859004237,
+              "official_fused": {
+                "mAP": 72.11867050207712,
+                "Rank-1": 73.44497442245483,
+                "Rank-5": 82.8947365283966,
+                "Rank-10": 87.91866302490234
+              }
+            },
+            {
+              "epoch": 2,
+              "steps": 53,
+              "mean_loss": 4.1649064792777,
+              "seconds": 20.361948250007117,
+              "official_fused": {
+                "mAP": 72.56205395889998,
+                "Rank-1": 73.9234447479248,
+                "Rank-5": 82.41626620292664,
+                "Rank-10": 87.79904246330261
+              }
+            },
+            {
+              "epoch": 3,
+              "steps": 53,
+              "mean_loss": 2.8186611544411138,
+              "seconds": 20.41259082200122,
+              "official_fused": {
+                "mAP": 70.92642526261581,
+                "Rank-1": 71.41148447990417,
+                "Rank-5": 80.26315569877625,
+                "Rank-10": 85.8851671218872
+              }
+            },
+            {
+              "epoch": 4,
+              "steps": 53,
+              "mean_loss": 1.6192006974850062,
+              "seconds": 20.4188754420029,
+              "official_fused": {
+                "mAP": 71.32392344579928,
+                "Rank-1": 71.77033424377441,
+                "Rank-5": 80.38277626037598,
+                "Rank-10": 85.047847032547
+              }
+            },
+            {
+              "epoch": 5,
+              "steps": 53,
+              "mean_loss": 1.0835961058454693,
+              "seconds": 20.484391328005586,
+              "official_fused": {
+                "mAP": 70.05352434887583,
+                "Rank-1": 70.21530866622925,
+                "Rank-5": 79.54545617103577,
+                "Rank-10": 84.92823243141174
+              }
+            }
+          ],
+          "initializer": {
+            "initial_model_state_sha256": "0296d6a9b8ba817d50e880c1e533bccace1e0ba4d32ff6c27a5fc6cf8730adaf",
+            "trainable_parameters": 2871242,
+            "architecture": "role_global_tokens_v1",
+            "token_mode": "token",
+            "transformer_sequence_length": 17,
+            "attention_subgraph_dtype": "float32"
+          }
+        }
+      ]
+    },
+    {
+      "dataset": "MSVR310",
+      "variant": "token",
+      "status": "RUNNING",
+      "worker": {
+        "pid": 1739630,
+        "exists": true,
+        "state": "S",
+        "live": true,
+        "command": "/data/gaob/Re-ID/conda-envs/tri_reid/bin/python -B /data/gaob/Re-ID/Trifusion/tools/queue_role_global_tokens.py --worker --campaign /data/gaob/Re-ID/Trifusion/logs/role_global_tokens_20261001_v1 --dataset MSVR310 --variant token --gpu 2 "
+      },
+      "gpu": 2,
+      "child_status": "RUNNING",
+      "stages": [
+        {
+          "mode": "m0",
+          "status": "COMPLETE",
+          "started_at": "2026-10-01T07:49:33.219003+08:00",
+          "pid": 1739632,
+          "output_dir": "/data/gaob/Re-ID/Trifusion/trained-model/role_global_tokens_20261001_v1_role_global_tokens_token_MSVR310_seed42_m0",
+          "exit_code": 0,
+          "completed_at": "2026-10-01T07:50:17.983622+08:00",
+          "process": {
+            "pid": 1739632,
+            "exists": false,
+            "live": false
+          },
+          "receipt_sha256": "575d49561685c4857d556438f0433e7dfea98f371df075a9b2eabe25934f2c60",
+          "receipt_status": "M0_PASS",
+          "history": [
+            {
+              "epoch": 1,
+              "steps": 8,
+              "mean_loss": 5.222018778324127,
+              "seconds": 8.22215846501058
+            }
+          ],
+          "initializer": {
+            "initial_model_state_sha256": "fad34e895b82625f665edca47aa107c9b60ea0cf0b65377373e127119ecf0d30",
+            "trainable_parameters": 2846666,
+            "architecture": "role_global_tokens_v1",
+            "token_mode": "token",
+            "transformer_sequence_length": 17,
+            "attention_subgraph_dtype": "float32"
+          },
+          "m0": {
+            "nonzero_gradient_parameters": 128,
+            "trainable_parameters": 128,
+            "frozen_signal_unchanged": true,
+            "reload_max_abs_difference": 0.0,
+            "reload_probe_sha256": "de8f4702074c45708657e3891e5500c70a7543d009acb335fca0760870a32463"
+          }
+        },
+        {
+          "mode": "train",
+          "status": "RUNNING",
+          "started_at": "2026-10-01T07:50:18.018308+08:00",
+          "pid": 1742542,
+          "output_dir": "/data/gaob/Re-ID/Trifusion/trained-model/role_global_tokens_20261001_v1_role_global_tokens_token_MSVR310_seed42_full",
+          "process": {
+            "pid": 1742542,
+            "exists": true,
+            "state": "R",
+            "live": true,
+            "command": "/data/gaob/Re-ID/conda-envs/tri_reid/bin/python -B /data/gaob/Re-ID/Trifusion/tools/run_role_global_tokens.py --dataset MSVR310 --mode train --protocol /data/gaob/Re-ID/Trifusion/logs/official_three_dataset_protocols_20260923/MSVR310.json --signal-source /data/gaob/Re-ID/Trifusion/comparators/Signal-cd1b0a6 --clip-weight /data/gaob/Re-ID/Trifusion/pertrained-model/ViT-B-16.pt --baseline-checkpoint /data/gaob/Re-ID/Trifusion/pertrained-model/MSVR310_PlainBaseline_50.pth --baseline-sha256 69c5e71b75036d7216ece3ff84450f0052f5e70dfaba46bf73f3e1d40992bb37 --output-dir /data/gaob/Re-ID/Trifusion/trained-model/role_global_tokens_20261001_v1_role_global_tokens_token_MSVR310_seed42_full --seed 42 --epochs 50 --width 128 --pred-weight 0.1 --m1 --m2 --no-m3 --query-mode context --auxiliary-target none --token-mode token "
+          },
+          "receipt_sha256": "dc300fc2c2d2728e37a4ab673c643f6ec4ce4acebee6af127bd35c264f80736e",
+          "receipt_status": "RUNNING",
+          "history": [
+            {
+              "epoch": 1,
+              "steps": 20,
+              "mean_loss": 5.204397296905517,
+              "seconds": 11.318547471993952,
+              "official_fused": {
+                "mAP": 50.91434459147863,
+                "Rank-1": 68.52791905403137,
+                "Rank-5": 81.04906678199768,
+                "Rank-10": 85.78680157661438
+              }
+            },
+            {
+              "epoch": 2,
+              "steps": 20,
+              "mean_loss": 4.908461022377014,
+              "seconds": 9.064918421994662,
+              "official_fused": {
+                "mAP": 49.75748767680127,
+                "Rank-1": 67.17427968978882,
+                "Rank-5": 81.55668377876282,
+                "Rank-10": 85.27919054031372
+              }
+            },
+            {
+              "epoch": 3,
+              "steps": 20,
+              "mean_loss": 4.418929862976074,
+              "seconds": 9.215967960000853,
+              "official_fused": {
+                "mAP": 50.69164491440797,
+                "Rank-1": 68.02030205726624,
+                "Rank-5": 81.89509510993958,
+                "Rank-10": 85.10998487472534
+              }
+            },
+            {
+              "epoch": 4,
+              "steps": 20,
+              "mean_loss": 3.7548843741416933,
+              "seconds": 9.28988066499005,
+              "official_fused": {
+                "mAP": 48.69131133814557,
+                "Rank-1": 65.82064032554626,
+                "Rank-5": 80.03383874893188,
+                "Rank-10": 85.10998487472534
+              }
+            },
+            {
+              "epoch": 5,
+              "steps": 20,
+              "mean_loss": 3.0076693177223204,
+              "seconds": 9.517114501009928,
+              "official_fused": {
+                "mAP": 49.73129590056953,
+                "Rank-1": 66.66666865348816,
+                "Rank-5": 80.87986707687378,
+                "Rank-10": 86.46361827850342
+              }
+            },
+            {
+              "epoch": 6,
+              "steps": 20,
+              "mean_loss": 2.3077429592609406,
+              "seconds": 9.453729717992246,
+              "official_fused": {
+                "mAP": 50.69622717060332,
+                "Rank-1": 67.3434853553772,
+                "Rank-5": 80.87986707687378,
+                "Rank-10": 86.29441857337952
+              }
+            }
+          ],
+          "initializer": {
+            "initial_model_state_sha256": "fad34e895b82625f665edca47aa107c9b60ea0cf0b65377373e127119ecf0d30",
+            "trainable_parameters": 2846666,
+            "architecture": "role_global_tokens_v1",
+            "token_mode": "token",
+            "transformer_sequence_length": 17,
+            "attention_subgraph_dtype": "float32"
+          }
+        }
+      ]
+    },
+    {
+      "dataset": "RGBNT100",
+      "variant": "static",
+      "status": "RUNNING",
+      "worker": {
+        "pid": 1739631,
+        "exists": true,
+        "state": "S",
+        "live": true,
+        "command": "/data/gaob/Re-ID/conda-envs/tri_reid/bin/python -B /data/gaob/Re-ID/Trifusion/tools/queue_role_global_tokens.py --worker --campaign /data/gaob/Re-ID/Trifusion/logs/role_global_tokens_20261001_v1 --dataset RGBNT100 --variant static --gpu 3 "
+      },
+      "gpu": 3,
+      "child_status": "RUNNING",
+      "stages": [
+        {
+          "mode": "m0",
+          "status": "COMPLETE",
+          "started_at": "2026-10-01T07:49:33.225773+08:00",
+          "pid": 1739635,
+          "output_dir": "/data/gaob/Re-ID/Trifusion/trained-model/role_global_tokens_20261001_v1_role_global_tokens_static_RGBNT100_seed42_m0",
+          "exit_code": 0,
+          "completed_at": "2026-10-01T07:50:12.412318+08:00",
+          "process": {
+            "pid": 1739635,
+            "exists": false,
+            "live": false
+          },
+          "receipt_sha256": "6263cb16adb7b262bdbd8ca4ff5c660ba154d0e1eb8d35ccd3599f6dbc5d2bbb",
+          "receipt_status": "M0_PASS",
+          "history": [
+            {
+              "epoch": 1,
+              "steps": 8,
+              "mean_loss": 3.857854664325714,
+              "seconds": 6.617085374993621
+            }
+          ],
+          "initializer": {
+            "initial_model_state_sha256": "2f943b51cfbcad0bf8d2a0cc552a94eeb81b04a5a24035218e5e9b1df6a82688",
+            "trainable_parameters": 2685386,
+            "architecture": "role_global_tokens_v1",
+            "token_mode": "static",
+            "transformer_sequence_length": 17,
+            "attention_subgraph_dtype": "float32"
+          },
+          "m0": {
+            "nonzero_gradient_parameters": 128,
+            "trainable_parameters": 128,
+            "frozen_signal_unchanged": true,
+            "reload_max_abs_difference": 0.0,
+            "reload_probe_sha256": "c5a2a8eaafff2b53b171c890388c5d4fa4ee554b1c84130453b3998010702181"
+          }
+        },
+        {
+          "mode": "train",
+          "status": "RUNNING",
+          "started_at": "2026-10-01T07:50:12.447764+08:00",
+          "pid": 1742292,
+          "output_dir": "/data/gaob/Re-ID/Trifusion/trained-model/role_global_tokens_20261001_v1_role_global_tokens_static_RGBNT100_seed42_full",
+          "process": {
+            "pid": 1742292,
+            "exists": true,
+            "state": "R",
+            "live": true,
+            "command": "/data/gaob/Re-ID/conda-envs/tri_reid/bin/python -B /data/gaob/Re-ID/Trifusion/tools/run_role_global_tokens.py --dataset RGBNT100 --mode train --protocol /data/gaob/Re-ID/Trifusion/logs/official_three_dataset_protocols_20260923/RGBNT100.json --signal-source /data/gaob/Re-ID/Trifusion/comparators/Signal-cd1b0a6 --clip-weight /data/gaob/Re-ID/Trifusion/pertrained-model/ViT-B-16.pt --baseline-checkpoint /data/gaob/Re-ID/Trifusion/pertrained-model/RGBNT100_PlainBaseline_30.pth --baseline-sha256 299a28bfb3e3180eeae0736cf8638cd162525dce0f2192a940b62b97f6e67dcd --output-dir /data/gaob/Re-ID/Trifusion/trained-model/role_global_tokens_20261001_v1_role_global_tokens_static_RGBNT100_seed42_full --seed 42 --epochs 50 --width 128 --pred-weight 0.1 --m1 --m2 --no-m3 --query-mode context --auxiliary-target none --token-mode static "
+          },
+          "receipt_sha256": "4100f519ec6d2159900ad2be8c7be96b55e06e3958e9496cc6301fb264f8ef94",
+          "receipt_status": "RUNNING",
+          "history": [
+            {
+              "epoch": 1,
+              "steps": 130,
+              "mean_loss": 2.5177160061322725,
+              "seconds": 51.82116721999773,
+              "official_fused": {
+                "mAP": 85.10352421510171,
+                "Rank-1": 95.04373073577881,
+                "Rank-5": 95.68513035774231,
+                "Rank-10": 96.03498578071594
+              }
+            }
+          ],
+          "initializer": {
+            "initial_model_state_sha256": "2f943b51cfbcad0bf8d2a0cc552a94eeb81b04a5a24035218e5e9b1df6a82688",
+            "trainable_parameters": 2685386,
+            "architecture": "role_global_tokens_v1",
+            "token_mode": "static",
+            "transformer_sequence_length": 17,
+            "attention_subgraph_dtype": "float32"
+          }
+        }
+      ]
+    },
+    {
+      "dataset": "RGBNT201",
+      "variant": "static",
+      "status": "PENDING"
+    },
+    {
+      "dataset": "MSVR310",
+      "variant": "static",
+      "status": "PENDING"
+    },
+    {
+      "dataset": "RGBNT100",
+      "variant": "direct",
+      "status": "PENDING"
+    },
+    {
+      "dataset": "RGBNT201",
+      "variant": "direct",
+      "status": "PENDING"
+    },
+    {
+      "dataset": "MSVR310",
+      "variant": "direct",
+      "status": "PENDING"
+    }
+  ],
+  "gpu_inventory": "0, 10889, 99\n1, 10196, 100\n2, 10941, 100\n3, 10373, 84\n",
+  "data_free_bytes": 95443279872,
+  "accepted_endpoints": 0,
+  "scope": "Live process and first-wave production M0 observation; no formal endpoint accepted."
+}
