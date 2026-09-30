@@ -13419,3 +13419,28 @@ CPU诊断实际退出0，仅加载已完整验收的Patch-memory六端原始距�
 fresh native reviewer 按 experiment-audit 流程给出 **WARN（same-family／provisional）**，数值／回执完整性 PASS，推进门 FAIL。独立核验 18 个实际退出码、213 源绑定、18 矩阵／72 指标，最大复算差 2.94×10⁻⁶ 个百分点；全路径与标签顺序一致。六端完整初始状态成对相同，12 份 best／M0 checkpoint 在明确记录的 CPU 设备重定向下严格加载。第一次 CPU 检查因上游硬编码 `.to("cuda")` 退出 1，失败与后续工具处理均保留；复核没有运行神经前向、梯度、优化或新训练。M0 127／127 指的是八批累计有效梯度覆盖，不能说每批所有张量都有非零梯度。详细边界见 `results/slot_competition_fp32_audit_20261001/AUDIT.md`、`AUDIT.json`。
 
 这是一个研发种子、先训练纯 ReID 起点再训练角色 50 轮，官方集参与逐轮选点和历史方法选择；固定模型 bootstrap 不是多种子稳定性或未消费测试显著性。本地镜像不是完整独立运行环境，权威远端绑定通过，不把本地缺失比较器／协议副本当成虚假的全环境复现。仍未达到三个数据集的 baseline／SOTA 完整 Goal，不证明三个角色必要性。当前训练、等待器和诊断均已结束；健康卡后续利用须由新的明确假设登记，不能用重复种子挽救这一失败版本。尚未登记下一训练干预。
+
+
+### 41.687 全局身份 token 参与角色区域交互：独立九端新假设与执行准备（2026-10-01）
+
+承接 §41.686 的完整负结果，不继续槽位竞争的系数／种子搜索，也不重跑已完成的跨层状态、局部辅助身份监督或全 Patch 记忆对照。新登记的唯一结构假设是：让每模态已适配 global 经 512→128 零初始化投影，作为额外 token 参与区域 Transformer，能否形成比仅以 global 改变 query 权重更有效的角色证据。该 token 在 Transformer 输出后移除，保留原 16 个区域，再传入 Mamba 的原 48-token 空间／光谱序列；不直接将它作为第 17 个区域池化。
+
+全局／局部交互已有 DSGM 等先例，固定来源和作者代码绑定见既有 reference_source_check_682_20261001；本次不复制作者源码，不使用其文本或 SAM2，不声称首次 global 条件化。它也不等于旧 V8 的 SIM→block8 CLS 反馈：当前作用位置、来源语义与区域读出均不同。能否取得性能或独特贡献，仍由完整对照决定。
+
+| 新条件 | 区域 Transformer 的额外 token | 末端额外投影 | 区分的问题 |
+|---|---|---|---|
+| static | 同一投影读取固定单位向量 | 无 | 17-token、同参数的结构控制 |
+| token | 同一投影读取当前每模态归一化 global | 无 | 身份上下文参与区域加工 |
+| direct | 与 static 相同 | 当前 global 投影重复到各区域，通过原读出加入修正 | 收益是否只是另一份 global 投影 |
+
+三条件有相同张量集合、参数量、零初始化投影和新的完整训练。固定向量与样本 global 的有效输入自由度不同，direct 的投影／读出又在两处共享，因此不将同参数量称为完全相同有效容量或计算路径。`joint_local` 是沿用评价键名，实际为归一化总修正；token 已受 global 值条件化，direct 明确含 global 投影，不能宣称纯局部信息。
+
+合同 `refine-logs/role_global_tokens_v1/EXPERIMENT_PLAN.md` 登记三条件×三个数据集共九端，固定 seed42、每端 50 轮和同一官方 fused mAP-best。独立归一化／全 FP32 注意力、128 个 Patch／16 槽位、M1、CNN→Transformer→真实 Mamba、1536D 区域读出、冻结纯 ReID 起点、原数据和优化日程均保持；M3 与辅助 ID 关闭。保留全图库和原 camera／MSVR 时间段规则，不调损失、scale、seed 或门槛。预登记推进须 token 对 static 和 direct 都满足三数据集 mAP 正增量、Rank-1 不降，且 RGBNT201／MSVR310 对每个控制均至少 +0.5 mAP；本轮未授权推进门触发后的新种子或 global-only。
+
+07:28:40—07:28:46 实际 CPU 结构／CLI 预检四个子进程均等待退出 0，原 210／211／213 份源绑定均不变。两种网格下 GlobalTokenRoles 的完整初始状态和区域输出一致；实际观察 Transformer 输入 [6,17,128]、输出区域 [2,3,16,128]；新投影梯度有限且非零，改变 global 只在 token 模式改变角色交互，direct 的末端 global 投影会变化。这个 fixture 使用线性 Mamba 替身，只实例化角色模块，未执行 GlobalTokenTriFusion 完整 direct 读出、真实 CLIP／生产 Mamba 或真实数据 M0。前者的完整调用链仍须由后续真实八批 M0 检验，不能把 CPU 结果冒称生产通过。
+
+原私有工具生成第一次在错误位置的 schema 替换断言退出 1，未写出队列／collector，也没有 M0 或训练；明确修正后生成成功。原生成源码、失败和修正记录、实际预检 wrapper／日志都保留在新计划目录。没有自动训练重试或用失败前指标填正式表。
+
+fresh 源码／执行合同审查为 WARN（gpt-6-astra／max，same-family／provisional），范围是新源码、现有 CPU 预检、实际协议／baseline／前驱来源与未来执行合同，不是新方法性能验收。详细依据在 `refine-logs/role_global_tokens_v1/REVIEW.md`、`REVIEW.json`。真实九端 M0／正式训练均尚未开始。部署后每端必须先通过八批生产 Mamba 的有限梯度、累计全部可训练张量支持、冻结起点和严格重载检查，才新初始化训练完整 50 轮。
+
+当前四卡均可被 nvidia-smi 读取且空闲，/data 实际可用约 95.54 GB；这不证明早先故障的内核根因或管理员维修完成，不执行 sudo／reset／重启。复用既有 tri_reid 和 .aris/compute/tri_reid_four_gpu.md，不安装环境。只占真实空闲卡，持久队列 240 秒调度，估计 8—12 GPU 小时另加 M0／评估；用实际时长替换估计。任何真实失败保留退出码并停止新 pending 派发，已运行端自然收尾，不自动改条件。原完整三数据集 baseline／SOTA Goal ACTIVE／UNMET，下一实际启动状态单列回执。

@@ -1,0 +1,1040 @@
+{
+  "audit_skill": "experiment-audit",
+  "schema": "trifusion-role-global-tokens-source-preflight-review-v1",
+  "verdict": "WARN",
+  "overall_verdict": "warn",
+  "integrity_status": "warn",
+  "reason_code": "cpu_fixture_only_production_and_formal_evidence_pending",
+  "summary": "No concrete execution-blocking defect found in the reviewed source. CPU/CLI evidence is valid within its limited scope; production M0, full-model three-condition witnesses and all nine formal endpoints are not established.",
+  "date": "2026-10-01",
+  "generated_at": "2026-09-30 23:41:29 UTC",
+  "auditor": "gpt-6-astra-max",
+  "agent_id": "/root/review_role_global_tokens_687",
+  "verdict_id": "/root/review_role_global_tokens_687",
+  "reviewer_backend": "native-codex",
+  "reviewer_model": "gpt-6-astra",
+  "reviewer_reasoning": "max",
+  "reviewer_family": "openai",
+  "review_context": "fresh",
+  "review_independence": "same-family",
+  "acceptance_status": "provisional",
+  "trace_path": "refine-logs/role_global_tokens_v1/REVIEW.json",
+  "trace_storage_note": "Reviewer scope permits writes only to REVIEW.md and REVIEW.json; review evidence and action summary are embedded here.",
+  "source_contract_verdict": "PASS",
+  "mandatory_code_fixes": [],
+  "production_m0_status": "NOT_RUN",
+  "formal_performance_status": "NOT_ESTABLISHED",
+  "scientific_gate_status": "NOT_EVALUATED",
+  "new_neural_replay_performed": false,
+  "production_mamba_executed_by_reviewer": false,
+  "checked_remote": {
+    "host": "172.19.12.138",
+    "port": 2026,
+    "user": "gaob",
+    "identity_file": "C:/Users/gb/.ssh/id_ed25519",
+    "proxy_command": "none",
+    "batch_mode": "yes",
+    "connect_timeout_seconds": 10,
+    "root": "/data/gaob/Re-ID/Trifusion",
+    "python": "/data/gaob/Re-ID/conda-envs/tri_reid/bin/python"
+  },
+  "checks": {
+    "A_ground_truth_and_scope": {
+      "status": "PASS",
+      "evaluation_type": "real_gt",
+      "details": "All official train/query/gallery metadata matched filenames and image-directory path sets; train/test identities disjoint; all official queries eligible. Correct same-ID AND camera filtering for RGBNT201/100 and same-ID AND scene/time filtering for MSVR310.",
+      "evidence": [
+        "tools/official_three_dataset_data.py:8-18",
+        "tools/run_correspondence_roles.py:66-108",
+        "tools/train_rgbnt100_signal_oof.py:253-268",
+        "tools/train_msvr310_signal_oof.py:223-238",
+        "comparators/Signal-cd1b0a6/utils/metrics.py:68",
+        "comparators/Signal-cd1b0a6/utils/metrics.py:137"
+      ]
+    },
+    "B_score_normalization": {
+      "status": "PASS",
+      "details": "L2 representation normalization and squared Euclidean distances; raw AP/CMC with standard relevance/query denominators and percent scaling. No model-statistic score normalization.",
+      "evidence": [
+        "modeling/trifusion/role_global_tokens.py:25-27",
+        "modeling/trifusion/role_global_tokens.py:79-94",
+        "tools/run_official_three_dataset_roles.py:230-238",
+        "tools/run_correspondence_context_identity.py:214-228"
+      ]
+    },
+    "C_existence_and_live_calls": {
+      "status": "WARN",
+      "details": "Recorded CPU/CLI four exit-zero checks have matching local/remote source and log SHA. Fixture instantiates only GlobalTokenRoles with a linear Mamba stub, not complete GlobalTokenTriFusion. No new formal result directories exist in the checked logs/trained-model locations.",
+      "evidence": [
+        "refine-logs/role_global_tokens_v1/PREFLIGHT_20261001.json:18-75",
+        "refine-logs/role_global_tokens_v1/preflight_0.log:1",
+        "tools/check_role_global_tokens_cpu.py:23-24",
+        "tools/check_role_global_tokens_cpu.py:43-60",
+        "tools/run_role_global_tokens.py:82-92",
+        "tools/run_correspondence_context_identity.py:244-254"
+      ]
+    },
+    "D_execution_contract": {
+      "status": "WARN",
+      "static_source_status": "PASS",
+      "details": "Three mode-independent constructors and zero projection; 17 input tokens, 16 regional outputs and 48-token Mamba sequence. Direct differentiable bypass calls the shared readout. Fixed production factory, 8-batch M0, fresh full50, last-tie mAP-best, strict schema/mode reload, nine-endpoint collector, real process waits, predecessor/source locks and 240-second no-retry scheduling all connected. Actual production numerical and full-model initialization checks remain pending.",
+      "evidence": [
+        "modeling/trifusion/role_global_tokens.py:16-94",
+        "modeling/trifusion/correspondence_evidence_readout.py:65-77",
+        "modeling/trifusion/experts/mamba.py:29-32",
+        "tools/run_correspondence_roles.py:32-57",
+        "tools/run_correspondence_context_identity.py:68-171",
+        "tools/run_role_global_tokens.py:42-68",
+        "tools/collect_role_global_tokens.py:19-181",
+        "tools/queue_role_global_tokens.py:91-189",
+        "tools/queue_correspondence_refinement.py:135-181"
+      ]
+    },
+    "E_scope_and_control_interpretation": {
+      "status": "PASS",
+      "details": "Fresh static control required; historical 16-token endpoints used only as sealed predecessor evidence. Static effective input capacity and direct shared-projection/readout limits disclosed. joint_local means total correction, not pure local or independently trained output. One seed with official-best development selection cannot establish novelty, SOTA, stability or untouched-test significance.",
+      "evidence": [
+        "refine-logs/role_global_tokens_v1/EXPERIMENT_PLAN.md:13-39",
+        "tools/run_role_global_tokens.py:32",
+        "tools/run_role_global_tokens.py:78",
+        "results/SLOT_COMPETITION_FP32_COMPLETE_2026-10-01.md:24",
+        "results/SLOT_COMPETITION_FP32_COMPLETE_2026-10-01.md:61"
+      ]
+    },
+    "F_evaluation_type": {
+      "status": "PASS",
+      "planned_retrieval": "real_gt",
+      "existing_cpu_fixture": "simulation_only",
+      "details": "Random synthetic tensors and linear Mamba are labeled structural engineering evidence; they are not fake ground truth or retrieval performance."
+    }
+  },
+  "findings": [
+    {
+      "id": "W1",
+      "status": "WARN",
+      "kind": "pending_registered_evidence",
+      "must_fix_code": false,
+      "locations": [
+        "tools/check_role_global_tokens_cpu.py:23-24",
+        "tools/check_role_global_tokens_cpu.py:43-60"
+      ],
+      "details": "Existing fixture does not cover complete TriFusion, actual direct correction/readout, static/direct full-loss gradients, production Mamba/AMP, full-model paired initialization or strict production reload.",
+      "required_follow_through": "Use only the already registered per-endpoint eight-production-batch M0 and actual initializer/collector evidence; do not relabel the CPU stub as M0."
+    },
+    {
+      "id": "W2",
+      "status": "WARN",
+      "kind": "reporting_scope",
+      "must_fix_code": false,
+      "locations": [
+        "tools/collect_role_global_tokens.py:127-141",
+        "refine-logs/role_global_tokens_v1/EXPERIMENT_PLAN.md:25",
+        "refine-logs/role_global_tokens_v1/EXPERIMENT_PLAN.md:39"
+      ],
+      "details": "training_and_epoch_eval_seconds excludes M0/final evaluation/upstream ReID. Collector retains joint_local's legacy field name and does not itself produce all final pair/identity-equal/trajectory analyses.",
+      "required_follow_through": "Final reporting must use total-correction semantics, actual stage timings and complete paired diagnostics from existing raw artifacts. No new experiment or defensive code is requested."
+    }
+  ],
+  "claims": [
+    {
+      "id": "cpu_structure_and_cli",
+      "impact": "supported_with_scope",
+      "note": "Existing hash-bound records only; no reviewer neural rerun."
+    },
+    {
+      "id": "full_model_three_condition_initialization",
+      "impact": "source_supported_execution_pending"
+    },
+    {
+      "id": "production_m0_pass",
+      "impact": "unsupported_not_run"
+    },
+    {
+      "id": "new_formal_performance_or_scientific_gate_pass",
+      "impact": "unsupported_no_results"
+    },
+    {
+      "id": "historical_endpoints_as_fresh_static",
+      "impact": "prohibited_by_contract"
+    },
+    {
+      "id": "pure_local_information_from_joint_local",
+      "impact": "unsupported_in_token_or_direct"
+    },
+    {
+      "id": "sota_or_novelty_or_stability",
+      "impact": "not_established"
+    }
+  ],
+  "audited_input_hashes": {
+    "modeling/trifusion/role_global_tokens.py": "sha256:f41ff1af1fb1b6303a9af63cf039263e2572c16b23813f92a0297f014e71dd4f",
+    "tools/run_role_global_tokens.py": "sha256:dba04e72a4d3b81583b7c5c2e26aa0204618736a2c57280340313e50674f63cb",
+    "tools/check_role_global_tokens_cpu.py": "sha256:c639efd6039affe9762209f6f968984b183d98689d2f7f116521f33da91f8214",
+    "tools/queue_role_global_tokens.py": "sha256:a577264d1d2214b9e7dcc012e9bcbe0f602d95d969433eea0209eb6e80d71a14",
+    "tools/collect_role_global_tokens.py": "sha256:845e4353ebb2751184f478a4117f96f443c9670e5934d667a6dbb470b508a8c6",
+    "refine-logs/role_global_tokens_v1/EXPERIMENT_PLAN.md": "sha256:d8f2dfc64268267734f6aaff6ce9d53d3533a8517a903c6a52e40d9b352d2776",
+    "refine-logs/role_global_tokens_v1/PREFLIGHT_20261001.json": "sha256:3a6d62a4c42f1e7045905f14e7b8c7c718a9ff7e7fcdd4f96897f98635f20c76",
+    "refine-logs/role_global_tokens_v1/preflight_0.log": "sha256:7345f1c0b03e4a5b04779bd1e89ca9c6582ce2d5a4f596f0166e9847dc6b3b7c",
+    "refine-logs/role_global_tokens_v1/preflight_1.log": "sha256:138b421ea5ff69b0eaa8e0137b1e844b2e576ea3c29f70aa9204709d6eec79bb",
+    "refine-logs/role_global_tokens_v1/preflight_2.log": "sha256:5b7de6996b197120e0de4b97e4766f067558701ac6ded9ea82d1a9f6df3c26b8",
+    "refine-logs/role_global_tokens_v1/preflight_3.log": "sha256:8cfadd19f6e0194f8071e4a54dc4419e889127803cd13096558398cb5eaf998e",
+    "modeling/trifusion/slot_competition_fp32_roles.py": "sha256:810801e048bcb07ddbdef0635708b63cba7562a4876e044af34135fd412f79c8",
+    "modeling/trifusion/slot_competition_roles.py": "sha256:bbc3e2430f760587cf8c1d11e40bcbdf0459424e975de74b5b15a40706efbe99",
+    "modeling/trifusion/patch_memory_roles.py": "sha256:833c8c93363cee7a4fc74c6c458194b484dc1b8cac0f9ec58113a07ac89cb23d",
+    "modeling/trifusion/correspondence_context_identity.py": "sha256:eda3d1473496b33e4b69402dba7770e67d23b33b07afd41d23105b7f148d63af",
+    "modeling/trifusion/correspondence_roles.py": "sha256:e2a51154b5b327341f35e453dd32a821b091a49a669b49a7c70e79e6e2f2591b",
+    "modeling/trifusion/correspondence_evidence_readout.py": "sha256:e737a977d39ccbe09a5509118e5b5333d653f7f13381e65e84af1a13e5c28dc4",
+    "tools/run_correspondence_context_identity.py": "sha256:9f4cc9f11998819d4a927a32f4e47baf0c4ff9d14c4bc93b0dc35b0153ebc142",
+    "tools/run_correspondence_roles.py": "sha256:e50865fb923297cd61cf38b33ec2bc95154f8c503b5dfe5de9823cad3f03d7ef",
+    "tools/queue_correspondence_refinement.py": "sha256:5256afe78d02d9bfea3103daa00d488b94c05e839c955f00355098f69ecbd84a",
+    "tools/queue_correspondence_roles.py": "sha256:746fbdb8bdad04290a9ef22c0550e873c9dce9de74c2c3c3767fea9278be69bf",
+    "tools/audit_correspondence_context_identity_losses.py": "sha256:bcc15e568c6a14efdaca1df5268c5abdec716287d3b6efb2482804add724abf1",
+    "tools/official_three_dataset_model.py": "sha256:e103ea0f4d6342b0dc129dc2dace0e8c0d0e6c956cfe94729ccb70d9588cf0f9",
+    "tools/official_three_dataset_data.py": "sha256:c3180a88d12440709319d2025928fc699ff3b7c020b11697d468453fbfc68062",
+    "tools/train_rgbnt100_signal_oof.py": "sha256:4462b73139e034d450d955c5b4a994aaa967548e9cc503d97bb753a14ea03b22",
+    "tools/train_msvr310_signal_oof.py": "sha256:c25579d931df34481fef321558f0b9a1f9179d72a25d6047dbbfd3682d4ae60f",
+    "tools/run_official_three_dataset_roles.py": "sha256:f30bb00a0b71429e9d11dd196cd1d543202a133c663ad66e175d2f82e28d448d",
+    "tools/run_signal_preserving_v5.py": "sha256:e162184f68778b4991db0f97f26c5fda273b2ad2f7c8db2bbb2d53775eb717e5",
+    "modeling/trifusion/experts/mamba.py": "sha256:8b9cb420c42e4d70f8de7e4608637c81c505b97ca54228175462a7e92fdfcc83",
+    "modeling/trifusion/criterion.py": "sha256:9a028e5711981123310f5e0d441a35b7dbecaf33f9edcec4fd3773d070cf877f",
+    "logs/slot_competition_fp32_complete_intake_20261001/accepted_matrix.json": "sha256:e3433db691dbb1070595386c542f27782cd88b45f5f6faa8660b246e7c2fd4b8",
+    "logs/slot_competition_fp32_complete_intake_20261001/campaign.json": "sha256:9ce7e38c53159b6bcf42e472f31f5dc0623cc1c27ed017b3a2861a55848fe433",
+    "logs/slot_competition_fp32_complete_intake_20261001/manifest.json": "sha256:811bb2fd9ff1638283076a25a4b86c263d93614d9d78f5701e62895411abf181",
+    "results/SLOT_COMPETITION_FP32_COMPLETE_2026-10-01.md": "sha256:b516be1c3635ad150044f3ba6dac738c184a6fffcba3f5a6e431f16b95675b84"
+  },
+  "remote_input_hashes": {
+    "modeling/trifusion/role_global_tokens.py": "f41ff1af1fb1b6303a9af63cf039263e2572c16b23813f92a0297f014e71dd4f",
+    "tools/run_role_global_tokens.py": "dba04e72a4d3b81583b7c5c2e26aa0204618736a2c57280340313e50674f63cb",
+    "tools/check_role_global_tokens_cpu.py": "c639efd6039affe9762209f6f968984b183d98689d2f7f116521f33da91f8214",
+    "tools/queue_role_global_tokens.py": "a577264d1d2214b9e7dcc012e9bcbe0f602d95d969433eea0209eb6e80d71a14",
+    "tools/collect_role_global_tokens.py": "845e4353ebb2751184f478a4117f96f443c9670e5934d667a6dbb470b508a8c6",
+    "refine-logs/role_global_tokens_v1/EXPERIMENT_PLAN.md": "d8f2dfc64268267734f6aaff6ce9d53d3533a8517a903c6a52e40d9b352d2776",
+    "refine-logs/role_global_tokens_v1/PREFLIGHT_20261001.json": "3a6d62a4c42f1e7045905f14e7b8c7c718a9ff7e7fcdd4f96897f98635f20c76",
+    "refine-logs/role_global_tokens_v1/preflight_0.log": "7345f1c0b03e4a5b04779bd1e89ca9c6582ce2d5a4f596f0166e9847dc6b3b7c",
+    "refine-logs/role_global_tokens_v1/preflight_1.log": "138b421ea5ff69b0eaa8e0137b1e844b2e576ea3c29f70aa9204709d6eec79bb",
+    "refine-logs/role_global_tokens_v1/preflight_2.log": "5b7de6996b197120e0de4b97e4766f067558701ac6ded9ea82d1a9f6df3c26b8",
+    "refine-logs/role_global_tokens_v1/preflight_3.log": "8cfadd19f6e0194f8071e4a54dc4419e889127803cd13096558398cb5eaf998e",
+    "modeling/trifusion/slot_competition_fp32_roles.py": "810801e048bcb07ddbdef0635708b63cba7562a4876e044af34135fd412f79c8",
+    "modeling/trifusion/slot_competition_roles.py": "bbc3e2430f760587cf8c1d11e40bcbdf0459424e975de74b5b15a40706efbe99",
+    "modeling/trifusion/patch_memory_roles.py": "833c8c93363cee7a4fc74c6c458194b484dc1b8cac0f9ec58113a07ac89cb23d",
+    "modeling/trifusion/correspondence_context_identity.py": "eda3d1473496b33e4b69402dba7770e67d23b33b07afd41d23105b7f148d63af",
+    "modeling/trifusion/correspondence_roles.py": "e2a51154b5b327341f35e453dd32a821b091a49a669b49a7c70e79e6e2f2591b",
+    "modeling/trifusion/correspondence_evidence_readout.py": "e737a977d39ccbe09a5509118e5b5333d653f7f13381e65e84af1a13e5c28dc4",
+    "tools/run_correspondence_context_identity.py": "9f4cc9f11998819d4a927a32f4e47baf0c4ff9d14c4bc93b0dc35b0153ebc142",
+    "tools/run_correspondence_roles.py": "e50865fb923297cd61cf38b33ec2bc95154f8c503b5dfe5de9823cad3f03d7ef",
+    "tools/queue_correspondence_refinement.py": "5256afe78d02d9bfea3103daa00d488b94c05e839c955f00355098f69ecbd84a",
+    "tools/queue_correspondence_roles.py": "746fbdb8bdad04290a9ef22c0550e873c9dce9de74c2c3c3767fea9278be69bf",
+    "tools/audit_correspondence_context_identity_losses.py": "bcc15e568c6a14efdaca1df5268c5abdec716287d3b6efb2482804add724abf1",
+    "tools/official_three_dataset_model.py": "e103ea0f4d6342b0dc129dc2dace0e8c0d0e6c956cfe94729ccb70d9588cf0f9",
+    "tools/official_three_dataset_data.py": "c3180a88d12440709319d2025928fc699ff3b7c020b11697d468453fbfc68062",
+    "tools/train_rgbnt100_signal_oof.py": "4462b73139e034d450d955c5b4a994aaa967548e9cc503d97bb753a14ea03b22",
+    "tools/train_msvr310_signal_oof.py": "c25579d931df34481fef321558f0b9a1f9179d72a25d6047dbbfd3682d4ae60f",
+    "tools/run_official_three_dataset_roles.py": "f30bb00a0b71429e9d11dd196cd1d543202a133c663ad66e175d2f82e28d448d",
+    "tools/run_signal_preserving_v5.py": "e162184f68778b4991db0f97f26c5fda273b2ad2f7c8db2bbb2d53775eb717e5",
+    "modeling/trifusion/experts/mamba.py": "c516c7ad937e5eee6a4ed1e3ec33c2afe3522b751d296bd2e4910e4f27a20ee5",
+    "modeling/trifusion/criterion.py": "0b2a6370f434828d885945d1a46dd56f6668133ceed45ef359fe71eeca63740a"
+  },
+  "line_ending_only_differences": [
+    {
+      "path": "modeling/trifusion/experts/mamba.py",
+      "local_sha256": "8b9cb420c42e4d70f8de7e4608637c81c505b97ca54228175462a7e92fdfcc83",
+      "remote_sha256": "c516c7ad937e5eee6a4ed1e3ec33c2afe3522b751d296bd2e4910e4f27a20ee5",
+      "lf_only": true
+    },
+    {
+      "path": "modeling/trifusion/criterion.py",
+      "local_sha256": "9a028e5711981123310f5e0d441a35b7dbecaf33f9edcec4fd3773d070cf877f",
+      "remote_sha256": "0b2a6370f434828d885945d1a46dd56f6668133ceed45ef359fe71eeca63740a",
+      "lf_only": true
+    }
+  ],
+  "protocols": [
+    {
+      "schema": "trifusion-official-three-dataset-protocol-v1",
+      "dataset": "RGBNT201",
+      "dataset_root": "/data/gaob/Re-ID/dataset/RGBNT201",
+      "environment_key": "camera",
+      "train_split": "train_171",
+      "query_split": "test",
+      "gallery_split": "test",
+      "counts": {
+        "train": 3951,
+        "query": 836,
+        "gallery": 836
+      },
+      "sha256": "e63be5d9f8bd41df365264ad8f459dcd063d088023a2d2ed525a49a72f61161e",
+      "keys": [
+        "schema",
+        "dataset",
+        "inventory_sha256",
+        "dataset_root",
+        "seed",
+        "environment_key",
+        "train_split",
+        "query_split",
+        "gallery_split",
+        "train_label_map",
+        "records",
+        "query_rows",
+        "counts",
+        "filter",
+        "model_forwards",
+        "optimizer_updates"
+      ],
+      "train_label_count": 171,
+      "record_summary": {
+        "train": {
+          "count": 3951,
+          "identities": 171,
+          "cameras": [
+            0,
+            1,
+            2,
+            3
+          ],
+          "scenes": [
+            0,
+            1,
+            2,
+            3
+          ],
+          "first": {
+            "index": 0,
+            "paths": [
+              "train_171/RGB/000009_cam3_1_00.jpg",
+              "train_171/NI/000009_cam3_1_00.jpg",
+              "train_171/TI/000009_cam3_1_00.jpg"
+            ],
+            "identity": 9,
+            "camera": 2,
+            "scene": 2,
+            "view": -1,
+            "label": 0
+          },
+          "last": {
+            "index": 3950,
+            "paths": [
+              "train_171/RGB/000328_cam1_0_19.jpg",
+              "train_171/NI/000328_cam1_0_19.jpg",
+              "train_171/TI/000328_cam1_0_19.jpg"
+            ],
+            "identity": 328,
+            "camera": 0,
+            "scene": 0,
+            "view": -1,
+            "label": 170
+          }
+        },
+        "query": {
+          "count": 836,
+          "identities": 30,
+          "cameras": [
+            0,
+            1
+          ],
+          "scenes": [
+            0,
+            1
+          ],
+          "first": {
+            "index": 0,
+            "paths": [
+              "test/RGB/000258_cam1_0_00.jpg",
+              "test/NI/000258_cam1_0_00.jpg",
+              "test/TI/000258_cam1_0_00.jpg"
+            ],
+            "identity": 258,
+            "camera": 0,
+            "scene": 0,
+            "view": -1,
+            "label": null
+          },
+          "last": {
+            "index": 835,
+            "paths": [
+              "test/RGB/000299_cam2_0_12.jpg",
+              "test/NI/000299_cam2_0_12.jpg",
+              "test/TI/000299_cam2_0_12.jpg"
+            ],
+            "identity": 299,
+            "camera": 1,
+            "scene": 1,
+            "view": -1,
+            "label": null
+          }
+        },
+        "gallery": {
+          "count": 836,
+          "identities": 30,
+          "cameras": [
+            0,
+            1
+          ],
+          "scenes": [
+            0,
+            1
+          ],
+          "first": {
+            "index": 0,
+            "paths": [
+              "test/RGB/000258_cam1_0_00.jpg",
+              "test/NI/000258_cam1_0_00.jpg",
+              "test/TI/000258_cam1_0_00.jpg"
+            ],
+            "identity": 258,
+            "camera": 0,
+            "scene": 0,
+            "view": -1,
+            "label": null
+          },
+          "last": {
+            "index": 835,
+            "paths": [
+              "test/RGB/000299_cam2_0_12.jpg",
+              "test/NI/000299_cam2_0_12.jpg",
+              "test/TI/000299_cam2_0_12.jpg"
+            ],
+            "identity": 299,
+            "camera": 1,
+            "scene": 1,
+            "view": -1,
+            "label": null
+          }
+        }
+      }
+    },
+    {
+      "schema": "trifusion-official-three-dataset-protocol-v1",
+      "dataset": "RGBNT100",
+      "dataset_root": "/data/gaob/Re-ID/dataset/RGBNT100",
+      "environment_key": "camera",
+      "train_split": "bounding_box_train",
+      "query_split": "query",
+      "gallery_split": "bounding_box_test",
+      "counts": {
+        "train": 8675,
+        "query": 1715,
+        "gallery": 8575
+      },
+      "sha256": "12d8afe5cf6e537b69ccf753481dd5fd651f14b7672e1e6411a4d4e9d88cc956",
+      "keys": [
+        "schema",
+        "dataset",
+        "inventory_sha256",
+        "dataset_root",
+        "seed",
+        "environment_key",
+        "train_split",
+        "query_split",
+        "gallery_split",
+        "train_label_map",
+        "records",
+        "query_rows",
+        "counts",
+        "filter",
+        "model_forwards",
+        "optimizer_updates"
+      ],
+      "train_label_count": 50,
+      "record_summary": {
+        "train": {
+          "count": 8675,
+          "identities": 50,
+          "cameras": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7
+          ],
+          "scenes": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7
+          ],
+          "first": {
+            "index": 0,
+            "paths": [
+              "rgbir/bounding_box_train/0501_c0001_000.jpg"
+            ],
+            "identity": 501,
+            "camera": 0,
+            "scene": 0,
+            "view": -1,
+            "label": 0
+          },
+          "last": {
+            "index": 8674,
+            "paths": [
+              "rgbir/bounding_box_train/0599_c0006_024.jpg"
+            ],
+            "identity": 599,
+            "camera": 5,
+            "scene": 5,
+            "view": -1,
+            "label": 49
+          }
+        },
+        "query": {
+          "count": 1715,
+          "identities": 50,
+          "cameras": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7
+          ],
+          "scenes": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7
+          ],
+          "first": {
+            "index": 0,
+            "paths": [
+              "rgbir/query/0502_c0001_000.jpg"
+            ],
+            "identity": 502,
+            "camera": 0,
+            "scene": 0,
+            "view": -1,
+            "label": null
+          },
+          "last": {
+            "index": 1714,
+            "paths": [
+              "rgbir/query/0600_c0008_020.jpg"
+            ],
+            "identity": 600,
+            "camera": 7,
+            "scene": 7,
+            "view": -1,
+            "label": null
+          }
+        },
+        "gallery": {
+          "count": 8575,
+          "identities": 50,
+          "cameras": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7
+          ],
+          "scenes": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7
+          ],
+          "first": {
+            "index": 0,
+            "paths": [
+              "rgbir/bounding_box_test/0502_c0001_000.jpg"
+            ],
+            "identity": 502,
+            "camera": 0,
+            "scene": 0,
+            "view": -1,
+            "label": null
+          },
+          "last": {
+            "index": 8574,
+            "paths": [
+              "rgbir/bounding_box_test/0600_c0008_024.jpg"
+            ],
+            "identity": 600,
+            "camera": 7,
+            "scene": 7,
+            "view": -1,
+            "label": null
+          }
+        }
+      }
+    },
+    {
+      "schema": "trifusion-official-three-dataset-protocol-v1",
+      "dataset": "MSVR310",
+      "dataset_root": "/data/gaob/Re-ID/dataset/MSVR310",
+      "environment_key": "scene",
+      "train_split": "bounding_box_train",
+      "query_split": "query3",
+      "gallery_split": "bounding_box_test",
+      "counts": {
+        "train": 1032,
+        "query": 591,
+        "gallery": 1055
+      },
+      "sha256": "7f2b35f9a7e00433558c1e723db0e3ff0ea9daa7144eeeb972139d1502945cbc",
+      "keys": [
+        "schema",
+        "dataset",
+        "inventory_sha256",
+        "dataset_root",
+        "seed",
+        "environment_key",
+        "train_split",
+        "query_split",
+        "gallery_split",
+        "train_label_map",
+        "records",
+        "query_rows",
+        "counts",
+        "filter",
+        "model_forwards",
+        "optimizer_updates"
+      ],
+      "train_label_count": 155,
+      "record_summary": {
+        "train": {
+          "count": 1032,
+          "identities": 155,
+          "cameras": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7
+          ],
+          "scenes": [
+            0,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8,
+            9,
+            10,
+            11,
+            12,
+            13,
+            14,
+            15,
+            16,
+            17,
+            18,
+            19,
+            20,
+            21,
+            22,
+            23,
+            24,
+            25,
+            26,
+            27,
+            28,
+            29,
+            30
+          ],
+          "first": {
+            "index": 0,
+            "paths": [
+              "bounding_box_train/0001/vis/0001_s002_v0_000.jpg",
+              "bounding_box_train/0001/ni/0001_s002_v0_000.jpg",
+              "bounding_box_train/0001/th/0001_s002_v0_000.jpg"
+            ],
+            "identity": 1,
+            "camera": 0,
+            "scene": 2,
+            "view": 2,
+            "label": 0
+          },
+          "last": {
+            "index": 1031,
+            "paths": [
+              "bounding_box_train/0330/vis/0330_s000_v4_001.jpg",
+              "bounding_box_train/0330/ni/0330_s000_v4_001.jpg",
+              "bounding_box_train/0330/th/0330_s000_v4_001.jpg"
+            ],
+            "identity": 330,
+            "camera": 4,
+            "scene": 0,
+            "view": 0,
+            "label": 154
+          }
+        },
+        "query": {
+          "count": 591,
+          "identities": 52,
+          "cameras": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7
+          ],
+          "scenes": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            7,
+            8,
+            9,
+            10,
+            11,
+            12,
+            13,
+            14,
+            15,
+            16,
+            17,
+            18,
+            19,
+            20,
+            21,
+            22,
+            23,
+            24,
+            25,
+            26,
+            27,
+            28,
+            29,
+            30
+          ],
+          "first": {
+            "index": 0,
+            "paths": [
+              "query3/0002/vis/0002_s002_v0_000.jpg",
+              "query3/0002/ni/0002_s002_v0_000.jpg",
+              "query3/0002/th/0002_s002_v0_000.jpg"
+            ],
+            "identity": 2,
+            "camera": 0,
+            "scene": 2,
+            "view": 2,
+            "label": null
+          },
+          "last": {
+            "index": 590,
+            "paths": [
+              "query3/0253/vis/0253_s030_v7_003.jpg",
+              "query3/0253/ni/0253_s030_v7_003.jpg",
+              "query3/0253/th/0253_s030_v7_003.jpg"
+            ],
+            "identity": 253,
+            "camera": 7,
+            "scene": 30,
+            "view": 30,
+            "label": null
+          }
+        },
+        "gallery": {
+          "count": 1055,
+          "identities": 155,
+          "cameras": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7
+          ],
+          "scenes": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            7,
+            8,
+            9,
+            10,
+            11,
+            12,
+            13,
+            14,
+            15,
+            16,
+            17,
+            18,
+            19,
+            20,
+            21,
+            22,
+            23,
+            24,
+            25,
+            26,
+            27,
+            28,
+            29,
+            30
+          ],
+          "first": {
+            "index": 0,
+            "paths": [
+              "bounding_box_test/0002/vis/0002_s002_v0_000.jpg",
+              "bounding_box_test/0002/ni/0002_s002_v0_000.jpg",
+              "bounding_box_test/0002/th/0002_s002_v0_000.jpg"
+            ],
+            "identity": 2,
+            "camera": 0,
+            "scene": 2,
+            "view": 2,
+            "label": null
+          },
+          "last": {
+            "index": 1054,
+            "paths": [
+              "bounding_box_test/0331/vis/0331_s000_v7_007.jpg",
+              "bounding_box_test/0331/ni/0331_s000_v7_007.jpg",
+              "bounding_box_test/0331/th/0331_s000_v7_007.jpg"
+            ],
+            "identity": 331,
+            "camera": 7,
+            "scene": 0,
+            "view": 0,
+            "label": null
+          }
+        }
+      }
+    }
+  ],
+  "protocol_readonly_verification": [
+    {
+      "dataset": "RGBNT201",
+      "filter": "exclude same identity and same environment; retain all different identities",
+      "splits": {
+        "train": {
+          "records": 3951,
+          "paths": 11853,
+          "disk_paths": 11853,
+          "metadata_matches_filenames": true
+        },
+        "query": {
+          "records": 836,
+          "paths": 2508,
+          "disk_paths": 2508,
+          "metadata_matches_filenames": true
+        },
+        "gallery": {
+          "records": 836,
+          "paths": 2508,
+          "disk_paths": 2508,
+          "metadata_matches_filenames": true
+        }
+      },
+      "train_test_disjoint": true,
+      "valid_queries": 836,
+      "positive_count_range": [
+        7,
+        21
+      ],
+      "gallery_only_identities": 0,
+      "gallery_only_records": 0
+    },
+    {
+      "dataset": "RGBNT100",
+      "filter": "exclude same identity and same environment; retain all different identities",
+      "splits": {
+        "train": {
+          "records": 8675,
+          "paths": 8675,
+          "disk_paths": 8675,
+          "metadata_matches_filenames": true
+        },
+        "query": {
+          "records": 1715,
+          "paths": 1715,
+          "disk_paths": 1715,
+          "metadata_matches_filenames": true
+        },
+        "gallery": {
+          "records": 8575,
+          "paths": 8575,
+          "disk_paths": 8575,
+          "metadata_matches_filenames": true
+        }
+      },
+      "train_test_disjoint": true,
+      "valid_queries": 1715,
+      "positive_count_range": [
+        50,
+        175
+      ],
+      "gallery_only_identities": 0,
+      "gallery_only_records": 0
+    },
+    {
+      "dataset": "MSVR310",
+      "filter": "exclude same identity and same environment; retain all different identities",
+      "splits": {
+        "train": {
+          "records": 1032,
+          "paths": 3096,
+          "disk_paths": 3096,
+          "metadata_matches_filenames": true
+        },
+        "query": {
+          "records": 591,
+          "paths": 1773,
+          "disk_paths": 1773,
+          "metadata_matches_filenames": true
+        },
+        "gallery": {
+          "records": 1055,
+          "paths": 3165,
+          "disk_paths": 3165,
+          "metadata_matches_filenames": true
+        }
+      },
+      "train_test_disjoint": true,
+      "valid_queries": 591,
+      "positive_count_range": [
+        1,
+        31
+      ],
+      "gallery_only_identities": 103,
+      "gallery_only_records": 464
+    }
+  ],
+  "actual_baseline_weights": {
+    "RGBNT201": {
+      "file": "RGBNT201_PlainBaseline_50.pth",
+      "expected": "789e5e14aacd74ad122aad701389eb216ca5b4fda92687e27351a513023b4407",
+      "actual": "789e5e14aacd74ad122aad701389eb216ca5b4fda92687e27351a513023b4407",
+      "bytes": 345714525
+    },
+    "MSVR310": {
+      "file": "MSVR310_PlainBaseline_50.pth",
+      "expected": "69c5e71b75036d7216ece3ff84450f0052f5e70dfaba46bf73f3e1d40992bb37",
+      "actual": "69c5e71b75036d7216ece3ff84450f0052f5e70dfaba46bf73f3e1d40992bb37",
+      "bytes": 345632425
+    },
+    "RGBNT100": {
+      "file": "RGBNT100_PlainBaseline_30.pth",
+      "expected": "299a28bfb3e3180eeae0736cf8638cd162525dce0f2192a940b62b97f6e67dcd",
+      "actual": "299a28bfb3e3180eeae0736cf8638cd162525dce0f2192a940b62b97f6e67dcd",
+      "bytes": 344987305
+    }
+  },
+  "actual_clip_weight": {
+    "file": "/data/gaob/Re-ID/Trifusion/pertrained-model/ViT-B-16.pt",
+    "sha256": "5806e77cd80f8b59890b7e101eabd078d9fb84e6937f9e85e4ecb61988df416f",
+    "bytes": 350837078
+  },
+  "predecessor_readonly_verification": {
+    "status": "COMPLETE",
+    "jobs": [
+      {
+        "dataset": "RGBNT100",
+        "variant": "competitive",
+        "status": "COMPLETE",
+        "exit_code": 0
+      },
+      {
+        "dataset": "RGBNT201",
+        "variant": "competitive",
+        "status": "COMPLETE",
+        "exit_code": 0
+      },
+      {
+        "dataset": "MSVR310",
+        "variant": "competitive",
+        "status": "COMPLETE",
+        "exit_code": 0
+      },
+      {
+        "dataset": "RGBNT100",
+        "variant": "independent",
+        "status": "COMPLETE",
+        "exit_code": 0
+      },
+      {
+        "dataset": "RGBNT201",
+        "variant": "independent",
+        "status": "COMPLETE",
+        "exit_code": 0
+      },
+      {
+        "dataset": "MSVR310",
+        "variant": "independent",
+        "status": "COMPLETE",
+        "exit_code": 0
+      }
+    ],
+    "verified_complete": 6,
+    "expected_endpoints": 6,
+    "matrix_sha256": "e3433db691dbb1070595386c542f27782cd88b45f5f6faa8660b246e7c2fd4b8",
+    "manifest_sha256": "811bb2fd9ff1638283076a25a4b86c263d93614d9d78f5701e62895411abf181",
+    "source_count": 213,
+    "source_mismatches": {}
+  },
+  "author_metric_source_sha256": "91604acb7d978462c16904910a645d7d1697c15bf150da529099004c8b5eecb2",
+  "deterministic_checks": {
+    "new_source_and_contract_sha_match_count": 6,
+    "preflight_log_sha_match_count": 4,
+    "cross_endpoint_files_checked": 30,
+    "byte_equal_count": 28,
+    "lf_only_difference_count": 2,
+    "ast_parse_source_count": 24,
+    "ast_parse_status": "PASS",
+    "remote_new_role_global_tokens_result_directories": [],
+    "actual_new_formal_endpoints_observed": 0,
+    "image_contents_opened": false,
+    "weights_loaded_as_models": false,
+    "baseline_and_clip_bytes_hashed_only": true,
+    "prior_numeric_metric_audit_repeated": false
+  },
+  "preserved_execution_evidence": {
+    "preflight_sha256": "3a6d62a4c42f1e7045905f14e7b8c7c718a9ff7e7fcdd4f96897f98635f20c76",
+    "preflight_recorded_exit_codes": [
+      0,
+      0,
+      0,
+      0
+    ],
+    "preflight_recorded_scope": "CPU structural fixture with linear Mamba stub and CLI help; no real data/GPU M0/training.",
+    "preflight_reexecuted_by_reviewer": false
+  },
+  "limitations": [
+    "Same-family provisional semantic review, not cross-family acceptance.",
+    "No production forward, backward, GPU M0, new training, strict model reload or new retrieval metric replay was executed by reviewer.",
+    "No complete historical numerical audit was repeated; predecessor terminal/source locks were checked.",
+    "No actual future initialization hashes, parameter counts, gradients, epochs, timing or performance are fabricated."
+  ],
+  "reviewer_writes": [
+    "refine-logs/role_global_tokens_v1/REVIEW.md",
+    "refine-logs/role_global_tokens_v1/REVIEW.json"
+  ]
+}
