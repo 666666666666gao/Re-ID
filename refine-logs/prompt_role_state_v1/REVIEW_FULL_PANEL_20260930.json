@@ -1,0 +1,1632 @@
+{
+  "audit_skill": "experiment-audit",
+  "verdict": "WARN",
+  "overall_verdict": "warn",
+  "integrity_status": "warn",
+  "reason_code": "single_seed_test_selected_mixed_result",
+  "summary": "Primary artifacts and all 72 metrics agree; all six CPU initial-state hashes and 12 strict state loads pass. Carry loses RGBNT201 mAP and fails the registered gate. No fresh neural inference was rerun.",
+  "generated_at": "2026-09-30T02:07:39.778810+00:00",
+  "date": "2026-09-30",
+  "auditor": "fresh native Codex agent",
+  "agent_id": "/root/prompt_panel_audit",
+  "verdict_id": "/root/prompt_panel_audit:20260930",
+  "reviewer_family": "openai",
+  "executor_family": "openai",
+  "review_independence": "same-family",
+  "acceptance_status": "provisional",
+  "reviewer_model": null,
+  "reviewer_reasoning": null,
+  "requested_reviewer_model": "gpt-6-astra",
+  "requested_reviewer_reasoning": "max",
+  "model_attribution_note": "Child host does not surface runtime model/effort; executor native spawn trace should populate actual attribution.",
+  "trace_path": "D:\\Program Files\\UserCache\\gb\\codex_tmp\\prompt_role_state_audit_20260930\\trace",
+  "audited_input_hashes": {
+    "comparators/Signal-cd1b0a6/config/__init__.py": "sha256:ff27847384f82ad53a61a80147c38a8282d9bd5af852593aef7c653e48a5d11b",
+    "comparators/Signal-cd1b0a6/config/defaults.py": "sha256:40257d349153e56e345983c99b1638d7c3d77966dfd2f5496fe03c86dc8dbd57",
+    "comparators/Signal-cd1b0a6/configs/MSVR310/Signal.yml": "sha256:357ca3a989e943ea5348e6206c0d0f69b3c0d35ad9fbadbf68d2786439b8a915",
+    "comparators/Signal-cd1b0a6/configs/RGBNT100/Signal.yml": "sha256:02641ce2941dcd50df77d379aab54650cae4a2a6b15ba1bcd43deba970b6900f",
+    "comparators/Signal-cd1b0a6/configs/RGBNT201/Signal.yml": "sha256:a13bd5169a4c710fa79efc87db909409015a0b2611086c0fbf4c1842f0cfcc44",
+    "comparators/Signal-cd1b0a6/data/__init__.py": "sha256:3e55e3cdaf53a8e97673876c9ad5d2b316bbc82e500e0e318d127e88129be22f",
+    "comparators/Signal-cd1b0a6/data/datasets/MSVWild863.py": "sha256:261f7ed87c78a44274502627415dd6cf88c636e69a98cdc30fdfb20db5f66870",
+    "comparators/Signal-cd1b0a6/data/datasets/RGBNT100.py": "sha256:fe38cdb9d0905b4637f215b804e933a226aefcd9a865e9f73e564a84ef2393ac",
+    "comparators/Signal-cd1b0a6/data/datasets/RGBNT201.py": "sha256:7b2b30b339123e92bbead5c092afa7570a06f423570c4249acfdd39294fc4a88",
+    "comparators/Signal-cd1b0a6/data/datasets/__init__.py": "sha256:82d38047efcac536c237306029bc2354b89d1b64f4a6316f70884a723ba665a5",
+    "comparators/Signal-cd1b0a6/data/datasets/bases.py": "sha256:48f050a7924cebd1e51f8831ba05df78dbccc7049afb0bcf83351d9d1ee23814",
+    "comparators/Signal-cd1b0a6/data/datasets/dukemtmcreid.py": "sha256:d4ddd8fbf7df3432b1af079c3bf7f86d62181bed06ac59de12fd9210ad11945c",
+    "comparators/Signal-cd1b0a6/data/datasets/make_dataloader.py": "sha256:54c47d798a20955bde224d9c78b42149c3c2ef008b02659141829a553194434f",
+    "comparators/Signal-cd1b0a6/data/datasets/market1501.py": "sha256:6b7642f048a36dde3c99af37b91a20560946bcdeab937cfcfe15b263da4319d8",
+    "comparators/Signal-cd1b0a6/data/datasets/msmt17.py": "sha256:d38552fb167fd6c76b369bac14d43170f7ae93849b6144d3846f75b72ee59640",
+    "comparators/Signal-cd1b0a6/data/datasets/msvr310.py": "sha256:10b0197e7c97d1067bd63f25afef3cf0c4e64944ff4028c90d1f2f426a200eb9",
+    "comparators/Signal-cd1b0a6/data/datasets/sampler.py": "sha256:b77902214633a2b06a7c0a80924a737fdb5122984a857f3c6e120a8ad8cce65a",
+    "comparators/Signal-cd1b0a6/data/datasets/sampler_ddp.py": "sha256:c707f1c3e0163ce6bed42780cecfe4fa1bb948f3aec6779edac41e79a69d5983",
+    "comparators/Signal-cd1b0a6/engine/processor.py": "sha256:968aa8bc6304ce6f92410d7e8550b5a0a8c64142dce0aa584089477ba169878b",
+    "comparators/Signal-cd1b0a6/layers/__init__.py": "sha256:48ef0154cc20c04e1e81a6a97895fdf38e7a21695a4386124d79f522c389bd2b",
+    "comparators/Signal-cd1b0a6/layers/center_loss.py": "sha256:c2e23be80b1b3e54503c704dda45ddc4a86f23647fcc8c37c63dbac47d003d89",
+    "comparators/Signal-cd1b0a6/layers/cluster_loss.py": "sha256:699f7357d702ea433a5ef02597a1268471875c9b83908b9f10069fae7e92b477",
+    "comparators/Signal-cd1b0a6/layers/hcloss.py": "sha256:f179d7b00e1206af853098114e3ea0d744c6b7feeb032a280424182914a28908",
+    "comparators/Signal-cd1b0a6/layers/make_loss.py": "sha256:7eb7ab953c2bbc52d0c298ef971d0c3ff7000e5e50756fbb5a5fd63ac4c109aa",
+    "comparators/Signal-cd1b0a6/layers/metric_learning.py": "sha256:262cd6a003028e8c11eadf3ed4e43096adae8e9d89d50dc61b1e9bd4fad94246",
+    "comparators/Signal-cd1b0a6/layers/mutilmargin.py": "sha256:627685f7bfbb31a22b7483942914f0e9f0dad47eae0231915ba26e0a3fb82727",
+    "comparators/Signal-cd1b0a6/layers/range_loss.py": "sha256:e35e1b4eb5287f25dd4cb38ea7450264d386a5c98f2ca8d9d337c8eb03be60c5",
+    "comparators/Signal-cd1b0a6/layers/softmax_loss.py": "sha256:92192d9c3ff4e2fd3920c6e9a9637e0caa1e66cffbbc0be8b4049e5dcdb0bf24",
+    "comparators/Signal-cd1b0a6/layers/supcontrast.py": "sha256:bc21c9763cc795b623089894b711aedaf0cde0c01fd8a1c5d641982513b10f6b",
+    "comparators/Signal-cd1b0a6/layers/triplet_loss.py": "sha256:f502c44bec642bbf72ce6d0f58c9f9a0084beef9cbb451c2d2786bb13f94960a",
+    "comparators/Signal-cd1b0a6/modeling/AddModule/DAS.py": "sha256:55b98cb11a22ece7a422eed565f68e1ca8ffa1b448dca616f9a3e243311644ea",
+    "comparators/Signal-cd1b0a6/modeling/AddModule/useA.py": "sha256:1f8fef4dcadb89f5097f83b41a699d9f801a23c88ca3eea73b3ad973a56952a9",
+    "comparators/Signal-cd1b0a6/modeling/AddModule/useB.py": "sha256:39a65f82d59048745663d891a1c4c012eb1cc404ef8c8084f942702aeef46fec",
+    "comparators/Signal-cd1b0a6/modeling/__init__.py": "sha256:c1962dec3f8aa828bd7237baf6edd7b4862cdbd8e9f710170f37f3d61bf1d1c0",
+    "comparators/Signal-cd1b0a6/modeling/backbones/__init__.py": "sha256:cb7a2fb6a8f54e83ff3c6293317a3d043b7dccd24501784de644cf8d15af78b9",
+    "comparators/Signal-cd1b0a6/modeling/backbones/basic_cnn_params/__init__.py": "sha256:e1625a0f2d541b9a8e6d470d4ad0fd151034bb26ca02d602f05336ed9de2201c",
+    "comparators/Signal-cd1b0a6/modeling/backbones/basic_cnn_params/cal.py": "sha256:2b2a5cf892e0afd43714fe062e5188f2db60311b34feb53f4247de2803f284ac",
+    "comparators/Signal-cd1b0a6/modeling/backbones/basic_cnn_params/densenet.py": "sha256:a681ab2026ad388a332caee0cc7766cf324d71615281983971a9dd72cf396936",
+    "comparators/Signal-cd1b0a6/modeling/backbones/basic_cnn_params/flops.py": "sha256:954e233730eb5ad868b85b2021d5a9381db6e67a21c1627fae144bdb0fc2107c",
+    "comparators/Signal-cd1b0a6/modeling/backbones/basic_cnn_params/hacnn.py": "sha256:cd83408cc6f8891759116a0ec84237e19473dc42eb9bd72c3f928d1de2bd313c",
+    "comparators/Signal-cd1b0a6/modeling/backbones/basic_cnn_params/inceptionresnetv2.py": "sha256:de17492a6c1801ae56ba989073667a1b8f1577c140be490a2a88eb60842c73ac",
+    "comparators/Signal-cd1b0a6/modeling/backbones/basic_cnn_params/inceptionv4.py": "sha256:aa301ffdcdbcdd25408c65dc7fe5573de1983b7fa94e1562023f9d914dea6fde",
+    "comparators/Signal-cd1b0a6/modeling/backbones/basic_cnn_params/mlfn.py": "sha256:1ae1196d103345a13c60502d2e4f14cf31f05a00f30cdd193eb61f74f19fe8a4",
+    "comparators/Signal-cd1b0a6/modeling/backbones/basic_cnn_params/mobilenetv2.py": "sha256:f9e1c2a3b8a469f343b47812b13367d150880d38758eab14670e52d60fa72ba3",
+    "comparators/Signal-cd1b0a6/modeling/backbones/basic_cnn_params/mudeep.py": "sha256:82b24f86064538abf5d85ba147f67e0d950ee07b6406547e12fd11393ff947f4",
+    "comparators/Signal-cd1b0a6/modeling/backbones/basic_cnn_params/nasnet.py": "sha256:20e762521082698eafe9d3db4553d1aa731a5364b15c9d217636a44a6b9bc3af",
+    "comparators/Signal-cd1b0a6/modeling/backbones/basic_cnn_params/osnet.py": "sha256:34b8b7a4ceb54625a29c1952d665061ae235efdd695fc999a8cd928107435bc4",
+    "comparators/Signal-cd1b0a6/modeling/backbones/basic_cnn_params/osnet_ain.py": "sha256:a43b495866a4b1645cd134a30c3011592e8c6826ba4781955a135588cf46cd25",
+    "comparators/Signal-cd1b0a6/modeling/backbones/basic_cnn_params/pcb.py": "sha256:76246a0f6b6438566f26f307ec9ab3f378f38885eefa9e58aaf23df2b90410e4",
+    "comparators/Signal-cd1b0a6/modeling/backbones/basic_cnn_params/resnet.py": "sha256:6b871338b477421bbc23bc7b3028735fc67ab4f551d979c5ae8b2edf2d02c168",
+    "comparators/Signal-cd1b0a6/modeling/backbones/basic_cnn_params/resnet_ibn_a.py": "sha256:8459ffb25de797b755c7ded64527ab664491b0c50aaf66c259a7cb530577ec10",
+    "comparators/Signal-cd1b0a6/modeling/backbones/basic_cnn_params/resnet_ibn_b.py": "sha256:b26f408850d5e6b6ad34f576536004d392db8f6c26d738b3d8e5a71ab56ca60b",
+    "comparators/Signal-cd1b0a6/modeling/backbones/basic_cnn_params/resnetmid.py": "sha256:97886e2906f107a7fdb7913ae49db08e326e26dea3aeb76b06cba75f8e63dd83",
+    "comparators/Signal-cd1b0a6/modeling/backbones/basic_cnn_params/senet.py": "sha256:062339e75c5137987371b761428c74bc7cfa3d3d219bce1f5f1ffff7e39291da",
+    "comparators/Signal-cd1b0a6/modeling/backbones/basic_cnn_params/shufflenet.py": "sha256:0db745f384bee5daacce335de41a4f841a367d1302c80245d453d21ae8aa64b3",
+    "comparators/Signal-cd1b0a6/modeling/backbones/basic_cnn_params/shufflenetv2.py": "sha256:8ce02f3e59da5db8f50ecb2af1d79d742a9499d87734a30ff53326c0fe945767",
+    "comparators/Signal-cd1b0a6/modeling/backbones/basic_cnn_params/squeezenet.py": "sha256:8d42e650ddb6a65000081bf233fd343585db422b29f4d79a16211b1d514aa94e",
+    "comparators/Signal-cd1b0a6/modeling/backbones/basic_cnn_params/xception.py": "sha256:2b11ac064b1fb8dbc5ed7e900475347eb61b1376c4a8a7992188596757b1cdbf",
+    "comparators/Signal-cd1b0a6/modeling/backbones/t2t.py": "sha256:f8cd394abc8b2d650310968e14a4ae978063fee55d545658aa3e90676f996159",
+    "comparators/Signal-cd1b0a6/modeling/backbones/token_performer.py": "sha256:3e3dfa33523e3d090d9e639d8b442a7883860a650e1af241786d1e4561f136d3",
+    "comparators/Signal-cd1b0a6/modeling/backbones/token_transformer.py": "sha256:6dc55462e5ff1138a2b19883aec86d43591494efdb65bce383152dcdc0fdfc6a",
+    "comparators/Signal-cd1b0a6/modeling/backbones/transformer_block.py": "sha256:7d4da490e811af278eafb7fe768622a68de6ab8fcc78adce36c59db307ca96a4",
+    "comparators/Signal-cd1b0a6/modeling/backbones/vit_pytorch.py": "sha256:6821875c278d1999dc6841b599abc8368651ef5cf6e8c507c323f02dbf334fa9",
+    "comparators/Signal-cd1b0a6/modeling/clip/LoRA.py": "sha256:c3f085ba05071701235bf4f0f3f87caaa3823bc1e17883ca85f1a2f690133365",
+    "comparators/Signal-cd1b0a6/modeling/clip/__init__.py": "sha256:d7930eb290ebed432116795c91473200d098451a94c0aedd4ae0f934f97955e8",
+    "comparators/Signal-cd1b0a6/modeling/clip/clip.py": "sha256:4898d0e683126fbc83d450465593042159ca7162de3199c5e9e89e0e0d1d5d3d",
+    "comparators/Signal-cd1b0a6/modeling/clip/model.py": "sha256:2c2ca81815830fad2ab13bb8bb4ba0d41f0625477af6505815f0982d96df4e73",
+    "comparators/Signal-cd1b0a6/modeling/clip/simple_tokenizer.py": "sha256:d1b09f10ed3d1e2c343619cb98cbfacb92363dd8607526a43aa7fe2d60d15bad",
+    "comparators/Signal-cd1b0a6/modeling/make_model.py": "sha256:1a88a91d2e5055f5d338996231b16c0e13b2fa7013c74131ca663f16c2655963",
+    "comparators/Signal-cd1b0a6/modeling/make_model_clipreid.py": "sha256:5494c2b7cb9acfb2c727a2cde201ba587184b344667e077eacfe0c3a0c578651",
+    "comparators/Signal-cd1b0a6/modeling/meta_arch.py": "sha256:8b709d5ab4b14ba150a96bbb5e8cc7e6dbbb71dd8bd30cafd7a5cb110ee5a757",
+    "comparators/Signal-cd1b0a6/scripts/auto_tests_docs/auto_docs.py": "sha256:e3132d7b5d7f2ba1c4ea6069ce5396d813606d9c609735d1a636e905aeb6c009",
+    "comparators/Signal-cd1b0a6/scripts/auto_tests_docs/auto_docs_functions.py": "sha256:bf6603819ade241c60ab67c8fb23b2baf63032008886b6115d1aaf8ed4b8ae30",
+    "comparators/Signal-cd1b0a6/scripts/auto_tests_docs/auto_tests.py": "sha256:553e8393d20a0d8b6669b28c1384f74e0362daedead9a31cedcaaa461037fed2",
+    "comparators/Signal-cd1b0a6/scripts/auto_tests_docs/auto_tests_functions.py": "sha256:b5d5ac1d5780c944f13af959766ab06a3533929492e56d5df9524ae5621ac2d7",
+    "comparators/Signal-cd1b0a6/scripts/auto_tests_docs/docs.py": "sha256:24c5bddb8e81ead8a609e7068c99ab7dbdf6e6f9e3cceefa262429c31af4ce74",
+    "comparators/Signal-cd1b0a6/scripts/auto_tests_docs/mkdocs_handler.py": "sha256:fc9e0aaf11b4338abd3deb1cd818dd5d248c2402f85c475ff0e06f7f87d23849",
+    "comparators/Signal-cd1b0a6/scripts/delpycache.py": "sha256:2af16df38b78eac2bc716c9b1baa1aff2bb91463cdddf05a9c532088a8640cc8",
+    "comparators/Signal-cd1b0a6/scripts/get_package_requirements.py": "sha256:959cc0cf202faa3739395912ce20356dadd554b8d11dbae4b1a21ab7a328f836",
+    "comparators/Signal-cd1b0a6/scripts/requirementstxt_to_pyproject.py": "sha256:f2b7c530272db869827272f8bbc1915e9adcf9f86ebbc7e35f6ad2673d0ddaa5",
+    "comparators/Signal-cd1b0a6/solver/cosine_lr.py": "sha256:d3db6e30c1666c5af71200086f33c644d476310b6c5dc7ed98097cc989bdad4d",
+    "comparators/Signal-cd1b0a6/solver/lr_scheduler.py": "sha256:6b7ea85e2c66ab5fb76560ba55b12bd0f2b3ab6eca2a6c9603e45648bfffbeba",
+    "comparators/Signal-cd1b0a6/solver/lr_scheduler310.py": "sha256:e15481ca1d40dbab559af1d97367a192d44b9635a1eaf3ce004dcddb14ee7674",
+    "comparators/Signal-cd1b0a6/solver/make_optimizer.py": "sha256:ada1023a79fcaaed092bce0849a61db9d0253cf8974c494bfb3082d0fd35fee1",
+    "comparators/Signal-cd1b0a6/solver/scheduler.py": "sha256:b7517bb0f79a3334e2a3ac5ecb14bdcf69cb28c62dd3c734c4e3d212d0955228",
+    "comparators/Signal-cd1b0a6/solver/scheduler_factory.py": "sha256:c5e20bdffec4b5360faa04f823639c8e5fd8672914813fb96148927c9ee19abc",
+    "comparators/Signal-cd1b0a6/test.py": "sha256:9e6f2a190e02f25be97c599922c43554de1d2efb3916a5bebe1c4cce30b6ae4a",
+    "comparators/Signal-cd1b0a6/tests/test_benchmarks.py": "sha256:ce4ef25c55057e674647415a8af010c40d3dd6e3c547955cf0e294761ebb624f",
+    "comparators/Signal-cd1b0a6/tests/test_blocks.py": "sha256:cac136da29ddc8a93853e368f4e5ca71ad2fc458dc79d19677580b1c21dbacdb",
+    "comparators/Signal-cd1b0a6/tests/test_model.py": "sha256:28fd57c2c82e9da22484a734adbedecd92e5c26dd59778e46b65bb2e437dd783",
+    "comparators/Signal-cd1b0a6/train.py": "sha256:243a2f6de57f6113c6f0e35390670ee937bbcea84ab3335eea2b6257b3bcbd8f",
+    "comparators/Signal-cd1b0a6/utils/iotools.py": "sha256:05e59eac76140ec28c87f606283baae9cdc260b250d3088d9624e08e3cacf3d7",
+    "comparators/Signal-cd1b0a6/utils/logger.py": "sha256:5a732f76d567609ec1054e1e705dccbec871b71795189d80d0fb3538b28583b0",
+    "comparators/Signal-cd1b0a6/utils/meter.py": "sha256:0245aa40c9a6ade9a9ac0a0f882d1a1d7b06260c667ea43e2ecb3ba846311796",
+    "comparators/Signal-cd1b0a6/utils/metrics.py": "sha256:91604acb7d978462c16904910a645d7d1697c15bf150da529099004c8b5eecb2",
+    "comparators/Signal-cd1b0a6/utils/ranklist_vehicle.py": "sha256:ca4b544911256a95f45ff924f006973828bc3972cfdbbf4ea96f724229244394",
+    "comparators/Signal-cd1b0a6/utils/reranking.py": "sha256:1d55aa0227630a56a34931f9aded128987807d358ae9d5365dd83f28bc459fb9",
+    "comparators/Signal-cd1b0a6/utils/volume.py": "sha256:a154f65e5f4483446748e216b7b03672617efb02004e14e9940446c1013b8ccb",
+    "comparators/Signal-cd1b0a6/visualize/GradCAM.py": "sha256:d3c9f88b3ce4e18e20e10521f0d19d2ee6a15e2eaff3fb08a32c8a18fffd63fc",
+    "comparators/Signal-cd1b0a6/zablation/CAM.py": "sha256:9bc131a4643848d6a7af4b80347a24726727a57c6e9e969da8454395680b5bfb",
+    "comparators/Signal-cd1b0a6/zablation/offestvisual.py": "sha256:8af7f3c8511d076373014b4de269317800dc7edd686a6acdec6f4d342ec01661",
+    "comparators/Signal-cd1b0a6/zablation/tiaoxing.py": "sha256:efa278cc4ad099ba62979d8f4de4146a26a2552c3ea3863ec919e60389da4f6c",
+    "comparators/Signal-cd1b0a6/zablation/token_visual.py": "sha256:b07ae0a3a3d2c18be520a0878c8980196727da04f15e85bcce5b04bf676d4994",
+    "comparators/Signal-cd1b0a6/zablation/zhexian.py": "sha256:b9486f3fe80e96679ba09b4b7ee995fb2433e198eec489c680bd7a87c44d13be",
+    "configs/MSVR310/TriFusion-source-style-paired-v1-r2.json": "sha256:848254aab6dc02230a7fd33be0d60fc2560c99fc77cbd320cf0ef2efd655539d",
+    "configs/RGBNT100/TriFusion-main-v1.json": "sha256:68b091dd48f086a29319dc853f9eb48bd38aabc72391e0187421efc5e1496aaf",
+    "configs/RGBNT201/TriFusion-signal-preserving-v27-source-style-rtx3090.json": "sha256:6f3161985f3a3831ffa890a163a510c6fa463ce4fd933793f0ce79db2c07677a",
+    "logs/official_three_dataset_protocols_20260923/MSVR310.json": "sha256:7f2b35f9a7e00433558c1e723db0e3ff0ea9daa7144eeeb972139d1502945cbc",
+    "logs/official_three_dataset_protocols_20260923/RGBNT100.json": "sha256:12d8afe5cf6e537b69ccf753481dd5fd651f14b7672e1e6411a4d4e9d88cc956",
+    "logs/official_three_dataset_protocols_20260923/RGBNT201.json": "sha256:e63be5d9f8bd41df365264ad8f459dcd063d088023a2d2ed525a49a72f61161e",
+    "logs/prompt_role_state_20260930/accepted_matrix.json": "sha256:1405d73124e7a1776de521edefb14620457f7b6e0691787bb18e2f2a8e0af7f9",
+    "logs/prompt_role_state_20260930/campaign.json": "sha256:979be2aa7e080c34c5067bb59c9b52e3ef43edf127219bb06180243d61deb417",
+    "logs/prompt_role_state_20260930/manifest.json": "sha256:01d165e19f53e9100ea955b16537150a397332d8011583f72fe969f5a6cf0cf1",
+    "logs/prompt_role_state_20260930/paired_MSVR310.json": "sha256:a30d49d71beb43dd39469b3e6da897dff5b27d1f20defe59f03d97a3bbd901aa",
+    "logs/prompt_role_state_20260930/paired_RGBNT100.json": "sha256:0cd53a3895742cd83e0eee87ebace3e9b68baefa9966d5b0c79aaa89f7151c39",
+    "logs/prompt_role_state_20260930/paired_RGBNT201.json": "sha256:de81023ee03556cbf39e94c6c2ad2fc0d34d6bf9cf40cc6b8df094ad63afb1e6",
+    "logs/prompt_role_state_20260930/parent_matrix.json": "sha256:c088faf8d44b9b7b02d50d11dec4f32766801a501e6248b2989339654d1de7c2",
+    "logs/prompt_role_state_20260930/prompt_carry_roles_MSVR310.log": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "logs/prompt_role_state_20260930/prompt_carry_roles_RGBNT100.log": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "logs/prompt_role_state_20260930/prompt_carry_roles_RGBNT201.log": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "logs/prompt_role_state_20260930/prompt_reset_roles_MSVR310.log": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "logs/prompt_role_state_20260930/prompt_reset_roles_RGBNT100.log": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "logs/prompt_role_state_20260930/prompt_reset_roles_RGBNT201.log": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "logs/prompt_role_state_20260930/prompt_role_state_20260930_prompt_carry_roles_MSVR310/campaign.json": "sha256:ac79d3649e14171f12e73d1a2afdbfa681302c7eb7748ba824c233e5e1beee5d",
+    "logs/prompt_role_state_20260930/prompt_role_state_20260930_prompt_carry_roles_MSVR310/evaluate.log": "sha256:565b3b59c84d48615e657f107ca57ca98714bde7e80f03c09872326479488072",
+    "logs/prompt_role_state_20260930/prompt_role_state_20260930_prompt_carry_roles_MSVR310/m0.log": "sha256:9a6b42aec447c7d6da499b60baf63521e5c308619e4c5a6e9661b8f7b6e0d8cf",
+    "logs/prompt_role_state_20260930/prompt_role_state_20260930_prompt_carry_roles_MSVR310/train.log": "sha256:ca869a9e4ae3d2cd53b056589b2a8567a9aa23f8a475032568fde19f4cad2564",
+    "logs/prompt_role_state_20260930/prompt_role_state_20260930_prompt_carry_roles_RGBNT100/campaign.json": "sha256:493a5ef900d74b1d57d1e4862aa8db128052af43b8b83a220d59f5311f9c74bd",
+    "logs/prompt_role_state_20260930/prompt_role_state_20260930_prompt_carry_roles_RGBNT100/evaluate.log": "sha256:dfb5f73dd4d6cd464a17d97e3980c944ec19bc9f8fcd04c9c769156391bb7265",
+    "logs/prompt_role_state_20260930/prompt_role_state_20260930_prompt_carry_roles_RGBNT100/m0.log": "sha256:e6963dcb76297490c9b3cb713c8400d61e1514d1d5a1ac20cdb752d4073710db",
+    "logs/prompt_role_state_20260930/prompt_role_state_20260930_prompt_carry_roles_RGBNT100/train.log": "sha256:7a07ac63a3c6c459b97a5586d2171612eb3c3c42059b37c8ec29a01cbadffd81",
+    "logs/prompt_role_state_20260930/prompt_role_state_20260930_prompt_carry_roles_RGBNT201/campaign.json": "sha256:a25448d29eca96e5b2a443f59df1dd7584dbd82af130ed1a8db48a843700efea",
+    "logs/prompt_role_state_20260930/prompt_role_state_20260930_prompt_carry_roles_RGBNT201/evaluate.log": "sha256:616d9db6ca166f7f0a70c62edf736ff5983c2e2ce4ea7fcfff1f68f0c71f83b6",
+    "logs/prompt_role_state_20260930/prompt_role_state_20260930_prompt_carry_roles_RGBNT201/m0.log": "sha256:a0f58b5fc766b20530366e94543edebaf3dcf6d9fcafd0a3468b638cac5295ea",
+    "logs/prompt_role_state_20260930/prompt_role_state_20260930_prompt_carry_roles_RGBNT201/train.log": "sha256:a8f1a7e0c50df4dd2a447e33a2bf627c8dd9d9905a56928d3bb39b08e3ff51e6",
+    "logs/prompt_role_state_20260930/prompt_role_state_20260930_prompt_reset_roles_MSVR310/campaign.json": "sha256:aab7648c86562687f5f1181816c3387399b798aab5d694793ee65ee5b42af451",
+    "logs/prompt_role_state_20260930/prompt_role_state_20260930_prompt_reset_roles_MSVR310/evaluate.log": "sha256:446304485372d0dec4980627ca94c34f3d2f8b1a93f15803f8d883c18efd97af",
+    "logs/prompt_role_state_20260930/prompt_role_state_20260930_prompt_reset_roles_MSVR310/m0.log": "sha256:28c8b8df13fce8261e6dbe70290ad701765279c2c98ae33ede603c8795fe3467",
+    "logs/prompt_role_state_20260930/prompt_role_state_20260930_prompt_reset_roles_MSVR310/train.log": "sha256:f4dafb7f4279cdbdf1e038b0af860e545237b2ef4c77b61fd51d6c44bb9c1e11",
+    "logs/prompt_role_state_20260930/prompt_role_state_20260930_prompt_reset_roles_RGBNT100/campaign.json": "sha256:d2b7d3c6497ec14320dd64845a4fcc42097d0fcd84e7a06c91788b5e05a0155b",
+    "logs/prompt_role_state_20260930/prompt_role_state_20260930_prompt_reset_roles_RGBNT100/evaluate.log": "sha256:9a198352dae2d7caff3f8cd4620dd6f4a818ffd8f7479ee7af14e988d1a66849",
+    "logs/prompt_role_state_20260930/prompt_role_state_20260930_prompt_reset_roles_RGBNT100/m0.log": "sha256:c0dc20ade249ab4fd9631aebd3e6fc9a0cbc14efc5163ce519ce306942c51d60",
+    "logs/prompt_role_state_20260930/prompt_role_state_20260930_prompt_reset_roles_RGBNT100/train.log": "sha256:210cedd9e0a1dfa5a8ffc7d9b8da768e4f362e2f3f3329826b8b050b5662fd46",
+    "logs/prompt_role_state_20260930/prompt_role_state_20260930_prompt_reset_roles_RGBNT201/campaign.json": "sha256:24a0f0e2404fbe27b02ba189829a40b7ba08c7eed2c9b84e35d0ae44691d9266",
+    "logs/prompt_role_state_20260930/prompt_role_state_20260930_prompt_reset_roles_RGBNT201/evaluate.log": "sha256:27f24ae5e5064ea924d6e4b25111f3cd71166edc2ae9013abd794ee5736d9c86",
+    "logs/prompt_role_state_20260930/prompt_role_state_20260930_prompt_reset_roles_RGBNT201/m0.log": "sha256:12d2df069e90a3beb4f3dbddae82637b6f1806ad695ec36ef929e97c1af69fef",
+    "logs/prompt_role_state_20260930/prompt_role_state_20260930_prompt_reset_roles_RGBNT201/train.log": "sha256:a6e88b118f69d1b444ffec3ebaccf91a0ccd4dc953da46355036d6f38b2f4a58",
+    "modeling/trifusion/__init__.py": "sha256:ad617b86663e319f7702e9231fdec9c5f079f4d39ec5dabb90ced469414d910c",
+    "modeling/trifusion/aligned_data.py": "sha256:3ea362d17660483b554cb599442b6377ace020fa114969b9bdd58906fbceedd5",
+    "modeling/trifusion/builder.py": "sha256:8b3620e6be3727709253589a9e59b3efd20a611ba0eec4e8f6b4d0d17eeea4eb",
+    "modeling/trifusion/camera_coverage_v25.py": "sha256:341bacc189c3782d72c3f7c5b7c5bdde8e966f0eddb32966d90b3fd154ff75b5",
+    "modeling/trifusion/camera_negative_v22.py": "sha256:38b6ccc4e495d55af7e68617cdb6b54fdede9e3f177fa3c54a7f8d0db4465f97",
+    "modeling/trifusion/cascade_v2.py": "sha256:a1753a8dff2d6ab9f8d78810e941fef3949d5d07cce4877fb956b5889bc46c5a",
+    "modeling/trifusion/cascade_v2_builder.py": "sha256:1821068cfafe1bfc6d54e65323cd2469f9fc922829ec7ebf6c47af83125c1b0d",
+    "modeling/trifusion/circ_scoring.py": "sha256:db9ae624446674812618ff8c6f7e8d773a576ea31ab1ecb0d41bc3c33ca2da3e",
+    "modeling/trifusion/correspondence_context_identity.py": "sha256:eda3d1473496b33e4b69402dba7770e67d23b33b07afd41d23105b7f148d63af",
+    "modeling/trifusion/correspondence_evidence_readout.py": "sha256:e737a977d39ccbe09a5509118e5b5333d653f7f13381e65e84af1a13e5c28dc4",
+    "modeling/trifusion/correspondence_global_only.py": "sha256:cb0cc4c1d0f6a2c0cad3d310ce3df74845fd17bdbfa3b66dfa64632f5cbd08c3",
+    "modeling/trifusion/correspondence_role_prediction.py": "sha256:7c80d7aa86ac5bd0d07ab7f6df7b2e93f708a2407bfee03fb078ff2bb182787d",
+    "modeling/trifusion/correspondence_roles.py": "sha256:e2a51154b5b327341f35e453dd32a821b091a49a669b49a7c70e79e6e2f2591b",
+    "modeling/trifusion/criterion.py": "sha256:0b2a6370f434828d885945d1a46dd56f6668133ceed45ef359fe71eeca63740a",
+    "modeling/trifusion/cross_depth_role_state.py": "sha256:8e18c7c9d397fbe3eff6f7360a5ab890ebbeecf1404628da6979ade47544b7ba",
+    "modeling/trifusion/cross_modal_identity_v20.py": "sha256:c02e14c4731aba33ebb41d5efdae1b2a077c4b80622691e68014fe5ac280337e",
+    "modeling/trifusion/data.py": "sha256:d0795f8c74e1a35d44d50b408f41c585e90fb57f9267915923f9de5a7aa850be",
+    "modeling/trifusion/dual_view_data_v24.py": "sha256:68de48892c217bdeb143d041b56520822cc9785dea05cd37f7b30328a6f3b560",
+    "modeling/trifusion/encoder.py": "sha256:80fd6adc6d80b232296412ff8647a3d7c6a66d64bda699f545e477b94e72a46b",
+    "modeling/trifusion/experts/__init__.py": "sha256:49709dfc6fd4ca781fa6d24f81476596f716163222ab01fe5d9eae105d8fc286",
+    "modeling/trifusion/experts/cnn.py": "sha256:f823cfd59589e7fa8dbe066b26eec662d93a9d01b2376f05e7a4b6f43409996a",
+    "modeling/trifusion/experts/mamba.py": "sha256:c516c7ad937e5eee6a4ed1e3ec33c2afe3522b751d296bd2e4910e4f27a20ee5",
+    "modeling/trifusion/experts/semantic_residual.py": "sha256:c8cef9717fd7bd1e5e50b428ac92762455defac2e25857c9e0dfaf82729c2a93",
+    "modeling/trifusion/experts/tiny.py": "sha256:d5462c7259e5a17f7e50b87d29f44e2ecb49c4a50ccf5b59f34e8870c3e1cf90",
+    "modeling/trifusion/experts/transformer.py": "sha256:8580c6e761a2fbfd54a70d0bd231fef0695cccecbec328f643a6c5112deb674e",
+    "modeling/trifusion/fusion.py": "sha256:58d3672fb571e9acce8e7a8e82c8cd355fdb0f831f5439aa2d5b6e918b491a8d",
+    "modeling/trifusion/intervention_targets.py": "sha256:dcfab01a167411e98b148caeb55a9e29cd1eae453bae5a2cfe2ae9166c866f38",
+    "modeling/trifusion/interventions.py": "sha256:b32386352edc6f37a0ef62cf4140eb22d5e400b9eefc580e649447b10cc549e1",
+    "modeling/trifusion/joint_geometry_v29.py": "sha256:cf439edf017d3b5e1695521052161bde66082bcc59fb1acd2bab6d0f2fbb4d71",
+    "modeling/trifusion/joint_tokens_v28.py": "sha256:95de3c39fb86c1d574204eb507ca1fd7b84c7ed27eb8e63de87e905310b01656",
+    "modeling/trifusion/joint_tokens_v28_fp32.py": "sha256:fdfa64109973fb5ddeaba6db27e4dc0ef9bb014710d7c6813185ba6535346d0b",
+    "modeling/trifusion/model.py": "sha256:02e08b4ef6102431808bf850c98117e2169330fc954999086241693a22d92bf5",
+    "modeling/trifusion/peer_teaching.py": "sha256:d5ec38a6ebb26d8012be7fa5ebced3dcd5e16de4576e29fef2e89d92dc970b3b",
+    "modeling/trifusion/prompt_role_state.py": "sha256:2b4071f0a78e08426c0d2f3ee3f28b30562cff821b631fe39f2269049c85dcfb",
+    "modeling/trifusion/protocol.py": "sha256:519ff4386addb3b83a0416bca25f75ed5a54029a4fcd949231b5eb96db4ef3bc",
+    "modeling/trifusion/relay.py": "sha256:a24194bc81b72444dcbf3cea3450ee27f7d541787b77fd5d5cf4bdf13799d645",
+    "modeling/trifusion/reliability.py": "sha256:eb9fbed2994ef31038bd31cd129af0b0761c5adc88902ca918d20a05ae431207",
+    "modeling/trifusion/role_modal_responsibility_v26.py": "sha256:ce56ffb40089fad3131958045f9c6d12a11d48ec84123da840eb38e7ad12177b",
+    "modeling/trifusion/sam_training_v21.py": "sha256:9233e8f806914eed623976c7f30830ecac80af274f842214c73055ded9009b56",
+    "modeling/trifusion/semantic_tokenizer.py": "sha256:ea5e2181aaf20be10802b626a17a5dcd6de59ba88d44fa5e833827f8a5931278",
+    "modeling/trifusion/signal_preserving_v13.py": "sha256:7b7c4abb220ed234608553c77aeedd5f8ef763abb04cce5b21f1bfce0f4daa62",
+    "modeling/trifusion/signal_preserving_v14.py": "sha256:168ccc065c50f1ea1dd65d82247b89d664baa67881a8c2ff19c039a7ba740b0e",
+    "modeling/trifusion/signal_preserving_v15.py": "sha256:bba418acfc67c939b06a1285e0e711616beaf8432532237499bc339edcbf890a",
+    "modeling/trifusion/signal_preserving_v15_builder.py": "sha256:7173f0afeecdef3fdf8f7185bef1253ef4193a0a4f03e31dff5d5f79a9416b74",
+    "modeling/trifusion/signal_preserving_v16.py": "sha256:eba55a9001a13f5dba287ba5397377f105f1f83cfe3fd24c705185a7c13cf31c",
+    "modeling/trifusion/signal_preserving_v16_builder.py": "sha256:ebb7e87b3ea03798bde54cda75a6e9e95f805f1f472baafb05d34e3ea7960235",
+    "modeling/trifusion/signal_preserving_v17.py": "sha256:b095383fb619c8e8377cd95a82ef88c0726d3a3a0cecd8211ae2fd3e5493c800",
+    "modeling/trifusion/signal_preserving_v17_builder.py": "sha256:26f68c627656a0f539f1704ac54d865e63cf7c9049a80f2789a7e42d1a424411",
+    "modeling/trifusion/signal_preserving_v18.py": "sha256:c81f1c76c253b297501af6c1cba4d47ecc31a1320101ae2637abf5bff7a11455",
+    "modeling/trifusion/signal_preserving_v19.py": "sha256:69989cced25950ff476759bc93df945b167e8ce88a4340676e8adbbd9f88918e",
+    "modeling/trifusion/signal_preserving_v23.py": "sha256:89816298baedf6ab5d3f122fe16db69035420df8cc91b65e0bb0c8c6f9cde1af",
+    "modeling/trifusion/signal_preserving_v5.py": "sha256:126c98ea869f5b48e2b0873ecf4639a3f4d3671812f898376732d1dc93850426",
+    "modeling/trifusion/signal_preserving_v5_builder.py": "sha256:45a2250e79266abc801cc62b9500bade732183ac23cd4d0921cac56ae85f98e2",
+    "modeling/trifusion/signal_preserving_v6.py": "sha256:09bbd25ae3ef6a209e924b55f6a84bc53146907611c4fa0ab262fd96f348360d",
+    "modeling/trifusion/signal_preserving_v6_builder.py": "sha256:a86e7a2ae87a5e4df08bf4c4bbe6a7cd6b08d597a13435ca654de5bb54396ebf",
+    "modeling/trifusion/signal_preserving_v7.py": "sha256:d238087bbb64111a41ec726732b28eacbdc9ef503ec175b16107228212347963",
+    "modeling/trifusion/signal_preserving_v7_builder.py": "sha256:2a6295288be5a2303ba5485204bccf1035432dd6feb5c213bc71fdb335c6f873",
+    "modeling/trifusion/signal_preserving_v8.py": "sha256:70f79990af4a4a9b784e286635d1b78a1abf367306fe5945fbdcc1ed6f3d6159",
+    "modeling/trifusion/signal_preserving_v8_builder.py": "sha256:6ed1ae8981d5b2f192d196784e26d5f8f13b0611837fc24accbc57f0792ddbf7",
+    "modeling/trifusion/signal_preserving_v8_router.py": "sha256:79c683784c0c2bc9c7484fa10c141afcdcca9edf8a5913e4e352b1fa3a9efb57",
+    "modeling/trifusion/signal_preserving_v9.py": "sha256:48cfff021abf68854ae06443efad4259752a591f492473e25447533fb6691246",
+    "modeling/trifusion/signal_preserving_v9_builder.py": "sha256:88f78dbd7361a555bf304e04c77ff06995d1886690bc8f573e7ecb0a608dbcaa",
+    "modeling/trifusion/source_prototype_v24.py": "sha256:703f2393aaec83a2276497ededddb6ad888f305cb5b93f3bdf600953b5e6ebf7",
+    "modeling/trifusion/source_style_msvr.py": "sha256:57c54142a0617d1ca5c4e1d68a63e31537a10c203eb08056b92971605749092f",
+    "modeling/trifusion/source_style_v27.py": "sha256:aee2f1d40e2362690f704a154f13a0c9e5696ab05ce44837818defe1725d58c5",
+    "modeling/trifusion/standalone.py": "sha256:2017048e0a2493acd76da3946793a02707f9dd543a96cc30994b38887506d8e2",
+    "modeling/trifusion/state.py": "sha256:5fe89c4885507e74ca1833cc18822a4b57e4c2d6fa9a6c6b2e127d1e74b70db9",
+    "modeling/trifusion/task_anchor_v3.py": "sha256:cead5c736ae014a5855c0481e31c3e73ea32a76e7b4ebed9b97abe9541b1a5f0",
+    "modeling/trifusion/task_anchor_v3_builder.py": "sha256:18e84eb2365589bd9cdd16e7113aa012ef9f63b965afe3d8a0f27bb8748733c6",
+    "modeling/trifusion/task_anchor_v4.py": "sha256:d6280a25e21acd2dca10aab51e686a820ee18a2def3341692850fa28ca7057cb",
+    "modeling/trifusion/task_anchor_v4_builder.py": "sha256:1ceeae572c0273ceb4f6fde601dc1a3d717a34ff9b94f35f9ccf1a258d529736",
+    "modeling/trifusion/tokenizer.py": "sha256:ff180350cea3ea8c5a9a7c57e4f4c9b1d7f30cc70dde5405037270be2392c306",
+    "modeling/trifusion/training_phases.py": "sha256:66a7666ad04d7e32392864227df967b86d8aeeba9a62b6ebeff280c96dd89dee",
+    "modeling/trifusion/variants.py": "sha256:ca456227c5249e28461dafb67a68f7103a9b1fea292dcd2f214fb92bab1b91ef",
+    "modeling/trifusion/warm_start.py": "sha256:68591452f89d6303baf81b9957c30b48135a33ce9e7a5544a40ede2b92f5a05d",
+    "tools/audit_correspondence_context_identity_losses.py": "sha256:bcc15e568c6a14efdaca1df5268c5abdec716287d3b6efb2482804add724abf1",
+    "tools/audit_v17_full_gallery.py": "sha256:856881f984ab8793788d291018a60046a47e309c625a65394b1a3ff4e670d8a9",
+    "tools/build_v12_complete_path_oof_targets.py": "sha256:999356e18d489dce99042f1e7873eac15b811b64255f1aee9550c52ae1c7ee06",
+    "tools/collect_correspondence_roles.py": "sha256:f81af437fe5ccfea4361c1ed182cb9b8841b362214d2a5220309a0fd2c78fff8",
+    "tools/collect_prompt_role_state.py": "sha256:50157af0f418f51d9321422701de13167dc2de6a0007b81dbe47bf6f1c7e3b11",
+    "tools/official_three_dataset_data.py": "sha256:c3180a88d12440709319d2025928fc699ff3b7c020b11697d468453fbfc68062",
+    "tools/official_three_dataset_model.py": "sha256:e103ea0f4d6342b0dc129dc2dace0e8c0d0e6c956cfe94729ccb70d9588cf0f9",
+    "tools/queue_correspondence_refinement.py": "sha256:5256afe78d02d9bfea3103daa00d488b94c05e839c955f00355098f69ecbd84a",
+    "tools/queue_correspondence_roles.py": "sha256:746fbdb8bdad04290a9ef22c0550e873c9dce9de74c2c3c3767fea9278be69bf",
+    "tools/queue_prompt_role_state.py": "sha256:76b6e83d108710e1393bcb886cf183312ff7a8776740b382161d6e075a165605",
+    "tools/run_correspondence_context_identity.py": "sha256:9f4cc9f11998819d4a927a32f4e47baf0c4ff9d14c4bc93b0dc35b0153ebc142",
+    "tools/run_correspondence_roles.py": "sha256:e50865fb923297cd61cf38b33ec2bc95154f8c503b5dfe5de9823cad3f03d7ef",
+    "tools/run_official_three_dataset_roles.py": "sha256:f30bb00a0b71429e9d11dd196cd1d543202a133c663ad66e175d2f82e28d448d",
+    "tools/run_prompt_role_state.py": "sha256:f0a0ad609fd0c0448187790672274f3b944a52b74c30390f401d1ce62cb67a68",
+    "tools/run_signal_baseline_dev.py": "sha256:083967f2a38267415b2992da98c2ad9429ebb793f387b45daac1dbb4eb16f365",
+    "tools/run_signal_preserving_v5.py": "sha256:e162184f68778b4991db0f97f26c5fda273b2ad2f7c8db2bbb2d53775eb717e5",
+    "tools/train_msvr310_signal_oof.py": "sha256:c25579d931df34481fef321558f0b9a1f9179d72a25d6047dbbfd3682d4ae60f",
+    "tools/train_msvr310_trifusion_oof.py": "sha256:6e4185f539931a7af05ce56252249c06472e459b6ac7818051d00de1c48e2fa5",
+    "tools/train_official_three_dataset_roles.py": "sha256:d9bf51873f4f4692bed05a5fbd5654a3e6a2e14e104b166b74395c0de0fa39cd",
+    "tools/train_rgbnt100_signal_oof.py": "sha256:4462b73139e034d450d955c5b4a994aaa967548e9cc503d97bb753a14ea03b22",
+    "tools/train_signal_preserving_v17.py": "sha256:333886d16f73987accddb70b0780661bb9400b8afd04af01b57e188d34e5228d",
+    "tools/train_signal_preserving_v18.py": "sha256:f6bdda4631d710d0b6db5fe2a8df124d8dcbd294cb54adcf3ec261d523e96cf8",
+    "trained-model/prompt_role_state_20260930_prompt_carry_roles_MSVR310_seed42_full/official_metrics.json": "sha256:9be442198b84ebe484f8e00dd3ea2da63f8f20fab7c5ece54bab0a1c0ab63bb2",
+    "trained-model/prompt_role_state_20260930_prompt_carry_roles_MSVR310_seed42_full/re.txt": "sha256:d3b0d88f803f8239bd555c912ae5de0b6d55b376ec806b94b0afdc48bf1237eb",
+    "trained-model/prompt_role_state_20260930_prompt_carry_roles_MSVR310_seed42_full/training.json": "sha256:ff63e57b82e0ca635edc7dc23e2edd281daac236a5cd20bc51b312d95f1f62fa",
+    "trained-model/prompt_role_state_20260930_prompt_carry_roles_MSVR310_seed42_full/training_steps.jsonl": "sha256:7845d6c3f904d4d2c344d34e5434afaeec1f4fc321892b934cbebe47257e79ca",
+    "trained-model/prompt_role_state_20260930_prompt_carry_roles_MSVR310_seed42_m0/training.json": "sha256:21c1c4d95c17884493eb7eb8ca5ff15d7849e9a0b048a356cd2b29651aaee399",
+    "trained-model/prompt_role_state_20260930_prompt_carry_roles_MSVR310_seed42_m0/training_steps.jsonl": "sha256:f8f5496b9fec5c68e06350f747414647967bd43913ad7efca235ab4a7775273a",
+    "trained-model/prompt_role_state_20260930_prompt_carry_roles_RGBNT100_seed42_full/official_metrics.json": "sha256:a0f7142ff4afd2c9d756eef47127ff372d1f2910675a87a18761b94dbd4a29db",
+    "trained-model/prompt_role_state_20260930_prompt_carry_roles_RGBNT100_seed42_full/training.json": "sha256:773c864b412d4a3b6368485c6e7527d87c56acf9ffdba99f7137785eab196d88",
+    "trained-model/prompt_role_state_20260930_prompt_carry_roles_RGBNT100_seed42_full/training_steps.jsonl": "sha256:407a061e34aa7a092782f61335ce6261baae834bb695a10ca867fe6081a3b6cb",
+    "trained-model/prompt_role_state_20260930_prompt_carry_roles_RGBNT100_seed42_m0/training.json": "sha256:ae5cfec72b60fc450cb31112e40e4240980c73c3dbae6b39b80a19a72d987615",
+    "trained-model/prompt_role_state_20260930_prompt_carry_roles_RGBNT100_seed42_m0/training_steps.jsonl": "sha256:e4eb639a9776555d89487d2ae53275eb324359fd23a062b1fad6a5deede45990",
+    "trained-model/prompt_role_state_20260930_prompt_carry_roles_RGBNT201_seed42_full/official_metrics.json": "sha256:99e011b492d371bcb314e5f8cab07308e1d09ea88efe29b2d45a2c6b8f882348",
+    "trained-model/prompt_role_state_20260930_prompt_carry_roles_RGBNT201_seed42_full/training.json": "sha256:a9eb2e21f2e2cf70237f3f662436eff2db37ca035d33441afd90fcc8d31c2c3f",
+    "trained-model/prompt_role_state_20260930_prompt_carry_roles_RGBNT201_seed42_full/training_steps.jsonl": "sha256:6ecb35e57768179c01c9f54b02033639005963f4e350f9fb45084b5a0514e641",
+    "trained-model/prompt_role_state_20260930_prompt_carry_roles_RGBNT201_seed42_m0/training.json": "sha256:7921b0911ca14130afc5b8a58d4ba54d1115202779c385179e96862cc69db210",
+    "trained-model/prompt_role_state_20260930_prompt_carry_roles_RGBNT201_seed42_m0/training_steps.jsonl": "sha256:9ed8bd9079020987fc657c9f96f096f020e0f6285547f71c8a4234acae0a96ff",
+    "trained-model/prompt_role_state_20260930_prompt_reset_roles_MSVR310_seed42_full/official_metrics.json": "sha256:f36f9a2eef520079a87d51a5d3319eec799c5692a152a2996ee06999f7e53bef",
+    "trained-model/prompt_role_state_20260930_prompt_reset_roles_MSVR310_seed42_full/re.txt": "sha256:0d2153ccfa8aeabca697ab7d5321a520f2b2194fcfd9900180b3537de9354bd6",
+    "trained-model/prompt_role_state_20260930_prompt_reset_roles_MSVR310_seed42_full/training.json": "sha256:c0e99381375383bec0a3e16bba828a8e57b53fb68e9c0ba49fafc005ff6715fa",
+    "trained-model/prompt_role_state_20260930_prompt_reset_roles_MSVR310_seed42_full/training_steps.jsonl": "sha256:5d5a9a3bc2f7ac84afa2599c4a86203384db5e7b8de6115c0231083987be8eff",
+    "trained-model/prompt_role_state_20260930_prompt_reset_roles_MSVR310_seed42_m0/training.json": "sha256:665c86c5b11158e83cdf731150b86308376e4954e89ebe49c40cf7e94d09dfe7",
+    "trained-model/prompt_role_state_20260930_prompt_reset_roles_MSVR310_seed42_m0/training_steps.jsonl": "sha256:1a7fb01a935915e5996d2af1edd0b0317ae269c67b96c259ecd4e0b33a49888c",
+    "trained-model/prompt_role_state_20260930_prompt_reset_roles_RGBNT100_seed42_full/official_metrics.json": "sha256:377ab6fdcaeb65c49bdd685de00c115237599b38c5e8efa4a8d55b3dba14cc58",
+    "trained-model/prompt_role_state_20260930_prompt_reset_roles_RGBNT100_seed42_full/training.json": "sha256:04751862a3f5d37ce9352c93e20de2091471288e0a9bd9223e4fadcb8ebaf5c8",
+    "trained-model/prompt_role_state_20260930_prompt_reset_roles_RGBNT100_seed42_full/training_steps.jsonl": "sha256:99e7ff015ba27a58739b9876aab379e096a5eb129b804b6b70ac1fe3f720523d",
+    "trained-model/prompt_role_state_20260930_prompt_reset_roles_RGBNT100_seed42_m0/training.json": "sha256:891fd295b0830dc4fb8f9e58b7d84964995236e0cafa453fa5276793318d5888",
+    "trained-model/prompt_role_state_20260930_prompt_reset_roles_RGBNT100_seed42_m0/training_steps.jsonl": "sha256:46127d0e98dabef52ecb29095ea7821aed2c27351ddda189250076112b3cdc30",
+    "trained-model/prompt_role_state_20260930_prompt_reset_roles_RGBNT201_seed42_full/official_metrics.json": "sha256:dfe69e96b28b47e654a4f801f0453cae9a1f6b6335cd1c6b2cdb6d1859ec7de2",
+    "trained-model/prompt_role_state_20260930_prompt_reset_roles_RGBNT201_seed42_full/training.json": "sha256:d752a9d6c1946961b84206b86e297cac6b305687c8ff05f372a77de3b8e6deda",
+    "trained-model/prompt_role_state_20260930_prompt_reset_roles_RGBNT201_seed42_full/training_steps.jsonl": "sha256:0ff5ece7f61e14612ea63ea76511e093d9160e3ef2344fccf771276283ae6a22",
+    "trained-model/prompt_role_state_20260930_prompt_reset_roles_RGBNT201_seed42_m0/training.json": "sha256:59fea7ae8e62211dabd740de0c8e482155e2d8575c5014885b1dc9282eedd4cc",
+    "trained-model/prompt_role_state_20260930_prompt_reset_roles_RGBNT201_seed42_m0/training_steps.jsonl": "sha256:5b696979b0cfb9b7bde3ba9a8c2e4a38c10dae70f70c12774e6b4d87a0c879c9",
+    "local:refine-logs/prompt_role_state_v1/EXPERIMENT_PLAN.md": "sha256:a2ac78e24deb3c46ef7c8b081684c25db4d6a3d4d7ee0d0d8663d96bea8a6b1a",
+    "local:refine-logs/prompt_role_state_v1/EXPERIMENT_TRACKER.md": "sha256:763dfb74241ef90597a3c7095cd7099cc82e4a5982392a7c914eeedba962fba7",
+    "local:docs/TRIFUSION_RGBNT201_CURRENT_COMPLETE_HANDOFF_2026-09-01.md": "sha256:04d2eb14f48767d4d8c38d657556ea5cd5b47f7c1ea031c3363acfade7db4091"
+  },
+  "backend_input_hashes": {
+    "/data/gaob/Re-ID/Trifusion/logs/prompt_role_state_20260930/manifest.json": "01d165e19f53e9100ea955b16537150a397332d8011583f72fe969f5a6cf0cf1",
+    "/data/gaob/Re-ID/Trifusion/modeling/trifusion/correspondence_roles.py": "e2a51154b5b327341f35e453dd32a821b091a49a669b49a7c70e79e6e2f2591b",
+    "/data/gaob/Re-ID/Trifusion/modeling/trifusion/correspondence_evidence_readout.py": "e737a977d39ccbe09a5509118e5b5333d653f7f13381e65e84af1a13e5c28dc4",
+    "/data/gaob/Re-ID/Trifusion/modeling/trifusion/correspondence_context_identity.py": "eda3d1473496b33e4b69402dba7770e67d23b33b07afd41d23105b7f148d63af",
+    "/data/gaob/Re-ID/Trifusion/modeling/trifusion/prompt_role_state.py": "2b4071f0a78e08426c0d2f3ee3f28b30562cff821b631fe39f2269049c85dcfb",
+    "/data/gaob/Re-ID/Trifusion/tools/run_correspondence_roles.py": "e50865fb923297cd61cf38b33ec2bc95154f8c503b5dfe5de9823cad3f03d7ef",
+    "/data/gaob/Re-ID/Trifusion/tools/run_correspondence_context_identity.py": "9f4cc9f11998819d4a927a32f4e47baf0c4ff9d14c4bc93b0dc35b0153ebc142",
+    "/data/gaob/Re-ID/Trifusion/tools/run_prompt_role_state.py": "f0a0ad609fd0c0448187790672274f3b944a52b74c30390f401d1ce62cb67a68",
+    "/data/gaob/Re-ID/Trifusion/tools/queue_prompt_role_state.py": "76b6e83d108710e1393bcb886cf183312ff7a8776740b382161d6e075a165605",
+    "/data/gaob/Re-ID/Trifusion/tools/collect_prompt_role_state.py": "50157af0f418f51d9321422701de13167dc2de6a0007b81dbe47bf6f1c7e3b11",
+    "/data/gaob/Re-ID/Trifusion/tools/queue_correspondence_refinement.py": "5256afe78d02d9bfea3103daa00d488b94c05e839c955f00355098f69ecbd84a",
+    "/data/gaob/Re-ID/Trifusion/tools/queue_correspondence_roles.py": "746fbdb8bdad04290a9ef22c0550e873c9dce9de74c2c3c3767fea9278be69bf",
+    "/data/gaob/Re-ID/Trifusion/tools/collect_correspondence_roles.py": "f81af437fe5ccfea4361c1ed182cb9b8841b362214d2a5220309a0fd2c78fff8",
+    "/data/gaob/Re-ID/Trifusion/tools/audit_correspondence_context_identity_losses.py": "bcc15e568c6a14efdaca1df5268c5abdec716287d3b6efb2482804add724abf1",
+    "/data/gaob/Re-ID/Trifusion/tools/train_msvr310_signal_oof.py": "c25579d931df34481fef321558f0b9a1f9179d72a25d6047dbbfd3682d4ae60f",
+    "/data/gaob/Re-ID/Trifusion/tools/train_rgbnt100_signal_oof.py": "4462b73139e034d450d955c5b4a994aaa967548e9cc503d97bb753a14ea03b22",
+    "/data/gaob/Re-ID/Trifusion/tools/train_msvr310_trifusion_oof.py": "6e4185f539931a7af05ce56252249c06472e459b6ac7818051d00de1c48e2fa5",
+    "/data/gaob/Re-ID/Trifusion/tools/train_official_three_dataset_roles.py": "d9bf51873f4f4692bed05a5fbd5654a3e6a2e14e104b166b74395c0de0fa39cd",
+    "/data/gaob/Re-ID/Trifusion/tools/audit_v17_full_gallery.py": "856881f984ab8793788d291018a60046a47e309c625a65394b1a3ff4e670d8a9",
+    "/data/gaob/Re-ID/Trifusion/tools/official_three_dataset_data.py": "c3180a88d12440709319d2025928fc699ff3b7c020b11697d468453fbfc68062",
+    "/data/gaob/Re-ID/Trifusion/tools/official_three_dataset_model.py": "e103ea0f4d6342b0dc129dc2dace0e8c0d0e6c956cfe94729ccb70d9588cf0f9",
+    "/data/gaob/Re-ID/Trifusion/tools/run_official_three_dataset_roles.py": "f30bb00a0b71429e9d11dd196cd1d543202a133c663ad66e175d2f82e28d448d",
+    "/data/gaob/Re-ID/Trifusion/tools/run_signal_preserving_v5.py": "e162184f68778b4991db0f97f26c5fda273b2ad2f7c8db2bbb2d53775eb717e5",
+    "/data/gaob/Re-ID/Trifusion/tools/build_v12_complete_path_oof_targets.py": "999356e18d489dce99042f1e7873eac15b811b64255f1aee9550c52ae1c7ee06",
+    "/data/gaob/Re-ID/Trifusion/tools/run_signal_baseline_dev.py": "083967f2a38267415b2992da98c2ad9429ebb793f387b45daac1dbb4eb16f365",
+    "/data/gaob/Re-ID/Trifusion/tools/train_signal_preserving_v18.py": "f6bdda4631d710d0b6db5fe2a8df124d8dcbd294cb54adcf3ec261d523e96cf8",
+    "/data/gaob/Re-ID/Trifusion/tools/train_signal_preserving_v17.py": "333886d16f73987accddb70b0780661bb9400b8afd04af01b57e188d34e5228d",
+    "/data/gaob/Re-ID/Trifusion/modeling/trifusion/aligned_data.py": "3ea362d17660483b554cb599442b6377ace020fa114969b9bdd58906fbceedd5",
+    "/data/gaob/Re-ID/Trifusion/modeling/trifusion/criterion.py": "0b2a6370f434828d885945d1a46dd56f6668133ceed45ef359fe71eeca63740a",
+    "/data/gaob/Re-ID/Trifusion/modeling/trifusion/experts/mamba.py": "c516c7ad937e5eee6a4ed1e3ec33c2afe3522b751d296bd2e4910e4f27a20ee5",
+    "/data/gaob/Re-ID/Trifusion/configs/RGBNT201/TriFusion-signal-preserving-v27-source-style-rtx3090.json": "6f3161985f3a3831ffa890a163a510c6fa463ce4fd933793f0ce79db2c07677a",
+    "/data/gaob/Re-ID/Trifusion/configs/RGBNT100/TriFusion-main-v1.json": "68b091dd48f086a29319dc853f9eb48bd38aabc72391e0187421efc5e1496aaf",
+    "/data/gaob/Re-ID/Trifusion/configs/MSVR310/TriFusion-source-style-paired-v1-r2.json": "848254aab6dc02230a7fd33be0d60fc2560c99fc77cbd320cf0ef2efd655539d",
+    "/data/gaob/Re-ID/Trifusion/modeling/trifusion/__init__.py": "ad617b86663e319f7702e9231fdec9c5f079f4d39ec5dabb90ced469414d910c",
+    "/data/gaob/Re-ID/Trifusion/modeling/trifusion/builder.py": "8b3620e6be3727709253589a9e59b3efd20a611ba0eec4e8f6b4d0d17eeea4eb",
+    "/data/gaob/Re-ID/Trifusion/modeling/trifusion/camera_coverage_v25.py": "341bacc189c3782d72c3f7c5b7c5bdde8e966f0eddb32966d90b3fd154ff75b5",
+    "/data/gaob/Re-ID/Trifusion/modeling/trifusion/camera_negative_v22.py": "38b6ccc4e495d55af7e68617cdb6b54fdede9e3f177fa3c54a7f8d0db4465f97",
+    "/data/gaob/Re-ID/Trifusion/modeling/trifusion/cascade_v2.py": "a1753a8dff2d6ab9f8d78810e941fef3949d5d07cce4877fb956b5889bc46c5a",
+    "/data/gaob/Re-ID/Trifusion/modeling/trifusion/cascade_v2_builder.py": "1821068cfafe1bfc6d54e65323cd2469f9fc922829ec7ebf6c47af83125c1b0d",
+    "/data/gaob/Re-ID/Trifusion/modeling/trifusion/circ_scoring.py": "db9ae624446674812618ff8c6f7e8d773a576ea31ab1ecb0d41bc3c33ca2da3e",
+    "/data/gaob/Re-ID/Trifusion/modeling/trifusion/correspondence_global_only.py": "cb0cc4c1d0f6a2c0cad3d310ce3df74845fd17bdbfa3b66dfa64632f5cbd08c3",
+    "/data/gaob/Re-ID/Trifusion/modeling/trifusion/correspondence_role_prediction.py": "7c80d7aa86ac5bd0d07ab7f6df7b2e93f708a2407bfee03fb078ff2bb182787d",
+    "/data/gaob/Re-ID/Trifusion/modeling/trifusion/cross_depth_role_state.py": "8e18c7c9d397fbe3eff6f7360a5ab890ebbeecf1404628da6979ade47544b7ba",
+    "/data/gaob/Re-ID/Trifusion/modeling/trifusion/cross_modal_identity_v20.py": "c02e14c4731aba33ebb41d5efdae1b2a077c4b80622691e68014fe5ac280337e",
+    "/data/gaob/Re-ID/Trifusion/modeling/trifusion/data.py": "d0795f8c74e1a35d44d50b408f41c585e90fb57f9267915923f9de5a7aa850be",
+    "/data/gaob/Re-ID/Trifusion/modeling/trifusion/dual_view_data_v24.py": "68de48892c217bdeb143d041b56520822cc9785dea05cd37f7b30328a6f3b560",
+    "/data/gaob/Re-ID/Trifusion/modeling/trifusion/encoder.py": "80fd6adc6d80b232296412ff8647a3d7c6a66d64bda699f545e477b94e72a46b",
+    "/data/gaob/Re-ID/Trifusion/modeling/trifusion/experts/__init__.py": "49709dfc6fd4ca781fa6d24f81476596f716163222ab01fe5d9eae105d8fc286",
+    "/data/gaob/Re-ID/Trifusion/modeling/trifusion/experts/cnn.py": "f823cfd59589e7fa8dbe066b26eec662d93a9d01b2376f05e7a4b6f43409996a",
+    "/data/gaob/Re-ID/Trifusion/modeling/trifusion/experts/semantic_residual.py": "c8cef9717fd7bd1e5e50b428ac92762455defac2e25857c9e0dfaf82729c2a93",
+    "/data/gaob/Re-ID/Trifusion/modeling/trifusion/experts/tiny.py": "d5462c7259e5a17f7e50b87d29f44e2ecb49c4a50ccf5b59f34e8870c3e1cf90",
+    "/data/gaob/Re-ID/Trifusion/modeling/trifusion/experts/transformer.py": "8580c6e761a2fbfd54a70d0bd231fef0695cccecbec328f643a6c5112deb674e",
+    "/data/gaob/Re-ID/Trifusion/modeling/trifusion/fusion.py": "58d3672fb571e9acce8e7a8e82c8cd355fdb0f831f5439aa2d5b6e918b491a8d",
+    "/data/gaob/Re-ID/Trifusion/modeling/trifusion/intervention_targets.py": "dcfab01a167411e98b148caeb55a9e29cd1eae453bae5a2cfe2ae9166c866f38",
+    "/data/gaob/Re-ID/Trifusion/modeling/trifusion/interventions.py": "b32386352edc6f37a0ef62cf4140eb22d5e400b9eefc580e649447b10cc549e1",
+    "/data/gaob/Re-ID/Trifusion/modeling/trifusion/joint_geometry_v29.py": "cf439edf017d3b5e1695521052161bde66082bcc59fb1acd2bab6d0f2fbb4d71",
+    "/data/gaob/Re-ID/Trifusion/modeling/trifusion/joint_tokens_v28.py": "95de3c39fb86c1d574204eb507ca1fd7b84c7ed27eb8e63de87e905310b01656",
+    "/data/gaob/Re-ID/Trifusion/modeling/trifusion/joint_tokens_v28_fp32.py": "fdfa64109973fb5ddeaba6db27e4dc0ef9bb014710d7c6813185ba6535346d0b",
+    "/data/gaob/Re-ID/Trifusion/modeling/trifusion/model.py": "02e08b4ef6102431808bf850c98117e2169330fc954999086241693a22d92bf5",
+    "/data/gaob/Re-ID/Trifusion/modeling/trifusion/peer_teaching.py": "d5ec38a6ebb26d8012be7fa5ebced3dcd5e16de4576e29fef2e89d92dc970b3b",
+    "/data/gaob/Re-ID/Trifusion/modeling/trifusion/protocol.py": "519ff4386addb3b83a0416bca25f75ed5a54029a4fcd949231b5eb96db4ef3bc",
+    "/data/gaob/Re-ID/Trifusion/modeling/trifusion/relay.py": "a24194bc81b72444dcbf3cea3450ee27f7d541787b77fd5d5cf4bdf13799d645",
+    "/data/gaob/Re-ID/Trifusion/modeling/trifusion/reliability.py": "eb9fbed2994ef31038bd31cd129af0b0761c5adc88902ca918d20a05ae431207",
+    "/data/gaob/Re-ID/Trifusion/modeling/trifusion/role_modal_responsibility_v26.py": "ce56ffb40089fad3131958045f9c6d12a11d48ec84123da840eb38e7ad12177b",
+    "/data/gaob/Re-ID/Trifusion/modeling/trifusion/sam_training_v21.py": "9233e8f806914eed623976c7f30830ecac80af274f842214c73055ded9009b56",
+    "/data/gaob/Re-ID/Trifusion/modeling/trifusion/semantic_tokenizer.py": "ea5e2181aaf20be10802b626a17a5dcd6de59ba88d44fa5e833827f8a5931278",
+    "/data/gaob/Re-ID/Trifusion/modeling/trifusion/signal_preserving_v13.py": "7b7c4abb220ed234608553c77aeedd5f8ef763abb04cce5b21f1bfce0f4daa62",
+    "/data/gaob/Re-ID/Trifusion/modeling/trifusion/signal_preserving_v14.py": "168ccc065c50f1ea1dd65d82247b89d664baa67881a8c2ff19c039a7ba740b0e",
+    "/data/gaob/Re-ID/Trifusion/modeling/trifusion/signal_preserving_v15.py": "bba418acfc67c939b06a1285e0e711616beaf8432532237499bc339edcbf890a",
+    "/data/gaob/Re-ID/Trifusion/modeling/trifusion/signal_preserving_v15_builder.py": "7173f0afeecdef3fdf8f7185bef1253ef4193a0a4f03e31dff5d5f79a9416b74",
+    "/data/gaob/Re-ID/Trifusion/modeling/trifusion/signal_preserving_v16.py": "eba55a9001a13f5dba287ba5397377f105f1f83cfe3fd24c705185a7c13cf31c",
+    "/data/gaob/Re-ID/Trifusion/modeling/trifusion/signal_preserving_v16_builder.py": "ebb7e87b3ea03798bde54cda75a6e9e95f805f1f472baafb05d34e3ea7960235",
+    "/data/gaob/Re-ID/Trifusion/modeling/trifusion/signal_preserving_v17.py": "b095383fb619c8e8377cd95a82ef88c0726d3a3a0cecd8211ae2fd3e5493c800",
+    "/data/gaob/Re-ID/Trifusion/modeling/trifusion/signal_preserving_v17_builder.py": "26f68c627656a0f539f1704ac54d865e63cf7c9049a80f2789a7e42d1a424411",
+    "/data/gaob/Re-ID/Trifusion/modeling/trifusion/signal_preserving_v18.py": "c81f1c76c253b297501af6c1cba4d47ecc31a1320101ae2637abf5bff7a11455",
+    "/data/gaob/Re-ID/Trifusion/modeling/trifusion/signal_preserving_v19.py": "69989cced25950ff476759bc93df945b167e8ce88a4340676e8adbbd9f88918e",
+    "/data/gaob/Re-ID/Trifusion/modeling/trifusion/signal_preserving_v23.py": "89816298baedf6ab5d3f122fe16db69035420df8cc91b65e0bb0c8c6f9cde1af",
+    "/data/gaob/Re-ID/Trifusion/modeling/trifusion/signal_preserving_v5.py": "126c98ea869f5b48e2b0873ecf4639a3f4d3671812f898376732d1dc93850426",
+    "/data/gaob/Re-ID/Trifusion/modeling/trifusion/signal_preserving_v5_builder.py": "45a2250e79266abc801cc62b9500bade732183ac23cd4d0921cac56ae85f98e2",
+    "/data/gaob/Re-ID/Trifusion/modeling/trifusion/signal_preserving_v6.py": "09bbd25ae3ef6a209e924b55f6a84bc53146907611c4fa0ab262fd96f348360d",
+    "/data/gaob/Re-ID/Trifusion/modeling/trifusion/signal_preserving_v6_builder.py": "a86e7a2ae87a5e4df08bf4c4bbe6a7cd6b08d597a13435ca654de5bb54396ebf",
+    "/data/gaob/Re-ID/Trifusion/modeling/trifusion/signal_preserving_v7.py": "d238087bbb64111a41ec726732b28eacbdc9ef503ec175b16107228212347963",
+    "/data/gaob/Re-ID/Trifusion/modeling/trifusion/signal_preserving_v7_builder.py": "2a6295288be5a2303ba5485204bccf1035432dd6feb5c213bc71fdb335c6f873",
+    "/data/gaob/Re-ID/Trifusion/modeling/trifusion/signal_preserving_v8.py": "70f79990af4a4a9b784e286635d1b78a1abf367306fe5945fbdcc1ed6f3d6159",
+    "/data/gaob/Re-ID/Trifusion/modeling/trifusion/signal_preserving_v8_builder.py": "6ed1ae8981d5b2f192d196784e26d5f8f13b0611837fc24accbc57f0792ddbf7",
+    "/data/gaob/Re-ID/Trifusion/modeling/trifusion/signal_preserving_v8_router.py": "79c683784c0c2bc9c7484fa10c141afcdcca9edf8a5913e4e352b1fa3a9efb57",
+    "/data/gaob/Re-ID/Trifusion/modeling/trifusion/signal_preserving_v9.py": "48cfff021abf68854ae06443efad4259752a591f492473e25447533fb6691246",
+    "/data/gaob/Re-ID/Trifusion/modeling/trifusion/signal_preserving_v9_builder.py": "88f78dbd7361a555bf304e04c77ff06995d1886690bc8f573e7ecb0a608dbcaa",
+    "/data/gaob/Re-ID/Trifusion/modeling/trifusion/source_prototype_v24.py": "703f2393aaec83a2276497ededddb6ad888f305cb5b93f3bdf600953b5e6ebf7",
+    "/data/gaob/Re-ID/Trifusion/modeling/trifusion/source_style_msvr.py": "57c54142a0617d1ca5c4e1d68a63e31537a10c203eb08056b92971605749092f",
+    "/data/gaob/Re-ID/Trifusion/modeling/trifusion/source_style_v27.py": "aee2f1d40e2362690f704a154f13a0c9e5696ab05ce44837818defe1725d58c5",
+    "/data/gaob/Re-ID/Trifusion/modeling/trifusion/standalone.py": "2017048e0a2493acd76da3946793a02707f9dd543a96cc30994b38887506d8e2",
+    "/data/gaob/Re-ID/Trifusion/modeling/trifusion/state.py": "5fe89c4885507e74ca1833cc18822a4b57e4c2d6fa9a6c6b2e127d1e74b70db9",
+    "/data/gaob/Re-ID/Trifusion/modeling/trifusion/task_anchor_v3.py": "cead5c736ae014a5855c0481e31c3e73ea32a76e7b4ebed9b97abe9541b1a5f0",
+    "/data/gaob/Re-ID/Trifusion/modeling/trifusion/task_anchor_v3_builder.py": "18e84eb2365589bd9cdd16e7113aa012ef9f63b965afe3d8a0f27bb8748733c6",
+    "/data/gaob/Re-ID/Trifusion/modeling/trifusion/task_anchor_v4.py": "d6280a25e21acd2dca10aab51e686a820ee18a2def3341692850fa28ca7057cb",
+    "/data/gaob/Re-ID/Trifusion/modeling/trifusion/task_anchor_v4_builder.py": "1ceeae572c0273ceb4f6fde601dc1a3d717a34ff9b94f35f9ccf1a258d529736",
+    "/data/gaob/Re-ID/Trifusion/modeling/trifusion/tokenizer.py": "ff180350cea3ea8c5a9a7c57e4f4c9b1d7f30cc70dde5405037270be2392c306",
+    "/data/gaob/Re-ID/Trifusion/modeling/trifusion/training_phases.py": "66a7666ad04d7e32392864227df967b86d8aeeba9a62b6ebeff280c96dd89dee",
+    "/data/gaob/Re-ID/Trifusion/modeling/trifusion/variants.py": "ca456227c5249e28461dafb67a68f7103a9b1fea292dcd2f214fb92bab1b91ef",
+    "/data/gaob/Re-ID/Trifusion/modeling/trifusion/warm_start.py": "68591452f89d6303baf81b9957c30b48135a33ce9e7a5544a40ede2b92f5a05d",
+    "/data/gaob/Re-ID/Trifusion/comparators/Signal-cd1b0a6/config/__init__.py": "ff27847384f82ad53a61a80147c38a8282d9bd5af852593aef7c653e48a5d11b",
+    "/data/gaob/Re-ID/Trifusion/comparators/Signal-cd1b0a6/config/defaults.py": "40257d349153e56e345983c99b1638d7c3d77966dfd2f5496fe03c86dc8dbd57",
+    "/data/gaob/Re-ID/Trifusion/comparators/Signal-cd1b0a6/data/__init__.py": "3e55e3cdaf53a8e97673876c9ad5d2b316bbc82e500e0e318d127e88129be22f",
+    "/data/gaob/Re-ID/Trifusion/comparators/Signal-cd1b0a6/data/datasets/MSVWild863.py": "261f7ed87c78a44274502627415dd6cf88c636e69a98cdc30fdfb20db5f66870",
+    "/data/gaob/Re-ID/Trifusion/comparators/Signal-cd1b0a6/data/datasets/RGBNT100.py": "fe38cdb9d0905b4637f215b804e933a226aefcd9a865e9f73e564a84ef2393ac",
+    "/data/gaob/Re-ID/Trifusion/comparators/Signal-cd1b0a6/data/datasets/RGBNT201.py": "7b2b30b339123e92bbead5c092afa7570a06f423570c4249acfdd39294fc4a88",
+    "/data/gaob/Re-ID/Trifusion/comparators/Signal-cd1b0a6/data/datasets/__init__.py": "82d38047efcac536c237306029bc2354b89d1b64f4a6316f70884a723ba665a5",
+    "/data/gaob/Re-ID/Trifusion/comparators/Signal-cd1b0a6/data/datasets/bases.py": "48f050a7924cebd1e51f8831ba05df78dbccc7049afb0bcf83351d9d1ee23814",
+    "/data/gaob/Re-ID/Trifusion/comparators/Signal-cd1b0a6/data/datasets/dukemtmcreid.py": "d4ddd8fbf7df3432b1af079c3bf7f86d62181bed06ac59de12fd9210ad11945c",
+    "/data/gaob/Re-ID/Trifusion/comparators/Signal-cd1b0a6/data/datasets/make_dataloader.py": "54c47d798a20955bde224d9c78b42149c3c2ef008b02659141829a553194434f",
+    "/data/gaob/Re-ID/Trifusion/comparators/Signal-cd1b0a6/data/datasets/market1501.py": "6b7642f048a36dde3c99af37b91a20560946bcdeab937cfcfe15b263da4319d8",
+    "/data/gaob/Re-ID/Trifusion/comparators/Signal-cd1b0a6/data/datasets/msmt17.py": "d38552fb167fd6c76b369bac14d43170f7ae93849b6144d3846f75b72ee59640",
+    "/data/gaob/Re-ID/Trifusion/comparators/Signal-cd1b0a6/data/datasets/msvr310.py": "10b0197e7c97d1067bd63f25afef3cf0c4e64944ff4028c90d1f2f426a200eb9",
+    "/data/gaob/Re-ID/Trifusion/comparators/Signal-cd1b0a6/data/datasets/sampler.py": "b77902214633a2b06a7c0a80924a737fdb5122984a857f3c6e120a8ad8cce65a",
+    "/data/gaob/Re-ID/Trifusion/comparators/Signal-cd1b0a6/data/datasets/sampler_ddp.py": "c707f1c3e0163ce6bed42780cecfe4fa1bb948f3aec6779edac41e79a69d5983",
+    "/data/gaob/Re-ID/Trifusion/comparators/Signal-cd1b0a6/engine/processor.py": "968aa8bc6304ce6f92410d7e8550b5a0a8c64142dce0aa584089477ba169878b",
+    "/data/gaob/Re-ID/Trifusion/comparators/Signal-cd1b0a6/layers/__init__.py": "48ef0154cc20c04e1e81a6a97895fdf38e7a21695a4386124d79f522c389bd2b",
+    "/data/gaob/Re-ID/Trifusion/comparators/Signal-cd1b0a6/layers/center_loss.py": "c2e23be80b1b3e54503c704dda45ddc4a86f23647fcc8c37c63dbac47d003d89",
+    "/data/gaob/Re-ID/Trifusion/comparators/Signal-cd1b0a6/layers/cluster_loss.py": "699f7357d702ea433a5ef02597a1268471875c9b83908b9f10069fae7e92b477",
+    "/data/gaob/Re-ID/Trifusion/comparators/Signal-cd1b0a6/layers/hcloss.py": "f179d7b00e1206af853098114e3ea0d744c6b7feeb032a280424182914a28908",
+    "/data/gaob/Re-ID/Trifusion/comparators/Signal-cd1b0a6/layers/make_loss.py": "7eb7ab953c2bbc52d0c298ef971d0c3ff7000e5e50756fbb5a5fd63ac4c109aa",
+    "/data/gaob/Re-ID/Trifusion/comparators/Signal-cd1b0a6/layers/metric_learning.py": "262cd6a003028e8c11eadf3ed4e43096adae8e9d89d50dc61b1e9bd4fad94246",
+    "/data/gaob/Re-ID/Trifusion/comparators/Signal-cd1b0a6/layers/mutilmargin.py": "627685f7bfbb31a22b7483942914f0e9f0dad47eae0231915ba26e0a3fb82727",
+    "/data/gaob/Re-ID/Trifusion/comparators/Signal-cd1b0a6/layers/range_loss.py": "e35e1b4eb5287f25dd4cb38ea7450264d386a5c98f2ca8d9d337c8eb03be60c5",
+    "/data/gaob/Re-ID/Trifusion/comparators/Signal-cd1b0a6/layers/softmax_loss.py": "92192d9c3ff4e2fd3920c6e9a9637e0caa1e66cffbbc0be8b4049e5dcdb0bf24",
+    "/data/gaob/Re-ID/Trifusion/comparators/Signal-cd1b0a6/layers/supcontrast.py": "bc21c9763cc795b623089894b711aedaf0cde0c01fd8a1c5d641982513b10f6b",
+    "/data/gaob/Re-ID/Trifusion/comparators/Signal-cd1b0a6/layers/triplet_loss.py": "f502c44bec642bbf72ce6d0f58c9f9a0084beef9cbb451c2d2786bb13f94960a",
+    "/data/gaob/Re-ID/Trifusion/comparators/Signal-cd1b0a6/modeling/AddModule/DAS.py": "55b98cb11a22ece7a422eed565f68e1ca8ffa1b448dca616f9a3e243311644ea",
+    "/data/gaob/Re-ID/Trifusion/comparators/Signal-cd1b0a6/modeling/AddModule/useA.py": "1f8fef4dcadb89f5097f83b41a699d9f801a23c88ca3eea73b3ad973a56952a9",
+    "/data/gaob/Re-ID/Trifusion/comparators/Signal-cd1b0a6/modeling/AddModule/useB.py": "39a65f82d59048745663d891a1c4c012eb1cc404ef8c8084f942702aeef46fec",
+    "/data/gaob/Re-ID/Trifusion/comparators/Signal-cd1b0a6/modeling/__init__.py": "c1962dec3f8aa828bd7237baf6edd7b4862cdbd8e9f710170f37f3d61bf1d1c0",
+    "/data/gaob/Re-ID/Trifusion/comparators/Signal-cd1b0a6/modeling/backbones/__init__.py": "cb7a2fb6a8f54e83ff3c6293317a3d043b7dccd24501784de644cf8d15af78b9",
+    "/data/gaob/Re-ID/Trifusion/comparators/Signal-cd1b0a6/modeling/backbones/basic_cnn_params/__init__.py": "e1625a0f2d541b9a8e6d470d4ad0fd151034bb26ca02d602f05336ed9de2201c",
+    "/data/gaob/Re-ID/Trifusion/comparators/Signal-cd1b0a6/modeling/backbones/basic_cnn_params/cal.py": "2b2a5cf892e0afd43714fe062e5188f2db60311b34feb53f4247de2803f284ac",
+    "/data/gaob/Re-ID/Trifusion/comparators/Signal-cd1b0a6/modeling/backbones/basic_cnn_params/densenet.py": "a681ab2026ad388a332caee0cc7766cf324d71615281983971a9dd72cf396936",
+    "/data/gaob/Re-ID/Trifusion/comparators/Signal-cd1b0a6/modeling/backbones/basic_cnn_params/flops.py": "954e233730eb5ad868b85b2021d5a9381db6e67a21c1627fae144bdb0fc2107c",
+    "/data/gaob/Re-ID/Trifusion/comparators/Signal-cd1b0a6/modeling/backbones/basic_cnn_params/hacnn.py": "cd83408cc6f8891759116a0ec84237e19473dc42eb9bd72c3f928d1de2bd313c",
+    "/data/gaob/Re-ID/Trifusion/comparators/Signal-cd1b0a6/modeling/backbones/basic_cnn_params/inceptionresnetv2.py": "de17492a6c1801ae56ba989073667a1b8f1577c140be490a2a88eb60842c73ac",
+    "/data/gaob/Re-ID/Trifusion/comparators/Signal-cd1b0a6/modeling/backbones/basic_cnn_params/inceptionv4.py": "aa301ffdcdbcdd25408c65dc7fe5573de1983b7fa94e1562023f9d914dea6fde",
+    "/data/gaob/Re-ID/Trifusion/comparators/Signal-cd1b0a6/modeling/backbones/basic_cnn_params/mlfn.py": "1ae1196d103345a13c60502d2e4f14cf31f05a00f30cdd193eb61f74f19fe8a4",
+    "/data/gaob/Re-ID/Trifusion/comparators/Signal-cd1b0a6/modeling/backbones/basic_cnn_params/mobilenetv2.py": "f9e1c2a3b8a469f343b47812b13367d150880d38758eab14670e52d60fa72ba3",
+    "/data/gaob/Re-ID/Trifusion/comparators/Signal-cd1b0a6/modeling/backbones/basic_cnn_params/mudeep.py": "82b24f86064538abf5d85ba147f67e0d950ee07b6406547e12fd11393ff947f4",
+    "/data/gaob/Re-ID/Trifusion/comparators/Signal-cd1b0a6/modeling/backbones/basic_cnn_params/nasnet.py": "20e762521082698eafe9d3db4553d1aa731a5364b15c9d217636a44a6b9bc3af",
+    "/data/gaob/Re-ID/Trifusion/comparators/Signal-cd1b0a6/modeling/backbones/basic_cnn_params/osnet.py": "34b8b7a4ceb54625a29c1952d665061ae235efdd695fc999a8cd928107435bc4",
+    "/data/gaob/Re-ID/Trifusion/comparators/Signal-cd1b0a6/modeling/backbones/basic_cnn_params/osnet_ain.py": "a43b495866a4b1645cd134a30c3011592e8c6826ba4781955a135588cf46cd25",
+    "/data/gaob/Re-ID/Trifusion/comparators/Signal-cd1b0a6/modeling/backbones/basic_cnn_params/pcb.py": "76246a0f6b6438566f26f307ec9ab3f378f38885eefa9e58aaf23df2b90410e4",
+    "/data/gaob/Re-ID/Trifusion/comparators/Signal-cd1b0a6/modeling/backbones/basic_cnn_params/resnet.py": "6b871338b477421bbc23bc7b3028735fc67ab4f551d979c5ae8b2edf2d02c168",
+    "/data/gaob/Re-ID/Trifusion/comparators/Signal-cd1b0a6/modeling/backbones/basic_cnn_params/resnet_ibn_a.py": "8459ffb25de797b755c7ded64527ab664491b0c50aaf66c259a7cb530577ec10",
+    "/data/gaob/Re-ID/Trifusion/comparators/Signal-cd1b0a6/modeling/backbones/basic_cnn_params/resnet_ibn_b.py": "b26f408850d5e6b6ad34f576536004d392db8f6c26d738b3d8e5a71ab56ca60b",
+    "/data/gaob/Re-ID/Trifusion/comparators/Signal-cd1b0a6/modeling/backbones/basic_cnn_params/resnetmid.py": "97886e2906f107a7fdb7913ae49db08e326e26dea3aeb76b06cba75f8e63dd83",
+    "/data/gaob/Re-ID/Trifusion/comparators/Signal-cd1b0a6/modeling/backbones/basic_cnn_params/senet.py": "062339e75c5137987371b761428c74bc7cfa3d3d219bce1f5f1ffff7e39291da",
+    "/data/gaob/Re-ID/Trifusion/comparators/Signal-cd1b0a6/modeling/backbones/basic_cnn_params/shufflenet.py": "0db745f384bee5daacce335de41a4f841a367d1302c80245d453d21ae8aa64b3",
+    "/data/gaob/Re-ID/Trifusion/comparators/Signal-cd1b0a6/modeling/backbones/basic_cnn_params/shufflenetv2.py": "8ce02f3e59da5db8f50ecb2af1d79d742a9499d87734a30ff53326c0fe945767",
+    "/data/gaob/Re-ID/Trifusion/comparators/Signal-cd1b0a6/modeling/backbones/basic_cnn_params/squeezenet.py": "8d42e650ddb6a65000081bf233fd343585db422b29f4d79a16211b1d514aa94e",
+    "/data/gaob/Re-ID/Trifusion/comparators/Signal-cd1b0a6/modeling/backbones/basic_cnn_params/xception.py": "2b11ac064b1fb8dbc5ed7e900475347eb61b1376c4a8a7992188596757b1cdbf",
+    "/data/gaob/Re-ID/Trifusion/comparators/Signal-cd1b0a6/modeling/backbones/t2t.py": "f8cd394abc8b2d650310968e14a4ae978063fee55d545658aa3e90676f996159",
+    "/data/gaob/Re-ID/Trifusion/comparators/Signal-cd1b0a6/modeling/backbones/token_performer.py": "3e3dfa33523e3d090d9e639d8b442a7883860a650e1af241786d1e4561f136d3",
+    "/data/gaob/Re-ID/Trifusion/comparators/Signal-cd1b0a6/modeling/backbones/token_transformer.py": "6dc55462e5ff1138a2b19883aec86d43591494efdb65bce383152dcdc0fdfc6a",
+    "/data/gaob/Re-ID/Trifusion/comparators/Signal-cd1b0a6/modeling/backbones/transformer_block.py": "7d4da490e811af278eafb7fe768622a68de6ab8fcc78adce36c59db307ca96a4",
+    "/data/gaob/Re-ID/Trifusion/comparators/Signal-cd1b0a6/modeling/backbones/vit_pytorch.py": "6821875c278d1999dc6841b599abc8368651ef5cf6e8c507c323f02dbf334fa9",
+    "/data/gaob/Re-ID/Trifusion/comparators/Signal-cd1b0a6/modeling/clip/LoRA.py": "c3f085ba05071701235bf4f0f3f87caaa3823bc1e17883ca85f1a2f690133365",
+    "/data/gaob/Re-ID/Trifusion/comparators/Signal-cd1b0a6/modeling/clip/__init__.py": "d7930eb290ebed432116795c91473200d098451a94c0aedd4ae0f934f97955e8",
+    "/data/gaob/Re-ID/Trifusion/comparators/Signal-cd1b0a6/modeling/clip/clip.py": "4898d0e683126fbc83d450465593042159ca7162de3199c5e9e89e0e0d1d5d3d",
+    "/data/gaob/Re-ID/Trifusion/comparators/Signal-cd1b0a6/modeling/clip/model.py": "2c2ca81815830fad2ab13bb8bb4ba0d41f0625477af6505815f0982d96df4e73",
+    "/data/gaob/Re-ID/Trifusion/comparators/Signal-cd1b0a6/modeling/clip/simple_tokenizer.py": "d1b09f10ed3d1e2c343619cb98cbfacb92363dd8607526a43aa7fe2d60d15bad",
+    "/data/gaob/Re-ID/Trifusion/comparators/Signal-cd1b0a6/modeling/make_model.py": "1a88a91d2e5055f5d338996231b16c0e13b2fa7013c74131ca663f16c2655963",
+    "/data/gaob/Re-ID/Trifusion/comparators/Signal-cd1b0a6/modeling/make_model_clipreid.py": "5494c2b7cb9acfb2c727a2cde201ba587184b344667e077eacfe0c3a0c578651",
+    "/data/gaob/Re-ID/Trifusion/comparators/Signal-cd1b0a6/modeling/meta_arch.py": "8b709d5ab4b14ba150a96bbb5e8cc7e6dbbb71dd8bd30cafd7a5cb110ee5a757",
+    "/data/gaob/Re-ID/Trifusion/comparators/Signal-cd1b0a6/scripts/auto_tests_docs/auto_docs.py": "e3132d7b5d7f2ba1c4ea6069ce5396d813606d9c609735d1a636e905aeb6c009",
+    "/data/gaob/Re-ID/Trifusion/comparators/Signal-cd1b0a6/scripts/auto_tests_docs/auto_docs_functions.py": "bf6603819ade241c60ab67c8fb23b2baf63032008886b6115d1aaf8ed4b8ae30",
+    "/data/gaob/Re-ID/Trifusion/comparators/Signal-cd1b0a6/scripts/auto_tests_docs/auto_tests.py": "553e8393d20a0d8b6669b28c1384f74e0362daedead9a31cedcaaa461037fed2",
+    "/data/gaob/Re-ID/Trifusion/comparators/Signal-cd1b0a6/scripts/auto_tests_docs/auto_tests_functions.py": "b5d5ac1d5780c944f13af959766ab06a3533929492e56d5df9524ae5621ac2d7",
+    "/data/gaob/Re-ID/Trifusion/comparators/Signal-cd1b0a6/scripts/auto_tests_docs/docs.py": "24c5bddb8e81ead8a609e7068c99ab7dbdf6e6f9e3cceefa262429c31af4ce74",
+    "/data/gaob/Re-ID/Trifusion/comparators/Signal-cd1b0a6/scripts/auto_tests_docs/mkdocs_handler.py": "fc9e0aaf11b4338abd3deb1cd818dd5d248c2402f85c475ff0e06f7f87d23849",
+    "/data/gaob/Re-ID/Trifusion/comparators/Signal-cd1b0a6/scripts/delpycache.py": "2af16df38b78eac2bc716c9b1baa1aff2bb91463cdddf05a9c532088a8640cc8",
+    "/data/gaob/Re-ID/Trifusion/comparators/Signal-cd1b0a6/scripts/get_package_requirements.py": "959cc0cf202faa3739395912ce20356dadd554b8d11dbae4b1a21ab7a328f836",
+    "/data/gaob/Re-ID/Trifusion/comparators/Signal-cd1b0a6/scripts/requirementstxt_to_pyproject.py": "f2b7c530272db869827272f8bbc1915e9adcf9f86ebbc7e35f6ad2673d0ddaa5",
+    "/data/gaob/Re-ID/Trifusion/comparators/Signal-cd1b0a6/solver/cosine_lr.py": "d3db6e30c1666c5af71200086f33c644d476310b6c5dc7ed98097cc989bdad4d",
+    "/data/gaob/Re-ID/Trifusion/comparators/Signal-cd1b0a6/solver/lr_scheduler.py": "6b7ea85e2c66ab5fb76560ba55b12bd0f2b3ab6eca2a6c9603e45648bfffbeba",
+    "/data/gaob/Re-ID/Trifusion/comparators/Signal-cd1b0a6/solver/lr_scheduler310.py": "e15481ca1d40dbab559af1d97367a192d44b9635a1eaf3ce004dcddb14ee7674",
+    "/data/gaob/Re-ID/Trifusion/comparators/Signal-cd1b0a6/solver/make_optimizer.py": "ada1023a79fcaaed092bce0849a61db9d0253cf8974c494bfb3082d0fd35fee1",
+    "/data/gaob/Re-ID/Trifusion/comparators/Signal-cd1b0a6/solver/scheduler.py": "b7517bb0f79a3334e2a3ac5ecb14bdcf69cb28c62dd3c734c4e3d212d0955228",
+    "/data/gaob/Re-ID/Trifusion/comparators/Signal-cd1b0a6/solver/scheduler_factory.py": "c5e20bdffec4b5360faa04f823639c8e5fd8672914813fb96148927c9ee19abc",
+    "/data/gaob/Re-ID/Trifusion/comparators/Signal-cd1b0a6/test.py": "9e6f2a190e02f25be97c599922c43554de1d2efb3916a5bebe1c4cce30b6ae4a",
+    "/data/gaob/Re-ID/Trifusion/comparators/Signal-cd1b0a6/tests/test_benchmarks.py": "ce4ef25c55057e674647415a8af010c40d3dd6e3c547955cf0e294761ebb624f",
+    "/data/gaob/Re-ID/Trifusion/comparators/Signal-cd1b0a6/tests/test_blocks.py": "cac136da29ddc8a93853e368f4e5ca71ad2fc458dc79d19677580b1c21dbacdb",
+    "/data/gaob/Re-ID/Trifusion/comparators/Signal-cd1b0a6/tests/test_model.py": "28fd57c2c82e9da22484a734adbedecd92e5c26dd59778e46b65bb2e437dd783",
+    "/data/gaob/Re-ID/Trifusion/comparators/Signal-cd1b0a6/train.py": "243a2f6de57f6113c6f0e35390670ee937bbcea84ab3335eea2b6257b3bcbd8f",
+    "/data/gaob/Re-ID/Trifusion/comparators/Signal-cd1b0a6/utils/iotools.py": "05e59eac76140ec28c87f606283baae9cdc260b250d3088d9624e08e3cacf3d7",
+    "/data/gaob/Re-ID/Trifusion/comparators/Signal-cd1b0a6/utils/logger.py": "5a732f76d567609ec1054e1e705dccbec871b71795189d80d0fb3538b28583b0",
+    "/data/gaob/Re-ID/Trifusion/comparators/Signal-cd1b0a6/utils/meter.py": "0245aa40c9a6ade9a9ac0a0f882d1a1d7b06260c667ea43e2ecb3ba846311796",
+    "/data/gaob/Re-ID/Trifusion/comparators/Signal-cd1b0a6/utils/metrics.py": "91604acb7d978462c16904910a645d7d1697c15bf150da529099004c8b5eecb2",
+    "/data/gaob/Re-ID/Trifusion/comparators/Signal-cd1b0a6/utils/ranklist_vehicle.py": "ca4b544911256a95f45ff924f006973828bc3972cfdbbf4ea96f724229244394",
+    "/data/gaob/Re-ID/Trifusion/comparators/Signal-cd1b0a6/utils/reranking.py": "1d55aa0227630a56a34931f9aded128987807d358ae9d5365dd83f28bc459fb9",
+    "/data/gaob/Re-ID/Trifusion/comparators/Signal-cd1b0a6/utils/volume.py": "a154f65e5f4483446748e216b7b03672617efb02004e14e9940446c1013b8ccb",
+    "/data/gaob/Re-ID/Trifusion/comparators/Signal-cd1b0a6/visualize/GradCAM.py": "d3c9f88b3ce4e18e20e10521f0d19d2ee6a15e2eaff3fb08a32c8a18fffd63fc",
+    "/data/gaob/Re-ID/Trifusion/comparators/Signal-cd1b0a6/zablation/CAM.py": "9bc131a4643848d6a7af4b80347a24726727a57c6e9e969da8454395680b5bfb",
+    "/data/gaob/Re-ID/Trifusion/comparators/Signal-cd1b0a6/zablation/offestvisual.py": "8af7f3c8511d076373014b4de269317800dc7edd686a6acdec6f4d342ec01661",
+    "/data/gaob/Re-ID/Trifusion/comparators/Signal-cd1b0a6/zablation/tiaoxing.py": "efa278cc4ad099ba62979d8f4de4146a26a2552c3ea3863ec919e60389da4f6c",
+    "/data/gaob/Re-ID/Trifusion/comparators/Signal-cd1b0a6/zablation/token_visual.py": "b07ae0a3a3d2c18be520a0878c8980196727da04f15e85bcce5b04bf676d4994",
+    "/data/gaob/Re-ID/Trifusion/comparators/Signal-cd1b0a6/zablation/zhexian.py": "b9486f3fe80e96679ba09b4b7ee995fb2433e198eec489c680bd7a87c44d13be",
+    "/data/gaob/Re-ID/Trifusion/logs/official_three_dataset_protocols_20260923/RGBNT201.json": "e63be5d9f8bd41df365264ad8f459dcd063d088023a2d2ed525a49a72f61161e",
+    "/data/gaob/Re-ID/Trifusion/comparators/Signal-cd1b0a6/configs/RGBNT201/Signal.yml": "a13bd5169a4c710fa79efc87db909409015a0b2611086c0fbf4c1842f0cfcc44",
+    "/data/gaob/Re-ID/Trifusion/logs/official_three_dataset_protocols_20260923/RGBNT100.json": "12d8afe5cf6e537b69ccf753481dd5fd651f14b7672e1e6411a4d4e9d88cc956",
+    "/data/gaob/Re-ID/Trifusion/comparators/Signal-cd1b0a6/configs/RGBNT100/Signal.yml": "02641ce2941dcd50df77d379aab54650cae4a2a6b15ba1bcd43deba970b6900f",
+    "/data/gaob/Re-ID/Trifusion/logs/official_three_dataset_protocols_20260923/MSVR310.json": "7f2b35f9a7e00433558c1e723db0e3ff0ea9daa7144eeeb972139d1502945cbc",
+    "/data/gaob/Re-ID/Trifusion/comparators/Signal-cd1b0a6/configs/MSVR310/Signal.yml": "357ca3a989e943ea5348e6206c0d0f69b3c0d35ad9fbadbf68d2786439b8a915",
+    "/data/gaob/Re-ID/Trifusion/logs/prompt_role_state_20260930/campaign.json": "979be2aa7e080c34c5067bb59c9b52e3ef43edf127219bb06180243d61deb417",
+    "/data/gaob/Re-ID/Trifusion/logs/prompt_role_state_20260930/accepted_matrix.json": "1405d73124e7a1776de521edefb14620457f7b6e0691787bb18e2f2a8e0af7f9",
+    "/data/gaob/Re-ID/Trifusion/logs/prompt_role_state_20260930/prompt_role_state_20260930_prompt_reset_roles_RGBNT201/campaign.json": "24a0f0e2404fbe27b02ba189829a40b7ba08c7eed2c9b84e35d0ae44691d9266",
+    "/data/gaob/Re-ID/Trifusion/trained-model/prompt_role_state_20260930_prompt_reset_roles_RGBNT201_seed42_full/training.json": "d752a9d6c1946961b84206b86e297cac6b305687c8ff05f372a77de3b8e6deda",
+    "/data/gaob/Re-ID/Trifusion/trained-model/prompt_role_state_20260930_prompt_reset_roles_RGBNT201_seed42_full/official_metrics.json": "dfe69e96b28b47e654a4f801f0453cae9a1f6b6335cd1c6b2cdb6d1859ec7de2",
+    "/data/gaob/Re-ID/Trifusion/trained-model/prompt_role_state_20260930_prompt_reset_roles_RGBNT201_seed42_m0/training.json": "59fea7ae8e62211dabd740de0c8e482155e2d8575c5014885b1dc9282eedd4cc",
+    "/data/gaob/Re-ID/Trifusion/trained-model/prompt_role_state_20260930_prompt_reset_roles_RGBNT201_seed42_full/best_map.pth": "0da20026517a7f9d0dec294e47b8551dd19d5d426b7abccd781b324c9b0150b2",
+    "/data/gaob/Re-ID/Trifusion/trained-model/prompt_role_state_20260930_prompt_reset_roles_RGBNT201_seed42_full/official_distances.pt": "6a68a2ae3aa699b636c8e4e342ce8b7d5b0cf8349d6b970b2b9e0bb610b36b4a",
+    "/data/gaob/Re-ID/Trifusion/trained-model/prompt_role_state_20260930_prompt_reset_roles_RGBNT201_seed42_m0/m0_reload_probe.pth": "87829c8c977c989012969c08f72c8c6a18f52f6fe645a455caf5293894fb6ce8",
+    "/data/gaob/Re-ID/Trifusion/pertrained-model/RGBNT201_PlainBaseline_50.pth": "789e5e14aacd74ad122aad701389eb216ca5b4fda92687e27351a513023b4407",
+    "/data/gaob/Re-ID/Trifusion/trained-model/prompt_role_state_20260930_prompt_reset_roles_RGBNT201_seed42_full/training_steps.jsonl": "0ff5ece7f61e14612ea63ea76511e093d9160e3ef2344fccf771276283ae6a22",
+    "/data/gaob/Re-ID/Trifusion/trained-model/prompt_role_state_20260930_prompt_reset_roles_RGBNT201_seed42_m0/training_steps.jsonl": "5b696979b0cfb9b7bde3ba9a8c2e4a38c10dae70f70c12774e6b4d87a0c879c9",
+    "/data/gaob/Re-ID/Trifusion/logs/prompt_role_state_20260930/prompt_role_state_20260930_prompt_reset_roles_RGBNT100/campaign.json": "d2b7d3c6497ec14320dd64845a4fcc42097d0fcd84e7a06c91788b5e05a0155b",
+    "/data/gaob/Re-ID/Trifusion/trained-model/prompt_role_state_20260930_prompt_reset_roles_RGBNT100_seed42_full/training.json": "04751862a3f5d37ce9352c93e20de2091471288e0a9bd9223e4fadcb8ebaf5c8",
+    "/data/gaob/Re-ID/Trifusion/trained-model/prompt_role_state_20260930_prompt_reset_roles_RGBNT100_seed42_full/official_metrics.json": "377ab6fdcaeb65c49bdd685de00c115237599b38c5e8efa4a8d55b3dba14cc58",
+    "/data/gaob/Re-ID/Trifusion/trained-model/prompt_role_state_20260930_prompt_reset_roles_RGBNT100_seed42_m0/training.json": "891fd295b0830dc4fb8f9e58b7d84964995236e0cafa453fa5276793318d5888",
+    "/data/gaob/Re-ID/Trifusion/trained-model/prompt_role_state_20260930_prompt_reset_roles_RGBNT100_seed42_full/best_map.pth": "22c078384d560e1d362694fb33f6332e27d7937f28c2166758e0c7e1e38c58d3",
+    "/data/gaob/Re-ID/Trifusion/trained-model/prompt_role_state_20260930_prompt_reset_roles_RGBNT100_seed42_full/official_distances.pt": "6d9450eb02f6276eb644322672ea0a502fb8e463f105f30975ceaef130e53eb3",
+    "/data/gaob/Re-ID/Trifusion/trained-model/prompt_role_state_20260930_prompt_reset_roles_RGBNT100_seed42_m0/m0_reload_probe.pth": "dde206e8166934f048fb0affbb471979c00b2860e0c620f8becbc093d7c9f53c",
+    "/data/gaob/Re-ID/Trifusion/pertrained-model/RGBNT100_PlainBaseline_30.pth": "299a28bfb3e3180eeae0736cf8638cd162525dce0f2192a940b62b97f6e67dcd",
+    "/data/gaob/Re-ID/Trifusion/trained-model/prompt_role_state_20260930_prompt_reset_roles_RGBNT100_seed42_full/training_steps.jsonl": "99e7ff015ba27a58739b9876aab379e096a5eb129b804b6b70ac1fe3f720523d",
+    "/data/gaob/Re-ID/Trifusion/trained-model/prompt_role_state_20260930_prompt_reset_roles_RGBNT100_seed42_m0/training_steps.jsonl": "46127d0e98dabef52ecb29095ea7821aed2c27351ddda189250076112b3cdc30",
+    "/data/gaob/Re-ID/Trifusion/logs/prompt_role_state_20260930/prompt_role_state_20260930_prompt_reset_roles_MSVR310/campaign.json": "aab7648c86562687f5f1181816c3387399b798aab5d694793ee65ee5b42af451",
+    "/data/gaob/Re-ID/Trifusion/trained-model/prompt_role_state_20260930_prompt_reset_roles_MSVR310_seed42_full/training.json": "c0e99381375383bec0a3e16bba828a8e57b53fb68e9c0ba49fafc005ff6715fa",
+    "/data/gaob/Re-ID/Trifusion/trained-model/prompt_role_state_20260930_prompt_reset_roles_MSVR310_seed42_full/official_metrics.json": "f36f9a2eef520079a87d51a5d3319eec799c5692a152a2996ee06999f7e53bef",
+    "/data/gaob/Re-ID/Trifusion/trained-model/prompt_role_state_20260930_prompt_reset_roles_MSVR310_seed42_m0/training.json": "665c86c5b11158e83cdf731150b86308376e4954e89ebe49c40cf7e94d09dfe7",
+    "/data/gaob/Re-ID/Trifusion/trained-model/prompt_role_state_20260930_prompt_reset_roles_MSVR310_seed42_full/best_map.pth": "3ac5ad6b6ffbaede1f7d54f04853e617ea7b162a4abee7b9f69faf398a211483",
+    "/data/gaob/Re-ID/Trifusion/trained-model/prompt_role_state_20260930_prompt_reset_roles_MSVR310_seed42_full/official_distances.pt": "1058b1c39b47a63cbc656d1e9a9e230ccef4c3e6488e62215dd03ec9d9323080",
+    "/data/gaob/Re-ID/Trifusion/trained-model/prompt_role_state_20260930_prompt_reset_roles_MSVR310_seed42_m0/m0_reload_probe.pth": "90ead27a518cf120b8f93c4d732b5d36a6b38d95a5284ef10d785cd25d7df2f0",
+    "/data/gaob/Re-ID/Trifusion/pertrained-model/MSVR310_PlainBaseline_50.pth": "69c5e71b75036d7216ece3ff84450f0052f5e70dfaba46bf73f3e1d40992bb37",
+    "/data/gaob/Re-ID/Trifusion/trained-model/prompt_role_state_20260930_prompt_reset_roles_MSVR310_seed42_full/training_steps.jsonl": "5d5a9a3bc2f7ac84afa2599c4a86203384db5e7b8de6115c0231083987be8eff",
+    "/data/gaob/Re-ID/Trifusion/trained-model/prompt_role_state_20260930_prompt_reset_roles_MSVR310_seed42_m0/training_steps.jsonl": "1a7fb01a935915e5996d2af1edd0b0317ae269c67b96c259ecd4e0b33a49888c",
+    "/data/gaob/Re-ID/Trifusion/logs/prompt_role_state_20260930/prompt_role_state_20260930_prompt_carry_roles_RGBNT201/campaign.json": "a25448d29eca96e5b2a443f59df1dd7584dbd82af130ed1a8db48a843700efea",
+    "/data/gaob/Re-ID/Trifusion/trained-model/prompt_role_state_20260930_prompt_carry_roles_RGBNT201_seed42_full/training.json": "a9eb2e21f2e2cf70237f3f662436eff2db37ca035d33441afd90fcc8d31c2c3f",
+    "/data/gaob/Re-ID/Trifusion/trained-model/prompt_role_state_20260930_prompt_carry_roles_RGBNT201_seed42_full/official_metrics.json": "99e011b492d371bcb314e5f8cab07308e1d09ea88efe29b2d45a2c6b8f882348",
+    "/data/gaob/Re-ID/Trifusion/trained-model/prompt_role_state_20260930_prompt_carry_roles_RGBNT201_seed42_m0/training.json": "7921b0911ca14130afc5b8a58d4ba54d1115202779c385179e96862cc69db210",
+    "/data/gaob/Re-ID/Trifusion/trained-model/prompt_role_state_20260930_prompt_carry_roles_RGBNT201_seed42_full/best_map.pth": "3d282b9d208c5c409c2eb8e05b44a5a0caa9567595daee3d4d28e0de05f286a1",
+    "/data/gaob/Re-ID/Trifusion/trained-model/prompt_role_state_20260930_prompt_carry_roles_RGBNT201_seed42_full/official_distances.pt": "1d31d5d772b6980920fa0075dda1be05535309735b0fd72be40699320ca3f806",
+    "/data/gaob/Re-ID/Trifusion/trained-model/prompt_role_state_20260930_prompt_carry_roles_RGBNT201_seed42_m0/m0_reload_probe.pth": "b3d3f49ab48abdd43c5568abd3dadbd0aa681d39fb98392726f58029e27a9cf1",
+    "/data/gaob/Re-ID/Trifusion/trained-model/prompt_role_state_20260930_prompt_carry_roles_RGBNT201_seed42_full/training_steps.jsonl": "6ecb35e57768179c01c9f54b02033639005963f4e350f9fb45084b5a0514e641",
+    "/data/gaob/Re-ID/Trifusion/trained-model/prompt_role_state_20260930_prompt_carry_roles_RGBNT201_seed42_m0/training_steps.jsonl": "9ed8bd9079020987fc657c9f96f096f020e0f6285547f71c8a4234acae0a96ff",
+    "/data/gaob/Re-ID/Trifusion/logs/prompt_role_state_20260930/prompt_role_state_20260930_prompt_carry_roles_RGBNT100/campaign.json": "493a5ef900d74b1d57d1e4862aa8db128052af43b8b83a220d59f5311f9c74bd",
+    "/data/gaob/Re-ID/Trifusion/trained-model/prompt_role_state_20260930_prompt_carry_roles_RGBNT100_seed42_full/training.json": "773c864b412d4a3b6368485c6e7527d87c56acf9ffdba99f7137785eab196d88",
+    "/data/gaob/Re-ID/Trifusion/trained-model/prompt_role_state_20260930_prompt_carry_roles_RGBNT100_seed42_full/official_metrics.json": "a0f7142ff4afd2c9d756eef47127ff372d1f2910675a87a18761b94dbd4a29db",
+    "/data/gaob/Re-ID/Trifusion/trained-model/prompt_role_state_20260930_prompt_carry_roles_RGBNT100_seed42_m0/training.json": "ae5cfec72b60fc450cb31112e40e4240980c73c3dbae6b39b80a19a72d987615",
+    "/data/gaob/Re-ID/Trifusion/trained-model/prompt_role_state_20260930_prompt_carry_roles_RGBNT100_seed42_full/best_map.pth": "1e2360adf8c5ef4ffbab04097ff0eb97dbe0408f41cdb2c7a018a9af0333779a",
+    "/data/gaob/Re-ID/Trifusion/trained-model/prompt_role_state_20260930_prompt_carry_roles_RGBNT100_seed42_full/official_distances.pt": "b3f2821e20e17f469cc839e0499d039c37ea97bba8e5fcb39c0a25e13bb9b3c1",
+    "/data/gaob/Re-ID/Trifusion/trained-model/prompt_role_state_20260930_prompt_carry_roles_RGBNT100_seed42_m0/m0_reload_probe.pth": "c24289bca7bebdb68673dafb6f0fd2bb9e8d7fe69222e6f37d3b78b86bf7f2e8",
+    "/data/gaob/Re-ID/Trifusion/trained-model/prompt_role_state_20260930_prompt_carry_roles_RGBNT100_seed42_full/training_steps.jsonl": "407a061e34aa7a092782f61335ce6261baae834bb695a10ca867fe6081a3b6cb",
+    "/data/gaob/Re-ID/Trifusion/trained-model/prompt_role_state_20260930_prompt_carry_roles_RGBNT100_seed42_m0/training_steps.jsonl": "e4eb639a9776555d89487d2ae53275eb324359fd23a062b1fad6a5deede45990",
+    "/data/gaob/Re-ID/Trifusion/logs/prompt_role_state_20260930/prompt_role_state_20260930_prompt_carry_roles_MSVR310/campaign.json": "ac79d3649e14171f12e73d1a2afdbfa681302c7eb7748ba824c233e5e1beee5d",
+    "/data/gaob/Re-ID/Trifusion/trained-model/prompt_role_state_20260930_prompt_carry_roles_MSVR310_seed42_full/training.json": "ff63e57b82e0ca635edc7dc23e2edd281daac236a5cd20bc51b312d95f1f62fa",
+    "/data/gaob/Re-ID/Trifusion/trained-model/prompt_role_state_20260930_prompt_carry_roles_MSVR310_seed42_full/official_metrics.json": "9be442198b84ebe484f8e00dd3ea2da63f8f20fab7c5ece54bab0a1c0ab63bb2",
+    "/data/gaob/Re-ID/Trifusion/trained-model/prompt_role_state_20260930_prompt_carry_roles_MSVR310_seed42_m0/training.json": "21c1c4d95c17884493eb7eb8ca5ff15d7849e9a0b048a356cd2b29651aaee399",
+    "/data/gaob/Re-ID/Trifusion/trained-model/prompt_role_state_20260930_prompt_carry_roles_MSVR310_seed42_full/best_map.pth": "34377c4a950706004c6180c95ed80664daa62899b5c3919d7b39c74dced074ed",
+    "/data/gaob/Re-ID/Trifusion/trained-model/prompt_role_state_20260930_prompt_carry_roles_MSVR310_seed42_full/official_distances.pt": "74ea255d5c9521ae84d1ebc9cce3bed7df36a6c1127566e2cc8df887999935f4",
+    "/data/gaob/Re-ID/Trifusion/trained-model/prompt_role_state_20260930_prompt_carry_roles_MSVR310_seed42_m0/m0_reload_probe.pth": "8d83c690e0ebf4accd420058013087619a9ec36dfdcebf4c0b197f67c09c7b5d",
+    "/data/gaob/Re-ID/Trifusion/trained-model/prompt_role_state_20260930_prompt_carry_roles_MSVR310_seed42_full/training_steps.jsonl": "7845d6c3f904d4d2c344d34e5434afaeec1f4fc321892b934cbebe47257e79ca",
+    "/data/gaob/Re-ID/Trifusion/trained-model/prompt_role_state_20260930_prompt_carry_roles_MSVR310_seed42_m0/training_steps.jsonl": "f8f5496b9fec5c68e06350f747414647967bd43913ad7efca235ab4a7775273a"
+  },
+  "checks": {
+    "gt_provenance": {
+      "status": "PASS",
+      "details": "Full protocol rows independently parsed from dataset file names and checked against complete filesystem split inventories; all matrix metadata agrees; no train/eval identity overlap."
+    },
+    "score_normalization": {
+      "status": "PASS",
+      "details": "Raw percent AP/CMC; standard feature normalization only; 72 values replayed independently."
+    },
+    "result_existence": {
+      "status": "PASS",
+      "details": "Six full and six M0 runs, six best checkpoints, six distances, all steps/logs and SHA bindings agree."
+    },
+    "tracker_freshness": {
+      "status": "WARN",
+      "details": "Supplied 01:03 snapshot still reports running/PENDING; formal backend is complete."
+    },
+    "dead_code": {
+      "status": "WARN",
+      "details": "Reported scalar metrics are active. Legacy upstream metric wrapper/visualization helpers and OOF mains are not invoked for this panel."
+    },
+    "scope": {
+      "status": "WARN",
+      "details": "Single seed, official-evaluation checkpoint selection, same-checkpoint decompositions; registered gate fails on RGBNT201 mAP."
+    },
+    "eval_type": {
+      "status": "PASS",
+      "classification": "real_gt",
+      "m0": "engineering_validation",
+      "cpu_toy_contract": "simulation_only"
+    },
+    "strict_reload": {
+      "status": "PASS",
+      "production_evidence": "verified code/exit0/receipt/M0 equality/checkpoint key-shape-SHA evidence",
+      "fresh_cpu_model_reload": "PASS",
+      "baseline_strict_loads": 3,
+      "m0_strict_loads": 6,
+      "best_checkpoint_strict_loads": 6,
+      "neural_forward_rerun": false,
+      "reason": "After explicit scratch authorization, real CPU constructors and all state loads passed; no neural forward was performed."
+    },
+    "paired_initialization": {
+      "status": "PASS",
+      "basis": "All six initial full model hashes freshly reproduced with real CPU constructors; initializer fields equal except mode."
+    },
+    "source_freeze": {
+      "status": "PASS",
+      "manifest_files": 207
+    },
+    "deterministic_metric_replay": {
+      "status": "PASS",
+      "acceptance_status": "accepted",
+      "runs": 6,
+      "matrices": 18,
+      "metric_values": 72,
+      "formal_steps": 20416,
+      "m0_steps": 48,
+      "max_source_precision_metric_error_pp": 1.4210854715202004e-14,
+      "max_float64_metric_error_pp": 2.965972754509494e-06
+    }
+  },
+  "datasets": {
+    "RGBNT201": {
+      "counts": {
+        "train": 3951,
+        "query": 836,
+        "gallery": 836
+      },
+      "split_checks": {
+        "train": {
+          "records": 3951,
+          "unique_identities": 171,
+          "image_paths": 11853,
+          "filesystem_paths": 11853,
+          "all_metadata_filename_derived": true,
+          "complete_split": true
+        },
+        "query": {
+          "records": 836,
+          "unique_identities": 30,
+          "image_paths": 2508,
+          "filesystem_paths": 2508,
+          "all_metadata_filename_derived": true,
+          "complete_split": true
+        },
+        "gallery": {
+          "records": 836,
+          "unique_identities": 30,
+          "image_paths": 2508,
+          "filesystem_paths": 2508,
+          "all_metadata_filename_derived": true,
+          "complete_split": true
+        }
+      },
+      "identity_train_eval_overlap": 0,
+      "environment_key": "camera",
+      "protocol_sha256": "e63be5d9f8bd41df365264ad8f459dcd063d088023a2d2ed525a49a72f61161e"
+    },
+    "RGBNT100": {
+      "counts": {
+        "train": 8675,
+        "query": 1715,
+        "gallery": 8575
+      },
+      "split_checks": {
+        "train": {
+          "records": 8675,
+          "unique_identities": 50,
+          "image_paths": 8675,
+          "filesystem_paths": 8675,
+          "all_metadata_filename_derived": true,
+          "complete_split": true
+        },
+        "query": {
+          "records": 1715,
+          "unique_identities": 50,
+          "image_paths": 1715,
+          "filesystem_paths": 1715,
+          "all_metadata_filename_derived": true,
+          "complete_split": true
+        },
+        "gallery": {
+          "records": 8575,
+          "unique_identities": 50,
+          "image_paths": 8575,
+          "filesystem_paths": 8575,
+          "all_metadata_filename_derived": true,
+          "complete_split": true
+        }
+      },
+      "identity_train_eval_overlap": 0,
+      "environment_key": "camera",
+      "protocol_sha256": "12d8afe5cf6e537b69ccf753481dd5fd651f14b7672e1e6411a4d4e9d88cc956"
+    },
+    "MSVR310": {
+      "counts": {
+        "train": 1032,
+        "query": 591,
+        "gallery": 1055
+      },
+      "split_checks": {
+        "train": {
+          "records": 1032,
+          "unique_identities": 155,
+          "image_paths": 3096,
+          "filesystem_paths": 3096,
+          "all_metadata_filename_derived": true,
+          "complete_split": true
+        },
+        "query": {
+          "records": 591,
+          "unique_identities": 52,
+          "image_paths": 1773,
+          "filesystem_paths": 1773,
+          "all_metadata_filename_derived": true,
+          "complete_split": true
+        },
+        "gallery": {
+          "records": 1055,
+          "unique_identities": 155,
+          "image_paths": 3165,
+          "filesystem_paths": 3165,
+          "all_metadata_filename_derived": true,
+          "complete_split": true
+        }
+      },
+      "identity_train_eval_overlap": 0,
+      "environment_key": "scene",
+      "protocol_sha256": "7f2b35f9a7e00433558c1e723db0e3ff0ea9daa7144eeeb972139d1502945cbc"
+    }
+  },
+  "pairs": [
+    {
+      "dataset": "RGBNT201",
+      "initial_bindings_equal_except_mode": true,
+      "initial_model_state_sha256": "3064592f65bf60c1c13570fbd4d8804c5575ed29dd3401f5b9d55e343dfc5f6e",
+      "carry_minus_reset_pp": {
+        "mAP": -0.6140690806794709,
+        "Rank-1": 0.35884976387023926,
+        "Rank-5": 0.1196146011352539,
+        "Rank-10": 0.5980908870697021
+      },
+      "diagnostic_carry_minus_reset_pp": {
+        "shared_global": {
+          "mAP": -1.2007660403345142,
+          "Rank-1": -1.0765552520751953,
+          "Rank-5": -1.67464017868042,
+          "Rank-10": -0.4784703254699707
+        },
+        "joint_local": {
+          "mAP": 4.828253294173123,
+          "Rank-1": -0.35884976387023926,
+          "Rank-5": 1.6746461391448975,
+          "Rank-10": 3.110051155090332
+        }
+      },
+      "top1_repaired": 35,
+      "top1_new_errors": 32,
+      "query_ap_up": 296,
+      "query_ap_down": 287,
+      "query_ap_equal": 253,
+      "identity_mean_ap_delta_pp": -0.4410368030919561
+    },
+    {
+      "dataset": "RGBNT100",
+      "initial_bindings_equal_except_mode": true,
+      "initial_model_state_sha256": "10ecddbe720b1b2dcfd370e1de5b84240b632745c69be6ddbece6942d2a1998a",
+      "carry_minus_reset_pp": {
+        "mAP": 0.09429216451533762,
+        "Rank-1": 0.46647191047668457,
+        "Rank-5": -0.1749277114868164,
+        "Rank-10": -0.29154419898986816
+      },
+      "diagnostic_carry_minus_reset_pp": {
+        "shared_global": {
+          "mAP": 0.09192161071278804,
+          "Rank-1": 0.4081606864929199,
+          "Rank-5": -0.11661648750305176,
+          "Rank-10": -0.29154419898986816
+        },
+        "joint_local": {
+          "mAP": -2.297622584522628,
+          "Rank-1": -0.9912490844726562,
+          "Rank-5": -1.1661827564239502,
+          "Rank-10": -1.1078715324401855
+        }
+      },
+      "top1_repaired": 18,
+      "top1_new_errors": 10,
+      "query_ap_up": 657,
+      "query_ap_down": 634,
+      "query_ap_equal": 424,
+      "identity_mean_ap_delta_pp": 0.05227362951427306
+    },
+    {
+      "dataset": "MSVR310",
+      "initial_bindings_equal_except_mode": true,
+      "initial_model_state_sha256": "a75302513d9ab399f660e7535941345bb6bdfd28b98a4d7a1f6679f7470c0ed7",
+      "carry_minus_reset_pp": {
+        "mAP": 1.1773144604620995,
+        "Rank-1": 1.1844336986541748,
+        "Rank-5": 1.861250400543213,
+        "Rank-10": 0.8460283279418945
+      },
+      "diagnostic_carry_minus_reset_pp": {
+        "shared_global": {
+          "mAP": 1.4704169873731487,
+          "Rank-1": 2.876478433609009,
+          "Rank-5": 1.3536334037780762,
+          "Rank-10": 1.522839069366455
+        },
+        "joint_local": {
+          "mAP": 3.010956696813219,
+          "Rank-1": 3.8917094469070435,
+          "Rank-5": 11.167511343955994,
+          "Rank-10": 9.306257963180542
+        }
+      },
+      "top1_repaired": 27,
+      "top1_new_errors": 20,
+      "query_ap_up": 323,
+      "query_ap_down": 245,
+      "query_ap_equal": 23,
+      "identity_mean_ap_delta_pp": 1.6009870729413611
+    }
+  ],
+  "runs": [
+    {
+      "dataset": "RGBNT201",
+      "variant": "reset_roles",
+      "run_dir": "/data/gaob/Re-ID/Trifusion/trained-model/prompt_role_state_20260930_prompt_reset_roles_RGBNT201_seed42_full",
+      "best_epoch": 18,
+      "checkpoint_sha256": "0da20026517a7f9d0dec294e47b8551dd19d5d426b7abccd781b324c9b0150b2",
+      "distance_sha256": "6a68a2ae3aa699b636c8e4e342ce8b7d5b0cf8349d6b970b2b9e0bb610b36b4a",
+      "receipt_sha256": "dfe69e96b28b47e654a4f801f0453cae9a1f6b6335cd1c6b2cdb6d1859ec7de2",
+      "initializer": {
+        "author_checkpoint": "/data/gaob/Re-ID/Trifusion/pertrained-model/RGBNT201_PlainBaseline_50.pth",
+        "author_checkpoint_sha256": "789e5e14aacd74ad122aad701389eb216ca5b4fda92687e27351a513023b4407",
+        "signal_state_sha256": "4d5cf3d7bb445199b6d2a0d3492c4fcf8ae5263f240bb6b6a322933695abd89d",
+        "baseline_kind": "independently_trained_module_free_cls",
+        "architecture": "prompt_role_state_v1",
+        "m1": true,
+        "m2": true,
+        "m3": false,
+        "width": 128,
+        "fused_width": 1536,
+        "prediction_weight": 0.1,
+        "learning_rate": 0.00035,
+        "weight_decay": 0.0001,
+        "entry_sha256": "f0a0ad609fd0c0448187790672274f3b944a52b74c30390f401d1ce62cb67a68",
+        "model_source_sha256": "e2a51154b5b327341f35e453dd32a821b091a49a669b49a7c70e79e6e2f2591b",
+        "initial_model_state_sha256": "3064592f65bf60c1c13570fbd4d8804c5575ed29dd3401f5b9d55e343dfc5f6e",
+        "trainable_parameters": 2628109,
+        "condition": {
+          "query_mode": "context",
+          "auxiliary_target": "none"
+        },
+        "auxiliary_id_weight": 1.0,
+        "query_context_width": 512,
+        "reused_entry_sha256": "e50865fb923297cd61cf38b33ec2bc95154f8c503b5dfe5de9823cad3f03d7ef",
+        "context_source_sha256": "eda3d1473496b33e4b69402dba7770e67d23b33b07afd41d23105b7f148d63af",
+        "evidence_source_sha256": "e737a977d39ccbe09a5509118e5b5333d653f7f13381e65e84af1a13e5c28dc4",
+        "prompt_mode": "reset",
+        "prompt_tokens_per_role": 4,
+        "prompt_roles": 3,
+        "prompt_blocks": 12,
+        "prompt_source_sha256": "2b4071f0a78e08426c0d2f3ee3f28b30562cff821b631fe39f2269049c85dcfb",
+        "reused_context_entry_sha256": "9f4cc9f11998819d4a927a32f4e47baf0c4ff9d14c4bc93b0dc35b0153ebc142"
+      },
+      "m0": {
+        "nonzero_gradient_parameters": 123,
+        "trainable_parameters": 123,
+        "frozen_signal_unchanged": true,
+        "reload_max_abs_difference": 0.0,
+        "reload_probe_sha256": "87829c8c977c989012969c08f72c8c6a18f52f6fe645a455caf5293894fb6ce8"
+      },
+      "state_tensor_keys": 135,
+      "loss_checks": {
+        "full": {
+          "steps": 2649,
+          "epochs": 50,
+          "loss_reconstruction_max_abs": 2.3469328880310059e-07,
+          "nonzero_triplet_steps": 1175,
+          "nonzero_auxiliary_steps": 0
+        },
+        "m0": {
+          "steps": 8,
+          "epochs": 1,
+          "loss_reconstruction_max_abs": 2.3655593395233154e-07,
+          "nonzero_triplet_steps": 8,
+          "nonzero_auxiliary_steps": 0
+        }
+      },
+      "metrics": {
+        "mAP": 71.2649894665388,
+        "Rank-1": 72.0095694065094,
+        "Rank-5": 81.45933151245117,
+        "Rank-10": 86.00478172302246
+      },
+      "diagnostic_metrics": {
+        "shared_global": {
+          "mAP": 70.94120825416427,
+          "Rank-1": 71.17224931716919,
+          "Rank-5": 80.62201142311096,
+          "Rank-10": 85.64593195915222
+        },
+        "joint_local": {
+          "mAP": 55.9051316298379,
+          "Rank-1": 60.406696796417236,
+          "Rank-5": 70.21530866622925,
+          "Rank-10": 77.03348994255066
+        }
+      },
+      "final_epoch_metrics": {
+        "mAP": 70.54632771741419,
+        "Rank-1": 71.65071964263916,
+        "Rank-5": 79.66507077217102,
+        "Rank-10": 84.56937670707703
+      }
+    },
+    {
+      "dataset": "RGBNT100",
+      "variant": "reset_roles",
+      "run_dir": "/data/gaob/Re-ID/Trifusion/trained-model/prompt_role_state_20260930_prompt_reset_roles_RGBNT100_seed42_full",
+      "best_epoch": 1,
+      "checkpoint_sha256": "22c078384d560e1d362694fb33f6332e27d7937f28c2166758e0c7e1e38c58d3",
+      "distance_sha256": "6d9450eb02f6276eb644322672ea0a502fb8e463f105f30975ceaef130e53eb3",
+      "receipt_sha256": "377ab6fdcaeb65c49bdd685de00c115237599b38c5e8efa4a8d55b3dba14cc58",
+      "initializer": {
+        "author_checkpoint": "/data/gaob/Re-ID/Trifusion/pertrained-model/RGBNT100_PlainBaseline_30.pth",
+        "author_checkpoint_sha256": "299a28bfb3e3180eeae0736cf8638cd162525dce0f2192a940b62b97f6e67dcd",
+        "signal_state_sha256": "68cea6c9ae4246ec9d0394b8b5e0dec53d70bd6af55d92c3140ac268e60e3174",
+        "baseline_kind": "independently_trained_module_free_cls",
+        "architecture": "prompt_role_state_v1",
+        "m1": true,
+        "m2": true,
+        "m3": false,
+        "width": 128,
+        "fused_width": 1536,
+        "prediction_weight": 0.1,
+        "learning_rate": 0.00035,
+        "weight_decay": 0.0001,
+        "entry_sha256": "f0a0ad609fd0c0448187790672274f3b944a52b74c30390f401d1ce62cb67a68",
+        "model_source_sha256": "e2a51154b5b327341f35e453dd32a821b091a49a669b49a7c70e79e6e2f2591b",
+        "initial_model_state_sha256": "10ecddbe720b1b2dcfd370e1de5b84240b632745c69be6ddbece6942d2a1998a",
+        "trainable_parameters": 2442253,
+        "condition": {
+          "query_mode": "context",
+          "auxiliary_target": "none"
+        },
+        "auxiliary_id_weight": 1.0,
+        "query_context_width": 512,
+        "reused_entry_sha256": "e50865fb923297cd61cf38b33ec2bc95154f8c503b5dfe5de9823cad3f03d7ef",
+        "context_source_sha256": "eda3d1473496b33e4b69402dba7770e67d23b33b07afd41d23105b7f148d63af",
+        "evidence_source_sha256": "e737a977d39ccbe09a5509118e5b5333d653f7f13381e65e84af1a13e5c28dc4",
+        "prompt_mode": "reset",
+        "prompt_tokens_per_role": 4,
+        "prompt_roles": 3,
+        "prompt_blocks": 12,
+        "prompt_source_sha256": "2b4071f0a78e08426c0d2f3ee3f28b30562cff821b631fe39f2269049c85dcfb",
+        "reused_context_entry_sha256": "9f4cc9f11998819d4a927a32f4e47baf0c4ff9d14c4bc93b0dc35b0153ebc142"
+      },
+      "m0": {
+        "nonzero_gradient_parameters": 123,
+        "trainable_parameters": 123,
+        "frozen_signal_unchanged": true,
+        "reload_max_abs_difference": 0.0,
+        "reload_probe_sha256": "dde206e8166934f048fb0affbb471979c00b2860e0c620f8becbc093d7c9f53c"
+      },
+      "state_tensor_keys": 135,
+      "loss_checks": {
+        "full": {
+          "steps": 6559,
+          "epochs": 50,
+          "loss_reconstruction_max_abs": 0.0,
+          "nonzero_triplet_steps": 0,
+          "nonzero_auxiliary_steps": 0
+        },
+        "m0": {
+          "steps": 8,
+          "epochs": 1,
+          "loss_reconstruction_max_abs": 0.0,
+          "nonzero_triplet_steps": 0,
+          "nonzero_auxiliary_steps": 0
+        }
+      },
+      "metrics": {
+        "mAP": 85.64857694395474,
+        "Rank-1": 95.86005806922913,
+        "Rank-5": 96.61807417869568,
+        "Rank-10": 96.85131311416626
+      },
+      "diagnostic_metrics": {
+        "shared_global": {
+          "mAP": 85.61703139365949,
+          "Rank-1": 95.86005806922913,
+          "Rank-5": 96.61807417869568,
+          "Rank-10": 96.90961837768555
+        },
+        "joint_local": {
+          "mAP": 58.35640152712919,
+          "Rank-1": 78.3090353012085,
+          "Rank-5": 81.2828004360199,
+          "Rank-10": 83.03207159042358
+        }
+      },
+      "final_epoch_metrics": {
+        "mAP": 81.85786001072664,
+        "Rank-1": 93.81924271583557,
+        "Rank-5": 94.8104977607727,
+        "Rank-10": 95.16034722328186
+      }
+    },
+    {
+      "dataset": "MSVR310",
+      "variant": "reset_roles",
+      "run_dir": "/data/gaob/Re-ID/Trifusion/trained-model/prompt_role_state_20260930_prompt_reset_roles_MSVR310_seed42_full",
+      "best_epoch": 15,
+      "checkpoint_sha256": "3ac5ad6b6ffbaede1f7d54f04853e617ea7b162a4abee7b9f69faf398a211483",
+      "distance_sha256": "1058b1c39b47a63cbc656d1e9a9e230ccef4c3e6488e62215dd03ec9d9323080",
+      "receipt_sha256": "f36f9a2eef520079a87d51a5d3319eec799c5692a152a2996ee06999f7e53bef",
+      "initializer": {
+        "author_checkpoint": "/data/gaob/Re-ID/Trifusion/pertrained-model/MSVR310_PlainBaseline_50.pth",
+        "author_checkpoint_sha256": "69c5e71b75036d7216ece3ff84450f0052f5e70dfaba46bf73f3e1d40992bb37",
+        "signal_state_sha256": "b64e8827028042012bed9a9fc2ffd0bc29122dc1077815b4773626c6a41a087c",
+        "baseline_kind": "independently_trained_module_free_cls",
+        "architecture": "prompt_role_state_v1",
+        "m1": true,
+        "m2": true,
+        "m3": false,
+        "width": 128,
+        "fused_width": 1536,
+        "prediction_weight": 0.1,
+        "learning_rate": 0.00035,
+        "weight_decay": 0.0001,
+        "entry_sha256": "f0a0ad609fd0c0448187790672274f3b944a52b74c30390f401d1ce62cb67a68",
+        "model_source_sha256": "e2a51154b5b327341f35e453dd32a821b091a49a669b49a7c70e79e6e2f2591b",
+        "initial_model_state_sha256": "a75302513d9ab399f660e7535941345bb6bdfd28b98a4d7a1f6679f7470c0ed7",
+        "trainable_parameters": 2603533,
+        "condition": {
+          "query_mode": "context",
+          "auxiliary_target": "none"
+        },
+        "auxiliary_id_weight": 1.0,
+        "query_context_width": 512,
+        "reused_entry_sha256": "e50865fb923297cd61cf38b33ec2bc95154f8c503b5dfe5de9823cad3f03d7ef",
+        "context_source_sha256": "eda3d1473496b33e4b69402dba7770e67d23b33b07afd41d23105b7f148d63af",
+        "evidence_source_sha256": "e737a977d39ccbe09a5509118e5b5333d653f7f13381e65e84af1a13e5c28dc4",
+        "prompt_mode": "reset",
+        "prompt_tokens_per_role": 4,
+        "prompt_roles": 3,
+        "prompt_blocks": 12,
+        "prompt_source_sha256": "2b4071f0a78e08426c0d2f3ee3f28b30562cff821b631fe39f2269049c85dcfb",
+        "reused_context_entry_sha256": "9f4cc9f11998819d4a927a32f4e47baf0c4ff9d14c4bc93b0dc35b0153ebc142"
+      },
+      "m0": {
+        "nonzero_gradient_parameters": 123,
+        "trainable_parameters": 123,
+        "frozen_signal_unchanged": true,
+        "reload_max_abs_difference": 0.0,
+        "reload_probe_sha256": "90ead27a518cf120b8f93c4d732b5d36a6b38d95a5284ef10d785cd25d7df2f0"
+      },
+      "state_tensor_keys": 135,
+      "loss_checks": {
+        "full": {
+          "steps": 1000,
+          "epochs": 50,
+          "loss_reconstruction_max_abs": 2.384185791015625e-07,
+          "nonzero_triplet_steps": 980,
+          "nonzero_auxiliary_steps": 0
+        },
+        "m0": {
+          "steps": 8,
+          "epochs": 1,
+          "loss_reconstruction_max_abs": 2.384185791015625e-07,
+          "nonzero_triplet_steps": 8,
+          "nonzero_auxiliary_steps": 0
+        }
+      },
+      "metrics": {
+        "mAP": 53.04987585816998,
+        "Rank-1": 69.03553009033203,
+        "Rank-5": 83.07952880859375,
+        "Rank-10": 87.64805197715759
+      },
+      "diagnostic_metrics": {
+        "shared_global": {
+          "mAP": 52.01243538123887,
+          "Rank-1": 68.358713388443,
+          "Rank-5": 82.91032314300537,
+          "Rank-10": 87.47885227203369
+        },
+        "joint_local": {
+          "mAP": 8.728754459914281,
+          "Rank-1": 18.95093023777008,
+          "Rank-5": 34.348562359809875,
+          "Rank-10": 43.48561763763428
+        }
+      },
+      "final_epoch_metrics": {
+        "mAP": 49.63458024152374,
+        "Rank-1": 65.3130292892456,
+        "Rank-5": 81.21827244758606,
+        "Rank-10": 86.97123527526855
+      }
+    },
+    {
+      "dataset": "RGBNT201",
+      "variant": "carry_roles",
+      "run_dir": "/data/gaob/Re-ID/Trifusion/trained-model/prompt_role_state_20260930_prompt_carry_roles_RGBNT201_seed42_full",
+      "best_epoch": 30,
+      "checkpoint_sha256": "3d282b9d208c5c409c2eb8e05b44a5a0caa9567595daee3d4d28e0de05f286a1",
+      "distance_sha256": "1d31d5d772b6980920fa0075dda1be05535309735b0fd72be40699320ca3f806",
+      "receipt_sha256": "99e011b492d371bcb314e5f8cab07308e1d09ea88efe29b2d45a2c6b8f882348",
+      "initializer": {
+        "author_checkpoint": "/data/gaob/Re-ID/Trifusion/pertrained-model/RGBNT201_PlainBaseline_50.pth",
+        "author_checkpoint_sha256": "789e5e14aacd74ad122aad701389eb216ca5b4fda92687e27351a513023b4407",
+        "signal_state_sha256": "4d5cf3d7bb445199b6d2a0d3492c4fcf8ae5263f240bb6b6a322933695abd89d",
+        "baseline_kind": "independently_trained_module_free_cls",
+        "architecture": "prompt_role_state_v1",
+        "m1": true,
+        "m2": true,
+        "m3": false,
+        "width": 128,
+        "fused_width": 1536,
+        "prediction_weight": 0.1,
+        "learning_rate": 0.00035,
+        "weight_decay": 0.0001,
+        "entry_sha256": "f0a0ad609fd0c0448187790672274f3b944a52b74c30390f401d1ce62cb67a68",
+        "model_source_sha256": "e2a51154b5b327341f35e453dd32a821b091a49a669b49a7c70e79e6e2f2591b",
+        "initial_model_state_sha256": "3064592f65bf60c1c13570fbd4d8804c5575ed29dd3401f5b9d55e343dfc5f6e",
+        "trainable_parameters": 2628109,
+        "condition": {
+          "query_mode": "context",
+          "auxiliary_target": "none"
+        },
+        "auxiliary_id_weight": 1.0,
+        "query_context_width": 512,
+        "reused_entry_sha256": "e50865fb923297cd61cf38b33ec2bc95154f8c503b5dfe5de9823cad3f03d7ef",
+        "context_source_sha256": "eda3d1473496b33e4b69402dba7770e67d23b33b07afd41d23105b7f148d63af",
+        "evidence_source_sha256": "e737a977d39ccbe09a5509118e5b5333d653f7f13381e65e84af1a13e5c28dc4",
+        "prompt_mode": "carry",
+        "prompt_tokens_per_role": 4,
+        "prompt_roles": 3,
+        "prompt_blocks": 12,
+        "prompt_source_sha256": "2b4071f0a78e08426c0d2f3ee3f28b30562cff821b631fe39f2269049c85dcfb",
+        "reused_context_entry_sha256": "9f4cc9f11998819d4a927a32f4e47baf0c4ff9d14c4bc93b0dc35b0153ebc142"
+      },
+      "m0": {
+        "nonzero_gradient_parameters": 123,
+        "trainable_parameters": 123,
+        "frozen_signal_unchanged": true,
+        "reload_max_abs_difference": 0.0,
+        "reload_probe_sha256": "b3d3f49ab48abdd43c5568abd3dadbd0aa681d39fb98392726f58029e27a9cf1"
+      },
+      "state_tensor_keys": 135,
+      "loss_checks": {
+        "full": {
+          "steps": 2649,
+          "epochs": 50,
+          "loss_reconstruction_max_abs": 2.3655593395233154e-07,
+          "nonzero_triplet_steps": 1210,
+          "nonzero_auxiliary_steps": 0
+        },
+        "m0": {
+          "steps": 8,
+          "epochs": 1,
+          "loss_reconstruction_max_abs": 2.0675361156463623e-07,
+          "nonzero_triplet_steps": 8,
+          "nonzero_auxiliary_steps": 0
+        }
+      },
+      "metrics": {
+        "mAP": 70.65092038585932,
+        "Rank-1": 72.36841917037964,
+        "Rank-5": 81.57894611358643,
+        "Rank-10": 86.60287261009216
+      },
+      "diagnostic_metrics": {
+        "shared_global": {
+          "mAP": 69.74044221382975,
+          "Rank-1": 70.095694065094,
+          "Rank-5": 78.94737124443054,
+          "Rank-10": 85.16746163368225
+        },
+        "joint_local": {
+          "mAP": 60.73338492401103,
+          "Rank-1": 60.047847032547,
+          "Rank-5": 71.88995480537415,
+          "Rank-10": 80.14354109764099
+        }
+      },
+      "final_epoch_metrics": {
+        "mAP": 69.62064268967939,
+        "Rank-1": 70.21530866622925,
+        "Rank-5": 80.02392053604126,
+        "Rank-10": 85.52631735801697
+      }
+    },
+    {
+      "dataset": "RGBNT100",
+      "variant": "carry_roles",
+      "run_dir": "/data/gaob/Re-ID/Trifusion/trained-model/prompt_role_state_20260930_prompt_carry_roles_RGBNT100_seed42_full",
+      "best_epoch": 1,
+      "checkpoint_sha256": "1e2360adf8c5ef4ffbab04097ff0eb97dbe0408f41cdb2c7a018a9af0333779a",
+      "distance_sha256": "b3f2821e20e17f469cc839e0499d039c37ea97bba8e5fcb39c0a25e13bb9b3c1",
+      "receipt_sha256": "a0f7142ff4afd2c9d756eef47127ff372d1f2910675a87a18761b94dbd4a29db",
+      "initializer": {
+        "author_checkpoint": "/data/gaob/Re-ID/Trifusion/pertrained-model/RGBNT100_PlainBaseline_30.pth",
+        "author_checkpoint_sha256": "299a28bfb3e3180eeae0736cf8638cd162525dce0f2192a940b62b97f6e67dcd",
+        "signal_state_sha256": "68cea6c9ae4246ec9d0394b8b5e0dec53d70bd6af55d92c3140ac268e60e3174",
+        "baseline_kind": "independently_trained_module_free_cls",
+        "architecture": "prompt_role_state_v1",
+        "m1": true,
+        "m2": true,
+        "m3": false,
+        "width": 128,
+        "fused_width": 1536,
+        "prediction_weight": 0.1,
+        "learning_rate": 0.00035,
+        "weight_decay": 0.0001,
+        "entry_sha256": "f0a0ad609fd0c0448187790672274f3b944a52b74c30390f401d1ce62cb67a68",
+        "model_source_sha256": "e2a51154b5b327341f35e453dd32a821b091a49a669b49a7c70e79e6e2f2591b",
+        "initial_model_state_sha256": "10ecddbe720b1b2dcfd370e1de5b84240b632745c69be6ddbece6942d2a1998a",
+        "trainable_parameters": 2442253,
+        "condition": {
+          "query_mode": "context",
+          "auxiliary_target": "none"
+        },
+        "auxiliary_id_weight": 1.0,
+        "query_context_width": 512,
+        "reused_entry_sha256": "e50865fb923297cd61cf38b33ec2bc95154f8c503b5dfe5de9823cad3f03d7ef",
+        "context_source_sha256": "eda3d1473496b33e4b69402dba7770e67d23b33b07afd41d23105b7f148d63af",
+        "evidence_source_sha256": "e737a977d39ccbe09a5509118e5b5333d653f7f13381e65e84af1a13e5c28dc4",
+        "prompt_mode": "carry",
+        "prompt_tokens_per_role": 4,
+        "prompt_roles": 3,
+        "prompt_blocks": 12,
+        "prompt_source_sha256": "2b4071f0a78e08426c0d2f3ee3f28b30562cff821b631fe39f2269049c85dcfb",
+        "reused_context_entry_sha256": "9f4cc9f11998819d4a927a32f4e47baf0c4ff9d14c4bc93b0dc35b0153ebc142"
+      },
+      "m0": {
+        "nonzero_gradient_parameters": 123,
+        "trainable_parameters": 123,
+        "frozen_signal_unchanged": true,
+        "reload_max_abs_difference": 0.0,
+        "reload_probe_sha256": "c24289bca7bebdb68673dafb6f0fd2bb9e8d7fe69222e6f37d3b78b86bf7f2e8"
+      },
+      "state_tensor_keys": 135,
+      "loss_checks": {
+        "full": {
+          "steps": 6559,
+          "epochs": 50,
+          "loss_reconstruction_max_abs": 8.381903171539307e-08,
+          "nonzero_triplet_steps": 5,
+          "nonzero_auxiliary_steps": 0
+        },
+        "m0": {
+          "steps": 8,
+          "epochs": 1,
+          "loss_reconstruction_max_abs": 1.1688098311424255e-07,
+          "nonzero_triplet_steps": 2,
+          "nonzero_auxiliary_steps": 0
+        }
+      },
+      "metrics": {
+        "mAP": 85.74286910847007,
+        "Rank-1": 96.32652997970581,
+        "Rank-5": 96.44314646720886,
+        "Rank-10": 96.55976891517639
+      },
+      "diagnostic_metrics": {
+        "shared_global": {
+          "mAP": 85.70895300437228,
+          "Rank-1": 96.26821875572205,
+          "Rank-5": 96.50145769119263,
+          "Rank-10": 96.61807417869568
+        },
+        "joint_local": {
+          "mAP": 56.05877894260656,
+          "Rank-1": 77.31778621673584,
+          "Rank-5": 80.11661767959595,
+          "Rank-10": 81.9242000579834
+        }
+      },
+      "final_epoch_metrics": {
+        "mAP": 82.58069041116676,
+        "Rank-1": 93.29445958137512,
+        "Rank-5": 94.05247569084167,
+        "Rank-10": 94.22740340232849
+      }
+    },
+    {
+      "dataset": "MSVR310",
+      "variant": "carry_roles",
+      "run_dir": "/data/gaob/Re-ID/Trifusion/trained-model/prompt_role_state_20260930_prompt_carry_roles_MSVR310_seed42_full",
+      "best_epoch": 24,
+      "checkpoint_sha256": "34377c4a950706004c6180c95ed80664daa62899b5c3919d7b39c74dced074ed",
+      "distance_sha256": "74ea255d5c9521ae84d1ebc9cce3bed7df36a6c1127566e2cc8df887999935f4",
+      "receipt_sha256": "9be442198b84ebe484f8e00dd3ea2da63f8f20fab7c5ece54bab0a1c0ab63bb2",
+      "initializer": {
+        "author_checkpoint": "/data/gaob/Re-ID/Trifusion/pertrained-model/MSVR310_PlainBaseline_50.pth",
+        "author_checkpoint_sha256": "69c5e71b75036d7216ece3ff84450f0052f5e70dfaba46bf73f3e1d40992bb37",
+        "signal_state_sha256": "b64e8827028042012bed9a9fc2ffd0bc29122dc1077815b4773626c6a41a087c",
+        "baseline_kind": "independently_trained_module_free_cls",
+        "architecture": "prompt_role_state_v1",
+        "m1": true,
+        "m2": true,
+        "m3": false,
+        "width": 128,
+        "fused_width": 1536,
+        "prediction_weight": 0.1,
+        "learning_rate": 0.00035,
+        "weight_decay": 0.0001,
+        "entry_sha256": "f0a0ad609fd0c0448187790672274f3b944a52b74c30390f401d1ce62cb67a68",
+        "model_source_sha256": "e2a51154b5b327341f35e453dd32a821b091a49a669b49a7c70e79e6e2f2591b",
+        "initial_model_state_sha256": "a75302513d9ab399f660e7535941345bb6bdfd28b98a4d7a1f6679f7470c0ed7",
+        "trainable_parameters": 2603533,
+        "condition": {
+          "query_mode": "context",
+          "auxiliary_target": "none"
+        },
+        "auxiliary_id_weight": 1.0,
+        "query_context_width": 512,
+        "reused_entry_sha256": "e50865fb923297cd61cf38b33ec2bc95154f8c503b5dfe5de9823cad3f03d7ef",
+        "context_source_sha256": "eda3d1473496b33e4b69402dba7770e67d23b33b07afd41d23105b7f148d63af",
+        "evidence_source_sha256": "e737a977d39ccbe09a5509118e5b5333d653f7f13381e65e84af1a13e5c28dc4",
+        "prompt_mode": "carry",
+        "prompt_tokens_per_role": 4,
+        "prompt_roles": 3,
+        "prompt_blocks": 12,
+        "prompt_source_sha256": "2b4071f0a78e08426c0d2f3ee3f28b30562cff821b631fe39f2269049c85dcfb",
+        "reused_context_entry_sha256": "9f4cc9f11998819d4a927a32f4e47baf0c4ff9d14c4bc93b0dc35b0153ebc142"
+      },
+      "m0": {
+        "nonzero_gradient_parameters": 123,
+        "trainable_parameters": 123,
+        "frozen_signal_unchanged": true,
+        "reload_max_abs_difference": 0.0,
+        "reload_probe_sha256": "8d83c690e0ebf4accd420058013087619a9ec36dfdcebf4c0b197f67c09c7b5d"
+      },
+      "state_tensor_keys": 135,
+      "loss_checks": {
+        "full": {
+          "steps": 1000,
+          "epochs": 50,
+          "loss_reconstruction_max_abs": 2.384185791015625e-07,
+          "nonzero_triplet_steps": 988,
+          "nonzero_auxiliary_steps": 0
+        },
+        "m0": {
+          "steps": 8,
+          "epochs": 1,
+          "loss_reconstruction_max_abs": 1.7881393432617188e-07,
+          "nonzero_triplet_steps": 8,
+          "nonzero_auxiliary_steps": 0
+        }
+      },
+      "metrics": {
+        "mAP": 54.22719031863208,
+        "Rank-1": 70.2199637889862,
+        "Rank-5": 84.94077920913696,
+        "Rank-10": 88.49408030509949
+      },
+      "diagnostic_metrics": {
+        "shared_global": {
+          "mAP": 53.48285236861202,
+          "Rank-1": 71.235191822052,
+          "Rank-5": 84.26395654678345,
+          "Rank-10": 89.00169134140015
+        },
+        "joint_local": {
+          "mAP": 11.7397111567275,
+          "Rank-1": 22.842639684677124,
+          "Rank-5": 45.51607370376587,
+          "Rank-10": 52.79187560081482
+        }
+      },
+      "final_epoch_metrics": {
+        "mAP": 51.183625938691144,
+        "Rank-1": 66.3282573223114,
+        "Rank-5": 82.23350048065186,
+        "Rank-10": 88.15566897392273
+      }
+    }
+  ],
+  "strict_cpu_model_checks": [
+    {
+      "dataset": "RGBNT201",
+      "device": "cpu",
+      "cuda_available": false,
+      "scope": "real model constructors and strict state reload; no neural forward; CUDA module transfers redirected to CPU",
+      "rows": [
+        {
+          "dataset": "RGBNT201",
+          "mode": "reset",
+          "initial_model_state_sha256_recomputed": "3064592f65bf60c1c13570fbd4d8804c5575ed29dd3401f5b9d55e343dfc5f6e",
+          "initial_hash_matches_recorded": true,
+          "trainable_parameter_tensors": 123,
+          "trainable_elements": 2628109,
+          "loads": [
+            {
+              "stage": "m0",
+              "strict_load": true,
+              "missing_keys": [],
+              "unexpected_keys": [],
+              "saved_tensor_keys": 135,
+              "tensors_equal_after_load": true,
+              "frozen_signal_unchanged": true
+            },
+            {
+              "stage": "full",
+              "strict_load": true,
+              "missing_keys": [],
+              "unexpected_keys": [],
+              "saved_tensor_keys": 135,
+              "tensors_equal_after_load": true,
+              "frozen_signal_unchanged": true
+            }
+          ]
+        },
+        {
+          "dataset": "RGBNT201",
+          "mode": "carry",
+          "initial_model_state_sha256_recomputed": "3064592f65bf60c1c13570fbd4d8804c5575ed29dd3401f5b9d55e343dfc5f6e",
+          "initial_hash_matches_recorded": true,
+          "trainable_parameter_tensors": 123,
+          "trainable_elements": 2628109,
+          "loads": [
+            {
+              "stage": "m0",
+              "strict_load": true,
+              "missing_keys": [],
+              "unexpected_keys": [],
+              "saved_tensor_keys": 135,
+              "tensors_equal_after_load": true,
+              "frozen_signal_unchanged": true
+            },
+            {
+              "stage": "full",
+              "strict_load": true,
+              "missing_keys": [],
+              "unexpected_keys": [],
+              "saved_tensor_keys": 135,
+              "tensors_equal_after_load": true,
+              "frozen_signal_unchanged": true
+            }
+          ]
+        }
+      ],
+      "constructor_stdout": "\u5efa\u7acbtransformer............\nusing Transformer_type: ViT-B-16 as a backbone\nResized position embedding: %s to %s torch.Size([197, 768]) torch.Size([129, 768])\nPosition embedding resize to height:16 width: 8\nSuccessfully load ckpt!\n<All keys matched successfully>\nLoading pretrained model from CLIP\ncamera number is : 4\n===========Building Signal===========\n"
+    },
+    {
+      "dataset": "RGBNT100",
+      "device": "cpu",
+      "cuda_available": false,
+      "scope": "real model constructors and strict state reload; no neural forward; CUDA module transfers redirected to CPU",
+      "rows": [
+        {
+          "dataset": "RGBNT100",
+          "mode": "reset",
+          "initial_model_state_sha256_recomputed": "10ecddbe720b1b2dcfd370e1de5b84240b632745c69be6ddbece6942d2a1998a",
+          "initial_hash_matches_recorded": true,
+          "trainable_parameter_tensors": 123,
+          "trainable_elements": 2442253,
+          "loads": [
+            {
+              "stage": "m0",
+              "strict_load": true,
+              "missing_keys": [],
+              "unexpected_keys": [],
+              "saved_tensor_keys": 135,
+              "tensors_equal_after_load": true,
+              "frozen_signal_unchanged": true
+            },
+            {
+              "stage": "full",
+              "strict_load": true,
+              "missing_keys": [],
+              "unexpected_keys": [],
+              "saved_tensor_keys": 135,
+              "tensors_equal_after_load": true,
+              "frozen_signal_unchanged": true
+            }
+          ]
+        },
+        {
+          "dataset": "RGBNT100",
+          "mode": "carry",
+          "initial_model_state_sha256_recomputed": "10ecddbe720b1b2dcfd370e1de5b84240b632745c69be6ddbece6942d2a1998a",
+          "initial_hash_matches_recorded": true,
+          "trainable_parameter_tensors": 123,
+          "trainable_elements": 2442253,
+          "loads": [
+            {
+              "stage": "m0",
+              "strict_load": true,
+              "missing_keys": [],
+              "unexpected_keys": [],
+              "saved_tensor_keys": 135,
+              "tensors_equal_after_load": true,
+              "frozen_signal_unchanged": true
+            },
+            {
+              "stage": "full",
+              "strict_load": true,
+              "missing_keys": [],
+              "unexpected_keys": [],
+              "saved_tensor_keys": 135,
+              "tensors_equal_after_load": true,
+              "frozen_signal_unchanged": true
+            }
+          ]
+        }
+      ],
+      "constructor_stdout": "\u5efa\u7acbtransformer............\nusing Transformer_type: ViT-B-16 as a backbone\nResized position embedding: %s to %s torch.Size([197, 768]) torch.Size([129, 768])\nPosition embedding resize to height:8 width: 16\nSuccessfully load ckpt!\n<All keys matched successfully>\nLoading pretrained model from CLIP\ncamera number is : 8\n===========Building Signal===========\n"
+    },
+    {
+      "dataset": "MSVR310",
+      "device": "cpu",
+      "cuda_available": false,
+      "scope": "real model constructors and strict state reload; no neural forward; CUDA module transfers redirected to CPU",
+      "rows": [
+        {
+          "dataset": "MSVR310",
+          "mode": "reset",
+          "initial_model_state_sha256_recomputed": "a75302513d9ab399f660e7535941345bb6bdfd28b98a4d7a1f6679f7470c0ed7",
+          "initial_hash_matches_recorded": true,
+          "trainable_parameter_tensors": 123,
+          "trainable_elements": 2603533,
+          "loads": [
+            {
+              "stage": "m0",
+              "strict_load": true,
+              "missing_keys": [],
+              "unexpected_keys": [],
+              "saved_tensor_keys": 135,
+              "tensors_equal_after_load": true,
+              "frozen_signal_unchanged": true
+            },
+            {
+              "stage": "full",
+              "strict_load": true,
+              "missing_keys": [],
+              "unexpected_keys": [],
+              "saved_tensor_keys": 135,
+              "tensors_equal_after_load": true,
+              "frozen_signal_unchanged": true
+            }
+          ]
+        },
+        {
+          "dataset": "MSVR310",
+          "mode": "carry",
+          "initial_model_state_sha256_recomputed": "a75302513d9ab399f660e7535941345bb6bdfd28b98a4d7a1f6679f7470c0ed7",
+          "initial_hash_matches_recorded": true,
+          "trainable_parameter_tensors": 123,
+          "trainable_elements": 2603533,
+          "loads": [
+            {
+              "stage": "m0",
+              "strict_load": true,
+              "missing_keys": [],
+              "unexpected_keys": [],
+              "saved_tensor_keys": 135,
+              "tensors_equal_after_load": true,
+              "frozen_signal_unchanged": true
+            },
+            {
+              "stage": "full",
+              "strict_load": true,
+              "missing_keys": [],
+              "unexpected_keys": [],
+              "saved_tensor_keys": 135,
+              "tensors_equal_after_load": true,
+              "frozen_signal_unchanged": true
+            }
+          ]
+        }
+      ],
+      "constructor_stdout": "\u5efa\u7acbtransformer............\nusing Transformer_type: ViT-B-16 as a backbone\nResized position embedding: %s to %s torch.Size([197, 768]) torch.Size([129, 768])\nPosition embedding resize to height:8 width: 16\nSuccessfully load ckpt!\n<All keys matched successfully>\nLoading pretrained model from CLIP\ncamera number is : 8\n===========Building Signal===========\n"
+    }
+  ],
+  "registered_progression_gate": {
+    "status": "FAIL",
+    "integrity_failure": false,
+    "cause": "RGBNT201 carry-reset mAP -0.6140690806794709 pp; requires positive and >=0.5 pp"
+  },
+  "claims": [
+    {
+      "id": "six_complete_official_panel",
+      "impact": "supported"
+    },
+    {
+      "id": "mixed_seed42_selected_checkpoint_effect",
+      "impact": "needs_qualifier"
+    },
+    {
+      "id": "stable_cross_dataset_improvement",
+      "impact": "unsupported"
+    },
+    {
+      "id": "independent_causal_role_benefit",
+      "impact": "unsupported"
+    },
+    {
+      "id": "untouched_test_generalization",
+      "impact": "unsupported"
+    },
+    {
+      "id": "fresh_auditor_model_state_reload_and_initialization",
+      "impact": "supported"
+    },
+    {
+      "id": "fresh_auditor_neural_checkpoint_inference",
+      "impact": "unsupported"
+    }
+  ],
+  "report_sha256": "6b067198ec7527c2733b44d5cfda9b834d1d3fdb7b476e59a6cdf75ac1a68644"
+}

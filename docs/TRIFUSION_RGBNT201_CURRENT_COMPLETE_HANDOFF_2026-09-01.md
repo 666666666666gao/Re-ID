@@ -13183,3 +13183,9 @@ WARN另外保留三份导入依赖没有启动时冻结、目录不能认证像�
 201的R5/R10，reset为81.4593／86.0048、carry为81.5789／86.6029；100和MSVR车辆主表只用mAP/R1。已有已保存距离的配对CPU诊断退出0：201首位修复35、新增错误32；100为18/10；MSVR为27/20。按身份宏平均AP的carry−reset分别为−0.4410、+0.0523、+1.6010个百分点。201同权重local-alone mAP从55.9051升到60.7334，但shared global从70.9412降到69.7404，fused仍下降；这是输出分解，不是独立消融或唯一因果。100两端mAP-best均为第1轮，末轮分别降到81.8579、82.5807，训练loss继续下降；来源Triplet非零步数仅0/6559与5/6559。MSVR carry的54.2272 mAP高于发布Signal checkpoint的53.2424，但R1 70.2200仍低于Signal的72.4196；不能称双指标超过强基线，更非当前强方法SOTA。
 
 预登记进入独立carry-global-only的跨集门槛要求三个数据集mAP均正、R1不降，且201/MSVR mAP至少+0.5；201 mAP为−0.6141，因此FAIL，不启动该后继。完整原始值、训练成本约6.13端小时、证据与限制见`results/PROMPT_ROLE_STATE_FULL_2026-09-30.md`和更新的prompt tracker；fresh独立experiment-audit已启动、尚未返回，当前项目collector通过不等于fresh审计完成。此为seed42二阶段开发结果；官方集参与逐轮选点，不能宣称未触碰测试或跨种子可靠性。Goal ACTIVE／UNMET，下一研究假设需基于全六端和审计结果另行登记，不能仅取MSVR正差改写本次预设失败。
+
+### §41.668 Prompt 角色状态六端独立审计完成（2026-09-30 10:10 CST）
+
+§41.667 的六端结果、50轮选 best 规则与跨数据集 FAIL 判断保持不变。新完成的 fresh 审计为 **WARN / same-family / provisional，无结果完整性 FAIL**：审计员独立复算全部18张 fused/global/local 完整距离矩阵的72个指标，最大误差 1.42e-14 个百分点；六端合计20,416个正式训练步骤、48个 M0 步、207份冻结源码 SHA 与原始文本记录相符。使用真实模型在 CPU 重新构建时，六端初始模型状态 SHA 与回执完全一致，六个 M0 probe 和六个最高 fused mAP checkpoint 均严格重载，冻结基线张量不变。审计未重新执行神经前向或 GPU 训练。完整报告与机器记录归档在 `refine-logs/prompt_role_state_v1/REVIEW_FULL_PANEL_20260930.md/json`，原报告 SHA256 `6b067198ec7527c2733b44d5cfda9b834d1d3fdb7b476e59a6cdf75ac1a68644`；真实审核代理的模型归属另见同目录 `REVIEW_ATTRIBUTION_20260930.md`。
+
+carry 相对 reset 的 mAP 仍为 RGBNT201 −0.614069、RGBNT100 +0.094292、MSVR310 +1.177314 个百分点；预登记的统一晋级门槛失败，不启动条件限定的 carry-global-only 后继。单一 seed、官方集逐轮选点且曾用于历史方法选择、同权重输出分解不能当独立训练消融，均继续标明。四卡服务器于核对时 GPU 0/1/2/3 均空闲，`/data` 可用约91GiB；本批六端已自然结束，不重启或按中途最佳继续搜种子。下一结构假设应从已知 global 主导、local 泛化弱和跨数据集作用混合的证据重新登记，不能将本轮审计通过等同于算法达标。总体研究目标保持 ACTIVE / UNMET。

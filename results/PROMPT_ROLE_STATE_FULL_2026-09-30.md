@@ -1,6 +1,6 @@
 # 视觉主干内角色提示状态：六端完整结果
 
-2026-09-30。`reset_roles` 与 `carry_roles` 各覆盖 RGBNT201、RGBNT100、MSVR310，均为相同纯 CLIP ReID 权重起点、角色训练 seed42、完整 50 轮。两条件每个数据集的初始模型张量哈希和可训练参数量相同；每端真实八批 M0、训练、正式评价均退出 0。按每轮**官方 fused mAP**选取一份最高权重，再严格重载，在完整 query/gallery 与原协议过滤下报告同一权重的指标。`accepted_matrix.json` 已通过项目 collector 的六端验收；fresh 独立审计在进行中。
+2026-09-30。`reset_roles` 与 `carry_roles` 各覆盖 RGBNT201、RGBNT100、MSVR310，均为相同纯 CLIP ReID 权重起点、角色训练 seed42、完整 50 轮。两条件每个数据集的初始模型张量哈希和可训练参数量相同；每端真实八批 M0、训练、正式评价均退出 0。按每轮**官方 fused mAP**选取一份最高权重，再严格重载，在完整 query/gallery 与原协议过滤下报告同一权重的指标。`accepted_matrix.json` 已通过项目 collector 的六端验收；独立审计已完成：WARN（same-family / provisional），未发现完整性 FAIL。
 
 ## 正式指标
 
@@ -52,3 +52,8 @@ RGBNT201 的角色局部表示单独 mAP 上升约 4.83 点，但 shared global 
 - 对照来源：视觉主干内提示传递的思想已有 MambaPro 等先例。本次只检验同参数提示每层重置和跨层传递，不支持新的原创性或 SOTA 声称。MSVR310 的 `scene` 是时间段标签，按原协议排除同身份同时间段，而非泛称跨摄像头。
 
 结论：跨层 carry 对 MSVR310 有正向单种子开发结果，但在 RGBNT201 损害 mAP，RGBNT100 mAP 差很小。预注册的统一改善门槛失败；保留全部六端正式结果，不做 carry-global-only 后继，也不把本次工程验收或某一数据集正差写成完整目标达成。
+## 独立审计结论
+
+审计员在不调用项目评分器的条件下，以 CPU 独立复算六端的 18 张完整距离矩阵和 72 个正式指标，最大误差为 1.42e-14 个百分点。六端均有完整 50 轮、合计 20,416 个训练步骤；48 个真实 M0 步和 207 份已登记源码文件的 SHA 核对通过。真实模型在 CPU 上重新构建后，六端初始状态 SHA 一致，六份 M0 probe 和六份 mAP-best checkpoint 均严格重载成功，冻结基线张量未改变。该审计没有重新运行神经前向或 GPU 训练。
+
+审计结论为 **WARN（same-family / provisional）**，没有发现结果完整性 FAIL。限制包括单一 seed、官方集逐轮选点并曾用于历史方法选择，以及 shared global / joint local 同权重诊断不能当独立训练消融。它确认科学上的预登记跨数据集晋级门槛失败；审计通过不意味着性能目标完成。完整证据见 [独立审计报告](../refine-logs/prompt_role_state_v1/REVIEW_FULL_PANEL_20260930.md)、[机器记录](../refine-logs/prompt_role_state_v1/REVIEW_FULL_PANEL_20260930.json)和[模型归属说明](../refine-logs/prompt_role_state_v1/REVIEW_ATTRIBUTION_20260930.md)。

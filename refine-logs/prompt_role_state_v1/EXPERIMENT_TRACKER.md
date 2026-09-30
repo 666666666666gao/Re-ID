@@ -21,3 +21,5 @@
 | MSVR310 | 15／53.0499／69.0355 | 24／54.2272／70.2200 | +1.1773／+1.1844 |
 
 预登记跨集门槛**未通过**：RGBNT201 mAP 为负。完整四项／两项指标、机制边界与证据路径见 `results/PROMPT_ROLE_STATE_FULL_2026-09-30.md`。不启动仅为 carry 准备的独立global-only阶段。Goal仍为 ACTIVE／UNMET。
+
+2026-09-30 10:10 CST 独立完整审计封存：`REVIEW_FULL_PANEL_20260930.md/json`，原报告 SHA256 `6b067198ec7527c2733b44d5cfda9b834d1d3fdb7b476e59a6cdf75ac1a68644`；裁决 WARN / same-family / provisional，未发现完整性 FAIL。审计不调用项目 scorer，独立复算六端18张矩阵和72个指标、核对全部50轮/20,416步/48步M0/207份源码SHA，并在CPU重建真实模型，六份初始SHA匹配、六份M0 probe和六份best checkpoint严格重载成功，冻结基线未变。没有重跑神经前向。预登记跨集晋级门槛 FAIL（201 mAP carry-reset −0.614069pp），因此不启动 carry-global-only；六端正式结果与审计报告保留。四卡训练队列已结束，不把空闲GPU用来绕过该门槛的追加种子或调参。
