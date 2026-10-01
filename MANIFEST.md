@@ -1676,3 +1676,5 @@
 - 2026-10-02 §41.726: actualN1 3/6 full50/reloadaccepted, lowMSVR50train0 thenstrictmetricparityassertionFAILED(mAPgap .00030268, CMCequal); savedCPUdistanceoriginalscorersagree. Two100continue, waiterexited/report0,238sourceunchanged. No threshold/seed rescue/N2/N3.
 
 - 2026-10-02 §41.727: reviewed fixedcheckpoint diagnostic twoforwards exact inputs/features/distances; oldtrainingbest mismatch remains-.00030268mAP. OriginallowMSVR officialFAIL unchanged, no retry/tolerance/epoch rescue; all238sourcesunchanged, two100continue/next07:23, GoalACTIVE_UNMET.
+
+- 2026-10-02 §41.728: actual N1 milestone accepted4/6, running1, original lowMSVR evaluationFAILED retained/report0; sealed238 unchanged. N3 static training environment capacity20151/171,10050/50,MSVR60/155, not actual batch support or effectiveness. GoalACTIVE_UNMET.
