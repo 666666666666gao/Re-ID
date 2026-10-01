@@ -13965,3 +13965,36 @@ visual_global/visual_roles分别是对应读出的low_lr减frozen；role_frozen/
 证据目录logs/visual_update_milestone_706_20261001/，152份原始文本逐字节/SHA核对；含原240秒observer快照、父/子状态、完整轨迹和正式回执、同步705证明及一次归档源。快照空闲磁盘84392267776字节。222份活动源、manifest、witness、preflight和报告源未改；完整CPU报告调用次数0，由原observer在十二端严格验收后执行一次，本次没有神经计算或数组重放。
 
 下一步收齐MSVR独立冻结global-only和三个剩余RGBNT100端，统一审核固定C1/C2及成本、身份收益和负翻转，再决定共享全局流/私有角色流分离。已完成的M3地址/预测器、V17保护及旧提示/池化控制不重立项。GoalACTIVE/UNMET。
+
+## §41.707 MSVR310训练边界2×2收齐，RGBNT100角色配对出现mAP与首位分歧
+
+记录 2026-10-01T17:14:17.3154333+08:00；既定一次归档快照 2026-10-01T17:10:12.484135+08:00，父队列和子端严格验收均10/12。新完整端为MSVR310 frozen_global_only与RGBNT100 frozen_roles。165份原始文本逐字节核对，见logs/visual_update_milestone_707_20261001/。所有已完成端各自m0/train/evaluate实际退出0，完整50轮后按同一官方mAP-best权重严格重载，正式标签、完整图库和MSVR同身份同时间段过滤不变。
+
+| MSVR310 condition | best epoch | mAP | R1 |
+|---|---:|---:|---:|
+| frozen_global_only | 10 | 51.9480 | 67.3435 |
+| frozen_roles | 10 | 52.3728 | 67.3435 |
+| low_lr_global_only | 10 | 52.9354 | 67.8511 |
+| low_lr_roles | 10 | 53.0027 | 68.0203 |
+
+| MSVR310 comparison | delta mAP | delta R1 |
+|---|---:|---:|
+| visual_global | 0.9874 | 0.5076 |
+| visual_roles | 0.6299 | 0.6768 |
+| role_frozen | 0.4248 | 0.0000 |
+| role_low_lr | 0.0673 | 0.1692 |
+
+MSVR两种读出都受益于视觉更新，分别约+0.9874与+0.6299mAP；但在相同视觉边界下，角色增量由冻结的+0.4248mAP缩小为更新的+0.0673，后者仍低于固定0.5要求。角色×视觉交互约-0.3575mAP。不能将视觉更新收益归给角色协作，也不能凭两个完整数据集宣布跨数据集稳定。独立global-only保留M1均值写回适配，关闭角色算子和读出，不是从roles同权重取global。
+
+| RGBNT100 roles condition | best epoch | mAP | R1 |
+|---|---:|---:|
+| frozen_roles | 1 | 85.1001 | 95.1020 |
+| low_lr_roles | 1 | 85.3580 | 94.9854 |
+
+RGBNT100两端均选中第1轮；low_lr减frozen为+0.2579mAP、-0.1166R1，R5/R10分别+0.0583/+0.2915。这个完整配对没有满足原C1的R1不得下降要求；保留原规则，等剩余global-only两端、统一CPU报告与完整审核，不通过修改阈值、epoch、学习率或种子补救。冻结roles6559步Triplet全部0，更新roles39步为正；这只描述来源hinge支持，不是实际AdamW更新份额或唯一性能原因。
+
+新MSVR冻结global-only第50轮48.4215/64.1286，相对best下降3.5265mAP；新RGBNT100冻结roles末轮81.8050/93.7609，相对best下降3.2951mAP。更新roles100末轮82.1469/94.3440，也有退化。训练轮数已经完整，不能再把后期检索下降解释为尚未跑满。所有结果仍是一个角色阶段seed42、已消费官方集逐轮选点；不是完整流程多种子或未消费测试证据。
+
+剩余RGBNT100 low_lr_global_only和frozen_global_only快照分别45/50与39/50，预计剩余约1042/1153秒，仅为日程估计；不填中途best。磁盘快照84309110784字节空闲，必要权重/数组留远端供最终审核。222份活动源、共有初始化、preflight和报告源未改。完整CPU报告调用次数0，由原240秒observer待全12验收后执行一次；本次只归档已有文本并计算配对算术，不运行模型、重放数组或新增实验。
+
+RGBNT201完整矩阵已见§41.706；两数据集现在都显示视觉更新效应明显大于同边界角色增量。下一步完成最后两端和全12报告/审核，再决定共享全局流与私有角色证据分离；旧M3地址/预测器、V17保护及提示/池化不重立项。GoalACTIVE/UNMET，尚无三数据集baseline/SOTA达成证据。
