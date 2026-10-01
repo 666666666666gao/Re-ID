@@ -1,0 +1,121 @@
+{
+  "observed_at": "2026-10-01T09:41:13.507691+08:00",
+  "source_count_verified": 215,
+  "campaign_status": "RUNNING",
+  "jobs": [
+    {
+      "dataset": "RGBNT100",
+      "variant": "token",
+      "status": "COMPLETE",
+      "pid": 1739628,
+      "gpu": 0,
+      "worker_live": false
+    },
+    {
+      "dataset": "RGBNT201",
+      "variant": "token",
+      "status": "COMPLETE",
+      "pid": 1739629,
+      "gpu": 1,
+      "worker_live": false
+    },
+    {
+      "dataset": "MSVR310",
+      "variant": "token",
+      "status": "COMPLETE",
+      "pid": 1739630,
+      "gpu": 2,
+      "worker_live": false
+    },
+    {
+      "dataset": "RGBNT100",
+      "variant": "static",
+      "status": "RUNNING",
+      "pid": 1739631,
+      "gpu": 3,
+      "worker_live": true
+    },
+    {
+      "dataset": "RGBNT201",
+      "variant": "static",
+      "status": "COMPLETE",
+      "pid": 1793661,
+      "gpu": 2,
+      "worker_live": false
+    },
+    {
+      "dataset": "MSVR310",
+      "variant": "static",
+      "status": "COMPLETE",
+      "pid": 1801997,
+      "gpu": 1,
+      "worker_live": false
+    },
+    {
+      "dataset": "RGBNT100",
+      "variant": "direct",
+      "status": "RUNNING",
+      "pid": 1845862,
+      "gpu": 1,
+      "worker_live": true
+    },
+    {
+      "dataset": "RGBNT201",
+      "variant": "direct",
+      "status": "COMPLETE",
+      "pid": 1860907,
+      "gpu": 2,
+      "worker_live": false
+    },
+    {
+      "dataset": "MSVR310",
+      "variant": "direct",
+      "status": "RUNNING",
+      "pid": 1924499,
+      "gpu": 2,
+      "worker_live": true
+    }
+  ],
+  "controller_live": true,
+  "observer_receipt": {
+    "started_at": "2026-10-01T09:40:31.768109+08:00",
+    "pid": 1945281,
+    "command": [
+      "/data/gaob/Re-ID/conda-envs/tri_reid/bin/python",
+      "-B",
+      "/data/gaob/Re-ID/Trifusion/.codex_tmp/observe_role_global_tokens_milestone_0953_20261001.py"
+    ],
+    "source_sha256": "06d86b822d2588af9c471a257fcc415c66fb525421082c4071572ed24d240107",
+    "observe_at": "2026-10-01T09:53:00+08:00",
+    "status": "RUNNING"
+  },
+  "observer_wrapper_live": true,
+  "observer_child_live": true,
+  "analysis_waiter_receipt": {
+    "started_at": "2026-10-01T09:08:21.228189+08:00",
+    "pid": 1888324,
+    "command": [
+      "/data/gaob/Re-ID/conda-envs/tri_reid/bin/python",
+      "-B",
+      "/data/gaob/Re-ID/Trifusion/.codex_tmp/wait_role_global_tokens_complete_analysis_20261001.py"
+    ],
+    "source_sha256": "49437db4a13d7757f328d2c62a666bcb27b171fedd5ea5df45aca77cb84a5a7b",
+    "status": "RUNNING",
+    "poll_seconds": 240,
+    "scope": "Wait for full nine-end completion, then the already prepared CPU report once."
+  },
+  "analysis_waiter_wrapper_live": true,
+  "analysis_waiter_child_live": true,
+  "analysis_waiter_status": {
+    "observed_at": "2026-10-01T09:40:21.934969+08:00",
+    "pid": 1888324,
+    "controller_pid": 1739616,
+    "campaign_status": "RUNNING",
+    "complete_parent_jobs": 6,
+    "expected_jobs": 9,
+    "report_source_sha256": "8c5856c102e8503907b70e58dc6e083bfde11ae1e7f4037030ccfe5d48656bb2",
+    "status": "WAITING_FOR_NINE_VERIFIED_ENDPOINTS",
+    "scope": "Status/proc reads only while waiting; no interim scores, model forwards or retries.",
+    "controller_live": true
+  }
+}
