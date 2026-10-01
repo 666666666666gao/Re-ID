@@ -14156,3 +14156,27 @@ MSVR310/separated相对同容量coupled为−0.171365 mAP/+0.338411 R1；两者R
 MDReID的模态specific/shared双token分工也与本轮“角色private adapter是否直接写回”不同；本轮没有实现共享/私有区域语义分解，不能用这个负对照否定全部分解方法，也不能把改adapter写回方式称作已完成新M2。作者源码保留在本地私有阅读缓存，公开检查记录只存commit、SHA、精确来源链接和限定结论，不重新分发作者代码。下一项结构/训练合同仍应依据完整九端诊断再定；已做V17、预测器/地址、提示carry、全patch/竞争、global-token和普通视觉更新不重复包装。
 
 同配方baseline、global-only额外收益、经资源/协议核实的强参照及三数据集稳定性仍需同时满足。固定seed的阶段正差、工程验收或某一数据集接近Signal均不构成完整目标。Goal仍ACTIVE/UNMET。
+
+## §41.713：MSVR独立global完成，角色增量门仍未通过；强参照的论文与执行协议继续分开（2026-10-01）
+
+21:18:15存量等待器实际验收7/9，新增RGBNT100/coupled_roles与MSVR310/global_only；全部新完成端满50轮、train/evaluate实际exit0、最高官方fused mAP的一份权重经严格重载和完整真实GT图库评分。RGBNT100的另外两端仍在训练，不填临时best。
+
+| 当前MSVR310完整配对 | best轮 | mAP | R1 |
+|---|---:|---:|---:|
+| 独立global_only | 10 | 52.9354 | 67.8511 |
+| 同容量coupled_roles | 10 | 53.2434 | 67.3435 |
+| separated_roles | 10 | 53.0721 | 67.6819 |
+
+分离角色相对独立global仅+0.136654 mAP、−0.169206 R1，未达到预登记S2的+0.5pp且R1不降要求；coupled相对同一global为+0.308019/−0.507617。这与§712同容量S1负差一起，说明当前adapter写回分离没有在MSVR同时得到足够的mAP增量和首位改善。它不否定所有共享/模态私有语义机制，也不替代尚未实际调用的全九端CPU报告与fresh结果审计。
+
+新增RGBNT100/coupled为85.5581 mAP/95.2770 R1，best第1轮；6559训练步、39步Triplet为正、89731850可训练参数，训练加逐轮评价7187.4秒，峰值allocated约15.28GiB。末轮80.8547/94.5189低于自身best。MSVR独立global为87286080参数、1462.2秒、约12.84GiB；末轮46.8840/62.9442，同样退化。这些是完整预算后的真实best结果，不能将最佳早轮当未完整训练，也不将同配方新global当新机制或新的稳定性seed。
+
+剩余RGBNT100/separated与global在21:18分别完成25/24轮，train PID2914904/2980357均存活。21:23另一次只读进程/存储核对确认wrapper2840894、controller2846591、analysis_waiter2910065均实际存活，磁盘剩余76888469504字节（约71.61GiB）；无必要退役当前依赖权重。下一里程碑客户端已等待22:20:30读取同一分析等待器，不启动新队列或重复报告。届时完成数量以实际回执为准；全九端结束才由现有等待器调用一次CPU报告。
+
+此次仅归档两个新增完整端和固定21:18快照、源码/存储/上次同步回执共29份原始文本。归档实际21:24:53，tar190724字节，SHA a295da7399fedf0d45e8d6ed2b0c3caa1e7fe562880ab41bff6fbb13731fe6cb；逐文件字节与SHA核对完成。活动229与旧222来源、manifest、preflight和witness不变；没有追加评分或神经前向，权重和距离留远端。新回执与精确配对见PARTIAL_MILESTONE_20261001_211815.json。
+
+同时补核RoDI正式CVPR2026 Findings主论文Table1（印刷p.6565），分别保存CLIP与DINOv3 distilled ViT-B/16资源边界：CLIP的RGBNT201为84.1/87.2/92.0/93.2，RGBNT100为88.5/97.6，MSVR310为64.1/77.2；DINOv3对应85.3/87.9/93.0/94.8、89.0/99.1、71.8/84.8。正式CVF主PDF SHA745393be9fd1e46e1d6b2804c20c6b82a31498725ea86e169ae7f7885c393fa6，与仓库内作者PDF字节不同，主结果取正式Table1，不混用表或骨干。
+
+实际作者仓库HEAD2f38911c49d42d4ca259d440a851b8d77dddccbe仅含README/PDF/海报三个blob，无可执行模型、训练器、parser、evaluator、配置或checkpoint。论文声称沿用既有数据协议，但精确解析、camera/时间段过滤、归一化/距离、BN前后特征、rerank和历史输入清单均不能从公开实现核对。因此这些分数是已核主表的强论文参照，不是已复现或代码协议相同的baseline；没有源码不构成论文失实证据。原文/图像和作者缓存留私有阅读目录，公开只保存RODI_PRIMARY_READBACK与RODI_SOURCE_CHECK（来源URL、commit、SHA及限定结论）。arXiv/DOI未从所查官方资料确认，不补造ID。
+
+当前训练仍从已有ReID底座温启动。干净公开CLIP联合训练需要避开完整ReID state reload，同时重新明确相机嵌入的全新初始化和优化器归属、全新分类头及配方匹配baseline；仅替换152视觉张量不满足这个定义。这是后继准备中的代码边界核查，没有新训练或成绩。当前九项保持原合同，完整报告/审核后才决定唯一后继干预；阶段门失败与三数据集baseline/SOTA完整Goal均不改写。
