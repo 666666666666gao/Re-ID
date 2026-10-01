@@ -14308,3 +14308,14 @@ fresh gpt-6-astra/max paths-only只读审计于04:13:09.674521实际启动并完
 旧六端20,416行step日志均只有标量字段，没有实存身份/环境元组，N3真实A/B支持仍未捕获，不以sampler模拟补造历史。下一步只先实现/验证N1原生细节value来源及相同参数量低分辨率控制，保持公开初始化、1536输出、原CE/Triplet和50轮，不堆N2/N3或外部资源。此节不宣称N1已实现/登记/运行。Goal ACTIVE/UNMET。
 
 审计补充已实际接收17项原始初始化/preflight/M0小型文本、84104B，封存233来源保持不变，见logs/clean_clip_audit_supplement721_20261002/INTAKE.json；纠正6个审计目录距离路径后缀为实际.pt，不改变结果。运行时断言的重建限制按WARN如实保留。
+
+
+### 41.722 — N1原生细节信息来源与匹配低分辨率控制（2026-10-02）
+
+前序干净六端完整收齐并fresh审计WARN，J1 FAIL2/3原结果封存。现仅实现N1：同一增强/预处理图像经共享3层stride2 CNN(3→32→64→128，93,248参数)提供value，现有CNN后的CLIP语义提供key，沿用原context/anchor query。high产生32×16/16×32细节格，low输入先平均降采样2倍再经过完全相同stem、特征插值到相同512候选格；插值不恢复移除的细节。此干预不包含N2语义共享/私有或N3跨环境归一化。
+
+三个角色的桥接、原Transformer/Mamba、static global token、1536区域读出和CE/Triplet及训练配方不变。真实原roles/high/low逐张量初值比较尚待远端执行；所有非stem状态必须与前序roles一致，高/低所有状态一致，M0更新权重不复用于正式训练。新stem独立RNG构造；原语义CNN/role0保留key梯度路径，不冻结或绕过原有参数。现有固定槽位不等于可靠语义部件对应。
+
+fresh gpt-6-astra/max、same-family/provisional代码复核已记录，详见refine-logs/native_detail_v1/EXPERIMENT_CODE_REVIEW_20261002.md/.json；源码复核不能替代真实M0。四个新Python文件AST通过，前序233来源不修改。下一步先真实构造比较和RGBNT201高/低各8batch M0，通过后才登记三集×两条件完整50轮，无自动retry。
+
+N1-A事前门：high−已完成同配方原roles三集mAP>0/R1>=0，201与MSVR各至少+0.5mAP；N1-B：high−low三集mAP>0/R1>=0。六端完整收齐后判定，不改门或追加seed救分。相同mAP-best权重报告所有指标、并列较晚轮、完整真实GT图库与MSVR时间段/干扰身份保留、无rerank。官方集已消费，单seed阶段门不证明稳定性或SOTA。初期估计8–12GPU小时，当前约67GiB空闲，无需退役证据。此节尚无N1训练或正式成绩，目标ACTIVE/UNMET。
