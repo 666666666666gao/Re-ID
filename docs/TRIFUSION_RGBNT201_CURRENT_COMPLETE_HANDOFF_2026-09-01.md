@@ -14212,3 +14212,15 @@ fresh实验完整性审计实际返回WARN：gpt-6-astra/max，same-family/provi
 下一项具体计划为真正干净公开CLIP初始化的独立global-only/原roles×三数据集六端：直接公开视觉、全新camera/neck/classifier及新增模块，不加载训练过ReID state；同一50轮和152视觉5e−6/新增3.5e−4配方。global控制含原九共享适配器，roles沿用§708原架构，不叠加本次失败的九private适配器或新的语义分解。新camera必须优化，因此与旧训练过冻结camera的跨配方差值不等于初始化单因素因果。新J1只回答同配方roles的足够净增量，不代替全三集baseline/SOTA终点。六份实际作者构造/配置源已按活动manifest精确读取/SHA核对，计划和SOURCE_CONSTRUCTION_READBACK存于refine-logs/clean_clip_joint_v1；本节时尚未实现新入口、生成初始化、运行M0或登记正式队列，不能把计划写成结果。代码fresh复核及真实八批M0/初始化/完整保存重载通过后才允许正式训练。
 
 用户提出的原生高空间分辨率CNN细节来源、区域共享/私有证据、CNN细节—Transformer对应—Mamba共享传播职责，保留为后继结构假设。它与失败的adapter写回分离不同；先收齐干净起点对照，再单独改变信息来源。投影分成两头不证明语义分解，无可靠对应选项需要实际训练侧支持，当前没有实现，也不预先承诺十点。当前目标ACTIVE_UNMET，阶段验收或审计通过不能代替三数据集强基线/合格强参照净收益。
+
+## §41.715：干净公开CLIP六端入口实现与fresh代码复核完成；真实初始化/M0仍待执行（2026-10-02）
+
+按§714计划新增run_clean_clip_joint、prepare_clean_clip_joint、queue_clean_clip_joint三个入口，不修改已封存229/222源码。直接通过作者构造函数加载公开CLIP，不接收ReID checkpoint参数、不调用旧全state重载；camera、未使用Signal状态、共享适配器、roles和检索neck/classifier均重新构造。两臂同一公开初始化/seed42，原九共享适配器、static global-token/context-query/allpatch/区域1536读出、原CNN→Transformer→Mamba保留，M3/local-ID关闭。相机在新增3.5e−4组、152视觉FP32在5e−6组，其余Signal状态冻结。复用原真实全50轮训练/官方评价/完整state保存与严格重载循环；legacy baseline_sha256字段明确代表公开CLIP输入文件SHA，不是训练过的baseline。
+
+fresh gpt-6-astra/max、same-family/provisional、独立上下文代码复核实际返回PASS，无剩余blocking/nonblocking。先前检查过程的CPU位置编码插值不匹配作者CUDA构造，现只把参考位置编码移至真实视觉设备后按原bilinear插值并保留torch.equal精确核对，没有放宽容差；此为静态复核发现，不伪称已发生runtime失败。耗时字段改用训练回执实际开始/完成区间，包含逐轮评价，边界不含构造和上游训练。审阅只读源码、实际协议/public archive元数据及229既有绑定，没有神经调用；PASS只允许进入真实初始化/M0阶段，不是M0、性能或科研验收成功。完整原文/JSON存CODE_REVIEW_20261002；三新文件AST解析PASS，无import执行。
+
+prepare实际命令将构造六个模型并逐tensor比较每个数据集两臂common backbone/neck/classifier，写入六份初始化见证；再只运行RGBNT201两臂各八个真实batch。正式queue硬性要求preflight COMPLETE及两份M0实退出/回执；其他四端各自先M0，再以全新模型完整50轮/重载评价。M0须所有可训练tensor有限且累计非零、视觉/camera实际变化、其余冻结状态不变、严格完整重载一致。240秒调度、空闲显存<500MiB、故障停止新派发并等待已有端退出、不自动重试。确切命令见RUN_INSTRUCTIONS_20261002。本节出版时新初始化/M0/正式队列均未执行，后续状态看真实运行回执，不能据代码推断已经通过。
+
+同时做了训练文件环境覆盖的只读盘点：RGBNT201共171训练身份，其中51有多个camera，涉及1396/3951条记录；RGBNT100为50/50、8675/8675；MSVR310为60/155，涉及600/1032条记录，环境使用原scene/时间段而非视角。JSON逐环境有序A/B关系支持及协议SHA保留在TRAIN_ENVIRONMENT_SUPPORT_20261002，SHA5bb7a5387dfb9ca0bc44f8e1a05eb0a92761072eda8b2af45c6b63c1b6b03061。仅数据集层面可用关系，不是实际批次/meta split活动支持，不宣布N3已满足训练门；单环境身份仍可参加普通ID训练。N1原生细节来源后继优先，N2共享/私有区域需MDReID/DeMo/MODAL直接近邻，N3需BN/IN/staticBIN/无meta/V27和真实跨环境批次支持；均未实现新机制或成绩。
+
+旧完整九端和科研C1/C2/S1/S2/joint FAIL保持；本次J1及三数据集baseline/强参照目标仍未达成。真正公开起点需要camera优化，不能把与旧冻结trainedcamera温启动的差值全算成初始化单因素因果，也不能把新同配方baseline偷换成旧69.6415分母。目标ACTIVE_UNMET。
