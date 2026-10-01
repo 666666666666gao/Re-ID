@@ -1662,3 +1662,5 @@
 - 2026-10-02 §41.719: fifth clean-public full50 terminal(RGBNT100 global78.4913/93.8776), remainingroles27/50. Seven new original texts retained; seven-source N1 interface readback and pinned UGG source qualification. Full6/J1/audit pending; train source unchanged.
 
 - 2026-10-02 §41.720: preserve6 missing local RGBNT201 roles terminal texts(512814B), unchanged result; inspect13,857 saved step records from5 complete endpoints. Actual per-batch identity/environment meta support is not recorded; no sampler/model/scorer replay. Full6 report/audit and04:08 observation continue.
+
+- 2026-10-02 §41.721: actual full6/300epochs/20416steps and once-only report; J1FAIL2/3. Fresh audit WARN same-family/provisional. Preserve18 original artifacts,233-source intake proof and fixed-model result/cost boundaries. N1 next, N2/N3 not started; goalACTIVE_UNMET.

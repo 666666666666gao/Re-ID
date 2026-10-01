@@ -1,0 +1,104 @@
+{
+  "schema": "trifusion-clean-public-clip-joint-v1",
+  "status": "M0_PASS",
+  "dataset": "RGBNT100",
+  "seed": 42,
+  "epochs": 50,
+  "checkpoint_policy": "best_official_map",
+  "initializer": {
+    "architecture": "clean_public_clip_joint_v1",
+    "dataset": "RGBNT100",
+    "seed": 42,
+    "readout": "roles",
+    "public_clip_path": "/data/gaob/Re-ID/Trifusion/pertrained-model/ViT-B-16.pt",
+    "public_clip_sha256": "5806e77cd80f8b59890b7e101eabd078d9fb84e6937f9e85e4ecb61988df416f",
+    "public_visual_tensors_verified": 152,
+    "visual_initial_sha256": "9a92d7f60d061e3282fdc2a557a7d07d7cc519a4534e47239e9240cfb95c62b0",
+    "fresh_camera_initial_sha256": "b836a2e23c5dcb8834b69aee4a26a04d4209819b23527bd1c57693ba8e914201",
+    "fresh_camera_shape": [
+      8,
+      1,
+      768
+    ],
+    "author_source_commit": "cd1b0a672d1fe642e7608731cb4899a19dda7d51",
+    "protocol_sha256": "12d8afe5cf6e537b69ccf753481dd5fd651f14b7672e1e6411a4d4e9d88cc956",
+    "common_initializer_sha256": {
+      "backbone": "1db5ac9c440aca58bb11f2ecb08e7c031bf3ee2d0401934c7b22975edfb1d841",
+      "neck": "06efe49412cdf6c9d8d9162b9394e4bc49329d169906cecc2b6c4784bcdb166e",
+      "classifier": "1deee2afd7a2f8b90231dc24c16cb5e1ce5232e2b1d92383a964342cded88ddd"
+    },
+    "initial_model_state_sha256": "caf1ee0e5e2b30451fa7043a1b17589c1aeaac66a5ccfcd49288e8fb5de0ae2b",
+    "trainable_parameters": 88831946,
+    "trainable_parameter_tensors": 281,
+    "entry_sha256": "178e9793f2cf8261eb44a278e053d5caabd4f2f37dba48a65952b2547338a746",
+    "baseline_sha256_semantics": "Public CLIP input file only; no trained ReID baseline is read.",
+    "camera_semantics": "Fresh author truncated-normal embedding, trainable at new-module LR.",
+    "initialization_scope": "public visual only; fresh camera, unused Signal state, shared adapters, roles and retrieval heads",
+    "condition": {
+      "visual_update": "low_lr",
+      "readout": "roles",
+      "visual_lr": 5e-06,
+      "visual_parameter_dtype": "float32",
+      "initialization": "public_CLIP_fresh_camera_heads_modules",
+      "public_clip_sha256": "5806e77cd80f8b59890b7e101eabd078d9fb84e6937f9e85e4ecb61988df416f",
+      "initialization_witness_sha256": "e20de7f0284e85a9d73d645773225af46b6904d515c57d208d9511b99d9cfbca",
+      "camera_update": "new_module_lr_0.00035"
+    },
+    "initialization_witness_sha256": "e20de7f0284e85a9d73d645773225af46b6904d515c57d208d9511b99d9cfbca"
+  },
+  "protocol_sha256": "12d8afe5cf6e537b69ccf753481dd5fd651f14b7672e1e6411a4d4e9d88cc956",
+  "condition": {
+    "visual_update": "low_lr",
+    "readout": "roles",
+    "visual_lr": 5e-06,
+    "visual_parameter_dtype": "float32",
+    "initialization": "public_CLIP_fresh_camera_heads_modules",
+    "public_clip_sha256": "5806e77cd80f8b59890b7e101eabd078d9fb84e6937f9e85e4ecb61988df416f",
+    "initialization_witness_sha256": "e20de7f0284e85a9d73d645773225af46b6904d515c57d208d9511b99d9cfbca",
+    "camera_update": "new_module_lr_0.00035"
+  },
+  "started_at": "2026-10-02T01:42:18.738952+08:00",
+  "history": [
+    {
+      "epoch": 1,
+      "steps": 8,
+      "mean_loss": 4.304086327552795,
+      "seconds": 8.179423911991762
+    }
+  ],
+  "optimizer_groups": [
+    {
+      "label": "new",
+      "base_lr": 0.00035,
+      "tensors": 129,
+      "elements": 2691530
+    },
+    {
+      "label": "visual",
+      "base_lr": 5e-06,
+      "tensors": 152,
+      "elements": 86140416
+    }
+  ],
+  "frozen_signal_state_unchanged": true,
+  "visual_parameters_changed": true,
+  "visual_state_before_sha256": "9a92d7f60d061e3282fdc2a557a7d07d7cc519a4534e47239e9240cfb95c62b0",
+  "visual_state_after_sha256": "e9c181a1b5a0ab640a283bac88f431fc47fcd14d8a1ffee7461c7100c94d7fd8",
+  "peak_training_and_epoch_eval_allocated_bytes": 14899018752,
+  "m0": {
+    "nonzero_gradient_parameters": 281,
+    "trainable_parameters": 281,
+    "frozen_signal_state_unchanged": true,
+    "visual_parameters_changed": true,
+    "reload_max_abs_difference": 0.0,
+    "reload_probe_sha256": "9780795e1a70431dfd5c2e1a83f88544cb0d200eb392f5bf18cbde69e0751d4b"
+  },
+  "peak_stage_allocated_bytes": 14899018752,
+  "best_epoch": null,
+  "completed_at": "2026-10-02T01:42:40.031953+08:00",
+  "public_clip_sha256": "5806e77cd80f8b59890b7e101eabd078d9fb84e6937f9e85e4ecb61988df416f",
+  "baseline_sha256_semantics": "Public CLIP input file only; no trained ReID baseline loaded.",
+  "fresh_camera_parameters_changed": true,
+  "camera_state_before_sha256": "b836a2e23c5dcb8834b69aee4a26a04d4209819b23527bd1c57693ba8e914201",
+  "camera_state_after_sha256": "391b33b4deedf1e46cf8a4ebd2af540e818b8bf5ec48ac1a9306f7df5ddd87ee"
+}

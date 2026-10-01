@@ -1,0 +1,1363 @@
+{
+  "schema": "trifusion-clean-public-clip-complete-report-v1",
+  "status": "COMPLETE",
+  "created_at": "2026-10-02T04:06:40.199283+08:00",
+  "campaign": "/data/gaob/Re-ID/Trifusion/logs/clean_clip_joint_20261002_v1",
+  "accepted": 6,
+  "formal_epochs": 300,
+  "formal_steps": 20416,
+  "registered_J1_gate": "FAIL",
+  "registered_J1_components_passed": 2,
+  "rows": [
+    {
+      "dataset": "RGBNT201",
+      "variant": "global_only",
+      "status": "VERIFIED_COMPLETE",
+      "run_dir": "/data/gaob/Re-ID/Trifusion/trained-model/clean_clip_joint_20261002_v1_clean_clip_global_only_RGBNT201_seed42_full",
+      "m0_dir": "/data/gaob/Re-ID/Trifusion/trained-model/clean_clip_preflight_20261002_v1_RGBNT201_global_only_m0",
+      "metrics": {
+        "mAP": 68.11166857760156,
+        "Rank-1": 69.73684430122375,
+        "Rank-5": 79.0669858455658,
+        "Rank-10": 84.56937670707703
+      },
+      "best_epoch": 13,
+      "checkpoint_sha256": "d782caf4a73573b30d0d6190c928b26896254cabc3b96bd758b5e9646c3dcd9e",
+      "distance_sha256": "7accf58c71177d2eb329cc07ede41529ce47f4d0c3bc541984d3c9ef32e9c5c3",
+      "receipt_sha256": "7ef6f3f02d652b768f88d7d08acb907b1502c2e2c2be539a564ac1184906b5c2",
+      "initializer": {
+        "architecture": "clean_public_clip_joint_v1",
+        "dataset": "RGBNT201",
+        "seed": 42,
+        "readout": "global_only",
+        "public_clip_path": "/data/gaob/Re-ID/Trifusion/pertrained-model/ViT-B-16.pt",
+        "public_clip_sha256": "5806e77cd80f8b59890b7e101eabd078d9fb84e6937f9e85e4ecb61988df416f",
+        "public_visual_tensors_verified": 152,
+        "visual_initial_sha256": "e989d3d5cf05e26109cd62aba6752ad1151b70c06dc14324703826fecbb9383f",
+        "fresh_camera_initial_sha256": "71161723dfbaee1cbbcf2f07d2065187b0fe05ccc0b1afd25f62e16e48d85ec1",
+        "fresh_camera_shape": [
+          4,
+          1,
+          768
+        ],
+        "author_source_commit": "cd1b0a672d1fe642e7608731cb4899a19dda7d51",
+        "protocol_sha256": "e63be5d9f8bd41df365264ad8f459dcd063d088023a2d2ed525a49a72f61161e",
+        "common_initializer_sha256": {
+          "backbone": "0baf5860672e4522ee1a6de815ac2e1443d9d2937e2f757aa4c227e06508afb8",
+          "neck": "06efe49412cdf6c9d8d9162b9394e4bc49329d169906cecc2b6c4784bcdb166e",
+          "classifier": "22bd8be47d0a37e4afd7689789e40999fe33dd5ee5b8e338bd920bd6678fbf47"
+        },
+        "initial_model_state_sha256": "f4a8bb42ff8a8dc84c1382b8a39f0c92c33ae3468d3494b17ed4fe2f14f7b263",
+        "trainable_parameters": 87313728,
+        "trainable_parameter_tensors": 209,
+        "entry_sha256": "178e9793f2cf8261eb44a278e053d5caabd4f2f37dba48a65952b2547338a746",
+        "baseline_sha256_semantics": "Public CLIP input file only; no trained ReID baseline is read.",
+        "camera_semantics": "Fresh author truncated-normal embedding, trainable at new-module LR.",
+        "initialization_scope": "public visual only; fresh camera, unused Signal state, shared adapters, roles and retrieval heads",
+        "condition": {
+          "visual_update": "low_lr",
+          "readout": "global_only",
+          "visual_lr": 5e-06,
+          "visual_parameter_dtype": "float32",
+          "initialization": "public_CLIP_fresh_camera_heads_modules",
+          "public_clip_sha256": "5806e77cd80f8b59890b7e101eabd078d9fb84e6937f9e85e4ecb61988df416f",
+          "initialization_witness_sha256": "605d85819ad521227173912945f41bfa89736a34c6709a46423af7361ec0e494",
+          "camera_update": "new_module_lr_0.00035"
+        },
+        "initialization_witness_sha256": "605d85819ad521227173912945f41bfa89736a34c6709a46423af7361ec0e494"
+      },
+      "training_and_epoch_eval_seconds": 2005.078665,
+      "timing_boundary": "Training receipt interval including epoch evaluation; excludes model construction and upstream training.",
+      "peak_training_and_epoch_eval_allocated_bytes": 13794171392,
+      "formal_steps": 2649,
+      "trainable_parameters": 87313728,
+      "best_mean_loss": 0.9118488655900056,
+      "final_mean_loss": 0.8542958554231895,
+      "final_minus_best_metrics": {
+        "mAP": -4.449753987314146,
+        "Rank-1": -5.023926496505737,
+        "Rank-5": -3.947371244430542,
+        "Rank-10": -3.229665756225586
+      },
+      "endpoint_parent_observed_wall_seconds": 2071.764704,
+      "m0_origin": "verified_preflight"
+    },
+    {
+      "dataset": "RGBNT100",
+      "variant": "global_only",
+      "status": "VERIFIED_COMPLETE",
+      "run_dir": "/data/gaob/Re-ID/Trifusion/trained-model/clean_clip_joint_20261002_v1_clean_clip_global_only_RGBNT100_seed42_full",
+      "m0_dir": "/data/gaob/Re-ID/Trifusion/trained-model/clean_clip_joint_20261002_v1_clean_clip_global_only_RGBNT100_seed42_m0",
+      "metrics": {
+        "mAP": 78.49127361133196,
+        "Rank-1": 93.87755393981934,
+        "Rank-5": 95.10204195976257,
+        "Rank-10": 95.56851387023926
+      },
+      "best_epoch": 3,
+      "checkpoint_sha256": "6326e5df4d5703ae38cf5dfee6a6e2da4cfc71b5e1e6eb3bb683315d10e30fcd",
+      "distance_sha256": "c85fe4a6e238ebfd890586199444ec9725cad7fddfc0c6b4829e3f22a0c88708",
+      "receipt_sha256": "59c474b54867742e7a75bf117832661c4929fe093d9f8ded8ad11508d082eedb",
+      "initializer": {
+        "architecture": "clean_public_clip_joint_v1",
+        "dataset": "RGBNT100",
+        "seed": 42,
+        "readout": "global_only",
+        "public_clip_path": "/data/gaob/Re-ID/Trifusion/pertrained-model/ViT-B-16.pt",
+        "public_clip_sha256": "5806e77cd80f8b59890b7e101eabd078d9fb84e6937f9e85e4ecb61988df416f",
+        "public_visual_tensors_verified": 152,
+        "visual_initial_sha256": "9a92d7f60d061e3282fdc2a557a7d07d7cc519a4534e47239e9240cfb95c62b0",
+        "fresh_camera_initial_sha256": "b836a2e23c5dcb8834b69aee4a26a04d4209819b23527bd1c57693ba8e914201",
+        "fresh_camera_shape": [
+          8,
+          1,
+          768
+        ],
+        "author_source_commit": "cd1b0a672d1fe642e7608731cb4899a19dda7d51",
+        "protocol_sha256": "12d8afe5cf6e537b69ccf753481dd5fd651f14b7672e1e6411a4d4e9d88cc956",
+        "common_initializer_sha256": {
+          "backbone": "1db5ac9c440aca58bb11f2ecb08e7c031bf3ee2d0401934c7b22975edfb1d841",
+          "neck": "06efe49412cdf6c9d8d9162b9394e4bc49329d169906cecc2b6c4784bcdb166e",
+          "classifier": "1deee2afd7a2f8b90231dc24c16cb5e1ce5232e2b1d92383a964342cded88ddd"
+        },
+        "initial_model_state_sha256": "72be8ba88a5342c97925aa5c0ff6a313fddd7bd497f7501666888d7f1ef233bc",
+        "trainable_parameters": 87130944,
+        "trainable_parameter_tensors": 209,
+        "entry_sha256": "178e9793f2cf8261eb44a278e053d5caabd4f2f37dba48a65952b2547338a746",
+        "baseline_sha256_semantics": "Public CLIP input file only; no trained ReID baseline is read.",
+        "camera_semantics": "Fresh author truncated-normal embedding, trainable at new-module LR.",
+        "initialization_scope": "public visual only; fresh camera, unused Signal state, shared adapters, roles and retrieval heads",
+        "condition": {
+          "visual_update": "low_lr",
+          "readout": "global_only",
+          "visual_lr": 5e-06,
+          "visual_parameter_dtype": "float32",
+          "initialization": "public_CLIP_fresh_camera_heads_modules",
+          "public_clip_sha256": "5806e77cd80f8b59890b7e101eabd078d9fb84e6937f9e85e4ecb61988df416f",
+          "initialization_witness_sha256": "694fc92dc9ff608af60f1d1dafb660653b05661bc737b57749f3693a25a63cdd",
+          "camera_update": "new_module_lr_0.00035"
+        },
+        "initialization_witness_sha256": "694fc92dc9ff608af60f1d1dafb660653b05661bc737b57749f3693a25a63cdd"
+      },
+      "training_and_epoch_eval_seconds": 6211.391251,
+      "timing_boundary": "Training receipt interval including epoch evaluation; excludes model construction and upstream training.",
+      "peak_training_and_epoch_eval_allocated_bytes": 13787558400,
+      "formal_steps": 6559,
+      "trainable_parameters": 87130944,
+      "best_mean_loss": 0.8249063491821289,
+      "final_mean_loss": 0.70652676820755,
+      "final_minus_best_metrics": {
+        "mAP": -0.9041817159096013,
+        "Rank-1": -1.0495662689208984,
+        "Rank-5": -1.3994157314300537,
+        "Rank-10": -0.641399621963501
+      },
+      "endpoint_parent_observed_wall_seconds": 6369.81731,
+      "m0_origin": "worker"
+    },
+    {
+      "dataset": "MSVR310",
+      "variant": "global_only",
+      "status": "VERIFIED_COMPLETE",
+      "run_dir": "/data/gaob/Re-ID/Trifusion/trained-model/clean_clip_joint_20261002_v1_clean_clip_global_only_MSVR310_seed42_full",
+      "m0_dir": "/data/gaob/Re-ID/Trifusion/trained-model/clean_clip_joint_20261002_v1_clean_clip_global_only_MSVR310_seed42_m0",
+      "metrics": {
+        "mAP": 51.72241087708173,
+        "Rank-1": 67.17427968978882,
+        "Rank-5": 83.58713984489441,
+        "Rank-10": 88.49408030509949
+      },
+      "best_epoch": 16,
+      "checkpoint_sha256": "40f73d686c730993f491d4a4c9f8d8a7acb5e75f25baa5cd2fff6cbc469be501",
+      "distance_sha256": "88b49378e3c19957bd20a59e96e191950233c8ecbf11210a696f40deeb5d0050",
+      "receipt_sha256": "79e9d305d987bd508c4f3459909ffa865ac27c868eb4d47af1881ea6a30b2e16",
+      "initializer": {
+        "architecture": "clean_public_clip_joint_v1",
+        "dataset": "MSVR310",
+        "seed": 42,
+        "readout": "global_only",
+        "public_clip_path": "/data/gaob/Re-ID/Trifusion/pertrained-model/ViT-B-16.pt",
+        "public_clip_sha256": "5806e77cd80f8b59890b7e101eabd078d9fb84e6937f9e85e4ecb61988df416f",
+        "public_visual_tensors_verified": 152,
+        "visual_initial_sha256": "9a92d7f60d061e3282fdc2a557a7d07d7cc519a4534e47239e9240cfb95c62b0",
+        "fresh_camera_initial_sha256": "b836a2e23c5dcb8834b69aee4a26a04d4209819b23527bd1c57693ba8e914201",
+        "fresh_camera_shape": [
+          8,
+          1,
+          768
+        ],
+        "author_source_commit": "cd1b0a672d1fe642e7608731cb4899a19dda7d51",
+        "protocol_sha256": "7f2b35f9a7e00433558c1e723db0e3ff0ea9daa7144eeeb972139d1502945cbc",
+        "common_initializer_sha256": {
+          "backbone": "3423402d38d0867292c5e78d3b847ec5d49a4351575a8082bee7924ab71ecd6e",
+          "neck": "06efe49412cdf6c9d8d9162b9394e4bc49329d169906cecc2b6c4784bcdb166e",
+          "classifier": "47b33e14c05d9560e27d6f6287cd36eabbdd766f6aa26508367922d43571461e"
+        },
+        "initial_model_state_sha256": "429c55b319e6b9946f59bd373ecba41601d3f8770b4699cb54510eedefc28ef1",
+        "trainable_parameters": 87292224,
+        "trainable_parameter_tensors": 209,
+        "entry_sha256": "178e9793f2cf8261eb44a278e053d5caabd4f2f37dba48a65952b2547338a746",
+        "baseline_sha256_semantics": "Public CLIP input file only; no trained ReID baseline is read.",
+        "camera_semantics": "Fresh author truncated-normal embedding, trainable at new-module LR.",
+        "initialization_scope": "public visual only; fresh camera, unused Signal state, shared adapters, roles and retrieval heads",
+        "condition": {
+          "visual_update": "low_lr",
+          "readout": "global_only",
+          "visual_lr": 5e-06,
+          "visual_parameter_dtype": "float32",
+          "initialization": "public_CLIP_fresh_camera_heads_modules",
+          "public_clip_sha256": "5806e77cd80f8b59890b7e101eabd078d9fb84e6937f9e85e4ecb61988df416f",
+          "initialization_witness_sha256": "7944ef7a030855aec8283fe1b0d02c9cf3ed9b1f13395dc81c81c12778912096",
+          "camera_update": "new_module_lr_0.00035"
+        },
+        "initialization_witness_sha256": "7944ef7a030855aec8283fe1b0d02c9cf3ed9b1f13395dc81c81c12778912096"
+      },
+      "training_and_epoch_eval_seconds": 1482.450426,
+      "timing_boundary": "Training receipt interval including epoch evaluation; excludes model construction and upstream training.",
+      "peak_training_and_epoch_eval_allocated_bytes": 13791692288,
+      "formal_steps": 1000,
+      "trainable_parameters": 87292224,
+      "best_mean_loss": 1.018700787425041,
+      "final_mean_loss": 0.8975573599338531,
+      "final_minus_best_metrics": {
+        "mAP": -2.9447272253232626,
+        "Rank-1": -0.846022367477417,
+        "Rank-5": -2.3688673973083496,
+        "Rank-10": -2.3688673973083496
+      },
+      "endpoint_parent_observed_wall_seconds": 1597.386279,
+      "m0_origin": "worker"
+    },
+    {
+      "dataset": "RGBNT201",
+      "variant": "roles",
+      "status": "VERIFIED_COMPLETE",
+      "run_dir": "/data/gaob/Re-ID/Trifusion/trained-model/clean_clip_joint_20261002_v1_clean_clip_roles_RGBNT201_seed42_full",
+      "m0_dir": "/data/gaob/Re-ID/Trifusion/trained-model/clean_clip_preflight_20261002_v1_RGBNT201_roles_m0",
+      "metrics": {
+        "mAP": 69.8763956482104,
+        "Rank-1": 71.41148447990417,
+        "Rank-5": 79.18660044670105,
+        "Rank-10": 84.92823243141174
+      },
+      "best_epoch": 13,
+      "checkpoint_sha256": "c27819f0f7dd3086a87970d9a3473258fe9fe3a7d42aad7888aa5033e40ee6bd",
+      "distance_sha256": "e2a7b40ca08bd0f23782046cbb3e3b605680840ca56b0be0a3eb4e28d7ff8076",
+      "receipt_sha256": "59a30db73c2a25585f99c1c073b2c9b613108641ed02ed1718e324bcc4e108fd",
+      "initializer": {
+        "architecture": "clean_public_clip_joint_v1",
+        "dataset": "RGBNT201",
+        "seed": 42,
+        "readout": "roles",
+        "public_clip_path": "/data/gaob/Re-ID/Trifusion/pertrained-model/ViT-B-16.pt",
+        "public_clip_sha256": "5806e77cd80f8b59890b7e101eabd078d9fb84e6937f9e85e4ecb61988df416f",
+        "public_visual_tensors_verified": 152,
+        "visual_initial_sha256": "e989d3d5cf05e26109cd62aba6752ad1151b70c06dc14324703826fecbb9383f",
+        "fresh_camera_initial_sha256": "71161723dfbaee1cbbcf2f07d2065187b0fe05ccc0b1afd25f62e16e48d85ec1",
+        "fresh_camera_shape": [
+          4,
+          1,
+          768
+        ],
+        "author_source_commit": "cd1b0a672d1fe642e7608731cb4899a19dda7d51",
+        "protocol_sha256": "e63be5d9f8bd41df365264ad8f459dcd063d088023a2d2ed525a49a72f61161e",
+        "common_initializer_sha256": {
+          "backbone": "0baf5860672e4522ee1a6de815ac2e1443d9d2937e2f757aa4c227e06508afb8",
+          "neck": "06efe49412cdf6c9d8d9162b9394e4bc49329d169906cecc2b6c4784bcdb166e",
+          "classifier": "22bd8be47d0a37e4afd7689789e40999fe33dd5ee5b8e338bd920bd6678fbf47"
+        },
+        "initial_model_state_sha256": "2ecd6470a498c08872087ff03c5770fed96b036874a591413f1809fd96a36e6b",
+        "trainable_parameters": 89014730,
+        "trainable_parameter_tensors": 281,
+        "entry_sha256": "178e9793f2cf8261eb44a278e053d5caabd4f2f37dba48a65952b2547338a746",
+        "baseline_sha256_semantics": "Public CLIP input file only; no trained ReID baseline is read.",
+        "camera_semantics": "Fresh author truncated-normal embedding, trainable at new-module LR.",
+        "initialization_scope": "public visual only; fresh camera, unused Signal state, shared adapters, roles and retrieval heads",
+        "condition": {
+          "visual_update": "low_lr",
+          "readout": "roles",
+          "visual_lr": 5e-06,
+          "visual_parameter_dtype": "float32",
+          "initialization": "public_CLIP_fresh_camera_heads_modules",
+          "public_clip_sha256": "5806e77cd80f8b59890b7e101eabd078d9fb84e6937f9e85e4ecb61988df416f",
+          "initialization_witness_sha256": "79a0ab43ef31179f839970f36aeec610821f83943b71f3e9dd2f024087715c36",
+          "camera_update": "new_module_lr_0.00035"
+        },
+        "initialization_witness_sha256": "79a0ab43ef31179f839970f36aeec610821f83943b71f3e9dd2f024087715c36"
+      },
+      "training_and_epoch_eval_seconds": 2418.537594,
+      "timing_boundary": "Training receipt interval including epoch evaluation; excludes model construction and upstream training.",
+      "peak_training_and_epoch_eval_allocated_bytes": 14906160128,
+      "formal_steps": 2649,
+      "trainable_parameters": 89014730,
+      "best_mean_loss": 0.911113755882911,
+      "final_mean_loss": 0.8539930908185132,
+      "final_minus_best_metrics": {
+        "mAP": -3.765713491569869,
+        "Rank-1": -5.382776260375977,
+        "Rank-5": -2.51196026802063,
+        "Rank-10": -2.392345666885376
+      },
+      "endpoint_parent_observed_wall_seconds": 2486.159085,
+      "m0_origin": "verified_preflight"
+    },
+    {
+      "dataset": "RGBNT100",
+      "variant": "roles",
+      "status": "VERIFIED_COMPLETE",
+      "run_dir": "/data/gaob/Re-ID/Trifusion/trained-model/clean_clip_joint_20261002_v1_clean_clip_roles_RGBNT100_seed42_full",
+      "m0_dir": "/data/gaob/Re-ID/Trifusion/trained-model/clean_clip_joint_20261002_v1_clean_clip_roles_RGBNT100_seed42_m0",
+      "metrics": {
+        "mAP": 80.9230600397191,
+        "Rank-1": 94.28571462631226,
+        "Rank-5": 95.27696967124939,
+        "Rank-10": 96.20991349220276
+      },
+      "best_epoch": 20,
+      "checkpoint_sha256": "0824c8dd2755093a1cbf45b4f3dad23938ee25b666968e751a6af68598e4817b",
+      "distance_sha256": "f86f8180f650b3c5e6226dcc5dfbe688dfbc7ec27cff4f030d211e7ab2b268fb",
+      "receipt_sha256": "7cf596385aff04e53bc0a3ea15c2af5f552d429888da01694a029a52b8c2ae6b",
+      "initializer": {
+        "architecture": "clean_public_clip_joint_v1",
+        "dataset": "RGBNT100",
+        "seed": 42,
+        "readout": "roles",
+        "public_clip_path": "/data/gaob/Re-ID/Trifusion/pertrained-model/ViT-B-16.pt",
+        "public_clip_sha256": "5806e77cd80f8b59890b7e101eabd078d9fb84e6937f9e85e4ecb61988df416f",
+        "public_visual_tensors_verified": 152,
+        "visual_initial_sha256": "9a92d7f60d061e3282fdc2a557a7d07d7cc519a4534e47239e9240cfb95c62b0",
+        "fresh_camera_initial_sha256": "b836a2e23c5dcb8834b69aee4a26a04d4209819b23527bd1c57693ba8e914201",
+        "fresh_camera_shape": [
+          8,
+          1,
+          768
+        ],
+        "author_source_commit": "cd1b0a672d1fe642e7608731cb4899a19dda7d51",
+        "protocol_sha256": "12d8afe5cf6e537b69ccf753481dd5fd651f14b7672e1e6411a4d4e9d88cc956",
+        "common_initializer_sha256": {
+          "backbone": "1db5ac9c440aca58bb11f2ecb08e7c031bf3ee2d0401934c7b22975edfb1d841",
+          "neck": "06efe49412cdf6c9d8d9162b9394e4bc49329d169906cecc2b6c4784bcdb166e",
+          "classifier": "1deee2afd7a2f8b90231dc24c16cb5e1ce5232e2b1d92383a964342cded88ddd"
+        },
+        "initial_model_state_sha256": "caf1ee0e5e2b30451fa7043a1b17589c1aeaac66a5ccfcd49288e8fb5de0ae2b",
+        "trainable_parameters": 88831946,
+        "trainable_parameter_tensors": 281,
+        "entry_sha256": "178e9793f2cf8261eb44a278e053d5caabd4f2f37dba48a65952b2547338a746",
+        "baseline_sha256_semantics": "Public CLIP input file only; no trained ReID baseline is read.",
+        "camera_semantics": "Fresh author truncated-normal embedding, trainable at new-module LR.",
+        "initialization_scope": "public visual only; fresh camera, unused Signal state, shared adapters, roles and retrieval heads",
+        "condition": {
+          "visual_update": "low_lr",
+          "readout": "roles",
+          "visual_lr": 5e-06,
+          "visual_parameter_dtype": "float32",
+          "initialization": "public_CLIP_fresh_camera_heads_modules",
+          "public_clip_sha256": "5806e77cd80f8b59890b7e101eabd078d9fb84e6937f9e85e4ecb61988df416f",
+          "initialization_witness_sha256": "e20de7f0284e85a9d73d645773225af46b6904d515c57d208d9511b99d9cfbca",
+          "camera_update": "new_module_lr_0.00035"
+        },
+        "initialization_witness_sha256": "e20de7f0284e85a9d73d645773225af46b6904d515c57d208d9511b99d9cfbca"
+      },
+      "training_and_epoch_eval_seconds": 8330.172885,
+      "timing_boundary": "Training receipt interval including epoch evaluation; excludes model construction and upstream training.",
+      "peak_training_and_epoch_eval_allocated_bytes": 14899837952,
+      "formal_steps": 6559,
+      "trainable_parameters": 88831946,
+      "best_mean_loss": 0.7131622302712817,
+      "final_mean_loss": 0.706978681912789,
+      "final_minus_best_metrics": {
+        "mAP": -0.4427046104028278,
+        "Rank-1": -0.874638557434082,
+        "Rank-5": -0.8163273334503174,
+        "Rank-10": -1.6326546669006348
+      },
+      "endpoint_parent_observed_wall_seconds": 8504.051992,
+      "m0_origin": "worker"
+    },
+    {
+      "dataset": "MSVR310",
+      "variant": "roles",
+      "status": "VERIFIED_COMPLETE",
+      "run_dir": "/data/gaob/Re-ID/Trifusion/trained-model/clean_clip_joint_20261002_v1_clean_clip_roles_MSVR310_seed42_full",
+      "m0_dir": "/data/gaob/Re-ID/Trifusion/trained-model/clean_clip_joint_20261002_v1_clean_clip_roles_MSVR310_seed42_m0",
+      "metrics": {
+        "mAP": 52.004201838107925,
+        "Rank-1": 68.69712471961975,
+        "Rank-5": 83.58713984489441,
+        "Rank-10": 88.15566897392273
+      },
+      "best_epoch": 16,
+      "checkpoint_sha256": "9d53d11d991c9c6e7a07ff108be0c965becf59a75b9ef219380a5b2103bc5c82",
+      "distance_sha256": "498ac94d5ffa31ec383955a306d987fcfba566a76ad91faaebb51a6819df9fa6",
+      "receipt_sha256": "4748c1a41474b33b7f09c118366582a0b141002e489ebccb448a37cc6ac92201",
+      "initializer": {
+        "architecture": "clean_public_clip_joint_v1",
+        "dataset": "MSVR310",
+        "seed": 42,
+        "readout": "roles",
+        "public_clip_path": "/data/gaob/Re-ID/Trifusion/pertrained-model/ViT-B-16.pt",
+        "public_clip_sha256": "5806e77cd80f8b59890b7e101eabd078d9fb84e6937f9e85e4ecb61988df416f",
+        "public_visual_tensors_verified": 152,
+        "visual_initial_sha256": "9a92d7f60d061e3282fdc2a557a7d07d7cc519a4534e47239e9240cfb95c62b0",
+        "fresh_camera_initial_sha256": "b836a2e23c5dcb8834b69aee4a26a04d4209819b23527bd1c57693ba8e914201",
+        "fresh_camera_shape": [
+          8,
+          1,
+          768
+        ],
+        "author_source_commit": "cd1b0a672d1fe642e7608731cb4899a19dda7d51",
+        "protocol_sha256": "7f2b35f9a7e00433558c1e723db0e3ff0ea9daa7144eeeb972139d1502945cbc",
+        "common_initializer_sha256": {
+          "backbone": "3423402d38d0867292c5e78d3b847ec5d49a4351575a8082bee7924ab71ecd6e",
+          "neck": "06efe49412cdf6c9d8d9162b9394e4bc49329d169906cecc2b6c4784bcdb166e",
+          "classifier": "47b33e14c05d9560e27d6f6287cd36eabbdd766f6aa26508367922d43571461e"
+        },
+        "initial_model_state_sha256": "c467b6ff40613e30a6a81bfbd390babf1fefc0cc9578d36dfe925453790a028b",
+        "trainable_parameters": 88993226,
+        "trainable_parameter_tensors": 281,
+        "entry_sha256": "178e9793f2cf8261eb44a278e053d5caabd4f2f37dba48a65952b2547338a746",
+        "baseline_sha256_semantics": "Public CLIP input file only; no trained ReID baseline is read.",
+        "camera_semantics": "Fresh author truncated-normal embedding, trainable at new-module LR.",
+        "initialization_scope": "public visual only; fresh camera, unused Signal state, shared adapters, roles and retrieval heads",
+        "condition": {
+          "visual_update": "low_lr",
+          "readout": "roles",
+          "visual_lr": 5e-06,
+          "visual_parameter_dtype": "float32",
+          "initialization": "public_CLIP_fresh_camera_heads_modules",
+          "public_clip_sha256": "5806e77cd80f8b59890b7e101eabd078d9fb84e6937f9e85e4ecb61988df416f",
+          "initialization_witness_sha256": "9933e03e3c9151830a665524d722e51238c05344e27671ce935179603f14debf",
+          "camera_update": "new_module_lr_0.00035"
+        },
+        "initialization_witness_sha256": "9933e03e3c9151830a665524d722e51238c05344e27671ce935179603f14debf"
+      },
+      "training_and_epoch_eval_seconds": 1424.280531,
+      "timing_boundary": "Training receipt interval including epoch evaluation; excludes model construction and upstream training.",
+      "peak_training_and_epoch_eval_allocated_bytes": 14903961600,
+      "formal_steps": 1000,
+      "trainable_parameters": 88993226,
+      "best_mean_loss": 1.0095606088638305,
+      "final_mean_loss": 0.8937906414270401,
+      "final_minus_best_metrics": {
+        "mAP": -3.5327644816912738,
+        "Rank-1": -1.861250400543213,
+        "Rank-5": -2.5380730628967285,
+        "Rank-10": -2.030456066131592
+      },
+      "endpoint_parent_observed_wall_seconds": 1534.241984,
+      "m0_origin": "worker"
+    }
+  ],
+  "pairs": [
+    {
+      "dataset": "RGBNT201",
+      "minimum_map_points": 0.5,
+      "gate_passed": true,
+      "paired_diagnosis": {
+        "status": "CPU_ARRAY_PARITY_AND_PAIRED_DIAGNOSIS_COMPLETE",
+        "dataset": "RGBNT201",
+        "control": "global_only",
+        "candidate": "roles",
+        "time": "2026-10-02T04:06:37.470541+08:00",
+        "bindings": {
+          "global_only": {
+            "best_epoch": 13,
+            "checkpoint_sha256": "d782caf4a73573b30d0d6190c928b26896254cabc3b96bd758b5e9646c3dcd9e",
+            "distance_sha256": "7accf58c71177d2eb329cc07ede41529ce47f4d0c3bc541984d3c9ef32e9c5c3",
+            "receipt_sha256": "7ef6f3f02d652b768f88d7d08acb907b1502c2e2c2be539a564ac1184906b5c2"
+          },
+          "roles": {
+            "best_epoch": 13,
+            "checkpoint_sha256": "c27819f0f7dd3086a87970d9a3473258fe9fe3a7d42aad7888aa5033e40ee6bd",
+            "distance_sha256": "e2a7b40ca08bd0f23782046cbb3e3b605680840ca56b0be0a3eb4e28d7ff8076",
+            "receipt_sha256": "59a30db73c2a25585f99c1c073b2c9b613108641ed02ed1718e324bcc4e108fd"
+          }
+        },
+        "metrics": {
+          "global_only": {
+            "mAP": 68.11166857760156,
+            "Rank-1": 69.73684210526315,
+            "Rank-5": 79.06698564593302,
+            "Rank-10": 84.56937799043062
+          },
+          "roles": {
+            "mAP": 69.8763956482104,
+            "Rank-1": 71.41148325358851,
+            "Rank-5": 79.18660287081339,
+            "Rank-10": 84.92822966507177
+          }
+        },
+        "delta_metrics": {
+          "mAP": 1.764727070608842,
+          "Rank-1": 1.6746411483253638,
+          "Rank-5": 0.11961722488037196,
+          "Rank-10": 0.3588516746411443
+        },
+        "rank1_repairs": 29,
+        "rank1_new_errors": 15,
+        "query_ap_improved": 371,
+        "query_ap_worsened": 256,
+        "identity_ap_improved": 22,
+        "identity_ap_worsened": 7,
+        "identity_macro_mean_delta_ap_points": 1.987603427590247,
+        "identity_bootstrap_95_percentile_interval": [
+          0.194695523508521,
+          3.7365266692028882
+        ],
+        "identity_changes": [
+          {
+            "identity": 258,
+            "queries": 30,
+            "mean_delta_ap_points": 0.21660998279301533
+          },
+          {
+            "identity": 260,
+            "queries": 30,
+            "mean_delta_ap_points": 0.8391616585366239
+          },
+          {
+            "identity": 269,
+            "queries": 25,
+            "mean_delta_ap_points": 1.1417985035057223
+          },
+          {
+            "identity": 270,
+            "queries": 17,
+            "mean_delta_ap_points": 3.4632690136104824
+          },
+          {
+            "identity": 271,
+            "queries": 26,
+            "mean_delta_ap_points": 0.05410361080706155
+          },
+          {
+            "identity": 272,
+            "queries": 25,
+            "mean_delta_ap_points": 11.788484964806562
+          },
+          {
+            "identity": 273,
+            "queries": 26,
+            "mean_delta_ap_points": -0.05744485294117632
+          },
+          {
+            "identity": 274,
+            "queries": 30,
+            "mean_delta_ap_points": -5.220620521709899
+          },
+          {
+            "identity": 275,
+            "queries": 30,
+            "mean_delta_ap_points": -0.5053966692326154
+          },
+          {
+            "identity": 276,
+            "queries": 30,
+            "mean_delta_ap_points": -13.060276037276594
+          },
+          {
+            "identity": 277,
+            "queries": 30,
+            "mean_delta_ap_points": 1.0897884748702025
+          },
+          {
+            "identity": 278,
+            "queries": 30,
+            "mean_delta_ap_points": 0.4151868554391909
+          },
+          {
+            "identity": 279,
+            "queries": 29,
+            "mean_delta_ap_points": 1.1320506305146134
+          },
+          {
+            "identity": 280,
+            "queries": 29,
+            "mean_delta_ap_points": 3.3607548936418166
+          },
+          {
+            "identity": 282,
+            "queries": 30,
+            "mean_delta_ap_points": -0.7261616668479076
+          },
+          {
+            "identity": 283,
+            "queries": 29,
+            "mean_delta_ap_points": -2.4117658007023697
+          },
+          {
+            "identity": 284,
+            "queries": 26,
+            "mean_delta_ap_points": 14.355298277979214
+          },
+          {
+            "identity": 285,
+            "queries": 24,
+            "mean_delta_ap_points": 7.507504042707179
+          },
+          {
+            "identity": 286,
+            "queries": 23,
+            "mean_delta_ap_points": 12.192023269296001
+          },
+          {
+            "identity": 287,
+            "queries": 28,
+            "mean_delta_ap_points": 2.5796262322208006
+          },
+          {
+            "identity": 288,
+            "queries": 30,
+            "mean_delta_ap_points": 0.8391668160753601
+          },
+          {
+            "identity": 289,
+            "queries": 30,
+            "mean_delta_ap_points": 2.3840784913525987
+          },
+          {
+            "identity": 290,
+            "queries": 25,
+            "mean_delta_ap_points": 1.852908326050743
+          },
+          {
+            "identity": 291,
+            "queries": 25,
+            "mean_delta_ap_points": 0.0
+          },
+          {
+            "identity": 292,
+            "queries": 30,
+            "mean_delta_ap_points": 3.3077839309855555
+          },
+          {
+            "identity": 293,
+            "queries": 29,
+            "mean_delta_ap_points": -0.4445098190885489
+          },
+          {
+            "identity": 294,
+            "queries": 30,
+            "mean_delta_ap_points": 8.599259195119858
+          },
+          {
+            "identity": 295,
+            "queries": 30,
+            "mean_delta_ap_points": 4.396867059575802
+          },
+          {
+            "identity": 298,
+            "queries": 30,
+            "mean_delta_ap_points": 0.25243339426717487
+          },
+          {
+            "identity": 299,
+            "queries": 30,
+            "mean_delta_ap_points": 0.2861205713509389
+          }
+        ],
+        "boundary": "Official post-selection diagnosis, not new inference or selection. Different capacity and possibly random-number consumption. Bootstrap resamples fixed-model identities, not training seeds."
+      }
+    },
+    {
+      "dataset": "RGBNT100",
+      "minimum_map_points": 0.0,
+      "gate_passed": true,
+      "paired_diagnosis": {
+        "status": "CPU_ARRAY_PARITY_AND_PAIRED_DIAGNOSIS_COMPLETE",
+        "dataset": "RGBNT100",
+        "control": "global_only",
+        "candidate": "roles",
+        "time": "2026-10-02T04:06:39.991822+08:00",
+        "bindings": {
+          "global_only": {
+            "best_epoch": 3,
+            "checkpoint_sha256": "6326e5df4d5703ae38cf5dfee6a6e2da4cfc71b5e1e6eb3bb683315d10e30fcd",
+            "distance_sha256": "c85fe4a6e238ebfd890586199444ec9725cad7fddfc0c6b4829e3f22a0c88708",
+            "receipt_sha256": "59c474b54867742e7a75bf117832661c4929fe093d9f8ded8ad11508d082eedb"
+          },
+          "roles": {
+            "best_epoch": 20,
+            "checkpoint_sha256": "0824c8dd2755093a1cbf45b4f3dad23938ee25b666968e751a6af68598e4817b",
+            "distance_sha256": "f86f8180f650b3c5e6226dcc5dfbe688dfbc7ec27cff4f030d211e7ab2b268fb",
+            "receipt_sha256": "7cf596385aff04e53bc0a3ea15c2af5f552d429888da01694a029a52b8c2ae6b"
+          }
+        },
+        "metrics": {
+          "global_only": {
+            "mAP": 78.49127361133196,
+            "Rank-1": 93.87755102040816,
+            "Rank-5": 95.10204081632652,
+            "Rank-10": 95.56851311953352
+          },
+          "roles": {
+            "mAP": 80.9230600397191,
+            "Rank-1": 94.28571428571428,
+            "Rank-5": 95.27696793002916,
+            "Rank-10": 96.20991253644316
+          }
+        },
+        "delta_metrics": {
+          "mAP": 2.4317864283871415,
+          "Rank-1": 0.4081632653061149,
+          "Rank-5": 0.17492711370263692,
+          "Rank-10": 0.6413994169096355
+        },
+        "rank1_repairs": 58,
+        "rank1_new_errors": 51,
+        "query_ap_improved": 945,
+        "query_ap_worsened": 654,
+        "identity_ap_improved": 27,
+        "identity_ap_worsened": 23,
+        "identity_macro_mean_delta_ap_points": 2.519329979626712,
+        "identity_bootstrap_95_percentile_interval": [
+          0.000532976171181359,
+          4.927734843618765
+        ],
+        "identity_changes": [
+          {
+            "identity": 502,
+            "queries": 40,
+            "mean_delta_ap_points": 10.47149954340366
+          },
+          {
+            "identity": 504,
+            "queries": 35,
+            "mean_delta_ap_points": -8.510121702902481
+          },
+          {
+            "identity": 506,
+            "queries": 40,
+            "mean_delta_ap_points": -3.019102031126946
+          },
+          {
+            "identity": 508,
+            "queries": 40,
+            "mean_delta_ap_points": 7.4284550722246685
+          },
+          {
+            "identity": 510,
+            "queries": 40,
+            "mean_delta_ap_points": -2.4085330021229354
+          },
+          {
+            "identity": 512,
+            "queries": 20,
+            "mean_delta_ap_points": 12.005958690547777
+          },
+          {
+            "identity": 514,
+            "queries": 40,
+            "mean_delta_ap_points": -2.5278070664630903
+          },
+          {
+            "identity": 516,
+            "queries": 20,
+            "mean_delta_ap_points": 11.989411327473979
+          },
+          {
+            "identity": 518,
+            "queries": 25,
+            "mean_delta_ap_points": 14.494804337772283
+          },
+          {
+            "identity": 520,
+            "queries": 35,
+            "mean_delta_ap_points": -3.504522828280527
+          },
+          {
+            "identity": 522,
+            "queries": 35,
+            "mean_delta_ap_points": 23.21237002272086
+          },
+          {
+            "identity": 524,
+            "queries": 40,
+            "mean_delta_ap_points": 11.291249340464251
+          },
+          {
+            "identity": 526,
+            "queries": 15,
+            "mean_delta_ap_points": -5.531667569308907
+          },
+          {
+            "identity": 528,
+            "queries": 35,
+            "mean_delta_ap_points": -2.2886493657307434
+          },
+          {
+            "identity": 530,
+            "queries": 35,
+            "mean_delta_ap_points": -0.08705783305196604
+          },
+          {
+            "identity": 532,
+            "queries": 40,
+            "mean_delta_ap_points": -2.0938457946502482
+          },
+          {
+            "identity": 534,
+            "queries": 35,
+            "mean_delta_ap_points": 3.5909968465736624
+          },
+          {
+            "identity": 536,
+            "queries": 20,
+            "mean_delta_ap_points": -21.099472126142988
+          },
+          {
+            "identity": 538,
+            "queries": 40,
+            "mean_delta_ap_points": 5.993005481478356
+          },
+          {
+            "identity": 540,
+            "queries": 40,
+            "mean_delta_ap_points": 5.655892095347174
+          },
+          {
+            "identity": 542,
+            "queries": 35,
+            "mean_delta_ap_points": 6.669711470182273
+          },
+          {
+            "identity": 544,
+            "queries": 35,
+            "mean_delta_ap_points": 10.237761438343426
+          },
+          {
+            "identity": 546,
+            "queries": 20,
+            "mean_delta_ap_points": -11.183244455819455
+          },
+          {
+            "identity": 548,
+            "queries": 30,
+            "mean_delta_ap_points": 10.900495775380845
+          },
+          {
+            "identity": 550,
+            "queries": 40,
+            "mean_delta_ap_points": 9.078458049645127
+          },
+          {
+            "identity": 552,
+            "queries": 40,
+            "mean_delta_ap_points": 4.904833212693689
+          },
+          {
+            "identity": 554,
+            "queries": 35,
+            "mean_delta_ap_points": 4.6617945112873755
+          },
+          {
+            "identity": 556,
+            "queries": 40,
+            "mean_delta_ap_points": 4.2545641972832975
+          },
+          {
+            "identity": 558,
+            "queries": 40,
+            "mean_delta_ap_points": 10.380566947546432
+          },
+          {
+            "identity": 560,
+            "queries": 35,
+            "mean_delta_ap_points": 1.8504139745864239
+          },
+          {
+            "identity": 562,
+            "queries": 15,
+            "mean_delta_ap_points": 32.819662074851266
+          },
+          {
+            "identity": 564,
+            "queries": 35,
+            "mean_delta_ap_points": -0.10521766679531673
+          },
+          {
+            "identity": 566,
+            "queries": 40,
+            "mean_delta_ap_points": -4.342928218245969
+          },
+          {
+            "identity": 568,
+            "queries": 15,
+            "mean_delta_ap_points": -7.051021796071303
+          },
+          {
+            "identity": 570,
+            "queries": 35,
+            "mean_delta_ap_points": 6.384845061850197
+          },
+          {
+            "identity": 572,
+            "queries": 40,
+            "mean_delta_ap_points": 0.1912117348356289
+          },
+          {
+            "identity": 574,
+            "queries": 35,
+            "mean_delta_ap_points": -4.063878635529421
+          },
+          {
+            "identity": 576,
+            "queries": 35,
+            "mean_delta_ap_points": -0.22165605814375894
+          },
+          {
+            "identity": 578,
+            "queries": 40,
+            "mean_delta_ap_points": -0.11386207435834911
+          },
+          {
+            "identity": 580,
+            "queries": 40,
+            "mean_delta_ap_points": -5.192271614147111
+          },
+          {
+            "identity": 582,
+            "queries": 40,
+            "mean_delta_ap_points": -9.654501729859943
+          },
+          {
+            "identity": 584,
+            "queries": 40,
+            "mean_delta_ap_points": -4.269138907708672
+          },
+          {
+            "identity": 586,
+            "queries": 40,
+            "mean_delta_ap_points": 3.2459469514543966
+          },
+          {
+            "identity": 588,
+            "queries": 40,
+            "mean_delta_ap_points": 4.627932034724881
+          },
+          {
+            "identity": 590,
+            "queries": 35,
+            "mean_delta_ap_points": -4.752855880755976
+          },
+          {
+            "identity": 592,
+            "queries": 30,
+            "mean_delta_ap_points": 7.506067054833247
+          },
+          {
+            "identity": 594,
+            "queries": 35,
+            "mean_delta_ap_points": 11.473743134650961
+          },
+          {
+            "identity": 596,
+            "queries": 40,
+            "mean_delta_ap_points": -3.876672533821954
+          },
+          {
+            "identity": 598,
+            "queries": 25,
+            "mean_delta_ap_points": -6.417148513484243
+          },
+          {
+            "identity": 600,
+            "queries": 40,
+            "mean_delta_ap_points": 2.96002600370176
+          }
+        ],
+        "boundary": "Official post-selection diagnosis, not new inference or selection. Different capacity and possibly random-number consumption. Bootstrap resamples fixed-model identities, not training seeds."
+      }
+    },
+    {
+      "dataset": "MSVR310",
+      "minimum_map_points": 0.5,
+      "gate_passed": false,
+      "paired_diagnosis": {
+        "status": "CPU_ARRAY_PARITY_AND_PAIRED_DIAGNOSIS_COMPLETE",
+        "dataset": "MSVR310",
+        "control": "global_only",
+        "candidate": "roles",
+        "time": "2026-10-02T04:06:40.148579+08:00",
+        "bindings": {
+          "global_only": {
+            "best_epoch": 16,
+            "checkpoint_sha256": "40f73d686c730993f491d4a4c9f8d8a7acb5e75f25baa5cd2fff6cbc469be501",
+            "distance_sha256": "88b49378e3c19957bd20a59e96e191950233c8ecbf11210a696f40deeb5d0050",
+            "receipt_sha256": "79e9d305d987bd508c4f3459909ffa865ac27c868eb4d47af1881ea6a30b2e16"
+          },
+          "roles": {
+            "best_epoch": 16,
+            "checkpoint_sha256": "9d53d11d991c9c6e7a07ff108be0c965becf59a75b9ef219380a5b2103bc5c82",
+            "distance_sha256": "498ac94d5ffa31ec383955a306d987fcfba566a76ad91faaebb51a6819df9fa6",
+            "receipt_sha256": "4748c1a41474b33b7f09c118366582a0b141002e489ebccb448a37cc6ac92201"
+          }
+        },
+        "metrics": {
+          "global_only": {
+            "mAP": 51.722410877081714,
+            "Rank-1": 67.17428087986464,
+            "Rank-5": 83.58714043993231,
+            "Rank-10": 88.49407783417935
+          },
+          "roles": {
+            "mAP": 52.004201838107925,
+            "Rank-1": 68.69712351945854,
+            "Rank-5": 83.58714043993231,
+            "Rank-10": 88.15566835871405
+          }
+        },
+        "delta_metrics": {
+          "mAP": 0.2817909610262106,
+          "Rank-1": 1.5228426395939039,
+          "Rank-5": 0.0,
+          "Rank-10": -0.33840947546529776
+        },
+        "rank1_repairs": 16,
+        "rank1_new_errors": 7,
+        "query_ap_improved": 295,
+        "query_ap_worsened": 270,
+        "identity_ap_improved": 28,
+        "identity_ap_worsened": 23,
+        "identity_macro_mean_delta_ap_points": 0.16733172390861692,
+        "identity_bootstrap_95_percentile_interval": [
+          -0.518648189066862,
+          0.846169475751504
+        ],
+        "identity_changes": [
+          {
+            "identity": 2,
+            "queries": 4,
+            "mean_delta_ap_points": -0.6060606060606072
+          },
+          {
+            "identity": 4,
+            "queries": 12,
+            "mean_delta_ap_points": -0.3851773249951821
+          },
+          {
+            "identity": 6,
+            "queries": 16,
+            "mean_delta_ap_points": 1.1640952203212533
+          },
+          {
+            "identity": 8,
+            "queries": 15,
+            "mean_delta_ap_points": 1.2720528962796553
+          },
+          {
+            "identity": 10,
+            "queries": 6,
+            "mean_delta_ap_points": -2.134319793440088
+          },
+          {
+            "identity": 12,
+            "queries": 4,
+            "mean_delta_ap_points": -2.1050110151338326
+          },
+          {
+            "identity": 14,
+            "queries": 8,
+            "mean_delta_ap_points": 3.3262982600661037
+          },
+          {
+            "identity": 16,
+            "queries": 8,
+            "mean_delta_ap_points": 0.4061980129968841
+          },
+          {
+            "identity": 20,
+            "queries": 31,
+            "mean_delta_ap_points": -2.428235447674436
+          },
+          {
+            "identity": 22,
+            "queries": 9,
+            "mean_delta_ap_points": 0.2049461973395157
+          },
+          {
+            "identity": 24,
+            "queries": 34,
+            "mean_delta_ap_points": 0.39800997248333453
+          },
+          {
+            "identity": 26,
+            "queries": 24,
+            "mean_delta_ap_points": 4.345844326669244
+          },
+          {
+            "identity": 30,
+            "queries": 6,
+            "mean_delta_ap_points": 0.21839352723323166
+          },
+          {
+            "identity": 34,
+            "queries": 13,
+            "mean_delta_ap_points": -0.41354983877197693
+          },
+          {
+            "identity": 36,
+            "queries": 18,
+            "mean_delta_ap_points": -0.5185094589595315
+          },
+          {
+            "identity": 45,
+            "queries": 6,
+            "mean_delta_ap_points": 2.804232804232805
+          },
+          {
+            "identity": 47,
+            "queries": 8,
+            "mean_delta_ap_points": -5.648809523809523
+          },
+          {
+            "identity": 59,
+            "queries": 20,
+            "mean_delta_ap_points": 1.0269784606138657
+          },
+          {
+            "identity": 63,
+            "queries": 10,
+            "mean_delta_ap_points": 1.8848820770544374
+          },
+          {
+            "identity": 69,
+            "queries": 6,
+            "mean_delta_ap_points": -0.027463402652082303
+          },
+          {
+            "identity": 75,
+            "queries": 19,
+            "mean_delta_ap_points": 0.12211965943362182
+          },
+          {
+            "identity": 79,
+            "queries": 8,
+            "mean_delta_ap_points": -3.791720011110558
+          },
+          {
+            "identity": 88,
+            "queries": 10,
+            "mean_delta_ap_points": -0.5938862549390472
+          },
+          {
+            "identity": 90,
+            "queries": 11,
+            "mean_delta_ap_points": 0.3439120672180492
+          },
+          {
+            "identity": 92,
+            "queries": 7,
+            "mean_delta_ap_points": 3.218182492021051
+          },
+          {
+            "identity": 94,
+            "queries": 22,
+            "mean_delta_ap_points": 0.5843736271073194
+          },
+          {
+            "identity": 96,
+            "queries": 13,
+            "mean_delta_ap_points": -1.4074984336486154
+          },
+          {
+            "identity": 100,
+            "queries": 12,
+            "mean_delta_ap_points": 5.072516710922787
+          },
+          {
+            "identity": 110,
+            "queries": 5,
+            "mean_delta_ap_points": -2.3091198337367413
+          },
+          {
+            "identity": 112,
+            "queries": 9,
+            "mean_delta_ap_points": -4.714308458839645
+          },
+          {
+            "identity": 114,
+            "queries": 13,
+            "mean_delta_ap_points": -0.8966054894418348
+          },
+          {
+            "identity": 116,
+            "queries": 7,
+            "mean_delta_ap_points": 3.4122062148377923
+          },
+          {
+            "identity": 122,
+            "queries": 13,
+            "mean_delta_ap_points": 4.817302787837996
+          },
+          {
+            "identity": 127,
+            "queries": 6,
+            "mean_delta_ap_points": -1.058820363660473
+          },
+          {
+            "identity": 129,
+            "queries": 16,
+            "mean_delta_ap_points": -0.49166695418608186
+          },
+          {
+            "identity": 139,
+            "queries": 10,
+            "mean_delta_ap_points": 2.90319730801622
+          },
+          {
+            "identity": 141,
+            "queries": 8,
+            "mean_delta_ap_points": 0.8794191919191909
+          },
+          {
+            "identity": 143,
+            "queries": 9,
+            "mean_delta_ap_points": 0.6884853192902723
+          },
+          {
+            "identity": 145,
+            "queries": 14,
+            "mean_delta_ap_points": 0.808404641996748
+          },
+          {
+            "identity": 150,
+            "queries": 15,
+            "mean_delta_ap_points": 2.3079038533353544
+          },
+          {
+            "identity": 152,
+            "queries": 4,
+            "mean_delta_ap_points": 0.0
+          },
+          {
+            "identity": 160,
+            "queries": 15,
+            "mean_delta_ap_points": 0.32700551977266584
+          },
+          {
+            "identity": 170,
+            "queries": 8,
+            "mean_delta_ap_points": 2.924948564061283
+          },
+          {
+            "identity": 176,
+            "queries": 9,
+            "mean_delta_ap_points": -7.710757043189891
+          },
+          {
+            "identity": 178,
+            "queries": 6,
+            "mean_delta_ap_points": 0.34907469439027783
+          },
+          {
+            "identity": 196,
+            "queries": 5,
+            "mean_delta_ap_points": -0.11243678209244823
+          },
+          {
+            "identity": 204,
+            "queries": 6,
+            "mean_delta_ap_points": 3.97986887119884
+          },
+          {
+            "identity": 220,
+            "queries": 11,
+            "mean_delta_ap_points": 1.6493477661121037
+          },
+          {
+            "identity": 228,
+            "queries": 11,
+            "mean_delta_ap_points": -4.003902618393725
+          },
+          {
+            "identity": 239,
+            "queries": 5,
+            "mean_delta_ap_points": -0.5685346544261637
+          },
+          {
+            "identity": 241,
+            "queries": 9,
+            "mean_delta_ap_points": -0.12158513646773662
+          },
+          {
+            "identity": 253,
+            "queries": 17,
+            "mean_delta_ap_points": -0.6909729558836043
+          }
+        ],
+        "boundary": "Official post-selection diagnosis, not new inference or selection. Different capacity and possibly random-number consumption. Bootstrap resamples fixed-model identities, not training seeds."
+      }
+    }
+  ],
+  "report_inputs_sha256": {
+    "/data/gaob/Re-ID/Trifusion/logs/clean_clip_joint_20261002_v1/manifest.json": "4683c9b78d4beb6f76f7910a22b1a10c02978519aba1206549fd4260f2252701",
+    "/data/gaob/Re-ID/Trifusion/logs/clean_clip_joint_20261002_v1/campaign.json": "67caecb9af2d0bdb9d4c666b52de9c3e2d78ec047903d8da8b7285ce41d84063",
+    "/data/gaob/Re-ID/Trifusion/logs/clean_clip_joint_20261002_v1/accepted_matrix.json": "072b619a2ed0e04424bc44a39189148e65f86ab75c8aa0149c856a733367aff5",
+    "/data/gaob/Re-ID/Trifusion/logs/clean_clip_preflight_20261002_v1/preflight.json": "8d5d381a2f5db394eed47259134ea49ccdceb110a66cfe81842b3838b767bf14",
+    "/data/gaob/Re-ID/Trifusion/logs/clean_clip_preflight_20261002_v1/RGBNT201_global_only.json": "605d85819ad521227173912945f41bfa89736a34c6709a46423af7361ec0e494",
+    "/data/gaob/Re-ID/Trifusion/logs/clean_clip_preflight_20261002_v1/RGBNT201_roles.json": "79a0ab43ef31179f839970f36aeec610821f83943b71f3e9dd2f024087715c36",
+    "/data/gaob/Re-ID/Trifusion/logs/clean_clip_preflight_20261002_v1/RGBNT100_global_only.json": "694fc92dc9ff608af60f1d1dafb660653b05661bc737b57749f3693a25a63cdd",
+    "/data/gaob/Re-ID/Trifusion/logs/clean_clip_preflight_20261002_v1/RGBNT100_roles.json": "e20de7f0284e85a9d73d645773225af46b6904d515c57d208d9511b99d9cfbca",
+    "/data/gaob/Re-ID/Trifusion/logs/clean_clip_preflight_20261002_v1/MSVR310_global_only.json": "7944ef7a030855aec8283fe1b0d02c9cf3ed9b1f13395dc81c81c12778912096",
+    "/data/gaob/Re-ID/Trifusion/logs/clean_clip_preflight_20261002_v1/MSVR310_roles.json": "9933e03e3c9151830a665524d722e51238c05344e27671ce935179603f14debf",
+    "/data/gaob/Re-ID/Trifusion/tools/report_clean_clip_joint_complete.py": "25250470077bcda629633fba47c94f91bb686910ed708310a6afd46ec3709e86",
+    "/data/gaob/Re-ID/Trifusion/tools/analyze_correspondence_distances.py": "833ebeb47cb5840422710fc00df1a974338cb04078249720d867f18b945f997a",
+    "/data/gaob/Re-ID/Trifusion/logs/clean_clip_joint_20261002_v1/clean_clip_joint_20261002_v1_clean_clip_global_only_RGBNT201/campaign.json": "a21769c9ae67e9ccc2f90fce4ff772a49a15b27fdd1a6054ea9f3aacf7f8d1f0",
+    "/data/gaob/Re-ID/Trifusion/trained-model/clean_clip_joint_20261002_v1_clean_clip_global_only_RGBNT201_seed42_full/training.json": "88b25428bdb6c85a17fdcfd1d3d946029aa6efc71e463c27181230f05e5cc66f",
+    "/data/gaob/Re-ID/Trifusion/trained-model/clean_clip_joint_20261002_v1_clean_clip_global_only_RGBNT201_seed42_full/training_steps.jsonl": "64e0d4b4282840821d103163a897332dd20083c23201a3b6c64cbec7097e1c2e",
+    "/data/gaob/Re-ID/Trifusion/trained-model/clean_clip_joint_20261002_v1_clean_clip_global_only_RGBNT201_seed42_full/official_metrics.json": "7ef6f3f02d652b768f88d7d08acb907b1502c2e2c2be539a564ac1184906b5c2",
+    "/data/gaob/Re-ID/Trifusion/trained-model/clean_clip_preflight_20261002_v1_RGBNT201_global_only_m0/training.json": "a9149b5626795d60bc432c05600233b8f1603c532b7292c21ea911a90332395f",
+    "/data/gaob/Re-ID/Trifusion/trained-model/clean_clip_preflight_20261002_v1_RGBNT201_global_only_m0/training_steps.jsonl": "6d476c67acad8d657454fe599306e74acea403732f3e0713f9fa3ba0fd128f85",
+    "/data/gaob/Re-ID/Trifusion/logs/clean_clip_joint_20261002_v1/clean_clip_joint_20261002_v1_clean_clip_global_only_RGBNT100/campaign.json": "1c728889b5573963fca69368847095269ae190d26e0606d118c52d0c1296659a",
+    "/data/gaob/Re-ID/Trifusion/trained-model/clean_clip_joint_20261002_v1_clean_clip_global_only_RGBNT100_seed42_full/training.json": "5b798c962fc43d5ed6407a62e6d648133a6908b94de4f96e7df353c8dccb748c",
+    "/data/gaob/Re-ID/Trifusion/trained-model/clean_clip_joint_20261002_v1_clean_clip_global_only_RGBNT100_seed42_full/training_steps.jsonl": "375b4b0da4262a0dee1f088802dc440e434dd8ea24bd438731d1d2b9458544bd",
+    "/data/gaob/Re-ID/Trifusion/trained-model/clean_clip_joint_20261002_v1_clean_clip_global_only_RGBNT100_seed42_full/official_metrics.json": "59c474b54867742e7a75bf117832661c4929fe093d9f8ded8ad11508d082eedb",
+    "/data/gaob/Re-ID/Trifusion/trained-model/clean_clip_joint_20261002_v1_clean_clip_global_only_RGBNT100_seed42_m0/training.json": "935450433c39d4bbed218cff4d023693d0ccff6419239c87371caafa0975fe14",
+    "/data/gaob/Re-ID/Trifusion/trained-model/clean_clip_joint_20261002_v1_clean_clip_global_only_RGBNT100_seed42_m0/training_steps.jsonl": "243ff736212bd2ca79f26701be5f70ae2a40d6b293231662b4ba254b3f918ac7",
+    "/data/gaob/Re-ID/Trifusion/logs/clean_clip_joint_20261002_v1/clean_clip_joint_20261002_v1_clean_clip_global_only_MSVR310/campaign.json": "22165598081298aedae0ed3218ccdfc3f88da66a19f40f6d070bed31555a5249",
+    "/data/gaob/Re-ID/Trifusion/trained-model/clean_clip_joint_20261002_v1_clean_clip_global_only_MSVR310_seed42_full/training.json": "023e349a263f8b66e7c8ecba45b411f4a101187900a098fd23cc901bd270e309",
+    "/data/gaob/Re-ID/Trifusion/trained-model/clean_clip_joint_20261002_v1_clean_clip_global_only_MSVR310_seed42_full/training_steps.jsonl": "49ebb0316d34aa4484e5868c1c38f0e50bcfa131de6acfefecd66b0df99a8b4f",
+    "/data/gaob/Re-ID/Trifusion/trained-model/clean_clip_joint_20261002_v1_clean_clip_global_only_MSVR310_seed42_full/official_metrics.json": "79e9d305d987bd508c4f3459909ffa865ac27c868eb4d47af1881ea6a30b2e16",
+    "/data/gaob/Re-ID/Trifusion/trained-model/clean_clip_joint_20261002_v1_clean_clip_global_only_MSVR310_seed42_m0/training.json": "7ddbb95a1435aec507ac7c93294be2a5771c0d6324a8a2efda80e682718b355e",
+    "/data/gaob/Re-ID/Trifusion/trained-model/clean_clip_joint_20261002_v1_clean_clip_global_only_MSVR310_seed42_m0/training_steps.jsonl": "660222ec00613158414b339c48dbedc80c784a359dd12d573308e10ae72c9315",
+    "/data/gaob/Re-ID/Trifusion/logs/clean_clip_joint_20261002_v1/clean_clip_joint_20261002_v1_clean_clip_roles_RGBNT201/campaign.json": "da7aaf60e6b790ce5ee2d77c22a4380071d4a03b39182793ee526bccf664ef4e",
+    "/data/gaob/Re-ID/Trifusion/trained-model/clean_clip_joint_20261002_v1_clean_clip_roles_RGBNT201_seed42_full/training.json": "9743552bf409c1ba23094221e6e7142603bb5e4cd9f67600786ef4b346fc2600",
+    "/data/gaob/Re-ID/Trifusion/trained-model/clean_clip_joint_20261002_v1_clean_clip_roles_RGBNT201_seed42_full/training_steps.jsonl": "b4cab7d27d65ced9ea341babc2198f8525384453abc9e0f8ade286e5fad9637c",
+    "/data/gaob/Re-ID/Trifusion/trained-model/clean_clip_joint_20261002_v1_clean_clip_roles_RGBNT201_seed42_full/official_metrics.json": "59a30db73c2a25585f99c1c073b2c9b613108641ed02ed1718e324bcc4e108fd",
+    "/data/gaob/Re-ID/Trifusion/trained-model/clean_clip_preflight_20261002_v1_RGBNT201_roles_m0/training.json": "8986cd34c0f813396b22d06e48b4d5dcfc328ffece37f793e2a903d043960b11",
+    "/data/gaob/Re-ID/Trifusion/trained-model/clean_clip_preflight_20261002_v1_RGBNT201_roles_m0/training_steps.jsonl": "82db7b98d3ad8705dda1c2f32cabe24ee01a6ebe26d8202cc9f642868aa23c2a",
+    "/data/gaob/Re-ID/Trifusion/logs/clean_clip_joint_20261002_v1/clean_clip_joint_20261002_v1_clean_clip_roles_RGBNT100/campaign.json": "f21954309085e7430d5b48a4fc080697ef363ba8cc2af450e68d85589254694e",
+    "/data/gaob/Re-ID/Trifusion/trained-model/clean_clip_joint_20261002_v1_clean_clip_roles_RGBNT100_seed42_full/training.json": "94cdf00e083473090e4cb6f0378b2c631cc364228f33970a2be37d58f019a06e",
+    "/data/gaob/Re-ID/Trifusion/trained-model/clean_clip_joint_20261002_v1_clean_clip_roles_RGBNT100_seed42_full/training_steps.jsonl": "52c6b05d7acaf2a6eabae874f373b48e9153be7dd995ace8ed1c2a165077c1f3",
+    "/data/gaob/Re-ID/Trifusion/trained-model/clean_clip_joint_20261002_v1_clean_clip_roles_RGBNT100_seed42_full/official_metrics.json": "7cf596385aff04e53bc0a3ea15c2af5f552d429888da01694a029a52b8c2ae6b",
+    "/data/gaob/Re-ID/Trifusion/trained-model/clean_clip_joint_20261002_v1_clean_clip_roles_RGBNT100_seed42_m0/training.json": "1c0116898889e51b711c736fb9aece062925b666b407112859ba2422c5a81c01",
+    "/data/gaob/Re-ID/Trifusion/trained-model/clean_clip_joint_20261002_v1_clean_clip_roles_RGBNT100_seed42_m0/training_steps.jsonl": "fed8217a6571438c7ec1dd06d3495a6010a06c2ccfc8a9c36f5fb6ad23ea70d0",
+    "/data/gaob/Re-ID/Trifusion/logs/clean_clip_joint_20261002_v1/clean_clip_joint_20261002_v1_clean_clip_roles_MSVR310/campaign.json": "08d0447638c2af252e52ce8278f79cbb81abc085eca8e508e90e49d03833f372",
+    "/data/gaob/Re-ID/Trifusion/trained-model/clean_clip_joint_20261002_v1_clean_clip_roles_MSVR310_seed42_full/training.json": "14f1941ad3690d97cf9238a801c465b97de4b4b1b279672ebaaac7d305d15840",
+    "/data/gaob/Re-ID/Trifusion/trained-model/clean_clip_joint_20261002_v1_clean_clip_roles_MSVR310_seed42_full/training_steps.jsonl": "8a4ecd3a496c066d2e61cc675053669455166f08af8b653b918f942c241ac506",
+    "/data/gaob/Re-ID/Trifusion/trained-model/clean_clip_joint_20261002_v1_clean_clip_roles_MSVR310_seed42_full/official_metrics.json": "4748c1a41474b33b7f09c118366582a0b141002e489ebccb448a37cc6ac92201",
+    "/data/gaob/Re-ID/Trifusion/trained-model/clean_clip_joint_20261002_v1_clean_clip_roles_MSVR310_seed42_m0/training.json": "a6eccd50a8a887699b0eaafb190e004c98c9cdb3e61bafd57da2495cf3e61971",
+    "/data/gaob/Re-ID/Trifusion/trained-model/clean_clip_joint_20261002_v1_clean_clip_roles_MSVR310_seed42_m0/training_steps.jsonl": "1848d51552921b621958dbf70332c97cc26a05bfa82a39e229d067d1810a5e1e"
+  },
+  "campaign_parent_observed_wall_seconds": 10327.448314,
+  "sum_training_and_epoch_eval_seconds": 21871.911352,
+  "logical_m0_and_full_output_bytes": 4377717752,
+  "disk_free_bytes_at_report": 72349720576,
+  "boundaries": [
+    "Clean public CLIP visual weights; fresh trainable camera, adapters and heads. No trained ReID state loaded.",
+    "Global-only includes the same shared adapters; it is an independent trained control, not raw or zero-shot CLIP.",
+    "Roles add capacity and may consume randomness differently. Common initial states were actually compared bitwise.",
+    "All six ends completed50 epochs; one highest official fused-mAP checkpoint per end, tied epochs resolved later.",
+    "Full real-GT query/gallery and original camera/time-block exclusions; gallery-only distractors retained; no reranking.",
+    "Official benchmarks already participated in epoch and method development. Fixed-model identity bootstrap is not training-seed stability.",
+    "Training/epoch-evaluation intervals exclude construction and upstream costs. Two RGBNT201 M0s precede the formal controller.",
+    "Trainable counts are reported from initializer witnesses; equal output width/epochs do not imply equal capacity or computation.",
+    "Warm ReID comparisons are historical and differ in camera training and initialization; no single-factor causal attribution.",
+    "J1 is an intermediate role-contribution gate, not the full three-dataset baseline/SOTA goal. N1/N2/N3 are not tested here."
+  ],
+  "figure_sha256": {
+    "TRAINING_CURVES.png": "861be77b0f6dca21df662ed3dd9197751a44be478c6a2822ff57ff7383caacbd",
+    "TRAINING_CURVES.svg": "b2bf629fe21923ec0ed93e242bc0a82d1c5972e44fd8e62354c9b830267b12bc"
+  }
+}
