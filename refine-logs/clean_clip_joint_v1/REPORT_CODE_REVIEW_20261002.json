@@ -1,0 +1,211 @@
+{
+  "schema": "clean-clip-complete-reporter-predeployment-review-v1",
+  "created_at": "2026-10-02T01:27:44.1181319+08:00",
+  "reviewer_agent": "/root/review_clean_clip_report_716",
+  "model": "gpt-6-astra",
+  "reasoning_effort": "max",
+  "model_attribution": "Review dispatch configuration; backend identity not independently attested",
+  "review_independence": "same-family",
+  "acceptance_status": "provisional",
+  "verdict": "NONBLOCKING",
+  "substantive_verdict": "PASS",
+  "review_scope": "Predeployment source/schema/call-chain review of the two new CPU reporter/waiter files only; dependencies inspected read-only",
+  "result_audit": false,
+  "runtime_pass": false,
+  "deployment_performed": false,
+  "repository": "C:\\Users\\gb\\.trifusion_github_publish_22c3bee",
+  "repository_head": "c7eb1853d3c3f601f2e8bc4aaca055611936a370",
+  "reviewed_files": [
+    "tools/report_clean_clip_joint_complete.py",
+    "tools/wait_clean_clip_complete_analysis.py"
+  ],
+  "input_sha256": {
+    "tools/report_clean_clip_joint_complete.py": "25250470077bcda629633fba47c94f91bb686910ed708310a6afd46ec3709e86",
+    "tools/wait_clean_clip_complete_analysis.py": "6530aa1159eb1b569a451c6c4d5dfdba92c6f928d8ffa921badd99cb03db805f",
+    "tools/queue_clean_clip_joint.py": "479d629ea788584a69c8a59d99e2249714f6f77ed1bb825c1c957c1dac8946a3",
+    "tools/analyze_correspondence_distances.py": "833ebeb47cb5840422710fc00df1a974338cb04078249720d867f18b945f997a",
+    "tools/run_clean_clip_joint.py": "178e9793f2cf8261eb44a278e053d5caabd4f2f37dba48a65952b2547338a746",
+    "tools/prepare_clean_clip_joint.py": "d3be286799fc8fca780bdfae7bd923eb562dfc0cf336265cd5144ebf09216445",
+    "tools/run_visual_update_control.py": "537cd5a4ab4e9b3501a7279e3f4857536bdda761f597d8b5fa7bfdbdbf82cbdd",
+    "tools/run_correspondence_roles.py": "e50865fb923297cd61cf38b33ec2bc95154f8c503b5dfe5de9823cad3f03d7ef",
+    "tools/queue_correspondence_refinement.py": "5256afe78d02d9bfea3103daa00d488b94c05e839c955f00355098f69ecbd84a",
+    "tools/train_rgbnt100_signal_oof.py": "4462b73139e034d450d955c5b4a994aaa967548e9cc503d97bb753a14ea03b22",
+    "tools/train_msvr310_signal_oof.py": "c25579d931df34481fef321558f0b9a1f9179d72a25d6047dbbfd3682d4ae60f",
+    "tools/collect_correspondence_roles.py": "f81af437fe5ccfea4361c1ed182cb9b8841b362214d2a5220309a0fd2c78fff8",
+    "tools/queue_correspondence_roles.py": "746fbdb8bdad04290a9ef22c0550e873c9dce9de74c2c3c3767fea9278be69bf",
+    "tools/official_three_dataset_data.py": "c3180a88d12440709319d2025928fc699ff3b7c020b11697d468453fbfc68062",
+    "tools/run_official_three_dataset_roles.py": "f30bb00a0b71429e9d11dd196cd1d543202a133c663ad66e175d2f82e28d448d",
+    "refine-logs/clean_clip_joint_v1/EXPERIMENT_PLAN.md": "20acb704e0f7dd34f77fb611e57ef641da0fbce24401ebe9cf26c60a9d1d0d7c",
+    "logs/shared_private_report_ready_710_20261001/raw/tools/report_shared_private_evidence_complete.py": "ef1aea1ce0d1557fae5bef8c0514b4188450fbf53df9f1d5b50eb818e9fc4781",
+    "AGENTS.md": "685c6f4418765957c3272e335cbb2e549bf03f07e3d13aad929950361d7207c4"
+  },
+  "initial_input_sha256": {
+    "tools/report_clean_clip_joint_complete.py": "0b853fc653c5418668baa445574b332a38b3cbd8261493749c41dde708200cb6",
+    "tools/wait_clean_clip_complete_analysis.py": "7d4eeea9697c4dd8d5056c8ae01de5153f5e981597775e602b0725034f6bb7ed"
+  },
+  "blocking_issues": [],
+  "nonblocking_issues": [],
+  "resolved_findings": [
+    {
+      "id": "R1",
+      "initial_severity": "BLOCKING",
+      "status": "RESOLVED_AND_REVIEWED",
+      "title": "Reused analysis helper missing from existing source-binding contract",
+      "evidence": "Actual 233-source manifest excludes tools/analyze_correspondence_distances.py; original reporter sources and waiter digest checks also excluded this imported helper",
+      "current_score_mismatch_observed": false,
+      "fixed_by": "Executor, in the two new files only",
+      "smallest_correction": "Record analyzer digest in existing reporter sources and waiter receipt, and use existing before-output / before-invocation checks; leave the active 233-source map unchanged",
+      "final_locations": [
+        "tools/report_clean_clip_joint_complete.py:44-45,83",
+        "tools/wait_clean_clip_complete_analysis.py:24-30,42"
+      ]
+    }
+  ],
+  "fixed_gate": "After all six verified COMPLETE endpoints: roles-global mAP > 0 and Rank-1 >= 0 on all three datasets; RGBNT201/MSVR310 additionally mAP >= 0.5 percentage points",
+  "correct_scope": [
+    "Six exact seed42/full50 endpoints",
+    "One highest fused official-mAP checkpoint per endpoint, later-epoch ties",
+    "Full saved real-GT query/gallery replay with original camera/time exclusions and no reranking",
+    "Three paired diagnoses and full50 loss/mAP curves",
+    "Honest trainable-parameter, training/epoch-evaluation, parent-wall and logical-storage fields",
+    "240-second same-controller waiter, one report invocation, FAILED return, no retries",
+    "Negative outcomes and scientific claim limits retained"
+  ],
+  "remote_root": "/data/gaob/Re-ID/Trifusion",
+  "active_campaign": "/data/gaob/Re-ID/Trifusion/logs/clean_clip_joint_20261002_v1",
+  "active_source_count": 233,
+  "active_source_digest_mismatches": [],
+  "remote_read_input_sha256": {
+    "logs/clean_clip_joint_20261002_v1/manifest.json": "4683c9b78d4beb6f76f7910a22b1a10c02978519aba1206549fd4260f2252701",
+    "logs/clean_clip_preflight_20261002_v1/preflight.json": "8d5d381a2f5db394eed47259134ea49ccdceb110a66cfe81842b3838b767bf14",
+    "logs/clean_clip_preflight_20261002_v1/RGBNT201_global_only.json": "605d85819ad521227173912945f41bfa89736a34c6709a46423af7361ec0e494",
+    "logs/clean_clip_preflight_20261002_v1/RGBNT201_roles.json": "79a0ab43ef31179f839970f36aeec610821f83943b71f3e9dd2f024087715c36",
+    "logs/clean_clip_preflight_20261002_v1/RGBNT100_global_only.json": "694fc92dc9ff608af60f1d1dafb660653b05661bc737b57749f3693a25a63cdd",
+    "logs/clean_clip_preflight_20261002_v1/RGBNT100_roles.json": "e20de7f0284e85a9d73d645773225af46b6904d515c57d208d9511b99d9cfbca",
+    "logs/clean_clip_preflight_20261002_v1/MSVR310_global_only.json": "7944ef7a030855aec8283fe1b0d02c9cf3ed9b1f13395dc81c81c12778912096",
+    "logs/clean_clip_preflight_20261002_v1/MSVR310_roles.json": "9933e03e3c9151830a665524d722e51238c05344e27671ce935179603f14debf",
+    "trained-model/clean_clip_preflight_20261002_v1_RGBNT201_global_only_m0/training.json": "a9149b5626795d60bc432c05600233b8f1603c532b7292c21ea911a90332395f",
+    "trained-model/clean_clip_preflight_20261002_v1_RGBNT201_roles_m0/training.json": "8986cd34c0f813396b22d06e48b4d5dcfc328ffece37f793e2a903d043960b11",
+    "logs/official_three_dataset_protocols_20260923/RGBNT201.json": "e63be5d9f8bd41df365264ad8f459dcd063d088023a2d2ed525a49a72f61161e",
+    "logs/official_three_dataset_protocols_20260923/RGBNT100.json": "12d8afe5cf6e537b69ccf753481dd5fd651f14b7672e1e6411a4d4e9d88cc956",
+    "logs/official_three_dataset_protocols_20260923/MSVR310.json": "7f2b35f9a7e00433558c1e723db0e3ff0ea9daa7144eeeb972139d1502945cbc",
+    "logs/clean_clip_launch716_20261002.json": "27fd170ffbf854dcefe3301a85e3e4f40372beb7d72027bee8a905b862e27ae7",
+    "logs/clean_clip_snapshot716_20261002.json": "38a3b50f331e39dee1160943be2a0b05982a77c94fa7449996660e437b26bab1",
+    "tools/analyze_correspondence_distances.py": "833ebeb47cb5840422710fc00df1a974338cb04078249720d867f18b945f997a"
+  },
+  "inspection_trace": [
+    {
+      "id": "T01",
+      "action": "Read full initial reporter and waiter with line numbers",
+      "outcome": "Pinned two new-file initial sources; no program execution",
+      "inputs": [
+        "tools/report_clean_clip_joint_complete.py",
+        "tools/wait_clean_clip_complete_analysis.py"
+      ]
+    },
+    {
+      "id": "T02",
+      "action": "Read fixed plan and queue/preflight/run-clean sources",
+      "outcome": "Traced six-pair admission, expected initializer/M0 schemas, COMPLETE ordering, fixed 50 epochs and seed 42",
+      "inputs": [
+        "refine-logs/clean_clip_joint_v1/EXPERIMENT_PLAN.md",
+        "tools/queue_clean_clip_joint.py",
+        "tools/prepare_clean_clip_joint.py",
+        "tools/run_clean_clip_joint.py"
+      ]
+    },
+    {
+      "id": "T03",
+      "action": "Read sealed full50 save/load/evaluate chain",
+      "outcome": "Full state saved; strict reload; max fused official mAP and later-epoch ties; saved receipt/distance hashes and exact dataset fields",
+      "inputs": [
+        "tools/run_visual_update_control.py",
+        "tools/run_correspondence_roles.py",
+        "tools/official_three_dataset_data.py",
+        "tools/run_official_three_dataset_roles.py"
+      ]
+    },
+    {
+      "id": "T04",
+      "action": "Read CPU compare helper, camera_scores and scene_scores",
+      "outcome": "CPU-only arrays, actual GT, correct exclusion masks, metric parity checks, paired rank/AP diagnosis, fixed-model identity bootstrap",
+      "inputs": [
+        "tools/analyze_correspondence_distances.py",
+        "tools/train_rgbnt100_signal_oof.py",
+        "tools/train_msvr310_signal_oof.py"
+      ]
+    },
+    {
+      "id": "T05",
+      "action": "Read queue/import chain without importing or executing it",
+      "outcome": "No top-level worker, collector, scoring or GPU call on the new programs import paths",
+      "inputs": [
+        "tools/queue_correspondence_refinement.py",
+        "tools/collect_correspondence_roles.py",
+        "tools/queue_correspondence_roles.py"
+      ]
+    },
+    {
+      "id": "T06",
+      "action": "SSH read-only stdlib JSON and SHA inspection of actual manifest/preflight/witnesses/protocols and existing text receipts",
+      "outcome": "233 source files match manifest; preflight and six witness digests match; required schemas and paths exist; protocols are bound",
+      "source_count": 233,
+      "source_hash_mismatches": [],
+      "neural_or_scoring_execution": false
+    },
+    {
+      "id": "T07",
+      "action": "Inspect four existing child campaign JSON keys and output-dir/origin fields only",
+      "outcome": "Two RGBNT201 jobs reuse verified preflight M0 directories; RGBNT100 and MSVR310 workers use their own M0 paths; remaining child behavior traced statically",
+      "inspected_pairs": [
+        "RGBNT201/global_only",
+        "RGBNT100/global_only",
+        "MSVR310/global_only",
+        "RGBNT201/roles"
+      ],
+      "partial_metrics_read": false
+    },
+    {
+      "id": "T08",
+      "action": "Check analyzer in actual source map and compare earlier complete reporter binding pattern",
+      "outcome": "Concrete existing binding omission R1 found; helper absent from active 233-source map; helper current local/remote bytes identical",
+      "inputs": [
+        "tools/analyze_correspondence_distances.py",
+        "logs/shared_private_report_ready_710_20261001/raw/tools/report_shared_private_evidence_complete.py"
+      ]
+    },
+    {
+      "id": "T09",
+      "action": "Re-read both corrected new files in full after executor patch",
+      "outcome": "R1 resolved: reporter existing sources covers analyzer and waiter records/rechecks analyzer before invocation; no remaining code finding",
+      "inputs": [
+        "tools/report_clean_clip_joint_complete.py",
+        "tools/wait_clean_clip_complete_analysis.py"
+      ]
+    },
+    {
+      "id": "T10",
+      "action": "Re-hash final review inputs before writing verdict and preserve full review response",
+      "outcome": "Final input bytes unchanged since re-review; source acceptance only, not runtime or result acceptance"
+    }
+  ],
+  "executed_during_review": {
+    "reporter": false,
+    "waiter": false,
+    "collector": false,
+    "scorer": false,
+    "training": false,
+    "neural_forward": false,
+    "gpu_operation": false,
+    "checkpoint_or_distance_loading": false,
+    "read_only_source_and_json_sha_inspection": true
+  },
+  "limitations": [
+    "Same-family provisional source acceptance only",
+    "No completed six-end result or runtime pass asserted",
+    "No isolated inference-latency or end-to-end GPU-hour estimate established by existing cost fields",
+    "Final CPU execution and fresh result audit remain future steps"
+  ],
+  "response_path": "C:\\Users\\gb\\.codex_tmp\\clean_clip_report716_review_response_20261002.md",
+  "response_sha256": "c61ddfe27fcae7675be22abc04d94a81d8841748d845dc68814f525132b692a6"
+}

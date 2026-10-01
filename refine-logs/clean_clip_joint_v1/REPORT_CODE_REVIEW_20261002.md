@@ -1,0 +1,48 @@
+# Clean-public CLIP complete reporter/waiter review
+
+Final verdict: **NONBLOCKING — PASS for the corrected source, with the scope limits below.** No open blocking or nonblocking code defect remains. One concrete source-binding omission was found, corrected by the executor in the two new files, and re-reviewed before this verdict.
+
+Reviewer: fresh Codex agent `/root/review_clean_clip_report_716`, configured as `gpt-6-astra` with `max` reasoning. `review_independence: same-family`; `acceptance_status: provisional`. This records the review dispatch configuration, not an independent backend-identity attestation.
+
+Scope: predeployment code and existing JSON-schema/call-chain review of `tools/report_clean_clip_joint_complete.py` and `tools/wait_clean_clip_complete_analysis.py` in `C:/Users/gb/.trifusion_github_publish_22c3bee`. The fixed plan is `refine-logs/clean_clip_joint_v1/EXPERIMENT_PLAN.md`. Repository HEAD was `c7eb1853d3c3f601f2e8bc4aaca055611936a370`; both reviewed files are new additions, so their full source and exact file hashes, rather than a committed diff, define the review input.
+
+Final input SHA256:
+
+- `tools/report_clean_clip_joint_complete.py`: `25250470077bcda629633fba47c94f91bb686910ed708310a6afd46ec3709e86`
+- `tools/wait_clean_clip_complete_analysis.py`: `6530aa1159eb1b569a451c6c4d5dfdba92c6f928d8ffa921badd99cb03db805f`
+- Reused `tools/analyze_correspondence_distances.py`: `833ebeb47cb5840422710fc00df1a974338cb04078249720d867f18b945f997a`
+- Fixed plan: `20acb704e0f7dd34f77fb611e57ef641da0fbce24401ebe9cf26c60a9d1d0d7c`
+
+## Finding found and resolved
+
+**R1 — Analysis helper omitted from the existing source-binding contract. Resolved; initially blocking for this predeployment provenance requirement.**
+
+The original reporter imported `compare` and `sha` from `tools/analyze_correspondence_distances.py`, but its existing `report_inputs_sha256` dictionary recorded only the reporter itself and data/text inputs. The original waiter recorded and rechecked only the reporter digest and campaign manifest. Read-only inspection of the actual remote campaign manifest confirmed that this analysis helper is absent from the 233 sealed training sources. Thus the existing checks did not record or check the code implementing paired diagnosis and metric replay. This is a concrete omission in existing binding logic, not a proposal for a new hash framework. The earlier complete shared/private reporter already handled this dependency explicitly.
+
+The helper's current local and remote bytes match the SHA above; no runtime score mismatch, changed scorer, or completed-result corruption was observed or alleged.
+
+The executor added the helper to the reporter's existing `sources` dictionary (final lines 44–45); the existing before-output recheck at line 83 covers it. The waiter now records `analyzer_source_sha256` alongside the reporter hash (lines 24–30) and checks it before its sole invocation (line 42). I re-read both corrected files. This fixes the omission without changing the active 233-source manifest, the scorer, training, selection, or J1 logic. No additional correction is requested.
+
+## What is correct
+
+- **Full-six admission and unchanged J1.** Reporter lines 30–37 require the expected six unique dataset/readout pairs and a COMPLETE controller with six successful jobs. Each child must have successful `m0/train/evaluate` stages, and `panel.verify(...)` must reproduce the accepted row exactly (lines 48–56). The queue writes `accepted_matrix.json` before marking the controller COMPLETE. Only after all six have passed validation does the reporter compute all three roles-minus-global comparisons. Its unrounded gate is exactly mAP > 0 and R1 >= 0 for all three datasets, with an additional mAP >= 0.5 percentage-point floor for RGBNT201 and MSVR310. No endpoint can pass the overall stage by itself.
+
+- **Selection and saved-state chain.** The sealed full50 loop saves the complete model state whenever fused official mAP is greater than or equal to the current best, so ties select the later epoch. Evaluation constructs the registered model, strictly reloads that full state, checks the selected epoch and metrics against the complete 1–50 history, then saves the full distances. `panel.verify` repeats the selected-history checks and binds the checkpoint, distance file, receipt, initializer and protocol. The new reporter uses those same endpoint rows; it does not choose a new checkpoint or mix Rank-1/5/10 from different epochs.
+
+- **Real-GT scoring and CPU-only analysis.** I traced `run_correspondence_roles.official_metrics` through the fixed protocol records, full query/gallery extraction, saved distance keys, and the independent camera/scene scorers. The saved data contain `fused`, query/gallery identities, cameras and scenes. The comparison helper loads those arrays with `map_location='cpu'`, uses dataset identities as GT, removes same-identity/same-camera entries for RGBNT201/RGBNT100 and same-identity/same-time-block entries for MSVR310, and retains other gallery identities. It checks replay parity with accepted metrics and matching paired metadata. The new reporter invokes that helper once per dataset, giving six matrix replays in one report invocation. No reranking, model construction, neural forward or GPU function is on this report/waiter execution path. Importing the queue does not invoke its worker or collector.
+
+- **Actual schema compatibility and M0 origins.** Existing remote preflight JSON has six initializer witnesses and the two successful RGBNT201 M0 jobs with `mode`, `exit_code`, `output_dir` and timestamp fields required by the new code. The six actual witnesses contain `trainable_parameters` and the initializer fields consumed by `panel.verify`. The active child JSONs use the same child-directory convention and reuse the two RGBNT201 M0s as `origin='verified_preflight'`; the RGBNT100/MSVR310 workers use their own M0 outputs. The report follows `row['m0_dir']` and does not substitute an assumed worker-local RGBNT201 directory. The remaining two not-yet-created child stages are supported by the same inspected worker code; no partial result was treated as complete.
+
+- **Cost and curve semantics.** Full50 mean-loss and official-mAP curves are taken from all registered history rows. Step totals are checked against the saved step-log line counts. Trainable element counts come from the actual initializer witnesses; the report preserves the existing peak allocated training/epoch-evaluation memory and receipt-interval seconds. Its wall-time fields explicitly say parent-observed, and it discloses that the two RGBNT201 M0s precede the controller. The training/epoch-evaluation total excludes model construction, M0 and the separate final strict-reload evaluation; it is not end-to-end GPU cost or isolated inference latency. Logical output bytes are a current sum over unique M0/full directories, not peak allocated storage. Those limitations follow from the code and should remain attached when quoting costs; they do not require new measurements or changes to sealed training.
+
+- **Negative outcomes and presentation.** All six endpoint rows, three signed pair differences and final-minus-best differences are retained; negative J1 components are not removed or reinterpreted. The JSON keeps all four metrics, while the Markdown presents mAP/R1/R5/R10 for RGBNT201 and mAP/R1 for vehicle datasets. The report explicitly limits identity bootstrap to fixed-model identities, discloses official epoch/method selection, capacity/randomness differences and historical recipe differences, and states that J1 neither establishes the overall baseline/SOTA goal nor tests N1/N2/N3.
+
+- **One-time waiter behavior.** The waiter sleeps 240 seconds while the same controller is nonterminal, exits with no report on FAILED, and starts one subprocess after COMPLETE. It writes the invocation count, command, PID and actual child exit code, waits for that child, and has no retry or training path. A nonzero child exit becomes CPU_REPORT_FAILED. Fresh output/receipt checks and exclusive log creation preserve this single authorized invocation; no global job-locking framework is needed.
+
+- **Minimal change and existing bindings.** Read-only verification of the actual remote manifest found 233 source entries and zero digest mismatches. The six initialization digests and preflight digest matched their existing bindings. The three full official protocols are included in the sealed manifest, with counts RGBNT201 836/836, RGBNT100 1715/8575 and MSVR310 591/1055 for query/gallery. The inspected local queue/training/data/scoring dependencies match their remote bound hashes. The correction touches only the two new files and leaves the scientific implementation and active source map unchanged.
+
+## Limits of acceptance
+
+This is a source/schema review, not a result audit, a successful runtime test, a deployment receipt, or a claim that the six endpoints have completed. I did not invoke either new program, any scorer/collector, model forward, GPU operation or training. I did not load checkpoints or saved distance arrays and did not evaluate partial retrieval scores. The actual complete artifacts, eventual single CPU execution and fresh result audit remain future workflow steps. The existing JSON/text reads and SHA comparisons establish the stated source/schema observations only.
+
+No new fallback, exception layer, compatibility mechanism, speculative edge-case branch, source-binding framework, or unrelated refactor is requested. Final open issues: BLOCKING 0; NONBLOCKING 0. Same-family/provisional source acceptance applies only to the final hashes above.
