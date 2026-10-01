@@ -14180,3 +14180,35 @@ MDReID的模态specific/shared双token分工也与本轮“角色private adapter
 实际作者仓库HEAD2f38911c49d42d4ca259d440a851b8d77dddccbe仅含README/PDF/海报三个blob，无可执行模型、训练器、parser、evaluator、配置或checkpoint。论文声称沿用既有数据协议，但精确解析、camera/时间段过滤、归一化/距离、BN前后特征、rerank和历史输入清单均不能从公开实现核对。因此这些分数是已核主表的强论文参照，不是已复现或代码协议相同的baseline；没有源码不构成论文失实证据。原文/图像和作者缓存留私有阅读目录，公开只保存RODI_PRIMARY_READBACK与RODI_SOURCE_CHECK（来源URL、commit、SHA及限定结论）。arXiv/DOI未从所查官方资料确认，不补造ID。
 
 当前训练仍从已有ReID底座温启动。干净公开CLIP联合训练需要避开完整ReID state reload，同时重新明确相机嵌入的全新初始化和优化器归属、全新分类头及配方匹配baseline；仅替换152视觉张量不满足这个定义。这是后继准备中的代码边界核查，没有新训练或成绩。当前九项保持原合同，完整报告/审核后才决定唯一后继干预；阶段门失败与三数据集baseline/SOTA完整Goal均不改写。
+
+## §41.714：九端全50轮终态、科研门FAIL与fresh审计；下一项干净公开CLIP配对训练仅为准备计划（2026-10-02）
+
+本节替代§713的7/9运行快照作为当前状态，保留旧节和失败记录。实际最后两项RGBNT100/global与separated分别于2026-10-01 22:19:56、22:39:57获parent验收，九项全部完成独立50轮及严格全state重载。既有等待器只调用一次CPU分析，22:42:19.161127开始、22:42:41.662988完成，exit0。以下每行来自同一最高官方fused mAP权重，tie取较晚轮，未跨轮或种子拼列。
+
+| 数据集 | 条件 | best轮 | mAP | R1 | R5 | R10 |
+|---|---|---:|---:|---:|---:|---:|
+| RGBNT201 | coupled_roles | 1 | 74.0506 | 75.5981 | 85.0478 | 88.6364 |
+| RGBNT100 | coupled_roles | 1 | 85.5581 | 95.2770 | 95.9767 | 96.5598 |
+| MSVR310 | coupled_roles | 10 | 53.2434 | 67.3435 | 83.0795 | 89.0017 |
+| RGBNT201 | separated_roles | 1 | 73.8242 | 75.2392 | 84.4498 | 88.5167 |
+| RGBNT100 | separated_roles | 1 | 85.4176 | 95.3353 | 95.8601 | 96.3848 |
+| MSVR310 | separated_roles | 10 | 53.0721 | 67.6819 | 83.0795 | 89.0017 |
+| RGBNT201 | global_only | 1 | 73.7442 | 74.7608 | 84.8086 | 88.7560 |
+| RGBNT100 | global_only | 1 | 85.3799 | 95.2187 | 96.0350 | 96.5015 |
+| MSVR310 | global_only | 10 | 52.9354 | 67.8511 | 82.9103 | 88.6633 |
+
+新增RGBNT100/separated相对coupled为−0.140520 mAP/+0.058305 R1，相对本次独立global为+0.037673/+0.116616；不能再以旧global代替未完成端，也不能再称这批只有7/9。
+
+预登记S1 separated−coupled三数据集mAP分别−0.226435/−0.140520/−0.171365，三个分量全部FAIL。S2 separated−独立global分别+0.079955/+0.037673/+0.136654 mAP，R1为+0.478470/+0.116616/−0.169206，只有RGBNT100分量通过，整体FAIL；joint FAIL。201/MSVR预设至少+0.5mAP、全三集mAP>0/R1>=0的门未修改，旧视觉C1/角色C2失败不改写。修复/新增首位错误、身份宏平均AP和coupled−global诊断均保留在完整REPORT/SUMMARY，不能只展示正值。
+
+全九端共450个epoch回执、30,624个正式训练step。201/100的三个条件best均在第1轮，MSVR均第10轮；全部末轮低于best约2.40—9.53mAP，loss继续下降的轨迹保存在PNG/SVG。支持描述后期未见身份检索退化，不证明温启动、灾难性遗忘、背景或任何单一损失是唯一原因。M3/local-ID关闭，不能把退化全归给预测任务。100的Triplet非零步coupled39、separated53、global15/各6559步，不能写成完全无训练。
+
+本批仍为已训练ReID视觉和camera温启动、一个新增阶段seed42。coupled/separated完整初始state与容量相同、两者私有MLP均采用已审计FP32数值修订；原26项零梯度M0中止及0/1/0退出保留，修复不算算法增益。global独立训练且含共享适配器，容量/成本不同，不是同权重切片或新seed稳定性实验。写回分离仍允许角色梯度改变共享/视觉/global，不是严格行为保护，更不是区域共享/光谱私有语义分解。官方集已参与选epoch/方法，身份bootstrap只针对固定权重，不代表未消费测试或训练多seed显著性。
+
+fresh实验完整性审计实际返回WARN：gpt-6-astra/max，same-family/provisional。直接只读核对229活动源和222已封存源、59报告输入、九份权重/距离/M0以及全450epoch/30,624steps。实际数据文件核对query/gallery为836/836、1715/8575、591/1055，全部标签与六个保存数组相符，MSVR的103个gallery-only身份完整保留。普通AP/CMC来自真实GT完整图库，原同身份同camera或MSVR同时间段过滤不变，无按预测最大值自归一化，无rerank。审计没有重新调用评分、bootstrap、神经前向或优化器，权重/数组未传回本机；直接二进制元数据及SHA核验不是新的独立mAP复算。完整原文/JSON及调用限定见AUDIT_COMPLETE_20261002和AUDIT_CALL；审计指出的tracker/交接7/9文档滞后在本节和当前tracker修正，旧日期快照保留。工程证据PASS不把S1/S2科研FAIL变成成功。
+
+九端campaign实际wall12,762.786602秒，重叠端wall求和37,743.256675秒。九份revised M0与九份正式目录逻辑输出6,633,154,815B，不含上游训练、原失败预检和诊断；峰值allocated不含初始化瞬态或reserved。23:51:52真实存储/进程核对剩余76,763,021,312B，wrapper/controller/waiter/report均已退出，无需退休当前权重。新增37份原始文本/完整报告/图件压缩归档643331B，SHA7825cd4833aae5d331ab9dc7b3f2bccf80a439cff9e5fa66b9e009f35ef41d66，文件逐字节/SHA一致。正式SUMMARY SHA6537cb1cf8379cffdd1e94bf5569ef23d604940c359e41f0a9b9aaf47d80e9b2。没有重启队列、重算报告、挑新权重或覆写封存源码。
+
+下一项具体计划为真正干净公开CLIP初始化的独立global-only/原roles×三数据集六端：直接公开视觉、全新camera/neck/classifier及新增模块，不加载训练过ReID state；同一50轮和152视觉5e−6/新增3.5e−4配方。global控制含原九共享适配器，roles沿用§708原架构，不叠加本次失败的九private适配器或新的语义分解。新camera必须优化，因此与旧训练过冻结camera的跨配方差值不等于初始化单因素因果。新J1只回答同配方roles的足够净增量，不代替全三集baseline/SOTA终点。六份实际作者构造/配置源已按活动manifest精确读取/SHA核对，计划和SOURCE_CONSTRUCTION_READBACK存于refine-logs/clean_clip_joint_v1；本节时尚未实现新入口、生成初始化、运行M0或登记正式队列，不能把计划写成结果。代码fresh复核及真实八批M0/初始化/完整保存重载通过后才允许正式训练。
+
+用户提出的原生高空间分辨率CNN细节来源、区域共享/私有证据、CNN细节—Transformer对应—Mamba共享传播职责，保留为后继结构假设。它与失败的adapter写回分离不同；先收齐干净起点对照，再单独改变信息来源。投影分成两头不证明语义分解，无可靠对应选项需要实际训练侧支持，当前没有实现，也不预先承诺十点。当前目标ACTIVE_UNMET，阶段验收或审计通过不能代替三数据集强基线/合格强参照净收益。
