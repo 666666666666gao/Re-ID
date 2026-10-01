@@ -13759,3 +13759,34 @@ low_lr仅更新CLIP视觉152个参数，固定5e-6；camera与非视觉Signal继
 新queue／collector／preflight／initialization witness已由实际fresh gpt-6-astra/max源码审查，无剩余阻断项，same-family/provisional、源码审查不是神经或性能验收。20文件native AST/compile与惰性失败停止／等待测试通过；修复了父进程验证可能漏记失败、日志均值未重构、preflight依赖未先绑定三个具体问题。最终源码SHA与原始回复见 CODE_REVIEW_CALL.json、CODE_REVIEW_RESPONSE.md。当前新12正式登记0、实际M0为0、实际训练0。先部署已审查源码，执行RGBNT201 low_lr_roles／low_lr_global_only各8批真实M0，再实际构建12模型核对公共初始化，之后才登记并启动完整面板。原计划性能门不变，无重试、补救种子、LR扫描或按中途官方分数选择条件。
 
 完整三数据集baseline及注明资源／协议的SOTA目标仍ACTIVE／UNMET。冻结起点负结果与工程审查都不能替代完整目标。
+
+## §41.701 真实视觉更新预检、匹配初始化及十二端50轮队列已启动
+
+记录：2026-10-01T14:19:00.4247879+08:00；训练快照以14:08:57.750828为准，不把本文写入时刻当作再次实时查询。只使用gaob@172.19.12.138:2026及既有tri_reid环境。一次性持久工作流实际13:57:24.186306启动，PID2337321；preflight PID2337322于13:58:11.756694实际wait退出0，两个RGBNT201端各8批；初始化witness PID2339376于14:00:44.899645实际wait退出0，12个真实模型构建的backbone/neck/classifier公共状态逐项相等（无forward/optimizer/retrieval）。这些不能称检索性能成功。
+
+截至快照已实际通过4个M0：
+RGBNT201/low_lr_roles: 280/280非零梯度、frozen不变、visual变化=True、reload最大差=0
+RGBNT100/low_lr_roles: 280/280非零梯度、frozen不变、visual变化=True、reload最大差=0
+MSVR310/low_lr_roles: 280/280非零梯度、frozen不变、visual变化=True、reload最大差=0
+RGBNT201/low_lr_global_only: 208/208非零梯度、frozen不变、visual变化=True、reload最大差=0
+
+前两项M0从preflight合法复用，只用作资格证据；正式训练重新seed构建，未加载M0更新后的权重。初始视觉存储统一FP32，152张量边界和冻结camera/非视觉状态保持登记合同。全模型保存/strict重载在真实预检中通过；源审查的AST通过不能替代这里的实际神经执行。
+
+正式12端manifest实际14:00:51.488565登记，controller PID2342941，source bindings222项，manifest SHA947b028e835a6c722fac47f5e6333f7f02838ec9b1fbd2beda35ec1885543e5c。四种条件low_lr_roles、low_lr_global_only、frozen_roles、frozen_global_only各覆盖三数据集，seed42/full50；当前4项实际train进程、8项PENDING、0/12正式完整终点。原旧冻结端不能代替新FP32存储控制。
+
+| GPU | 完整50轮端 | 已记录完整轮次 | 实际train PID |
+|---:|---|---:|---:|
+| 0 | RGBNT201 / low_lr_roles | 10/50 | 2343606 |
+| 1 | RGBNT100 / low_lr_roles | 3/50 | 2346469 |
+| 2 | MSVR310 / low_lr_roles | 12/50 | 2346535 |
+| 3 | RGBNT201 / low_lr_global_only | 9/50 | 2343607 |
+
+快照四张卡均有登记训练进程；GPU2瞬时利用率为0但train PID存活且已记录12轮，不能凭一次利用率认定停训或硬件故障。磁盘空闲90168016896字节。原221运行源和manifest继续精确不变，新增222源亦通过核对；42份当前文本/JSON/日志逐字节SHA验证，tar SHA6285ad6c73d2e35d1f9d6189ce0fa85db7c9cfb976255564bbae39a98c50bfa5，114933字节，归档 logs/visual_update_launch_701_20261001/raw；模型/距离数组/图像不下载。旧硬件故障记录继续保留，未sudo/reset/reboot，也不将当前可运行当成旧根因解决。
+
+完整汇总源 tools/report_visual_update_control_complete.py 已实际fresh gpt-6-astra/max源码审查PASS，无阻断项，same-family/provisional；native AST/compile6源、43惰性断言、7个无效/不完整样例按预期拒绝，实际SSH退出0。未执行production imports、renderer、saved-array replay或report main。原始返回及最终源码SHA4c21b1cc6212ef0202512ef46afc8fc714e3b2329fd68f701e4a7ac24acd4765封存REPORT_CODE_REVIEW_RESPONSE.md/CALL.json；后续仍须实际完整结果审计。
+
+汇总将使用6个视觉更新比较和3个low_lr下独立roles-global_only比较，原C1/C2门不变；frozen角色比较与交互仅作诊断。输出全部12行同权重四指标、修复/新增首位错误、身份AP分布、50轮loss/mAP轨迹、真实计时/峰值allocated显存/有日期的逻辑存储；不使用旧同权重global切片冒充独立训练，也不使用预测/教师分数当评价GT。普通微调不是novelty；单seed及官方mAP逐轮选点仍不能证明稳定性、独立未消费测试或SOTA。
+
+一次性持久观察/CPU汇总等待器实际14:16:04.220007启动，wrapper PID2372978、observer PID2372984；14:17:01.462213核对实际存活且status WAITING_FOR_TWELVE_VERIFIED_ENDPOINTS、report_invocations=0。根据首个端快照估计约14:31结束，首次观察14:28:30、后续240秒；估计不是完成证据。等待器只观察现有登记12端，全部COMPLETE/zero exits/accepted12之后自动调用已审查CPU报告一次，并保留真实报告PID/wait/退出码。没有重跑原六端CPU报告、重启观察器、追加种子或按中途正式分数挑方法。
+
+原视觉起点六端科学门FAIL及此前失败结果全部保留。当前工程链已有推进，三数据集baseline与资源/协议清楚的SOTA目标仍ACTIVE/UNMET；不得用M0、共享初始化、源码审查或某个局部结果替代完整目标。

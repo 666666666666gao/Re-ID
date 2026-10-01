@@ -1,0 +1,463 @@
+{
+  "observed_at": "2026-10-01T14:02:23.146704+08:00",
+  "workflow": {
+    "status": "RUNNING",
+    "launched_at": "2026-10-01T13:57:24.186306+08:00",
+    "launch_pid": 2337299,
+    "source_sha256": "625b53bce1f507bd7dfc012b4d7d26b9ab281672ffc7102f7a05050f9bdd8327",
+    "entry_source_sha256": {
+      "tools/run_visual_update_control.py": "537cd5a4ab4e9b3501a7279e3f4857536bdda761f597d8b5fa7bfdbdbf82cbdd",
+      "tools/preflight_visual_update_control.py": "bb9557b7a16f908af41a6601ce5863703610196231e6c91a260d04cf7ffa281c",
+      "tools/check_visual_update_initialization.py": "a46125b3b448513029560179cdeb6994aa86071e39238216871a6a067ba17134",
+      "tools/collect_visual_update_control.py": "9ae6a61c961dec5ab42485814ae54585c300926afc6027963b696531a5c64bb8",
+      "tools/queue_visual_update_control.py": "fda58fb80d357fcaae00d751a78d2b93f46da501439cc1c77e6f9492cfcec628",
+      "refine-logs/visual_update_control_v1/EXPERIMENT_PLAN.md": "a8df22383478a59fd68c1c7f57719120896f2c5327844ce264f52f4cb330a984",
+      "refine-logs/visual_update_control_v1/QUEUE_IMPLEMENTATION_20261001_132200.md": "2acfd1a0463a6bdc9750cb2cc85787460b04d60385e0be517621a488188b7599"
+    },
+    "campaign": "/data/gaob/Re-ID/Trifusion/logs/visual_update_control_20261001_v1",
+    "preflight": "/data/gaob/Re-ID/Trifusion/logs/visual_update_preflight_20261001_v1/PRECHECK.json",
+    "witness": "/data/gaob/Re-ID/Trifusion/logs/visual_update_preflight_20261001_v1/INITIALIZATION_WITNESS.json",
+    "after_summary_sha256": "214ea13646e218bb3a1f771ba5bebd9255c6065f05b99cda37d37680f2563567",
+    "poll_seconds": 240,
+    "scope": "Fixed two actual M0s, actual twelve-build witness, then fresh twelve full50 controls. No retries.",
+    "pid": 2337321,
+    "actual_started_at": "2026-10-01T13:57:24.242314+08:00",
+    "jobs": [
+      {
+        "stage": "preflight",
+        "status": "COMPLETE",
+        "started_at": "2026-10-01T13:57:24.242606+08:00",
+        "command": [
+          "/data/gaob/Re-ID/conda-envs/tri_reid/bin/python",
+          "-B",
+          "/data/gaob/Re-ID/Trifusion/tools/preflight_visual_update_control.py",
+          "--output",
+          "/data/gaob/Re-ID/Trifusion/logs/visual_update_preflight_20261001_v1/PRECHECK.json",
+          "--after-campaign",
+          "/data/gaob/Re-ID/Trifusion/logs/visual_start_roles_20261001_v1",
+          "--after-summary",
+          "/data/gaob/Re-ID/Trifusion/results/visual_start_roles_complete_20261001/SUMMARY.json",
+          "--after-summary-sha256",
+          "214ea13646e218bb3a1f771ba5bebd9255c6065f05b99cda37d37680f2563567",
+          "--gpus",
+          "0",
+          "1"
+        ],
+        "source_sha256": "bb9557b7a16f908af41a6601ce5863703610196231e6c91a260d04cf7ffa281c",
+        "pid": 2337322,
+        "exit_code": 0,
+        "completed_at": "2026-10-01T13:58:11.756694+08:00"
+      },
+      {
+        "stage": "initialization",
+        "status": "COMPLETE",
+        "started_at": "2026-10-01T13:58:11.757577+08:00",
+        "command": [
+          "/data/gaob/Re-ID/conda-envs/tri_reid/bin/python",
+          "-B",
+          "/data/gaob/Re-ID/Trifusion/tools/check_visual_update_initialization.py",
+          "--preflight",
+          "/data/gaob/Re-ID/Trifusion/logs/visual_update_preflight_20261001_v1/PRECHECK.json",
+          "--output",
+          "/data/gaob/Re-ID/Trifusion/logs/visual_update_preflight_20261001_v1/INITIALIZATION_WITNESS.json"
+        ],
+        "source_sha256": "a46125b3b448513029560179cdeb6994aa86071e39238216871a6a067ba17134",
+        "pid": 2339376,
+        "exit_code": 0,
+        "completed_at": "2026-10-01T14:00:44.899645+08:00"
+      },
+      {
+        "stage": "full50_panel",
+        "status": "RUNNING",
+        "started_at": "2026-10-01T14:00:44.900774+08:00",
+        "command": [
+          "/data/gaob/Re-ID/conda-envs/tri_reid/bin/python",
+          "-B",
+          "/data/gaob/Re-ID/Trifusion/tools/queue_visual_update_control.py",
+          "--campaign",
+          "/data/gaob/Re-ID/Trifusion/logs/visual_update_control_20261001_v1",
+          "--preflight",
+          "/data/gaob/Re-ID/Trifusion/logs/visual_update_preflight_20261001_v1/PRECHECK.json",
+          "--initialization-witness",
+          "/data/gaob/Re-ID/Trifusion/logs/visual_update_preflight_20261001_v1/INITIALIZATION_WITNESS.json",
+          "--after-campaign",
+          "/data/gaob/Re-ID/Trifusion/logs/visual_start_roles_20261001_v1",
+          "--after-summary",
+          "/data/gaob/Re-ID/Trifusion/results/visual_start_roles_complete_20261001/SUMMARY.json",
+          "--after-summary-sha256",
+          "214ea13646e218bb3a1f771ba5bebd9255c6065f05b99cda37d37680f2563567"
+        ],
+        "source_sha256": "fda58fb80d357fcaae00d751a78d2b93f46da501439cc1c77e6f9492cfcec628",
+        "pid": 2342941
+      }
+    ]
+  },
+  "free_disk_bytes": 90882940928,
+  "gpu_state": "0, 16093, 100\n1, 16178, 97\n2, 4607, 100\n3, 14585, 100\n",
+  "preflight_status": "COMPLETE",
+  "preflight_jobs": [
+    {
+      "dataset": "RGBNT201",
+      "variant": "low_lr_roles",
+      "mode": "m0",
+      "gpu": 0,
+      "status": "COMPLETE",
+      "started_at": "2026-10-01T13:57:26.139421+08:00",
+      "output_dir": "/data/gaob/Re-ID/Trifusion/trained-model/visual_update_preflight_20261001_v1_RGBNT201_low_lr_roles_m0",
+      "command": [
+        "/data/gaob/Re-ID/conda-envs/tri_reid/bin/python",
+        "-B",
+        "/data/gaob/Re-ID/Trifusion/tools/run_visual_update_control.py",
+        "--dataset",
+        "RGBNT201",
+        "--mode",
+        "m0",
+        "--visual-update",
+        "low_lr",
+        "--readout",
+        "roles",
+        "--protocol",
+        "/data/gaob/Re-ID/Trifusion/logs/official_three_dataset_protocols_20260923/RGBNT201.json",
+        "--signal-source",
+        "/data/gaob/Re-ID/Trifusion/comparators/Signal-cd1b0a6",
+        "--clip-weight",
+        "/data/gaob/Re-ID/Trifusion/pertrained-model/ViT-B-16.pt",
+        "--baseline-checkpoint",
+        "/data/gaob/Re-ID/Trifusion/pertrained-model/RGBNT201_PlainBaseline_50.pth",
+        "--baseline-sha256",
+        "789e5e14aacd74ad122aad701389eb216ca5b4fda92687e27351a513023b4407",
+        "--output-dir",
+        "/data/gaob/Re-ID/Trifusion/trained-model/visual_update_preflight_20261001_v1_RGBNT201_low_lr_roles_m0",
+        "--seed",
+        "42",
+        "--epochs",
+        "50"
+      ],
+      "pid": 2337443,
+      "exit_code": 0,
+      "completed_at": "2026-10-01T13:58:11.307859+08:00",
+      "completion_time_semantics": "Parent-observed exit after wait; use child receipt for measured M0 runtime."
+    },
+    {
+      "dataset": "RGBNT201",
+      "variant": "low_lr_global_only",
+      "mode": "m0",
+      "gpu": 1,
+      "status": "COMPLETE",
+      "started_at": "2026-10-01T13:57:26.140833+08:00",
+      "output_dir": "/data/gaob/Re-ID/Trifusion/trained-model/visual_update_preflight_20261001_v1_RGBNT201_low_lr_global_only_m0",
+      "command": [
+        "/data/gaob/Re-ID/conda-envs/tri_reid/bin/python",
+        "-B",
+        "/data/gaob/Re-ID/Trifusion/tools/run_visual_update_control.py",
+        "--dataset",
+        "RGBNT201",
+        "--mode",
+        "m0",
+        "--visual-update",
+        "low_lr",
+        "--readout",
+        "global_only",
+        "--protocol",
+        "/data/gaob/Re-ID/Trifusion/logs/official_three_dataset_protocols_20260923/RGBNT201.json",
+        "--signal-source",
+        "/data/gaob/Re-ID/Trifusion/comparators/Signal-cd1b0a6",
+        "--clip-weight",
+        "/data/gaob/Re-ID/Trifusion/pertrained-model/ViT-B-16.pt",
+        "--baseline-checkpoint",
+        "/data/gaob/Re-ID/Trifusion/pertrained-model/RGBNT201_PlainBaseline_50.pth",
+        "--baseline-sha256",
+        "789e5e14aacd74ad122aad701389eb216ca5b4fda92687e27351a513023b4407",
+        "--output-dir",
+        "/data/gaob/Re-ID/Trifusion/trained-model/visual_update_preflight_20261001_v1_RGBNT201_low_lr_global_only_m0",
+        "--seed",
+        "42",
+        "--epochs",
+        "50"
+      ],
+      "pid": 2337444,
+      "exit_code": 0,
+      "completed_at": "2026-10-01T13:58:11.309559+08:00",
+      "completion_time_semantics": "Parent-observed exit after wait; use child receipt for measured M0 runtime."
+    }
+  ],
+  "source_count": 222,
+  "m0_receipts": [
+    {
+      "status": "M0_PASS",
+      "condition": {
+        "visual_update": "low_lr",
+        "readout": "roles",
+        "visual_lr": 5e-06,
+        "visual_parameter_dtype": "float32"
+      },
+      "initializer": {
+        "author_checkpoint": "/data/gaob/Re-ID/Trifusion/pertrained-model/RGBNT201_PlainBaseline_50.pth",
+        "author_checkpoint_sha256": "789e5e14aacd74ad122aad701389eb216ca5b4fda92687e27351a513023b4407",
+        "signal_state_sha256": "4d5cf3d7bb445199b6d2a0d3492c4fcf8ae5263f240bb6b6a322933695abd89d",
+        "baseline_kind": "independently_trained_module_free_cls",
+        "architecture": "visual_update_control_v1",
+        "m1": true,
+        "m2": true,
+        "m3": false,
+        "width": 128,
+        "fused_width": 1536,
+        "prediction_weight": 0.0,
+        "learning_rate": 0.00035,
+        "weight_decay": 0.0001,
+        "entry_sha256": "537cd5a4ab4e9b3501a7279e3f4857536bdda761f597d8b5fa7bfdbdbf82cbdd",
+        "model_source_sha256": "e2a51154b5b327341f35e453dd32a821b091a49a669b49a7c70e79e6e2f2591b",
+        "initial_model_state_sha256": "0296d6a9b8ba817d50e880c1e533bccace1e0ba4d32ff6c27a5fc6cf8730adaf",
+        "trainable_parameters": 89011658,
+        "condition": {
+          "visual_update": "low_lr",
+          "readout": "roles",
+          "visual_lr": 5e-06,
+          "visual_parameter_dtype": "float32"
+        },
+        "common_initializer_sha256": {
+          "backbone": "ebcdaef1ea006369fbbaa693bce98677b2efaa06abe4657a3e26ee675e6b4b16",
+          "neck": "06efe49412cdf6c9d8d9162b9394e4bc49329d169906cecc2b6c4784bcdb166e",
+          "classifier": "22bd8be47d0a37e4afd7689789e40999fe33dd5ee5b8e338bd920bd6678fbf47"
+        },
+        "role_source_sha256": "f41ff1af1fb1b6303a9af63cf039263e2572c16b23813f92a0297f014e71dd4f",
+        "visual_update_semantics": "base visual parameters only; camera and nonvisual Signal state frozen"
+      },
+      "history": [
+        {
+          "epoch": 1,
+          "steps": 8,
+          "mean_loss": 5.1280933022499084,
+          "seconds": 8.032887082998059
+        }
+      ],
+      "m0": {
+        "nonzero_gradient_parameters": 280,
+        "trainable_parameters": 280,
+        "frozen_signal_state_unchanged": true,
+        "visual_parameters_changed": true,
+        "reload_max_abs_difference": 0.0,
+        "reload_probe_sha256": "0189d78a4fc7161c4032a1ab71b31f541a1939a27ebbc6faf72a32d6f45bc34b"
+      },
+      "frozen_signal_state_unchanged": true,
+      "visual_parameters_changed": true,
+      "peak_stage_allocated_bytes": 14906135552
+    },
+    {
+      "status": "M0_PASS",
+      "condition": {
+        "visual_update": "low_lr",
+        "readout": "global_only",
+        "visual_lr": 5e-06,
+        "visual_parameter_dtype": "float32"
+      },
+      "initializer": {
+        "author_checkpoint": "/data/gaob/Re-ID/Trifusion/pertrained-model/RGBNT201_PlainBaseline_50.pth",
+        "author_checkpoint_sha256": "789e5e14aacd74ad122aad701389eb216ca5b4fda92687e27351a513023b4407",
+        "signal_state_sha256": "4d5cf3d7bb445199b6d2a0d3492c4fcf8ae5263f240bb6b6a322933695abd89d",
+        "baseline_kind": "independently_trained_module_free_cls",
+        "architecture": "visual_update_control_v1",
+        "m1": true,
+        "m2": true,
+        "m3": false,
+        "width": 128,
+        "fused_width": 1536,
+        "prediction_weight": 0.0,
+        "learning_rate": 0.00035,
+        "weight_decay": 0.0001,
+        "entry_sha256": "537cd5a4ab4e9b3501a7279e3f4857536bdda761f597d8b5fa7bfdbdbf82cbdd",
+        "model_source_sha256": "e2a51154b5b327341f35e453dd32a821b091a49a669b49a7c70e79e6e2f2591b",
+        "initial_model_state_sha256": "992f3c93df4150f3e085537ababfab6294bf9fc5859f0caf7b5e611b0aa78c86",
+        "trainable_parameters": 87310656,
+        "condition": {
+          "visual_update": "low_lr",
+          "readout": "global_only",
+          "visual_lr": 5e-06,
+          "visual_parameter_dtype": "float32"
+        },
+        "common_initializer_sha256": {
+          "backbone": "ebcdaef1ea006369fbbaa693bce98677b2efaa06abe4657a3e26ee675e6b4b16",
+          "neck": "06efe49412cdf6c9d8d9162b9394e4bc49329d169906cecc2b6c4784bcdb166e",
+          "classifier": "22bd8be47d0a37e4afd7689789e40999fe33dd5ee5b8e338bd920bd6678fbf47"
+        },
+        "role_source_sha256": "f41ff1af1fb1b6303a9af63cf039263e2572c16b23813f92a0297f014e71dd4f",
+        "visual_update_semantics": "base visual parameters only; camera and nonvisual Signal state frozen"
+      },
+      "history": [
+        {
+          "epoch": 1,
+          "steps": 8,
+          "mean_loss": 5.128181993961334,
+          "seconds": 7.2154883469920605
+        }
+      ],
+      "m0": {
+        "nonzero_gradient_parameters": 208,
+        "trainable_parameters": 208,
+        "frozen_signal_state_unchanged": true,
+        "visual_parameters_changed": true,
+        "reload_max_abs_difference": 0.0,
+        "reload_probe_sha256": "6a106f62b7c4dff8734f0bea82394625e62d48a7923d18255da0241318fd22b7"
+      },
+      "frozen_signal_state_unchanged": true,
+      "visual_parameters_changed": true,
+      "peak_stage_allocated_bytes": 13794146816
+    }
+  ],
+  "witness": {
+    "status": "MATCHED_COMMON_INITIALIZATION_PASS",
+    "completed_at": "2026-10-01T14:00:43.842365+08:00",
+    "rows": 12,
+    "all_common_equal": true
+  },
+  "campaign": {
+    "status": "RUNNING",
+    "phase": "visual_update",
+    "controller_pid": 2342941,
+    "started_at": "2026-10-01T14:00:51.488565+08:00",
+    "jobs": [
+      {
+        "phase": "visual_update",
+        "dataset": "RGBNT201",
+        "variant": "low_lr_roles",
+        "status": "RUNNING",
+        "gpu": 0,
+        "started_at": "2026-10-01T14:00:51.566283+08:00",
+        "command": [
+          "/data/gaob/Re-ID/conda-envs/tri_reid/bin/python",
+          "-B",
+          "/data/gaob/Re-ID/Trifusion/tools/queue_visual_update_control.py",
+          "--worker",
+          "--campaign",
+          "/data/gaob/Re-ID/Trifusion/logs/visual_update_control_20261001_v1",
+          "--dataset",
+          "RGBNT201",
+          "--variant",
+          "low_lr_roles",
+          "--gpu",
+          "0"
+        ],
+        "pid": 2343161
+      },
+      {
+        "phase": "visual_update",
+        "dataset": "RGBNT100",
+        "variant": "low_lr_roles",
+        "status": "RUNNING",
+        "gpu": 1,
+        "started_at": "2026-10-01T14:00:51.568096+08:00",
+        "command": [
+          "/data/gaob/Re-ID/conda-envs/tri_reid/bin/python",
+          "-B",
+          "/data/gaob/Re-ID/Trifusion/tools/queue_visual_update_control.py",
+          "--worker",
+          "--campaign",
+          "/data/gaob/Re-ID/Trifusion/logs/visual_update_control_20261001_v1",
+          "--dataset",
+          "RGBNT100",
+          "--variant",
+          "low_lr_roles",
+          "--gpu",
+          "1"
+        ],
+        "pid": 2343162
+      },
+      {
+        "phase": "visual_update",
+        "dataset": "MSVR310",
+        "variant": "low_lr_roles",
+        "status": "RUNNING",
+        "gpu": 2,
+        "started_at": "2026-10-01T14:00:51.569406+08:00",
+        "command": [
+          "/data/gaob/Re-ID/conda-envs/tri_reid/bin/python",
+          "-B",
+          "/data/gaob/Re-ID/Trifusion/tools/queue_visual_update_control.py",
+          "--worker",
+          "--campaign",
+          "/data/gaob/Re-ID/Trifusion/logs/visual_update_control_20261001_v1",
+          "--dataset",
+          "MSVR310",
+          "--variant",
+          "low_lr_roles",
+          "--gpu",
+          "2"
+        ],
+        "pid": 2343163
+      },
+      {
+        "phase": "visual_update",
+        "dataset": "RGBNT201",
+        "variant": "low_lr_global_only",
+        "status": "RUNNING",
+        "gpu": 3,
+        "started_at": "2026-10-01T14:00:51.570616+08:00",
+        "command": [
+          "/data/gaob/Re-ID/conda-envs/tri_reid/bin/python",
+          "-B",
+          "/data/gaob/Re-ID/Trifusion/tools/queue_visual_update_control.py",
+          "--worker",
+          "--campaign",
+          "/data/gaob/Re-ID/Trifusion/logs/visual_update_control_20261001_v1",
+          "--dataset",
+          "RGBNT201",
+          "--variant",
+          "low_lr_global_only",
+          "--gpu",
+          "3"
+        ],
+        "pid": 2343164
+      },
+      {
+        "phase": "visual_update",
+        "dataset": "RGBNT100",
+        "variant": "low_lr_global_only",
+        "status": "PENDING"
+      },
+      {
+        "phase": "visual_update",
+        "dataset": "MSVR310",
+        "variant": "low_lr_global_only",
+        "status": "PENDING"
+      },
+      {
+        "phase": "visual_update",
+        "dataset": "RGBNT201",
+        "variant": "frozen_roles",
+        "status": "PENDING"
+      },
+      {
+        "phase": "visual_update",
+        "dataset": "RGBNT100",
+        "variant": "frozen_roles",
+        "status": "PENDING"
+      },
+      {
+        "phase": "visual_update",
+        "dataset": "MSVR310",
+        "variant": "frozen_roles",
+        "status": "PENDING"
+      },
+      {
+        "phase": "visual_update",
+        "dataset": "RGBNT201",
+        "variant": "frozen_global_only",
+        "status": "PENDING"
+      },
+      {
+        "phase": "visual_update",
+        "dataset": "RGBNT100",
+        "variant": "frozen_global_only",
+        "status": "PENDING"
+      },
+      {
+        "phase": "visual_update",
+        "dataset": "MSVR310",
+        "variant": "frozen_global_only",
+        "status": "PENDING"
+      }
+    ],
+    "updated_at": "2026-10-01T14:00:51.571781+08:00"
+  },
+  "full50_panel_pid_live": true
+}

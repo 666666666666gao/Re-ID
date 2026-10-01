@@ -1591,3 +1591,10 @@
 | 2026-10-01T13:52:38.3519767+08:00 | /experiment-queue | tools/collect_visual_update_control.py | implementation | Reviewed real-GT complete-gallery/mean-loss/full-state verification, pending execution |
 | 2026-10-01T13:52:38.3519767+08:00 | /experiment-bridge | refine-logs/visual_update_control_v1/EXPERIMENT_CODE_REVIEW_QUEUE_20261001.md | implementation | Actual fresh no remaining blocker; AST20files and inert failure harness only |
 | 2026-10-01T13:52:38.3519767+08:00 | /experiment-queue | refine-logs/visual_update_control_v1/QUEUE_IMPLEMENTATION_20261001_132200.md | implementation | Immutable preflight/source/witness contract addendum |
+
+| 2026-10-01T14:19:00.4247879+08:00 | /run-experiment | logs/visual_update_launch_701_20261001/ | implementation | Actual preflight2/witness12/registered12, four full50 trains,42 verified raw artifacts, not formal metrics |
+| 2026-10-01T14:19:00.4247879+08:00 | /analyze-results | tools/report_visual_update_control_complete.py | implementation | Fresh reviewed complete12 CPU report; fixed C1/C2, independent roles, realGT, timing/memory/disk; main not run |
+| 2026-10-01T14:19:00.4247879+08:00 | /experiment-bridge | logs/visual_update_launch_701_20261001/REPORT_CODE_REVIEW_CALL.json | implementation | Actual fresh source PASS same-family provisional, sixAST43assertions, no renderer/neural/result replay |
+| 2026-10-01T14:19:00.4247879+08:00 | /analyze-results | refine-logs/visual_update_control_v1/COMPLETE_REPORT_PLAN_20261001.md | implementation | Fixed full12 reporting scope, original gates unchanged, no partial-score rescue |
+| 2026-10-01T14:19:00.4247879+08:00 | /monitor-experiment | logs/visual_update_launch_701_20261001/WAIT_HELPER.py | implementation | Actual durable wrapper2372978/observer2372984, first14:28:30 then240sec, once-only CPU report after12 |
+| 2026-10-01T14:19:00.4247879+08:00 | /experiment-queue | refine-logs/visual_update_control_v1/EXPERIMENT_TRACKER_20261001_140857.md | implementation | Actual dated4train/8pending/4M0pass/0formalaccepted, all full50 remain required |
