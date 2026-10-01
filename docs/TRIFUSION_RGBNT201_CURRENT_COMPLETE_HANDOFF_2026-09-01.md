@@ -13719,3 +13719,17 @@ ReID起点的RGBNT201、MSVR310会在真实空闲卡出现后接续，不抢占�
 作者Signal源码默认MODEL.FROZEN=False，未冻结的CLIP base非adapter参数在原优化器取5e−6；当前入口只对requires_grad参数用一个AdamW组、五轮warmup/cosine。当前batch64/K8与作者100的128/K16、MSVR的64/K4不同。该审计说明代码合同差异，不证明全部发布权重实际训练来源，也不把“同50轮”等同同训练/计算预算。当前checkpoint排除backbone.signal.*且断言整个Signal不变；后续若测试视觉更新，必须同时明确参数组、保存/重载更新状态和真正冻结部分的断言，不能仅改requires_grad。未实施或启动新的视觉微调实验；普通微调不是新增算法贡献，角色作用仍需与匹配global-only区分。
 
 证据目录logs/visual_start_milestone_698_20261001/含65份原始文本文件及源码审计、精确配对描述；归档316163字节，SHA b2ba7a1373041649a5389404d8a10fd638530b8fa3ae5019702885ce383dd769。快照磁盘余93,399,752,704字节，未退役依赖权重，模型/图像/距离数组留远端。697实际同步证明已归档（12:01:55，HEAD5eb72bc7，64项字节核对）。既有13:15观察器和唯一CPU完成等待器继续执行；等待六端完整后自动一次性分析，不重复报告。原三数据集超过同协议baseline及当前强参照目标仍ACTIVE/UNMET。
+
+### 41.699 2026-10-01 13:02：独立视觉更新/角色读出对照入口准备及真实代码审查
+
+本轮为准备工作，不是新训练结果。12:38:57实际核对原RGBNT100公开视觉PID2077472/ReID视觉PID2077361及原命令仍在运行，分别42/35轮；父控制器、13:15观察器和唯一六端完成CPU等待器均有实际/proc句柄。之后未重复轮询中途成绩，原221项源码、原六端设置及待完成报告不变。
+
+基于§41.698已核查的冻结/作者视觉微调边界差异，新增独立入口tools/run_visual_update_control.py和refine-logs/visual_update_control_v1/准备计划。每数据集拟议frozen/low_lr视觉更新×global_only/roles读出2×2，共12端，固定原纯ReID权重、seed42、50轮。该计划DRAFT/PREPARATION_ONLY，未注册、未执行M0或正式训练，队列尚未实现。先接收原六端完整报告与结论，再登记执行；不改旧门槛、不追加旧版本种子。
+
+low_lr仅更新CLIP视觉152个参数，固定5e-6；camera与非视觉Signal继续冻结。新参数维持原AdamW/LR/weight_decay、batch64/K8、五轮warmup/cosine、ID/Triplet；无SIM/AlignM、辅助ID、M3或新外部资源。四种条件均将视觉参数存储统一FP32，必须新跑frozen控制，旧指标不替代。global_only从同一完整初始化保留相同M1共享backbone、neck和classifier，省去角色计算；不是从角色权重截取global输出。
+
+入口保存完整模型state并strict加载，能够保存更新视觉状态，同时保留原冻结camera/非视觉断言；并单独检查视觉按条件确实更新或不变。预定实际八批M0检查全部选定参数有限且非零梯度、冻结状态保持、重载输出一致。全部50轮后用同一最高mAP权重，四指标随该权重、完整合法图库、camera/时间段过滤及干扰身份保持。普通视觉微调是控制，不宣称算法创新；只有roles相对独立global_only具有额外收益，才支持角色贡献。
+
+实际fresh审查调用/root/review_visual_update_control_699，forknone、gpt-6-astra/max、same-family/provisional，读取本地/远端源码与协议，没有神经执行。返回“no remaining blocking correctness issue identified”。两项具体修正已完成：global-only获益仅是C1部分证据，整体注册门仍失败；显存字段分别记录训练/逐轮评价及包含M0重载的峰值，但均从初始构建后开始，不包含初始化瞬态或设备reserved显存。原回复完整保存在logs/visual_update_preparation_699_20261001/REVIEW_RESPONSE.txt。审查者本地Python启动失败且未执行AST；执行者原生远端12:56:06实际AST-only通过，当前源SHA537cd5a4ab4e9b3501a7279e3f4857536bdda761f597d8b5fa7bfdbdbf82cbdd。代码审查和语法通过不等于梯度/M0/重载/检索通过，这些仍待真实执行。
+
+拟议解释固定：视觉条件差须在两种读出、三数据集mAP>0/R1≥0且201/MSVR各至少0.5mAP；low_lr角色相对global-only同样要求三数据集mAP>0/R1≥0且201/MSVR至少0.5mAP。未达到不调LR、不改门、不换seed挽救；仅global微调有效则整体视觉支持门未过、角色贡献未证。估计12端16–28GPU小时与10GB权重预留都未实测，生产M0后再校准成本，不作效果承诺。所有权重/原图/数组仍远端，原三份纯基线保留。§41.698实际同步证明（12:36:20，HEAD ea080758，72项blob/221源核对）本轮归档。整体三数据集baseline/SOTA目标仍ACTIVE/UNMET。

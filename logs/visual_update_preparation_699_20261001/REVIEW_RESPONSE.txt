@@ -1,0 +1,27 @@
+Current review: **no remaining blocking correctness issue identified**. Same-family/provisional source review, against runner SHA `537cd5a4ab4e9b3501a7279e3f4857536bdda761f597d8b5fa7bfdbdbf82cbdd`.
+
+**BLOCKING**
+
+None after the two corrections:
+
+- `EXPERIMENT_PLAN.md:58` now treats global-only-only improvement as partial C1 evidence while preserving the failed overall gate.
+- `tools/run_visual_update_control.py:221` now records peak allocation after the M0 reload check.
+
+**NON-BLOCKING**
+
+No additional patch required from this review. Memory measurements start after initial construction (`runner:148`), so they exclude transient initialization allocations. They measure allocated tensors, not total device reservation.
+
+Verified by source inspection:
+
+- **Initialization:** all conditions construct the same full model with seed42 before selecting backbone/head modules (`runner:66–82`; `run_correspondence_roles.py:32–45`). Changing visual trainability introduces no random initialization. Global-only retains the same adapters, neck and classifier and omits the role computation.
+- **Trainability and precision:** Signal initially freezes completely; only the 152 visual parameters are reopened. All four conditions convert visual storage to FP32 (`runner:74–82`). The authoritative Signal forward has no detach/no-grad cutoff. Keeping Signal in eval mode does not disable differentiation.
+- **Optimizer:** new trainable tensors use `3.5e-4`; low-LR visual tensors use `5e-6`; both receive the existing five-epoch warmup/cosine multiplier and AdamW decay `1e-4` (`runner:120–154`). Frozen camera/nonvisual tensors remain outside the optimizer.
+- **Checkpoint:** complete model state is saved and strictly loaded, including updated visual values and retained camera/nonvisual state (`runner:93–109`). M0 checks gradient coverage, frozen-state preservation, visual change/no-change and reload-output parity.
+- **Evaluation:** uses protocol identity labels and complete galleries with same-ID/same-camera filtering for RGBNT201/100 and same-ID/same-time filtering for MSVR310 (`run_correspondence_roles.py:79–108`). Read-only inspection of authoritative protocol JSONs confirmed disjoint train/evaluation identities, expected counts, and all 103 MSVR310 gallery-only identities.
+- **Selection:** all50 epochs are required; ties select the later epoch; the reloaded checkpoint must match the recorded selected epoch and all four metrics (`runner:188–240`).
+- **Data:** all three existing loaders use B64/K8, the same seed and shared geometric augmentation. No sampler or objective change was introduced.
+- **Storage:** 86,140,416 FP32 visual elements require approximately344.6MB per checkpoint. Twenty-four best/M0 visual copies alone require8.27GB; the draft’s10GB estimate is plausible, pending actual checkpoint sizes.
+
+Minimal remaining checks are the already-planned syntax check, quartet initialization witness and production M0 runs before formal training. Gradient support, capacity and neural reload parity remain **unexecuted**, not passed.
+
+I performed only local/remote source and protocol reads; no model, GPU, training, deployment or file edits. My attempted local AST check could not start because the local Python launcher reported `No pyvenv.cfg file`; the parent’s planned syntax check remains necessary.

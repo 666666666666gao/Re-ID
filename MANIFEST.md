@@ -1570,3 +1570,15 @@
 | 2026-10-01T01:36:00+08:00 | /analyze-results | refine-logs/patch_memory_roles_v1/SLOT_DIAGNOSTIC_PLAN_20261001.md | implementation | Predefined six slot statistics; completed pairs first,100 only after acceptance |
 | 2026-10-01T01:27:43+08:00 | /analyze-results | logs/patch_memory_pair_diagnosis_20261001/ | implementation | Two all-query CPU comparisons, true subprocess exits and preserved initial source-binding error |
 | 2026-10-01T01:37:25+08:00 | /analyze-results | logs/patch_memory_slot_diagnosis_20261001/ | implementation | Four full-gallery slot reports, original stdout, exact first-batch output/state parity; no unrecorded OS exit claim |
+
+| 2026-10-01T12:47:00+08:00 | /experiment-plan | refine-logs/visual_update_control_v1/EXPERIMENT_PLAN_20261001_124700.md | implementation | Draft12-end matched visual-update/readout matrix; not registered or launched |
+| 2026-10-01T12:47:00+08:00 | /experiment-plan | refine-logs/visual_update_control_v1/EXPERIMENT_PLAN.md | implementation | Latest preparation-only plan |
+| 2026-10-01T12:47:00+08:00 | /experiment-plan | refine-logs/visual_update_control_v1/EXPERIMENT_TRACKER_20261001_124700.md | implementation | All12 PREPARATION_ONLY, no phantom completion |
+| 2026-10-01T12:47:00+08:00 | /experiment-plan | refine-logs/visual_update_control_v1/EXPERIMENT_TRACKER.md | implementation | Latest preparation-only tracker |
+| 2026-10-01T12:47:00+08:00 | /experiment-bridge | tools/run_visual_update_control.py | implementation | Isolated draft entry; shared initialization, FP32 visual groups, full-state checkpoints; review/M0 pending |
+| 2026-10-01T12:55:26.1415223+08:00 | /experiment-bridge | refine-logs/visual_update_control_v1/EXPERIMENT_PLAN_20261001_125526.md | implementation | Draft-only reviewer correction: global-only benefit is partial evidence, overall registered gate remains failed |
+| 10/01/2026 12:56:06 | /experiment-bridge | refine-logs/visual_update_control_v1/SYNTAX_CHECK_20261001_125606.json | implementation | Actual AST-only recheck after reviewer corrections, no M0 |
+| 2026-10-01T12:58:00+08:00 | /experiment-bridge | refine-logs/visual_update_control_v1/EXPERIMENT_CODE_REVIEW_20261001_125800.md | implementation | Actual fresh gpt-6-astra/max source review: no remaining blockers; same-family provisional |
+| 2026-10-01T12:58:00+08:00 | /experiment-bridge | refine-logs/visual_update_control_v1/EXPERIMENT_CODE_REVIEW.md | implementation | Latest source review; production checks remain unexecuted |
+| 2026-10-01T12:58:00+08:00 | /experiment-bridge | logs/visual_update_preparation_699_20261001/REVIEW_RESPONSE.txt | implementation | Intact actual returned review; no fabricated model execution |
+| 2026-10-01T12:58:00+08:00 | /experiment-bridge | logs/visual_update_preparation_699_20261001/REVIEW_CALL.json | implementation | Actual task/model/effort and provisional source-review scope |
