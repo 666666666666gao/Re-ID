@@ -13911,3 +13911,29 @@ C1仍要求两个独立读出设置中的六个low_lr−frozen配对全部满足
 勘误：提交`02b22ba`的上一段误沿用了“§41.702”标题与702证据目录，应读作§41.703，实际证据目录为`logs/visual_update_milestone_703_20261001/`，91份原始文本；父队列4/12及四个完整成绩本身不变。该次私有staging回执也误写在702文件名，实际104个blob已另存703回执，未重新staging。历史正文保留，本段修正标签；本轮模板和证据目录独立704。原始UTF8严格解码通过，没有新增替换字符。归档源、真实运行回执与文档标签分别核对。
 
 Goal继续ACTIVE/UNMET；普通视觉微调是训练控制，不作为方法新颖性。全十二端完成后再作固定C1/C2与成本、负翻转和身份收益分布的完整审核。
+
+## §41.705 第二个完整视觉更新对照与连续训练快照
+
+记录 2026-10-01T16:06:51.4411393+08:00；采用顺序文本快照 2026-10-01T16:05:12.018799+08:00，父队列完整 7/12、子端验证 7/12。新增正式结果如下；旧五项见§41.704及该时点tracker，未完成端不填中途best。每行均完整50轮、同一个mAP-best权重、严格全state重载、原完整图库和过滤；m0/train/evaluate及worker验证实际退出0。
+
+| Dataset | Condition | best epoch | mAP | R1 | R5 | R10 |
+|---|---|---:|---:|---:|---:|---:|
+| RGBNT100 | low_lr_roles | 1 | 85.3580 | 94.9854 | - | - |
+| MSVR310 | frozen_roles | 10 | 52.3728 | 67.3435 | - | - |
+
+已完成的视觉更新减冻结配对如下。两侧使用本次共同FP32存储和匹配初始backbone/neck/classifier，不以旧FP16冻结端补控制。
+
+| Dataset/readout | low_lr minus matched frozen mAP | delta R1 | status |
+|---|---:|---:|---|
+| RGBNT201/roles | 1.3448 | 1.1962 | Complete pair; final full12 audit pending |
+| RGBNT201/global_only | - | - | Pending both complete endpoints |
+| RGBNT100/roles | - | - | Pending both complete endpoints |
+| RGBNT100/global_only | - | - | Pending both complete endpoints |
+| MSVR310/roles | 0.6299 | 0.6768 | Complete pair; final full12 audit pending |
+| MSVR310/global_only | - | - | Pending both complete endpoints |
+
+新MSVR310 frozen_roles为52.3728/67.3435，low_lr_roles为53.0027/68.0203，增加0.6299mAP/0.6768R1；与此前201 roles的+1.3448/+1.1962共同支持这两个数据集在roles读出条件下更新视觉有收益。全局读出对照及完整六项C1仍未完成，不能扩大成全部训练边界均有效。相同low_lr条件下，201/MSVR的roles减独立global_only仍分别只有0.1093/0.0673mAP，低于原C2的0.5要求；不因此改门槛、学习率或种子。普通视觉微调属于训练控制，不是角色新颖性。
+
+MSVR冻结roles的第50轮48.6064/66.4975，较best下降3.7664mAP；冻结201与两数据集的low_lr路径也有best到末轮退化。完整轨迹和实际资源成本最终由预登记CPU报告统一整理，单seed/正式集选best不能当未知分布稳定性证明。共享全局流与私有角色流分离仍是收齐本面板后的候选；本次没有启动新结构或重复旧预测器、地址匹配、V17保护。
+
+证据目录：logs/visual_update_milestone_705_20261001/，135份原始文本逐字节/SHA核对，包含实际既有240秒observer快照、父/子状态、训练步与评价回执、同步704证明及本次一次性归档源。完整CPU报告调用次数 0，由原observer在全部十二端严格验收后执行一次；未加载模型、距离数组或重放神经计算。快照可用磁盘 85113630720字节。222份活动源、witness、preflight、manifest及报告源未变；原模型、数组与图像留远端。GoalACTIVE/UNMET。

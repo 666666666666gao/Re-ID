@@ -1,0 +1,70 @@
+{
+  "schema": "trifusion-visual-update-control-v1",
+  "status": "RUNNING",
+  "dataset": "RGBNT100",
+  "seed": 42,
+  "epochs": 50,
+  "checkpoint_policy": "best_official_map",
+  "initializer": {
+    "author_checkpoint": "/data/gaob/Re-ID/Trifusion/pertrained-model/RGBNT100_PlainBaseline_30.pth",
+    "author_checkpoint_sha256": "299a28bfb3e3180eeae0736cf8638cd162525dce0f2192a940b62b97f6e67dcd",
+    "signal_state_sha256": "68cea6c9ae4246ec9d0394b8b5e0dec53d70bd6af55d92c3140ac268e60e3174",
+    "baseline_kind": "independently_trained_module_free_cls",
+    "architecture": "visual_update_control_v1",
+    "m1": true,
+    "m2": true,
+    "m3": false,
+    "width": 128,
+    "fused_width": 1536,
+    "prediction_weight": 0.0,
+    "learning_rate": 0.00035,
+    "weight_decay": 0.0001,
+    "entry_sha256": "537cd5a4ab4e9b3501a7279e3f4857536bdda761f597d8b5fa7bfdbdbf82cbdd",
+    "model_source_sha256": "e2a51154b5b327341f35e453dd32a821b091a49a669b49a7c70e79e6e2f2591b",
+    "initial_model_state_sha256": "3c4e03aa1ac0b3e7078ce28aa0b088ca6fabb350f595250e29cfe7aaadaef73c",
+    "trainable_parameters": 984384,
+    "condition": {
+      "visual_update": "frozen",
+      "readout": "global_only",
+      "visual_lr": 5e-06,
+      "visual_parameter_dtype": "float32"
+    },
+    "common_initializer_sha256": {
+      "backbone": "219b2d8c067a957ef495e406c28be769e6b3d01ecfd661c0f6f0f327faf6204f",
+      "neck": "06efe49412cdf6c9d8d9162b9394e4bc49329d169906cecc2b6c4784bcdb166e",
+      "classifier": "1deee2afd7a2f8b90231dc24c16cb5e1ce5232e2b1d92383a964342cded88ddd"
+    },
+    "role_source_sha256": "f41ff1af1fb1b6303a9af63cf039263e2572c16b23813f92a0297f014e71dd4f",
+    "visual_update_semantics": "base visual parameters only; camera and nonvisual Signal state frozen"
+  },
+  "protocol_sha256": "12d8afe5cf6e537b69ccf753481dd5fd651f14b7672e1e6411a4d4e9d88cc956",
+  "condition": {
+    "visual_update": "frozen",
+    "readout": "global_only",
+    "visual_lr": 5e-06,
+    "visual_parameter_dtype": "float32"
+  },
+  "started_at": "2026-10-01T16:02:05.044718+08:00",
+  "history": [
+    {
+      "epoch": 1,
+      "steps": 130,
+      "mean_loss": 2.531353382880871,
+      "seconds": 41.330818086004,
+      "official_fused": {
+        "mAP": 85.18839867069983,
+        "Rank-1": 95.10204195976257,
+        "Rank-5": 95.68513035774231,
+        "Rank-10": 96.0932970046997
+      }
+    }
+  ],
+  "optimizer_groups": [
+    {
+      "label": "new",
+      "base_lr": 0.00035,
+      "tensors": 56,
+      "elements": 984384
+    }
+  ]
+}
