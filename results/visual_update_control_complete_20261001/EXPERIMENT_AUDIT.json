@@ -1,0 +1,107 @@
+{
+  "audit_skill": "experiment-audit",
+  "verdict": "WARN",
+  "overall_verdict": "warn",
+  "integrity_status": "warn",
+  "reason_code": "single_seed_consumed_official_selection_and_remote_only_reproducibility",
+  "summary": "Real-GT engineering and metric checks pass; registered C1/C2/joint scientific gates fail. Dated historical tracker/handoff needs terminal append. One official-selected adaptation seed and retained ReID/camera starting state qualify claims.",
+  "trace_path": ".aris/traces/experiment-audit/2026-10-01_visual_update_complete_708/",
+  "agent_id": "/root/audit_visual_update_complete_708",
+  "verdict_id": "/root/audit_visual_update_complete_708",
+  "executor": "codex",
+  "executor_family": "openai",
+  "reviewer_model": "gpt-6-astra",
+  "reviewer_family": "openai",
+  "reviewer_reasoning": "max",
+  "review_independence": "same-family",
+  "acceptance_status": "provisional",
+  "generated_at": "2026-10-01T18:09:28.8986593+08:00",
+  "date": "2026-10-01",
+  "auditor": "gpt-6-astra-max",
+  "original_response_sha256": "c3f98bd01f84993a22692d88a06d55a7c7eba9236c37142d72da2babe163e743",
+  "audited_input_hashes": {
+    "campaign_manifest": "947b028e835a6c722fac47f5e6333f7f02838ec9b1fbd2beda35ec1885543e5c",
+    "accepted_matrix": "45ce06b471c074ed86ec5617e71892932a032f8c22d4e8230c6e5087b5813889",
+    "report_source": "4c21b1cc6212ef0202512ef46afc8fc714e3b2329fd68f701e4a7ac24acd4765",
+    "SUMMARY.json": "43634cf0c6acd7b998d9c9c2e39174bd60141598c4f4b9f1ba14d81fea6b18ad",
+    "REPORT.md": "41d6d3b8d29eec6e9db77bc74e5b503047a50f55fbab6c22a8cebc54998dc5ea",
+    "handoff_at_review": "71816df830851f61d13e19297402fcb0b359919eb546d272c3c0c1d1bbc1f2ba"
+  },
+  "checks": {
+    "gt_provenance": {
+      "status": "pass",
+      "details": "Dataset identity/camera/time labels, complete galleries, 103 MSVR gallery-only identities retained; metadata-only scope, no image-content provenance replay."
+    },
+    "score_normalization": {
+      "status": "pass",
+      "details": "Official AP/CMC denominators; embedding normalization is not performance self-normalization; 48 official-format metrics recomputed with zero pp discrepancy."
+    },
+    "result_existence": {
+      "status": "warn",
+      "details": "Artifacts/checkpoints/full50/once-executed report verified; canonical tracker/handoff at review were dated ten-complete snapshots and need a new terminal entry."
+    },
+    "dead_code": {
+      "status": "pass",
+      "details": "Executed official scorer, collector and original report paths checked; inactive legacy saving/M3 paths distinguished."
+    },
+    "scope": {
+      "status": "warn",
+      "details": "Three datasets x four conditions x one seed; warm ReID/camera state, official selection and remote-only inputs; fixed-model identity bootstrap is not multiseed or query-mAP significance."
+    },
+    "eval_type": "real_gt"
+  },
+  "actual_checks": {
+    "intake_files": 185,
+    "bound_remote_files": 222,
+    "selected_checkpoints": 12,
+    "m0_checkpoints": 12,
+    "upstream_baselines": 3,
+    "strict_reloaded_checkpoints": 24,
+    "complete_epochs": 600,
+    "training_steps": 40832,
+    "m0_steps": 96,
+    "distance_matrices": 12,
+    "official_metrics": 48,
+    "maximum_official_metric_difference_pp": 0,
+    "paired_diagnoses": 12,
+    "bootstrap_resamples": 2000,
+    "protocol_records": 27266,
+    "milestone_snapshots": 48,
+    "svg_curves": 24,
+    "points_per_curve": 50,
+    "remote_verifier_assertions": 15539,
+    "cpu_construction_assertions": 342,
+    "metadata_assertions": 54659,
+    "local_history_cost_assertions": 684,
+    "neural_forwards": 0,
+    "report_replays": 0
+  },
+  "scientific_gates": {
+    "visual_components_passed": 5,
+    "visual_components_total": 6,
+    "C1": "FAIL",
+    "role_components_passed": 0,
+    "role_components_total": 3,
+    "C2": "FAIL",
+    "joint": "FAIL",
+    "full_goal": "ACTIVE_UNMET"
+  },
+  "claims": [
+    {
+      "id": "full12_engineering_real_gt",
+      "impact": "supported"
+    },
+    {
+      "id": "ordinary_visual_update",
+      "impact": "supported_with_scope_qualifiers"
+    },
+    {
+      "id": "registered_C1_C2_joint_success",
+      "impact": "unsupported"
+    },
+    {
+      "id": "stability_untouched_test_or_SOTA",
+      "impact": "unsupported"
+    }
+  ]
+}

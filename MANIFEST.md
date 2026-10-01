@@ -1612,3 +1612,5 @@
 | 2026-10-01T16:43:53.7499958+08:00 | /monitor-experiment | logs/visual_update_milestone_706_20261001/ | implementation | First complete201visual2x2, full50 matched controls, roleincrement belowfixedfloor |
 
 | 2026-10-01T17:14:17.3154333+08:00 | /monitor-experiment | logs/visual_update_milestone_707_20261001/ | implementation | CompleteMSVR2x2 and RGBNT100roles pair, ten accepted endpoints |
+
+| 2026-10-01T18:09:29.4413101+08:00 | /experiment-audit | results/visual_update_control_complete_20261001/ | implementation | Full12 matched controls and actual fresh integrity audit; scientific gates retained |

@@ -13998,3 +13998,57 @@ RGBNT100两端均选中第1轮；low_lr减frozen为+0.2579mAP、-0.1166R1，R5/R
 剩余RGBNT100 low_lr_global_only和frozen_global_only快照分别45/50与39/50，预计剩余约1042/1153秒，仅为日程估计；不填中途best。磁盘快照84309110784字节空闲，必要权重/数组留远端供最终审核。222份活动源、共有初始化、preflight和报告源未改。完整CPU报告调用次数0，由原240秒observer待全12验收后执行一次；本次只归档已有文本并计算配对算术，不运行模型、重放数组或新增实验。
 
 RGBNT201完整矩阵已见§41.706；两数据集现在都显示视觉更新效应明显大于同边界角色增量。下一步完成最后两端和全12报告/审核，再决定共享全局流与私有角色证据分离；旧M3地址/预测器、V17保护及提示/池化不重立项。GoalACTIVE/UNMET，尚无三数据集baseline/SOTA达成证据。
+
+## §41.708 视觉训练边界十二端全部验收：全局适配受益，角色独立增量仍不足
+
+记录 2026-10-01T18:09:29.4413101+08:00。原队列十二项全部完成50轮，m0/train/evaluate与严格重载均保留实际退出回执；原240秒observer在17:36:41启动唯一CPU报告进程2719272，17:37:10.786035退出0，外层等待器也退出0。接收快照为 2026-10-01T17:43:48.807320+08:00，185份原始文件逐字节/SHA归档于logs/visual_update_complete_708_20261001/；原报告四文件完整镜像至results/visual_update_control_complete_20261001/，没有重跑神经前向、训练或CPU报告。
+
+| Dataset | Condition | best epoch | mAP | R1 | R5 | R10 |
+|---|---|---:|---:|---:|---:|---:|
+| RGBNT201 | low_lr_roles | 1 | 73.8535 | 75.1196 | 84.3301 | 88.7560 |
+| RGBNT100 | low_lr_roles | 1 | 85.3580 | 94.9854 | 95.7434 | 96.3265 |
+| MSVR310 | low_lr_roles | 10 | 53.0027 | 68.0203 | 82.5719 | 88.8325 |
+| RGBNT201 | low_lr_global_only | 1 | 73.7442 | 74.7608 | 84.8086 | 88.7560 |
+| RGBNT100 | low_lr_global_only | 1 | 85.3799 | 95.2187 | 96.0350 | 96.5015 |
+| MSVR310 | low_lr_global_only | 10 | 52.9354 | 67.8511 | 82.9103 | 88.6633 |
+| RGBNT201 | frozen_roles | 2 | 72.5087 | 73.9234 | 82.7751 | 87.9187 |
+| RGBNT100 | frozen_roles | 1 | 85.1001 | 95.1020 | 95.6851 | 96.0350 |
+| MSVR310 | frozen_roles | 10 | 52.3728 | 67.3435 | 83.7563 | 88.8325 |
+| RGBNT201 | frozen_global_only | 2 | 72.4944 | 74.0431 | 82.4163 | 87.9187 |
+| RGBNT100 | frozen_global_only | 1 | 85.1884 | 95.1020 | 95.6851 | 96.0933 |
+| MSVR310 | frozen_global_only | 10 | 51.9480 | 67.3435 | 83.5871 | 89.1709 |
+
+本面板固定M1第4/8/12层、static global-token、128个Patch内容查询与1536维区域读出，M3及局部ID辅助监督关闭。它是训练边界×读出对照，不是原完整111的新成绩。以上每行所有列来自同一个最高官方fused mAP checkpoint；best是第1/2/10轮并不表示提前停止，全部跑完50轮。四条件视觉存储统一FP32，共同backbone/neck/classifier初始化按字典逐项匹配；low_lr只更新152个视觉张量，固定5e-6；相机及非视觉旧状态保持。global-only独立训练，仍含M1九个适配器的平均写回，关闭角色算子与角色读出；它不是无适配纯CLIP，也不是roles同权重截取global。
+
+| Dataset | Visual update: global ΔmAP/ΔR1 | Visual update: roles ΔmAP/ΔR1 | low_lr roles − independent global ΔmAP/ΔR1 |
+|---|---:|---:|---:|
+| RGBNT201 | +1.2498/+0.7177 | +1.3448/+1.1962 | +0.1093/+0.3588 |
+| RGBNT100 | +0.1915/+0.1166 | +0.2579/-0.1166 | -0.0219/-0.2332 |
+| MSVR310 | +0.9874/+0.5076 | +0.6299/+0.6768 | +0.0673/+0.1692 |
+
+独立global-only的视觉更新三集均有正mAP与非负R1，是训练边界的局部正证据。但完整C1要求两种读出都满足，RGBNT100 roles的R1为-0.1166，因此原视觉门为FAIL。C2只使用low_lr下roles相对独立global的三项比较，201/MSVR要求至少0.5mAP；实际约+0.1093、-0.0219、+0.0673，三项均未过原条件，角色门为FAIL，联合门为FAIL。不根据官方分数修改门槛、学习率、seed或轮次。普通微调不是角色创新，也不支持“所有问题只是冻结主干”。
+
+原报告保留全部六项视觉比较、三项注册角色比较、冻结角色诊断、修复与新增首位错误、身份宏平均AP及固定模型身份bootstrap。低学习率roles相对global的首位修复/新增错误分别为201的3/0、100的1/5、MSVR的8/7；这只是已选模型的真实标签事后解释。bootstrap不是训练多种子，不是未消费官方集的独立泛化检验。RGBNT201修复数较多也不能替代原mAP要求。
+
+| Dataset | Condition | train + per-epoch evaluation seconds | peak allocated GiB | positive Triplet steps / all steps | final − best mAP |
+|---|---|---:|---:|---:|---:|
+| RGBNT201 | low_lr_roles | 2229.1 | 13.88 | 742/2649 | -7.8972 |
+| RGBNT100 | low_lr_roles | 6824.0 | 13.88 | 39/6559 | -3.2111 |
+| MSVR310 | low_lr_roles | 1740.7 | 13.88 | 836/1000 | -5.9342 |
+| RGBNT201 | low_lr_global_only | 2415.4 | 12.85 | 826/2649 | -8.4237 |
+| RGBNT100 | low_lr_global_only | 10207.7 | 12.84 | 15/6559 | -3.7542 |
+| MSVR310 | low_lr_global_only | 1363.5 | 12.84 | 862/1000 | -6.0514 |
+| RGBNT201 | frozen_roles | 2046.6 | 8.45 | 1104/2649 | -3.7116 |
+| RGBNT100 | frozen_roles | 6448.8 | 8.45 | 0/6559 | -3.2951 |
+| MSVR310 | frozen_roles | 1380.5 | 8.44 | 969/1000 | -3.7664 |
+| RGBNT201 | frozen_global_only | 1813.0 | 7.41 | 1449/2649 | -3.3732 |
+| RGBNT100 | frozen_global_only | 5125.5 | 7.40 | 0/6559 | -2.6398 |
+| MSVR310 | frozen_global_only | 1285.5 | 7.40 | 988/1000 | -3.5265 |
+
+原trajectories.png/svg显示所有十二项最终mAP均低于所选best，训练loss仍总体下降。延长到50轮已经完成，不能再把后期退化写成“训练还不够”。报告列出的时间包含该阶段训练与逐轮评价，不包括此前ReID底座训练；峰值是初始化后allocated显存，不含初始化瞬时峰值或reserved显存。相同50轮不是相同算力。来源Triplet活动步只描述当前hinge支持，不能换算成AdamW更新份额或某项监督的性能贡献。
+
+新鲜审计实际verdict为WARN，gpt-6-astra/max、独立上下文、同模型家族/provisional；原响应及A–F证据见EXPERIMENT_AUDIT.md/json，私人完整调用trace不提交。审计范围及具体保留项以原响应为准，不把科学门FAIL和结果真实性核查混为一谈。
+
+本次接收器原版错误地断言training.json.status等于COMPLETE，实际十二份状态均为BEST_OFFICIAL_MAP_TRAINING_COMPLETE，17:40:12中止于归档前。原脚本、定时器回执与stderr原样保留；仅修正接收器状态字符串后17:43:49归档成功，实验、权重、原报告与原门槛没有变化。该错误属于证据接收，不是训练失败，不补造重试训练。
+
+下一阶段依据完整面板研究共享全局流与私有角色证据的分离；首先登记一个结构干预并配独立global-only及参数控制，不能同时重写M2对应、M3职责、采样器、视觉学习率和读出。共享/私有分离是待验证假设，不提前声称保住global或十点增益。已完成的M3地址×预测器、V17关系保护、提示carry、全patch/池化与global-token保持封存，不重新换名立项。当前仍是ReID底座上的第二阶段、seed42、官方选best，未获得完整流程多seed、三集强baseline或经协议/资源核实SOTA证据，GoalACTIVE/UNMET。
