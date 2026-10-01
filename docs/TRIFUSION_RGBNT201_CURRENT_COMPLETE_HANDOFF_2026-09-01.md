@@ -13733,3 +13733,29 @@ low_lr仅更新CLIP视觉152个参数，固定5e-6；camera与非视觉Signal继
 实际fresh审查调用/root/review_visual_update_control_699，forknone、gpt-6-astra/max、same-family/provisional，读取本地/远端源码与协议，没有神经执行。返回“no remaining blocking correctness issue identified”。两项具体修正已完成：global-only获益仅是C1部分证据，整体注册门仍失败；显存字段分别记录训练/逐轮评价及包含M0重载的峰值，但均从初始构建后开始，不包含初始化瞬态或设备reserved显存。原回复完整保存在logs/visual_update_preparation_699_20261001/REVIEW_RESPONSE.txt。审查者本地Python启动失败且未执行AST；执行者原生远端12:56:06实际AST-only通过，当前源SHA537cd5a4ab4e9b3501a7279e3f4857536bdda761f597d8b5fa7bfdbdbf82cbdd。代码审查和语法通过不等于梯度/M0/重载/检索通过，这些仍待真实执行。
 
 拟议解释固定：视觉条件差须在两种读出、三数据集mAP>0/R1≥0且201/MSVR各至少0.5mAP；low_lr角色相对global-only同样要求三数据集mAP>0/R1≥0且201/MSVR至少0.5mAP。未达到不调LR、不改门、不换seed挽救；仅global微调有效则整体视觉支持门未过、角色贡献未证。估计12端16–28GPU小时与10GB权重预留都未实测，生产M0后再校准成本，不作效果承诺。所有权重/原图/数组仍远端，原三份纯基线保留。§41.698实际同步证明（12:36:20，HEAD ea080758，72项blob/221源核对）本轮归档。整体三数据集baseline/SOTA目标仍ACTIVE/UNMET。
+## §41.700 冻结视觉起点六端全部完成、完整诊断与新视觉更新对照源码审查
+
+记录时间：2026-10-01T13:52:38.3519767+08:00。六端均完整50轮，实际M0／train／evaluate共18子进程全部wait返回0；6/6严格重载和完整官方图库验收。一次性CPU报告于13:25:12.531532—13:25:30.902797（北京时间）实际执行并退出0，未重复执行。SUMMARY SHA256：214ea13646e218bb3a1f771ba5bebd9255c6065f05b99cda37d37680f2563567。原始报告与53份文本／图表证据封存在 logs/visual_start_complete_700_20261001/raw，逐文件SHA核对通过；模型、距离数组和原图留在服务器。
+
+| 数据集 | 条件 | best轮 | mAP | R1 | R5 | R10 |
+|---|---|---:|---:|---:|---:|---:|
+| RGBNT201 | reid_visual | 2 | 72.5247 | 73.9234 | 82.7751 | 87.9187 |
+| RGBNT201 | public_visual | 34 | 70.1618 | 72.3684 | 82.4163 | 86.4833 |
+| RGBNT100 | reid_visual | 1 | 85.1051 | 95.0437 | 95.6851 | 95.9767 |
+| RGBNT100 | public_visual | 16 | 77.9913 | 93.4111 | 94.1691 | 94.8688 |
+| MSVR310 | reid_visual | 10 | 52.4159 | 67.8511 | 83.2487 | 89.0017 |
+| MSVR310 | public_visual | 24 | 48.0166 | 66.1591 | 81.2183 | 86.9712 |
+
+全部指标来自各行同一份最高官方fused mAP权重；没有跨epoch或种子拼列。public_visual相对fresh reid_visual的mAP变化依次为−2.3629、−7.1137、−4.3993个百分点，R1全部下降，修复／新增首位错误分别64/77、63/91、42/52。预登记三数据集性能门全部FAIL。公开视觉权重仍保留数据集训练过的camera及非视觉状态，不能称完全公开预训练模型；此负结果不证明公开CLIP普遍无效，也不能唯一解释以前的角色增量薄弱。
+
+同权重global→fused诊断：ReID三端额外mAP分别+0.0753、+0.0304、−0.0772；public三端分别+8.1551、+6.2156、+0.3096。这些global与角色都共同训练，不能代替独立global-only，也不能把total correction称纯局部表示。六端best→第50轮检索均回落而训练loss下降，当前未启用M3，不能把后期退化全部归因于M3。ReID–RGBNT100共6559正式步Triplet全为0；这是来源hinge监督活动事实，不是AdamW更新份额或唯一因果证明。
+
+实际fresh gpt-6-astra/max完整审计返回WARN、same-family/provisional：执行及保存结果完整性PASS，科学性能门FAIL。126890断言、286文件SHA检查、额外348汇总／Markdown检查、18距离矩阵／72指标独立CPU复算，最大差2.737821006348895e−6个百分点；未重跑模型、梯度、M0、native kernel或报告主程序。单seed、官方逐轮选点、已消费正式测试、固定模型bootstrap非种子方差、上游成本未计入、冻结Signal需保留输入权重等限制全部保留。原审计返回全文及审计侧初次哈希口径错误后纠正记录分别见 INTEGRITY_REVIEW_RESPONSE.md、INTEGRITY_AUDIT.json，不将审计错误记作实验失败。
+
+成本：实际campaign 7943.015467秒，六端区间合计20796.080268秒，非精确GPU计算预算且未计上游ReID训练。补充13:39:27.137849实测：12个M0／正式输出目录总逻辑字节534492553，排除输入权重，不是历史峰值或项目总存储；磁盘空闲93033672704字节，四卡均可访问并空闲（15/60/15/153 MiB）。另存 CURRENT_RESOURCE_SNAPSHOT.json，未改写封存SUMMARY或重跑报告。旧硬件故障记录保留，当前可访问不等于旧故障根因已查清。
+
+下一项控制保持结构不变，仅检验视觉是否允许固定小学习率更新及角色是否提供独立global之外收益：frozen／low_lr × roles／global_only × 三数据集共12端，全部seed42、fresh50轮、统一FP32视觉存储，视觉LR固定5e−6，非视觉Signal／camera冻结。完整模型权重保存严格重载，两个读取方式匹配公共初始化；原旧冻结端不能替代新FP32冻结控制。
+
+新queue／collector／preflight／initialization witness已由实际fresh gpt-6-astra/max源码审查，无剩余阻断项，same-family/provisional、源码审查不是神经或性能验收。20文件native AST/compile与惰性失败停止／等待测试通过；修复了父进程验证可能漏记失败、日志均值未重构、preflight依赖未先绑定三个具体问题。最终源码SHA与原始回复见 CODE_REVIEW_CALL.json、CODE_REVIEW_RESPONSE.md。当前新12正式登记0、实际M0为0、实际训练0。先部署已审查源码，执行RGBNT201 low_lr_roles／low_lr_global_only各8批真实M0，再实际构建12模型核对公共初始化，之后才登记并启动完整面板。原计划性能门不变，无重试、补救种子、LR扫描或按中途官方分数选择条件。
+
+完整三数据集baseline及注明资源／协议的SOTA目标仍ACTIVE／UNMET。冻结起点负结果与工程审查都不能替代完整目标。

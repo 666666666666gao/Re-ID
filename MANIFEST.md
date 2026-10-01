@@ -1582,3 +1582,12 @@
 | 2026-10-01T12:58:00+08:00 | /experiment-bridge | refine-logs/visual_update_control_v1/EXPERIMENT_CODE_REVIEW.md | implementation | Latest source review; production checks remain unexecuted |
 | 2026-10-01T12:58:00+08:00 | /experiment-bridge | logs/visual_update_preparation_699_20261001/REVIEW_RESPONSE.txt | implementation | Intact actual returned review; no fabricated model execution |
 | 2026-10-01T12:58:00+08:00 | /experiment-bridge | logs/visual_update_preparation_699_20261001/REVIEW_CALL.json | implementation | Actual task/model/effort and provisional source-review scope |
+
+| 2026-10-01T13:52:38.3519767+08:00 | /analyze-results | logs/visual_start_complete_700_20261001/ | implementation | All6 full50, once-only CPU report,53 SHA-verified raw artifacts, all3 scientific gates FAIL, dated disk supplement |
+| 2026-10-01T13:52:38.3519767+08:00 | /experiment-audit | logs/visual_start_complete_700_20261001/INTEGRITY_AUDIT.json | implementation | Actual fresh WARN same-family/provisional; saved real-GT execution PASS, no neural replay |
+| 2026-10-01T13:52:38.3519767+08:00 | /experiment-bridge | tools/preflight_visual_update_control.py | implementation | Reviewed two durable M0 subprocesses, prelaunch complete source binding; not executed at publication |
+| 2026-10-01T13:52:38.3519767+08:00 | /experiment-bridge | tools/check_visual_update_initialization.py | implementation | Reviewed12 production-build common-state witness, pending actual execution |
+| 2026-10-01T13:52:38.3519767+08:00 | /experiment-queue | tools/queue_visual_update_control.py | implementation | Reviewed complete12 full50 queue; two verified preflight M0s reused,240sec,no retry |
+| 2026-10-01T13:52:38.3519767+08:00 | /experiment-queue | tools/collect_visual_update_control.py | implementation | Reviewed real-GT complete-gallery/mean-loss/full-state verification, pending execution |
+| 2026-10-01T13:52:38.3519767+08:00 | /experiment-bridge | refine-logs/visual_update_control_v1/EXPERIMENT_CODE_REVIEW_QUEUE_20261001.md | implementation | Actual fresh no remaining blocker; AST20files and inert failure harness only |
+| 2026-10-01T13:52:38.3519767+08:00 | /experiment-queue | refine-logs/visual_update_control_v1/QUEUE_IMPLEMENTATION_20261001_132200.md | implementation | Immutable preflight/source/witness contract addendum |
