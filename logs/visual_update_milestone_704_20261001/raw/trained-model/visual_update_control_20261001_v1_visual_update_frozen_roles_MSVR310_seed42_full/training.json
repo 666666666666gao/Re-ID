@@ -1,0 +1,130 @@
+{
+  "schema": "trifusion-visual-update-control-v1",
+  "status": "RUNNING",
+  "dataset": "MSVR310",
+  "seed": 42,
+  "epochs": 50,
+  "checkpoint_policy": "best_official_map",
+  "initializer": {
+    "author_checkpoint": "/data/gaob/Re-ID/Trifusion/pertrained-model/MSVR310_PlainBaseline_50.pth",
+    "author_checkpoint_sha256": "69c5e71b75036d7216ece3ff84450f0052f5e70dfaba46bf73f3e1d40992bb37",
+    "signal_state_sha256": "b64e8827028042012bed9a9fc2ffd0bc29122dc1077815b4773626c6a41a087c",
+    "baseline_kind": "independently_trained_module_free_cls",
+    "architecture": "visual_update_control_v1",
+    "m1": true,
+    "m2": true,
+    "m3": false,
+    "width": 128,
+    "fused_width": 1536,
+    "prediction_weight": 0.0,
+    "learning_rate": 0.00035,
+    "weight_decay": 0.0001,
+    "entry_sha256": "537cd5a4ab4e9b3501a7279e3f4857536bdda761f597d8b5fa7bfdbdbf82cbdd",
+    "model_source_sha256": "e2a51154b5b327341f35e453dd32a821b091a49a669b49a7c70e79e6e2f2591b",
+    "initial_model_state_sha256": "fad34e895b82625f665edca47aa107c9b60ea0cf0b65377373e127119ecf0d30",
+    "trainable_parameters": 2846666,
+    "condition": {
+      "visual_update": "frozen",
+      "readout": "roles",
+      "visual_lr": 5e-06,
+      "visual_parameter_dtype": "float32"
+    },
+    "common_initializer_sha256": {
+      "backbone": "f35524f686cdb47fa3655d63378eacd216261d4024b802b22ff432bfdb647832",
+      "neck": "06efe49412cdf6c9d8d9162b9394e4bc49329d169906cecc2b6c4784bcdb166e",
+      "classifier": "47b33e14c05d9560e27d6f6287cd36eabbdd766f6aa26508367922d43571461e"
+    },
+    "role_source_sha256": "f41ff1af1fb1b6303a9af63cf039263e2572c16b23813f92a0297f014e71dd4f",
+    "visual_update_semantics": "base visual parameters only; camera and nonvisual Signal state frozen"
+  },
+  "protocol_sha256": "7f2b35f9a7e00433558c1e723db0e3ff0ea9daa7144eeeb972139d1502945cbc",
+  "condition": {
+    "visual_update": "frozen",
+    "readout": "roles",
+    "visual_lr": 5e-06,
+    "visual_parameter_dtype": "float32"
+  },
+  "started_at": "2026-10-01T15:22:06.090187+08:00",
+  "history": [
+    {
+      "epoch": 1,
+      "steps": 20,
+      "mean_loss": 5.2044050931930546,
+      "seconds": 11.789982073998544,
+      "official_fused": {
+        "mAP": 50.92047441162734,
+        "Rank-1": 68.52791905403137,
+        "Rank-5": 81.04906678199768,
+        "Rank-10": 85.78680157661438
+      }
+    },
+    {
+      "epoch": 2,
+      "steps": 20,
+      "mean_loss": 4.908540534973144,
+      "seconds": 9.366130434005754,
+      "official_fused": {
+        "mAP": 49.71564863122321,
+        "Rank-1": 67.3434853553772,
+        "Rank-5": 81.21827244758606,
+        "Rank-10": 84.94077920913696
+      }
+    },
+    {
+      "epoch": 3,
+      "steps": 20,
+      "mean_loss": 4.420201420783997,
+      "seconds": 9.52300169999944,
+      "official_fused": {
+        "mAP": 50.6195771742182,
+        "Rank-1": 67.85110235214233,
+        "Rank-5": 81.55668377876282,
+        "Rank-10": 84.94077920913696
+      }
+    },
+    {
+      "epoch": 4,
+      "steps": 20,
+      "mean_loss": 3.757633996009827,
+      "seconds": 9.314006060987595,
+      "official_fused": {
+        "mAP": 48.645569524643136,
+        "Rank-1": 65.48223495483398,
+        "Rank-5": 79.52622771263123,
+        "Rank-10": 84.94077920913696
+      }
+    },
+    {
+      "epoch": 5,
+      "steps": 20,
+      "mean_loss": 3.008738648891449,
+      "seconds": 9.595995985000627,
+      "official_fused": {
+        "mAP": 49.14555799350224,
+        "Rank-1": 66.49746298789978,
+        "Rank-5": 80.7106614112854,
+        "Rank-10": 85.78680157661438
+      }
+    },
+    {
+      "epoch": 6,
+      "steps": 20,
+      "mean_loss": 2.3099057972431183,
+      "seconds": 9.496898197990959,
+      "official_fused": {
+        "mAP": 50.939527529948805,
+        "Rank-1": 68.02030205726624,
+        "Rank-5": 81.04906678199768,
+        "Rank-10": 86.46361827850342
+      }
+    }
+  ],
+  "optimizer_groups": [
+    {
+      "label": "new",
+      "base_lr": 0.00035,
+      "tensors": 128,
+      "elements": 2846666
+    }
+  ]
+}
