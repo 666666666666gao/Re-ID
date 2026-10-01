@@ -14131,3 +14131,28 @@ MSVR310/coupled_roles也已验收full50，best第10轮mAP53.243449/R1 67.343485�
 本次在20:08:49保留77份原始文本文件，归档SHA288a4631e95807a4ec3f745cdc370ff2f162db5da8f9330ad56e4e5d179541ca（341807字节）；既包含固定20:06快照，也包含稍后读取且自带时间的原始回执，两者不能混作同一时刻。全部逐文件字节/SHA核对；原始模型和完整数组留在服务器。活动229及旧sealed222来源、manifest、preflight和初始化witness均未变化；上一轮实际remote FF与四份文档核对已保存。本次只归档新终态证据，不重跑旧12端或CPU报告。
 
 这是已消费官方基准、固定一个角色阶段seed、温启动ReID底座的阶段证据，不是公开CLIP干净联合训练、完整流程多种子或SOTA证明。研究目标仍ACTIVE/UNMET。下一步收齐九端后只调用已审核CPU报告一次，计算同协议S1/S2、修复/新增首位错误、身份AP分布、全50轨迹与实际成本，再进行fresh完整结果审计。
+
+## §41.712：RGBNT201角色相对独立global的增量仍薄，MSVR成对终态也不支持分离写回（2026-10-01）
+
+实际20:42:14存量等待器快照已验收5/9：新增MSVR310/separated_roles与RGBNT201/global_only。其余四项均在完整50轮训练中，无PENDING端；wrapper/controller存活，完整九端CPU报告调用仍为0。各行指标来自完整50轮后选中的一份最高官方fused mAP权重，并经实际严格重载、完整图库GT评分及父队列验收。
+
+| 新完成端 | best轮 | mAP | R1 | R5 | R10 |
+|---|---:|---:|---:|---:|---:|
+| RGBNT201/global_only | 1 | 73.7442 | 74.7608 | 84.8086 | 88.7560 |
+| MSVR310/separated_roles | 10 | 53.0721 | 67.6819 | — | — |
+
+RGBNT201/separated相对这次独立global为+0.079955 mAP/+0.478470 R1，R5/R10为−0.358850/−0.239235；coupled相对同一global为+0.306390 mAP/+0.837320 R1。角色并非完全无信息，但分离版本的mAP增量仍未达到预登记S2的+0.5pp要求。加上§711的同容量S1负差，当前RGBNT201不支持该结构获得足够的角色增量。global与roles共用signal/shared-adapter/neck/classifier初始hash，独立global参数更少；不能把这两种容量当严格相同。
+
+MSVR310/separated相对同容量coupled为−0.171365 mAP/+0.338411 R1；两者R5/R10相同、同选第10轮，初始全state和参数量完全匹配，各完成50轮、1000步、训练与evaluate exit0。该S1组件也未通过。MSVR的独立global尚在训练，S2不能提前填值；RGBNT100三端尚未完成。尽管已有组件失败，仍完整收齐已登记九端，不按正式结果取消其余端、换系数/seed或降低门。全九端CPU报告与fresh完整结果审计尚待实际执行，旧视觉C1/角色C2 FAIL保留。
+
+独立global201参数87310656，实际阶段训练加逐轮评价2364.2秒，峰值allocated约12.85GiB；第50轮mAP65.3205，低于自身best8.4237点。MSVR分离版相应为89893130参数/1526.8秒/约15.28GiB，第50轮mAP46.3797，低于best6.6924点。完整训练、best选择和后期泛化退化均是真实发生；普通视觉微调、共享适配和容量变化不能冒称三角色创新。原始checkpoint/距离/回执SHA及全轨迹见PARTIAL_MILESTONE_20261001_204214.json与此次新端归档。
+
+20:42记录的其余训练进度为RGBNT100/coupled38轮、separated15轮、global9轮，以及MSVR310/global2轮，四个train PID均实际存活。依据当前耗时，下一次预计21:18附近读取已有等待器里程碑；预计不是终态证据。20:37单次存储/进程核对确认三个管理PID均存活，剩余77656104960字节（约72.3GiB），足以继续保存本轮必要权重/数组，本节未删除任务依赖。
+
+新里程碑只接收两个新增完整端、20:42固定快照、源码/存储及上次同步回执共28份原始文本，未重复打包此前所有端。实际归档20:44:07，tar149253字节，SHA bb0338a345671aafc421b9488cf6e3aa7bb023fd0a8c6d5c9ee57f17e20c536c，逐文件字节/SHA核对完成；活动229与旧222 source、manifest、preflight及witness不变。原图、权重和NPY留在服务器。
+
+同时完成一项近邻实现边界核查，未修改当前实验：作者MDReID固定commit3525ac2da1a2a90a5a160c930fac674b4f226f6c的三份dataset parser仅统一LF/CRLF后，与当前项目文本完全一致；MSVR作者实际同身份/同时间段过滤，201使用train_171/test。这是解析实现兼容证据，作者论文实际图像清单哈希仍未提供，不能据此声称复现了其主表。作者EnhancedTripletLoss在batch级取最难正距离最大值、最难负距离最小值，specific/shared比较分支detach，默认不归一化，训练器确实调用；不是逐query mAP增量或同一三元组修复目标。配置含Adam、warmup10、seed1555及独立/共享/组合监督，与本轮温启动/AdamW/warmup5不同。
+
+MDReID的模态specific/shared双token分工也与本轮“角色private adapter是否直接写回”不同；本轮没有实现共享/私有区域语义分解，不能用这个负对照否定全部分解方法，也不能把改adapter写回方式称作已完成新M2。作者源码保留在本地私有阅读缓存，公开检查记录只存commit、SHA、精确来源链接和限定结论，不重新分发作者代码。下一项结构/训练合同仍应依据完整九端诊断再定；已做V17、预测器/地址、提示carry、全patch/竞争、global-token和普通视觉更新不重复包装。
+
+同配方baseline、global-only额外收益、经资源/协议核实的强参照及三数据集稳定性仍需同时满足。固定seed的阶段正差、工程验收或某一数据集接近Signal均不构成完整目标。Goal仍ACTIVE/UNMET。
