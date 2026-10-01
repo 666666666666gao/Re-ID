@@ -14319,3 +14319,12 @@ fresh gpt-6-astra/max paths-only只读审计于04:13:09.674521实际启动并完
 fresh gpt-6-astra/max、same-family/provisional代码复核已记录，详见refine-logs/native_detail_v1/EXPERIMENT_CODE_REVIEW_20261002.md/.json；源码复核不能替代真实M0。四个新Python文件AST通过，前序233来源不修改。下一步先真实构造比较和RGBNT201高/低各8batch M0，通过后才登记三集×两条件完整50轮，无自动retry。
 
 N1-A事前门：high−已完成同配方原roles三集mAP>0/R1>=0，201与MSVR各至少+0.5mAP；N1-B：high−low三集mAP>0/R1>=0。六端完整收齐后判定，不改门或追加seed救分。相同mAP-best权重报告所有指标、并列较晚轮、完整真实GT图库与MSVR时间段/干扰身份保留、无rerank。官方集已消费，单seed阶段门不证明稳定性或SOTA。初期估计8–12GPU小时，当前约67GiB空闲，无需退役证据。此节尚无N1训练或正式成绩，目标ACTIVE/UNMET。
+
+
+### 41.723 — N1真实初始化/M0通过、六端正式队列实际启动（2026-10-02）
+
+05:17:08预检查10031启动一次，05:20:15读取时实际已结束并COMPLETE。三数据集六种新构造逐张量见证通过：原roles全部非stem张量一致、新high/low全部state一致、公共backbone/neck/classifier及公开152视觉张量一致，各端新增stem恰93,248参数。RGBNT201 high/low各8batch M0均通过287/287累计非零有限梯度、相机和视觉更新、未训练Signal状态不变，完整重载输出最大差0；probe SHA777b99181360f663a761f83aa937000bd2717d6342d15fdb6881c4a25e0194f7与3c1ed0ce3fc4e0475c8cdc8baa255651df5aade6beb8f4364fa60c73e9a6fe15。原始小型见证/M0日志接收在logs/native_detail_preflight723_20261002，模型仍留远端。
+
+正式high/low×三数据集六端于2026-10-02T05:20:41.661554+08:00由控制器21951启动一次。2026-10-02T05:24:35.680284+08:00实查控制器与4个worker/训练进程存活：high201、高100、高MSVR、low201正在完整50轮；首批4项M0均287/287、reload0，low100/lowMSVR待健康空闲卡并须各自M0。此为实存进程/回执，不是预计完成。238来源封存，240秒调度，无抢占或自动retry；日志见logs/native_detail_start723_20261002和EXPERIMENT_TRACKER_20261002_723.md。
+
+全部端仍按最高fused mAP同一权重/并列较晚轮、严格完整重载及真实完整GT图库，N1-A/B门与seed42不改，不使用中途分数取消或救分。当前只有工程通过与训练启动，未有N1完整检索成绩，不称+10或SOTA。四卡分配约16–17GiB；空间69476974592B，无必要删除前序审计依赖。完整CPU报告与一次性等待器已写、fresh源码复核中，尚未部署/执行；它们不修改训练238来源。N2/N3未实现。GoalACTIVE/UNMET。
