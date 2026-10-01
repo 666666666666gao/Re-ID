@@ -1674,3 +1674,5 @@
 - 2026-10-02 §41.725: actual06:05 N1 complete3/6/full50/reload, first201high−low mAP+.1686/R1−1.7943 and high−oldroles negative; MSVRhigh negative. AllsixM0PASS, threeotherscontinue, report103554 oncewaiter0,238sourcesunchanged. No gate rescue/N2N3; goalACTIVE_UNMET.
 
 - 2026-10-02 §41.726: actualN1 3/6 full50/reloadaccepted, lowMSVR50train0 thenstrictmetricparityassertionFAILED(mAPgap .00030268, CMCequal); savedCPUdistanceoriginalscorersagree. Two100continue, waiterexited/report0,238sourceunchanged. No threshold/seed rescue/N2/N3.
+
+- 2026-10-02 §41.727: reviewed fixedcheckpoint diagnostic twoforwards exact inputs/features/distances; oldtrainingbest mismatch remains-.00030268mAP. OriginallowMSVR officialFAIL unchanged, no retry/tolerance/epoch rescue; all238sourcesunchanged, two100continue/next07:23, GoalACTIVE_UNMET.

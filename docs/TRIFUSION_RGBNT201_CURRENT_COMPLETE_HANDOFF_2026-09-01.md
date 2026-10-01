@@ -14389,3 +14389,16 @@ CPU仅复算原失败距离：训练记录mAP 51.344854211608，重载距离mAP 
 
 
 本地旧观察器续接状态写入实际发生GBK编码错误，临时状态文件被截断；训练源、权重、回执及已发布文档未受影响。状态已按存活原始证据重建并通过UTF-8 roundtrip；仅替换已核验属于本任务的本地定时观察器，06:35观察未重复，远端GPU训练和一次报告等待器未重启。这是工程修复，不计算法增益。当前不能据已有失败端更改N1-A/B或把N2/N3描述为已实现成功；完整目标保持ACTIVE/UNMET。
+
+
+### 41.727 — 固定低MSVR权重重复前向稳定，原训练best与重载差异仍在；诊断不重开正式验收（2026-10-02）
+
+经实际gpt-6-astra/max源码第二意见，最小固定权重诊断获PASS_WITH_LIMITS（same-family/provisional），修正了输入摘要遗漏camera_ids的具体问题。完整实际review与metadata已保存为RELOAD_FAILURE_SOURCE_REVIEW_20261002.md/.json；这只是诊断脚本源码许可，不是原结果或科学机制通过。
+
+06:52:22在刚验证空闲的0号GPU（15MiB/24576MiB）仅启动一次固定权重诊断PID320418，原best_map SHA06355d22452b3e8ba85a998d8c0b339f89b0820eba383bbeb21d56c3ef77b51f、第16轮不变。首版启动器内嵌字符串在远端Python解析阶段SyntaxError，尚未执行任何启动或GPU动作；原错误stderr保留，只修正原始字符串字面量后实际启动一次。诊断使用原模型/计分函数，两次完整query/gallery前向各26.53/23.69秒，无optimizer或训练、无正式evaluate重试；输出另存，不覆盖原权重、原距离、training或official回执。
+
+实际SUMMARY时间2026-10-02T06:53:34.132767+08:00，06:56:01接收时进程已结束；launch未捕获退出码，因此不虚填exit0。两次输入摘要含图像及camera IDs，query/gallery特征SHA均相同；两次距离与彼此、原失败评价距离的最大绝对差均为0。两次mAP均51.344551531015，而存储训练best为51.344854211608，差−0.000302680593；R1/R5/R10差均0。模型state、原checkpoint、原距离及238训练源均未改变。原始三份终态小文本及SHA见logs/native_detail_reload_probe726_20261002，特征/距离留远端；两份诊断源码封存于reload_diagnostic_source_20261002。
+
+这些证据排除本次两次前向内的输入漂移和state变化，但不恢复训练第16轮当时的特征/距离，也不证明一般的跨进程/cuDNN缓存等价。原_set_seed同时设deterministic=True与benchmark=True，数值计算是候选解释，不是已确认根因。没有因分数接近而放宽1e-5、重试挑通过、重写原验收状态或另选checkpoint；低MSVR仍为原FAILED_EVALUATION_AFTER50，正式结果格仍“—”。原完整六端报告等待器已退出、调用0次，不能说已经收到成功完整报告。
+
+最后训练进度证据仍是06:35：3端正式接受，低MSVR50轮训练完成但验收失败，两个100分别31/13轮继续。唯一后继观察器已实际验证UV38576/Python34532，计划07:23按墙钟ETA接收高100并更新低100剩余时间；不是此刻已完成的证明。完成既有训练、保持失败证据后再定后继单一假设，N2/N3不叠加。Goal持续ACTIVE/UNMET；N1工程与诊断完成不代表角色贡献、三数据集baseline或SOTA目标达成。

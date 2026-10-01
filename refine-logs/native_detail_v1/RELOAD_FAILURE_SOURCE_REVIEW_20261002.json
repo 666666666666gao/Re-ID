@@ -1,0 +1,56 @@
+{
+  "schema": "trifusion-native-reload-source-review-v1",
+  "date": "2026-10-02",
+  "reviewer": {
+    "agent": "/root/review_native_reload_failure726",
+    "model": "gpt-6-astra",
+    "reasoning_effort": "max",
+    "context": "fresh direct artifact read"
+  },
+  "review_independence": "same-family",
+  "acceptance_status": "provisional",
+  "route": "experiment-bridge rescue/source review",
+  "source_verdict": "PASS_WITH_LIMITS_FOR_BOUNDED_DIAGNOSTIC_ONLY",
+  "original_endpoint": {
+    "dataset": "MSVR310",
+    "variant": "low",
+    "selected_epoch": 16,
+    "status": "FAILED",
+    "original_tolerance": 0.00001,
+    "stored_map": 51.3448542116076,
+    "saved_reload_map": 51.344551531014595,
+    "reload_minus_training_map": -0.00030268059300198047,
+    "official_acceptance": false
+  },
+  "reviewed_probe": {
+    "path": "C:/Users/gb/.codex_tmp/probe_native_low_msvr_fixed_reload726_20261002.py",
+    "sha256": "cc96e2e8b7a52e1af10cca2220e86e5ef929f8ab92fced5abc65fbb95c5a7f0a",
+    "executed_by_reviewer": false,
+    "blocking_findings": [],
+    "resolved_finding": "Actual camera_ids are now included in the input digest at lines 55-56.",
+    "scope": "Two full query/gallery passes of one loaded model in one process; within-process repeatability only."
+  },
+  "evidence_checks": {
+    "requested_code_and_plan_files_compared_to_registered_manifest": 9,
+    "all_nine_match": true,
+    "all_238_remote_sources_unchanged": "archived receipt evidence only; no fresh remote inventory by reviewer",
+    "saved_distance_cpu_rescore": "already archived; not repeated"
+  },
+  "missing_evidence": [
+    "Epoch-16 training query/gallery features and distance matrix",
+    "Historical epoch-16 and original reload input fingerprints and kernel/cache choices",
+    "Actual output from the prepared neural diagnostic",
+    "Fresh idle-GPU observation at any launch time"
+  ],
+  "permitted_next_step": "One bounded separate-output diagnostic after immediate idle-GPU verification, then archive diagnosis and allow existing arms to finish; preserve FAILED endpoint and zero-report receipt.",
+  "original_contract_acceptance_route": "None on present evidence; even a matching diagnostic scalar cannot replace the original failed endpoint.",
+  "reviewer_actions": {
+    "neural_forwards": 0,
+    "optimizer_steps": 0,
+    "training_retries": 0,
+    "saved_distance_rescoring": 0,
+    "deployments": 0,
+    "source_modifications": 0,
+    "writes": "Only this actual review and matching metadata at the four explicitly authorized paths."
+  }
+}
