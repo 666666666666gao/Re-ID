@@ -1,0 +1,690 @@
+{
+  "schema": "trifusion-clean-public-clip-joint-v1",
+  "status": "BEST_OFFICIAL_MAP_TRAINING_COMPLETE",
+  "dataset": "RGBNT201",
+  "seed": 42,
+  "epochs": 50,
+  "checkpoint_policy": "best_official_map",
+  "initializer": {
+    "architecture": "clean_public_clip_joint_v1",
+    "dataset": "RGBNT201",
+    "seed": 42,
+    "readout": "global_only",
+    "public_clip_path": "/data/gaob/Re-ID/Trifusion/pertrained-model/ViT-B-16.pt",
+    "public_clip_sha256": "5806e77cd80f8b59890b7e101eabd078d9fb84e6937f9e85e4ecb61988df416f",
+    "public_visual_tensors_verified": 152,
+    "visual_initial_sha256": "e989d3d5cf05e26109cd62aba6752ad1151b70c06dc14324703826fecbb9383f",
+    "fresh_camera_initial_sha256": "71161723dfbaee1cbbcf2f07d2065187b0fe05ccc0b1afd25f62e16e48d85ec1",
+    "fresh_camera_shape": [
+      4,
+      1,
+      768
+    ],
+    "author_source_commit": "cd1b0a672d1fe642e7608731cb4899a19dda7d51",
+    "protocol_sha256": "e63be5d9f8bd41df365264ad8f459dcd063d088023a2d2ed525a49a72f61161e",
+    "common_initializer_sha256": {
+      "backbone": "0baf5860672e4522ee1a6de815ac2e1443d9d2937e2f757aa4c227e06508afb8",
+      "neck": "06efe49412cdf6c9d8d9162b9394e4bc49329d169906cecc2b6c4784bcdb166e",
+      "classifier": "22bd8be47d0a37e4afd7689789e40999fe33dd5ee5b8e338bd920bd6678fbf47"
+    },
+    "initial_model_state_sha256": "f4a8bb42ff8a8dc84c1382b8a39f0c92c33ae3468d3494b17ed4fe2f14f7b263",
+    "trainable_parameters": 87313728,
+    "trainable_parameter_tensors": 209,
+    "entry_sha256": "178e9793f2cf8261eb44a278e053d5caabd4f2f37dba48a65952b2547338a746",
+    "baseline_sha256_semantics": "Public CLIP input file only; no trained ReID baseline is read.",
+    "camera_semantics": "Fresh author truncated-normal embedding, trainable at new-module LR.",
+    "initialization_scope": "public visual only; fresh camera, unused Signal state, shared adapters, roles and retrieval heads",
+    "condition": {
+      "visual_update": "low_lr",
+      "readout": "global_only",
+      "visual_lr": 5e-06,
+      "visual_parameter_dtype": "float32",
+      "initialization": "public_CLIP_fresh_camera_heads_modules",
+      "public_clip_sha256": "5806e77cd80f8b59890b7e101eabd078d9fb84e6937f9e85e4ecb61988df416f",
+      "initialization_witness_sha256": "605d85819ad521227173912945f41bfa89736a34c6709a46423af7361ec0e494",
+      "camera_update": "new_module_lr_0.00035"
+    },
+    "initialization_witness_sha256": "605d85819ad521227173912945f41bfa89736a34c6709a46423af7361ec0e494"
+  },
+  "protocol_sha256": "e63be5d9f8bd41df365264ad8f459dcd063d088023a2d2ed525a49a72f61161e",
+  "condition": {
+    "visual_update": "low_lr",
+    "readout": "global_only",
+    "visual_lr": 5e-06,
+    "visual_parameter_dtype": "float32",
+    "initialization": "public_CLIP_fresh_camera_heads_modules",
+    "public_clip_sha256": "5806e77cd80f8b59890b7e101eabd078d9fb84e6937f9e85e4ecb61988df416f",
+    "initialization_witness_sha256": "605d85819ad521227173912945f41bfa89736a34c6709a46423af7361ec0e494",
+    "camera_update": "new_module_lr_0.00035"
+  },
+  "started_at": "2026-10-02T01:14:23.204669+08:00",
+  "history": [
+    {
+      "epoch": 1,
+      "steps": 53,
+      "mean_loss": 5.420154913416448,
+      "seconds": 27.58681640199211,
+      "official_fused": {
+        "mAP": 7.10749030760708,
+        "Rank-1": 5.263157933950424,
+        "Rank-5": 10.645932704210281,
+        "Rank-10": 16.626794636249542
+      }
+    },
+    {
+      "epoch": 2,
+      "steps": 53,
+      "mean_loss": 4.751927888618325,
+      "seconds": 26.29879544999858,
+      "official_fused": {
+        "mAP": 24.162500549229822,
+        "Rank-1": 20.215311646461487,
+        "Rank-5": 32.65550136566162,
+        "Rank-10": 40.071770548820496
+      }
+    },
+    {
+      "epoch": 3,
+      "steps": 53,
+      "mean_loss": 3.451716620967073,
+      "seconds": 26.49686057100189,
+      "official_fused": {
+        "mAP": 39.64012737133119,
+        "Rank-1": 34.928229451179504,
+        "Rank-5": 49.88038241863251,
+        "Rank-10": 58.9712917804718
+      }
+    },
+    {
+      "epoch": 4,
+      "steps": 53,
+      "mean_loss": 2.1903428221648595,
+      "seconds": 26.530083183999523,
+      "official_fused": {
+        "mAP": 56.56608083712326,
+        "Rank-1": 55.38277626037598,
+        "Rank-5": 66.98564887046814,
+        "Rank-10": 76.0765552520752
+      }
+    },
+    {
+      "epoch": 5,
+      "steps": 53,
+      "mean_loss": 1.4060911367524345,
+      "seconds": 26.58213954299572,
+      "official_fused": {
+        "mAP": 54.93668420821973,
+        "Rank-1": 55.741626024246216,
+        "Rank-5": 66.74641370773315,
+        "Rank-10": 74.40191507339478
+      }
+    },
+    {
+      "epoch": 6,
+      "steps": 53,
+      "mean_loss": 1.0924994225771922,
+      "seconds": 27.029832441010512,
+      "official_fused": {
+        "mAP": 59.87041381589554,
+        "Rank-1": 61.00478172302246,
+        "Rank-5": 71.29186391830444,
+        "Rank-10": 78.11004519462585
+      }
+    },
+    {
+      "epoch": 7,
+      "steps": 53,
+      "mean_loss": 0.9939315251584323,
+      "seconds": 26.707887136988575,
+      "official_fused": {
+        "mAP": 63.30855271074741,
+        "Rank-1": 63.15789222717285,
+        "Rank-5": 75.83732008934021,
+        "Rank-10": 81.93780183792114
+      }
+    },
+    {
+      "epoch": 8,
+      "steps": 53,
+      "mean_loss": 0.9638887418890899,
+      "seconds": 26.609011319000274,
+      "official_fused": {
+        "mAP": 66.28629735745793,
+        "Rank-1": 66.86602830886841,
+        "Rank-5": 75.59808492660522,
+        "Rank-10": 82.0574164390564
+      }
+    },
+    {
+      "epoch": 9,
+      "steps": 53,
+      "mean_loss": 0.9426035397457626,
+      "seconds": 26.626018849987304,
+      "official_fused": {
+        "mAP": 64.69954827252315,
+        "Rank-1": 67.46411323547363,
+        "Rank-5": 76.43540501594543,
+        "Rank-10": 81.69856667518616
+      }
+    },
+    {
+      "epoch": 10,
+      "steps": 53,
+      "mean_loss": 0.9423341638637039,
+      "seconds": 26.73281173099531,
+      "official_fused": {
+        "mAP": 65.55048725978224,
+        "Rank-1": 66.74641370773315,
+        "Rank-5": 77.39234566688538,
+        "Rank-10": 83.01435112953186
+      }
+    },
+    {
+      "epoch": 11,
+      "steps": 53,
+      "mean_loss": 0.9274524877656181,
+      "seconds": 26.784172450003098,
+      "official_fused": {
+        "mAP": 67.06139804587137,
+        "Rank-1": 67.9425835609436,
+        "Rank-5": 76.19616985321045,
+        "Rank-10": 82.65550136566162
+      }
+    },
+    {
+      "epoch": 12,
+      "steps": 53,
+      "mean_loss": 0.916763369767171,
+      "seconds": 26.603944699993008,
+      "official_fused": {
+        "mAP": 60.631830098714865,
+        "Rank-1": 63.27751278877258,
+        "Rank-5": 72.0095694065094,
+        "Rank-10": 78.94737124443054
+      }
+    },
+    {
+      "epoch": 13,
+      "steps": 53,
+      "mean_loss": 0.9118488655900056,
+      "seconds": 26.644742757998756,
+      "official_fused": {
+        "mAP": 68.11166857760156,
+        "Rank-1": 69.73684430122375,
+        "Rank-5": 79.0669858455658,
+        "Rank-10": 84.56937670707703
+      }
+    },
+    {
+      "epoch": 14,
+      "steps": 53,
+      "mean_loss": 0.9053911521749677,
+      "seconds": 26.480747866997262,
+      "official_fused": {
+        "mAP": 64.74853565595973,
+        "Rank-1": 64.83253836631775,
+        "Rank-5": 76.0765552520752,
+        "Rank-10": 82.53588676452637
+      }
+    },
+    {
+      "epoch": 15,
+      "steps": 53,
+      "mean_loss": 0.9004650014751362,
+      "seconds": 27.037727578994236,
+      "official_fused": {
+        "mAP": 66.8793066998244,
+        "Rank-1": 67.1052634716034,
+        "Rank-5": 77.03348994255066,
+        "Rank-10": 84.92823243141174
+      }
+    },
+    {
+      "epoch": 16,
+      "steps": 53,
+      "mean_loss": 0.8951451778411865,
+      "seconds": 26.95342226199864,
+      "official_fused": {
+        "mAP": 65.5240338116798,
+        "Rank-1": 67.22487807273865,
+        "Rank-5": 77.03348994255066,
+        "Rank-10": 83.49282145500183
+      }
+    },
+    {
+      "epoch": 17,
+      "steps": 53,
+      "mean_loss": 0.8885782979569345,
+      "seconds": 26.620790436005336,
+      "official_fused": {
+        "mAP": 67.34865775729527,
+        "Rank-1": 66.74641370773315,
+        "Rank-5": 77.03348994255066,
+        "Rank-10": 83.49282145500183
+      }
+    },
+    {
+      "epoch": 18,
+      "steps": 53,
+      "mean_loss": 0.8856003014546521,
+      "seconds": 26.999516344003496,
+      "official_fused": {
+        "mAP": 63.641362904528705,
+        "Rank-1": 64.1148328781128,
+        "Rank-5": 74.64115023612976,
+        "Rank-10": 81.22009634971619
+      }
+    },
+    {
+      "epoch": 19,
+      "steps": 53,
+      "mean_loss": 0.8855641495506719,
+      "seconds": 26.880221105995588,
+      "official_fused": {
+        "mAP": 66.00763565134807,
+        "Rank-1": 66.74641370773315,
+        "Rank-5": 77.15311050415039,
+        "Rank-10": 84.33014154434204
+      }
+    },
+    {
+      "epoch": 20,
+      "steps": 53,
+      "mean_loss": 0.8826069224555537,
+      "seconds": 26.99554378099856,
+      "official_fused": {
+        "mAP": 63.11494133560092,
+        "Rank-1": 64.71291780471802,
+        "Rank-5": 75.71770548820496,
+        "Rank-10": 82.17703104019165
+      }
+    },
+    {
+      "epoch": 21,
+      "steps": 53,
+      "mean_loss": 0.8801861619049648,
+      "seconds": 26.645409757999005,
+      "official_fused": {
+        "mAP": 61.69936843734804,
+        "Rank-1": 62.44019269943237,
+        "Rank-5": 73.80383014678955,
+        "Rank-10": 79.78469133377075
+      }
+    },
+    {
+      "epoch": 22,
+      "steps": 53,
+      "mean_loss": 0.8765857006019017,
+      "seconds": 26.59427136501472,
+      "official_fused": {
+        "mAP": 62.973880968528626,
+        "Rank-1": 63.87559771537781,
+        "Rank-5": 73.9234447479248,
+        "Rank-10": 81.69856667518616
+      }
+    },
+    {
+      "epoch": 23,
+      "steps": 53,
+      "mean_loss": 0.8738175675554095,
+      "seconds": 26.759507322014542,
+      "official_fused": {
+        "mAP": 66.35789073179843,
+        "Rank-1": 67.58373379707336,
+        "Rank-5": 75.83732008934021,
+        "Rank-10": 83.37320685386658
+      }
+    },
+    {
+      "epoch": 24,
+      "steps": 53,
+      "mean_loss": 0.8748893614085216,
+      "seconds": 27.0786358609912,
+      "official_fused": {
+        "mAP": 61.64524434568928,
+        "Rank-1": 62.20095753669739,
+        "Rank-5": 73.44497442245483,
+        "Rank-10": 81.33971095085144
+      }
+    },
+    {
+      "epoch": 25,
+      "steps": 53,
+      "mean_loss": 0.8730293782252185,
+      "seconds": 26.76834099201369,
+      "official_fused": {
+        "mAP": 64.34848009080419,
+        "Rank-1": 63.15789222717285,
+        "Rank-5": 74.16267991065979,
+        "Rank-10": 81.45933151245117
+      }
+    },
+    {
+      "epoch": 26,
+      "steps": 53,
+      "mean_loss": 0.8697439184728658,
+      "seconds": 27.067295356973773,
+      "official_fused": {
+        "mAP": 62.883993335804966,
+        "Rank-1": 63.51674795150757,
+        "Rank-5": 74.16267991065979,
+        "Rank-10": 81.69856667518616
+      }
+    },
+    {
+      "epoch": 27,
+      "steps": 53,
+      "mean_loss": 0.8681855685306046,
+      "seconds": 26.636299686011625,
+      "official_fused": {
+        "mAP": 61.355153228603996,
+        "Rank-1": 60.64593195915222,
+        "Rank-5": 72.0095694065094,
+        "Rank-10": 78.11004519462585
+      }
+    },
+    {
+      "epoch": 28,
+      "steps": 53,
+      "mean_loss": 0.8660622610236114,
+      "seconds": 27.13147036198643,
+      "official_fused": {
+        "mAP": 65.63184436469582,
+        "Rank-1": 66.26794338226318,
+        "Rank-5": 76.19616985321045,
+        "Rank-10": 81.33971095085144
+      }
+    },
+    {
+      "epoch": 29,
+      "steps": 53,
+      "mean_loss": 0.8643744756590646,
+      "seconds": 26.735841971996706,
+      "official_fused": {
+        "mAP": 64.84068407592707,
+        "Rank-1": 64.71291780471802,
+        "Rank-5": 74.40191507339478,
+        "Rank-10": 80.38277626037598
+      }
+    },
+    {
+      "epoch": 30,
+      "steps": 53,
+      "mean_loss": 0.8633067630371958,
+      "seconds": 26.966176429006737,
+      "official_fused": {
+        "mAP": 64.88017452232991,
+        "Rank-1": 64.71291780471802,
+        "Rank-5": 76.31579041481018,
+        "Rank-10": 82.17703104019165
+      }
+    },
+    {
+      "epoch": 31,
+      "steps": 53,
+      "mean_loss": 0.8627937211180633,
+      "seconds": 26.91437213899917,
+      "official_fused": {
+        "mAP": 65.02608071288006,
+        "Rank-1": 65.43062329292297,
+        "Rank-5": 74.40191507339478,
+        "Rank-10": 80.50239086151123
+      }
+    },
+    {
+      "epoch": 32,
+      "steps": 53,
+      "mean_loss": 0.8617429879476439,
+      "seconds": 26.894885449990397,
+      "official_fused": {
+        "mAP": 65.20349414525381,
+        "Rank-1": 66.26794338226318,
+        "Rank-5": 74.88038539886475,
+        "Rank-10": 79.78469133377075
+      }
+    },
+    {
+      "epoch": 33,
+      "steps": 53,
+      "mean_loss": 0.8605851992121283,
+      "seconds": 26.557852199010085,
+      "official_fused": {
+        "mAP": 64.6468296712801,
+        "Rank-1": 66.62679314613342,
+        "Rank-5": 74.88038539886475,
+        "Rank-10": 81.81818127632141
+      }
+    },
+    {
+      "epoch": 34,
+      "steps": 53,
+      "mean_loss": 0.8592375640599232,
+      "seconds": 26.52905411401298,
+      "official_fused": {
+        "mAP": 63.693103221273226,
+        "Rank-1": 64.1148328781128,
+        "Rank-5": 74.28229451179504,
+        "Rank-10": 80.38277626037598
+      }
+    },
+    {
+      "epoch": 35,
+      "steps": 53,
+      "mean_loss": 0.8576853354022188,
+      "seconds": 26.761328171996865,
+      "official_fused": {
+        "mAP": 63.468939550434676,
+        "Rank-1": 64.59330320358276,
+        "Rank-5": 73.9234447479248,
+        "Rank-10": 79.904305934906
+      }
+    },
+    {
+      "epoch": 36,
+      "steps": 53,
+      "mean_loss": 0.8577196080729647,
+      "seconds": 26.616183300997363,
+      "official_fused": {
+        "mAP": 64.17554550827717,
+        "Rank-1": 66.86602830886841,
+        "Rank-5": 75.35884976387024,
+        "Rank-10": 81.10047578811646
+      }
+    },
+    {
+      "epoch": 37,
+      "steps": 53,
+      "mean_loss": 0.857975498685297,
+      "seconds": 26.746670770982746,
+      "official_fused": {
+        "mAP": 63.48503050794017,
+        "Rank-1": 64.83253836631775,
+        "Rank-5": 74.52152967453003,
+        "Rank-10": 80.26315569877625
+      }
+    },
+    {
+      "epoch": 38,
+      "steps": 53,
+      "mean_loss": 0.8566831451541973,
+      "seconds": 26.67276769899763,
+      "official_fused": {
+        "mAP": 63.15957682522038,
+        "Rank-1": 64.47368264198303,
+        "Rank-5": 74.52152967453003,
+        "Rank-10": 80.14354109764099
+      }
+    },
+    {
+      "epoch": 39,
+      "steps": 53,
+      "mean_loss": 0.8558876177050033,
+      "seconds": 26.692175436008256,
+      "official_fused": {
+        "mAP": 63.91485540080421,
+        "Rank-1": 65.31100273132324,
+        "Rank-5": 74.64115023612976,
+        "Rank-10": 80.14354109764099
+      }
+    },
+    {
+      "epoch": 40,
+      "steps": 53,
+      "mean_loss": 0.8552676664208466,
+      "seconds": 26.369414854008937,
+      "official_fused": {
+        "mAP": 63.36590646395952,
+        "Rank-1": 64.35406804084778,
+        "Rank-5": 74.64115023612976,
+        "Rank-10": 80.50239086151123
+      }
+    },
+    {
+      "epoch": 41,
+      "steps": 53,
+      "mean_loss": 0.855291412686402,
+      "seconds": 26.65062654099893,
+      "official_fused": {
+        "mAP": 63.62045589698948,
+        "Rank-1": 64.47368264198303,
+        "Rank-5": 75.23923516273499,
+        "Rank-10": 80.14354109764099
+      }
+    },
+    {
+      "epoch": 42,
+      "steps": 53,
+      "mean_loss": 0.8546929134512847,
+      "seconds": 26.50601309002377,
+      "official_fused": {
+        "mAP": 63.75831250243631,
+        "Rank-1": 65.43062329292297,
+        "Rank-5": 75.47847032546997,
+        "Rank-10": 80.86124658584595
+      }
+    },
+    {
+      "epoch": 43,
+      "steps": 53,
+      "mean_loss": 0.8545912425473051,
+      "seconds": 26.550656854000408,
+      "official_fused": {
+        "mAP": 63.941909117369875,
+        "Rank-1": 65.43062329292297,
+        "Rank-5": 75.23923516273499,
+        "Rank-10": 80.50239086151123
+      }
+    },
+    {
+      "epoch": 44,
+      "steps": 53,
+      "mean_loss": 0.8544903926129611,
+      "seconds": 26.708100705000106,
+      "official_fused": {
+        "mAP": 64.18798841606484,
+        "Rank-1": 65.55023789405823,
+        "Rank-5": 75.59808492660522,
+        "Rank-10": 81.57894611358643
+      }
+    },
+    {
+      "epoch": 45,
+      "steps": 53,
+      "mean_loss": 0.8551897496547339,
+      "seconds": 26.96016843401594,
+      "official_fused": {
+        "mAP": 63.7634351420594,
+        "Rank-1": 65.07176756858826,
+        "Rank-5": 75.11961460113525,
+        "Rank-10": 81.33971095085144
+      }
+    },
+    {
+      "epoch": 46,
+      "steps": 52,
+      "mean_loss": 0.8543267261523467,
+      "seconds": 26.111755221994827,
+      "official_fused": {
+        "mAP": 63.62775062353517,
+        "Rank-1": 64.83253836631775,
+        "Rank-5": 75.0,
+        "Rank-10": 80.9808611869812
+      }
+    },
+    {
+      "epoch": 47,
+      "steps": 53,
+      "mean_loss": 0.8539870651263111,
+      "seconds": 26.76982611499261,
+      "official_fused": {
+        "mAP": 63.71440867103663,
+        "Rank-1": 64.71291780471802,
+        "Rank-5": 75.11961460113525,
+        "Rank-10": 81.22009634971619
+      }
+    },
+    {
+      "epoch": 48,
+      "steps": 53,
+      "mean_loss": 0.8540242100661656,
+      "seconds": 26.883405006024987,
+      "official_fused": {
+        "mAP": 63.743453562946364,
+        "Rank-1": 64.83253836631775,
+        "Rank-5": 75.11961460113525,
+        "Rank-10": 81.22009634971619
+      }
+    },
+    {
+      "epoch": 49,
+      "steps": 53,
+      "mean_loss": 0.8538924196981034,
+      "seconds": 26.95238528700429,
+      "official_fused": {
+        "mAP": 63.682090347362184,
+        "Rank-1": 64.71291780471802,
+        "Rank-5": 75.11961460113525,
+        "Rank-10": 81.33971095085144
+      }
+    },
+    {
+      "epoch": 50,
+      "steps": 53,
+      "mean_loss": 0.8542958554231895,
+      "seconds": 27.19958643100108,
+      "official_fused": {
+        "mAP": 63.66191459028742,
+        "Rank-1": 64.71291780471802,
+        "Rank-5": 75.11961460113525,
+        "Rank-10": 81.33971095085144
+      }
+    }
+  ],
+  "optimizer_groups": [
+    {
+      "label": "new",
+      "base_lr": 0.00035,
+      "tensors": 57,
+      "elements": 1173312
+    },
+    {
+      "label": "visual",
+      "base_lr": 5e-06,
+      "tensors": 152,
+      "elements": 86140416
+    }
+  ],
+  "frozen_signal_state_unchanged": true,
+  "visual_parameters_changed": true,
+  "visual_state_before_sha256": "e989d3d5cf05e26109cd62aba6752ad1151b70c06dc14324703826fecbb9383f",
+  "visual_state_after_sha256": "f74ff25afa151fefac215949e8bc4a4f73fd703501926a8a49f6653d835c0b2f",
+  "peak_training_and_epoch_eval_allocated_bytes": 13794171392,
+  "peak_stage_allocated_bytes": 13794171392,
+  "best_epoch": 13,
+  "completed_at": "2026-10-02T01:47:48.283334+08:00",
+  "public_clip_sha256": "5806e77cd80f8b59890b7e101eabd078d9fb84e6937f9e85e4ecb61988df416f",
+  "baseline_sha256_semantics": "Public CLIP input file only; no trained ReID baseline loaded.",
+  "fresh_camera_parameters_changed": true,
+  "camera_state_before_sha256": "71161723dfbaee1cbbcf2f07d2065187b0fe05ccc0b1afd25f62e16e48d85ec1",
+  "camera_state_after_sha256": "38d2a4457a2f6e3a41c665e2eaad64c13a5868f7b8a4cfa5a7e7e42288ca9677"
+}
