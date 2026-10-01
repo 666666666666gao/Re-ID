@@ -1656,3 +1656,5 @@
 - 2026-10-02 §41.716: actual clean-public6 initialization/M0/full50 launch,18+3 raw text launch artifacts, fresh CPU report/waiter source review and actual240sec waiter launch; no complete results or J1 verdict yet.
 
 - 2026-10-02 §41.717: first clean-public RGBNT201 full50 pair,3/6 terminal milestone,23 original texts in two incremental archives; pinned MDReID/DeMo/MODAL direct-neighbor preparation. Full6 report/J1/audit pending; source233 unchanged.
+
+- 2026-10-02 §41.718: second clean-public full50 pair onMSVR310;4/6 complete, twoRGBNT100 running.7 new original texts verified, MSVR mAP+.2818/R1+1.5228; fixed0.5pp condition unmet, full6/J1/audit pending.
