@@ -1598,3 +1598,6 @@
 | 2026-10-01T14:19:00.4247879+08:00 | /analyze-results | refine-logs/visual_update_control_v1/COMPLETE_REPORT_PLAN_20261001.md | implementation | Fixed full12 reporting scope, original gates unchanged, no partial-score rescue |
 | 2026-10-01T14:19:00.4247879+08:00 | /monitor-experiment | logs/visual_update_launch_701_20261001/WAIT_HELPER.py | implementation | Actual durable wrapper2372978/observer2372984, first14:28:30 then240sec, once-only CPU report after12 |
 | 2026-10-01T14:19:00.4247879+08:00 | /experiment-queue | refine-logs/visual_update_control_v1/EXPERIMENT_TRACKER_20261001_140857.md | implementation | Actual dated4train/8pending/4M0pass/0formalaccepted, all full50 remain required |
+
+| 2026-10-01T14:46:17.3483184+08:00 | /monitor-experiment | logs/visual_update_milestone_702_20261001/ | implementation | One actual text-only first-endpoint milestone, existing240sec observer and full12 queue preserved |
+| 2026-10-01T14:46:17.3483184+08:00 | /experiment-queue | refine-logs/visual_update_control_v1/EXPERIMENT_TRACKER_20261001_702.md | implementation | Full50 complete endpoints and pending controls recorded; fixed C1/C2 not replaced by partial comparisons |
