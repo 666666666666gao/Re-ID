@@ -1,0 +1,184 @@
+{
+  "schema": "trifusion-visual-update-control-v1",
+  "status": "RUNNING",
+  "dataset": "RGBNT100",
+  "seed": 42,
+  "epochs": 50,
+  "checkpoint_policy": "best_official_map",
+  "initializer": {
+    "author_checkpoint": "/data/gaob/Re-ID/Trifusion/pertrained-model/RGBNT100_PlainBaseline_30.pth",
+    "author_checkpoint_sha256": "299a28bfb3e3180eeae0736cf8638cd162525dce0f2192a940b62b97f6e67dcd",
+    "signal_state_sha256": "68cea6c9ae4246ec9d0394b8b5e0dec53d70bd6af55d92c3140ac268e60e3174",
+    "baseline_kind": "independently_trained_module_free_cls",
+    "architecture": "visual_update_control_v1",
+    "m1": true,
+    "m2": true,
+    "m3": false,
+    "width": 128,
+    "fused_width": 1536,
+    "prediction_weight": 0.0,
+    "learning_rate": 0.00035,
+    "weight_decay": 0.0001,
+    "entry_sha256": "537cd5a4ab4e9b3501a7279e3f4857536bdda761f597d8b5fa7bfdbdbf82cbdd",
+    "model_source_sha256": "e2a51154b5b327341f35e453dd32a821b091a49a669b49a7c70e79e6e2f2591b",
+    "initial_model_state_sha256": "3c4e03aa1ac0b3e7078ce28aa0b088ca6fabb350f595250e29cfe7aaadaef73c",
+    "trainable_parameters": 87124800,
+    "condition": {
+      "visual_update": "low_lr",
+      "readout": "global_only",
+      "visual_lr": 5e-06,
+      "visual_parameter_dtype": "float32"
+    },
+    "common_initializer_sha256": {
+      "backbone": "219b2d8c067a957ef495e406c28be769e6b3d01ecfd661c0f6f0f327faf6204f",
+      "neck": "06efe49412cdf6c9d8d9162b9394e4bc49329d169906cecc2b6c4784bcdb166e",
+      "classifier": "1deee2afd7a2f8b90231dc24c16cb5e1ce5232e2b1d92383a964342cded88ddd"
+    },
+    "role_source_sha256": "f41ff1af1fb1b6303a9af63cf039263e2572c16b23813f92a0297f014e71dd4f",
+    "visual_update_semantics": "base visual parameters only; camera and nonvisual Signal state frozen"
+  },
+  "protocol_sha256": "12d8afe5cf6e537b69ccf753481dd5fd651f14b7672e1e6411a4d4e9d88cc956",
+  "condition": {
+    "visual_update": "low_lr",
+    "readout": "global_only",
+    "visual_lr": 5e-06,
+    "visual_parameter_dtype": "float32"
+  },
+  "started_at": "2026-10-01T14:33:57.283918+08:00",
+  "history": [
+    {
+      "epoch": 1,
+      "steps": 130,
+      "mean_loss": 2.50245638352174,
+      "seconds": 72.88757869400433,
+      "official_fused": {
+        "mAP": 85.37991550280026,
+        "Rank-1": 95.21865844726562,
+        "Rank-5": 96.03498578071594,
+        "Rank-10": 96.50145769119263
+      }
+    },
+    {
+      "epoch": 2,
+      "steps": 131,
+      "mean_loss": 0.875449386716799,
+      "seconds": 84.16006774400012,
+      "official_fused": {
+        "mAP": 84.79122483687568,
+        "Rank-1": 95.74344158172607,
+        "Rank-5": 96.55976891517639,
+        "Rank-10": 96.96792960166931
+      }
+    },
+    {
+      "epoch": 3,
+      "steps": 132,
+      "mean_loss": 0.7239834169546763,
+      "seconds": 80.23429247300373,
+      "official_fused": {
+        "mAP": 82.00787863601376,
+        "Rank-1": 94.69387531280518,
+        "Rank-5": 95.68513035774231,
+        "Rank-10": 96.20991349220276
+      }
+    },
+    {
+      "epoch": 4,
+      "steps": 131,
+      "mean_loss": 0.7155931773986525,
+      "seconds": 82.20162634400185,
+      "official_fused": {
+        "mAP": 81.07606214563997,
+        "Rank-1": 94.05247569084167,
+        "Rank-5": 94.75218653678894,
+        "Rank-10": 95.10204195976257
+      }
+    },
+    {
+      "epoch": 5,
+      "steps": 132,
+      "mean_loss": 0.7113406942649321,
+      "seconds": 82.99593618999643,
+      "official_fused": {
+        "mAP": 81.67719061784854,
+        "Rank-1": 94.92711424827576,
+        "Rank-5": 95.27696967124939,
+        "Rank-10": 95.56851387023926
+      }
+    },
+    {
+      "epoch": 6,
+      "steps": 131,
+      "mean_loss": 0.7099282354798936,
+      "seconds": 82.9741695440025,
+      "official_fused": {
+        "mAP": 81.38593744972638,
+        "Rank-1": 94.22740340232849,
+        "Rank-5": 95.04373073577881,
+        "Rank-10": 95.5102026462555
+      }
+    },
+    {
+      "epoch": 7,
+      "steps": 132,
+      "mean_loss": 0.708125857241226,
+      "seconds": 84.02952365699457,
+      "official_fused": {
+        "mAP": 81.11659401714323,
+        "Rank-1": 93.81924271583557,
+        "Rank-5": 94.40233111381531,
+        "Rank-10": 94.69387531280518
+      }
+    },
+    {
+      "epoch": 8,
+      "steps": 131,
+      "mean_loss": 0.7078815416525338,
+      "seconds": 85.31085803300084,
+      "official_fused": {
+        "mAP": 82.1922375306998,
+        "Rank-1": 94.86880302429199,
+        "Rank-5": 95.4518973827362,
+        "Rank-10": 95.74344158172607
+      }
+    },
+    {
+      "epoch": 9,
+      "steps": 130,
+      "mean_loss": 0.707780861396056,
+      "seconds": 84.3335002810054,
+      "official_fused": {
+        "mAP": 82.00834738505388,
+        "Rank-1": 94.69387531280518,
+        "Rank-5": 95.68513035774231,
+        "Rank-10": 95.97667455673218
+      }
+    },
+    {
+      "epoch": 10,
+      "steps": 132,
+      "mean_loss": 0.7072961953553286,
+      "seconds": 82.57567055300751,
+      "official_fused": {
+        "mAP": 81.36366213205802,
+        "Rank-1": 94.05247569084167,
+        "Rank-5": 95.04373073577881,
+        "Rank-10": 95.56851387023926
+      }
+    }
+  ],
+  "optimizer_groups": [
+    {
+      "label": "new",
+      "base_lr": 0.00035,
+      "tensors": 56,
+      "elements": 984384
+    },
+    {
+      "label": "visual",
+      "base_lr": 5e-06,
+      "tensors": 152,
+      "elements": 86140416
+    }
+  ]
+}
