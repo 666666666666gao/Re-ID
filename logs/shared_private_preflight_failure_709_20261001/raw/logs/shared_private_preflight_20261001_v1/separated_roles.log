@@ -1,0 +1,24 @@
+/data/gaob/Re-ID/conda-envs/tri_reid/lib/python3.10/site-packages/timm/models/helpers.py:7: FutureWarning: Importing from timm.models.helpers is deprecated, please import via timm.models
+  warnings.warn(f"Importing from {__name__} is deprecated, please import via timm.models", FutureWarning)
+/data/gaob/Re-ID/conda-envs/tri_reid/lib/python3.10/site-packages/timm/models/registry.py:4: FutureWarning: Importing from timm.models.registry is deprecated, please import via timm.models
+  warnings.warn(f"Importing from {__name__} is deprecated, please import via timm.models", FutureWarning)
+/data/gaob/Re-ID/conda-envs/tri_reid/lib/python3.10/site-packages/timm/models/layers/__init__.py:48: FutureWarning: Importing from timm.models.layers is deprecated, please import via timm.layers
+  warnings.warn(f"Importing from {__name__} is deprecated, please import via timm.layers", FutureWarning)
+建立transformer............
+using Transformer_type: ViT-B-16 as a backbone
+Resized position embedding: %s to %s torch.Size([197, 768]) torch.Size([129, 768])
+Position embedding resize to height:16 width: 8
+Successfully load ckpt!
+<All keys matched successfully>
+Loading pretrained model from CLIP
+camera number is : 4
+===========Building Signal===========
+{"event": "epoch", "dataset": "RGBNT201", "epoch": 1, "steps": 8, "mean_loss": 5.128056049346924, "seconds": 8.476004216005094, "best_epoch": null}
+Traceback (most recent call last):
+  File "/data/gaob/Re-ID/Trifusion/tools/run_shared_private_evidence.py", line 69, in <module>
+    main()
+  File "/data/gaob/Re-ID/Trifusion/tools/run_shared_private_evidence.py", line 65, in main
+    (control.evaluate if args.mode == 'evaluate' else control.train)(args, protocol)
+  File "/data/gaob/Re-ID/Trifusion/tools/run_visual_update_control.py", line 205, in train
+    assert live == set(named), sorted(set(named) - live)
+AssertionError: ['backbone.private_adapters.0.1.0.bias', 'backbone.private_adapters.0.1.0.weight', 'backbone.private_adapters.0.1.1.bias', 'backbone.private_adapters.0.1.1.weight', 'backbone.private_adapters.0.2.0.bias', 'backbone.private_adapters.0.2.0.weight', 'backbone.private_adapters.0.2.1.bias', 'backbone.private_adapters.0.2.1.weight', 'backbone.private_adapters.1.1.0.bias', 'backbone.private_adapters.1.1.0.weight', 'backbone.private_adapters.1.1.1.bias', 'backbone.private_adapters.1.1.1.weight', 'backbone.private_adapters.1.2.0.bias', 'backbone.private_adapters.1.2.0.weight', 'backbone.private_adapters.1.2.1.bias', 'backbone.private_adapters.1.2.1.weight', 'backbone.private_adapters.2.0.0.bias', 'backbone.private_adapters.2.0.0.weight', 'backbone.private_adapters.2.1.0.bias', 'backbone.private_adapters.2.1.0.weight', 'backbone.private_adapters.2.1.1.bias', 'backbone.private_adapters.2.1.1.weight', 'backbone.private_adapters.2.2.0.bias', 'backbone.private_adapters.2.2.0.weight', 'backbone.private_adapters.2.2.1.bias', 'backbone.private_adapters.2.2.1.weight']

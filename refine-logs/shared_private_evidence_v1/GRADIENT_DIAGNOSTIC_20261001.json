@@ -1,0 +1,459 @@
+{
+  "status": "COMPLETE",
+  "completed_at": "2026-10-01T18:56:30.672545+08:00",
+  "binding": {
+    "author_checkpoint": "/data/gaob/Re-ID/Trifusion/pertrained-model/RGBNT201_PlainBaseline_50.pth",
+    "author_checkpoint_sha256": "789e5e14aacd74ad122aad701389eb216ca5b4fda92687e27351a513023b4407",
+    "signal_state_sha256": "4d5cf3d7bb445199b6d2a0d3492c4fcf8ae5263f240bb6b6a322933695abd89d",
+    "baseline_kind": "independently_trained_module_free_cls",
+    "architecture": "shared_private_evidence_v1",
+    "m1": true,
+    "m2": true,
+    "m3": false,
+    "width": 128,
+    "fused_width": 1536,
+    "prediction_weight": 0.0,
+    "learning_rate": 0.00035,
+    "weight_decay": 0.0001,
+    "entry_sha256": "d5c578dd57681e89fca5761f65d662cfc84785c7137388b27130a2a6c509689c",
+    "model_source_sha256": "e2a51154b5b327341f35e453dd32a821b091a49a669b49a7c70e79e6e2f2591b",
+    "initial_model_state_sha256": "96a85fef436571c55440c03807fd730d251923ffafa7519894d939e516a2a4f7",
+    "trainable_parameters": 89917706,
+    "condition": {
+      "visual_update": "low_lr",
+      "readout": "roles",
+      "visual_lr": 5e-06,
+      "visual_parameter_dtype": "float32",
+      "evidence_flow": "separated_roles"
+    },
+    "common_initializer_sha256": {
+      "backbone": "ebcdaef1ea006369fbbaa693bce98677b2efaa06abe4657a3e26ee675e6b4b16",
+      "neck": "06efe49412cdf6c9d8d9162b9394e4bc49329d169906cecc2b6c4784bcdb166e",
+      "classifier": "22bd8be47d0a37e4afd7689789e40999fe33dd5ee5b8e338bd920bd6678fbf47"
+    },
+    "role_source_sha256": "f41ff1af1fb1b6303a9af63cf039263e2572c16b23813f92a0297f014e71dd4f",
+    "visual_update_semantics": "base visual parameters only; camera and nonvisual Signal state frozen",
+    "common_initializer_scope": "Original signal/shared-adapter backbone, neck and classifier; private adapters excluded",
+    "evidence_flow_source_sha256": "3ab4b16c4898ce98a80f0428ea04d4f0b696f77870929fdfc53f0e4444722889"
+  },
+  "losses": [
+    5.153749942779541,
+    5.162192344665527,
+    5.1361212730407715,
+    5.119766712188721,
+    5.10766077041626,
+    5.152163028717041,
+    5.087611675262451,
+    5.1051812171936035
+  ],
+  "original_loss_max_abs_difference": 1.430511474609375e-06,
+  "missing_nonzero_gradients": [
+    "backbone.private_adapters.0.1.0.bias",
+    "backbone.private_adapters.0.1.0.weight",
+    "backbone.private_adapters.0.1.1.bias",
+    "backbone.private_adapters.0.1.1.weight",
+    "backbone.private_adapters.0.2.0.bias",
+    "backbone.private_adapters.0.2.0.weight",
+    "backbone.private_adapters.0.2.1.bias",
+    "backbone.private_adapters.0.2.1.weight",
+    "backbone.private_adapters.1.1.0.bias",
+    "backbone.private_adapters.1.1.0.weight",
+    "backbone.private_adapters.1.1.1.bias",
+    "backbone.private_adapters.1.1.1.weight",
+    "backbone.private_adapters.1.2.0.bias",
+    "backbone.private_adapters.1.2.0.weight",
+    "backbone.private_adapters.1.2.1.bias",
+    "backbone.private_adapters.1.2.1.weight",
+    "backbone.private_adapters.2.0.0.bias",
+    "backbone.private_adapters.2.0.0.weight",
+    "backbone.private_adapters.2.1.0.bias",
+    "backbone.private_adapters.2.1.0.weight",
+    "backbone.private_adapters.2.1.1.bias",
+    "backbone.private_adapters.2.1.1.weight",
+    "backbone.private_adapters.2.2.0.bias",
+    "backbone.private_adapters.2.2.0.weight",
+    "backbone.private_adapters.2.2.1.bias",
+    "backbone.private_adapters.2.2.1.weight"
+  ],
+  "batch8_private_local_replay": [
+    {
+      "parameter": "backbone.private_adapters.0.0.0.weight",
+      "original_gradient_max_abs": 3.853078922588793e-08,
+      "fp32_local_replay_gradient_max_abs": 1.7012139608141297e-07,
+      "input_dtype": "torch.float16",
+      "output_dtype": "torch.float16"
+    },
+    {
+      "parameter": "backbone.private_adapters.0.0.0.bias",
+      "original_gradient_max_abs": 2.0721927285194397e-08,
+      "fp32_local_replay_gradient_max_abs": 4.088525784595731e-08,
+      "input_dtype": "torch.float16",
+      "output_dtype": "torch.float16"
+    },
+    {
+      "parameter": "backbone.private_adapters.0.0.1.weight",
+      "original_gradient_max_abs": 2.1513551473617554e-06,
+      "fp32_local_replay_gradient_max_abs": 9.952758546205587e-07,
+      "input_dtype": "torch.float16",
+      "output_dtype": "torch.float16"
+    },
+    {
+      "parameter": "backbone.private_adapters.0.0.1.bias",
+      "original_gradient_max_abs": 3.802124410867691e-07,
+      "fp32_local_replay_gradient_max_abs": 1.3352016026146885e-07,
+      "input_dtype": "torch.float16",
+      "output_dtype": "torch.float16"
+    },
+    {
+      "parameter": "backbone.private_adapters.0.0.3.weight",
+      "original_gradient_max_abs": 1.2427568435668945e-05,
+      "fp32_local_replay_gradient_max_abs": 1.2427362889866345e-05,
+      "input_dtype": "torch.float16",
+      "output_dtype": "torch.float16"
+    },
+    {
+      "parameter": "backbone.private_adapters.0.0.3.bias",
+      "original_gradient_max_abs": 1.6629695892333984e-05,
+      "fp32_local_replay_gradient_max_abs": 1.6617821529507637e-05,
+      "input_dtype": "torch.float16",
+      "output_dtype": "torch.float16"
+    },
+    {
+      "parameter": "backbone.private_adapters.0.1.0.weight",
+      "original_gradient_max_abs": 0.0,
+      "fp32_local_replay_gradient_max_abs": 2.757390760166345e-09,
+      "input_dtype": "torch.float16",
+      "output_dtype": "torch.float16"
+    },
+    {
+      "parameter": "backbone.private_adapters.0.1.0.bias",
+      "original_gradient_max_abs": 0.0,
+      "fp32_local_replay_gradient_max_abs": 6.084013293161661e-10,
+      "input_dtype": "torch.float16",
+      "output_dtype": "torch.float16"
+    },
+    {
+      "parameter": "backbone.private_adapters.0.1.1.weight",
+      "original_gradient_max_abs": 0.0,
+      "fp32_local_replay_gradient_max_abs": 1.815033456864512e-08,
+      "input_dtype": "torch.float16",
+      "output_dtype": "torch.float16"
+    },
+    {
+      "parameter": "backbone.private_adapters.0.1.1.bias",
+      "original_gradient_max_abs": 0.0,
+      "fp32_local_replay_gradient_max_abs": 3.428079153877661e-09,
+      "input_dtype": "torch.float16",
+      "output_dtype": "torch.float16"
+    },
+    {
+      "parameter": "backbone.private_adapters.0.1.3.weight",
+      "original_gradient_max_abs": 5.802139639854431e-07,
+      "fp32_local_replay_gradient_max_abs": 5.803309477414587e-07,
+      "input_dtype": "torch.float16",
+      "output_dtype": "torch.float16"
+    },
+    {
+      "parameter": "backbone.private_adapters.0.1.3.bias",
+      "original_gradient_max_abs": 1.0337680578231812e-06,
+      "fp32_local_replay_gradient_max_abs": 1.0333023965358734e-06,
+      "input_dtype": "torch.float16",
+      "output_dtype": "torch.float16"
+    },
+    {
+      "parameter": "backbone.private_adapters.0.2.0.weight",
+      "original_gradient_max_abs": 0.0,
+      "fp32_local_replay_gradient_max_abs": 2.826721301474322e-09,
+      "input_dtype": "torch.float16",
+      "output_dtype": "torch.float16"
+    },
+    {
+      "parameter": "backbone.private_adapters.0.2.0.bias",
+      "original_gradient_max_abs": 0.0,
+      "fp32_local_replay_gradient_max_abs": 6.027719434698042e-10,
+      "input_dtype": "torch.float16",
+      "output_dtype": "torch.float16"
+    },
+    {
+      "parameter": "backbone.private_adapters.0.2.1.weight",
+      "original_gradient_max_abs": 0.0,
+      "fp32_local_replay_gradient_max_abs": 1.5365696270919216e-08,
+      "input_dtype": "torch.float16",
+      "output_dtype": "torch.float16"
+    },
+    {
+      "parameter": "backbone.private_adapters.0.2.1.bias",
+      "original_gradient_max_abs": 0.0,
+      "fp32_local_replay_gradient_max_abs": 2.656043163185018e-09,
+      "input_dtype": "torch.float16",
+      "output_dtype": "torch.float16"
+    },
+    {
+      "parameter": "backbone.private_adapters.0.2.3.weight",
+      "original_gradient_max_abs": 4.617031663656235e-07,
+      "fp32_local_replay_gradient_max_abs": 4.617903073267371e-07,
+      "input_dtype": "torch.float16",
+      "output_dtype": "torch.float16"
+    },
+    {
+      "parameter": "backbone.private_adapters.0.2.3.bias",
+      "original_gradient_max_abs": 8.614733815193176e-07,
+      "fp32_local_replay_gradient_max_abs": 8.610077202320099e-07,
+      "input_dtype": "torch.float16",
+      "output_dtype": "torch.float16"
+    },
+    {
+      "parameter": "backbone.private_adapters.1.0.0.weight",
+      "original_gradient_max_abs": 1.9802932904600112e-10,
+      "fp32_local_replay_gradient_max_abs": 9.294878111631988e-08,
+      "input_dtype": "torch.float16",
+      "output_dtype": "torch.float16"
+    },
+    {
+      "parameter": "backbone.private_adapters.1.0.0.bias",
+      "original_gradient_max_abs": 6.984919309616089e-10,
+      "fp32_local_replay_gradient_max_abs": 2.6626349125535853e-08,
+      "input_dtype": "torch.float16",
+      "output_dtype": "torch.float16"
+    },
+    {
+      "parameter": "backbone.private_adapters.1.0.1.weight",
+      "original_gradient_max_abs": 2.115964889526367e-06,
+      "fp32_local_replay_gradient_max_abs": 6.93374886395759e-07,
+      "input_dtype": "torch.float16",
+      "output_dtype": "torch.float16"
+    },
+    {
+      "parameter": "backbone.private_adapters.1.0.1.bias",
+      "original_gradient_max_abs": 4.568137228488922e-07,
+      "fp32_local_replay_gradient_max_abs": 1.1391610854616374e-07,
+      "input_dtype": "torch.float16",
+      "output_dtype": "torch.float16"
+    },
+    {
+      "parameter": "backbone.private_adapters.1.0.3.weight",
+      "original_gradient_max_abs": 1.0728836059570312e-05,
+      "fp32_local_replay_gradient_max_abs": 1.0731365364335943e-05,
+      "input_dtype": "torch.float16",
+      "output_dtype": "torch.float16"
+    },
+    {
+      "parameter": "backbone.private_adapters.1.0.3.bias",
+      "original_gradient_max_abs": 1.265108585357666e-05,
+      "fp32_local_replay_gradient_max_abs": 1.265411265194416e-05,
+      "input_dtype": "torch.float16",
+      "output_dtype": "torch.float16"
+    },
+    {
+      "parameter": "backbone.private_adapters.1.1.0.weight",
+      "original_gradient_max_abs": 0.0,
+      "fp32_local_replay_gradient_max_abs": 2.137411136970968e-09,
+      "input_dtype": "torch.float16",
+      "output_dtype": "torch.float16"
+    },
+    {
+      "parameter": "backbone.private_adapters.1.1.0.bias",
+      "original_gradient_max_abs": 0.0,
+      "fp32_local_replay_gradient_max_abs": 6.379505812503794e-10,
+      "input_dtype": "torch.float16",
+      "output_dtype": "torch.float16"
+    },
+    {
+      "parameter": "backbone.private_adapters.1.1.1.weight",
+      "original_gradient_max_abs": 0.0,
+      "fp32_local_replay_gradient_max_abs": 1.909444691250428e-08,
+      "input_dtype": "torch.float16",
+      "output_dtype": "torch.float16"
+    },
+    {
+      "parameter": "backbone.private_adapters.1.1.1.bias",
+      "original_gradient_max_abs": 0.0,
+      "fp32_local_replay_gradient_max_abs": 3.0897964187204252e-09,
+      "input_dtype": "torch.float16",
+      "output_dtype": "torch.float16"
+    },
+    {
+      "parameter": "backbone.private_adapters.1.1.3.weight",
+      "original_gradient_max_abs": 6.575137376785278e-07,
+      "fp32_local_replay_gradient_max_abs": 6.572450956809917e-07,
+      "input_dtype": "torch.float16",
+      "output_dtype": "torch.float16"
+    },
+    {
+      "parameter": "backbone.private_adapters.1.1.3.bias",
+      "original_gradient_max_abs": 9.126961231231689e-07,
+      "fp32_local_replay_gradient_max_abs": 9.124632924795151e-07,
+      "input_dtype": "torch.float16",
+      "output_dtype": "torch.float16"
+    },
+    {
+      "parameter": "backbone.private_adapters.1.2.0.weight",
+      "original_gradient_max_abs": 0.0,
+      "fp32_local_replay_gradient_max_abs": 1.8863290929260756e-09,
+      "input_dtype": "torch.float16",
+      "output_dtype": "torch.float16"
+    },
+    {
+      "parameter": "backbone.private_adapters.1.2.0.bias",
+      "original_gradient_max_abs": 0.0,
+      "fp32_local_replay_gradient_max_abs": 6.782442385500076e-10,
+      "input_dtype": "torch.float16",
+      "output_dtype": "torch.float16"
+    },
+    {
+      "parameter": "backbone.private_adapters.1.2.1.weight",
+      "original_gradient_max_abs": 0.0,
+      "fp32_local_replay_gradient_max_abs": 1.2670548166227036e-08,
+      "input_dtype": "torch.float16",
+      "output_dtype": "torch.float16"
+    },
+    {
+      "parameter": "backbone.private_adapters.1.2.1.bias",
+      "original_gradient_max_abs": 0.0,
+      "fp32_local_replay_gradient_max_abs": 2.3786923541990745e-09,
+      "input_dtype": "torch.float16",
+      "output_dtype": "torch.float16"
+    },
+    {
+      "parameter": "backbone.private_adapters.1.2.3.weight",
+      "original_gradient_max_abs": 4.654284566640854e-07,
+      "fp32_local_replay_gradient_max_abs": 4.654574468077044e-07,
+      "input_dtype": "torch.float16",
+      "output_dtype": "torch.float16"
+    },
+    {
+      "parameter": "backbone.private_adapters.1.2.3.bias",
+      "original_gradient_max_abs": 7.273629307746887e-07,
+      "fp32_local_replay_gradient_max_abs": 7.275957614183426e-07,
+      "input_dtype": "torch.float16",
+      "output_dtype": "torch.float16"
+    },
+    {
+      "parameter": "backbone.private_adapters.2.0.0.weight",
+      "original_gradient_max_abs": 0.0,
+      "fp32_local_replay_gradient_max_abs": 2.5367601352854763e-08,
+      "input_dtype": "torch.float16",
+      "output_dtype": "torch.float16"
+    },
+    {
+      "parameter": "backbone.private_adapters.2.0.0.bias",
+      "original_gradient_max_abs": 0.0,
+      "fp32_local_replay_gradient_max_abs": 1.6700070659680932e-08,
+      "input_dtype": "torch.float16",
+      "output_dtype": "torch.float16"
+    },
+    {
+      "parameter": "backbone.private_adapters.2.0.1.weight",
+      "original_gradient_max_abs": 2.8274953365325928e-06,
+      "fp32_local_replay_gradient_max_abs": 1.488379893999081e-06,
+      "input_dtype": "torch.float16",
+      "output_dtype": "torch.float16"
+    },
+    {
+      "parameter": "backbone.private_adapters.2.0.1.bias",
+      "original_gradient_max_abs": 2.2794120013713837e-07,
+      "fp32_local_replay_gradient_max_abs": 1.2153046213825291e-07,
+      "input_dtype": "torch.float16",
+      "output_dtype": "torch.float16"
+    },
+    {
+      "parameter": "backbone.private_adapters.2.0.3.weight",
+      "original_gradient_max_abs": 9.47713851928711e-06,
+      "fp32_local_replay_gradient_max_abs": 9.46965428738622e-06,
+      "input_dtype": "torch.float16",
+      "output_dtype": "torch.float16"
+    },
+    {
+      "parameter": "backbone.private_adapters.2.0.3.bias",
+      "original_gradient_max_abs": 5.163252353668213e-06,
+      "fp32_local_replay_gradient_max_abs": 5.161156877875328e-06,
+      "input_dtype": "torch.float16",
+      "output_dtype": "torch.float16"
+    },
+    {
+      "parameter": "backbone.private_adapters.2.1.0.weight",
+      "original_gradient_max_abs": 0.0,
+      "fp32_local_replay_gradient_max_abs": 4.8505155447742254e-09,
+      "input_dtype": "torch.float16",
+      "output_dtype": "torch.float16"
+    },
+    {
+      "parameter": "backbone.private_adapters.2.1.0.bias",
+      "original_gradient_max_abs": 0.0,
+      "fp32_local_replay_gradient_max_abs": 4.1496020508624554e-10,
+      "input_dtype": "torch.float16",
+      "output_dtype": "torch.float16"
+    },
+    {
+      "parameter": "backbone.private_adapters.2.1.1.weight",
+      "original_gradient_max_abs": 0.0,
+      "fp32_local_replay_gradient_max_abs": 2.5888816423957905e-08,
+      "input_dtype": "torch.float16",
+      "output_dtype": "torch.float16"
+    },
+    {
+      "parameter": "backbone.private_adapters.2.1.1.bias",
+      "original_gradient_max_abs": 0.0,
+      "fp32_local_replay_gradient_max_abs": 2.1608284050955717e-09,
+      "input_dtype": "torch.float16",
+      "output_dtype": "torch.float16"
+    },
+    {
+      "parameter": "backbone.private_adapters.2.1.3.weight",
+      "original_gradient_max_abs": 4.1606836020946503e-07,
+      "fp32_local_replay_gradient_max_abs": 4.1599611222409294e-07,
+      "input_dtype": "torch.float16",
+      "output_dtype": "torch.float16"
+    },
+    {
+      "parameter": "backbone.private_adapters.2.1.3.bias",
+      "original_gradient_max_abs": 4.866160452365875e-07,
+      "fp32_local_replay_gradient_max_abs": 4.866160452365875e-07,
+      "input_dtype": "torch.float16",
+      "output_dtype": "torch.float16"
+    },
+    {
+      "parameter": "backbone.private_adapters.2.2.0.weight",
+      "original_gradient_max_abs": 0.0,
+      "fp32_local_replay_gradient_max_abs": 4.580664292319625e-09,
+      "input_dtype": "torch.float16",
+      "output_dtype": "torch.float16"
+    },
+    {
+      "parameter": "backbone.private_adapters.2.2.0.bias",
+      "original_gradient_max_abs": 0.0,
+      "fp32_local_replay_gradient_max_abs": 3.6620448340407563e-10,
+      "input_dtype": "torch.float16",
+      "output_dtype": "torch.float16"
+    },
+    {
+      "parameter": "backbone.private_adapters.2.2.1.weight",
+      "original_gradient_max_abs": 0.0,
+      "fp32_local_replay_gradient_max_abs": 2.0802145783704873e-08,
+      "input_dtype": "torch.float16",
+      "output_dtype": "torch.float16"
+    },
+    {
+      "parameter": "backbone.private_adapters.2.2.1.bias",
+      "original_gradient_max_abs": 0.0,
+      "fp32_local_replay_gradient_max_abs": 1.6691765747367526e-09,
+      "input_dtype": "torch.float16",
+      "output_dtype": "torch.float16"
+    },
+    {
+      "parameter": "backbone.private_adapters.2.2.3.weight",
+      "original_gradient_max_abs": 2.9336661100387573e-07,
+      "fp32_local_replay_gradient_max_abs": 2.9329771678021643e-07,
+      "input_dtype": "torch.float16",
+      "output_dtype": "torch.float16"
+    },
+    {
+      "parameter": "backbone.private_adapters.2.2.3.bias",
+      "original_gradient_max_abs": 3.7602148950099945e-07,
+      "fp32_local_replay_gradient_max_abs": 3.7602148950099945e-07,
+      "input_dtype": "torch.float16",
+      "output_dtype": "torch.float16"
+    }
+  ],
+  "scope": "One explicit eight-real-batch diagnostic. FP32 local derivative replay uses same captured input/incoming gradient and pre-step weights; no formal train/eval/checkpoint/metric or M0 gate change."
+}

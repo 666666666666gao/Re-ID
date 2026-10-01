@@ -1614,3 +1614,29 @@
 | 2026-10-01T17:14:17.3154333+08:00 | /monitor-experiment | logs/visual_update_milestone_707_20261001/ | implementation | CompleteMSVR2x2 and RGBNT100roles pair, ten accepted endpoints |
 
 | 2026-10-01T18:09:29.4413101+08:00 | /experiment-audit | results/visual_update_control_complete_20261001/ | implementation | Full12 matched controls and actual fresh integrity audit; scientific gates retained |
+
+| 2026-10-01T18:25:27.4731904+08:00 | /experiment-plan | refine-logs/shared_private_evidence_v1/EXPERIMENT_PLAN_20261001_182400.md | implementation | Single structural hypothesis, nine registered-intent controls; no M0/results yet |
+
+| 2026-10-01T18:25:27.4731904+08:00 | /experiment-plan | refine-logs/shared_private_evidence_v1/EXPERIMENT_PLAN.md | implementation | Single structural hypothesis, nine registered-intent controls; no M0/results yet |
+
+| 2026-10-01T18:25:27.4731904+08:00 | /experiment-plan | refine-logs/shared_private_evidence_v1/EXPERIMENT_TRACKER_20261001_182400.md | implementation | Single structural hypothesis, nine registered-intent controls; no M0/results yet |
+
+| 2026-10-01T18:25:27.4731904+08:00 | /experiment-plan | refine-logs/shared_private_evidence_v1/EXPERIMENT_TRACKER.md | implementation | Single structural hypothesis, nine registered-intent controls; no M0/results yet |
+
+| 2026-10-01T18:25:27.4731904+08:00 | /experiment-bridge | idea-stage/docs/research_contract.md | implementation | Current hypothesis and intact full three-dataset baseline/SOTA objective |
+
+| 2026-10-01T18:58:34.9275894+08:00 | /experiment-bridge | refine-logs/shared_private_evidence_v1/EXPERIMENT_PLAN_20261001_185700.md | implementation | Real M0 numeric failure preserved; same scientific gates, matched private FP32 internal repair; no formal scores |
+
+| 2026-10-01T19:13:43.8165773+08:00 | /experiment-bridge | logs/shared_private_preflight_failure_709_20261001/ | implementation | Actual firstfailure/diagnostic/corrected5M0/witness9/registered9, fourtrain-fivepending; no formal results yet |
+
+| 2026-10-01T19:13:43.8165773+08:00 | /experiment-bridge | logs/shared_private_launch_709_20261001/ | implementation | Actual firstfailure/diagnostic/corrected5M0/witness9/registered9, fourtrain-fivepending; no formal results yet |
+
+| 2026-10-01T19:13:43.8165773+08:00 | /experiment-bridge | refine-logs/shared_private_evidence_v1/EXPERIMENT_CODE_REVIEW.md | implementation | Actual firstfailure/diagnostic/corrected5M0/witness9/registered9, fourtrain-fivepending; no formal results yet |
+
+| 2026-10-01T19:13:43.8165773+08:00 | /experiment-bridge | refine-logs/shared_private_evidence_v1/RESCUE_REVIEW_FINAL_20261001.md | implementation | Actual firstfailure/diagnostic/corrected5M0/witness9/registered9, fourtrain-fivepending; no formal results yet |
+
+| 2026-10-01T19:13:43.8165773+08:00 | /experiment-bridge | refine-logs/shared_private_evidence_v1/GRADIENT_DIAGNOSTIC_20261001.json | implementation | Actual firstfailure/diagnostic/corrected5M0/witness9/registered9, fourtrain-fivepending; no formal results yet |
+
+| 2026-10-01T19:13:43.8165773+08:00 | /experiment-bridge | refine-logs/shared_private_evidence_v1/EXPERIMENT_TRACKER_20261001_190938.md | implementation | Actual firstfailure/diagnostic/corrected5M0/witness9/registered9, fourtrain-fivepending; no formal results yet |
+
+| 2026-10-01T19:13:43.8165773+08:00 | /experiment-bridge | refine-logs/shared_private_evidence_v1/EXPERIMENT_TRACKER.md | implementation | Actual firstfailure/diagnostic/corrected5M0/witness9/registered9, fourtrain-fivepending; no formal results yet |

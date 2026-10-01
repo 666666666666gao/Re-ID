@@ -1,0 +1,74 @@
+{
+  "schema": "trifusion-shared-private-evidence-v1",
+  "status": "RUNNING",
+  "dataset": "RGBNT201",
+  "seed": 42,
+  "epochs": 50,
+  "checkpoint_policy": "best_official_map",
+  "initializer": {
+    "author_checkpoint": "/data/gaob/Re-ID/Trifusion/pertrained-model/RGBNT201_PlainBaseline_50.pth",
+    "author_checkpoint_sha256": "789e5e14aacd74ad122aad701389eb216ca5b4fda92687e27351a513023b4407",
+    "signal_state_sha256": "4d5cf3d7bb445199b6d2a0d3492c4fcf8ae5263f240bb6b6a322933695abd89d",
+    "baseline_kind": "independently_trained_module_free_cls",
+    "architecture": "shared_private_evidence_v1",
+    "m1": true,
+    "m2": true,
+    "m3": false,
+    "width": 128,
+    "fused_width": 1536,
+    "prediction_weight": 0.0,
+    "learning_rate": 0.00035,
+    "weight_decay": 0.0001,
+    "entry_sha256": "d5c578dd57681e89fca5761f65d662cfc84785c7137388b27130a2a6c509689c",
+    "model_source_sha256": "e2a51154b5b327341f35e453dd32a821b091a49a669b49a7c70e79e6e2f2591b",
+    "initial_model_state_sha256": "96a85fef436571c55440c03807fd730d251923ffafa7519894d939e516a2a4f7",
+    "trainable_parameters": 89917706,
+    "condition": {
+      "visual_update": "low_lr",
+      "readout": "roles",
+      "visual_lr": 5e-06,
+      "visual_parameter_dtype": "float32",
+      "evidence_flow": "separated_roles"
+    },
+    "common_initializer_sha256": {
+      "backbone": "ebcdaef1ea006369fbbaa693bce98677b2efaa06abe4657a3e26ee675e6b4b16",
+      "neck": "06efe49412cdf6c9d8d9162b9394e4bc49329d169906cecc2b6c4784bcdb166e",
+      "classifier": "22bd8be47d0a37e4afd7689789e40999fe33dd5ee5b8e338bd920bd6678fbf47"
+    },
+    "role_source_sha256": "f41ff1af1fb1b6303a9af63cf039263e2572c16b23813f92a0297f014e71dd4f",
+    "visual_update_semantics": "base visual parameters only; camera and nonvisual Signal state frozen",
+    "common_initializer_scope": "Original signal/shared-adapter backbone, neck and classifier; private adapters excluded",
+    "evidence_flow_source_sha256": "3ab4b16c4898ce98a80f0428ea04d4f0b696f77870929fdfc53f0e4444722889"
+  },
+  "protocol_sha256": "e63be5d9f8bd41df365264ad8f459dcd063d088023a2d2ed525a49a72f61161e",
+  "condition": {
+    "visual_update": "low_lr",
+    "readout": "roles",
+    "visual_lr": 5e-06,
+    "visual_parameter_dtype": "float32",
+    "evidence_flow": "separated_roles"
+  },
+  "started_at": "2026-10-01T18:44:44.720705+08:00",
+  "history": [
+    {
+      "epoch": 1,
+      "steps": 8,
+      "mean_loss": 5.128056049346924,
+      "seconds": 8.476004216005094
+    }
+  ],
+  "optimizer_groups": [
+    {
+      "label": "new",
+      "base_lr": 0.00035,
+      "tensors": 182,
+      "elements": 3777290
+    },
+    {
+      "label": "visual",
+      "base_lr": 5e-06,
+      "tensors": 152,
+      "elements": 86140416
+    }
+  ]
+}

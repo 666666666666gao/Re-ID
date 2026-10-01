@@ -14052,3 +14052,42 @@ RGBNT201完整矩阵已见§41.706；两数据集现在都显示视觉更新效�
 本次接收器原版错误地断言training.json.status等于COMPLETE，实际十二份状态均为BEST_OFFICIAL_MAP_TRAINING_COMPLETE，17:40:12中止于归档前。原脚本、定时器回执与stderr原样保留；仅修正接收器状态字符串后17:43:49归档成功，实验、权重、原报告与原门槛没有变化。该错误属于证据接收，不是训练失败，不补造重试训练。
 
 下一阶段依据完整面板研究共享全局流与私有角色证据的分离；首先登记一个结构干预并配独立global-only及参数控制，不能同时重写M2对应、M3职责、采样器、视觉学习率和读出。共享/私有分离是待验证假设，不提前声称保住global或十点增益。已完成的M3地址×预测器、V17关系保护、提示carry、全patch/池化与global-token保持封存，不重新换名立项。当前仍是ReID底座上的第二阶段、seed42、官方选best，未获得完整流程多seed、三集强baseline或经协议/资源核实SOTA证据，GoalACTIVE/UNMET。
+
+## §41.709 共享全局流与私有角色流：真实预检失败、数值定位与九端正式登记
+
+记录：2026-10-01T19:13:43.8165773+08:00；以下执行状态是2026-10-01T19:09:38.982295+08:00的存档快照，不把写入时间或预计完成时间当作服务器新结果。原§708完整12端及fresh审计已接收，C1/C2科学门仍FAIL；本轮不重开视觉学习率、旧M2/M3、提示或关系保护。
+
+唯一结构假设：私有角色增量是否直接写回后续共享视觉流。每个4/8/12层保留原九个共享适配器形成S，再增加完全相同初始化的九个私有适配器D_e；两种roles均读取S+D_e。coupled_roles送S+mean(D_e)继续CLIP，separated_roles只送S；独立global_only不运行私有bank/角色。两种roles同容量、同初始全state、同算子和1536维读出，只改变直接写回。角色梯度仍能改变共享适配及视觉主干，不宣称global严格保底；shared/private思想及普通视觉微调本身均非原创贡献。
+
+第一次源码复核发现collector expected字段拼错，先修正并复核PASS，原错误源码和完整回复保留。随后实际三项RGBNT201八批M0在18:44:22启动，18:45:12.680094父进程确认退出码0/1/0：分离版累计有26个私有LN/下投影参数没有非零梯度。父预检/一次性wrapper如约FAILED，未启动witness或正式训练；separated训练回执残留RUNNING是断言前落盘状态，不能说它仍在运行，更不能填成mAP=0。24份原源码/回执/日志已逐字节封存，archive SHA85707e3429f75324f5541ff5d38de481004125b52029a962520dc5482f285b25。
+
+fresh gpt-6-astra/max救援确认九个私有bank均有真实角色路径，建议先辨别数值精度。明确执行一次八批诊断，实际exit0：loss与原轨迹最大差1.430511474609375e-6，缺项仍同26个；在诊断第八批相同pre-step权重、输入及上游梯度下，FP32局部导数重放使26项全部由零恢复非零，最大梯度范围3.6620e-10至2.5889e-8，输入/输出均FP16。这证明诊断状态的私有MLP内部数值丢失，不声称历史权重逐位复现，也未进一步分离半精度权重舍入或反向乘积下溢。原诊断source/JSON/log与原失败均保留。
+
+只对两个roles共同使用的private_adapters内部禁用autocast并将输入转FP32，输出转回原dtype；shared、视觉、role算子、损失、学习率、梯度门和八批预算不变。经救援源码复核PASS后使用独立_v2路径人工执行一次修正尝试，不是无变化自动retry，也不使用正式分数选修正。两次review均same-family/provisional/source-only，不能当独立性能审计。
+
+修正版wrapper实际19:04:41.789291启动PID2840894；preflight PID2840895实际exit0、witness PID2843514实际exit0。九模型共同signal/shared-adapter/neck/classifier初始张量逐位相同（私有bank明确排除在common范围）；两种roles全初始state及容量还分别核对：
+RGBNT201: 两种roles full initial state=96a85fef436571c55440c03807fd730d251923ffafa7519894d939e516a2a4f7，trainable parameters=89917706
+RGBNT100: 两种roles full initial state=62d001b975a5876578c5f581cf4e235b55b6a2037298fe94cbc77de25e5c71fa，trainable parameters=89731850
+MSVR310: 两种roles full initial state=36bc43bbe8bccb4177bdcaadda4aca8b49cedfa22686497bd5c0686baae5e219，trainable parameters=89893130
+
+快照共五项真实M0通过：
+MSVR310/coupled_roles: 334/334非零梯度，reload=0，peak allocated=16406107648 bytes
+RGBNT100/coupled_roles: 334/334非零梯度，reload=0，peak allocated=16402868736 bytes
+RGBNT201/coupled_roles: 334/334非零梯度，reload=0，peak allocated=16410149376 bytes
+RGBNT201/global_only: 208/208非零梯度，reload=0，peak allocated=13794146816 bytes
+RGBNT201/separated_roles: 334/334非零梯度，reload=0，peak allocated=16406561280 bytes
+
+冻结camera/非视觉状态不变、视觉真实更新及严格重载均实际通过。三项RGBNT201预检之后，其余六项各自仍需先M0；所有正式训练fresh构造，不读取M0权重。正式九端manifest实际登记，controller PID2846591，229项source绑定，manifest SHA89227da9bea2b89d399fa19f814ff921c8a92b666d31c072dbf4fdaea7694109。四项完整50轮训练进程已存在、五项PENDING、正式验收0/9：
+
+| GPU | 正式50轮端 | 已记录完整epoch | 实际train PID |
+|---:|---|---:|---:|
+| 0 | RGBNT201/coupled_roles | 1/50 | 2847328 |
+| 1 | RGBNT100/coupled_roles | 0/50 | 2850362 |
+| 2 | MSVR310/coupled_roles | 0/50 | 2850432 |
+| 3 | RGBNT201/separated_roles | 1/50 | 2847264 |
+
+seed42/full50、warmup5/cosine50、视觉152参数FP32存储/base LR5e-6、新模块base LR3.5e-4、CE0.1/Triplet0.3及B64/K8/PLAIN_V8 loader保持；首轮warmup后的视觉实际LR1e-6，不称全程常数5e-6。static global-token/context-query/区域1536读出、原CNN→Transformer→Mamba桥接固定，M3与local-ID关闭。每轮正式GT评价、最高fused mAP同一完整state（并列取后轮）、严格重载，全部指标随同checkpoint。camera/时间段过滤及MSVR的103个gallery-only身份/464干扰记录均保留。骨干来自已有ReID权重且camera状态保留，不是干净公开CLIP从头联合训练；global-only仍作为该新面板的fresh同日程独立控制，不把重复控制当新随机种子。
+
+预登记S1：separated减同容量coupled；S2：separated减独立global-only。两条均要求三集mAP正/R1非负且201/MSVR mAP至少+0.5pp。完整九端才能判门，不按中途best改seed、LR、阈值或取消不利端；原708失败门不重新定阈值。240秒队列、健康空闲卡小于500MiB、最多四卡、异常停止新launch并排空已启动项，保留中止，无自动retry。部署前实际可用84,135,997,440字节（约78GiB），初始7–10GiB产物预算足够，未清理必要权重/数组。
+
+48份新登记/M0/当前日志原件已存档并校验，archive SHAc6d270d993972231dc677aa201af5a16f86101ac21e2cb25ef57bf198ef3c3a0；模型/原图/距离数组留远端。旧222 sealed source未变，新229 source绑定通过；原视觉12端及CPU报告没有重跑。继续收齐九端、完整图库与修复/破坏/身份分布/全50轮轨迹/成本核对，再做fresh结果审计。工程过门、单seed局部门或部分数据集增益都不能代替三数据集baseline与资源/协议限定SOTA目标，Goal仍ACTIVE/UNMET。
