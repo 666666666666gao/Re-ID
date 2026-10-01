@@ -1,0 +1,111 @@
+{
+  "schema": "trifusion-visual-training-boundary-source-audit-v1",
+  "audited_at": "2026-10-01T12:16:05.648115+08:00",
+  "manifest_sha256": "c749e3089a775c5781435fe14bfb7a1b75228f59004c9a31ec26d2a9409706dc",
+  "runtime_source_count_verified": 221,
+  "source_bindings": {
+    "modeling/trifusion/correspondence_roles.py": {
+      "sha256": "e2a51154b5b327341f35e453dd32a821b091a49a669b49a7c70e79e6e2f2591b"
+    },
+    "tools/run_visual_start_roles.py": {
+      "sha256": "c24362f4ea9053a1534720e549aff736adca1f38d5ad17a33d864f88d0cbc52a"
+    },
+    "tools/run_role_global_tokens.py": {
+      "sha256": "dba04e72a4d3b81583b7c5c2e26aa0204618736a2c57280340313e50674f63cb"
+    },
+    "tools/run_correspondence_context_identity.py": {
+      "sha256": "9f4cc9f11998819d4a927a32f4e47baf0c4ff9d14c4bc93b0dc35b0153ebc142"
+    },
+    "tools/run_correspondence_roles.py": {
+      "sha256": "e50865fb923297cd61cf38b33ec2bc95154f8c503b5dfe5de9823cad3f03d7ef"
+    },
+    "tools/official_three_dataset_data.py": {
+      "sha256": "c3180a88d12440709319d2025928fc699ff3b7c020b11697d468453fbfc68062"
+    },
+    "tools/run_signal_preserving_v5.py": {
+      "sha256": "e162184f68778b4991db0f97f26c5fda273b2ad2f7c8db2bbb2d53775eb717e5"
+    },
+    "comparators/Signal-cd1b0a6/config/defaults.py": {
+      "sha256": "40257d349153e56e345983c99b1638d7c3d77966dfd2f5496fe03c86dc8dbd57"
+    },
+    "comparators/Signal-cd1b0a6/modeling/meta_arch.py": {
+      "sha256": "8b709d5ab4b14ba150a96bbb5e8cc7e6dbbb71dd8bd30cafd7a5cb110ee5a757"
+    },
+    "comparators/Signal-cd1b0a6/solver/make_optimizer.py": {
+      "sha256": "ada1023a79fcaaed092bce0849a61db9d0253cf8974c494bfb3082d0fd35fee1"
+    },
+    "comparators/Signal-cd1b0a6/configs/RGBNT201/Signal.yml": {
+      "sha256": "a13bd5169a4c710fa79efc87db909409015a0b2611086c0fbf4c1842f0cfcc44"
+    },
+    "comparators/Signal-cd1b0a6/configs/RGBNT100/Signal.yml": {
+      "sha256": "02641ce2941dcd50df77d379aab54650cae4a2a6b15ba1bcd43deba970b6900f"
+    },
+    "comparators/Signal-cd1b0a6/configs/MSVR310/Signal.yml": {
+      "sha256": "357ca3a989e943ea5348e6206c0d0f69b3c0d35ad9fbadbf68d2786439b8a915"
+    }
+  },
+  "inputs_sha256": "6fb9d6a1876a67447ad0b126f154397b6af9fd48e1c3b885a2d13de102cd347a",
+  "initialization_witness_sha256": "ccfe359b92ba76dd74f5fe25c1d79a864cd4b3905bb64b65c606d688da561a7a",
+  "rows": [
+    {
+      "dataset": "RGBNT201",
+      "frozen_visual_saved_state_tensors": 152,
+      "frozen_visual_saved_state_elements": 86140416,
+      "current_trainable_parameters": 2871242,
+      "native_signal_config": {
+        "BASE_LR": "0.00035",
+        "MAX_EPOCHS": "50",
+        "IMS_PER_BATCH": "64",
+        "NUM_INSTANCE": "8",
+        "WARMUP_ITERS": "10",
+        "OPTIMIZER_NAME": "'Adam'"
+      }
+    },
+    {
+      "dataset": "RGBNT100",
+      "frozen_visual_saved_state_tensors": 152,
+      "frozen_visual_saved_state_elements": 86140416,
+      "current_trainable_parameters": 2685386,
+      "native_signal_config": {
+        "BASE_LR": "0.0007",
+        "MAX_EPOCHS": "30",
+        "IMS_PER_BATCH": "128",
+        "NUM_INSTANCE": "16",
+        "WARMUP_ITERS": "5",
+        "OPTIMIZER_NAME": "'Adam'"
+      }
+    },
+    {
+      "dataset": "MSVR310",
+      "frozen_visual_saved_state_tensors": 152,
+      "frozen_visual_saved_state_elements": 86140416,
+      "current_trainable_parameters": 2846666,
+      "native_signal_config": {
+        "BASE_LR": "5e-6",
+        "MAX_EPOCHS": "50",
+        "IMS_PER_BATCH": "64",
+        "NUM_INSTANCE": "4",
+        "WARMUP_ITERS": "0",
+        "OPTIMIZER_NAME": "'Adam'"
+      }
+    }
+  ],
+  "established_facts": [
+    "Current CrossLayerAdaptedCLIP explicitly freezes every Signal parameter. Public/reid visual conditions change frozen weights, not trainability.",
+    "M1 hook outputs alter the downstream shared input. There is no whole-forward no_grad cutoff; gradients can propagate through frozen later blocks to adapters. Shared-global is therefore trainable through adapters, not an independent fixed baseline.",
+    "Current optimizer includes requires_grad parameters only in one AdamW group; the training loop sets NEW_MODULE_LR times the same five-epoch warmup/cosine multiplier.",
+    "Current loader explicitly uses training batch64/K8. Native Signal configurations differ on RGBNT100 and MSVR310; matching50 epochs alone does not equalize their schedule or sampling.",
+    "Native Signal defaults FROZEN=False and only invokes adapter-only freezing when that flag is true. Its optimizer assigns CLIP base, non-adapter parameters5e-6 when not frozen. This is source behavior, not an audit of every historical publication checkpoint training run.",
+    "Current checkpoint_state excludes all backbone.signal.* tensors and current training asserts the whole Signal hash unchanged. Simply switching requires_grad=True would violate both the training invariant and checkpoint/reload contract."
+  ],
+  "requirements_for_any_future_visual_update_control": [
+    "Keep the present registered six-end campaign unchanged and complete its paired analysis first.",
+    "An independently registered visual-update study must define its exact trainable visual tensors and optimizer groups, save and strictly reload changed visual state, and check only genuinely frozen tensors for immutability.",
+    "Separate ordinary visual fine-tuning/global-only effects from role contribution with matched initialization and training boundaries. Do not label visual fine-tuning a new algorithmic contribution."
+  ],
+  "limits": [
+    "86140416 is a saved visual-state element count derived from pinned tensor shapes, not measured gradient support, optimizer updates, FLOPs or a proven capacity bottleneck.",
+    "Source/training-boundary differences are established. Their performance causality is not: this audit executes no model, optimization, evaluation or new experiment.",
+    "No current source, gate, seed, loader, checkpoint, environment or training process was changed."
+  ]
+}
