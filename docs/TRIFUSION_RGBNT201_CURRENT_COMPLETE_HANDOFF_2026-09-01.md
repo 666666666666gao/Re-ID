@@ -14328,3 +14328,12 @@ N1-A事前门：high−已完成同配方原roles三集mAP>0/R1>=0，201与MSVR�
 正式high/low×三数据集六端于2026-10-02T05:20:41.661554+08:00由控制器21951启动一次。2026-10-02T05:24:35.680284+08:00实查控制器与4个worker/训练进程存活：high201、高100、高MSVR、low201正在完整50轮；首批4项M0均287/287、reload0，low100/lowMSVR待健康空闲卡并须各自M0。此为实存进程/回执，不是预计完成。238来源封存，240秒调度，无抢占或自动retry；日志见logs/native_detail_start723_20261002和EXPERIMENT_TRACKER_20261002_723.md。
 
 全部端仍按最高fused mAP同一权重/并列较晚轮、严格完整重载及真实完整GT图库，N1-A/B门与seed42不改，不使用中途分数取消或救分。当前只有工程通过与训练启动，未有N1完整检索成绩，不称+10或SOTA。四卡分配约16–17GiB；空间69476974592B，无必要删除前序审计依赖。完整CPU报告与一次性等待器已写、fresh源码复核中，尚未部署/执行；它们不修改训练238来源。N2/N3未实现。GoalACTIVE/UNMET。
+
+
+### 41.724 — N1完整CPU报告与240秒等待器复核完成；运行结果仍待六端终态（2026-10-02）
+
+在六项高/低分辨率正式训练继续期间，新增tools/report_native_detail_complete.py与tools/wait_native_detail_complete_analysis.py，均位于已登记238训练源之外，不更改活跃模型、训练配方、门槛或checkpoint选择。仅在六端全部完整50轮、M0/训练/严格重载回执一致后，用已保存的完整GT图库距离计算N1-A、N1-B及修复/新增首位错误、身份宏平均AP、固定模型bootstrap；保留新六端全轨迹、末轮退化与成本，以及固定旧clean六端报告的原数据。相对global-only只作描述性比较，不是第三个门槛。
+
+实际fresh gpt-6-astra/max审核/root/review_native_report_724首次REQUEST_CHANGES：报告曾把high−global-only显示成overall PASS/FAIL。最小修正删除该未登记门槛，并改正参数匹配high/low诊断文字、完整带入旧报告末轮退化；修订后SOURCE_ONLY_PASS，0阻塞，same-family/provisional。两次原文及精确源码归属见refine-logs/native_detail_v1/COMPLETE_REPORT_CODE_REVIEW_20261002.md/.json；私有完整调用trace不上传。仅AST及源码/已有记录核查，未执行模型、采样器、评分器或报告，不代表工程运行或科学结果PASS。
+
+等待器按240秒观察，父队列FAILED则零报告；COMPLETE后一次CPU报告，保留退出码和日志，不自动重试。此节出版时尚未启动等待器；部署后使用RUN_INSTRUCTIONS追加的唯一命令，实际PID/WAITING状态随后另行记录。原正式训练控制器21951不重启，N2/N3未加入。源代码封存、seed42、官方集已消费与单模型bootstrap边界不变，GoalACTIVE/UNMET。

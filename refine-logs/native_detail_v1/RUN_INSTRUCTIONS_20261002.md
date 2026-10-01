@@ -19,3 +19,14 @@ CUDA_VISIBLE_DEVICES=0 /data/gaob/Re-ID/conda-envs/tri_reid/bin/python -B tools/
 六端high/low×三数据集均完整50轮。其余四端各自M0先行，M0失败不开始该端正式训练。复用240秒队列，无抢占/自动重试，失败停止新增调度并等待已启动端结束。每端最高fused mAP的一份权重、并列较晚轮、四指标同行；车辆主表只列mAP/R1。完整真实GT图库与原过滤、干扰身份保留，无rerank。
 
 两条命令不表示已经执行。当前只实现N1信息来源，不执行N2/N3。完整结果收齐后才运行一次配对分析与fresh结果审计。
+
+
+## 完整CPU报告等待器（§41.724）
+
+前文预检与正式训练命令已实际执行，controller21951运行，不得重复。报告代码经两次实际fresh源码复核PASS；确认下列receipt和output尚不存在后，仅执行一次：
+
+```bash
+/data/gaob/Re-ID/conda-envs/tri_reid/bin/python -B tools/wait_native_detail_complete_analysis.py --campaign /data/gaob/Re-ID/Trifusion/logs/native_detail_20261002_v1 --output-dir /data/gaob/Re-ID/Trifusion/results/native_detail_complete_20261002 --receipt /data/gaob/Re-ID/Trifusion/logs/native_detail_analysis_waiter_20261002.json
+```
+
+持久进程240秒观察，只在六端完整终态后运行一次已保存GT距离CPU分析；失败记录不自动重试。此处记载命令不表示已启动，后续必须登记真实PID/WAITING与最终退出码。无模型前向/新训练，工程报告完成不等于N1门槛或全Goal达成。

@@ -1668,3 +1668,5 @@
 - 2026-10-02 §41.722: reviewed minimal N1 native-image detail values and matched low-resolution control; 4 Python files/plan/instructions/code review. No runtime or retrieval claim. GoalACTIVE_UNMET.
 
 - 2026-10-02 §41.723: actualN1 six initialization parity / 2preflightM0 PASS, sixfull50queue21951 startedonce; startup4live formal/2pending and4M0pass verified, sources238sealed. No complete retrieval claim, goalACTIVE_UNMET.
+
+- 2026-10-02 §41.724: full-six N1 CPU report + 240sec once waiter source-only review REQUEST_CHANGES then PASS; unregistered gate corrected, pinned prior late-degradation preserved. Deployment/run pending, sources238 unchanged; goalACTIVE_UNMET.
