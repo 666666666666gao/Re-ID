@@ -1660,3 +1660,5 @@
 - 2026-10-02 §41.718: second clean-public full50 pair onMSVR310;4/6 complete, twoRGBNT100 running.7 new original texts verified, MSVR mAP+.2818/R1+1.5228; fixed0.5pp condition unmet, full6/J1/audit pending.
 
 - 2026-10-02 §41.719: fifth clean-public full50 terminal(RGBNT100 global78.4913/93.8776), remainingroles27/50. Seven new original texts retained; seven-source N1 interface readback and pinned UGG source qualification. Full6/J1/audit pending; train source unchanged.
+
+- 2026-10-02 §41.720: preserve6 missing local RGBNT201 roles terminal texts(512814B), unchanged result; inspect13,857 saved step records from5 complete endpoints. Actual per-batch identity/environment meta support is not recorded; no sampler/model/scorer replay. Full6 report/audit and04:08 observation continue.
