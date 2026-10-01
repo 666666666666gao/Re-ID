@@ -14337,3 +14337,12 @@ N1-A事前门：high−已完成同配方原roles三集mAP>0/R1>=0，201与MSVR�
 实际fresh gpt-6-astra/max审核/root/review_native_report_724首次REQUEST_CHANGES：报告曾把high−global-only显示成overall PASS/FAIL。最小修正删除该未登记门槛，并改正参数匹配high/low诊断文字、完整带入旧报告末轮退化；修订后SOURCE_ONLY_PASS，0阻塞，same-family/provisional。两次原文及精确源码归属见refine-logs/native_detail_v1/COMPLETE_REPORT_CODE_REVIEW_20261002.md/.json；私有完整调用trace不上传。仅AST及源码/已有记录核查，未执行模型、采样器、评分器或报告，不代表工程运行或科学结果PASS。
 
 等待器按240秒观察，父队列FAILED则零报告；COMPLETE后一次CPU报告，保留退出码和日志，不自动重试。此节出版时尚未启动等待器；部署后使用RUN_INSTRUCTIONS追加的唯一命令，实际PID/WAITING状态随后另行记录。原正式训练控制器21951不重启，N2/N3未加入。源代码封存、seed42、官方集已消费与单模型bootstrap边界不变，GoalACTIVE/UNMET。
+
+
+### 41.725 — N1已完成3/6：首个RGBNT201高低配对不支持预登记增量；其余端继续（2026-10-02）
+
+2026-10-02T06:05:01.758193+08:00唯一ETA观察器实查：high RGBNT201、low RGBNT201及high MSVR310已完整50轮、最佳权重严格重载结束；high RGBNT100 18轮、low RGBNT100 3轮、low MSVR310 5轮继续训练。三个活跃训练PID27210/136945/166770、控制器21951均实际存活，不以瞬间0利用率判停。所有6端M0均287/287累计非零有限梯度和精确重载；201两端引用此前预检M0、其余四端新执行M0，正式训练均新建模型。238训练源不变，空闲68033986560B。原始24项文本+快照见logs/native_detail_milestone725_20261002，权重和距离张量留远端。
+
+RGBNT201 high best10为68.3015/69.2584/78.7081/83.8517；low best13为68.1329/71.0526/79.3062/84.5694。相对同配方独立原roles69.8764/71.4115，high变化-1.5749mAP/-2.1531R1；high−low为+0.1686/-1.7943。high MSVR310 best16为51.1501/68.0203，相对同配方原roles52.0042/68.6971为-0.8541/-0.6768。这些是完整端的单份mAP-best正式结果，不是中途best；目前已完成的组件不满足预登记N1-A/B，不能声称原生细节提供稳定额外身份证据。单种子差值不确定唯一根因，不据此改系数、选种子或叠加N2/N3。
+
+报告等待器103554已于05:43:56实际启动，在此快照仍WAITING_FULL6，240秒观察、invocations0，无报告输出。剩余三端全部继续完成，完整报告/fresh结果审计后再决定下一假设，不取消或改门。high100墙钟估计07:21、low100约08:58、lowMSVR约06:32；少轮端包含初始化/正在运行轮次，ETA仅粗估。下一实查安排06:35，以收齐MSVR高低配对并更新长端稳态ETA；该计划不是已观察完成。完整表见EXPERIMENT_TRACKER_20261002_725.md，其他正式终态保持“—”。GoalACTIVE/UNMET；工程与局部完成不等于全三集baseline/SOTA达成。

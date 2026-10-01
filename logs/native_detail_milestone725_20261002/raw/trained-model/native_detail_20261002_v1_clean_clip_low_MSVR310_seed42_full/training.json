@@ -1,0 +1,157 @@
+{
+  "schema": "trifusion-native-detail-v1",
+  "status": "RUNNING",
+  "dataset": "MSVR310",
+  "seed": 42,
+  "epochs": 50,
+  "checkpoint_policy": "best_official_map",
+  "initializer": {
+    "architecture": "native_detail_v1",
+    "dataset": "MSVR310",
+    "seed": 42,
+    "readout": "roles",
+    "public_clip_path": "/data/gaob/Re-ID/Trifusion/pertrained-model/ViT-B-16.pt",
+    "public_clip_sha256": "5806e77cd80f8b59890b7e101eabd078d9fb84e6937f9e85e4ecb61988df416f",
+    "public_visual_tensors_verified": 152,
+    "visual_initial_sha256": "9a92d7f60d061e3282fdc2a557a7d07d7cc519a4534e47239e9240cfb95c62b0",
+    "fresh_camera_initial_sha256": "b836a2e23c5dcb8834b69aee4a26a04d4209819b23527bd1c57693ba8e914201",
+    "fresh_camera_shape": [
+      8,
+      1,
+      768
+    ],
+    "author_source_commit": "cd1b0a672d1fe642e7608731cb4899a19dda7d51",
+    "protocol_sha256": "7f2b35f9a7e00433558c1e723db0e3ff0ea9daa7144eeeb972139d1502945cbc",
+    "common_initializer_sha256": {
+      "backbone": "3423402d38d0867292c5e78d3b847ec5d49a4351575a8082bee7924ab71ecd6e",
+      "neck": "06efe49412cdf6c9d8d9162b9394e4bc49329d169906cecc2b6c4784bcdb166e",
+      "classifier": "47b33e14c05d9560e27d6f6287cd36eabbdd766f6aa26508367922d43571461e"
+    },
+    "initial_model_state_sha256": "5f0af0c511b15e700d18d3a3012003eaad54dbfdac200c075431d85d7af95dc0",
+    "trainable_parameters": 89086474,
+    "trainable_parameter_tensors": 287,
+    "entry_sha256": "4344bea88f47f65d9d7422eb0bb23567f1fb030a61851d96dfa25bdf6f627a0f",
+    "baseline_sha256_semantics": "Public CLIP input file only; no trained ReID baseline is read.",
+    "camera_semantics": "Fresh author truncated-normal embedding, trainable at new-module LR.",
+    "initialization_scope": "public visual only; fresh camera, unused Signal state, shared adapters, roles and retrieval heads",
+    "detail_resolution": "low",
+    "role_source_sha256": "0ff799fe309c0a6437623a26cda978309421af8ba1e85485da2dd78389b6f335",
+    "condition": {
+      "visual_update": "low_lr",
+      "readout": "roles",
+      "visual_lr": 5e-06,
+      "visual_parameter_dtype": "float32",
+      "initialization": "public_CLIP_fresh_camera_heads_modules",
+      "public_clip_sha256": "5806e77cd80f8b59890b7e101eabd078d9fb84e6937f9e85e4ecb61988df416f",
+      "initialization_witness_sha256": "44368f7545628679fab37ded9f45b8cd6c086b9f7c43efd05eed7faa3e31b923",
+      "camera_update": "new_module_lr_0.00035",
+      "detail_resolution": "low",
+      "detail_candidates": 512,
+      "native_stem_parameters": 93248
+    },
+    "initialization_witness_sha256": "44368f7545628679fab37ded9f45b8cd6c086b9f7c43efd05eed7faa3e31b923"
+  },
+  "protocol_sha256": "7f2b35f9a7e00433558c1e723db0e3ff0ea9daa7144eeeb972139d1502945cbc",
+  "condition": {
+    "visual_update": "low_lr",
+    "readout": "roles",
+    "visual_lr": 5e-06,
+    "visual_parameter_dtype": "float32",
+    "initialization": "public_CLIP_fresh_camera_heads_modules",
+    "public_clip_sha256": "5806e77cd80f8b59890b7e101eabd078d9fb84e6937f9e85e4ecb61988df416f",
+    "initialization_witness_sha256": "44368f7545628679fab37ded9f45b8cd6c086b9f7c43efd05eed7faa3e31b923",
+    "camera_update": "new_module_lr_0.00035",
+    "detail_resolution": "low",
+    "detail_candidates": 512,
+    "native_stem_parameters": 93248
+  },
+  "started_at": "2026-10-02T06:02:00.353371+08:00",
+  "history": [
+    {
+      "epoch": 1,
+      "steps": 20,
+      "mean_loss": 5.415478825569153,
+      "seconds": 15.359225911000976,
+      "official_fused": {
+        "mAP": 17.00064756214116,
+        "Rank-1": 39.593908190727234,
+        "Rank-5": 58.71404409408569,
+        "Rank-10": 65.65144062042236
+      }
+    },
+    {
+      "epoch": 2,
+      "steps": 20,
+      "mean_loss": 5.219755601882935,
+      "seconds": 13.157007386995247,
+      "official_fused": {
+        "mAP": 24.34510488284575,
+        "Rank-1": 45.85448503494263,
+        "Rank-5": 65.3130292892456,
+        "Rank-10": 72.0812201499939
+      }
+    },
+    {
+      "epoch": 3,
+      "steps": 20,
+      "mean_loss": 4.864891362190247,
+      "seconds": 13.01584935199935,
+      "official_fused": {
+        "mAP": 33.628509309572344,
+        "Rank-1": 55.32994866371155,
+        "Rank-5": 72.75803685188293,
+        "Rank-10": 78.68020534515381
+      }
+    },
+    {
+      "epoch": 4,
+      "steps": 20,
+      "mean_loss": 4.288199114799499,
+      "seconds": 12.578992246999405,
+      "official_fused": {
+        "mAP": 33.33608260847687,
+        "Rank-1": 51.9458532333374,
+        "Rank-5": 70.38916945457458,
+        "Rank-10": 76.48054361343384
+      }
+    },
+    {
+      "epoch": 5,
+      "steps": 20,
+      "mean_loss": 3.5392661929130553,
+      "seconds": 13.014635630999692,
+      "official_fused": {
+        "mAP": 34.54144169308489,
+        "Rank-1": 53.13028693199158,
+        "Rank-5": 69.54314708709717,
+        "Rank-10": 75.46531558036804
+      }
+    },
+    {
+      "epoch": 6,
+      "steps": 20,
+      "mean_loss": 2.8106413006782534,
+      "seconds": 12.901888899999904,
+      "official_fused": {
+        "mAP": 40.785649138754856,
+        "Rank-1": 61.42131686210632,
+        "Rank-5": 75.80372095108032,
+        "Rank-10": 81.7258894443512
+      }
+    }
+  ],
+  "optimizer_groups": [
+    {
+      "label": "new",
+      "base_lr": 0.00035,
+      "tensors": 135,
+      "elements": 2946058
+    },
+    {
+      "label": "visual",
+      "base_lr": 5e-06,
+      "tensors": 152,
+      "elements": 86140416
+    }
+  ]
+}
