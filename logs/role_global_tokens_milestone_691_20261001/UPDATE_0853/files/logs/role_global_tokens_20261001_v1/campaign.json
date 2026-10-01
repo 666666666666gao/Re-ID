@@ -1,0 +1,387 @@
+{
+  "status": "RUNNING",
+  "phase": "role_global_tokens",
+  "controller_pid": 1739616,
+  "started_at": "2026-10-01T07:49:33.012969+08:00",
+  "jobs": [
+    {
+      "phase": "role_global_tokens",
+      "dataset": "RGBNT100",
+      "variant": "token",
+      "status": "RUNNING",
+      "gpu": 0,
+      "started_at": "2026-10-01T07:49:33.089315+08:00",
+      "command": [
+        "/data/gaob/Re-ID/conda-envs/tri_reid/bin/python",
+        "-B",
+        "/data/gaob/Re-ID/Trifusion/tools/queue_role_global_tokens.py",
+        "--worker",
+        "--campaign",
+        "/data/gaob/Re-ID/Trifusion/logs/role_global_tokens_20261001_v1",
+        "--dataset",
+        "RGBNT100",
+        "--variant",
+        "token",
+        "--gpu",
+        "0"
+      ],
+      "pid": 1739628
+    },
+    {
+      "phase": "role_global_tokens",
+      "dataset": "RGBNT201",
+      "variant": "token",
+      "status": "COMPLETE",
+      "gpu": 1,
+      "started_at": "2026-10-01T07:49:33.090771+08:00",
+      "command": [
+        "/data/gaob/Re-ID/conda-envs/tri_reid/bin/python",
+        "-B",
+        "/data/gaob/Re-ID/Trifusion/tools/queue_role_global_tokens.py",
+        "--worker",
+        "--campaign",
+        "/data/gaob/Re-ID/Trifusion/logs/role_global_tokens_20261001_v1",
+        "--dataset",
+        "RGBNT201",
+        "--variant",
+        "token",
+        "--gpu",
+        "1"
+      ],
+      "pid": 1739629,
+      "result": {
+        "schema": "trifusion-correspondence-context-identity-retrieval-v1",
+        "status": "COMPLETE",
+        "dataset": "RGBNT201",
+        "seed": 42,
+        "selected_epoch": 2,
+        "training_epochs": 50,
+        "condition": {
+          "query_mode": "context",
+          "auxiliary_target": "none"
+        },
+        "protocol_sha256": "e63be5d9f8bd41df365264ad8f459dcd063d088023a2d2ed525a49a72f61161e",
+        "baseline_sha256": "789e5e14aacd74ad122aad701389eb216ca5b4fda92687e27351a513023b4407",
+        "checkpoint_sha256": "0982107d9206f01dbc08b6c9450f358225753835bcfe05705e63a731851b2b72",
+        "distance_sha256": "a4d0ae75277a2cf4490c75d508c61bdb11775c44113053874e767e64e0492bf0",
+        "metrics": {
+          "mAP": 72.56205395889998,
+          "Rank-1": 73.9234447479248,
+          "Rank-5": 82.41626620292664,
+          "Rank-10": 87.79904246330261
+        },
+        "diagnostic_metrics": {
+          "shared_global": {
+            "mAP": 72.49149294153334,
+            "Rank-1": 73.9234447479248,
+            "Rank-5": 82.65550136566162,
+            "Rank-10": 88.0382776260376
+          },
+          "joint_local": {
+            "mAP": 37.03559714440475,
+            "Rank-1": 40.55023789405823,
+            "Rank-5": 54.18660044670105,
+            "Rank-10": 64.1148328781128
+          }
+        },
+        "reranking": false,
+        "independent_upstream_metrics_equal": true,
+        "completed_at": "2026-10-01T08:18:42.246567+08:00",
+        "architecture": "role_global_tokens_v1",
+        "token_mode": "token",
+        "memory_mode": "full",
+        "attention_normalization": "independent",
+        "attention_subgraph_dtype": "float32",
+        "joint_local_semantics": "normalized total correction, not independent local training"
+      },
+      "exit_code": 0,
+      "completed_at": "2026-10-01T08:21:34.390172+08:00"
+    },
+    {
+      "phase": "role_global_tokens",
+      "dataset": "MSVR310",
+      "variant": "token",
+      "status": "COMPLETE",
+      "gpu": 2,
+      "started_at": "2026-10-01T07:49:33.092038+08:00",
+      "command": [
+        "/data/gaob/Re-ID/conda-envs/tri_reid/bin/python",
+        "-B",
+        "/data/gaob/Re-ID/Trifusion/tools/queue_role_global_tokens.py",
+        "--worker",
+        "--campaign",
+        "/data/gaob/Re-ID/Trifusion/logs/role_global_tokens_20261001_v1",
+        "--dataset",
+        "MSVR310",
+        "--variant",
+        "token",
+        "--gpu",
+        "2"
+      ],
+      "pid": 1739630,
+      "result": {
+        "schema": "trifusion-correspondence-context-identity-retrieval-v1",
+        "status": "COMPLETE",
+        "dataset": "MSVR310",
+        "seed": 42,
+        "selected_epoch": 10,
+        "training_epochs": 50,
+        "condition": {
+          "query_mode": "context",
+          "auxiliary_target": "none"
+        },
+        "protocol_sha256": "7f2b35f9a7e00433558c1e723db0e3ff0ea9daa7144eeeb972139d1502945cbc",
+        "baseline_sha256": "69c5e71b75036d7216ece3ff84450f0052f5e70dfaba46bf73f3e1d40992bb37",
+        "checkpoint_sha256": "0e4da3c8d0a0241286df54cec1cd546866157f1916ddc476a58be1b9a6a83f36",
+        "distance_sha256": "4e806400de2dffaa89c748d4f8825a06194c7f84a4453e19580819f30241a05e",
+        "metrics": {
+          "mAP": 52.48765148101342,
+          "Rank-1": 68.18950772285461,
+          "Rank-5": 83.41793417930603,
+          "Rank-10": 89.00169134140015
+        },
+        "diagnostic_metrics": {
+          "shared_global": {
+            "mAP": 52.43973462736685,
+            "Rank-1": 68.358713388443,
+            "Rank-5": 83.92555117607117,
+            "Rank-10": 88.83248567581177
+          },
+          "joint_local": {
+            "mAP": 18.47418633403189,
+            "Rank-1": 29.610830545425415,
+            "Rank-5": 54.99153733253479,
+            "Rank-10": 65.14382362365723
+          }
+        },
+        "reranking": false,
+        "independent_upstream_metrics_equal": true,
+        "completed_at": "2026-10-01T08:14:24.132120+08:00",
+        "architecture": "role_global_tokens_v1",
+        "token_mode": "token",
+        "memory_mode": "full",
+        "attention_normalization": "independent",
+        "attention_subgraph_dtype": "float32",
+        "joint_local_semantics": "normalized total correction, not independent local training"
+      },
+      "exit_code": 0,
+      "completed_at": "2026-10-01T08:17:34.214579+08:00"
+    },
+    {
+      "phase": "role_global_tokens",
+      "dataset": "RGBNT100",
+      "variant": "static",
+      "status": "RUNNING",
+      "gpu": 3,
+      "started_at": "2026-10-01T07:49:33.093618+08:00",
+      "command": [
+        "/data/gaob/Re-ID/conda-envs/tri_reid/bin/python",
+        "-B",
+        "/data/gaob/Re-ID/Trifusion/tools/queue_role_global_tokens.py",
+        "--worker",
+        "--campaign",
+        "/data/gaob/Re-ID/Trifusion/logs/role_global_tokens_20261001_v1",
+        "--dataset",
+        "RGBNT100",
+        "--variant",
+        "static",
+        "--gpu",
+        "3"
+      ],
+      "pid": 1739631
+    },
+    {
+      "phase": "role_global_tokens",
+      "dataset": "RGBNT201",
+      "variant": "static",
+      "status": "COMPLETE",
+      "gpu": 2,
+      "started_at": "2026-10-01T08:17:34.284352+08:00",
+      "command": [
+        "/data/gaob/Re-ID/conda-envs/tri_reid/bin/python",
+        "-B",
+        "/data/gaob/Re-ID/Trifusion/tools/queue_role_global_tokens.py",
+        "--worker",
+        "--campaign",
+        "/data/gaob/Re-ID/Trifusion/logs/role_global_tokens_20261001_v1",
+        "--dataset",
+        "RGBNT201",
+        "--variant",
+        "static",
+        "--gpu",
+        "2"
+      ],
+      "pid": 1793661,
+      "result": {
+        "schema": "trifusion-correspondence-context-identity-retrieval-v1",
+        "status": "COMPLETE",
+        "dataset": "RGBNT201",
+        "seed": 42,
+        "selected_epoch": 2,
+        "training_epochs": 50,
+        "condition": {
+          "query_mode": "context",
+          "auxiliary_target": "none"
+        },
+        "protocol_sha256": "e63be5d9f8bd41df365264ad8f459dcd063d088023a2d2ed525a49a72f61161e",
+        "baseline_sha256": "789e5e14aacd74ad122aad701389eb216ca5b4fda92687e27351a513023b4407",
+        "checkpoint_sha256": "96f74890d86339ff9cbba80e574e09bde58d4b1ccd10817daea1c52da8568007",
+        "distance_sha256": "2f1d8a403aaccd047f2d79a4b6c711cb11b2db6f1f2335c1f4cc2072108683a1",
+        "metrics": {
+          "mAP": 72.5307600011648,
+          "Rank-1": 74.04305934906006,
+          "Rank-5": 82.77512192726135,
+          "Rank-10": 87.91866302490234
+        },
+        "diagnostic_metrics": {
+          "shared_global": {
+            "mAP": 72.4480391435909,
+            "Rank-1": 73.80383014678955,
+            "Rank-5": 82.8947365283966,
+            "Rank-10": 88.0382776260376
+          },
+          "joint_local": {
+            "mAP": 33.133182710692154,
+            "Rank-1": 32.53588378429413,
+            "Rank-5": 50.83732008934021,
+            "Rank-10": 59.21052694320679
+          }
+        },
+        "reranking": false,
+        "independent_upstream_metrics_equal": true,
+        "completed_at": "2026-10-01T08:52:06.574412+08:00",
+        "architecture": "role_global_tokens_v1",
+        "token_mode": "static",
+        "memory_mode": "full",
+        "attention_normalization": "independent",
+        "attention_subgraph_dtype": "float32",
+        "joint_local_semantics": "normalized total correction, not independent local training"
+      },
+      "exit_code": 0,
+      "completed_at": "2026-10-01T08:53:35.772469+08:00"
+    },
+    {
+      "phase": "role_global_tokens",
+      "dataset": "MSVR310",
+      "variant": "static",
+      "status": "COMPLETE",
+      "gpu": 1,
+      "started_at": "2026-10-01T08:21:34.458827+08:00",
+      "command": [
+        "/data/gaob/Re-ID/conda-envs/tri_reid/bin/python",
+        "-B",
+        "/data/gaob/Re-ID/Trifusion/tools/queue_role_global_tokens.py",
+        "--worker",
+        "--campaign",
+        "/data/gaob/Re-ID/Trifusion/logs/role_global_tokens_20261001_v1",
+        "--dataset",
+        "MSVR310",
+        "--variant",
+        "static",
+        "--gpu",
+        "1"
+      ],
+      "pid": 1801997,
+      "result": {
+        "schema": "trifusion-correspondence-context-identity-retrieval-v1",
+        "status": "COMPLETE",
+        "dataset": "MSVR310",
+        "seed": 42,
+        "selected_epoch": 10,
+        "training_epochs": 50,
+        "condition": {
+          "query_mode": "context",
+          "auxiliary_target": "none"
+        },
+        "protocol_sha256": "7f2b35f9a7e00433558c1e723db0e3ff0ea9daa7144eeeb972139d1502945cbc",
+        "baseline_sha256": "69c5e71b75036d7216ece3ff84450f0052f5e70dfaba46bf73f3e1d40992bb37",
+        "checkpoint_sha256": "8f88db6c28b4d3edfdebb35bc660e4465d8d57f3f714a9626e82aa9328c8fc36",
+        "distance_sha256": "3e1cf737c936d6ab22305f913970ed74ca8c4ab0bb370fb96e809d4bba67b343",
+        "metrics": {
+          "mAP": 52.48487555803318,
+          "Rank-1": 68.02030205726624,
+          "Rank-5": 83.41793417930603,
+          "Rank-10": 89.3401026725769
+        },
+        "diagnostic_metrics": {
+          "shared_global": {
+            "mAP": 52.537954478831516,
+            "Rank-1": 69.20473575592041,
+            "Rank-5": 84.09475684165955,
+            "Rank-10": 88.49408030509949
+          },
+          "joint_local": {
+            "mAP": 6.065554515102787,
+            "Rank-1": 11.336717754602432,
+            "Rank-5": 23.011843860149384,
+            "Rank-10": 32.82572031021118
+          }
+        },
+        "reranking": false,
+        "independent_upstream_metrics_equal": true,
+        "completed_at": "2026-10-01T08:42:57.680219+08:00",
+        "architecture": "role_global_tokens_v1",
+        "token_mode": "static",
+        "memory_mode": "full",
+        "attention_normalization": "independent",
+        "attention_subgraph_dtype": "float32",
+        "joint_local_semantics": "normalized total correction, not independent local training"
+      },
+      "exit_code": 0,
+      "completed_at": "2026-10-01T08:45:35.425894+08:00"
+    },
+    {
+      "phase": "role_global_tokens",
+      "dataset": "RGBNT100",
+      "variant": "direct",
+      "status": "RUNNING",
+      "gpu": 1,
+      "started_at": "2026-10-01T08:45:35.496811+08:00",
+      "command": [
+        "/data/gaob/Re-ID/conda-envs/tri_reid/bin/python",
+        "-B",
+        "/data/gaob/Re-ID/Trifusion/tools/queue_role_global_tokens.py",
+        "--worker",
+        "--campaign",
+        "/data/gaob/Re-ID/Trifusion/logs/role_global_tokens_20261001_v1",
+        "--dataset",
+        "RGBNT100",
+        "--variant",
+        "direct",
+        "--gpu",
+        "1"
+      ],
+      "pid": 1845862
+    },
+    {
+      "phase": "role_global_tokens",
+      "dataset": "RGBNT201",
+      "variant": "direct",
+      "status": "RUNNING",
+      "gpu": 2,
+      "started_at": "2026-10-01T08:53:35.836726+08:00",
+      "command": [
+        "/data/gaob/Re-ID/conda-envs/tri_reid/bin/python",
+        "-B",
+        "/data/gaob/Re-ID/Trifusion/tools/queue_role_global_tokens.py",
+        "--worker",
+        "--campaign",
+        "/data/gaob/Re-ID/Trifusion/logs/role_global_tokens_20261001_v1",
+        "--dataset",
+        "RGBNT201",
+        "--variant",
+        "direct",
+        "--gpu",
+        "2"
+      ],
+      "pid": 1860907
+    },
+    {
+      "phase": "role_global_tokens",
+      "dataset": "MSVR310",
+      "variant": "direct",
+      "status": "PENDING"
+    }
+  ],
+  "updated_at": "2026-10-01T08:53:35.838232+08:00"
+}
