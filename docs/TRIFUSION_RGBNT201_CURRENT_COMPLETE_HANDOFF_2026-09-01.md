@@ -14091,3 +14091,21 @@ seed42/full50、warmup5/cosine50、视觉152参数FP32存储/base LR5e-6、新�
 预登记S1：separated减同容量coupled；S2：separated减独立global-only。两条均要求三集mAP正/R1非负且201/MSVR mAP至少+0.5pp。完整九端才能判门，不按中途best改seed、LR、阈值或取消不利端；原708失败门不重新定阈值。240秒队列、健康空闲卡小于500MiB、最多四卡、异常停止新launch并排空已启动项，保留中止，无自动retry。部署前实际可用84,135,997,440字节（约78GiB），初始7–10GiB产物预算足够，未清理必要权重/数组。
 
 48份新登记/M0/当前日志原件已存档并校验，archive SHAc6d270d993972231dc677aa201af5a16f86101ac21e2cb25ef57bf198ef3c3a0；模型/原图/距离数组留远端。旧222 sealed source未变，新229 source绑定通过；原视觉12端及CPU报告没有重跑。继续收齐九端、完整图库与修复/破坏/身份分布/全50轮轨迹/成本核对，再做fresh结果审计。工程过门、单seed局部门或部分数据集增益都不能代替三数据集baseline与资源/协议限定SOTA目标，Goal仍ACTIVE/UNMET。
+
+## §41.710　九端终态分析入口与实际19:42进度（2026-10-01）
+
+本节不提供新结构的完整比较成绩。19:42:43的原始快照为父队列RUNNING、0项父级收取、4项父级RUNNING、5项PENDING；5项实际M0已通过。其中MSVR310/coupled_roles子回执已经COMPLETE：50轮训练、evaluate实际退出0、worker核验后终态。父队列采用240秒调度，尚未收取该子端，不能将父状态与子状态混写。其余首批训练快照为RGBNT201/coupled43轮、RGBNT201/separated37轮、RGBNT100/coupled14轮。这些是完成轮数，不是未完成端的正式成绩。
+
+新增tools/report_shared_private_evidence_complete.py与tools/wait_shared_private_complete_analysis.py只负责终态CPU分析和等待，不改变登记manifest或229项绑定训练源码。报告严格要求全部9端成功，重核完整1–50轮历史、同一mAP-best权重的四项指标、保存的checkpoint/距离/评价回执、三臂共同初始状态与两个roles的完整初始化/容量匹配；用既有真实camera/时间段GT和完整query/gallery数组重算配对AP、首位修复/新增错误与身份分布。报告同时保存全轨迹、实际阶段时间、训练step时间、初始化后peak allocated显存与当前逻辑输出占用；它不执行神经forward或optimizer，不重放训练。
+
+比较保持原计划：S1为separated−同容量coupled，S2为separated−独立global-only；两门均要求三集mAP>0/R1≥0，RGBNT201和MSVR310至少+0.5pp mAP。coupled−global仅为诊断。旧视觉C1与角色C2仍FAIL；不因本节登记新报告改变其失败结论。固定模型身份bootstrap不是训练多种子稳定性，已消费官方best选点不是未触碰测试；global-only容量与成本不同且重复既有配方，须如实披露。
+
+fresh gpt-6-astra/max源码审查（same-family/provisional）没有BLOCKING问题；首次报告指出S1复用诊断文字误称“容量不同”。已仅在新报告中覆写该比较边界，冻结helper与数值/门不变；实际一次修订复审PASS。初审与复审原文、元数据及完整私有请求/响应trace保存；这是源码审查，不冒充完整结果审计。实际检查包括9源码AST、15门边界、6种不完整/无效输入拒绝和229绑定源核对。一次Windows控制台打印编码失败和一次本地响应写入路径表达式失败均保留，修复只在检查/记录端，没有GPU、训练或结果重试。
+
+实际远端部署检查19:41:51退出0：两个新文件AST与现有环境原生import通过，229项当前绑定、222项旧sealed源及preflight/witness保持不变。报告SHA ef1aea1ce0d1557fae5bef8c0514b4188450fbf53df9f1d5b50eb818e9fc4781；等待器SHA dee45aa5a73a8316eed7b266b540f35216231bb4f9e77f01bc542ada1644dcdb。
+
+等待器实际19:42:12启动，PID2910065；原计划首次19:40，因源码复审与部署完成后才启动，首次实际观察为19:42，随后每240秒观察。它只有在父队列、实际wrapper都COMPLETE、九端成功后才调用CPU报告一次；失败保留并退出，不自动重试。当前报告调用数0，不能写成报告已完成。最终真实结果产生后还须fresh experiment-audit读取原始证据。
+
+不可变文本快照归档logs/shared_private_report_ready_710_20261001：57项原始文件，tar241468字节/SHA134946d48fd90e0add405211ed8046d39ba884f57bbf3d6950f5362fce3b0f9a；本地逐文件核验后保存原始字节。权重/完整距离留在服务器。上一§709已实际同步HEAD7107770bd32856d7486a8383cde21857951e1635，四份文档1967746字节/SHA cce11e786567db1b3337224f0a991031cbd737bd05e0cfb6fe5a8274ff983ddd；remote FF19:22:56核验103owned blobs、229当前与222历史源未变。
+
+本轮只检验私有增量是否直接写回共享视觉流；不增加共享/私有区域语义分解、排序职责损失、教师、外部数据、文本/SAM或新输出维度。两个roles都有相同私有MLP FP32数值修订，第一批失败证据保留。端到端公开CLIP起点、稳定多种子、同资源强参照与三集baseline/SOTA目标仍未实现，Goal ACTIVE/UNMET。

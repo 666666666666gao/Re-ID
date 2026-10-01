@@ -1,0 +1,79 @@
+{
+  "status": "RUNNING",
+  "pid": 2840894,
+  "started_at": "2026-10-01T19:04:41.837932+08:00",
+  "jobs": [
+    {
+      "stage": "preflight",
+      "status": "COMPLETE",
+      "command": [
+        "/data/gaob/Re-ID/conda-envs/tri_reid/bin/python",
+        "-B",
+        "/data/gaob/Re-ID/Trifusion/tools/preflight_shared_private_evidence.py",
+        "--output",
+        "/data/gaob/Re-ID/Trifusion/logs/shared_private_preflight_20261001_v2/preflight.json",
+        "--gpus",
+        "0",
+        "1",
+        "2",
+        "--after-campaign",
+        "/data/gaob/Re-ID/Trifusion/logs/visual_update_control_20261001_v1",
+        "--after-summary",
+        "/data/gaob/Re-ID/Trifusion/results/visual_update_control_complete_20261001/SUMMARY.json",
+        "--after-summary-sha256",
+        "43634cf0c6acd7b998d9c9c2e39174bd60141598c4f4b9f1ba14d81fea6b18ad"
+      ],
+      "started_at": "2026-10-01T19:04:41.838018+08:00",
+      "pid": 2840895,
+      "exit_code": 0,
+      "completed_at": "2026-10-01T19:05:34.227693+08:00"
+    },
+    {
+      "stage": "witness",
+      "status": "COMPLETE",
+      "command": [
+        "/data/gaob/Re-ID/conda-envs/tri_reid/bin/python",
+        "-B",
+        "/data/gaob/Re-ID/Trifusion/tools/check_shared_private_initialization.py",
+        "--output",
+        "/data/gaob/Re-ID/Trifusion/logs/shared_private_preflight_20261001_v2/initialization_witness.json",
+        "--preflight",
+        "/data/gaob/Re-ID/Trifusion/logs/shared_private_preflight_20261001_v2/preflight.json"
+      ],
+      "started_at": "2026-10-01T19:05:34.228967+08:00",
+      "pid": 2843514,
+      "exit_code": 0,
+      "completed_at": "2026-10-01T19:07:40.862872+08:00"
+    },
+    {
+      "stage": "queue",
+      "status": "RUNNING",
+      "command": [
+        "/data/gaob/Re-ID/conda-envs/tri_reid/bin/python",
+        "-B",
+        "/data/gaob/Re-ID/Trifusion/tools/queue_shared_private_evidence.py",
+        "--campaign",
+        "/data/gaob/Re-ID/Trifusion/logs/shared_private_evidence_20261001_v2",
+        "--preflight",
+        "/data/gaob/Re-ID/Trifusion/logs/shared_private_preflight_20261001_v2/preflight.json",
+        "--initialization-witness",
+        "/data/gaob/Re-ID/Trifusion/logs/shared_private_preflight_20261001_v2/initialization_witness.json",
+        "--after-campaign",
+        "/data/gaob/Re-ID/Trifusion/logs/visual_update_control_20261001_v1",
+        "--after-summary",
+        "/data/gaob/Re-ID/Trifusion/results/visual_update_control_complete_20261001/SUMMARY.json",
+        "--after-summary-sha256",
+        "43634cf0c6acd7b998d9c9c2e39174bd60141598c4f4b9f1ba14d81fea6b18ad"
+      ],
+      "started_at": "2026-10-01T19:07:40.863536+08:00",
+      "pid": 2846591
+    }
+  ],
+  "campaign": "/data/gaob/Re-ID/Trifusion/logs/shared_private_evidence_20261001_v2",
+  "preflight": "/data/gaob/Re-ID/Trifusion/logs/shared_private_preflight_20261001_v2/preflight.json",
+  "witness": "/data/gaob/Re-ID/Trifusion/logs/shared_private_preflight_20261001_v2/initialization_witness.json",
+  "source_sha256": "b7b9bb243bb1e5d47ac37dc9b34171e5a6fac2c6382af8edab61c2fce9a31710",
+  "after_summary_sha256": "43634cf0c6acd7b998d9c9c2e39174bd60141598c4f4b9f1ba14d81fea6b18ad",
+  "poll_seconds": 240,
+  "scope": "One preflight and witness, then fresh full50 nine-end queue. No retries."
+}
