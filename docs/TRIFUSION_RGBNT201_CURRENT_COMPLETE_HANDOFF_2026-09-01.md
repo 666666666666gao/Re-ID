@@ -14109,3 +14109,25 @@ fresh gpt-6-astra/max源码审查（same-family/provisional）没有BLOCKING问�
 不可变文本快照归档logs/shared_private_report_ready_710_20261001：57项原始文件，tar241468字节/SHA134946d48fd90e0add405211ed8046d39ba884f57bbf3d6950f5362fce3b0f9a；本地逐文件核验后保存原始字节。权重/完整距离留在服务器。上一§709已实际同步HEAD7107770bd32856d7486a8383cde21857951e1635，四份文档1967746字节/SHA cce11e786567db1b3337224f0a991031cbd737bd05e0cfb6fe5a8274ff983ddd；remote FF19:22:56核验103owned blobs、229当前与222历史源未变。
 
 本轮只检验私有增量是否直接写回共享视觉流；不增加共享/私有区域语义分解、排序职责损失、教师、外部数据、文本/SAM或新输出维度。两个roles都有相同私有MLP FP32数值修订，第一批失败证据保留。端到端公开CLIP起点、稳定多种子、同资源强参照与三集baseline/SOTA目标仍未实现，Goal ACTIVE/UNMET。
+
+## §41.711：RGBNT201同容量角色流成对终态，九端已验收3项（2026-10-01）
+
+现有等待器的实际观察时间为2026-10-01T20:06:13.205277+08:00；本节没有重新启动训练、前向或评分。九项已登记full50中，父队列实际验收3项，4项RUNNING、2项PENDING；wrapper/controller均在运行，CPU全九端报告调用数仍为0。已验收者为RGBNT201/coupled_roles、RGBNT201/separated_roles、MSVR310/coupled_roles。未完成端不以中途best填表。
+
+| RGBNT201，seed42/full50 | 同一mAP-best轮 | mAP | Rank-1 | Rank-5 | Rank-10 |
+|---|---:|---:|---:|---:|---:|
+| coupled_roles | 1 | 74.0506 | 75.5981 | 85.0478 | 88.6364 |
+| separated_roles | 1 | 73.8242 | 75.2392 | 84.4498 | 88.5167 |
+| separated−coupled，百分点 | — | −0.2264 | −0.3588 | −0.5981 | −0.1196 |
+
+两端均已完整训练50轮，训练及evaluate实际exit0，父队列已收取VERIFIED_COMPLETE；训练记录各2649步。初始全state均为96a85fef436571c55440c03807fd730d251923ffafa7519894d939e516a2a4f7，可训练参数均89917706，三类common initializer hash完全一致。best权重/距离/官方回执的精确SHA见原始父回执与PARTIAL_PAIR_20261001_200613.json。该配对只改变私有增量是否直接写回后续CLIP流；两端共用此前private-MLP内部FP32数值修订，不更换视觉学习率、M2/M3或读出。
+
+该RGBNT201条件已经不满足预登记S1的正mAP、非负R1及至少+0.5pp mAP要求。因此目前证据不支持“分离直接写回即可产生更好的角色空间”这项假设；不能把它包装为成功的新M1。S2仍待同配方独立global_only终态；完整九端报告与fresh完整结果审计尚未执行。后续仍完成已登记九项，不根据这个负结果修改门、挑epoch、重跑seed或取消其他端。原视觉C1与角色C2的FAIL保留。
+
+两端best均在第1轮，而第50轮mAP分别为64.5213、66.4510，相对各自best下降9.5293、7.3732点；完整50轮已完成，不能再把后期退化解释为尚未训练足够。这一轨迹与后期泛化退化相容，尚不能证明唯一模块原因。实际训练加逐轮评价耗时2397.4/2773.3秒，峰值allocated约15.28/15.28GiB；初始化、独立重载评价与前置ReID训练另计，不把50轮当总系统预算。
+
+MSVR310/coupled_roles也已验收full50，best第10轮mAP53.243449/R1 67.343485；其同容量separated和独立global尚未完成，故此处不作方法对比。20:06观察记录的四个训练端为RGBNT100/coupled23轮、RGBNT100/separated5轮、MSVR310/separated25轮及RGBNT201/global_only12轮；其余RGBNT100/global与MSVR310/global待调度。等待器仍按240秒节奏采集，预计先在20:34附近读取下一份已有里程碑，不把预计时间当实际完成。
+
+本次在20:08:49保留77份原始文本文件，归档SHA288a4631e95807a4ec3f745cdc370ff2f162db5da8f9330ad56e4e5d179541ca（341807字节）；既包含固定20:06快照，也包含稍后读取且自带时间的原始回执，两者不能混作同一时刻。全部逐文件字节/SHA核对；原始模型和完整数组留在服务器。活动229及旧sealed222来源、manifest、preflight和初始化witness均未变化；上一轮实际remote FF与四份文档核对已保存。本次只归档新终态证据，不重跑旧12端或CPU报告。
+
+这是已消费官方基准、固定一个角色阶段seed、温启动ReID底座的阶段证据，不是公开CLIP干净联合训练、完整流程多种子或SOTA证明。研究目标仍ACTIVE/UNMET。下一步收齐九端后只调用已审核CPU报告一次，计算同协议S1/S2、修复/新增首位错误、身份AP分布、全50轨迹与实际成本，再进行fresh完整结果审计。

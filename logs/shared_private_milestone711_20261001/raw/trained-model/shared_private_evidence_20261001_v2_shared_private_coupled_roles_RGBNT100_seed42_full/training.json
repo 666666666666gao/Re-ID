@@ -1,0 +1,356 @@
+{
+  "schema": "trifusion-shared-private-evidence-v1",
+  "status": "RUNNING",
+  "dataset": "RGBNT100",
+  "seed": 42,
+  "epochs": 50,
+  "checkpoint_policy": "best_official_map",
+  "initializer": {
+    "author_checkpoint": "/data/gaob/Re-ID/Trifusion/pertrained-model/RGBNT100_PlainBaseline_30.pth",
+    "author_checkpoint_sha256": "299a28bfb3e3180eeae0736cf8638cd162525dce0f2192a940b62b97f6e67dcd",
+    "signal_state_sha256": "68cea6c9ae4246ec9d0394b8b5e0dec53d70bd6af55d92c3140ac268e60e3174",
+    "baseline_kind": "independently_trained_module_free_cls",
+    "architecture": "shared_private_evidence_v1",
+    "m1": true,
+    "m2": true,
+    "m3": false,
+    "width": 128,
+    "fused_width": 1536,
+    "prediction_weight": 0.0,
+    "learning_rate": 0.00035,
+    "weight_decay": 0.0001,
+    "entry_sha256": "d5c578dd57681e89fca5761f65d662cfc84785c7137388b27130a2a6c509689c",
+    "model_source_sha256": "e2a51154b5b327341f35e453dd32a821b091a49a669b49a7c70e79e6e2f2591b",
+    "initial_model_state_sha256": "62d001b975a5876578c5f581cf4e235b55b6a2037298fe94cbc77de25e5c71fa",
+    "trainable_parameters": 89731850,
+    "condition": {
+      "visual_update": "low_lr",
+      "readout": "roles",
+      "visual_lr": 5e-06,
+      "visual_parameter_dtype": "float32",
+      "evidence_flow": "coupled_roles"
+    },
+    "common_initializer_sha256": {
+      "backbone": "219b2d8c067a957ef495e406c28be769e6b3d01ecfd661c0f6f0f327faf6204f",
+      "neck": "06efe49412cdf6c9d8d9162b9394e4bc49329d169906cecc2b6c4784bcdb166e",
+      "classifier": "1deee2afd7a2f8b90231dc24c16cb5e1ce5232e2b1d92383a964342cded88ddd"
+    },
+    "role_source_sha256": "f41ff1af1fb1b6303a9af63cf039263e2572c16b23813f92a0297f014e71dd4f",
+    "visual_update_semantics": "base visual parameters only; camera and nonvisual Signal state frozen",
+    "common_initializer_scope": "Original signal/shared-adapter backbone, neck and classifier; private adapters excluded",
+    "evidence_flow_source_sha256": "c5a0164eda85a3b070a06f011abf445ae8bfe26b749b52a8c71245306e7ad2c2"
+  },
+  "protocol_sha256": "12d8afe5cf6e537b69ccf753481dd5fd651f14b7672e1e6411a4d4e9d88cc956",
+  "condition": {
+    "visual_update": "low_lr",
+    "readout": "roles",
+    "visual_lr": 5e-06,
+    "visual_parameter_dtype": "float32",
+    "evidence_flow": "coupled_roles"
+  },
+  "started_at": "2026-10-01T19:09:05.337504+08:00",
+  "history": [
+    {
+      "epoch": 1,
+      "steps": 130,
+      "mean_loss": 2.4755781173706053,
+      "seconds": 77.63374025699159,
+      "official_fused": {
+        "mAP": 85.55810880333647,
+        "Rank-1": 95.27696967124939,
+        "Rank-5": 95.97667455673218,
+        "Rank-10": 96.55976891517639
+      }
+    },
+    {
+      "epoch": 2,
+      "steps": 131,
+      "mean_loss": 0.8610792883479869,
+      "seconds": 76.68207727200934,
+      "official_fused": {
+        "mAP": 84.32913606575109,
+        "Rank-1": 95.80174684524536,
+        "Rank-5": 96.61807417869568,
+        "Rank-10": 97.08454608917236
+      }
+    },
+    {
+      "epoch": 3,
+      "steps": 132,
+      "mean_loss": 0.7211258614605124,
+      "seconds": 77.38527670499752,
+      "official_fused": {
+        "mAP": 81.54798262894961,
+        "Rank-1": 94.22740340232849,
+        "Rank-5": 94.75218653678894,
+        "Rank-10": 95.33527493476868
+      }
+    },
+    {
+      "epoch": 4,
+      "steps": 131,
+      "mean_loss": 0.7137538567754148,
+      "seconds": 77.18981614099175,
+      "official_fused": {
+        "mAP": 81.6026449926148,
+        "Rank-1": 93.7609314918518,
+        "Rank-5": 94.46064233779907,
+        "Rank-10": 95.21865844726562
+      }
+    },
+    {
+      "epoch": 5,
+      "steps": 132,
+      "mean_loss": 0.7103485356677662,
+      "seconds": 77.56284518599568,
+      "official_fused": {
+        "mAP": 81.54061351645275,
+        "Rank-1": 94.8104977607727,
+        "Rank-5": 95.56851387023926,
+        "Rank-10": 96.151602268219
+      }
+    },
+    {
+      "epoch": 6,
+      "steps": 131,
+      "mean_loss": 0.709235112630684,
+      "seconds": 76.84989155600488,
+      "official_fused": {
+        "mAP": 81.83119333811993,
+        "Rank-1": 94.63557004928589,
+        "Rank-5": 95.10204195976257,
+        "Rank-10": 95.21865844726562
+      }
+    },
+    {
+      "epoch": 7,
+      "steps": 132,
+      "mean_loss": 0.7077986313538118,
+      "seconds": 77.851400561005,
+      "official_fused": {
+        "mAP": 81.34207523106193,
+        "Rank-1": 93.87755393981934,
+        "Rank-5": 94.28571462631226,
+        "Rank-10": 94.57725882530212
+      }
+    },
+    {
+      "epoch": 8,
+      "steps": 131,
+      "mean_loss": 0.7075736135926866,
+      "seconds": 76.76660392800113,
+      "official_fused": {
+        "mAP": 81.88684124763618,
+        "Rank-1": 94.69387531280518,
+        "Rank-5": 95.68513035774231,
+        "Rank-10": 96.0932970046997
+      }
+    },
+    {
+      "epoch": 9,
+      "steps": 130,
+      "mean_loss": 0.7076857594343332,
+      "seconds": 76.69102566200309,
+      "official_fused": {
+        "mAP": 81.3576844804923,
+        "Rank-1": 94.28571462631226,
+        "Rank-5": 94.86880302429199,
+        "Rank-10": 94.92711424827576
+      }
+    },
+    {
+      "epoch": 10,
+      "steps": 132,
+      "mean_loss": 0.7079046382145449,
+      "seconds": 78.3673731170129,
+      "official_fused": {
+        "mAP": 81.1433758705106,
+        "Rank-1": 94.46064233779907,
+        "Rank-5": 95.10204195976257,
+        "Rank-10": 95.16034722328186
+      }
+    },
+    {
+      "epoch": 11,
+      "steps": 131,
+      "mean_loss": 0.7073698098422917,
+      "seconds": 76.99391676401137,
+      "official_fused": {
+        "mAP": 80.76533841534905,
+        "Rank-1": 93.64431500434875,
+        "Rank-5": 94.46064233779907,
+        "Rank-10": 94.98542547225952
+      }
+    },
+    {
+      "epoch": 12,
+      "steps": 131,
+      "mean_loss": 0.7074324647888882,
+      "seconds": 76.86266431899276,
+      "official_fused": {
+        "mAP": 80.74815554061574,
+        "Rank-1": 93.00291538238525,
+        "Rank-5": 93.5276985168457,
+        "Rank-10": 93.93585920333862
+      }
+    },
+    {
+      "epoch": 13,
+      "steps": 131,
+      "mean_loss": 0.7071382935720546,
+      "seconds": 76.61497400001099,
+      "official_fused": {
+        "mAP": 81.72862389331374,
+        "Rank-1": 93.70262622833252,
+        "Rank-5": 94.34402585029602,
+        "Rank-10": 94.8104977607727
+      }
+    },
+    {
+      "epoch": 14,
+      "steps": 132,
+      "mean_loss": 0.7626996293212428,
+      "seconds": 78.25624208600493,
+      "official_fused": {
+        "mAP": 77.3908208453192,
+        "Rank-1": 96.03498578071594,
+        "Rank-5": 96.90961837768555,
+        "Rank-10": 97.25947380065918
+      }
+    },
+    {
+      "epoch": 15,
+      "steps": 129,
+      "mean_loss": 0.7183416273242743,
+      "seconds": 75.88728094700491,
+      "official_fused": {
+        "mAP": 77.98282157337356,
+        "Rank-1": 95.21865844726562,
+        "Rank-5": 95.74344158172607,
+        "Rank-10": 95.80174684524536
+      }
+    },
+    {
+      "epoch": 16,
+      "steps": 131,
+      "mean_loss": 0.7106884108244917,
+      "seconds": 77.34811582700058,
+      "official_fused": {
+        "mAP": 78.99055329131454,
+        "Rank-1": 95.21865844726562,
+        "Rank-5": 95.74344158172607,
+        "Rank-10": 96.26821875572205
+      }
+    },
+    {
+      "epoch": 17,
+      "steps": 132,
+      "mean_loss": 0.7091243289636843,
+      "seconds": 77.54248293099226,
+      "official_fused": {
+        "mAP": 79.93939274865708,
+        "Rank-1": 95.04373073577881,
+        "Rank-5": 95.68513035774231,
+        "Rank-10": 95.97667455673218
+      }
+    },
+    {
+      "epoch": 18,
+      "steps": 132,
+      "mean_loss": 0.7084503968556722,
+      "seconds": 77.66783790999034,
+      "official_fused": {
+        "mAP": 80.10944043887592,
+        "Rank-1": 94.98542547225952,
+        "Rank-5": 95.97667455673218,
+        "Rank-10": 96.44314646720886
+      }
+    },
+    {
+      "epoch": 19,
+      "steps": 132,
+      "mean_loss": 0.7078341584314,
+      "seconds": 79.08057297799678,
+      "official_fused": {
+        "mAP": 80.61284841451004,
+        "Rank-1": 95.39358615875244,
+        "Rank-5": 95.86005806922913,
+        "Rank-10": 96.20991349220276
+      }
+    },
+    {
+      "epoch": 20,
+      "steps": 132,
+      "mean_loss": 0.7075719824343016,
+      "seconds": 77.86028807400726,
+      "official_fused": {
+        "mAP": 80.89522606292442,
+        "Rank-1": 94.46064233779907,
+        "Rank-5": 95.56851387023926,
+        "Rank-10": 95.91836929321289
+      }
+    },
+    {
+      "epoch": 21,
+      "steps": 131,
+      "mean_loss": 0.7075707279998837,
+      "seconds": 77.4952103770047,
+      "official_fused": {
+        "mAP": 80.58677833216562,
+        "Rank-1": 95.21865844726562,
+        "Rank-5": 95.68513035774231,
+        "Rank-10": 96.20991349220276
+      }
+    },
+    {
+      "epoch": 22,
+      "steps": 132,
+      "mean_loss": 0.7073586312207308,
+      "seconds": 77.93075732199941,
+      "official_fused": {
+        "mAP": 80.95128656260623,
+        "Rank-1": 95.16034722328186,
+        "Rank-5": 95.74344158172607,
+        "Rank-10": 96.0932970046997
+      }
+    },
+    {
+      "epoch": 23,
+      "steps": 131,
+      "mean_loss": 0.7071730681048095,
+      "seconds": 77.27030309100519,
+      "official_fused": {
+        "mAP": 81.05911047575658,
+        "Rank-1": 95.5102026462555,
+        "Rank-5": 96.151602268219,
+        "Rank-10": 96.26821875572205
+      }
+    },
+    {
+      "epoch": 24,
+      "steps": 130,
+      "mean_loss": 0.7070528365098513,
+      "seconds": 76.6509991010098,
+      "official_fused": {
+        "mAP": 80.89214222757963,
+        "Rank-1": 94.92711424827576,
+        "Rank-5": 95.80174684524536,
+        "Rank-10": 95.97667455673218
+      }
+    }
+  ],
+  "optimizer_groups": [
+    {
+      "label": "new",
+      "base_lr": 0.00035,
+      "tensors": 182,
+      "elements": 3591434
+    },
+    {
+      "label": "visual",
+      "base_lr": 5e-06,
+      "tensors": 152,
+      "elements": 86140416
+    }
+  ]
+}
