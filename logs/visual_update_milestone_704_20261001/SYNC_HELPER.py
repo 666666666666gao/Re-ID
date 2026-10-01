@@ -26,8 +26,8 @@ parser.add_argument('--new', required=True)
 parser.add_argument('--doc-sha', required=True)
 parser.add_argument('--changed-count', type=int, required=True)
 args = parser.parse_args()
-proof = ROOT / 'logs/visual_update_milestone_sync703_20261001.json'
-backup = ROOT / '.codex_tmp/visual_update_milestone_sync703_20261001_originals'
+proof = ROOT / 'logs/visual_update_milestone_sync704_20261001.json'
+backup = ROOT / '.codex_tmp/visual_update_milestone_sync704_20261001_originals'
 assert not proof.exists() and not backup.exists()
 assert git('rev-parse', 'HEAD').decode().strip() == OLD
 assert not git('status', '--porcelain', '--untracked-files=no').strip()
@@ -46,7 +46,7 @@ assert len(old_manifest['source_sha256']) == 221
 assert all(sha(ROOT / path) == digest for path, digest in old_manifest['source_sha256'].items())
 report_path = ROOT / 'tools/report_visual_update_control_complete.py'
 assert sha(report_path) == '4c21b1cc6212ef0202512ef46afc8fc714e3b2329fd68f701e4a7ac24acd4765'
-git('fetch', str(ROOT / '.git/visual_update_milestone_sync703_20261001.incremental.bundle'), 'main')
+git('fetch', str(ROOT / '.git/visual_update_milestone_sync704_20261001.incremental.bundle'), 'main')
 assert git('rev-parse', 'FETCH_HEAD').decode().strip() == args.new
 changed = git('diff', '--name-only', OLD, args.new).decode().splitlines()
 assert len(changed) == args.changed_count
