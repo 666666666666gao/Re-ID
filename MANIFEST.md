@@ -1688,3 +1688,5 @@
 - 2026-10-02 §41.732: EV1 first full50 semantic-MSVR control accepted, five endpoints continue; bound26-file foundation recipe readback only. No paired mechanism conclusion, source or threshold change.
 
 - 2026-10-02 §41.733: EV1 accepted4/6;201/MSVR combined−semantic negative, remaining100 unchanged. Extra2025 four-card resource packages complete but transfer/connectivity and destination validation pending; no new model/campaign.
+
+- 2026-10-02 §41.734: EV1 all6/full300epochs/20416steps/once CPU report COMPLETE; EV-A and EV-B FAIL. Fresh integrity review and strict scope retained. Extra2025 four RTX3090 resource validated, all assets under/data2/gb/Re-ID; no new formal experiment.
