@@ -14986,3 +14986,43 @@ max4，其余卡继续遵守原预留任务真实释放条件；没有25新训�
 所有文本在`logs/training_feature_scale_control_repeat750_20261003/`。
 接下来仍按原合同收齐六端full50/strict和全训练顺序配对，再读取唯一最终报告。
 Goal保持ACTIVE_UNMET；训练路径重复性不能替代三数据集强基线/SOTA性能目标。
+
+
+## 41.751 第二项F2完整终态与2026四卡实际并行（2026-10-03）
+
+MSVR310/normalized按原计划完成50轮/1000步，training receipt完成时间
+2026-10-03T03:14:38.214989+08:00；原strict进程完成时间
+2026-10-03T03:15:20.980933+08:00，train/evaluate退出均为0。
+选定第24轮，同一份权重mAP/R1/R5/R10为
+50.35673958098721/67.51269102096558/81.38747811317444/86.29441857337952。
+七份原始终态文本完整复制；执行者CPU检查连续50轮/1000步、记录数值有限、
+原strict完整图库与GT/source绑定以及原重载容差。此为执行者检查，不冒称独立审计。
+
+03:20:24直接重新读取服务器实际文件SHA：best_map.pth为
+05408203434fa59828a2c34ca35f38921e94320806bac70079d349dde7d792bb，
+official_distances.pt为8efb6dd2c6efa029524335ee828ed9fd8b8a494c749e0731ce78f58a0d9043b2，
+best_epoch_distances.pt为4206a87f3bfde67b0b7bd2eb087577eafb07f51a3223dcb0f5de80c590fd0d4b。
+原始训练、评价和batch-order文本SHA及其实际字节数边界在INTAKE.json中。
+尚未把F1-current/MSVR与本次全部1000步逐字段比较，不能扩大为已证明整条轨迹一致。
+
+local wait751按计划在03:17只调用一次只读observer，退出0。
+实测2026-10-03T03:17:03.556020+08:00，controller PID2185141 LIVE，full状态计数
+`{'COMPLETE': 2, 'RUNNING': 4, 'PENDING': 0, 'FAILED': 0}`；活动(dataset,variant,physicalGPU,workerPID)为`[('RGBNT100', 'normalized', 1, 2215835), ('RGBNT201', 'raw', 2, 2309402), ('RGBNT100', 'raw', 3, 2309403), ('MSVR310', 'raw', 0, 2318203)]`。
+归一化201/MSVR均已由父队列吸收；GPU2/3预留工作按原释放条件结束后，
+raw201/100在03:12:33启动；rawMSVR在03:16:33接续GPU0。
+当前四卡都运行本次F2，零PENDING、零FAILED，report调用仍为0。
+只使用2026 GPU0–3/max4；没有启动2025训练，没有接管或停止其他项目任务。
+
+2026-10-03T03:30:47.439163+08:00再次CPU读取各训练history的实际mtime/start并估时：
+- RGBNT100/normalized：37/50，完整epoch均值117.35秒，训练预计2026-10-03T03:54:39.934171+08:00。
+- RGBNT201/raw：21/50，完整epoch均值49.71秒，训练预计2026-10-03T03:54:21.276953+08:00。
+- RGBNT100/raw：5/50，完整epoch均值179.07秒，训练预计2026-10-03T05:42:09.645714+08:00。
+- MSVR310/raw：30/50，完整epoch均值27.17秒，训练预计2026-10-03T03:39:33.769238+08:00。
+估计包括逐轮官方评价与best保存，排除模型构建、最终strict与父队列观察延迟。
+不使用检索分数决定继续或停止；row.seconds仍仅训练循环，不将其误当完整epoch。
+实际剩余磁盘16,161,886,208字节，未删除任何文件，六个M0 probe依赖继续保留。
+
+文本回执在`logs/training_feature_scale_second_full751_20261003/`。
+必须等另外四项full50/strict完成并验证全50轮实际batch-order配对，才读取原队列
+唯一最终报告并作fresh审计。两个normalized终态不是raw增量证据，不写角色新贡献、
+跨数据集成功或SOTA；Goal仍ACTIVE_UNMET。
