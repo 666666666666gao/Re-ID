@@ -1678,3 +1678,5 @@
 - 2026-10-02 §41.727: reviewed fixedcheckpoint diagnostic twoforwards exact inputs/features/distances; oldtrainingbest mismatch remains-.00030268mAP. OriginallowMSVR officialFAIL unchanged, no retry/tolerance/epoch rescue; all238sourcesunchanged, two100continue/next07:23, GoalACTIVE_UNMET.
 
 - 2026-10-02 §41.728: actual N1 milestone accepted4/6, running1, original lowMSVR evaluationFAILED retained/report0; sealed238 unchanged. N3 static training environment capacity20151/171,10050/50,MSVR60/155, not actual batch support or effectiveness. GoalACTIVE_UNMET.
+
+- 2026-10-02 §41.729: N1 all6 original50epoch arms ended300epochs/20416steps; accepted5/invalid1 and originalsuccessreport0 remainFAILED. Separate saved-distance CPU closeoutexit0; source/fresh integrity review archived. N1-A3FAIL/N1-B201FAIL100PASSMSVRunavailable; 128→512/capacity boundary explicit. GoalACTIVE_UNMET.
