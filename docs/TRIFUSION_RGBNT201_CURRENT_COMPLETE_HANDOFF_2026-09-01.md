@@ -14958,3 +14958,31 @@ GPU3全部压力评价释放规则执行，无25新训练，无抢占。其余�
 下一步继续原控制器，收齐6端及原始配对训练顺序，再接收唯一最终CPU报告；
 父队列状态COMPLETE本身仍需report_exit_code=0及实际报告存在证明。
 Goal继续ACTIVE_UNMET，原三数据集强基线/SOTA目标未达成。
+
+
+## 41.750 已完成归一化控制的全程日志比较与下一节点实际观察（2026-10-03）
+
+补充比较已完成的F1-current与F2-normalized RGBNT201原始文本。相同的公开
+visual、fresh camera/current head、全initial state SHA、seed42、容量与B64/K8
+初始字段一致；2649条(epoch,batch,loss,id,triplet,lr)无一差异，50行
+(epoch,steps,mean_loss,official_fused)也逐项相同，strict四项和selected epoch一致。
+两端各有1882/2649步Triplet非零。比较明确排除了时间字段；它仅证明所比较日志
+字段的一致性，不证明未记录图像/增强的字节一致，更不是独立seed稳定性、raw收益
+或F1多变化配方差距的唯一因果解释。原始双方SHA及比较字段在CONTROL_REPRODUCTION.json，
+执行只是CPU读原文本，未做模型前向或重算指标。
+
+03:05:30实际查看F2自有9个run目录，总文件大小3,262,826,228字节，磁盘余
+18,150,170,624字节。六份m0_reload_probe.pth仍在；封存queue_foundation_recipe.py
+verify_m0在完整端和最后report验证时仍重新读取其SHA，故不能提前删除这些依赖。
+未进行权重退役。此大小是观察瞬间值，运行中的文件仍可能增长。
+
+原local wait750 PID19572按03:12计划，只调用一次既有只读observer，已正常返回0。
+实际快照2026-10-03T03:12:02.410852+08:00确认controller PID2185141 LIVE，
+RUNNING/full；full状态数为`{'COMPLETE': 1, 'RUNNING': 2, 'PENDING': 3, 'FAILED': 0}`，
+活动(dataset,variant,physicalGPU,workerPID)为`[('RGBNT100', 'normalized', 1, 2215835), ('MSVR310', 'normalized', 0, 2272765)]`。最终report调用仍为0，
+没有手动接管派发、重做初始化/M0、修改margin/seed或提前停止。仅使用2026 GPU0—3、
+max4，其余卡继续遵守原预留任务真实释放条件；没有25新训练。
+
+所有文本在`logs/training_feature_scale_control_repeat750_20261003/`。
+接下来仍按原合同收齐六端full50/strict和全训练顺序配对，再读取唯一最终报告。
+Goal保持ACTIVE_UNMET；训练路径重复性不能替代三数据集强基线/SOTA性能目标。
