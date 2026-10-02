@@ -2,8 +2,10 @@
 import json
 import os
 from pathlib import Path
+import shutil
 import subprocess
 import sys
+import time
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
@@ -19,6 +21,74 @@ SOURCES = ('tools/run_training_feature_scale.py', 'tools/queue_training_feature_
     'tools/check_training_feature_scale_pair.py', 'tools/report_training_feature_scale.py',
     'tools/analyze_correspondence_distances.py', 'refine-logs/training_feature_scale_v1/EXPERIMENT_PLAN.md',
     'refine-logs/training_feature_scale_v1/EXPERIMENT_CODE_REVIEW.md')
+OTHER_RUNS = Path('/data/gaob/Re-ID/DeMo-DualAxis/runs/three_seed_extension')
+GPU_RELEASE = {
+    0: 'RGBNT100_demo_s44',
+    1: 'RGBNT100_ordinary_s44',
+    2: 'RGBNT100_dual_s44',
+    3: 'MSVR310_dual_s44',
+}
+
+
+def released_gpus():
+    released = []
+    for gpu, name in GPU_RELEASE.items():
+        terminal = OTHER_RUNS/name/'evaluation_exit.json'
+        if terminal.is_file() and json.loads(terminal.read_text())['exit_code'] == 0:
+            released.append(gpu)
+    return released
+
+
+def run_phase(campaign, state, phase):
+    pending = [job for job in state['jobs'] if job['phase'] == phase]
+    active = []
+    failed = False
+    state.update(status='RUNNING', phase=phase, updated_at=base.queue.stamp())
+    while pending or active:
+        for job, process in list(active):
+            code = process.poll()
+            if code is None:
+                continue
+            if code == 0:
+                folder = base.queue.child_campaign(campaign, phase, job['dataset'], job['variant'])
+                job['result'] = base.require_complete(folder, job['dataset'])
+            job.update(status='COMPLETE' if code == 0 else 'FAILED', exit_code=code,
+                       completed_at=base.queue.stamp())
+            failed |= code != 0
+            active.remove((job, process))
+            print(json.dumps({'event':'completed', **job}), flush=True)
+        if not failed:
+            memory = subprocess.check_output(['nvidia-smi','--query-gpu=index,memory.used',
+                                               '--format=csv,noheader,nounits'], text=True)
+            occupied = {job['gpu'] for job, _ in active}
+            released = released_gpus()
+            available = [int(row.split(',')[0]) for row in memory.splitlines()
+                         if int(row.split(',')[0]) in released
+                         and int(row.split(',')[0]) not in occupied and int(row.split(',')[1]) < 500]
+            state['released_gpu_indices'] = released
+            for gpu in available:
+                if not pending:
+                    break
+                assert shutil.disk_usage(ROOT).free >= 10*1024**3
+                job = pending.pop(0)
+                job.update(gpu=gpu, status='RUNNING', started_at=base.queue.stamp(),
+                           command=start_command(campaign, job, gpu))
+                name = f"{phase}_{job['variant']}_{job['dataset']}"
+                with (campaign/f'{name}.log').open('x', encoding='utf-8') as log:
+                    process = subprocess.Popen(job['command'], cwd=ROOT,
+                                               stdout=log, stderr=subprocess.STDOUT)
+                job['pid'] = process.pid
+                active.append((job, process))
+                print(json.dumps({'event':'started', **job}), flush=True)
+        state['updated_at'] = base.queue.stamp()
+        if failed:
+            state['status'] = 'FAILED'
+        base.queue.write(campaign/'campaign.json', state)
+        if failed and not active:
+            return 1
+        if pending or active:
+            time.sleep(240)
+    return 0
 
 
 def source_map():
@@ -68,6 +138,7 @@ def expected_binding(campaign, dataset, recipe):
 
 def coordinate(args):
     assert str(ROOT) == '/data/gaob/Re-ID/Trifusion'
+    assert args.gpu in released_gpus()
     assert not args.campaign.exists()
     args.campaign.mkdir(parents=True)
     sources = source_map()
@@ -94,12 +165,14 @@ def coordinate(args):
           for phase in ('m0','full') for recipe in RECIPES for dataset in DATASETS]
     base.queue.write(args.campaign/'manifest.json',{'schema':SCHEMA,'seed':42,'epochs':50,
         'poll_seconds':240,'source_sha256':sources,'initialization_sha256':initial,'jobs':jobs,
+        'gpu_release': {str(gpu):str(OTHER_RUNS/name/'evaluation_exit.json')
+                        for gpu,name in GPU_RELEASE.items()},
         'boundary':'One training feature-scale control; both deployment embeddings L2; only 2026 GPU0-3.'})
     state={'status':'RUNNING','controller_pid':os.getpid(),'started_at':base.queue.stamp(),
            'jobs':jobs,'report_invocations':0}
     base.queue.start_command,base.queue.require_complete=start_command,base.require_complete
     for phase in ('m0','full'):
-        code=base.queue.run_phase(args.campaign,state,phase)
+        code=run_phase(args.campaign,state,phase)
         if code:
             state.update(status='FAILED',completed_at=base.queue.stamp())
             base.queue.write(args.campaign/'campaign.json',state)
