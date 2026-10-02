@@ -15026,3 +15026,35 @@ raw201/100在03:12:33启动；rawMSVR在03:16:33接续GPU0。
 必须等另外四项full50/strict完成并验证全50轮实际batch-order配对，才读取原队列
 唯一最终报告并作fresh审计。两个normalized终态不是raw增量证据，不写角色新贡献、
 跨数据集成功或SOTA；Goal仍ACTIVE_UNMET。
+
+
+## 41.752 第三项F2完整终态：MSVR310/raw（2026-10-03）
+
+MSVR310/raw按原方案完成50轮/1000步，原train/evaluate退出均为0；训练receipt
+完成时间2026-10-03T03:39:15.006257+08:00，strict完成时间
+2026-10-03T03:39:56.142588+08:00。同一mAP-best第23轮的正式mAP/R1/R5/R10为
+51.57761561006768/70.55837512016296/85.617595911026/89.17089700698853。
+七份原始终态文本已完整接收；CPU核对连续epoch/step、原strict完整图库、GT/source绑定、
+原重载容差与实际远端文件SHA，不重跑模型或评分，不改变训练配置。
+best_map.pth实际SHA为49edd0a2ba448edb3bc3360e3f9b98f7e626eeb92b399430b67841fa8cc841b7，
+official_distances.pt为8d85011b0bb64424661d467c51b1b57e386fe8a4cf5f9e4671c91fae8e76b3c6；
+完整记录与其余SHA在INTAKE.json。检查属于执行者文本/hash检查，未冒称fresh独立审计。
+
+定时wait753在03:42仅调用一次原只读observer并正常退出0。
+实际2026-10-03T03:42:01.814812+08:00，controller2185141 LIVE，full状态计数为
+`{'COMPLETE': 3, 'RUNNING': 3, 'PENDING': 0, 'FAILED': 0}`，report调用仍为0；活动(dataset,variant,physicalGPU,workerPID)
+为`[('RGBNT100', 'normalized', 1, 2215835), ('RGBNT201', 'raw', 2, 2309402), ('RGBNT100', 'raw', 3, 2309403)]`。MSVR双条件已完整，另外三项继续原50轮流程，零PENDING/FAILED。
+GPU0本项已结束；快照中另有compute PID2360411，未将该卡宣称为空闲或抢占。
+仅用2026物理GPU0–3/max4，没有新2025训练。
+
+2026-10-03T03:44:04.485311+08:00实际训练mtime/start估时：
+- RGBNT100/normalized：44/50，完整epoch均值117.40秒，训练预计2026-10-03T03:54:42.404718+08:00。
+- RGBNT201/raw：37/50，完整epoch均值49.36秒，训练预计2026-10-03T03:54:03.608465+08:00。
+- RGBNT100/raw：10/50，完整epoch均值178.61秒，训练预计2026-10-03T05:41:46.550504+08:00。
+完整epoch均值包含逐轮评价与best保存；预计训练终点不包含最后strict与父队列延迟，
+也不是完成证据。磁盘余量16,148,307,968字节，未删除依赖或修改运行代码。
+原始资料在`logs/training_feature_scale_third_full752_20261003/`。
+
+已完成3/6，仍须全六项终态、全50轮实际batch-order配对、原队列唯一最终报告
+及fresh审计。此处只登记原始单端指标，不从尚未齐全的面板宣称跨数据集成功、
+角色贡献、完整F1配方差异因果或SOTA。Goal仍ACTIVE_UNMET。
