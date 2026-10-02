@@ -1,0 +1,1625 @@
+{
+  "audit_skill": "experiment-audit",
+  "schema": "trifusion-f2-experiment-audit-v1",
+  "verdict": "WARN",
+  "overall_verdict": "WARN",
+  "integrity_status": "warn",
+  "reason_code": "post_selection_single_seed_external_binary_limits",
+  "summary": "No blocking integrity error for the narrow six-arm report; local hash/count/batch/metric arithmetic checks pass. Official selection, single seed, external binaries and cfg_yaml overrides require qualification.",
+  "generated_at": "2026-10-02T22:25:15.789008+00:00",
+  "date": "2026-10-03",
+  "reviewer_model": "gpt-6-astra",
+  "reviewer_reasoning": "max",
+  "reviewer_family": "openai",
+  "reviewer_task": "/root/audit_training_feature_scale_complete754",
+  "fork_turns": "none",
+  "spawn_metadata_source": "Root confirmed model/reasoning/fork fields via collaboration.",
+  "review_independence": "same-family",
+  "acceptance_status": "provisional",
+  "trace_ownership": "Parent/root; reviewer did not write private traces.",
+  "scope": {
+    "source_files_hashed": 259,
+    "primary_texts_hashed_read_and_parsed": 109,
+    "input_hash_count_including_request_catalogs": 372,
+    "source_review": "Actual evaluation/scorer/report files read line by line and active model/data/config/runtime-helper call graph followed; legacy unused methods not credited. All canonical and F2 protocol objects parsed.",
+    "not_performed": [
+      "model imports",
+      "GPU/model work",
+      "scoring/report program execution",
+      "SSH",
+      "binary deserialization",
+      "image rereading",
+      "bootstrap regeneration"
+    ],
+    "write_scope": [
+      "C:/Users/gb/.codex_tmp/training_feature_scale_complete754/reviewer_audit754/EXPERIMENT_AUDIT.md",
+      "C:/Users/gb/.codex_tmp/training_feature_scale_complete754/reviewer_audit754/EXPERIMENT_AUDIT.json"
+    ]
+  },
+  "deterministic_checks": {
+    "acceptance_status": "accepted_only_for_exact_local_scope",
+    "source_hashes_match": 259,
+    "primary_hashes_and_sizes_match": 109,
+    "source_maps_equal": true,
+    "formal_epochs": 300,
+    "formal_steps": 20416,
+    "formal_sample_exposures": 1306624,
+    "m0_steps": 48,
+    "all_m0_before_full": true,
+    "matched_batch_bytes_all_pairs": true,
+    "all_batches_B64_K8_and_GT_metadata_consistent": true,
+    "all_train_filenames_seen_across_50_epochs": true,
+    "selected_epochs_recomputed": true,
+    "strict_reload_recorded_metric_max_abs_delta_pp": 0.0,
+    "lr_max_abs_recalculation_delta": 0.0,
+    "all_log_histories_match": true,
+    "parent_jobs_complete_exit0": 12,
+    "child_subprocesses_complete_exit0": 18,
+    "launcher_events": 24,
+    "report_invocations": 1,
+    "report_exit_code": 0,
+    "peak_recorded_concurrency": 4,
+    "gpu_indices": [
+      0,
+      1,
+      2,
+      3
+    ],
+    "summed_training_and_epoch_evaluation_seconds": 21994.386657,
+    "binary_hash_cross_record_matches": 24,
+    "binary_hashes_recomputed_locally": 0,
+    "harness_note": "Initial exact LR assertion used a different multiplication/division operation order; exact source order yields max difference 0. No experiment record/source/gate was changed."
+  },
+  "checks": {
+    "A": {
+      "name": "Ground truth provenance",
+      "status": "PASS",
+      "details": [
+        "Retrieval GT comes from fixed dataset identity/camera/scene records, not model outputs. All filename-derived metadata and all training label maps were independently checked. Train IDs are disjoint from query/gallery IDs.",
+        "RGBNT201 has 3951/836/836 train/query/gallery rows and 171/30/30 identities; RGBNT100 has 8675/1715/8575 rows and 50/50/50 identities; MSVR310 has 1032/591/1055 rows and 155/52/155 identities. All 3142 queries have valid positives. MSVR310 retains all 103 gallery-only identities.",
+        "Active filters remove same identity AND same camera (RGBNT) or same identity AND same scene (MSVR); different-ID distractors remain. The actual evaluator invokes the pinned Signal author scorer and independent AP/CMC scorers. F2 versus canonical protocol objects match except for permitted dataset_root."
+      ],
+      "evidence": [
+        {
+          "path": "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/tools/official_three_dataset_data.py",
+          "line": 8,
+          "reference": "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/tools/official_three_dataset_data.py:8",
+          "detail": "Protocol record-to-loader mapping."
+        },
+        {
+          "path": "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/tools/run_correspondence_roles.py",
+          "line": 79,
+          "reference": "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/tools/run_correspondence_roles.py:79",
+          "detail": "Full-gallery extraction, protocol GT and both scorers."
+        },
+        {
+          "path": "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/comparators/Signal-cd1b0a6/data/datasets/RGBNT201.py",
+          "line": 61,
+          "reference": "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/comparators/Signal-cd1b0a6/data/datasets/RGBNT201.py:61",
+          "detail": "Filename ID/camera parsing."
+        },
+        {
+          "path": "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/comparators/Signal-cd1b0a6/data/datasets/RGBNT100.py",
+          "line": 63,
+          "reference": "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/comparators/Signal-cd1b0a6/data/datasets/RGBNT100.py:63",
+          "detail": "Filename ID/camera parsing."
+        },
+        {
+          "path": "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/comparators/Signal-cd1b0a6/data/datasets/msvr310.py",
+          "line": 67,
+          "reference": "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/comparators/Signal-cd1b0a6/data/datasets/msvr310.py:67",
+          "detail": "Filename ID/camera/scene parsing."
+        },
+        {
+          "path": "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/comparators/Signal-cd1b0a6/utils/metrics.py",
+          "line": 68,
+          "reference": "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/comparators/Signal-cd1b0a6/utils/metrics.py:68",
+          "detail": "MSVR filter."
+        },
+        {
+          "path": "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/comparators/Signal-cd1b0a6/utils/metrics.py",
+          "line": 137,
+          "reference": "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/comparators/Signal-cd1b0a6/utils/metrics.py:137",
+          "detail": "RGBNT filter."
+        },
+        {
+          "path": "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/logs/training_feature_scale_protocols_20261002/RGBNT201.json",
+          "line": 184,
+          "reference": "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/logs/training_feature_scale_protocols_20261002/RGBNT201.json:184",
+          "detail": "All train/query/gallery metadata; counts at 78309."
+        },
+        {
+          "path": "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/logs/training_feature_scale_protocols_20261002/RGBNT100.json",
+          "line": 63,
+          "reference": "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/logs/training_feature_scale_protocols_20261002/RGBNT100.json:63",
+          "detail": "All metadata; counts at 218978."
+        },
+        {
+          "path": "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/logs/training_feature_scale_protocols_20261002/MSVR310.json",
+          "line": 168,
+          "reference": "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/logs/training_feature_scale_protocols_20261002/MSVR310.json:168",
+          "detail": "All metadata; counts at 38538."
+        },
+        {
+          "path": "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/tools/queue_training_feature_scale.py",
+          "line": 112,
+          "reference": "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/tools/queue_training_feature_scale.py:112",
+          "detail": "Root-only protocol difference."
+        }
+      ],
+      "limitations": [
+        "Metadata/source provenance is verified, not the remote image bytes or dataset publisher archive. No newly enumerated dataset file listing or SSH was allowed."
+      ]
+    },
+    "B": {
+      "name": "Score normalization",
+      "status": "PASS",
+      "details": [
+        "No active metric is divided by a prediction max/min/mean/norm. AP uses GT relevant-item counts, CMC averages query hits, and mAP averages query AP; values are percentage points.",
+        "L2 feature normalization before squared Euclidean distance is representation processing. The intervention switches features delivered to both BN/CE and margin-0.3 Triplet; deployment remains L2 in both arms. CLIP attention/LayerNorm are not score normalization."
+      ],
+      "evidence": [
+        {
+          "path": "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/tools/run_training_feature_scale.py",
+          "line": 30,
+          "reference": "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/tools/run_training_feature_scale.py:30",
+          "detail": "Training/deployment boundary."
+        },
+        {
+          "path": "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/tools/run_foundation_recipe.py",
+          "line": 155,
+          "reference": "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/tools/run_foundation_recipe.py:155",
+          "detail": "Actual CE+Triplet loss."
+        },
+        {
+          "path": "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/modeling/trifusion/criterion.py",
+          "line": 17,
+          "reference": "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/modeling/trifusion/criterion.py:17",
+          "detail": "Batch-hard Triplet."
+        },
+        {
+          "path": "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/tools/run_official_three_dataset_roles.py",
+          "line": 230,
+          "reference": "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/tools/run_official_three_dataset_roles.py:230",
+          "detail": "L2/squared Euclidean distance."
+        },
+        {
+          "path": "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/tools/train_msvr310_signal_oof.py",
+          "line": 223,
+          "reference": "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/tools/train_msvr310_signal_oof.py:223",
+          "detail": "Independent scene AP/CMC."
+        },
+        {
+          "path": "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/tools/train_rgbnt100_signal_oof.py",
+          "line": 253,
+          "reference": "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/tools/train_rgbnt100_signal_oof.py:253",
+          "detail": "Independent camera AP/CMC."
+        },
+        {
+          "path": "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/comparators/Signal-cd1b0a6/utils/metrics.py",
+          "line": 93,
+          "reference": "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/comparators/Signal-cd1b0a6/utils/metrics.py:93",
+          "detail": "MSVR GT denominator."
+        },
+        {
+          "path": "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/comparators/Signal-cd1b0a6/utils/metrics.py",
+          "line": 153,
+          "reference": "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/comparators/Signal-cd1b0a6/utils/metrics.py:153",
+          "detail": "RGBNT GT denominator."
+        }
+      ],
+      "limitations": [
+        "Source and text/arithmetic audit, not regenerated distance rankings."
+      ]
+    },
+    "C": {
+      "name": "Result existence and numerical fidelity",
+      "status": "WARN",
+      "details": [
+        "All 259 source files and 109 primary texts match actual local SHA256; all primary byte sizes match. Actual relative-path/hash maps equal the catalog, both intakes and terminal manifest. All JSON/JSONL contents and logs were read; every epoch/step/batch record was checked.",
+        "Six initialization witnesses and three two-record forward witnesses exist. Six M0 jobs each record 8 steps, all 155 trainable tensors active, and zero reload-output difference. All M0 parent completions precede the first full launch; full jobs rebuild from public initial state, not M0 weights.",
+        "Six full jobs have 50 ordered epochs each, 20416 aligned formal step/batch records and 1306624 B64 exposures. All batches are 8 identities x 8 instances, all filename/label/camera tuples map to train metadata, and all official train filenames occur across 50 epochs. Per-epoch counts, means, logs and LR schedules agree. Loss/norm values are finite. Source logs after finite-gradient and nondecreasing AMP-scale assertions.",
+        "Later-tie mAP-best epochs recompute to normalized/raw 26/26 (201), 12/47 (100), 24/23 (MSVR). All four final metrics equal selected-epoch values exactly (maximum numeric difference 0), passing the unchanged <1e-5 percentage-point gate. This establishes recorded metric parity, not local bitwise checkpoint/distance equality.",
+        "All official receipts, matrix rows, report histories and rounded Markdown values match. All 24 launcher events agree with 12 terminal COMPLETE/exit-0 parent jobs; all 18 child subprocesses are COMPLETE/exit-0. report_invocations=1, report_exit_code=0, matching report.log and SUMMARY support one report. Historical SOURCE_INTAKE RUNNING/report0 at 02:40 is not terminal evidence.",
+        "The 24 output binary hashes agree across remote attestations and local receipts but were not locally recomputed. Public CLIP weights, image bytes and output tensors were not reread. Per-query AP/ranks, repair/harm events and bootstrap samples were not regenerated. Their aggregate arithmetic, identity-weighted deltas and bindings agree; binary numerical regeneration remains unverified."
+      ],
+      "evidence": [
+        {
+          "path": "C:/Users/gb/.codex_tmp/training_feature_scale_complete754/raw/logs/training_feature_scale_20261003_v2/manifest.json",
+          "line": 6,
+          "reference": "C:/Users/gb/.codex_tmp/training_feature_scale_complete754/raw/logs/training_feature_scale_20261003_v2/manifest.json:6",
+          "detail": "259-source seal."
+        },
+        {
+          "path": "C:/Users/gb/.codex_tmp/training_feature_scale_complete754/raw/logs/training_feature_scale_20261003_v2/manifest.json",
+          "line": 267,
+          "reference": "C:/Users/gb/.codex_tmp/training_feature_scale_complete754/raw/logs/training_feature_scale_20261003_v2/manifest.json:267",
+          "detail": "Nine initialization/forward hashes."
+        },
+        {
+          "path": "C:/Users/gb/.codex_tmp/training_feature_scale_complete754/INTAKE.json",
+          "line": 704,
+          "reference": "C:/Users/gb/.codex_tmp/training_feature_scale_complete754/INTAKE.json:704",
+          "detail": "24 remote binary attestations."
+        },
+        {
+          "path": "C:/Users/gb/.codex_tmp/training_feature_scale_complete754/INTAKE.json",
+          "line": 2063,
+          "reference": "C:/Users/gb/.codex_tmp/training_feature_scale_complete754/INTAKE.json:2063",
+          "detail": "Explicit remote/no-replay limit."
+        },
+        {
+          "path": "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/SOURCE_INTAKE.json",
+          "line": 270,
+          "reference": "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/SOURCE_INTAKE.json:270",
+          "detail": "Historical running status."
+        },
+        {
+          "path": "C:/Users/gb/.codex_tmp/training_feature_scale_complete754/raw/logs/training_feature_scale_20261003_v2/campaign.json",
+          "line": 961,
+          "reference": "C:/Users/gb/.codex_tmp/training_feature_scale_complete754/raw/logs/training_feature_scale_20261003_v2/campaign.json:961",
+          "detail": "One report and terminal exit/time."
+        },
+        {
+          "path": "C:/Users/gb/.codex_tmp/training_feature_scale_complete754/raw/logs/training_feature_scale_20261003_v2/report.log",
+          "line": 1,
+          "reference": "C:/Users/gb/.codex_tmp/training_feature_scale_complete754/raw/logs/training_feature_scale_20261003_v2/report.log:1",
+          "detail": "Report completion output."
+        },
+        {
+          "path": "C:/Users/gb/.codex_tmp/training_feature_scale_complete754/raw/results/training_feature_scale_complete_20261003/SUMMARY.json",
+          "line": 5,
+          "reference": "C:/Users/gb/.codex_tmp/training_feature_scale_complete754/raw/results/training_feature_scale_complete_20261003/SUMMARY.json:5",
+          "detail": "Six arms/300 epochs/20416 steps."
+        },
+        {
+          "path": "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/tools/run_foundation_recipe.py",
+          "line": 174,
+          "reference": "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/tools/run_foundation_recipe.py:174",
+          "detail": "Full model-state save and strict load at 185."
+        },
+        {
+          "path": "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/tools/run_foundation_recipe.py",
+          "line": 189,
+          "reference": "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/tools/run_foundation_recipe.py:189",
+          "detail": "Fresh build, optimizer/AMP assertions and logging."
+        },
+        {
+          "path": "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/tools/run_foundation_recipe.py",
+          "line": 248,
+          "reference": "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/tools/run_foundation_recipe.py:248",
+          "detail": "Actual best-checkpoint selection."
+        },
+        {
+          "path": "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/tools/run_foundation_recipe.py",
+          "line": 263,
+          "reference": "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/tools/run_foundation_recipe.py:263",
+          "detail": "M0 activity and reload check."
+        },
+        {
+          "path": "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/tools/run_foundation_recipe.py",
+          "line": 287,
+          "reference": "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/tools/run_foundation_recipe.py:287",
+          "detail": "Final strict reload and tolerance."
+        },
+        {
+          "path": "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/tools/queue_foundation_recipe.py",
+          "line": 118,
+          "reference": "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/tools/queue_foundation_recipe.py:118",
+          "detail": "Child execution and exits."
+        },
+        {
+          "path": "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/tools/queue_training_feature_scale.py",
+          "line": 183,
+          "reference": "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/tools/queue_training_feature_scale.py:183",
+          "detail": "M0 barrier, full phase, one report."
+        },
+        {
+          "path": "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/tools/report_training_feature_scale.py",
+          "line": 23,
+          "reference": "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/tools/report_training_feature_scale.py:23",
+          "detail": "Report source/batch/receipt checks."
+        },
+        {
+          "path": "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/tools/analyze_correspondence_distances.py",
+          "line": 28,
+          "reference": "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/tools/analyze_correspondence_distances.py:28",
+          "detail": "Array-bound diagnosis path."
+        }
+      ],
+      "limitations": [
+        "Accepted deterministic scope is local bytes, complete text, counts and arithmetic only; semantic/remote binary assurance remains provisional. No optimizer-state counter or model replay was audited."
+      ]
+    },
+    "D": {
+      "name": "Dead code and invocation",
+      "status": "PASS",
+      "details": [
+        "F2 queue installs its command/source/coordinator into the foundation queue; workers invoke run_training_feature_scale in prepare/m0/train/evaluate modes. This installs FeatureScaleFoundation plus actual batch/norm instrumentation.",
+        "Inference calls signal(training=False), encodes three images with CLIP, concatenates 1536-D globals and applies L2. Training return_aux=True passes either raw or normalized features to both BN/classifier and Triplet. Norm records approximately 1 versus 13.09-20.60 corroborate the active intervention.",
+        "The evaluator calls run_correspondence_roles.official_metrics/extract, the squared-distance helper, pinned author eval_func/eval_func_msrv, and independent camera/scene scoring. The report calls analyze_correspondence_distances.compare.",
+        "Role/adapter/teacher objects are transient construction objects removed from the final wrapper. Their forward, auxiliary losses, old OOF entry points and old Signal classifiers are not used. The fresh shared BN/classifier is active. No uncalled metric, TTT, reranking, role-module or SOTA result is credited."
+      ],
+      "evidence": [
+        {
+          "path": "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/tools/queue_training_feature_scale.py",
+          "line": 123,
+          "reference": "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/tools/queue_training_feature_scale.py:123",
+          "detail": "Actual F2 command."
+        },
+        {
+          "path": "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/tools/queue_training_feature_scale.py",
+          "line": 137,
+          "reference": "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/tools/queue_training_feature_scale.py:137",
+          "detail": "Queue installation."
+        },
+        {
+          "path": "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/tools/run_training_feature_scale.py",
+          "line": 22,
+          "reference": "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/tools/run_training_feature_scale.py:22",
+          "detail": "Final model wrapper."
+        },
+        {
+          "path": "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/tools/run_training_feature_scale.py",
+          "line": 84,
+          "reference": "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/tools/run_training_feature_scale.py:84",
+          "detail": "Trainer installation and main."
+        },
+        {
+          "path": "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/tools/run_clean_clip_joint.py",
+          "line": 37,
+          "reference": "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/tools/run_clean_clip_joint.py:37",
+          "detail": "Public initialization and module disable."
+        },
+        {
+          "path": "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/tools/run_clean_clip_joint.py",
+          "line": 62,
+          "reference": "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/tools/run_clean_clip_joint.py:62",
+          "detail": "152 visual tensors checked against public input."
+        },
+        {
+          "path": "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/modeling/trifusion/correspondence_roles.py",
+          "line": 49,
+          "reference": "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/modeling/trifusion/correspondence_roles.py:49",
+          "detail": "Old Signal parameters frozen during construction."
+        },
+        {
+          "path": "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/comparators/Signal-cd1b0a6/modeling/make_model.py",
+          "line": 197,
+          "reference": "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/comparators/Signal-cd1b0a6/modeling/make_model.py:197",
+          "detail": "Actual head-bypassing Signal forward."
+        },
+        {
+          "path": "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/comparators/Signal-cd1b0a6/modeling/clip/model.py",
+          "line": 447,
+          "reference": "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/comparators/Signal-cd1b0a6/modeling/clip/model.py:447",
+          "detail": "Actual CLIP forward."
+        },
+        {
+          "path": "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/tools/run_correspondence_roles.py",
+          "line": 66,
+          "reference": "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/tools/run_correspondence_roles.py:66",
+          "detail": "Active extraction/evaluator."
+        },
+        {
+          "path": "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/tools/report_training_feature_scale.py",
+          "line": 50,
+          "reference": "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/tools/report_training_feature_scale.py:50",
+          "detail": "Actual diagnostic call."
+        },
+        {
+          "path": "C:/Users/gb/.codex_tmp/training_feature_scale_complete754/raw/results/training_feature_scale_complete_20261003/SUMMARY.json",
+          "line": 654,
+          "reference": "C:/Users/gb/.codex_tmp/training_feature_scale_complete754/raw/results/training_feature_scale_complete_20261003/SUMMARY.json:654",
+          "detail": "Normalized norm evidence."
+        },
+        {
+          "path": "C:/Users/gb/.codex_tmp/training_feature_scale_complete754/raw/results/training_feature_scale_complete_20261003/SUMMARY.json",
+          "line": 3286,
+          "reference": "C:/Users/gb/.codex_tmp/training_feature_scale_complete754/raw/results/training_feature_scale_complete_20261003/SUMMARY.json:3286",
+          "detail": "Raw norm evidence."
+        }
+      ],
+      "limitations": [
+        "Call-path/record audit, not profiling or model replay. Legacy imported functions are not assumed executed."
+      ]
+    },
+    "E": {
+      "name": "Scope and causality",
+      "status": "WARN",
+      "details": [
+        "Three datasets x two fresh arms, seed42, 50 epochs. Paired initial full-state/visual/camera/head hashes, capacity, data and budget match; formal and M0 batch files are byte-identical and LR sequences agree. Actual filename/label/camera order is proved; augmented pixel tensors and cross-device kernel execution were not recorded for exact comparison.",
+        "BN/CE and Triplet inputs change together. This is a current-package feature-scale control, not Triplet-only causality, full F1 package-gap explanation, role necessity or a new-module contribution.",
+        "Official query/gallery mAP is scored each epoch and selects the best checkpoint (later ties). This is benchmark-consumed development evidence, not untouched holdout generalization. Equal selection policy does not eliminate selection bias.",
+        "The fixed raw-minus-normalized gate (mAP >=0.5 pp and Rank1 >=0) recomputes as FAIL for RGBNT201, FAIL for RGBNT100 and PASS for MSVR310. Both negative datasets remain; neither rounding nor identity-macro substitution is used.",
+        "Bootstrap resamples fixed-model identity mean AP changes, seed42, 2000 replicates. It is an identity-macro interval, not a query-weighted official-mAP or training-seed interval. All three intervals include zero; MSVR gate passage is not significance, seed stability or universal benefit.",
+        "Per-run training+epoch-evaluation elapsed time sums to 21994.386657 seconds (6.109551849 hours); parent first-M0-to-report wall time is 3.754712843 hours, excluding preparation. Maximum recorded concurrency is four on GPUs0-3; memory matches receipts. These are timing boundaries, not inference throughput or controlled speed comparisons.",
+        "cfg_yaml retains legacy Adam and BASE_LR/warmup/loss fields. Active non-author code uses AdamW, visual5e-6/other3.5e-4, weight_decay1e-4, five-epoch warmup, fixed50 cosine, unit CE+Triplet weighting and margin0.3. Source and LR records establish actual behavior; cfg_yaml alone is not an effective recipe. This ambiguity affects both arms equally."
+      ],
+      "evidence": [
+        {
+          "path": "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/refine-logs/training_feature_scale_v1/EXPERIMENT_PLAN.md",
+          "line": 7,
+          "reference": "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/refine-logs/training_feature_scale_v1/EXPERIMENT_PLAN.md:7",
+          "detail": "Joint BN/CE+Triplet scope."
+        },
+        {
+          "path": "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/refine-logs/training_feature_scale_v1/EXPERIMENT_PLAN.md",
+          "line": 11,
+          "reference": "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/refine-logs/training_feature_scale_v1/EXPERIMENT_PLAN.md:11",
+          "detail": "Fixed recipe/budget/tolerance."
+        },
+        {
+          "path": "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/refine-logs/training_feature_scale_v1/EXPERIMENT_PLAN.md",
+          "line": 23,
+          "reference": "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/refine-logs/training_feature_scale_v1/EXPERIMENT_PLAN.md:23",
+          "detail": "Unchanged gates and claim ceiling."
+        },
+        {
+          "path": "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/refine-logs/training_feature_scale_v1/EXPERIMENT_PLAN.md",
+          "line": 25,
+          "reference": "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/refine-logs/training_feature_scale_v1/EXPERIMENT_PLAN.md:25",
+          "detail": "Official selection and seed limitation."
+        },
+        {
+          "path": "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/tools/run_foundation_recipe.py",
+          "line": 148,
+          "reference": "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/tools/run_foundation_recipe.py:148",
+          "detail": "Actual AdamW groups."
+        },
+        {
+          "path": "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/tools/run_signal_preserving_v5.py",
+          "line": 1621,
+          "reference": "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/tools/run_signal_preserving_v5.py:1621",
+          "detail": "Actual LR formula."
+        },
+        {
+          "path": "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/tools/run_foundation_recipe.py",
+          "line": 248,
+          "reference": "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/tools/run_foundation_recipe.py:248",
+          "detail": "Official epoch selection."
+        },
+        {
+          "path": "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/tools/analyze_correspondence_distances.py",
+          "line": 57,
+          "reference": "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/tools/analyze_correspondence_distances.py:57",
+          "detail": "Identity-macro/bootstrap formula."
+        },
+        {
+          "path": "C:/Users/gb/.codex_tmp/training_feature_scale_complete754/raw/results/training_feature_scale_complete_20261003/SUMMARY.json",
+          "line": 3963,
+          "reference": "C:/Users/gb/.codex_tmp/training_feature_scale_complete754/raw/results/training_feature_scale_complete_20261003/SUMMARY.json:3963",
+          "detail": "201 gate false; interval at 4011."
+        },
+        {
+          "path": "C:/Users/gb/.codex_tmp/training_feature_scale_complete754/raw/results/training_feature_scale_complete_20261003/SUMMARY.json",
+          "line": 4174,
+          "reference": "C:/Users/gb/.codex_tmp/training_feature_scale_complete754/raw/results/training_feature_scale_complete_20261003/SUMMARY.json:4174",
+          "detail": "100 gate false; interval at 4222."
+        },
+        {
+          "path": "C:/Users/gb/.codex_tmp/training_feature_scale_complete754/raw/results/training_feature_scale_complete_20261003/SUMMARY.json",
+          "line": 4485,
+          "reference": "C:/Users/gb/.codex_tmp/training_feature_scale_complete754/raw/results/training_feature_scale_complete_20261003/SUMMARY.json:4485",
+          "detail": "MSVR gate true; interval at 4533."
+        },
+        {
+          "path": "C:/Users/gb/.codex_tmp/training_feature_scale_complete754/raw/trained-model/training_feature_scale_20261003_v2_full_normalized_RGBNT201/training.json",
+          "line": 643,
+          "reference": "C:/Users/gb/.codex_tmp/training_feature_scale_complete754/raw/trained-model/training_feature_scale_20261003_v2_full_normalized_RGBNT201/training.json:643",
+          "detail": "Legacy cfg_yaml fields."
+        },
+        {
+          "path": "C:/Users/gb/.codex_tmp/training_feature_scale_complete754/raw/results/training_feature_scale_complete_20261003/SUMMARY.json",
+          "line": 4803,
+          "reference": "C:/Users/gb/.codex_tmp/training_feature_scale_complete754/raw/results/training_feature_scale_complete_20261003/SUMMARY.json:4803",
+          "detail": "Narrow claim statement."
+        }
+      ],
+      "limitations": [
+        "No multi-seed, untouched-test, exact augmented-pixel or speed claim accepted."
+      ]
+    },
+    "F": {
+      "name": "Evaluation classification",
+      "status": "PASS",
+      "classification": "real_gt",
+      "details": [
+        "Official retrieval is real_gt. M0 supervised finite-loss checks use real labels but establish engineering activity, not retrieval efficacy.",
+        "Initial-forward/reload equality uses model outputs as numerical consistency references. Under the requested taxonomy this is synthetic_proxy solely for the reference-output comparison, not for the real images or official retrieval GT. These probes are explicitly not dataset accuracy claims.",
+        "Hash/count/arithmetic checks are engineering verification. No human-eval or simulation-only retrieval result is claimed."
+      ],
+      "evidence": [
+        {
+          "path": "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/tools/run_correspondence_roles.py",
+          "line": 88,
+          "reference": "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/tools/run_correspondence_roles.py:88",
+          "detail": "Real protocol GT."
+        },
+        {
+          "path": "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/tools/check_training_feature_scale_pair.py",
+          "line": 28,
+          "reference": "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/tools/check_training_feature_scale_pair.py:28",
+          "detail": "Two real training records; output equality only."
+        },
+        {
+          "path": "C:/Users/gb/.codex_tmp/training_feature_scale_complete754/raw/logs/training_feature_scale_20261003_v2/initial_forward_pair_RGBNT201.json",
+          "line": 30,
+          "reference": "C:/Users/gb/.codex_tmp/training_feature_scale_complete754/raw/logs/training_feature_scale_20261003_v2/initial_forward_pair_RGBNT201.json:30",
+          "detail": "No optimizer or official scoring."
+        },
+        {
+          "path": "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/tools/run_foundation_recipe.py",
+          "line": 263,
+          "reference": "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/tools/run_foundation_recipe.py:263",
+          "detail": "Engineering M0/reload."
+        },
+        {
+          "path": "C:/Users/gb/.codex_tmp/training_feature_scale_complete754/raw/trained-model/training_feature_scale_20261003_v2_m0_normalized_RGBNT201/training.json",
+          "line": 51,
+          "reference": "C:/Users/gb/.codex_tmp/training_feature_scale_complete754/raw/trained-model/training_feature_scale_20261003_v2_m0_normalized_RGBNT201/training.json:51",
+          "detail": "Recorded activity/reload."
+        }
+      ],
+      "limitations": [
+        "Engineering consistency is not performance evidence."
+      ]
+    }
+  },
+  "blocking_findings": [],
+  "nonblocking_findings": [
+    {
+      "id": "W1",
+      "blocking": false,
+      "status": "WARN",
+      "finding": "Official benchmark selects checkpoints.",
+      "claim_impact": "Post-selection development evidence, not untouched generalization/SOTA.",
+      "minimal_correction": "Keep official-test mAP-best selection explicit beside results.",
+      "evidence": [
+        {
+          "path": "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/tools/run_foundation_recipe.py",
+          "line": 248,
+          "reference": "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/tools/run_foundation_recipe.py:248",
+          "detail": "Official epoch selection."
+        }
+      ]
+    },
+    {
+      "id": "W2",
+      "blocking": false,
+      "status": "WARN",
+      "finding": "One seed and all identity-bootstrap intervals cross zero.",
+      "claim_impact": "MSVR gate passage is not significance/stability; two datasets fail.",
+      "minimal_correction": "Retain all datasets, seed42 and identity-macro interval meaning.",
+      "evidence": [
+        {
+          "path": "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/tools/analyze_correspondence_distances.py",
+          "line": 57,
+          "reference": "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/tools/analyze_correspondence_distances.py:57",
+          "detail": "Identity-macro/bootstrap formula."
+        },
+        {
+          "path": "C:/Users/gb/.codex_tmp/training_feature_scale_complete754/raw/results/training_feature_scale_complete_20261003/SUMMARY.json",
+          "line": 3963,
+          "reference": "C:/Users/gb/.codex_tmp/training_feature_scale_complete754/raw/results/training_feature_scale_complete_20261003/SUMMARY.json:3963",
+          "detail": "201 gate false; interval at 4011."
+        },
+        {
+          "path": "C:/Users/gb/.codex_tmp/training_feature_scale_complete754/raw/results/training_feature_scale_complete_20261003/SUMMARY.json",
+          "line": 4174,
+          "reference": "C:/Users/gb/.codex_tmp/training_feature_scale_complete754/raw/results/training_feature_scale_complete_20261003/SUMMARY.json:4174",
+          "detail": "100 gate false; interval at 4222."
+        },
+        {
+          "path": "C:/Users/gb/.codex_tmp/training_feature_scale_complete754/raw/results/training_feature_scale_complete_20261003/SUMMARY.json",
+          "line": 4485,
+          "reference": "C:/Users/gb/.codex_tmp/training_feature_scale_complete754/raw/results/training_feature_scale_complete_20261003/SUMMARY.json:4485",
+          "detail": "MSVR gate true; interval at 4533."
+        }
+      ]
+    },
+    {
+      "id": "W3",
+      "blocking": false,
+      "status": "WARN",
+      "finding": "Binary/image content remains externally attested.",
+      "claim_impact": "No independent local tensor/ranking/image regeneration.",
+      "minimal_correction": "Call this a source/primary-text audit with remote binary hashes. Stronger binary validation requires actual separately authorized binary reading.",
+      "evidence": [
+        {
+          "path": "C:/Users/gb/.codex_tmp/training_feature_scale_complete754/INTAKE.json",
+          "line": 704,
+          "reference": "C:/Users/gb/.codex_tmp/training_feature_scale_complete754/INTAKE.json:704",
+          "detail": "24 remote binary attestations."
+        },
+        {
+          "path": "C:/Users/gb/.codex_tmp/training_feature_scale_complete754/INTAKE.json",
+          "line": 2063,
+          "reference": "C:/Users/gb/.codex_tmp/training_feature_scale_complete754/INTAKE.json:2063",
+          "detail": "Explicit remote/no-replay limit."
+        }
+      ]
+    },
+    {
+      "id": "W4",
+      "blocking": false,
+      "status": "WARN",
+      "finding": "cfg_yaml retains overridden optimizer settings.",
+      "claim_impact": "Reproduction from cfg_yaml alone misstates effective optimization.",
+      "minimal_correction": "Document effective settings from source/LR logs; preserve original receipts.",
+      "evidence": [
+        {
+          "path": "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/tools/run_foundation_recipe.py",
+          "line": 148,
+          "reference": "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/tools/run_foundation_recipe.py:148",
+          "detail": "Actual AdamW groups."
+        },
+        {
+          "path": "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/tools/run_signal_preserving_v5.py",
+          "line": 1621,
+          "reference": "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/tools/run_signal_preserving_v5.py:1621",
+          "detail": "Actual LR formula."
+        },
+        {
+          "path": "C:/Users/gb/.codex_tmp/training_feature_scale_complete754/raw/trained-model/training_feature_scale_20261003_v2_full_normalized_RGBNT201/training.json",
+          "line": 643,
+          "reference": "C:/Users/gb/.codex_tmp/training_feature_scale_complete754/raw/trained-model/training_feature_scale_20261003_v2_full_normalized_RGBNT201/training.json:643",
+          "detail": "Legacy cfg_yaml fields."
+        }
+      ]
+    }
+  ],
+  "blocking_scope": "No blocker for this qualified report; unsupported broader claims remain unsupported.",
+  "runs": [
+    {
+      "dataset": "RGBNT201",
+      "variant": "normalized",
+      "best_epoch": 26,
+      "metrics": {
+        "mAP": 62.580551571472775,
+        "Rank-1": 62.44019269943237,
+        "Rank-5": 75.83732008934021,
+        "Rank-10": 83.01435112953186
+      },
+      "formal_steps": 2649,
+      "nonzero_triplet_steps": 1882,
+      "feature_norm_range": [
+        0.9999998211860657,
+        1.0000001192092896
+      ],
+      "training_and_epoch_evaluation_seconds": 1896.074327,
+      "peak_allocated_bytes": 11704324096,
+      "epochs": 50,
+      "trainable_parameters": 86407680,
+      "trainable_tensors": 155,
+      "strict_reload_metric_max_abs_difference": 0.0,
+      "evidence": [
+        {
+          "path": "C:/Users/gb/.codex_tmp/training_feature_scale_complete754/raw/trained-model/training_feature_scale_20261003_v2_full_normalized_RGBNT201/official_metrics.json",
+          "line": 20,
+          "reference": "C:/Users/gb/.codex_tmp/training_feature_scale_complete754/raw/trained-model/training_feature_scale_20261003_v2_full_normalized_RGBNT201/official_metrics.json:20",
+          "detail": "Original metrics."
+        },
+        {
+          "path": "C:/Users/gb/.codex_tmp/training_feature_scale_complete754/raw/trained-model/training_feature_scale_20261003_v2_full_normalized_RGBNT201/training.json",
+          "line": 41,
+          "reference": "C:/Users/gb/.codex_tmp/training_feature_scale_complete754/raw/trained-model/training_feature_scale_20261003_v2_full_normalized_RGBNT201/training.json:41",
+          "detail": "All fifty epoch rows."
+        },
+        {
+          "path": "C:/Users/gb/.codex_tmp/training_feature_scale_complete754/raw/trained-model/training_feature_scale_20261003_v2_full_normalized_RGBNT201/training_steps.jsonl",
+          "line": 2649,
+          "reference": "C:/Users/gb/.codex_tmp/training_feature_scale_complete754/raw/trained-model/training_feature_scale_20261003_v2_full_normalized_RGBNT201/training_steps.jsonl:2649",
+          "detail": "Last step; all rows checked."
+        },
+        {
+          "path": "C:/Users/gb/.codex_tmp/training_feature_scale_complete754/raw/trained-model/training_feature_scale_20261003_v2_full_normalized_RGBNT201/training_batch_order.jsonl",
+          "line": 2649,
+          "reference": "C:/Users/gb/.codex_tmp/training_feature_scale_complete754/raw/trained-model/training_feature_scale_20261003_v2_full_normalized_RGBNT201/training_batch_order.jsonl:2649",
+          "detail": "Last batch; all rows checked."
+        }
+      ]
+    },
+    {
+      "dataset": "RGBNT100",
+      "variant": "normalized",
+      "best_epoch": 12,
+      "metrics": {
+        "mAP": 77.58429184381957,
+        "Rank-1": 94.1690981388092,
+        "Rank-5": 95.33527493476868,
+        "Rank-10": 95.86005806922913
+      },
+      "formal_steps": 6559,
+      "nonzero_triplet_steps": 842,
+      "feature_norm_range": [
+        0.9999998211860657,
+        1.0000001192092896
+      ],
+      "training_and_epoch_evaluation_seconds": 5871.136725,
+      "peak_allocated_bytes": 11702802432,
+      "epochs": 50,
+      "trainable_parameters": 86224896,
+      "trainable_tensors": 155,
+      "strict_reload_metric_max_abs_difference": 0.0,
+      "evidence": [
+        {
+          "path": "C:/Users/gb/.codex_tmp/training_feature_scale_complete754/raw/trained-model/training_feature_scale_20261003_v2_full_normalized_RGBNT100/official_metrics.json",
+          "line": 20,
+          "reference": "C:/Users/gb/.codex_tmp/training_feature_scale_complete754/raw/trained-model/training_feature_scale_20261003_v2_full_normalized_RGBNT100/official_metrics.json:20",
+          "detail": "Original metrics."
+        },
+        {
+          "path": "C:/Users/gb/.codex_tmp/training_feature_scale_complete754/raw/trained-model/training_feature_scale_20261003_v2_full_normalized_RGBNT100/training.json",
+          "line": 41,
+          "reference": "C:/Users/gb/.codex_tmp/training_feature_scale_complete754/raw/trained-model/training_feature_scale_20261003_v2_full_normalized_RGBNT100/training.json:41",
+          "detail": "All fifty epoch rows."
+        },
+        {
+          "path": "C:/Users/gb/.codex_tmp/training_feature_scale_complete754/raw/trained-model/training_feature_scale_20261003_v2_full_normalized_RGBNT100/training_steps.jsonl",
+          "line": 6559,
+          "reference": "C:/Users/gb/.codex_tmp/training_feature_scale_complete754/raw/trained-model/training_feature_scale_20261003_v2_full_normalized_RGBNT100/training_steps.jsonl:6559",
+          "detail": "Last step; all rows checked."
+        },
+        {
+          "path": "C:/Users/gb/.codex_tmp/training_feature_scale_complete754/raw/trained-model/training_feature_scale_20261003_v2_full_normalized_RGBNT100/training_batch_order.jsonl",
+          "line": 6559,
+          "reference": "C:/Users/gb/.codex_tmp/training_feature_scale_complete754/raw/trained-model/training_feature_scale_20261003_v2_full_normalized_RGBNT100/training_batch_order.jsonl:6559",
+          "detail": "Last batch; all rows checked."
+        }
+      ]
+    },
+    {
+      "dataset": "MSVR310",
+      "variant": "normalized",
+      "best_epoch": 24,
+      "metrics": {
+        "mAP": 50.35673958098721,
+        "Rank-1": 67.51269102096558,
+        "Rank-5": 81.38747811317444,
+        "Rank-10": 86.29441857337952
+      },
+      "formal_steps": 1000,
+      "nonzero_triplet_steps": 992,
+      "feature_norm_range": [
+        0.9999998211860657,
+        1.0000001192092896
+      ],
+      "training_and_epoch_evaluation_seconds": 1304.533802,
+      "peak_allocated_bytes": 11702207488,
+      "epochs": 50,
+      "trainable_parameters": 86386176,
+      "trainable_tensors": 155,
+      "strict_reload_metric_max_abs_difference": 0.0,
+      "evidence": [
+        {
+          "path": "C:/Users/gb/.codex_tmp/training_feature_scale_complete754/raw/trained-model/training_feature_scale_20261003_v2_full_normalized_MSVR310/official_metrics.json",
+          "line": 20,
+          "reference": "C:/Users/gb/.codex_tmp/training_feature_scale_complete754/raw/trained-model/training_feature_scale_20261003_v2_full_normalized_MSVR310/official_metrics.json:20",
+          "detail": "Original metrics."
+        },
+        {
+          "path": "C:/Users/gb/.codex_tmp/training_feature_scale_complete754/raw/trained-model/training_feature_scale_20261003_v2_full_normalized_MSVR310/training.json",
+          "line": 41,
+          "reference": "C:/Users/gb/.codex_tmp/training_feature_scale_complete754/raw/trained-model/training_feature_scale_20261003_v2_full_normalized_MSVR310/training.json:41",
+          "detail": "All fifty epoch rows."
+        },
+        {
+          "path": "C:/Users/gb/.codex_tmp/training_feature_scale_complete754/raw/trained-model/training_feature_scale_20261003_v2_full_normalized_MSVR310/training_steps.jsonl",
+          "line": 1000,
+          "reference": "C:/Users/gb/.codex_tmp/training_feature_scale_complete754/raw/trained-model/training_feature_scale_20261003_v2_full_normalized_MSVR310/training_steps.jsonl:1000",
+          "detail": "Last step; all rows checked."
+        },
+        {
+          "path": "C:/Users/gb/.codex_tmp/training_feature_scale_complete754/raw/trained-model/training_feature_scale_20261003_v2_full_normalized_MSVR310/training_batch_order.jsonl",
+          "line": 1000,
+          "reference": "C:/Users/gb/.codex_tmp/training_feature_scale_complete754/raw/trained-model/training_feature_scale_20261003_v2_full_normalized_MSVR310/training_batch_order.jsonl:1000",
+          "detail": "Last batch; all rows checked."
+        }
+      ]
+    },
+    {
+      "dataset": "RGBNT201",
+      "variant": "raw",
+      "best_epoch": 26,
+      "metrics": {
+        "mAP": 59.68789908355065,
+        "Rank-1": 60.88516712188721,
+        "Rank-5": 73.20573925971985,
+        "Rank-10": 80.62201142311096
+      },
+      "formal_steps": 2649,
+      "nonzero_triplet_steps": 1122,
+      "feature_norm_range": [
+        14.621070861816406,
+        20.60223960876465
+      ],
+      "training_and_epoch_evaluation_seconds": 2461.06459,
+      "peak_allocated_bytes": 11705700352,
+      "epochs": 50,
+      "trainable_parameters": 86407680,
+      "trainable_tensors": 155,
+      "strict_reload_metric_max_abs_difference": 0.0,
+      "evidence": [
+        {
+          "path": "C:/Users/gb/.codex_tmp/training_feature_scale_complete754/raw/trained-model/training_feature_scale_20261003_v2_full_raw_RGBNT201/official_metrics.json",
+          "line": 20,
+          "reference": "C:/Users/gb/.codex_tmp/training_feature_scale_complete754/raw/trained-model/training_feature_scale_20261003_v2_full_raw_RGBNT201/official_metrics.json:20",
+          "detail": "Original metrics."
+        },
+        {
+          "path": "C:/Users/gb/.codex_tmp/training_feature_scale_complete754/raw/trained-model/training_feature_scale_20261003_v2_full_raw_RGBNT201/training.json",
+          "line": 41,
+          "reference": "C:/Users/gb/.codex_tmp/training_feature_scale_complete754/raw/trained-model/training_feature_scale_20261003_v2_full_raw_RGBNT201/training.json:41",
+          "detail": "All fifty epoch rows."
+        },
+        {
+          "path": "C:/Users/gb/.codex_tmp/training_feature_scale_complete754/raw/trained-model/training_feature_scale_20261003_v2_full_raw_RGBNT201/training_steps.jsonl",
+          "line": 2649,
+          "reference": "C:/Users/gb/.codex_tmp/training_feature_scale_complete754/raw/trained-model/training_feature_scale_20261003_v2_full_raw_RGBNT201/training_steps.jsonl:2649",
+          "detail": "Last step; all rows checked."
+        },
+        {
+          "path": "C:/Users/gb/.codex_tmp/training_feature_scale_complete754/raw/trained-model/training_feature_scale_20261003_v2_full_raw_RGBNT201/training_batch_order.jsonl",
+          "line": 2649,
+          "reference": "C:/Users/gb/.codex_tmp/training_feature_scale_complete754/raw/trained-model/training_feature_scale_20261003_v2_full_raw_RGBNT201/training_batch_order.jsonl:2649",
+          "detail": "Last batch; all rows checked."
+        }
+      ]
+    },
+    {
+      "dataset": "RGBNT100",
+      "variant": "raw",
+      "best_epoch": 47,
+      "metrics": {
+        "mAP": 75.19293649431079,
+        "Rank-1": 94.40233111381531,
+        "Rank-5": 95.91836929321289,
+        "Rank-10": 96.38484120368958
+      },
+      "formal_steps": 6559,
+      "nonzero_triplet_steps": 704,
+      "feature_norm_range": [
+        13.090947151184082,
+        20.42727279663086
+      ],
+      "training_and_epoch_evaluation_seconds": 9122.063616,
+      "peak_allocated_bytes": 11702802432,
+      "epochs": 50,
+      "trainable_parameters": 86224896,
+      "trainable_tensors": 155,
+      "strict_reload_metric_max_abs_difference": 0.0,
+      "evidence": [
+        {
+          "path": "C:/Users/gb/.codex_tmp/training_feature_scale_complete754/raw/trained-model/training_feature_scale_20261003_v2_full_raw_RGBNT100/official_metrics.json",
+          "line": 20,
+          "reference": "C:/Users/gb/.codex_tmp/training_feature_scale_complete754/raw/trained-model/training_feature_scale_20261003_v2_full_raw_RGBNT100/official_metrics.json:20",
+          "detail": "Original metrics."
+        },
+        {
+          "path": "C:/Users/gb/.codex_tmp/training_feature_scale_complete754/raw/trained-model/training_feature_scale_20261003_v2_full_raw_RGBNT100/training.json",
+          "line": 41,
+          "reference": "C:/Users/gb/.codex_tmp/training_feature_scale_complete754/raw/trained-model/training_feature_scale_20261003_v2_full_raw_RGBNT100/training.json:41",
+          "detail": "All fifty epoch rows."
+        },
+        {
+          "path": "C:/Users/gb/.codex_tmp/training_feature_scale_complete754/raw/trained-model/training_feature_scale_20261003_v2_full_raw_RGBNT100/training_steps.jsonl",
+          "line": 6559,
+          "reference": "C:/Users/gb/.codex_tmp/training_feature_scale_complete754/raw/trained-model/training_feature_scale_20261003_v2_full_raw_RGBNT100/training_steps.jsonl:6559",
+          "detail": "Last step; all rows checked."
+        },
+        {
+          "path": "C:/Users/gb/.codex_tmp/training_feature_scale_complete754/raw/trained-model/training_feature_scale_20261003_v2_full_raw_RGBNT100/training_batch_order.jsonl",
+          "line": 6559,
+          "reference": "C:/Users/gb/.codex_tmp/training_feature_scale_complete754/raw/trained-model/training_feature_scale_20261003_v2_full_raw_RGBNT100/training_batch_order.jsonl:6559",
+          "detail": "Last batch; all rows checked."
+        }
+      ]
+    },
+    {
+      "dataset": "MSVR310",
+      "variant": "raw",
+      "best_epoch": 23,
+      "metrics": {
+        "mAP": 51.57761561006768,
+        "Rank-1": 70.55837512016296,
+        "Rank-5": 85.617595911026,
+        "Rank-10": 89.17089700698853
+      },
+      "formal_steps": 1000,
+      "nonzero_triplet_steps": 938,
+      "feature_norm_range": [
+        17.30005645751953,
+        20.57608413696289
+      ],
+      "training_and_epoch_evaluation_seconds": 1339.513597,
+      "peak_allocated_bytes": 11702207488,
+      "epochs": 50,
+      "trainable_parameters": 86386176,
+      "trainable_tensors": 155,
+      "strict_reload_metric_max_abs_difference": 0.0,
+      "evidence": [
+        {
+          "path": "C:/Users/gb/.codex_tmp/training_feature_scale_complete754/raw/trained-model/training_feature_scale_20261003_v2_full_raw_MSVR310/official_metrics.json",
+          "line": 20,
+          "reference": "C:/Users/gb/.codex_tmp/training_feature_scale_complete754/raw/trained-model/training_feature_scale_20261003_v2_full_raw_MSVR310/official_metrics.json:20",
+          "detail": "Original metrics."
+        },
+        {
+          "path": "C:/Users/gb/.codex_tmp/training_feature_scale_complete754/raw/trained-model/training_feature_scale_20261003_v2_full_raw_MSVR310/training.json",
+          "line": 41,
+          "reference": "C:/Users/gb/.codex_tmp/training_feature_scale_complete754/raw/trained-model/training_feature_scale_20261003_v2_full_raw_MSVR310/training.json:41",
+          "detail": "All fifty epoch rows."
+        },
+        {
+          "path": "C:/Users/gb/.codex_tmp/training_feature_scale_complete754/raw/trained-model/training_feature_scale_20261003_v2_full_raw_MSVR310/training_steps.jsonl",
+          "line": 1000,
+          "reference": "C:/Users/gb/.codex_tmp/training_feature_scale_complete754/raw/trained-model/training_feature_scale_20261003_v2_full_raw_MSVR310/training_steps.jsonl:1000",
+          "detail": "Last step; all rows checked."
+        },
+        {
+          "path": "C:/Users/gb/.codex_tmp/training_feature_scale_complete754/raw/trained-model/training_feature_scale_20261003_v2_full_raw_MSVR310/training_batch_order.jsonl",
+          "line": 1000,
+          "reference": "C:/Users/gb/.codex_tmp/training_feature_scale_complete754/raw/trained-model/training_feature_scale_20261003_v2_full_raw_MSVR310/training_batch_order.jsonl:1000",
+          "detail": "Last batch; all rows checked."
+        }
+      ]
+    }
+  ],
+  "pairs": [
+    {
+      "dataset": "RGBNT201",
+      "delta_official_metrics_pp": {
+        "mAP": -2.8926524879221276,
+        "Rank-1": -1.555025577545166,
+        "Rank-5": -2.6315808296203613,
+        "Rank-10": -2.3923397064208984
+      },
+      "preregistered_gate": "FAIL",
+      "batch_bytes_equal_both_phases": true,
+      "repairs_recorded": 71,
+      "new_errors_recorded": 84,
+      "identity_macro_mean_delta_ap_points": -2.6772687835642,
+      "identity_bootstrap_95_interval_recorded": [
+        -8.480107771092971,
+        3.181634262225375
+      ],
+      "bootstrap_locally_regenerated": false
+    },
+    {
+      "dataset": "RGBNT100",
+      "delta_official_metrics_pp": {
+        "mAP": -2.3913553495087854,
+        "Rank-1": 0.23323297500610352,
+        "Rank-5": 0.5830943584442139,
+        "Rank-10": 0.5247831344604492
+      },
+      "preregistered_gate": "FAIL",
+      "batch_bytes_equal_both_phases": true,
+      "repairs_recorded": 55,
+      "new_errors_recorded": 51,
+      "identity_macro_mean_delta_ap_points": -2.333872287294807,
+      "identity_bootstrap_95_interval_recorded": [
+        -5.381174073803389,
+        0.9325535988399216
+      ],
+      "bootstrap_locally_regenerated": false
+    },
+    {
+      "dataset": "MSVR310",
+      "delta_official_metrics_pp": {
+        "mAP": 1.2208760290804719,
+        "Rank-1": 3.0456840991973877,
+        "Rank-5": 4.2301177978515625,
+        "Rank-10": 2.876478433609009
+      },
+      "preregistered_gate": "PASS",
+      "batch_bytes_equal_both_phases": true,
+      "repairs_recorded": 46,
+      "new_errors_recorded": 28,
+      "identity_macro_mean_delta_ap_points": 1.4829155291202976,
+      "identity_bootstrap_95_interval_recorded": [
+        -1.1970756358069765,
+        4.36589795779194
+      ],
+      "bootstrap_locally_regenerated": false
+    }
+  ],
+  "claims": [
+    {
+      "claim": "Six fresh matched feature-scale controls completed.",
+      "impact": "supported_with_qualifiers",
+      "reason": "Source/text/receipt evidence; binary content not locally replayed."
+    },
+    {
+      "claim": "MSVR310 raw arm passes the registered gate.",
+      "impact": "supported_with_qualifiers",
+      "reason": "One seed, official-selected checkpoint; no significance/stability established."
+    },
+    {
+      "claim": "Raw improves all datasets.",
+      "impact": "unsupported",
+      "reason": "201 and 100 mAP decline and fail gates."
+    },
+    {
+      "claim": "Triplet-only causality or whole F1 gap explained.",
+      "impact": "unsupported",
+      "reason": "BN/CE and Triplet inputs change jointly; other F1 variables not isolated."
+    },
+    {
+      "claim": "New module/role contribution, SOTA, seed robustness or untouched-test generalization.",
+      "impact": "unsupported",
+      "reason": "No such evidence in this experiment."
+    },
+    {
+      "claim": "Strict reload means bitwise equality of all checkpoint/distance tensors.",
+      "impact": "unsupported",
+      "reason": "Strict loading is in source and metrics exactly match, but no local binary comparison."
+    }
+  ],
+  "evaluation_types": [
+    {
+      "name": "official retrieval",
+      "type": "real_gt"
+    },
+    {
+      "name": "M0 supervised loss checks",
+      "type": "real_gt",
+      "claim_ceiling": "engineering only"
+    },
+    {
+      "name": "initial/reload reference-output comparison",
+      "type": "synthetic_proxy",
+      "claim_ceiling": "numerical consistency only; real inputs, not benchmark GT"
+    }
+  ],
+  "minimal_corrections": [
+    "No code change, threshold change or retraining needed for honest reporting.",
+    "Preserve negative datasets, official selection, seed42, joint CE/BN+Triplet scope and bootstrap limits.",
+    "State external binary boundary and effective optimizer source; preserve primary records."
+  ],
+  "audited_input_hashes": {
+    "C:/Users/gb/.codex_tmp/training_feature_scale_complete754/AUDIT_INPUT_PATHS.json": "sha256:144cdfb2d9883aa4cdf37043b489359ee5ae67b387c85470f92f4159b773563a",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_complete754/AUDIT_REQUEST.txt": "sha256:aa88a1e5b60961fe9a789a54d8ed7b23b34dcce44102a00c4e8cada3557fe257",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_complete754/INTAKE.json": "sha256:bd895673325553e71f41f25c54f6c53f0f87b7b47ec6e2876710a27406e1c137",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_complete754/raw/logs/training_feature_scale_20261003_v2/accepted_matrix.json": "sha256:f1df5ecc85daa346229dfc94f90ca20039558a80640f4c7dc183dd5e556dcc7a",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_complete754/raw/logs/training_feature_scale_20261003_v2/campaign.json": "sha256:90306d936d93a6d5221bace09476e69837cd180f77ed8fb0d7b10b19e72c9197",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_complete754/raw/logs/training_feature_scale_20261003_v2/full_normalized_MSVR310.log": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_complete754/raw/logs/training_feature_scale_20261003_v2/full_normalized_RGBNT100.log": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_complete754/raw/logs/training_feature_scale_20261003_v2/full_normalized_RGBNT201.log": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_complete754/raw/logs/training_feature_scale_20261003_v2/full_raw_MSVR310.log": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_complete754/raw/logs/training_feature_scale_20261003_v2/full_raw_RGBNT100.log": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_complete754/raw/logs/training_feature_scale_20261003_v2/full_raw_RGBNT201.log": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_complete754/raw/logs/training_feature_scale_20261003_v2/initial_forward_pair_MSVR310.json": "sha256:3c58206df4b7ef49184b7c7ba14175627a54df6b0bb8ae49c27f10e5c686c9cd",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_complete754/raw/logs/training_feature_scale_20261003_v2/initial_forward_pair_MSVR310.log": "sha256:3dee9c9b5433ce4059f1d82e964decff55137d1258c9d8013c516101f2eff4b5",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_complete754/raw/logs/training_feature_scale_20261003_v2/initial_forward_pair_RGBNT100.json": "sha256:d538d320c1df5ab1e5b6fb78482daa5ef40905b90e3ef36a8d55e9d9ed5bd6f2",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_complete754/raw/logs/training_feature_scale_20261003_v2/initial_forward_pair_RGBNT100.log": "sha256:d23c4cc8079b09492f27173d4039ae297bc7a9e8e3f7cfc684efed78f33855ed",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_complete754/raw/logs/training_feature_scale_20261003_v2/initial_forward_pair_RGBNT201.json": "sha256:7ab06afaae08022a808ea16e5ea7673a4699b2e3b7bb91895a54286ceabcbe2d",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_complete754/raw/logs/training_feature_scale_20261003_v2/initial_forward_pair_RGBNT201.log": "sha256:f78215e93ca6f66cb61d00a37c5d35064041a02e4e44e5045efa5a3dba153eed",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_complete754/raw/logs/training_feature_scale_20261003_v2/initialization/MSVR310_normalized.json": "sha256:a7df1efd1575002fddeaf767e7ac0c56e7b3532873a7eed9f75e1c09c23bc78e",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_complete754/raw/logs/training_feature_scale_20261003_v2/initialization/MSVR310_raw.json": "sha256:75e7328efc529e39c9fd3bcc9ce689af81ca5c20afc3ebcda3720db8950262aa",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_complete754/raw/logs/training_feature_scale_20261003_v2/initialization/RGBNT100_normalized.json": "sha256:f5af32ae42af98353623173121826dd613341d7976523c7e69ca974402ecf37b",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_complete754/raw/logs/training_feature_scale_20261003_v2/initialization/RGBNT100_raw.json": "sha256:e824ca9a8c3bed82d00bacf03d681b51b9e7391320c952fb969d33667325f2c8",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_complete754/raw/logs/training_feature_scale_20261003_v2/initialization/RGBNT201_normalized.json": "sha256:4a52d5c98005ec3d6273b51462c90ccce5f738833c0bf51b1a02607f0779a819",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_complete754/raw/logs/training_feature_scale_20261003_v2/initialization/RGBNT201_raw.json": "sha256:76a7f92b5701a149ba0cd0dda0d8c295f233d4e9a5c036de7157ecc5efef6eba",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_complete754/raw/logs/training_feature_scale_20261003_v2/m0_normalized_MSVR310.log": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_complete754/raw/logs/training_feature_scale_20261003_v2/m0_normalized_RGBNT100.log": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_complete754/raw/logs/training_feature_scale_20261003_v2/m0_normalized_RGBNT201.log": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_complete754/raw/logs/training_feature_scale_20261003_v2/m0_raw_MSVR310.log": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_complete754/raw/logs/training_feature_scale_20261003_v2/m0_raw_RGBNT100.log": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_complete754/raw/logs/training_feature_scale_20261003_v2/m0_raw_RGBNT201.log": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_complete754/raw/logs/training_feature_scale_20261003_v2/manifest.json": "sha256:e7e6df04d8632147d1fb16398566474665e0b094d6431ea36d96a34621f17d18",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_complete754/raw/logs/training_feature_scale_20261003_v2/prepare_normalized_MSVR310.log": "sha256:bc3ba455af236c550424b0d7ff6e356225fe5fd1aea745525f33ec43f6e10808",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_complete754/raw/logs/training_feature_scale_20261003_v2/prepare_normalized_RGBNT100.log": "sha256:bc3ba455af236c550424b0d7ff6e356225fe5fd1aea745525f33ec43f6e10808",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_complete754/raw/logs/training_feature_scale_20261003_v2/prepare_normalized_RGBNT201.log": "sha256:fd000d5f5f71b88337edd0b2b806c41c8ba6e2a54502d24752bf91b51022748a",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_complete754/raw/logs/training_feature_scale_20261003_v2/prepare_raw_MSVR310.log": "sha256:bc3ba455af236c550424b0d7ff6e356225fe5fd1aea745525f33ec43f6e10808",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_complete754/raw/logs/training_feature_scale_20261003_v2/prepare_raw_RGBNT100.log": "sha256:bc3ba455af236c550424b0d7ff6e356225fe5fd1aea745525f33ec43f6e10808",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_complete754/raw/logs/training_feature_scale_20261003_v2/prepare_raw_RGBNT201.log": "sha256:fd000d5f5f71b88337edd0b2b806c41c8ba6e2a54502d24752bf91b51022748a",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_complete754/raw/logs/training_feature_scale_20261003_v2/report.log": "sha256:ff18de6a64abeeffb80a7714b08f5ba3a07968fac58276440b13ed226565ebfa",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_complete754/raw/logs/training_feature_scale_20261003_v2/training_feature_scale_20261003_v2_full_normalized_MSVR310/campaign.json": "sha256:7fab75434dc1c1f8d245656cecf34ed6c3a879902cc7f87797c8643b697b92b9",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_complete754/raw/logs/training_feature_scale_20261003_v2/training_feature_scale_20261003_v2_full_normalized_MSVR310/evaluate.log": "sha256:e782ba090cd701f3040fd6c414169b4f7157dee0ce8813fc59cbf6c0ca8cb3e8",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_complete754/raw/logs/training_feature_scale_20261003_v2/training_feature_scale_20261003_v2_full_normalized_MSVR310/train.log": "sha256:f7664fb1f9cf11727701e8ee990f6373eea21cee7a77358894d765d056aad506",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_complete754/raw/logs/training_feature_scale_20261003_v2/training_feature_scale_20261003_v2_full_normalized_RGBNT100/campaign.json": "sha256:8218f7b7f88de7f9e9480ae3ac414884a5ac2aa018cab1205f474a2d82ad2305",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_complete754/raw/logs/training_feature_scale_20261003_v2/training_feature_scale_20261003_v2_full_normalized_RGBNT100/evaluate.log": "sha256:1229ec1a6f575fd619de6ad9bf348c2aec02e155c15730955ddadf6e107da305",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_complete754/raw/logs/training_feature_scale_20261003_v2/training_feature_scale_20261003_v2_full_normalized_RGBNT100/train.log": "sha256:907f21b25a398bb44826cb877faf8160044815a4fd2fdee2635c0837046cc285",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_complete754/raw/logs/training_feature_scale_20261003_v2/training_feature_scale_20261003_v2_full_normalized_RGBNT201/campaign.json": "sha256:701e6d3caa698e7320d39d6a204429890ec35ea23e4fe689a9c8818ace71a0c0",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_complete754/raw/logs/training_feature_scale_20261003_v2/training_feature_scale_20261003_v2_full_normalized_RGBNT201/evaluate.log": "sha256:b3e6275505b73bdd37394e00f93010853557647b15a626219be43fccfe13b9e5",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_complete754/raw/logs/training_feature_scale_20261003_v2/training_feature_scale_20261003_v2_full_normalized_RGBNT201/train.log": "sha256:c0af8bb6bf7a324d4c8f262cad70ae4de6691c6ff6f286398533bba256125ce5",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_complete754/raw/logs/training_feature_scale_20261003_v2/training_feature_scale_20261003_v2_full_raw_MSVR310/campaign.json": "sha256:f16570ab48125fc17360d0bfa896193ada03da54b1ecab032eabee1cfb21728e",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_complete754/raw/logs/training_feature_scale_20261003_v2/training_feature_scale_20261003_v2_full_raw_MSVR310/evaluate.log": "sha256:035846664b67cf9e216b0e4ab92070285959ae4ad78e10fbcb160aeeb3f01e5b",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_complete754/raw/logs/training_feature_scale_20261003_v2/training_feature_scale_20261003_v2_full_raw_MSVR310/train.log": "sha256:14af4c19c80120324f241d7dda2226ef7f0c965a032406e3983f69a2936ddb28",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_complete754/raw/logs/training_feature_scale_20261003_v2/training_feature_scale_20261003_v2_full_raw_RGBNT100/campaign.json": "sha256:1ada8903f4dcad765672a1d97d6fd4dfb7d000362e9b680c5eac0f149c5eb685",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_complete754/raw/logs/training_feature_scale_20261003_v2/training_feature_scale_20261003_v2_full_raw_RGBNT100/evaluate.log": "sha256:85bd311e9da514339aa28ac432fe80c392bdec6f51b49ec91eaa01de10de48b7",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_complete754/raw/logs/training_feature_scale_20261003_v2/training_feature_scale_20261003_v2_full_raw_RGBNT100/train.log": "sha256:56d6043ba98db4ff31670add4d80445e7211e9c0377e0fb680c749d85548cc4d",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_complete754/raw/logs/training_feature_scale_20261003_v2/training_feature_scale_20261003_v2_full_raw_RGBNT201/campaign.json": "sha256:5ba7d73c8145620cbe806a7c7675475a62efdf2d3e37da5659e85fa26ff7c502",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_complete754/raw/logs/training_feature_scale_20261003_v2/training_feature_scale_20261003_v2_full_raw_RGBNT201/evaluate.log": "sha256:806dcefc2c3ad859df922b34b557a46aed537c9ba7e3cf489b64749fddc5ce5b",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_complete754/raw/logs/training_feature_scale_20261003_v2/training_feature_scale_20261003_v2_full_raw_RGBNT201/train.log": "sha256:34596fa8e9f1603dd7749067ebf4df29089ddf9fca073bd5cacb73cd7eec1be3",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_complete754/raw/logs/training_feature_scale_20261003_v2/training_feature_scale_20261003_v2_m0_normalized_MSVR310/campaign.json": "sha256:109f8aabd72f70378b6c23c414f36c9f0509e0a959e706481f35c1f3072dde5f",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_complete754/raw/logs/training_feature_scale_20261003_v2/training_feature_scale_20261003_v2_m0_normalized_MSVR310/m0.log": "sha256:1f5ab6d4df95f62424693f452ca80e7da2ca63a4fac5bf52266f144583dc4e0e",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_complete754/raw/logs/training_feature_scale_20261003_v2/training_feature_scale_20261003_v2_m0_normalized_RGBNT100/campaign.json": "sha256:88ce315ecf5e1904e7941b36e29ff5569351d1eb6ae7e8b53ce746d0c4c7569f",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_complete754/raw/logs/training_feature_scale_20261003_v2/training_feature_scale_20261003_v2_m0_normalized_RGBNT100/m0.log": "sha256:50589a9a419ef8bb2da71c13e65b010387b26fcba73549c36bd061ace629ac25",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_complete754/raw/logs/training_feature_scale_20261003_v2/training_feature_scale_20261003_v2_m0_normalized_RGBNT201/campaign.json": "sha256:0abb562b01880207fafc85810e8940fc1a17c7259bb61e2e39296b86cd3dc457",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_complete754/raw/logs/training_feature_scale_20261003_v2/training_feature_scale_20261003_v2_m0_normalized_RGBNT201/m0.log": "sha256:49983cbf86aa0083fa4295e35fd753752a8addcdc7aa8be4684fec0a26071a2e",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_complete754/raw/logs/training_feature_scale_20261003_v2/training_feature_scale_20261003_v2_m0_raw_MSVR310/campaign.json": "sha256:90074df6f5d8e3fc5bd8524568fbe31c6c5a345c2c7b555e1271b7436b8b1d5d",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_complete754/raw/logs/training_feature_scale_20261003_v2/training_feature_scale_20261003_v2_m0_raw_MSVR310/m0.log": "sha256:dd2638b117fdd09a2b240d0a672874fdc9b83e7a70065e0e03a105422d7952ce",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_complete754/raw/logs/training_feature_scale_20261003_v2/training_feature_scale_20261003_v2_m0_raw_RGBNT100/campaign.json": "sha256:86e8883ff7be0892bbd07062fde684b3287c738f91bfd5b362bf62c8d1757141",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_complete754/raw/logs/training_feature_scale_20261003_v2/training_feature_scale_20261003_v2_m0_raw_RGBNT100/m0.log": "sha256:a7be1f12fe5968d7cf849ca62a12f734fe7ec09e746a75c4d67cfea14efd6f66",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_complete754/raw/logs/training_feature_scale_20261003_v2/training_feature_scale_20261003_v2_m0_raw_RGBNT201/campaign.json": "sha256:a878d0018bd62f58e4972b39159bfdc83a4ca87fe20034b1f23a372065094563",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_complete754/raw/logs/training_feature_scale_20261003_v2/training_feature_scale_20261003_v2_m0_raw_RGBNT201/m0.log": "sha256:3683dbeedc32b9f3476074ef7ad56f21ffbba6f2e7730bd4724c7eae990f0209",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_complete754/raw/logs/training_feature_scale_20261003_v2_launcher.log": "sha256:dddf244ab032e12de368fce7044b6846171dd40fff91f8e0c6190b91e5c79eae",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_complete754/raw/results/training_feature_scale_complete_20261003/REPORT.md": "sha256:32e26f91e1d0beaab19f0968cb912cbd86d60593764438f5c3d2110831ff3f33",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_complete754/raw/results/training_feature_scale_complete_20261003/SUMMARY.json": "sha256:202addf168eb43b6d1942e29a646a2b14b418ab54dba5c3f97405709ac544b17",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_complete754/raw/trained-model/training_feature_scale_20261003_v2_full_normalized_MSVR310/official_metrics.json": "sha256:1ea3b538955da8278b5fdf36420bb8fd357a6e4ae2e91748a33b0548509e87f7",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_complete754/raw/trained-model/training_feature_scale_20261003_v2_full_normalized_MSVR310/training.json": "sha256:56e2b2e54acdaddceb8069cb52457ed007e8d8ef18bffc96ba04eb5bcd83dfcf",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_complete754/raw/trained-model/training_feature_scale_20261003_v2_full_normalized_MSVR310/training_batch_order.jsonl": "sha256:95670ff1ce6b83f979370c8f4736c12fbf5f40a9f86699fb2fc61cb994653450",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_complete754/raw/trained-model/training_feature_scale_20261003_v2_full_normalized_MSVR310/training_steps.jsonl": "sha256:1cb693f802b428295959c5614ecdf180ecfd45f86a3c050f31280f857ac3c1cb",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_complete754/raw/trained-model/training_feature_scale_20261003_v2_full_normalized_RGBNT100/official_metrics.json": "sha256:1195a3c89de3c86391f31620a4f1506eb195a82a7847a96647bb30dfb9249673",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_complete754/raw/trained-model/training_feature_scale_20261003_v2_full_normalized_RGBNT100/training.json": "sha256:f3988f92a36bfc951d2c5e9a37692a3c89d9d0d845f898944809a2155f393f18",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_complete754/raw/trained-model/training_feature_scale_20261003_v2_full_normalized_RGBNT100/training_batch_order.jsonl": "sha256:17800b61d46948c4596f37f9b9169c67a4e3e64edeb06cc885725f661dc3e881",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_complete754/raw/trained-model/training_feature_scale_20261003_v2_full_normalized_RGBNT100/training_steps.jsonl": "sha256:22d60bab6e71e0ec34d6b351d1f78b31694f0a4df7aac183370b7193d6d7b1a1",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_complete754/raw/trained-model/training_feature_scale_20261003_v2_full_normalized_RGBNT201/official_metrics.json": "sha256:39c89408ac4ccc8ab729ffc252ef4a6f61a8b9546b2a5d34b85a0596caf7cc47",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_complete754/raw/trained-model/training_feature_scale_20261003_v2_full_normalized_RGBNT201/training.json": "sha256:03dfdb7428cde9723ef827d88ed5df931de1da51d6c3dcd51765f14edd022323",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_complete754/raw/trained-model/training_feature_scale_20261003_v2_full_normalized_RGBNT201/training_batch_order.jsonl": "sha256:e446282654c74949fb594856631b246642593b73229331c30b555418a0358993",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_complete754/raw/trained-model/training_feature_scale_20261003_v2_full_normalized_RGBNT201/training_steps.jsonl": "sha256:05b70edc9106dabdddc63162fb4d599502144529e9a0dd2c8d302d9857d580f8",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_complete754/raw/trained-model/training_feature_scale_20261003_v2_full_raw_MSVR310/official_metrics.json": "sha256:118799da68c7c939f54d84b1bc8b541edc453a329348063ecf35f45e2276f0cb",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_complete754/raw/trained-model/training_feature_scale_20261003_v2_full_raw_MSVR310/training.json": "sha256:6b7ebe8b4a3d38c2820405ae057a65973bdab4cca8c5a97ec580de2e4250835d",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_complete754/raw/trained-model/training_feature_scale_20261003_v2_full_raw_MSVR310/training_batch_order.jsonl": "sha256:95670ff1ce6b83f979370c8f4736c12fbf5f40a9f86699fb2fc61cb994653450",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_complete754/raw/trained-model/training_feature_scale_20261003_v2_full_raw_MSVR310/training_steps.jsonl": "sha256:285970247d5c7849cad3627f6512dcd6a4ec83236815218f9d43391b24ce53b8",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_complete754/raw/trained-model/training_feature_scale_20261003_v2_full_raw_RGBNT100/official_metrics.json": "sha256:08e42d31c2fd322c04a1e4ce0e095618969a6c855742ea3a3bec35489a71adbb",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_complete754/raw/trained-model/training_feature_scale_20261003_v2_full_raw_RGBNT100/training.json": "sha256:2f6507087db4f7aa80f1b54175036978b32ca1219c6693d291fa6e4a6deb9520",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_complete754/raw/trained-model/training_feature_scale_20261003_v2_full_raw_RGBNT100/training_batch_order.jsonl": "sha256:17800b61d46948c4596f37f9b9169c67a4e3e64edeb06cc885725f661dc3e881",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_complete754/raw/trained-model/training_feature_scale_20261003_v2_full_raw_RGBNT100/training_steps.jsonl": "sha256:2ac01ad30ce9128fc158c8615d7e61273caf1db0cd96f974fa81cb5111a9f40a",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_complete754/raw/trained-model/training_feature_scale_20261003_v2_full_raw_RGBNT201/official_metrics.json": "sha256:59c871bcbf36a3e688df9662d58fadf1455511e4f884acd92c5e102cc81312ce",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_complete754/raw/trained-model/training_feature_scale_20261003_v2_full_raw_RGBNT201/training.json": "sha256:ffa12df9943227789cbe14fb31911335955076ce02b7e297f9a2bdbedc719750",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_complete754/raw/trained-model/training_feature_scale_20261003_v2_full_raw_RGBNT201/training_batch_order.jsonl": "sha256:e446282654c74949fb594856631b246642593b73229331c30b555418a0358993",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_complete754/raw/trained-model/training_feature_scale_20261003_v2_full_raw_RGBNT201/training_steps.jsonl": "sha256:694bb9c40b07fc4c00b67772de2658091c2230754d6549cb5d40222daa2a794c",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_complete754/raw/trained-model/training_feature_scale_20261003_v2_m0_normalized_MSVR310/training.json": "sha256:746e60cf32810484a799d0c54c73ace38cec3b8f4129e7ac32a6cca0346db4ec",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_complete754/raw/trained-model/training_feature_scale_20261003_v2_m0_normalized_MSVR310/training_batch_order.jsonl": "sha256:6b365ae4b6830fe48d75fc6d397d0ea481c82d0b6f0051dfc0c2e8bd2626b2d0",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_complete754/raw/trained-model/training_feature_scale_20261003_v2_m0_normalized_MSVR310/training_steps.jsonl": "sha256:fcc14489b3750ee9bc5e2f7a3a9a1c725cf9bdb4c8a55b83adaa7923f1bf3f01",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_complete754/raw/trained-model/training_feature_scale_20261003_v2_m0_normalized_RGBNT100/training.json": "sha256:f2e4f36bd7a981bf5871dc044a415aef1deb550b44e229d8a202253c061798a4",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_complete754/raw/trained-model/training_feature_scale_20261003_v2_m0_normalized_RGBNT100/training_batch_order.jsonl": "sha256:111700e1c37d8f5035b1bf4d399c65201ff12e4fda7741b63c9a23aa38da3ca0",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_complete754/raw/trained-model/training_feature_scale_20261003_v2_m0_normalized_RGBNT100/training_steps.jsonl": "sha256:bf554593c105f75266812d4bd8b0bda1950b18186bb306f4c6889f1056ec6f93",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_complete754/raw/trained-model/training_feature_scale_20261003_v2_m0_normalized_RGBNT201/training.json": "sha256:43041296d9678b76d9172ed0feb1940c77475242ca387bda0f474347a56a5206",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_complete754/raw/trained-model/training_feature_scale_20261003_v2_m0_normalized_RGBNT201/training_batch_order.jsonl": "sha256:b6e9f9e803cc762d405c97faaabbe27222ca489e42a646504062ca95ef07325e",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_complete754/raw/trained-model/training_feature_scale_20261003_v2_m0_normalized_RGBNT201/training_steps.jsonl": "sha256:48f85929dc21091827f404572b42833f6a462015e56756d89e6baa22d1d6de23",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_complete754/raw/trained-model/training_feature_scale_20261003_v2_m0_raw_MSVR310/training.json": "sha256:e90a86e8feb47d5f1f21d648e4bb07811a78039de7b0c25f433c7f15bb97db8e",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_complete754/raw/trained-model/training_feature_scale_20261003_v2_m0_raw_MSVR310/training_batch_order.jsonl": "sha256:6b365ae4b6830fe48d75fc6d397d0ea481c82d0b6f0051dfc0c2e8bd2626b2d0",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_complete754/raw/trained-model/training_feature_scale_20261003_v2_m0_raw_MSVR310/training_steps.jsonl": "sha256:2843ca2052b582e7b2c92aceea39e74918d15e7fccaf25052775ae469f5b9216",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_complete754/raw/trained-model/training_feature_scale_20261003_v2_m0_raw_RGBNT100/training.json": "sha256:7cf7aa97c1f1bcd9d3a0903487dfd4e042ce8a0e6c6b975ae553451c5fdd6b2a",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_complete754/raw/trained-model/training_feature_scale_20261003_v2_m0_raw_RGBNT100/training_batch_order.jsonl": "sha256:111700e1c37d8f5035b1bf4d399c65201ff12e4fda7741b63c9a23aa38da3ca0",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_complete754/raw/trained-model/training_feature_scale_20261003_v2_m0_raw_RGBNT100/training_steps.jsonl": "sha256:a0d9cace871de4a179cc3eaf3c60189920b216f2b819c34b011e20d9f5d66065",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_complete754/raw/trained-model/training_feature_scale_20261003_v2_m0_raw_RGBNT201/training.json": "sha256:c8269a9ef246121742f4ecd2dbcac65ab5b864b6c475332242efdbb5229b5b36",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_complete754/raw/trained-model/training_feature_scale_20261003_v2_m0_raw_RGBNT201/training_batch_order.jsonl": "sha256:b6e9f9e803cc762d405c97faaabbe27222ca489e42a646504062ca95ef07325e",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_complete754/raw/trained-model/training_feature_scale_20261003_v2_m0_raw_RGBNT201/training_steps.jsonl": "sha256:94ee795ffbc25d1410b737e86076aaeba24c583d2f6d5d5b296b9815e9f251fb",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/SOURCE_INTAKE.json": "sha256:e446b628da46959c939ab5e7de9a30801b6dd6bfd5f053595d439fbb082f8ee0",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/comparators/Signal-cd1b0a6/config/__init__.py": "sha256:ff27847384f82ad53a61a80147c38a8282d9bd5af852593aef7c653e48a5d11b",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/comparators/Signal-cd1b0a6/config/defaults.py": "sha256:40257d349153e56e345983c99b1638d7c3d77966dfd2f5496fe03c86dc8dbd57",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/comparators/Signal-cd1b0a6/configs/MSVR310/Signal.yml": "sha256:357ca3a989e943ea5348e6206c0d0f69b3c0d35ad9fbadbf68d2786439b8a915",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/comparators/Signal-cd1b0a6/configs/RGBNT100/Signal.yml": "sha256:02641ce2941dcd50df77d379aab54650cae4a2a6b15ba1bcd43deba970b6900f",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/comparators/Signal-cd1b0a6/configs/RGBNT201/Signal.yml": "sha256:a13bd5169a4c710fa79efc87db909409015a0b2611086c0fbf4c1842f0cfcc44",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/comparators/Signal-cd1b0a6/data/__init__.py": "sha256:3e55e3cdaf53a8e97673876c9ad5d2b316bbc82e500e0e318d127e88129be22f",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/comparators/Signal-cd1b0a6/data/datasets/MSVWild863.py": "sha256:261f7ed87c78a44274502627415dd6cf88c636e69a98cdc30fdfb20db5f66870",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/comparators/Signal-cd1b0a6/data/datasets/RGBNT100.py": "sha256:fe38cdb9d0905b4637f215b804e933a226aefcd9a865e9f73e564a84ef2393ac",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/comparators/Signal-cd1b0a6/data/datasets/RGBNT201.py": "sha256:7b2b30b339123e92bbead5c092afa7570a06f423570c4249acfdd39294fc4a88",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/comparators/Signal-cd1b0a6/data/datasets/__init__.py": "sha256:82d38047efcac536c237306029bc2354b89d1b64f4a6316f70884a723ba665a5",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/comparators/Signal-cd1b0a6/data/datasets/bases.py": "sha256:48f050a7924cebd1e51f8831ba05df78dbccc7049afb0bcf83351d9d1ee23814",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/comparators/Signal-cd1b0a6/data/datasets/dukemtmcreid.py": "sha256:d4ddd8fbf7df3432b1af079c3bf7f86d62181bed06ac59de12fd9210ad11945c",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/comparators/Signal-cd1b0a6/data/datasets/make_dataloader.py": "sha256:54c47d798a20955bde224d9c78b42149c3c2ef008b02659141829a553194434f",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/comparators/Signal-cd1b0a6/data/datasets/market1501.py": "sha256:6b7642f048a36dde3c99af37b91a20560946bcdeab937cfcfe15b263da4319d8",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/comparators/Signal-cd1b0a6/data/datasets/msmt17.py": "sha256:d38552fb167fd6c76b369bac14d43170f7ae93849b6144d3846f75b72ee59640",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/comparators/Signal-cd1b0a6/data/datasets/msvr310.py": "sha256:10b0197e7c97d1067bd63f25afef3cf0c4e64944ff4028c90d1f2f426a200eb9",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/comparators/Signal-cd1b0a6/data/datasets/sampler.py": "sha256:b77902214633a2b06a7c0a80924a737fdb5122984a857f3c6e120a8ad8cce65a",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/comparators/Signal-cd1b0a6/data/datasets/sampler_ddp.py": "sha256:c707f1c3e0163ce6bed42780cecfe4fa1bb948f3aec6779edac41e79a69d5983",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/comparators/Signal-cd1b0a6/engine/processor.py": "sha256:968aa8bc6304ce6f92410d7e8550b5a0a8c64142dce0aa584089477ba169878b",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/comparators/Signal-cd1b0a6/layers/__init__.py": "sha256:48ef0154cc20c04e1e81a6a97895fdf38e7a21695a4386124d79f522c389bd2b",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/comparators/Signal-cd1b0a6/layers/center_loss.py": "sha256:c2e23be80b1b3e54503c704dda45ddc4a86f23647fcc8c37c63dbac47d003d89",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/comparators/Signal-cd1b0a6/layers/cluster_loss.py": "sha256:699f7357d702ea433a5ef02597a1268471875c9b83908b9f10069fae7e92b477",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/comparators/Signal-cd1b0a6/layers/hcloss.py": "sha256:f179d7b00e1206af853098114e3ea0d744c6b7feeb032a280424182914a28908",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/comparators/Signal-cd1b0a6/layers/make_loss.py": "sha256:7eb7ab953c2bbc52d0c298ef971d0c3ff7000e5e50756fbb5a5fd63ac4c109aa",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/comparators/Signal-cd1b0a6/layers/metric_learning.py": "sha256:262cd6a003028e8c11eadf3ed4e43096adae8e9d89d50dc61b1e9bd4fad94246",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/comparators/Signal-cd1b0a6/layers/mutilmargin.py": "sha256:627685f7bfbb31a22b7483942914f0e9f0dad47eae0231915ba26e0a3fb82727",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/comparators/Signal-cd1b0a6/layers/range_loss.py": "sha256:e35e1b4eb5287f25dd4cb38ea7450264d386a5c98f2ca8d9d337c8eb03be60c5",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/comparators/Signal-cd1b0a6/layers/softmax_loss.py": "sha256:92192d9c3ff4e2fd3920c6e9a9637e0caa1e66cffbbc0be8b4049e5dcdb0bf24",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/comparators/Signal-cd1b0a6/layers/supcontrast.py": "sha256:bc21c9763cc795b623089894b711aedaf0cde0c01fd8a1c5d641982513b10f6b",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/comparators/Signal-cd1b0a6/layers/triplet_loss.py": "sha256:f502c44bec642bbf72ce6d0f58c9f9a0084beef9cbb451c2d2786bb13f94960a",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/comparators/Signal-cd1b0a6/modeling/AddModule/DAS.py": "sha256:55b98cb11a22ece7a422eed565f68e1ca8ffa1b448dca616f9a3e243311644ea",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/comparators/Signal-cd1b0a6/modeling/AddModule/useA.py": "sha256:1f8fef4dcadb89f5097f83b41a699d9f801a23c88ca3eea73b3ad973a56952a9",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/comparators/Signal-cd1b0a6/modeling/AddModule/useB.py": "sha256:39a65f82d59048745663d891a1c4c012eb1cc404ef8c8084f942702aeef46fec",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/comparators/Signal-cd1b0a6/modeling/__init__.py": "sha256:c1962dec3f8aa828bd7237baf6edd7b4862cdbd8e9f710170f37f3d61bf1d1c0",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/comparators/Signal-cd1b0a6/modeling/backbones/__init__.py": "sha256:cb7a2fb6a8f54e83ff3c6293317a3d043b7dccd24501784de644cf8d15af78b9",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/comparators/Signal-cd1b0a6/modeling/backbones/basic_cnn_params/__init__.py": "sha256:e1625a0f2d541b9a8e6d470d4ad0fd151034bb26ca02d602f05336ed9de2201c",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/comparators/Signal-cd1b0a6/modeling/backbones/basic_cnn_params/cal.py": "sha256:2b2a5cf892e0afd43714fe062e5188f2db60311b34feb53f4247de2803f284ac",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/comparators/Signal-cd1b0a6/modeling/backbones/basic_cnn_params/densenet.py": "sha256:a681ab2026ad388a332caee0cc7766cf324d71615281983971a9dd72cf396936",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/comparators/Signal-cd1b0a6/modeling/backbones/basic_cnn_params/flops.py": "sha256:954e233730eb5ad868b85b2021d5a9381db6e67a21c1627fae144bdb0fc2107c",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/comparators/Signal-cd1b0a6/modeling/backbones/basic_cnn_params/hacnn.py": "sha256:cd83408cc6f8891759116a0ec84237e19473dc42eb9bd72c3f928d1de2bd313c",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/comparators/Signal-cd1b0a6/modeling/backbones/basic_cnn_params/inceptionresnetv2.py": "sha256:de17492a6c1801ae56ba989073667a1b8f1577c140be490a2a88eb60842c73ac",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/comparators/Signal-cd1b0a6/modeling/backbones/basic_cnn_params/inceptionv4.py": "sha256:aa301ffdcdbcdd25408c65dc7fe5573de1983b7fa94e1562023f9d914dea6fde",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/comparators/Signal-cd1b0a6/modeling/backbones/basic_cnn_params/mlfn.py": "sha256:1ae1196d103345a13c60502d2e4f14cf31f05a00f30cdd193eb61f74f19fe8a4",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/comparators/Signal-cd1b0a6/modeling/backbones/basic_cnn_params/mobilenetv2.py": "sha256:f9e1c2a3b8a469f343b47812b13367d150880d38758eab14670e52d60fa72ba3",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/comparators/Signal-cd1b0a6/modeling/backbones/basic_cnn_params/mudeep.py": "sha256:82b24f86064538abf5d85ba147f67e0d950ee07b6406547e12fd11393ff947f4",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/comparators/Signal-cd1b0a6/modeling/backbones/basic_cnn_params/nasnet.py": "sha256:20e762521082698eafe9d3db4553d1aa731a5364b15c9d217636a44a6b9bc3af",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/comparators/Signal-cd1b0a6/modeling/backbones/basic_cnn_params/osnet.py": "sha256:34b8b7a4ceb54625a29c1952d665061ae235efdd695fc999a8cd928107435bc4",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/comparators/Signal-cd1b0a6/modeling/backbones/basic_cnn_params/osnet_ain.py": "sha256:a43b495866a4b1645cd134a30c3011592e8c6826ba4781955a135588cf46cd25",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/comparators/Signal-cd1b0a6/modeling/backbones/basic_cnn_params/pcb.py": "sha256:76246a0f6b6438566f26f307ec9ab3f378f38885eefa9e58aaf23df2b90410e4",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/comparators/Signal-cd1b0a6/modeling/backbones/basic_cnn_params/resnet.py": "sha256:6b871338b477421bbc23bc7b3028735fc67ab4f551d979c5ae8b2edf2d02c168",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/comparators/Signal-cd1b0a6/modeling/backbones/basic_cnn_params/resnet_ibn_a.py": "sha256:8459ffb25de797b755c7ded64527ab664491b0c50aaf66c259a7cb530577ec10",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/comparators/Signal-cd1b0a6/modeling/backbones/basic_cnn_params/resnet_ibn_b.py": "sha256:b26f408850d5e6b6ad34f576536004d392db8f6c26d738b3d8e5a71ab56ca60b",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/comparators/Signal-cd1b0a6/modeling/backbones/basic_cnn_params/resnetmid.py": "sha256:97886e2906f107a7fdb7913ae49db08e326e26dea3aeb76b06cba75f8e63dd83",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/comparators/Signal-cd1b0a6/modeling/backbones/basic_cnn_params/senet.py": "sha256:062339e75c5137987371b761428c74bc7cfa3d3d219bce1f5f1ffff7e39291da",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/comparators/Signal-cd1b0a6/modeling/backbones/basic_cnn_params/shufflenet.py": "sha256:0db745f384bee5daacce335de41a4f841a367d1302c80245d453d21ae8aa64b3",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/comparators/Signal-cd1b0a6/modeling/backbones/basic_cnn_params/shufflenetv2.py": "sha256:8ce02f3e59da5db8f50ecb2af1d79d742a9499d87734a30ff53326c0fe945767",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/comparators/Signal-cd1b0a6/modeling/backbones/basic_cnn_params/squeezenet.py": "sha256:8d42e650ddb6a65000081bf233fd343585db422b29f4d79a16211b1d514aa94e",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/comparators/Signal-cd1b0a6/modeling/backbones/basic_cnn_params/xception.py": "sha256:2b11ac064b1fb8dbc5ed7e900475347eb61b1376c4a8a7992188596757b1cdbf",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/comparators/Signal-cd1b0a6/modeling/backbones/t2t.py": "sha256:f8cd394abc8b2d650310968e14a4ae978063fee55d545658aa3e90676f996159",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/comparators/Signal-cd1b0a6/modeling/backbones/token_performer.py": "sha256:3e3dfa33523e3d090d9e639d8b442a7883860a650e1af241786d1e4561f136d3",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/comparators/Signal-cd1b0a6/modeling/backbones/token_transformer.py": "sha256:6dc55462e5ff1138a2b19883aec86d43591494efdb65bce383152dcdc0fdfc6a",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/comparators/Signal-cd1b0a6/modeling/backbones/transformer_block.py": "sha256:7d4da490e811af278eafb7fe768622a68de6ab8fcc78adce36c59db307ca96a4",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/comparators/Signal-cd1b0a6/modeling/backbones/vit_pytorch.py": "sha256:6821875c278d1999dc6841b599abc8368651ef5cf6e8c507c323f02dbf334fa9",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/comparators/Signal-cd1b0a6/modeling/clip/LoRA.py": "sha256:c3f085ba05071701235bf4f0f3f87caaa3823bc1e17883ca85f1a2f690133365",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/comparators/Signal-cd1b0a6/modeling/clip/__init__.py": "sha256:d7930eb290ebed432116795c91473200d098451a94c0aedd4ae0f934f97955e8",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/comparators/Signal-cd1b0a6/modeling/clip/clip.py": "sha256:4898d0e683126fbc83d450465593042159ca7162de3199c5e9e89e0e0d1d5d3d",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/comparators/Signal-cd1b0a6/modeling/clip/model.py": "sha256:2c2ca81815830fad2ab13bb8bb4ba0d41f0625477af6505815f0982d96df4e73",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/comparators/Signal-cd1b0a6/modeling/clip/simple_tokenizer.py": "sha256:d1b09f10ed3d1e2c343619cb98cbfacb92363dd8607526a43aa7fe2d60d15bad",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/comparators/Signal-cd1b0a6/modeling/make_model.py": "sha256:1a88a91d2e5055f5d338996231b16c0e13b2fa7013c74131ca663f16c2655963",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/comparators/Signal-cd1b0a6/modeling/make_model_clipreid.py": "sha256:5494c2b7cb9acfb2c727a2cde201ba587184b344667e077eacfe0c3a0c578651",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/comparators/Signal-cd1b0a6/modeling/meta_arch.py": "sha256:8b709d5ab4b14ba150a96bbb5e8cc7e6dbbb71dd8bd30cafd7a5cb110ee5a757",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/comparators/Signal-cd1b0a6/scripts/auto_tests_docs/auto_docs.py": "sha256:e3132d7b5d7f2ba1c4ea6069ce5396d813606d9c609735d1a636e905aeb6c009",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/comparators/Signal-cd1b0a6/scripts/auto_tests_docs/auto_docs_functions.py": "sha256:bf6603819ade241c60ab67c8fb23b2baf63032008886b6115d1aaf8ed4b8ae30",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/comparators/Signal-cd1b0a6/scripts/auto_tests_docs/auto_tests.py": "sha256:553e8393d20a0d8b6669b28c1384f74e0362daedead9a31cedcaaa461037fed2",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/comparators/Signal-cd1b0a6/scripts/auto_tests_docs/auto_tests_functions.py": "sha256:b5d5ac1d5780c944f13af959766ab06a3533929492e56d5df9524ae5621ac2d7",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/comparators/Signal-cd1b0a6/scripts/auto_tests_docs/docs.py": "sha256:24c5bddb8e81ead8a609e7068c99ab7dbdf6e6f9e3cceefa262429c31af4ce74",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/comparators/Signal-cd1b0a6/scripts/auto_tests_docs/mkdocs_handler.py": "sha256:fc9e0aaf11b4338abd3deb1cd818dd5d248c2402f85c475ff0e06f7f87d23849",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/comparators/Signal-cd1b0a6/scripts/delpycache.py": "sha256:2af16df38b78eac2bc716c9b1baa1aff2bb91463cdddf05a9c532088a8640cc8",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/comparators/Signal-cd1b0a6/scripts/get_package_requirements.py": "sha256:959cc0cf202faa3739395912ce20356dadd554b8d11dbae4b1a21ab7a328f836",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/comparators/Signal-cd1b0a6/scripts/requirementstxt_to_pyproject.py": "sha256:f2b7c530272db869827272f8bbc1915e9adcf9f86ebbc7e35f6ad2673d0ddaa5",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/comparators/Signal-cd1b0a6/solver/cosine_lr.py": "sha256:d3db6e30c1666c5af71200086f33c644d476310b6c5dc7ed98097cc989bdad4d",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/comparators/Signal-cd1b0a6/solver/lr_scheduler.py": "sha256:6b7ea85e2c66ab5fb76560ba55b12bd0f2b3ab6eca2a6c9603e45648bfffbeba",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/comparators/Signal-cd1b0a6/solver/lr_scheduler310.py": "sha256:e15481ca1d40dbab559af1d97367a192d44b9635a1eaf3ce004dcddb14ee7674",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/comparators/Signal-cd1b0a6/solver/make_optimizer.py": "sha256:ada1023a79fcaaed092bce0849a61db9d0253cf8974c494bfb3082d0fd35fee1",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/comparators/Signal-cd1b0a6/solver/scheduler.py": "sha256:b7517bb0f79a3334e2a3ac5ecb14bdcf69cb28c62dd3c734c4e3d212d0955228",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/comparators/Signal-cd1b0a6/solver/scheduler_factory.py": "sha256:c5e20bdffec4b5360faa04f823639c8e5fd8672914813fb96148927c9ee19abc",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/comparators/Signal-cd1b0a6/test.py": "sha256:9e6f2a190e02f25be97c599922c43554de1d2efb3916a5bebe1c4cce30b6ae4a",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/comparators/Signal-cd1b0a6/tests/test_benchmarks.py": "sha256:ce4ef25c55057e674647415a8af010c40d3dd6e3c547955cf0e294761ebb624f",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/comparators/Signal-cd1b0a6/tests/test_blocks.py": "sha256:cac136da29ddc8a93853e368f4e5ca71ad2fc458dc79d19677580b1c21dbacdb",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/comparators/Signal-cd1b0a6/tests/test_model.py": "sha256:28fd57c2c82e9da22484a734adbedecd92e5c26dd59778e46b65bb2e437dd783",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/comparators/Signal-cd1b0a6/train.py": "sha256:243a2f6de57f6113c6f0e35390670ee937bbcea84ab3335eea2b6257b3bcbd8f",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/comparators/Signal-cd1b0a6/utils/iotools.py": "sha256:05e59eac76140ec28c87f606283baae9cdc260b250d3088d9624e08e3cacf3d7",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/comparators/Signal-cd1b0a6/utils/logger.py": "sha256:5a732f76d567609ec1054e1e705dccbec871b71795189d80d0fb3538b28583b0",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/comparators/Signal-cd1b0a6/utils/meter.py": "sha256:0245aa40c9a6ade9a9ac0a0f882d1a1d7b06260c667ea43e2ecb3ba846311796",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/comparators/Signal-cd1b0a6/utils/metrics.py": "sha256:91604acb7d978462c16904910a645d7d1697c15bf150da529099004c8b5eecb2",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/comparators/Signal-cd1b0a6/utils/ranklist_vehicle.py": "sha256:ca4b544911256a95f45ff924f006973828bc3972cfdbbf4ea96f724229244394",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/comparators/Signal-cd1b0a6/utils/reranking.py": "sha256:1d55aa0227630a56a34931f9aded128987807d358ae9d5365dd83f28bc459fb9",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/comparators/Signal-cd1b0a6/utils/volume.py": "sha256:a154f65e5f4483446748e216b7b03672617efb02004e14e9940446c1013b8ccb",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/comparators/Signal-cd1b0a6/visualize/GradCAM.py": "sha256:d3c9f88b3ce4e18e20e10521f0d19d2ee6a15e2eaff3fb08a32c8a18fffd63fc",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/comparators/Signal-cd1b0a6/zablation/CAM.py": "sha256:9bc131a4643848d6a7af4b80347a24726727a57c6e9e969da8454395680b5bfb",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/comparators/Signal-cd1b0a6/zablation/offestvisual.py": "sha256:8af7f3c8511d076373014b4de269317800dc7edd686a6acdec6f4d342ec01661",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/comparators/Signal-cd1b0a6/zablation/tiaoxing.py": "sha256:efa278cc4ad099ba62979d8f4de4146a26a2552c3ea3863ec919e60389da4f6c",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/comparators/Signal-cd1b0a6/zablation/token_visual.py": "sha256:b07ae0a3a3d2c18be520a0878c8980196727da04f15e85bcce5b04bf676d4994",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/comparators/Signal-cd1b0a6/zablation/zhexian.py": "sha256:b9486f3fe80e96679ba09b4b7ee995fb2433e198eec489c680bd7a87c44d13be",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/configs/MSVR310/TriFusion-source-style-paired-v1-r2.json": "sha256:848254aab6dc02230a7fd33be0d60fc2560c99fc77cbd320cf0ef2efd655539d",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/configs/RGBNT100/TriFusion-main-v1.json": "sha256:68b091dd48f086a29319dc853f9eb48bd38aabc72391e0187421efc5e1496aaf",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/configs/RGBNT201/TriFusion-signal-preserving-v27-source-style-rtx3090.json": "sha256:6f3161985f3a3831ffa890a163a510c6fa463ce4fd933793f0ce79db2c07677a",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/logs/official_three_dataset_protocols_20260923/MSVR310.json": "sha256:7f2b35f9a7e00433558c1e723db0e3ff0ea9daa7144eeeb972139d1502945cbc",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/logs/official_three_dataset_protocols_20260923/RGBNT100.json": "sha256:12d8afe5cf6e537b69ccf753481dd5fd651f14b7672e1e6411a4d4e9d88cc956",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/logs/official_three_dataset_protocols_20260923/RGBNT201.json": "sha256:e63be5d9f8bd41df365264ad8f459dcd063d088023a2d2ed525a49a72f61161e",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/logs/training_feature_scale_protocols_20261002/MSVR310.json": "sha256:015a3cafef8e36ba71da2784de6835959c0549c442624c8fb9e9b37bd8c8229d",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/logs/training_feature_scale_protocols_20261002/RGBNT100.json": "sha256:b2c14adf947b06b27b9576a712f96192c1393ad6ed3ec1be5259b63f88300169",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/logs/training_feature_scale_protocols_20261002/RGBNT201.json": "sha256:b2409c2d992d04adcf0c78354d306afd6af7ae9507738fd4e83de480e9a9b90f",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/modeling/trifusion/__init__.py": "sha256:ad617b86663e319f7702e9231fdec9c5f079f4d39ec5dabb90ced469414d910c",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/modeling/trifusion/aligned_data.py": "sha256:3ea362d17660483b554cb599442b6377ace020fa114969b9bdd58906fbceedd5",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/modeling/trifusion/builder.py": "sha256:8b3620e6be3727709253589a9e59b3efd20a611ba0eec4e8f6b4d0d17eeea4eb",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/modeling/trifusion/camera_coverage_v25.py": "sha256:341bacc189c3782d72c3f7c5b7c5bdde8e966f0eddb32966d90b3fd154ff75b5",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/modeling/trifusion/camera_negative_v22.py": "sha256:38b6ccc4e495d55af7e68617cdb6b54fdede9e3f177fa3c54a7f8d0db4465f97",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/modeling/trifusion/cascade_v2.py": "sha256:a1753a8dff2d6ab9f8d78810e941fef3949d5d07cce4877fb956b5889bc46c5a",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/modeling/trifusion/cascade_v2_builder.py": "sha256:1821068cfafe1bfc6d54e65323cd2469f9fc922829ec7ebf6c47af83125c1b0d",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/modeling/trifusion/circ_scoring.py": "sha256:db9ae624446674812618ff8c6f7e8d773a576ea31ab1ecb0d41bc3c33ca2da3e",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/modeling/trifusion/correspondence_context_identity.py": "sha256:eda3d1473496b33e4b69402dba7770e67d23b33b07afd41d23105b7f148d63af",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/modeling/trifusion/correspondence_evidence_readout.py": "sha256:e737a977d39ccbe09a5509118e5b5333d653f7f13381e65e84af1a13e5c28dc4",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/modeling/trifusion/correspondence_global_only.py": "sha256:cb0cc4c1d0f6a2c0cad3d310ce3df74845fd17bdbfa3b66dfa64632f5cbd08c3",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/modeling/trifusion/correspondence_role_prediction.py": "sha256:7c80d7aa86ac5bd0d07ab7f6df7b2e93f708a2407bfee03fb078ff2bb182787d",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/modeling/trifusion/correspondence_roles.py": "sha256:e2a51154b5b327341f35e453dd32a821b091a49a669b49a7c70e79e6e2f2591b",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/modeling/trifusion/criterion.py": "sha256:0b2a6370f434828d885945d1a46dd56f6668133ceed45ef359fe71eeca63740a",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/modeling/trifusion/cross_depth_role_state.py": "sha256:8e18c7c9d397fbe3eff6f7360a5ab890ebbeecf1404628da6979ade47544b7ba",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/modeling/trifusion/cross_modal_identity_v20.py": "sha256:c02e14c4731aba33ebb41d5efdae1b2a077c4b80622691e68014fe5ac280337e",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/modeling/trifusion/data.py": "sha256:d0795f8c74e1a35d44d50b408f41c585e90fb57f9267915923f9de5a7aa850be",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/modeling/trifusion/dual_view_data_v24.py": "sha256:68de48892c217bdeb143d041b56520822cc9785dea05cd37f7b30328a6f3b560",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/modeling/trifusion/encoder.py": "sha256:80fd6adc6d80b232296412ff8647a3d7c6a66d64bda699f545e477b94e72a46b",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/modeling/trifusion/experts/__init__.py": "sha256:49709dfc6fd4ca781fa6d24f81476596f716163222ab01fe5d9eae105d8fc286",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/modeling/trifusion/experts/cnn.py": "sha256:f823cfd59589e7fa8dbe066b26eec662d93a9d01b2376f05e7a4b6f43409996a",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/modeling/trifusion/experts/mamba.py": "sha256:c516c7ad937e5eee6a4ed1e3ec33c2afe3522b751d296bd2e4910e4f27a20ee5",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/modeling/trifusion/experts/semantic_residual.py": "sha256:c8cef9717fd7bd1e5e50b428ac92762455defac2e25857c9e0dfaf82729c2a93",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/modeling/trifusion/experts/tiny.py": "sha256:d5462c7259e5a17f7e50b87d29f44e2ecb49c4a50ccf5b59f34e8870c3e1cf90",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/modeling/trifusion/experts/transformer.py": "sha256:8580c6e761a2fbfd54a70d0bd231fef0695cccecbec328f643a6c5112deb674e",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/modeling/trifusion/fusion.py": "sha256:58d3672fb571e9acce8e7a8e82c8cd355fdb0f831f5439aa2d5b6e918b491a8d",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/modeling/trifusion/intervention_targets.py": "sha256:dcfab01a167411e98b148caeb55a9e29cd1eae453bae5a2cfe2ae9166c866f38",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/modeling/trifusion/interventions.py": "sha256:b32386352edc6f37a0ef62cf4140eb22d5e400b9eefc580e649447b10cc549e1",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/modeling/trifusion/joint_geometry_v29.py": "sha256:cf439edf017d3b5e1695521052161bde66082bcc59fb1acd2bab6d0f2fbb4d71",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/modeling/trifusion/joint_tokens_v28.py": "sha256:95de3c39fb86c1d574204eb507ca1fd7b84c7ed27eb8e63de87e905310b01656",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/modeling/trifusion/joint_tokens_v28_fp32.py": "sha256:fdfa64109973fb5ddeaba6db27e4dc0ef9bb014710d7c6813185ba6535346d0b",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/modeling/trifusion/model.py": "sha256:02e08b4ef6102431808bf850c98117e2169330fc954999086241693a22d92bf5",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/modeling/trifusion/native_detail_roles.py": "sha256:0ff799fe309c0a6437623a26cda978309421af8ba1e85485da2dd78389b6f335",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/modeling/trifusion/patch_memory_roles.py": "sha256:833c8c93363cee7a4fc74c6c458194b484dc1b8cac0f9ec58113a07ac89cb23d",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/modeling/trifusion/peer_teaching.py": "sha256:d5ec38a6ebb26d8012be7fa5ebced3dcd5e16de4576e29fef2e89d92dc970b3b",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/modeling/trifusion/prompt_role_state.py": "sha256:2b4071f0a78e08426c0d2f3ee3f28b30562cff821b631fe39f2269049c85dcfb",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/modeling/trifusion/protocol.py": "sha256:519ff4386addb3b83a0416bca25f75ed5a54029a4fcd949231b5eb96db4ef3bc",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/modeling/trifusion/relay.py": "sha256:a24194bc81b72444dcbf3cea3450ee27f7d541787b77fd5d5cf4bdf13799d645",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/modeling/trifusion/reliability.py": "sha256:eb9fbed2994ef31038bd31cd129af0b0761c5adc88902ca918d20a05ae431207",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/modeling/trifusion/role_global_tokens.py": "sha256:f41ff1af1fb1b6303a9af63cf039263e2572c16b23813f92a0297f014e71dd4f",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/modeling/trifusion/role_modal_responsibility_v26.py": "sha256:ce56ffb40089fad3131958045f9c6d12a11d48ec84123da840eb38e7ad12177b",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/modeling/trifusion/sam_training_v21.py": "sha256:9233e8f806914eed623976c7f30830ecac80af274f842214c73055ded9009b56",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/modeling/trifusion/semantic_native_evidence.py": "sha256:875459a6e1d2ec287d027114dce923147bcd95a70fdefecc5004391590a29abc",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/modeling/trifusion/semantic_tokenizer.py": "sha256:ea5e2181aaf20be10802b626a17a5dcd6de59ba88d44fa5e833827f8a5931278",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/modeling/trifusion/shared_private_evidence.py": "sha256:c5a0164eda85a3b070a06f011abf445ae8bfe26b749b52a8c71245306e7ad2c2",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/modeling/trifusion/signal_preserving_v13.py": "sha256:7b7c4abb220ed234608553c77aeedd5f8ef763abb04cce5b21f1bfce0f4daa62",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/modeling/trifusion/signal_preserving_v14.py": "sha256:168ccc065c50f1ea1dd65d82247b89d664baa67881a8c2ff19c039a7ba740b0e",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/modeling/trifusion/signal_preserving_v15.py": "sha256:bba418acfc67c939b06a1285e0e711616beaf8432532237499bc339edcbf890a",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/modeling/trifusion/signal_preserving_v15_builder.py": "sha256:7173f0afeecdef3fdf8f7185bef1253ef4193a0a4f03e31dff5d5f79a9416b74",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/modeling/trifusion/signal_preserving_v16.py": "sha256:eba55a9001a13f5dba287ba5397377f105f1f83cfe3fd24c705185a7c13cf31c",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/modeling/trifusion/signal_preserving_v16_builder.py": "sha256:ebb7e87b3ea03798bde54cda75a6e9e95f805f1f472baafb05d34e3ea7960235",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/modeling/trifusion/signal_preserving_v17.py": "sha256:b095383fb619c8e8377cd95a82ef88c0726d3a3a0cecd8211ae2fd3e5493c800",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/modeling/trifusion/signal_preserving_v17_builder.py": "sha256:26f68c627656a0f539f1704ac54d865e63cf7c9049a80f2789a7e42d1a424411",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/modeling/trifusion/signal_preserving_v18.py": "sha256:c81f1c76c253b297501af6c1cba4d47ecc31a1320101ae2637abf5bff7a11455",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/modeling/trifusion/signal_preserving_v19.py": "sha256:69989cced25950ff476759bc93df945b167e8ce88a4340676e8adbbd9f88918e",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/modeling/trifusion/signal_preserving_v23.py": "sha256:89816298baedf6ab5d3f122fe16db69035420df8cc91b65e0bb0c8c6f9cde1af",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/modeling/trifusion/signal_preserving_v5.py": "sha256:126c98ea869f5b48e2b0873ecf4639a3f4d3671812f898376732d1dc93850426",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/modeling/trifusion/signal_preserving_v5_builder.py": "sha256:45a2250e79266abc801cc62b9500bade732183ac23cd4d0921cac56ae85f98e2",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/modeling/trifusion/signal_preserving_v6.py": "sha256:09bbd25ae3ef6a209e924b55f6a84bc53146907611c4fa0ab262fd96f348360d",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/modeling/trifusion/signal_preserving_v6_builder.py": "sha256:a86e7a2ae87a5e4df08bf4c4bbe6a7cd6b08d597a13435ca654de5bb54396ebf",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/modeling/trifusion/signal_preserving_v7.py": "sha256:d238087bbb64111a41ec726732b28eacbdc9ef503ec175b16107228212347963",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/modeling/trifusion/signal_preserving_v7_builder.py": "sha256:2a6295288be5a2303ba5485204bccf1035432dd6feb5c213bc71fdb335c6f873",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/modeling/trifusion/signal_preserving_v8.py": "sha256:70f79990af4a4a9b784e286635d1b78a1abf367306fe5945fbdcc1ed6f3d6159",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/modeling/trifusion/signal_preserving_v8_builder.py": "sha256:6ed1ae8981d5b2f192d196784e26d5f8f13b0611837fc24accbc57f0792ddbf7",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/modeling/trifusion/signal_preserving_v8_router.py": "sha256:79c683784c0c2bc9c7484fa10c141afcdcca9edf8a5913e4e352b1fa3a9efb57",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/modeling/trifusion/signal_preserving_v9.py": "sha256:48cfff021abf68854ae06443efad4259752a591f492473e25447533fb6691246",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/modeling/trifusion/signal_preserving_v9_builder.py": "sha256:88f78dbd7361a555bf304e04c77ff06995d1886690bc8f573e7ecb0a608dbcaa",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/modeling/trifusion/slot_competition_fp32_roles.py": "sha256:810801e048bcb07ddbdef0635708b63cba7562a4876e044af34135fd412f79c8",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/modeling/trifusion/slot_competition_roles.py": "sha256:bbc3e2430f760587cf8c1d11e40bcbdf0459424e975de74b5b15a40706efbe99",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/modeling/trifusion/source_prototype_v24.py": "sha256:703f2393aaec83a2276497ededddb6ad888f305cb5b93f3bdf600953b5e6ebf7",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/modeling/trifusion/source_style_msvr.py": "sha256:57c54142a0617d1ca5c4e1d68a63e31537a10c203eb08056b92971605749092f",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/modeling/trifusion/source_style_v27.py": "sha256:aee2f1d40e2362690f704a154f13a0c9e5696ab05ce44837818defe1725d58c5",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/modeling/trifusion/standalone.py": "sha256:2017048e0a2493acd76da3946793a02707f9dd543a96cc30994b38887506d8e2",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/modeling/trifusion/state.py": "sha256:5fe89c4885507e74ca1833cc18822a4b57e4c2d6fa9a6c6b2e127d1e74b70db9",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/modeling/trifusion/task_anchor_v3.py": "sha256:cead5c736ae014a5855c0481e31c3e73ea32a76e7b4ebed9b97abe9541b1a5f0",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/modeling/trifusion/task_anchor_v3_builder.py": "sha256:18e84eb2365589bd9cdd16e7113aa012ef9f63b965afe3d8a0f27bb8748733c6",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/modeling/trifusion/task_anchor_v4.py": "sha256:d6280a25e21acd2dca10aab51e686a820ee18a2def3341692850fa28ca7057cb",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/modeling/trifusion/task_anchor_v4_builder.py": "sha256:1ceeae572c0273ceb4f6fde601dc1a3d717a34ff9b94f35f9ccf1a258d529736",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/modeling/trifusion/tokenizer.py": "sha256:ff180350cea3ea8c5a9a7c57e4f4c9b1d7f30cc70dde5405037270be2392c306",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/modeling/trifusion/training_phases.py": "sha256:66a7666ad04d7e32392864227df967b86d8aeeba9a62b6ebeff280c96dd89dee",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/modeling/trifusion/variants.py": "sha256:ca456227c5249e28461dafb67a68f7103a9b1fea292dcd2f214fb92bab1b91ef",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/modeling/trifusion/warm_start.py": "sha256:68591452f89d6303baf81b9957c30b48135a33ce9e7a5544a40ede2b92f5a05d",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/refine-logs/clean_clip_joint_v1/EXPERIMENT_PLAN.md": "sha256:20acb704e0f7dd34f77fb611e57ef641da0fbce24401ebe9cf26c60a9d1d0d7c",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/refine-logs/foundation_recipe_v1/EXPERIMENT_CODE_REVIEW.md": "sha256:1c15a2a3de77acf834c145f26694ee2505204bfcfd252b43cb22d6922b59123b",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/refine-logs/foundation_recipe_v1/EXPERIMENT_PLAN.md": "sha256:9ba24f07c014b0238cb690b55f3883094f5c5953adeae18f32ef74a2dfffed87",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/refine-logs/foundation_recipe_v1/SEALED_SOURCE243.json": "sha256:3834440f9f924d1cba869088469e06678b27c779994bb0232bbc930ec61ef329",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/refine-logs/native_detail_v1/EXPERIMENT_PLAN.md": "sha256:370cb36478d03847648a2ba681a1b1dab2a9594cd7f3c4cc341a0b4b98562aa9",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/refine-logs/role_global_tokens_v1/EXPERIMENT_PLAN.md": "sha256:d8f2dfc64268267734f6aaff6ce9d53d3533a8517a903c6a52e40d9b352d2776",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/refine-logs/semantic_native_evidence_v1/EXPERIMENT_PLAN.md": "sha256:adec43cee2f3d0f84bddcd1aca25cf649832a970534ae40dfc5fbffd92177bde",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/refine-logs/shared_private_evidence_v1/EXPERIMENT_PLAN.md": "sha256:a152b8e224504eb4b3e2b90e563b6ff7a1a1da896f60ddc85a808044f3a58a7f",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/refine-logs/slot_competition_roles_v1/EXPERIMENT_PLAN.md": "sha256:3d6906fa25340d64d8d98cf4a5e1e40ccef9e1d9576a993c522d08c1c81af37b",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/refine-logs/slot_competition_roles_v1/FP32_PLAN_20261001.md": "sha256:c19646aa49a28aa0f264c553d0ec30319cde9d7cc9a420072679f54154d78aad",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/refine-logs/training_feature_scale_v1/EXPERIMENT_CODE_REVIEW.md": "sha256:725e17fd95d643382362054e8900f1f23a555164bb63d4dc2b4fbef2e32d0d91",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/refine-logs/training_feature_scale_v1/EXPERIMENT_PLAN.md": "sha256:04e3f88fe9e1e11351a34e9e6aab375ae0e3946653f3abba1e9f2c33903900f0",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/refine-logs/visual_update_control_v1/EXPERIMENT_PLAN.md": "sha256:a8df22383478a59fd68c1c7f57719120896f2c5327844ce264f52f4cb330a984",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/refine-logs/visual_update_control_v1/QUEUE_IMPLEMENTATION_20261001_132200.md": "sha256:2acfd1a0463a6bdc9750cb2cc85787460b04d60385e0be517621a488188b7599",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/tools/analyze_correspondence_distances.py": "sha256:833ebeb47cb5840422710fc00df1a974338cb04078249720d867f18b945f997a",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/tools/audit_correspondence_context_identity_losses.py": "sha256:bcc15e568c6a14efdaca1df5268c5abdec716287d3b6efb2482804add724abf1",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/tools/audit_v17_full_gallery.py": "sha256:856881f984ab8793788d291018a60046a47e309c625a65394b1a3ff4e670d8a9",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/tools/build_v12_complete_path_oof_targets.py": "sha256:999356e18d489dce99042f1e7873eac15b811b64255f1aee9550c52ae1c7ee06",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/tools/check_role_global_tokens_cpu.py": "sha256:c639efd6039affe9762209f6f968984b183d98689d2f7f116521f33da91f8214",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/tools/check_shared_private_initialization.py": "sha256:8b9b7376ba9f0d61177fa4c55c2633d64ffcf23cc65ae502e83a51d833dc14b0",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/tools/check_training_feature_scale_pair.py": "sha256:f1d57db3cd377beff1a6279f2e866c3a0201acb7145e8175cc23400870ee1599",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/tools/check_visual_update_initialization.py": "sha256:a46125b3b448513029560179cdeb6994aa86071e39238216871a6a067ba17134",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/tools/collect_correspondence_roles.py": "sha256:f81af437fe5ccfea4361c1ed182cb9b8841b362214d2a5220309a0fd2c78fff8",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/tools/collect_role_global_tokens.py": "sha256:845e4353ebb2751184f478a4117f96f443c9670e5934d667a6dbb470b508a8c6",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/tools/collect_shared_private_evidence.py": "sha256:0d5c8591093b9c57d687f7622d103ab60fd758c565dc4047c9d3a0632e7bf988",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/tools/collect_visual_update_control.py": "sha256:9ae6a61c961dec5ab42485814ae54585c300926afc6027963b696531a5c64bb8",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/tools/official_three_dataset_data.py": "sha256:c3180a88d12440709319d2025928fc699ff3b7c020b11697d468453fbfc68062",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/tools/official_three_dataset_model.py": "sha256:e103ea0f4d6342b0dc129dc2dace0e8c0d0e6c956cfe94729ccb70d9588cf0f9",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/tools/preflight_shared_private_evidence.py": "sha256:f0c18fc63cf608fe05b561fd151ed67dcd4f9154c8d1b8ec771ad8bdef3cceab",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/tools/preflight_visual_update_control.py": "sha256:bb9557b7a16f908af41a6601ce5863703610196231e6c91a260d04cf7ffa281c",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/tools/prepare_clean_clip_joint.py": "sha256:d3be286799fc8fca780bdfae7bd923eb562dfc0cf336265cd5144ebf09216445",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/tools/prepare_native_detail.py": "sha256:32107c8988dadc27cebb8ac7a9b0428934d03b2cfd7cc0913e1c1675b7d0f220",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/tools/prepare_semantic_native_evidence.py": "sha256:8e0463c1b21735f61f889c31056ccb34f8679013dce4b60ebaec094994fc4c7f",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/tools/queue_clean_clip_joint.py": "sha256:479d629ea788584a69c8a59d99e2249714f6f77ed1bb825c1c957c1dac8946a3",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/tools/queue_correspondence_refinement.py": "sha256:5256afe78d02d9bfea3103daa00d488b94c05e839c955f00355098f69ecbd84a",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/tools/queue_correspondence_roles.py": "sha256:746fbdb8bdad04290a9ef22c0550e873c9dce9de74c2c3c3767fea9278be69bf",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/tools/queue_foundation_recipe.py": "sha256:3afe051358aa25d99cb3900b4c6fdb13d5d79d9dcee76d01018fccd27e27d302",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/tools/queue_native_detail.py": "sha256:6cbf732bf77886ba9898f2255b7235d3a5fffbb3b4a04d408f86155adf5f8100",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/tools/queue_role_global_tokens.py": "sha256:a577264d1d2214b9e7dcc012e9bcbe0f602d95d969433eea0209eb6e80d71a14",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/tools/queue_semantic_native_evidence.py": "sha256:f96026132854b17fecf99db0f142fa57275800dd15b3ec2b2b662d16880cf14a",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/tools/queue_shared_private_evidence.py": "sha256:e707e59456f108568afc63fb25130829339edb994e4452b292e79da916c33107",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/tools/queue_training_feature_scale.py": "sha256:43de0eae7b9660de12d8729fdee06efa82f6adfcaf74599c6fda5faf00e8ae16",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/tools/queue_visual_update_control.py": "sha256:fda58fb80d357fcaae00d751a78d2b93f46da501439cc1c77e6f9492cfcec628",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/tools/report_foundation_recipe.py": "sha256:02aa7ef9f97feb87908639fbf616787b4cf56f1d7da228eb22755f482a7e072e",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/tools/report_training_feature_scale.py": "sha256:977281df7c340d5b9b9d2b6aa36d33b018810bb7cdf935c2186a68a1215d413c",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/tools/run_clean_clip_joint.py": "sha256:178e9793f2cf8261eb44a278e053d5caabd4f2f37dba48a65952b2547338a746",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/tools/run_correspondence_context_identity.py": "sha256:9f4cc9f11998819d4a927a32f4e47baf0c4ff9d14c4bc93b0dc35b0153ebc142",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/tools/run_correspondence_roles.py": "sha256:e50865fb923297cd61cf38b33ec2bc95154f8c503b5dfe5de9823cad3f03d7ef",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/tools/run_foundation_recipe.py": "sha256:c18042509dc33ff66eee1a6b04a723ad55685bd5d9daf218c3779703ffe20758",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/tools/run_native_detail.py": "sha256:4344bea88f47f65d9d7422eb0bb23567f1fb030a61851d96dfa25bdf6f627a0f",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/tools/run_official_three_dataset_roles.py": "sha256:f30bb00a0b71429e9d11dd196cd1d543202a133c663ad66e175d2f82e28d448d",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/tools/run_role_global_tokens.py": "sha256:dba04e72a4d3b81583b7c5c2e26aa0204618736a2c57280340313e50674f63cb",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/tools/run_semantic_native_evidence.py": "sha256:82b6def911211896e6802b0c7b087e7844a3eea9a6aab235b46ab6fa7335d436",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/tools/run_shared_private_evidence.py": "sha256:d5c578dd57681e89fca5761f65d662cfc84785c7137388b27130a2a6c509689c",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/tools/run_signal_baseline_dev.py": "sha256:083967f2a38267415b2992da98c2ad9429ebb793f387b45daac1dbb4eb16f365",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/tools/run_signal_preserving_v5.py": "sha256:e162184f68778b4991db0f97f26c5fda273b2ad2f7c8db2bbb2d53775eb717e5",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/tools/run_training_feature_scale.py": "sha256:473853f58e4ed70bf123509afe2861fa8a9988631c04f0ce04f3260c55fd9081",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/tools/run_visual_update_control.py": "sha256:537cd5a4ab4e9b3501a7279e3f4857536bdda761f597d8b5fa7bfdbdbf82cbdd",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/tools/train_msvr310_signal_oof.py": "sha256:c25579d931df34481fef321558f0b9a1f9179d72a25d6047dbbfd3682d4ae60f",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/tools/train_msvr310_trifusion_oof.py": "sha256:6e4185f539931a7af05ce56252249c06472e459b6ac7818051d00de1c48e2fa5",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/tools/train_official_three_dataset_roles.py": "sha256:d9bf51873f4f4692bed05a5fbd5654a3e6a2e14e104b166b74395c0de0fa39cd",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/tools/train_rgbnt100_signal_oof.py": "sha256:4462b73139e034d450d955c5b4a994aaa967548e9cc503d97bb753a14ea03b22",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/tools/train_signal_preserving_v17.py": "sha256:333886d16f73987accddb70b0780661bb9400b8afd04af01b57e188d34e5228d",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/tools/train_signal_preserving_v18.py": "sha256:f6bdda4631d710d0b6db5fe2a8df124d8dcbd294cb54adcf3ec261d523e96cf8"
+  },
+  "external_binary_attestations": [
+    {
+      "path": "/data/gaob/Re-ID/Trifusion/trained-model/training_feature_scale_20261003_v2_m0_normalized_RGBNT201/m0_reload_probe.pth",
+      "bytes": 346782704,
+      "sha256": "a6d257ff551053d2a2896056ee77689a367bf815437760b15a623b857dbde33d",
+      "locally_reread": false,
+      "attestation_source": "C:/Users/gb/.codex_tmp/training_feature_scale_complete754/INTAKE.json"
+    },
+    {
+      "path": "/data/gaob/Re-ID/Trifusion/trained-model/training_feature_scale_20261003_v2_full_normalized_RGBNT201/best_map.pth",
+      "bytes": 346781649,
+      "sha256": "06be6f6680c8563476f5d6049811521ec646d5caa1adcf638260c3d74b653dcc",
+      "locally_reread": false,
+      "attestation_source": "C:/Users/gb/.codex_tmp/training_feature_scale_complete754/INTAKE.json"
+    },
+    {
+      "path": "/data/gaob/Re-ID/Trifusion/trained-model/training_feature_scale_20261003_v2_full_normalized_RGBNT201/best_epoch_distances.pt",
+      "bytes": 2837533,
+      "sha256": "18f30ffcaa41f7162919ee4b91ad5a03da65d5579063fa88bff77ba25601347a",
+      "locally_reread": false,
+      "attestation_source": "C:/Users/gb/.codex_tmp/training_feature_scale_complete754/INTAKE.json"
+    },
+    {
+      "path": "/data/gaob/Re-ID/Trifusion/trained-model/training_feature_scale_20261003_v2_full_normalized_RGBNT201/official_distances.pt",
+      "bytes": 2837523,
+      "sha256": "fabf9a11fca22d43773a2c0d3ad2d9ae96b4a01dab01d048c9b123e315283305",
+      "locally_reread": false,
+      "attestation_source": "C:/Users/gb/.codex_tmp/training_feature_scale_complete754/INTAKE.json"
+    },
+    {
+      "path": "/data/gaob/Re-ID/Trifusion/trained-model/training_feature_scale_20261003_v2_m0_raw_RGBNT201/m0_reload_probe.pth",
+      "bytes": 346782704,
+      "sha256": "8fea60d6db5dbc62d784d3eae799db2c47aaa195eedccdd11d81588924101461",
+      "locally_reread": false,
+      "attestation_source": "C:/Users/gb/.codex_tmp/training_feature_scale_complete754/INTAKE.json"
+    },
+    {
+      "path": "/data/gaob/Re-ID/Trifusion/trained-model/training_feature_scale_20261003_v2_full_raw_RGBNT201/best_map.pth",
+      "bytes": 346781649,
+      "sha256": "98d93c8520d5419d669871bacc8800ecd226bb576e6b1d6e81b04e434154df49",
+      "locally_reread": false,
+      "attestation_source": "C:/Users/gb/.codex_tmp/training_feature_scale_complete754/INTAKE.json"
+    },
+    {
+      "path": "/data/gaob/Re-ID/Trifusion/trained-model/training_feature_scale_20261003_v2_full_raw_RGBNT201/best_epoch_distances.pt",
+      "bytes": 2837533,
+      "sha256": "855733592cac01a5bd98aeba60c9391d401c79037ec25bc97733abff15e5390f",
+      "locally_reread": false,
+      "attestation_source": "C:/Users/gb/.codex_tmp/training_feature_scale_complete754/INTAKE.json"
+    },
+    {
+      "path": "/data/gaob/Re-ID/Trifusion/trained-model/training_feature_scale_20261003_v2_full_raw_RGBNT201/official_distances.pt",
+      "bytes": 2837523,
+      "sha256": "68ab5b8f0923aef20acf9032110d7b95a92f944df66f232a4fa8424606b8a1d5",
+      "locally_reread": false,
+      "attestation_source": "C:/Users/gb/.codex_tmp/training_feature_scale_complete754/INTAKE.json"
+    },
+    {
+      "path": "/data/gaob/Re-ID/Trifusion/trained-model/training_feature_scale_20261003_v2_m0_normalized_RGBNT100/m0_reload_probe.pth",
+      "bytes": 345311864,
+      "sha256": "a9211c8a2601bffa8f6d26f1adb233b1f197ebceab2966fa1105b659dd62fa2d",
+      "locally_reread": false,
+      "attestation_source": "C:/Users/gb/.codex_tmp/training_feature_scale_complete754/INTAKE.json"
+    },
+    {
+      "path": "/data/gaob/Re-ID/Trifusion/trained-model/training_feature_scale_20261003_v2_full_normalized_RGBNT100/best_map.pth",
+      "bytes": 345310725,
+      "sha256": "bd78c3c6bfa83f4ef7b238b5c0dc8c829c03df9124c4e6cd320e79aa79006d44",
+      "locally_reread": false,
+      "attestation_source": "C:/Users/gb/.codex_tmp/training_feature_scale_complete754/INTAKE.json"
+    },
+    {
+      "path": "/data/gaob/Re-ID/Trifusion/trained-model/training_feature_scale_20261003_v2_full_normalized_RGBNT100/best_epoch_distances.pt",
+      "bytes": 59074461,
+      "sha256": "469a55cfc0f58eca4ef4c38d0482b7cffcad96ba15f090e3f6f63a1c9cb03c81",
+      "locally_reread": false,
+      "attestation_source": "C:/Users/gb/.codex_tmp/training_feature_scale_complete754/INTAKE.json"
+    },
+    {
+      "path": "/data/gaob/Re-ID/Trifusion/trained-model/training_feature_scale_20261003_v2_full_normalized_RGBNT100/official_distances.pt",
+      "bytes": 59074387,
+      "sha256": "7713526182f794a5e7db52f8fe62df2c0be5780925dfe4950c3e70c239b311c7",
+      "locally_reread": false,
+      "attestation_source": "C:/Users/gb/.codex_tmp/training_feature_scale_complete754/INTAKE.json"
+    },
+    {
+      "path": "/data/gaob/Re-ID/Trifusion/trained-model/training_feature_scale_20261003_v2_m0_raw_RGBNT100/m0_reload_probe.pth",
+      "bytes": 345311864,
+      "sha256": "42244ba0181946130abf1106f9ecafba9acd82c4b618ec7c2804a475d5f57b4f",
+      "locally_reread": false,
+      "attestation_source": "C:/Users/gb/.codex_tmp/training_feature_scale_complete754/INTAKE.json"
+    },
+    {
+      "path": "/data/gaob/Re-ID/Trifusion/trained-model/training_feature_scale_20261003_v2_full_raw_RGBNT100/best_map.pth",
+      "bytes": 345310725,
+      "sha256": "2f8a30483fd598ee1639cefa7dcb6c0b1fff50a3d56786b68b2d6db25f7396a2",
+      "locally_reread": false,
+      "attestation_source": "C:/Users/gb/.codex_tmp/training_feature_scale_complete754/INTAKE.json"
+    },
+    {
+      "path": "/data/gaob/Re-ID/Trifusion/trained-model/training_feature_scale_20261003_v2_full_raw_RGBNT100/best_epoch_distances.pt",
+      "bytes": 59074461,
+      "sha256": "ae1ec89a639c4400d0b9cd74d1bb7988c29c93c56e6c6bf05cd05e41d2e0a742",
+      "locally_reread": false,
+      "attestation_source": "C:/Users/gb/.codex_tmp/training_feature_scale_complete754/INTAKE.json"
+    },
+    {
+      "path": "/data/gaob/Re-ID/Trifusion/trained-model/training_feature_scale_20261003_v2_full_raw_RGBNT100/official_distances.pt",
+      "bytes": 59074387,
+      "sha256": "716088204a64330bb010c161fbca1057d6d5004cb9aa9d2ad4d60d2bd261df3f",
+      "locally_reread": false,
+      "attestation_source": "C:/Users/gb/.codex_tmp/training_feature_scale_complete754/INTAKE.json"
+    },
+    {
+      "path": "/data/gaob/Re-ID/Trifusion/trained-model/training_feature_scale_20261003_v2_m0_normalized_MSVR310/m0_reload_probe.pth",
+      "bytes": 346602104,
+      "sha256": "4c83aafa55d5f239b9a7e0d6bba122bcb80398e638847dbe603a8f33bfde2bc2",
+      "locally_reread": false,
+      "attestation_source": "C:/Users/gb/.codex_tmp/training_feature_scale_complete754/INTAKE.json"
+    },
+    {
+      "path": "/data/gaob/Re-ID/Trifusion/trained-model/training_feature_scale_20261003_v2_full_normalized_MSVR310/best_map.pth",
+      "bytes": 346600965,
+      "sha256": "05408203434fa59828a2c34ca35f38921e94320806bac70079d349dde7d792bb",
+      "locally_reread": false,
+      "attestation_source": "C:/Users/gb/.codex_tmp/training_feature_scale_complete754/INTAKE.json"
+    },
+    {
+      "path": "/data/gaob/Re-ID/Trifusion/trained-model/training_feature_scale_20261003_v2_full_normalized_MSVR310/best_epoch_distances.pt",
+      "bytes": 2535837,
+      "sha256": "4206a87f3bfde67b0b7bd2eb087577eafb07f51a3223dcb0f5de80c590fd0d4b",
+      "locally_reread": false,
+      "attestation_source": "C:/Users/gb/.codex_tmp/training_feature_scale_complete754/INTAKE.json"
+    },
+    {
+      "path": "/data/gaob/Re-ID/Trifusion/trained-model/training_feature_scale_20261003_v2_full_normalized_MSVR310/official_distances.pt",
+      "bytes": 2535827,
+      "sha256": "8efb6dd2c6efa029524335ee828ed9fd8b8a494c749e0731ce78f58a0d9043b2",
+      "locally_reread": false,
+      "attestation_source": "C:/Users/gb/.codex_tmp/training_feature_scale_complete754/INTAKE.json"
+    },
+    {
+      "path": "/data/gaob/Re-ID/Trifusion/trained-model/training_feature_scale_20261003_v2_m0_raw_MSVR310/m0_reload_probe.pth",
+      "bytes": 346602104,
+      "sha256": "97cebee3e420e5553a477535401e9d5fe1b7a99c74c785db6125df2dae848dbf",
+      "locally_reread": false,
+      "attestation_source": "C:/Users/gb/.codex_tmp/training_feature_scale_complete754/INTAKE.json"
+    },
+    {
+      "path": "/data/gaob/Re-ID/Trifusion/trained-model/training_feature_scale_20261003_v2_full_raw_MSVR310/best_map.pth",
+      "bytes": 346600965,
+      "sha256": "49edd0a2ba448edb3bc3360e3f9b98f7e626eeb92b399430b67841fa8cc841b7",
+      "locally_reread": false,
+      "attestation_source": "C:/Users/gb/.codex_tmp/training_feature_scale_complete754/INTAKE.json"
+    },
+    {
+      "path": "/data/gaob/Re-ID/Trifusion/trained-model/training_feature_scale_20261003_v2_full_raw_MSVR310/best_epoch_distances.pt",
+      "bytes": 2535837,
+      "sha256": "8f59270aabfab575c726b3bd99c3c01edec8c1f5857dac2857f28aec5d440b97",
+      "locally_reread": false,
+      "attestation_source": "C:/Users/gb/.codex_tmp/training_feature_scale_complete754/INTAKE.json"
+    },
+    {
+      "path": "/data/gaob/Re-ID/Trifusion/trained-model/training_feature_scale_20261003_v2_full_raw_MSVR310/official_distances.pt",
+      "bytes": 2535827,
+      "sha256": "8d85011b0bb64424661d467c51b1b57e386fe8a4cf5f9e4671c91fae8e76b3c6",
+      "locally_reread": false,
+      "attestation_source": "C:/Users/gb/.codex_tmp/training_feature_scale_complete754/INTAKE.json"
+    }
+  ]
+}

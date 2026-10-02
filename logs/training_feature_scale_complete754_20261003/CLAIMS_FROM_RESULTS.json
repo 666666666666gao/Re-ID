@@ -1,0 +1,1189 @@
+{
+  "schema": "trifusion-f2-result-to-claim-v1",
+  "generated_at": "2026-10-03T06:49:07.069986+08:00",
+  "claim_supported": "partial",
+  "verdict": "PARTIAL",
+  "reviewer_model": "gpt-6-astra",
+  "reviewer_reasoning": "max",
+  "fork_turns": "none",
+  "reviewer_task": "/root/claim_training_feature_scale_complete754",
+  "spawn_metadata_source": "Parent /root confirmed actual gpt-6-astra/max/fork none via collaboration message.",
+  "review_independence": "same-family",
+  "acceptance_status": "provisional",
+  "cross_family_accepted": false,
+  "integrity_status": "warn",
+  "integrity_label": "[INTEGRITY: WARN]",
+  "integrity_blocking_findings": [],
+  "inherited_audit_limitations": [
+    {
+      "id": "W1",
+      "blocking": false,
+      "status": "WARN",
+      "finding": "Official benchmark selects checkpoints.",
+      "claim_impact": "Post-selection development evidence, not untouched generalization/SOTA.",
+      "minimal_correction": "Keep official-test mAP-best selection explicit beside results.",
+      "evidence": [
+        {
+          "path": "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/tools/run_foundation_recipe.py",
+          "line": 248,
+          "reference": "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/tools/run_foundation_recipe.py:248",
+          "detail": "Official epoch selection."
+        }
+      ]
+    },
+    {
+      "id": "W2",
+      "blocking": false,
+      "status": "WARN",
+      "finding": "One seed and all identity-bootstrap intervals cross zero.",
+      "claim_impact": "MSVR gate passage is not significance/stability; two datasets fail.",
+      "minimal_correction": "Retain all datasets, seed42 and identity-macro interval meaning.",
+      "evidence": [
+        {
+          "path": "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/tools/analyze_correspondence_distances.py",
+          "line": 57,
+          "reference": "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/tools/analyze_correspondence_distances.py:57",
+          "detail": "Identity-macro/bootstrap formula."
+        },
+        {
+          "path": "C:/Users/gb/.codex_tmp/training_feature_scale_complete754/raw/results/training_feature_scale_complete_20261003/SUMMARY.json",
+          "line": 3963,
+          "reference": "C:/Users/gb/.codex_tmp/training_feature_scale_complete754/raw/results/training_feature_scale_complete_20261003/SUMMARY.json:3963",
+          "detail": "201 gate false; interval at 4011."
+        },
+        {
+          "path": "C:/Users/gb/.codex_tmp/training_feature_scale_complete754/raw/results/training_feature_scale_complete_20261003/SUMMARY.json",
+          "line": 4174,
+          "reference": "C:/Users/gb/.codex_tmp/training_feature_scale_complete754/raw/results/training_feature_scale_complete_20261003/SUMMARY.json:4174",
+          "detail": "100 gate false; interval at 4222."
+        },
+        {
+          "path": "C:/Users/gb/.codex_tmp/training_feature_scale_complete754/raw/results/training_feature_scale_complete_20261003/SUMMARY.json",
+          "line": 4485,
+          "reference": "C:/Users/gb/.codex_tmp/training_feature_scale_complete754/raw/results/training_feature_scale_complete_20261003/SUMMARY.json:4485",
+          "detail": "MSVR gate true; interval at 4533."
+        }
+      ]
+    },
+    {
+      "id": "W3",
+      "blocking": false,
+      "status": "WARN",
+      "finding": "Binary/image content remains externally attested.",
+      "claim_impact": "No independent local tensor/ranking/image regeneration.",
+      "minimal_correction": "Call this a source/primary-text audit with remote binary hashes. Stronger binary validation requires actual separately authorized binary reading.",
+      "evidence": [
+        {
+          "path": "C:/Users/gb/.codex_tmp/training_feature_scale_complete754/INTAKE.json",
+          "line": 704,
+          "reference": "C:/Users/gb/.codex_tmp/training_feature_scale_complete754/INTAKE.json:704",
+          "detail": "24 remote binary attestations."
+        },
+        {
+          "path": "C:/Users/gb/.codex_tmp/training_feature_scale_complete754/INTAKE.json",
+          "line": 2063,
+          "reference": "C:/Users/gb/.codex_tmp/training_feature_scale_complete754/INTAKE.json:2063",
+          "detail": "Explicit remote/no-replay limit."
+        }
+      ]
+    },
+    {
+      "id": "W4",
+      "blocking": false,
+      "status": "WARN",
+      "finding": "cfg_yaml retains overridden optimizer settings.",
+      "claim_impact": "Reproduction from cfg_yaml alone misstates effective optimization.",
+      "minimal_correction": "Document effective settings from source/LR logs; preserve original receipts.",
+      "evidence": [
+        {
+          "path": "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/tools/run_foundation_recipe.py",
+          "line": 148,
+          "reference": "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/tools/run_foundation_recipe.py:148",
+          "detail": "Actual AdamW groups."
+        },
+        {
+          "path": "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/tools/run_signal_preserving_v5.py",
+          "line": 1621,
+          "reference": "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/tools/run_signal_preserving_v5.py:1621",
+          "detail": "Actual LR formula."
+        },
+        {
+          "path": "C:/Users/gb/.codex_tmp/training_feature_scale_complete754/raw/trained-model/training_feature_scale_20261003_v2_full_normalized_RGBNT201/training.json",
+          "line": 643,
+          "reference": "C:/Users/gb/.codex_tmp/training_feature_scale_complete754/raw/trained-model/training_feature_scale_20261003_v2_full_normalized_RGBNT201/training.json:643",
+          "detail": "Legacy cfg_yaml fields."
+        }
+      ]
+    }
+  ],
+  "named_precheck": {
+    "status": "WARN_HELPER_UNRESOLVED",
+    "observed_at": "2026-10-03T06:08:59.832138+08:00",
+    "helper": "evidence_check.py",
+    "ARIS_REPO": null,
+    "managed_install_record_exists": false,
+    "project_helper_exists": false,
+    "installed_search": "rg --files C:/Users/gb/.agents C:/Users/gb/.codex C:/Users/gb/.trifusion_github_publish_22c3bee/tools -g evidence_check.py -g installed-skills-codex.txt returned no paths, exit1.",
+    "boundary": "Named evidence precheck not executed. Do not substitute a new helper or label deterministic helper PASS. Semantic review may proceed with this warning and direct primary evidence."
+  },
+  "named_helper_pass_claimed": false,
+  "evaluated_claim": {
+    "actual_plan": "C:/Users/gb/.trifusion_github_publish_22c3bee/refine-logs/training_feature_scale_v1/EXPERIMENT_PLAN.md",
+    "plan_sha256": "04e3f88fe9e1e11351a34e9e6aab375ae0e3946653f3abba1e9f2c33903900f0",
+    "sealed_plan_identical_sha256": "04e3f88fe9e1e11351a34e9e6aab375ae0e3946653f3abba1e9f2c33903900f0",
+    "intervention": "Shared training feature L2-normalized versus raw in the fixed current recipe; affects BN/CE and margin0.3 Triplet together, both deployment embeddings L2.",
+    "progress_gate": "Per dataset, raw-minus-normalized mAP >=0.5 percentage points AND Rank-1 >=0, using original official metrics and no rounding.",
+    "panel_interpretation": "Controlled-comparison completion is supported. Raw-feature progress is partially supported, only on MSVR310. The plan never licensed a general module/SOTA conclusion or a seed-significance claim."
+  },
+  "what_results_support": [
+    {
+      "claim": "Six fresh controls completed; the comparison is interpretable within the source/text audit scope.",
+      "detail": "300 ordered epochs and 20416 formal steps, matched full-state initialization witnesses, all M0-before-full, equal parameter budgets and byte-identical paired batch-order files. All six strict metrics equal their selected-epoch metrics exactly.",
+      "evidence": [
+        "initialization_budget_selection_reload"
+      ]
+    },
+    {
+      "claim": "Raw meets the original local progress gate on MSVR310 only.",
+      "detail": "Official mAP +1.2208760290804719 pp and Rank-1 +3.0456840991973877 pp.",
+      "evidence": [
+        {
+          "path": "C:/Users/gb/.codex_tmp/training_feature_scale_complete754/raw/results/training_feature_scale_complete_20261003/SUMMARY.json",
+          "json_key": "/pairs/2/phase_progress"
+        }
+      ]
+    },
+    {
+      "claim": "Raw is not an across-panel improvement under the fixed recipe.",
+      "detail": "RGBNT201 and RGBNT100 lose mAP; RGBNT201 also loses Rank-1. RGBNT100's small Rank-1 gain does not override its mAP gate failure.",
+      "evidence": [
+        {
+          "path": "C:/Users/gb/.codex_tmp/training_feature_scale_complete754/raw/results/training_feature_scale_complete_20261003/SUMMARY.json",
+          "json_key": "/pairs/0"
+        },
+        {
+          "path": "C:/Users/gb/.codex_tmp/training_feature_scale_complete754/raw/results/training_feature_scale_complete_20261003/SUMMARY.json",
+          "json_key": "/pairs/1"
+        }
+      ]
+    },
+    {
+      "claim": "The intervention was active and changes a joint training boundary.",
+      "detail": "Normalized norms stay approximately one; raw norms span 13.090947151184082 to 20.60223960876465. Source changes the input to both BN/CE and Triplet, with unchanged L2 deployment.",
+      "evidence": [
+        "active_training_boundary"
+      ]
+    },
+    {
+      "claim": "Paired outcomes include harm as well as repairs.",
+      "detail": "Rank-1 repairs/new errors are 71/84, 55/51 and 46/28. MSVR310 has 26 improving and 26 worsening identities. These are post-selection diagnoses, not mechanism or replication evidence.",
+      "evidence": [
+        "real_gt_full_gallery_and_diagnostics"
+      ]
+    }
+  ],
+  "what_results_dont_support": [
+    "A universal or statistically established raw-feature gain across RGBNT201, RGBNT100 and MSVR310.",
+    "A significant or training-seed-stable MSVR310 improvement: only one training seed, and every reported identity-macro interval includes zero.",
+    "Using the identity-macro bootstrap interval as an interval for official query-weighted mAP or as training-seed uncertainty.",
+    "A Triplet-only effect, BN-only effect or full causal decomposition: both paths changed in F2.",
+    "Explaining the whole earlier F1 recipe gap. F1 and F2 are different comparisons; no cross-host F1 arm substitutes for this fresh normalized control.",
+    "Role/adapter/SIM/AlignM/router/memory contribution, a new module, or evidence that such a module is necessary.",
+    "Untouched-test generalization, SOTA or a final paper efficacy claim: official benchmark mAP selected all six checkpoints and informed development.",
+    "Independent local bitwise equality or regeneration of checkpoint tensors, distance rankings, images, per-query AP/rank vectors or bootstrap samples."
+  ],
+  "missing_evidence": [
+    {
+      "id": "M1",
+      "evidence_gap": "Prespecified paired training-seed replications and an appropriate uncertainty analysis.",
+      "needed_for": "Stability or training-seed significance; not needed to report the observed seed42 mixed result."
+    },
+    {
+      "id": "M2",
+      "evidence_gap": "Development-based checkpoint selection followed by genuinely untouched final evaluation.",
+      "needed_for": "Generalization or competitive final-performance claims; the consumed benchmark cannot become untouched retrospectively."
+    },
+    {
+      "id": "M3",
+      "evidence_gap": "A condition varying only one of the BN/CE-input and Triplet-input paths.",
+      "needed_for": "Mechanism attribution; existing loss/norm trajectories do not identify the responsible path."
+    },
+    {
+      "id": "M4",
+      "evidence_gap": "Independent reading/recomputation of externally attested binary/image material and per-query vectors.",
+      "needed_for": "Stronger numerical assurance. Current text has aggregate query counts and per-identity rows; remote distances were not replayed in this review."
+    }
+  ],
+  "suggested_claim_revision": "In six fresh seed-42, 50-epoch controls of the fixed public-CLIP current recipe, switching the shared training feature delivered to BN/CE and margin-0.3 Triplet from L2-normalized to raw produced mixed results while deployment remained L2-normalized. At each arm's official-mAP-selected checkpoint, raw minus normalized changed mAP/Rank-1 by -2.892652/-1.555026 pp on RGBNT201, -2.391355/+0.233233 pp on RGBNT100, and +1.220876/+3.045684 pp on MSVR310. Only MSVR310 passed its preregistered local progress gate. This is dataset-specific, post-selection development evidence for the joint training-feature boundary, not a general raw-feature advantage, Triplet-only mechanism, full F1 explanation, seed-stable improvement, module contribution or SOTA result.",
+  "next_experiments_needed": [
+    {
+      "priority": 1,
+      "status": "PROPOSED_ONLY_NOT_EXECUTED",
+      "type": "bounded_causal_diagnostic_not_method_contribution",
+      "name": "One fixed hybrid: normalized BN/CE input, raw Triplet input",
+      "rationale": "F2 changed both paths and produced opposite signs across datasets; active source establishes this ambiguity, while finite/nonzero loss logs do not resolve it.",
+      "primary_contrast": "Fresh normalized control versus a hybrid that keeps BN/CE input L2-normalized and changes only the Triplet input to raw. Deployment stays L2. Existing raw results are context, not a substitute for the fresh paired control.",
+      "scope": "If mechanism resolution is needed, separately preregister one fresh matched pair per dataset across the same three-dataset panel. Keep public initialization, seed42, full50, B64/K8, effective AdamW/LR schedule, margin0.3 and CE/Triplet coefficients fixed; preserve M0-before-full, source seal, actual batch matching, strict reload and original per-dataset gate.",
+      "interpretation": "The primary contrast estimates the Triplet-input effect conditional on normalized BN/CE. It does not identify every pathway interaction or recover the full F1 decomposition; continued official-selected evaluation remains development-only.",
+      "stop_rule": "One preregistered diagnostic panel only. Retain all failures; no margin/weight/multiplier/seed scans, successful-seed selection, gate reduction or F2 rescue retry. If the diagnostic has no valid increment, close the scale-only improvement branch.",
+      "not_resolved_by_this_experiment": [
+        "training-seed stability",
+        "untouched-test generalization",
+        "method/module novelty"
+      ],
+      "required_for_current_descriptive_claim": false
+    }
+  ],
+  "confidence": "high",
+  "confidence_scope": "High for the descriptive mixed seed42 result and original gate decisions within the source/primary-text/receipt scope. No high-confidence mechanism, population, cross-seed or SOTA inference; semantic assurance remains same-family/provisional.",
+  "per_dataset": [
+    {
+      "dataset": "RGBNT201",
+      "normalized_selected_epoch": 26,
+      "raw_selected_epoch": 26,
+      "normalized_metrics_percent": {
+        "mAP": 62.580551571472775,
+        "Rank-1": 62.44019269943237,
+        "Rank-5": 75.83732008934021,
+        "Rank-10": 83.01435112953186
+      },
+      "raw_metrics_percent": {
+        "mAP": 59.68789908355065,
+        "Rank-1": 60.88516712188721,
+        "Rank-5": 73.20573925971985,
+        "Rank-10": 80.62201142311096
+      },
+      "official_raw_minus_normalized_pp": {
+        "mAP": -2.8926524879221276,
+        "Rank-1": -1.555025577545166,
+        "Rank-5": -2.6315808296203613,
+        "Rank-10": -2.3923397064208984
+      },
+      "registered_gate": {
+        "delta_mAP_min_pp": 0.5,
+        "delta_Rank_1_min_pp": 0,
+        "combine": "AND",
+        "pass": false
+      },
+      "actual_training_batch_order_equal": true,
+      "paired_diagnosis": {
+        "rank1_repairs": 71,
+        "rank1_new_errors": 84,
+        "query_ap_improved": 313,
+        "query_ap_worsened": 432,
+        "identity_ap_improved": 11,
+        "identity_ap_worsened": 19,
+        "identity_macro_mean_delta_ap_points": -2.6772687835642,
+        "identity_bootstrap_95_percentile_interval": [
+          -8.480107771092971,
+          3.181634262225375
+        ],
+        "queries": 836,
+        "identities": 30,
+        "query_ap_ties_at_report_tolerance": 91,
+        "interval_contains_zero": true,
+        "query_weighted_identity_delta_recomputed_pp": -2.892652487922126,
+        "reported_independent_scorer_delta_metrics_pp": {
+          "mAP": -2.8926524879221276,
+          "Rank-1": -1.5550239234449776,
+          "Rank-5": -2.6315789473684106,
+          "Rank-10": -2.3923444976076524
+        },
+        "bootstrap_unit": "Equal-weight identities; fixed selected models; 2000 draws, RNG seed42; not training seeds"
+      },
+      "evidence": [
+        {
+          "path": "C:/Users/gb/.codex_tmp/training_feature_scale_complete754/raw/results/training_feature_scale_complete_20261003/SUMMARY.json",
+          "json_key": "/pairs/0/phase_progress"
+        },
+        {
+          "path": "C:/Users/gb/.codex_tmp/training_feature_scale_complete754/raw/results/training_feature_scale_complete_20261003/SUMMARY.json",
+          "json_key": "/pairs/0/paired_diagnosis"
+        },
+        {
+          "path": "C:/Users/gb/.codex_tmp/training_feature_scale_complete754/raw/results/training_feature_scale_complete_20261003/SUMMARY.json",
+          "json_key": "/pairs/0/paired_diagnosis/identity_changes"
+        }
+      ]
+    },
+    {
+      "dataset": "RGBNT100",
+      "normalized_selected_epoch": 12,
+      "raw_selected_epoch": 47,
+      "normalized_metrics_percent": {
+        "mAP": 77.58429184381957,
+        "Rank-1": 94.1690981388092,
+        "Rank-5": 95.33527493476868,
+        "Rank-10": 95.86005806922913
+      },
+      "raw_metrics_percent": {
+        "mAP": 75.19293649431079,
+        "Rank-1": 94.40233111381531,
+        "Rank-5": 95.91836929321289,
+        "Rank-10": 96.38484120368958
+      },
+      "official_raw_minus_normalized_pp": {
+        "mAP": -2.3913553495087854,
+        "Rank-1": 0.23323297500610352,
+        "Rank-5": 0.5830943584442139,
+        "Rank-10": 0.5247831344604492
+      },
+      "registered_gate": {
+        "delta_mAP_min_pp": 0.5,
+        "delta_Rank_1_min_pp": 0,
+        "combine": "AND",
+        "pass": false
+      },
+      "actual_training_batch_order_equal": true,
+      "paired_diagnosis": {
+        "rank1_repairs": 55,
+        "rank1_new_errors": 51,
+        "query_ap_improved": 717,
+        "query_ap_worsened": 902,
+        "identity_ap_improved": 21,
+        "identity_ap_worsened": 29,
+        "identity_macro_mean_delta_ap_points": -2.333872287294807,
+        "identity_bootstrap_95_percentile_interval": [
+          -5.381174073803389,
+          0.9325535988399216
+        ],
+        "queries": 1715,
+        "identities": 50,
+        "query_ap_ties_at_report_tolerance": 96,
+        "interval_contains_zero": true,
+        "query_weighted_identity_delta_recomputed_pp": -2.3913553495087774,
+        "reported_independent_scorer_delta_metrics_pp": {
+          "mAP": -2.391355349508771,
+          "Rank-1": 0.23323615160350641,
+          "Rank-5": 0.5830903790087376,
+          "Rank-10": 0.5247813411078681
+        },
+        "bootstrap_unit": "Equal-weight identities; fixed selected models; 2000 draws, RNG seed42; not training seeds"
+      },
+      "evidence": [
+        {
+          "path": "C:/Users/gb/.codex_tmp/training_feature_scale_complete754/raw/results/training_feature_scale_complete_20261003/SUMMARY.json",
+          "json_key": "/pairs/1/phase_progress"
+        },
+        {
+          "path": "C:/Users/gb/.codex_tmp/training_feature_scale_complete754/raw/results/training_feature_scale_complete_20261003/SUMMARY.json",
+          "json_key": "/pairs/1/paired_diagnosis"
+        },
+        {
+          "path": "C:/Users/gb/.codex_tmp/training_feature_scale_complete754/raw/results/training_feature_scale_complete_20261003/SUMMARY.json",
+          "json_key": "/pairs/1/paired_diagnosis/identity_changes"
+        }
+      ]
+    },
+    {
+      "dataset": "MSVR310",
+      "normalized_selected_epoch": 24,
+      "raw_selected_epoch": 23,
+      "normalized_metrics_percent": {
+        "mAP": 50.35673958098721,
+        "Rank-1": 67.51269102096558,
+        "Rank-5": 81.38747811317444,
+        "Rank-10": 86.29441857337952
+      },
+      "raw_metrics_percent": {
+        "mAP": 51.57761561006768,
+        "Rank-1": 70.55837512016296,
+        "Rank-5": 85.617595911026,
+        "Rank-10": 89.17089700698853
+      },
+      "official_raw_minus_normalized_pp": {
+        "mAP": 1.2208760290804719,
+        "Rank-1": 3.0456840991973877,
+        "Rank-5": 4.2301177978515625,
+        "Rank-10": 2.876478433609009
+      },
+      "registered_gate": {
+        "delta_mAP_min_pp": 0.5,
+        "delta_Rank_1_min_pp": 0,
+        "combine": "AND",
+        "pass": true
+      },
+      "actual_training_batch_order_equal": true,
+      "paired_diagnosis": {
+        "rank1_repairs": 46,
+        "rank1_new_errors": 28,
+        "query_ap_improved": 301,
+        "query_ap_worsened": 279,
+        "identity_ap_improved": 26,
+        "identity_ap_worsened": 26,
+        "identity_macro_mean_delta_ap_points": 1.4829155291202976,
+        "identity_bootstrap_95_percentile_interval": [
+          -1.1970756358069765,
+          4.36589795779194
+        ],
+        "queries": 591,
+        "identities": 52,
+        "query_ap_ties_at_report_tolerance": 11,
+        "interval_contains_zero": true,
+        "query_weighted_identity_delta_recomputed_pp": 1.220876029080468,
+        "reported_independent_scorer_delta_metrics_pp": {
+          "mAP": 1.2208760290804719,
+          "Rank-1": 3.045685279187822,
+          "Rank-5": 4.230118443316414,
+          "Rank-10": 2.876480541455166
+        },
+        "bootstrap_unit": "Equal-weight identities; fixed selected models; 2000 draws, RNG seed42; not training seeds"
+      },
+      "evidence": [
+        {
+          "path": "C:/Users/gb/.codex_tmp/training_feature_scale_complete754/raw/results/training_feature_scale_complete_20261003/SUMMARY.json",
+          "json_key": "/pairs/2/phase_progress"
+        },
+        {
+          "path": "C:/Users/gb/.codex_tmp/training_feature_scale_complete754/raw/results/training_feature_scale_complete_20261003/SUMMARY.json",
+          "json_key": "/pairs/2/paired_diagnosis"
+        },
+        {
+          "path": "C:/Users/gb/.codex_tmp/training_feature_scale_complete754/raw/results/training_feature_scale_complete_20261003/SUMMARY.json",
+          "json_key": "/pairs/2/paired_diagnosis/identity_changes"
+        }
+      ]
+    }
+  ],
+  "runs": [
+    {
+      "dataset": "RGBNT201",
+      "variant": "normalized",
+      "seed": 42,
+      "formal_epochs": 50,
+      "selected_epoch": 26,
+      "selection_policy": "official_mAP_best_later_ties",
+      "metrics_percent": {
+        "mAP": 62.580551571472775,
+        "Rank-1": 62.44019269943237,
+        "Rank-5": 75.83732008934021,
+        "Rank-10": 83.01435112953186
+      },
+      "formal_steps": 2649,
+      "nonzero_triplet_steps": 1882,
+      "feature_norm_range": [
+        0.9999998211860657,
+        1.0000001192092896
+      ],
+      "strict_reload_minus_selected_metrics_pp": {
+        "mAP": 0,
+        "Rank-1": 0,
+        "Rank-5": 0,
+        "Rank-10": 0
+      },
+      "trainable_parameters": 86407680,
+      "trainable_parameter_tensors": 155,
+      "initial_model_state_sha256": "70b598e0a10fc68ed8749754f28f0d093269f08d39f1a2aac62770f73e557b6c",
+      "checkpoint_sha256_remote_attestation": "06be6f6680c8563476f5d6049811521ec646d5caa1adcf638260c3d74b653dcc",
+      "distance_sha256_remote_attestation": "fabf9a11fca22d43773a2c0d3ad2d9ae96b4a01dab01d048c9b123e315283305",
+      "binary_content_reread": false,
+      "evidence": [
+        {
+          "path": "C:/Users/gb/.codex_tmp/training_feature_scale_complete754/raw/trained-model/training_feature_scale_20261003_v2_full_normalized_RGBNT201/training.json",
+          "json_key_or_rows": "/history"
+        },
+        {
+          "path": "C:/Users/gb/.codex_tmp/training_feature_scale_complete754/raw/trained-model/training_feature_scale_20261003_v2_full_normalized_RGBNT201/training.json",
+          "json_key_or_rows": "/initializer"
+        },
+        {
+          "path": "C:/Users/gb/.codex_tmp/training_feature_scale_complete754/raw/trained-model/training_feature_scale_20261003_v2_full_normalized_RGBNT201/official_metrics.json",
+          "json_key_or_rows": "/metrics"
+        },
+        {
+          "path": "C:/Users/gb/.codex_tmp/training_feature_scale_complete754/raw/trained-model/training_feature_scale_20261003_v2_full_normalized_RGBNT201/official_metrics.json",
+          "json_key_or_rows": "/selected_epoch"
+        },
+        {
+          "path": "C:/Users/gb/.codex_tmp/training_feature_scale_complete754/raw/trained-model/training_feature_scale_20261003_v2_full_normalized_RGBNT201/training_steps.jsonl",
+          "json_key_or_rows": "all rows"
+        },
+        {
+          "path": "C:/Users/gb/.codex_tmp/training_feature_scale_complete754/raw/trained-model/training_feature_scale_20261003_v2_full_normalized_RGBNT201/training_batch_order.jsonl",
+          "json_key_or_rows": "all rows"
+        },
+        {
+          "path": "C:/Users/gb/.codex_tmp/training_feature_scale_complete754/raw/trained-model/training_feature_scale_20261003_v2_m0_normalized_RGBNT201/training.json",
+          "json_key": "/m0"
+        },
+        {
+          "path": "C:/Users/gb/.codex_tmp/training_feature_scale_complete754/raw/logs/training_feature_scale_20261003_v2/initialization/RGBNT201_normalized.json",
+          "json_key": "/binding"
+        }
+      ]
+    },
+    {
+      "dataset": "RGBNT201",
+      "variant": "raw",
+      "seed": 42,
+      "formal_epochs": 50,
+      "selected_epoch": 26,
+      "selection_policy": "official_mAP_best_later_ties",
+      "metrics_percent": {
+        "mAP": 59.68789908355065,
+        "Rank-1": 60.88516712188721,
+        "Rank-5": 73.20573925971985,
+        "Rank-10": 80.62201142311096
+      },
+      "formal_steps": 2649,
+      "nonzero_triplet_steps": 1122,
+      "feature_norm_range": [
+        14.621070861816406,
+        20.60223960876465
+      ],
+      "strict_reload_minus_selected_metrics_pp": {
+        "mAP": 0,
+        "Rank-1": 0,
+        "Rank-5": 0,
+        "Rank-10": 0
+      },
+      "trainable_parameters": 86407680,
+      "trainable_parameter_tensors": 155,
+      "initial_model_state_sha256": "70b598e0a10fc68ed8749754f28f0d093269f08d39f1a2aac62770f73e557b6c",
+      "checkpoint_sha256_remote_attestation": "98d93c8520d5419d669871bacc8800ecd226bb576e6b1d6e81b04e434154df49",
+      "distance_sha256_remote_attestation": "68ab5b8f0923aef20acf9032110d7b95a92f944df66f232a4fa8424606b8a1d5",
+      "binary_content_reread": false,
+      "evidence": [
+        {
+          "path": "C:/Users/gb/.codex_tmp/training_feature_scale_complete754/raw/trained-model/training_feature_scale_20261003_v2_full_raw_RGBNT201/training.json",
+          "json_key_or_rows": "/history"
+        },
+        {
+          "path": "C:/Users/gb/.codex_tmp/training_feature_scale_complete754/raw/trained-model/training_feature_scale_20261003_v2_full_raw_RGBNT201/training.json",
+          "json_key_or_rows": "/initializer"
+        },
+        {
+          "path": "C:/Users/gb/.codex_tmp/training_feature_scale_complete754/raw/trained-model/training_feature_scale_20261003_v2_full_raw_RGBNT201/official_metrics.json",
+          "json_key_or_rows": "/metrics"
+        },
+        {
+          "path": "C:/Users/gb/.codex_tmp/training_feature_scale_complete754/raw/trained-model/training_feature_scale_20261003_v2_full_raw_RGBNT201/official_metrics.json",
+          "json_key_or_rows": "/selected_epoch"
+        },
+        {
+          "path": "C:/Users/gb/.codex_tmp/training_feature_scale_complete754/raw/trained-model/training_feature_scale_20261003_v2_full_raw_RGBNT201/training_steps.jsonl",
+          "json_key_or_rows": "all rows"
+        },
+        {
+          "path": "C:/Users/gb/.codex_tmp/training_feature_scale_complete754/raw/trained-model/training_feature_scale_20261003_v2_full_raw_RGBNT201/training_batch_order.jsonl",
+          "json_key_or_rows": "all rows"
+        },
+        {
+          "path": "C:/Users/gb/.codex_tmp/training_feature_scale_complete754/raw/trained-model/training_feature_scale_20261003_v2_m0_raw_RGBNT201/training.json",
+          "json_key": "/m0"
+        },
+        {
+          "path": "C:/Users/gb/.codex_tmp/training_feature_scale_complete754/raw/logs/training_feature_scale_20261003_v2/initialization/RGBNT201_raw.json",
+          "json_key": "/binding"
+        }
+      ]
+    },
+    {
+      "dataset": "RGBNT100",
+      "variant": "normalized",
+      "seed": 42,
+      "formal_epochs": 50,
+      "selected_epoch": 12,
+      "selection_policy": "official_mAP_best_later_ties",
+      "metrics_percent": {
+        "mAP": 77.58429184381957,
+        "Rank-1": 94.1690981388092,
+        "Rank-5": 95.33527493476868,
+        "Rank-10": 95.86005806922913
+      },
+      "formal_steps": 6559,
+      "nonzero_triplet_steps": 842,
+      "feature_norm_range": [
+        0.9999998211860657,
+        1.0000001192092896
+      ],
+      "strict_reload_minus_selected_metrics_pp": {
+        "mAP": 0,
+        "Rank-1": 0,
+        "Rank-5": 0,
+        "Rank-10": 0
+      },
+      "trainable_parameters": 86224896,
+      "trainable_parameter_tensors": 155,
+      "initial_model_state_sha256": "811ffca8c438ea7545421bc1ad515499f096f6a5100a17263b7c1c9c3b34f9f0",
+      "checkpoint_sha256_remote_attestation": "bd78c3c6bfa83f4ef7b238b5c0dc8c829c03df9124c4e6cd320e79aa79006d44",
+      "distance_sha256_remote_attestation": "7713526182f794a5e7db52f8fe62df2c0be5780925dfe4950c3e70c239b311c7",
+      "binary_content_reread": false,
+      "evidence": [
+        {
+          "path": "C:/Users/gb/.codex_tmp/training_feature_scale_complete754/raw/trained-model/training_feature_scale_20261003_v2_full_normalized_RGBNT100/training.json",
+          "json_key_or_rows": "/history"
+        },
+        {
+          "path": "C:/Users/gb/.codex_tmp/training_feature_scale_complete754/raw/trained-model/training_feature_scale_20261003_v2_full_normalized_RGBNT100/training.json",
+          "json_key_or_rows": "/initializer"
+        },
+        {
+          "path": "C:/Users/gb/.codex_tmp/training_feature_scale_complete754/raw/trained-model/training_feature_scale_20261003_v2_full_normalized_RGBNT100/official_metrics.json",
+          "json_key_or_rows": "/metrics"
+        },
+        {
+          "path": "C:/Users/gb/.codex_tmp/training_feature_scale_complete754/raw/trained-model/training_feature_scale_20261003_v2_full_normalized_RGBNT100/official_metrics.json",
+          "json_key_or_rows": "/selected_epoch"
+        },
+        {
+          "path": "C:/Users/gb/.codex_tmp/training_feature_scale_complete754/raw/trained-model/training_feature_scale_20261003_v2_full_normalized_RGBNT100/training_steps.jsonl",
+          "json_key_or_rows": "all rows"
+        },
+        {
+          "path": "C:/Users/gb/.codex_tmp/training_feature_scale_complete754/raw/trained-model/training_feature_scale_20261003_v2_full_normalized_RGBNT100/training_batch_order.jsonl",
+          "json_key_or_rows": "all rows"
+        },
+        {
+          "path": "C:/Users/gb/.codex_tmp/training_feature_scale_complete754/raw/trained-model/training_feature_scale_20261003_v2_m0_normalized_RGBNT100/training.json",
+          "json_key": "/m0"
+        },
+        {
+          "path": "C:/Users/gb/.codex_tmp/training_feature_scale_complete754/raw/logs/training_feature_scale_20261003_v2/initialization/RGBNT100_normalized.json",
+          "json_key": "/binding"
+        }
+      ]
+    },
+    {
+      "dataset": "RGBNT100",
+      "variant": "raw",
+      "seed": 42,
+      "formal_epochs": 50,
+      "selected_epoch": 47,
+      "selection_policy": "official_mAP_best_later_ties",
+      "metrics_percent": {
+        "mAP": 75.19293649431079,
+        "Rank-1": 94.40233111381531,
+        "Rank-5": 95.91836929321289,
+        "Rank-10": 96.38484120368958
+      },
+      "formal_steps": 6559,
+      "nonzero_triplet_steps": 704,
+      "feature_norm_range": [
+        13.090947151184082,
+        20.42727279663086
+      ],
+      "strict_reload_minus_selected_metrics_pp": {
+        "mAP": 0,
+        "Rank-1": 0,
+        "Rank-5": 0,
+        "Rank-10": 0
+      },
+      "trainable_parameters": 86224896,
+      "trainable_parameter_tensors": 155,
+      "initial_model_state_sha256": "811ffca8c438ea7545421bc1ad515499f096f6a5100a17263b7c1c9c3b34f9f0",
+      "checkpoint_sha256_remote_attestation": "2f8a30483fd598ee1639cefa7dcb6c0b1fff50a3d56786b68b2d6db25f7396a2",
+      "distance_sha256_remote_attestation": "716088204a64330bb010c161fbca1057d6d5004cb9aa9d2ad4d60d2bd261df3f",
+      "binary_content_reread": false,
+      "evidence": [
+        {
+          "path": "C:/Users/gb/.codex_tmp/training_feature_scale_complete754/raw/trained-model/training_feature_scale_20261003_v2_full_raw_RGBNT100/training.json",
+          "json_key_or_rows": "/history"
+        },
+        {
+          "path": "C:/Users/gb/.codex_tmp/training_feature_scale_complete754/raw/trained-model/training_feature_scale_20261003_v2_full_raw_RGBNT100/training.json",
+          "json_key_or_rows": "/initializer"
+        },
+        {
+          "path": "C:/Users/gb/.codex_tmp/training_feature_scale_complete754/raw/trained-model/training_feature_scale_20261003_v2_full_raw_RGBNT100/official_metrics.json",
+          "json_key_or_rows": "/metrics"
+        },
+        {
+          "path": "C:/Users/gb/.codex_tmp/training_feature_scale_complete754/raw/trained-model/training_feature_scale_20261003_v2_full_raw_RGBNT100/official_metrics.json",
+          "json_key_or_rows": "/selected_epoch"
+        },
+        {
+          "path": "C:/Users/gb/.codex_tmp/training_feature_scale_complete754/raw/trained-model/training_feature_scale_20261003_v2_full_raw_RGBNT100/training_steps.jsonl",
+          "json_key_or_rows": "all rows"
+        },
+        {
+          "path": "C:/Users/gb/.codex_tmp/training_feature_scale_complete754/raw/trained-model/training_feature_scale_20261003_v2_full_raw_RGBNT100/training_batch_order.jsonl",
+          "json_key_or_rows": "all rows"
+        },
+        {
+          "path": "C:/Users/gb/.codex_tmp/training_feature_scale_complete754/raw/trained-model/training_feature_scale_20261003_v2_m0_raw_RGBNT100/training.json",
+          "json_key": "/m0"
+        },
+        {
+          "path": "C:/Users/gb/.codex_tmp/training_feature_scale_complete754/raw/logs/training_feature_scale_20261003_v2/initialization/RGBNT100_raw.json",
+          "json_key": "/binding"
+        }
+      ]
+    },
+    {
+      "dataset": "MSVR310",
+      "variant": "normalized",
+      "seed": 42,
+      "formal_epochs": 50,
+      "selected_epoch": 24,
+      "selection_policy": "official_mAP_best_later_ties",
+      "metrics_percent": {
+        "mAP": 50.35673958098721,
+        "Rank-1": 67.51269102096558,
+        "Rank-5": 81.38747811317444,
+        "Rank-10": 86.29441857337952
+      },
+      "formal_steps": 1000,
+      "nonzero_triplet_steps": 992,
+      "feature_norm_range": [
+        0.9999998211860657,
+        1.0000001192092896
+      ],
+      "strict_reload_minus_selected_metrics_pp": {
+        "mAP": 0,
+        "Rank-1": 0,
+        "Rank-5": 0,
+        "Rank-10": 0
+      },
+      "trainable_parameters": 86386176,
+      "trainable_parameter_tensors": 155,
+      "initial_model_state_sha256": "cac73b168710588b804c471e93952fb5f50fdf9b8ed2f9c8a8de35afd61065cc",
+      "checkpoint_sha256_remote_attestation": "05408203434fa59828a2c34ca35f38921e94320806bac70079d349dde7d792bb",
+      "distance_sha256_remote_attestation": "8efb6dd2c6efa029524335ee828ed9fd8b8a494c749e0731ce78f58a0d9043b2",
+      "binary_content_reread": false,
+      "evidence": [
+        {
+          "path": "C:/Users/gb/.codex_tmp/training_feature_scale_complete754/raw/trained-model/training_feature_scale_20261003_v2_full_normalized_MSVR310/training.json",
+          "json_key_or_rows": "/history"
+        },
+        {
+          "path": "C:/Users/gb/.codex_tmp/training_feature_scale_complete754/raw/trained-model/training_feature_scale_20261003_v2_full_normalized_MSVR310/training.json",
+          "json_key_or_rows": "/initializer"
+        },
+        {
+          "path": "C:/Users/gb/.codex_tmp/training_feature_scale_complete754/raw/trained-model/training_feature_scale_20261003_v2_full_normalized_MSVR310/official_metrics.json",
+          "json_key_or_rows": "/metrics"
+        },
+        {
+          "path": "C:/Users/gb/.codex_tmp/training_feature_scale_complete754/raw/trained-model/training_feature_scale_20261003_v2_full_normalized_MSVR310/official_metrics.json",
+          "json_key_or_rows": "/selected_epoch"
+        },
+        {
+          "path": "C:/Users/gb/.codex_tmp/training_feature_scale_complete754/raw/trained-model/training_feature_scale_20261003_v2_full_normalized_MSVR310/training_steps.jsonl",
+          "json_key_or_rows": "all rows"
+        },
+        {
+          "path": "C:/Users/gb/.codex_tmp/training_feature_scale_complete754/raw/trained-model/training_feature_scale_20261003_v2_full_normalized_MSVR310/training_batch_order.jsonl",
+          "json_key_or_rows": "all rows"
+        },
+        {
+          "path": "C:/Users/gb/.codex_tmp/training_feature_scale_complete754/raw/trained-model/training_feature_scale_20261003_v2_m0_normalized_MSVR310/training.json",
+          "json_key": "/m0"
+        },
+        {
+          "path": "C:/Users/gb/.codex_tmp/training_feature_scale_complete754/raw/logs/training_feature_scale_20261003_v2/initialization/MSVR310_normalized.json",
+          "json_key": "/binding"
+        }
+      ]
+    },
+    {
+      "dataset": "MSVR310",
+      "variant": "raw",
+      "seed": 42,
+      "formal_epochs": 50,
+      "selected_epoch": 23,
+      "selection_policy": "official_mAP_best_later_ties",
+      "metrics_percent": {
+        "mAP": 51.57761561006768,
+        "Rank-1": 70.55837512016296,
+        "Rank-5": 85.617595911026,
+        "Rank-10": 89.17089700698853
+      },
+      "formal_steps": 1000,
+      "nonzero_triplet_steps": 938,
+      "feature_norm_range": [
+        17.30005645751953,
+        20.57608413696289
+      ],
+      "strict_reload_minus_selected_metrics_pp": {
+        "mAP": 0,
+        "Rank-1": 0,
+        "Rank-5": 0,
+        "Rank-10": 0
+      },
+      "trainable_parameters": 86386176,
+      "trainable_parameter_tensors": 155,
+      "initial_model_state_sha256": "cac73b168710588b804c471e93952fb5f50fdf9b8ed2f9c8a8de35afd61065cc",
+      "checkpoint_sha256_remote_attestation": "49edd0a2ba448edb3bc3360e3f9b98f7e626eeb92b399430b67841fa8cc841b7",
+      "distance_sha256_remote_attestation": "8d85011b0bb64424661d467c51b1b57e386fe8a4cf5f9e4671c91fae8e76b3c6",
+      "binary_content_reread": false,
+      "evidence": [
+        {
+          "path": "C:/Users/gb/.codex_tmp/training_feature_scale_complete754/raw/trained-model/training_feature_scale_20261003_v2_full_raw_MSVR310/training.json",
+          "json_key_or_rows": "/history"
+        },
+        {
+          "path": "C:/Users/gb/.codex_tmp/training_feature_scale_complete754/raw/trained-model/training_feature_scale_20261003_v2_full_raw_MSVR310/training.json",
+          "json_key_or_rows": "/initializer"
+        },
+        {
+          "path": "C:/Users/gb/.codex_tmp/training_feature_scale_complete754/raw/trained-model/training_feature_scale_20261003_v2_full_raw_MSVR310/official_metrics.json",
+          "json_key_or_rows": "/metrics"
+        },
+        {
+          "path": "C:/Users/gb/.codex_tmp/training_feature_scale_complete754/raw/trained-model/training_feature_scale_20261003_v2_full_raw_MSVR310/official_metrics.json",
+          "json_key_or_rows": "/selected_epoch"
+        },
+        {
+          "path": "C:/Users/gb/.codex_tmp/training_feature_scale_complete754/raw/trained-model/training_feature_scale_20261003_v2_full_raw_MSVR310/training_steps.jsonl",
+          "json_key_or_rows": "all rows"
+        },
+        {
+          "path": "C:/Users/gb/.codex_tmp/training_feature_scale_complete754/raw/trained-model/training_feature_scale_20261003_v2_full_raw_MSVR310/training_batch_order.jsonl",
+          "json_key_or_rows": "all rows"
+        },
+        {
+          "path": "C:/Users/gb/.codex_tmp/training_feature_scale_complete754/raw/trained-model/training_feature_scale_20261003_v2_m0_raw_MSVR310/training.json",
+          "json_key": "/m0"
+        },
+        {
+          "path": "C:/Users/gb/.codex_tmp/training_feature_scale_complete754/raw/logs/training_feature_scale_20261003_v2/initialization/MSVR310_raw.json",
+          "json_key": "/binding"
+        }
+      ]
+    }
+  ],
+  "routing_action": {
+    "route": "PARTIAL_NARROW_CLAIM_AND_CLOSE_F2_AS_MIXED",
+    "action": "Record the revised mixed-result claim and all three gates. Stop promoting raw-for-both-paths as a general recipe replacement; do not route to confirmed-module ablations or final efficacy/SOTA claims.",
+    "optional_next_route": "Separately preregister the single hybrid diagnostic only if causal attribution is the remaining research question. It is not a rescue rerun of F2.",
+    "per_dataset": {
+      "RGBNT201": "FAIL: do not advance raw on this evidence",
+      "RGBNT100": "FAIL: do not advance raw on this evidence",
+      "MSVR310": "PASS_LOCAL_GATE_ONLY: provisional development lead"
+    },
+    "gate_semantics": "The plan judges three datasets separately. No all-three-must-pass veto or pooled/macro substitute was invented. Partial expresses one passing comparison and two failing comparisons.",
+    "execution_performed": false,
+    "parent_owned_followthrough": "Only the two requested claim outputs were written. Project findings, pipeline notes, wiki and private traces remain parent-owned and were not modified."
+  },
+  "effective_recipe": {
+    "seed": 42,
+    "epochs": 50,
+    "batch_size": 64,
+    "instances_per_identity": 8,
+    "workers": 4,
+    "optimizer": "AdamW",
+    "weight_decay": 0.0001,
+    "visual_base_lr": 0.000005,
+    "other_base_lr": 0.00035,
+    "warmup_epochs": 5,
+    "schedule": "sealed learning_rate_multiplier(epoch,max_epochs=50,warmup_epochs=5)",
+    "amp_initial_scale": 256,
+    "CE_label_smoothing": 0.1,
+    "triplet_margin": 0.3,
+    "loss": "CE + Triplet",
+    "embedding_width": 1536,
+    "inference": "global L2 plus squared Euclidean; no reranking/TTT",
+    "cfg_yaml_limitation": "Inherited W4: cfg_yaml retains overridden author optimizer/LR/schedule/loss-weight metadata. Reproduce effective source and logged LRs, not cfg_yaml alone."
+  },
+  "review_scope": {
+    "read_only_standard_library_checks": true,
+    "local_source_hashes_checked": 259,
+    "local_primary_text_hashes_and_sizes_checked": 109,
+    "catalog_hash_mismatches": 0,
+    "active_source_review": "Read active trainer, queue, verifier, report, analyzer, evaluator/scorers, loss, optimizer/scheduler and relevant model/data/initialization call paths. Legacy unused methods were not credited.",
+    "source_paths_read_in_full_or_relevant_active_sections": [
+      "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/tools/run_training_feature_scale.py",
+      "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/tools/queue_training_feature_scale.py",
+      "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/tools/check_training_feature_scale_pair.py",
+      "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/tools/report_training_feature_scale.py",
+      "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/tools/run_foundation_recipe.py",
+      "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/tools/queue_foundation_recipe.py",
+      "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/tools/analyze_correspondence_distances.py",
+      "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/tools/run_clean_clip_joint.py",
+      "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/tools/run_correspondence_roles.py",
+      "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/tools/run_official_three_dataset_roles.py",
+      "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/tools/official_three_dataset_data.py",
+      "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/tools/run_signal_preserving_v5.py",
+      "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/tools/train_msvr310_signal_oof.py",
+      "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/tools/train_rgbnt100_signal_oof.py",
+      "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/modeling/trifusion/criterion.py",
+      "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/modeling/trifusion/correspondence_roles.py",
+      "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/modeling/trifusion/aligned_data.py",
+      "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/tools/run_visual_update_control.py",
+      "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/comparators/Signal-cd1b0a6/utils/metrics.py",
+      "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/comparators/Signal-cd1b0a6/modeling/make_model.py"
+    ],
+    "primary_review": "Read all six full training histories and strict receipts; parsed all 20416 step rows and all 20416 corresponding batch rows, compared paired file hashes; read six M0 receipts, six initialization witnesses, three initial-forward witnesses, terminal campaign/manifest/intake, all three paired diagnoses and all 132 identity-change rows.",
+    "formal_epochs": 300,
+    "formal_steps": 20416,
+    "step_batch_keys_aligned": true,
+    "loss_and_norm_values_finite": true,
+    "paired_batch_bytes_equal": true,
+    "selected_epochs_recomputed": true,
+    "strict_receipt_minus_selected_metric_max_abs_pp": 0,
+    "official_gates_recomputed": true,
+    "identity_weighted_delta_arithmetic_checked": true,
+    "protocol_counts_read": {
+      "RGBNT201": {
+        "train": 3951,
+        "query": 836,
+        "gallery": 836
+      },
+      "RGBNT100": {
+        "train": 8675,
+        "query": 1715,
+        "gallery": 8575
+      },
+      "MSVR310": {
+        "train": 1032,
+        "query": 591,
+        "gallery": 1055,
+        "gallery_only_identities": 103
+      }
+    },
+    "train_eval_identity_overlap": 0,
+    "models_gpu_ssh_scorers_reports_downloads_or_new_experiments_executed": false,
+    "binary_or_image_content_reread": false,
+    "bootstrap_regenerated": false,
+    "optimizer_state_counter_independently_verified": false,
+    "tooling_notes": [
+      "Ambient python launcher returned 'No pyvenv.cfg file' before read-script execution; review checks used PowerShell and the already installed direct uv-managed Python interpreter.",
+      "First oversized output-write command was rejected by Windows process creation with os error 206 before launch; no output was written by that attempt."
+    ],
+    "only_written_paths": [
+      "C:/Users/gb/.codex_tmp/training_feature_scale_complete754/reviewer_claims754/CLAIMS_FROM_RESULTS.md",
+      "C:/Users/gb/.codex_tmp/training_feature_scale_complete754/reviewer_claims754/CLAIMS_FROM_RESULTS.json"
+    ]
+  },
+  "metric_precision_note": "Author CMC uses float32; independent scorer CMC uses query counts. Original values are preserved and differ by less than the existing 1e-5 pp parity tolerance. Gates use full-precision original official receipts and yield the same decisions.",
+  "evidence": {
+    "registered_claim_and_gate": [
+      {
+        "path": "C:/Users/gb/.trifusion_github_publish_22c3bee/refine-logs/training_feature_scale_v1/EXPERIMENT_PLAN.md",
+        "line": 7,
+        "detail": "BN/CE and Triplet inputs change together."
+      },
+      {
+        "path": "C:/Users/gb/.trifusion_github_publish_22c3bee/refine-logs/training_feature_scale_v1/EXPERIMENT_PLAN.md",
+        "line": 21,
+        "detail": "Per-dataset gate and no margin/multiplier rescue."
+      },
+      {
+        "path": "C:/Users/gb/.trifusion_github_publish_22c3bee/refine-logs/training_feature_scale_v1/EXPERIMENT_PLAN.md",
+        "line": 23,
+        "detail": "Consumed official benchmark, single seed, bootstrap limitation."
+      }
+    ],
+    "active_training_boundary": [
+      {
+        "path": "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/tools/run_training_feature_scale.py",
+        "line": 30,
+        "detail": "Active feature boundary."
+      },
+      {
+        "path": "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/tools/run_foundation_recipe.py",
+        "line": 148,
+        "detail": "Actual AdamW groups."
+      },
+      {
+        "path": "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/tools/run_foundation_recipe.py",
+        "line": 160,
+        "detail": "Actual loss."
+      },
+      {
+        "path": "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/modeling/trifusion/criterion.py",
+        "line": 17,
+        "detail": "Euclidean batch-hard Triplet."
+      },
+      {
+        "path": "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/tools/run_signal_preserving_v5.py",
+        "line": 1621,
+        "detail": "Actual LR schedule."
+      }
+    ],
+    "initialization_budget_selection_reload": [
+      {
+        "path": "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/tools/run_clean_clip_joint.py",
+        "line": 37,
+        "detail": "Fresh public initialization."
+      },
+      {
+        "path": "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/tools/queue_training_feature_scale.py",
+        "line": 123,
+        "detail": "Fixed commands."
+      },
+      {
+        "path": "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/tools/queue_training_feature_scale.py",
+        "line": 183,
+        "detail": "All M0 before full and once-only report."
+      },
+      {
+        "path": "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/tools/run_foundation_recipe.py",
+        "line": 189,
+        "detail": "Fresh full training."
+      },
+      {
+        "path": "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/tools/run_foundation_recipe.py",
+        "line": 248,
+        "detail": "Official mAP best, later ties."
+      },
+      {
+        "path": "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/tools/run_foundation_recipe.py",
+        "line": 287,
+        "detail": "Strict reload and <1e-5 pp gate."
+      },
+      {
+        "path": "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/tools/queue_foundation_recipe.py",
+        "line": 70,
+        "detail": "M0 verifier."
+      },
+      {
+        "path": "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/tools/queue_foundation_recipe.py",
+        "line": 84,
+        "detail": "Full verifier."
+      },
+      {
+        "path": "C:/Users/gb/.codex_tmp/training_feature_scale_complete754/raw/logs/training_feature_scale_20261003_v2/campaign.json",
+        "json_key": "/jobs"
+      },
+      {
+        "path": "C:/Users/gb/.codex_tmp/training_feature_scale_complete754/raw/logs/training_feature_scale_20261003_v2/campaign.json",
+        "json_key": "/report_invocations"
+      },
+      {
+        "path": "C:/Users/gb/.codex_tmp/training_feature_scale_complete754/raw/logs/training_feature_scale_20261003_v2/campaign.json",
+        "json_key": "/report_exit_code"
+      },
+      {
+        "path": "C:/Users/gb/.codex_tmp/training_feature_scale_complete754/raw/logs/training_feature_scale_20261003_v2/manifest.json",
+        "json_key": "/initialization_sha256"
+      }
+    ],
+    "real_gt_full_gallery_and_diagnostics": [
+      {
+        "path": "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/tools/run_correspondence_roles.py",
+        "line": 79,
+        "detail": "Actual complete-gallery evaluator and real protocol GT."
+      },
+      {
+        "path": "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/tools/run_official_three_dataset_roles.py",
+        "line": 230,
+        "detail": "L2 plus squared Euclidean distance."
+      },
+      {
+        "path": "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/tools/train_msvr310_signal_oof.py",
+        "line": 223,
+        "detail": "Scene filter/AP/CMC."
+      },
+      {
+        "path": "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/tools/train_rgbnt100_signal_oof.py",
+        "line": 253,
+        "detail": "Camera filter/AP/CMC."
+      },
+      {
+        "path": "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/comparators/Signal-cd1b0a6/utils/metrics.py",
+        "line": 68,
+        "detail": "Author scene filter; AP denominator."
+      },
+      {
+        "path": "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/comparators/Signal-cd1b0a6/utils/metrics.py",
+        "line": 137,
+        "detail": "Author camera filter; AP denominator."
+      },
+      {
+        "path": "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/tools/report_training_feature_scale.py",
+        "line": 35,
+        "detail": "Original step/batch checking."
+      },
+      {
+        "path": "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/tools/report_training_feature_scale.py",
+        "line": 50,
+        "detail": "Analyzer and gate."
+      },
+      {
+        "path": "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/tools/analyze_correspondence_distances.py",
+        "line": 28,
+        "detail": "Bound paired arrays."
+      },
+      {
+        "path": "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/tools/analyze_correspondence_distances.py",
+        "line": 57,
+        "detail": "Identity-macro bootstrap."
+      }
+    ],
+    "integrity_and_precheck": [
+      {
+        "path": "C:/Users/gb/.codex_tmp/training_feature_scale_complete754/reviewer_audit754/EXPERIMENT_AUDIT.json",
+        "json_key": "/integrity_status"
+      },
+      {
+        "path": "C:/Users/gb/.codex_tmp/training_feature_scale_complete754/reviewer_audit754/EXPERIMENT_AUDIT.json",
+        "json_key": "/nonblocking_findings"
+      },
+      {
+        "path": "C:/Users/gb/.codex_tmp/training_feature_scale_complete754/reviewer_audit754/EXPERIMENT_AUDIT.json",
+        "json_key": "/external_binary_attestations"
+      },
+      {
+        "path": "C:/Users/gb/.codex_tmp/training_feature_scale_complete754/reviewer_claims754/EVIDENCE_PRECHECK.json",
+        "json_key": "/status"
+      },
+      {
+        "path": "C:/Users/gb/.codex_tmp/training_feature_scale_complete754/reviewer_claims754/EVIDENCE_PRECHECK.json",
+        "json_key": "/boundary"
+      },
+      {
+        "path": "C:/Users/gb/.codex_tmp/training_feature_scale_complete754/INTAKE.json",
+        "json_key": "/boundary"
+      }
+    ]
+  },
+  "cited_input_sha256": {
+    "C:/Users/gb/.codex_tmp/training_feature_scale_complete754/AUDIT_INPUT_PATHS.json": "144cdfb2d9883aa4cdf37043b489359ee5ae67b387c85470f92f4159b773563a",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_complete754/CLAIM_REQUEST.txt": "a840ea6f725836be73a1266d03ef1745f6dc829966cc11b4bf7a0a4b63e76fcd",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_complete754/INTAKE.json": "bd895673325553e71f41f25c54f6c53f0f87b7b47ec6e2876710a27406e1c137",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_complete754/raw/logs/training_feature_scale_20261003_v2/campaign.json": "90306d936d93a6d5221bace09476e69837cd180f77ed8fb0d7b10b19e72c9197",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_complete754/raw/logs/training_feature_scale_20261003_v2/initialization/MSVR310_normalized.json": "a7df1efd1575002fddeaf767e7ac0c56e7b3532873a7eed9f75e1c09c23bc78e",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_complete754/raw/logs/training_feature_scale_20261003_v2/initialization/MSVR310_raw.json": "75e7328efc529e39c9fd3bcc9ce689af81ca5c20afc3ebcda3720db8950262aa",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_complete754/raw/logs/training_feature_scale_20261003_v2/initialization/RGBNT100_normalized.json": "f5af32ae42af98353623173121826dd613341d7976523c7e69ca974402ecf37b",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_complete754/raw/logs/training_feature_scale_20261003_v2/initialization/RGBNT100_raw.json": "e824ca9a8c3bed82d00bacf03d681b51b9e7391320c952fb969d33667325f2c8",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_complete754/raw/logs/training_feature_scale_20261003_v2/initialization/RGBNT201_normalized.json": "4a52d5c98005ec3d6273b51462c90ccce5f738833c0bf51b1a02607f0779a819",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_complete754/raw/logs/training_feature_scale_20261003_v2/initialization/RGBNT201_raw.json": "76a7f92b5701a149ba0cd0dda0d8c295f233d4e9a5c036de7157ecc5efef6eba",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_complete754/raw/logs/training_feature_scale_20261003_v2/manifest.json": "e7e6df04d8632147d1fb16398566474665e0b094d6431ea36d96a34621f17d18",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_complete754/raw/results/training_feature_scale_complete_20261003/SUMMARY.json": "202addf168eb43b6d1942e29a646a2b14b418ab54dba5c3f97405709ac544b17",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_complete754/raw/trained-model/training_feature_scale_20261003_v2_full_normalized_MSVR310/official_metrics.json": "1ea3b538955da8278b5fdf36420bb8fd357a6e4ae2e91748a33b0548509e87f7",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_complete754/raw/trained-model/training_feature_scale_20261003_v2_full_normalized_MSVR310/training.json": "56e2b2e54acdaddceb8069cb52457ed007e8d8ef18bffc96ba04eb5bcd83dfcf",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_complete754/raw/trained-model/training_feature_scale_20261003_v2_full_normalized_RGBNT100/official_metrics.json": "1195a3c89de3c86391f31620a4f1506eb195a82a7847a96647bb30dfb9249673",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_complete754/raw/trained-model/training_feature_scale_20261003_v2_full_normalized_RGBNT100/training.json": "f3988f92a36bfc951d2c5e9a37692a3c89d9d0d845f898944809a2155f393f18",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_complete754/raw/trained-model/training_feature_scale_20261003_v2_full_normalized_RGBNT201/official_metrics.json": "39c89408ac4ccc8ab729ffc252ef4a6f61a8b9546b2a5d34b85a0596caf7cc47",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_complete754/raw/trained-model/training_feature_scale_20261003_v2_full_normalized_RGBNT201/training.json": "03dfdb7428cde9723ef827d88ed5df931de1da51d6c3dcd51765f14edd022323",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_complete754/raw/trained-model/training_feature_scale_20261003_v2_full_raw_MSVR310/official_metrics.json": "118799da68c7c939f54d84b1bc8b541edc453a329348063ecf35f45e2276f0cb",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_complete754/raw/trained-model/training_feature_scale_20261003_v2_full_raw_MSVR310/training.json": "6b7ebe8b4a3d38c2820405ae057a65973bdab4cca8c5a97ec580de2e4250835d",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_complete754/raw/trained-model/training_feature_scale_20261003_v2_full_raw_RGBNT100/official_metrics.json": "08e42d31c2fd322c04a1e4ce0e095618969a6c855742ea3a3bec35489a71adbb",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_complete754/raw/trained-model/training_feature_scale_20261003_v2_full_raw_RGBNT100/training.json": "2f6507087db4f7aa80f1b54175036978b32ca1219c6693d291fa6e4a6deb9520",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_complete754/raw/trained-model/training_feature_scale_20261003_v2_full_raw_RGBNT201/official_metrics.json": "59c871bcbf36a3e688df9662d58fadf1455511e4f884acd92c5e102cc81312ce",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_complete754/raw/trained-model/training_feature_scale_20261003_v2_full_raw_RGBNT201/training.json": "ffa12df9943227789cbe14fb31911335955076ce02b7e297f9a2bdbedc719750",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_complete754/raw/trained-model/training_feature_scale_20261003_v2_m0_normalized_MSVR310/training.json": "746e60cf32810484a799d0c54c73ace38cec3b8f4129e7ac32a6cca0346db4ec",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_complete754/raw/trained-model/training_feature_scale_20261003_v2_m0_normalized_RGBNT100/training.json": "f2e4f36bd7a981bf5871dc044a415aef1deb550b44e229d8a202253c061798a4",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_complete754/raw/trained-model/training_feature_scale_20261003_v2_m0_normalized_RGBNT201/training.json": "43041296d9678b76d9172ed0feb1940c77475242ca387bda0f474347a56a5206",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_complete754/raw/trained-model/training_feature_scale_20261003_v2_m0_raw_MSVR310/training.json": "e90a86e8feb47d5f1f21d648e4bb07811a78039de7b0c25f433c7f15bb97db8e",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_complete754/raw/trained-model/training_feature_scale_20261003_v2_m0_raw_RGBNT100/training.json": "7cf7aa97c1f1bcd9d3a0903487dfd4e042ce8a0e6c6b975ae553451c5fdd6b2a",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_complete754/raw/trained-model/training_feature_scale_20261003_v2_m0_raw_RGBNT201/training.json": "c8269a9ef246121742f4ecd2dbcac65ab5b864b6c475332242efdbb5229b5b36",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_complete754/reviewer_audit754/EXPERIMENT_AUDIT.json": "2de9746807d60e7c8bfdab1be1179f7d974dd4ee4c7f8b0c86919467115a4bce",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_complete754/reviewer_audit754/EXPERIMENT_AUDIT.md": "fac5314cd55ca330b5b7bf75cb6eee6b43559dc677fa62d333bb31971f0d9506",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_complete754/reviewer_claims754/EVIDENCE_PRECHECK.json": "94046b7fd5ad448393d72e5a0232b18d9af39782d4b5b183a5bc3e410d85c408",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/comparators/Signal-cd1b0a6/modeling/make_model.py": "1a88a91d2e5055f5d338996231b16c0e13b2fa7013c74131ca663f16c2655963",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/comparators/Signal-cd1b0a6/utils/metrics.py": "91604acb7d978462c16904910a645d7d1697c15bf150da529099004c8b5eecb2",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/modeling/trifusion/aligned_data.py": "3ea362d17660483b554cb599442b6377ace020fa114969b9bdd58906fbceedd5",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/modeling/trifusion/correspondence_roles.py": "e2a51154b5b327341f35e453dd32a821b091a49a669b49a7c70e79e6e2f2591b",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/modeling/trifusion/criterion.py": "0b2a6370f434828d885945d1a46dd56f6668133ceed45ef359fe71eeca63740a",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/tools/analyze_correspondence_distances.py": "833ebeb47cb5840422710fc00df1a974338cb04078249720d867f18b945f997a",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/tools/check_training_feature_scale_pair.py": "f1d57db3cd377beff1a6279f2e866c3a0201acb7145e8175cc23400870ee1599",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/tools/official_three_dataset_data.py": "c3180a88d12440709319d2025928fc699ff3b7c020b11697d468453fbfc68062",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/tools/queue_foundation_recipe.py": "3afe051358aa25d99cb3900b4c6fdb13d5d79d9dcee76d01018fccd27e27d302",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/tools/queue_training_feature_scale.py": "43de0eae7b9660de12d8729fdee06efa82f6adfcaf74599c6fda5faf00e8ae16",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/tools/report_training_feature_scale.py": "977281df7c340d5b9b9d2b6aa36d33b018810bb7cdf935c2186a68a1215d413c",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/tools/run_clean_clip_joint.py": "178e9793f2cf8261eb44a278e053d5caabd4f2f37dba48a65952b2547338a746",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/tools/run_correspondence_roles.py": "e50865fb923297cd61cf38b33ec2bc95154f8c503b5dfe5de9823cad3f03d7ef",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/tools/run_foundation_recipe.py": "c18042509dc33ff66eee1a6b04a723ad55685bd5d9daf218c3779703ffe20758",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/tools/run_official_three_dataset_roles.py": "f30bb00a0b71429e9d11dd196cd1d543202a133c663ad66e175d2f82e28d448d",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/tools/run_signal_preserving_v5.py": "e162184f68778b4991db0f97f26c5fda273b2ad2f7c8db2bbb2d53775eb717e5",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/tools/run_training_feature_scale.py": "473853f58e4ed70bf123509afe2861fa8a9988631c04f0ce04f3260c55fd9081",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/tools/run_visual_update_control.py": "537cd5a4ab4e9b3501a7279e3f4857536bdda761f597d8b5fa7bfdbdbf82cbdd",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/tools/train_msvr310_signal_oof.py": "c25579d931df34481fef321558f0b9a1f9179d72a25d6047dbbfd3682d4ae60f",
+    "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/tools/train_rgbnt100_signal_oof.py": "4462b73139e034d450d955c5b4a994aaa967548e9cc503d97bb753a14ea03b22",
+    "C:/Users/gb/.trifusion_github_publish_22c3bee/refine-logs/training_feature_scale_v1/EXPERIMENT_PLAN.md": "04e3f88fe9e1e11351a34e9e6aab375ae0e3946653f3abba1e9f2c33903900f0"
+  }
+}
+
