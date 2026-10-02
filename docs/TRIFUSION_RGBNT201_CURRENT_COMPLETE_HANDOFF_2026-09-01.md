@@ -14717,3 +14717,27 @@ experiment-bridge Phase2.5要求部署前fresh secondary code review。实际gpt
 审查报告里的“patch/review undeployed”对应其读取的23:19回执，随后§741的864cd581代码修正已同步2026；132份cumulative owned文本和五份交接副本逐字节一致。该后续事实在route说明中另列，不回改审查原文。此次继续部署完成的审查文本并验证全部owned闭包，模型、原图、NPY不迁移；没有新增25训练。
 
 最后实际GPU回执仍为23:19四卡由DeMo-DualAxis占用。真正启动前需再次核warm环境/来源/卡和磁盘；等待既有任务释放，不抢占。F2三组初始forward、六M0、六fresh full50和唯一CPU报告仍全部NOT_RUN；fixed50/seed42/训练尺度对照与原严格门不改。GoalACTIVE_UNMET，现有F1包收益不计新模块/SOTA，N1/EV1失败仍封存。
+
+
+## 41.743 — 固定ProxyTTT源码边界补齐；F2继续等待2026资源（2026-10-02）
+
+本节没有新模型成绩。F2259项实际来源映射和已完成的SOURCE_ONLY审查保持通过，
+尚未执行模型初始化前向、六端M0、正式50轮或报告。仅使用2026GPU0–3，最多四端；
+不新增2025训练，不改变已封存损失、margin、seed42、50轮、GT图库及选点合同。
+
+23:43一次容量预约观察已实际结束：四卡仍占用。23:49补充读取已知占用队列后，
+GPU3暂空闲，但另三卡和该队列仍运行，故未抢占或将短暂空闲当成整队结束。
+23:50队列进度读取显示最慢端32/50轮，最近一轮99.624秒；按剩余18轮估算，
+约10月3日00:20:40附近结束训练，另需重载/评价时间。这是容量ETA，不是终态证据。
+占用项目的原始日志和指标只保留在私有容量记录，不作为TriFusion科研结果。
+任务范围状态见logs/training_feature_scale_wait743_20261002/STATUS.json。
+
+等待期间完成ProxyTTT作者固定提交92fb0fa33d74813566e06820e56e8d8f48ca1205的17份
+主源码读取及Git blob/SHA核对。其val_loader由query+gallery构成，训练入口在
+评价前对该loader执行TTT反传和optimizer.step；普通测试入口eval/no_grad且模型
+默认TTT=False，不足以证明所加载checkpoint没有接受过目标数据更新。
+因此保留论文w/oTTT和完整PESA两行资源区分。源码过滤谓词与本项目相容，但
+历史作者图像清单、文件顺序、checkpoint仍未取得，没有本地复现或同清单认证。
+执行者只读说明与catalog位于refine-logs/foundation_recipe_v1/proxyttt_source743/；
+此前403、过滤checkout和raw超时错误保持原状，不用后来成功覆盖失败记录。
+本次复核不作为独立完整性审查，也不据此改写F2合同或宣称达到SOTA。

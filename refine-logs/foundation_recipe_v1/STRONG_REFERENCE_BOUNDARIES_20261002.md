@@ -14,3 +14,16 @@ UGG-ReID原文表1/2报告RGBNT20181.2/86.8/92.0/94.7、RGBNT10088.0/98.1、MSVR
 ProxyTTT作者代码的固定提交接收请求在GitHub API返回403 rate limit exceeded，发生于取得commit之前；没有成功接收源码、运行代码或完成推理源码审计。RoDI正式CVF正文本轮未取得，继续保留既有文档原表核读的范围，不称本轮重新复核。
 
 这些参照不参与运行中F1的调参或选方法。F1固定六端/source249不变；正式报告仍需全部完成。单seed、官方集已消费、不同训练预算和推理资源边界继续保留。
+
+
+## §743：固定源码读取完成后的边界补充
+
+此前API403、过滤checkout失败、两份raw后超时均作为历史失败保留。
+本次固定提交92fb0fa33d74813566e06820e56e8d8f48ca1205的17份源码均核对Git blob成功，
+完成了训练/测试入口、对应model分支、数据构造和计分过滤的只读检查。
+训练入口在正式评价前，对query+gallery组成的val_loader执行TTT反传和optimizer.step；
+普通do_test虽是eval/no_grad，并不证明其加载权重从未接受目标数据更新。
+w/oTTT与完整PESA应继续分列；本地没有作者历史checkpoint、数据清单或复现成绩。
+源码说明、逐文件SHA/URL及未解决边界见[FACTUAL_NOTE](proxyttt_source743/FACTUAL_NOTE.md)
+及[CATALOG](proxyttt_source743/CATALOG.json)。这是执行者源码复核，不冒充独立完整性审查。
+F2合同没有因此改变。
