@@ -14909,3 +14909,52 @@ F2仅隔离同一固定配方下raw/normalized同时进入BN/CE和margin0.3 Trip
 边界；部署两端均L2归一化1536维。六项完整50轮、全状态strict重载、原完整图库
 与合法过滤、实际训练顺序配对及唯一最终报告仍待完成；初始化/M0通过不能替代
 任何数据集的指标或SOTA目标，当前Goal继续ACTIVE_UNMET。
+
+
+## 41.749 F2 首个完整50轮/strict端已接收，原队列继续运行（2026-10-03）
+
+计划中的单次只读观察于02:49:32执行；local timer PID40336正常返回0，未触发
+训练/评价/重启。原控制器PID2185141仍LIVE/full/RUNNING，GPU0空闲来自已完成
+子任务，不等于队列停止。RGBNT201-normalized训练PID2215837实际02:48:30退出0；
+strict全状态重载与完整图库评价PID2266128于02:49:08退出0，子campaign VERIFIED_COMPLETE。
+该时点父队列尚标RUNNING，属于原240秒接收周期，不应手动补开下一任务。
+
+CPU接收原始training.json、2649条training_steps与同数batch_order、official_metrics、
+子campaign及完整train/evaluate日志共7份文本。已核对50轮连续记录、selected epoch26、
+原1e-5个百分点重载容差、同一权重四项、initializer、step/order索引与有限值。
+另在远端只读重新计算实际best_map.pth、official_distances.pt、best_epoch_distances.pt
+及official_metrics.json的SHA，均与strict回执一致；未把权重/距离数组下载本地。
+best_map实存346,781,649字节，checkpoint SHA
+`06be6f6680c8563476f5d6049811521ec646d5caa1adcf638260c3d74b653dcc`。
+
+| Dataset/variant | best epoch | mAP | R1 | R5 | R10 |
+|---|---:|---:|---:|---:|---:|
+| RGBNT201 / normalized | 26 | 62.5806 | 62.4402 | 75.8373 | 83.0144 |
+
+四项与已封存F1-current RGBNT201对应回执完全一致。这是相同seed/current配方
+端的fresh执行结果，不能当独立训练种子稳定性或raw配对收益。raw尚未完成，
+因此本节没有特征尺度有效性、角色贡献或SOTA结论；F2不继承F1-current权重。
+
+还已逐字节接收本次启动的259份真实封存源码，逐项SHA与LAUNCH相同，供最终
+fresh审计直接读取，避免本地无关dirty源码混入依据。这是执行者文本收集，
+不是独立完整性判定；审计仍需最终全部原始结果。02:52:02磁盘余
+19,858,849,792字节，没有删除。
+
+后续实际父队列快照2026-10-03T02:54:44.012352+08:00：完整端接收1/6，
+运行列表(dataset,variant,physicalGPU,workerPID)为`[('RGBNT100', 'normalized', 1, 2215835), ('MSVR310', 'normalized', 0, 2272765)]`；
+最终报告调用仍为0。保持只用2026 GPU0—3/max4；GPU2/3仍按封存原队列与
+GPU3全部压力评价释放规则执行，无25新训练，无抢占。其余端均按原50轮合同继续，
+不根据首个分数改变配置/筛seed/修改阶段门。
+
+02:55:46只读整轮墙钟估计：normalized-RGBNT100已19轮，117.224106秒/完整轮，
+预计50轮训练结束03:54:34；normalized-MSVR310已6轮，26.793710秒/完整轮，
+预计03:15:13。两者均排除最后strict评价与队列接收，早期估计可随实际耗时变化。
+下一次按MSVR预计结束前几分钟安排约03:12；原队列自行每240秒接收释放卡与
+派发待运行端，不需要在两次人工观察之间重复launch。该时点余盘
+19,508,158,464字节。完整时间记录在WALL_TIMING.json。
+
+原文本与两个快照在`logs/training_feature_scale_first_full749_20261003/`；
+259份审计工作副本在本地私有source_intake目录，公共SOURCE_INTAKE记录完整SHA。
+下一步继续原控制器，收齐6端及原始配对训练顺序，再接收唯一最终CPU报告；
+父队列状态COMPLETE本身仍需report_exit_code=0及实际报告存在证明。
+Goal继续ACTIVE_UNMET，原三数据集强基线/SOTA目标未达成。
