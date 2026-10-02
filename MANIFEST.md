@@ -1702,3 +1702,5 @@
 
 | 2026-10-02T19:17:49+08:00 | /experiment-bridge | refine-logs/foundation_recipe_v1/REVIEW_TRACE_20261002.md | review | gpt-6-astra/max PASS; same-family/provisional; real M0 pending |
 | 2026-10-02T19:17:49+08:00 | /experiment-bridge | refine-logs/foundation_recipe_v1/EXPERIMENT_CODE_REVIEW.md | review | gpt-6-astra/max PASS; same-family/provisional; real M0 pending |
+
+- 2026-10-02T19:31:00.200368+08:00: §41.736 F1 actual all6 M0/48steps PASS, strict probe maxdiff0; first4 full50 launched,2queued on2025. No formal scores or source249 changes; snapshot/tracker/doc updated.

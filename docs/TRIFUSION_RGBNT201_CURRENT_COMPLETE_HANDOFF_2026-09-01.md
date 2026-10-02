@@ -14582,3 +14582,21 @@ RGBNT201两端M0峰值分配分别15,074,276,352和15,493,688,832B；全部四�
 部署前fresh gpt-6-astra/max代码复核已保存于`EXPERIMENT_CODE_REVIEW.md`及完整trace；独立上下文、同模型家族/provisional，不冒称跨家族验证。新控制器已实际启动一次，PID `233821`，campaign `logs/foundation_recipe_20261002_v1`，报告出口 `results/foundation_recipe_complete_20261002`；本段记录的是初始化/M0流程启动证据，尚无F1正式成绩。最多四卡并行，内部240秒观察，失败不重新启动或更换种子，预计完整六端约2–4小时，以实际吞吐更新。
 
 未启动后继双来源独立读取、部分对应、SNR补偿、N2/N3、文本或额外外部资源。基础配方不计作CNN/Transformer/Mamba贡献，阶段+0.5 mAP/R1非负亦非显著性或SOTA门；原三数据集完整Goal仍ACTIVE_UNMET。下一步使用同配方基础与历史共享适配对照来确定后续单一机制，不为十点重新挑弱分母。
+
+
+## §41.736：F1六项真实M0全部通过，2025四卡开始full50（2026-10-02T19:28:21.873971+08:00）
+
+实际控制器PID233821已在19:28:05按六端依赖门启动首批正式训练；author三数据集与current201运行，current100/MSVR排队。此前六个fresh公开CLIP初始化已核对公共视觉、camera及当前头初值。六M0各实际8批，共48次更新；所有实际可训练张量均有非零有限梯度、视觉/camera更新、冻结参数不变，全state严格加载与同批前向最大差均0。没有使用M0权重初始化正式端，没有新正式mAP/CMC。
+
+| Dataset | Recipe | Real B | Nonzero gradient tensors | M0 peak allocated GiB | Strict reload max difference |
+|---|---|---:|---:|---:|---:|
+| RGBNT201 | author | 64 | 155 | 10.8998 | 0 |
+| RGBNT100 | author | 128 | 159 | 20.6579 | 0 |
+| MSVR310 | author | 64 | 159 | 10.9229 | 0 |
+| RGBNT201 | current | 64 | 155 | 10.9018 | 0 |
+| RGBNT100 | current | 64 | 155 | 10.8983 | 0 |
+| MSVR310 | current | 64 | 155 | 10.8995 | 0 |
+
+此表峰值包含M0及其fresh重载探针，不能当正式训练峰值或推理显存；RGBNT100作者B128确实执行并通过，没有减batch。实际派生快照见`logs/foundation_m0_736_20261002/M0_AND_LAUNCH.json`。原249绑定源码/计划不变，只有未绑定的tracker与交接状态更新。一次CPU终态报告仍未调用，需等六端full50与原重载/完整图库门全部通过。
+
+§735同步时旧2026服务器GitHub fetch出现真实GnuTLS -110，保留失败；改用已发布提交的Git bundle经SSH核对后fast-forward。该根已有sparse-checkout，refine-logs未自动检出，按已发布字节补齐缺失文本，不改变训练源码。§735五份主文档及12份本次拥有文本已验证一致。此为发布传输修复，不计科学增益或改环境。当前正式训练在2025端继续，最多四卡、内部240秒，下一次约19:45读取吞吐/完整epoch，不抢占、不重启、不以中途分数改配方。三数据集Goal保持ACTIVE_UNMET。
