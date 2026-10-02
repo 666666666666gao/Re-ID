@@ -24,9 +24,13 @@ SOURCES = ('tools/run_training_feature_scale.py', 'tools/queue_training_feature_
 def source_map():
     old = json.loads(PREDECESSOR.read_text())['source_sha256']
     assert len(old) == 249
+    sealed = json.loads(base.PREDECESSOR.read_text())['source_sha256']
+    protocols = {f'logs/official_three_dataset_protocols_20260923/{name}.json' for name in DATASETS}
+    result = {}
     for name, digest in old.items():
-        assert base.sha(ROOT/name) == digest, name
-    result = dict(old)
+        actual = base.sha(ROOT/name)
+        assert actual == (sealed[name] if name in protocols else digest), name
+        result[name] = actual
     for dataset in DATASETS:
         name = f'logs/training_feature_scale_protocols_20261002/{dataset}.json'
         before = json.loads((base.PROTOCOLS/f'{dataset}.json').read_text())

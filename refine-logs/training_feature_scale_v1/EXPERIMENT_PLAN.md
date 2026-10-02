@@ -31,3 +31,9 @@ seed42/full50；三集B64/K8、workers4、当前共享几何增强、AdamW weigh
 - tools/report_training_feature_scale.py：真实GT/完整图库配对及全部batch顺序审计。
 
 实现/source review/M0/registration/launch需记录真实状态；本文件不是已经执行的证据。
+
+## 2026目标目录校正（§41.741）
+
+实际只读检查发现旧F1证据目录未纳入Git稀疏检出；已恢复并持久加入检出范围，旧manifest字节保持不变。F1/249三份canonical协议使用25的数据根；26继续保留原SEALED_SOURCE243的三份协议。F2只对这三个明确已知差异使用原243哈希，其余246份旧源码仍逐字节验证；新F2协议的metadata/行顺序与26canonical相同，canonical不覆盖。此项只是目标来源校正，不改变训练/math、数据划分或门槛。
+
+41,360条唯一引用图像路径存在，MSVR全部103个gallery-only身份保留；这是路径存在性检查，不是图像字节复核或模型执行。源码审查续接仍未形成完整结论；当前四卡另有DeMo-DualAxis任务，待审查完成、容量再次实查可用后才能初始化及M0，不抢占、不新增25训练。

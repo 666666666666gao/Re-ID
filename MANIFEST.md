@@ -1712,3 +1712,5 @@
 - 2026-10-02T22:43:50.106768+08:00: §41.739 F1 full6/300epochs/16692steps and once-onlyreport complete; actual fresh integrity WARN/claim judgment archived; current training scope exclusively2026 fourGPU; private traces excluded.
 
 - 2026-10-02T22:54:11.164429+08:00: §41.740 F2 feature-scale control prepared only; actual fresh review capacity failures retained, REVIEW_UNAVAILABLE; no deployment/M0/new GPU run; exclusively2026 scope.
+
+- 2026-10-02T23:24:29.701039+08:00: §41.741 actual26 sparse source failure restored; exact three243 canonical protocol exception, other246 sources unchanged; all41360 image paths present, fourcards occupied by other jobs, same source review incomplete. No model/M0/new training.

@@ -14691,3 +14691,18 @@ UGG固定eaf1e8e50d04f34ee3e471440f70d335cc67b2c1的20份完整作者文件已�
 experiment-bridge Phase2.5要求部署前fresh secondary code review。实际gpt-6-astra/max review740第一次和同agent续接均返回Selected model is at capacity；两份完整请求/错误响应私下保留，公开REVIEW_UNAVAILABLE。其说明为：“If reviewer delegation is unavailable, record REVIEW_UNAVAILABLE; local checklist work does not satisfy the independent review gate. Continue preparation that does not depend on that gate.” 因此没有降模型/降effort、没有执行者自授PASS，也没有部署或重启旧版本。可在同一审查任务可用后续接，取得实际结论并修复真实问题，再按计划执行。
 
 用户最新资源范围继续仅2026 GPU0–3/max4，新25训练不启动。最后容量实查仍为22:02:52，不把未查询的当前状态猜为空闲；真正启动前再次核查卡、磁盘、已核验的warm环境与全部依赖。§739两机同步仅代码/文本，不迁移模型/数据、不使用25GPU。后续状态以logs/training_feature_scale_preparation740_20261002和refine-logs/training_feature_scale_v1为准。GoalACTIVE_UNMET，N1/EV1失败封存，不做margin/seed/倍率搜索救援。
+
+
+## §41.741：26目标来源错误已定位并最小校正，稀疏文件恢复；F2仍无GPU执行（2026-10-02T23:24:29.701039+08:00）
+
+继续同一个F2源码审查任务，第三次实际返回Selected model is at capacity。原请求/错误保留，不换模型、降低effort或执行者授PASS；第四次同agent续接只审查已定位问题及最小修正，尚无完整结论。§740引号内的复合说明是工作流与本地模型政策的概括，不是Phase2.5原文逐字引用；实际约束依据experiment-bridge部署前secondary review及local-codex-policy“Continue only work that does not depend on that result.”。本节不是审批或性能结果。
+
+首次只读目标检查在读取logs/foundation_complete739_20261002/raw/logs/foundation_recipe_20261002_v1/manifest.json时报FileNotFoundError，发生于任何模型/GPU/optimizer/scorer执行前。23:10实查HEAD仍b81f311f，但manifest和旧seal/plan/review在index标为S（skip-worktree）；旧739的114份owned文本缺失。原因是这两个任务目录未列入原Git sparse checkout，先前739/740同步回执只能证明当时快照，不能推定后来文件一直存在。
+
+已用sparse-checkout add恢复已提交的两项F1目录，并持久加入三项F2目录；23:18核对739/740共128份unique owned文本与HEAD完全一致。未重建、改写旧manifest或canonical协议，未删除文件。第一版私有恢复helper的命令构造被纠正，原脚本和停止记录保留；最终恢复回执包含canonical前后相同的实际字节哈希。
+
+同时确认F1/249三份canonical协议绑定25的/data2/gb路径，26实际一直保留/data/gaob路径，其哈希与原SEALED_SOURCE243完全一致。故原F2 source_map直接要求所有249哈希相同，会在这三处停止。最小代码修正仅使用原243的三个明确canonical哈希，其他246份源码仍要求原249哈希，新manifest记录实际文件值。原249及243绑定不改写；新F2协议仍逐项比较除dataset_root之外全部metadata和行顺序，保持原GT/full-gallery/camera/time语义。训练特征尺度、头/loss/LR/BK、seed50轮和评价门未改变。
+
+23:19只读复核三集记录数为201 train3951/query836/gallery836、100 train8675/query1715/gallery8575、MSVR train1032/query591/gallery1055；合计41,360条唯一引用图像路径全部存在，train/query身份分离、MSVR完整103个gallery-only身份保留。此处只核路径存在与记录，不复核原图字节，也没有模型forward或指标评分。恢复后的246源码与三个原26协议有效，分析器SHA仍833ebeb47cb5840422710fc00df1a974338cb04078249720d867f18b945f997a。
+
+资源实查与归属检查发现四卡由/data/gaob/Re-ID/DeMo-DualAxis的既有训练占用，未中止或修改其进程。23:19磁盘free42,087,841,792字节；不沿用22:02空闲快照启动。当前授权始终ONLY2026 GPU0–3/max4，无新增25GPU训练。F2初始化、六M0、fresh六full50和唯一CPU报告全部未执行，待完整审查结论与实际空闲容量；不重跑封存F1/N1/EV1。证据目录logs/training_feature_scale_target741_20261002为task-scoped派生只读/恢复回执，私有完整记录保留。GoalACTIVE_UNMET。
