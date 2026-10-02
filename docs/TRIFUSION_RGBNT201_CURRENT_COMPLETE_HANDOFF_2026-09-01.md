@@ -2,7 +2,7 @@
 
 ## 0. 一页结论
 
-**本页更新至§41.754（2026-10-03）：EV1六端与F1基础配方六端已经完成并封存；F2训练特征尺度六端也全部完成50轮、严格重载及原唯一CPU报告。raw相对normalized的mAP变化依次为RGBNT201 −2.8927、RGBNT100 −2.3914、MSVR310 +1.2209；仅MSVR满足事前≥0.5mAP且R1不降的推进条件，不能称三集通用修复。完整结果、fresh审计与主张边界见§41.754。后续只使用2026 GPU0–3、最多四项单卡训练；2025不新增本项目训练。目标仍ACTIVE／UNMET。** 当前结论以本页和末尾终态为准，下文保留各历史阶段的原始记录。工程通过、单seed局部增量不代替三数据集强基线与SOTA要求。
+**本页更新至§41.755（2026-10-03）：F2六端已完成并封存，raw相对normalized仅MSVR满足事前推进条件，不能称三集通用修复。下一项F3只做一组成对的Triplet入口尺度诊断：BN/CE在两端均保持归一化，Triplet分别用归一化／raw特征，部署均L2。四个独立入口、固定计划和fresh源码审核已登记；尚未部署、初始化前向、M0或正式训练，不能把源码审核当运行通过。后续只使用2026 GPU0–3、最多四项单卡训练；2025不新增本项目训练。目标仍ACTIVE／UNMET。** 当前状态以末尾实际回执为准，历史记录不覆盖。六端均先M0、再fresh完整50轮，不扫系数、margin或seed。
 
 **现行合同：** 每个正式候选完整50轮，使用作者完整query/gallery及camera／MSVR时间段过滤，以官方fused mAP最高的同一checkpoint报告全部指标，随后严格重载。RGBNT201报告mAP／R1／R5／R10，RGBNT100及MSVR310报告mAP／R1；不跨epoch或seed拼列。官方集已参与逐轮选点和历史方法选择，属于已消费基准上的探索性结果。
 
@@ -15170,3 +15170,20 @@ CLOSED_EV1_M0_RETIREMENT.json列全部精确路径、SHA、逐项退役时间及
 完整资料在`logs/training_feature_scale_complete754_20261003/`；没有手动评价/报告重试、
 换seed、改margin、停止最后一端或修改已封存失败。下一项科学干预须另登记并在
 仅2026/max4下实施。本次闭合的是一项训练边界对照，Goal保持ACTIVE_UNMET。
+
+
+## 41.755 F3固定计划与fresh源码审核：仅改变Triplet入口，运行尚未开始（2026-10-03T07:34:46.802416+08:00）
+
+本节只登记源代码与计划。上一节F2原始结果、259个实际依赖源码、严格验收、唯一CPU报告与fresh审计/主张均保留；不改写F2 seal，不复用其旧结果代替新的配对控制。
+
+- 新入口：`tools/run_metric_feature_scale.py`、`queue_metric_feature_scale.py`、`check_metric_feature_scale_pair.py`、`report_metric_feature_scale.py`；计划与review在`refine-logs/metric_feature_scale_v1/`。五个受保护source/plan输入在审核期间保持原字节。
+- 审核：`PASS`，实际gpt-6-astra/max、fork none、same-family/provisional，阻塞发现0。审核沿实际调用链读取259个冻结依赖，未执行Torch/项目导入、模型、GPU、SSH或评分；具体范围与非阻塞限制见原review，不能扩展成运行或性能批准。
+- 三数据集各一组fresh配对：normalized BN/CE + normalized Triplet，与normalized BN/CE + raw Triplet。两端从同一公开CLIP和新camera/单一1536维BN分类头初始化；current配方、sampler、优化器、学习率、CE平滑、Triplet margin0.3、loss权重与L2部署保持固定。没有角色、适配器、SIM/AlignM、原生细节、文本或新任务。
+- 六项M0各八次更新，核验梯度、优化器覆盖和严格重载；全部M0通过才启动六项fresh full50。初始化state、CE/deployment实际前向、全量训练batch顺序和原F2上下文绑定分别核验。M0参数不带入正式训练。
+- 主比较只对新配对控制，固定≥0.5mAP且R1不降；原F2仅上下文。不识别BN/CE的完整效应/交互，不解释全部F1差距，不证明SOTA或新模块。此有限面板后结束入口尺度变体，转入独立语义/细节读取候选；不以系数、margin或seed搜索救分。
+- 最新容量证据07:04：2026四卡均空闲，磁盘17,589,342,208字节，原F2控制器/报告终态。实际启动前重查空闲、源文件、旧终态和磁盘；只用物理GPU0–3/max4，不抢占、不失败重试、不新增2025训练，240秒队列观察。
+- ETA参考来自F2真实start/end（含逐轮评价）：六端合计约6.11小时工作区间，四卡FIFO约3.03小时墙钟估计；初始化、两波M0、严格重载和最终报告另计，混合端速度也尚未测得。它不是已执行时长或实测GPU小时。原始参考在`logs/metric_feature_scale_source755_20261003/ETA_REFERENCE.json`。
+
+**状态：REVIEWED_SOURCE_REGISTERED_NOT_LAUNCHED。** 尚无初始化/M0/full50/指标；唯一下一步是精确部署、CUDA隐藏源码导入核验以及在2026启动一次已审核队列。不要重启已结束的F2或改写其结果，也不要把25的文本同步解释为25训练。
+
+同步说明：第一次发布脚本在Git暂存阶段因`logs`被忽略而退出1，尚未commit/push/部署。实际索引检查发现计划的CRLF被`core.autocrlf=true`转换；后续只对明确自有文件force-add，并用本次命令的`core.autocrlf=false`重新暂存，提交前逐字节核对。source/plan/review原字节和科学门槛不变，原脚本及失败事实保留在`PUBLICATION_FIRST_FAILURE.json`。

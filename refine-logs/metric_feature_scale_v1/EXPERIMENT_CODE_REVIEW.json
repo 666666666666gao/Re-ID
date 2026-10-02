@@ -1,0 +1,633 @@
+{
+  "schema": "trifusion-f3-metric-feature-scale-source-review-v1",
+  "verdict": "PASS",
+  "verdict_scope": "SOURCE_ONLY",
+  "reviewer_model": "gpt-6-astra",
+  "reviewer_reasoning": "max",
+  "fork_turns": "none",
+  "reviewer_task": "/root/review_metric_feature_scale_source755",
+  "spawn_metadata_source": "Native fresh-review task dispatch and parent-supplied actual model/reasoning/fork attribution; no external reviewer backend was called.",
+  "review_independence": "same-family",
+  "acceptance_status": "provisional",
+  "cross_family_accepted": false,
+  "blocking_findings": [],
+  "nonblocking_findings": [],
+  "suggested_fixes": [],
+  "summary": "No demonstrated source defect requiring a fix was found. The implementation matches the bounded fresh normalized-BN/CE, normalized-versus-raw-Triplet diagnostic. This PASS clears only the fresh source-review gate.",
+  "effective_scope": {
+    "new_source_root": "C:/Users/gb/.trifusion_github_publish_22c3bee",
+    "frozen_dependency_root": "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source",
+    "request_path": "C:/Users/gb/.codex_tmp/training_feature_scale_split755/SOURCE_REVIEW_REQUEST.txt",
+    "allowed": "Read-only source/call-graph inspection, local stdlib AST/JSON/hash arithmetic; only the two requested review outputs written.",
+    "performed": [
+      "Read all four new Python entries and immutable plan directly.",
+      "Followed active trainer/queue/initializer/loader/loss/evaluator/scorer/analyzer paths from the frozen intake.",
+      "AST-parsed all four new entries without executing them.",
+      "Independently recomputed all 259 frozen source SHA256s and compared intake and original F2 manifest.",
+      "Validated protocol counts, disjoint train/test identities, train label maps, every record filename identity/camera/time field and positive eligibility by stdlib metadata arithmetic.",
+      "Read original F2 initialization/batch records only as reproducibility context; did not rescore F2."
+    ],
+    "not_performed": [
+      "No project or Torch imports.",
+      "No models, forwards, optimizers, M0s, GPU work or experiments.",
+      "No SSH or remote-state/capacity checks.",
+      "No evaluator, scoring program, analyzer or report execution.",
+      "No package installation, source/plan/original-record/trace mutation."
+    ],
+    "interpretation_boundary": "This is not runtime, numerical, statistical, efficacy, training-seed-stability, untouched-test or SOTA approval.",
+    "actual_new_runtime_status": "NOT_EXECUTED_BY_REVIEWER"
+  },
+  "effective_experiment": {
+    "schema": "trifusion-metric-feature-scale-v1",
+    "datasets": [
+      "RGBNT201",
+      "RGBNT100",
+      "MSVR310"
+    ],
+    "arms": [
+      "normalized",
+      "metric_raw"
+    ],
+    "fresh_control": true,
+    "ce_input_both": "L2-normalized raw Signal embedding",
+    "metric_input": {
+      "normalized": "L2-normalized",
+      "metric_raw": "raw"
+    },
+    "deployment": "1536D L2-normalized",
+    "seed": 42,
+    "formal_runs": 6,
+    "epochs_per_run": 50,
+    "total_formal_epochs": 300,
+    "m0_runs": 6,
+    "m0_updates_per_run": 8,
+    "batch_size": 64,
+    "num_instances": 8,
+    "num_workers": 4,
+    "optimizer": "AdamW",
+    "weight_decay": 0.0001,
+    "visual_nominal_lr": 0.000005,
+    "other_nominal_lr": 0.00035,
+    "schedule": "Inherited epoch/5 warmup for epochs1-5 and inherited cosine multiplier thereafter, max_epochs50.",
+    "ce_coefficient": 1,
+    "ce_label_smoothing": 0.1,
+    "triplet_coefficient": 1,
+    "triplet_margin": 0.3,
+    "amp_initial_scale": 256,
+    "best_checkpoint_selection": "Official mAP maximum, latest exact tie; all metrics from the same selected checkpoint.",
+    "progress_gate": "Per dataset: metric_raw minus fresh normalized mAP >=0.5 percentage points AND Rank-1 >=0, unrounded.",
+    "host_contract": "Existing 2026 /data/gaob/Re-ID/Trifusion; unchanged tri_reid runtime; GPUs0-3; max4; poll240s."
+  },
+  "checks": [
+    {
+      "id": "C1",
+      "status": "PASS_SOURCE",
+      "claim": "Only the Triplet input scale differs between the fresh arms. Both share one raw Signal forward; CE receives F.normalize(raw) through the same neck/classifier, and deployment returns that normalized embedding. Raw and normalized training tensors are attached to autograd; detach is used only for norm diagnostics.",
+      "references": [
+        {
+          "path": "C:/Users/gb/.trifusion_github_publish_22c3bee/tools/run_metric_feature_scale.py",
+          "line_start": 18,
+          "line_end": 61
+        },
+        {
+          "path": "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/tools/run_foundation_recipe.py",
+          "line_start": 155,
+          "line_end": 162
+        },
+        {
+          "path": "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/tools/run_training_feature_scale.py",
+          "line_start": 75,
+          "line_end": 81
+        },
+        {
+          "path": "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/comparators/Signal-cd1b0a6/modeling/make_model.py",
+          "line_start": 197,
+          "line_end": 228
+        },
+        {
+          "path": "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/modeling/trifusion/criterion.py",
+          "line_start": 17,
+          "line_end": 34
+        }
+      ]
+    },
+    {
+      "id": "C2",
+      "status": "PASS_SOURCE",
+      "claim": "The trainer captures the original F1 build/loader/loss functions when F2 is imported; F2.configure is not run on import. F3 then rebinds foundation schema/recipes/build/loader/loss. F3 build and loader explicitly use recipe=current for construction and sampler; inherited optimization/loss choose the non-author branch for both normalized and metric_raw. There is no F3-to-F3 recursion or accidental author recipe.",
+      "references": [
+        {
+          "path": "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/tools/run_training_feature_scale.py",
+          "line_start": 13,
+          "line_end": 19
+        },
+        {
+          "path": "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/tools/run_training_feature_scale.py",
+          "line_start": 84,
+          "line_end": 94
+        },
+        {
+          "path": "C:/Users/gb/.trifusion_github_publish_22c3bee/tools/run_metric_feature_scale.py",
+          "line_start": 36,
+          "line_end": 74
+        },
+        {
+          "path": "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/tools/run_foundation_recipe.py",
+          "line_start": 103,
+          "line_end": 162
+        },
+        {
+          "path": "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/tools/run_foundation_recipe.py",
+          "line_start": 316,
+          "line_end": 337
+        }
+      ]
+    },
+    {
+      "id": "C3",
+      "status": "PASS_SOURCE",
+      "claim": "Queue imports leave F1 globals intact until F3.configure binds base schema/recipes/source_map/command/start_command/coordinate. The reused base.main/worker/verify functions resolve those globals dynamically. F3 owns run_phase and its worker command, so no mutation of the unused lower queue.run_phase callbacks is needed. Preparation, worker training/evaluation, pair check and the sole report point to F3 entries.",
+      "references": [
+        {
+          "path": "C:/Users/gb/.trifusion_github_publish_22c3bee/tools/queue_metric_feature_scale.py",
+          "line_start": 26,
+          "line_end": 43
+        },
+        {
+          "path": "C:/Users/gb/.trifusion_github_publish_22c3bee/tools/queue_metric_feature_scale.py",
+          "line_start": 46,
+          "line_end": 101
+        },
+        {
+          "path": "C:/Users/gb/.trifusion_github_publish_22c3bee/tools/queue_metric_feature_scale.py",
+          "line_start": 104,
+          "line_end": 163
+        },
+        {
+          "path": "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/tools/queue_foundation_recipe.py",
+          "line_start": 57,
+          "line_end": 155
+        },
+        {
+          "path": "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/tools/queue_foundation_recipe.py",
+          "line_start": 212,
+          "line_end": 231
+        }
+      ]
+    },
+    {
+      "id": "C4",
+      "status": "PASS_SOURCE",
+      "claim": "Effective fixed recipe remains CE coefficient 1, smoothing 0.1; Euclidean batch-hard Triplet coefficient 1, margin 0.3; B64/K8 and four workers; AdamW weight decay 1e-4; visual base LR 5e-6, other trainable base LR 3.5e-4; the inherited five-epoch warmup/cosine multiplier; seed42, full50 and AMP initial scale256. The AdamW default LR is overridden from base_lr before every update. YAML author defaults do not replace the active current-package path.",
+      "references": [
+        {
+          "path": "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/tools/run_foundation_recipe.py",
+          "line_start": 62,
+          "line_end": 100
+        },
+        {
+          "path": "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/tools/run_foundation_recipe.py",
+          "line_start": 110,
+          "line_end": 162
+        },
+        {
+          "path": "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/tools/run_foundation_recipe.py",
+          "line_start": 189,
+          "line_end": 244
+        },
+        {
+          "path": "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/tools/run_signal_preserving_v5.py",
+          "line_start": 1621,
+          "line_end": 1627
+        },
+        {
+          "path": "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/tools/official_three_dataset_data.py",
+          "line_start": 21,
+          "line_end": 39
+        },
+        {
+          "path": "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/tools/train_rgbnt100_signal_oof.py",
+          "line_start": 113,
+          "line_end": 123
+        },
+        {
+          "path": "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/tools/train_msvr310_signal_oof.py",
+          "line_start": 89,
+          "line_end": 99
+        },
+        {
+          "path": "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/comparators/Signal-cd1b0a6/data/datasets/sampler.py",
+          "line_start": 18,
+          "line_end": 68
+        }
+      ]
+    },
+    {
+      "id": "C5",
+      "status": "PASS_SOURCE",
+      "claim": "Public visual tensor equality and fresh camera/head construction are retained. F3 preserves model-state names and verifies its full initial-state digest. Six prepared witnesses and three two-real-train-record pair checks require equal fresh states, equal CE logits/deployment and an active raw-vs-normalized metric change. The historical F2 state equality is additional context. Initial pair checks are eval-only and are correctly labelled as such.",
+      "references": [
+        {
+          "path": "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/tools/run_clean_clip_joint.py",
+          "line_start": 37,
+          "line_end": 107
+        },
+        {
+          "path": "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/tools/run_foundation_recipe.py",
+          "line_start": 62,
+          "line_end": 100
+        },
+        {
+          "path": "C:/Users/gb/.trifusion_github_publish_22c3bee/tools/run_metric_feature_scale.py",
+          "line_start": 36,
+          "line_end": 46
+        },
+        {
+          "path": "C:/Users/gb/.trifusion_github_publish_22c3bee/tools/check_metric_feature_scale_pair.py",
+          "line_start": 20,
+          "line_end": 65
+        },
+        {
+          "path": "C:/Users/gb/.trifusion_github_publish_22c3bee/tools/queue_metric_feature_scale.py",
+          "line_start": 111,
+          "line_end": 135
+        }
+      ]
+    },
+    {
+      "id": "C6",
+      "status": "PASS_SOURCE",
+      "claim": "Each M0 makes exactly eight optimizer updates, rejects nonfinite loss/gradients and AMP skips, requires every trainable parameter to have nonzero gradient at least once, exact optimizer-parameter coverage, unchanged frozen parameters and changed visual/camera parameters. Strict state loading and unchanged 1e-5 gates remain. All six M0s are verified before any full phase; formal outputs are new directories built from the public initializer, never the M0 state.",
+      "references": [
+        {
+          "path": "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/tools/run_foundation_recipe.py",
+          "line_start": 174,
+          "line_end": 284
+        },
+        {
+          "path": "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/tools/queue_foundation_recipe.py",
+          "line_start": 66,
+          "line_end": 107
+        },
+        {
+          "path": "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/tools/queue_foundation_recipe.py",
+          "line_start": 118,
+          "line_end": 148
+        },
+        {
+          "path": "C:/Users/gb/.trifusion_github_publish_22c3bee/tools/queue_metric_feature_scale.py",
+          "line_start": 130,
+          "line_end": 149
+        }
+      ]
+    },
+    {
+      "id": "C7",
+      "status": "PASS_SOURCE",
+      "claim": "The controller requires the registered /data/gaob/Re-ID/Trifusion root, a completed F2 predecessor/report and no predecessor controller PID. CLI restricts physical GPU indices to 0-3; startup checks the preparation device. Scheduling uses current nvidia-smi memory<500 MiB, one active job per physical device and >=10 GiB free disk per launch; workers set CUDA_VISIBLE_DEVICES. Polling is 240 seconds. Failures stop new launches while preserving logs/artifacts and allowing active children to finish; there are no retries or preemptions. The source is consistent with the existing 2026 host binding, not a fresh remote-capacity observation.",
+      "references": [
+        {
+          "path": "C:/Users/gb/.trifusion_github_publish_22c3bee/tools/queue_metric_feature_scale.py",
+          "line_start": 46,
+          "line_end": 91
+        },
+        {
+          "path": "C:/Users/gb/.trifusion_github_publish_22c3bee/tools/queue_metric_feature_scale.py",
+          "line_start": 104,
+          "line_end": 118
+        },
+        {
+          "path": "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/tools/queue_foundation_recipe.py",
+          "line_start": 118,
+          "line_end": 148
+        },
+        {
+          "path": "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/tools/queue_foundation_recipe.py",
+          "line_start": 212,
+          "line_end": 231
+        },
+        {
+          "path": "C:/Users/gb/.trifusion_github_publish_22c3bee/.aris/compute/tri_reid_four_gpu.md",
+          "line_start": 1,
+          "line_end": 9
+        }
+      ]
+    },
+    {
+      "id": "C8",
+      "status": "PASS_SOURCE",
+      "claim": "F3 source_map preserves the original 259-entry F2 seal and adds its five protected inputs plus the review Markdown; it does not rewrite F1/F2 seals. Preparation takes and rechecks the source snapshot, and each worker mode and terminal report call require_sources, including initialization/pair witness hashes. BatchOrderLoader logs the actual consumed labels/cameras/paths after each processed yield; the M0 ninth fetched batch is not recorded as an update. The final report aligns all step/epoch indices and requires fresh-pair and historical F2 batch-order bytes to match.",
+      "references": [
+        {
+          "path": "C:/Users/gb/.trifusion_github_publish_22c3bee/tools/queue_metric_feature_scale.py",
+          "line_start": 19,
+          "line_end": 29
+        },
+        {
+          "path": "C:/Users/gb/.trifusion_github_publish_22c3bee/tools/queue_metric_feature_scale.py",
+          "line_start": 111,
+          "line_end": 135
+        },
+        {
+          "path": "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/tools/queue_training_feature_scale.py",
+          "line_start": 102,
+          "line_end": 120
+        },
+        {
+          "path": "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/tools/queue_foundation_recipe.py",
+          "line_start": 110,
+          "line_end": 135
+        },
+        {
+          "path": "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/tools/run_training_feature_scale.py",
+          "line_start": 50,
+          "line_end": 65
+        },
+        {
+          "path": "C:/Users/gb/.trifusion_github_publish_22c3bee/tools/report_metric_feature_scale.py",
+          "line_start": 21,
+          "line_end": 59
+        }
+      ]
+    },
+    {
+      "id": "C9",
+      "status": "PASS_SOURCE",
+      "claim": "Evaluation extracts every protocol query/gallery record and asserts the full (count,1536) shapes. Identity labels are actual protocol ground truth. RGBNT removes same identity AND same camera; MSVR removes same identity AND the filename time/scene group. Different identities and gallery-only identities remain. The saved-distance analyzer uses the same filtering and asserts every metric against the chosen receipt within 1e-5. Percent multiplication is metric units, not performance scaling; there is no query subset, pseudo-GT, target-derived training or reranking in the active path.",
+      "references": [
+        {
+          "path": "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/tools/run_correspondence_roles.py",
+          "line_start": 60,
+          "line_end": 108
+        },
+        {
+          "path": "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/tools/run_official_three_dataset_roles.py",
+          "line_start": 58,
+          "line_end": 68
+        },
+        {
+          "path": "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/tools/run_official_three_dataset_roles.py",
+          "line_start": 230,
+          "line_end": 238
+        },
+        {
+          "path": "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/tools/official_three_dataset_data.py",
+          "line_start": 8,
+          "line_end": 39
+        },
+        {
+          "path": "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/tools/train_rgbnt100_signal_oof.py",
+          "line_start": 253,
+          "line_end": 268
+        },
+        {
+          "path": "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/tools/train_msvr310_signal_oof.py",
+          "line_start": 223,
+          "line_end": 238
+        },
+        {
+          "path": "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/comparators/Signal-cd1b0a6/utils/metrics.py",
+          "line_start": 13,
+          "line_end": 170
+        },
+        {
+          "path": "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/tools/analyze_correspondence_distances.py",
+          "line_start": 28,
+          "line_end": 75
+        }
+      ]
+    },
+    {
+      "id": "C10",
+      "status": "PASS_SOURCE",
+      "claim": "Full training always completes epochs1-50. The mAP-best checkpoint uses the latest epoch for an exact mAP tie, consistently in saving, reload and queue verification. All reported ranks/mAP come from that single checkpoint. Six strict full completions precede accepted_matrix and the one CPU-only report invocation. The report retains all histories, final-minus-best metrics, norms, Triplet support, time/memory, repairs/errors and identity-level diagnosis. The per-dataset progress gate uses unrounded hybrid-minus-fresh-control mAP>=0.5 percentage points and Rank-1>=0.",
+      "references": [
+        {
+          "path": "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/tools/run_foundation_recipe.py",
+          "line_start": 210,
+          "line_end": 313
+        },
+        {
+          "path": "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/source/tools/queue_foundation_recipe.py",
+          "line_start": 84,
+          "line_end": 107
+        },
+        {
+          "path": "C:/Users/gb/.trifusion_github_publish_22c3bee/tools/queue_metric_feature_scale.py",
+          "line_start": 138,
+          "line_end": 158
+        },
+        {
+          "path": "C:/Users/gb/.trifusion_github_publish_22c3bee/tools/report_metric_feature_scale.py",
+          "line_start": 23,
+          "line_end": 70
+        },
+        {
+          "path": "C:/Users/gb/.trifusion_github_publish_22c3bee/refine-logs/metric_feature_scale_v1/EXPERIMENT_PLAN.md",
+          "line_start": 20,
+          "line_end": 47
+        }
+      ]
+    }
+  ],
+  "protocol_metadata_checks": [
+    {
+      "dataset": "RGBNT201",
+      "counts": {
+        "train": 3951,
+        "query": 836,
+        "gallery": 836
+      },
+      "identities": {
+        "train": 171,
+        "query": 30,
+        "gallery": 30
+      },
+      "environment": "camera",
+      "minimum_eligible_positives": 7,
+      "gallery_only_identities": 0,
+      "gallery_only_records": 0,
+      "train_test_identity_intersection": 0,
+      "all_filename_metadata_match": true,
+      "training_label_map_verified": true,
+      "all_queries_have_eligible_positive": true,
+      "old_protocol_equal_except_dataset_root": true
+    },
+    {
+      "dataset": "RGBNT100",
+      "counts": {
+        "train": 8675,
+        "query": 1715,
+        "gallery": 8575
+      },
+      "identities": {
+        "train": 50,
+        "query": 50,
+        "gallery": 50
+      },
+      "environment": "camera",
+      "minimum_eligible_positives": 50,
+      "gallery_only_identities": 0,
+      "gallery_only_records": 0,
+      "train_test_identity_intersection": 0,
+      "all_filename_metadata_match": true,
+      "training_label_map_verified": true,
+      "all_queries_have_eligible_positive": true,
+      "old_protocol_equal_except_dataset_root": true
+    },
+    {
+      "dataset": "MSVR310",
+      "counts": {
+        "train": 1032,
+        "query": 591,
+        "gallery": 1055
+      },
+      "identities": {
+        "train": 155,
+        "query": 52,
+        "gallery": 155
+      },
+      "environment": "time/scene from filename sNNN",
+      "minimum_eligible_positives": 1,
+      "gallery_only_identities": 103,
+      "gallery_only_records": 464,
+      "train_test_identity_intersection": 0,
+      "all_filename_metadata_match": true,
+      "training_label_map_verified": true,
+      "all_queries_have_eligible_positive": true,
+      "old_protocol_equal_except_dataset_root": true
+    }
+  ],
+  "historical_context": {
+    "role": "Reproducibility context only; not the fresh control and not an independent seed.",
+    "f2_manifest_path": "C:/Users/gb/.codex_tmp/training_feature_scale_complete754/raw/logs/training_feature_scale_20261003_v2/manifest.json",
+    "f2_manifest_sha256": "e7e6df04d8632147d1fb16398566474665e0b094d6431ea36d96a34621f17d18",
+    "recorded_campaign_status": "COMPLETE",
+    "recorded_report_invocations": 1,
+    "recorded_report_exit_code": 0,
+    "current_controller_liveness_not_checked": true,
+    "normalized_batch_record_counts": {
+      "RGBNT201": 2649,
+      "RGBNT100": 6559,
+      "MSVR310": 1000
+    },
+    "normalized_batch_sha256": {
+      "RGBNT201": "e446282654c74949fb594856631b246642593b73229331c30b555418a0358993",
+      "RGBNT100": "17800b61d46948c4596f37f9b9169c67a4e3e64edeb06cc885725f661dc3e881",
+      "MSVR310": "95670ff1ce6b83f979370c8f4736c12fbf5f40a9f86699fb2fc61cb994653450"
+    }
+  },
+  "inspected_dependency_paths": [
+    "tools/run_training_feature_scale.py",
+    "tools/queue_training_feature_scale.py",
+    "tools/run_foundation_recipe.py",
+    "tools/queue_foundation_recipe.py",
+    "tools/queue_correspondence_refinement.py",
+    "tools/queue_correspondence_roles.py",
+    "tools/run_clean_clip_joint.py",
+    "tools/run_visual_update_control.py",
+    "tools/run_correspondence_roles.py",
+    "tools/run_official_three_dataset_roles.py",
+    "tools/official_three_dataset_data.py",
+    "tools/official_three_dataset_model.py",
+    "tools/analyze_correspondence_distances.py",
+    "tools/train_rgbnt100_signal_oof.py",
+    "tools/train_msvr310_signal_oof.py",
+    "tools/run_signal_preserving_v5.py",
+    "tools/run_signal_baseline_dev.py",
+    "tools/build_v12_complete_path_oof_targets.py",
+    "tools/train_signal_preserving_v18.py",
+    "modeling/trifusion/criterion.py",
+    "modeling/trifusion/aligned_data.py",
+    "modeling/trifusion/correspondence_roles.py",
+    "modeling/trifusion/role_global_tokens.py",
+    "modeling/trifusion/slot_competition_fp32_roles.py",
+    "modeling/trifusion/slot_competition_roles.py",
+    "modeling/trifusion/patch_memory_roles.py",
+    "modeling/trifusion/correspondence_context_identity.py",
+    "modeling/trifusion/correspondence_evidence_readout.py",
+    "comparators/Signal-cd1b0a6/modeling/__init__.py",
+    "comparators/Signal-cd1b0a6/modeling/make_model.py",
+    "comparators/Signal-cd1b0a6/modeling/meta_arch.py",
+    "comparators/Signal-cd1b0a6/modeling/make_model_clipreid.py",
+    "comparators/Signal-cd1b0a6/modeling/clip/model.py",
+    "comparators/Signal-cd1b0a6/data/datasets/make_dataloader.py",
+    "comparators/Signal-cd1b0a6/data/datasets/sampler.py",
+    "comparators/Signal-cd1b0a6/utils/metrics.py",
+    "comparators/Signal-cd1b0a6/config/defaults.py",
+    "comparators/Signal-cd1b0a6/configs/RGBNT201/Signal.yml",
+    "logs/training_feature_scale_protocols_20261002/RGBNT201.json",
+    "logs/official_three_dataset_protocols_20260923/RGBNT201.json",
+    "comparators/Signal-cd1b0a6/configs/RGBNT100/Signal.yml",
+    "logs/training_feature_scale_protocols_20261002/RGBNT100.json",
+    "logs/official_three_dataset_protocols_20260923/RGBNT100.json",
+    "comparators/Signal-cd1b0a6/configs/MSVR310/Signal.yml",
+    "logs/training_feature_scale_protocols_20261002/MSVR310.json",
+    "logs/official_three_dataset_protocols_20260923/MSVR310.json"
+  ],
+  "limitations": [
+    "Static reasoning does not prove the new forward pair, numerical gradients, strict reload, all50 completion or batch-order equality will pass on the runtime. The registered checks must actually execute.",
+    "Two-record initial pair checks establish only the stated eval-mode witness; they do not establish training-mode or whole-dataset functional identity.",
+    "Logged batch-order equality covers recorded labels, cameras and paths, not independently replayed augmented tensors.",
+    "Historical F2 files were read locally; this review did not deserialize checkpoints/arrays or independently verify current remote binaries, live processes, GPUs or disk.",
+    "Official-set checkpoint/method selection and single seed42 remain consumed-benchmark development limitations. Identity bootstrap is fixed-model identity uncertainty, not training-seed uncertainty.",
+    "The preserved strict 1e-5 numeric gates must remain unchanged if later runtime evidence fails."
+  ],
+  "next_required_checks": "No source fix is requested. Continue only the already registered exact source sync/resource checks, fresh preparation/pair witnesses and six production-data M0s; full50 remains conditional on all six actual M0 passes. Preserve any failure and diagnose its actual artifact before a separately reviewed fix.",
+  "protected_inputs": [
+    {
+      "path": "C:/Users/gb/.trifusion_github_publish_22c3bee/tools/run_metric_feature_scale.py",
+      "bytes": 2851,
+      "sha256_before": "4bc89febd69f75f8a4b97d6445a9100bac73db6600fe8bb3df8401973fd1f593",
+      "sha256_after": "4bc89febd69f75f8a4b97d6445a9100bac73db6600fe8bb3df8401973fd1f593",
+      "unchanged": true
+    },
+    {
+      "path": "C:/Users/gb/.trifusion_github_publish_22c3bee/tools/queue_metric_feature_scale.py",
+      "bytes": 8516,
+      "sha256_before": "ff19f479fba2da677298456ba850254ddd40d6882375d63d7c0fa6d98df05e1c",
+      "sha256_after": "ff19f479fba2da677298456ba850254ddd40d6882375d63d7c0fa6d98df05e1c",
+      "unchanged": true
+    },
+    {
+      "path": "C:/Users/gb/.trifusion_github_publish_22c3bee/tools/check_metric_feature_scale_pair.py",
+      "bytes": 4081,
+      "sha256_before": "8fbcfba96e3a1d8810412dc100fb63679542d69bf44a589d40b0297e963c4cf0",
+      "sha256_after": "8fbcfba96e3a1d8810412dc100fb63679542d69bf44a589d40b0297e963c4cf0",
+      "unchanged": true
+    },
+    {
+      "path": "C:/Users/gb/.trifusion_github_publish_22c3bee/tools/report_metric_feature_scale.py",
+      "bytes": 5034,
+      "sha256_before": "181cda28e9a18197a6b17350f6e07743602ec299401ceee0b3838938f5f200c8",
+      "sha256_after": "181cda28e9a18197a6b17350f6e07743602ec299401ceee0b3838938f5f200c8",
+      "unchanged": true
+    },
+    {
+      "path": "C:/Users/gb/.trifusion_github_publish_22c3bee/refine-logs/metric_feature_scale_v1/EXPERIMENT_PLAN.md",
+      "bytes": 5753,
+      "sha256_before": "a2706c9306b0bd5fe5797e3da3198bb852ff5ba15d0abf81cda47c3c757bd53d",
+      "sha256_after": "a2706c9306b0bd5fe5797e3da3198bb852ff5ba15d0abf81cda47c3c757bd53d",
+      "unchanged": true
+    }
+  ],
+  "frozen_input_integrity": {
+    "intake_path": "C:/Users/gb/.codex_tmp/training_feature_scale_source_intake749/SOURCE_INTAKE.json",
+    "intake_sha256_before": "e446b628da46959c939ab5e7de9a30801b6dd6bfd5f053595d439fbb082f8ee0",
+    "expected_count": 259,
+    "actual_file_count_before": 259,
+    "all_before_hashes_equal_intake": true,
+    "original_f2_manifest_source_map_equals_intake": true,
+    "intake_sha256_after": "e446b628da46959c939ab5e7de9a30801b6dd6bfd5f053595d439fbb082f8ee0",
+    "actual_file_count_after": 259,
+    "all_after_hashes_equal_intake": true,
+    "all_259_unchanged": true
+  },
+  "outputs": {
+    "markdown": "C:/Users/gb/.trifusion_github_publish_22c3bee/refine-logs/metric_feature_scale_v1/EXPERIMENT_CODE_REVIEW.md",
+    "json": "C:/Users/gb/.trifusion_github_publish_22c3bee/refine-logs/metric_feature_scale_v1/EXPERIMENT_CODE_REVIEW.json"
+  },
+  "generated_at": "2026-10-03T07:31:24.822473+08:00",
+  "protected_inputs_unchanged": true,
+  "only_requested_review_outputs_written": true
+}
