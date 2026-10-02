@@ -1710,3 +1710,5 @@
 - 2026-10-02T20:33:23.412517+08:00: §41.738 F1 measured4accepted/2running; source249 unchanged; two-host/eight-GPU user authorization and actual2026free capacity recorded; fixed inference/TTT primary reference separated.
 
 - 2026-10-02T22:43:50.106768+08:00: §41.739 F1 full6/300epochs/16692steps and once-onlyreport complete; actual fresh integrity WARN/claim judgment archived; current training scope exclusively2026 fourGPU; private traces excluded.
+
+- 2026-10-02T22:54:11.164429+08:00: §41.740 F2 feature-scale control prepared only; actual fresh review capacity failures retained, REVIEW_UNAVAILABLE; no deployment/M0/new GPU run; exclusively2026 scope.

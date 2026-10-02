@@ -14678,3 +14678,16 @@ fresh gpt-6-astra/max完整性审计实际WARN，A/B/C/F PASS、D/E WARN，same-
 UGG固定eaf1e8e50d04f34ee3e471440f70d335cc67b2c1的20份完整作者文件已取得Git blob校验；其MSVR samePID-and-scene及全部图库规则与当前metadata表达式相符。普通入口无测试时更新/rerank，默认ori+moe为3072维；GPGR在eval前仍采样噪声，未加载训练后w，不能称确定性复现。仅201 YAML40轮/seed1111，车辆配置/作者历史数据字节/可用best权重未建立。ProxyTTT已找到固定92fb0fa提交，但clone checkout失败、pinned raw仅2/15后超时，仍无完整do_test被调主体审计；保留所有失败记录，不冒称代码复现完成。论文静态与TTT数字继续分列。来源详见REFERENCE_PROTOCOL_NOTE_739.md。
 
 完整证据包：logs/foundation_complete739_20261002，原raw字节保持不变；新派生分析/audit/claims明确区分。整个三数据集baseline/SOTA目标仍ACTIVE_UNMET。旧N1/EV1失败封存，未加新seed、重启旧端或堆入N2/N3。下一项单干预必须明确相同配方/完整初始化/真实batch覆盖和原严格评价，再只在2026启动；本节不将候选方案写成已有成绩。
+
+
+## §41.740：F2单一训练特征尺度对照已准备，代码审查容量中断，未部署（2026-10-02T22:54:11.164429+08:00）
+
+§739六端证据、完整性WARN与有边界的主张结论已发布f3ca8a41；117份owned文本及主交接五份副本逐字节一致，原F1源码、结果、门槛和once-only报告不修改。MSVR仍为+0.482087、不满足0.5门。
+
+后继仅准备F2：三数据集各normalized/raw两个fresh full50/seed42端。固定当前无角色/无adapter结构、1536维、一组BN/分类头、CE、margin0.3 Triplet、AdamW与LR、B64/K8及增强；只改变训练输入原始或L2特征，影响BN/CE及Triplet二者，推理均保持L2。不得据此预写为F1全部差距原因、新模块收益或SOTA。计划和四个脚本复用原F1循环及调度；独立2026协议只替换dataset_root，原记录及顺序保留。预定完整state/两个真实训练记录初始前向一致、六个八批M0全通过后才进入六端fresh50；实际batch身份/camera/path顺序、特征范数、loss、LR和完整轨迹均记录。CPU全量报告须等全部端严格验收，门槛固定raw-normalized>=0.5mAP且R1不降。
+
+四个入口只有本地AST解析完成，尚未在GPU执行：tools/run_training_feature_scale.py、queue_training_feature_scale.py、check_training_feature_scale_pair.py、report_training_feature_scale.py。六个初始化、M0、正式训练、配对报告均未执行，不能将prepared文件当运行回执。预计5–8GPU小时/四卡wall约2–3小时只是计划估算，尚无本批实测。
+
+experiment-bridge Phase2.5要求部署前fresh secondary code review。实际gpt-6-astra/max review740第一次和同agent续接均返回Selected model is at capacity；两份完整请求/错误响应私下保留，公开REVIEW_UNAVAILABLE。其说明为：“If reviewer delegation is unavailable, record REVIEW_UNAVAILABLE; local checklist work does not satisfy the independent review gate. Continue preparation that does not depend on that gate.” 因此没有降模型/降effort、没有执行者自授PASS，也没有部署或重启旧版本。可在同一审查任务可用后续接，取得实际结论并修复真实问题，再按计划执行。
+
+用户最新资源范围继续仅2026 GPU0–3/max4，新25训练不启动。最后容量实查仍为22:02:52，不把未查询的当前状态猜为空闲；真正启动前再次核查卡、磁盘、已核验的warm环境与全部依赖。§739两机同步仅代码/文本，不迁移模型/数据、不使用25GPU。后续状态以logs/training_feature_scale_preparation740_20261002和refine-logs/training_feature_scale_v1为准。GoalACTIVE_UNMET，N1/EV1失败封存，不做margin/seed/倍率搜索救援。
