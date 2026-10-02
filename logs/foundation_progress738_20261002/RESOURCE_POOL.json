@@ -1,0 +1,33 @@
+{
+  "schema": "trifusion-two-host-resource-pool-v1",
+  "user_authorized_at": "2026-10-02",
+  "user_request": "25和26共八台服务器你可以一起启动实验",
+  "interpretation": "Two SSH servers, four distinct RTX3090 GPUs per server; eight GPUs total.",
+  "hosts": [
+    {
+      "port": 2025,
+      "project_root": "/data2/gb/Re-ID/Trifusion",
+      "environment_python": "/data2/gb/Re-ID/conda-envs/tri_reid/bin/python",
+      "observed_at": "2026-10-02T20:25:00.712310+08:00",
+      "free_bytes": 1135101624320,
+      "running_formal_jobs": 2,
+      "active_campaign": "logs/foundation_recipe_20261002_v1"
+    },
+    {
+      "port": 2026,
+      "project_root": "/data/gaob/Re-ID/Trifusion",
+      "environment_python": "/data/gaob/Re-ID/conda-envs/tri_reid/bin/python",
+      "observed_at": "2026-10-02T20:24:26.458517+08:00",
+      "free_bytes": 52512616448,
+      "free_gpu_indices": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "compute_processes": []
+    }
+  ],
+  "next_batch_policy": "Allocate different preregistered independent endpoints across both hosts, up to four per host; keep each model single-GPU with its original batch contract.",
+  "current_phase": "F1 drains on2025; next intervention remains conditional on all six accepted endpoints and the complete report. No new2026 training launch yet."
+}
