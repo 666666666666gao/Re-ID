@@ -1,0 +1,45 @@
+{
+  "status": "ORIGINAL_RESOURCE_ASSERT_FAILED_BEFORE_CAMPAIGN_NEW_STRESS_GATE_SOURCE_REVIEW_PASS",
+  "observed_at": "2026-10-03T00:41:06.364538+08:00",
+  "original_launcher_trace": "Traceback (most recent call last):\n  File \"/data/gaob/Re-ID/Trifusion/tools/queue_training_feature_scale.py\", line 199, in <module>\n    raise SystemExit(base.main())\n  File \"/data/gaob/Re-ID/Trifusion/tools/queue_foundation_recipe.py\", line 230, in main\n    assert dict((int(line.split(',')[0]), int(line.split(',')[1])) for line in used.splitlines())[args.gpu] < 500\nAssertionError\n",
+  "original_controller_live": false,
+  "original_campaign_exists": false,
+  "original_report_exists": false,
+  "occupant2041908_record_paths": [
+    "runs/dynamic_amp_comparison/RGBNT100_dual_s42/stress_launch.json"
+  ],
+  "new_actual_stress_controller": {
+    "cmdline": "/data/gaob/Re-ID/conda-envs/tri_reid/bin/python -u launch_stress.py --host 2026 ",
+    "cwd": "/data/gaob/Re-ID/DeMo-DualAxis",
+    "gpu_environment": []
+  },
+  "stress_observed_at": "2026-10-03T00:42:21.209793+08:00",
+  "cpu_release_check": {
+    "status": "CPU_RELEASE_PREDICATE_PASS",
+    "queue_sha256": "43de0eae7b9660de12d8729fdee06efa82f6adfcaf74599c6fda5faf00e8ae16",
+    "checks": [
+      "0\u20132 release independently despite pending GPU3 stress",
+      "13/14 stress exits do not release GPU3",
+      "Failed final stress exit does not release GPU3",
+      "All14 successful stress exits plus ordinary final marker release GPU3"
+    ],
+    "boundary": "Only released_gpus AST and synthetic JSON files; no ML, GPU, SSH, model or M0."
+  },
+  "new_queue_sha256": "43de0eae7b9660de12d8729fdee06efa82f6adfcaf74599c6fda5faf00e8ae16",
+  "new_review_scope": "PASS_SOURCE_ONLY_same_family_provisional",
+  "new_wait_helper": "wait_and_deploy_scale746.py",
+  "new_wait_started": false,
+  "new_launcher_invocations": 0,
+  "first_planned_check": "2026-10-03T01:48:00+08:00",
+  "training_ports": [
+    2026
+  ],
+  "gpu_scope": [
+    0,
+    1,
+    2,
+    3
+  ],
+  "max_parallel": 4,
+  "boundary": "New GPU3-only stress reservation is factual. Original launch failure retained. Staging reviewed bytes precedes any new wait; no model/optimizer/scorer/report or score-rescue retry."
+}

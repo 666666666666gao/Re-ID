@@ -29,10 +29,18 @@ GPU_RELEASE = {
     3: 'MSVR310_dual_s44',
 }
 
+GPU3_STRESS_RUNS = ('dynamic_amp_comparison/RGBNT100_demo_s42', 'dynamic_amp_comparison/RGBNT100_ordinary_s42', 'dynamic_amp_comparison/RGBNT100_dual_s42', 'dynamic_amp_comparison/MSVR310_ordinary_s42', 'dynamic_amp_comparison/MSVR310_dual_s42', 'three_seed_extension/RGBNT100_demo_s43', 'three_seed_extension/RGBNT100_demo_s44', 'three_seed_extension/RGBNT100_ordinary_s43', 'three_seed_extension/RGBNT100_ordinary_s44', 'three_seed_extension/RGBNT100_dual_s43', 'three_seed_extension/RGBNT100_dual_s44', 'three_seed_extension/MSVR310_demo_s44', 'three_seed_extension/MSVR310_ordinary_s44', 'three_seed_extension/MSVR310_dual_s44')
+
 
 def released_gpus():
     released = []
     for gpu, name in GPU_RELEASE.items():
+        if gpu == 3 and not all(
+            (OTHER_RUNS.parent/run/'stress_exit.json').is_file()
+            and json.loads((OTHER_RUNS.parent/run/'stress_exit.json').read_text())['exit_code'] == 0
+            for run in GPU3_STRESS_RUNS
+        ):
+            continue
         terminal = OTHER_RUNS/name/'evaluation_exit.json'
         if terminal.is_file() and json.loads(terminal.read_text())['exit_code'] == 0:
             released.append(gpu)
@@ -167,6 +175,7 @@ def coordinate(args):
         'poll_seconds':240,'source_sha256':sources,'initialization_sha256':initial,'jobs':jobs,
         'gpu_release': {str(gpu):str(OTHER_RUNS/name/'evaluation_exit.json')
                         for gpu,name in GPU_RELEASE.items()},
+        'gpu3_stress_release': [str(OTHER_RUNS.parent/run/'stress_exit.json') for run in GPU3_STRESS_RUNS],
         'boundary':'One training feature-scale control; both deployment embeddings L2; only 2026 GPU0-3.'})
     state={'status':'RUNNING','controller_pid':os.getpid(),'started_at':base.queue.stamp(),
            'jobs':jobs,'report_invocations':0}
