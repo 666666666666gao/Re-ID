@@ -1690,3 +1690,15 @@
 - 2026-10-02 §41.733: EV1 accepted4/6;201/MSVR combined−semantic negative, remaining100 unchanged. Extra2025 four-card resource packages complete but transfer/connectivity and destination validation pending; no new model/campaign.
 
 - 2026-10-02 §41.734: EV1 all6/full300epochs/20416steps/once CPU report COMPLETE; EV-A and EV-B FAIL. Fresh integrity review and strict scope retained. Extra2025 four RTX3090 resource validated, all assets under/data2/gb/Re-ID; no new formal experiment.
+
+| 2026-10-02T19:05:56+08:00 | /experiment-bridge | refine-logs/foundation_recipe_v1/EXPERIMENT_PLAN_20261002.md | implementation | F1 six-package controls; source review and GPU execution pending |
+| 2026-10-02T19:05:56+08:00 | /experiment-bridge | refine-logs/foundation_recipe_v1/EXPERIMENT_PLAN.md | implementation | F1 six-package controls; source review and GPU execution pending |
+| 2026-10-02T19:05:56+08:00 | /experiment-bridge | refine-logs/foundation_recipe_v1/EXPERIMENT_TRACKER.md | implementation | F1 six-package controls; source review and GPU execution pending |
+| 2026-10-02T19:05:56+08:00 | /experiment-bridge | refine-logs/foundation_recipe_v1/SEALED_SOURCE243.json | implementation | F1 six-package controls; source review and GPU execution pending |
+| 2026-10-02T19:05:56+08:00 | /experiment-bridge | tools/run_foundation_recipe.py | implementation | F1 six-package controls; source review and GPU execution pending |
+| 2026-10-02T19:05:56+08:00 | /experiment-bridge | tools/queue_foundation_recipe.py | implementation | F1 six-package controls; source review and GPU execution pending |
+| 2026-10-02T19:05:56+08:00 | /experiment-bridge | tools/report_foundation_recipe.py | implementation | F1 six-package controls; source review and GPU execution pending |
+| 2026-10-02T19:05:56+08:00 | /experiment-bridge | idea-stage/docs/research_contract.md | implementation | F1 six-package controls; source review and GPU execution pending |
+
+| 2026-10-02T19:17:49+08:00 | /experiment-bridge | refine-logs/foundation_recipe_v1/REVIEW_TRACE_20261002.md | review | gpt-6-astra/max PASS; same-family/provisional; real M0 pending |
+| 2026-10-02T19:17:49+08:00 | /experiment-bridge | refine-logs/foundation_recipe_v1/EXPERIMENT_CODE_REVIEW.md | review | gpt-6-astra/max PASS; same-family/provisional; real M0 pending |

@@ -1,5 +1,9 @@
 # TriFusion当前研究合同
 
+## 2026-10-02 F1 foundation control supplement
+
+The earlier shared/private-adapter hypothesis below is sealed as a historical contract. Current F1 uses `refine-logs/foundation_recipe_v1/EXPERIMENT_PLAN.md`: six new no-module public-CLIP endpoints, author/current foundation packages across all three datasets. All six eight-batch M0 checks must pass before any full50 training. The historical completed shared-adapter global-only control is a separate fixed reference. F1 compares complete recipes, has no new mechanism/role/SOTA claim, and leaves the full research goal ACTIVE_UNMET. No EV1/N1 rescue, N2/N3 addition, seed search, official selection change or tolerance relaxation is authorized by this supplement.
+
 完整用户目标不变：RGBNT201、RGBNT100、MSVR310分别超过同协议baseline，并达到经文献、预训练资源和评价协议核实的SOTA。单seed结构晋级不代表Goal完成。
 
 当前唯一新假设与预登记设置以refine-logs/shared_private_evidence_v1/EXPERIMENT_PLAN.md为准：检验私有角色适配写回共享视觉流的作用，与同容量coupled_roles及独立global-only对照，三数据集九端fresh/full50、seed42、单一官方mAP-best checkpoint。

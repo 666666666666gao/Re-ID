@@ -14569,3 +14569,16 @@ RGBNT201两端M0峰值分配分别15,074,276,352和15,493,688,832B；全部四�
 2025项目是c240ca5e的已校验git archive快照，原始导出没有根项目.git元数据；固定Signal比较源保留其git版本。此次最新文档及公开终态文件另做逐字节同步，不能把导出版本说成新的服务器Git提交。原SFTP中断部分及后续传输记录均保留；四压包累计10,143,675,706B，均通过大小和SHA校验，模型依赖未升级。资源证据见本节COMPUTE2025_READY.json。
 
 后继双来源读取、部分对应与判别补偿仍是候选；本次没有堆入N2/N3。当前优先事项是用已封存EV1结论收束有限的基础配方对照，再登记唯一后继干预。需要分清作者无模块结构、当前训练配方和共享适配global-only，不能继续以偏弱或不同配方的分母放大贡献。三数据集baseline／合格SOTA目标仍未达到，Goal保持ACTIVE_UNMET。
+
+
+## §41.735：新增2025计算端验收后，登记有限基础配方F1对照（2026-10-02T19:18:59.898954+08:00）
+
+§41.734的EV1六端/full50/一次CPU报告与EV-A、EV-B失败结论保持封存，不改原源码、权重、门槛或失败回执。新资源位于用户指定的`/data2/gb/Re-ID`：四张独立RTX3090、三套数据、已有tri_reid conda环境已通过实际CUDA/Mamba、完整协议路径、公开CLIP和真实8批M0/重载验收；环境规格不变，继续复用。2025项目根为c240归档导出加已核对的发布覆盖，并无根Git元数据；不能称新Git checkout。三个protocol仅dataset_root搬迁，其余240份旧绑定源码字节不变。旧2026端不迁移或重启历史实验。
+
+当前登记F1，计划`refine-logs/foundation_recipe_v1/EXPERIMENT_PLAN.md`，执行入口`tools/run_foundation_recipe.py`、`tools/queue_foundation_recipe.py`。两套真正无SIM/AlignM/角色/共享适配的基础系统从同一公开CLIP视觉和fresh camera起点训练：author使用原始特征、数据集专属BN/分类头、原soft-margin Triplet/Adam/采样/增强/学习率日程；current使用归一化1536维单头、CE+margin0.3、AdamW、B64/K8和现有共享几何增强。author100的30轮明确延长到项目50轮；公共workers4、AMPscale256、评价入口也是执行差异。此为完整配方包比较，不能归因于某一loss或优化器，也不是新论文模块。
+
+两套×三个数据集共六个新端，固定seed42、50轮、完整原图库和合法camera/时间过滤、原双scorer、mAP-best同份CMC、并列较晚轮及原1e-5重载门。所有六个真实8批M0通过后才允许任何正式训练；正式端fresh重建，不使用M0权重。真实B128若失败保留原stderr并停止队列，不自动减batch或添加补救配方。每次更新best保存当时距离，新增这条证据链源自原N1已出现的重载差异，不是放宽旧验收。历史clean-public共享适配global-only固定为另外参照，不重跑或声称同容量。完整两套结果收齐后才由一次CPU报告做配对、轨迹、首位修复/新增错误与身份收益诊断。
+
+部署前fresh gpt-6-astra/max代码复核已保存于`EXPERIMENT_CODE_REVIEW.md`及完整trace；独立上下文、同模型家族/provisional，不冒称跨家族验证。新控制器已实际启动一次，PID `233821`，campaign `logs/foundation_recipe_20261002_v1`，报告出口 `results/foundation_recipe_complete_20261002`；本段记录的是初始化/M0流程启动证据，尚无F1正式成绩。最多四卡并行，内部240秒观察，失败不重新启动或更换种子，预计完整六端约2–4小时，以实际吞吐更新。
+
+未启动后继双来源独立读取、部分对应、SNR补偿、N2/N3、文本或额外外部资源。基础配方不计作CNN/Transformer/Mamba贡献，阶段+0.5 mAP/R1非负亦非显著性或SOTA门；原三数据集完整Goal仍ACTIVE_UNMET。下一步使用同配方基础与历史共享适配对照来确定后续单一机制，不为十点重新挑弱分母。
