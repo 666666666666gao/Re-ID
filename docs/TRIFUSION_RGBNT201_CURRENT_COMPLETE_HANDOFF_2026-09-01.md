@@ -14857,3 +14857,55 @@ hash核对和释放函数AST，没有ML导入、模型或GPU前向；发现可�
 `logs/training_feature_scale_launch747_20261003/`；所有远端 checkpoint/图片/数组仍留
 远端。当前目标 ACTIVE_UNMET：F2 只是固定配方下 raw/normalized 训练特征边界诊断，
 不把工程通过归于新角色，也不声称三集强基线或 SOTA 目标已完成。
+
+
+## 41.748 F2 六项 M0 全部通过，原控制器已进入 fresh full50（2026-10-03）
+
+本节是实际运行与工程门证据，不是完整性能结论。26 服务器控制器 PID2185141
+继续运行同一 campaign `logs/training_feature_scale_20261003_v2`，没有重复 launch。
+六份初始化、三个数据集各自两条真实训练记录的初始输出配对全部通过；最后两项
+M0 于02:16:18由原队列接收成功。02:18:04与02:29:12实际观察均确认六项M0
+COMPLETE/exit0，控制器状态RUNNING/phase full，最终report调用次数仍为0。
+
+CPU只读接收了六项M0的training.json、training_steps.jsonl、training_batch_order.jsonl
+原始18份文本，并逐项核对与02:18快照的result完全一致。每项实际8批，合计48批；
+同数据集raw/normalized的全初始状态SHA相同，八批训练记录顺序严格相同。
+六项probe均累计观察到155/155可训练参数张量的非零梯度，损失及检查梯度有限，
+冻结张量未变化，视觉/新camera已更新；二样本重载最大差全为0.0。这是八批工程
+证据，不代表每一参数每一批都有梯度，也不代表50轮曝光审计已经通过。汇总是
+执行者CPU接收/聚合，不能称独立结果审计。
+
+这48批Triplet均非零；normalized输入特征每批的B64平均范数为1，raw的八批
+平均范数范围为RGBNT201 19.525757—19.692253、RGBNT100 19.136776—19.494591、
+MSVR310 19.075081—19.398132。此事实验证实际训练特征边界，不能推断raw更准，
+也不能将历史后期Triplet饱和扩展成当前所有来源训练批次都没有度量梯度。
+
+原控制器在所有M0通过后，02:16:30派发独立fresh full50。normalized-RGBNT201
+在物理GPU0执行，worker PID2215833、训练PID2215837；normalized-RGBNT100
+在GPU1执行，worker PID2215835、训练PID2215838。两训练子进程02:16:31开始，
+各自从封存initialization重新构建，未接续M0参数。其余四端截至02:29:12仍PENDING。
+继续只使用2026物理0—3、最多四项单卡任务；2/3需满足已登记原任务及GPU3
+压力评价的真实成功释放条件后才加入，不能把瞬间空闲当成释放。未启动任何新的
+2025训练；后面的2025同步仅交接文本。
+
+计时字段勘误：当前run_foundation_recipe.py的history行seconds在epoch训练循环
+之后、official_metrics与best保存之前赋值，故只含训练循环；receipt中的
+`timing_boundary='Training and per-epoch evaluation; excludes construction and final strict evaluation.'`
+对逐行seconds的说明不准确。整体started_at到completed_at仍含中间评价/保存。
+本节仅修正解释与ETA，运行代码、原始receipt及实验科学合同不改，历史原字段保留。
+不能将训练循环seconds乘50当成全程耗时。
+
+02:29:12只读取得两个training.json的start、已完成epoch数和文件mtime，按已完成
+整轮的实际墙钟（含逐轮评价/保存）估计：201已19轮，平均38.473445秒/完整轮
+（训练循环平均24.697761秒），预计50轮训练结束02:48:56；100已6轮，平均
+117.489009秒/完整轮（训练循环57.091121秒），预计03:54:47。它们均不含最后
+strict重载评价和队列等待，是预估而非终态。没有使用中途性能选择停止、修改配置
+或重启；下一观察按首端预估结束前几分钟安排约02:44。不能据此承诺六端总结束。
+该时点磁盘余19,872,272,384字节，没有进行删除。
+
+原快照、18份M0原文、聚合及CPU读取脚本保存在
+`logs/training_feature_scale_m0_full748_20261003/`。训练、权重、原图及数组仍留远端。
+F2仅隔离同一固定配方下raw/normalized同时进入BN/CE和margin0.3 Triplet的训练
+边界；部署两端均L2归一化1536维。六项完整50轮、全状态strict重载、原完整图库
+与合法过滤、实际训练顺序配对及唯一最终报告仍待完成；初始化/M0通过不能替代
+任何数据集的指标或SOTA目标，当前Goal继续ACTIVE_UNMET。
