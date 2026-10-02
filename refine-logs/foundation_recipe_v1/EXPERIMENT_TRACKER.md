@@ -1,12 +1,14 @@
 # F1 基础配方执行表
 
-实测：2026-10-02T20:25:00.712310+08:00。六项M0通过；正式4完成/2运行/0等待；终态CPU报告尚未调用。
+六端完整50轮/严格评价COMPLETE；CPU报告一次exit0；fresh integrity WARN，精确资源范围改为2026四卡。
 
-| Run | Dataset | Recipe | M0 | Full50 | Epochs | Strict evaluation |
-|---|---|---|---|---|---:|---|
-| F101 | RGBNT201 | author | PASS | COMPLETE | 50 | PASS |
-| F102 | RGBNT100 | author | PASS | RUNNING | 29 | NOT_COMPLETE |
-| F103 | MSVR310 | author | PASS | COMPLETE | 50 | PASS |
-| F104 | RGBNT201 | current | PASS | COMPLETE | 50 | PASS |
-| F105 | RGBNT100 | current | PASS | RUNNING | 18 | NOT_COMPLETE |
-| F106 | MSVR310 | current | PASS | COMPLETE | 50 | PASS |
+| Dataset | Recipe | Best epoch | mAP | R1 | R5 | R10 | Steps |
+|---|---|---:|---:|---:|---:|---:|---:|
+| RGBNT201 | author | 27 | 73.4728 | 77.1531 | 85.8852 | 89.9522 | 2649 |
+| RGBNT100 | author | 9 | 84.0319 | 96.2099 | - | - | 3129 |
+| MSVR310 | author | 38 | 50.8388 | 68.6971 | - | - | 706 |
+| RGBNT201 | current | 26 | 62.5806 | 62.4402 | 75.8373 | 83.0144 | 2649 |
+| RGBNT100 | current | 12 | 77.5843 | 94.1691 | - | - | 6559 |
+| MSVR310 | current | 24 | 50.3567 | 67.5127 | - | - | 1000 |
+
+完整主张见logs/foundation_complete739_20261002/CLAIMS_FROM_RESULTS.md；基础配方差值不能计为新模块增益。原计划与249运行绑定不修改。

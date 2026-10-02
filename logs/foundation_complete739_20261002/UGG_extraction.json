@@ -1,0 +1,186 @@
+{
+  "shard_id": "ugg_protocol_739",
+  "entries": [
+    {
+      "dedup_key": "arxiv:2507.04638v3",
+      "payload": {
+        "evidence_status": "Read-only evidence extraction; static code/metadata checks only. No semantic integrity verdict, model execution, scorer invocation, or numerical reproduction.",
+        "author_commit": "eaf1e8e50d04f34ee3e471440f70d335cc67b2c1",
+        "code_intake": {
+          "verified_files": 20,
+          "verified_bytes": 163384,
+          "method": "14 archived primary author blobs independently reread/rehash-verified; 6 fresh commit-pinned raw code files downloaded. All 20 match the archived author Git tree blob SHA-1 and sizes. Current same HEAD confirmed by parent git ls-remote; this shard's clone failed before checkout."
+        },
+        "paper_claims": {
+          "identity": "Xixi Wan, Aihua Zheng, Bo Jiang, Beibei Wang, Chenglong Li, Jin Tang (2025), UGG-ReID: Uncertainty-Guided Graph Model for Multi-Modal Object Re-Identification. Author repository says accepted at NeurIPS 2025; inspected paper is arXiv v3.",
+          "implementation": "Section 4.1: pretrained CLIP visual encoder; RGB/NIR/TIR inputs; person 256x128, vehicle 128x256; 16x16 patches, 128 local plus one global token; Adam at 0.00035 for 40 epochs on one RTX 4090.",
+          "partition_table7": "Train/query/gallery ID/sample counts: RGBNT201 171/3951,30/836,30/836; RGBNT100 50/8675,50/1715,50/8575; MSVR310 155/1032,52/591,155/1055.",
+          "published_metrics": "Tables 1-2 CLIP UGG-ReID mAP/Rank-1 (%): RGBNT201 81.2/86.8; RGBNT100 88.0/98.1; MSVR310 60.1/78.0. These are paper claims, not reproduced results.",
+          "inference_scope": "Section 3.3.1 uses expert means downstream; Section 3.2.2 separately describes graph sampling. Section 4.1 names mAP/Rank but does not specify the executable scene/camera exclusion or historical filename hashes."
+        },
+        "actual_code_facts_with_file_lines_and_commit": [
+          {
+            "fact": "MSVR310 uses bounding_box_train, query3, bounding_box_test. It enumerates every identity directory and vis filename and constructs matched vis/ni/th triplets. pid=filename[:4], camera=filename[11], scene=filename[6:9]. There is no query-ID-based gallery pruning.",
+            "commit": "eaf1e8e50d04f34ee3e471440f70d335cc67b2c1",
+            "refs": [
+              "data/datasets/msvr310.py:24-38",
+              "data/datasets/msvr310.py:67-88"
+            ]
+          },
+          {
+            "fact": "RGBNT201 trains on train_171 and independently parses test as both query and gallery. RGBNT100 uses rgbir/{bounding_box_train,query,bounding_box_test}; camera IDs are zero-based. RGBNT201 pairs RGB/NI/TI by filename; RGBNT100 reads a 768x128 composite as three 256x128 modality crops.",
+            "commit": "eaf1e8e50d04f34ee3e471440f70d335cc67b2c1",
+            "refs": [
+              "data/datasets/RGBNT201.py:34-42,69-95",
+              "data/datasets/RGBNT100.py:24-37,63-85",
+              "data/datasets/bases.py:9-43"
+            ]
+          },
+          {
+            "fact": "MSVR310's executable remove condition is same pid AND same scene; same-camera and neighbor-view alternatives are commented out. RGBNT201/RGBNT100 use same pid AND same camera. Different identities are retained. Queries with no surviving positive are skipped by the author metric. The stale MSVR camera docstring does not describe the active rule.",
+            "commit": "eaf1e8e50d04f34ee3e471440f70d335cc67b2c1",
+            "refs": [
+              "utils/metrics.py:12-15,48-85,93-108",
+              "utils/metrics.py:111-179"
+            ]
+          },
+          {
+            "fact": "For the supplied FEAT_NORM='yes', evaluation applies L2 normalization to the final concatenated embedding, then squared Euclidean distance. MSVR R1_mAP directly computes that distance; other datasets use R1_mAP_eval. The latter defaults to reranking=False. Both processor entrypoints omit the reranking argument, so their ordinary path does not rerank even though an optional implementation and a RE_RANKING config field exist.",
+            "commit": "eaf1e8e50d04f34ee3e471440f70d335cc67b2c1",
+            "refs": [
+              "utils/metrics.py:182-228,231-238,415-444,470-476",
+              "engine/processor.py:42-45,156-161",
+              "configs/RGBNT201/UGG.yml:39-44"
+            ]
+          },
+          {
+            "fact": "test_net chooses return_pattern=3. It runs model.eval; do_inference uses no_grad and has no optimizer/backward/adaptation loop. The forward requires all three images plus camera IDs; test pids are only passed to the evaluator. The CLIP branch indexes learned camera embeddings and does not consume scene IDs as an encoder input. return_pattern=3 concatenates ori and moe embeddings; with the supplied ViT-B-16 configuration this is 3072 dimensions, versus the 1536-dimensional F1 extractor.",
+            "commit": "eaf1e8e50d04f34ee3e471440f70d335cc67b2c1",
+            "refs": [
+              "test_net.py:43-49",
+              "engine/processor.py:167-194",
+              "modeling/meta_arch.py:67-107",
+              "modeling/make_model_ugg.py:18-20,139-169",
+              "modeling/GPGR_UGMOE/GPGR_UGMoE.py:460-472"
+            ]
+          },
+          {
+            "fact": "The graph is per sample over patch/global nodes (batched P-by-P adjacency), not a query/gallery retrieval graph. Gate outputs operate per sample; the apparent batch-capacity normalization is commented out. Auxiliary losses may be computed during forward, but the read inference path does not update parameters from them.",
+            "commit": "eaf1e8e50d04f34ee3e471440f70d335cc67b2c1",
+            "refs": [
+              "modeling/GPGR_UGMOE/GPGR_UGMoE.py:143-194,225-269,330-423,460-472"
+            ]
+          },
+          {
+            "fact": "GPGR calls torch.randn_like and samples z1/z2/z3 before the self.training branch, including eval. Its multiplicative w is a trainable parameter initialized to zero. Therefore RNG is consumed in evaluation, and numerical randomness depends on the trained w values; no checkpoint was inspected to establish those values or repeat-evaluation variance. Expert FeedForward returns its mean, which does not remove upstream GPGR sampling. test_net has no seed call.",
+            "commit": "eaf1e8e50d04f34ee3e471440f70d335cc67b2c1",
+            "refs": [
+              "modeling/GPGR_UGMOE/GPGR_UGMoE.py:278-294,494,537-544,546-618,636-654",
+              "test_net.py:1-49"
+            ]
+          },
+          {
+            "fact": "The sole tracked experiment YAML is RGBNT201/UGG.yml: 40 epochs, batch64, 8 instances/identity, Adam, base LR3.5e-4, eval every epoch, warmup10. Default seed1111, weight decay1e-4, bias multiplier2, PROMPT/ADAPTER/FROZEN false. Optimizer assigns unfrozen CLIP base parameters nominal LR5e-6. Sampler pads short identities and emits complete identity-balanced batches; exact updates cannot be inferred as ceil(raw_rows/64).",
+            "commit": "eaf1e8e50d04f34ee3e471440f70d335cc67b2c1",
+            "refs": [
+              "configs/RGBNT201/UGG.yml:1-44",
+              "config/defaults.py:31-33,106-107,125-140",
+              "solver/make_optimizer.py:4-37",
+              "solver/scheduler_factory.py:7-30",
+              "data/datasets/sampler.py:18-67",
+              "train_net.py:16-25,39-44"
+            ]
+          },
+          {
+            "fact": "Training evaluates the official query+gallery every epoch and retains the latest epoch on mAP ties (>=). Best-checkpoint writing is commented out; checkpoint period50 exceeds the supplied 40-epoch run. test_net loads an absolute author-local checkpoint path and load_param uses strict=False. Thus the supplied config/entrypoints alone do not produce the checkpoint expected by test_net.",
+            "commit": "eaf1e8e50d04f34ee3e471440f70d335cc67b2c1",
+            "refs": [
+              "data/datasets/make_dataloader.py:258-268",
+              "engine/processor.py:112-145,202-240",
+              "configs/RGBNT201/UGG.yml:31-37",
+              "test_net.py:45-49",
+              "modeling/make_model_ugg.py:76-80"
+            ]
+          }
+        ],
+        "protocol_comparison": {
+          "exact_local_sources_root": "C:/Users/gb/.codex_tmp/foundation_recipe_v1_20261002/source_intake737",
+          "exact_protocols": [
+            {
+              "dataset": "RGBNT201",
+              "sha256": "3306755a1f3e3d6dc5b8c11205fc4adf95cdca2db8ede7ac32971a5d569f78f7",
+              "train": "171 IDs / 3951",
+              "query": "30 IDs / 836",
+              "gallery": "30 IDs / 836",
+              "environment": "camera",
+              "gallery_only_identities": 0
+            },
+            {
+              "dataset": "RGBNT100",
+              "sha256": "50db004ee47cfb13c68505ebd0d95e62009fcee0afc22e9e5675e06611bac12c",
+              "train": "50 IDs / 8675",
+              "query": "50 IDs / 1715",
+              "gallery": "50 IDs / 8575",
+              "environment": "camera",
+              "gallery_only_identities": 0
+            },
+            {
+              "dataset": "MSVR310",
+              "sha256": "04d0a4fdbabfdfbe1d3d661e10dad7e99af0fbccf3c916705080c6ddc3fa44b6",
+              "train": "155 IDs / 1032",
+              "query": "52 IDs / 591",
+              "gallery": "155 IDs / 1055",
+              "environment": "scene",
+              "gallery_only_identities": 103,
+              "gallery_only_records": 464
+            }
+          ],
+          "split_and_parser_comparison": "Paper Table7 counts and author directory definitions match current fixed protocol metadata. Independent string parsing agrees with all 27266 train/query/gallery metadata rows. This does not establish identity of the authors' historical dataset bytes or directory ordering.",
+          "actual_F1_chain": "run_foundation_recipe.py:18-20 -> run_clean_clip_joint.py:14 -> run_visual_update_control.py:22 -> run_correspondence_roles.py:66-108. official_metrics extracts every protocol query/gallery record, computes normalized squared Euclidean distances through run_official_three_dataset_roles.py:230-238, and calls the fixed Signal scorer. MSVR uses scene_scores plus eval_func_msrv; the other two use camera_scores plus eval_func. No reranking is called.",
+          "scorer_comparison": "ASTs of the active remove expressions in UGG and the sealed Signal scorer are identical for eval_func_msrv and eval_func. This is a deterministic source-expression comparison, not a numerical rerun or full semantic-integrity verdict.",
+          "gallery_boundary": "Current MSVR gallery has 103 IDs absent from its 52-ID query (464 samples). The read UGG loader/scorer retain such identities; reducing gallery to query IDs would change both defined protocols. Current metadata has 2010 same-ID query/gallery pairs removed by scene but retained by camera, and 868 removed by camera but retained by scene; these are metadata counts, not accuracy metrics.",
+          "inference_and_training_boundary": "F1 uses eval/inference_mode and 1536-dimensional features; UGG ordinary inference is eval/no_grad with 3072-dimensional ori+moe output and possible upstream graph randomness. F1 source fixes50 epochs/seed42 and selects best official mAP; UGG supplied RGBNT201 config fixes40/1111. Scorer alignment does not establish matched training budget, deterministic reproduction, or a one-factor architectural comparison.",
+          "local_source_refs": [
+            "tools/run_correspondence_roles.py:66-108",
+            "tools/official_three_dataset_data.py:8-18",
+            "tools/run_official_three_dataset_roles.py:230-238",
+            "tools/run_foundation_recipe.py:42-53,72-78,189-211,248-255,287-310",
+            "comparators/Signal-cd1b0a6/utils/metrics.py:68,137"
+          ]
+        },
+        "unresolved": [
+          "Author historical train/query/gallery filename lists, hashes, exact dataset revision and ordering are not established. Local list counts and parser/filter compatibility are established only at the source/metadata level.",
+          "The tracked author tree contains only configs/RGBNT201/UGG.yml. MSVR310/RGBNT100 YAMLs mentioned in README are absent at this commit, so their exact runtime overrides, image sizing, batch composition and training budgets cannot be reconstructed from released configs.",
+          "No tracked .pt/.pth/.ckpt/.safetensors or license file appears in the archived full tree. No external checkpoint or dataset was downloaded; this is not an exhaustive audit of releases or external hosting.",
+          "Git clone failed with schannel SSL/TLS handshake error. Fresh make_model_clipreid.py transfer timed out at2756/10013 bytes; make_loss.py transfer timed out at0/3597; direct arXiv HTML transfer timed out at325325/355796. Incomplete downloads are preserved and excluded from verified code. Exact pretrained loader and full loss implementation were not completed in this shard; do not label this a complete repository audit.",
+          "Numerical evaluation variability from graph sampling, learned w, checkpoint compatibility and paper-score reproduction remain untested. No test-time optimization loop was found in read code, but no before/after parameter-state execution check was run."
+        ],
+        "source_urls": [
+          "https://arxiv.org/abs/2507.04638v3",
+          "https://arxiv.org/html/2507.04638v3",
+          "https://github.com/wanxixi11/UGG-ReID/commit/eaf1e8e50d04f34ee3e471440f70d335cc67b2c1",
+          "https://github.com/wanxixi11/UGG-ReID/blob/eaf1e8e50d04f34ee3e471440f70d335cc67b2c1/data/datasets/msvr310.py#L67",
+          "https://github.com/wanxixi11/UGG-ReID/blob/eaf1e8e50d04f34ee3e471440f70d335cc67b2c1/utils/metrics.py#L68",
+          "https://github.com/wanxixi11/UGG-ReID/blob/eaf1e8e50d04f34ee3e471440f70d335cc67b2c1/engine/processor.py#L148",
+          "https://github.com/wanxixi11/UGG-ReID/blob/eaf1e8e50d04f34ee3e471440f70d335cc67b2c1/modeling/GPGR_UGMOE/GPGR_UGMoE.py#L537",
+          "https://github.com/wanxixi11/UGG-ReID/blob/eaf1e8e50d04f34ee3e471440f70d335cc67b2c1/configs/RGBNT201/UGG.yml#L30",
+          "https://github.com/wanxixi11/UGG-ReID/blob/eaf1e8e50d04f34ee3e471440f70d335cc67b2c1/modeling/meta_arch.py#L95",
+          "https://github.com/wanxixi11/UGG-ReID/blob/eaf1e8e50d04f34ee3e471440f70d335cc67b2c1/test_net.py#L43"
+        ],
+        "private_artifact_paths": [
+          "C:/Users/gb/.codex_tmp/ugg_protocol_20261002_2045/FACTUAL_NOTE.md",
+          "C:/Users/gb/.codex_tmp/ugg_protocol_20261002_2045/extraction.json",
+          "C:/Users/gb/.codex_tmp/ugg_protocol_20261002_2045/source_catalog.json",
+          "C:/Users/gb/.codex_tmp/ugg_protocol_20261002_2045/access_manifest.json",
+          "C:/Users/gb/.codex_tmp/ugg_protocol_20261002_2045/source",
+          "C:/Users/gb/.codex_tmp/ugg_protocol_20261002_2045/commit.json",
+          "C:/Users/gb/.codex_tmp/ugg_protocol_20261002_2045/tree.json",
+          "C:/Users/gb/.codex_tmp/ugg_protocol_20261002_2045/paper_web_extract.txt",
+          "C:/Users/gb/.codex_tmp/ugg_protocol_20261002_2045/supplement_web_extract.txt",
+          "C:/Users/gb/.codex_tmp/ugg_protocol_20261002_2045/access/partials",
+          "C:/Users/gb/.codex_tmp/ugg_protocol_20261002_2045/build_source_catalog.py"
+        ]
+      }
+    }
+  ]
+}

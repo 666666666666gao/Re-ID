@@ -14642,3 +14642,39 @@ RGBNT100两端包含图库评价的平均每轮约116/119秒，依实际进度�
 等待期间核读AAAI正式ProxyTTT表1/3：无测试时更新时，201为82.3/84.7/90.6/92.7，10088.4/97.9，MSVR62.1/71.7；完整PESA为85.0/88.5/92.1/93.7、89.3/97.7、63.6/72.1。其baseline75.4到静态82.3为+6.9，再经测试时更新到85.0为+2.7；完整增量不能全部算训练架构贡献。该论文只是作者参照，尚未同协议复现；固定参数推理与目标域更新必须分列。来源与边界见STRONG_REFERENCE_BOUNDARIES_20261002.md。固定提交源码接收在API403限流处失败，未取得commit/源码，不声称代码审计成功；不修改F1来追这些数字。
 
 基础配方包、角色贡献与SOTA仍分别判断。旧EV1/N1失败封存，未堆入N2/N3、换种子或追加救分端。完整目标仍ACTIVE_UNMET。
+
+
+## §41.739：F1六端终态、基础配方收益分账及资源限定2026四卡（2026-10-02T22:43:50.106768+08:00）
+
+原唯一控制器233821正常结束；21:33实际终态记录六个M0和六个正式端均exit0，全部完整50轮、严格全state重载和原完整图库双scorer评价有效。原CPU报告只调用一次，exit0；未重跑模型、评分或报告。合计300epoch、16,692正式updates，M0另48updates。完整原始91份文本25,956,427字节及24个远端checkpoint/distance绑定已接收；249份绑定源码仍与原manifest一致。正式权重、图片与距离留原服务器，未下载或删除。
+
+| Dataset | Recipe | mAP-best epoch | mAP | R1 | R5 | R10 | Formal steps |
+|---|---|---:|---:|---:|---:|---:|---:|
+| RGBNT201 | author | 27 | 73.4728 | 77.1531 | 85.8852 | 89.9522 | 2649 |
+| RGBNT100 | author | 9 | 84.0319 | 96.2099 | - | - | 3129 |
+| MSVR310 | author | 38 | 50.8388 | 68.6971 | - | - | 706 |
+| RGBNT201 | current | 26 | 62.5806 | 62.4402 | 75.8373 | 83.0144 | 2649 |
+| RGBNT100 | current | 12 | 77.5843 | 94.1691 | - | - | 6559 |
+| MSVR310 | current | 24 | 50.3567 | 67.5127 | - | - | 1000 |
+
+所有CMC随各端同一mAP-best checkpoint，不跨轮拼列；这里没有新角色/adapter/SIM/AlignM。当前真正无模块系统使用归一化1536维训练特征、一组BN/分类头、CE与margin0.3、AdamW、视觉5e-6/其余3.5e-4、5轮warmup-cosine、三集B64/K8及共享几何。不能将继承cfg_yaml里的Adam/作者B/K字段当作当前有效配方。作者包使用原始训练特征、原生头/loss/Adam/数据集专属采样与增强和日程；201/100噪声cosine的实际LR变化已记录，不能声称视觉全程固定5e-6。作者100从原30改50、共同workers4/AMPscale256和现有评估入口，属于修改后的可核验包而非精确作者复现。
+
+| Author minus current | ΔmAP | ΔR1 | Rank1 repairs | New Rank1 errors | Fixed progress gate |
+|---|---:|---:|---:|---:|---|
+| RGBNT201 | +10.892203 | +14.712919 | 180 | 57 | PASS |
+| RGBNT100 | +6.447646 | +2.040816 | 68 | 33 | PASS |
+| MSVR310 | +0.482087 | +1.184433 | 47 | 40 | FAIL |
+
+paired诊断的CMC由独立CPU计数，与正式float32CMC有容差内小数差别。MSVR官方query-mean ΔmAP为+0.482087，低于事前0.5；身份宏平均+0.528435不能替代正式门，也不通过四舍五入转PASS。201/100的+10.89/+6.45是整个基础配方包差值，包含特征尺度、头、loss、optimizer、scheduler、B/K与增强，不能计为我们的新模块贡献或单一归一化因果。三个历史shared-global控制另列，不是本批同容量/同期消融。
+
+完整step统计显示当前Triplet非零步骤为201 1882/2649、100 842/6559、MSVR 992/1000，因此不能继续把新当前基础三集都称为Triplet饱和。作者仅记head_losses，无法据此分解其Triplet活动；不同loss幅度不作单独原因。六端末轮mAP均低于其best，保留完整50轮轨迹及训练/逐轮评价时间，后者不含构造/M0/最终评价且两包更新数不同。
+
+fresh gpt-6-astra/max完整性审计实际WARN，A/B/C/F PASS、D/E WARN，same-family/provisional，非跨家族独立接受。主要结果/epoch/step/GT计数均可核对；完整27,266条protocol记录符合作者ID/camera/time解析，MSVR保留103个gallery-only身份。原任务提示包含执行者预期数值，审计已明示非盲审并独立读原记录。结果主张另由fresh result-to-claim判断，完整结论及其限制见公开CLAIMS_FROM_RESULTS.md/.json，不把工程绿灯当科学通过。
+
+审计发现paired报告导入tools/analyze_correspondence_distances.py但原249绑定未纳入它。单独追回5031字节源码，SHA833ebeb47cb5840422710fc00df1a974338cb04078249720d867f18b945f997a，与17:52:32运行前EV1收录及当时分析器见证、已提交8ca源码一致；原F1manifest保持不变。事后追回不能追认原运行不可变绑定，因此paired诊断的此项WARN保留。原始tensor/image字节没有在这次本地fresh审计中再读，保留实际save/load回执和远端hash的证据上限。evidence_check.py未解析到，明确记录unavailable，无假造PASS。
+
+用户21:53改为“现在不用25，只用26的四台显卡吧”，覆盖此前两机八卡新训练授权。新训练仅2026 GPU0–3、最多四项独立单卡；原2025六端已全部完成，无需中止或迁移。22:02:52实查2026无compute/项目进程、四卡空闲、磁盘52,511,584,256字节，既有/data/gaob/Re-ID/conda-envs/tri_reid和/data/gaob/Re-ID/dataset存在。资源回执和历史授权区分保存，旧RESOURCE_POOL738不改写。此次只复用原环境，未重新安装。
+
+UGG固定eaf1e8e50d04f34ee3e471440f70d335cc67b2c1的20份完整作者文件已取得Git blob校验；其MSVR samePID-and-scene及全部图库规则与当前metadata表达式相符。普通入口无测试时更新/rerank，默认ori+moe为3072维；GPGR在eval前仍采样噪声，未加载训练后w，不能称确定性复现。仅201 YAML40轮/seed1111，车辆配置/作者历史数据字节/可用best权重未建立。ProxyTTT已找到固定92fb0fa提交，但clone checkout失败、pinned raw仅2/15后超时，仍无完整do_test被调主体审计；保留所有失败记录，不冒称代码复现完成。论文静态与TTT数字继续分列。来源详见REFERENCE_PROTOCOL_NOTE_739.md。
+
+完整证据包：logs/foundation_complete739_20261002，原raw字节保持不变；新派生分析/audit/claims明确区分。整个三数据集baseline/SOTA目标仍ACTIVE_UNMET。旧N1/EV1失败封存，未加新seed、重启旧端或堆入N2/N3。下一项单干预必须明确相同配方/完整初始化/真实batch覆盖和原严格评价，再只在2026启动；本节不将候选方案写成已有成绩。

@@ -1,0 +1,57 @@
+{
+  "schema": "ugg-protocol-access-v1",
+  "shard_id": "ugg_protocol_739",
+  "author_commit": "eaf1e8e50d04f34ee3e471440f70d335cc67b2c1",
+  "inherited_rest_api_failure": {
+    "status": 403,
+    "source": "Parent reported existing GitHub REST rate limit failure; this shard did not retry REST.",
+    "scope": "Access history only; no new response body invented."
+  },
+  "this_shard_failures": [
+    {
+      "method": "git clone --depth1 --filter=blob:none --no-checkout",
+      "url": "https://github.com/wanxixi11/UGG-ReID.git",
+      "exit_code": 128,
+      "message": "fatal: unable to access 'https://github.com/wanxixi11/UGG-ReID.git/': schannel: failed to receive handshake, SSL/TLS connection failed",
+      "source": "Actual exec tool output. Clone failed before checkout and before the subsequent tree command."
+    },
+    {
+      "method": "web open",
+      "url": "https://github.com/wanxixi11/UGG-ReID",
+      "message": "Failed to fetch https://github.com/wanxixi11/UGG-ReID: (400) Timeout fetching",
+      "source": "Actual web tool output on a follow-up open; initial root-page open had succeeded."
+    },
+    {
+      "method": "commit-pinned curl raw",
+      "path": "modeling/make_model_clipreid.py",
+      "exit_code": 28,
+      "bytes_received": 2756,
+      "bytes_expected": 10013,
+      "artifact": "C:/Users/gb/.codex_tmp/ugg_protocol_20261002_2045/access/partials/modeling_make_model_clipreid.py.partial",
+      "error_log": "C:/Users/gb/.codex_tmp/ugg_protocol_20261002_2045/access/modeling_make_model_clipreid.py.stderr.txt",
+      "used_as_complete_code": false
+    },
+    {
+      "method": "commit-pinned curl raw",
+      "path": "layers/make_loss.py",
+      "exit_code": 28,
+      "bytes_received": 0,
+      "bytes_expected": 3597,
+      "error_log": "C:/Users/gb/.codex_tmp/ugg_protocol_20261002_2045/access/layers_make_loss.py.stderr.txt",
+      "used_as_complete_code": false
+    },
+    {
+      "method": "curl raw HTML",
+      "url": "https://arxiv.org/html/2507.04638v3",
+      "exit_code": 28,
+      "bytes_received": 325325,
+      "bytes_expected": 355796,
+      "artifact": "C:/Users/gb/.codex_tmp/ugg_protocol_20261002_2045/access/partials/arxiv_2507.04638v3.partial.html",
+      "error_log": "C:/Users/gb/.codex_tmp/ugg_protocol_20261002_2045/access/arxiv_2507.04638v3.stderr.txt",
+      "used_as_complete_source": false
+    }
+  ],
+  "successful_alternative_evidence": "Primary arXiv web-page extracts; 14 archived pinned author code files with independent Git-blob verification; 6 fresh raw author code downloads verified against the same tree. These recover the audited protocol/inference sections but do not erase the recorded failures or imply a complete code audit.",
+  "no_author_model_or_scorer_execution": true,
+  "no_weights_images_datasets_downloaded": true
+}
