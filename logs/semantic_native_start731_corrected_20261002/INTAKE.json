@@ -1,0 +1,564 @@
+{
+  "observed_at": "2026-10-02T14:50:26.624075+08:00",
+  "campaign": {
+    "status": "RUNNING",
+    "phase": "clean_clip",
+    "controller_pid": 1301010,
+    "started_at": "2026-10-02T14:46:46.353765+08:00",
+    "jobs": [
+      {
+        "phase": "clean_clip",
+        "dataset": "RGBNT201",
+        "variant": "semantic",
+        "status": "RUNNING",
+        "gpu": 0,
+        "started_at": "2026-10-02T14:46:46.431760+08:00",
+        "command": [
+          "/data/gaob/Re-ID/conda-envs/tri_reid/bin/python",
+          "-B",
+          "/data/gaob/Re-ID/Trifusion/tools/queue_semantic_native_evidence.py",
+          "--worker",
+          "--campaign",
+          "/data/gaob/Re-ID/Trifusion/logs/semantic_native_evidence_20261002_v1",
+          "--dataset",
+          "RGBNT201",
+          "--variant",
+          "semantic",
+          "--gpu",
+          "0"
+        ],
+        "pid": 1301304
+      },
+      {
+        "phase": "clean_clip",
+        "dataset": "RGBNT100",
+        "variant": "semantic",
+        "status": "RUNNING",
+        "gpu": 1,
+        "started_at": "2026-10-02T14:46:46.433536+08:00",
+        "command": [
+          "/data/gaob/Re-ID/conda-envs/tri_reid/bin/python",
+          "-B",
+          "/data/gaob/Re-ID/Trifusion/tools/queue_semantic_native_evidence.py",
+          "--worker",
+          "--campaign",
+          "/data/gaob/Re-ID/Trifusion/logs/semantic_native_evidence_20261002_v1",
+          "--dataset",
+          "RGBNT100",
+          "--variant",
+          "semantic",
+          "--gpu",
+          "1"
+        ],
+        "pid": 1301305
+      },
+      {
+        "phase": "clean_clip",
+        "dataset": "MSVR310",
+        "variant": "semantic",
+        "status": "RUNNING",
+        "gpu": 2,
+        "started_at": "2026-10-02T14:46:46.434750+08:00",
+        "command": [
+          "/data/gaob/Re-ID/conda-envs/tri_reid/bin/python",
+          "-B",
+          "/data/gaob/Re-ID/Trifusion/tools/queue_semantic_native_evidence.py",
+          "--worker",
+          "--campaign",
+          "/data/gaob/Re-ID/Trifusion/logs/semantic_native_evidence_20261002_v1",
+          "--dataset",
+          "MSVR310",
+          "--variant",
+          "semantic",
+          "--gpu",
+          "2"
+        ],
+        "pid": 1301306
+      },
+      {
+        "phase": "clean_clip",
+        "dataset": "RGBNT201",
+        "variant": "combined",
+        "status": "RUNNING",
+        "gpu": 3,
+        "started_at": "2026-10-02T14:46:46.436011+08:00",
+        "command": [
+          "/data/gaob/Re-ID/conda-envs/tri_reid/bin/python",
+          "-B",
+          "/data/gaob/Re-ID/Trifusion/tools/queue_semantic_native_evidence.py",
+          "--worker",
+          "--campaign",
+          "/data/gaob/Re-ID/Trifusion/logs/semantic_native_evidence_20261002_v1",
+          "--dataset",
+          "RGBNT201",
+          "--variant",
+          "combined",
+          "--gpu",
+          "3"
+        ],
+        "pid": 1301307
+      },
+      {
+        "phase": "clean_clip",
+        "dataset": "RGBNT100",
+        "variant": "combined",
+        "status": "PENDING"
+      },
+      {
+        "phase": "clean_clip",
+        "dataset": "MSVR310",
+        "variant": "combined",
+        "status": "PENDING"
+      }
+    ],
+    "updated_at": "2026-10-02T14:46:46.437512+08:00"
+  },
+  "manifest_sha256": "8555b297cdbe2a017fff3cea68430a26a135ed9afc0ffd0dfe1e9c7bed5d9842",
+  "source243_unchanged": true,
+  "controller_alive": true,
+  "disk_free_bytes": 65058488320,
+  "gpu_inventory": "0, 16141 MiB, 24576 MiB\n1, 16256 MiB, 24576 MiB\n2, 16867 MiB, 24576 MiB\n3, 16687 MiB, 24576 MiB\n",
+  "child_states": [
+    {
+      "dataset": "RGBNT201",
+      "variant": "semantic",
+      "state": {
+        "status": "RUNNING",
+        "dataset": "RGBNT201",
+        "variant": "semantic",
+        "gpu": 0,
+        "controller_pid": 1301304,
+        "started_at": "2026-10-02T14:46:46.533904+08:00",
+        "jobs": [
+          {
+            "dataset": "RGBNT201",
+            "variant": "semantic",
+            "mode": "m0",
+            "gpu": 0,
+            "status": "COMPLETE",
+            "started_at": "2026-10-02T14:39:28.839225+08:00",
+            "output_dir": "/data/gaob/Re-ID/Trifusion/trained-model/semantic_native_preflight_20261002_v1_RGBNT201_semantic_m0",
+            "command": [
+              "/data/gaob/Re-ID/conda-envs/tri_reid/bin/python",
+              "-B",
+              "/data/gaob/Re-ID/Trifusion/tools/run_semantic_native_evidence.py",
+              "--dataset",
+              "RGBNT201",
+              "--mode",
+              "m0",
+              "--variant",
+              "semantic",
+              "--protocol",
+              "/data/gaob/Re-ID/Trifusion/logs/official_three_dataset_protocols_20260923/RGBNT201.json",
+              "--signal-source",
+              "/data/gaob/Re-ID/Trifusion/comparators/Signal-cd1b0a6",
+              "--clip-weight",
+              "/data/gaob/Re-ID/Trifusion/pertrained-model/ViT-B-16.pt",
+              "--initialization",
+              "/data/gaob/Re-ID/Trifusion/logs/semantic_native_preflight_20261002_v1/RGBNT201_semantic.json",
+              "--output-dir",
+              "/data/gaob/Re-ID/Trifusion/trained-model/semantic_native_preflight_20261002_v1_RGBNT201_semantic_m0",
+              "--seed",
+              "42",
+              "--epochs",
+              "50"
+            ],
+            "pid": 1290462,
+            "exit_code": 0,
+            "completed_at": "2026-10-02T14:40:09.528188+08:00",
+            "origin": "verified_preflight"
+          },
+          {
+            "mode": "train",
+            "status": "RUNNING",
+            "started_at": "2026-10-02T14:46:51.477660+08:00",
+            "output_dir": "/data/gaob/Re-ID/Trifusion/trained-model/semantic_native_evidence_20261002_v1_clean_clip_semantic_RGBNT201_seed42_full",
+            "command": [
+              "/data/gaob/Re-ID/conda-envs/tri_reid/bin/python",
+              "-B",
+              "/data/gaob/Re-ID/Trifusion/tools/run_semantic_native_evidence.py",
+              "--dataset",
+              "RGBNT201",
+              "--mode",
+              "train",
+              "--variant",
+              "semantic",
+              "--protocol",
+              "/data/gaob/Re-ID/Trifusion/logs/official_three_dataset_protocols_20260923/RGBNT201.json",
+              "--signal-source",
+              "/data/gaob/Re-ID/Trifusion/comparators/Signal-cd1b0a6",
+              "--clip-weight",
+              "/data/gaob/Re-ID/Trifusion/pertrained-model/ViT-B-16.pt",
+              "--initialization",
+              "/data/gaob/Re-ID/Trifusion/logs/semantic_native_preflight_20261002_v1/RGBNT201_semantic.json",
+              "--output-dir",
+              "/data/gaob/Re-ID/Trifusion/trained-model/semantic_native_evidence_20261002_v1_clean_clip_semantic_RGBNT201_seed42_full",
+              "--seed",
+              "42",
+              "--epochs",
+              "50"
+            ],
+            "pid": 1301735
+          }
+        ]
+      }
+    },
+    {
+      "dataset": "RGBNT100",
+      "variant": "semantic",
+      "state": {
+        "status": "RUNNING",
+        "dataset": "RGBNT100",
+        "variant": "semantic",
+        "gpu": 1,
+        "controller_pid": 1301305,
+        "started_at": "2026-10-02T14:46:46.533773+08:00",
+        "jobs": [
+          {
+            "mode": "m0",
+            "status": "COMPLETE",
+            "started_at": "2026-10-02T14:46:46.570443+08:00",
+            "output_dir": "/data/gaob/Re-ID/Trifusion/trained-model/semantic_native_evidence_20261002_v1_clean_clip_semantic_RGBNT100_seed42_m0",
+            "command": [
+              "/data/gaob/Re-ID/conda-envs/tri_reid/bin/python",
+              "-B",
+              "/data/gaob/Re-ID/Trifusion/tools/run_semantic_native_evidence.py",
+              "--dataset",
+              "RGBNT100",
+              "--mode",
+              "m0",
+              "--variant",
+              "semantic",
+              "--protocol",
+              "/data/gaob/Re-ID/Trifusion/logs/official_three_dataset_protocols_20260923/RGBNT100.json",
+              "--signal-source",
+              "/data/gaob/Re-ID/Trifusion/comparators/Signal-cd1b0a6",
+              "--clip-weight",
+              "/data/gaob/Re-ID/Trifusion/pertrained-model/ViT-B-16.pt",
+              "--initialization",
+              "/data/gaob/Re-ID/Trifusion/logs/semantic_native_preflight_20261002_v1/RGBNT100_semantic.json",
+              "--output-dir",
+              "/data/gaob/Re-ID/Trifusion/trained-model/semantic_native_evidence_20261002_v1_clean_clip_semantic_RGBNT100_seed42_m0",
+              "--seed",
+              "42",
+              "--epochs",
+              "50"
+            ],
+            "pid": 1301367,
+            "exit_code": 0,
+            "completed_at": "2026-10-02T14:47:29.895243+08:00"
+          },
+          {
+            "mode": "train",
+            "status": "RUNNING",
+            "started_at": "2026-10-02T14:47:34.956771+08:00",
+            "output_dir": "/data/gaob/Re-ID/Trifusion/trained-model/semantic_native_evidence_20261002_v1_clean_clip_semantic_RGBNT100_seed42_full",
+            "command": [
+              "/data/gaob/Re-ID/conda-envs/tri_reid/bin/python",
+              "-B",
+              "/data/gaob/Re-ID/Trifusion/tools/run_semantic_native_evidence.py",
+              "--dataset",
+              "RGBNT100",
+              "--mode",
+              "train",
+              "--variant",
+              "semantic",
+              "--protocol",
+              "/data/gaob/Re-ID/Trifusion/logs/official_three_dataset_protocols_20260923/RGBNT100.json",
+              "--signal-source",
+              "/data/gaob/Re-ID/Trifusion/comparators/Signal-cd1b0a6",
+              "--clip-weight",
+              "/data/gaob/Re-ID/Trifusion/pertrained-model/ViT-B-16.pt",
+              "--initialization",
+              "/data/gaob/Re-ID/Trifusion/logs/semantic_native_preflight_20261002_v1/RGBNT100_semantic.json",
+              "--output-dir",
+              "/data/gaob/Re-ID/Trifusion/trained-model/semantic_native_evidence_20261002_v1_clean_clip_semantic_RGBNT100_seed42_full",
+              "--seed",
+              "42",
+              "--epochs",
+              "50"
+            ],
+            "pid": 1304389
+          }
+        ]
+      }
+    },
+    {
+      "dataset": "MSVR310",
+      "variant": "semantic",
+      "state": {
+        "status": "RUNNING",
+        "dataset": "MSVR310",
+        "variant": "semantic",
+        "gpu": 2,
+        "controller_pid": 1301306,
+        "started_at": "2026-10-02T14:46:46.533829+08:00",
+        "jobs": [
+          {
+            "mode": "m0",
+            "status": "COMPLETE",
+            "started_at": "2026-10-02T14:46:46.570347+08:00",
+            "output_dir": "/data/gaob/Re-ID/Trifusion/trained-model/semantic_native_evidence_20261002_v1_clean_clip_semantic_MSVR310_seed42_m0",
+            "command": [
+              "/data/gaob/Re-ID/conda-envs/tri_reid/bin/python",
+              "-B",
+              "/data/gaob/Re-ID/Trifusion/tools/run_semantic_native_evidence.py",
+              "--dataset",
+              "MSVR310",
+              "--mode",
+              "m0",
+              "--variant",
+              "semantic",
+              "--protocol",
+              "/data/gaob/Re-ID/Trifusion/logs/official_three_dataset_protocols_20260923/MSVR310.json",
+              "--signal-source",
+              "/data/gaob/Re-ID/Trifusion/comparators/Signal-cd1b0a6",
+              "--clip-weight",
+              "/data/gaob/Re-ID/Trifusion/pertrained-model/ViT-B-16.pt",
+              "--initialization",
+              "/data/gaob/Re-ID/Trifusion/logs/semantic_native_preflight_20261002_v1/MSVR310_semantic.json",
+              "--output-dir",
+              "/data/gaob/Re-ID/Trifusion/trained-model/semantic_native_evidence_20261002_v1_clean_clip_semantic_MSVR310_seed42_m0",
+              "--seed",
+              "42",
+              "--epochs",
+              "50"
+            ],
+            "pid": 1301368,
+            "exit_code": 0,
+            "completed_at": "2026-10-02T14:47:31.190956+08:00"
+          },
+          {
+            "mode": "train",
+            "status": "RUNNING",
+            "started_at": "2026-10-02T14:47:36.100706+08:00",
+            "output_dir": "/data/gaob/Re-ID/Trifusion/trained-model/semantic_native_evidence_20261002_v1_clean_clip_semantic_MSVR310_seed42_full",
+            "command": [
+              "/data/gaob/Re-ID/conda-envs/tri_reid/bin/python",
+              "-B",
+              "/data/gaob/Re-ID/Trifusion/tools/run_semantic_native_evidence.py",
+              "--dataset",
+              "MSVR310",
+              "--mode",
+              "train",
+              "--variant",
+              "semantic",
+              "--protocol",
+              "/data/gaob/Re-ID/Trifusion/logs/official_three_dataset_protocols_20260923/MSVR310.json",
+              "--signal-source",
+              "/data/gaob/Re-ID/Trifusion/comparators/Signal-cd1b0a6",
+              "--clip-weight",
+              "/data/gaob/Re-ID/Trifusion/pertrained-model/ViT-B-16.pt",
+              "--initialization",
+              "/data/gaob/Re-ID/Trifusion/logs/semantic_native_preflight_20261002_v1/MSVR310_semantic.json",
+              "--output-dir",
+              "/data/gaob/Re-ID/Trifusion/trained-model/semantic_native_evidence_20261002_v1_clean_clip_semantic_MSVR310_seed42_full",
+              "--seed",
+              "42",
+              "--epochs",
+              "50"
+            ],
+            "pid": 1304502
+          }
+        ]
+      }
+    },
+    {
+      "dataset": "RGBNT201",
+      "variant": "combined",
+      "state": {
+        "status": "RUNNING",
+        "dataset": "RGBNT201",
+        "variant": "combined",
+        "gpu": 3,
+        "controller_pid": 1301307,
+        "started_at": "2026-10-02T14:46:46.537438+08:00",
+        "jobs": [
+          {
+            "dataset": "RGBNT201",
+            "variant": "combined",
+            "mode": "m0",
+            "gpu": 1,
+            "status": "COMPLETE",
+            "started_at": "2026-10-02T14:39:29.866589+08:00",
+            "output_dir": "/data/gaob/Re-ID/Trifusion/trained-model/semantic_native_preflight_20261002_v1_RGBNT201_combined_m0",
+            "command": [
+              "/data/gaob/Re-ID/conda-envs/tri_reid/bin/python",
+              "-B",
+              "/data/gaob/Re-ID/Trifusion/tools/run_semantic_native_evidence.py",
+              "--dataset",
+              "RGBNT201",
+              "--mode",
+              "m0",
+              "--variant",
+              "combined",
+              "--protocol",
+              "/data/gaob/Re-ID/Trifusion/logs/official_three_dataset_protocols_20260923/RGBNT201.json",
+              "--signal-source",
+              "/data/gaob/Re-ID/Trifusion/comparators/Signal-cd1b0a6",
+              "--clip-weight",
+              "/data/gaob/Re-ID/Trifusion/pertrained-model/ViT-B-16.pt",
+              "--initialization",
+              "/data/gaob/Re-ID/Trifusion/logs/semantic_native_preflight_20261002_v1/RGBNT201_combined.json",
+              "--output-dir",
+              "/data/gaob/Re-ID/Trifusion/trained-model/semantic_native_preflight_20261002_v1_RGBNT201_combined_m0",
+              "--seed",
+              "42",
+              "--epochs",
+              "50"
+            ],
+            "pid": 1290574,
+            "exit_code": 0,
+            "completed_at": "2026-10-02T14:40:11.337970+08:00",
+            "origin": "verified_preflight"
+          },
+          {
+            "mode": "train",
+            "status": "RUNNING",
+            "started_at": "2026-10-02T14:46:51.478032+08:00",
+            "output_dir": "/data/gaob/Re-ID/Trifusion/trained-model/semantic_native_evidence_20261002_v1_clean_clip_combined_RGBNT201_seed42_full",
+            "command": [
+              "/data/gaob/Re-ID/conda-envs/tri_reid/bin/python",
+              "-B",
+              "/data/gaob/Re-ID/Trifusion/tools/run_semantic_native_evidence.py",
+              "--dataset",
+              "RGBNT201",
+              "--mode",
+              "train",
+              "--variant",
+              "combined",
+              "--protocol",
+              "/data/gaob/Re-ID/Trifusion/logs/official_three_dataset_protocols_20260923/RGBNT201.json",
+              "--signal-source",
+              "/data/gaob/Re-ID/Trifusion/comparators/Signal-cd1b0a6",
+              "--clip-weight",
+              "/data/gaob/Re-ID/Trifusion/pertrained-model/ViT-B-16.pt",
+              "--initialization",
+              "/data/gaob/Re-ID/Trifusion/logs/semantic_native_preflight_20261002_v1/RGBNT201_combined.json",
+              "--output-dir",
+              "/data/gaob/Re-ID/Trifusion/trained-model/semantic_native_evidence_20261002_v1_clean_clip_combined_RGBNT201_seed42_full",
+              "--seed",
+              "42",
+              "--epochs",
+              "50"
+            ],
+            "pid": 1301734
+          }
+        ]
+      }
+    }
+  ],
+  "scope": "Read-only initialization/M0/formal registration intake; no model, training or evaluation invocation.",
+  "files": [
+    {
+      "path": "logs/semantic_native_evidence_20261002_v1/campaign.json",
+      "bytes": 2977,
+      "sha256": "eafef5d6202d58f0e2f86e61bc541353bbe8327792d0110ef1db59d21afe7a9f"
+    },
+    {
+      "path": "logs/semantic_native_evidence_20261002_v1/manifest.json",
+      "bytes": 32384,
+      "sha256": "8555b297cdbe2a017fff3cea68430a26a135ed9afc0ffd0dfe1e9c7bed5d9842"
+    },
+    {
+      "path": "logs/semantic_native_evidence_20261002_v1/semantic_native_evidence_20261002_v1_clean_clip_combined_RGBNT201/campaign.json",
+      "bytes": 2798,
+      "sha256": "d65be48e531ae462235d5378f7a56aeaea9e6a5e9fc0ae9bf4e279a82149c865"
+    },
+    {
+      "path": "logs/semantic_native_evidence_20261002_v1/semantic_native_evidence_20261002_v1_clean_clip_semantic_MSVR310/campaign.json",
+      "bytes": 2709,
+      "sha256": "de688ad698d721c401cf93f5dafc597edead489b90e4b0c625bba5fe77c7ace3"
+    },
+    {
+      "path": "logs/semantic_native_evidence_20261002_v1/semantic_native_evidence_20261002_v1_clean_clip_semantic_RGBNT100/campaign.json",
+      "bytes": 2720,
+      "sha256": "05991959e30a89f81f456c64b1799cea7431d8e20f40de7568b81c9d62585408"
+    },
+    {
+      "path": "logs/semantic_native_evidence_20261002_v1/semantic_native_evidence_20261002_v1_clean_clip_semantic_RGBNT201/campaign.json",
+      "bytes": 2798,
+      "sha256": "1a720fa5cbad1e2cb18ed6f2dbbff2626d3b5422b5f94d7ed736150c18c4fafb"
+    },
+    {
+      "path": "logs/semantic_native_formal_launch731_20261002.json",
+      "bytes": 718,
+      "sha256": "0c20590f944ecf2fe89133dc2fd3f2a9def2f26cb7d03337ca0ae98edb13ba10"
+    },
+    {
+      "path": "logs/semantic_native_preflight_20261002_v1.log",
+      "bytes": 4176,
+      "sha256": "e9a28a7ac9aa8d17a5214d8cc6df93c83cf38c3f0e142d75ee4a64e6d795feb2"
+    },
+    {
+      "path": "logs/semantic_native_preflight_20261002_v1/MSVR310_combined.json",
+      "bytes": 2076,
+      "sha256": "de9f9d94eb3c4f67d9aca78997eb0b6ac9cc30f7979f41275926e8bc099c5c72"
+    },
+    {
+      "path": "logs/semantic_native_preflight_20261002_v1/MSVR310_semantic.json",
+      "bytes": 2076,
+      "sha256": "9d3704878fe8fb3bc9d365ea29ed9b4fecbcf8d12d90ec3795a145697e77a4bd"
+    },
+    {
+      "path": "logs/semantic_native_preflight_20261002_v1/RGBNT100_combined.json",
+      "bytes": 2077,
+      "sha256": "eaba26ab6d45f71c97515050d257a2bb27932a14e324410e61cf7d66be4814e8"
+    },
+    {
+      "path": "logs/semantic_native_preflight_20261002_v1/RGBNT100_semantic.json",
+      "bytes": 2077,
+      "sha256": "ade98a4cac9ed6de090ba463baa8f15de0aed3528f475f62acada1506388dfb1"
+    },
+    {
+      "path": "logs/semantic_native_preflight_20261002_v1/RGBNT201_combined.json",
+      "bytes": 2077,
+      "sha256": "e7641b53010439506109c704c57f33c23309d57621ad4339d4a7b2c2f4fbfd9d"
+    },
+    {
+      "path": "logs/semantic_native_preflight_20261002_v1/RGBNT201_semantic.json",
+      "bytes": 2077,
+      "sha256": "f519a8c458023f4407a2ca082357f00b0a1b7f350a1d046b812f860396db74eb"
+    },
+    {
+      "path": "logs/semantic_native_preflight_20261002_v1/combined.m0.log",
+      "bytes": 1754,
+      "sha256": "41019992b3b4c46dd209e170d9a0e0dbff739a8895dc1f9cb0a4abb551d02b0c"
+    },
+    {
+      "path": "logs/semantic_native_preflight_20261002_v1/preflight.json",
+      "bytes": 46914,
+      "sha256": "754d8bfda9549f789d7ed92906a2b0ac8dcd7d7f627ba6d62fbbcf292c42c904"
+    },
+    {
+      "path": "logs/semantic_native_preflight_20261002_v1/semantic.m0.log",
+      "bytes": 1753,
+      "sha256": "2dd816ccd834e1a884006982a680ae528c55e39182a684ac98ad663231da16b1"
+    },
+    {
+      "path": "logs/semantic_native_preflight_launch730_20261002.json",
+      "bytes": 784,
+      "sha256": "a21f9935a3ca9be280e3d73167c8eb42bd9dd4840c3257d47ff1d0d96719ccd1"
+    },
+    {
+      "path": "trained-model/semantic_native_preflight_20261002_v1_RGBNT201_combined_m0/training.json",
+      "bytes": 4927,
+      "sha256": "79647de3590399811a62408d245de9b1affeee684cf5435fab5618284a0fa161"
+    },
+    {
+      "path": "trained-model/semantic_native_preflight_20261002_v1_RGBNT201_combined_m0/training_steps.jsonl",
+      "bytes": 1440,
+      "sha256": "a3d753c39c03deb85a3d4d62dd5268fb7cc1789af03dff5d15231c238824855d"
+    },
+    {
+      "path": "trained-model/semantic_native_preflight_20261002_v1_RGBNT201_semantic_m0/training.json",
+      "bytes": 4918,
+      "sha256": "e441175940bcb5b3607ca2a789b064a64487207e0c3274a2e8562eaf14e9c992"
+    },
+    {
+      "path": "trained-model/semantic_native_preflight_20261002_v1_RGBNT201_semantic_m0/training_steps.jsonl",
+      "bytes": 1443,
+      "sha256": "31d71b0700154cc038ae6c591cc4be7c4698c8d42a496f69305c1c6a146fb4ea"
+    }
+  ]
+}

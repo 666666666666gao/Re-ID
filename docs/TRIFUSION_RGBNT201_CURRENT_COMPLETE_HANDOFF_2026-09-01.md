@@ -14475,3 +14475,29 @@ EV-A主要配对combined−semantic：三集mAP>0/R1>=0，201及MSVR各至少+.5
 新增四项训练/队列源码及两项CPU完整报告/waiter已实现、AST检查通过。fresh experiment-bridge源码复核结论PASS，gpt-6-astra/max、same-family/provisional；原文见refine-logs/semantic_native_evidence_v1/EXPERIMENT_CODE_REVIEW_20261002.md。复核只检查源码与已存绑定，不等于实际M0/训练/性能通过。CPU新报告必须等六端完整验收后仅调用一次，失败campaign不调用成功报告。
 
 现有环境只作warm reuse，无依赖修改；实查2026-10-02T14:16:45.949689+08:00四卡显存均<500MiB、可用空间67923202048B，旧controller已结束、238来源不变。此节时点未执行新构造/M0、未登记或启动六端。下一步是两个201端各8真实batch M0及三集初始state核对，通过后再登记完整六端；调度240秒、不抢占、无自动retry，预计6–9 GPU小时/四卡3–4小时，按实际进度更新里程碑。N2/N3不同时堆叠，原Goal仍ACTIVE_UNMET。
+
+
+### 41.731 — EV1真实初始化、四端M0与六端正式登记通过；四卡首波运行，单次CPU报告等待器已核实（2026-10-02）
+
+本节仅记录实际启动证据，不提前填检索成绩。前节源码发布79e667a3及四份主文档一致已核实；原N1失败、MSVR-low正式指标为空、旧238源文件及失败SUMMARY均保持封存。新EV1只检验“保留语义value后，原生细节是否提供额外收益”，不叠加N2/N3，也不重跑旧native-high。
+
+真实preflight于14:37:47开始、14:40:17完成。三个数据集×semantic/combined共六份初始化均核实共同状态逐位相同；combined全部初始state等于封存旧high，semantic全部非stem共同state等于旧high；公共CLIP152个视觉张量、fresh camera、共同backbone/neck/classifier均逐项绑定。运行源图包含原238加新5共243项，非仅依赖本机AST。preflight完成后RGBNT201两端各8批真实训练均退出0，M0权重不作为正式训练续跑起点。
+
+| 实查条件 | 真实8批M0 | 非零梯度张量／可训练张量 | 可训练参数元素 | 保存重载最大输出差 | 完整50轮／正式指标 |
+|---|---|---:|---:|---:|---|
+| RGBNT201 semantic | PASS | 281／281 | 89,014,730 | 0.0 | 训练运行／未验收 |
+| RGBNT201 combined | PASS | 287／287 | 89,107,978 | 0.0 | 训练运行／未验收 |
+| RGBNT100 semantic | PASS | 281／281 | 88,831,946 | 0.0 | 训练运行／未验收 |
+| MSVR310 semantic | PASS | 281／281 | 88,993,226 | 0.0 | 训练运行／未验收 |
+| RGBNT100 combined | 等待该端worker执行 | — | 初始化已绑定 | — | 已登记待排／未验收 |
+| MSVR310 combined | 等待该端worker执行 | — | 初始化已绑定 | — | 已登记待排／未验收 |
+
+RGBNT201两端M0峰值分配分别15,074,276,352和15,493,688,832B；全部四个已启动条件均核实视觉参数和fresh camera发生更新，冻结的非视觉Signal状态不变。语义＋细节仍比纯语义多93,248个真实训练参数，不能称容量匹配；M0工程通过不证明模块有效或最终全程稳定。
+
+正式父队列于14:46:38.732461唯一启动，PID1301010；实际manifest SHA8555b297cdbe2a017fff3cea68430a26a135ed9afc0ffd0dfe1e9c7bed5d9842，登记六端seed42/full50。14:50:26只读实查：GPU0 RGBNT201-semantic、GPU1 RGBNT100-semantic、GPU2 MSVR310-semantic、GPU3 RGBNT201-combined正在训练，另两端PENDING；四卡占用16,141／16,256／16,867／16,687MiB，无抢占。磁盘可用65,058,488,320B，当前没有为腾空间删除必要权重。243项源SHA一致，父进程仍存在。该状态是实查快照，不推断之后已完成。
+
+唯一CPU报告等待器于14:50:34.778023启动，PID1310752；14:52:33读回为WAITING_FULL6、invocations=0、进程存在、报告输出目录不存在。等待器按240秒观察；只有六端完成并全部严格重载验收后才调用一次新报告。report SHAa6516aa2894603803b9a544eabaf90b8f4a21701713be146d4fe489cceb9bbf2；waiter SHAe6b6a285edc23006a30ae7a75104b1e3bead5454fc3ea1cdda17cff59fc8344c。失败campaign不会生成成功报告。原N1高分辨率五项有效回执中的high三端只作为历史诊断，不进入新六端验收；原MSVR-low失败项继续为NULL。
+
+启动证据采集曾因把真实training_steps.jsonl写成steps.jsonl而失败；本地留下的0字节错误目标不是远端证据，已单独标记FAILED_INTAKE。采集器另按原queue.child_campaign定义修正子目录名字；随后只读校正采集成功，训练与模型源未改、没有重复M0/训练/评价。原始部分下载及完整校正证据分别保留logs/semantic_native_start731_20261002和logs/semantic_native_start731_corrected_20261002，后者包含六初始化、preflight、四已完成M0、正式manifest/队列和报告等待器回执。
+
+预计整批6–9 GPU小时／四卡约3–4小时，按实际完整端及队列转接更新预计时间；不因途中best改变50轮、seed、选点或门槛。EV-A/EV-B仍无结果，阶段门均未通过；官方集已用于研发与epoch选择、单seed及额外参数边界不变。下一步在预计首个完整端附近核查，再收取全部六端与一次CPU配对报告后做fresh结果审计。Goal继续ACTIVE_UNMET，当前不能声称新信息有效、三个模块成立或SOTA完成。

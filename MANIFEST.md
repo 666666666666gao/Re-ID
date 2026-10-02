@@ -1682,3 +1682,5 @@
 - 2026-10-02 §41.729: N1 all6 original50epoch arms ended300epochs/20416steps; accepted5/invalid1 and originalsuccessreport0 remainFAILED. Separate saved-distance CPU closeoutexit0; source/fresh integrity review archived. N1-A3FAIL/N1-B201FAIL100PASSMSVRunavailable; 128→512/capacity boundary explicit. GoalACTIVE_UNMET.
 
 - 2026-10-02 §41.730: EV1 semantic512 vssemantic+native512 sources, fixed plan, actual fresh source review and warm environment inventory; M0/formal NOT_RUN. Capacity difference93248 explicit; original N1 failure unchanged.
+
+- 2026-10-02 §41.731: Actual EV1 initialization6/M0first4 passed, six full50 registered, four GPUs training, unique CPU waiter invocations0; startup intake correction preserved; no formal metric or scientific pass yet.
