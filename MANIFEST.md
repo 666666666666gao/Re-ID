@@ -1704,3 +1704,5 @@
 | 2026-10-02T19:17:49+08:00 | /experiment-bridge | refine-logs/foundation_recipe_v1/EXPERIMENT_CODE_REVIEW.md | review | gpt-6-astra/max PASS; same-family/provisional; real M0 pending |
 
 - 2026-10-02T19:31:00.200368+08:00: §41.736 F1 actual all6 M0/48steps PASS, strict probe maxdiff0; first4 full50 launched,2queued on2025. No formal scores or source249 changes; snapshot/tracker/doc updated.
+
+- 2026-10-02T19:52:35.849932+08:00: §41.737 F1 measured 1/6 full50+strict evaluation complete,4running/1pending; source249 unchanged,266 immutable text files received; one terminal CPU report pending.
