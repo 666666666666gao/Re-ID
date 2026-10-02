@@ -14458,3 +14458,20 @@ N1-A在三集均FAIL。N1-B在RGBNT100有正配对（mAP+0.2125/R1+1.4577），R
 fresh experiment-audit结论WARN，gpt-6-astra/max、same-family/provisional；完整原文见refine-logs/native_detail_v1/FAILED_CLOSEOUT_EXPERIMENT_AUDIT_20261002.md。复核通过代表这些限定下的证据链可读，不能证明N1有效、三角色必要、跨seed稳定或baseline/SOTA已达成。N3训练侧静态容量仍仅是库存上界（20151/171、10050/50、MSVR60/155多环境身份），不是实际batch梯度支持；N2/N3未实现，未用它们堆叠挽救N1。
 
 下一步先围绕完整结果登记唯一结构假设，区分“替换语义信息”与“增加互补证据”，固定同配方原roles及N1高分辨率记录作为必要对照；不扫描倍率或种子，不重新解释原FAIL。当前尚无下一训练端登记或启动，原Goal保持ACTIVE/UNMET。
+
+
+### 41.730 — 新EV1单因素对照：保留语义value后再添加原生细节，源码复核完成，尚未执行M0或正式训练（2026-10-02）
+
+前置§729终态保持：旧N1全部300轮结束、五端正式有效、低MSVR原重载失败且正式指标为空；N1-A三集失败，N1-B仅100通过、201失败、MSVR不可比较。独立CPU失败收尾退出0，fresh完整性审计WARN。仓库bb4839d9及四份交接文档已核对字节一致；原238项封存来源不变，旧控制与报告不重新执行。
+
+当前新假设是：先保留CNN的语义证据，再检验原生细节是否提供额外未知身份检索收益。新增semantic/combined两条件，CNN语义网格均插值为512候选并产生同一key。semantic从此网格产生value；combined将该网格与同一输入图像经stride8三层CNN的细节逐位置相加，再经过原value投影一次。原query、CNN→Transformer→Mamba桥接、global融合与1536维输出不变；没有新增倍率、投影头、损失、采样器或外部资源。只用细节的原N1 high作为封存历史参照，不重新运行旧失败训练。
+
+combined比semantic增加93248个真实可训练参数，不能称容量匹配，也不放置闲置参数伪造匹配。前置构造检查须在三个数据集实际证明：combined完整初始state等于原high，semantic等于共同非stem部分，新camera/公开视觉152张量/公共backbone及头一致，构造不改变数据RNG。即使成功，此对照首先支持“添加细节与容量后的增量”，不自动单独证明细节信息的因果作用或三个角色必要性。
+
+六端计划沿用公开CLIP干净初始化、视觉FP32 LR5e-6/新增3.5e-4、AdamW wd1e-4、warmup5+cosine50、B64/K8、原PLAIN_V8增强和CE/Triplet。每端必须满50轮，同一最高fused mAP checkpoint的全部CMC、平分取较后轮、完整state严格重载、原1e-5一致性门、真实GT及完整图库、作者camera/时间过滤、无rerank。失败不重试、不换点、不开容差救分；官方集已参与开发与选点、单seed限制继续披露。
+
+EV-A主要配对combined−semantic：三集mAP>0/R1>=0，201及MSVR各至少+.5mAP。EV-B绝对能力combined−固定同配方旧roles采用相同门；此差还含128→512候选与容量变化，不能称单独value效应。两门都通过才支持后续结构；不是baseline/SOTA达成。旧纯69.6415不作新固定分母，原N1低MSVR无正式分数仍不补填。
+
+新增四项训练/队列源码及两项CPU完整报告/waiter已实现、AST检查通过。fresh experiment-bridge源码复核结论PASS，gpt-6-astra/max、same-family/provisional；原文见refine-logs/semantic_native_evidence_v1/EXPERIMENT_CODE_REVIEW_20261002.md。复核只检查源码与已存绑定，不等于实际M0/训练/性能通过。CPU新报告必须等六端完整验收后仅调用一次，失败campaign不调用成功报告。
+
+现有环境只作warm reuse，无依赖修改；实查2026-10-02T14:16:45.949689+08:00四卡显存均<500MiB、可用空间67923202048B，旧controller已结束、238来源不变。此节时点未执行新构造/M0、未登记或启动六端。下一步是两个201端各8真实batch M0及三集初始state核对，通过后再登记完整六端；调度240秒、不抢占、无自动retry，预计6–9 GPU小时/四卡3–4小时，按实际进度更新里程碑。N2/N3不同时堆叠，原Goal仍ACTIVE_UNMET。
