@@ -1684,3 +1684,5 @@
 - 2026-10-02 §41.730: EV1 semantic512 vssemantic+native512 sources, fixed plan, actual fresh source review and warm environment inventory; M0/formal NOT_RUN. Capacity difference93248 explicit; original N1 failure unchanged.
 
 - 2026-10-02 §41.731: Actual EV1 initialization6/M0first4 passed, six full50 registered, four GPUs training, unique CPU waiter invocations0; startup intake correction preserved; no formal metric or scientific pass yet.
+
+- 2026-10-02 §41.732: EV1 first full50 semantic-MSVR control accepted, five endpoints continue; bound26-file foundation recipe readback only. No paired mechanism conclusion, source or threshold change.

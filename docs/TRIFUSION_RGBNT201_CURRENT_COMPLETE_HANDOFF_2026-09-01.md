@@ -14501,3 +14501,23 @@ RGBNT201两端M0峰值分配分别15,074,276,352和15,493,688,832B；全部四�
 启动证据采集曾因把真实training_steps.jsonl写成steps.jsonl而失败；本地留下的0字节错误目标不是远端证据，已单独标记FAILED_INTAKE。采集器另按原queue.child_campaign定义修正子目录名字；随后只读校正采集成功，训练与模型源未改、没有重复M0/训练/评价。原始部分下载及完整校正证据分别保留logs/semantic_native_start731_20261002和logs/semantic_native_start731_corrected_20261002，后者包含六初始化、preflight、四已完成M0、正式manifest/队列和报告等待器回执。
 
 预计整批6–9 GPU小时／四卡约3–4小时，按实际完整端及队列转接更新预计时间；不因途中best改变50轮、seed、选点或门槛。EV-A/EV-B仍无结果，阶段门均未通过；官方集已用于研发与epoch选择、单seed及额外参数边界不变。下一步在预计首个完整端附近核查，再收取全部六端与一次CPU配对报告后做fresh结果审计。Goal继续ACTIVE_UNMET，当前不能声称新信息有效、三个模块成立或SOTA完成。
+
+
+### 41.732 — EV1首端完整验收及基础配方源码对照（实际2026-10-02 15:20）
+
+唯一预定观察在15:20:02.216094执行，原controller1301010继续运行；MSVR310 semantic已完整50轮，M0／训练／评价均exit0，严格重载与独立作者计分通过。正式同一best为第24轮：mAP52.68704029579014，Rank-1 71.91201448440552；其他CMC随该权重保存在原回执，不另选轮次。这是纯语义512候选控制的成绩，不是加入原生细节的收益。combined-MSVR尚未执行，EV-A/EV-B均不能下结论。
+
+| 端 | 15:20实际状态 | 完成训练轮数 | 本次正式mAP / R1 |
+|---|---|---:|---|
+| RGBNT201 semantic | GPU0训练 | 44/50 | — |
+| RGBNT201 combined | GPU3训练 | 40/50 | — |
+| RGBNT100 semantic | GPU1训练 | 14/50 | — |
+| RGBNT100 combined | GPU2已接替MSVR semantic，M0通过后训练 | 1/50 | — |
+| MSVR310 semantic | COMPLETE／VERIFIED_COMPLETE | 50/50 | 52.6870 / 71.9120 |
+| MSVR310 combined | PENDING | 0/50 | — |
+
+六端登记及原243源文件未改，唯一CPU等待器仍WAITING_FULL6、invocations=0、poll240。磁盘可用64,339,918,848B；无删除或重启。完整原始快照与首端回执摘录保存在logs/semantic_native_milestone732_20261002/。本次只读取已有日志，不重新前向、训练、评价或生成全六端成功报告。下一次只读里程碑为15:35，靠近201配对验收及MSVR combined转接；预计全部结束仍为估计，不能预填结果。
+
+等待期间完成26份已绑定源码的离线基础配方对照，见refine-logs/semantic_native_evidence_v1/FOUNDATION_RECIPE_READBACK_20261002.md/.json。Signal cd1b0a6默认NO_MARGIN=True，用未归一化特征上的soft-margin batch-hard Triplet；201为单1536分类头，100/MSVR为三套512模态头，processor累加各头0.25CE＋Triplet。当前clean/EV1为单融合头、先L2归一化、CE权重1＋margin0.3 Triplet。作者图像变换逐模态独立调用；当前共享flip/crop，独立erasing。作者代码三集B/K为64/8、128/16、64/4；当前均64/8。作者100 YAML默认30轮，不能当作论文统一50轮的代码证明；未来若按项目50轮改动需明确披露。
+
+作者201/100采用带epoch噪声的cosine及公共warmup起始LR，故优化器名义visual5e-6不代表全程实际LR；MSVR使用20/40轮multistep。当前使用AdamW、固定组比例warm5＋cos50。以上均为源码差异，不是造成失分的已证实原因，也不是作者无模块baseline已复现。基础结构、配方和共享适配的有限对照将在EV1收齐后再登记，当前不改EV1、不加N2/N3、不救旧N1失败。Goal保持ACTIVE_UNMET。
