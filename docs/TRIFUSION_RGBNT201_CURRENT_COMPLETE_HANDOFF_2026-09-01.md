@@ -2,7 +2,7 @@
 
 ## 0. 一页结论
 
-**本页更新至§41.755（2026-10-03）：F2六端已完成并封存，raw相对normalized仅MSVR满足事前推进条件，不能称三集通用修复。下一项F3只做一组成对的Triplet入口尺度诊断：BN/CE在两端均保持归一化，Triplet分别用归一化／raw特征，部署均L2。四个独立入口、固定计划和fresh源码审核已登记；尚未部署、初始化前向、M0或正式训练，不能把源码审核当运行通过。后续只使用2026 GPU0–3、最多四项单卡训练；2025不新增本项目训练。目标仍ACTIVE／UNMET。** 当前状态以末尾实际回执为准，历史记录不覆盖。六端均先M0、再fresh完整50轮，不扫系数、margin或seed。
+**本页更新至§41.756（2026-10-03）：F2六端已完成封存，raw仅MSVR通过事前推进条件。F3已通过fresh SOURCE_ONLY审核、精确同步及CUDA隐藏265项源码/导入核验；07:38:31在2026实际启动唯一控制器2691826，初始GPU0。初始化配对、六项M0和正式50轮仍待实际回执，不能由控制器启动推断通过。首次只读观察07:50:31、随后240秒；全部M0通过后最多四卡并行fresh full50。仅使用2026物理GPU0–3/max4，2025仅文本同步、不新增本项目训练。目标仍ACTIVE／UNMET。** 入口尺度有限诊断不计作新模块或SOTA结论；不因观察超时重启，不扫系数、margin或seed。
 
 **现行合同：** 每个正式候选完整50轮，使用作者完整query/gallery及camera／MSVR时间段过滤，以官方fused mAP最高的同一checkpoint报告全部指标，随后严格重载。RGBNT201报告mAP／R1／R5／R10，RGBNT100及MSVR310报告mAP／R1；不跨epoch或seed拼列。官方集已参与逐轮选点和历史方法选择，属于已消费基准上的探索性结果。
 
@@ -20,7 +20,7 @@
 
 **训练成本账本：** 24消融及3独立global共27端的实际训练／逐轮评价时间已绑定日志重建。M3四条件平均开启／关闭耗时比分别201 2.0452、100 1.9192、MSVR 1.4695，对应平均ΔmAP −0.4828、+0.1065、+0.2943。记录包含逐轮评价且并行负载不同，非受控测速；参数仅可训练部分，不是总参数/FLOPs。进一步支持检验预测任务的职责和成本，十五端现已全部完成；该旧账本与新M2成本分开，见§41.628、639。
 
-**当前服务器：** `gaob@172.19.12.138:2026`，项目`/data/gaob/Re-ID/Trifusion`，数据`/data/gaob/Re-ID/dataset`，环境`/data/gaob/Re-ID/conda-envs/tri_reid`。仅物理GPU0–3/max4；06:06实查四卡无计算进程，F2原控制器和报告均结束。05:51:43终态接收时可用15,958,028,288字节，未删除任何权重。2025只保留历史证据与文本同步；06:07实查命令引用Trifusion预训练文件的进程实际cwd全部为DeMo-DualAxis，未改动其他项目。作者权重、必要best、当前M0依赖及全部原始记录保留；模型、原图和距离数组留远端。主MD与Desktop、GitHub、两台服务器同名副本继续核对同字节。
+**当前服务器：** `gaob@172.19.12.138:2026`，项目`/data/gaob/Re-ID/Trifusion`，数据`/data/gaob/Re-ID/dataset`，环境`/data/gaob/Re-ID/conda-envs/tri_reid`。训练只用物理GPU0–3/max4。F3于07:38:31一次启动，启动前四张RTX3090占用15/60/15/153 MiB、compute为空、磁盘16,347,992,064字节，旧F2控制器和唯一报告终态；这是启动边界证据，不是此刻M0/训练进度。2025仅同步本项目代码与文本，未新增训练；不抢占其他项目。作者权重、必要best、当前M0及全部原始记录保留，模型、原图、距离矩阵留远端。
 
 **当前模型与下一步边界：** F2是无角色、无adapter/SIM/AlignM的公开CLIP＋fresh camera＋1536维BN/分类头控制，操纵同时作用于BN/CE输入和Triplet，并非三个新模块的训练结果。CNN／Transformer／Mamba旧框架、N1和EV1保留各自结果，不改名累计收益。下一候选须依据完整F1/F2与fresh审查单独登记；此处未声称已有新模块、已启动后继训练或达到SOTA。以下08:28等叙述是原§666阶段快照，不能作为当前运行状态。
 
@@ -15187,3 +15187,17 @@ CLOSED_EV1_M0_RETIREMENT.json列全部精确路径、SHA、逐项退役时间及
 **状态：REVIEWED_SOURCE_REGISTERED_NOT_LAUNCHED。** 尚无初始化/M0/full50/指标；唯一下一步是精确部署、CUDA隐藏源码导入核验以及在2026启动一次已审核队列。不要重启已结束的F2或改写其结果，也不要把25的文本同步解释为25训练。
 
 同步说明：第一次发布脚本在Git暂存阶段因`logs`被忽略而退出1，尚未commit/push/部署。实际索引检查发现计划的CRLF被`core.autocrlf=true`转换；后续只对明确自有文件force-add，并用本次命令的`core.autocrlf=false`重新暂存，提交前逐字节核对。source/plan/review原字节和科学门槛不变，原脚本及失败事实保留在`PUBLICATION_FIRST_FAILURE.json`。
+
+
+## 41.756 F3实际一次启动与M0里程碑观察：仅2026四卡（2026-10-03T07:43:38.961468+08:00）
+
+§755的四入口、immutable plan及fresh SOURCE_ONLY PASS已以`1b62f79c0426ce64ca9dd20d0d3dc2629cc4f245`精确发布，664项累计自有文本和主交接五份一致。该阶段未导入模型或启动训练。随后本节所列动作各执行一次，没有重启F2、旧资源等待器或失败发布脚本。
+
+- 部署器在2026以CUDA_VISIBLE_DEVICES空字符串执行源码/导入检查：265项现行源SHA等于旧F2 seal259＋新四入口/plan/review六项，路径为登记的项目和tri_reid环境；torch2.5.1+cu121、numpy1.24.4、mamba2.2.6.post3、timm1.0.15，CUDA未初始化。此检查无模型构造、优化器、评分或环境重建，不替代M0。
+- 真实启动：`2026-10-03T07:38:31.029288+08:00`，2026控制器PID`2691826`，初始物理GPU`0`，run`logs/metric_feature_scale_20261003_v1`，日志`logs/metric_feature_scale_20261003_v1_launcher.log`。启动后立即核对真实proc/cmdline；状态仅`CONTROLLER_STARTED_INITIALIZATION_PENDING`。
+- 启动前实查四卡15/60/15/153 MiB、无compute，磁盘`16347992064`字节，旧F2 COMPLETE/report一次/exit0且旧控制器不存在。未调用2025训练入口、未抢占、未修改源代码或配方；新的parent/worker命令仅绑定2026 GPU0–3/max4。
+- 自动顺序：fresh六初始化与三组实际CE/deployment配对前向 → 六项八更新M0与严格重载 → 全部M0通过才六项fresh完整50轮 → 六端严格完成后唯一CPU报告。当前尚未收取这些运行门的完成回执，不提前报告指标。
+- 隐藏只读观察器实际启动07:40:45，UV PID44108/Python PID`43044`，首查`2026-10-03T07:50:31.029288+08:00`，随后240秒；本地状态`WAITING_INITIAL_M0_MILESTONE`。观察器只读现有process/JSON/log，不做模型、评分、训练或自动重启。M0全通过且full phase出现时停止这一初始观察器；后续依真实训练ETA设置下一个里程碑。
+- 固定比较、gate与单seed/官方选点限制仍见§755/immutable plan。正式四卡墙钟约3.03小时仅为前次真实区间推算，初始化/M0/严格重载/报告另计；实际混合端速度尚未知。无精度或SOTA结论，三数据集目标仍ACTIVE/UNMET。
+
+原始启动、CUDA隐藏核验、观察器启动和源码均存`logs/metric_feature_scale_launch756_20261003/`。下一步读取原观察器07:50里程碑回执；不要在超时后另起控制器，不用局部epoch或某端分数取消其余正式端。
