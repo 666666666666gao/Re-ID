@@ -14706,3 +14706,14 @@ experiment-bridge Phase2.5要求部署前fresh secondary code review。实际gpt
 23:19只读复核三集记录数为201 train3951/query836/gallery836、100 train8675/query1715/gallery8575、MSVR train1032/query591/gallery1055；合计41,360条唯一引用图像路径全部存在，train/query身份分离、MSVR完整103个gallery-only身份保留。此处只核路径存在与记录，不复核原图字节，也没有模型forward或指标评分。恢复后的246源码与三个原26协议有效，分析器SHA仍833ebeb47cb5840422710fc00df1a974338cb04078249720d867f18b945f997a。
 
 资源实查与归属检查发现四卡由/data/gaob/Re-ID/DeMo-DualAxis的既有训练占用，未中止或修改其进程。23:19磁盘free42,087,841,792字节；不沿用22:02空闲快照启动。当前授权始终ONLY2026 GPU0–3/max4，无新增25GPU训练。F2初始化、六M0、fresh六full50和唯一CPU报告全部未执行，待完整审查结论与实际空闲容量；不重跑封存F1/N1/EV1。证据目录logs/training_feature_scale_target741_20261002为task-scoped派生只读/恢复回执，私有完整记录保留。GoalACTIVE_UNMET。
+
+
+## §41.742：F2源码审查实际完成PASS，运行门仍单独等待26容量（2026-10-02T23:32:43.586128+08:00）
+
+同一gpt-6-astra/max reviewer740在三次实际容量中断后完成第四次续接，私有MD/JSON已实存；完整审查verdict PASS、blocking_issues为空，same-family/provisional、仅SOURCE_ONLY_AFTER_MINIMAL_PROTOCOL_PROVENANCE_FIX。原请求/中断错误/完整响应不改写、不公开私有prompt。它读取四个入口、封存依赖和§741追加计划，最终五项code/plan SHA与当前字节一致；48份eager项目import均在绑定范围，真实GT/MSVR过滤、fresh初始化/M0顺序、八批M0记录、full50与全batch顺序比较均经源码审查。源表预期249继承+3新protocol+7显式文件=259；实际初始化/梯度/性能尚未验证，源码PASS不能替代这些门。
+
+审查确认F2-SOURCE-1已修正，原canonical不变、其余246旧文件严格验证；它独立核对23:18恢复及23:19路径记录，并保留图像字节、训练种子和全量正式batch实际一致性等未验证边界。完整原报告及JSON逐字节公布在refine-logs/training_feature_scale_v1，timestamped副本先保存，再固定名复制；审查route另有REVIEW_TRACE_20261002.md，actual四次调用及前三次错误私下保留。
+
+审查报告里的“patch/review undeployed”对应其读取的23:19回执，随后§741的864cd581代码修正已同步2026；132份cumulative owned文本和五份交接副本逐字节一致。该后续事实在route说明中另列，不回改审查原文。此次继续部署完成的审查文本并验证全部owned闭包，模型、原图、NPY不迁移；没有新增25训练。
+
+最后实际GPU回执仍为23:19四卡由DeMo-DualAxis占用。真正启动前需再次核warm环境/来源/卡和磁盘；等待既有任务释放，不抢占。F2三组初始forward、六M0、六fresh full50和唯一CPU报告仍全部NOT_RUN；fixed50/seed42/训练尺度对照与原严格门不改。GoalACTIVE_UNMET，现有F1包收益不计新模块/SOTA，N1/EV1失败仍封存。

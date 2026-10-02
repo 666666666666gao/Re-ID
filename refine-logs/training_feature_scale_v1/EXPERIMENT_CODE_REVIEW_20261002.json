@@ -1,0 +1,145 @@
+{
+  "schema": "trifusion-training-feature-scale-code-review-v1",
+  "status": "COMPLETED",
+  "verdict": "PASS",
+  "verdict_scope": "SOURCE_ONLY_AFTER_MINIMAL_PROTOCOL_PROVENANCE_FIX",
+  "created_at": "2026-10-02T15:29:06.200808+00:00",
+  "reviewer_model": "gpt-6-astra",
+  "reasoning_effort": "max",
+  "review_independence": "same-family",
+  "acceptance_status": "provisional",
+  "review_agent": "/root/review_training_feature_scale740",
+  "workflow": "experiment-bridge Phase 2.5 and local-codex-policy",
+  "reviewed_repository": "C:\\Users\\gb\\.trifusion_github_publish_22c3bee",
+  "original_review_base_commit": "b81f311f47d9da635ba4470f0e138b0cbdc5b7e8",
+  "latest_read_repository_head": "864cd58101222e2d11d55dd79f6b98268fbffc8c",
+  "reviewed_local_patch": "Only source_map protocol-provenance correction; plan append at section 41.741 also read.",
+  "reviewed_source_sha256": {
+    "tools/run_training_feature_scale.py": "473853f58e4ed70bf123509afe2861fa8a9988631c04f0ce04f3260c55fd9081",
+    "tools/queue_training_feature_scale.py": "f73bc7df61523ea6c20c63b12d9392b5fea74415f6acd8402c7ad7eba0b7bbca",
+    "tools/check_training_feature_scale_pair.py": "f1d57db3cd377beff1a6279f2e866c3a0201acb7145e8175cc23400870ee1599",
+    "tools/report_training_feature_scale.py": "977281df7c340d5b9b9d2b6aa36d33b018810bb7cdf935c2186a68a1215d413c",
+    "refine-logs/training_feature_scale_v1/EXPERIMENT_PLAN.md": "07b3670ed0b9fc1b5d837a1d24dcd1d4ce16cb9feed6df41ac2f43d587419fed"
+  },
+  "blocking_issues": [],
+  "resolved_issues": [
+    {
+      "id": "F2-SOURCE-1",
+      "severity": "P1",
+      "status": "RESOLVED_IN_REVIEWED_LOCAL_PATCH",
+      "location": "tools/queue_training_feature_scale.py:24-42",
+      "problem": "Original source_map required F1/2025 canonical protocol hashes on 2026. Actual preserved canonical protocols have the sealed243 /data/gaob bytes, not the F1/249 /data2/gb bytes, so the original assertion would fail before initialization.",
+      "evidence": "TARGET_LAYOUT.json lists the three actual protocol mismatches. Archived source2026 protocols independently match sealed243. SPARSE_RESTORATION.json confirms canonical protocols unchanged and restores the separate sparse omissions.",
+      "minimal_correction": "Use sealed243 digests only for the three explicit canonical protocol paths, original249 digests for all other 246 entries including the seal itself, and record actual hashes. Preserve old manifests/canonical protocols and separate F2 root/order checks.",
+      "verification": "The patch matches this correction; all 249 post-restoration target entries equal its expected map. No training/math/data-order/threshold/retry change."
+    }
+  ],
+  "checks": [
+    {
+      "area": "Learning boundary",
+      "status": "PASS_SOURCE_REVIEW",
+      "references": "run_training_feature_scale.py:22-47,75-89; run_foundation_recipe.py:133-162",
+      "finding": "Both arms reuse the current-package Signal, BN and classifier and the same CE (label smoothing 0.1) plus Euclidean batch-hard Triplet (margin 0.3). Only the feature supplied to both BN/CE and Triplet changes between overall L2 and raw. Inference always returns L2-normalized 1536D. No retained role, adapter, SIM, AlignM or ReID checkpoint enters the model."
+    },
+    {
+      "area": "Initialization and optimizer",
+      "status": "PASS_SOURCE_REVIEW",
+      "references": "run_clean_clip_joint.py:37-107; run_foundation_recipe.py:62-100,133-162,189-245",
+      "finding": "The public initializer checks all 152 visual tensors, creates fresh camera/current heads and seeds construction identically. The variant wrapper keeps identical complete state and parameter names. Both arms use seed 42/full 50, actual B64/K8/workers 4, the same sampler/shared geometry, AdamW weight decay 1e-4, visual/nonvisual base LRs 5e-6/3.5e-4, five-epoch warmup plus the inherited cosine formula, and AMP initial scale 256. Actual LR groups and feature norms are logged."
+    },
+    {
+      "area": "Monkeypatch and import paths",
+      "status": "PASS_SOURCE_REVIEW",
+      "references": "run_training_feature_scale.py:17-19,39-47,69-94; queue_training_feature_scale.py:55-62,96-102,124-126",
+      "finding": "Original runner functions are captured before replacement. Construction/loader dispatch receive recipe=current; normalized/raw both take the inherited non-author optimizer/loss branch. Each fresh process configures its own globals, workers invoke the F2 entry, and the inherited phase runner receives the F2 launcher and F1 completion verifier. No recursion or accidental F1 main execution was found. The inspected eager project import route covers 48 files, all included in the inherited source map plus explicit F2 additions; relevant deferred constructor, loader, sampler and scorer call paths were also read."
+    },
+    {
+      "area": "Freshness and phase ordering",
+      "status": "PASS_SOURCE_REVIEW",
+      "references": "queue_training_feature_scale.py:69-112; check_training_feature_scale_pair.py:24-52",
+      "finding": "Six initialization witnesses and three exact two-real-training-record deployment-forward comparisons precede all M0 work. The six M0 jobs complete and every M0 receipt is verified before the full phase. Full training uses separate fresh construction and a fresh optimizer from public initialization; it never loads M0 weights."
+    },
+    {
+      "area": "M0 and strict model state",
+      "status": "PASS_SOURCE_REVIEW",
+      "references": "run_foundation_recipe.py:174-186,189-284; queue_foundation_recipe.py:70-81",
+      "finding": "Each M0 processes eight real batches and requires finite loss/gradients, nondecreasing AMP scale, cumulative nonzero activity for every trainable tensor, changed visual/camera parameters, unchanged frozen parameters and full state save/load with strict=True. The inherited queue additionally requires M0 maximum absolute reload difference <=1e-5. These are implemented gates, not executed passes."
+    },
+    {
+      "area": "Actual processed batch trace",
+      "status": "PASS_SOURCE_REVIEW",
+      "references": "run_training_feature_scale.py:50-72; report_training_feature_scale.py:35-54",
+      "finding": "BatchOrderLoader is re-iterable and advances its epoch on each iteration. Logging after yield records a processed batch when the consumer resumes: fetching M0 index 8 logs processed index 7, then index 8 is broken before processing and is not logged. Full exhaustion records its final batch. The report compares step counts and epoch/batch keys, then byte equality of actual labels/cameras/RGB filename order across each full pair."
+    },
+    {
+      "area": "GT and full gallery",
+      "status": "PASS_SOURCE_REVIEW",
+      "references": "official_three_dataset_data.py; run_correspondence_roles.py:60-108; run_official_three_dataset_roles.py:58-68,230-238; pinned author metrics.py and dataset parser",
+      "finding": "Extraction uses the complete fixed query/gallery and actual protocol labels. Squared Euclidean distance is computed on L2 features. RGBNT removes same identity AND camera; MSVR removes same identity AND scene/time, parsed from filename characters 6:9, matching eval_func_msrv. All different identities remain, including 103 MSVR gallery-only identities. Query/gallery counts remain 836/836, 1715/8575 and 591/1055. Independent formula checks compare to the pinned author scorer."
+    },
+    {
+      "area": "Selection and terminal report",
+      "status": "PASS_SOURCE_REVIEW",
+      "references": "run_foundation_recipe.py:246-313; report_training_feature_scale.py:22-64",
+      "finding": "Full 50 epochs use later-tie mAP-best selection and all CMC values from that same checkpoint. Complete model state uses strict load; the original metric-reload gate stays below 1e-5 percentage points, with both training-best and reload distances retained. All six accepted endpoints precede one CPU report. It reports all six endpoints, batch parity and raw-minus-normalized paired results. Advancement is unrounded mAP gain >=0.5 with nondecreasing Rank-1, not identity macro-average."
+    },
+    {
+      "area": "Provenance and exact dependencies",
+      "status": "PASS_SOURCE_REVIEW",
+      "references": "queue_training_feature_scale.py:17-42; SPARSE_RESTORATION.json; DATA_READY.json",
+      "finding": "The original executed cache matches all 249 F1 hashes. The corrected target map matches 246 F1 hashes plus the three exact sealed243 canonical protocol hashes. PREDECESSOR is the correct archived F1 manifest and is now restored from sparse checkout. The previously omitted analyze_correspondence_distances.py is explicitly included; its target hash matches the reviewed local file. New protocol metadata/order equal the original F1 records except root. Once the completed review is installed, the inherited 249 plus three new protocols and seven explicit additions yield 259 source entries."
+    },
+    {
+      "area": "Resources and failure policy",
+      "status": "PASS_SOURCE_REVIEW",
+      "references": "queue_training_feature_scale.py:69-70,93-106; queue_foundation_recipe.py:212-231; queue_correspondence_refinement.py:135-181",
+      "finding": "The coordinator asserts the 2026 project root. The inherited parser/queue restricts execution to GPU 0-3, one active job per card, maximum four, existing idle-memory checks and 240-second polling. Failure prevents progression. There is no OOM retry, reduced-batch retry or backend fallback. Current supplied GPU evidence shows occupied unrelated tasks; source correctness does not establish available capacity."
+    }
+  ],
+  "deployment_readiness": {
+    "status": "NOT_READY_TO_LAUNCH",
+    "sparse_restoration": "COMPLETE_2026-10-02T23:18:01.197930+08:00",
+    "data_presence": "PASS_41360_PATHS_2026-10-02T23:19:22.253757+08:00",
+    "patch_deployed": false,
+    "completed_review_deployed": false,
+    "gpu_status": "All four GPUs occupied in latest supplied target receipt; no preemption of unrelated DeMo-DualAxis jobs.",
+    "initial_forward_pair": "NOT_RUN",
+    "m0": "NOT_RUN",
+    "full_training": "NOT_RUN",
+    "terminal_report": "NOT_RUN"
+  },
+  "nonblocking_caveats": [
+    "Source review does not establish neural parity, raw-branch stability, M0 success, full formal batch equality, strict evaluation success or retrieval improvement. Those runtime gates remain NOT_RUN.",
+    "Batch equality covers the recorded label/camera/RGB filename sequence; augmented tensor byte equality is not measured or claimed.",
+    "This fixed one-seed comparison changes BN/CE and Triplet jointly. It does not isolate Triplet-only causality, explain the entire F1 package gap, establish seed stability or support SOTA. Identity bootstrap resamples fixed-model identities, not training seeds; official benchmarks are consumed for epoch selection.",
+    "The data-presence receipt verifies all 41,360 referenced unique paths, fixed metadata/order and disjoint train/query IDs. It explicitly does not verify image byte identity or historical author assets.",
+    "The local checkout has 107 absent archived paths and 27 CRLF-only byte differences from the executed tree. Reused dependencies were read from the exact supplied cache; current target receipts, not the local checkout alone, establish deployed file presence."
+  ],
+  "validation": {
+    "ast_parse": "PASS_ALL_FOUR_F2_FILES_AFTER_PATCH",
+    "original_cache": "249_OF_249_MATCH_ORIGINAL_MANIFEST",
+    "target_restored_map": "249_OF_249_MATCH_PATCHED_RULE",
+    "eager_project_import_closure": "48_FILES_NO_UNBOUND_PROJECT_SOURCE_IN_INSPECTED_ROUTE",
+    "diagnostic_helper_target_equals_reviewed_local": true,
+    "new_protocol_non_root_metadata_and_order_equal": true,
+    "msvr_gallery_only_identities": 103
+  },
+  "reviewer_execution_boundary": {
+    "source_edits": 0,
+    "ssh_calls": 0,
+    "gpu_calls": 0,
+    "model_executions": 0,
+    "training_executions": 0,
+    "scorer_executions": 0,
+    "experiment_report_executions": 0,
+    "child_agents": 0,
+    "operations": "Local source/artifact reads, AST parsing and standard-library comparisons; writes only completed review Markdown/JSON."
+  },
+  "evidence_paths": [
+    "C:\\Users\\gb\\.codex_tmp\\training_feature_scale_readonly741\\TARGET_LAYOUT.json",
+    "C:\\Users\\gb\\.codex_tmp\\training_feature_scale_readonly741\\OCCUPIED_PROCESSES.json",
+    "C:\\Users\\gb\\.codex_tmp\\training_feature_scale_readonly741\\SPARSE_RESTORATION.json",
+    "C:\\Users\\gb\\.codex_tmp\\training_feature_scale_readonly741\\DATA_READY.json"
+  ],
+  "prior_capacity_interruptions": "Preserved native backend capacity errors were availability failures, not code findings or completed verdicts. This review continues the same task/model; original traces remain untouched."
+}
