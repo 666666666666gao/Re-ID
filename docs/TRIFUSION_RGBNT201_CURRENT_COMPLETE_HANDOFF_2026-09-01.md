@@ -2,7 +2,7 @@
 
 ## 0. 一页结论
 
-**当前进度（§41.786，2026-10-03）：** 唯一native原实现对原实现无更新AMP对照已终止：83/295固定梯度FAIL，其余13门PASS，0更新/0M0/0正式训练/0新权重。原路径也失败，不能把V5差异唯一归给分段；按登记停止GPU parity，继续源码分析，未定位可直接修复原因。五份primary/317份as-launched源码及fresh救援封存。新退役15份已闭合context M0探针165678236B，15端正式mAP-best及距离/记录保留。Goal ACTIVE_UNMET。
+**当前进度（§41.787，2026-10-03晚）** native原路对原路83/295梯度FAIL继续封存，原登记STOP_GPU_PARITY不变。安装Mamba两份核心Python源码与官方v2.2.6.post3逐字节一致；对应CUDA源码存在跨通道浮点原子累加，仅确认具体风险，尚无运行根因或局部修复。当前0/9新路线M0、0正式50轮/0新增权重；此前15份闭合探针已退役、正式mAP-best及记录保留。Goal ACTIVE_UNMET。
 
 **现行合同：** 每个正式候选完整50轮，使用作者完整query/gallery及camera／MSVR时间段过滤，以官方fused mAP最高的同一checkpoint报告全部指标，随后严格重载。RGBNT201报告mAP／R1／R5／R10，RGBNT100及MSVR310报告mAP／R1；不跨epoch或seed拼列。官方集已参与逐轮选点和历史方法选择，属于已消费基准上的探索性结果。
 
@@ -15717,3 +15717,18 @@ JOB记录19:04:34.612193开始，19:05:21.571946 child exit1/FAILED。19:09:07.7
 响应“及时清理无用权重，只保留最佳”：19:23:55只读盘点完成此前context_identity五条件×三集15端，均完整50轮/单mAP-best/独立重载/完整距离与accepted_matrix VERIFIED_COMPLETE；controller/worker/children均不存活。collector后继只读M0 training.json，不读M0二进制。19:25:10—19:25:24真实退役精确15份m0_reload_probe.pth，共165678236B；删除前实存SHA、路径及完成依赖核对，删除后15端正式best、距离、receipt、training及公开/作者/当前输入保护摘要再核对。空闲41626472448→41792126976B，磁盘余量变化不等同独占磁盘归因。15端正式目录各仅best_map.pth，其他项目未触碰；所有失败、训练、重载与指标记录保留。被退役探针不能再直接二进制重放，文本与正式结果依赖仍闭合。此前清理不重复计入本次。未证明确无依赖的其余M0文件继续逐项核对，不盲删。
 
 实际fresh救援结论：FAIL_STOP_GPU_PARITY_NO_LOCALIZED_REPAIR；完整边界以本节archive/review/RESCUE_REVIEW.md及真实final为准。
+
+
+## 41.787 native反向依赖版本与原子累加的有限源码核对（2026-10-03晚）
+
+本节只补源码证据，不重跑原路/V5，不执行新GPU诊断、M0或正式训练。19:40:56下载官方Mamba v2.2.6.post3六份版本化源码；此前从实际Python3.10环境取回的mamba_simple.py与selective_scan_interface.py，与官方同版本逐字节一致。新增intake保存原URL、字节、时间和摘要，另保留许可及PyTorch v2.5.1复现说明。Python源码一致不能证明已安装CUDA二进制的编译来源、选项或实际执行轨迹。
+
+实际调用的IndependentNativeRoles为16区域、128宽，production factory设置d_state16、d_conv4、expand2，内部宽度为256；同一套Mamba正反处理48个空间/模态token。官方Python快分支与普通分支都生成输入相关B/C并走selective_scan_cuda；快分支的causal-conv可用性未在旧控制中记录，故不宣称已确认运行分支。两种候选分支都将B/C整理为单group；对应C++把dim/ngroups作为通道分组比例，kernel按batch与channel发block，却按batch与group寻址可变dB/dC，并用gpuAtomicAdd累加。因此，在使用该版本内核的条件下，一个样本的256个通道block会累加同一组B/C梯度元素；32样本见证的条件launch为32×256 block。这是源码推导，未采集真实kernel trace。
+
+浮点加法的结果依赖累加顺序，而该实现未固定跨block的求和顺序；此处是具体数值风险，不再泛泛猜测CUDA。但还不能认定它造成了83项失败。对应C++还将累加的dB/dC转回输入dtype，快分支通过x投影把相关梯度传回Mamba输入；这只说明上游差异有可行路径，不证明已发生FP16放大，更不证明Signal76项和adapter7项均由此产生。旧控制的roles/detail差值虽在门内，仍不足以确定最早差异边界。历史完整梯度和pre-forward RNG未保存，90−83不能当作分段额外造成7项失配。
+
+依据仍以logs/native_atomic_sources787_20261003/SOURCE_ANALYSIS.md及版本化原文为准：[Mamba forward](https://github.com/state-spaces/mamba/blob/v2.2.6.post3/mamba_ssm/modules/mamba_simple.py#L143-L204)、[反向kernel](https://github.com/state-spaces/mamba/blob/v2.2.6.post3/csrc/selective_scan/selective_scan_bwd_kernel.cuh#L307-L321)、[PyTorch v2.5.1复现边界](https://github.com/pytorch/pytorch/blob/v2.5.1/docs/source/notes/randomness.rst#L63-L124)。实际全patch FP32采样覆盖旧grid_sample的排除结论不变。关闭Mamba fast mode仍会走selective-scan候选路径；改变dependency内部checkpoint_lvl也不直接去掉该原子累加。未据此升级依赖、替换扫描、切精度、放门、改batch、seed或backend设置。
+
+19:45:43分析结论SOURCE_RISK_IDENTIFIED_NOT_RUNTIME_CAUSE，localized_source_repair为空；0新增GPU运行、0optimizer update、0scorer、0权重。当前证据没有可直接验证的修复，原STOP_GPU_PARITY继续成立，九端M0与完整科学目标均未完成。缺失的运行证据是实际extension/build来源及两个Mamba调用的输入/输出/上下游梯度边界；本节列出证据缺口不等于登记或授权另一个GPU实验。后续运行需先形成具体可审查的计划修订，不能凭存在风险就复跑。权重保留规则持续有效：每正式端只留一份mAP-best，其他已确认无依赖的自训二进制及时退役；当前分析没有新权重可清理，不重复计入上一节15份165678236B。
+
+发布入口勘误：19:50:15第一次本地publisher在import paramiko时立即失败，尚未进入Git暂存、提交、推送或SSH；原stdout/stderr/exit保留。实际入口缺少声明的本地SSH依赖，后续显式使用uv --with paramiko；不修改远端conda，不重启模型或GPU实验。

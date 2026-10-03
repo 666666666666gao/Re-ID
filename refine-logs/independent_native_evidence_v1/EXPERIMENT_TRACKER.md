@@ -1,4 +1,4 @@
-# Author-recipe independent native evidence: status at §41.786
+# Author-recipe independent native evidence: status at §41.787
 
 The existing nine-endpoint scientific plan is unchanged: seed42, public CLIP with fresh camera/heads, matched author recipe, global-only/semantic/native on RGBNT201, MSVR310 and RGBNT100, full50 and one mAP-best per endpoint. Native−semantic must improve mAP by at least 0.5 percentage points without Rank-1 decline on every dataset. The independent global-only comparison and the other registered comparisons remain required.
 
@@ -21,3 +21,5 @@ At 19:05:21 the single native original/original AMP control failed the unchanged
 The registered FAIL branch is now active: stop GPU parity probes; no original/V5 retry, additional GPU arm, tolerance/precision/batch/seed weakening, or automatic M0/formal launch. Further work is limited to existing-source/evidence analysis and a concrete, reviewable future proposal. This status is engineering evidence, not a negative efficacy score for the scientific method. Broad Goal remains ACTIVE_UNMET.
 
 Storage: every completed formal endpoint retains one mAP-best with all metrics from that checkpoint. Fifteen completed context-identity M0 binaries were retired only after full50/reload/report closure and pre/post checks; corresponding formal bests, distances and all textual records were retained. No native-original control weight exists to retire.
+
+Section787 source-only supplement: installed Mamba's two core Python files match official v2.2.6.post3 byte for byte. Both candidate forward branches call single-group selective scan; the corresponding upstream backward has cross-channel floating-point atomic accumulation. This is a concrete potential mechanism, not a measured cause: installed extension build provenance and intermediate backward values were not captured. No localized repair, model/dependency/backend change, new GPU run or weight. All nine M0/formal statuses and STOP_GPU_PARITY remain unchanged. Full analysis: logs/native_atomic_sources787_20261003/SOURCE_ANALYSIS.md.
