@@ -1,0 +1,155 @@
+{
+  "schema": "trifusion-rescue-cpu-saved-failure778-v1",
+  "reviewed_at": "2026-10-03T16:34:00+08:00",
+  "reviewer": {
+    "agent": "/root/rescue_cpu_saved_failure778",
+    "context": "fresh",
+    "review_independence": "same-family",
+    "acceptance_status": "provisional",
+    "native_spawn_parameters_reported_by_parent": {
+      "model": "gpt-6-astra",
+      "reasoning_effort": "max",
+      "fork_turns": "none"
+    },
+    "underlying_backend_independently_verified": false,
+    "model_attribution": "Actual native spawn parameters reported by parent; no independent underlying backend or cross-family attribution."
+  },
+  "verdict": "WARN_DIAGNOSIS_ONLY",
+  "actual_v4_numeric_gate": "FAIL",
+  "unchanged_v4_restart": false,
+  "m0_or_formal_continuation": false,
+  "inspection_only": true,
+  "remote_connections": 0,
+  "model_imports": 0,
+  "experiments_started": 0,
+  "production_code_edits": 0,
+  "weight_deletions": 0,
+  "evidence_roots": {
+    "v4": "C:/Users/gb/.codex_tmp/independent_evidence_draft/cpu_saved_terminal_intake778",
+    "original_repeat": "C:/Users/gb/.codex_tmp/independent_evidence_draft/original_repeat_intake776",
+    "v3": "C:/Users/gb/.codex_tmp/independent_evidence_draft/terminal_intake775"
+  },
+  "actual_v4_facts": {
+    "controller_present": false,
+    "controller_exit_code": null,
+    "collector_exit_code": 0,
+    "failed_backward_child_exit_code": 1,
+    "raw_campaign_status": "INITIALIZING",
+    "raw_jobs": [],
+    "initializations": 3,
+    "eval_pairs": 1,
+    "complete_backward_witnesses": 0,
+    "m0_updates": 0,
+    "formal50_jobs": 0,
+    "report_invocations": 0,
+    "weight_output_empty": true,
+    "witness_dataset": "RGBNT201",
+    "witness_samples": 32,
+    "full_author_batch": 64,
+    "forward_atol_rtol": [0.00001, 0.00001],
+    "gradient_atol_rtol": [0.0001, 0.0001],
+    "global_only": {
+      "gradient_parameters": 209,
+      "failed_gradient_parameters": 0,
+      "gradient_max_absolute_difference": 0.0
+    },
+    "semantic": {
+      "gradient_parameters": 281,
+      "failed_gradient_parameters": 94,
+      "failed_signal_parameters": 83,
+      "failed_adapter_parameters": 11,
+      "gradient_max_absolute_difference": 0.0078125,
+      "cv_embed_max_absolute_difference": 0.001220703125,
+      "none_mismatches": 0,
+      "raw_fused_global_loss_max_absolute_differences": [0.0, 0.0, 0.0, 0.0],
+      "heads_fixed_gate_passed_before_failure": true,
+      "post_gradient_state_buffer_rng_bn_hook_assertions_executed": false,
+      "group_observations": {
+        "roles": {"parameters": 70, "nonzero_differences": 66, "failed": 0, "max_absolute_difference": 0.000000476837158203125},
+        "readout": {"parameters": 2, "nonzero_differences": 0, "failed": 0, "max_absolute_difference": 0.0},
+        "signal": {"parameters": 155, "nonzero_differences": 150, "failed": 83, "max_absolute_difference": 0.0078125},
+        "adapters": {"parameters": 54, "nonzero_differences": 17, "failed": 11, "max_absolute_difference": 0.000244140625}
+      }
+    },
+    "native_backward_tested": false
+  },
+  "historical_original_repeat": {
+    "actual_status": "ORIGINAL_BACKWARD_REPEAT_PARITY_PASS",
+    "gradient_parameters": 281,
+    "gradient_max_absolute_difference": 2.9103830456733704e-11,
+    "v4_recorded_labels_cameras_paths_images_match": true,
+    "v4_recorded_initial_model_state_matches": true,
+    "v4_cfg_matches": true,
+    "cross_process_raw_rng_equality_proven": false,
+    "universal_determinism_proven": false
+  },
+  "hypotheses": [
+    {
+      "name": "saved_tensor_layout_or_stride_change",
+      "status": "PLAUSIBLE_INPUT_PATH_NOT_OBSERVED",
+      "source_evidence": [
+        "modeling/trifusion/cpu_saved_evidence_clip.py:7-16 wraps only original bound forward in built-in save_on_cpu(pin_memory=False)",
+        "comparators/Signal-cd1b0a6/modeling/clip/model.py:448-461,484-487 uses reshape, permute, CLS indexing, projection",
+        "comparators/Signal-cd1b0a6/modeling/meta_arch.py:103,108-109 uses camera indexing and token slices",
+        "modeling/trifusion/correspondence_roles.py:64-72 uses permute followed by stack and multiple adapter branches"
+      ],
+      "missing_evidence": "No pack/unpack tensor metadata or exact runtime torch/autograd/graph.py is included. A permute followed by stack does not prove a saved tensor changes stride after copying.",
+      "causality_proven": false
+    },
+    {
+      "name": "backward_dag_structure_or_execution_order_change",
+      "status": "STRUCTURAL_REWRITE_NOT_SHOWN_EXECUTION_ORDER_UNMEASURED",
+      "source_evidence": [
+        "No checkpoint, replay, explicit stream change or forward reordering in v4 helper",
+        "correspondence_roles.py:64-89 has shared parameters, adapter branches, capture and three modal calls",
+        "independent_native_roles.py:66-74 consumes both stages and shared_global; evidence_author_heads.py:14-18 discards stages in global_only"
+      ],
+      "missing_evidence": "No runtime backward node or kernel execution trace. First failed named parameter is not earliest divergent backward operator.",
+      "causality_proven": false
+    }
+  ],
+  "recommended_next_step": {
+    "kind": "ONE_BOUNDED_REAL_DIAGNOSTIC",
+    "status": "PROPOSED_NOT_IMPLEMENTED_OR_RUN",
+    "variant": "semantic",
+    "dataset": "RGBNT201",
+    "processes": 1,
+    "arms": ["original", "original_with_builtin_cpu_save_and_metadata_logging"],
+    "forward_backward_pairs_total": 2,
+    "optimizer_updates": 0,
+    "max_automatic_retries": 0,
+    "gates_unchanged": true,
+    "observations": [
+      "Read actual installed save_on_cpu and saved_tensors_hooks source/version before implementing direct delegation",
+      "Candidate pack input, CPU payload and unpack output shape/dtype/layout/stride/storage_offset/device; scalar sequence IDs only",
+      "Symmetric forward values and incoming production backward gradients at original stages/shared_global return boundary",
+      "All existing output/head/281-gradient/state/buffer/RNG/BN/hook outcomes persisted before the final fixed assertion"
+    ],
+    "instrumentation_limits": [
+      "Delegate original built-in pack/unpack exactly once; no extra copies, contiguous, dtype changes or new streams",
+      "Do not retain original saved GPU tensor references merely to log metadata",
+      "No callback cpu/item/global synchronization; compare retained boundary gradients after production backward",
+      "No whole-DAG profiler, new loss, optimizer step, full campaign, fallback or compatibility path",
+      "If observation changes behavior or failure does not recur, report inconclusive and stop; do not replace v4 failure with a pass"
+    ],
+    "decision_rules": [
+      "Observed saved stride/layout difference plus equal boundary forward and gradients supports prioritizing saved representation, without proving sole cause",
+      "Different boundary forward requires locating hidden forward divergence first",
+      "Equal boundary forward but different boundary gradients means the difference is already present at the backbone backward input; a pack-only fix is not established",
+      "No layout difference, no recurrence, or insufficient evidence means unresolved; terminate the diagnostic without automatic follow-on memory candidates"
+    ],
+    "memory_intervention_recommended_now": false,
+    "can_satisfy_m0_or_formal_gate": false
+  },
+  "contract_and_retention": {
+    "compute": "Only existing 2026 physical GPU0-3, max4, no preemption; this diagnostic one idle GPU; 2025 text only",
+    "training_batches": {"RGBNT201": "B64/K8", "RGBNT100": "B128/K16", "MSVR310": "B64/K4"},
+    "unchanged": ["public CLIP", "fresh camera/heads", "seed42", "AMP FP16", "GradScaler256 witness", "author optimizer/loss", "raw training/L2_1536 deployment", "all9 M0 before all9 formal50", "numeric thresholds"],
+    "diagnostic_new_checkpoints": 0,
+    "v4_weights_to_cleanup": 0,
+    "engineering_probes": "Retain only through their required strict verification and terminal report, then retire after existing dependency checks",
+    "completed_experiments": "Retain one mAP-best checkpoint; all reported metrics from that checkpoint",
+    "protected": "Public author weights, active dependencies, other projects",
+    "poll_seconds_for_long_diagnostic": [180, 300]
+  }
+}

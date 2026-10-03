@@ -1,0 +1,19 @@
+To https://github.com/666666666666gao/Re-ID.git
+   ec349fd6..227d5e63  main -> main
+Traceback (most recent call last):
+  File "C:\Users\gb\.codex_tmp\publish_failure778.py", line 81, in <module>
+    verification=json.loads(script(client,f"from pathlib import Path;import hashlib,json;root=Path({root!r});expected={expected!r};actual={{name:hashlib.sha256((root/name).read_bytes()).hexdigest() for name in expected}};assert actual==expected;print(json.dumps({{'port':{port},'verified_files':actual,'model_executed':False,'training_started':False}}))"))
+                            ~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\gb\.codex_tmp\publish_failure778.py", line 50, in script
+    assert stdout.channel.recv_exit_status()==0,error.decode()
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+  File "/usr/lib/python3.12/pathlib.py", line 1021, in read_bytes
+    with self.open(mode='rb') as f:
+         ^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/pathlib.py", line 1015, in open
+    return io.open(self, mode, buffering, encoding, errors, newline)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: '/data/gaob/Re-ID/Trifusion/.aris/traces/experiment-bridge/2026-10-03_native_cpu_saved_storage777/001-review.request.json'
+

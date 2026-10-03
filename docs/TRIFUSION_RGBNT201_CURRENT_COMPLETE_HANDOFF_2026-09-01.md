@@ -2,7 +2,7 @@
 
 ## 0. 一页结论
 
-**当前进度（§41.778，2026-10-03）：** CPU-save v4 已实际启动并在 RGBNT201 semantic 梯度一致性门停止，未进入 M0/正式50轮；新权重目录为空。原前向与loss一致，但94/281梯度不满足固定门，不能认定整体等价或B128内存通过。失败回执封存，等待针对性复核，不原样重启或放宽门。用户重申及时清理无用权重、每个完成实验只保留同一份mAP-best；§777精确退役8份工程probe共2789830448B，正式best及必要证据保留。§777五份文档与1608份归属文本已实际同步；仅2026四卡用于计算，2025仅文本。Goal ACTIVE_UNMET。
+**当前进度（§41.779，2026-10-03）：** CPU-save v4仍封存为M0前梯度FAIL；fresh救援只建议一次semantic RGBNT201张量保存/骨干边界诊断，未批准修复或正式训练。两臂、两个backward、零更新、无权重，固定原AMP/seed/损失/门不变；新诊断源码已复核，尚未启动。上轮实际接收失败证据并完成§778五份文档/1634归属文本一致核验，属于实质进展。每完成实验仅保留mAP-best，必要工程probe验收后退役。只2026四卡计算，2025仅文本；正式9端50轮仍未启动。Goal ACTIVE_UNMET。
 
 **现行合同：** 每个正式候选完整50轮，使用作者完整query/gallery及camera／MSVR时间段过滤，以官方fused mAP最高的同一checkpoint报告全部指标，随后严格重载。RGBNT201报告mAP／R1／R5／R10，RGBNT100及MSVR310报告mAP／R1；不跨epoch或seed拼列。官方集已参与逐轮选点和历史方法选择，属于已消费基准上的探索性结果。
 
@@ -15601,3 +15601,16 @@ pre-assert完整测量显示：global-only 209个梯度无差异；semantic 281�
 用户明确重申“及时清理我们产生的无用的权重，只保留指标最好的权重”。每个完成实验只保留同一份mAP-best，其他指标随该权重报告；训练入口已经覆盖保存单个best_map.pth，不生成逐epoch权重归档。严格重载与终态报告仍依赖的M0工程probe先保留，通过终态后核对实际文件、SHA和无依赖再及时退役，保留文本回执。作者/公开权重、当前必要依赖、正式最佳对照及其他项目不在无用清理范围。§777已实际删除八份过期probe共2789830448B，不能重复执行删除；剩余旧probe元数据库存不等于已经证明无用，不盲删。该CPU-save失败发生在任何M0权重生成之前。
 
 另补§777延迟同步终态：16:14:39.666663，2025只做SFTP/标准库文本同步，90份变更与累计1608份归属文本核验，五份主文档SHA均为b731a67012310e51002c9fb4226dfb8164c136fe506b3d55a42ba40cdf5e23ab。没有2025模型导入、GPU或训练使用。此前“2025待同步”的记录保留为历史，而非当前事实。§778接收与本次文档同步仍按实际回执另核对。
+
+
+## 41.779 一次保存张量与梯度边界诊断准备（2026-10-03）
+
+上轮已完成真实v4终态接收、梯度测量归纳及§778五份交接文档同步，属于progress；没有把原始INITIALIZING字段或一次采样当成正在训练。Fresh rescue778为WARN_DIAGNOSIS_ONLY，同族模型/fresh context/provisional，未连接服务器或启动模型，也未批准任何内存修复。补充核对：semantic的70个roles梯度都过固定门，但66个已有非零差、最大4.76837158203125e-7；readout两项完全一致。失败参数集中在骨干，不证明首个差异发生在骨干。旧原方法重复控制与v4记录的输入摘要、初始模型状态和cfg一致，但跨进程原始RNG未留存，不能扩大为确定性证明。
+
+16:42:22仅在2026读取实际PyTorch2.5.1+cu121运行源码及资源，确认save_on_cpu的pack_hook/unpack_hook可直接委托，pin_memory=False仍是原tensor.cpu()/to(device)。旧v4父进程不存在，home权重目录为空；当时GPU1正被其他任务使用，不能据旧观察选择该卡或抢占。源码有permute/view与多路梯度汇合，没有实际stride变更或backward调度证据，故不预先添加contiguous、恢复stride、精度切换或另一种offload。
+
+新增diagnose_cpu_saved_boundaries.py仅做一次semantic RGBNT201原实现/内置CPU-save两臂、两个forward/backward、零optimizer步，复用原完整B64/K8批次首32及相同初始状态/RNG/AMP FP16/scaler256/作者head/loss。候选pack/unpack每次只调用实际内置函数一次，记录shape、stride、storage_offset、dtype/layout/device及顺序，不保留原GPU保存张量、不额外复制值或修复布局。在两臂相同stages/shared_global出口retain_grad，callback不做cpu/item/同步，backward后再复制边界值与传入梯度。MEASURED.json先保存完整281项梯度、heads/outputs/loss、buffer/state/RNG/BN/hook全部检查，随后再用原1e-5/1e-4固定门断言；边界比较是定位证据，不替代参数门或正式检索。原RNG字节列表以文本保留；不保存模型、原图或权重。
+
+SOURCE_ONLY fresh复核与实际native trace保留；源码通过不等于诊断已跑。预计1–2分钟，部署前再次核对2026来源和当前空卡，首次只读观察180秒，父子真实exit独立记录。观测可能改变时序，若偶然PASS不能覆盖v4或自动启动M0；若未定位，结束这一次诊断，不追加另一个条件或原样重试。只有实际结果支持具体修复，才另登记唯一下一干预。所有9个完整作者batch、八更新、严格重载M0及正式9端50轮仍未完成。
+
+§778同步执行来源补记：原publisher已完成本地commit/push与2026 fast-forward，但累计文本核验发现5份旧归属trace被稀疏检出移出工作树，原exit1保留；过早的2025依赖同步因本地proof尚未生成而在SSH前失败。未原样重启publisher；单独依据实际归属清单恢复缺失文本，16:32:25核验累计1634份文本与五份doc一致，227d5e63/2183725B/SHA ae78f608ed4c64006a49a38ffaa876ee46272f6cbe437cc6da4db1af4507ee71。修复未涉及权重或模型，其他dirty与受保护文件未覆盖。后续同步同样先核对实际归属文本，避免将部分同步当成成功。
