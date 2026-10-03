@@ -2,7 +2,7 @@
 
 ## 0. 一页结论
 
-**当前进度（§41.803，2026-10-04）：** 正式4/9：RGBNT201三端、MSVR310 global-only已50轮＋严格评价。MSVR global E38为50.5421/68.0203；semantic M0通过并开始fresh50，01:49已5轮。201 native较semantic +0.2291mAP仍未达0.5线、低于global-only；剩余五端原计划继续，仅26GPU0/1、不管功温，Goal active/unmet。
+**当前进度（§41.804，2026-10-04）：** 正式5/9；MSVR global-only 50.5421/68.0203、semantic 50.9636/69.2047，配对+0.4215mAP/+1.1844R1，低于原0.5mAP线。semantic best49→末轮仅降0.0018，不能把201后期退化外推三集。MSVR native M0通过并fresh50已2轮，RGBNT100待原队列；仅26GPU0/1、不管功温，Goal active/unmet。
 
 **现行合同：** 每个正式候选完整50轮，使用作者完整query/gallery及camera／MSVR时间段过滤，以官方fused mAP最高的同一checkpoint报告全部指标，随后严格重载。RGBNT201报告mAP／R1／R5／R10，RGBNT100及MSVR310报告mAP／R1；不跨epoch或seed拼列。官方集已参与逐轮选点和历史方法选择，属于已消费基准上的探索性结果。
 
@@ -15962,3 +15962,29 @@ native末轮mAP69.99400870982726，best回落2.133266751459008；原循环和、
 原始接收、50轮step、初始化检查、实存SHA与成本分析在logs/native_research_msvr_global803_20261004。全九端CPU报告尚未调用，不新增N2/N3或临时调参。正式4/9不等于统一Goal完成；三数据集强参照、机制必要性、完整流程稳定性仍未达到，Goal active/unmet。
 
 本地归档准备首次在匹配CURRENT_GOAL旧段落时StopIteration，已保留LOCAL_PREPARATION_FAILURE.json；原始接收/分析完成而文档尚未写入。校验已复制文字后仅修正实际段落定位并续写同步，没有重新训练、评价或改动科学source。
+
+
+## 41.804 MSVR角色配对小幅正向，未达推进线；没有明显末轮退化（2026-10-04）
+
+原semantic PID246040完整50轮训练01:46:04.602622–02:10:17.524397退出0；首次严格独立评价PID311357于02:10:17.699395–02:11:05.487039退出0，02:11:05.521019原队列验收。02:10实查49/50、同一原进程R；02:14:02正式完成数5/9，原队列已接续MSVR native，未重启semantic或重复挑选评价。
+
+| MSVR310，匹配公开CLIP/新camera/作者来源配方，seed42完整50轮 | best epoch | mAP | Rank-1 |
+|---|---:|---:|---:|
+| 独立global_only，含共享适配 | 38 | 50.5421 | 68.0203 |
+| semantic，原角色协作路径 | 49 | 50.9636 | 69.2047 |
+| semantic−global_only，百分点 | — | +0.4215 | +1.1844 |
+| native，独立原生细节读取 | 待完成 | 尚无正式结果 | 尚无正式结果 |
+
+角色系统在这个配对中有小幅正结果，但mAP未达事前0.5推进线；项目推进门不等同统计显著性。R5/R10随同一E49分别为80.7106614112854/86.12521290779114，较global为+0.1692057/+0.6768227个百分点。不能将这对正值外推成三数据集稳定收益，也不能填native增量。201当前角色系统明显低于global，而MSVR略正，已说明作用依赖数据集；仍不改变剩余四端的配方、结构或种子。
+
+本次需要收窄此前的后期退化概括：MSVR semantic最佳E49，末轮mAP50.96181677927415，best→末轮仅差0.0017643847556992；global最佳E38，末轮差0.0898254。这两个完成端没有出现201当前条件数点的后期回落。不能将“视觉更新后会严重退化”或“训练50轮太长”当作所有数据集的已确认原因；仍需各数据集完整曲线及完整流程多种子。
+
+semantic完整50轮、706条实际训练step及所有loss有限已核对，严格重载分差0，无reranking。两端共同public CLIP、visual/camera/shared initializer、protocol、B64/K4、seed42与author字段一致；实际training_batch_order.jsonl各1456580B/706行，SHA同9c8a03beccbccedfa065cb13a3b20f5e64673d79693c4971034b54ab94e147e8。真实初始full-batch检查已通过，不能据此声称所有增强像素逐位相同或等同训练多种子稳定性。global训练参数87292224、213项；semantic88993226、285项，新增1701002参数；这仍是两个独立联合训练系统的比较，不是固定global上加一段角色后的纯因果效果。
+
+02:14:17.001696实存best/距离/M0探针SHA均核验，314项科学source未改。semantic best仅一份，358094393B，SHA6b858dd3b2bb3c49d47f21c1dd66fdde888c4c7251ecb44a25ae598ae65fdb8f；official距离SHAc402bbf9579d88c1f4edd539b9dee7b6c4f66780da3e2b714a944ed5b97e9972；训练best-epoch距离SHA65f000ddaa8c295859171df14536c609f4309858db854682f382a75ec7476d4b；正式回执SHA828ded91e88c6eb25555f00ce8eabf82cee2d880fc0582c794af8ed673f9a8f4。所有报告指标跟随同一E49，未跨轮拼列。
+
+semantic训练循环合计533.6126709940145秒，完整训练命令墙钟1452.921775秒，独立评价43.209083919995464秒。history.seconds仅循环，不含逐轮评价/保存；两卡峰值allocated/reserved为cuda0 8778124800/10888413184B、cuda1 6318302208/7277117440B。磁盘可用29708836864B，模型与距离留远端，仅接收文本；仍保留所有M0探针到原CPU九端报告的verify依赖闭合。
+
+02:14:02原controller3854540仍S；MSVR native M0于02:12:06.212507验收，fresh50开始02:12:10.519895，PID316812/R、ticks30647128，已2轮、loss有限。剩余MSVR native＋RGBNT100三端继续原合同，B128容量尚未实测。没有新增N2/N3、工程parity门或按官方分数调参。只用26物理GPU0/1，25文字同步，不恢复功温监控。
+
+原始接收、50轮step、初始检查、实存SHA与窄范围配对分析在logs/native_research_msvr_semantic804_20261004。原全九端CPU净修复/身份收益/成本报告尚未调用；正式5/9不等于统一Goal完成，三集强参照、必要性、完整流程稳定性仍active/unmet。
