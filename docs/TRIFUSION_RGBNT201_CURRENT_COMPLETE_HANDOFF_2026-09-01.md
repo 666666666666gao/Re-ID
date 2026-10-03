@@ -2,7 +2,7 @@
 
 ## 0. 一页结论
 
-**当前进度（§41.781，2026-10-03）：** 原CPU-save及其一次边界诊断继续封存FAIL。新V5单进程模型分段源码已实现并经fresh源码复核，尚未GPU启动：同一作者完整batch经两卡、参数只一份、完整BN/Triplet在输出端。只2026四张卡，两卡一组最多两job；不CPU保存/checkpoint/DDP/改batch或门。估计后端约22GiB、余量有限，容量与梯度必须实际验证，九端M0/50轮仍未完成。每正式端仅保留一份mAP-best。Goal ACTIVE_UNMET。
+**当前进度（§41.782，2026-10-03）：** V5两卡模型分段经fresh源码WARN/0阻塞后已真实Popen，2026控制PID3410754、初始物理GPU0/1；启动不代表初始化、梯度等价、B128容量或M0通过。源码499b2cc6与312项闭包已核实，5处文档/1706自有文本已同步。观察首次300秒约18:04，工程阶段300秒、正式训练按里程碑观察，不重启。全部九端完整batch八更新M0通过后才正式50轮；2025只文本同步。每正式实验只保留一个mAP-best，工程probe依赖结束后及时退役。Goal ACTIVE_UNMET。
 
 **现行合同：** 每个正式候选完整50轮，使用作者完整query/gallery及camera／MSVR时间段过滤，以官方fused mAP最高的同一checkpoint报告全部指标，随后严格重载。RGBNT201报告mAP／R1／R5／R10，RGBNT100及MSVR310报告mAP／R1；不跨epoch或seed拼列。官方集已参与逐轮选点和历史方法选择，属于已消费基准上的探索性结果。
 
@@ -15648,3 +15648,12 @@ queue_native_partitioned按2026物理(0,1)/(2,3)整对核对空闲；同一job�
 fresh reviewer原始请求/response/native final与MD/JSON、私有待部署源码snapshot保留。复核为同家族/provisional/source-only，不能代表真实数值、完整B128峰值、M0、正式mAP或SOTA。此节SOURCE_REVIEWED_NOT_LAUNCHED：下一步五处同步后再核对实际空闲两卡/312项来源/磁盘并真实Popen。原九端科学问题仍是native−semantic及roles−独立global-only净收益，不把计算修正归为方法创新；预训练、作者完整图库/过滤、seed42、50轮、原推进门、全部指标同一best均保持。
 
 复核非阻塞边界：正常train返回后才写入两卡max_memory记录；若OOM或训练门异常退出，异常日志保留，但这一字段可能没有完成。终态报告沿用四项主指标，完整CMC/AP数组及已存final_evaluation_seconds未直接汇总，原同best完整距离与评价回执保留后可独立CPU补算。pre-assert明细含所有参数梯度与raw/fused/global/loss；head/buffer/RNG明细在通过固定梯度门后继续检查，不能把未执行部分当PASS。此次只认可源码可进入工程验证，不代表B128容量、梯度等价、M0或正式性能已通过。
+
+
+## 41.782 V5真实启动与首次观察安排（2026-10-03）
+
+§781实际发布499b2cc61e877a284af412e6ea97136c3dd7bfa5，ONE文档2195528B/SHA c625fe0ea2227567047a321de68de5e5f25ddf7555df6c2ea47d830b0152e5a2，17:58:34.655993五处与1706项累计自有文本核对一致。随后第一次部署exit0；17:59:03.277076在2026 Popen队列控制PID3410754，物理GPU0/1。部署重新核对整对卡空闲、固定/data与/home预算、新路径、公开CLIP、全部312项源码；按实际源复制到logs/native_partition_launch_source781_20261003/_source。没有2025模型/conda/CUDA执行，没有旧CPU-save重跑。
+
+实际campaign为logs/independent_native_evidence_20261003_v5，输出/home/gaob/trifusion-native-evidence-v5，正式report results/native_partition_complete_20261003。状态只记LAUNCHED_NOT_VALIDATED；此处没有查询运行中训练或补造初始化结果。先九份prepare、三份full-batch初始配对、三数据集三个variant的原单卡/两卡首32 witness；保留固定1e-5/1e-4门，再执行九份完整作者batch八更新M0。全部九M0通过之前不运行正式50轮。首批初始化/配对/witness估计约7–8分钟，仅为观察时间参考，实际以日志为准。
+
+17:59:24.445695本地hidden observer PID33016启动一次；首次延迟300秒约18:04:24，再按工程300秒、full阶段1800秒里程碑查看。只读2026对应campaign/PID/日志、GPU与磁盘；观察超时不重启，失败不变更batch/precision/门槛、不重复未改干预。若工程失败，完整取回实际pre-assert和source后fresh救援再判断；原终态失败全部保留。formal仅覆盖一份best_map.pth，工程M0权重严格验收和报告依赖闭合后退役，本次Popen尚没有已验收或可删除的新权重。
