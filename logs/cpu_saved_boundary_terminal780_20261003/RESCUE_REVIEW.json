@@ -1,0 +1,200 @@
+{
+  "schema": "trifusion-rescue-cpu-boundary-terminal780-v1",
+  "reviewed_at": "2026-10-03T17:15:34+08:00",
+  "verdict": "FAIL_STOP_CPU_SAVE_ROUTE_UNLOCALIZED",
+  "diagnostic_result": "TERMINAL_FAILED",
+  "cpu_save_route_status": "FAILED_UNLOCALIZED_SEALED",
+  "reviewer": {
+    "agent": "/root/review_cpu_boundary_terminal780",
+    "context": "fresh",
+    "review_independence": "same-family",
+    "acceptance_status": "provisional",
+    "native_spawn_request_reported_by_parent": {
+      "model": "gpt-6-astra",
+      "reasoning_effort": "max",
+      "fork_turns": "none"
+    },
+    "actual_model": null,
+    "actual_reasoning_effort": null,
+    "underlying_backend_independently_verified": false,
+    "model_effort_boundary": "The parent confirmed these actual native spawn request parameters. This child cannot independently verify the underlying backend model or runtime effort; no cross-family or independently verified backend attribution is claimed."
+  },
+  "scope": {
+    "kind": "READ_ONLY_LOCAL_PRIMARY_AND_SOURCE_REVIEW",
+    "remote_connections": 0,
+    "model_imports": 0,
+    "cuda_workloads": 0,
+    "diagnostics_started": 0,
+    "training_started": 0,
+    "production_code_edits": 0,
+    "weight_deletions": 0,
+    "writes": "This review report, versioned copies and its local manifest only",
+    "full_measured_json_bytes": 1826450,
+    "full_gradient_records_recounted": 281,
+    "full_pack_records_recounted": 1323,
+    "full_unpack_records_recounted": 1323,
+    "existing_primary_seals_checked": 6,
+    "existing_primary_seals_all_match": true
+  },
+  "evidence_roots": {
+    "current": "C:/Users/gb/.codex_tmp/independent_evidence_draft/cpu_boundary_terminal780",
+    "prior_rescue": "C:/Users/gb/.codex_tmp/independent_evidence_draft/rescue_cpu_saved778",
+    "sealed_v4": "C:/Users/gb/.codex_tmp/independent_evidence_draft/cpu_saved_terminal_intake778",
+    "original_repeat": "C:/Users/gb/.codex_tmp/independent_evidence_draft/original_repeat_intake776",
+    "v1_oom": "C:/Users/gb/.codex_tmp/independent_evidence_draft/terminal_intake771",
+    "capacity": "C:/Users/gb/.codex_tmp/independent_evidence_draft/capacity780/stdout.json"
+  },
+  "primary_files": [
+    "INTAKE.json",
+    "primary/logs/cpu_saved_boundary_diagnostic_20261003_v1/JOB.json",
+    "primary/logs/cpu_saved_boundary_diagnostic_20261003_v1/diagnostic.log",
+    "primary/logs/cpu_saved_boundary_diagnostic_20261003_v1/observations/MEASURED.json"
+  ],
+  "required_sources_read": [
+    "_source/tools/diagnose_cpu_saved_boundaries.py",
+    "_source/modeling/trifusion/cpu_saved_evidence_clip.py",
+    "_source/modeling/trifusion/correspondence_roles.py",
+    "_source/modeling/trifusion/independent_native_roles.py"
+  ],
+  "facts": {
+    "job_status": "FAILED",
+    "child_exit_code": 1,
+    "physical_gpu": 0,
+    "job_started_at": "2026-10-03T17:03:31.920060+08:00",
+    "job_completed_at": "2026-10-03T17:04:31.814224+08:00",
+    "failed_source_line": "tools/diagnose_cpu_saved_boundaries.py:195",
+    "measured_status": "MEASURED_BEFORE_FIXED_GATE",
+    "complete_json_present": false,
+    "dataset": "RGBNT201",
+    "variant": "semantic",
+    "full_author_batch": 64,
+    "witness_samples": 32,
+    "distinct_identities": 4,
+    "forward_backward_pairs": 2,
+    "optimizer_updates": 0,
+    "new_weights": 0,
+    "forward_outputs_heads_boundaries_recorded_max_delta": 0.0,
+    "gradient_parameters": 281,
+    "gradient_failures": 81,
+    "gradient_nonzero_differences": 229,
+    "passing_gradients_with_nonzero_difference": 148,
+    "gradient_none_mismatches": 0,
+    "gradients_finite": true,
+    "gradient_max_absolute_difference": 0.00390625,
+    "gradient_groups": {
+      "signal": {"parameters": 155, "failed": 75, "nonzero": 150, "max_absolute_difference": 0.00390625},
+      "adapters": {"parameters": 54, "failed": 6, "nonzero": 14, "max_absolute_difference": 0.000244140625},
+      "roles": {"parameters": 70, "failed": 0, "nonzero": 65, "max_absolute_difference": 2.384185791015625e-7},
+      "readout": {"parameters": 2, "failed": 0, "nonzero": 0, "max_absolute_difference": 0.0}
+    },
+    "boundaries": {
+      "stages": {"forward_max_delta": 0.0, "incoming_gradient_max_delta": 9.313225746154785e-10, "incoming_gradient_gate_pass": true, "incoming_gradient_reference_max_abs": 1.171603798866272e-6, "incoming_gradient_nonzero_difference": true},
+      "shared_global": {"forward_max_delta": 0.0, "incoming_gradient_max_delta": 0.0, "incoming_gradient_gate_pass": true}
+    },
+    "saved_tensors": {
+      "torch_version": "2.5.1+cu121",
+      "actual_builtin_source_persisted": true,
+      "packs": 1323,
+      "unpacks": 1323,
+      "unique_pack_indices": 1323,
+      "unique_unpack_indices": 1323,
+      "cpu_payload_changed_fields_excluding_expected_device": {"storage_offset": 72},
+      "restored_changed_fields": {"storage_offset": 72},
+      "stride_changes": 0,
+      "layout_changes": 0,
+      "example_index": 1265,
+      "example_storage_offset": [3170304, 0, 0],
+      "example_stride_before_cpu_restored": [768, 64, 24576, 1]
+    },
+    "post_checks": {"buffers_exact": true, "cpu_rng_exact": true, "cuda_rng_exact": true, "state_exact": true, "bn_one_batch_each": true, "original_capture_hooks_removed": true},
+    "post_checks_observed_before_final_gradient_assertion": true,
+    "memory": [
+      {"arm": "original", "allocated": 7761206272, "reserved": 9124708352},
+      {"arm": "cpu_saved_instrumented", "allocated": 2072029696, "reserved": 3099590656}
+    ],
+    "historical_original_repeat": {"status": "ORIGINAL_BACKWARD_REPEAT_PARITY_PASS", "gradient_parameters": 281, "gradient_max_absolute_difference": 2.9103830456733704e-11, "current_witness_labels_cameras_paths_images_match": true, "cross_process_raw_rng_equality_proven": false, "universal_bitwise_determinism_proven": false},
+    "sealed_v4": {"gradient_failures": 94, "gradient_parameters": 281, "gradient_max_absolute_difference": 0.0078125, "status_not_promoted": true, "weight_output_empty": true},
+    "v1_oom": {"dataset": "RGBNT100", "variant": "global_only", "full_author_batch": 128, "site": "correspondence_roles.py:86 captured tensor stack", "requested_mib": 218.0, "free_mib": 78.56, "process_usage_gib": 23.42}
+  },
+  "blocking_issues": [
+    {"id": "B1", "title": "CPU-save fails the unchanged parameter-gradient contract", "evidence": "81/281 fixed allclose failures and terminal child exit 1", "blocks": ["unchanged rerun", "CPU-save M0", "formal50 promotion"]},
+    {"id": "B2", "title": "No localized causal mechanism supports a repair", "evidence": "No stride/layout changes; stages incoming gradient already differs; storage_offset changes are observations only", "blocks": ["contiguous/custom-offload repair", "new diagnostic arms", "automatic iterative rescue"]},
+    {"id": "B3", "title": "Full-author-batch capacity remains unresolved", "evidence": "V1 B128 original path OOM and no larger authorized single GPU; this diagnostic was first32/zero-update", "blocks": ["capacity acceptance", "all-nine M0 acceptance", "any formal50"]}
+  ],
+  "nonblocking": [
+    "All post checks were actually calculated and persisted before the final failing parameter-gradient assertion; no rerun is needed to collect them.",
+    "Forward/head/boundary max deltas of zero, lower observed memory and passing post checks are valid limited observations, not scientific acceptance.",
+    "The diagnostic correctly retained complete failure evidence and produced no weights to clean up."
+  ],
+  "inferences": [
+    {"claim": "The prior stop condition is satisfied", "basis": "Saved stride/layout unchanged and no causal localization", "status": "SUPPORTED_WORKFLOW_CONCLUSION"},
+    {"claim": "A pack-only/layout repair is not justified", "basis": "Boundary gradient difference precedes use of the backbone incoming gradient and no layout alteration was observed", "status": "SUPPORTED_LIMIT_ON_INFERENCE"},
+    {"claim": "storage_offset, kernel selection, scheduling, accumulation order or a named operator is the root cause", "basis": "No isolating intervention or execution trace", "status": "NOT_ESTABLISHED"},
+    {"claim": "A source-level model partition feasibility investigation is relevant", "basis": "Four existing GPUs and a sequential 12-layer model with a specific captured-tensor OOM boundary", "status": "FEASIBLE_DIRECTION_NOT_VALIDATED_IMPLEMENTATION"}
+  ],
+  "stop_action": {
+    "prior_rule": "No layout difference or insufficient evidence means unresolved; terminate the diagnostic without automatic follow-on memory candidates.",
+    "rule_satisfied": true,
+    "seal_current_route_as_failed_unlocalized": true,
+    "preserve_original_v4_and_current_primary": true,
+    "retry_unchanged": false,
+    "add_diagnostic_arms": false,
+    "change_threshold_precision_seed_or_batch": false,
+    "approve_contiguous_or_custom_offload": false,
+    "approve_m0": false,
+    "approve_formal50": false
+  },
+  "capacity_snapshot": {
+    "at": "2026-10-03T17:11:58.965822+08:00",
+    "server": "2026",
+    "physical_gpus": [0, 1, 2, 3],
+    "model_each": "NVIDIA GeForce RTX 3090",
+    "memory_mib_each": 24576,
+    "used_mib": [15, 15, 15, 68],
+    "utilization_percent": [0, 0, 0, 0],
+    "topology": "0-1 NODE; 2-3 NODE; cross-group SYS; no NVLink shown",
+    "ram_total_kb": 131577172,
+    "ram_available_kb": 121397300,
+    "data_free_bytes": 17769156608,
+    "home_free_bytes": 591721623552,
+    "larger_authorized_single_gpu_present": false,
+    "reservation_or_launch_authorization": false
+  },
+  "minimal_next_step": {
+    "kind": "LOCAL_SOURCE_ONLY_MODEL_PARTITION_FEASIBILITY_NOTE",
+    "status": "RECOMMENDED_NOT_IMPLEMENTED_OR_RUN",
+    "direction": "Investigate one process placing sequential model segments on existing 2026 GPUs, with the intact full author batch through each segment, one shared parameter identity and unchanged modality order.",
+    "must_describe": ["unique module/parameter placement", "autograd-preserving inter-segment transfers and captured tensor lifetime", "one complete-batch BN and Triplet head/loss computation", "per-GPU parameter/activation/gradient/optimizer-state memory budget"],
+    "source_anchors": ["comparators/Signal-cd1b0a6/modeling/clip/model.py:462-482", "modeling/trifusion/correspondence_roles.py:27,64-89", "modeling/trifusion/evidence_author_heads.py:49-60", "comparators/Signal-cd1b0a6/layers/make_loss.py:37-56"],
+    "ordinary_ddp_or_gradient_accumulation_assumed_equivalent": false,
+    "four_gpus_assumed_one_96gib_device": false,
+    "new_capacity_query_required": false,
+    "model_partition_code_approved": false,
+    "specific_partition_point_endorsed": false,
+    "six_blocks_per_gpu_boundary": "A proposed first6/last6 split is only a candidate for the local feasibility note; this review provides no capacity or equivalence endorsement of that split.",
+    "gpu_diagnostic_or_training_approved": false,
+    "numerical_equivalence_or_capacity_proven": false,
+    "later_gate": "Any concrete later implementation needs separate source review and original fixed numeric gates; all 9 real 8-update full-author-batch M0 runs must precede any formal 50-epoch run."
+  },
+  "research_contract": {
+    "variants": ["global_only", "semantic", "native"],
+    "datasets": ["RGBNT201", "RGBNT100", "MSVR310"],
+    "batches": {"RGBNT201": {"B": 64, "K": 8}, "RGBNT100": {"B": 128, "K": 16}, "MSVR310": {"B": 64, "K": 4}},
+    "seed": 42,
+    "precision": "AMP FP16",
+    "witness_scaler": 256,
+    "forward_atol_rtol": [1e-5, 1e-5],
+    "parameter_gradient_atol_rtol": [1e-4, 1e-4],
+    "compute": "Only existing 2026 physical GPU0-3, max4, no preemption; 2025 text only",
+    "unchanged": ["public CLIP", "fresh camera/heads", "author optimizer/loss", "all-nine M0 before any formal50"],
+    "diagnostic_cannot_satisfy_m0": true
+  },
+  "retention": {
+    "current_diagnostic_weights_to_delete": 0,
+    "actual_deletions_by_reviewer": 0,
+    "failure_text_and_json": "preserve",
+    "future_unused_completed_engineering_weights": "retire after required verification and dependency checks",
+    "completed_formal_end": "retain one mAP-best; all metrics from that same checkpoint",
+    "protected": ["public pretrained weights", "active dependencies", "other project weights"]
+  }
+}

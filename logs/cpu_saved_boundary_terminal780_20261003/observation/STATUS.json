@@ -1,0 +1,197 @@
+{
+  "observer_status": "CLOSED",
+  "last_observation": 1,
+  "observation": {
+    "at": "2026-10-03T17:06:44.895255+08:00",
+    "job_status": "FAILED",
+    "job_exit_code": 1,
+    "controller_present": false,
+    "child_pid": 3364272,
+    "child_present": false,
+    "measurement": {
+      "outputs": {
+        "raw": {
+          "max_absolute_difference": 0.0,
+          "reference_max_abs": 9.859926223754883,
+          "candidate_max_abs": 9.859926223754883,
+          "fixed_gate_pass": true
+        },
+        "fused": {
+          "max_absolute_difference": 0.0,
+          "reference_max_abs": 0.4853230118751526,
+          "candidate_max_abs": 0.4853230118751526,
+          "fixed_gate_pass": true
+        },
+        "global": {
+          "max_absolute_difference": 0.0,
+          "reference_max_abs": 9.859375,
+          "candidate_max_abs": 9.859375,
+          "fixed_gate_pass": true
+        },
+        "loss": {
+          "max_absolute_difference": 0.0,
+          "reference_max_abs": 4.135505676269531,
+          "candidate_max_abs": 4.135505676269531,
+          "fixed_gate_pass": true
+        }
+      },
+      "boundaries": {
+        "stages": {
+          "forward": {
+            "max_absolute_difference": 0.0,
+            "reference_max_abs": 88.25,
+            "candidate_max_abs": 88.25,
+            "fixed_gate_pass": true
+          },
+          "incoming_unscaled_gradient": {
+            "max_absolute_difference": 9.313225746154785e-10,
+            "reference_max_abs": 1.171603798866272e-06,
+            "candidate_max_abs": 1.171603798866272e-06,
+            "fixed_gate_pass": true
+          },
+          "reference_metadata": {
+            "shape": [
+              3,
+              3,
+              32,
+              3,
+              129,
+              768
+            ],
+            "stride": [
+              28532736,
+              9510912,
+              297216,
+              99072,
+              768,
+              1
+            ],
+            "storage_offset": 0,
+            "dtype": "torch.float16",
+            "layout": "torch.strided",
+            "device": "cuda:0",
+            "contiguous": true,
+            "requires_grad": true,
+            "grad_fn": "StackBackward0"
+          },
+          "candidate_metadata": {
+            "shape": [
+              3,
+              3,
+              32,
+              3,
+              129,
+              768
+            ],
+            "stride": [
+              28532736,
+              9510912,
+              297216,
+              99072,
+              768,
+              1
+            ],
+            "storage_offset": 0,
+            "dtype": "torch.float16",
+            "layout": "torch.strided",
+            "device": "cuda:0",
+            "contiguous": true,
+            "requires_grad": true,
+            "grad_fn": "StackBackward0"
+          }
+        },
+        "shared_global": {
+          "forward": {
+            "max_absolute_difference": 0.0,
+            "reference_max_abs": 9.859375,
+            "candidate_max_abs": 9.859375,
+            "fixed_gate_pass": true
+          },
+          "incoming_unscaled_gradient": {
+            "max_absolute_difference": 0.0,
+            "reference_max_abs": 0.037750244140625,
+            "candidate_max_abs": 0.037750244140625,
+            "fixed_gate_pass": true
+          },
+          "reference_metadata": {
+            "shape": [
+              32,
+              1536
+            ],
+            "stride": [
+              1536,
+              1
+            ],
+            "storage_offset": 0,
+            "dtype": "torch.float16",
+            "layout": "torch.strided",
+            "device": "cuda:0",
+            "contiguous": true,
+            "requires_grad": true,
+            "grad_fn": "CatBackward0"
+          },
+          "candidate_metadata": {
+            "shape": [
+              32,
+              1536
+            ],
+            "stride": [
+              1536,
+              1
+            ],
+            "storage_offset": 0,
+            "dtype": "torch.float16",
+            "layout": "torch.strided",
+            "device": "cuda:0",
+            "contiguous": true,
+            "requires_grad": true,
+            "grad_fn": "CatBackward0"
+          }
+        }
+      },
+      "gradient_entries": 281,
+      "failed_gradients": 81,
+      "post_checks": {
+        "buffers_exact": true,
+        "cpu_rng_exact": true,
+        "cuda_rng_exact": true,
+        "state_exact": true,
+        "bn_one_batch_each": true,
+        "original_capture_hooks_removed": true
+      },
+      "packs": 1323,
+      "unpacks": 1323,
+      "metadata_differences": 72,
+      "memory": [
+        {
+          "allocated": 7761206272,
+          "reserved": 9124708352
+        },
+        {
+          "allocated": 2072029696,
+          "reserved": 3099590656
+        }
+      ]
+    },
+    "complete_receipt_exists": false,
+    "log_tail": [
+      "Position embedding resize to height:16 width: 8",
+      "Successfully load ckpt!",
+      "<All keys matched successfully>",
+      "Loading pretrained model from CLIP",
+      "camera number is : 4",
+      "===========Building Signal===========",
+      "using soft triplet loss for training",
+      "label smooth on, numclasses: 171",
+      "using soft triplet loss for training",
+      "label smooth on, numclasses: 171",
+      "Traceback (most recent call last):",
+      "  File \"/data/gaob/Re-ID/Trifusion/tools/diagnose_cpu_saved_boundaries.py\", line 205, in <module>",
+      "    main()",
+      "  File \"/data/gaob/Re-ID/Trifusion/tools/diagnose_cpu_saved_boundaries.py\", line 195, in main",
+      "    assert all(row['reference_none']==row['candidate_none'] and row.get('fixed_gate_pass',True)",
+      "AssertionError"
+    ],
+    "boundary": "Read-only bounded diagnostic observation; no model or scorer/retry/weights"
+  }
+}

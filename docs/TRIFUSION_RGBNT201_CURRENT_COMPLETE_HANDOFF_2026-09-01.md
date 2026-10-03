@@ -2,7 +2,7 @@
 
 ## 0. 一页结论
 
-**当前进度（§41.779，2026-10-03）：** CPU-save v4仍封存为M0前梯度FAIL；fresh救援只建议一次semantic RGBNT201张量保存/骨干边界诊断，未批准修复或正式训练。两臂、两个backward、零更新、无权重，固定原AMP/seed/损失/门不变；新诊断源码已复核，尚未启动。上轮实际接收失败证据并完成§778五份文档/1634归属文本一致核验，属于实质进展。每完成实验仅保留mAP-best，必要工程probe验收后退役。只2026四卡计算，2025仅文本；正式9端50轮仍未启动。Goal ACTIVE_UNMET。
+**当前进度（§41.780，2026-10-03）：** 一次CPU-save边界诊断已真实结束，两个backward、零更新、无权重，child exit1。前向及loss一致，281项参数梯度81项仍失败；1323次保存/恢复的stride和layout均不变，72项仅storage_offset变化，未定位唯一原因。按原计划结束此诊断，封存v4失败，不原样重启、不放宽门或新增诊断臂。2026四张均24GiB卡，无更大单卡；fresh救援复核与完整primary已接收。正式九端M0/50轮仍未完成，Goal ACTIVE_UNMET。每个完成实验仅留一份mAP-best；旧工程probe确认无依赖后及时退役，当前没有新权重可清理。
 
 **现行合同：** 每个正式候选完整50轮，使用作者完整query/gallery及camera／MSVR时间段过滤，以官方fused mAP最高的同一checkpoint报告全部指标，随后严格重载。RGBNT201报告mAP／R1／R5／R10，RGBNT100及MSVR310报告mAP／R1；不跨epoch或seed拼列。官方集已参与逐轮选点和历史方法选择，属于已消费基准上的探索性结果。
 
@@ -15614,3 +15614,20 @@ pre-assert完整测量显示：global-only 209个梯度无差异；semantic 281�
 SOURCE_ONLY fresh复核与实际native trace保留；源码通过不等于诊断已跑。预计1–2分钟，部署前再次核对2026来源和当前空卡，首次只读观察180秒，父子真实exit独立记录。观测可能改变时序，若偶然PASS不能覆盖v4或自动启动M0；若未定位，结束这一次诊断，不追加另一个条件或原样重试。只有实际结果支持具体修复，才另登记唯一下一干预。所有9个完整作者batch、八更新、严格重载M0及正式9端50轮仍未完成。
 
 §778同步执行来源补记：原publisher已完成本地commit/push与2026 fast-forward，但累计文本核验发现5份旧归属trace被稀疏检出移出工作树，原exit1保留；过早的2025依赖同步因本地proof尚未生成而在SSH前失败。未原样重启publisher；单独依据实际归属清单恢复缺失文本，16:32:25核验累计1634份文本与五份doc一致，227d5e63/2183725B/SHA ae78f608ed4c64006a49a38ffaa876ee46272f6cbe437cc6da4db1af4507ee71。修复未涉及权重或模型，其他dirty与受保护文件未覆盖。后续同步同样先核对实际归属文本，避免将部分同步当成成功。
+
+
+## 41.780 CPU-save边界诊断终态与最佳权重保留（2026-10-03）
+
+§779源码和计划完成五处同步后，在2026 physicalGPU0真实启动controller3364271/child3364272，source bbfd388a，实际闭包304项。17:03:31开始、17:04:31结束，child exit1；首次180秒观察在17:06:44确认父子均已退出、JOB=FAILED。17:09:04只读collector实际exit0并接收6份primary和304份精确源码；collector成功不能改写诊断失败。只有semantic RGBNT201原实现/内置CPU-save两臂、两次forward/backward、零optimizer更新，没有M0、正式训练、检索评分或权重。MEASURED先保存全部测量，随后固定梯度断言失败，COMPLETE未生成。源计划的未定位即停边界继续有效。
+
+raw/fused/shared_global/loss、作者head输出最大差均0。281梯度参数中81项固定allclose(1e-4,1e-4)失败：Signal155项中75FAIL/150非零，最大0.00390625；adapter54项中6FAIL/14非零，最大0.000244140625；roles70项均过门但65项非零，最大2.384185791015625e-7；readout两项为0。stages出口前向相同，其传入unscaled梯度最大差9.313225746154785e-10，shared_global出口梯度差0。前者虽过旧门仍非逐位一致，因此不能把超门参数集中在骨干当作最早差异节点。buffers、CPU/CUDA RNG、完整state、BN各1批及capture-hook移除检查全部实际执行并通过。
+
+1323次pack与1323次unpack一一记录，仅72项storage_offset改变，shape/stride/dtype/layout/contiguous均未变。例如attention view的offset3170304往返后为0，stride[768,64,24576,1]保持。此结果不支持先前未经实测的stride改变解释，也不足以把storage_offset或执行时序认定为唯一原因；不据此增加contiguous、自定义保存恢复、精度切换或另一诊断臂。两臂backward后allocated/reserved分别7761206272/9124708352B和2072029696/3099590656B，这是该观测时点的内存，不是完整B128峰值或容量通过。instrumentation会改变时序；无论本次结果如何，原v4失败均不覆盖。
+
+17:11:58只读资源清点：2026四张均RTX3090、每卡24576MiB，0–1/2–3各为NODE，跨组SYS，无NVLink；CPU可用内存121397300kB。/data空闲17769156608B、/home空闲591721623552B。该时点四卡低占用不是以后空闲保证，更不能把四卡显存直接视为一块96GiB空间。仅2026四卡/max4、不抢占，2025保持文本同步。任何多卡放置需先证明作者全batch、BN/Triplet、随机数和原数值门保持；不能未经实现与fresh源码复核就启动训练，亦不改作者B128或门槛救分。
+
+fresh-context终态救援复核、实际请求/response/native final、完整primary与测量均存于logs/cpu_saved_boundary_terminal780_20261003和.aris/traces/experiment-bridge/2026-10-03_cpu_boundary_terminal780。复核为同家族/provisional，只读证据，不是独立复现或新的科学PASS。下一实施选择必须依据该完整终态，不连续尝试同类无证据内存小修。九端原科学合同仍未履行，性能目标未达成；本轮实质进展是完整失败定位边界、状态接收与证据同步。
+
+已写入refine-logs/native_model_partition_v5/MODEL_PARTITION_FEASIBILITY_20261003.md，只有本地单进程模型分段候选：同一完整批次顺序经过两卡，参数不复制，完整作者BN/Triplet留输出端，明确camera/adapter/capture跨段路径与逐卡参数/激活/梯度/Adam预算。前6/后6只是候选点，救援没有背书；尚未形成完整预算、具体实现、源码接受或GPU启动。原固定数值门和九端完整M0不变，不用DDP/梯度累积替代作者批次语义。
+
+权重保留继续执行用户最新要求：每个完成的正式端只保留一份mAP-best，所有指标跟随它；目前正式入口已经只覆盖best_map.pth，不写逐epoch历史模型。工程M0 probe仅保留至严格重载和报告依赖闭合，确认后及时退役；作者/public CLIP、活动初始化、必要复核依赖及其他项目权重不删。§777已确认并退役8份无用probe共2789830448B，原清理回执与失败记录保留，不能重复执行删除。本诊断没有生成任何权重，v4输出目录已核为空，本节没有新增权重删除。其余旧probe只有库存记录、未完成逐项无依赖证明，不能按名字盲删。

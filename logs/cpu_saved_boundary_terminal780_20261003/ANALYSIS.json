@@ -1,0 +1,205 @@
+{
+  "status": "ACTUAL_DIAGNOSTIC_FAIL_UNLOCALIZED",
+  "at": "2026-10-03T17:20:36.685186+08:00",
+  "child_exit_code": 1,
+  "source_head": "bbfd388a0343ef9eaf481c5031d6f98f897bc19e",
+  "source_files": 304,
+  "gradient_groups": {
+    "readout": {
+      "parameters": 2,
+      "failed": 0,
+      "nonzero_difference": 0,
+      "max_absolute_difference": 0
+    },
+    "signal": {
+      "parameters": 155,
+      "failed": 75,
+      "nonzero_difference": 150,
+      "max_absolute_difference": 0.00390625
+    },
+    "adapters": {
+      "parameters": 54,
+      "failed": 6,
+      "nonzero_difference": 14,
+      "max_absolute_difference": 0.000244140625
+    },
+    "roles": {
+      "parameters": 70,
+      "failed": 0,
+      "nonzero_difference": 65,
+      "max_absolute_difference": 2.384185791015625e-07
+    }
+  },
+  "outputs": {
+    "raw": {
+      "max_absolute_difference": 0.0,
+      "reference_max_abs": 9.859926223754883,
+      "candidate_max_abs": 9.859926223754883,
+      "fixed_gate_pass": true
+    },
+    "fused": {
+      "max_absolute_difference": 0.0,
+      "reference_max_abs": 0.4853230118751526,
+      "candidate_max_abs": 0.4853230118751526,
+      "fixed_gate_pass": true
+    },
+    "global": {
+      "max_absolute_difference": 0.0,
+      "reference_max_abs": 9.859375,
+      "candidate_max_abs": 9.859375,
+      "fixed_gate_pass": true
+    },
+    "loss": {
+      "max_absolute_difference": 0.0,
+      "reference_max_abs": 4.135505676269531,
+      "candidate_max_abs": 4.135505676269531,
+      "fixed_gate_pass": true
+    }
+  },
+  "boundaries": {
+    "stages": {
+      "forward": {
+        "max_absolute_difference": 0.0,
+        "reference_max_abs": 88.25,
+        "candidate_max_abs": 88.25,
+        "fixed_gate_pass": true
+      },
+      "incoming_unscaled_gradient": {
+        "max_absolute_difference": 9.313225746154785e-10,
+        "reference_max_abs": 1.171603798866272e-06,
+        "candidate_max_abs": 1.171603798866272e-06,
+        "fixed_gate_pass": true
+      },
+      "reference_metadata": {
+        "shape": [
+          3,
+          3,
+          32,
+          3,
+          129,
+          768
+        ],
+        "stride": [
+          28532736,
+          9510912,
+          297216,
+          99072,
+          768,
+          1
+        ],
+        "storage_offset": 0,
+        "dtype": "torch.float16",
+        "layout": "torch.strided",
+        "device": "cuda:0",
+        "contiguous": true,
+        "requires_grad": true,
+        "grad_fn": "StackBackward0"
+      },
+      "candidate_metadata": {
+        "shape": [
+          3,
+          3,
+          32,
+          3,
+          129,
+          768
+        ],
+        "stride": [
+          28532736,
+          9510912,
+          297216,
+          99072,
+          768,
+          1
+        ],
+        "storage_offset": 0,
+        "dtype": "torch.float16",
+        "layout": "torch.strided",
+        "device": "cuda:0",
+        "contiguous": true,
+        "requires_grad": true,
+        "grad_fn": "StackBackward0"
+      }
+    },
+    "shared_global": {
+      "forward": {
+        "max_absolute_difference": 0.0,
+        "reference_max_abs": 9.859375,
+        "candidate_max_abs": 9.859375,
+        "fixed_gate_pass": true
+      },
+      "incoming_unscaled_gradient": {
+        "max_absolute_difference": 0.0,
+        "reference_max_abs": 0.037750244140625,
+        "candidate_max_abs": 0.037750244140625,
+        "fixed_gate_pass": true
+      },
+      "reference_metadata": {
+        "shape": [
+          32,
+          1536
+        ],
+        "stride": [
+          1536,
+          1
+        ],
+        "storage_offset": 0,
+        "dtype": "torch.float16",
+        "layout": "torch.strided",
+        "device": "cuda:0",
+        "contiguous": true,
+        "requires_grad": true,
+        "grad_fn": "CatBackward0"
+      },
+      "candidate_metadata": {
+        "shape": [
+          32,
+          1536
+        ],
+        "stride": [
+          1536,
+          1
+        ],
+        "storage_offset": 0,
+        "dtype": "torch.float16",
+        "layout": "torch.strided",
+        "device": "cuda:0",
+        "contiguous": true,
+        "requires_grad": true,
+        "grad_fn": "CatBackward0"
+      }
+    }
+  },
+  "post_checks": {
+    "buffers_exact": true,
+    "cpu_rng_exact": true,
+    "cuda_rng_exact": true,
+    "state_exact": true,
+    "bn_one_batch_each": true,
+    "original_capture_hooks_removed": true
+  },
+  "saved_tensors": {
+    "packs": 1323,
+    "unpacks": 1323,
+    "metadata_difference_count": 72,
+    "changed_fields": [
+      "storage_offset"
+    ],
+    "stride_and_layout_changed": false
+  },
+  "memory_after_backward_not_peak": [
+    {
+      "allocated": 7761206272,
+      "reserved": 9124708352
+    },
+    {
+      "allocated": 2072029696,
+      "reserved": 3099590656
+    }
+  ],
+  "optimizer_updates": 0,
+  "new_weights": 0,
+  "new_m0_or_formal_jobs": 0,
+  "goal": "ACTIVE_UNMET",
+  "boundary": "One instrumented two-arm diagnostic ended. Storage offset and tiny nonzero boundary gradients do not identify a unique cause. Sealed v4 remains failed; no unchanged restart or further diagnostic arms."
+}
