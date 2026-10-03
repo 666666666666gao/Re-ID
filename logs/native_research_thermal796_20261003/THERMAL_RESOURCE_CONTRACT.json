@@ -1,0 +1,26 @@
+{
+  "status": "THERMAL_HOLD_AWAITING_HARDWARE_POWER_CAP",
+  "user_requested_at": "2026-10-03",
+  "physical_server": 2026,
+  "physical_gpus": [
+    0,
+    1
+  ],
+  "target_temperature_c": 75,
+  "target_power_limit_w": 250,
+  "power_limit_applied": false,
+  "power_attempt_exit_code": 4,
+  "reason": "Insufficient Permissions",
+  "controller_pid": 3854540,
+  "active_pid": 3863278,
+  "completed_epochs": 19,
+  "held_at": "2026-10-03T22:45:11.092505+08:00",
+  "observed_at": "2026-10-03T22:49:44.496070+08:00",
+  "cooled_temperature_power": [
+    "0, GPU-6a0b725d-15aa-9ec3-a292-1367f3c33f8f, 69, 130.73, 350.00",
+    "1, GPU-bc13d99e-845a-f985-262e-1918d2a39d6b, 58, 121.55, 350.00"
+  ],
+  "administrator_command": "sudo nvidia-smi -i 0,1 -pl 250",
+  "resume_rule": "Verify actual GPU0/1 power limits <=250W and temperature <=75C before SIGCONT of the same retained processes; continue temperature/power observation. No restart, model change or false hardware-limit claim.",
+  "scope": "Thermal resource control only; source314 and mathematical training contract unchanged; full Goal active/unmet. Paused process state is not completed model evidence."
+}
