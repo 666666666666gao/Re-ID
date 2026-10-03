@@ -2,7 +2,7 @@
 
 ## 0. 一页结论
 
-**当前进度（§41.787，2026-10-03晚）** native原路对原路83/295梯度FAIL继续封存，原登记STOP_GPU_PARITY不变。安装Mamba两份核心Python源码与官方v2.2.6.post3逐字节一致；对应CUDA源码存在跨通道浮点原子累加，仅确认具体风险，尚无运行根因或局部修复。当前0/9新路线M0、0正式50轮/0新增权重；此前15份闭合探针已退役、正式mAP-best及记录保留。Goal ACTIVE_UNMET。
+**当前进度（§41.788，2026-10-03晚）** 最新资源仅2026物理GPU0、1；0/1当前无compute进程，未启动新任务。原native梯度FAIL与STOP_GPU_PARITY保持；§787只确认依赖源码风险，未定位运行根因或修复。九端正式实验仍未完成。每正式端保留一份mAP-best，及时清理已确认无依赖权重。Goal ACTIVE_UNMET。
 
 **现行合同：** 每个正式候选完整50轮，使用作者完整query/gallery及camera／MSVR时间段过滤，以官方fused mAP最高的同一checkpoint报告全部指标，随后严格重载。RGBNT201报告mAP／R1／R5／R10，RGBNT100及MSVR310报告mAP／R1；不跨epoch或seed拼列。官方集已参与逐轮选点和历史方法选择，属于已消费基准上的探索性结果。
 
@@ -15732,3 +15732,10 @@ JOB记录19:04:34.612193开始，19:05:21.571946 child exit1/FAILED。19:09:07.7
 19:45:43分析结论SOURCE_RISK_IDENTIFIED_NOT_RUNTIME_CAUSE，localized_source_repair为空；0新增GPU运行、0optimizer update、0scorer、0权重。当前证据没有可直接验证的修复，原STOP_GPU_PARITY继续成立，九端M0与完整科学目标均未完成。缺失的运行证据是实际extension/build来源及两个Mamba调用的输入/输出/上下游梯度边界；本节列出证据缺口不等于登记或授权另一个GPU实验。后续运行需先形成具体可审查的计划修订，不能凭存在风险就复跑。权重保留规则持续有效：每正式端只留一份mAP-best，其他已确认无依赖的自训二进制及时退役；当前分析没有新权重可清理，不重复计入上一节15份165678236B。
 
 发布入口勘误：19:50:15第一次本地publisher在import paramiko时立即失败，尚未进入Git暂存、提交、推送或SSH；原stdout/stderr/exit保留。实际入口缺少声明的本地SSH依赖，后续显式使用uv --with paramiko；不修改远端conda，不重启模型或GPU实验。
+
+
+## 41.788 用户限定2026物理GPU0、1（2026-10-03晚）
+
+用户最新指令“你用26的0，1号显卡”。它覆盖此前2026四卡/两机八卡范围：后续仅2026物理GPU0、1，单卡最多2端，双卡仅0/1一对；不使用2026的2、3或2025训练。19:59:36实际只读nvidia-smi确认两卡均15MiB、利用率0、compute进程为空，UUID及原指令存logs/resource_scope788_20261003/GPU_SCOPE.json。2025只作文本同步；此前19:53:55所见1/2/3卡为wangwj的ts2net环境进程，不属于本TriFusion，未停止或干预。
+
+资源设置不改变已封存FAIL的科学边界：native原路重复梯度83/295未通过，STOP_GPU_PARITY继续有效，无新GPU模型运行、M0或正式训练。不得以卡空闲为由复跑失败对照或放宽门。后续合法执行仍须遵守真实资源/源代码/阶段门核验；模型batch、50轮、全图库过滤及单一mAP-best规则不变。上一节及历史清理数量不重复累计。
