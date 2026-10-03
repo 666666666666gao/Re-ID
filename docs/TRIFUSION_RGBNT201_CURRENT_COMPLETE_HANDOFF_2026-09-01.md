@@ -2,7 +2,7 @@
 
 ## 0. 一页结论
 
-**当前进度（§41.777，2026-10-03）：** CPU保存视觉激活的v4尚未启动；两次私有启动前固定磁盘预算失败均在Popen之前。额外精确退役八份已结束M0 probe，正式best/距离/回执保留。26的/home位于另一设备、空闲约592GB；本轮新权重明确输出到/home/gaob/trifusion-native-evidence-v4，未移动旧文件。新存储路径fresh源码复核通过；原训练配方/批量/数值门/seed42/50轮不变。26文本与GitHub/Desktop继续核对，25文本连接超时待同步；Goal ACTIVE_UNMET。
+**当前进度（§41.778，2026-10-03）：** CPU-save v4 已实际启动并在 RGBNT201 semantic 梯度一致性门停止，未进入 M0/正式50轮；新权重目录为空。原前向与loss一致，但94/281梯度不满足固定门，不能认定整体等价或B128内存通过。失败回执封存，等待针对性复核，不原样重启或放宽门。用户重申及时清理无用权重、每个完成实验只保留同一份mAP-best；§777精确退役8份工程probe共2789830448B，正式best及必要证据保留。§777五份文档与1608份归属文本已实际同步；仅2026四卡用于计算，2025仅文本。Goal ACTIVE_UNMET。
 
 **现行合同：** 每个正式候选完整50轮，使用作者完整query/gallery及camera／MSVR时间段过滤，以官方fused mAP最高的同一checkpoint报告全部指标，随后严格重载。RGBNT201报告mAP／R1／R5／R10，RGBNT100及MSVR310报告mAP／R1；不跨epoch或seed拼列。官方集已参与逐轮选点和历史方法选择，属于已消费基准上的探索性结果。
 
@@ -15590,3 +15590,14 @@ v3使用18行直接计算helper：每个现有CLIP resblock保存原绑定forwar
 实际df与st_dev显示/data与/home/gaob属于不同设备，后者空闲591852425216B。因此仅改尚未启动的v4队列的新权重输出：固定/home/gaob/trifusion-native-evidence-v4，启动时要求目录不存在。本轮18个M0/full目录在那里新建；不移动旧权重，不创建symlink，不加fallback或新训练选项。源码、数据、初始化及控制日志仍在原/data路径；原同一10292822016B整批预算改在实际权重输出设备检查，运行时两个设备均保留2GiB门。configure统一设置base.output_dir，使worker、M0验证、完整验证和最终CPU报告读取同一路径；manifest明确保存output_root。初始化模式只写原campaign witness，无权重落到原trained-model。科学合同、原helper/图/BN/loss/optimizer/seed42/作者完整批量/严格门/50轮全部不变。
 
 fresh reviewer请求gpt-6-astra/max/forknone，实际源码结论PASS，无阻塞项，同模型家族/provisional。复核只涉及固定输出路径及传播，不能声称真实M0、完整B128内存适配、正式增益或SOTA。原CPU源码review和两次数值失败历史保留；此次storage review原始response与完整native transport保留。此节阶段是SOURCE_REVIEWED_NOT_LAUNCHED；下一步是同步后实际新Popen，并先完成全部初始化/forward/backward witness及九个真实M0，再进入九端50轮。2026 physicalGPU0–3/max4且不抢占；2025仅待文本同步，严禁其模型训练。
+
+
+## 41.778 CPU-save实际停止与最佳权重保留（2026-10-03）
+
+§777的“尚未启动”是当时来源复核状态，现追加实际执行：16:11:51.926198，以ec349fd6精确301份来源在2026 physicalGPU1创建PID3318963，使用独立新权重目录/home/gaob/trifusion-native-evidence-v4。16:17:22首次300秒只读观察确认父进程不在，原campaign仍为INITIALIZING/jobs[]，traceback停在check_cpu_saved_backward.py:106。16:21:51只读接收13份原始文本与301份源码快照，确认权重目录存在且为空。父退出码没有独立捕获；接收器exit0不等于父训练exit0。只完成RGBNT201三初始化与一个完整batch eval配对；完整backward收据0，manifest/M0/正式50轮/report调用均0。没有新检索指标，也没有新权重需要退役。
+
+pre-assert完整测量显示：global-only 209个梯度无差异；semantic 281个中94个未通过固定atol/rtol=1e-4，其中Signal83项、adapter11项，无None不匹配，最大绝对差0.0078125。首先触发的是cv_embed差0.001220703125。raw/fused/global/loss最大差均0；不能据此前向一致宣布训练等价。semantic后续buffer/state/RNG/BN断言尚未执行，native尚未测量，B128完整M0容量与正式训练成本尚无结论。保留CPU-save当前FAIL及旧checkpoint两次FAIL、原方法重复一次PASS的边界；不原样重启、不改门槛/AMP/种子/完整作者batch。下一步仅由fresh复核确定具体诊断，尚未登记新的训练启动。
+
+用户明确重申“及时清理我们产生的无用的权重，只保留指标最好的权重”。每个完成实验只保留同一份mAP-best，其他指标随该权重报告；训练入口已经覆盖保存单个best_map.pth，不生成逐epoch权重归档。严格重载与终态报告仍依赖的M0工程probe先保留，通过终态后核对实际文件、SHA和无依赖再及时退役，保留文本回执。作者/公开权重、当前必要依赖、正式最佳对照及其他项目不在无用清理范围。§777已实际删除八份过期probe共2789830448B，不能重复执行删除；剩余旧probe元数据库存不等于已经证明无用，不盲删。该CPU-save失败发生在任何M0权重生成之前。
+
+另补§777延迟同步终态：16:14:39.666663，2025只做SFTP/标准库文本同步，90份变更与累计1608份归属文本核验，五份主文档SHA均为b731a67012310e51002c9fb4226dfb8164c136fe506b3d55a42ba40cdf5e23ab。没有2025模型导入、GPU或训练使用。此前“2025待同步”的记录保留为历史，而非当前事实。§778接收与本次文档同步仍按实际回执另核对。
