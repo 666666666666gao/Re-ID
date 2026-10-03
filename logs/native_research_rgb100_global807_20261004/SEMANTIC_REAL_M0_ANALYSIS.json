@@ -1,0 +1,90 @@
+{
+  "status": "RGBNT100_SEMANTIC_OWN_FULL_BATCH_M0_PASS_FRESH50_RUNNING",
+  "at": "2026-10-04T04:41:44.023820+08:00",
+  "m0_completed_at": "2026-10-04T04:35:42.593599+08:00",
+  "batch_size": 128,
+  "num_instances": 16,
+  "effective_optimizer_updates": 8,
+  "nonzero_finite_gradient_tensors": 285,
+  "trainable_parameter_tensors": 285,
+  "author_bn_batches_tracked": {
+    "bottleneck_r": 8,
+    "bottleneck_n": 8,
+    "bottleneck_t": 8
+  },
+  "reload_max_abs_difference": 0,
+  "actual_probe_sha256": "464ddbd8531a15df2fe693674fbff9cc6a34ba52697bc52e28203858d746834e",
+  "partition_peak_memory": {
+    "cuda:0": {
+      "allocated_bytes": 16854013440,
+      "reserved_bytes": 19318964224
+    },
+    "cuda:1": {
+      "allocated_bytes": 11955404800,
+      "reserved_bytes": 12626952192
+    }
+  },
+  "active_command": {
+    "mode": "train",
+    "command": [
+      "/data/gaob/Re-ID/conda-envs/tri_reid/bin/python",
+      "-B",
+      "/data/gaob/Re-ID/Trifusion/tools/run_native_research.py",
+      "--dataset",
+      "RGBNT100",
+      "--variant",
+      "semantic",
+      "--mode",
+      "train",
+      "--protocol",
+      "/data/gaob/Re-ID/Trifusion/logs/training_feature_scale_protocols_20261002/RGBNT100.json",
+      "--signal-source",
+      "/data/gaob/Re-ID/Trifusion/comparators/Signal-cd1b0a6",
+      "--clip-weight",
+      "/data/gaob/Re-ID/Trifusion/pertrained-model/ViT-B-16.pt",
+      "--initialization",
+      "/data/gaob/Re-ID/Trifusion/logs/native_research_v6_20261003_794/initialization/RGBNT100_semantic.json",
+      "--output-dir",
+      "/data/gaob/Re-ID/Trifusion/trained-model/native_research_v6_20261003_794_full_semantic_RGBNT100",
+      "--seed",
+      "42",
+      "--epochs",
+      "50"
+    ],
+    "status": "RUNNING",
+    "pid": 634130,
+    "started_at": "2026-10-04T04:35:46.838015+08:00",
+    "gpus": [
+      0,
+      1
+    ]
+  },
+  "epochs_completed": 2,
+  "recent_epochs": [
+    {
+      "epoch": 1,
+      "steps": 62,
+      "mean_loss": 5.488979793364002,
+      "seconds": 69.97257417999208
+    },
+    {
+      "epoch": 2,
+      "steps": 62,
+      "mean_loss": 4.254538147680221,
+      "seconds": 67.32343215600122
+    }
+  ],
+  "processes": [
+    {
+      "pid": 3854540,
+      "state": "S",
+      "start_ticks": "29297570"
+    },
+    {
+      "pid": 634130,
+      "state": "R",
+      "start_ticks": "31508760"
+    }
+  ],
+  "boundary": "Global and semantic ownB128 M0 passed; native ownB128 M0 pending. No retrieval gain or old backward-parity repair claim."
+}
