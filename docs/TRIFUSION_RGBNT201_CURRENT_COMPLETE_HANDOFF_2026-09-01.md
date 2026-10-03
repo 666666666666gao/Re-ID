@@ -2,7 +2,7 @@
 
 ## 0. 一页结论
 
-**首页当前进度：§41.765（2026-10-03）** 原F3尚待最后RGBNT100 metric_raw及原once report，既有final observer37344按首次11:02:04.284968／240秒观察，不重启。新独立细节组件有限CPU检查通过；raw feature、author heads及复用全50／strict／batch-order的完整入口草稿已形成，仅AST检查。author仍只是选项，未选择配方／注册计划／执行完整模型、初始化或M0／训练。仅26 GPU0–3/max4；25不训练。Goal ACTIVE／UNMET。
+**当前进度：§41.766（2026-10-03）** 原F3六端均完成50轮，但RGBNT100 metric_raw在评价前触发10 GiB磁盘检查，原controller已FAILED退出。正式验收仍5/6，原CPU report调用0次。已收齐原失败文本与实际源码，24份旧已结项M0权重退役及仅补齐未启动评价的脚本正接受fresh源码复核，尚未执行。仅2026 GPU0–3/max4；2025不训练。独立原生细节方法仍是未登记草稿；Goal ACTIVE_UNMET。
 
 **现行合同：** 每个正式候选完整50轮，使用作者完整query/gallery及camera／MSVR时间段过滤，以官方fused mAP最高的同一checkpoint报告全部指标，随后严格重载。RGBNT201报告mAP／R1／R5／R10，RGBNT100及MSVR310报告mAP／R1；不跨epoch或seed拼列。官方集已参与逐轮选点和历史方法选择，属于已消费基准上的探索性结果。
 
@@ -15419,3 +15419,18 @@ raw端原训练完成`2026-10-03T08:49:00.629471+08:00`，原严格评价完成`
 entry实际SHA为`5929d9a0c71a071d5050fbcb0628281792fb36ec50485c28b5b24d8cde4fd1e7`，源码／notes／AST status存于`logs/native_evidence_author_entry_option765_20261003/`。§762组件CPU证据不接受本trainer，head/integration草稿源码也尚未获得完整所选plan的source review。原F3受保护source／plan字节保持；没有新模型、initializer、M0、训练、评价或额外report。继承history.seconds是训练循环耗时，不能以其求和推断含epoch评分／checkpoint保存的墙钟ETA。
 
 下一步先完整接收原F3最后一端及原once report，经fresh完整审计／claim后选择可信配方并登记有限比较，再进行完整source review和真实全模型M0。停止尺度变体或margin／seed／系数救分；当前准备不能替代三个数据集上的实际净收益与资源注明SOTA要求。
+
+
+## 41.766 原F3磁盘门失败与仅补齐未启动评价的准备（2026-10-03T11:37:06.397338+08:00）
+
+原六端训练均跑满50轮；最后RGBNT100 metric_raw共6559步，best为第48轮，训练记录mAP75.45198460760588、R1 94.75218653678894。这些是训练时的记录，尚未通过独立重载验收，不能提前填为第六项正式结果。
+
+原训练于10:59:28结束、训练子进程exit0。原worker于11:02:54 exit1，原controller2691826写入FAILED；traceback停在`queue_foundation_recipe.py:130`的`shutil.disk_usage(ROOT).free >= 10 * 1024**3`。独立evaluate未调用：没有evaluate.log、official_metrics.json或official_distances.pt，accepted_matrix及report目录也不存在。11:06原sole observer观察到terminal-without-report后自然退出，不重启旧controller或observer。11:11实际空间为4,519,247,872字节。
+
+已一次接收103份原文本、265份实际源码及24项二进制存在/SHA记录，其中23项存在；唯一缺项是尚未生成的RGBNT100 metric_raw正式距离。原FAILED parent、train-only child、worker traceback全部保留。不存在重新训练、重选checkpoint或放宽原1e-5容差的授权变更。
+
+清理范围为24份已完成并发布的旧工程M0 `m0_reload_probe.pth`，清单合计8,444,122,668字节：旧视觉更新12份、干净起点6份、旧F2六份。它们的正式best、文本、距离、作者和公共权重及当前F3全部23项依赖保留；F1在2025的六份基础权重不属于清单。旧M0二进制退役会限制历史工程重载，必须披露，不能称历史全部仍可从二进制重放。
+
+storage-only finish单独归属：待fresh源码复核无阻断、实存SHA及旧campaign终态确认、实际释放空间后，只第一次启动原缺失evaluate，严格通过后核齐六端，第一次调用未经修改的原CPU report。保存原FAILED字节和真实exit1，不伪造原worker成功。使用2026的一张空闲卡，所有新实验仍限定其物理0–3四张卡、最多4并行；2025只同步文本，不启动训练。
+
+本节是失败事实与准备记录：fresh review仍在运行，权重尚未退役，finish尚未启动，六端完整汇总及fresh完整性/claim审计均未完成。准备源码、清单、原失败回执和INTAKE在`logs/metric_scale_disk_failure766_20261003/`；新的独立双来源方法尚未选择foundation、登记plan、执行全模型M0或正式训练。总体性能目标仍未达到。
