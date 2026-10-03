@@ -1,0 +1,167 @@
+{
+  "schema": "native-model-partition-v5-fresh-source-review",
+  "created_at": "2026-10-03T17:52:21+08:00",
+  "status": "WARN",
+  "verdict": "WARN",
+  "blocking_issues": [],
+  "nonblocking": [
+    {
+      "id": "N1",
+      "title": "Dual-device peak-memory JSON is success-only",
+      "files": ["tools/run_native_partitioned.py:43-51"],
+      "evidence": "original_foundation_train must return normally before partition_peak_memory is written. OOM or a gate/reload assertion bypasses this write. Original worker traceback/exit still remain. V1 RGBNT100 B128 really failed with OOM in the stages stack.",
+      "impact": "Failure-capacity diagnosis lacks both device peaks; failed runs cannot pass the existing gates.",
+      "minimal_action": "If completing failure observability, record the already-initialized device peaks in the new orchestration wrapper while preserving the original exception and stop behavior. No model/gate/retry changes."
+    },
+    {
+      "id": "N2",
+      "title": "Pre-assert receipt omits head, buffer and RNG comparison details",
+      "files": ["tools/check_partitioned_backward.py:79-118"],
+      "evidence": "All parameter gradient deltas and witness input metadata are written before parity assertions, but heads, buffers and CPU/two-CUDA RNG comparison details are only checked afterward and not serialized in that pre-gate file.",
+      "impact": "This does not weaken acceptance. The existing file should not be described as complete pre-assert recording of every checked object.",
+      "minimal_action": "Limit any addition to observations of the already-checked objects; retain every existing threshold and failure stop."
+    },
+    {
+      "id": "N3",
+      "title": "Terminal summary lacks the planned full CMC and final evaluation timing",
+      "files": ["tools/report_native_partitioned.py:33-59", "tools/analyze_correspondence_distances.py:28-75", "tools/run_correspondence_roles.py:79-108", "tools/run_foundation_recipe.py:302-311"],
+      "evidence": "The reused scorer/report emits mAP and Rank-1/5/10 plus aggregate paired diagnosis; full CMC and per-query AP are not returned in the final summary. final_evaluation_seconds exists in official_metrics.json but is not copied to the summary. Exact same-best distances and identity/environment labels remain saved.",
+      "impact": "Engineering M0 may proceed. Complete-CMC/all-cost report completion cannot be claimed from this report as currently written.",
+      "minimal_action": "Complete the CPU report from the existing same-best distance arrays and evaluation receipt before claiming full reporting completion; no new inference, training or checkpoint selection."
+    }
+  ],
+  "scope": {
+    "kind": "LOCAL_STATIC_SOURCE_AND_EXISTING_PRIMARY_REVIEW",
+    "new_files_read": [
+      "modeling/trifusion/partitioned_evidence_clip.py",
+      "tools/run_native_partitioned.py",
+      "tools/check_partitioned_native_pair.py",
+      "tools/check_partitioned_backward.py",
+      "tools/queue_native_partitioned.py",
+      "tools/report_native_partitioned.py",
+      "refine-logs/native_model_partition_v5/EXPERIMENT_PLAN.md",
+      "refine-logs/native_model_partition_v5/MODEL_PARTITION_FEASIBILITY_20261003.md",
+      "C:/Users/gb/.codex_tmp/deploy_native_partition781.py"
+    ],
+    "code_root": "C:/Users/gb/.trifusion_github_publish_22c3bee",
+    "dependency_root": "C:/Users/gb/.codex_tmp/independent_evidence_draft/cpu_boundary_terminal780/_source",
+    "key_dependencies_read": [
+      "tools/run_independent_native_evidence.py",
+      "tools/run_foundation_recipe.py",
+      "tools/queue_foundation_recipe.py",
+      "tools/run_clean_clip_joint.py",
+      "tools/run_visual_update_control.py",
+      "tools/run_signal_preserving_v5.py",
+      "tools/run_training_feature_scale.py",
+      "tools/run_correspondence_roles.py",
+      "tools/queue_correspondence_roles.py",
+      "tools/queue_correspondence_refinement.py",
+      "tools/collect_correspondence_roles.py",
+      "tools/analyze_correspondence_distances.py",
+      "tools/train_rgbnt100_signal_oof.py",
+      "tools/train_msvr310_signal_oof.py",
+      "modeling/trifusion/correspondence_roles.py",
+      "modeling/trifusion/evidence_author_heads.py",
+      "modeling/trifusion/independent_native_roles.py",
+      "modeling/trifusion/image_native_evidence.py",
+      "comparators/Signal-cd1b0a6/modeling/meta_arch.py",
+      "comparators/Signal-cd1b0a6/modeling/clip/model.py",
+      "comparators/Signal-cd1b0a6/solver/make_optimizer.py",
+      "comparators/Signal-cd1b0a6/configs/RGBNT201/Signal.yml",
+      "comparators/Signal-cd1b0a6/configs/RGBNT100/Signal.yml",
+      "comparators/Signal-cd1b0a6/configs/MSVR310/Signal.yml"
+    ],
+    "ast_files_checked": 7,
+    "ast_status": "PASS",
+    "private_remote_body_ast": "PASS_WITH_LITERAL_PLACEHOLDERS_NOT_EXECUTED",
+    "existing_dependency_manifest_members_checked": 304,
+    "existing_dependency_manifest_mismatch_or_missing": [],
+    "remote_connections": 0,
+    "pytorch_or_model_imports": 0,
+    "cuda_workloads": 0,
+    "model_or_scorer_executions": 0,
+    "training_started": 0,
+    "deployments": 0,
+    "production_code_edits": 0,
+    "weight_changes": 0,
+    "writes": "This review, versioned copies and local review manifest only",
+    "tool_limitation": "Initial bare python invocation failed before script execution because its local pyvenv.cfg was missing; stdlib validation then used an existing uv-managed Python in offline mode without installing packages."
+  },
+  "attribution": {
+    "requested_model": "gpt-6-astra",
+    "requested_reasoning_effort": "max",
+    "requested_fork_turns": "none",
+    "native_spawn_parameters_confirmation": "Parent explicitly confirmed the actual spawn request parameters in a collaboration message",
+    "actual_backend_model_independently_verified": false,
+    "actual_reasoning_effort_independently_verified": false,
+    "review_independence": "same-family",
+    "acceptance_status": "provisional",
+    "cross_family_review": false
+  },
+  "correct_source_paths": {
+    "parameter_ownership": "Single registered parameter bank; placement precedes optimizer; parameter identity and full state equality assertions remain; no dtype change",
+    "camera_indices": "Pinned meta_arch.py moves cam_label to cv_embed.device before indexing",
+    "autograd_and_capture": "Original block arithmetic and adapter writeback/order preserved; snapshot and block-boundary device transfers do not detach; temporary hooks removed in finally",
+    "full_batch": "Full BN, author losses and native/semantic computation remain on cuda:0; only the explicitly documented backward witness slices first32",
+    "train_wrapper_chain": "entry.main -> original entry.train -> new foundation.train wrapper -> captured original foundation.train; no recursion; original M0Diagnostics append still runs",
+    "optimizer_amp": "Original full-model optimizer group coverage/uniqueness and GradScaler256 scale/backward/unscale/step/update preserved across parameters on both devices",
+    "rng": "Seed path initializes all CUDA devices; witness resets and compares CPU plus both CUDA RNG states and asserts exactly two devices",
+    "m0": "All-nine barrier, eight actual optimizer post-hooks, BN8, cumulative activity of every trainable parameter, native14 support/updates and strict fresh-state reload preserved",
+    "save_reload": "Full CPU model state saved; fresh partitioned construction before strict load; one mAP-best checkpoint, same-best final metric/distance verification",
+    "ground_truth": "Evaluation uses true query/gallery identity and camera or MSVR scene filtering with the original author evaluator and independent scorer",
+    "scheduling": "2026 physical pairs0/1 and2/3; both cards checked for availability; max2 workers/4 cards; explicit child CUDA_VISIBLE_DEVICES; 240-second poll; no preemption or2025 model command",
+    "private_deployment": "Fixed2026 target; source/public CLIP/new paths/prior process/disk checks; source snapshot; launched-not-validated receipt; not executed in review"
+  },
+  "primary_evidence": {
+    "v1_oom": {
+      "path": "C:/Users/gb/.codex_tmp/independent_evidence_draft/terminal_intake771/primary/logs/independent_native_evidence_20261003_v1/independent_native_evidence_20261003_v1_m0_global_only_RGBNT100/m0.log",
+      "dataset": "RGBNT100",
+      "variant": "global_only",
+      "batch": 128,
+      "site": "correspondence_roles.py:86 stages stack",
+      "attempted_allocation_MiB": 218,
+      "reported_pytorch_allocated_GiB": 22.52
+    },
+    "v4_pre_gate_recount": {
+      "global_only_parameters": 209,
+      "global_only_failed_fixed_gradient_gates": 0,
+      "semantic_parameters": 281,
+      "semantic_failed_fixed_gradient_gates": 94
+    },
+    "section780_recount": {
+      "measured_json": "C:/Users/gb/.codex_tmp/independent_evidence_draft/cpu_boundary_terminal780/primary/logs/cpu_saved_boundary_diagnostic_20261003_v1/observations/MEASURED.json",
+      "torch_version_in_existing_record": "2.5.1+cu121",
+      "parameters": 281,
+      "failed_fixed_gradient_gates": 81,
+      "packs": 1323,
+      "unpacks": 1323,
+      "storage_offset_differences": 72,
+      "stride_or_layout_differences": 0,
+      "route_disposition": "CPU-save remains stopped; no localized repair is established"
+    },
+    "capacity_inventory": "C:/Users/gb/.codex_tmp/independent_evidence_draft/capacity780/stdout.json"
+  },
+  "budget_recount": {
+    "basis": "Existing B32 RGBNT201 saved-tensor logical metadata, not V5 peak measurement",
+    "packs_per_modality": 441,
+    "front_indices_inclusive": [0,205],
+    "rear_indices_inclusive": [206,440],
+    "front_bytes_per_modality_B32": 1194906976,
+    "rear_bytes_per_modality_B32": 1255505760,
+    "front_logical_bytes_three_modalities_B128_linear_estimate": 14338883712,
+    "rear_logical_bytes_three_modalities_B128_linear_estimate": 15066069120,
+    "duplicates_or_cache_subtracted": false,
+    "new_graph_memory_upper_bound": false,
+    "actual_gpu_peak_measured_by_this_review": false,
+    "backend_margin": "Limited; role and workspace allowances remain estimates, not measured upper bounds"
+  },
+  "runtime_gate_status": {
+    "initial_full_batch_pairs": "NOT_RUN_BY_REVIEW",
+    "forward_backward_parity": "NOT_RUN_BY_REVIEW",
+    "full_B128_capacity": "NOT_ESTABLISHED",
+    "all_nine_M0": "NOT_ESTABLISHED",
+    "formal50": "NOT_AUTHORIZED_BY_A_SOURCE_REVIEW_ALONE",
+    "scientific_or_retrieval_success": "NOT_ESTABLISHED"
+  },
+  "recommendation": "Source paths may enter the already-registered initialization/witness/M0 sequence with the nonblocking limitations recorded. Keep every unchanged gate; preserve failures and stop on any failed witness or full-author-batch M0. Complete planned CPU reporting before claiming all metrics/cost reporting is finished."
+}

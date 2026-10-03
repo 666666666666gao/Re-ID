@@ -2,7 +2,7 @@
 
 ## 0. 一页结论
 
-**当前进度（§41.780，2026-10-03）：** 一次CPU-save边界诊断已真实结束，两个backward、零更新、无权重，child exit1。前向及loss一致，281项参数梯度81项仍失败；1323次保存/恢复的stride和layout均不变，72项仅storage_offset变化，未定位唯一原因。按原计划结束此诊断，封存v4失败，不原样重启、不放宽门或新增诊断臂。2026四张均24GiB卡，无更大单卡；fresh救援复核与完整primary已接收。正式九端M0/50轮仍未完成，Goal ACTIVE_UNMET。每个完成实验仅留一份mAP-best；旧工程probe确认无依赖后及时退役，当前没有新权重可清理。
+**当前进度（§41.781，2026-10-03）：** 原CPU-save及其一次边界诊断继续封存FAIL。新V5单进程模型分段源码已实现并经fresh源码复核，尚未GPU启动：同一作者完整batch经两卡、参数只一份、完整BN/Triplet在输出端。只2026四张卡，两卡一组最多两job；不CPU保存/checkpoint/DDP/改batch或门。估计后端约22GiB、余量有限，容量与梯度必须实际验证，九端M0/50轮仍未完成。每正式端仅保留一份mAP-best。Goal ACTIVE_UNMET。
 
 **现行合同：** 每个正式候选完整50轮，使用作者完整query/gallery及camera／MSVR时间段过滤，以官方fused mAP最高的同一checkpoint报告全部指标，随后严格重载。RGBNT201报告mAP／R1／R5／R10，RGBNT100及MSVR310报告mAP／R1；不跨epoch或seed拼列。官方集已参与逐轮选点和历史方法选择，属于已消费基准上的探索性结果。
 
@@ -15631,3 +15631,20 @@ fresh-context终态救援复核、实际请求/response/native final、完整pri
 已写入refine-logs/native_model_partition_v5/MODEL_PARTITION_FEASIBILITY_20261003.md，只有本地单进程模型分段候选：同一完整批次顺序经过两卡，参数不复制，完整作者BN/Triplet留输出端，明确camera/adapter/capture跨段路径与逐卡参数/激活/梯度/Adam预算。前6/后6只是候选点，救援没有背书；尚未形成完整预算、具体实现、源码接受或GPU启动。原固定数值门和九端完整M0不变，不用DDP/梯度累积替代作者批次语义。
 
 权重保留继续执行用户最新要求：每个完成的正式端只保留一份mAP-best，所有指标跟随它；目前正式入口已经只覆盖best_map.pth，不写逐epoch历史模型。工程M0 probe仅保留至严格重载和报告依赖闭合，确认后及时退役；作者/public CLIP、活动初始化、必要复核依赖及其他项目权重不删。§777已确认并退役8份无用probe共2789830448B，原清理回执与失败记录保留，不能重复执行删除。本诊断没有生成任何权重，v4输出目录已核为空，本节没有新增权重删除。其余旧probe只有库存记录、未完成逐项无依赖证明，不能按名字盲删。
+
+
+## 41.781 原作者完整批次的两卡分段实现（2026-10-03）
+
+上一轮实际接收§780两臂诊断和fresh救援，stride/layout未变而281梯度81FAIL，已停止CPU-save路径；完整证据与1691份归属文本在17:21:09五处一致核验，b547dffb/2191381B/SHA914c3ae0af3255ebf1f0cc128fdcee13e20b02b2d2fd6f477f3062899ae0a0d7。没有原样重启、改门或额外诊断臂。新干预来自已确认的B128单卡OOM与四张同规格24GiB卡，属于计算放置，不新增科学模块。
+
+partitioned_evidence_clip只放置一份原参数：cuda1承载conv/CLS/position/camera/ln_pre、前6个原block、第4层adapter，cuda0承载后6个block/第8、12层adapter/ln_post/proj/全部角色/native/readout及作者heads。迁移在optimizer创建前，参数对象身份和完整state检查保持。两处持久pre-hook搬原图与第7层输入；第4层按原stack公式生成snapshot后to(cuda0)，原角色均值写回及原三模态执行顺序不改。临时capture hook仍原finally移除。全batch在输出端一次执行BN/Triplet，所有原公式直接执行；没有模型复制、batch分片、累积梯度、CPU保存、checkpoint重放、额外stream或精度更改。
+
+run_native_partitioned沿用原作者配方入口，完整raw/L21536与作者头只编码一次，优化器覆盖整个包装模型。原全参数M0Diagnostics及14项native累计非零梯度/参数改变要求不动；新增两卡峰值allocated/reserved记录，完整state CPU保存与匹配放置fresh重载。所有九份初始构造、三份完整作者batch semantic/native forward配对、原单卡/新两卡首32数值witness及九份完整作者batch八更新M0都必须通过，之后才允许九端各50轮。witness保留原1e-5前向和1e-4梯度门，实际CPU和两CUDA RNG精确检查；持久transfer pre-hook与临时capture清理区别记录，失败先封存，不放宽门。
+
+原§780实际保存元数据用于预算：三个模态各441项，每模态前6层0–205、后段206–440，单模态逻辑保存值1194906976/1255505760B。不扣storage/cache重复，将全部逻辑值乘三模态和B32→B128四倍，得14338883712/15066069120B。再列真实参数/梯度/Adam/AMP，stage暂存、角色/native和workspace估算，前端约15.5GiB、后端约22GiB。后端余量有限，角色和workspace不是实测上界；这不是容量PASS，必须由完整B128 M0实际证明。六份Python源码编译、私有启动器及其实际渲染远端代码AST通过，只是源码工程证据，无模型导入或GPU。
+
+queue_native_partitioned按2026物理(0,1)/(2,3)整对核对空闲；同一job明确两张卡归属，最多两job/四卡且不抢占。九份M0全部通过才开正式阶段，失败等待已运行同阶段job闭合但不启动后续job；240秒间隔，不重试失败端。新/home/gaob/trifusion-native-evidence-v5目录承接18份M0/full输出，原整批10292822016B预算与/data、/home各2GiB运行保留不变。旧权重不搬、不加symlink。九端M0 probe至严格验收/报告依赖闭合后退役，正式仍只覆写单一best_map.pth。
+
+fresh reviewer原始请求/response/native final与MD/JSON、私有待部署源码snapshot保留。复核为同家族/provisional/source-only，不能代表真实数值、完整B128峰值、M0、正式mAP或SOTA。此节SOURCE_REVIEWED_NOT_LAUNCHED：下一步五处同步后再核对实际空闲两卡/312项来源/磁盘并真实Popen。原九端科学问题仍是native−semantic及roles−独立global-only净收益，不把计算修正归为方法创新；预训练、作者完整图库/过滤、seed42、50轮、原推进门、全部指标同一best均保持。
+
+复核非阻塞边界：正常train返回后才写入两卡max_memory记录；若OOM或训练门异常退出，异常日志保留，但这一字段可能没有完成。终态报告沿用四项主指标，完整CMC/AP数组及已存final_evaluation_seconds未直接汇总，原同best完整距离与评价回执保留后可独立CPU补算。pre-assert明细含所有参数梯度与raw/fused/global/loss；head/buffer/RNG明细在通过固定梯度门后继续检查，不能把未执行部分当PASS。此次只认可源码可进入工程验证，不代表B128容量、梯度等价、M0或正式性能已通过。
