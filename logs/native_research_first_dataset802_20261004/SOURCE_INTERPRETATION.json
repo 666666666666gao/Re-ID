@@ -1,0 +1,24 @@
+{
+  "at": "2026-10-04T00:58:54.439398+08:00",
+  "scope": "Local current-source interpretation, no execution/tuning or new performance conclusion",
+  "sources": {
+    "tools/run_independent_native_evidence.py": "2429af8d2f803d70b9d15113a430609ead28621eb4341a746c3025cc5685fe23",
+    "modeling/trifusion/independent_native_roles.py": "1565590fdfb281fb51b43d06497cd526ffe5bbdc135727ebaa609615dc7832ff",
+    "modeling/trifusion/image_native_evidence.py": "0b5a2ab7fa3f2e3dc276f651e86a83bbff162e25e65e16f321b7882f05ecbd58",
+    "modeling/trifusion/evidence_author_heads.py": "613b249dae9e1d62d418b94398a0d6ccbcf48e72c88b26b27dd5b9254e9c24cd",
+    "modeling/trifusion/partitioned_evidence_clip.py": "3bad53abd6777602e1f1ea9e7b03f10a796116b577501ee5ec0aec6e683b436c",
+    "modeling/trifusion/slot_competition_fp32_roles.py": "810801e048bcb07ddbdef0635708b63cba7562a4876e044af34135fd412f79c8"
+  },
+  "facts": [
+    "global_only retains identical shared CLIP/adapters and author heads, drops registered role parameters; RGBNT201 trainable87313728/209tensors.",
+    "semantic adds1701002 trainable parameters/72tensors; native adds159296/14 beyond semantic. Real initializer records, not inactive parameter padding.",
+    "AuthorHeadEvidence.forward applies CE and metric heads to corrected raw1536 once; deployment uses L2. Historical evidence neck/classifier frozen and unused.",
+    "152 visual tensors and fresh camera updated in every arm. Native and semantic differences include feedback into shared visual/adapters/context, not fixed global plus an independent lookup.",
+    "Native zero output exit matches semantic at initialization, not a performance guarantee after joint learning. First update data gradient only outputweight; weight decay can move other weights without initial data gradient.",
+    "Semantic sampler uses full128patch FP32 Q/K/V attention; native independently reads512stem values via own Q/K/V, same role0 queries expanded across modalities. Native attention has no explicit position bias/local candidate restriction. Slot index is not a verified semantic/physical correspondence."
+  ],
+  "limits": [
+    "Only source properties; no claim that missing spatial prior or joint gradient is the performance root cause.",
+    "Keep full nine endpoints fixed. Native formal result still unavailable in last actual capture, no current tuning or new diagnostic."
+  ]
+}
