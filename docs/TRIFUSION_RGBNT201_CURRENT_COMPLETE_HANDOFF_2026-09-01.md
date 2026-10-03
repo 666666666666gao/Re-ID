@@ -2,7 +2,7 @@
 
 ## 0. 一页结论
 
-**首页当前进度：§41.764（2026-10-03）** 原F3仍按既有任务接续，最新远端实查10:18为5/6完整50轮端及RGBNT100 metric_raw在26 GPU2实活，原报告调用0；final observer37344的首次11:02:04.284968与240秒节奏保持。新细节组件有限CPU检查通过；完整接入稿提供raw feature接口，并准备author单／三head及完整optimizer ownership选项，仅AST检查，未选择配方／注册／执行新M0或训练。仅26 GPU0–3/max4；25不训练。Goal ACTIVE／UNMET。
+**首页当前进度：§41.765（2026-10-03）** 原F3尚待最后RGBNT100 metric_raw及原once report，既有final observer37344按首次11:02:04.284968／240秒观察，不重启。新独立细节组件有限CPU检查通过；raw feature、author heads及复用全50／strict／batch-order的完整入口草稿已形成，仅AST检查。author仍只是选项，未选择配方／注册计划／执行完整模型、初始化或M0／训练。仅26 GPU0–3/max4；25不训练。Goal ACTIVE／UNMET。
 
 **现行合同：** 每个正式候选完整50轮，使用作者完整query/gallery及camera／MSVR时间段过滤，以官方fused mAP最高的同一checkpoint报告全部指标，随后严格重载。RGBNT201报告mAP／R1／R5／R10，RGBNT100及MSVR310报告mAP／R1；不跨epoch或seed拼列。官方集已参与逐轮选点和历史方法选择，属于已消费基准上的探索性结果。
 
@@ -15406,3 +15406,16 @@ raw端原训练完成`2026-10-03T08:49:00.629471+08:00`，原严格评价完成`
 源文件`evidence_author_heads.py`的实际SHA为`b0a3a20c1ca5124f761d6bae01f88429a1d1c48cb0066926af7b82dd6f11f218`，AST解析通过；代码及notes/status归档`logs/native_evidence_author_head_option764_20261003/`。没有导入模型、执行optimizer、运行真实paired前向／AMP-CUDA M0或训练；当前author只是准备选项，没有选作foundation。§762组件CPU通过不接受本包装器，§763 integration源码／detail组件字节未改，原F3受保护源码／计划也未改。
 
 下一门仍是原six端全50＋strict＋once report及fresh audit／claim，随后登记可信匹配基座与有限证据对照，获得完整source review后才能实际M0。既有final observer在10:31实际PID37344实活；其11:02:04.284968首次观察与240秒间隔不变，无重复观察器、report或训练启动。总体三数据集性能与SOTA目标仍未满足。
+
+
+## 41.765 完整50轮作者选项训练入口草稿（2026-10-03T10:52:07.375106+08:00）
+
+已将§763 raw feature及§764 author heads选项接到完整训练入口草稿`run_independent_native_author_option.py`，variants为shared global-only、semantic roles、semantic+independent native detail。仍未选择author作为最终foundation，未登记队列或科学计划；本入口未导入／执行，只有AST解析。global-only含共享适配器，不能等同F1无adapter纯baseline。
+
+该入口复用原F1全50循环／官方完整图库评价／mAP-best及latest exact tie／完整state save及strict reload；用原F2 BatchOrderLoader给作者loader增加实际labels/cameras/paths顺序记录。保留author loss、dataset-specific sampler／增强／scheduler／LR，整个模型交给§764 optimizer option，旧normalized heads冻结。native构造在既有CPU RNG fork内进行，将原semantic完整state复制到带detail的state，再在全部variants构造完成后恢复visual及camera梯度；新增backbone构造会重新冻结Signal，因此此恢复必须放在variant replacement之后。
+
+源码绑定记录public CLIP、fresh camera／视觉／common initializer SHA、实际head names、cfg、参数量及batch/K。损失仍是author head汇总，没有新增loss；部署L2_1536。继承8步M0的累计梯度、有限AMP更新及full-state reload，但目前未执行任何一门，不能把继承检查逻辑的存在写成PASS。后续实际paired witness还须核对全部common role张量、真实同批输入与semantic/native输出、BN模式和optimizer groups；全50后核对所有批次顺序。
+
+entry实际SHA为`5929d9a0c71a071d5050fbcb0628281792fb36ec50485c28b5b24d8cde4fd1e7`，源码／notes／AST status存于`logs/native_evidence_author_entry_option765_20261003/`。§762组件CPU证据不接受本trainer，head/integration草稿源码也尚未获得完整所选plan的source review。原F3受保护source／plan字节保持；没有新模型、initializer、M0、训练、评价或额外report。继承history.seconds是训练循环耗时，不能以其求和推断含epoch评分／checkpoint保存的墙钟ETA。
+
+下一步先完整接收原F3最后一端及原once report，经fresh完整审计／claim后选择可信配方并登记有限比较，再进行完整source review和真实全模型M0。停止尺度变体或margin／seed／系数救分；当前准备不能替代三个数据集上的实际净收益与资源注明SOTA要求。
