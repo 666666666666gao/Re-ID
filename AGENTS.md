@@ -1,3 +1,7 @@
+## 2026-10-03 latest user direction — current research Goal
+
+Read `refine-logs/CURRENT_GOAL.md` before further TriFusion work. User stopped engineering repairs and requested Goal refinement. The proposed new backward-boundary observation is WITHDRAWN, not registered/deployed/run; its fresh reviewer was interrupted. Preserve old FAIL/STOP and distinguish untrained from ineffective. Prioritize matched-recipe identity-retrieval evidence and the global_only/semantic/native comparison; do not continue independent parity/kernel/checkpoint/offload repair or silently rerun failed attempts. Only2026 physicalGPU0/1; 2025 text-sync only. Formal endpoints retain one mAP-best. Older server, 20-epoch and seed-search instructions below are historical and superseded by this latest execution scope. The broad Goal remains active/unmet.
+
 # TriFusion-ReID workspace
 
 ## Latest verified state (2026-09-21 balance R2 Q1 five endpoints complete)

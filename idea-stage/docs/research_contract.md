@@ -1,3 +1,7 @@
+## 2026-10-03 current Goal supplement
+
+Latest user instruction stops engineering repair and narrows immediate work to the research Goal in `refine-logs/CURRENT_GOAL.md`. Its matched-recipe evidence, role/detail contribution, three-dataset evaluation, single-best retention and GPU0/1 scope supersede stale execution priorities below. The new localization draft was withdrawn before registration or runtime. Historical failures are unchanged; this is not automatic approval for failed-route retries or acceptance of unrun endpoints. Existing nine scientific comparisons remain, with no new formal result. Total Goal active/unmet; this supplement records user-directed scope, not a performance claim.
+
 # TriFusion当前研究合同
 
 ## 2026-10-02 F1 foundation control supplement
