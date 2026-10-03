@@ -1716,3 +1716,15 @@
 - 2026-10-02T23:24:29.701039+08:00: §41.741 actual26 sparse source failure restored; exact three243 canonical protocol exception, other246 sources unchanged; all41360 image paths present, fourcards occupied by other jobs, same source review incomplete. No model/M0/new training.
 
 - 2026-10-02T23:32:43.586128+08:00: §41.742 completed same-agent gpt-6-astra/max source review PASS/no blockers after exact protocol correction; reports bytes preserved, only2026 scope, runtime gates NOT_RUN and latest GPUs occupied.
+
+| 2026-10-03T21:41:42.683465+08:00 | /experiment-plan | refine-logs/independent_native_evidence_v1/EXPERIMENT_PLAN_20261003_214142.md | implementation | §41.792 仅GPU0/1资源范围同步；CPU调度检查；旧M0/STOP不改、训练未启动 |
+
+| 2026-10-03T21:41:42.683506+08:00 | /experiment-plan | refine-logs/independent_native_evidence_v1/EXPERIMENT_PLAN.md | implementation | §41.792 仅GPU0/1资源范围同步；CPU调度检查；旧M0/STOP不改、训练未启动 |
+
+| 2026-10-03T21:41:42.683514+08:00 | /experiment-plan | refine-logs/independent_native_evidence_v1/EXPERIMENT_TRACKER_20261003_214142.md | implementation | §41.792 仅GPU0/1资源范围同步；CPU调度检查；旧M0/STOP不改、训练未启动 |
+
+| 2026-10-03T21:41:42.683521+08:00 | /experiment-plan | refine-logs/independent_native_evidence_v1/EXPERIMENT_TRACKER.md | implementation | §41.792 仅GPU0/1资源范围同步；CPU调度检查；旧M0/STOP不改、训练未启动 |
+
+| 2026-10-03T21:41:42.683527+08:00 | /experiment-plan | tools/queue_independent_native_evidence.py | implementation | §41.792 仅GPU0/1资源范围同步；CPU调度检查；旧M0/STOP不改、训练未启动 |
+
+| 2026-10-03T21:41:42.683532+08:00 | /experiment-plan | logs/native_resource_scope792_20261003/RESOURCE_SCOPE_CHECK.json | implementation | §41.792 仅GPU0/1资源范围同步；CPU调度检查；旧M0/STOP不改、训练未启动 |

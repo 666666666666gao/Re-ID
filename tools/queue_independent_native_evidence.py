@@ -1,4 +1,4 @@
-"""Nine matched author-package runs, 2026 physical GPU0-3 only."""
+"""Nine matched author-package runs, 2026 physical GPU0/1 only."""
 import json
 import os
 from pathlib import Path
@@ -72,6 +72,7 @@ def verify_m0(campaign, dataset, variant):
 
 
 def worker(args):
+    assert args.gpu in (0, 1)
     base.require_sources(args.campaign)
     child = base.queue.child_campaign(args.campaign, args.phase, args.dataset, args.variant)
     assert not child.exists()
@@ -124,12 +125,12 @@ def run_phase(campaign, state, phase):
                 '--format=csv,noheader,nounits'], text=True)
             occupied = {job['gpu'] for job, _ in active}
             available = [int(row.split(',')[0]) for row in memory.splitlines()
-                if int(row.split(',')[0]) in range(4) and int(row.split(',')[0]) not in occupied
+                if int(row.split(',')[0]) in (0, 1) and int(row.split(',')[0]) not in occupied
                 and int(row.split(',')[1]) < 500]
             for gpu in available:
                 if not pending:
                     break
-                assert len(active) < 4 and shutil.disk_usage(ROOT).free >= RESERVE_BYTES
+                assert len(active) < 2 and shutil.disk_usage(ROOT).free >= RESERVE_BYTES
                 job = pending.pop(0)
                 job.update(gpu=gpu, status='RUNNING', started_at=base.queue.stamp(), command=start_command(campaign, job, gpu))
                 with (campaign / f"{phase}_{job['variant']}_{job['dataset']}.log").open('x') as log:
@@ -148,6 +149,7 @@ def run_phase(campaign, state, phase):
 
 
 def coordinate(args):
+    assert args.gpu in (0, 1)
     assert str(ROOT) == '/data/gaob/Re-ID/Trifusion'
     previous = json.loads((PREVIOUS / 'campaign.json').read_text())
     assert previous['status'] == 'COMPLETE' and previous['report_invocations'] == 1 and previous['report_exit_code'] == 0
@@ -175,7 +177,7 @@ def coordinate(args):
     base.queue.write(args.campaign / 'manifest.json', {'schema': SCHEMA, 'seed': 42, 'epochs': 50,
         'poll_seconds': 240, 'source_sha256': sources, 'initialization_sha256': initial, 'jobs': jobs,
         'storage_estimate_bytes': CAMPAIGN_STORAGE_BYTES, 'free_reserve_bytes': RESERVE_BYTES,
-        'boundary': 'Matched author training package; global-only shared adapters, semantic roles and independent additive native detail; no auxiliary loss or F3 rescue;2026GPU0-3/max4.'})
+        'boundary': 'Matched author training package; global-only shared adapters, semantic roles and independent additive native detail; no auxiliary loss or F3 rescue;2026GPU0/1/max2.'})
     state = {'status': 'RUNNING', 'controller_pid': os.getpid(), 'started_at': base.queue.stamp(),
         'jobs': jobs, 'report_invocations': 0}
     for phase in ('m0', 'full'):
