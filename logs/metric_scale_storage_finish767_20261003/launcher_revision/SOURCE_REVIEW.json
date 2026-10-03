@@ -1,0 +1,220 @@
+{
+  "verdict": "PASS",
+  "blocking_findings": [],
+  "nonblocking_findings": [],
+  "review_independence": "same-family",
+  "acceptance_status": "provisional",
+  "scope": "source-only/not-runtime",
+  "runtime_acceptance": false,
+  "reviewed_at": "2026-10-03T11:47:53.818051+08:00",
+  "reviewer_task": "/root/review_f3_storage_finish766",
+  "review_type": "Narrow revision review of actual receipt-byte transport failure",
+  "decision": "PASS for the exact revised transport source. It uses the received remote receipt bytes and preserves the original failed attempt, completed retirement, unchanged scientific finish helper and launch guards. No blocking static defect found.",
+  "prior_review_correction": "The original source review missed Windows CRLF reserialization of the local retirement receipt before the launcher compared its raw digest with remote LF bytes. That original review is retained as historical evidence. The actual failure artifacts and exact receipt bytes now demonstrate the cause and validate this minimal correction.",
+  "checks": [
+    {
+      "id": "P1",
+      "verdict": "PASS",
+      "blocking": false,
+      "title": "Actual failure is an exact-byte transport mismatch before model launch",
+      "detail": "Original launcher remote line7 is the receipt SHA assertion, corresponding to launcher source line44. The supplied failure trace reports line7/AssertionError and exit1. Local old receipt is 134866 bytes with 2490 CRLF endings, SHA c19c08147a7564f3efb4cf352b0eacbadd27683656d62e1d8f35539f56d31b54. Received remote receipt is 132376 bytes, LF only, SHA 63956ff16251c212b37ec1264c58878e4ccab46ffed1721f6f8da499ebba4645. Their decoded JSON objects are equal and remote bytes exactly equal old local bytes with CRLF replaced by LF. The original retirement writer reserialized JSON via Windows write_text; the launcher incorrectly treated those bytes as equal to the Linux remote receipt. The failure precedes launcher.log creation (remote line15) and the only Popen (remote line16); the collected diagnosis independently records absent finish/log/launch receipt.",
+      "evidence": [
+        {
+          "path": "C:/Users/gb/.codex_tmp/retire_closed_m0_766.py",
+          "line": 58
+        },
+        {
+          "path": "C:/Users/gb/.codex_tmp/retire_closed_m0_766.py",
+          "line": 65,
+          "end_line": 70
+        },
+        {
+          "path": "C:/Users/gb/.codex_tmp/deploy_metric_storage_finish766.py",
+          "line": 19,
+          "end_line": 20
+        },
+        {
+          "path": "C:/Users/gb/.codex_tmp/deploy_metric_storage_finish766.py",
+          "line": 44,
+          "end_line": 53
+        },
+        {
+          "path": "C:/Users/gb/.codex_tmp/metric_feature_scale_failed_closeout766/deploy/stderr.txt",
+          "line": 1,
+          "end_line": 3
+        },
+        {
+          "path": "C:/Users/gb/.codex_tmp/metric_feature_scale_failed_closeout766/deploy/EXIT.json",
+          "line": 1
+        },
+        {
+          "path": "C:/Users/gb/.codex_tmp/metric_feature_scale_failed_closeout766/retirement/TRANSPORT_DIAGNOSIS.json",
+          "line": 3,
+          "end_line": 13
+        }
+      ]
+    },
+    {
+      "id": "P2",
+      "verdict": "PASS",
+      "blocking": false,
+      "title": "Revision fixes the diagnosed byte comparison without relaxing it",
+      "detail": "V2 changes retirement_path to the exact received REMOTE_RETIREMENT_BYTES.json. The remote comparison remains a SHA256 equality against the actual remote receipt; its expected digest is now computed from those received bytes, which match the diagnosed remote SHA. No JSON-only acceptance, ignored mismatch, fallback, tolerance change or generic newline-normalization path is introduced. Reading the receipt with json.loads checks status/retired count without rewriting its bytes.",
+      "evidence": [
+        {
+          "path": "C:/Users/gb/.codex_tmp/deploy_metric_storage_finish766_v2.py",
+          "line": 19,
+          "end_line": 22
+        },
+        {
+          "path": "C:/Users/gb/.codex_tmp/deploy_metric_storage_finish766_v2.py",
+          "line": 44
+        },
+        {
+          "path": "C:/Users/gb/.codex_tmp/deploy_metric_storage_finish766_v2.py",
+          "line": 61
+        },
+        {
+          "path": "C:/Users/gb/.codex_tmp/metric_feature_scale_failed_closeout766/retirement/TRANSPORT_DIAGNOSIS.json",
+          "line": 4,
+          "end_line": 7
+        }
+      ]
+    },
+    {
+      "id": "P3",
+      "verdict": "PASS",
+      "blocking": false,
+      "title": "Completed retirement is reused; original failed launcher is preserved",
+      "detail": "Both receipt representations record the same completed retirement: exactly24 deleted candidates, 8444122668 retired bytes, completion 2026-10-03T11:40:00.368695+08:00 and 12859166720 free bytes after. The retirement exit receipt is0. V2 reads this existing completion and does not invoke the retirement helper. It uses separate deploy_v2 and remote metric_storage_finish_source766_v2_20261003 locations, leaving original deploy evidence and staged source intact; the original launcher hash is unchanged. This is a corrected transport attempt after a proven pre-Popen failure, not a repeated model/evaluation run or another retirement.",
+      "evidence": [
+        {
+          "path": "C:/Users/gb/.codex_tmp/metric_feature_scale_failed_closeout766/retirement/REMOTE_RETIREMENT_BYTES.json",
+          "line": 2
+        },
+        {
+          "path": "C:/Users/gb/.codex_tmp/metric_feature_scale_failed_closeout766/retirement/REMOTE_RETIREMENT_BYTES.json",
+          "line": 2487,
+          "end_line": 2489
+        },
+        {
+          "path": "C:/Users/gb/.codex_tmp/metric_feature_scale_failed_closeout766/retirement/EXIT.json",
+          "line": 1
+        },
+        {
+          "path": "C:/Users/gb/.codex_tmp/deploy_metric_storage_finish766_v2.py",
+          "line": 15,
+          "end_line": 28
+        },
+        {
+          "path": "C:/Users/gb/.codex_tmp/deploy_metric_storage_finish766_v2.py",
+          "line": 50,
+          "end_line": 63
+        }
+      ]
+    },
+    {
+      "id": "P4",
+      "verdict": "PASS",
+      "blocking": false,
+      "title": "Scientific helper and live launch guards are unchanged",
+      "detail": "The exact diff only redirects the revision review paths, binds the v2 launcher itself in the existing checked script list, selects the exact received receipt, and uses new local/remote attempt directories. retire_closed_m0_766.py, finish_metric_feature_scale766.py, FINISH_SPEC, STORAGE_FINISH_PLAN and retirement/SPEC hashes match the prior source review. V2 still connects only to port2026, verifies uploaded bytes and original failed parent SHA, requires absent finish directory, >=10GiB free disk and physicalGPU1 memory<500MiB, then starts exactly one original tri_reid finish helper with --gpu1. No source265, training, initialization witness, checkpoint, selection, tolerance, evaluator or report code is modified or replaced. The separately reviewed unchanged helper remains responsible for first strict evaluation and all-six verification before one CPU report.",
+      "evidence": [
+        {
+          "path": "C:/Users/gb/.codex_tmp/deploy_metric_storage_finish766_v2.py",
+          "line": 10,
+          "end_line": 17
+        },
+        {
+          "path": "C:/Users/gb/.codex_tmp/deploy_metric_storage_finish766_v2.py",
+          "line": 29,
+          "end_line": 63
+        },
+        {
+          "path": "C:/Users/gb/.codex_tmp/finish_metric_feature_scale766.py",
+          "line": 37,
+          "end_line": 69
+        },
+        {
+          "path": "C:/Users/gb/.codex_tmp/finish_metric_feature_scale766.py",
+          "line": 81,
+          "end_line": 123
+        }
+      ]
+    },
+    {
+      "id": "P5",
+      "verdict": "PASS",
+      "blocking": false,
+      "title": "Review gate and syntax checks are satisfied at source level",
+      "detail": "V2 requires this review to be PASS or WARN with an empty blocking_findings array and same-family/provisional attribution. It checks reviewed SHA values for unchanged retirement/finish helpers and v2 itself. Both launcher ASTs and embedded remote templates parse; the remote body retains exactly one Popen. All checks used local standard-library read/hash/JSON/AST only; templates were syntax-checked with inert literal substitutions, not executed.",
+      "evidence": [
+        {
+          "path": "C:/Users/gb/.codex_tmp/deploy_metric_storage_finish766_v2.py",
+          "line": 10,
+          "end_line": 17
+        },
+        {
+          "path": "C:/Users/gb/.codex_tmp/deploy_metric_storage_finish766_v2.py",
+          "line": 38,
+          "end_line": 68
+        }
+      ]
+    }
+  ],
+  "acceptance_scope": [
+    "Narrow transport revision only; retain the earlier whole-source review and its scientific/runtime limitations.",
+    "This review accepts the exact checked v2 source and input bytes, not a launch, evaluation, strict reload, report result or new retirement.",
+    "The retirement completion and no-launch state are claims supported by collected primary receipts/diagnosis; this reviewer made no independent remote query.",
+    "All live capacity, original failure-state and exact-byte gates must still pass when the revised launcher executes.",
+    "Do not rerun retirement or the unchanged failed original launcher. No execution was performed by this review."
+  ],
+  "evidence_checks": {
+    "old_local_receipt_bytes": 134866,
+    "remote_receipt_bytes": 132376,
+    "old_local_crlf_count": 2490,
+    "remote_crlf_count": 0,
+    "decoded_objects_equal": true,
+    "remote_equals_local_crlf_to_lf": true,
+    "remote_receipt_sha256": "63956ff16251c212b37ec1264c58878e4ccab46ffed1721f6f8da499ebba4645",
+    "retirement_recorded_deleted_candidates": 24,
+    "retirement_recorded_bytes": 8444122668,
+    "retirement_recorded_free_bytes_after": 12859166720,
+    "retirement_recorded_exit_code": 0,
+    "original_transport_recorded_exit_code": 1,
+    "original_remote_failure_line": 7,
+    "original_remote_popen_line": 16,
+    "collected_original_launch_state": {
+      "finish_exists": false,
+      "launcher_log_exists": false,
+      "launch_receipt_exists": false
+    },
+    "new_local_deploy_directory_absent_at_review": true
+  },
+  "reviewed_input_hashes": {
+    "C:/Users/gb/.codex_tmp/deploy_metric_storage_finish766.py": "1d98146b186fb9a01d332ef260b59986b5f71d66b47281299c12e88538608b42",
+    "C:/Users/gb/.codex_tmp/deploy_metric_storage_finish766_v2.py": "30ec16057719e5f86970a9e30d82568684c68142f996579529a8f0407dde1f68",
+    "C:/Users/gb/.codex_tmp/finish_metric_feature_scale766.py": "22807e06f47b387e77218f2dc7ec72393a265d6fd184495542345507749ca2f6",
+    "C:/Users/gb/.codex_tmp/metric_feature_scale_failed_closeout766/FINISH_SPEC.json": "8a3bf5d8a9575150f415360fd30dba87da565eeb8531521636432cd71e7e1dfc",
+    "C:/Users/gb/.codex_tmp/metric_feature_scale_failed_closeout766/STORAGE_FINISH_PLAN.md": "0408cbd11f3e850b3941816b0687c7d5ebb5180aa2d78d229d345bb2cf384752",
+    "C:/Users/gb/.codex_tmp/metric_feature_scale_failed_closeout766/deploy/EXIT.json": "054a76e7744b2c305a4c5b5baccbd7459725cc0b83cba02929a2f737d4fdd757",
+    "C:/Users/gb/.codex_tmp/metric_feature_scale_failed_closeout766/deploy/stderr.txt": "2c4cf6ee3fb84976c844e0c6002b84fb287a30845e628c228ba12ddf533560d9",
+    "C:/Users/gb/.codex_tmp/metric_feature_scale_failed_closeout766/deploy/stdout.json": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "C:/Users/gb/.codex_tmp/metric_feature_scale_failed_closeout766/retirement/EXIT.json": "302c5fcf0227d427ee240abdbd2a948557ea7ab09699f9c3bdeb0f98b67375ce",
+    "C:/Users/gb/.codex_tmp/metric_feature_scale_failed_closeout766/retirement/REMOTE_RETIREMENT_BYTES.json": "63956ff16251c212b37ec1264c58878e4ccab46ffed1721f6f8da499ebba4645",
+    "C:/Users/gb/.codex_tmp/metric_feature_scale_failed_closeout766/retirement/RETIREMENT.json": "c19c08147a7564f3efb4cf352b0eacbadd27683656d62e1d8f35539f56d31b54",
+    "C:/Users/gb/.codex_tmp/metric_feature_scale_failed_closeout766/retirement/SPEC.json": "1a3548c272a353b80e99e5b6e9666fa8c80b3ba5dafcd4d2603ac3749e605642",
+    "C:/Users/gb/.codex_tmp/metric_feature_scale_failed_closeout766/retirement/TRANSPORT_DIAGNOSIS.json": "85654c81838275932b27d93616523f9a2174ee8040e098cc3f97c3f1eb6d93a2",
+    "C:/Users/gb/.codex_tmp/metric_feature_scale_failed_closeout766/retirement/stderr.txt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "C:/Users/gb/.codex_tmp/metric_feature_scale_failed_closeout766/reviewer_source/SOURCE_REVIEW.json": "08498a277db0d9a13d1e3e3fe866b49ef3fd8f1316efbcec991953ab5fc4f2fa",
+    "C:/Users/gb/.codex_tmp/metric_feature_scale_failed_closeout766/reviewer_source/SOURCE_REVIEW.md": "30418c863022859a627c64b14a2d0d99a33e4568df814e8b40ab796cdbd605c2",
+    "C:/Users/gb/.codex_tmp/retire_closed_m0_766.py": "a65fb7eab10b30162c775ae2d2c596a06179be545c253fd70346c00353ce1979"
+  },
+  "input_hash_semantics": "Hashes are of exact local bytes at these absolute workspace paths. Some paths resolve through the workspace junction; launcher Path.resolve comparisons retain the same file identity. Remote bytes are the exact received receipt artifact, not a new remote read performed by this reviewer.",
+  "diff": "--- deploy_metric_storage_finish766.py\n+++ deploy_metric_storage_finish766_v2.py\n@@ -7,25 +7,25 @@\n import paramiko\n \n base=Path('C:/Users/gb/.codex_tmp/metric_feature_scale_failed_closeout766')\n-review_path=base/'reviewer_source/SOURCE_REVIEW.json'\n+review_path=base/'launcher_revision/SOURCE_REVIEW.json'\n review=json.loads(review_path.read_bytes())\n assert review['verdict'] in ('PASS','WARN') and review['blocking_findings']==[]\n assert review['review_independence']=='same-family' and review['acceptance_status']=='provisional'\n bound={Path(name).resolve():digest for name,digest in review['reviewed_input_hashes'].items()}\n-for name in ('retire_closed_m0_766.py','finish_metric_feature_scale766.py'):\n+for name in ('retire_closed_m0_766.py','finish_metric_feature_scale766.py','deploy_metric_storage_finish766_v2.py'):\n     path=Path('C:/Users/gb/.codex_tmp')/name\n     assert bound[path.resolve()]==hashlib.sha256(path.read_bytes()).hexdigest()\n spec=json.loads((base/'FINISH_SPEC.json').read_bytes())\n-retirement_path=base/'retirement/RETIREMENT.json'\n+retirement_path=base/'retirement/REMOTE_RETIREMENT_BYTES.json'\n retirement=json.loads(retirement_path.read_bytes())\n assert retirement['status']=='RETIRED_EXACT_24_CLOSED_M0' and retirement['retired_bytes']==8444122668\n assert spec['port']==2026 and spec['root']=='/data/gaob/Re-ID/Trifusion'\n-out=base/'deploy'\n+out=base/'deploy_v2'\n assert not out.exists();out.mkdir()\n files={'finish_metric_feature_scale766.py':Path('C:/Users/gb/.codex_tmp/finish_metric_feature_scale766.py'),\n        'FINISH_SPEC.json':base/'FINISH_SPEC.json','STORAGE_FINISH_PLAN.md':base/'STORAGE_FINISH_PLAN.md',\n-       'SOURCE_REVIEW.json':review_path,'SOURCE_REVIEW.md':base/'reviewer_source/SOURCE_REVIEW.md'}\n-root=spec['root'];asset=root+'/logs/metric_storage_finish_source766_20261003'\n+       'SOURCE_REVIEW.json':review_path,'SOURCE_REVIEW.md':base/'launcher_revision/SOURCE_REVIEW.md'}\n+root=spec['root'];asset=root+'/logs/metric_storage_finish_source766_v2_20261003'\n client=paramiko.SSHClient();client.load_host_keys('C:/Users/gb/.ssh/known_hosts')\n client.connect('172.19.12.138',port=2026,username='gaob',key_filename='C:/Users/gb/.ssh/id_ed25519',timeout=20)\n sftp=client.open_sftp();sftp.mkdir(asset)\n",
+  "prohibited_actions_performed": [],
+  "files_written": [
+    "C:/Users/gb/.codex_tmp/metric_feature_scale_failed_closeout766/launcher_revision/SOURCE_REVIEW.md",
+    "C:/Users/gb/.codex_tmp/metric_feature_scale_failed_closeout766/launcher_revision/SOURCE_REVIEW.json"
+  ]
+}

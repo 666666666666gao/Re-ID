@@ -2,7 +2,7 @@
 
 ## 0. 一页结论
 
-**当前进度：§41.766（2026-10-03）** 原F3六端均完成50轮，但RGBNT100 metric_raw在评价前触发10 GiB磁盘检查，原controller已FAILED退出。正式验收仍5/6，原CPU report调用0次。已收齐原失败文本与实际源码，24份旧已结项M0权重退役及仅补齐未启动评价的脚本正接受fresh源码复核，尚未执行。仅2026 GPU0–3/max4；2025不训练。独立原生细节方法仍是未登记草稿；Goal ACTIVE_UNMET。
+**当前进度：§41.767（2026-10-03）** 原F3磁盘门失败已封存，24份旧已结项M0权重实退役8.44GB，当前F3与正式best保留。fresh源码复核无阻断后，storage-only finish已在2026 GPU1单次启动，PID3070294；只补齐原未启动评价与首次CPU report，完成及六端审计尚未接收。仅2026 GPU0–3/max4；2025不训练。Goal ACTIVE_UNMET。
 
 **现行合同：** 每个正式候选完整50轮，使用作者完整query/gallery及camera／MSVR时间段过滤，以官方fused mAP最高的同一checkpoint报告全部指标，随后严格重载。RGBNT201报告mAP／R1／R5／R10，RGBNT100及MSVR310报告mAP／R1；不跨epoch或seed拼列。官方集已参与逐轮选点和历史方法选择，属于已消费基准上的探索性结果。
 
@@ -15434,3 +15434,14 @@ entry实际SHA为`5929d9a0c71a071d5050fbcb0628281792fb36ec50485c28b5b24d8cde4fd1
 storage-only finish单独归属：待fresh源码复核无阻断、实存SHA及旧campaign终态确认、实际释放空间后，只第一次启动原缺失evaluate，严格通过后核齐六端，第一次调用未经修改的原CPU report。保存原FAILED字节和真实exit1，不伪造原worker成功。使用2026的一张空闲卡，所有新实验仍限定其物理0–3四张卡、最多4并行；2025只同步文本，不启动训练。
 
 本节是失败事实与准备记录：fresh review仍在运行，权重尚未退役，finish尚未启动，六端完整汇总及fresh完整性/claim审计均未完成。准备源码、清单、原失败回执和INTAKE在`logs/metric_scale_disk_failure766_20261003/`；新的独立双来源方法尚未选择foundation、登记plan、执行全模型M0或正式训练。总体性能目标仍未达到。
+
+
+## 41.767 旧M0实退役及storage-only finish实际启动（2026-10-03T11:49:59.464843+08:00）
+
+fresh gpt-6-astra/max源码复核为WARN、无阻断项，same-family/provisional，未执行模型。实际退役于2026-10-03T11:40:00.368695+08:00结束：严格按24份清单逐一核对path/size/SHA、旧campaign终态和owner结束、正式best/currentF3保护；实删8,444,122,668字节，free由4415078400到12859166720字节。没有扩大删除范围；原F1在2025的基础权重未动。旧M0不再能直接二进制重放，但其原回执、正式best与文本保留。
+
+首次transport在Popen之前失败：本地`RETIREMENT.json`写成CRLF，远端原回执为LF，同一JSON对象但字节摘要不同。原stderr/exit1保留，11:41:38实查finish目录、launcher.log、LAUNCH均不存在。一次接收实际远端132376字节，SHA`63956ff16251c212b37ec1264c58878e4ccab46ffed1721f6f8da499ebba4645`，未改原记录、未重新清理或重试原失败脚本。
+
+新v2 transport仅改为绑定实接收的远端字节，并使用独立asset目录和deploy_v2输出；相同reviewer重新复核PASS、无阻断。原科学source265、finish helper、checkpoint、协议、seed、loss及strict1e-5容差不变。真实launch时间2026-10-03T11:49:23.405684+08:00，新controller PID3070294，GPU1，空闲与10GiB空间门实际通过。这是首次缺失evaluate和首次原CPU report的单独归属controller，不是重启原2691826，原exit1/FAILED仍归档。启动不等于评价或汇总已通过。
+
+launch/原失败transport/两轮源码review/真实退役回执在`logs/metric_scale_storage_finish767_20261003/`，源码与原FAILED见§766。新只读observer按240秒节奏观察新controller，旧observer不重启。完整结果应在实际评价exit0、原report第一次exit0、finish PID结束后一次接收，再做fresh完整性与claim审计；当前尚未据此选择新foundation或登记新训练。所有新训练限制2026物理0–3四张卡/max4；2025仅文本同步。
