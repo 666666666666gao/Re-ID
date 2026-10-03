@@ -2,7 +2,7 @@
 
 ## 0. 一页结论
 
-**当前进度（§41.788，2026-10-03晚）** 最新资源仅2026物理GPU0、1；0/1当前无compute进程，未启动新任务。原native梯度FAIL与STOP_GPU_PARITY保持；§787只确认依赖源码风险，未定位运行根因或修复。九端正式实验仍未完成。每正式端保留一份mAP-best，及时清理已确认无依赖权重。Goal ACTIVE_UNMET。
+**当前进度（§41.789，2026-10-03晚）：** 仅允许2026物理GPU0/1；未恢复训练。已安装Mamba反向二进制确认含FP32原子累加，但未定位历史83/295梯度差异的运行原因或修复。原STOP_GPU_PARITY、九端M0与正式50轮未完成状态保持。每正式端保留单一mAP-best。Goal ACTIVE_UNMET。
 
 **现行合同：** 每个正式候选完整50轮，使用作者完整query/gallery及camera／MSVR时间段过滤，以官方fused mAP最高的同一checkpoint报告全部指标，随后严格重载。RGBNT201报告mAP／R1／R5／R10，RGBNT100及MSVR310报告mAP／R1；不跨epoch或seed拼列。官方集已参与逐轮选点和历史方法选择，属于已消费基准上的探索性结果。
 
@@ -15739,3 +15739,10 @@ JOB记录19:04:34.612193开始，19:05:21.571946 child exit1/FAILED。19:09:07.7
 用户最新指令“你用26的0，1号显卡”。它覆盖此前2026四卡/两机八卡范围：后续仅2026物理GPU0、1，单卡最多2端，双卡仅0/1一对；不使用2026的2、3或2025训练。19:59:36实际只读nvidia-smi确认两卡均15MiB、利用率0、compute进程为空，UUID及原指令存logs/resource_scope788_20261003/GPU_SCOPE.json。2025只作文本同步；此前19:53:55所见1/2/3卡为wangwj的ts2net环境进程，不属于本TriFusion，未停止或干预。
 
 资源设置不改变已封存FAIL的科学边界：native原路重复梯度83/295未通过，STOP_GPU_PARITY继续有效，无新GPU模型运行、M0或正式训练。不得以卡空闲为由复跑失败对照或放宽门。后续合法执行仍须遵守真实资源/源代码/阶段门核验；模型batch、50轮、全图库过滤及单一mAP-best规则不变。上一节及历史清理数量不重复累计。
+
+
+## 41.789 已安装扩展的静态原子累加证据，保持训练暂停（2026-10-03晚）
+
+20:10:40只读包记录确认Mamba2.2.6.post3与causal-conv1d1.6.0的实际扩展均匹配RECORD。20:15:08原/root构建目录读取返回PermissionError，采集器退出1，原失败保留且未重试/提权；不能证明编译源码等价。20:17:42静态nm成功；20:19:51服务器现有cuobjdump13.2.78解码当前selective-scan扩展的两个sm86短序列variable-B/C反向函数，FP16-input/FP32-weight与FP32-input/FP32-weight各含11处FP32原子加法指令。9个sm86 cubin列表、完整两个函数汇编及其余cubin的16条找不到请求函数warning均保留。全部采集器、stdout/stderr/EXIT、分析在logs/native_binary_provenance789_20261003。
+
+相比§787，新增事实是风险确实存在于当前安装的编译物中；仍没有历史kernel dispatch/中间梯度，不能证明其导致83/295差异，不能视为localized repair。未加载扩展、执行Torch/模型/CUDA kernel、升级环境、启动M0/正式训练或生成/退役权重。2026物理GPU0/1范围不变；2025仅文本同步。原STOP_GPU_PARITY保持，禁止将本静态证据当作重复失败GPU门或自动开训的理由。九端0个当前路径完整M0验收、无正式终态，B128容量未证明；Goal ACTIVE_UNMET。详细分析明确区分静态指令、运行因果与性能结论，不将采集器失败写成算法失败。
