@@ -2,7 +2,7 @@
 
 ## 0. 一页结论
 
-**当前进度：§41.768（2026-10-03）** F3六端全部完整50轮/300epochs/20416steps，并已严格验收。原磁盘门失败保留；单独storage-only finish仅首次补缺失评价和首次原CPU report，均exit0。已一次接收126原文本、265源码、24远端二进制SHA记录；fresh完整性与claim审计进行中，尚未选择下一foundation或启动新训练。仅2026 GPU0–3/max4，2025不训练；Goal ACTIVE_UNMET。
+**当前进度（§41.769，2026-10-03）：** F3六端完成后的独立复核已收齐，integrity warn、全三集claim no；封存FAIL/FAIL/PASS，不继续尺度救分。下一项固定作者训练配方、共享global／语义roles／独立原生细节九端计划已登记并完成源码复核，尚未执行真实初始化、M0或训练。仅2026 GPU0–3/max4；2025不启动训练。Goal ACTIVE_UNMET。
 
 **现行合同：** 每个正式候选完整50轮，使用作者完整query/gallery及camera／MSVR时间段过滤，以官方fused mAP最高的同一checkpoint报告全部指标，随后严格重载。RGBNT201报告mAP／R1／R5／R10，RGBNT100及MSVR310报告mAP／R1；不跨epoch或seed拼列。官方集已参与逐轮选点和历史方法选择，属于已消费基准上的探索性结果。
 
@@ -15467,3 +15467,16 @@ launch/原失败transport/两轮源码review/真实退役回执在`logs/metric_s
 所有source/主回执/完整step与batch-order/strict/原report/失败与finish归属在`logs/metric_feature_scale_complete768_20261003/`。两位fresh gpt-6-astra/max/forknone reviewer已实际启动：完整性与claim分别只读审计；现在尚无其正式终态，不能预填PASS。辅助evidence_check resolver实际未找到脚本，明确WARN，不能把它写成检验通过；实际collector与hash核对也不替代语义claim。
 
 公开benchmark已用于逐轮mAP-best和研发选择；identity bootstrap不等于训练seed不确定性。F2同时改CE和Triplet，F1作者与当前配方还有head/optimizer/sampler/scheduler差异，不能用跨panel简单相减确定唯一失分原因。停止输入倍率、margin、seed、loss系数救F3；完整审计后才选择可信matched foundation，登记独立语义/细节读取对照并执行全模型M0。当前草稿尚未形成新的GPU实验，目标仍未达到。
+
+
+## 41.769 F3复核收束与独立原生细节九端登记（2026-10-03T12:50:07.645949+08:00）
+
+两位fresh gpt-6-astra/max/forknone复核员已给出实际完整报告。完整性`warn`，无阻塞发现；claim_supported=`no`、confidence=`medium`。同模型家族、独立上下文、provisional，不是跨模型家族验收。原始claim报告保留其当时integrity pending；另由`CLAIMS_FROM_RESULTS.json`附加现已完成的实际完整性回执，未覆盖reviewer原文或改成partial/yes。
+
+严格回执的mAP/R1百分点差为：201 −2.846207561661925/−2.15311050415039；100 −2.13230723621369/+0.58308839797974；MSVR +2.402812986499136/+3.89170646667480。仍为FAIL/FAIL/PASS。只支持固定42及本配方下MSVR描述性改善；不支持全三集有效、新机制、角色必要性、多seed或SOTA。原worker磁盘exit1、CRLF运输失败及后续各一次补评价/report的复合执行来源均保留。二进制仍远端，复核只读源码、文本和实存SHA回执；24个历史M0退役造成的历史二进制重放损失仍披露。
+
+下一项不再修改F3尺度、margin、seed或系数。选择统一的作者训练package，重新训练匹配的共享适配global-only、原语义roles、语义roles加独立原生细节三个条件×三数据集；每端50轮。全局控制含共享适配，不等于F1无adapter的plain baseline，也不继续使用旧69.6415作固定分母。新CNN从原图stride8得到512候选，独立Q/K/V读取，再以单个零出口加到保留的128-token语义CNN区域；原桥接和1536维部署接口不变。新增159296参数/14张量，若正增益还需同容量语义控制，不能先宣称纯细节因果贡献。
+
+源码复核在运行前找到并修正两项具体阻塞：独立校验子进程未初始化新schema，以及入口提前缓存DeMo的modeling包。分别只加入panel.configure()、改用项目已有trifusion导入；原草稿字节和反馈保留。MSVR作者学习率明确base5e-6、bias×2、classifier×100，未调LR救分。实际作者head/optimizer/loader/scheduler按三条件匹配。没有添加新损失、teacher、文本、掩码或外部数据。
+
+12:22:27只读实查2026四张3090无compute任务、可用磁盘11,176,480,768字节。新队列依据实际旧state345–347MB与最大distance59MB，预估18份384MiB状态、600MiB距离、256MiB文本并保留2GiB；原F3的10GiB断言不改写。启动前仍要实查空卡与磁盘。新的九个真实M0全部通过前不启动正式训练，检查完整初始化／真实作者batch／semantic-native初始完全等价／所有参数梯度与更新／作者BN模式／全状态重载。此刻只是计划登记和source复核，尚无新GPU运行或性能。所有后续GPU只用2026物理0–3，最多四端；2025仅继续已授权文本同步。
