@@ -2,7 +2,7 @@
 
 ## 0. 一页结论
 
-**当前进度（§41.776，2026-10-03）** 原实现/原实现控制真实退出0：281梯度全过，最大差2.9103830456733704e-11；V3原失败仍保留。新v4仅把原CLIP前向保存的反向张量放到CPU，不重计算，不改作者batch/精度/门槛；源码fresh复核通过，尚未实际初始化或M0。精确退役封存V1三项旧M0 probe释放1059051944B，正式best保留。26运行与文本已核验；25文本连接超时待补，不运行模型。Goal ACTIVE_UNMET。
+**当前进度（§41.777，2026-10-03）：** CPU保存视觉激活的v4尚未启动；两次私有启动前固定磁盘预算失败均在Popen之前。额外精确退役八份已结束M0 probe，正式best/距离/回执保留。26的/home位于另一设备、空闲约592GB；本轮新权重明确输出到/home/gaob/trifusion-native-evidence-v4，未移动旧文件。新存储路径fresh源码复核通过；原训练配方/批量/数值门/seed42/50轮不变。26文本与GitHub/Desktop继续核对，25文本连接超时待同步；Goal ACTIVE_UNMET。
 
 **现行合同：** 每个正式候选完整50轮，使用作者完整query/gallery及camera／MSVR时间段过滤，以官方fused mAP最高的同一checkpoint报告全部指标，随后严格重载。RGBNT201报告mAP／R1／R5／R10，RGBNT100及MSVR310报告mAP／R1；不跨epoch或seed拼列。官方集已参与逐轮选点和历史方法选择，属于已消费基准上的探索性结果。
 
@@ -15579,3 +15579,14 @@ v3使用18行直接计算helper：每个现有CLIP resblock保存原绑定forwar
 磁盘实际只剩9712MB左右，低于原10292822016B固定预算；没有放宽门。按持续Goal已明确的闲置自训权重清理授权，核验封存FAILED V1没有正式训练、原父/三完成worker均不存在，精确三份M0_PASS probe的实际SHA/大小与原training收据一致；仅删除这些m0_reload_probe.pth，共1059051944B，结束后10770534400B。原training/hash、初始化、失败/控制/293源码及公共CLIP保留；没有正式best被删，三旧工程probe直接二进制重放能力退役。原只读盘点因真实字段为pid而非worker_pid触发KeyError，删除前失败；原错误保留，修正已知字段的新盘点一次退出0，实际退役一次退出0，不重试删除。
 
 两份fresh native审查均按gpt-6-astra/max/forknone请求，same-family/provisional：救援意见只选最小工程方向，新代码审查PASS、无阻塞问题；它们没有运行新模型或GPU，不能称生产验证。原生输入transport/实际final/未改写报告保留私有trace，书面报告公开。此节仅SOURCE_REVIEWED_NOT_STARTED，无新M0/正式成绩；原global_only含共享adapter，native多159296参数，科学native-semantic增量、同配方角色增量、三集稳定性和SOTA仍未获得。N2/N3继续候选，Goal ACTIVE_UNMET。只用2026 GPU0–3/max4，不抢占，25仅文本。
+
+
+## 41.777 固定预算失败保留与新权重存储位置（2026-10-03T16:11:11.530568+08:00）
+
+§776的CPU-save源码与旧301项执行闭包已经发布并同步26，但原私有deploy776真实exit1，远端固定10292822016B预算assert在Popen前失败，没有创建v4 campaign/launcher。不能把源码通过或deploy准备当成已训练。随后只读清点、核对实际SHA/大小/M0_PASS及父子进程均结束：六份F3已完成工程probe、两份失败shared/private早期preflight成功probe，共2789830448B。它们都不是正式best；F3六端及对应shared/private正式50轮best/距离/全部回执逐项SHA在删除前后一致。原training与probe SHA保留，八份旧M0直接二进制重放明确退役。当前301源码、公开CLIP及其他项目未删除。真实retirement exit0，15:54:20—15:54:30，仅执行一次。
+
+删除后/data空闲10695692288B，但第二个独立私有deploy777仍在相同启动前预算assert失败，exit1/Popen前。15:56:40只读观察/data剩9491521536B；没有证明是哪一进程导致变化，不归因其他项目。此时四卡聚合显存低，但这不是后续空闲保障。原两次失败stdout/stderr/EXIT及清理证据均封存，未重新运行失败队列，没有改固定预算。
+
+实际df与st_dev显示/data与/home/gaob属于不同设备，后者空闲591852425216B。因此仅改尚未启动的v4队列的新权重输出：固定/home/gaob/trifusion-native-evidence-v4，启动时要求目录不存在。本轮18个M0/full目录在那里新建；不移动旧权重，不创建symlink，不加fallback或新训练选项。源码、数据、初始化及控制日志仍在原/data路径；原同一10292822016B整批预算改在实际权重输出设备检查，运行时两个设备均保留2GiB门。configure统一设置base.output_dir，使worker、M0验证、完整验证和最终CPU报告读取同一路径；manifest明确保存output_root。初始化模式只写原campaign witness，无权重落到原trained-model。科学合同、原helper/图/BN/loss/optimizer/seed42/作者完整批量/严格门/50轮全部不变。
+
+fresh reviewer请求gpt-6-astra/max/forknone，实际源码结论PASS，无阻塞项，同模型家族/provisional。复核只涉及固定输出路径及传播，不能声称真实M0、完整B128内存适配、正式增益或SOTA。原CPU源码review和两次数值失败历史保留；此次storage review原始response与完整native transport保留。此节阶段是SOURCE_REVIEWED_NOT_LAUNCHED；下一步是同步后实际新Popen，并先完成全部初始化/forward/backward witness及九个真实M0，再进入九端50轮。2026 physicalGPU0–3/max4且不抢占；2025仅待文本同步，严禁其模型训练。

@@ -58,3 +58,18 @@ Report repairs/new errors, identity AP, full50 trajectories and real costs.
 Native capacity differs; one seed and consumed official selection cannot
 prove source causality, robustness, three-module effectiveness or SOTA.
 Goal ACTIVE_UNMET. Obtain fresh code review before actual deployment.
+
+Storage correction before the still-unstarted v4 campaign (2026-10-03):
+two private pre-launch attempts failed the unchanged whole-campaign disk
+budget BEFORE Popen. Exact8 additional verified closed engineering probes
+were retired (2789830448B), with formalbest/distances/text preserved, but
+/data free fell again before launch. Actual df at15:56:40 shows /data and
+/home/gaob are separate devices; /home/gaob has591852425216B available.
+Set this campaign's NEW18 M0/formal output directories explicitly under
+/home/gaob/trifusion-native-evidence-v4, which must not already exist.
+No old file is moved, no symlink or fallback is added, no source/data path
+or scientific setting is changed. Check the same10292822016B budget on
+the actual weight-output filesystem. Preserve2GiB running reserves on
+both output and /data log/source filesystems. All workers, strict verifiers
+and the final report use the same output_dir via configure; manifest
+records output_root. Obtain a fresh source review of this correction.

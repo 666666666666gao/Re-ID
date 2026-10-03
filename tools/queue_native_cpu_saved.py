@@ -34,6 +34,7 @@ SOURCES = (
 # Budget this NEW nine-arm campaign once; do not change F3's original guard.
 RESERVE_BYTES = 2 * 1024**3
 CAMPAIGN_STORAGE_BYTES = 18 * 384 * 1024**2 + 600 * 1024**2 + 256 * 1024**2
+OUTPUT_ROOT = Path('/home/gaob/trifusion-native-evidence-v4')
 
 
 def source_map():
@@ -54,6 +55,10 @@ def command(dataset, variant, mode, campaign, output):
 
 def expected_binding(campaign, dataset, variant):
     return base.expected_binding(campaign, dataset, variant)
+
+
+def output_dir(campaign, phase, dataset, variant):
+    return OUTPUT_ROOT / f'{campaign.name}_{phase}_{variant}_{dataset}'
 
 
 def start_command(campaign, job, gpu):
@@ -86,6 +91,7 @@ def worker(args):
     for mode in (('m0',) if args.phase == 'm0' else ('train', 'evaluate')):
         base.require_sources(args.campaign)
         assert shutil.disk_usage(ROOT).free >= RESERVE_BYTES
+        assert shutil.disk_usage(OUTPUT_ROOT).free >= RESERVE_BYTES
         row = {'mode': mode, 'status': 'RUNNING', 'started_at': base.queue.stamp(),
             'output_dir': str(output), 'command': command(args.dataset, args.variant, mode, args.campaign, output)}
         with (child / f'{mode}.log').open('x') as log:
@@ -132,6 +138,7 @@ def run_phase(campaign, state, phase):
                 if not pending:
                     break
                 assert len(active) < 4 and shutil.disk_usage(ROOT).free >= RESERVE_BYTES
+                assert shutil.disk_usage(OUTPUT_ROOT).free >= RESERVE_BYTES
                 job = pending.pop(0)
                 job.update(gpu=gpu, status='RUNNING', started_at=base.queue.stamp(), command=start_command(campaign, job, gpu))
                 with (campaign / f"{phase}_{job['variant']}_{job['dataset']}.log").open('x') as log:
@@ -160,7 +167,10 @@ def coordinate(args):
     assert not (Path('/proc') / str(repeat['controller_pid'])).exists()
     assert json.loads((ROOT / 'logs/native_original_backward_repeat_20261003_v1/original_backward_repeat_RGBNT201.json').read_text())['status'] == 'ORIGINAL_BACKWARD_REPEAT_PARITY_PASS'
     assert not args.campaign.exists()
-    assert shutil.disk_usage(ROOT).free >= CAMPAIGN_STORAGE_BYTES + RESERVE_BYTES
+    assert shutil.disk_usage(ROOT).free >= RESERVE_BYTES
+    assert not OUTPUT_ROOT.exists()
+    OUTPUT_ROOT.mkdir()
+    assert shutil.disk_usage(OUTPUT_ROOT).free >= CAMPAIGN_STORAGE_BYTES + RESERVE_BYTES
     args.campaign.mkdir(parents=True)
     sources, initial = source_map(), {}
     base.queue.write(args.campaign / 'campaign.json', {'status': 'INITIALIZING', 'controller_pid': os.getpid(), 'jobs': []})
@@ -189,6 +199,7 @@ def coordinate(args):
     base.queue.write(args.campaign / 'manifest.json', {'schema': SCHEMA, 'seed': 42, 'epochs': 50,
         'poll_seconds': 240, 'source_sha256': sources, 'initialization_sha256': initial, 'jobs': jobs,
         'storage_estimate_bytes': CAMPAIGN_STORAGE_BYTES, 'free_reserve_bytes': RESERVE_BYTES,
+        'output_root': str(OUTPUT_ROOT),
         'boundary': 'Computation-only v4 after preserved V1 OOM and V2/V3 gradient-gate failures plus one actual original-repeat PASS; original graph and author batches with visual saved tensors on CPU, no checkpointing; global-only shared adapters, semantic roles and independent additive native detail; no auxiliary loss or F3 rescue;2026GPU0-3/max4.'})
     state = {'status': 'RUNNING', 'controller_pid': os.getpid(), 'started_at': base.queue.stamp(),
         'jobs': jobs, 'report_invocations': 0}
@@ -217,6 +228,7 @@ def coordinate(args):
 def configure():
     base.SCHEMA, base.RECIPES = SCHEMA, VARIANTS
     base.source_map, base.command, base.start_command = source_map, command, start_command
+    base.output_dir = output_dir
     base.worker, base.coordinate = worker, coordinate
 
 

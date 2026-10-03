@@ -1,0 +1,140 @@
+{
+  "schema": "trifusion-native-cpu-saved-v4-source-review-v1",
+  "verdict": "PASS",
+  "scope": "SOURCE_ONLY",
+  "review_addendum": "storage-only correction plus verification that the reviewed numerical source is unchanged",
+  "blocking_issues": [],
+  "nonblocking_issues": [],
+  "required_fixes": [],
+  "review_independence": "same-family",
+  "acceptance_status": "provisional",
+  "requested_model": "gpt-6-astra",
+  "requested_effort": "max",
+  "actual_model_identity_independently_verified": false,
+  "actual_reasoning_effort_independently_verified": false,
+  "runtime_not_run": true,
+  "reviewer_task": "/root/review_cpu_saved_storage777",
+  "baseline_commit": "2d2e2147cc943be7d666dde0bb0d5933a3a67a0f",
+  "worktree": "C:/Users/gb/.trifusion_github_publish_22c3bee",
+  "original_review_files": [
+    "refine-logs/native_cpu_saved_v4/EXPERIMENT_CODE_REVIEW.md",
+    "refine-logs/native_cpu_saved_v4/EXPERIMENT_CODE_REVIEW.json"
+  ],
+  "original_review_attribution": {
+    "task": "/root/review_native_cpu_saved776",
+    "scope": "SOURCE_ONLY",
+    "review_independence": "same-family",
+    "acceptance_status": "provisional",
+    "requested_model": "gpt-6-astra",
+    "requested_reasoning_effort": "max",
+    "files_preserved": true
+  },
+  "reviewed_source_sha256": {
+    "tools/queue_native_cpu_saved.py": "b30b38021bf07c3a2483b0159b13e0e1436d4f4a99e2c8de8578fd9d38250f82",
+    "refine-logs/native_cpu_saved_v4/EXPERIMENT_PLAN.md": "a2ad82424d30a5283bca09d3a4314d3840ee202eb5bc78bcee7a8308eee7fea1"
+  },
+  "actual_checks": [
+    {
+      "check": "scoped diff and syntax",
+      "result": "PASS",
+      "details": "Reviewed only queue_native_cpu_saved.py and the plan storage paragraph against the baseline; unrelated dirty paths were ignored. Parsed 11 relevant Python sources with ast, without importing them. Existing source_map, command, start_command and verify_m0 function ASTs are unchanged. Changed queue functions are worker, run_phase, coordinate and configure; output_dir is the sole new function."
+    },
+    {
+      "check": "prepare and output propagation",
+      "result": "PASS",
+      "details": "prepare continues to write only initialization JSON under the campaign. Its existing native_prepare_unused output argument is unused by the prepare branch, so it creates no old trained-model output. M0/formal workers obtain their directory from base.output_dir and pass it as --output-dir; train/evaluate resolve that absolute argument and use it for receipts, batch order, weights, distance files and strict reload. Both arguments of the existing os.replace remain in the same output directory."
+    },
+    {
+      "check": "AST-extracted path dispatch",
+      "result": "PASS",
+      "distinct_output_directories": 18,
+      "m0_train_evaluate_commands_checked": 27,
+      "foundation_verify_globals_rebound": true,
+      "foundation_verify_m0_globals_rebound": true,
+      "details": "Executed only extracted function definitions with stdlib modules and PurePosixPath. All 18 phase/dataset/variant paths are distinct children of /home/gaob/trifusion-native-evidence-v4; all 27 commands retain the same initialization/protocol paths and seed42/full50. configure binds worker/coordinator and the foundation verifier globals to the new output_dir. No filesystem writes, model imports or experiment execution occurred in this check."
+    },
+    {
+      "check": "strict verification and report path",
+      "result": "PASS",
+      "details": "Foundation verify_m0/verify resolve the patched global output_dir, including M0 probe, formal weights, receipts and distance hashes. The report calls panel.configure at line22, require_sources at23 and base.verify at33; it checks accepted rows against the recalculated paths. Reporting and paired distance analysis consume row.run_dir, so they use the same new output directories."
+    },
+    {
+      "check": "budget and filesystem separation",
+      "result": "PASS",
+      "output_root": "/home/gaob/trifusion-native-evidence-v4",
+      "campaign_storage_bytes": 8145338368,
+      "reserve_bytes_per_filesystem": 2147483648,
+      "whole_campaign_threshold_bytes": 10292822016,
+      "details": "coordinate rejects an existing output root, creates the new root, checks the unchanged whole-campaign threshold on that root's actual filesystem, and records output_root in manifest. Before worker dispatch and each worker mode, both ROOT (/data) and OUTPUT_ROOT have independent 2GiB guards. No fallback, symlink, move, deletion or new CLI flag is added.",
+      "recorded_resource_time": "2026-10-03T15:56:40.816445+08:00",
+      "recorded_data_device": 2048,
+      "recorded_data_free_bytes": 9491521536,
+      "recorded_home_device": 66306,
+      "recorded_home_free_bytes": 591852425216,
+      "recorded_v4_campaign_exists": false,
+      "recorded_v4_launcher_exists": false,
+      "live_remote_capacity_checked": false
+    },
+    {
+      "check": "unchanged scientific source and phase gate",
+      "result": "PASS",
+      "unchanged_reference_sources_against_baseline": 10,
+      "details": "Helper, entry, pair/backward witnesses, report, foundation queue/training, underlying independent entry, clean initializer and distance analysis match the baseline after accounting for CRLF transport. The diff changes no data/model/loss/head/optimizer/batch/precision/seed/epoch or fixed parity criterion. The loop remains M0 then full, and all 9 extended M0 verifications occur before full. This checks unchanged code, not numerical equivalence."
+    },
+    {
+      "check": "existing source closure and hash semantics",
+      "result": "PASS",
+      "locally_verified_archived_source_hashes": 293,
+      "sources_tuple_entries": 11,
+      "inherited_overlap": 3,
+      "additional_entries": 8,
+      "expected_closure_size": 301,
+      "same_paths_as_recorded_current301": true,
+      "original_review_md_bytes_unchanged": true,
+      "details": "The existing source_map first verifies all inherited293 digests, then overlays SOURCES; its code and SOURCES tuple are unchanged. The local original-repeat archive matches all293 recorded digests. The resulting path union matches the retirement receipt's301 keys. Queue/plan hashes necessarily change; the manifest still captures current source_map and require_sources still compares it plus initializer hashes. This addendum does not replace or rename the original review files and is not added to the fixed source closure. Live server assembly was not checked."
+    },
+    {
+      "check": "repository newline convention",
+      "result": "PASS",
+      "baseline_crlf_lines": 225,
+      "working_crlf_lines": 237,
+      "details": "The unconfigured diff check flagged added CRLF lines. Both baseline and working queue use CRLF throughout. The established check with core.whitespace=blank-at-eol,space-before-tab,cr-at-eol,-blank-at-eof passes. No newline normalization or unrelated edit was made."
+    },
+    {
+      "check": "local review tooling",
+      "result": "PASS_AFTER_TOOL_PATH_CORRECTION",
+      "details": "The first bare python invocation failed before executing the script with 'No pyvenv.cfg file'. Reran the checks using the existing uv-managed CPython3.12.12 executable with -B. No environment or package was created or modified."
+    }
+  ],
+  "reviewed_files": [
+    "tools/queue_native_cpu_saved.py",
+    "refine-logs/native_cpu_saved_v4/EXPERIMENT_PLAN.md",
+    "tools/queue_foundation_recipe.py",
+    "tools/run_native_cpu_saved.py",
+    "tools/run_independent_native_evidence.py",
+    "tools/run_foundation_recipe.py",
+    "tools/run_clean_clip_joint.py",
+    "tools/report_native_cpu_saved.py",
+    "tools/analyze_correspondence_distances.py",
+    "modeling/trifusion/cpu_saved_evidence_clip.py",
+    "tools/check_cpu_saved_native_pair.py",
+    "tools/check_cpu_saved_backward.py",
+    "tools/run_visual_update_control.py",
+    "tools/collect_correspondence_roles.py",
+    "tools/run_training_feature_scale.py",
+    "refine-logs/native_cpu_saved_v4/EXPERIMENT_CODE_REVIEW.md",
+    "refine-logs/native_cpu_saved_v4/EXPERIMENT_CODE_REVIEW.json",
+    "C:/Users/gb/.codex_tmp/independent_evidence_draft/original_repeat_intake776/INTAKE.json",
+    "C:/Users/gb/.codex_tmp/independent_evidence_draft/original_repeat_intake776/source",
+    "C:/Users/gb/.codex_tmp/independent_evidence_draft/cpu_prelaunch777_resources/stdout.json",
+    "C:/Users/gb/.codex_tmp/independent_evidence_draft/closed_probe_retirement777/RETIREMENT.json"
+  ],
+  "limitations": [
+    "Fresh context, same model family; provisional acceptance, not cross-family validation. Requested model/effort are recorded without independent backend identity attestation.",
+    "No SSH/server connection, torch/model import, GPU operation, launch, training, checkpoint load or real report execution. Directory creation/write permissions and future filesystem availability remain runtime checks.",
+    "The saved resource receipt establishes capacity/devices and campaign/launcher absence only at its recorded time. The plan/task records two pre-Popen failures; their launch code was not executed during this review.",
+    "No v4 runtime PASS, full-author B128 fit, CPU-saved numerical parity, M0 completion, full50 result, scientific gain or SOTA is implied.",
+    "Prior full code review remains attributed to its original filenames/reviewer; this is a storage-only supplement, not a replacement full numerical review."
+  ],
+  "created_at": "2026-10-03T16:10:48.039216+08:00"
+}
