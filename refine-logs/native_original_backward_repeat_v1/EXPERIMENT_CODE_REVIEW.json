@@ -1,0 +1,114 @@
+{
+  "verdict": "PASS",
+  "verdict_scope": "Single preregistered semantic RGBNT201 original-versus-original backward diagnostic; source review only",
+  "blocking_issues": [],
+  "non_blocking_code_defects": [],
+  "required_source_fixes": [],
+  "reviewer": "/root/review_original_backward_repeat775_fresh",
+  "review_date": "2026-10-03",
+  "review_independence": "same-family",
+  "acceptance_status": "provisional",
+  "requested_model": "gpt-6-astra",
+  "requested_reasoning_effort": "max",
+  "actual_backend_identity": "not independently verified",
+  "backend_identity_verified": false,
+  "earlier_review_verdict_used": false,
+  "source_only": true,
+  "runtime_result": null,
+  "repository": "C:/Users/gb/.trifusion_github_publish_22c3bee",
+  "head": "47bc814ebdb1063d1cdefaeb29a5d9705d34e018",
+  "diagnostic": "tools/check_native_original_backward_repeat.py",
+  "plan": "refine-logs/native_original_backward_repeat_v1/EXPERIMENT_PLAN.md",
+  "terminal_intake": "C:/Users/gb/.codex_tmp/independent_evidence_draft/terminal_intake775/INTAKE.json",
+  "inherited_source_check": {
+    "authoritative_source": "terminal_intake775/source",
+    "recorded_source_files": 290,
+    "snapshot_digest_matches": 290,
+    "snapshot_digest_mismatches": [],
+    "windows_checkout_byte_matches": 156,
+    "windows_checkout_newline_only_differences": 27,
+    "windows_checkout_runtime_files_absent": 107,
+    "windows_checkout_substantive_differences_among_present_files": [],
+    "boundary": "Existing intake digests were checked. This does not certify current remote deployment or complete local runtime availability."
+  },
+  "primary_evidence": {
+    "raw_campaign_status": "INITIALIZING",
+    "raw_controller_pid": 3281097,
+    "raw_jobs": [],
+    "terminal_status_from_intake": "V3_INITIALIZATION_TERMINATED_BACKWARD_PARITY_FAILURE",
+    "first_semantic_failure": {
+      "parameter": "evidence_model.backbone.signal.clip_vision_encoder.cv_embed",
+      "max_absolute_difference": 0.0009765625,
+      "gradient_atol_rtol": [0.0001, 0.0001]
+    },
+    "global_only": {
+      "gradient_entries": 209,
+      "failed_fixed_gradient_checks": 0,
+      "raw_fused_global_loss_differences": [0, 0, 0, 0]
+    },
+    "semantic": {
+      "gradient_entries": 281,
+      "failed_fixed_gradient_checks": 92,
+      "raw_fused_global_loss_differences": [0, 0, 0, 0]
+    },
+    "v3_reclassification": false
+  },
+  "scope": {
+    "dataset": "RGBNT201",
+    "variant": "semantic",
+    "allowed_diagnostic_runs": 1,
+    "comparison": "original_vs_original",
+    "seed": 42,
+    "author_batch_size": 64,
+    "author_num_instances": 8,
+    "witness_samples": 32,
+    "precision": "Original float16 autocast with GradScaler initial scale 256",
+    "forward_atol_rtol": [0.00001, 0.00001],
+    "gradient_atol_rtol": [0.0001, 0.0001],
+    "optimizer_steps": 0,
+    "official_scoring": false,
+    "m0_or_formal_training": false,
+    "new_neural_intervention": false
+  },
+  "source_findings": [
+    {
+      "status": "CORRECT",
+      "item": "Original/original execution",
+      "evidence": "check_native_original_backward_repeat.py:33-44 restores each candidate block's own stored bound original forward before any forward; the V3 wrapper only changed methods and binding metadata."
+    },
+    {
+      "status": "CORRECT",
+      "item": "State/config/source binding",
+      "evidence": "Both calls reach the same semantic constructor. Candidate binding matches the preserved initialization receipt; cfg dumps and complete stored states are equal before execution. Inherited source paths, public weight input, seed and trainability are unchanged."
+    },
+    {
+      "status": "CORRECT",
+      "item": "Batch and RNG",
+      "evidence": "Lines 45-57 obtain one unchanged full author training batch, use its first 32 samples for both models, and restore identical CPU/current-device CUDA RNG before each comparison arm."
+    },
+    {
+      "status": "CORRECT",
+      "item": "Author head/BN/loss/optimizer",
+      "evidence": "The inherited author-head wrapper restores Signal training mode and executes its raw-feature BN head once; the author optimizer owns every trainable tensor once; the original author loss receives real labels. The script performs backward/unscale only, compares buffers/RNG/state, and checks BN counters equal one."
+    },
+    {
+      "status": "CORRECT",
+      "item": "Fixed gates and evidence preservation",
+      "evidence": "Forward and gradient tolerances match the original V3 witness. Lines 83-103 persist measured output/gradient deltas and current batch metadata before parity assertions. Distinct original_repeat outputs cannot overwrite V3 failure files; final PASS is written only after every fixed comparison passes."
+    },
+    {
+      "status": "CORRECT",
+      "item": "Claim boundary",
+      "evidence": "The plan and result boundary explicitly retain V3 failure, exclude historical reconstruction and restrict the result to a numerical control with no optimizer update, M0, formal training or scoring."
+    }
+  ],
+  "limitations": [
+    "Source-only same-family provisional review; no independently verified backend identity or runtime result.",
+    "No SSH, model/package import, ML execution, GPU use, source patch or job launch was performed.",
+    "Runtime libraries, binary weights, GPU availability and current remote source state were not independently inspected.",
+    "The Windows checkout lacks 107 inherited runtime files; the complete supplied runtime source snapshot was used for their review.",
+    "One newly logged original/original pair cannot prove universal numerical determinism or reconstruct unpersisted V3 inputs and full gradient tensors.",
+    "Either eventual outcome leaves V3's fixed-gate failure unchanged and does not by itself identify the numerical cause.",
+    "The source PASS does not extend to additional datasets, retries, new engineering rescues, altered seeds/batches/precision/tolerances, M0, formal training or official scoring."
+  ]
+}

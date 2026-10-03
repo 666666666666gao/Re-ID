@@ -2,7 +2,7 @@
 
 ## 0. 一页结论
 
-**当前进度（§41.774，2026-10-03）：** 原block内部重计算v3于2026-10-03T14:31:46.908569+08:00在2026物理GPU0启动后，再次因semantic相机嵌入梯度差0.0009765625终止；首次实际观察父进程已不存在，无M0或正式训练。原磁盘启动失败及旧v1/v2失败保留；已核验退役15份历史M0探针，正式best和当前依赖保留。下一步按已登记边界做一次原模型重复数值控制，不放宽门槛。仅2026 GPU0–3/max4，2025仅文本同步，N2/N3不叠加，Goal ACTIVE_UNMET。
+**当前进度（§41.775，2026-10-03）** V3实际终止：前向与loss完全一致，global-only209项梯度通过；semantic281项中92项超固定1e-4门槛。原失败与290项源码已封存。一次原实现/原实现数值控制已实现并经fresh源码审查PASS，尚未执行；不放宽门槛，不改判V3，无M0或正式训练。只用2026 GPU0–3/max4，2025仅文本同步；Goal ACTIVE_UNMET。
 
 **现行合同：** 每个正式候选完整50轮，使用作者完整query/gallery及camera／MSVR时间段过滤，以官方fused mAP最高的同一checkpoint报告全部指标，随后严格重载。RGBNT201报告mAP／R1／R5／R10，RGBNT100及MSVR310报告mAP／R1；不跨epoch或seed拼列。官方集已参与逐轮选点和历史方法选择，属于已消费基准上的探索性结果。
 
@@ -15549,3 +15549,18 @@ v3使用18行直接计算helper：每个现有CLIP resblock保存原绑定forwar
 运行代码未改：作者配方、seed42、完整B128/K16、固定前向1e-5/梯度1e-4、全九端M0前置和正式50轮均保留。若v3同一固定数值门再次失败，只先执行已登记的同原模型/同输入/state/RNG重复控制，检查原实现自己的数值变动，不改门槛或继续盲修。第二、第三模块仍候选，不加入此九端。前一Goal turn有实际失败封存、源码修订与复核，本次有真实退役/启动/观察，属于PROGRESS；完整三数据集性能目标仍未满足。
 
 首次观察已经确认上述同门失败：RGBNT201 semantic的 `evidence_model.backbone.signal.clip_vision_encoder.cv_embed` 差0.0009765625，与v2相同；原controller不存在。原状态文件INITIALIZING/jobs[]保持原字节，不伪造为FAILED。无manifest、M0、正式50轮或新检索分数。后继仅做预登记的一次原模型重复诊断；V3不因控制结果被追改为PASS。
+
+
+## 41.775 原实现重复性对照的源码边界（2026-10-03T15:05:14.362926+08:00）
+
+§774已经发布为47bc814ebdb1063d1cdefaeb29a5d9705d34e018，五份文档及1519项累计自有文本一致。随后只读collector退出0，实际收齐V3的13项原始文本及290项执行源码。V3父进程已经退出，原campaign.json仍为INITIALIZING/jobs[]；没有manifest、M0、正式50轮或report调用，不伪造状态。
+
+预门槛完整测量显示：global-only的209项梯度全部通过；semantic的281项中92项不满足1e-4绝对/相对容差。两条件raw、fused、global和loss差值均为0。semantic首个失败仍是camera embedding，max绝对差0.0009765625；其他CLIP参数也存在失败。只能确认该严格数值检查失败，尚不能唯一归因于重计算。原测量、日志、初始化和来源图完整封存，不以摘要替代原始证据。
+
+按§773已有登记，仅做一次semantic RGBNT201原实现/原实现控制。参考模型使用原构造；候选仍经既有构造，但在任何前向之前把所有CLIP block恢复到原绑定forward，并删除checkpoint标记。两边都运行原生产实现，共享同一初始state/config、同一新记录输入和CPU/CUDA RNG。沿用原作者head/loss、FP16 autocast、GradScaler256、原optimizer分组；没有optimizer step。诊断只取真实完整B64/K8批次的前32样本，不改变正式M0或训练的完整batch。
+
+固定前向1e-5、梯度1e-4门槛不变；先写所有参数差值及输入顺序/hash，再assert，避免失败后只剩首项差值。输出名使用original_repeat_gradient_deltas_RGBNT201_semantic.json和original_backward_repeat_RGBNT201.json，不覆盖V3文件。输入是本次新记录，不声称恢复未保存的历史梯度或输入。通过只支持本次原实现重复，不能证明普遍确定性；失败则支持本次原实现自身未通过相同严格检查。两种结局均不改判V3，也不自动启动M0/正式训练。
+
+首次review句柄丢失且没有verdict，未作为审查结果。新的fresh native reviewer /root/review_original_backward_repeat775_fresh，请求gpt-6-astra/max/forknone，实际写出PASS、无阻塞或非阻塞代码缺陷；审查仅source-only、same-family/provisional，未执行SSH、模型或GPU。原生请求transport、实际final与未改写报告保存到私有trace，公开保留书面报告。该PASS不是运行通过。
+
+新控制单独目录logs/native_original_backward_repeat_20261003_v1，单卡，只在2026实际空闲的物理0–3卡运行，原V3源码290项不变；新增诊断、计划及审查文本后闭包293项。2025仅代码/文档同步。没有新模块、loss、seed、精度、batch或学习率改变，也没有评分和权重产出。此节发布时仍未执行；实际结果以随后JOB exit及预门槛测量为准。N2/N3仍是候选，完整科学目标ACTIVE_UNMET。
