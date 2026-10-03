@@ -1,0 +1,1689 @@
+{
+  "status": "RETIRED_EXACT_15_CLOSED_ENGINEERING_PROBES",
+  "started_at": "2026-10-03T14:24:52.327412+08:00",
+  "candidates": [
+    {
+      "path": "/data/gaob/Re-ID/Trifusion/trained-model/native_detail_20261002_v1_clean_clip_high_MSVR310_seed42_m0/m0_reload_probe.pth",
+      "bytes": 358466788,
+      "sha256": "5e1008001922410cb099dde269552e1ed554103fe03d4f63566f5a0345972188",
+      "training_path": "/data/gaob/Re-ID/Trifusion/trained-model/native_detail_20261002_v1_clean_clip_high_MSVR310_seed42_m0/training.json",
+      "training_sha256": "849fa1b805a97e8fe7a58d58d45df789c3cde61b63850425982d3dd0b5e5a906",
+      "original_training_receipt": {
+        "schema": "trifusion-native-detail-v1",
+        "status": "M0_PASS",
+        "dataset": "MSVR310",
+        "seed": 42,
+        "epochs": 50,
+        "checkpoint_policy": "best_official_map",
+        "initializer": {
+          "architecture": "native_detail_v1",
+          "dataset": "MSVR310",
+          "seed": 42,
+          "readout": "roles",
+          "public_clip_path": "/data/gaob/Re-ID/Trifusion/pertrained-model/ViT-B-16.pt",
+          "public_clip_sha256": "5806e77cd80f8b59890b7e101eabd078d9fb84e6937f9e85e4ecb61988df416f",
+          "public_visual_tensors_verified": 152,
+          "visual_initial_sha256": "9a92d7f60d061e3282fdc2a557a7d07d7cc519a4534e47239e9240cfb95c62b0",
+          "fresh_camera_initial_sha256": "b836a2e23c5dcb8834b69aee4a26a04d4209819b23527bd1c57693ba8e914201",
+          "fresh_camera_shape": [
+            8,
+            1,
+            768
+          ],
+          "author_source_commit": "cd1b0a672d1fe642e7608731cb4899a19dda7d51",
+          "protocol_sha256": "7f2b35f9a7e00433558c1e723db0e3ff0ea9daa7144eeeb972139d1502945cbc",
+          "common_initializer_sha256": {
+            "backbone": "3423402d38d0867292c5e78d3b847ec5d49a4351575a8082bee7924ab71ecd6e",
+            "neck": "06efe49412cdf6c9d8d9162b9394e4bc49329d169906cecc2b6c4784bcdb166e",
+            "classifier": "47b33e14c05d9560e27d6f6287cd36eabbdd766f6aa26508367922d43571461e"
+          },
+          "initial_model_state_sha256": "5f0af0c511b15e700d18d3a3012003eaad54dbfdac200c075431d85d7af95dc0",
+          "trainable_parameters": 89086474,
+          "trainable_parameter_tensors": 287,
+          "entry_sha256": "4344bea88f47f65d9d7422eb0bb23567f1fb030a61851d96dfa25bdf6f627a0f",
+          "baseline_sha256_semantics": "Public CLIP input file only; no trained ReID baseline is read.",
+          "camera_semantics": "Fresh author truncated-normal embedding, trainable at new-module LR.",
+          "initialization_scope": "public visual only; fresh camera, unused Signal state, shared adapters, roles and retrieval heads",
+          "detail_resolution": "high",
+          "role_source_sha256": "0ff799fe309c0a6437623a26cda978309421af8ba1e85485da2dd78389b6f335",
+          "condition": {
+            "visual_update": "low_lr",
+            "readout": "roles",
+            "visual_lr": 5e-06,
+            "visual_parameter_dtype": "float32",
+            "initialization": "public_CLIP_fresh_camera_heads_modules",
+            "public_clip_sha256": "5806e77cd80f8b59890b7e101eabd078d9fb84e6937f9e85e4ecb61988df416f",
+            "initialization_witness_sha256": "f0e761898ccb37cfacfdfd734a28c8217e28bb6f7dfcb6ea9efec0df41c2e696",
+            "camera_update": "new_module_lr_0.00035",
+            "detail_resolution": "high",
+            "detail_candidates": 512,
+            "native_stem_parameters": 93248
+          },
+          "initialization_witness_sha256": "f0e761898ccb37cfacfdfd734a28c8217e28bb6f7dfcb6ea9efec0df41c2e696"
+        },
+        "protocol_sha256": "7f2b35f9a7e00433558c1e723db0e3ff0ea9daa7144eeeb972139d1502945cbc",
+        "condition": {
+          "visual_update": "low_lr",
+          "readout": "roles",
+          "visual_lr": 5e-06,
+          "visual_parameter_dtype": "float32",
+          "initialization": "public_CLIP_fresh_camera_heads_modules",
+          "public_clip_sha256": "5806e77cd80f8b59890b7e101eabd078d9fb84e6937f9e85e4ecb61988df416f",
+          "initialization_witness_sha256": "f0e761898ccb37cfacfdfd734a28c8217e28bb6f7dfcb6ea9efec0df41c2e696",
+          "camera_update": "new_module_lr_0.00035",
+          "detail_resolution": "high",
+          "detail_candidates": 512,
+          "native_stem_parameters": 93248
+        },
+        "started_at": "2026-10-02T05:21:09.836799+08:00",
+        "history": [
+          {
+            "epoch": 1,
+            "steps": 8,
+            "mean_loss": 5.453635096549988,
+            "seconds": 9.905048001004616
+          }
+        ],
+        "optimizer_groups": [
+          {
+            "label": "new",
+            "base_lr": 0.00035,
+            "tensors": 135,
+            "elements": 2946058
+          },
+          {
+            "label": "visual",
+            "base_lr": 5e-06,
+            "tensors": 152,
+            "elements": 86140416
+          }
+        ],
+        "frozen_signal_state_unchanged": true,
+        "visual_parameters_changed": true,
+        "visual_state_before_sha256": "9a92d7f60d061e3282fdc2a557a7d07d7cc519a4534e47239e9240cfb95c62b0",
+        "visual_state_after_sha256": "54ef311437369636b1229366a7aa3cfa6c56c6cee5d826e085d80d8793fa7b10",
+        "peak_training_and_epoch_eval_allocated_bytes": 15491686912,
+        "m0": {
+          "nonzero_gradient_parameters": 287,
+          "trainable_parameters": 287,
+          "frozen_signal_state_unchanged": true,
+          "visual_parameters_changed": true,
+          "reload_max_abs_difference": 0.0,
+          "reload_probe_sha256": "5e1008001922410cb099dde269552e1ed554103fe03d4f63566f5a0345972188"
+        },
+        "peak_stage_allocated_bytes": 15491686912,
+        "best_epoch": null,
+        "completed_at": "2026-10-02T05:21:33.426009+08:00",
+        "public_clip_sha256": "5806e77cd80f8b59890b7e101eabd078d9fb84e6937f9e85e4ecb61988df416f",
+        "baseline_sha256_semantics": "Public CLIP input file only; no trained ReID baseline loaded.",
+        "fresh_camera_parameters_changed": true,
+        "camera_state_before_sha256": "b836a2e23c5dcb8834b69aee4a26a04d4209819b23527bd1c57693ba8e914201",
+        "camera_state_after_sha256": "52a6e1378a3487f93688319392caf36e7c978d1c1861e591690b9c77f16bb185"
+      },
+      "deleted": true,
+      "deleted_at": "2026-10-03T14:24:52.333383+08:00"
+    },
+    {
+      "path": "/data/gaob/Re-ID/Trifusion/trained-model/native_detail_20261002_v1_clean_clip_high_RGBNT100_seed42_m0/m0_reload_probe.pth",
+      "bytes": 356531428,
+      "sha256": "52d93fda5fd743f36244ccbe0420c64deae2ea27c7eab7a9e9dabade685ac482",
+      "training_path": "/data/gaob/Re-ID/Trifusion/trained-model/native_detail_20261002_v1_clean_clip_high_RGBNT100_seed42_m0/training.json",
+      "training_sha256": "77c40c68878e44ebd17042fe18de357ad0ae63546e9380c98e8c0084eecce659",
+      "original_training_receipt": {
+        "schema": "trifusion-native-detail-v1",
+        "status": "M0_PASS",
+        "dataset": "RGBNT100",
+        "seed": 42,
+        "epochs": 50,
+        "checkpoint_policy": "best_official_map",
+        "initializer": {
+          "architecture": "native_detail_v1",
+          "dataset": "RGBNT100",
+          "seed": 42,
+          "readout": "roles",
+          "public_clip_path": "/data/gaob/Re-ID/Trifusion/pertrained-model/ViT-B-16.pt",
+          "public_clip_sha256": "5806e77cd80f8b59890b7e101eabd078d9fb84e6937f9e85e4ecb61988df416f",
+          "public_visual_tensors_verified": 152,
+          "visual_initial_sha256": "9a92d7f60d061e3282fdc2a557a7d07d7cc519a4534e47239e9240cfb95c62b0",
+          "fresh_camera_initial_sha256": "b836a2e23c5dcb8834b69aee4a26a04d4209819b23527bd1c57693ba8e914201",
+          "fresh_camera_shape": [
+            8,
+            1,
+            768
+          ],
+          "author_source_commit": "cd1b0a672d1fe642e7608731cb4899a19dda7d51",
+          "protocol_sha256": "12d8afe5cf6e537b69ccf753481dd5fd651f14b7672e1e6411a4d4e9d88cc956",
+          "common_initializer_sha256": {
+            "backbone": "1db5ac9c440aca58bb11f2ecb08e7c031bf3ee2d0401934c7b22975edfb1d841",
+            "neck": "06efe49412cdf6c9d8d9162b9394e4bc49329d169906cecc2b6c4784bcdb166e",
+            "classifier": "1deee2afd7a2f8b90231dc24c16cb5e1ce5232e2b1d92383a964342cded88ddd"
+          },
+          "initial_model_state_sha256": "a403aeaaf8338954d04d0d112c916f9f0fd52564d13fac12798531f5adc6ebad",
+          "trainable_parameters": 88925194,
+          "trainable_parameter_tensors": 287,
+          "entry_sha256": "4344bea88f47f65d9d7422eb0bb23567f1fb030a61851d96dfa25bdf6f627a0f",
+          "baseline_sha256_semantics": "Public CLIP input file only; no trained ReID baseline is read.",
+          "camera_semantics": "Fresh author truncated-normal embedding, trainable at new-module LR.",
+          "initialization_scope": "public visual only; fresh camera, unused Signal state, shared adapters, roles and retrieval heads",
+          "detail_resolution": "high",
+          "role_source_sha256": "0ff799fe309c0a6437623a26cda978309421af8ba1e85485da2dd78389b6f335",
+          "condition": {
+            "visual_update": "low_lr",
+            "readout": "roles",
+            "visual_lr": 5e-06,
+            "visual_parameter_dtype": "float32",
+            "initialization": "public_CLIP_fresh_camera_heads_modules",
+            "public_clip_sha256": "5806e77cd80f8b59890b7e101eabd078d9fb84e6937f9e85e4ecb61988df416f",
+            "initialization_witness_sha256": "97ea7a978dbe7f5233f3b4756b5bddab98588d62c48250c9704749842589fec8",
+            "camera_update": "new_module_lr_0.00035",
+            "detail_resolution": "high",
+            "detail_candidates": 512,
+            "native_stem_parameters": 93248
+          },
+          "initialization_witness_sha256": "97ea7a978dbe7f5233f3b4756b5bddab98588d62c48250c9704749842589fec8"
+        },
+        "protocol_sha256": "12d8afe5cf6e537b69ccf753481dd5fd651f14b7672e1e6411a4d4e9d88cc956",
+        "condition": {
+          "visual_update": "low_lr",
+          "readout": "roles",
+          "visual_lr": 5e-06,
+          "visual_parameter_dtype": "float32",
+          "initialization": "public_CLIP_fresh_camera_heads_modules",
+          "public_clip_sha256": "5806e77cd80f8b59890b7e101eabd078d9fb84e6937f9e85e4ecb61988df416f",
+          "initialization_witness_sha256": "97ea7a978dbe7f5233f3b4756b5bddab98588d62c48250c9704749842589fec8",
+          "camera_update": "new_module_lr_0.00035",
+          "detail_resolution": "high",
+          "detail_candidates": 512,
+          "native_stem_parameters": 93248
+        },
+        "started_at": "2026-10-02T05:21:10.440310+08:00",
+        "history": [
+          {
+            "epoch": 1,
+            "steps": 8,
+            "mean_loss": 4.3045694231987,
+            "seconds": 8.632883689017035
+          }
+        ],
+        "optimizer_groups": [
+          {
+            "label": "new",
+            "base_lr": 0.00035,
+            "tensors": 135,
+            "elements": 2784778
+          },
+          {
+            "label": "visual",
+            "base_lr": 5e-06,
+            "tensors": 152,
+            "elements": 86140416
+          }
+        ],
+        "frozen_signal_state_unchanged": true,
+        "visual_parameters_changed": true,
+        "visual_state_before_sha256": "9a92d7f60d061e3282fdc2a557a7d07d7cc519a4534e47239e9240cfb95c62b0",
+        "visual_state_after_sha256": "a7cf316943538ac5c8c2e43b63eccea7778d25fb018a6c1ed672fdffd6e61091",
+        "peak_training_and_epoch_eval_allocated_bytes": 15488546304,
+        "m0": {
+          "nonzero_gradient_parameters": 287,
+          "trainable_parameters": 287,
+          "frozen_signal_state_unchanged": true,
+          "visual_parameters_changed": true,
+          "reload_max_abs_difference": 0.0,
+          "reload_probe_sha256": "52d93fda5fd743f36244ccbe0420c64deae2ea27c7eab7a9e9dabade685ac482"
+        },
+        "peak_stage_allocated_bytes": 15488546304,
+        "best_epoch": null,
+        "completed_at": "2026-10-02T05:21:32.778612+08:00",
+        "public_clip_sha256": "5806e77cd80f8b59890b7e101eabd078d9fb84e6937f9e85e4ecb61988df416f",
+        "baseline_sha256_semantics": "Public CLIP input file only; no trained ReID baseline loaded.",
+        "fresh_camera_parameters_changed": true,
+        "camera_state_before_sha256": "b836a2e23c5dcb8834b69aee4a26a04d4209819b23527bd1c57693ba8e914201",
+        "camera_state_after_sha256": "a744d279986fc078cb18912cfe839fea26356356c0271149589a93d2dd099ee0"
+      },
+      "deleted": true,
+      "deleted_at": "2026-10-03T14:24:52.338812+08:00"
+    },
+    {
+      "path": "/data/gaob/Re-ID/Trifusion/trained-model/native_detail_20261002_v1_clean_clip_low_MSVR310_seed42_m0/m0_reload_probe.pth",
+      "bytes": 358466788,
+      "sha256": "23ae96d1bc0e1bc0c892c4a3ef1d453ac2f2ac731340b497036e41c229aa0e8c",
+      "training_path": "/data/gaob/Re-ID/Trifusion/trained-model/native_detail_20261002_v1_clean_clip_low_MSVR310_seed42_m0/training.json",
+      "training_sha256": "83083cc6f36d12a1a800733fa3f8e144b3fa9647f0a41a9ace8fd5ef26db7283",
+      "original_training_receipt": {
+        "schema": "trifusion-native-detail-v1",
+        "status": "M0_PASS",
+        "dataset": "MSVR310",
+        "seed": 42,
+        "epochs": 50,
+        "checkpoint_policy": "best_official_map",
+        "initializer": {
+          "architecture": "native_detail_v1",
+          "dataset": "MSVR310",
+          "seed": 42,
+          "readout": "roles",
+          "public_clip_path": "/data/gaob/Re-ID/Trifusion/pertrained-model/ViT-B-16.pt",
+          "public_clip_sha256": "5806e77cd80f8b59890b7e101eabd078d9fb84e6937f9e85e4ecb61988df416f",
+          "public_visual_tensors_verified": 152,
+          "visual_initial_sha256": "9a92d7f60d061e3282fdc2a557a7d07d7cc519a4534e47239e9240cfb95c62b0",
+          "fresh_camera_initial_sha256": "b836a2e23c5dcb8834b69aee4a26a04d4209819b23527bd1c57693ba8e914201",
+          "fresh_camera_shape": [
+            8,
+            1,
+            768
+          ],
+          "author_source_commit": "cd1b0a672d1fe642e7608731cb4899a19dda7d51",
+          "protocol_sha256": "7f2b35f9a7e00433558c1e723db0e3ff0ea9daa7144eeeb972139d1502945cbc",
+          "common_initializer_sha256": {
+            "backbone": "3423402d38d0867292c5e78d3b847ec5d49a4351575a8082bee7924ab71ecd6e",
+            "neck": "06efe49412cdf6c9d8d9162b9394e4bc49329d169906cecc2b6c4784bcdb166e",
+            "classifier": "47b33e14c05d9560e27d6f6287cd36eabbdd766f6aa26508367922d43571461e"
+          },
+          "initial_model_state_sha256": "5f0af0c511b15e700d18d3a3012003eaad54dbfdac200c075431d85d7af95dc0",
+          "trainable_parameters": 89086474,
+          "trainable_parameter_tensors": 287,
+          "entry_sha256": "4344bea88f47f65d9d7422eb0bb23567f1fb030a61851d96dfa25bdf6f627a0f",
+          "baseline_sha256_semantics": "Public CLIP input file only; no trained ReID baseline is read.",
+          "camera_semantics": "Fresh author truncated-normal embedding, trainable at new-module LR.",
+          "initialization_scope": "public visual only; fresh camera, unused Signal state, shared adapters, roles and retrieval heads",
+          "detail_resolution": "low",
+          "role_source_sha256": "0ff799fe309c0a6437623a26cda978309421af8ba1e85485da2dd78389b6f335",
+          "condition": {
+            "visual_update": "low_lr",
+            "readout": "roles",
+            "visual_lr": 5e-06,
+            "visual_parameter_dtype": "float32",
+            "initialization": "public_CLIP_fresh_camera_heads_modules",
+            "public_clip_sha256": "5806e77cd80f8b59890b7e101eabd078d9fb84e6937f9e85e4ecb61988df416f",
+            "initialization_witness_sha256": "44368f7545628679fab37ded9f45b8cd6c086b9f7c43efd05eed7faa3e31b923",
+            "camera_update": "new_module_lr_0.00035",
+            "detail_resolution": "low",
+            "detail_candidates": 512,
+            "native_stem_parameters": 93248
+          },
+          "initialization_witness_sha256": "44368f7545628679fab37ded9f45b8cd6c086b9f7c43efd05eed7faa3e31b923"
+        },
+        "protocol_sha256": "7f2b35f9a7e00433558c1e723db0e3ff0ea9daa7144eeeb972139d1502945cbc",
+        "condition": {
+          "visual_update": "low_lr",
+          "readout": "roles",
+          "visual_lr": 5e-06,
+          "visual_parameter_dtype": "float32",
+          "initialization": "public_CLIP_fresh_camera_heads_modules",
+          "public_clip_sha256": "5806e77cd80f8b59890b7e101eabd078d9fb84e6937f9e85e4ecb61988df416f",
+          "initialization_witness_sha256": "44368f7545628679fab37ded9f45b8cd6c086b9f7c43efd05eed7faa3e31b923",
+          "camera_update": "new_module_lr_0.00035",
+          "detail_resolution": "low",
+          "detail_candidates": 512,
+          "native_stem_parameters": 93248
+        },
+        "started_at": "2026-10-02T06:01:11.566688+08:00",
+        "history": [
+          {
+            "epoch": 1,
+            "steps": 8,
+            "mean_loss": 5.45366245508194,
+            "seconds": 9.883233255997766
+          }
+        ],
+        "optimizer_groups": [
+          {
+            "label": "new",
+            "base_lr": 0.00035,
+            "tensors": 135,
+            "elements": 2946058
+          },
+          {
+            "label": "visual",
+            "base_lr": 5e-06,
+            "tensors": 152,
+            "elements": 86140416
+          }
+        ],
+        "frozen_signal_state_unchanged": true,
+        "visual_parameters_changed": true,
+        "visual_state_before_sha256": "9a92d7f60d061e3282fdc2a557a7d07d7cc519a4534e47239e9240cfb95c62b0",
+        "visual_state_after_sha256": "6f2d404d26a886b2474684820c47d095dda776a133647e1188f2dc52edede7b8",
+        "peak_training_and_epoch_eval_allocated_bytes": 15214682624,
+        "m0": {
+          "nonzero_gradient_parameters": 287,
+          "trainable_parameters": 287,
+          "frozen_signal_state_unchanged": true,
+          "visual_parameters_changed": true,
+          "reload_max_abs_difference": 0.0,
+          "reload_probe_sha256": "23ae96d1bc0e1bc0c892c4a3ef1d453ac2f2ac731340b497036e41c229aa0e8c"
+        },
+        "peak_stage_allocated_bytes": 15214682624,
+        "best_epoch": null,
+        "completed_at": "2026-10-02T06:01:34.747796+08:00",
+        "public_clip_sha256": "5806e77cd80f8b59890b7e101eabd078d9fb84e6937f9e85e4ecb61988df416f",
+        "baseline_sha256_semantics": "Public CLIP input file only; no trained ReID baseline loaded.",
+        "fresh_camera_parameters_changed": true,
+        "camera_state_before_sha256": "b836a2e23c5dcb8834b69aee4a26a04d4209819b23527bd1c57693ba8e914201",
+        "camera_state_after_sha256": "7d3577c8e011328b38a47c266315ed88427907b410e162f472360a8f0a1b3a18"
+      },
+      "deleted": true,
+      "deleted_at": "2026-10-03T14:24:52.346278+08:00"
+    },
+    {
+      "path": "/data/gaob/Re-ID/Trifusion/trained-model/native_detail_20261002_v1_clean_clip_low_RGBNT100_seed42_m0/m0_reload_probe.pth",
+      "bytes": 356531428,
+      "sha256": "cd6233e95b61cf83dd4feb2c1b0f8f0e34effafbea858949dc7e22e808d5cbe5",
+      "training_path": "/data/gaob/Re-ID/Trifusion/trained-model/native_detail_20261002_v1_clean_clip_low_RGBNT100_seed42_m0/training.json",
+      "training_sha256": "c286428fcc3a0be536fd5a460d3f6a818c843a359d2b352374292d3202115eea",
+      "original_training_receipt": {
+        "schema": "trifusion-native-detail-v1",
+        "status": "M0_PASS",
+        "dataset": "RGBNT100",
+        "seed": 42,
+        "epochs": 50,
+        "checkpoint_policy": "best_official_map",
+        "initializer": {
+          "architecture": "native_detail_v1",
+          "dataset": "RGBNT100",
+          "seed": 42,
+          "readout": "roles",
+          "public_clip_path": "/data/gaob/Re-ID/Trifusion/pertrained-model/ViT-B-16.pt",
+          "public_clip_sha256": "5806e77cd80f8b59890b7e101eabd078d9fb84e6937f9e85e4ecb61988df416f",
+          "public_visual_tensors_verified": 152,
+          "visual_initial_sha256": "9a92d7f60d061e3282fdc2a557a7d07d7cc519a4534e47239e9240cfb95c62b0",
+          "fresh_camera_initial_sha256": "b836a2e23c5dcb8834b69aee4a26a04d4209819b23527bd1c57693ba8e914201",
+          "fresh_camera_shape": [
+            8,
+            1,
+            768
+          ],
+          "author_source_commit": "cd1b0a672d1fe642e7608731cb4899a19dda7d51",
+          "protocol_sha256": "12d8afe5cf6e537b69ccf753481dd5fd651f14b7672e1e6411a4d4e9d88cc956",
+          "common_initializer_sha256": {
+            "backbone": "1db5ac9c440aca58bb11f2ecb08e7c031bf3ee2d0401934c7b22975edfb1d841",
+            "neck": "06efe49412cdf6c9d8d9162b9394e4bc49329d169906cecc2b6c4784bcdb166e",
+            "classifier": "1deee2afd7a2f8b90231dc24c16cb5e1ce5232e2b1d92383a964342cded88ddd"
+          },
+          "initial_model_state_sha256": "a403aeaaf8338954d04d0d112c916f9f0fd52564d13fac12798531f5adc6ebad",
+          "trainable_parameters": 88925194,
+          "trainable_parameter_tensors": 287,
+          "entry_sha256": "4344bea88f47f65d9d7422eb0bb23567f1fb030a61851d96dfa25bdf6f627a0f",
+          "baseline_sha256_semantics": "Public CLIP input file only; no trained ReID baseline is read.",
+          "camera_semantics": "Fresh author truncated-normal embedding, trainable at new-module LR.",
+          "initialization_scope": "public visual only; fresh camera, unused Signal state, shared adapters, roles and retrieval heads",
+          "detail_resolution": "low",
+          "role_source_sha256": "0ff799fe309c0a6437623a26cda978309421af8ba1e85485da2dd78389b6f335",
+          "condition": {
+            "visual_update": "low_lr",
+            "readout": "roles",
+            "visual_lr": 5e-06,
+            "visual_parameter_dtype": "float32",
+            "initialization": "public_CLIP_fresh_camera_heads_modules",
+            "public_clip_sha256": "5806e77cd80f8b59890b7e101eabd078d9fb84e6937f9e85e4ecb61988df416f",
+            "initialization_witness_sha256": "aaef608cec232fc6d043ba200526229bc9253f29b7e2de39bf2b65cf3c13a36e",
+            "camera_update": "new_module_lr_0.00035",
+            "detail_resolution": "low",
+            "detail_candidates": 512,
+            "native_stem_parameters": 93248
+          },
+          "initialization_witness_sha256": "aaef608cec232fc6d043ba200526229bc9253f29b7e2de39bf2b65cf3c13a36e"
+        },
+        "protocol_sha256": "12d8afe5cf6e537b69ccf753481dd5fd651f14b7672e1e6411a4d4e9d88cc956",
+        "condition": {
+          "visual_update": "low_lr",
+          "readout": "roles",
+          "visual_lr": 5e-06,
+          "visual_parameter_dtype": "float32",
+          "initialization": "public_CLIP_fresh_camera_heads_modules",
+          "public_clip_sha256": "5806e77cd80f8b59890b7e101eabd078d9fb84e6937f9e85e4ecb61988df416f",
+          "initialization_witness_sha256": "aaef608cec232fc6d043ba200526229bc9253f29b7e2de39bf2b65cf3c13a36e",
+          "camera_update": "new_module_lr_0.00035",
+          "detail_resolution": "low",
+          "detail_candidates": 512,
+          "native_stem_parameters": 93248
+        },
+        "started_at": "2026-10-02T05:53:10.132989+08:00",
+        "history": [
+          {
+            "epoch": 1,
+            "steps": 8,
+            "mean_loss": 4.304585158824921,
+            "seconds": 8.569377915002406
+          }
+        ],
+        "optimizer_groups": [
+          {
+            "label": "new",
+            "base_lr": 0.00035,
+            "tensors": 135,
+            "elements": 2784778
+          },
+          {
+            "label": "visual",
+            "base_lr": 5e-06,
+            "tensors": 152,
+            "elements": 86140416
+          }
+        ],
+        "frozen_signal_state_unchanged": true,
+        "visual_parameters_changed": true,
+        "visual_state_before_sha256": "9a92d7f60d061e3282fdc2a557a7d07d7cc519a4534e47239e9240cfb95c62b0",
+        "visual_state_after_sha256": "96e05c7afbe25d5be857428a353b1305d62ebfc04c65fb75e8a36c52daf0f312",
+        "peak_training_and_epoch_eval_allocated_bytes": 15211705856,
+        "m0": {
+          "nonzero_gradient_parameters": 287,
+          "trainable_parameters": 287,
+          "frozen_signal_state_unchanged": true,
+          "visual_parameters_changed": true,
+          "reload_max_abs_difference": 0.0,
+          "reload_probe_sha256": "cd6233e95b61cf83dd4feb2c1b0f8f0e34effafbea858949dc7e22e808d5cbe5"
+        },
+        "peak_stage_allocated_bytes": 15211705856,
+        "best_epoch": null,
+        "completed_at": "2026-10-02T05:53:31.704239+08:00",
+        "public_clip_sha256": "5806e77cd80f8b59890b7e101eabd078d9fb84e6937f9e85e4ecb61988df416f",
+        "baseline_sha256_semantics": "Public CLIP input file only; no trained ReID baseline loaded.",
+        "fresh_camera_parameters_changed": true,
+        "camera_state_before_sha256": "b836a2e23c5dcb8834b69aee4a26a04d4209819b23527bd1c57693ba8e914201",
+        "camera_state_after_sha256": "0257bcab3cd8777afcb7f86032dbf7cebcc99611da2adacf181ec1f3b8a20f47"
+      },
+      "deleted": true,
+      "deleted_at": "2026-10-03T14:24:52.360031+08:00"
+    },
+    {
+      "path": "/data/gaob/Re-ID/Trifusion/trained-model/native_detail_preflight_20261002_v1_RGBNT201_high_m0/m0_reload_probe.pth",
+      "bytes": 358745564,
+      "sha256": "777b99181360f663a761f83aa937000bd2717d6342d15fdb6881c4a25e0194f7",
+      "training_path": "/data/gaob/Re-ID/Trifusion/trained-model/native_detail_preflight_20261002_v1_RGBNT201_high_m0/training.json",
+      "training_sha256": "e016c193d562a51ff58c35856334fda735bd59e82a02605b50d5f500556b9ae7",
+      "original_training_receipt": {
+        "schema": "trifusion-native-detail-v1",
+        "status": "M0_PASS",
+        "dataset": "RGBNT201",
+        "seed": 42,
+        "epochs": 50,
+        "checkpoint_policy": "best_official_map",
+        "initializer": {
+          "architecture": "native_detail_v1",
+          "dataset": "RGBNT201",
+          "seed": 42,
+          "readout": "roles",
+          "public_clip_path": "/data/gaob/Re-ID/Trifusion/pertrained-model/ViT-B-16.pt",
+          "public_clip_sha256": "5806e77cd80f8b59890b7e101eabd078d9fb84e6937f9e85e4ecb61988df416f",
+          "public_visual_tensors_verified": 152,
+          "visual_initial_sha256": "e989d3d5cf05e26109cd62aba6752ad1151b70c06dc14324703826fecbb9383f",
+          "fresh_camera_initial_sha256": "71161723dfbaee1cbbcf2f07d2065187b0fe05ccc0b1afd25f62e16e48d85ec1",
+          "fresh_camera_shape": [
+            4,
+            1,
+            768
+          ],
+          "author_source_commit": "cd1b0a672d1fe642e7608731cb4899a19dda7d51",
+          "protocol_sha256": "e63be5d9f8bd41df365264ad8f459dcd063d088023a2d2ed525a49a72f61161e",
+          "common_initializer_sha256": {
+            "backbone": "0baf5860672e4522ee1a6de815ac2e1443d9d2937e2f757aa4c227e06508afb8",
+            "neck": "06efe49412cdf6c9d8d9162b9394e4bc49329d169906cecc2b6c4784bcdb166e",
+            "classifier": "22bd8be47d0a37e4afd7689789e40999fe33dd5ee5b8e338bd920bd6678fbf47"
+          },
+          "initial_model_state_sha256": "fc853f0e1181a51c66b1897327f233e09ea3066274ee2a55ff3d6ea2dedd286f",
+          "trainable_parameters": 89107978,
+          "trainable_parameter_tensors": 287,
+          "entry_sha256": "4344bea88f47f65d9d7422eb0bb23567f1fb030a61851d96dfa25bdf6f627a0f",
+          "baseline_sha256_semantics": "Public CLIP input file only; no trained ReID baseline is read.",
+          "camera_semantics": "Fresh author truncated-normal embedding, trainable at new-module LR.",
+          "initialization_scope": "public visual only; fresh camera, unused Signal state, shared adapters, roles and retrieval heads",
+          "detail_resolution": "high",
+          "role_source_sha256": "0ff799fe309c0a6437623a26cda978309421af8ba1e85485da2dd78389b6f335",
+          "condition": {
+            "visual_update": "low_lr",
+            "readout": "roles",
+            "visual_lr": 5e-06,
+            "visual_parameter_dtype": "float32",
+            "initialization": "public_CLIP_fresh_camera_heads_modules",
+            "public_clip_sha256": "5806e77cd80f8b59890b7e101eabd078d9fb84e6937f9e85e4ecb61988df416f",
+            "initialization_witness_sha256": "4e593d6df7d1870a8437cfa92f33198b170515191e3367f31562d14025730e61",
+            "camera_update": "new_module_lr_0.00035",
+            "detail_resolution": "high",
+            "detail_candidates": 512,
+            "native_stem_parameters": 93248
+          },
+          "initialization_witness_sha256": "4e593d6df7d1870a8437cfa92f33198b170515191e3367f31562d14025730e61"
+        },
+        "protocol_sha256": "e63be5d9f8bd41df365264ad8f459dcd063d088023a2d2ed525a49a72f61161e",
+        "condition": {
+          "visual_update": "low_lr",
+          "readout": "roles",
+          "visual_lr": 5e-06,
+          "visual_parameter_dtype": "float32",
+          "initialization": "public_CLIP_fresh_camera_heads_modules",
+          "public_clip_sha256": "5806e77cd80f8b59890b7e101eabd078d9fb84e6937f9e85e4ecb61988df416f",
+          "initialization_witness_sha256": "4e593d6df7d1870a8437cfa92f33198b170515191e3367f31562d14025730e61",
+          "camera_update": "new_module_lr_0.00035",
+          "detail_resolution": "high",
+          "detail_candidates": 512,
+          "native_stem_parameters": 93248
+        },
+        "started_at": "2026-10-02T05:19:10.404792+08:00",
+        "history": [
+          {
+            "epoch": 1,
+            "steps": 8,
+            "mean_loss": 5.526286542415619,
+            "seconds": 8.675208415021189
+          }
+        ],
+        "optimizer_groups": [
+          {
+            "label": "new",
+            "base_lr": 0.00035,
+            "tensors": 135,
+            "elements": 2967562
+          },
+          {
+            "label": "visual",
+            "base_lr": 5e-06,
+            "tensors": 152,
+            "elements": 86140416
+          }
+        ],
+        "frozen_signal_state_unchanged": true,
+        "visual_parameters_changed": true,
+        "visual_state_before_sha256": "e989d3d5cf05e26109cd62aba6752ad1151b70c06dc14324703826fecbb9383f",
+        "visual_state_after_sha256": "357746eb80e8473679152c0c9f972817a1642bcde8e5046c5cdfa9dc5cf80088",
+        "peak_training_and_epoch_eval_allocated_bytes": 15494213120,
+        "m0": {
+          "nonzero_gradient_parameters": 287,
+          "trainable_parameters": 287,
+          "frozen_signal_state_unchanged": true,
+          "visual_parameters_changed": true,
+          "reload_max_abs_difference": 0.0,
+          "reload_probe_sha256": "777b99181360f663a761f83aa937000bd2717d6342d15fdb6881c4a25e0194f7"
+        },
+        "peak_stage_allocated_bytes": 15494213120,
+        "best_epoch": null,
+        "completed_at": "2026-10-02T05:19:32.274519+08:00",
+        "public_clip_sha256": "5806e77cd80f8b59890b7e101eabd078d9fb84e6937f9e85e4ecb61988df416f",
+        "baseline_sha256_semantics": "Public CLIP input file only; no trained ReID baseline loaded.",
+        "fresh_camera_parameters_changed": true,
+        "camera_state_before_sha256": "71161723dfbaee1cbbcf2f07d2065187b0fe05ccc0b1afd25f62e16e48d85ec1",
+        "camera_state_after_sha256": "a21e46b1d45ac20237a2cee2a1cf7ecf4965787beceec5a0607ca4ee4b18723c"
+      },
+      "deleted": true,
+      "deleted_at": "2026-10-03T14:24:52.365731+08:00"
+    },
+    {
+      "path": "/data/gaob/Re-ID/Trifusion/trained-model/native_detail_preflight_20261002_v1_RGBNT201_low_m0/m0_reload_probe.pth",
+      "bytes": 358745564,
+      "sha256": "3c1ed0ce3fc4e0475c8cdc8baa255651df5aade6beb8f4364fa60c73e9a6fe15",
+      "training_path": "/data/gaob/Re-ID/Trifusion/trained-model/native_detail_preflight_20261002_v1_RGBNT201_low_m0/training.json",
+      "training_sha256": "50b5e2b0de5d90011fdc0e00fd6fed086ef966e4b96243fccfc0da7344f4eaf5",
+      "original_training_receipt": {
+        "schema": "trifusion-native-detail-v1",
+        "status": "M0_PASS",
+        "dataset": "RGBNT201",
+        "seed": 42,
+        "epochs": 50,
+        "checkpoint_policy": "best_official_map",
+        "initializer": {
+          "architecture": "native_detail_v1",
+          "dataset": "RGBNT201",
+          "seed": 42,
+          "readout": "roles",
+          "public_clip_path": "/data/gaob/Re-ID/Trifusion/pertrained-model/ViT-B-16.pt",
+          "public_clip_sha256": "5806e77cd80f8b59890b7e101eabd078d9fb84e6937f9e85e4ecb61988df416f",
+          "public_visual_tensors_verified": 152,
+          "visual_initial_sha256": "e989d3d5cf05e26109cd62aba6752ad1151b70c06dc14324703826fecbb9383f",
+          "fresh_camera_initial_sha256": "71161723dfbaee1cbbcf2f07d2065187b0fe05ccc0b1afd25f62e16e48d85ec1",
+          "fresh_camera_shape": [
+            4,
+            1,
+            768
+          ],
+          "author_source_commit": "cd1b0a672d1fe642e7608731cb4899a19dda7d51",
+          "protocol_sha256": "e63be5d9f8bd41df365264ad8f459dcd063d088023a2d2ed525a49a72f61161e",
+          "common_initializer_sha256": {
+            "backbone": "0baf5860672e4522ee1a6de815ac2e1443d9d2937e2f757aa4c227e06508afb8",
+            "neck": "06efe49412cdf6c9d8d9162b9394e4bc49329d169906cecc2b6c4784bcdb166e",
+            "classifier": "22bd8be47d0a37e4afd7689789e40999fe33dd5ee5b8e338bd920bd6678fbf47"
+          },
+          "initial_model_state_sha256": "fc853f0e1181a51c66b1897327f233e09ea3066274ee2a55ff3d6ea2dedd286f",
+          "trainable_parameters": 89107978,
+          "trainable_parameter_tensors": 287,
+          "entry_sha256": "4344bea88f47f65d9d7422eb0bb23567f1fb030a61851d96dfa25bdf6f627a0f",
+          "baseline_sha256_semantics": "Public CLIP input file only; no trained ReID baseline is read.",
+          "camera_semantics": "Fresh author truncated-normal embedding, trainable at new-module LR.",
+          "initialization_scope": "public visual only; fresh camera, unused Signal state, shared adapters, roles and retrieval heads",
+          "detail_resolution": "low",
+          "role_source_sha256": "0ff799fe309c0a6437623a26cda978309421af8ba1e85485da2dd78389b6f335",
+          "condition": {
+            "visual_update": "low_lr",
+            "readout": "roles",
+            "visual_lr": 5e-06,
+            "visual_parameter_dtype": "float32",
+            "initialization": "public_CLIP_fresh_camera_heads_modules",
+            "public_clip_sha256": "5806e77cd80f8b59890b7e101eabd078d9fb84e6937f9e85e4ecb61988df416f",
+            "initialization_witness_sha256": "49881d3370fe8557c0f1c6a898212e8fcae58ec25e8dbdc16958b43a38ec469c",
+            "camera_update": "new_module_lr_0.00035",
+            "detail_resolution": "low",
+            "detail_candidates": 512,
+            "native_stem_parameters": 93248
+          },
+          "initialization_witness_sha256": "49881d3370fe8557c0f1c6a898212e8fcae58ec25e8dbdc16958b43a38ec469c"
+        },
+        "protocol_sha256": "e63be5d9f8bd41df365264ad8f459dcd063d088023a2d2ed525a49a72f61161e",
+        "condition": {
+          "visual_update": "low_lr",
+          "readout": "roles",
+          "visual_lr": 5e-06,
+          "visual_parameter_dtype": "float32",
+          "initialization": "public_CLIP_fresh_camera_heads_modules",
+          "public_clip_sha256": "5806e77cd80f8b59890b7e101eabd078d9fb84e6937f9e85e4ecb61988df416f",
+          "initialization_witness_sha256": "49881d3370fe8557c0f1c6a898212e8fcae58ec25e8dbdc16958b43a38ec469c",
+          "camera_update": "new_module_lr_0.00035",
+          "detail_resolution": "low",
+          "detail_candidates": 512,
+          "native_stem_parameters": 93248
+        },
+        "started_at": "2026-10-02T05:19:11.022304+08:00",
+        "history": [
+          {
+            "epoch": 1,
+            "steps": 8,
+            "mean_loss": 5.526272475719452,
+            "seconds": 8.44804629299324
+          }
+        ],
+        "optimizer_groups": [
+          {
+            "label": "new",
+            "base_lr": 0.00035,
+            "tensors": 135,
+            "elements": 2967562
+          },
+          {
+            "label": "visual",
+            "base_lr": 5e-06,
+            "tensors": 152,
+            "elements": 86140416
+          }
+        ],
+        "frozen_signal_state_unchanged": true,
+        "visual_parameters_changed": true,
+        "visual_state_before_sha256": "e989d3d5cf05e26109cd62aba6752ad1151b70c06dc14324703826fecbb9383f",
+        "visual_state_after_sha256": "cee3594fdb701bbbdb90f38208194c072538094613becd6fced3c3f7074a803a",
+        "peak_training_and_epoch_eval_allocated_bytes": 15216881152,
+        "m0": {
+          "nonzero_gradient_parameters": 287,
+          "trainable_parameters": 287,
+          "frozen_signal_state_unchanged": true,
+          "visual_parameters_changed": true,
+          "reload_max_abs_difference": 0.0,
+          "reload_probe_sha256": "3c1ed0ce3fc4e0475c8cdc8baa255651df5aade6beb8f4364fa60c73e9a6fe15"
+        },
+        "peak_stage_allocated_bytes": 15216881152,
+        "best_epoch": null,
+        "completed_at": "2026-10-02T05:19:32.718505+08:00",
+        "public_clip_sha256": "5806e77cd80f8b59890b7e101eabd078d9fb84e6937f9e85e4ecb61988df416f",
+        "baseline_sha256_semantics": "Public CLIP input file only; no trained ReID baseline loaded.",
+        "fresh_camera_parameters_changed": true,
+        "camera_state_before_sha256": "71161723dfbaee1cbbcf2f07d2065187b0fe05ccc0b1afd25f62e16e48d85ec1",
+        "camera_state_after_sha256": "416ec958b4aa73a709813663359ffcfdaba31024eb212771e17a6d4f7df6fbf3"
+      },
+      "deleted": true,
+      "deleted_at": "2026-10-03T14:24:52.372141+08:00"
+    },
+    {
+      "path": "/data/gaob/Re-ID/Trifusion/trained-model/role_global_tokens_20261001_v1_role_global_tokens_direct_MSVR310_seed42_m0/m0_reload_probe.pth",
+      "bytes": 12467326,
+      "sha256": "c58932029d7498520a3d437707e8645d8d7103aa9ac5535259e2bb5732224bc4",
+      "training_path": "/data/gaob/Re-ID/Trifusion/trained-model/role_global_tokens_20261001_v1_role_global_tokens_direct_MSVR310_seed42_m0/training.json",
+      "training_sha256": "7d34145c2780a874d40e805e473bc99cb9bc4e9ae9e8b29b8488993a99720c61",
+      "original_training_receipt": {
+        "schema": "trifusion-correspondence-context-identity-training-v1",
+        "status": "M0_PASS",
+        "dataset": "MSVR310",
+        "seed": 42,
+        "epochs": 50,
+        "checkpoint_policy": "best_official_map",
+        "protocol_sha256": "7f2b35f9a7e00433558c1e723db0e3ff0ea9daa7144eeeb972139d1502945cbc",
+        "initializer": {
+          "author_checkpoint": "/data/gaob/Re-ID/Trifusion/pertrained-model/MSVR310_PlainBaseline_50.pth",
+          "author_checkpoint_sha256": "69c5e71b75036d7216ece3ff84450f0052f5e70dfaba46bf73f3e1d40992bb37",
+          "signal_state_sha256": "b64e8827028042012bed9a9fc2ffd0bc29122dc1077815b4773626c6a41a087c",
+          "baseline_kind": "independently_trained_module_free_cls",
+          "architecture": "role_global_tokens_v1",
+          "m1": true,
+          "m2": true,
+          "m3": false,
+          "width": 128,
+          "fused_width": 1536,
+          "prediction_weight": 0.1,
+          "learning_rate": 0.00035,
+          "weight_decay": 0.0001,
+          "entry_sha256": "dba04e72a4d3b81583b7c5c2e26aa0204618736a2c57280340313e50674f63cb",
+          "model_source_sha256": "e2a51154b5b327341f35e453dd32a821b091a49a669b49a7c70e79e6e2f2591b",
+          "initial_model_state_sha256": "fad34e895b82625f665edca47aa107c9b60ea0cf0b65377373e127119ecf0d30",
+          "trainable_parameters": 2846666,
+          "condition": {
+            "query_mode": "context",
+            "auxiliary_target": "none"
+          },
+          "auxiliary_id_weight": 1.0,
+          "query_context_width": 512,
+          "reused_entry_sha256": "e50865fb923297cd61cf38b33ec2bc95154f8c503b5dfe5de9823cad3f03d7ef",
+          "context_source_sha256": "eda3d1473496b33e4b69402dba7770e67d23b33b07afd41d23105b7f148d63af",
+          "evidence_source_sha256": "e737a977d39ccbe09a5509118e5b5333d653f7f13381e65e84af1a13e5c28dc4",
+          "token_mode": "direct",
+          "memory_mode": "full",
+          "attention_normalization": "independent",
+          "attention_subgraph_dtype": "float32",
+          "slot_count": 16,
+          "transformer_sequence_length": 17,
+          "patch_count": 128,
+          "memory_candidates": 128,
+          "fixed_slot_positions": true,
+          "joint_local_semantics": "normalized total role correction; global-conditioned in token/direct modes",
+          "patch_memory_source_sha256": "833c8c93363cee7a4fc74c6c458194b484dc1b8cac0f9ec58113a07ac89cb23d",
+          "slot_competition_source_sha256": "bbc3e2430f760587cf8c1d11e40bcbdf0459424e975de74b5b15a40706efbe99",
+          "slot_competition_fp32_source_sha256": "810801e048bcb07ddbdef0635708b63cba7562a4876e044af34135fd412f79c8",
+          "role_global_source_sha256": "f41ff1af1fb1b6303a9af63cf039263e2572c16b23813f92a0297f014e71dd4f",
+          "reused_context_entry_sha256": "9f4cc9f11998819d4a927a32f4e47baf0c4ff9d14c4bc93b0dc35b0153ebc142"
+        },
+        "started_at": "2026-10-01T09:29:53.806610+08:00",
+        "history": [
+          {
+            "epoch": 1,
+            "steps": 8,
+            "mean_loss": 5.222001731395721,
+            "seconds": 7.967136103994562
+          }
+        ],
+        "m0": {
+          "nonzero_gradient_parameters": 128,
+          "trainable_parameters": 128,
+          "frozen_signal_unchanged": true,
+          "reload_max_abs_difference": 0.0,
+          "reload_probe_sha256": "c58932029d7498520a3d437707e8645d8d7103aa9ac5535259e2bb5732224bc4"
+        },
+        "best_epoch": null,
+        "checkpoint": null,
+        "completed_at": "2026-10-01T09:30:13.422100+08:00"
+      },
+      "deleted": true,
+      "deleted_at": "2026-10-03T14:24:52.375287+08:00"
+    },
+    {
+      "path": "/data/gaob/Re-ID/Trifusion/trained-model/role_global_tokens_20261001_v1_role_global_tokens_direct_RGBNT100_seed42_m0/m0_reload_probe.pth",
+      "bytes": 11177086,
+      "sha256": "2b26d008da153713f0e4837b76650bd575c07941a7570f01d53a3359ebcc9cbb",
+      "training_path": "/data/gaob/Re-ID/Trifusion/trained-model/role_global_tokens_20261001_v1_role_global_tokens_direct_RGBNT100_seed42_m0/training.json",
+      "training_sha256": "9a939d01f894d9c9b487f80fd581619d575a9bd02e61f83da52133ee88c3da27",
+      "original_training_receipt": {
+        "schema": "trifusion-correspondence-context-identity-training-v1",
+        "status": "M0_PASS",
+        "dataset": "RGBNT100",
+        "seed": 42,
+        "epochs": 50,
+        "checkpoint_policy": "best_official_map",
+        "protocol_sha256": "12d8afe5cf6e537b69ccf753481dd5fd651f14b7672e1e6411a4d4e9d88cc956",
+        "initializer": {
+          "author_checkpoint": "/data/gaob/Re-ID/Trifusion/pertrained-model/RGBNT100_PlainBaseline_30.pth",
+          "author_checkpoint_sha256": "299a28bfb3e3180eeae0736cf8638cd162525dce0f2192a940b62b97f6e67dcd",
+          "signal_state_sha256": "68cea6c9ae4246ec9d0394b8b5e0dec53d70bd6af55d92c3140ac268e60e3174",
+          "baseline_kind": "independently_trained_module_free_cls",
+          "architecture": "role_global_tokens_v1",
+          "m1": true,
+          "m2": true,
+          "m3": false,
+          "width": 128,
+          "fused_width": 1536,
+          "prediction_weight": 0.1,
+          "learning_rate": 0.00035,
+          "weight_decay": 0.0001,
+          "entry_sha256": "dba04e72a4d3b81583b7c5c2e26aa0204618736a2c57280340313e50674f63cb",
+          "model_source_sha256": "e2a51154b5b327341f35e453dd32a821b091a49a669b49a7c70e79e6e2f2591b",
+          "initial_model_state_sha256": "2f943b51cfbcad0bf8d2a0cc552a94eeb81b04a5a24035218e5e9b1df6a82688",
+          "trainable_parameters": 2685386,
+          "condition": {
+            "query_mode": "context",
+            "auxiliary_target": "none"
+          },
+          "auxiliary_id_weight": 1.0,
+          "query_context_width": 512,
+          "reused_entry_sha256": "e50865fb923297cd61cf38b33ec2bc95154f8c503b5dfe5de9823cad3f03d7ef",
+          "context_source_sha256": "eda3d1473496b33e4b69402dba7770e67d23b33b07afd41d23105b7f148d63af",
+          "evidence_source_sha256": "e737a977d39ccbe09a5509118e5b5333d653f7f13381e65e84af1a13e5c28dc4",
+          "token_mode": "direct",
+          "memory_mode": "full",
+          "attention_normalization": "independent",
+          "attention_subgraph_dtype": "float32",
+          "slot_count": 16,
+          "transformer_sequence_length": 17,
+          "patch_count": 128,
+          "memory_candidates": 128,
+          "fixed_slot_positions": true,
+          "joint_local_semantics": "normalized total role correction; global-conditioned in token/direct modes",
+          "patch_memory_source_sha256": "833c8c93363cee7a4fc74c6c458194b484dc1b8cac0f9ec58113a07ac89cb23d",
+          "slot_competition_source_sha256": "bbc3e2430f760587cf8c1d11e40bcbdf0459424e975de74b5b15a40706efbe99",
+          "slot_competition_fp32_source_sha256": "810801e048bcb07ddbdef0635708b63cba7562a4876e044af34135fd412f79c8",
+          "role_global_source_sha256": "f41ff1af1fb1b6303a9af63cf039263e2572c16b23813f92a0297f014e71dd4f",
+          "reused_context_entry_sha256": "9f4cc9f11998819d4a927a32f4e47baf0c4ff9d14c4bc93b0dc35b0153ebc142"
+        },
+        "started_at": "2026-10-01T08:45:52.707836+08:00",
+        "history": [
+          {
+            "epoch": 1,
+            "steps": 8,
+            "mean_loss": 3.8578717410564423,
+            "seconds": 6.791723396992893
+          }
+        ],
+        "m0": {
+          "nonzero_gradient_parameters": 128,
+          "trainable_parameters": 128,
+          "frozen_signal_unchanged": true,
+          "reload_max_abs_difference": 0.0,
+          "reload_probe_sha256": "2b26d008da153713f0e4837b76650bd575c07941a7570f01d53a3359ebcc9cbb"
+        },
+        "best_epoch": null,
+        "checkpoint": null,
+        "completed_at": "2026-10-01T08:46:10.847487+08:00"
+      },
+      "deleted": true,
+      "deleted_at": "2026-10-03T14:24:52.378193+08:00"
+    },
+    {
+      "path": "/data/gaob/Re-ID/Trifusion/trained-model/role_global_tokens_20261001_v1_role_global_tokens_direct_RGBNT201_seed42_m0/m0_reload_probe.pth",
+      "bytes": 12663934,
+      "sha256": "f873d972d5d24a6ced1b9afde623f273d49492b99231a6d9d574cf89d4c49ce1",
+      "training_path": "/data/gaob/Re-ID/Trifusion/trained-model/role_global_tokens_20261001_v1_role_global_tokens_direct_RGBNT201_seed42_m0/training.json",
+      "training_sha256": "0c2a2be979c5eff4ecfdf2e920e9f0e4255be5ddf417b76ac3e55cbbfc5409ed",
+      "original_training_receipt": {
+        "schema": "trifusion-correspondence-context-identity-training-v1",
+        "status": "M0_PASS",
+        "dataset": "RGBNT201",
+        "seed": 42,
+        "epochs": 50,
+        "checkpoint_policy": "best_official_map",
+        "protocol_sha256": "e63be5d9f8bd41df365264ad8f459dcd063d088023a2d2ed525a49a72f61161e",
+        "initializer": {
+          "author_checkpoint": "/data/gaob/Re-ID/Trifusion/pertrained-model/RGBNT201_PlainBaseline_50.pth",
+          "author_checkpoint_sha256": "789e5e14aacd74ad122aad701389eb216ca5b4fda92687e27351a513023b4407",
+          "signal_state_sha256": "4d5cf3d7bb445199b6d2a0d3492c4fcf8ae5263f240bb6b6a322933695abd89d",
+          "baseline_kind": "independently_trained_module_free_cls",
+          "architecture": "role_global_tokens_v1",
+          "m1": true,
+          "m2": true,
+          "m3": false,
+          "width": 128,
+          "fused_width": 1536,
+          "prediction_weight": 0.1,
+          "learning_rate": 0.00035,
+          "weight_decay": 0.0001,
+          "entry_sha256": "dba04e72a4d3b81583b7c5c2e26aa0204618736a2c57280340313e50674f63cb",
+          "model_source_sha256": "e2a51154b5b327341f35e453dd32a821b091a49a669b49a7c70e79e6e2f2591b",
+          "initial_model_state_sha256": "0296d6a9b8ba817d50e880c1e533bccace1e0ba4d32ff6c27a5fc6cf8730adaf",
+          "trainable_parameters": 2871242,
+          "condition": {
+            "query_mode": "context",
+            "auxiliary_target": "none"
+          },
+          "auxiliary_id_weight": 1.0,
+          "query_context_width": 512,
+          "reused_entry_sha256": "e50865fb923297cd61cf38b33ec2bc95154f8c503b5dfe5de9823cad3f03d7ef",
+          "context_source_sha256": "eda3d1473496b33e4b69402dba7770e67d23b33b07afd41d23105b7f148d63af",
+          "evidence_source_sha256": "e737a977d39ccbe09a5509118e5b5333d653f7f13381e65e84af1a13e5c28dc4",
+          "token_mode": "direct",
+          "memory_mode": "full",
+          "attention_normalization": "independent",
+          "attention_subgraph_dtype": "float32",
+          "slot_count": 16,
+          "transformer_sequence_length": 17,
+          "patch_count": 128,
+          "memory_candidates": 128,
+          "fixed_slot_positions": true,
+          "joint_local_semantics": "normalized total role correction; global-conditioned in token/direct modes",
+          "patch_memory_source_sha256": "833c8c93363cee7a4fc74c6c458194b484dc1b8cac0f9ec58113a07ac89cb23d",
+          "slot_competition_source_sha256": "bbc3e2430f760587cf8c1d11e40bcbdf0459424e975de74b5b15a40706efbe99",
+          "slot_competition_fp32_source_sha256": "810801e048bcb07ddbdef0635708b63cba7562a4876e044af34135fd412f79c8",
+          "role_global_source_sha256": "f41ff1af1fb1b6303a9af63cf039263e2572c16b23813f92a0297f014e71dd4f",
+          "reused_context_entry_sha256": "9f4cc9f11998819d4a927a32f4e47baf0c4ff9d14c4bc93b0dc35b0153ebc142"
+        },
+        "started_at": "2026-10-01T08:53:51.550369+08:00",
+        "history": [
+          {
+            "epoch": 1,
+            "steps": 8,
+            "mean_loss": 5.1292449831962585,
+            "seconds": 6.779147664012271
+          }
+        ],
+        "m0": {
+          "nonzero_gradient_parameters": 128,
+          "trainable_parameters": 128,
+          "frozen_signal_unchanged": true,
+          "reload_max_abs_difference": 0.0,
+          "reload_probe_sha256": "f873d972d5d24a6ced1b9afde623f273d49492b99231a6d9d574cf89d4c49ce1"
+        },
+        "best_epoch": null,
+        "checkpoint": null,
+        "completed_at": "2026-10-01T08:54:09.153927+08:00"
+      },
+      "deleted": true,
+      "deleted_at": "2026-10-03T14:24:52.381462+08:00"
+    },
+    {
+      "path": "/data/gaob/Re-ID/Trifusion/trained-model/role_global_tokens_20261001_v1_role_global_tokens_static_MSVR310_seed42_m0/m0_reload_probe.pth",
+      "bytes": 12467326,
+      "sha256": "644c5b49f4fe903903cb45e1e2e4a18ab5477cf89a7dbfeb2b32b5738431ee74",
+      "training_path": "/data/gaob/Re-ID/Trifusion/trained-model/role_global_tokens_20261001_v1_role_global_tokens_static_MSVR310_seed42_m0/training.json",
+      "training_sha256": "790d478981111c77e9f3d70843f76a576f7d43aeec0242cfe39fb1adcb212904",
+      "original_training_receipt": {
+        "schema": "trifusion-correspondence-context-identity-training-v1",
+        "status": "M0_PASS",
+        "dataset": "MSVR310",
+        "seed": 42,
+        "epochs": 50,
+        "checkpoint_policy": "best_official_map",
+        "protocol_sha256": "7f2b35f9a7e00433558c1e723db0e3ff0ea9daa7144eeeb972139d1502945cbc",
+        "initializer": {
+          "author_checkpoint": "/data/gaob/Re-ID/Trifusion/pertrained-model/MSVR310_PlainBaseline_50.pth",
+          "author_checkpoint_sha256": "69c5e71b75036d7216ece3ff84450f0052f5e70dfaba46bf73f3e1d40992bb37",
+          "signal_state_sha256": "b64e8827028042012bed9a9fc2ffd0bc29122dc1077815b4773626c6a41a087c",
+          "baseline_kind": "independently_trained_module_free_cls",
+          "architecture": "role_global_tokens_v1",
+          "m1": true,
+          "m2": true,
+          "m3": false,
+          "width": 128,
+          "fused_width": 1536,
+          "prediction_weight": 0.1,
+          "learning_rate": 0.00035,
+          "weight_decay": 0.0001,
+          "entry_sha256": "dba04e72a4d3b81583b7c5c2e26aa0204618736a2c57280340313e50674f63cb",
+          "model_source_sha256": "e2a51154b5b327341f35e453dd32a821b091a49a669b49a7c70e79e6e2f2591b",
+          "initial_model_state_sha256": "fad34e895b82625f665edca47aa107c9b60ea0cf0b65377373e127119ecf0d30",
+          "trainable_parameters": 2846666,
+          "condition": {
+            "query_mode": "context",
+            "auxiliary_target": "none"
+          },
+          "auxiliary_id_weight": 1.0,
+          "query_context_width": 512,
+          "reused_entry_sha256": "e50865fb923297cd61cf38b33ec2bc95154f8c503b5dfe5de9823cad3f03d7ef",
+          "context_source_sha256": "eda3d1473496b33e4b69402dba7770e67d23b33b07afd41d23105b7f148d63af",
+          "evidence_source_sha256": "e737a977d39ccbe09a5509118e5b5333d653f7f13381e65e84af1a13e5c28dc4",
+          "token_mode": "static",
+          "memory_mode": "full",
+          "attention_normalization": "independent",
+          "attention_subgraph_dtype": "float32",
+          "slot_count": 16,
+          "transformer_sequence_length": 17,
+          "patch_count": 128,
+          "memory_candidates": 128,
+          "fixed_slot_positions": true,
+          "joint_local_semantics": "normalized total role correction; global-conditioned in token/direct modes",
+          "patch_memory_source_sha256": "833c8c93363cee7a4fc74c6c458194b484dc1b8cac0f9ec58113a07ac89cb23d",
+          "slot_competition_source_sha256": "bbc3e2430f760587cf8c1d11e40bcbdf0459424e975de74b5b15a40706efbe99",
+          "slot_competition_fp32_source_sha256": "810801e048bcb07ddbdef0635708b63cba7562a4876e044af34135fd412f79c8",
+          "role_global_source_sha256": "f41ff1af1fb1b6303a9af63cf039263e2572c16b23813f92a0297f014e71dd4f",
+          "reused_context_entry_sha256": "9f4cc9f11998819d4a927a32f4e47baf0c4ff9d14c4bc93b0dc35b0153ebc142"
+        },
+        "started_at": "2026-10-01T08:21:50.732621+08:00",
+        "history": [
+          {
+            "epoch": 1,
+            "steps": 8,
+            "mean_loss": 5.222001254558563,
+            "seconds": 8.196578545001103
+          }
+        ],
+        "m0": {
+          "nonzero_gradient_parameters": 128,
+          "trainable_parameters": 128,
+          "frozen_signal_unchanged": true,
+          "reload_max_abs_difference": 0.0,
+          "reload_probe_sha256": "644c5b49f4fe903903cb45e1e2e4a18ab5477cf89a7dbfeb2b32b5738431ee74"
+        },
+        "best_epoch": null,
+        "checkpoint": null,
+        "completed_at": "2026-10-01T08:22:10.653150+08:00"
+      },
+      "deleted": true,
+      "deleted_at": "2026-10-03T14:24:52.384486+08:00"
+    },
+    {
+      "path": "/data/gaob/Re-ID/Trifusion/trained-model/role_global_tokens_20261001_v1_role_global_tokens_static_RGBNT100_seed42_m0/m0_reload_probe.pth",
+      "bytes": 11177086,
+      "sha256": "c5a2a8eaafff2b53b171c890388c5d4fa4ee554b1c84130453b3998010702181",
+      "training_path": "/data/gaob/Re-ID/Trifusion/trained-model/role_global_tokens_20261001_v1_role_global_tokens_static_RGBNT100_seed42_m0/training.json",
+      "training_sha256": "6263cb16adb7b262bdbd8ca4ff5c660ba154d0e1eb8d35ccd3599f6dbc5d2bbb",
+      "original_training_receipt": {
+        "schema": "trifusion-correspondence-context-identity-training-v1",
+        "status": "M0_PASS",
+        "dataset": "RGBNT100",
+        "seed": 42,
+        "epochs": 50,
+        "checkpoint_policy": "best_official_map",
+        "protocol_sha256": "12d8afe5cf6e537b69ccf753481dd5fd651f14b7672e1e6411a4d4e9d88cc956",
+        "initializer": {
+          "author_checkpoint": "/data/gaob/Re-ID/Trifusion/pertrained-model/RGBNT100_PlainBaseline_30.pth",
+          "author_checkpoint_sha256": "299a28bfb3e3180eeae0736cf8638cd162525dce0f2192a940b62b97f6e67dcd",
+          "signal_state_sha256": "68cea6c9ae4246ec9d0394b8b5e0dec53d70bd6af55d92c3140ac268e60e3174",
+          "baseline_kind": "independently_trained_module_free_cls",
+          "architecture": "role_global_tokens_v1",
+          "m1": true,
+          "m2": true,
+          "m3": false,
+          "width": 128,
+          "fused_width": 1536,
+          "prediction_weight": 0.1,
+          "learning_rate": 0.00035,
+          "weight_decay": 0.0001,
+          "entry_sha256": "dba04e72a4d3b81583b7c5c2e26aa0204618736a2c57280340313e50674f63cb",
+          "model_source_sha256": "e2a51154b5b327341f35e453dd32a821b091a49a669b49a7c70e79e6e2f2591b",
+          "initial_model_state_sha256": "2f943b51cfbcad0bf8d2a0cc552a94eeb81b04a5a24035218e5e9b1df6a82688",
+          "trainable_parameters": 2685386,
+          "condition": {
+            "query_mode": "context",
+            "auxiliary_target": "none"
+          },
+          "auxiliary_id_weight": 1.0,
+          "query_context_width": 512,
+          "reused_entry_sha256": "e50865fb923297cd61cf38b33ec2bc95154f8c503b5dfe5de9823cad3f03d7ef",
+          "context_source_sha256": "eda3d1473496b33e4b69402dba7770e67d23b33b07afd41d23105b7f148d63af",
+          "evidence_source_sha256": "e737a977d39ccbe09a5509118e5b5333d653f7f13381e65e84af1a13e5c28dc4",
+          "token_mode": "static",
+          "memory_mode": "full",
+          "attention_normalization": "independent",
+          "attention_subgraph_dtype": "float32",
+          "slot_count": 16,
+          "transformer_sequence_length": 17,
+          "patch_count": 128,
+          "memory_candidates": 128,
+          "fixed_slot_positions": true,
+          "joint_local_semantics": "normalized total role correction; global-conditioned in token/direct modes",
+          "patch_memory_source_sha256": "833c8c93363cee7a4fc74c6c458194b484dc1b8cac0f9ec58113a07ac89cb23d",
+          "slot_competition_source_sha256": "bbc3e2430f760587cf8c1d11e40bcbdf0459424e975de74b5b15a40706efbe99",
+          "slot_competition_fp32_source_sha256": "810801e048bcb07ddbdef0635708b63cba7562a4876e044af34135fd412f79c8",
+          "role_global_source_sha256": "f41ff1af1fb1b6303a9af63cf039263e2572c16b23813f92a0297f014e71dd4f",
+          "reused_context_entry_sha256": "9f4cc9f11998819d4a927a32f4e47baf0c4ff9d14c4bc93b0dc35b0153ebc142"
+        },
+        "started_at": "2026-10-01T07:49:52.531129+08:00",
+        "history": [
+          {
+            "epoch": 1,
+            "steps": 8,
+            "mean_loss": 3.857854664325714,
+            "seconds": 6.617085374993621
+          }
+        ],
+        "m0": {
+          "nonzero_gradient_parameters": 128,
+          "trainable_parameters": 128,
+          "frozen_signal_unchanged": true,
+          "reload_max_abs_difference": 0.0,
+          "reload_probe_sha256": "c5a2a8eaafff2b53b171c890388c5d4fa4ee554b1c84130453b3998010702181"
+        },
+        "best_epoch": null,
+        "checkpoint": null,
+        "completed_at": "2026-10-01T07:50:11.104715+08:00"
+      },
+      "deleted": true,
+      "deleted_at": "2026-10-03T14:24:52.387498+08:00"
+    },
+    {
+      "path": "/data/gaob/Re-ID/Trifusion/trained-model/role_global_tokens_20261001_v1_role_global_tokens_static_RGBNT201_seed42_m0/m0_reload_probe.pth",
+      "bytes": 12663934,
+      "sha256": "793765f500ddae500e975199a38f862331152b5359680cc3b91413fa091cc4bc",
+      "training_path": "/data/gaob/Re-ID/Trifusion/trained-model/role_global_tokens_20261001_v1_role_global_tokens_static_RGBNT201_seed42_m0/training.json",
+      "training_sha256": "0a35249d332fc81a2fa2b73c0afe2cc3cbb98eb7c3c2b22d4b05c247a8b44c41",
+      "original_training_receipt": {
+        "schema": "trifusion-correspondence-context-identity-training-v1",
+        "status": "M0_PASS",
+        "dataset": "RGBNT201",
+        "seed": 42,
+        "epochs": 50,
+        "checkpoint_policy": "best_official_map",
+        "protocol_sha256": "e63be5d9f8bd41df365264ad8f459dcd063d088023a2d2ed525a49a72f61161e",
+        "initializer": {
+          "author_checkpoint": "/data/gaob/Re-ID/Trifusion/pertrained-model/RGBNT201_PlainBaseline_50.pth",
+          "author_checkpoint_sha256": "789e5e14aacd74ad122aad701389eb216ca5b4fda92687e27351a513023b4407",
+          "signal_state_sha256": "4d5cf3d7bb445199b6d2a0d3492c4fcf8ae5263f240bb6b6a322933695abd89d",
+          "baseline_kind": "independently_trained_module_free_cls",
+          "architecture": "role_global_tokens_v1",
+          "m1": true,
+          "m2": true,
+          "m3": false,
+          "width": 128,
+          "fused_width": 1536,
+          "prediction_weight": 0.1,
+          "learning_rate": 0.00035,
+          "weight_decay": 0.0001,
+          "entry_sha256": "dba04e72a4d3b81583b7c5c2e26aa0204618736a2c57280340313e50674f63cb",
+          "model_source_sha256": "e2a51154b5b327341f35e453dd32a821b091a49a669b49a7c70e79e6e2f2591b",
+          "initial_model_state_sha256": "0296d6a9b8ba817d50e880c1e533bccace1e0ba4d32ff6c27a5fc6cf8730adaf",
+          "trainable_parameters": 2871242,
+          "condition": {
+            "query_mode": "context",
+            "auxiliary_target": "none"
+          },
+          "auxiliary_id_weight": 1.0,
+          "query_context_width": 512,
+          "reused_entry_sha256": "e50865fb923297cd61cf38b33ec2bc95154f8c503b5dfe5de9823cad3f03d7ef",
+          "context_source_sha256": "eda3d1473496b33e4b69402dba7770e67d23b33b07afd41d23105b7f148d63af",
+          "evidence_source_sha256": "e737a977d39ccbe09a5509118e5b5333d653f7f13381e65e84af1a13e5c28dc4",
+          "token_mode": "static",
+          "memory_mode": "full",
+          "attention_normalization": "independent",
+          "attention_subgraph_dtype": "float32",
+          "slot_count": 16,
+          "transformer_sequence_length": 17,
+          "patch_count": 128,
+          "memory_candidates": 128,
+          "fixed_slot_positions": true,
+          "joint_local_semantics": "normalized total role correction; global-conditioned in token/direct modes",
+          "patch_memory_source_sha256": "833c8c93363cee7a4fc74c6c458194b484dc1b8cac0f9ec58113a07ac89cb23d",
+          "slot_competition_source_sha256": "bbc3e2430f760587cf8c1d11e40bcbdf0459424e975de74b5b15a40706efbe99",
+          "slot_competition_fp32_source_sha256": "810801e048bcb07ddbdef0635708b63cba7562a4876e044af34135fd412f79c8",
+          "role_global_source_sha256": "f41ff1af1fb1b6303a9af63cf039263e2572c16b23813f92a0297f014e71dd4f",
+          "reused_context_entry_sha256": "9f4cc9f11998819d4a927a32f4e47baf0c4ff9d14c4bc93b0dc35b0153ebc142"
+        },
+        "started_at": "2026-10-01T08:17:50.302668+08:00",
+        "history": [
+          {
+            "epoch": 1,
+            "steps": 8,
+            "mean_loss": 5.129234731197357,
+            "seconds": 6.838232666006661
+          }
+        ],
+        "m0": {
+          "nonzero_gradient_parameters": 128,
+          "trainable_parameters": 128,
+          "frozen_signal_unchanged": true,
+          "reload_max_abs_difference": 0.0,
+          "reload_probe_sha256": "793765f500ddae500e975199a38f862331152b5359680cc3b91413fa091cc4bc"
+        },
+        "best_epoch": null,
+        "checkpoint": null,
+        "completed_at": "2026-10-01T08:18:07.935718+08:00"
+      },
+      "deleted": true,
+      "deleted_at": "2026-10-03T14:24:52.390528+08:00"
+    },
+    {
+      "path": "/data/gaob/Re-ID/Trifusion/trained-model/role_global_tokens_20261001_v1_role_global_tokens_token_MSVR310_seed42_m0/m0_reload_probe.pth",
+      "bytes": 12467326,
+      "sha256": "de8f4702074c45708657e3891e5500c70a7543d009acb335fca0760870a32463",
+      "training_path": "/data/gaob/Re-ID/Trifusion/trained-model/role_global_tokens_20261001_v1_role_global_tokens_token_MSVR310_seed42_m0/training.json",
+      "training_sha256": "575d49561685c4857d556438f0433e7dfea98f371df075a9b2eabe25934f2c60",
+      "original_training_receipt": {
+        "schema": "trifusion-correspondence-context-identity-training-v1",
+        "status": "M0_PASS",
+        "dataset": "MSVR310",
+        "seed": 42,
+        "epochs": 50,
+        "checkpoint_policy": "best_official_map",
+        "protocol_sha256": "7f2b35f9a7e00433558c1e723db0e3ff0ea9daa7144eeeb972139d1502945cbc",
+        "initializer": {
+          "author_checkpoint": "/data/gaob/Re-ID/Trifusion/pertrained-model/MSVR310_PlainBaseline_50.pth",
+          "author_checkpoint_sha256": "69c5e71b75036d7216ece3ff84450f0052f5e70dfaba46bf73f3e1d40992bb37",
+          "signal_state_sha256": "b64e8827028042012bed9a9fc2ffd0bc29122dc1077815b4773626c6a41a087c",
+          "baseline_kind": "independently_trained_module_free_cls",
+          "architecture": "role_global_tokens_v1",
+          "m1": true,
+          "m2": true,
+          "m3": false,
+          "width": 128,
+          "fused_width": 1536,
+          "prediction_weight": 0.1,
+          "learning_rate": 0.00035,
+          "weight_decay": 0.0001,
+          "entry_sha256": "dba04e72a4d3b81583b7c5c2e26aa0204618736a2c57280340313e50674f63cb",
+          "model_source_sha256": "e2a51154b5b327341f35e453dd32a821b091a49a669b49a7c70e79e6e2f2591b",
+          "initial_model_state_sha256": "fad34e895b82625f665edca47aa107c9b60ea0cf0b65377373e127119ecf0d30",
+          "trainable_parameters": 2846666,
+          "condition": {
+            "query_mode": "context",
+            "auxiliary_target": "none"
+          },
+          "auxiliary_id_weight": 1.0,
+          "query_context_width": 512,
+          "reused_entry_sha256": "e50865fb923297cd61cf38b33ec2bc95154f8c503b5dfe5de9823cad3f03d7ef",
+          "context_source_sha256": "eda3d1473496b33e4b69402dba7770e67d23b33b07afd41d23105b7f148d63af",
+          "evidence_source_sha256": "e737a977d39ccbe09a5509118e5b5333d653f7f13381e65e84af1a13e5c28dc4",
+          "token_mode": "token",
+          "memory_mode": "full",
+          "attention_normalization": "independent",
+          "attention_subgraph_dtype": "float32",
+          "slot_count": 16,
+          "transformer_sequence_length": 17,
+          "patch_count": 128,
+          "memory_candidates": 128,
+          "fixed_slot_positions": true,
+          "joint_local_semantics": "normalized total role correction; global-conditioned in token/direct modes",
+          "patch_memory_source_sha256": "833c8c93363cee7a4fc74c6c458194b484dc1b8cac0f9ec58113a07ac89cb23d",
+          "slot_competition_source_sha256": "bbc3e2430f760587cf8c1d11e40bcbdf0459424e975de74b5b15a40706efbe99",
+          "slot_competition_fp32_source_sha256": "810801e048bcb07ddbdef0635708b63cba7562a4876e044af34135fd412f79c8",
+          "role_global_source_sha256": "f41ff1af1fb1b6303a9af63cf039263e2572c16b23813f92a0297f014e71dd4f",
+          "reused_context_entry_sha256": "9f4cc9f11998819d4a927a32f4e47baf0c4ff9d14c4bc93b0dc35b0153ebc142"
+        },
+        "started_at": "2026-10-01T07:49:54.685867+08:00",
+        "history": [
+          {
+            "epoch": 1,
+            "steps": 8,
+            "mean_loss": 5.222018778324127,
+            "seconds": 8.22215846501058
+          }
+        ],
+        "m0": {
+          "nonzero_gradient_parameters": 128,
+          "trainable_parameters": 128,
+          "frozen_signal_unchanged": true,
+          "reload_max_abs_difference": 0.0,
+          "reload_probe_sha256": "de8f4702074c45708657e3891e5500c70a7543d009acb335fca0760870a32463"
+        },
+        "best_epoch": null,
+        "checkpoint": null,
+        "completed_at": "2026-10-01T07:50:16.480095+08:00"
+      },
+      "deleted": true,
+      "deleted_at": "2026-10-03T14:24:52.393625+08:00"
+    },
+    {
+      "path": "/data/gaob/Re-ID/Trifusion/trained-model/role_global_tokens_20261001_v1_role_global_tokens_token_RGBNT100_seed42_m0/m0_reload_probe.pth",
+      "bytes": 11177086,
+      "sha256": "8fb266c825a8768dff3e60ef6d0cba26c1e26c15cb80ead40f9e0c0bbd1c0f32",
+      "training_path": "/data/gaob/Re-ID/Trifusion/trained-model/role_global_tokens_20261001_v1_role_global_tokens_token_RGBNT100_seed42_m0/training.json",
+      "training_sha256": "612acdd9a4e58bb1c58ba554514ddc09b0ea4f6cf8d97ed1f46d4d241197397b",
+      "original_training_receipt": {
+        "schema": "trifusion-correspondence-context-identity-training-v1",
+        "status": "M0_PASS",
+        "dataset": "RGBNT100",
+        "seed": 42,
+        "epochs": 50,
+        "checkpoint_policy": "best_official_map",
+        "protocol_sha256": "12d8afe5cf6e537b69ccf753481dd5fd651f14b7672e1e6411a4d4e9d88cc956",
+        "initializer": {
+          "author_checkpoint": "/data/gaob/Re-ID/Trifusion/pertrained-model/RGBNT100_PlainBaseline_30.pth",
+          "author_checkpoint_sha256": "299a28bfb3e3180eeae0736cf8638cd162525dce0f2192a940b62b97f6e67dcd",
+          "signal_state_sha256": "68cea6c9ae4246ec9d0394b8b5e0dec53d70bd6af55d92c3140ac268e60e3174",
+          "baseline_kind": "independently_trained_module_free_cls",
+          "architecture": "role_global_tokens_v1",
+          "m1": true,
+          "m2": true,
+          "m3": false,
+          "width": 128,
+          "fused_width": 1536,
+          "prediction_weight": 0.1,
+          "learning_rate": 0.00035,
+          "weight_decay": 0.0001,
+          "entry_sha256": "dba04e72a4d3b81583b7c5c2e26aa0204618736a2c57280340313e50674f63cb",
+          "model_source_sha256": "e2a51154b5b327341f35e453dd32a821b091a49a669b49a7c70e79e6e2f2591b",
+          "initial_model_state_sha256": "2f943b51cfbcad0bf8d2a0cc552a94eeb81b04a5a24035218e5e9b1df6a82688",
+          "trainable_parameters": 2685386,
+          "condition": {
+            "query_mode": "context",
+            "auxiliary_target": "none"
+          },
+          "auxiliary_id_weight": 1.0,
+          "query_context_width": 512,
+          "reused_entry_sha256": "e50865fb923297cd61cf38b33ec2bc95154f8c503b5dfe5de9823cad3f03d7ef",
+          "context_source_sha256": "eda3d1473496b33e4b69402dba7770e67d23b33b07afd41d23105b7f148d63af",
+          "evidence_source_sha256": "e737a977d39ccbe09a5509118e5b5333d653f7f13381e65e84af1a13e5c28dc4",
+          "token_mode": "token",
+          "memory_mode": "full",
+          "attention_normalization": "independent",
+          "attention_subgraph_dtype": "float32",
+          "slot_count": 16,
+          "transformer_sequence_length": 17,
+          "patch_count": 128,
+          "memory_candidates": 128,
+          "fixed_slot_positions": true,
+          "joint_local_semantics": "normalized total role correction; global-conditioned in token/direct modes",
+          "patch_memory_source_sha256": "833c8c93363cee7a4fc74c6c458194b484dc1b8cac0f9ec58113a07ac89cb23d",
+          "slot_competition_source_sha256": "bbc3e2430f760587cf8c1d11e40bcbdf0459424e975de74b5b15a40706efbe99",
+          "slot_competition_fp32_source_sha256": "810801e048bcb07ddbdef0635708b63cba7562a4876e044af34135fd412f79c8",
+          "role_global_source_sha256": "f41ff1af1fb1b6303a9af63cf039263e2572c16b23813f92a0297f014e71dd4f",
+          "reused_context_entry_sha256": "9f4cc9f11998819d4a927a32f4e47baf0c4ff9d14c4bc93b0dc35b0153ebc142"
+        },
+        "started_at": "2026-10-01T07:49:55.240296+08:00",
+        "history": [
+          {
+            "epoch": 1,
+            "steps": 8,
+            "mean_loss": 3.8578509986400604,
+            "seconds": 7.058447321993299
+          }
+        ],
+        "m0": {
+          "nonzero_gradient_parameters": 128,
+          "trainable_parameters": 128,
+          "frozen_signal_unchanged": true,
+          "reload_max_abs_difference": 0.0,
+          "reload_probe_sha256": "8fb266c825a8768dff3e60ef6d0cba26c1e26c15cb80ead40f9e0c0bbd1c0f32"
+        },
+        "best_epoch": null,
+        "checkpoint": null,
+        "completed_at": "2026-10-01T07:50:15.256746+08:00"
+      },
+      "deleted": true,
+      "deleted_at": "2026-10-03T14:24:52.396839+08:00"
+    },
+    {
+      "path": "/data/gaob/Re-ID/Trifusion/trained-model/role_global_tokens_20261001_v1_role_global_tokens_token_RGBNT201_seed42_m0/m0_reload_probe.pth",
+      "bytes": 12663934,
+      "sha256": "53b9304ef0e435fef85223b5e518872e18059e92d145b4f9d9b3fb74f69eaf7c",
+      "training_path": "/data/gaob/Re-ID/Trifusion/trained-model/role_global_tokens_20261001_v1_role_global_tokens_token_RGBNT201_seed42_m0/training.json",
+      "training_sha256": "a5acd1424aca48f1effd9c966046c33ed0b3d75802d63966e9ec5af7ad8668b8",
+      "original_training_receipt": {
+        "schema": "trifusion-correspondence-context-identity-training-v1",
+        "status": "M0_PASS",
+        "dataset": "RGBNT201",
+        "seed": 42,
+        "epochs": 50,
+        "checkpoint_policy": "best_official_map",
+        "protocol_sha256": "e63be5d9f8bd41df365264ad8f459dcd063d088023a2d2ed525a49a72f61161e",
+        "initializer": {
+          "author_checkpoint": "/data/gaob/Re-ID/Trifusion/pertrained-model/RGBNT201_PlainBaseline_50.pth",
+          "author_checkpoint_sha256": "789e5e14aacd74ad122aad701389eb216ca5b4fda92687e27351a513023b4407",
+          "signal_state_sha256": "4d5cf3d7bb445199b6d2a0d3492c4fcf8ae5263f240bb6b6a322933695abd89d",
+          "baseline_kind": "independently_trained_module_free_cls",
+          "architecture": "role_global_tokens_v1",
+          "m1": true,
+          "m2": true,
+          "m3": false,
+          "width": 128,
+          "fused_width": 1536,
+          "prediction_weight": 0.1,
+          "learning_rate": 0.00035,
+          "weight_decay": 0.0001,
+          "entry_sha256": "dba04e72a4d3b81583b7c5c2e26aa0204618736a2c57280340313e50674f63cb",
+          "model_source_sha256": "e2a51154b5b327341f35e453dd32a821b091a49a669b49a7c70e79e6e2f2591b",
+          "initial_model_state_sha256": "0296d6a9b8ba817d50e880c1e533bccace1e0ba4d32ff6c27a5fc6cf8730adaf",
+          "trainable_parameters": 2871242,
+          "condition": {
+            "query_mode": "context",
+            "auxiliary_target": "none"
+          },
+          "auxiliary_id_weight": 1.0,
+          "query_context_width": 512,
+          "reused_entry_sha256": "e50865fb923297cd61cf38b33ec2bc95154f8c503b5dfe5de9823cad3f03d7ef",
+          "context_source_sha256": "eda3d1473496b33e4b69402dba7770e67d23b33b07afd41d23105b7f148d63af",
+          "evidence_source_sha256": "e737a977d39ccbe09a5509118e5b5333d653f7f13381e65e84af1a13e5c28dc4",
+          "token_mode": "token",
+          "memory_mode": "full",
+          "attention_normalization": "independent",
+          "attention_subgraph_dtype": "float32",
+          "slot_count": 16,
+          "transformer_sequence_length": 17,
+          "patch_count": 128,
+          "memory_candidates": 128,
+          "fixed_slot_positions": true,
+          "joint_local_semantics": "normalized total role correction; global-conditioned in token/direct modes",
+          "patch_memory_source_sha256": "833c8c93363cee7a4fc74c6c458194b484dc1b8cac0f9ec58113a07ac89cb23d",
+          "slot_competition_source_sha256": "bbc3e2430f760587cf8c1d11e40bcbdf0459424e975de74b5b15a40706efbe99",
+          "slot_competition_fp32_source_sha256": "810801e048bcb07ddbdef0635708b63cba7562a4876e044af34135fd412f79c8",
+          "role_global_source_sha256": "f41ff1af1fb1b6303a9af63cf039263e2572c16b23813f92a0297f014e71dd4f",
+          "reused_context_entry_sha256": "9f4cc9f11998819d4a927a32f4e47baf0c4ff9d14c4bc93b0dc35b0153ebc142"
+        },
+        "started_at": "2026-10-01T07:49:55.494248+08:00",
+        "history": [
+          {
+            "epoch": 1,
+            "steps": 8,
+            "mean_loss": 5.129229485988617,
+            "seconds": 7.139811796005233
+          }
+        ],
+        "m0": {
+          "nonzero_gradient_parameters": 128,
+          "trainable_parameters": 128,
+          "frozen_signal_unchanged": true,
+          "reload_max_abs_difference": 0.0,
+          "reload_probe_sha256": "53b9304ef0e435fef85223b5e518872e18059e92d145b4f9d9b3fb74f69eaf7c"
+        },
+        "best_epoch": null,
+        "checkpoint": null,
+        "completed_at": "2026-10-01T07:50:16.011910+08:00"
+      },
+      "deleted": true,
+      "deleted_at": "2026-10-03T14:24:52.399852+08:00"
+    }
+  ],
+  "protected_best": [
+    {
+      "path": "/data/gaob/Re-ID/Trifusion/trained-model/native_detail_20261002_v1_clean_clip_high_RGBNT201_seed42_full/best_map.pth",
+      "bytes": 358743487,
+      "sha256": "a8754bfdf68f72d0eacaf81a46e1345ae7e4506ae78e0e8e2d095bcc1ee739ac",
+      "original_validation_sha256": "a8754bfdf68f72d0eacaf81a46e1345ae7e4506ae78e0e8e2d095bcc1ee739ac"
+    },
+    {
+      "path": "/data/gaob/Re-ID/Trifusion/trained-model/native_detail_20261002_v1_clean_clip_high_RGBNT100_seed42_full/best_map.pth",
+      "bytes": 356529267,
+      "sha256": "870c450f1e3c60bfb6c9926b3529e3fef362957a5a9e2cb6af6b08875a9719f4",
+      "original_validation_sha256": "870c450f1e3c60bfb6c9926b3529e3fef362957a5a9e2cb6af6b08875a9719f4"
+    },
+    {
+      "path": "/data/gaob/Re-ID/Trifusion/trained-model/native_detail_20261002_v1_clean_clip_high_MSVR310_seed42_full/best_map.pth",
+      "bytes": 358464627,
+      "sha256": "703385c207079e0e97686396eb30e788ce66d61498dda27b7a79ed31b1b1cceb",
+      "original_validation_sha256": "703385c207079e0e97686396eb30e788ce66d61498dda27b7a79ed31b1b1cceb"
+    },
+    {
+      "path": "/data/gaob/Re-ID/Trifusion/trained-model/native_detail_20261002_v1_clean_clip_low_RGBNT201_seed42_full/best_map.pth",
+      "bytes": 358743487,
+      "sha256": "31d529454450b5772a54cd5500a8a30df11fd4dc65c90190e0fa246e63e1a752",
+      "original_validation_sha256": "31d529454450b5772a54cd5500a8a30df11fd4dc65c90190e0fa246e63e1a752"
+    },
+    {
+      "path": "/data/gaob/Re-ID/Trifusion/trained-model/native_detail_20261002_v1_clean_clip_low_RGBNT100_seed42_full/best_map.pth",
+      "bytes": 356529267,
+      "sha256": "27e13bac5c854f34a47365234a61c06278a8a44df9322f21aeff5ec44b61bc8c",
+      "original_validation_sha256": "27e13bac5c854f34a47365234a61c06278a8a44df9322f21aeff5ec44b61bc8c"
+    },
+    {
+      "path": "/data/gaob/Re-ID/Trifusion/trained-model/role_global_tokens_20261001_v1_role_global_tokens_token_RGBNT100_seed42_full/best_map.pth",
+      "bytes": 11176100,
+      "sha256": "33c4ab5d0ad728b1cbb7fb951dc200ed1f871028e22c979fad0ea74dab02393a",
+      "original_validation_sha256": "33c4ab5d0ad728b1cbb7fb951dc200ed1f871028e22c979fad0ea74dab02393a"
+    },
+    {
+      "path": "/data/gaob/Re-ID/Trifusion/trained-model/role_global_tokens_20261001_v1_role_global_tokens_token_RGBNT201_seed42_full/best_map.pth",
+      "bytes": 12662948,
+      "sha256": "0982107d9206f01dbc08b6c9450f358225753835bcfe05705e63a731851b2b72",
+      "original_validation_sha256": "0982107d9206f01dbc08b6c9450f358225753835bcfe05705e63a731851b2b72"
+    },
+    {
+      "path": "/data/gaob/Re-ID/Trifusion/trained-model/role_global_tokens_20261001_v1_role_global_tokens_token_MSVR310_seed42_full/best_map.pth",
+      "bytes": 12466340,
+      "sha256": "0e4da3c8d0a0241286df54cec1cd546866157f1916ddc476a58be1b9a6a83f36",
+      "original_validation_sha256": "0e4da3c8d0a0241286df54cec1cd546866157f1916ddc476a58be1b9a6a83f36"
+    },
+    {
+      "path": "/data/gaob/Re-ID/Trifusion/trained-model/role_global_tokens_20261001_v1_role_global_tokens_static_RGBNT100_seed42_full/best_map.pth",
+      "bytes": 11176100,
+      "sha256": "f375294ed905142c992e283426355b3a6431ffc4242640270c5cf482bd9ecfde",
+      "original_validation_sha256": "f375294ed905142c992e283426355b3a6431ffc4242640270c5cf482bd9ecfde"
+    },
+    {
+      "path": "/data/gaob/Re-ID/Trifusion/trained-model/role_global_tokens_20261001_v1_role_global_tokens_static_RGBNT201_seed42_full/best_map.pth",
+      "bytes": 12662948,
+      "sha256": "96f74890d86339ff9cbba80e574e09bde58d4b1ccd10817daea1c52da8568007",
+      "original_validation_sha256": "96f74890d86339ff9cbba80e574e09bde58d4b1ccd10817daea1c52da8568007"
+    },
+    {
+      "path": "/data/gaob/Re-ID/Trifusion/trained-model/role_global_tokens_20261001_v1_role_global_tokens_static_MSVR310_seed42_full/best_map.pth",
+      "bytes": 12466340,
+      "sha256": "8f88db6c28b4d3edfdebb35bc660e4465d8d57f3f714a9626e82aa9328c8fc36",
+      "original_validation_sha256": "8f88db6c28b4d3edfdebb35bc660e4465d8d57f3f714a9626e82aa9328c8fc36"
+    },
+    {
+      "path": "/data/gaob/Re-ID/Trifusion/trained-model/role_global_tokens_20261001_v1_role_global_tokens_direct_RGBNT100_seed42_full/best_map.pth",
+      "bytes": 11176100,
+      "sha256": "7a13d9c102c3f00f44871d007429ea112e046dbd3d6f42767037dbefbd243eec",
+      "original_validation_sha256": "7a13d9c102c3f00f44871d007429ea112e046dbd3d6f42767037dbefbd243eec"
+    },
+    {
+      "path": "/data/gaob/Re-ID/Trifusion/trained-model/role_global_tokens_20261001_v1_role_global_tokens_direct_RGBNT201_seed42_full/best_map.pth",
+      "bytes": 12662948,
+      "sha256": "9d37b5b5b035e059388bacd79a7527fedf887e55c0f0191ef4132f82e4f062ec",
+      "original_validation_sha256": "9d37b5b5b035e059388bacd79a7527fedf887e55c0f0191ef4132f82e4f062ec"
+    },
+    {
+      "path": "/data/gaob/Re-ID/Trifusion/trained-model/role_global_tokens_20261001_v1_role_global_tokens_direct_MSVR310_seed42_full/best_map.pth",
+      "bytes": 12466340,
+      "sha256": "529ee30b006bac0e201f27d00442eaec66bd805dccc628f1c27b1a37d0562c47",
+      "original_validation_sha256": "529ee30b006bac0e201f27d00442eaec66bd805dccc628f1c27b1a37d0562c47"
+    },
+    {
+      "path": "/data/gaob/Re-ID/Trifusion/trained-model/native_detail_20261002_v1_clean_clip_low_MSVR310_seed42_full/best_map.pth",
+      "bytes": 358464627,
+      "sha256": "06355d22452b3e8ba85a998d8c0b339f89b0820eba383bbeb21d56c3ef77b51f",
+      "original_validation_sha256": null
+    }
+  ],
+  "protected_f3": [
+    {
+      "path": "/data/gaob/Re-ID/Trifusion/trained-model/metric_feature_scale_20261003_v1_m0_normalized_RGBNT201/m0_reload_probe.pth",
+      "exists": true,
+      "bytes": 346782704,
+      "sha256": "87036a99d74b09dd1c8030f281a3ddff6b7555a1a2676e33205f9b4525fe8b94"
+    },
+    {
+      "path": "/data/gaob/Re-ID/Trifusion/trained-model/metric_feature_scale_20261003_v1_full_normalized_RGBNT201/best_map.pth",
+      "exists": true,
+      "bytes": 346781649,
+      "sha256": "22d3d2a1d242af0b822b4070b995e1fab65148d963b79eab183e01dd90f5c076"
+    },
+    {
+      "path": "/data/gaob/Re-ID/Trifusion/trained-model/metric_feature_scale_20261003_v1_full_normalized_RGBNT201/best_epoch_distances.pt",
+      "exists": true,
+      "bytes": 2837533,
+      "sha256": "18f30ffcaa41f7162919ee4b91ad5a03da65d5579063fa88bff77ba25601347a"
+    },
+    {
+      "path": "/data/gaob/Re-ID/Trifusion/trained-model/metric_feature_scale_20261003_v1_full_normalized_RGBNT201/official_distances.pt",
+      "exists": true,
+      "bytes": 2837523,
+      "sha256": "fabf9a11fca22d43773a2c0d3ad2d9ae96b4a01dab01d048c9b123e315283305"
+    },
+    {
+      "path": "/data/gaob/Re-ID/Trifusion/trained-model/metric_feature_scale_20261003_v1_m0_metric_raw_RGBNT201/m0_reload_probe.pth",
+      "exists": true,
+      "bytes": 346782704,
+      "sha256": "1a26ff75e91332aebf11ec14152efdf84e1bff262c86748f08a4ac2880ac203b"
+    },
+    {
+      "path": "/data/gaob/Re-ID/Trifusion/trained-model/metric_feature_scale_20261003_v1_full_metric_raw_RGBNT201/best_map.pth",
+      "exists": true,
+      "bytes": 346781649,
+      "sha256": "9aa7151f67ac353a32e5ff3c0547d7cf024a8be64db99a807065832b0cb0b945"
+    },
+    {
+      "path": "/data/gaob/Re-ID/Trifusion/trained-model/metric_feature_scale_20261003_v1_full_metric_raw_RGBNT201/best_epoch_distances.pt",
+      "exists": true,
+      "bytes": 2837533,
+      "sha256": "856b22b31565d2b9ba0709e56942e66ccb032b2fae430bb2149bb393f77a3e98"
+    },
+    {
+      "path": "/data/gaob/Re-ID/Trifusion/trained-model/metric_feature_scale_20261003_v1_full_metric_raw_RGBNT201/official_distances.pt",
+      "exists": true,
+      "bytes": 2837523,
+      "sha256": "b964d71848939480f3b5f5da85f0c5d28f7da557f9936605bca86a3e8146e336"
+    },
+    {
+      "path": "/data/gaob/Re-ID/Trifusion/trained-model/metric_feature_scale_20261003_v1_m0_normalized_RGBNT100/m0_reload_probe.pth",
+      "exists": true,
+      "bytes": 345311864,
+      "sha256": "5f530a51b86e433e87d8ec27bf9ebe80193634bcddea0d0e06c2124d03394338"
+    },
+    {
+      "path": "/data/gaob/Re-ID/Trifusion/trained-model/metric_feature_scale_20261003_v1_full_normalized_RGBNT100/best_map.pth",
+      "exists": true,
+      "bytes": 345310725,
+      "sha256": "89ef0e97deaf739fca364965a933bbb2a0ebe45b26c48c44df8c7da8ac89d1dc"
+    },
+    {
+      "path": "/data/gaob/Re-ID/Trifusion/trained-model/metric_feature_scale_20261003_v1_full_normalized_RGBNT100/best_epoch_distances.pt",
+      "exists": true,
+      "bytes": 59074461,
+      "sha256": "469a55cfc0f58eca4ef4c38d0482b7cffcad96ba15f090e3f6f63a1c9cb03c81"
+    },
+    {
+      "path": "/data/gaob/Re-ID/Trifusion/trained-model/metric_feature_scale_20261003_v1_full_normalized_RGBNT100/official_distances.pt",
+      "exists": true,
+      "bytes": 59074387,
+      "sha256": "7713526182f794a5e7db52f8fe62df2c0be5780925dfe4950c3e70c239b311c7"
+    },
+    {
+      "path": "/data/gaob/Re-ID/Trifusion/trained-model/metric_feature_scale_20261003_v1_m0_metric_raw_RGBNT100/m0_reload_probe.pth",
+      "exists": true,
+      "bytes": 345311864,
+      "sha256": "82fc75d4d0bb57753c7a9ca855c13c23c8a68494ecf78246422d548b691152d1"
+    },
+    {
+      "path": "/data/gaob/Re-ID/Trifusion/trained-model/metric_feature_scale_20261003_v1_full_metric_raw_RGBNT100/best_map.pth",
+      "exists": true,
+      "bytes": 345310725,
+      "sha256": "d2a3865a516eff38ee30078d30245831c9914d3d271a35a8a0934dc243960651"
+    },
+    {
+      "path": "/data/gaob/Re-ID/Trifusion/trained-model/metric_feature_scale_20261003_v1_full_metric_raw_RGBNT100/best_epoch_distances.pt",
+      "exists": true,
+      "bytes": 59074461,
+      "sha256": "e491c95c84c9ee2a12d8c2e56ed7d407f00826c2ea11aa689e12b639365ab2ec"
+    },
+    {
+      "path": "/data/gaob/Re-ID/Trifusion/trained-model/metric_feature_scale_20261003_v1_m0_normalized_MSVR310/m0_reload_probe.pth",
+      "exists": true,
+      "bytes": 346602104,
+      "sha256": "6bd7575190c30e1a5ef4f85a032dd87aae57a72c6d7e96d2e46d5236756db44c"
+    },
+    {
+      "path": "/data/gaob/Re-ID/Trifusion/trained-model/metric_feature_scale_20261003_v1_full_normalized_MSVR310/best_map.pth",
+      "exists": true,
+      "bytes": 346600965,
+      "sha256": "5543aeec6b915523b35c2b35a6a55295aeb7b214a4d7b998931ea01b4f10c208"
+    },
+    {
+      "path": "/data/gaob/Re-ID/Trifusion/trained-model/metric_feature_scale_20261003_v1_full_normalized_MSVR310/best_epoch_distances.pt",
+      "exists": true,
+      "bytes": 2535837,
+      "sha256": "4206a87f3bfde67b0b7bd2eb087577eafb07f51a3223dcb0f5de80c590fd0d4b"
+    },
+    {
+      "path": "/data/gaob/Re-ID/Trifusion/trained-model/metric_feature_scale_20261003_v1_full_normalized_MSVR310/official_distances.pt",
+      "exists": true,
+      "bytes": 2535827,
+      "sha256": "384f5bfa24af5c003ba2a93a2aced0b899262cab38b11b20026adb7e209a3be0"
+    },
+    {
+      "path": "/data/gaob/Re-ID/Trifusion/trained-model/metric_feature_scale_20261003_v1_m0_metric_raw_MSVR310/m0_reload_probe.pth",
+      "exists": true,
+      "bytes": 346602104,
+      "sha256": "023b9f0d8d790f30aeffa325366105d6a38477cb0c5469e77b689fb281b9dad2"
+    },
+    {
+      "path": "/data/gaob/Re-ID/Trifusion/trained-model/metric_feature_scale_20261003_v1_full_metric_raw_MSVR310/best_map.pth",
+      "exists": true,
+      "bytes": 346600965,
+      "sha256": "47a0a9928095c957b0331d46e5955ed5ca22eea678f915c1ca440461c999c683"
+    },
+    {
+      "path": "/data/gaob/Re-ID/Trifusion/trained-model/metric_feature_scale_20261003_v1_full_metric_raw_MSVR310/best_epoch_distances.pt",
+      "exists": true,
+      "bytes": 2535837,
+      "sha256": "1dc2f16dc6bea56092cc08b76a19cf8d1d4ac585579610d7f1587ffa8aa0f5f9"
+    },
+    {
+      "path": "/data/gaob/Re-ID/Trifusion/trained-model/metric_feature_scale_20261003_v1_full_metric_raw_MSVR310/official_distances.pt",
+      "exists": true,
+      "bytes": 2535827,
+      "sha256": "d091b35cd6923b8c596ef8432f10b37e9690dee89c0785756927e61f6bef1a5d"
+    }
+  ],
+  "free_bytes_before": 8177336320,
+  "boundary": "Explicit persistent goal authorizes retirement of unused verified self-trained weights. Exact six closed N1 and nine global-token M0 probes only; all15 formal bests, all current F3 binaries, V1 failure probes, public/author models and all logs/distances/source retained. Historical engineering-probe binary replay retired; original N1 MSVR low strict failure remains.",
+  "retired_bytes": 2256412598,
+  "completed_at": "2026-10-03T14:25:11.665933+08:00",
+  "free_bytes_after": 10433683456
+}

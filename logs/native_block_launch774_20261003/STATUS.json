@@ -1,0 +1,58 @@
+{
+  "status": "V3_ACTUAL_LAUNCH_AND_FIRST_OBSERVATION",
+  "recorded_at": "2026-10-03T14:40:25.420974+08:00",
+  "source_execution_head": "647527dfb441a8e86917342e40636cefa27439be",
+  "controller_pid": 3281097,
+  "prelaunch_failure": "deploy773 exited1 at unchanged disk budget guard, before Popen",
+  "retired_bytes": 2256412598,
+  "retired_probe_count": 15,
+  "launch_free_bytes": 10433683456,
+  "fixed_budget_bytes": 10292822016,
+  "observation": {
+    "at": "2026-10-03T14:37:05.840675+08:00",
+    "status": "INITIALIZING",
+    "phase": null,
+    "controller_pid": 3281097,
+    "controller_present": false,
+    "counts": {
+      "m0": {
+        "PENDING": 0,
+        "RUNNING": 0,
+        "COMPLETE": 0,
+        "FAILED": 0
+      },
+      "full": {
+        "PENDING": 0,
+        "RUNNING": 0,
+        "COMPLETE": 0,
+        "FAILED": 0
+      }
+    },
+    "report_invocations": 0,
+    "report_exit_code": null,
+    "gpu": "0, 15 MiB, 0 %\n1, 60 MiB, 0 %\n2, 15 MiB, 0 %\n3, 153 MiB, 0 %\n",
+    "disk_free_bytes": 10433466368,
+    "initialization_count": 3,
+    "initial_pair_count": 1,
+    "checkpoint_backward_count": 0,
+    "log_tails": {
+      "logs/independent_native_evidence_20261003_v3/checkpoint_backward_RGBNT201.log": [
+        "camera number is : 4",
+        "===========Building Signal===========",
+        "using soft triplet loss for training",
+        "label smooth on, numclasses: 171",
+        "using soft triplet loss for training",
+        "label smooth on, numclasses: 171",
+        "Traceback (most recent call last):",
+        "  File \"/data/gaob/Re-ID/Trifusion/tools/check_block_checkpoint_backward.py\", line 133, in <module>",
+        "    main()",
+        "  File \"/data/gaob/Re-ID/Trifusion/tools/check_block_checkpoint_backward.py\", line 103, in main",
+        "    assert torch.allclose(x, y, atol=1e-4, rtol=1e-4), (variant, name, float((x-y).abs().max()))",
+        "AssertionError: ('semantic', 'evidence_model.backbone.signal.clip_vision_encoder.cv_embed', 0.0009765625)"
+      ]
+    },
+    "boundary": "Read-only only2026; no model import, report/scorer, restart or process control."
+  },
+  "boundary": "Computation-only engineering continuation; no new scientific performance claim, unchanged author9/seed42/fullbatch/50. Only2026 GPU0-3/max4;2025 text only; N2/N3 remain candidates; goal ACTIVE_UNMET.",
+  "outcome": "V3_TERMINATED_AT_SAME_CAMERA_GRADIENT_GATE_BEFORE_M0"
+}
