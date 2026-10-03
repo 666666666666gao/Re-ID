@@ -10,4 +10,6 @@
 
 RGBNT201/global_only M0 有8次实际 AMP 更新、作者 BN 计数8、重载差0。正式训练 PID3863278；controller3854540。22:45:11 因0号卡温度超出用户75°C目标、250W设置被权限拒绝而 SIGSTOP 两个原进程。22:49:44 实测两卡69°C/58°C、0%利用率，/proc均T，上限仍350W。硬件限功率完成且核验后恢复原进程，不重启、不据中途分数更改方案。正式终态0/9，未形成新模型性能结论。
 
-资源证据：logs/native_research_thermal796_20261003。每端一份mAP-best；M0探针仍为队列验证依赖。总体 Goal active/unmet。
+资源证据：logs/native_research_thermal796_20261003。每端一份mAP-best；M0探针仍为队列验证依赖。最新状态：Goal blocked/unmet（§41.798）；整体三数据集目标未完成，待管理员落实限功率。
+
+23:12:25实查同一controller/训练均T、两卡71°C/59°C、350W上限。连续三轮同一阻塞已满足blocked审计；没有重启、终止或新的正式完成端。
