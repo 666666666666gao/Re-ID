@@ -2,7 +2,7 @@
 
 ## 0. 一页结论
 
-**当前进度（§41.769，2026-10-03）：** F3六端完成后的独立复核已收齐，integrity warn、全三集claim no；封存FAIL/FAIL/PASS，不继续尺度救分。下一项固定作者训练配方、共享global／语义roles／独立原生细节九端计划已登记并完成源码复核，尚未执行真实初始化、M0或训练。仅2026 GPU0–3/max4；2025不启动训练。Goal ACTIVE_UNMET。
+**当前进度（§41.770，2026-10-03）：** 独立原生细节九端队列已在2026启动；2026-10-03T13:02:11.002827+08:00实查status=INITIALIZING、phase=None、M0完成0/9、正式完成0/9。仅GPU0–3/max4。首次启动因磁盘预算未过、在Popen前退出；核验退役九份早已完成的shared/private M0后，保持所有代码/预算/实验合同不变，12:57:34启动PID3160856。2025不训练。Goal ACTIVE_UNMET。
 
 **现行合同：** 每个正式候选完整50轮，使用作者完整query/gallery及camera／MSVR时间段过滤，以官方fused mAP最高的同一checkpoint报告全部指标，随后严格重载。RGBNT201报告mAP／R1／R5／R10，RGBNT100及MSVR310报告mAP／R1；不跨epoch或seed拼列。官方集已参与逐轮选点和历史方法选择，属于已消费基准上的探索性结果。
 
@@ -15480,3 +15480,14 @@ launch/原失败transport/两轮源码review/真实退役回执在`logs/metric_s
 源码复核在运行前找到并修正两项具体阻塞：独立校验子进程未初始化新schema，以及入口提前缓存DeMo的modeling包。分别只加入panel.configure()、改用项目已有trifusion导入；原草稿字节和反馈保留。MSVR作者学习率明确base5e-6、bias×2、classifier×100，未调LR救分。实际作者head/optimizer/loader/scheduler按三条件匹配。没有添加新损失、teacher、文本、掩码或外部数据。
 
 12:22:27只读实查2026四张3090无compute任务、可用磁盘11,176,480,768字节。新队列依据实际旧state345–347MB与最大distance59MB，预估18份384MiB状态、600MiB距离、256MiB文本并保留2GiB；原F3的10GiB断言不改写。启动前仍要实查空卡与磁盘。新的九个真实M0全部通过前不启动正式训练，检查完整初始化／真实作者batch／semantic-native初始完全等价／所有参数梯度与更新／作者BN模式／全状态重载。此刻只是计划登记和source复核，尚无新GPU运行或性能。所有后续GPU只用2026物理0–3，最多四端；2025仅继续已授权文本同步。
+
+
+## 41.770 独立原生细节队列实际启动与磁盘阻塞收尾（2026-10-03T13:03:00.166261+08:00）
+
+§769已同步提交0c1dff450d74b82b6a93f7614124fa601d4a3a32，1377份累计自有文本与五份主文档一致。首次部署未越过磁盘预算检查，remote stdin line11 assertion失败；无新campaign或launcher log，未创建训练进程。12:53:05实查可用9,140,363,264字节，低于固定10,292,822,016字节全批预算；不修改预算或旧F3保护断言。四张3090仍无计算任务。
+
+随后只退役已完成shared_private_evidence_20261001_v2正式9/9验收的九份M0检查权重。逐文件核对实际SHA/大小、M0_PASS原回执、闭合summary和退出进程，并保护其九份正式best、全部当前F3二进制及公共CLIP。12:57:16实删3,216,709,812字节，可用空间变为12,357,050,368字节；原文本、distance和正式权重未改。此九份历史M0二进制从现在起不能直接重放，不覆盖此前24份退役或任何失败记录。精确原始远端receipt保存在本节日志raw_retirement770.json。
+
+第二次部署只改变本地尝试回执目录以保留首次失败，远端命令、代码、计划、预算和checkpoint规则完全不变。12:57:34.912972实启动持久队列PID3160856，port2026、物理GPU0–3、最多四个单卡任务；2025不启动任何模型或训练。初始化在GPU0顺序执行，九个prepare和三组真实batch/prediction配对通过后才运行全部九个M0，全部M0通过才进入正式50轮。没有重跑既有训练、评分或F3报告。
+
+首个定时观察2026-10-03T13:02:11.002827+08:00：controller_present=True，status=INITIALIZING，phase=None；初始化文件7/9、配对文件2/3；M0计数{'PENDING': 0, 'RUNNING': 0, 'COMPLETE': 0, 'FAILED': 0}，正式计数{'PENDING': 0, 'RUNNING': 0, 'COMPLETE': 0, 'FAILED': 0}。这些是当前运行事实，不是性能或完整M0通过的替代证据。只读观察器PID25216，初始化/M0按240秒观察，正式50轮按预计耗时降低频率；观察器不重启/控制进程、不执行模型或评分。source-only PASS和F3 integrity warn仍不等于新方案已经成功。
