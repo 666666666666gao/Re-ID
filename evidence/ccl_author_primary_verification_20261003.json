@@ -1,0 +1,136 @@
+{
+  "status": "PRIMARY_PDF_TABLES_VISUALLY_VERIFIED_NOT_MODEL_REPRODUCTION",
+  "accessed_at": "2026-10-03T22:57:23.086179+08:00",
+  "publisher": "PMLR306 ICML2026,116082-116098",
+  "title": "Correspondence Cognitive Learning for Multi-Modal Object Re-Identification",
+  "publisher_url": "https://proceedings.mlr.press/v306/su26k.html",
+  "pdf_url": "https://raw.githubusercontent.com/mlresearch/v306/main/assets/su26k/su26k.pdf",
+  "pdf_bytes": 2498262,
+  "pdf_sha256": "2e2bfeda03f23808322fe7641268acf7dfd5483c05063703a5d74d4e6bbf4707",
+  "pdf_pages": 17,
+  "visually_checked_table_pages": {
+    "main_tables_1_2": 6,
+    "ablation_table_4": 7
+  },
+  "render_sha256": {
+    "6": "8e97ad0857bf714755c84418c1fe7d759327b95d25cf1984705b0e5072a9058c",
+    "7": "343842a1d94a3e50ddc7d1fec0c84b12aaaf4edad3945b0a9e5b6515e36b56b0"
+  },
+  "full_modality_main_results": {
+    "RGBNT201": {
+      "mAP": 83.2,
+      "Rank-1": 87.4,
+      "Rank-5": 92.7,
+      "Rank-10": 94.5
+    },
+    "RGBNT100": {
+      "mAP": 88.0,
+      "Rank-1": 98.0
+    },
+    "MSVR310": {
+      "mAP": 53.8,
+      "Rank-1": 69.5
+    }
+  },
+  "resources": {
+    "visual_backbone": "CLIP shared ViT, low-learning-rate visual fine tuning",
+    "text_encoder": "Frozen CLIP textual encoder",
+    "training_text": "Qwen-VL captions supplied by IDEA; text-augmented versions of three datasets",
+    "inference_text": "Authors state no textual descriptions required; executable inference not verified",
+    "optimizer": "Adam",
+    "base_lr": 0.00035,
+    "visual_lr": 5e-06,
+    "epochs": 50,
+    "batch_sizes": {
+      "RGBNT201": 64,
+      "RGBNT100": 128,
+      "MSVR310": 64
+    },
+    "identity_sampling_paper_wording": "8 pedestrian instances or16 vehicle instances; not independently checked in executable sampler",
+    "warmup_epochs": {
+      "RGBNT201": 5,
+      "RGBNT100": 5,
+      "MSVR310": 10
+    },
+    "reported_gpu": "RTX4090"
+  },
+  "ablation_table_4": [
+    {
+      "variant": "Baseline of DeMo method as labeled in table4",
+      "RGBNT201": [
+        73.1,
+        76.7
+      ],
+      "MSVR310": [
+        49.3,
+        65.5
+      ]
+    },
+    {
+      "variant": "CCL-1, no CDDO",
+      "RGBNT201": [
+        79.0,
+        81.7
+      ],
+      "MSVR310": [
+        50.6,
+        66.2
+      ]
+    },
+    {
+      "variant": "CCL-2, no CGSR",
+      "RGBNT201": [
+        74.6,
+        77.3
+      ],
+      "MSVR310": [
+        49.4,
+        65.8
+      ]
+    },
+    {
+      "variant": "CCL-3, no DeMo Hierarchical Decoupling / Attention-Triggered MoE",
+      "RGBNT201": [
+        82.3,
+        85.9
+      ],
+      "MSVR310": [
+        43.2,
+        60.2
+      ]
+    },
+    {
+      "variant": "CCL-4, no warmup",
+      "RGBNT201": [
+        76.7,
+        80.3
+      ],
+      "MSVR310": [
+        50.9,
+        67.5
+      ]
+    },
+    {
+      "variant": "Full CCL",
+      "RGBNT201": [
+        83.2,
+        87.4
+      ],
+      "MSVR310": [
+        53.8,
+        69.5
+      ]
+    }
+  ],
+  "baseline_boundary": {
+    "table1_full_DeMo_RGBNT201": [
+      79.0,
+      82.3
+    ],
+    "full_minus_table4_baseline_mAP": 10.1,
+    "full_minus_table1_DeMo_mAP": 4.2,
+    "explanation": "Two different comparison rows; executable details needed before interpreting why they differ. Do not assign10.1 to an increment over fullDeMo."
+  },
+  "implementation_boundary": "No author repository identified from PMLR/PDF links and exact-title search in this check. Not a claim that no code exists. Third-party toy reproduction is not benchmark evidence.",
+  "project_effect": "Close prior full-text/numeric access gap and add a resource-labeled external reference. No current nine-endpoint config/source/math/acceptance change."
+}
