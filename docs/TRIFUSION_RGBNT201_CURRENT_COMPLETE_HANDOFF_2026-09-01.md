@@ -2,7 +2,7 @@
 
 ## 0. 一页结论
 
-**当前进度（§41.783，2026-10-03）：** V5两卡分段真实工程已停止：201三份初始化/一份full-batch初始配对，global209与semantic281梯度门通过；native295中90梯度FAIL。全部前向/损失差0并不等价于反向通过。尚无完整dataset witness回执、0M0/0更新/0formal/0权重，B128容量未测。observer已关闭，未重启；完整15 primary/312 source与fresh救援已保存。原CPU-save/checkpoint失败不改；保持原1e-5/1e-4门。每正式实验只留mAP-best，当前无新增权重可清理。Goal ACTIVE_UNMET。
+**当前进度（§41.784，2026-10-03）：** V5 native90/295固定梯度门失败已封存；没有明确源码修复，不重启。唯一native原实现/原实现无更新对照已实现并完成fresh源码复核，尚未启动。2026四卡18:44:59各占约13GB，固定GPU0/1当前不可用，等待释放且不抢占；该快照不作后续预留。无新权重、无M0/正式成绩；原全部科学门和50轮九端计划不变。正式候选只留一份mAP-best。Goal ACTIVE_UNMET。
 
 **现行合同：** 每个正式候选完整50轮，使用作者完整query/gallery及camera／MSVR时间段过滤，以官方fused mAP最高的同一checkpoint报告全部指标，随后严格重载。RGBNT201报告mAP／R1／R5／R10，RGBNT100及MSVR310报告mAP／R1；不跨epoch或seed拼列。官方集已参与逐轮选点和历史方法选择，属于已消费基准上的探索性结果。
 
@@ -15674,3 +15674,18 @@ native295项有90项固定1e-4/1e-4 allclose失败：Signal155中80FAIL，最大
 此处封存科学状态为ACTIVE_UNMET：没有新检索成绩，没有任何正式权重或M0 probe可退役。此前§777八份无用探针已删除2789830448B，不能重复计成本次清理；当前正式入口仍覆盖一份best_map.pth。保护公开/作者与活动依赖，不按失败标签删除必要证据。
 
 18:28:08.9640862实际fresh救援结论为FAIL_STOP_V5_NO_LOCALIZED_REPAIR：15/15 primary与312/312 source核对一致，但未定位可直接修复的源码错误，V5保持停止。唯一建议后继是封存同步后，另行实现并源码复核一次native原实现对原实现的无更新AMP对照，固定同初始化、同首32样本、原1e-5/1e-4门与两卡RNG范围；目前尚未实现或运行。它不训练、不计分、不产生权重、不自动重启V5；PASS只支持这次原路径重复性，FAIL则停止GPU parity试验。全部细节以本节review/RESCUE_REVIEW.md、JSON及原生final为准；发布这次失败不构成后继GPU启动。
+
+
+## 41.784 封存后唯一native原路径重复性对照的实现与源码复核（2026-10-03T18:56:45.837974+08:00）
+
+§783已同步main d56e49b0195eb0e222bddc0f3b41fe3f36352192，15 primary/312 as-launched source、90条native失败及head顺序勘误保留。Fresh救援没有定位可直接修复的源码错误，唯一建议后继是原native对原native无更新对照；不是重启V5，不增加科学变体。旧§776脚本只循环semantic，不能代替native证据。
+
+新增tools/check_native_original_repeat.py直接调用未分段的run_independent_native_evidence.build_core两次，不导入partition/checkpoint/CPU-save，也不构造后再撤销改写。要求两模型初始fullstate与既有7f5ff300a45faed287a510dacc68d06c006931504a4510fffd8c47e43d93b852一致；原cfg、trainability、author heads、优化器参数恰好覆盖一次。RGBNT201作者B64/K8、seed42、同一loader首32样本，labels/cameras/paths/图像摘要匹配既有V5 native记录，否则停止。保留FP32参数、AMP FP16/scaler256，原cuda0计算且同两CUDA可见与RNG范围，每次恢复相同CPU/两CUDA RNG。每模型一次forward/backward/unscale，0 optimizer/scheduler/scaler update、0 scorer、0权重、无重试和自动继续。
+
+输出/损失/每个head沿用1e-5；全部295梯度沿用1e-4，同时记录keys/None/shape/finite。buffer、CPU/两CUDA RNG、BN1、poststate、参数未变、capture hooks与优化器分组也全部在最终断言前测量并写MEASURED.json。只有所有既有门通过才写PASS.json；失败完整保留，不再让首个梯度断言遮住其他已要求的观察。既有历史完整grad/RNG张量没有保存，因此这里只能比较两个新受控原实现，不声称还原历史张量。
+
+一次性stdlib controller tools/run_native_original_repeat_control.py只启动这一个child并保存实际exit/log/状态，不调用生产训练队列。PASS仅证明该原native重复性；V5仍FAIL、B128容量和all9M0/正式训练仍未证明。FAIL或初始化/输入/runtime失败均封存停止GPU parity尝试，不换batch/precision/seed/门槛。后继源分析不会自动获得重启权限。
+
+实际fresh源码复核以refine-logs/native_original_repeat_control/EXPERIMENT_CODE_REVIEW.md/json及.aris原生request/final为准；请求gpt-6-astra/max/forknone，same-family/provisional，后端独立验证边界保留。源码AST通过只是工程证据，尚无真实模型对照。18:44:59.876753只读2026快照：旧controller3410754不在/proc，V5输出目录没有pth；四卡显存13729/13567/13825/12937MiB，磁盘空余42096893952B。18:50:09.584756进一步确认GPU0–3占用进程3448034/3448035/3448036/3448037实际在/proc存活。固定0/1卡尚不空闲，必须在启动时重新实查，不抢占或改用其他卡。18:51:09.348770启动隐藏Windows只读资源observer PID1632，300秒间隔、最多12次，首查约18:56:09；仅报告空闲，不自动启动/停止进程，不因观察限额将GPU任务认作停止。2025只同步文本，不运行模型/conda/CUDA。对照预计模型60–120秒，启动后首查180秒，后续仅对确认存活进程按180–300秒观察。
+
+当前没有新权重可清理；正式完成端一份mAP-best、闭合复核依赖后的临时M0权重及时退役，公共/作者/当前输入及其他项目保留，原指标与失败回执不删除。该源码复核和发布是实际进展，不等于达到三数据集性能目标；Goal ACTIVE_UNMET。
