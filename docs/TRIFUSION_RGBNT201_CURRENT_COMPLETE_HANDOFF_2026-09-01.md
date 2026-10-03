@@ -2,7 +2,7 @@
 
 ## 0. 一页结论
 
-**当前进度（§41.802，2026-10-04）：** RGBNT201三端均50轮＋严格评价通过，正式3/9。global-only 74.2967/78.9474；semantic 71.8981/74.4019；native 72.1273/75.1196。native相对semantic +0.2291mAP，未达0.5线；相对global-only −2.1694。MSVR初始化检查接续，原两车辆六端继续，仅26GPU0/1、不管功温，Goal active/unmet。
+**当前进度（§41.803，2026-10-04）：** 正式4/9：RGBNT201三端、MSVR310 global-only已50轮＋严格评价。MSVR global E38为50.5421/68.0203；semantic M0通过并开始fresh50，01:49已5轮。201 native较semantic +0.2291mAP仍未达0.5线、低于global-only；剩余五端原计划继续，仅26GPU0/1、不管功温，Goal active/unmet。
 
 **现行合同：** 每个正式候选完整50轮，使用作者完整query/gallery及camera／MSVR时间段过滤，以官方fused mAP最高的同一checkpoint报告全部指标，随后严格重载。RGBNT201报告mAP／R1／R5／R10，RGBNT100及MSVR310报告mAP／R1；不跨epoch或seed拼列。官方集已参与逐轮选点和历史方法选择，属于已消费基准上的探索性结果。
 
@@ -15937,3 +15937,28 @@ native正式训练00:35:08.419900–01:17:45.150602，原PID25430正常退出0�
 native末轮mAP69.99400870982726，best回落2.133266751459008；原循环和、完整命令墙钟及两卡peak见机器分析，独立评价40.514224秒另计。history.seconds仍只含训练循环，不含逐轮评价/保存；global旧暂停成本按§800单列。01:20:19磁盘可用34935881728B，三端仅正式best保留；M0探针仍是最终报告base.verify→verify_m0→probe SHA的依赖，不能现在退役。CPU九端/逐query AP/首位修复新增错误报告尚未调用，等全九端完整后由原入口一次执行。
 
 01:20:02 controller3854540仍活，MSVR310初始full-author-batch检查PID173529/R、ticks30333415；车辆端从各自公开初始化开始，不继承201已训练best。26物理GPU0/1约束、不管功率和温度、25仅文字同步继续有效。source314实存未改，旧反向重复性FAIL及所有历史负结果不改判。原始文字、SHA、初始检查、actual batch绑定和窄范围分析在logs/native_research_first_dataset802_20261004。正式3/9不是Goal完成，完整三数据集强参照、必要性及稳定性仍active/unmet。
+
+
+## 41.803 MSVR310独立global完成，第四正式端收齐（2026-10-04）
+
+原MSVR global-only训练PID180327于01:22:04.284967开始，完整50轮后01:44:13.975819退出0；首次独立严格评价PID240216于01:44:14.139363开始，01:45:00.560706退出0，原队列01:45:00.589831验收。01:45的观察读取到阶段交接快照，controller3854540仍R、没有活动GPU命令；01:49:02确认第四正式端完成，semantic M0已通过，并由原队列接续fresh50。没有重启global或额外重试挑分。
+
+| MSVR310，公开CLIP/新camera/作者来源配方/共享适配，seed42完整50轮 | best epoch | mAP | Rank-1 |
+|---|---:|---:|---:|
+| 独立global_only | 38 | 50.5421 | 68.0203 |
+| semantic | 待完成 | 尚无正式结果 | 尚无正式结果 |
+| native | 待执行 | 尚无正式结果 | 尚无正式结果 |
+
+该端含共享适配，不能直接称为F1无adapter作者基础，也不能以其一项成绩证明角色或细节有效。完整内部CMC随同一E38为R5 80.54145574569702、R10 85.44839024543762；主车辆面板仍用mAP/R1。所有50轮和706条真实训练step已核对，step及epoch loss有限，严格重载与训练选中best的分差0、无reranking。末轮mAP50.45230341128734，较best低0.089825443814155。
+
+01:49:18.797706实存核验：best_map.pth仅一份，350246863B，SHA7738874db19c07e2443a8d0433db523cf7b054ac563d00bf9a1032ddd9e9e785；official距离SHA83e949a23b46af75e0a8eba564c07190016882a6ad20474049181a693b499357；训练best-epoch距离SHA3d4961a3f060d58d4c460849fd730a75916250809d97c0a837dfcfa561443510；正式回执SHAd5c7995a71eda99cbfd4f94add0650c05cec360462db1859fb04794c10d1df73。M0重载探针实存SHA通过，仍为全九端最终报告的依赖，不能现在删除。
+
+该端actual training_batch_order.jsonl为1456580B/706行，SHA9c8a03beccbccedfa065cb13a3b20f5e64673d79693c4971034b54ab94e147e8。MSVR共同初始化真实full-batch检查已通过，semantic/native原state及native单零出口初始行为一致；这不是三个完整训练过程的最终配对，另两端完成后再核对实际batch顺序和指标差。不能把201的2649steps或三端同SHA直接搬到车辆。
+
+循环时间合计451.2153298118501秒，完整训练命令墙钟1329.690852秒，独立评价41.86676028597867秒；history.seconds不包括逐轮评价/保存，三者分开记录。两卡峰值allocated/reserved为cuda0 7659466752/9495904256B、cuda1 6281700352/7243563008B。01:49:18磁盘可用31462952960B，不上传模型、图像或距离；仅同步文本证据。
+
+01:49:02原controller3854540仍S；MSVR semantic训练PID246040/R、ticks30490536，fresh50开始01:46:04.602622，已5轮，近期loss有限。原global已结束，暂时GPU空闲不能作为停机或重启依据。MSVR native及RGBNT100三端尚未正式执行，B128容量仍未验证；剩余五端继续同配方、seed42、单best与严格首次独立评价。314项科学source实存SHA未改；只用26物理GPU0/1，25文字同步，不恢复功温监控或旧parity门。
+
+原始接收、50轮step、初始化检查、实存SHA与成本分析在logs/native_research_msvr_global803_20261004。全九端CPU报告尚未调用，不新增N2/N3或临时调参。正式4/9不等于统一Goal完成；三数据集强参照、机制必要性、完整流程稳定性仍未达到，Goal active/unmet。
+
+本地归档准备首次在匹配CURRENT_GOAL旧段落时StopIteration，已保留LOCAL_PREPARATION_FAILURE.json；原始接收/分析完成而文档尚未写入。校验已复制文字后仅修正实际段落定位并续写同步，没有重新训练、评价或改动科学source。
