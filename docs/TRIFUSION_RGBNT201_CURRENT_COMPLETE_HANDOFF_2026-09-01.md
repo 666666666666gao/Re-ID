@@ -2,7 +2,7 @@
 
 ## 0. 一页结论
 
-**当前进度：§41.771（2026-10-03）** 独立原生证据v1在真实M0阶段终止：9/9初始化、3/3完整批次初始配对已完成；3项B64 M0通过，RGBNT100/global-only B128 M0首次前向OOM，5项M0及9项正式训练未启动。原失败、51份原始文本和274文件源码封存不变。计算修复v2已单独实现并经源码复核；保留作者完整批量和训练配方，用逐模态激活重计算降低显存。尚无v2运行、正式分数或科学成功；仅2026 GPU0–3/max4，Goal ACTIVE_UNMET。
+**当前进度：§41.772（2026-10-03）** 保留作者完整batch的激活重计算v2已13:38:28在仅2026启动，PID3216332；2026-10-03T13:43:53.711735+08:00实测status=INITIALIZING、phase=None，初始化3/9，初始配对1/3，生产AMP反向等价0/3，M0完成0/9，正式完成0/9。父进程已退出，RGBNT201/semantic梯度一致性检查失败，尚无M0或正式训练。原状态INITIALIZING不覆盖；原v1的B128 OOM与全部记录保留，不变batch/配方/种子/损失，不加N2/N3。Goal ACTIVE_UNMET。
 
 **现行合同：** 每个正式候选完整50轮，使用作者完整query/gallery及camera／MSVR时间段过滤，以官方fused mAP最高的同一checkpoint报告全部指标，随后严格重载。RGBNT201报告mAP／R1／R5／R10，RGBNT100及MSVR310报告mAP／R1；不跨epoch或seed拼列。官方集已参与逐轮选点和历史方法选择，属于已消费基准上的探索性结果。
 
@@ -15506,3 +15506,18 @@ RGBNT100失败发生在第一次前向、correspondence_roles.py第86行堆叠�
 v2先重做九项真实初始化和三项完整batch初始配对，并在生产模型上用真实作者batch前32样本比较原类与新类的训练AMP前向/反向：features/logits/loss固定1e-5容差，unscaled全部参数梯度固定1e-4容差，BN缓冲/count、完整state、RNG与hook清理要求exact。此小批只检验等价性，不替代完整作者批次。之后九项M0均按原完整batch执行8次有效更新、原参数/BN/细节14张量/严格重载条件；全部通过才运行九项正式50轮。没有N2/N3、新loss、外部资源或官方分数驱动的救分。
 
 本轮fresh同家族源码复核实际verdict=PASS、无阻塞发现，只支持工程源码范围，未运行v2模型、未验证完整B128 fit、也不证明检索增益。计划、代码与原失败记录都可审阅，当前Goal仍ACTIVE_UNMET。
+
+
+## 41.772 激活重计算版本真实启动与首个定时观察（2026-10-03T13:52:08.490521+08:00）
+
+§771已推送提交2c0c72dab222413fc10a61ea3fdc36d90853d493，主文档2,161,791字节、SHA5848ba7947895ddbc65650e585c0b13a77bc9e044fa9a5e0efb22acd7ca53475，五份文档和1465份累计自有文本一致。原同步父程序在commit/push与2026快进完成后，因为累计文件集合漏掉771的新路径而KeyError退出；未重做提交或push，仅使用包含739至771的正确所有权列表完成已提交的文本同步，实际终态成功。原错误原样保留；它与模型或训练OOM不同。
+
+13:38:28.957163实际在2026启动新独立campaign logs/independent_native_evidence_20261003_v2，PID3216332，执行源提交2c0c72dab222413fc10a61ea3fdc36d90853d493。启动前空闲空间11,293,151,232字节，满足原固定10,292,822,016预算；原v1已FAILED且全九项正式仍PENDING、旧进程已退出、274继承源码SHA均未变。未执行新的权重删除、安装、旧队列重试、官方重评分或2025模型操作。初始GPU0用于顺序构造与配对，M0/正式队列才并行调度最多四张0–3号卡。
+
+唯一新增只读观察进程45120，先等待300秒再观察，初始化/M0之后240秒、正式阶段1800秒观察；不控制训练进程或重新执行模型。旧v1观察器已CLOSED。首个保存实际快照2026-10-03T13:43:53.711735+08:00：父进程存在=False，status=INITIALIZING，phase=None，9初始化累计3，3完整batch配对累计1，3真实AMP反向等价报告累计0，M0计数{'PENDING': 0, 'RUNNING': 0, 'COMPLETE': 0, 'FAILED': 0}，正式计数{'PENDING': 0, 'RUNNING': 0, 'COMPLETE': 0, 'FAILED': 0}。新观察器的子日志目录使用完整campaign.name前缀，原始stdout/stderr/EXIT均保存。
+
+首次观察已确认父进程退出。原launcher保留subprocess.CalledProcessError，生产反向witness在RGBNT201/semantic的相机嵌入参数cv_embed处失败：最大绝对差0.0009765625，超过事前allclose(atol=1e-4,rtol=1e-4)。此前features/logits/loss比较代码已通过，但不能推断后续其它参数、buffer/RNG、native或其它数据集通过。完整反向报告未写出，M0与正式队列均未创建，也没有manifest或官方分数。原campaign状态仍INITIALIZING，不能冒改成FAILED；原异常及父进程退出证明本次终止。11份原始文本和282份源码逐文件SHA封存于terminal/INTAKE.json及本地终态接收目录，未重跑v2、未放宽容差或改变batch。
+
+源码中逐模态重计算联合返回snapshot与global，改变了原堆叠及多支梯度汇合方式；这可能影响AMP梯度累加，但尚不能宣称唯一根因。新fresh源码救援审阅建议保留原CrossLayerAdaptedCLIP.forward和外侧adapter hooks，只重计算各实际resblock内部原始forward；重计算调用原绑定方法不重复外侧capture hook。它仍待单独实现、源码审阅和真实等价/完整M0，不计作检索模块。若同一固定数值门继续失败，应先做相同模型/输入/RNG的原计算重复控制来分离数值变化，而非继续无依据修补。
+
+本节记录启动后真实工程门失败，不将其写成检索成功。主要科学比较仍为native−semantic，同时报告semantic−独立global-only；作者配方收益不算角色贡献。未来任何独立计算版本九项真实M0/严格重载全部通过后才开始九项正式50轮，并保留匹配源、真实batch顺序、完整官方gallery/过滤与单份mAP-best CMC。N2可靠部分对应、N3判别补偿仍为后继候选，当前不加入。
