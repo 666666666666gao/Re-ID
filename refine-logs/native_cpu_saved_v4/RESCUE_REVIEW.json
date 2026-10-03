@@ -1,0 +1,229 @@
+{
+  "schema": "trifusion-rescue-memory-source-review-v1",
+  "created_at": "2026-10-03T15:28:07.3286544+08:00",
+  "review_scope": "source-only",
+  "reviewer_agent": "/root/review_memory_after_original_repeat776",
+  "reviewer_route": "fresh native Codex sub-agent; model identity not separately introspected here",
+  "review_independence": "same-family",
+  "acceptance_status": "provisional",
+  "worktree": "C:/Users/gb/.trifusion_github_publish_22c3bee",
+  "reviewed_head": "27a1d4bd7423a52bc658fb03ac48b92272879e8a",
+  "new_candidate_runtime_results": null,
+  "new_candidate_runtime_status": "NOT_IMPLEMENTED_OR_RUN_BY_THIS_REVIEWER",
+  "actions_performed": [
+    "local source/text reads",
+    "local scalar summaries",
+    "official PyTorch source/documentation lookup",
+    "write this review and its Markdown counterpart"
+  ],
+  "actions_not_performed": [
+    "SSH",
+    "model execution",
+    "GPU execution",
+    "scientific source edits",
+    "deployment",
+    "file retirement"
+  ],
+  "verdict": {
+    "status": "SOURCE_ONLY_CONDITIONAL_NEXT_ACTION",
+    "exact_gradient_cause_identified": false,
+    "v3_status_unchanged": "FAILED_FIXED_GRADIENT_GATE",
+    "selected_candidate": "save_on_cpu_pin_memory_false_on_original_backbone_forward",
+    "may_proceed_to": "minimal new helper/entry implementation and fresh source review",
+    "runtime_acceptance": false
+  },
+  "blocking_issues": [
+    "V3 semantic remains 92/281 failed gradients under unchanged atol=rtol=1e-4; no proven harmless cause.",
+    "New candidate lacks fixed forward/all-gradient/state/RNG/BN equivalence evidence.",
+    "New candidate lacks full author batch/K GPU and host RAM capacity, timing, all nine M0 and strict reload evidence.",
+    "Captured tensors and stack outputs remain live on GPU; CPU save does not prove B128 fits.",
+    "Four-process host RAM capacity is unmeasured; max4 does not authorize overcommitting RAM."
+  ],
+  "observed_facts": {
+    "v1": {
+      "dataset": "RGBNT100",
+      "variant": "global_only",
+      "batch_size": 128,
+      "num_instances": 16,
+      "failed_stage": "forward inner torch.stack(captured[index], dim=2), correspondence_roles.py:86",
+      "failed_allocation_mib": 218,
+      "gpu_free_mib": 78.56,
+      "process_memory_gib": 23.42,
+      "pytorch_allocated_gib": 22.52,
+      "evidence": "terminal_intake771/primary/logs/independent_native_evidence_20261003_v1/independent_native_evidence_20261003_v1_m0_global_only_RGBNT100/m0.log"
+    },
+    "v2": {
+      "status": "FAILED_FIXED_GRADIENT_GATE",
+      "first_failure": "semantic cv_embed",
+      "first_failure_max_abs": 0.0009765625,
+      "evidence": "terminal_intake772/primary/logs/independent_native_evidence_20261003_v2/checkpoint_backward_RGBNT201.log"
+    },
+    "v3": {
+      "dataset": "RGBNT201",
+      "full_author_batch": 64,
+      "witness_samples": 32,
+      "global_only_gradient_entries": 209,
+      "global_only_failed": 0,
+      "semantic_gradient_entries": 281,
+      "semantic_failed": 92,
+      "raw_fused_global_loss_max_abs": 0,
+      "heads_fixed_forward_gate_passed_before_failure": true,
+      "camera_max_abs": 0.0009765625,
+      "overall_max_abs": 0.005859375,
+      "overall_max_name": "evidence_model.backbone.signal.clip_vision_encoder.base.conv1.weight",
+      "failed_signal_parameters": 81,
+      "failed_adapters": 11,
+      "other_parameters": 72,
+      "other_failed": 0,
+      "other_max_abs": 4.76837158203125E-07,
+      "semantic_post_backward_state_rng_assertions_reached": false,
+      "full_backward_pass_receipt_exists": false,
+      "evidence_root": "terminal_intake775"
+    },
+    "original_repeat": {
+      "status": "ORIGINAL_BACKWARD_REPEAT_PARITY_PASS",
+      "exit_code": 0,
+      "started_at": "2026-10-03T15:09:22.781584+08:00",
+      "completed_at": "2026-10-03T15:10:11.543323+08:00",
+      "dataset": "RGBNT201",
+      "variant": "semantic",
+      "full_author_batch": 64,
+      "witness_samples": 32,
+      "distinct_identities": 4,
+      "gradient_entries": 281,
+      "failed_gradients": 0,
+      "gradient_max_abs": 2.9103830456733704E-11,
+      "signal_and_adapters_gradient_max_abs": 0,
+      "other_nonzero_gradient_differences": 5,
+      "bn_count": 1,
+      "state_buffers_rng_exact": true,
+      "original_forwards_restored": true,
+      "evidence_root": "original_repeat_intake776",
+      "intake_primary_text_count": 6,
+      "intake_source_count": 293
+    },
+    "verified_worktree_source_matches": [
+      "modeling/trifusion/block_checkpointed_evidence_clip.py",
+      "modeling/trifusion/correspondence_roles.py",
+      "modeling/trifusion/independent_native_roles.py",
+      "modeling/trifusion/evidence_author_heads.py",
+      "tools/check_block_checkpoint_backward.py",
+      "tools/check_native_original_backward_repeat.py",
+      "tools/run_native_block_checkpointed.py",
+      "tools/run_independent_native_evidence.py",
+      "tools/queue_native_block_checkpointed.py"
+    ],
+    "environment_version_receipt": {
+      "torch_version": "2.5.1+cu121",
+      "evidence": "cpu_component_witness/CPU_WITNESS.json",
+      "observed_at": "2026-10-03T10:00:13.764545+08:00",
+      "device": "cpu",
+      "limitation": "Existing environment evidence, not new offload runtime verification."
+    }
+  },
+  "cause_limits": [
+    "One newly logged original/original batch is not universal determinism and is not a full reconstruction of historical V3 batch/intermediate gradients.",
+    "Saved scalar differences locate affected parameters but cannot identify the first differing operator, kernel, stride, recomputation value or gradient accumulation event.",
+    "First failure cv_embed is parameter iteration order, not established causal origin.",
+    "V3 bound-method internal checkpoint leaves existing module adapter hooks outside; no source-proven missing/double hook defect was found.",
+    "The active semantic sample_context is FP32 attention, so an ancestor grid_sample definition is not evidence of an active causal grid_sample operation.",
+    "Do not label BN, RNG, Mamba, FP16 rounding or CUDA nondeterminism a proven cause."
+  ],
+  "selected_minimal_next_action": {
+    "mechanism": "torch.autograd.graph.save_on_cpu(pin_memory=False)",
+    "apply_to": "Original model.evidence_model.backbone.forward only",
+    "implementation_boundary": "New helper retains original bound forward in a closure and calls it once under the context; retain module registration/state keys and original source function.",
+    "covers": [
+      "original visual encoder",
+      "existing cross-layer adapter hooks"
+    ],
+    "outside_context": [
+      "roles",
+      "Mamba",
+      "native detail reader",
+      "author BN and classifiers",
+      "loss",
+      "optimizer",
+      "GradScaler",
+      "backward"
+    ],
+    "prohibited_changes": [
+      "checkpoint",
+      "custom saved-tensor hooks",
+      "pinning",
+      "custom streams",
+      "prefetch",
+      "compression",
+      "deduplication machinery",
+      "fallback",
+      "extra try/except",
+      "batch/K changes",
+      "precision changes",
+      "gate changes",
+      "sealed source edits"
+    ],
+    "reason": "Preserves original forward graph/operator path while moving saved-for-backward storage, without forward recomputation.",
+    "costs": [
+      "synchronous GPU-to-CPU and CPU-to-GPU transfers",
+      "additional CPU copies per save, potentially repeated",
+      "GPU live captures/stacks and role memory remain",
+      "full-batch speed and memory savings unknown"
+    ],
+    "no_runtime_result": true
+  },
+  "required_fixed_runtime_checks": [
+    "Fresh source review of new helper/entry; original state keys, requires_grad, cfg and optimizer ownership unchanged; actual existing environment/API recorded.",
+    "Retain three-dataset by three-variant matched original/candidate B32 parity witnesses from full author loader batches; same initial state, batch, RNG and backend flags; no selection/retry-until-pass.",
+    "FP16 autocast and CUDA GradScaler init_scale=256; forward/head/loss atol=rtol=1e-5; all unscaled trainable gradients atol=rtol=1e-4, same None states, finite; persist measurements before asserts.",
+    "Exact buffers/parameter state/CPU and CUDA RNG, author BN count=1, existing hooks removed, no recompute path.",
+    "All nine fresh complete-author-batch M0 checks, RGBNT100 B128/K16 unchanged, eight effective updates and BN count=8, visual/camera changes, frozen preservation, native fourteen-parameter support and strict reload.",
+    "Measure full M0 peak GPU allocated/reserved, CPU RSS/peak, MemAvailable/swap and step wall time; use actual resource costs to decide concurrency and ETA.",
+    "Only after all fixed gates and resource conditions pass may original seed42/50-epoch nine-arm training proceed with unchanged science."
+  ],
+  "resource_limits": {
+    "allowed_host": "2026",
+    "allowed_physical_gpu_ids": [
+      0,
+      1,
+      2,
+      3
+    ],
+    "max_parallel": 4,
+    "host2025": "unavailable; no SSH/model/GPU execution",
+    "no_external_resources": true,
+    "no_n2_n3": true,
+    "memory_receipt_at": "2026-10-03T15:14:16.345041+08:00",
+    "mem_total_kib": 131577172,
+    "mem_available_kib": 116887232,
+    "swap_total_kib": 8388604,
+    "swap_free_kib": 8388604,
+    "gpu_receipt": {
+      "0": "18 MiB / 0%",
+      "1": "13774 MiB / 100%",
+      "2": "18 MiB / 0%",
+      "3": "156 MiB / 0%"
+    },
+    "memory_receipt_limitation": "Not all GPUs idle in this source snapshot; no measured offload or four-way RAM capacity.",
+    "storage_latest_evidence": "closed_v1_probe_retirement776/RETIREMENT.json",
+    "storage_retirement_exit_code": 0,
+    "retired_bytes": 1059051944,
+    "retirement_boundary": "Parent executed exact three sealed failed V1 engineering reload-probe retirements; text/digests retained, direct binary replay retired.",
+    "latest_free_bytes": 10770534400,
+    "unchanged_campaign_plus_reserve_bytes": 10292822016,
+    "margin_bytes": 477712384,
+    "current_storage_snapshot_gate": "PASS_AT_RECEIPT_ONLY_RECHECK_AT_START",
+    "disk_offload": false,
+    "poll_seconds": 240,
+    "scheduling": "Use actual measured single-run host/GPU memory and elapsed time; do not assume four offload graphs fit or preempt another task."
+  },
+  "official_sources": [
+    {
+      "url": "https://github.com/pytorch/pytorch/blob/v2.5.1/torch/autograd/graph.py#L300-L355",
+      "supports": "Version-matched save_on_cpu API implementation and default synchronous copy path"
+    },
+    {
+      "url": "https://docs.pytorch.org/tutorials/intermediate/autograd_saved_tensors_hooks_tutorial.html",
+      "supports": "CPU saved-tensor memory/time tradeoff and scope control; no project-specific speed extrapolation"
+    }
+  ]
+}

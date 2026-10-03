@@ -2,7 +2,7 @@
 
 ## 0. 一页结论
 
-**当前进度（§41.775，2026-10-03）** V3实际终止：前向与loss完全一致，global-only209项梯度通过；semantic281项中92项超固定1e-4门槛。原失败与290项源码已封存。一次原实现/原实现数值控制已实现并经fresh源码审查PASS，尚未执行；不放宽门槛，不改判V3，无M0或正式训练。只用2026 GPU0–3/max4，2025仅文本同步；Goal ACTIVE_UNMET。
+**当前进度（§41.776，2026-10-03）** 原实现/原实现控制真实退出0：281梯度全过，最大差2.9103830456733704e-11；V3原失败仍保留。新v4仅把原CLIP前向保存的反向张量放到CPU，不重计算，不改作者batch/精度/门槛；源码fresh复核通过，尚未实际初始化或M0。精确退役封存V1三项旧M0 probe释放1059051944B，正式best保留。26运行与文本已核验；25文本连接超时待补，不运行模型。Goal ACTIVE_UNMET。
 
 **现行合同：** 每个正式候选完整50轮，使用作者完整query/gallery及camera／MSVR时间段过滤，以官方fused mAP最高的同一checkpoint报告全部指标，随后严格重载。RGBNT201报告mAP／R1／R5／R10，RGBNT100及MSVR310报告mAP／R1；不跨epoch或seed拼列。官方集已参与逐轮选点和历史方法选择，属于已消费基准上的探索性结果。
 
@@ -15564,3 +15564,18 @@ v3使用18行直接计算helper：每个现有CLIP resblock保存原绑定forwar
 首次review句柄丢失且没有verdict，未作为审查结果。新的fresh native reviewer /root/review_original_backward_repeat775_fresh，请求gpt-6-astra/max/forknone，实际写出PASS、无阻塞或非阻塞代码缺陷；审查仅source-only、same-family/provisional，未执行SSH、模型或GPU。原生请求transport、实际final与未改写报告保存到私有trace，公开保留书面报告。该PASS不是运行通过。
 
 新控制单独目录logs/native_original_backward_repeat_20261003_v1，单卡，只在2026实际空闲的物理0–3卡运行，原V3源码290项不变；新增诊断、计划及审查文本后闭包293项。2025仅代码/文档同步。没有新模块、loss、seed、精度、batch或学习率改变，也没有评分和权重产出。此节发布时仍未执行；实际结果以随后JOB exit及预门槛测量为准。N2/N3仍是候选，完整科学目标ACTIVE_UNMET。
+
+
+## 41.776 原实现对照终态与CPU保存候选（2026-10-03T15:39:08.183332+08:00）
+
+§775提交27a1d4bd7423a52bc658fb03ac48b92272879e8a已推送GitHub。原publisher实际退出1，client.connect超时；只读检查确认26已到该HEAD且所有改动文本一致。文本续接再次在25连接超时；26累计1542项自有文本、GitHub、本地与Desktop文档核对通过，25仍待补。不伪造five-copy PASS，不重复commit/push，也不因25文本不可用停止授权的26诊断。
+
+原控制在2026物理GPU0于15:09:22启动，controller3292200；实际15:10:11.543323结束、exit0。180秒唯一observer于15:12:33收取原终态后自然关闭。raw/fused/global/loss差值均0；281项梯度全部满足原1e-4绝对/相对门，最大差2.9103830456733704e-11；author BN count1、buffer/state/RNG及hook清理核验通过。没有optimizer step、M0、正式轮、评分或新权重。只读collector退出0，收齐6原始文本与293项源码。此单次PASS不能证明普遍确定性；V3的92/281失败不改判。没有唯一算子归因，不把数值量级直接写成已证明的根因。
+
+按fresh源码救援意见，v4保留原CrossLayerAdaptedCLIP实例、bound forward、图、camera/模态顺序及adapter capture hooks，仅在训练且启用梯度时以torch.autograd.graph.save_on_cpu(pin_memory=False)包住原backbone forward。roles/Mamba、作者heads/loss留在外部。没有checkpoint、重新执行、pinning、额外stream、压缩、CPU optimizer、新训练参数/buffer/state key或模块注册。该变化只是工程内存方案，不是科学创新；不能从文档/API支持推断实际梯度等价或完整B128容量已通过。
+
+已有环境2.5.1+cu121不变。实际可用主存116887232kB是观测，不是保障。CPU传输将增加主存和时间，应由实际M0/训练记录检验。旧完整B128/K16 OOM、FP16 AMP/GradScaler256、原1e-5前向/1e-4梯度/1e-5重载门、完整作者三集batch、优化器/heads/BN/raw入口/seed42/50轮均不变。新每种variant先做完整batch eval与原实现/CPU保存反向对照，所有差值和新输入元数据先保存再assert；全部九项M0的8真实更新/BN8/14detail实际改变通过后才进入正式50轮。任一失败保留并停，不以换门或新seed救分。新来源闭包301项，以实际原控制293项为基础；旧V1/V2/V3源不编辑。
+
+磁盘实际只剩9712MB左右，低于原10292822016B固定预算；没有放宽门。按持续Goal已明确的闲置自训权重清理授权，核验封存FAILED V1没有正式训练、原父/三完成worker均不存在，精确三份M0_PASS probe的实际SHA/大小与原training收据一致；仅删除这些m0_reload_probe.pth，共1059051944B，结束后10770534400B。原training/hash、初始化、失败/控制/293源码及公共CLIP保留；没有正式best被删，三旧工程probe直接二进制重放能力退役。原只读盘点因真实字段为pid而非worker_pid触发KeyError，删除前失败；原错误保留，修正已知字段的新盘点一次退出0，实际退役一次退出0，不重试删除。
+
+两份fresh native审查均按gpt-6-astra/max/forknone请求，same-family/provisional：救援意见只选最小工程方向，新代码审查PASS、无阻塞问题；它们没有运行新模型或GPU，不能称生产验证。原生输入transport/实际final/未改写报告保留私有trace，书面报告公开。此节仅SOURCE_REVIEWED_NOT_STARTED，无新M0/正式成绩；原global_only含共享adapter，native多159296参数，科学native-semantic增量、同配方角色增量、三集稳定性和SOTA仍未获得。N2/N3继续候选，Goal ACTIVE_UNMET。只用2026 GPU0–3/max4，不抢占，25仅文本。

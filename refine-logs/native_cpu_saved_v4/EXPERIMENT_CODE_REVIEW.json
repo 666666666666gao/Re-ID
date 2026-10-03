@@ -1,0 +1,153 @@
+{
+  "schema": "trifusion-native-cpu-saved-v4-source-review-v1",
+  "created_at": "2026-10-03T15:35:01+08:00",
+  "verdict": "PASS",
+  "scope": "SOURCE_ONLY",
+  "blocking_issues": [],
+  "non_blocking_code_defects": [],
+  "required_source_fixes": [],
+  "reviewer": {
+    "task": "/root/review_native_cpu_saved776",
+    "review_phase": "experiment-bridge Phase 2.5 fresh CODE_REVIEW",
+    "requested_model": "gpt-6-astra",
+    "requested_reasoning_effort": "max",
+    "actual_model_identity_independently_verified": false,
+    "actual_reasoning_effort_independently_verified": false,
+    "review_independence": "same-family",
+    "acceptance_status": "provisional"
+  },
+  "reviewed_inputs": {
+    "worktree": "C:/Users/gb/.trifusion_github_publish_22c3bee",
+    "worktree_head_at_start": "27a1d4bd7423a52bc658fb03ac48b92272879e8a",
+    "plan": "refine-logs/native_cpu_saved_v4/EXPERIMENT_PLAN.md",
+    "new_python": [
+      "modeling/trifusion/cpu_saved_evidence_clip.py",
+      "tools/run_native_cpu_saved.py",
+      "tools/check_cpu_saved_native_pair.py",
+      "tools/check_cpu_saved_backward.py",
+      "tools/queue_native_cpu_saved.py",
+      "tools/report_native_cpu_saved.py"
+    ],
+    "actual_inherited_source_root": "C:/Users/gb/.codex_tmp/independent_evidence_draft/original_repeat_intake776/source",
+    "actual_intake": "C:/Users/gb/.codex_tmp/independent_evidence_draft/original_repeat_intake776/INTAKE.json",
+    "actual_primary_root": "C:/Users/gb/.codex_tmp/independent_evidence_draft/original_repeat_intake776/primary",
+    "inherited_source_verified": 293,
+    "inherited_source_mismatches": 0,
+    "actual_primary_texts_verified": 6,
+    "actual_primary_text_mismatches": 0
+  },
+  "static_checks": {
+    "new_python_ast_pass": 6,
+    "archived_python_ast_pass": 257,
+    "source_overlap_count": 3,
+    "new_sources": [
+      "modeling/trifusion/cpu_saved_evidence_clip.py",
+      "refine-logs/native_cpu_saved_v4/EXPERIMENT_CODE_REVIEW.md",
+      "refine-logs/native_cpu_saved_v4/EXPERIMENT_PLAN.md",
+      "tools/check_cpu_saved_backward.py",
+      "tools/check_cpu_saved_native_pair.py",
+      "tools/queue_native_cpu_saved.py",
+      "tools/report_native_cpu_saved.py",
+      "tools/run_native_cpu_saved.py"
+    ],
+    "prospective_source_total": 301,
+    "publish_tree": {
+      "line_end_only_differences": 27,
+      "missing_archived_paths": 107,
+      "substantive_differences": []
+    },
+    "helper_stub_calls": [
+      {
+        "training": false,
+        "grad_enabled": false,
+        "context_entered": false,
+        "original_calls": 1
+      },
+      {
+        "training": false,
+        "grad_enabled": true,
+        "context_entered": false,
+        "original_calls": 1
+      },
+      {
+        "training": true,
+        "grad_enabled": false,
+        "context_entered": false,
+        "original_calls": 1
+      },
+      {
+        "training": true,
+        "grad_enabled": true,
+        "context_entered": true,
+        "original_calls": 1
+      }
+    ],
+    "runtime_model_imported": false,
+    "torch_imported": false,
+    "gpu_or_ssh_used": false
+  },
+  "findings": [
+    {
+      "check": "visual_wrapper_and_ownership",
+      "result": "PASS",
+      "evidence": [
+        "modeling/trifusion/cpu_saved_evidence_clip.py:7-16",
+        "tools/run_native_cpu_saved.py:17-36",
+        "original source/modeling/trifusion/correspondence_roles.py:53-90",
+        "original source/modeling/trifusion/independent_native_roles.py:66-74",
+        "original source/modeling/trifusion/evidence_author_heads.py:42-73"
+      ],
+      "conclusion": "保存原 bound forward，仅在 backbone.training 且 grad 启用时包裹 save_on_cpu(pin_memory=False)。无 activation checkpoint、重算、模块注册、Parameter/buffer 增加或优化器迁移；roles/Mamba/detail、作者 heads/loss 留在上下文外。"
+    },
+    {
+      "check": "partial_substitutions_and_author_recipe",
+      "result": "PASS",
+      "conclusion": "entry/foundation 与 queue base 的替换接口一致，原构造器捕获在 configure 之前；M0、train、evaluate 均使用 v4 构造器。作者 loss、优化器参数完整且不重复、raw feature 与一次 heads 路径保持。seed42、FP16 autocast、GradScaler256、full50 和 B64/K8、B128/K16、B64/K4 保持。"
+    },
+    {
+      "check": "parity_and_m0_gates",
+      "result": "PASS",
+      "evidence": [
+        "tools/check_cpu_saved_backward.py:33-131",
+        "tools/queue_native_cpu_saved.py:64-73",
+        "tools/queue_native_cpu_saved.py:167-205",
+        "original source/tools/run_independent_native_evidence.py:100-174",
+        "original source/tools/run_foundation_recipe.py:189-284"
+      ],
+      "conclusion": "全部初始化、完整作者批 eval pairs 和9项32样本AMP对照完成后才进入M0；任一失败不重试、不启动后续阶段。forward/loss/head 1e-5、gradient 1e-4、None支持一致、state/buffer/RNG exact、BN1与hooks清理保持；梯度差和有序输入元数据在数值容差断言前写入。全部9个独立M0必须8次有效更新、BN8、完整optimizer ownership、native14张量更新及严格reload。"
+    },
+    {
+      "check": "scientific_path_and_evaluation",
+      "result": "PASS",
+      "conclusion": "native159296/14独立detail参数、原128-token semantic读取与单zero exit未改。单mAP-best提供全部既有指标；完整query/gallery、camera/scene过滤、GT评估与独立评分校验保持。报告保留全50轨迹、batch-order一致、repair/new-error与identity AP，+.5mAP/R1非负仅为阶段标准。"
+    },
+    {
+      "check": "source_carry_forward_and_resource_policy",
+      "result": "PASS",
+      "conclusion": "source_map先核验实际封存293项，再合并11项，其中3项重叠、8项新增，完整组装应为301。2026限定路径、物理GPU0-3、空闲<500MiB、最多4个单卡任务、240秒轮询、无抢占/重试和全M0前置保持。",
+      "campaign_storage_estimate_bytes": 8145338368,
+      "running_reserve_bytes": 2147483648,
+      "initial_free_threshold_bytes": 10292822016
+    }
+  ],
+  "deployment_prerequisites_not_code_defects": [
+    "发布并部署与实际 original_repeat_intake776/INTAKE.json 相同的 logs/native_original_repeat_result776_20261003/terminal/INTAKE.json；该公开副本在审查开始时尚未存在。",
+    "保留远端实际293项，只叠加6新Python、计划与本审查MD共8项；复制完成后由既有source_map核验301。不能以不完整本地publish目录整体覆盖runtime源码。",
+    "仅启动全新v4 campaign；真实空闲卡以启动检查为准，不使用仍忙的GPU1，不重启V1/V2/V3。",
+    "保留并实际执行全部新initializer/pair/backward/M0门禁。完整B128显存、CPU主存峰值和耗时尚待实测。"
+  ],
+  "historical_evidence_limits": {
+    "v1": "真实full B128/K16 OOM保持失败；3项精确旧M0 probe二进制已退役，文本/哈希保留，不表示可直接二进制重放。",
+    "v2_v3": "保持各自原AMP梯度门失败；未重判或唯一归因。",
+    "original_repeat": "仅一次semantic RGBNT201 original/original实际PASS，281梯度、max_abs 2.9103830456733704e-11、BN1/state/RNG exact；不证明普遍确定性。",
+    "retirement_free_bytes_at_observed_boundary": 10770534400,
+    "host_mem_available_kb_at_observed_boundary": 116887232
+  },
+  "non_claims": [
+    "本审查未SSH、未导入torch或模型、未使用GPU，未改科学源码。",
+    "stdlib helper mock仅验证条件分支、参数转发与一次调用，不验证PyTorch hooks、数值等价或资源节省。",
+    "没有v4实际运行成绩，不声称完整B128可适配、AMP等价、M0通过、科学有效性、鲁棒性或SOTA。",
+    "同一模型家族的独立上下文审查，接受状态provisional；请求模型/effort的实际身份未独立验证。"
+  ]
+}
+
