@@ -1,0 +1,84 @@
+{
+  "status": "RGBNT100_NATIVE_OWN_FULL_BATCH_M0_PASS_FRESH50_RUNNING",
+  "at": "2026-10-04T06:43:17.578388+08:00",
+  "m0_completed_at": "2026-10-04T06:39:16.229098+08:00",
+  "batch_size": 128,
+  "num_instances": 16,
+  "effective_optimizer_updates": 8,
+  "nonzero_finite_gradient_tensors": 299,
+  "trainable_parameter_tensors": 299,
+  "author_bn_batches_tracked": {
+    "bottleneck_r": 8,
+    "bottleneck_n": 8,
+    "bottleneck_t": 8
+  },
+  "reload_max_abs_difference": 0,
+  "actual_probe_sha256": "b200c1e8e944725a5c00c4cce71c4c6f7ced9962811c7ff6c445b6336130060d",
+  "partition_peak_memory": {
+    "cuda:0": {
+      "allocated_bytes": 18269185024,
+      "reserved_bytes": 20252196864
+    },
+    "cuda:1": {
+      "allocated_bytes": 11958566912,
+      "reserved_bytes": 12486443008
+    }
+  },
+  "active_command": {
+    "mode": "train",
+    "command": [
+      "/data/gaob/Re-ID/conda-envs/tri_reid/bin/python",
+      "-B",
+      "/data/gaob/Re-ID/Trifusion/tools/run_native_research.py",
+      "--dataset",
+      "RGBNT100",
+      "--variant",
+      "native",
+      "--mode",
+      "train",
+      "--protocol",
+      "/data/gaob/Re-ID/Trifusion/logs/training_feature_scale_protocols_20261002/RGBNT100.json",
+      "--signal-source",
+      "/data/gaob/Re-ID/Trifusion/comparators/Signal-cd1b0a6",
+      "--clip-weight",
+      "/data/gaob/Re-ID/Trifusion/pertrained-model/ViT-B-16.pt",
+      "--initialization",
+      "/data/gaob/Re-ID/Trifusion/logs/native_research_v6_20261003_794/initialization/RGBNT100_native.json",
+      "--output-dir",
+      "/data/gaob/Re-ID/Trifusion/trained-model/native_research_v6_20261003_794_full_native_RGBNT100",
+      "--seed",
+      "42",
+      "--epochs",
+      "50"
+    ],
+    "status": "RUNNING",
+    "pid": 901390,
+    "started_at": "2026-10-04T06:39:20.321738+08:00",
+    "gpus": [
+      0,
+      1
+    ]
+  },
+  "epochs_completed": 1,
+  "recent_epochs": [
+    {
+      "epoch": 1,
+      "steps": 62,
+      "mean_loss": 5.481003061417611,
+      "seconds": 71.42776213400066
+    }
+  ],
+  "processes": [
+    {
+      "pid": 3854540,
+      "state": "S",
+      "start_ticks": "29297570"
+    },
+    {
+      "pid": 901390,
+      "state": "S",
+      "start_ticks": "32250108"
+    }
+  ],
+  "boundary": "All9 endpoints own actual M0 passed; final native fresh50 remains incomplete. No retrieval gain or old backward-parity repair claim."
+}
