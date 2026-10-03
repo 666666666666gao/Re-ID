@@ -2,7 +2,7 @@
 
 ## 0. 一页结论
 
-**当前进度（§41.785，2026-10-03）：** 唯一native原路径无更新对照源码PASS并已同步§784，模型尚未启动。2026 GPU0/1在18:50实查被存活进程占用；等待释放不抢占。原Windows资源observer1632因Python配置缺失未进入脚本，失败保留；改用持久uv承载同一只读观察器，PID17548已实际启动，首查约19:03:41，300秒间隔，不自动启动模型。V5仍90/295固定梯度FAIL，0M0/正式训练/新权重。Goal ACTIVE_UNMET。
+**当前进度（§41.786，2026-10-03）：** 唯一native原实现对原实现无更新AMP对照已终止：83/295固定梯度FAIL，其余13门PASS，0更新/0M0/0正式训练/0新权重。原路径也失败，不能把V5差异唯一归给分段；按登记停止GPU parity，继续源码分析，未定位可直接修复原因。五份primary/317份as-launched源码及fresh救援封存。新退役15份已闭合context M0探针165678236B，15端正式mAP-best及距离/记录保留。Goal ACTIVE_UNMET。
 
 **现行合同：** 每个正式候选完整50轮，使用作者完整query/gallery及camera／MSVR时间段过滤，以官方fused mAP最高的同一checkpoint报告全部指标，随后严格重载。RGBNT201报告mAP／R1／R5／R10，RGBNT100及MSVR310报告mAP／R1；不跨epoch或seed拼列。官方集已参与逐轮选点和历史方法选择，属于已消费基准上的探索性结果。
 
@@ -15700,3 +15700,20 @@ native295项有90项固定1e-4/1e-4 allclose失败：Signal155中80FAIL，最大
 修正只涉及Windows后台进程的启动方式：让持久uv进程承载原只读脚本，使Python环境生命周期覆盖观察任务。18:58:44.436730实际UV PID17548存活，观察器已经完成导入并创建自身目录；首查约19:03:41，原300秒间隔和最多12次不变。它只查询2026 GPU0/1资源，空闲时报告READY并停止观察，不启动模型、不终止占用进程；观察限额不等于远端工作停止。原18:50实查GPU0–3进程3448034–3448037都存活，不能抢占；启动模型前仍要重新核查固定0/1和发布源码。
 
 对照部署helper尚未执行，模型启动0、optimizer更新0、官方评价0、权重0；不产生本次清理量。正式实验best-only保留规则继续执行。该进展是源码实现/复核/同步及真实资源等待，完整三数据集性能目标仍未达到，Goal ACTIVE_UNMET。
+
+
+## 41.786 native原路径对原路径的真实终态与15份闭合探针退役（2026-10-03）
+
+资源观察器19:03:44.345960实查0/1号卡已空闲并自然READY退出；随后启动器再次核对资源、公开CLIP及317份源码，于19:04:34.559385仅启动一次控制器3475611，child3475612。执行源码为§785提交688a2a63a3283668cf1de2064dfbd77fd123a8fa。私有启动器相对已审784启动器仅将同步回执引用five_copy784改为five_copy785，逐字差异证明保留；模型、数据、精度和门不变。两原实现均直接build_core，无分段/checkpoint/CPU-save；固定201作者B64/K8首32样本、初始化state7f5ff300…b852、CPU与两CUDA RNG、AMP FP16/scaler256，零optimizer更新。没有启动任何训练或评价后继。
+
+JOB记录19:04:34.612193开始，19:05:21.571946 child exit1/FAILED。19:09:07.741790首次180秒观察确认控制器与child均已离开/proc，观察器CLOSED；没有因观察时进程不存在而重启。独立parent exit未测得，不伪填0或1。19:10:20.680173文本collector exit0收齐5/5 primary及317/317 as-launched源码，逐字节/摘要一致；collector0不是模型PASS。MEASURED完整写出、PASS不存在、权重0。
+
+固定1e-4/1e-4梯度门：295个唯一key中83项FAIL，Signal155中76项FAIL（最大0.005859375），adapter54中7项FAIL（最大0.000244140625）。roles70全部PASS（最大4.76837158203125e-7），detail14全部PASS（最大1.7951242625713348e-7，初始仅output.weight非零），readout2差0。所有梯度形状/key/有限性均有效，没有None。raw/fused/global/loss及两项author-head张量差全0，1e-5前向门PASS；其余13门全部PASS：输出、head、梯度key、buffer key/value、CPU RNG、两CUDA RNG、一次BN、full poststate、参数未变、无hooks、optimizer分组、固定scale。每模型306份参数未变、14份buffer一致；BN bottleneck计数各1。这次全部测量在聚合assert之前写出，因此不能沿用V5“后置BN/RNG未执行”的边界。
+
+原路径自身也失败，说明现有证据不足以将V5的90项失败唯一归于双卡分段；也不能据此宣称V5已经等价或免责。fresh救援按现有5份primary/317份source及补充安装源码复核，原始request/final、MD/JSON与manifest保留；same-family/provisional，不当作异模型复现。原1e-5/1e-4门、batch、precision、scaler、seed均未放宽。按本控制预登记，停止GPU parity试跑，不重启原路径或V5，不自动进入M0/full50。当前仍0正式成绩、0新权重，B128容量未证明，九端训练目标未完成。
+
+源码分析的明确排除：真实继承链IndependentNativeRoles→GlobalTokenRoles→FP32SlotCompetitionRoles.sample_context使用FP32全patch Q/K/V，覆盖了含grid_sample的旧采样实现。不能借PyTorch的grid-sampler CUDA反向非确定性说明来给当前控制归因。19:21:45只读采集实际Python3.10.14环境中的Mamba2.2.6.post3导出、mamba_simple、selective_scan_interface、包metadata和Torch functional共5份；默认fast_path及其条件只能说明候选调用路径，不证明实际编译kernel选择、atomics或唯一原因。原安装源码collector因多份site-packages目录而assert终止，原失败保留；修订仅按实际解释器版本选目录，未导入Torch/model/CUDA，未评分或改权重。没有中间backward tensor/kernel trace，尚无可直接修复的局部根因。
+
+响应“及时清理无用权重，只保留最佳”：19:23:55只读盘点完成此前context_identity五条件×三集15端，均完整50轮/单mAP-best/独立重载/完整距离与accepted_matrix VERIFIED_COMPLETE；controller/worker/children均不存活。collector后继只读M0 training.json，不读M0二进制。19:25:10—19:25:24真实退役精确15份m0_reload_probe.pth，共165678236B；删除前实存SHA、路径及完成依赖核对，删除后15端正式best、距离、receipt、training及公开/作者/当前输入保护摘要再核对。空闲41626472448→41792126976B，磁盘余量变化不等同独占磁盘归因。15端正式目录各仅best_map.pth，其他项目未触碰；所有失败、训练、重载与指标记录保留。被退役探针不能再直接二进制重放，文本与正式结果依赖仍闭合。此前清理不重复计入本次。未证明确无依赖的其余M0文件继续逐项核对，不盲删。
+
+实际fresh救援结论：FAIL_STOP_GPU_PARITY_NO_LOCALIZED_REPAIR；完整边界以本节archive/review/RESCUE_REVIEW.md及真实final为准。

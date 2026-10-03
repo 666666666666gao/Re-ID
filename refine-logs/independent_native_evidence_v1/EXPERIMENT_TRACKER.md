@@ -1,0 +1,23 @@
+# Author-recipe independent native evidence: status at §41.786
+
+The existing nine-endpoint scientific plan is unchanged: seed42, public CLIP with fresh camera/heads, matched author recipe, global-only/semantic/native on RGBNT201, MSVR310 and RGBNT100, full50 and one mAP-best per endpoint. Native−semantic must improve mAP by at least 0.5 percentage points without Rank-1 decline on every dataset. The independent global-only comparison and the other registered comparisons remain required.
+
+| Dataset | Variant | Accepted full-batch M0 under a validated current route | Formal50 | Scientific result |
+|---|---|---|---|---|
+| RGBNT201 | global_only | Not accepted | Not started | Unmet |
+| RGBNT201 | semantic | Not accepted | Not started | Unmet |
+| RGBNT201 | native | Not accepted | Not started | Unmet |
+| MSVR310 | global_only | Not accepted | Not started | Unmet |
+| MSVR310 | semantic | Not accepted | Not started | Unmet |
+| MSVR310 | native | Not accepted | Not started | Unmet |
+| RGBNT100 | global_only | Not accepted | Not started | Unmet |
+| RGBNT100 | semantic | Not accepted | Not started | Unmet |
+| RGBNT100 | native | Not accepted | Not started | Unmet |
+
+This table does not erase historical component checks, initializations, or the three isolated V1 M0 PASS records. Those belong to their sealed source/execution contexts; they do not complete the current all-nine prerequisite. V1's B128 OOM and the failed V2/V3/V4/V5 parity routes remain sealed. RGBNT100 full B128 capacity is still unproved. The first32 witness is a no-update parity check and cannot replace each endpoint's full-author-batch eight-update M0.
+
+At 19:05:21 the single native original/original AMP control failed the unchanged gradient gate for 83/295 tensors, with all13 other gates passing. It produced no updates, M0s, formal scores or weights. Fresh source/primary review returned `FAIL_STOP_GPU_PARITY_NO_LOCALIZED_REPAIR`; no concrete invalidating defect or repair was established. The runtime numerical mechanism remains unresolved. The actual role sampler is FP32 full-patch attention, so the inherited grid-sampler implementation is not a localized cause.
+
+The registered FAIL branch is now active: stop GPU parity probes; no original/V5 retry, additional GPU arm, tolerance/precision/batch/seed weakening, or automatic M0/formal launch. Further work is limited to existing-source/evidence analysis and a concrete, reviewable future proposal. This status is engineering evidence, not a negative efficacy score for the scientific method. Broad Goal remains ACTIVE_UNMET.
+
+Storage: every completed formal endpoint retains one mAP-best with all metrics from that checkpoint. Fifteen completed context-identity M0 binaries were retired only after full50/reload/report closure and pre/post checks; corresponding formal bests, distances and all textual records were retained. No native-original control weight exists to retire.

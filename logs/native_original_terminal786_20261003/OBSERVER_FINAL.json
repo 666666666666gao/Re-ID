@@ -1,0 +1,63 @@
+{
+  "status": "CLOSED",
+  "observation": 1,
+  "value": {
+    "at": "2026-10-03T19:09:07.741790+08:00",
+    "job": {
+      "status": "FAILED",
+      "controller_pid": 3475611,
+      "started_at": "2026-10-03T19:04:34.612193+08:00",
+      "command": [
+        "/data/gaob/Re-ID/conda-envs/tri_reid/bin/python",
+        "-B",
+        "/data/gaob/Re-ID/Trifusion/tools/check_native_original_repeat.py",
+        "--reference-campaign",
+        "/data/gaob/Re-ID/Trifusion/logs/independent_native_evidence_20261003_v5",
+        "--output-dir",
+        "/data/gaob/Re-ID/Trifusion/logs/native_original_repeat_control_20261003_v1"
+      ],
+      "optimizer_updates": 0,
+      "weights_generated": 0,
+      "child_pid": 3475612,
+      "exit_code": 1,
+      "completed_at": "2026-10-03T19:05:21.571946+08:00"
+    },
+    "controller_present": false,
+    "child_present": false,
+    "measurement_present": true,
+    "gates": {
+      "outputs": true,
+      "heads": true,
+      "gradient_keys": true,
+      "gradients": false,
+      "buffer_keys": true,
+      "buffers": true,
+      "cpu_rng": true,
+      "cuda_rng": true,
+      "bn_one_batch": true,
+      "post_state": true,
+      "parameters_unchanged": true,
+      "hooks_removed": true,
+      "optimizer_groups": true,
+      "fixed_scale": true
+    },
+    "gradient_failures": 83,
+    "pass_receipt_present": false,
+    "log_tail": [
+      "camera number is : 4",
+      "===========Building Signal===========",
+      "using soft triplet loss for training",
+      "label smooth on, numclasses: 171",
+      "using soft triplet loss for training",
+      "label smooth on, numclasses: 171",
+      "Traceback (most recent call last):",
+      "  File \"/data/gaob/Re-ID/Trifusion/tools/check_native_original_repeat.py\", line 189, in <module>",
+      "    main()",
+      "  File \"/data/gaob/Re-ID/Trifusion/tools/check_native_original_repeat.py\", line 181, in main",
+      "    assert all(gates.values()), [name for name, passed in gates.items() if not passed]",
+      "AssertionError: ['gradients']"
+    ],
+    "weights": [],
+    "boundary": "Read-only ONE control observation; no model/scorer/retry/restart/removal."
+  }
+}
