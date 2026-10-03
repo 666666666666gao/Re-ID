@@ -1,0 +1,92 @@
+{
+  "status": "RGBNT100_GLOBAL_ONLY_REAL_FULL_BATCH_M0_PASS_FRESH50_RUNNING",
+  "at": "2026-10-04T02:45:30.882617+08:00",
+  "m0_completed_at": "2026-10-04T02:40:18.617584+08:00",
+  "batch_size": 128,
+  "num_instances": 16,
+  "effective_optimizer_updates": 8,
+  "nonzero_finite_gradient_tensors": 213,
+  "trainable_parameter_tensors": 213,
+  "author_bn_batches_tracked": {
+    "bottleneck_r": 8,
+    "bottleneck_n": 8,
+    "bottleneck_t": 8
+  },
+  "reload_max_abs_difference": 0,
+  "actual_probe_sha256": "2982413d6820d5f2c5df548d3e71b1a2aa778c05d38a60b3e4f799414706f969",
+  "partition_peak_memory": {
+    "cuda:0": {
+      "allocated_bytes": 14635440128,
+      "reserved_bytes": 15107883008
+    },
+    "cuda:1": {
+      "allocated_bytes": 11882135552,
+      "reserved_bytes": 12434014208
+    }
+  },
+  "full_batch_initial_forward_pair_pass": true,
+  "active_command": {
+    "mode": "train",
+    "command": [
+      "/data/gaob/Re-ID/conda-envs/tri_reid/bin/python",
+      "-B",
+      "/data/gaob/Re-ID/Trifusion/tools/run_native_research.py",
+      "--dataset",
+      "RGBNT100",
+      "--variant",
+      "global_only",
+      "--mode",
+      "train",
+      "--protocol",
+      "/data/gaob/Re-ID/Trifusion/logs/training_feature_scale_protocols_20261002/RGBNT100.json",
+      "--signal-source",
+      "/data/gaob/Re-ID/Trifusion/comparators/Signal-cd1b0a6",
+      "--clip-weight",
+      "/data/gaob/Re-ID/Trifusion/pertrained-model/ViT-B-16.pt",
+      "--initialization",
+      "/data/gaob/Re-ID/Trifusion/logs/native_research_v6_20261003_794/initialization/RGBNT100_global_only.json",
+      "--output-dir",
+      "/data/gaob/Re-ID/Trifusion/trained-model/native_research_v6_20261003_794_full_global_only_RGBNT100",
+      "--seed",
+      "42",
+      "--epochs",
+      "50"
+    ],
+    "status": "RUNNING",
+    "pid": 385541,
+    "started_at": "2026-10-04T02:40:22.839966+08:00",
+    "gpus": [
+      0,
+      1
+    ]
+  },
+  "active_epochs_completed": 2,
+  "recent_epochs": [
+    {
+      "epoch": 1,
+      "steps": 62,
+      "mean_loss": 5.499043572333552,
+      "seconds": 59.976823272008915
+    },
+    {
+      "epoch": 2,
+      "steps": 62,
+      "mean_loss": 4.301110244566394,
+      "seconds": 58.701725100982
+    }
+  ],
+  "processes": [
+    {
+      "pid": 3854540,
+      "state": "S",
+      "start_ticks": "29297570"
+    },
+    {
+      "pid": 385541,
+      "state": "R",
+      "start_ticks": "30816360"
+    }
+  ],
+  "disk_free_bytes": 28481900544,
+  "boundary": "Only global-only B128 backward/update/reload capacity proven; semantic/native own M0 pending. No retrieval score, old parity repair, reduced batch, accumulation or recomputation claim."
+}

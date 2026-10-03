@@ -1,0 +1,214 @@
+{
+  "status": "SECOND_DATASET_THREE_ENDPOINTS_VERIFIED_FULL_GOAL_UNMET",
+  "at": "2026-10-04T02:40:59.944437+08:00",
+  "formal_completed": 6,
+  "planned_formal": 9,
+  "dataset": "MSVR310",
+  "rows": [
+    {
+      "variant": "global_only",
+      "best_epoch": 38,
+      "metrics": {
+        "mAP": 50.542128855101495,
+        "Rank-1": 68.02030205726624,
+        "Rank-5": 80.54145574569702,
+        "Rank-10": 85.44839024543762
+      },
+      "checkpoint_sha256": "7738874db19c07e2443a8d0433db523cf7b054ac563d00bf9a1032ddd9e9e785",
+      "distance_sha256": "83e949a23b46af75e0a8eba564c07190016882a6ad20474049181a693b499357",
+      "receipt_sha256": "d5c7995a71eda99cbfd4f94add0650c05cec360462db1859fb04794c10d1df73"
+    },
+    {
+      "variant": "semantic",
+      "best_epoch": 49,
+      "metrics": {
+        "mAP": 50.96358116402985,
+        "Rank-1": 69.20473575592041,
+        "Rank-5": 80.7106614112854,
+        "Rank-10": 86.12521290779114
+      },
+      "checkpoint_sha256": "6b858dd3b2bb3c49d47f21c1dd66fdde888c4c7251ecb44a25ae598ae65fdb8f",
+      "distance_sha256": "c402bbf9579d88c1f4edd539b9dee7b6c4f66780da3e2b714a944ed5b97e9972",
+      "receipt_sha256": "828ded91e88c6eb25555f00ce8eabf82cee2d880fc0582c794af8ed673f9a8f4"
+    },
+    {
+      "variant": "native",
+      "best_epoch": 38,
+      "metrics": {
+        "mAP": 50.67551653497196,
+        "Rank-1": 68.69712471961975,
+        "Rank-5": 81.55668377876282,
+        "Rank-10": 85.95600724220276
+      },
+      "checkpoint_sha256": "306c24b138f20fcd4fdb00348e8c2b34e096fd8b1d5f05c9a9bba143de9c5f5f",
+      "distance_sha256": "2c8667168ed39a0f4fe8925e81eb6fbf82ae32f750f976bc28241050814ae6d7",
+      "receipt_sha256": "fab563c6ecb35d2d4e6f1ebafbc6987828debe20e210b9e493f0b6246b59cd80"
+    }
+  ],
+  "comparisons": {
+    "semantic_minus_global_only": {
+      "delta_metrics": {
+        "mAP": 0.4214523089283517,
+        "Rank-1": 1.1844336986541748,
+        "Rank-5": 0.1692056655883789,
+        "Rank-10": 0.6768226623535156
+      },
+      "phase_progress": false
+    },
+    "native_minus_semantic": {
+      "delta_metrics": {
+        "mAP": -0.2880646290578852,
+        "Rank-1": -0.5076110363006592,
+        "Rank-5": 0.846022367477417,
+        "Rank-10": -0.1692056655883789
+      },
+      "phase_progress": false
+    },
+    "native_minus_global_only": {
+      "delta_metrics": {
+        "mAP": 0.1333876798704665,
+        "Rank-1": 0.6768226623535156,
+        "Rank-5": 1.015228033065796,
+        "Rank-10": 0.5076169967651367
+      },
+      "phase_progress": false
+    }
+  },
+  "native_epochs": 50,
+  "native_logged_training_steps": 706,
+  "all_logged_losses_finite": true,
+  "native_strict_reload_metric_difference": 0,
+  "native_best_to_last_map_drop": 0.1563519290999409,
+  "native_last_epoch_metrics": {
+    "mAP": 50.51916460587202,
+    "Rank-1": 68.18950772285461,
+    "Rank-5": 81.38747811317444,
+    "Rank-10": 86.29441857337952
+  },
+  "native_training_loop_seconds": 534.5107830110355,
+  "native_full_train_command_wall_seconds": 1434.066932,
+  "native_independent_evaluation_seconds": 42.3345368700102,
+  "native_partition_peak_memory": {
+    "cuda:0": {
+      "allocated_bytes": 9487802368,
+      "reserved_bytes": 11265900544
+    },
+    "cuda:1": {
+      "allocated_bytes": 6318826496,
+      "reserved_bytes": 7266631680
+    }
+  },
+  "artifacts": {
+    "global_only": {
+      "best_map.pth": {
+        "bytes": 350246863,
+        "sha256": "7738874db19c07e2443a8d0433db523cf7b054ac563d00bf9a1032ddd9e9e785"
+      },
+      "official_distances.pt": {
+        "bytes": 2535827,
+        "sha256": "83e949a23b46af75e0a8eba564c07190016882a6ad20474049181a693b499357"
+      },
+      "best_epoch_distances.pt": {
+        "bytes": 2535837,
+        "sha256": "3d4961a3f060d58d4c460849fd730a75916250809d97c0a837dfcfa561443510"
+      }
+    },
+    "semantic": {
+      "best_map.pth": {
+        "bytes": 358094393,
+        "sha256": "6b858dd3b2bb3c49d47f21c1dd66fdde888c4c7251ecb44a25ae598ae65fdb8f"
+      },
+      "official_distances.pt": {
+        "bytes": 2535827,
+        "sha256": "c402bbf9579d88c1f4edd539b9dee7b6c4f66780da3e2b714a944ed5b97e9972"
+      },
+      "best_epoch_distances.pt": {
+        "bytes": 2535837,
+        "sha256": "65f000ddaa8c295859171df14536c609f4309858db854682f382a75ec7476d4b"
+      }
+    },
+    "native": {
+      "best_map.pth": {
+        "bytes": 358736107,
+        "sha256": "306c24b138f20fcd4fdb00348e8c2b34e096fd8b1d5f05c9a9bba143de9c5f5f"
+      },
+      "official_distances.pt": {
+        "bytes": 2535827,
+        "sha256": "2c8667168ed39a0f4fe8925e81eb6fbf82ae32f750f976bc28241050814ae6d7"
+      },
+      "best_epoch_distances.pt": {
+        "bytes": 2535837,
+        "sha256": "3b4b939bbac7d4ae9a2b307e7bb010f8aea945c77715f26960f5baf2232ee453"
+      }
+    }
+  },
+  "actual_batch_order_equal": true,
+  "batch_order_bindings": {
+    "global_only": {
+      "sha256": "9c8a03beccbccedfa065cb13a3b20f5e64673d79693c4971034b54ab94e147e8",
+      "bytes": 1456580,
+      "lines": 706
+    },
+    "semantic": {
+      "sha256": "9c8a03beccbccedfa065cb13a3b20f5e64673d79693c4971034b54ab94e147e8",
+      "bytes": 1456580,
+      "lines": 706
+    },
+    "native": {
+      "sha256": "9c8a03beccbccedfa065cb13a3b20f5e64673d79693c4971034b54ab94e147e8",
+      "bytes": 1456580,
+      "lines": 706
+    }
+  },
+  "common_initialization_fields": [
+    "public_clip_sha256",
+    "protocol_sha256",
+    "visual_initial_sha256",
+    "camera_initial_sha256",
+    "shared_initializer_sha256",
+    "batch_size",
+    "num_instances",
+    "seed",
+    "foundation_option"
+  ],
+  "source_files_verified_unchanged": 314,
+  "m0_probe_shas_verified": true,
+  "each_full_weight_count": 1,
+  "next_active_command_at_collection": {
+    "mode": "train",
+    "command": [
+      "/data/gaob/Re-ID/conda-envs/tri_reid/bin/python",
+      "-B",
+      "/data/gaob/Re-ID/Trifusion/tools/run_native_research.py",
+      "--dataset",
+      "RGBNT100",
+      "--variant",
+      "global_only",
+      "--mode",
+      "train",
+      "--protocol",
+      "/data/gaob/Re-ID/Trifusion/logs/training_feature_scale_protocols_20261002/RGBNT100.json",
+      "--signal-source",
+      "/data/gaob/Re-ID/Trifusion/comparators/Signal-cd1b0a6",
+      "--clip-weight",
+      "/data/gaob/Re-ID/Trifusion/pertrained-model/ViT-B-16.pt",
+      "--initialization",
+      "/data/gaob/Re-ID/Trifusion/logs/native_research_v6_20261003_794/initialization/RGBNT100_global_only.json",
+      "--output-dir",
+      "/data/gaob/Re-ID/Trifusion/trained-model/native_research_v6_20261003_794_full_global_only_RGBNT100",
+      "--seed",
+      "42",
+      "--epochs",
+      "50"
+    ],
+    "status": "RUNNING",
+    "pid": 385541,
+    "started_at": "2026-10-04T02:40:22.839966+08:00",
+    "gpus": [
+      0,
+      1
+    ]
+  },
+  "disk_free_bytes_at_collection": 28891045888,
+  "boundary": "Native-semantic -0.2881mAP/-0.5076R1 in MSVR310, while RGBNT201 +0.2291mAP/+0.7177R1 below0.5gate. No stable detail increment established in two completed datasets; RGBNT100 pending, no universal failure/capacity-only/causal or SOTA claim. Remaining3 fixed endpoints continue; no tuning or N2/N3. Only26GPU0/1, no power/temp; allM0 probes retained for finalreport."
+}

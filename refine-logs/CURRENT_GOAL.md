@@ -1,6 +1,6 @@
 # TriFusion 当前 Goal 执行约定
 
-更新：2026-10-04 §41.804。正式5/9；MSVR310 semantic E49为50.9636/69.2047，相对本批global-only +0.4215mAP/+1.1844R1，未达0.5mAP线。native M0通过并开始fresh50；RGBNT100三端待原队列。仅26物理GPU0/1，不管功温；Goal active / unmet。
+更新：2026-10-04 §41.805。正式6/9，RGBNT201/MSVR310三端收齐。MSVR native E38为50.6755/68.6971，相对semantic −0.2881mAP/−0.5076R1；两集尚无稳定细节增量。RGBNT100 global-only B128/K16 M0通过并开始fresh50，02:45已2轮；另外两端待原队列。仅26GPU0/1、不管功温；Goal active / unmet。
 
 ## 研究目标与当前阶段
 
@@ -21,13 +21,13 @@
 
 用户最新指示“不管功率和温度了”。23:54:04核对PID4013580、UID、启动ticks和完整命令后，仅SIGTERM本项目只读功温观察器；23:58:11确认该/proc已不存在，semantic训练PID4081872仍R，controller3854540仍活。没有发送训练信号，没有设置硬件，不再以温度或功率作为当前执行门，也不继续采样或反复设置。旧权限失败、热暂停及监测数据保留为历史证据。
 
-RGBNT201三个条件均完成50轮、各2649条实际step及独立严格评价：global_only E8为74.2967/78.9474/88.2775/91.8660；semantic E7为71.8981/74.4019/84.3301/90.1914；native E20为72.1273/75.1196/85.1675/89.3541。当前正式5/9，MSVR global-only E38为50.5421/68.0203，semantic E49为50.9636/69.2047；native细节增量待其正式终态。
+RGBNT201三个条件均完成50轮、各2649条实际step及独立严格评价：global_only E8为74.2967/78.9474/88.2775/91.8660；semantic E7为71.8981/74.4019/84.3301/90.1914；native E20为72.1273/75.1196/85.1675/89.3541。当前正式6/9，MSVR三端各50轮/706step：global-only E38为50.5421/68.0203，semantic E49为50.9636/69.2047，native E38为50.6755/68.6971。
 
 native−semantic为+0.2291/+0.7177/+0.8373/−0.8373个百分点，未达原0.5mAP推进线；native−global_only为−2.1694/−3.8278/−3.1101/−2.5120。只能说201当前单种子独立细节读取小幅正向，但没有抵消完整角色路径相对global-only的损失。项目门槛不是统计显著性；不能宣布无身份价值或三数据集普遍失败，不改已登记配方。
 
 三条件实际training_batch_order.jsonl各5475022B、2649行，SHA均e446282654c74949fb594856631b246642593b73229331c30b555418a0358993。共享初始化字段及真实初始前向已核对，native零出口与semantic初始输出/heads一致。50轮step和loss有限、同一best、严格评分差0，三份best及距离实存SHA通过，每正式端仅一份best。
 
-RGBNT201 native于01:18:30.352995验收；MSVR global-only于01:45:00.589831、semantic于02:11:05.521019验收，均为原进程完整50轮后首次独立评价。02:14:02原controller3854540仍活，MSVR native PID316812/R、ticks30647128，fresh50于02:12:10.519895开始，已完成2轮，M0已通过。没有继承201训练权重；后续RGBNT100三端继续固定配方，B128容量仍未验证。314项source未改；仅26GPU0/1，功温监控保持停用。
+MSVR native于02:36:51.524761完成首次独立严格评价；三端初始化字段及actual batch顺序同SHA，314科学source未改。RGBNT100 global-only M0于02:40:18.617584验收，B128/K16真实8次有效更新、213/213非零有限梯度、三个作者BN各8批、重载差0。fresh50开始02:40:22.839966，02:45:30 PID385541/R、ticks30816360，已2轮，原controller3854540仍S。只证明global的B128反向容量，semantic/native各自M0仍待执行；不改变batch、累积或重计算，不追认旧parity已修复。
 
 原始文字、SHA/实际batch顺序绑定及分析见logs/native_research_first_dataset802_20261004；前两端历史见§800–801。native末轮mAP69.994009，best回落2.133267；计时与显存按机器分析分账，history.seconds只含循环。三端CPU距离/逐query净修复报告仍等全九端终态后由原入口调用一次。M0探针为该报告verify依赖，暂不清理；01:20:19磁盘约34.94GB可用。
 
@@ -36,6 +36,10 @@ MSVR新正式回执在logs/native_research_msvr_global803_20261004：50轮/706�
 MSVR前两端实际batch顺序字节相同，各1456580B/706行、SHA9c8a03beccbccedfa065cb13a3b20f5e64673d79693c4971034b54ab94e147e8；共同公开初始化与真实full-batch检查已核对。semantic相对global-only四项为+0.4215/+1.1844/+0.1692/+0.6768个百分点，mAP仍低于原0.5推进线。单种子正配对不是稳定性或SOTA证据；没有按它改变剩余四端。
 
 semantic末轮mAP50.96181677927415，比best低0.0017643847556992；当前MSVR两个完成端均无明显best→末轮退化，不能把201早期峰值/后期回落泛化到所有数据集。原始回执、SHA、706step和配对分析见logs/native_research_msvr_semantic804_20261004。02:14:17可用29708836864B；全九端CPU报告未调用，M0探针仍保留其依赖。
+
+当前细节配对：201 native−semantic +0.2291mAP/+0.7177R1，MSVR −0.2881mAP/−0.5076R1；两集尚未支持稳定额外收益，RGBNT100完整配对仍待完成。MSVR native−global仅+0.1334mAP/+0.6768R1，不能用这个分母覆盖native低于semantic的事实。维持剩余三端原合同，不叠N2/N3或临时调学习率/倍率/种子。
+
+MSVR native best38→末轮回落0.1563519mAP，三端当前均无201那样数点退化。新回执、完整step、三端SHA/batch绑定及RGBNT100实测M0在logs/native_research_second_dataset805_20261004。全九端CPU报告仍未调用，保留M0依赖；02:45:30磁盘可用28481900544B。仅26物理GPU0/1，不恢复功温监控，25文字同步。
 
 ## 评价、保留与完成标准
 
