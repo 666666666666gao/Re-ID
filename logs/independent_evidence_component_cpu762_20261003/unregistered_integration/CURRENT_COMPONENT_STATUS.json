@@ -1,0 +1,293 @@
+{
+  "status": "UNREGISTERED_INTEGRATION_STANDALONE_CPU_PASS_ONLY",
+  "recorded_at": "2026-10-03T10:04:07.953824+08:00",
+  "source_correction": {
+    "status": "SOURCE_KEY_BIAS_CORRECTION_APPLIED_CPU_NOT_RUN",
+    "observed_at": "2026-10-03T09:57:48.005133+08:00",
+    "reason": "Key bias produces identical score shift across candidates and cancels in softmax; remove one redundant parameter, matching existing patch_memory_roles.py key bias=False.",
+    "parameter_count_formula": 159296,
+    "trainable_tensors_expected": 14,
+    "source_sha256": {
+      "ImageNativeEvidenceReader.py": "14c7ffef0d3e540a24542c5b6f8d9ed68c5d2410dcaed40b2225fe547d547db8",
+      "independent_native_roles.py": "3bb63ff185ab52495a56df138d49f182b40c31d7e1e0919bd4df2bb79ffcca00",
+      "check_image_native_evidence.py": "211c4afd9b4c95f2ab82e30755d8b4104e7197526901f21b9f16245ce9cb4beb",
+      "run_component_cpu_once.py": "8b66702d86dd6588d055f95852429e660e301f541ebe09c50b15a779863b23ea"
+    },
+    "original_revision": "source_before_key_bias_fix",
+    "scope": "AST only; same fresh source review continues, no CPU or formal training."
+  },
+  "review": {
+    "status": "PASS",
+    "blocking_issues": [],
+    "nonblocking_defects": [],
+    "agent_id": "/root/review_independent_native_component_cpu",
+    "model": "gpt-6-astra",
+    "reasoning_effort": "max",
+    "fork_turns": "none",
+    "review_independence": "same-family",
+    "acceptance_status": "provisional",
+    "resolved_issue": "Redundant key bias removed before execution; corrected159296 parameters/14 tensors.",
+    "scope": "Source readiness for one isolated CPU synthetic component witness only; not full experiment/model/M0 or performance acceptance."
+  },
+  "cpu_witness": {
+    "status": "PASS_STANDALONE_CPU_ENGINEERING_ONLY",
+    "observed_at": "2026-10-03T10:00:13.764545+08:00",
+    "torch_version": "2.5.1+cu121",
+    "device": "cpu",
+    "threads": 4,
+    "seed": 42,
+    "synthetic_batch_size": 2,
+    "parameter_count": 159296,
+    "trainable_tensors": 14,
+    "fixtures": [
+      {
+        "input_shape": [
+          2,
+          3,
+          3,
+          256,
+          128
+        ],
+        "output_shape": [
+          2,
+          3,
+          16,
+          128
+        ],
+        "initial_detail_exact_zero": true,
+        "synthetic_addition_exact_equal": true
+      },
+      {
+        "input_shape": [
+          2,
+          3,
+          3,
+          128,
+          256
+        ],
+        "output_shape": [
+          2,
+          3,
+          16,
+          128
+        ],
+        "initial_detail_exact_zero": true,
+        "synthetic_addition_exact_equal": true
+      }
+    ],
+    "optimizer_covers_component_exactly_once": true,
+    "toy_updates": 8,
+    "steps": [
+      {
+        "step": 1,
+        "toy_loss": 1.9879287481307983,
+        "nonzero_gradients": {
+          "stem.0.weight": false,
+          "stem.0.bias": false,
+          "stem.2.weight": false,
+          "stem.2.bias": false,
+          "stem.4.weight": false,
+          "stem.4.bias": false,
+          "query.weight": false,
+          "query.bias": false,
+          "key.weight": false,
+          "value.weight": false,
+          "value.bias": false,
+          "norm.weight": false,
+          "norm.bias": false,
+          "output.weight": true
+        }
+      },
+      {
+        "step": 2,
+        "toy_loss": 1.982766032218933,
+        "nonzero_gradients": {
+          "stem.0.weight": true,
+          "stem.0.bias": true,
+          "stem.2.weight": true,
+          "stem.2.bias": true,
+          "stem.4.weight": true,
+          "stem.4.bias": true,
+          "query.weight": true,
+          "query.bias": true,
+          "key.weight": true,
+          "value.weight": true,
+          "value.bias": true,
+          "norm.weight": true,
+          "norm.bias": true,
+          "output.weight": true
+        }
+      },
+      {
+        "step": 3,
+        "toy_loss": 1.9784432649612427,
+        "nonzero_gradients": {
+          "stem.0.weight": true,
+          "stem.0.bias": true,
+          "stem.2.weight": true,
+          "stem.2.bias": true,
+          "stem.4.weight": true,
+          "stem.4.bias": true,
+          "query.weight": true,
+          "query.bias": true,
+          "key.weight": true,
+          "value.weight": true,
+          "value.bias": true,
+          "norm.weight": true,
+          "norm.bias": true,
+          "output.weight": true
+        }
+      },
+      {
+        "step": 4,
+        "toy_loss": 1.9769868850708008,
+        "nonzero_gradients": {
+          "stem.0.weight": true,
+          "stem.0.bias": true,
+          "stem.2.weight": true,
+          "stem.2.bias": true,
+          "stem.4.weight": true,
+          "stem.4.bias": true,
+          "query.weight": true,
+          "query.bias": true,
+          "key.weight": true,
+          "value.weight": true,
+          "value.bias": true,
+          "norm.weight": true,
+          "norm.bias": true,
+          "output.weight": true
+        }
+      },
+      {
+        "step": 5,
+        "toy_loss": 1.9757565259933472,
+        "nonzero_gradients": {
+          "stem.0.weight": true,
+          "stem.0.bias": true,
+          "stem.2.weight": true,
+          "stem.2.bias": true,
+          "stem.4.weight": true,
+          "stem.4.bias": true,
+          "query.weight": true,
+          "query.bias": true,
+          "key.weight": true,
+          "value.weight": true,
+          "value.bias": true,
+          "norm.weight": true,
+          "norm.bias": true,
+          "output.weight": true
+        }
+      },
+      {
+        "step": 6,
+        "toy_loss": 1.9739704132080078,
+        "nonzero_gradients": {
+          "stem.0.weight": true,
+          "stem.0.bias": true,
+          "stem.2.weight": true,
+          "stem.2.bias": true,
+          "stem.4.weight": true,
+          "stem.4.bias": true,
+          "query.weight": true,
+          "query.bias": true,
+          "key.weight": true,
+          "value.weight": true,
+          "value.bias": true,
+          "norm.weight": true,
+          "norm.bias": true,
+          "output.weight": true
+        }
+      },
+      {
+        "step": 7,
+        "toy_loss": 1.9760189056396484,
+        "nonzero_gradients": {
+          "stem.0.weight": true,
+          "stem.0.bias": true,
+          "stem.2.weight": true,
+          "stem.2.bias": true,
+          "stem.4.weight": true,
+          "stem.4.bias": true,
+          "query.weight": true,
+          "query.bias": true,
+          "key.weight": true,
+          "value.weight": true,
+          "value.bias": true,
+          "norm.weight": true,
+          "norm.bias": true,
+          "output.weight": true
+        }
+      },
+      {
+        "step": 8,
+        "toy_loss": 1.9723972082138062,
+        "nonzero_gradients": {
+          "stem.0.weight": true,
+          "stem.0.bias": true,
+          "stem.2.weight": true,
+          "stem.2.bias": true,
+          "stem.4.weight": true,
+          "stem.4.bias": true,
+          "query.weight": true,
+          "query.bias": true,
+          "key.weight": true,
+          "value.weight": true,
+          "value.bias": true,
+          "norm.weight": true,
+          "norm.bias": true,
+          "output.weight": true
+        }
+      }
+    ],
+    "cumulative_gradient_support": {
+      "stem.0.weight": true,
+      "stem.0.bias": true,
+      "stem.2.weight": true,
+      "stem.2.bias": true,
+      "stem.4.weight": true,
+      "stem.4.bias": true,
+      "query.weight": true,
+      "query.bias": true,
+      "key.weight": true,
+      "value.weight": true,
+      "value.bias": true,
+      "norm.weight": true,
+      "norm.bias": true,
+      "output.weight": true
+    },
+    "strict_component_state_reload_outputs_exact": true,
+    "inputs_unchanged": true,
+    "scope": "Synthetic standalone component and semantic-addition arithmetic only; not full role integration, actual dataset inputs, paired initialization, production optimizer, AMP/CUDA M0, formal training or retrieval evidence."
+  },
+  "exit": {
+    "ended_at": "2026-10-03T10:00:14.340080+08:00",
+    "exit_code": 0
+  },
+  "original_f3_actual_after_cpu": {
+    "observed_at": "2026-10-03T10:02:44.100809+08:00",
+    "training_port": 2026,
+    "controller_pid": 2691826,
+    "controller_live": true,
+    "status": "RUNNING",
+    "phase": "full",
+    "completed_full": 5,
+    "running": [
+      {
+        "dataset": "RGBNT100",
+        "variant": "metric_raw",
+        "gpu": 2,
+        "worker_pid": 2762610,
+        "process_live": true,
+        "completed_epochs": 32
+      }
+    ],
+    "report_invocations": 0,
+    "source_files_verified_unchanged": 265,
+    "disk_free_bytes": 11756904448,
+    "boundary": "CPU metadata/source read only; no model, scorer, report or training/restart."
+  },
+  "foundation_selected": false,
+  "full_integration_imported": false,
+  "real_data_cuda_amp_m0_passed": false,
+  "formal_training_started": false
+}

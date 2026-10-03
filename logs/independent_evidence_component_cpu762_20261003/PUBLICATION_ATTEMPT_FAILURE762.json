@@ -1,0 +1,18 @@
+{
+  "status": "ORIGINAL_PUBLICATION_EXIT1_BEFORE_COMMIT",
+  "observed_at": "2026-10-03T10:09:40.900881+08:00",
+  "native_session": 52472,
+  "primary_message": "logs/independent_evidence_component_cpu762_20261003/source_review_cpu_20261003/001-source.response.md:14: new blank line at EOF.",
+  "failed_command": [
+    "git",
+    "-c",
+    "core.whitespace=blank-at-eol,space-before-tab,cr-at-eol",
+    "diff",
+    "--cached",
+    "--check"
+  ],
+  "native_exit_code": 1,
+  "failed_command_exit_code": 2,
+  "original_response_text": "**Verdict: PASS for source readiness for one isolated CPU synthetic witness.** Same-family review remains provisional. **Blocking findings: none remaining. Nonblocking defects: none identified.**\n\nThe original redundant key-bias finding is resolved at [ImageNativeEvidenceReader.py:21](/C:/Users/gb/.codex_tmp/independent_evidence_draft/ImageNativeEvidenceReader.py:21). The corrected count is **159,296 parameters in 14 trainable tensors**, matching [checker assertions](/C:/Users/gb/.codex_tmp/independent_evidence_draft/check_image_native_evidence.py:25). The former 159,424/15 count belongs only to the preserved revision.\n\nSource checks are correct:\n\n- Both image orientations yield 512 tokens; attention returns `B\u00d73\u00d716\u00d7128`. The integration stacks `RGB, NI, TI` in the existing modality order.\n- The original semantic sampler remains intact. Detail is added before CNN normalization, with the static token, bridges, Mamba scans and readout preserved: [integration:33](/C:/Users/gb/.codex_tmp/independent_evidence_draft/independent_native_roles.py:33).\n- Extra initialization uses the existing CPU RNG-fork convention; common role parameters and buffers are copied before strict loading: [integration:62](/C:/Users/gb/.codex_tmp/independent_evidence_draft/independent_native_roles.py:62).\n- Zero-exit initialization and first-step gradient expectations are correct. The checker subsequently requires observed cumulative support, exact optimizer ownership, finite updates, unchanged inputs and strict reload output equality: [checker:42](/C:/Users/gb/.codex_tmp/independent_evidence_draft/check_image_native_evidence.py:42).\n- The helper invokes one isolated, nice-10, CUDA-hidden, four-thread CPU process and preserves its stdout, stderr and exit status. Its F3 access only reads campaign metadata: [helper:29](/C:/Users/gb/.codex_tmp/independent_evidence_draft/run_component_cpu_once.py:29).\n\nNo torch import, model execution, SSH, edits or witness execution occurred during this review. Full-model parity, real inputs, production optimizer ownership, AMP/CUDA M0, foundation selection and formal experiment acceptance remain unverified. Historical `INTEGRATION_STATUS.json` was not treated as corrected runtime evidence.\n\n",
+  "correction": "Remove one executor-added blank EOF line only; retain response content and original captured bytes in this JSON. No model/source/scientific-gate changes."
+}
