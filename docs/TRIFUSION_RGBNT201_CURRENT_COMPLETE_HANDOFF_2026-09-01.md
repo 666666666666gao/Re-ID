@@ -2,7 +2,7 @@
 
 ## 0. 一页结论
 
-**首页当前进度：§41.762（2026-10-03）** F3原任务已接收5/6完整50轮端，RGBNT100 metric_raw仍在26的GPU2运行；10:02实查完成32轮，原报告调用0。新独立细节读取支路完成有限源码复核及一次CPU合成组件检查：159296参数、14张量、8次toy更新，形状/初始零出口/累计梯度/组件重载通过。完整角色接入、真实输入CUDA/AMP M0、训练基座选择及正式训练尚未完成。仅26 GPU0–3/max4；25仅同步文本。Goal ACTIVE／UNMET。
+**首页当前进度：§41.763（2026-10-03）** F3原任务5/6完整50轮端已接收；10:18实查原controller2691826及RGBNT100 metric_raw worker2762610在26 GPU2实活，原报告调用0。新独立细节组件有限CPU检查已通过；未登记的完整接入稿新增原始融合特征接口，完成源码／AST检查，未执行完整模型、未选择训练配方、未启动后继M0或训练。作者分类头／BN模式／optimizer ownership仍须在所选配方中明确。仅26 GPU0–3/max4；25不启动训练。Goal ACTIVE／UNMET。
 
 **现行合同：** 每个正式候选完整50轮，使用作者完整query/gallery及camera／MSVR时间段过滤，以官方fused mAP最高的同一checkpoint报告全部指标，随后严格重载。RGBNT201报告mAP／R1／R5／R10，RGBNT100及MSVR310报告mAP／R1；不跨epoch或seed拼列。官方集已参与逐轮选点和历史方法选择，属于已消费基准上的探索性结果。
 
@@ -15378,3 +15378,18 @@ raw端原训练完成`2026-10-03T08:49:00.629471+08:00`，原严格评价完成`
 检查后于`2026-10-03T10:02:44.100809+08:00`重新读取原F3：controller2691826及RGBNT100 metric_raw worker2762610实活，GPU2，完成32轮，正式5/6，原报告调用0，磁盘剩余11756904448字节；原265源码全部实存字节不变。完整接收仍由既有只读观察器执行，首次11:02:04.284968、随后240秒；原报告仅在全部6端50轮及strict完成后由原控制器调用一次。没有重启训练、调用额外 scorer/report，或新增25训练。
 
 原源码发现、修订、请求／回应、实际CPU stdout/stderr/exit及原F3实活证明归档于`logs/independent_evidence_component_cpu762_20261003/`；代码作为未登记接入稿保存，未写入canonical运行模型目录。等待F3完整报告、fresh完整审计和claim核查后确定可信训练基座，再做全模型M0和有限方法比较。有限尺度面板完成后停止尺度变体；总体三数据集baseline／SOTA目标仍未满足。
+
+
+## 41.763 新证据分支的原始特征训练接口与作者配方调用边界（2026-10-03T10:27:04.212379+08:00）
+
+当前人类再次明确只用26四卡。于`2026-10-03T10:18:42.163279+08:00`实际读取原F3：controller2691826实活，5/6正式端完成；RGBNT100 metric_raw worker2762610在GPU2运行，显存12591MiB、利用率99%，原report调用0，剩余磁盘11750084608字节。所有任务分配限定0–3；未启动25训练或新候选。既有final observer37344仍沿原11:02:04.284968里程碑及240秒节奏观察，不重启。
+
+准备后继训练接口时，实际读取F1使用的封存Signal `cd1b0a6`调用源码，而非canonical DeMo `modeling/make_model.py`。作者201 DIRECT=1，raw1536进入单一BN/classifier；100与MSVR DIRECT=0，三个raw512分别进入各模态BN/classifier。原author loss在NO_MARGIN下使用soft Triplet，F1按对应head汇总。当前roles则先L2融合，再进入自己的一套1536 BN/classifier及margin0.3 Triplet。仅改优化器不构成作者配方匹配，重新调用Signal训练forward也会重复编码并监督未加角色修正的另一份特征。
+
+另两项真实接口限制：CrossLayerAdaptedCLIP.train会强制Signal.eval，且原Signal heads构造时被冻结；未来若选author heads，必须显式规定heads的requires_grad及BN train/eval，不能把冻结head误当正常训练。F1 author optimizer只接收model.signal，直接复用会遗漏roles/adapters/detail。MSVR作者BASE_LR=5e-6且存在classifier特殊分组，不能统一赋新模块3.5e-4而宣称完整author-matched。
+
+在未登记接入稿中新增RawFeatureSemanticTriFusion作为static语义控制，与IndependentNativeTriFusion共用forward_features。一次骨干／角色／读出前向显式返回raw_fused、L2 fused、shared_global和correction；feature-only方法不调用任何neck/classifier，供后续匹配训练head使用。普通forward仍返回L2部署向量，并保留原normalized辅助head接口。新增detail reader的实际组件源码字节与§762完全一致，旧integration修订已保存；没有替换canonical运行入口。
+
+此次只完成实际callee源码读取和AST解析，记录时间`2026-10-03T10:25:16.998933+08:00`。没有导入或执行完整模型，没有选择foundation、登记正式训练配方、调用CUDA/AMP M0或产出检索成绩。旧组件CPU通过只覆盖合成component，不能转用为修订后的完整integration接受。原F3受保护源码／计划字节未改；仍待all6完整50轮、strict、原once report、fresh完整审计及claim核查后决定可信基座。尺度／margin／seed／系数搜索不继续。
+
+修订代码、旧稿、source事实SHA、notes、AST记录及10:18原任务只读回执在`logs/native_evidence_feature_interface763_20261003/`。后继注册必须明确同配方global-only／semantic roles／semantic+detail的heads、BN模式、CE与metric输入、optimizer exact coverage、采样和scheduler，再经源码复核、真实paired前向及全模型M0；当前总体三数据集baseline与资源注明SOTA目标未满足。
