@@ -1,0 +1,51 @@
+{
+  "observer_status": "CLOSED",
+  "last_observation": 1,
+  "observation": {
+    "at": "2026-10-03T18:04:27.013109+08:00",
+    "status": "INITIALIZING",
+    "phase": null,
+    "controller_pid": 3410754,
+    "controller_present": false,
+    "counts": {
+      "m0": {
+        "PENDING": 0,
+        "RUNNING": 0,
+        "COMPLETE": 0,
+        "FAILED": 0
+      },
+      "full": {
+        "PENDING": 0,
+        "RUNNING": 0,
+        "COMPLETE": 0,
+        "FAILED": 0
+      }
+    },
+    "report_invocations": 0,
+    "report_exit_code": null,
+    "gpu": "0, 15 MiB, 0 %\n1, 15 MiB, 0 %\n2, 15 MiB, 0 %\n3, 155 MiB, 0 %\n",
+    "disk_free_bytes": 43324407808,
+    "home_free_bytes": 591563603968,
+    "initialization_count": 3,
+    "initial_pair_count": 1,
+    "partition_backward_count": 0,
+    "gradient_measurements": 3,
+    "log_tails": {
+      "logs/independent_native_evidence_20261003_v5/partitioned_backward_RGBNT201.log": [
+        "camera number is : 4",
+        "===========Building Signal===========",
+        "using soft triplet loss for training",
+        "label smooth on, numclasses: 171",
+        "using soft triplet loss for training",
+        "label smooth on, numclasses: 171",
+        "Traceback (most recent call last):",
+        "  File \"/data/gaob/Re-ID/Trifusion/tools/check_partitioned_backward.py\", line 145, in <module>",
+        "    main()",
+        "  File \"/data/gaob/Re-ID/Trifusion/tools/check_partitioned_backward.py\", line 109, in main",
+        "    assert torch.allclose(x, y, atol=1e-4, rtol=1e-4), (variant, name, float((x-y).abs().max()))",
+        "AssertionError: ('native', 'evidence_model.backbone.signal.clip_vision_encoder.cv_embed', 0.0010986328125)"
+      ]
+    },
+    "boundary": "Read-only only2026; no model import, report/scorer, restart or process control."
+  }
+}

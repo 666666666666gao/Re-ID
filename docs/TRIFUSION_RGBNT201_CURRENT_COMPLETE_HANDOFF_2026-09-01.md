@@ -2,7 +2,7 @@
 
 ## 0. 一页结论
 
-**当前进度（§41.782，2026-10-03）：** V5两卡模型分段经fresh源码WARN/0阻塞后已真实Popen，2026控制PID3410754、初始物理GPU0/1；启动不代表初始化、梯度等价、B128容量或M0通过。源码499b2cc6与312项闭包已核实，5处文档/1706自有文本已同步。观察首次300秒约18:04，工程阶段300秒、正式训练按里程碑观察，不重启。全部九端完整batch八更新M0通过后才正式50轮；2025只文本同步。每正式实验只保留一个mAP-best，工程probe依赖结束后及时退役。Goal ACTIVE_UNMET。
+**当前进度（§41.783，2026-10-03）：** V5两卡分段真实工程已停止：201三份初始化/一份full-batch初始配对，global209与semantic281梯度门通过；native295中90梯度FAIL。全部前向/损失差0并不等价于反向通过。尚无完整dataset witness回执、0M0/0更新/0formal/0权重，B128容量未测。observer已关闭，未重启；完整15 primary/312 source与fresh救援已保存。原CPU-save/checkpoint失败不改；保持原1e-5/1e-4门。每正式实验只留mAP-best，当前无新增权重可清理。Goal ACTIVE_UNMET。
 
 **现行合同：** 每个正式候选完整50轮，使用作者完整query/gallery及camera／MSVR时间段过滤，以官方fused mAP最高的同一checkpoint报告全部指标，随后严格重载。RGBNT201报告mAP／R1／R5／R10，RGBNT100及MSVR310报告mAP／R1；不跨epoch或seed拼列。官方集已参与逐轮选点和历史方法选择，属于已消费基准上的探索性结果。
 
@@ -15657,3 +15657,20 @@ fresh reviewer原始请求/response/native final与MD/JSON、私有待部署源�
 实际campaign为logs/independent_native_evidence_20261003_v5，输出/home/gaob/trifusion-native-evidence-v5，正式report results/native_partition_complete_20261003。状态只记LAUNCHED_NOT_VALIDATED；此处没有查询运行中训练或补造初始化结果。先九份prepare、三份full-batch初始配对、三数据集三个variant的原单卡/两卡首32 witness；保留固定1e-5/1e-4门，再执行九份完整作者batch八更新M0。全部九M0通过之前不运行正式50轮。首批初始化/配对/witness估计约7–8分钟，仅为观察时间参考，实际以日志为准。
 
 17:59:24.445695本地hidden observer PID33016启动一次；首次延迟300秒约18:04:24，再按工程300秒、full阶段1800秒里程碑查看。只读2026对应campaign/PID/日志、GPU与磁盘；观察超时不重启，失败不变更batch/precision/门槛、不重复未改干预。若工程失败，完整取回实际pre-assert和source后fresh救援再判断；原终态失败全部保留。formal仅覆盖一份best_map.pth，工程M0权重严格验收和报告依赖闭合后退役，本次Popen尚没有已验收或可删除的新权重。
+
+
+## 41.783 V5 native固定梯度门失败、完整接收与边界勘误（2026-10-03）
+
+18:04:27.013109首次300秒observer读取：controller3410754已经不在/proc，原campaign仍INITIALIZING/jobs[]；不把这份原始状态改写为COMPLETE，不补造独立parent exit。prepare完成201的global_only/semantic/native三份、完整作者B64初始forward配对一份；backward首32实际测量三份但没有整数据集PASS回执，MSVR/100尚未初始化或测容量。queue在native固定梯度门停止，M0/full/report全0，输出目录没有权重；observer CLOSED后不重启。
+
+18:05:35.635528只读collector exit0取回15份primary和312份as-launched源闭包，全部字节/摘要核对。collector0只是接收成功，不是model PASS。三条件witness保持同batch/state/CPU+两CUDA RNG/AMP FP16/scaler256，0optimizer更新；raw/fused/global/loss最大差全部0。global_only209项梯度全部固定门通过、差0；semantic281项全部通过，Signal155/adapter54差0，roles70最大3.2741809263825417e-11、readout2差0。该循环确实推进到native，但不能以此补造整个dataset完成回执或九端M0。
+
+native295项有90项固定1e-4/1e-4 allclose失败：Signal155中80FAIL，最大差0.0068359375；adapter54中10FAIL，最大差0.000244140625。roles70均通过、最大4.76837158203125e-7，readout2差0；detail14均通过但初始化仅唯一零出口weight有非零梯度，最大3.5087577998638153e-7，其余零梯度符合初始零出口，不能代替八步累计活动/实际更新验收。日志首个断言是cv_embed差0.0010986328125，不只记录第一项而忽略其余89FAIL。没有后续M0/optimizer skip/官方打分，也没有B128显存通过证据。
+
+勘误：父代理初版派生ANALYSIS误称native head门在gradient之后未执行；fresh救援按实际check_partitioned_backward.py:101–111发现，author heads的1e-5 allclose门在梯度断言之前，故已经执行并通过，但exact head delta未落盘。buffer/RNG/BN/fullstate/hook的后续门在梯度断言之后，native未执行，不能写PASS。ANALYSIS_INITIAL与ERRATA原样保留，所有原primary不改；§781关于head/buffer/RNG顺序的笼统文字在此明确纠正，不覆盖历史。gradient90FAIL及0更新/0权重结论不变。
+
+已有证据仍没有定位唯一根因。不能从forward0推断backward等价，也不能从native分支初始zero出口直接归因原子顺序、layout、调度或jitter。旧§776只是semantic原实现两次重放窄PASS，尚没有native原实现两次对照；不能把它外推成所有variant确定性保证。fresh救援实际MD/JSON、原生request/final及来源primary/source已保存，归因为same-family/provisional、source/primary-only；后继仅依其明确建议另行登记，不重跑未改V5，不改数值门/precision/batch。
+
+此处封存科学状态为ACTIVE_UNMET：没有新检索成绩，没有任何正式权重或M0 probe可退役。此前§777八份无用探针已删除2789830448B，不能重复计成本次清理；当前正式入口仍覆盖一份best_map.pth。保护公开/作者与活动依赖，不按失败标签删除必要证据。
+
+18:28:08.9640862实际fresh救援结论为FAIL_STOP_V5_NO_LOCALIZED_REPAIR：15/15 primary与312/312 source核对一致，但未定位可直接修复的源码错误，V5保持停止。唯一建议后继是封存同步后，另行实现并源码复核一次native原实现对原实现的无更新AMP对照，固定同初始化、同首32样本、原1e-5/1e-4门与两卡RNG范围；目前尚未实现或运行。它不训练、不计分、不产生权重、不自动重启V5；PASS只支持这次原路径重复性，FAIL则停止GPU parity试验。全部细节以本节review/RESCUE_REVIEW.md、JSON及原生final为准；发布这次失败不构成后继GPU启动。
