@@ -1,0 +1,135 @@
+{
+  "schema": "native_research_v6_independent_code_review",
+  "reviewed_at": "2026-10-03T22:24:17.609521+08:00",
+  "verdict": "PASS_SOURCE_AND_STDLIB_MOCK",
+  "blocking_issues": [],
+  "nonblocking_issues": [],
+  "reviewer_model": "gpt-6-astra",
+  "reasoning_effort": "max",
+  "review_independence": "same-family",
+  "acceptance_status": "provisional",
+  "fresh_context": true,
+  "repository": "C:\\Users\\gb\\.trifusion_github_publish_22c3bee",
+  "source_sha256": {
+    "tools/run_native_research.py": "b48725622371fc6d9671c464ce97252e2e06eba465e213ce221d84c798e52cc2",
+    "tools/queue_native_research.py": "b138144780a31dc8a5a4922cc4e15dbc0537d0f75ce47d823434d3d3a3c5bc65",
+    "tools/check_native_research_pair.py": "f368de9c455971da5d4fd50757ce576088b0db526ecd992dac2a3f0d1a43ae70",
+    "tools/report_native_research.py": "1117d3ad9e186ec941c8d84ab4363aa28b7ce9c78d492ca7671c95338121e77a",
+    "refine-logs/native_research_v6/EXPERIMENT_PLAN.md": "06407ddd77a59cdf92c7b5b1313ba1c97b9993a5973f2adc1dfd89fe47249a44"
+  },
+  "reviewed_inherited_sources": [
+    "tools/run_native_partitioned.py",
+    "tools/run_independent_native_evidence.py",
+    "tools/run_foundation_recipe.py",
+    "tools/queue_foundation_recipe.py",
+    "tools/queue_native_partitioned.py",
+    "tools/check_partitioned_native_pair.py",
+    "tools/report_native_partitioned.py",
+    "tools/run_clean_clip_joint.py",
+    "tools/run_correspondence_roles.py",
+    "tools/run_training_feature_scale.py",
+    "tools/analyze_correspondence_distances.py",
+    "modeling/trifusion/evidence_author_heads.py",
+    "modeling/trifusion/partitioned_evidence_clip.py",
+    "modeling/trifusion/independent_native_roles.py"
+  ],
+  "authorization": "User selected option1 (1先修复吧): per-endpoint research training with finite actual updates/full model save-reload/GT scoring retained; extra backward-repeatability repair is not a prerequisite. Historical V1-V5 FAIL/STOP results remain unchanged.",
+  "checks": [
+    {
+      "id": "cli_namespace_and_receipt",
+      "status": "PASS",
+      "evidence": [
+        "tools/run_native_research.py:22",
+        "tools/run_native_partitioned.py:54",
+        "tools/run_independent_native_evidence.py:167",
+        "tools/run_independent_native_evidence.py:187"
+      ],
+      "finding": "V6 configure replaces the partitioned schema/build_core; partitioned configure binds foundation.train to the original partitioned wrapper. The independent entry main then rebinds build/loss/optimizer globals and invokes its own train wrapper. Thus CLI train is independent.train -> partitioned.train -> original foundation.train, then partition memory and production_m0_diagnostics are written once. V5 and final V6 each produced exactly one diagnostics result call in the exact-function AST mock; there is no recursion or omitted receipt."
+    },
+    {
+      "id": "fresh_initialization_and_author_batch",
+      "status": "PASS_SOURCE",
+      "evidence": [
+        "tools/run_clean_clip_joint.py:37",
+        "tools/run_independent_native_evidence.py:36",
+        "tools/run_foundation_recipe.py:103",
+        "tools/run_foundation_recipe.py:189",
+        "tools/check_partitioned_native_pair.py:26"
+      ],
+      "finding": "Every prepare/M0/train/evaluate is a separate process and uses the fresh public-CLIP/fresh-camera/head constructor with seed42 and strict initialization binding. M0 weights are never loaded into formal training. Author B/K configuration and augmentation are inherited unchanged; the first actual full batch, config, common state, shared output, and semantic/native zero-exit outputs are checked. Formal loops assert each batch size; all variants retain the same two-device placement, full BN and full triplet batch."
+    },
+    {
+      "id": "updates_optimizer_bn_and_full_state",
+      "status": "PASS_SOURCE",
+      "evidence": [
+        "modeling/trifusion/evidence_author_heads.py:42",
+        "modeling/trifusion/evidence_author_heads.py:63",
+        "tools/run_independent_native_evidence.py:100",
+        "tools/run_independent_native_evidence.py:126",
+        "tools/run_foundation_recipe.py:229",
+        "tools/run_foundation_recipe.py:263"
+      ],
+      "finding": "Each run constructs a fresh author optimizer, scheduler and AMP scaler at 256. Author optimizer membership is exactly the trainable parameter set. Loss and unscaled gradients must be finite; every M0 trainable tensor must have cumulative nonzero gradients; visual and camera state must change. The real optimizer post-step hook requires eight effective updates, native14-tensor activity/change and author BN num_batches_tracked=8. Full model state_dict includes BN buffers and is strictly loaded into an independently constructed model before the original 1e-5 output check. The checkpoint intentionally contains model state, not optimizer/scaler resume state; this is fresh training and inference reload, not a training-resume test."
+    },
+    {
+      "id": "scoring_and_best_reload",
+      "status": "PASS_SOURCE",
+      "evidence": [
+        "tools/run_foundation_recipe.py:248",
+        "tools/run_foundation_recipe.py:287",
+        "tools/run_correspondence_roles.py:79",
+        "tools/queue_foundation_recipe.py:84"
+      ],
+      "finding": "The loop trains epochs1..50, overwrites one best_map.pth only on nondecreasing mAP, and selects the latest epoch for exact mAP ties. All reported CMC values follow that same model. A fresh evaluate process verifies the selected epoch/metrics, strict full-model load and complete query/gallery author-versus-independent GT scoring with original camera/scene filtering and 1e-5 tolerance. These are source invariants, not achieved runtime results."
+    },
+    {
+      "id": "per_endpoint_queue_resource_and_failure",
+      "status": "PASS_SOURCE_AND_STDLIB_MOCK",
+      "evidence": [
+        "tools/queue_native_research.py:49",
+        "tools/queue_native_research.py:62",
+        "tools/queue_native_research.py:97",
+        "MOCK_RESULT.json"
+      ],
+      "finding": "Exact-function AST mock executed the intended39-command sequence: for201,MSVR,100, prepare all3 variants and paired forward, then global_only M0/train/evaluate, semantic M0/train/evaluate, native M0/train/evaluate. No backward-repeatability command or global nine-M0 barrier remains. Each child launch explicitly exposes only physical0,1; only one child is active and the existing resource wait is240s. Simulated201/native M0 nonzero exit stopped after command11, preserved FAILED status/exit code and invoked no report. Successful completion invokes one CPU report. Actual run_logged zero/nonzero branches, active-command cleanup and waiting GPU readings were exercised with stubs."
+    },
+    {
+      "id": "terminal_report",
+      "status": "PASS_SOURCE_AND_STDLIB_MOCK",
+      "evidence": [
+        "tools/report_native_partitioned.py:23",
+        "tools/report_native_partitioned.py:45",
+        "tools/report_native_research.py:15",
+        "MOCK_RESULT.json"
+      ],
+      "finding": "The report still requires all18 M0/full jobs and all9 verified endpoints, checks identical full batch order and reuses the original diagnosis/scoring formulas. The V6 wrapper now appends every query identity/AP/first-match rank using the same camera/scene scorer; mock data confirm both routing branches and control/candidate row alignment. Existing paired harm/repair counts, identity distributions, curves, best-to-last change, parameter placement and runtime receipts are retained. No new scientific module or claimed result was added."
+    }
+  ],
+  "resolved_during_review": [
+    "Original draft incorrectly said the V5 CLI did not write production_m0_diagnostics and added a redundant train wrapper. Exact namespace inspection showed the original independent entry already writes it. Executor removed the V6 train wrapper and corrected plan line12; final mock confirms one diagnostics write for both V5 and V6.",
+    "Inherited terminal compare discarded per-query AP/rank arrays despite the plan promise. Executor added report-only query_changes using the existing verified scorer; final source/mocks pass without changing scoring or training."
+  ],
+  "validation": {
+    "ast_parse": "PASS for all listed current Python entry/inherited files",
+    "stdlib_mock": "PASS",
+    "mock_result": "MOCK_RESULT.json",
+    "mock_source": "namespace_queue_mock.py",
+    "harness_notes": "HARNESS_EXECUTION_NOTES.md",
+    "success_command_count": 39,
+    "failure_stop_command_count": 11,
+    "actual_model_forwards": 0,
+    "actual_optimizer_updates": 0,
+    "remote_commands": 0,
+    "package_installs": 0,
+    "source_files_modified_by_reviewer": 0,
+    "harness_failures": "PATH Python E:/Scripts/python.exe failed before execution because pyvenv.cfg was missing. Existing offline-discovered Python ran the harness; its initial subprocess stub lacked STDOUT. Only the mock constant was fixed and a fresh fixture used. Both are review-harness failures, not model evidence; first fixture and notes retained."
+  },
+  "limitations": [
+    "This is local source review and stdlib control-flow mocking only. It is not a neural M0, GPU memory test, numerical repeatability pass, full50 result, efficacy result, or independent replay of remote weights.",
+    "The existing309-file remote dependency precheck and final V6 SOURCE_SCOPE are executor preparation outside this reviewer run. This verdict does not claim that deployment bytes, live GPU availability, or storage capacity were remotely verified by the reviewer.",
+    "Actual paired initialization and each endpoint M0 must pass before its own fresh50. RGBNT100 B128 capacity remains unproven until that real check; any real update/reload/scoring/OOM failure must stop and preserve its original trace.",
+    "Full state here means full model parameters/buffers for inference reload; optimizer/scheduler/scaler continuation is neither implemented nor claimed.",
+    "All results remain single-seed, officially selected research results; no SOTA, capacity-isolated mechanism, multi-seed stability or overall Goal completion follows from this review."
+  ],
+  "deployment_scope": "Source gate supports the registered new V6 campaign on server2026 physicalGPU0/1 only, through its own paired-forward/per-endpoint-M0 gates. No authorization to restart or relabel historical V1-V5 failures."
+}

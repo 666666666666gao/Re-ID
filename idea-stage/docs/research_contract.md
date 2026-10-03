@@ -1,3 +1,7 @@
+## 2026-10-03 user-selected per-endpoint V6 supplement
+
+The explicit reply “1先修复吧” adopts the first offered execution option. New V6 replaces the old all-nine-M0 barrier with each endpoint's actual eight-update finite/update/BN/full-state-reload M0 followed immediately by its own fresh50. Additional backward-repeatability repair is not a prerequisite for this new research campaign. Existing two-device full-author-batch placement, seed42 and matched author recipe are reused; no model/kernel/math/batch/precision/loss/tolerance changes. Historical FAIL/STOP remains sealed, not accepted as equivalence or repaired determinism. Only2026 GPU0/1,2025 text-only sync. Scope and claim limits: refine-logs/CURRENT_GOAL.md and native_research_v6/EXPERIMENT_PLAN.md. Goal resumed active/unmet; no new formal retrieval score at registration.
+
 ## 2026-10-03 current Goal supplement
 
 Latest user instruction stops engineering repair and narrows immediate work to the research Goal in `refine-logs/CURRENT_GOAL.md`. Its matched-recipe evidence, role/detail contribution, three-dataset evaluation, single-best retention and GPU0/1 scope supersede stale execution priorities below. The new localization draft was withdrawn before registration or runtime. Historical failures are unchanged; this is not automatic approval for failed-route retries or acceptance of unrun endpoints. Existing nine scientific comparisons remain, with no new formal result. Total Goal active/unmet; this supplement records user-directed scope, not a performance claim.
