@@ -2,7 +2,7 @@
 
 ## 0. 一页结论
 
-**当前进度：§41.772（2026-10-03）** 保留作者完整batch的激活重计算v2已13:38:28在仅2026启动，PID3216332；2026-10-03T13:43:53.711735+08:00实测status=INITIALIZING、phase=None，初始化3/9，初始配对1/3，生产AMP反向等价0/3，M0完成0/9，正式完成0/9。父进程已退出，RGBNT201/semantic梯度一致性检查失败，尚无M0或正式训练。原状态INITIALIZING不覆盖；原v1的B128 OOM与全部记录保留，不变batch/配方/种子/损失，不加N2/N3。Goal ACTIVE_UNMET。
+**当前进度：§41.773（2026-10-03）** 原v1真实B128 OOM和v2相机梯度一致性失败均已封存，无正式分数。新的v3仅重计算原CLIP block内部forward，原跨层前向、camera、模态堆叠、外侧adapter hook及参数state保持原路径；已单独实现并经fresh源码复核，尚未运行初始化、数值门或M0。保留全部作者配方/B128/K16、seed42、50轮、原容差和九M0前置门。仅2026 GPU0–3/max4，N2/N3不加入，Goal ACTIVE_UNMET。
 
 **现行合同：** 每个正式候选完整50轮，使用作者完整query/gallery及camera／MSVR时间段过滤，以官方fused mAP最高的同一checkpoint报告全部指标，随后严格重载。RGBNT201报告mAP／R1／R5／R10，RGBNT100及MSVR310报告mAP／R1；不跨epoch或seed拼列。官方集已参与逐轮选点和历史方法选择，属于已消费基准上的探索性结果。
 
@@ -15521,3 +15521,16 @@ v2先重做九项真实初始化和三项完整batch初始配对，并在生产�
 源码中逐模态重计算联合返回snapshot与global，改变了原堆叠及多支梯度汇合方式；这可能影响AMP梯度累加，但尚不能宣称唯一根因。新fresh源码救援审阅建议保留原CrossLayerAdaptedCLIP.forward和外侧adapter hooks，只重计算各实际resblock内部原始forward；重计算调用原绑定方法不重复外侧capture hook。它仍待单独实现、源码审阅和真实等价/完整M0，不计作检索模块。若同一固定数值门继续失败，应先做相同模型/输入/RNG的原计算重复控制来分离数值变化，而非继续无依据修补。
 
 本节记录启动后真实工程门失败，不将其写成检索成功。主要科学比较仍为native−semantic，同时报告semantic−独立global-only；作者配方收益不算角色贡献。未来任何独立计算版本九项真实M0/严格重载全部通过后才开始九项正式50轮，并保留匹配源、真实batch顺序、完整官方gallery/过滤与单份mAP-best CMC。N2可靠部分对应、N3判别补偿仍为后继候选，当前不加入。
+
+
+## 41.773 保留原block外侧梯度图的计算版本（2026-10-03T14:04:43.904961+08:00）
+
+原逐模态v2的真实一致性失败已在§772公开：源提交9f772d5bad574ee76ca108f923bfadbe5a4c4ce2，文档2165403字节/SHAfb2f5412fd85c4ca78010bcbefa8e221a00c288e8dbd1532567d190a969eb06a，五份文档和1487份累计自有文本匹配。没有放宽任何gate或把原INITIALIZING状态伪改FAILED。11份原始文本/282份源码本地封存，与原274继承逐字节一致；旧队列未重启。
+
+新fresh native Codex源码救援上下文请求gpt-6-astra/max/forknone，同家族provisional，实际verdict=PASS、无阻塞。审阅只读取真实源码/日志并执行stdlib AST/hash/diff，不运行模型、GPU或计分。逐模态多输出封装改变梯度汇合是合理源码解释，仍非唯一实测根因。
+
+v3使用18行直接计算helper：每个现有CLIP resblock保存原绑定forward，MethodType绑定替换forward；训练且有梯度时非reentrant/RNG保持地调用原绑定forward重计算，eval直接调用原方法。原CrossLayerAdaptedCLIP对象和forward不变，outer __call__负责的adapter capture hooks仍在重计算之外，仅正常前向触发一次；重计算直接调用原绑定方法，不重复outer hook。无新模块子节点、构造器/拷贝/参数前缀，无额外可训练参数；安装前后完整state SHA相同。Camera、模态顺序/stack、原角色支路和作者BN头都保持旧作用路径。
+
+三条件和三数据集统一策略；原作者配方、全部loss/optimizer/group/LR、增强/采样、完整batch、seed42、50轮、1536维推理、1e-5严格重载、1e-5前向/1e-4梯度固定数值门都不变。仅增加一致性测量逐参数差异在assert前落盘，因为上一失败只留下首个gradient差值；这些预门测量不标PASS、不更新参数、不计官方分。若固定数值门再失败，先执行一次相同原模型/输入/state/RNG重复控制，分离原计算数值变化，再讨论原因；不继续无依据修补或解锁正式训练。
+
+新计划先九项初始化、三项完整batch eval配对、三项生产AMP前32样本反向等价；九项M0必须全部按原完整batch做8次有效更新、BN count8、14张量真实更新/全参数梯度/严格state重载才进入九项正式50轮。仅2026四卡，固定存储预算/240秒队列；旧v2必须原状态INITIALIZING/jobs[]/无manifest且父进程不存在，并核对其公开真实失败intake和282源码。当前v3未启动，不能声称fullB128 fit或任何检索增量。N2/N3仍不加入，本工作继续检验独立原生读取相对semantic/global-only，不把计算修复当创新。
