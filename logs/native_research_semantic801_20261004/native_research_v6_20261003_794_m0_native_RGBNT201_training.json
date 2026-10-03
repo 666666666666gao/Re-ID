@@ -1,0 +1,2655 @@
+{
+  "schema": "trifusion-independent-native-research-v6",
+  "status": "M0_PASS",
+  "dataset": "RGBNT201",
+  "recipe": "native",
+  "seed": 42,
+  "epochs": 50,
+  "initializer": {
+    "architecture": "trifusion-independent-native-research-v6",
+    "dataset": "RGBNT201",
+    "variant": "native",
+    "recipe": "native",
+    "foundation_option": "author",
+    "seed": 42,
+    "public_clip_sha256": "5806e77cd80f8b59890b7e101eabd078d9fb84e6937f9e85e4ecb61988df416f",
+    "protocol_sha256": "b2409c2d992d04adcf0c78354d306afd6af7ae9507738fd4e83de480e9a9b90f",
+    "author_source_commit": "cd1b0a672d1fe642e7608731cb4899a19dda7d51",
+    "visual_initial_sha256": "e989d3d5cf05e26109cd62aba6752ad1151b70c06dc14324703826fecbb9383f",
+    "camera_initial_sha256": "71161723dfbaee1cbbcf2f07d2065187b0fe05ccc0b1afd25f62e16e48d85ec1",
+    "shared_initializer_sha256": {
+      "backbone": "0baf5860672e4522ee1a6de815ac2e1443d9d2937e2f757aa4c227e06508afb8",
+      "neck": "06efe49412cdf6c9d8d9162b9394e4bc49329d169906cecc2b6c4784bcdb166e",
+      "classifier": "22bd8be47d0a37e4afd7689789e40999fe33dd5ee5b8e338bd920bd6678fbf47"
+    },
+    "initial_model_state_sha256": "7f5ff300a45faed287a510dacc68d06c006931504a4510fffd8c47e43d93b852",
+    "trainable_parameters": 89174026,
+    "trainable_parameter_tensors": 295,
+    "batch_size": 64,
+    "num_instances": 8,
+    "head_names": [
+      [
+        "bottleneck",
+        "classifier"
+      ]
+    ],
+    "cfg_yaml": "DATALOADER:\n  NUM_INSTANCE: 8\n  NUM_WORKERS: 4\n  SAMPLER: softmax_triplet\nDATASETS:\n  NAMES: RGBNT201\n  ROOT_DIR: ..\nINPUT:\n  PADDING: 10\n  PIXEL_MEAN:\n  - 0.5\n  - 0.5\n  - 0.5\n  PIXEL_STD:\n  - 0.5\n  - 0.5\n  - 0.5\n  PROB: 0.5\n  RE_PROB: 0.5\n  SIZE_TEST:\n  - 256\n  - 128\n  SIZE_TRAIN:\n  - 256\n  - 128\nMODEL:\n  ADAPTER: false\n  ATT_DROP_RATE: 0.0\n  DEVICE: cuda\n  DEVICE_ID: '0'\n  DIRECT: 1\n  DIST_TRAIN: false\n  DROP_OUT: 0.0\n  DROP_PATH: 0.1\n  FROZEN: false\n  Gram_Loss_weight: 0.2\n  ID_LOSS_TYPE: softmax\n  ID_LOSS_WEIGHT: 0.25\n  IF_LABELSMOOTH: 'on'\n  IF_WITH_CENTER: 'no'\n  METRIC_LOSS_TYPE: triplet\n  MoE_Loss_weight: 0.1\n  NAME: Signal\n  NECK: bnneck\n  NO_MARGIN: true\n  PAT_Loss_weight: 0.2\n  PRETRAIN_PATH_T: /data/gaob/Re-ID/Trifusion/pertrained-model/ViT-B-16.pt\n  PROMPT: false\n  SIE_CAMERA: true\n  SIE_COE: 1.0\n  SIE_VIEW: false\n  STRIDE_SIZE:\n  - 16\n  - 16\n  TOPK: 80\n  TRANSFORMER_TYPE: ViT-B-16\n  TRIPLET_LOSS_WEIGHT: 1.0\n  USE_A: false\n  USE_B: false\n  stageName: together_CLS_Patch\nOUTPUT_DIR: .\nSOLVER:\n  BASE_LR: 0.00035\n  BIAS_LR_FACTOR: 2\n  CENTER_LOSS_WEIGHT: 0.0005\n  CENTER_LR: 0.5\n  CHECKPOINT_PERIOD: 50\n  CLUSTER_MARGIN: 0.3\n  COSINE_MARGIN: 0.5\n  COSINE_SCALE: 30\n  EVAL_PERIOD: 1\n  GAMMA: 0.1\n  IMS_PER_BATCH: 64\n  LARGE_FC_LR: false\n  LOG_PERIOD: 10\n  MARGIN: 0.3\n  MAX_EPOCHS: 50\n  MOMENTUM: 0.9\n  OPTIMIZER_NAME: Adam\n  RANGE_ALPHA: 0\n  RANGE_BETA: 1\n  RANGE_K: 2\n  RANGE_LOSS_WEIGHT: 1\n  RANGE_MARGIN: 0.3\n  SEED: 42\n  STEPS:\n  - 40\n  - 70\n  WARMUP_FACTOR: 0.01\n  WARMUP_ITERS: 10\n  WARMUP_METHOD: linear\n  WEIGHT_DECAY: 0.0001\n  WEIGHT_DECAY_BIAS: 0.0001\nTEST:\n  EVAL: false\n  FEAT_NORM: 'yes'\n  IMS_PER_BATCH: 128\n  MISS: nothing\n  NECK_FEAT: before\n  RE_RANKING: 'no'\n  WEIGHT: ''\nckpt_save_path: RGBNT201_all\nckpt_test_path: test_RNT201\n",
+    "entry_sha256": "b48725622371fc6d9671c464ce97252e2e06eba465e213ce221d84c798e52cc2",
+    "scope": "Fresh public CLIP/camera/heads, shared adaptation and optional semantic/native roles. No ReID weights, SIM, AlignM, teacher, new loss or external data.",
+    "visual_placement": "single_process_original_full_batch_first6_cuda1_last6_and_heads_cuda0",
+    "parameter_placement": {
+      "cuda:0": {
+        "parameters": 46191754,
+        "trainable_parameters": 45650506,
+        "parameter_bytes": 184767016,
+        "gradient_adam_bytes_if_fp32": 547806072
+      },
+      "cuda:1": {
+        "parameters": 43523520,
+        "trainable_parameters": 43523520,
+        "parameter_bytes": 174094080,
+        "gradient_adam_bytes_if_fp32": 522282240
+      }
+    }
+  },
+  "condition": {
+    "variant": "native",
+    "foundation_option": "author",
+    "seed": 42,
+    "epochs": 50,
+    "public_clip_sha256": "5806e77cd80f8b59890b7e101eabd078d9fb84e6937f9e85e4ecb61988df416f",
+    "initialization_sha256": "d156ad2944d8b683b13140436c9684e388f22e679a15942b606aa7c303bc3bf7",
+    "deployment": "L2_1536",
+    "auxiliary_tasks": "none",
+    "visual_placement": "single_process_original_full_batch_first6_cuda1_last6_and_heads_cuda0"
+  },
+  "started_at": "2026-10-04T00:34:34.572519+08:00",
+  "history": [
+    {
+      "epoch": 1,
+      "steps": 8,
+      "mean_loss": 2.6509474515914917,
+      "seconds": 9.346625074045733
+    }
+  ],
+  "cfg_yaml": "DATALOADER:\n  NUM_INSTANCE: 8\n  NUM_WORKERS: 4\n  SAMPLER: softmax_triplet\nDATASETS:\n  NAMES: RGBNT201\n  ROOT_DIR: ..\nINPUT:\n  PADDING: 10\n  PIXEL_MEAN:\n  - 0.5\n  - 0.5\n  - 0.5\n  PIXEL_STD:\n  - 0.5\n  - 0.5\n  - 0.5\n  PROB: 0.5\n  RE_PROB: 0.5\n  SIZE_TEST:\n  - 256\n  - 128\n  SIZE_TRAIN:\n  - 256\n  - 128\nMODEL:\n  ADAPTER: false\n  ATT_DROP_RATE: 0.0\n  DEVICE: cuda\n  DEVICE_ID: '0'\n  DIRECT: 1\n  DIST_TRAIN: false\n  DROP_OUT: 0.0\n  DROP_PATH: 0.1\n  FROZEN: false\n  Gram_Loss_weight: 0.2\n  ID_LOSS_TYPE: softmax\n  ID_LOSS_WEIGHT: 0.25\n  IF_LABELSMOOTH: 'on'\n  IF_WITH_CENTER: 'no'\n  METRIC_LOSS_TYPE: triplet\n  MoE_Loss_weight: 0.1\n  NAME: Signal\n  NECK: bnneck\n  NO_MARGIN: true\n  PAT_Loss_weight: 0.2\n  PRETRAIN_PATH_T: /data/gaob/Re-ID/Trifusion/pertrained-model/ViT-B-16.pt\n  PROMPT: false\n  SIE_CAMERA: true\n  SIE_COE: 1.0\n  SIE_VIEW: false\n  STRIDE_SIZE:\n  - 16\n  - 16\n  TOPK: 80\n  TRANSFORMER_TYPE: ViT-B-16\n  TRIPLET_LOSS_WEIGHT: 1.0\n  USE_A: false\n  USE_B: false\n  stageName: together_CLS_Patch\nOUTPUT_DIR: .\nSOLVER:\n  BASE_LR: 0.00035\n  BIAS_LR_FACTOR: 2\n  CENTER_LOSS_WEIGHT: 0.0005\n  CENTER_LR: 0.5\n  CHECKPOINT_PERIOD: 50\n  CLUSTER_MARGIN: 0.3\n  COSINE_MARGIN: 0.5\n  COSINE_SCALE: 30\n  EVAL_PERIOD: 1\n  GAMMA: 0.1\n  IMS_PER_BATCH: 64\n  LARGE_FC_LR: false\n  LOG_PERIOD: 10\n  MARGIN: 0.3\n  MAX_EPOCHS: 50\n  MOMENTUM: 0.9\n  OPTIMIZER_NAME: Adam\n  RANGE_ALPHA: 0\n  RANGE_BETA: 1\n  RANGE_K: 2\n  RANGE_LOSS_WEIGHT: 1\n  RANGE_MARGIN: 0.3\n  SEED: 42\n  STEPS:\n  - 40\n  - 70\n  WARMUP_FACTOR: 0.01\n  WARMUP_ITERS: 10\n  WARMUP_METHOD: linear\n  WEIGHT_DECAY: 0.0001\n  WEIGHT_DECAY_BIAS: 0.0001\nTEST:\n  EVAL: false\n  FEAT_NORM: 'yes'\n  IMS_PER_BATCH: 128\n  MISS: nothing\n  NECK_FEAT: before\n  RE_RANKING: 'no'\n  WEIGHT: ''\nckpt_save_path: RGBNT201_all\nckpt_test_path: test_RNT201\n",
+  "timing_boundary": "Training and per-epoch evaluation; excludes construction and final strict evaluation.",
+  "m0": {
+    "nonzero_gradient_parameters": 295,
+    "trainable_parameters": 295,
+    "reload_max_abs_difference": 0.0,
+    "reload_probe_sha256": "5221c969f1e1bb5d6cf9a4c5d650bf729104a3cb6a01aa01fea6b3fea7ab88f0"
+  },
+  "best_epoch": null,
+  "frozen_parameters_unchanged": true,
+  "visual_parameters_changed": true,
+  "fresh_camera_parameters_changed": true,
+  "peak_allocated_bytes": 9494977536,
+  "completed_at": "2026-10-04T00:35:02.983754+08:00",
+  "partition_peak_memory": {
+    "cuda:0": {
+      "allocated_bytes": 9494977536,
+      "reserved_bytes": 10726932480
+    },
+    "cuda:1": {
+      "allocated_bytes": 6318265344,
+      "reserved_bytes": 6788481024
+    }
+  },
+  "production_m0_diagnostics": {
+    "effective_optimizer_updates": 8,
+    "optimizer_groups_at_construction": [
+      {
+        "names": [
+          "evidence_model.readout_gain"
+        ],
+        "lr": 3.5000000000000004e-05,
+        "weight_decay": 0.0001
+      },
+      {
+        "names": [
+          "evidence_model.backbone.signal.clip_vision_encoder.cv_embed"
+        ],
+        "lr": 3.5000000000000004e-05,
+        "weight_decay": 0.0001
+      },
+      {
+        "names": [
+          "evidence_model.backbone.signal.clip_vision_encoder.base.class_embedding"
+        ],
+        "lr": 3.5000000000000004e-05,
+        "weight_decay": 0.0001
+      },
+      {
+        "names": [
+          "evidence_model.backbone.signal.clip_vision_encoder.base.positional_embedding"
+        ],
+        "lr": 3.5000000000000004e-05,
+        "weight_decay": 0.0001
+      },
+      {
+        "names": [
+          "evidence_model.backbone.signal.clip_vision_encoder.base.proj"
+        ],
+        "lr": 3.5000000000000004e-05,
+        "weight_decay": 0.0001
+      },
+      {
+        "names": [
+          "evidence_model.backbone.signal.clip_vision_encoder.base.conv1.weight"
+        ],
+        "lr": 3.5000000000000004e-05,
+        "weight_decay": 0.0001
+      },
+      {
+        "names": [
+          "evidence_model.backbone.signal.clip_vision_encoder.base.ln_pre.weight"
+        ],
+        "lr": 3.5000000000000004e-05,
+        "weight_decay": 0.0001
+      },
+      {
+        "names": [
+          "evidence_model.backbone.signal.clip_vision_encoder.base.ln_pre.bias"
+        ],
+        "lr": 3.5000000000000004e-05,
+        "weight_decay": 0.0001
+      },
+      {
+        "names": [
+          "evidence_model.backbone.signal.clip_vision_encoder.base.transformer.resblocks.0.attn.in_proj_weight"
+        ],
+        "lr": 3.5000000000000004e-05,
+        "weight_decay": 0.0001
+      },
+      {
+        "names": [
+          "evidence_model.backbone.signal.clip_vision_encoder.base.transformer.resblocks.0.attn.in_proj_bias"
+        ],
+        "lr": 3.5000000000000004e-05,
+        "weight_decay": 0.0001
+      },
+      {
+        "names": [
+          "evidence_model.backbone.signal.clip_vision_encoder.base.transformer.resblocks.0.attn.out_proj.weight"
+        ],
+        "lr": 3.5000000000000004e-05,
+        "weight_decay": 0.0001
+      },
+      {
+        "names": [
+          "evidence_model.backbone.signal.clip_vision_encoder.base.transformer.resblocks.0.attn.out_proj.bias"
+        ],
+        "lr": 3.5000000000000004e-05,
+        "weight_decay": 0.0001
+      },
+      {
+        "names": [
+          "evidence_model.backbone.signal.clip_vision_encoder.base.transformer.resblocks.0.ln_1.weight"
+        ],
+        "lr": 3.5000000000000004e-05,
+        "weight_decay": 0.0001
+      },
+      {
+        "names": [
+          "evidence_model.backbone.signal.clip_vision_encoder.base.transformer.resblocks.0.ln_1.bias"
+        ],
+        "lr": 3.5000000000000004e-05,
+        "weight_decay": 0.0001
+      },
+      {
+        "names": [
+          "evidence_model.backbone.signal.clip_vision_encoder.base.transformer.resblocks.0.mlp.c_fc.weight"
+        ],
+        "lr": 3.5000000000000004e-05,
+        "weight_decay": 0.0001
+      },
+      {
+        "names": [
+          "evidence_model.backbone.signal.clip_vision_encoder.base.transformer.resblocks.0.mlp.c_fc.bias"
+        ],
+        "lr": 3.5000000000000004e-05,
+        "weight_decay": 0.0001
+      },
+      {
+        "names": [
+          "evidence_model.backbone.signal.clip_vision_encoder.base.transformer.resblocks.0.mlp.c_proj.weight"
+        ],
+        "lr": 3.5000000000000004e-05,
+        "weight_decay": 0.0001
+      },
+      {
+        "names": [
+          "evidence_model.backbone.signal.clip_vision_encoder.base.transformer.resblocks.0.mlp.c_proj.bias"
+        ],
+        "lr": 3.5000000000000004e-05,
+        "weight_decay": 0.0001
+      },
+      {
+        "names": [
+          "evidence_model.backbone.signal.clip_vision_encoder.base.transformer.resblocks.0.ln_2.weight"
+        ],
+        "lr": 3.5000000000000004e-05,
+        "weight_decay": 0.0001
+      },
+      {
+        "names": [
+          "evidence_model.backbone.signal.clip_vision_encoder.base.transformer.resblocks.0.ln_2.bias"
+        ],
+        "lr": 3.5000000000000004e-05,
+        "weight_decay": 0.0001
+      },
+      {
+        "names": [
+          "evidence_model.backbone.signal.clip_vision_encoder.base.transformer.resblocks.1.attn.in_proj_weight"
+        ],
+        "lr": 3.5000000000000004e-05,
+        "weight_decay": 0.0001
+      },
+      {
+        "names": [
+          "evidence_model.backbone.signal.clip_vision_encoder.base.transformer.resblocks.1.attn.in_proj_bias"
+        ],
+        "lr": 3.5000000000000004e-05,
+        "weight_decay": 0.0001
+      },
+      {
+        "names": [
+          "evidence_model.backbone.signal.clip_vision_encoder.base.transformer.resblocks.1.attn.out_proj.weight"
+        ],
+        "lr": 3.5000000000000004e-05,
+        "weight_decay": 0.0001
+      },
+      {
+        "names": [
+          "evidence_model.backbone.signal.clip_vision_encoder.base.transformer.resblocks.1.attn.out_proj.bias"
+        ],
+        "lr": 3.5000000000000004e-05,
+        "weight_decay": 0.0001
+      },
+      {
+        "names": [
+          "evidence_model.backbone.signal.clip_vision_encoder.base.transformer.resblocks.1.ln_1.weight"
+        ],
+        "lr": 3.5000000000000004e-05,
+        "weight_decay": 0.0001
+      },
+      {
+        "names": [
+          "evidence_model.backbone.signal.clip_vision_encoder.base.transformer.resblocks.1.ln_1.bias"
+        ],
+        "lr": 3.5000000000000004e-05,
+        "weight_decay": 0.0001
+      },
+      {
+        "names": [
+          "evidence_model.backbone.signal.clip_vision_encoder.base.transformer.resblocks.1.mlp.c_fc.weight"
+        ],
+        "lr": 3.5000000000000004e-05,
+        "weight_decay": 0.0001
+      },
+      {
+        "names": [
+          "evidence_model.backbone.signal.clip_vision_encoder.base.transformer.resblocks.1.mlp.c_fc.bias"
+        ],
+        "lr": 3.5000000000000004e-05,
+        "weight_decay": 0.0001
+      },
+      {
+        "names": [
+          "evidence_model.backbone.signal.clip_vision_encoder.base.transformer.resblocks.1.mlp.c_proj.weight"
+        ],
+        "lr": 3.5000000000000004e-05,
+        "weight_decay": 0.0001
+      },
+      {
+        "names": [
+          "evidence_model.backbone.signal.clip_vision_encoder.base.transformer.resblocks.1.mlp.c_proj.bias"
+        ],
+        "lr": 3.5000000000000004e-05,
+        "weight_decay": 0.0001
+      },
+      {
+        "names": [
+          "evidence_model.backbone.signal.clip_vision_encoder.base.transformer.resblocks.1.ln_2.weight"
+        ],
+        "lr": 3.5000000000000004e-05,
+        "weight_decay": 0.0001
+      },
+      {
+        "names": [
+          "evidence_model.backbone.signal.clip_vision_encoder.base.transformer.resblocks.1.ln_2.bias"
+        ],
+        "lr": 3.5000000000000004e-05,
+        "weight_decay": 0.0001
+      },
+      {
+        "names": [
+          "evidence_model.backbone.signal.clip_vision_encoder.base.transformer.resblocks.2.attn.in_proj_weight"
+        ],
+        "lr": 3.5000000000000004e-05,
+        "weight_decay": 0.0001
+      },
+      {
+        "names": [
+          "evidence_model.backbone.signal.clip_vision_encoder.base.transformer.resblocks.2.attn.in_proj_bias"
+        ],
+        "lr": 3.5000000000000004e-05,
+        "weight_decay": 0.0001
+      },
+      {
+        "names": [
+          "evidence_model.backbone.signal.clip_vision_encoder.base.transformer.resblocks.2.attn.out_proj.weight"
+        ],
+        "lr": 3.5000000000000004e-05,
+        "weight_decay": 0.0001
+      },
+      {
+        "names": [
+          "evidence_model.backbone.signal.clip_vision_encoder.base.transformer.resblocks.2.attn.out_proj.bias"
+        ],
+        "lr": 3.5000000000000004e-05,
+        "weight_decay": 0.0001
+      },
+      {
+        "names": [
+          "evidence_model.backbone.signal.clip_vision_encoder.base.transformer.resblocks.2.ln_1.weight"
+        ],
+        "lr": 3.5000000000000004e-05,
+        "weight_decay": 0.0001
+      },
+      {
+        "names": [
+          "evidence_model.backbone.signal.clip_vision_encoder.base.transformer.resblocks.2.ln_1.bias"
+        ],
+        "lr": 3.5000000000000004e-05,
+        "weight_decay": 0.0001
+      },
+      {
+        "names": [
+          "evidence_model.backbone.signal.clip_vision_encoder.base.transformer.resblocks.2.mlp.c_fc.weight"
+        ],
+        "lr": 3.5000000000000004e-05,
+        "weight_decay": 0.0001
+      },
+      {
+        "names": [
+          "evidence_model.backbone.signal.clip_vision_encoder.base.transformer.resblocks.2.mlp.c_fc.bias"
+        ],
+        "lr": 3.5000000000000004e-05,
+        "weight_decay": 0.0001
+      },
+      {
+        "names": [
+          "evidence_model.backbone.signal.clip_vision_encoder.base.transformer.resblocks.2.mlp.c_proj.weight"
+        ],
+        "lr": 3.5000000000000004e-05,
+        "weight_decay": 0.0001
+      },
+      {
+        "names": [
+          "evidence_model.backbone.signal.clip_vision_encoder.base.transformer.resblocks.2.mlp.c_proj.bias"
+        ],
+        "lr": 3.5000000000000004e-05,
+        "weight_decay": 0.0001
+      },
+      {
+        "names": [
+          "evidence_model.backbone.signal.clip_vision_encoder.base.transformer.resblocks.2.ln_2.weight"
+        ],
+        "lr": 3.5000000000000004e-05,
+        "weight_decay": 0.0001
+      },
+      {
+        "names": [
+          "evidence_model.backbone.signal.clip_vision_encoder.base.transformer.resblocks.2.ln_2.bias"
+        ],
+        "lr": 3.5000000000000004e-05,
+        "weight_decay": 0.0001
+      },
+      {
+        "names": [
+          "evidence_model.backbone.signal.clip_vision_encoder.base.transformer.resblocks.3.attn.in_proj_weight"
+        ],
+        "lr": 3.5000000000000004e-05,
+        "weight_decay": 0.0001
+      },
+      {
+        "names": [
+          "evidence_model.backbone.signal.clip_vision_encoder.base.transformer.resblocks.3.attn.in_proj_bias"
+        ],
+        "lr": 3.5000000000000004e-05,
+        "weight_decay": 0.0001
+      },
+      {
+        "names": [
+          "evidence_model.backbone.signal.clip_vision_encoder.base.transformer.resblocks.3.attn.out_proj.weight"
+        ],
+        "lr": 3.5000000000000004e-05,
+        "weight_decay": 0.0001
+      },
+      {
+        "names": [
+          "evidence_model.backbone.signal.clip_vision_encoder.base.transformer.resblocks.3.attn.out_proj.bias"
+        ],
+        "lr": 3.5000000000000004e-05,
+        "weight_decay": 0.0001
+      },
+      {
+        "names": [
+          "evidence_model.backbone.signal.clip_vision_encoder.base.transformer.resblocks.3.ln_1.weight"
+        ],
+        "lr": 3.5000000000000004e-05,
+        "weight_decay": 0.0001
+      },
+      {
+        "names": [
+          "evidence_model.backbone.signal.clip_vision_encoder.base.transformer.resblocks.3.ln_1.bias"
+        ],
+        "lr": 3.5000000000000004e-05,
+        "weight_decay": 0.0001
+      },
+      {
+        "names": [
+          "evidence_model.backbone.signal.clip_vision_encoder.base.transformer.resblocks.3.mlp.c_fc.weight"
+        ],
+        "lr": 3.5000000000000004e-05,
+        "weight_decay": 0.0001
+      },
+      {
+        "names": [
+          "evidence_model.backbone.signal.clip_vision_encoder.base.transformer.resblocks.3.mlp.c_fc.bias"
+        ],
+        "lr": 3.5000000000000004e-05,
+        "weight_decay": 0.0001
+      },
+      {
+        "names": [
+          "evidence_model.backbone.signal.clip_vision_encoder.base.transformer.resblocks.3.mlp.c_proj.weight"
+        ],
+        "lr": 3.5000000000000004e-05,
+        "weight_decay": 0.0001
+      },
+      {
+        "names": [
+          "evidence_model.backbone.signal.clip_vision_encoder.base.transformer.resblocks.3.mlp.c_proj.bias"
+        ],
+        "lr": 3.5000000000000004e-05,
+        "weight_decay": 0.0001
+      },
+      {
+        "names": [
+          "evidence_model.backbone.signal.clip_vision_encoder.base.transformer.resblocks.3.ln_2.weight"
+        ],
+        "lr": 3.5000000000000004e-05,
+        "weight_decay": 0.0001
+      },
+      {
+        "names": [
+          "evidence_model.backbone.signal.clip_vision_encoder.base.transformer.resblocks.3.ln_2.bias"
+        ],
+        "lr": 3.5000000000000004e-05,
+        "weight_decay": 0.0001
+      },
+      {
+        "names": [
+          "evidence_model.backbone.signal.clip_vision_encoder.base.transformer.resblocks.4.attn.in_proj_weight"
+        ],
+        "lr": 3.5000000000000004e-05,
+        "weight_decay": 0.0001
+      },
+      {
+        "names": [
+          "evidence_model.backbone.signal.clip_vision_encoder.base.transformer.resblocks.4.attn.in_proj_bias"
+        ],
+        "lr": 3.5000000000000004e-05,
+        "weight_decay": 0.0001
+      },
+      {
+        "names": [
+          "evidence_model.backbone.signal.clip_vision_encoder.base.transformer.resblocks.4.attn.out_proj.weight"
+        ],
+        "lr": 3.5000000000000004e-05,
+        "weight_decay": 0.0001
+      },
+      {
+        "names": [
+          "evidence_model.backbone.signal.clip_vision_encoder.base.transformer.resblocks.4.attn.out_proj.bias"
+        ],
+        "lr": 3.5000000000000004e-05,
+        "weight_decay": 0.0001
+      },
+      {
+        "names": [
+          "evidence_model.backbone.signal.clip_vision_encoder.base.transformer.resblocks.4.ln_1.weight"
+        ],
+        "lr": 3.5000000000000004e-05,
+        "weight_decay": 0.0001
+      },
+      {
+        "names": [
+          "evidence_model.backbone.signal.clip_vision_encoder.base.transformer.resblocks.4.ln_1.bias"
+        ],
+        "lr": 3.5000000000000004e-05,
+        "weight_decay": 0.0001
+      },
+      {
+        "names": [
+          "evidence_model.backbone.signal.clip_vision_encoder.base.transformer.resblocks.4.mlp.c_fc.weight"
+        ],
+        "lr": 3.5000000000000004e-05,
+        "weight_decay": 0.0001
+      },
+      {
+        "names": [
+          "evidence_model.backbone.signal.clip_vision_encoder.base.transformer.resblocks.4.mlp.c_fc.bias"
+        ],
+        "lr": 3.5000000000000004e-05,
+        "weight_decay": 0.0001
+      },
+      {
+        "names": [
+          "evidence_model.backbone.signal.clip_vision_encoder.base.transformer.resblocks.4.mlp.c_proj.weight"
+        ],
+        "lr": 3.5000000000000004e-05,
+        "weight_decay": 0.0001
+      },
+      {
+        "names": [
+          "evidence_model.backbone.signal.clip_vision_encoder.base.transformer.resblocks.4.mlp.c_proj.bias"
+        ],
+        "lr": 3.5000000000000004e-05,
+        "weight_decay": 0.0001
+      },
+      {
+        "names": [
+          "evidence_model.backbone.signal.clip_vision_encoder.base.transformer.resblocks.4.ln_2.weight"
+        ],
+        "lr": 3.5000000000000004e-05,
+        "weight_decay": 0.0001
+      },
+      {
+        "names": [
+          "evidence_model.backbone.signal.clip_vision_encoder.base.transformer.resblocks.4.ln_2.bias"
+        ],
+        "lr": 3.5000000000000004e-05,
+        "weight_decay": 0.0001
+      },
+      {
+        "names": [
+          "evidence_model.backbone.signal.clip_vision_encoder.base.transformer.resblocks.5.attn.in_proj_weight"
+        ],
+        "lr": 3.5000000000000004e-05,
+        "weight_decay": 0.0001
+      },
+      {
+        "names": [
+          "evidence_model.backbone.signal.clip_vision_encoder.base.transformer.resblocks.5.attn.in_proj_bias"
+        ],
+        "lr": 3.5000000000000004e-05,
+        "weight_decay": 0.0001
+      },
+      {
+        "names": [
+          "evidence_model.backbone.signal.clip_vision_encoder.base.transformer.resblocks.5.attn.out_proj.weight"
+        ],
+        "lr": 3.5000000000000004e-05,
+        "weight_decay": 0.0001
+      },
+      {
+        "names": [
+          "evidence_model.backbone.signal.clip_vision_encoder.base.transformer.resblocks.5.attn.out_proj.bias"
+        ],
+        "lr": 3.5000000000000004e-05,
+        "weight_decay": 0.0001
+      },
+      {
+        "names": [
+          "evidence_model.backbone.signal.clip_vision_encoder.base.transformer.resblocks.5.ln_1.weight"
+        ],
+        "lr": 3.5000000000000004e-05,
+        "weight_decay": 0.0001
+      },
+      {
+        "names": [
+          "evidence_model.backbone.signal.clip_vision_encoder.base.transformer.resblocks.5.ln_1.bias"
+        ],
+        "lr": 3.5000000000000004e-05,
+        "weight_decay": 0.0001
+      },
+      {
+        "names": [
+          "evidence_model.backbone.signal.clip_vision_encoder.base.transformer.resblocks.5.mlp.c_fc.weight"
+        ],
+        "lr": 3.5000000000000004e-05,
+        "weight_decay": 0.0001
+      },
+      {
+        "names": [
+          "evidence_model.backbone.signal.clip_vision_encoder.base.transformer.resblocks.5.mlp.c_fc.bias"
+        ],
+        "lr": 3.5000000000000004e-05,
+        "weight_decay": 0.0001
+      },
+      {
+        "names": [
+          "evidence_model.backbone.signal.clip_vision_encoder.base.transformer.resblocks.5.mlp.c_proj.weight"
+        ],
+        "lr": 3.5000000000000004e-05,
+        "weight_decay": 0.0001
+      },
+      {
+        "names": [
+          "evidence_model.backbone.signal.clip_vision_encoder.base.transformer.resblocks.5.mlp.c_proj.bias"
+        ],
+        "lr": 3.5000000000000004e-05,
+        "weight_decay": 0.0001
+      },
+      {
+        "names": [
+          "evidence_model.backbone.signal.clip_vision_encoder.base.transformer.resblocks.5.ln_2.weight"
+        ],
+        "lr": 3.5000000000000004e-05,
+        "weight_decay": 0.0001
+      },
+      {
+        "names": [
+          "evidence_model.backbone.signal.clip_vision_encoder.base.transformer.resblocks.5.ln_2.bias"
+        ],
+        "lr": 3.5000000000000004e-05,
+        "weight_decay": 0.0001
+      },
+      {
+        "names": [
+          "evidence_model.backbone.signal.clip_vision_encoder.base.transformer.resblocks.6.attn.in_proj_weight"
+        ],
+        "lr": 3.5000000000000004e-05,
+        "weight_decay": 0.0001
+      },
+      {
+        "names": [
+          "evidence_model.backbone.signal.clip_vision_encoder.base.transformer.resblocks.6.attn.in_proj_bias"
+        ],
+        "lr": 3.5000000000000004e-05,
+        "weight_decay": 0.0001
+      },
+      {
+        "names": [
+          "evidence_model.backbone.signal.clip_vision_encoder.base.transformer.resblocks.6.attn.out_proj.weight"
+        ],
+        "lr": 3.5000000000000004e-05,
+        "weight_decay": 0.0001
+      },
+      {
+        "names": [
+          "evidence_model.backbone.signal.clip_vision_encoder.base.transformer.resblocks.6.attn.out_proj.bias"
+        ],
+        "lr": 3.5000000000000004e-05,
+        "weight_decay": 0.0001
+      },
+      {
+        "names": [
+          "evidence_model.backbone.signal.clip_vision_encoder.base.transformer.resblocks.6.ln_1.weight"
+        ],
+        "lr": 3.5000000000000004e-05,
+        "weight_decay": 0.0001
+      },
+      {
+        "names": [
+          "evidence_model.backbone.signal.clip_vision_encoder.base.transformer.resblocks.6.ln_1.bias"
+        ],
+        "lr": 3.5000000000000004e-05,
+        "weight_decay": 0.0001
+      },
+      {
+        "names": [
+          "evidence_model.backbone.signal.clip_vision_encoder.base.transformer.resblocks.6.mlp.c_fc.weight"
+        ],
+        "lr": 3.5000000000000004e-05,
+        "weight_decay": 0.0001
+      },
+      {
+        "names": [
+          "evidence_model.backbone.signal.clip_vision_encoder.base.transformer.resblocks.6.mlp.c_fc.bias"
+        ],
+        "lr": 3.5000000000000004e-05,
+        "weight_decay": 0.0001
+      },
+      {
+        "names": [
+          "evidence_model.backbone.signal.clip_vision_encoder.base.transformer.resblocks.6.mlp.c_proj.weight"
+        ],
+        "lr": 3.5000000000000004e-05,
+        "weight_decay": 0.0001
+      },
+      {
+        "names": [
+          "evidence_model.backbone.signal.clip_vision_encoder.base.transformer.resblocks.6.mlp.c_proj.bias"
+        ],
+        "lr": 3.5000000000000004e-05,
+        "weight_decay": 0.0001
+      },
+      {
+        "names": [
+          "evidence_model.backbone.signal.clip_vision_encoder.base.transformer.resblocks.6.ln_2.weight"
+        ],
+        "lr": 3.5000000000000004e-05,
+        "weight_decay": 0.0001
+      },
+      {
+        "names": [
+          "evidence_model.backbone.signal.clip_vision_encoder.base.transformer.resblocks.6.ln_2.bias"
+        ],
+        "lr": 3.5000000000000004e-05,
+        "weight_decay": 0.0001
+      },
+      {
+        "names": [
+          "evidence_model.backbone.signal.clip_vision_encoder.base.transformer.resblocks.7.attn.in_proj_weight"
+        ],
+        "lr": 3.5000000000000004e-05,
+        "weight_decay": 0.0001
+      },
+      {
+        "names": [
+          "evidence_model.backbone.signal.clip_vision_encoder.base.transformer.resblocks.7.attn.in_proj_bias"
+        ],
+        "lr": 3.5000000000000004e-05,
+        "weight_decay": 0.0001
+      },
+      {
+        "names": [
+          "evidence_model.backbone.signal.clip_vision_encoder.base.transformer.resblocks.7.attn.out_proj.weight"
+        ],
+        "lr": 3.5000000000000004e-05,
+        "weight_decay": 0.0001
+      },
+      {
+        "names": [
+          "evidence_model.backbone.signal.clip_vision_encoder.base.transformer.resblocks.7.attn.out_proj.bias"
+        ],
+        "lr": 3.5000000000000004e-05,
+        "weight_decay": 0.0001
+      },
+      {
+        "names": [
+          "evidence_model.backbone.signal.clip_vision_encoder.base.transformer.resblocks.7.ln_1.weight"
+        ],
+        "lr": 3.5000000000000004e-05,
+        "weight_decay": 0.0001
+      },
+      {
+        "names": [
+          "evidence_model.backbone.signal.clip_vision_encoder.base.transformer.resblocks.7.ln_1.bias"
+        ],
+        "lr": 3.5000000000000004e-05,
+        "weight_decay": 0.0001
+      },
+      {
+        "names": [
+          "evidence_model.backbone.signal.clip_vision_encoder.base.transformer.resblocks.7.mlp.c_fc.weight"
+        ],
+        "lr": 3.5000000000000004e-05,
+        "weight_decay": 0.0001
+      },
+      {
+        "names": [
+          "evidence_model.backbone.signal.clip_vision_encoder.base.transformer.resblocks.7.mlp.c_fc.bias"
+        ],
+        "lr": 3.5000000000000004e-05,
+        "weight_decay": 0.0001
+      },
+      {
+        "names": [
+          "evidence_model.backbone.signal.clip_vision_encoder.base.transformer.resblocks.7.mlp.c_proj.weight"
+        ],
+        "lr": 3.5000000000000004e-05,
+        "weight_decay": 0.0001
+      },
+      {
+        "names": [
+          "evidence_model.backbone.signal.clip_vision_encoder.base.transformer.resblocks.7.mlp.c_proj.bias"
+        ],
+        "lr": 3.5000000000000004e-05,
+        "weight_decay": 0.0001
+      },
+      {
+        "names": [
+          "evidence_model.backbone.signal.clip_vision_encoder.base.transformer.resblocks.7.ln_2.weight"
+        ],
+        "lr": 3.5000000000000004e-05,
+        "weight_decay": 0.0001
+      },
+      {
+        "names": [
+          "evidence_model.backbone.signal.clip_vision_encoder.base.transformer.resblocks.7.ln_2.bias"
+        ],
+        "lr": 3.5000000000000004e-05,
+        "weight_decay": 0.0001
+      },
+      {
+        "names": [
+          "evidence_model.backbone.signal.clip_vision_encoder.base.transformer.resblocks.8.attn.in_proj_weight"
+        ],
+        "lr": 3.5000000000000004e-05,
+        "weight_decay": 0.0001
+      },
+      {
+        "names": [
+          "evidence_model.backbone.signal.clip_vision_encoder.base.transformer.resblocks.8.attn.in_proj_bias"
+        ],
+        "lr": 3.5000000000000004e-05,
+        "weight_decay": 0.0001
+      },
+      {
+        "names": [
+          "evidence_model.backbone.signal.clip_vision_encoder.base.transformer.resblocks.8.attn.out_proj.weight"
+        ],
+        "lr": 3.5000000000000004e-05,
+        "weight_decay": 0.0001
+      },
+      {
+        "names": [
+          "evidence_model.backbone.signal.clip_vision_encoder.base.transformer.resblocks.8.attn.out_proj.bias"
+        ],
+        "lr": 3.5000000000000004e-05,
+        "weight_decay": 0.0001
+      },
+      {
+        "names": [
+          "evidence_model.backbone.signal.clip_vision_encoder.base.transformer.resblocks.8.ln_1.weight"
+        ],
+        "lr": 3.5000000000000004e-05,
+        "weight_decay": 0.0001
+      },
+      {
+        "names": [
+          "evidence_model.backbone.signal.clip_vision_encoder.base.transformer.resblocks.8.ln_1.bias"
+        ],
+        "lr": 3.5000000000000004e-05,
+        "weight_decay": 0.0001
+      },
+      {
+        "names": [
+          "evidence_model.backbone.signal.clip_vision_encoder.base.transformer.resblocks.8.mlp.c_fc.weight"
+        ],
+        "lr": 3.5000000000000004e-05,
+        "weight_decay": 0.0001
+      },
+      {
+        "names": [
+          "evidence_model.backbone.signal.clip_vision_encoder.base.transformer.resblocks.8.mlp.c_fc.bias"
+        ],
+        "lr": 3.5000000000000004e-05,
+        "weight_decay": 0.0001
+      },
+      {
+        "names": [
+          "evidence_model.backbone.signal.clip_vision_encoder.base.transformer.resblocks.8.mlp.c_proj.weight"
+        ],
+        "lr": 3.5000000000000004e-05,
+        "weight_decay": 0.0001
+      },
+      {
+        "names": [
+          "evidence_model.backbone.signal.clip_vision_encoder.base.transformer.resblocks.8.mlp.c_proj.bias"
+        ],
+        "lr": 3.5000000000000004e-05,
+        "weight_decay": 0.0001
+      },
+      {
+        "names": [
+          "evidence_model.backbone.signal.clip_vision_encoder.base.transformer.resblocks.8.ln_2.weight"
+        ],
+        "lr": 3.5000000000000004e-05,
+        "weight_decay": 0.0001
+      },
+      {
+        "names": [
+          "evidence_model.backbone.signal.clip_vision_encoder.base.transformer.resblocks.8.ln_2.bias"
+        ],
+        "lr": 3.5000000000000004e-05,
+        "weight_decay": 0.0001
+      },
+      {
+        "names": [
+          "evidence_model.backbone.signal.clip_vision_encoder.base.transformer.resblocks.9.attn.in_proj_weight"
+        ],
+        "lr": 3.5000000000000004e-05,
+        "weight_decay": 0.0001
+      },
+      {
+        "names": [
+          "evidence_model.backbone.signal.clip_vision_encoder.base.transformer.resblocks.9.attn.in_proj_bias"
+        ],
+        "lr": 3.5000000000000004e-05,
+        "weight_decay": 0.0001
+      },
+      {
+        "names": [
+          "evidence_model.backbone.signal.clip_vision_encoder.base.transformer.resblocks.9.attn.out_proj.weight"
+        ],
+        "lr": 3.5000000000000004e-05,
+        "weight_decay": 0.0001
+      },
+      {
+        "names": [
+          "evidence_model.backbone.signal.clip_vision_encoder.base.transformer.resblocks.9.attn.out_proj.bias"
+        ],
+        "lr": 3.5000000000000004e-05,
+        "weight_decay": 0.0001
+      },
+      {
+        "names": [
+          "evidence_model.backbone.signal.clip_vision_encoder.base.transformer.resblocks.9.ln_1.weight"
+        ],
+        "lr": 3.5000000000000004e-05,
+        "weight_decay": 0.0001
+      },
+      {
+        "names": [
+          "evidence_model.backbone.signal.clip_vision_encoder.base.transformer.resblocks.9.ln_1.bias"
+        ],
+        "lr": 3.5000000000000004e-05,
+        "weight_decay": 0.0001
+      },
+      {
+        "names": [
+          "evidence_model.backbone.signal.clip_vision_encoder.base.transformer.resblocks.9.mlp.c_fc.weight"
+        ],
+        "lr": 3.5000000000000004e-05,
+        "weight_decay": 0.0001
+      },
+      {
+        "names": [
+          "evidence_model.backbone.signal.clip_vision_encoder.base.transformer.resblocks.9.mlp.c_fc.bias"
+        ],
+        "lr": 3.5000000000000004e-05,
+        "weight_decay": 0.0001
+      },
+      {
+        "names": [
+          "evidence_model.backbone.signal.clip_vision_encoder.base.transformer.resblocks.9.mlp.c_proj.weight"
+        ],
+        "lr": 3.5000000000000004e-05,
+        "weight_decay": 0.0001
+      },
+      {
+        "names": [
+          "evidence_model.backbone.signal.clip_vision_encoder.base.transformer.resblocks.9.mlp.c_proj.bias"
+        ],
+        "lr": 3.5000000000000004e-05,
+        "weight_decay": 0.0001
+      },
+      {
+        "names": [
+          "evidence_model.backbone.signal.clip_vision_encoder.base.transformer.resblocks.9.ln_2.weight"
+        ],
+        "lr": 3.5000000000000004e-05,
+        "weight_decay": 0.0001
+      },
+      {
+        "names": [
+          "evidence_model.backbone.signal.clip_vision_encoder.base.transformer.resblocks.9.ln_2.bias"
+        ],
+        "lr": 3.5000000000000004e-05,
+        "weight_decay": 0.0001
+      },
+      {
+        "names": [
+          "evidence_model.backbone.signal.clip_vision_encoder.base.transformer.resblocks.10.attn.in_proj_weight"
+        ],
+        "lr": 3.5000000000000004e-05,
+        "weight_decay": 0.0001
+      },
+      {
+        "names": [
+          "evidence_model.backbone.signal.clip_vision_encoder.base.transformer.resblocks.10.attn.in_proj_bias"
+        ],
+        "lr": 3.5000000000000004e-05,
+        "weight_decay": 0.0001
+      },
+      {
+        "names": [
+          "evidence_model.backbone.signal.clip_vision_encoder.base.transformer.resblocks.10.attn.out_proj.weight"
+        ],
+        "lr": 3.5000000000000004e-05,
+        "weight_decay": 0.0001
+      },
+      {
+        "names": [
+          "evidence_model.backbone.signal.clip_vision_encoder.base.transformer.resblocks.10.attn.out_proj.bias"
+        ],
+        "lr": 3.5000000000000004e-05,
+        "weight_decay": 0.0001
+      },
+      {
+        "names": [
+          "evidence_model.backbone.signal.clip_vision_encoder.base.transformer.resblocks.10.ln_1.weight"
+        ],
+        "lr": 3.5000000000000004e-05,
+        "weight_decay": 0.0001
+      },
+      {
+        "names": [
+          "evidence_model.backbone.signal.clip_vision_encoder.base.transformer.resblocks.10.ln_1.bias"
+        ],
+        "lr": 3.5000000000000004e-05,
+        "weight_decay": 0.0001
+      },
+      {
+        "names": [
+          "evidence_model.backbone.signal.clip_vision_encoder.base.transformer.resblocks.10.mlp.c_fc.weight"
+        ],
+        "lr": 3.5000000000000004e-05,
+        "weight_decay": 0.0001
+      },
+      {
+        "names": [
+          "evidence_model.backbone.signal.clip_vision_encoder.base.transformer.resblocks.10.mlp.c_fc.bias"
+        ],
+        "lr": 3.5000000000000004e-05,
+        "weight_decay": 0.0001
+      },
+      {
+        "names": [
+          "evidence_model.backbone.signal.clip_vision_encoder.base.transformer.resblocks.10.mlp.c_proj.weight"
+        ],
+        "lr": 3.5000000000000004e-05,
+        "weight_decay": 0.0001
+      },
+      {
+        "names": [
+          "evidence_model.backbone.signal.clip_vision_encoder.base.transformer.resblocks.10.mlp.c_proj.bias"
+        ],
+        "lr": 3.5000000000000004e-05,
+        "weight_decay": 0.0001
+      },
+      {
+        "names": [
+          "evidence_model.backbone.signal.clip_vision_encoder.base.transformer.resblocks.10.ln_2.weight"
+        ],
+        "lr": 3.5000000000000004e-05,
+        "weight_decay": 0.0001
+      },
+      {
+        "names": [
+          "evidence_model.backbone.signal.clip_vision_encoder.base.transformer.resblocks.10.ln_2.bias"
+        ],
+        "lr": 3.5000000000000004e-05,
+        "weight_decay": 0.0001
+      },
+      {
+        "names": [
+          "evidence_model.backbone.signal.clip_vision_encoder.base.transformer.resblocks.11.attn.in_proj_weight"
+        ],
+        "lr": 3.5000000000000004e-05,
+        "weight_decay": 0.0001
+      },
+      {
+        "names": [
+          "evidence_model.backbone.signal.clip_vision_encoder.base.transformer.resblocks.11.attn.in_proj_bias"
+        ],
+        "lr": 3.5000000000000004e-05,
+        "weight_decay": 0.0001
+      },
+      {
+        "names": [
+          "evidence_model.backbone.signal.clip_vision_encoder.base.transformer.resblocks.11.attn.out_proj.weight"
+        ],
+        "lr": 3.5000000000000004e-05,
+        "weight_decay": 0.0001
+      },
+      {
+        "names": [
+          "evidence_model.backbone.signal.clip_vision_encoder.base.transformer.resblocks.11.attn.out_proj.bias"
+        ],
+        "lr": 3.5000000000000004e-05,
+        "weight_decay": 0.0001
+      },
+      {
+        "names": [
+          "evidence_model.backbone.signal.clip_vision_encoder.base.transformer.resblocks.11.ln_1.weight"
+        ],
+        "lr": 3.5000000000000004e-05,
+        "weight_decay": 0.0001
+      },
+      {
+        "names": [
+          "evidence_model.backbone.signal.clip_vision_encoder.base.transformer.resblocks.11.ln_1.bias"
+        ],
+        "lr": 3.5000000000000004e-05,
+        "weight_decay": 0.0001
+      },
+      {
+        "names": [
+          "evidence_model.backbone.signal.clip_vision_encoder.base.transformer.resblocks.11.mlp.c_fc.weight"
+        ],
+        "lr": 3.5000000000000004e-05,
+        "weight_decay": 0.0001
+      },
+      {
+        "names": [
+          "evidence_model.backbone.signal.clip_vision_encoder.base.transformer.resblocks.11.mlp.c_fc.bias"
+        ],
+        "lr": 3.5000000000000004e-05,
+        "weight_decay": 0.0001
+      },
+      {
+        "names": [
+          "evidence_model.backbone.signal.clip_vision_encoder.base.transformer.resblocks.11.mlp.c_proj.weight"
+        ],
+        "lr": 3.5000000000000004e-05,
+        "weight_decay": 0.0001
+      },
+      {
+        "names": [
+          "evidence_model.backbone.signal.clip_vision_encoder.base.transformer.resblocks.11.mlp.c_proj.bias"
+        ],
+        "lr": 3.5000000000000004e-05,
+        "weight_decay": 0.0001
+      },
+      {
+        "names": [
+          "evidence_model.backbone.signal.clip_vision_encoder.base.transformer.resblocks.11.ln_2.weight"
+        ],
+        "lr": 3.5000000000000004e-05,
+        "weight_decay": 0.0001
+      },
+      {
+        "names": [
+          "evidence_model.backbone.signal.clip_vision_encoder.base.transformer.resblocks.11.ln_2.bias"
+        ],
+        "lr": 3.5000000000000004e-05,
+        "weight_decay": 0.0001
+      },
+      {
+        "names": [
+          "evidence_model.backbone.signal.clip_vision_encoder.base.ln_post.weight"
+        ],
+        "lr": 3.5000000000000004e-05,
+        "weight_decay": 0.0001
+      },
+      {
+        "names": [
+          "evidence_model.backbone.signal.clip_vision_encoder.base.ln_post.bias"
+        ],
+        "lr": 3.5000000000000004e-05,
+        "weight_decay": 0.0001
+      },
+      {
+        "names": [
+          "evidence_model.backbone.signal.bottleneck.weight"
+        ],
+        "lr": 3.5000000000000004e-05,
+        "weight_decay": 0.0001
+      },
+      {
+        "names": [
+          "evidence_model.backbone.signal.classifier.weight"
+        ],
+        "lr": 3.5000000000000004e-05,
+        "weight_decay": 0.0001
+      },
+      {
+        "names": [
+          "evidence_model.backbone.adapters.0.0.0.weight"
+        ],
+        "lr": 3.5000000000000004e-05,
+        "weight_decay": 0.0001
+      },
+      {
+        "names": [
+          "evidence_model.backbone.adapters.0.0.0.bias"
+        ],
+        "lr": 3.5000000000000004e-05,
+        "weight_decay": 0.0001
+      },
+      {
+        "names": [
+          "evidence_model.backbone.adapters.0.0.1.weight"
+        ],
+        "lr": 3.5000000000000004e-05,
+        "weight_decay": 0.0001
+      },
+      {
+        "names": [
+          "evidence_model.backbone.adapters.0.0.1.bias"
+        ],
+        "lr": 3.5000000000000004e-05,
+        "weight_decay": 0.0001
+      },
+      {
+        "names": [
+          "evidence_model.backbone.adapters.0.0.3.weight"
+        ],
+        "lr": 3.5000000000000004e-05,
+        "weight_decay": 0.0001
+      },
+      {
+        "names": [
+          "evidence_model.backbone.adapters.0.0.3.bias"
+        ],
+        "lr": 3.5000000000000004e-05,
+        "weight_decay": 0.0001
+      },
+      {
+        "names": [
+          "evidence_model.backbone.adapters.0.1.0.weight"
+        ],
+        "lr": 3.5000000000000004e-05,
+        "weight_decay": 0.0001
+      },
+      {
+        "names": [
+          "evidence_model.backbone.adapters.0.1.0.bias"
+        ],
+        "lr": 3.5000000000000004e-05,
+        "weight_decay": 0.0001
+      },
+      {
+        "names": [
+          "evidence_model.backbone.adapters.0.1.1.weight"
+        ],
+        "lr": 3.5000000000000004e-05,
+        "weight_decay": 0.0001
+      },
+      {
+        "names": [
+          "evidence_model.backbone.adapters.0.1.1.bias"
+        ],
+        "lr": 3.5000000000000004e-05,
+        "weight_decay": 0.0001
+      },
+      {
+        "names": [
+          "evidence_model.backbone.adapters.0.1.3.weight"
+        ],
+        "lr": 3.5000000000000004e-05,
+        "weight_decay": 0.0001
+      },
+      {
+        "names": [
+          "evidence_model.backbone.adapters.0.1.3.bias"
+        ],
+        "lr": 3.5000000000000004e-05,
+        "weight_decay": 0.0001
+      },
+      {
+        "names": [
+          "evidence_model.backbone.adapters.0.2.0.weight"
+        ],
+        "lr": 3.5000000000000004e-05,
+        "weight_decay": 0.0001
+      },
+      {
+        "names": [
+          "evidence_model.backbone.adapters.0.2.0.bias"
+        ],
+        "lr": 3.5000000000000004e-05,
+        "weight_decay": 0.0001
+      },
+      {
+        "names": [
+          "evidence_model.backbone.adapters.0.2.1.weight"
+        ],
+        "lr": 3.5000000000000004e-05,
+        "weight_decay": 0.0001
+      },
+      {
+        "names": [
+          "evidence_model.backbone.adapters.0.2.1.bias"
+        ],
+        "lr": 3.5000000000000004e-05,
+        "weight_decay": 0.0001
+      },
+      {
+        "names": [
+          "evidence_model.backbone.adapters.0.2.3.weight"
+        ],
+        "lr": 3.5000000000000004e-05,
+        "weight_decay": 0.0001
+      },
+      {
+        "names": [
+          "evidence_model.backbone.adapters.0.2.3.bias"
+        ],
+        "lr": 3.5000000000000004e-05,
+        "weight_decay": 0.0001
+      },
+      {
+        "names": [
+          "evidence_model.backbone.adapters.1.0.0.weight"
+        ],
+        "lr": 3.5000000000000004e-05,
+        "weight_decay": 0.0001
+      },
+      {
+        "names": [
+          "evidence_model.backbone.adapters.1.0.0.bias"
+        ],
+        "lr": 3.5000000000000004e-05,
+        "weight_decay": 0.0001
+      },
+      {
+        "names": [
+          "evidence_model.backbone.adapters.1.0.1.weight"
+        ],
+        "lr": 3.5000000000000004e-05,
+        "weight_decay": 0.0001
+      },
+      {
+        "names": [
+          "evidence_model.backbone.adapters.1.0.1.bias"
+        ],
+        "lr": 3.5000000000000004e-05,
+        "weight_decay": 0.0001
+      },
+      {
+        "names": [
+          "evidence_model.backbone.adapters.1.0.3.weight"
+        ],
+        "lr": 3.5000000000000004e-05,
+        "weight_decay": 0.0001
+      },
+      {
+        "names": [
+          "evidence_model.backbone.adapters.1.0.3.bias"
+        ],
+        "lr": 3.5000000000000004e-05,
+        "weight_decay": 0.0001
+      },
+      {
+        "names": [
+          "evidence_model.backbone.adapters.1.1.0.weight"
+        ],
+        "lr": 3.5000000000000004e-05,
+        "weight_decay": 0.0001
+      },
+      {
+        "names": [
+          "evidence_model.backbone.adapters.1.1.0.bias"
+        ],
+        "lr": 3.5000000000000004e-05,
+        "weight_decay": 0.0001
+      },
+      {
+        "names": [
+          "evidence_model.backbone.adapters.1.1.1.weight"
+        ],
+        "lr": 3.5000000000000004e-05,
+        "weight_decay": 0.0001
+      },
+      {
+        "names": [
+          "evidence_model.backbone.adapters.1.1.1.bias"
+        ],
+        "lr": 3.5000000000000004e-05,
+        "weight_decay": 0.0001
+      },
+      {
+        "names": [
+          "evidence_model.backbone.adapters.1.1.3.weight"
+        ],
+        "lr": 3.5000000000000004e-05,
+        "weight_decay": 0.0001
+      },
+      {
+        "names": [
+          "evidence_model.backbone.adapters.1.1.3.bias"
+        ],
+        "lr": 3.5000000000000004e-05,
+        "weight_decay": 0.0001
+      },
+      {
+        "names": [
+          "evidence_model.backbone.adapters.1.2.0.weight"
+        ],
+        "lr": 3.5000000000000004e-05,
+        "weight_decay": 0.0001
+      },
+      {
+        "names": [
+          "evidence_model.backbone.adapters.1.2.0.bias"
+        ],
+        "lr": 3.5000000000000004e-05,
+        "weight_decay": 0.0001
+      },
+      {
+        "names": [
+          "evidence_model.backbone.adapters.1.2.1.weight"
+        ],
+        "lr": 3.5000000000000004e-05,
+        "weight_decay": 0.0001
+      },
+      {
+        "names": [
+          "evidence_model.backbone.adapters.1.2.1.bias"
+        ],
+        "lr": 3.5000000000000004e-05,
+        "weight_decay": 0.0001
+      },
+      {
+        "names": [
+          "evidence_model.backbone.adapters.1.2.3.weight"
+        ],
+        "lr": 3.5000000000000004e-05,
+        "weight_decay": 0.0001
+      },
+      {
+        "names": [
+          "evidence_model.backbone.adapters.1.2.3.bias"
+        ],
+        "lr": 3.5000000000000004e-05,
+        "weight_decay": 0.0001
+      },
+      {
+        "names": [
+          "evidence_model.backbone.adapters.2.0.0.weight"
+        ],
+        "lr": 3.5000000000000004e-05,
+        "weight_decay": 0.0001
+      },
+      {
+        "names": [
+          "evidence_model.backbone.adapters.2.0.0.bias"
+        ],
+        "lr": 3.5000000000000004e-05,
+        "weight_decay": 0.0001
+      },
+      {
+        "names": [
+          "evidence_model.backbone.adapters.2.0.1.weight"
+        ],
+        "lr": 3.5000000000000004e-05,
+        "weight_decay": 0.0001
+      },
+      {
+        "names": [
+          "evidence_model.backbone.adapters.2.0.1.bias"
+        ],
+        "lr": 3.5000000000000004e-05,
+        "weight_decay": 0.0001
+      },
+      {
+        "names": [
+          "evidence_model.backbone.adapters.2.0.3.weight"
+        ],
+        "lr": 3.5000000000000004e-05,
+        "weight_decay": 0.0001
+      },
+      {
+        "names": [
+          "evidence_model.backbone.adapters.2.0.3.bias"
+        ],
+        "lr": 3.5000000000000004e-05,
+        "weight_decay": 0.0001
+      },
+      {
+        "names": [
+          "evidence_model.backbone.adapters.2.1.0.weight"
+        ],
+        "lr": 3.5000000000000004e-05,
+        "weight_decay": 0.0001
+      },
+      {
+        "names": [
+          "evidence_model.backbone.adapters.2.1.0.bias"
+        ],
+        "lr": 3.5000000000000004e-05,
+        "weight_decay": 0.0001
+      },
+      {
+        "names": [
+          "evidence_model.backbone.adapters.2.1.1.weight"
+        ],
+        "lr": 3.5000000000000004e-05,
+        "weight_decay": 0.0001
+      },
+      {
+        "names": [
+          "evidence_model.backbone.adapters.2.1.1.bias"
+        ],
+        "lr": 3.5000000000000004e-05,
+        "weight_decay": 0.0001
+      },
+      {
+        "names": [
+          "evidence_model.backbone.adapters.2.1.3.weight"
+        ],
+        "lr": 3.5000000000000004e-05,
+        "weight_decay": 0.0001
+      },
+      {
+        "names": [
+          "evidence_model.backbone.adapters.2.1.3.bias"
+        ],
+        "lr": 3.5000000000000004e-05,
+        "weight_decay": 0.0001
+      },
+      {
+        "names": [
+          "evidence_model.backbone.adapters.2.2.0.weight"
+        ],
+        "lr": 3.5000000000000004e-05,
+        "weight_decay": 0.0001
+      },
+      {
+        "names": [
+          "evidence_model.backbone.adapters.2.2.0.bias"
+        ],
+        "lr": 3.5000000000000004e-05,
+        "weight_decay": 0.0001
+      },
+      {
+        "names": [
+          "evidence_model.backbone.adapters.2.2.1.weight"
+        ],
+        "lr": 3.5000000000000004e-05,
+        "weight_decay": 0.0001
+      },
+      {
+        "names": [
+          "evidence_model.backbone.adapters.2.2.1.bias"
+        ],
+        "lr": 3.5000000000000004e-05,
+        "weight_decay": 0.0001
+      },
+      {
+        "names": [
+          "evidence_model.backbone.adapters.2.2.3.weight"
+        ],
+        "lr": 3.5000000000000004e-05,
+        "weight_decay": 0.0001
+      },
+      {
+        "names": [
+          "evidence_model.backbone.adapters.2.2.3.bias"
+        ],
+        "lr": 3.5000000000000004e-05,
+        "weight_decay": 0.0001
+      },
+      {
+        "names": [
+          "evidence_model.roles.depth_logits"
+        ],
+        "lr": 3.5000000000000004e-05,
+        "weight_decay": 0.0001
+      },
+      {
+        "names": [
+          "evidence_model.roles.modality_embedding"
+        ],
+        "lr": 3.5000000000000004e-05,
+        "weight_decay": 0.0001
+      },
+      {
+        "names": [
+          "evidence_model.roles.anchor_queries"
+        ],
+        "lr": 3.5000000000000004e-05,
+        "weight_decay": 0.0001
+      },
+      {
+        "names": [
+          "evidence_model.roles.depth_norms.0.weight"
+        ],
+        "lr": 3.5000000000000004e-05,
+        "weight_decay": 0.0001
+      },
+      {
+        "names": [
+          "evidence_model.roles.depth_norms.0.bias"
+        ],
+        "lr": 3.5000000000000004e-05,
+        "weight_decay": 0.0001
+      },
+      {
+        "names": [
+          "evidence_model.roles.depth_norms.1.weight"
+        ],
+        "lr": 3.5000000000000004e-05,
+        "weight_decay": 0.0001
+      },
+      {
+        "names": [
+          "evidence_model.roles.depth_norms.1.bias"
+        ],
+        "lr": 3.5000000000000004e-05,
+        "weight_decay": 0.0001
+      },
+      {
+        "names": [
+          "evidence_model.roles.depth_norms.2.weight"
+        ],
+        "lr": 3.5000000000000004e-05,
+        "weight_decay": 0.0001
+      },
+      {
+        "names": [
+          "evidence_model.roles.depth_norms.2.bias"
+        ],
+        "lr": 3.5000000000000004e-05,
+        "weight_decay": 0.0001
+      },
+      {
+        "names": [
+          "evidence_model.roles.role_adapters.0.0.weight"
+        ],
+        "lr": 3.5000000000000004e-05,
+        "weight_decay": 0.0001
+      },
+      {
+        "names": [
+          "evidence_model.roles.role_adapters.0.0.bias"
+        ],
+        "lr": 3.5000000000000004e-05,
+        "weight_decay": 0.0001
+      },
+      {
+        "names": [
+          "evidence_model.roles.role_adapters.0.2.weight"
+        ],
+        "lr": 3.5000000000000004e-05,
+        "weight_decay": 0.0001
+      },
+      {
+        "names": [
+          "evidence_model.roles.role_adapters.0.2.bias"
+        ],
+        "lr": 3.5000000000000004e-05,
+        "weight_decay": 0.0001
+      },
+      {
+        "names": [
+          "evidence_model.roles.role_adapters.1.0.weight"
+        ],
+        "lr": 3.5000000000000004e-05,
+        "weight_decay": 0.0001
+      },
+      {
+        "names": [
+          "evidence_model.roles.role_adapters.1.0.bias"
+        ],
+        "lr": 3.5000000000000004e-05,
+        "weight_decay": 0.0001
+      },
+      {
+        "names": [
+          "evidence_model.roles.role_adapters.1.2.weight"
+        ],
+        "lr": 3.5000000000000004e-05,
+        "weight_decay": 0.0001
+      },
+      {
+        "names": [
+          "evidence_model.roles.role_adapters.1.2.bias"
+        ],
+        "lr": 3.5000000000000004e-05,
+        "weight_decay": 0.0001
+      },
+      {
+        "names": [
+          "evidence_model.roles.role_adapters.2.0.weight"
+        ],
+        "lr": 3.5000000000000004e-05,
+        "weight_decay": 0.0001
+      },
+      {
+        "names": [
+          "evidence_model.roles.role_adapters.2.0.bias"
+        ],
+        "lr": 3.5000000000000004e-05,
+        "weight_decay": 0.0001
+      },
+      {
+        "names": [
+          "evidence_model.roles.role_adapters.2.2.weight"
+        ],
+        "lr": 3.5000000000000004e-05,
+        "weight_decay": 0.0001
+      },
+      {
+        "names": [
+          "evidence_model.roles.role_adapters.2.2.bias"
+        ],
+        "lr": 3.5000000000000004e-05,
+        "weight_decay": 0.0001
+      },
+      {
+        "names": [
+          "evidence_model.roles.cnn.0.weight"
+        ],
+        "lr": 3.5000000000000004e-05,
+        "weight_decay": 0.0001
+      },
+      {
+        "names": [
+          "evidence_model.roles.cnn.0.bias"
+        ],
+        "lr": 3.5000000000000004e-05,
+        "weight_decay": 0.0001
+      },
+      {
+        "names": [
+          "evidence_model.roles.cnn.2.weight"
+        ],
+        "lr": 3.5000000000000004e-05,
+        "weight_decay": 0.0001
+      },
+      {
+        "names": [
+          "evidence_model.roles.cnn.2.bias"
+        ],
+        "lr": 3.5000000000000004e-05,
+        "weight_decay": 0.0001
+      },
+      {
+        "names": [
+          "evidence_model.roles.transformer.self_attn.in_proj_weight"
+        ],
+        "lr": 3.5000000000000004e-05,
+        "weight_decay": 0.0001
+      },
+      {
+        "names": [
+          "evidence_model.roles.transformer.self_attn.in_proj_bias"
+        ],
+        "lr": 3.5000000000000004e-05,
+        "weight_decay": 0.0001
+      },
+      {
+        "names": [
+          "evidence_model.roles.transformer.self_attn.out_proj.weight"
+        ],
+        "lr": 3.5000000000000004e-05,
+        "weight_decay": 0.0001
+      },
+      {
+        "names": [
+          "evidence_model.roles.transformer.self_attn.out_proj.bias"
+        ],
+        "lr": 3.5000000000000004e-05,
+        "weight_decay": 0.0001
+      },
+      {
+        "names": [
+          "evidence_model.roles.transformer.linear1.weight"
+        ],
+        "lr": 3.5000000000000004e-05,
+        "weight_decay": 0.0001
+      },
+      {
+        "names": [
+          "evidence_model.roles.transformer.linear1.bias"
+        ],
+        "lr": 3.5000000000000004e-05,
+        "weight_decay": 0.0001
+      },
+      {
+        "names": [
+          "evidence_model.roles.transformer.linear2.weight"
+        ],
+        "lr": 3.5000000000000004e-05,
+        "weight_decay": 0.0001
+      },
+      {
+        "names": [
+          "evidence_model.roles.transformer.linear2.bias"
+        ],
+        "lr": 3.5000000000000004e-05,
+        "weight_decay": 0.0001
+      },
+      {
+        "names": [
+          "evidence_model.roles.transformer.norm1.weight"
+        ],
+        "lr": 3.5000000000000004e-05,
+        "weight_decay": 0.0001
+      },
+      {
+        "names": [
+          "evidence_model.roles.transformer.norm1.bias"
+        ],
+        "lr": 3.5000000000000004e-05,
+        "weight_decay": 0.0001
+      },
+      {
+        "names": [
+          "evidence_model.roles.transformer.norm2.weight"
+        ],
+        "lr": 3.5000000000000004e-05,
+        "weight_decay": 0.0001
+      },
+      {
+        "names": [
+          "evidence_model.roles.transformer.norm2.bias"
+        ],
+        "lr": 3.5000000000000004e-05,
+        "weight_decay": 0.0001
+      },
+      {
+        "names": [
+          "evidence_model.roles.mamba_norm.weight"
+        ],
+        "lr": 3.5000000000000004e-05,
+        "weight_decay": 0.0001
+      },
+      {
+        "names": [
+          "evidence_model.roles.mamba_norm.bias"
+        ],
+        "lr": 3.5000000000000004e-05,
+        "weight_decay": 0.0001
+      },
+      {
+        "names": [
+          "evidence_model.roles.mamba.A_log"
+        ],
+        "lr": 3.5000000000000004e-05,
+        "weight_decay": 0.0001
+      },
+      {
+        "names": [
+          "evidence_model.roles.mamba.D"
+        ],
+        "lr": 3.5000000000000004e-05,
+        "weight_decay": 0.0001
+      },
+      {
+        "names": [
+          "evidence_model.roles.mamba.in_proj.weight"
+        ],
+        "lr": 3.5000000000000004e-05,
+        "weight_decay": 0.0001
+      },
+      {
+        "names": [
+          "evidence_model.roles.mamba.conv1d.weight"
+        ],
+        "lr": 3.5000000000000004e-05,
+        "weight_decay": 0.0001
+      },
+      {
+        "names": [
+          "evidence_model.roles.mamba.conv1d.bias"
+        ],
+        "lr": 3.5000000000000004e-05,
+        "weight_decay": 0.0001
+      },
+      {
+        "names": [
+          "evidence_model.roles.mamba.x_proj.weight"
+        ],
+        "lr": 3.5000000000000004e-05,
+        "weight_decay": 0.0001
+      },
+      {
+        "names": [
+          "evidence_model.roles.mamba.dt_proj.weight"
+        ],
+        "lr": 3.5000000000000004e-05,
+        "weight_decay": 0.0001
+      },
+      {
+        "names": [
+          "evidence_model.roles.mamba.dt_proj.bias"
+        ],
+        "lr": 3.5000000000000004e-05,
+        "weight_decay": 0.0001
+      },
+      {
+        "names": [
+          "evidence_model.roles.mamba.out_proj.weight"
+        ],
+        "lr": 3.5000000000000004e-05,
+        "weight_decay": 0.0001
+      },
+      {
+        "names": [
+          "evidence_model.roles.cnn_to_transformer.weight"
+        ],
+        "lr": 3.5000000000000004e-05,
+        "weight_decay": 0.0001
+      },
+      {
+        "names": [
+          "evidence_model.roles.transformer_to_mamba.weight"
+        ],
+        "lr": 3.5000000000000004e-05,
+        "weight_decay": 0.0001
+      },
+      {
+        "names": [
+          "evidence_model.roles.output_norms.0.weight"
+        ],
+        "lr": 3.5000000000000004e-05,
+        "weight_decay": 0.0001
+      },
+      {
+        "names": [
+          "evidence_model.roles.output_norms.0.bias"
+        ],
+        "lr": 3.5000000000000004e-05,
+        "weight_decay": 0.0001
+      },
+      {
+        "names": [
+          "evidence_model.roles.output_norms.1.weight"
+        ],
+        "lr": 3.5000000000000004e-05,
+        "weight_decay": 0.0001
+      },
+      {
+        "names": [
+          "evidence_model.roles.output_norms.1.bias"
+        ],
+        "lr": 3.5000000000000004e-05,
+        "weight_decay": 0.0001
+      },
+      {
+        "names": [
+          "evidence_model.roles.output_norms.2.weight"
+        ],
+        "lr": 3.5000000000000004e-05,
+        "weight_decay": 0.0001
+      },
+      {
+        "names": [
+          "evidence_model.roles.output_norms.2.bias"
+        ],
+        "lr": 3.5000000000000004e-05,
+        "weight_decay": 0.0001
+      },
+      {
+        "names": [
+          "evidence_model.roles.context_queries.weight"
+        ],
+        "lr": 3.5000000000000004e-05,
+        "weight_decay": 0.0001
+      },
+      {
+        "names": [
+          "evidence_model.roles.query_projections.0.weight"
+        ],
+        "lr": 3.5000000000000004e-05,
+        "weight_decay": 0.0001
+      },
+      {
+        "names": [
+          "evidence_model.roles.query_projections.1.weight"
+        ],
+        "lr": 3.5000000000000004e-05,
+        "weight_decay": 0.0001
+      },
+      {
+        "names": [
+          "evidence_model.roles.query_projections.2.weight"
+        ],
+        "lr": 3.5000000000000004e-05,
+        "weight_decay": 0.0001
+      },
+      {
+        "names": [
+          "evidence_model.roles.key_projections.0.weight"
+        ],
+        "lr": 3.5000000000000004e-05,
+        "weight_decay": 0.0001
+      },
+      {
+        "names": [
+          "evidence_model.roles.key_projections.1.weight"
+        ],
+        "lr": 3.5000000000000004e-05,
+        "weight_decay": 0.0001
+      },
+      {
+        "names": [
+          "evidence_model.roles.key_projections.2.weight"
+        ],
+        "lr": 3.5000000000000004e-05,
+        "weight_decay": 0.0001
+      },
+      {
+        "names": [
+          "evidence_model.roles.value_projections.0.weight"
+        ],
+        "lr": 3.5000000000000004e-05,
+        "weight_decay": 0.0001
+      },
+      {
+        "names": [
+          "evidence_model.roles.value_projections.1.weight"
+        ],
+        "lr": 3.5000000000000004e-05,
+        "weight_decay": 0.0001
+      },
+      {
+        "names": [
+          "evidence_model.roles.value_projections.2.weight"
+        ],
+        "lr": 3.5000000000000004e-05,
+        "weight_decay": 0.0001
+      },
+      {
+        "names": [
+          "evidence_model.roles.output_projections.0.weight"
+        ],
+        "lr": 3.5000000000000004e-05,
+        "weight_decay": 0.0001
+      },
+      {
+        "names": [
+          "evidence_model.roles.output_projections.1.weight"
+        ],
+        "lr": 3.5000000000000004e-05,
+        "weight_decay": 0.0001
+      },
+      {
+        "names": [
+          "evidence_model.roles.output_projections.2.weight"
+        ],
+        "lr": 3.5000000000000004e-05,
+        "weight_decay": 0.0001
+      },
+      {
+        "names": [
+          "evidence_model.roles.global_projection.weight"
+        ],
+        "lr": 3.5000000000000004e-05,
+        "weight_decay": 0.0001
+      },
+      {
+        "names": [
+          "evidence_model.roles.detail_reader.stem.0.weight"
+        ],
+        "lr": 3.5000000000000004e-05,
+        "weight_decay": 0.0001
+      },
+      {
+        "names": [
+          "evidence_model.roles.detail_reader.stem.0.bias"
+        ],
+        "lr": 3.5000000000000004e-05,
+        "weight_decay": 0.0001
+      },
+      {
+        "names": [
+          "evidence_model.roles.detail_reader.stem.2.weight"
+        ],
+        "lr": 3.5000000000000004e-05,
+        "weight_decay": 0.0001
+      },
+      {
+        "names": [
+          "evidence_model.roles.detail_reader.stem.2.bias"
+        ],
+        "lr": 3.5000000000000004e-05,
+        "weight_decay": 0.0001
+      },
+      {
+        "names": [
+          "evidence_model.roles.detail_reader.stem.4.weight"
+        ],
+        "lr": 3.5000000000000004e-05,
+        "weight_decay": 0.0001
+      },
+      {
+        "names": [
+          "evidence_model.roles.detail_reader.stem.4.bias"
+        ],
+        "lr": 3.5000000000000004e-05,
+        "weight_decay": 0.0001
+      },
+      {
+        "names": [
+          "evidence_model.roles.detail_reader.query.weight"
+        ],
+        "lr": 3.5000000000000004e-05,
+        "weight_decay": 0.0001
+      },
+      {
+        "names": [
+          "evidence_model.roles.detail_reader.query.bias"
+        ],
+        "lr": 3.5000000000000004e-05,
+        "weight_decay": 0.0001
+      },
+      {
+        "names": [
+          "evidence_model.roles.detail_reader.key.weight"
+        ],
+        "lr": 3.5000000000000004e-05,
+        "weight_decay": 0.0001
+      },
+      {
+        "names": [
+          "evidence_model.roles.detail_reader.value.weight"
+        ],
+        "lr": 3.5000000000000004e-05,
+        "weight_decay": 0.0001
+      },
+      {
+        "names": [
+          "evidence_model.roles.detail_reader.value.bias"
+        ],
+        "lr": 3.5000000000000004e-05,
+        "weight_decay": 0.0001
+      },
+      {
+        "names": [
+          "evidence_model.roles.detail_reader.norm.weight"
+        ],
+        "lr": 3.5000000000000004e-05,
+        "weight_decay": 0.0001
+      },
+      {
+        "names": [
+          "evidence_model.roles.detail_reader.norm.bias"
+        ],
+        "lr": 3.5000000000000004e-05,
+        "weight_decay": 0.0001
+      },
+      {
+        "names": [
+          "evidence_model.roles.detail_reader.output.weight"
+        ],
+        "lr": 3.5000000000000004e-05,
+        "weight_decay": 0.0001
+      },
+      {
+        "names": [
+          "evidence_model.readout.weight"
+        ],
+        "lr": 3.5000000000000004e-05,
+        "weight_decay": 0.0001
+      }
+    ],
+    "author_bn_batches_tracked": {
+      "bottleneck": 8
+    },
+    "detail_parameters": [
+      "evidence_model.roles.detail_reader.stem.0.weight",
+      "evidence_model.roles.detail_reader.stem.0.bias",
+      "evidence_model.roles.detail_reader.stem.2.weight",
+      "evidence_model.roles.detail_reader.stem.2.bias",
+      "evidence_model.roles.detail_reader.stem.4.weight",
+      "evidence_model.roles.detail_reader.stem.4.bias",
+      "evidence_model.roles.detail_reader.query.weight",
+      "evidence_model.roles.detail_reader.query.bias",
+      "evidence_model.roles.detail_reader.key.weight",
+      "evidence_model.roles.detail_reader.value.weight",
+      "evidence_model.roles.detail_reader.value.bias",
+      "evidence_model.roles.detail_reader.norm.weight",
+      "evidence_model.roles.detail_reader.norm.bias",
+      "evidence_model.roles.detail_reader.output.weight"
+    ],
+    "detail_updates": [
+      {
+        "evidence_model.roles.detail_reader.stem.0.weight": {
+          "unscaled_gradient_max_abs": 0.0,
+          "parameter_delta_from_initial_max_abs": 2.3365020751953125e-05
+        },
+        "evidence_model.roles.detail_reader.stem.0.bias": {
+          "unscaled_gradient_max_abs": 0.0,
+          "parameter_delta_from_initial_max_abs": 3.567337989807129e-05
+        },
+        "evidence_model.roles.detail_reader.stem.2.weight": {
+          "unscaled_gradient_max_abs": 0.0,
+          "parameter_delta_from_initial_max_abs": 2.3342669010162354e-05
+        },
+        "evidence_model.roles.detail_reader.stem.2.bias": {
+          "unscaled_gradient_max_abs": 0.0,
+          "parameter_delta_from_initial_max_abs": 3.5624951124191284e-05
+        },
+        "evidence_model.roles.detail_reader.stem.4.weight": {
+          "unscaled_gradient_max_abs": 0.0,
+          "parameter_delta_from_initial_max_abs": 2.3324042558670044e-05
+        },
+        "evidence_model.roles.detail_reader.stem.4.bias": {
+          "unscaled_gradient_max_abs": 0.0,
+          "parameter_delta_from_initial_max_abs": 3.560259938240051e-05
+        },
+        "evidence_model.roles.detail_reader.query.weight": {
+          "unscaled_gradient_max_abs": 0.0,
+          "parameter_delta_from_initial_max_abs": 2.33575701713562e-05
+        },
+        "evidence_model.roles.detail_reader.query.bias": {
+          "unscaled_gradient_max_abs": 0.0,
+          "parameter_delta_from_initial_max_abs": 3.5643577575683594e-05
+        },
+        "evidence_model.roles.detail_reader.key.weight": {
+          "unscaled_gradient_max_abs": 0.0,
+          "parameter_delta_from_initial_max_abs": 2.33575701713562e-05
+        },
+        "evidence_model.roles.detail_reader.value.weight": {
+          "unscaled_gradient_max_abs": 0.0,
+          "parameter_delta_from_initial_max_abs": 2.33575701713562e-05
+        },
+        "evidence_model.roles.detail_reader.value.bias": {
+          "unscaled_gradient_max_abs": 0.0,
+          "parameter_delta_from_initial_max_abs": 3.5643577575683594e-05
+        },
+        "evidence_model.roles.detail_reader.norm.weight": {
+          "unscaled_gradient_max_abs": 0.0,
+          "parameter_delta_from_initial_max_abs": 2.3365020751953125e-05
+        },
+        "evidence_model.roles.detail_reader.norm.bias": {
+          "unscaled_gradient_max_abs": 0.0,
+          "parameter_delta_from_initial_max_abs": 0.0
+        },
+        "evidence_model.roles.detail_reader.output.weight": {
+          "unscaled_gradient_max_abs": 0.001281599747017026,
+          "parameter_delta_from_initial_max_abs": 2.3381144274026155e-05
+        }
+      },
+      {
+        "evidence_model.roles.detail_reader.stem.0.weight": {
+          "unscaled_gradient_max_abs": 4.332978278398514e-07,
+          "parameter_delta_from_initial_max_abs": 4.67449426651001e-05
+        },
+        "evidence_model.roles.detail_reader.stem.0.bias": {
+          "unscaled_gradient_max_abs": 6.952323019504547e-07,
+          "parameter_delta_from_initial_max_abs": 7.134675979614258e-05
+        },
+        "evidence_model.roles.detail_reader.stem.2.weight": {
+          "unscaled_gradient_max_abs": 5.532056093215942e-07,
+          "parameter_delta_from_initial_max_abs": 4.670768976211548e-05
+        },
+        "evidence_model.roles.detail_reader.stem.2.bias": {
+          "unscaled_gradient_max_abs": 9.937211871147156e-07,
+          "parameter_delta_from_initial_max_abs": 7.127970457077026e-05
+        },
+        "evidence_model.roles.detail_reader.stem.4.weight": {
+          "unscaled_gradient_max_abs": 1.9813887774944305e-07,
+          "parameter_delta_from_initial_max_abs": 4.66667115688324e-05
+        },
+        "evidence_model.roles.detail_reader.stem.4.bias": {
+          "unscaled_gradient_max_abs": 8.596107363700867e-07,
+          "parameter_delta_from_initial_max_abs": 7.124990224838257e-05
+        },
+        "evidence_model.roles.detail_reader.query.weight": {
+          "unscaled_gradient_max_abs": 4.8037247069032674e-08,
+          "parameter_delta_from_initial_max_abs": 4.67151403427124e-05
+        },
+        "evidence_model.roles.detail_reader.query.bias": {
+          "unscaled_gradient_max_abs": 3.447950192025928e-08,
+          "parameter_delta_from_initial_max_abs": 7.129460573196411e-05
+        },
+        "evidence_model.roles.detail_reader.key.weight": {
+          "unscaled_gradient_max_abs": 4.643712969709668e-08,
+          "parameter_delta_from_initial_max_abs": 4.67151403427124e-05
+        },
+        "evidence_model.roles.detail_reader.value.weight": {
+          "unscaled_gradient_max_abs": 1.3318296510078653e-07,
+          "parameter_delta_from_initial_max_abs": 4.67151403427124e-05
+        },
+        "evidence_model.roles.detail_reader.value.bias": {
+          "unscaled_gradient_max_abs": 1.3683413726539584e-06,
+          "parameter_delta_from_initial_max_abs": 7.133930921554565e-05
+        },
+        "evidence_model.roles.detail_reader.norm.weight": {
+          "unscaled_gradient_max_abs": 8.29441333394243e-08,
+          "parameter_delta_from_initial_max_abs": 4.673004150390625e-05
+        },
+        "evidence_model.roles.detail_reader.norm.bias": {
+          "unscaled_gradient_max_abs": 5.734012376024111e-08,
+          "parameter_delta_from_initial_max_abs": 2.1303363610059023e-05
+        },
+        "evidence_model.roles.detail_reader.output.weight": {
+          "unscaled_gradient_max_abs": 0.0007251664064824581,
+          "parameter_delta_from_initial_max_abs": 4.679262565332465e-05
+        }
+      },
+      {
+        "evidence_model.roles.detail_reader.stem.0.weight": {
+          "unscaled_gradient_max_abs": 1.0095536708831787e-06,
+          "parameter_delta_from_initial_max_abs": 7.012486457824707e-05
+        },
+        "evidence_model.roles.detail_reader.stem.0.bias": {
+          "unscaled_gradient_max_abs": 1.4388933777809143e-06,
+          "parameter_delta_from_initial_max_abs": 0.00010704994201660156
+        },
+        "evidence_model.roles.detail_reader.stem.2.weight": {
+          "unscaled_gradient_max_abs": 1.3587996363639832e-06,
+          "parameter_delta_from_initial_max_abs": 7.011741399765015e-05
+        },
+        "evidence_model.roles.detail_reader.stem.2.bias": {
+          "unscaled_gradient_max_abs": 3.3080577850341797e-06,
+          "parameter_delta_from_initial_max_abs": 0.00010698661208152771
+        },
+        "evidence_model.roles.detail_reader.stem.4.weight": {
+          "unscaled_gradient_max_abs": 7.753260433673859e-07,
+          "parameter_delta_from_initial_max_abs": 7.006898522377014e-05
+        },
+        "evidence_model.roles.detail_reader.stem.4.bias": {
+          "unscaled_gradient_max_abs": 2.903863787651062e-06,
+          "parameter_delta_from_initial_max_abs": 0.0001069679856300354
+        },
+        "evidence_model.roles.detail_reader.query.weight": {
+          "unscaled_gradient_max_abs": 2.0241668607923202e-07,
+          "parameter_delta_from_initial_max_abs": 7.008016109466553e-05
+        },
+        "evidence_model.roles.detail_reader.query.bias": {
+          "unscaled_gradient_max_abs": 1.790233454812551e-07,
+          "parameter_delta_from_initial_max_abs": 0.00010694563388824463
+        },
+        "evidence_model.roles.detail_reader.key.weight": {
+          "unscaled_gradient_max_abs": 2.327464017071179e-07,
+          "parameter_delta_from_initial_max_abs": 7.008016109466553e-05
+        },
+        "evidence_model.roles.detail_reader.value.weight": {
+          "unscaled_gradient_max_abs": 3.6770913425243634e-07,
+          "parameter_delta_from_initial_max_abs": 7.008761167526245e-05
+        },
+        "evidence_model.roles.detail_reader.value.bias": {
+          "unscaled_gradient_max_abs": 5.748484909418039e-06,
+          "parameter_delta_from_initial_max_abs": 0.00010710209608078003
+        },
+        "evidence_model.roles.detail_reader.norm.weight": {
+          "unscaled_gradient_max_abs": 3.2190547472055187e-07,
+          "parameter_delta_from_initial_max_abs": 7.009506225585938e-05
+        },
+        "evidence_model.roles.detail_reader.norm.bias": {
+          "unscaled_gradient_max_abs": 2.902944515881245e-07,
+          "parameter_delta_from_initial_max_abs": 4.5610217057401314e-05
+        },
+        "evidence_model.roles.detail_reader.output.weight": {
+          "unscaled_gradient_max_abs": 0.001013309694826603,
+          "parameter_delta_from_initial_max_abs": 7.025442027952522e-05
+        }
+      },
+      {
+        "evidence_model.roles.detail_reader.stem.0.weight": {
+          "unscaled_gradient_max_abs": 1.2777745723724365e-06,
+          "parameter_delta_from_initial_max_abs": 9.351968765258789e-05
+        },
+        "evidence_model.roles.detail_reader.stem.0.bias": {
+          "unscaled_gradient_max_abs": 2.425163984298706e-06,
+          "parameter_delta_from_initial_max_abs": 0.00014274567365646362
+        },
+        "evidence_model.roles.detail_reader.stem.2.weight": {
+          "unscaled_gradient_max_abs": 1.5329569578170776e-06,
+          "parameter_delta_from_initial_max_abs": 9.351596236228943e-05
+        },
+        "evidence_model.roles.detail_reader.stem.2.bias": {
+          "unscaled_gradient_max_abs": 1.991167664527893e-06,
+          "parameter_delta_from_initial_max_abs": 0.0001425221562385559
+        },
+        "evidence_model.roles.detail_reader.stem.4.weight": {
+          "unscaled_gradient_max_abs": 5.573965609073639e-07,
+          "parameter_delta_from_initial_max_abs": 9.336322546005249e-05
+        },
+        "evidence_model.roles.detail_reader.stem.4.bias": {
+          "unscaled_gradient_max_abs": 1.8635764718055725e-06,
+          "parameter_delta_from_initial_max_abs": 0.00014277175068855286
+        },
+        "evidence_model.roles.detail_reader.query.weight": {
+          "unscaled_gradient_max_abs": 1.3248563845991157e-07,
+          "parameter_delta_from_initial_max_abs": 9.343773126602173e-05
+        },
+        "evidence_model.roles.detail_reader.query.bias": {
+          "unscaled_gradient_max_abs": 9.685646773505141e-08,
+          "parameter_delta_from_initial_max_abs": 0.00014258921146392822
+        },
+        "evidence_model.roles.detail_reader.key.weight": {
+          "unscaled_gradient_max_abs": 1.2491913992107584e-07,
+          "parameter_delta_from_initial_max_abs": 9.343773126602173e-05
+        },
+        "evidence_model.roles.detail_reader.value.weight": {
+          "unscaled_gradient_max_abs": 4.320251321132673e-07,
+          "parameter_delta_from_initial_max_abs": 9.344518184661865e-05
+        },
+        "evidence_model.roles.detail_reader.value.bias": {
+          "unscaled_gradient_max_abs": 4.429829459695611e-06,
+          "parameter_delta_from_initial_max_abs": 0.00014280527830123901
+        },
+        "evidence_model.roles.detail_reader.norm.weight": {
+          "unscaled_gradient_max_abs": 2.330588984023052e-07,
+          "parameter_delta_from_initial_max_abs": 9.34600830078125e-05
+        },
+        "evidence_model.roles.detail_reader.norm.bias": {
+          "unscaled_gradient_max_abs": 2.1701113439576147e-07,
+          "parameter_delta_from_initial_max_abs": 7.151228055590764e-05
+        },
+        "evidence_model.roles.detail_reader.output.weight": {
+          "unscaled_gradient_max_abs": 0.0008334583253599703,
+          "parameter_delta_from_initial_max_abs": 9.378924733027816e-05
+        }
+      },
+      {
+        "evidence_model.roles.detail_reader.stem.0.weight": {
+          "unscaled_gradient_max_abs": 1.6083940863609314e-06,
+          "parameter_delta_from_initial_max_abs": 0.00011692941188812256
+        },
+        "evidence_model.roles.detail_reader.stem.0.bias": {
+          "unscaled_gradient_max_abs": 2.33575701713562e-06,
+          "parameter_delta_from_initial_max_abs": 0.00017842650413513184
+        },
+        "evidence_model.roles.detail_reader.stem.2.weight": {
+          "unscaled_gradient_max_abs": 9.955838322639465e-07,
+          "parameter_delta_from_initial_max_abs": 0.00011689960956573486
+        },
+        "evidence_model.roles.detail_reader.stem.2.bias": {
+          "unscaled_gradient_max_abs": 3.1087547540664673e-06,
+          "parameter_delta_from_initial_max_abs": 0.00017832964658737183
+        },
+        "evidence_model.roles.detail_reader.stem.4.weight": {
+          "unscaled_gradient_max_abs": 1.0682269930839539e-06,
+          "parameter_delta_from_initial_max_abs": 0.00011672452092170715
+        },
+        "evidence_model.roles.detail_reader.stem.4.bias": {
+          "unscaled_gradient_max_abs": 3.930181264877319e-06,
+          "parameter_delta_from_initial_max_abs": 0.0001785755157470703
+        },
+        "evidence_model.roles.detail_reader.query.weight": {
+          "unscaled_gradient_max_abs": 1.3545962929129018e-07,
+          "parameter_delta_from_initial_max_abs": 0.00011679530143737793
+        },
+        "evidence_model.roles.detail_reader.query.bias": {
+          "unscaled_gradient_max_abs": 1.6523563317605294e-07,
+          "parameter_delta_from_initial_max_abs": 0.00017824023962020874
+        },
+        "evidence_model.roles.detail_reader.key.weight": {
+          "unscaled_gradient_max_abs": 1.2191621578949707e-07,
+          "parameter_delta_from_initial_max_abs": 0.00011679530143737793
+        },
+        "evidence_model.roles.detail_reader.value.weight": {
+          "unscaled_gradient_max_abs": 6.080132948227401e-07,
+          "parameter_delta_from_initial_max_abs": 0.00011681020259857178
+        },
+        "evidence_model.roles.detail_reader.value.bias": {
+          "unscaled_gradient_max_abs": 1.0261434908898082e-05,
+          "parameter_delta_from_initial_max_abs": 0.00017867237329483032
+        },
+        "evidence_model.roles.detail_reader.norm.weight": {
+          "unscaled_gradient_max_abs": 2.032003010299377e-07,
+          "parameter_delta_from_initial_max_abs": 0.00011682510375976562
+        },
+        "evidence_model.roles.detail_reader.norm.bias": {
+          "unscaled_gradient_max_abs": 4.168730924902775e-07,
+          "parameter_delta_from_initial_max_abs": 9.24882770050317e-05
+        },
+        "evidence_model.roles.detail_reader.output.weight": {
+          "unscaled_gradient_max_abs": 0.0009874869138002396,
+          "parameter_delta_from_initial_max_abs": 0.00011689222446875647
+        }
+      },
+      {
+        "evidence_model.roles.detail_reader.stem.0.weight": {
+          "unscaled_gradient_max_abs": 1.5487894415855408e-06,
+          "parameter_delta_from_initial_max_abs": 0.00014041364192962646
+        },
+        "evidence_model.roles.detail_reader.stem.0.bias": {
+          "unscaled_gradient_max_abs": 1.8309801816940308e-06,
+          "parameter_delta_from_initial_max_abs": 0.00021423399448394775
+        },
+        "evidence_model.roles.detail_reader.stem.2.weight": {
+          "unscaled_gradient_max_abs": 1.3057142496109009e-06,
+          "parameter_delta_from_initial_max_abs": 0.000140264630317688
+        },
+        "evidence_model.roles.detail_reader.stem.2.bias": {
+          "unscaled_gradient_max_abs": 1.4826655387878418e-06,
+          "parameter_delta_from_initial_max_abs": 0.00021419674158096313
+        },
+        "evidence_model.roles.detail_reader.stem.4.weight": {
+          "unscaled_gradient_max_abs": 5.899928510189056e-07,
+          "parameter_delta_from_initial_max_abs": 0.00014009326696395874
+        },
+        "evidence_model.roles.detail_reader.stem.4.bias": {
+          "unscaled_gradient_max_abs": 4.0531158447265625e-06,
+          "parameter_delta_from_initial_max_abs": 0.00021427497267723083
+        },
+        "evidence_model.roles.detail_reader.query.weight": {
+          "unscaled_gradient_max_abs": 1.5628184257820976e-07,
+          "parameter_delta_from_initial_max_abs": 0.00014015287160873413
+        },
+        "evidence_model.roles.detail_reader.query.bias": {
+          "unscaled_gradient_max_abs": 1.443523274247127e-07,
+          "parameter_delta_from_initial_max_abs": 0.00021389871835708618
+        },
+        "evidence_model.roles.detail_reader.key.weight": {
+          "unscaled_gradient_max_abs": 1.297205329819917e-07,
+          "parameter_delta_from_initial_max_abs": 0.00014015287160873413
+        },
+        "evidence_model.roles.detail_reader.value.weight": {
+          "unscaled_gradient_max_abs": 3.7387258089438546e-07,
+          "parameter_delta_from_initial_max_abs": 0.00014019012451171875
+        },
+        "evidence_model.roles.detail_reader.value.bias": {
+          "unscaled_gradient_max_abs": 8.387333764403593e-06,
+          "parameter_delta_from_initial_max_abs": 0.00021475553512573242
+        },
+        "evidence_model.roles.detail_reader.norm.weight": {
+          "unscaled_gradient_max_abs": 9.276711239181168e-07,
+          "parameter_delta_from_initial_max_abs": 0.00014019012451171875
+        },
+        "evidence_model.roles.detail_reader.norm.bias": {
+          "unscaled_gradient_max_abs": 4.881359245700878e-07,
+          "parameter_delta_from_initial_max_abs": 9.789659088710323e-05
+        },
+        "evidence_model.roles.detail_reader.output.weight": {
+          "unscaled_gradient_max_abs": 0.000984587357379496,
+          "parameter_delta_from_initial_max_abs": 0.00013948777632322162
+        }
+      },
+      {
+        "evidence_model.roles.detail_reader.stem.0.weight": {
+          "unscaled_gradient_max_abs": 2.5015324354171753e-06,
+          "parameter_delta_from_initial_max_abs": 0.0001640617847442627
+        },
+        "evidence_model.roles.detail_reader.stem.0.bias": {
+          "unscaled_gradient_max_abs": 2.168118953704834e-06,
+          "parameter_delta_from_initial_max_abs": 0.00025016069412231445
+        },
+        "evidence_model.roles.detail_reader.stem.2.weight": {
+          "unscaled_gradient_max_abs": 4.455447196960449e-06,
+          "parameter_delta_from_initial_max_abs": 0.00016377493739128113
+        },
+        "evidence_model.roles.detail_reader.stem.2.bias": {
+          "unscaled_gradient_max_abs": 3.818422555923462e-06,
+          "parameter_delta_from_initial_max_abs": 0.0002502240240573883
+        },
+        "evidence_model.roles.detail_reader.stem.4.weight": {
+          "unscaled_gradient_max_abs": 2.9578804969787598e-06,
+          "parameter_delta_from_initial_max_abs": 0.00016366690397262573
+        },
+        "evidence_model.roles.detail_reader.stem.4.bias": {
+          "unscaled_gradient_max_abs": 2.4847686290740967e-06,
+          "parameter_delta_from_initial_max_abs": 0.0002498701214790344
+        },
+        "evidence_model.roles.detail_reader.query.weight": {
+          "unscaled_gradient_max_abs": 1.7392750351064024e-07,
+          "parameter_delta_from_initial_max_abs": 0.0001635029911994934
+        },
+        "evidence_model.roles.detail_reader.query.bias": {
+          "unscaled_gradient_max_abs": 1.8114987199169263e-07,
+          "parameter_delta_from_initial_max_abs": 0.00024956464767456055
+        },
+        "evidence_model.roles.detail_reader.key.weight": {
+          "unscaled_gradient_max_abs": 1.8353790665059933e-07,
+          "parameter_delta_from_initial_max_abs": 0.00016351789236068726
+        },
+        "evidence_model.roles.detail_reader.value.weight": {
+          "unscaled_gradient_max_abs": 1.3310271924638073e-06,
+          "parameter_delta_from_initial_max_abs": 0.00016370415687561035
+        },
+        "evidence_model.roles.detail_reader.value.bias": {
+          "unscaled_gradient_max_abs": 7.029041171335848e-06,
+          "parameter_delta_from_initial_max_abs": 0.0002510249614715576
+        },
+        "evidence_model.roles.detail_reader.norm.weight": {
+          "unscaled_gradient_max_abs": 7.836042641429231e-07,
+          "parameter_delta_from_initial_max_abs": 0.00016355514526367188
+        },
+        "evidence_model.roles.detail_reader.norm.bias": {
+          "unscaled_gradient_max_abs": 1.974573535790114e-07,
+          "parameter_delta_from_initial_max_abs": 0.00011758845357690006
+        },
+        "evidence_model.roles.detail_reader.output.weight": {
+          "unscaled_gradient_max_abs": 0.0007752443780191243,
+          "parameter_delta_from_initial_max_abs": 0.00016227929154410958
+        }
+      },
+      {
+        "evidence_model.roles.detail_reader.stem.0.weight": {
+          "unscaled_gradient_max_abs": 1.712702214717865e-06,
+          "parameter_delta_from_initial_max_abs": 0.00018787570297718048
+        },
+        "evidence_model.roles.detail_reader.stem.0.bias": {
+          "unscaled_gradient_max_abs": 1.7192214727401733e-06,
+          "parameter_delta_from_initial_max_abs": 0.00028614699840545654
+        },
+        "evidence_model.roles.detail_reader.stem.2.weight": {
+          "unscaled_gradient_max_abs": 1.5990808606147766e-06,
+          "parameter_delta_from_initial_max_abs": 0.00018739700317382812
+        },
+        "evidence_model.roles.detail_reader.stem.2.bias": {
+          "unscaled_gradient_max_abs": 3.041699528694153e-06,
+          "parameter_delta_from_initial_max_abs": 0.00028615444898605347
+        },
+        "evidence_model.roles.detail_reader.stem.4.weight": {
+          "unscaled_gradient_max_abs": 1.1026859283447266e-06,
+          "parameter_delta_from_initial_max_abs": 0.0001873224973678589
+        },
+        "evidence_model.roles.detail_reader.stem.4.bias": {
+          "unscaled_gradient_max_abs": 3.1515955924987793e-06,
+          "parameter_delta_from_initial_max_abs": 0.0002860892564058304
+        },
+        "evidence_model.roles.detail_reader.query.weight": {
+          "unscaled_gradient_max_abs": 1.7705554000713164e-07,
+          "parameter_delta_from_initial_max_abs": 0.00018687546253204346
+        },
+        "evidence_model.roles.detail_reader.query.bias": {
+          "unscaled_gradient_max_abs": 2.6483425585865916e-07,
+          "parameter_delta_from_initial_max_abs": 0.000285223126411438
+        },
+        "evidence_model.roles.detail_reader.key.weight": {
+          "unscaled_gradient_max_abs": 1.5621715476754616e-07,
+          "parameter_delta_from_initial_max_abs": 0.00018687546253204346
+        },
+        "evidence_model.roles.detail_reader.value.weight": {
+          "unscaled_gradient_max_abs": 6.158551286716829e-07,
+          "parameter_delta_from_initial_max_abs": 0.0001872032880783081
+        },
+        "evidence_model.roles.detail_reader.value.bias": {
+          "unscaled_gradient_max_abs": 1.0578858564258553e-05,
+          "parameter_delta_from_initial_max_abs": 0.0002867504954338074
+        },
+        "evidence_model.roles.detail_reader.norm.weight": {
+          "unscaled_gradient_max_abs": 1.1191799558218918e-06,
+          "parameter_delta_from_initial_max_abs": 0.000186920166015625
+        },
+        "evidence_model.roles.detail_reader.norm.bias": {
+          "unscaled_gradient_max_abs": 6.074621978768846e-07,
+          "parameter_delta_from_initial_max_abs": 0.00013482646318152547
+        },
+        "evidence_model.roles.detail_reader.output.weight": {
+          "unscaled_gradient_max_abs": 0.0007446492090821266,
+          "parameter_delta_from_initial_max_abs": 0.0001842726196628064
+        }
+      }
+    ],
+    "boundary": "Engineering gradient/update support only; no evidence of retrieval benefit."
+  }
+}
