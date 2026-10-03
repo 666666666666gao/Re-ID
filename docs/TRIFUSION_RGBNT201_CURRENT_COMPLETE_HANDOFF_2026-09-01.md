@@ -2,7 +2,7 @@
 
 ## 0. 一页结论
 
-**首页当前进度：§41.763（2026-10-03）** F3原任务5/6完整50轮端已接收；10:18实查原controller2691826及RGBNT100 metric_raw worker2762610在26 GPU2实活，原报告调用0。新独立细节组件有限CPU检查已通过；未登记的完整接入稿新增原始融合特征接口，完成源码／AST检查，未执行完整模型、未选择训练配方、未启动后继M0或训练。作者分类头／BN模式／optimizer ownership仍须在所选配方中明确。仅26 GPU0–3/max4；25不启动训练。Goal ACTIVE／UNMET。
+**首页当前进度：§41.764（2026-10-03）** 原F3仍按既有任务接续，最新远端实查10:18为5/6完整50轮端及RGBNT100 metric_raw在26 GPU2实活，原报告调用0；final observer37344的首次11:02:04.284968与240秒节奏保持。新细节组件有限CPU检查通过；完整接入稿提供raw feature接口，并准备author单／三head及完整optimizer ownership选项，仅AST检查，未选择配方／注册／执行新M0或训练。仅26 GPU0–3/max4；25不训练。Goal ACTIVE／UNMET。
 
 **现行合同：** 每个正式候选完整50轮，使用作者完整query/gallery及camera／MSVR时间段过滤，以官方fused mAP最高的同一checkpoint报告全部指标，随后严格重载。RGBNT201报告mAP／R1／R5／R10，RGBNT100及MSVR310报告mAP／R1；不跨epoch或seed拼列。官方集已参与逐轮选点和历史方法选择，属于已消费基准上的探索性结果。
 
@@ -15393,3 +15393,16 @@ raw端原训练完成`2026-10-03T08:49:00.629471+08:00`，原严格评价完成`
 此次只完成实际callee源码读取和AST解析，记录时间`2026-10-03T10:25:16.998933+08:00`。没有导入或执行完整模型，没有选择foundation、登记正式训练配方、调用CUDA/AMP M0或产出检索成绩。旧组件CPU通过只覆盖合成component，不能转用为修订后的完整integration接受。原F3受保护源码／计划字节未改；仍待all6完整50轮、strict、原once report、fresh完整审计及claim核查后决定可信基座。尺度／margin／seed／系数搜索不继续。
 
 修订代码、旧稿、source事实SHA、notes、AST记录及10:18原任务只读回执在`logs/native_evidence_feature_interface763_20261003/`。后继注册必须明确同配方global-only／semantic roles／semantic+detail的heads、BN模式、CE与metric输入、optimizer exact coverage、采样和scheduler，再经源码复核、真实paired前向及全模型M0；当前总体三数据集baseline与资源注明SOTA目标未满足。
+
+
+## 41.764 作者训练head与全模型optimizer ownership接入选项（2026-10-03T10:37:18.291367+08:00）
+
+在§763明确raw feature接口后，继续实现未登记author-head选项，未据未完成F3中间成绩选择配方。SharedGlobalRawFeatures独立控制只注册共享backbone及历史neck/classifier，不注册roles和其读出；AuthorHeadEvidence对global／semantic／native均可以调用forward_features一次，取raw_fused后使用Signal已有DIRECT=1单1536 head或DIRECT=0三个512 head，推理仍返回L2的1536向量。没有重新调用Signal.forward、detach raw特征或新增分类参数。
+
+旧normalized neck/classifier在这个选项中冻结且不参与forward。包装器train/eval先沿继承链执行，再显式恢复Signal对应模式，包括作者BN heads与visual encoder，避免继承的强制eval阻止BN正常训练。该模式合同须在三个新配对控制中一致；不能冒称与旧role训练模式相同。全模型初始化、BN实际运行统计及对应输出尚无运行证据。
+
+优化器选项使用封存作者make_loss／make_optimizer，传入整个包装模型而非仅Signal；保留已有按名称分组的LR／decay，加入intended requires_grad参数ID与optimizer groups的恰好一次覆盖断言。这里只证明源码中有这个检查，没有实际构造优化器或验证梯度。具体采样、增强、head loss汇总、scheduler和全state保存仍须在选定训练配方及完整入口中落实。
+
+源文件`evidence_author_heads.py`的实际SHA为`b0a3a20c1ca5124f761d6bae01f88429a1d1c48cb0066926af7b82dd6f11f218`，AST解析通过；代码及notes/status归档`logs/native_evidence_author_head_option764_20261003/`。没有导入模型、执行optimizer、运行真实paired前向／AMP-CUDA M0或训练；当前author只是准备选项，没有选作foundation。§762组件CPU通过不接受本包装器，§763 integration源码／detail组件字节未改，原F3受保护源码／计划也未改。
+
+下一门仍是原six端全50＋strict＋once report及fresh audit／claim，随后登记可信匹配基座与有限证据对照，获得完整source review后才能实际M0。既有final observer在10:31实际PID37344实活；其11:02:04.284968首次观察与240秒间隔不变，无重复观察器、report或训练启动。总体三数据集性能与SOTA目标仍未满足。
