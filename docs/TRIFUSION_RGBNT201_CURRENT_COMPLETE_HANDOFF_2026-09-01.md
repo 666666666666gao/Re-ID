@@ -17146,3 +17146,22 @@ native M0实测295/295训练张量有非零梯度，8次有效更新，作者BN�
 存储实测降至3.15GB后，先核对全部历史权重元数据及11份Signal文件SHA，没有完全重复Signal权重，不凭名称删它们。70份历史M0均为M0_PASS、无正式checkpoint、重载0、探针SHA与回执一致，且不在当前控制输入/当前项目活动命令目录；接受证书与逐文件日志封存后退役807,017,706B。原首次清理因/proc进程退出竞态在preflight前停止，尚未生成远端证书或删除；保留原failure，简化为当前项目队列实际路径核对后再执行明确白名单，不新增try/except。删除前可用3,096,526,848B，删除后3,903,311,872B（并发训练仍会写盘）。所有正式best、作者/初始化/当前控制与原training.json保留；这些旧探针的直接二进制重放现已退役，不能冒称仍可重放。
 
 只26物理GPU0/1，无功率/温度查询、设置或门槛；2025旧I/O pending不探测。本地/Desktop/GitHub/2026逐字节核对，完整Goal ACTIVE / UNMET。
+
+
+## 41.842 第三正式端闭合，MSVR native M0原失败保留；仅继续未启动RGBNT100配对
+
+MSVR310 semantic完成完整50轮/706步/第一次strict，E38的同一份mAP-best为50.5121 / 67.8511 / 80.5415 / 85.4484。相对匹配raw-semantic mAP−0.0301、全部CMC相同；相对独立global mAP−0.0300/R1−0.1692，推进未过。best到末轮下降0.0988 mAP。没有重新选点或重算query。
+
+正式best SHA `053a2aa256cd3a3f708d44ffb07deb0bf76be999dfd1d18b78648da75d7051fc`，strict距离SHA `a774c87cab0afbe016dca3b716c68d9f6efb6fe3221e3b2cb41ce357f566e159`；原M0探针自身完整接受后退役358,096,832B。曲线及原验收文本见`logs/deployment_metric_role_terminal842_20261005`。
+
+原队列随后prepare MSVR native成功，8步M0于04:07:13→04:07:22训练完，但非零梯度全集检查缺`detail_reader.stem.0.weight`与`.bias`两张量，进程退出1，supervisor04:07:25退出1。原M0无PASS、无reload probe，没有full或正式mAP；8步loss有限，不把它描述为训练数值崩溃或模块检索无效。training.json仍是阶段性RUNNING，终态以campaign/EXIT为FAILED，不能当活进程。原8步和完整traceback保留，不延长M0、不重换seed或改初始化/阈值救门。
+
+原队列接受3/6正式端，M0通过3端、失败1端，100两端尚未prepare；report_invocations=0。原terminal campaign SHA `88e2575a7d3693afc0e9e02d0ed3352e61e0eb02447263b8a5c4ff1612db62f9`。原唯一15对CPU报告需要六份正式回执，此时不调用。只读接收器曾误把终态缺失active_command键当null，读取失败未启动模型；按实际run_logged的pop行为修正只读接收器，原失败也归档。
+
+为继续用户已授权的独立实验，登记仅RGBNT100 semantic/native的新有限队列，原六端FAILED/PENDING历史不修改。模型与训练339源码、187控制、seed42、B128/K16、作者head求和、joint1536 L2角色metric、raw global监督、optimizer/LR/增强/noAMP均保持；每端prepare→真实8M0→fresh50→首次strict，失败即止。它是未启动条件的继续，不是MSVR失败端重试。新队列自己的2/2不能称原六端6/6；原报告仍不调用。
+
+有限队列源码SHA `19ac57ad4172be5e60f0ff48a4b6acc41e6f5de4761701662a485075d3b88b94`，来源与边界见`refine-logs/deployment_metric_role_v1/PENDING_RGBNT100_QUEUE.py / refine-logs/deployment_metric_role_v1/PENDING_RGBNT100_PLAN.md`；仅新增队列编排，原339训练/模型source不改。两best+最多一probe+2GiB reserve最低3,355,443,200B。当前为登记/源码复核状态，尚未启动；后续首次实际启动另记，不能把syntax通过当M0。
+
+为存储预留，对25份历史非primary seed、固定20轮权重按相同dataset/method/protocol/author分组核对原回执、权重与距离SHA，每组保留最高fused mAP；seed42与所有组外权重未动。退役11份非优权重/372,411,106B，保留14组赢家，原指标与距离/文本保留；可用空间2,858,196,992B。它仅是用户指定存储选择，不将赢家当无偏泛化估计；被退役旧seed模型不能再声称可直接重放。
+
+仅26GPU0/1，无功率/温度操作；2025旧I/O pending不探测。正常实验失败不标Goal blocked/complete，整体ACTIVE / UNMET；本地/Desktop/GitHub/2026字节同步。

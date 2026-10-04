@@ -1,20 +1,18 @@
 # 当前执行登记
 
-更新：2026-10-05 §41.841。03:57:28实际模型快照：正式2/6，M0终态3/6。source339与控制187不变。
+更新：2026-10-05 §41.842。原队列04:07:25退出1，正式3/6；M0通过3、失败1。source339与控制187不变。原campaign终态保留。
 
 | 数据集 | 条件 | 实际阶段 | 状态/结果 |
 |---|---|---|---|
-| RGBNT201 | semantic | 8步M0、fresh50/2649、首次strict闭合 | E8：74.9363 mAP / 78.7081 R1；匹配推进FAIL |
-| RGBNT201 | native | 8步M0、fresh50/2649、首次strict闭合 | E8：74.9846 mAP / 77.8708 R1；匹配推进FAIL |
-| MSVR310 | semantic | 真实8步M0通过；fresh50开始 | train3887034，03:41:45开始；尚无正式成绩 |
-| MSVR310 | native | 原顺序排队 | 待执行 |
-| RGBNT100 | semantic | 原顺序排队 | 待执行 |
-| RGBNT100 | native | 原顺序排队 | 待执行 |
+| RGBNT201 | semantic | 8M0/fresh50/2649/首次strict闭合 | E8 74.9363mAP/78.7081R1，配对推进FAIL |
+| RGBNT201 | native | 8M0/fresh50/2649/首次strict闭合 | E8 74.9846mAP/77.8708R1，配对推进FAIL |
+| MSVR310 | semantic | 8M0/fresh50/706/首次strict闭合 | E38 50.5121mAP/67.8511R1，配对推进FAIL |
+| MSVR310 | native | prepare成功；真实8步M0失败 | 缺细节stem首层weight/bias非零梯度，full未启动，无正式分数 |
+| RGBNT100 | semantic | 原队列从未prepare；新有限队列登记 | 尚未启动 |
+| RGBNT100 | native | 原队列从未prepare；新有限队列登记 | 尚未启动 |
 
-native−semantic：mAP+0.0483/R1−0.8373/R5不变/R10+0.3588。native−匹配raw-native：+0.5664/−1.1962/−0.5981/+0.8373；相对独立global+0.6879/−1.0766/−0.8373/+0.5981。固定推进+0.5mAP且R1不降，仍失败，不换epoch救分。新增14个张量实际更新不等于身份价值。
+旧86112终态观察器退出0。原supervisor不重启/不回改FAILED；只未启动RGBNT100配对另以相同科学合同继续，PENDING_RGBNT100_QUEUE.py/PENDING_RGBNT100_PLAN.md已登记。此处仍无新实际启动证明。
 
-两份201正式best保留；各自完整验收/SHA后只退役本端M0探针。历史70份不再依赖的M0通过回执与SHA后另退役807MB，文本与日志保留，直接旧二进制重放退役。当前MSVR probe仍保留。
+原六端15对CPU报告0次，不因新两端2/2误写整体6/6。正式best与当前依赖保留；历史不再使用的探针/同组非优seed20权重按回执与SHA退役，原文本/距离/失败记录保留。
 
-原supervisor3606472/startticks39300650继续；旧37914已退出0。唯一local observer86112首次04:03:25.104808，必要时240秒。六端全闭合后原唯一15对CPU报告一次执行。
-
-仅26物理GPU0/1，不查询/设置/监控功率与温度；2025旧I/O pending不探测。单seed42/已消费官方集；Goal ACTIVE / UNMET。
+仅26GPU0/1，无功率/温度操作；2025原I/O pending不探测。单seed42/已消费官方基准；Goal ACTIVE / UNMET。
