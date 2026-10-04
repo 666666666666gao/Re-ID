@@ -2,7 +2,7 @@
 
 ## 0. 一页结论
 
-**当前进度：§41.816，2026-10-04更新。** 读取输入detach的RGBNT201两端各完成50轮/2649步及首次严格评价。native E8为69.4305/72.1292/85.2871/90.7895；较原native的mAP/R1下降2.6968/2.9904，较同批semantic下降3.3494/4.7847。正式2/6、M0 3/6；MSVR310 semantic自己的M0通过并开始fresh50。只26GPU0/1，不管功温；Goal active/unmet。
+**当前进度：§41.817（2026-10-04更新）。** MSVR310读取输入detach semantic完整50轮/706步及首次严格评价完成，E49为50.7851/68.8663；较原semantic下降0.1785/0.3384。正式3/6、M0 4/6，MSVR native已开始fresh50。只26GPU0/1，不控制功率温度，保留原配方和单一best；Goal active/unmet。
 
 **现行合同：** 每个正式候选完整50轮，使用作者完整query/gallery及camera／MSVR时间段过滤，以官方fused mAP最高的同一checkpoint报告全部指标，随后严格重载。RGBNT201报告mAP／R1／R5／R10，RGBNT100及MSVR310报告mAP／R1；不跨epoch或seed拼列。官方集已参与逐轮选点和历史方法选择，属于已消费基准上的探索性结果。
 
@@ -16320,3 +16320,32 @@ native训练循环合计1659.312259秒，含逐轮评价的训练阶段2426.0021
 MSVR310 semantic真实M0于2026-10-04T11:18:52.089646+08:00完成：8有效更新、285项非零有限梯度、三个作者BN各8批、严格重载差0；fresh50始于2026-10-04T11:18:56.254454+08:00，2026-10-04T11:23:26.345577+08:00实查PID1589307/R、ticks33927701、已8轮。接近预计11:43终态前再观察，余下四端保持原配方/顺序/预算，不叠N2/N3，不搜索LR/gain/seed或修复旧parity；六端全收齐后原CPU报告一次。
 
 等待期间只读复核[RoDI作者仓库](https://github.com/lsh-ahu/RoDI)：2026-10-04T11:04:13.527809+08:00默认分支HEAD仍为2f38911c49d42d4ca259d440a851b8d77dddccbe，完整未截断tree为24335ba4dc90d550be56dc074b87860bf0f1edc5，仅README、论文PDF和海报，无公开训练/评价Python实现。commit/tree/固定README的SHA已保存于本节primary_source_refresh；没有重复下载全文、运行作者模型或重新核读主表。代码缺失不证明协议不一致，但逐项query/gallery/过滤核对边界仍未闭合；原公开数字继续按资源注明的作者报告参照，不据此宣称同协议SOTA。
+
+
+## 41.817 MSVR310 semantic完整50轮：读取detach未增加主指标；native继续（2026-10-04）
+
+MSVR310读取输入detach semantic完整50轮/706步及首次严格评价完成，E49为50.7851/68.8663；较原semantic下降0.1785/0.3384。正式3/6、M0 4/6，MSVR native已开始fresh50。只26GPU0/1，不控制功率温度，保留原配方和单一best；Goal active/unmet。
+
+| 条件 | best轮 | mAP | R1 | R5 | R10 |
+|---|---:|---:|---:|---:|---:|
+| 原独立global-only | 38 | 50.5421 | 68.0203 | 80.5415 | 85.4484 |
+| 原semantic | 49 | 50.9636 | 69.2047 | 80.7107 | 86.1252 |
+| 读取输入detach semantic | 49 | 50.7851 | 68.8663 | 81.5567 | 85.4484 |
+
+| 配对差值 | ΔmAP | ΔR1 | ΔR5 | ΔR10 |
+|---|---:|---:|---:|---:|
+| 新semantic−原semantic | -0.1785 | -0.3384 | +0.8460 | -0.6768 |
+| 新semantic−原独立global-only | +0.2430 | +0.8460 | +1.0152 | +0.0000 |
+
+1. **MSVR semantic未显示该干预的主指标增益。** 相对原semantic，mAP和Rank-1均下降；相对历史独立global略高不能替代干预配对。预登记推进条件未达到，不等同统计上证明无效。
+2. **训练与评价链闭合。** 完整50轮、706步、唯一mAP-best及首次严格重载通过；对应初始化、容量、配方和实际批次顺序保持，322项源码和61项原控制依赖SHA未变。原九端结果和已退役M0状态未修改。
+3. **不从范数推导检索贡献。** step中的修正/全局幅度是训练批次观察；尚无新模型固定best的g/c/h/f检索分解，不能据此证明global被保护或定位梯度冲突。
+4. **继续原队列而不救分。** MSVR native自身M0已通过8步更新、299项有限非零梯度、三BN各8、14项细节参数参与检查、严格重载差0；随后进入fresh50。其性能和RGBNT100两端仍待完成，不修改LR、gain、seed、读取器或损失。
+
+Historical same-seed control intervention, not full-flow multi-seed or independent reproduction. MSVR semantic mAP/R1 declined relative to original semantic, although above the historical independent global. No general role-input detach repair or protected-global claim. Current once-only final report and fixed-best g/c decomposition pending. Only26GPU0/1; no power/temp control or parity repair. Scientific Goal active/unmet.
+
+收集时间2026-10-04T11:47:43.285247+08:00，正式完成2026-10-04T11:43:04.892935+08:00。actual order 706行/1456580B，SHA 9c8a03beccbccedfa065cb13a3b20f5e64673d79693c4971034b54ab94e147e8。证据归档logs/role_input_detach_msvr_semantic817_20261004，权重和距离二进制仅在远端；正式目录只保留best_map.pth，当前自身M0探针仍为最终验收依赖。磁盘可用22426673152B。
+
+训练循环501.934888秒，训练加逐轮评价1376.078148秒；两者均不冒充包括初始化及首次重载评价的完整墙钟。best到末轮mAP下降0.01575873点。step actual scaled correction/global均值0.00536646，末步0.00587574。
+
+截至2026-10-04T11:45:45.798326+08:00，MSVR native PID1653673/R、ticks34081216；fresh50从2026-10-04T11:44:31.403393+08:00开始。自身M0于2026-10-04T11:44:27.342663+08:00完成，299/299梯度有限非零，8有效更新及三BN各8，14项细节参数检查通过。预计约12:08结束训练后进行首次严格评价，接近终态再观察；不依短期官方分数改计划。原一次CPU汇总报告尚未调用，三个剩余端及后续固定best分解、完整流程多种子、必要性/SOTA协议证据仍待闭合。

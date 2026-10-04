@@ -27,3 +27,8 @@
 §41.816：读取输入detach的RGBNT201两端各完成50轮/2649步及首次严格评价。native E8为69.4305/72.1292/85.2871/90.7895；较原native的mAP/R1下降2.6968/2.9904，较同批semantic下降3.3494/4.7847。正式2/6、M0 3/6；MSVR310 semantic自己的M0通过并开始fresh50。只26GPU0/1，不管功温；Goal active/unmet。
 
 完整配对/实存SHA/批次证据和只读资源补证见logs/role_input_detach_first_pair816_20261004。旧九端与退休M0边界保持封存，不修改负结果；新的六端终态、原一次CPU报告及同模型分解仍待完成。
+
+
+§41.817：MSVR310读取输入detach semantic完整50轮/706步及首次严格评价完成，E49为50.7851/68.8663；较原semantic下降0.1785/0.3384。正式3/6、M0 4/6，MSVR native已开始fresh50。只26GPU0/1，不控制功率温度，保留原配方和单一best；Goal active/unmet。
+
+证据logs/role_input_detach_msvr_semantic817_20261004；322源码/61原依赖/初始化/实际顺序SHA核验，非新种子复现。原报告一次与同模型固定best分解待完成。
