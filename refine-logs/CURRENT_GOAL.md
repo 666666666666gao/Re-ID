@@ -1,6 +1,6 @@
 # TriFusion 当前 Goal 执行约定
 
-更新：2026-10-04 §41.815。读取输入detach的RGBNT201 semantic完成50轮/2649步并通过首次严格重载：E18为72.7798/76.9139/84.9282/89.2344。相对原semantic，mAP/R1提高0.8817/2.5120，R10下降0.9569；仍低于独立global-only。六项正式1/6、M0 2/6；native已通过自己的M0并开始fresh50。只26GPU0/1，不管功率温度；Goal active/unmet。
+更新：2026-10-04 §41.816。读取输入detach的RGBNT201两端各完成50轮/2649步及首次严格评价。native E8为69.4305/72.1292/85.2871/90.7895；较原native的mAP/R1下降2.6968/2.9904，较同批semantic下降3.3494/4.7847。正式2/6、M0 3/6；MSVR310 semantic自己的M0通过并开始fresh50。只26GPU0/1，不管功温；Goal active/unmet。
 
 ## 研究目标与当前阶段
 
@@ -101,3 +101,6 @@ MSVR native best38→末轮回落0.1563519mAP，三端当前均无201那样数�
 
 
 §41.815首项50轮正式闭合；原semantic对照窄范围mAP/R1为正、R10为负，仍低于独立global-only，不宣称保住global或三集有效。actual初始化/批次顺序/322源码/61历史控制核对通过；证据logs/role_input_detach_first_formal815_20261004。正式1/6，M0 2/6，native自己的295张量/14detail/BN8/重载0通过，10:35:47开始fresh50。11:13近末观察；其余四项/一次最终CPU报告/同模型分解及稳定性仍待完成。科学Goal active/unmet。
+
+
+§41.816首个新RGBNT201配对完整闭合。native主指标较原native及新semantic均负，R5/R10变化仍按同一best保留；不能用首项semantic正收益宣称通用修复。对应初始化/actual order/322源码/61控制SHA通过。正式2/6、M0 3/6，MSVR semantic自己的8步/三BN/重载通过并fresh50运行；原最终CPU报告尚未调用。六端完成后还需同模型g/c分解、必要性和全流程稳定性。证据logs/role_input_detach_first_pair816_20261004；仅26GPU0/1，无功温控制，科学Goal active/unmet。

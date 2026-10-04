@@ -22,3 +22,8 @@
 §41.815：读取输入detach的RGBNT201 semantic完成50轮/2649步并通过首次严格重载：E18为72.7798/76.9139/84.9282/89.2344。相对原semantic，mAP/R1提高0.8817/2.5120，R10下降0.9569；仍低于独立global-only。六项正式1/6、M0 2/6；native已通过自己的M0并开始fresh50。只26GPU0/1，不管功率温度；Goal active/unmet。
 
 原V6历史九端保持封存。新首项actual批次/init/源/实存权重与距离核对见logs/role_input_detach_first_formal815_20261004；不重跑旧M0或历史报告，不用首项局部增益完成科学Goal。
+
+
+§41.816：读取输入detach的RGBNT201两端各完成50轮/2649步及首次严格评价。native E8为69.4305/72.1292/85.2871/90.7895；较原native的mAP/R1下降2.6968/2.9904，较同批semantic下降3.3494/4.7847。正式2/6、M0 3/6；MSVR310 semantic自己的M0通过并开始fresh50。只26GPU0/1，不管功温；Goal active/unmet。
+
+完整配对/实存SHA/批次证据和只读资源补证见logs/role_input_detach_first_pair816_20261004。旧九端与退休M0边界保持封存，不修改负结果；新的六端终态、原一次CPU报告及同模型分解仍待完成。

@@ -1,0 +1,238 @@
+{
+  "status": "FIRST_NEW_DATASET_PAIR_FULL50_STRICT_VERIFIED_FOUR_ENDPOINTS_PENDING",
+  "at": "2026-10-04T11:19:27.164461+08:00",
+  "formal_completed": 2,
+  "formal_expected": 6,
+  "m0_completed": 3,
+  "m0_expected": 6,
+  "dataset": "RGBNT201",
+  "epochs_per_endpoint": 50,
+  "formal_steps_per_endpoint": 2649,
+  "semantic": {
+    "dataset": "RGBNT201",
+    "variant": "semantic",
+    "status": "VERIFIED_COMPLETE",
+    "run_dir": "/data/gaob/Re-ID/Trifusion/trained-model/role_input_detach_v1_20261004_813_full_semantic_RGBNT201",
+    "m0_dir": "/data/gaob/Re-ID/Trifusion/trained-model/role_input_detach_v1_20261004_813_m0_semantic_RGBNT201",
+    "metrics": {
+      "mAP": 72.77980952045851,
+      "Rank-1": 76.9138753414154,
+      "Rank-5": 84.92823243141174,
+      "Rank-10": 89.23444747924805
+    },
+    "best_epoch": 18,
+    "initializer": {
+      "architecture": "trifusion-role-input-detach-v1",
+      "dataset": "RGBNT201",
+      "variant": "semantic",
+      "recipe": "semantic",
+      "foundation_option": "author",
+      "seed": 42,
+      "public_clip_sha256": "5806e77cd80f8b59890b7e101eabd078d9fb84e6937f9e85e4ecb61988df416f",
+      "protocol_sha256": "b2409c2d992d04adcf0c78354d306afd6af7ae9507738fd4e83de480e9a9b90f",
+      "author_source_commit": "cd1b0a672d1fe642e7608731cb4899a19dda7d51",
+      "visual_initial_sha256": "e989d3d5cf05e26109cd62aba6752ad1151b70c06dc14324703826fecbb9383f",
+      "camera_initial_sha256": "71161723dfbaee1cbbcf2f07d2065187b0fe05ccc0b1afd25f62e16e48d85ec1",
+      "shared_initializer_sha256": {
+        "backbone": "0baf5860672e4522ee1a6de815ac2e1443d9d2937e2f757aa4c227e06508afb8",
+        "neck": "06efe49412cdf6c9d8d9162b9394e4bc49329d169906cecc2b6c4784bcdb166e",
+        "classifier": "22bd8be47d0a37e4afd7689789e40999fe33dd5ee5b8e338bd920bd6678fbf47"
+      },
+      "initial_model_state_sha256": "93775618f02cbab681550773d271d9d8b6cdd7a44e28c35eeae5118802cf7c7e",
+      "trainable_parameters": 89014730,
+      "trainable_parameter_tensors": 281,
+      "batch_size": 64,
+      "num_instances": 8,
+      "head_names": [
+        [
+          "bottleneck",
+          "classifier"
+        ]
+      ],
+      "cfg_yaml": "DATALOADER:\n  NUM_INSTANCE: 8\n  NUM_WORKERS: 4\n  SAMPLER: softmax_triplet\nDATASETS:\n  NAMES: RGBNT201\n  ROOT_DIR: ..\nINPUT:\n  PADDING: 10\n  PIXEL_MEAN:\n  - 0.5\n  - 0.5\n  - 0.5\n  PIXEL_STD:\n  - 0.5\n  - 0.5\n  - 0.5\n  PROB: 0.5\n  RE_PROB: 0.5\n  SIZE_TEST:\n  - 256\n  - 128\n  SIZE_TRAIN:\n  - 256\n  - 128\nMODEL:\n  ADAPTER: false\n  ATT_DROP_RATE: 0.0\n  DEVICE: cuda\n  DEVICE_ID: '0'\n  DIRECT: 1\n  DIST_TRAIN: false\n  DROP_OUT: 0.0\n  DROP_PATH: 0.1\n  FROZEN: false\n  Gram_Loss_weight: 0.2\n  ID_LOSS_TYPE: softmax\n  ID_LOSS_WEIGHT: 0.25\n  IF_LABELSMOOTH: 'on'\n  IF_WITH_CENTER: 'no'\n  METRIC_LOSS_TYPE: triplet\n  MoE_Loss_weight: 0.1\n  NAME: Signal\n  NECK: bnneck\n  NO_MARGIN: true\n  PAT_Loss_weight: 0.2\n  PRETRAIN_PATH_T: /data/gaob/Re-ID/Trifusion/pertrained-model/ViT-B-16.pt\n  PROMPT: false\n  SIE_CAMERA: true\n  SIE_COE: 1.0\n  SIE_VIEW: false\n  STRIDE_SIZE:\n  - 16\n  - 16\n  TOPK: 80\n  TRANSFORMER_TYPE: ViT-B-16\n  TRIPLET_LOSS_WEIGHT: 1.0\n  USE_A: false\n  USE_B: false\n  stageName: together_CLS_Patch\nOUTPUT_DIR: .\nSOLVER:\n  BASE_LR: 0.00035\n  BIAS_LR_FACTOR: 2\n  CENTER_LOSS_WEIGHT: 0.0005\n  CENTER_LR: 0.5\n  CHECKPOINT_PERIOD: 50\n  CLUSTER_MARGIN: 0.3\n  COSINE_MARGIN: 0.5\n  COSINE_SCALE: 30\n  EVAL_PERIOD: 1\n  GAMMA: 0.1\n  IMS_PER_BATCH: 64\n  LARGE_FC_LR: false\n  LOG_PERIOD: 10\n  MARGIN: 0.3\n  MAX_EPOCHS: 50\n  MOMENTUM: 0.9\n  OPTIMIZER_NAME: Adam\n  RANGE_ALPHA: 0\n  RANGE_BETA: 1\n  RANGE_K: 2\n  RANGE_LOSS_WEIGHT: 1\n  RANGE_MARGIN: 0.3\n  SEED: 42\n  STEPS:\n  - 40\n  - 70\n  WARMUP_FACTOR: 0.01\n  WARMUP_ITERS: 10\n  WARMUP_METHOD: linear\n  WEIGHT_DECAY: 0.0001\n  WEIGHT_DECAY_BIAS: 0.0001\nTEST:\n  EVAL: false\n  FEAT_NORM: 'yes'\n  IMS_PER_BATCH: 128\n  MISS: nothing\n  NECK_FEAT: before\n  RE_RANKING: 'no'\n  WEIGHT: ''\nckpt_save_path: RGBNT201_all\nckpt_test_path: test_RNT201\n",
+      "entry_sha256": "a177fd5aa4d5ba25422a49cb619062001722d6c7640891cb3da9645a8eb32fe5",
+      "scope": "Fresh public CLIP/camera/heads, shared adaptation and optional semantic/native roles. No ReID weights, SIM, AlignM, teacher, new loss or external data.",
+      "visual_placement": "single_process_original_full_batch_first6_cuda1_last6_and_heads_cuda0",
+      "parameter_placement": {
+        "cuda:0": {
+          "parameters": 46032458,
+          "trainable_parameters": 45491210,
+          "parameter_bytes": 184129832,
+          "gradient_adam_bytes_if_fp32": 545894520
+        },
+        "cuda:1": {
+          "parameters": 43523520,
+          "trainable_parameters": 43523520,
+          "parameter_bytes": 174094080,
+          "gradient_adam_bytes_if_fp32": 522282240
+        }
+      },
+      "role_input_gradient_policy": "detach_stages_context_shared_global_at_role_read_only"
+    },
+    "checkpoint_sha256": "5918df18b422f6c3c7f58a53ee2254786c19569e6c0fa8512ed9c6a7b16f2bc9",
+    "distance_sha256": "c3e6000548f4fbdead8f323c3a31b659eadc9e2457370e2bee2a39d1da230535",
+    "receipt_sha256": "febbccb3429b1b932b0c1170223015632cdc3aa2fa89cdbda4d30e9abc832b05"
+  },
+  "native": {
+    "dataset": "RGBNT201",
+    "variant": "native",
+    "status": "VERIFIED_COMPLETE",
+    "run_dir": "/data/gaob/Re-ID/Trifusion/trained-model/role_input_detach_v1_20261004_813_full_native_RGBNT201",
+    "m0_dir": "/data/gaob/Re-ID/Trifusion/trained-model/role_input_detach_v1_20261004_813_m0_native_RGBNT201",
+    "metrics": {
+      "mAP": 69.43045262188411,
+      "Rank-1": 72.12918400764465,
+      "Rank-5": 85.28708219528198,
+      "Rank-10": 90.78947305679321
+    },
+    "best_epoch": 8,
+    "initializer": {
+      "architecture": "trifusion-role-input-detach-v1",
+      "dataset": "RGBNT201",
+      "variant": "native",
+      "recipe": "native",
+      "foundation_option": "author",
+      "seed": 42,
+      "public_clip_sha256": "5806e77cd80f8b59890b7e101eabd078d9fb84e6937f9e85e4ecb61988df416f",
+      "protocol_sha256": "b2409c2d992d04adcf0c78354d306afd6af7ae9507738fd4e83de480e9a9b90f",
+      "author_source_commit": "cd1b0a672d1fe642e7608731cb4899a19dda7d51",
+      "visual_initial_sha256": "e989d3d5cf05e26109cd62aba6752ad1151b70c06dc14324703826fecbb9383f",
+      "camera_initial_sha256": "71161723dfbaee1cbbcf2f07d2065187b0fe05ccc0b1afd25f62e16e48d85ec1",
+      "shared_initializer_sha256": {
+        "backbone": "0baf5860672e4522ee1a6de815ac2e1443d9d2937e2f757aa4c227e06508afb8",
+        "neck": "06efe49412cdf6c9d8d9162b9394e4bc49329d169906cecc2b6c4784bcdb166e",
+        "classifier": "22bd8be47d0a37e4afd7689789e40999fe33dd5ee5b8e338bd920bd6678fbf47"
+      },
+      "initial_model_state_sha256": "7f5ff300a45faed287a510dacc68d06c006931504a4510fffd8c47e43d93b852",
+      "trainable_parameters": 89174026,
+      "trainable_parameter_tensors": 295,
+      "batch_size": 64,
+      "num_instances": 8,
+      "head_names": [
+        [
+          "bottleneck",
+          "classifier"
+        ]
+      ],
+      "cfg_yaml": "DATALOADER:\n  NUM_INSTANCE: 8\n  NUM_WORKERS: 4\n  SAMPLER: softmax_triplet\nDATASETS:\n  NAMES: RGBNT201\n  ROOT_DIR: ..\nINPUT:\n  PADDING: 10\n  PIXEL_MEAN:\n  - 0.5\n  - 0.5\n  - 0.5\n  PIXEL_STD:\n  - 0.5\n  - 0.5\n  - 0.5\n  PROB: 0.5\n  RE_PROB: 0.5\n  SIZE_TEST:\n  - 256\n  - 128\n  SIZE_TRAIN:\n  - 256\n  - 128\nMODEL:\n  ADAPTER: false\n  ATT_DROP_RATE: 0.0\n  DEVICE: cuda\n  DEVICE_ID: '0'\n  DIRECT: 1\n  DIST_TRAIN: false\n  DROP_OUT: 0.0\n  DROP_PATH: 0.1\n  FROZEN: false\n  Gram_Loss_weight: 0.2\n  ID_LOSS_TYPE: softmax\n  ID_LOSS_WEIGHT: 0.25\n  IF_LABELSMOOTH: 'on'\n  IF_WITH_CENTER: 'no'\n  METRIC_LOSS_TYPE: triplet\n  MoE_Loss_weight: 0.1\n  NAME: Signal\n  NECK: bnneck\n  NO_MARGIN: true\n  PAT_Loss_weight: 0.2\n  PRETRAIN_PATH_T: /data/gaob/Re-ID/Trifusion/pertrained-model/ViT-B-16.pt\n  PROMPT: false\n  SIE_CAMERA: true\n  SIE_COE: 1.0\n  SIE_VIEW: false\n  STRIDE_SIZE:\n  - 16\n  - 16\n  TOPK: 80\n  TRANSFORMER_TYPE: ViT-B-16\n  TRIPLET_LOSS_WEIGHT: 1.0\n  USE_A: false\n  USE_B: false\n  stageName: together_CLS_Patch\nOUTPUT_DIR: .\nSOLVER:\n  BASE_LR: 0.00035\n  BIAS_LR_FACTOR: 2\n  CENTER_LOSS_WEIGHT: 0.0005\n  CENTER_LR: 0.5\n  CHECKPOINT_PERIOD: 50\n  CLUSTER_MARGIN: 0.3\n  COSINE_MARGIN: 0.5\n  COSINE_SCALE: 30\n  EVAL_PERIOD: 1\n  GAMMA: 0.1\n  IMS_PER_BATCH: 64\n  LARGE_FC_LR: false\n  LOG_PERIOD: 10\n  MARGIN: 0.3\n  MAX_EPOCHS: 50\n  MOMENTUM: 0.9\n  OPTIMIZER_NAME: Adam\n  RANGE_ALPHA: 0\n  RANGE_BETA: 1\n  RANGE_K: 2\n  RANGE_LOSS_WEIGHT: 1\n  RANGE_MARGIN: 0.3\n  SEED: 42\n  STEPS:\n  - 40\n  - 70\n  WARMUP_FACTOR: 0.01\n  WARMUP_ITERS: 10\n  WARMUP_METHOD: linear\n  WEIGHT_DECAY: 0.0001\n  WEIGHT_DECAY_BIAS: 0.0001\nTEST:\n  EVAL: false\n  FEAT_NORM: 'yes'\n  IMS_PER_BATCH: 128\n  MISS: nothing\n  NECK_FEAT: before\n  RE_RANKING: 'no'\n  WEIGHT: ''\nckpt_save_path: RGBNT201_all\nckpt_test_path: test_RNT201\n",
+      "entry_sha256": "a177fd5aa4d5ba25422a49cb619062001722d6c7640891cb3da9645a8eb32fe5",
+      "scope": "Fresh public CLIP/camera/heads, shared adaptation and optional semantic/native roles. No ReID weights, SIM, AlignM, teacher, new loss or external data.",
+      "visual_placement": "single_process_original_full_batch_first6_cuda1_last6_and_heads_cuda0",
+      "parameter_placement": {
+        "cuda:0": {
+          "parameters": 46191754,
+          "trainable_parameters": 45650506,
+          "parameter_bytes": 184767016,
+          "gradient_adam_bytes_if_fp32": 547806072
+        },
+        "cuda:1": {
+          "parameters": 43523520,
+          "trainable_parameters": 43523520,
+          "parameter_bytes": 174094080,
+          "gradient_adam_bytes_if_fp32": 522282240
+        }
+      },
+      "role_input_gradient_policy": "detach_stages_context_shared_global_at_role_read_only"
+    },
+    "checkpoint_sha256": "b88ee87cd055a08bb6db65d9ed894c6afcbb97b7785705c95745b1cfb6aad9c9",
+    "distance_sha256": "3536df661f7bdaeab3c8226a50540277ae6e1fe537d1f7a795015881655b0f4e",
+    "receipt_sha256": "4ffab07968f7ee6962641e11033f199f7435abd7b480fa4d45302c0a9c9a5152"
+  },
+  "delta_original_native": {
+    "mAP": -2.6968228394021594,
+    "Rank-1": -2.9904305934906006,
+    "Rank-5": 0.11962056159973145,
+    "Rank-10": 1.4354050159454346
+  },
+  "delta_new_semantic": {
+    "mAP": -3.349356898574399,
+    "Rank-1": -4.784691333770752,
+    "Rank-5": 0.35884976387023926,
+    "Rank-10": 1.555025577545166
+  },
+  "delta_original_global_only": {
+    "mAP": -4.866210952803399,
+    "Rank-1": -6.818187236785889,
+    "Rank-5": -2.9904305934906006,
+    "Rank-10": -1.0765552520751953
+  },
+  "phase_progress_vs_original_native": false,
+  "native_best_minus_last_mAP": 3.519041449118177,
+  "native_training_loop_seconds": 1659.3122587261023,
+  "native_training_and_epoch_evaluation_seconds": 2426.002185,
+  "actual_batch_order": {
+    "sha256": "e446282654c74949fb594856631b246642593b73229331c30b555418a0358993",
+    "bytes": 5475022,
+    "lines": 2649
+  },
+  "artifacts": {
+    "/data/gaob/Re-ID/Trifusion/trained-model/role_input_detach_v1_20261004_813_full_native_RGBNT201/best_map.pth": {
+      "bytes": 359014775,
+      "sha256": "b88ee87cd055a08bb6db65d9ed894c6afcbb97b7785705c95745b1cfb6aad9c9"
+    },
+    "/data/gaob/Re-ID/Trifusion/trained-model/role_input_detach_v1_20261004_813_full_native_RGBNT201/official_distances.pt": {
+      "bytes": 2837523,
+      "sha256": "3536df661f7bdaeab3c8226a50540277ae6e1fe537d1f7a795015881655b0f4e"
+    },
+    "/data/gaob/Re-ID/Trifusion/trained-model/role_input_detach_v1_20261004_813_full_native_RGBNT201/best_epoch_distances.pt": {
+      "bytes": 2837533,
+      "sha256": "5433d4863b42c4a1fb06ca1daebfcea38f7407fb685ba6ae1437b6c8bd1366c5"
+    },
+    "/data/gaob/Re-ID/Trifusion/trained-model/role_input_detach_v1_20261004_813_m0_native_RGBNT201/m0_reload_probe.pth": {
+      "bytes": 359016972,
+      "sha256": "dcd0108607778127c2e36fed49de9e91fb264a57fffd2a714955bfe3fd36e49e"
+    }
+  },
+  "training_norm_observations": {
+    "shared_global_norm_mean": {
+      "step_mean": 21.015411952253825,
+      "minimum": 16.069076538085938,
+      "maximum": 23.391523361206055,
+      "first": 19.628864288330078,
+      "last": 20.877300262451172
+    },
+    "correction_norm_mean": {
+      "step_mean": 8.984126371948527,
+      "minimum": 0.6377933025360107,
+      "maximum": 12.390031814575195,
+      "first": 0.7061101794242859,
+      "last": 8.787020683288574
+    },
+    "actual_scaled_correction_norm_mean": {
+      "step_mean": 0.9889326599852325,
+      "minimum": 0.06419014185667038,
+      "maximum": 1.3424876928329468,
+      "first": 0.07061101496219635,
+      "last": 1.0067180395126343
+    },
+    "actual_scaled_correction_global_ratio_mean": {
+      "step_mean": 0.04691528743565386,
+      "minimum": 0.0035982620902359486,
+      "maximum": 0.06840334087610245,
+      "first": 0.0035982620902359486,
+      "last": 0.04835127294063568
+    }
+  },
+  "msvr_semantic_m0": {
+    "completed_at": "2026-10-04T11:18:52.089646+08:00",
+    "effective_updates": 8,
+    "nonzero_gradient_parameter_tensors": 285,
+    "author_bn_batches_tracked": {
+      "bottleneck_r": 8,
+      "bottleneck_n": 8,
+      "bottleneck_t": 8
+    },
+    "reload_max_abs_difference": 0.0
+  },
+  "active_msvr_semantic": {
+    "pid": 1589307,
+    "started_at": "2026-10-04T11:18:56.254454+08:00",
+    "observed_at": "2026-10-04T11:23:26.345577+08:00",
+    "start_ticks": 33927701,
+    "process_state": "R",
+    "epochs_completed": 8
+  },
+  "source_count": 322,
+  "original_control_artifacts_verified": 61,
+  "boundary": "Single seed historical-control intervention: semantic mAP/R1 improved while native mAP/R1 declined. Rank5/10 gains do not rescue the negative main metrics. No universal gradient-conflict repair or protected-global claim; same-model g/c decomposition and other datasets pending. Current six-endpoint final CPU report not invoked. Scientific Goal active/unmet."
+}

@@ -2,7 +2,7 @@
 
 ## 0. 一页结论
 
-**当前进度：§41.815，2026-10-04更新。** 读取输入detach的RGBNT201 semantic完成50轮/2649步并通过首次严格重载：E18为72.7798/76.9139/84.9282/89.2344。相对原semantic，mAP/R1提高0.8817/2.5120，R10下降0.9569；仍低于独立global-only。六项正式1/6、M0 2/6；native已通过自己的M0并开始fresh50。只26GPU0/1，不管功率温度；Goal active/unmet。
+**当前进度：§41.816，2026-10-04更新。** 读取输入detach的RGBNT201两端各完成50轮/2649步及首次严格评价。native E8为69.4305/72.1292/85.2871/90.7895；较原native的mAP/R1下降2.6968/2.9904，较同批semantic下降3.3494/4.7847。正式2/6、M0 3/6；MSVR310 semantic自己的M0通过并开始fresh50。只26GPU0/1，不管功温；Goal active/unmet。
 
 **现行合同：** 每个正式候选完整50轮，使用作者完整query/gallery及camera／MSVR时间段过滤，以官方fused mAP最高的同一checkpoint报告全部指标，随后严格重载。RGBNT201报告mAP／R1／R5／R10，RGBNT100及MSVR310报告mAP／R1；不跨epoch或seed拼列。官方集已参与逐轮选点和历史方法选择，属于已消费基准上的探索性结果。
 
@@ -16284,3 +16284,39 @@ Single seed paired intervention versus historical controls; no new seed uncertai
 训练循环合计1613.658102秒，含逐轮评价的训练阶段2364.758187秒；前者不冒称完整墙钟。完整正式回执保留同一E18的全部CMC。step记录的实际缩放修正/global范数比均值0.03793336，只是训练侧活动描述，不是角色独立有效性证明。磁盘可用26017116160B；活动新M0供自己的最终CPU报告校验，暂不退役。
 
 native实际10:37:03观察PID1446349/R、ticks33668796，fresh50始于2026-10-04T10:35:47.201448+08:00；自己的M0于2026-10-04T10:35:43.113636+08:00通过8次有效更新、295/295梯度、作者BN8、重载差0，14个细节张量获得参数变化。这不代表native性能通过。预计接近11:15完成，11:13安排下一次近末核查；其余四端保持登记的顺序、配方和预算，不按首项分数改结构/学习率/gain/种子/容差。六端齐后仍由原队列只生成一次最终CPU报告。
+
+
+## 41.816 读取梯度边界的首个完整数据集配对：native主指标下降，MSVR继续（2026-10-04）
+
+读取输入detach的RGBNT201两端各完成50轮/2649步及首次严格评价。native E8为69.4305/72.1292/85.2871/90.7895；较原native的mAP/R1下降2.6968/2.9904，较同批semantic下降3.3494/4.7847。正式2/6、M0 3/6；MSVR310 semantic自己的M0通过并开始fresh50。只26GPU0/1，不管功温；Goal active/unmet。
+
+| 条件 | best轮 | mAP | R1 | R5 | R10 |
+|---|---:|---:|---:|---:|---:|
+| 原独立global-only | 8 | 74.2967 | 78.9474 | 88.2775 | 91.8660 |
+| 原semantic | 7 | 71.8981 | 74.4019 | 84.3301 | 90.1914 |
+| 原native | 20 | 72.1273 | 75.1196 | 85.1675 | 89.3541 |
+| 读取输入detach semantic | 18 | 72.7798 | 76.9139 | 84.9282 | 89.2344 |
+| 读取输入detach native | 8 | 69.4305 | 72.1292 | 85.2871 | 90.7895 |
+
+| 配对差值 | ΔmAP | ΔR1 | ΔR5 | ΔR10 |
+|---|---:|---:|---:|---:|
+| 新semantic−原semantic | +0.8817 | +2.5120 | +0.5981 | -0.9569 |
+| 新native−原native | -2.6968 | -2.9904 | +0.1196 | +1.4354 |
+| 新native−新semantic | -3.3494 | -4.7847 | +0.3588 | +1.5550 |
+| 新native−原独立global-only | -4.8662 | -6.8182 | -2.9904 | -1.0766 |
+
+1. **相同读取梯度干预未形成通用收益。** semantic对原控制的mAP/R1改善，但native的两项主指标均下降；不能把首项正结果写成角色读取detach已解决整个系统。该入口同时截断stages/context/shared_global向前端的读取梯度，共享适配平均写回及global直接路径仍参与训练，不等于全局冻结或已定位唯一梯度冲突。
+2. **native的R5/R10正变化没有抵消主指标损失。** 同一mAP-best的完整四项均报告；不从其他epoch挑选CMC，不用较后位CMC改善覆盖mAP/Rank-1下降。两新端仍均低于匹配独立global-only。
+3. **比较约束已核验。** 对应原variant的初始化、容量、配置及实际批次顺序保持；新semantic/native的2649条actual order也逐字节相同。322源码和61个原控制依赖SHA未变，每端仅一份正式best，首次严格加载/评分和实存模型及距离SHA通过。旧控制为历史同种子配对，不是新训练种子重复。
+4. **后期回落仍存在。** native E8的mAP-best为69.4305，末轮为65.9114，差3.5190。完整50轮保持原预算；step范数仅是训练活动统计。固定best的g/c/h/f分解仍待六端结束，尚不能将fused损失全部归于global或细节修正。
+
+Single seed historical-control intervention: semantic mAP/R1 improved while native mAP/R1 declined. Rank5/10 gains do not rescue the negative main metrics. No universal gradient-conflict repair or protected-global claim; same-model g/c decomposition and other datasets pending. Current six-endpoint final CPU report not invoked. Scientific Goal active/unmet.
+
+
+首对收集实际时刻2026-10-04T11:19:27.164461+08:00；对应原native及同批新semantic的actual order完全相同：2649行/5475022B，SHAe446282654c74949fb594856631b246642593b73229331c30b555418a0358993。源码322项、原61个依赖/控制SHA均核验；该轮数据见logs/role_input_detach_first_pair816_20261004。训练、模型和距离二进制仍留远端，native正式目录只留best_map.pth，自己的M0保留到原定六端最终报告依赖闭合。当前磁盘可用23962198016B。
+
+native训练循环合计1659.312259秒，含逐轮评价的训练阶段2426.002185秒，二者不冒称完整启动/初始化/独立评价墙钟。训练step中actual scaled correction/global均值0.04691529，末步0.04835127，不是固定best的检索贡献。
+
+MSVR310 semantic真实M0于2026-10-04T11:18:52.089646+08:00完成：8有效更新、285项非零有限梯度、三个作者BN各8批、严格重载差0；fresh50始于2026-10-04T11:18:56.254454+08:00，2026-10-04T11:23:26.345577+08:00实查PID1589307/R、ticks33927701、已8轮。接近预计11:43终态前再观察，余下四端保持原配方/顺序/预算，不叠N2/N3，不搜索LR/gain/seed或修复旧parity；六端全收齐后原CPU报告一次。
+
+等待期间只读复核[RoDI作者仓库](https://github.com/lsh-ahu/RoDI)：2026-10-04T11:04:13.527809+08:00默认分支HEAD仍为2f38911c49d42d4ca259d440a851b8d77dddccbe，完整未截断tree为24335ba4dc90d550be56dc074b87860bf0f1edc5，仅README、论文PDF和海报，无公开训练/评价Python实现。commit/tree/固定README的SHA已保存于本节primary_source_refresh；没有重复下载全文、运行作者模型或重新核读主表。代码缺失不证明协议不一致，但逐项query/gallery/过滤核对边界仍未闭合；原公开数字继续按资源注明的作者报告参照，不据此宣称同协议SOTA。
