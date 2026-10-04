@@ -16630,3 +16630,26 @@ CPU组件检查覆盖201单头及车辆三模态头：初始参数/state与输�
 预计约6–7小时，按180–300秒或预计里程碑观察，不因观察超时重启。2025镜像仍为真实I/O待补，仅本地/Desktop/GitHub/2026核实范围有效。
 
 具体合同：`refine-logs/global_task_role_v1/EXPERIMENT_PLAN.md`。CPU与源码证据：`logs/global_task_role_preparation824_20261004`。
+
+
+## 41.825 新训练职责对照首端真实M0通过并开始fresh50
+
+新训练职责对照已实际启动；RGBNT201 semantic真实M0通过8次有效更新、281/281项有限非零梯度、作者BN只计8及完整state重载差0。匹配初始化与330项source核对通过；fresh50原进程正在运行，18:46收取3轮闭合日志，正式验收仍0/6。只26GPU0/1，无功率/温度管理；2025文字镜像I/O待补，Goal active/unmet。
+
+原唯一队列启动于2026-10-04T18:41:16.459200+08:00，运行源码提交`f5ce44d69da6e7d2e33cfd48e5341fa57ba34f7c`。supervisor PID2620776/ticks36581722，controller PID2620777。
+启动前两卡各15MiB占用/0利用率，剩余空间14,711,930,880B；复核330项source、124项当前正式artifact及61项旧控制artifact，不调用已退役探针。
+
+RGBNT201 semantic自己的prepare与读取detach同variant实际初始state/配置字段匹配，仅预登记architecture、entry、scope和objective_policy差异。
+真实8步M0严格通过：281/281项可训练张量累计有限非零梯度、8次有效optimizer更新、bottleneck.num_batches_tracked=8、重载最大差0。
+这是此端实际完整模型工程结果，不外推尚未执行的native、车辆三头或B128条件；CPU组件结果和源码核对仍分别记录。
+
+18:45观察原supervisor状态S、训练PID2625645状态R；18:46:21同PID仍R，3轮闭合日志已写入，fresh50尚未结束。
+两卡内存/利用率观察为9345MiB/72%及6791MiB/11%，没有查询温度/功率。不得因分段利用率差异判停，也不据早期官方分数改实验。
+完整50轮、同一mAP-best、第一次严格重载和原全量CPU配对报告都仍待完成。早期日志不是正式结果或SOTA证据。
+
+§824原发布器已完成commit/push，后续因错误引用旧`/tmp/trifusion_target823_20261004.bundle`而在覆盖检查前停止。
+原文件、失败和已推送commit保留；没有重跑原发布器或删除823 bundle。独立remaining-sync入口只完成余下部署，使用新的tmp824路径；
+18:40:07本地/Desktop/GitHub/2026文档及3282份累计文字SHA核对一致。2025真实I/O待补，没有冒称五份同步。
+
+本轮继续原队列和合同，不调整head、学习率、gain、seed、batch或附加N2/N3。M0探针依赖保持到六端及原一次CPU报告闭合，正式权重每端仅一份best。
+证据目录：`logs/global_task_role_first_m0825_20261004`。本轮完整科学目标、跨数据集净增量、必要性、多种子及强参照要求均未闭合。

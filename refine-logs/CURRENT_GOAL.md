@@ -1,6 +1,6 @@
 # TriFusion 当前 Goal 执行约定
 
-更新：2026-10-04 §41.824。基于完整固定best诊断登记唯一下一项训练职责对照：原作者global任务更新shared和身份head，同head值的fused任务仅更新roles/readout/gain。模型state、参数量、推理接口及作者配方不变。CPU组件和配置链通过，330项source封存；尚无真实初始化/M0/正式成绩。只26GPU0/1，无功率/温度管理；2025文字镜像I/O待补，Goal active/unmet。
+更新：2026-10-04 §41.825。新训练职责对照已实际启动；RGBNT201 semantic真实M0通过8次有效更新、281/281项有限非零梯度、作者BN只计8及完整state重载差0。匹配初始化与330项source核对通过；fresh50原进程正在运行，18:46收取3轮闭合日志，正式验收仍0/6。只26GPU0/1，无功率/温度管理；2025文字镜像I/O待补，Goal active/unmet。
 
 ## 研究目标与当前阶段
 
@@ -130,3 +130,6 @@ MSVR native best38→末轮回落0.1563519mAP，三端当前均无201那样数�
 §41.824：基于完整固定best诊断登记唯一下一项训练职责对照：原作者global任务更新shared和身份head，同head值的fused任务仅更新roles/readout/gain。模型state、参数量、推理接口及作者配方不变。CPU组件和配置链通过，330项source封存；尚无真实初始化/M0/正式成绩。只26GPU0/1，无功率/温度管理；2025文字镜像I/O待补，Goal active/unmet。
 
 本轮执行`refine-logs/global_task_role_v1/EXPERIMENT_PLAN.md`；历史V6/读取detach已闭合，不重跑退役M0依赖。
+
+
+§41.825：新训练职责对照已实际启动；RGBNT201 semantic真实M0通过8次有效更新、281/281项有限非零梯度、作者BN只计8及完整state重载差0。匹配初始化与330项source核对通过；fresh50原进程正在运行，18:46收取3轮闭合日志，正式验收仍0/6。只26GPU0/1，无功率/温度管理；2025文字镜像I/O待补，Goal active/unmet。 证据`logs/global_task_role_first_m0825_20261004`，队列不重启。
