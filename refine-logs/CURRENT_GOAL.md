@@ -1,6 +1,6 @@
 # TriFusion 当前 Goal 执行约定
 
-更新：2026-10-04 §41.810。原九端完整报告与§809五份发布核验后，精确退役九份无用M0探针，释放3196826712B（2.9773GiB）；九份正式mAP-best和公开/作者初始化保留，分数不变。仅26GPU0/1，不管功温，Goal active / unmet。
+更新：2026-10-04 §41.811。原九端已完成且M0临时权重已退役；固定六份正式best的g/c/h/f只读诊断已登记并绑定源码/输入，尚未启动推理。仅26GPU0/1，2025只同步文字，不监控或限制功率温度；完整科学Goal active / unmet。
 
 ## 研究目标与当前阶段
 
@@ -86,3 +86,6 @@ MSVR native best38→末轮回落0.1563519mAP，三端当前均无201那样数�
 
 
 §41.810：原九端一次全量报告/§809五份发布闭合后，九个精确成功M0探针已退役，实删3196826712B；9正式best/CLIP/回执不变。旧M0依赖校验不可直接重放，不追认二进制仍保留。记录见logs/native_research_m0_retirement810_20261004。完整性能Goal仍active/unmet。
+
+
+§41.811当前下一执行已登记：refine-logs/native_fixed_best_diagnosis_v1/EXPERIMENT_PLAN.md，六份已定best全量只读g/c/h/f诊断，尚未GPU运行。原九端训练/唯一报告完成，不重启旧队列；M0退役边界不改。新训练待完整诊断后另行登记；Goal active/unmet。
