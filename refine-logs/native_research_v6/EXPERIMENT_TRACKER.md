@@ -47,3 +47,8 @@
 
 
 §41.814原V6仍COMPLETE；新role_input_detach六项队列真实启动，201semantic自己M0通过、fresh50运行。原始证据logs/role_input_detach_launch814_20261004。正式0/6；不重跑旧M0、原nine报告或改变封存失败。
+
+
+§41.815：读取输入detach的RGBNT201 semantic完成50轮/2649步并通过首次严格重载：E18为72.7798/76.9139/84.9282/89.2344。相对原semantic，mAP/R1提高0.8817/2.5120，R10下降0.9569；仍低于独立global-only。六项正式1/6、M0 2/6；native已通过自己的M0并开始fresh50。只26GPU0/1，不管功率温度；Goal active/unmet。
+
+原V6历史九端保持封存。新首项actual批次/init/源/实存权重与距离核对见logs/role_input_detach_first_formal815_20261004；不重跑旧M0或历史报告，不用首项局部增益完成科学Goal。

@@ -2,7 +2,7 @@
 
 ## 0. 一页结论
 
-**当前进度：§41.814，2026-10-04更新。** 六项角色读取梯度边界对照已真实启动。RGBNT201 semantic 自己的8次有效更新M0通过，281/281张量有非零有限梯度，作者BN计数8、重载差0，匹配初始state/cfg/容量；fresh50已开始。当前M0 1/6、正式完成0/6，没有新的完整50轮分数。只用26GPU0/1，不管功率温度；科学Goal active/unmet。
+**当前进度：§41.815，2026-10-04更新。** 读取输入detach的RGBNT201 semantic完成50轮/2649步并通过首次严格重载：E18为72.7798/76.9139/84.9282/89.2344。相对原semantic，mAP/R1提高0.8817/2.5120，R10下降0.9569；仍低于独立global-only。六项正式1/6、M0 2/6；native已通过自己的M0并开始fresh50。只26GPU0/1，不管功率温度；Goal active/unmet。
 
 **现行合同：** 每个正式候选完整50轮，使用作者完整query/gallery及camera／MSVR时间段过滤，以官方fused mAP最高的同一checkpoint报告全部指标，随后严格重载。RGBNT201报告mAP／R1／R5／R10，RGBNT100及MSVR310报告mAP／R1；不跨epoch或seed拼列。官方集已参与逐轮选点和历史方法选择，属于已消费基准上的探索性结果。
 
@@ -16259,3 +16259,28 @@ history.seconds仅为训练循环，不包括每轮评价/保存；完整命令�
 以上是首项真实执行支持，不覆盖其余五项M0，也不代表梯度边界改动有效或训练后global保持。队列按同一双卡顺序执行201 semantic/native、MSVR semantic/native、100 semantic/native；每项自己的8步M0后从匹配初始化fresh50，首次严格重载，六项全部完成后只生成一次CPU报告。保留每端同一mAP-best及对应CMC；当前活动M0探针暂留供自己的终态验收，闭合后再按精确清单退役。
 
 估计完整六项6–8小时，首项约40分钟；按预估里程碑或180–300秒间隔观察，不修改中途结构、配方、学习率、gain、seed或容差。未恢复核算子/环境/parity工程修复，未监控或限制温度功率；2025只有文本同步。原V6九端、固定best六端诊断、九M0退役均保持封存。原始启动来源、进程身份、M0完整记录、第一条正式训练观察及分析在logs/role_input_detach_launch814_20261004。
+
+
+## 41.815 首项读取梯度边界对照正式闭合；native接续（2026-10-04）
+
+读取输入detach的RGBNT201 semantic完成50轮/2649步并通过首次严格重载：E18为72.7798/76.9139/84.9282/89.2344。相对原semantic，mAP/R1提高0.8817/2.5120，R10下降0.9569；仍低于独立global-only。六项正式1/6、M0 2/6；native已通过自己的M0并开始fresh50。只26GPU0/1，不管功率温度；Goal active/unmet。
+
+| 条件 | best轮 | mAP | R1 | R5 | R10 |
+|---|---:|---:|---:|---:|---:|
+| 原独立global-only | 8 | 74.2967 | 78.9474 | 88.2775 | 91.8660 |
+| 原semantic | 7 | 71.8981 | 74.4019 | 84.3301 | 90.1914 |
+| 读取输入detach的semantic | 18 | 72.7798 | 76.9139 | 84.9282 | 89.2344 |
+
+1. **对原semantic有窄范围正证据。** 同前向、容量、初始化、作者配方和实际批次顺序，仅改变角色读取的输入回传路径；mAP提高0.8817，R1提高2.5120，R5提高0.5981，R10下降0.9569。满足预登记mAP≥0.5/R1不降的推进线，不等于全部CMC改善、训练多种子显著性或SOTA。
+2. **仍未超过独立全局适配。** 相对原global-only，mAP/R1/R5/R10全部为负。这份fused成绩不能说明global本身被保护；需要固定best的同模型g/c/h/f诊断分开其共同训练变化与实际修正效用。
+3. **后期回落仍存在。** E18选中best；末轮mAP为70.0197，较best下降2.7601。保留完整50轮，而非按中途表现改日程。训练范数是step描述，不替代未知身份排序分析。
+4. **只完成六项之一。** native自己的8次更新M0已通过，295/295非零有限梯度、BN8、重载差0，14个细节张量有真实参数变化；10:35:47已从匹配初始化进入fresh50。MSVR310和RGBNT100的四项尚待同队列执行。M0不等于检索有效，原九控制与封存parity失败保持不变。
+
+Single seed paired intervention versus historical controls; no new seed uncertainty or causal gradient-conflict localization. First model improved mAP/R1 but Rank10 declined and all metrics remain below independent global-only. Same-model g/c decomposition pending; no claim that global was protected. Five endpoints and one final CPU report pending; scientific Goal active/unmet.
+
+
+完整接收核验于2026-10-04T10:37:47.530674+08:00：322源码、原61控制依赖SHA保持；新实际批次2649行/5475022B，与原semantic逐字节相同，SHAe446282654c74949fb594856631b246642593b73229331c30b555418a0358993；新初始化所有科学字段（除明确schema/entry/policy元数据）相同。50轮loss有限，best、训练best距离、独立距离、自己的M0探针均核对实存SHA，正式目录只有best_map.pth。具体原始文本和分析在logs/role_input_detach_first_formal815_20261004。
+
+训练循环合计1613.658102秒，含逐轮评价的训练阶段2364.758187秒；前者不冒称完整墙钟。完整正式回执保留同一E18的全部CMC。step记录的实际缩放修正/global范数比均值0.03793336，只是训练侧活动描述，不是角色独立有效性证明。磁盘可用26017116160B；活动新M0供自己的最终CPU报告校验，暂不退役。
+
+native实际10:37:03观察PID1446349/R、ticks33668796，fresh50始于2026-10-04T10:35:47.201448+08:00；自己的M0于2026-10-04T10:35:43.113636+08:00通过8次有效更新、295/295梯度、作者BN8、重载差0，14个细节张量获得参数变化。这不代表native性能通过。预计接近11:15完成，11:13安排下一次近末核查；其余四端保持登记的顺序、配方和预算，不按首项分数改结构/学习率/gain/种子/容差。六端齐后仍由原队列只生成一次最终CPU报告。
