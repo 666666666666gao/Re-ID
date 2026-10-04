@@ -1,0 +1,40 @@
+{
+  "schema": "trifusion-global-task-role-v1",
+  "status": "COMPLETE",
+  "dataset": "RGBNT100",
+  "recipe": "semantic",
+  "seed": 42,
+  "training_epochs": 50,
+  "selected_epoch": 5,
+  "condition": {
+    "variant": "semantic",
+    "foundation_option": "author",
+    "seed": 42,
+    "epochs": 50,
+    "public_clip_sha256": "5806e77cd80f8b59890b7e101eabd078d9fb84e6937f9e85e4ecb61988df416f",
+    "initialization_sha256": "d062d5bc1bd554da4aa6d9fe5012db0b5616f50eed8e465b623069760b0c5f20",
+    "deployment": "L2_1536",
+    "auxiliary_tasks": "none",
+    "visual_placement": "single_process_original_full_batch_first6_cuda1_last6_and_heads_cuda0",
+    "objective_gradient_policy": "author_global_loss_to_shared_and_heads_fused_loss_to_roles_only",
+    "author_training_objectives": [
+      "shared_global",
+      "role_corrected_fused"
+    ]
+  },
+  "protocol_sha256": "b2c14adf947b06b27b9576a712f96192c1393ad6ed3ec1be5259b63f88300169",
+  "checkpoint_sha256": "b689b9a316bb0b1638c8697f4f7643285456903616b8031f62142b2088dcf5b4",
+  "distance_sha256": "045efc4558b473b1b8d73a24df8030ae35f2e37e5125f4681a4ea72f9051307a",
+  "training_best_distance_sha256": "33aa40709748a67aa8e91d5d04741235b71235b788745d77f9d8c87ae4c18550",
+  "metrics": {
+    "mAP": 84.09030506924212,
+    "Rank-1": 95.86005806922913,
+    "Rank-5": 96.61807417869568,
+    "Rank-10": 97.20116853713989
+  },
+  "reranking": false,
+  "independent_upstream_metrics_equal": true,
+  "final_evaluation_seconds": 101.35816973401234,
+  "final_evaluation_timing_boundary": "Fresh construction, strict reload and full-gallery scoring.",
+  "completed_at": "2026-10-04T23:00:59.376541+08:00"
+}
