@@ -38,3 +38,6 @@
 
 
 §41.811：固定六份正式best全量只读诊断已登记/输入实际SHA通过/源码复核，尚未启动。一个forward同时读g/c/h/f，实际gain，原native hook出口幅度；同模型global不冒充独立global-only。无新训练/参数调整/功温观察/旧M0依赖重放。完整科学Goal未完成。
+
+
+§41.812六best全量只读诊断闭合，父子exit0/原fused复现/模型状态不变/原61依赖及316源码未变。所有原始query/AP/首正例、身份和幅度分布保留；二进制仅在远端，新文本归档logs/native_fixed_best_complete812_20261004。原九端0/3结论和M0退役不改。下一训练需基于完整诊断另行登记，当前没有新训练/调参/工程修复。科学Goal active/unmet。

@@ -1,6 +1,6 @@
 # TriFusion 当前 Goal 执行约定
 
-更新：2026-10-04 §41.811。原九端已完成且M0临时权重已退役；固定六份正式best的g/c/h/f只读诊断已登记并绑定源码/输入，尚未启动推理。仅26GPU0/1，2025只同步文字，不监控或限制功率温度；完整科学Goal active / unmet。
+更新：2026-10-04 §41.812。六份固定best全量只读诊断已完成：原fused指标全部复现，零训练更新，模型/buffer及原输入SHA不变。RGBNT201 native修正在同模型内确有收益，但不足抵消其global相对独立global-only的差距；三数据集结果分别分析，不再把全部差距归于读出修正。原九端0/3推进结论不变，下一训练尚未登记。仅26GPU0/1、2025文本同步、不管功温，科学Goal active / unmet。
 
 ## 研究目标与当前阶段
 
@@ -89,3 +89,6 @@ MSVR native best38→末轮回落0.1563519mAP，三端当前均无201那样数�
 
 
 §41.811当前下一执行已登记：refine-logs/native_fixed_best_diagnosis_v1/EXPERIMENT_PLAN.md，六份已定best全量只读g/c/h/f诊断，尚未GPU运行。原九端训练/唯一报告完成，不重启旧队列；M0退役边界不改。新训练待完整诊断后另行登记；Goal active/unmet。
+
+
+§41.812固定六best诊断完成/父子exit0；同模型g/c/h/f与native真实出口已量化，原fused四项复现、模型/buffer与原61依赖未变。下一训练尚未登记：依据完整六端分开检验global共同训练差与证据读出增量，不重复旧九端、不放宽门槛、不自动叠加N2/N3或扫描参数。完整数据见logs/native_fixed_best_complete812_20261004。Goal active/unmet。
