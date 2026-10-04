@@ -1,6 +1,6 @@
 # TriFusion 当前 Goal 执行约束
 
-更新：2026-10-05 §41.837。旧职责任务六端与全部fixed-best诊断已闭合。唯一下一候选为角色Triplet使用实际部署的1536维L2(h)；代码/CPU检查/339项source封存完成，真实初始化/M0/正式训练尚未启动。总Goal ACTIVE / UNMET。
+更新：2026-10-05 §41.838：部署几何六端队列已启动，RGBNT201 semantic真实8步M0通过并进入fresh50；其余五端依次待运行。首端281/281有效梯度、BN8次、重载maxdiff0。无新正式结果，仅26GPU0/1，不管功率/温度，Goal ACTIVE / UNMET。
 
 ## 总目标与贡献边界
 
@@ -18,6 +18,8 @@
 refine-logs/deployment_metric_role_v1/EXPERIMENT_PLAN.md与SOURCE_SCOPE.json。semantic/native各自三个数据集，共六端；仅改变角色metric feature为当前output.fused=L2(sg(g)+gain*c)。原global作者raw任务、raw BN classification、同一head值/clone buffers、梯度所有权、结构/state/容量、初始化、视觉/camera更新、optimizer/LR/WD/scheduler、soft-margin/gain/seed42、完整batch/增强、noAMP和推理保持上一轮。
 
 车辆从各512维raw模态Triplet改为整1536联合L2，因此同时改变模态联合几何，不能称仅L2。原作者各头loss求和保留，车辆三份joint Triplet等价3倍，同三份CE不变。没有新head、辅助目标或系数。
+
+当前实际launch02:14:25 supervisor3606472/startticks39300650，campaign logs/deployment_metric_role_v1_20261005_837；首端M0通过，train3610653从02:16:15运行。唯一observer首次02:54:04.334057、之后240秒（本地native session66644），不要重复启动或提前轮询。
 
 每端独立prepare核对上一轮initializer→8步真实M0→fresh50→首次strict。M0沿用有限loss、全部训练张量至少一次非零梯度/实际更新、BN8次、native14张量活动、完整state严格重载。不能用CPU witness替代实际M0。失败保持，不据官方结果改seed/LR/gain/margin/batch或堆N2/N3。
 

@@ -17050,3 +17050,18 @@ RGBNT100 native原50轮/3129步CSV/SVG已补齐，全部epoch保留、无平滑�
 01:58实际26物理GPU0/1均15MiB、没有项目训练进程，磁盘5,352,148,992B。原六M0一直保留到末端的预算不足；事前登记逐端清理：每个full50/首次strict先调用原完整verify（含M0二进制），把正式全部文件与M0文字、验证结果、探针路径/大小/SHA封存，然后只删除这个已经闭合的m0_reload_probe.pth。最终报告核验全部验收SHA及退役journal，不重放已退役探针。CPU合成回执实际走原verify/m0，确认best仍在、只probe删除、改动验收文件会被拒绝；正式合同仍待实际每端通过。预算六best+最多一活动probe+2GiB reserve=4,966,055,936B，原历史best/作者及必要初始化全部保留。
 
 源码、计划、执行者复核及检查回执在refine-logs/deployment_metric_role_v1与logs/deployment_metric_role_preparation837_20261005。执行者复核不冒称独立模型审计。封存与同步后才启动，预计6–7小时，按预计节点或180–300秒观察；只26物理GPU0/1、最大并发1。按用户最新要求完全不查询/设置/监控功率及温度。2025仍为原I/O pending，不再探测或恢复。单seed42、官方基准已消费；N2/N3、真实同容量控制、完整角色删除/重训和完整多种子仍待后续，总Goal active/unmet。
+
+
+## 41.838 部署几何六端实际启动及首端真实M0通过
+
+2026-10-05 §41.838：部署几何六端队列已启动，RGBNT201 semantic真实8步M0通过并进入fresh50；其余五端依次待运行。首端281/281有效梯度、BN8次、重载maxdiff0。无新正式结果，仅26GPU0/1，不管功率/温度，Goal ACTIVE / UNMET。
+
+339项source与187控制再次按SHA核对后，六端队列仅启动一次于2026-10-05T02:14:25.739932+08:00，supervisor PID3606472/startticks39300650。campaign `/data/gaob/Re-ID/Trifusion/logs/deployment_metric_role_v1_20261005_837`，report `/data/gaob/Re-ID/Trifusion/results/deployment_metric_role_v1_complete_20261005_837`，执行source提交`6b7a6f2afa13e57576d2981fc832008138b86909`，scope SHA`76987d2ca7d6dc7a9aeac34000d37ebe5e7d1d8ead6d52b1832f0b1557523a3d`。02:18:27实际观察原supervisor匹配存活，首M0已COMPLETE；02:18:40读取原回执确认正式train PID3610653存活，正式开始2026-10-05T02:16:15.183726+08:00。这是实际启动和M0证据，不是50轮性能。
+
+首端公开初始化89014730个训练参数/281张量，与匹配控制保持一致；281/281有限有效梯度，8次真实更新，原bottleneck的num_batches_tracked=8，冻结状态保护与视觉/camera更新检查通过，完整state严格重载差0。原八步training_steps中role_metric_width全部1536、role_metric_norm_mean约1，真实入口活动，不是只写配置名。metric仍沿用作者soft-margin，classification/global职责不改。
+
+M0探针SHA`098f36f14f3e5bb60cecb15d91fc42e8d14993c0ecd55c7a32d95c2b9c6d2977`，大小358375480B，目前仍保留，只有它自己的full50/首次strict/完整验收及SHA封存通过后才按§837合同退役。原正式best与必要历史控制均保留。02:18:40磁盘实际余4627841024B；不能把该瞬间M0+formal best占用误写成无用权重已清理。
+
+原上一轮首端完整训练+逐轮评价实测2359.150331秒，当前单个正式节点预估据此确定。原唯一后续observer已设置首次2026-10-05T02:54:04.334057+08:00，在估计结束前约90秒查看，若仍运行按240秒再查看；不在节点前重复读取训练或以中间官方成绩改计划。整批预估6–7小时，须各端M0/fresh50/首次strict以及原唯一15对CPU报告全部完成；此处正式完成0/6。
+
+原回执、manifest/初始化、M0文字/八步日志、启动源与观察器记录归档`logs/deployment_metric_role_first_m0838_20261005`。全部是一次原始执行文本收取，未重新构造/推理模型。只26物理GPU0/1，2025原I/O pending不再访问；无功率/温度设置、查询、监控或门槛。官方基准消费和seed42边界不变，未提前宣称角色/原生细节/三模块有效。339项scientific source运行中不得覆盖。
