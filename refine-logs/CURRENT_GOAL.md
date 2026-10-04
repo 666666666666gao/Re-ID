@@ -1,6 +1,6 @@
 # TriFusion 当前 Goal 执行约束
 
-更新：2026-10-05 §41.845，三端150轮/6004步保存轨迹闭合，三个固定best推进仍FAIL。最近实测仍为§844的100 semantic M0通过、fresh50 PID4002738自04:30:37；当前两端正式0/2。唯一observer46650首查06:27:54，之后240秒；原MSVR native M0失败不重试。只26 GPU0/1，无功率/温度操作。Goal ACTIVE / UNMET。
+更新：2026-10-05 §41.846。当前100 semantic按原fresh50继续，最近实测§844；唯一observer46650首查06:27:54。已登记但未执行五正式端/12可用对/3缺失对的部分CPU报告；必须等100两端验收，原MSVR native M0失败不重试，原六端报告仍未执行。源339/控制187不变，只26 GPU0/1，无功率温度操作。Goal ACTIVE / UNMET。
 
 ## 总目标与贡献边界
 
@@ -46,3 +46,5 @@ refine-logs/deployment_metric_role_v1/EXPERIMENT_PLAN.md与SOURCE_SCOPE.json。s
 最新实际收取§41.844：04:33:35 pending100 semantic M0通过，fresh50PID4002738；唯一observer46650首次06:27:54.475551，依据旧同variant7126.702006秒估计。节点前不重复启动/查询。旧72982已退出0；原MSVR native没有formal，不回改或重试。新probe356161472B等自身full50/首次strict验收后退役。
 
 §41.845仅完成三端保存轨迹分析：各50轮global loss/global范数均值对各自控制差0；201多轮mAP正但高阶CMC多负，MSVR semantic 49/50轮mAP负。依赖epoch不代替多种子，原best/门槛不改；模型与当前队列不改。
+
+§41.846部分报告入口REPORT_AVAILABLE_FIVE.py已登记，source-only自复核/AST/封存terminal接线通过，未执行。固定五端/12可用全query对/3缺失对，不改原FAILED/PENDING或report_invocations。仅在100两端实际验收后运行一次，缺失不是6/6完成。

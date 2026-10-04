@@ -17208,3 +17208,12 @@ MSVR310 semantic完成完整50轮/706步/第一次strict，E38的同一份mAP-be
 角色目标包含分类与Triplet；改动同时改变了metric尺度，车辆还从各512维raw变为同一1536维joint L2并按原头数求和。不同几何下的loss绝对值不能直接判断拟合更差或Triplet不活动。训练修正幅度变大是观察，尚未证明它导致CMC下降，也不能据此修改gain、margin或当前100训练。完整CSV、对照SVG、输入SHA见 `logs/deployment_metric_saved_trajectory845_20261005`。本地消费者最初猜错SUMMARY字段并在任何输出创建之前失败，读实际schema修正；原错误记录保留，未涉及远端或模型。
 
 当前模型状态沿用§844的最近实测：100 semantic M0 285/285梯度、8有效更新、三BN头各8次、重载0；fresh50 PID4002738始于04:30:37。本文档同步不是新的模型状态查询。唯一observer46650首查06:27:54.475551，必要时240秒；此前不重复启动或查询模型。只2026物理GPU0/1，不设置、查询或监控功率/温度；2025旧I/O pending不探测。Goal ACTIVE / UNMET。
+
+
+## 41.846 登记五个可用正式端的部分CPU报告；不替代六端完整结果
+
+原MSVR native M0失败且没有formal结果，原六端15对报告前提不成立，保持未执行。登记独立的保存距离CPU汇总：必须等原三端和100两端都真实验收闭合，才执行一次。固定包含201 semantic/native、MSVR semantic、100 semantic/native；各对匹配raw角色及独立global-only，201/100另对native−semantic，共12个全量query比较。明确列出缺失的MSVR native三对，不填分、不省略失败、不称6/6完成。
+
+入口 `refine-logs/deployment_metric_role_v1/REPORT_AVAILABLE_FIVE.py`、计划 `refine-logs/deployment_metric_role_v1/AVAILABLE_FIVE_REPORT_PLAN.md`、SHA登记 `refine-logs/deployment_metric_role_v1/AVAILABLE_FIVE_REPORT_SOURCE.json`。复用原paired/compare及camera/scene过滤，保留全部query/gallery、固定mAP-best的整套CMC、首位修复/新增错误、身份分布和固定模型bootstrap边界；检查339原科学源、187控制artifact、全部批次顺序及不可变验收journal。原FAILED/PENDING历史及两个campaign的report_invocations=0不改；仅在100两端实际COMPLETE且正式250轮/12262步之后执行。若100未能形成两端验收，这个五端入口不运行或改小cohort。
+
+登记时刻 `2026-10-05T05:08:05.203139+08:00`，入口SHA `f91fe79cbd7079eea0863640f8a244de5cf8c755906f426b99c9fb47f3efdc89`。本轮只是自复核/AST/已封存terminal接线检查，未加载模型、未计分距离、未运行新报告，不能冒称独立审计或性能通过。最近模型实测仍沿用§844；唯一observer46650首次06:27:54.475551，原训练继续。只26 GPU0/1，无功率/温度操作；2025旧I/O pending不探测。Goal ACTIVE / UNMET。
