@@ -17165,3 +17165,18 @@ MSVR310 semantic完成完整50轮/706步/第一次strict，E38的同一份mAP-be
 为存储预留，对25份历史非primary seed、固定20轮权重按相同dataset/method/protocol/author分组核对原回执、权重与距离SHA，每组保留最高fused mAP；seed42与所有组外权重未动。退役11份非优权重/372,411,106B，保留14组赢家，原指标与距离/文本保留；可用空间2,858,196,992B。它仅是用户指定存储选择，不将赢家当无偏泛化估计；被退役旧seed模型不能再声称可直接重放。
 
 仅26GPU0/1，无功率/温度操作；2025旧I/O pending不探测。正常实验失败不标Goal blocked/complete，整体ACTIVE / UNMET；本地/Desktop/GitHub/2026字节同步。
+
+
+## 41.843 仅未启动RGBNT100配对首次启动；原MSVR native失败不重跑
+
+§842登记的有限两端于2026-10-05T04:28:44.568383+08:00首次启动：supervisor3997841/startticks40106533，campaign `/data/gaob/Re-ID/Trifusion/logs/deployment_metric_role_pending100_20261005_842`。新协调脚本SHA `19ac57ad4172be5e60f0ff48a4b6acc41e6f5de4761701662a485075d3b88b94`；原模型/训练source339再次核对不变，原FAILED campaign SHA `88e2575a7d3693afc0e9e02d0ed3352e61e0eb02447263b8a5c4ff1612db62f9` 未改，旧supervisor已退出。
+
+启动前GPU0/1仅检查空闲显存，均15MiB；不检查功率/温度。可用磁盘3,732,811,776B满足两best+一probe+2GiB reserve。当前只证明启动，未取得新的真实M0或正式分数。每端仍独立prepare/8步M0/fresh50/首次strict，同seed42/B128K16/同作者配方；失败不按成绩调整。原六端报告仍0次，新2/2不冒充原6/6。
+
+唯一local M0观察器72982首次2026-10-05T04:32:44.568383+08:00，按预计节点收取，不启动第二队列或提前读取中间分数；原86112、66179、83465等已闭合，不重复调用。
+
+存储门仍不足时，核对已经闭合并消费的native-fixed与detach-fixed两组诊断，各RGBNT100 semantic/native的4份gallery_features.pt：原DIAGNOSIS回执SHA、缓存SHA和保留距离SHA都一致，且不在当前187输入。接受证书后只退役843,795,290B图库特征缓存，可用3,732,824,064B。保留原诊断距离、query特征、报告、全部模型best及当前global-task固定诊断，旧缓存的直接图库特征检查退役，不称所有历史binary仍完整可重放。没有重跑NN或删除正式距离。
+
+另20份已完成发布的/tmp传输bundle SHA等于本地保留bundle，发布commit均为当前HEAD祖先；其7,122,419B临时副本已删除，当前/未来bundle未动。这不构成/data模型盘释放承诺（实际空间未随该小清理上升）。最初本地脚本错假设有103份pending格式proof，实际只有20，preflight在SSH前停止；原helper与错误边界保留，后按已读取格式计数执行。
+
+启动/清理/定时观察SOURCE与SHA证据见`logs/deployment_metric_pending100_launch843_20261005`。仅26GPU0/1，无功率/温度行为；2025旧I/O pending不探测。Goal ACTIVE / UNMET；本地/Desktop/GitHub/2026文字逐字节同步。
