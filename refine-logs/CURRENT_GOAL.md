@@ -1,6 +1,6 @@
 # TriFusion 当前 Goal 执行约定
 
-更新：2026-10-04 §41.823。读取detach六份固定mAP-best的全量g/c/h/f诊断全部完成；原fused计分保持，距离最大差3.57627868652e-07，模型及buffer未变。依赖闭合后仅退役自身六个M0探针，释放2,147,191,340B；正式best和原控制均保留。2025 /data2文字镜像真实I/O错误，明确待补；本地/Desktop/GitHub/2026核对范围单独记录，不冒称五份同步。只26GPU0/1，无功率/温度管理；下一唯一训练干预待完整解释后登记，Goal active/unmet。
+更新：2026-10-04 §41.824。基于完整固定best诊断登记唯一下一项训练职责对照：原作者global任务更新shared和身份head，同head值的fused任务仅更新roles/readout/gain。模型state、参数量、推理接口及作者配方不变。CPU组件和配置链通过，330项source封存；尚无真实初始化/M0/正式成绩。只26GPU0/1，无功率/温度管理；2025文字镜像I/O待补，Goal active/unmet。
 
 ## 研究目标与当前阶段
 
@@ -125,3 +125,8 @@ MSVR native best38→末轮回落0.1563519mAP，三端当前均无201那样数�
 
 
 §41.823：读取detach六份固定mAP-best的全量g/c/h/f诊断全部完成；原fused计分保持，距离最大差3.57627868652e-07，模型及buffer未变。依赖闭合后仅退役自身六个M0探针，释放2,147,191,340B；正式best和原控制均保留。2025 /data2文字镜像真实I/O错误，明确待补；本地/Desktop/GitHub/2026核对范围单独记录，不冒称五份同步。只26GPU0/1，无功率/温度管理；下一唯一训练干预待完整解释后登记，Goal active/unmet。 证据logs/role_input_detach_fixed_best_complete823_20261004。
+
+
+§41.824：基于完整固定best诊断登记唯一下一项训练职责对照：原作者global任务更新shared和身份head，同head值的fused任务仅更新roles/readout/gain。模型state、参数量、推理接口及作者配方不变。CPU组件和配置链通过，330项source封存；尚无真实初始化/M0/正式成绩。只26GPU0/1，无功率/温度管理；2025文字镜像I/O待补，Goal active/unmet。
+
+本轮执行`refine-logs/global_task_role_v1/EXPERIMENT_PLAN.md`；历史V6/读取detach已闭合，不重跑退役M0依赖。

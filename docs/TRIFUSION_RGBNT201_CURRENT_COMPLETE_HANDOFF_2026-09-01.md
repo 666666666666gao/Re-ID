@@ -16606,3 +16606,27 @@ native细节出口在三个数据集均非零：query均值范数7.4481/1.8052/1
 §822发布已完成Git提交、GitHub推送和2026快进；原发布父进程在2025文字镜像读取阶段退出1。单独只读核对证实`/data2/gb/Re-ID/Trifusion`目录及主文档均返回I/O错误。没有重跑原发布器、重启训练、修改324项科学source或删除异常存储。只将启动前的文字镜像证据范围明确限定为已核实四份；模型诊断的seal、源码、全部artifact SHA、GPU0/1空闲检查和原命令均未变。2025最后已核验文字版本为§821；恢复可读后仍须补齐，不能计作当前同步。
 
 证据目录：`logs/role_input_detach_fixed_best_complete823_20261004`。官方集已消费；同一最佳权重分解是描述性结果，不替代独立重训消融、完整流程多种子或同协议SOTA。
+
+
+## 41.824 Global身份任务与角色修正职责对照登记
+
+基于完整固定best诊断登记唯一下一项训练职责对照：原作者global任务更新shared和身份head，同head值的fused任务仅更新roles/readout/gain。模型state、参数量、推理接口及作者配方不变。CPU组件和配置链通过，330项source封存；尚无真实初始化/M0/正式成绩。只26GPU0/1，无功率/温度管理；2025文字镜像I/O待补，Goal active/unmet。
+
+读取detach六端的固定best诊断显示：201同模型global相对独立global存在明显缺口；100现有修正使同模型global的mAP下降约1.71–1.79点；MSVR修正只有约0.028–0.059点。
+原head仅监督h=g+gain*c，读取detach并没有切断h中g的融合目标梯度。因此本轮只检查训练职责，而不继续调gain、池化、对应或预测头。
+
+合同为Lg=作者身份目标(g)，Lf=同一身份头值的作者目标(sg(g)+gain*c)。Lg更新shared/camera/适配及作者head，Lf仅更新roles/readout/gain；
+角色输入仍保持上一轮stages/context/shared_global的stop-gradient。原持久BN只由global调用更新；fused使用detach参数和clone buffers，不写第二次统计。
+不存在额外持久head，训练损失Lg+Lf沿用各自原单位尺度；推理仍是Normalize(g+gain*c)。这是一项训练控制，不是新推理模块，不能单独区分两个职责因素的因果作用。
+
+CPU组件检查覆盖201单头及车辆三模态头：初始参数/state与输出保持，两项loss梯度职责分离，8次forward各BN只计8；配置链确认partition/实际loss绑定。
+这是toy和import/configuration证据，不是完整CLIP初始化、真实M0或检索结果。执行者源码核对保留为SOURCE_REVIEW，未声称独立模型审计。
+
+封存既有324项科学source和六份新增文件共330项；已有124项当前控制artifact及61项旧控制artifact实际远端SHA核对通过。
+每端必须prepare验证匹配初始state和作者配方，再自己的8步真实M0→fresh50→首次严格重载评价。顺序201 semantic/native、MSVR semantic/native、100 semantic/native；B64/K8、B64/K4、B128/K16及双卡完整batch保持。
+主要推进线仍是相对独立global-only至少+0.5 mAP且R1不下降，同时公开相对读取detach和旧V6同variant结果；恢复普通global能力不能计作角色独占贡献。
+
+所有六端及原一次CPU报告闭合前保留新M0依赖；每端只保留一个正式mAP-best及必要证据。官方基准已消费，seed42配对不替代完整流程多种子、算子必要性或同协议强参照。
+预计约6–7小时，按180–300秒或预计里程碑观察，不因观察超时重启。2025镜像仍为真实I/O待补，仅本地/Desktop/GitHub/2026核实范围有效。
+
+具体合同：`refine-logs/global_task_role_v1/EXPERIMENT_PLAN.md`。CPU与源码证据：`logs/global_task_role_preparation824_20261004`。
