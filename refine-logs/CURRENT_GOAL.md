@@ -1,6 +1,6 @@
 # TriFusion 当前 Goal 执行约束
 
-更新：2026-10-05 §41.844。有限100 semantic真实8M0/285项/BN三头8次/重载0通过，train4002738从04:30:37运行fresh50；新队列正式0/2、M0通过1/2。原3正式＋MSVR native M0失败不改。唯一observer46650首次06:27:54，之后240秒；只26GPU0/1，无功率/温度，Goal ACTIVE / UNMET。
+更新：2026-10-05 §41.845，三端150轮/6004步保存轨迹闭合，三个固定best推进仍FAIL。最近实测仍为§844的100 semantic M0通过、fresh50 PID4002738自04:30:37；当前两端正式0/2。唯一observer46650首查06:27:54，之后240秒；原MSVR native M0失败不重试。只26 GPU0/1，无功率/温度操作。Goal ACTIVE / UNMET。
 
 ## 总目标与贡献边界
 
@@ -44,3 +44,5 @@ refine-logs/deployment_metric_role_v1/EXPERIMENT_PLAN.md与SOURCE_SCOPE.json。s
 唯一当前活动队列§41.843：logs/deployment_metric_role_pending100_20261005_842；supervisor3997841，最多1个GPU0/1任务，100semantic/native原合同。旧837 campaign FAILED终态SHA88e2575a7d3693afc0e9e02d0ed3352e61e0eb02447263b8a5c4ff1612db62f9不改。local observer72982首次04:32:44；未取得该两端M0，不提前称通过。旧4份已消费gallery缓存SHA核对后退役843MB，距离/query/报告/模型best保留。
 
 最新实际收取§41.844：04:33:35 pending100 semantic M0通过，fresh50PID4002738；唯一observer46650首次06:27:54.475551，依据旧同variant7126.702006秒估计。节点前不重复启动/查询。旧72982已退出0；原MSVR native没有formal，不回改或重试。新probe356161472B等自身full50/首次strict验收后退役。
+
+§41.845仅完成三端保存轨迹分析：各50轮global loss/global范数均值对各自控制差0；201多轮mAP正但高阶CMC多负，MSVR semantic 49/50轮mAP负。依赖epoch不代替多种子，原best/门槛不改；模型与当前队列不改。
