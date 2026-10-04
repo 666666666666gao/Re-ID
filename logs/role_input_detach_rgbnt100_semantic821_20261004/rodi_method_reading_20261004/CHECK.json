@@ -1,0 +1,41 @@
+{
+  "status": "PRIMARY_RODI_METHOD_PAGES_VISUALLY_READ",
+  "at": "2026-10-04T13:53:16.007644+08:00",
+  "source": {
+    "url": "https://raw.githubusercontent.com/lsh-ahu/RoDI/2f38911c49d42d4ca259d440a851b8d77dddccbe/assets/RoDI.pdf",
+    "commit": "2f38911c49d42d4ca259d440a851b8d77dddccbe",
+    "bytes": 5636720,
+    "git_blob_sha1": "dcfca845758fdb072688c5077679f10ee6f92cc3",
+    "sha256": "b816237dbbcccda47dbf02b19c9de9816bce05b4f40723ae88ef1286ff663d86",
+    "pages": 13
+  },
+  "visual_pages": [
+    4,
+    5,
+    6
+  ],
+  "facts": {
+    "base_fusion": "Three modality CLS queries progressively attend to modality patch keys/values; this is not CNN/Transformer/Mamba role splitting.",
+    "EDFL": "Patch-level query-key similarity forms evidential opinion; belief and imbalance quantify interactions at fusion steps.",
+    "MSR": "Imbalance-derived weights form a rebalanced anchor; queries rotate toward it, with a Dirichlet KL alignment term.",
+    "LMD": "Belief-selected top-K patches and CLS form feature targets; cross-modality conditional diffusion predicts noise and reconstructed features, followed by belief-dependent feature combination.",
+    "training_objectives": "Classification + triplet + KL + denoising/reconstruction objectives.",
+    "inference_statement": "Section3.5 explicitly states that inference fusion is independent of subjective opinion metrics and modality rolling."
+  },
+  "unverified_implementation_details": [
+    "Exact nonnegative evidence conversion from cosine similarity.",
+    "Concrete SVD rotation construction and numerical handling.",
+    "Whether and how LMD sampling/post-fusion is used during inference.",
+    "Actual output feature width and runnable evaluation implementation.",
+    "Exact public weight hash, trainable visual parameter groups, total epochs and checkpoint-selection rule.",
+    "Exact query/gallery membership and camera/scene filtering."
+  ],
+  "project_inferences": [
+    "RoDI evaluates fusion interactions before adjusting them; this is a relevant comparison principle, not proof of our failure cause.",
+    "Its patch belief is an interaction proxy, not a label-free guarantee of retrieval gain or role complementarity.",
+    "Modality rolling differs from a router choosing a winning heterogeneous role; do not reclassify our old router failures as a replication of RoDI.",
+    "Its reconstruction mechanism is distinct from our proposed spatial-statistic SNR restoration; both need explicit nearest-method controls if implemented.",
+    "Partially matched cross-spectral messages must be compared with ordinary attention or confidence-based selection; a new name alone is insufficient."
+  ],
+  "boundary": "Primary paper reading only. No runnable implementation at previously checked repository commit; no local reproduction, new experiment, source change, GPU work, denoising/rotation module addition or protocol-equivalence claim."
+}

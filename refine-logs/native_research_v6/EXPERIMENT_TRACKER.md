@@ -67,3 +67,8 @@
 §41.818：MSVR310 semantic/native均完成自身50轮/706步与首次严格评价。native E38为51.1388/69.8816；较原native变化+0.4632/+1.1844，较新semantic+0.3537/+1.0152。正式4/6；RGBNT100两端按原队列继续。固定best分解计划仅准备，输入尚未封存、模型尚未执行。只26GPU0/1，无功率温度控制；Goal active/unmet。
 
 原始证据、actual order、weight/distance SHA及主指标完整表见logs/role_input_detach_msvr_pair818_20261004。后续固定best计划尚未执行，当前六端CPU报告一次仍待完成。
+
+
+§41.821：RGBNT100读取detach semantic完整50轮/3129步及首次严格评价通过，E5为81.9418/94.7522；较原semantic下降1.4977/1.3411，R5/R10也下降。正式5/6、M0 6/6，最后native正在fresh50。仅26GPU0/1，不设置或监控功率温度限制；原配方和单一best保持，Goal active/unmet。
+
+证据logs/role_input_detach_rgbnt100_semantic821_20261004；原一次CPU报告和新固定best分解仍待终态，不把源码检查当新模型评价。

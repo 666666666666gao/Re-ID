@@ -1,0 +1,112 @@
+{
+  "status": "FROZEN_SOURCE_ROLE_INPUT_GRADIENT_BOUNDARY_CHECKED",
+  "at": "2026-10-04T13:39:51.885135+08:00",
+  "source_files": {
+    "modeling/trifusion/role_input_detach.py": "a3732d5ea98a9fef6039a14f34de98a23cd85a39efd83f52c8835ec59d4605b3",
+    "modeling/trifusion/independent_native_roles.py": "1565590fdfb281fb51b43d06497cd526ffe5bbdc135727ebaa609615dc7832ff",
+    "modeling/trifusion/evidence_author_heads.py": "613b249dae9e1d62d418b94398a0d6ccbcf48e72c88b26b27dd5b9254e9c24cd",
+    "modeling/trifusion/partitioned_evidence_clip.py": "3bad53abd6777602e1f1ea9e7b03f10a796116b577501ee5ec0aec6e683b436c",
+    "modeling/trifusion/role_global_tokens.py": "f41ff1af1fb1b6303a9af63cf039263e2572c16b23813f92a0297f014e71dd4f",
+    "tools/run_role_input_detach.py": "a177fd5aa4d5ba25422a49cb619062001722d6c7640891cb3da9645a8eb32fe5",
+    "tools/run_native_research.py": "b48725622371fc6d9671c464ce97252e2e06eba465e213ce221d84c798e52cc2",
+    "tools/run_native_partitioned.py": "2c3abac37b122760895b97ccf01d4fefe2cfb8223b35b6e2e335a1a4144f72fa",
+    "tools/run_independent_native_evidence.py": "2429af8d2f803d70b9d15113a430609ead28621eb4341a746c3025cc5685fe23",
+    "tools/run_foundation_recipe.py": "c18042509dc33ff66eee1a6b04a723ad55685bd5d9daf218c3779703ffe20758"
+  },
+  "evidence": [
+    {
+      "file": "modeling/trifusion/role_input_detach.py",
+      "source_sha256": "a3732d5ea98a9fef6039a14f34de98a23cd85a39efd83f52c8835ec59d4605b3",
+      "lines": [
+        7,
+        12
+      ],
+      "fragment": "stages.detach(), context.detach(), shared_global.detach()"
+    },
+    {
+      "file": "modeling/trifusion/independent_native_roles.py",
+      "source_sha256": "1565590fdfb281fb51b43d06497cd526ffe5bbdc135727ebaa609615dc7832ff",
+      "lines": [
+        71
+      ],
+      "fragment": "raw_fused = shared_global.float() + self.readout_gain * correction.float()"
+    },
+    {
+      "file": "modeling/trifusion/independent_native_roles.py",
+      "source_sha256": "1565590fdfb281fb51b43d06497cd526ffe5bbdc135727ebaa609615dc7832ff",
+      "lines": [
+        69
+      ],
+      "fragment": "evidence = self.role_evidence(batch, stages, context, shared_global)"
+    },
+    {
+      "file": "modeling/trifusion/evidence_author_heads.py",
+      "source_sha256": "613b249dae9e1d62d418b94398a0d6ccbcf48e72c88b26b27dd5b9254e9c24cd",
+      "lines": [
+        53
+      ],
+      "fragment": "raw = output['raw_fused']"
+    },
+    {
+      "file": "modeling/trifusion/evidence_author_heads.py",
+      "source_sha256": "613b249dae9e1d62d418b94398a0d6ccbcf48e72c88b26b27dd5b9254e9c24cd",
+      "lines": [
+        57
+      ],
+      "fragment": "feature)), feature)"
+    },
+    {
+      "file": "modeling/trifusion/evidence_author_heads.py",
+      "source_sha256": "613b249dae9e1d62d418b94398a0d6ccbcf48e72c88b26b27dd5b9254e9c24cd",
+      "lines": [
+        55
+      ],
+      "fragment": "features = (raw,) if self.signal.direct else raw.split(512, dim=1)"
+    },
+    {
+      "file": "modeling/trifusion/partitioned_evidence_clip.py",
+      "source_sha256": "3bad53abd6777602e1f1ea9e7b03f10a796116b577501ee5ec0aec6e683b436c",
+      "lines": [
+        47
+      ],
+      "fragment": "return output + sum(deltas) / 3"
+    },
+    {
+      "file": "tools/run_independent_native_evidence.py",
+      "source_sha256": "2429af8d2f803d70b9d15113a430609ead28621eb4341a746c3025cc5685fe23",
+      "lines": [
+        64
+      ],
+      "fragment": "visual.requires_grad_(True)"
+    },
+    {
+      "file": "tools/run_independent_native_evidence.py",
+      "source_sha256": "2429af8d2f803d70b9d15113a430609ead28621eb4341a746c3025cc5685fe23",
+      "lines": [
+        65
+      ],
+      "fragment": "camera.requires_grad_(True)"
+    },
+    {
+      "file": "tools/run_foundation_recipe.py",
+      "source_sha256": "c18042509dc33ff66eee1a6b04a723ad55685bd5d9daf218c3779703ffe20758",
+      "lines": [
+        158
+      ],
+      "fragment": "for score, feature in output['heads']"
+    }
+  ],
+  "facts": [
+    "Detached classes stop gradients only through stages, context and shared_global when those values enter role_evidence.",
+    "The original shared_global stays differentiable in raw_fused = shared_global + gain * correction.",
+    "Matched author heads and their metric features use raw_fused; there is no separate global-only preservation objective in this entry.",
+    "The partitioned backbone still writes the mean of three adapter deltas into the shared CLIP stream; visual and camera parameters remain trainable.",
+    "Thus stopping the direct role-input derivative does not freeze global or guarantee its retrieval geometry is protected."
+  ],
+  "limits": [
+    "Static graph reasoning only; no new forward, gradient measurement, training, evaluation or diagnosis.",
+    "At fixed role inputs the direct derivative through the role read is absent, but the fused loss derivative passed through global depends on the correction and trained heads.",
+    "This does not prove gradient conflict or identify a unique cause of the observed full50 scores.",
+    "Interpret the completed six endpoints and the registered fixed-best g/c/h/f diagnosis before choosing a next intervention."
+  ]
+}

@@ -2,7 +2,7 @@
 
 ## 0. 一页结论
 
-**当前进度：§41.820（2026-10-04更新）** 旧M3预测12端已完成后，精确退役12份临时M0探针，实删162,103,728B；12份正式best、结果回执、当前5份必需M0和61件固定best诊断依赖均SHA不变。未新增训练或检索成绩，继续等待原RGBNT100队列的14:05观察。仅26GPU0/1，不执行功率温度操作，Goal active/unmet。
+**当前进度：§41.821（2026-10-04更新）。** RGBNT100读取detach semantic完整50轮/3129步及首次严格评价通过，E5为81.9418/94.7522；较原semantic下降1.4977/1.3411，R5/R10也下降。正式5/6、M0 6/6，最后native正在fresh50。仅26GPU0/1，不设置或监控功率温度限制；原配方和单一best保持，Goal active/unmet。
 
 **现行合同：** 每个正式候选完整50轮，使用作者完整query/gallery及camera／MSVR时间段过滤，以官方fused mAP最高的同一checkpoint报告全部指标，随后严格重载。RGBNT201报告mAP／R1／R5／R10，RGBNT100及MSVR310报告mAP／R1；不跨epoch或seed拼列。官方集已参与逐轮选点和历史方法选择，属于已消费基准上的探索性结果。
 
@@ -16441,3 +16441,59 @@ RoDI作者PDF的主表/资源已实际读取并目视复核，仍未建立精确
 保留两个清理辅助检查失败：第一版preflight把子campaign父目录误写成logs，实际源码child_campaign明确位于父campaign内；第二个传输辅助脚本嵌套换行发生语法错误。两次均在任何unlink之前失败，没有模型forward、训练或权重变化。修正仅涉及清理辅助脚本路径合同与字符串构造，第二版通过，原失败记录随本节归档。此项不计为算法或训练修复。
 
 训练状态沿用§819的12:27观察和12:52原进程身份记录，不伪称本节又取得训练终态。既有14:05观察器保持单份，未重启训练、未提前执行新固定best诊断。后续依原队列收齐RGBNT100 semantic/native的50轮与首次严格评价、原一次CPU报告，再封存新固定best诊断输入。科学目标与已封存负结果不变。
+
+
+## 41.821 RGBNT100 semantic完整结果；最后native继续，读取detach不保护global（2026-10-04）
+
+RGBNT100读取detach semantic完整50轮/3129步及首次严格评价通过，E5为81.9418/94.7522；较原semantic下降1.4977/1.3411，R5/R10也下降。正式5/6、M0 6/6，最后native正在fresh50。仅26GPU0/1，不设置或监控功率温度限制；原配方和单一best保持，Goal active/unmet。
+
+| 条件 | best轮 | mAP | R1 | R5 | R10 |
+|---|---:|---:|---:|---:|---:|
+| 原独立global-only | 7 | 84.5338 | 96.6181 | 97.3178 | 97.9592 |
+| 原semantic | 5 | 83.4395 | 96.0933 | 96.6764 | 96.9679 |
+| 读取输入detach semantic | 5 | 81.9418 | 94.7522 | 95.2770 | 95.6851 |
+
+| 配对差值 | ΔmAP | ΔR1 | ΔR5 | ΔR10 |
+|---|---:|---:|---:|---:|
+| 新semantic−原semantic | -1.4977 | -1.3411 | -1.3994 | -1.2828 |
+| 新semantic−原独立global-only | -2.5920 | -1.8659 | -2.0408 | -2.2741 |
+
+三个semantic端均已完成。相对各自原semantic，201的mAP/R1提高0.8817/2.5120，MSVR下降0.1785/0.3384，100下降1.4977/1.3411。事前推进条件只在201满足；这些单种子配对不支持三集通用修复，也不等同统计显著性结论。
+正式完成5/6、全部自身M0完成6/6。最后RGBNT100 native自身8步M0通过：299/299张量有限非零梯度、三BN各8、14项细节参数纳入检查、重载差0，随后按原队列fresh50。没有重启、调参或追加模块。
+训练批次scaled c/g幅度只描述训练过程，不能代替固定best的检索贡献或证明global受保护。读入口停止梯度不改变最终融合loss通过global训练共享参数的路径。
+已核对source322、历史61依赖、共同初始化、真实批次顺序和唯一正式best；原一次CPU报告与新固定best g/c/h/f分解仍待六端终态。
+
+Same-seed intervention, not full-flow multi-seed or independent reproduction. RGBNT100 semantic all four metrics declined relative to original semantic and independent global. Detach removes only the direct role-read derivative; fused loss still trains global. No universal gradient-conflict cause. Current once-only CPU report and fixed-best decomposition pending. Only26GPU0/1; no power/temp control or queries; scientific Goal active/unmet.
+
+收集于2026-10-04T14:15:08.399945+08:00，正式端完成于2026-10-04T14:10:35.386851+08:00。actual order 3129行/11727745B，SHA 75012100fd55f1da89d113c6159d99682a60deff8e92d11d54c7adfcd90da7b2，与原semantic一致。训练循环3239.700607秒，训练及逐轮评价7055.223857秒；不冒充含初始化及首次严格评价的完整墙钟。best到末轮mAP下降3.71515929点。证据logs/role_input_detach_rgbnt100_semantic821_20261004；权重和距离仅在远端，当前六份M0二进制仍是一次最终报告依赖，暂不退役。
+
+最后native正式进程于2026-10-04T14:12:16.084644+08:00开始，截至2026-10-04T14:12:28.891608+08:00为PID1997935/R、ticks34967684。前次14:05观察仍在semantic末轮，14:12观察才确认semantic终态与native开始；旧observer的active_log_tail仍读取semantic日志，不能冒称native进度。预计接近16:10再核查native终态，随后原一次CPU报告，输入封存及已登记六best只读分解。尚未启动固定best分解或下一项训练。
+
+源码边界复核：
+
+两种新类仅在进入role_evidence时对stages、context、shared_global停止梯度。最终raw_fused仍使用未detach的shared_global；作者分类头和度量损失都接收这份融合后的raw表示。分段backbone仍把三组adapter增量的均值写回共享CLIP流，视觉和camera仍参加优化。
+
+因此，该实验隔离的是角色读取输入到共享编码器的直接反向通道，不是严格冻结或保底global。在固定参数处，若把共享参数记为θ、角色参数记为ψ，其简化关系为h=gθ+αcψ(sg(Eθ),sg(contextθ),sg(gθ),I)。共享参数仍接收Jg,θ转置乘以融合损失对h的梯度；后一个量依赖修正内容和训练后的分类头。停止一条直接导数，不等于把共享路径的学习任务变成独立global-only。
+
+这只说明源码定义，不能据此宣布梯度冲突成立或把某一端的下降唯一归因于融合耦合。收齐六端正式50轮与首次严格评价、原一次CPU报告后，再按已登记固定best诊断比较各模型global、correction、raw_fused、fused及独立global-only。当前不改变网络、损失、学习率、gain或queue。
+
+本检查只经SFTP读取十个冻结文本文件并对照当前322源SHA；没有导入torch、构造模型、调用GPU、进行forward/反向或新增检索分数。
+
+
+RoDI方法短记录：
+
+实际查看固定作者PDF第4、5、6页。其起点是三个模态CLS形成的query，依次读取各模态patch；不是CNN、Transformer、Mamba三个算子的职责分工。
+
+- EDFL：由query-key相似度形成patch层证据与融合步骤的belief/imbalance。
+- MSR：根据模态间imbalance构造平衡anchor，旋转query并用Dirichlet KL约束交流。
+- LMD：以belief选择局部patch，再做跨模态条件的特征去噪/重建；根据伪模态和原模态belief组合特征。
+
+这提供的直接启发是先衡量融合交互，再控制参与交互的内容。不能把其belief当作未知身份检索增量的真值，也不能把它等同我们的旧专家赢家Router。其LMD也不同于空间统计归一化后的SNR信息恢复，不能把两者都笼统写成一个去噪模块。
+
+论文第6页§3.5明确说推理fusion不依赖subjective opinion和modality rolling；但仅凭原文无法核定LMD推理调用和具体实现。因此不能断言测试一定运行20步扩散，也不能断言所有去噪都只在训练使用。余弦证据的非负转换、SVD旋转实现、实际输出宽度、视觉参数组及完整训练/选点/过滤仍未由执行源码确认。此前固定作者仓库只有README与论文/海报，没有可直接运行的训练评价代码。
+
+这些是论文事实和项目推论，尚非本地复现。当前原RGBNT100队列不变；独立原生读取、部分对应或风格补偿都不能因为近邻论文存在而自动成为有效贡献。收齐当前六端和固定best诊断后再确定唯一下一项实验。
+
+PDF、页图和全文提取仍放私有目录，只在下次正式结果更新中归档简短核对记录。
+
+原论文PDF、页图、全文提取保持私有，不纳入公开归档。当前用户再次明确不管功率和温度；不设置限制、不读取功温遥测。只26GPU0/1，25继续仅文字镜像；总体性能、必要性、多种子与协议SOTA证据仍未达到，Goal保持active。
