@@ -17217,3 +17217,16 @@ MSVR310 semantic完成完整50轮/706步/第一次strict，E38的同一份mAP-be
 入口 `refine-logs/deployment_metric_role_v1/REPORT_AVAILABLE_FIVE.py`、计划 `refine-logs/deployment_metric_role_v1/AVAILABLE_FIVE_REPORT_PLAN.md`、SHA登记 `refine-logs/deployment_metric_role_v1/AVAILABLE_FIVE_REPORT_SOURCE.json`。复用原paired/compare及camera/scene过滤，保留全部query/gallery、固定mAP-best的整套CMC、首位修复/新增错误、身份分布和固定模型bootstrap边界；检查339原科学源、187控制artifact、全部批次顺序及不可变验收journal。原FAILED/PENDING历史及两个campaign的report_invocations=0不改；仅在100两端实际COMPLETE且正式250轮/12262步之后执行。若100未能形成两端验收，这个五端入口不运行或改小cohort。
 
 登记时刻 `2026-10-05T05:08:05.203139+08:00`，入口SHA `f91fe79cbd7079eea0863640f8a244de5cf8c755906f426b99c9fb47f3efdc89`。本轮只是自复核/AST/已封存terminal接线检查，未加载模型、未计分距离、未运行新报告，不能冒称独立审计或性能通过。最近模型实测仍沿用§844；唯一observer46650首次06:27:54.475551，原训练继续。只26 GPU0/1，无功率/温度操作；2025旧I/O pending不探测。Goal ACTIVE / UNMET。
+
+
+## 41.847 度量几何的源码绑定数学核验；不改变当前训练
+
+2026-10-05 05:38:45，本地完成纯标量数学分析。8份相关源码逐项符合既有339源清单SHA；原清单与187控制seal不变。分析见 `logs/deployment_metric_geometry847_20261005/ANALYSIS.json`、`README.md` 与原生产脚本。没有导入PyTorch、构造模型、重放真实batch、取得新官方成绩或修改训练。这是数学边界核验，不是新模型结果或独立审计。
+
+当前入口保留raw作者分类、原global任务，角色Triplet读取联合1536维L2(h)。源码使用Euclidean hard mining与默认soft-margin；车辆三头损失求和，包含三份同一联合Triplet，不能写成平均或只改L2。车辆控制原本采用各512维raw分量，比较还包含模态分量与联合几何的变化。
+
+精确实数模型中，单位向量Euclidean距离在0到2之间。每个soft-margin项为 log(1+exp(d_pos-d_neg))，因此存在约0.126928011043的松下界，三份未加权Triplet约0.380784033129。实际多身份batch可能有更高下界；这不是FP32容差，不是CE或总loss下界，也不是实际训练测量。理想标量例子中只统一放大raw范数，排序及归一化向量不变，raw loss却可由0.1397069降至约5.742e-9，L2 loss保持0.1397069。因此raw/L2的绝对loss不能直接比较拟合优劣，归一化Triplet不趋零也不能直接判为没有训练。
+
+对非零h且不在归一化epsilon分支内，度量梯度为 (I-zz^T)u/||h||，与h正交；标量核验径向内积约5.55e-17。这个度量项自身不直接奖励统一径向增大，不能把§845记录的修正/global幅度增长归因于该loss下界。相对固定global增大修正仍会改变方向，raw分类与优化器又是独立作用路径；具体CMC损害、过拟合或M0无梯度原因仍未定位。margin空间的softplus导数非零，也不保证所有参数梯度非零。
+
+所有原失败、当前队列、权重、选择规则和推进门槛保持不变。最新真实模型接收仍是§844的04:33:35；原RGBNT100 semantic fresh50未重新启动，唯一观察进程46650首个远端节点仍为06:27:54.475551。§846的五正式端/12可用对/3明确缺失对CPU报告尚未执行，须等待100两端真实验收。没有新增margin、倍率、种子、辅助损失或工程修复。仅26物理GPU0/1，无功率温度动作；2025原I/O pending不探测。完整Goal仍ACTIVE / UNMET。
