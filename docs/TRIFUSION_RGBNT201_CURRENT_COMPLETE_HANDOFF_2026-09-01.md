@@ -17180,3 +17180,14 @@ MSVR310 semantic完成完整50轮/706步/第一次strict，E38的同一份mAP-be
 另20份已完成发布的/tmp传输bundle SHA等于本地保留bundle，发布commit均为当前HEAD祖先；其7,122,419B临时副本已删除，当前/未来bundle未动。这不构成/data模型盘释放承诺（实际空间未随该小清理上升）。最初本地脚本错假设有103份pending格式proof，实际只有20，preflight在SSH前停止；原helper与错误边界保留，后按已读取格式计数执行。
 
 启动/清理/定时观察SOURCE与SHA证据见`logs/deployment_metric_pending100_launch843_20261005`。仅26GPU0/1，无功率/温度行为；2025旧I/O pending不探测。Goal ACTIVE / UNMET；本地/Desktop/GitHub/2026文字逐字节同步。
+
+
+## 41.844 RGBNT100 semantic真实M0通过，独立fresh50已开始
+
+原唯一M0观察器72982按节点04:32:46收取，正常退出0；04:33:35真实接收回执：285/285训练张量累计非零梯度，8次有效optimizer更新，bottleneck_r/n/t各8次，完整state严格重载差0。probe SHA `d72eb9ff050db0d95959a60a6a51bbb68606ef14a0422e6fe1508a2b27db514c`，356,161,472B保留，尚未完成本端full/strict，不提前退役。
+
+本端独立fresh50实际train4002738从2026-10-05T04:30:37.773545+08:00开始，最新收取时原supervisor3997841仍在运行。新有限队列真实M01/2、正式0/2；原队列3份正式和MSVR native M0失败仍封存，不产生第四份正式分数或总体6/6。只实际M0路径通过，不代表角色增益。
+
+仅一个新local observer46650，首次2026-10-05T06:27:54.475551+08:00，依据匹配旧100semantic实测训练及逐轮评价7126.702006秒，从本端实际启动推算、提前90秒观察；必要时240秒，不在这之前反复查询中间分数。旧72982已退出，不能重启；若定时观察尚未完整，只续等原队列。
+
+所有原始M0步、初始化/manifest/head/BN/源码、阶段与probe证据见`logs/deployment_metric_pending100_m0844_20261005`。实际04:33:35可用磁盘4,581,249,024B；当前仅formal的mAP-best保存合同不变。只26GPU0/1，不查询/设置/监控功率与温度；2025旧I/O pending不探测。Goal ACTIVE / UNMET；本地/Desktop/GitHub/2026同步SHA核对。

@@ -8,7 +8,7 @@
 | RGBNT201 | native | 8M0/fresh50/2649/首次strict闭合 | E8 74.9846mAP/77.8708R1，配对推进FAIL |
 | MSVR310 | semantic | 8M0/fresh50/706/首次strict闭合 | E38 50.5121mAP/67.8511R1，配对推进FAIL |
 | MSVR310 | native | prepare成功；真实8步M0失败 | 缺细节stem首层weight/bias非零梯度，full未启动，无正式分数 |
-| RGBNT100 | semantic | 原队列从未prepare；新有限队列登记 | 04:28:44有限队列首次启动；尚无M0/正式分数 |
+| RGBNT100 | semantic | 新有限队列真实8步M0通过；fresh50运行 | 285项梯度/有效8更新/BN三头8次/重载0；train4002738从04:30:37，尚无正式分数 |
 | RGBNT100 | native | 原队列从未prepare；新有限队列登记 | 04:28:44有限队列首次启动；尚无M0/正式分数 |
 
 旧86112终态观察器退出0。原supervisor不重启/不回改FAILED；只未启动RGBNT100配对另以相同科学合同继续，PENDING_RGBNT100_QUEUE.py/PENDING_RGBNT100_PLAN.md已登记。此处仍无新实际启动证明。
@@ -18,3 +18,5 @@
 仅26GPU0/1，无功率/温度操作；2025原I/O pending不探测。单seed42/已消费官方基准；Goal ACTIVE / UNMET。
 
 §41.843实际启动：新supervisor3997841/startticks40106533，campaign deployment_metric_role_pending100_20261005_842；唯一local M0 observer72982首次04:32:44.568383。原失败queue不重启/回改，339科学源不变。当前新队列正式0/2、实际M0尚未收取；总体仍3正式＋1M0失败＋2已启动未验收条件。
+
+§41.844：实际M0收取04:33:35；有限队列M01/2、formal0/2。唯一full observer46650首次06:27:54.475551，必要时240秒；旧72982已退出0。当前native尚未执行，不以同组semantic替代它的M0。总体正式仍3端，原native失败保留。
