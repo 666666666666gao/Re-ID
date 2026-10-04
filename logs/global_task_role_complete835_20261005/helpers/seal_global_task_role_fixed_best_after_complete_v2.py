@@ -1,0 +1,43 @@
+"""Execute once only after the registered six endpoints and original CPU report finish."""
+from datetime import datetime
+from pathlib import Path
+import hashlib
+import json
+import paramiko
+
+repo = Path('C:/Users/gb/.trifusion_github_publish_22c3bee')
+packet = Path('C:/Users/gb/.codex_tmp/independent_evidence_draft/global_task_role_fixed_best_seal')
+destination = repo / 'refine-logs/global_task_role_fixed_best_diagnosis_v1/INPUT_SEAL.json'
+complete_intake = Path('C:/Users/gb/.codex_tmp/independent_evidence_draft/global_task_role_complete_report')
+assert json.loads((complete_intake/'EXIT.json').read_bytes())['exit_code'] == 0
+assert (packet/'LOCAL_TIMEOUT.json').exists() and not (packet/'stdout.json').exists() and not destination.exists()
+code = "\nfrom datetime import datetime\nfrom pathlib import Path\nimport hashlib,json,shutil,subprocess\n\nroot=Path('/data/gaob/Re-ID/Trifusion')\ncampaign=root/'logs/global_task_role_v1_20261004_824'\nreport=root/'results/global_task_role_v1_complete_20261004_824'\nlaunch=root/'logs/global_task_role_launch_20261004_824'\nsha=lambda path:hashlib.sha256(path.read_bytes()).hexdigest()\nstate=json.loads((campaign/'campaign.json').read_text())\nexit_record=json.loads((launch/'EXIT.json').read_text())\nassert exit_record['exit_code']==0\nassert state['status']=='COMPLETE' and state['report_invocations']==1 and state['report_exit_code']==0\nassert len(state['jobs'])==12 and all(row['status']=='COMPLETE' and row['exit_code']==0 for row in state['jobs'])\nmatrix=json.loads((campaign/'accepted_matrix.json').read_text())\nsummary=json.loads((report/'SUMMARY.json').read_text())\nassert matrix['schema']==summary['schema']=='trifusion-global-task-role-v1'\nassert matrix['accepted']==matrix['expected']==len(matrix['rows'])==summary['accepted']==6\nassert summary['status']=='COMPLETE' and summary['formal_epochs']==300 and summary['formal_steps']==12968\nassert len(summary['pairs'])==18\nmanifest=json.loads((campaign/'manifest.json').read_text())\nscope=json.loads((root/'refine-logs/global_task_role_fixed_best_diagnosis_v1/SOURCE_SCOPE.json').read_text())\nsource=scope['source_sha256']\nassert len(source)==332 and len(manifest['source_sha256'])==330\nassert set(source)-set(manifest['source_sha256'])=={'tools/diagnose_global_task_role_best.py','refine-logs/global_task_role_fixed_best_diagnosis_v1/EXPERIMENT_PLAN.md'}\nassert all(source[name]==digest for name,digest in manifest['source_sha256'].items())\nassert all(sha(root/name)==digest for name,digest in source.items())\nassert all(sha(Path(name))==digest for name,digest in manifest['initialization_sha256'].items())\ncontrols_path=root/'refine-logs/role_input_detach_fixed_best_diagnosis_v1/INPUT_SEAL.json'\ncontrols=json.loads(controls_path.read_text())\nassert len(controls['rows'])==9 and len(controls['artifact_sha256'])==124\nassert all(sha(Path(name))==digest for name,digest in controls['artifact_sha256'].items())\nrows=list(matrix['rows'])+[row for row in controls['rows'] if row['variant']=='global_only']\nassert {(row['dataset'],row['variant']) for row in rows}=={(dataset,variant) for dataset in ('RGBNT201','MSVR310','RGBNT100') for variant in ('global_only','semantic','native')}\nartifacts=dict(controls['artifact_sha256'])\nartifacts[str(controls_path)]=sha(controls_path)\nfor base,names in ((campaign,('accepted_matrix.json','manifest.json','campaign.json','report.log')),\n                   (report,('SUMMARY.json','REPORT.md')),\n                   (launch,('LAUNCH.json','EXIT.json'))):\n    for name in names:\n        artifacts[str(base/name)]=sha(base/name)\nartifacts.update(manifest['initialization_sha256'])\nfor row in matrix['rows']:\n    assert row['status']=='VERIFIED_COMPLETE'\n    accepted=next(item for item in summary['rows'] if (item['dataset'],item['variant'])==(row['dataset'],row['variant']))\n    assert all(accepted[key]==value for key,value in row.items())\n    out=Path(row['run_dir'])\n    receipt=json.loads((out/'official_metrics.json').read_text())\n    training=json.loads((out/'training.json').read_text())\n    assert receipt['status']=='COMPLETE' and receipt['metrics']==row['metrics']\n    assert len(training['history'])==50 and training['best_epoch']==row['best_epoch']\n    assert [path.name for path in out.glob('*.pth')]==['best_map.pth']\n    for name,key in (('best_map.pth','checkpoint_sha256'),('official_distances.pt','distance_sha256'),('official_metrics.json','receipt_sha256')):\n        assert sha(out/name)==row[key]\n        artifacts[str(out/name)]=row[key]\n    assert sha(out/'best_epoch_distances.pt')==receipt['training_best_distance_sha256']\n    for name in ('training.json','best_epoch_distances.pt','training_steps.jsonl','training_batch_order.jsonl'):\n        artifacts[str(out/name)]=sha(out/name)\n    original=next(item for item in controls['rows'] if (item['dataset'],item['variant'])==(row['dataset'],row['variant']))\n    assert (out/'training_batch_order.jsonl').read_bytes()==(Path(original['run_dir'])/'training_batch_order.jsonl').read_bytes()\n    m0=Path(row['m0_dir'])/'training.json'\n    artifacts[str(m0)]=sha(m0)\nassert all(sha(Path(name))==digest for name,digest in artifacts.items())\nresult={'status':'ALL_SIX_FULL50_FIRST_STRICT_AND_ONCE_CPU_REPORT_INPUTS_VERIFIED',\n    'at':datetime.now().astimezone().isoformat(),'source_sha256':source,'artifact_sha256':artifacts,'rows':rows,\n    'source_count':len(source),'original_control_artifacts':124,'original_campaign':'logs/global_task_role_v1_20261004_824',\n    'original_once_cpu_report':'results/global_task_role_v1_complete_20261004_824',\n    'disk_free_bytes':shutil.disk_usage(root).free,'remote_head':subprocess.check_output(['git','rev-parse','HEAD'],cwd=root,text=True).strip(),\n    'boundary':'Input validation only; no model construction/inference, training, old M0 verifier or report replay. New M0 receipt sealed; probe binary is not a diagnosis dependency. Fixed selected best and original controls unchanged; Goal active/unmet.'}\njournal=root/'logs/global_task_role_fixed_best_seal835_20261005'\nassert not journal.exists()\njournal.mkdir()\n(journal/'RESULT.json').write_text(json.dumps(result,indent=2)+'\\n')\nprint(json.dumps(result))\n"
+compile(code, 'remote_seal_inputs_v2.py', 'exec')
+(packet / 'remote_seal_inputs_v2.py').write_text(code, encoding='utf-8')
+client = paramiko.SSHClient()
+client.load_host_keys('C:/Users/gb/.ssh/known_hosts')
+client.connect('172.19.12.138', port=2026, username='gaob', key_filename='C:/Users/gb/.ssh/id_ed25519', timeout=20)
+stdin, stdout, stderr = client.exec_command('/usr/bin/python3 -B -')
+stdin.write(code)
+stdin.channel.shutdown_write()
+stdout.channel.settimeout(300)
+data, error = stdout.read(), stderr.read()
+exit_code = stdout.channel.recv_exit_status()
+(packet / 'stdout.json').write_bytes(data)
+(packet / 'stderr.txt').write_bytes(error)
+(packet / 'EXIT.json').write_text(json.dumps({'exit_code': exit_code}) + '\n', encoding='utf-8')
+assert exit_code == 0, error.decode()
+record = json.loads(data)
+assert record['source_count'] == 332 and len(record['rows']) == 9
+for name in ('tools/diagnose_global_task_role_best.py', 'refine-logs/global_task_role_fixed_best_diagnosis_v1/EXPERIMENT_PLAN.md'):
+    assert hashlib.sha256((repo / name).read_bytes()).hexdigest() == record['source_sha256'][name]
+seal = {'schema': 'trifusion-global-task-role-fixed-best-diagnosis-v1', 'registered_at': datetime.now().astimezone().isoformat(),
+    'original_campaign': record['original_campaign'], 'original_once_cpu_report': record['original_once_cpu_report'],
+    'source_sha256': record['source_sha256'], 'artifact_sha256': record['artifact_sha256'], 'rows': record['rows'],
+    'physical_gpus': [0, 1], 'optimizer_updates': 0, 'planned_models': 6,
+    'inference': 'Actual task-ownership models, original eval loader, fixed best, one forward per record, no AMP, full query/gallery and camera/scene filters',
+    'boundary': 'Six own full50/first strict and original once CPU report completed before seal. No re-selection, new training, test adaptation, original retired M0 verifier or parity repair. New probe binaries not needed by this diagnosis; retain best/receipts/controls. Only26GPU0/1,25textonly,no power/temp actions; Goal active/unmet.'}
+destination.write_text(json.dumps(seal, indent=2) + '\n', encoding='utf-8')
+(packet / 'INPUT_SEAL.json').write_bytes(destination.read_bytes())
+client.close()
+print(json.dumps({'status': record['status'], 'at': record['at'], 'source_count': record['source_count'], 'artifact_count': len(seal['artifact_sha256']), 'disk_free_bytes': record['disk_free_bytes'], 'seal_sha256': hashlib.sha256(destination.read_bytes()).hexdigest()}))
