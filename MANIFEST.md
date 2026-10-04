@@ -1728,3 +1728,23 @@
 | 2026-10-03T21:41:42.683527+08:00 | /experiment-plan | tools/queue_independent_native_evidence.py | implementation | §41.792 仅GPU0/1资源范围同步；CPU调度检查；旧M0/STOP不改、训练未启动 |
 
 | 2026-10-03T21:41:42.683532+08:00 | /experiment-plan | logs/native_resource_scope792_20261003/RESOURCE_SCOPE_CHECK.json | implementation | §41.792 仅GPU0/1资源范围同步；CPU调度检查；旧M0/STOP不改、训练未启动 |
+
+| 2026-10-04T09:45:00.861724+08:00 | /experiment-plan | refine-logs/role_input_detach_v1/EXPERIMENT_PLAN_20261004_094500.md | implementation | §41.813 角色读取梯度边界最小配对，PREPARED_NOT_LAUNCHED；同前向/容量/作者配方，六端fresh50，非新颖性或成功宣称 |
+
+| 2026-10-04T09:45:00.861724+08:00 | /experiment-plan | refine-logs/role_input_detach_v1/EXPERIMENT_PLAN.md | implementation | §41.813 角色读取梯度边界最小配对，PREPARED_NOT_LAUNCHED；同前向/容量/作者配方，六端fresh50，非新颖性或成功宣称 |
+
+| 2026-10-04T09:45:00.861724+08:00 | /experiment-plan | refine-logs/role_input_detach_v1/EXPERIMENT_TRACKER_20261004_094500.md | implementation | §41.813 角色读取梯度边界最小配对，PREPARED_NOT_LAUNCHED；同前向/容量/作者配方，六端fresh50，非新颖性或成功宣称 |
+
+| 2026-10-04T09:45:00.861724+08:00 | /experiment-plan | refine-logs/role_input_detach_v1/EXPERIMENT_TRACKER.md | implementation | §41.813 角色读取梯度边界最小配对，PREPARED_NOT_LAUNCHED；同前向/容量/作者配方，六端fresh50，非新颖性或成功宣称 |
+
+| 2026-10-04T09:45:00.861724+08:00 | /experiment-plan | modeling/trifusion/role_input_detach.py | implementation | §41.813 角色读取梯度边界最小配对，PREPARED_NOT_LAUNCHED；同前向/容量/作者配方，六端fresh50，非新颖性或成功宣称 |
+
+| 2026-10-04T09:45:00.861724+08:00 | /experiment-plan | tools/run_role_input_detach.py | implementation | §41.813 角色读取梯度边界最小配对，PREPARED_NOT_LAUNCHED；同前向/容量/作者配方，六端fresh50，非新颖性或成功宣称 |
+
+| 2026-10-04T09:45:00.861724+08:00 | /experiment-plan | tools/queue_role_input_detach.py | implementation | §41.813 角色读取梯度边界最小配对，PREPARED_NOT_LAUNCHED；同前向/容量/作者配方，六端fresh50，非新颖性或成功宣称 |
+
+| 2026-10-04T09:45:00.861724+08:00 | /experiment-plan | tools/report_role_input_detach.py | implementation | §41.813 角色读取梯度边界最小配对，PREPARED_NOT_LAUNCHED；同前向/容量/作者配方，六端fresh50，非新颖性或成功宣称 |
+
+| 2026-10-04T09:45:00.861724+08:00 | /experiment-plan | refine-logs/role_input_detach_v1/SOURCE_REVIEW.json | implementation | §41.813 角色读取梯度边界最小配对，PREPARED_NOT_LAUNCHED；同前向/容量/作者配方，六端fresh50，非新颖性或成功宣称 |
+
+| 2026-10-04T09:45:00.861724+08:00 | /experiment-plan | refine-logs/role_input_detach_v1/SOURCE_SCOPE.json | implementation | §41.813 角色读取梯度边界最小配对，PREPARED_NOT_LAUNCHED；同前向/容量/作者配方，六端fresh50，非新颖性或成功宣称 |

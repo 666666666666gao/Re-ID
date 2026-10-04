@@ -41,3 +41,6 @@
 
 
 §41.812六best全量只读诊断闭合，父子exit0/原fused复现/模型状态不变/原61依赖及316源码未变。所有原始query/AP/首正例、身份和幅度分布保留；二进制仅在远端，新文本归档logs/native_fixed_best_complete812_20261004。原九端0/3结论和M0退役不改。下一训练需基于完整诊断另行登记，当前没有新训练/调参/工程修复。科学Goal active/unmet。
+
+
+§41.813原V6状态保持COMPLETE/九端0/3、原六best诊断COMPLETE。新训练家族role_input_detach_v1另行登记：六端只变读取梯度边界，同前向/容量/初始化/配方，尚未实际prepare/M0/full。原控制/旧M0退役不变，非parity修复。

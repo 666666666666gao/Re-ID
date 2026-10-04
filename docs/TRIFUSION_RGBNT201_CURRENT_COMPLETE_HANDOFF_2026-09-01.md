@@ -2,7 +2,7 @@
 
 ## 0. 一页结论
 
-**当前进度：§41.812（2026-10-04更新）** 六份固定best全量只读诊断已完成：原fused指标全部复现，零训练更新，模型/buffer及原输入SHA不变。RGBNT201 native修正在同模型内确有收益，但不足抵消其global相对独立global-only的差距；三数据集结果分别分析，不再把全部差距归于读出修正。原九端0/3推进结论不变，下一训练尚未登记。仅26GPU0/1、2025文本同步、不管功温，科学Goal active / unmet。
+**当前进度：§41.813（2026-10-04更新）** 原九端及六份固定best诊断完成并封存；下一项仅改变角色读取处的梯度边界，六端fresh50已登记/源码复核，尚未启动真实prepare/M0/训练。保持原前向、容量、作者配方和已有全局直接学习，检验一个回传路径，不宣称梯度冲突已定位。仅26GPU0/1、25文本同步、不管功温；完整科学Goal active/unmet。
 
 **现行合同：** 每个正式候选完整50轮，使用作者完整query/gallery及camera／MSVR时间段过滤，以官方fused mAP最高的同一checkpoint报告全部指标，随后严格重载。RGBNT201报告mAP／R1／R5／R10，RGBNT100及MSVR310报告mAP／R1；不跨epoch或seed拼列。官方集已参与逐轮选点和历史方法选择，属于已消费基准上的探索性结果。
 
@@ -16231,3 +16231,18 @@ history.seconds仅为训练循环，不包括每轮评价/保存；完整命令�
 3. **没有触碰封存训练与选择。** 六端参数/buffer哈希相同、零梯度与optimizer更新，原九份best/评价/距离/初始化/协议/训练回执/执行源码均保持61项依赖SHA。fused四指标复现容差1e−5；原距离最大差逐端记录，未放宽容差。旧成功M0退役、原一次性报告、旧反向parity FAIL及九端事前推进0/3均不改。
 
 唯一下一科学问题应区分全局表征的共同训练变化与证据读出的增量，完成源代码/来源训练支持核查后再登记最小配对干预；当前不自动叠加N2/N3、不按已消费官方分数扫描gain/LR/seed。强基线/SOTA、必要性与完整流程多种子仍未达成，Goal保持active/unmet。
+
+
+## 41.813 唯一下一干预登记：角色读取处 stop-gradient（2026-10-04）
+
+原九端及六份固定best诊断完成并封存；下一项仅改变角色读取处的梯度边界，六端fresh50已登记/源码复核，尚未启动真实prepare/M0/训练。保持原前向、容量、作者配方和已有全局直接学习，检验一个回传路径，不宣称梯度冲突已定位。仅26GPU0/1、25文本同步、不管功温；完整科学Goal active/unmet。
+
+固定best结果显示201主要有global差，而100还存在修正直接损伤，MSVR修正作用很薄，不能用同一个数值解释三集。最小下一对照在semantic/native的role_evidence入口只对stages/context/shared_global执行detach，然后调用原角色实现；所有值、参数及前向操作保持。backbone适配均值写回和h=g+gain*c的global直接路径继续训练，故不是冻结global、不是旧private写回分离，也不保证global严格保持。
+
+六端从相同公开CLIP/fresh camera/head初始化，作者配方/seed42/50轮/真实201B64K8、MSVRB64K4、100B128K16及原两卡分段不变；每端prepare→原实际8-update M0→相同初始化fresh50→首次严格重载。共300epoch/12968正式step、48 M0更新。对应原V6九端仅作历史控制，不重训、不调用已退役旧M0依赖。新初始state/cfg/容量及全部绑定字段除架构/entrySHA/gradient policy外必须与原控制相同。
+
+执行入口tools/run_role_input_detach.py，模型modeling/trifusion/role_input_detach.py，队列tools/queue_role_input_detach.py，唯一终态报告tools/report_role_input_detach.py；计划/时间戳副本/追踪表/SOURCE_SCOPE和主代理源码复核存于refine-logs/role_input_detach_v1。322源绑定，原控制61依赖经既有INPUT_SEAL保持；无环境/损失/分类头/读取/gain/seed/超参数改变。观察日志补g/c/实际修正范数，不改变loss。源码通过不等于M0或性能通过。
+
+顺序201semantic/native→MSVRsemantic/native→100semantic/native，最多一组26 GPU0/1；沿历史同条件总wall约6.22小时，估计6–8小时两卡占用，先核对首端真实M0和启动，再按180–300秒或预计轮次里程碑观察。新权重/距离约5GiB另留2GiB，无功温设置/监控；25只文本同步。推进仍是相应原角色控制ΔmAP≥0.5且R1不降，另报告相对独立global-only，不将阈值当显著性。
+
+本项是训练机制假设，不作为普通stop-gradient原创主张。若失败保存，不改变detach位置或按官方分数救gain/LR/epoch/seed；不加N2/N3/外部资源/新损失。最终需独立全局、修正作用及跨数据集/多种子证据，当前不宣称解决唯一根因、SOTA或三个模块必要性，完整Goal未达成。
