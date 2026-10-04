@@ -1,0 +1,55 @@
+{
+  "observed_at": "2026-10-05T06:31:56.915757+08:00",
+  "parent_exit": {
+    "exit_code": 1,
+    "completed_at": "2026-10-05T06:29:41.662154+08:00"
+  },
+  "original_campaign_sha256": "4d5b9e00e2b3739a59c0ae411c89b28b4955701b5bb16780eaab84e54130223d",
+  "original_exit_sha256": "57418a8ba131304cf38feb34195a47da211e2a15ffbc023bccbb5006591a2aac",
+  "original_train": {
+    "dataset": "RGBNT100",
+    "variant": "semantic",
+    "phase": "full",
+    "status": "PENDING",
+    "steps": [
+      {
+        "mode": "train",
+        "command": [
+          "/data/gaob/Re-ID/conda-envs/tri_reid/bin/python",
+          "-B",
+          "/data/gaob/Re-ID/Trifusion/tools/run_deployment_metric_role.py",
+          "--dataset",
+          "RGBNT100",
+          "--variant",
+          "semantic",
+          "--mode",
+          "train",
+          "--protocol",
+          "/data/gaob/Re-ID/Trifusion/logs/training_feature_scale_protocols_20261002/RGBNT100.json",
+          "--signal-source",
+          "/data/gaob/Re-ID/Trifusion/comparators/Signal-cd1b0a6",
+          "--clip-weight",
+          "/data/gaob/Re-ID/Trifusion/pertrained-model/ViT-B-16.pt",
+          "--initialization",
+          "/data/gaob/Re-ID/Trifusion/logs/deployment_metric_role_pending100_20261005_842/initialization/RGBNT100_semantic.json",
+          "--output-dir",
+          "/data/gaob/Re-ID/Trifusion/trained-model/deployment_metric_role_pending100_20261005_842_full_semantic_RGBNT100",
+          "--seed",
+          "42",
+          "--epochs",
+          "50"
+        ],
+        "status": "COMPLETE",
+        "pid": 4002738,
+        "started_at": "2026-10-05T04:30:37.773545+08:00",
+        "gpus": [
+          0,
+          1
+        ],
+        "exit_code": 0,
+        "completed_at": "2026-10-05T06:29:41.562464+08:00"
+      }
+    ]
+  },
+  "boundary": "Original train complete50/exit0;first evaluation never launched;parent disk-reserve EXIT1 retained. This is not a new scientific failure or a retrained best."
+}

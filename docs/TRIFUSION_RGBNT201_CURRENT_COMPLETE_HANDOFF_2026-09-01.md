@@ -17230,3 +17230,20 @@ MSVR310 semantic完成完整50轮/706步/第一次strict，E38的同一份mAP-be
 对非零h且不在归一化epsilon分支内，度量梯度为 (I-zz^T)u/||h||，与h正交；标量核验径向内积约5.55e-17。这个度量项自身不直接奖励统一径向增大，不能把§845记录的修正/global幅度增长归因于该loss下界。相对固定global增大修正仍会改变方向，raw分类与优化器又是独立作用路径；具体CMC损害、过拟合或M0无梯度原因仍未定位。margin空间的softplus导数非零，也不保证所有参数梯度非零。
 
 所有原失败、当前队列、权重、选择规则和推进门槛保持不变。最新真实模型接收仍是§844的04:33:35；原RGBNT100 semantic fresh50未重新启动，唯一观察进程46650首个远端节点仍为06:27:54.475551。§846的五正式端/12可用对/3明确缺失对CPU报告尚未执行，须等待100两端真实验收。没有新增margin、倍率、种子、辅助损失或工程修复。仅26物理GPU0/1，无功率温度动作；2025原I/O pending不探测。完整Goal仍ACTIVE / UNMET。
+
+
+## 41.848 RGBNT100 semantic首次严格评价闭合；磁盘续接后native已开始50轮
+
+2026-10-05原RGBNT100 semantic于06:29:41.562464完成50轮、训练子进程退出0；原parent于06:29:41.662154退出1。原因是第一份严格评价启动前，原2GiB磁盘reserve门失败，可用空间约622MB。评价并未启动。保留原parent EXIT1和campaign.json SHA `4d5b9e00e2b3739a59c0ae411c89b28b4955701b5bb16780eaab84e54130223d`，不把其PENDING/旧RUNNING快照改写成COMPLETE。
+
+按用户只保留有用最佳权重的授权，06:51:31完成41份精确SHA退役，释放2,725,126,373字节：3份完成50轮、mAP低于对应semantic的旧EV1 combined best；38份已消费诊断缓存。对应semantic权重、全部正式成绩/距离/训练/回执/initializer保留；当前global-task query/gallery特征也保留。当前339科学源码、187控制输入逐项验证不变。初次normalized控制相等性检查失败，未得到重复证明，其权重完全未删除；原检查失败单独归档。实际清理后磁盘可用3,347,369,984字节。清理回执 `logs/legacy_storage_retirement_20261005_848/`，不得重复运行该删除脚本。
+
+新增纯行政 `STORAGE_CONTINUATION_848.py` 于06:59:22.779831启动，supervisor141141/startticks41010354。先用原semantic best与原initializer完成首次严格评价，再运行从未prepare/M0/full过的RGBNT100 native。没有重训semantic、重放M0或重试MSVR310 native失败；模型/训练339源码、当前控制187、seed42、配方、精度与验收门完全不变。继续仅2026物理GPU0/1一对，无功率/温度查询、设置、监控或门槛；2025原I/O pending不探测。
+
+RGBNT100 semantic正式50轮/3129步，mAP-best第5轮，同权重 mAP/Rank-1/Rank-5/Rank-10 = **84.0826843833 / 95.1603472233 / 96.4431464672 / 96.8513131142**。对同variant raw-role控制增量 **−0.0076206860 / −0.6997108459 / −0.1749277115 / −0.3498554230**；对独立global-only为 **−0.4510998427 / −1.4577269554 / −0.8746385574 / −1.1078715324**。两项推进门均FAIL，不是统计显著性结论。最佳到第50轮mAP下降24.3372544311；训练加逐轮评价7117.205935秒，不当作包含所有首次strict/准备成本的完整墙钟。首次strict与原M0验收后，仅退役原356,161,472字节M0 probe；best和正式距离保留。全部50轮CSV/SVG、真实损失/范数轨迹与封存raw控制见 `logs/deployment_metric_rgb100_semantic_full848_20261005/`。当前正式4/6端；缺失MSVR native未补填分数。
+
+07:03:24.970669首次续接观察确认：native M0_PASS，299/299可训练张量累计非零有限梯度，8次真实更新，三作者BN各8次，全state重载差0；14个detail张量末次相对初始参数均改变。native fresh50 PID150146已于07:03:13.843187开始。新行政campaign为 `logs/deployment_metric_storage_continuation_20261005_848`，原pending100只追加新acceptance/probe退役时间记录，原campaign.json不改写。没有native正式分数，也不称5/6完成。
+
+唯一近结束观察器session17277，07:04:38.311499实际启动；依据已完成同variant控制7230.976585秒估计，首次远端观察为 **09:02:14.819772**，之后必要时240秒。不在该节点前重复查询native模型/logs或启动另一观察器。此前46650、24035观察器与cleanup78286、semantic collector89511均已终止，不重启。
+
+§846 `REPORT_AVAILABLE_FIVE.py` 不改、不执行：原parent失败使其旧COMPLETE prerequisite无法满足。新 `REPORT_STORAGE_FIVE_848.py` 是明确绑定original三端、原pending semantic与新行政native的独立CPU报告合同；仅源码自复核/AST，未执行，未取得数组分析或统计成绩。须等native完整50轮/首次strict/2端混合来源acceptance matrix实际完成，才执行12可用全query对照，另列MSVR native三项UNAVAILABLE。原两parent失败、原report_invocations=0保持。不是6/6完成或完整Goal达到。当前不改模型、不加入N2/N3或新尺度/seed搜索；Goal **ACTIVE / UNMET**。

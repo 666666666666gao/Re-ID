@@ -1,0 +1,685 @@
+{
+  "status": "ORIGINAL_FRESH50_FIRST_STRICT_AND_PROBE_RETIREMENT_VERIFIED",
+  "at": "2026-10-05T07:05:29.066531+08:00",
+  "row": {
+    "dataset": "RGBNT100",
+    "variant": "semantic",
+    "status": "VERIFIED_COMPLETE",
+    "run_dir": "/data/gaob/Re-ID/Trifusion/trained-model/deployment_metric_role_pending100_20261005_842_full_semantic_RGBNT100",
+    "m0_dir": "/data/gaob/Re-ID/Trifusion/trained-model/deployment_metric_role_pending100_20261005_842_m0_semantic_RGBNT100",
+    "metrics": {
+      "mAP": 84.08268438328433,
+      "Rank-1": 95.16034722328186,
+      "Rank-5": 96.44314646720886,
+      "Rank-10": 96.85131311416626
+    },
+    "best_epoch": 5,
+    "initializer": {
+      "architecture": "trifusion-deployment-metric-role-v1",
+      "dataset": "RGBNT100",
+      "variant": "semantic",
+      "recipe": "semantic",
+      "foundation_option": "author",
+      "seed": 42,
+      "public_clip_sha256": "5806e77cd80f8b59890b7e101eabd078d9fb84e6937f9e85e4ecb61988df416f",
+      "protocol_sha256": "b2c14adf947b06b27b9576a712f96192c1393ad6ed3ec1be5259b63f88300169",
+      "author_source_commit": "cd1b0a672d1fe642e7608731cb4899a19dda7d51",
+      "visual_initial_sha256": "9a92d7f60d061e3282fdc2a557a7d07d7cc519a4534e47239e9240cfb95c62b0",
+      "camera_initial_sha256": "b836a2e23c5dcb8834b69aee4a26a04d4209819b23527bd1c57693ba8e914201",
+      "shared_initializer_sha256": {
+        "backbone": "1db5ac9c440aca58bb11f2ecb08e7c031bf3ee2d0401934c7b22975edfb1d841",
+        "neck": "06efe49412cdf6c9d8d9162b9394e4bc49329d169906cecc2b6c4784bcdb166e",
+        "classifier": "1deee2afd7a2f8b90231dc24c16cb5e1ce5232e2b1d92383a964342cded88ddd"
+      },
+      "initial_model_state_sha256": "f20e3c7c8ee258192b6c37afa5a41e7f5fe8fa0f3322bdb083009ec57f639f11",
+      "trainable_parameters": 88831946,
+      "trainable_parameter_tensors": 285,
+      "batch_size": 128,
+      "num_instances": 16,
+      "head_names": [
+        [
+          "bottleneck_r",
+          "classifier_r"
+        ],
+        [
+          "bottleneck_n",
+          "classifier_n"
+        ],
+        [
+          "bottleneck_t",
+          "classifier_t"
+        ]
+      ],
+      "cfg_yaml": "DATALOADER:\n  NUM_INSTANCE: 16\n  NUM_WORKERS: 4\n  SAMPLER: softmax_triplet\nDATASETS:\n  NAMES: RGBNT100\n  ROOT_DIR: ..\nINPUT:\n  PADDING: 10\n  PIXEL_MEAN:\n  - 0.5\n  - 0.5\n  - 0.5\n  PIXEL_STD:\n  - 0.5\n  - 0.5\n  - 0.5\n  PROB: 0.5\n  RE_PROB: 0.5\n  SIZE_TEST:\n  - 128\n  - 256\n  SIZE_TRAIN:\n  - 128\n  - 256\nMODEL:\n  ADAPTER: false\n  ATT_DROP_RATE: 0.0\n  DEVICE: cuda\n  DEVICE_ID: '0'\n  DIRECT: 0\n  DIST_TRAIN: false\n  DROP_OUT: 0.0\n  DROP_PATH: 0.1\n  FROZEN: false\n  Gram_Loss_weight: 0.1\n  ID_LOSS_TYPE: softmax\n  ID_LOSS_WEIGHT: 0.25\n  IF_LABELSMOOTH: 'on'\n  IF_WITH_CENTER: 'no'\n  METRIC_LOSS_TYPE: triplet\n  MoE_Loss_weight: 0.1\n  NAME: Signal\n  NECK: bnneck\n  NO_MARGIN: true\n  PAT_Loss_weight: 0.1\n  PRETRAIN_PATH_T: /data/gaob/Re-ID/Trifusion/pertrained-model/ViT-B-16.pt\n  PROMPT: false\n  SIE_CAMERA: true\n  SIE_COE: 1.0\n  SIE_VIEW: false\n  STRIDE_SIZE:\n  - 16\n  - 16\n  TOPK: 112\n  TRANSFORMER_TYPE: ViT-B-16\n  TRIPLET_LOSS_WEIGHT: 1.0\n  USE_A: false\n  USE_B: false\n  stageName: together_CLS_Patch\nOUTPUT_DIR: .\nSOLVER:\n  BASE_LR: 0.0007\n  BIAS_LR_FACTOR: 2\n  CENTER_LOSS_WEIGHT: 0.0005\n  CENTER_LR: 0.5\n  CHECKPOINT_PERIOD: 30\n  CLUSTER_MARGIN: 0.3\n  COSINE_MARGIN: 0.5\n  COSINE_SCALE: 30\n  EVAL_PERIOD: 1\n  GAMMA: 0.1\n  IMS_PER_BATCH: 128\n  LARGE_FC_LR: false\n  LOG_PERIOD: 10\n  MARGIN: 0.3\n  MAX_EPOCHS: 50\n  MOMENTUM: 0.9\n  OPTIMIZER_NAME: Adam\n  RANGE_ALPHA: 0\n  RANGE_BETA: 1\n  RANGE_K: 2\n  RANGE_LOSS_WEIGHT: 1\n  RANGE_MARGIN: 0.3\n  SEED: 42\n  STEPS:\n  - 40\n  - 70\n  WARMUP_FACTOR: 0.01\n  WARMUP_ITERS: 5\n  WARMUP_METHOD: linear\n  WEIGHT_DECAY: 0.0001\n  WEIGHT_DECAY_BIAS: 0.0001\nTEST:\n  EVAL: false\n  FEAT_NORM: 'yes'\n  IMS_PER_BATCH: 128\n  MISS: nothing\n  NECK_FEAT: before\n  RE_RANKING: 'no'\n  WEIGHT: ''\nckpt_save_path: RGBNT100_all\nckpt_test_path: test_RNT100\n",
+      "entry_sha256": "42b061a7426d032675d53e1c576fb5955d7be50c20b2b2a9559e15b7979a907b",
+      "scope": "Same initialized state, raw BN logits and global author task; only role Triplet uses actual joint1536 L2(h). Vehicles also change per-modal to joint metric geometry.",
+      "visual_placement": "single_process_original_full_batch_first6_cuda1_last6_and_heads_cuda0",
+      "parameter_placement": {
+        "cuda:0": {
+          "parameters": 45474890,
+          "trainable_parameters": 45305354,
+          "parameter_bytes": 181899560,
+          "gradient_adam_bytes_if_fp32": 543664248
+        },
+        "cuda:1": {
+          "parameters": 43526592,
+          "trainable_parameters": 43526592,
+          "parameter_bytes": 174106368,
+          "gradient_adam_bytes_if_fp32": 522319104
+        }
+      },
+      "role_input_gradient_policy": "detach_stages_context_shared_global_at_role_read_only",
+      "objective_gradient_policy": "author_global_loss_to_shared_and_heads_fused_loss_to_roles_only",
+      "role_metric_policy": "role_triplet_joint_1536_l2_h_global_triplet_original_raw_parts"
+    },
+    "checkpoint_sha256": "fce0a25e1437db2b51db1aa4222dc5cdcf20e84ffbfbe74f734db936aea0cefa",
+    "distance_sha256": "2e73f9f80d12175bc3b046775c07087117d6c648a478d6043dfd936c447f95b8",
+    "receipt_sha256": "7e5da3063025a48d8c1c2319df4a40d7124cee8ece48fd9a3daca03989d00f08"
+  },
+  "formal_epochs": 50,
+  "formal_steps": 3129,
+  "source_files_verified_unchanged": 339,
+  "control_artifacts_verified_unchanged": 187,
+  "actual_training_batch_order_equal": true,
+  "metric_width": 1536,
+  "head_loss_sum_count": 3,
+  "global_and_role_losses_verified": true,
+  "deltas": {
+    "semantic": {
+      "control_metrics": {
+        "mAP": 84.09030506924212,
+        "Rank-1": 95.86005806922913,
+        "Rank-5": 96.61807417869568,
+        "Rank-10": 97.20116853713989
+      },
+      "delta_metrics": {
+        "mAP": -0.007620685957789419,
+        "Rank-1": -0.6997108459472656,
+        "Rank-5": -0.1749277114868164,
+        "Rank-10": -0.3498554229736328
+      },
+      "phase_progress": false
+    },
+    "global_only": {
+      "control_metrics": {
+        "mAP": 84.53378422597531,
+        "Rank-1": 96.61807417869568,
+        "Rank-5": 97.31778502464294,
+        "Rank-10": 97.95918464660645
+      },
+      "delta_metrics": {
+        "mAP": -0.45109984269097936,
+        "Rank-1": -1.4577269554138184,
+        "Rank-5": -0.874638557434082,
+        "Rank-10": -1.1078715324401855
+      },
+      "phase_progress": false
+    }
+  },
+  "training_task_and_norm_trajectory": [
+    {
+      "epoch": 1,
+      "steps": 62,
+      "global_loss": 5.499043572333552,
+      "fused_role_loss": 4.9576984913118425,
+      "shared_global_norm_mean": 15.261199028261247,
+      "correction_norm_mean": 3.4115740868353073,
+      "actual_scaled_correction_norm_mean": 0.34953657585767006,
+      "actual_scaled_correction_global_ratio_mean": 0.023095794840745868,
+      "role_metric_norm_mean": 1.0
+    },
+    {
+      "epoch": 2,
+      "steps": 62,
+      "global_loss": 4.301110244566394,
+      "fused_role_loss": 4.221718730465058,
+      "shared_global_norm_mean": 14.754973626905873,
+      "correction_norm_mean": 9.39849881202944,
+      "actual_scaled_correction_norm_mean": 1.059763579599319,
+      "actual_scaled_correction_global_ratio_mean": 0.07178437607663293,
+      "role_metric_norm_mean": 1.0
+    },
+    {
+      "epoch": 3,
+      "steps": 63,
+      "global_loss": 2.7107988236442444,
+      "fused_role_loss": 3.1029628609854076,
+      "shared_global_norm_mean": 18.3485628309704,
+      "correction_norm_mean": 30.09578227996826,
+      "actual_scaled_correction_norm_mean": 4.3014044137228105,
+      "actual_scaled_correction_global_ratio_mean": 0.22950180288818148,
+      "role_metric_norm_mean": 1.0
+    },
+    {
+      "epoch": 4,
+      "steps": 61,
+      "global_loss": 1.4370155940290357,
+      "fused_role_loss": 2.3761050153951175,
+      "shared_global_norm_mean": 22.14678461043561,
+      "correction_norm_mean": 61.25855580314261,
+      "actual_scaled_correction_norm_mean": 11.121481559315665,
+      "actual_scaled_correction_global_ratio_mean": 0.5049849841438356,
+      "role_metric_norm_mean": 1.0
+    },
+    {
+      "epoch": 5,
+      "steps": 63,
+      "global_loss": 0.8769930809263199,
+      "fused_role_loss": 2.0552869883794633,
+      "shared_global_norm_mean": 22.82197349790543,
+      "correction_norm_mean": 71.78551580035497,
+      "actual_scaled_correction_norm_mean": 13.8664214875963,
+      "actual_scaled_correction_global_ratio_mean": 0.6117999922661554,
+      "role_metric_norm_mean": 1.0
+    },
+    {
+      "epoch": 6,
+      "steps": 63,
+      "global_loss": 0.7438573364227538,
+      "fused_role_loss": 1.9363013714078874,
+      "shared_global_norm_mean": 23.17884057665628,
+      "correction_norm_mean": 75.8669907100617,
+      "actual_scaled_correction_norm_mean": 13.495895173814562,
+      "actual_scaled_correction_global_ratio_mean": 0.5854639363667321,
+      "role_metric_norm_mean": 1.0
+    },
+    {
+      "epoch": 7,
+      "steps": 62,
+      "global_loss": 0.6722853866315657,
+      "fused_role_loss": 1.8539520271362797,
+      "shared_global_norm_mean": 23.420860136708907,
+      "correction_norm_mean": 78.81726910991054,
+      "actual_scaled_correction_norm_mean": 14.285072926552065,
+      "actual_scaled_correction_global_ratio_mean": 0.6130694468175212,
+      "role_metric_norm_mean": 1.0
+    },
+    {
+      "epoch": 8,
+      "steps": 63,
+      "global_loss": 0.6323352616930765,
+      "fused_role_loss": 1.7965206134886968,
+      "shared_global_norm_mean": 23.63852161831326,
+      "correction_norm_mean": 73.89202426728748,
+      "actual_scaled_correction_norm_mean": 13.944973642863925,
+      "actual_scaled_correction_global_ratio_mean": 0.5936439832051595,
+      "role_metric_norm_mean": 1.0
+    },
+    {
+      "epoch": 9,
+      "steps": 63,
+      "global_loss": 0.610994333312625,
+      "fused_role_loss": 1.7566494695724002,
+      "shared_global_norm_mean": 23.84954270862398,
+      "correction_norm_mean": 73.83518412756541,
+      "actual_scaled_correction_norm_mean": 14.592558633713494,
+      "actual_scaled_correction_global_ratio_mean": 0.6166153275777423,
+      "role_metric_norm_mean": 1.0
+    },
+    {
+      "epoch": 10,
+      "steps": 62,
+      "global_loss": 0.5960740850817773,
+      "fused_role_loss": 1.711073221698884,
+      "shared_global_norm_mean": 23.884337548286684,
+      "correction_norm_mean": 72.82134406797347,
+      "actual_scaled_correction_norm_mean": 15.09515030153336,
+      "actual_scaled_correction_global_ratio_mean": 0.6376944155462326,
+      "role_metric_norm_mean": 1.0
+    },
+    {
+      "epoch": 11,
+      "steps": 63,
+      "global_loss": 0.5885126609650869,
+      "fused_role_loss": 1.6910532940001715,
+      "shared_global_norm_mean": 23.937231548248775,
+      "correction_norm_mean": 72.35935695587642,
+      "actual_scaled_correction_norm_mean": 15.788166742476205,
+      "actual_scaled_correction_global_ratio_mean": 0.6659317508576408,
+      "role_metric_norm_mean": 1.0
+    },
+    {
+      "epoch": 12,
+      "steps": 63,
+      "global_loss": 0.5812287302244277,
+      "fused_role_loss": 1.658139389658731,
+      "shared_global_norm_mean": 24.132287040589347,
+      "correction_norm_mean": 71.29566241067553,
+      "actual_scaled_correction_norm_mean": 16.292008263724192,
+      "actual_scaled_correction_global_ratio_mean": 0.6812449003022815,
+      "role_metric_norm_mean": 1.0
+    },
+    {
+      "epoch": 13,
+      "steps": 63,
+      "global_loss": 0.5792732333380078,
+      "fused_role_loss": 1.6472622156143188,
+      "shared_global_norm_mean": 24.15220838879782,
+      "correction_norm_mean": 71.10606578039744,
+      "actual_scaled_correction_norm_mean": 17.00704202197847,
+      "actual_scaled_correction_global_ratio_mean": 0.7101794121757387,
+      "role_metric_norm_mean": 1.0
+    },
+    {
+      "epoch": 14,
+      "steps": 63,
+      "global_loss": 0.5765354538720752,
+      "fused_role_loss": 1.6481414238611858,
+      "shared_global_norm_mean": 24.013851862105113,
+      "correction_norm_mean": 69.7017695714557,
+      "actual_scaled_correction_norm_mean": 17.404248404124427,
+      "actual_scaled_correction_global_ratio_mean": 0.7315974642360021,
+      "role_metric_norm_mean": 1.0
+    },
+    {
+      "epoch": 15,
+      "steps": 63,
+      "global_loss": 0.5720597694790552,
+      "fused_role_loss": 1.6270663643640184,
+      "shared_global_norm_mean": 24.03989022875589,
+      "correction_norm_mean": 68.63595641605438,
+      "actual_scaled_correction_norm_mean": 17.675259272257488,
+      "actual_scaled_correction_global_ratio_mean": 0.7427640860042874,
+      "role_metric_norm_mean": 1.0
+    },
+    {
+      "epoch": 16,
+      "steps": 63,
+      "global_loss": 0.566675725437346,
+      "fused_role_loss": 1.61850701248835,
+      "shared_global_norm_mean": 24.187762911357577,
+      "correction_norm_mean": 68.57724743797665,
+      "actual_scaled_correction_norm_mean": 18.4618958064488,
+      "actual_scaled_correction_global_ratio_mean": 0.7719729713031224,
+      "role_metric_norm_mean": 1.0
+    },
+    {
+      "epoch": 17,
+      "steps": 62,
+      "global_loss": 0.5618897224626234,
+      "fused_role_loss": 1.6087573958981423,
+      "shared_global_norm_mean": 24.064913995804325,
+      "correction_norm_mean": 66.5799742052632,
+      "actual_scaled_correction_norm_mean": 18.577505511622274,
+      "actual_scaled_correction_global_ratio_mean": 0.7800537242043403,
+      "role_metric_norm_mean": 1.0
+    },
+    {
+      "epoch": 18,
+      "steps": 62,
+      "global_loss": 0.5602823428569301,
+      "fused_role_loss": 1.6120881649755663,
+      "shared_global_norm_mean": 23.672927518044748,
+      "correction_norm_mean": 63.68774284855012,
+      "actual_scaled_correction_norm_mean": 17.963760945104784,
+      "actual_scaled_correction_global_ratio_mean": 0.7669571118970071,
+      "role_metric_norm_mean": 1.0
+    },
+    {
+      "epoch": 19,
+      "steps": 63,
+      "global_loss": 0.5578532985278538,
+      "fused_role_loss": 1.5890075346780201,
+      "shared_global_norm_mean": 24.001608984810964,
+      "correction_norm_mean": 65.33804515051463,
+      "actual_scaled_correction_norm_mean": 19.09026881626674,
+      "actual_scaled_correction_global_ratio_mean": 0.8032618552919418,
+      "role_metric_norm_mean": 1.0
+    },
+    {
+      "epoch": 20,
+      "steps": 62,
+      "global_loss": 0.5560644826581401,
+      "fused_role_loss": 1.571414057285555,
+      "shared_global_norm_mean": 24.048000735621297,
+      "correction_norm_mean": 64.75116705125377,
+      "actual_scaled_correction_norm_mean": 19.579558710898123,
+      "actual_scaled_correction_global_ratio_mean": 0.8234484551414367,
+      "role_metric_norm_mean": 1.0
+    },
+    {
+      "epoch": 21,
+      "steps": 63,
+      "global_loss": 0.5531835915550353,
+      "fused_role_loss": 1.5705809290446933,
+      "shared_global_norm_mean": 24.073983843364413,
+      "correction_norm_mean": 65.52729894244482,
+      "actual_scaled_correction_norm_mean": 20.76785008869474,
+      "actual_scaled_correction_global_ratio_mean": 0.8723271517526536,
+      "role_metric_norm_mean": 1.0
+    },
+    {
+      "epoch": 22,
+      "steps": 63,
+      "global_loss": 0.5550829938479832,
+      "fused_role_loss": 1.5542288450967698,
+      "shared_global_norm_mean": 23.981999442690896,
+      "correction_norm_mean": 64.38831196134052,
+      "actual_scaled_correction_norm_mean": 21.042497241307817,
+      "actual_scaled_correction_global_ratio_mean": 0.8864175194785708,
+      "role_metric_norm_mean": 1.0
+    },
+    {
+      "epoch": 23,
+      "steps": 63,
+      "global_loss": 0.5495919254091051,
+      "fused_role_loss": 1.5281664984566825,
+      "shared_global_norm_mean": 24.014150013999334,
+      "correction_norm_mean": 65.22550788758294,
+      "actual_scaled_correction_norm_mean": 22.192047391619003,
+      "actual_scaled_correction_global_ratio_mean": 0.9350739660717192,
+      "role_metric_norm_mean": 1.0
+    },
+    {
+      "epoch": 24,
+      "steps": 63,
+      "global_loss": 0.5486851315649729,
+      "fused_role_loss": 1.5110677310398646,
+      "shared_global_norm_mean": 23.98274836464534,
+      "correction_norm_mean": 64.64518628801618,
+      "actual_scaled_correction_norm_mean": 22.690152183411612,
+      "actual_scaled_correction_global_ratio_mean": 0.9571801556481255,
+      "role_metric_norm_mean": 1.0
+    },
+    {
+      "epoch": 25,
+      "steps": 63,
+      "global_loss": 0.5479697339118473,
+      "fused_role_loss": 1.5058727775301253,
+      "shared_global_norm_mean": 24.019075605604385,
+      "correction_norm_mean": 65.74251005384657,
+      "actual_scaled_correction_norm_mean": 23.77355154733809,
+      "actual_scaled_correction_global_ratio_mean": 1.0010991910147289,
+      "role_metric_norm_mean": 1.0
+    },
+    {
+      "epoch": 26,
+      "steps": 63,
+      "global_loss": 0.5478463267523145,
+      "fused_role_loss": 1.5187038031835405,
+      "shared_global_norm_mean": 23.705490384783065,
+      "correction_norm_mean": 65.36658235580202,
+      "actual_scaled_correction_norm_mean": 24.285522672865127,
+      "actual_scaled_correction_global_ratio_mean": 1.0372509738755604,
+      "role_metric_norm_mean": 1.0
+    },
+    {
+      "epoch": 27,
+      "steps": 63,
+      "global_loss": 0.5467469427320693,
+      "fused_role_loss": 1.5143099606983246,
+      "shared_global_norm_mean": 23.799356036716038,
+      "correction_norm_mean": 62.27707581293015,
+      "actual_scaled_correction_norm_mean": 23.0997859712631,
+      "actual_scaled_correction_global_ratio_mean": 0.9822631166094825,
+      "role_metric_norm_mean": 1.0
+    },
+    {
+      "epoch": 28,
+      "steps": 62,
+      "global_loss": 0.5457100387542478,
+      "fused_role_loss": 1.490587294101715,
+      "shared_global_norm_mean": 23.782722934599846,
+      "correction_norm_mean": 63.51377001116353,
+      "actual_scaled_correction_norm_mean": 24.140804936808923,
+      "actual_scaled_correction_global_ratio_mean": 1.0282870915628248,
+      "role_metric_norm_mean": 1.0
+    },
+    {
+      "epoch": 29,
+      "steps": 63,
+      "global_loss": 0.545682240100134,
+      "fused_role_loss": 1.4883488227450659,
+      "shared_global_norm_mean": 23.747608003162203,
+      "correction_norm_mean": 64.80418474712069,
+      "actual_scaled_correction_norm_mean": 25.37905490209186,
+      "actual_scaled_correction_global_ratio_mean": 1.0823219172538272,
+      "role_metric_norm_mean": 1.0
+    },
+    {
+      "epoch": 30,
+      "steps": 62,
+      "global_loss": 0.5439437281700873,
+      "fused_role_loss": 1.4635843692287323,
+      "shared_global_norm_mean": 23.68890325484737,
+      "correction_norm_mean": 64.71345064716954,
+      "actual_scaled_correction_norm_mean": 25.966971766564154,
+      "actual_scaled_correction_global_ratio_mean": 1.1096561877958235,
+      "role_metric_norm_mean": 1.0
+    },
+    {
+      "epoch": 31,
+      "steps": 62,
+      "global_loss": 0.5440431064175021,
+      "fused_role_loss": 1.4581285580512016,
+      "shared_global_norm_mean": 23.863487059070216,
+      "correction_norm_mean": 65.09018528846002,
+      "actual_scaled_correction_norm_mean": 26.60218998693651,
+      "actual_scaled_correction_global_ratio_mean": 1.1290716221255641,
+      "role_metric_norm_mean": 1.0
+    },
+    {
+      "epoch": 32,
+      "steps": 62,
+      "global_loss": 0.5431879691539272,
+      "fused_role_loss": 1.466015269679408,
+      "shared_global_norm_mean": 23.93521927249047,
+      "correction_norm_mean": 65.97556311084378,
+      "actual_scaled_correction_norm_mean": 27.605958107979067,
+      "actual_scaled_correction_global_ratio_mean": 1.1694345108924373,
+      "role_metric_norm_mean": 1.0
+    },
+    {
+      "epoch": 33,
+      "steps": 63,
+      "global_loss": 0.542111819698697,
+      "fused_role_loss": 1.4519634208981953,
+      "shared_global_norm_mean": 23.93269205850268,
+      "correction_norm_mean": 65.36128489176433,
+      "actual_scaled_correction_norm_mean": 27.838631281777033,
+      "actual_scaled_correction_global_ratio_mean": 1.178962026323591,
+      "role_metric_norm_mean": 1.0
+    },
+    {
+      "epoch": 34,
+      "steps": 62,
+      "global_loss": 0.5419405160411712,
+      "fused_role_loss": 1.4413714370419901,
+      "shared_global_norm_mean": 23.824767205022997,
+      "correction_norm_mean": 65.82865265877017,
+      "actual_scaled_correction_norm_mean": 28.40999181808964,
+      "actual_scaled_correction_global_ratio_mean": 1.2089863592578518,
+      "role_metric_norm_mean": 1.0
+    },
+    {
+      "epoch": 35,
+      "steps": 63,
+      "global_loss": 0.541874230854095,
+      "fused_role_loss": 1.439580211563716,
+      "shared_global_norm_mean": 23.921562164548842,
+      "correction_norm_mean": 65.89570920429533,
+      "actual_scaled_correction_norm_mean": 28.682787668137323,
+      "actual_scaled_correction_global_ratio_mean": 1.2155436182778978,
+      "role_metric_norm_mean": 1.0
+    },
+    {
+      "epoch": 36,
+      "steps": 62,
+      "global_loss": 0.5443183808557449,
+      "fused_role_loss": 1.4332385928400102,
+      "shared_global_norm_mean": 23.725602672946067,
+      "correction_norm_mean": 66.32297165163102,
+      "actual_scaled_correction_norm_mean": 29.081868110164518,
+      "actual_scaled_correction_global_ratio_mean": 1.2429769096835968,
+      "role_metric_norm_mean": 1.0
+    },
+    {
+      "epoch": 37,
+      "steps": 63,
+      "global_loss": 0.5416784040511601,
+      "fused_role_loss": 1.428288944183834,
+      "shared_global_norm_mean": 23.881613383217463,
+      "correction_norm_mean": 66.00602970426044,
+      "actual_scaled_correction_norm_mean": 29.208749438089036,
+      "actual_scaled_correction_global_ratio_mean": 1.240192381162492,
+      "role_metric_norm_mean": 1.0
+    },
+    {
+      "epoch": 38,
+      "steps": 63,
+      "global_loss": 0.5407006494582646,
+      "fused_role_loss": 1.4314164339549957,
+      "shared_global_norm_mean": 23.95912775917659,
+      "correction_norm_mean": 66.85018266950335,
+      "actual_scaled_correction_norm_mean": 29.88187251015315,
+      "actual_scaled_correction_global_ratio_mean": 1.2645905926114036,
+      "role_metric_norm_mean": 1.0
+    },
+    {
+      "epoch": 39,
+      "steps": 63,
+      "global_loss": 0.5414173158388289,
+      "fused_role_loss": 1.434616069945078,
+      "shared_global_norm_mean": 23.857933528839595,
+      "correction_norm_mean": 66.37965017651754,
+      "actual_scaled_correction_norm_mean": 29.833913227868457,
+      "actual_scaled_correction_global_ratio_mean": 1.2679168061604575,
+      "role_metric_norm_mean": 1.0
+    },
+    {
+      "epoch": 40,
+      "steps": 62,
+      "global_loss": 0.5407387537340964,
+      "fused_role_loss": 1.4250777844459779,
+      "shared_global_norm_mean": 23.900618153233683,
+      "correction_norm_mean": 66.76141578920426,
+      "actual_scaled_correction_norm_mean": 30.209629335711078,
+      "actual_scaled_correction_global_ratio_mean": 1.2811745924334372,
+      "role_metric_norm_mean": 1.0
+    },
+    {
+      "epoch": 41,
+      "steps": 63,
+      "global_loss": 0.5405857298109267,
+      "fused_role_loss": 1.4249427261806669,
+      "shared_global_norm_mean": 23.819398123120504,
+      "correction_norm_mean": 66.49640110560826,
+      "actual_scaled_correction_norm_mean": 30.233593380640425,
+      "actual_scaled_correction_global_ratio_mean": 1.2871025725016518,
+      "role_metric_norm_mean": 1.0
+    },
+    {
+      "epoch": 42,
+      "steps": 63,
+      "global_loss": 0.5402694212065803,
+      "fused_role_loss": 1.4175982304981776,
+      "shared_global_norm_mean": 23.886767765832325,
+      "correction_norm_mean": 66.66081782749721,
+      "actual_scaled_correction_norm_mean": 30.476338704427082,
+      "actual_scaled_correction_global_ratio_mean": 1.2938409211143616,
+      "role_metric_norm_mean": 1.0
+    },
+    {
+      "epoch": 43,
+      "steps": 62,
+      "global_loss": 0.5401437801699485,
+      "fused_role_loss": 1.4157897118599183,
+      "shared_global_norm_mean": 23.85909951117731,
+      "correction_norm_mean": 66.78418424052578,
+      "actual_scaled_correction_norm_mean": 30.616291630652643,
+      "actual_scaled_correction_global_ratio_mean": 1.3014192696540587,
+      "role_metric_norm_mean": 1.0
+    },
+    {
+      "epoch": 44,
+      "steps": 62,
+      "global_loss": 0.5398532007971117,
+      "fused_role_loss": 1.415365453689329,
+      "shared_global_norm_mean": 23.9422030602732,
+      "correction_norm_mean": 66.80249152644988,
+      "actual_scaled_correction_norm_mean": 30.725331152639082,
+      "actual_scaled_correction_global_ratio_mean": 1.3013459059499926,
+      "role_metric_norm_mean": 1.0
+    },
+    {
+      "epoch": 45,
+      "steps": 62,
+      "global_loss": 0.5401808436839811,
+      "fused_role_loss": 1.4115062394449789,
+      "shared_global_norm_mean": 23.890900581113755,
+      "correction_norm_mean": 66.49167620751166,
+      "actual_scaled_correction_norm_mean": 30.656551084210797,
+      "actual_scaled_correction_global_ratio_mean": 1.3016675133858957,
+      "role_metric_norm_mean": 1.0
+    },
+    {
+      "epoch": 46,
+      "steps": 63,
+      "global_loss": 0.5397677241809784,
+      "fused_role_loss": 1.410557544420636,
+      "shared_global_norm_mean": 23.959793696327814,
+      "correction_norm_mean": 66.60560335431781,
+      "actual_scaled_correction_norm_mean": 30.76877124725826,
+      "actual_scaled_correction_global_ratio_mean": 1.3025057921333918,
+      "role_metric_norm_mean": 1.0
+    },
+    {
+      "epoch": 47,
+      "steps": 62,
+      "global_loss": 0.5398115861800409,
+      "fused_role_loss": 1.4166241691958519,
+      "shared_global_norm_mean": 23.825981540064657,
+      "correction_norm_mean": 66.79329090733683,
+      "actual_scaled_correction_norm_mean": 30.890203814352713,
+      "actual_scaled_correction_global_ratio_mean": 1.3144340226727147,
+      "role_metric_norm_mean": 1.0
+    },
+    {
+      "epoch": 48,
+      "steps": 63,
+      "global_loss": 0.5395176268759228,
+      "fused_role_loss": 1.4114951652193826,
+      "shared_global_norm_mean": 23.92337523566352,
+      "correction_norm_mean": 66.73662403651646,
+      "actual_scaled_correction_norm_mean": 30.87765624031188,
+      "actual_scaled_correction_global_ratio_mean": 1.3091447050609286,
+      "role_metric_norm_mean": 1.0
+    },
+    {
+      "epoch": 49,
+      "steps": 63,
+      "global_loss": 0.5396368654947432,
+      "fused_role_loss": 1.415207372771369,
+      "shared_global_norm_mean": 23.89185333251953,
+      "correction_norm_mean": 66.85075602455744,
+      "actual_scaled_correction_norm_mean": 30.94100025721959,
+      "actual_scaled_correction_global_ratio_mean": 1.3131500539325534,
+      "role_metric_norm_mean": 1.0
+    },
+    {
+      "epoch": 50,
+      "steps": 62,
+      "global_loss": 0.5394895057524404,
+      "fused_role_loss": 1.41622830014075,
+      "shared_global_norm_mean": 23.89022667177262,
+      "correction_norm_mean": 66.80361021718672,
+      "actual_scaled_correction_norm_mean": 30.92228541835662,
+      "actual_scaled_correction_global_ratio_mean": 1.312498656011397,
+      "role_metric_norm_mean": 1.0
+    }
+  ],
+  "best_to_last_map_drop": 24.337254431126397,
+  "training_and_epoch_evaluation_seconds": 7117.205935,
+  "full_acceptance_sha256": "cc009bd3670abf8cdd80fb36b3cf59bef01efc78ba3827162335a4d01bf00d08",
+  "retired_probe": {
+    "dataset": "RGBNT100",
+    "variant": "semantic",
+    "retired_at": "2026-10-05T07:01:42.592677+08:00",
+    "acceptance_sha256": "cc009bd3670abf8cdd80fb36b3cf59bef01efc78ba3827162335a4d01bf00d08",
+    "path": "/data/gaob/Re-ID/Trifusion/trained-model/deployment_metric_role_pending100_20261005_842_m0_semantic_RGBNT100/m0_reload_probe.pth",
+    "bytes": 356161472,
+    "sha256": "d72eb9ff050db0d95959a60a6a51bbb68606ef14a0422e6fe1508a2b27db514c"
+  },
+  "disk_free_bytes": 3286470656,
+  "boundary": "One closed endpoint from explicit storage continuation;original parentEXIT1/campaign snapshot retained,no training replay. Original full50/first strict verified from immutable acceptance inputs,never old retired M0 verifier or model replay. Scalar paired deltas only; all-query15pairCPU report remains original once-only final stage. No reselection,new NN,power/temperature action or seed/SOTA claim."
+}

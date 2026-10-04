@@ -1,6 +1,6 @@
 # TriFusion 当前 Goal 执行约束
 
-更新：2026-10-05 §41.847。8份源码绑定的纯标量度量几何核验已完成；无新模型/成绩/训练修改。原100 semantic fresh50继续，最新实际模型仍§844，唯一observer46650首个远端节点06:27:54；部分CPU报告846待100两端验收。源339/控制187不变，仅26 GPU0/1，无功率温度动作，Goal ACTIVE / UNMET。
+更新：2026-10-05 §41.848；100semantic full50/3129步/首次strict已闭合，84.0827mAP/95.1603R1，两推进FAIL。原磁盘parentEXIT1/campaignSHA保留；退役41份历史冗余释放2.725GB。新行政续接native M0299/299通过，07:03:13 fresh50PID150146运行。唯一observer17277首次09:02:14.819772，之后240秒。源339/控制187不变；仅26 GPU0/1，无功率温度动作。4/6正式端，原报告846不执行，新混合来源12对报告仅待验。Goal ACTIVE / UNMET；下方早期状态按对应历史节阅读。
 
 ## 总目标与贡献边界
 
@@ -48,3 +48,6 @@ refine-logs/deployment_metric_role_v1/EXPERIMENT_PLAN.md与SOURCE_SCOPE.json。s
 §41.845仅完成三端保存轨迹分析：各50轮global loss/global范数均值对各自控制差0；201多轮mAP正但高阶CMC多负，MSVR semantic 49/50轮mAP负。依赖epoch不代替多种子，原best/门槛不改；模型与当前队列不改。
 
 §41.846部分报告入口REPORT_AVAILABLE_FIVE.py已登记，source-only自复核/AST/封存terminal接线通过，未执行。固定五端/12可用全query对/3缺失对，不改原FAILED/PENDING或report_invocations。仅在100两端实际验收后运行一次，缺失不是6/6完成。
+
+
+§41.848当前执行与保存边界：更新：2026-10-05 §41.848；100semantic full50/3129步/首次strict已闭合，84.0827mAP/95.1603R1，两推进FAIL。原磁盘parentEXIT1/campaignSHA保留；退役41份历史冗余释放2.725GB。新行政续接native M0299/299通过，07:03:13 fresh50PID150146运行。唯一observer17277首次09:02:14.819772，之后240秒。源339/控制187不变；仅26 GPU0/1，无功率温度动作。4/6正式端，原报告846不执行，新混合来源12对报告仅待验。Goal ACTIVE / UNMET；下方早期状态按对应历史节阅读。
