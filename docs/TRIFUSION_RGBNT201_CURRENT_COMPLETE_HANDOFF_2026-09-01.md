@@ -16793,3 +16793,31 @@ RGBNT100原fresh50开始21:00:00.501846，原PID2981697/ticks37414126在21:34:52
 主Goal保持active/unmet：三数据集最终性能、匹配强基线、必要近邻与完整流程多种子仍未完成。
 
 证据目录：`logs/global_task_role_msvr_pair828_20261004`。
+
+
+## 41.829 MSVR完整曲线与剩余端接收准备
+
+职责干预正式终态仍4/6、真实M0 5/6；MSVR两端完整50轮曲线已生成并核验。两端best均E38，最佳到末轮mAP仅下降0.060976/0.067221，不能用201的较大后期退化解释MSVR全部缺口。原RGBNT100 semantic21:00开始，最新远端实查仍为21:34；本地22:54一次观察handle11365已确认存活。其余接收入口仅本地准备；六端闭合前不执行fixed-best候选。科学source330不变，只26GPU0/1，不管功温；Goal active/unmet。
+
+
+新增证据为两端各50行原轨迹CSV、四面板SVG、输入/输出SHA manifest和说明。绘图完全使用§828已验收的training/summary文本，无远端访问、模型前向、优化器或epoch选择。
+本地PNG预览已经目视核对标题、坐标、图例与完整50轮覆盖；私有预览不进GitHub，发布保留SVG/CSV及文字。
+上排显示完整mAP/R1，两端几乎重合并接近独立global best；下排显示global/fused原作者总目标及实际scaled-c/global训练批均值。
+两端50个平均global loss与shared_global范数日志逐项相等，仍不能扩展为全模型state/梯度/逐query轨迹等价。
+原作者head记录只包含CE/soft-triplet合计，不从总loss推断其中Triplet已经归零。native scaled-c/global约0.35–0.50%，semantic约0.37–0.53%；这不构成改gain的理由。
+
+当前MSVR后期退化很小，而201约2.90/3.10mAP。新增角色效用不足与后期退化是可分离现象；不能给三个数据集预设同一失分原因。
+没有新正式指标，没有放大+0.010120的小差值，也没有把单种子/固定模型身份bootstrap写成训练稳定性。
+
+原RGBNT100两个终态接收入口及全六端once-report文本/SHA接收入口已经生成，尚未调用。全报告必须验证原启动器exit0、全12个M0/full阶段、300轮/12968步、18组保存距离配对和单次report退出0。
+全报告接收仅标准库/SFTP和SHA，不导入torch、不重放旧报告、不构建模型；当前M0仍留在原队列依赖中，不能提前删除。
+本地生成器曾用过宽torch子串assert匹配到说明文字而exit1；保留原失败，只完成尚未生成的final helper，没有重跑已经生成的100入口，无远端影响。
+
+固定best候选只有本地薄wrapper和有限合同，放在本证据archive内作为未登记提案，尚未成为生产tools入口，尚无新输入seal，也没有执行GPU诊断。
+计划全六端和一次报告闭合后，在原best上用单次g/c/h/f读出来区分global恢复与角色修正净作用；真正执行前仍需核对入口构造binding、全部正式artifact和当前空闲0/1。
+不以准备或源码通过冒充该诊断已经执行，也不因某四端结果提前启动部分模型或N2/N3。
+
+22:54观察器在本地等待原100预计终点（上一同variant训练加逐轮评价7055.223857秒，约22:57–23:01）。此前不做无谓远端轮询，不因过去状态文件或临时利用率低重启。
+2025文本镜像仍保留原I/O待同步；新证据核对本地/Desktop/GitHub/2026四份执行副本。正式best及全部数据、特征和距离留远端，科学Goal保持active/unmet。
+
+证据：`logs/global_task_role_curve_intake829_20261004`。
