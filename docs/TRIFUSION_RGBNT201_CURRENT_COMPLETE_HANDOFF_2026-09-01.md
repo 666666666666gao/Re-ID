@@ -16944,3 +16944,22 @@ RGBNT201 semantic在两个旧条件下分别约97.55%和99.71%共同能量，而
 当前不改变原训练、best选择、旧失败、330科学source或未执行的332 fixed-best候选。六端原fresh50、首次strict、原唯一18对CPU报告及完整静态接收闭合后，才登记当前六端fixed-best分解；未提前开始。上次23:32:52核对原native PID3215669/ticks38149139存活，本次纯统计不冒称新查了进程。原01:00一次里程碑观察保持，无功率/温度查询或设置，无2025访问。本地/Desktop/GitHub/2026文本同步，2025既有I/O失败继续明确pending。
 
 证据：`logs/sealed_role_correction_moments833_20261005`。
+
+
+## 41.834 已闭合prompt实验的临时权重退役
+
+§41.834：已按确切路径、回执与实存SHA退役旧prompt六份M0探针，释放66,536,808B。正式best/距离/回执、当前六份M0与330科学source保持不变。00:24:05再次核对原RGBNT100 native PID3215669/ticks38149139存活；正式仍5/6，原01:00观察不变。只26GPU0/1，无功率/温度操作；Goal active/unmet。
+
+本次限定旧`logs/prompt_role_state_20260930`的reset/carry×三数据集六端。原父任务6/6和每个子任务M0、fresh50、首次evaluate都已COMPLETE/exit0，原accepted矩阵包含完整合法图库重算及任务标量验证；本次只核对已保存文本/模型SHA，不调用旧verify/report、不做模型前向。
+
+删除前实际核对六端M0成功回执、reload为0、非零梯度覆盖、probe实存SHA、正式50轮/唯一best/距离/评价回执，以及原配对结果和完整报告文本SHA。当前两个control seal的正式artifact集合和初始化依赖不含这些候选；330科学源与当前六份M0依赖均实际核对。Linux绝对路径使用PurePosixPath准备，删除范围逐一限定本项目trained-model下的六个`prompt_role_state_20260930_prompt_*_seed42_m0/m0_reload_probe.pth`。
+
+远端先写PLAN，再逐文件记录原SHA/bytes/退役时间，最后复核旧正式artifact、当前六份探针、源代码和控制seal。原native训练PID及start ticks在删除前后均相同，没有重启、重新选择best或改变实验条件。
+
+实际完成：2026-10-05T00:24:05.803735+08:00。退役6文件/66,536,808B，磁盘可用从5188882432B到5255360512B。精确释放量取文件大小之和；并行训练及同盘其他写入使free变化不能直接全部归到本次删除。没有删除作者权重、必要初始化、旧正式best或当前六端探针。
+
+这些旧M0二进制已不可直接重放，原M0成功记录、训练轨迹和首次评价仍保留；不能因删除后旧验证器需要探针而重跑或追认失败。这是存储收尾，不是算法创新或新增性能。固定best v2候选仍未登记/上传/执行，当前原六端及唯一CPU报告未全闭合前不启动诊断。原01:00里程碑观察保持，2025已记录的I/O镜像问题仍pending，不访问其GPU或尝试恢复；只同步本地/Desktop/GitHub/2026文本。
+
+证据：`logs/closed_prompt_m0_retirement834_20261005`。
+
+发布准备边界：初稿按错误复述的旧磁盘段落替换，在本地主文追加后、goal/desktop/staging/commit/push/远端同步前断言失败；随后publisher文件尚未生成，命令退出2而未执行。已按实际旧段落继续，未重跑清理。失败说明与初稿在本节archive保留。
