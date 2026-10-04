@@ -1,0 +1,86 @@
+{
+  "status": "PREDEFINED_CPU_STATISTICS_OF_TWELVE_CLOSED_FIXED_BEST_MODELS",
+  "registered_at": "2026-10-05T00:00:41.991162+08:00",
+  "inputs": [
+    {
+      "group": "original_v6",
+      "path": "results/native_fixed_best_20261004_811/RGBNT201_semantic/DIAGNOSIS.json",
+      "sha256": "92c585b0707c73d3554f2d7b1c8e587f2bf1cdd336249dc43b4ada0df3af0dc9",
+      "bytes": 717440
+    },
+    {
+      "group": "original_v6",
+      "path": "results/native_fixed_best_20261004_811/RGBNT201_native/DIAGNOSIS.json",
+      "sha256": "6a10906af1a934558e742a860be65651dcffc45f22feac17c37f7f8b617361f3",
+      "bytes": 719577
+    },
+    {
+      "group": "original_v6",
+      "path": "results/native_fixed_best_20261004_811/MSVR310_semantic/DIAGNOSIS.json",
+      "sha256": "92c1cbfec345d198318a2a8d7f2d556edcf614f630c3b2f47ab68f5b3056ef5a",
+      "bytes": 544931
+    },
+    {
+      "group": "original_v6",
+      "path": "results/native_fixed_best_20261004_811/MSVR310_native/DIAGNOSIS.json",
+      "sha256": "bf834ec0b8f60d4fc001b9bc81ac5c145933f189e1fdc301a2dabc7cf8460f7c",
+      "bytes": 546062
+    },
+    {
+      "group": "original_v6",
+      "path": "results/native_fixed_best_20261004_811/RGBNT100_semantic/DIAGNOSIS.json",
+      "sha256": "ad40a3767ce7c6a244a54ec7e97e042de7a76cc7508765d7fc06587c33e8fa76",
+      "bytes": 1478141
+    },
+    {
+      "group": "original_v6",
+      "path": "results/native_fixed_best_20261004_811/RGBNT100_native/DIAGNOSIS.json",
+      "sha256": "ca76b6a919b69b2d0f5def35b98f63c475de7e9ba40d2b2b050980d046ef33d3",
+      "bytes": 1476647
+    },
+    {
+      "group": "read_input_detach",
+      "path": "results/role_input_detach_fixed_best_20261004_v1/RGBNT201_semantic/DIAGNOSIS.json",
+      "sha256": "5155cef646e800f93e2f16164fc3bd6ff518df5ba65d2cde44a9ca1228bb1687",
+      "bytes": 718779
+    },
+    {
+      "group": "read_input_detach",
+      "path": "results/role_input_detach_fixed_best_20261004_v1/RGBNT201_native/DIAGNOSIS.json",
+      "sha256": "16a2c95e28f7082212839ea4102abe753c9b3309da9b447bb75b7b18f6064872",
+      "bytes": 723317
+    },
+    {
+      "group": "read_input_detach",
+      "path": "results/role_input_detach_fixed_best_20261004_v1/MSVR310_semantic/DIAGNOSIS.json",
+      "sha256": "cbe281ebbf13138f937a6476de000fa9a5b0d94d12b37ba918c58fd4033a13e0",
+      "bytes": 545215
+    },
+    {
+      "group": "read_input_detach",
+      "path": "results/role_input_detach_fixed_best_20261004_v1/MSVR310_native/DIAGNOSIS.json",
+      "sha256": "cad8297b2624c3dc34cc80c99d8a39c4ca027f4c781fb4e6e1b06af90cfec3b2",
+      "bytes": 546477
+    },
+    {
+      "group": "read_input_detach",
+      "path": "results/role_input_detach_fixed_best_20261004_v1/RGBNT100_semantic/DIAGNOSIS.json",
+      "sha256": "581815e0275d7230518ab8baccb10564989713cc540197da768818c0114e1a0a",
+      "bytes": 1484342
+    },
+    {
+      "group": "read_input_detach",
+      "path": "results/role_input_detach_fixed_best_20261004_v1/RGBNT100_native/DIAGNOSIS.json",
+      "sha256": "69a549ea997e3cd4c0b9c0421c0ca83a8c77efb8d342ca38a0bc0b5a586c4553",
+      "bytes": 1480157
+    }
+  ],
+  "current_scientific_source_scope_sha256": "5ac2b38e74cb837d902205482ecfdc32686d3698739300ce94c68b68ab70eb34",
+  "observations": [
+    "For each query/gallery split: mean vector energy divided by mean per-sample squared norm for g and c.",
+    "RMS energy of centered versus common correction, scaled correction versus global RMS, and mean-direction cosine.",
+    "Check original h=g+gain*c and f=L2(h), artifact bytes/SHA before and after; retain existing scores without recalculation."
+  ],
+  "hypothesis": "In exact arithmetic, training-mode BN classification and raw Euclidean triplet are invariant to a common additive feature offset, while final L2 retrieval is not. This structural observation does not prove current corrections contain harmful offsets.",
+  "boundary": "All twelve inputs previously closed; current sixth training endpoint continues unchanged. No new neural forward, test statistics update, mean subtraction in deployed representation, distance/scoring computation, new checkpoint selection or training decision. Descriptive moments are not causal attribution."
+}

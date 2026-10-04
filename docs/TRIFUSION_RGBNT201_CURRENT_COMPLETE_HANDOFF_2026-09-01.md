@@ -16910,3 +16910,37 @@ CURRENT_GOAL只保留当前权威状态、固定合同、未闭合项与完成�
 2025原/data2镜像I/O失败继续待补；本地/Desktop/GitHub/2026按既有四份范围核对。本次没有去2025做恢复、训练或功温操作，Goal仍active/unmet。
 
 证据：`logs/closed_visual_start_m0_retirement832_20261004`。
+
+
+## 41.833 已封存角色修正的共同偏移与样本变化统计
+
+§41.833：已封存原V6与read-input-detach共12模型、24个query/gallery分割的CPU特征矩统计完成；不是当前未闭合六端的新前向或重评价。RGBNT100 semantic原50轮曲线已生成。正式仍5/6，原native与01:00里程碑观察不变；只26GPU0/1，不查询或限制功率、温度。Goal active/unmet。
+
+本次统计于2026-10-05T00:01:13.411795+08:00完成，只读原V6六个fixed-best与read-input-detach六个fixed-best保存的g/c/h/f。每个DIAGNOSIS及query/gallery特征实际bytes/SHA在计算前后核对，保存的h=g+gain*c、f=L2(h)满足原数值检查；330科学源SHA不变。使用单线程CPU/float64描述矩，不执行模型、不计算新距离或mAP、不重新选checkpoint、不改变部署表示。24个分割全部保留，未按结果筛选。
+
+源码结构提供一个有限假设：在精确算术下，若所有样本的raw特征增加同一个向量，训练模式BN分类与raw欧氏距离Triplet对这项共同平移不敏感；最终L2归一化距离一般会改变。这个性质不能直接证明当前模型利用了该自由度，也不能证明共同偏移有害。统计定义为||mean(c)||² / mean(||c_i||²)，反映给定query/gallery样本集合中的共同能量；中心化剩余包含身份及其他变化，不能全部称为有效身份证据。
+
+下表仅列query分割，完整query和gallery在MOMENTS.csv/SUMMARY.json中。修正/global为abs(gain)×RMS(c)/RMS(g)，不是训练日志的逐样本比值平均；最后一列沿用原DIAGNOSIS同模型global→fused的mAP变化，没有重新评分。
+
+| 已闭合条件 | 数据集 | 角色 | 共同修正能量占比% | gain修正/global RMS% | 原同模型ΔmAP |
+|---|---|---|---:|---:|---:|
+| original_v6 | RGBNT201 | semantic | 97.5507 | 5.0204 | +0.102267 |
+| original_v6 | RGBNT201 | native | 24.2456 | 5.6287 | +0.759730 |
+| original_v6 | MSVR310 | semantic | 84.9262 | 0.6917 | +0.032202 |
+| original_v6 | MSVR310 | native | 76.1796 | 0.6431 | +0.036995 |
+| original_v6 | RGBNT100 | semantic | 22.3847 | 47.1437 | -0.637371 |
+| original_v6 | RGBNT100 | native | 12.0286 | 47.3948 | -1.335094 |
+| read_input_detach | RGBNT201 | semantic | 99.7109 | 6.4887 | +0.087432 |
+| read_input_detach | RGBNT201 | native | 69.2463 | 5.5857 | -0.014916 |
+| read_input_detach | MSVR310 | semantic | 85.5145 | 0.6847 | +0.028166 |
+| read_input_detach | MSVR310 | native | 77.1454 | 0.6444 | +0.059040 |
+| read_input_detach | RGBNT100 | semantic | 36.2051 | 49.1418 | -1.789616 |
+| read_input_detach | RGBNT100 | native | 23.1373 | 48.7194 | -1.714541 |
+
+RGBNT201 semantic在两个旧条件下分别约97.55%和99.71%共同能量，而native不同；RGBNT100共同占比低得多，但修正幅度约global RMS的47%–49%，原融合mAP仍负。MSVR修正幅度较小。这说明不能把所有失分统一归结为共同偏移，也不能仅凭方差或能量推断身份证据质量。没有在测试数据上学习均值并应用、没有提出立即去均值或调gain的修复、没有据此登记下一训练。当前六端尚未完成，其结果不参与本统计。
+
+另对已accepted的RGBNT100 semantic原50轮/3129步生成CSV/SVG，没有平滑、截段或换选点。仍E5的84.090305/95.860058/96.618074/97.201169；末轮mAP82.282148，best到末轮下降1.808157点。第50轮global/role组合身份目标分别0.539490/0.537613，实际scaled修正/global逐样本比值均值约19.3719%。日志没有单独CE/Triplet活动量，不能从组合目标推算度量监督是否饱和。独立global参考是另一训练模型，不是当前模型自身global轨迹。
+
+当前不改变原训练、best选择、旧失败、330科学source或未执行的332 fixed-best候选。六端原fresh50、首次strict、原唯一18对CPU报告及完整静态接收闭合后，才登记当前六端fixed-best分解；未提前开始。上次23:32:52核对原native PID3215669/ticks38149139存活，本次纯统计不冒称新查了进程。原01:00一次里程碑观察保持，无功率/温度查询或设置，无2025访问。本地/Desktop/GitHub/2026文本同步，2025既有I/O失败继续明确pending。
+
+证据：`logs/sealed_role_correction_moments833_20261005`。
