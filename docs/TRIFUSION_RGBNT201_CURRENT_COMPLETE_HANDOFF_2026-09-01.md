@@ -2,7 +2,7 @@
 
 ## 0. 一页结论
 
-**当前进度：§41.819（2026-10-04更新）：** RoDI作者PDF的主表/资源已实际读取并目视复核，仍未建立精确评价协议等价；新固定best诊断仅CPU import/help通过，尚未封存输入或执行模型诊断。12:27观察为正式4/6、100 semantic 6/50轮，按原队列继续，预计14:10左右结束、14:05近末轮观察。仅26GPU0/1，无功率温度操作；Goal active/unmet。
+**当前进度：§41.820（2026-10-04更新）** 旧M3预测12端已完成后，精确退役12份临时M0探针，实删162,103,728B；12份正式best、结果回执、当前5份必需M0和61件固定best诊断依赖均SHA不变。未新增训练或检索成绩，继续等待原RGBNT100队列的14:05观察。仅26GPU0/1，不执行功率温度操作，Goal active/unmet。
 
 **现行合同：** 每个正式候选完整50轮，使用作者完整query/gallery及camera／MSVR时间段过滤，以官方fused mAP最高的同一checkpoint报告全部指标，随后严格重载。RGBNT201报告mAP／R1／R5／R10，RGBNT100及MSVR310报告mAP／R1；不跨epoch或seed拼列。官方集已参与逐轮选点和历史方法选择，属于已消费基准上的探索性结果。
 
@@ -16411,3 +16411,33 @@ RoDI作者PDF的主表/资源已实际读取并目视复核，仍未建立精确
 新入口 `tools/diagnose_role_input_detach_best.py` 于12:19:05在空CUDA_VISIBLE_DEVICES下仅执行一次 `--help`，退出0；324项源文件SHA不变，输入封存不存在。此项不构建模型、不运行forward/M0、无新分数；只能证明CPU导入和参数解析。必须等六端各自完整50轮/首次严格评价及原一次性CPU全量报告退出0后，才能封存并执行固定best g/c/h/f诊断。
 
 12:27:35观察仍为原RGBNT100 semantic PID1716550/ticks34238497，正式4/6，自己的M0已通过，训练6/50轮完成、最新E7 batch61；源322不变，controller未退出。训练step c/g不是固定best检索效用证据，不据此调gain/LR。预计14:10–14:15完成，下一次近末轮观察约14:05，实际终态以回执为准。剩余native由原队列接续；不重启、不提前运行诊断、不退役仍为原报告依赖的新M0探针。原九端/旧固定best/M0退役历史边界不变。
+
+
+## 41.820 已闭合旧M3预测面板的临时探针退役与当前训练保护
+
+旧M3预测12端已完成后，精确退役12份临时M0探针，实删162,103,728B；12份正式best、结果回执、当前5份必需M0和61件固定best诊断依赖均SHA不变。未新增训练或检索成绩，继续等待原RGBNT100队列的14:05观察。仅26GPU0/1，不执行功率温度操作，Goal active/unmet。
+
+实际退役完成于2026-10-04T13:26:29.495639+08:00。旧面板logs/correspondence_m3_prediction_20260929的12个条件均完成M0、完整50轮和首次独立评价；原accepted_complete_656矩阵为12/12 VERIFIED_COMPLETE。清理前逐项复核正式best、距离、官方回执、M0回执与原存档SHA，仅移除下表12个m0_reload_probe.pth；未删除任一正式mAP-best。
+
+| 探针所属run | 实删字节 | 删除前SHA256 |
+|---|---:|---|
+| correspondence_m3_prediction_20260929_m3_own_direct_RGBNT201_seed42_m0 | 13789220 | f94215494eff86981772849510c9c518803cc3d4c0ef3cb4d844e10a3160675c |
+| correspondence_m3_prediction_20260929_m3_own_direct_RGBNT100_seed42_m0 | 13045796 | 634c78584660e9a2710e1e1b1f02ebfcfd09931ac5737d868ad865ca11f87f1a |
+| correspondence_m3_prediction_20260929_m3_own_direct_MSVR310_seed42_m0 | 13690916 | 825c667d074e8fc36515106f0f98e3885fb8451b11e275a078cd46073517d9f1 |
+| correspondence_m3_prediction_20260929_m3_matched_direct_RGBNT201_seed42_m0 | 13789220 | f5d2dbfb6d8f31fcccb7a2ba0a2b03599cbbb676df4c09e958344447048ac457 |
+| correspondence_m3_prediction_20260929_m3_matched_direct_RGBNT100_seed42_m0 | 13045796 | 3e3ebb33c17d34318cb881b0fca928f0d31997627328174a6a6bf13816605bda |
+| correspondence_m3_prediction_20260929_m3_matched_direct_MSVR310_seed42_m0 | 13690916 | f7b77f686ba44c17c7ca8547403de09ac58a5911c25d045411d746df4b4e0259 |
+| correspondence_m3_prediction_20260929_m3_own_predictor_RGBNT201_seed42_m0 | 13789220 | bfe57c3ab6fb96cc7259fffbdebb1e84401bb723fc729bea3d843f2a4b3db716 |
+| correspondence_m3_prediction_20260929_m3_own_predictor_RGBNT100_seed42_m0 | 13045796 | 91c1f67d1bb82778bf6bdf8bd0cfcff82ec4182cb213e1f1e766db023ec808cd |
+| correspondence_m3_prediction_20260929_m3_own_predictor_MSVR310_seed42_m0 | 13690916 | 64914020d888c25ec5c80a6313cb56e3d5378245b7346a633ff2ec9fdbbf72e0 |
+| correspondence_m3_prediction_20260929_m3_matched_predictor_RGBNT201_seed42_m0 | 13789220 | 0a9c169bebd2932c7a1329e42663154d8c43817f8f0c659273cbf1c1b4175595 |
+| correspondence_m3_prediction_20260929_m3_matched_predictor_RGBNT100_seed42_m0 | 13045796 | 19d773866436c88eaeb53a2e79696513d3ec4656a0cfc58efa8ff84fc3be715f |
+| correspondence_m3_prediction_20260929_m3_matched_predictor_MSVR310_seed42_m0 | 13690916 | f1c1db8d210cfd0e600fd228abbabaedf3978af964ae5115fcfaaa0afdd716b1 |
+
+实删合计162103728B（154.59MiB）。删除前磁盘free为19148455936B，删除后为19310575616B；训练仍可能写日志，磁盘差值不能替代逐文件实删字节。远端保留logs/closed_m3_probe_retirement_20261004下的PLAN、逐文件DELETION_EVENTS与RETIREMENT。
+
+本轮初始库存共有99份探针，当前队列5份仍是原一次CPU报告的必需依赖，全部保留。其余旧探针未因文件名或年龄自动删除；本轮只处理具有12端闭合证据的这一个面板。所有必要初始化、旧61件固定best依赖及当前322源文件均在删除前后核对SHA一致。旧M3收集器读取M0文本回执，不依赖探针二进制；但历史M0二进制重载探针本身已不能直接重放，不得补训生成探针来冒充原物。
+
+保留两个清理辅助检查失败：第一版preflight把子campaign父目录误写成logs，实际源码child_campaign明确位于父campaign内；第二个传输辅助脚本嵌套换行发生语法错误。两次均在任何unlink之前失败，没有模型forward、训练或权重变化。修正仅涉及清理辅助脚本路径合同与字符串构造，第二版通过，原失败记录随本节归档。此项不计为算法或训练修复。
+
+训练状态沿用§819的12:27观察和12:52原进程身份记录，不伪称本节又取得训练终态。既有14:05观察器保持单份，未重启训练、未提前执行新固定best诊断。后续依原队列收齐RGBNT100 semantic/native的50轮与首次严格评价、原一次CPU报告，再封存新固定best诊断输入。科学目标与已封存负结果不变。
