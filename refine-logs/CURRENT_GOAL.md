@@ -1,6 +1,6 @@
 # TriFusion 当前 Goal 执行约定
 
-更新：2026-10-04 §41.813。原九端及六份固定best诊断完成并封存；下一项仅改变角色读取处的梯度边界，六端fresh50已登记/源码复核，尚未启动真实prepare/M0/训练。保持原前向、容量、作者配方和已有全局直接学习，检验一个回传路径，不宣称梯度冲突已定位。仅26GPU0/1、25文本同步、不管功温；完整科学Goal active/unmet。
+更新：2026-10-04 §41.814。六项角色读取梯度边界对照已真实启动。RGBNT201 semantic 自己的8次有效更新M0通过，281/281张量有非零有限梯度，作者BN计数8、重载差0，匹配初始state/cfg/容量；fresh50已开始。当前M0 1/6、正式完成0/6，没有新的完整50轮分数。只用26GPU0/1，不管功率温度；科学Goal active/unmet。
 
 ## 研究目标与当前阶段
 
@@ -95,3 +95,6 @@ MSVR native best38→末轮回落0.1563519mAP，三端当前均无201那样数�
 
 
 §41.813下一唯一六端：refine-logs/role_input_detach_v1/EXPERIMENT_PLAN.md（固定前向/容量/作者配方，仅角色输入detach），当前prepare/M0/full尚未启动。原V6九端和§812固定best诊断封存；旧M0已退役不能重放其依赖verifier。新端自己的真实8步M0通过后fresh50，原控制保持，不加N2/N3/调参/工程修复。Goal active/unmet。
+
+
+§41.814六项真实队列运行中，首项201semantic自己的M0 PASS/fresh50开始。具体执行refine-logs/role_input_detach_v1/EXPERIMENT_PLAN.md，原V6九端已经终态封存；新M0自己的验证不调用旧退役M0。首项281/281梯度、BN8、重载差0；正式0/6，不预写新分数。原同容量/初始化/配方，只有角色输入梯度边界改变，global仍可训练。只26GPU0/1、不管功率温度。科学Goal active/unmet。

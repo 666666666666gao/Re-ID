@@ -44,3 +44,6 @@
 
 
 §41.813原V6状态保持COMPLETE/九端0/3、原六best诊断COMPLETE。新训练家族role_input_detach_v1另行登记：六端只变读取梯度边界，同前向/容量/初始化/配方，尚未实际prepare/M0/full。原控制/旧M0退役不变，非parity修复。
+
+
+§41.814原V6仍COMPLETE；新role_input_detach六项队列真实启动，201semantic自己M0通过、fresh50运行。原始证据logs/role_input_detach_launch814_20261004。正式0/6；不重跑旧M0、原nine报告或改变封存失败。
