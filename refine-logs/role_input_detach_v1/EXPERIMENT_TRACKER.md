@@ -47,3 +47,8 @@
 §41.822：读取detach六端均完成自身8步M0、完整50轮和首次严格评价；原CPU报告只调用一次并退出0，合计300轮/12968正式step。RGBNT100 native同一E5 best为82.5124/95.8017。相对各自原变体的预登记推进条件满足1/6，不支持把这项梯度干预描述为通用修复。固定best分解已完成输入封存，尚未执行；只使用26GPU0/1，无功率或温度控制，Goal active/unmet。
 
 证据`logs/role_input_detach_complete822_20261004`；固定best输入已封存，诊断仍待执行。
+
+
+§41.823：读取detach六份固定mAP-best的全量g/c/h/f诊断全部完成；原fused计分保持，距离最大差3.57627868652e-07，模型及buffer未变。依赖闭合后仅退役自身六个M0探针，释放2,147,191,340B；正式best和原控制均保留。2025 /data2文字镜像真实I/O错误，明确待补；本地/Desktop/GitHub/2026核对范围单独记录，不冒称五份同步。只26GPU0/1，无功率/温度管理；下一唯一训练干预待完整解释后登记，Goal active/unmet。
+
+证据`logs/role_input_detach_fixed_best_complete823_20261004`。

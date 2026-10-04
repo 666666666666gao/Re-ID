@@ -1,0 +1,18 @@
+To https://github.com/666666666666gao/Re-ID.git
+   935c3e10..62184bc2  main -> main
+Traceback (most recent call last):
+  File "C:\Users\gb\.codex_tmp\publish_role_input_detach822_complete.py", line 73, in <module>
+    before=json.loads(script(client,f"from pathlib import Path;import hashlib,json;root=Path({root!r});print(json.dumps({{name:hashlib.sha256((root/name).read_bytes()).hexdigest() if (root/name).is_file() else None for name in {files!r}}}))"))
+                      ~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\gb\.codex_tmp\publish_role_input_detach822_complete.py", line 50, in script
+    assert stdout.channel.recv_exit_status()==0,error.decode()
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+  File "<stdin>", line 1, in <dictcomp>
+  File "/usr/lib/python3.8/pathlib.py", line 1439, in is_file
+    return S_ISREG(self.stat().st_mode)
+  File "/usr/lib/python3.8/pathlib.py", line 1198, in stat
+    return self._accessor.stat(self)
+OSError: [Errno 5] Input/output error: '/data2/gb/Re-ID/Trifusion/.aris/compute/TRIFUSION_EIGHT_GPU_POOL_20261002.md'
+
