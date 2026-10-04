@@ -1,0 +1,15 @@
+# 本次执行者源码复核与CPU证据
+
+2026-10-05。这是执行者复核，不是独立模型、跨家族审计或性能复现。
+
+实际核对run_foundation_recipe.loss_values：各head损失求和；原Signal Triplet为soft-margin/hard mining、默认不对输入归一化。本候选不改loss_fn与求和，仅在角色调用前将head tuple的metric feature替换为已返回的output.fused。分数对象保持同一raw BN logits；global_heads仍送给原作者接口，未受替换。车辆同一joint Triplet计算三次并求和；这一实际聚合边界已写入计划，未误称平均。
+
+run_deployment_metric_role.configure链实际CPU加载通过：inner/foundation build_core、loss_values、condition、SCHEMA指向新入口，AuthorHeadEvidence仍为GlobalTaskRoleHeads，原双卡placement和global职责policy保留。没有新模型参数、buffer、head或额外编码。
+
+CPU witness调用当前封存作者Triplet实现、真实新runner.loss_values，并覆盖201单1536头和车辆三512分类头：输出state/容量/原logits/global特征不变；角色metric均为8×1536单位向量；真实runner损失与保留各头求和的独立参考一致；global/role梯度所有权仍分离；persistent BN只累积一次。两种合成loss确实变化，避免测试只镜像不活动的配置名。这不代替真实数据M0、50轮检索或多种子。
+
+存储的真实证据是01:58仅剩5,352,148,992B，不能按旧六M0+六best预算启动。新队列不弱化首次verify；真实M0和full50/首次strict仍先调用原verify及production M0检查，再SHA封存全部正式文件/M0文字，然后准确删除该端probe。最终按同一封存+退役journal校验。CPU合成回执实际执行原verify/m0逻辑，证明仅probe被删、formal best仍在、被修改的验收文件触发拒绝。不是用CPU虚拟数据替代正式验收。
+
+报告静态核对：不调用退役probe依赖的旧verify；每行accepted_row核对不可变文件；同variant原实际batch字节必须相等；按原camera/scene规则做12对control比较及3对native−semantic，总15对；所有query AP和首个合法正例位置保留。原控制187输入SHA前后核对，未重新选epoch或重跑NN。
+
+剩余必须完成：真实初始化与各自8步M0、所有正式fresh50、首次strict及原唯一CPU报告。旧332 source和187控制不改变，原失败不回改，不根据候选官方分数搜索LR/gain/margin/seed。只有26GPU0/1，无功率/温度动作。Goal active/unmet。

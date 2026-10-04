@@ -1,55 +1,34 @@
-# TriFusion 当前 Goal 执行约定
+# TriFusion 当前 Goal 执行约束
 
-更新：2026-10-05 §41.836：当前职责六端fixed-best g/c/h/f分析全部完成并核验；332source及187原输入、模型参数和buffer不变，原fused距离差全部0，无优化更新。201/MSVR同模型global指标恢复到独立global，但角色增量仍薄；100修正使同模型mAP下降0.2789/0.8022。原六端训练与全部分解已闭合；下一项先检验角色训练度量与部署几何，不叠加N2/N3。仅26GPU0/1，不管功温；Goal active/unmet。
+更新：2026-10-05 §41.837。旧职责任务六端与全部fixed-best诊断已闭合。唯一下一候选为角色Triplet使用实际部署的1536维L2(h)；代码/CPU检查/339项source封存完成，真实初始化/M0/正式训练尚未启动。总Goal ACTIVE / UNMET。
 
-## 完整目标
+## 总目标与贡献边界
 
-在RGBNT201、RGBNT100、MSVR310匹配协议下超过baseline，注明预训练、外部资源、训练及推理条件比较强方法；形成机制必要性、同容量控制及完整流程多种子证据。普通配方收益、继承Signal能力与新增角色收益分账，不能弱化baseline凑十点。工程通过、单端收益或原报告完成都不能完成整个Goal。
+在RGBNT201、RGBNT100、MSVR310匹配协议下超过baseline及注明预训练、外部资源和完整训练成本的强参照，形成机制必要性、同容量及完整流程稳定证据。普通配方提升、继承Signal、单个seed最佳点或工程检查不代替主方法贡献。完整历史只追加docs/TRIFUSION_RGBNT201_CURRENT_COMPLETE_HANDOFF_2026-09-01.md，旧失败不回改。
 
-所有历史在docs/TRIFUSION_RGBNT201_CURRENT_COMPLETE_HANDOFF_2026-09-01.md及原archive中保留；本文件只给当前执行状态，旧观察不作为新启动指令。
+## 已闭合，不能重复调用
 
-## 已闭合、不得重跑的前置工作
+- V6九端§809/固定best§812；角色读取detach六端§822/固定best§823；职责任务六端§835/固定best§836均已完成。
+- 当前职责任务六端：logs/global_task_role_v1_20261004_824，全部fresh50/首次strict/唯一18对CPU报告；300轮/12968步；相对独立global的推进0/6。201 semantic/native74.3749/74.4182，MSVR50.5422/50.5523，10084.0903/83.1632 mAP。
+- 固定best实测：201角色使同模型global mAP提高0.078198/0.121584；MSVR提高0.000096/0.010216；100下降0.278914/0.802213。100自己fused-best E5/E26与独立global E7不同，跨checkpoint差异单独解释。detail输出非零不证明身份价值。
+- 332旧source和187控制输入封存在refine-logs/global_task_role_fixed_best_diagnosis_v1/INPUT_SEAL.json。原M0二进制已按依赖闭合退役；不能调用依赖这些binary的旧verify/report或重放旧模型。旧parity FAIL/STOP保留，本研究训练不额外修parity。
 
-- 原V6九端：logs/native_research_v6_20261003_794，九端各自M0/fresh50/首次strict及原单次CPU报告完成，450轮/19452步。原native−semantic推进0/3，不能视为稳定细节收益。
-- 原V6固定best分解完成§812；随后读取detach六端和固定best分解完成§822–823，300轮/12968步。读取detach不是global保护的充分条件。
-- 以上9+6份M0探针已按依赖闭合/回执/SHA退役，只保留M0文字及正式best；不能再调用依赖其二进制的旧verify/report。
-- 旧反向parity FAIL与STOP记录保留；当前合同没有把parity修复设为前提，不重启工程修复，也不追认确定性问题已解决。
+## 唯一当前实验
 
-## 已完整闭合、不得重跑的训练合同
+refine-logs/deployment_metric_role_v1/EXPERIMENT_PLAN.md与SOURCE_SCOPE.json。semantic/native各自三个数据集，共六端；仅改变角色metric feature为当前output.fused=L2(sg(g)+gain*c)。原global作者raw任务、raw BN classification、同一head值/clone buffers、梯度所有权、结构/state/容量、初始化、视觉/camera更新、optimizer/LR/WD/scheduler、soft-margin/gain/seed42、完整batch/增强、noAMP和推理保持上一轮。
 
-计划refine-logs/global_task_role_v1/EXPERIMENT_PLAN.md；campaign logs/global_task_role_v1_20261004_824，原launch logs/global_task_role_launch_20261004_824。原supervisor2620776、controller2620777；全部六端和原唯一CPU报告闭合前不重启或改源。
+车辆从各512维raw模态Triplet改为整1536联合L2，因此同时改变模态联合几何，不能称仅L2。原作者各头loss求和保留，车辆三份joint Triplet等价3倍，同三份CE不变。没有新head、辅助目标或系数。
 
-- 330项科学source封存不变，原公开CLIP、新camera/head、seed42、作者来源配方，完整50轮和合法query/gallery过滤。
-- 双卡完整batch第一6个CLIP block在GPU1、后6及作者head在GPU0；201 B64/K8、MSVR B64/K4、100 B128/K16，maxparallel1。
-- 角色读取stages/context/shared_global stop-gradient；原global任务L_g仅更新shared及原作者head。h=sg(g)+gain*c的L_f使用同一head值、detached参数及cloned BN buffer，仅更新roles/readout/gain。持久作者BN每batch更新一次；推理仍Normalize(g+gain*c)。
-- 各端prepare→自己的8步真实M0→fresh50→首次strict。保持有限数值、有效参数更新、作者BN8、完整state重载与固定计分检查；失败保留，不重试挑通过。
-- 不改LR/batch/AMP/margin/gain/seed/容差，不加N2/N3、loss、文本/SAM/DINO、教师、测试更新或新采样器。
+每端独立prepare核对上一轮initializer→8步真实M0→fresh50→首次strict。M0沿用有限loss、全部训练张量至少一次非零梯度/实际更新、BN8次、native14张量活动、完整state严格重载。不能用CPU witness替代实际M0。失败保持，不据官方结果改seed/LR/gain/margin/batch或堆N2/N3。
 
-## 最新已验收结果
+主要比较候选−封存同variant职责任务；另报独立global-only和native−semantic，全量15对报告。推进+0.5mAP且R1不降只是项目门槛。每端完整50轮一份mAP-best，所有CMC跟随它；同时保留50轮、query修复/新增错误、身份分布和实际成本。单seed、官方基准已参与研发，身份bootstrap不替代训练种子方差。
 
-同一mAP-best报告全部指标，车辆下表mAP/R1，201另有R5/R10完整回执。
+## 资源与保存
 
-| 数据集 | semantic | native | 相对独立global-only的推进 |
-|---|---|---|---|
-| RGBNT201 | 74.3749/78.8278，E8 | 74.4182/79.0670，E8 | 两端均未达条件；native−semantic +0.0434mAP |
-| MSVR310 | 50.5422/67.8511，E38 | 50.5523/68.0203，E38 | 两端均未达条件；native−semantic +0.010120mAP |
-| RGBNT100 | 84.0903/95.8601，E5 | 83.1632/96.7930，E26 | 两端均未达；native比semantic低0.9271mAP、高0.9329R1 |
+只2026 gaob@172.19.12.138:2026，/data/gaob/Re-ID/Trifusion，现有tri_reid/data/公共权重复用，无环境重建。只物理GPU0/1一对，前6CLIP层GPU1/后6与heads GPU0，最大并行1。201 B64/K8、MSVR B64/K4、100 B128/K16。预计六端6–7小时，按节点或180–300秒观察，不误把超时当停止、不重复启动。
 
-六端既定推进条件0/6：至少+0.5mAP且R1不下降，只是项目门槛，不是统计显著性。职责干预使201/100的部分旧角色表现恢复，但不等于角色已产生稳定新增证据。实际batch顺序、源码、best/距离SHA和全部50轮已按各端核验；均为单seed42、官方基准已参与研发选择。
+用户最新指令：不查询、设置、监控或以功率/温度作为门槛。GPU2/3和2025不运行本项目模型。2025 /data2/gb/Re-ID/Trifusion原I/O失败仍pending，不恢复/探测；本地/Desktop/GitHub/2026执行副本SHA核对，不能冒称2025一致。
 
-## 接下来按依赖顺序做
+每个formal仅保留best_map.pth。新队列逐端完整严格验收及SHA封存后只退役该M0探针，失败端不删；最终report验证不可变验收文件/journal，不调用退役binary依赖。六best+最多一probe+2GiB reserve预算4,966,055,936B，必要控制/作者/初始化全部保留。模型、原图、NPY/PT距离留远端；代码、文字、CSV/SVG、SHA同步。
 
-1. 原六端fresh50、首次strict、原18组CPU报告及六端fixed-best分析全部闭合。不重跑原训练、报告或诊断；332source/187原输入保持封存。
-2. 全六端表明global职责保护已经恢复部分主干检索，但未形成稳定角色增量。唯一下一候选为角色度量直接使用完整1536维L2(h)，原global作者任务、分类头、BN更新、结构/容量/推理保持不变；车辆同时改为联合模态度量，不能称仅归一化。
-3. 下一候选尚未实现/登记/运行，先完成最小源码、匹配初始条件和真实M0计划，再开展匹配seed42/fresh50。不扫描LR/gain/margin/seed，不叠N2/N3，不把普通损失接口校正当模型创新。
-4. 仍需真实同容量来源控制、完整角色作用路径删除重训、完整流程多种子和强参照；单次源代码或计分通过不能完成Goal。
-
-## 资源、保留和同步
-
-只2026 gaob@172.19.12.138:2026，/data/gaob/Re-ID/Trifusion，复用tri_reid环境与数据。GPU2/3和2025不运行模型；不设置、监测或以功率/温度作为门槛。只清理本项目确认无用的权重，不触及其他项目；正式best、作者权重、初始化与当前依赖保留。
-
-最新清理为本轮闭合六份M0共2,147,192,492B，实测剩余5,067,812,864B。原六端父进程exit0，已无训练活动；正式best、全部187项诊断输入及332source保持SHA。固定best六端已经完成核验；下一候选尚待源码/合同/执行登记；旧所有失败及清理记录保留。没有模型、环境或功温修订。
-
-数据、模型、图像、NPY留远端；代码、文本、CSV/SVG及SHA同步本地/Desktop/GitHub/2026并核对。2025 /data2/gb/Re-ID/Trifusion仍有已记录真实I/O错误，文本镜像待补，最后验证§821；不冒称五份一致或擅自做恢复。
-
-每个正式端只保留一份mAP-best，CMC随同一权重；保留原失败、50轮曲线、逐query修复/新增错误、身份收益分布、完整成本。identity bootstrap不是训练种子方差。只有完整性能、必要性和稳定性目标实现才标complete；合法等待不标blocked。
+后续只有完整六端和固定诊断闭合后才能决定；优先验证真实同容量、角色完整路径删除重训、强参照与完整流程多种子，不为三个框强保无效机制。目标实际达成前不complete，正常长任务等待不blocked。

@@ -17035,3 +17035,18 @@ RGBNT100 native最佳到末轮下降1.215202mAP；训练及逐轮评价原墙钟
 RGBNT100 native原50轮/3129步CSV/SVG已补齐，全部epoch保留、无平滑或重新选点；E26保持83.163236/96.793002/97.551018/98.017490，末轮mAP81.948034，下降1.215202点。第26轮实际训练scaled修正/global均值23.8361%，末轮18.5809%；目标下降不证明新增判别性。训练loss仍是作者CE+softTriplet组合，不能从总量推断单项活动。
 
 代码、合同、完整文本和SHA在`logs/global_task_role_fixed_best_complete836_20261005`，原特征与距离留远端。收藏入口将静态接收读期限从60改为300秒，是因为上一seal实际发生60秒读取超时；原60秒helper留在§835，模型、容差和科学source不改。原4/6里程碑及14分钟完成窗记录保留，总启动到退出约13分11秒；没有原模型或失败诊断重启。2025镜像仍I/O pending；只26GPU0/1，不操作功温。完整目标未达成，固定模型bootstrap不代替训练多种子，不宣称SOTA或三项创新有效。
+
+
+## 41.837 角色度量使用实际部署几何：单项对照实现与登记
+
+2026-10-05。上一轮六端完整训练、原唯一CPU报告及全量fixed-best g/c/h/f诊断均已闭合；本轮没有回改这些结果。唯一候选现已实现，CPU接口/实际作者Triplet/存储验收检查通过，339项source封存（旧332项保持不变）。此处尚无候选真实初始化、M0或正式成绩，不能把CPU通过当性能成功。
+
+干预只在角色loss调用前改变metric feature：h=sg(g)+gain*c，Triplet读取实际部署的整幅1536维L2(h)。原global作者任务仍按raw g训练；角色classification仍用raw h经过同一BN/head的stateless参数调用。原梯度职责、persistent BN每batch一次、结构/state/参数量、公共CLIP新camera/head、optimizer/LR/WD/scheduler/soft-margin/gain/seed/完整batch及增强、双卡分段和推理均不变，无新参数、head、loss系数或外部资源。
+
+车辆同时从三份512维模态度量改为整1536维联合度量，因此不是“只改L2”。源码新复核明确作者各头损失是求和，并非平均：保留三份CE和三份Triplet求和，后三份读取同一个联合f，等价于3倍该joint Triplet；未暗改聚合规则。201仍为一份1536维metric。新CPU witness实际调用新runner及封存作者Triplet，覆盖两种head形式，确认raw logits/global特征不变、单位1536 metric、梯度职责分离、BN一次，不能替代真实生产M0。
+
+计划为semantic/native×RGBNT201/MSVR310/RGBNT100共六端；每端prepare匹配前一轮initializer，8步真实M0→fresh50→首次strict。主要control为前一轮同variant职责任务六端，独立global-only三端为共同能力参照，187项输入SHA已实查不变。两组control均不重训、不重选best、不调用其被退役M0依赖的旧verify/report。原全量15对CPU报告保留全部query/AP/首个合法正例、首位修复/新增错误、身份宏平均AP/分布及50轮轨迹。推进线仍为相对匹配同variant+0.5mAP且R1不降，并同时报告独立global和native−semantic；不是统计显著性或SOTA。
+
+01:58实际26物理GPU0/1均15MiB、没有项目训练进程，磁盘5,352,148,992B。原六M0一直保留到末端的预算不足；事前登记逐端清理：每个full50/首次strict先调用原完整verify（含M0二进制），把正式全部文件与M0文字、验证结果、探针路径/大小/SHA封存，然后只删除这个已经闭合的m0_reload_probe.pth。最终报告核验全部验收SHA及退役journal，不重放已退役探针。CPU合成回执实际走原verify/m0，确认best仍在、只probe删除、改动验收文件会被拒绝；正式合同仍待实际每端通过。预算六best+最多一活动probe+2GiB reserve=4,966,055,936B，原历史best/作者及必要初始化全部保留。
+
+源码、计划、执行者复核及检查回执在refine-logs/deployment_metric_role_v1与logs/deployment_metric_role_preparation837_20261005。执行者复核不冒称独立模型审计。封存与同步后才启动，预计6–7小时，按预计节点或180–300秒观察；只26物理GPU0/1、最大并发1。按用户最新要求完全不查询/设置/监控功率及温度。2025仍为原I/O pending，不再探测或恢复。单seed42、官方基准已消费；N2/N3、真实同容量控制、完整角色删除/重训和完整多种子仍待后续，总Goal active/unmet。
