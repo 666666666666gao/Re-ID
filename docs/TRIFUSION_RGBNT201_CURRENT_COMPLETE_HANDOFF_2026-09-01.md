@@ -16888,3 +16888,25 @@ v2准备期间一个生成器的旧句assert失败已记录，只补完尚未写
 CURRENT_GOAL只保留当前权威状态、固定合同、未闭合项与完成标准，删除其中重复的历史观察段；全部历史仍完整保留在主交接与原archive，科学合同和已封存失败没有改判。2025文本镜像原/data2 I/O错误继续明确待补，不访问它运行训练或做额外恢复。只核对本地/Desktop/GitHub/2026四份副本，不冒称五份同步。
 
 证据：`logs/global_task_role_rgb100_semantic831_20261004`。
+
+
+## 41.832 已闭合视觉起点六端临时权重退役
+
+§41.832仅清理已闭合视觉起点六端的六份成功M0探针，释放72,616,692B；正式best/回执、当前六份必需M0及330项科学源码均不变。23:32:52核对原RGBNT100 native PID3215669同一启动ticks仍存活。职责正式仍5/6，01:00里程碑观察保持；只26GPU0/1，无功温操作，Goal active/unmet。
+
+
+本次处理的是`logs/visual_start_roles_20261001_v1`，不是正在运行的职责实验。原六端全部50轮、首次strict、accepted6/6以及原CPU报告exit0已在10月1日闭合并发布。清理前实际核对原41件报告artifact SHA、六份成功M0回执及实存探针SHA、六份唯一正式best/距离/评价回执，确认候选文件不属于当前两份控制seal或当前初始化依赖。
+
+删除限定六个精确`visual_start_roles_20261001_v1_visual_start_*_m0/m0_reload_probe.pth`，验证解析后的绝对路径处于本项目trained-model范围。远端PLAN在删除前写入，每个文件的原SHA/大小/删除时刻写入RETIREMENT.jsonl；之后再核对原报告artifact、正式best/回执、当前六份M0和330项源码均保持。没有模型前向、CPU报告重放、训练重启或硬件设置。
+
+两次前置检查失败均发生在任何删除和远端journal创建之前：首版误把当前所需探针写为`probe_checkpoint.pth`，真实foundation入口使用`m0_reload_probe.pth`；第二版在Windows侧用Path重建Linux绝对路径，产生反斜杠字符串，被删除范围检查拦住。第三个独立实现只修正实际文件名及PurePosixPath路径构造，保留相同SHA、依赖和路径范围断言；成功执行，没有放宽检查或重试挑偶然通过。全部原失败stdout/stderr/exit及三个实际脚本归档。
+
+实际完成于2026-10-04T23:32:52.248979+08:00：6文件、72,616,692B。磁盘可用从3594805248B到3667312640B；并发训练可能同时写文件，free差不是精确释放量，释放量按六文件原大小相加。原native PID3215669/ticks38149139在清理前后都核对，当前六个报告必需探针实存SHA不变，没有提前删除当前依赖。
+
+旧视觉起点探针二进制已退役，原M0成功文字、正式best、距离和报告继续保留；不能再声称其原二进制仍可直接重放，也不能调用必须读取该探针的旧verify/report。这只是存储收尾，不计作算法或性能增量。
+
+固定best v2的启动/接收helper已在本地完成AST检查，仍未SSH执行或登记到production入口。它们要求当前原六端及原一次18组CPU报告、完整接收、新332项source/seal与发布闭合后才能用。没有新formal分数，native−semantic配对及同模型分解仍待完整六端。
+
+2025原/data2镜像I/O失败继续待补；本地/Desktop/GitHub/2026按既有四份范围核对。本次没有去2025做恢复、训练或功温操作，Goal仍active/unmet。
+
+证据：`logs/closed_visual_start_m0_retirement832_20261004`。
