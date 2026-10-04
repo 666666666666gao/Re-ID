@@ -1,6 +1,6 @@
 # TriFusion 当前 Goal 执行约束
 
-更新：2026-10-05 §41.840。首端完整50轮保存曲线补充核对：47/50轮mAP高于匹配控制，但R5、R10分别35/50、34/50轮下降；正式best仍为E8，推进仍未通过。 正式1/6、M0终态2/6；最近模型snapshot02:58:48，原native从02:58:05进入fresh50，observer37914首次03:36:44。只26GPU0/1，无功率/温度操作，Goal ACTIVE / UNMET。
+更新：2026-10-05 §41.841。RGBNT201两端完整50轮/首次strict闭合：native相对本轮semantic仅+0.0483 mAP、R1−0.8373；相对匹配raw-native虽mAP+0.5664，但R1−1.1962，推进仍未通过。 正式2/6、M0终态3/6；03:57:28实际MSVR semantic train3887034；observer86112首次04:03:25，之后240秒。历史70个无用M0退役807MB，正式best和当前依赖保留。只26GPU0/1，无功率/温度操作；Goal ACTIVE / UNMET。
 
 ## 总目标与贡献边界
 
@@ -19,7 +19,7 @@ refine-logs/deployment_metric_role_v1/EXPERIMENT_PLAN.md与SOURCE_SCOPE.json。s
 
 车辆从各512维raw模态Triplet改为整1536联合L2，因此同时改变模态联合几何，不能称仅L2。原作者各头loss求和保留，车辆三份joint Triplet等价3倍，同三份CE不变。没有新head、辅助目标或系数。
 
-当前原supervisor3606472/startticks39300650队列正式1/6、M0终态2/6。首201semantic E8为74.9363/78.7081，相对匹配控制mAP+0.5614/R1−0.1196，未通过推进。02:58:48 snapshot记载native train3741795从02:58:05进入fresh50；唯一新observer session37914首次03:36:44.855310、之后240秒。旧66644已退出0，不重启；不要提前读取中间分数。
+当前原supervisor3606472/startticks39300650队列正式2/6、M0终态3/6。201 semantic/native E8为74.9363/74.9846 mAP、78.7081/77.8708 R1，两端对匹配控制均因R1下降未通过推进。native−semantic为+0.0483/−0.8373。03:57:28实际MSVR semantic train3887034从03:41:45运行；唯一observer86112首次04:03:25.104808、之后240秒。旧37914正常退出0，不重启，不提前读中间分数。
 
 每端独立prepare核对上一轮initializer→8步真实M0→fresh50→首次strict。M0沿用有限loss、全部训练张量至少一次非零梯度/实际更新、BN8次、native14张量活动、完整state严格重载。不能用CPU witness替代实际M0。失败保持，不据官方结果改seed/LR/gain/margin/batch或堆N2/N3。
 
@@ -36,3 +36,5 @@ refine-logs/deployment_metric_role_v1/EXPERIMENT_PLAN.md与SOURCE_SCOPE.json。s
 后续只有完整六端和固定诊断闭合后才能决定；优先验证真实同容量、角色完整路径删除重训、强参照与完整流程多种子，不为三个框强保无效机制。目标实际达成前不complete，正常长任务等待不blocked。
 
 首端保存曲线补充§41.840：47/50轮mAP配对为正；R5/R10多数轮为负。依赖轮次不当独立种子，E8主结果和推进判定不变；剩余全部配对与固定best诊断闭合后再决定新干预。
+
+历史M0存储退役§41.841：70份通过回执/权重SHA且不属于当前依赖的工程探针已退役807,017,706B；旧二进制直接重放不可再调用。全部正式best/作者/初始化/当前控制保留。完整six及唯一15对报告闭合后再判断下一干预。

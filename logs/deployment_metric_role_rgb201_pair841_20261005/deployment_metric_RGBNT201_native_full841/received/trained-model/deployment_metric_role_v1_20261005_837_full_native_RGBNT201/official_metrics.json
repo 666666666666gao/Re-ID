@@ -1,0 +1,41 @@
+{
+  "schema": "trifusion-deployment-metric-role-v1",
+  "status": "COMPLETE",
+  "dataset": "RGBNT201",
+  "recipe": "native",
+  "seed": 42,
+  "training_epochs": 50,
+  "selected_epoch": 8,
+  "condition": {
+    "variant": "native",
+    "foundation_option": "author",
+    "seed": 42,
+    "epochs": 50,
+    "public_clip_sha256": "5806e77cd80f8b59890b7e101eabd078d9fb84e6937f9e85e4ecb61988df416f",
+    "initialization_sha256": "a31c868880c5243b1246ab186df6794ace5bd5bd12a1e4e8b71b056aebd71d8e",
+    "deployment": "L2_1536",
+    "auxiliary_tasks": "none",
+    "visual_placement": "single_process_original_full_batch_first6_cuda1_last6_and_heads_cuda0",
+    "objective_gradient_policy": "author_global_loss_to_shared_and_heads_fused_loss_to_roles_only",
+    "author_training_objectives": [
+      "shared_global",
+      "role_corrected_fused"
+    ],
+    "role_metric_policy": "role_triplet_joint_1536_l2_h_global_triplet_original_raw_parts"
+  },
+  "protocol_sha256": "b2409c2d992d04adcf0c78354d306afd6af7ae9507738fd4e83de480e9a9b90f",
+  "checkpoint_sha256": "98aa562ef92911b88b87ebb581472b05ee7a528ef1041cbf6cfbdd3f9809828e",
+  "distance_sha256": "b10d944befebbc6f60446e0799f69b628d3784e2d5631430d97be3c116741629",
+  "training_best_distance_sha256": "d65edff3ac66772b532357b9b5a4ff5e3b69613457e124780231a6acaf5eec15",
+  "metrics": {
+    "mAP": 74.98460329070005,
+    "Rank-1": 77.87081599235535,
+    "Rank-5": 87.44019269943237,
+    "Rank-10": 92.46411323547363
+  },
+  "reranking": false,
+  "independent_upstream_metrics_equal": true,
+  "final_evaluation_seconds": 41.661557792976964,
+  "final_evaluation_timing_boundary": "Fresh construction, strict reload and full-gallery scoring.",
+  "completed_at": "2026-10-05T03:40:06.984302+08:00"
+}

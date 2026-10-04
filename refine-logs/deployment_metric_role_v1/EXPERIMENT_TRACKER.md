@@ -1,20 +1,20 @@
 # 当前执行登记
 
-更新：2026-10-05 §41.839。依据02:58:48实际收取：正式1/6；M0终态2/6。339项scientific source与187项封存控制不变。
+更新：2026-10-05 §41.841。03:57:28实际模型快照：正式2/6，M0终态3/6。source339与控制187不变。
 
 | 数据集 | 条件 | 实际阶段 | 状态/结果 |
 |---|---|---|---|
-| RGBNT201 | semantic | prepare、真实8步M0、fresh50/2649、首次strict完成 | E8：74.9363 mAP / 78.7081 R1；两项配对推进均未通过 |
-| RGBNT201 | native | manifest M0 complete/exit0；fresh50已开始 | train3741795从02:58:05运行；内部M0诊断尚未单独收取 |
-| MSVR310 | semantic | 原顺序排队 | 待执行 |
+| RGBNT201 | semantic | 8步M0、fresh50/2649、首次strict闭合 | E8：74.9363 mAP / 78.7081 R1；匹配推进FAIL |
+| RGBNT201 | native | 8步M0、fresh50/2649、首次strict闭合 | E8：74.9846 mAP / 77.8708 R1；匹配推进FAIL |
+| MSVR310 | semantic | 真实8步M0通过；fresh50开始 | train3887034，03:41:45开始；尚无正式成绩 |
 | MSVR310 | native | 原顺序排队 | 待执行 |
 | RGBNT100 | semantic | 原顺序排队 | 待执行 |
 | RGBNT100 | native | 原顺序排队 | 待执行 |
 
-首semantic相对匹配raw-role控制ΔmAP +0.5614、ΔR1 −0.1196；相对独立global-only为+0.6396/−0.2392。预登记+0.5mAP且R1不下降，两项均未通过。完整四项、50轮原始曲线和所有回执见主交接§41.839与 logs/deployment_metric_role_first_full839_20261005。
+native−semantic：mAP+0.0483/R1−0.8373/R5不变/R10+0.3588。native−匹配raw-native：+0.5664/−1.1962/−0.5981/+0.8373；相对独立global+0.6879/−1.0766/−0.8373/+0.5981。固定推进+0.5mAP且R1不降，仍失败，不换epoch救分。新增14个张量实际更新不等于身份价值。
 
-首端M0探针在自身完整50轮/第一次strict和SHA接受证书完成后退役358,375,480B；正式best及必要控制/初始化/作者权重保留。其他端不提前清理。
+两份201正式best保留；各自完整验收/SHA后只退役本端M0探针。历史70份不再依赖的M0通过回执与SHA后另退役807MB，文本与日志保留，直接旧二进制重放退役。当前MSVR probe仍保留。
 
-原supervisor3606472/startticks39300650；原66644观察器正常退出0。唯一新观察器session37914于03:01:01启动，首次03:36:44.855310、之后240秒。节点前不重复查询或启动。原唯一15对CPU报告仍在全部六端闭合后执行一次。
+原supervisor3606472/startticks39300650继续；旧37914已退出0。唯一local observer86112首次04:03:25.104808，必要时240秒。六端全闭合后原唯一15对CPU报告一次执行。
 
-仅26物理GPU0/1，不设置、查询或监控功率/温度；不使用2025或GPU2/3。2025原I/O pending。单seed42、已消费官方基准；Goal ACTIVE / UNMET。
+仅26物理GPU0/1，不查询/设置/监控功率与温度；2025旧I/O pending不探测。单seed42/已消费官方集；Goal ACTIVE / UNMET。
