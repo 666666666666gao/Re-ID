@@ -2,7 +2,7 @@
 
 ## 0. 一页结论
 
-**当前进度：§41.818（2026-10-04更新）。** MSVR310 semantic/native均完成自身50轮/706步与首次严格评价。native E38为51.1388/69.8816；较原native变化+0.4632/+1.1844，较新semantic+0.3537/+1.0152。正式4/6；RGBNT100两端按原队列继续。固定best分解计划仅准备，输入尚未封存、模型尚未执行。只26GPU0/1，无功率温度控制；Goal active/unmet。
+**当前进度：§41.819（2026-10-04更新）：** RoDI作者PDF的主表/资源已实际读取并目视复核，仍未建立精确评价协议等价；新固定best诊断仅CPU import/help通过，尚未封存输入或执行模型诊断。12:27观察为正式4/6、100 semantic 6/50轮，按原队列继续，预计14:10左右结束、14:05近末轮观察。仅26GPU0/1，无功率温度操作；Goal active/unmet。
 
 **现行合同：** 每个正式候选完整50轮，使用作者完整query/gallery及camera／MSVR时间段过滤，以官方fused mAP最高的同一checkpoint报告全部指标，随后严格重载。RGBNT201报告mAP／R1／R5／R10，RGBNT100及MSVR310报告mAP／R1；不跨epoch或seed拼列。官方集已参与逐轮选点和历史方法选择，属于已消费基准上的探索性结果。
 
@@ -16386,3 +16386,28 @@ native训练循环517.438269秒，训练加逐轮评价1406.032567秒，两者�
 后续入口tools/diagnose_role_input_detach_best.py及计划refine-logs/role_input_detach_fixed_best_diagnosis_v1/EXPERIMENT_PLAN.md已登记；SOURCE_SCOPE继承实际远端322项加新入口/计划2项，共324。输入封存须等待六端及原一次CPU报告退出0，再绑定六个新角色best和三个原独立global的九行证据。当前没有INPUT_SEAL，也没有新模型诊断结果。SOURCE_REVIEW只为主代理源码复核，不是独立复现。
 
 本地范围准备曾因把发布副本当完整服务器源码而断言失败：107项比较方法/日志未在本地，27项原模型文件仅CRLF/LF不同；失败记录保留在LOCAL_PREPARATION_FAILURE.json。未归一化、替换或删掉这些文件，也不改变原封存322项SHA。后续范围沿用已实查的远端精确SHA，执行前仍须完整服务器核验；这不是训练失败或放宽数值门槛。
+
+
+## 41.819 RoDI作者PDF核读、固定best入口CPU检查与原队列等待边界
+
+RoDI作者PDF的主表/资源已实际读取并目视复核，仍未建立精确评价协议等价；新固定best诊断仅CPU import/help通过，尚未封存输入或执行模型诊断。12:27观察为正式4/6、100 semantic 6/50轮，按原队列继续，预计14:10左右结束、14:05近末轮观察。仅26GPU0/1，无功率温度操作；Goal active/unmet。
+
+### 文献参照重新建立原文来源
+
+
+固定作者提交 `2f38911c49d42d4ca259d440a851b8d77dddccbe` 的[PDF](https://github.com/lsh-ahu/RoDI/blob/2f38911c49d42d4ca259d440a851b8d77dddccbe/assets/RoDI.pdf)已取得；13页，文件与Git blob哈希核验。目视复核PDF页6、7、12、13。二进制、页面图及全文提取留本地私有目录，不再分发。
+
+| 主表1版本 | RGBNT201 mAP/R1/R5/R10 | MSVR310 mAP/R1 | RGBNT100 mAP/R1 |
+|---|---|---|---|
+| CLIP ViT-B/16 | 84.1/87.2/92.0/93.2 | 64.1/77.2 | 88.5/97.6 |
+| DINOv3 ViT-B/16 distilled | 85.3/87.9/93.0/94.8 | 71.8/84.8 | 89.0/99.1 |
+
+页7表2的201累计消融mAP：CLIP 76.0→79.3→82.7→84.1；DINOv3 81.0→82.3→84.0→85.3。不同预训练版本分列。
+
+页6说明B64/K8、Adam、学习率3.5e-4、weight decay1e-4、warmup10轮、单RTX4090。该说明不足以核实精确query/gallery成员、camera/scene过滤、选checkpoint规则、总训练轮数和预训练权重哈希。固定仓库仍无可执行训练/评价代码。这是论文参照，不是同协议本地复现或SOTA已达成证明；不修改当前实验。
+
+### 执行不变与诊断前提
+
+新入口 `tools/diagnose_role_input_detach_best.py` 于12:19:05在空CUDA_VISIBLE_DEVICES下仅执行一次 `--help`，退出0；324项源文件SHA不变，输入封存不存在。此项不构建模型、不运行forward/M0、无新分数；只能证明CPU导入和参数解析。必须等六端各自完整50轮/首次严格评价及原一次性CPU全量报告退出0后，才能封存并执行固定best g/c/h/f诊断。
+
+12:27:35观察仍为原RGBNT100 semantic PID1716550/ticks34238497，正式4/6，自己的M0已通过，训练6/50轮完成、最新E7 batch61；源322不变，controller未退出。训练step c/g不是固定best检索效用证据，不据此调gain/LR。预计14:10–14:15完成，下一次近末轮观察约14:05，实际终态以回执为准。剩余native由原队列接续；不重启、不提前运行诊断、不退役仍为原报告依赖的新M0探针。原九端/旧固定best/M0退役历史边界不变。
