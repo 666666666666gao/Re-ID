@@ -16821,3 +16821,32 @@ RGBNT100原fresh50开始21:00:00.501846，原PID2981697/ticks37414126在21:34:52
 2025文本镜像仍保留原I/O待同步；新证据核对本地/Desktop/GitHub/2026四份执行副本。正式best及全部数据、特征和距离留远端，科学Goal保持active/unmet。
 
 证据：`logs/global_task_role_curve_intake829_20261004`。
+
+
+## 41.830 原文强参照与可复现资源边界
+
+§41.830补充三项强参照的原文及资源边界核查；当前实验正式4/6、真实M0 5/6未变化。最后远端训练见证仍为21:34；原RGBNT100 semantic预计22:57–23:01，已有本地观察器22:54执行一次。科学source330不变，仅2026物理GPU0/1，不查询或调整温度、功率；Goal active/unmet。
+
+
+本次只核查预先指定的DEEP、RoDI、PMKD，不声称穷尽最新SOTA或完成本机复现。数值单位为百分比；RGBNT201四项依次mAP/R1/R5/R10，车辆两项mAP/R1。
+
+| 方法与预训练 | RGBNT201 | RGBNT100 | MSVR310 |
+|---|---|---|---|
+| DEEP：CLIP视觉与冻结文本编码器 | 79.6/84.2/89.4/91.5 | 88.5/97.6 | 66.0/82.1 |
+| RoDI：CLIP | 84.1/87.2/92.0/93.2 | 88.5/97.6 | 64.1/77.2 |
+| RoDI：DINOv3 | 85.3/87.9/93.0/94.8 | 89.0/99.1 | 71.8/84.8 |
+| PMKD：DINOv2 | 84.7/88.9/91.0/92.2 | 91.6/98.0 | 未报告 |
+
+DEEP依据[作者接受稿](https://aihuazheng.github.io/publications/pdf/2025/2025-DEEP_Decoupled_Semantic_Prompt_Learning_Guiding_and_Embedding_for_Multi-Spectral_Object_Re-Identification.pdf)表I/IV及IV.B：视觉分支可训练、60轮，使用冻结CLIP文本编码器与学习/图像反演提示；不要求具体人工文本标签，但不能因此写成无文本编码资源。MSVR按相同身份、相同时间段过滤。目录2025不作为发表年份，DOI为10.1109/TMM.2026.3660160。
+
+RoDI依据[作者公开PDF](https://github.com/lsh-ahu/RoDI/blob/main/assets/RoDI.pdf)表1及4.2，并已目视核对CLIP/DINO两行与表头。B64/K8、Adam3.5e-4、10轮warmup；检查的13页全文没有建立总训练epoch，不填成50或60。3.5说明推理去掉opinion metrics及rolling；论文描述条件扩散与伪特征融合，实际推理代码路径尚不能核对。CVF HTML返回403，本次使用作者PDF，未证明其与正式CVF文件逐字一致。
+
+PMKD依据[AAAI正式PDF](https://ojs.aaai.org/index.php/AAAI/article/download/38338/42300)表1/2及第3/5页，并目视核对主表：DINOv2、224×224、B32/K8、Adam4.5e-5。实现段写50轮，但源模型训练及两次新目标蒸馏是不同阶段，整条流程总成本尚未核实，不算成总计50或自行乘成150。全文没有MSVR310成绩；其表3自身MM82.5/MS81.5到完整84.7，不当作十点消融。
+
+当日直接读取三个作者仓库的完整main树、核对truncated=false：DEEP为README/LICENSE/图片等，RoDI为README/PDF/poster，PMKD只有README，均没有当前可执行训练实现。树SHA、路径列表、访问回执已归档；树SHA不是commit SHA。结论限定于检查的公开主树，不推断私有实现不存在。
+
+研究检索agent因模型容量失败，没有返回材料；第二shard创建因线程限额失败。原文核查由root顺序完成，不冒充独立评审或自动评审拒绝。AAAI网页抓取超时/体积限制与CVF403均保留，官方AAAI直接下载随后成功；原PDF/完整原文/预览图保留私有，不发布到项目仓库。
+
+仅补充强参照资源边界，没有改架构、配方、种子、epoch选择或当前330项科学源码。当前四端相对独立global推进条件0/4仍保留，不能用外部论文表替代其余两端终态。原训练未重启，无温功查询/设置、无权重退役；2025只作文本镜像且原I/O失败待处理，未新探测。
+
+证据：`logs/strong_reference_primary830_20261004`。

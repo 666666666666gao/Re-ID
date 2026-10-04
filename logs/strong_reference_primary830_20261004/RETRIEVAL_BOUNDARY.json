@@ -1,0 +1,28 @@
+{
+  "retrieval_agent": {
+    "task": "/root/retrieve_rodi_primary_20261004",
+    "status": "FAILED",
+    "reason": "Selected model is at capacity. No findings or artifact returned; not a reviewer rejection."
+  },
+  "second_shard": {
+    "task": "retrieve_pmkd_primary_20261004",
+    "status": "SPAWN_FAILED",
+    "reason": "Agent thread limit reached; no agent created."
+  },
+  "retrieval_failures": [
+    {
+      "source": "AAAI PDF webopen",
+      "reason": "Timeout fetching"
+    },
+    {
+      "source": "AAAI PDF webclick",
+      "reason": "Content length exceeds10MiB"
+    },
+    {
+      "source": "CVF RoDI HTML",
+      "reason": "403 Forbidden"
+    }
+  ],
+  "source_completion": "Root sequential original retrieval: official AAAI direct download successful; author RoDI PDF successful; DEEP author PDF read with web. Source failures retained, no model/backend retry.",
+  "unresolved": "No arxiv_fetch helper resolved. Exact target filename local search found no matching target PDF. Not every local PDF inspected. Zotero/Obsidian not requested or used."
+}
