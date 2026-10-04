@@ -72,3 +72,8 @@
 §41.821：RGBNT100读取detach semantic完整50轮/3129步及首次严格评价通过，E5为81.9418/94.7522；较原semantic下降1.4977/1.3411，R5/R10也下降。正式5/6、M0 6/6，最后native正在fresh50。仅26GPU0/1，不设置或监控功率温度限制；原配方和单一best保持，Goal active/unmet。
 
 证据logs/role_input_detach_rgbnt100_semantic821_20261004；原一次CPU报告和新固定best分解仍待终态，不把源码检查当新模型评价。
+
+
+§41.822：读取detach六端均完成自身8步M0、完整50轮和首次严格评价；原CPU报告只调用一次并退出0，合计300轮/12968正式step。RGBNT100 native同一E5 best为82.5124/95.8017。相对各自原变体的预登记推进条件满足1/6，不支持把这项梯度干预描述为通用修复。固定best分解已完成输入封存，尚未执行；只使用26GPU0/1，无功率或温度控制，Goal active/unmet。
+
+证据`logs/role_input_detach_complete822_20261004`；固定best输入已封存，诊断仍待执行。

@@ -16497,3 +16497,57 @@ RoDI方法短记录：
 PDF、页图和全文提取仍放私有目录，只在下次正式结果更新中归档简短核对记录。
 
 原论文PDF、页图、全文提取保持私有，不纳入公开归档。当前用户再次明确不管功率和温度；不设置限制、不读取功温遥测。只26GPU0/1，25继续仅文字镜像；总体性能、必要性、多种子与协议SOTA证据仍未达到，Goal保持active。
+
+
+## 41.822 读取梯度边界六端完整终态与后续固定best输入封存
+
+读取detach六端均完成自身8步M0、完整50轮和首次严格评价；原CPU报告只调用一次并退出0，合计300轮/12968正式step。RGBNT100 native同一E5 best为82.5124/95.8017。相对各自原变体的预登记推进条件满足1/6，不支持把这项梯度干预描述为通用修复。固定best分解已完成输入封存，尚未执行；只使用26GPU0/1，无功率或温度控制，Goal active/unmet。
+
+| 数据集 | 条件 | best轮 | mAP | R1 | R5 | R10 | best−末轮mAP |
+|---|---|---:|---:|---:|---:|---:|---:|
+| RGBNT201 | semantic | 18 | 72.7798 | 76.9139 | 84.9282 | 89.2344 | 2.7601 |
+| RGBNT201 | native | 8 | 69.4305 | 72.1292 | 85.2871 | 90.7895 | 3.5190 |
+| MSVR310 | semantic | 49 | 50.7851 | 68.8663 | 81.5567 | 85.4484 | 0.0158 |
+| MSVR310 | native | 38 | 51.1388 | 69.8816 | 81.2183 | 85.9560 | 0.1684 |
+| RGBNT100 | semantic | 5 | 81.9418 | 94.7522 | 95.2770 | 95.6851 | 3.7152 |
+| RGBNT100 | native | 5 | 82.5124 | 95.8017 | 96.7930 | 97.0845 | 3.1849 |
+
+| 干预：新−对应原变体 | ΔmAP | ΔR1 | 首位修复/新增错误 | 身份宏平均ΔAP | 事前推进条件 |
+|---|---:|---:|---:|---:|---|
+| RGBNT201 semantic | +0.8817 | +2.5120 | 72/51 | +0.9975 | 满足 |
+| RGBNT201 native | -2.6968 | -2.9904 | 54/79 | -2.6073 | 未满足 |
+| MSVR310 semantic | -0.1785 | -0.3384 | 5/7 | +0.0171 | 未满足 |
+| MSVR310 native | +0.4632 | +1.1844 | 12/5 | +0.5933 | 未满足 |
+| RGBNT100 semantic | -1.4977 | -1.3411 | 25/48 | -1.7615 | 未满足 |
+| RGBNT100 native | -0.0486 | +0.2915 | 47/42 | -1.4135 | 未满足 |
+
+| 同干预native−semantic（描述性） | ΔmAP | ΔR1 | 首位修复/新增错误 | 身份宏平均ΔAP |
+|---|---:|---:|---:|---:|
+| RGBNT201 | -3.3494 | -4.7847 | 50/90 | -3.5036 |
+| MSVR310 | +0.3537 | +1.0152 | 14/8 | +0.2938 |
+| RGBNT100 | +0.5706 | +1.0496 | 49/31 | +0.1830 |
+
+Original once-only CPU report retained unchanged. All six endpoints and all queries included; no new checkpoint selection, model/scorer call, seed, training, gain search or acceptance rule. Fixed-model identity statistics do not establish training-seed stability. New fixed-best g/c/h/f diagnosis remains separate; scientific Goal active/unmet.
+
+原十二组CPU配对为每个新变体对原同变体及原独立global-only，完整query/AP、合法首位排名及身份宏平均均保留；新增native−semantic表由同一报告中的逐query记录相减得到，不调用模型或新计分器，也不新增验收规则。原报告不改写，不能把同家族单seed配对当成完整训练多种子或同协议SOTA证明。
+
+已核对322冻结源码、61项历史对照、公开CLIP/实际初始化、全部实际batch顺序、每端唯一正式best与自身M0探针。六个M0二进制仍保留；完整结果及新诊断依赖闭合后才退役。原失败、现有best、距离与文本回执保留。
+
+16:08本地定时观察器因基础Python缺少paramiko退出1，未连接服务器。随后使用已有uv参数化环境只读核验：原训练PID/startticks不变，48轮已完成、第49轮运行、322源码不变；该本地观察失败不属于训练失败，未重启训练。原失败及后续只读观察均保留，不更改服务器环境。
+
+后续固定best分解使用真实读取detach模型、原全query/gallery与过滤、一次前向收集g/c/h/f、固定原mAP-best。INPUT_SEAL已封存324文件和九个模型行（新六端与原独立global三个）；此处只完成封存，尚未执行模型诊断。按已登记计划比较同模型global→fused的修复/新增错误，以及global相对独立global-only的变化；不重新选权重，不改变gain、loss、LR、batch、seed、环境或原评分容差。
+
+当前实际读出与槽位路径勘核：
+
+此记录针对 role_input_detach_v1 的冻结322文件清单，15份实际源码字节与缓存清单一致。未导入 torch/模型，未读取权重、运行训练或访问服务器。不是性能实验，也不修改任何已登记实验。
+
+1. 当前 semantic/native 的继承链到 ContextIdentityTriFusion 时明确启用 structured_readout=True。最终读出没有把全部模态、槽位平均成单个384维输入。每角色 B×3×16×128 先按4×4槽位索引分为四组，每组平均四个槽位，得到 B×3×4×128；三角色在通道维拼接成 B×3×4×384，再用12个128×384权重块各自投影并拼成1536维。
+2. 虽然保存的 readout.weight 形状是1536×384，当前作用是12个不同输入块上的分组线性映射。不能仅凭这个保存形状断言最终全部修正被限制在一个全局rank128或rank384子空间。等效分块映射在维度上可以达到1536秩；这不证明实际训练权重的秩或判别性。
+3. 四组的“区域”目前是学习槽位的索引分组，不能直接当作四个真实空间/语义部件。当前实际 FP32SlotCompetitionRoles.sample_context 覆盖旧采样：读取全部128个patch，采用每槽位对patch的独立softmax，不使用传入positions或local_support。offset参数冻结，返回的positions是固定参考点；旧grid_sample路径不是这个版本的实际角色读取。
+4. native 细节分支读取全部512个CNN位置，具有独立key/value。细节query由anchor_queries加context_queries中的CNN角色项生成，并扩展到三模态。context_queries reshape中的3是角色索引，不能解释成三个模态各自的query。当前细节reader没有显式局部位置mask或额外位置编码；卷积网格及CLIP路径仍具有空间来源，不能泛化为整网没有空间信息。
+5. 新细节在CNN出口LayerNorm之前相加，CNN证据还经桥接影响Transformer/Mamba。仅删除最终CNN读出分量，不等于删除CNN/细节路径。Transformer使用每模态一个固定上下文token加16个槽位；Mamba使用48个空间/模态token及共享参数的正逆扫描。
+6. input-detach切断角色输入对共享编码器的直接反向路径；h=g+gain*c中的g路径仍训练，且梯度受融合损失影响。不能将其描述为严格保护global不变。
+
+以上是当前代码的结构性质。它们不能唯一解释负增益、证明对应失效、槽位塌缩或指定下一项干预。等待全部六端及固定best诊断完成后，再据完整证据决定唯一下一实验。
+
+证据目录：`logs/role_input_detach_complete822_20261004`。下一步先执行已登记的六个固定best诊断，依据全部结果确定唯一下一项科学干预；不提前堆入N2/N3，不把计算/验收通过当成机制有效。强baseline/SOTA、机制必要性和完整流程稳定性仍未完成。

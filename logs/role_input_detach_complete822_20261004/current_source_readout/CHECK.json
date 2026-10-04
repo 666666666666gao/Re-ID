@@ -1,0 +1,608 @@
+{
+  "observed_at": "2026-10-04T15:22:59.540697+08:00",
+  "status": "FROZEN_SOURCE_READOUT_AND_SLOT_PATH_VERIFIED",
+  "boundary": "Cached local source only; no torch import, model call, server contact, training change or new scientific gate",
+  "manifest_path": "C:\\Users\\gb\\.codex_tmp\\independent_evidence_draft\\role_input_detach821_rgbnt100_native_observations\\142805_490290\\texts\\campaign_manifest.json",
+  "manifest_sha256": "79ba3039d3dd0bf44fcbb92789ed7b6d4a6c0f7715d949550c38ccac84de870c",
+  "manifest_source_count": 322,
+  "verified_files": [
+    {
+      "path": "modeling/trifusion/correspondence_roles.py",
+      "sha256": "e2a51154b5b327341f35e453dd32a821b091a49a669b49a7c70e79e6e2f2591b",
+      "bytes": 15524
+    },
+    {
+      "path": "modeling/trifusion/correspondence_evidence_readout.py",
+      "sha256": "e737a977d39ccbe09a5509118e5b5333d653f7f13381e65e84af1a13e5c28dc4",
+      "bytes": 4484
+    },
+    {
+      "path": "modeling/trifusion/correspondence_context_identity.py",
+      "sha256": "eda3d1473496b33e4b69402dba7770e67d23b33b07afd41d23105b7f148d63af",
+      "bytes": 6147
+    },
+    {
+      "path": "modeling/trifusion/patch_memory_roles.py",
+      "sha256": "833c8c93363cee7a4fc74c6c458194b484dc1b8cac0f9ec58113a07ac89cb23d",
+      "bytes": 3685
+    },
+    {
+      "path": "modeling/trifusion/slot_competition_roles.py",
+      "sha256": "bbc3e2430f760587cf8c1d11e40bcbdf0459424e975de74b5b15a40706efbe99",
+      "bytes": 2226
+    },
+    {
+      "path": "modeling/trifusion/slot_competition_fp32_roles.py",
+      "sha256": "810801e048bcb07ddbdef0635708b63cba7562a4876e044af34135fd412f79c8",
+      "bytes": 1763
+    },
+    {
+      "path": "modeling/trifusion/role_global_tokens.py",
+      "sha256": "f41ff1af1fb1b6303a9af63cf039263e2572c16b23813f92a0297f014e71dd4f",
+      "bytes": 4968
+    },
+    {
+      "path": "modeling/trifusion/independent_native_roles.py",
+      "sha256": "1565590fdfb281fb51b43d06497cd526ffe5bbdc135727ebaa609615dc7832ff",
+      "bytes": 5375
+    },
+    {
+      "path": "modeling/trifusion/image_native_evidence.py",
+      "sha256": "0b5a2ab7fa3f2e3dc276f651e86a83bbff162e25e65e16f321b7882f05ecbd58",
+      "bytes": 2142
+    },
+    {
+      "path": "modeling/trifusion/role_input_detach.py",
+      "sha256": "a3732d5ea98a9fef6039a14f34de98a23cd85a39efd83f52c8835ec59d4605b3",
+      "bytes": 639
+    },
+    {
+      "path": "tools/run_role_input_detach.py",
+      "sha256": "a177fd5aa4d5ba25422a49cb619062001722d6c7640891cb3da9645a8eb32fe5",
+      "bytes": 1753
+    },
+    {
+      "path": "tools/run_native_research.py",
+      "sha256": "b48725622371fc6d9671c464ce97252e2e06eba465e213ce221d84c798e52cc2",
+      "bytes": 781
+    },
+    {
+      "path": "tools/run_native_partitioned.py",
+      "sha256": "2c3abac37b122760895b97ccf01d4fefe2cfb8223b35b6e2e335a1a4144f72fa",
+      "bytes": 2289
+    },
+    {
+      "path": "tools/run_independent_native_evidence.py",
+      "sha256": "2429af8d2f803d70b9d15113a430609ead28621eb4341a746c3025cc5685fe23",
+      "bytes": 10367
+    },
+    {
+      "path": "tools/run_clean_clip_joint.py",
+      "sha256": "178e9793f2cf8261eb44a278e053d5caabd4f2f37dba48a65952b2547338a746",
+      "bytes": 9804
+    }
+  ],
+  "semantic_class_chain": [
+    "DetachedSemanticTriFusion",
+    "RawFeatureSemanticTriFusion",
+    "GlobalTokenTriFusion",
+    "FP32SlotCompetitionTriFusion",
+    "SlotCompetitionTriFusion",
+    "PatchMemoryTriFusion",
+    "ContextIdentityTriFusion",
+    "EvidenceReadoutTriFusion",
+    "CorrespondenceTriFusion"
+  ],
+  "native_class_chain": [
+    "DetachedNativeTriFusion",
+    "IndependentNativeTriFusion",
+    "RawFeatureSemanticTriFusion",
+    "GlobalTokenTriFusion",
+    "FP32SlotCompetitionTriFusion",
+    "SlotCompetitionTriFusion",
+    "PatchMemoryTriFusion",
+    "ContextIdentityTriFusion",
+    "EvidenceReadoutTriFusion",
+    "CorrespondenceTriFusion"
+  ],
+  "classes": {
+    "RoleEvidence": {
+      "path": "modeling/trifusion/correspondence_roles.py",
+      "line": 17,
+      "bases": [],
+      "methods": {}
+    },
+    "CrossLayerAdaptedCLIP": {
+      "path": "modeling/trifusion/correspondence_roles.py",
+      "line": 24,
+      "bases": [
+        "nn.Module"
+      ],
+      "methods": {
+        "__init__": {
+          "line": 27,
+          "end_line": 51,
+          "source": "def __init__(self, signal: nn.Module, *, layers: tuple[int, int, int] = (3, 7, 11),\n                 enabled: bool = True):\n        super().__init__()\n        self.signal = signal\n        self.layers = layers\n        self.enabled = enabled\n        self.adapters = nn.ModuleList(\n            nn.ModuleList(\n                nn.Sequential(nn.LayerNorm(768), nn.Linear(768, 64), nn.GELU(),\n                              nn.Linear(64, 768)) for _ in range(3)\n            ) for _ in layers\n        )\n        for depth in self.adapters:\n            for adapter in depth:\n                nn.init.zeros_(adapter[-1].weight)\n                nn.init.zeros_(adapter[-1].bias)\n        if not enabled:\n            for parameter in self.adapters.parameters():\n                parameter.requires_grad_(False)\n        blocks = signal.clip_vision_encoder.base.transformer.resblocks\n        assert len(blocks) == 12 and all(0 <= index < len(blocks) for index in layers)\n        assert not hasattr(signal, \"SIM\") and not hasattr(signal, \"AlignM\")\n        for parameter in signal.parameters():\n            parameter.requires_grad_(False)\n        signal.eval()"
+        },
+        "train": {
+          "line": 53,
+          "end_line": 56,
+          "source": "def train(self, mode: bool = True):\n        super().train(mode)\n        self.signal.eval()\n        return self"
+        },
+        "forward": {
+          "line": 58,
+          "end_line": 90,
+          "source": "def forward(self, images: dict[str, torch.Tensor], camera_ids: torch.Tensor,\n                adapter_bank: nn.ModuleList | None = None):\n        bank = self.adapters if adapter_bank is None else adapter_bank\n        captured: dict[int, list[torch.Tensor]] = {index: [] for index in self.layers}\n        handles = []\n        for stage_index, index in enumerate(self.layers):\n            def capture(_module, _inputs, output, *, layer=index, stage=stage_index):\n                if not self.enabled:\n                    captured[layer].append(torch.stack([output.permute(1, 0, 2)] * 3, dim=0))\n                    return output\n                deltas = [adapter(output) for adapter in bank[stage]]\n                captured[layer].append(torch.stack(\n                    [(output + delta).permute(1, 0, 2) for delta in deltas], dim=0\n                ))\n                return output + sum(deltas) / 3\n            handles.append(self.signal.clip_vision_encoder.base.transformer.resblocks[index].register_forward_hook(capture))\n        globals_by_modal = []\n        try:\n            for name in MODALITY_ORDER:\n                _, global_feature = self.signal.clip_vision_encoder(\n                    images[name], cam_label=camera_ids, view_label=None\n                )\n                globals_by_modal.append(global_feature)\n        finally:\n            for handle in handles:\n                handle.remove()\n        assert all(len(captured[index]) == 3 for index in self.layers)\n        stages = torch.stack(\n            [torch.stack(captured[index], dim=2) for index in self.layers], dim=0\n        )\n        # depth, role, batch, modality, token, channel.\n        baseline = torch.cat(globals_by_modal, dim=1)\n        return stages, baseline"
+        }
+      }
+    },
+    "CorrespondenceRoles": {
+      "path": "modeling/trifusion/correspondence_roles.py",
+      "line": 93,
+      "bases": [
+        "nn.Module"
+      ],
+      "methods": {
+        "__init__": {
+          "line": 96,
+          "end_line": 153,
+          "source": "def __init__(\n        self,\n        *,\n        grid: tuple[int, int],\n        width: int = 128,\n        anchor_side: int = 4,\n        m1: bool = True,\n        m2: bool = True,\n        mamba_factory: Callable[[int], nn.Module],\n    ):\n        super().__init__()\n        self.grid = grid\n        self.width = width\n        self.anchor_side = anchor_side\n        self.anchor_count = anchor_side * anchor_side\n        self.m1 = m1\n        self.m2 = m2\n        self.depth_logits = nn.Parameter(torch.zeros(3, 3))\n        self.depth_norms = nn.ModuleList(nn.LayerNorm(768) for _ in range(3))\n        self.role_adapters = nn.ModuleList(\n            nn.Sequential(nn.Linear(768, width), nn.GELU(), nn.Linear(width, width))\n            for _ in range(3)\n        )\n        self.modality_embedding = nn.Parameter(torch.zeros(3, width))\n        points = torch.linspace(-0.75, 0.75, anchor_side)\n        yy, xx = torch.meshgrid(points, points, indexing=\"ij\")\n        self.register_buffer(\"reference_points\", torch.stack((xx, yy), dim=-1).reshape(-1, 2))\n        self.shared_offset = nn.Linear(width, 2 * self.anchor_count)\n        self.modal_offset = nn.Linear(width, 2 * self.anchor_count)\n        nn.init.zeros_(self.shared_offset.weight)\n        nn.init.zeros_(self.shared_offset.bias)\n        nn.init.zeros_(self.modal_offset.weight)\n        nn.init.zeros_(self.modal_offset.bias)\n        self.anchor_queries = nn.Parameter(torch.randn(self.anchor_count, width) * 0.02)\n        self.cnn = nn.Sequential(\n            nn.Conv2d(width, width, 3, padding=1, groups=width),\n            nn.GELU(),\n            nn.Conv2d(width, width, 1),\n        )\n        self.transformer = nn.TransformerEncoderLayer(\n            d_model=width, nhead=4, dim_feedforward=2 * width,\n            dropout=0.0, batch_first=True, norm_first=True,\n        )\n        self.mamba_norm = nn.LayerNorm(width)\n        self.mamba = mamba_factory(width)\n        self.cnn_to_transformer = nn.Linear(width, width, bias=False)\n        self.transformer_to_mamba = nn.Linear(width, width, bias=False)\n        self.output_norms = nn.ModuleList(nn.LayerNorm(width) for _ in range(3))\n        if not m1:\n            self.depth_logits.requires_grad_(False)\n            for norm in self.depth_norms[:2]:\n                for parameter in norm.parameters():\n                    parameter.requires_grad_(False)\n        if not m2:\n            for module in (self.shared_offset, self.modal_offset,\n                           self.cnn_to_transformer, self.transformer_to_mamba):\n                for parameter in module.parameters():\n                    parameter.requires_grad_(False)"
+        },
+        "_depth_role": {
+          "line": 155,
+          "end_line": 164,
+          "source": "def _depth_role(self, stages: torch.Tensor, role: int) -> torch.Tensor:\n        # stages: 3 depths, 3 roles, B, 3 modalities, CLS+patches, 768.\n        role_stages = stages[:, role]\n        if self.m1:\n            weights = self.depth_logits[role].softmax(dim=0)\n            combined = sum(weights[index] * self.depth_norms[index](role_stages[index])\n                           for index in range(3))\n        else:\n            combined = self.depth_norms[-1](role_stages[-1])\n        return self.role_adapters[role](combined) + self.modality_embedding[None, :, None]"
+        },
+        "_positions": {
+          "line": 166,
+          "end_line": 173,
+          "source": "def _positions(self, pooled: torch.Tensor) -> torch.Tensor:\n        batch_size = pooled.shape[0]\n        base = self.reference_points[None, None].expand(batch_size, 3, -1, -1)\n        if not self.m2:\n            return base\n        shared = self.shared_offset(pooled.mean(dim=1)).reshape(batch_size, 1, -1, 2)\n        modal = self.modal_offset(pooled).reshape(batch_size, 3, -1, 2)\n        return base + 0.05 * torch.tanh(shared) + 0.05 * torch.tanh(modal)"
+        },
+        "_sample": {
+          "line": 175,
+          "end_line": 182,
+          "source": "def _sample(self, patches: torch.Tensor, positions: torch.Tensor) -> torch.Tensor:\n        batch_size, modality_count, token_count, width = patches.shape\n        height, grid_width = self.grid\n        assert token_count == height * grid_width and modality_count == 3\n        grid = patches.reshape(batch_size * 3, height, grid_width, width).permute(0, 3, 1, 2)\n        points = positions.reshape(batch_size * 3, self.anchor_count, 1, 2)\n        sampled = F.grid_sample(grid, points, align_corners=True)\n        return sampled.squeeze(-1).transpose(1, 2).reshape(batch_size, 3, self.anchor_count, width)"
+        },
+        "forward": {
+          "line": 184,
+          "end_line": 213,
+          "source": "def forward(self, stages: torch.Tensor) -> RoleEvidence:\n        assert stages.ndim == 6 and stages.shape[:2] == (3, 3) and stages.shape[3] == 3\n        cnn_input = self._depth_role(stages, 0)\n        transformer_input = self._depth_role(stages, 1)\n        mamba_input = self._depth_role(stages, 2)\n        positions = self._positions(transformer_input[:, :, 0])\n        height, grid_width = self.grid\n        cnn_grid = cnn_input[:, :, 1:].reshape(-1, height, grid_width, self.width).permute(0, 3, 1, 2)\n        cnn_grid = cnn_grid + self.cnn(cnn_grid)\n        cnn = self._sample(cnn_grid.permute(0, 2, 3, 1).reshape(cnn_input.shape[0], 3, -1, self.width), positions)\n        transformer = self._sample(transformer_input[:, :, 1:], positions)\n        mamba = self._sample(mamba_input[:, :, 1:], positions)\n        queries = self.anchor_queries[None, None]\n        cnn = self.output_norms[0](cnn + queries)\n        transformer_input = transformer + queries\n        if self.m2:\n            transformer_input = transformer_input + self.cnn_to_transformer(cnn)\n        transformer = self.transformer(transformer_input.flatten(0, 1)).reshape_as(transformer)\n        transformer = self.output_norms[1](transformer)\n        # The sequence groups corresponding RGB/NIR/TIR anchors together.\n        mamba_input = mamba + queries\n        if self.m2:\n            mamba_input = mamba_input + self.transformer_to_mamba(transformer)\n        sequence = mamba_input.permute(0, 2, 1, 3).reshape(mamba.shape[0], -1, self.width)\n        sequence = self.mamba_norm(sequence)\n        propagated = 0.5 * (self.mamba(sequence) + self.mamba(sequence.flip(1)).flip(1))\n        mamba = self.output_norms[2](\n            propagated.reshape(mamba.shape[0], self.anchor_count, 3, self.width).permute(0, 2, 1, 3)\n        )\n        return RoleEvidence(cnn=cnn, transformer=transformer, mamba=mamba, positions=positions)"
+        }
+      }
+    },
+    "CorrespondenceTriFusion": {
+      "path": "modeling/trifusion/correspondence_roles.py",
+      "line": 216,
+      "bases": [
+        "nn.Module"
+      ],
+      "methods": {
+        "__init__": {
+          "line": 219,
+          "end_line": 250,
+          "source": "def __init__(\n        self,\n        signal: nn.Module,\n        *,\n        num_classes: int,\n        grid: tuple[int, int],\n        width: int = 128,\n        m1: bool = True,\n        m2: bool = True,\n        m3: bool = True,\n        mamba_factory: Callable[[int], nn.Module],\n    ):\n        super().__init__()\n        self.backbone = CrossLayerAdaptedCLIP(signal, enabled=m1)\n        self.teacher_adapters = deepcopy(self.backbone.adapters) if m3 else None\n        if self.teacher_adapters is not None:\n            for parameter in self.teacher_adapters.parameters():\n                parameter.requires_grad_(False)\n        self.roles = CorrespondenceRoles(grid=grid, width=width, m1=m1, m2=m2,\n                                         mamba_factory=mamba_factory)\n        self.m3 = m3\n        self.teacher = deepcopy(self.roles) if m3 else None\n        if self.teacher is not None:\n            for parameter in self.teacher.parameters():\n                parameter.requires_grad_(False)\n        self.readout = nn.Linear(3 * width, 1536, bias=False)\n        nn.init.normal_(self.readout.weight, std=0.001)\n        self.readout_gain = nn.Parameter(torch.tensor(0.1))\n        self.neck = nn.BatchNorm1d(1536)\n        self.neck.bias.requires_grad_(False)\n        self.classifier = nn.Linear(1536, num_classes, bias=False)\n        nn.init.normal_(self.classifier.weight, std=0.001)"
+        },
+        "train": {
+          "line": 252,
+          "end_line": 258,
+          "source": "def train(self, mode: bool = True):\n        super().train(mode)\n        self.backbone.signal.eval()\n        if self.teacher is not None:\n            self.teacher.eval()\n            self.teacher_adapters.eval()\n        return self"
+        },
+        "update_teacher": {
+          "line": 261,
+          "end_line": 267,
+          "source": "def update_teacher(self, momentum: float = 0.996) -> None:\n        if self.teacher is not None:\n            for target, source in zip(self.teacher_adapters.parameters(),\n                                      self.backbone.adapters.parameters(), strict=True):\n                target.lerp_(source, 1.0 - momentum)\n            for target, source in zip(self.teacher.parameters(), self.roles.parameters(), strict=True):\n                target.lerp_(source, 1.0 - momentum)"
+        },
+        "_masked_images": {
+          "line": 269,
+          "end_line": 282,
+          "source": "def _masked_images(self, images: dict[str, torch.Tensor]):\n        batch_size = images[MODALITY_ORDER[0]].shape[0]\n        height, width = self.roles.grid\n        missing = torch.randint(0, 3, (batch_size,), device=images[MODALITY_ORDER[0]].device)\n        patch_mask = torch.rand(batch_size, 3, height, width, device=missing.device) < 0.25\n        local_mask = patch_mask.clone()\n        local_mask[torch.arange(batch_size, device=missing.device), missing] = False\n        patch_mask[torch.arange(batch_size, device=missing.device), missing] = True\n        masked = {}\n        for index, name in enumerate(MODALITY_ORDER):\n            image_mask = F.interpolate(patch_mask[:, index:index + 1].float(),\n                                       size=images[name].shape[-2:], mode=\"nearest\")\n            masked[name] = images[name] * (1.0 - image_mask)\n        return masked, local_mask, missing"
+        },
+        "_prediction_losses": {
+          "line": 284,
+          "end_line": 311,
+          "source": "def _prediction_losses(self, images: dict[str, torch.Tensor],\n                           camera_ids: torch.Tensor) -> dict[str, torch.Tensor]:\n        assert self.teacher is not None\n        with torch.no_grad():\n            clean_teacher, _ = self.backbone(images, camera_ids,\n                                             adapter_bank=self.teacher_adapters)\n            target = self.teacher(clean_teacher)\n        masked_images, local_mask, missing = self._masked_images(images)\n        masked_stages, _ = self.backbone(masked_images, camera_ids)\n        predicted = self.roles(masked_stages)\n        batch_size = clean_teacher.shape[2]\n        mask_at_anchor = F.grid_sample(\n            local_mask.float().reshape(batch_size * 3, 1, *self.roles.grid),\n            predicted.positions.reshape(batch_size * 3, self.roles.anchor_count, 1, 2),\n            mode=\"nearest\", align_corners=True,\n        ).reshape(batch_size, 3, self.roles.anchor_count)\n        local_error = (predicted.cnn.float() - target.cnn.float()).square().mean(dim=-1)\n        local = (local_error * mask_at_anchor).sum() / mask_at_anchor.sum().clamp_min(1)\n        target_rel = F.normalize(target.transformer.float(), dim=-1)\n        predicted_rel = F.normalize(predicted.transformer.float(), dim=-1)\n        relation = F.mse_loss(\n            predicted_rel @ predicted_rel.transpose(-1, -2),\n            target_rel @ target_rel.transpose(-1, -2),\n        )\n        rows = torch.arange(batch_size, device=missing.device)\n        cross_modal = F.mse_loss(predicted.mamba[rows, missing].float(),\n                                 target.mamba[rows, missing].float())\n        return {\"local\": local, \"relation\": relation, \"cross_modal\": cross_modal}"
+        },
+        "forward": {
+          "line": 313,
+          "end_line": 328,
+          "source": "def forward(self, batch: dict, *, return_aux: bool = False):\n        stages, shared_global = self.backbone(batch[\"images\"], batch[\"camera_ids\"])\n        evidence = self.roles(stages)\n        pooled = torch.cat(\n            [evidence.cnn.mean(dim=(1, 2)),\n             evidence.transformer.mean(dim=(1, 2)),\n             evidence.mamba.mean(dim=(1, 2))], dim=1\n        )\n        fused = F.normalize(shared_global.float() + self.readout_gain * self.readout(pooled).float(), dim=1)\n        if not return_aux:\n            return fused\n        result = {\"fused\": fused, \"shared_global\": shared_global,\n                  \"logits\": self.classifier(self.neck(fused))}\n        if self.training and self.m3:\n            result[\"prediction\"] = self._prediction_losses(batch[\"images\"], batch[\"camera_ids\"])\n        return result"
+        }
+      }
+    },
+    "ContentSelectionRoles": {
+      "path": "modeling/trifusion/correspondence_evidence_readout.py",
+      "line": 11,
+      "bases": [
+        "CorrespondenceRoles"
+      ],
+      "methods": {
+        "__init__": {
+          "line": 12,
+          "end_line": 24,
+          "source": "def __init__(self, *, selection: str, **kwargs):\n        super().__init__(**kwargs)\n        assert selection in (\"single\", \"uniform\", \"query\")\n        self.selection = selection\n        height, grid_width = self.grid\n        delta_y, delta_x = torch.meshgrid(\n            torch.linspace(-1, 1, 3) / (height - 1),\n            torch.linspace(-1, 1, 3) / (grid_width - 1),\n            indexing=\"ij\",\n        )\n        # Nine candidates within half a patch-center interval of each anchor.\n        self.register_buffer(\"candidate_offsets\", torch.stack((delta_x, delta_y), dim=-1)\n                             .reshape(9, 2), persistent=False)"
+        },
+        "_sample": {
+          "line": 26,
+          "end_line": 43,
+          "source": "def _sample(self, patches: torch.Tensor, positions: torch.Tensor) -> torch.Tensor:\n        if self.selection == \"single\":\n            return super()._sample(patches, positions)\n        batch_size, modalities, tokens, width = patches.shape\n        height, grid_width = self.grid\n        assert modalities == 3 and tokens == height * grid_width\n        grid = patches.reshape(batch_size * 3, height, grid_width, width).permute(0, 3, 1, 2)\n        points = positions.unsqueeze(-2) + self.candidate_offsets\n        samples = F.grid_sample(\n            grid, points.reshape(batch_size * 3, self.anchor_count * 9, 1, 2),\n            align_corners=True,\n        ).squeeze(-1).transpose(1, 2).reshape(batch_size, 3, self.anchor_count, 9, width)\n        if self.selection == \"uniform\":\n            return samples.mean(dim=-2)\n        queries = F.layer_norm(self.anchor_queries, (width,))[None, None, :, None]\n        keys = F.layer_norm(samples, (width,))\n        scores = (queries * keys).sum(dim=-1) * width ** -0.5\n        return (scores.softmax(dim=-1).unsqueeze(-1) * samples).sum(dim=-2)"
+        }
+      }
+    },
+    "EvidenceReadoutTriFusion": {
+      "path": "modeling/trifusion/correspondence_evidence_readout.py",
+      "line": 46,
+      "bases": [
+        "CorrespondenceTriFusion"
+      ],
+      "methods": {
+        "__init__": {
+          "line": 47,
+          "end_line": 63,
+          "source": "def __init__(self, *args, selection: str, structured_readout: bool, **kwargs):\n        super().__init__(*args, **kwargs)\n        # Replacement construction must not change subsequent mask/augmentation RNG.\n        with torch.random.fork_rng(devices=[]):\n            roles = ContentSelectionRoles(\n                selection=selection, grid=self.roles.grid, width=self.roles.width,\n                anchor_side=self.roles.anchor_side, m1=self.roles.m1, m2=self.roles.m2,\n                mamba_factory=kwargs[\"mamba_factory\"],\n            )\n        roles.load_state_dict(self.roles.state_dict(), strict=True)\n        self.roles = roles\n        if self.m3:\n            self.teacher = deepcopy(self.roles)\n            for parameter in self.teacher.parameters():\n                parameter.requires_grad_(False)\n        self.structured_readout = structured_readout\n        assert self.roles.width == 128 and self.roles.anchor_side == 4"
+        },
+        "read_evidence": {
+          "line": 65,
+          "end_line": 77,
+          "source": "def read_evidence(self, evidence):\n        features = (evidence.cnn, evidence.transformer, evidence.mamba)\n        if not self.structured_readout:\n            pooled = torch.cat([feature.mean(dim=(1, 2)) for feature in features], dim=1)\n            return self.readout(pooled)\n        batch_size = features[0].shape[0]\n        regions = [feature.reshape(batch_size, 3, 2, 2, 2, 2, 128)\n                   .mean(dim=(3, 5)).reshape(batch_size, 3, 4, 128)\n                   for feature in features]\n        regional_inputs = torch.cat(regions, dim=-1)\n        # The existing 1536x384 matrix supplies 3 modalities x 4 regions x 128 rows.\n        weights = self.readout.weight.reshape(3, 4, 128, 384)\n        return torch.einsum(\"bmrf,mrof->bmro\", regional_inputs, weights).reshape(batch_size, 1536)"
+        },
+        "forward": {
+          "line": 79,
+          "end_line": 90,
+          "source": "def forward(self, batch: dict, *, return_aux: bool = False):\n        stages, shared_global = self.backbone(batch[\"images\"], batch[\"camera_ids\"])\n        evidence = self.roles(stages)\n        correction = self.read_evidence(evidence)\n        fused = F.normalize(shared_global.float() + self.readout_gain * correction.float(), dim=1)\n        if not return_aux:\n            return fused\n        result = {\"fused\": fused, \"shared_global\": shared_global,\n                  \"logits\": self.classifier(self.neck(fused))}\n        if self.training and self.m3:\n            result[\"prediction\"] = self._prediction_losses(batch[\"images\"], batch[\"camera_ids\"])\n        return result"
+        }
+      }
+    },
+    "ContextSelectionRoles": {
+      "path": "modeling/trifusion/correspondence_context_identity.py",
+      "line": 13,
+      "bases": [
+        "ContentSelectionRoles"
+      ],
+      "methods": {
+        "__init__": {
+          "line": 14,
+          "end_line": 17,
+          "source": "def __init__(self, **kwargs):\n        super().__init__(selection=\"query\", **kwargs)\n        self.context_queries = nn.Linear(512, 3 * self.width, bias=False)\n        nn.init.zeros_(self.context_queries.weight)"
+        },
+        "sample_context": {
+          "line": 19,
+          "end_line": 32,
+          "source": "def sample_context(self, patches, positions, context_queries, role):\n        batch, modalities, tokens, width = patches.shape\n        height, grid_width = self.grid\n        assert modalities == 3 and tokens == height * grid_width\n        grid = patches.reshape(batch * 3, height, grid_width, width).permute(0, 3, 1, 2)\n        points = positions.unsqueeze(-2) + self.candidate_offsets\n        samples = F.grid_sample(\n            grid, points.reshape(batch * 3, self.anchor_count * 9, 1, 2), align_corners=True,\n        ).squeeze(-1).transpose(1, 2).reshape(batch, 3, self.anchor_count, 9, width)\n        queries = self.anchor_queries[None] + context_queries[:, role, None]\n        queries = F.layer_norm(queries, (width,))[:, None, :, None]\n        keys = F.layer_norm(samples, (width,))\n        scores = (queries * keys).sum(dim=-1) * width ** -0.5\n        return (scores.softmax(dim=-1).unsqueeze(-1) * samples).sum(dim=-2)"
+        },
+        "forward": {
+          "line": 34,
+          "end_line": 62,
+          "source": "def forward(self, stages, context):\n        assert stages.ndim == 6 and stages.shape[:2] == (3, 3) and stages.shape[3] == 3\n        assert context.shape == (stages.shape[2], 512)\n        context_queries = self.context_queries(context).reshape(context.shape[0], 3, self.width)\n        cnn_input = self._depth_role(stages, 0)\n        transformer_input = self._depth_role(stages, 1)\n        mamba_input = self._depth_role(stages, 2)\n        positions = self._positions(transformer_input[:, :, 0])\n        height, grid_width = self.grid\n        cnn_grid = cnn_input[:, :, 1:].reshape(-1, height, grid_width, self.width).permute(0, 3, 1, 2)\n        cnn_grid = cnn_grid + self.cnn(cnn_grid)\n        cnn_patches = cnn_grid.permute(0, 2, 3, 1).reshape(cnn_input.shape[0], 3, -1, self.width)\n        cnn = self.sample_context(cnn_patches, positions, context_queries, 0)\n        transformer = self.sample_context(transformer_input[:, :, 1:], positions, context_queries, 1)\n        mamba = self.sample_context(mamba_input[:, :, 1:], positions, context_queries, 2)\n        # Conditioning changes candidate weights only. Slot messages contain no global values.\n        queries = self.anchor_queries[None, None]\n        cnn = self.output_norms[0](cnn + queries)\n        transformer = transformer + queries + self.cnn_to_transformer(cnn)\n        transformer = self.transformer(transformer.flatten(0, 1)).reshape_as(transformer)\n        transformer = self.output_norms[1](transformer)\n        mamba_input = mamba + queries + self.transformer_to_mamba(transformer)\n        sequence = mamba_input.permute(0, 2, 1, 3).reshape(-1, self.anchor_count * 3, self.width)\n        sequence = self.mamba_norm(sequence)\n        propagated = 0.5 * (self.mamba(sequence) + self.mamba(sequence.flip(1)).flip(1))\n        mamba = self.output_norms[2](\n            propagated.reshape(-1, self.anchor_count, 3, self.width).permute(0, 2, 1, 3)\n        )\n        return RoleEvidence(cnn=cnn, transformer=transformer, mamba=mamba, positions=positions)"
+        }
+      }
+    },
+    "ContextIdentityTriFusion": {
+      "path": "modeling/trifusion/correspondence_context_identity.py",
+      "line": 65,
+      "bases": [
+        "EvidenceReadoutTriFusion"
+      ],
+      "methods": {
+        "__init__": {
+          "line": 66,
+          "end_line": 90,
+          "source": "def __init__(self, *args, query_mode, auxiliary_target, **kwargs):\n        assert query_mode in (\"static\", \"context\")\n        assert auxiliary_target in (\"none\", \"local\", \"global\")\n        assert kwargs[\"m1\"] and kwargs[\"m2\"] and not kwargs[\"m3\"] and kwargs[\"width\"] == 128\n        super().__init__(*args, selection=\"query\", structured_readout=True, **kwargs)\n        with torch.random.fork_rng(devices=[]):\n            roles = ContextSelectionRoles(\n                grid=self.roles.grid, width=self.roles.width, anchor_side=self.roles.anchor_side,\n                m1=True, m2=True, mamba_factory=kwargs[\"mamba_factory\"],\n            )\n            self.auxiliary_neck = nn.BatchNorm1d(1536)\n            self.auxiliary_neck.bias.requires_grad_(False)\n            self.auxiliary_classifier = nn.Linear(1536, kwargs[\"num_classes\"], bias=False)\n            nn.init.normal_(self.auxiliary_classifier.weight, std=0.001)\n        state = roles.state_dict()\n        state.update(self.roles.state_dict())\n        roles.load_state_dict(state, strict=True)\n        self.roles = roles\n        self.query_mode = query_mode\n        self.auxiliary_target = auxiliary_target\n        self.register_buffer(\"static_context\", torch.ones(512) / math.sqrt(512))\n        if auxiliary_target == \"none\":\n            for module in (self.auxiliary_neck, self.auxiliary_classifier):\n                for parameter in module.parameters():\n                    parameter.requires_grad_(False)"
+        },
+        "forward": {
+          "line": 92,
+          "end_line": 109,
+          "source": "def forward(self, batch, *, return_aux=False):\n        stages, shared_global = self.backbone(batch[\"images\"], batch[\"camera_ids\"])\n        if self.query_mode == \"context\":\n            context = F.normalize(shared_global.float().reshape(-1, 3, 512).mean(dim=1), dim=1)\n        else:\n            context = self.static_context[None].expand(shared_global.shape[0], -1)\n        evidence = self.roles(stages, context)\n        correction = self.read_evidence(evidence)\n        local = F.normalize(correction.float(), dim=1)\n        fused = F.normalize(shared_global.float() + self.readout_gain * correction.float(), dim=1)\n        if not return_aux:\n            return fused\n        result = {\"fused\": fused, \"shared_global\": shared_global, \"joint_local\": local,\n                  \"logits\": self.classifier(self.neck(fused))}\n        if self.auxiliary_target != \"none\":\n            auxiliary = local if self.auxiliary_target == \"local\" else F.normalize(shared_global.float(), dim=1)\n            result[\"auxiliary_logits\"] = self.auxiliary_classifier(self.auxiliary_neck(auxiliary))\n        return result"
+        }
+      }
+    },
+    "PatchMemoryRoles": {
+      "path": "modeling/trifusion/patch_memory_roles.py",
+      "line": 10,
+      "bases": [
+        "ContextSelectionRoles"
+      ],
+      "methods": {
+        "__init__": {
+          "line": 11,
+          "end_line": 33,
+          "source": "def __init__(self, *, memory_mode, **kwargs):\n        assert memory_mode in (\"local\", \"full\")\n        super().__init__(**kwargs)\n        self.memory_mode = memory_mode\n        # Both endpoints use fixed slot addresses. No untrained offset parameters.\n        for module in (self.shared_offset, self.modal_offset):\n            for parameter in module.parameters():\n                parameter.requires_grad_(False)\n        self.query_projections = nn.ModuleList(nn.Linear(self.width, self.width, bias=False) for _ in range(3))\n        self.key_projections = nn.ModuleList(nn.Linear(self.width, self.width, bias=False) for _ in range(3))\n        self.value_projections = nn.ModuleList(nn.Linear(self.width, self.width, bias=False) for _ in range(3))\n        self.output_projections = nn.ModuleList(nn.Linear(self.width, self.width, bias=False) for _ in range(3))\n        height, grid_width = self.grid\n        yy, xx = torch.meshgrid(torch.linspace(-1, 1, height), torch.linspace(-1, 1, grid_width), indexing=\"ij\")\n        patch_positions = torch.stack((xx, yy), dim=-1).reshape(-1, 2)\n        # Distances are measured in Patch intervals, independent of image aspect ratio.\n        intervals = torch.tensor([(grid_width - 1) / 2, (height - 1) / 2])\n        distances = ((self.reference_points[:, None] - patch_positions[None]) * intervals).square().sum(-1)\n        nearest = distances.argsort(dim=-1, stable=True)[:, :9]\n        support = torch.zeros(self.anchor_count, height * grid_width, dtype=torch.bool)\n        support.scatter_(1, nearest, True)\n        # The same buffer is saved in both modes, keeping paired initial state identical.\n        self.register_buffer(\"local_support\", support)"
+        },
+        "_positions": {
+          "line": 35,
+          "end_line": 36,
+          "source": "def _positions(self, pooled):\n        return self.reference_points[None, None].expand(pooled.shape[0], 3, -1, -1)"
+        },
+        "sample_context": {
+          "line": 38,
+          "end_line": 49,
+          "source": "def sample_context(self, patches, positions, context_queries, role):\n        batch, modalities, tokens, width = patches.shape\n        assert modalities == 3 and tokens == self.grid[0] * self.grid[1]\n        queries = self.anchor_queries[None] + context_queries[:, role, None]\n        queries = self.query_projections[role](F.layer_norm(queries, (width,)))\n        keys = self.key_projections[role](F.layer_norm(patches, (width,)))\n        values = self.value_projections[role](patches)\n        scores = torch.matmul(queries[:, None], keys.transpose(-1, -2)) * width ** -0.5\n        if self.memory_mode == \"local\":\n            scores = scores.masked_fill(~self.local_support[None, None], float(\"-inf\"))\n        selected = torch.matmul(scores.softmax(dim=-1), values)\n        return self.output_projections[role](selected)"
+        }
+      }
+    },
+    "PatchMemoryTriFusion": {
+      "path": "modeling/trifusion/patch_memory_roles.py",
+      "line": 52,
+      "bases": [
+        "ContextIdentityTriFusion"
+      ],
+      "methods": {
+        "__init__": {
+          "line": 53,
+          "end_line": 66,
+          "source": "def __init__(self, *args, memory_mode, **kwargs):\n        assert kwargs[\"query_mode\"] == \"context\" and kwargs[\"auxiliary_target\"] == \"none\"\n        super().__init__(*args, **kwargs)\n        with torch.random.fork_rng(devices=[]):\n            roles = PatchMemoryRoles(\n                memory_mode=memory_mode, grid=self.roles.grid, width=self.roles.width,\n                anchor_side=self.roles.anchor_side, m1=True, m2=True,\n                mamba_factory=kwargs[\"mamba_factory\"],\n            )\n        state = roles.state_dict()\n        state.update(self.roles.state_dict())\n        roles.load_state_dict(state, strict=True)\n        self.roles = roles\n        self.memory_mode = memory_mode"
+        }
+      }
+    },
+    "SlotCompetitionRoles": {
+      "path": "modeling/trifusion/slot_competition_roles.py",
+      "line": 18,
+      "bases": [
+        "PatchMemoryRoles"
+      ],
+      "methods": {
+        "__init__": {
+          "line": 19,
+          "end_line": 22,
+          "source": "def __init__(self, *, attention_normalization, **kwargs):\n        super().__init__(memory_mode=\"full\", **kwargs)\n        assert attention_normalization in (\"independent\", \"competitive\")\n        self.attention_normalization = attention_normalization"
+        },
+        "sample_context": {
+          "line": 24,
+          "end_line": 33,
+          "source": "def sample_context(self, patches, positions, context_queries, role):\n        batch, modalities, tokens, width = patches.shape\n        assert modalities == 3 and tokens == self.grid[0] * self.grid[1]\n        queries = self.anchor_queries[None] + context_queries[:, role, None]\n        queries = self.query_projections[role](F.layer_norm(queries, (width,)))\n        keys = self.key_projections[role](F.layer_norm(patches, (width,)))\n        values = self.value_projections[role](patches)\n        scores = torch.matmul(queries[:, None], keys.transpose(-1, -2)) * width ** -0.5\n        weights = allocation_weights(scores, self.attention_normalization).to(values.dtype)\n        return self.output_projections[role](torch.matmul(weights, values))"
+        }
+      }
+    },
+    "SlotCompetitionTriFusion": {
+      "path": "modeling/trifusion/slot_competition_roles.py",
+      "line": 36,
+      "bases": [
+        "PatchMemoryTriFusion"
+      ],
+      "methods": {
+        "__init__": {
+          "line": 37,
+          "end_line": 47,
+          "source": "def __init__(self, *args, attention_normalization, **kwargs):\n        super().__init__(*args, memory_mode=\"full\", **kwargs)\n        with torch.random.fork_rng(devices=[]):\n            roles = SlotCompetitionRoles(\n                attention_normalization=attention_normalization, grid=self.roles.grid,\n                width=self.roles.width, anchor_side=self.roles.anchor_side,\n                m1=True, m2=True, mamba_factory=kwargs[\"mamba_factory\"],\n            )\n        roles.load_state_dict(self.roles.state_dict(), strict=True)\n        self.roles = roles\n        self.attention_normalization = attention_normalization"
+        }
+      }
+    },
+    "FP32SlotCompetitionRoles": {
+      "path": "modeling/trifusion/slot_competition_fp32_roles.py",
+      "line": 9,
+      "bases": [
+        "SlotCompetitionRoles"
+      ],
+      "methods": {
+        "sample_context": {
+          "line": 10,
+          "end_line": 20,
+          "source": "def sample_context(self, patches, positions, context_queries, role):\n        with torch.autocast(patches.device.type, enabled=False):\n            patches, context_queries = patches.float(), context_queries.float()\n            width = patches.shape[-1]\n            queries = self.anchor_queries[None] + context_queries[:, role, None]\n            queries = self.query_projections[role](F.layer_norm(queries, (width,)))\n            keys = self.key_projections[role](F.layer_norm(patches, (width,)))\n            values = self.value_projections[role](patches)\n            scores = torch.matmul(queries[:, None], keys.transpose(-1, -2)) * width ** -0.5\n            weights = allocation_weights(scores, self.attention_normalization)\n            return self.output_projections[role](torch.matmul(weights, values))"
+        }
+      }
+    },
+    "FP32SlotCompetitionTriFusion": {
+      "path": "modeling/trifusion/slot_competition_fp32_roles.py",
+      "line": 23,
+      "bases": [
+        "SlotCompetitionTriFusion"
+      ],
+      "methods": {
+        "__init__": {
+          "line": 24,
+          "end_line": 33,
+          "source": "def __init__(self, *args, attention_normalization, **kwargs):\n        super().__init__(*args, attention_normalization=attention_normalization, **kwargs)\n        with torch.random.fork_rng(devices=[]):\n            roles = FP32SlotCompetitionRoles(\n                attention_normalization=attention_normalization, grid=self.roles.grid,\n                width=self.roles.width, anchor_side=self.roles.anchor_side,\n                m1=True, m2=True, mamba_factory=kwargs[\"mamba_factory\"],\n            )\n        roles.load_state_dict(self.roles.state_dict(), strict=True)\n        self.roles = roles"
+        }
+      }
+    },
+    "GlobalTokenRoles": {
+      "path": "modeling/trifusion/role_global_tokens.py",
+      "line": 16,
+      "bases": [
+        "FP32SlotCompetitionRoles"
+      ],
+      "methods": {
+        "__init__": {
+          "line": 17,
+          "end_line": 23,
+          "source": "def __init__(self, *, token_mode, **kwargs):\n        assert token_mode in TOKEN_MODES\n        super().__init__(attention_normalization=\"independent\", **kwargs)\n        self.token_mode = token_mode\n        self.global_projection = nn.Linear(512, self.width, bias=False)\n        nn.init.zeros_(self.global_projection.weight)\n        self.register_buffer(\"static_token_context\", torch.ones(512) / math.sqrt(512))"
+        },
+        "projected_global": {
+          "line": 25,
+          "end_line": 27,
+          "source": "def projected_global(self, shared_global):\n        per_modal = F.normalize(shared_global.float().reshape(-1, 3, 512), dim=-1)\n        return self.global_projection(per_modal)"
+        },
+        "forward": {
+          "line": 29,
+          "end_line": 61,
+          "source": "def forward(self, stages, context, shared_global):\n        context_queries = self.context_queries(context).reshape(context.shape[0], 3, self.width)\n        cnn_input = self._depth_role(stages, 0)\n        transformer_input = self._depth_role(stages, 1)\n        mamba_input = self._depth_role(stages, 2)\n        positions = self._positions(transformer_input[:, :, 0])\n        height, grid_width = self.grid\n        cnn_grid = cnn_input[:, :, 1:].reshape(-1, height, grid_width, self.width).permute(0, 3, 1, 2)\n        cnn_grid = cnn_grid + self.cnn(cnn_grid)\n        cnn_patches = cnn_grid.permute(0, 2, 3, 1).reshape(cnn_input.shape[0], 3, -1, self.width)\n        cnn = self.sample_context(cnn_patches, positions, context_queries, 0)\n        transformer = self.sample_context(transformer_input[:, :, 1:], positions, context_queries, 1)\n        mamba = self.sample_context(mamba_input[:, :, 1:], positions, context_queries, 2)\n        queries = self.anchor_queries[None, None]\n        cnn = self.output_norms[0](cnn + queries)\n        transformer = transformer + queries + self.cnn_to_transformer(cnn)\n        if self.token_mode == \"token\":\n            global_token = self.projected_global(shared_global)\n        else:\n            fixed = self.static_token_context[None, None].expand(context.shape[0], 3, -1)\n            global_token = self.global_projection(fixed)\n        # The extra token is an interaction input; exclude it from role readout.\n        sequence = torch.cat((global_token.unsqueeze(2), transformer), dim=2)\n        transformer = self.transformer(sequence.flatten(0, 1))[:, 1:].reshape_as(transformer)\n        transformer = self.output_norms[1](transformer)\n        mamba_input = mamba + queries + self.transformer_to_mamba(transformer)\n        sequence = mamba_input.permute(0, 2, 1, 3).reshape(-1, self.anchor_count * 3, self.width)\n        sequence = self.mamba_norm(sequence)\n        propagated = 0.5 * (self.mamba(sequence) + self.mamba(sequence.flip(1)).flip(1))\n        mamba = self.output_norms[2](\n            propagated.reshape(-1, self.anchor_count, 3, self.width).permute(0, 2, 1, 3)\n        )\n        return RoleEvidence(cnn=cnn, transformer=transformer, mamba=mamba, positions=positions)"
+        }
+      }
+    },
+    "GlobalTokenTriFusion": {
+      "path": "modeling/trifusion/role_global_tokens.py",
+      "line": 64,
+      "bases": [
+        "FP32SlotCompetitionTriFusion"
+      ],
+      "methods": {
+        "__init__": {
+          "line": 65,
+          "end_line": 77,
+          "source": "def __init__(self, *args, token_mode, **kwargs):\n        super().__init__(*args, attention_normalization=\"independent\", **kwargs)\n        with torch.random.fork_rng(devices=[]):\n            roles = GlobalTokenRoles(\n                token_mode=token_mode, grid=self.roles.grid, width=self.roles.width,\n                anchor_side=self.roles.anchor_side, m1=True, m2=True,\n                mamba_factory=kwargs[\"mamba_factory\"],\n            )\n        state = roles.state_dict()\n        state.update(self.roles.state_dict())\n        roles.load_state_dict(state, strict=True)\n        self.roles = roles\n        self.token_mode = token_mode"
+        },
+        "forward": {
+          "line": 79,
+          "end_line": 94,
+          "source": "def forward(self, batch, *, return_aux=False):\n        stages, shared_global = self.backbone(batch[\"images\"], batch[\"camera_ids\"])\n        context = F.normalize(shared_global.float().reshape(-1, 3, 512).mean(dim=1), dim=1)\n        evidence = self.roles(stages, context, shared_global)\n        correction = self.read_evidence(evidence)\n        if self.token_mode == \"direct\":\n            projected = self.roles.projected_global(shared_global)[:, :, None].expand(-1, -1, 16, -1)\n            direct = RoleEvidence(cnn=projected, transformer=projected, mamba=projected,\n                                  positions=evidence.positions)\n            correction = correction + self.read_evidence(direct)\n        fused = F.normalize(shared_global.float() + self.readout_gain * correction.float(), dim=1)\n        if not return_aux:\n            return fused\n        return {\"fused\": fused, \"shared_global\": shared_global,\n                \"joint_local\": F.normalize(correction.float(), dim=1),\n                \"logits\": self.classifier(self.neck(fused))}"
+        }
+      }
+    },
+    "IndependentNativeRoles": {
+      "path": "modeling/trifusion/independent_native_roles.py",
+      "line": 11,
+      "bases": [
+        "GlobalTokenRoles"
+      ],
+      "methods": {
+        "__init__": {
+          "line": 12,
+          "end_line": 16,
+          "source": "def __init__(self, **kwargs):\n        super().__init__(**kwargs)\n        assert self.width == 128 and self.anchor_count == 16\n        assert self.token_mode == 'static'\n        self.detail_reader = ImageNativeEvidenceReader()"
+        },
+        "forward": {
+          "line": 18,
+          "end_line": 50,
+          "source": "def forward(self, stages, context, shared_global, images):\n        context_queries = self.context_queries(context).reshape(context.shape[0], 3, self.width)\n        cnn_input = self._depth_role(stages, 0)\n        transformer_input = self._depth_role(stages, 1)\n        mamba_input = self._depth_role(stages, 2)\n        positions = self._positions(transformer_input[:, :, 0])\n        height, grid_width = self.grid\n        cnn_grid = cnn_input[:, :, 1:].reshape(-1, height, grid_width, self.width).permute(0, 3, 1, 2)\n        cnn_grid = cnn_grid + self.cnn(cnn_grid)\n        cnn_patches = cnn_grid.permute(0, 2, 3, 1).reshape(cnn_input.shape[0], 3, -1, self.width)\n        # Preserve the original 128-token semantic sampler and its parameters.\n        cnn = self.sample_context(cnn_patches, positions, context_queries, 0)\n        detail_queries = self.anchor_queries[None] + context_queries[:, 0, None]\n        detail_queries = detail_queries[:, None].expand(-1, 3, -1, -1)\n        image_tensor = torch.stack([images[name] for name in MODALITY_ORDER], dim=1)\n        cnn = cnn + self.detail_reader(image_tensor, detail_queries)\n        transformer = self.sample_context(transformer_input[:, :, 1:], positions, context_queries, 1)\n        mamba = self.sample_context(mamba_input[:, :, 1:], positions, context_queries, 2)\n        queries = self.anchor_queries[None, None]\n        cnn = self.output_norms[0](cnn + queries)\n        transformer = transformer + queries + self.cnn_to_transformer(cnn)\n        fixed = self.static_token_context[None, None].expand(context.shape[0], 3, -1)\n        global_token = self.global_projection(fixed)\n        sequence = torch.cat((global_token.unsqueeze(2), transformer), dim=2)\n        transformer = self.transformer(sequence.flatten(0, 1))[:, 1:].reshape_as(transformer)\n        transformer = self.output_norms[1](transformer)\n        mamba_input = mamba + queries + self.transformer_to_mamba(transformer)\n        sequence = mamba_input.permute(0, 2, 1, 3).reshape(-1, self.anchor_count * 3, self.width)\n        sequence = self.mamba_norm(sequence)\n        propagated = 0.5 * (self.mamba(sequence) + self.mamba(sequence.flip(1)).flip(1))\n        mamba = self.output_norms[2](\n            propagated.reshape(-1, self.anchor_count, 3, self.width).permute(0, 2, 1, 3))\n        return RoleEvidence(cnn=cnn, transformer=transformer, mamba=mamba, positions=positions)"
+        }
+      }
+    },
+    "RawFeatureSemanticTriFusion": {
+      "path": "modeling/trifusion/independent_native_roles.py",
+      "line": 53,
+      "bases": [
+        "GlobalTokenTriFusion"
+      ],
+      "methods": {
+        "__init__": {
+          "line": 59,
+          "end_line": 61,
+          "source": "def __init__(self, *args, **kwargs):\n        assert kwargs['token_mode'] == 'static'\n        super().__init__(*args, **kwargs)"
+        },
+        "role_evidence": {
+          "line": 63,
+          "end_line": 64,
+          "source": "def role_evidence(self, batch, stages, context, shared_global):\n        return self.roles(stages, context, shared_global)"
+        },
+        "forward_features": {
+          "line": 66,
+          "end_line": 74,
+          "source": "def forward_features(self, batch):\n        stages, shared_global = self.backbone(batch['images'], batch['camera_ids'])\n        context = F.normalize(shared_global.float().reshape(-1, 3, 512).mean(dim=1), dim=1)\n        evidence = self.role_evidence(batch, stages, context, shared_global)\n        correction = self.read_evidence(evidence)\n        raw_fused = shared_global.float() + self.readout_gain * correction.float()\n        fused = F.normalize(raw_fused, dim=1)\n        return {'raw_fused': raw_fused, 'fused': fused,\n                'shared_global': shared_global, 'correction': correction}"
+        },
+        "forward": {
+          "line": 76,
+          "end_line": 82,
+          "source": "def forward(self, batch, *, return_aux=False):\n        output = self.forward_features(batch)\n        if not return_aux:\n            return output['fused']\n        return {**output,\n                'joint_local': F.normalize(output['correction'].float(), dim=1),\n                'logits': self.classifier(self.neck(output['fused']))}"
+        }
+      }
+    },
+    "IndependentNativeTriFusion": {
+      "path": "modeling/trifusion/independent_native_roles.py",
+      "line": 85,
+      "bases": [
+        "RawFeatureSemanticTriFusion"
+      ],
+      "methods": {
+        "__init__": {
+          "line": 86,
+          "end_line": 98,
+          "source": "def __init__(self, *args, **kwargs):\n        assert kwargs['token_mode'] == 'static'\n        super().__init__(*args, **kwargs)\n        # Added random initialization must not shift the original model's RNG.\n        with torch.random.fork_rng(devices=[]):\n            roles = IndependentNativeRoles(\n                token_mode='static', grid=self.roles.grid, width=self.roles.width,\n                anchor_side=self.roles.anchor_side, m1=True, m2=True,\n                mamba_factory=kwargs['mamba_factory'])\n        state = roles.state_dict()\n        state.update(self.roles.state_dict())\n        roles.load_state_dict(state, strict=True)\n        self.roles = roles"
+        },
+        "role_evidence": {
+          "line": 100,
+          "end_line": 101,
+          "source": "def role_evidence(self, batch, stages, context, shared_global):\n        return self.roles(stages, context, shared_global, batch['images'])"
+        }
+      }
+    },
+    "ImageNativeEvidenceReader": {
+      "path": "modeling/trifusion/image_native_evidence.py",
+      "line": 12,
+      "bases": [
+        "nn.Module"
+      ],
+      "methods": {
+        "__init__": {
+          "line": 13,
+          "end_line": 27,
+          "source": "def __init__(self):\n        super().__init__()\n        self.stem = nn.Sequential(\n            nn.Conv2d(3, 32, 3, stride=2, padding=1), nn.GELU(),\n            nn.Conv2d(32, 64, 3, stride=2, padding=1), nn.GELU(),\n            nn.Conv2d(64, 128, 3, stride=2, padding=1), nn.GELU(),\n        )\n        self.query = nn.Linear(128, 128)\n        self.key = nn.Linear(128, 128, bias=False)\n        self.value = nn.Linear(128, 128)\n        self.norm = nn.LayerNorm(128)\n        self.output = nn.Linear(128, 128, bias=False)\n        # Only this exit starts at zero. Other layers are normally initialized;\n        # actual cumulative gradient support must be checked by a future M0.\n        nn.init.zeros_(self.output.weight)"
+        },
+        "forward": {
+          "line": 29,
+          "end_line": 46,
+          "source": "def forward(self, images, queries):\n        # images: B x 3 modalities x 3 channels x H x W\n        # queries: B x 3 modalities x 16 regions x 128, from semantic context\n        batch = images.shape[0]\n        assert images.ndim == 5 and images.shape[1:3] == (3, 3)\n        assert queries.shape == (batch, 3, 16, 128)\n        detail = self.stem(images.flatten(0, 1))\n        detail = detail.flatten(2).transpose(1, 2).reshape(batch, 3, -1, 128)\n        assert detail.shape[2] == 512\n        # Existing role attention uses FP32 after actual M0 Q/K gradient loss;\n        # retain that numerical boundary for the new independent attention.\n        with torch.autocast(images.device.type, enabled=False):\n            detail = detail.float()\n            q = self.query(F.layer_norm(queries.float(), (128,)))\n            k = self.key(F.layer_norm(detail, (128,)))\n            v = self.value(detail)\n            weights = (q @ k.transpose(-1, -2) * 128 ** -0.5).softmax(dim=-1)\n            return self.output(self.norm(weights @ v))"
+        }
+      }
+    },
+    "DetachedSemanticTriFusion": {
+      "path": "modeling/trifusion/role_input_detach.py",
+      "line": 5,
+      "bases": [
+        "RawFeatureSemanticTriFusion"
+      ],
+      "methods": {
+        "role_evidence": {
+          "line": 6,
+          "end_line": 7,
+          "source": "def role_evidence(self, batch, stages, context, shared_global):\n        return super().role_evidence(batch, stages.detach(), context.detach(), shared_global.detach())"
+        }
+      }
+    },
+    "DetachedNativeTriFusion": {
+      "path": "modeling/trifusion/role_input_detach.py",
+      "line": 10,
+      "bases": [
+        "IndependentNativeTriFusion"
+      ],
+      "methods": {
+        "role_evidence": {
+          "line": 11,
+          "end_line": 12,
+          "source": "def role_evidence(self, batch, stages, context, shared_global):\n        return super().role_evidence(batch, stages.detach(), context.detach(), shared_global.detach())"
+        }
+      }
+    },
+    "M0Diagnostics": {
+      "path": "tools/run_independent_native_evidence.py",
+      "line": 126,
+      "bases": [],
+      "methods": {
+        "__init__": {
+          "line": 127,
+          "end_line": 136,
+          "source": "def __init__(self, model, optimizer):\n        self.model = model\n        self.detail = {name: p for name, p in model.named_parameters()\n                       if '.detail_reader.' in name and p.requires_grad}\n        self.initial = {name: p.detach().clone() for name, p in self.detail.items()}\n        self.updates = []\n        names = {id(p): name for name, p in model.named_parameters()}\n        self.groups = [{'names': [names[id(p)] for p in group['params']],\n                        'lr': group['lr'], 'weight_decay': group['weight_decay']}\n                       for group in optimizer.param_groups]"
+        },
+        "after_step": {
+          "line": 138,
+          "end_line": 144,
+          "source": "def after_step(self, _optimizer, _args, _kwargs):\n        assert self.model.signal.training\n        assert all(getattr(self.model.signal, neck).training for neck, _ in self.model.head_names)\n        self.updates.append({name: {\n            'unscaled_gradient_max_abs': float(p.grad.detach().abs().max()) if p.grad is not None else None,\n            'parameter_delta_from_initial_max_abs': float((p.detach() - self.initial[name]).abs().max()),\n        } for name, p in self.detail.items()})"
+        },
+        "result": {
+          "line": 146,
+          "end_line": 161,
+          "source": "def result(self):\n        assert len(self.updates) == 8\n        if self.detail:\n            assert len(self.detail) == 14 and sum(p.numel() for p in self.detail.values()) == 159296\n            assert all(any(row[name]['unscaled_gradient_max_abs'] is not None\n                           and row[name]['unscaled_gradient_max_abs'] > 0 for row in self.updates)\n                       for name in self.detail)\n            assert all(self.updates[-1][name]['parameter_delta_from_initial_max_abs'] > 0\n                       for name in self.detail)\n        tracked = {neck: int(getattr(self.model.signal, neck).num_batches_tracked)\n                   for neck, _ in self.model.head_names}\n        assert all(value == 8 for value in tracked.values())\n        return {'effective_optimizer_updates': 8, 'optimizer_groups_at_construction': self.groups,\n                'author_bn_batches_tracked': tracked, 'detail_parameters': list(self.detail),\n                'detail_updates': self.updates,\n                'boundary': 'Engineering gradient/update support only; no evidence of retrieval benefit.'}"
+        }
+      }
+    }
+  },
+  "structured_readout_shapes": {
+    "per_role": [
+      "B",
+      3,
+      16,
+      128
+    ],
+    "per_role_grouped": [
+      "B",
+      3,
+      4,
+      128
+    ],
+    "concatenated_roles": [
+      "B",
+      3,
+      4,
+      384
+    ],
+    "weight_blocks": [
+      3,
+      4,
+      128,
+      384
+    ],
+    "output": [
+      "B",
+      1536
+    ],
+    "scope": "Dimensional structure only; no actual trained matrix rank computed"
+  }
+}
