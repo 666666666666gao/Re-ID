@@ -1,6 +1,6 @@
 # TriFusion 当前 Goal 执行约束
 
-更新：2026-10-05 §41.848；100semantic full50/3129步/首次strict已闭合，84.0827mAP/95.1603R1，两推进FAIL。原磁盘parentEXIT1/campaignSHA保留；退役41份历史冗余释放2.725GB。新行政续接native M0299/299通过，07:03:13 fresh50PID150146运行。唯一observer17277首次09:02:14.819772，之后240秒。源339/控制187不变；仅26 GPU0/1，无功率温度动作。4/6正式端，原报告846不执行，新混合来源12对报告仅待验。Goal ACTIVE / UNMET；下方早期状态按对应历史节阅读。
+更新：2026-10-05 §41.849；100semantic已封存全50轮配对：41轮mAP/46轮R1低于raw控制，best→末轮24.34点 vs raw1.81点；记录global损失/范数逐轮相等，不作因果或种子显著性。当前native fresh50PID150146/observer17277不变，首次远端09:02:14.819772，随后240秒；本轮同一handle已确认活动，无提前native查询。4/6正式端，12对混合来源报告未执行；源339/控制187不改，只26 GPU0/1，无功率温度动作，2025 I/O pending。Goal ACTIVE / UNMET；以下旧状态按历史节阅读。
 
 ## 总目标与贡献边界
 
@@ -51,3 +51,6 @@ refine-logs/deployment_metric_role_v1/EXPERIMENT_PLAN.md与SOURCE_SCOPE.json。s
 
 
 §41.848当前执行与保存边界：更新：2026-10-05 §41.848；100semantic full50/3129步/首次strict已闭合，84.0827mAP/95.1603R1，两推进FAIL。原磁盘parentEXIT1/campaignSHA保留；退役41份历史冗余释放2.725GB。新行政续接native M0299/299通过，07:03:13 fresh50PID150146运行。唯一observer17277首次09:02:14.819772，之后240秒。源339/控制187不变；仅26 GPU0/1，无功率温度动作。4/6正式端，原报告846不执行，新混合来源12对报告仅待验。Goal ACTIVE / UNMET；下方早期状态按对应历史节阅读。
+
+
+§41.849本轮完成保存文本配对分析；当前实验不改。更新：2026-10-05 §41.849；100semantic已封存全50轮配对：41轮mAP/46轮R1低于raw控制，best→末轮24.34点 vs raw1.81点；记录global损失/范数逐轮相等，不作因果或种子显著性。当前native fresh50PID150146/observer17277不变，首次远端09:02:14.819772，随后240秒；本轮同一handle已确认活动，无提前native查询。4/6正式端，12对混合来源报告未执行；源339/控制187不改，只26 GPU0/1，无功率温度动作，2025 I/O pending。Goal ACTIVE / UNMET；以下旧状态按历史节阅读。

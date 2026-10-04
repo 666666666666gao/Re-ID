@@ -17247,3 +17247,21 @@ RGBNT100 semantic正式50轮/3129步，mAP-best第5轮，同权重 mAP/Rank-1/Ra
 唯一近结束观察器session17277，07:04:38.311499实际启动；依据已完成同variant控制7230.976585秒估计，首次远端观察为 **09:02:14.819772**，之后必要时240秒。不在该节点前重复查询native模型/logs或启动另一观察器。此前46650、24035观察器与cleanup78286、semantic collector89511均已终止，不重启。
 
 §846 `REPORT_AVAILABLE_FIVE.py` 不改、不执行：原parent失败使其旧COMPLETE prerequisite无法满足。新 `REPORT_STORAGE_FIVE_848.py` 是明确绑定original三端、原pending semantic与新行政native的独立CPU报告合同；仅源码自复核/AST，未执行，未取得数组分析或统计成绩。须等native完整50轮/首次strict/2端混合来源acceptance matrix实际完成，才执行12可用全query对照，另列MSVR native三项UNAVAILABLE。原两parent失败、原report_invocations=0保持。不是6/6完成或完整Goal达到。当前不改模型、不加入N2/N3或新尺度/seed搜索；Goal **ACTIVE / UNMET**。
+
+
+## 41.849 RGBNT100 semantic全50轮配对记录：后期退化明显，不据此修改当前native
+
+2026-10-05 07:24:58.498335，本地仅使用已封存的semantic首次strict/训练记录与同variant raw-role控制完成50轮/3129步配对。candidate训练JSON与acceptance原SHA一致，控制训练JSON从原传输UTF8字节重建并与187-input seal的SHA一致。输出 `logs/deployment_metric_rgb100_semantic_saved849_20261005/ANALYSIS.json`、`TRAJECTORY.csv`、`README.md`；本地执行生产者源码同时归档。没有访问远端、导入PyTorch、重新运行模型或对当前native进行查询。
+
+| 记录 | 新role metric mAP / R1 | raw-role控制 mAP / R1 | 新scaled-c/global训练均值 | raw控制scaled-c/global训练均值 |
+|---|---|---|---|---|
+| 原mAP-best E5 | 84.082684 / 95.160347 | 84.090305 / 95.860058 | 61.179999% | 33.459590% |
+| 第50轮 | 59.745430 / 85.014576 | 82.282148 / 96.093297 | 131.249866% | 19.371913% |
+
+正式best仍为E5，表中末轮不是另一个重新选定的部署权重；四项best成绩、首次strict和FAIL结论均沿用§848。新方案50轮中mAP正/负为9/41，R1正/负4/46，R5正/负3/47，R10正/负4/46，无相等轮；mAP正且R1非负仅4轮。所有epoch相互依赖，不是50个训练种子，也不作显著性结论或挑选这4轮替换原best。新best→末轮mAP下降24.3372544311点，raw控制下降1.8081568455点。
+
+两边记录的global objective与global norm逐轮最大绝对差均为0；这只是50个batch均值记录的相等，不证明全部参数、global query向量或距离逐位相等。修正读出轨迹显著不同：新scaled-c训练范数E5→E50由13.8664变为30.9223，global范数22.8220→23.8902；raw控制scaled-c从7.5911变为4.5716。训练c/global均值不是query上的比值。修正增加与检索退化同时出现，但未证明前者导致后者，也不据此开始gain搜索、门槛调整或新损失。raw/L2两边role loss包含分类和不同度量几何，绝对值不可直接作为相对拟合优劣；保留§847数学边界。
+
+当前能收束的窄结论是：这一RGBNT100 semantic配对没有形成稳定的检索增量，后期退化远大于匹配raw控制；记录中的global训练聚合量未同时出现差异。具体错误身份、判别内容与实际部署几何仍需已登记的保存数组报告/固定best诊断，不把任何单一原因写为已定位。
+
+当前native队列、科学339源码与控制187均未修改。上轮唯一近结束观察器17277，本轮对同一handle等待180秒仍返回原session，确认观察器继续活动；09:02:14.819772前没有远端native日志/模型进度查询。当前完整正式端仍4/6，native只有已通过8步M0与已开始full50的实际证据；MSVR native失败保持。§848混合来源5端/12对CPU报告尚未执行，须先收齐native首次strict。仅26 GPU0/1，无功率/温度动作；2025原I/O pending不探测。Goal ACTIVE / UNMET。
