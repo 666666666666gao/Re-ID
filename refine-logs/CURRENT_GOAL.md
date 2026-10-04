@@ -1,6 +1,6 @@
 # TriFusion 当前 Goal 执行约定
 
-更新：2026-10-04 §41.817。MSVR310读取输入detach semantic完整50轮/706步及首次严格评价完成，E49为50.7851/68.8663；较原semantic下降0.1785/0.3384。正式3/6、M0 4/6，MSVR native已开始fresh50。只26GPU0/1，不控制功率温度，保留原配方和单一best；Goal active/unmet。
+更新：2026-10-04 §41.818。MSVR310 semantic/native均完成自身50轮/706步与首次严格评价。native E38为51.1388/69.8816；较原native变化+0.4632/+1.1844，较新semantic+0.3537/+1.0152。正式4/6；RGBNT100两端按原队列继续。固定best分解计划仅准备，输入尚未封存、模型尚未执行。只26GPU0/1，无功率温度控制；Goal active/unmet。
 
 ## 研究目标与当前阶段
 
@@ -107,3 +107,6 @@ MSVR native best38→末轮回落0.1563519mAP，三端当前均无201那样数�
 
 
 §41.817：MSVR semantic正式50轮/706步、首次严格评价已闭合；mAP/R1较原semantic下降，不能外推201 semantic的正向结果为通用修复。正式3/6、M0 4/6，native按原顺序fresh50。证据logs/role_input_detach_msvr_semantic817_20261004。全部六端完成后仅执行原CPU报告一次，再安排匹配固定best g/c分解；只26GPU0/1，无功率温度控制，Goal active/unmet。
+
+
+§41.818：201/MSVR两组完整配对正式4/6，100两端继续；证据logs/role_input_detach_msvr_pair818_20261004。读取detach的作用必须按原控制与新细节配对分开判断，不能外推通用成功。固定best g/c/h/f分解入口/计划和324源码范围仅准备；全六端及原一次CPU报告完成后才封存/执行。原322源码、61依赖、旧九端及其M0退役边界不变。只26GPU0/1，无功率温度控制；SOTA/必要性/完整流程稳定性仍未闭合，Goal active/unmet。

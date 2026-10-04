@@ -2,7 +2,7 @@
 
 ## 0. 一页结论
 
-**当前进度：§41.817（2026-10-04更新）。** MSVR310读取输入detach semantic完整50轮/706步及首次严格评价完成，E49为50.7851/68.8663；较原semantic下降0.1785/0.3384。正式3/6、M0 4/6，MSVR native已开始fresh50。只26GPU0/1，不控制功率温度，保留原配方和单一best；Goal active/unmet。
+**当前进度：§41.818（2026-10-04更新）。** MSVR310 semantic/native均完成自身50轮/706步与首次严格评价。native E38为51.1388/69.8816；较原native变化+0.4632/+1.1844，较新semantic+0.3537/+1.0152。正式4/6；RGBNT100两端按原队列继续。固定best分解计划仅准备，输入尚未封存、模型尚未执行。只26GPU0/1，无功率温度控制；Goal active/unmet。
 
 **现行合同：** 每个正式候选完整50轮，使用作者完整query/gallery及camera／MSVR时间段过滤，以官方fused mAP最高的同一checkpoint报告全部指标，随后严格重载。RGBNT201报告mAP／R1／R5／R10，RGBNT100及MSVR310报告mAP／R1；不跨epoch或seed拼列。官方集已参与逐轮选点和历史方法选择，属于已消费基准上的探索性结果。
 
@@ -16349,3 +16349,40 @@ Historical same-seed control intervention, not full-flow multi-seed or independe
 训练循环501.934888秒，训练加逐轮评价1376.078148秒；两者均不冒充包括初始化及首次重载评价的完整墙钟。best到末轮mAP下降0.01575873点。step actual scaled correction/global均值0.00536646，末步0.00587574。
 
 截至2026-10-04T11:45:45.798326+08:00，MSVR native PID1653673/R、ticks34081216；fresh50从2026-10-04T11:44:31.403393+08:00开始。自身M0于2026-10-04T11:44:27.342663+08:00完成，299/299梯度有限非零，8有效更新及三BN各8，14项细节参数检查通过。预计约12:08结束训练后进行首次严格评价，接近终态再观察；不依短期官方分数改计划。原一次CPU汇总报告尚未调用，三个剩余端及后续固定best分解、完整流程多种子、必要性/SOTA协议证据仍待闭合。
+
+
+## 41.818 MSVR310读取detach完整配对与后续固定best分解计划（2026-10-04）
+
+MSVR310 semantic/native均完成自身50轮/706步与首次严格评价。native E38为51.1388/69.8816；较原native变化+0.4632/+1.1844，较新semantic+0.3537/+1.0152。正式4/6；RGBNT100两端按原队列继续。固定best分解计划仅准备，输入尚未封存、模型尚未执行。只26GPU0/1，无功率温度控制；Goal active/unmet。
+
+| 条件 | best轮 | mAP | R1 | R5 | R10 |
+|---|---:|---:|---:|---:|---:|
+| 原独立global-only | 38 | 50.5421 | 68.0203 | 80.5415 | 85.4484 |
+| 原semantic | 49 | 50.9636 | 69.2047 | 80.7107 | 86.1252 |
+| 原native | 38 | 50.6755 | 68.6971 | 81.5567 | 85.9560 |
+| 读取输入detach semantic | 49 | 50.7851 | 68.8663 | 81.5567 | 85.4484 |
+| 读取输入detach native | 38 | 51.1388 | 69.8816 | 81.2183 | 85.9560 |
+
+| 配对差值 | ΔmAP | ΔR1 | ΔR5 | ΔR10 |
+|---|---:|---:|---:|---:|
+| 新semantic−原semantic | -0.1785 | -0.3384 | +0.8460 | -0.6768 |
+| 新native−原native | +0.4632 | +1.1844 | -0.3384 | +0.0000 |
+| 新native−新semantic | +0.3537 | +1.0152 | -0.3384 | +0.5076 |
+| 新native−原独立global-only | +0.5966 | +1.8613 | +0.6768 | +0.5076 |
+
+1. **区分干预配对和细节配对。** native相对原native的预登记推进条件为False；新native相对新semantic的同起点细节推进条件为False。两者不是同一个问题，0.5点门槛不是统计显著性。
+2. **不外推201或MSVR到全部条件。** 201新native主指标明显下降，MSVR新semantic也未增加主指标。现有结果不能支持通用读取detach修复、已定位唯一梯度冲突或global严格保护。100仍须完成两端50轮及首次严格评价。
+3. **比较合同保持。** 两端706步actual order相同，与对应原控制一致；初始化、容量、作者配方、322源码及61原依赖SHA核验，正式每端只有一份mAP-best，其余CMC跟随这份权重。自身M0依赖仍保留给最后一次原CPU报告。
+4. **固定best分解仅准备。** 后续计划复用已完成原诊断的提取/计分逻辑，经实际detach入口配置模型，待全六端和原CPU报告完成后再封存九行输入并执行。训练step范数尚不能替代同模型g/c/h/f检索。
+
+Two complete dataset pairs, RGBNT100 endpoints pending. Historical same-seed controls, not full-flow multi-seed or independent reproduction. New native minus new semantic differs from registered gradient intervention versus original native. No universal gradient-conflict repair or strict global preservation. Final once-only CPU report and fixed-best decomposition pending. Only26GPU0/1, no power/temp or parity repair. Scientific Goal active/unmet.
+
+收集2026-10-04T12:11:06.959592+08:00，native正式终态2026-10-04T12:09:12.364312+08:00。两端actual order 706行/1456580B，SHA 9c8a03beccbccedfa065cb13a3b20f5e64673d79693c4971034b54ab94e147e8。原依赖与本端实际weight/distance SHA见logs/role_input_detach_msvr_pair818_20261004。二进制仍只远端；正式目录仅best_map.pth，磁盘可用21682548736B。
+
+native训练循环517.438269秒，训练加逐轮评价1406.032567秒，两者不包含全部准备与首次重载评价。best到末轮mAP回落0.16838884点。step actual scaled correction/global均值0.00518015，仅为训练观察。
+
+2026-10-04T12:15:19.996830+08:00队列状态RUNNING，正式4/6、M0 5/6，原CPU汇总报告尚未调用。RGBNT100 semantic自身M0于2026-10-04T12:10:40.067343+08:00完成，285项有限非零梯度、8有效更新、三BN各8、严格重载差0。fresh50从2026-10-04T12:10:44.208969+08:00开始，实查PID1716550/R、ticks34238497，已完成1轮。保持B128/K16、原作者配方、fresh seed42与50轮，不依已有201/MSVR成绩改实验。活动命令及实际进程原始证据已归档，不用短时利用率或观察超时判为停止。
+
+后续入口tools/diagnose_role_input_detach_best.py及计划refine-logs/role_input_detach_fixed_best_diagnosis_v1/EXPERIMENT_PLAN.md已登记；SOURCE_SCOPE继承实际远端322项加新入口/计划2项，共324。输入封存须等待六端及原一次CPU报告退出0，再绑定六个新角色best和三个原独立global的九行证据。当前没有INPUT_SEAL，也没有新模型诊断结果。SOURCE_REVIEW只为主代理源码复核，不是独立复现。
+
+本地范围准备曾因把发布副本当完整服务器源码而断言失败：107项比较方法/日志未在本地，27项原模型文件仅CRLF/LF不同；失败记录保留在LOCAL_PREPARATION_FAILURE.json。未归一化、替换或删掉这些文件，也不改变原封存322项SHA。后续范围沿用已实查的远端精确SHA，执行前仍须完整服务器核验；这不是训练失败或放宽数值门槛。

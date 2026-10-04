@@ -1748,3 +1748,15 @@
 | 2026-10-04T09:45:00.861724+08:00 | /experiment-plan | refine-logs/role_input_detach_v1/SOURCE_REVIEW.json | implementation | §41.813 角色读取梯度边界最小配对，PREPARED_NOT_LAUNCHED；同前向/容量/作者配方，六端fresh50，非新颖性或成功宣称 |
 
 | 2026-10-04T09:45:00.861724+08:00 | /experiment-plan | refine-logs/role_input_detach_v1/SOURCE_SCOPE.json | implementation | §41.813 角色读取梯度边界最小配对，PREPARED_NOT_LAUNCHED；同前向/容量/作者配方，六端fresh50，非新颖性或成功宣称 |
+
+| 2026-10-04T12:01:43.471394+08:00 | /experiment-plan | tools/diagnose_role_input_detach_best.py | implementation | 读取detach六端结束后的固定best分解；PREPARED_NOT_EXECUTED，324源码范围已登记，原322以远端精确SHA为准，输入封存及GPU执行待全六端和原一次CPU报告完成 |
+
+| 2026-10-04T12:01:43.471394+08:00 | /experiment-plan | refine-logs/role_input_detach_fixed_best_diagnosis_v1/EXPERIMENT_PLAN.md | implementation | 读取detach六端结束后的固定best分解；PREPARED_NOT_EXECUTED，324源码范围已登记，原322以远端精确SHA为准，输入封存及GPU执行待全六端和原一次CPU报告完成 |
+
+| 2026-10-04T12:01:43.471394+08:00 | /experiment-plan | refine-logs/role_input_detach_fixed_best_diagnosis_v1/EXPERIMENT_PLAN_20261004_115900.md | implementation | 读取detach六端结束后的固定best分解；PREPARED_NOT_EXECUTED，324源码范围已登记，原322以远端精确SHA为准，输入封存及GPU执行待全六端和原一次CPU报告完成 |
+
+| 2026-10-04T12:01:43.471394+08:00 | /experiment-plan | refine-logs/role_input_detach_fixed_best_diagnosis_v1/SOURCE_REVIEW.json | implementation | 读取detach六端结束后的固定best分解；PREPARED_NOT_EXECUTED，324源码范围已登记，原322以远端精确SHA为准，输入封存及GPU执行待全六端和原一次CPU报告完成 |
+
+| 2026-10-04T12:01:43.471394+08:00 | /experiment-plan | refine-logs/role_input_detach_fixed_best_diagnosis_v1/SOURCE_SCOPE.json | implementation | 读取detach六端结束后的固定best分解；PREPARED_NOT_EXECUTED，324源码范围已登记，原322以远端精确SHA为准，输入封存及GPU执行待全六端和原一次CPU报告完成 |
+
+| 2026-10-04T12:01:43.471394+08:00 | /experiment-plan | refine-logs/role_input_detach_fixed_best_diagnosis_v1/LOCAL_PREPARATION_FAILURE.json | implementation | 读取detach六端结束后的固定best分解；PREPARED_NOT_EXECUTED，324源码范围已登记，原322以远端精确SHA为准，输入封存及GPU执行待全六端和原一次CPU报告完成 |
