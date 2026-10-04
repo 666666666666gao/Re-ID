@@ -1,6 +1,6 @@
 # TriFusion 当前 Goal 执行约束
 
-更新：2026-10-05 §41.838：部署几何六端队列已启动，RGBNT201 semantic真实8步M0通过并进入fresh50；其余五端依次待运行。首端281/281有效梯度、BN8次、重载maxdiff0。无新正式结果，仅26GPU0/1，不管功率/温度，Goal ACTIVE / UNMET。
+更新：2026-10-05 §41.839。部署度量角色首端RGBNT201 semantic完整50轮/2649步及首次严格评价完成；E8为74.9363/78.7081/87.4402/92.1053。相对匹配raw-role控制mAP+0.5614、R1−0.1196，相对独立global-only+0.6396/−0.2392；两项推进门均未通过。正式1/6、M0终态2/6；native于02:58:05进入fresh50，下一观察03:36:44。只26GPU0/1，无功率/温度操作，Goal ACTIVE / UNMET。
 
 ## 总目标与贡献边界
 
@@ -19,7 +19,7 @@ refine-logs/deployment_metric_role_v1/EXPERIMENT_PLAN.md与SOURCE_SCOPE.json。s
 
 车辆从各512维raw模态Triplet改为整1536联合L2，因此同时改变模态联合几何，不能称仅L2。原作者各头loss求和保留，车辆三份joint Triplet等价3倍，同三份CE不变。没有新head、辅助目标或系数。
 
-当前实际launch02:14:25 supervisor3606472/startticks39300650，campaign logs/deployment_metric_role_v1_20261005_837；首端M0通过，train3610653从02:16:15运行。唯一observer首次02:54:04.334057、之后240秒（本地native session66644），不要重复启动或提前轮询。
+当前原supervisor3606472/startticks39300650队列正式1/6、M0终态2/6。首201semantic E8为74.9363/78.7081，相对匹配控制mAP+0.5614/R1−0.1196，未通过推进。02:58:48 snapshot记载native train3741795从02:58:05进入fresh50；唯一新observer session37914首次03:36:44.855310、之后240秒。旧66644已退出0，不重启；不要提前读取中间分数。
 
 每端独立prepare核对上一轮initializer→8步真实M0→fresh50→首次strict。M0沿用有限loss、全部训练张量至少一次非零梯度/实际更新、BN8次、native14张量活动、完整state严格重载。不能用CPU witness替代实际M0。失败保持，不据官方结果改seed/LR/gain/margin/batch或堆N2/N3。
 
