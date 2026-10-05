@@ -1,6 +1,6 @@
 # TriFusion 当前 Goal 执行约束
 
-更新：2026-10-05 §41.852：native100 full50/首次strict已验收E6=83.9534/96.5015，五端250轮12262步CPU报告闭合，12项推进门全失败；MSVR native原M0失败缺失。八行固定best输入已封存341源码/271件，五端诊断待同步后执行。正式5/6；原计时器均结束。仅26 GPU0/1，无功率温度动作；2025 I/O pending。Goal ACTIVE / UNMET。
+更新：2026-10-05 §41.853：五端固定best诊断已09:21启动supervisor444043，零优化更新合同；唯一observer60517首09:30:30.214080，必要时240秒。正式5/6及12项推进门全失败不变，MSVR native原M0失败缺失；341源码/271封存保持。仅26 GPU0/1，无功率温度动作；2025 I/O pending。Goal ACTIVE / UNMET。
 
 ## 总目标与贡献边界
 
@@ -13,13 +13,13 @@
 - 固定best实测：201角色使同模型global mAP提高0.078198/0.121584；MSVR提高0.000096/0.010216；100下降0.278914/0.802213。100自己fused-best E5/E26与独立global E7不同，跨checkpoint差异单独解释。detail输出非零不证明身份价值。
 - 332旧source和187控制输入封存在refine-logs/global_task_role_fixed_best_diagnosis_v1/INPUT_SEAL.json。原M0二进制已按依赖闭合退役；不能调用依赖这些binary的旧verify/report或重放旧模型。旧parity FAIL/STOP保留，本研究训练不额外修parity。
 
-## 唯一当前实验
+## 当前已闭合训练与正在执行的诊断
 
 refine-logs/deployment_metric_role_v1/EXPERIMENT_PLAN.md与SOURCE_SCOPE.json。semantic/native各自三个数据集，共六端；仅改变角色metric feature为当前output.fused=L2(sg(g)+gain*c)。原global作者raw任务、raw BN classification、同一head值/clone buffers、梯度所有权、结构/state/容量、初始化、视觉/camera更新、optimizer/LR/WD/scheduler、soft-margin/gain/seed42、完整batch/增强、noAMP和推理保持上一轮。
 
 车辆从各512维raw模态Triplet改为整1536联合L2，因此同时改变模态联合几何，不能称仅L2。原作者各头loss求和保留，车辆三份joint Triplet等价3倍，同三份CE不变。没有新head、辅助目标或系数。
 
-当前原supervisor3606472/startticks39300650已04:07:25退出1，不重启。正式3端闭合，M0通过3端/失败1端；MSVR native缺detail_reader.stem.0 weight/bias梯度，保留失败/full未启动。旧observer86112正常收取终态退出0。仅未prepare的RGBNT100 semantic/native另登记有限队列，当前未启动，计划见PENDING_RGBNT100_PLAN.md；原FAILED/PENDING历史不覆盖。
+原supervisor3606472/startticks39300650已04:07:25退出1，其三端闭合及MSVR native M0失败不回改。原100 semantic完成full50后磁盘门阻断首次评价，旧磁盘parentEXIT1保留；新行政continuation完成原semantic首次strict及从未启动native自己的8M0/fresh50/首次strict。当前可用五个正式端/250轮12262步及唯一12对CPU报告均闭合，推进0/12；MSVR native无formal权重。正在执行refine-logs/deployment_metric_fixed_best_diagnosis_v1下的固定五端诊断，supervisor444043，输入八行341源码/271件；不新训练、不重选、不重试失败端。唯一观察器60517首次09:30:30.214080，之后240秒。原训练队列/报告/退役操作不能重复调用。
 
 每端独立prepare核对上一轮initializer→8步真实M0→fresh50→首次strict。M0沿用有限loss、全部训练张量至少一次非零梯度/实际更新、BN8次、native14张量活动、完整state严格重载。不能用CPU witness替代实际M0。失败保持，不据官方结果改seed/LR/gain/margin/batch或堆N2/N3。
 

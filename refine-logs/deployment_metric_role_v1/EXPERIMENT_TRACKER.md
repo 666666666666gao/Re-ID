@@ -1,6 +1,6 @@
 # 当前执行登记
 
-更新：2026-10-05 §41.852：native100 full50/首次strict已验收E6=83.9534/96.5015，五端250轮12262步CPU报告闭合，12项推进门全失败；MSVR native原M0失败缺失。八行固定best输入已封存341源码/271件，五端诊断待同步后执行。正式5/6；原计时器均结束。仅26 GPU0/1，无功率温度动作；2025 I/O pending。Goal ACTIVE / UNMET。
+更新：2026-10-05 §41.853：五端固定best诊断已09:21启动supervisor444043，零优化更新合同；唯一observer60517首09:30:30.214080，必要时240秒。正式5/6及12项推进门全失败不变，MSVR native原M0失败缺失；341源码/271封存保持。仅26 GPU0/1，无功率温度动作；2025 I/O pending。Goal ACTIVE / UNMET。
 
 | 数据集 | 条件 | 实际阶段 | 状态/结果 |
 |---|---|---|---|
@@ -9,9 +9,9 @@
 | MSVR310 | semantic | 8M0/fresh50/706/首次strict闭合 | E38 50.5121mAP/67.8511R1，配对推进FAIL |
 | MSVR310 | native | prepare成功；真实8步M0失败 | 缺细节stem首层weight/bias非零梯度，full未启动，无正式分数 |
 | RGBNT100 | semantic | full50/3129步/首次strict闭合 | E5 84.082684mAP/95.160347R1，两推进FAIL；原磁盘parent退出1保留 |
-| RGBNT100 | native | 独立8步M0通过；fresh50运行 | 299/299梯度、BN各8次、重载0；07:03:13 PID150146；未有正式成绩 |
+| RGBNT100 | native | 独立8M0/full50/3129步/首次strict闭合 | E6 83.953389mAP/96.501458R1；raw及独立global推进均FAIL；原probe验收后退役 |
 
-旧86112终态观察器退出0。原supervisor不重启/不回改FAILED；只未启动RGBNT100配对另以相同科学合同继续，PENDING_RGBNT100_QUEUE.py/PENDING_RGBNT100_PLAN.md已登记。此处仍无新实际启动证明。
+§41.841历史状态：旧86112终态观察器退出0。原supervisor不重启/不回改FAILED；只未启动RGBNT100配对另以相同科学合同继续，PENDING_RGBNT100_QUEUE.py/PENDING_RGBNT100_PLAN.md已登记。此处仍无新实际启动证明。
 
 原六端15对CPU报告0次，不因新两端2/2误写整体6/6。正式best与当前依赖保留；历史不再使用的探针/同组非优seed20权重按回执与SHA退役，原文本/距离/失败记录保留。
 

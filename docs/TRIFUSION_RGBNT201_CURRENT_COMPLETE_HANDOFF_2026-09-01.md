@@ -17313,3 +17313,12 @@ L_{tri}=\operatorname{mean}\log(1+\exp(d_{ap}-d_{an}))
 五个原最优权重及三个独立global控制已封存为八行输入：339项原科学源码、两个新诊断文本共341源码、271件不可变输入，seal SHA `a4de9faca7f502cb7a4fa01800e437919810d2cfa83bfcf0361047d831a42cb7`。新入口 `refine-logs/deployment_metric_fixed_best_diagnosis_v1/DIAGNOSE_FIVE.py`复用既有g/c/h/f诊断数值函数，只给五端供应各自真实campaign；目前已部署/封存，尚未执行诊断。MSVR native无formal权重，不重试、不填分、不读取已退役probe；仍按原完整query/gallery与camera/scene过滤、原1e-5指标容差，零优化更新、不重新选epoch。待本文与输入源码/封存四份同步核验后，才一次顺序执行五端固定best诊断，依据完整证据选择下一项干预，不自动堆N2/N3或调倍率/margin/seed。
 
 原native观察17277及CPU观察24930、collectors35118/68794均正常结束；当时可用空间5,335,597,056字节。局部绘图前两次调用分别缺少matplotlib与使用相对控制路径，均在写曲线前失败，实际使用明确依赖和绝对参数后完成50轮CSV/SVG；没有改绘图算法或重跑模型。只用26物理GPU0/1，无功率温度动作；2025原I/O pending不探测。正式端5/6、原缺失失败保留，Goal ACTIVE / UNMET。
+
+
+## 41.853 五端固定best诊断实际启动：唯一观察器按历史完整墙钟估计，不提前查询
+
+§852四份文本同步核验完成后，09:21:00一次启动原五端固定best诊断，supervisor444043/startticks41860134，执行Git `7471d607b0d881733b292528aabde76f7b904e1b`、seal `a4de9faca7f502cb7a4fa01800e437919810d2cfa83bfcf0361047d831a42cb7`。实际启动前341源码/271输入均核验，GPU0/1各15 MiB占用、可用磁盘5,177,835,520字节；不查询功率温度。输出namespace为 `results/deployment_metric_fixed_best_five_20261005_850`。这里只有启动证据，不是五端完成或状态保持验收；按零优化更新合同顺序读取原最优权重及完整合法query/gallery，不重新选择checkpoint、不重试MSVR native。
+
+唯一local观察器60517于09:23:20实际启动，首次远端09:30:30.214080，未结束时240秒。旧六端完整campaign墙钟763.061661秒，减去原MSVR native作业103.428484秒，再提前90秒估计；不是只求和NN内部elapsed的486.905998秒。新增输入核验成本仍可能改变时长，该观察节点不是超时或停止门。观察源码及实际启动回执归档 `logs/deployment_metric_fixed_best_launch853_20261005/`。旧native/CPU观察与collectors已结束，不重复启动；当前尚无新固定best诊断结果。
+
+状态表将100 native明确更新为已验收E6四项83.9533886085/96.5014576912/97.3760962486/97.7842569351；当前正式5/6及12项推进门失败不变。原MSVR native失败、原磁盘父进程退出1及对应旧状态按历史解释。仅26物理GPU0/1，无温度功率动作；2025原I/O pending不探测；完整研究Goal ACTIVE / UNMET。
