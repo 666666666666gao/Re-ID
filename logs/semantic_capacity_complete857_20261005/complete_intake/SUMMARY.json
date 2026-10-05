@@ -1,0 +1,246 @@
+{
+  "status": "CAPACITY_COMPLETE_WITH_FIRST_EVAL_CONTINUATION_VERIFIED",
+  "at": "2026-10-05T14:30:33.452556+08:00",
+  "source_files_verified_unchanged": 345,
+  "control_artifacts_verified": 187,
+  "report_invocations": 1,
+  "formal_completed": 3,
+  "formal_epochs": 150,
+  "formal_steps": 6484,
+  "batch_orders": {
+    "RGBNT201": {
+      "sha256": "e446282654c74949fb594856631b246642593b73229331c30b555418a0358993",
+      "bytes": 5475022,
+      "lines": 2649,
+      "controls_equal": 3
+    },
+    "MSVR310": {
+      "sha256": "9c8a03beccbccedfa065cb13a3b20f5e64673d79693c4971034b54ab94e147e8",
+      "bytes": 1456580,
+      "lines": 706,
+      "controls_equal": 3
+    },
+    "RGBNT100": {
+      "sha256": "75012100fd55f1da89d113c6159d99682a60deff8e92d11d54c7adfcd90da7b2",
+      "bytes": 11727745,
+      "lines": 3129,
+      "controls_equal": 3
+    }
+  },
+  "rows": [
+    {
+      "dataset": "RGBNT201",
+      "source": "semantic_capacity",
+      "best_epoch": 8,
+      "metrics": {
+        "mAP": 74.39491438122786,
+        "Rank-1": 78.58851552009583,
+        "Rank-5": 88.51674795150757,
+        "Rank-10": 91.86602830886841
+      },
+      "formal_steps": 2649,
+      "last_epoch_metrics": {
+        "mAP": 71.45942241775302,
+        "Rank-1": 73.80383014678955,
+        "Rank-5": 84.33014154434204,
+        "Rank-10": 89.71291780471802
+      },
+      "best_to_last_map_drop": 2.9354919634748455,
+      "complete_training_and_epoch_eval_seconds": 2350.06232
+    },
+    {
+      "dataset": "MSVR310",
+      "source": "semantic_capacity",
+      "best_epoch": 38,
+      "metrics": {
+        "mAP": 50.54991431283226,
+        "Rank-1": 67.85110235214233,
+        "Rank-5": 80.54145574569702,
+        "Rank-10": 85.617595911026
+      },
+      "formal_steps": 706,
+      "last_epoch_metrics": {
+        "mAP": 50.492012107524346,
+        "Rank-1": 67.68189668655396,
+        "Rank-5": 81.38747811317444,
+        "Rank-10": 85.617595911026
+      },
+      "best_to_last_map_drop": 0.05790220530791146,
+      "complete_training_and_epoch_eval_seconds": 1433.619479
+    },
+    {
+      "dataset": "RGBNT100",
+      "source": "semantic_capacity",
+      "best_epoch": 9,
+      "metrics": {
+        "mAP": 83.5904654424885,
+        "Rank-1": 96.32652997970581,
+        "Rank-5": 97.02624082565308,
+        "Rank-10": 97.49271273612976
+      },
+      "formal_steps": 3129,
+      "last_epoch_metrics": {
+        "mAP": 82.38690188688255,
+        "Rank-1": 95.80174684524536,
+        "Rank-5": 96.67638540267944,
+        "Rank-10": 96.7930018901825
+      },
+      "best_to_last_map_drop": 1.203563555605939,
+      "complete_training_and_epoch_eval_seconds": 7173.677028
+    }
+  ],
+  "pairs": [
+    {
+      "dataset": "RGBNT201",
+      "control": "raw_native",
+      "delta": {
+        "mAP": -0.02333272275987497,
+        "Rank-1": -0.4784688995215305,
+        "Rank-5": 0.4784688995215305,
+        "Rank-10": 0.23923444976077235
+      },
+      "phase_progress": false,
+      "rank1_repairs": 5,
+      "rank1_new_errors": 9,
+      "identity_macro_mean_delta_ap_points": -0.017610493416768916,
+      "query_count": 836
+    },
+    {
+      "dataset": "RGBNT201",
+      "control": "raw_semantic",
+      "delta": {
+        "mAP": 0.020052844614966148,
+        "Rank-1": -0.23923444976075814,
+        "Rank-5": 0.11961722488038617,
+        "Rank-10": 0.11961722488038617
+      },
+      "phase_progress": false,
+      "rank1_repairs": 2,
+      "rank1_new_errors": 4,
+      "identity_macro_mean_delta_ap_points": 0.02958412558623567,
+      "query_count": 836
+    },
+    {
+      "dataset": "RGBNT201",
+      "control": "raw_global_only",
+      "delta": {
+        "mAP": 0.09825080654034934,
+        "Rank-1": -0.3588516746411443,
+        "Rank-5": 0.23923444976077235,
+        "Rank-10": 0.0
+      },
+      "phase_progress": false,
+      "rank1_repairs": 3,
+      "rank1_new_errors": 6,
+      "identity_macro_mean_delta_ap_points": 0.09678059222258463,
+      "query_count": 836
+    },
+    {
+      "dataset": "MSVR310",
+      "control": "raw_native",
+      "delta": {
+        "mAP": -0.002430365344352481,
+        "Rank-1": -0.16920473773265599,
+        "Rank-5": 0.0,
+        "Rank-10": 0.0
+      },
+      "phase_progress": false,
+      "rank1_repairs": 0,
+      "rank1_new_errors": 1,
+      "identity_macro_mean_delta_ap_points": 0.0014095322924712965,
+      "query_count": 591
+    },
+    {
+      "dataset": "MSVR310",
+      "control": "raw_semantic",
+      "delta": {
+        "mAP": 0.0076894008399932545,
+        "Rank-1": 0.0,
+        "Rank-5": 0.0,
+        "Rank-10": 0.16920473773265599
+      },
+      "phase_progress": false,
+      "rank1_repairs": 0,
+      "rank1_new_errors": 0,
+      "identity_macro_mean_delta_ap_points": 0.01072308717907219,
+      "query_count": 591
+    },
+    {
+      "dataset": "MSVR310",
+      "control": "raw_global_only",
+      "delta": {
+        "mAP": 0.007785457730761891,
+        "Rank-1": -0.16920473773265599,
+        "Rank-5": 0.0,
+        "Rank-10": 0.16920473773265599
+      },
+      "phase_progress": false,
+      "rank1_repairs": 0,
+      "rank1_new_errors": 1,
+      "identity_macro_mean_delta_ap_points": 0.004283639679975365,
+      "query_count": 591
+    },
+    {
+      "dataset": "RGBNT100",
+      "control": "raw_native",
+      "delta": {
+        "mAP": 0.427229756965815,
+        "Rank-1": -0.4664723032069986,
+        "Rank-5": -0.5247813411078681,
+        "Rank-10": -0.5247813411078681
+      },
+      "phase_progress": false,
+      "rank1_repairs": 23,
+      "rank1_new_errors": 31,
+      "identity_macro_mean_delta_ap_points": 0.14650344239270638,
+      "query_count": 1715
+    },
+    {
+      "dataset": "RGBNT100",
+      "control": "raw_semantic",
+      "delta": {
+        "mAP": -0.4998396267536265,
+        "Rank-1": 0.4664723032069986,
+        "Rank-5": 0.4081632653061291,
+        "Rank-10": 0.2915451895043759
+      },
+      "phase_progress": false,
+      "rank1_repairs": 30,
+      "rank1_new_errors": 22,
+      "identity_macro_mean_delta_ap_points": -0.5908741162204576,
+      "query_count": 1715
+    },
+    {
+      "dataset": "RGBNT100",
+      "control": "raw_global_only",
+      "delta": {
+        "mAP": -0.9433187834868164,
+        "Rank-1": -0.2915451895043759,
+        "Rank-5": -0.2915451895043759,
+        "Rank-10": -0.4664723032069986
+      },
+      "phase_progress": false,
+      "rank1_repairs": 11,
+      "rank1_new_errors": 16,
+      "identity_macro_mean_delta_ap_points": -0.7816830584150242,
+      "query_count": 1715
+    }
+  ],
+  "m0_probes_retired_after_original_strict": true,
+  "completion_launch_exit": {
+    "exit_code": 0,
+    "completed_at": "2026-10-05T14:22:33.688944+08:00"
+  },
+  "original_launch_exit": {
+    "exit_code": 1,
+    "completed_at": "2026-10-05T13:59:42.688593+08:00"
+  },
+  "original_failure_sha256": {
+    "/data/gaob/Re-ID/Trifusion/logs/semantic_capacity_control_v1_20261005_856/campaign.json": "7520956155145c8adde04affd538fea9d99b5799d34b89de002fb4cac8d0c174",
+    "/data/gaob/Re-ID/Trifusion/logs/semantic_capacity_launch_20261005_856/EXIT.json": "4515887a6f349d7691e98ae6724e0c98d7bf14cc7a4620ed1d69f96d2b542cba",
+    "/data/gaob/Re-ID/Trifusion/logs/semantic_capacity_launch_20261005_856/console.log": "ba4d3944936cccbcfb898627dbdf7c087e883904917fc66e5b9f1e5a90067bfe"
+  },
+  "new_training_invocations": 0,
+  "disk_free_bytes": 2531274752,
+  "boundary": "Text-only intake and immutable SHA checks, no torch import/model/report replay. Three original trainings, first strict100 and once-only report through explicit continuation; original disk-stop parent EXIT1/state/counters preserved. Seed42 near-capacity control, no causal uniqueness, equivalence, multiple-seed robustness or SOTA claim."
+}

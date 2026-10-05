@@ -1,0 +1,43 @@
+{
+  "schema": "trifusion-semantic-capacity-control-v1",
+  "status": "COMPLETE",
+  "dataset": "MSVR310",
+  "recipe": "native",
+  "seed": 42,
+  "training_epochs": 50,
+  "selected_epoch": 38,
+  "condition": {
+    "variant": "native",
+    "foundation_option": "author",
+    "seed": 42,
+    "epochs": 50,
+    "public_clip_sha256": "5806e77cd80f8b59890b7e101eabd078d9fb84e6937f9e85e4ecb61988df416f",
+    "initialization_sha256": "eca4a8a7a53e277a839fd1dae3832b59a8416547ea48c37312272ce444ee397d",
+    "deployment": "L2_1536",
+    "auxiliary_tasks": "none",
+    "visual_placement": "single_process_original_full_batch_first6_cuda1_last6_and_heads_cuda0",
+    "objective_gradient_policy": "author_global_loss_to_shared_and_heads_fused_loss_to_roles_only",
+    "author_training_objectives": [
+      "shared_global",
+      "role_corrected_fused"
+    ],
+    "evidence_source_policy": "CLIP_role_C_patches_active_MLP_128_202_202_128_to_512_candidates",
+    "active_reader_parameters": 159096,
+    "native_reader_parameter_gap": -200
+  },
+  "protocol_sha256": "015a3cafef8e36ba71da2784de6835959c0549c442624c8fb9e9b37bd8c8229d",
+  "checkpoint_sha256": "f8012f5c3c8d935f97d7e8210be859e0cdb7b7803d2ac43e7324e7e632e49740",
+  "distance_sha256": "a91640c6e083c8edbaa3658aa44439ade4bb9ca7026a2bff31297c8d7f3bac36",
+  "training_best_distance_sha256": "d7402e7e93d7d44aba1197a7f6f3be812b4ca21418a198dcf2bb03e6fb1bf4c2",
+  "metrics": {
+    "mAP": 50.54991431283226,
+    "Rank-1": 67.85110235214233,
+    "Rank-5": 80.54145574569702,
+    "Rank-10": 85.617595911026
+  },
+  "reranking": false,
+  "independent_upstream_metrics_equal": true,
+  "final_evaluation_seconds": 44.428798536013346,
+  "final_evaluation_timing_boundary": "Fresh construction, strict reload and full-gallery scoring.",
+  "completed_at": "2026-10-05T11:57:07.746757+08:00"
+}

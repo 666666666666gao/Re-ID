@@ -1,6 +1,6 @@
 # TriFusion 当前 Goal 执行约束
 
-更新：2026-10-05 §41.856。下一项为近似同容量语义来源控制：只新增三端，复用封存raw结果，作者raw目标不变。CPU组件已通过，真实初始化/M0/50轮待首次执行。仅26GPU0/1、无功率温度动作；2025 I/O pending；Goal ACTIVE / UNMET。
+更新：2026-10-05T15:05:38.523245+08:00 §41.857。近容量语义三端fresh50及原一次报告已闭合，150轮/6484更新，九配对推进0/9。raw控制187及执行来源345不变；没有活动训练或新后继启动。容量对照到此闭合，当前原生/近容量额外读取均不晋级为主模块。下一项优先选原raw-semantic的CNN语义patch，不保留未获净收益的原生CNN或额外MLP；在原16区域读取前研究patch查询视觉anchor的残差候选重建。必须加入同参数、实际运行的整图均值query重复到各patch的控制，分清局部路由与广播上下文/容量。共享anchor的图像条件偏移须逐槽位输出，不把公共平移当局部选择；仅新增一个零输出出口保留初始语义行为。保持raw职责目标、原读取/桥接、1536维、配方、采样、seed42/fresh50和单一best；不改gain/梯度切断/Triplet尺度/LR/margin/seed，不同时加N2/N3。此为视觉-only项目改写，非完整SAGA复现。后继代码和正式合同尚未登记或启动。只用26 GPU0/1；无功率温度动作；2025 I/O pending。Goal ACTIVE / UNMET。
 
 ## 总目标与贡献边界
 
@@ -63,3 +63,5 @@ refine-logs/deployment_metric_role_v1/EXPERIMENT_PLAN.md与SOURCE_SCOPE.json。s
 
 
 §41.856 当前唯一下一项：refine-logs/semantic_capacity_control_v1，source345/raw187。先发布固定来源，再首次prepare/实际批次初始化/M0/full50；只三端，不重跑原raw/metric阶段或旧NN诊断。历史正文中的已结束阶段待办不恢复。
+
+§41.857当前边界：本节顶部覆盖旧PREPARED及旧观察状态；原capacity训练/报告终态，下一机制须先明确登记。
