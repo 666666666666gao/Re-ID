@@ -17424,3 +17424,22 @@ MSVR失败前已保存的三数组只做了一次CPU描述，09:52:14完成，�
 容量对照到此闭合，当前原生/近容量额外读取均不晋级为主模块。下一项优先选原raw-semantic的CNN语义patch，不保留未获净收益的原生CNN或额外MLP；在原16区域读取前研究patch查询视觉anchor的残差候选重建。必须加入同参数、实际运行的整图均值query重复到各patch的控制，分清局部路由与广播上下文/容量。共享anchor的图像条件偏移须逐槽位输出，不把公共平移当局部选择；仅新增一个零输出出口保留初始语义行为。保持raw职责目标、原读取/桥接、1536维、配方、采样、seed42/fresh50和单一best；不改gain/梯度切断/Triplet尺度/LR/margin/seed，不同时加N2/N3。此为视觉-only项目改写，非完整SAGA复现。后继代码和正式合同尚未登记或启动。
 
 只有原训练及首次评价补完/CPU报告均终态后才准备本次文本/图表发布与远端同步。原失败仍为EXIT1/RUNNING状态字节，不把行政补完计作原父进程成功；新状态显式继承三端训练来源。仅2026物理GPU0/1，功率/温度不查询、设置或监控；2025原I/O pending不探测、不假称其镜像一致。旧parity/M0/诊断失败不改判。完整Goal ACTIVE / UNMET；强基线、机制必要性、完整流程多种子与同资源SOTA仍未达到。
+
+
+## 41.858 后继视觉候选重建登记：patch与mean-query活动控制；尚无真实M0/正式指标
+
+2026-10-05T15:47:18.958102+08:00在已闭合§857后登记唯一结构干预。原raw-semantic的CNN角色128个128维patch先查询16视觉anchor，残差重建候选，再走原16区域读取与CNN→Transformer→Mamba桥接。共享anchor加逐槽位图像条件偏移128→16→2048，单头Q/K/V、两个LN、唯一零输出出口；没有原生CNN/额外容量MLP、文本、FFN、新loss、路由或N2/N3。不是完整SAGA复现，更不宣称真实语义部件。
+
+直接活动控制将每模态patch均值重复到128位置作为query，Q投影仍在完整位置执行；anchor/KV/残差与原读取相同。两条件均105,232参数/15张量，区别是局部query与广播上下文，不把闲置参数作为容量匹配。两者都有图像条件anchor，本轮不能证明条件anchor本身必要。内部semantic/native槽位实际分别patch/mean，mean不代表原生来源。
+
+CPU合成两条件各8更新实际通过：初始输出等于原patch；15张量累计非零有限梯度/参数变化、strict组件重载及两个routing控制区别均通过。五新Python源AST解析通过。独立上下文Codex复核见`refine-logs/region_evidence_reconstruction_v1/REVIEW.md`，same-family/provisional，运行时后端未独立证明；不得把这些源码/组件检查写成全模型M0或性能成功。
+
+合同见同目录EXPERIMENT_PLAN.md/SOURCE_SCOPE.json。原345来源字节及raw9控制187保留，加本次必要来源共354项；六端按201 patch/mean→MSVR patch/mean→100 patch/mean，每端独立真实8M0→fresh50→首次strict；初始化零出口完整作者batch与旧semantic非新增state、raw/L2/global/head逐项核对。作者配方/RAW职责目标、gain、采样、日程、AMP/FP32边界、1536L2和过滤不变，不重训旧9控制、不放宽旧parity或失败。
+
+一次保存距离CPU报告覆盖patch−mean及两新条件对raw semantic/global，共15配对。50轮单mAP-best及同权重CMC、全query/身份/首位修复和新增错误、完整曲线及原定义成本必须报告。推进线为+0.5mAP且R1不降，不是显著性；源组织未取得正式检索分数，目前6端真实初始化/M0/fresh50/strict全部NOT_RUN。
+
+15:29:44按已有清理授权仅退役九份完成且mAP低于已保留匹配对照的旧候选best，共3,228,602,999字节：N1 high/low的201/100四份、shared-private separated三份、visual-update frozen roles的201/100两份。删除前核完整50轮、原best/距离回执、实存SHA与更好保留权重；原187/345、成绩/距离/历史不变。余量2,447,380,480→5,675,995,136B，满足六best+一probe+2GiB=4,966,055,936B预算。九权重的直接重放能力已退役，不再调用需要它们的旧binary验收。
+
+第一次清理按新版best_epoch_distances要求在准备loop失败，旧合同实际只有official_distances，0删除；明确原格式后R2完成。R2本地60秒SSH读取超时EXIT1，随后只读原PREPARE/RETIREMENT确认远端已完成，不重复删除、不把本地超时改判成正常返回。全部清理与CPU/复核来源字节见`logs/region_reconstruction_registration858_20261005/`。
+
+仅26物理GPU0/1，一完整batch前6视觉块GPU1/后6及head GPU0；环境温复用，GPU2/3和其他项目不动。功率温度不查询/设置/监控，2025原I/O pending不探。登记/同步在所有旧生产者终态之后，当前尚未启动后继。预计六端6.5—7.5小时，按实际里程碑更新；观察180—300秒，超时不重启。完整Goal ACTIVE/UNMET，主机制、多种子和同资源SOTA仍未达到。

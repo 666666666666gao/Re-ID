@@ -1972,3 +1972,40 @@
 | `logs/semantic_capacity_complete857_20261005/complete_intake/received/logs/semantic_capacity_control_v1_20261005_856/initialization/MSVR310_native.json` | 原三端/一次报告闭合后的文本与图表归档；无模型重跑 |
 | `logs/semantic_capacity_complete857_20261005/complete_intake/received/logs/semantic_capacity_control_v1_20261005_856/initialization/RGBNT100_native.json` | 原三端/一次报告闭合后的文本与图表归档；无模型重跑 |
 | `logs/semantic_capacity_complete857_20261005/complete_intake/received/logs/semantic_capacity_control_v1_20261005_856/initialization/RGBNT201_native.json` | 原三端/一次报告闭合后的文本与图表归档；无模型重跑 |
+
+- 2026-10-05T15:47:18.958102+08:00 | §41.858 | docs/TRIFUSION_RGBNT201_CURRENT_COMPLETE_HANDOFF_2026-09-01.md | register visual patch/mean candidate reconstruction; no NN result
+- 2026-10-05T15:47:18.958102+08:00 | §41.858 | logs/region_reconstruction_registration858_20261005/cleanup_complete/LOCAL_TRANSPORT_BOUNDARY.json | register visual patch/mean candidate reconstruction; no NN result
+- 2026-10-05T15:47:18.958102+08:00 | §41.858 | logs/region_reconstruction_registration858_20261005/cleanup_complete/OBSERVER_STDERR.txt | register visual patch/mean candidate reconstruction; no NN result
+- 2026-10-05T15:47:18.958102+08:00 | §41.858 | logs/region_reconstruction_registration858_20261005/cleanup_complete/OBSERVER_STDOUT.json | register visual patch/mean candidate reconstruction; no NN result
+- 2026-10-05T15:47:18.958102+08:00 | §41.858 | logs/region_reconstruction_registration858_20261005/cleanup_complete/PREPARE.json | register visual patch/mean candidate reconstruction; no NN result
+- 2026-10-05T15:47:18.958102+08:00 | §41.858 | logs/region_reconstruction_registration858_20261005/cleanup_complete/RETIREMENT.json | register visual patch/mean candidate reconstruction; no NN result
+- 2026-10-05T15:47:18.958102+08:00 | §41.858 | logs/region_reconstruction_registration858_20261005/cleanup_complete/remote_script.py | register visual patch/mean candidate reconstruction; no NN result
+- 2026-10-05T15:47:18.958102+08:00 | §41.858 | logs/region_reconstruction_registration858_20261005/cleanup_failed_format/EXIT.json | register visual patch/mean candidate reconstruction; no NN result
+- 2026-10-05T15:47:18.958102+08:00 | §41.858 | logs/region_reconstruction_registration858_20261005/cleanup_failed_format/remote_script.py | register visual patch/mean candidate reconstruction; no NN result
+- 2026-10-05T15:47:18.958102+08:00 | §41.858 | logs/region_reconstruction_registration858_20261005/cleanup_failed_format/stderr.txt | register visual patch/mean candidate reconstruction; no NN result
+- 2026-10-05T15:47:18.958102+08:00 | §41.858 | logs/region_reconstruction_registration858_20261005/cleanup_failed_format/stdout.json | register visual patch/mean candidate reconstruction; no NN result
+- 2026-10-05T15:47:18.958102+08:00 | §41.858 | logs/region_reconstruction_registration858_20261005/component/COMPONENT.json | register visual patch/mean candidate reconstruction; no NN result
+- 2026-10-05T15:47:18.958102+08:00 | §41.858 | logs/region_reconstruction_registration858_20261005/component/EXECUTION.json | register visual patch/mean candidate reconstruction; no NN result
+- 2026-10-05T15:47:18.958102+08:00 | §41.858 | logs/region_reconstruction_registration858_20261005/component/INVENTORY.json | register visual patch/mean candidate reconstruction; no NN result
+- 2026-10-05T15:47:18.958102+08:00 | §41.858 | logs/region_reconstruction_registration858_20261005/component/LOCAL_SOURCE_LOCATION_BOUNDARY.json | register visual patch/mean candidate reconstruction; no NN result
+- 2026-10-05T15:47:18.958102+08:00 | §41.858 | logs/region_reconstruction_registration858_20261005/component/STATIC_PARSE.json | register visual patch/mean candidate reconstruction; no NN result
+- 2026-10-05T15:47:18.958102+08:00 | §41.858 | logs/region_reconstruction_registration858_20261005/component/component.stderr | register visual patch/mean candidate reconstruction; no NN result
+- 2026-10-05T15:47:18.958102+08:00 | §41.858 | logs/region_reconstruction_registration858_20261005/component/component.stdout | register visual patch/mean candidate reconstruction; no NN result
+- 2026-10-05T15:47:18.958102+08:00 | §41.858 | logs/region_reconstruction_registration858_20261005/region_reconstruction_prepare858.py | register visual patch/mean candidate reconstruction; no NN result
+- 2026-10-05T15:47:18.958102+08:00 | §41.858 | logs/region_reconstruction_registration858_20261005/retire_rejected_candidates858.py | register visual patch/mean candidate reconstruction; no NN result
+- 2026-10-05T15:47:18.958102+08:00 | §41.858 | logs/region_reconstruction_registration858_20261005/retire_rejected_candidates858_r2.py | register visual patch/mean candidate reconstruction; no NN result
+- 2026-10-05T15:47:18.958102+08:00 | §41.858 | logs/region_reconstruction_registration858_20261005/review/REVIEW.json | register visual patch/mean candidate reconstruction; no NN result
+- 2026-10-05T15:47:18.958102+08:00 | §41.858 | logs/region_reconstruction_registration858_20261005/review/REVIEW.md | register visual patch/mean candidate reconstruction; no NN result
+- 2026-10-05T15:47:18.958102+08:00 | §41.858 | logs/region_reconstruction_registration858_20261005/review/REVIEW_RUNTIME_FAILURE.json | register visual patch/mean candidate reconstruction; no NN result
+- 2026-10-05T15:47:18.958102+08:00 | §41.858 | modeling/trifusion/region_evidence_reconstruction.py | register visual patch/mean candidate reconstruction; no NN result
+- 2026-10-05T15:47:18.958102+08:00 | §41.858 | refine-logs/CURRENT_GOAL.md | register visual patch/mean candidate reconstruction; no NN result
+- 2026-10-05T15:47:18.958102+08:00 | §41.858 | refine-logs/region_evidence_reconstruction_v1/EXPERIMENT_PLAN.md | register visual patch/mean candidate reconstruction; no NN result
+- 2026-10-05T15:47:18.958102+08:00 | §41.858 | refine-logs/region_evidence_reconstruction_v1/EXPERIMENT_TRACKER.md | register visual patch/mean candidate reconstruction; no NN result
+- 2026-10-05T15:47:18.958102+08:00 | §41.858 | refine-logs/region_evidence_reconstruction_v1/PRIMARY_SOURCE_CHECK.md | register visual patch/mean candidate reconstruction; no NN result
+- 2026-10-05T15:47:18.958102+08:00 | §41.858 | refine-logs/region_evidence_reconstruction_v1/REVIEW.json | register visual patch/mean candidate reconstruction; no NN result
+- 2026-10-05T15:47:18.958102+08:00 | §41.858 | refine-logs/region_evidence_reconstruction_v1/REVIEW.md | register visual patch/mean candidate reconstruction; no NN result
+- 2026-10-05T15:47:18.958102+08:00 | §41.858 | refine-logs/region_evidence_reconstruction_v1/SOURCE_SCOPE.json | register visual patch/mean candidate reconstruction; no NN result
+- 2026-10-05T15:47:18.958102+08:00 | §41.858 | tools/check_region_reconstruction.py | register visual patch/mean candidate reconstruction; no NN result
+- 2026-10-05T15:47:18.958102+08:00 | §41.858 | tools/queue_region_reconstruction.py | register visual patch/mean candidate reconstruction; no NN result
+- 2026-10-05T15:47:18.958102+08:00 | §41.858 | tools/report_region_reconstruction.py | register visual patch/mean candidate reconstruction; no NN result
+- 2026-10-05T15:47:18.958102+08:00 | §41.858 | tools/run_region_reconstruction.py | register visual patch/mean candidate reconstruction; no NN result
