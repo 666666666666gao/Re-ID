@@ -17525,3 +17525,14 @@ result-to-claim新鲜上下文复核 verdict=`no`，same-family/provisional，�
 随后额外EV1combined201资格检查在发现best已退役时退出1，无新删除/NN；只读存量清单显示free5,553,836,032B，已高于未改变的4,966,055,936B启动预算。它相对前一free变化的外部原因未确定，不归于本次删除。正式启动仍实时检查，两卡之外项目不动。所有清理journal/组件失败/观察/新组件与helpers在logs/selective_transport_preparation860_20261006，无模型/NPY回传。
 
 当前只26物理GPU0/1、无功率温度动作、25原I/O pending；不重建环境、无消息/W&B。初始全模型与逐端M0通过后才启动其fresh50，旧反向parity失败不追认修复、不作为本轮额外屏障。预计六端6.5–8小时，持久队列按端里程碑/240秒观察，超时不重启。整体Goal ACTIVE/UNMET；机制有效、三集净增益、必要性消融、完整流程多种子及资源合格强参照/SOTA仍缺。
+
+
+## 41.861 启动前存储门未过，无NN重试；资格清理后首次启动条件恢复
+
+2026-10-06T02:43:58.559861+08:00。§860首次启动仅到远端CPU preflight：free<原4,966,055,936B而退出1；未创建campaign/监督器/M0/full目录，没有新NN、M0失败或检索成绩。此前本地uv临时查询PyPI握手失败、脚本尚未执行，随后明确使用已缓存离线运输环境，不重建服务器conda。两个失败均不补签成功，也不因为观察/启动失败重试训练。
+
+第一份10目标清理资格检查发现旧MSVR低LR roles mAP53.002737高于F3metricRAW52.759551，未满足四指标支配，整份资格阶段在任何删除前停止；无journal/删除。该有独立优势的旧权重保留。九个其余明确目标重新资格核验，完整50轮/原首strict回执/实存best与distance SHA一致，保留region201mean或F3metricRAWpositive四指标均支配；实际清理3,196,995,377B，free 5,418,659,840→8,615,649,280B。原366执行源与187控制前后SHA全通过，数据/公共CLIP/作者/F1/RAW依赖和赢家均保留。
+
+退役的是旧clean公开起点201的global/roles、旧shared-private201 global/coupled、旧视觉更新201冻结global/低LR global/低LR roles、旧N1 highMSVR及旧冻结rolesMSVR九份无用自训best；训练/数组/原metric记录保留，九个旧binary直接重载路径现在不可用。没有改门、选另一份新checkpoint或按成绩更改新方法/超参。全部原失败、资格源与实做journal见logs/row_transport_storage_start861_20261006。
+
+本次只是恢复原六端row-null/slot-mass vs pair-uniform研究的首次可启动条件。原seed42/50轮/作者RAW职责、batch、1536L2、全gallery、真实8M0与首strict合同及366科学源不变。尚无该六端真实结果，不把存储清理算成识别增益或OT根因修复。只26 GPU0/1、无功率温度动作、25原I/O pending。Goal ACTIVE/UNMET；首次队列仍须实时验证来源、余量、空闲卡，旧启动失败记录保留。

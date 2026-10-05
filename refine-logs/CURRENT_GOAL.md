@@ -1,6 +1,6 @@
 # TriFusion 当前 Goal 执行约束
 
-更新：2026-10-06T00:33:32.732633+08:00 §41.860。旧区域重建六端/15配对0晋级，不重试；后继旧OT组件FAIL封存，新row-null槽位质量vs模态对统一质量组件PASS，六端固定RAW/作者/seed42/fresh50计划待真实初始化与逐端8M0。只26 GPU0/1，无功率温度动作；25原I/O pending。整体Goal ACTIVE/UNMET；尚无新正式成绩。旧阶段历史状态不恢复。
+更新：2026-10-06T02:43:58.559861+08:00 §41.861。旧OT组件FAIL、新row-null组件PASS；首次CPU启动存储门EXIT1，未启动NN/创建campaign。九个已闭合且四指标被赢家支配的无用best退役，366源/187控制前后SHA不变，原六端RAW/作者/seed42/fresh50计划待首次真实prepare/8M0。只26 GPU0/1，无功率温度动作，25原I/O pending；Goal ACTIVE/UNMET，尚无新正式成绩。
 
 ## 总目标与贡献边界
 
