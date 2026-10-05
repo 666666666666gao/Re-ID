@@ -17504,3 +17504,24 @@ CPU合成两条件各8更新实际通过：初始输出等于原patch；15张量
 result-to-claim新鲜上下文复核 verdict=`no`，same-family/provisional，见本归档claim_review。ARIS evidence_check.py规范helper未解析已记录；不把终态SHA存在性检查当语义成功，运行后端也未独立证明。原整体验证可重放范围与旧失败口径保持。
 
 本轮patch候选重建不晋级有效主模块，mean广播也没有跨三集净增益支持。下一结构尚未登记或启动，不按官方分数继续调LR/gain/margin/query数/种子，不自动在当前失败结构上叠N2/N3。先依据完整对照锁定下一个单一问题及直接活动控制，再实现；完整Goal ACTIVE/UNMET，同匹配强基线净增益、三个必要机制、完整流程多种子与同资源SOTA仍缺。仅在所有NN/首次评价/CPU报告终态后更新并同步本节；2025原I/O pending继续保留，不探测、不宣称镜像一致。
+
+
+## 41.860 下一干预收束为槽位消息质量；旧OT组件失败封存，新按行分配组件通过
+
+2026-10-06T00:33:32.732633+08:00。前§859区域候选重建300轮/15配对已闭合且不晋级，本次没有重试它、读取detach、joint-L2或额外原生读取。围绕后继“选择性协作”形成窄问题：按接收槽位分配跨光谱消息质量，是否优于同一模态对统一衰减，并能增加原RAWsemantic之外的最终检索收益。原RAW/作者配方/1536L2保持，Mamba只改为各模态16槽私有扫描再peer交流；不是同时实现三个主模块。
+
+方法复核按research-refine做两轮，原partial/forced6.55→slot/mean-mass7.25，均论文REVISE；same-family/provisional、CALIBRATION:none，实际后端未独立核实。原forced控制主要混入幅度作用，修订保留同score总矩阵质量并只改变槽位分配；不严格匹配向量能量、独立训练后预算，不能证明真实对应。完整R1/R2及固定anchor在refine-logs/selective_role_transport_v1，未自动升为9或论文READY。
+
+原100次Sinkhorn/17×17/null1版本的首次CPU组件检查退出1：全低分−8构造条件，最大行边际残差0.005828857421875>预登记0.001；独立CPU观察同一原函数确认，该条件真实行质量最大0.01080610789、列残差约1.91e-6。强对角与随机条件最大残差约1.91e-6。原失败保留，不增加迭代、改变null或放宽原容差，也没有真实M0/NN分数；诊断通过不补签原失败。
+
+新的直接按行方案将每方向16×16 score加一个null列，FP32 log_softmax得16×17行分配；取消Sinkhorn与列容量约束，反向对C转置另归一化，不称双向OT/可靠几何匹配或SuperGlue完整复现。W_slot=diag(r)Q，W_uniform=mean(r)Q，rbar保留梯度。仅matching_projection和唯一零出口message_output两个128×128矩阵，共32,768活动参数/2张量；原CNN/T与自身Mamba路径保留，不加value头、FFN、分类头、loss或资源。
+
+新CPU组件首次通过：强对角/全低分/随机17列最大行残差分别5.96e-8/1.19e-7/2.38e-7，真实质量均值0.999089/0.001971/0.899337，两臂同score总质量匹配；两矩阵各8次toy更新累计有限非零梯度/实际变化、零出口及strict组件重载通过。此时没有真实完整模型初始化、M0或新检索成绩。新直接softmax方案未独立获论文评分，旧7.25不能冒充其论文READY；数学/活动证据不能代替机制结果。
+
+唯一六端计划见refine-logs/row_mass_role_transport_v2/EXPERIMENT_PLAN.md：内部semantic=slot_mass、native=uniform_mass，两者都不读取原生图像；201→MSVR→100，各两臂真实prepare/完整batch匹配→8M0→fresh50→首次strict→一次15配对。seed42，201B64/K8、100B128/K16、MSVRB64/K4，作者RAW职责、head/BN所有权、optimizer/日程、原AMP和first6/last6两卡位置不变。原RAW9/187依赖直接复用，主对照slot−uniform与slot−RAWsemantic各mAP≥0.5/R1不降，独立global单列；跨旧RAW还含Mamba序列/容量差异，不能全部归因门控。固定50轮一mAP-best、完整合法gallery与camera/scene规则；不按官方分数搜null/gain/LR/margin/seed救。
+
+23:xx清理实做7份已闭合无用best，释放2,482,212,968B：当前region201patch、MSVR两臂、100两臂，以及F2/F3重复normalizedMSVR；每份50轮/原receipt/实存weight与距离SHA核验、保留winner四项均支配，region201mean/F3metricRAWpositive/RAW187与作者公共权重保留。原354源/187控制删除前后SHA均一致；7份binary重载路径退役，历史数组/训练/回执未变，不能继续执行依赖这些旧best的直接重放。保护表187键实际为远端绝对路径；原脚本relative排除判断不充分，但显式7目标均不在保护表且全表前后SHA通过。后续资格检查同时检查绝对和相对键，原已执行源码不回改。
+
+随后额外EV1combined201资格检查在发现best已退役时退出1，无新删除/NN；只读存量清单显示free5,553,836,032B，已高于未改变的4,966,055,936B启动预算。它相对前一free变化的外部原因未确定，不归于本次删除。正式启动仍实时检查，两卡之外项目不动。所有清理journal/组件失败/观察/新组件与helpers在logs/selective_transport_preparation860_20261006，无模型/NPY回传。
+
+当前只26物理GPU0/1、无功率温度动作、25原I/O pending；不重建环境、无消息/W&B。初始全模型与逐端M0通过后才启动其fresh50，旧反向parity失败不追认修复、不作为本轮额外屏障。预计六端6.5–8小时，持久队列按端里程碑/240秒观察，超时不重启。整体Goal ACTIVE/UNMET；机制有效、三集净增益、必要性消融、完整流程多种子及资源合格强参照/SOTA仍缺。

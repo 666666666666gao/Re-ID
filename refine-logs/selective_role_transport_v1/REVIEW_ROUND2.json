@@ -1,0 +1,223 @@
+{
+  "schema_version": 1,
+  "review_round": 2,
+  "max_rounds": 2,
+  "review_rounds_complete": true,
+  "no_third_round": true,
+  "review_agent": "/root/review_selective_transport860",
+  "continuity": "same_agent_as_round1",
+  "review_time": "2026-10-06T00:04:18.7987363+08:00",
+  "verdict": "REVISE",
+  "paper_ready": false,
+  "weighted_composite": 7.25,
+  "composite_scale": 10,
+  "dimensions": [
+    {
+      "name": "Problem Fidelity",
+      "score": 8,
+      "weight": 0.15,
+      "rationale": "三数据集、完整排序净增益和最终同协议baseline/资源合格SOTA目标逐字保留；本轮窄问题更清楚，但尚无证据认定48-token隐式传播就是旧失败原因。"
+    },
+    {
+      "name": "Method Specificity",
+      "score": 8,
+      "weight": 0.25,
+      "rationale": "两矩阵、维度、FP32边缘、转置、两臂定义和RAW职责已具体；初始化/RNG、100迭代的更新单元和诊断统计需在实施前最后锁定。"
+    },
+    {
+      "name": "Contribution Quality",
+      "score": 6,
+      "weight": 0.25,
+      "rationale": "已收敛成一个可否证的slot质量分配命题；但标准部分OT接入的独特性与身份效用仍未知，没有足够新的机制洞见支撑主方法。"
+    },
+    {
+      "name": "Frontier Leverage",
+      "score": 7,
+      "weight": 0.15,
+      "rationale": "保持CLIP资源匹配且不叠外部teacher是合适选择；新机制对预训练表征的独特利用仍未建立，不需要为此加入潮流组件。"
+    },
+    {
+      "name": "Feasibility",
+      "score": 8,
+      "weight": 0.1,
+      "rationale": "参数/张量算术合理，已有训练合同可复用；实现、100迭代真实成本、组件/M0及存储门仍没有通过证据。"
+    },
+    {
+      "name": "Validation Focus",
+      "score": 8,
+      "weight": 0.05,
+      "rationale": "uniform_mass控制修正了最重要的整体质量混杂，六端与旧控制复用足够克制；可解释为端到端策略对比，不能扩大到能量独立或真实对应。"
+    },
+    {
+      "name": "Venue Readiness",
+      "score": 6,
+      "weight": 0.05,
+      "rationale": "设计现在是可解释的探索，但尚未建立实际收益、机制必要性或足够独特的论文主张，不能由接口完整度推得论文READY。"
+    }
+  ],
+  "calibration": "none",
+  "calibration_reason": "未提供human-curated 3 good/3 bad；未自选或虚构。",
+  "gap": "CALIBRATION:none。本次仍未提供human-curated的3个known-good和3个known-bad提案，未自选或虚构标杆，因此不能声称7.25已由某组优秀/失败提案校准。相对于READY要求，R1最严重的对照归因缺口已经解决到本轮限定的粒度，Method Specificity与Validation Focus相应提高；剩余主要差距是Contribution Quality与Venue Readiness。现在可以清楚地问一个问题，不等于已经有足够独特的答案。仅身份任务监督下，slot质量是否有未见身份价值、这种作用是否超出已有消息门控思路，以及是否优于完整RAW/global参照，都还是未知；工程实现或单seed项目门通过也不能自动补齐这些差距。",
+  "review_independence": "same-family",
+  "acceptance_status": "provisional",
+  "reviewer_provenance": {
+    "requested_model": "gpt-6-astra",
+    "requested_reasoning_effort": "max",
+    "actual_backend_verified": false,
+    "actual_model": null,
+    "actual_reasoning_effort": null
+  },
+  "anchor_check": {
+    "verbatim_contained": true,
+    "trimend_equal": true,
+    "extra_suffix": "<CR><LF>",
+    "status": "preserved"
+  },
+  "problem_anchor": "底线问题：在RGBNT201、RGBNT100、MSVR310上，从匹配公开CLIP/作者配方与RAW职责训练起点形成对未见身份有实际净增益的角色证据，最终超过同协议baseline并向注明资源和协议的强参照/SOTA推进。\n必须解决的瓶颈：分支活动、判别性或某些首位修复不能替代完整排序的净增益；已完成独立global与同容量控制显示多种额外读取/重建未获三集一致效用。新方案必须隔离具体作用路径，证明角色贡献而不是配方/容量/继承收益。\n本轮边界：不用旧失败重试、LR/gain/margin/seed/Triplet尺度搜索、N1失败重建、外部文本/掩码/DINO或测试更新；这些是本轮控制边界，不缩小总体SOTA目标。无功率温度动作，只26物理GPU0/1，25原I/O pending保持。\n成功条件：新两臂共享初始化、参数、作者batch/采样/优化/50轮/RAW职责/1536L2部署与全合法gallery过滤；预登记候选相对直接活动控制和原RAWsemantic ΔmAP≥0.5且Rank-1不下降，并单列对独立global结果。三集未全部成立不得写通用机制；项目推进线不是统计显著性，固定模型bootstrap不是训练seed。最终论文仍需强基线、机制必要性、完整流程多种子与资源合格SOTA证据。",
+  "problem_addressed": "在同一P/条件Q及每个对象-模态对总real质量的定义下，按接收slot非均匀分配质量的端到端训练策略，是否优于uniform质量并获得三数据集完整检索净效用。",
+  "does_not_claim": [
+    "真实几何/语义对应",
+    "校准拒绝可靠性",
+    "独立于所有消息能量效应",
+    "旧48扫描函数等价",
+    "完整流程seed或SOTA已经成功"
+  ],
+  "narrow_design_assessment": {
+    "status": "INTERPRETABLE",
+    "conceptual_implementation": "IMPLEMENTABLE_AFTER_SPECIFICATION_LOCKINS",
+    "blocking_control_mathematics_protocol_errors": [],
+    "no_such_blocker_found": true,
+    "caveats": [
+      "same-P总质量相同不保证消息能量相同。",
+      "独立训练后P/Q/rbar/H可不同，对比为端到端策略效果。",
+      "uniform W通常不保原P每列容量或方向转置互易性；此为行质量替换派生效果，不另设第三臂。",
+      "两臂均保留带dustbin的分配求解，不能单独证明OT/Q/private拆分必要性。"
+    ]
+  },
+  "engineering_assessment": {
+    "status": "NOT_VALIDATED",
+    "implementation_provided_for_audit": false,
+    "cpu_component_pass": false,
+    "real_m0_pass": false,
+    "training_results_available": false,
+    "note": "false表示本审阅未获通过证据，不是已经执行后失败。"
+  },
+  "must_resolve_before_implementation_and_launch": [
+    {
+      "id": "I1",
+      "stage": "before_implementation",
+      "priority": "IMPORTANT",
+      "item": "固定matching具体初始化函数、新模块RNG隔离和旧state加载；r/rbar/Q/P保持可微，不能新增detach；既有role输入detach保持。",
+      "changes_scientific_factor": false
+    },
+    {
+      "id": "I2",
+      "stage": "before_implementation",
+      "priority": "IMPORTANT",
+      "item": "固定100迭代完整row/column更新定义、u/v初值、FP32及固定toy fixture/目标；完整17维边缘含null，real块只要求质量上界。",
+      "changes_scientific_factor": false
+    },
+    {
+      "id": "I3",
+      "stage": "before_implementation",
+      "priority": "IMPORTANT",
+      "item": "明确行接收/列来源；条件Q列集中度、每样本/模态对slot质量离散性、pre-LN输出peer/self和含实际gain的修正/global范数。",
+      "changes_scientific_factor": false
+    },
+    {
+      "id": "E1",
+      "stage": "before_training",
+      "priority": "CRITICAL",
+      "item": "按原合同实际完成组件/初始化一致性/真实作者batch 8M0/strict reload/来源检查；当前没有新通过证据。",
+      "changes_scientific_factor": false
+    },
+    {
+      "id": "E2",
+      "stage": "before_training",
+      "priority": "CRITICAL",
+      "item": "实际有效存储达到4,966,055,936B固定门；稿中快照不足190,353,408B，不能凭本评审启动或清理。",
+      "changes_scientific_factor": false
+    }
+  ],
+  "unresolved_paper_issues": [
+    {
+      "dimension": "Contribution Quality",
+      "score": 6,
+      "priority": "IMPORTANT",
+      "scope": "paper_not_control_math",
+      "weakness": "可解释任务门控尚不足以建立超出已有部分传输/消息门控的独特机制。",
+      "fix": "保持唯一post-private/pre-LN质量分配接口；不把三个角色/求解器/私有拆分凑贡献。若未胜uniform与RAW/global，撤回Transport主机制，不加模块救分。"
+    },
+    {
+      "dimension": "Venue Readiness",
+      "score": 6,
+      "priority": "IMPORTANT",
+      "scope": "paper_not_control_math",
+      "weakness": "机制价值、效用、必要性与最终完整证据均尚未建立。",
+      "fix": "论文以同一窄命题和可否证删除规则为中心；依真实后续结果决定是否可作主方法，不把工程完成或单seed门槛当论文READY。"
+    }
+  ],
+  "storage_text_arithmetic": {
+    "required_bytes": 4966055936,
+    "reported_free_bytes": 4775702528,
+    "deficit_bytes": 190353408,
+    "independently_queried_remote_storage": false,
+    "cleanup_audited": false
+  },
+  "simplification_opportunities": "NONE: R1的线性冗余已删除，当前不需再加/改模块或增加训练臂。",
+  "modernization_opportunities": "NONE",
+  "drift_warning": {
+    "status": "NONE",
+    "reason": "anchor逐字保持；限定本轮可证明范围不缩小总体三数据集、完整排序与资源合格SOTA目标。"
+  },
+  "inputs": [
+    {
+      "path": "C:/Users/gb/.trifusion_github_publish_22c3bee/refine-logs/selective_role_transport_v1/PROBLEM_ANCHOR.md",
+      "sha256": "6af436af04c2fa493683b3e15359c9dc71d0885236b81a33f00a88d20b5924e4",
+      "bytes": 1302,
+      "verified_this_round": true
+    },
+    {
+      "path": "C:/Users/gb/.trifusion_github_publish_22c3bee/refine-logs/selective_role_transport_v1/round-2-revised-proposal.md",
+      "sha256": "11d0f805430a56e27c9607a7c0a0a421e5ef0e8c744e122b6a669106abd2cad7",
+      "bytes": 10463,
+      "verified_this_round": true
+    }
+  ],
+  "expected_proposal_sha256": "11d0f805430a56e27c9607a7c0a0a421e5ef0e8c744e122b6a669106abd2cad7",
+  "prior_round": {
+    "weighted_composite": 6.55,
+    "verdict": "REVISE",
+    "not_retroactively_changed": true,
+    "artifact_hashes_recorded_in_round1": [
+      {
+        "path": "C:\\Users\\gb\\.codex_tmp\\independent_evidence_draft\\selective_transport_method_review860\\REVIEW_ROUND1.json",
+        "sha256": "a3bc7f5dcd0eb770326ab101367cb35948408bc3394234c09eadfa02bdbad4ab",
+        "bytes": 37780
+      },
+      {
+        "path": "C:\\Users\\gb\\.codex_tmp\\independent_evidence_draft\\selective_transport_method_review860\\round-1-review.md",
+        "sha256": "fa292b096244fcf8719158bdfbe0e13fc1249072aaa944095bc1c6c374f1e232",
+        "bytes": 26426
+      }
+    ]
+  },
+  "scope": {
+    "network_or_ssh": false,
+    "model_or_nn_execution": false,
+    "retrieval_or_metric_evaluation": false,
+    "sinkhorn_simulation": false,
+    "implementation": false,
+    "training_or_m0": false,
+    "weight_or_source_changes": false,
+    "proposal_or_round1_changes": false,
+    "shared_event_log_append": false,
+    "new_output_files_only": [
+      "REVIEW_ROUND2.json",
+      "round-2-review.md"
+    ]
+  },
+  "review_markdown": "# 第2轮最终方法评审：按槽位分配跨光谱传输质量\n\n**论文层面Verdict：REVISE；加权COMPOSITE：7.25/10。不是READY。**\n\n**窄机制对照：可解释，设计上可实施。未发现阻塞这一限定对照的控制、数学或协议错误。** 该判断只针对修订稿所限定的端到端比较，不是源码、CPU组件、真实M0或训练的PASS。实施前尚需锁定少量具体约定；训练启动前仍需实际完成工程检查并达到固定存储门。\n\n本次是同一agent的第2轮、也是max_rounds=2的最后一轮，不发起第3轮。R1的6.55/REVISE保留；R2按完整新稿独立重评，没有因为“已修改”而自动给9。CALIBRATION:none；review_independence=same-family；acceptance_status=provisional。请求gpt-6-astra/max，实际后端型号与实际effort未独立核实。\n\n## 输入、锚点与执行范围\n\n已完整读取round-2-revised-proposal.md，SHA256为11d0f805430a56e27c9607a7c0a0a421e5ef0e8c744e122b6a669106abd2cad7，与委派指定值吻合。PROBLEM_ANCHOR.md的SHA256仍为6af436af04c2fa493683b3e15359c9dc71d0885236b81a33f00a88d20b5924e4。原anchor全文包含于修订稿；章节末尾仅多一个CRLF分隔行，正文逐字相同。\n\n底线问题：在RGBNT201、RGBNT100、MSVR310上，从匹配公开CLIP/作者配方与RAW职责训练起点形成对未见身份有实际净增益的角色证据，最终超过同协议baseline并向注明资源和协议的强参照/SOTA推进。\n必须解决的瓶颈：分支活动、判别性或某些首位修复不能替代完整排序的净增益；已完成独立global与同容量控制显示多种额外读取/重建未获三集一致效用。新方案必须隔离具体作用路径，证明角色贡献而不是配方/容量/继承收益。\n本轮边界：不用旧失败重试、LR/gain/margin/seed/Triplet尺度搜索、N1失败重建、外部文本/掩码/DINO或测试更新；这些是本轮控制边界，不缩小总体SOTA目标。无功率温度动作，只26物理GPU0/1，25原I/O pending保持。\n成功条件：新两臂共享初始化、参数、作者batch/采样/优化/50轮/RAW职责/1536L2部署与全合法gallery过滤；预登记候选相对直接活动控制和原RAWsemantic ΔmAP≥0.5且Rank-1不下降，并单列对独立global结果。三集未全部成立不得写通用机制；项目推进线不是统计显著性，固定模型bootstrap不是训练seed。最终论文仍需强基线、机制必要性、完整流程多种子与资源合格SOTA证据。\n\n总体目标没有缩成工程通过、某一个数据集的成功或单seed过线。本轮只是其中一项窄机制假设。旧六端/15配对的负结果仍闭合；不在失败N1上叠N2，也不把上一候选无效当作新传播方案正确的证据。\n\n本轮只读取修订稿和anchor并作文字/哈希核对，沿用R1已经读取的本地源码观察；没有重新审计全部旧科学源、远端354/187依赖或新磁盘状态。未SSH、联网检索、执行NN/CPU模型、Sinkhorn数值模拟、检索评价、M0、训练、清理或实现。修订稿明确“尚未实现或训练”，本评审没有可用于签署工程PASS的新实现/回执。本文公式为解析核对，不是运行结果。\n\n## 七维评分\n\n| 维度 | 分数 | 权重 | 判断 |\n|---|---:|---:|---|\n| Problem Fidelity | 8/10 | 15% | 三数据集、完整排序净增益和最终同协议baseline/资源合格SOTA目标逐字保留；本轮窄问题更清楚，但尚无证据认定48-token隐式传播就是旧失败原因。 |\n| Method Specificity | 8/10 | 25% | 两矩阵、维度、FP32边缘、转置、两臂定义和RAW职责已具体；初始化/RNG、100迭代的更新单元和诊断统计需在实施前最后锁定。 |\n| Contribution Quality | 6/10 | 25% | 已收敛成一个可否证的slot质量分配命题；但标准部分OT接入的独特性与身份效用仍未知，没有足够新的机制洞见支撑主方法。 |\n| Frontier Leverage | 7/10 | 15% | 保持CLIP资源匹配且不叠外部teacher是合适选择；新机制对预训练表征的独特利用仍未建立，不需要为此加入潮流组件。 |\n| Feasibility | 8/10 | 10% | 参数/张量算术合理，已有训练合同可复用；实现、100迭代真实成本、组件/M0及存储门仍没有通过证据。 |\n| Validation Focus | 8/10 | 5% | uniform_mass控制修正了最重要的整体质量混杂，六端与旧控制复用足够克制；可解释为端到端策略对比，不能扩大到能量独立或真实对应。 |\n| Venue Readiness | 6/10 | 5% | 设计现在是可解释的探索，但尚未建立实际收益、机制必要性或足够独特的论文主张，不能由接口完整度推得论文READY。 |\n\n8×0.15 + 8×0.25 + 6×0.25 + 7×0.15 + 8×0.10 + 8×0.05 + 6×0.05 = **7.25/10**。\n\n**GAP：** CALIBRATION:none。本次仍未提供human-curated的3个known-good和3个known-bad提案，未自选或虚构标杆，因此不能声称7.25已由某组优秀/失败提案校准。相对于READY要求，R1最严重的对照归因缺口已经解决到本轮限定的粒度，Method Specificity与Validation Focus相应提高；剩余主要差距是Contribution Quality与Venue Readiness。现在可以清楚地问一个问题，不等于已经有足够独特的答案。仅身份任务监督下，slot质量是否有未见身份价值、这种作用是否超出已有消息门控思路，以及是否优于完整RAW/global参照，都还是未知；工程实现或单seed项目门通过也不能自动补齐这些差距。\n\n## 方法现在解决什么问题\n\n清楚且可检验的问题是：在保留同一条件分配Q、并在同一参数状态下保持每个对象/模态对总real质量的前提下，把这笔传输质量分给不同接收slot，是否比给每个接收slot相同质量更有未见身份检索效用。\n\n具体接口位于原Mamba按模态独立传播之后、原Mamba output LayerNorm之前。两臂共享private H、matching、原readout及RAW训练职责；只切换接收行质量的使用方式。这是一个传播门控的归因问题。它不解决或证明物理部件对应、遮挡定位、可校准置信度、来源模态独占的语义解耦，也不自动解释原RAW或已关闭N1为何失败。\n\nR2将“区域”收窄为学习slot、合并value/output、删除forced并保留六端，确实使主线更集中。改动减少的是混杂和冗余，没有因此产生一项新的几何监督来源或已经验证的创新。\n\n## 1. uniform_mass对照的解析核对：成立，但边界必须保留\n\n对固定样本、模态对和同一参数状态，取real块P，令r_i=Σ_jP_ij、Q_ij=softmax(L_i·)_j、r̄=(1/16)Σ_i r_i。依提案的log域定义，P=diag(r)Q。\n\n- 候选W_S=P。\n- 控制W_U=r̄Q。\n- Σ_ij(W_S)_ij=Σ_i r_i=16r̄=Σ_ij(W_U)_ij。\n\n对同一H，两者进入输出线性层之前的消息差为0.5·Σ_{n≠m}diag(r_mn−r̄_mn)Q_mnH_n。因此，固定状态下确实只替换了“各接收slot如何分配real质量”这一计算规则，而不是再引入一个learned标量、额外容量或额外损失。r̄应按每个样本/模态对的16个接收slot计算，不能跨batch或跨模态对求均值。\n\n反向由Lᵀ重新按接收行定义Q、r、r̄是正确的，不能转置已归一化的最终W_U。两矩阵的名义参数数目也正确：2×128×128=32,768。删除value保留了此前两层无中间非线性线性映射的前向表达族；优化参数化发生变化，但这是R2事前对新两臂共同采用的修改，不把R1原稿追改成两矩阵方案。\n\n这里的“可解释”是限定的：\n\n1. 同P下总real质量相同不等于消息向量范数相同，更不等于经过output投影、LayerNorm及readout后的能量相同。R2已经明确这一点。\n2. 独立训练后P、Q、r̄、H都可能不同。结果识别的是两种端到端训练/传播策略，不是把最终质量或能量强行固定后的直接因果效应。R2也已明确。\n3. W_U通常不再保留原P的每列容量或正反方向的转置互易关系。总质量相等不等于两臂最终W具有相同全部OT边缘。它们是行质量替换所产生的派生后果，并非需要再加第三臂修复的独立新增模块；但不能在论文里写成“两臂都保持相同最终行列预算/同样的传输互易性”。\n4. Q来自同一个有dustbin的求解器，uniform控制不是“无OT”“普通cross-attention”或“无对应读取”模型。两臂的正结果仍不能单独证明OT或Q的必要性。\n\n因此，对R2目前限定的“slot级质量分配策略相对同模态对统一衰减策略”命题，**没有控制设计阻塞**。不能把它重新扩大成“局部正确匹配优于错误匹配”或“已经排除一切能量解释”。\n\n## 2. 数学与训练路径：设计一致，尚无运行验收\n\nR2给出的17×17矩阵、真实边缘1/null边缘16和总质量32一致。log边缘真实为−log32、null为log16−log32，所以归一化求解得到总质量1的logΠ，再加log32得到用于P的L，是正确的尺度约定。只要实现按这个顺序，就不存在重复乘32的问题。100次、FP32、边缘残差1e−3及同P总质量atol/rtol1e−5均已预定，没有提出根据检索分数改容差。\n\n需要强调，边缘检查应针对**包含null在内的完整17维行/列**。real块P自身的行和r可以小于1，恰好是候选保留的自由度。不能把“真实边际残差”误实现成要求real块每行和等于1。按全文意图，这是一项实现命名澄清，不是本稿的矛盾或数学错误。\n\nfixed null=1现在仅作为事先固定的建模选择，已撤回“forced中可学习null必闲置”的错误理由。它仍没有校准含义。matching输出尺度可学习、仅有ID监督、重复slot以及近全拒绝都仍可能出现；R2接受这些结果并不加loss救失败，这是合适的边界。全低分合成输入只验证数学行为，不证明真实样本存在正确“无对应”标注。\n\nH自路径和peer路径的shape、共享三对分配、post-H zero output及1536维离线L2部署相容。只有output矩阵零初始化，matching采用非零常规初始化时，首步matching从新peer路径得到零梯度是预期现象；后续才可学习。累计8步活动而非首步所有矩阵活动的标准合理。活动证据必须有非零任务梯度和实际更新，不能只算weight decay的参数变化。现在这些只是需要执行的检查，不是已经通过的检查。\n\nRAW的global/role/head职责沿用原设计；新稿没有引入测试更新、额外持久头、对query-gallery联合推理或旧失败重试。新两臂初始化相同与新旧RAW48不等价已明确。CNN/T接口不变不意味着其训练后表征冻结，private H也仍含三模态global条件；这些源码边界继续适用。\n\n## 3. 是否还有阻塞的控制、数学或协议错误\n\n**未发现此类概念性阻塞。**\n\n该结论的对象是完整R2里的窄探索设计，不是对尚不存在运行证据的实现签字。以下状态必须分开：\n\n| 层级 | 本轮结论 |\n|---|---|\n| Problem Anchor | 保持，无实质漂移 |\n| 窄机制对照的逻辑 | 可解释，未发现阻塞错误 |\n| 方法接口的可实施性 | 设计上可实施；下述小项需在实现前固定 |\n| 实际源码/数值组件/真实M0 | 未实现或未提供本轮可验通过证据，不能写PASS |\n| 当前是否可启动完整队列 | 不能据此评审直接启动；实际工程与固定存储门尚需满足 |\n| 论文READY | 否，REVISE 7.25/10 |\n| 第3轮评审 | 不发起，本次两轮到限 |\n\n“无概念性阻塞”不是“仍然欠缺的检查都不重要”，也不是“整体科研Goal已经接近完成”。它只意味着不需要为了这个受限对照再改科学因素或增加训练臂。\n\n## 4. 实施前必须锁定的具体项\n\n这些可以直接落到新实现/预登记规格，不需要新的模型模块、超参搜索或第3轮方法评审：\n\n1. **初始化与计算图。** 将“matching普通初始化”写成具体构造/初始化函数，锁定新模块RNG隔离和旧state加载次序；同一个起点产生两个模式，保持原batch/增强序列。P、r、Q以及r̄均应按公式可微，uniform的r̄不能新增detach。原role输入detach边界继续保持。无需发明另一套初始化或增加可学习倍率。\n2. **Sinkhorn的完整更新约定与固定fixture。** 明确100迭代指多少次完整row/column更新对、u/v初值、logsumexp轴和统一FP32边界；用完整17行/列检查边缘，用real块检查r≤1+1e−3。把组件fixture的具体有限数值、toy活动目标和seed事前固定，不通过后不能改成刚好可过的fixture或容差。若借用已有明确函数，就引用该函数/锁定版本，不加fallback或动态迭代。\n3. **诊断统计的精确定义。** “接收列质量集中度”要改清楚：接收方是行、来源方是列。若检查条件Q向来源列集中，定义max_j(Σ_iQ_ij/16)；不要与P的列容量混为一谈。每个样本/模态对先算slot间r的离散程度再汇总，才能区分“不同样本门控不同”与“同一样本内slot分配不同”。peer/self定义为pre-LN的||message_output(J_m)||/||H_m||，最终修正/global应说明是否包含实际gain；用于融合影响解释时应包含gain。它们是描述统计，不是能量因果对照。\n\n上述第1项未明确“detach”的现稿按普通可微公式可合理实现，并不存在本稿要求detach的冲突；第2项边缘含null可由已有公式推出；第3项不改变方法，只防止日志命名造成错误解释。这些是实施规格的最后固定，不是要求重新发明一个科学方案。\n\n## 5. 完整训练前仍未满足的实际门\n\n当前稿已经明确无实现、无组件/M0结果，不能由纸面公式正确或源码尚不存在推断任何工程检查通过。先按既有逐端规则实际完成新两臂初始化对齐、组件与真实author-batch 8M0、严格重载、参数/BN/梯度所有权和来源核验；失败保留，不延长M0或改变配方救门。前述条目是方案要求，不是本评审执行过的动作。\n\n存储也有明确的已报告缺口。按稿中快照，预算7×384MiB+2GiB=4,966,055,936B，报告free=4,775,702,528B，差190,353,408B（约181.54MiB）。这只是对文本数字的算术核对，不是新的远端磁盘查询，也不是对7个权重清理或354/187 SHA保持的独立审计。尚未达到固定门就不启动的规则正确；本评审不删除文件或决定下一项清理对象。实际需要新的有效容量证据，而不能据文档中“已清理”字样直接放行。\n\n旧RAW/global控制复用、三集完整50轮、一份mAP-best的全部CMC、全合法gallery、15配对一次完整报告及官方集已消费的披露都保持一致。+0.5 mAP/R1不降仅是项目门，不能换成显著性或训练seed稳定性；不得用只有某集或CMC的正结果推广三集。这些限制没有因方法更清楚而消失。\n\n## 6. 仍低于7分的维度：不是更多模块能修复的缺口\n\n| 维度 | 具体弱点 | 具体方法/主张处理 | 优先级 |\n|---|---|---|---|\n| Contribution Quality（6） | 虽然对照现在明确，但主张仍可能只是对学习slot的任务门控；没有证据表明标准partial OT适配提出了新的跨光谱机制，或该slot结构确实有用。 | 固定唯一作用接口为post-private-Mamba/pre-output-LN的质量分配，不把private拆分、Q求解器和三个角色重复列为贡献。保留“若slot对uniform及RAW/global没有一致净效用就撤回此Transport主机制”的删除判据；不能用容量、global继承或单个修复案例顶替它。 | IMPORTANT |\n| Venue Readiness（6） | 当前足以做一个受限科学比较，不足以说明其答案为何具有顶会贡献；无性能或必要性结果，更没有完整流程多种子/强参照/SOTA证据。 | 论文只围绕上述一个可否证接口命题组织。若后续阳性仅支持整体幅度或既有门控的任务迁移，将其保留为控制/负结果，不强行做主方法；若有稳定净收益，再按已声明条件补核心必要性与最终证据。没有一个需要现在加入的新模块能代替这一步。 | IMPORTANT |\n\n这两项是论文层面的实质研究不足，不是窄对照的数学错误。不能通过把“可实现”“无阻塞”改称“READY”解决，也不能承诺完成下一个工程阶段后分数必然≥9。\n\n## Simplification Opportunities\n\n**NONE（本轮无需再加或改模块）。** R1指出的value/output冗余已删除；三对分配转置复用、两矩阵、唯一零出口和六端对照已足够克制。保持现有删除结果，不再为了评审分数加入auxloss、能量归一化器、teacher或第三臂。现有普通attention/self-only必要性问题仍未解决，但可按主结果成立后的原条件另行登记，而非把全部论文实验塞进本轮。\n\n## Modernization Opportunities\n\n**NONE。** 在本次资源一致性约束下复用CLIP是合理的，不需要新增文本、DINO、Diffusion或RL。没有证据说明这些工具会更直接解决当前唯一问题；保持克制也不等于自动具有前沿新颖性。\n\n## Drift Warning\n\n**NONE。** anchor全文和整体三数据集/完整排序/强baseline/资源合格SOTA目标保持。本轮把“能验证什么”改成学习slot的任务门控，是纠正主张边界，不是缩小总体目标。以后若把一次工程通过、一个数据集或单seed项目门当作最终目标，才构成实质漂移。当前稿没有这样做。\n\n## 最终判定与终止轮次\n\n**REVISE，7.25/10；两轮结束。** R2成功把原来主要是幅度差异的对比改成一个可解释的窄策略比较，并降低了参数冗余。未发现阻塞这一限定对照的控制、数学或协议错误；把实施约定锁定后，设计可用于实现与预检查。实际源码、M0、资源合格和训练成绩仍未验证，论文机制深度与价值也仍未知。因此不给论文READY，不追加第3轮，不实现、不启动、不修改旧稿或R1。\n",
+  "final_status": "ROUND_LIMIT_REACHED_WITH_PAPER_REVISE_AND_NO_IDENTIFIED_NARROW_CONTROL_MATH_PROTOCOL_BLOCKER"
+}
+
