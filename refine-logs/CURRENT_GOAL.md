@@ -1,6 +1,6 @@
 # TriFusion 当前 Goal 执行约束
 
-更新：2026-10-05 §41.855：五formal/250轮12262步/12可用配对闭合，推进0/12；固定诊断四接受＋MSVR一原失败数组CPU描述，100首次诊断parent/observer已退出0，零重试/训练更新。所有当前角色未同时改善同模型global的mAP/R1，本轮不晋级；待登记唯一新科学干预。退役6已消费历史gallery缓存514949895B、free约3.01GB，best/当前依赖保留。仅26GPU0/1，无功率温度动作，2025 I/O pending。Goal ACTIVE / UNMET。
+更新：2026-10-05 §41.856。下一项为近似同容量语义来源控制：只新增三端，复用封存raw结果，作者raw目标不变。CPU组件已通过，真实初始化/M0/50轮待首次执行。仅26GPU0/1、无功率温度动作；2025 I/O pending；Goal ACTIVE / UNMET。
 
 ## 总目标与贡献边界
 
@@ -60,3 +60,6 @@ refine-logs/deployment_metric_role_v1/EXPERIMENT_PLAN.md与SOURCE_SCOPE.json。s
 
 
 §41.855当前边界：本节之前所有启动/等待文字按对应历史读取。当前五formal和四接受fixed诊断＋一失败数组描述已闭合，GPU队列/observer均已退出，下一科学干预未登记或启动；不重新执行原报告/NN/退役操作。
+
+
+§41.856 当前唯一下一项：refine-logs/semantic_capacity_control_v1，source345/raw187。先发布固定来源，再首次prepare/实际批次初始化/M0/full50；只三端，不重跑原raw/metric阶段或旧NN诊断。历史正文中的已结束阶段待办不恢复。

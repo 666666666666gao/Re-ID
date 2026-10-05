@@ -17352,3 +17352,22 @@ MSVR失败前已保存的三数组只做了一次CPU描述，09:52:14完成，�
 新诊断数组占用使磁盘降到约2.50GB；依据用户既有清理授权，只退役六份已消费历史 `results/global_task_role_fixed_best_20261004_v1/*/gallery_features.pt`，每份先核原DIAGNOSIS与实存SHA/bytes，且不属于当前271输入。10:13:32实际退役514,949,895字节，free2,496,122,880→3,011,088,384；仅删除六个明确文件，不递归。所有formal best、初始化、作者权重、当前诊断数组、原evaluation distances、旧query和DIAGNOSIS保留。旧历史诊断的gallery二进制重放已退役，不能再调用要求其仍存在的旧验证器；这是保存边界，不改变旧指标。两项本地准备错误发生在remote action前，单独记录。
 
 本轮零新训练权重、零优化更新；所有本轮GPU producer/observer/intake已终态，收齐后才进行本次发布。归档 `logs/deployment_metric_five_diagnostic_closure855_20261005/`。只26 GPU0/1，无功率温度动作；2025 I/O pending仍不探测。主Goal ACTIVE / UNMET，三个新机制和强参照/完整流程稳定性仍未达到。
+
+
+## 41.856 登记近似同容量语义来源控制：只新增三端，复用raw正式结果；CPU检查完成，尚无真实M0或新检索成绩
+
+§855已收齐五个可用正式端及四接受/一失败数组描述，joint-L2角色目标未晋级；不重跑失败、不扫描LR/gain/margin/seed，不堆N2/N3救分。下一项是前期一直缺少的主动参与计算的语义容量控制，用已有raw global-task/role分工目标与原native比较，回答额外容量是否足以解释新增读取器，不当成又一个论文主模块。
+
+原128-token语义读取、16区域、512候选额外Q/K/V、零输出残差和CNN→Transformer→Mamba不变。新支路的输入是当前CNN角色的128个语义patch，经128→202→202→128 MLP再插值到512位置，不是原生图像、不新增高分辨率信息。MLP93,048参数对原CNN stem93,248，完整reader159,096对159,296，实际同为14张量，差200约0.126%。诚实称近似同容量，不挂空闲参数凑精确值。两种来源的计算、源分辨率、梯度传播及分布仍不同，不能作唯一因果归因。宽度选择是静态预算计算，不用官方分数搜宽度。
+
+代码仅五个新文件：semantic_capacity_evidence.py、run/check/queue/report_semantic_capacity.py；旧339科学源码未改。入口复用内部native factory slot但initializer/condition/manifest显式绑定semantic_capacity来源，报告不得标成原生图像实验。沿用作者raw global与fused角色两个目标、角色输入stop-gradient、完整author batch和两卡分段；没有新损失、配方、margin/gain、测试时更新或额外数据。新M0使用实际159,096参数预算而保留原8更新、全参数非零支持、BN8、visual/camera变化、优化器所有权与重载容差，不是修改旧失败门。
+
+10:30:37仅查询26物理GPU0/1显存，两卡各18MiB，无本项目活动NN；不查询/设置功率温度，25仍I/O pending不探测。10:39:51远端339源与raw187依赖SHA全部保持，两个方向CPU合成组件的初始零出口、8次累计有限非零梯度、14张量真实变化及组件重载通过。仅工程组件证据，不是正式M0，更非识别贡献。真实初始化待执行，将与封存旧native初始化摘要匹配、除stem六张量外逐项比较state，并在实际完整author batch检查raw/L2/global/logits相同，然后各数据集自己的8步M0、新鲜50轮、第一次严格评价。
+
+本轮只新增201→MSVR→100三端，复用logs/global_task_role_v1_20261004_824的raw semantic/native与独立global-only；控制seal9行187文件，不访问已退役探针。固定seed42/50轮/同mAP-best全指标，报告全部九个source/control配对、实际训练batch顺序逐字节匹配、首位修复与新增错误、身份收益和完整轨迹/成本。推进线仍ΔmAP≥0.5且R1不降，不代替统计显著性；近容量控制若相近或更好，原生内容必要性主张就不成立，两者均不胜semantic/global也不能再靠堆模块宣布有效。
+
+空间按三份best+最多一份live probe每份384MiB及2GiB余量登记。10:38:07清理四个已接受normalized诊断的12个消费完query/gallery/diagnostic-distance缓存958,866,944B；10:41:29另清理六个消费完raw诊断query缓存154,608,735B。每项先核DIAGNOSIS状态、SHA/bytes及不在新187依赖，保留所有必要best、原正式评价距离、DIAGNOSIS及MSVR原失败数组。旧数组重验路径已退役，不能再调用依赖它们的验证器。其他项目仍写盘，实际余量会变，不能把一次3.856GB观测当恒定。没有删除权重或改任何正式结果。
+
+准备中的只读错误及首次清理缺键都发生在真实删除前，原包保留，纠正实际路径/文件名后第一次删除完成；本地AST默认GBK读取失败也无remote action，显式UTF8后通过。六个准备证据包和helper归档logs/semantic_capacity_preparation856_20261005，源码自审明确是self review，未使用子代理或跨家族复现。当前只有CPU PASS和新计划，真实prepare/pair/M0/full50/检索报告尚未执行。源345和raw187控制固定，发布完成后才首次启动，NN活动期间不做远端checkout/sparse更新。
+
+仅26GPU0/1，无功率温度动作；2025 pending不复探。总Goal ACTIVE / UNMET，同协议强baseline/SOTA、多种子与机制必要性均未完成。

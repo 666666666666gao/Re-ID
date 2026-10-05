@@ -1760,3 +1760,15 @@
 | 2026-10-04T12:01:43.471394+08:00 | /experiment-plan | refine-logs/role_input_detach_fixed_best_diagnosis_v1/SOURCE_SCOPE.json | implementation | 读取detach六端结束后的固定best分解；PREPARED_NOT_EXECUTED，324源码范围已登记，原322以远端精确SHA为准，输入封存及GPU执行待全六端和原一次CPU报告完成 |
 
 | 2026-10-04T12:01:43.471394+08:00 | /experiment-plan | refine-logs/role_input_detach_fixed_best_diagnosis_v1/LOCAL_PREPARATION_FAILURE.json | implementation | 读取detach六端结束后的固定best分解；PREPARED_NOT_EXECUTED，324源码范围已登记，原322以远端精确SHA为准，输入封存及GPU执行待全六端和原一次CPU报告完成 |
+
+| 2026-10-05T10:44:48.865582+08:00 | /experiment-plan | refine-logs/semantic_capacity_control_v1/EXPERIMENT_PLAN.md | implementation | 近似同容量语义来源三端计划，CPU组件通过；无真实M0/正式成绩 |
+
+| 2026-10-05T10:44:48.865582+08:00 | /experiment-plan | refine-logs/semantic_capacity_control_v1/EXPERIMENT_PLAN_20261005_104448.md | implementation | 近似同容量语义来源三端计划，CPU组件通过；无真实M0/正式成绩 |
+
+| 2026-10-05T10:44:48.865582+08:00 | /experiment-plan | refine-logs/semantic_capacity_control_v1/EXPERIMENT_TRACKER_20261005_104448.md | implementation | 近似同容量语义来源三端计划，CPU组件通过；无真实M0/正式成绩 |
+
+| 2026-10-05T10:44:48.865582+08:00 | /experiment-plan | refine-logs/semantic_capacity_control_v1/EXPERIMENT_TRACKER.md | implementation | 近似同容量语义来源三端计划，CPU组件通过；无真实M0/正式成绩 |
+
+| 2026-10-05T10:44:48.865582+08:00 | /experiment-plan | refine-logs/semantic_capacity_control_v1/SOURCE_REVIEW.json | implementation | 近似同容量语义来源三端计划，CPU组件通过；无真实M0/正式成绩 |
+
+| 2026-10-05T10:44:48.865582+08:00 | /experiment-plan | refine-logs/semantic_capacity_control_v1/SOURCE_SCOPE.json | implementation | 近似同容量语义来源三端计划，CPU组件通过；无真实M0/正式成绩 |
