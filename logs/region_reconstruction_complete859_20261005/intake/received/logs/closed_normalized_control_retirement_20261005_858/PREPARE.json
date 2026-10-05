@@ -1,0 +1,362 @@
+{
+  "at": "2026-10-05T20:45:31.497594+08:00",
+  "rows": [
+    {
+      "path": "/data/gaob/Re-ID/Trifusion/trained-model/training_feature_scale_20261003_v2_full_normalized_RGBNT201/best_map.pth",
+      "bytes": 346781649,
+      "sha256": "06be6f6680c8563476f5d6049811521ec646d5caa1adcf638260c3d74b653dcc",
+      "metrics": {
+        "mAP": 62.580551571472775,
+        "Rank-1": 62.44019269943237,
+        "Rank-5": 75.83732008934021,
+        "Rank-10": 83.01435112953186
+      },
+      "retained_winner": {
+        "dataset": "RGBNT201",
+        "variant": "global_only",
+        "status": "VERIFIED_COMPLETE",
+        "run_dir": "/data/gaob/Re-ID/Trifusion/trained-model/native_research_v6_20261003_794_full_global_only_RGBNT201",
+        "m0_dir": "/data/gaob/Re-ID/Trifusion/trained-model/native_research_v6_20261003_794_m0_global_only_RGBNT201",
+        "metrics": {
+          "mAP": 74.29666357468751,
+          "Rank-1": 78.94737124443054,
+          "Rank-5": 88.27751278877258,
+          "Rank-10": 91.86602830886841
+        },
+        "best_epoch": 8,
+        "initializer": {
+          "architecture": "trifusion-independent-native-research-v6",
+          "dataset": "RGBNT201",
+          "variant": "global_only",
+          "recipe": "global_only",
+          "foundation_option": "author",
+          "seed": 42,
+          "public_clip_sha256": "5806e77cd80f8b59890b7e101eabd078d9fb84e6937f9e85e4ecb61988df416f",
+          "protocol_sha256": "b2409c2d992d04adcf0c78354d306afd6af7ae9507738fd4e83de480e9a9b90f",
+          "author_source_commit": "cd1b0a672d1fe642e7608731cb4899a19dda7d51",
+          "visual_initial_sha256": "e989d3d5cf05e26109cd62aba6752ad1151b70c06dc14324703826fecbb9383f",
+          "camera_initial_sha256": "71161723dfbaee1cbbcf2f07d2065187b0fe05ccc0b1afd25f62e16e48d85ec1",
+          "shared_initializer_sha256": {
+            "backbone": "0baf5860672e4522ee1a6de815ac2e1443d9d2937e2f757aa4c227e06508afb8",
+            "neck": "06efe49412cdf6c9d8d9162b9394e4bc49329d169906cecc2b6c4784bcdb166e",
+            "classifier": "22bd8be47d0a37e4afd7689789e40999fe33dd5ee5b8e338bd920bd6678fbf47"
+          },
+          "initial_model_state_sha256": "de94e0dac3d31fad28f176e413a961d1eb0b6f2d7888f7700ecf67fb7e5ad24e",
+          "trainable_parameters": 87313728,
+          "trainable_parameter_tensors": 209,
+          "batch_size": 64,
+          "num_instances": 8,
+          "head_names": [
+            [
+              "bottleneck",
+              "classifier"
+            ]
+          ],
+          "cfg_yaml": "DATALOADER:\n  NUM_INSTANCE: 8\n  NUM_WORKERS: 4\n  SAMPLER: softmax_triplet\nDATASETS:\n  NAMES: RGBNT201\n  ROOT_DIR: ..\nINPUT:\n  PADDING: 10\n  PIXEL_MEAN:\n  - 0.5\n  - 0.5\n  - 0.5\n  PIXEL_STD:\n  - 0.5\n  - 0.5\n  - 0.5\n  PROB: 0.5\n  RE_PROB: 0.5\n  SIZE_TEST:\n  - 256\n  - 128\n  SIZE_TRAIN:\n  - 256\n  - 128\nMODEL:\n  ADAPTER: false\n  ATT_DROP_RATE: 0.0\n  DEVICE: cuda\n  DEVICE_ID: '0'\n  DIRECT: 1\n  DIST_TRAIN: false\n  DROP_OUT: 0.0\n  DROP_PATH: 0.1\n  FROZEN: false\n  Gram_Loss_weight: 0.2\n  ID_LOSS_TYPE: softmax\n  ID_LOSS_WEIGHT: 0.25\n  IF_LABELSMOOTH: 'on'\n  IF_WITH_CENTER: 'no'\n  METRIC_LOSS_TYPE: triplet\n  MoE_Loss_weight: 0.1\n  NAME: Signal\n  NECK: bnneck\n  NO_MARGIN: true\n  PAT_Loss_weight: 0.2\n  PRETRAIN_PATH_T: /data/gaob/Re-ID/Trifusion/pertrained-model/ViT-B-16.pt\n  PROMPT: false\n  SIE_CAMERA: true\n  SIE_COE: 1.0\n  SIE_VIEW: false\n  STRIDE_SIZE:\n  - 16\n  - 16\n  TOPK: 80\n  TRANSFORMER_TYPE: ViT-B-16\n  TRIPLET_LOSS_WEIGHT: 1.0\n  USE_A: false\n  USE_B: false\n  stageName: together_CLS_Patch\nOUTPUT_DIR: .\nSOLVER:\n  BASE_LR: 0.00035\n  BIAS_LR_FACTOR: 2\n  CENTER_LOSS_WEIGHT: 0.0005\n  CENTER_LR: 0.5\n  CHECKPOINT_PERIOD: 50\n  CLUSTER_MARGIN: 0.3\n  COSINE_MARGIN: 0.5\n  COSINE_SCALE: 30\n  EVAL_PERIOD: 1\n  GAMMA: 0.1\n  IMS_PER_BATCH: 64\n  LARGE_FC_LR: false\n  LOG_PERIOD: 10\n  MARGIN: 0.3\n  MAX_EPOCHS: 50\n  MOMENTUM: 0.9\n  OPTIMIZER_NAME: Adam\n  RANGE_ALPHA: 0\n  RANGE_BETA: 1\n  RANGE_K: 2\n  RANGE_LOSS_WEIGHT: 1\n  RANGE_MARGIN: 0.3\n  SEED: 42\n  STEPS:\n  - 40\n  - 70\n  WARMUP_FACTOR: 0.01\n  WARMUP_ITERS: 10\n  WARMUP_METHOD: linear\n  WEIGHT_DECAY: 0.0001\n  WEIGHT_DECAY_BIAS: 0.0001\nTEST:\n  EVAL: false\n  FEAT_NORM: 'yes'\n  IMS_PER_BATCH: 128\n  MISS: nothing\n  NECK_FEAT: before\n  RE_RANKING: 'no'\n  WEIGHT: ''\nckpt_save_path: RGBNT201_all\nckpt_test_path: test_RNT201\n",
+          "entry_sha256": "b48725622371fc6d9671c464ce97252e2e06eba465e213ce221d84c798e52cc2",
+          "scope": "Fresh public CLIP/camera/heads, shared adaptation and optional semantic/native roles. No ReID weights, SIM, AlignM, teacher, new loss or external data.",
+          "visual_placement": "single_process_original_full_batch_first6_cuda1_last6_and_heads_cuda0",
+          "parameter_placement": {
+            "cuda:1": {
+              "parameters": 43523520,
+              "trainable_parameters": 43523520,
+              "parameter_bytes": 174094080,
+              "gradient_adam_bytes_if_fp32": 522282240
+            },
+            "cuda:0": {
+              "parameters": 44057472,
+              "trainable_parameters": 43790208,
+              "parameter_bytes": 176229888,
+              "gradient_adam_bytes_if_fp32": 525482496
+            }
+          }
+        },
+        "checkpoint_sha256": "4eaeaf23341edf36f07b0c88ad39dbd9febcbb0f686c24ce9ea76d35c6d421fd",
+        "distance_sha256": "b03c4ec16fa8f384b3d2914d5e3a01f402c8ee005ab0a8cdb8cef4184ea86e9f",
+        "receipt_sha256": "d9a397682dc7115cc4542385a8f000bded59d1e468d6c58a9ba9ec58a6d8a148"
+      },
+      "preserved_artifact_sha256": {
+        "/data/gaob/Re-ID/Trifusion/trained-model/training_feature_scale_20261003_v2_full_normalized_RGBNT201/best_epoch_distances.pt": "18f30ffcaa41f7162919ee4b91ad5a03da65d5579063fa88bff77ba25601347a",
+        "/data/gaob/Re-ID/Trifusion/trained-model/training_feature_scale_20261003_v2_full_normalized_RGBNT201/training.json": "03dfdb7428cde9723ef827d88ed5df931de1da51d6c3dcd51765f14edd022323",
+        "/data/gaob/Re-ID/Trifusion/trained-model/training_feature_scale_20261003_v2_full_normalized_RGBNT201/training_steps.jsonl": "05b70edc9106dabdddc63162fb4d599502144529e9a0dd2c8d302d9857d580f8",
+        "/data/gaob/Re-ID/Trifusion/trained-model/training_feature_scale_20261003_v2_full_normalized_RGBNT201/training_batch_order.jsonl": "e446282654c74949fb594856631b246642593b73229331c30b555418a0358993",
+        "/data/gaob/Re-ID/Trifusion/trained-model/training_feature_scale_20261003_v2_full_normalized_RGBNT201/official_metrics.json": "39c89408ac4ccc8ab729ffc252ef4a6f61a8b9546b2a5d34b85a0596caf7cc47",
+        "/data/gaob/Re-ID/Trifusion/trained-model/training_feature_scale_20261003_v2_full_normalized_RGBNT201/last_epoch_distances.pt": "c19bfc562897652d6a1e9c1cd5b9341cc0e3337519f4846639c2adbb2f94214c",
+        "/data/gaob/Re-ID/Trifusion/trained-model/training_feature_scale_20261003_v2_full_normalized_RGBNT201/official_distances.pt": "fabf9a11fca22d43773a2c0d3ad2d9ae96b4a01dab01d048c9b123e315283305"
+      }
+    },
+    {
+      "path": "/data/gaob/Re-ID/Trifusion/trained-model/metric_feature_scale_20261003_v1_full_normalized_RGBNT201/best_map.pth",
+      "bytes": 346781649,
+      "sha256": "22d3d2a1d242af0b822b4070b995e1fab65148d963b79eab183e01dd90f5c076",
+      "metrics": {
+        "mAP": 62.580551571472775,
+        "Rank-1": 62.44019269943237,
+        "Rank-5": 75.83732008934021,
+        "Rank-10": 83.01435112953186
+      },
+      "retained_winner": {
+        "dataset": "RGBNT201",
+        "variant": "global_only",
+        "status": "VERIFIED_COMPLETE",
+        "run_dir": "/data/gaob/Re-ID/Trifusion/trained-model/native_research_v6_20261003_794_full_global_only_RGBNT201",
+        "m0_dir": "/data/gaob/Re-ID/Trifusion/trained-model/native_research_v6_20261003_794_m0_global_only_RGBNT201",
+        "metrics": {
+          "mAP": 74.29666357468751,
+          "Rank-1": 78.94737124443054,
+          "Rank-5": 88.27751278877258,
+          "Rank-10": 91.86602830886841
+        },
+        "best_epoch": 8,
+        "initializer": {
+          "architecture": "trifusion-independent-native-research-v6",
+          "dataset": "RGBNT201",
+          "variant": "global_only",
+          "recipe": "global_only",
+          "foundation_option": "author",
+          "seed": 42,
+          "public_clip_sha256": "5806e77cd80f8b59890b7e101eabd078d9fb84e6937f9e85e4ecb61988df416f",
+          "protocol_sha256": "b2409c2d992d04adcf0c78354d306afd6af7ae9507738fd4e83de480e9a9b90f",
+          "author_source_commit": "cd1b0a672d1fe642e7608731cb4899a19dda7d51",
+          "visual_initial_sha256": "e989d3d5cf05e26109cd62aba6752ad1151b70c06dc14324703826fecbb9383f",
+          "camera_initial_sha256": "71161723dfbaee1cbbcf2f07d2065187b0fe05ccc0b1afd25f62e16e48d85ec1",
+          "shared_initializer_sha256": {
+            "backbone": "0baf5860672e4522ee1a6de815ac2e1443d9d2937e2f757aa4c227e06508afb8",
+            "neck": "06efe49412cdf6c9d8d9162b9394e4bc49329d169906cecc2b6c4784bcdb166e",
+            "classifier": "22bd8be47d0a37e4afd7689789e40999fe33dd5ee5b8e338bd920bd6678fbf47"
+          },
+          "initial_model_state_sha256": "de94e0dac3d31fad28f176e413a961d1eb0b6f2d7888f7700ecf67fb7e5ad24e",
+          "trainable_parameters": 87313728,
+          "trainable_parameter_tensors": 209,
+          "batch_size": 64,
+          "num_instances": 8,
+          "head_names": [
+            [
+              "bottleneck",
+              "classifier"
+            ]
+          ],
+          "cfg_yaml": "DATALOADER:\n  NUM_INSTANCE: 8\n  NUM_WORKERS: 4\n  SAMPLER: softmax_triplet\nDATASETS:\n  NAMES: RGBNT201\n  ROOT_DIR: ..\nINPUT:\n  PADDING: 10\n  PIXEL_MEAN:\n  - 0.5\n  - 0.5\n  - 0.5\n  PIXEL_STD:\n  - 0.5\n  - 0.5\n  - 0.5\n  PROB: 0.5\n  RE_PROB: 0.5\n  SIZE_TEST:\n  - 256\n  - 128\n  SIZE_TRAIN:\n  - 256\n  - 128\nMODEL:\n  ADAPTER: false\n  ATT_DROP_RATE: 0.0\n  DEVICE: cuda\n  DEVICE_ID: '0'\n  DIRECT: 1\n  DIST_TRAIN: false\n  DROP_OUT: 0.0\n  DROP_PATH: 0.1\n  FROZEN: false\n  Gram_Loss_weight: 0.2\n  ID_LOSS_TYPE: softmax\n  ID_LOSS_WEIGHT: 0.25\n  IF_LABELSMOOTH: 'on'\n  IF_WITH_CENTER: 'no'\n  METRIC_LOSS_TYPE: triplet\n  MoE_Loss_weight: 0.1\n  NAME: Signal\n  NECK: bnneck\n  NO_MARGIN: true\n  PAT_Loss_weight: 0.2\n  PRETRAIN_PATH_T: /data/gaob/Re-ID/Trifusion/pertrained-model/ViT-B-16.pt\n  PROMPT: false\n  SIE_CAMERA: true\n  SIE_COE: 1.0\n  SIE_VIEW: false\n  STRIDE_SIZE:\n  - 16\n  - 16\n  TOPK: 80\n  TRANSFORMER_TYPE: ViT-B-16\n  TRIPLET_LOSS_WEIGHT: 1.0\n  USE_A: false\n  USE_B: false\n  stageName: together_CLS_Patch\nOUTPUT_DIR: .\nSOLVER:\n  BASE_LR: 0.00035\n  BIAS_LR_FACTOR: 2\n  CENTER_LOSS_WEIGHT: 0.0005\n  CENTER_LR: 0.5\n  CHECKPOINT_PERIOD: 50\n  CLUSTER_MARGIN: 0.3\n  COSINE_MARGIN: 0.5\n  COSINE_SCALE: 30\n  EVAL_PERIOD: 1\n  GAMMA: 0.1\n  IMS_PER_BATCH: 64\n  LARGE_FC_LR: false\n  LOG_PERIOD: 10\n  MARGIN: 0.3\n  MAX_EPOCHS: 50\n  MOMENTUM: 0.9\n  OPTIMIZER_NAME: Adam\n  RANGE_ALPHA: 0\n  RANGE_BETA: 1\n  RANGE_K: 2\n  RANGE_LOSS_WEIGHT: 1\n  RANGE_MARGIN: 0.3\n  SEED: 42\n  STEPS:\n  - 40\n  - 70\n  WARMUP_FACTOR: 0.01\n  WARMUP_ITERS: 10\n  WARMUP_METHOD: linear\n  WEIGHT_DECAY: 0.0001\n  WEIGHT_DECAY_BIAS: 0.0001\nTEST:\n  EVAL: false\n  FEAT_NORM: 'yes'\n  IMS_PER_BATCH: 128\n  MISS: nothing\n  NECK_FEAT: before\n  RE_RANKING: 'no'\n  WEIGHT: ''\nckpt_save_path: RGBNT201_all\nckpt_test_path: test_RNT201\n",
+          "entry_sha256": "b48725622371fc6d9671c464ce97252e2e06eba465e213ce221d84c798e52cc2",
+          "scope": "Fresh public CLIP/camera/heads, shared adaptation and optional semantic/native roles. No ReID weights, SIM, AlignM, teacher, new loss or external data.",
+          "visual_placement": "single_process_original_full_batch_first6_cuda1_last6_and_heads_cuda0",
+          "parameter_placement": {
+            "cuda:1": {
+              "parameters": 43523520,
+              "trainable_parameters": 43523520,
+              "parameter_bytes": 174094080,
+              "gradient_adam_bytes_if_fp32": 522282240
+            },
+            "cuda:0": {
+              "parameters": 44057472,
+              "trainable_parameters": 43790208,
+              "parameter_bytes": 176229888,
+              "gradient_adam_bytes_if_fp32": 525482496
+            }
+          }
+        },
+        "checkpoint_sha256": "4eaeaf23341edf36f07b0c88ad39dbd9febcbb0f686c24ce9ea76d35c6d421fd",
+        "distance_sha256": "b03c4ec16fa8f384b3d2914d5e3a01f402c8ee005ab0a8cdb8cef4184ea86e9f",
+        "receipt_sha256": "d9a397682dc7115cc4542385a8f000bded59d1e468d6c58a9ba9ec58a6d8a148"
+      },
+      "preserved_artifact_sha256": {
+        "/data/gaob/Re-ID/Trifusion/trained-model/metric_feature_scale_20261003_v1_full_normalized_RGBNT201/best_epoch_distances.pt": "18f30ffcaa41f7162919ee4b91ad5a03da65d5579063fa88bff77ba25601347a",
+        "/data/gaob/Re-ID/Trifusion/trained-model/metric_feature_scale_20261003_v1_full_normalized_RGBNT201/training.json": "7f8a6e319fb8f8a87c7bfa6f05c58e9cef7ef9f9536b79525c0c5cdf083e8fde",
+        "/data/gaob/Re-ID/Trifusion/trained-model/metric_feature_scale_20261003_v1_full_normalized_RGBNT201/training_steps.jsonl": "f1c5d918ac42872197849df2b4f962daa35dbf1d61c5214fd6da7dc82932ff9d",
+        "/data/gaob/Re-ID/Trifusion/trained-model/metric_feature_scale_20261003_v1_full_normalized_RGBNT201/training_batch_order.jsonl": "e446282654c74949fb594856631b246642593b73229331c30b555418a0358993",
+        "/data/gaob/Re-ID/Trifusion/trained-model/metric_feature_scale_20261003_v1_full_normalized_RGBNT201/official_metrics.json": "fcaa6d8068bed029879809851aaa26183ca3bdc6b6f057c65aab5aa1c49bd58e",
+        "/data/gaob/Re-ID/Trifusion/trained-model/metric_feature_scale_20261003_v1_full_normalized_RGBNT201/last_epoch_distances.pt": "c19bfc562897652d6a1e9c1cd5b9341cc0e3337519f4846639c2adbb2f94214c",
+        "/data/gaob/Re-ID/Trifusion/trained-model/metric_feature_scale_20261003_v1_full_normalized_RGBNT201/official_distances.pt": "fabf9a11fca22d43773a2c0d3ad2d9ae96b4a01dab01d048c9b123e315283305"
+      }
+    },
+    {
+      "path": "/data/gaob/Re-ID/Trifusion/trained-model/metric_feature_scale_20261003_v1_full_normalized_RGBNT100/best_map.pth",
+      "bytes": 345310725,
+      "sha256": "89ef0e97deaf739fca364965a933bbb2a0ebe45b26c48c44df8c7da8ac89d1dc",
+      "metrics": {
+        "mAP": 77.58429184381957,
+        "Rank-1": 94.1690981388092,
+        "Rank-5": 95.33527493476868,
+        "Rank-10": 95.86005806922913
+      },
+      "retained_winner": {
+        "dataset": "RGBNT100",
+        "variant": "global_only",
+        "status": "VERIFIED_COMPLETE",
+        "run_dir": "/data/gaob/Re-ID/Trifusion/trained-model/native_research_v6_20261003_794_full_global_only_RGBNT100",
+        "m0_dir": "/data/gaob/Re-ID/Trifusion/trained-model/native_research_v6_20261003_794_m0_global_only_RGBNT100",
+        "metrics": {
+          "mAP": 84.53378422597531,
+          "Rank-1": 96.61807417869568,
+          "Rank-5": 97.31778502464294,
+          "Rank-10": 97.95918464660645
+        },
+        "best_epoch": 7,
+        "initializer": {
+          "architecture": "trifusion-independent-native-research-v6",
+          "dataset": "RGBNT100",
+          "variant": "global_only",
+          "recipe": "global_only",
+          "foundation_option": "author",
+          "seed": 42,
+          "public_clip_sha256": "5806e77cd80f8b59890b7e101eabd078d9fb84e6937f9e85e4ecb61988df416f",
+          "protocol_sha256": "b2c14adf947b06b27b9576a712f96192c1393ad6ed3ec1be5259b63f88300169",
+          "author_source_commit": "cd1b0a672d1fe642e7608731cb4899a19dda7d51",
+          "visual_initial_sha256": "9a92d7f60d061e3282fdc2a557a7d07d7cc519a4534e47239e9240cfb95c62b0",
+          "camera_initial_sha256": "b836a2e23c5dcb8834b69aee4a26a04d4209819b23527bd1c57693ba8e914201",
+          "shared_initializer_sha256": {
+            "backbone": "1db5ac9c440aca58bb11f2ecb08e7c031bf3ee2d0401934c7b22975edfb1d841",
+            "neck": "06efe49412cdf6c9d8d9162b9394e4bc49329d169906cecc2b6c4784bcdb166e",
+            "classifier": "1deee2afd7a2f8b90231dc24c16cb5e1ce5232e2b1d92383a964342cded88ddd"
+          },
+          "initial_model_state_sha256": "4da4cac6f288b6629b05340ba87fb6628ab5cd13ee8fabeed46e78a11b89a36c",
+          "trainable_parameters": 87130944,
+          "trainable_parameter_tensors": 213,
+          "batch_size": 128,
+          "num_instances": 16,
+          "head_names": [
+            [
+              "bottleneck_r",
+              "classifier_r"
+            ],
+            [
+              "bottleneck_n",
+              "classifier_n"
+            ],
+            [
+              "bottleneck_t",
+              "classifier_t"
+            ]
+          ],
+          "cfg_yaml": "DATALOADER:\n  NUM_INSTANCE: 16\n  NUM_WORKERS: 4\n  SAMPLER: softmax_triplet\nDATASETS:\n  NAMES: RGBNT100\n  ROOT_DIR: ..\nINPUT:\n  PADDING: 10\n  PIXEL_MEAN:\n  - 0.5\n  - 0.5\n  - 0.5\n  PIXEL_STD:\n  - 0.5\n  - 0.5\n  - 0.5\n  PROB: 0.5\n  RE_PROB: 0.5\n  SIZE_TEST:\n  - 128\n  - 256\n  SIZE_TRAIN:\n  - 128\n  - 256\nMODEL:\n  ADAPTER: false\n  ATT_DROP_RATE: 0.0\n  DEVICE: cuda\n  DEVICE_ID: '0'\n  DIRECT: 0\n  DIST_TRAIN: false\n  DROP_OUT: 0.0\n  DROP_PATH: 0.1\n  FROZEN: false\n  Gram_Loss_weight: 0.1\n  ID_LOSS_TYPE: softmax\n  ID_LOSS_WEIGHT: 0.25\n  IF_LABELSMOOTH: 'on'\n  IF_WITH_CENTER: 'no'\n  METRIC_LOSS_TYPE: triplet\n  MoE_Loss_weight: 0.1\n  NAME: Signal\n  NECK: bnneck\n  NO_MARGIN: true\n  PAT_Loss_weight: 0.1\n  PRETRAIN_PATH_T: /data/gaob/Re-ID/Trifusion/pertrained-model/ViT-B-16.pt\n  PROMPT: false\n  SIE_CAMERA: true\n  SIE_COE: 1.0\n  SIE_VIEW: false\n  STRIDE_SIZE:\n  - 16\n  - 16\n  TOPK: 112\n  TRANSFORMER_TYPE: ViT-B-16\n  TRIPLET_LOSS_WEIGHT: 1.0\n  USE_A: false\n  USE_B: false\n  stageName: together_CLS_Patch\nOUTPUT_DIR: .\nSOLVER:\n  BASE_LR: 0.0007\n  BIAS_LR_FACTOR: 2\n  CENTER_LOSS_WEIGHT: 0.0005\n  CENTER_LR: 0.5\n  CHECKPOINT_PERIOD: 30\n  CLUSTER_MARGIN: 0.3\n  COSINE_MARGIN: 0.5\n  COSINE_SCALE: 30\n  EVAL_PERIOD: 1\n  GAMMA: 0.1\n  IMS_PER_BATCH: 128\n  LARGE_FC_LR: false\n  LOG_PERIOD: 10\n  MARGIN: 0.3\n  MAX_EPOCHS: 50\n  MOMENTUM: 0.9\n  OPTIMIZER_NAME: Adam\n  RANGE_ALPHA: 0\n  RANGE_BETA: 1\n  RANGE_K: 2\n  RANGE_LOSS_WEIGHT: 1\n  RANGE_MARGIN: 0.3\n  SEED: 42\n  STEPS:\n  - 40\n  - 70\n  WARMUP_FACTOR: 0.01\n  WARMUP_ITERS: 5\n  WARMUP_METHOD: linear\n  WEIGHT_DECAY: 0.0001\n  WEIGHT_DECAY_BIAS: 0.0001\nTEST:\n  EVAL: false\n  FEAT_NORM: 'yes'\n  IMS_PER_BATCH: 128\n  MISS: nothing\n  NECK_FEAT: before\n  RE_RANKING: 'no'\n  WEIGHT: ''\nckpt_save_path: RGBNT100_all\nckpt_test_path: test_RNT100\n",
+          "entry_sha256": "b48725622371fc6d9671c464ce97252e2e06eba465e213ce221d84c798e52cc2",
+          "scope": "Fresh public CLIP/camera/heads, shared adaptation and optional semantic/native roles. No ReID weights, SIM, AlignM, teacher, new loss or external data.",
+          "visual_placement": "single_process_original_full_batch_first6_cuda1_last6_and_heads_cuda0",
+          "parameter_placement": {
+            "cuda:1": {
+              "parameters": 43526592,
+              "trainable_parameters": 43526592,
+              "parameter_bytes": 174106368,
+              "gradient_adam_bytes_if_fp32": 522319104
+            },
+            "cuda:0": {
+              "parameters": 43685760,
+              "trainable_parameters": 43604352,
+              "parameter_bytes": 174743040,
+              "gradient_adam_bytes_if_fp32": 523252224
+            }
+          }
+        },
+        "checkpoint_sha256": "799580cb17781a2dae96dbc4b32532014d3e57afd2de786f17a7536a17f579fc",
+        "distance_sha256": "9eda8d664c1adbf5c6050b5813bfbeebc3af35f10b8da463730667efb7490422",
+        "receipt_sha256": "d8f61fc5b2add3683f523a8d8a159cc5bd3e93798a57d0160f0449fb1948d476"
+      },
+      "preserved_artifact_sha256": {
+        "/data/gaob/Re-ID/Trifusion/trained-model/metric_feature_scale_20261003_v1_full_normalized_RGBNT100/best_epoch_distances.pt": "469a55cfc0f58eca4ef4c38d0482b7cffcad96ba15f090e3f6f63a1c9cb03c81",
+        "/data/gaob/Re-ID/Trifusion/trained-model/metric_feature_scale_20261003_v1_full_normalized_RGBNT100/training.json": "a98fc643922dfaa435171dadfd10ebe6a169434035561ec3b16ecfc3c97ca9eb",
+        "/data/gaob/Re-ID/Trifusion/trained-model/metric_feature_scale_20261003_v1_full_normalized_RGBNT100/training_steps.jsonl": "693f6c8e6e3766debbb71ff0c0d1af15626739e7e6c7f2f359678e169fb7bb95",
+        "/data/gaob/Re-ID/Trifusion/trained-model/metric_feature_scale_20261003_v1_full_normalized_RGBNT100/training_batch_order.jsonl": "17800b61d46948c4596f37f9b9169c67a4e3e64edeb06cc885725f661dc3e881",
+        "/data/gaob/Re-ID/Trifusion/trained-model/metric_feature_scale_20261003_v1_full_normalized_RGBNT100/official_metrics.json": "8f95b84d4a00f8a45b7a5fd68e47e5fbabd2f9224e3b33318ee3957154905bc5",
+        "/data/gaob/Re-ID/Trifusion/trained-model/metric_feature_scale_20261003_v1_full_normalized_RGBNT100/last_epoch_distances.pt": "e5ecbb7602d936c2ddfa9b7ac6a28cf3782f147b0e721baa80fd1c357900bf0d",
+        "/data/gaob/Re-ID/Trifusion/trained-model/metric_feature_scale_20261003_v1_full_normalized_RGBNT100/official_distances.pt": "7713526182f794a5e7db52f8fe62df2c0be5780925dfe4950c3e70c239b311c7"
+      }
+    },
+    {
+      "path": "/data/gaob/Re-ID/Trifusion/trained-model/training_feature_scale_20261003_v2_full_normalized_RGBNT100/best_map.pth",
+      "bytes": 345310725,
+      "sha256": "bd78c3c6bfa83f4ef7b238b5c0dc8c829c03df9124c4e6cd320e79aa79006d44",
+      "metrics": {
+        "mAP": 77.58429184381957,
+        "Rank-1": 94.1690981388092,
+        "Rank-5": 95.33527493476868,
+        "Rank-10": 95.86005806922913
+      },
+      "retained_winner": {
+        "dataset": "RGBNT100",
+        "variant": "global_only",
+        "status": "VERIFIED_COMPLETE",
+        "run_dir": "/data/gaob/Re-ID/Trifusion/trained-model/native_research_v6_20261003_794_full_global_only_RGBNT100",
+        "m0_dir": "/data/gaob/Re-ID/Trifusion/trained-model/native_research_v6_20261003_794_m0_global_only_RGBNT100",
+        "metrics": {
+          "mAP": 84.53378422597531,
+          "Rank-1": 96.61807417869568,
+          "Rank-5": 97.31778502464294,
+          "Rank-10": 97.95918464660645
+        },
+        "best_epoch": 7,
+        "initializer": {
+          "architecture": "trifusion-independent-native-research-v6",
+          "dataset": "RGBNT100",
+          "variant": "global_only",
+          "recipe": "global_only",
+          "foundation_option": "author",
+          "seed": 42,
+          "public_clip_sha256": "5806e77cd80f8b59890b7e101eabd078d9fb84e6937f9e85e4ecb61988df416f",
+          "protocol_sha256": "b2c14adf947b06b27b9576a712f96192c1393ad6ed3ec1be5259b63f88300169",
+          "author_source_commit": "cd1b0a672d1fe642e7608731cb4899a19dda7d51",
+          "visual_initial_sha256": "9a92d7f60d061e3282fdc2a557a7d07d7cc519a4534e47239e9240cfb95c62b0",
+          "camera_initial_sha256": "b836a2e23c5dcb8834b69aee4a26a04d4209819b23527bd1c57693ba8e914201",
+          "shared_initializer_sha256": {
+            "backbone": "1db5ac9c440aca58bb11f2ecb08e7c031bf3ee2d0401934c7b22975edfb1d841",
+            "neck": "06efe49412cdf6c9d8d9162b9394e4bc49329d169906cecc2b6c4784bcdb166e",
+            "classifier": "1deee2afd7a2f8b90231dc24c16cb5e1ce5232e2b1d92383a964342cded88ddd"
+          },
+          "initial_model_state_sha256": "4da4cac6f288b6629b05340ba87fb6628ab5cd13ee8fabeed46e78a11b89a36c",
+          "trainable_parameters": 87130944,
+          "trainable_parameter_tensors": 213,
+          "batch_size": 128,
+          "num_instances": 16,
+          "head_names": [
+            [
+              "bottleneck_r",
+              "classifier_r"
+            ],
+            [
+              "bottleneck_n",
+              "classifier_n"
+            ],
+            [
+              "bottleneck_t",
+              "classifier_t"
+            ]
+          ],
+          "cfg_yaml": "DATALOADER:\n  NUM_INSTANCE: 16\n  NUM_WORKERS: 4\n  SAMPLER: softmax_triplet\nDATASETS:\n  NAMES: RGBNT100\n  ROOT_DIR: ..\nINPUT:\n  PADDING: 10\n  PIXEL_MEAN:\n  - 0.5\n  - 0.5\n  - 0.5\n  PIXEL_STD:\n  - 0.5\n  - 0.5\n  - 0.5\n  PROB: 0.5\n  RE_PROB: 0.5\n  SIZE_TEST:\n  - 128\n  - 256\n  SIZE_TRAIN:\n  - 128\n  - 256\nMODEL:\n  ADAPTER: false\n  ATT_DROP_RATE: 0.0\n  DEVICE: cuda\n  DEVICE_ID: '0'\n  DIRECT: 0\n  DIST_TRAIN: false\n  DROP_OUT: 0.0\n  DROP_PATH: 0.1\n  FROZEN: false\n  Gram_Loss_weight: 0.1\n  ID_LOSS_TYPE: softmax\n  ID_LOSS_WEIGHT: 0.25\n  IF_LABELSMOOTH: 'on'\n  IF_WITH_CENTER: 'no'\n  METRIC_LOSS_TYPE: triplet\n  MoE_Loss_weight: 0.1\n  NAME: Signal\n  NECK: bnneck\n  NO_MARGIN: true\n  PAT_Loss_weight: 0.1\n  PRETRAIN_PATH_T: /data/gaob/Re-ID/Trifusion/pertrained-model/ViT-B-16.pt\n  PROMPT: false\n  SIE_CAMERA: true\n  SIE_COE: 1.0\n  SIE_VIEW: false\n  STRIDE_SIZE:\n  - 16\n  - 16\n  TOPK: 112\n  TRANSFORMER_TYPE: ViT-B-16\n  TRIPLET_LOSS_WEIGHT: 1.0\n  USE_A: false\n  USE_B: false\n  stageName: together_CLS_Patch\nOUTPUT_DIR: .\nSOLVER:\n  BASE_LR: 0.0007\n  BIAS_LR_FACTOR: 2\n  CENTER_LOSS_WEIGHT: 0.0005\n  CENTER_LR: 0.5\n  CHECKPOINT_PERIOD: 30\n  CLUSTER_MARGIN: 0.3\n  COSINE_MARGIN: 0.5\n  COSINE_SCALE: 30\n  EVAL_PERIOD: 1\n  GAMMA: 0.1\n  IMS_PER_BATCH: 128\n  LARGE_FC_LR: false\n  LOG_PERIOD: 10\n  MARGIN: 0.3\n  MAX_EPOCHS: 50\n  MOMENTUM: 0.9\n  OPTIMIZER_NAME: Adam\n  RANGE_ALPHA: 0\n  RANGE_BETA: 1\n  RANGE_K: 2\n  RANGE_LOSS_WEIGHT: 1\n  RANGE_MARGIN: 0.3\n  SEED: 42\n  STEPS:\n  - 40\n  - 70\n  WARMUP_FACTOR: 0.01\n  WARMUP_ITERS: 5\n  WARMUP_METHOD: linear\n  WEIGHT_DECAY: 0.0001\n  WEIGHT_DECAY_BIAS: 0.0001\nTEST:\n  EVAL: false\n  FEAT_NORM: 'yes'\n  IMS_PER_BATCH: 128\n  MISS: nothing\n  NECK_FEAT: before\n  RE_RANKING: 'no'\n  WEIGHT: ''\nckpt_save_path: RGBNT100_all\nckpt_test_path: test_RNT100\n",
+          "entry_sha256": "b48725622371fc6d9671c464ce97252e2e06eba465e213ce221d84c798e52cc2",
+          "scope": "Fresh public CLIP/camera/heads, shared adaptation and optional semantic/native roles. No ReID weights, SIM, AlignM, teacher, new loss or external data.",
+          "visual_placement": "single_process_original_full_batch_first6_cuda1_last6_and_heads_cuda0",
+          "parameter_placement": {
+            "cuda:1": {
+              "parameters": 43526592,
+              "trainable_parameters": 43526592,
+              "parameter_bytes": 174106368,
+              "gradient_adam_bytes_if_fp32": 522319104
+            },
+            "cuda:0": {
+              "parameters": 43685760,
+              "trainable_parameters": 43604352,
+              "parameter_bytes": 174743040,
+              "gradient_adam_bytes_if_fp32": 523252224
+            }
+          }
+        },
+        "checkpoint_sha256": "799580cb17781a2dae96dbc4b32532014d3e57afd2de786f17a7536a17f579fc",
+        "distance_sha256": "9eda8d664c1adbf5c6050b5813bfbeebc3af35f10b8da463730667efb7490422",
+        "receipt_sha256": "d8f61fc5b2add3683f523a8d8a159cc5bd3e93798a57d0160f0449fb1948d476"
+      },
+      "preserved_artifact_sha256": {
+        "/data/gaob/Re-ID/Trifusion/trained-model/training_feature_scale_20261003_v2_full_normalized_RGBNT100/best_epoch_distances.pt": "469a55cfc0f58eca4ef4c38d0482b7cffcad96ba15f090e3f6f63a1c9cb03c81",
+        "/data/gaob/Re-ID/Trifusion/trained-model/training_feature_scale_20261003_v2_full_normalized_RGBNT100/training.json": "f3988f92a36bfc951d2c5e9a37692a3c89d9d0d845f898944809a2155f393f18",
+        "/data/gaob/Re-ID/Trifusion/trained-model/training_feature_scale_20261003_v2_full_normalized_RGBNT100/training_steps.jsonl": "22d60bab6e71e0ec34d6b351d1f78b31694f0a4df7aac183370b7193d6d7b1a1",
+        "/data/gaob/Re-ID/Trifusion/trained-model/training_feature_scale_20261003_v2_full_normalized_RGBNT100/training_batch_order.jsonl": "17800b61d46948c4596f37f9b9169c67a4e3e64edeb06cc885725f661dc3e881",
+        "/data/gaob/Re-ID/Trifusion/trained-model/training_feature_scale_20261003_v2_full_normalized_RGBNT100/official_metrics.json": "1195a3c89de3c86391f31620a4f1506eb195a82a7847a96647bb30dfb9249673",
+        "/data/gaob/Re-ID/Trifusion/trained-model/training_feature_scale_20261003_v2_full_normalized_RGBNT100/last_epoch_distances.pt": "e5ecbb7602d936c2ddfa9b7ac6a28cf3782f147b0e721baa80fd1c357900bf0d",
+        "/data/gaob/Re-ID/Trifusion/trained-model/training_feature_scale_20261003_v2_full_normalized_RGBNT100/official_distances.pt": "7713526182f794a5e7db52f8fe62df2c0be5780925dfe4950c3e70c239b311c7"
+      }
+    }
+  ],
+  "original_failure_sha256": {
+    "/data/gaob/Re-ID/Trifusion/logs/region_reconstruction_v1_20261005_858/campaign.json": "22de0447f290430350b50e2ddc174d53cfbb240862fddf10c0217f16d819b686",
+    "/data/gaob/Re-ID/Trifusion/logs/region_reconstruction_launch_20261005_858/EXIT.json": "9cc857422087866d16b4d6d9a4d320b70a4303df8795f8906756e29866573cab",
+    "/data/gaob/Re-ID/Trifusion/logs/region_reconstruction_launch_20261005_858/console.log": "15c12304b64298a3b680e53b387732a0ec294144c9eead75a57328f8d6477498"
+  }
+}

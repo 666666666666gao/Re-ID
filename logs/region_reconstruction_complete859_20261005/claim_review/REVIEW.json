@@ -1,0 +1,430 @@
+{
+  "schema": "region-reconstruction-v1-result-to-claim-review859",
+  "review_date": "2026-10-05",
+  "reviewer_role": "fresh-context delegated semantic reviewer",
+  "requested_model": "gpt-6-astra",
+  "requested_reasoning_effort": "max",
+  "actual_model": null,
+  "actual_reasoning_effort": null,
+  "backend_attestation": "Runtime model and reasoning effort are not independently attestable from the evidence available to this reviewer. Requested routing is recorded without claiming verified backend identity.",
+  "review_independence": "same-family",
+  "acceptance_status": "provisional",
+  "claim_supported": "no",
+  "confidence": "high",
+  "confidence_scope": "对本轮完整 seed42 结果不支持所述功效/机制主张的判断有高信心；这不是对所有种子、所有实现或局部信息永久无用的高信心结论。",
+  "intended_claim": "在原 RAW 职责分离 semantic 角色路径中，128 个候选 patch 各自查询 16 个视觉 anchor 的残差重建，比同活动参数、同初始化的图像均值 query 广播控制提供有用局部身份证据，并在三个数据集相对 RAW-semantic 和独立 global 有净收益。",
+  "decision": "不能继续把候选重建 v1 写成已验证有效的主模块。可以保留为完整受控负结果/消融，以及 RGBNT100 上特定固定模型的 CMC 收益观察；不能用这些局部观察替换原 mAP 与 Rank-1 联合推进条件。",
+  "what_results_support": [
+    "六端均完成 seed42 fresh50、各自 mAP-best 的第一次 strict 验收；合计 300 正式 epoch、12968 正式更新。完整曲线、完整 query/身份诊断和原 15 配对 CPU 报告均存在，因而可以对本轮已完成实验作结论。",
+    "源码实现和初始化证据支持这是 patch-specific query 与图像均值广播 query 的受控比较。两者均为 105232 个活动重建参数、15 个张量；三数据集新两臂的 initial_model_state_sha256 分别相同，原报告全部 15 对 batch 顺序相同。M0/严格重载支持工程活动性与执行完整性，不自动支持检索机制。",
+    "RGBNT201 的选定 patch 相对 mean 的 mAP、Rank-1、Rank-5、Rank-10 均下降；全 query 的 AP 改善/恶化为 162/311，身份改善/恶化为 8/18，身份宏 AP 差值 -0.344105 pp。这一固定模型比较的方向反对 patch 查询优势。",
+    "MSVR310 的 patch−mean mAP 为 +0.000801 pp，所有报告的 CMC 相同，首位修复/新增错误为 0/0；只观察到很小的排序/AP 改变，未观察到达到项目实用门槛的收益。",
+    "RGBNT100 的 patch 相对 mean 有真实的固定模型 CMC 收益：Rank-1 +0.874636 pp，Rank-5 +0.699708 pp，Rank-10 +0.641399 pp，首位修复 22 个、新增错误 7 个。但其 mAP -0.059234 pp、身份宏 AP -0.061192 pp，query AP 改善/恶化 687/690，说明收益和损失并存。",
+    "相对 RAW-semantic，patch 在 RGBNT201 和 RGBNT100 分别出现 Rank-1 +0.598086/+0.758017 pp 与 mAP -0.035111/-0.591102 pp 的不同向变化；相对独立 global，patch 的 mAP 差值为 +0.043087/+0.000807/-1.034582 pp，MSVR310 Rank-1 还下降 0.169205 pp。",
+    "mean 在 RGBNT201 相对 RAW-semantic/global 的 mAP 为 +0.303619/+0.381817 pp 且 Rank-1 上升，说明本轮小幅正向观察并不专属于 patch 查询；这些数值仍未达到预登记的 0.5 pp mAP 分量。"
+  ],
+  "what_results_dont_support": [
+    "不支持 patch 特定查询优于 mean 广播控制的跨数据集功效主张；三组 patch−mean 均未达到 ΔmAP>=0.5 pp 且 Rank-1 不下降的项目门。",
+    "不支持相对 RAW-semantic 与独立 global 的三数据集一致净收益；主要六个 patch−mean/patch−RAW-semantic 比较为 0/6 通过，全部十五个报告配对按同一项目门统计为 0/15。",
+    "不支持将 Rank-1 或其他 CMC 改善改写成总体 mAP 改善；也不能以 RGBNT100 的 CMC 收益覆盖 mAP 损失，或事后改用某个 Rank-1-best/last epoch 代替预登记的 mAP-best。",
+    "不支持局部身份证据、真实部件语义或局部重建机制已被确认。代码中的 anchor 是学习槽位并带图像均值条件偏移，输出是残差注意力变换；没有独立的局部真值/重建目标或因果诊断证明这些槽位对应部件或身份局部信息。",
+    "不支持动态图像 anchor 的必要性：两臂都有同样的图像条件 anchor，比较只干预 query 来源。",
+    "不支持将新增 mean 条件称为原生图像路径、原生 CNN 或旧 raw_native。factory 的 native 槽位在本轮实际映射 mean，源码没有新增原生图像分支。",
+    "不支持用 MSVR310 的微小差值证明等价，也不支持把未达项目门称为统计不显著/显著。没有预登记等价界限与相应等价检验。",
+    "不支持跨训练种子稳定性、未触碰测试集泛化或 SOTA；官方基准已用于开发，50 个 epoch 是同一次训练的相关观测，固定模型身份 bootstrap 不是独立训练重复。",
+    "本轮负结果不证明所有候选重建或局部信息永久无用；现有证据也不能定位失败原因到学习率、零初始化、容量不足或模块坍缩。"
+  ],
+  "missing_evidence": [
+    "独立训练种子上的配对重复与训练随机性范围；当前每个条件只有 seed42。",
+    "支持真实局部身份信息或部件对应的直接机制证据。单独的检索总体指标、参数活动性、注意力形式和部分 query 修复均不足以完成该归因。",
+    "若要声称动态图像 anchor 必要，需要直接隔离该因素的证据；当前比较未识别这一因素。",
+    "独立于既有开发与 checkpoint 选择的评估证据；当前 official benchmark 已消费，身份 bootstrap 未计入开发/选择/训练随机性。",
+    "若要声称等价，需要事前界定实用等价范围并估计相应不确定性；小差值本身不满足这个条件。",
+    "未提供独立完整 EXPERIMENT_AUDIT.json；已提供的 collector 验收/哈希记录与本审阅读取支持证据存在和执行链路，不能据此冒称完整科学完整性审计已通过。"
+  ],
+  "suggested_claim_revision": "在已用于开发的 RGBNT201、MSVR310 和 RGBNT100 上，我们以 seed42、fresh50 和各自单一 mAP-best 比较了同活动参数、同初始化的 patch query 与图像均值 query 候选重建。patch−mean 的 mAP 差值分别为 -0.338730、+0.000801 和 -0.059234 个百分点，三组均未达到预登记的 ΔmAP≥0.5 且 Rank-1 不下降的推进门。RGBNT100 出现 CMC 收益，但 mAP 未改善；相对原 RAW-semantic 和独立 global 也没有三数据集一致净收益。本轮未验证 patch 特定候选重建提供有效局部身份证据，故保留为负结果/消融，不作为已验证有效的主模块。",
+  "next_experiments_needed": [
+    "关闭本轮主张并如实记录负结果不需要补跑；本审阅不建议用尺度搜索、额外堆叠、重选 epoch 或放宽门槛救分。",
+    "仅在另行决定重新打开功效主张时，才需要事前固定同一选择规则的独立种子配对重复和独立评估证据；这是重新评估的最低证据要求，不是本轮自动启动的新方案。",
+    "仅在仍要主张局部机制或 anchor 必要性时，才需要直接隔离相应因素的机制证据；当前总分不能替代它。本审阅不设计参数网格，也不启动任何实验。"
+  ],
+  "experiment_scope": {
+    "seed": 42,
+    "fresh_epochs_per_endpoint": 50,
+    "completed_new_endpoints": 6,
+    "completed_formal_epochs": 300,
+    "formal_updates": 12968,
+    "single_mAP_best_per_endpoint": true,
+    "benchmarks_already_consumed": true,
+    "active_reconstruction_parameters": 105232,
+    "active_reconstruction_tensors": 15,
+    "query_mode_mapping": {
+      "semantic": "patch",
+      "native": "mean"
+    },
+    "scientific_control": "Both arms use the original semantic CNN patches and image-conditioned anchors. Mean retains the original spatial patches and adds a broadcast residual; it is not a global-only or no-local-input model.",
+    "raw_comparison_caveat": "RAW-semantic/global comparisons measure the net result of adding the module, with changed capacity and possibly random-number consumption, as the report itself states. They do not isolate patch-query routing as cleanly as patch versus mean."
+  },
+  "progress_gate": {
+    "definition": "delta_mAP_pp >= 0.5 and delta_Rank1_pp >= 0",
+    "statistical_significance_test": false,
+    "primary_patch_vs_mean_pass_count": 0,
+    "primary_patch_vs_mean_count": 3,
+    "primary_patch_vs_mean_and_raw_semantic_pass_count": 0,
+    "primary_patch_vs_mean_and_raw_semantic_count": 6,
+    "all_reported_pair_pass_count": 0,
+    "all_reported_pair_count": 15
+  },
+  "selected_checkpoints": [
+    {
+      "dataset": "RGBNT201",
+      "query": "patch",
+      "best_epoch": 8,
+      "mAP": 74.3397509199159,
+      "Rank1": 79.42583560943604
+    },
+    {
+      "dataset": "RGBNT201",
+      "query": "mean",
+      "best_epoch": 8,
+      "mAP": 74.67848098839367,
+      "Rank1": 79.54545617103577
+    },
+    {
+      "dataset": "MSVR310",
+      "query": "patch",
+      "best_epoch": 38,
+      "mAP": 50.54293630207136,
+      "Rank1": 67.85110235214233
+    },
+    {
+      "dataset": "MSVR310",
+      "query": "mean",
+      "best_epoch": 38,
+      "mAP": 50.54213502750579,
+      "Rank1": 67.85110235214233
+    },
+    {
+      "dataset": "RGBNT100",
+      "query": "patch",
+      "best_epoch": 26,
+      "mAP": 83.49920269739064,
+      "Rank1": 96.61807417869568
+    },
+    {
+      "dataset": "RGBNT100",
+      "query": "mean",
+      "best_epoch": 26,
+      "mAP": 83.55843698341971,
+      "Rank1": 95.74344158172607
+    }
+  ],
+  "paired_comparisons": [
+    {
+      "dataset": "RGBNT201",
+      "candidate": "patch",
+      "control": "mean",
+      "delta_mAP_pp": -0.33873006847777276,
+      "delta_Rank1_pp": -0.11961722488038617,
+      "rank1_repairs": 5,
+      "rank1_new_errors": 6,
+      "identity_macro_delta_AP_pp": -0.34410479363907837,
+      "actual_training_batch_order_equal": true,
+      "phase_progress": false
+    },
+    {
+      "dataset": "RGBNT201",
+      "candidate": "patch",
+      "control": "raw_semantic",
+      "delta_mAP_pp": -0.035110616696997,
+      "delta_Rank1_pp": 0.5980861244019167,
+      "rank1_repairs": 7,
+      "rank1_new_errors": 2,
+      "identity_macro_delta_AP_pp": -0.03763607867585947,
+      "actual_training_batch_order_equal": true,
+      "phase_progress": false
+    },
+    {
+      "dataset": "RGBNT201",
+      "candidate": "patch",
+      "control": "raw_global_only",
+      "delta_mAP_pp": 0.0430873452283862,
+      "delta_Rank1_pp": 0.4784688995215305,
+      "rank1_repairs": 4,
+      "rank1_new_errors": 0,
+      "identity_macro_delta_AP_pp": 0.029560387960489497,
+      "actual_training_batch_order_equal": true,
+      "phase_progress": false
+    },
+    {
+      "dataset": "RGBNT201",
+      "candidate": "mean",
+      "control": "raw_semantic",
+      "delta_mAP_pp": 0.30361945178077576,
+      "delta_Rank1_pp": 0.7177033492823028,
+      "rank1_repairs": 7,
+      "rank1_new_errors": 1,
+      "identity_macro_delta_AP_pp": 0.3064687149632189,
+      "actual_training_batch_order_equal": true,
+      "phase_progress": false
+    },
+    {
+      "dataset": "RGBNT201",
+      "candidate": "mean",
+      "control": "raw_global_only",
+      "delta_mAP_pp": 0.38181741370615896,
+      "delta_Rank1_pp": 0.5980861244019167,
+      "rank1_repairs": 8,
+      "rank1_new_errors": 3,
+      "identity_macro_delta_AP_pp": 0.3736651815995679,
+      "actual_training_batch_order_equal": true,
+      "phase_progress": false
+    },
+    {
+      "dataset": "MSVR310",
+      "candidate": "patch",
+      "control": "mean",
+      "delta_mAP_pp": 0.0008012745655676667,
+      "delta_Rank1_pp": 0,
+      "rank1_repairs": 0,
+      "rank1_new_errors": 0,
+      "identity_macro_delta_AP_pp": 0.001187213478789318,
+      "actual_training_batch_order_equal": true,
+      "phase_progress": false
+    },
+    {
+      "dataset": "MSVR310",
+      "candidate": "patch",
+      "control": "raw_semantic",
+      "delta_mAP_pp": 0.0007113900790969296,
+      "delta_Rank1_pp": 0,
+      "rank1_repairs": 0,
+      "rank1_new_errors": 0,
+      "identity_macro_delta_AP_pp": 0.0005422008252236092,
+      "actual_training_batch_order_equal": true,
+      "phase_progress": false
+    },
+    {
+      "dataset": "MSVR310",
+      "candidate": "patch",
+      "control": "raw_global_only",
+      "delta_mAP_pp": 0.0008074469698655662,
+      "delta_Rank1_pp": -0.16920473773265599,
+      "rank1_repairs": 0,
+      "rank1_new_errors": 1,
+      "identity_macro_delta_AP_pp": -0.005897246673873215,
+      "actual_training_batch_order_equal": true,
+      "phase_progress": false
+    },
+    {
+      "dataset": "MSVR310",
+      "candidate": "mean",
+      "control": "raw_semantic",
+      "delta_mAP_pp": -0.0000898844864707371,
+      "delta_Rank1_pp": 0,
+      "rank1_repairs": 0,
+      "rank1_new_errors": 0,
+      "identity_macro_delta_AP_pp": -0.0006450126535657084,
+      "actual_training_batch_order_equal": true,
+      "phase_progress": false
+    },
+    {
+      "dataset": "MSVR310",
+      "candidate": "mean",
+      "control": "raw_global_only",
+      "delta_mAP_pp": 0.0000061724042978994476,
+      "delta_Rank1_pp": -0.16920473773265599,
+      "rank1_repairs": 0,
+      "rank1_new_errors": 1,
+      "identity_macro_delta_AP_pp": -0.007084460152662533,
+      "actual_training_batch_order_equal": true,
+      "phase_progress": false
+    },
+    {
+      "dataset": "RGBNT100",
+      "candidate": "patch",
+      "control": "mean",
+      "delta_mAP_pp": -0.05923428602906711,
+      "delta_Rank1_pp": 0.8746355685131135,
+      "rank1_repairs": 22,
+      "rank1_new_errors": 7,
+      "identity_macro_delta_AP_pp": -0.061191618758774234,
+      "actual_training_batch_order_equal": true,
+      "phase_progress": false
+    },
+    {
+      "dataset": "RGBNT100",
+      "candidate": "patch",
+      "control": "raw_semantic",
+      "delta_mAP_pp": -0.591102371851477,
+      "delta_Rank1_pp": 0.7580174927113745,
+      "rank1_repairs": 46,
+      "rank1_new_errors": 33,
+      "identity_macro_delta_AP_pp": -0.3896991183994926,
+      "actual_training_batch_order_equal": true,
+      "phase_progress": false
+    },
+    {
+      "dataset": "RGBNT100",
+      "candidate": "patch",
+      "control": "raw_global_only",
+      "delta_mAP_pp": -1.034581528584667,
+      "delta_Rank1_pp": 0,
+      "rank1_repairs": 39,
+      "rank1_new_errors": 39,
+      "identity_macro_delta_AP_pp": -0.5805080605940595,
+      "actual_training_batch_order_equal": true,
+      "phase_progress": false
+    },
+    {
+      "dataset": "RGBNT100",
+      "candidate": "mean",
+      "control": "raw_semantic",
+      "delta_mAP_pp": -0.5318680858224099,
+      "delta_Rank1_pp": -0.116618075801739,
+      "rank1_repairs": 36,
+      "rank1_new_errors": 38,
+      "identity_macro_delta_AP_pp": -0.32850749964071824,
+      "actual_training_batch_order_equal": true,
+      "phase_progress": false
+    },
+    {
+      "dataset": "RGBNT100",
+      "candidate": "mean",
+      "control": "raw_global_only",
+      "delta_mAP_pp": -0.9753472425555998,
+      "delta_Rank1_pp": -0.8746355685131135,
+      "rank1_repairs": 29,
+      "rank1_new_errors": 44,
+      "identity_macro_delta_AP_pp": -0.519316441835285,
+      "actual_training_batch_order_equal": true,
+      "phase_progress": false
+    }
+  ],
+  "fixed_model_identity_diagnostics": [
+    {
+      "dataset": "RGBNT201",
+      "comparison": "patch-mean",
+      "query_count": 836,
+      "identity_count": 30,
+      "query_AP_improved": 162,
+      "query_AP_worsened": 311,
+      "identity_AP_improved": 8,
+      "identity_AP_worsened": 18,
+      "identity_macro_delta_AP_pp": -0.34410479363907837,
+      "identity_bootstrap_95_percentile_interval": [
+        -0.7217705776884048,
+        -0.043163718162426264
+      ]
+    },
+    {
+      "dataset": "MSVR310",
+      "comparison": "patch-mean",
+      "query_count": 591,
+      "identity_count": 52,
+      "query_AP_improved": 13,
+      "query_AP_worsened": 15,
+      "identity_AP_improved": 6,
+      "identity_AP_worsened": 7,
+      "identity_macro_delta_AP_pp": 0.001187213478789318,
+      "identity_bootstrap_95_percentile_interval": [
+        -0.00006369283358315808,
+        0.0033151562323603767
+      ]
+    },
+    {
+      "dataset": "RGBNT100",
+      "comparison": "patch-mean",
+      "query_count": 1715,
+      "identity_count": 50,
+      "query_AP_improved": 687,
+      "query_AP_worsened": 690,
+      "identity_AP_improved": 26,
+      "identity_AP_worsened": 22,
+      "identity_macro_delta_AP_pp": -0.061191618758774234,
+      "identity_bootstrap_95_percentile_interval": [
+        -0.6725764311333318,
+        0.545656051129298
+      ]
+    }
+  ],
+  "uncertainty_interpretation": "上述区间是既定、经 mAP 选择的模型上的身份宏 AP 差值区间，不能当作 query 加权 mAP 的同一估计量，也不能计入训练种子、checkpoint 选择和已消费基准开发的不确定性。RGBNT201 patch−mean 的区间在零以下可作为该固定模型条件下的不利诊断；不能据此宣称跨种子显著劣于。MSVR310/RGBNT100 的区间跨零也不证明等价。",
+  "full_history_interpretation": [
+    "已读取六端全部 50 轮 mAP/Rank-1/更新数轨迹；三数据集新两臂的 mAP-best 分别同在 epoch8/38/26。",
+    "RGBNT201 后期部分 epoch 的 patch mAP 高于 mean，但两者均低于自己的 epoch8 best；不能事后改选后期曲线来反转正式终点结论。",
+    "MSVR310 两臂整条 Rank-1 曲线相同，mAP 差值很小且随 epoch 变号；这说明该次训练中排序表现相近，不能证明两方法数学/统计等价。",
+    "RGBNT100 在训练后段反复呈现 patch CMC 较高、mAP 较低的现象；这是相关训练轨迹里的描述，不是许多独立实验。",
+    "新增六端 300 epoch 与旧九控制合计 750 条可视化曲线记录不是 750 个独立训练种子；15 配对还共享模型与 query，不能当作15个独立重复。"
+  ],
+  "administrative_completion": {
+    "original_parent_exit_code": 1,
+    "original_failure": "Prelaunch assertion that free disk must be at least 2147483648 bytes; final RGBNT100 mean fresh50 had not been launched.",
+    "separate_completion_exit_code": 0,
+    "inherited_formal_endpoints": 5,
+    "inherited_M0_endpoints": 6,
+    "new_training_invocations": 1,
+    "original_report_invocations": 1,
+    "scientific_protocol_changed": false,
+    "interpretation": "原失败保留，另立行政补完完成此前未启动的最后一端及首次 strict/首次报告。没有把训练失败改判成功，也没有重跑已完成五端。manifest/jobs 中旧 PENDING 状态属于保留的准备快照；终态以另立 COMPLETE campaign、6/6 accepted_matrix、六份验收与最终 SUMMARY 为准。",
+    "evidence": [
+      "C:/Users/gb/.codex_tmp/independent_evidence_draft/region_reconstruction_completed_admin_intake858/received/logs/region_reconstruction_launch_20261005_858/EXIT.json",
+      "C:/Users/gb/.codex_tmp/independent_evidence_draft/region_reconstruction_completed_admin_intake858/received/logs/region_reconstruction_launch_20261005_858/console.log",
+      "C:/Users/gb/.codex_tmp/independent_evidence_draft/region_reconstruction_completed_admin_intake858/received/logs/region_reconstruction_final_training_completion_20261005_858/PLAN.json",
+      "C:/Users/gb/.codex_tmp/independent_evidence_draft/region_reconstruction_completed_admin_intake858/received/logs/region_reconstruction_final_training_completion_20261005_858/campaign.json",
+      "C:/Users/gb/.codex_tmp/independent_evidence_draft/region_reconstruction_completed_admin_intake858/received/logs/region_reconstruction_final_training_completion_20261005_858/accepted_matrix.json"
+    ]
+  },
+  "evidence_precheck": {
+    "canonical_helper_status": "ARIS_EVIDENCE_HELPER_UNRESOLVED",
+    "deterministic_collector_record": {
+      "verified_text_sha_count": 164,
+      "sealed_source_count": 354,
+      "old_control_artifact_count": 187,
+      "accepted_endpoints": 6,
+      "all_fifteen_batch_orders_equal": true
+    },
+    "reviewer_direct_checks": "Read the prescribed source artifacts, all six final histories, all fifteen diagnosis summaries and full array-bearing JSON, initial-pair receipts, final six acceptance statuses and administrative provenance. Independently hashed the nine prescribed artifacts; plan and module hashes match SOURCE_SCOPE and final SUMMARY hash matches analysis859.",
+    "limitation": "The existing collector's complete verification is read as provenance; this reviewer did not rerun that collector, the canonical evidence helper, model inference, retrieval, original CPU report, or bootstrap. Hash existence never implies mechanistic effectiveness."
+  },
+  "integrity_status": "unavailable",
+  "integrity_note": "No independent EXPERIMENT_AUDIT.json was supplied/found at the examined plan, intake, analysis or review roots. This semantic verdict remains provisional; no full integrity-audit PASS is fabricated.",
+  "evidence_sources": [
+    {
+      "path": "C:/Users/gb/.codex_tmp/independent_evidence_draft/region_reconstruction_completed_admin_intake858/stdout.json",
+      "sha256": "a3da4502fb6b50c63073caed2c46523d8cc9fe4fc694026022beb0cdfb90423b"
+    },
+    {
+      "path": "C:/Users/gb/.codex_tmp/independent_evidence_draft/region_reconstruction_completed_admin_intake858/received/results/region_reconstruction_v1_complete_20261005_858/SUMMARY.json",
+      "sha256": "803668f47141bd00fe2b9588375b7db1e932be8d79b528b32ba2ef0c5ebc792d"
+    },
+    {
+      "path": "C:/Users/gb/.trifusion_github_publish_22c3bee/refine-logs/region_evidence_reconstruction_v1/EXPERIMENT_PLAN.md",
+      "sha256": "1707022cf15836811a296850a6873b0f53f3e0e95b33572c285889bb4ce902a8"
+    },
+    {
+      "path": "C:/Users/gb/.trifusion_github_publish_22c3bee/refine-logs/region_evidence_reconstruction_v1/SOURCE_SCOPE.json",
+      "sha256": "5a30dda2a60c2c90bde9d4b61e97f10d14ebdc7248db3db8c563a24f7b365ce7"
+    },
+    {
+      "path": "C:/Users/gb/.trifusion_github_publish_22c3bee/modeling/trifusion/region_evidence_reconstruction.py",
+      "sha256": "a4a08867f1ddf8a4ae9025b41b0293bce2d9643152b9776d7b621c15da66808b"
+    },
+    {
+      "path": "C:/Users/gb/.codex_tmp/independent_evidence_draft/region_reconstruction_complete_analysis859/SUMMARY.json",
+      "sha256": "1abec895d33ed869b75247937b0273868b89bb3f429d95ce3f410ddda0b570f0"
+    },
+    {
+      "path": "C:/Users/gb/.codex_tmp/independent_evidence_draft/region_reconstruction_complete_analysis859/selected_checkpoints.csv",
+      "sha256": "12543679241aa7b5a7db3fa43267050d59e5aac3258a60a6173a63ee7c47fafc"
+    },
+    {
+      "path": "C:/Users/gb/.codex_tmp/independent_evidence_draft/region_reconstruction_complete_analysis859/fifteen_paired_comparisons.csv",
+      "sha256": "b94f83d32df9b05e064afb11e4f1a57c851aa93859e9118170b9210a03cbf6a3"
+    },
+    {
+      "path": "C:/Users/gb/.codex_tmp/independent_evidence_draft/region_reconstruction_claim_review859/EVIDENCE_PRECHECK.json",
+      "sha256": "dc799842b7336e10a95784bca8588fea59ca0b22647cdc867aac18ba0eaddddf"
+    }
+  ],
+  "actions_performed": "Local evidence reads and creation of REVIEW.json and CLAIMS_FROM_RESULTS.md only. No SSH, training, inference, retrieval, CPU report execution, source/protocol edits, weight deletion or unrelated work."
+}
