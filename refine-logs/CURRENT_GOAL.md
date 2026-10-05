@@ -1,6 +1,6 @@
 # TriFusion 当前 Goal 执行约束
 
-更新：2026-10-05 §41.854：原固定诊断2接受/1失败/2未启动，supervisor444043已EXIT1；MSVR最后封存文件检查失败，原失败/数组不回改。只准备100两端首次诊断，未启动；同步结束后再启动，运行期间暂停remote同步。正式5/6及12推进FAIL不变。仅26 GPU0/1，无功率温度动作；2025 I/O pending。Goal ACTIVE / UNMET。
+更新：2026-10-05 §41.855：五formal/250轮12262步/12可用配对闭合，推进0/12；固定诊断四接受＋MSVR一原失败数组CPU描述，100首次诊断parent/observer已退出0，零重试/训练更新。所有当前角色未同时改善同模型global的mAP/R1，本轮不晋级；待登记唯一新科学干预。退役6已消费历史gallery缓存514949895B、free约3.01GB，best/当前依赖保留。仅26GPU0/1，无功率温度动作，2025 I/O pending。Goal ACTIVE / UNMET。
 
 ## 总目标与贡献边界
 
@@ -13,13 +13,13 @@
 - 固定best实测：201角色使同模型global mAP提高0.078198/0.121584；MSVR提高0.000096/0.010216；100下降0.278914/0.802213。100自己fused-best E5/E26与独立global E7不同，跨checkpoint差异单独解释。detail输出非零不证明身份价值。
 - 332旧source和187控制输入封存在refine-logs/global_task_role_fixed_best_diagnosis_v1/INPUT_SEAL.json。原M0二进制已按依赖闭合退役；不能调用依赖这些binary的旧verify/report或重放旧模型。旧parity FAIL/STOP保留，本研究训练不额外修parity。
 
-## 当前已闭合训练与正在执行的诊断
+## 当前训练与固定诊断均已终态，下一科学干预待登记
 
 refine-logs/deployment_metric_role_v1/EXPERIMENT_PLAN.md与SOURCE_SCOPE.json。semantic/native各自三个数据集，共六端；仅改变角色metric feature为当前output.fused=L2(sg(g)+gain*c)。原global作者raw任务、raw BN classification、同一head值/clone buffers、梯度所有权、结构/state/容量、初始化、视觉/camera更新、optimizer/LR/WD/scheduler、soft-margin/gain/seed42、完整batch/增强、noAMP和推理保持上一轮。
 
 车辆从各512维raw模态Triplet改为整1536联合L2，因此同时改变模态联合几何，不能称仅L2。原作者各头loss求和保留，车辆三份joint Triplet等价3倍，同三份CE不变。没有新head、辅助目标或系数。
 
-原supervisor3606472/startticks39300650已04:07:25退出1，其三端闭合及MSVR native M0失败不回改。原100 semantic完成full50后磁盘门阻断首次评价，旧磁盘parentEXIT1保留；新行政continuation完成原semantic首次strict及从未启动native自己的8M0/fresh50/首次strict。当前可用五个正式端/250轮12262步及唯一12对CPU报告均闭合，推进0/12；MSVR native无formal权重。原固定五端诊断已失败终态，2接受201＋1 MSVR末尾输入检查失败＋2未启动100；全部原状态保留。refine-logs/deployment_metric_pending_fixed_best_v1登记只继续两个从未启动100的首次固定诊断，尚未启动；原341/271输入和所有科学合同不变。所有同步必须先完成，再启动；活跃期间不进行remote仓库同步。原训练队列/报告/退役操作不能重复调用。
+原supervisor3606472/startticks39300650已04:07:25退出1，其三端闭合及MSVR native M0失败不回改。原100 semantic完成full50后磁盘门阻断首次评价，旧磁盘parentEXIT1保留；新行政continuation完成原semantic首次strict及从未启动native自己的8M0/fresh50/首次strict。当前可用五个正式端/250轮12262步及唯一12对CPU报告均闭合，推进0/12；MSVR native无formal权重。原固定诊断父进程FAILED及两201接受回执保留；两个从未启动100已在新行政父进程504070下首次诊断完成，parent EXIT0。MSVR原失败只做一次已保存数组CPU描述，不补签原接受回执或重跑模型。现在四接受＋一失败数组描述，原341/271和所有科学合同不变，所有本轮producer/observer已终态。本轮角色度量归一化不晋级为通用修复；后续依据全部证据登记唯一新科学干预，不调整本轮seed/LR/gain/margin救分。所有同步必须先完成，再启动；活跃期间不进行remote仓库同步。原训练队列/报告/退役操作不能重复调用。
 
 每端独立prepare核对上一轮initializer→8步真实M0→fresh50→首次strict。M0沿用有限loss、全部训练张量至少一次非零梯度/实际更新、BN8次、native14张量活动、完整state严格重载。不能用CPU witness替代实际M0。失败保持，不据官方结果改seed/LR/gain/margin/batch或堆N2/N3。
 
@@ -57,3 +57,6 @@ refine-logs/deployment_metric_role_v1/EXPERIMENT_PLAN.md与SOURCE_SCOPE.json。s
 
 
 §41.850：更新：2026-10-05 §41.850：六份执行源码SHA核验确认单位范数soft-margin Triplet的理想数学下界约0.126928；不据合计loss判断拟合或监督有效性，不改变当前训练。native原计时器17277首观察09:02:14.819772，之后240秒；正式4/6，五端/12对CPU报告未执行；MSVR native原M0失败保留。仅26 GPU0/1，无功率温度动作；2025 I/O pending。Goal ACTIVE / UNMET。
+
+
+§41.855当前边界：本节之前所有启动/等待文字按对应历史读取。当前五formal和四接受fixed诊断＋一失败数组描述已闭合，GPU队列/observer均已退出，下一科学干预未登记或启动；不重新执行原报告/NN/退役操作。

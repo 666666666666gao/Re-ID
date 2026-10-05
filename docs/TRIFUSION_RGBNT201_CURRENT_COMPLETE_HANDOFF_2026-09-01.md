@@ -17335,3 +17335,20 @@ L_{tri}=\operatorname{mean}\log(1+\exp(d_{ap}-d_{an}))
 收到失败结果时，第一个只读intake额外假设“失败端没有输出features”，真实已有部分数组，因此自身assert退出1，未改模型/科学源码。该intake失败独立保存；第二次只读收取如实列出部分数组及SHA，不重跑NN。归档 `logs/deployment_metric_fixed_best_failure854_20261005/` 包含原observer、原父进程/日志、两接受诊断和两次intake来源。
 
 已登记 `refine-logs/deployment_metric_pending_fixed_best_v1/CONTINUE_RGBNT100.py`：只将从未启动的100 semantic/native按原子入口、原341/271seal、原selected best/initializer、相同模型与1e-5容差顺序进行首次固定诊断；新行政父进程与新namespace，不修改原失败或原两个完成结果，不恢复缺失文件作为重试。所有实际输入SHA及GPU0/1空闲需先核对；本節只有准备和源核查，尚未启动。即使该两端完成，也只是4接受＋1明确诊断失败，不能写成5接受；MSVR已保存数组若以后做只读描述，须单独标明原诊断未接受，不能补签原回执。只26 GPU0/1，无功率温度动作；2025 I/O pending不探测。完整研究Goal ACTIVE / UNMET。
+
+
+## 41.855 剩余100首次诊断完成；四接受＋一失败数组描述，停止将归一化角色度量当通用修复
+
+§854同步于09:44:58结束后，09:46:55.375235首次启动两个原来未调度的100诊断，supervisor504070/startticks42015613，执行 `4d8bf809f5d2139f3b290a40c5333ce9b5d24dcf`。行政coordinator只调用原DIAGNOSE_FIVE子入口、原341源码/271输入seal、100各自initializer/selected best。09:54:13.967335父进程退出0；唯一observer3020在09:52:25第一次观察仍运行，240秒后09:56:26收取COMPLETE并退出0。耗时估计使用旧两100作业墙钟338.167248秒＋原启动核验34.304544秒−45，不提前轮询。10:09:25一次接收两端完整证据，原失败parent/EXIT/MSVR log和两201诊断SHA未变；前后model state/buffers SHA一致、无parameter grad、原fused距离最大差均0，原1e-5点容差未改。活跃期间没有远端仓库同步，也没有模型重试、优化更新或新checkpoint选择。
+
+100 semantic E5：fused84.082684mAP/95.160350R1，同一模型global84.369219/96.093294，故角色净作用−0.286534/−0.932945，首位修复/新增错误6/22。100 native E6：fused83.953389/96.501458，同模型global84.119386/96.734694，净作用−0.165998/−0.233236，修复/新增14/18。独立global最佳E7为84.533784/96.618076；因此两端相对独立global的负值包含E5/E6与E7的选点差，不能全部算成角色在同一模型内的作用。两种比较已分账。native同模型身份宏平均AP净变化+0.217952而全query mAP负，说明两种汇总不等价，不能选其中有利的一项替代主结果。此处诊断CPU CMC与原formal浮点CMC在既定容差内，原正式回执数值不覆盖。
+
+100 query scaled correction/global均值：semantic0.572747、native0.602856，global→fused平均夹角34.6389°/36.4534°；correction单独mAP41.0923/42.0700。raw控制对应修正比例0.340000/0.244686、角度18.2506°/13.3680°、correction mAP36.6259/31.1784。native实际reader输出范数从5.9478到19.5117，reader/derived semantic-plus-anchor比例从0.673618到0.812814；两个native比较使用各自mAP-best E26/E6，含选点差。更强的修正和独立识别没有改善同模型完整检索，不能简单归因于分支没有活动或输出不够大。
+
+MSVR失败前已保存的三数组只做了一次CPU描述，09:52:14完成，没有新NN forward。原全query/gallery元数据、scene过滤、作者scorer和固定fused指标核对通过，原fused距离最大差0；global50.542129/68.020305，fused50.512118/67.851100，角色净−0.030011mAP/−0.169205R1，首位0修复/1新增错误；query修正/global均值0.006336，夹角0.360760°。这份 `DESCRIPTION.json` 不是原DIAGNOSIS接受回执：原FAILED/EXIT1保留，不重构模型before/after SHA、不补签已失败验收、不重跑MSVR模型。MSVR native原M0失败也没有新增分数。
+
+本轮现在为四接受fixed-best诊断＋一明确失败的saved-array描述，五个可用formal/250轮12262步，12可用配对＋3明确缺失配对，推进0/12。所有五个当前角色相对其同模型global的主指标均未同时提高mAP和R1；201 mAP正但R1负，100两项负，MSVR仅微负。归一化联合1536角色Triplet不能晋级为三数据集通用机制，也不继续修改本实验seed/LR/gain/margin来救分。车辆改动同时涉及模态联合几何，不能把全部现象单独归给L2；50轮依赖轨迹和固定best描述不替代训练多种子、因果定位或SOTA。上一轮raw匹配控制保留；后续要从完整证据中登记一个新的明确科学干预，不能自动堆N2/N3、重试旧失败或重新包装倍率/池化。
+
+新诊断数组占用使磁盘降到约2.50GB；依据用户既有清理授权，只退役六份已消费历史 `results/global_task_role_fixed_best_20261004_v1/*/gallery_features.pt`，每份先核原DIAGNOSIS与实存SHA/bytes，且不属于当前271输入。10:13:32实际退役514,949,895字节，free2,496,122,880→3,011,088,384；仅删除六个明确文件，不递归。所有formal best、初始化、作者权重、当前诊断数组、原evaluation distances、旧query和DIAGNOSIS保留。旧历史诊断的gallery二进制重放已退役，不能再调用要求其仍存在的旧验证器；这是保存边界，不改变旧指标。两项本地准备错误发生在remote action前，单独记录。
+
+本轮零新训练权重、零优化更新；所有本轮GPU producer/observer/intake已终态，收齐后才进行本次发布。归档 `logs/deployment_metric_five_diagnostic_closure855_20261005/`。只26 GPU0/1，无功率温度动作；2025 I/O pending仍不探测。主Goal ACTIVE / UNMET，三个新机制和强参照/完整流程稳定性仍未达到。
