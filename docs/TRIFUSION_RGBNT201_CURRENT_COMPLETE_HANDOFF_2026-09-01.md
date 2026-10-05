@@ -17300,3 +17300,16 @@ L_{tri}=\operatorname{mean}\log(1+\exp(d_{ap}-d_{an}))
 三个配对的保存全局loss及全局范数均值在全部50轮最大绝对差均为0。这只证明这些聚合标量相同，不证明完整模型状态或query/global表示逐位相同。训练批次scaled-c/g：201 semantic E8新0.618222/raw0.048096，E50新0.688511/raw0.026928；201 native E8新0.617549/raw0.040596，E50新0.644543/raw0.026900；MSVR semantic E38新0.005772/raw0.005318，E50新0.005754/raw0.005269。它们不是query特征比值，也不证明修正幅度是失分原因。结合§849中100 semantic明显退化，更需要固定best的实际检索几何及修复/新增错误诊断，而不是仅凭能量选择倍率。
 
 各作者头loss仍为加权CE与Triplet合计；本节不恢复未保存分量、不跨raw/L2几何比较loss大小优劣。正式端仍4/6，100 native待原full50/首次strict；MSVR native原M0失败保留。原计时器17277首观察09:02:14.819772之后240秒，不提前查native进度，不改合同339源码/187控制或原失败回执。新五端12对CPU报告及固定best诊断待原执行闭合再做。只用26物理GPU0/1，无温度功率动作；2025 I/O pending不探测。Goal ACTIVE / UNMET。
+
+
+## 41.852 原RGBNT100 native与五端CPU报告闭合：全部12项推进门失败，固定best诊断输入已封存
+
+原计时器17277于09:02:16实际确认原supervisor仍存活、native训练未退出，沿原240秒间隔继续；09:06:17观察到full及首次strict完成、父进程09:06:07退出0，计时器正常结束。没有重新启动训练或提前改变观察计划。09:07:11接收并核验native原full50、3129步、同一E6 mAP-best完整四项为 **83.9533886085 / 96.5014576912 / 97.3760962486 / 97.7842569351**。相对匹配raw-native mAP +0.7901529229、R1 −0.2915441990；相对独立global-only mAP −0.5803956175、R1 −0.1166164875，两个原推进门均失败。best到E50 mAP下降26.066143428；训练加逐轮评价耗时7200.416309秒，不称完整墙钟。首次strict验收后才退役原356,803,284字节M0 probe，正式best和必要证据保留。
+
+09:08:02仅启动一次新的保存距离CPU报告，09:09:37退出0；09:11:54完成接收、339源码及187控制核验。原失败campaign、磁盘父进程EXIT1和report counters未改。报告是五个可用formal端、250轮/12262步、12个可用比较、3个MSVR native缺失比较；不是六端全部完成。全部12项原推进条件失败，匹配角色及独立global条件通过数均0。完整逐query/身份AP变化、固定模型identity bootstrap与全部CMC保存在 `logs/deployment_metric_available_five852_20261005/storage_five_report_closed850/`，bootstrap不代替训练多种子。
+
+其中native相对semantic：201 mAP +0.0483226841、R1 −0.8373205742，首位修复2/新增错误9；100 mAP −0.1292957748、R1 +1.3411078717，修复49/新增26、身份宏平均AP +0.1918421883。报告CMC为保存距离的CPU重算，微小FP32/CPU表示差异不替换原正式权重回执的四项。这说明同一个改动对首位与全部正例排序可能不同向，不能只展示有利指标或据此宣布原生细节无效。
+
+五个原最优权重及三个独立global控制已封存为八行输入：339项原科学源码、两个新诊断文本共341源码、271件不可变输入，seal SHA `a4de9faca7f502cb7a4fa01800e437919810d2cfa83bfcf0361047d831a42cb7`。新入口 `refine-logs/deployment_metric_fixed_best_diagnosis_v1/DIAGNOSE_FIVE.py`复用既有g/c/h/f诊断数值函数，只给五端供应各自真实campaign；目前已部署/封存，尚未执行诊断。MSVR native无formal权重，不重试、不填分、不读取已退役probe；仍按原完整query/gallery与camera/scene过滤、原1e-5指标容差，零优化更新、不重新选epoch。待本文与输入源码/封存四份同步核验后，才一次顺序执行五端固定best诊断，依据完整证据选择下一项干预，不自动堆N2/N3或调倍率/margin/seed。
+
+原native观察17277及CPU观察24930、collectors35118/68794均正常结束；当时可用空间5,335,597,056字节。局部绘图前两次调用分别缺少matplotlib与使用相对控制路径，均在写曲线前失败，实际使用明确依赖和绝对参数后完成50轮CSV/SVG；没有改绘图算法或重跑模型。只用26物理GPU0/1，无功率温度动作；2025原I/O pending不探测。正式端5/6、原缺失失败保留，Goal ACTIVE / UNMET。
