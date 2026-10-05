@@ -17265,3 +17265,21 @@ RGBNT100 semantic正式50轮/3129步，mAP-best第5轮，同权重 mAP/Rank-1/Ra
 当前能收束的窄结论是：这一RGBNT100 semantic配对没有形成稳定的检索增量，后期退化远大于匹配raw控制；记录中的global训练聚合量未同时出现差异。具体错误身份、判别内容与实际部署几何仍需已登记的保存数组报告/固定best诊断，不把任何单一原因写为已定位。
 
 当前native队列、科学339源码与控制187均未修改。上轮唯一近结束观察器17277，本轮对同一handle等待180秒仍返回原session，确认观察器继续活动；09:02:14.819772前没有远端native日志/模型进度查询。当前完整正式端仍4/6，native只有已通过8步M0与已开始full50的实际证据；MSVR native失败保持。§848混合来源5端/12对CPU报告尚未执行，须先收齐native首次strict。仅26 GPU0/1，无功率/温度动作；2025原I/O pending不探测。Goal ACTIVE / UNMET。
+
+
+## 41.850 当前单位范数 soft-margin Triplet 的损失边界：源码代数核验，不是新检索结果
+
+2026-10-05 08:09:39，本地核验六份源码与当前339项执行封存中的对应SHA相同：foundation作者损失入口、deployment-metric入口、metric_heads、global-task heads，以及Signal来源的make_loss和triplet_loss。后两份使用历史保存的精确源码副本；没有把不匹配的本地根目录layers文件当成远端当前实现。只核验了这六份对应源码，并未声称本机发布树与完整339项远端执行树相同。证据及实际本地生产脚本位于 `logs/deployment_metric_loss_source_invariants850_20261005/`。
+
+原配置无margin，Triplet默认hard_factor为0，使用取平方根后的欧氏距离及SoftMarginLoss。对单位球中的表示，理想实数计算下距离不超过2，因此
+
+\[
+L_{tri}=\operatorname{mean}\log(1+\exp(d_{ap}-d_{an}))
+\geq\log(1+\exp(-2))\approx0.126928.
+\]
+
+这是保守数学下界，不是整个多身份batch可达到的精确最小值，也不是对FP32舍入或工程容差的断言。当前metric_heads给各作者头相同的joint1536归一化表示，而作者head_losses求和，所以角色损失为 `lambda_id * sum(CE_h) + H * lambda_tri * L_tri`。车辆三个头对应三份同一Triplet；未乘配置权重时，下界约0.380784。这里只解释原已固定的目标，不改权重、head求和、margin、尺度、gain或学习率。
+
+因此，旧raw表示的Triplet接近零不能直接作为当前归一化soft-margin任务的活动标准；损失非零也不证明梯度有用或检索学得更好。原训练日志只保存加权CE与Triplet的合计head_losses，不能从这些合计值恢复各分量曲线；也不能直接根据raw/L2合计损失大小比较来源拟合质量。这一结构事实没有定位RGBNT100最佳到末轮退化的唯一原因，不据此修改正在执行的实验。
+
+正式端仍为4/6，当前native最近实际启动记录与原计时器17277保持不变，第一次远端观察计划09:02:14.819772，之后240秒；计时器已按180秒同handle等待确认仍活动。这里没有提前读取native训练进度、新执行模型或新生成mAP。五端/12项配对CPU报告与固定best诊断均待实际native原full50/首次strict闭合；MSVR310 native原M0失败及原磁盘父进程EXIT1保留。只用26物理GPU0/1，不查询、设置或监控功率温度；2025原I/O pending不再探测。Goal ACTIVE / UNMET。

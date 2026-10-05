@@ -1,0 +1,48 @@
+{
+  "status": "SOURCE_BOUND_MATHEMATICAL_INTERPRETATION_ONLY",
+  "at": "2026-10-05T08:09:39.115436+08:00",
+  "source_scope_sha256": "76987d2ca7d6dc7a9aeac34000d37ebe5e7d1d8ead6d52b1832f0b1557523a3d",
+  "exact_sources": [
+    {
+      "runtime_source": "tools/run_foundation_recipe.py",
+      "local_exact_copy": "tools\\run_foundation_recipe.py",
+      "sha256": "c18042509dc33ff66eee1a6b04a723ad55685bd5d9daf218c3779703ffe20758"
+    },
+    {
+      "runtime_source": "tools/run_deployment_metric_role.py",
+      "local_exact_copy": "tools\\run_deployment_metric_role.py",
+      "sha256": "42b061a7426d032675d53e1c576fb5955d7be50c20b2b2a9559e15b7979a907b"
+    },
+    {
+      "runtime_source": "modeling/trifusion/deployment_metric_role.py",
+      "local_exact_copy": "modeling\\trifusion\\deployment_metric_role.py",
+      "sha256": "fa60927aa22c1af6055a0b8bb229bcd07eda41a864e8a549a53a6cb27d1e0564"
+    },
+    {
+      "runtime_source": "modeling/trifusion/global_task_role_heads.py",
+      "local_exact_copy": "modeling\\trifusion\\global_task_role_heads.py",
+      "sha256": "2298763b70b48718411db52e55f32dabddade5af0e56457a85eeabab4f9fcefd"
+    },
+    {
+      "runtime_source": "comparators/Signal-cd1b0a6/layers/make_loss.py",
+      "local_exact_copy": "evidence\\smooth_ap_m0_audit_20260909\\snapshots\\remote\\root\\autodl-tmp\\trifusion-v2\\comparators\\Signal-cd1b0a6\\layers\\make_loss.py",
+      "sha256": "7eb7ab953c2bbc52d0c298ef971d0c3ff7000e5e50756fbb5a5fd63ac4c109aa"
+    },
+    {
+      "runtime_source": "comparators/Signal-cd1b0a6/layers/triplet_loss.py",
+      "local_exact_copy": "evidence\\smooth_ap_m0_audit_20260909\\snapshots\\remote\\root\\autodl-tmp\\trifusion-v2\\comparators\\Signal-cd1b0a6\\layers\\triplet_loss.py",
+      "sha256": "f502c44bec642bbf72ce6d0f58c9f9a0084beef9cbb451c2d2786bb13f94960a"
+    }
+  ],
+  "source_count_checked": 6,
+  "full_runtime_scope_checked": false,
+  "model_execution": false,
+  "remote_query": false,
+  "new_metric_result": false,
+  "formula": "L_tri=mean(log(1+exp(d_ap-d_an))); normalized-vector Euclidean distances are at most2 in ideal real arithmetic.",
+  "ideal_per_triplet_lower_bound": 0.1269280110429725,
+  "multihead_formula": "sum_h(lambda_id*CE_h + lambda_tri*L_tri(z)) = lambda_id*sum_h CE_h + H*lambda_tri*L_tri(z); z is the same joint1536 normalized vector for every head.",
+  "three_head_unweighted_triplet_lower_bound": 0.3807840331289175,
+  "interpretation": "Normalized soft-margin loss cannot approach zero just by scaling features. A nonzero value alone does not prove useful gradient support. Raw and normalized loss magnitudes cannot measure relative fitting quality directly; saved combined head_losses do not separate CE from Triplet.",
+  "boundary": "Ideal mathematical bound, not a floating-point equality/tolerance check, exact attainable batch minimum, diagnosis of retrieval degradation, evidence of an optimal new margin/scale, or authorization to change the live experiment. H and weights follow the configured heads; no new metric or seed claimed."
+}
