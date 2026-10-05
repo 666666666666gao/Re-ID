@@ -1,6 +1,6 @@
 # TriFusion 当前 Goal 执行约束
 
-更新：2026-10-05 §41.853：五端固定best诊断已09:21启动supervisor444043，零优化更新合同；唯一observer60517首09:30:30.214080，必要时240秒。正式5/6及12项推进门全失败不变，MSVR native原M0失败缺失；341源码/271封存保持。仅26 GPU0/1，无功率温度动作；2025 I/O pending。Goal ACTIVE / UNMET。
+更新：2026-10-05 §41.854：原固定诊断2接受/1失败/2未启动，supervisor444043已EXIT1；MSVR最后封存文件检查失败，原失败/数组不回改。只准备100两端首次诊断，未启动；同步结束后再启动，运行期间暂停remote同步。正式5/6及12推进FAIL不变。仅26 GPU0/1，无功率温度动作；2025 I/O pending。Goal ACTIVE / UNMET。
 
 ## 总目标与贡献边界
 
@@ -19,7 +19,7 @@ refine-logs/deployment_metric_role_v1/EXPERIMENT_PLAN.md与SOURCE_SCOPE.json。s
 
 车辆从各512维raw模态Triplet改为整1536联合L2，因此同时改变模态联合几何，不能称仅L2。原作者各头loss求和保留，车辆三份joint Triplet等价3倍，同三份CE不变。没有新head、辅助目标或系数。
 
-原supervisor3606472/startticks39300650已04:07:25退出1，其三端闭合及MSVR native M0失败不回改。原100 semantic完成full50后磁盘门阻断首次评价，旧磁盘parentEXIT1保留；新行政continuation完成原semantic首次strict及从未启动native自己的8M0/fresh50/首次strict。当前可用五个正式端/250轮12262步及唯一12对CPU报告均闭合，推进0/12；MSVR native无formal权重。正在执行refine-logs/deployment_metric_fixed_best_diagnosis_v1下的固定五端诊断，supervisor444043，输入八行341源码/271件；不新训练、不重选、不重试失败端。唯一观察器60517首次09:30:30.214080，之后240秒。原训练队列/报告/退役操作不能重复调用。
+原supervisor3606472/startticks39300650已04:07:25退出1，其三端闭合及MSVR native M0失败不回改。原100 semantic完成full50后磁盘门阻断首次评价，旧磁盘parentEXIT1保留；新行政continuation完成原semantic首次strict及从未启动native自己的8M0/fresh50/首次strict。当前可用五个正式端/250轮12262步及唯一12对CPU报告均闭合，推进0/12；MSVR native无formal权重。原固定五端诊断已失败终态，2接受201＋1 MSVR末尾输入检查失败＋2未启动100；全部原状态保留。refine-logs/deployment_metric_pending_fixed_best_v1登记只继续两个从未启动100的首次固定诊断，尚未启动；原341/271输入和所有科学合同不变。所有同步必须先完成，再启动；活跃期间不进行remote仓库同步。原训练队列/报告/退役操作不能重复调用。
 
 每端独立prepare核对上一轮initializer→8步真实M0→fresh50→首次strict。M0沿用有限loss、全部训练张量至少一次非零梯度/实际更新、BN8次、native14张量活动、完整state严格重载。不能用CPU witness替代实际M0。失败保持，不据官方结果改seed/LR/gain/margin/batch或堆N2/N3。
 
@@ -33,7 +33,7 @@ refine-logs/deployment_metric_role_v1/EXPERIMENT_PLAN.md与SOURCE_SCOPE.json。s
 
 每个formal仅保留best_map.pth。新队列逐端完整严格验收及SHA封存后只退役该M0探针，失败端不删；最终report验证不可变验收文件/journal，不调用退役binary依赖。六best+最多一probe+2GiB reserve预算4,966,055,936B，必要控制/作者/初始化全部保留。模型、原图、NPY/PT距离留远端；代码、文字、CSV/SVG、SHA同步。
 
-后续只有完整六端和固定诊断闭合后才能决定；优先验证真实同容量、角色完整路径删除重训、强参照与完整流程多种子，不为三个框强保无效机制。目标实际达成前不complete，正常长任务等待不blocked。
+后续在可用五端训练、固定诊断及明确失败/缺失记录闭合后再决定；MSVR native原失败不得为凑齐六端而重试；优先验证真实同容量、角色完整路径删除重训、强参照与完整流程多种子，不为三个框强保无效机制。目标实际达成前不complete，正常长任务等待不blocked。
 
 首端保存曲线补充§41.840：47/50轮mAP配对为正；R5/R10多数轮为负。依赖轮次不当独立种子，E8主结果和推进判定不变；剩余全部配对与固定best诊断闭合后再决定新干预。
 

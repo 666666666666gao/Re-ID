@@ -17322,3 +17322,16 @@ L_{tri}=\operatorname{mean}\log(1+\exp(d_{ap}-d_{an}))
 唯一local观察器60517于09:23:20实际启动，首次远端09:30:30.214080，未结束时240秒。旧六端完整campaign墙钟763.061661秒，减去原MSVR native作业103.428484秒，再提前90秒估计；不是只求和NN内部elapsed的486.905998秒。新增输入核验成本仍可能改变时长，该观察节点不是超时或停止门。观察源码及实际启动回执归档 `logs/deployment_metric_fixed_best_launch853_20261005/`。旧native/CPU观察与collectors已结束，不重复启动；当前尚无新固定best诊断结果。
 
 状态表将100 native明确更新为已验收E6四项83.9533886085/96.5014576912/97.3760962486/97.7842569351；当前正式5/6及12项推进门失败不变。原MSVR native失败、原磁盘父进程退出1及对应旧状态按历史解释。仅26物理GPU0/1，无温度功率动作；2025原I/O pending不探测；完整研究Goal ACTIVE / UNMET。
+
+
+## 41.854 固定诊断两端闭合、一端终态封存失败：不重试；只续接从未启动的100两端
+
+原09:21诊断supervisor444043在09:26:53.673270退出1；唯一观察器60517于09:30:31收取FAILED并退出0。201 semantic/native分别09:23:25、09:25:16完整DIAGNOSIS闭合；MSVR semantic在09:26:53失败，100两端从未被该父进程调度。故当前是2项接受诊断＋1项失败＋2项未启动，不能称五端诊断完成。训练正式5/6、250轮12262步及CPU12对报告闭合/推进0/12不变；MSVR native原M0失败依旧没有正式权重。
+
+完整trace定位在 `tools/diagnose_native_research_best.py:211` 的最后 `require_inputs(seal)`，不是forward、模型state、过滤或指标容差断言；当时找不到已封存历史 `refine-logs/native_fixed_best_diagnosis_v1/INPUT_SEAL.json`。MSVR query/gallery features及diagnostic distances已经保存，但未写入DIAGNOSIS.json，不能把部分数组补填成接受回执。此时§853同步正在执行，09:26:55发布核对该文件已经恢复为原SHA `faec05a5eea483570b136a1c087e787c336f5fee2cf9d416b05c879d0bcee724`；09:40:37再次收取341源码/271输入均原SHA通过。这支持瞬时封存文件可见性问题，不支持算法掉分或CUDA计算失败。同步中进行了sparse-checkout操作；不能在诊断活跃期间再次进行远端仓库同步，后续先同步完再启动，在终态后再发布。原FAILED、EXIT1、部分数组及日志保持不变，不重试MSVR诊断，也不重新运行两项已完成201诊断。
+
+两项201接受结果的fused距离相对原首次strict最大差均0，前后模型参数/buffer SHA一致，无梯度/更新。实测query的scaled correction/global均值：semantic从raw控制0.0529813变为0.6481506，native从0.0466822变为0.6449841；global→fused平均夹角从3.0016°/2.6578°变为40.2744°/40.0381°。correction独立mAP从11.5781/6.3115变为28.4666/15.9666。尽管修正能量和独立检索能力增强，完整相对独立global仍为+0.6396mAP/−0.2392R1及+0.6879/−1.0766；首位修复/新增错误为21/23及19/28。native相对当前semantic仅+0.0483mAP而R1−0.8373。指标不是同时改善，不能继续把“修正太弱”当作这一条件的已证实根因；这些是固定best描述，不是因果或训练种子证据。
+
+收到失败结果时，第一个只读intake额外假设“失败端没有输出features”，真实已有部分数组，因此自身assert退出1，未改模型/科学源码。该intake失败独立保存；第二次只读收取如实列出部分数组及SHA，不重跑NN。归档 `logs/deployment_metric_fixed_best_failure854_20261005/` 包含原observer、原父进程/日志、两接受诊断和两次intake来源。
+
+已登记 `refine-logs/deployment_metric_pending_fixed_best_v1/CONTINUE_RGBNT100.py`：只将从未启动的100 semantic/native按原子入口、原341/271seal、原selected best/initializer、相同模型与1e-5容差顺序进行首次固定诊断；新行政父进程与新namespace，不修改原失败或原两个完成结果，不恢复缺失文件作为重试。所有实际输入SHA及GPU0/1空闲需先核对；本節只有准备和源核查，尚未启动。即使该两端完成，也只是4接受＋1明确诊断失败，不能写成5接受；MSVR已保存数组若以后做只读描述，须单独标明原诊断未接受，不能补签原回执。只26 GPU0/1，无功率温度动作；2025 I/O pending不探测。完整研究Goal ACTIVE / UNMET。
