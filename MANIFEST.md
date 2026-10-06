@@ -2237,3 +2237,5 @@
 | 2026-10-07T03:11:10.653656+08:00 | /analyze-results | logs/independent_role_heads_complete874_20261007/ | complete | 三端full50/first-strict/原单次报告及完整来源支持普查接收；主配对0/3，科学目标未完成 |
 
 | 2026-10-07T03:39:24.470306+08:00 | /experiment-plan | refine-logs/independent_role_heads_fixed_best_diagnosis_v1/ | preparation | 三份固定best只读g/c/f诊断；实存仅fused，新NN未运行；原385/RAW187保持 |
+
+| 2026-10-07T04:10:56.894489+08:00 | /analyze-results | results/independent_role_heads_fixed_best_partial876_20261007/ | partial | 原诊断2/3，100磁盘门前停止；19非最佳末轮缓存退役，单端续接准备 |

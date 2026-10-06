@@ -1,0 +1,43 @@
+{
+  "schema": "trifusion-semantic-capacity-control-v1",
+  "status": "COMPLETE",
+  "dataset": "RGBNT100",
+  "recipe": "native",
+  "seed": 42,
+  "training_epochs": 50,
+  "selected_epoch": 9,
+  "condition": {
+    "variant": "native",
+    "foundation_option": "author",
+    "seed": 42,
+    "epochs": 50,
+    "public_clip_sha256": "5806e77cd80f8b59890b7e101eabd078d9fb84e6937f9e85e4ecb61988df416f",
+    "initialization_sha256": "4d699b66bdee589155c98d87aba910da6c92cc27cb920580c9c13edeb925fb28",
+    "deployment": "L2_1536",
+    "auxiliary_tasks": "none",
+    "visual_placement": "single_process_original_full_batch_first6_cuda1_last6_and_heads_cuda0",
+    "objective_gradient_policy": "author_global_loss_to_shared_and_heads_fused_loss_to_roles_only",
+    "author_training_objectives": [
+      "shared_global",
+      "role_corrected_fused"
+    ],
+    "evidence_source_policy": "CLIP_role_C_patches_active_MLP_128_202_202_128_to_512_candidates",
+    "active_reader_parameters": 159096,
+    "native_reader_parameter_gap": -200
+  },
+  "protocol_sha256": "b2c14adf947b06b27b9576a712f96192c1393ad6ed3ec1be5259b63f88300169",
+  "checkpoint_sha256": "b198ca9b1210c9cdd6767a31020b57b053059f5d2ab81d95568a951449218d3f",
+  "distance_sha256": "8641b618d97011f47fe572c02c7ea282e08ebd0ad0f16204b352e54d2609af3e",
+  "training_best_distance_sha256": "de7e0593c2ed870d9ee2f3b5be03107fb84f40702b1c2980f7ad9dddc56f72b2",
+  "metrics": {
+    "mAP": 83.5904654424885,
+    "Rank-1": 96.32652997970581,
+    "Rank-5": 97.02624082565308,
+    "Rank-10": 97.49271273612976
+  },
+  "reranking": false,
+  "independent_upstream_metrics_equal": true,
+  "final_evaluation_seconds": 104.55026910197921,
+  "final_evaluation_timing_boundary": "Fresh construction, strict reload and full-gallery scoring.",
+  "completed_at": "2026-10-05T14:20:53.313252+08:00"
+}
