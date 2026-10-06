@@ -17776,3 +17776,16 @@ all_patch相对global-only的mAP在201/100/MSVR分别为−0.9243/+2.0398/+2.431
 23:00:49只读核实本项目producer为空，GPU0/1各18MiB，free2,493,485,056B。启动需3best+1probe各384MiB加2GiB，固定3,758,096,384B。23:10:08资格清理完成四份刚闭合且被保留RAWglobal四指标支配的源选择best：201global/masked/allpatch及100global；每份原50轮、首strict回执/实际PTH/训练和评价距离SHA及保留winner已核。实退役1,407,383,008B，free3,895,394,304B；原374来源与RAW187前后SHA一致。四份旧binary直接重放能力退役，原history/receipt/距离/所有分数与既有失败不改；源MSVRglobal及其他未支配best、作者/public/当前对照仍保留。完整资格、CPU与退役journal在`logs/independent_role_head_preparation872_20261006/`，没有模型/NPY回传。
 
 当前真实prepare/pair/M0/full三端均NOT_RUN。只26物理GPU0/1、无25/其他GPU/功率温度动作、无环境重建或消息。预计约3.5–4小时，按实际里程碑/180–300秒观察；NN期间不做source/Git同步。发布完成后才首次启动，旧计算parity失败仍封存。整体Goal ACTIVE/UNMET，三集强净收益、必要机制、完整多种子和同资源SOTA仍缺；2025原I/O pending不探测。
+
+
+## §41.873 — 独立训练头队列第一次启动前空间门失败；旧二进制清理后重新具备启动空间（2026-10-06T23:42:38.212583+08:00）
+
+§872首次启动检查在固定3,758,096,384B空间断言处退出1；尚未创建campaign/journal、初始化模型、M0或正式训练。原失败保留，不称训练失败或指标负结果。23:23:58复查free3,055,337,472B，比23:10记录少约840MB；变化来源未定位，不归咎其他项目。
+
+23:32:29退役两份自己的闭合非当前依赖PTH，共704,086,974B：来源SIM的MSVR global-best由保留F3 metric-raw的四项指标支配；原N1-low MSVR完成50轮但首次数值验收失败、无正式receipt，作为已停用失败二进制退役，不补正式分数或改判。原训练史、首次失败评价距离与记录保留。首次清理资格代码误要求旧N1从未保存的training-best距离文件，在创建journal/删除前失败；后续根据实际旧保存入口，读取CPU checkpoint metadata与原失败official距离校验，原错误保留。旧N1没有training-best距离不能写成该数组仍在，退役后这份权重不可直接重放。
+
+已用的117份自己Git传输bundle字节匹配本地留存副本后清理，共882,883,245B；它们位于/tmp另一设备，未增加/data训练盘空间，不能计入有效训练盘释放。仓库提交及本地bundle保留。
+
+随后按用户“只保留指标最好的权重”的授权，退役不再参与当前研究的F2 raw-MSVR best二进制346,600,965B；保留F3 metric-raw best。后者mAP/R1/R10较高，R5较低，这不是四项支配，也不是跨配方单因素因果比较；原50轮、正式receipt、训练best与official距离均留存。本次三份训练盘清理共1,050,687,939B；2026-10-06T23:39:57.641202+08:00实际free4,100,222,976B，超过固定启动门，未放宽空间或数值门槛。
+
+本地首次发布准备误把服务器封存来源的字节口径套用于Windows历史CRLF/缺少的作者文件，资格断言在写入前失败；后续改为校验新增11份自有来源，本地既有Git状态不变，服务器继续逐字节核对完整385份。依赖发布描述尚未生成的发布调用也在本地读取前失败，未有Git/远端动作。独立fused训练头科学计划、385份来源文件与RAW187当前输入全不变。初值CPU见证通过仍不代表真实pair/M0或性能通过；目前新三端尚未正式开始。保持201→MSVR→100，每端8M0/fresh50/first-strict、同一mAP-best全部CMC。只26GPU0/1，不探测25、其他卡、功率或温度；NN期间不改source/Git。空间证据与全部失败/清理journal归档于logs/independent_role_head_storage873_20261006，目标ACTIVE/UNMET。

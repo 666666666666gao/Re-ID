@@ -2232,3 +2232,4 @@
 | 2026-10-06T23:14:19.085135+08:00 | /experiment-plan | refine-logs/independent_role_heads_v1/EXPERIMENT_TRACKER.md | implementation | 独立fused训练头的三端固定对照与执行状态 |
 | 2026-10-06T23:14:19.085135+08:00 | /experiment-plan | refine-logs/independent_role_heads_v1/EXPERIMENT_TRACKER_20261006_230600.md | implementation | 独立fused训练头的三端固定对照与执行状态 |
 | 2026-10-06T23:14:19.085135+08:00 | /experiment-plan | refine-logs/independent_role_heads_v1/EXPERIMENT_TRACKER_20261006_231200.md | implementation | 独立fused训练头的三端固定对照与执行状态 |
+| 2026-10-06T23:42:38.212583+08:00 | /run-experiment | logs/independent_role_head_storage873_20261006/ | preparation | 独立训练头启动前空间失败与授权清理记录；未产生训练结果 |
