@@ -2,7 +2,7 @@
 
 ## 0. 一页结论
 
-**当前进度：§41.821（2026-10-04更新）。** RGBNT100读取detach semantic完整50轮/3129步及首次严格评价通过，E5为81.9418/94.7522；较原semantic下降1.4977/1.3411，R5/R10也下降。正式5/6、M0 6/6，最后native正在fresh50。仅26GPU0/1，不设置或监控功率温度限制；原配方和单一best保持，Goal active/unmet。
+**当前进度：§41.863（2026-10-06更新）。** row接收质量六端完整50轮/首次strict已闭合（300轮/12,968更新），主推进0/3、全部15比较0/15；固定六份best十八模式/24配对诊断也已闭合。固定权重切换分配最大mAP变化0.001059942点、六份CMC全部不变；100更强修正仍损伤自身global。五份无依赖且四指标被保留winner支配的best已退役，201slot因R10优势保留。当前没有活动训练/观察，下一科学干预未启动；只26 GPU0/1、无功率温度动作、25原I/O pending，Goal ACTIVE/UNMET。下面旧首页细节为历史摘要，现态以本段与正文§862–863为准。
 
 **现行合同：** 每个正式候选完整50轮，使用作者完整query/gallery及camera／MSVR时间段过滤，以官方fused mAP最高的同一checkpoint报告全部指标，随后严格重载。RGBNT201报告mAP／R1／R5／R10，RGBNT100及MSVR310报告mAP／R1；不跨epoch或seed拼列。官方集已参与逐轮选点和历史方法选择，属于已消费基准上的探索性结果。
 
@@ -17536,3 +17536,66 @@ result-to-claim新鲜上下文复核 verdict=`no`，same-family/provisional，�
 退役的是旧clean公开起点201的global/roles、旧shared-private201 global/coupled、旧视觉更新201冻结global/低LR global/低LR roles、旧N1 highMSVR及旧冻结rolesMSVR九份无用自训best；训练/数组/原metric记录保留，九个旧binary直接重载路径现在不可用。没有改门、选另一份新checkpoint或按成绩更改新方法/超参。全部原失败、资格源与实做journal见logs/row_transport_storage_start861_20261006。
 
 本次只是恢复原六端row-null/slot-mass vs pair-uniform研究的首次可启动条件。原seed42/50轮/作者RAW职责、batch、1536L2、全gallery、真实8M0与首strict合同及366科学源不变。尚无该六端真实结果，不把存储清理算成识别增益或OT根因修复。只26 GPU0/1、无功率温度动作、25原I/O pending。Goal ACTIVE/UNMET；首次队列仍须实时验证来源、余量、空闲卡，旧启动失败记录保留。
+
+## 41.862 按槽位接收质量六端正式闭合：三项主配对均未晋级
+
+2026-10-06T10:12:23.143893+08:00。原监督2724091在09:18:22退出0，六端真实prepare/8M0/fresh50/首strict均接受，300正式轮、12,968更新；原唯一15配对CPU报告只执行一次。全部配对实际batch顺序一致，366执行源/187 RAW控制实存SHA核验。不是新原生图像分支：内部semantic=slot_mass、native=uniform_mass，两者只有消息接收质量分配不同，均使用原CNN/T语义与各模态16区域私有Mamba，再跨模态交流。
+
+| 数据集 | 接收方式 | best轮 | mAP | R1 | R5 | R10 |
+|---|---|---|---|---|---|---|
+| RGBNT201 | slot_mass | 8 | 74.338779 | 78.588516 | 88.397127 | 91.985649 |
+| RGBNT201 | uniform_mass | 8 | 74.256865 | 78.827751 | 88.277513 | 91.746414 |
+| MSVR310 | slot_mass | 38 | 50.546624 | 68.020302 | 80.541456 | 85.448390 |
+| MSVR310 | uniform_mass | 38 | 50.547712 | 68.020302 | 80.541456 | 85.448390 |
+| RGBNT100 | slot_mass | 26 | 83.418072 | 96.268219 | 96.734697 | 97.142857 |
+| RGBNT100 | uniform_mass | 26 | 83.895222 | 96.384841 | 97.084546 | 97.609329 |
+
+全部列跟随各端同一mAP-best。车辆R5/R10展开已保存CMC，不替代其mAP/R1主指标。主slot−uniform的mAP依201/MSVR/100为+0.081915/−0.001089/−0.477150，R1为−0.239234/0/−0.116618；主推进0/3、全部15比较0/15。事前+0.5mAP且R1不降是项目推进线，不是显著性。
+
+| 数据集 | 候选−对照 | ΔmAP | ΔR1 | 首位修复/新增 | 身份宏平均ΔAP | 推进 |
+|---|---|---|---|---|---|---|
+| RGBNT201 | slot_mass−uniform_mass | +0.081915 | -0.239234 | 4/6 | +0.057541 | FAIL |
+| RGBNT201 | slot_mass−raw_semantic | -0.036082 | -0.239234 | 4/6 | -0.049456 | FAIL |
+| RGBNT201 | slot_mass−raw_global_only | +0.042116 | -0.358852 | 1/4 | +0.017740 | FAIL |
+| RGBNT201 | uniform_mass−raw_semantic | -0.117997 | +0.000000 | 4/4 | -0.106998 | FAIL |
+| RGBNT201 | uniform_mass−raw_global_only | -0.039799 | -0.119617 | 4/5 | -0.039801 | FAIL |
+| MSVR310 | slot_mass−uniform_mass | -0.001089 | +0.000000 | 0/0 | -0.000875 | FAIL |
+| MSVR310 | slot_mass−raw_semantic | +0.004399 | +0.169205 | 1/0 | +0.001949 | FAIL |
+| MSVR310 | slot_mass−raw_global_only | +0.004495 | +0.000000 | 1/1 | -0.004490 | FAIL |
+| MSVR310 | uniform_mass−raw_semantic | +0.005487 | +0.169205 | 1/0 | +0.002824 | FAIL |
+| MSVR310 | uniform_mass−raw_global_only | +0.005584 | +0.000000 | 1/1 | -0.003616 | FAIL |
+| RGBNT100 | slot_mass−uniform_mass | -0.477150 | -0.116618 | 14/16 | -0.488458 | FAIL |
+| RGBNT100 | slot_mass−raw_semantic | -0.672233 | +0.408163 | 38/31 | -0.499313 | FAIL |
+| RGBNT100 | slot_mass−raw_global_only | -1.115712 | -0.349854 | 31/37 | -0.690122 | FAIL |
+| RGBNT100 | uniform_mass−raw_semantic | -0.195083 | +0.524781 | 41/32 | -0.010855 | FAIL |
+| RGBNT100 | uniform_mass−raw_global_only | -0.638562 | -0.233236 | 29/33 | -0.201664 | FAIL |
+
+以上配对CMC来自CPU原保存距离精确计分，正式receipt float32表示保留，不以几百万分之一差异覆盖原回执。完整50轮曲线、逐query/身份变化、真实训练与逐轮评价时间、参数及全部输入/距离/权重SHA见`logs/row_transport_complete863_20261006/formal/`和`analysis/`。单seed42、官方集已参与选epoch/方法；微小正值不证明等价、稳定互补或同协议SOTA。原科学范围为逐行17项null分配，不是Sinkhorn/双向OT/真实部件匹配；同score控制的是总矩阵质量，不是最终向量能量或两份独立训练后的预算。
+
+本轮不晋级成功主模块。零出口保证初始无peer写入，不保证训练结果；私有Mamba拆分已改变旧48-token路径，跨RAW比较不能全部归因接收质量。所有旧OT组件失败、启动前磁盘EXIT1保持原判。当前正式队列已终态，没有训练重跑或官方分数救参。
+
+## 41.863 六份固定best、十八模式诊断闭合：接收分配作用极薄，活动与互补仍须分开
+
+固定六份best各原方式、相反分配、仅保留自身消息输出三模式，全量query/gallery共18模式与24配对；参数/buffer/权重不更新，original重载四指标按原门通过。唯一CPU报告10:00:00退出0，10:01实查监督不在、原子步骤全0；完整接收156份文本及远端数组SHA，未在本地下载模型或NPY。
+
+| 数据集 | 训练方式 | 切换分配ΔmAP | 去peer写入ΔmAP | 平均槽位质量std | 条件Q熵 | scaled修正/global | fused−自身global mAP |
+|---|---|---|---|---|---|---|---|
+| RGBNT201 | slot | +0.000177298 | -0.001162478 | 0.000150 | 2.772587 | 0.063735 | +0.042116 |
+| RGBNT201 | uniform | +0.000000000 | +0.005409085 | 0.000334 | 2.772582 | 0.057653 | -0.039799 |
+| MSVR310 | slot | +0.000015495 | +0.000266218 | 0.006049 | 2.558328 | 0.006098 | +0.004495 |
+| MSVR310 | uniform | +0.000013329 | +0.000053330 | 0.006150 | 2.555933 | 0.006071 | +0.005584 |
+| RGBNT100 | slot | -0.001059942 | +0.030482853 | 0.026106 | 2.657813 | 0.228580 | -0.547380 |
+| RGBNT100 | uniform | -0.000362933 | -0.002310730 | 0.013724 | 2.749737 | 0.178549 | -0.070231 |
+
+同一份权重切换分配的最大绝对mAP变化0.001059942点，六模型R1/R5/R10全部不变；不能把100两份训练间0.477150差解释为固定best中有显著接收分配收益。去peer有效写入最大绝对变化0.030482853点；它保留CNN/T、私有Mamba/norm/readout和原共享context，不是完整角色删除或禁止一切跨模态信息，更不是重新训练的必要性消融。
+
+201的Q熵约ln16=2.772589、最大列份额约1/16，接收质量槽位std仅0.000150/0.000334；100更不均匀（std0.026106/0.013724）且写入更大，修正/global约0.228580/0.178549、转角约12.54/10.00度，仍使自身global mAP分别下降0.547380/0.070231、R1下降0.291545/0.174927。不能统一说各集消息都没有活动，也不能把分支独立判别性视为有用互补。MSVR对自身global的query mAP虽微正，身份宏平均仍微负。
+
+matching矩阵范数201从6.538缩到1.193/1.195、100从6.517缩到0.582/0.307，MSVR从6.564到6.401；当前训练记录未单因素分离任务梯度与weight decay，不能宣布唯一根因。100两份自身global均83.965452，低于独立global-only84.533784；职责分离不保证训练轨迹完全相同，随机数/AMP等原因尚未定位，不用这次结果追认旧所有下降原因。
+
+初次固定best进程09:31:57 EXIT1，已完成201/MSVR四模型十二模式；原因在factory初始化binding：共享YACS cfg从MSVR带入STEPS(20,40)，100 YAML没有重置，fresh100应为(40,70)。CPU原配置复现显示仅该项差异、fresh dump与原initializer完全一致。原正式六端均fresh process，不受该诊断跨集状态影响。原失败/初次CPU tuple类型断言失败均保留。只另立两份缺失100的fresh process继续既定诊断，未重跑四接受、未改科学source/strict门；两进程09:54:19/09:59:33退出0。旧PROGRESS四项RUNNING是历史文件，不覆盖新SUMMARY6/18与CPU24终态。失败和继续来源见本归档`configuration_failure/`、`fixed_best/`、`diagnosis_preparation/`；代码自查明确为root self-review，不冒称独立审计。
+
+所有消费者闭合后，先完整资格核50轮、原strict回执、实存checkpoint/距离SHA以及保留winner四项指标，再退役五份本轮无用best：201uniform、MSVR两臂、100两臂，实删1,787,541,343B，free 3,849,072,640→5,636,186,112B。201slot的R10仍有独立优势，best SHA`c04d308e7b5cc3d8a81226840da34b1caa6bd4eddcd6d70cde6c8797e74e0371`保留；region201mean、F3MSVR、RAW100global及原187依赖/366源前后SHA不变。数组、回执、训练文本仍在，五份binary直接重放路径退役，不能再执行需要六份实存PTH的旧诊断/验收。最初清理资格脚本将six_weight_sha256逻辑行名误作路径，在journal/删除前退出1；新R2显式映射既定run_dir完成资格与删除，原失败不改判。详见`retirement/`。
+
+研究下一步只收束到身份证据内容的形成及直接活动控制；不继续以gain/null/LR/margin/seed、统一detach或Triplet输入救本轮，不把三个候选一齐叠上。后继科学计划尚未登记/启动，不能从旧PREPARED脚本推断正在训练。Goal ACTIVE/UNMET，三集强净收益、必要机制、多种子和资源匹配SOTA均缺；仅26物理GPU0/1，无功率温度动作，2025原I/O pending不探测。所有NN/报告/观察已终态后才进行本次Git/主文档同步，其他10份非本任务文件保留。
+

@@ -1,0 +1,46 @@
+{
+  "schema": "trifusion-row-mass-role-transport-v2",
+  "status": "COMPLETE",
+  "dataset": "RGBNT201",
+  "recipe": "native",
+  "seed": 42,
+  "training_epochs": 50,
+  "selected_epoch": 8,
+  "condition": {
+    "variant": "native",
+    "foundation_option": "author",
+    "seed": 42,
+    "epochs": 50,
+    "public_clip_sha256": "5806e77cd80f8b59890b7e101eabd078d9fb84e6937f9e85e4ecb61988df416f",
+    "initialization_sha256": "a151138b6f53f983a8b481b4bd3b4af6853fe744f2e2c7f743a5af56a6aaea89",
+    "deployment": "L2_1536",
+    "auxiliary_tasks": "none",
+    "visual_placement": "single_process_original_full_batch_first6_cuda1_last6_and_heads_cuda0",
+    "objective_gradient_policy": "author_global_loss_to_shared_and_heads_fused_loss_to_roles_only",
+    "author_training_objectives": [
+      "shared_global",
+      "role_corrected_fused"
+    ],
+    "transport_mass_mode": "uniform_mass",
+    "active_transport_parameters": 32768,
+    "transport_iterations": 0,
+    "transport_null_logit": 1.0,
+    "mamba_sequence_policy": "three_private_16_slot_sequences_then_peer_transport",
+    "transport_assignment_policy": "directional_row_softmax_with_one_fixed_null"
+  },
+  "protocol_sha256": "b2409c2d992d04adcf0c78354d306afd6af7ae9507738fd4e83de480e9a9b90f",
+  "checkpoint_sha256": "c2f3971b8805a288ab7dbf7e657c654690e2d17d4734db61910a0449ad4f353c",
+  "distance_sha256": "22b8aa82a7353f1f454923922ec87307f8883516877010bc410f81b06bf91522",
+  "training_best_distance_sha256": "6b1515c51f47f6b34947d64a7af8d619464764a085388beadf659df3ba9e82ef",
+  "metrics": {
+    "mAP": 74.25686494177754,
+    "Rank-1": 78.82775068283081,
+    "Rank-5": 88.27751278877258,
+    "Rank-10": 91.74641370773315
+  },
+  "reranking": false,
+  "independent_upstream_metrics_equal": true,
+  "final_evaluation_seconds": 39.89996870997129,
+  "final_evaluation_timing_boundary": "Fresh construction, strict reload and full-gallery scoring.",
+  "completed_at": "2026-10-06T04:14:49.036779+08:00"
+}
