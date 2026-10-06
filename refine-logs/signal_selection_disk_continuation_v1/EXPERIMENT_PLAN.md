@@ -1,0 +1,5 @@
+# Disk-only continuation of the source-selection reference
+
+Run two missing fresh50 RGBNT100 endpoints and one missing all_patch eight-step M0. Reuse seven accepted full50/first-strict results, eight M0s and nine actual initializer witnesses from 868. Keep the original374 sealed sources and explicit MSVR metadata supplement unchanged. Preserve original868 EXIT1 (disk gate before formal start), earlier866/867 failures and all receipts. No model/recipe/metric/precision/seed changes; only GPU0/1, one NN. Final original CPU report once after all9/450 and all18 stages pass, all9 pairs and full query/gallery. No selection according to official scores or extra module/scale search.
+
+Budget: unchanged2GiB stage reserve plus three360MiB future save/probe slots and six59,074,461B arrays, 3,634,392,494B. Shared filesystem growth remains external to this forecast. Current masked M0 retires only after its own first-strict; future all_patch likewise. All9 formal best stay through final consumers. Source self-review is not independent/scientific validation.

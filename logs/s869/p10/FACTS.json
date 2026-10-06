@@ -1,0 +1,66 @@
+{
+  "status": "CPU_ONLY_SOURCE_SEMANTICS_AND_CLOSED_COST_READOUT",
+  "created_at": "2026-10-06T15:00:04.788495+08:00",
+  "source_sha256": {
+    "comparators/Signal-cd1b0a6/modeling/AddModule/useA.py": "1f8fef4dcadb89f5097f83b41a699d9f801a23c88ca3eea73b3ad973a56952a9",
+    "tools/run_signal_selection_reference.py": "931a94ae5a2ad8f6d2ee355ed00701f781397922f3e9144c1d4ab4f28c5475e3"
+  },
+  "closed_input_sha256": "fad28601082736db0610e13bbcf64eaddfb0e7bd4730ed5c5807d787936a76e1",
+  "properties": {
+    "mask_is_intra_inter_union": true,
+    "topk_not_total_retained_count": true,
+    "masked_tokens_are_zeroed_not_removed": true,
+    "attention_sequence_length_unchanged": true,
+    "selected_and_unselected_tokens_share_same_MHA_call": true,
+    "explicit_attention_exclusion_absent": true,
+    "actual_retained_counts_not_saved": true
+  },
+  "pairs": [
+    {
+      "candidate": "masked",
+      "control": "all_patch",
+      "delta_metrics": {
+        "mAP": 0.23701087434611168,
+        "Rank-1": -1.1961698532104492,
+        "Rank-5": -1.1961698532104492,
+        "Rank-10": 0.5980908870697021
+      },
+      "training_parameters_added": 0,
+      "train_cli_seconds_added": 244.68991699999992,
+      "train_cli_ratio": 1.1231056959959274,
+      "training_loop_ratio": 1.109445713373654,
+      "loop_epoch_evaluation_save_ratio": 1.124297829986763
+    },
+    {
+      "candidate": "masked",
+      "control": "global_only",
+      "delta_metrics": {
+        "mAP": -0.6873190482821485,
+        "Rank-1": -1.67464017868042,
+        "Rank-5": -1.0765552520751953,
+        "Rank-10": 0.717705488204956
+      },
+      "training_parameters_added": 2366976,
+      "train_cli_seconds_added": 300.86551399999985,
+      "train_cli_ratio": 1.1557706021194556,
+      "training_loop_ratio": 1.1548123158717225,
+      "loop_epoch_evaluation_save_ratio": 1.1567275287346497
+    },
+    {
+      "candidate": "all_patch",
+      "control": "global_only",
+      "delta_metrics": {
+        "mAP": -0.9243299226282602,
+        "Rank-1": -0.4784703254699707,
+        "Rank-5": 0.1196146011352539,
+        "Rank-10": 0.1196146011352539
+      },
+      "training_parameters_added": 2366976,
+      "train_cli_seconds_added": 56.175596999999925,
+      "train_cli_ratio": 1.0290844452485501,
+      "training_loop_ratio": 1.0408912323975867,
+      "loop_epoch_evaluation_save_ratio": 1.028844402153003
+    }
+  ],
+  "boundary": "No NN/SSH/runtime-mask measurement/officialscoring/report rerun. Actualunchanged pinnedauthorcode, not a bug claim. Zeroinputtokens keep softmaxmass even ifprojectionbias iszero; trainedK/Vbias maygive them a common projectedvalue. Union count is not fixedk; currentretainedcounts unknown. Closed201 timing is single sequentialrun onsharedserver, not repeated isolatedlatency orcausal speed claim. No cross-dataset conclusion; do notchangeactive topk/mask/threshold/recipe."
+}
