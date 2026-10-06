@@ -27,3 +27,6 @@
 
 
 §41.865：九端SOURCE_READY_ONLY，queue/report/扩展source372已实现，尚未真实prepare/M0/full。六份明确dominated已闭合own权重退役2127963598B，旧366/RAW187/winners不改。启动预算仍5,922,357,248B，须实时核查。真实M0通过后各端fresh50，不再额外parity修复/尺度搜索。根自查非独立复现。Goal ACTIVE/UNMET。
+
+
+§41.866：原865 terminalEXIT1，3初始化PASS但首M0在build前统计reset失败，更新0/formal0。只移动GPU1统计调用至build/partition之后；去统计语句AST相等。修订866待一次启动freshprepare/M0/full，旧失败不重跑改判。Goal ACTIVE/UNMET。

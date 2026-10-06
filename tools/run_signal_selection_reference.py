@@ -127,6 +127,7 @@ def condition(args):
 
 def optimization(args,model,cfg):
     global m0_parameter_before
+    torch.cuda.reset_peak_memory_stats(1)
     optimizer,scheduler,loss_fn=original_optimization(args,model,cfg)
     ids=[id(p) for group in optimizer.param_groups for p in group['params']]
     assert len(ids)==len(set(ids))
@@ -141,7 +142,6 @@ def train(args,protocol):
     assert not batch_log_path.exists()
     batch_step=0
     foundation.runner._training_batch=training_batch
-    torch.cuda.reset_peak_memory_stats(1)
     original_train(args,protocol)
     receipt_path=args.output_dir/'training.json'
     receipt=json.loads(receipt_path.read_text())

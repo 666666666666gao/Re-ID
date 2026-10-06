@@ -2,7 +2,7 @@
 
 ## 0. 一页结论
 
-**当前进度：§41.865（2026-10-06更新）。** 原row六端与fixed-best全部闭合且无稳定进步，旧失败不改判。作者SIM masked/all_patch加26新global-only九端对照的执行队列与唯一CPU全query报告已实现、自查并登记；尚未真实prepare/M0/full。六份无当前依赖且被保留winner四指标覆盖的旧best已核SHA退役，完整日志/距离/回执和来源依赖保留。启动预算5,922,357,248B不变，须实时核查。当前无活动NN/observer；仅26 GPU0/1、无功率温度动作，25原I/O pending不探测。Goal ACTIVE/UNMET。以下旧首页细节为历史摘要，现态以本段及正文后段为准。
+**当前进度：§41.866（2026-10-06更新）。** 原九端首次执行在三份RGBNT201真实初始化及配对状态通过后，首M0入口因CUDA尚未初始化就重置显存统计而EXIT1；更新0、正式成绩0。原失败保留。只将统计调用移到模型分段后，新旧去统计语句AST一致，研究模型/目标/阈值不变。修订执行源已登记，尚未真实M0/full。六份dominated旧best已退役且日志/距离/依赖保留。只26 GPU0/1、无功率温度动作，25原I/O pending不探测。Goal ACTIVE/UNMET。以下旧首页细节为历史摘要。
 
 **现行合同：** 每个正式候选完整50轮，使用作者完整query/gallery及camera／MSVR时间段过滤，以官方fused mAP最高的同一checkpoint报告全部指标，随后严格重载。RGBNT201报告mAP／R1／R5／R10，RGBNT100及MSVR310报告mAP／R1；不跨epoch或seed拼列。官方集已参与逐轮选点和历史方法选择，属于已消费基准上的探索性结果。
 
@@ -17633,3 +17633,12 @@ Goal ACTIVE/UNMET。下一工作是完成此明确来源参照的执行与归因
 存储启动预算仍5,922,357,248B，各阶段2GiB，须启动实时再核。旧cleanup后共享磁盘实际free曾降至4,625,711,104B。六份已完成50轮和首次strict的本项目clean_joint车辆/EV1semantic权重，经实际binary/distance/receipt SHA核验，四项指标均被保留winner覆盖，且不在RAW187或当前任务依赖中，单独退役2127963598B，retirement时free6749700096B。完整日志/距离/回执保留，三个winner及旧source366/RAW187不变。qualificationV2错误把保留winner也要求不在protected中，断言后未删除；V3仅限制targets，原失败保留。新权重预算未降低。证据在`logs/selection_reference_execution_preparation865_20261006/`。
 
 此时仍无新检索分数，ETA9.5–12小时只是执行估计；下一动作是同步已登记源码后一次启动队列、真实初始化/M0验证，按180–300秒或预计里程碑观察。2025镜像I/O仍pending，不假称两服当前字节一致。
+
+
+## §41.866 — 首次九端执行失败定位；仅移动显存统计重置
+
+2026-10-06T11:11:29.216451+08:00：原865 supervisor3862123/queue3862125已实际EXIT1于11:07:40.242523；首180秒观察确认两者不存在。不是初始化失败：RGBNT201 global_only/masked/all_patch三份真实prepare全部EXIT0，同SIM状态与common plain状态配对核验通过。首global M0进程3865331在调用`torch.cuda.reset_peak_memory_stats(1)`时，设备CUDA allocator尚未初始化，明确抛`Invalid device argument: did you call init?`，未进入模型构造/optimizer/训练目录，M0更新0、formal0。原19份文本和旧入口接收SHA核对并保留在`logs/signal_selection_execution_failure866_20261006/`。首次日志collector误读failed_preparation键，在本地KeyError、SSH未连；正确读取实际failed_job后只接收原日志，没有重跑。
+
+唯一源修订：GPU1 peak reset从train入口移到optimization，在模型已分段放置GPU1之后执行。删除memory-reset语句后的新旧AST完全一致，模型/头/损失/topk/原AMP/采样/日程和阈值不变，无fallback或额外try。峰值范围由初始化之后开始，与原GPU0循环一致，不能称包括构造或独立推理测速。根自查仍不是独立审计；真实M0/正式性能尚无。旧865失败不改判。
+
+另立866执行，fresh prepares→逐端8M0→fresh50→首次strict→唯一九端CPU报告，entrySHA已变所以不复用旧3初始化binding。旧3PASS仍保留。预算5,922,357,248B、source372中旧366/RAW187不变、仅26GPU0/1、一NN/no功率温度/25范围不变。已退役六份权重不再重放或重复删除。此时无活动NN/observer，下一步同步新源后一次启动修订，Goal ACTIVE/UNMET。

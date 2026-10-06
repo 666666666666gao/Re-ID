@@ -11,6 +11,3 @@ Queue fresh endpoints18jobs and9initializers; status/actual command/pid/starttic
 Startup pre-registered9best+oneprobe at360MiB plus2GiB budget5,922,357,248B; per-stage2GiB. Six target binaries qualified separately by exact complete50/strict/SHA/all4dominance/no dependency and retired; source366 and protected187 unchanged. Source scope adds only new3tools and this plan/tracker/review.
 
 Remaining: actual prepare/commonstate, M0/AMP/memory/activity/BN/heads/reload and fresh50/first strict/full report. CPU component and AST do not prove these. Zero original novelty or current SOTA claim.
-
-
-2026-10-06T11:11:29.216451+08:00: Actual threeRGBNT201 initializers match SIM state/capacity and common plain state. FirstM0 failed before build/update at prematureGPU1 memory reset. Revised entry only relocates that statistics call after actual build/partition; AST excluding reset statements equals original. Original receipt/failure untouched, no numerical threshold or algorithm rescue. No realM0 PASS or retrieval yet.
