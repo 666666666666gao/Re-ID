@@ -1,0 +1,92 @@
+{
+  "schema": "trifusion-incremental-role-objective-full-stage-source-review-v1",
+  "review_id": "FULL_STAGE_20261007_878",
+  "date": "2026-10-07",
+  "review_type": "SOURCE_ONLY",
+  "verdict": "PASS",
+  "reviewer_model": "gpt-6-astra",
+  "reasoning_effort": "max",
+  "review_independence": "same-family",
+  "acceptance_status": "provisional",
+  "reviewer_context": "Continuation of the independent objective and M0 queue reviewer; previous context retained",
+  "plan": "refine-logs/incremental_role_objective_v1/EXPERIMENT_PLAN_20261007_071500.md",
+  "review_markdown": "refine-logs/incremental_role_objective_v1/FULL_STAGE_SOURCE_REVIEW_20261007_878.md",
+  "reviewed_implementations": {
+    "tools/queue_incremental_role_objective_full.py": 122,
+    "tools/report_incremental_role_objective.py": 80
+  },
+  "blocking": [],
+  "non_blocking": [],
+  "required_source_changes": [],
+  "resolved_observations": [
+    {
+      "initial_severity": "NON-BLOCKING",
+      "issue": "Inherited compare boundary incorrectly described every pair as different capacity, including equal-parameter semantic objective comparisons.",
+      "resolution": "Executor changed only the new report lines 50-51 to distinguish raw_global_only from equal-parameter semantic comparisons, preserving post-selection and fixed-model identity-bootstrap limits.",
+      "final_patch_read": true,
+      "shared_comparator_modified": false
+    }
+  ],
+  "actual_callees_and_producers_read": [
+    "tools/queue_incremental_role_objective_m0.py",
+    "tools/queue_native_research.py:run_logged",
+    "tools/queue_foundation_recipe.py:require_sources",
+    "tools/run_incremental_role_objective.py",
+    "tools/run_foundation_recipe.py:train,build,save,load,evaluate",
+    "tools/run_training_feature_scale.py:BatchOrderLoader",
+    "tools/analyze_correspondence_distances.py:compare",
+    "tools/train_rgbnt100_signal_oof.py:camera_scores",
+    "tools/train_msvr310_signal_oof.py:scene_scores",
+    "tools/run_correspondence_roles.py:official_metrics"
+  ],
+  "source_checks": {
+    "six_accepted_m0_gate_with_retired_probes": "PASS_SOURCE_ONLY",
+    "fresh_public_construction_using_m0_json_only": "PASS",
+    "full_source_map_and_require_sources_chain": "PASS",
+    "control_seal_consumer": "PASS",
+    "registered_storage_expression": "PASS",
+    "serial_physical_gpu_0_1_execution": "PASS",
+    "full50_and_same_map_best_cmc_receipts": "PASS",
+    "full_raw_semantic_batch_order_comparison": "PASS_SOURCE_ONLY",
+    "persist_complete_before_cpu_report": "PASS",
+    "fifteen_registered_pairs": "PASS",
+    "all_query_and_identity_arithmetic": "PASS_SOURCE_ONLY",
+    "msvr_scene_and_other_camera_filtering": "PASS",
+    "all_50_epochs_and_final_epoch_retained": "PASS",
+    "pair_capacity_and_statistical_claim_boundary": "PASS_AFTER_REPORT_WORDING_FIX"
+  },
+  "actual_static_inputs": {
+    "input_seal": "refine-logs/incremental_role_objective_v1/INPUT_SEAL.json",
+    "input_seal_control_rows": 6,
+    "input_seal_artifact_entries": 45,
+    "current_m0_source_scope_entries": 393,
+    "new_full_queue_in_m0_scope": false,
+    "new_report_in_m0_scope": false,
+    "full_source_scope_status_at_review": "NOT_YET_GENERATED",
+    "storage_required_bytes": 5192548352,
+    "per_stage_reserve_bytes": 2147483648,
+    "expected_new_formal_endpoints": 6,
+    "expected_new_formal_epochs": 300,
+    "expected_cpu_comparison_pairs": 15
+  },
+  "reviewer_actions": {
+    "implementation_edits": 0,
+    "ssh_calls": 0,
+    "gpu_queries_or_tasks": 0,
+    "model_constructions_or_forwards": 0,
+    "optimizer_updates": 0,
+    "formal_queue_executions": 0,
+    "distance_report_executions": 0,
+    "new_subagents": 0
+  },
+  "runtime_acceptance_remaining": [
+    "Receive and validate all six actual M0 acceptances; this review has not accepted the still-pending real M0 results.",
+    "Complete FULL_SOURCE_SCOPE and verify current control artifacts and actual available capacity before launch.",
+    "Execute all six fresh full50 runs and first strict evaluations without M0 weight inheritance.",
+    "Complete the saved-array CPU report and retain all fifteen full-query comparisons, fifty-epoch histories and per-identity results."
+  ],
+  "real_m0_accepted_by_this_review": false,
+  "formal_training_accepted": false,
+  "cpu_report_accepted": false,
+  "scientific_benefit_claim": false
+}

@@ -17903,3 +17903,14 @@ V26/R2/CIRC已包含责任反传、合法多正例排序与删除效用；本轮
 fresh gpt-6-astra/max SOURCE_ONLY PASS及队列补充PASS为同家族provisional；新增隔离loss梯度不因继承M0_PASS自动获准。登记六个8步M0（201→MSVR→100，各ratio/repair）；初始化全state/参数/配方匹配旧raw semantic，旧八批次一致，BN8/strictreload，同时g梯度必须None、c及六Q/K累计非零有限。接受实际receipt与probeSHA后退役该新工程probe，fresh50不继承M0。六M0全通过且独立正式容量预算满足才推进full。
 
 当前393项来源、45项控制登记。真实初始化/M0/正式训练均NOT_RUN；六端正式计划300epoch/12968次更新，不以计划冒充结果。现行2GiB预留不下调；只26物理0/1、max1分段模型，无25/GPU2/3/温度功率操作。官方开发消费、多种子与三集SOTA边界不变，Goal ACTIVE_UNMET。新计划、review、CPU原件及INPUT_SEAL见 refine-logs/incremental_role_objective_v1 与 logs/incremental_preparation878。
+
+
+## 41.879 2026-10-07：新增目标首M0生产训练通过但隔离门失败；固定尺度诊断准备，不追认算法失败
+
+§878原唯一supervisor2208857/controller2208860在07:27:34启动；首md_batch_ratio201实际完成8更新、production M0_PASS、281/281总loss张量梯度活动、BN8、strictreload差0、初始化/旧八batch一致。新增未缩放isolated门在key_projections.1.weight停止，controller原exit1于07:29:02；sole observer59916首次07:35:36确认终态。campaign原stale RUNNING与子进程COMPLETE只是既有记录，不能解释成资格通过。accepted0/6，其他五条件PENDING，formal0。
+
+实际隔离c范数累加0.060138889588；CNN q0/k0累加3.425063596e-6/1.985827794e-6；q1/k1/q2/k2记录均0，g梯度None。全角色确实进入c，全部六Q/K在optimizer中；源码及记录未证实遗漏loss或错误detach。关键量测区别是isolated autograd.grad未scaled，生产backward使用GradScaler init256。记录也未区分None与数值零。因此不能把原资格FAIL扩大成“MD无法训练Transformer/Mamba”或“underflow根因已证实”。原8步/原失败不重写，不改变目标或阈值。
+
+已准备并fresh同家族 SOURCE_ONLY PASS的一次固定诊断：严格加载保留M0 probe/原initializer，一份来源B64（只与旧首批paths/labels一致，不声称重建旧增强像素），同一train-mode AMP图分别loss×1与×256 VJP，输出除scale后的g/c/六QK norm/max以及unused。一次forward、两VJP、0优化，恢复BN等buffer并检查完整state精确一致；没有官方评价或新mAP。固定八步后的一个状态不代表旧八步资格通过。该诊断目前NOT_RUN。
+
+正式六端fresh50与全query15pair报告源码审查PASS，不等于部署资格。六M0尚不完整，禁止直接full或gain/margin/LR/seed救分；已准备的12旧binary容量资格脚本未执行。当前M0 probe358375672B为真实诊断依赖保留。07:43:47 old393来源及current45控制实存SHA不变；固定诊断397来源/9输入登记。原失败文本已按实际byteSHA归档 logs/incremental_m0_failure879。文档、代码和源码审查继续同步，本次无25/GPU2/3/温度功率操作，Goal ACTIVE_UNMET。

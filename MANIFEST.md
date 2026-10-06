@@ -2243,3 +2243,5 @@
 | 2026-10-07T04:21:19.593773+08:00 | /analyze-results | results/head_fixed_best_analysis877/ | complete | 原两端加100单端续接的完整固定best分解；0更新、独立头原0/3结论保持 |
 
 - 2026-10-07 §41.878：incremental_role_objective_v1，3份新源码+计划/同家族源码审查/CPU与环境见证；真实M0及formal NOT_RUN。
+
+- 2026-10-07 §41.879：原新增目标首M0隔离门FAIL保留；固定M0一批scale1/256 VJP代码/计划/源码审查与397来源/9输入，NN NOT_RUN；formal source PASS仍不可启动。
