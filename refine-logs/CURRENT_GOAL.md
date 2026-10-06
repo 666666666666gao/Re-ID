@@ -19,3 +19,17 @@ Signal作者SIM masked/all_patch是来源邻近参照，零原创主张：同307
 仅gaob@172.19.12.138:2026 /data/gaob/Re-ID/Trifusion，温复用既有tri_reid/data/public。仅物理GPU0/1，一NN，first6块GPU1/last6+headsGPU0；GPU2/3/其他项目不动。功率温度不查/设/监/设门。2025 /data2/gb/Re-ID/Trifusion原I/O pending不探测或恢复。NN/唯一报告活动时不热同步source/Git。观察按预计里程碑或180–300秒；超时不重启。
 
 每端完整50轮、一份mAP-best携同权重全部CMC，不拼epoch/seed；记录曲线、逐query修复/新增错误、身份收益、成本和SHA。官方基准已消费，bootstrap/50epoch不代替完整训练种子。正式global和maskedM0是现依赖；best仅消费者闭合且实际SHA/保留winner核验后才按用户授权退役。所有模型/图像/数组留远端，代码/文本/同一主文档Local/GitHub/26/Desktop核字节，25pending单列。
+
+
+### 2026-10-06 §41.868 当前执行边界
+
+
+## §41.868 — training/evaluation metadata repair and explicit four-result reuse, 2026-10-06T14:41:08.275546+08:00
+
+Original867 supervisor/controller stopped EXIT1 at13:45:42 after MSVRglobal full50/firststrict both exited0. Official panel stays3/9 until new administrative reuse acceptance: RGB201 all3 accepted; MSVRglobal best38 mAP50.8388266656/R168.6971247196 has completed50/706 updates but original acceptance failed. Original campaign RUNNING and fulljob PENDING are stale flags, not liveness. Original receipt/log/exit/status remain unchanged.
+
+Actual MSVR metadata had2056rows vs706updates:1350extra rows are50×27 ordered query/gallery evaluation batches. `_eval_batch` for vehicles calls the wrapped `_training_batch`, whose logger omitted a phase guard. Every evaluation block and all training rows checked against protocol; no skipped optimizer update. Entry now appends/increments metadata only while model.training, with converter call/return unchanged. All other entry AST is unchanged. Actual-function CPU RED→GREEN logs2056→706; original accepted_row remains RED by default, explicit canonical706path passes its unchanged count/best/SHA checks. CPU fixtures do not establish new M0/runtime or independent review.
+
+New resume entry uses explicit origins for four existing50/firststrict and four accepted8M0s; only five missing8M0/full50 run. Nine fresh initializer witnesses and existing paired state guards must pass; reused binding fields match except logging-only entrySHA. Explicit sidecar provenance preserves originalraw2056. Reuse acceptance must precede retirement of the still-live MSVR M0 probe. Startup budget after oldprobe retirement:5newbest+oneprobe at360MiB each+2GiB=4,412,407,808B; each stage still2GiB. This accounts only remaining storage, does not lower the reserve. All9best stay through final report; report executes once using all9 explicit batchpaths and origin map, full450epochs/completequery/gallery/all9pairs.
+
+Eleven own closed fixed20 inferior weights actually retired after actual weight/receipt/distance/protocol/author SHA checks, allfour-metric dominance within same method/dataset/protocol/author+Signal state, RAW187/currentprobe verification. Retired379,316,962B; retained31candidate weights/allauthor weights/current50dependencies. Original cleanup helper NameError occurred before QUALIFIED/delete; empty originalfolder verified, separateR2 complete. Historical11 binary replay is retired, original logs/receipts/distance arrays remain. Source check fixture R1 failed on Windows path separator before mutation; R2 pass is source-level only. No model/recipe/seed/topk/AMP/loss/filter/best/tolerance change. Only2026 GPU0/1, oneNN; no25/power/temperature action. New868 not launched. GoalACTIVE/UNMET.
