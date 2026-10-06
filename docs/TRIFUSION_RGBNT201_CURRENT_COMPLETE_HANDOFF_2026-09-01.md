@@ -17759,3 +17759,20 @@ all_patch相对global-only的mAP在201/100/MSVR分别为−0.9243/+2.0398/+2.431
 本轮科学结论是选择主要对照0/3；执行与统计闭合不是算法成功。整体Goal仍ACTIVE/UNMET，尚未达到三数据集稳定超过匹配强基线/SOTA及完整流程多种子。下一步应先根据完整近容量/角色结果确定一个证据内容假设，并核查当前训练头约束与身份条件区域重建的作用边界；不按本轮官方分数搜索top-k/LR/gain/margin/seed，不自动堆N2/N3或重新启动任何已闭合队列。三角色仍是内部算子，不能把源码来源能力或基础配方收益当作三项创新。
 
 仅26物理GPU0/1，现已空闲；未探测25/GPU2/3、未查询或设置功率温度。25旧镜像I/O pending继续保留。原374、v1/v2overlay字节不变，所有旧失败完整保存。统一主交接与Local/GitHub/26/Desktop同步；本节发布为完整结果终态，不是假实时服务器状态或训练多种子证明。
+
+
+## §41.872 — 独立fused身份头三端登记：只检验训练头限制，尚无真实M0（2026-10-06T23:14:19.085135+08:00）
+
+已读完整§857–871及实际源码。近容量来源三端、视觉anchor重建六端、按槽位消息分配六端、源SIM纯mask九端均已闭合且未晋级。上一goal轮完成这些证据范围核对，不再将容量/重建/部分分配当尚未尝试的创新。本轮不回放旧队列，也不在失败结构上叠N1/N2/N3。
+
+当前RAW角色经当前global头的detached参数与cloneBN buffer训练，头只接受global目标；源SIM另有可学习var头。但源SIM还改变聚合、容量、目标和3072维输出，因此不能把车辆增益唯一归因于分类头。下一窄假设：原semantic角色是否受到共用global训练头的限制。
+
+新`IndependentRoleHeads`保持原semantic角色、shared/role输入detach、raw作者损失、L_g+L_f、gain和1536L2部署。global头只接受L_g，fused使用从原global头deepcopy的独立BN/分类头，只接受L_f；不是给修正c追加局部ID辅助loss，也没有新外部资源。201一套1536头、车辆三套512头；新增活动参数1536×(训练类+1)、张量数2/6，明确多出训练容量及独立运行统计，不计为论文原创模块。初值clone不消耗新随机数。
+
+一次CPU合成direct/vehicle见证通过：共同state与raw/L2/global/logits初值一致，两任务梯度归属分离，新头累计非零有限梯度/实际更新及组件strict重载一致。fixture为4类，7680是合成预算而非生产参数量。新五文件AST/源码自审为root self-review、same-family/provisional，不是独立审计、全模型M0或检索成功。
+
+唯一计划`refine-logs/independent_role_heads_v1/EXPERIMENT_PLAN.md`：201→MSVR→100，各新semantic端prepare/真实完整batch初值对照/8M0/fresh50/首次strict，然后一次全query六配对报告。旧RAWsemantic/global九行187依赖复用，不重训；新三端batch顺序与对应旧控制逐字节比较。原seed42、作者采样/Adam/raw目标/日程/AMP及first6 GPU1/last6与heads GPU0不改。主要新−RAWsemantic与对独立global推进均为mAP≥+0.5且R1不降，保持单mAP-best全部CMC、完整gallery与原过滤。负结果不救LR/gain/margin/Triplet/seed，也不立即加其他模块。
+
+23:00:49只读核实本项目producer为空，GPU0/1各18MiB，free2,493,485,056B。启动需3best+1probe各384MiB加2GiB，固定3,758,096,384B。23:10:08资格清理完成四份刚闭合且被保留RAWglobal四指标支配的源选择best：201global/masked/allpatch及100global；每份原50轮、首strict回执/实际PTH/训练和评价距离SHA及保留winner已核。实退役1,407,383,008B，free3,895,394,304B；原374来源与RAW187前后SHA一致。四份旧binary直接重放能力退役，原history/receipt/距离/所有分数与既有失败不改；源MSVRglobal及其他未支配best、作者/public/当前对照仍保留。完整资格、CPU与退役journal在`logs/independent_role_head_preparation872_20261006/`，没有模型/NPY回传。
+
+当前真实prepare/pair/M0/full三端均NOT_RUN。只26物理GPU0/1、无25/其他GPU/功率温度动作、无环境重建或消息。预计约3.5–4小时，按实际里程碑/180–300秒观察；NN期间不做source/Git同步。发布完成后才首次启动，旧计算parity失败仍封存。整体Goal ACTIVE/UNMET，三集强净收益、必要机制、完整多种子和同资源SOTA仍缺；2025原I/O pending不探测。

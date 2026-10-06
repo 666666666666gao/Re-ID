@@ -2227,3 +2227,8 @@
 | `logs/region_reconstruction_storage_completion858_20261005/remote_evidence/logs/region_reconstruction_v1_20261005_858/acceptance/RGBNT100_semantic.json` | 原完整终态/保存文本分析/只读复核；无模型重跑 |
 | `logs/region_reconstruction_storage_completion858_20261005/remote_evidence/logs/region_reconstruction_v1_20261005_858/acceptance/RGBNT201_native.json` | 原完整终态/保存文本分析/只读复核；无模型重跑 |
 | `logs/region_reconstruction_storage_completion858_20261005/remote_evidence/logs/region_reconstruction_v1_20261005_858/acceptance/RGBNT201_semantic.json` | 原完整终态/保存文本分析/只读复核；无模型重跑 |
+| 2026-10-06T23:14:19.085135+08:00 | /experiment-plan | refine-logs/independent_role_heads_v1/EXPERIMENT_PLAN.md | implementation | 独立fused训练头的三端固定对照与执行状态 |
+| 2026-10-06T23:14:19.085135+08:00 | /experiment-plan | refine-logs/independent_role_heads_v1/EXPERIMENT_PLAN_20261006_230600.md | implementation | 独立fused训练头的三端固定对照与执行状态 |
+| 2026-10-06T23:14:19.085135+08:00 | /experiment-plan | refine-logs/independent_role_heads_v1/EXPERIMENT_TRACKER.md | implementation | 独立fused训练头的三端固定对照与执行状态 |
+| 2026-10-06T23:14:19.085135+08:00 | /experiment-plan | refine-logs/independent_role_heads_v1/EXPERIMENT_TRACKER_20261006_230600.md | implementation | 独立fused训练头的三端固定对照与执行状态 |
+| 2026-10-06T23:14:19.085135+08:00 | /experiment-plan | refine-logs/independent_role_heads_v1/EXPERIMENT_TRACKER_20261006_231200.md | implementation | 独立fused训练头的三端固定对照与执行状态 |
