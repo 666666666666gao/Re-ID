@@ -47,3 +47,12 @@
 - 各集方向不同：全部结果保留，禁止用201正值覆盖车辆集。
 
 架构、近邻归属及真实头/维度先清楚，再形成原创候选；三个成功主模块目前仍未成立。Goal ACTIVE/UNMET。
+
+
+## §41.865 execution revision — 2026-10-06T11:02:39.828452+08:00
+
+Queue and the sole all-query CPU report now implemented. Each dataset prepares three fresh-process initializers, verifies both SIM initial states/capacity and the common plain foundation state, then runs each actual8M0 → fresh50 → first strict evaluation. Retire only that M0 probe after accepted full receipt; all nine formal bests stay until consumers close. Six explicitly qualified historical own weights retired, freeing 2127963598B; actual free 6749700096B at retirement. Startup budget unchanged5,922,357,248B and each stage requires2GiB.
+
+The entry now logs M0 per-tensor actual parameter changes, and requires all12 SIM interaction tensors plus var classifier/BN weight to change, in addition to original finite/live/reload gates. Original CPU component8-step evidence remains component-only. Common initializer and BN/optimizer/runtime gates have not run. No source modification after launch. Report requires9/450epochs and all9 comparisons, exact labels/camera/view/basename batch metadata equality; full official arrays, same-best CMC, query repairs/new errors and identity changes, fixed-model bootstrap only.
+
+Original storage qualificationV2 stopped before mutation because its generic loop incorrectly forbade a protected retained winner as well as targets. V3 narrows the protection exclusion to target weights; all winner SHA preservation remains required. No old producer or experiment was rerun. This source revision is root self-checked, not independently reviewed or runtime accepted.

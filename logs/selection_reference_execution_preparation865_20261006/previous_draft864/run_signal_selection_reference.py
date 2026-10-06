@@ -24,10 +24,6 @@ original_training_batch=foundation.runner._training_batch
 last_built_model=None
 batch_log_path=None
 batch_step=0
-m0_parameter_before=None
-
-def parameter_sha(parameter):
-    return hashlib.sha256(parameter.detach().cpu().contiguous().numpy().tobytes()).hexdigest()
 
 def training_batch(raw):
     global batch_step
@@ -126,13 +122,10 @@ def condition(args):
                 initialization_sha256=foundation.runner.sha256(args.initialization))
 
 def optimization(args,model,cfg):
-    global m0_parameter_before
     optimizer,scheduler,loss_fn=original_optimization(args,model,cfg)
     ids=[id(p) for group in optimizer.param_groups for p in group['params']]
     assert len(ids)==len(set(ids))
     assert set(ids)=={id(p) for p in model.parameters() if p.requires_grad}
-    if args.mode=='m0':
-        m0_parameter_before={name:parameter_sha(p) for name,p in model.named_parameters() if p.requires_grad}
     return optimizer,scheduler,loss_fn
 
 def train(args,protocol):
@@ -157,13 +150,6 @@ def train(args,protocol):
         counts={name:int(getattr(signal,name).num_batches_tracked) for name in names}
         assert all(count==8 for count in counts.values())
         receipt['selection_reference']['m0_bn_counts']=counts
-        changed={name:parameter_sha(p)!=m0_parameter_before[name]
-                 for name,p in last_built_model.named_parameters() if p.requires_grad}
-        receipt['selection_reference']['m0_parameter_changed']=changed
-        if args.selection!='global_only':
-            interaction=[name for name in changed if name.startswith('signal.SIM.modal_interactive.')]
-            assert len(interaction)==12 and all(changed[name] for name in interaction)
-            assert changed['signal.classifier_var.weight'] and changed['signal.bottleneck_var.weight']
     receipt_path.write_text(json.dumps(receipt,indent=2)+'\n')
 
 def main():

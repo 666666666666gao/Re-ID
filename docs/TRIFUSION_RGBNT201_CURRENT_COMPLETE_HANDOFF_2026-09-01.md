@@ -2,7 +2,7 @@
 
 ## 0. 一页结论
 
-**当前进度：§41.864（2026-10-06更新）。** 原row六端300轮/12,968更新及fixed-best6/18/24全部闭合，主0/3、全部0/15，五份无用best已退役。后续只读固定数组几何诊断在CPU additive资格失败（mAP差0.000177点、CMC一致），无直和结果，已停止不重跑。作者SIM与all-patch及26新global-only九端基础对照已有源码草稿和CPU模块检查；queue/report/真实初始化/M0/正式训练仍未执行。当前无活动NN/observer，Goal ACTIVE/UNMET；只26 GPU0/1、无功率温度动作，25原I/O pending不探测。以下旧首页细节为历史摘要，现态以本段及正文后段为准。
+**当前进度：§41.865（2026-10-06更新）。** 原row六端与fixed-best全部闭合且无稳定进步，旧失败不改判。作者SIM masked/all_patch加26新global-only九端对照的执行队列与唯一CPU全query报告已实现、自查并登记；尚未真实prepare/M0/full。六份无当前依赖且被保留winner四指标覆盖的旧best已核SHA退役，完整日志/距离/回执和来源依赖保留。启动预算5,922,357,248B不变，须实时核查。当前无活动NN/observer；仅26 GPU0/1、无功率温度动作，25原I/O pending不探测。Goal ACTIVE/UNMET。以下旧首页细节为历史摘要，现态以本段及正文后段为准。
 
 **现行合同：** 每个正式候选完整50轮，使用作者完整query/gallery及camera／MSVR时间段过滤，以官方fused mAP最高的同一checkpoint报告全部指标，随后严格重载。RGBNT201报告mAP／R1／R5／R10，RGBNT100及MSVR310报告mAP／R1；不跨epoch或seed拼列。官方集已参与逐轮选点和历史方法选择，属于已消费基准上的探索性结果。
 
@@ -17618,3 +17618,18 @@ CPU syntheticB2检查k20180/MSVR64/100112，两SIM臂相同state、12交互张�
 九端执行顺序/prepare→8M0→fresh50→首次strict、主+0.5mAP/R1不降推进线、完整gallery过滤、单一best、全部batch元数据/轨迹/成本/SHA已写草稿。queue和唯一CPU配对report尚未实现；未部署、未全模型初始化/M0/正式训练。只26 GPU0/1，first6/last6一模型；未访问25或其他卡/项目，无功率温度动作。每best/probe360MiB上界的九best＋一probe＋2GiB为5,922,357,248B，现约5.6GB尚不能说门通过；启动前资格清理及实际模型尺寸仍待确认，不能先开跑再放宽门。
 
 Goal ACTIVE/UNMET。下一工作是完成此明确来源参照的执行与归因，随后决定原创内容形成方向；不以此宣称三主模块成功、不将继承作者机制改名、不按CPU或官方分数救gain/LR/top-k/seed、不同时堆N2/N3。
+
+
+## §41.865 — 来源选择参考九端执行入口完成；先退役已闭合冗余权重
+
+记录时间：2026-10-06T11:02:39.828452+08:00。上一Goal轮实际完成§864源码草稿与CPU组件检查；本轮属于PROGRESS，不是已有九端结果。当前无活动旧NN/CPU报告；仍仅26物理GPU0/1，warm conda不重建，不查询或设置功率/温度，不访问2025或其他项目。统一Goal ACTIVE/UNMET。
+
+独立研究边界维持：global_only/masked/all_patch×RGBNT201、MSVR310、RGBNT100，共九个fresh50。SIM两臂同初始化、同活动容量、同var头、同3072维，只改变hard union mask；无SIM globalonly1536比较还含容量/额外head/联合视觉目标/维度差异，不能归为选择专属增益，更不计作我们的创新。public CLIP、新camera/head、作者RAW分头CE/softmargin、Adam/原AMP、B/K、增强和50轮日程不改。旧F1实存路径在25，仅历史参照，不重定位距离。
+
+源码队列与唯一CPU全query报告已补齐并根代理自查/AST通过，**尚未执行真实prepare/M0/full**。每数据集三份fresh initializer先核SIM两臂state和common plain state，逐端实际8M0→fresh50→首次strict，接受后退役该M0 probe；新九份best保留到消费者全部结束。M0保留原有限/全trainable非零梯度/冻结状态/严格重载门，另记录全部活动参数实变并要求SIM12 interaction及var classifier/BN权重改变，BN计数8。新3工具与plan/tracker/review构成扩展source372；旧366不改。根代理自查不是独立审计，也不等于真实模型通过。
+
+终态CPU报告只调用一次，要求9端/450epoch/全部9配对；主要masked−all_patch，另报告两臂−新匹配global。完整距离/过滤/同best CMC、batch labels/camera/view/RGB basename、query修复/新增错误、身份分布/固定模型bootstrap与实测训练成本均保留。metadata相等不证明增强图像字节相等；bootstrap不替代训练多种子。不得按首个分数换topk/LR/gain/margin/seed或叠N2/N3。
+
+存储启动预算仍5,922,357,248B，各阶段2GiB，须启动实时再核。旧cleanup后共享磁盘实际free曾降至4,625,711,104B。六份已完成50轮和首次strict的本项目clean_joint车辆/EV1semantic权重，经实际binary/distance/receipt SHA核验，四项指标均被保留winner覆盖，且不在RAW187或当前任务依赖中，单独退役2127963598B，retirement时free6749700096B。完整日志/距离/回执保留，三个winner及旧source366/RAW187不变。qualificationV2错误把保留winner也要求不在protected中，断言后未删除；V3仅限制targets，原失败保留。新权重预算未降低。证据在`logs/selection_reference_execution_preparation865_20261006/`。
+
+此时仍无新检索分数，ETA9.5–12小时只是执行估计；下一动作是同步已登记源码后一次启动队列、真实初始化/M0验证，按180–300秒或预计里程碑观察。2025镜像I/O仍pending，不假称两服当前字节一致。

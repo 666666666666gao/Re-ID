@@ -1,13 +1,13 @@
-# Root source self-check — 2026-10-06T10:41:48.593380+08:00
+# Root source self-check — 2026-10-06T11:02:39.828452+08:00
 
-SOURCE_DRAFT_ONLY; no independent reviewer or runtime acceptance.
+SOURCE_READY_ONLY, not independent review or production acceptance.
 
-The entry delegates the frozen F1 full50/strict loop and author losses to the existing module. Two SIM arms retain identical state and trainable interaction/head capacity; six discrete-only/unused selector tensors are frozen. CPU toy checks report12 active interaction tensors/2,102,784 parameters in both arms for k80/64/112; no full CLIP/head test.
+Source trace: pinned Signal forward returns global and SIM raw heads; training var1536 Triplet counted once, inference3072 concatenation. All_patch bypasses only TokenSelection forward; both arms retain the same frozen6 selector tensors and12 trainable interaction tensors plus var heads. Globalonly has no SIM/roles/adapters. CPU-private SIM initialization restores CPU RNG; full baseline/public/camera/common state equality checked per dataset before training. Original author losses/AMP/batch/schedule/evaluator are delegated unchanged.
 
-The original F1 constructor is reused before adding SIM in a CPU-private RNG context. New global_only control is required because original F1 result paths are2025, currently inaccessible; no2025 probe or historical distance rebasing. Global-only output1536 versus SIM3072 is explicit. SIM has its own1536 var head; vehicle var Triplet once plus three512 global Triplets, not repeated joint Triplet three times. Author global/var targets jointly update the visual; this differs from oldRAW role duty separation.
+Fresh processes avoid YACS cross-dataset carryover. Optimizer covers every trainable parameter exactly once. Both BN/global and SIM var counts must be8 in actual M0; all SIM12 plus var classifier/BN weight must actually change. Original every-trainable finite/nonzero-gradient, unchanged frozen state and strict-reload gates remain. M0 and fresh50 separate processes. Each full first strict success retires only its own M0 probe. Full nine formal bests retained until all consumers close.
 
-Two-card placement mirrors existing first6/last6 transfers without an adapter compatibility wrapper. Fresh process per endpoint avoids cfg carryover. Training logs actual labels/camera/view/RGB basename metadata once per used batch; this is not image/augmentation-byte equality. All optimizer ownership and eight BN counts are runtime gates; CPU AST is not their proof.
+Queue fresh endpoints18jobs and9initializers; status/actual command/pid/startticks/time/exit saved. No replay/retry/rescue path. Sole CPU report9rows/450epochs/9pairs rechecks SHA/full50/best/distance/metadata and all-query scorer parity. It reports pair query repairs and identity distribution; no training seed inference from bootstrap. No power/temp or2025 calls.
 
-Remaining before any formal deployment: queue and sole-report implementation; exact source/control/disk budget; CPU queue predicates; all-model prepare, paired initializer equality, real8M0 and first strict reload. Actual Signal/global head initial states and compatibility of original teacher outputs3072 remain unverified. Formal training has not started.
+Startup pre-registered9best+oneprobe at360MiB plus2GiB budget5,922,357,248B; per-stage2GiB. Six target binaries qualified separately by exact complete50/strict/SHA/all4dominance/no dependency and retired; source366 and protected187 unchanged. Source scope adds only new3tools and this plan/tracker/review.
 
-No original contribution, calibrated matching, stable cross-dataset effect or SOTA claimed. All historical failures remain unchanged.
+Remaining: actual prepare/commonstate, M0/AMP/memory/activity/BN/heads/reload and fresh50/first strict/full report. CPU component and AST do not prove these. Zero original novelty or current SOTA claim.

@@ -24,3 +24,6 @@
 
 
 §41.864当前唯一后继：作者SIM masked/all_patch＋26匹配无SIM global-only三集九端。仅源码草稿/CPU模块PASS，执行queue/report未实现，未部署/初始化/M0/full；原F1在25仅历史参照，不探测25。masked/all_patch同3072/同交互头容量，global-only1536差异分账。raw各头作者损失与原AMP，global/var联合视觉学习，不套用旧RAW职责分离。固定数组几何CPU资格FAIL且无直和结果，不重跑/改门；没有活动NN/observer。精确存储预算5,922,357,248B还待启动前资格。完整目标ACTIVE/UNMET。
+
+
+§41.865：九端SOURCE_READY_ONLY，queue/report/扩展source372已实现，尚未真实prepare/M0/full。六份明确dominated已闭合own权重退役2127963598B，旧366/RAW187/winners不改。启动预算仍5,922,357,248B，须实时核查。真实M0通过后各端fresh50，不再额外parity修复/尺度搜索。根自查非独立复现。Goal ACTIVE/UNMET。
