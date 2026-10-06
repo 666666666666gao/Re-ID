@@ -17888,3 +17888,18 @@ all_patch相对global-only的mAP在201/100/MSVR分别为−0.9243/+2.0398/+2.431
 201/MSVR同模型g与独立global全部评分/逐query AP相同；100同模型g比独立global低0.568336mAP，加修正再低0.683912，合计相对独立global低1.252248。这只是同一best的数值分解，不是两项独立因果贡献。100 c单独34.499507mAP，query均值修正比0.341033/18.423128°，却首位只修复18、新增20；不能声称三端g都完全保护，也不能统一归因为修正过弱。
 
 独立头正式三端0/3、原六配对0/6推进结论保持。当前结果支持“仅解除借用global头这一约束，没有产生稳定角色净收益”；不支持将它确认为唯一原因，也不证明所有独立头无效。固定best的c单独检索、同模型global及几何统计是描述性诊断，不替代完整训练多种子或因果实验。下一项应以具体新增证据职责登记，而不是继续倍率/尺度/自由读取结构搜索；V26/R2/CIRC已具有上游责任、多正例及删除效用，不能仅将这些旧功能改名为P3。已闭合近容量、视觉重建、slot/uniform和Signal mask线继续封存。主目标ACTIVE/UNMET，尚未达到三数据集匹配强参照/SOTA。
+
+
+## 41.878 2026-10-07：固定结构下新增证据训练职责对照登记，源码审查通过，M0未启动
+
+§874独立fused头三端0/3、§877三集固定best分解已闭合，不重复旧近容量/重建/slot/SIM选择或独立头队列。新实验只改变监督内容：保留semantic角色、borrowed detached global head、作者raw全局与角色任务、1536维部署、公开CLIP/new camera/seed42。两条件分别为独立数学表达的MDReID式batch困难正负距离比适配，以及相对停止梯度global的合法实例repair/keep。两者均不增加参数，联合新增loss各只求一次。
+
+repair使用global margin≤0的合法关系，目标融合cosine margin≥0.1；keep使用global margin>0关系，保留原margin。全部同ID异实际环境正例及异ID负例，先每query再每cell平均，两cell各0.5。MSVR从protocol actual scene绑定，201/100从camera绑定；不修改camera embedding或loader增强。空关系loss定义0是因为已观测20192/2649来源批无合法正例，普通作者任务继续。
+
+V26/R2/CIRC已包含责任反传、合法多正例排序与删除效用；本轮仅作训练目标机制对照，不声称公式/上游责任原创、完整MDReID复现或P1/P2/P3贡献已成立。真正区域形成与共享内容升级仍须后续证据。近邻论文与固定作者代码仅核读，无许可代码未搬运。
+
+实际证据：四个CPU合成数学/梯度用例通过（无模型/GPU/优化）；来源元数据三集basename无环境冲突；MSVR actual scene确与view代理不同。07:24:04原187输入实存SHA全通过，新六条件控制45项；26物理0/1各15MiB且无本项目NN，空闲3017297920B。仅复用暖tri_reid，不安装重建。
+
+fresh gpt-6-astra/max SOURCE_ONLY PASS及队列补充PASS为同家族provisional；新增隔离loss梯度不因继承M0_PASS自动获准。登记六个8步M0（201→MSVR→100，各ratio/repair）；初始化全state/参数/配方匹配旧raw semantic，旧八批次一致，BN8/strictreload，同时g梯度必须None、c及六Q/K累计非零有限。接受实际receipt与probeSHA后退役该新工程probe，fresh50不继承M0。六M0全通过且独立正式容量预算满足才推进full。
+
+当前393项来源、45项控制登记。真实初始化/M0/正式训练均NOT_RUN；六端正式计划300epoch/12968次更新，不以计划冒充结果。现行2GiB预留不下调；只26物理0/1、max1分段模型，无25/GPU2/3/温度功率操作。官方开发消费、多种子与三集SOTA边界不变，Goal ACTIVE_UNMET。新计划、review、CPU原件及INPUT_SEAL见 refine-logs/incremental_role_objective_v1 与 logs/incremental_preparation878。
