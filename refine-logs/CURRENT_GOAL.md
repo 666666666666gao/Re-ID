@@ -1,6 +1,6 @@
 # TriFusion 当前执行目标
 
-更新：2026-10-06T10:12:23.143893+08:00，§41.863。完整目标 ACTIVE/UNMET；原终态及后继计划以同一主交接文档为准。
+更新：2026-10-06T10:12:23.143893+08:00，§41.864。完整目标 ACTIVE/UNMET；原终态及后继计划以同一主交接文档为准。
 
 在RGBNT201、RGBNT100、MSVR310相同训练与评价协议下获得稳定净增益，明确超过独立global-only、同预算旧V8/V27及资源注明的强参照；最终形成必要机制和完整流程多种子证据。配方、继承Signal能力、单seed局部涨分、工程通过不作为新模块贡献或SOTA证明。
 
@@ -21,3 +21,6 @@
 仅 gaob@172.19.12.138:2026，/data/gaob/Re-ID/Trifusion，温复用tri_reid环境/数据/public权重。仅物理GPU0/1，一模型first6块GPU1/last6+heads GPU0；不使用2/3、25或其他项目。功率温度不查询/设置/监控/设门。长任务按实际里程碑或180–300秒观察，超时不等于停机、不重启。NN/唯一报告活动期间不热同步source/Git。
 
 2025 /data2/gb/Re-ID/Trifusion原I/O pending不探测/恢复，不冒称镜像一致。代码/主文档/文本结果按Local、GitHub、26、Desktop核字节；模型、图像和NPY留远端。仅用户授权且消费者已闭合、实际SHA/回执/赢家资格通过的无用自训权重可以清理；其他项目文件不触碰。
+
+
+§41.864当前唯一后继：作者SIM masked/all_patch＋26匹配无SIM global-only三集九端。仅源码草稿/CPU模块PASS，执行queue/report未实现，未部署/初始化/M0/full；原F1在25仅历史参照，不探测25。masked/all_patch同3072/同交互头容量，global-only1536差异分账。raw各头作者损失与原AMP，global/var联合视觉学习，不套用旧RAW职责分离。固定数组几何CPU资格FAIL且无直和结果，不重跑/改门；没有活动NN/observer。精确存储预算5,922,357,248B还待启动前资格。完整目标ACTIVE/UNMET。

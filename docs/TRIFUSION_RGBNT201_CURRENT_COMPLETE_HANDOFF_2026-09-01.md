@@ -2,7 +2,7 @@
 
 ## 0. 一页结论
 
-**当前进度：§41.863（2026-10-06更新）。** row接收质量六端完整50轮/首次strict已闭合（300轮/12,968更新），主推进0/3、全部15比较0/15；固定六份best十八模式/24配对诊断也已闭合。固定权重切换分配最大mAP变化0.001059942点、六份CMC全部不变；100更强修正仍损伤自身global。五份无依赖且四指标被保留winner支配的best已退役，201slot因R10优势保留。当前没有活动训练/观察，下一科学干预未启动；只26 GPU0/1、无功率温度动作、25原I/O pending，Goal ACTIVE/UNMET。下面旧首页细节为历史摘要，现态以本段与正文§862–863为准。
+**当前进度：§41.864（2026-10-06更新）。** 原row六端300轮/12,968更新及fixed-best6/18/24全部闭合，主0/3、全部0/15，五份无用best已退役。后续只读固定数组几何诊断在CPU additive资格失败（mAP差0.000177点、CMC一致），无直和结果，已停止不重跑。作者SIM与all-patch及26新global-only九端基础对照已有源码草稿和CPU模块检查；queue/report/真实初始化/M0/正式训练仍未执行。当前无活动NN/observer，Goal ACTIVE/UNMET；只26 GPU0/1、无功率温度动作，25原I/O pending不探测。以下旧首页细节为历史摘要，现态以本段及正文后段为准。
 
 **现行合同：** 每个正式候选完整50轮，使用作者完整query/gallery及camera／MSVR时间段过滤，以官方fused mAP最高的同一checkpoint报告全部指标，随后严格重载。RGBNT201报告mAP／R1／R5／R10，RGBNT100及MSVR310报告mAP／R1；不跨epoch或seed拼列。官方集已参与逐轮选点和历史方法选择，属于已消费基准上的探索性结果。
 
@@ -17599,3 +17599,22 @@ matching矩阵范数201从6.538缩到1.193/1.195、100从6.517缩到0.582/0.307�
 
 研究下一步只收束到身份证据内容的形成及直接活动控制；不继续以gain/null/LR/margin/seed、统一detach或Triplet输入救本轮，不把三个候选一齐叠上。后继科学计划尚未登记/启动，不能从旧PREPARED脚本推断正在训练。Goal ACTIVE/UNMET，三集强净收益、必要机制、多种子和资源匹配SOTA均缺；仅26物理GPU0/1，无功率温度动作，2025原I/O pending不探测。所有NN/报告/观察已终态后才进行本次Git/主文档同步，其他10份非本任务文件保留。
 
+
+
+## 41.864 固定数组直和诊断资格失败封存；后继收束为作者SIM的同容量选择控制
+
+2026-10-06T10:41:48.593380+08:00。§863全部NN/原唯一报告/观察已终态后，新增一次纯CPU固定数组诊断：六份原best的g/c/h及原gain，不读PTH、不新NN、不选另一份checkpoint、不搜索权重；计划先要求CPU additive四指标复现<1e-5点，才算3072直和。原进程3771484在10:22:21退出1：第一份201slot的h=g+gain*c最大逐元素差0，CPU重新归一化计分mAP74.338956779对原74.338779481差0.000177298258点，CMC三项都0差，超过既定门。未进入直和计算、没有新完整分数；不放宽门或重试，不能宣布相加/直和谁更好，也不是新正式模型mAP失败。原输入source/array SHA在启动前核验，13份失败及来源文本10:25收齐，原六端及6/18/24接受不改判。
+
+首次本地启动草稿的嵌入supervisor换行在AST阶段退出，未连接SSH/创建远端；raw literal修订后才一次启动该CPU进程。上节初次发布的proc空字节literal也在远端只读gate编译前退出、没有Git stage/commit/source同步；失败副本并入本次归档。详见`logs/selection_reference_preparation864_20261006/`；这些运输/CPU失败不计算法增益或拒绝三模块的科学证据。
+
+新原文代码核查显示，pinned Signal SIM不仅做top-k mask，还包括512维MHA/FFN/LN及独立1536 var BN/分类头；训练global各头＋var头，推理拼接global1536和SIM1536得到3072维。车辆var联合Triplet一次，不是旧joint-L2三次；zero mask不移除patch位置，也没有MHA key_padding_mask。W_q/W_k只经整数top-k索引作用于mask、W_v未被用，因此不能把它们总参数误计活动选择容量。作者完整SIM收益不等于纯mask收益，不能直接宣称与当前1536残差同接口。
+
+后继来源参照草稿见`refine-logs/signal_selection_reference_v1/`与`tools/run_signal_selection_reference.py`：SIM masked和all_patch同初始state/交互/var头/3072，只改变mask输出；不加adapter/三角色/native/AlignM/新loss。CPU私有seed42新增SIM/head不扰动原RNG，这不复制作者完整构造初始化次序。当前SRC自查是root self-check，没有独立审核或生产M0通过。
+
+历史F1本来在2025 `/data2/gb/Re-ID/Trifusion`，当前26库存不含它的直接原PTH/距离，不把路径改成26就当已接受新控制。2025原I/O pending不访问。为主配对成立，草稿扩大为三数据集各global_only/masked/all_patch九端，同26 public CLIP/newcamera/head、作者采样/增强/Adam/raw损失/原AMP/完整50轮；global_only没有SIM且1536，SIM两臂3072。与新global-only差包含容量/新头/联合视觉任务/维度，选择专属贡献只由masked−all_patch回答，全部继承能力仍属Signal来源参照，零原创主张。
+
+CPU syntheticB2检查k20180/MSVR64/100112，两SIM臂相同state、12交互张量/2,102,784参数均累计有限非零梯度且实际变化，六selector张量冻结不变。toy选择非零比例201约0.934–0.953、MSVR0.844–0.891、1000.996–1；这是随机输入组件观察，不是现实图像覆盖、身份证据选择质量或检索结论。真实新var头、optimizer覆盖、两卡完整batch、BN8次及重载仍待M0。
+
+九端执行顺序/prepare→8M0→fresh50→首次strict、主+0.5mAP/R1不降推进线、完整gallery过滤、单一best、全部batch元数据/轨迹/成本/SHA已写草稿。queue和唯一CPU配对report尚未实现；未部署、未全模型初始化/M0/正式训练。只26 GPU0/1，first6/last6一模型；未访问25或其他卡/项目，无功率温度动作。每best/probe360MiB上界的九best＋一probe＋2GiB为5,922,357,248B，现约5.6GB尚不能说门通过；启动前资格清理及实际模型尺寸仍待确认，不能先开跑再放宽门。
+
+Goal ACTIVE/UNMET。下一工作是完成此明确来源参照的执行与归因，随后决定原创内容形成方向；不以此宣称三主模块成功、不将继承作者机制改名、不按CPU或官方分数救gain/LR/top-k/seed、不同时堆N2/N3。
