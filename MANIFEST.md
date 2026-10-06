@@ -2239,3 +2239,5 @@
 | 2026-10-07T03:39:24.470306+08:00 | /experiment-plan | refine-logs/independent_role_heads_fixed_best_diagnosis_v1/ | preparation | 三份固定best只读g/c/f诊断；实存仅fused，新NN未运行；原385/RAW187保持 |
 
 | 2026-10-07T04:10:56.894489+08:00 | /analyze-results | results/independent_role_heads_fixed_best_partial876_20261007/ | partial | 原诊断2/3，100磁盘门前停止；19非最佳末轮缓存退役，单端续接准备 |
+
+| 2026-10-07T04:21:19.593773+08:00 | /analyze-results | results/head_fixed_best_analysis877/ | complete | 原两端加100单端续接的完整固定best分解；0更新、独立头原0/3结论保持 |
