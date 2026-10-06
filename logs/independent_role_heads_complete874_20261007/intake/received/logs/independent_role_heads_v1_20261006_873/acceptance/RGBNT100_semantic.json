@@ -1,0 +1,99 @@
+{
+  "status": "FULL50_FIRST_STRICT_AND_M0_VERIFIED_BEFORE_RETIREMENT",
+  "verified_at": "2026-10-07T03:01:20.522882+08:00",
+  "row": {
+    "dataset": "RGBNT100",
+    "variant": "semantic",
+    "status": "VERIFIED_COMPLETE",
+    "run_dir": "/data/gaob/Re-ID/Trifusion/trained-model/independent_role_heads_v1_20261006_873_full_semantic_RGBNT100",
+    "m0_dir": "/data/gaob/Re-ID/Trifusion/trained-model/independent_role_heads_v1_20261006_873_m0_semantic_RGBNT100",
+    "metrics": {
+      "mAP": 83.28153653451179,
+      "Rank-1": 96.44314646720886,
+      "Rank-5": 97.25947380065918,
+      "Rank-10": 97.66764044761658
+    },
+    "best_epoch": 26,
+    "initializer": {
+      "architecture": "trifusion-independent-role-heads-v1",
+      "dataset": "RGBNT100",
+      "variant": "semantic",
+      "recipe": "semantic",
+      "foundation_option": "author",
+      "seed": 42,
+      "public_clip_sha256": "5806e77cd80f8b59890b7e101eabd078d9fb84e6937f9e85e4ecb61988df416f",
+      "protocol_sha256": "b2c14adf947b06b27b9576a712f96192c1393ad6ed3ec1be5259b63f88300169",
+      "author_source_commit": "cd1b0a672d1fe642e7608731cb4899a19dda7d51",
+      "visual_initial_sha256": "9a92d7f60d061e3282fdc2a557a7d07d7cc519a4534e47239e9240cfb95c62b0",
+      "camera_initial_sha256": "b836a2e23c5dcb8834b69aee4a26a04d4209819b23527bd1c57693ba8e914201",
+      "shared_initializer_sha256": {
+        "backbone": "1db5ac9c440aca58bb11f2ecb08e7c031bf3ee2d0401934c7b22975edfb1d841",
+        "neck": "06efe49412cdf6c9d8d9162b9394e4bc49329d169906cecc2b6c4784bcdb166e",
+        "classifier": "1deee2afd7a2f8b90231dc24c16cb5e1ce5232e2b1d92383a964342cded88ddd"
+      },
+      "initial_model_state_sha256": "41f5281deabe75003ccf1229b5577f63b14b1c668795aa084652f945814dddf5",
+      "trainable_parameters": 88910282,
+      "trainable_parameter_tensors": 291,
+      "batch_size": 128,
+      "num_instances": 16,
+      "head_names": [
+        [
+          "bottleneck_r",
+          "classifier_r"
+        ],
+        [
+          "bottleneck_n",
+          "classifier_n"
+        ],
+        [
+          "bottleneck_t",
+          "classifier_t"
+        ]
+      ],
+      "cfg_yaml": "DATALOADER:\n  NUM_INSTANCE: 16\n  NUM_WORKERS: 4\n  SAMPLER: softmax_triplet\nDATASETS:\n  NAMES: RGBNT100\n  ROOT_DIR: ..\nINPUT:\n  PADDING: 10\n  PIXEL_MEAN:\n  - 0.5\n  - 0.5\n  - 0.5\n  PIXEL_STD:\n  - 0.5\n  - 0.5\n  - 0.5\n  PROB: 0.5\n  RE_PROB: 0.5\n  SIZE_TEST:\n  - 128\n  - 256\n  SIZE_TRAIN:\n  - 128\n  - 256\nMODEL:\n  ADAPTER: false\n  ATT_DROP_RATE: 0.0\n  DEVICE: cuda\n  DEVICE_ID: '0'\n  DIRECT: 0\n  DIST_TRAIN: false\n  DROP_OUT: 0.0\n  DROP_PATH: 0.1\n  FROZEN: false\n  Gram_Loss_weight: 0.1\n  ID_LOSS_TYPE: softmax\n  ID_LOSS_WEIGHT: 0.25\n  IF_LABELSMOOTH: 'on'\n  IF_WITH_CENTER: 'no'\n  METRIC_LOSS_TYPE: triplet\n  MoE_Loss_weight: 0.1\n  NAME: Signal\n  NECK: bnneck\n  NO_MARGIN: true\n  PAT_Loss_weight: 0.1\n  PRETRAIN_PATH_T: /data/gaob/Re-ID/Trifusion/pertrained-model/ViT-B-16.pt\n  PROMPT: false\n  SIE_CAMERA: true\n  SIE_COE: 1.0\n  SIE_VIEW: false\n  STRIDE_SIZE:\n  - 16\n  - 16\n  TOPK: 112\n  TRANSFORMER_TYPE: ViT-B-16\n  TRIPLET_LOSS_WEIGHT: 1.0\n  USE_A: false\n  USE_B: false\n  stageName: together_CLS_Patch\nOUTPUT_DIR: .\nSOLVER:\n  BASE_LR: 0.0007\n  BIAS_LR_FACTOR: 2\n  CENTER_LOSS_WEIGHT: 0.0005\n  CENTER_LR: 0.5\n  CHECKPOINT_PERIOD: 30\n  CLUSTER_MARGIN: 0.3\n  COSINE_MARGIN: 0.5\n  COSINE_SCALE: 30\n  EVAL_PERIOD: 1\n  GAMMA: 0.1\n  IMS_PER_BATCH: 128\n  LARGE_FC_LR: false\n  LOG_PERIOD: 10\n  MARGIN: 0.3\n  MAX_EPOCHS: 50\n  MOMENTUM: 0.9\n  OPTIMIZER_NAME: Adam\n  RANGE_ALPHA: 0\n  RANGE_BETA: 1\n  RANGE_K: 2\n  RANGE_LOSS_WEIGHT: 1\n  RANGE_MARGIN: 0.3\n  SEED: 42\n  STEPS:\n  - 40\n  - 70\n  WARMUP_FACTOR: 0.01\n  WARMUP_ITERS: 5\n  WARMUP_METHOD: linear\n  WEIGHT_DECAY: 0.0001\n  WEIGHT_DECAY_BIAS: 0.0001\nTEST:\n  EVAL: false\n  FEAT_NORM: 'yes'\n  IMS_PER_BATCH: 128\n  MISS: nothing\n  NECK_FEAT: before\n  RE_RANKING: 'no'\n  WEIGHT: ''\nckpt_save_path: RGBNT100_all\nckpt_test_path: test_RNT100\n",
+      "entry_sha256": "ba680019d4e7f9414fa18a6fd9279a5e503c6eea68de7e9fd519370e7081123c",
+      "scope": "Semantic evidence unchanged. Independent fused heads train only with raw role task; original heads and shared features train only with global task. Extra trainable head capacity disclosed; not an original research module.",
+      "visual_placement": "single_process_original_full_batch_first6_cuda1_last6_and_heads_cuda0",
+      "parameter_placement": {
+        "cuda:0": {
+          "parameters": 45554762,
+          "trainable_parameters": 45383690,
+          "parameter_bytes": 182219048,
+          "gradient_adam_bytes_if_fp32": 544604280
+        },
+        "cuda:1": {
+          "parameters": 43526592,
+          "trainable_parameters": 43526592,
+          "parameter_bytes": 174106368,
+          "gradient_adam_bytes_if_fp32": 522319104
+        }
+      },
+      "role_input_gradient_policy": "detach_stages_context_shared_global_at_role_read_only",
+      "objective_gradient_policy": "global_author_heads_to_global_task_separate_fused_heads_to_role_task",
+      "role_head_initialization": "deepcopy_original_global_heads_no_rng_consumption",
+      "role_head_parameters": 78336,
+      "role_head_tensors": 6
+    },
+    "checkpoint_sha256": "dc166b557adaca166c7e6a3f6a8d65486b0ad99bca0ed204ef5f5dec4c9a04af",
+    "distance_sha256": "27639b8dedc68165e05406b03544c35b8a4864e79feaddd7c41057b56500fb89",
+    "receipt_sha256": "011f6aeb0f564d21588a872970adaf282702132066950fcafe62b2328a04fa30"
+  },
+  "artifact_sha256": {
+    "/data/gaob/Re-ID/Trifusion/trained-model/independent_role_heads_v1_20261006_873_m0_semantic_RGBNT100/training.json": "5d691cadcfbd05a1efebd2d4d13f3286225385f54238d42d7b7d7cf7f80543b8",
+    "/data/gaob/Re-ID/Trifusion/trained-model/independent_role_heads_v1_20261006_873_m0_semantic_RGBNT100/training_steps.jsonl": "6aaf0a69c8b7c997cbf1cf52ab8ecabb7a8fadf9ab40cda7e4619967a22a2d20",
+    "/data/gaob/Re-ID/Trifusion/trained-model/independent_role_heads_v1_20261006_873_m0_semantic_RGBNT100/training_batch_order.jsonl": "8e5575b1330269c9fd45f2f06c8894b7d97b9e1658f6901c4997ca8b00d044b1",
+    "/data/gaob/Re-ID/Trifusion/trained-model/independent_role_heads_v1_20261006_873_full_semantic_RGBNT100/best_epoch_distances.pt": "36e84af94ae82923b559b243b85c48fefc7b84ffecad7b239fca7c175a1f1757",
+    "/data/gaob/Re-ID/Trifusion/trained-model/independent_role_heads_v1_20261006_873_full_semantic_RGBNT100/training.json": "319c394c7c6185fd9cdf0338b5c38d4d8abadb36fc9472d23cfec7fbbbcb4256",
+    "/data/gaob/Re-ID/Trifusion/trained-model/independent_role_heads_v1_20261006_873_full_semantic_RGBNT100/training_steps.jsonl": "dd31b872c42cbcd9119bc34aa992a937d2acab782e6f627bd21540112e9ed101",
+    "/data/gaob/Re-ID/Trifusion/trained-model/independent_role_heads_v1_20261006_873_full_semantic_RGBNT100/training_batch_order.jsonl": "75012100fd55f1da89d113c6159d99682a60deff8e92d11d54c7adfcd90da7b2",
+    "/data/gaob/Re-ID/Trifusion/trained-model/independent_role_heads_v1_20261006_873_full_semantic_RGBNT100/official_metrics.json": "011f6aeb0f564d21588a872970adaf282702132066950fcafe62b2328a04fa30",
+    "/data/gaob/Re-ID/Trifusion/trained-model/independent_role_heads_v1_20261006_873_full_semantic_RGBNT100/last_epoch_distances.pt": "1a3fd47a2c2e2d2e103f4f459b62c139a57b983ff2fd50d2836f6d72f5c6cf96",
+    "/data/gaob/Re-ID/Trifusion/trained-model/independent_role_heads_v1_20261006_873_full_semantic_RGBNT100/best_map.pth": "dc166b557adaca166c7e6a3f6a8d65486b0ad99bca0ed204ef5f5dec4c9a04af",
+    "/data/gaob/Re-ID/Trifusion/trained-model/independent_role_heads_v1_20261006_873_full_semantic_RGBNT100/official_distances.pt": "27639b8dedc68165e05406b03544c35b8a4864e79feaddd7c41057b56500fb89"
+  },
+  "probe": {
+    "path": "/data/gaob/Re-ID/Trifusion/trained-model/independent_role_heads_v1_20261006_873_m0_semantic_RGBNT100/m0_reload_probe.pth",
+    "bytes": 356498860,
+    "sha256": "39ec888584e91f0159090e7d185dbb271d163c3d14aef0cdcc5440e9515a45ae"
+  }
+}
