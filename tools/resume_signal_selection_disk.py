@@ -17,7 +17,7 @@ ORIGINAL=ROOT/'logs/signal_selection_reference_v1_20261006_866'
 PREVIOUS=ROOT/'logs/signal_selection_reference_v1_20261006_867'
 STOPPED=ROOT/'logs/signal_selection_reference_v1_20261006_868'
 STOPPED_LAUNCH=ROOT/'logs/signal_selection_reference_launch_20261006_868'
-OVERLAY=ROOT/'refine-logs/signal_selection_disk_continuation_v1/SOURCE_SCOPE.json'
+OVERLAY=ROOT/'refine-logs/signal_selection_disk_continuation_v2/SOURCE_SCOPE.json'
 STORAGE_BYTES=2*1024**3+3*360*1024**2+6*59_074_461
 
 def origin(campaign,dataset,selection,phase):
@@ -83,7 +83,7 @@ def main():
     assert sum(j['phase']=='m0' and j['status']=='COMPLETE' for j in stopped['jobs'])==8
     for selection in ('masked','all_patch'):
         j=next(j for j in stopped['jobs'] if (j['dataset'],j['selection'],j['phase'])==('RGBNT100',selection,'full'))
-        assert j['status']=='PENDING' and not j['steps']
+        assert j['status']=='PENDING' and not j.get('steps')
     old_manifest=json.loads((STOPPED/'manifest.json').read_text())
     campaign.mkdir(parents=True);(campaign/'initialization').mkdir()
     initialization_sha={}
