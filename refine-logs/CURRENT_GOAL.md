@@ -1,32 +1,21 @@
 # TriFusion 当前执行目标
 
-更新：2026-10-06T10:12:23.143893+08:00，§41.864。完整目标 ACTIVE/UNMET；原终态及后继计划以同一主交接文档为准。
+更新：2026-10-06T12:04:15.690161+08:00，§41.867。完整目标ACTIVE/UNMET。
 
-在RGBNT201、RGBNT100、MSVR310相同训练与评价协议下获得稳定净增益，明确超过独立global-only、同预算旧V8/V27及资源注明的强参照；最终形成必要机制和完整流程多种子证据。配方、继承Signal能力、单seed局部涨分、工程通过不作为新模块贡献或SOTA证明。
+在RGBNT201、RGBNT100、MSVR310匹配训练/评价下取得稳定净增益，超过独立global-only、同预算V8/V27及资源注明的强参照，形成必要机制和完整流程多种子。工程通过、作者配方、继承Signal能力、单seed局部涨分不当作原创/SOTA。历史goal工具的旧服务器/20轮记录不再作为当前执行指令。
 
-## 当前真实终态
+## 当前状态和唯一继续
 
-- row_mass_role_transport_v2六端fresh50/真实8M0/首strict已闭合：300轮、12,968更新，source366/control187字节SHA一致。主slot−uniform0/3、全部15门0/15；原监督退出0。
-- 六份固定best十八模式/24全query配对诊断闭合，original重载通过。初次跨集cfg残留导致100 factory失败原EXIT1保留；仅缺失100两端fresh process继续，CPU唯一报告退出0。没有重训、救参或评价挑结果。
-- 同固定权重切换分配最大mAP变化0.001059942点、六份CMC全不变；去peer最大0.030482853点，不是完整角色删除。201近均匀Q；100分支较强仍损伤自身global，活动不等于互补。
-- 五份本轮无用且四指标被保留winner支配的权重已退役；201slot因R10优势保留。训练/数组/回执/SHA未改。旧直接六PTH重放路径不再可用；RAW187、作者/public、必要赢家/初始化保持。
-- 所有本任务训练、首次评价、CPU报告、观察与收集进程终态；没有活动NN/定时observer，也没有新科学计划已经启动。旧PREPARED脚本不代表当前待执行。
+row_mass_role_transport_v2六端/300轮12968更新与24固定best全query对照已闭合：主0/3，全0/15推进，不救参；五旧权重退役，201slot因R10保留。固定数组CPU几何资格FAIL没有直和结果。旧parity/STOP/失败均保留。
 
-## 下一研究问题与固定边界
+Signal作者SIM masked/all_patch是来源邻近参照，零原创主张：同3072维/同容量/同头，仅改变hardmask，独立global-only无adapter且1536维。公共CLIP、新camera/head、作者raw配方/原AMP/50轮/seed42；车辆原三个512globalTriplet＋一次1536varTriplet，不用旧joint-L2。完整query/gallery/camera及MSVRscene过滤保持。
 
-先依据完整结果登记一个区域身份证据内容形成的单一干预及真正活动控制；不重复容量、读取detach、joint-L2或row质量救分，不同时堆N2/N3。完整必要性必须删除算子整路径重新训练，固定best出口置零只是诊断。后继方案和门须事前锁定，不能看官方分数后改gain/null/LR/margin/seed。
+原866已EXIT1：global201首8M0→fresh50→firststrict接受73.4728/77.1531（27轮best）；masked8M0也通过，正式53更新后评价继承1536断言失败，未出正式指标。当前1/9完成、原report0。只追加与原循环相同的3072/1536提取检查，其他entry AST不变，CPU真实调用链fixture通过不是模型验收。
 
-每端完整50轮，一份mAP-best带同权重R1/R5/R10；部署L2 1536维，保留作者RAW/head/BN职责与既定采样/增强/日程，完整query/gallery及camera/scene过滤。不跨种子/epoch拼列；报告全轨迹、逐query修复/新增错误、身份收益及真实成本。官方集已消费；身份bootstrap/50epoch不代替训练多种子。
+唯一后继867行政继续，复用原global完整50及两个已接受M0，除entrySHA外fresh初始化全部字段精确匹配才可复用。masked53无checkpoint，fresh50不能称optimizerresume，旧成本保留。余7实际M0/8fresh50＋firststrict，再只一次CPU9端/450轮/全query配对。禁止重跑旧接受global或按官方分数换LR/gain/margin/topk/seed、叠N2/N3。当前新源待发布/一次启动。
 
-仅 gaob@172.19.12.138:2026，/data/gaob/Re-ID/Trifusion，温复用tri_reid环境/数据/public权重。仅物理GPU0/1，一模型first6块GPU1/last6+heads GPU0；不使用2/3、25或其他项目。功率温度不查询/设置/监控/设门。长任务按实际里程碑或180–300秒观察，超时不等于停机、不重启。NN/唯一报告活动期间不热同步source/Git。
+## 固定资源与证据
 
-2025 /data2/gb/Re-ID/Trifusion原I/O pending不探测/恢复，不冒称镜像一致。代码/主文档/文本结果按Local、GitHub、26、Desktop核字节；模型、图像和NPY留远端。仅用户授权且消费者已闭合、实际SHA/回执/赢家资格通过的无用自训权重可以清理；其他项目文件不触碰。
+仅gaob@172.19.12.138:2026 /data/gaob/Re-ID/Trifusion，温复用既有tri_reid/data/public。仅物理GPU0/1，一NN，first6块GPU1/last6+headsGPU0；GPU2/3/其他项目不动。功率温度不查/设/监/设门。2025 /data2/gb/Re-ID/Trifusion原I/O pending不探测或恢复。NN/唯一报告活动时不热同步source/Git。观察按预计里程碑或180–300秒；超时不重启。
 
-
-§41.864当前唯一后继：作者SIM masked/all_patch＋26匹配无SIM global-only三集九端。仅源码草稿/CPU模块PASS，执行queue/report未实现，未部署/初始化/M0/full；原F1在25仅历史参照，不探测25。masked/all_patch同3072/同交互头容量，global-only1536差异分账。raw各头作者损失与原AMP，global/var联合视觉学习，不套用旧RAW职责分离。固定数组几何CPU资格FAIL且无直和结果，不重跑/改门；没有活动NN/observer。精确存储预算5,922,357,248B还待启动前资格。完整目标ACTIVE/UNMET。
-
-
-§41.865：九端SOURCE_READY_ONLY，queue/report/扩展source372已实现，尚未真实prepare/M0/full。六份明确dominated已闭合own权重退役2127963598B，旧366/RAW187/winners不改。启动预算仍5,922,357,248B，须实时核查。真实M0通过后各端fresh50，不再额外parity修复/尺度搜索。根自查非独立复现。Goal ACTIVE/UNMET。
-
-
-§41.866：原865 terminalEXIT1，3初始化PASS但首M0在build前统计reset失败，更新0/formal0。只移动GPU1统计调用至build/partition之后；去统计语句AST相等。修订866待一次启动freshprepare/M0/full，旧失败不重跑改判。Goal ACTIVE/UNMET。
+每端完整50轮、一份mAP-best携同权重全部CMC，不拼epoch/seed；记录曲线、逐query修复/新增错误、身份收益、成本和SHA。官方基准已消费，bootstrap/50epoch不代替完整训练种子。正式global和maskedM0是现依赖；best仅消费者闭合且实际SHA/保留winner核验后才按用户授权退役。所有模型/图像/数组留远端，代码/文本/同一主文档Local/GitHub/26/Desktop核字节，25pending单列。

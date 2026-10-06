@@ -14,7 +14,6 @@ from tools.analyze_correspondence_distances import compare,camera_scores,scene_s
 def main():
     parser=argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--campaign',type=Path,required=True)
-    parser.add_argument('--origin-campaigns',type=Path,required=True)
     parser.add_argument('--output-dir',type=Path,required=True)
     args=parser.parse_args()
     panel.require_sources();panel.require_protected()
@@ -22,14 +21,12 @@ def main():
     assert state['status']=='COMPLETE' and state['report_invocations']==1
     assert len(state['jobs'])==18 and all(r['status']=='COMPLETE' and r['exit_code']==0 for r in state['jobs'])
     matrix=json.loads((args.campaign/'accepted_matrix.json').read_text())
-    origins=json.loads(args.origin_campaigns.read_text())
-    assert set(origins)=={f'{d}:{s}' for d in panel.DATASETS for s in panel.SELECTIONS}
     assert matrix['accepted']==matrix['expected']==len(matrix['rows'])==9
     assert not args.output_dir.exists()
     torch.set_num_threads(1)
     rows=[]
     for row in matrix['rows']:
-        assert panel.accepted_row(Path(origins[f'{row["dataset"]}:{row["variant"]}']),row['dataset'],row['variant'])==row
+        assert panel.accepted_row(args.campaign,row['dataset'],row['variant'])==row
         training=json.loads((Path(row['run_dir'])/'training.json').read_text())
         rows.append(dict(row,history=training['history'],selection_reference=training['selection_reference'],
             training_and_epoch_evaluation_seconds=(datetime.fromisoformat(training['completed_at'])-datetime.fromisoformat(training['started_at'])).total_seconds()))

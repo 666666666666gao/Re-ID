@@ -1,0 +1,31 @@
+/data/gaob/Re-ID/conda-envs/tri_reid/lib/python3.10/site-packages/timm/models/helpers.py:7: FutureWarning: Importing from timm.models.helpers is deprecated, please import via timm.models
+  warnings.warn(f"Importing from {__name__} is deprecated, please import via timm.models", FutureWarning)
+/data/gaob/Re-ID/conda-envs/tri_reid/lib/python3.10/site-packages/timm/models/registry.py:4: FutureWarning: Importing from timm.models.registry is deprecated, please import via timm.models
+  warnings.warn(f"Importing from {__name__} is deprecated, please import via timm.models", FutureWarning)
+/data/gaob/Re-ID/conda-envs/tri_reid/lib/python3.10/site-packages/timm/models/layers/__init__.py:48: FutureWarning: Importing from timm.models.layers is deprecated, please import via timm.layers
+  warnings.warn(f"Importing from {__name__} is deprecated, please import via timm.layers", FutureWarning)
+建立transformer............
+using Transformer_type: ViT-B-16 as a backbone
+Resized position embedding: %s to %s torch.Size([197, 768]) torch.Size([129, 768])
+Position embedding resize to height:16 width: 8
+Successfully load ckpt!
+<All keys matched successfully>
+Loading pretrained model from CLIP
+camera number is : 4
+===========Building Signal===========
+using soft triplet loss for training
+label smooth on, numclasses: 171
+Traceback (most recent call last):
+  File "/data/gaob/Re-ID/Trifusion/tools/run_signal_selection_reference.py", line 197, in <module>
+    if __name__=='__main__':main()
+  File "/data/gaob/Re-ID/Trifusion/tools/run_signal_selection_reference.py", line 195, in main
+    (foundation.evaluate if args.mode=='evaluate' else train)(args,protocol)
+  File "/data/gaob/Re-ID/Trifusion/tools/run_signal_selection_reference.py", line 145, in train
+    original_train(args,protocol)
+  File "/data/gaob/Re-ID/Trifusion/tools/run_foundation_recipe.py", line 250, in train
+    metrics = runner.official_metrics(model, protocol, args.signal_source, save_distances=current_distances)
+  File "/data/gaob/Re-ID/Trifusion/tools/run_correspondence_roles.py", line 85, in official_metrics
+    query = extract(model, protocol, "query")
+  File "/data/gaob/Re-ID/Trifusion/tools/run_correspondence_roles.py", line 75, in extract
+    assert result.shape == (protocol["counts"][split], 1536)
+AssertionError

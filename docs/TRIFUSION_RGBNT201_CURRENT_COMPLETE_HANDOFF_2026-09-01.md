@@ -2,7 +2,7 @@
 
 ## 0. 一页结论
 
-**当前进度：§41.866（2026-10-06更新）。** 原九端首次执行在三份RGBNT201真实初始化及配对状态通过后，首M0入口因CUDA尚未初始化就重置显存统计而EXIT1；更新0、正式成绩0。原失败保留。只将统计调用移到模型分段后，新旧去统计语句AST一致，研究模型/目标/阈值不变。修订执行源已登记，尚未真实M0/full。六份dominated旧best已退役且日志/距离/依赖保留。只26 GPU0/1、无功率温度动作，25原I/O pending不探测。Goal ACTIVE/UNMET。以下旧首页细节为历史摘要。
+**当前进度：§41.867（2026-10-06更新）。** 作者SIM选择参照中，RGBNT201无模块global-only完整50轮及首次strict完成，best73.4728/77.1531；masked8M0通过169/169，但正式第1轮53更新后的评价遭遇继承1536硬编码与登记3072输出冲突，原退出1保留，无masked正式成绩。只修评价宽度，真实CPU调用链fixture通过，模型/配方AST不变；行政继续将复用1完整global与2M0，余8正式端尚未启动。RoDI原表/资源边界补核。仅26GPU0/1，无功率温度动作，25 I/O pending；GoalACTIVE/UNMET。以下旧首页细节为历史摘要。
 
 **现行合同：** 每个正式候选完整50轮，使用作者完整query/gallery及camera／MSVR时间段过滤，以官方fused mAP最高的同一checkpoint报告全部指标，随后严格重载。RGBNT201报告mAP／R1／R5／R10，RGBNT100及MSVR310报告mAP／R1；不跨epoch或seed拼列。官方集已参与逐轮选点和历史方法选择，属于已消费基准上的探索性结果。
 
@@ -17642,3 +17642,18 @@ Goal ACTIVE/UNMET。下一工作是完成此明确来源参照的执行与归因
 唯一源修订：GPU1 peak reset从train入口移到optimization，在模型已分段放置GPU1之后执行。删除memory-reset语句后的新旧AST完全一致，模型/头/损失/topk/原AMP/采样/日程和阈值不变，无fallback或额外try。峰值范围由初始化之后开始，与原GPU0循环一致，不能称包括构造或独立推理测速。根自查仍不是独立审计；真实M0/正式性能尚无。旧865失败不改判。
 
 另立866执行，fresh prepares→逐端8M0→fresh50→首次strict→唯一九端CPU报告，entrySHA已变所以不复用旧3初始化binding。旧3PASS仍保留。预算5,922,357,248B、source372中旧366/RAW187不变、仅26GPU0/1、一NN/no功率温度/25范围不变。已退役六份权重不再重放或重复删除。此时无活动NN/observer，下一步同步新源后一次启动修订，Goal ACTIVE/UNMET。
+
+
+## §41.867 — 来源选择参照首global正式完成；3072维评价接口修订
+
+2026-10-06T12:04:15.690161+08:00：原866 supervisor3884260/queue3884261实际EXIT1于11:52:58.034071，11:53:15观察两者已不存在。RGBNT201无角色/无adapter/无SIM global-only已完成50轮2649更新，并首strict接受：best27，mAP73.4727548749/R177.1531105042/R585.8851671219/R1089.9521529675；PTH74a957139a3751aa20f551aed965fafa4e39ff1a2c55dd4f8ae153a28bdaaadf。它是重新在26建立的无模块作者配方匹配参照，不是74.2967共享adapter global，亦不是原创收益；指标与历史F1作者基础相同属于同seed一致性，不是新seed稳定性。E50的71.81698不能冒充best。
+
+masked实际8M0已PASS169/169活动并变化、BN8、reload0；随后fresh正式训练完成第1轮53次更新，评价调用继承的1536固定shape检查时AssertionError。该端仍无正式best/history0，不能填成绩或写成检索掉点；另7full未启动、原CPU报告0。37份原文本及实际checkpoint/distanceSHA接收闭合，原失败和53步成本保留。
+
+最小修订仅在当前entry安装原提取循环的1536/3072明确宽度检查；距离、完整数据/顺序、camera/scene过滤、两scorer/save/best/strict阈值不变，其他入口AST完全一致。CPU合成输出驱动真实extract/official_metrics：旧3072检查确实失败，修后1536/3072通过，plain特征和指标不变；不是模型或正式性能证明。首次fixture因为没有执行真实pinned-source配置而在utils来源检查失败，原stderr保留，独立R2配置后通过。没有GPU数值修复、AMP或训练配方调整。
+
+另立867行政继续：已接受global50与两个M0不重训；新fresh初始化需除entrySHA外全部binding字段精确等于旧3份才可复用。原masked53步没有checkpoint，不能优化器续训，另一个fresh50保留原成本。余7新M0/8新full，最终从明确endpoint_origin读取原global＋8新端，九端450轮只报告一次。旧globalprobe已退役不重删；旧maskedprobe是当前依赖，待新full首strict后才可删。全9best保留至全部消费者结束。原存储门5,922,357,248B/perstage2GiB不变。新源此时未启动。
+
+等待期间额外核读RoDI作者实际13页PDF、Table2渲染及补充：CLIP自身baseline76.0→84.1，+8.1mAP；DINOv3 81.0→85.3，+4.3。distilled修饰DINO视觉编码器，未描述额外ReID教师；公开HEAD2f38911c仍只有README/PDF/poster，不能反向证明代码里绝无教师。总epoch、完整过滤与视觉更新边界未确定。表dataset数量与现有train＋gallery算术一致，但不是文件/协议相同证明。只发布两份归纳事实，不发布PDF/全文/长摘录，不冒称复现或当前SOTA。来源 https://github.com/lsh-ahu/RoDI/blob/2f38911c49d42d4ca259d440a851b8d77dddccbe/assets/RoDI.pdf 。
+
+GoalACTIVE/UNMET，当前只是1/9正式端，尚不能判断mask三集效应。仍只26物理GPU0/1、不查/设/监功率温度、不用25或GPU2/3，不启动N2/N3或救参。Local/GitHub/26/Desktop同步待核；2025 I/O pending保持。
