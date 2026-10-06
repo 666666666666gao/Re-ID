@@ -17831,3 +17831,16 @@ all_patch相对global-only的mAP在201/100/MSVR分别为−0.9243/+2.0398/+2.431
 下一步不能把同容量读取、视觉重建、slot分配、Signal hard-mask或独立头再次列作尚未尝试模块。可保留P1/P2/P3问题链，但直接下一项应先利用已保存距离/完整训练记录分开检验同模型global与fused的净修复、新增错误及真实修正活动，再锁定一个具有新增监督内容的干预。相对global的纠错与保留、空间选择和共享/私有证据的责任需要与V26/R2/CIRC及MDReID直接移植比较；普通多正例排序、删除敏感度或上游反传本身不能称新贡献。未来诊断/训练尚未执行，不提前填分。
 
 证据入口：logs/independent_role_heads_complete874_20261007/（67份原始接收文本、接收校验、两个完整来源普查实现和限定源码笔记），results/independent_role_heads_analysis874_20261007/（450行轨迹、150行训练均值、完整指标/配对）。原385封存源文件、RAW187及未发布无关10文件字节均保持。只26物理GPU0/1，不探测25/GPU2/3，不查询/设置功率温度；25镜像仍I/O pending，不把这次四份本地/GitHub/26/Desktop同步说成25也已同步。主目标ACTIVE/UNMET：稳定三集强参照/SOTA、机制必要性和完整流程多种子仍未满足。
+
+
+## §41.875 — 固定best分解合同：实存只有fused，新增三端只读前向准备（2026-10-07T03:39:24.470306+08:00）
+
+上一节“利用已保存距离检验同模型global与fused”需要补充一个实际边界：03:20 CPU校验三份正式official_distances.pt均只含fused和身份/camera/scene元数据，没有g/c特征或距离。因此不能执行纯CPU的同权重分解，也不能把独立global-only当该模型自己的global。读取本身没有模型前向、评分重放或梯度更新；原三端与六配对成绩全部保持。
+
+已登记tools/diagnose_independent_role_heads_best.py及独立诊断计划：对201 best8、MSVR best38、100 best26各进行一次原完整query/gallery FP32 eval，合计13,608记录曝光，同时提取g/c/h/f。冻结所有参数，严格原schema/initializer/checkpoint，模型及buffer SHA前后相同、无grad；g+gain×c和归一化关系使用原检查，fused与独立global评分沿用1e-5，不重新选epoch。全部gallery与camera/scene过滤不变，输出每query/身份的修复、新增错误、AP变化、c独立评分、幅度/夹角。它是后选择描述性诊断，不是新算法、独立消融、因果定位或性能晋级。
+
+原385源文件不改，新增入口/immutable计划/root源码复核形成388源；新INPUT_SEAL固定6个模型/参照行和241个原输入artifact。复用已存在的严格构造/加载、extract、score、paired、describe；本轮root静态复核及AST通过，非独立模型家族审阅，真实加载/NN及数值验收尚未执行。原RAW187和三个当前best保留。
+
+03:20实际free2,563,211,264B不足以同时保留原通用诊断四套完整向量缓存并维持2GiB预留。F2 raw201资格读取发现旧PTH已退役，在删除前失败；原错误/源码保留，未删除任何文件。03:24只读库存仅剩F3 metric-raw MSVR自训PTH，mAP52.759551/R171.404397，是有效强参照，不退役。本问题只需完整三种距离和逐样本标量统计，四套向量缓存不生成；全部前向、评分、公式和样本检查不减。距离tensor实际逻辑载荷192,342,312B，总序列化预算256MiB，启动要求2GiB+256MiB=2,415,919,104B，预留不降低。
+
+诊断顺序201→MSVR→100、max1模型，只26物理GPU0/1，暖环境不安装/重建；启动只查0/1显存，不查2/3、功率温度或25。预计5–10分钟，按实测或180–300秒等待原句柄，不在NN活跃时sync源码/Git。不把未来状态提前填为PASS；失败原样保存，不调整容差、gain、margin、种子，不重启原训练/六配对报告。输入seal构建及本节发表阶段仍为新诊断前向0/3、更新0。主目标ACTIVE/UNMET。

@@ -2235,3 +2235,5 @@
 | 2026-10-06T23:42:38.212583+08:00 | /run-experiment | logs/independent_role_head_storage873_20261006/ | preparation | 独立训练头启动前空间失败与授权清理记录；未产生训练结果 |
 
 | 2026-10-07T03:11:10.653656+08:00 | /analyze-results | logs/independent_role_heads_complete874_20261007/ | complete | 三端full50/first-strict/原单次报告及完整来源支持普查接收；主配对0/3，科学目标未完成 |
+
+| 2026-10-07T03:39:24.470306+08:00 | /experiment-plan | refine-logs/independent_role_heads_fixed_best_diagnosis_v1/ | preparation | 三份固定best只读g/c/f诊断；实存仅fused，新NN未运行；原385/RAW187保持 |
