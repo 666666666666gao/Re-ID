@@ -2,6 +2,8 @@
 
 ## 0. 一页结论
 
+**最新执行状态：§41.895（2026-10-07）。** 前一轮五端完整250轮与固定best分解已闭合，主要配对0/5；无用自训二进制已退役。下一项是0新增参数的固定同模态几何辅助目标，三集各自M0→fresh50→首次strict；方法评审6.35/10 REVISE、有限pilot低置信度，源码/CPU接入通过，但真实初始化/M0/新训练尚未执行。只26物理0/1，旧对照复用，Goal ACTIVE_UNMET。下面原“当前进度”段是§867历史快照，以本行和正文终态为准。
+
 **当前进度：§41.867（2026-10-06更新）。** 作者SIM选择参照中，RGBNT201无模块global-only完整50轮及首次strict完成，best73.4728/77.1531；masked8M0通过169/169，但正式第1轮53更新后的评价遭遇继承1536硬编码与登记3072输出冲突，原退出1保留，无masked正式成绩。只修评价宽度，真实CPU调用链fixture通过，模型/配方AST不变；行政继续将复用1完整global与2M0，余8正式端尚未启动。RoDI原表/资源边界补核。仅26GPU0/1，无功率温度动作，25 I/O pending；GoalACTIVE/UNMET。以下旧首页细节为历史摘要。
 
 **现行合同：** 每个正式候选完整50轮，使用作者完整query/gallery及camera／MSVR时间段过滤，以官方fused mAP最高的同一checkpoint报告全部指标，随后严格重载。RGBNT201报告mAP／R1／R5／R10，RGBNT100及MSVR310报告mAP／R1；不跨epoch或seed拼列。官方集已参与逐轮选点和历史方法选择，属于已消费基准上的探索性结果。
@@ -18079,3 +18081,20 @@ SOURCE_ONLY首轮真实FAIL：新入口绕过原main后缺ENVIRONMENTS映射，�
 固定分解NN原EXIT0、19份主文本接收与逐query核查、新鲜文本主张复核均闭合后，仅退役五份未晋级OWN正式best和十份此次query/gallery特征缓存，合计2,205,443,037字节。逐文件验证原SHA/字节、实际路径位于当前明确项目run、单链接、当前消费者结束；不是根据某次中途分数盲删。原official_metrics、完整training/steps/batch-order、official_distances、五份diagnostic_distances及完整逐query/身份结果保持SHA不变。公开CLIP/作者/当前45与48输入控制/较强V8、V27、Signal等赢家未触及，424source也不变。
 
 实际空间从2,902,974,464到5,108,424,704字节；原正式五端5,192,548,352B空间门未改变，不能只看到释放容量就声称新队列已获空间资格。退役权重/特征缓存不能直接再次前向重放，需重新生成；保留的距离与文本支持此次诊断复算，不冒称所有旧PTH仍在。旧M0/源码FAIL、缺失100端、0/5与0/12结论全部保持。当前NN CLOSED，尚无新的训练合同或模型启动；Goal ACTIVE_UNMET。
+
+
+## 41.895 2026-10-07：固定H2a同模态几何辅助目标，生产接入与CPU/source资格完成，尚无新CUDA/M0或检索成绩
+
+§893–894的五端完整结果、固定权重诊断和无用二进制退役已闭合，不重训旧控制、重放退役权重或再搜索gain/seed/loss。宽H2“池化前区域对应证据可能不足”仍未确证；本轮只检验一个更小的H2a：在相同semantic输入、raw职责目标/读出/1536推理下，固定同模态几何监督包能否改善新增证据的净效用。research-refine两轮5.85→6.35，REVISE、paper_ready=false，认为低置信度固定可证伪pilot值得执行，不把方法评审或代码通过当作论文成功。
+
+新增模型参数0。主作者图像及sampler/增强保留，记录原eraser实际像素支持并保守剔除10px边框。第二视图只在训练中运行：private Random(42)，每模态batch共享flip0.5，再pad10/normalized -1，dy/dx均匀整数±10裁回。当前模型另一视图no_grad；原CPU/0/1 RNG fork，teacher buffer/RNG中性由实际M0检查。已知像素面积重叠是软标签，dense logits=sqrt128*cosine，系数1.0、3角色×3模态均值；未支持列退出辅助分母、未支持行零权重，实际每样本模态必须有支持，不用替代目标。它不是跨光谱部件真值或有限感受野对应；pre-key自然梯度会改变depth/norm/adapters/modal embedding/CNN及key，也间接改变value输入，不能写成只更新W_K。
+
+原作者raw global/role任务、头、optimizer和first6 GPU1/last6+head GPU0分段沿用。teacher-only缓存修补有当前Torch2.5.1+cu121具体证据：CPU bf16 Linear两固定例中，no_grad缓存开启后student无weight/bias梯度；只教师cache_enabled=False后梯度恢复、前向相同。4组件forward/1backward/0optimizer，无CUDA/生产模型。初始两个新神经源SOURCE_ONLY FAIL保留，只增加一个teacher autocast缓存上下文，第二轮PASS；这不是历史mAP/Mamba数值失败根因定位或旧FAIL改判。
+
+40组两方向/翻转/平移/擦除几何参考与Torch整数计数精确，首次target归一化索引错误留档。三集真实作者CPU loader/workers4前8批图像/labels/camera/view/paths、日志及CPU/Python/NumPy RNG精确；原关闭包装generator夹具的_shutdown_workers错误留档，r2只按真实M0第9次fetch/第8次log后close修订。CPU随机key的aux VJP有限非零、unused-global梯度为空，这些均不是实际角色/视觉更新证据。
+
+4新增运行源及1私有launcher完成fresh SOURCE_ONLY审查。第一版队列端级initializer/full断言会直接终止控制器，stdlib重放确认余两端PENDING且无matrix；修订到既有run_logged子验收，原两个端级失败成为missing并继续，source/disk共同门仍先停止。原accept_m0/accepted_row条件未放宽，没有try/fallback/兼容层；第二轮PASS。请求Astra/max，actual runtime UNATTESTED/same-family/provisional，不称跨模型验收；完整prompt/RAW私有，只公开摘要/来源/确定性检查与失败源快照。
+
+唯一三端按RGBNT201→MSVR310→RGBNT100逐端prepare、匹配初始化验收、真实8步M0、累计3个aux key梯度非零且shared-global aux梯度为空、原全部281/285张量/8实际更新/作者BN8/frozen不变/strict reload1e-5门，合格端再fresh50并首次完整query/gallery严格评价。失败记缺失，不重试挑通过，也不把未跑成填为0。原raw-semantic与独立global六结果/45依赖只复用，不重训。主要新−raw-semantic门仍+0.5mAP且R1不降；另报new−独立global、new−same-weight own-g、own-g−独立global，own-g来自同一次strict fused forward/同一fused mAP-best，不另选epoch或增加全局编码。全50曲线/末轮/全部合法干扰库/camera或scene过滤/逐query修复新增/AP与身份分布完整保留。实际全读取熵与未归一化可见mass L1只是代理，不等于条件熵、正确区域或身份机制。
+
+新3端空间预算3,758,096,384B（3best+1当前M0探针+2GiB缓冲），在实际启动时再验；旧五端5,192,548,352B门不改。接受的M0 probe在消费者闭合后逐文件退役，full从公共初始化重建；正式每端只留一份mAP-best，当前依赖/强赢家保留。本节发布时新CUDA初始化/M0/full仍0，4–6h/8–12GPU·h只是预计。新428范围=原424逐字冻结+4新源，本地27行尾镜像差异和107旧缺项不被规范化或冒称全部working tree相同。仅26物理0/1；不探测25/2/3/功率温度，不安装/改环境、不抢占他人。25旧镜像I/O pending；训练活动时不做源码/Git/服务器同步。三集单seed方向不是稳定性、公式原创、P1/P2/P3成功或SOTA；完整主Goal继续ACTIVE_UNMET。

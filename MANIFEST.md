@@ -2261,3 +2261,5 @@
 - 2026-10-07 §41.889–892：真实M0关系支持、主来源资源核查、五端250轮/9839steps/12全query配对封存（推进0/5、0/12），WARN完整性与限定主张；保留原SOURCE_ONLY FAIL后最小修订固定五best分解入口，诊断尚未运行，Goal ACTIVE_UNMET。
 
 - 2026-10-07 §41.893–894：固定五best g/c/f完整分解EXIT0，原fused距离全相同，逐query复算；201/MSVR的g指标匹配独立global，100融合修正造成额外0.4586mAP损失。闭合消费者后退役5份未晋级自训best+10特征缓存，保留评分距离/全量记录/当前控制/强赢家，旧FAIL不变，Goal ACTIVE_UNMET。
+
+- 2026-10-07 §41.895：固定0参数同模态几何aux；2轮方法REVISE、2类新源码FAIL后窄修补SOURCE_ONLY PASS；40几何及三集真实CPU前8批主输入/RNG中性。旧424不变+4新源；真实CUDA/M0/full未执行，Goal ACTIVE_UNMET。

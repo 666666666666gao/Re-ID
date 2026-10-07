@@ -123,3 +123,8 @@ all_patch相对global-only的mAP在201/100/MSVR分别为−0.9243/+2.0398/+2.431
 本轮科学结论是选择主要对照0/3；执行与统计闭合不是算法成功。整体Goal仍ACTIVE/UNMET，尚未达到三数据集稳定超过匹配强基线/SOTA及完整流程多种子。下一步应先根据完整近容量/角色结果确定一个证据内容假设，并核查当前训练头约束与身份条件区域重建的作用边界；不按本轮官方分数搜索top-k/LR/gain/margin/seed，不自动堆N2/N3或重新启动任何已闭合队列。三角色仍是内部算子，不能把源码来源能力或基础配方收益当作三项创新。
 
 仅26物理GPU0/1，现已空闲；未探测25/GPU2/3、未查询或设置功率温度。25旧镜像I/O pending继续保留。原374、v1/v2overlay字节不变，所有旧失败完整保存。统一主交接与Local/GitHub/26/Desktop同步；本节发布为完整结果终态，不是假实时服务器状态或训练多种子证明。
+
+
+## §41.895：当前唯一待启动合同
+
+固定H2a同模态几何辅助目标三端，方法6.35REVISE/有限低置信度pilot；0新增参数，原semantic/raw职责/作者配方/1536推理。SOURCE_ONLY与CPU主接入完成，尚无真实CUDA初始化/M0/full。每端M0→fresh50→首次strict，复用旧六控制/45依赖；失败缺失，不重试挑通过。见prepool_dense_correspondence_v1/EXPERIMENT_PLAN.md。只26物理0/1，旧424source不变，官方开发边界/强参照/多种子/SOTA仍未完成，主Goal ACTIVE_UNMET。
