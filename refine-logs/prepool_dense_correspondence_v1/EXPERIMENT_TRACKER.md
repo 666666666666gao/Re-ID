@@ -18,3 +18,8 @@
 ## §41.896：启动前资源记录
 
 实际CPU导入通过，原895启动仅在free≥3,758,096,384B断言失败，未创建NN/campaign/journal。独立资格检查后退役五份旧794无当前消费者权重，共1,789,083,787B；原50轮/评价/诊断证据保留。清理后观察free=3941203968B，非未来保证。新896行政调用待执行，模型428来源、目标、seed42、三数据集及M0→fresh50门不变；此刻0/3正式端，无新指标。
+
+
+## §41.897 current completion override
+
+Original896 COMPLETE/EXIT0: all three real M0 accepted, all three fresh50 and first strict accepted. 150 epochs/6,484 formal updates; original report invocation1/exit0, primary0/3/allpairs0/12. Initial NOT_LAUNCHED sections above are historical. No active NN/observer, no new experiment launched. H2a family closed without advancement; strong-reference/multiseed/SOTA goal remains ACTIVE_UNMET. See completion evidence and findings.md.

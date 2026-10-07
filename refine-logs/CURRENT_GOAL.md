@@ -133,3 +133,8 @@ all_patch相对global-only的mAP在201/100/MSVR分别为−0.9243/+2.0398/+2.431
 ## §41.896 实际资源变化
 
 H2a原启动磁盘失败，0NN，原失败保留。五份闭合旧794 OWN权重清理1,789,083,787B，当前48依赖及428源码不变；新896调用待执行，3758096384B门不降低。此刻0/3新正式端，无新mAP。只26物理0/1，模型/目标固定，Goal ACTIVE_UNMET。
+
+
+## §41.897 authoritative current override
+
+H2a original896 complete: three50-epoch endpoints/6,484 updates/first strict/original report EXIT0; primary0/3/allpairs0/12. Semantic geometry proxies improved without stable identity gain. Same-selected-epoch own-global metrics match original independent controls E8/E38/E26; 100 independent shared-adapter best E7, so separate selection gap from fusion loss. H2a closed, no scale/seed rescue or new experiment started. Published evidence under logs/prepool_complete_text_20261008_897. Broad goal ACTIVE_UNMET; strong references, full-pipeline seeds and necessary identity mechanisms still required. Only26 physical0/1, no25/temp/power.

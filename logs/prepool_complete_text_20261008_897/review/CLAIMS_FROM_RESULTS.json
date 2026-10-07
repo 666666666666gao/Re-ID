@@ -1,0 +1,1687 @@
+{
+  "schema": "result-to-claim/h2a-scoped-v1",
+  "skill": "result-to-claim",
+  "generated_at": "2026-10-08T01:15:46.500590+08:00",
+  "claim_supported": "no",
+  "verdict": "NO",
+  "integrity_status": "warn",
+  "confidence": "high",
+  "confidence_scope": "High for the scoped negative criterion decision and insufficiency judgments; low for a unique causal failure diagnosis.",
+  "requested_model": "gpt-6-astra",
+  "requested_reasoning": "max",
+  "actual_model": "UNATTESTED",
+  "actual_reasoning": "UNATTESTED",
+  "reviewer_family": "openai",
+  "reviewer_role": "fresh_secondary_judge",
+  "review_independence": "same-family",
+  "acceptance_status": "provisional",
+  "primary_claim_id": "C1",
+  "scope": {
+    "datasets": [
+      "RGBNT201",
+      "MSVR310",
+      "RGBNT100"
+    ],
+    "seed": 42,
+    "new_formal_runs": 3,
+    "new_condition_per_dataset": 1,
+    "reused_sealed_controls": 6,
+    "formal_epochs": 150,
+    "formal_updates": 6484,
+    "m0_runs": 3,
+    "m0_updates": 24,
+    "primary_comparison": "H2a_minus_sealed_raw_semantic",
+    "advance_rule": {
+      "delta_mAP_points_at_least": 0.5,
+      "delta_Rank1_points_at_least": 0
+    },
+    "primary_advance": 0,
+    "primary_pairs": 3,
+    "reported_pair_advance": 0,
+    "reported_pairs": 12,
+    "reported_pairs_are_twelve_independent_primary_tests": false,
+    "checkpoint_selection": "Maximum official development fused mAP; latest epoch on exact tie in the implementation.",
+    "own_global_selection": "Same fused-selected checkpoint; never independently selected.",
+    "official_development_consumed": true,
+    "heldout_final_test": false,
+    "full_pipeline_multiple_seeds": false,
+    "extra_model_parameters": 0,
+    "inference_dimensions": 1536,
+    "extra_training_computation": true,
+    "geometry": "Known same-image/same-modality visible overlap; current-model detached second-view targets.",
+    "retrieval": "Complete valid query/gallery identity GT with original camera/scene filtering.",
+    "new_algorithm_authorized": false,
+    "full_goal_complete": false,
+    "broader_goal_status": "ACTIVE_UNMET"
+  },
+  "per_claim_judgments": [
+    {
+      "id": "C1",
+      "claim": "Fixed H2a provides useful retrieval increments on RGBNT201, MSVR310 and RGBNT100 under +0.5 mAP with Rank-1 nondecline.",
+      "claim_supported": "no",
+      "confidence": "high",
+      "what_results_support": [
+        "Small observed positive changes on two datasets and a negative change on RGBNT100.",
+        "Completed fixed-implementation negative decision:0/3 primary advances."
+      ],
+      "what_results_dont_support": [
+        "The preregistered useful three-dataset increment.",
+        "Significance, equivalence, a population null effect or failure of all correspondence methods."
+      ],
+      "reasoning": "Primary mAP changes +0.01155769158454234,+0.004553087525593469,-0.563055354664499 all miss+0.5; RGBNT100 also lowers R1. Two tiny observed improvements do not establish partial success of this threshold-defined claim.",
+      "missing_evidence": [
+        "No missing planned endpoint; the intended positive result was not obtained."
+      ],
+      "suggested_claim_revision": "This fixed geometric auxiliary failed the registered useful-retrieval criterion in three complete seed42 development runs despite lower auxiliary loss.",
+      "next_experiments_needed": [],
+      "routing": "Close this implementation; no post-hoc weight, temperature, view, gain, seed or selection rescue.",
+      "evidence": [
+        "registered_plan",
+        "original_complete_summary",
+        "formal_strict_receipts",
+        "original_cpu_pairs"
+      ]
+    },
+    {
+      "id": "C2",
+      "claim": "Original three endpoints completed real M0, fresh50, first strict evaluation and one CPU report; geometry proxies changed separately from identity retrieval.",
+      "claim_supported": "yes",
+      "confidence": "high",
+      "qualification": "Original bound receipt/text evidence; no independent binary replay or fresh remote observation.",
+      "what_results_support": [
+        "Three real8-step M0s followed by separately fresh50 runs;150 formal epochs/6484 updates excluding24 M0 updates.",
+        "Three first strict evaluations and one original complete CPU report.",
+        "First-to-last auxiliary means decrease in all three datasets."
+      ],
+      "what_results_dont_support": [
+        "Independent checkpoint/distance/image replication.",
+        "Engineering completion or proxy optimization as retrieval success.",
+        "Zero new parameters as zero added computation."
+      ],
+      "reasoning": "Original controller/terminal, acceptance records, strict receipts and full histories agree with the completed text audit. Auxiliary optimization and retrieval are separate observations.",
+      "missing_evidence": [
+        "Binary replication was outside this review and the attached local audit; retain that qualification."
+      ],
+      "suggested_claim_revision": "Original receipts support completed execution and changed proxies with local text-only validation limits.",
+      "next_experiments_needed": [],
+      "evidence": [
+        "original_campaign",
+        "original_exit",
+        "formal_strict_receipts",
+        "original_complete_summary",
+        "completed_integrity_audit"
+      ]
+    },
+    {
+      "id": "C3",
+      "claim": "Lower RGBNT100 own-global versus independent-global best proves H2a harmed the shared backbone.",
+      "claim_supported": "no",
+      "confidence": "high",
+      "what_results_support": [
+        "All four own-global metrics equal the sealed global curve at the fused-selected epochs8/38/26.",
+        "RGBNT100 global-best selects7 and raw-semantic selects5.",
+        "RGBNT100 fused versus own-global at26 is lower, with10 repairs/23 new R1 errors."
+      ],
+      "what_results_dont_support": [
+        "Backbone damage inferred from epoch26 versus epoch7.",
+        "Identical weights, feature arrays, whole trajectories, all rankings or causal invariance from four equal aggregate metrics."
+      ],
+      "reasoning": "The proposed proof compares differently selected epochs. Same-epoch metric equality removes that evidence for damage without establishing absence of every causal effect. F1 plain-source epoch9 is a different control.",
+      "missing_evidence": [
+        "A matched-epoch controlled causal comparison and sufficient representation/state evidence for any backbone-harm or invariance claim."
+      ],
+      "suggested_claim_revision": "Selected-epoch own-global metrics equal the sealed global history; shared-backbone damage is not diagnosed.",
+      "next_experiments_needed": [],
+      "routing": "Correct the inference now; no new run is needed to reject this proof.",
+      "evidence": [
+        "same_epoch_global_check",
+        "sealed_control_histories",
+        "original_cpu_pairs"
+      ]
+    },
+    {
+      "id": "C4",
+      "claim": "Very small mapped L1 or decreasing correspondence loss proves reliable identity-relevant region correspondence.",
+      "claim_supported": "no",
+      "confidence": "high",
+      "what_results_support": [
+        "Same-image/same-modality geometric proxy optimization.",
+        "Normalized K-K auxiliary and raw Q-K128-token reading are distinct quantities.",
+        "Late RGBNT201 Transformer/Mamba mean reading entropy is near ln128 with mapped L1 around2e-7."
+      ],
+      "what_results_dont_support": [
+        "Reliable identity/part or cross-spectral correspondence.",
+        "A unique norm/logit-scale cause or collapse of every role/modality/sample."
+      ],
+      "reasoning": "Under the original formula, uniform attention produces equal mapped and restricted visible mass, hence zero mapped L1. The objective supplies geometric overlap, not identity/part labels, and does not guarantee actual Q-K behavior. Some RGBNT100 reading is more selective while retrieval remains negative.",
+      "missing_evidence": [
+        "Semantic/identity validity and causal linkage to net retrieval.",
+        "Original activation-norm/logit-standard-deviation records are absent."
+      ],
+      "suggested_claim_revision": "Geometric/reading diagnostics changed; reliable identity-relevant correspondence remains unproven.",
+      "next_experiments_needed": [
+        {
+          "condition": "Separately authorized successor protocol only",
+          "requirement": "Preregister identity error targets and a causal reading intervention; record actual Q/K norms/logits, semantic/identity validity and full paired retrieval outcomes."
+        }
+      ],
+      "evidence": [
+        "original_proxy_source",
+        "original_auxiliary_traces",
+        "original_cpu_pairs",
+        "registered_proposal"
+      ]
+    },
+    {
+      "id": "C5",
+      "claim": "These results establish stable cross-seed benefit, three necessary novel mechanisms or SOTA.",
+      "claim_supported": "no",
+      "confidence": "high",
+      "what_results_support": [
+        "One fixed seed42 condition per dataset on official benchmarks consumed for development.",
+        "A bounded completed negative implementation test."
+      ],
+      "what_results_dont_support": [
+        "Cross-seed stability, three necessary novel mechanisms, SOTA, untouched final-test generalization or full-goal completion."
+      ],
+      "reasoning": "One seed gives no training-seed uncertainty; the usefulness criterion failed, and required mechanism/novelty and resource-matched strong-reference evidence is unmet. Three roles or datasets are not three validated novel mechanisms.",
+      "missing_evidence": [
+        "Complete-pipeline paired seeds with fixed selection and appropriate uncertainty.",
+        "Distinct mechanism necessity and novelty evidence.",
+        "Prospective held-out, protocol/resource-matched strong-reference comparisons with actual cost."
+      ],
+      "suggested_claim_revision": "Only a scoped negative development result is established; broader obligations remain open.",
+      "next_experiments_needed": [
+        {
+          "condition": "A separately authorized successor first establishes useful benefit",
+          "requirement": "Preregister full-pipeline paired seeds and necessity controls, then assess a prospective held-out/resource-matched strong-reference protocol with measured cost."
+        }
+      ],
+      "evidence": [
+        "registered_plan",
+        "registered_proposal",
+        "completed_integrity_audit",
+        "original_complete_summary"
+      ]
+    }
+  ],
+  "what_results_support": [
+    "Completed negative utility test of fixed H2a.",
+    "Receipt-backed completion, changed proxies and complete query/identity tradeoffs.",
+    "Selected-epoch own-global/sealed-global metric equality on all three datasets."
+  ],
+  "what_results_dont_support": [
+    "Useful three-dataset advance; significance/equivalence or general null effect.",
+    "Identity/cross-spectral part reliability, unique failure cause, universal role collapse.",
+    "Backbone damage from mismatched epochs or complete representation/trajectory identity from metric equality.",
+    "Cross-seed stability, three necessary novel mechanisms, SOTA or full-goal completion.",
+    "Independent binary replication or fresh remote artifact verification."
+  ],
+  "missing_evidence": [
+    {
+      "scope": "Fixed H2a",
+      "gap": "No additional experiment needed for this negative decision; all planned endpoints completed."
+    },
+    {
+      "scope": "Causal identity mechanism",
+      "gap": "Semantic/identity validity, controlled retrieval linkage and actual Q/K norm/logit records absent."
+    },
+    {
+      "scope": "Stable/SOTA successor",
+      "gap": "Full-pipeline seed uncertainty, necessity/novelty evidence, prospective held-out/resource-matched strong comparisons and cost remain unmet."
+    },
+    {
+      "scope": "Independent replication",
+      "gap": "Binaries were not independently loaded or rescored in the local review/audit."
+    }
+  ],
+  "suggested_claim_revision": "In three complete seed42 development runs, adding the fixed H2a same-image/same-modality geometric pre-key auxiliary reduced its logged auxiliary loss but failed the preregistered +0.5 mAP and Rank-1 nondecline criterion against raw-semantic on all three datasets. Primary mAP changes were +0.0116,+0.0046,-0.5631 percentage points. Close this fixed implementation under the registered plan; identity-correspondence mechanisms and broader correspondence hypotheses remain unresolved.",
+  "next_experiments_needed": [
+    {
+      "priority": 0,
+      "action": "None for the fixed H2a verdict. Close the implementation, preserve negatives and leave B3 inactive.",
+      "authorized_by_this_review": false
+    },
+    {
+      "priority": 1,
+      "condition": "Separate new contract",
+      "action": "Use the existing complete query/identity evidence to specify a falsifiable identity error target. Do not repeat its already completed decomposition or rename closed controls.",
+      "authorized_by_this_review": false
+    },
+    {
+      "priority": 2,
+      "condition": "Separate causal study",
+      "action": "Preregister an identity-linked reading intervention with actual Q/K norms/logits, semantic validity and full retrieval tradeoffs.",
+      "authorized_by_this_review": false
+    },
+    {
+      "priority": 3,
+      "condition": "A successor demonstrates useful benefit",
+      "action": "Collect full-pipeline paired-seed uncertainty/necessity and prospective held-out/resource-matched strong-reference results with measured cost.",
+      "authorized_by_this_review": false
+    }
+  ],
+  "already_closed_experiments": [
+    "independent-fused-head",
+    "MD-repair",
+    "capacity",
+    "reconstruction",
+    "slot/uniform",
+    "native-reading",
+    "current-geometry H2a"
+  ],
+  "routing": {
+    "recommendation": "CLOSE_FIXED_H2A_AS_SCOPED_NEGATIVE",
+    "B3_triggered": false,
+    "post_hoc_rescue_tuning": false,
+    "project_pipeline_mutated": false,
+    "broader_goal_status": "ACTIVE_UNMET"
+  },
+  "integrity_audit": {
+    "status": "warn",
+    "verdict": "WARN",
+    "blockers": 0,
+    "warnings": [
+      {
+        "id": "W1",
+        "category": "development_selection_single_seed",
+        "finding": "Three complete new endpoints use seed42 and best official development mAP. This does not establish held-out generalization, multi-seed stability, significance or SOTA.",
+        "claim_impact": "The registered three-dataset negative decision is supported with development and seed qualifiers."
+      },
+      {
+        "id": "W2",
+        "category": "local_evidence_ceiling",
+        "finding": "Original text, hashes, complete counts and saved AP/rank arithmetic are checked. Images, checkpoints and distance binaries were not independently inspected or rescored locally. Canonical evidence_check.py remains UNRESOLVED.",
+        "claim_impact": "Receipt-backed completion is supported. Do not label this audit an independent binary replication or fresh observation of remote artifact presence."
+      },
+      {
+        "id": "W3",
+        "category": "selected_epoch_comparison_scope",
+        "finding": "All own-global metric vectors equal the sealed independent-global curve at fused-selected epochs8/38/26. RGBNT100 global-best selects7, so own-global minus global-best compares26 against7.",
+        "claim_impact": "Metric equality at the selected same epoch is supported; weight, feature, whole-trajectory identity and causal global-path effects are not established."
+      },
+      {
+        "id": "W4",
+        "category": "proxy_interpretation",
+        "finding": "Same-modal geometry loss/match and Q-K entropy/mapped mass L1 are self-supervised diagnostics. RGBNT201 late-role entropy is near log128 while mapped L1 is near zero, so low mapped L1 need not mean semantic correspondence.",
+        "claim_impact": "Only proxy consistency/attention observations are supported; no reliable cross-spectral part or identity mechanism claim."
+      }
+    ],
+    "artifact_name": "EXPERIMENT_AUDIT.json",
+    "sha256": "f32c9846fe8a2280ae345813a11931c36bbbfcf8f651ac026519166e7275bc69",
+    "review_independence": "same-family",
+    "acceptance_status": "provisional",
+    "audit_reported_checks": 1436,
+    "audit_reported_failed_checks": 0,
+    "audit_reported_saved_query_rows": 12568,
+    "audit_script_rerun_by_this_reviewer": false
+  },
+  "evidence_precheck": {
+    "canonical_evidence_check_status": "UNRESOLVED",
+    "supplied_claim_precheck_status": "CANONICAL_HELPER_UNRESOLVED",
+    "canonical_helper_invoked": false,
+    "reviewer_verified_supplied_claim_input_digests": 9,
+    "scope": "File existence/bytes/SHA only; not canonical numeric-token verification or semantic acceptance.",
+    "sha256": "38cc8c4f531725d9ecf0baadb14d50cb8c8a3360853a121372a1c244e5f321c9"
+  },
+  "metric_provenance": {
+    "formal_results": "Original first strict-evaluation vectors, same fused-selected checkpoint. Epoch50 is separately labeled training history.",
+    "cpu_pairs": "Original complete CPU report arithmetic; never splice CMC into formal vectors.",
+    "same_epoch_global": "Sealed original training-history official_fused at H2a-selected epochs.",
+    "tolerance_points": 1e-05,
+    "audit_max_reaggregation_difference_points": 2.8233779119091196e-06,
+    "threshold_is_significance_or_equivalence_test": false
+  },
+  "formal_results": [
+    {
+      "dataset": "RGBNT201",
+      "fused_selected_epoch": 8,
+      "formal_strict_metrics": {
+        "mAP": 74.38641922819744,
+        "Rank-1": 79.18660044670105,
+        "Rank-5": 88.39712738990784,
+        "Rank-10": 91.86602830886841
+      },
+      "same_checkpoint_own_global_formal_metrics": {
+        "mAP": 74.29666357468751,
+        "Rank-1": 78.94737124443054,
+        "Rank-5": 88.27751278877258,
+        "Rank-10": 91.86602830886841
+      },
+      "formal_steps": 2649,
+      "formal_epochs": 50,
+      "checkpoint_sha256": "47d8980087bbce7a5a454d40aa19e63b6bdd9ff7dc3bb1228816f0e2e4c1e611",
+      "formal_receipt_sha256": "68afc3fb14990bee473cff703b276b9df1e49252e47d4f880adef01d12e201ad",
+      "own_global_receipt_sha256": "d2c6cd82371d9dac851882517389f36de52ceea743a2c2f710c2329d6630292f",
+      "raw_semantic_best_epoch": 8,
+      "independent_global_best_epoch": 8,
+      "epoch50_history_metrics": {
+        "mAP": 71.66867268744575,
+        "Rank-1": 74.28229451179504,
+        "Rank-5": 84.33014154434204,
+        "Rank-10": 89.59330320358276
+      },
+      "actual_training_batch_order_equal": true
+    },
+    {
+      "dataset": "MSVR310",
+      "fused_selected_epoch": 38,
+      "formal_strict_metrics": {
+        "mAP": 50.546777999517865,
+        "Rank-1": 68.02030205726624,
+        "Rank-5": 80.54145574569702,
+        "Rank-10": 85.44839024543762
+      },
+      "same_checkpoint_own_global_formal_metrics": {
+        "mAP": 50.542128855101495,
+        "Rank-1": 68.02030205726624,
+        "Rank-5": 80.54145574569702,
+        "Rank-10": 85.44839024543762
+      },
+      "formal_steps": 706,
+      "formal_epochs": 50,
+      "checkpoint_sha256": "fe8f9a9de7091f64e378b9b7e78101cda8871c96b931443892ed879dc84d0130",
+      "formal_receipt_sha256": "91ca6fe0407a7b50531ee55c713bda633084fad632c2c08b94a0247fd07d6951",
+      "own_global_receipt_sha256": "88d4f1cd948a28bcea5809604bfb9efc178d881de6569cc842f312a5c15f26a3",
+      "raw_semantic_best_epoch": 38,
+      "independent_global_best_epoch": 38,
+      "epoch50_history_metrics": {
+        "mAP": 50.47204175197913,
+        "Rank-1": 67.68189668655396,
+        "Rank-5": 81.38747811317444,
+        "Rank-10": 85.617595911026
+      },
+      "actual_training_batch_order_equal": true
+    },
+    {
+      "dataset": "RGBNT100",
+      "fused_selected_epoch": 26,
+      "formal_strict_metrics": {
+        "mAP": 83.52724971457761,
+        "Rank-1": 95.80174684524536,
+        "Rank-5": 96.85131311416626,
+        "Rank-10": 97.434401512146
+      },
+      "same_checkpoint_own_global_formal_metrics": {
+        "mAP": 83.96545249147147,
+        "Rank-1": 96.55976891517639,
+        "Rank-5": 97.49271273612976,
+        "Rank-10": 97.8425681591034
+      },
+      "formal_steps": 3129,
+      "formal_epochs": 50,
+      "checkpoint_sha256": "8efdda3627d833cc59f8041f1b440a1af8e1ac45035a46d0e29ef4e48f85726c",
+      "formal_receipt_sha256": "4fe42c1b1cec37a4914ab028cf3a6d8c5a1861d086e9575671a537c3feb6e3ea",
+      "own_global_receipt_sha256": "2055f1e41894b7c6c3ec019b5438427cc3be5b1454f9ee6699815f4bc178e335",
+      "raw_semantic_best_epoch": 5,
+      "independent_global_best_epoch": 7,
+      "epoch50_history_metrics": {
+        "mAP": 82.55138633758202,
+        "Rank-1": 95.97667455673218,
+        "Rank-5": 96.61807417869568,
+        "Rank-10": 97.14285731315613
+      },
+      "actual_training_batch_order_equal": true
+    }
+  ],
+  "original_cpu_pairs": [
+    {
+      "dataset": "RGBNT201",
+      "control": "raw_semantic",
+      "candidate": "dense",
+      "metrics": {
+        "raw_semantic": {
+          "mAP": 74.3748615366129,
+          "Rank-1": 78.82775119617224,
+          "Rank-5": 88.39712918660287,
+          "Rank-10": 91.74641148325358
+        },
+        "dense": {
+          "mAP": 74.38641922819744,
+          "Rank-1": 79.18660287081339,
+          "Rank-5": 88.39712918660287,
+          "Rank-10": 91.86602870813397
+        }
+      },
+      "delta_metrics": {
+        "mAP": 0.01155769158454234,
+        "Rank-1": 0.3588516746411443,
+        "Rank-5": 0.0,
+        "Rank-10": 0.11961722488038617
+      },
+      "rank1_repairs": 6,
+      "rank1_new_errors": 3,
+      "query_ap_improved": 242,
+      "query_ap_worsened": 255,
+      "identity_macro_mean_delta_ap_points": 0.023034192702383112,
+      "boundary": "Complete legal query/gallery ground truth, same camera/scene filtering. Post-selection fixed-model diagnosis, not training seed uncertainty or causal correspondence proof.",
+      "primary_pair": true,
+      "phase_progress": false
+    },
+    {
+      "dataset": "RGBNT201",
+      "control": "independent_global",
+      "candidate": "dense",
+      "metrics": {
+        "independent_global": {
+          "mAP": 74.29666357468751,
+          "Rank-1": 78.94736842105263,
+          "Rank-5": 88.27751196172248,
+          "Rank-10": 91.86602870813397
+        },
+        "dense": {
+          "mAP": 74.38641922819744,
+          "Rank-1": 79.18660287081339,
+          "Rank-5": 88.39712918660287,
+          "Rank-10": 91.86602870813397
+        }
+      },
+      "delta_metrics": {
+        "mAP": 0.08975565350992554,
+        "Rank-1": 0.23923444976075814,
+        "Rank-5": 0.11961722488038617,
+        "Rank-10": 0.0
+      },
+      "rank1_repairs": 7,
+      "rank1_new_errors": 5,
+      "query_ap_improved": 249,
+      "query_ap_worsened": 249,
+      "identity_macro_mean_delta_ap_points": 0.09023065933873203,
+      "boundary": "Complete legal query/gallery ground truth, same camera/scene filtering. Post-selection fixed-model diagnosis, not training seed uncertainty or causal correspondence proof.",
+      "primary_pair": false,
+      "phase_progress": false
+    },
+    {
+      "dataset": "RGBNT201",
+      "control": "own_global",
+      "candidate": "dense",
+      "metrics": {
+        "own_global": {
+          "mAP": 74.29666357468751,
+          "Rank-1": 78.94736842105263,
+          "Rank-5": 88.27751196172248,
+          "Rank-10": 91.86602870813397
+        },
+        "dense": {
+          "mAP": 74.38641922819744,
+          "Rank-1": 79.18660287081339,
+          "Rank-5": 88.39712918660287,
+          "Rank-10": 91.86602870813397
+        }
+      },
+      "delta_metrics": {
+        "mAP": 0.08975565350992554,
+        "Rank-1": 0.23923444976075814,
+        "Rank-5": 0.11961722488038617,
+        "Rank-10": 0.0
+      },
+      "rank1_repairs": 7,
+      "rank1_new_errors": 5,
+      "query_ap_improved": 249,
+      "query_ap_worsened": 249,
+      "identity_macro_mean_delta_ap_points": 0.09023065933873203,
+      "boundary": "Complete legal query/gallery ground truth, same camera/scene filtering. Post-selection fixed-model diagnosis, not training seed uncertainty or causal correspondence proof.",
+      "primary_pair": false,
+      "phase_progress": false
+    },
+    {
+      "dataset": "RGBNT201",
+      "control": "independent_global",
+      "candidate": "own_global",
+      "metrics": {
+        "independent_global": {
+          "mAP": 74.29666357468751,
+          "Rank-1": 78.94736842105263,
+          "Rank-5": 88.27751196172248,
+          "Rank-10": 91.86602870813397
+        },
+        "own_global": {
+          "mAP": 74.29666357468751,
+          "Rank-1": 78.94736842105263,
+          "Rank-5": 88.27751196172248,
+          "Rank-10": 91.86602870813397
+        }
+      },
+      "delta_metrics": {
+        "mAP": 0.0,
+        "Rank-1": 0.0,
+        "Rank-5": 0.0,
+        "Rank-10": 0.0
+      },
+      "rank1_repairs": 0,
+      "rank1_new_errors": 0,
+      "query_ap_improved": 0,
+      "query_ap_worsened": 0,
+      "identity_macro_mean_delta_ap_points": 0.0,
+      "boundary": "Complete legal query/gallery ground truth, same camera/scene filtering. Post-selection fixed-model diagnosis, not training seed uncertainty or causal correspondence proof.",
+      "primary_pair": false,
+      "phase_progress": false
+    },
+    {
+      "dataset": "MSVR310",
+      "control": "raw_semantic",
+      "candidate": "dense",
+      "metrics": {
+        "raw_semantic": {
+          "mAP": 50.542224911992264,
+          "Rank-1": 67.85109983079526,
+          "Rank-5": 80.5414551607445,
+          "Rank-10": 85.44839255499154
+        },
+        "dense": {
+          "mAP": 50.54677799951786,
+          "Rank-1": 68.02030456852792,
+          "Rank-5": 80.5414551607445,
+          "Rank-10": 85.44839255499154
+        }
+      },
+      "delta_metrics": {
+        "mAP": 0.004553087525593469,
+        "Rank-1": 0.16920473773265599,
+        "Rank-5": 0.0,
+        "Rank-10": 0.0
+      },
+      "rank1_repairs": 1,
+      "rank1_new_errors": 0,
+      "query_ap_improved": 96,
+      "query_ap_worsened": 105,
+      "identity_macro_mean_delta_ap_points": 0.004021428603984589,
+      "boundary": "Complete legal query/gallery ground truth, same camera/scene filtering. Post-selection fixed-model diagnosis, not training seed uncertainty or causal correspondence proof.",
+      "primary_pair": true,
+      "phase_progress": false
+    },
+    {
+      "dataset": "MSVR310",
+      "control": "independent_global",
+      "candidate": "dense",
+      "metrics": {
+        "independent_global": {
+          "mAP": 50.542128855101495,
+          "Rank-1": 68.02030456852792,
+          "Rank-5": 80.5414551607445,
+          "Rank-10": 85.44839255499154
+        },
+        "dense": {
+          "mAP": 50.54677799951786,
+          "Rank-1": 68.02030456852792,
+          "Rank-5": 80.5414551607445,
+          "Rank-10": 85.44839255499154
+        }
+      },
+      "delta_metrics": {
+        "mAP": 0.004649144416362105,
+        "Rank-1": 0.0,
+        "Rank-5": 0.0,
+        "Rank-10": 0.0
+      },
+      "rank1_repairs": 1,
+      "rank1_new_errors": 1,
+      "query_ap_improved": 169,
+      "query_ap_worsened": 126,
+      "identity_macro_mean_delta_ap_points": -0.002418018895112237,
+      "boundary": "Complete legal query/gallery ground truth, same camera/scene filtering. Post-selection fixed-model diagnosis, not training seed uncertainty or causal correspondence proof.",
+      "primary_pair": false,
+      "phase_progress": false
+    },
+    {
+      "dataset": "MSVR310",
+      "control": "own_global",
+      "candidate": "dense",
+      "metrics": {
+        "own_global": {
+          "mAP": 50.542128855101495,
+          "Rank-1": 68.02030456852792,
+          "Rank-5": 80.5414551607445,
+          "Rank-10": 85.44839255499154
+        },
+        "dense": {
+          "mAP": 50.54677799951786,
+          "Rank-1": 68.02030456852792,
+          "Rank-5": 80.5414551607445,
+          "Rank-10": 85.44839255499154
+        }
+      },
+      "delta_metrics": {
+        "mAP": 0.004649144416362105,
+        "Rank-1": 0.0,
+        "Rank-5": 0.0,
+        "Rank-10": 0.0
+      },
+      "rank1_repairs": 1,
+      "rank1_new_errors": 1,
+      "query_ap_improved": 169,
+      "query_ap_worsened": 126,
+      "identity_macro_mean_delta_ap_points": -0.002418018895112237,
+      "boundary": "Complete legal query/gallery ground truth, same camera/scene filtering. Post-selection fixed-model diagnosis, not training seed uncertainty or causal correspondence proof.",
+      "primary_pair": false,
+      "phase_progress": false
+    },
+    {
+      "dataset": "MSVR310",
+      "control": "independent_global",
+      "candidate": "own_global",
+      "metrics": {
+        "independent_global": {
+          "mAP": 50.542128855101495,
+          "Rank-1": 68.02030456852792,
+          "Rank-5": 80.5414551607445,
+          "Rank-10": 85.44839255499154
+        },
+        "own_global": {
+          "mAP": 50.542128855101495,
+          "Rank-1": 68.02030456852792,
+          "Rank-5": 80.5414551607445,
+          "Rank-10": 85.44839255499154
+        }
+      },
+      "delta_metrics": {
+        "mAP": 0.0,
+        "Rank-1": 0.0,
+        "Rank-5": 0.0,
+        "Rank-10": 0.0
+      },
+      "rank1_repairs": 0,
+      "rank1_new_errors": 0,
+      "query_ap_improved": 0,
+      "query_ap_worsened": 0,
+      "identity_macro_mean_delta_ap_points": 0.0,
+      "boundary": "Complete legal query/gallery ground truth, same camera/scene filtering. Post-selection fixed-model diagnosis, not training seed uncertainty or causal correspondence proof.",
+      "primary_pair": false,
+      "phase_progress": false
+    },
+    {
+      "dataset": "RGBNT100",
+      "control": "raw_semantic",
+      "candidate": "dense",
+      "metrics": {
+        "raw_semantic": {
+          "mAP": 84.09030506924212,
+          "Rank-1": 95.8600583090379,
+          "Rank-5": 96.61807580174927,
+          "Rank-10": 97.20116618075801
+        },
+        "dense": {
+          "mAP": 83.52724971457762,
+          "Rank-1": 95.80174927113703,
+          "Rank-5": 96.85131195335276,
+          "Rank-10": 97.43440233236151
+        }
+      },
+      "delta_metrics": {
+        "mAP": -0.563055354664499,
+        "Rank-1": -0.0583090379008695,
+        "Rank-5": 0.2332361516034922,
+        "Rank-10": 0.23323615160350641
+      },
+      "rank1_repairs": 30,
+      "rank1_new_errors": 31,
+      "query_ap_improved": 643,
+      "query_ap_worsened": 778,
+      "identity_macro_mean_delta_ap_points": -0.5439375813875325,
+      "boundary": "Complete legal query/gallery ground truth, same camera/scene filtering. Post-selection fixed-model diagnosis, not training seed uncertainty or causal correspondence proof.",
+      "primary_pair": true,
+      "phase_progress": false
+    },
+    {
+      "dataset": "RGBNT100",
+      "control": "independent_global",
+      "candidate": "dense",
+      "metrics": {
+        "independent_global": {
+          "mAP": 84.53378422597531,
+          "Rank-1": 96.61807580174927,
+          "Rank-5": 97.31778425655978,
+          "Rank-10": 97.95918367346938
+        },
+        "dense": {
+          "mAP": 83.52724971457762,
+          "Rank-1": 95.80174927113703,
+          "Rank-5": 96.85131195335276,
+          "Rank-10": 97.43440233236151
+        }
+      },
+      "delta_metrics": {
+        "mAP": -1.006534511397689,
+        "Rank-1": -0.816326530612244,
+        "Rank-5": -0.46647230320701283,
+        "Rank-10": -0.5247813411078681
+      },
+      "rank1_repairs": 21,
+      "rank1_new_errors": 35,
+      "query_ap_improved": 610,
+      "query_ap_worsened": 812,
+      "identity_macro_mean_delta_ap_points": -0.7347465235820995,
+      "boundary": "Complete legal query/gallery ground truth, same camera/scene filtering. Post-selection fixed-model diagnosis, not training seed uncertainty or causal correspondence proof.",
+      "primary_pair": false,
+      "phase_progress": false
+    },
+    {
+      "dataset": "RGBNT100",
+      "control": "own_global",
+      "candidate": "dense",
+      "metrics": {
+        "own_global": {
+          "mAP": 83.96545249147147,
+          "Rank-1": 96.5597667638484,
+          "Rank-5": 97.49271137026238,
+          "Rank-10": 97.84256559766764
+        },
+        "dense": {
+          "mAP": 83.52724971457762,
+          "Rank-1": 95.80174927113703,
+          "Rank-5": 96.85131195335276,
+          "Rank-10": 97.43440233236151
+        }
+      },
+      "delta_metrics": {
+        "mAP": -0.4382027768938457,
+        "Rank-1": -0.7580174927113745,
+        "Rank-5": -0.6413994169096213,
+        "Rank-10": -0.4081632653061291
+      },
+      "rank1_repairs": 10,
+      "rank1_new_errors": 23,
+      "query_ap_improved": 712,
+      "query_ap_worsened": 671,
+      "identity_macro_mean_delta_ap_points": -0.6465425077380499,
+      "boundary": "Complete legal query/gallery ground truth, same camera/scene filtering. Post-selection fixed-model diagnosis, not training seed uncertainty or causal correspondence proof.",
+      "primary_pair": false,
+      "phase_progress": false
+    },
+    {
+      "dataset": "RGBNT100",
+      "control": "independent_global",
+      "candidate": "own_global",
+      "metrics": {
+        "independent_global": {
+          "mAP": 84.53378422597531,
+          "Rank-1": 96.61807580174927,
+          "Rank-5": 97.31778425655978,
+          "Rank-10": 97.95918367346938
+        },
+        "own_global": {
+          "mAP": 83.96545249147147,
+          "Rank-1": 96.5597667638484,
+          "Rank-5": 97.49271137026238,
+          "Rank-10": 97.84256559766764
+        }
+      },
+      "delta_metrics": {
+        "mAP": -0.5683317345038432,
+        "Rank-1": -0.0583090379008695,
+        "Rank-5": 0.1749271137026085,
+        "Rank-10": -0.116618075801739
+      },
+      "rank1_repairs": 34,
+      "rank1_new_errors": 35,
+      "query_ap_improved": 631,
+      "query_ap_worsened": 781,
+      "identity_macro_mean_delta_ap_points": -0.08820401584404959,
+      "boundary": "Complete legal query/gallery ground truth, same camera/scene filtering. Post-selection fixed-model diagnosis, not training seed uncertainty or causal correspondence proof.",
+      "primary_pair": false,
+      "phase_progress": false
+    }
+  ],
+  "same_epoch_global_metric_checks": [
+    {
+      "dataset": "RGBNT201",
+      "fused_selected_epoch": 8,
+      "independent_global_selected_epoch": 8,
+      "independent_global_same_epoch_metrics": {
+        "mAP": 74.29666357468751,
+        "Rank-1": 78.94737124443054,
+        "Rank-5": 88.27751278877258,
+        "Rank-10": 91.86602830886841
+      },
+      "own_global_metrics": {
+        "mAP": 74.29666357468751,
+        "Rank-1": 78.94737124443054,
+        "Rank-5": 88.27751278877258,
+        "Rank-10": 91.86602830886841
+      },
+      "same_epoch_delta": {
+        "mAP": 0.0,
+        "Rank-1": 0.0,
+        "Rank-5": 0.0,
+        "Rank-10": 0.0
+      },
+      "max_absolute_metric_delta": 0.0,
+      "same_epoch_metrics_match_registered_tolerance": true,
+      "boundary": "Matched metric values at selected epoch only; no claim of identical weights, full feature arrays, all shared trajectory or causal invariance. No additional forward/epoch selection/retraining."
+    },
+    {
+      "dataset": "MSVR310",
+      "fused_selected_epoch": 38,
+      "independent_global_selected_epoch": 38,
+      "independent_global_same_epoch_metrics": {
+        "mAP": 50.542128855101495,
+        "Rank-1": 68.02030205726624,
+        "Rank-5": 80.54145574569702,
+        "Rank-10": 85.44839024543762
+      },
+      "own_global_metrics": {
+        "mAP": 50.542128855101495,
+        "Rank-1": 68.02030205726624,
+        "Rank-5": 80.54145574569702,
+        "Rank-10": 85.44839024543762
+      },
+      "same_epoch_delta": {
+        "mAP": 0.0,
+        "Rank-1": 0.0,
+        "Rank-5": 0.0,
+        "Rank-10": 0.0
+      },
+      "max_absolute_metric_delta": 0.0,
+      "same_epoch_metrics_match_registered_tolerance": true,
+      "boundary": "Matched metric values at selected epoch only; no claim of identical weights, full feature arrays, all shared trajectory or causal invariance. No additional forward/epoch selection/retraining."
+    },
+    {
+      "dataset": "RGBNT100",
+      "fused_selected_epoch": 26,
+      "independent_global_selected_epoch": 7,
+      "independent_global_same_epoch_metrics": {
+        "mAP": 83.96545249147147,
+        "Rank-1": 96.55976891517639,
+        "Rank-5": 97.49271273612976,
+        "Rank-10": 97.8425681591034
+      },
+      "own_global_metrics": {
+        "mAP": 83.96545249147147,
+        "Rank-1": 96.55976891517639,
+        "Rank-5": 97.49271273612976,
+        "Rank-10": 97.8425681591034
+      },
+      "same_epoch_delta": {
+        "mAP": 0.0,
+        "Rank-1": 0.0,
+        "Rank-5": 0.0,
+        "Rank-10": 0.0
+      },
+      "max_absolute_metric_delta": 0.0,
+      "same_epoch_metrics_match_registered_tolerance": true,
+      "boundary": "Matched metric values at selected epoch only; no claim of identical weights, full feature arrays, all shared trajectory or causal invariance. No additional forward/epoch selection/retraining."
+    }
+  ],
+  "auxiliary_proxy_observations": [
+    {
+      "dataset": "RGBNT201",
+      "auxiliary_first_epoch": {
+        "epoch": 1,
+        "auxiliary_mean": 3.007409487130507,
+        "match_mass_by_role": [
+          0.29982406491378566,
+          0.30320793840120425,
+          0.30839147966987684
+        ],
+        "actual_full_read_entropy_by_role": [
+          4.829106222908452,
+          4.8191644470646695,
+          4.816929196411708
+        ],
+        "actual_visible_mass_mapped_l1_by_role": [
+          0.08789877790325093,
+          0.10459654187818743,
+          0.10013744445904246
+        ]
+      },
+      "auxiliary_best_epoch": {
+        "epoch": 8,
+        "auxiliary_mean": 1.5705310353692972,
+        "match_mass_by_role": [
+          0.47289921202749574,
+          0.4668720246485944,
+          0.4662468500857083
+        ],
+        "actual_full_read_entropy_by_role": [
+          4.67593020313191,
+          4.8493449912880955,
+          4.84914808453254
+        ],
+        "actual_visible_mass_mapped_l1_by_role": [
+          0.14251951985764053,
+          0.019221892756111216,
+          0.018861592167390966
+        ]
+      },
+      "auxiliary_last_epoch": {
+        "epoch": 50,
+        "auxiliary_mean": 1.4373319621356029,
+        "match_mass_by_role": [
+          0.4889927275900571,
+          0.4742394292129661,
+          0.47403898329105015
+        ],
+        "actual_full_read_entropy_by_role": [
+          4.801302828878726,
+          4.8520307540893555,
+          4.8520307540893555
+        ],
+        "actual_visible_mass_mapped_l1_by_role": [
+          0.07076681602113652,
+          2.080846146962461e-07,
+          2.0389297401808743e-07
+        ]
+      }
+    },
+    {
+      "dataset": "MSVR310",
+      "auxiliary_first_epoch": {
+        "epoch": 1,
+        "auxiliary_mean": 3.4917850494384766,
+        "match_mass_by_role": [
+          0.23835546097585134,
+          0.2362745702266693,
+          0.2381043859890529
+        ],
+        "actual_full_read_entropy_by_role": [
+          4.826982430049351,
+          4.815195287976946,
+          4.812219313212803
+        ],
+        "actual_visible_mass_mapped_l1_by_role": [
+          0.0971193675483976,
+          0.12775512358972005,
+          0.12512597282017981
+        ]
+      },
+      "auxiliary_best_epoch": {
+        "epoch": 38,
+        "auxiliary_mean": 2.780489751270839,
+        "match_mass_by_role": [
+          0.3161692257438387,
+          0.31576745212078094,
+          0.31424020550080706
+        ],
+        "actual_full_read_entropy_by_role": [
+          4.8095176219940186,
+          4.81180545261928,
+          4.816505329949515
+        ],
+        "actual_visible_mass_mapped_l1_by_role": [
+          0.09962035130177226,
+          0.10847750465784754,
+          0.10236904078296252
+        ]
+      },
+      "auxiliary_last_epoch": {
+        "epoch": 50,
+        "auxiliary_mean": 2.692850819655827,
+        "match_mass_by_role": [
+          0.34341434070042204,
+          0.3428750080721719,
+          0.3421093778950827
+        ],
+        "actual_full_read_entropy_by_role": [
+          4.8095954145704,
+          4.81158971786499,
+          4.816474097115653
+        ],
+        "actual_visible_mass_mapped_l1_by_role": [
+          0.09856888598629407,
+          0.10735548979469708,
+          0.10110253361718995
+        ]
+      }
+    },
+    {
+      "dataset": "RGBNT100",
+      "auxiliary_first_epoch": {
+        "epoch": 1,
+        "auxiliary_mean": 2.8708870833919895,
+        "match_mass_by_role": [
+          0.2916357853720265,
+          0.3020418392073724,
+          0.29911305130489413
+        ],
+        "actual_full_read_entropy_by_role": [
+          4.806770155506749,
+          4.801922528974472,
+          4.808131771702921
+        ],
+        "actual_visible_mass_mapped_l1_by_role": [
+          0.11322824476707366,
+          0.11357363277385311,
+          0.10580073236938446
+        ]
+      },
+      "auxiliary_best_epoch": {
+        "epoch": 26,
+        "auxiliary_mean": 1.446959862633357,
+        "match_mass_by_role": [
+          0.4924292304213085,
+          0.4797529947190058,
+          0.4800519867548867
+        ],
+        "actual_full_read_entropy_by_role": [
+          4.501329883696541,
+          4.6961658947051514,
+          4.824189352610754
+        ],
+        "actual_visible_mass_mapped_l1_by_role": [
+          0.19388805672762885,
+          0.14106025676878672,
+          0.0615274068855104
+        ]
+      },
+      "auxiliary_last_epoch": {
+        "epoch": 50,
+        "auxiliary_mean": 1.4431596302217053,
+        "match_mass_by_role": [
+          0.48266839644601267,
+          0.46925868286240485,
+          0.4693166714522146
+        ],
+        "actual_full_read_entropy_by_role": [
+          4.6294491444864585,
+          4.832256709375689,
+          4.843510596982894
+        ],
+        "actual_visible_mass_mapped_l1_by_role": [
+          0.17012887015458075,
+          0.05154129736606152,
+          0.030746074934159557
+        ]
+      }
+    }
+  ],
+  "supplementary_query_group_decomposition": {
+    "source_name": "QUERY_GROUPS.json",
+    "sha256": "54fa23ff38752c4a53994f260a85b1155dfda857878d4d3799bb4e989c2c42d6",
+    "original_summary_sha256": "5c24f95e26bf3c885d781591163c29c0437bfe71c71fcbb840777facf35ddec6",
+    "pairs": [
+      {
+        "dataset": "RGBNT201",
+        "control": "raw_semantic",
+        "candidate": "dense",
+        "primary_pair": true,
+        "query_count": 836,
+        "groups": [
+          {
+            "group": "repair",
+            "queries": 6,
+            "within_group_mean_delta_ap_points": 5.6837112423561225,
+            "contribution_to_overall_delta_map_points": 0.04079218594992433
+          },
+          {
+            "group": "new_error",
+            "queries": 3,
+            "within_group_mean_delta_ap_points": -4.411100180858381,
+            "contribution_to_overall_delta_map_points": -0.015829306869109022
+          },
+          {
+            "group": "stays_correct",
+            "queries": 656,
+            "within_group_mean_delta_ap_points": -0.007385668903767827,
+            "contribution_to_overall_delta_map_points": -0.005795453111090544
+          },
+          {
+            "group": "stays_wrong",
+            "queries": 171,
+            "within_group_mean_delta_ap_points": -0.03720314588313959,
+            "contribution_to_overall_delta_map_points": -0.007609734385187644
+          }
+        ]
+      },
+      {
+        "dataset": "RGBNT201",
+        "control": "independent_global",
+        "candidate": "dense",
+        "primary_pair": false,
+        "query_count": 836,
+        "groups": [
+          {
+            "group": "repair",
+            "queries": 7,
+            "within_group_mean_delta_ap_points": 6.0973963604499035,
+            "contribution_to_overall_delta_map_points": 0.051054754214293445
+          },
+          {
+            "group": "new_error",
+            "queries": 5,
+            "within_group_mean_delta_ap_points": -3.5978520252698147,
+            "contribution_to_overall_delta_map_points": -0.021518253739652
+          },
+          {
+            "group": "stays_correct",
+            "queries": 655,
+            "within_group_mean_delta_ap_points": 0.06192116806921666,
+            "contribution_to_overall_delta_map_points": 0.0485147907719341
+          },
+          {
+            "group": "stays_wrong",
+            "queries": 169,
+            "within_group_mean_delta_ap_points": 0.057898502083783235,
+            "contribution_to_overall_delta_map_points": 0.011704362263348525
+          }
+        ]
+      },
+      {
+        "dataset": "RGBNT201",
+        "control": "own_global",
+        "candidate": "dense",
+        "primary_pair": false,
+        "query_count": 836,
+        "groups": [
+          {
+            "group": "repair",
+            "queries": 7,
+            "within_group_mean_delta_ap_points": 6.0973963604499035,
+            "contribution_to_overall_delta_map_points": 0.051054754214293445
+          },
+          {
+            "group": "new_error",
+            "queries": 5,
+            "within_group_mean_delta_ap_points": -3.5978520252698147,
+            "contribution_to_overall_delta_map_points": -0.021518253739652
+          },
+          {
+            "group": "stays_correct",
+            "queries": 655,
+            "within_group_mean_delta_ap_points": 0.06192116806921666,
+            "contribution_to_overall_delta_map_points": 0.0485147907719341
+          },
+          {
+            "group": "stays_wrong",
+            "queries": 169,
+            "within_group_mean_delta_ap_points": 0.057898502083783235,
+            "contribution_to_overall_delta_map_points": 0.011704362263348525
+          }
+        ]
+      },
+      {
+        "dataset": "RGBNT201",
+        "control": "independent_global",
+        "candidate": "own_global",
+        "primary_pair": false,
+        "query_count": 836,
+        "groups": [
+          {
+            "group": "repair",
+            "queries": 0,
+            "within_group_mean_delta_ap_points": null,
+            "contribution_to_overall_delta_map_points": 0.0
+          },
+          {
+            "group": "new_error",
+            "queries": 0,
+            "within_group_mean_delta_ap_points": null,
+            "contribution_to_overall_delta_map_points": 0.0
+          },
+          {
+            "group": "stays_correct",
+            "queries": 660,
+            "within_group_mean_delta_ap_points": 0.0,
+            "contribution_to_overall_delta_map_points": 0.0
+          },
+          {
+            "group": "stays_wrong",
+            "queries": 176,
+            "within_group_mean_delta_ap_points": 0.0,
+            "contribution_to_overall_delta_map_points": 0.0
+          }
+        ]
+      },
+      {
+        "dataset": "MSVR310",
+        "control": "raw_semantic",
+        "candidate": "dense",
+        "primary_pair": true,
+        "query_count": 591,
+        "groups": [
+          {
+            "group": "repair",
+            "queries": 1,
+            "within_group_mean_delta_ap_points": 2.2620156782111462,
+            "contribution_to_overall_delta_map_points": 0.0038274376957887417
+          },
+          {
+            "group": "new_error",
+            "queries": 0,
+            "within_group_mean_delta_ap_points": null,
+            "contribution_to_overall_delta_map_points": 0.0
+          },
+          {
+            "group": "stays_correct",
+            "queries": 401,
+            "within_group_mean_delta_ap_points": -0.002809635278689159,
+            "contribution_to_overall_delta_map_points": -0.001906368437824624
+          },
+          {
+            "group": "stays_wrong",
+            "queries": 189,
+            "within_group_mean_delta_ap_points": 0.008230279344815213,
+            "contribution_to_overall_delta_map_points": 0.002632018267631261
+          }
+        ]
+      },
+      {
+        "dataset": "MSVR310",
+        "control": "independent_global",
+        "candidate": "dense",
+        "primary_pair": false,
+        "query_count": 591,
+        "groups": [
+          {
+            "group": "repair",
+            "queries": 1,
+            "within_group_mean_delta_ap_points": 2.2822455219311086,
+            "contribution_to_overall_delta_map_points": 0.00386166754979883
+          },
+          {
+            "group": "new_error",
+            "queries": 1,
+            "within_group_mean_delta_ap_points": -2.500000000000002,
+            "contribution_to_overall_delta_map_points": -0.004230118443316416
+          },
+          {
+            "group": "stays_correct",
+            "queries": 401,
+            "within_group_mean_delta_ap_points": -0.005538441605037948,
+            "contribution_to_overall_delta_map_points": -0.0037578935425045977
+          },
+          {
+            "group": "stays_wrong",
+            "queries": 188,
+            "within_group_mean_delta_ap_points": 0.02758677612634021,
+            "contribution_to_overall_delta_map_points": 0.008775488852372181
+          }
+        ]
+      },
+      {
+        "dataset": "MSVR310",
+        "control": "own_global",
+        "candidate": "dense",
+        "primary_pair": false,
+        "query_count": 591,
+        "groups": [
+          {
+            "group": "repair",
+            "queries": 1,
+            "within_group_mean_delta_ap_points": 2.2822455219311086,
+            "contribution_to_overall_delta_map_points": 0.00386166754979883
+          },
+          {
+            "group": "new_error",
+            "queries": 1,
+            "within_group_mean_delta_ap_points": -2.500000000000002,
+            "contribution_to_overall_delta_map_points": -0.004230118443316416
+          },
+          {
+            "group": "stays_correct",
+            "queries": 401,
+            "within_group_mean_delta_ap_points": -0.005538441605037948,
+            "contribution_to_overall_delta_map_points": -0.0037578935425045977
+          },
+          {
+            "group": "stays_wrong",
+            "queries": 188,
+            "within_group_mean_delta_ap_points": 0.02758677612634021,
+            "contribution_to_overall_delta_map_points": 0.008775488852372181
+          }
+        ]
+      },
+      {
+        "dataset": "MSVR310",
+        "control": "independent_global",
+        "candidate": "own_global",
+        "primary_pair": false,
+        "query_count": 591,
+        "groups": [
+          {
+            "group": "repair",
+            "queries": 0,
+            "within_group_mean_delta_ap_points": null,
+            "contribution_to_overall_delta_map_points": 0.0
+          },
+          {
+            "group": "new_error",
+            "queries": 0,
+            "within_group_mean_delta_ap_points": null,
+            "contribution_to_overall_delta_map_points": 0.0
+          },
+          {
+            "group": "stays_correct",
+            "queries": 402,
+            "within_group_mean_delta_ap_points": 0.0,
+            "contribution_to_overall_delta_map_points": 0.0
+          },
+          {
+            "group": "stays_wrong",
+            "queries": 189,
+            "within_group_mean_delta_ap_points": 0.0,
+            "contribution_to_overall_delta_map_points": 0.0
+          }
+        ]
+      },
+      {
+        "dataset": "RGBNT100",
+        "control": "raw_semantic",
+        "candidate": "dense",
+        "primary_pair": true,
+        "query_count": 1715,
+        "groups": [
+          {
+            "group": "repair",
+            "queries": 30,
+            "within_group_mean_delta_ap_points": 15.916591557358917,
+            "contribution_to_overall_delta_map_points": 0.2784243421112347
+          },
+          {
+            "group": "new_error",
+            "queries": 31,
+            "within_group_mean_delta_ap_points": -34.345093478676084,
+            "contribution_to_overall_delta_map_points": -0.6208151007807339
+          },
+          {
+            "group": "stays_correct",
+            "queries": 1613,
+            "within_group_mean_delta_ap_points": -0.2021416875532917,
+            "contribution_to_overall_delta_map_points": -0.19011926648598224
+          },
+          {
+            "group": "stays_wrong",
+            "queries": 41,
+            "within_group_mean_delta_ap_points": -1.2776887831216233,
+            "contribution_to_overall_delta_map_points": -0.03054532950903006
+          }
+        ]
+      },
+      {
+        "dataset": "RGBNT100",
+        "control": "independent_global",
+        "candidate": "dense",
+        "primary_pair": false,
+        "query_count": 1715,
+        "groups": [
+          {
+            "group": "repair",
+            "queries": 21,
+            "within_group_mean_delta_ap_points": 20.34694984358053,
+            "contribution_to_overall_delta_map_points": 0.2491463246152718
+          },
+          {
+            "group": "new_error",
+            "queries": 35,
+            "within_group_mean_delta_ap_points": -20.294871342439727,
+            "contribution_to_overall_delta_map_points": -0.4141810478048924
+          },
+          {
+            "group": "stays_correct",
+            "queries": 1622,
+            "within_group_mean_delta_ap_points": -0.8101273649369535,
+            "contribution_to_overall_delta_map_points": -0.7661962600161741
+          },
+          {
+            "group": "stays_wrong",
+            "queries": 37,
+            "within_group_mean_delta_ap_points": -3.4904202932193322,
+            "contribution_to_overall_delta_map_points": -0.07530352819190396
+          }
+        ]
+      },
+      {
+        "dataset": "RGBNT100",
+        "control": "own_global",
+        "candidate": "dense",
+        "primary_pair": false,
+        "query_count": 1715,
+        "groups": [
+          {
+            "group": "repair",
+            "queries": 10,
+            "within_group_mean_delta_ap_points": 7.299667963651684,
+            "contribution_to_overall_delta_map_points": 0.04256366159563665
+          },
+          {
+            "group": "new_error",
+            "queries": 23,
+            "within_group_mean_delta_ap_points": -16.201859399763027,
+            "contribution_to_overall_delta_map_points": -0.21728441177524757
+          },
+          {
+            "group": "stays_correct",
+            "queries": 1633,
+            "within_group_mean_delta_ap_points": -0.20542454102001956,
+            "contribution_to_overall_delta_map_points": -0.19560249299457258
+          },
+          {
+            "group": "stays_wrong",
+            "queries": 49,
+            "within_group_mean_delta_ap_points": -2.3757836801885084,
+            "contribution_to_overall_delta_map_points": -0.06787953371967168
+          }
+        ]
+      },
+      {
+        "dataset": "RGBNT100",
+        "control": "independent_global",
+        "candidate": "own_global",
+        "primary_pair": false,
+        "query_count": 1715,
+        "groups": [
+          {
+            "group": "repair",
+            "queries": 34,
+            "within_group_mean_delta_ap_points": 21.586597663466453,
+            "contribution_to_overall_delta_map_points": 0.4279558720453991
+          },
+          {
+            "group": "new_error",
+            "queries": 35,
+            "within_group_mean_delta_ap_points": -18.14114412604118,
+            "contribution_to_overall_delta_map_points": -0.3702274311436975
+          },
+          {
+            "group": "stays_correct",
+            "queries": 1622,
+            "within_group_mean_delta_ap_points": -0.5754932242705744,
+            "contribution_to_overall_delta_map_points": -0.5442857199806832
+          },
+          {
+            "group": "stays_wrong",
+            "queries": 24,
+            "within_group_mean_delta_ap_points": -5.843466293901591,
+            "contribution_to_overall_delta_map_points": -0.08177445542486192
+          }
+        ]
+      }
+    ],
+    "scope": "Descriptive post-selection Rank-1 outcomes, not causal treatments or independent replications. Counts and contribution sums checked against original report; no rescoring.",
+    "max_delta_sum_error_points": 1.2545520178264269e-14
+  },
+  "uniform_attention_mapped_l1": {
+    "kind": "Algebraic inference from original source, no experiment.",
+    "formula": "Uniform attention gives sum_i (1/N)(r_i/256)(C_ij/r_i)=c_j/(256N)=(1/N)(c_j/256), N=128.",
+    "implication": "Zero mapped visible-mass L1 need not imply identity-relevant reading.",
+    "not_established": "Uniformity of every sample/modality/role or a unique causal failure."
+  },
+  "original_completion_records": [
+    {
+      "dataset": "RGBNT201",
+      "controller_steps": [
+        {
+          "mode": "prepare",
+          "status": "COMPLETE",
+          "exit_code": 0
+        },
+        {
+          "mode": "accept-initialization",
+          "status": "COMPLETE",
+          "exit_code": 0
+        },
+        {
+          "mode": "m0",
+          "status": "COMPLETE",
+          "exit_code": 0
+        },
+        {
+          "mode": "accept-m0",
+          "status": "COMPLETE",
+          "exit_code": 0
+        },
+        {
+          "mode": "train",
+          "status": "COMPLETE",
+          "exit_code": 0
+        },
+        {
+          "mode": "evaluate",
+          "status": "COMPLETE",
+          "exit_code": 0
+        },
+        {
+          "mode": "accept-full",
+          "status": "COMPLETE",
+          "exit_code": 0
+        }
+      ],
+      "m0_receipt_status": "REAL_M0_AND_ISOLATED_DENSE_ACTIVITY_ACCEPTED",
+      "full_receipt_status": "VERIFIED_COMPLETE"
+    },
+    {
+      "dataset": "MSVR310",
+      "controller_steps": [
+        {
+          "mode": "prepare",
+          "status": "COMPLETE",
+          "exit_code": 0
+        },
+        {
+          "mode": "accept-initialization",
+          "status": "COMPLETE",
+          "exit_code": 0
+        },
+        {
+          "mode": "m0",
+          "status": "COMPLETE",
+          "exit_code": 0
+        },
+        {
+          "mode": "accept-m0",
+          "status": "COMPLETE",
+          "exit_code": 0
+        },
+        {
+          "mode": "train",
+          "status": "COMPLETE",
+          "exit_code": 0
+        },
+        {
+          "mode": "evaluate",
+          "status": "COMPLETE",
+          "exit_code": 0
+        },
+        {
+          "mode": "accept-full",
+          "status": "COMPLETE",
+          "exit_code": 0
+        }
+      ],
+      "m0_receipt_status": "REAL_M0_AND_ISOLATED_DENSE_ACTIVITY_ACCEPTED",
+      "full_receipt_status": "VERIFIED_COMPLETE"
+    },
+    {
+      "dataset": "RGBNT100",
+      "controller_steps": [
+        {
+          "mode": "prepare",
+          "status": "COMPLETE",
+          "exit_code": 0
+        },
+        {
+          "mode": "accept-initialization",
+          "status": "COMPLETE",
+          "exit_code": 0
+        },
+        {
+          "mode": "m0",
+          "status": "COMPLETE",
+          "exit_code": 0
+        },
+        {
+          "mode": "accept-m0",
+          "status": "COMPLETE",
+          "exit_code": 0
+        },
+        {
+          "mode": "train",
+          "status": "COMPLETE",
+          "exit_code": 0
+        },
+        {
+          "mode": "evaluate",
+          "status": "COMPLETE",
+          "exit_code": 0
+        },
+        {
+          "mode": "accept-full",
+          "status": "COMPLETE",
+          "exit_code": 0
+        }
+      ],
+      "m0_receipt_status": "REAL_M0_AND_ISOLATED_DENSE_ACTIVITY_ACCEPTED",
+      "full_receipt_status": "VERIFIED_COMPLETE"
+    }
+  ],
+  "review_actions": {
+    "NN_forwards": 0,
+    "training_invocations": 0,
+    "experiment_evaluator_invocations": 0,
+    "experiment_report_invocations": 0,
+    "SSH": 0,
+    "GPU_queries": 0,
+    "installs": 0,
+    "source_changes": 0,
+    "Git_changes": 0,
+    "delegation": 0,
+    "root_event_writes": 0,
+    "writes_outside_private_claim_directory": 0
+  },
+  "evidence_artifacts": [
+    {
+      "id": "original_complete_summary",
+      "name": "SUMMARY.json",
+      "sha256": "5c24f95e26bf3c885d781591163c29c0437bfe71c71fcbb840777facf35ddec6"
+    },
+    {
+      "id": "received_text_analysis",
+      "name": "ANALYSIS.json",
+      "sha256": "a0d536b5f105a7f7cfbda2282aad4a27c9e203affce93bf9e6b75c3ad5b24ced"
+    },
+    {
+      "id": "same_epoch_global_check",
+      "name": "SAME_EPOCH_GLOBAL_CHECK.json",
+      "sha256": "ba3804cd1ba3eb1abea05faf8042773680663a6f32883cfdeb7598b20e00d37c"
+    },
+    {
+      "id": "sealed_control_histories",
+      "name": "FILE_MAP.json",
+      "sha256": "6c779b5f71251ca399b2c82f0211efff23bea8c692af7d6d3beb316d35648f8d"
+    },
+    {
+      "id": "registered_plan",
+      "name": "EXPERIMENT_PLAN_20261007_194152.md",
+      "sha256": "3520d5976b6e5c1c3177d95cb6921209f1ad53da3a8a9166f606d2b28117af26"
+    },
+    {
+      "id": "registered_proposal",
+      "name": "FINAL_PROPOSAL_20261007_194152.md",
+      "sha256": "0b988176da39d489975bd56ebd057817a4b502466a4c1c7530b21439a7b0aa5d"
+    },
+    {
+      "id": "original_proxy_source",
+      "name": "modeling/trifusion/prepool_dense_correspondence.py",
+      "sha256": "bda53e82db91a2c777cd4869e0ef3af948bbc37b2dc50454dc6badff705b2ebd"
+    },
+    {
+      "id": "original_campaign",
+      "name": "campaign.json",
+      "sha256": "10bd664d3916352179748a2ae15575740be0b94f624809149f9bd128d4292a7b"
+    },
+    {
+      "id": "original_exit",
+      "name": "EXIT.json",
+      "sha256": "0a8b04fc76ed77931117c19e25164350dcf0acc56a169b514179f05e83f98f9f"
+    }
+  ]
+}

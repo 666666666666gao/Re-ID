@@ -29,3 +29,6 @@
 | EXPERIMENT_TRACKER.md | experiment-bridge | 2026-10-07T19:41:52.620944+08:00 | source review closed, original failures preserved, production NN0 |
 
 | LATEST_EXECUTION.json / LAUNCH896_SOURCE_REVIEW.json | run-experiment | 2026-10-07T20:14:58.674570+08:00 | old disk failure retained, exact OWN cleanup closed, new launch pending |
+
+
+- §41.897 original three endpoints COMPLETE: results, complete trajectories, same-epoch control check and provisional audit/claim reports at logs/prepool_complete_text_20261008_897. Prior failure/source records are immutable; H2a advancement0/3.
