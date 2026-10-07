@@ -18146,3 +18146,24 @@ best至E50的mAP下降201 2.7177、MSVR 0.0747、100 0.9759；不是训练未完
 72份原文本共72,575,119B于00:09:00逐字接收，PTH/NPY/原图未下载。公开 logs/prepool_complete_text_20261008_897/FILE_MAP.json 映射原始日志/初始化/全部验收/评价/报告、六控制曲线、450行跨条件epoch表和简要审查；六份大formal step/batch日志仍在远端及私有精确副本，公开其SHA/字节和全epoch摘要，避免重复提交。原报告body仅执行一次，原424与新428范围逐字保持；27行尾差异/107旧缺项未规范化。NN/报告闭合后才做本次发布。
 
 本轮封存结论：H2a同模态几何辅助包未显示三集稳定净增益；既不证明所有区域对应无效，也不支持H2a继续扩大成已成功主模块。无需重复当前队列、追调系数/温度/gain/margin/seed或默认叠加下一模块。后续科学干预需改变有身份证据的学习内容，并与已闭合独立头、MD/repair、容量、重建、slot/uniform及当前几何对照区别登记，尚未新启动。完整主Goal仍ACTIVE_UNMET：匹配强参照/SOTA、完整流程多种子与三个必要机制都没有完成。只2026物理GPU0/1；没有25/GPU2/3/温度功率/环境安装操作，25旧镜像I/O pending保持。
+
+
+## 41.898 2026-10-08：冻结文本包必要性对照收束；组件source已复核，尚无新前向或正式成绩
+
+H2a原三端50轮/6,484更新及完整报告已在§897闭合，0/3主要推进不变；不重启旧队列，也不把低几何辅助loss当新增身份证据。现在只登记一个新的资源问题：用已有公开CLIP的冻结文本预训练包形成实例条件区域query上下文，是否优于同结构固定random包。它仍是g的确定性重编码，不增加图像没有的新像素或独立身份信息；不默认有效，更不是三个已成立的创新点。
+
+真实CPU只读检查确认公开ViT-B/16权重SHA5806e77c…df416f包含完整12层文本encoder及49408×512词表，现有ftfy/regex/torch依赖齐全。两固定person/vehicle模板实际均12token、pseudo-word位置5—8/EOT11。没有encoder forward、GPU查询、下载安装；12前缀与full77的数值输出/VJP尚未执行。153个非visual state张量包含完整词表及元数据；不能把它们全部称本方法新增参数。encoder本体148state/38,131,200元素，另加固定template buffer1state/6,144元素，持久组件静态估计149state/152,549,376FP32B；原本体估计及评审不回写，实际构造/保存尚未核验。
+
+最小接口只新增ψ(512→128→2048、4 pseudo-word)和无bias W(512→512)，共592,000可训练参数/5tensor；T冻结但训练时保留输入autograd。原visual/global/head/角色/readout/gain及raw职责目标不变，value仍是原128视觉patch，部署仍1536维、推理也运行T。pretrained/random两个臂×三集共六fresh50端，复用六封存raw-semantic/global控制；不按官方分数改倍率/LR/margin/词/seed，不加style prompt、新loss、教师或matcher。
+
+源码事实落实了两个具体接入要求：原role_evidence会detach incoming context，因此新text上下文必须在旧视觉inputs detach之后构造，并直接调用roles；Signal默认Transformer包装不能当普通text forward，须显式逐层forward_ori。原context_queries初始C=0使首步ψ/W任务梯度预期0；M0将先验证C首次更新，再验证第2—8步全部新增tensor收到真实有限非零任务梯度及累计实际变化，不能用weight decay代替监督。初始私有初始化只seed CPU default generator，避免torch.manual_seed影响CUDA训练随机流。上述都是实现要求，不追认成旧实验掉分原因。
+
+同一方法评审R1为REVISE/5.90、R2为REVISE/6.40，有限pilot判断WORTHWHILE_PENDING_ORDINARY_GATES；没有为了READY加模块或换评审。PromptSG及DEEP是很近的实例提示/text-guided先例，本pilot不支持架构原创性。fresh源码评审仅对新组件给SOURCE_COMPONENT_PASS，production_launch_ready=false。完整RAW/request/tracePRIVATE，公开简明MD/JSON；actual model/effort UNATTESTED、same-family/provisional、CALIBRATION:none。R1/R2真实工具/检查失败及共享追加账本漂移保留，未追认成科学PASS。
+
+当前只实现并发布modeling/trifusion/text_semantic_prior.py组件；production builder/training entry/唯一queue/report和固定prefix检查工具尚未接入。组件尚未构造，0新NN forward/0新M0/0正式端，没有新增检索数字。原428source逐字保持，单独429source清单只增加这一unused候选组件；不能称新六端已通过全模型初始化、M0或正式训练。
+
+实际空间原快照约2.96GB低于5,905,580,032B预留。完成原回执、实存SHA和无当前后继consumer核验并保存64份原metric/train文本后，2026-10-08T02:44:33.151671+08:00一次精确退役32个闭合旧distance缓存3,896,408,208B；删除前后free为2709798912/6606270464B。没有checkpoint/作者/初始化删除，当前45控制依赖再次字节核验。旧32矩阵不能再直接重放，原文字/指标/哈希与退役逐项回执保持；不声称所有历史binary仍可重放。原Windows长路径文本收集失败保留，独立r2短索引映射核验完成，没有模型/eval重跑。此空间快照不是未来启动门，source和真实prefix/M0仍待完成。
+
+下一步是补齐生产接入并复核，先做固定普通文本prefix输出/VJP与真实逐端8步M0，合格端再fresh50。主判定pretrained−random≥+0.5mAP且R1不降，同时报告对旧semantic/独立global及同模型f−g净增量。任何单集或包对比成功都不替代三集稳定收益、强近邻、完整流程种子及SOTA。只26物理GPU0/1，不查25/GPU2/3/温度功率，不安装。Goal ACTIVE_UNMET。
+
+文献范围：[PromptSG主文](https://openaccess.thecvf.com/content/CVPR2024/html/Yang_A_Pedestrian_is_Worth_One_Prompt_Towards_Language_Guidance_Person_CVPR_2024_paper.html)、[DEEP原文](https://aihuazheng.github.io/publications/pdf/2025/2025-DEEP_Decoupled_Semantic_Prompt_Learning_Guiding_and_Embedding_for_Multi-Spectral_Object_Re-Identification.pdf)、[CLIP-ReID作者实现](https://github.com/Syliz517/CLIP-ReID)。PromptSG直接PDF读取403/其当前公开repo为空，DEEP当前公开tree10files/0Python；不假称完整可执行复现。文本证据：logs/text_prior_preparation_20261008_898；计划及组件复核：refine-logs/text_semantic_prior_v1。

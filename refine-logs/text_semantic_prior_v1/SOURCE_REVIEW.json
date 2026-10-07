@@ -1,0 +1,204 @@
+{
+  "at": "2026-10-07T19:05:41.284Z",
+  "verdict": "SOURCE_COMPONENT_PASS",
+  "production_launch_ready": false,
+  "scope": "component-source-only",
+  "source_round": 1,
+  "max_source_rounds": 2,
+  "blocking_component_findings": [],
+  "nonblocking_component_findings": [],
+  "blocking_count": 0,
+  "nonblocking_count": 0,
+  "candidate": {
+    "file": "modeling/trifusion/text_semantic_prior.py",
+    "bytes": 6878,
+    "sha256": "4b1c5448929881f2914113fcf6fbaba18112da0eae0f9a7264bfe6b2e66d7382"
+  },
+  "request": {
+    "bytes": 2849,
+    "sha256": "bddb771e4865a98c86a45e2e1e927360ec60b4b24728852f1c7ff7f000bba519",
+    "fully_read": true
+  },
+  "attribution": {
+    "requested_model": "gpt-6-astra",
+    "requested_reasoning_effort": "max",
+    "actual_model": "UNATTESTED",
+    "actual_reasoning_effort": "UNATTESTED",
+    "review_independence": "same-family",
+    "acceptance_status": "provisional",
+    "reviewer_agent": "/root/review_text_component898"
+  },
+  "checks": [
+    {
+      "id": "C01",
+      "status": "SOURCE_CORRECT",
+      "topic": "普通因果文本调用图",
+      "evidence": [
+        "text_semantic_prior.py:61-66,86-103",
+        "Signal/modeling/clip/model.py:154-179,223-231,407-416"
+      ],
+      "detail": "构造12个d_model=512/n_head=8/pattern=None普通block，逐层forward_ori；LND排列、上三角-inf mask、EOT11、ln_final和projection与方案一致。未调用作者视觉prompt/adapter默认forward或多参数Sequential包装器。"
+    },
+    {
+      "id": "C02",
+      "status": "SOURCE_CORRECT",
+      "topic": "公开状态映射与持久冻结状态",
+      "evidence": [
+        "text_semantic_prior.py:13-26,67-84",
+        "既有REMOTE_STDOUT.json的text_state元数据"
+      ],
+      "detail": "149个所选公开text键和shape逐项匹配；排除visual/logit_scale/metadata。12层strict load及末端LN严格加载；projection、77位置表、12模板均持久注册并复制。148项encoder加1项template=149项/38137344元素。完整词表不注册为组件状态。"
+    },
+    {
+      "id": "C03",
+      "status": "SOURCE_CORRECT",
+      "topic": "固定随机包与训练RNG隔离",
+      "evidence": [
+        "text_semantic_prior.py:27-50,61-66",
+        "PyTorch v2.5.1 torch/random.py"
+      ],
+      "detail": "独立CPU Generator seed42，依次word table、position、block0..11的in/out/c_fc/c_proj、末尾projection；std和bias/LN常量符合登记。作者构造draw在CPU fork中，不共享填充generator。组件没有调用all-device torch.manual_seed。"
+    },
+    {
+      "id": "C04",
+      "status": "SOURCE_CORRECT",
+      "topic": "ψ/W初始化次序及可训练集合",
+      "evidence": [
+        "text_semantic_prior.py:106-115",
+        "PyTorch v2.5.1 torch/nn/modules/linear.py"
+      ],
+      "detail": "CPU fork内只seed默认CPU generator，依次ψ第一Linear、ψ第二Linear、无bias W；默认Linear初始化未改。静态算术329856+262144=592000，5张量。两臂实际state逐tensor相同仍需未来builder/资格验证。"
+    },
+    {
+      "id": "C05",
+      "status": "SOURCE_CORRECT",
+      "topic": "输入autograd、detach边界与上下文公式",
+      "evidence": [
+        "text_semantic_prior.py:86-103,117-133",
+        "role_input_detach.py:5-7",
+        "independent_native_roles.py:63-74",
+        "role_global_tokens.py:29-61"
+      ],
+      "detail": "仅原stages/g/context detach；ψ→T→W→augmented_context无detach/no_grad。覆盖role_evidence后直接调用roles，绕过继承方法的context.detach。模态normalize、mean及残差normalize均符合方案。冻结T参数和eval不关闭输入autograd。"
+    },
+    {
+      "id": "C06",
+      "status": "SOURCE_CORRECT",
+      "topic": "FP32",
+      "evidence": [
+        "text_semantic_prior.py:26,31,44-48,78,90,120-125",
+        "Signal/modeling/clip/model.py:154-160",
+        "PyTorch v2.5.1 torch/amp/autocast_mode.py"
+      ],
+      "detail": "公开/随机T状态转FP32，T构造后float；conditioner在autocast disabled区间把原输入转float，覆盖ψ、T、W及归一化。直接encode_embeddings资格调用仍须由未来检查器以FP32/autocast disabled执行。未证明运行时内核数值或VJP。"
+    },
+    {
+      "id": "C07",
+      "status": "SOURCE_CORRECT",
+      "topic": "C=0首步延迟",
+      "evidence": [
+        "correspondence_context_identity.py:16-17",
+        "role_global_tokens.py:30",
+        "slot_competition_fp32_roles.py:10-20",
+        "EXPERIMENT_PLAN.md:B1"
+      ],
+      "detail": "C零初始化使首步ψ/W任务梯度为零，属于已登记预期；没有永久梯度切断。C首步非零任务梯度/更新及第2–8步各新增张量活动仍需真实M0。"
+    },
+    {
+      "id": "C08",
+      "status": "INTERFACE_PRESENT_QUALIFICATION_NOT_RUN",
+      "topic": "prefix12/full77输出与输入VJP",
+      "evidence": [
+        "text_semantic_prior.py:86-103",
+        "FINAL_PROPOSAL.md:前缀资格"
+      ],
+      "detail": "接口接受12/77长度，共享前12position和EOT11，支持登记的比较。两包×两模板、固定非零pseudo-word及固定上游向量，输出atol/rtol=1e-5、输入VJP atol/rtol=1e-4仍待执行；没有数值PASS。"
+    }
+  ],
+  "static_validation": {
+    "bound_input_matches": 6,
+    "python_ast_files": 14,
+    "public_text_keys_and_shapes_matched": 149,
+    "token_constants_match_existing_bpe_receipt": true,
+    "encoder_state_tensors": 148,
+    "persistent_state_tensors": 149,
+    "persistent_elements": 38137344,
+    "persistent_fp32_bytes": 152549376,
+    "added_trainable_elements": 592000,
+    "added_trainable_tensors": 5,
+    "checkpoint_deserialized_by_reviewer": false,
+    "grounding_report_torch_version": "2.5.1+cu121"
+  },
+  "production_work_pending": [
+    "生产builder须解析到此次已核验的Signal作者模块，在共同旧state构造之后附加新组件，并实核旧state、ψ/W两臂初值和CPU/两GPU及batch/augmentation随机流。",
+    "生产训练入口、唯一六端队列、optimizer覆盖、完整持久state严格保存/重载和全量报告入口尚未实现/未审查。",
+    "两冻结包×person/vehicle的prefix/full77输出及pseudo-word输入VJP资格尚未执行。",
+    "实际资源/显存/完整批量、8步M0、冻结state不变、梯度归属、fresh50和严格评价均未执行。"
+  ],
+  "noNN": {
+    "torch_imports": 0,
+    "candidate_imports": 0,
+    "nn_constructions": 0,
+    "neural_forwards": 0,
+    "backwards": 0,
+    "optimizer_updates": 0,
+    "training_runs": 0,
+    "evaluation_runs": 0,
+    "ssh_calls": 0,
+    "gpu_queries": 0,
+    "installations": 0,
+    "git_commands": 0,
+    "source_edits": 0,
+    "delegations": 0
+  },
+  "limitations": [
+    "源码静态结论不等于数学/运行时/M0通过。",
+    "公开权重SHA和shape依据既有grounding元数据；本审查没有重新打开公开权重。",
+    "输入六项已实核，未重新核对原项目全部428源码清单。",
+    "没有新检索指标、因果效用、稳定性、SOTA或论文READY结论。"
+  ],
+  "tool_failures_preserved": [
+    {
+      "id": "T01",
+      "kind": "actual_tool_exit",
+      "exit_code": 1,
+      "detail": "组合只读命令末尾Get-Command python,py -ErrorAction SilentlyContinue只返回E:\\Scripts\\python.exe，未返回py；整个命令exit1。没有执行该PATH Python、没有NN。之后直接使用已存在的绝对CPython3.11.14，-I -S，仅stdlib AST/JSON/整数算术。"
+    },
+    {
+      "id": "T02",
+      "kind": "actual_web_error",
+      "url": "https://pytorch.org/docs/2.1/amp.html",
+      "detail": "web open返回Internal Error；随后docs.pytorch.org/docs/2.1/amp.html成功。该2.1查询来自旧AGENTS环境描述，不用于声称当前版本。"
+    },
+    {
+      "id": "T03",
+      "kind": "actual_web_error",
+      "url": "https://docs.pytorch.org/docs/2.5/notes/autograd.html",
+      "detail": "版本化文档URL返回Internal Error/not accessible；读取PyTorch v2.5.1 docs/source/notes/autograd.rst成功。"
+    },
+    {
+      "id": "T04",
+      "kind": "actual_web_error",
+      "url": "https://docs.pytorch.org/docs/2.5/amp.html",
+      "detail": "版本化文档URL返回Internal Error/not accessible；读取PyTorch v2.5.1 torch/amp/autocast_mode.py成功。"
+    }
+  ],
+  "primary_sources": [
+    {
+      "url": "https://raw.githubusercontent.com/pytorch/pytorch/v2.5.1/torch/random.py",
+      "use": "CPU RNG fork/restoration and all-device manual_seed distinction"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/pytorch/pytorch/v2.5.1/torch/nn/modules/linear.py",
+      "use": "default Linear parameter initialization"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/pytorch/pytorch/v2.5.1/docs/source/notes/autograd.rst",
+      "use": "frozen parameters and eval versus input autograd"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/pytorch/pytorch/v2.5.1/torch/amp/autocast_mode.py",
+      "use": "autocast-disabled subregion and FP32 input casting"
+    }
+  ]
+}
