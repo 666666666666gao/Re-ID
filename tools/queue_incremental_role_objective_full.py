@@ -14,6 +14,7 @@ from tools import queue_incremental_role_objective_m0 as m0
 base = m0.base
 SCOPE = ROOT / 'refine-logs/incremental_role_objective_v1/FULL_SOURCE_SCOPE.json'
 STORAGE_BYTES = 6 * 384 * 1024**2 + 600 * 1024**2 + 2 * 1024**3
+REPORT_ENTRY = ROOT / 'tools/report_incremental_role_objective.py'
 
 
 def source_map():
@@ -105,7 +106,7 @@ def coordinate(args):
     state.update(status='COMPLETE', completed_at=base.queue.stamp(), report_invocations=1)
     base.queue.write(args.campaign / 'campaign.json', state)
     with (args.campaign / 'report.log').open('x') as log:
-        result = subprocess.run([sys.executable, '-B', str(ROOT / 'tools/report_incremental_role_objective.py'),
+        result = subprocess.run([sys.executable, '-B', str(REPORT_ENTRY),
             '--campaign', str(args.campaign), '--output-dir', str(args.report_dir)], cwd=ROOT,
             env=dict(os.environ, CUDA_VISIBLE_DEVICES=''), stdout=log, stderr=subprocess.STDOUT)
     state.update(report_exit_code=result.returncode, report_completed_at=base.queue.stamp())

@@ -17973,3 +17973,18 @@ CPU收集有两次独立调用：原59711因将201的281张量硬编码到车辆
 新控制固定原八targets（g/c/六QK参数）、固定scale1，不挂hook/添加targets；只在同一新公开初始201 AMPforward/loss图上比较VJP autocast=True/False。0优化、梯度有限/global无梯度/p.grad无累积、BN等buffer恢复与整体state一致。结果标准不规定哪个方式应该活动；没有原门修改或formal自动启动。
 
 源码/计划已独立SOURCE_ONLY PASS（请求gpt-6-astra max，同家族provisional，后端未鉴证）。新增四份文件与原402形成406来源，沿用已保留current48输入，无已清理PTH消费者。当前真实单图尚未执行，NN NOT_RUN，预估1分钟内；唯一observer首读3分钟后再240秒。只有实际此图呈现上下文效应，才据此事前登记观测位置的修订；不能用当前分数调整gain/margin/LR/seed/阈值或改判原FAIL。仅26物理GPU0/1/max1，不操作25/GPU2/3/温度功率。Goal ACTIVE_UNMET。
+
+
+## 41.885 2026-10-07：同图autocast观测对照完成，定位到检查上下文效应
+
+真实运行supervisor2401510于08:56:34启动、08:57:06 exit0；唯一23291 observer于08:59:36确认终态，13415 collector于09:00:40核验406源码和current48输入。一个新的匹配公开初始化RGBNT201 repair_keep AMP前向与损失图，固定原八targets（g/c/六QK）、scale1，无hook，无优化器更新。重新进入autocast执行VJP时六QK范数全为0且unused=False；在autocast外执行时六QK全部有限非零且unused=False，范数约1.43e-7—4.79e-6。两者c均非零、g无梯度，模型state/buffer恢复完全一致，参数.grad没有累积。
+
+这证明该固定图的独立活动观测存在上下文效应：零梯度读数不能直接解释成分支永久断开。它不是旧八步增强像素/cache生命周期的完全重演，也不是所有旧失败或历史mAP的唯一根因，更不是Mamba原子累加已修复。旧六端0/6、48次真实更新与所有原FAIL保留；正式增量目标成绩仍为0端。
+
+## 41.886 2026-10-07：仅修正M0观测位置，重新登记原两目标比较
+
+新增checked入口只将M0独立autograd.grad放在autocast(enabled=False)内。未缩放原增量损失、原八targets、有限非零累计门、global无梯度、八步全参数活动、BN8、严格重载和实际batch匹配要求不变；新记录上下文和unused。prepare/train/evaluate仍用原模型与原公式，生产AMP/GradScaler/backward位置不变，无新增模型参数、头、原生CNN或1536维部署接口变化。旧0/6不改判；新的六个八步M0资格单独记录，尚未执行。
+
+原md_batch_ratio和repair_keep继续作为训练职责对照，而非原创公式或完整MDReID复现。只有新六端全部真实接受、存储达到原5,192,548,352字节门，才启动新六端各50轮，重新公开初始化且不继承M0权重；复用已封存rawsemantic和独立global六控制，报告15组全query配对、同一mAP-best全部CMC、完整轨迹与成本。源码审查发现最终报告新进程会丢失checked source_map；已在从未执行且不属于旧冻结范围的prepared full入口增加明确报告路由，并由checked报告调用原统计main，重新审查通过后冻结本范围。旧prepared full审查被取代，所有已执行393/398/402/406源码不变。
+
+本节是SOURCE_ONLY复核与计划登记，不是新M0或正式训练通过。仅26物理GPU0/1/max1分段模型；无25/GPU2/3/温度功率操作。NN活动期间禁止源码/Git/服务器同步，按唯一observer与预计里程碑观察。当前正式目标仍未实现，Goal ACTIVE_UNMET。
