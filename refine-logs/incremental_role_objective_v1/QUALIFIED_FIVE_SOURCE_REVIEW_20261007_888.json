@@ -1,0 +1,298 @@
+{
+  "schema": "trifusion-qualified-five-source-review-v1",
+  "reviewed_at": "2026-10-07T09:38:22.802829+08:00",
+  "verdict": "PASS",
+  "blocking_issues": [],
+  "blocking_count": 0,
+  "non_blocking_issues": [],
+  "reviewer": "/root/review_qualified_five888",
+  "review_independence": "same-family",
+  "acceptance_status": "provisional",
+  "actual_model_backend": "UNATTESTED",
+  "actual_reasoning_effort": "UNATTESTED",
+  "review_type": "Independent local source and AST review after original M0-controller failure",
+  "execution_boundary": {
+    "ssh": 0,
+    "project_imports": 0,
+    "nn_execution": 0,
+    "queue_execution": 0,
+    "training": 0,
+    "report_execution": 0,
+    "review_output_files_only": true
+  },
+  "primary_evidence": {
+    "path": "C:\\Users\\gb\\.codex_tmp\\independent_evidence_draft\\checked_m0_terminal_failure887\\REMOTE.json",
+    "sha256": "08addd190a6cd87f2955dab2eb9db815fe0945d784605b75d1f938211fcf4e16",
+    "embedded_text_files": 51,
+    "embedded_sha_all_equal": true,
+    "original_controller_exit": {
+      "exit_code": 1,
+      "completed_at": "2026-10-07T09:24:19.637023+08:00"
+    },
+    "original_campaign_status": "RUNNING (stale; EXIT1 is authoritative)",
+    "production_m0_passes": 6,
+    "auxiliary_acceptances": 5,
+    "missing_endpoint": {
+      "dataset": "RGBNT100",
+      "objective": "repair_keep",
+      "production_updates": 8,
+      "query_projection_2_gradient_sum": 0.0,
+      "key_projection_2_gradient_sum": 0.0,
+      "all_query_key_unused_flags_false": true
+    }
+  },
+  "contract": {
+    "jobs": [
+      {
+        "dataset": "RGBNT201",
+        "objective": "md_batch_ratio"
+      },
+      {
+        "dataset": "RGBNT201",
+        "objective": "repair_keep"
+      },
+      {
+        "dataset": "MSVR310",
+        "objective": "md_batch_ratio"
+      },
+      {
+        "dataset": "MSVR310",
+        "objective": "repair_keep"
+      },
+      {
+        "dataset": "RGBNT100",
+        "objective": "md_batch_ratio"
+      }
+    ],
+    "expected_formal_epochs": 250,
+    "expected_formal_updates": 9839,
+    "comparison_pairs": [
+      {
+        "dataset": "RGBNT201",
+        "objective": "md_batch_ratio",
+        "control": "raw_semantic"
+      },
+      {
+        "dataset": "RGBNT201",
+        "objective": "md_batch_ratio",
+        "control": "raw_global_only"
+      },
+      {
+        "dataset": "RGBNT201",
+        "objective": "repair_keep",
+        "control": "raw_semantic"
+      },
+      {
+        "dataset": "RGBNT201",
+        "objective": "repair_keep",
+        "control": "raw_global_only"
+      },
+      {
+        "dataset": "RGBNT201",
+        "objective": "repair_keep",
+        "control": "md_batch_ratio"
+      },
+      {
+        "dataset": "MSVR310",
+        "objective": "md_batch_ratio",
+        "control": "raw_semantic"
+      },
+      {
+        "dataset": "MSVR310",
+        "objective": "md_batch_ratio",
+        "control": "raw_global_only"
+      },
+      {
+        "dataset": "MSVR310",
+        "objective": "repair_keep",
+        "control": "raw_semantic"
+      },
+      {
+        "dataset": "MSVR310",
+        "objective": "repair_keep",
+        "control": "raw_global_only"
+      },
+      {
+        "dataset": "MSVR310",
+        "objective": "repair_keep",
+        "control": "md_batch_ratio"
+      },
+      {
+        "dataset": "RGBNT100",
+        "objective": "md_batch_ratio",
+        "control": "raw_semantic"
+      },
+      {
+        "dataset": "RGBNT100",
+        "objective": "md_batch_ratio",
+        "control": "raw_global_only"
+      }
+    ],
+    "storage_required_bytes": 5192548352,
+    "physical_gpus": [
+      0,
+      1
+    ],
+    "max_parallel_jobs": 1,
+    "new_formal_results_claimed": false
+  },
+  "static_verification": {
+    "ast_parse_files": 22,
+    "ast_parse_pass": true,
+    "accepted_row_ast_equal_original": true,
+    "report_comparison_loop_ast_equal_original": true,
+    "reviewed_protected_source_count": 20,
+    "reviewed_protected_sha_all_equal_frozen415": true,
+    "original_manifest_source_map_equal_frozen415": true,
+    "control_seal_equal_original_manifest": true
+  },
+  "reviewed_source_sha256": {
+    "tools/queue_incremental_qualified_five.py": "ef14c868e0b15ae0e203ab3fd53bf03be66bb6fec56446edb7d03a0000ccea26",
+    "tools/report_incremental_qualified_five.py": "1c2c3259f3bf2a1dbc4650d2858b2611799213a32dd09bf805445f4eb08e1969",
+    "tools/queue_incremental_role_objective_full.py": "14f8c7a82ea367e77bdb392cdd0bd5b43d9cdc83d1cf1e59a7c1910091f4e33a",
+    "tools/report_incremental_role_objective.py": "d58f6841f7fc440844e70a40928c922db8c92e0e6e55502994c3bed7ad690577",
+    "tools/queue_incremental_checked_m0.py": "aa1b23477a53546d3ba1ab118ae1e2652a97865ccc6b6eb761d0415a3f247ac4",
+    "tools/run_incremental_role_objective_checked.py": "70121fe68b6a89830ca98835e84ace604b04986e125881eb571744dc7549c17d",
+    "tools/queue_incremental_role_objective_m0.py": "7b12f7586e3b5754916cff7f2c8581019565c0fa537454f21d989f2aeb24a454",
+    "tools/run_incremental_role_objective.py": "76ad1ec53ec4d87df11c12fb89fd32aeb64174505136ea59d61a184d7e3b7e0a",
+    "tools/queue_native_research.py": "b138144780a31dc8a5a4922cc4e15dbc0537d0f75ce47d823434d3d3a3c5bc65",
+    "tools/queue_foundation_recipe.py": "3afe051358aa25d99cb3900b4c6fdb13d5d79d9dcee76d01018fccd27e27d302",
+    "tools/run_global_task_role.py": "151a3350a9da7d86ce6b4b7d5160537b182792ab08727ccb5e4ab0c64bb56d5f",
+    "tools/run_role_input_detach.py": "a177fd5aa4d5ba25422a49cb619062001722d6c7640891cb3da9645a8eb32fe5",
+    "tools/run_native_research.py": "b48725622371fc6d9671c464ce97252e2e06eba465e213ce221d84c798e52cc2",
+    "tools/run_native_partitioned.py": "2c3abac37b122760895b97ccf01d4fefe2cfb8223b35b6e2e335a1a4144f72fa",
+    "tools/run_independent_native_evidence.py": "2429af8d2f803d70b9d15113a430609ead28621eb4341a746c3025cc5685fe23",
+    "tools/run_foundation_recipe.py": "c18042509dc33ff66eee1a6b04a723ad55685bd5d9daf218c3779703ffe20758",
+    "tools/run_training_feature_scale.py": "473853f58e4ed70bf123509afe2861fa8a9988631c04f0ce04f3260c55fd9081",
+    "tools/analyze_correspondence_distances.py": "833ebeb47cb5840422710fc00df1a974338cb04078249720d867f18b945f997a",
+    "modeling/trifusion/incremental_role_objectives.py": "4859d1f19d9f9a9c944caefee5c7194c754444053b6e443af9d39e40a807a4cf",
+    "tools/run_clean_clip_joint.py": "178e9793f2cf8261eb44a278e053d5caabd4f2f37dba48a65952b2547338a746",
+    "tools/train_msvr310_signal_oof.py": "c25579d931df34481fef321558f0b9a1f9179d72a25d6047dbbfd3682d4ae60f",
+    "tools/train_rgbnt100_signal_oof.py": "4462b73139e034d450d955c5b4a994aaa967548e9cc503d97bb753a14ea03b22"
+  },
+  "plan": {
+    "path": "refine-logs/incremental_role_objective_v1/QUALIFIED_FIVE_PLAN_20261007_888.md",
+    "sha256": "ff0c66dd958fecfcc41e2a5fcdeb9d274edbd71f0a47746cd5136cd8e67b2d8f"
+  },
+  "checks": [
+    {
+      "id": "qualified_five_gate",
+      "status": "PASS",
+      "locations": [
+        "tools/queue_incremental_qualified_five.py:17",
+        "tools/queue_incremental_qualified_five.py:28"
+      ],
+      "finding": "Exactly the five accepted dataset/objective pairs are selected; original six-controller EXIT1 is required; the sixth pair must lack acceptance and its third query/key eight-step sums must be zero. The original campaign is read, not rewritten."
+    },
+    {
+      "id": "original_evidence",
+      "status": "PASS",
+      "locations": [
+        "C:\\Users\\gb\\.codex_tmp\\independent_evidence_draft\\checked_m0_terminal_failure887\\REMOTE.json"
+      ],
+      "finding": "51 embedded text files match their recorded SHA. Five original acceptance records match campaign entries, initializers, receipts, gradient sums and all embedded accepted artifact digests. Six production M0s each completed eight updates, complete trainable support, BN8 and reload difference 0. The failed RGBNT100 repair_keep has third Q/K sum 0 and all auxiliary unused flags false."
+    },
+    {
+      "id": "checked_entry_binding",
+      "status": "PASS",
+      "locations": [
+        "tools/queue_incremental_qualified_five.py:89",
+        "tools/queue_incremental_checked_m0.py:22",
+        "tools/run_incremental_role_objective_checked.py:15",
+        "tools/run_incremental_role_objective.py:84"
+      ],
+      "finding": "checked.configure switches full train/evaluate commands to the same checked entry used by accepted witnesses. Its entry SHA and auxiliary policy binding remain exact. Schema propagation through native/partitioned/independent/foundation configure is consistent."
+    },
+    {
+      "id": "fresh_initialization_and_loss",
+      "status": "PASS",
+      "locations": [
+        "tools/run_foundation_recipe.py:103",
+        "tools/run_clean_clip_joint.py:37",
+        "tools/run_incremental_role_objective_checked.py:22",
+        "tools/run_incremental_role_objective.py:62"
+      ],
+      "finding": "Training constructs the public CLIP/fresh-camera/fresh-head model and compares the complete binding to the M0 initializer witness. It does not load M0 weights. For any non-M0 mode the checked loss returns the original incremental loss function unchanged; objective formulas, margin, weights, model, optimizer recipe, AMP scale, seed42 and 50 epochs remain frozen."
+    },
+    {
+      "id": "source_scope_process_boundary",
+      "status": "PASS",
+      "locations": [
+        "tools/queue_incremental_qualified_five.py:22",
+        "tools/queue_incremental_qualified_five.py:103",
+        "tools/report_incremental_qualified_five.py:12",
+        "tools/report_incremental_qualified_five.py:21",
+        "tools/queue_foundation_recipe.py:110",
+        "tools/queue_native_research.py:62"
+      ],
+      "finding": "Parent run_logged and the fresh report process both use the five-end source_map and require_sources. The manifest binds exactly five initialization JSONs. The new scope is intentionally created after this review; its absence is not a source defect."
+    },
+    {
+      "id": "single_best_and_first_strict_evaluation",
+      "status": "PASS",
+      "locations": [
+        "tools/queue_incremental_qualified_five.py:110",
+        "tools/queue_incremental_qualified_five.py:56",
+        "tools/run_foundation_recipe.py:248",
+        "tools/run_foundation_recipe.py:287"
+      ],
+      "finding": "Each job runs train then one fresh strict evaluate. One mAP-best is retained with the existing later-epoch tie rule; all metrics come from that checkpoint. Full50 history, seed, protocol, initializer, condition, checkpoint/distance receipts, upstream equality and unchanged tolerance are checked. accepted_row is AST-identical to the frozen original."
+    },
+    {
+      "id": "complete_batch_order_and_costs",
+      "status": "PASS",
+      "locations": [
+        "tools/queue_incremental_qualified_five.py:78",
+        "tools/report_incremental_qualified_five.py:35",
+        "tools/run_training_feature_scale.py:49"
+      ],
+      "finding": "Acceptance requires byte equality of the full training batch-order stream with the fixed raw semantic control. The report checks step/batch counts and ordered epoch/batch coordinates and retains all histories/E50 and measured training-plus-epoch-evaluation time. Expected total is 250 epochs and 9839 updates, not an observed new result."
+    },
+    {
+      "id": "twelve_pairs_and_missing_endpoint",
+      "status": "PASS",
+      "locations": [
+        "tools/report_incremental_qualified_five.py:28",
+        "tools/report_incremental_qualified_five.py:46",
+        "tools/report_incremental_qualified_five.py:70",
+        "tools/report_incremental_qualified_five.py:78"
+      ],
+      "finding": "Five candidates each compare with raw semantic/global; the two qualified repair_keep candidates also compare with same-dataset MD, exactly 12 pairs. The full per-row comparison loop is AST-identical to the original report. SUMMARY.json and REPORT.md explicitly identify RGBNT100 repair_keep as missing; no zero or substitute score/checkpoint is inserted."
+    },
+    {
+      "id": "ground_truth_statistics",
+      "status": "PASS",
+      "locations": [
+        "tools/analyze_correspondence_distances.py:28",
+        "tools/train_msvr310_signal_oof.py:223",
+        "tools/train_rgbnt100_signal_oof.py:253"
+      ],
+      "finding": "Distance-array receipts and metric parity are checked before comparisons, query/gallery identity and environment arrays must align, and ranking/AP use dataset ground-truth identities with scene filtering for MSVR310 and camera filtering for the other datasets. Existing repair/new-error, identity AP and fixed-model identity bootstrap formulas and the 0.5 mAP/nondecreasing R1 gate remain unchanged."
+    },
+    {
+      "id": "resources_and_original_failure",
+      "status": "PASS",
+      "locations": [
+        "tools/queue_incremental_qualified_five.py:18",
+        "tools/queue_incremental_qualified_five.py:85",
+        "tools/queue_incremental_qualified_five.py:98",
+        "tools/queue_native_research.py:62"
+      ],
+      "finding": "Initial storage guard remains 5192548352 bytes, stage reserve remains 2 GiB, physical GPU0/1 and maximum one NN job are preserved. The queue introduces no retry, failed-end rescue or cleanup. The original EXIT1 and failed endpoint remain distinct from future five-end completion."
+    }
+  ],
+  "followup_review": {
+    "status": "PASS",
+    "change": "REPORT.md now explicitly states the missing RGBNT100 repair_keep endpoint and third-role Q/K zero-sum reason.",
+    "location": "tools/report_incremental_qualified_five.py:78",
+    "original_observation_severity": "non-blocking presentation omission",
+    "remaining_issue": false,
+    "statistics_loop_changed": false
+  },
+  "limits": [
+    "Static source verdict only; no remote execution, current remote-storage attestation or new full-training result is established by this review.",
+    "QUALIFIED_FIVE_SOURCE_SCOPE.json intentionally does not yet exist and must be frozen after review. Existing source_map/require_sources enforce the resulting scope at runtime.",
+    "The broad 415-file local copy has 27 known historical CRLF byte differences and 107 remote-only comparator/protocol files absent locally. They were not changed or normalized. The 20 directly reviewed protected source files match the frozen415 hashes; remote-wide checks reported by the parent were not independently rerun here.",
+    "M0 activity acceptance does not establish formal retrieval benefit, three-dataset repair_keep completion, statistical significance, independent training seeds, novelty, complete MDReID reproduction or SOTA."
+  ]
+}
