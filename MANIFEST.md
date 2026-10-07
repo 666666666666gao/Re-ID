@@ -2245,3 +2245,5 @@
 - 2026-10-07 §41.878：incremental_role_objective_v1，3份新源码+计划/同家族源码审查/CPU与环境见证；真实M0及formal NOT_RUN。
 
 - 2026-10-07 §41.879：原新增目标首M0隔离门FAIL保留；固定M0一批scale1/256 VJP代码/计划/源码审查与397来源/9输入，NN NOT_RUN；formal source PASS仍不可启动。
+
+- 2026-10-07 §41.880：固定M0尺度NN诊断已完成0更新；原FAIL不改。五项原PENDING M0续接源码/计划审查PASS与398来源，未运行、不自动formal。

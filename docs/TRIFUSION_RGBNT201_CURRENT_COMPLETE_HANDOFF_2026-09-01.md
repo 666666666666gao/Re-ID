@@ -17914,3 +17914,14 @@ fresh gpt-6-astra/max SOURCE_ONLY PASS及队列补充PASS为同家族provisional
 已准备并fresh同家族 SOURCE_ONLY PASS的一次固定诊断：严格加载保留M0 probe/原initializer，一份来源B64（只与旧首批paths/labels一致，不声称重建旧增强像素），同一train-mode AMP图分别loss×1与×256 VJP，输出除scale后的g/c/六QK norm/max以及unused。一次forward、两VJP、0优化，恢复BN等buffer并检查完整state精确一致；没有官方评价或新mAP。固定八步后的一个状态不代表旧八步资格通过。该诊断目前NOT_RUN。
 
 正式六端fresh50与全query15pair报告源码审查PASS，不等于部署资格。六M0尚不完整，禁止直接full或gain/margin/LR/seed救分；已准备的12旧binary容量资格脚本未执行。当前M0 probe358375672B为真实诊断依赖保留。07:43:47 old393来源及current45控制实存SHA不变；固定诊断397来源/9输入登记。原失败文本已按实际byteSHA归档 logs/incremental_m0_failure879。文档、代码和源码审查继续同步，本次无25/GPU2/3/温度功率操作，Goal ACTIVE_UNMET。
+
+
+## 41.880 2026-10-07：固定M0尺度比较完成；原FAIL不改，仅原五项未运行资格续接
+
+原固定诊断supervisor2252159在07:48:00启动、07:48:34 exit0；一次B64前向/同图两VJP/0优化，BN等buffer恢复后完整state精确一致。sole76760 observer首次07:51:03确认终态；24020 collector在07:53:42实存核对397来源、9固定input与current45不变。原first-eight FAIL不重写。
+
+同一post-eight已训练固定状态/当前一份来源batch，scale1和256均sixQK非零且unusedFalse；c梯度范数0.009005612694/0.009005615488。Q/K范数大致2.8e-6至5.9e-5，仍有数值差异，不宣称逐位梯度等价。两种方式均活动，不支持永久断路推断；既没有重建旧八步增强像素/梯度，也未定位它们的零值原因，不能据此认定scale是万能修复或原门该通过。没有正式检索或新mAP。
+
+为收齐原研究资格矩阵，已准备并fresh SOURCE_ONLY PASS的新有限续接，只取原campaign五个PENDING：201 repair_keep、MSVR两个目标、100两个目标。原md201不重跑，loss/尺度/八step/nonzero门/初始化/作者配方不改。每端真实8更新与production strict/BN8/完整旧八batch/probeSHA核验后，由CPU门输出0接受、2活动资格失败（不等于mAP失败）；其他错误停机。活动失败结束该端、继续下一尚未运行条件，不retry。最终表必须含原失败，formal_eligible始终false，不自动运行六端full。
+
+新五端工程probe没有已登记后续模型消费者，分类与实际严格收据/所有非probeSHA保存后按既有用户授权退役。原首端probe作为已闭合诊断的历史输入仍保留，不进入本续接清理。398来源和current45登记，新五端真实初始化/M0尚NOT_RUN；预计6—10分钟、首观察6分钟以后240秒。只有26物理0/1/max1分段模型，无source sync during NN、25/GPU2/3/温度功率操作。所有新主模块/多种子/三集SOTA均未完成，Goal ACTIVE_UNMET。
