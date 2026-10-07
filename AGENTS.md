@@ -1,3 +1,7 @@
+## 2026-10-08 user-requested pause - latest priority
+
+The user requested stopping after current training. No own project tool processes remained at the actual check. Keep the research Goal paused/unmet; do not launch new training, prefix checks, M0, queues or method work unless the user explicitly resumes. Only cleanup and GitHub/handoff synchronization were authorized afterwards. Read refine-logs/USER_PAUSE_20261008.md before older execution instructions. Current production source429 is unchanged; four unfinished tool drafts are archived as text, not installed.
+
 ## 2026-10-03 user-selected execution V6 — current priority
 
 User replied “1先修复吧” to the explicit per-endpoint research-training option. Read refine-logs/CURRENT_GOAL.md and refine-logs/native_research_v6/EXPERIMENT_PLAN.md. Goal active/unmet. Run each endpoint's actual eight-step finite/update/BN/full-state-reload M0, then its own fresh full50; no all-nine global M0 barrier and no extra backward-repeatability repair prerequisite. Reuse existing first6/last6 two-GPU placement without model/loss/batch/precision changes. Only2026 physicalGPU0/1, one pair;2025 text sync only. Historical parity FAIL/STOP and withdrawn diagnostics remain sealed, never reclassified as PASS. Existing older execution instructions below are historical. Formal endpoints retain one mAP-best; full research/SOTA goal remains unmet.

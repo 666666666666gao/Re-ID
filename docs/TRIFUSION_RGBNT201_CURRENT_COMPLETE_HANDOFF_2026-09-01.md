@@ -1,3 +1,5 @@
+> **当前状态（2026-10-08，§41.899）：已按用户要求暂停，科研目标未完成。现有训练已结束，不启动新实验。最新收尾是文档同步与清理；新增文本生产入口仍未验收、未部署。以下旧“继续启动”计划只在用户明确恢复后重新核对。**
+
 # TriFusion RGB–NIR–TIR ReID 完整交接（2026-09-01）
 
 ## 0. 一页结论
@@ -18167,3 +18169,16 @@ H2a原三端50轮/6,484更新及完整报告已在§897闭合，0/3主要推进�
 下一步是补齐生产接入并复核，先做固定普通文本prefix输出/VJP与真实逐端8步M0，合格端再fresh50。主判定pretrained−random≥+0.5mAP且R1不降，同时报告对旧semantic/独立global及同模型f−g净增量。任何单集或包对比成功都不替代三集稳定收益、强近邻、完整流程种子及SOTA。只26物理GPU0/1，不查25/GPU2/3/温度功率，不安装。Goal ACTIVE_UNMET。
 
 文献范围：[PromptSG主文](https://openaccess.thecvf.com/content/CVPR2024/html/Yang_A_Pedestrian_is_Worth_One_Prompt_Towards_Language_Guidance_Person_CVPR_2024_paper.html)、[DEEP原文](https://aihuazheng.github.io/publications/pdf/2025/2025-DEEP_Decoupled_Semantic_Prompt_Learning_Guiding_and_Embedding_for_Multi-Spectral_Object_Re-Identification.pdf)、[CLIP-ReID作者实现](https://github.com/Syliz517/CLIP-ReID)。PromptSG直接PDF读取403/其当前公开repo为空，DEEP当前公开tree10files/0Python；不假称完整可执行复现。文本证据：logs/text_prior_preparation_20261008_898；计划及组件复核：refine-logs/text_semantic_prior_v1。
+
+
+## 41.899 2026-10-08：用户要求训练结束后停止；GitHub/交接同步与无用产物清理
+
+用户明确要求“做完现在的训练就停止吧”，随后要求上传GitHub、更新交接文档并清理本项目无用产物。科研Goal已设为paused，原三数据集超过匹配baseline/SOTA的完整目标仍未达到，不标complete。26只读进程快照2026-10-08T06:44:59.654686+08:00及本次清理前后检查均无本项目工具进程；没有需要继续等待的本项目训练，也不新开训练、prefix/M0、评价或研究队列。
+
+最后完成的H2a三端仍是§897：RGBNT201 bestE8为74.386419/79.186600/88.397127/91.866028；MSVR310 bestE38为50.546778/68.020302；RGBNT100 bestE26为83.527250/95.801747。三端均完整50轮，主要推进配对0/3；本收尾没有新正式分数。§898文本包计划只有最小组件源码通过；四个新增生产工具停在私人草稿，原生产评审发生传输故障，后按用户停止中断，未形成可接受final。独立prefix入口的包路径问题尚未修复。四份草稿以逐字节.py.txt归档供交接，不安装为可运行生产工具；0新构造/NN/prefix/M0/正式端。三个未执行发布帮助脚本移入可恢复的私人withdrawn_helpers，原请求/完整trace不公开，不改判旧失败或REVISE。
+
+本次实际清理54份已闭合last_epoch_distances.pt（427170718B）和2个已消费传输bundle（1296437B），共56文件/428467155B。每个缓存所属训练都有完整50轮、同一best与首次严格评价，且best_epoch/official距离保留并验SHA；源码中last_epoch_distances.pt仅由训练器生成，没有当前密封consumer。当前45项对照与429项源码删除前后字节SHA一致，全部162条权重/初始化路径stat未变，0checkpoint/初始化删除。末轮原始距离矩阵直接重放退役，50轮曲线、原训练/指标文本及SHA保留。free快照8058851328→8486129664B；共享文件系统变化不全归因于本次删除。此前§898的32份旧缓存3,896,408,208B清理不重复执行。
+
+工程收件边界：远端清理退出0，本地末尾因CRLF重新格式化与远端LF原文的byte比较失败而退出1。独立收件核对确认JSON内容相同、只差换行，56条原删除日志与428,467,155B合计吻合；原失败及两个SHA保留，未重跑删除。公共RESULT使用原远端字节，INTAKE_NORMALIZATION_RECEIPT单独解释，不覆盖原失败。
+
+停止/清理依据：logs/user_stop_closeout_20261008_899，以及refine-logs/USER_PAUSE_20261008.md/.json。主文档首页、CURRENT_GOAL与AGENTS已明确暂停优先，防止旧待办误启动。只做本次收尾，不连接25、不查询GPU温度功率、不改模型/损失/seed；25原镜像I/O pending边界仍保留。用户明确恢复后再核对当前状态与未完成评审，不直接运行已撤回帮助脚本。GitHub、26与桌面复制一致性须以本次发布回执为准。

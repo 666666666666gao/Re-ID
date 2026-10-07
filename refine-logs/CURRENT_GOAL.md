@@ -1,3 +1,7 @@
+# Current priority: PAUSED BY USER, 2026-10-08
+
+Read USER_PAUSE_20261008.md first. Research goal remains unmet. No new training, prefix, M0, queue or method work until explicit user resume. This closeout only updates documents and removes proven unused scratch. Old ACTIVE/next-launch instructions below are historical.
+
 # TriFusion 当前执行目标
 
 更新：2026-10-06T12:04:15.690161+08:00，§41.867。完整目标ACTIVE/UNMET。

@@ -1,0 +1,85 @@
+"""Complete legal-query package comparison plus same-weight global diagnosis."""
+import argparse
+from datetime import datetime
+import json
+from pathlib import Path
+import sys
+
+import torch
+
+ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(ROOT))
+from tools import queue_text_semantic_prior as panel
+from tools.report_prepool_dense_correspondence import paired, descriptor
+
+
+def main():
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument('--campaign', type=Path, required=True)
+    parser.add_argument('--output-dir', type=Path, required=True)
+    args = parser.parse_args()
+    panel.base.source_map = panel.source_map
+    manifest = panel.base.require_sources(args.campaign)
+    controls = json.loads(panel.CONTROLS.read_text())
+    assert panel.base.sha(panel.CONTROLS) == manifest['control_seal_sha256']
+    assert all(panel.base.sha(Path(name)) == digest for name, digest in controls['artifact_sha256'].items())
+    state = json.loads((args.campaign / 'campaign.json').read_text())
+    matrix = json.loads((args.campaign / 'accepted_matrix.json').read_text())
+    assert state['status'] in ('COMPLETE', 'COMPLETE_WITH_MISSING') and state['report_invocations'] == 1
+    assert len(state['jobs']) == matrix['expected'] == 6
+    assert len(matrix['rows']) == matrix['accepted'] and len(matrix['rows']) + len(matrix['missing']) == 6
+    assert {(job['dataset'], job['package']) for job in state['jobs']} == {(d, p) for d in panel.DATASETS for p in panel.PACKAGES}
+    assert not args.output_dir.exists()
+    torch.set_num_threads(1)
+    rows, pairs = [], []
+    for row in matrix['rows']:
+        dataset, package = row['dataset'], row['package']
+        assert panel.accepted_row(args.campaign, dataset, package) == row
+        run = Path(row['run_dir'])
+        training = json.loads((run / 'training.json').read_text())
+        steps = [json.loads(line) for line in (run / 'training_steps.jsonl').read_text().splitlines()]
+        batches = [json.loads(line) for line in (run / 'training_batch_order.jsonl').read_text().splitlines()]
+        assert len(steps) == len(batches) == sum(value['steps'] for value in training['history'])
+        assert [(r['epoch'], r['batch']) for r in steps] == [(r['epoch'], r['batch']) for r in batches]
+        rows.append(dict(row, formal_steps=len(steps), history=training['history'],
+            production_training_interval_seconds=(datetime.fromisoformat(training['completed_at']) - datetime.fromisoformat(training['started_at'])).total_seconds(),
+            partition_peak_memory=training['partition_peak_memory']))
+        raw = next(value for value in controls['rows'] if value['dataset'] == dataset and value['variant'] == 'semantic')
+        independent = next(value for value in controls['rows'] if value['dataset'] == dataset and value['variant'] == 'global_only')
+        candidate = descriptor(row, package)
+        own = descriptor(row, 'own_global', own=True)
+        for first, second in ((descriptor(raw, 'raw_semantic'), candidate),
+                              (descriptor(independent, 'independent_global'), candidate), (own, candidate)):
+            result = paired(dataset, first, second)
+            result['primary_pair'] = False
+            result['phase_progress'] = result['delta_metrics']['mAP'] >= 0.5 and result['delta_metrics']['Rank-1'] >= 0
+            pairs.append(result)
+    for dataset in panel.DATASETS:
+        matching = {row['package']: row for row in rows if row['dataset'] == dataset}
+        if set(matching) == set(panel.PACKAGES):
+            result = paired(dataset, descriptor(matching['random'], 'random'), descriptor(matching['pretrained'], 'pretrained'))
+            result['primary_pair'] = True
+            result['phase_progress'] = result['delta_metrics']['mAP'] >= 0.5 and result['delta_metrics']['Rank-1'] >= 0
+            pairs.append(result)
+    value = dict(schema=panel.SCHEMA, status='COMPLETE', created_at=datetime.now().astimezone().isoformat(),
+        accepted=len(rows), expected=6, formal_epochs=50 * len(rows), formal_steps=sum(row['formal_steps'] for row in rows),
+        rows=rows, pairs=pairs, missing=matrix['missing'],
+        primary_advance=sum(pair['primary_pair'] and pair['phase_progress'] for pair in pairs),
+        primary_pairs_available=sum(pair['primary_pair'] for pair in pairs),
+        boundary='Conditional pretrained versus one fixed random text-package contrast. Same original raw tasks/1536 deployment, new592000 trainable parameters, frozen38M text body/template. No independent image identity information, word/layer-specific attribution, novel prompt claim, full-pipeline seeds, unconsumed test or SOTA. Missing endpoints have no substituted score.')
+    args.output_dir.mkdir(parents=True)
+    panel.base.queue.write(args.output_dir / 'SUMMARY.json', value)
+    lines = ['# 冻结文本包必要性对照', '',
+             '| 数据集 | 文本包 | best轮 | mAP | R1 | own-global mAP | 末轮mAP | 正式更新 |',
+             '|---|---|---:|---:|---:|---:|---:|---:|']
+    lines += [f'| {r["dataset"]} | {r["package"]} | {r["best_epoch"]} | {r["metrics"]["mAP"]:.4f} | {r["metrics"]["Rank-1"]:.4f} | {r["own_global_metrics"]["mAP"]:.4f} | {r["history"][-1]["official_fused"]["mAP"]:.4f} | {r["formal_steps"]} |' for r in rows]
+    lines += ['', f'主要配对过线 {value["primary_advance"]}/3，可比较配对 {value["primary_pairs_available"]}/3；正式端完成 {len(rows)}/6。', '', value['boundary']]
+    for item in matrix['missing']:
+        lines += ['', f'缺失：{item["dataset"]}/{item["package"]}，停止阶段 {item["failed_phase"]}，无替代分数。']
+    (args.output_dir / 'REPORT.md').write_text('\n'.join(lines) + '\n')
+    print(json.dumps(dict(status='COMPLETE', accepted=len(rows), expected=6,
+        primary_advance=value['primary_advance'], pairs=len(pairs), formal_steps=value['formal_steps'])), flush=True)
+
+
+if __name__ == '__main__':
+    main()
