@@ -17958,3 +17958,18 @@ CPU收集有两次独立调用：原59711因将201的281张量硬编码到车辆
 新诊断没有scaled必须非零的结果门，不改变模型、训练loss/scale/gain/LR/margin/seed，也不将旧未缩放门改判。新公开初始状态/当前一批增强不等于重建旧八步像素梯度，结论只能局限于这张实际图，不能作为三集资格或检索成绩。若存在具体初始数值边界，后续检查合同仍需事前单独登记；无自动formal或重跑旧M0。
 
 08:30:23只读准备已物理核验旧398来源、current45与新增三份保留元数据，共48 input；新增源码/计划/两份review形成402来源。没有需要加载已清理probe的输入。当前真实初始化/一次forward尚未执行，NN NOT_RUN。预估1分钟内，唯一观察者首读3分钟后/后续240秒；异常不重启。仅26物理GPU0/1/max1，25/GPU2/3/温度功率不查询不操作。Goal ACTIVE_UNMET。
+
+
+## 41.883 2026-10-07：初始单图尺度诊断完成；清理闭合独立头权重后启动
+
+原20575启动在磁盘门失败，发生在journal/NN创建前；原packet/EXIT1保留。核验独立头三端50轮、首次严格评价、全部固定g/c/f消费者闭合、当前48/fixed9/402来源不受影响后，仅三份自训非推进best_map.pth于08:40:15退役，共1,075,024,013字节。当前对照、作者、公开初始化和赢家不动，best/official距离、完整曲线/评价/固定诊断保留；独立头历史权重直接重放现在需重训，不再声称旧187/241等二进制链全部完整。清理前共享盘余量1,748,393,984，清理后2,823,307,264字节；不归因于某个其他进程。
+
+经实际空间变化的独立续接6312首次神经启动08:40:52，supervisor2368492于08:41:25 exit0。新的匹配公开初始201 repair_keep图仅1forward/2VJP/0优化，未加载任何probe。唯一20639 observer于08:43:54确认终态，65419 collector于08:45:12核验402来源/current48与current45。BN等buffer恢复后整体state完全一致。两个尺度sixQK均nonzero/unusedFalse：scale1各参数范数约1.43e-7至4.79e-6，scale256除回后约2.16e-7至3.83e-6；correction梯度约0.0006025668/0.0006025278。correction为FP16，角色与Q/K出口为FP32。没有旧八步增强像素重放、正式训练或新mAP；原0/6不改。
+
+因此“只换256尺度即可解释旧零值”的说法没有得到支持。源码显示另一个具体差异：foundation训练的loss_values处于autocast块内，原独立autograd.grad就在loss_values里；生产scaler.backward以及两份已完成诊断的VJP位于块外。此前初始诊断还额外请求中间targets。上下文与targets差异需要受控检查，不能直接追认为历史唯一根因。
+
+## 41.884 2026-10-07：单图VJP autocast上下文控制源码登记；不自动改判或训练
+
+新控制固定原八targets（g/c/六QK参数）、固定scale1，不挂hook/添加targets；只在同一新公开初始201 AMPforward/loss图上比较VJP autocast=True/False。0优化、梯度有限/global无梯度/p.grad无累积、BN等buffer恢复与整体state一致。结果标准不规定哪个方式应该活动；没有原门修改或formal自动启动。
+
+源码/计划已独立SOURCE_ONLY PASS（请求gpt-6-astra max，同家族provisional，后端未鉴证）。新增四份文件与原402形成406来源，沿用已保留current48输入，无已清理PTH消费者。当前真实单图尚未执行，NN NOT_RUN，预估1分钟内；唯一observer首读3分钟后再240秒。只有实际此图呈现上下文效应，才据此事前登记观测位置的修订；不能用当前分数调整gain/margin/LR/seed/阈值或改判原FAIL。仅26物理GPU0/1/max1，不操作25/GPU2/3/温度功率。Goal ACTIVE_UNMET。
