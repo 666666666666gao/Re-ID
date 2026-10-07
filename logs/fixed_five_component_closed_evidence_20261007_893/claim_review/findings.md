@@ -1,0 +1,13 @@
+Research Findings — fixed five, 2026-10-07
+
+The previously proposed H1 fixed-best global/correction/fused diagnosis is now closed. It found modest 201 net gains, near-zero MSVR changes and 100 net harm. The independently retrained global-only reference is score-equivalent to own-g at the four 201/MSVR selected endpoints, but not on 100. Preserve this descriptive boundary; do not promote it to parameter equality or causal protection.
+
+D1 and D2 are scoped yes, D3 is descriptive yes, and D4 broad claims are no. The old objective branch remains below its practical advancement line in every registered pair: primary 0/5 and all 0/12. Five formal endpoints completed 250 epochs and 9,839 updates; the missing RGBNT100 repair_keep M0 failure is retained. The broad goal stays ACTIVE_UNMET.
+
+RGBNT100 MD's -0.623140570464 mAP-point deficit decomposes arithmetically into -0.164565494893 own-g versus independent-global and -0.458575075571 fused versus own-g. The latter comparison has 8 repairs/16 new errors. Do not add pair-transition counts, infer gradient leakage, assign causal blame, or optimize residual amplitude from this result. Weak c-only retrieval is not sufficient to prove absence of useful residual information.
+
+The only proposed successor is H2: regional correspondence may be lost before current whole-grid role aggregation. Any future training requires a separately preregistered single evidence-formation intervention versus the current matched control; it is not current-loss rescue. The exact operator and matching must be defined before launch. No gain/temperature/margin/LR/seed search, no unchanged CE/Triplet/reconstruction/SIM/selective control rerun, and no new architecture implementation are part of this review.
+
+No further NN or feature-cache experiment on the five selected models is executed or needed. Final binary consumers are closed for this review. Preserve reports, official/diagnostic distances and receipts; the review does not perform storage retirement.
+
+Evidence assurance: stdlib direct checks PASS for 19 primary payloads, 424 sealed sources, 45 prior-formal texts, 20 score tables, 15 pairs, 13,707 paired query rows and 642 identity summaries. All five original-distance differences of 0.0 remain original collector/report-backed; no tensors were reopened. Canonical evidence_check.py UNRESOLVED, runtime model/effort UNATTESTED, same-family/provisional, prior integrity WARN with zero blocking findings. Single seed 42 and consumed official checkpoints prevent untouched-test, training-seed or SOTA claims. Full paths/SHA and request/response trace are in CLAIMS_FROM_RESULTS.json and private .aris.
