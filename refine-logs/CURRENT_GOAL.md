@@ -128,3 +128,8 @@ all_patch相对global-only的mAP在201/100/MSVR分别为−0.9243/+2.0398/+2.431
 ## §41.895：当前唯一待启动合同
 
 固定H2a同模态几何辅助目标三端，方法6.35REVISE/有限低置信度pilot；0新增参数，原semantic/raw职责/作者配方/1536推理。SOURCE_ONLY与CPU主接入完成，尚无真实CUDA初始化/M0/full。每端M0→fresh50→首次strict，复用旧六控制/45依赖；失败缺失，不重试挑通过。见prepool_dense_correspondence_v1/EXPERIMENT_PLAN.md。只26物理0/1，旧424source不变，官方开发边界/强参照/多种子/SOTA仍未完成，主Goal ACTIVE_UNMET。
+
+
+## §41.896 实际资源变化
+
+H2a原启动磁盘失败，0NN，原失败保留。五份闭合旧794 OWN权重清理1,789,083,787B，当前48依赖及428源码不变；新896调用待执行，3758096384B门不降低。此刻0/3新正式端，无新mAP。只26物理0/1，模型/目标固定，Goal ACTIVE_UNMET。

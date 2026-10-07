@@ -27,3 +27,5 @@
 | EXPERIMENT_PLAN.md | experiment-bridge | 2026-10-07T19:41:52.620944+08:00 | source review closed, original failures preserved, production NN0 |
 | FINAL_PROPOSAL.md | experiment-bridge | 2026-10-07T19:41:52.620944+08:00 | source review closed, original failures preserved, production NN0 |
 | EXPERIMENT_TRACKER.md | experiment-bridge | 2026-10-07T19:41:52.620944+08:00 | source review closed, original failures preserved, production NN0 |
+
+| LATEST_EXECUTION.json / LAUNCH896_SOURCE_REVIEW.json | run-experiment | 2026-10-07T20:14:58.674570+08:00 | old disk failure retained, exact OWN cleanup closed, new launch pending |
