@@ -1,0 +1,124 @@
+{
+  "schema": "trifusion-region-reconstruction-independent-code-review858-v1",
+  "review_date": "2026-10-05",
+  "verdict": "PASS",
+  "review_independence": "same-family",
+  "acceptance_status": "provisional",
+  "reviewer_task": "/root/review_region_reconstruction858",
+  "requested_model": "gpt-6-astra",
+  "requested_reasoning_effort": "max",
+  "fork_turns": "none",
+  "routing_parameters_provenance": "Confirmed by parent agent for the actual spawn call",
+  "runtime_backend_independently_verified": false,
+  "cross_family_acceptance": false,
+  "workspace": "C:/Users/gb/.trifusion_github_publish_22c3bee",
+  "scope": "Read-only source review; only private review artifacts written. No model execution, training, GPU operation, remote access or project source modification by reviewer.",
+  "blocking_issues": [],
+  "non_blocking_issues": [],
+  "resolved_non_blocking_issues": [
+    {
+      "id": "NB1",
+      "status": "FIXED_AND_REVIEWED",
+      "original_location": "tools/report_region_reconstruction.py:16; tools/analyze_correspondence_distances.py:75",
+      "problem": "Inherited comparison boundary described different capacity and possibly different RNG consumption even for the equal-parameter patch-versus-mean comparison.",
+      "fix_location": "tools/report_region_reconstruction.py:17-20",
+      "fix": "Only control == mean overrides the diagnostic boundary to state same active parameters and initial state, differing query routing, and fixed-model identity bootstrap rather than training-seed uncertainty.",
+      "validation": "Reporter AST passed. Removing precisely the four added lines reproduces the pre-fix reporter recorded in the existing component EXECUTION.json; the other four new Python files remain unchanged. Generic compare, arithmetic, model and training code were not changed.",
+      "additional_execution_required_for_fix": false
+    }
+  ],
+  "verified_source_paths": [
+    {
+      "area": "method_and_equal_parameter_control",
+      "status": "PASS_SOURCE_REVIEW",
+      "locations": ["modeling/trifusion/region_evidence_reconstruction.py:14-48", "modeling/trifusion/role_global_tokens.py:35-61", "modeling/trifusion/slot_competition_fp32_roles.py:10-20"],
+      "result": "16 image-conditioned per-slot anchors, 128 patch queries versus 128 repeated mean queries, FP32 residual attention, single added zero output, same 105232 parameters/15 tensors; original independent 16-region CNN readout and downstream bridges preserved. No new image-native branch, text, FFN or N2/N3."
+    },
+    {
+      "area": "factory_and_configure_chain",
+      "status": "PASS_SOURCE_REVIEW",
+      "locations": ["tools/run_region_reconstruction.py:59-68", "tools/run_global_task_role.py:39-49", "tools/run_role_input_detach.py:34-41", "tools/run_native_research.py:22-25", "tools/run_native_partitioned.py:54-60", "tools/run_independent_native_evidence.py:36-65,177-185", "tools/run_clean_clip_joint.py:78-89"],
+      "result": "New classes reach the actual clean factory and inner constructor. Internal semantic/native map to patch/mean; mean inherits detached semantic evidence and does not instantiate the old native detail reader."
+    },
+    {
+      "area": "raw_gradient_responsibility_and_recipe",
+      "status": "PASS_SOURCE_REVIEW",
+      "locations": ["modeling/trifusion/role_input_detach.py:5-7", "modeling/trifusion/global_task_role_heads.py:8-32", "tools/run_global_task_role.py:25-31", "tools/run_independent_native_evidence.py:100-115", "modeling/trifusion/evidence_author_heads.py:63-72", "tools/run_foundation_recipe.py:110-159,189-255"],
+      "result": "Global author objectives retain shared/head gradients; fused author objectives update roles through detached shared inputs and current detached head parameters with cloned BN buffers. Original RAW losses, gain, author batches, sampler, augmentation, optimizer groups, scheduler, AMP, seed42, 50 epochs and latest tied mAP-best selection remain."
+    },
+    {
+      "area": "initial_state_rng_batch_and_heads",
+      "status": "PASS_SOURCE_REVIEW_NOT_EXECUTED",
+      "locations": ["modeling/trifusion/region_evidence_reconstruction.py:51-63", "tools/run_independent_native_evidence.py:42-52", "tools/check_region_reconstruction.py:56-109", "tools/queue_region_reconstruction.py:72-102"],
+      "result": "Added construction uses fork_rng and original-state copy. Real-pair checker rebuilds seeded patch/mean/raw-semantic, verifies old state, complete new-arm state, real full author batch images/labels/cameras/paths and zero-exit raw/L2/global/head predictions before dataset M0. No real pair result exists yet."
+    },
+    {
+      "area": "m0_activity_and_state_reload",
+      "status": "PASS_SOURCE_REVIEW_NOT_EXECUTED",
+      "locations": ["tools/run_region_reconstruction.py:18-39", "tools/run_independent_native_evidence.py:111-115,126-144,167-174", "tools/run_foundation_recipe.py:229-241,263-278", "tools/queue_region_reconstruction.py:41-49,103-118"],
+      "result": "Inherited post-step hook reads the replacement reconstruction detail bank, recording unscaled gradients and cumulative changes for all 15 tensors across eight effective updates; result enforces activity, changes and BN8. Existing finite/full trainable activity/full-state strict reload gates remain. Production M0 is pending."
+    },
+    {
+      "area": "queue_acceptance_controls_and_probe_retirement",
+      "status": "PASS_SOURCE_REVIEW",
+      "locations": ["tools/queue_region_reconstruction.py:15-20,52-132", "tools/queue_native_research.py:40-78,145-147", "tools/queue_foundation_recipe.py:70-115", "tools/queue_deployment_metric_role.py:28-33,48-89"],
+      "result": "RGBNT201, MSVR310, RGBNT100 each run patch then mean, per endpoint M0 followed by fresh50 and first strict evaluation, using one GPU0/1 pair. Existing raw9/187 artifacts are read-only controls. Own M0 probe is retired only after complete strict verification; saved acceptance supports later report verification without replaying retired probe validators."
+    },
+    {
+      "area": "all_query_report_and_ground_truth",
+      "status": "PASS_SOURCE_REVIEW_NOT_EXECUTED",
+      "locations": ["tools/report_region_reconstruction.py:15-39,47-82", "tools/analyze_correspondence_distances.py:28-75", "tools/run_correspondence_roles.py:79-107", "tools/train_rgbnt100_signal_oof.py:253-268", "tools/train_msvr310_signal_oof.py:223-238"],
+      "result": "Only after 12 completed phases and six accepted endpoints, one CPU report generates 15 pairs, checks full training batch order, preserves full history and actual steps, recomputes saved-distance metrics, all query/identity changes and repairs/new errors. Evaluation uses real protocol IDs/camera/scene filters and author-metric parity, not model predictions as ground truth."
+    }
+  ],
+  "actual_validation": {
+    "initial_ast_files_parsed": 20,
+    "corrected_reporter_ast": "PASS",
+    "other_four_new_sources_match_existing_component_receipt": true,
+    "reporter_only_four_line_change_verified": true,
+    "local_python_torch_available": false,
+    "full_model_dynamic_import_or_execution_by_reviewer": false,
+    "existing_cpu_component_receipt": "C:/Users/gb/.codex_tmp/independent_evidence_draft/region_reconstruction_preparation858/COMPONENT.json",
+    "existing_cpu_execution_receipt": "C:/Users/gb/.codex_tmp/independent_evidence_draft/region_reconstruction_preparation858/EXECUTION.json",
+    "existing_cpu_static_receipt": "C:/Users/gb/.codex_tmp/independent_evidence_draft/region_reconstruction_preparation858/STATIC_PARSE.json",
+    "existing_cpu_result": "CPU_SYNTHETIC_COMPONENT_PASS, exit0, both query modes 15 tensors active/changed, zero initial exit and strict component reload",
+    "existing_cpu_replayed_by_reviewer": false,
+    "cpu_result_is_production_m0": false
+  },
+  "storage_evidence": {
+    "review_mode": "Read existing local terminal receipts only; no remote re-query or deletion",
+    "retirement_receipt": "C:/Users/gb/.codex_tmp/independent_evidence_draft/rejected_candidate_retirement858_r2/RETIREMENT.json",
+    "preparation_receipt": "C:/Users/gb/.codex_tmp/independent_evidence_draft/rejected_candidate_retirement858_r2/PREPARE.json",
+    "transport_boundary_receipt": "C:/Users/gb/.codex_tmp/independent_evidence_draft/rejected_candidate_retirement858_r2/LOCAL_TRANSPORT_BOUNDARY.json",
+    "recorded_retired_at": "2026-10-05T15:29:44.743227+08:00",
+    "recorded_retired_candidates": 9,
+    "recorded_bytes_retired": 3228602999,
+    "recorded_free_bytes_after": 5675995136,
+    "queue_budget_bytes": 4966055936,
+    "recorded_free_exceeds_budget": true,
+    "recorded_protected_control_count": 187,
+    "recorded_protected_source_count": 345,
+    "boundary": "Replaces the earlier 2.4GB snapshot for this review; no claim of a new live server measurement by reviewer. Original format failure and SSH read timeout remain preserved."
+  },
+  "pending_execution_requirements": [
+    "SOURCE_SCOPE.json was still absent at final local check; finish the already planned source registration before launch. Existing source_map fails closed on absence.",
+    "Actual full-author-batch initialization pairing for each dataset has not run.",
+    "All six production-data eight-update M0s remain NOT_RUN.",
+    "All six fresh50 trainings, first strict evaluations, and the once-only full 15-pair terminal report remain NOT_RUN."
+  ],
+  "research_boundaries": [
+    "Visual-only adaptation inspired by anchor residual attention, not a full SAGA reproduction.",
+    "Equal active capacity patch-versus-mean tests patch-specific routing against broadcast context; both arms are image-conditioned, so conditioning necessity is not identified.",
+    "Single seed42 and benchmarks already used in development; no untouched-test, seed-stability, equivalence, true-part, necessity or SOTA claim.",
+    "PASS applies to reviewed implementation, not unexecuted GPU gates or scientific outcomes."
+  ],
+  "runtime_delivery_history": {
+    "prior_capacity_failures_reported_by_parent": 2,
+    "preserved_record": "C:/Users/gb/.codex_tmp/independent_evidence_draft/region_reconstruction_review858/REVIEW_RUNTIME_FAILURE.json",
+    "recorded_error": "Selected model is at capacity. Please try a different model.",
+    "classification": "Model-service review-delivery failure, not code FAIL and not a prior completed PASS",
+    "same_reviewer_continued": true,
+    "model_fallback_used": false,
+    "current_delivery": "Complete review artifacts saved after targeted reporter re-review"
+  }
+}

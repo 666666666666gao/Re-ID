@@ -1,0 +1,48 @@
+{
+  "schema": "trifusion-incremental-role-objective-v1",
+  "status": "COMPLETE",
+  "dataset": "RGBNT100",
+  "recipe": "semantic",
+  "seed": 42,
+  "training_epochs": 50,
+  "selected_epoch": 5,
+  "condition": {
+    "variant": "semantic",
+    "foundation_option": "author",
+    "seed": 42,
+    "epochs": 50,
+    "public_clip_sha256": "5806e77cd80f8b59890b7e101eabd078d9fb84e6937f9e85e4ecb61988df416f",
+    "initialization_sha256": "583ff32f309d17c4ff38f586141a29855ea64ca2781fd4a7317400988b52549d",
+    "deployment": "L2_1536",
+    "auxiliary_tasks": "incremental_role_objective_training_only",
+    "visual_placement": "single_process_original_full_batch_first6_cuda1_last6_and_heads_cuda0",
+    "objective_gradient_policy": "author_global_loss_to_shared_and_heads_fused_loss_to_roles_only",
+    "author_training_objectives": [
+      "shared_global",
+      "role_corrected_fused"
+    ],
+    "incremental_objective": "md_batch_ratio",
+    "incremental_weight": 1.0,
+    "repair_margin": 0.1,
+    "repair_keep_cell_weights": [
+      0.5,
+      0.5
+    ],
+    "relation_environment": "actual_protocol_scene_MSVR310_camera_others"
+  },
+  "protocol_sha256": "b2c14adf947b06b27b9576a712f96192c1393ad6ed3ec1be5259b63f88300169",
+  "checkpoint_sha256": "7dbe94c45fa680ce243666ee30e75bb31aa17b8422e83b1f4e0ae90d3a63ae9f",
+  "distance_sha256": "d4efed1adafe0e143f944c1a8d176ca076d79e2ce6583adb7b0b77afc174f59f",
+  "training_best_distance_sha256": "2c40ac80fcb079fcf0832e0be45067d6a5693d8fdf1ab5ed9a1fbf4325c8400b",
+  "metrics": {
+    "mAP": 83.91064365551128,
+    "Rank-1": 95.62682509422302,
+    "Rank-5": 96.90961837768555,
+    "Rank-10": 97.49271273612976
+  },
+  "reranking": false,
+  "independent_upstream_metrics_equal": true,
+  "final_evaluation_seconds": 101.19750438595656,
+  "final_evaluation_timing_boundary": "Fresh construction, strict reload and full-gallery scoring.",
+  "completed_at": "2026-10-07T13:55:59.593728+08:00"
+}

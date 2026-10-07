@@ -1,0 +1,684 @@
+{
+  "status": "BOUNDED_PRIMARY_SOURCE_REFERENCE_COMPLETED",
+  "at": "2026-10-07T10:31:59.346465+08:00",
+  "papers": 4,
+  "entries": [
+    {
+      "dedup_key": "10.1109/TMM.2026.3660160",
+      "kind": "source",
+      "payload": {
+        "identity": {
+          "title": "DEEP: Decoupled Semantic Prompt Learning, Guiding and Embedding for Multi-Spectral Object Re-Identification",
+          "authors": [
+            "Shihao Li",
+            "Chenglong Li",
+            "Aihua Zheng",
+            "Jin Tang",
+            "Bin Luo"
+          ],
+          "venue": "IEEE Transactions on Multimedia",
+          "year": 2026,
+          "version": "16-page accepted author manuscript",
+          "metadata_boundary": "Author page/pathnames retain 2025; PDF copyright/DOI and official citation are2026."
+        },
+        "resources": {
+          "image": "CLIP ViT-B/16",
+          "text": "Frozen CLIP text encoder",
+          "concrete_caption_annotations_required": false,
+          "inference_dependency": "Paper uses inverted prompt features in prediction; frozen text encoder remains involved (inference from architecture, no executable code verified).",
+          "exact_initial_checkpoint": null
+        },
+        "training": {
+          "epochs": 60,
+          "optimizer": "Adam",
+          "lr": 5e-06,
+          "weight_decay": 0.0001,
+          "lr_at20": 5e-07,
+          "lr_at40": 5e-08,
+          "stated_momentum": 0.9,
+          "sampler": null,
+          "batch_size": null,
+          "person_input": [
+            256,
+            128
+          ],
+          "vehicle_input": [
+            128,
+            256
+          ],
+          "stages": "End-to-end as described"
+        },
+        "evaluation": {
+          "modalities": "RGB+NIR+TIR",
+          "MSVR310_filter": "Same identity AND same time span excluded, using time labels.",
+          "RGBNT201_RGBNT100_filter": "Common cited protocol, explicit code unavailable.",
+          "exact_query_gallery_counts": null
+        },
+        "reported_metrics": {
+          "units": "percent",
+          "order": [
+            "mAP",
+            "R1",
+            "R5",
+            "R10"
+          ],
+          "RGBNT201": [
+            79.6,
+            84.2,
+            89.4,
+            91.5
+          ],
+          "RGBNT100": [
+            88.5,
+            97.6,
+            null,
+            null
+          ],
+          "MSVR310": [
+            66.0,
+            82.1,
+            90.7,
+            93.9
+          ]
+        },
+        "ablation": {
+          "baseline": "Three pretrained CLIP ViT-B/16 visual branches; distinct from CLIP-ReID comparison row.",
+          "RGBNT201_baseline": [
+            71.0,
+            71.5,
+            81.3,
+            86.4
+          ],
+          "MSVR310_baseline": [
+            49.1,
+            65.5,
+            82.7,
+            85.6
+          ],
+          "RGBNT100_component_ablation": null
+        },
+        "code": {
+          "repo": "https://github.com/lsh-ahu/DEEP-ReID",
+          "agent_observation": "Root/README show no executable sources; assets recursive tree inaccessible via agent web tool.",
+          "parent_recursive_verification": "DEEP_DISCOVERY.json at10:27:55, SHA cc177306528dd8f8c468de2bb2eeba22978a9fb7, contains README/LICENSE/.gitignore and sevenPNG assets only.",
+          "executable_sources_current_main": false,
+          "reproduced_by_project": false
+        },
+        "primary_urls": {
+          "paper": "https://aihuazheng.github.io/publications/pdf/2025/2025-DEEP_Decoupled_Semantic_Prompt_Learning_Guiding_and_Embedding_for_Multi-Spectral_Object_Re-Identification.pdf",
+          "repo": "https://github.com/lsh-ahu/DEEP-ReID"
+        },
+        "source_anchors": {
+          "identity": "PDF p1",
+          "resources": "III-A/B/E",
+          "training": "IV-B p7",
+          "protocol": "IV-A p6-7",
+          "RGBNT201_metrics": "TableI p6",
+          "vehicle_mAP_R1": "TableIV p7",
+          "MSVR310_R5_R10": "TableVI rowf p8",
+          "ablation": "TableVI p8",
+          "recursive_code": "DEEP_TREE.json"
+        },
+        "uncertainties": [
+          "Exact checkpoint, sampler and executable evaluation absent.",
+          "TableIV 88.5/97.6 are RGBNT100 mAP/R1, not MSVR310 R5/R10.",
+          "Paper-reported, not local reproduction or SOTA ranking."
+        ]
+      }
+    },
+    {
+      "dedup_key": "CVPR2026F:Li_Rolling_and_Denoising",
+      "kind": "source",
+      "payload": {
+        "identity": {
+          "title": "Rolling and Denoising: Rethinking Dynamic Modal Fusion for Multi-Modal Object Re-Identification",
+          "authors": [
+            "Shihao Li",
+            "Huaibo Huang",
+            "Aihua Zheng",
+            "Jin Tang",
+            "Ran He"
+          ],
+          "year": 2026,
+          "venue": "IEEE/CVF CVPR Findings",
+          "pages": "6560-6569",
+          "DOI": null,
+          "arxiv": null
+        },
+        "resources": {
+          "backbones": {
+            "CLIP": "ViT-B/16",
+            "DINOv3": "ViT-B/16 distilled"
+          },
+          "exact_checkpoints": null,
+          "text_masks_TTA": "Not described; absence not proven by executable code.",
+          "CLIP_RoDI_paramsM_FLOPsG_TPS": [
+            90.6,
+            38.7,
+            299.6
+          ],
+          "DINOv3_RoDI_paramsM_FLOPsG_TPS": [
+            95.1,
+            64.0,
+            191.1
+          ],
+          "cost_boundary": "Supplement Table6 on RGBNT201; paper figures, not measured here.",
+          "family_pretraining": "Official CLIP family400M image-text; official DINOv3 distilledViT-B16 tableLVD-1689M. Exact RoDI checkpoint-to-corpus mapping unverified."
+        },
+        "training": {
+          "epochs": null,
+          "stages": null,
+          "batch_size": 64,
+          "images_per_identity": 8,
+          "optimizer": "Adam",
+          "lr": 0.00035,
+          "weight_decay": 0.0001,
+          "stated_momentum": 0.9,
+          "warmup_epochs": 10,
+          "KL_weight": 1.0,
+          "diffusion_weight": 0.1,
+          "top_k": 64,
+          "denoising_steps_stated": 20
+        },
+        "evaluation": {
+          "modalities": "RGB+NIR+TIR",
+          "query_gallery_counts": null,
+          "camera_scene_filter": null,
+          "distance_normalization": null,
+          "reranking": null,
+          "inference_boundary": "Paper omits opinion measurements and rolling at inference; LMD execution remains unclear."
+        },
+        "reported_metrics": {
+          "units": "percent",
+          "order": [
+            "mAP",
+            "R1",
+            "R5",
+            "R10"
+          ],
+          "CLIP": {
+            "RGBNT201": [
+              84.1,
+              87.2,
+              92.0,
+              93.2
+            ],
+            "RGBNT100": [
+              88.5,
+              97.6,
+              null,
+              null
+            ],
+            "MSVR310": [
+              64.1,
+              77.2,
+              null,
+              null
+            ]
+          },
+          "DINOv3": {
+            "RGBNT201": [
+              85.3,
+              87.9,
+              93.0,
+              94.8
+            ],
+            "RGBNT100": [
+              89.0,
+              99.1,
+              null,
+              null
+            ],
+            "MSVR310": [
+              71.8,
+              84.8,
+              null,
+              null
+            ]
+          }
+        },
+        "ablation": {
+          "RGBNT201_CLIP_baseline": [
+            76.0,
+            77.6,
+            85.4,
+            89.6
+          ],
+          "RGBNT201_DINOv3_baseline": [
+            81.0,
+            83.3,
+            91.0,
+            93.4
+          ],
+          "baseline": "Pretrained three-branch encoders, EDFL/MSR/LMD disabled."
+        },
+        "code": {
+          "repo": "https://github.com/lsh-ahu/RoDI",
+          "commit": "2f38911c49d42d4ca259d440a851b8d77dddccbe",
+          "commit_date": "2026-06-15T08:31:44Z",
+          "recursive_files": [
+            "README.md",
+            "assets/RoDI.pdf",
+            "assets/poster.png"
+          ],
+          "train_eval_sources_current_main": false,
+          "released_checkpoints": false,
+          "executed_by_project": false,
+          "agent_api_observation": "Recursive tree, branches, releases and tags checked; no other branches/tags/releases.",
+          "repository_pdf_sha256": "b816237dbbcccda47dbf02b19c9de9816bce05b4f40723ae88ef1286ff663d86"
+        },
+        "primary_urls": {
+          "repo": "https://github.com/lsh-ahu/RoDI",
+          "paper": "https://aihuazheng.github.io/publications/pdf/2026/2026-Li_Rolling_and_Denoising_Rethinking_Dynamic_Modal_Fusion_for_Multi-Modal_Object_CVPRF_2026_paper.pdf",
+          "supplement": "https://github.com/lsh-ahu/RoDI/blob/2f38911c49d42d4ca259d440a851b8d77dddccbe/assets/RoDI.pdf",
+          "CVF": "https://openaccess.thecvf.com/content/CVPR2026F/html/Li_Rolling_and_Denoising_Rethinking_Dynamic_Modal_Fusion_for_Multi-Modal_Object_CVPRF_2026_paper.html",
+          "DINOv3_family": "https://github.com/facebookresearch/dinov3#pretrained-models",
+          "CLIP_family": "https://arxiv.org/abs/2103.00020"
+        },
+        "source_anchors": {
+          "metrics": "Table1, IV-A/B, PDFp6",
+          "ablation": "Table2, IV-D, PDFp7",
+          "cost": "Repositorysupplement Table6 p12",
+          "k_steps": "Supplement9.2/9.3/Table7 p13",
+          "code": "Official recursive tree at2f38911c"
+        },
+        "uncertainties": [
+          "Author mirror10pages, repo13pages inclsupplement; main tables agree.",
+          "CVF returned403; author/repo primary papers were read.",
+          "Epochs, full query/gallery and exact inference implementation unresolved.",
+          "No local reproduction, exhaustive SOTA ranking, or matched-pretraining conclusion."
+        ]
+      }
+    },
+    {
+      "dedup_key": "arXiv:2607.29207v1",
+      "kind": "source",
+      "payload": {
+        "identity": {
+          "title": "Multi-Modal Object Re-Identification with Dual Semantic Guidance and Global-Local Mutual Modulation",
+          "authors": [
+            "Weixiang Zhou",
+            "Xingguo Xu",
+            "Yuhao Wang",
+            "Cong Wang",
+            "Yang Yang",
+            "Zhixun Su",
+            "Jinshan Pan"
+          ],
+          "arxiv_date": "2026-07-31",
+          "venue_boundary": "Official repo self-labels IEEE TCSVT2026; venue DOI not independently verified."
+        },
+        "resources": {
+          "image": "CLIP ViT-B/16",
+          "text": "GPT-4o generated unified descriptions and CLIP text encoding",
+          "masks": "SAM2 soft masks",
+          "inference_dependency_code": "Eval forward and do_inference require text and mask_r. Generator assets may be prepared offline; cached texts/masks and text encoding remain dependencies.",
+          "exact_CLIP_checkpoint": null
+        },
+        "training": {
+          "paper_epochs": {
+            "RGBNT201": 60,
+            "RGBNT100": 50,
+            "MSVR310": 50
+          },
+          "current_yaml_epochs": {
+            "RGBNT201": 50,
+            "RGBNT100": 50,
+            "MSVR310": 50
+          },
+          "paper_and_code_B_K": {
+            "RGBNT201": [
+              64,
+              8
+            ],
+            "RGBNT100": [
+              128,
+              16
+            ],
+            "MSVR310": [
+              64,
+              8
+            ]
+          },
+          "code_optimizer": "Adam",
+          "yaml_base_lr": 0.00035,
+          "actual_code_lr_rule": "Default FROZEN=False/LARGE_FC_LR=False + ViT-B-16 forces BASE_LR*.01, i.e.3.5e-6.",
+          "paper_initial_module_lr": 3.5e-06
+        },
+        "evaluation": {
+          "RGBNT201_paper_split": "141train/30validation/30test identities stated",
+          "RGBNT201_current_loader": "train_171, test as query and gallery; exact dataset bytes/counts not inspected",
+          "RGBNT201_RGBNT100_code_filter": "Exclude sameidentity AND samecamera.",
+          "MSVR310_code_filter": "Exclude sameidentity AND samescene; sceneid=filename[6:9].",
+          "code_distance": "L2-normalized Euclidean; default no reranking.",
+          "output_protocol_boundary": "Default DA=False training evaluation uses V_RGB/V_NIR/V_TIR/T_RGB/T_NIR/T_TIR; LOCAL fusion diagnostics behind DA=True. Exact main-table output/checkpoint correspondence not established."
+        },
+        "reported_metrics": {
+          "units": "percent",
+          "order": [
+            "mAP",
+            "R1",
+            "R5",
+            "R10"
+          ],
+          "RGBNT201": [
+            82.6,
+            87.0,
+            92.0,
+            93.9
+          ],
+          "RGBNT100": [
+            89.4,
+            98.2,
+            null,
+            null
+          ],
+          "MSVR310": [
+            64.6,
+            76.0,
+            null,
+            null
+          ]
+        },
+        "ablation": {
+          "RGBNT201_mAP_R1": [
+            [
+              70.3,
+              72.1
+            ],
+            [
+              76.1,
+              79.1
+            ],
+            [
+              78.8,
+              84.0
+            ],
+            [
+              82.6,
+              87.0
+            ]
+          ],
+          "components": [
+            "baseline",
+            "+TSI",
+            "+MGLM",
+            "+HMF"
+          ],
+          "baseline": "SharedCLIP naive concatenation as described."
+        },
+        "code": {
+          "commit": "6566f78636440c70c85700a45bbf2f48f18260b1",
+          "commit_date": "2026-08-07T05:32:05Z",
+          "public_sources_present": true,
+          "actual_entries": [
+            "train.py",
+            "test.py"
+          ],
+          "README_entries": [
+            "train_net.py",
+            "test_net.py"
+          ],
+          "test_weight_boundary": "test.py uses a hard-coded local trained checkpoint path.",
+          "exact_reproduction_verified": false,
+          "executed_by_project": false
+        },
+        "primary_urls": {
+          "paper": "https://arxiv.org/html/2607.29207v1",
+          "repo": "https://github.com/zw-absin/DSGM"
+        },
+        "source_anchors": {
+          "paper_metrics": "TablesI/II",
+          "ablation": "TableIII",
+          "resources": "III-A, IV-A, IV-D8",
+          "training": "IV-B + configs/*/DSGM.yml + solver/make_optimizer.py",
+          "split": "IV-A + imported data/datasets/RGBNT201_Text.py:32-34",
+          "inference": "modeling/make_model.py:204-264 + engine/processor.py:166-200,253-307",
+          "filter": "utils/metrics.py:61,130,294-319",
+          "tree": "DSGM_TREE.json",
+          "received_sources": "DSGM_SOURCE_RECEIPT.json + DSGM_ADDENDA_RECEIPT.json"
+        },
+        "uncertainties": [
+          "Paper60 vs current201 YAML50 and paper141/30/30 vs loadertrain_171 are preserved source differences.",
+          "No local run/weight/dataset or resource equivalence to current purevisual method verified.",
+          "No current unified SOTA ranking claimed."
+        ]
+      }
+    },
+    {
+      "dedup_key": "CVPR2026:Gao_Chain-of-Thought_Guided_Multi-Modal_Object_Re-Identification",
+      "kind": "source",
+      "payload": {
+        "identity": {
+          "title": "Chain-of-Thought Guided Multi-Modal Object Re-Identification",
+          "authors": [
+            "Ya Gao",
+            "Shihao Li",
+            "Zhaojun Liu",
+            "Aihua Zheng",
+            "Chenglong Li",
+            "Jin Tang"
+          ],
+          "year": 2026,
+          "venue": "CVPR",
+          "pages": "37705-37714",
+          "DOI": null,
+          "arxiv": null
+        },
+        "resources": {
+          "image": "DINOv3-B; source requests dinov3_vitb16_pretrain_lvd1689m-73cec8be.pth",
+          "text_encoder": "Frozen CLIP ViT-B-16.pt text encoder",
+          "external_text": "API Qwen-VL generates descriptions and reasoning chains for all spectra, train AND test.",
+          "inference": "Prepared test JSON and all six text encodings remain required; visual model consumes reasoning features; image/text outputs concatenated. No online Qwen call observed.",
+          "masks": "No segmentation-mask requirement described or observed.",
+          "generator_revision": null,
+          "assets_boundary": "Text JSON, weights and compatible DINOv3 source not included in checked repository."
+        },
+        "training": {
+          "paper_epochs": 120,
+          "paper_optimizer": "Adam",
+          "paper_weight_decay": 0.0001,
+          "paper_lr": {
+            "RGBNT201": 0.0035,
+            "RGBNT100": 1e-05,
+            "MSVR310": 0.0035,
+            "WMVeID863": 0.00035
+          },
+          "code_epochs": {
+            "RGBNT201": 60,
+            "MSVR310": 60,
+            "WMVeID863": 80
+          },
+          "code_B_K": {
+            "RGBNT201": [
+              32,
+              4
+            ],
+            "MSVR310": [
+              32,
+              4
+            ],
+            "WMVeID863": [
+              32,
+              2
+            ]
+          },
+          "code_seed": 1234,
+          "code_selection": "mAP-best teacher_best.pth, replacing ties",
+          "code_stages": "train_net.py invokes one do_train_teacher loop; annotations prepared first.",
+          "RGBNT100_config_dataset_route": null
+        },
+        "evaluation": {
+          "paper_supplement_ID_sample_counts": {
+            "RGBNT201": {
+              "train": [
+                171,
+                3951
+              ],
+              "query": [
+                30,
+                836
+              ],
+              "gallery": [
+                30,
+                836
+              ]
+            },
+            "RGBNT100": {
+              "train": [
+                50,
+                8675
+              ],
+              "query": [
+                50,
+                1715
+              ],
+              "gallery": [
+                50,
+                8575
+              ]
+            },
+            "MSVR310": {
+              "train": [
+                155,
+                1032
+              ],
+              "query": [
+                52,
+                591
+              ],
+              "gallery": [
+                155,
+                1055
+              ]
+            }
+          },
+          "count_boundary": "As printed, not independent dataset inventory.",
+          "code_RGBNT201_filter": "Sameidentity AND samecamera excluded.",
+          "code_MSVR310_filter": "Sameidentity AND samescene excluded.",
+          "distance": "Euclidean, no reranking; current201 feature normalization enabled, MSVR disabled.",
+          "RGBNT100_executable_filter": null
+        },
+        "reported_metrics": {
+          "units": "percent",
+          "order": [
+            "mAP",
+            "R1",
+            "R5",
+            "R10"
+          ],
+          "RGBNT201": [
+            83.3,
+            86.1,
+            93.3,
+            94.8
+          ],
+          "RGBNT100": [
+            89.9,
+            99.3,
+            null,
+            null
+          ],
+          "MSVR310": [
+            71.7,
+            85.3,
+            94.3,
+            96.5
+          ],
+          "WMVeID863": [
+            74.7,
+            82.0,
+            85.9,
+            89.8
+          ],
+          "MSVR310_conflicting_Table3": [
+            72.7,
+            86.3,
+            95.3,
+            97.5
+          ],
+          "conflict_boundary": "MainTable1 and supplement9/12 repeat71.7/85.3; Table3 differs. Neither reconciled nor merged."
+        },
+        "ablation": {
+          "main_table_DINOv3_baselines": {
+            "RGBNT201": [
+              77.5,
+              78.9,
+              85.8,
+              88.9
+            ],
+            "RGBNT100": [
+              87.0,
+              98.5,
+              null,
+              null
+            ],
+            "MSVR310": [
+              68.2,
+              83.3,
+              93.5,
+              94.4
+            ]
+          },
+          "dedicated_module_table5": "WMVeID863 noCRE/CT/CMC/CTF70.1/80.8/84.3/87.7, complete74.7/82.0/85.9/89.8."
+        },
+        "code": {
+          "repo": "https://github.com/Gaoya615/CoT-ReID",
+          "commit": "db215273d6ee68b9c324fdf36e3d6800370fa21e",
+          "substantial_sources": true,
+          "train_eval_entries": [
+            "train_net.py",
+            "test_net.py"
+          ],
+          "self_contained": false,
+          "released_model_annotations": false,
+          "executed_by_project": false,
+          "external_DINO_interface": "Backbone calls external DINOv3 with image/CoT inputs and expects feature dictionaries; required supporting implementation absent or unvalidated.",
+          "documentation_boundary": "TRAINING.md bundled-assets claim conflicts with observed tree and README non-redistribution statement."
+        },
+        "primary_urls": {
+          "paper": "https://openaccess.thecvf.com/content/CVPR2026/papers/Gao_Chain-of-Thought_Guided_Multi-Modal_Object_Re-Identification_CVPR_2026_paper.pdf",
+          "supplement": "https://openaccess.thecvf.com/content/CVPR2026/supplemental/Gao_Chain-of-Thought_Guided_Multi-Modal_CVPR_2026_supplemental.zip",
+          "repo": "https://github.com/Gaoya615/CoT-ReID"
+        },
+        "source_anchors": {
+          "metrics": "MainTables1/2",
+          "conflict": "MainTable3, supplement9/12",
+          "counts": "SupplementTable11",
+          "training": "IV-A/B + configs (60/60/80)",
+          "resources": "3.2 + supplement7 + modeling/make_model.py:176-195,616-736",
+          "CLIP_frozen": "modeling/clip/model.py:373-380",
+          "filters": "utils/metrics.py:26-89",
+          "inference_selection": "engine/processor.py:203-244,278-334",
+          "snapshot": "db215273d6ee68b9c324fdf36e3d6800370fa21e"
+        },
+        "uncertainties": [
+          "Paper120 vs YAML60/60/80 and LR differences; current code not established as exact main experiment.",
+          "No exact Qwen revision or released train/test caption/weight package established.",
+          "No executableRGBNT100 route in checked snapshot.",
+          "Paper-reported, no local reproduction or SOTA ranking."
+        ]
+      }
+    }
+  ],
+  "input_sha256": {
+    "DEEP_EXTRACTION.json": "1bb4bab8e0c4a58a69d6435b6241cbd1b62d12caaeb0f4eaa5fab71971169fa6",
+    "RoDI_EXTRACTION.json": "8f64dc47f302c1c1f53652ae7b6fbf62414e806589d93682794b5c46c5ea8c14",
+    "DSGM_EXTRACTION.json": "a4e2cffb6514be8fdcc9b5a5eff18f03f9df1dfafbd75ed35cb53723c6d091a2",
+    "CoT_EXTRACTION.json": "74ef82b1b162e0f97eddc5dd1e746d68025163e4a576b5237f2d994a2bdda2de",
+    "DSGM_DISCOVERY.json": "d68918a994fcc58232681617fe7d7d4cb146c46da69b1e74cbeec15ce29942f4",
+    "DSGM_TREE.json": "0b78844ec74d3772e7df53b3acc7ae336995a2fbcee93e82111f764a4e6ce297",
+    "DSGM_SOURCE_RECEIPT.json": "b0d34f798c86c41630f372c44e2a4fb68ba2271f33458b960bee2bb2841c7272",
+    "DSGM_ADDENDA_RECEIPT.json": "8cd9c5fb37079167cf0b9f9dfb42e4a35556b888abb9bdf7c9e8ddbcac3e73fa",
+    "DEEP_DISCOVERY.json": "173bc2de9880e260e38ab10dfa4c8cdc87696c053c7edf4ffaf06ace205c136b",
+    "DEEP_TREE.json": "8f7f83abaa89b924a3da8ee9c4fb6882f60cb026207fc276893762d62d5c4b72"
+  },
+  "coverage": {
+    "local_papers": "No PDFs in project papers/literature paths",
+    "zotero": "No available tool",
+    "obsidian": "No available tool",
+    "arxiv_helper": "ARIS_REPO unset; canonical helper and installed repo metadata unresolved; primary web lookup used, no PDF download or install.",
+    "sources": "Author/publisher papers, official pinned repositories and explicit supplemental documents only"
+  },
+  "boundary": "No NN, SSH, source/Git/server sync, experiment change, model/data download, local reproduction, exhaustive SOTA search or quality verdict. Null is unresolved. Same-family read-only shards supplied source facts, parent merged canonical identifiers; conflicts preserved. Private until own NN terminal."
+}

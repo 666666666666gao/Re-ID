@@ -2257,3 +2257,5 @@
 - 2026-10-07 §41.885—886：同图VJP autocast True六QK零、False六非零/0optimizer；旧0/6保留。仅修正M0观测上下文，新六M0/六full计划SOURCE_ONLY复审通过，实际未运行。
 
 - 2026-10-07 §41.887—888：新六生产M0完成，独立辅助资格5/6；100repair第三QK零、原FAIL保留。仅五合格端full250轮/12pairs新合同SOURCE_ONLY复审；八废弃OWN权重退役并保留正式距离证据，full尚未启动。
+
+- 2026-10-07 §41.889–892：真实M0关系支持、主来源资源核查、五端250轮/9839steps/12全query配对封存（推进0/5、0/12），WARN完整性与限定主张；保留原SOURCE_ONLY FAIL后最小修订固定五best分解入口，诊断尚未运行，Goal ACTIVE_UNMET。

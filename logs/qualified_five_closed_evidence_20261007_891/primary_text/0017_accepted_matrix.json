@@ -1,0 +1,406 @@
+{
+  "schema": "trifusion-incremental-role-objective-v1",
+  "accepted": 5,
+  "expected": 5,
+  "rows": [
+    {
+      "dataset": "RGBNT201",
+      "variant": "md_batch_ratio",
+      "status": "VERIFIED_COMPLETE",
+      "run_dir": "/data/gaob/Re-ID/Trifusion/trained-model/qualified_five_incremental_full_v1_20261007_888_full_md_batch_ratio_RGBNT201",
+      "initializer": {
+        "architecture": "trifusion-incremental-role-objective-v1",
+        "dataset": "RGBNT201",
+        "variant": "semantic",
+        "recipe": "semantic",
+        "foundation_option": "author",
+        "seed": 42,
+        "public_clip_sha256": "5806e77cd80f8b59890b7e101eabd078d9fb84e6937f9e85e4ecb61988df416f",
+        "protocol_sha256": "b2409c2d992d04adcf0c78354d306afd6af7ae9507738fd4e83de480e9a9b90f",
+        "author_source_commit": "cd1b0a672d1fe642e7608731cb4899a19dda7d51",
+        "visual_initial_sha256": "e989d3d5cf05e26109cd62aba6752ad1151b70c06dc14324703826fecbb9383f",
+        "camera_initial_sha256": "71161723dfbaee1cbbcf2f07d2065187b0fe05ccc0b1afd25f62e16e48d85ec1",
+        "shared_initializer_sha256": {
+          "backbone": "0baf5860672e4522ee1a6de815ac2e1443d9d2937e2f757aa4c227e06508afb8",
+          "neck": "06efe49412cdf6c9d8d9162b9394e4bc49329d169906cecc2b6c4784bcdb166e",
+          "classifier": "22bd8be47d0a37e4afd7689789e40999fe33dd5ee5b8e338bd920bd6678fbf47"
+        },
+        "initial_model_state_sha256": "93775618f02cbab681550773d271d9d8b6cdd7a44e28c35eeae5118802cf7c7e",
+        "trainable_parameters": 89014730,
+        "trainable_parameter_tensors": 281,
+        "batch_size": 64,
+        "num_instances": 8,
+        "head_names": [
+          [
+            "bottleneck",
+            "classifier"
+          ]
+        ],
+        "cfg_yaml": "DATALOADER:\n  NUM_INSTANCE: 8\n  NUM_WORKERS: 4\n  SAMPLER: softmax_triplet\nDATASETS:\n  NAMES: RGBNT201\n  ROOT_DIR: ..\nINPUT:\n  PADDING: 10\n  PIXEL_MEAN:\n  - 0.5\n  - 0.5\n  - 0.5\n  PIXEL_STD:\n  - 0.5\n  - 0.5\n  - 0.5\n  PROB: 0.5\n  RE_PROB: 0.5\n  SIZE_TEST:\n  - 256\n  - 128\n  SIZE_TRAIN:\n  - 256\n  - 128\nMODEL:\n  ADAPTER: false\n  ATT_DROP_RATE: 0.0\n  DEVICE: cuda\n  DEVICE_ID: '0'\n  DIRECT: 1\n  DIST_TRAIN: false\n  DROP_OUT: 0.0\n  DROP_PATH: 0.1\n  FROZEN: false\n  Gram_Loss_weight: 0.2\n  ID_LOSS_TYPE: softmax\n  ID_LOSS_WEIGHT: 0.25\n  IF_LABELSMOOTH: 'on'\n  IF_WITH_CENTER: 'no'\n  METRIC_LOSS_TYPE: triplet\n  MoE_Loss_weight: 0.1\n  NAME: Signal\n  NECK: bnneck\n  NO_MARGIN: true\n  PAT_Loss_weight: 0.2\n  PRETRAIN_PATH_T: /data/gaob/Re-ID/Trifusion/pertrained-model/ViT-B-16.pt\n  PROMPT: false\n  SIE_CAMERA: true\n  SIE_COE: 1.0\n  SIE_VIEW: false\n  STRIDE_SIZE:\n  - 16\n  - 16\n  TOPK: 80\n  TRANSFORMER_TYPE: ViT-B-16\n  TRIPLET_LOSS_WEIGHT: 1.0\n  USE_A: false\n  USE_B: false\n  stageName: together_CLS_Patch\nOUTPUT_DIR: .\nSOLVER:\n  BASE_LR: 0.00035\n  BIAS_LR_FACTOR: 2\n  CENTER_LOSS_WEIGHT: 0.0005\n  CENTER_LR: 0.5\n  CHECKPOINT_PERIOD: 50\n  CLUSTER_MARGIN: 0.3\n  COSINE_MARGIN: 0.5\n  COSINE_SCALE: 30\n  EVAL_PERIOD: 1\n  GAMMA: 0.1\n  IMS_PER_BATCH: 64\n  LARGE_FC_LR: false\n  LOG_PERIOD: 10\n  MARGIN: 0.3\n  MAX_EPOCHS: 50\n  MOMENTUM: 0.9\n  OPTIMIZER_NAME: Adam\n  RANGE_ALPHA: 0\n  RANGE_BETA: 1\n  RANGE_K: 2\n  RANGE_LOSS_WEIGHT: 1\n  RANGE_MARGIN: 0.3\n  SEED: 42\n  STEPS:\n  - 40\n  - 70\n  WARMUP_FACTOR: 0.01\n  WARMUP_ITERS: 10\n  WARMUP_METHOD: linear\n  WEIGHT_DECAY: 0.0001\n  WEIGHT_DECAY_BIAS: 0.0001\nTEST:\n  EVAL: false\n  FEAT_NORM: 'yes'\n  IMS_PER_BATCH: 128\n  MISS: nothing\n  NECK_FEAT: before\n  RE_RANKING: 'no'\n  WEIGHT: ''\nckpt_save_path: RGBNT201_all\nckpt_test_path: test_RNT201\n",
+        "entry_sha256": "70121fe68b6a89830ca98835e84ace604b04986e125881eb571744dc7549c17d",
+        "scope": "Unchanged semantic evidence/raw author global+role tasks and1536 deployment. Training-only objective comparison; not complete P1/P2/P3 or novel loss claim.",
+        "visual_placement": "single_process_original_full_batch_first6_cuda1_last6_and_heads_cuda0",
+        "parameter_placement": {
+          "cuda:0": {
+            "parameters": 46032458,
+            "trainable_parameters": 45491210,
+            "parameter_bytes": 184129832,
+            "gradient_adam_bytes_if_fp32": 545894520
+          },
+          "cuda:1": {
+            "parameters": 43523520,
+            "trainable_parameters": 43523520,
+            "parameter_bytes": 174094080,
+            "gradient_adam_bytes_if_fp32": 522282240
+          }
+        },
+        "role_input_gradient_policy": "detach_stages_context_shared_global_at_role_read_only",
+        "objective_gradient_policy": "author_global_loss_to_shared_and_heads_fused_loss_to_roles_only",
+        "incremental_objective": "md_batch_ratio",
+        "incremental_weight": 1.0,
+        "repair_margin": 0.1,
+        "repair_keep_cell_weights": [
+          0.5,
+          0.5
+        ],
+        "added_model_parameters": 0,
+        "m0_auxiliary_vjp_policy": "unscaled_autocast_disabled_same_original_targets"
+      },
+      "best_epoch": 8,
+      "metrics": {
+        "mAP": 74.46938466396887,
+        "Rank-1": 79.18660044670105,
+        "Rank-5": 88.39712738990784,
+        "Rank-10": 91.98564887046814
+      },
+      "checkpoint_sha256": "9aab5d27c8d739ea5079673a64e6cd37d3b498b55c7fbe2a1f6964ca3e6c76cc",
+      "distance_sha256": "e5c8d6c1de280590249be7ed98bea23516c9bdb6782e2724c217ab647f35a57a",
+      "receipt_sha256": "404a6d0c42f50c1417049046a547125d19f0dc8c048dec7f802804afcb84ce3c",
+      "actual_training_batch_order_equal": true
+    },
+    {
+      "dataset": "RGBNT201",
+      "variant": "repair_keep",
+      "status": "VERIFIED_COMPLETE",
+      "run_dir": "/data/gaob/Re-ID/Trifusion/trained-model/qualified_five_incremental_full_v1_20261007_888_full_repair_keep_RGBNT201",
+      "initializer": {
+        "architecture": "trifusion-incremental-role-objective-v1",
+        "dataset": "RGBNT201",
+        "variant": "semantic",
+        "recipe": "semantic",
+        "foundation_option": "author",
+        "seed": 42,
+        "public_clip_sha256": "5806e77cd80f8b59890b7e101eabd078d9fb84e6937f9e85e4ecb61988df416f",
+        "protocol_sha256": "b2409c2d992d04adcf0c78354d306afd6af7ae9507738fd4e83de480e9a9b90f",
+        "author_source_commit": "cd1b0a672d1fe642e7608731cb4899a19dda7d51",
+        "visual_initial_sha256": "e989d3d5cf05e26109cd62aba6752ad1151b70c06dc14324703826fecbb9383f",
+        "camera_initial_sha256": "71161723dfbaee1cbbcf2f07d2065187b0fe05ccc0b1afd25f62e16e48d85ec1",
+        "shared_initializer_sha256": {
+          "backbone": "0baf5860672e4522ee1a6de815ac2e1443d9d2937e2f757aa4c227e06508afb8",
+          "neck": "06efe49412cdf6c9d8d9162b9394e4bc49329d169906cecc2b6c4784bcdb166e",
+          "classifier": "22bd8be47d0a37e4afd7689789e40999fe33dd5ee5b8e338bd920bd6678fbf47"
+        },
+        "initial_model_state_sha256": "93775618f02cbab681550773d271d9d8b6cdd7a44e28c35eeae5118802cf7c7e",
+        "trainable_parameters": 89014730,
+        "trainable_parameter_tensors": 281,
+        "batch_size": 64,
+        "num_instances": 8,
+        "head_names": [
+          [
+            "bottleneck",
+            "classifier"
+          ]
+        ],
+        "cfg_yaml": "DATALOADER:\n  NUM_INSTANCE: 8\n  NUM_WORKERS: 4\n  SAMPLER: softmax_triplet\nDATASETS:\n  NAMES: RGBNT201\n  ROOT_DIR: ..\nINPUT:\n  PADDING: 10\n  PIXEL_MEAN:\n  - 0.5\n  - 0.5\n  - 0.5\n  PIXEL_STD:\n  - 0.5\n  - 0.5\n  - 0.5\n  PROB: 0.5\n  RE_PROB: 0.5\n  SIZE_TEST:\n  - 256\n  - 128\n  SIZE_TRAIN:\n  - 256\n  - 128\nMODEL:\n  ADAPTER: false\n  ATT_DROP_RATE: 0.0\n  DEVICE: cuda\n  DEVICE_ID: '0'\n  DIRECT: 1\n  DIST_TRAIN: false\n  DROP_OUT: 0.0\n  DROP_PATH: 0.1\n  FROZEN: false\n  Gram_Loss_weight: 0.2\n  ID_LOSS_TYPE: softmax\n  ID_LOSS_WEIGHT: 0.25\n  IF_LABELSMOOTH: 'on'\n  IF_WITH_CENTER: 'no'\n  METRIC_LOSS_TYPE: triplet\n  MoE_Loss_weight: 0.1\n  NAME: Signal\n  NECK: bnneck\n  NO_MARGIN: true\n  PAT_Loss_weight: 0.2\n  PRETRAIN_PATH_T: /data/gaob/Re-ID/Trifusion/pertrained-model/ViT-B-16.pt\n  PROMPT: false\n  SIE_CAMERA: true\n  SIE_COE: 1.0\n  SIE_VIEW: false\n  STRIDE_SIZE:\n  - 16\n  - 16\n  TOPK: 80\n  TRANSFORMER_TYPE: ViT-B-16\n  TRIPLET_LOSS_WEIGHT: 1.0\n  USE_A: false\n  USE_B: false\n  stageName: together_CLS_Patch\nOUTPUT_DIR: .\nSOLVER:\n  BASE_LR: 0.00035\n  BIAS_LR_FACTOR: 2\n  CENTER_LOSS_WEIGHT: 0.0005\n  CENTER_LR: 0.5\n  CHECKPOINT_PERIOD: 50\n  CLUSTER_MARGIN: 0.3\n  COSINE_MARGIN: 0.5\n  COSINE_SCALE: 30\n  EVAL_PERIOD: 1\n  GAMMA: 0.1\n  IMS_PER_BATCH: 64\n  LARGE_FC_LR: false\n  LOG_PERIOD: 10\n  MARGIN: 0.3\n  MAX_EPOCHS: 50\n  MOMENTUM: 0.9\n  OPTIMIZER_NAME: Adam\n  RANGE_ALPHA: 0\n  RANGE_BETA: 1\n  RANGE_K: 2\n  RANGE_LOSS_WEIGHT: 1\n  RANGE_MARGIN: 0.3\n  SEED: 42\n  STEPS:\n  - 40\n  - 70\n  WARMUP_FACTOR: 0.01\n  WARMUP_ITERS: 10\n  WARMUP_METHOD: linear\n  WEIGHT_DECAY: 0.0001\n  WEIGHT_DECAY_BIAS: 0.0001\nTEST:\n  EVAL: false\n  FEAT_NORM: 'yes'\n  IMS_PER_BATCH: 128\n  MISS: nothing\n  NECK_FEAT: before\n  RE_RANKING: 'no'\n  WEIGHT: ''\nckpt_save_path: RGBNT201_all\nckpt_test_path: test_RNT201\n",
+        "entry_sha256": "70121fe68b6a89830ca98835e84ace604b04986e125881eb571744dc7549c17d",
+        "scope": "Unchanged semantic evidence/raw author global+role tasks and1536 deployment. Training-only objective comparison; not complete P1/P2/P3 or novel loss claim.",
+        "visual_placement": "single_process_original_full_batch_first6_cuda1_last6_and_heads_cuda0",
+        "parameter_placement": {
+          "cuda:0": {
+            "parameters": 46032458,
+            "trainable_parameters": 45491210,
+            "parameter_bytes": 184129832,
+            "gradient_adam_bytes_if_fp32": 545894520
+          },
+          "cuda:1": {
+            "parameters": 43523520,
+            "trainable_parameters": 43523520,
+            "parameter_bytes": 174094080,
+            "gradient_adam_bytes_if_fp32": 522282240
+          }
+        },
+        "role_input_gradient_policy": "detach_stages_context_shared_global_at_role_read_only",
+        "objective_gradient_policy": "author_global_loss_to_shared_and_heads_fused_loss_to_roles_only",
+        "incremental_objective": "repair_keep",
+        "incremental_weight": 1.0,
+        "repair_margin": 0.1,
+        "repair_keep_cell_weights": [
+          0.5,
+          0.5
+        ],
+        "added_model_parameters": 0,
+        "m0_auxiliary_vjp_policy": "unscaled_autocast_disabled_same_original_targets"
+      },
+      "best_epoch": 8,
+      "metrics": {
+        "mAP": 74.65207441845062,
+        "Rank-1": 79.66507077217102,
+        "Rank-5": 88.27751278877258,
+        "Rank-10": 91.74641370773315
+      },
+      "checkpoint_sha256": "e4b07c2b707eec3a0e553cb0f48a0325fe78e0ec06817edcae0a68031c4ecfc5",
+      "distance_sha256": "f5ff9edaf5fb60a1c1c30a11acd01874c9d42644a0f6db9a26e860c125497696",
+      "receipt_sha256": "4b93bcca2245d1c49ee9e12c4e8fec2c4675f3c35502922878513e4c49915546",
+      "actual_training_batch_order_equal": true
+    },
+    {
+      "dataset": "MSVR310",
+      "variant": "md_batch_ratio",
+      "status": "VERIFIED_COMPLETE",
+      "run_dir": "/data/gaob/Re-ID/Trifusion/trained-model/qualified_five_incremental_full_v1_20261007_888_full_md_batch_ratio_MSVR310",
+      "initializer": {
+        "architecture": "trifusion-incremental-role-objective-v1",
+        "dataset": "MSVR310",
+        "variant": "semantic",
+        "recipe": "semantic",
+        "foundation_option": "author",
+        "seed": 42,
+        "public_clip_sha256": "5806e77cd80f8b59890b7e101eabd078d9fb84e6937f9e85e4ecb61988df416f",
+        "protocol_sha256": "015a3cafef8e36ba71da2784de6835959c0549c442624c8fb9e9b37bd8c8229d",
+        "author_source_commit": "cd1b0a672d1fe642e7608731cb4899a19dda7d51",
+        "visual_initial_sha256": "9a92d7f60d061e3282fdc2a557a7d07d7cc519a4534e47239e9240cfb95c62b0",
+        "camera_initial_sha256": "b836a2e23c5dcb8834b69aee4a26a04d4209819b23527bd1c57693ba8e914201",
+        "shared_initializer_sha256": {
+          "backbone": "3423402d38d0867292c5e78d3b847ec5d49a4351575a8082bee7924ab71ecd6e",
+          "neck": "06efe49412cdf6c9d8d9162b9394e4bc49329d169906cecc2b6c4784bcdb166e",
+          "classifier": "47b33e14c05d9560e27d6f6287cd36eabbdd766f6aa26508367922d43571461e"
+        },
+        "initial_model_state_sha256": "801a6b7b12dbf0d92818f7f4b59399eb2e6c16e5aeb8babe0dfea3883ffa63c5",
+        "trainable_parameters": 88993226,
+        "trainable_parameter_tensors": 285,
+        "batch_size": 64,
+        "num_instances": 4,
+        "head_names": [
+          [
+            "bottleneck_r",
+            "classifier_r"
+          ],
+          [
+            "bottleneck_n",
+            "classifier_n"
+          ],
+          [
+            "bottleneck_t",
+            "classifier_t"
+          ]
+        ],
+        "cfg_yaml": "DATALOADER:\n  NUM_INSTANCE: 4\n  NUM_WORKERS: 4\n  SAMPLER: softmax_triplet\nDATASETS:\n  NAMES: MSVR310\n  ROOT_DIR: ..\nINPUT:\n  PADDING: 10\n  PIXEL_MEAN:\n  - 0.5\n  - 0.5\n  - 0.5\n  PIXEL_STD:\n  - 0.5\n  - 0.5\n  - 0.5\n  PROB: 0.5\n  RE_PROB: 0.5\n  SIZE_TEST:\n  - 128\n  - 256\n  SIZE_TRAIN:\n  - 128\n  - 256\nMODEL:\n  ADAPTER: false\n  ATT_DROP_RATE: 0.0\n  DEVICE: cuda\n  DEVICE_ID: '0'\n  DIRECT: 0\n  DIST_TRAIN: false\n  DROP_OUT: 0.0\n  DROP_PATH: 0.1\n  FROZEN: false\n  Gram_Loss_weight: 0.2\n  ID_LOSS_TYPE: softmax\n  ID_LOSS_WEIGHT: 0.25\n  IF_LABELSMOOTH: 'on'\n  IF_WITH_CENTER: 'no'\n  METRIC_LOSS_TYPE: triplet\n  MoE_Loss_weight: 0.1\n  NAME: Signal\n  NECK: bnneck\n  NO_MARGIN: true\n  PAT_Loss_weight: 0.01\n  PRETRAIN_PATH_T: /data/gaob/Re-ID/Trifusion/pertrained-model/ViT-B-16.pt\n  PROMPT: false\n  SIE_CAMERA: true\n  SIE_COE: 1.0\n  SIE_VIEW: false\n  STRIDE_SIZE:\n  - 16\n  - 16\n  TOPK: 64\n  TRANSFORMER_TYPE: ViT-B-16\n  TRIPLET_LOSS_WEIGHT: 1.0\n  USE_A: false\n  USE_B: false\n  stageName: together_CLS_Patch\nOUTPUT_DIR: .\nSOLVER:\n  BASE_LR: 5.0e-06\n  BIAS_LR_FACTOR: 2\n  CENTER_LOSS_WEIGHT: 0.0005\n  CENTER_LR: 0.5\n  CHECKPOINT_PERIOD: 50\n  CLUSTER_MARGIN: 0.3\n  COSINE_MARGIN: 0.5\n  COSINE_SCALE: 30\n  EVAL_PERIOD: 1\n  GAMMA: 0.1\n  IMS_PER_BATCH: 64\n  LARGE_FC_LR: false\n  LOG_PERIOD: 10\n  MARGIN: 0.3\n  MAX_EPOCHS: 50\n  MOMENTUM: 0.9\n  OPTIMIZER_NAME: Adam\n  RANGE_ALPHA: 0\n  RANGE_BETA: 1\n  RANGE_K: 2\n  RANGE_LOSS_WEIGHT: 1\n  RANGE_MARGIN: 0.3\n  SEED: 42\n  STEPS:\n  - 20\n  - 40\n  WARMUP_FACTOR: 0.01\n  WARMUP_ITERS: 0\n  WARMUP_METHOD: linear\n  WEIGHT_DECAY: 0.0001\n  WEIGHT_DECAY_BIAS: 0.0001\nTEST:\n  EVAL: false\n  FEAT_NORM: 'yes'\n  IMS_PER_BATCH: 64\n  MISS: nothing\n  NECK_FEAT: before\n  RE_RANKING: 'no'\n  WEIGHT: ''\nckpt_save_path: MSVR310_all\nckpt_test_path: test_MSVR310\n",
+        "entry_sha256": "70121fe68b6a89830ca98835e84ace604b04986e125881eb571744dc7549c17d",
+        "scope": "Unchanged semantic evidence/raw author global+role tasks and1536 deployment. Training-only objective comparison; not complete P1/P2/P3 or novel loss claim.",
+        "visual_placement": "single_process_original_full_batch_first6_cuda1_last6_and_heads_cuda0",
+        "parameter_placement": {
+          "cuda:0": {
+            "parameters": 45958730,
+            "trainable_parameters": 45466634,
+            "parameter_bytes": 183834920,
+            "gradient_adam_bytes_if_fp32": 545599608
+          },
+          "cuda:1": {
+            "parameters": 43526592,
+            "trainable_parameters": 43526592,
+            "parameter_bytes": 174106368,
+            "gradient_adam_bytes_if_fp32": 522319104
+          }
+        },
+        "role_input_gradient_policy": "detach_stages_context_shared_global_at_role_read_only",
+        "objective_gradient_policy": "author_global_loss_to_shared_and_heads_fused_loss_to_roles_only",
+        "incremental_objective": "md_batch_ratio",
+        "incremental_weight": 1.0,
+        "repair_margin": 0.1,
+        "repair_keep_cell_weights": [
+          0.5,
+          0.5
+        ],
+        "added_model_parameters": 0,
+        "m0_auxiliary_vjp_policy": "unscaled_autocast_disabled_same_original_targets"
+      },
+      "best_epoch": 38,
+      "metrics": {
+        "mAP": 50.55417711230392,
+        "Rank-1": 68.02030205726624,
+        "Rank-5": 80.54145574569702,
+        "Rank-10": 85.617595911026
+      },
+      "checkpoint_sha256": "4429cd95ed8ee962c73401c4b7c1f098f1fa5a1750f25a23d684d5b9e33b4a9f",
+      "distance_sha256": "4c9aea2159a21eab42deb8a273cbe414d04300593bbe1170fc608d8a8c248041",
+      "receipt_sha256": "9b5cc86a81a63c7eb735523284aa007f108c6946574e7ddbe932678d62a635f0",
+      "actual_training_batch_order_equal": true
+    },
+    {
+      "dataset": "MSVR310",
+      "variant": "repair_keep",
+      "status": "VERIFIED_COMPLETE",
+      "run_dir": "/data/gaob/Re-ID/Trifusion/trained-model/qualified_five_incremental_full_v1_20261007_888_full_repair_keep_MSVR310",
+      "initializer": {
+        "architecture": "trifusion-incremental-role-objective-v1",
+        "dataset": "MSVR310",
+        "variant": "semantic",
+        "recipe": "semantic",
+        "foundation_option": "author",
+        "seed": 42,
+        "public_clip_sha256": "5806e77cd80f8b59890b7e101eabd078d9fb84e6937f9e85e4ecb61988df416f",
+        "protocol_sha256": "015a3cafef8e36ba71da2784de6835959c0549c442624c8fb9e9b37bd8c8229d",
+        "author_source_commit": "cd1b0a672d1fe642e7608731cb4899a19dda7d51",
+        "visual_initial_sha256": "9a92d7f60d061e3282fdc2a557a7d07d7cc519a4534e47239e9240cfb95c62b0",
+        "camera_initial_sha256": "b836a2e23c5dcb8834b69aee4a26a04d4209819b23527bd1c57693ba8e914201",
+        "shared_initializer_sha256": {
+          "backbone": "3423402d38d0867292c5e78d3b847ec5d49a4351575a8082bee7924ab71ecd6e",
+          "neck": "06efe49412cdf6c9d8d9162b9394e4bc49329d169906cecc2b6c4784bcdb166e",
+          "classifier": "47b33e14c05d9560e27d6f6287cd36eabbdd766f6aa26508367922d43571461e"
+        },
+        "initial_model_state_sha256": "801a6b7b12dbf0d92818f7f4b59399eb2e6c16e5aeb8babe0dfea3883ffa63c5",
+        "trainable_parameters": 88993226,
+        "trainable_parameter_tensors": 285,
+        "batch_size": 64,
+        "num_instances": 4,
+        "head_names": [
+          [
+            "bottleneck_r",
+            "classifier_r"
+          ],
+          [
+            "bottleneck_n",
+            "classifier_n"
+          ],
+          [
+            "bottleneck_t",
+            "classifier_t"
+          ]
+        ],
+        "cfg_yaml": "DATALOADER:\n  NUM_INSTANCE: 4\n  NUM_WORKERS: 4\n  SAMPLER: softmax_triplet\nDATASETS:\n  NAMES: MSVR310\n  ROOT_DIR: ..\nINPUT:\n  PADDING: 10\n  PIXEL_MEAN:\n  - 0.5\n  - 0.5\n  - 0.5\n  PIXEL_STD:\n  - 0.5\n  - 0.5\n  - 0.5\n  PROB: 0.5\n  RE_PROB: 0.5\n  SIZE_TEST:\n  - 128\n  - 256\n  SIZE_TRAIN:\n  - 128\n  - 256\nMODEL:\n  ADAPTER: false\n  ATT_DROP_RATE: 0.0\n  DEVICE: cuda\n  DEVICE_ID: '0'\n  DIRECT: 0\n  DIST_TRAIN: false\n  DROP_OUT: 0.0\n  DROP_PATH: 0.1\n  FROZEN: false\n  Gram_Loss_weight: 0.2\n  ID_LOSS_TYPE: softmax\n  ID_LOSS_WEIGHT: 0.25\n  IF_LABELSMOOTH: 'on'\n  IF_WITH_CENTER: 'no'\n  METRIC_LOSS_TYPE: triplet\n  MoE_Loss_weight: 0.1\n  NAME: Signal\n  NECK: bnneck\n  NO_MARGIN: true\n  PAT_Loss_weight: 0.01\n  PRETRAIN_PATH_T: /data/gaob/Re-ID/Trifusion/pertrained-model/ViT-B-16.pt\n  PROMPT: false\n  SIE_CAMERA: true\n  SIE_COE: 1.0\n  SIE_VIEW: false\n  STRIDE_SIZE:\n  - 16\n  - 16\n  TOPK: 64\n  TRANSFORMER_TYPE: ViT-B-16\n  TRIPLET_LOSS_WEIGHT: 1.0\n  USE_A: false\n  USE_B: false\n  stageName: together_CLS_Patch\nOUTPUT_DIR: .\nSOLVER:\n  BASE_LR: 5.0e-06\n  BIAS_LR_FACTOR: 2\n  CENTER_LOSS_WEIGHT: 0.0005\n  CENTER_LR: 0.5\n  CHECKPOINT_PERIOD: 50\n  CLUSTER_MARGIN: 0.3\n  COSINE_MARGIN: 0.5\n  COSINE_SCALE: 30\n  EVAL_PERIOD: 1\n  GAMMA: 0.1\n  IMS_PER_BATCH: 64\n  LARGE_FC_LR: false\n  LOG_PERIOD: 10\n  MARGIN: 0.3\n  MAX_EPOCHS: 50\n  MOMENTUM: 0.9\n  OPTIMIZER_NAME: Adam\n  RANGE_ALPHA: 0\n  RANGE_BETA: 1\n  RANGE_K: 2\n  RANGE_LOSS_WEIGHT: 1\n  RANGE_MARGIN: 0.3\n  SEED: 42\n  STEPS:\n  - 20\n  - 40\n  WARMUP_FACTOR: 0.01\n  WARMUP_ITERS: 0\n  WARMUP_METHOD: linear\n  WEIGHT_DECAY: 0.0001\n  WEIGHT_DECAY_BIAS: 0.0001\nTEST:\n  EVAL: false\n  FEAT_NORM: 'yes'\n  IMS_PER_BATCH: 64\n  MISS: nothing\n  NECK_FEAT: before\n  RE_RANKING: 'no'\n  WEIGHT: ''\nckpt_save_path: MSVR310_all\nckpt_test_path: test_MSVR310\n",
+        "entry_sha256": "70121fe68b6a89830ca98835e84ace604b04986e125881eb571744dc7549c17d",
+        "scope": "Unchanged semantic evidence/raw author global+role tasks and1536 deployment. Training-only objective comparison; not complete P1/P2/P3 or novel loss claim.",
+        "visual_placement": "single_process_original_full_batch_first6_cuda1_last6_and_heads_cuda0",
+        "parameter_placement": {
+          "cuda:0": {
+            "parameters": 45958730,
+            "trainable_parameters": 45466634,
+            "parameter_bytes": 183834920,
+            "gradient_adam_bytes_if_fp32": 545599608
+          },
+          "cuda:1": {
+            "parameters": 43526592,
+            "trainable_parameters": 43526592,
+            "parameter_bytes": 174106368,
+            "gradient_adam_bytes_if_fp32": 522319104
+          }
+        },
+        "role_input_gradient_policy": "detach_stages_context_shared_global_at_role_read_only",
+        "objective_gradient_policy": "author_global_loss_to_shared_and_heads_fused_loss_to_roles_only",
+        "incremental_objective": "repair_keep",
+        "incremental_weight": 1.0,
+        "repair_margin": 0.1,
+        "repair_keep_cell_weights": [
+          0.5,
+          0.5
+        ],
+        "added_model_parameters": 0,
+        "m0_auxiliary_vjp_policy": "unscaled_autocast_disabled_same_original_targets"
+      },
+      "best_epoch": 38,
+      "metrics": {
+        "mAP": 50.54464055641864,
+        "Rank-1": 67.85110235214233,
+        "Rank-5": 80.54145574569702,
+        "Rank-10": 85.44839024543762
+      },
+      "checkpoint_sha256": "e062686b27abe35b7ea042bc343922a872d91bf0bd7daf8fa6036e89ed53cb48",
+      "distance_sha256": "3b26f8a568f56333fbccac49bf50af5f3c8da5850b2535ce469b49c645975580",
+      "receipt_sha256": "dd9eda5555d72d2e1b96775245ce726ebec1a94baebb543b74682fd56a3f8f18",
+      "actual_training_batch_order_equal": true
+    },
+    {
+      "dataset": "RGBNT100",
+      "variant": "md_batch_ratio",
+      "status": "VERIFIED_COMPLETE",
+      "run_dir": "/data/gaob/Re-ID/Trifusion/trained-model/qualified_five_incremental_full_v1_20261007_888_full_md_batch_ratio_RGBNT100",
+      "initializer": {
+        "architecture": "trifusion-incremental-role-objective-v1",
+        "dataset": "RGBNT100",
+        "variant": "semantic",
+        "recipe": "semantic",
+        "foundation_option": "author",
+        "seed": 42,
+        "public_clip_sha256": "5806e77cd80f8b59890b7e101eabd078d9fb84e6937f9e85e4ecb61988df416f",
+        "protocol_sha256": "b2c14adf947b06b27b9576a712f96192c1393ad6ed3ec1be5259b63f88300169",
+        "author_source_commit": "cd1b0a672d1fe642e7608731cb4899a19dda7d51",
+        "visual_initial_sha256": "9a92d7f60d061e3282fdc2a557a7d07d7cc519a4534e47239e9240cfb95c62b0",
+        "camera_initial_sha256": "b836a2e23c5dcb8834b69aee4a26a04d4209819b23527bd1c57693ba8e914201",
+        "shared_initializer_sha256": {
+          "backbone": "1db5ac9c440aca58bb11f2ecb08e7c031bf3ee2d0401934c7b22975edfb1d841",
+          "neck": "06efe49412cdf6c9d8d9162b9394e4bc49329d169906cecc2b6c4784bcdb166e",
+          "classifier": "1deee2afd7a2f8b90231dc24c16cb5e1ce5232e2b1d92383a964342cded88ddd"
+        },
+        "initial_model_state_sha256": "f20e3c7c8ee258192b6c37afa5a41e7f5fe8fa0f3322bdb083009ec57f639f11",
+        "trainable_parameters": 88831946,
+        "trainable_parameter_tensors": 285,
+        "batch_size": 128,
+        "num_instances": 16,
+        "head_names": [
+          [
+            "bottleneck_r",
+            "classifier_r"
+          ],
+          [
+            "bottleneck_n",
+            "classifier_n"
+          ],
+          [
+            "bottleneck_t",
+            "classifier_t"
+          ]
+        ],
+        "cfg_yaml": "DATALOADER:\n  NUM_INSTANCE: 16\n  NUM_WORKERS: 4\n  SAMPLER: softmax_triplet\nDATASETS:\n  NAMES: RGBNT100\n  ROOT_DIR: ..\nINPUT:\n  PADDING: 10\n  PIXEL_MEAN:\n  - 0.5\n  - 0.5\n  - 0.5\n  PIXEL_STD:\n  - 0.5\n  - 0.5\n  - 0.5\n  PROB: 0.5\n  RE_PROB: 0.5\n  SIZE_TEST:\n  - 128\n  - 256\n  SIZE_TRAIN:\n  - 128\n  - 256\nMODEL:\n  ADAPTER: false\n  ATT_DROP_RATE: 0.0\n  DEVICE: cuda\n  DEVICE_ID: '0'\n  DIRECT: 0\n  DIST_TRAIN: false\n  DROP_OUT: 0.0\n  DROP_PATH: 0.1\n  FROZEN: false\n  Gram_Loss_weight: 0.1\n  ID_LOSS_TYPE: softmax\n  ID_LOSS_WEIGHT: 0.25\n  IF_LABELSMOOTH: 'on'\n  IF_WITH_CENTER: 'no'\n  METRIC_LOSS_TYPE: triplet\n  MoE_Loss_weight: 0.1\n  NAME: Signal\n  NECK: bnneck\n  NO_MARGIN: true\n  PAT_Loss_weight: 0.1\n  PRETRAIN_PATH_T: /data/gaob/Re-ID/Trifusion/pertrained-model/ViT-B-16.pt\n  PROMPT: false\n  SIE_CAMERA: true\n  SIE_COE: 1.0\n  SIE_VIEW: false\n  STRIDE_SIZE:\n  - 16\n  - 16\n  TOPK: 112\n  TRANSFORMER_TYPE: ViT-B-16\n  TRIPLET_LOSS_WEIGHT: 1.0\n  USE_A: false\n  USE_B: false\n  stageName: together_CLS_Patch\nOUTPUT_DIR: .\nSOLVER:\n  BASE_LR: 0.0007\n  BIAS_LR_FACTOR: 2\n  CENTER_LOSS_WEIGHT: 0.0005\n  CENTER_LR: 0.5\n  CHECKPOINT_PERIOD: 30\n  CLUSTER_MARGIN: 0.3\n  COSINE_MARGIN: 0.5\n  COSINE_SCALE: 30\n  EVAL_PERIOD: 1\n  GAMMA: 0.1\n  IMS_PER_BATCH: 128\n  LARGE_FC_LR: false\n  LOG_PERIOD: 10\n  MARGIN: 0.3\n  MAX_EPOCHS: 50\n  MOMENTUM: 0.9\n  OPTIMIZER_NAME: Adam\n  RANGE_ALPHA: 0\n  RANGE_BETA: 1\n  RANGE_K: 2\n  RANGE_LOSS_WEIGHT: 1\n  RANGE_MARGIN: 0.3\n  SEED: 42\n  STEPS:\n  - 40\n  - 70\n  WARMUP_FACTOR: 0.01\n  WARMUP_ITERS: 5\n  WARMUP_METHOD: linear\n  WEIGHT_DECAY: 0.0001\n  WEIGHT_DECAY_BIAS: 0.0001\nTEST:\n  EVAL: false\n  FEAT_NORM: 'yes'\n  IMS_PER_BATCH: 128\n  MISS: nothing\n  NECK_FEAT: before\n  RE_RANKING: 'no'\n  WEIGHT: ''\nckpt_save_path: RGBNT100_all\nckpt_test_path: test_RNT100\n",
+        "entry_sha256": "70121fe68b6a89830ca98835e84ace604b04986e125881eb571744dc7549c17d",
+        "scope": "Unchanged semantic evidence/raw author global+role tasks and1536 deployment. Training-only objective comparison; not complete P1/P2/P3 or novel loss claim.",
+        "visual_placement": "single_process_original_full_batch_first6_cuda1_last6_and_heads_cuda0",
+        "parameter_placement": {
+          "cuda:0": {
+            "parameters": 45474890,
+            "trainable_parameters": 45305354,
+            "parameter_bytes": 181899560,
+            "gradient_adam_bytes_if_fp32": 543664248
+          },
+          "cuda:1": {
+            "parameters": 43526592,
+            "trainable_parameters": 43526592,
+            "parameter_bytes": 174106368,
+            "gradient_adam_bytes_if_fp32": 522319104
+          }
+        },
+        "role_input_gradient_policy": "detach_stages_context_shared_global_at_role_read_only",
+        "objective_gradient_policy": "author_global_loss_to_shared_and_heads_fused_loss_to_roles_only",
+        "incremental_objective": "md_batch_ratio",
+        "incremental_weight": 1.0,
+        "repair_margin": 0.1,
+        "repair_keep_cell_weights": [
+          0.5,
+          0.5
+        ],
+        "added_model_parameters": 0,
+        "m0_auxiliary_vjp_policy": "unscaled_autocast_disabled_same_original_targets"
+      },
+      "best_epoch": 5,
+      "metrics": {
+        "mAP": 83.91064365551128,
+        "Rank-1": 95.62682509422302,
+        "Rank-5": 96.90961837768555,
+        "Rank-10": 97.49271273612976
+      },
+      "checkpoint_sha256": "7dbe94c45fa680ce243666ee30e75bb31aa17b8422e83b1f4e0ae90d3a63ae9f",
+      "distance_sha256": "d4efed1adafe0e143f944c1a8d176ca076d79e2ce6583adb7b0b77afc174f59f",
+      "receipt_sha256": "3bfeb50ae585fdc316d55c56bf0c7f40e51c27f0f923df4640762b10348cfcf9",
+      "actual_training_batch_order_equal": true
+    }
+  ]
+}

@@ -1,0 +1,50 @@
+{
+  "shard_id": "paper:DEEP",
+  "entries": [{
+    "dedup_key": "10.1109/TMM.2026.3660160",
+    "kind": "source",
+    "payload": {
+      "identity": {
+        "title": "DEEP: Decoupled Semantic Prompt Learning, Guiding and Embedding for Multi-Spectral Object Re-Identification",
+        "authors": ["Shihao Li", "Chenglong Li", "Aihua Zheng", "Jin Tang", "Bin Luo"],
+        "venue": "IEEE Transactions on Multimedia", "year": 2026,
+        "version": "16-page accepted author manuscript",
+        "metadata_boundary": "Author page/pathnames retain 2025; PDF copyright/DOI and official citation are2026."
+      },
+      "resources": {
+        "image": "CLIP ViT-B/16", "text": "Frozen CLIP text encoder",
+        "concrete_caption_annotations_required": false,
+        "inference_dependency": "Paper uses inverted prompt features in prediction; frozen text encoder remains involved (inference from architecture, no executable code verified).",
+        "exact_initial_checkpoint": null
+      },
+      "training": {"epochs": 60, "optimizer": "Adam", "lr": 0.000005,
+        "weight_decay": 0.0001, "lr_at20": 0.0000005, "lr_at40": 0.00000005,
+        "stated_momentum": 0.9, "sampler": null, "batch_size": null,
+        "person_input": [256,128], "vehicle_input": [128,256], "stages": "End-to-end as described"},
+      "evaluation": {"modalities": "RGB+NIR+TIR", "MSVR310_filter": "Same identity AND same time span excluded, using time labels.",
+        "RGBNT201_RGBNT100_filter": "Common cited protocol, explicit code unavailable.",
+        "exact_query_gallery_counts": null},
+      "reported_metrics": {"units": "percent", "order": ["mAP","R1","R5","R10"],
+        "RGBNT201": [79.6,84.2,89.4,91.5], "RGBNT100": [88.5,97.6,null,null],
+        "MSVR310": [66.0,82.1,90.7,93.9]},
+      "ablation": {"baseline": "Three pretrained CLIP ViT-B/16 visual branches; distinct from CLIP-ReID comparison row.",
+        "RGBNT201_baseline": [71.0,71.5,81.3,86.4], "MSVR310_baseline": [49.1,65.5,82.7,85.6],
+        "RGBNT100_component_ablation": null},
+      "code": {"repo": "https://github.com/lsh-ahu/DEEP-ReID",
+        "agent_observation": "Root/README show no executable sources; assets recursive tree inaccessible via agent web tool.",
+        "parent_recursive_verification": "DEEP_DISCOVERY.json at10:27:55, SHA cc177306528dd8f8c468de2bb2eeba22978a9fb7, contains README/LICENSE/.gitignore and sevenPNG assets only.",
+        "executable_sources_current_main": false, "reproduced_by_project": false},
+      "primary_urls": {
+        "paper": "https://aihuazheng.github.io/publications/pdf/2025/2025-DEEP_Decoupled_Semantic_Prompt_Learning_Guiding_and_Embedding_for_Multi-Spectral_Object_Re-Identification.pdf",
+        "repo": "https://github.com/lsh-ahu/DEEP-ReID"
+      },
+      "source_anchors": {"identity": "PDF p1", "resources": "III-A/B/E",
+        "training": "IV-B p7", "protocol": "IV-A p6-7", "RGBNT201_metrics": "TableI p6",
+        "vehicle_mAP_R1": "TableIV p7", "MSVR310_R5_R10": "TableVI rowf p8",
+        "ablation": "TableVI p8", "recursive_code": "DEEP_TREE.json"},
+      "uncertainties": ["Exact checkpoint, sampler and executable evaluation absent.",
+        "TableIV 88.5/97.6 are RGBNT100 mAP/R1, not MSVR310 R5/R10.",
+        "Paper-reported, not local reproduction or SOTA ranking."]
+    }
+  }]
+}
