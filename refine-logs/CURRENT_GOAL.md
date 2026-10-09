@@ -1,3 +1,5 @@
+> 2026-10-10 §901：Goal ACTIVE_UNMET；900初次六端全部停于M0独立梯度诊断，0正式轮。已登记观察器AMP修正与六个缺失端续接；只26 GPU0/1。新真实M0/正式训练尚待执行，原失败保留。
+
 # Current priority: PAUSED BY USER, 2026-10-08
 
 2026-10-10: The user revised and resumed the Goal and explicitly selected server2026 physical GPU0/1. Research is ACTIVE_UNMET. Prioritize RGBNT201 exceeding full Signal, then RGBNT100/MSVR310; module-removed Signal is the matched development baseline. Keep seed42 for the currently unrun registered frozen-text pilot; complete production source review, prefix qualification and each end's real8M0 before fresh50. Do not restart sealed experiments. Later seed/parameter adaptation requires proximity evidence and a separate fixed comparison. Publish all tried results while retaining the single best deployment checkpoint. No25/GPU2/3/power/temperature actions. USER_PAUSE_20261008.md remains the immutable historical stop/cleanup record; older execution instructions below remain historical.

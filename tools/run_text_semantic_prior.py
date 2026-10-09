@@ -231,13 +231,18 @@ def loss_values(args, output, labels, cameras, loss_fn):
     if args.mode == 'm0':
         role_loss, _ = previous.previous.loss_values(args, output, labels, cameras, loss_fn)
         parameters = list(TEXT_DIAGNOSTICS.parameters.values())
-        gradients = torch.autograd.grad(role_loss, [output['shared_global']] + parameters,
+        # The registered fresh8 M0 uses init_scale256 and growth_interval2000,
+        # with no skipped step/scale decrease. Match its actual AMP backward;
+        # an unscaled VJP can underflow through the existing AMP path.
+        m0_gradient_scale = 256.0
+        gradients = torch.autograd.grad(role_loss * m0_gradient_scale, [output['shared_global']] + parameters,
                                         retain_graph=True, allow_unused=True)
         assert gradients[0] is None
         assert all(g is not None and bool(torch.isfinite(g).all()) for g in gradients[1:])
         values['text_role_shared_global_gradient_absent'] = True
+        values['text_isolated_vjp_scale'] = m0_gradient_scale
         values['text_isolated_task_gradient_max_abs'] = {
-            name: float(g.detach().abs().max())
+            name: float((g.detach().float() / m0_gradient_scale).abs().max())
             for name, g in zip(TEXT_DIAGNOSTICS.parameters, gradients[1:])}
     return loss, values
 

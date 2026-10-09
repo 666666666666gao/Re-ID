@@ -93,6 +93,7 @@ def accept_m0(campaign, dataset, package):
     assert all(row['cumulative_delta_max_abs'] > 0 for row in activity['steps'][-1]['parameters'].values())
     steps = [json.loads(line) for line in (output / 'training_steps.jsonl').read_text().splitlines()]
     assert len(steps) == 8 and all(row['text_role_shared_global_gradient_absent'] for row in steps)
+    assert all(row['text_isolated_vjp_scale'] == 256.0 for row in steps)
     assert all(set(row['text_isolated_task_gradient_max_abs']) == names for row in steps)
     assert all(math.isfinite(value) and value >= 0 for row in steps
                for value in row['text_isolated_task_gradient_max_abs'].values())
@@ -170,27 +171,42 @@ def coordinate(args):
     controls = json.loads(CONTROLS.read_text())
     assert len(controls['rows']) == 6 and all(base.sha(Path(name)) == digest for name, digest in controls['artifact_sha256'].items())
     sources = source_map()
+    prior = json.loads((args.prior_campaign / 'campaign.json').read_text())
+    prior_matrix = json.loads((args.prior_campaign / 'accepted_matrix.json').read_text())
+    prior_manifest = json.loads((args.prior_campaign / 'manifest.json').read_text())
+    assert prior['status'] == 'COMPLETE_WITH_MISSING' and prior['report_exit_code'] == 0
+    assert prior_matrix['accepted'] == 0 and prior_matrix['expected'] == 6
+    expected = {(d, p) for d in DATASETS for p in PACKAGES}
+    assert {(j['dataset'], j['package']) for j in prior['jobs']} == expected
+    assert {(j['dataset'], j['package']) for j in prior_matrix['missing']} == expected
+    assert all(j['status'] == 'FAILED' and j['failed_phase'] == 'accept-m0' for j in prior['jobs'])
+    assert set(prior_manifest['source_sha256']) == set(sources)
+    changed = {name for name, digest in sources.items() if prior_manifest['source_sha256'][name] != digest}
+    assert changed == {'tools/run_text_semantic_prior.py', 'tools/queue_text_semantic_prior.py'}
+    qualified_prefix = args.prior_campaign / 'prefix.json'
+    prefix_receipt = json.loads(qualified_prefix.read_text())
+    assert prefix_receipt['status'] == 'PREFIX_OUTPUT_AND_INPUT_VJP_PASS' and len(prefix_receipt['rows']) == 4
+    assert prefix_receipt['clip_sha256'] == base.sha(previous.WEIGHTS / 'ViT-B-16.pt')
+    assert prior_manifest['initialization_sha256'][str(qualified_prefix)] == base.sha(qualified_prefix)
     base.source_map = source_map
     args.campaign.mkdir(parents=True)
     jobs = [dict(dataset=d, package=p, status='PENDING', steps=[]) for d in DATASETS for p in PACKAGES]
     manifest = dict(schema=SCHEMA, source_sha256=sources, initialization_sha256={}, jobs=jobs,
         control_seal_sha256=base.sha(CONTROLS), physical_gpus=[0, 1], max_parallel_jobs=1,
         storage_required_bytes=STORAGE_BYTES, epochs=50, seed=42,
+        continuation_from=str(args.prior_campaign), prior_accepted=0, prior_missing=6,
         boundary='Six fixed frozen text-package necessity endpoints; per-end real8M0 then fresh50, no score-driven tuning/retry or old control retraining.')
     state = dict(status='RUNNING', controller_pid=os.getpid(), started_at=base.queue.stamp(), jobs=jobs, report_invocations=0)
     base.queue.write(args.campaign / 'manifest.json', manifest)
     base.queue.write(args.campaign / 'campaign.json', state)
-    prefix = dict(mode='prefix', command=[sys.executable, '-B', str(ROOT / 'tools/check_text_semantic_prefix.py'),
-        '--signal-source', str(previous.SOURCE), '--clip-weight', str(previous.WEIGHTS / 'ViT-B-16.pt'),
-        '--output', str(args.campaign / 'prefix.json')])
+    prefix = dict(mode='qualified-prefix-reuse', status='REUSED_PASS', source=str(qualified_prefix),
+                  source_sha256=base.sha(qualified_prefix), new_neural_forwards=0, new_input_vjps=0)
     state['prefix'] = prefix
-    if previous.run_logged(args.campaign, state, prefix, 'prefix.log'):
-        return 1
     prefix_path = args.campaign / 'prefix.json'
-    prefix_receipt = json.loads(prefix_path.read_text())
-    assert prefix_receipt['status'] == 'PREFIX_OUTPUT_AND_INPUT_VJP_PASS' and len(prefix_receipt['rows']) == 4
+    prefix_path.write_bytes(qualified_prefix.read_bytes())
     manifest['initialization_sha256'][str(prefix_path)] = base.sha(prefix_path)
     base.queue.write(args.campaign / 'manifest.json', manifest)
+    base.queue.write(args.campaign / 'campaign.json', state)
     for job in jobs:
         dataset, package = job['dataset'], job['package']
         for mode in ('prepare', 'accept-initialization', 'm0', 'accept-m0', 'train', 'evaluate', 'accept-full'):
@@ -229,6 +245,7 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--campaign', type=Path, required=True)
     parser.add_argument('--report-dir', type=Path)
+    parser.add_argument('--prior-campaign', type=Path)
     parser.add_argument('--accept', choices=('initialization', 'm0', 'full'))
     parser.add_argument('--dataset', choices=DATASETS)
     parser.add_argument('--text-package', choices=PACKAGES)
@@ -239,6 +256,7 @@ if __name__ == '__main__':
         source_map()
         {'initialization': accept_initialization, 'm0': accept_m0, 'full': accept_full}[args.accept](args.campaign, args.dataset, args.text_package)
     else:
-        assert args.report_dir is not None and args.dataset is None and args.text_package is None
+        assert args.report_dir is not None and args.prior_campaign is not None and args.dataset is None and args.text_package is None
         args.report_dir = args.report_dir.resolve()
+        args.prior_campaign = args.prior_campaign.resolve()
         raise SystemExit(coordinate(args))

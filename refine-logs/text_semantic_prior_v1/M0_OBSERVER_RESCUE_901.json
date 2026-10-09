@@ -1,0 +1,499 @@
+{
+  "schema": "trifusion-text-semantic-prior-m0-rescue-v1",
+  "created_at": "2026-10-10T00:55:13.501072+08:00",
+  "verdict": "REVISE_OBSERVER_ONLY",
+  "acceptance_status": "provisional",
+  "reviewer": {
+    "task": "/root/rescue_text_m0_amp901",
+    "requested_model": "gpt-6-astra",
+    "requested_reasoning_effort": "max",
+    "actual_model_identity": "UNATTESTED",
+    "actual_reasoning_effort": "UNATTESTED",
+    "review_independence": "same-family",
+    "context": "Fresh rescue review of primary runtime failure, not continuation of the earlier source reviewer."
+  },
+  "scope": {
+    "local_read_only_except_requested_reports": true,
+    "ssh_calls": 0,
+    "neural_network_runs": 0,
+    "gpu_calls": 0,
+    "torch_imports": 0,
+    "package_installs": 0,
+    "source_edits": 0,
+    "subagents_spawned": 0,
+    "git_head": "7ab14d15e575ce35c5427278f3517970ac38465d",
+    "source_review_before_failure": "R2 SOURCE_ONLY_PASS; actual runtime acceptance now failed. This is the first runtime implementation attempt after that source review, with the same failure on two R201 packages; not multiple failed repair attempts."
+  },
+  "classification": {
+    "established": "Observer numerical mismatch: unscaled isolated role VJP reports zeros where actual scaled-backward/unscaled optimizer gradients are nonzero, with no global-loss route to the five text parameters.",
+    "most_supported_cause": "Loss-scaling omission in the M0-only isolated VJP; small upstream gradients cross AMP float16 operations outside the FP32 text conditioner.",
+    "cause_status": "Strong source-and-receipt inference; no saved intermediate backward tensors and no scaled isolated VJP replay in this review. Exact first underflowing kernel is not localized.",
+    "algorithm_defect": "No disconnected/frozen psi-W task path or loss-routing defect is evidenced by these receipts. This is not a claim of retrieval benefit or broad algorithm correctness."
+  },
+  "actual_r201_receipts": {
+    "pretrained": {
+      "producer_status": "M0_PASS",
+      "acceptor_status": "FAILED at queue_text_semantic_prior.py:100",
+      "actual_step_rows": 8,
+      "effective_optimizer_updates": 8,
+      "trainable_tensors": 286,
+      "nonzero_gradient_tensors": 286,
+      "reload_max_abs_difference": 0.0,
+      "bn_batches_tracked": {
+        "bottleneck": 8
+      },
+      "frozen_text_states": 149,
+      "frozen_text_initial_sha256": "a6dcc4d2a32cc54d9178f8937517fc603c3cea1a6797ab8613cbbaac699990cd",
+      "frozen_text_final_sha256": "a6dcc4d2a32cc54d9178f8937517fc603c3cea1a6797ab8613cbbaac699990cd",
+      "all_role_shared_global_gradient_absent": true,
+      "initializer_binding_exact": true,
+      "two_actual_gradient_hook_copies_exact": true,
+      "formal_best_epoch": null,
+      "formal_retrieval_rows": 0,
+      "parameters": {
+        "psi.0.weight": {
+          "actual_step1_max_abs": 0.0,
+          "actual_steps2_8_nonzero_count": 7,
+          "actual_steps2_8_min_max_abs": 1.4771289968962265e-08,
+          "actual_steps2_8_max_max_abs": 5.86449075967721e-08,
+          "isolated_steps2_8_nonzero_count": 0,
+          "isolated_max_abs": 0.0,
+          "final_cumulative_delta_max_abs": 0.0001866072416305542
+        },
+        "psi.0.bias": {
+          "actual_step1_max_abs": 0.0,
+          "actual_steps2_8_nonzero_count": 7,
+          "actual_steps2_8_min_max_abs": 2.042656532807996e-08,
+          "actual_steps2_8_max_max_abs": 7.91218752738132e-08,
+          "isolated_steps2_8_nonzero_count": 0,
+          "isolated_max_abs": 0.0,
+          "final_cumulative_delta_max_abs": 0.0002848021686077118
+        },
+        "psi.2.weight": {
+          "actual_step1_max_abs": 0.0,
+          "actual_steps2_8_nonzero_count": 7,
+          "actual_steps2_8_min_max_abs": 1.0781022741213064e-09,
+          "actual_steps2_8_max_max_abs": 3.6248000157002025e-09,
+          "isolated_steps2_8_nonzero_count": 0,
+          "isolated_max_abs": 0.0,
+          "final_cumulative_delta_max_abs": 0.00018683075904846191
+        },
+        "psi.2.bias": {
+          "actual_step1_max_abs": 0.0,
+          "actual_steps2_8_nonzero_count": 7,
+          "actual_steps2_8_min_max_abs": 2.443377589145257e-08,
+          "actual_steps2_8_max_max_abs": 8.846332377743238e-08,
+          "isolated_steps2_8_nonzero_count": 0,
+          "isolated_max_abs": 0.0,
+          "final_cumulative_delta_max_abs": 0.0002851560711860657
+        },
+        "output.weight": {
+          "actual_step1_max_abs": 0.0,
+          "actual_steps2_8_nonzero_count": 7,
+          "actual_steps2_8_min_max_abs": 1.4862153818739898e-07,
+          "actual_steps2_8_max_max_abs": 6.455117045334191e-07,
+          "isolated_steps2_8_nonzero_count": 1,
+          "isolated_max_abs": 5.960464477539063e-08,
+          "final_cumulative_delta_max_abs": 0.00018665939569473267
+        }
+      }
+    },
+    "random": {
+      "producer_status": "M0_PASS",
+      "acceptor_status": "FAILED at queue_text_semantic_prior.py:100",
+      "actual_step_rows": 8,
+      "effective_optimizer_updates": 8,
+      "trainable_tensors": 286,
+      "nonzero_gradient_tensors": 286,
+      "reload_max_abs_difference": 0.0,
+      "bn_batches_tracked": {
+        "bottleneck": 8
+      },
+      "frozen_text_states": 149,
+      "frozen_text_initial_sha256": "6cd18e733c602bbf14ab59bb35a75c5f5bb658f6fbc3f50551ef34f81645c62a",
+      "frozen_text_final_sha256": "6cd18e733c602bbf14ab59bb35a75c5f5bb658f6fbc3f50551ef34f81645c62a",
+      "all_role_shared_global_gradient_absent": true,
+      "initializer_binding_exact": true,
+      "two_actual_gradient_hook_copies_exact": true,
+      "formal_best_epoch": null,
+      "formal_retrieval_rows": 0,
+      "parameters": {
+        "psi.0.weight": {
+          "actual_step1_max_abs": 0.0,
+          "actual_steps2_8_nonzero_count": 7,
+          "actual_steps2_8_min_max_abs": 6.442562039410404e-09,
+          "actual_steps2_8_max_max_abs": 2.353903916230138e-08,
+          "isolated_steps2_8_nonzero_count": 0,
+          "isolated_max_abs": 0.0,
+          "final_cumulative_delta_max_abs": 0.00018661096692085266
+        },
+        "psi.0.bias": {
+          "actual_step1_max_abs": 0.0,
+          "actual_steps2_8_nonzero_count": 7,
+          "actual_steps2_8_min_max_abs": 8.84393713818099e-09,
+          "actual_steps2_8_max_max_abs": 3.148156579868555e-08,
+          "isolated_steps2_8_nonzero_count": 0,
+          "isolated_max_abs": 0.0,
+          "final_cumulative_delta_max_abs": 0.0002848021686077118
+        },
+        "psi.2.weight": {
+          "actual_step1_max_abs": 0.0,
+          "actual_steps2_8_nonzero_count": 7,
+          "actual_steps2_8_min_max_abs": 4.158866584447196e-10,
+          "actual_steps2_8_max_max_abs": 1.5213106330236315e-09,
+          "isolated_steps2_8_nonzero_count": 0,
+          "isolated_max_abs": 0.0,
+          "final_cumulative_delta_max_abs": 0.00018683075904846191
+        },
+        "psi.2.bias": {
+          "actual_step1_max_abs": 0.0,
+          "actual_steps2_8_nonzero_count": 7,
+          "actual_steps2_8_min_max_abs": 9.387430388585472e-09,
+          "actual_steps2_8_max_max_abs": 3.4608305554684193e-08,
+          "isolated_steps2_8_nonzero_count": 0,
+          "isolated_max_abs": 0.0,
+          "final_cumulative_delta_max_abs": 0.00028514862060546875
+        },
+        "output.weight": {
+          "actual_step1_max_abs": 0.0,
+          "actual_steps2_8_nonzero_count": 7,
+          "actual_steps2_8_min_max_abs": 2.6600508462593098e-08,
+          "actual_steps2_8_max_max_abs": 1.1644144848332871e-07,
+          "isolated_steps2_8_nonzero_count": 0,
+          "isolated_max_abs": 0.0,
+          "final_cumulative_delta_max_abs": 0.00018662959337234497
+        }
+      }
+    }
+  },
+  "prefix": {
+    "status": "PREFIX_OUTPUT_AND_INPUT_VJP_PASS",
+    "rows": [
+      {
+        "package": "pretrained",
+        "template": "person",
+        "output_max_abs_difference": 9.5367431640625e-07,
+        "input_vjp_max_abs_difference": 3.1948089599609375e-05,
+        "frozen_state_unchanged": true,
+        "persistent_tensors": 149
+      },
+      {
+        "package": "pretrained",
+        "template": "vehicle",
+        "output_max_abs_difference": 9.5367431640625e-07,
+        "input_vjp_max_abs_difference": 5.5789947509765625e-05,
+        "frozen_state_unchanged": true,
+        "persistent_tensors": 149
+      },
+      {
+        "package": "random",
+        "template": "person",
+        "output_max_abs_difference": 2.8014183044433594e-06,
+        "input_vjp_max_abs_difference": 2.86102294921875e-05,
+        "frozen_state_unchanged": true,
+        "persistent_tensors": 149
+      },
+      {
+        "package": "random",
+        "template": "vehicle",
+        "output_max_abs_difference": 2.1457672119140625e-06,
+        "input_vjp_max_abs_difference": 2.765655517578125e-05,
+        "frozen_state_unchanged": true,
+        "persistent_tensors": 149
+      }
+    ],
+    "clip_sha256": "5806e77cd80f8b59890b7e101eabd078d9fb84e6937f9e85e4ecb61988df416f",
+    "neural_forwards": 8,
+    "input_vjps": 8,
+    "optimizer_updates": 0,
+    "output_atol": 1e-05,
+    "output_rtol": 1e-05,
+    "input_vjp_atol": 0.0001,
+    "input_vjp_rtol": 0.0001,
+    "completed_at": "2026-10-10T00:39:39.427757+08:00",
+    "boundary": "Fixed synthetic input engineering check; not real model M0 or retrieval result."
+  },
+  "scale_proof": {
+    "actual_installed_source_local_path": "C:\\Users\\gb\\.codex_tmp\\independent_evidence_draft\\text_semantic_prior900\\runtime\\grad_scaler.py",
+    "actual_installed_source_remote_path": "/data/gaob/Re-ID/conda-envs/tri_reid/lib/python3.10/site-packages/torch/amp/grad_scaler.py",
+    "actual_installed_source_sha256": "eb4bc91fda9815ba40206e2dbb68f9845b85622fee3a92611f227b5845b20780",
+    "source_supplied_by": "Parent copied installed source read-only; reviewer read this exact local file and verified its stated SHA.",
+    "constructor_defaults": {
+      "device": "'cuda'",
+      "init_scale": "2.0 ** 16",
+      "growth_factor": "2.0",
+      "backoff_factor": "0.5",
+      "growth_interval": "2000",
+      "enabled": "True"
+    },
+    "fresh_training_init_scale": 256.0,
+    "initial_growth_tracker": 0,
+    "m0_iterations": 8,
+    "growth_interval": 2000,
+    "finite_unscaled_gradients_asserted_each_step": true,
+    "no_scale_decrease_asserted_each_step": true,
+    "actual_effective_optimizer_updates_per_arm": 8,
+    "manual_new_scale_or_scaler_restore_in_loop": false,
+    "derived_actual_scale_on_all_m0_steps": 256.0,
+    "attribution": "Derived from the bound training loop, installed GradScaler source and completed receipts; old step logs do not directly record get_scale()."
+  },
+  "minimal_prospective_repair": {
+    "file": "tools/run_text_semantic_prior.py",
+    "location": "loss_values, M0-only isolated autograd.grad and scalar extraction (old lines231-241)",
+    "gradient_expression": "torch.autograd.grad(role_loss * 256.0, [output[\"shared_global\"]] + parameters, retain_graph=True, allow_unused=True)",
+    "stored_scalar_expression": "float((g.detach().float() / 256.0).abs().max())",
+    "must_preserve": [
+      "Return the original loss unchanged.",
+      "Keep gradients[0] is None and finite/non-None checks.",
+      "Keep queue line100 exact >0 for each tensor on steps2-8; keep every existing gate.",
+      "Keep first-step zero expectation, eight steps, actual .grad observation and cumulative-update checks.",
+      "Keep original model, two-GPU placement, optimizer, actual GradScaler, precision, seed42, losses, margins, LR, batches and full50 recipe.",
+      "Do not edit any of the historical429 sources."
+    ],
+    "optional_receipt_field": "A single text_isolated_vjp_loss_scale=256.0 field documents the numerical observation coefficient; label it as the derived M0 scale, not a newly observed get_scale().",
+    "share_actual_scale": "No new scaler hook/factory/proxy is needed for this fixed-eight-step path: the same value256 is proved. Do not generalize this fixed coefficient to formal training; the isolated diagnostic only runs in mode=m0.",
+    "proposed_fix_runtime_status": "NOT_RUN; a freshly reviewed revised source and new named actual M0 must satisfy the original gate before fresh50 for that endpoint."
+  },
+  "workflow_boundary": [
+    "Keep all original failed receipts unchanged; producer M0_PASS does not override acceptor failure.",
+    "Do not modify the active source433 campaign or restart it. Let the original controller/report close its fixed six jobs.",
+    "After closure, consider only missing endpoints under newly reviewed diagnostic revision and new named M0; never repeat any endpoint that the original campaign completes.",
+    "No scientific thresholds, seed, margin, LR, epochs, model, loss or M0 length changes. No fallback or new hash framework.",
+    "This rescue is not revised-source approval, runtime acceptance, formal epoch completion or scientific success."
+  ],
+  "source_points": [
+    {
+      "file": "tools/run_text_semantic_prior.py",
+      "lines": "97-117;190-207;217-241",
+      "fact": "Actual post-step hooks versus unscaled isolated role-only VJP."
+    },
+    {
+      "file": "tools/run_foundation_recipe.py",
+      "lines": "198;211-241;263-283",
+      "fact": "Fresh init256, outer FP16 autocast, scaled backward/unscale, finite and no-decrease assertions, exact8-step M0 and strict reload."
+    },
+    {
+      "file": "tools/run_global_task_role.py",
+      "lines": "25-31",
+      "fact": "Training loss is global_loss+fused_role_loss."
+    },
+    {
+      "file": "modeling/trifusion/global_task_role_heads.py",
+      "lines": "8-12;20-32",
+      "fact": "Global heads use shared_global; fused heads use detached head state and detached global plus correction."
+    },
+    {
+      "file": "modeling/trifusion/text_semantic_prior.py",
+      "lines": "117-133",
+      "fact": "psi/text/W run in FP32; visual inputs detach before conditioner, augmented context stays differentiable."
+    },
+    {
+      "file": "modeling/trifusion/role_global_tokens.py",
+      "lines": "29-41",
+      "fact": "context_queries linear executes under outer autocast before FP32 sample_context."
+    },
+    {
+      "file": "modeling/trifusion/slot_competition_fp32_roles.py",
+      "lines": "10-20",
+      "fact": "Attention subregion casts context_queries to FP32, which does not erase the preceding FP16 backward boundary."
+    },
+    {
+      "file": "tools/queue_text_semantic_prior.py",
+      "lines": "69-117;194-215",
+      "fact": "Exact failing assertion and still-pending later checks; endpoint failure skips its train and proceeds to next fixed job."
+    },
+    {
+      "file": "C:\\Users\\gb\\.codex_tmp\\independent_evidence_draft\\text_semantic_prior900\\runtime\\grad_scaler.py",
+      "lines": "119-147;205-210;333-339;350-352;463-528",
+      "fact": "Actual library defaults, initial tracker, multiply, unscale, nonfinite-step skip and growth/backoff behavior."
+    }
+  ],
+  "reviewed_source_files": [
+    {
+      "path": "tools/run_text_semantic_prior.py",
+      "bytes": 18355,
+      "sha256": "5cd50aefb158fd625a575e2add2930f93a9ca5f77135a7e64026dd753ebf3372",
+      "scope_exact": true,
+      "git_head_exact": true,
+      "stdlib_ast_parse": "PASS"
+    },
+    {
+      "path": "tools/queue_text_semantic_prior.py",
+      "bytes": 16315,
+      "sha256": "3fdde688b583c2e08167cb10aaf539863ac89f192de78872203065370258de2c",
+      "scope_exact": true,
+      "git_head_exact": true,
+      "stdlib_ast_parse": "PASS"
+    },
+    {
+      "path": "tools/run_foundation_recipe.py",
+      "bytes": 18242,
+      "sha256": "c18042509dc33ff66eee1a6b04a723ad55685bd5d9daf218c3779703ffe20758",
+      "scope_exact": true,
+      "git_head_exact": true,
+      "stdlib_ast_parse": "PASS"
+    },
+    {
+      "path": "tools/run_global_task_role.py",
+      "bytes": 2127,
+      "sha256": "151a3350a9da7d86ce6b4b7d5160537b182792ab08727ccb5e4ab0c64bb56d5f",
+      "scope_exact": true,
+      "git_head_exact": true,
+      "stdlib_ast_parse": "PASS"
+    },
+    {
+      "path": "tools/run_role_input_detach.py",
+      "bytes": 1753,
+      "sha256": "a177fd5aa4d5ba25422a49cb619062001722d6c7640891cb3da9645a8eb32fe5",
+      "scope_exact": true,
+      "git_head_exact": true,
+      "stdlib_ast_parse": "PASS"
+    },
+    {
+      "path": "tools/run_native_research.py",
+      "bytes": 781,
+      "sha256": "b48725622371fc6d9671c464ce97252e2e06eba465e213ce221d84c798e52cc2",
+      "scope_exact": true,
+      "git_head_exact": true,
+      "stdlib_ast_parse": "PASS"
+    },
+    {
+      "path": "tools/run_native_partitioned.py",
+      "bytes": 2289,
+      "sha256": "2c3abac37b122760895b97ccf01d4fefe2cfb8223b35b6e2e335a1a4144f72fa",
+      "scope_exact": true,
+      "git_head_exact": true,
+      "stdlib_ast_parse": "PASS"
+    },
+    {
+      "path": "tools/run_independent_native_evidence.py",
+      "bytes": 10367,
+      "sha256": "2429af8d2f803d70b9d15113a430609ead28621eb4341a746c3025cc5685fe23",
+      "scope_exact": true,
+      "git_head_exact": true,
+      "stdlib_ast_parse": "PASS"
+    },
+    {
+      "path": "modeling/trifusion/text_semantic_prior.py",
+      "bytes": 6878,
+      "sha256": "4b1c5448929881f2914113fcf6fbaba18112da0eae0f9a7264bfe6b2e66d7382",
+      "scope_exact": true,
+      "git_head_exact": true,
+      "stdlib_ast_parse": "PASS"
+    },
+    {
+      "path": "modeling/trifusion/role_global_tokens.py",
+      "bytes": 4968,
+      "sha256": "f41ff1af1fb1b6303a9af63cf039263e2572c16b23813f92a0297f014e71dd4f",
+      "scope_exact": true,
+      "git_head_exact": true,
+      "stdlib_ast_parse": "PASS"
+    },
+    {
+      "path": "modeling/trifusion/global_task_role_heads.py",
+      "bytes": 1774,
+      "sha256": "2298763b70b48718411db52e55f32dabddade5af0e56457a85eeabab4f9fcefd",
+      "scope_exact": true,
+      "git_head_exact": true,
+      "stdlib_ast_parse": "PASS"
+    },
+    {
+      "path": "modeling/trifusion/slot_competition_fp32_roles.py",
+      "bytes": 1763,
+      "sha256": "810801e048bcb07ddbdef0635708b63cba7562a4876e044af34135fd412f79c8",
+      "scope_exact": true,
+      "git_head_exact": true,
+      "stdlib_ast_parse": "PASS"
+    }
+  ],
+  "primary_receipt_files": [
+    {
+      "path": "prefix.json",
+      "bytes": 1513,
+      "sha256": "d6f1e7ae273a0f958794c9ed6c8d913ca94c5f7315628f453bb67d890c45927f"
+    },
+    {
+      "path": "pretrained/accept-m0.log",
+      "bytes": 497,
+      "sha256": "89cb9f25d922c0ca2f3034adf0af0b0de794e488ce066046aafe525dd5f99955"
+    },
+    {
+      "path": "pretrained/initialization.json",
+      "bytes": 4801,
+      "sha256": "97616cc5f7d91caeee0fb22a40d00099eda5fc732b023149cadbfc816fbe7e85"
+    },
+    {
+      "path": "pretrained/text_updates.jsonl",
+      "bytes": 5067,
+      "sha256": "c121f1c48f69f351a71b5b5639ba629b5d5fbef38654a5223276e3819e08fd25"
+    },
+    {
+      "path": "pretrained/training.json",
+      "bytes": 75193,
+      "sha256": "ae60d41bab3abf82199ff6101712f37cc56f493948351ec0dfa5248ec5fd268a"
+    },
+    {
+      "path": "pretrained/training_batch_order.jsonl",
+      "bytes": 16488,
+      "sha256": "b6e9f9e803cc762d405c97faaabbe27222ca489e42a646504062ca95ef07325e"
+    },
+    {
+      "path": "pretrained/training_steps.jsonl",
+      "bytes": 67239,
+      "sha256": "1a03ff6d04fa4b2ced76a2a37f52db5ad994598de8511a375a99ac481ad04875"
+    },
+    {
+      "path": "random/accept-m0.log",
+      "bytes": 497,
+      "sha256": "89cb9f25d922c0ca2f3034adf0af0b0de794e488ce066046aafe525dd5f99955"
+    },
+    {
+      "path": "random/initialization.json",
+      "bytes": 4797,
+      "sha256": "b75c36c7563ea8a90cf3b98568df407a3eeaee8dfb60c6690903b2c2ae522b1c"
+    },
+    {
+      "path": "random/text_updates.jsonl",
+      "bytes": 5083,
+      "sha256": "cf4c50bcb8fe4cf9c3f9d5670f749f5258c95102ab72c2b6aafe554556c448b4"
+    },
+    {
+      "path": "random/training.json",
+      "bytes": 75196,
+      "sha256": "a9548e566d4245f3fc1302d454fc3c85d22acb9c6e81e1e9ff4624e8cb3eb3a0"
+    },
+    {
+      "path": "random/training_batch_order.jsonl",
+      "bytes": 16488,
+      "sha256": "b6e9f9e803cc762d405c97faaabbe27222ca489e42a646504062ca95ef07325e"
+    },
+    {
+      "path": "random/training_steps.jsonl",
+      "bytes": 67083,
+      "sha256": "6cfa3a465a43ac420d481cfe0150898c6ba7841ed94306241b45e1b15396e494"
+    }
+  ],
+  "validation": {
+    "stdlib_receipt_parse_and_arithmetic": "PASS",
+    "selected12_source_SHA_to_scope_and_Git_HEAD": "PASS",
+    "selected12_source_AST_parse": "PASS",
+    "initializer_hash_binding_and_exact_object_comparison": "PASS",
+    "all16_actual_updates_and_isolated_observations_checked": "PASS",
+    "archive_to_extracted13_files": "EXACT",
+    "archive_sha256": "0955b170b1d3f3cd8aae49d181cc92086cfe8ce0d50f2622bf392ae2a04bfc47",
+    "installed_GradScaler_AST_defaults": "PASS",
+    "scoped433_local_availability": {
+      "exact": 299,
+      "CRLF_only_difference": 27,
+      "absent_author_protocol_files": 107,
+      "meaning": "No independent all433 local-byte match is claimed; twelve decisive sources were exact. No normalization/edit was performed."
+    }
+  },
+  "remaining_limits": [
+    "No model, backward, checkpoint reload or corrected observer execution by this reviewer. Existing reload/frozen-state claims are verified as mutually consistent receipt statements, not fresh binary replay.",
+    "No new scaled isolated VJP result yet. The repair is well-grounded but actual success must be observed.",
+    "Only R201 failed-package primary receipts are assessed; no claims about later live campaign endpoints.",
+    "No formal retrieval result or utility claim is established.",
+    "Same-family provisional review; actual backend model/effort identity is unattested."
+  ]
+}

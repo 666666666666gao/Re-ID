@@ -430,12 +430,695 @@
     "tools/queue_prepool_dense_correspondence.py": "cb4275eea0942f7b89c4c9febd61f5bced388b8cc4d4db1f93083b021250b111",
     "tools/report_prepool_dense_correspondence.py": "1f11d1e4557903abec023c53064f26eeae7591818bec71d0b598789e86b818f2",
     "modeling/trifusion/text_semantic_prior.py": "4b1c5448929881f2914113fcf6fbaba18112da0eae0f9a7264bfe6b2e66d7382",
-    "tools/run_text_semantic_prior.py": "18fafa9a7157077d7ad22a0359de905163bb17a8eb7b04b8f54c6b6bce436c79",
+    "tools/run_text_semantic_prior.py": "5cd50aefb158fd625a575e2add2930f93a9ca5f77135a7e64026dd753ebf3372",
     "tools/check_text_semantic_prefix.py": "f0b720cad3abaa7b337365e25380711cbd5a1964d2a93bd9800eeb25b844ecf9",
-    "tools/queue_text_semantic_prior.py": "ca679c4aa182cac2e698ce8571e12cc282c7182999e6e3650a60e66206c695e6",
+    "tools/queue_text_semantic_prior.py": "3fdde688b583c2e08167cb10aaf539863ac89f192de78872203065370258de2c",
     "tools/report_text_semantic_prior.py": "f4b415ace5dad9c03131d8dd23b850629bbc6170f3a1a290a6f0ec64f55adc2b"
   },
-  "source_review": "901_SOURCE_ONLY_PASS",
-  "production_validation": "901_CORRECTED_M0_PENDING",
-  "boundary": "Original429 sources, prefix and report tools unchanged. M0 diagnostic AMP scaling repaired; explicit six-missing continuation reuses original qualified prefix. Original900 failures remain immutable."
+  "initialization_sha256": {
+    "/data/gaob/Re-ID/Trifusion/logs/text_semantic_prior_v1_20261010_900/prefix.json": "d6f1e7ae273a0f958794c9ed6c8d913ca94c5f7315628f453bb67d890c45927f",
+    "/data/gaob/Re-ID/Trifusion/logs/text_semantic_prior_v1_20261010_900/initialization/RGBNT201_pretrained.json": "97616cc5f7d91caeee0fb22a40d00099eda5fc732b023149cadbfc816fbe7e85",
+    "/data/gaob/Re-ID/Trifusion/logs/text_semantic_prior_v1_20261010_900/initialization/RGBNT201_random.json": "b75c36c7563ea8a90cf3b98568df407a3eeaee8dfb60c6690903b2c2ae522b1c",
+    "/data/gaob/Re-ID/Trifusion/logs/text_semantic_prior_v1_20261010_900/initialization/MSVR310_pretrained.json": "ecc50a935ad9b3ab17dcebeabebe8866cd711dae624c9bf0ec3b226e0856cc3b",
+    "/data/gaob/Re-ID/Trifusion/logs/text_semantic_prior_v1_20261010_900/initialization/MSVR310_random.json": "164335433e296c9e84ee5a639fcc01c9b715e1dfc7ae39629177e5a8ad44e338",
+    "/data/gaob/Re-ID/Trifusion/logs/text_semantic_prior_v1_20261010_900/initialization/RGBNT100_pretrained.json": "a41e54a9652964417d31ba4beed98f9c455cd01e9fce53dba1ce366bee589260",
+    "/data/gaob/Re-ID/Trifusion/logs/text_semantic_prior_v1_20261010_900/initialization/RGBNT100_random.json": "50e4444c71d628e6b29ea697f777e17bce07ad24ca8095deec7b4b24c2cd3ba4"
+  },
+  "jobs": [
+    {
+      "dataset": "RGBNT201",
+      "package": "pretrained",
+      "status": "FAILED",
+      "steps": [
+        {
+          "mode": "prepare",
+          "command": [
+            "/data/gaob/Re-ID/conda-envs/tri_reid/bin/python",
+            "-B",
+            "/data/gaob/Re-ID/Trifusion/tools/run_text_semantic_prior.py",
+            "--dataset",
+            "RGBNT201",
+            "--text-package",
+            "pretrained",
+            "--mode",
+            "prepare",
+            "--protocol",
+            "/data/gaob/Re-ID/Trifusion/logs/training_feature_scale_protocols_20261002/RGBNT201.json",
+            "--signal-source",
+            "/data/gaob/Re-ID/Trifusion/comparators/Signal-cd1b0a6",
+            "--clip-weight",
+            "/data/gaob/Re-ID/Trifusion/pertrained-model/ViT-B-16.pt",
+            "--initialization",
+            "/data/gaob/Re-ID/Trifusion/logs/text_semantic_prior_v1_20261010_900/initialization/RGBNT201_pretrained.json",
+            "--output-dir",
+            "/data/gaob/Re-ID/Trifusion/trained-model/text_semantic_prior_v1_20261010_900_full_pretrained_RGBNT201"
+          ],
+          "status": "COMPLETE",
+          "pid": 3555844,
+          "started_at": "2026-10-10T00:39:40.626727+08:00",
+          "gpus": [
+            0,
+            1
+          ],
+          "exit_code": 0,
+          "completed_at": "2026-10-10T00:40:11.784725+08:00"
+        },
+        {
+          "mode": "accept-initialization",
+          "command": [
+            "/data/gaob/Re-ID/conda-envs/tri_reid/bin/python",
+            "-B",
+            "/data/gaob/Re-ID/Trifusion/tools/queue_text_semantic_prior.py",
+            "--accept",
+            "initialization",
+            "--campaign",
+            "/data/gaob/Re-ID/Trifusion/logs/text_semantic_prior_v1_20261010_900",
+            "--dataset",
+            "RGBNT201",
+            "--text-package",
+            "pretrained"
+          ],
+          "status": "COMPLETE",
+          "pid": 3556988,
+          "started_at": "2026-10-10T00:40:11.935178+08:00",
+          "gpus": [
+            0,
+            1
+          ],
+          "exit_code": 0,
+          "completed_at": "2026-10-10T00:40:12.087147+08:00"
+        },
+        {
+          "mode": "m0",
+          "command": [
+            "/data/gaob/Re-ID/conda-envs/tri_reid/bin/python",
+            "-B",
+            "/data/gaob/Re-ID/Trifusion/tools/run_text_semantic_prior.py",
+            "--dataset",
+            "RGBNT201",
+            "--text-package",
+            "pretrained",
+            "--mode",
+            "m0",
+            "--protocol",
+            "/data/gaob/Re-ID/Trifusion/logs/training_feature_scale_protocols_20261002/RGBNT201.json",
+            "--signal-source",
+            "/data/gaob/Re-ID/Trifusion/comparators/Signal-cd1b0a6",
+            "--clip-weight",
+            "/data/gaob/Re-ID/Trifusion/pertrained-model/ViT-B-16.pt",
+            "--initialization",
+            "/data/gaob/Re-ID/Trifusion/logs/text_semantic_prior_v1_20261010_900/initialization/RGBNT201_pretrained.json",
+            "--output-dir",
+            "/data/gaob/Re-ID/Trifusion/trained-model/text_semantic_prior_v1_20261010_900_m0_pretrained_RGBNT201"
+          ],
+          "status": "COMPLETE",
+          "pid": 3556995,
+          "started_at": "2026-10-10T00:40:12.246622+08:00",
+          "gpus": [
+            0,
+            1
+          ],
+          "exit_code": 0,
+          "completed_at": "2026-10-10T00:41:23.868966+08:00"
+        },
+        {
+          "mode": "accept-m0",
+          "command": [
+            "/data/gaob/Re-ID/conda-envs/tri_reid/bin/python",
+            "-B",
+            "/data/gaob/Re-ID/Trifusion/tools/queue_text_semantic_prior.py",
+            "--accept",
+            "m0",
+            "--campaign",
+            "/data/gaob/Re-ID/Trifusion/logs/text_semantic_prior_v1_20261010_900",
+            "--dataset",
+            "RGBNT201",
+            "--text-package",
+            "pretrained"
+          ],
+          "status": "FAILED",
+          "pid": 3560405,
+          "started_at": "2026-10-10T00:41:24.030088+08:00",
+          "gpus": [
+            0,
+            1
+          ],
+          "exit_code": 1,
+          "completed_at": "2026-10-10T00:41:24.186085+08:00"
+        }
+      ],
+      "failed_phase": "accept-m0",
+      "exit_code": 1
+    },
+    {
+      "dataset": "RGBNT201",
+      "package": "random",
+      "status": "FAILED",
+      "steps": [
+        {
+          "mode": "prepare",
+          "command": [
+            "/data/gaob/Re-ID/conda-envs/tri_reid/bin/python",
+            "-B",
+            "/data/gaob/Re-ID/Trifusion/tools/run_text_semantic_prior.py",
+            "--dataset",
+            "RGBNT201",
+            "--text-package",
+            "random",
+            "--mode",
+            "prepare",
+            "--protocol",
+            "/data/gaob/Re-ID/Trifusion/logs/training_feature_scale_protocols_20261002/RGBNT201.json",
+            "--signal-source",
+            "/data/gaob/Re-ID/Trifusion/comparators/Signal-cd1b0a6",
+            "--clip-weight",
+            "/data/gaob/Re-ID/Trifusion/pertrained-model/ViT-B-16.pt",
+            "--initialization",
+            "/data/gaob/Re-ID/Trifusion/logs/text_semantic_prior_v1_20261010_900/initialization/RGBNT201_random.json",
+            "--output-dir",
+            "/data/gaob/Re-ID/Trifusion/trained-model/text_semantic_prior_v1_20261010_900_full_random_RGBNT201"
+          ],
+          "status": "COMPLETE",
+          "pid": 3560408,
+          "started_at": "2026-10-10T00:41:24.341596+08:00",
+          "gpus": [
+            0,
+            1
+          ],
+          "exit_code": 0,
+          "completed_at": "2026-10-10T00:41:57.506895+08:00"
+        },
+        {
+          "mode": "accept-initialization",
+          "command": [
+            "/data/gaob/Re-ID/conda-envs/tri_reid/bin/python",
+            "-B",
+            "/data/gaob/Re-ID/Trifusion/tools/queue_text_semantic_prior.py",
+            "--accept",
+            "initialization",
+            "--campaign",
+            "/data/gaob/Re-ID/Trifusion/logs/text_semantic_prior_v1_20261010_900",
+            "--dataset",
+            "RGBNT201",
+            "--text-package",
+            "random"
+          ],
+          "status": "COMPLETE",
+          "pid": 3561559,
+          "started_at": "2026-10-10T00:41:57.665963+08:00",
+          "gpus": [
+            0,
+            1
+          ],
+          "exit_code": 0,
+          "completed_at": "2026-10-10T00:41:57.815775+08:00"
+        },
+        {
+          "mode": "m0",
+          "command": [
+            "/data/gaob/Re-ID/conda-envs/tri_reid/bin/python",
+            "-B",
+            "/data/gaob/Re-ID/Trifusion/tools/run_text_semantic_prior.py",
+            "--dataset",
+            "RGBNT201",
+            "--text-package",
+            "random",
+            "--mode",
+            "m0",
+            "--protocol",
+            "/data/gaob/Re-ID/Trifusion/logs/training_feature_scale_protocols_20261002/RGBNT201.json",
+            "--signal-source",
+            "/data/gaob/Re-ID/Trifusion/comparators/Signal-cd1b0a6",
+            "--clip-weight",
+            "/data/gaob/Re-ID/Trifusion/pertrained-model/ViT-B-16.pt",
+            "--initialization",
+            "/data/gaob/Re-ID/Trifusion/logs/text_semantic_prior_v1_20261010_900/initialization/RGBNT201_random.json",
+            "--output-dir",
+            "/data/gaob/Re-ID/Trifusion/trained-model/text_semantic_prior_v1_20261010_900_m0_random_RGBNT201"
+          ],
+          "status": "COMPLETE",
+          "pid": 3561566,
+          "started_at": "2026-10-10T00:41:57.982827+08:00",
+          "gpus": [
+            0,
+            1
+          ],
+          "exit_code": 0,
+          "completed_at": "2026-10-10T00:43:05.653552+08:00"
+        },
+        {
+          "mode": "accept-m0",
+          "command": [
+            "/data/gaob/Re-ID/conda-envs/tri_reid/bin/python",
+            "-B",
+            "/data/gaob/Re-ID/Trifusion/tools/queue_text_semantic_prior.py",
+            "--accept",
+            "m0",
+            "--campaign",
+            "/data/gaob/Re-ID/Trifusion/logs/text_semantic_prior_v1_20261010_900",
+            "--dataset",
+            "RGBNT201",
+            "--text-package",
+            "random"
+          ],
+          "status": "FAILED",
+          "pid": 3564294,
+          "started_at": "2026-10-10T00:43:05.808605+08:00",
+          "gpus": [
+            0,
+            1
+          ],
+          "exit_code": 1,
+          "completed_at": "2026-10-10T00:43:05.962317+08:00"
+        }
+      ],
+      "failed_phase": "accept-m0",
+      "exit_code": 1
+    },
+    {
+      "dataset": "MSVR310",
+      "package": "pretrained",
+      "status": "FAILED",
+      "steps": [
+        {
+          "mode": "prepare",
+          "command": [
+            "/data/gaob/Re-ID/conda-envs/tri_reid/bin/python",
+            "-B",
+            "/data/gaob/Re-ID/Trifusion/tools/run_text_semantic_prior.py",
+            "--dataset",
+            "MSVR310",
+            "--text-package",
+            "pretrained",
+            "--mode",
+            "prepare",
+            "--protocol",
+            "/data/gaob/Re-ID/Trifusion/logs/training_feature_scale_protocols_20261002/MSVR310.json",
+            "--signal-source",
+            "/data/gaob/Re-ID/Trifusion/comparators/Signal-cd1b0a6",
+            "--clip-weight",
+            "/data/gaob/Re-ID/Trifusion/pertrained-model/ViT-B-16.pt",
+            "--initialization",
+            "/data/gaob/Re-ID/Trifusion/logs/text_semantic_prior_v1_20261010_900/initialization/MSVR310_pretrained.json",
+            "--output-dir",
+            "/data/gaob/Re-ID/Trifusion/trained-model/text_semantic_prior_v1_20261010_900_full_pretrained_MSVR310"
+          ],
+          "status": "COMPLETE",
+          "pid": 3564297,
+          "started_at": "2026-10-10T00:43:06.120946+08:00",
+          "gpus": [
+            0,
+            1
+          ],
+          "exit_code": 0,
+          "completed_at": "2026-10-10T00:43:35.966882+08:00"
+        },
+        {
+          "mode": "accept-initialization",
+          "command": [
+            "/data/gaob/Re-ID/conda-envs/tri_reid/bin/python",
+            "-B",
+            "/data/gaob/Re-ID/Trifusion/tools/queue_text_semantic_prior.py",
+            "--accept",
+            "initialization",
+            "--campaign",
+            "/data/gaob/Re-ID/Trifusion/logs/text_semantic_prior_v1_20261010_900",
+            "--dataset",
+            "MSVR310",
+            "--text-package",
+            "pretrained"
+          ],
+          "status": "COMPLETE",
+          "pid": 3565303,
+          "started_at": "2026-10-10T00:43:36.110335+08:00",
+          "gpus": [
+            0,
+            1
+          ],
+          "exit_code": 0,
+          "completed_at": "2026-10-10T00:43:36.265039+08:00"
+        },
+        {
+          "mode": "m0",
+          "command": [
+            "/data/gaob/Re-ID/conda-envs/tri_reid/bin/python",
+            "-B",
+            "/data/gaob/Re-ID/Trifusion/tools/run_text_semantic_prior.py",
+            "--dataset",
+            "MSVR310",
+            "--text-package",
+            "pretrained",
+            "--mode",
+            "m0",
+            "--protocol",
+            "/data/gaob/Re-ID/Trifusion/logs/training_feature_scale_protocols_20261002/MSVR310.json",
+            "--signal-source",
+            "/data/gaob/Re-ID/Trifusion/comparators/Signal-cd1b0a6",
+            "--clip-weight",
+            "/data/gaob/Re-ID/Trifusion/pertrained-model/ViT-B-16.pt",
+            "--initialization",
+            "/data/gaob/Re-ID/Trifusion/logs/text_semantic_prior_v1_20261010_900/initialization/MSVR310_pretrained.json",
+            "--output-dir",
+            "/data/gaob/Re-ID/Trifusion/trained-model/text_semantic_prior_v1_20261010_900_m0_pretrained_MSVR310"
+          ],
+          "status": "COMPLETE",
+          "pid": 3565331,
+          "started_at": "2026-10-10T00:43:36.422643+08:00",
+          "gpus": [
+            0,
+            1
+          ],
+          "exit_code": 0,
+          "completed_at": "2026-10-10T00:44:44.218091+08:00"
+        },
+        {
+          "mode": "accept-m0",
+          "command": [
+            "/data/gaob/Re-ID/conda-envs/tri_reid/bin/python",
+            "-B",
+            "/data/gaob/Re-ID/Trifusion/tools/queue_text_semantic_prior.py",
+            "--accept",
+            "m0",
+            "--campaign",
+            "/data/gaob/Re-ID/Trifusion/logs/text_semantic_prior_v1_20261010_900",
+            "--dataset",
+            "MSVR310",
+            "--text-package",
+            "pretrained"
+          ],
+          "status": "FAILED",
+          "pid": 3568124,
+          "started_at": "2026-10-10T00:44:44.378719+08:00",
+          "gpus": [
+            0,
+            1
+          ],
+          "exit_code": 1,
+          "completed_at": "2026-10-10T00:44:44.540377+08:00"
+        }
+      ],
+      "failed_phase": "accept-m0",
+      "exit_code": 1
+    },
+    {
+      "dataset": "MSVR310",
+      "package": "random",
+      "status": "FAILED",
+      "steps": [
+        {
+          "mode": "prepare",
+          "command": [
+            "/data/gaob/Re-ID/conda-envs/tri_reid/bin/python",
+            "-B",
+            "/data/gaob/Re-ID/Trifusion/tools/run_text_semantic_prior.py",
+            "--dataset",
+            "MSVR310",
+            "--text-package",
+            "random",
+            "--mode",
+            "prepare",
+            "--protocol",
+            "/data/gaob/Re-ID/Trifusion/logs/training_feature_scale_protocols_20261002/MSVR310.json",
+            "--signal-source",
+            "/data/gaob/Re-ID/Trifusion/comparators/Signal-cd1b0a6",
+            "--clip-weight",
+            "/data/gaob/Re-ID/Trifusion/pertrained-model/ViT-B-16.pt",
+            "--initialization",
+            "/data/gaob/Re-ID/Trifusion/logs/text_semantic_prior_v1_20261010_900/initialization/MSVR310_random.json",
+            "--output-dir",
+            "/data/gaob/Re-ID/Trifusion/trained-model/text_semantic_prior_v1_20261010_900_full_random_MSVR310"
+          ],
+          "status": "COMPLETE",
+          "pid": 3568127,
+          "started_at": "2026-10-10T00:44:44.699866+08:00",
+          "gpus": [
+            0,
+            1
+          ],
+          "exit_code": 0,
+          "completed_at": "2026-10-10T00:45:18.012591+08:00"
+        },
+        {
+          "mode": "accept-initialization",
+          "command": [
+            "/data/gaob/Re-ID/conda-envs/tri_reid/bin/python",
+            "-B",
+            "/data/gaob/Re-ID/Trifusion/tools/queue_text_semantic_prior.py",
+            "--accept",
+            "initialization",
+            "--campaign",
+            "/data/gaob/Re-ID/Trifusion/logs/text_semantic_prior_v1_20261010_900",
+            "--dataset",
+            "MSVR310",
+            "--text-package",
+            "random"
+          ],
+          "status": "COMPLETE",
+          "pid": 3569219,
+          "started_at": "2026-10-10T00:45:18.361080+08:00",
+          "gpus": [
+            0,
+            1
+          ],
+          "exit_code": 0,
+          "completed_at": "2026-10-10T00:45:18.515199+08:00"
+        },
+        {
+          "mode": "m0",
+          "command": [
+            "/data/gaob/Re-ID/conda-envs/tri_reid/bin/python",
+            "-B",
+            "/data/gaob/Re-ID/Trifusion/tools/run_text_semantic_prior.py",
+            "--dataset",
+            "MSVR310",
+            "--text-package",
+            "random",
+            "--mode",
+            "m0",
+            "--protocol",
+            "/data/gaob/Re-ID/Trifusion/logs/training_feature_scale_protocols_20261002/MSVR310.json",
+            "--signal-source",
+            "/data/gaob/Re-ID/Trifusion/comparators/Signal-cd1b0a6",
+            "--clip-weight",
+            "/data/gaob/Re-ID/Trifusion/pertrained-model/ViT-B-16.pt",
+            "--initialization",
+            "/data/gaob/Re-ID/Trifusion/logs/text_semantic_prior_v1_20261010_900/initialization/MSVR310_random.json",
+            "--output-dir",
+            "/data/gaob/Re-ID/Trifusion/trained-model/text_semantic_prior_v1_20261010_900_m0_random_MSVR310"
+          ],
+          "status": "COMPLETE",
+          "pid": 3569326,
+          "started_at": "2026-10-10T00:45:18.675299+08:00",
+          "gpus": [
+            0,
+            1
+          ],
+          "exit_code": 0,
+          "completed_at": "2026-10-10T00:46:30.317954+08:00"
+        },
+        {
+          "mode": "accept-m0",
+          "command": [
+            "/data/gaob/Re-ID/conda-envs/tri_reid/bin/python",
+            "-B",
+            "/data/gaob/Re-ID/Trifusion/tools/queue_text_semantic_prior.py",
+            "--accept",
+            "m0",
+            "--campaign",
+            "/data/gaob/Re-ID/Trifusion/logs/text_semantic_prior_v1_20261010_900",
+            "--dataset",
+            "MSVR310",
+            "--text-package",
+            "random"
+          ],
+          "status": "FAILED",
+          "pid": 3572313,
+          "started_at": "2026-10-10T00:46:30.472723+08:00",
+          "gpus": [
+            0,
+            1
+          ],
+          "exit_code": 1,
+          "completed_at": "2026-10-10T00:46:30.628981+08:00"
+        }
+      ],
+      "failed_phase": "accept-m0",
+      "exit_code": 1
+    },
+    {
+      "dataset": "RGBNT100",
+      "package": "pretrained",
+      "status": "FAILED",
+      "steps": [
+        {
+          "mode": "prepare",
+          "command": [
+            "/data/gaob/Re-ID/conda-envs/tri_reid/bin/python",
+            "-B",
+            "/data/gaob/Re-ID/Trifusion/tools/run_text_semantic_prior.py",
+            "--dataset",
+            "RGBNT100",
+            "--text-package",
+            "pretrained",
+            "--mode",
+            "prepare",
+            "--protocol",
+            "/data/gaob/Re-ID/Trifusion/logs/training_feature_scale_protocols_20261002/RGBNT100.json",
+            "--signal-source",
+            "/data/gaob/Re-ID/Trifusion/comparators/Signal-cd1b0a6",
+            "--clip-weight",
+            "/data/gaob/Re-ID/Trifusion/pertrained-model/ViT-B-16.pt",
+            "--initialization",
+            "/data/gaob/Re-ID/Trifusion/logs/text_semantic_prior_v1_20261010_900/initialization/RGBNT100_pretrained.json",
+            "--output-dir",
+            "/data/gaob/Re-ID/Trifusion/trained-model/text_semantic_prior_v1_20261010_900_full_pretrained_RGBNT100"
+          ],
+          "status": "COMPLETE",
+          "pid": 3572316,
+          "started_at": "2026-10-10T00:46:30.783952+08:00",
+          "gpus": [
+            0,
+            1
+          ],
+          "exit_code": 0,
+          "completed_at": "2026-10-10T00:47:01.855963+08:00"
+        },
+        {
+          "mode": "accept-initialization",
+          "command": [
+            "/data/gaob/Re-ID/conda-envs/tri_reid/bin/python",
+            "-B",
+            "/data/gaob/Re-ID/Trifusion/tools/queue_text_semantic_prior.py",
+            "--accept",
+            "initialization",
+            "--campaign",
+            "/data/gaob/Re-ID/Trifusion/logs/text_semantic_prior_v1_20261010_900",
+            "--dataset",
+            "RGBNT100",
+            "--text-package",
+            "pretrained"
+          ],
+          "status": "COMPLETE",
+          "pid": 3573340,
+          "started_at": "2026-10-10T00:47:02.035710+08:00",
+          "gpus": [
+            0,
+            1
+          ],
+          "exit_code": 0,
+          "completed_at": "2026-10-10T00:47:02.191306+08:00"
+        },
+        {
+          "mode": "m0",
+          "command": [
+            "/data/gaob/Re-ID/conda-envs/tri_reid/bin/python",
+            "-B",
+            "/data/gaob/Re-ID/Trifusion/tools/run_text_semantic_prior.py",
+            "--dataset",
+            "RGBNT100",
+            "--text-package",
+            "pretrained",
+            "--mode",
+            "m0",
+            "--protocol",
+            "/data/gaob/Re-ID/Trifusion/logs/training_feature_scale_protocols_20261002/RGBNT100.json",
+            "--signal-source",
+            "/data/gaob/Re-ID/Trifusion/comparators/Signal-cd1b0a6",
+            "--clip-weight",
+            "/data/gaob/Re-ID/Trifusion/pertrained-model/ViT-B-16.pt",
+            "--initialization",
+            "/data/gaob/Re-ID/Trifusion/logs/text_semantic_prior_v1_20261010_900/initialization/RGBNT100_pretrained.json",
+            "--output-dir",
+            "/data/gaob/Re-ID/Trifusion/trained-model/text_semantic_prior_v1_20261010_900_m0_pretrained_RGBNT100"
+          ],
+          "status": "COMPLETE",
+          "pid": 3573360,
+          "started_at": "2026-10-10T00:47:02.400796+08:00",
+          "gpus": [
+            0,
+            1
+          ],
+          "exit_code": 0,
+          "completed_at": "2026-10-10T00:48:17.952445+08:00"
+        },
+        {
+          "mode": "accept-m0",
+          "command": [
+            "/data/gaob/Re-ID/conda-envs/tri_reid/bin/python",
+            "-B",
+            "/data/gaob/Re-ID/Trifusion/tools/queue_text_semantic_prior.py",
+            "--accept",
+            "m0",
+            "--campaign",
+            "/data/gaob/Re-ID/Trifusion/logs/text_semantic_prior_v1_20261010_900",
+            "--dataset",
+            "RGBNT100",
+            "--text-package",
+            "pretrained"
+          ],
+          "status": "FAILED",
+          "pid": 3576356,
+          "started_at": "2026-10-10T00:48:18.110886+08:00",
+          "gpus": [
+            0,
+            1
+          ],
+          "exit_code": 1,
+          "completed_at": "2026-10-10T00:48:18.257370+08:00"
+        }
+      ],
+      "failed_phase": "accept-m0",
+      "exit_code": 1
+    },
+    {
+      "dataset": "RGBNT100",
+      "package": "random",
+      "status": "PENDING",
+      "steps": [
+        {
+          "mode": "prepare",
+          "command": [
+            "/data/gaob/Re-ID/conda-envs/tri_reid/bin/python",
+            "-B",
+            "/data/gaob/Re-ID/Trifusion/tools/run_text_semantic_prior.py",
+            "--dataset",
+            "RGBNT100",
+            "--text-package",
+            "random",
+            "--mode",
+            "prepare",
+            "--protocol",
+            "/data/gaob/Re-ID/Trifusion/logs/training_feature_scale_protocols_20261002/RGBNT100.json",
+            "--signal-source",
+            "/data/gaob/Re-ID/Trifusion/comparators/Signal-cd1b0a6",
+            "--clip-weight",
+            "/data/gaob/Re-ID/Trifusion/pertrained-model/ViT-B-16.pt",
+            "--initialization",
+            "/data/gaob/Re-ID/Trifusion/logs/text_semantic_prior_v1_20261010_900/initialization/RGBNT100_random.json",
+            "--output-dir",
+            "/data/gaob/Re-ID/Trifusion/trained-model/text_semantic_prior_v1_20261010_900_full_random_RGBNT100"
+          ],
+          "status": "COMPLETE",
+          "pid": 3576363,
+          "started_at": "2026-10-10T00:48:18.411807+08:00",
+          "gpus": [
+            0,
+            1
+          ],
+          "exit_code": 0,
+          "completed_at": "2026-10-10T00:48:51.174470+08:00"
+        }
+      ]
+    }
+  ],
+  "control_seal_sha256": "2dd7dedfd4a6460bd65c9429c7face2d6148afd4c6e053cc8e9c8e641ec2f1ea",
+  "physical_gpus": [
+    0,
+    1
+  ],
+  "max_parallel_jobs": 1,
+  "storage_required_bytes": 5905580032,
+  "epochs": 50,
+  "seed": 42,
+  "boundary": "Six fixed frozen text-package necessity endpoints; per-end real8M0 then fresh50, no score-driven tuning/retry or old control retraining."
 }
