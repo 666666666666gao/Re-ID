@@ -1,6 +1,6 @@
 # Current priority: PAUSED BY USER, 2026-10-08
 
-Read USER_PAUSE_20261008.md first. Research goal remains unmet. No new training, prefix, M0, queue or method work until explicit user resume. This closeout only updates documents and removes proven unused scratch. Old ACTIVE/next-launch instructions below are historical.
+2026-10-10: The user revised and resumed the Goal and explicitly selected server2026 physical GPU0/1. Research is ACTIVE_UNMET. Prioritize RGBNT201 exceeding full Signal, then RGBNT100/MSVR310; module-removed Signal is the matched development baseline. Keep seed42 for the currently unrun registered frozen-text pilot; complete production source review, prefix qualification and each end's real8M0 before fresh50. Do not restart sealed experiments. Later seed/parameter adaptation requires proximity evidence and a separate fixed comparison. Publish all tried results while retaining the single best deployment checkpoint. No25/GPU2/3/power/temperature actions. USER_PAUSE_20261008.md remains the immutable historical stop/cleanup record; older execution instructions below remain historical.
 
 # TriFusion 当前执行目标
 

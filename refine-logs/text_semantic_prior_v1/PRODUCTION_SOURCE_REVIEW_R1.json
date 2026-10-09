@@ -1,0 +1,854 @@
+{
+  "schema": "text_semantic_prior_production_source_review",
+  "round": "R1",
+  "created_at": "2026-10-09T16:26:49.541Z",
+  "verdict": "REVISE",
+  "blocking": [
+    {
+      "id": "B1",
+      "classification": "BLOCKING",
+      "priority": "P1",
+      "title": "正式训练没有接入已登记的文本更新与读取诊断",
+      "contract": {
+        "path": "C:/Users/gb/.trifusion_github_publish_22c3bee/refine-logs/text_semantic_prior_v1/EXPERIMENT_PLAN.md",
+        "lines": [
+          42,
+          44,
+          46
+        ]
+      },
+      "evidence": [
+        {
+          "path": "C:/Users/gb/.codex_tmp/independent_evidence_draft/text_semantic_prior900/candidate_code/tools/run_text_semantic_prior.py",
+          "lines": [
+            83,
+            117,
+            120,
+            126,
+            128,
+            142,
+            144
+          ]
+        },
+        {
+          "path": "C:/Users/gb/.trifusion_github_publish_22c3bee/modeling/trifusion/text_semantic_prior.py",
+          "lines": [
+            117,
+            121,
+            122,
+            123,
+            124,
+            125
+          ]
+        },
+        {
+          "path": "C:/Users/gb/.trifusion_github_publish_22c3bee/modeling/trifusion/slot_competition_fp32_roles.py",
+          "lines": [
+            10,
+            14,
+            15,
+            16,
+            18,
+            19,
+            20
+          ]
+        },
+        {
+          "path": "C:/Users/gb/.trifusion_github_publish_22c3bee/tools/run_foundation_recipe.py",
+          "lines": [
+            229,
+            235,
+            236,
+            237,
+            238,
+            239,
+            240,
+            243,
+            244
+          ]
+        },
+        {
+          "path": "C:/Users/gb/.trifusion_github_publish_22c3bee/tools/run_role_input_detach.py",
+          "lines": [
+            22,
+            27,
+            28,
+            29,
+            30
+          ]
+        },
+        {
+          "path": "C:/Users/gb/.codex_tmp/independent_evidence_draft/text_semantic_prior900/candidate_code/tools/report_text_semantic_prior.py",
+          "lines": [
+            39,
+            40,
+            44,
+            45,
+            46
+          ]
+        }
+      ],
+      "description": "TextM0Diagnostics 的 optimizer post-hook、isolated role-gradient 和结果落盘均限定 mode=m0。正式 train 只有继承的任务损失、raw/deployment及g/c/f范数；text forward 和 sample_context 不保存 text/context、实际Q/K、score标准差或读取熵。报告读取 steps 后也不输出这些正式轨迹。不能把M0的8步活动记录解释为正式50轮的实际更新和读取证据；这不是断言新参数未训练。",
+      "impact": "正式50轮完成后只有最佳权重与现有日志，无法事后恢复合同要求的全部实际训练观测；应在正式训练前接入。",
+      "minimal_fix": "只在新入口对现有 ψ/text/W 和 query/key projection 的真实forward添加只读统计，在实际 allocation_weights 调用旁记录 actual scores/weights 并原样返回原weights；正式 optimizer post-hook记录5个新tensor实际梯度、初值delta和effective updates，报告消费这些记录。保留已有g/c/f字段，不改变loss/参数/RNG/配方/步数，不新增训练或调参。"
+    },
+    {
+      "id": "B2",
+      "classification": "BLOCKING",
+      "priority": "P2",
+      "title": "集成M0及正式训练没有验收冻结T的完整149项状态",
+      "contract": {
+        "path": "C:/Users/gb/.trifusion_github_publish_22c3bee/refine-logs/text_semantic_prior_v1/EXPERIMENT_PLAN.md",
+        "lines": [
+          26,
+          28,
+          30,
+          46
+        ]
+      },
+      "evidence": [
+        {
+          "path": "C:/Users/gb/.trifusion_github_publish_22c3bee/modeling/trifusion/text_semantic_prior.py",
+          "lines": [
+            73,
+            74,
+            75,
+            80,
+            81
+          ]
+        },
+        {
+          "path": "C:/Users/gb/.trifusion_github_publish_22c3bee/tools/run_foundation_recipe.py",
+          "lines": [
+            165,
+            167,
+            168,
+            169,
+            170,
+            171,
+            195,
+            259
+          ]
+        },
+        {
+          "path": "C:/Users/gb/.codex_tmp/independent_evidence_draft/text_semantic_prior900/candidate_code/tools/run_text_semantic_prior.py",
+          "lines": [
+            67,
+            94,
+            95,
+            96,
+            105,
+            147
+          ]
+        },
+        {
+          "path": "C:/Users/gb/.codex_tmp/independent_evidence_draft/text_semantic_prior900/candidate_code/tools/check_text_semantic_prefix.py",
+          "lines": [
+            50,
+            66,
+            67
+          ]
+        },
+        {
+          "path": "C:/Users/gb/.codex_tmp/independent_evidence_draft/text_semantic_prior900/candidate_code/tools/queue_text_semantic_prior.py",
+          "lines": [
+            78,
+            81,
+            82
+          ]
+        }
+      ],
+      "description": "训练器 frozen_parameters_digest 只遍历 named_parameters；T的 positional_embedding 和 template_embedding 是持久buffer。新入口仅保存初始text_state_sha256，M0 hook只断言eval/no-grad；prefix的全state比较针对独立合成测试组件，不能替代实际集成训练的终态检查。strict load完整保存/重载是正确的，但不证明训练前后两项buffer不变。",
+      "impact": "当前 M0_PASS / frozen_parameters_unchanged 不能被报告成冻结T全部149项状态已实测不变。未发现当前forward主动修改这两个buffer；本项是明确合同验收缺口，不是声称已发生状态污染。",
+      "minimal_fix": "复用已有 _module_state_sha256 与初始text_state_sha256，对实际训练模型的完整 text.state_dict 在M0/正式训练终点比较并落盘，队列接受及报告使用此结果。不要把可训练BN缓冲区一并纳入冻结T判断，不新增hash框架。"
+    }
+  ],
+  "nonblocking": [],
+  "reviewer": {
+    "task": "/root/review_text_production900",
+    "requested_model": "gpt-6-astra",
+    "requested_reasoning_effort": "max",
+    "actual_model_identity": "UNATTESTED",
+    "actual_reasoning_effort": "UNATTESTED",
+    "review_independence": "same-family",
+    "acceptance_status": "provisional",
+    "fresh_context": true
+  },
+  "scope": {
+    "main_repo": "C:/Users/gb/.trifusion_github_publish_22c3bee",
+    "candidate_tools": "C:/Users/gb/.codex_tmp/independent_evidence_draft/text_semantic_prior900/candidate_code/tools",
+    "read_only": true,
+    "source_edits": 0,
+    "ssh_calls": 0,
+    "remote_actions": 0,
+    "nn_forwards": 0,
+    "gpu_actions": 0,
+    "package_installs": 0,
+    "subagents_spawned": 0,
+    "boundary": "Registered six-endpoint fixed pretrained/random text-context pilot only. Method R2 remains finite-pilot-worthy/paper REVISE; this is source review, not runtime or retrieval acceptance."
+  },
+  "checks": [
+    {
+      "area": "import/configure/builder",
+      "status": "SOURCE_CHECKED",
+      "evidence": [
+        {
+          "path": "C:/Users/gb/.codex_tmp/independent_evidence_draft/text_semantic_prior900/candidate_code/tools/check_text_semantic_prefix.py",
+          "lines": [
+            12,
+            13,
+            14,
+            15,
+            16,
+            37,
+            38,
+            39
+          ]
+        },
+        {
+          "path": "C:/Users/gb/.codex_tmp/independent_evidence_draft/text_semantic_prior900/candidate_code/tools/run_text_semantic_prior.py",
+          "lines": [
+            13,
+            22,
+            40,
+            42,
+            43,
+            186,
+            187,
+            188,
+            189,
+            190,
+            191,
+            192,
+            193,
+            194,
+            195,
+            196
+          ]
+        }
+      ],
+      "notes": "Runner's predecessor import reaches run_visual_update_control's ROOT/modeling insertion before trifusion imports; explicit prefix insertion is present. Configure patches both the clean constructor and runtime class check/author head, then foundation build/loss/optimizer and actual evaluator."
+    },
+    {
+      "area": "text_math_and_rng",
+      "status": "SOURCE_CHECKED",
+      "evidence": [
+        {
+          "path": "C:/Users/gb/.trifusion_github_publish_22c3bee/modeling/trifusion/text_semantic_prior.py",
+          "lines": [
+            13,
+            27,
+            34,
+            49,
+            61,
+            63,
+            69,
+            78,
+            83,
+            86,
+            91,
+            95,
+            97,
+            99,
+            110,
+            111,
+            117,
+            120,
+            121,
+            123,
+            125,
+            130,
+            133
+          ]
+        }
+      ],
+      "notes": "Exact declared state mapping; private CPU seed42 random package; separate seed42 psi/W construction; constructors fork CPU RNG. FP32 frozen plain causal forward_ori retains input autograd and EOT11. Detached visual inputs enter conditioner before direct roles call; no second context detach after augmentation. Runtime equivalence is still unrun."
+    },
+    {
+      "area": "common_initialization_and_placement",
+      "status": "SOURCE_CHECKED",
+      "evidence": [
+        {
+          "path": "C:/Users/gb/.codex_tmp/independent_evidence_draft/text_semantic_prior900/candidate_code/tools/run_text_semantic_prior.py",
+          "lines": [
+            44,
+            45,
+            46,
+            53,
+            54,
+            55,
+            56,
+            62,
+            63,
+            69,
+            70,
+            71
+          ]
+        },
+        {
+          "path": "C:/Users/gb/.codex_tmp/independent_evidence_draft/text_semantic_prior900/candidate_code/tools/queue_text_semantic_prior.py",
+          "lines": [
+            52,
+            58,
+            59,
+            60,
+            61
+          ]
+        },
+        {
+          "path": "C:/Users/gb/.trifusion_github_publish_22c3bee/modeling/trifusion/partitioned_evidence_clip.py",
+          "lines": [
+            17,
+            19,
+            23,
+            26,
+            29,
+            31
+          ]
+        }
+      ],
+      "notes": "Common-state comparison occurs before T attachment and uses sealed common model state. Added592000/5 are checked. Existing first6cuda1/last6+headscuda0 retained; conditioner on cuda0. No claim that paired runtime initial values/RNG are already observed."
+    },
+    {
+      "area": "raw_losses_heads_optimizer",
+      "status": "SOURCE_CHECKED",
+      "evidence": [
+        {
+          "path": "C:/Users/gb/.trifusion_github_publish_22c3bee/modeling/trifusion/global_task_role_heads.py",
+          "lines": [
+            8,
+            10,
+            11,
+            12,
+            20,
+            21,
+            29,
+            30,
+            31
+          ]
+        },
+        {
+          "path": "C:/Users/gb/.trifusion_github_publish_22c3bee/tools/run_global_task_role.py",
+          "lines": [
+            25,
+            26,
+            27,
+            28,
+            31
+          ]
+        },
+        {
+          "path": "C:/Users/gb/.trifusion_github_publish_22c3bee/modeling/trifusion/evidence_author_heads.py",
+          "lines": [
+            63,
+            68,
+            69,
+            70,
+            71,
+            72
+          ]
+        }
+      ],
+      "notes": "Global task updates shared/head parameters; role task uses detached global and functional detached heads with clonedBN buffers. Original author groups receive the whole model exactly once and exclude all requires_grad=False T parameters. Verified author configs:201B64K8/base3.5e-4;MSVRB64K4/base5e-6;100B128K16/base7e-4; registered50epoch override and original per-dataset schedules preserved."
+    },
+    {
+      "area": "staged_m0_autograd",
+      "status": "SOURCE_CHECKED_WITH_B2",
+      "evidence": [
+        {
+          "path": "C:/Users/gb/.codex_tmp/independent_evidence_draft/text_semantic_prior900/candidate_code/tools/run_text_semantic_prior.py",
+          "lines": [
+            94,
+            97,
+            107,
+            108,
+            109,
+            111,
+            129,
+            131,
+            133,
+            134
+          ]
+        },
+        {
+          "path": "C:/Users/gb/.trifusion_github_publish_22c3bee/tools/run_foundation_recipe.py",
+          "lines": [
+            235,
+            236,
+            237,
+            238,
+            239,
+            241,
+            264
+          ]
+        },
+        {
+          "path": "C:/Users/gb/.codex_tmp/independent_evidence_draft/text_semantic_prior900/candidate_code/tools/queue_text_semantic_prior.py",
+          "lines": [
+            76,
+            79,
+            80,
+            83,
+            87,
+            88,
+            89,
+            91,
+            93,
+            95,
+            100
+          ]
+        }
+      ],
+      "notes": "Isolated role gradients finite and no gradient to shared_global; expected firststeppsi/Wzero, firstCgradient/update, eachnewtensor nonzero at least once steps2..8 and cumulativeupdate checked. Existing alltrainable activity/overflow/8effectiveupdate/authorBN8 retained. BatchOrderLoader logs after yield; ninth fetched unprocessed batch is NOT logged."
+    },
+    {
+      "area": "checkpoint_and_evaluation",
+      "status": "SOURCE_CHECKED",
+      "evidence": [
+        {
+          "path": "C:/Users/gb/.trifusion_github_publish_22c3bee/tools/run_foundation_recipe.py",
+          "lines": [
+            174,
+            177,
+            180,
+            185,
+            248,
+            252,
+            254,
+            255,
+            267,
+            268,
+            270,
+            274,
+            275,
+            295,
+            296,
+            297,
+            298,
+            300,
+            301
+          ]
+        },
+        {
+          "path": "C:/Users/gb/.codex_tmp/independent_evidence_draft/text_semantic_prior900/candidate_code/tools/run_text_semantic_prior.py",
+          "lines": [
+            29,
+            33,
+            34,
+            35,
+            37,
+            151,
+            152,
+            158,
+            160,
+            167,
+            169,
+            171,
+            172,
+            174,
+            181,
+            182
+          ]
+        }
+      ],
+      "notes": "Allpersistent state saved and strictloaded includingT/templates/psiW. Fresh50 rebuilds initializer rather thanM0state. Single latesttied mAP-best; sameweight ranks; own-global collected from same fused visual forward with no separateglobal epoch/NNpass. Firststrict evaluation is not retried by queue."
+    },
+    {
+      "area": "queue_controls_failure_storage",
+      "status": "SOURCE_CHECKED",
+      "evidence": [
+        {
+          "path": "C:/Users/gb/.codex_tmp/independent_evidence_draft/text_semantic_prior900/candidate_code/tools/queue_text_semantic_prior.py",
+          "lines": [
+            16,
+            17,
+            21,
+            73,
+            104,
+            109,
+            111,
+            113,
+            158,
+            159,
+            160,
+            162,
+            166,
+            187,
+            194,
+            195,
+            196,
+            205,
+            206,
+            207,
+            208,
+            210,
+            211,
+            214
+          ]
+        },
+        {
+          "path": "C:/Users/gb/.trifusion_github_publish_22c3bee/tools/queue_native_research.py",
+          "lines": [
+            49,
+            51,
+            59,
+            62,
+            63,
+            64,
+            65,
+            67,
+            68,
+            72
+          ]
+        }
+      ],
+      "notes": "Sixfixed endpoint order,serialtwoGPU0/1, prefix before per-end prepare/accept/M0/accept/fresh50/evaluate/accept. Failuremarks missing andcontinues fixedindependent ends; no scientificretry. Sixsealed rawsemantic/global controls reused through45artifactseal. Planned7x512MiB+2GiB reservation and actualprobe size check; acceptedprobe retirement only. Unique originalreport invocation with recorded exit. No runtime capacity or storagePASS asserted by reviewer."
+    },
+    {
+      "area": "fullquery_groundtruth_report",
+      "status": "SOURCE_CHECKED",
+      "evidence": [
+        {
+          "path": "C:/Users/gb/.codex_tmp/independent_evidence_draft/text_semantic_prior900/candidate_code/tools/report_text_semantic_prior.py",
+          "lines": [
+            23,
+            24,
+            25,
+            28,
+            29,
+            30,
+            31,
+            37,
+            42,
+            43,
+            47,
+            48,
+            51,
+            53,
+            57,
+            60,
+            66
+          ]
+        },
+        {
+          "path": "C:/Users/gb/.trifusion_github_publish_22c3bee/tools/report_prepool_dense_correspondence.py",
+          "lines": [
+            18,
+            24,
+            25,
+            27,
+            29,
+            32,
+            33,
+            34,
+            36,
+            37,
+            38,
+            39,
+            41,
+            43,
+            44,
+            49,
+            51,
+            54
+          ]
+        },
+        {
+          "path": "C:/Users/gb/.trifusion_github_publish_22c3bee/tools/train_msvr310_signal_oof.py",
+          "lines": [
+            223,
+            227,
+            228,
+            229,
+            230,
+            232,
+            233,
+            234
+          ]
+        },
+        {
+          "path": "C:/Users/gb/.trifusion_github_publish_22c3bee/tools/train_rgbnt100_signal_oof.py",
+          "lines": [
+            253,
+            257,
+            258,
+            259,
+            260,
+            262,
+            263,
+            264
+          ]
+        }
+      ],
+      "notes": "Original fullquery/gallery ground-truth IDs and same-IDcamera/scene filtering. Everylegalquery AP/firstmatchrank retained, repairs/newerrors and identitymacro differences computed over wholearrays, allnewvsraw/global/owng plus pretrained-vsrandom pairs; missing endpoint no substituted score. No testindependence/SOTA/generalrandompackage/originality claim."
+    }
+  ],
+  "validation": {
+    "python": "Local CPython3.10.19 stdlib ast.parse only",
+    "ast_files": [
+      {
+        "path": "C:\\Users\\gb\\.codex_tmp\\independent_evidence_draft\\text_semantic_prior900\\candidate_code\\tools\\check_text_semantic_prefix.py",
+        "bytes": 4453,
+        "sha256": "f0b720cad3abaa7b337365e25380711cbd5a1964d2a93bd9800eeb25b844ecf9",
+        "ast": "PASS"
+      },
+      {
+        "path": "C:\\Users\\gb\\.codex_tmp\\independent_evidence_draft\\text_semantic_prior900\\candidate_code\\tools\\queue_text_semantic_prior.py",
+        "bytes": 15440,
+        "sha256": "739a8752ffa511d665d6cddca71965559584a859836120c84c2803093a2ac878",
+        "ast": "PASS"
+      },
+      {
+        "path": "C:\\Users\\gb\\.codex_tmp\\independent_evidence_draft\\text_semantic_prior900\\candidate_code\\tools\\report_text_semantic_prior.py",
+        "bytes": 5971,
+        "sha256": "960cb0eace0e3fcab20fd78f0a31a04ebdd8e11324ed99ec24a214d85f10eaef",
+        "ast": "PASS"
+      },
+      {
+        "path": "C:\\Users\\gb\\.codex_tmp\\independent_evidence_draft\\text_semantic_prior900\\candidate_code\\tools\\run_text_semantic_prior.py",
+        "bytes": 12120,
+        "sha256": "dca3fd96a07d36714fbc7369c1124c4f19765c43e1cfd4dae914ac00015f1412",
+        "ast": "PASS"
+      },
+      {
+        "path": "C:\\Users\\gb\\.trifusion_github_publish_22c3bee\\modeling\\trifusion\\text_semantic_prior.py",
+        "bytes": 6878,
+        "sha256": "4b1c5448929881f2914113fcf6fbaba18112da0eae0f9a7264bfe6b2e66d7382",
+        "ast": "PASS"
+      }
+    ],
+    "ast_tool_chunk_id": "409025",
+    "reviewed_five_start_end_hash_equal": true,
+    "author_snapshot_hashes_match_existing_scope": true,
+    "author_snapshot_hash_tool_chunk_ids": [
+      "ce567e",
+      "9a394c"
+    ],
+    "runtime_import_or_model_execution": "NOT_RUN",
+    "remote_preflight": "Not performed by reviewer; parent-supplied remote statements were not treated as independent reviewer evidence."
+  },
+  "minimal_fix_runtime_notes": [
+    "Hooks must detach only observation tensors; never put actual allocation_weights or returned weights under no_grad, and do not replace model outputs.",
+    "Scalar GPU-to-CPU statistics synchronize CUDA and add measurable wall time. Record that overhead honestly; they need not add NN forwards.",
+    "Existing foundation.train:268 builds a fresh model for M0 strict reload. A fresh build must not overwrite the optimizer-bound training model's diagnostic object/state comparison; reload eval forwards are not optimizer updates.",
+    "After minimal edits, re-review exact changed files/diff. Do not alter registered thresholds, task, initialization, steps or data protocol."
+  ],
+  "limitations": [
+    "Five candidate/core files passed static parsing only. Prefix/VJP, real per-endM0, memory capacity, actualsameinitialization, optimizer runtime and retrieval results remain unrun.",
+    "PRODUCTION_SOURCE_SCOPE.json is referenced by the private staged queue but is not assembled in the published repo yet; this review does not claim installation or deployment.",
+    "No current algebra/gradient-routing/GT-filter/selection/endpoint-sequencing defect was found beyond the two explicit implementation/acceptance gaps."
+  ],
+  "reviewed_files": [
+    {
+      "path": "C:/Users/gb/.codex_tmp/independent_evidence_draft/text_semantic_prior900/candidate_code/tools/run_text_semantic_prior.py",
+      "bytes": 12120,
+      "sha256": "dca3fd96a07d36714fbc7369c1124c4f19765c43e1cfd4dae914ac00015f1412"
+    },
+    {
+      "path": "C:/Users/gb/.codex_tmp/independent_evidence_draft/text_semantic_prior900/candidate_code/tools/check_text_semantic_prefix.py",
+      "bytes": 4453,
+      "sha256": "f0b720cad3abaa7b337365e25380711cbd5a1964d2a93bd9800eeb25b844ecf9"
+    },
+    {
+      "path": "C:/Users/gb/.codex_tmp/independent_evidence_draft/text_semantic_prior900/candidate_code/tools/queue_text_semantic_prior.py",
+      "bytes": 15440,
+      "sha256": "739a8752ffa511d665d6cddca71965559584a859836120c84c2803093a2ac878"
+    },
+    {
+      "path": "C:/Users/gb/.codex_tmp/independent_evidence_draft/text_semantic_prior900/candidate_code/tools/report_text_semantic_prior.py",
+      "bytes": 5971,
+      "sha256": "960cb0eace0e3fcab20fd78f0a31a04ebdd8e11324ed99ec24a214d85f10eaef"
+    },
+    {
+      "path": "C:/Users/gb/.trifusion_github_publish_22c3bee/AGENTS.md",
+      "bytes": 47137,
+      "sha256": "ca7bb0ac1cf10f144d970e3bcc512d594048fe9db292ec9dfa62398c49106e3c"
+    },
+    {
+      "path": "C:/Users/gb/.trifusion_github_publish_22c3bee/refine-logs/text_semantic_prior_v1/FINAL_PROPOSAL.md",
+      "bytes": 15419,
+      "sha256": "066e26aa13a1b0cca6aaf43b7c3135b42be248b056dd20561cdf47c7d0023795"
+    },
+    {
+      "path": "C:/Users/gb/.trifusion_github_publish_22c3bee/refine-logs/text_semantic_prior_v1/EXPERIMENT_PLAN.md",
+      "bytes": 11337,
+      "sha256": "03a202fd7155f7603073ec9dcbd5852fbafecc970e22fb9322c568919bcff99b"
+    },
+    {
+      "path": "C:/Users/gb/.trifusion_github_publish_22c3bee/refine-logs/text_semantic_prior_v1/SOURCE_SCOPE.json",
+      "bytes": 53967,
+      "sha256": "a0d2ed0b9c7f5adde101b0240de8715c1cbb6e732cb96582352f72550bd5696a"
+    },
+    {
+      "path": "C:/Users/gb/.trifusion_github_publish_22c3bee/refine-logs/incremental_role_objective_v1/INPUT_SEAL.json",
+      "bytes": 40340,
+      "sha256": "2dd7dedfd4a6460bd65c9429c7face2d6148afd4c6e053cc8e9c8e641ec2f1ea"
+    },
+    {
+      "path": "C:/Users/gb/.trifusion_github_publish_22c3bee/modeling/trifusion/text_semantic_prior.py",
+      "bytes": 6878,
+      "sha256": "4b1c5448929881f2914113fcf6fbaba18112da0eae0f9a7264bfe6b2e66d7382"
+    },
+    {
+      "path": "C:/Users/gb/.trifusion_github_publish_22c3bee/tools/run_global_task_role.py",
+      "bytes": 2127,
+      "sha256": "151a3350a9da7d86ce6b4b7d5160537b182792ab08727ccb5e4ab0c64bb56d5f"
+    },
+    {
+      "path": "C:/Users/gb/.trifusion_github_publish_22c3bee/tools/run_role_input_detach.py",
+      "bytes": 1753,
+      "sha256": "a177fd5aa4d5ba25422a49cb619062001722d6c7640891cb3da9645a8eb32fe5"
+    },
+    {
+      "path": "C:/Users/gb/.trifusion_github_publish_22c3bee/tools/run_native_research.py",
+      "bytes": 781,
+      "sha256": "b48725622371fc6d9671c464ce97252e2e06eba465e213ce221d84c798e52cc2"
+    },
+    {
+      "path": "C:/Users/gb/.trifusion_github_publish_22c3bee/tools/run_native_partitioned.py",
+      "bytes": 2289,
+      "sha256": "2c3abac37b122760895b97ccf01d4fefe2cfb8223b35b6e2e335a1a4144f72fa"
+    },
+    {
+      "path": "C:/Users/gb/.trifusion_github_publish_22c3bee/tools/run_independent_native_evidence.py",
+      "bytes": 10367,
+      "sha256": "2429af8d2f803d70b9d15113a430609ead28621eb4341a746c3025cc5685fe23"
+    },
+    {
+      "path": "C:/Users/gb/.trifusion_github_publish_22c3bee/tools/run_foundation_recipe.py",
+      "bytes": 18242,
+      "sha256": "c18042509dc33ff66eee1a6b04a723ad55685bd5d9daf218c3779703ffe20758"
+    },
+    {
+      "path": "C:/Users/gb/.trifusion_github_publish_22c3bee/tools/run_training_feature_scale.py",
+      "bytes": 3442,
+      "sha256": "473853f58e4ed70bf123509afe2861fa8a9988631c04f0ce04f3260c55fd9081"
+    },
+    {
+      "path": "C:/Users/gb/.trifusion_github_publish_22c3bee/tools/run_clean_clip_joint.py",
+      "bytes": 9804,
+      "sha256": "178e9793f2cf8261eb44a278e053d5caabd4f2f37dba48a65952b2547338a746"
+    },
+    {
+      "path": "C:/Users/gb/.trifusion_github_publish_22c3bee/tools/run_visual_update_control.py",
+      "bytes": 14850,
+      "sha256": "537cd5a4ab4e9b3501a7279e3f4857536bdda761f597d8b5fa7bfdbdbf82cbdd"
+    },
+    {
+      "path": "C:/Users/gb/.trifusion_github_publish_22c3bee/tools/run_correspondence_roles.py",
+      "bytes": 15677,
+      "sha256": "e50865fb923297cd61cf38b33ec2bc95154f8c503b5dfe5de9823cad3f03d7ef"
+    },
+    {
+      "path": "C:/Users/gb/.trifusion_github_publish_22c3bee/tools/run_signal_baseline_dev.py",
+      "bytes": 12601,
+      "sha256": "083967f2a38267415b2992da98c2ad9429ebb793f387b45daac1dbb4eb16f365"
+    },
+    {
+      "path": "C:/Users/gb/.trifusion_github_publish_22c3bee/tools/queue_incremental_role_objective_m0.py",
+      "bytes": 8204,
+      "sha256": "7b12f7586e3b5754916cff7f2c8581019565c0fa537454f21d989f2aeb24a454"
+    },
+    {
+      "path": "C:/Users/gb/.trifusion_github_publish_22c3bee/tools/queue_native_research.py",
+      "bytes": 8654,
+      "sha256": "b138144780a31dc8a5a4922cc4e15dbc0537d0f75ce47d823434d3d3a3c5bc65"
+    },
+    {
+      "path": "C:/Users/gb/.trifusion_github_publish_22c3bee/tools/queue_foundation_recipe.py",
+      "bytes": 12850,
+      "sha256": "3afe051358aa25d99cb3900b4c6fdb13d5d79d9dcee76d01018fccd27e27d302"
+    },
+    {
+      "path": "C:/Users/gb/.trifusion_github_publish_22c3bee/tools/report_prepool_dense_correspondence.py",
+      "bytes": 9524,
+      "sha256": "1f11d1e4557903abec023c53064f26eeae7591818bec71d0b598789e86b818f2"
+    },
+    {
+      "path": "C:/Users/gb/.trifusion_github_publish_22c3bee/tools/train_msvr310_signal_oof.py",
+      "bytes": 20480,
+      "sha256": "c25579d931df34481fef321558f0b9a1f9179d72a25d6047dbbfd3682d4ae60f"
+    },
+    {
+      "path": "C:/Users/gb/.trifusion_github_publish_22c3bee/tools/train_rgbnt100_signal_oof.py",
+      "bytes": 22653,
+      "sha256": "4462b73139e034d450d955c5b4a994aaa967548e9cc503d97bb753a14ea03b22"
+    },
+    {
+      "path": "C:/Users/gb/.trifusion_github_publish_22c3bee/modeling/trifusion/global_task_role_heads.py",
+      "bytes": 1774,
+      "sha256": "2298763b70b48718411db52e55f32dabddade5af0e56457a85eeabab4f9fcefd"
+    },
+    {
+      "path": "C:/Users/gb/.trifusion_github_publish_22c3bee/modeling/trifusion/role_input_detach.py",
+      "bytes": 639,
+      "sha256": "a3732d5ea98a9fef6039a14f34de98a23cd85a39efd83f52c8835ec59d4605b3"
+    },
+    {
+      "path": "C:/Users/gb/.trifusion_github_publish_22c3bee/modeling/trifusion/independent_native_roles.py",
+      "bytes": 5375,
+      "sha256": "1565590fdfb281fb51b43d06497cd526ffe5bbdc135727ebaa609615dc7832ff"
+    },
+    {
+      "path": "C:/Users/gb/.trifusion_github_publish_22c3bee/modeling/trifusion/partitioned_evidence_clip.py",
+      "bytes": 3614,
+      "sha256": "3bad53abd6777602e1f1ea9e7b03f10a796116b577501ee5ec0aec6e683b436c"
+    },
+    {
+      "path": "C:/Users/gb/.trifusion_github_publish_22c3bee/modeling/trifusion/evidence_author_heads.py",
+      "bytes": 3287,
+      "sha256": "613b249dae9e1d62d418b94398a0d6ccbcf48e72c88b26b27dd5b9254e9c24cd"
+    },
+    {
+      "path": "C:/Users/gb/.trifusion_github_publish_22c3bee/modeling/trifusion/role_global_tokens.py",
+      "bytes": 4968,
+      "sha256": "f41ff1af1fb1b6303a9af63cf039263e2572c16b23813f92a0297f014e71dd4f"
+    },
+    {
+      "path": "C:/Users/gb/.trifusion_github_publish_22c3bee/modeling/trifusion/slot_competition_fp32_roles.py",
+      "bytes": 1763,
+      "sha256": "810801e048bcb07ddbdef0635708b63cba7562a4876e044af34135fd412f79c8"
+    },
+    {
+      "path": "C:/Users/gb/.trifusion_github_publish_22c3bee/modeling/trifusion/slot_competition_roles.py",
+      "bytes": 2226,
+      "sha256": "bbc3e2430f760587cf8c1d11e40bcbdf0459424e975de74b5b15a40706efbe99"
+    },
+    {
+      "path": "C:/Users/gb/.codex_tmp/independent_evidence_draft/text_prior_grounding898/verified_original_sources/comparators/Signal-cd1b0a6/modeling/clip/model.py",
+      "bytes": 33586,
+      "sha256": "2c2ca81815830fad2ab13bb8bb4ba0d41f0625477af6505815f0982d96df4e73"
+    },
+    {
+      "path": "C:/Users/gb/.codex_tmp/independent_evidence_draft/qualified_five_audit_sources891/0202_make_optimizer.py",
+      "bytes": 2021,
+      "sha256": "ada1023a79fcaaed092bce0849a61db9d0253cf8974c494bfb3082d0fd35fee1"
+    },
+    {
+      "path": "C:/Users/gb/.codex_tmp/independent_evidence_draft/qualified_five_audit_sources891/0224_Signal.yml",
+      "bytes": 914,
+      "sha256": "a13bd5169a4c710fa79efc87db909409015a0b2611086c0fbf4c1842f0cfcc44"
+    },
+    {
+      "path": "C:/Users/gb/.codex_tmp/independent_evidence_draft/qualified_five_audit_sources891/0226_Signal.yml",
+      "bytes": 946,
+      "sha256": "02641ce2941dcd50df77d379aab54650cae4a2a6b15ba1bcd43deba970b6900f"
+    },
+    {
+      "path": "C:/Users/gb/.codex_tmp/independent_evidence_draft/qualified_five_audit_sources891/0228_Signal.yml",
+      "bytes": 934,
+      "sha256": "357ca3a989e943ea5348e6206c0d0f69b3c0d35ad9fbadbf68d2786439b8a915"
+    },
+    {
+      "path": "C:/Users/gb/.codex_tmp/independent_evidence_draft/qualified_five_audit_sources891/0142_make_loss.py",
+      "bytes": 3674,
+      "sha256": "7eb7ab953c2bbc52d0c298ef971d0c3ff7000e5e50756fbb5a5fd63ac4c109aa"
+    },
+    {
+      "path": "C:/Users/gb/.codex_tmp/independent_evidence_draft/qualified_five_audit_sources891/0213_metrics.py",
+      "bytes": 22888,
+      "sha256": "91604acb7d978462c16904910a645d7d1697c15bf150da529099004c8b5eecb2"
+    }
+  ]
+}
+

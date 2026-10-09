@@ -1,0 +1,622 @@
+{
+  "schema": "text_semantic_prior_production_source_review",
+  "round": "R2",
+  "created_at": "2026-10-09T16:32:25.306Z",
+  "verdict": "PASS",
+  "verdict_scope": "SOURCE_ONLY_PASS",
+  "blocking": [],
+  "nonblocking": [],
+  "prior_review": {
+    "path": "C:/Users/gb/.codex_tmp/independent_evidence_draft/text_semantic_prior900/source_review/SOURCE_REVIEW_R1.json",
+    "verdict": "REVISE",
+    "resolved_blockers": [
+      "B1",
+      "B2"
+    ],
+    "prior_files_preserved": true
+  },
+  "reviewer": {
+    "task": "/root/review_text_production900",
+    "requested_model": "gpt-6-astra",
+    "requested_reasoning_effort": "max",
+    "actual_model_identity": "UNATTESTED",
+    "actual_reasoning_effort": "UNATTESTED",
+    "review_independence": "same-family",
+    "acceptance_status": "provisional",
+    "context_mode": "Same-reviewer R2 follow-up; R1 began in fresh context. Not a second independent reviewer."
+  },
+  "scope": {
+    "candidate_tools": "C:/Users/gb/.codex_tmp/independent_evidence_draft/text_semantic_prior900/candidate_r2/tools",
+    "diff_baseline": "C:/Users/gb/.codex_tmp/independent_evidence_draft/text_semantic_prior900/candidate_code/tools",
+    "source_edits": 0,
+    "ssh_calls": 0,
+    "remote_actions": 0,
+    "nn_forwards": 0,
+    "gpu_actions": 0,
+    "project_imports": 0,
+    "torch_imports": 0,
+    "package_installs": 0,
+    "subagents_spawned": 0
+  },
+  "checks": [
+    {
+      "area": "B1_formal_training_observations",
+      "status": "CLOSED_AT_SOURCE_LEVEL",
+      "evidence": [
+        {
+          "path": "C:/Users/gb/.codex_tmp/independent_evidence_draft/text_semantic_prior900/candidate_r2/tools/run_text_semantic_prior.py",
+          "lines": [
+            120,
+            125,
+            126,
+            131,
+            132,
+            133,
+            134,
+            137,
+            139,
+            142,
+            146,
+            152,
+            157,
+            164,
+            168,
+            176,
+            190,
+            196,
+            217,
+            220,
+            221,
+            228,
+            230,
+            249
+          ]
+        },
+        {
+          "path": "C:/Users/gb/.codex_tmp/independent_evidence_draft/text_semantic_prior900/candidate_r2/tools/report_text_semantic_prior.py",
+          "lines": [
+            44,
+            45,
+            46,
+            47,
+            49,
+            53,
+            56,
+            59,
+            60
+          ]
+        }
+      ],
+      "conclusion": "Observer is now created for both m0 and train. Actual psi/text/W/context/Q/K hooks and actual allocation scores/weights supply diagnostics to each training-step record; optimizer post-hook writes all5parameter gradients/deltas for each effective update. Report checks update count/sequence and aggregates diagnostic epochs. Existing g/c/f logging remains unchanged."
+    },
+    {
+      "area": "B2_complete_frozen_text_state",
+      "status": "CLOSED_AT_SOURCE_LEVEL",
+      "evidence": [
+        {
+          "path": "C:/Users/gb/.codex_tmp/independent_evidence_draft/text_semantic_prior900/candidate_r2/tools/run_text_semantic_prior.py",
+          "lines": [
+            127,
+            199,
+            201,
+            202,
+            204,
+            205,
+            249
+          ]
+        },
+        {
+          "path": "C:/Users/gb/.trifusion_github_publish_22c3bee/tools/run_signal_preserving_v5.py",
+          "lines": [
+            523,
+            525,
+            527
+          ]
+        },
+        {
+          "path": "C:/Users/gb/.codex_tmp/independent_evidence_draft/text_semantic_prior900/candidate_r2/tools/queue_text_semantic_prior.py",
+          "lines": [
+            81,
+            82,
+            83,
+            84,
+            146,
+            147,
+            148,
+            149
+          ]
+        }
+      ],
+      "conclusion": "Existing digest iterates text.state_dict, therefore includes both registered buffers as well as parameters. Initial/final complete text-state hashes must match; m0/full queue acceptance additionally binds them to initializer text_state_sha256. No new hashing scheme."
+    },
+    {
+      "area": "actual_graph_and_forward_outputs",
+      "status": "SOURCE_PASS",
+      "evidence": [
+        {
+          "path": "C:/Users/gb/.codex_tmp/independent_evidence_draft/text_semantic_prior900/candidate_r2/tools/run_text_semantic_prior.py",
+          "lines": [
+            144,
+            148,
+            154,
+            159,
+            166,
+            173,
+            174,
+            210,
+            211,
+            214,
+            290,
+            293
+          ]
+        },
+        {
+          "path": "C:/Users/gb/.trifusion_github_publish_22c3bee/modeling/trifusion/slot_competition_fp32_roles.py",
+          "lines": [
+            10,
+            15,
+            16,
+            18,
+            19,
+            20
+          ]
+        }
+      ],
+      "conclusion": "FP32 reader's actual allocation_weights global is wrapped. Original allocation executes on the original graph, the same weights object is returned, and observation-only operations detach. Hooks return None and do not replace/modify forward outputs. No additional model forward, objective or trainable state introduced."
+    },
+    {
+      "area": "AMP_effective_updates",
+      "status": "SOURCE_PASS",
+      "evidence": [
+        {
+          "path": "C:/Users/gb/.codex_tmp/independent_evidence_draft/text_semantic_prior900/candidate_r2/tools/run_text_semantic_prior.py",
+          "lines": [
+            190,
+            191,
+            193,
+            194,
+            196,
+            202,
+            219,
+            221,
+            223,
+            224
+          ]
+        },
+        {
+          "path": "C:/Users/gb/.trifusion_github_publish_22c3bee/tools/run_foundation_recipe.py",
+          "lines": [
+            234,
+            235,
+            236,
+            237,
+            239,
+            240,
+            241
+          ]
+        }
+      ],
+      "conclusion": "Existing scaler unscales and validates gradients before optimizer.step. Post-hook sees effective optimizer steps only and does not update/zero gradients. Native M0 hook and stagedpsi/W hook remain in place; expected firststepzero and steps2..8 activity thresholds are unchanged. This is static reasoning, not an executed AMP test."
+    },
+    {
+      "area": "M0_fresh_reload_and_evaluation_isolation",
+      "status": "SOURCE_PASS",
+      "evidence": [
+        {
+          "path": "C:/Users/gb/.codex_tmp/independent_evidence_draft/text_semantic_prior900/candidate_r2/tools/run_text_semantic_prior.py",
+          "lines": [
+            123,
+            143,
+            147,
+            153,
+            158,
+            165,
+            212,
+            217,
+            220,
+            245,
+            246,
+            249
+          ]
+        },
+        {
+          "path": "C:/Users/gb/.trifusion_github_publish_22c3bee/tools/run_foundation_recipe.py",
+          "lines": [
+            267,
+            268,
+            269,
+            270,
+            271,
+            272,
+            273,
+            274
+          ]
+        },
+        {
+          "path": "C:/Users/gb/.trifusion_github_publish_22c3bee/tools/run_correspondence_roles.py",
+          "lines": [
+            66,
+            67,
+            70,
+            71,
+            73
+          ]
+        }
+      ],
+      "conclusion": "Observer is bound in optimization, not build_core; fresh M0 reload construction does not overwrite it. Original model is switched to eval before the reload forwards. Training-state gates disable hooks/allocation capture during per-epoch eval and M0 reload; evaluation has no optimizer step and cannot increment update count. Standalone evaluation has TEXT_OBSERVATIONS=None."
+    },
+    {
+      "area": "RNG_initialization_BN_and_lifetime",
+      "status": "SOURCE_PASS",
+      "evidence": [
+        {
+          "path": "C:/Users/gb/.codex_tmp/independent_evidence_draft/text_semantic_prior900/candidate_r2/tools/run_text_semantic_prior.py",
+          "lines": [
+            122,
+            126,
+            127,
+            131,
+            176,
+            181,
+            183,
+            217,
+            219,
+            220
+          ]
+        },
+        {
+          "path": "C:/Users/gb/.trifusion_github_publish_22c3bee/modeling/trifusion/global_task_role_heads.py",
+          "lines": [
+            8,
+            10,
+            11,
+            12,
+            29,
+            30
+          ]
+        },
+        {
+          "path": "C:/Users/gb/.trifusion_github_publish_22c3bee/modeling/trifusion/evidence_author_heads.py",
+          "lines": [
+            42,
+            43,
+            46
+          ]
+        }
+      ],
+      "conclusion": "New observer uses deterministic detached clones/statistics and no random draws, model constructors, mode changes or BN-forward repetitions. Parameter initial clones do not register as model state. Detached feature snapshots contain no autograd graph; existing author/rawhead behavior and initial builder/RNG checks are unchanged. Runtime numerical parity is not claimed."
+    },
+    {
+      "area": "report_and_unchanged_contract",
+      "status": "SOURCE_PASS",
+      "evidence": [
+        {
+          "path": "C:/Users/gb/.codex_tmp/independent_evidence_draft/text_semantic_prior900/candidate_r2/tools/report_text_semantic_prior.py",
+          "lines": [
+            39,
+            42,
+            43,
+            44,
+            45,
+            46,
+            49,
+            50,
+            53,
+            59,
+            60
+          ]
+        },
+        {
+          "path": "C:/Users/gb/.codex_tmp/independent_evidence_draft/text_semantic_prior900/candidate_r2/tools/queue_text_semantic_prior.py",
+          "lines": [
+            81,
+            84,
+            99,
+            146,
+            149
+          ]
+        }
+      ],
+      "conclusion": "Added fields are accepted for both M0/formal phases and consumed by the terminal report. Existing ground-truth/fullquery pairing, endpoint sequencing, storage reservation, strict reload, mAP-best and missing-result handling are untouched. Only3newtool files changed; prefix is identical; all42R1inputs remain byte-identical."
+    }
+  ],
+  "runtime_impacts": [
+    "GPU scalar/statistic extraction and per-step log flush add time; they do not change returned weights or losses. Their actual cost still requires the ordinary registered runtime observations.",
+    "Training-hook work lies inside the existing training interval. Before/after full-state hashing and receipt finalization retain their existing startup/terminal boundaries; use campaign step timestamps for whole-process wall time.",
+    "No static bitwise training equivalence or measured capacity claim is made. Existing per-end real8M0/overflow/BN/stagedautograd/frozenstate/strictreload gates remain necessary."
+  ],
+  "validation": {
+    "python": "CPython 3.10.19; stdlib only",
+    "r1_reviewed_input_count": 42,
+    "changed_r1_inputs": [],
+    "candidate_files": [
+      {
+        "path": "C:\\Users\\gb\\.codex_tmp\\independent_evidence_draft\\text_semantic_prior900\\candidate_r2\\tools\\check_text_semantic_prefix.py",
+        "bytes": 4453,
+        "sha256": "f0b720cad3abaa7b337365e25380711cbd5a1964d2a93bd9800eeb25b844ecf9",
+        "ast": "PASS",
+        "r1_path": "C:\\Users\\gb\\.codex_tmp\\independent_evidence_draft\\text_semantic_prior900\\candidate_code\\tools\\check_text_semantic_prefix.py",
+        "r1_sha256": "f0b720cad3abaa7b337365e25380711cbd5a1964d2a93bd9800eeb25b844ecf9",
+        "identical_to_r1": true
+      },
+      {
+        "path": "C:\\Users\\gb\\.codex_tmp\\independent_evidence_draft\\text_semantic_prior900\\candidate_r2\\tools\\queue_text_semantic_prior.py",
+        "bytes": 16315,
+        "sha256": "3fdde688b583c2e08167cb10aaf539863ac89f192de78872203065370258de2c",
+        "ast": "PASS",
+        "r1_path": "C:\\Users\\gb\\.codex_tmp\\independent_evidence_draft\\text_semantic_prior900\\candidate_code\\tools\\queue_text_semantic_prior.py",
+        "r1_sha256": "739a8752ffa511d665d6cddca71965559584a859836120c84c2803093a2ac878",
+        "identical_to_r1": false
+      },
+      {
+        "path": "C:\\Users\\gb\\.codex_tmp\\independent_evidence_draft\\text_semantic_prior900\\candidate_r2\\tools\\report_text_semantic_prior.py",
+        "bytes": 7294,
+        "sha256": "f4b415ace5dad9c03131d8dd23b850629bbc6170f3a1a290a6f0ec64f55adc2b",
+        "ast": "PASS",
+        "r1_path": "C:\\Users\\gb\\.codex_tmp\\independent_evidence_draft\\text_semantic_prior900\\candidate_code\\tools\\report_text_semantic_prior.py",
+        "r1_sha256": "960cb0eace0e3fcab20fd78f0a31a04ebdd8e11324ed99ec24a214d85f10eaef",
+        "identical_to_r1": false
+      },
+      {
+        "path": "C:\\Users\\gb\\.codex_tmp\\independent_evidence_draft\\text_semantic_prior900\\candidate_r2\\tools\\run_text_semantic_prior.py",
+        "bytes": 18355,
+        "sha256": "5cd50aefb158fd625a575e2add2930f93a9ca5f77135a7e64026dd753ebf3372",
+        "ast": "PASS",
+        "r1_path": "C:\\Users\\gb\\.codex_tmp\\independent_evidence_draft\\text_semantic_prior900\\candidate_code\\tools\\run_text_semantic_prior.py",
+        "r1_sha256": "dca3fd96a07d36714fbc7369c1124c4f19765c43e1cfd4dae914ac00015f1412",
+        "identical_to_r1": false
+      }
+    ],
+    "ast_tool_chunk_id": "1ee1f6",
+    "diff_tool_chunk_ids": [
+      "16ce3f",
+      "37b2c4"
+    ],
+    "line_inspection_chunk_id": "487974",
+    "digest_helper_note": "Helper content was read directly; no model was imported or executed.",
+    "runtime_status": "NOT_RUN"
+  },
+  "reviewed_files": [
+    {
+      "path": "C:/Users/gb/.codex_tmp/independent_evidence_draft/text_semantic_prior900/candidate_r2/tools/check_text_semantic_prefix.py",
+      "bytes": 4453,
+      "sha256": "f0b720cad3abaa7b337365e25380711cbd5a1964d2a93bd9800eeb25b844ecf9"
+    },
+    {
+      "path": "C:/Users/gb/.codex_tmp/independent_evidence_draft/text_semantic_prior900/candidate_r2/tools/queue_text_semantic_prior.py",
+      "bytes": 16315,
+      "sha256": "3fdde688b583c2e08167cb10aaf539863ac89f192de78872203065370258de2c"
+    },
+    {
+      "path": "C:/Users/gb/.codex_tmp/independent_evidence_draft/text_semantic_prior900/candidate_r2/tools/report_text_semantic_prior.py",
+      "bytes": 7294,
+      "sha256": "f4b415ace5dad9c03131d8dd23b850629bbc6170f3a1a290a6f0ec64f55adc2b"
+    },
+    {
+      "path": "C:/Users/gb/.codex_tmp/independent_evidence_draft/text_semantic_prior900/candidate_r2/tools/run_text_semantic_prior.py",
+      "bytes": 18355,
+      "sha256": "5cd50aefb158fd625a575e2add2930f93a9ca5f77135a7e64026dd753ebf3372"
+    },
+    {
+      "path": "C:/Users/gb/.codex_tmp/independent_evidence_draft/text_semantic_prior900/candidate_code/tools/run_text_semantic_prior.py",
+      "bytes": 12120,
+      "sha256": "dca3fd96a07d36714fbc7369c1124c4f19765c43e1cfd4dae914ac00015f1412"
+    },
+    {
+      "path": "C:/Users/gb/.codex_tmp/independent_evidence_draft/text_semantic_prior900/candidate_code/tools/check_text_semantic_prefix.py",
+      "bytes": 4453,
+      "sha256": "f0b720cad3abaa7b337365e25380711cbd5a1964d2a93bd9800eeb25b844ecf9"
+    },
+    {
+      "path": "C:/Users/gb/.codex_tmp/independent_evidence_draft/text_semantic_prior900/candidate_code/tools/queue_text_semantic_prior.py",
+      "bytes": 15440,
+      "sha256": "739a8752ffa511d665d6cddca71965559584a859836120c84c2803093a2ac878"
+    },
+    {
+      "path": "C:/Users/gb/.codex_tmp/independent_evidence_draft/text_semantic_prior900/candidate_code/tools/report_text_semantic_prior.py",
+      "bytes": 5971,
+      "sha256": "960cb0eace0e3fcab20fd78f0a31a04ebdd8e11324ed99ec24a214d85f10eaef"
+    },
+    {
+      "path": "C:/Users/gb/.trifusion_github_publish_22c3bee/AGENTS.md",
+      "bytes": 47137,
+      "sha256": "ca7bb0ac1cf10f144d970e3bcc512d594048fe9db292ec9dfa62398c49106e3c"
+    },
+    {
+      "path": "C:/Users/gb/.trifusion_github_publish_22c3bee/refine-logs/text_semantic_prior_v1/FINAL_PROPOSAL.md",
+      "bytes": 15419,
+      "sha256": "066e26aa13a1b0cca6aaf43b7c3135b42be248b056dd20561cdf47c7d0023795"
+    },
+    {
+      "path": "C:/Users/gb/.trifusion_github_publish_22c3bee/refine-logs/text_semantic_prior_v1/EXPERIMENT_PLAN.md",
+      "bytes": 11337,
+      "sha256": "03a202fd7155f7603073ec9dcbd5852fbafecc970e22fb9322c568919bcff99b"
+    },
+    {
+      "path": "C:/Users/gb/.trifusion_github_publish_22c3bee/refine-logs/text_semantic_prior_v1/SOURCE_SCOPE.json",
+      "bytes": 53967,
+      "sha256": "a0d2ed0b9c7f5adde101b0240de8715c1cbb6e732cb96582352f72550bd5696a"
+    },
+    {
+      "path": "C:/Users/gb/.trifusion_github_publish_22c3bee/refine-logs/incremental_role_objective_v1/INPUT_SEAL.json",
+      "bytes": 40340,
+      "sha256": "2dd7dedfd4a6460bd65c9429c7face2d6148afd4c6e053cc8e9c8e641ec2f1ea"
+    },
+    {
+      "path": "C:/Users/gb/.trifusion_github_publish_22c3bee/modeling/trifusion/text_semantic_prior.py",
+      "bytes": 6878,
+      "sha256": "4b1c5448929881f2914113fcf6fbaba18112da0eae0f9a7264bfe6b2e66d7382"
+    },
+    {
+      "path": "C:/Users/gb/.trifusion_github_publish_22c3bee/tools/run_global_task_role.py",
+      "bytes": 2127,
+      "sha256": "151a3350a9da7d86ce6b4b7d5160537b182792ab08727ccb5e4ab0c64bb56d5f"
+    },
+    {
+      "path": "C:/Users/gb/.trifusion_github_publish_22c3bee/tools/run_role_input_detach.py",
+      "bytes": 1753,
+      "sha256": "a177fd5aa4d5ba25422a49cb619062001722d6c7640891cb3da9645a8eb32fe5"
+    },
+    {
+      "path": "C:/Users/gb/.trifusion_github_publish_22c3bee/tools/run_native_research.py",
+      "bytes": 781,
+      "sha256": "b48725622371fc6d9671c464ce97252e2e06eba465e213ce221d84c798e52cc2"
+    },
+    {
+      "path": "C:/Users/gb/.trifusion_github_publish_22c3bee/tools/run_native_partitioned.py",
+      "bytes": 2289,
+      "sha256": "2c3abac37b122760895b97ccf01d4fefe2cfb8223b35b6e2e335a1a4144f72fa"
+    },
+    {
+      "path": "C:/Users/gb/.trifusion_github_publish_22c3bee/tools/run_independent_native_evidence.py",
+      "bytes": 10367,
+      "sha256": "2429af8d2f803d70b9d15113a430609ead28621eb4341a746c3025cc5685fe23"
+    },
+    {
+      "path": "C:/Users/gb/.trifusion_github_publish_22c3bee/tools/run_foundation_recipe.py",
+      "bytes": 18242,
+      "sha256": "c18042509dc33ff66eee1a6b04a723ad55685bd5d9daf218c3779703ffe20758"
+    },
+    {
+      "path": "C:/Users/gb/.trifusion_github_publish_22c3bee/tools/run_training_feature_scale.py",
+      "bytes": 3442,
+      "sha256": "473853f58e4ed70bf123509afe2861fa8a9988631c04f0ce04f3260c55fd9081"
+    },
+    {
+      "path": "C:/Users/gb/.trifusion_github_publish_22c3bee/tools/run_clean_clip_joint.py",
+      "bytes": 9804,
+      "sha256": "178e9793f2cf8261eb44a278e053d5caabd4f2f37dba48a65952b2547338a746"
+    },
+    {
+      "path": "C:/Users/gb/.trifusion_github_publish_22c3bee/tools/run_visual_update_control.py",
+      "bytes": 14850,
+      "sha256": "537cd5a4ab4e9b3501a7279e3f4857536bdda761f597d8b5fa7bfdbdbf82cbdd"
+    },
+    {
+      "path": "C:/Users/gb/.trifusion_github_publish_22c3bee/tools/run_correspondence_roles.py",
+      "bytes": 15677,
+      "sha256": "e50865fb923297cd61cf38b33ec2bc95154f8c503b5dfe5de9823cad3f03d7ef"
+    },
+    {
+      "path": "C:/Users/gb/.trifusion_github_publish_22c3bee/tools/run_signal_baseline_dev.py",
+      "bytes": 12601,
+      "sha256": "083967f2a38267415b2992da98c2ad9429ebb793f387b45daac1dbb4eb16f365"
+    },
+    {
+      "path": "C:/Users/gb/.trifusion_github_publish_22c3bee/tools/queue_incremental_role_objective_m0.py",
+      "bytes": 8204,
+      "sha256": "7b12f7586e3b5754916cff7f2c8581019565c0fa537454f21d989f2aeb24a454"
+    },
+    {
+      "path": "C:/Users/gb/.trifusion_github_publish_22c3bee/tools/queue_native_research.py",
+      "bytes": 8654,
+      "sha256": "b138144780a31dc8a5a4922cc4e15dbc0537d0f75ce47d823434d3d3a3c5bc65"
+    },
+    {
+      "path": "C:/Users/gb/.trifusion_github_publish_22c3bee/tools/queue_foundation_recipe.py",
+      "bytes": 12850,
+      "sha256": "3afe051358aa25d99cb3900b4c6fdb13d5d79d9dcee76d01018fccd27e27d302"
+    },
+    {
+      "path": "C:/Users/gb/.trifusion_github_publish_22c3bee/tools/report_prepool_dense_correspondence.py",
+      "bytes": 9524,
+      "sha256": "1f11d1e4557903abec023c53064f26eeae7591818bec71d0b598789e86b818f2"
+    },
+    {
+      "path": "C:/Users/gb/.trifusion_github_publish_22c3bee/tools/train_msvr310_signal_oof.py",
+      "bytes": 20480,
+      "sha256": "c25579d931df34481fef321558f0b9a1f9179d72a25d6047dbbfd3682d4ae60f"
+    },
+    {
+      "path": "C:/Users/gb/.trifusion_github_publish_22c3bee/tools/train_rgbnt100_signal_oof.py",
+      "bytes": 22653,
+      "sha256": "4462b73139e034d450d955c5b4a994aaa967548e9cc503d97bb753a14ea03b22"
+    },
+    {
+      "path": "C:/Users/gb/.trifusion_github_publish_22c3bee/modeling/trifusion/global_task_role_heads.py",
+      "bytes": 1774,
+      "sha256": "2298763b70b48718411db52e55f32dabddade5af0e56457a85eeabab4f9fcefd"
+    },
+    {
+      "path": "C:/Users/gb/.trifusion_github_publish_22c3bee/modeling/trifusion/role_input_detach.py",
+      "bytes": 639,
+      "sha256": "a3732d5ea98a9fef6039a14f34de98a23cd85a39efd83f52c8835ec59d4605b3"
+    },
+    {
+      "path": "C:/Users/gb/.trifusion_github_publish_22c3bee/modeling/trifusion/independent_native_roles.py",
+      "bytes": 5375,
+      "sha256": "1565590fdfb281fb51b43d06497cd526ffe5bbdc135727ebaa609615dc7832ff"
+    },
+    {
+      "path": "C:/Users/gb/.trifusion_github_publish_22c3bee/modeling/trifusion/partitioned_evidence_clip.py",
+      "bytes": 3614,
+      "sha256": "3bad53abd6777602e1f1ea9e7b03f10a796116b577501ee5ec0aec6e683b436c"
+    },
+    {
+      "path": "C:/Users/gb/.trifusion_github_publish_22c3bee/modeling/trifusion/evidence_author_heads.py",
+      "bytes": 3287,
+      "sha256": "613b249dae9e1d62d418b94398a0d6ccbcf48e72c88b26b27dd5b9254e9c24cd"
+    },
+    {
+      "path": "C:/Users/gb/.trifusion_github_publish_22c3bee/modeling/trifusion/role_global_tokens.py",
+      "bytes": 4968,
+      "sha256": "f41ff1af1fb1b6303a9af63cf039263e2572c16b23813f92a0297f014e71dd4f"
+    },
+    {
+      "path": "C:/Users/gb/.trifusion_github_publish_22c3bee/modeling/trifusion/slot_competition_fp32_roles.py",
+      "bytes": 1763,
+      "sha256": "810801e048bcb07ddbdef0635708b63cba7562a4876e044af34135fd412f79c8"
+    },
+    {
+      "path": "C:/Users/gb/.trifusion_github_publish_22c3bee/modeling/trifusion/slot_competition_roles.py",
+      "bytes": 2226,
+      "sha256": "bbc3e2430f760587cf8c1d11e40bcbdf0459424e975de74b5b15a40706efbe99"
+    },
+    {
+      "path": "C:/Users/gb/.codex_tmp/independent_evidence_draft/text_prior_grounding898/verified_original_sources/comparators/Signal-cd1b0a6/modeling/clip/model.py",
+      "bytes": 33586,
+      "sha256": "2c2ca81815830fad2ab13bb8bb4ba0d41f0625477af6505815f0982d96df4e73"
+    },
+    {
+      "path": "C:/Users/gb/.codex_tmp/independent_evidence_draft/qualified_five_audit_sources891/0202_make_optimizer.py",
+      "bytes": 2021,
+      "sha256": "ada1023a79fcaaed092bce0849a61db9d0253cf8974c494bfb3082d0fd35fee1"
+    },
+    {
+      "path": "C:/Users/gb/.codex_tmp/independent_evidence_draft/qualified_five_audit_sources891/0224_Signal.yml",
+      "bytes": 914,
+      "sha256": "a13bd5169a4c710fa79efc87db909409015a0b2611086c0fbf4c1842f0cfcc44"
+    },
+    {
+      "path": "C:/Users/gb/.codex_tmp/independent_evidence_draft/qualified_five_audit_sources891/0226_Signal.yml",
+      "bytes": 946,
+      "sha256": "02641ce2941dcd50df77d379aab54650cae4a2a6b15ba1bcd43deba970b6900f"
+    },
+    {
+      "path": "C:/Users/gb/.codex_tmp/independent_evidence_draft/qualified_five_audit_sources891/0228_Signal.yml",
+      "bytes": 934,
+      "sha256": "357ca3a989e943ea5348e6206c0d0f69b3c0d35ad9fbadbf68d2786439b8a915"
+    },
+    {
+      "path": "C:/Users/gb/.codex_tmp/independent_evidence_draft/qualified_five_audit_sources891/0142_make_loss.py",
+      "bytes": 3674,
+      "sha256": "7eb7ab953c2bbc52d0c298ef971d0c3ff7000e5e50756fbb5a5fd63ac4c109aa"
+    },
+    {
+      "path": "C:/Users/gb/.codex_tmp/independent_evidence_draft/qualified_five_audit_sources891/0213_metrics.py",
+      "bytes": 22888,
+      "sha256": "91604acb7d978462c16904910a645d7d1697c15bf150da529099004c8b5eecb2"
+    },
+    {
+      "path": "C:/Users/gb/.trifusion_github_publish_22c3bee/tools/run_signal_preserving_v5.py",
+      "bytes": 65190,
+      "sha256": "e162184f68778b4991db0f97f26c5fda273b2ad2f7c8db2bbb2d53775eb717e5"
+    }
+  ],
+  "limitations": [
+    "Only actual local source diff and unchanged call-chain evidence reviewed; no prefix/VJP, real M0, GPU capacity, full50 or retrieval result executed.",
+    "Source PASS closes R1 B1/B2 only. Same-family provisional attribution and unverified runtime identity remain.",
+    "Registered method remains a fixed pretrained-versus-one-random-package pilot; no originality/SOTA/general-seed claim."
+  ]
+}
+

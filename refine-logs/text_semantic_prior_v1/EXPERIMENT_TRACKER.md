@@ -14,3 +14,6 @@
 | T7 | report | 完整全部配对/query/成本 | all complete or missing | three | all original/results | MUST | NOT_RUN |
 
 六旧semantic/global只复用封存控制；完整流程种子及论文级强近邻另立合同，目前不启动。
+
+
+2026-10-10：用户恢复；生产source R2通过，prefix/M0/full50仍NOT_RUN。固定六端顺序和原seed42/50轮合同不变，只用26GPU0/1。

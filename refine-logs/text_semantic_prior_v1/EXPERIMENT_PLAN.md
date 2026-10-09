@@ -77,7 +77,7 @@ pretrained与random有相同新增trainable数/固定text架构/推理成本接�
 - [x] 无额外模块/目标，无同维度或容量混账
 - [x] 原控制/数据/预算/消费边界明确
 - [x] R2实际最终方法回执：有限pilot值得检验，paper仍REVISE
-- [ ] source实现和独立复核
+- [x] 组件及四个生产入口源码复核（source-only；真实NN资格另计）
 - [ ] 实际资源、prefix/VJP、初始化、8步M0与严格重载
 - [ ] 六端fresh50+全量正式成绩与报告
 - [ ] 完整流程稳定性/强近邻/SOTA/论文原创性证据
@@ -87,3 +87,8 @@ pretrained与random有相同新增trainable数/固定text架构/推理成本接�
 2026-10-08T02:44:33.151671+08:00精确退役32个闭合旧distance缓存3,896,408,208B；原始64metric/train texts与SHA保留，无checkpoint/初始化删除。free_after=6606270464B，当次超过5,905,580,032B规划预留，但不代替未来启动前再验空间/实测保存预算。历史32raw distance不能再直接重放，不能称全部旧二进制仍存。
 
 组件SOURCE_COMPONENT_PASS只覆盖新core文件及其静态接入边界；生产builder、唯一六端queue、prefix/VJP工具、真实M0、full50/eval/report尚未完成。0新NN/0正式端，无检索结论。
+
+
+## 2026-10-10恢复执行
+
+用户已恢复新Goal并再次限定26物理GPU0/1。生产R1确认正式诊断和完整冻结buffer验收缺口；R2只补观察和149-state终态比较，源码层面闭合。新增观察不改变原weights、autograd、模型、任务、seed或配方，GPU标量读取的同步成本计入真实运行时间。prefix、逐端M0、fresh50与新正式结果仍未执行；旧控制不重训、旧失败不改判。

@@ -1,4 +1,4 @@
-> **当前状态（2026-10-08，§41.899）：已按用户要求暂停，科研目标未完成。现有训练已结束，不启动新实验。最新收尾是文档同步与清理；新增文本生产入口仍未验收、未部署。以下旧“继续启动”计划只在用户明确恢复后重新核对。**
+> **当前状态（2026-10-10，§41.900）：用户已更新Goal并明确恢复，只使用26服务器物理GPU0、1。研究目标仍未完成；先复核已登记但未运行的冻结文本上下文对照，源码复核、prefix与逐端真实M0合格后才进入fresh50。当前尚无新正式成绩。§899暂停/清理及所有旧失败保持历史记录，不重新执行已闭合队列。**
 
 # TriFusion RGB–NIR–TIR ReID 完整交接（2026-09-01）
 
@@ -18182,3 +18182,22 @@ H2a原三端50轮/6,484更新及完整报告已在§897闭合，0/3主要推进�
 工程收件边界：远端清理退出0，本地末尾因CRLF重新格式化与远端LF原文的byte比较失败而退出1。独立收件核对确认JSON内容相同、只差换行，56条原删除日志与428,467,155B合计吻合；原失败及两个SHA保留，未重跑删除。公共RESULT使用原远端字节，INTAKE_NORMALIZATION_RECEIPT单独解释，不覆盖原失败。
 
 停止/清理依据：logs/user_stop_closeout_20261008_899，以及refine-logs/USER_PAUSE_20261008.md/.json。主文档首页、CURRENT_GOAL与AGENTS已明确暂停优先，防止旧待办误启动。只做本次收尾，不连接25、不查询GPU温度功率、不改模型/损失/seed；25原镜像I/O pending边界仍保留。用户明确恢复后再核对当前状态与未完成评审，不直接运行已撤回帮助脚本。GitHub、26与桌面复制一致性须以本次发布回执为准。
+
+
+## 41.900 2026-10-10：用户恢复新目标；只26GPU0/1，文本上下文生产源码复核完成但NN尚未启动
+
+用户更新Goal，优先RGBNT201超过完整Signal，并要求三数据集最终全面超过Signal；开发baseline采用去掉创新模块的Signal。随后明确“还是用26服务器的0，1号显卡吧”。§899停止/清理已完成并作为历史保留，新Goal现为ACTIVE_UNMET，不把恢复动作写成新成绩。多seed及车辆参数适配只在接近目标后另行登记，当前仍seed42；全部尝试公开，单best作为部署选择，不解释为无偏估计。
+
+三个参照分账：无模块作者配方baseline为201 73.4728/77.1531、100 84.0319/96.2099、MSVR 50.8388/68.6971；有共享适配的独立global与raw-semantic是文本pilot的直接匹配控制。完整发布Signal本地参考仍80.3029/85.1675、86.3242/97.5510、53.2424/72.4196，初始化与训练历史不同，跨路线差不能全部归给一个模块。所有201 CMC跟随同一mAP-best；不跨epoch/seed拼指标。
+
+本次复用§898已登记但未运行的冻结文本上下文必要性对照：只新增ψ/W的592,000可训练参数，text包冻结且保留输入autograd，原global/角色raw职责、128视觉value及1536部署不变。它是global的确定性重编码，可能改变区域读取依据，不创造独立图像信息，也不宣布原创性。pretrained/random两臂×三集固定六端，各自真实8M0合格后fresh50；封存旧六控制不重训。
+
+四个未运行旧草稿复制到新候选，修复prefix显式ROOT/modeling导入。fresh生产R1为REVISE，两项明确缺口是正式ψ/W及读取诊断未接入、冻结检查未覆盖两个持久buffer。R2只在新入口加入实际forward/optimizer只读观察和完整149 textstate终态比较；原allocation_weights原样返回、训练autograd保留，M0末端freshbuild不覆盖原模型观察。source-only复核通过，原429运行源未改，新四工具进入433来源清单；不是prefix/M0/性能通过。requested Astra/max、actual身份UNATTESTED，同家族/provisional，旧R1与中断的899评审不改判。
+
+实际00:15:45资源快照GPU0/1各15MiB，free11,810,959,360B；00:17:10.705886+08只读CPU核验无本项目工具进程，原429source及45当前依赖全部SHA一致。warm复用既有conda，不安装、不查25/GPU2/3/功率温度。原生SSH继承proxy导致第一次连接关闭，显式使用既有ProxyCommand=none后连接；远端没有rg，进程核查改用stdlib。两者是运输/观察事实，不计模型修复。本次没有新增删除或权重变更。
+
+截止本节准备时间2026-10-10T00:33:10.456973+08:00，新组件forward/prefix/M0/正式端均0。下一动作仅固定prefix输出/VJP及首端prepare→M0；通过才正式50轮。报告同时保留text更新/模态与身份cosine、Q/K/logit_std/读取熵、g/c/f范数、全query修复/新增错误、AP与身份收益分布。记录同步会增加实测运行时间，不能称免费。该有限pilot不替代全面超过Signal或模块必要性证据。
+
+最新开源范围核查仍确认[CLIP-ReID作者仓库](https://github.com/Syliz517/CLIP-ReID)有实际训练/模型代码；[PromptSG](https://github.com/YzXian16/PromptSG)页面仍为空，[DEEP-ReID](https://github.com/lsh-ahu/DEEP-ReID)可见根目录仍以README/assets为主，不假称完整实现移植。借鉴公开提示/text先验思想，针对当前角色缺少有效新增判别依据的现象检验上下文入口；近邻必要性和原创性仍须后续证明。
+
+依据：refine-logs/USER_RESUME_20261010.md/.json、text_semantic_prior_v1/PRODUCTION_SOURCE_REVIEW_R1/R2、PRODUCTION_SOURCE_SCOPE.json及原EXPERIMENT_PLAN。只26物理GPU0/1；远端和桌面字节一致性以本次发布/同步实际回执为准。

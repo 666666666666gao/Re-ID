@@ -1,4 +1,8 @@
-## 2026-10-08 user-requested pause - latest priority
+## 2026-10-10 user-resumed research - latest priority
+
+The user revised and resumed the Goal, and explicitly selected server2026 physical GPU0/1 again. Research is active/unmet. Prioritize RGBNT201 exceeding full Signal, then all three datasets; use module-removed Signal as the matched development baseline. Keep seed42 until results are close enough for a separately registered seed/parameter comparison, disclose every tried result, and select one best checkpoint without claiming an unbiased estimate. Do not restart closed experiments. The registered frozen-text context pilot remains unrun; finish its production source review and ordinary per-end eight-step M0 before fresh50. Reuse the existing runtime, datasets, public initialization and two-GPU placement. No25/GPU2/3/power/temperature actions. The pause below and all failed/unfinished checks remain historical evidence, not overwritten results.
+
+## 2026-10-08 user-requested pause - historical
 
 The user requested stopping after current training. No own project tool processes remained at the actual check. Keep the research Goal paused/unmet; do not launch new training, prefix checks, M0, queues or method work unless the user explicitly resumes. Only cleanup and GitHub/handoff synchronization were authorized afterwards. Read refine-logs/USER_PAUSE_20261008.md before older execution instructions. Current production source429 is unchanged; four unfinished tool drafts are archived as text, not installed.
 
