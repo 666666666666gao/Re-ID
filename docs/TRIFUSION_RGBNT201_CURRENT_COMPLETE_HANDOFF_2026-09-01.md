@@ -1,4 +1,4 @@
-> **当前状态（2026-10-13，§41.916）：六端原始seed42／50轮／首次严格评价已闭合，训练保持停止。只读最佳权重诊断的行政绑定已对齐独立续接的接受记录；原存储EXIT1保留。五分数消费者及控制器未改，当前仅元数据／SHA／AST核查，未形成完整执行seal、未检查GPU空闲、未启动NN。下一步范围仍待回复；仅26 GPU0/1，科学目标ACTIVE_UNMET。**
+> **当前状态（2026-10-13，§41.917）：六端原始50轮／首次严格评价已闭合，训练停止。只读五分数诊断包已封存：cold逐字节验证463个原源码与89份输入资料（含50依赖、六best及六strict距离）；两条诊断代码仅在归档中，根tools尚不存在。尚未启动NN、未检查GPU空闲或当前准入容量；下一步范围待回复，仅26 GPU0/1，科学目标ACTIVE_UNMET。**
 
 
 # TriFusion RGB–NIR–TIR ReID 完整交接（2026-09-01）
@@ -18573,3 +18573,17 @@ Fresh正式50轮stage于01:04:40.710313开始，01:08:19真实snapshot只有1轮
 **科学问题不扩大。**原五项诊断仍为同模型global1536、correction1536、original fused1536、9组区域meanMaxSim、现有训练pairwise的固定0.5×(global cosine＋regional meanMaxSim)。它用于区分同模型全局能力、区域关系、实际辅助目标与部署融合；不选择新系数、种子或best，不宣称更强教师、压缩根因或新部署方法。旧消费者／控制器／旧计划的SHA与AST已核对，本轮不修改其源码、不执行forward；source_reference只归档字节，未部署到根tools入口。
 
 用户“做完当前训练就停止”继续有效；上一轮关于只读NN／仅保存结果／恢复实验的范围问题尚未收到答复，没有把时间经过当同意。计划与绑定只使后续动作具体可审阅，不恢复NN或训练。科学目标保持ACTIVE_UNMET。行政源、实际收据、旧失败与新绑定在logs/region_use_diagnostic_contract_20261013_916；本轮没有新语义实验审核或性能结论，不将root静态检查升级为独立科研复现。
+
+## 41.917 只读诊断输入包封存：原输入逐字节核对通过，执行仍未准入
+
+上一轮§916只检查了六端元数据与二进制存在／大小。本轮补齐cold streaming SHA：2026-10-13T06:17:38.746511+08:00，实际SSH只读调用exit0，耗时21.657513秒，原463个root源码与89份artifact逐字节匹配，其中包含原50依赖、六份当前mAP-best、六份当前首次严格评价距离、原history／初始化／协议及行政来源。源码读取19224661B，artifact读取5078342999B。六端仍是原seed42／原best，没有重新选择epoch或改指标。
+
+**原始失败与接受记录分开。**prepared package继续把remaining_campaign绑定到独立strict912的接受目录，original911的存储EXIT1保持原状。最终cold检查再次确认accepted状态COMPLETE／EXIT0和原失败EXIT1，source／strict seals与输入资料均未改写。不是将原失败改判，也不是重新执行训练／M0／正式评价。
+
+**两份诊断源码只验证归档。**消费者bc73f6f2…与控制器8999fcc3…在§916 source_reference目录的SHA匹配；root tools/diagnose_region_use_best.py与queue_region_use_best_diagnosis.py实查不存在。PREPARED_DIAGNOSTIC_INPUTS_917.json的465份prospective source pin由463份已核对root源码加这两份归档组成，不能据此说465份根源码已部署。本包execution_admission=false，没有forward、NN、optimizer、GPU查询或remote写入，也没有新模型分数。
+
+**剩余步骤有限且明确。**下一步范围选择到达后，若选择只读最佳权重诊断，才部署这两份原样源码，检查GPU0／1空闲及当时剩余容量，并在consumer／controller入口重新核对全部source／artifact SHA；五个固定score、完整Q/G、原fused replay容差、无参数更新规则均沿用旧合同。否则保持停止。当前完整输入包只是已核对的待执行资料，不是NN准入或成功证据，不引入新损失、系数、seed、教师或部署方案。
+
+**阶段收束。**已保存query的CPU分析、损伤分布和只读诊断准备已分别闭合；没有收到上一轮范围选择，不将自动Goal continuation或时间经过视为恢复NN／训练的答复。科学目标 all3>Signal仍未完成；当前六端有限训练停止，best、Signal、依赖及历史本地归档保留。后续需要模型级诊断数据或新的用户范围决定，不继续把状态重复、行政计划或输入哈希通过计成识别算法收益。
+
+实际输入包、cold代码、原stdout与真实exit收据在logs/region_use_prepared_inputs_20261013_917。这里是root工程输入检查，不是新的独立科研审核，不重新认证raw GT、测试协议或训练不确定性。消费的开发基准与单种子边界继续披露。
