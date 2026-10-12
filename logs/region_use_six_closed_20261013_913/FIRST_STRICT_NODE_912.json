@@ -1,0 +1,254 @@
+{
+  "observed_at": "2026-10-13T03:44:02.052245+08:00",
+  "launch": {
+    "status": "FIRST_UNATTEMPTED_STRICT_SUPERVISOR_STARTED_ONLY",
+    "launched_at": "2026-10-13T03:39:51.771242+08:00",
+    "supervisor_pid": 2752522,
+    "campaign": "/data/gaob/Re-ID/Trifusion/logs/region_use_remaining_strict_20261013_912/region_use_remaining_20261013_911",
+    "command": [
+      "/data/gaob/Re-ID/conda-envs/tri_reid/bin/python",
+      "-B",
+      "/data/gaob/Re-ID/Trifusion/tools/finish_region_use_evaluation.py",
+      "--campaign",
+      "/data/gaob/Re-ID/Trifusion/logs/region_use_remaining_strict_20261013_912/region_use_remaining_20261013_911",
+      "--seal",
+      "/data/gaob/Re-ID/Trifusion/refine-logs/region_use_remaining_strict912/INPUT_SEAL.json"
+    ],
+    "physical_gpus": [
+      0,
+      1
+    ],
+    "observed_gpu_memory_mib": {
+      "0": 18,
+      "1": 18
+    },
+    "free_bytes": 3003609088,
+    "launch_invocations": 1,
+    "source_sha256": "2709b390c42fc37a74678e185b98cf4ff84c15f490964c61c7fc0225246d83aa",
+    "seal_sha256": "7210728e8c32e575396f97af72cacf43bab70cd35277155ee5e87eb4c2345df7",
+    "source_pins_verified": 463,
+    "artifact_pins_verified": 61,
+    "boundary": "Only original first unattempted evaluate; no training/M0/prepare replay. Supervisor start is not strict acceptance. No retry."
+  },
+  "supervisor_started": {
+    "supervisor_pid": 2752522,
+    "controller_pid": 2752523,
+    "started_at": "2026-10-13T03:39:51.818217+08:00",
+    "command": [
+      "/data/gaob/Re-ID/conda-envs/tri_reid/bin/python",
+      "-B",
+      "/data/gaob/Re-ID/Trifusion/tools/finish_region_use_evaluation.py",
+      "--campaign",
+      "/data/gaob/Re-ID/Trifusion/logs/region_use_remaining_strict_20261013_912/region_use_remaining_20261013_911",
+      "--seal",
+      "/data/gaob/Re-ID/Trifusion/refine-logs/region_use_remaining_strict912/INPUT_SEAL.json"
+    ]
+  },
+  "campaign_status": "TRAINING_AND_STRICT_EVALUATION_COMPLETE",
+  "terminal": {
+    "supervisor_pid": 2752522,
+    "controller_pid": 2752523,
+    "started_at": "2026-10-13T03:39:51.818217+08:00",
+    "command": [
+      "/data/gaob/Re-ID/conda-envs/tri_reid/bin/python",
+      "-B",
+      "/data/gaob/Re-ID/Trifusion/tools/finish_region_use_evaluation.py",
+      "--campaign",
+      "/data/gaob/Re-ID/Trifusion/logs/region_use_remaining_strict_20261013_912/region_use_remaining_20261013_911",
+      "--seal",
+      "/data/gaob/Re-ID/Trifusion/refine-logs/region_use_remaining_strict912/INPUT_SEAL.json"
+    ],
+    "exit_code": 0,
+    "completed_at": "2026-10-13T03:42:03.740534+08:00"
+  },
+  "process_live": {
+    "2752522": false,
+    "2752523": false
+  },
+  "stages": [
+    {
+      "mode": "prepare",
+      "command": [
+        "/data/gaob/Re-ID/conda-envs/tri_reid/bin/python",
+        "-B",
+        "/data/gaob/Re-ID/Trifusion/tools/run_region_use_probe.py",
+        "--dataset",
+        "RGBNT100",
+        "--comparison",
+        "ambiguity",
+        "--mode",
+        "prepare",
+        "--protocol",
+        "/data/gaob/Re-ID/Trifusion/logs/training_feature_scale_protocols_20261002/RGBNT100.json",
+        "--signal-source",
+        "/data/gaob/Re-ID/Trifusion/comparators/Signal-cd1b0a6",
+        "--clip-weight",
+        "/data/gaob/Re-ID/Trifusion/pertrained-model/ViT-B-16.pt",
+        "--initialization",
+        "/data/gaob/Re-ID/Trifusion/logs/region_use_remaining_20261013_911/initialization/RGBNT100_ambiguity.json",
+        "--output-dir",
+        "/data/gaob/Re-ID/Trifusion/trained-model/region_use_remaining_20261013_911_full_ambiguity_RGBNT100"
+      ],
+      "status": "COMPLETE",
+      "pid": 2552794,
+      "started_at": "2026-10-13T01:03:17.967102+08:00",
+      "gpus": [
+        0,
+        1
+      ],
+      "exit_code": 0,
+      "completed_at": "2026-10-13T01:03:41.876465+08:00"
+    },
+    {
+      "mode": "m0",
+      "command": [
+        "/data/gaob/Re-ID/conda-envs/tri_reid/bin/python",
+        "-B",
+        "/data/gaob/Re-ID/Trifusion/tools/run_region_use_probe.py",
+        "--dataset",
+        "RGBNT100",
+        "--comparison",
+        "ambiguity",
+        "--mode",
+        "m0",
+        "--protocol",
+        "/data/gaob/Re-ID/Trifusion/logs/training_feature_scale_protocols_20261002/RGBNT100.json",
+        "--signal-source",
+        "/data/gaob/Re-ID/Trifusion/comparators/Signal-cd1b0a6",
+        "--clip-weight",
+        "/data/gaob/Re-ID/Trifusion/pertrained-model/ViT-B-16.pt",
+        "--initialization",
+        "/data/gaob/Re-ID/Trifusion/logs/region_use_remaining_20261013_911/initialization/RGBNT100_ambiguity.json",
+        "--output-dir",
+        "/data/gaob/Re-ID/Trifusion/trained-model/region_use_remaining_20261013_911_m0_ambiguity_RGBNT100"
+      ],
+      "status": "COMPLETE",
+      "pid": 2553330,
+      "started_at": "2026-10-13T01:03:42.036841+08:00",
+      "gpus": [
+        0,
+        1
+      ],
+      "exit_code": 0,
+      "completed_at": "2026-10-13T01:04:38.523253+08:00"
+    },
+    {
+      "mode": "train",
+      "command": [
+        "/data/gaob/Re-ID/conda-envs/tri_reid/bin/python",
+        "-B",
+        "/data/gaob/Re-ID/Trifusion/tools/run_region_use_probe.py",
+        "--dataset",
+        "RGBNT100",
+        "--comparison",
+        "ambiguity",
+        "--mode",
+        "train",
+        "--protocol",
+        "/data/gaob/Re-ID/Trifusion/logs/training_feature_scale_protocols_20261002/RGBNT100.json",
+        "--signal-source",
+        "/data/gaob/Re-ID/Trifusion/comparators/Signal-cd1b0a6",
+        "--clip-weight",
+        "/data/gaob/Re-ID/Trifusion/pertrained-model/ViT-B-16.pt",
+        "--initialization",
+        "/data/gaob/Re-ID/Trifusion/logs/region_use_remaining_20261013_911/initialization/RGBNT100_ambiguity.json",
+        "--output-dir",
+        "/data/gaob/Re-ID/Trifusion/trained-model/region_use_remaining_20261013_911_full_ambiguity_RGBNT100"
+      ],
+      "status": "COMPLETE",
+      "pid": 2554896,
+      "started_at": "2026-10-13T01:04:40.710313+08:00",
+      "gpus": [
+        0,
+        1
+      ],
+      "exit_code": 0,
+      "completed_at": "2026-10-13T03:05:07.775188+08:00"
+    },
+    {
+      "mode": "evaluate",
+      "command": [
+        "/data/gaob/Re-ID/conda-envs/tri_reid/bin/python",
+        "-B",
+        "/data/gaob/Re-ID/Trifusion/tools/run_region_use_probe.py",
+        "--dataset",
+        "RGBNT100",
+        "--comparison",
+        "ambiguity",
+        "--mode",
+        "evaluate",
+        "--protocol",
+        "/data/gaob/Re-ID/Trifusion/logs/training_feature_scale_protocols_20261002/RGBNT100.json",
+        "--signal-source",
+        "/data/gaob/Re-ID/Trifusion/comparators/Signal-cd1b0a6",
+        "--clip-weight",
+        "/data/gaob/Re-ID/Trifusion/pertrained-model/ViT-B-16.pt",
+        "--initialization",
+        "/data/gaob/Re-ID/Trifusion/logs/region_use_remaining_20261013_911/initialization/RGBNT100_ambiguity.json",
+        "--output-dir",
+        "/data/gaob/Re-ID/Trifusion/trained-model/region_use_remaining_20261013_911_full_ambiguity_RGBNT100"
+      ],
+      "status": "COMPLETE",
+      "pid": 2752754,
+      "started_at": "2026-10-13T03:40:01.688954+08:00",
+      "gpus": [
+        0,
+        1
+      ],
+      "exit_code": 0,
+      "completed_at": "2026-10-13T03:41:54.317090+08:00"
+    }
+  ],
+  "neural_calls": 0,
+  "observer_calls": 1,
+  "strict_files": {
+    "official_metrics.json": true,
+    "official_distances.pt": true
+  },
+  "strict_receipt": {
+    "schema": "trifusion-region-use-supervision-v1",
+    "status": "COMPLETE",
+    "dataset": "RGBNT100",
+    "recipe": "semantic",
+    "seed": 42,
+    "training_epochs": 50,
+    "selected_epoch": 26,
+    "condition": {
+      "variant": "semantic",
+      "foundation_option": "author",
+      "seed": 42,
+      "epochs": 50,
+      "public_clip_sha256": "5806e77cd80f8b59890b7e101eabd078d9fb84e6937f9e85e4ecb61988df416f",
+      "initialization_sha256": "af702ff372ad0d95e0d15934a8bef28d6f1dc44bd6bd61e0001d3235c9b19bdd",
+      "deployment": "L2_1536",
+      "auxiliary_tasks": "actual_region_identity_relation",
+      "visual_placement": "single_process_original_full_batch_first6_cuda1_last6_and_heads_cuda0",
+      "objective_gradient_policy": "author_global_loss_to_shared_and_heads_fused_loss_to_roles_only",
+      "author_training_objectives": [
+        "shared_global",
+        "role_corrected_fused"
+      ],
+      "region_use_comparison": "ambiguity",
+      "auxiliary_weight": 1.0,
+      "relation_scale": 11.313708498984761,
+      "relation_environment": "protocol_scene_MSVR310_camera_others",
+      "inference_region_comparison": false,
+      "added_model_parameters": 0
+    },
+    "protocol_sha256": "b2c14adf947b06b27b9576a712f96192c1393ad6ed3ec1be5259b63f88300169",
+    "checkpoint_sha256": "fe94de6bc30e5b1e6376f67a298f4ee2f3755928ce8245c20618629b47fe29ff",
+    "distance_sha256": "53f8426fca6fd49866b85656b71c3a8f132e22ab0627588f9b318d069639181b",
+    "training_best_distance_sha256": "25dc1e2f0be4255bfa0becde34aa2d2ed1674c35dd1ae5e46c40d97897495bda",
+    "metrics": {
+      "mAP": 83.3459139098287,
+      "Rank-1": 95.74344158172607,
+      "Rank-5": 96.32652997970581,
+      "Rank-10": 97.37609624862671
+    },
+    "reranking": false,
+    "independent_upstream_metrics_equal": true,
+    "final_evaluation_seconds": 107.56483794213273,
+    "final_evaluation_timing_boundary": "Fresh construction, strict reload and full-gallery scoring.",
+    "completed_at": "2026-10-13T03:41:52.572286+08:00"
+  }
+}
