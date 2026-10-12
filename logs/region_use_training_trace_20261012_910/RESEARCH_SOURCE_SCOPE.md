@@ -1,0 +1,9 @@
+# 外领域参考限定在证据形成
+
+本次只核查Finer-CAM的类别对比归因，未执行它的模型或把代码接入TriFusion。它对比目标类别与易混淆类别的响应，强调区分二者的细节；原评价属于显著图解释，不能当作检索增益或已学习的区域选择器。[CVPR原文](https://openaccess.thecvf.com/content/CVPR2025/papers/Zhang_Finer-CAM_Spotting_the_Difference_Reveals_Finer_Details_for_Visual_Explanation_CVPR_2025_paper.pdf)
+
+作者仓库固定为564ad2c3e66e32304076bf3124acea596ff44f48。默认路径需要backward并输出detached/NumPy显著图；当前多参考目标保留softmax权重梯度，与原论文等权参考及默认强度有差别。分类器训练教程也不是用这些图训练选择器。[固定作者实现](https://github.com/Imageomics/Finer-CAM/tree/564ad2c3e66e32304076bf3124acea596ff44f48)
+
+仅保留一个未实现假设：训练身份的混淆对比能否为实际读取的区域value提供空间/通道责任，并由普通图像前向迁移到未见身份。它尚缺可信训练桥梁，不能把CAM/attention一致性再当最终用途的替代指标。若以后实施，应有打乱混淆身份的内容对照；只提高解释或独立分数、不提高固定1536维检索，不能支持该假设。现阶段不追加当前队列，不使用测试标签、测试更新、文本资源或新比较器。
+
+research_provenance_manifest.json保存原文/补充材料和14个作者文件的URLs、SHA与Git blob核对。作者源码及PDF仅保存在私有研究证据目录，本发布不复制它们；完整私有笔记不是新的主交接文档或已登记实验。

@@ -1,0 +1,4099 @@
+{
+  "status": "FOUR_ACCEPTED_ENDPOINT_TRAINING_TRACE_DESCRIPTION_COMPLETE",
+  "created_at": "2026-10-12T23:21:54.398472+08:00",
+  "source_sha256": "008b9258270f08b769d8e438a1cb6a36dc283cb615b118c71306a6d4df33bfb4",
+  "inputs": {
+    "C:\\Users\\gb\\.codex_tmp\\independent_evidence_draft\\evidence_comparison903\\results908\\trained-model\\region_use_v1_20261012_906_full_uniform_RGBNT201\\training.json": "ecaecb28d3190481774c1f1bf36e4548d593b2aeffc59a11826ec324ef5251ab",
+    "C:\\Users\\gb\\.codex_tmp\\independent_evidence_draft\\evidence_comparison903\\results908\\trained-model\\region_use_v1_20261012_906_full_uniform_RGBNT201\\training_steps.jsonl": "e6480c3e80b1583fb20ce9175dded4e4df6c3a7953ddc2263ee6f37ca71b7dc9",
+    "C:\\Users\\gb\\.codex_tmp\\independent_evidence_draft\\evidence_comparison903\\results908\\trained-model\\region_use_v1_20261012_906_full_uniform_RGBNT201\\official_metrics.json": "9dafc0a49f18aebf5087be848f027dc07f0c750fde0cd5603bbf3f4d3bfc6829",
+    "C:\\Users\\gb\\.codex_tmp\\independent_evidence_draft\\evidence_comparison903\\results908\\trained-model\\region_use_v1_20261012_906_full_ambiguity_RGBNT201\\training.json": "50297128605ab50d3058326713f3d59d7925534dd7a5841d8906437ac48e8beb",
+    "C:\\Users\\gb\\.codex_tmp\\independent_evidence_draft\\evidence_comparison903\\results908\\trained-model\\region_use_v1_20261012_906_full_ambiguity_RGBNT201\\training_steps.jsonl": "2d4e4a749b88172b2a60127a84e7ec33983e40432036b41d760e04313e7c57b9",
+    "C:\\Users\\gb\\.codex_tmp\\independent_evidence_draft\\evidence_comparison903\\results908\\trained-model\\region_use_v1_20261012_906_full_ambiguity_RGBNT201\\official_metrics.json": "32e62373d4b7144bb492d9c842b3b35ea6d9d254e552e54893ad18591dfcab9c",
+    "C:\\Users\\gb\\.codex_tmp\\independent_evidence_draft\\evidence_comparison903\\results908\\trained-model\\region_use_v1_20261012_906_full_uniform_MSVR310\\training.json": "48ffc35cc8d58dedcf676961143b7c0f350c7c3b4cc00b4d531374c23c9505c7",
+    "C:\\Users\\gb\\.codex_tmp\\independent_evidence_draft\\evidence_comparison903\\results908\\trained-model\\region_use_v1_20261012_906_full_uniform_MSVR310\\training_steps.jsonl": "4a1d218638ecdab37e1bbf4bb6465a5c17d15bed29faf2635c20b5323861e697",
+    "C:\\Users\\gb\\.codex_tmp\\independent_evidence_draft\\evidence_comparison903\\results908\\trained-model\\region_use_v1_20261012_906_full_uniform_MSVR310\\official_metrics.json": "bdda341ccf8ea705f3e91a76a4ad2226fff09c29e5319a58f924518ddd81dd5d",
+    "C:\\Users\\gb\\.codex_tmp\\independent_evidence_draft\\evidence_comparison903\\results908\\trained-model\\region_use_v1_20261012_906_full_ambiguity_MSVR310\\training.json": "6a14f28839197d1853426d5cef31205277babebf2a360f15e2d75536b216548d",
+    "C:\\Users\\gb\\.codex_tmp\\independent_evidence_draft\\evidence_comparison903\\results908\\trained-model\\region_use_v1_20261012_906_full_ambiguity_MSVR310\\training_steps.jsonl": "2805154394e20ad830a334a77d6c205cdf26be947f5d4d6ebc8c4b3717dc9766",
+    "C:\\Users\\gb\\.codex_tmp\\independent_evidence_draft\\evidence_comparison903\\results908\\trained-model\\region_use_v1_20261012_906_full_ambiguity_MSVR310\\official_metrics.json": "1c5331681c140ac3ccd86bb810bb243aef7c62696fcc60f46adac9dc0ca7fba3"
+  },
+  "definitions": {
+    "global_nonpositive_margin": "Logged legal training relations where detached global cosine positive-minus-negative margin is <=0.",
+    "correction_ratio": "Mean per training batch of norm(raw_features-shared_global)/norm(shared_global); report unweighted mean of recorded batch means within an epoch.",
+    "counts": "Repeated training triplet/query exposures; not unique identities, independent trials or query/gallery retrieval samples."
+  },
+  "scope": "Descriptive saved source-training logs of four completed seed42 endpoints/two datasets only. Not same-checkpoint query/gallery geometry, regional standalone retrieval, exact global-margin distribution, training ambiguity weights, a cause of failure, or a justification for gain/seed rescue. No model/tensor/optimizer/SSH/GPU/production invocation. Official benchmark was consumed in development.",
+  "results": [
+    {
+      "dataset": "RGBNT201",
+      "condition": "uniform",
+      "selected_epoch": 8,
+      "total_legal_triplet_exposures": 11089680,
+      "total_global_nonpositive_margin_triplet_exposures": 39278,
+      "epochs": [
+        {
+          "epoch": 1,
+          "recorded_steps": 53,
+          "legal_triplet_exposures": 221200,
+          "global_nonpositive_margin_triplet_exposures": 30780,
+          "fraction_global_nonpositive_margin_among_legal_exposures": 0.1391500904159132,
+          "recorded_batch_mean_averages": {
+            "region_use_loss": 0.5774905743463984,
+            "actual_scaled_correction_global_ratio_mean": 0.004172691728322292,
+            "global_loss": 2.0645732767177076,
+            "fused_role_loss": 2.0644561322230213
+          },
+          "official_fused": {
+            "mAP": 29.332388710829587,
+            "Rank-1": 28.588515520095825,
+            "Rank-5": 45.45454680919647,
+            "Rank-10": 55.50239086151123
+          }
+        },
+        {
+          "epoch": 2,
+          "recorded_steps": 53,
+          "legal_triplet_exposures": 222656,
+          "global_nonpositive_margin_triplet_exposures": 6436,
+          "fraction_global_nonpositive_margin_among_legal_exposures": 0.028905576315033054,
+          "recorded_batch_mean_averages": {
+            "region_use_loss": 0.23748105103677175,
+            "actual_scaled_correction_global_ratio_mean": 0.01814284925964081,
+            "global_loss": 1.6179950102320257,
+            "fused_role_loss": 1.6151516100145735
+          },
+          "official_fused": {
+            "mAP": 52.59097876932438,
+            "Rank-1": 51.913875341415405,
+            "Rank-5": 63.27751278877258,
+            "Rank-10": 70.69377899169922
+          }
+        },
+        {
+          "epoch": 3,
+          "recorded_steps": 53,
+          "legal_triplet_exposures": 213808,
+          "global_nonpositive_margin_triplet_exposures": 1104,
+          "fraction_global_nonpositive_margin_among_legal_exposures": 0.0051635111876075735,
+          "recorded_batch_mean_averages": {
+            "region_use_loss": 0.07988919607662368,
+            "actual_scaled_correction_global_ratio_mean": 0.0466490719678267,
+            "global_loss": 1.1769455693802744,
+            "fused_role_loss": 1.1733748305518672
+          },
+          "official_fused": {
+            "mAP": 70.92289146370638,
+            "Rank-1": 77.63158082962036,
+            "Rank-5": 88.51674795150757,
+            "Rank-10": 91.14832282066345
+          }
+        },
+        {
+          "epoch": 4,
+          "recorded_steps": 53,
+          "legal_triplet_exposures": 215712,
+          "global_nonpositive_margin_triplet_exposures": 431,
+          "fraction_global_nonpositive_margin_among_legal_exposures": 0.0019980344162587155,
+          "recorded_batch_mean_averages": {
+            "region_use_loss": 0.04412534768816154,
+            "actual_scaled_correction_global_ratio_mean": 0.05569011183842173,
+            "global_loss": 0.8712528179276664,
+            "fused_role_loss": 0.8699852396857064
+          },
+          "official_fused": {
+            "mAP": 70.72396536252812,
+            "Rank-1": 74.04305934906006,
+            "Rank-5": 84.33014154434204,
+            "Rank-10": 88.51674795150757
+          }
+        },
+        {
+          "epoch": 5,
+          "recorded_steps": 53,
+          "legal_triplet_exposures": 223216,
+          "global_nonpositive_margin_triplet_exposures": 306,
+          "fraction_global_nonpositive_margin_among_legal_exposures": 0.0013708694717224571,
+          "recorded_batch_mean_averages": {
+            "region_use_loss": 0.03923774996710906,
+            "actual_scaled_correction_global_ratio_mean": 0.05602194973320331,
+            "global_loss": 0.6684301799198367,
+            "fused_role_loss": 0.6662558682684628
+          },
+          "official_fused": {
+            "mAP": 66.43847016864615,
+            "Rank-1": 69.25837397575378,
+            "Rank-5": 81.10047578811646,
+            "Rank-10": 85.52631735801697
+          }
+        },
+        {
+          "epoch": 6,
+          "recorded_steps": 53,
+          "legal_triplet_exposures": 215600,
+          "global_nonpositive_margin_triplet_exposures": 43,
+          "fraction_global_nonpositive_margin_among_legal_exposures": 0.00019944341372912802,
+          "recorded_batch_mean_averages": {
+            "region_use_loss": 0.021496952137962547,
+            "actual_scaled_correction_global_ratio_mean": 0.06467449693184979,
+            "global_loss": 0.4127339945649201,
+            "fused_role_loss": 0.41380871298178185
+          },
+          "official_fused": {
+            "mAP": 68.3289562837899,
+            "Rank-1": 72.84688949584961,
+            "Rank-5": 81.45933151245117,
+            "Rank-10": 88.27751278877258
+          }
+        },
+        {
+          "epoch": 7,
+          "recorded_steps": 53,
+          "legal_triplet_exposures": 227136,
+          "global_nonpositive_margin_triplet_exposures": 3,
+          "fraction_global_nonpositive_margin_among_legal_exposures": 1.3207945900253592e-05,
+          "recorded_batch_mean_averages": {
+            "region_use_loss": 0.012150888974813498,
+            "actual_scaled_correction_global_ratio_mean": 0.05754732692016745,
+            "global_loss": 0.29778789967860814,
+            "fused_role_loss": 0.29730892912396845
+          },
+          "official_fused": {
+            "mAP": 74.06061085780904,
+            "Rank-1": 77.51196026802063,
+            "Rank-5": 87.44019269943237,
+            "Rank-10": 92.58373379707336
+          }
+        },
+        {
+          "epoch": 8,
+          "recorded_steps": 53,
+          "legal_triplet_exposures": 229488,
+          "global_nonpositive_margin_triplet_exposures": 9,
+          "fraction_global_nonpositive_margin_among_legal_exposures": 3.9217736875130725e-05,
+          "recorded_batch_mean_averages": {
+            "region_use_loss": 0.010436714466228502,
+            "actual_scaled_correction_global_ratio_mean": 0.05809048738963199,
+            "global_loss": 0.2772999071287659,
+            "fused_role_loss": 0.2766743561006942
+          },
+          "official_fused": {
+            "mAP": 74.78804891412123,
+            "Rank-1": 78.94737124443054,
+            "Rank-5": 88.63636255264282,
+            "Rank-10": 92.22487807273865
+          }
+        },
+        {
+          "epoch": 9,
+          "recorded_steps": 53,
+          "legal_triplet_exposures": 218736,
+          "global_nonpositive_margin_triplet_exposures": 1,
+          "fraction_global_nonpositive_margin_among_legal_exposures": 4.571721161582913e-06,
+          "recorded_batch_mean_averages": {
+            "region_use_loss": 0.008213861226016339,
+            "actual_scaled_correction_global_ratio_mean": 0.06123299692880432,
+            "global_loss": 0.2574869748556389,
+            "fused_role_loss": 0.2569450932853627
+          },
+          "official_fused": {
+            "mAP": 73.3214390400529,
+            "Rank-1": 76.79426074028015,
+            "Rank-5": 86.60287261009216,
+            "Rank-10": 90.19138813018799
+          }
+        },
+        {
+          "epoch": 10,
+          "recorded_steps": 53,
+          "legal_triplet_exposures": 219408,
+          "global_nonpositive_margin_triplet_exposures": 5,
+          "fraction_global_nonpositive_margin_among_legal_exposures": 2.2788594764092468e-05,
+          "recorded_batch_mean_averages": {
+            "region_use_loss": 0.008874092930883943,
+            "actual_scaled_correction_global_ratio_mean": 0.06322899538109887,
+            "global_loss": 0.25422674642418913,
+            "fused_role_loss": 0.25338483840789433
+          },
+          "official_fused": {
+            "mAP": 73.02653928673789,
+            "Rank-1": 75.95694065093994,
+            "Rank-5": 85.52631735801697,
+            "Rank-10": 90.31100273132324
+          }
+        },
+        {
+          "epoch": 11,
+          "recorded_steps": 53,
+          "legal_triplet_exposures": 222320,
+          "global_nonpositive_margin_triplet_exposures": 11,
+          "fraction_global_nonpositive_margin_among_legal_exposures": 4.947822957898525e-05,
+          "recorded_batch_mean_averages": {
+            "region_use_loss": 0.006403871914064336,
+            "actual_scaled_correction_global_ratio_mean": 0.06643047085348165,
+            "global_loss": 0.2504985428081368,
+            "fused_role_loss": 0.2499465396944082
+          },
+          "official_fused": {
+            "mAP": 72.91666421100555,
+            "Rank-1": 75.95694065093994,
+            "Rank-5": 85.76555252075195,
+            "Rank-10": 90.31100273132324
+          }
+        },
+        {
+          "epoch": 12,
+          "recorded_steps": 53,
+          "legal_triplet_exposures": 223552,
+          "global_nonpositive_margin_triplet_exposures": 53,
+          "fraction_global_nonpositive_margin_among_legal_exposures": 0.00023708130546807902,
+          "recorded_batch_mean_averages": {
+            "region_use_loss": 0.0060814094585849784,
+            "actual_scaled_correction_global_ratio_mean": 0.06880526919409914,
+            "global_loss": 0.257470983660446,
+            "fused_role_loss": 0.25620816001352276
+          },
+          "official_fused": {
+            "mAP": 73.58753181747426,
+            "Rank-1": 77.27272510528564,
+            "Rank-5": 87.20095753669739,
+            "Rank-10": 91.38755798339844
+          }
+        },
+        {
+          "epoch": 13,
+          "recorded_steps": 53,
+          "legal_triplet_exposures": 221648,
+          "global_nonpositive_margin_triplet_exposures": 1,
+          "fraction_global_nonpositive_margin_among_legal_exposures": 4.511658124593951e-06,
+          "recorded_batch_mean_averages": {
+            "region_use_loss": 0.005965088419440501,
+            "actual_scaled_correction_global_ratio_mean": 0.07018279312354214,
+            "global_loss": 0.2476501594174583,
+            "fused_role_loss": 0.24665200654065833
+          },
+          "official_fused": {
+            "mAP": 73.35235676912659,
+            "Rank-1": 76.0765552520752,
+            "Rank-5": 86.12440228462219,
+            "Rank-10": 90.66985845565796
+          }
+        },
+        {
+          "epoch": 14,
+          "recorded_steps": 53,
+          "legal_triplet_exposures": 217840,
+          "global_nonpositive_margin_triplet_exposures": 13,
+          "fraction_global_nonpositive_margin_among_legal_exposures": 5.9676827029012117e-05,
+          "recorded_batch_mean_averages": {
+            "region_use_loss": 0.005709475656984515,
+            "actual_scaled_correction_global_ratio_mean": 0.07204141917656053,
+            "global_loss": 0.24790860431374245,
+            "fused_role_loss": 0.2471759057832214
+          },
+          "official_fused": {
+            "mAP": 71.10456707000743,
+            "Rank-1": 73.80383014678955,
+            "Rank-5": 84.44976210594177,
+            "Rank-10": 88.87559771537781
+          }
+        },
+        {
+          "epoch": 15,
+          "recorded_steps": 53,
+          "legal_triplet_exposures": 223216,
+          "global_nonpositive_margin_triplet_exposures": 0,
+          "fraction_global_nonpositive_margin_among_legal_exposures": 0.0,
+          "recorded_batch_mean_averages": {
+            "region_use_loss": 0.005757460757246557,
+            "actual_scaled_correction_global_ratio_mean": 0.07538283391381209,
+            "global_loss": 0.2421711081603788,
+            "fused_role_loss": 0.24148689716492058
+          },
+          "official_fused": {
+            "mAP": 71.53546289694076,
+            "Rank-1": 74.52152967453003,
+            "Rank-5": 84.33014154434204,
+            "Rank-10": 89.47368264198303
+          }
+        },
+        {
+          "epoch": 16,
+          "recorded_steps": 53,
+          "legal_triplet_exposures": 219072,
+          "global_nonpositive_margin_triplet_exposures": 13,
+          "fraction_global_nonpositive_margin_among_legal_exposures": 5.93412211510371e-05,
+          "recorded_batch_mean_averages": {
+            "region_use_loss": 0.005721434630686417,
+            "actual_scaled_correction_global_ratio_mean": 0.0741371176434013,
+            "global_loss": 0.24590537008249536,
+            "fused_role_loss": 0.24517860137066752
+          },
+          "official_fused": {
+            "mAP": 71.23990934225239,
+            "Rank-1": 73.20573925971985,
+            "Rank-5": 82.65550136566162,
+            "Rank-10": 88.0382776260376
+          }
+        },
+        {
+          "epoch": 17,
+          "recorded_steps": 53,
+          "legal_triplet_exposures": 224000,
+          "global_nonpositive_margin_triplet_exposures": 0,
+          "fraction_global_nonpositive_margin_among_legal_exposures": 0.0,
+          "recorded_batch_mean_averages": {
+            "region_use_loss": 0.00564986750931602,
+            "actual_scaled_correction_global_ratio_mean": 0.07465063527507602,
+            "global_loss": 0.23913093923397785,
+            "fused_role_loss": 0.2384769011218593
+          },
+          "official_fused": {
+            "mAP": 73.01848905967444,
+            "Rank-1": 74.88038539886475,
+            "Rank-5": 84.80861186981201,
+            "Rank-10": 89.83253836631775
+          }
+        },
+        {
+          "epoch": 18,
+          "recorded_steps": 53,
+          "legal_triplet_exposures": 220416,
+          "global_nonpositive_margin_triplet_exposures": 0,
+          "fraction_global_nonpositive_margin_among_legal_exposures": 0.0,
+          "recorded_batch_mean_averages": {
+            "region_use_loss": 0.003896368329219942,
+            "actual_scaled_correction_global_ratio_mean": 0.07585139895947475,
+            "global_loss": 0.23681875248000306,
+            "fused_role_loss": 0.23613315511424587
+          },
+          "official_fused": {
+            "mAP": 73.96078083210415,
+            "Rank-1": 76.67464017868042,
+            "Rank-5": 85.64593195915222,
+            "Rank-10": 90.55023789405823
+          }
+        },
+        {
+          "epoch": 19,
+          "recorded_steps": 53,
+          "legal_triplet_exposures": 223440,
+          "global_nonpositive_margin_triplet_exposures": 0,
+          "fraction_global_nonpositive_margin_among_legal_exposures": 0.0,
+          "recorded_batch_mean_averages": {
+            "region_use_loss": 0.0046471455370576805,
+            "actual_scaled_correction_global_ratio_mean": 0.07775210968728336,
+            "global_loss": 0.24954419091062727,
+            "fused_role_loss": 0.2487109494659136
+          },
+          "official_fused": {
+            "mAP": 73.82585544246466,
+            "Rank-1": 77.63158082962036,
+            "Rank-5": 85.40669679641724,
+            "Rank-10": 91.50717854499817
+          }
+        },
+        {
+          "epoch": 20,
+          "recorded_steps": 53,
+          "legal_triplet_exposures": 223664,
+          "global_nonpositive_margin_triplet_exposures": 8,
+          "fraction_global_nonpositive_margin_among_legal_exposures": 3.576793762071679e-05,
+          "recorded_batch_mean_averages": {
+            "region_use_loss": 0.0031053028805269243,
+            "actual_scaled_correction_global_ratio_mean": 0.08042597124036753,
+            "global_loss": 0.23964457354455623,
+            "fused_role_loss": 0.23905553992064493
+          },
+          "official_fused": {
+            "mAP": 74.12330479427283,
+            "Rank-1": 76.19616985321045,
+            "Rank-5": 85.8851671218872,
+            "Rank-10": 90.43062329292297
+          }
+        },
+        {
+          "epoch": 21,
+          "recorded_steps": 53,
+          "legal_triplet_exposures": 224112,
+          "global_nonpositive_margin_triplet_exposures": 26,
+          "fraction_global_nonpositive_margin_among_legal_exposures": 0.00011601342186049832,
+          "recorded_batch_mean_averages": {
+            "region_use_loss": 0.0037331180235168912,
+            "actual_scaled_correction_global_ratio_mean": 0.08631729812554594,
+            "global_loss": 0.23790846849387548,
+            "fused_role_loss": 0.236874557609828
+          },
+          "official_fused": {
+            "mAP": 73.21697813505104,
+            "Rank-1": 76.0765552520752,
+            "Rank-5": 86.12440228462219,
+            "Rank-10": 89.83253836631775
+          }
+        },
+        {
+          "epoch": 22,
+          "recorded_steps": 53,
+          "legal_triplet_exposures": 224448,
+          "global_nonpositive_margin_triplet_exposures": 4,
+          "fraction_global_nonpositive_margin_among_legal_exposures": 1.7821499857428003e-05,
+          "recorded_batch_mean_averages": {
+            "region_use_loss": 0.003971307478045588,
+            "actual_scaled_correction_global_ratio_mean": 0.08839037297469265,
+            "global_loss": 0.2361110122698658,
+            "fused_role_loss": 0.23524669824906116
+          },
+          "official_fused": {
+            "mAP": 71.92706379836574,
+            "Rank-1": 72.60765433311462,
+            "Rank-5": 83.61244201660156,
+            "Rank-10": 88.0382776260376
+          }
+        },
+        {
+          "epoch": 23,
+          "recorded_steps": 53,
+          "legal_triplet_exposures": 222880,
+          "global_nonpositive_margin_triplet_exposures": 0,
+          "fraction_global_nonpositive_margin_among_legal_exposures": 0.0,
+          "recorded_batch_mean_averages": {
+            "region_use_loss": 0.004162369990328168,
+            "actual_scaled_correction_global_ratio_mean": 0.0927085409749229,
+            "global_loss": 0.23937790995498873,
+            "fused_role_loss": 0.23862994476309363
+          },
+          "official_fused": {
+            "mAP": 70.07920337792413,
+            "Rank-1": 72.36841917037964,
+            "Rank-5": 81.10047578811646,
+            "Rank-10": 86.72248721122742
+          }
+        },
+        {
+          "epoch": 24,
+          "recorded_steps": 53,
+          "legal_triplet_exposures": 224000,
+          "global_nonpositive_margin_triplet_exposures": 3,
+          "fraction_global_nonpositive_margin_among_legal_exposures": 1.3392857142857142e-05,
+          "recorded_batch_mean_averages": {
+            "region_use_loss": 0.004191541754891041,
+            "actual_scaled_correction_global_ratio_mean": 0.09098183349618372,
+            "global_loss": 0.2345565841445383,
+            "fused_role_loss": 0.2338488000743794
+          },
+          "official_fused": {
+            "mAP": 70.42814074491841,
+            "Rank-1": 71.88995480537415,
+            "Rank-5": 81.81818127632141,
+            "Rank-10": 87.32057213783264
+          }
+        },
+        {
+          "epoch": 25,
+          "recorded_steps": 53,
+          "legal_triplet_exposures": 219520,
+          "global_nonpositive_margin_triplet_exposures": 6,
+          "fraction_global_nonpositive_margin_among_legal_exposures": 2.7332361516034985e-05,
+          "recorded_batch_mean_averages": {
+            "region_use_loss": 0.0029914975031784226,
+            "actual_scaled_correction_global_ratio_mean": 0.09128738349338747,
+            "global_loss": 0.23327708750400902,
+            "fused_role_loss": 0.23235561600271262
+          },
+          "official_fused": {
+            "mAP": 71.9567346097157,
+            "Rank-1": 73.44497442245483,
+            "Rank-5": 83.9712917804718,
+            "Rank-10": 89.47368264198303
+          }
+        },
+        {
+          "epoch": 26,
+          "recorded_steps": 53,
+          "legal_triplet_exposures": 224000,
+          "global_nonpositive_margin_triplet_exposures": 0,
+          "fraction_global_nonpositive_margin_among_legal_exposures": 0.0,
+          "recorded_batch_mean_averages": {
+            "region_use_loss": 0.00271597840984677,
+            "actual_scaled_correction_global_ratio_mean": 0.0919250876836057,
+            "global_loss": 0.23167624451079458,
+            "fused_role_loss": 0.2308747093632536
+          },
+          "official_fused": {
+            "mAP": 72.60801902886445,
+            "Rank-1": 74.88038539886475,
+            "Rank-5": 84.80861186981201,
+            "Rank-10": 89.952152967453
+          }
+        },
+        {
+          "epoch": 27,
+          "recorded_steps": 53,
+          "legal_triplet_exposures": 221200,
+          "global_nonpositive_margin_triplet_exposures": 0,
+          "fraction_global_nonpositive_margin_among_legal_exposures": 0.0,
+          "recorded_batch_mean_averages": {
+            "region_use_loss": 0.002718138415970453,
+            "actual_scaled_correction_global_ratio_mean": 0.0916787937002362,
+            "global_loss": 0.22975531529705479,
+            "fused_role_loss": 0.22898007732517314
+          },
+          "official_fused": {
+            "mAP": 72.83096868835943,
+            "Rank-1": 74.76076483726501,
+            "Rank-5": 84.68899726867676,
+            "Rank-10": 89.59330320358276
+          }
+        },
+        {
+          "epoch": 28,
+          "recorded_steps": 53,
+          "legal_triplet_exposures": 222096,
+          "global_nonpositive_margin_triplet_exposures": 0,
+          "fraction_global_nonpositive_margin_among_legal_exposures": 0.0,
+          "recorded_batch_mean_averages": {
+            "region_use_loss": 0.0030408583818671278,
+            "actual_scaled_correction_global_ratio_mean": 0.09244470649732733,
+            "global_loss": 0.22971420411793692,
+            "fused_role_loss": 0.22890022706310703
+          },
+          "official_fused": {
+            "mAP": 72.54071258585189,
+            "Rank-1": 74.88038539886475,
+            "Rank-5": 84.09090638160706,
+            "Rank-10": 89.23444747924805
+          }
+        },
+        {
+          "epoch": 29,
+          "recorded_steps": 53,
+          "legal_triplet_exposures": 219520,
+          "global_nonpositive_margin_triplet_exposures": 0,
+          "fraction_global_nonpositive_margin_among_legal_exposures": 0.0,
+          "recorded_batch_mean_averages": {
+            "region_use_loss": 0.0024456103114885684,
+            "actual_scaled_correction_global_ratio_mean": 0.09229357639011347,
+            "global_loss": 0.22959679871235253,
+            "fused_role_loss": 0.22888943749778676
+          },
+          "official_fused": {
+            "mAP": 72.88924582896084,
+            "Rank-1": 75.23923516273499,
+            "Rank-5": 83.49282145500183,
+            "Rank-10": 88.87559771537781
+          }
+        },
+        {
+          "epoch": 30,
+          "recorded_steps": 53,
+          "legal_triplet_exposures": 222320,
+          "global_nonpositive_margin_triplet_exposures": 0,
+          "fraction_global_nonpositive_margin_among_legal_exposures": 0.0,
+          "recorded_batch_mean_averages": {
+            "region_use_loss": 0.002633319741536705,
+            "actual_scaled_correction_global_ratio_mean": 0.09190058441094633,
+            "global_loss": 0.23076380255087367,
+            "fused_role_loss": 0.22972613291920357
+          },
+          "official_fused": {
+            "mAP": 72.73763390924594,
+            "Rank-1": 74.52152967453003,
+            "Rank-5": 84.09090638160706,
+            "Rank-10": 89.47368264198303
+          }
+        },
+        {
+          "epoch": 31,
+          "recorded_steps": 53,
+          "legal_triplet_exposures": 226576,
+          "global_nonpositive_margin_triplet_exposures": 0,
+          "fraction_global_nonpositive_margin_among_legal_exposures": 0.0,
+          "recorded_batch_mean_averages": {
+            "region_use_loss": 0.0021090312171200254,
+            "actual_scaled_correction_global_ratio_mean": 0.09187721910904038,
+            "global_loss": 0.22863261457884088,
+            "fused_role_loss": 0.2279777279439962
+          },
+          "official_fused": {
+            "mAP": 72.68430766071361,
+            "Rank-1": 74.88038539886475,
+            "Rank-5": 83.37320685386658,
+            "Rank-10": 89.47368264198303
+          }
+        },
+        {
+          "epoch": 32,
+          "recorded_steps": 53,
+          "legal_triplet_exposures": 222656,
+          "global_nonpositive_margin_triplet_exposures": 0,
+          "fraction_global_nonpositive_margin_among_legal_exposures": 0.0,
+          "recorded_batch_mean_averages": {
+            "region_use_loss": 0.002499752258991752,
+            "actual_scaled_correction_global_ratio_mean": 0.09479280069189251,
+            "global_loss": 0.22912793114500227,
+            "fused_role_loss": 0.22812525534404898
+          },
+          "official_fused": {
+            "mAP": 71.6736273796816,
+            "Rank-1": 72.96651005744934,
+            "Rank-5": 83.73205661773682,
+            "Rank-10": 88.75598311424255
+          }
+        },
+        {
+          "epoch": 33,
+          "recorded_steps": 53,
+          "legal_triplet_exposures": 221760,
+          "global_nonpositive_margin_triplet_exposures": 1,
+          "fraction_global_nonpositive_margin_among_legal_exposures": 4.509379509379509e-06,
+          "recorded_batch_mean_averages": {
+            "region_use_loss": 0.0031179663157398056,
+            "actual_scaled_correction_global_ratio_mean": 0.09435887606638782,
+            "global_loss": 0.2282625121890374,
+            "fused_role_loss": 0.22740676830399711
+          },
+          "official_fused": {
+            "mAP": 72.01665565373784,
+            "Rank-1": 73.80383014678955,
+            "Rank-5": 84.92823243141174,
+            "Rank-10": 89.23444747924805
+          }
+        },
+        {
+          "epoch": 34,
+          "recorded_steps": 53,
+          "legal_triplet_exposures": 221200,
+          "global_nonpositive_margin_triplet_exposures": 0,
+          "fraction_global_nonpositive_margin_among_legal_exposures": 0.0,
+          "recorded_batch_mean_averages": {
+            "region_use_loss": 0.00258757634761629,
+            "actual_scaled_correction_global_ratio_mean": 0.0941787155450515,
+            "global_loss": 0.22760769668615088,
+            "fused_role_loss": 0.22686903600422842
+          },
+          "official_fused": {
+            "mAP": 71.72040372470003,
+            "Rank-1": 73.56459498405457,
+            "Rank-5": 84.92823243141174,
+            "Rank-10": 89.1148328781128
+          }
+        },
+        {
+          "epoch": 35,
+          "recorded_steps": 53,
+          "legal_triplet_exposures": 217168,
+          "global_nonpositive_margin_triplet_exposures": 0,
+          "fraction_global_nonpositive_margin_among_legal_exposures": 0.0,
+          "recorded_batch_mean_averages": {
+            "region_use_loss": 0.0020499753437382786,
+            "actual_scaled_correction_global_ratio_mean": 0.09401979395803416,
+            "global_loss": 0.2274283437796359,
+            "fused_role_loss": 0.22665213357727482
+          },
+          "official_fused": {
+            "mAP": 71.70352507212286,
+            "Rank-1": 73.9234447479248,
+            "Rank-5": 84.68899726867676,
+            "Rank-10": 89.35406804084778
+          }
+        },
+        {
+          "epoch": 36,
+          "recorded_steps": 53,
+          "legal_triplet_exposures": 217952,
+          "global_nonpositive_margin_triplet_exposures": 0,
+          "fraction_global_nonpositive_margin_among_legal_exposures": 0.0,
+          "recorded_batch_mean_averages": {
+            "region_use_loss": 0.002641700496754328,
+            "actual_scaled_correction_global_ratio_mean": 0.09412620174434949,
+            "global_loss": 0.2265045592245066,
+            "fused_role_loss": 0.22577815854324484
+          },
+          "official_fused": {
+            "mAP": 71.85185622092855,
+            "Rank-1": 74.28229451179504,
+            "Rank-5": 84.92823243141174,
+            "Rank-10": 88.99521827697754
+          }
+        },
+        {
+          "epoch": 37,
+          "recorded_steps": 53,
+          "legal_triplet_exposures": 223776,
+          "global_nonpositive_margin_triplet_exposures": 20,
+          "fraction_global_nonpositive_margin_among_legal_exposures": 8.937508937508938e-05,
+          "recorded_batch_mean_averages": {
+            "region_use_loss": 0.002082785236196733,
+            "actual_scaled_correction_global_ratio_mean": 0.09469178009707972,
+            "global_loss": 0.2289888178402523,
+            "fused_role_loss": 0.22815069218851486
+          },
+          "official_fused": {
+            "mAP": 71.9141227203661,
+            "Rank-1": 75.71770548820496,
+            "Rank-5": 85.76555252075195,
+            "Rank-10": 89.1148328781128
+          }
+        },
+        {
+          "epoch": 38,
+          "recorded_steps": 53,
+          "legal_triplet_exposures": 226576,
+          "global_nonpositive_margin_triplet_exposures": 0,
+          "fraction_global_nonpositive_margin_among_legal_exposures": 0.0,
+          "recorded_batch_mean_averages": {
+            "region_use_loss": 0.0027570808504022797,
+            "actual_scaled_correction_global_ratio_mean": 0.09516927670195417,
+            "global_loss": 0.22893630474243523,
+            "fused_role_loss": 0.22809414931063382
+          },
+          "official_fused": {
+            "mAP": 72.05142918319295,
+            "Rank-1": 75.35884976387024,
+            "Rank-5": 85.76555252075195,
+            "Rank-10": 89.1148328781128
+          }
+        },
+        {
+          "epoch": 39,
+          "recorded_steps": 53,
+          "legal_triplet_exposures": 216496,
+          "global_nonpositive_margin_triplet_exposures": 0,
+          "fraction_global_nonpositive_margin_among_legal_exposures": 0.0,
+          "recorded_batch_mean_averages": {
+            "region_use_loss": 0.001725882606170105,
+            "actual_scaled_correction_global_ratio_mean": 0.09436719977068452,
+            "global_loss": 0.22702295572127937,
+            "fused_role_loss": 0.22627144292840418
+          },
+          "official_fused": {
+            "mAP": 71.91431752156534,
+            "Rank-1": 75.11961460113525,
+            "Rank-5": 84.44976210594177,
+            "Rank-10": 89.35406804084778
+          }
+        },
+        {
+          "epoch": 40,
+          "recorded_steps": 53,
+          "legal_triplet_exposures": 222208,
+          "global_nonpositive_margin_triplet_exposures": 0,
+          "fraction_global_nonpositive_margin_among_legal_exposures": 0.0,
+          "recorded_batch_mean_averages": {
+            "region_use_loss": 0.002346417317930214,
+            "actual_scaled_correction_global_ratio_mean": 0.09414134497912426,
+            "global_loss": 0.22661345915974312,
+            "fused_role_loss": 0.22584108333542663
+          },
+          "official_fused": {
+            "mAP": 71.74280540110723,
+            "Rank-1": 74.64115023612976,
+            "Rank-5": 84.44976210594177,
+            "Rank-10": 89.47368264198303
+          }
+        },
+        {
+          "epoch": 41,
+          "recorded_steps": 53,
+          "legal_triplet_exposures": 223104,
+          "global_nonpositive_margin_triplet_exposures": 0,
+          "fraction_global_nonpositive_margin_among_legal_exposures": 0.0,
+          "recorded_batch_mean_averages": {
+            "region_use_loss": 0.0022532066603779865,
+            "actual_scaled_correction_global_ratio_mean": 0.09390235551685658,
+            "global_loss": 0.22813565157494456,
+            "fused_role_loss": 0.2272472229768645
+          },
+          "official_fused": {
+            "mAP": 71.47385215919691,
+            "Rank-1": 74.28229451179504,
+            "Rank-5": 84.44976210594177,
+            "Rank-10": 89.59330320358276
+          }
+        },
+        {
+          "epoch": 42,
+          "recorded_steps": 53,
+          "legal_triplet_exposures": 218960,
+          "global_nonpositive_margin_triplet_exposures": 0,
+          "fraction_global_nonpositive_margin_among_legal_exposures": 0.0,
+          "recorded_batch_mean_averages": {
+            "region_use_loss": 0.002696539335752363,
+            "actual_scaled_correction_global_ratio_mean": 0.09361594043812661,
+            "global_loss": 0.22662172593035787,
+            "fused_role_loss": 0.2258598472712175
+          },
+          "official_fused": {
+            "mAP": 71.69251113388482,
+            "Rank-1": 74.16267991065979,
+            "Rank-5": 84.68899726867676,
+            "Rank-10": 89.59330320358276
+          }
+        },
+        {
+          "epoch": 43,
+          "recorded_steps": 53,
+          "legal_triplet_exposures": 224112,
+          "global_nonpositive_margin_triplet_exposures": 0,
+          "fraction_global_nonpositive_margin_among_legal_exposures": 0.0,
+          "recorded_batch_mean_averages": {
+            "region_use_loss": 0.0019289415465878709,
+            "actual_scaled_correction_global_ratio_mean": 0.09353020323335,
+            "global_loss": 0.22720931779663517,
+            "fused_role_loss": 0.2264237530388922
+          },
+          "official_fused": {
+            "mAP": 71.88059808732255,
+            "Rank-1": 74.04305934906006,
+            "Rank-5": 84.68899726867676,
+            "Rank-10": 89.47368264198303
+          }
+        },
+        {
+          "epoch": 44,
+          "recorded_steps": 53,
+          "legal_triplet_exposures": 219408,
+          "global_nonpositive_margin_triplet_exposures": 1,
+          "fraction_global_nonpositive_margin_among_legal_exposures": 4.557718952818494e-06,
+          "recorded_batch_mean_averages": {
+            "region_use_loss": 0.002912839256306091,
+            "actual_scaled_correction_global_ratio_mean": 0.09367508413094394,
+            "global_loss": 0.22715717048015235,
+            "fused_role_loss": 0.22628454357947944
+          },
+          "official_fused": {
+            "mAP": 71.90193077204569,
+            "Rank-1": 74.40191507339478,
+            "Rank-5": 84.33014154434204,
+            "Rank-10": 89.47368264198303
+          }
+        },
+        {
+          "epoch": 45,
+          "recorded_steps": 53,
+          "legal_triplet_exposures": 224784,
+          "global_nonpositive_margin_triplet_exposures": 0,
+          "fraction_global_nonpositive_margin_among_legal_exposures": 0.0,
+          "recorded_batch_mean_averages": {
+            "region_use_loss": 0.0026703283277489595,
+            "actual_scaled_correction_global_ratio_mean": 0.09360293172440438,
+            "global_loss": 0.2263390970117641,
+            "fused_role_loss": 0.22570169871708132
+          },
+          "official_fused": {
+            "mAP": 71.76662300938644,
+            "Rank-1": 74.16267991065979,
+            "Rank-5": 84.33014154434204,
+            "Rank-10": 89.71291780471802
+          }
+        },
+        {
+          "epoch": 46,
+          "recorded_steps": 52,
+          "legal_triplet_exposures": 222208,
+          "global_nonpositive_margin_triplet_exposures": 0,
+          "fraction_global_nonpositive_margin_among_legal_exposures": 0.0,
+          "recorded_batch_mean_averages": {
+            "region_use_loss": 0.002504897989498344,
+            "actual_scaled_correction_global_ratio_mean": 0.09337287367536472,
+            "global_loss": 0.22689188185792702,
+            "fused_role_loss": 0.22600796446204185
+          },
+          "official_fused": {
+            "mAP": 71.71316872940379,
+            "Rank-1": 74.04305934906006,
+            "Rank-5": 84.44976210594177,
+            "Rank-10": 89.952152967453
+          }
+        },
+        {
+          "epoch": 47,
+          "recorded_steps": 53,
+          "legal_triplet_exposures": 223440,
+          "global_nonpositive_margin_triplet_exposures": 0,
+          "fraction_global_nonpositive_margin_among_legal_exposures": 0.0,
+          "recorded_batch_mean_averages": {
+            "region_use_loss": 0.002354483118496027,
+            "actual_scaled_correction_global_ratio_mean": 0.09363108043963055,
+            "global_loss": 0.22592237451166478,
+            "fused_role_loss": 0.2251504586552674
+          },
+          "official_fused": {
+            "mAP": 71.75292681207694,
+            "Rank-1": 74.28229451179504,
+            "Rank-5": 84.44976210594177,
+            "Rank-10": 89.952152967453
+          }
+        },
+        {
+          "epoch": 48,
+          "recorded_steps": 53,
+          "legal_triplet_exposures": 221984,
+          "global_nonpositive_margin_triplet_exposures": 0,
+          "fraction_global_nonpositive_margin_among_legal_exposures": 0.0,
+          "recorded_batch_mean_averages": {
+            "region_use_loss": 0.002044805522704989,
+            "actual_scaled_correction_global_ratio_mean": 0.0937975583211431,
+            "global_loss": 0.22670791115400926,
+            "fused_role_loss": 0.22599542365883882
+          },
+          "official_fused": {
+            "mAP": 71.80364640018182,
+            "Rank-1": 74.28229451179504,
+            "Rank-5": 84.68899726867676,
+            "Rank-10": 89.59330320358276
+          }
+        },
+        {
+          "epoch": 49,
+          "recorded_steps": 53,
+          "legal_triplet_exposures": 224560,
+          "global_nonpositive_margin_triplet_exposures": 0,
+          "fraction_global_nonpositive_margin_among_legal_exposures": 0.0,
+          "recorded_batch_mean_averages": {
+            "region_use_loss": 0.0022973373208583754,
+            "actual_scaled_correction_global_ratio_mean": 0.09344951091509945,
+            "global_loss": 0.22641380749783427,
+            "fused_role_loss": 0.2256214773317553
+          },
+          "official_fused": {
+            "mAP": 71.84711674701433,
+            "Rank-1": 74.28229451179504,
+            "Rank-5": 84.68899726867676,
+            "Rank-10": 89.952152967453
+          }
+        },
+        {
+          "epoch": 50,
+          "recorded_steps": 53,
+          "legal_triplet_exposures": 220528,
+          "global_nonpositive_margin_triplet_exposures": 0,
+          "fraction_global_nonpositive_margin_among_legal_exposures": 0.0,
+          "recorded_batch_mean_averages": {
+            "region_use_loss": 0.002347439782856524,
+            "actual_scaled_correction_global_ratio_mean": 0.09343621205046491,
+            "global_loss": 0.22593450433803056,
+            "fused_role_loss": 0.225147101395535
+          },
+          "official_fused": {
+            "mAP": 71.63618715077537,
+            "Rank-1": 73.68420958518982,
+            "Rank-5": 84.56937670707703,
+            "Rank-10": 89.59330320358276
+          }
+        }
+      ],
+      "first_selected_last": {
+        "first": {
+          "epoch": 1,
+          "recorded_steps": 53,
+          "legal_triplet_exposures": 221200,
+          "global_nonpositive_margin_triplet_exposures": 30780,
+          "fraction_global_nonpositive_margin_among_legal_exposures": 0.1391500904159132,
+          "recorded_batch_mean_averages": {
+            "region_use_loss": 0.5774905743463984,
+            "actual_scaled_correction_global_ratio_mean": 0.004172691728322292,
+            "global_loss": 2.0645732767177076,
+            "fused_role_loss": 2.0644561322230213
+          },
+          "official_fused": {
+            "mAP": 29.332388710829587,
+            "Rank-1": 28.588515520095825,
+            "Rank-5": 45.45454680919647,
+            "Rank-10": 55.50239086151123
+          }
+        },
+        "selected": {
+          "epoch": 8,
+          "recorded_steps": 53,
+          "legal_triplet_exposures": 229488,
+          "global_nonpositive_margin_triplet_exposures": 9,
+          "fraction_global_nonpositive_margin_among_legal_exposures": 3.9217736875130725e-05,
+          "recorded_batch_mean_averages": {
+            "region_use_loss": 0.010436714466228502,
+            "actual_scaled_correction_global_ratio_mean": 0.05809048738963199,
+            "global_loss": 0.2772999071287659,
+            "fused_role_loss": 0.2766743561006942
+          },
+          "official_fused": {
+            "mAP": 74.78804891412123,
+            "Rank-1": 78.94737124443054,
+            "Rank-5": 88.63636255264282,
+            "Rank-10": 92.22487807273865
+          }
+        },
+        "last": {
+          "epoch": 50,
+          "recorded_steps": 53,
+          "legal_triplet_exposures": 220528,
+          "global_nonpositive_margin_triplet_exposures": 0,
+          "fraction_global_nonpositive_margin_among_legal_exposures": 0.0,
+          "recorded_batch_mean_averages": {
+            "region_use_loss": 0.002347439782856524,
+            "actual_scaled_correction_global_ratio_mean": 0.09343621205046491,
+            "global_loss": 0.22593450433803056,
+            "fused_role_loss": 0.225147101395535
+          },
+          "official_fused": {
+            "mAP": 71.63618715077537,
+            "Rank-1": 73.68420958518982,
+            "Rank-5": 84.56937670707703,
+            "Rank-10": 89.59330320358276
+          }
+        }
+      }
+    },
+    {
+      "dataset": "RGBNT201",
+      "condition": "ambiguity",
+      "selected_epoch": 8,
+      "total_legal_triplet_exposures": 11089680,
+      "total_global_nonpositive_margin_triplet_exposures": 39278,
+      "epochs": [
+        {
+          "epoch": 1,
+          "recorded_steps": 53,
+          "legal_triplet_exposures": 221200,
+          "global_nonpositive_margin_triplet_exposures": 30780,
+          "fraction_global_nonpositive_margin_among_legal_exposures": 0.1391500904159132,
+          "recorded_batch_mean_averages": {
+            "region_use_loss": 0.5834561462672252,
+            "actual_scaled_correction_global_ratio_mean": 0.004177191466057919,
+            "global_loss": 2.0645732767177076,
+            "fused_role_loss": 2.0644535051201873
+          },
+          "official_fused": {
+            "mAP": 29.333768504917114,
+            "Rank-1": 28.588515520095825,
+            "Rank-5": 45.21531164646149,
+            "Rank-10": 55.50239086151123
+          }
+        },
+        {
+          "epoch": 2,
+          "recorded_steps": 53,
+          "legal_triplet_exposures": 222656,
+          "global_nonpositive_margin_triplet_exposures": 6436,
+          "fraction_global_nonpositive_margin_among_legal_exposures": 0.028905576315033054,
+          "recorded_batch_mean_averages": {
+            "region_use_loss": 0.2879523688329841,
+            "actual_scaled_correction_global_ratio_mean": 0.017944098889546574,
+            "global_loss": 1.6179950102320257,
+            "fused_role_loss": 1.6149732931604925
+          },
+          "official_fused": {
+            "mAP": 52.67438329174677,
+            "Rank-1": 52.03348994255066,
+            "Rank-5": 63.39712738990784,
+            "Rank-10": 70.21530866622925
+          }
+        },
+        {
+          "epoch": 3,
+          "recorded_steps": 53,
+          "legal_triplet_exposures": 213808,
+          "global_nonpositive_margin_triplet_exposures": 1104,
+          "fraction_global_nonpositive_margin_among_legal_exposures": 0.0051635111876075735,
+          "recorded_batch_mean_averages": {
+            "region_use_loss": 0.1597564213399617,
+            "actual_scaled_correction_global_ratio_mean": 0.044310079290057126,
+            "global_loss": 1.1769455693802744,
+            "fused_role_loss": 1.1740354322037607
+          },
+          "official_fused": {
+            "mAP": 70.7376190415443,
+            "Rank-1": 77.51196026802063,
+            "Rank-5": 88.75598311424255,
+            "Rank-10": 91.14832282066345
+          }
+        },
+        {
+          "epoch": 4,
+          "recorded_steps": 53,
+          "legal_triplet_exposures": 215712,
+          "global_nonpositive_margin_triplet_exposures": 431,
+          "fraction_global_nonpositive_margin_among_legal_exposures": 0.0019980344162587155,
+          "recorded_batch_mean_averages": {
+            "region_use_loss": 0.11082074995908253,
+            "actual_scaled_correction_global_ratio_mean": 0.05449817906010826,
+            "global_loss": 0.8712528179276664,
+            "fused_role_loss": 0.8699264368920956
+          },
+          "official_fused": {
+            "mAP": 70.78361362856366,
+            "Rank-1": 73.56459498405457,
+            "Rank-5": 84.21052694320679,
+            "Rank-10": 88.75598311424255
+          }
+        },
+        {
+          "epoch": 5,
+          "recorded_steps": 53,
+          "legal_triplet_exposures": 223216,
+          "global_nonpositive_margin_triplet_exposures": 306,
+          "fraction_global_nonpositive_margin_among_legal_exposures": 0.0013708694717224571,
+          "recorded_batch_mean_averages": {
+            "region_use_loss": 0.11925869178518934,
+            "actual_scaled_correction_global_ratio_mean": 0.053355894842237794,
+            "global_loss": 0.6684301799198367,
+            "fused_role_loss": 0.667381060010982
+          },
+          "official_fused": {
+            "mAP": 66.20631301852904,
+            "Rank-1": 68.66028904914856,
+            "Rank-5": 80.74162602424622,
+            "Rank-10": 85.64593195915222
+          }
+        },
+        {
+          "epoch": 6,
+          "recorded_steps": 53,
+          "legal_triplet_exposures": 215600,
+          "global_nonpositive_margin_triplet_exposures": 43,
+          "fraction_global_nonpositive_margin_among_legal_exposures": 0.00019944341372912802,
+          "recorded_batch_mean_averages": {
+            "region_use_loss": 0.07903805086037742,
+            "actual_scaled_correction_global_ratio_mean": 0.0554982786470989,
+            "global_loss": 0.4127339945649201,
+            "fused_role_loss": 0.4134516058103094
+          },
+          "official_fused": {
+            "mAP": 68.31638800595088,
+            "Rank-1": 73.20573925971985,
+            "Rank-5": 82.0574164390564,
+            "Rank-10": 89.23444747924805
+          }
+        },
+        {
+          "epoch": 7,
+          "recorded_steps": 53,
+          "legal_triplet_exposures": 227136,
+          "global_nonpositive_margin_triplet_exposures": 3,
+          "fraction_global_nonpositive_margin_among_legal_exposures": 1.3207945900253592e-05,
+          "recorded_batch_mean_averages": {
+            "region_use_loss": 0.05492018316960279,
+            "actual_scaled_correction_global_ratio_mean": 0.052163796604804274,
+            "global_loss": 0.29778789967860814,
+            "fused_role_loss": 0.2977743109442153
+          },
+          "official_fused": {
+            "mAP": 74.16566351142001,
+            "Rank-1": 77.9904305934906,
+            "Rank-5": 88.15789222717285,
+            "Rank-10": 92.46411323547363
+          }
+        },
+        {
+          "epoch": 8,
+          "recorded_steps": 53,
+          "legal_triplet_exposures": 229488,
+          "global_nonpositive_margin_triplet_exposures": 9,
+          "fraction_global_nonpositive_margin_among_legal_exposures": 3.9217736875130725e-05,
+          "recorded_batch_mean_averages": {
+            "region_use_loss": 0.03654462590435836,
+            "actual_scaled_correction_global_ratio_mean": 0.052038956011803646,
+            "global_loss": 0.2772999071287659,
+            "fused_role_loss": 0.2769239471768433
+          },
+          "official_fused": {
+            "mAP": 74.62990085641505,
+            "Rank-1": 79.0669858455658,
+            "Rank-5": 88.27751278877258,
+            "Rank-10": 91.86602830886841
+          }
+        },
+        {
+          "epoch": 9,
+          "recorded_steps": 53,
+          "legal_triplet_exposures": 218736,
+          "global_nonpositive_margin_triplet_exposures": 1,
+          "fraction_global_nonpositive_margin_among_legal_exposures": 4.571721161582913e-06,
+          "recorded_batch_mean_averages": {
+            "region_use_loss": 0.03826143028091569,
+            "actual_scaled_correction_global_ratio_mean": 0.053011497728667166,
+            "global_loss": 0.2574869748556389,
+            "fused_role_loss": 0.257048525337903
+          },
+          "official_fused": {
+            "mAP": 73.27706504400037,
+            "Rank-1": 76.67464017868042,
+            "Rank-5": 86.72248721122742,
+            "Rank-10": 90.31100273132324
+          }
+        },
+        {
+          "epoch": 10,
+          "recorded_steps": 53,
+          "legal_triplet_exposures": 219408,
+          "global_nonpositive_margin_triplet_exposures": 5,
+          "fraction_global_nonpositive_margin_among_legal_exposures": 2.2788594764092468e-05,
+          "recorded_batch_mean_averages": {
+            "region_use_loss": 0.032552192794853156,
+            "actual_scaled_correction_global_ratio_mean": 0.05522348710669661,
+            "global_loss": 0.25422674642418913,
+            "fused_role_loss": 0.2538103739608009
+          },
+          "official_fused": {
+            "mAP": 73.29388710803214,
+            "Rank-1": 76.79426074028015,
+            "Rank-5": 86.60287261009216,
+            "Rank-10": 90.31100273132324
+          }
+        },
+        {
+          "epoch": 11,
+          "recorded_steps": 53,
+          "legal_triplet_exposures": 222320,
+          "global_nonpositive_margin_triplet_exposures": 11,
+          "fraction_global_nonpositive_margin_among_legal_exposures": 4.947822957898525e-05,
+          "recorded_batch_mean_averages": {
+            "region_use_loss": 0.0227138477021758,
+            "actual_scaled_correction_global_ratio_mean": 0.05882197892609632,
+            "global_loss": 0.2504985428081368,
+            "fused_role_loss": 0.2499137042828326
+          },
+          "official_fused": {
+            "mAP": 73.07313645763472,
+            "Rank-1": 75.83732008934021,
+            "Rank-5": 85.8851671218872,
+            "Rank-10": 90.19138813018799
+          }
+        },
+        {
+          "epoch": 12,
+          "recorded_steps": 53,
+          "legal_triplet_exposures": 223552,
+          "global_nonpositive_margin_triplet_exposures": 53,
+          "fraction_global_nonpositive_margin_among_legal_exposures": 0.00023708130546807902,
+          "recorded_batch_mean_averages": {
+            "region_use_loss": 0.019083336971201584,
+            "actual_scaled_correction_global_ratio_mean": 0.06134196082657238,
+            "global_loss": 0.257470983660446,
+            "fused_role_loss": 0.25659896770738205
+          },
+          "official_fused": {
+            "mAP": 73.73225925517893,
+            "Rank-1": 77.27272510528564,
+            "Rank-5": 87.44019269943237,
+            "Rank-10": 92.1052634716034
+          }
+        },
+        {
+          "epoch": 13,
+          "recorded_steps": 53,
+          "legal_triplet_exposures": 221648,
+          "global_nonpositive_margin_triplet_exposures": 1,
+          "fraction_global_nonpositive_margin_among_legal_exposures": 4.511658124593951e-06,
+          "recorded_batch_mean_averages": {
+            "region_use_loss": 0.018478083509934257,
+            "actual_scaled_correction_global_ratio_mean": 0.0630100999238356,
+            "global_loss": 0.2476501594174583,
+            "fused_role_loss": 0.24681124175494573
+          },
+          "official_fused": {
+            "mAP": 73.58677048531675,
+            "Rank-1": 76.55502557754517,
+            "Rank-5": 86.36363744735718,
+            "Rank-10": 91.14832282066345
+          }
+        },
+        {
+          "epoch": 14,
+          "recorded_steps": 53,
+          "legal_triplet_exposures": 217840,
+          "global_nonpositive_margin_triplet_exposures": 13,
+          "fraction_global_nonpositive_margin_among_legal_exposures": 5.9676827029012117e-05,
+          "recorded_batch_mean_averages": {
+            "region_use_loss": 0.015936788027658005,
+            "actual_scaled_correction_global_ratio_mean": 0.06479316443767187,
+            "global_loss": 0.24790860431374245,
+            "fused_role_loss": 0.24729461265060138
+          },
+          "official_fused": {
+            "mAP": 71.36676089923346,
+            "Rank-1": 73.9234447479248,
+            "Rank-5": 84.21052694320679,
+            "Rank-10": 89.23444747924805
+          }
+        },
+        {
+          "epoch": 15,
+          "recorded_steps": 53,
+          "legal_triplet_exposures": 223216,
+          "global_nonpositive_margin_triplet_exposures": 0,
+          "fraction_global_nonpositive_margin_among_legal_exposures": 0.0,
+          "recorded_batch_mean_averages": {
+            "region_use_loss": 0.01819447609475146,
+            "actual_scaled_correction_global_ratio_mean": 0.06804959363532516,
+            "global_loss": 0.2421711081603788,
+            "fused_role_loss": 0.24165511243748214
+          },
+          "official_fused": {
+            "mAP": 71.75584947883813,
+            "Rank-1": 74.64115023612976,
+            "Rank-5": 84.92823243141174,
+            "Rank-10": 89.83253836631775
+          }
+        },
+        {
+          "epoch": 16,
+          "recorded_steps": 53,
+          "legal_triplet_exposures": 219072,
+          "global_nonpositive_margin_triplet_exposures": 13,
+          "fraction_global_nonpositive_margin_among_legal_exposures": 5.93412211510371e-05,
+          "recorded_batch_mean_averages": {
+            "region_use_loss": 0.019372727791119787,
+            "actual_scaled_correction_global_ratio_mean": 0.06687275587387805,
+            "global_loss": 0.24590537008249536,
+            "fused_role_loss": 0.24524458061974003
+          },
+          "official_fused": {
+            "mAP": 71.39040967747647,
+            "Rank-1": 73.56459498405457,
+            "Rank-5": 82.65550136566162,
+            "Rank-10": 88.87559771537781
+          }
+        },
+        {
+          "epoch": 17,
+          "recorded_steps": 53,
+          "legal_triplet_exposures": 224000,
+          "global_nonpositive_margin_triplet_exposures": 0,
+          "fraction_global_nonpositive_margin_among_legal_exposures": 0.0,
+          "recorded_batch_mean_averages": {
+            "region_use_loss": 0.017690849352083256,
+            "actual_scaled_correction_global_ratio_mean": 0.06645668262861809,
+            "global_loss": 0.23913093923397785,
+            "fused_role_loss": 0.2386138025882109
+          },
+          "official_fused": {
+            "mAP": 73.0089415192644,
+            "Rank-1": 75.47847032546997,
+            "Rank-5": 85.047847032547,
+            "Rank-10": 90.19138813018799
+          }
+        },
+        {
+          "epoch": 18,
+          "recorded_steps": 53,
+          "legal_triplet_exposures": 220416,
+          "global_nonpositive_margin_triplet_exposures": 0,
+          "fraction_global_nonpositive_margin_among_legal_exposures": 0.0,
+          "recorded_batch_mean_averages": {
+            "region_use_loss": 0.017432536097366433,
+            "actual_scaled_correction_global_ratio_mean": 0.0674091952870477,
+            "global_loss": 0.23681875248000306,
+            "fused_role_loss": 0.23639804405986137
+          },
+          "official_fused": {
+            "mAP": 73.96935387803163,
+            "Rank-1": 76.43540501594543,
+            "Rank-5": 85.64593195915222,
+            "Rank-10": 90.55023789405823
+          }
+        },
+        {
+          "epoch": 19,
+          "recorded_steps": 53,
+          "legal_triplet_exposures": 223440,
+          "global_nonpositive_margin_triplet_exposures": 0,
+          "fraction_global_nonpositive_margin_among_legal_exposures": 0.0,
+          "recorded_batch_mean_averages": {
+            "region_use_loss": 0.017011237656917283,
+            "actual_scaled_correction_global_ratio_mean": 0.06996665543542718,
+            "global_loss": 0.24954419091062727,
+            "fused_role_loss": 0.24896207789205155
+          },
+          "official_fused": {
+            "mAP": 73.71189863739272,
+            "Rank-1": 77.75119543075562,
+            "Rank-5": 86.24401688575745,
+            "Rank-10": 91.38755798339844
+          }
+        },
+        {
+          "epoch": 20,
+          "recorded_steps": 53,
+          "legal_triplet_exposures": 223664,
+          "global_nonpositive_margin_triplet_exposures": 8,
+          "fraction_global_nonpositive_margin_among_legal_exposures": 3.576793762071679e-05,
+          "recorded_batch_mean_averages": {
+            "region_use_loss": 0.011753209495372226,
+            "actual_scaled_correction_global_ratio_mean": 0.074130376554885,
+            "global_loss": 0.23964457354455623,
+            "fused_role_loss": 0.23937146393757947
+          },
+          "official_fused": {
+            "mAP": 73.69625790274439,
+            "Rank-1": 75.95694065093994,
+            "Rank-5": 85.64593195915222,
+            "Rank-10": 90.78947305679321
+          }
+        },
+        {
+          "epoch": 21,
+          "recorded_steps": 53,
+          "legal_triplet_exposures": 224112,
+          "global_nonpositive_margin_triplet_exposures": 26,
+          "fraction_global_nonpositive_margin_among_legal_exposures": 0.00011601342186049832,
+          "recorded_batch_mean_averages": {
+            "region_use_loss": 0.01336954076354884,
+            "actual_scaled_correction_global_ratio_mean": 0.07932095496721987,
+            "global_loss": 0.23790846849387548,
+            "fused_role_loss": 0.23721775862405886
+          },
+          "official_fused": {
+            "mAP": 72.76240111176891,
+            "Rank-1": 75.83732008934021,
+            "Rank-5": 85.8851671218872,
+            "Rank-10": 89.83253836631775
+          }
+        },
+        {
+          "epoch": 22,
+          "recorded_steps": 53,
+          "legal_triplet_exposures": 224448,
+          "global_nonpositive_margin_triplet_exposures": 4,
+          "fraction_global_nonpositive_margin_among_legal_exposures": 1.7821499857428003e-05,
+          "recorded_batch_mean_averages": {
+            "region_use_loss": 0.013514189889768735,
+            "actual_scaled_correction_global_ratio_mean": 0.0826053980667636,
+            "global_loss": 0.2361110122698658,
+            "fused_role_loss": 0.23550024881677808
+          },
+          "official_fused": {
+            "mAP": 71.92259599142594,
+            "Rank-1": 73.20573925971985,
+            "Rank-5": 83.37320685386658,
+            "Rank-10": 88.0382776260376
+          }
+        },
+        {
+          "epoch": 23,
+          "recorded_steps": 53,
+          "legal_triplet_exposures": 222880,
+          "global_nonpositive_margin_triplet_exposures": 0,
+          "fraction_global_nonpositive_margin_among_legal_exposures": 0.0,
+          "recorded_batch_mean_averages": {
+            "region_use_loss": 0.014459066515797222,
+            "actual_scaled_correction_global_ratio_mean": 0.08427318508894939,
+            "global_loss": 0.23937790995498873,
+            "fused_role_loss": 0.23883068955169534
+          },
+          "official_fused": {
+            "mAP": 70.39739270737205,
+            "Rank-1": 72.72727489471436,
+            "Rank-5": 80.50239086151123,
+            "Rank-10": 86.84210777282715
+          }
+        },
+        {
+          "epoch": 24,
+          "recorded_steps": 53,
+          "legal_triplet_exposures": 224000,
+          "global_nonpositive_margin_triplet_exposures": 3,
+          "fraction_global_nonpositive_margin_among_legal_exposures": 1.3392857142857142e-05,
+          "recorded_batch_mean_averages": {
+            "region_use_loss": 0.013099029553693912,
+            "actual_scaled_correction_global_ratio_mean": 0.08287387439664805,
+            "global_loss": 0.2345565841445383,
+            "fused_role_loss": 0.23396707312116083
+          },
+          "official_fused": {
+            "mAP": 70.56967533507321,
+            "Rank-1": 72.0095694065094,
+            "Rank-5": 81.81818127632141,
+            "Rank-10": 88.27751278877258
+          }
+        },
+        {
+          "epoch": 25,
+          "recorded_steps": 53,
+          "legal_triplet_exposures": 219520,
+          "global_nonpositive_margin_triplet_exposures": 6,
+          "fraction_global_nonpositive_margin_among_legal_exposures": 2.7332361516034985e-05,
+          "recorded_batch_mean_averages": {
+            "region_use_loss": 0.008811273828438783,
+            "actual_scaled_correction_global_ratio_mean": 0.08177487552165985,
+            "global_loss": 0.23327708750400902,
+            "fused_role_loss": 0.23260849208202003
+          },
+          "official_fused": {
+            "mAP": 72.29664069991864,
+            "Rank-1": 74.52152967453003,
+            "Rank-5": 84.92823243141174,
+            "Rank-10": 89.71291780471802
+          }
+        },
+        {
+          "epoch": 26,
+          "recorded_steps": 53,
+          "legal_triplet_exposures": 224000,
+          "global_nonpositive_margin_triplet_exposures": 0,
+          "fraction_global_nonpositive_margin_among_legal_exposures": 0.0,
+          "recorded_batch_mean_averages": {
+            "region_use_loss": 0.010429172492190704,
+            "actual_scaled_correction_global_ratio_mean": 0.08290450809136876,
+            "global_loss": 0.23167624451079458,
+            "fused_role_loss": 0.23114175672801035
+          },
+          "official_fused": {
+            "mAP": 72.75480917567607,
+            "Rank-1": 75.23923516273499,
+            "Rank-5": 84.80861186981201,
+            "Rank-10": 90.19138813018799
+          }
+        },
+        {
+          "epoch": 27,
+          "recorded_steps": 53,
+          "legal_triplet_exposures": 221200,
+          "global_nonpositive_margin_triplet_exposures": 0,
+          "fraction_global_nonpositive_margin_among_legal_exposures": 0.0,
+          "recorded_batch_mean_averages": {
+            "region_use_loss": 0.0078092619358289565,
+            "actual_scaled_correction_global_ratio_mean": 0.08186033143187468,
+            "global_loss": 0.22975531529705479,
+            "fused_role_loss": 0.22913795653379188
+          },
+          "official_fused": {
+            "mAP": 72.93686206324358,
+            "Rank-1": 75.0,
+            "Rank-5": 85.28708219528198,
+            "Rank-10": 90.07176756858826
+          }
+        },
+        {
+          "epoch": 28,
+          "recorded_steps": 53,
+          "legal_triplet_exposures": 222096,
+          "global_nonpositive_margin_triplet_exposures": 0,
+          "fraction_global_nonpositive_margin_among_legal_exposures": 0.0,
+          "recorded_batch_mean_averages": {
+            "region_use_loss": 0.010636259471110226,
+            "actual_scaled_correction_global_ratio_mean": 0.0824868400704186,
+            "global_loss": 0.22971420411793692,
+            "fused_role_loss": 0.2291099358842058
+          },
+          "official_fused": {
+            "mAP": 72.63745832331895,
+            "Rank-1": 74.76076483726501,
+            "Rank-5": 84.21052694320679,
+            "Rank-10": 89.47368264198303
+          }
+        },
+        {
+          "epoch": 29,
+          "recorded_steps": 53,
+          "legal_triplet_exposures": 219520,
+          "global_nonpositive_margin_triplet_exposures": 0,
+          "fraction_global_nonpositive_margin_among_legal_exposures": 0.0,
+          "recorded_batch_mean_averages": {
+            "region_use_loss": 0.006140099725255497,
+            "actual_scaled_correction_global_ratio_mean": 0.08235252100341725,
+            "global_loss": 0.22959679871235253,
+            "fused_role_loss": 0.22897328745644047
+          },
+          "official_fused": {
+            "mAP": 73.11210219314295,
+            "Rank-1": 75.59808492660522,
+            "Rank-5": 84.33014154434204,
+            "Rank-10": 89.23444747924805
+          }
+        },
+        {
+          "epoch": 30,
+          "recorded_steps": 53,
+          "legal_triplet_exposures": 222320,
+          "global_nonpositive_margin_triplet_exposures": 0,
+          "fraction_global_nonpositive_margin_among_legal_exposures": 0.0,
+          "recorded_batch_mean_averages": {
+            "region_use_loss": 0.007589411009833401,
+            "actual_scaled_correction_global_ratio_mean": 0.08234095587482992,
+            "global_loss": 0.23076380255087367,
+            "fused_role_loss": 0.22991872845955616
+          },
+          "official_fused": {
+            "mAP": 72.86454682430859,
+            "Rank-1": 75.47847032546997,
+            "Rank-5": 84.33014154434204,
+            "Rank-10": 89.35406804084778
+          }
+        },
+        {
+          "epoch": 31,
+          "recorded_steps": 53,
+          "legal_triplet_exposures": 226576,
+          "global_nonpositive_margin_triplet_exposures": 0,
+          "fraction_global_nonpositive_margin_among_legal_exposures": 0.0,
+          "recorded_batch_mean_averages": {
+            "region_use_loss": 0.006564156486178344,
+            "actual_scaled_correction_global_ratio_mean": 0.08224224664692609,
+            "global_loss": 0.22863261457884088,
+            "fused_role_loss": 0.2280791146012972
+          },
+          "official_fused": {
+            "mAP": 72.82358309385974,
+            "Rank-1": 75.23923516273499,
+            "Rank-5": 84.33014154434204,
+            "Rank-10": 89.47368264198303
+          }
+        },
+        {
+          "epoch": 32,
+          "recorded_steps": 53,
+          "legal_triplet_exposures": 222656,
+          "global_nonpositive_margin_triplet_exposures": 0,
+          "fraction_global_nonpositive_margin_among_legal_exposures": 0.0,
+          "recorded_batch_mean_averages": {
+            "region_use_loss": 0.006702193463186048,
+            "actual_scaled_correction_global_ratio_mean": 0.08506500425766099,
+            "global_loss": 0.22912793114500227,
+            "fused_role_loss": 0.2282557926088009
+          },
+          "official_fused": {
+            "mAP": 71.8225092040142,
+            "Rank-1": 72.96651005744934,
+            "Rank-5": 83.9712917804718,
+            "Rank-10": 88.63636255264282
+          }
+        },
+        {
+          "epoch": 33,
+          "recorded_steps": 53,
+          "legal_triplet_exposures": 221760,
+          "global_nonpositive_margin_triplet_exposures": 1,
+          "fraction_global_nonpositive_margin_among_legal_exposures": 4.509379509379509e-06,
+          "recorded_batch_mean_averages": {
+            "region_use_loss": 0.009468231491858737,
+            "actual_scaled_correction_global_ratio_mean": 0.08419744220544707,
+            "global_loss": 0.2282625121890374,
+            "fused_role_loss": 0.22757844486326542
+          },
+          "official_fused": {
+            "mAP": 72.24443981565103,
+            "Rank-1": 74.52152967453003,
+            "Rank-5": 85.16746163368225,
+            "Rank-10": 89.71291780471802
+          }
+        },
+        {
+          "epoch": 34,
+          "recorded_steps": 53,
+          "legal_triplet_exposures": 221200,
+          "global_nonpositive_margin_triplet_exposures": 0,
+          "fraction_global_nonpositive_margin_among_legal_exposures": 0.0,
+          "recorded_batch_mean_averages": {
+            "region_use_loss": 0.007947599156188586,
+            "actual_scaled_correction_global_ratio_mean": 0.0842021515346923,
+            "global_loss": 0.22760769668615088,
+            "fused_role_loss": 0.22700948057309636
+          },
+          "official_fused": {
+            "mAP": 71.94038824224373,
+            "Rank-1": 74.28229451179504,
+            "Rank-5": 85.16746163368225,
+            "Rank-10": 89.47368264198303
+          }
+        },
+        {
+          "epoch": 35,
+          "recorded_steps": 53,
+          "legal_triplet_exposures": 217168,
+          "global_nonpositive_margin_triplet_exposures": 0,
+          "fraction_global_nonpositive_margin_among_legal_exposures": 0.0,
+          "recorded_batch_mean_averages": {
+            "region_use_loss": 0.004233405169732166,
+            "actual_scaled_correction_global_ratio_mean": 0.08400158134271514,
+            "global_loss": 0.2274283437796359,
+            "fused_role_loss": 0.22678058833446144
+          },
+          "official_fused": {
+            "mAP": 71.92161131615171,
+            "Rank-1": 74.40191507339478,
+            "Rank-5": 84.92823243141174,
+            "Rank-10": 89.23444747924805
+          }
+        },
+        {
+          "epoch": 36,
+          "recorded_steps": 53,
+          "legal_triplet_exposures": 217952,
+          "global_nonpositive_margin_triplet_exposures": 0,
+          "fraction_global_nonpositive_margin_among_legal_exposures": 0.0,
+          "recorded_batch_mean_averages": {
+            "region_use_loss": 0.0062775302196211484,
+            "actual_scaled_correction_global_ratio_mean": 0.08428376913070679,
+            "global_loss": 0.2265045592245066,
+            "fused_role_loss": 0.22587964276097855
+          },
+          "official_fused": {
+            "mAP": 72.13093943006882,
+            "Rank-1": 74.64115023612976,
+            "Rank-5": 85.047847032547,
+            "Rank-10": 89.47368264198303
+          }
+        },
+        {
+          "epoch": 37,
+          "recorded_steps": 53,
+          "legal_triplet_exposures": 223776,
+          "global_nonpositive_margin_triplet_exposures": 20,
+          "fraction_global_nonpositive_margin_among_legal_exposures": 8.937508937508938e-05,
+          "recorded_batch_mean_averages": {
+            "region_use_loss": 0.005976731756609812,
+            "actual_scaled_correction_global_ratio_mean": 0.08475688788688408,
+            "global_loss": 0.2289888178402523,
+            "fused_role_loss": 0.22835598689205241
+          },
+          "official_fused": {
+            "mAP": 72.3165198484115,
+            "Rank-1": 76.19616985321045,
+            "Rank-5": 85.64593195915222,
+            "Rank-10": 89.47368264198303
+          }
+        },
+        {
+          "epoch": 38,
+          "recorded_steps": 53,
+          "legal_triplet_exposures": 226576,
+          "global_nonpositive_margin_triplet_exposures": 0,
+          "fraction_global_nonpositive_margin_among_legal_exposures": 0.0,
+          "recorded_batch_mean_averages": {
+            "region_use_loss": 0.008481947009403364,
+            "actual_scaled_correction_global_ratio_mean": 0.08538961846311137,
+            "global_loss": 0.22893630474243523,
+            "fused_role_loss": 0.22811505620209677
+          },
+          "official_fused": {
+            "mAP": 72.42055302198172,
+            "Rank-1": 76.43540501594543,
+            "Rank-5": 85.52631735801697,
+            "Rank-10": 89.59330320358276
+          }
+        },
+        {
+          "epoch": 39,
+          "recorded_steps": 53,
+          "legal_triplet_exposures": 216496,
+          "global_nonpositive_margin_triplet_exposures": 0,
+          "fraction_global_nonpositive_margin_among_legal_exposures": 0.0,
+          "recorded_batch_mean_averages": {
+            "region_use_loss": 0.005031526042038645,
+            "actual_scaled_correction_global_ratio_mean": 0.08462682858390629,
+            "global_loss": 0.22702295572127937,
+            "fused_role_loss": 0.22640735866888514
+          },
+          "official_fused": {
+            "mAP": 72.22174644446476,
+            "Rank-1": 75.95694065093994,
+            "Rank-5": 85.047847032547,
+            "Rank-10": 89.952152967453
+          }
+        },
+        {
+          "epoch": 40,
+          "recorded_steps": 53,
+          "legal_triplet_exposures": 222208,
+          "global_nonpositive_margin_triplet_exposures": 0,
+          "fraction_global_nonpositive_margin_among_legal_exposures": 0.0,
+          "recorded_batch_mean_averages": {
+            "region_use_loss": 0.005610268101214765,
+            "actual_scaled_correction_global_ratio_mean": 0.0844899593096859,
+            "global_loss": 0.22661345915974312,
+            "fused_role_loss": 0.22591253580912105
+          },
+          "official_fused": {
+            "mAP": 72.0915554654057,
+            "Rank-1": 75.83732008934021,
+            "Rank-5": 84.92823243141174,
+            "Rank-10": 89.59330320358276
+          }
+        },
+        {
+          "epoch": 41,
+          "recorded_steps": 53,
+          "legal_triplet_exposures": 223104,
+          "global_nonpositive_margin_triplet_exposures": 0,
+          "fraction_global_nonpositive_margin_among_legal_exposures": 0.0,
+          "recorded_batch_mean_averages": {
+            "region_use_loss": 0.005401883182612265,
+            "actual_scaled_correction_global_ratio_mean": 0.08458241511066004,
+            "global_loss": 0.22813565157494456,
+            "fused_role_loss": 0.2273363066169451
+          },
+          "official_fused": {
+            "mAP": 71.79924444732734,
+            "Rank-1": 74.52152967453003,
+            "Rank-5": 85.16746163368225,
+            "Rank-10": 90.19138813018799
+          }
+        },
+        {
+          "epoch": 42,
+          "recorded_steps": 53,
+          "legal_triplet_exposures": 218960,
+          "global_nonpositive_margin_triplet_exposures": 0,
+          "fraction_global_nonpositive_margin_among_legal_exposures": 0.0,
+          "recorded_batch_mean_averages": {
+            "region_use_loss": 0.006560291842346624,
+            "actual_scaled_correction_global_ratio_mean": 0.08426575686009426,
+            "global_loss": 0.22662172593035787,
+            "fused_role_loss": 0.2259126623284142
+          },
+          "official_fused": {
+            "mAP": 71.99899767496461,
+            "Rank-1": 74.40191507339478,
+            "Rank-5": 85.40669679641724,
+            "Rank-10": 90.07176756858826
+          }
+        },
+        {
+          "epoch": 43,
+          "recorded_steps": 53,
+          "legal_triplet_exposures": 224112,
+          "global_nonpositive_margin_triplet_exposures": 0,
+          "fraction_global_nonpositive_margin_among_legal_exposures": 0.0,
+          "recorded_batch_mean_averages": {
+            "region_use_loss": 0.004855871713997023,
+            "actual_scaled_correction_global_ratio_mean": 0.08416433056008141,
+            "global_loss": 0.22720931779663517,
+            "fused_role_loss": 0.22650210418791142
+          },
+          "official_fused": {
+            "mAP": 72.16479314704578,
+            "Rank-1": 74.64115023612976,
+            "Rank-5": 85.047847032547,
+            "Rank-10": 90.07176756858826
+          }
+        },
+        {
+          "epoch": 44,
+          "recorded_steps": 53,
+          "legal_triplet_exposures": 219408,
+          "global_nonpositive_margin_triplet_exposures": 1,
+          "fraction_global_nonpositive_margin_among_legal_exposures": 4.557718952818494e-06,
+          "recorded_batch_mean_averages": {
+            "region_use_loss": 0.0072482377073819805,
+            "actual_scaled_correction_global_ratio_mean": 0.08436180131053025,
+            "global_loss": 0.22715717048015235,
+            "fused_role_loss": 0.22637495876483196
+          },
+          "official_fused": {
+            "mAP": 72.2267090715276,
+            "Rank-1": 75.71770548820496,
+            "Rank-5": 84.80861186981201,
+            "Rank-10": 89.47368264198303
+          }
+        },
+        {
+          "epoch": 45,
+          "recorded_steps": 53,
+          "legal_triplet_exposures": 224784,
+          "global_nonpositive_margin_triplet_exposures": 0,
+          "fraction_global_nonpositive_margin_among_legal_exposures": 0.0,
+          "recorded_batch_mean_averages": {
+            "region_use_loss": 0.008008488117857784,
+            "actual_scaled_correction_global_ratio_mean": 0.08424352067259122,
+            "global_loss": 0.2263390970117641,
+            "fused_role_loss": 0.22571282960333913
+          },
+          "official_fused": {
+            "mAP": 72.0031805760306,
+            "Rank-1": 75.23923516273499,
+            "Rank-5": 84.68899726867676,
+            "Rank-10": 89.83253836631775
+          }
+        },
+        {
+          "epoch": 46,
+          "recorded_steps": 52,
+          "legal_triplet_exposures": 222208,
+          "global_nonpositive_margin_triplet_exposures": 0,
+          "fraction_global_nonpositive_margin_among_legal_exposures": 0.0,
+          "recorded_batch_mean_averages": {
+            "region_use_loss": 0.006387526505232717,
+            "actual_scaled_correction_global_ratio_mean": 0.0841894457833125,
+            "global_loss": 0.22689188185792702,
+            "fused_role_loss": 0.22607036450734505
+          },
+          "official_fused": {
+            "mAP": 71.97792054401661,
+            "Rank-1": 74.64115023612976,
+            "Rank-5": 84.80861186981201,
+            "Rank-10": 89.83253836631775
+          }
+        },
+        {
+          "epoch": 47,
+          "recorded_steps": 53,
+          "legal_triplet_exposures": 223440,
+          "global_nonpositive_margin_triplet_exposures": 0,
+          "fraction_global_nonpositive_margin_among_legal_exposures": 0.0,
+          "recorded_batch_mean_averages": {
+            "region_use_loss": 0.0059788168774794715,
+            "actual_scaled_correction_global_ratio_mean": 0.08448289700274197,
+            "global_loss": 0.22592237451166478,
+            "fused_role_loss": 0.2252541552737074
+          },
+          "official_fused": {
+            "mAP": 71.98332478090667,
+            "Rank-1": 74.64115023612976,
+            "Rank-5": 84.68899726867676,
+            "Rank-10": 90.07176756858826
+          }
+        },
+        {
+          "epoch": 48,
+          "recorded_steps": 53,
+          "legal_triplet_exposures": 221984,
+          "global_nonpositive_margin_triplet_exposures": 0,
+          "fraction_global_nonpositive_margin_among_legal_exposures": 0.0,
+          "recorded_batch_mean_averages": {
+            "region_use_loss": 0.004831622200930175,
+            "actual_scaled_correction_global_ratio_mean": 0.08459506099516491,
+            "global_loss": 0.22670791115400926,
+            "fused_role_loss": 0.22606915713481182
+          },
+          "official_fused": {
+            "mAP": 72.13562011138504,
+            "Rank-1": 75.35884976387024,
+            "Rank-5": 84.80861186981201,
+            "Rank-10": 89.952152967453
+          }
+        },
+        {
+          "epoch": 49,
+          "recorded_steps": 53,
+          "legal_triplet_exposures": 224560,
+          "global_nonpositive_margin_triplet_exposures": 0,
+          "fraction_global_nonpositive_margin_among_legal_exposures": 0.0,
+          "recorded_batch_mean_averages": {
+            "region_use_loss": 0.00559937277751676,
+            "actual_scaled_correction_global_ratio_mean": 0.08427200972471598,
+            "global_loss": 0.22641380749783427,
+            "fused_role_loss": 0.22568358762084312
+          },
+          "official_fused": {
+            "mAP": 72.16933565605862,
+            "Rank-1": 75.47847032546997,
+            "Rank-5": 84.92823243141174,
+            "Rank-10": 89.83253836631775
+          }
+        },
+        {
+          "epoch": 50,
+          "recorded_steps": 53,
+          "legal_triplet_exposures": 220528,
+          "global_nonpositive_margin_triplet_exposures": 0,
+          "fraction_global_nonpositive_margin_among_legal_exposures": 0.0,
+          "recorded_batch_mean_averages": {
+            "region_use_loss": 0.006464390985817069,
+            "actual_scaled_correction_global_ratio_mean": 0.08436529689802313,
+            "global_loss": 0.22593450433803056,
+            "fused_role_loss": 0.22523466483601984
+          },
+          "official_fused": {
+            "mAP": 71.96038740594201,
+            "Rank-1": 74.88038539886475,
+            "Rank-5": 84.92823243141174,
+            "Rank-10": 89.83253836631775
+          }
+        }
+      ],
+      "first_selected_last": {
+        "first": {
+          "epoch": 1,
+          "recorded_steps": 53,
+          "legal_triplet_exposures": 221200,
+          "global_nonpositive_margin_triplet_exposures": 30780,
+          "fraction_global_nonpositive_margin_among_legal_exposures": 0.1391500904159132,
+          "recorded_batch_mean_averages": {
+            "region_use_loss": 0.5834561462672252,
+            "actual_scaled_correction_global_ratio_mean": 0.004177191466057919,
+            "global_loss": 2.0645732767177076,
+            "fused_role_loss": 2.0644535051201873
+          },
+          "official_fused": {
+            "mAP": 29.333768504917114,
+            "Rank-1": 28.588515520095825,
+            "Rank-5": 45.21531164646149,
+            "Rank-10": 55.50239086151123
+          }
+        },
+        "selected": {
+          "epoch": 8,
+          "recorded_steps": 53,
+          "legal_triplet_exposures": 229488,
+          "global_nonpositive_margin_triplet_exposures": 9,
+          "fraction_global_nonpositive_margin_among_legal_exposures": 3.9217736875130725e-05,
+          "recorded_batch_mean_averages": {
+            "region_use_loss": 0.03654462590435836,
+            "actual_scaled_correction_global_ratio_mean": 0.052038956011803646,
+            "global_loss": 0.2772999071287659,
+            "fused_role_loss": 0.2769239471768433
+          },
+          "official_fused": {
+            "mAP": 74.62990085641505,
+            "Rank-1": 79.0669858455658,
+            "Rank-5": 88.27751278877258,
+            "Rank-10": 91.86602830886841
+          }
+        },
+        "last": {
+          "epoch": 50,
+          "recorded_steps": 53,
+          "legal_triplet_exposures": 220528,
+          "global_nonpositive_margin_triplet_exposures": 0,
+          "fraction_global_nonpositive_margin_among_legal_exposures": 0.0,
+          "recorded_batch_mean_averages": {
+            "region_use_loss": 0.006464390985817069,
+            "actual_scaled_correction_global_ratio_mean": 0.08436529689802313,
+            "global_loss": 0.22593450433803056,
+            "fused_role_loss": 0.22523466483601984
+          },
+          "official_fused": {
+            "mAP": 71.96038740594201,
+            "Rank-1": 74.88038539886475,
+            "Rank-5": 84.92823243141174,
+            "Rank-10": 89.83253836631775
+          }
+        }
+      }
+    },
+    {
+      "dataset": "MSVR310",
+      "condition": "uniform",
+      "selected_epoch": 38,
+      "total_legal_triplet_exposures": 2793000,
+      "total_global_nonpositive_margin_triplet_exposures": 75342,
+      "epochs": [
+        {
+          "epoch": 1,
+          "recorded_steps": 14,
+          "legal_triplet_exposures": 57360,
+          "global_nonpositive_margin_triplet_exposures": 15936,
+          "fraction_global_nonpositive_margin_among_legal_exposures": 0.2778242677824268,
+          "recorded_batch_mean_averages": {
+            "region_use_loss": 0.655439555644989,
+            "actual_scaled_correction_global_ratio_mean": 0.0036768053957660285,
+            "global_loss": 7.737744195120675,
+            "fused_role_loss": 7.737324510301862
+          },
+          "official_fused": {
+            "mAP": 15.515066495540744,
+            "Rank-1": 34.1793566942215,
+            "Rank-5": 54.31472063064575,
+            "Rank-10": 61.92893385887146
+          }
+        },
+        {
+          "epoch": 2,
+          "recorded_steps": 14,
+          "legal_triplet_exposures": 55560,
+          "global_nonpositive_margin_triplet_exposures": 10243,
+          "fraction_global_nonpositive_margin_among_legal_exposures": 0.18435925125989922,
+          "recorded_batch_mean_averages": {
+            "region_use_loss": 0.6639233444418225,
+            "actual_scaled_correction_global_ratio_mean": 0.003742780237059508,
+            "global_loss": 6.2538928644997736,
+            "fused_role_loss": 6.254671096801758
+          },
+          "official_fused": {
+            "mAP": 21.416288780480567,
+            "Rank-1": 40.60913622379303,
+            "Rank-5": 61.42131686210632,
+            "Rank-10": 68.69712471961975
+          }
+        },
+        {
+          "epoch": 3,
+          "recorded_steps": 14,
+          "legal_triplet_exposures": 55800,
+          "global_nonpositive_margin_triplet_exposures": 6709,
+          "fraction_global_nonpositive_margin_among_legal_exposures": 0.12023297491039427,
+          "recorded_batch_mean_averages": {
+            "region_use_loss": 0.6642986493451255,
+            "actual_scaled_correction_global_ratio_mean": 0.003691844642162323,
+            "global_loss": 5.74046744619097,
+            "fused_role_loss": 5.737951857703073
+          },
+          "official_fused": {
+            "mAP": 25.381152689162633,
+            "Rank-1": 42.3011839389801,
+            "Rank-5": 64.29780125617981,
+            "Rank-10": 71.91201448440552
+          }
+        },
+        {
+          "epoch": 4,
+          "recorded_steps": 14,
+          "legal_triplet_exposures": 56520,
+          "global_nonpositive_margin_triplet_exposures": 6357,
+          "fraction_global_nonpositive_margin_among_legal_exposures": 0.11247346072186837,
+          "recorded_batch_mean_averages": {
+            "region_use_loss": 0.660845181771687,
+            "actual_scaled_correction_global_ratio_mean": 0.003672819584608078,
+            "global_loss": 5.397418941770281,
+            "fused_role_loss": 5.39322737285069
+          },
+          "official_fused": {
+            "mAP": 29.76617126109995,
+            "Rank-1": 47.88494110107422,
+            "Rank-5": 66.83587431907654,
+            "Rank-10": 75.46531558036804
+          }
+        },
+        {
+          "epoch": 5,
+          "recorded_steps": 14,
+          "legal_triplet_exposures": 57360,
+          "global_nonpositive_margin_triplet_exposures": 4413,
+          "fraction_global_nonpositive_margin_among_legal_exposures": 0.07693514644351464,
+          "recorded_batch_mean_averages": {
+            "region_use_loss": 0.6486036479473114,
+            "actual_scaled_correction_global_ratio_mean": 0.0036657750107614057,
+            "global_loss": 5.08450858933585,
+            "fused_role_loss": 5.088205133165632
+          },
+          "official_fused": {
+            "mAP": 33.18624346641686,
+            "Rank-1": 50.76141953468323,
+            "Rank-5": 69.03553009033203,
+            "Rank-10": 78.0033826828003
+          }
+        },
+        {
+          "epoch": 6,
+          "recorded_steps": 14,
+          "legal_triplet_exposures": 55560,
+          "global_nonpositive_margin_triplet_exposures": 4203,
+          "fraction_global_nonpositive_margin_among_legal_exposures": 0.07564794816414687,
+          "recorded_batch_mean_averages": {
+            "region_use_loss": 0.6432431212493351,
+            "actual_scaled_correction_global_ratio_mean": 0.0036583709796624525,
+            "global_loss": 4.829557963779995,
+            "fused_role_loss": 4.834119388035366
+          },
+          "official_fused": {
+            "mAP": 34.95994243861409,
+            "Rank-1": 52.62267589569092,
+            "Rank-5": 71.91201448440552,
+            "Rank-10": 79.01861071586609
+          }
+        },
+        {
+          "epoch": 7,
+          "recorded_steps": 14,
+          "legal_triplet_exposures": 57000,
+          "global_nonpositive_margin_triplet_exposures": 3801,
+          "fraction_global_nonpositive_margin_among_legal_exposures": 0.06668421052631579,
+          "recorded_batch_mean_averages": {
+            "region_use_loss": 0.6341369024344853,
+            "actual_scaled_correction_global_ratio_mean": 0.003736503455521805,
+            "global_loss": 4.615049464362008,
+            "fused_role_loss": 4.616577114377703
+          },
+          "official_fused": {
+            "mAP": 37.60536352697519,
+            "Rank-1": 56.85279369354248,
+            "Rank-5": 73.77326488494873,
+            "Rank-10": 80.03383874893188
+          }
+        },
+        {
+          "epoch": 8,
+          "recorded_steps": 14,
+          "legal_triplet_exposures": 54120,
+          "global_nonpositive_margin_triplet_exposures": 2935,
+          "fraction_global_nonpositive_margin_among_legal_exposures": 0.05423133776792313,
+          "recorded_batch_mean_averages": {
+            "region_use_loss": 0.6179049270493644,
+            "actual_scaled_correction_global_ratio_mean": 0.003758174367249012,
+            "global_loss": 4.3865092141287665,
+            "fused_role_loss": 4.389180387769427
+          },
+          "official_fused": {
+            "mAP": 36.66784516983264,
+            "Rank-1": 54.82233762741089,
+            "Rank-5": 72.41962552070618,
+            "Rank-10": 79.35702204704285
+          }
+        },
+        {
+          "epoch": 9,
+          "recorded_steps": 14,
+          "legal_triplet_exposures": 55800,
+          "global_nonpositive_margin_triplet_exposures": 2251,
+          "fraction_global_nonpositive_margin_among_legal_exposures": 0.040340501792114694,
+          "recorded_batch_mean_averages": {
+            "region_use_loss": 0.6063459387847355,
+            "actual_scaled_correction_global_ratio_mean": 0.0038459490918155226,
+            "global_loss": 4.180198737553188,
+            "fused_role_loss": 4.181296178272793
+          },
+          "official_fused": {
+            "mAP": 38.90174203318699,
+            "Rank-1": 56.6835880279541,
+            "Rank-5": 75.12690424919128,
+            "Rank-10": 80.87986707687378
+          }
+        },
+        {
+          "epoch": 10,
+          "recorded_steps": 15,
+          "legal_triplet_exposures": 60960,
+          "global_nonpositive_margin_triplet_exposures": 2495,
+          "fraction_global_nonpositive_margin_among_legal_exposures": 0.04092847769028871,
+          "recorded_batch_mean_averages": {
+            "region_use_loss": 0.6040002385775248,
+            "actual_scaled_correction_global_ratio_mean": 0.003912963097294172,
+            "global_loss": 4.004107936223348,
+            "fused_role_loss": 4.00188881556193
+          },
+          "official_fused": {
+            "mAP": 41.33030926789342,
+            "Rank-1": 59.56006646156311,
+            "Rank-5": 77.49577164649963,
+            "Rank-10": 83.41793417930603
+          }
+        },
+        {
+          "epoch": 11,
+          "recorded_steps": 14,
+          "legal_triplet_exposures": 56160,
+          "global_nonpositive_margin_triplet_exposures": 1862,
+          "fraction_global_nonpositive_margin_among_legal_exposures": 0.03315527065527066,
+          "recorded_batch_mean_averages": {
+            "region_use_loss": 0.5851852382932391,
+            "actual_scaled_correction_global_ratio_mean": 0.0039933954165982345,
+            "global_loss": 3.844752550125122,
+            "fused_role_loss": 3.8445007290158952
+          },
+          "official_fused": {
+            "mAP": 41.711963062589746,
+            "Rank-1": 59.72927212715149,
+            "Rank-5": 76.81894898414612,
+            "Rank-10": 83.07952880859375
+          }
+        },
+        {
+          "epoch": 12,
+          "recorded_steps": 14,
+          "legal_triplet_exposures": 55440,
+          "global_nonpositive_margin_triplet_exposures": 1849,
+          "fraction_global_nonpositive_margin_among_legal_exposures": 0.033351370851370854,
+          "recorded_batch_mean_averages": {
+            "region_use_loss": 0.5788731106689998,
+            "actual_scaled_correction_global_ratio_mean": 0.004122430624972496,
+            "global_loss": 3.7223741497312273,
+            "fused_role_loss": 3.721338765961783
+          },
+          "official_fused": {
+            "mAP": 43.93675923278565,
+            "Rank-1": 62.09813952445984,
+            "Rank-5": 79.18781638145447,
+            "Rank-10": 83.58713984489441
+          }
+        },
+        {
+          "epoch": 13,
+          "recorded_steps": 14,
+          "legal_triplet_exposures": 54840,
+          "global_nonpositive_margin_triplet_exposures": 1127,
+          "fraction_global_nonpositive_margin_among_legal_exposures": 0.020550692924872355,
+          "recorded_batch_mean_averages": {
+            "region_use_loss": 0.5448944504771914,
+            "actual_scaled_correction_global_ratio_mean": 0.004151279672182032,
+            "global_loss": 3.5495819875172208,
+            "fused_role_loss": 3.546975919178554
+          },
+          "official_fused": {
+            "mAP": 44.458870524374866,
+            "Rank-1": 61.92893385887146,
+            "Rank-5": 77.83417701721191,
+            "Rank-10": 83.41793417930603
+          }
+        },
+        {
+          "epoch": 14,
+          "recorded_steps": 14,
+          "legal_triplet_exposures": 56520,
+          "global_nonpositive_margin_triplet_exposures": 909,
+          "fraction_global_nonpositive_margin_among_legal_exposures": 0.0160828025477707,
+          "recorded_batch_mean_averages": {
+            "region_use_loss": 0.5287160979849952,
+            "actual_scaled_correction_global_ratio_mean": 0.00424532821801092,
+            "global_loss": 3.4240915945598056,
+            "fused_role_loss": 3.4210935831069946
+          },
+          "official_fused": {
+            "mAP": 44.12045267313695,
+            "Rank-1": 60.744500160217285,
+            "Rank-5": 78.68020534515381,
+            "Rank-10": 83.24872851371765
+          }
+        },
+        {
+          "epoch": 15,
+          "recorded_steps": 14,
+          "legal_triplet_exposures": 56520,
+          "global_nonpositive_margin_triplet_exposures": 1113,
+          "fraction_global_nonpositive_margin_among_legal_exposures": 0.019692144373673035,
+          "recorded_batch_mean_averages": {
+            "region_use_loss": 0.5187794928039823,
+            "actual_scaled_correction_global_ratio_mean": 0.0043066884058394605,
+            "global_loss": 3.346168977873666,
+            "fused_role_loss": 3.3408202614103044
+          },
+          "official_fused": {
+            "mAP": 45.72365407940808,
+            "Rank-1": 62.6057505607605,
+            "Rank-5": 80.03383874893188,
+            "Rank-10": 84.43316221237183
+          }
+        },
+        {
+          "epoch": 16,
+          "recorded_steps": 14,
+          "legal_triplet_exposures": 55560,
+          "global_nonpositive_margin_triplet_exposures": 764,
+          "fraction_global_nonpositive_margin_among_legal_exposures": 0.01375089992800576,
+          "recorded_batch_mean_averages": {
+            "region_use_loss": 0.48537553208214895,
+            "actual_scaled_correction_global_ratio_mean": 0.0044063046973730835,
+            "global_loss": 3.2229787281581332,
+            "fused_role_loss": 3.2160770893096924
+          },
+          "official_fused": {
+            "mAP": 48.50801424107556,
+            "Rank-1": 66.49746298789978,
+            "Rank-5": 81.55668377876282,
+            "Rank-10": 85.617595911026
+          }
+        },
+        {
+          "epoch": 17,
+          "recorded_steps": 15,
+          "legal_triplet_exposures": 63000,
+          "global_nonpositive_margin_triplet_exposures": 751,
+          "fraction_global_nonpositive_margin_among_legal_exposures": 0.01192063492063492,
+          "recorded_batch_mean_averages": {
+            "region_use_loss": 0.45705910126368204,
+            "actual_scaled_correction_global_ratio_mean": 0.004530393083890279,
+            "global_loss": 3.1467293739318847,
+            "fused_role_loss": 3.140627940495809
+          },
+          "official_fused": {
+            "mAP": 47.979402050771206,
+            "Rank-1": 64.80541229248047,
+            "Rank-5": 80.87986707687378,
+            "Rank-10": 85.617595911026
+          }
+        },
+        {
+          "epoch": 18,
+          "recorded_steps": 14,
+          "legal_triplet_exposures": 54000,
+          "global_nonpositive_margin_triplet_exposures": 534,
+          "fraction_global_nonpositive_margin_among_legal_exposures": 0.009888888888888888,
+          "recorded_batch_mean_averages": {
+            "region_use_loss": 0.4375165232590267,
+            "actual_scaled_correction_global_ratio_mean": 0.004687219359246748,
+            "global_loss": 2.997304950441633,
+            "fused_role_loss": 2.992920790399824
+          },
+          "official_fused": {
+            "mAP": 49.28428218907162,
+            "Rank-1": 67.17427968978882,
+            "Rank-5": 81.38747811317444,
+            "Rank-10": 85.95600724220276
+          }
+        },
+        {
+          "epoch": 19,
+          "recorded_steps": 15,
+          "legal_triplet_exposures": 64320,
+          "global_nonpositive_margin_triplet_exposures": 424,
+          "fraction_global_nonpositive_margin_among_legal_exposures": 0.006592039800995025,
+          "recorded_batch_mean_averages": {
+            "region_use_loss": 0.38538347482681273,
+            "actual_scaled_correction_global_ratio_mean": 0.004882056483378013,
+            "global_loss": 2.8929864406585692,
+            "fused_role_loss": 2.888309669494629
+          },
+          "official_fused": {
+            "mAP": 49.31564168745234,
+            "Rank-1": 68.18950772285461,
+            "Rank-5": 82.06430077552795,
+            "Rank-10": 86.80202960968018
+          }
+        },
+        {
+          "epoch": 20,
+          "recorded_steps": 14,
+          "legal_triplet_exposures": 55080,
+          "global_nonpositive_margin_triplet_exposures": 338,
+          "fraction_global_nonpositive_margin_among_legal_exposures": 0.006136528685548293,
+          "recorded_batch_mean_averages": {
+            "region_use_loss": 0.35154034410204205,
+            "actual_scaled_correction_global_ratio_mean": 0.005067876540124416,
+            "global_loss": 2.7625040326799666,
+            "fused_role_loss": 2.7565751586641585
+          },
+          "official_fused": {
+            "mAP": 49.69489201278389,
+            "Rank-1": 67.68189668655396,
+            "Rank-5": 82.23350048065186,
+            "Rank-10": 86.6328239440918
+          }
+        },
+        {
+          "epoch": 21,
+          "recorded_steps": 14,
+          "legal_triplet_exposures": 54720,
+          "global_nonpositive_margin_triplet_exposures": 170,
+          "fraction_global_nonpositive_margin_among_legal_exposures": 0.0031067251461988302,
+          "recorded_batch_mean_averages": {
+            "region_use_loss": 0.3300866431423596,
+            "actual_scaled_correction_global_ratio_mean": 0.005075634390647922,
+            "global_loss": 2.710995606013707,
+            "fused_role_loss": 2.7045555966241017
+          },
+          "official_fused": {
+            "mAP": 49.44556062837737,
+            "Rank-1": 67.00507402420044,
+            "Rank-5": 81.38747811317444,
+            "Rank-10": 85.95600724220276
+          }
+        },
+        {
+          "epoch": 22,
+          "recorded_steps": 14,
+          "legal_triplet_exposures": 54120,
+          "global_nonpositive_margin_triplet_exposures": 348,
+          "fraction_global_nonpositive_margin_among_legal_exposures": 0.006430155210643016,
+          "recorded_batch_mean_averages": {
+            "region_use_loss": 0.3327013169016157,
+            "actual_scaled_correction_global_ratio_mean": 0.005085476840447102,
+            "global_loss": 2.6607745034354076,
+            "fused_role_loss": 2.6552256686346873
+          },
+          "official_fused": {
+            "mAP": 49.711173185393406,
+            "Rank-1": 67.00507402420044,
+            "Rank-5": 81.21827244758606,
+            "Rank-10": 85.10998487472534
+          }
+        },
+        {
+          "epoch": 23,
+          "recorded_steps": 14,
+          "legal_triplet_exposures": 54840,
+          "global_nonpositive_margin_triplet_exposures": 355,
+          "fraction_global_nonpositive_margin_among_legal_exposures": 0.006473377097009482,
+          "recorded_batch_mean_averages": {
+            "region_use_loss": 0.3269630457673754,
+            "actual_scaled_correction_global_ratio_mean": 0.005071813939139247,
+            "global_loss": 2.711033582687378,
+            "fused_role_loss": 2.704102941921779
+          },
+          "official_fused": {
+            "mAP": 49.91120037219938,
+            "Rank-1": 67.85110235214233,
+            "Rank-5": 81.89509510993958,
+            "Rank-10": 85.10998487472534
+          }
+        },
+        {
+          "epoch": 24,
+          "recorded_steps": 14,
+          "legal_triplet_exposures": 54480,
+          "global_nonpositive_margin_triplet_exposures": 237,
+          "fraction_global_nonpositive_margin_among_legal_exposures": 0.00435022026431718,
+          "recorded_batch_mean_averages": {
+            "region_use_loss": 0.3406964881079538,
+            "actual_scaled_correction_global_ratio_mean": 0.005105739326349327,
+            "global_loss": 2.6664460386548723,
+            "fused_role_loss": 2.6618019683020457
+          },
+          "official_fused": {
+            "mAP": 49.66911703733115,
+            "Rank-1": 67.68189668655396,
+            "Rank-5": 80.87986707687378,
+            "Rank-10": 84.94077920913696
+          }
+        },
+        {
+          "epoch": 25,
+          "recorded_steps": 15,
+          "legal_triplet_exposures": 62040,
+          "global_nonpositive_margin_triplet_exposures": 244,
+          "fraction_global_nonpositive_margin_among_legal_exposures": 0.003932946486137976,
+          "recorded_batch_mean_averages": {
+            "region_use_loss": 0.3257970074812571,
+            "actual_scaled_correction_global_ratio_mean": 0.005138950639714797,
+            "global_loss": 2.656025457382202,
+            "fused_role_loss": 2.6499764760335287
+          },
+          "official_fused": {
+            "mAP": 49.99655181115514,
+            "Rank-1": 68.02030205726624,
+            "Rank-5": 80.7106614112854,
+            "Rank-10": 84.94077920913696
+          }
+        },
+        {
+          "epoch": 26,
+          "recorded_steps": 14,
+          "legal_triplet_exposures": 54360,
+          "global_nonpositive_margin_triplet_exposures": 250,
+          "fraction_global_nonpositive_margin_among_legal_exposures": 0.00459896983075791,
+          "recorded_batch_mean_averages": {
+            "region_use_loss": 0.31382136046886444,
+            "actual_scaled_correction_global_ratio_mean": 0.0051414095464029485,
+            "global_loss": 2.658906170300075,
+            "fused_role_loss": 2.6540918009621755
+          },
+          "official_fused": {
+            "mAP": 50.26775926459726,
+            "Rank-1": 68.18950772285461,
+            "Rank-5": 80.87986707687378,
+            "Rank-10": 85.10998487472534
+          }
+        },
+        {
+          "epoch": 27,
+          "recorded_steps": 14,
+          "legal_triplet_exposures": 54600,
+          "global_nonpositive_margin_triplet_exposures": 285,
+          "fraction_global_nonpositive_margin_among_legal_exposures": 0.0052197802197802195,
+          "recorded_batch_mean_averages": {
+            "region_use_loss": 0.3089867468391146,
+            "actual_scaled_correction_global_ratio_mean": 0.005159429274499416,
+            "global_loss": 2.6239211899893626,
+            "fused_role_loss": 2.6184188468115672
+          },
+          "official_fused": {
+            "mAP": 49.85479217126583,
+            "Rank-1": 67.00507402420044,
+            "Rank-5": 80.54145574569702,
+            "Rank-10": 84.94077920913696
+          }
+        },
+        {
+          "epoch": 28,
+          "recorded_steps": 15,
+          "legal_triplet_exposures": 62160,
+          "global_nonpositive_margin_triplet_exposures": 211,
+          "fraction_global_nonpositive_margin_among_legal_exposures": 0.0033944658944658943,
+          "recorded_batch_mean_averages": {
+            "region_use_loss": 0.3203579246997833,
+            "actual_scaled_correction_global_ratio_mean": 0.005161010970671971,
+            "global_loss": 2.617180267969767,
+            "fused_role_loss": 2.6121013323465982
+          },
+          "official_fused": {
+            "mAP": 49.918664471684856,
+            "Rank-1": 67.17427968978882,
+            "Rank-5": 80.7106614112854,
+            "Rank-10": 85.10998487472534
+          }
+        },
+        {
+          "epoch": 29,
+          "recorded_steps": 14,
+          "legal_triplet_exposures": 54360,
+          "global_nonpositive_margin_triplet_exposures": 232,
+          "fraction_global_nonpositive_margin_among_legal_exposures": 0.004267844002943341,
+          "recorded_batch_mean_averages": {
+            "region_use_loss": 0.3060710185340473,
+            "actual_scaled_correction_global_ratio_mean": 0.005203223587679011,
+            "global_loss": 2.5600780929837907,
+            "fused_role_loss": 2.55531712940761
+          },
+          "official_fused": {
+            "mAP": 50.06144780511933,
+            "Rank-1": 67.17427968978882,
+            "Rank-5": 81.04906678199768,
+            "Rank-10": 85.78680157661438
+          }
+        },
+        {
+          "epoch": 30,
+          "recorded_steps": 14,
+          "legal_triplet_exposures": 54480,
+          "global_nonpositive_margin_triplet_exposures": 265,
+          "fraction_global_nonpositive_margin_among_legal_exposures": 0.004864170337738619,
+          "recorded_batch_mean_averages": {
+            "region_use_loss": 0.2868088696684156,
+            "actual_scaled_correction_global_ratio_mean": 0.005223285373566406,
+            "global_loss": 2.5979317086083547,
+            "fused_role_loss": 2.5916493279593333
+          },
+          "official_fused": {
+            "mAP": 50.02569415580776,
+            "Rank-1": 67.17427968978882,
+            "Rank-5": 81.04906678199768,
+            "Rank-10": 85.27919054031372
+          }
+        },
+        {
+          "epoch": 31,
+          "recorded_steps": 14,
+          "legal_triplet_exposures": 53880,
+          "global_nonpositive_margin_triplet_exposures": 232,
+          "fraction_global_nonpositive_margin_among_legal_exposures": 0.004305864884929473,
+          "recorded_batch_mean_averages": {
+            "region_use_loss": 0.29827174863645006,
+            "actual_scaled_correction_global_ratio_mean": 0.005231568955683282,
+            "global_loss": 2.6018038477216447,
+            "fused_role_loss": 2.596473847116743
+          },
+          "official_fused": {
+            "mAP": 49.70604747997178,
+            "Rank-1": 67.00507402420044,
+            "Rank-5": 80.7106614112854,
+            "Rank-10": 84.94077920913696
+          }
+        },
+        {
+          "epoch": 32,
+          "recorded_steps": 14,
+          "legal_triplet_exposures": 54840,
+          "global_nonpositive_margin_triplet_exposures": 196,
+          "fraction_global_nonpositive_margin_among_legal_exposures": 0.003574033552151714,
+          "recorded_batch_mean_averages": {
+            "region_use_loss": 0.2933877238205501,
+            "actual_scaled_correction_global_ratio_mean": 0.005243329065186637,
+            "global_loss": 2.5239528928484236,
+            "fused_role_loss": 2.517649974141802
+          },
+          "official_fused": {
+            "mAP": 50.31499337762438,
+            "Rank-1": 68.02030205726624,
+            "Rank-5": 81.55668377876282,
+            "Rank-10": 85.95600724220276
+          }
+        },
+        {
+          "epoch": 33,
+          "recorded_steps": 14,
+          "legal_triplet_exposures": 53880,
+          "global_nonpositive_margin_triplet_exposures": 250,
+          "fraction_global_nonpositive_margin_among_legal_exposures": 0.0046399406087602076,
+          "recorded_batch_mean_averages": {
+            "region_use_loss": 0.2839035764336586,
+            "actual_scaled_correction_global_ratio_mean": 0.005266661522909999,
+            "global_loss": 2.5190512112208774,
+            "fused_role_loss": 2.513311539377485
+          },
+          "official_fused": {
+            "mAP": 50.20149260089435,
+            "Rank-1": 68.02030205726624,
+            "Rank-5": 81.55668377876282,
+            "Rank-10": 86.46361827850342
+          }
+        },
+        {
+          "epoch": 34,
+          "recorded_steps": 14,
+          "legal_triplet_exposures": 54360,
+          "global_nonpositive_margin_triplet_exposures": 170,
+          "fraction_global_nonpositive_margin_among_legal_exposures": 0.003127299484915379,
+          "recorded_batch_mean_averages": {
+            "region_use_loss": 0.2855216403092657,
+            "actual_scaled_correction_global_ratio_mean": 0.005291535153186747,
+            "global_loss": 2.4976063796452115,
+            "fused_role_loss": 2.4922812155314853
+          },
+          "official_fused": {
+            "mAP": 49.85667200755876,
+            "Rank-1": 66.49746298789978,
+            "Rank-5": 80.87986707687378,
+            "Rank-10": 85.95600724220276
+          }
+        },
+        {
+          "epoch": 35,
+          "recorded_steps": 14,
+          "legal_triplet_exposures": 54840,
+          "global_nonpositive_margin_triplet_exposures": 254,
+          "fraction_global_nonpositive_margin_among_legal_exposures": 0.00463165572574763,
+          "recorded_batch_mean_averages": {
+            "region_use_loss": 0.28401332774332594,
+            "actual_scaled_correction_global_ratio_mean": 0.005291670560836792,
+            "global_loss": 2.5040772472109114,
+            "fused_role_loss": 2.499078171593802
+          },
+          "official_fused": {
+            "mAP": 49.6243426608393,
+            "Rank-1": 66.49746298789978,
+            "Rank-5": 80.37225008010864,
+            "Rank-10": 84.94077920913696
+          }
+        },
+        {
+          "epoch": 36,
+          "recorded_steps": 14,
+          "legal_triplet_exposures": 54600,
+          "global_nonpositive_margin_triplet_exposures": 121,
+          "fraction_global_nonpositive_margin_among_legal_exposures": 0.0022161172161172162,
+          "recorded_batch_mean_averages": {
+            "region_use_loss": 0.26793705991336275,
+            "actual_scaled_correction_global_ratio_mean": 0.005322076879175646,
+            "global_loss": 2.51937963281359,
+            "fused_role_loss": 2.51210241658347
+          },
+          "official_fused": {
+            "mAP": 49.53306580855557,
+            "Rank-1": 66.83587431907654,
+            "Rank-5": 80.37225008010864,
+            "Rank-10": 84.77157354354858
+          }
+        },
+        {
+          "epoch": 37,
+          "recorded_steps": 14,
+          "legal_triplet_exposures": 56400,
+          "global_nonpositive_margin_triplet_exposures": 154,
+          "fraction_global_nonpositive_margin_among_legal_exposures": 0.0027304964539007093,
+          "recorded_batch_mean_averages": {
+            "region_use_loss": 0.2680844802941595,
+            "actual_scaled_correction_global_ratio_mean": 0.0053369613098246714,
+            "global_loss": 2.4731835978371755,
+            "fused_role_loss": 2.468842727797372
+          },
+          "official_fused": {
+            "mAP": 50.30881799182176,
+            "Rank-1": 67.85110235214233,
+            "Rank-5": 80.7106614112854,
+            "Rank-10": 85.617595911026
+          }
+        },
+        {
+          "epoch": 38,
+          "recorded_steps": 14,
+          "legal_triplet_exposures": 52680,
+          "global_nonpositive_margin_triplet_exposures": 202,
+          "fraction_global_nonpositive_margin_among_legal_exposures": 0.0038344722854973426,
+          "recorded_batch_mean_averages": {
+            "region_use_loss": 0.26950391701289583,
+            "actual_scaled_correction_global_ratio_mean": 0.005372187155964119,
+            "global_loss": 2.496271712439401,
+            "fused_role_loss": 2.4905292647225514
+          },
+          "official_fused": {
+            "mAP": 50.5417773777914,
+            "Rank-1": 67.85110235214233,
+            "Rank-5": 80.54145574569702,
+            "Rank-10": 85.44839024543762
+          }
+        },
+        {
+          "epoch": 39,
+          "recorded_steps": 14,
+          "legal_triplet_exposures": 53400,
+          "global_nonpositive_margin_triplet_exposures": 196,
+          "fraction_global_nonpositive_margin_among_legal_exposures": 0.0036704119850187265,
+          "recorded_batch_mean_averages": {
+            "region_use_loss": 0.275024770626,
+            "actual_scaled_correction_global_ratio_mean": 0.00539541374226766,
+            "global_loss": 2.4857790981020247,
+            "fused_role_loss": 2.4780102457318987
+          },
+          "official_fused": {
+            "mAP": 50.230762096917026,
+            "Rank-1": 67.51269102096558,
+            "Rank-5": 80.7106614112854,
+            "Rank-10": 85.44839024543762
+          }
+        },
+        {
+          "epoch": 40,
+          "recorded_steps": 14,
+          "legal_triplet_exposures": 53040,
+          "global_nonpositive_margin_triplet_exposures": 117,
+          "fraction_global_nonpositive_margin_among_legal_exposures": 0.0022058823529411764,
+          "recorded_batch_mean_averages": {
+            "region_use_loss": 0.26655441735471996,
+            "actual_scaled_correction_global_ratio_mean": 0.005367419848750744,
+            "global_loss": 2.4319931779588972,
+            "fused_role_loss": 2.425804989678519
+          },
+          "official_fused": {
+            "mAP": 50.3099918423969,
+            "Rank-1": 67.85110235214233,
+            "Rank-5": 80.54145574569702,
+            "Rank-10": 85.617595911026
+          }
+        },
+        {
+          "epoch": 41,
+          "recorded_steps": 14,
+          "legal_triplet_exposures": 56160,
+          "global_nonpositive_margin_triplet_exposures": 219,
+          "fraction_global_nonpositive_margin_among_legal_exposures": 0.0038995726495726496,
+          "recorded_batch_mean_averages": {
+            "region_use_loss": 0.25984432974031996,
+            "actual_scaled_correction_global_ratio_mean": 0.00538223356540714,
+            "global_loss": 2.440137267112732,
+            "fused_role_loss": 2.433956963675363
+          },
+          "official_fused": {
+            "mAP": 50.337275325294996,
+            "Rank-1": 67.85110235214233,
+            "Rank-5": 80.87986707687378,
+            "Rank-10": 85.617595911026
+          }
+        },
+        {
+          "epoch": 42,
+          "recorded_steps": 14,
+          "legal_triplet_exposures": 55200,
+          "global_nonpositive_margin_triplet_exposures": 177,
+          "fraction_global_nonpositive_margin_among_legal_exposures": 0.0032065217391304347,
+          "recorded_batch_mean_averages": {
+            "region_use_loss": 0.258687076824052,
+            "actual_scaled_correction_global_ratio_mean": 0.005366662949589747,
+            "global_loss": 2.4550348860876903,
+            "fused_role_loss": 2.44863908631461
+          },
+          "official_fused": {
+            "mAP": 50.31098708312093,
+            "Rank-1": 67.68189668655396,
+            "Rank-5": 80.87986707687378,
+            "Rank-10": 85.617595911026
+          }
+        },
+        {
+          "epoch": 43,
+          "recorded_steps": 15,
+          "legal_triplet_exposures": 60360,
+          "global_nonpositive_margin_triplet_exposures": 132,
+          "fraction_global_nonpositive_margin_among_legal_exposures": 0.002186878727634195,
+          "recorded_batch_mean_averages": {
+            "region_use_loss": 0.26579919159412385,
+            "actual_scaled_correction_global_ratio_mean": 0.00535473246127367,
+            "global_loss": 2.481222232182821,
+            "fused_role_loss": 2.4766252040863037
+          },
+          "official_fused": {
+            "mAP": 50.337700449248935,
+            "Rank-1": 67.85110235214233,
+            "Rank-5": 80.87986707687378,
+            "Rank-10": 85.617595911026
+          }
+        },
+        {
+          "epoch": 44,
+          "recorded_steps": 14,
+          "legal_triplet_exposures": 53880,
+          "global_nonpositive_margin_triplet_exposures": 176,
+          "fraction_global_nonpositive_margin_among_legal_exposures": 0.0032665181885671865,
+          "recorded_batch_mean_averages": {
+            "region_use_loss": 0.2693969596709524,
+            "actual_scaled_correction_global_ratio_mean": 0.005368885584175587,
+            "global_loss": 2.4312801361083984,
+            "fused_role_loss": 2.425916688782828
+          },
+          "official_fused": {
+            "mAP": 50.374966596976634,
+            "Rank-1": 67.68189668655396,
+            "Rank-5": 80.87986707687378,
+            "Rank-10": 85.617595911026
+          }
+        },
+        {
+          "epoch": 45,
+          "recorded_steps": 14,
+          "legal_triplet_exposures": 55800,
+          "global_nonpositive_margin_triplet_exposures": 255,
+          "fraction_global_nonpositive_margin_among_legal_exposures": 0.00456989247311828,
+          "recorded_batch_mean_averages": {
+            "region_use_loss": 0.25445939494030817,
+            "actual_scaled_correction_global_ratio_mean": 0.005399351773251381,
+            "global_loss": 2.4374269587653026,
+            "fused_role_loss": 2.429844924381801
+          },
+          "official_fused": {
+            "mAP": 50.4235577450875,
+            "Rank-1": 67.68189668655396,
+            "Rank-5": 80.87986707687378,
+            "Rank-10": 85.617595911026
+          }
+        },
+        {
+          "epoch": 46,
+          "recorded_steps": 14,
+          "legal_triplet_exposures": 53400,
+          "global_nonpositive_margin_triplet_exposures": 133,
+          "fraction_global_nonpositive_margin_among_legal_exposures": 0.00249063670411985,
+          "recorded_batch_mean_averages": {
+            "region_use_loss": 0.26712449533598764,
+            "actual_scaled_correction_global_ratio_mean": 0.0053856006623911,
+            "global_loss": 2.4473481007984708,
+            "fused_role_loss": 2.441202368055071
+          },
+          "official_fused": {
+            "mAP": 50.44172464971657,
+            "Rank-1": 67.68189668655396,
+            "Rank-5": 81.04906678199768,
+            "Rank-10": 85.617595911026
+          }
+        },
+        {
+          "epoch": 47,
+          "recorded_steps": 14,
+          "legal_triplet_exposures": 53160,
+          "global_nonpositive_margin_triplet_exposures": 137,
+          "fraction_global_nonpositive_margin_among_legal_exposures": 0.0025771256583897667,
+          "recorded_batch_mean_averages": {
+            "region_use_loss": 0.2598308707986559,
+            "actual_scaled_correction_global_ratio_mean": 0.005382149214191096,
+            "global_loss": 2.4321906651769365,
+            "fused_role_loss": 2.425655262810843
+          },
+          "official_fused": {
+            "mAP": 50.49653048475907,
+            "Rank-1": 67.68189668655396,
+            "Rank-5": 81.04906678199768,
+            "Rank-10": 85.78680157661438
+          }
+        },
+        {
+          "epoch": 48,
+          "recorded_steps": 14,
+          "legal_triplet_exposures": 54960,
+          "global_nonpositive_margin_triplet_exposures": 200,
+          "fraction_global_nonpositive_margin_among_legal_exposures": 0.00363901018922853,
+          "recorded_batch_mean_averages": {
+            "region_use_loss": 0.2582536073667662,
+            "actual_scaled_correction_global_ratio_mean": 0.005382017897708076,
+            "global_loss": 2.4829890557697842,
+            "fused_role_loss": 2.475513424192156
+          },
+          "official_fused": {
+            "mAP": 50.47001105526117,
+            "Rank-1": 67.68189668655396,
+            "Rank-5": 81.04906678199768,
+            "Rank-10": 85.78680157661438
+          }
+        },
+        {
+          "epoch": 49,
+          "recorded_steps": 14,
+          "legal_triplet_exposures": 55440,
+          "global_nonpositive_margin_triplet_exposures": 162,
+          "fraction_global_nonpositive_margin_among_legal_exposures": 0.002922077922077922,
+          "recorded_batch_mean_averages": {
+            "region_use_loss": 0.25837221422365736,
+            "actual_scaled_correction_global_ratio_mean": 0.005373892607167363,
+            "global_loss": 2.440151572227478,
+            "fused_role_loss": 2.4351636341639926
+          },
+          "official_fused": {
+            "mAP": 50.47299803273765,
+            "Rank-1": 67.68189668655396,
+            "Rank-5": 81.21827244758606,
+            "Rank-10": 85.78680157661438
+          }
+        },
+        {
+          "epoch": 50,
+          "recorded_steps": 14,
+          "legal_triplet_exposures": 55080,
+          "global_nonpositive_margin_triplet_exposures": 248,
+          "fraction_global_nonpositive_margin_among_legal_exposures": 0.0045025417574437185,
+          "recorded_batch_mean_averages": {
+            "region_use_loss": 0.2668859798993383,
+            "actual_scaled_correction_global_ratio_mean": 0.005375650212434786,
+            "global_loss": 2.4627974203654697,
+            "fused_role_loss": 2.456665175301688
+          },
+          "official_fused": {
+            "mAP": 50.49028401631792,
+            "Rank-1": 67.68189668655396,
+            "Rank-5": 81.21827244758606,
+            "Rank-10": 85.78680157661438
+          }
+        }
+      ],
+      "first_selected_last": {
+        "first": {
+          "epoch": 1,
+          "recorded_steps": 14,
+          "legal_triplet_exposures": 57360,
+          "global_nonpositive_margin_triplet_exposures": 15936,
+          "fraction_global_nonpositive_margin_among_legal_exposures": 0.2778242677824268,
+          "recorded_batch_mean_averages": {
+            "region_use_loss": 0.655439555644989,
+            "actual_scaled_correction_global_ratio_mean": 0.0036768053957660285,
+            "global_loss": 7.737744195120675,
+            "fused_role_loss": 7.737324510301862
+          },
+          "official_fused": {
+            "mAP": 15.515066495540744,
+            "Rank-1": 34.1793566942215,
+            "Rank-5": 54.31472063064575,
+            "Rank-10": 61.92893385887146
+          }
+        },
+        "selected": {
+          "epoch": 38,
+          "recorded_steps": 14,
+          "legal_triplet_exposures": 52680,
+          "global_nonpositive_margin_triplet_exposures": 202,
+          "fraction_global_nonpositive_margin_among_legal_exposures": 0.0038344722854973426,
+          "recorded_batch_mean_averages": {
+            "region_use_loss": 0.26950391701289583,
+            "actual_scaled_correction_global_ratio_mean": 0.005372187155964119,
+            "global_loss": 2.496271712439401,
+            "fused_role_loss": 2.4905292647225514
+          },
+          "official_fused": {
+            "mAP": 50.5417773777914,
+            "Rank-1": 67.85110235214233,
+            "Rank-5": 80.54145574569702,
+            "Rank-10": 85.44839024543762
+          }
+        },
+        "last": {
+          "epoch": 50,
+          "recorded_steps": 14,
+          "legal_triplet_exposures": 55080,
+          "global_nonpositive_margin_triplet_exposures": 248,
+          "fraction_global_nonpositive_margin_among_legal_exposures": 0.0045025417574437185,
+          "recorded_batch_mean_averages": {
+            "region_use_loss": 0.2668859798993383,
+            "actual_scaled_correction_global_ratio_mean": 0.005375650212434786,
+            "global_loss": 2.4627974203654697,
+            "fused_role_loss": 2.456665175301688
+          },
+          "official_fused": {
+            "mAP": 50.49028401631792,
+            "Rank-1": 67.68189668655396,
+            "Rank-5": 81.21827244758606,
+            "Rank-10": 85.78680157661438
+          }
+        }
+      }
+    },
+    {
+      "dataset": "MSVR310",
+      "condition": "ambiguity",
+      "selected_epoch": 38,
+      "total_legal_triplet_exposures": 2793000,
+      "total_global_nonpositive_margin_triplet_exposures": 75342,
+      "epochs": [
+        {
+          "epoch": 1,
+          "recorded_steps": 14,
+          "legal_triplet_exposures": 57360,
+          "global_nonpositive_margin_triplet_exposures": 15936,
+          "fraction_global_nonpositive_margin_among_legal_exposures": 0.2778242677824268,
+          "recorded_batch_mean_averages": {
+            "region_use_loss": 0.6646830098969596,
+            "actual_scaled_correction_global_ratio_mean": 0.0036830262314262135,
+            "global_loss": 7.737744195120675,
+            "fused_role_loss": 7.7370023386819025
+          },
+          "official_fused": {
+            "mAP": 15.515047454956582,
+            "Rank-1": 34.1793566942215,
+            "Rank-5": 54.31472063064575,
+            "Rank-10": 61.92893385887146
+          }
+        },
+        {
+          "epoch": 2,
+          "recorded_steps": 14,
+          "legal_triplet_exposures": 55560,
+          "global_nonpositive_margin_triplet_exposures": 10243,
+          "fraction_global_nonpositive_margin_among_legal_exposures": 0.18435925125989922,
+          "recorded_batch_mean_averages": {
+            "region_use_loss": 0.6653682972703662,
+            "actual_scaled_correction_global_ratio_mean": 0.0037543621812281863,
+            "global_loss": 6.2538928644997736,
+            "fused_role_loss": 6.2540324074881415
+          },
+          "official_fused": {
+            "mAP": 21.41483707776579,
+            "Rank-1": 40.60913622379303,
+            "Rank-5": 61.42131686210632,
+            "Rank-10": 68.69712471961975
+          }
+        },
+        {
+          "epoch": 3,
+          "recorded_steps": 14,
+          "legal_triplet_exposures": 55800,
+          "global_nonpositive_margin_triplet_exposures": 6709,
+          "fraction_global_nonpositive_margin_among_legal_exposures": 0.12023297491039427,
+          "recorded_batch_mean_averages": {
+            "region_use_loss": 0.6653767313276019,
+            "actual_scaled_correction_global_ratio_mean": 0.00370009576103517,
+            "global_loss": 5.74046744619097,
+            "fused_role_loss": 5.738346031733921
+          },
+          "official_fused": {
+            "mAP": 25.3821159478054,
+            "Rank-1": 42.3011839389801,
+            "Rank-5": 64.29780125617981,
+            "Rank-10": 71.91201448440552
+          }
+        },
+        {
+          "epoch": 4,
+          "recorded_steps": 14,
+          "legal_triplet_exposures": 56520,
+          "global_nonpositive_margin_triplet_exposures": 6357,
+          "fraction_global_nonpositive_margin_among_legal_exposures": 0.11247346072186837,
+          "recorded_batch_mean_averages": {
+            "region_use_loss": 0.6618480256625584,
+            "actual_scaled_correction_global_ratio_mean": 0.0036821315297856927,
+            "global_loss": 5.397418941770281,
+            "fused_role_loss": 5.393645797457014
+          },
+          "official_fused": {
+            "mAP": 29.765877292260562,
+            "Rank-1": 47.88494110107422,
+            "Rank-5": 66.83587431907654,
+            "Rank-10": 75.46531558036804
+          }
+        },
+        {
+          "epoch": 5,
+          "recorded_steps": 14,
+          "legal_triplet_exposures": 57360,
+          "global_nonpositive_margin_triplet_exposures": 4413,
+          "fraction_global_nonpositive_margin_among_legal_exposures": 0.07693514644351464,
+          "recorded_batch_mean_averages": {
+            "region_use_loss": 0.6497890310628074,
+            "actual_scaled_correction_global_ratio_mean": 0.003671373989033912,
+            "global_loss": 5.08450858933585,
+            "fused_role_loss": 5.087367023740496
+          },
+          "official_fused": {
+            "mAP": 33.18383293003643,
+            "Rank-1": 50.76141953468323,
+            "Rank-5": 69.03553009033203,
+            "Rank-10": 78.17258834838867
+          }
+        },
+        {
+          "epoch": 6,
+          "recorded_steps": 14,
+          "legal_triplet_exposures": 55560,
+          "global_nonpositive_margin_triplet_exposures": 4203,
+          "fraction_global_nonpositive_margin_among_legal_exposures": 0.07564794816414687,
+          "recorded_batch_mean_averages": {
+            "region_use_loss": 0.6443683760506767,
+            "actual_scaled_correction_global_ratio_mean": 0.003659216238052717,
+            "global_loss": 4.829557963779995,
+            "fused_role_loss": 4.834422077451434
+          },
+          "official_fused": {
+            "mAP": 34.95781475773999,
+            "Rank-1": 52.62267589569092,
+            "Rank-5": 71.91201448440552,
+            "Rank-10": 79.01861071586609
+          }
+        },
+        {
+          "epoch": 7,
+          "recorded_steps": 14,
+          "legal_triplet_exposures": 57000,
+          "global_nonpositive_margin_triplet_exposures": 3801,
+          "fraction_global_nonpositive_margin_among_legal_exposures": 0.06668421052631579,
+          "recorded_batch_mean_averages": {
+            "region_use_loss": 0.6351762669427055,
+            "actual_scaled_correction_global_ratio_mean": 0.0037339835294655393,
+            "global_loss": 4.615049464362008,
+            "fused_role_loss": 4.617435966219221
+          },
+          "official_fused": {
+            "mAP": 37.60354980277672,
+            "Rank-1": 56.85279369354248,
+            "Rank-5": 73.77326488494873,
+            "Rank-10": 80.03383874893188
+          }
+        },
+        {
+          "epoch": 8,
+          "recorded_steps": 14,
+          "legal_triplet_exposures": 54120,
+          "global_nonpositive_margin_triplet_exposures": 2935,
+          "fraction_global_nonpositive_margin_among_legal_exposures": 0.05423133776792313,
+          "recorded_batch_mean_averages": {
+            "region_use_loss": 0.6190640926361084,
+            "actual_scaled_correction_global_ratio_mean": 0.0037575141925896916,
+            "global_loss": 4.3865092141287665,
+            "fused_role_loss": 4.387936728341239
+          },
+          "official_fused": {
+            "mAP": 36.66905635748003,
+            "Rank-1": 54.82233762741089,
+            "Rank-5": 72.41962552070618,
+            "Rank-10": 79.35702204704285
+          }
+        },
+        {
+          "epoch": 9,
+          "recorded_steps": 14,
+          "legal_triplet_exposures": 55800,
+          "global_nonpositive_margin_triplet_exposures": 2251,
+          "fraction_global_nonpositive_margin_among_legal_exposures": 0.040340501792114694,
+          "recorded_batch_mean_averages": {
+            "region_use_loss": 0.6076299335275378,
+            "actual_scaled_correction_global_ratio_mean": 0.003846791689284146,
+            "global_loss": 4.180198737553188,
+            "fused_role_loss": 4.180584737232754
+          },
+          "official_fused": {
+            "mAP": 38.91171431842659,
+            "Rank-1": 56.6835880279541,
+            "Rank-5": 75.12690424919128,
+            "Rank-10": 80.87986707687378
+          }
+        },
+        {
+          "epoch": 10,
+          "recorded_steps": 15,
+          "legal_triplet_exposures": 60960,
+          "global_nonpositive_margin_triplet_exposures": 2495,
+          "fraction_global_nonpositive_margin_among_legal_exposures": 0.04092847769028871,
+          "recorded_batch_mean_averages": {
+            "region_use_loss": 0.6050408681233724,
+            "actual_scaled_correction_global_ratio_mean": 0.003912245466684301,
+            "global_loss": 4.004107936223348,
+            "fused_role_loss": 4.001111110051473
+          },
+          "official_fused": {
+            "mAP": 41.33139463553335,
+            "Rank-1": 59.56006646156311,
+            "Rank-5": 77.49577164649963,
+            "Rank-10": 83.41793417930603
+          }
+        },
+        {
+          "epoch": 11,
+          "recorded_steps": 14,
+          "legal_triplet_exposures": 56160,
+          "global_nonpositive_margin_triplet_exposures": 1862,
+          "fraction_global_nonpositive_margin_among_legal_exposures": 0.03315527065527066,
+          "recorded_batch_mean_averages": {
+            "region_use_loss": 0.5864078147070748,
+            "actual_scaled_correction_global_ratio_mean": 0.003992062328117234,
+            "global_loss": 3.844752550125122,
+            "fused_role_loss": 3.8449253014155795
+          },
+          "official_fused": {
+            "mAP": 41.70395939414339,
+            "Rank-1": 59.56006646156311,
+            "Rank-5": 76.81894898414612,
+            "Rank-10": 83.07952880859375
+          }
+        },
+        {
+          "epoch": 12,
+          "recorded_steps": 14,
+          "legal_triplet_exposures": 55440,
+          "global_nonpositive_margin_triplet_exposures": 1849,
+          "fraction_global_nonpositive_margin_among_legal_exposures": 0.033351370851370854,
+          "recorded_batch_mean_averages": {
+            "region_use_loss": 0.5802618392876217,
+            "actual_scaled_correction_global_ratio_mean": 0.004126026128817882,
+            "global_loss": 3.7223741497312273,
+            "fused_role_loss": 3.7210806778499057
+          },
+          "official_fused": {
+            "mAP": 43.93717981536647,
+            "Rank-1": 62.09813952445984,
+            "Rank-5": 79.18781638145447,
+            "Rank-10": 83.58713984489441
+          }
+        },
+        {
+          "epoch": 13,
+          "recorded_steps": 14,
+          "legal_triplet_exposures": 54840,
+          "global_nonpositive_margin_triplet_exposures": 1127,
+          "fraction_global_nonpositive_margin_among_legal_exposures": 0.020550692924872355,
+          "recorded_batch_mean_averages": {
+            "region_use_loss": 0.5463716983795166,
+            "actual_scaled_correction_global_ratio_mean": 0.00415234942920506,
+            "global_loss": 3.5495819875172208,
+            "fused_role_loss": 3.5480000972747803
+          },
+          "official_fused": {
+            "mAP": 44.46093909893922,
+            "Rank-1": 61.92893385887146,
+            "Rank-5": 77.83417701721191,
+            "Rank-10": 83.41793417930603
+          }
+        },
+        {
+          "epoch": 14,
+          "recorded_steps": 14,
+          "legal_triplet_exposures": 56520,
+          "global_nonpositive_margin_triplet_exposures": 909,
+          "fraction_global_nonpositive_margin_among_legal_exposures": 0.0160828025477707,
+          "recorded_batch_mean_averages": {
+            "region_use_loss": 0.5303538505520139,
+            "actual_scaled_correction_global_ratio_mean": 0.004247891816443631,
+            "global_loss": 3.4240915945598056,
+            "fused_role_loss": 3.4209446736744473
+          },
+          "official_fused": {
+            "mAP": 44.12027715550336,
+            "Rank-1": 60.744500160217285,
+            "Rank-5": 78.68020534515381,
+            "Rank-10": 83.24872851371765
+          }
+        },
+        {
+          "epoch": 15,
+          "recorded_steps": 14,
+          "legal_triplet_exposures": 56520,
+          "global_nonpositive_margin_triplet_exposures": 1113,
+          "fraction_global_nonpositive_margin_among_legal_exposures": 0.019692144373673035,
+          "recorded_batch_mean_averages": {
+            "region_use_loss": 0.5219337067433766,
+            "actual_scaled_correction_global_ratio_mean": 0.004310735567872014,
+            "global_loss": 3.346168977873666,
+            "fused_role_loss": 3.3409500122070312
+          },
+          "official_fused": {
+            "mAP": 45.72109953899729,
+            "Rank-1": 62.6057505607605,
+            "Rank-5": 80.03383874893188,
+            "Rank-10": 84.43316221237183
+          }
+        },
+        {
+          "epoch": 16,
+          "recorded_steps": 14,
+          "legal_triplet_exposures": 55560,
+          "global_nonpositive_margin_triplet_exposures": 764,
+          "fraction_global_nonpositive_margin_among_legal_exposures": 0.01375089992800576,
+          "recorded_batch_mean_averages": {
+            "region_use_loss": 0.4888934833662851,
+            "actual_scaled_correction_global_ratio_mean": 0.004403037418212209,
+            "global_loss": 3.2229787281581332,
+            "fused_role_loss": 3.216897198132106
+          },
+          "official_fused": {
+            "mAP": 48.497034328565114,
+            "Rank-1": 66.49746298789978,
+            "Rank-5": 81.55668377876282,
+            "Rank-10": 85.617595911026
+          }
+        },
+        {
+          "epoch": 17,
+          "recorded_steps": 15,
+          "legal_triplet_exposures": 63000,
+          "global_nonpositive_margin_triplet_exposures": 751,
+          "fraction_global_nonpositive_margin_among_legal_exposures": 0.01192063492063492,
+          "recorded_batch_mean_averages": {
+            "region_use_loss": 0.46279909610748293,
+            "actual_scaled_correction_global_ratio_mean": 0.0045244086533784865,
+            "global_loss": 3.1467293739318847,
+            "fused_role_loss": 3.140787061055501
+          },
+          "official_fused": {
+            "mAP": 47.980152939434774,
+            "Rank-1": 64.80541229248047,
+            "Rank-5": 80.87986707687378,
+            "Rank-10": 85.617595911026
+          }
+        },
+        {
+          "epoch": 18,
+          "recorded_steps": 14,
+          "legal_triplet_exposures": 54000,
+          "global_nonpositive_margin_triplet_exposures": 534,
+          "fraction_global_nonpositive_margin_among_legal_exposures": 0.009888888888888888,
+          "recorded_batch_mean_averages": {
+            "region_use_loss": 0.44485461924757275,
+            "actual_scaled_correction_global_ratio_mean": 0.004678185430488416,
+            "global_loss": 2.997304950441633,
+            "fused_role_loss": 2.992649027279445
+          },
+          "official_fused": {
+            "mAP": 49.28427736779846,
+            "Rank-1": 67.17427968978882,
+            "Rank-5": 81.38747811317444,
+            "Rank-10": 85.95600724220276
+          }
+        },
+        {
+          "epoch": 19,
+          "recorded_steps": 15,
+          "legal_triplet_exposures": 64320,
+          "global_nonpositive_margin_triplet_exposures": 424,
+          "fraction_global_nonpositive_margin_among_legal_exposures": 0.006592039800995025,
+          "recorded_batch_mean_averages": {
+            "region_use_loss": 0.3976698756217957,
+            "actual_scaled_correction_global_ratio_mean": 0.004873879471172889,
+            "global_loss": 2.8929864406585692,
+            "fused_role_loss": 2.8885664463043215
+          },
+          "official_fused": {
+            "mAP": 49.33582156200857,
+            "Rank-1": 68.358713388443,
+            "Rank-5": 82.06430077552795,
+            "Rank-10": 86.80202960968018
+          }
+        },
+        {
+          "epoch": 20,
+          "recorded_steps": 14,
+          "legal_triplet_exposures": 55080,
+          "global_nonpositive_margin_triplet_exposures": 338,
+          "fraction_global_nonpositive_margin_among_legal_exposures": 0.006136528685548293,
+          "recorded_batch_mean_averages": {
+            "region_use_loss": 0.37016504577228,
+            "actual_scaled_correction_global_ratio_mean": 0.005051490451608386,
+            "global_loss": 2.7625040326799666,
+            "fused_role_loss": 2.756582260131836
+          },
+          "official_fused": {
+            "mAP": 49.704936401031034,
+            "Rank-1": 67.68189668655396,
+            "Rank-5": 82.23350048065186,
+            "Rank-10": 86.6328239440918
+          }
+        },
+        {
+          "epoch": 21,
+          "recorded_steps": 14,
+          "legal_triplet_exposures": 54720,
+          "global_nonpositive_margin_triplet_exposures": 170,
+          "fraction_global_nonpositive_margin_among_legal_exposures": 0.0031067251461988302,
+          "recorded_batch_mean_averages": {
+            "region_use_loss": 0.3497707269021443,
+            "actual_scaled_correction_global_ratio_mean": 0.00506056535856,
+            "global_loss": 2.710995606013707,
+            "fused_role_loss": 2.7051946265356883
+          },
+          "official_fused": {
+            "mAP": 49.44962198341113,
+            "Rank-1": 67.00507402420044,
+            "Rank-5": 81.38747811317444,
+            "Rank-10": 85.95600724220276
+          }
+        },
+        {
+          "epoch": 22,
+          "recorded_steps": 14,
+          "legal_triplet_exposures": 54120,
+          "global_nonpositive_margin_triplet_exposures": 348,
+          "fraction_global_nonpositive_margin_among_legal_exposures": 0.006430155210643016,
+          "recorded_batch_mean_averages": {
+            "region_use_loss": 0.35195625041212353,
+            "actual_scaled_correction_global_ratio_mean": 0.005071728889431272,
+            "global_loss": 2.6607745034354076,
+            "fused_role_loss": 2.6558860880987987
+          },
+          "official_fused": {
+            "mAP": 49.711783039569674,
+            "Rank-1": 67.00507402420044,
+            "Rank-5": 81.21827244758606,
+            "Rank-10": 85.10998487472534
+          }
+        },
+        {
+          "epoch": 23,
+          "recorded_steps": 14,
+          "legal_triplet_exposures": 54840,
+          "global_nonpositive_margin_triplet_exposures": 355,
+          "fraction_global_nonpositive_margin_among_legal_exposures": 0.006473377097009482,
+          "recorded_batch_mean_averages": {
+            "region_use_loss": 0.34784106271607534,
+            "actual_scaled_correction_global_ratio_mean": 0.005057900312489697,
+            "global_loss": 2.711033582687378,
+            "fused_role_loss": 2.7042642661503384
+          },
+          "official_fused": {
+            "mAP": 49.91239173407613,
+            "Rank-1": 67.85110235214233,
+            "Rank-5": 81.89509510993958,
+            "Rank-10": 85.10998487472534
+          }
+        },
+        {
+          "epoch": 24,
+          "recorded_steps": 14,
+          "legal_triplet_exposures": 54480,
+          "global_nonpositive_margin_triplet_exposures": 237,
+          "fraction_global_nonpositive_margin_among_legal_exposures": 0.00435022026431718,
+          "recorded_batch_mean_averages": {
+            "region_use_loss": 0.36159014276095797,
+            "actual_scaled_correction_global_ratio_mean": 0.005090963860441532,
+            "global_loss": 2.6664460386548723,
+            "fused_role_loss": 2.6610389266695296
+          },
+          "official_fused": {
+            "mAP": 49.670874032715126,
+            "Rank-1": 67.68189668655396,
+            "Rank-5": 80.87986707687378,
+            "Rank-10": 84.94077920913696
+          }
+        },
+        {
+          "epoch": 25,
+          "recorded_steps": 15,
+          "legal_triplet_exposures": 62040,
+          "global_nonpositive_margin_triplet_exposures": 244,
+          "fraction_global_nonpositive_margin_among_legal_exposures": 0.003932946486137976,
+          "recorded_batch_mean_averages": {
+            "region_use_loss": 0.3482559859752655,
+            "actual_scaled_correction_global_ratio_mean": 0.005123363031695287,
+            "global_loss": 2.656025457382202,
+            "fused_role_loss": 2.650075626373291
+          },
+          "official_fused": {
+            "mAP": 49.99983993849259,
+            "Rank-1": 68.02030205726624,
+            "Rank-5": 80.7106614112854,
+            "Rank-10": 84.94077920913696
+          }
+        },
+        {
+          "epoch": 26,
+          "recorded_steps": 14,
+          "legal_triplet_exposures": 54360,
+          "global_nonpositive_margin_triplet_exposures": 250,
+          "fraction_global_nonpositive_margin_among_legal_exposures": 0.00459896983075791,
+          "recorded_batch_mean_averages": {
+            "region_use_loss": 0.33964034276349203,
+            "actual_scaled_correction_global_ratio_mean": 0.00512575324890869,
+            "global_loss": 2.658906170300075,
+            "fused_role_loss": 2.6539153712136403
+          },
+          "official_fused": {
+            "mAP": 50.267663963476984,
+            "Rank-1": 68.18950772285461,
+            "Rank-5": 80.87986707687378,
+            "Rank-10": 85.10998487472534
+          }
+        },
+        {
+          "epoch": 27,
+          "recorded_steps": 14,
+          "legal_triplet_exposures": 54600,
+          "global_nonpositive_margin_triplet_exposures": 285,
+          "fraction_global_nonpositive_margin_among_legal_exposures": 0.0052197802197802195,
+          "recorded_batch_mean_averages": {
+            "region_use_loss": 0.33134524311338154,
+            "actual_scaled_correction_global_ratio_mean": 0.005143386577921254,
+            "global_loss": 2.6239211899893626,
+            "fused_role_loss": 2.6177421467644826
+          },
+          "official_fused": {
+            "mAP": 49.85320303154478,
+            "Rank-1": 67.00507402420044,
+            "Rank-5": 80.54145574569702,
+            "Rank-10": 84.94077920913696
+          }
+        },
+        {
+          "epoch": 28,
+          "recorded_steps": 15,
+          "legal_triplet_exposures": 62160,
+          "global_nonpositive_margin_triplet_exposures": 211,
+          "fraction_global_nonpositive_margin_among_legal_exposures": 0.0033944658944658943,
+          "recorded_batch_mean_averages": {
+            "region_use_loss": 0.3448323607444763,
+            "actual_scaled_correction_global_ratio_mean": 0.005145013766984145,
+            "global_loss": 2.617180267969767,
+            "fused_role_loss": 2.6119054317474366
+          },
+          "official_fused": {
+            "mAP": 49.91739753509437,
+            "Rank-1": 67.17427968978882,
+            "Rank-5": 80.7106614112854,
+            "Rank-10": 85.10998487472534
+          }
+        },
+        {
+          "epoch": 29,
+          "recorded_steps": 14,
+          "legal_triplet_exposures": 54360,
+          "global_nonpositive_margin_triplet_exposures": 232,
+          "fraction_global_nonpositive_margin_among_legal_exposures": 0.004267844002943341,
+          "recorded_batch_mean_averages": {
+            "region_use_loss": 0.3309836004461561,
+            "actual_scaled_correction_global_ratio_mean": 0.005185957399329969,
+            "global_loss": 2.5600780929837907,
+            "fused_role_loss": 2.555220467703683
+          },
+          "official_fused": {
+            "mAP": 50.06090664239549,
+            "Rank-1": 67.17427968978882,
+            "Rank-5": 81.04906678199768,
+            "Rank-10": 85.78680157661438
+          }
+        },
+        {
+          "epoch": 30,
+          "recorded_steps": 14,
+          "legal_triplet_exposures": 54480,
+          "global_nonpositive_margin_triplet_exposures": 265,
+          "fraction_global_nonpositive_margin_among_legal_exposures": 0.004864170337738619,
+          "recorded_batch_mean_averages": {
+            "region_use_loss": 0.31485530095441,
+            "actual_scaled_correction_global_ratio_mean": 0.005205244125266161,
+            "global_loss": 2.5979317086083547,
+            "fused_role_loss": 2.591220906802586
+          },
+          "official_fused": {
+            "mAP": 50.026908596161654,
+            "Rank-1": 67.17427968978882,
+            "Rank-5": 81.04906678199768,
+            "Rank-10": 85.27919054031372
+          }
+        },
+        {
+          "epoch": 31,
+          "recorded_steps": 14,
+          "legal_triplet_exposures": 53880,
+          "global_nonpositive_margin_triplet_exposures": 232,
+          "fraction_global_nonpositive_margin_among_legal_exposures": 0.004305864884929473,
+          "recorded_batch_mean_averages": {
+            "region_use_loss": 0.3300682583025524,
+            "actual_scaled_correction_global_ratio_mean": 0.005212130656998072,
+            "global_loss": 2.6018038477216447,
+            "fused_role_loss": 2.596243977546692
+          },
+          "official_fused": {
+            "mAP": 49.70795601074657,
+            "Rank-1": 67.00507402420044,
+            "Rank-5": 80.7106614112854,
+            "Rank-10": 84.94077920913696
+          }
+        },
+        {
+          "epoch": 32,
+          "recorded_steps": 14,
+          "legal_triplet_exposures": 54840,
+          "global_nonpositive_margin_triplet_exposures": 196,
+          "fraction_global_nonpositive_margin_among_legal_exposures": 0.003574033552151714,
+          "recorded_batch_mean_averages": {
+            "region_use_loss": 0.32179666629859377,
+            "actual_scaled_correction_global_ratio_mean": 0.005222605474825416,
+            "global_loss": 2.5239528928484236,
+            "fused_role_loss": 2.5184581450053622
+          },
+          "official_fused": {
+            "mAP": 50.315308031626095,
+            "Rank-1": 68.02030205726624,
+            "Rank-5": 81.55668377876282,
+            "Rank-10": 85.95600724220276
+          }
+        },
+        {
+          "epoch": 33,
+          "recorded_steps": 14,
+          "legal_triplet_exposures": 53880,
+          "global_nonpositive_margin_triplet_exposures": 250,
+          "fraction_global_nonpositive_margin_among_legal_exposures": 0.0046399406087602076,
+          "recorded_batch_mean_averages": {
+            "region_use_loss": 0.3139118051954678,
+            "actual_scaled_correction_global_ratio_mean": 0.005245592910796404,
+            "global_loss": 2.5190512112208774,
+            "fused_role_loss": 2.51393152986254
+          },
+          "official_fused": {
+            "mAP": 50.199992458383036,
+            "Rank-1": 68.02030205726624,
+            "Rank-5": 81.55668377876282,
+            "Rank-10": 86.46361827850342
+          }
+        },
+        {
+          "epoch": 34,
+          "recorded_steps": 14,
+          "legal_triplet_exposures": 54360,
+          "global_nonpositive_margin_triplet_exposures": 170,
+          "fraction_global_nonpositive_margin_among_legal_exposures": 0.003127299484915379,
+          "recorded_batch_mean_averages": {
+            "region_use_loss": 0.31763685175350737,
+            "actual_scaled_correction_global_ratio_mean": 0.005269204898338232,
+            "global_loss": 2.4976063796452115,
+            "fused_role_loss": 2.4919150386537825
+          },
+          "official_fused": {
+            "mAP": 49.86268432163093,
+            "Rank-1": 66.49746298789978,
+            "Rank-5": 80.87986707687378,
+            "Rank-10": 85.95600724220276
+          }
+        },
+        {
+          "epoch": 35,
+          "recorded_steps": 14,
+          "legal_triplet_exposures": 54840,
+          "global_nonpositive_margin_triplet_exposures": 254,
+          "fraction_global_nonpositive_margin_among_legal_exposures": 0.00463165572574763,
+          "recorded_batch_mean_averages": {
+            "region_use_loss": 0.3188339365380151,
+            "actual_scaled_correction_global_ratio_mean": 0.005270032245399696,
+            "global_loss": 2.5040772472109114,
+            "fused_role_loss": 2.499216743877956
+          },
+          "official_fused": {
+            "mAP": 49.624777778651,
+            "Rank-1": 66.49746298789978,
+            "Rank-5": 80.37225008010864,
+            "Rank-10": 84.94077920913696
+          }
+        },
+        {
+          "epoch": 36,
+          "recorded_steps": 14,
+          "legal_triplet_exposures": 54600,
+          "global_nonpositive_margin_triplet_exposures": 121,
+          "fraction_global_nonpositive_margin_among_legal_exposures": 0.0022161172161172162,
+          "recorded_batch_mean_averages": {
+            "region_use_loss": 0.30020170765263693,
+            "actual_scaled_correction_global_ratio_mean": 0.005300560600257346,
+            "global_loss": 2.51937963281359,
+            "fused_role_loss": 2.513319866997855
+          },
+          "official_fused": {
+            "mAP": 49.53305090728609,
+            "Rank-1": 66.83587431907654,
+            "Rank-5": 80.37225008010864,
+            "Rank-10": 84.77157354354858
+          }
+        },
+        {
+          "epoch": 37,
+          "recorded_steps": 14,
+          "legal_triplet_exposures": 56400,
+          "global_nonpositive_margin_triplet_exposures": 154,
+          "fraction_global_nonpositive_margin_among_legal_exposures": 0.0027304964539007093,
+          "recorded_batch_mean_averages": {
+            "region_use_loss": 0.29966808961970465,
+            "actual_scaled_correction_global_ratio_mean": 0.0053138170457844225,
+            "global_loss": 2.4731835978371755,
+            "fused_role_loss": 2.469305634498596
+          },
+          "official_fused": {
+            "mAP": 50.30943067571998,
+            "Rank-1": 67.85110235214233,
+            "Rank-5": 80.7106614112854,
+            "Rank-10": 85.617595911026
+          }
+        },
+        {
+          "epoch": 38,
+          "recorded_steps": 14,
+          "legal_triplet_exposures": 52680,
+          "global_nonpositive_margin_triplet_exposures": 202,
+          "fraction_global_nonpositive_margin_among_legal_exposures": 0.0038344722854973426,
+          "recorded_batch_mean_averages": {
+            "region_use_loss": 0.3035817657198225,
+            "actual_scaled_correction_global_ratio_mean": 0.005348658056131431,
+            "global_loss": 2.496271712439401,
+            "fused_role_loss": 2.4913433619907925
+          },
+          "official_fused": {
+            "mAP": 50.545759980124174,
+            "Rank-1": 67.85110235214233,
+            "Rank-5": 80.54145574569702,
+            "Rank-10": 85.44839024543762
+          }
+        },
+        {
+          "epoch": 39,
+          "recorded_steps": 14,
+          "legal_triplet_exposures": 53400,
+          "global_nonpositive_margin_triplet_exposures": 196,
+          "fraction_global_nonpositive_margin_among_legal_exposures": 0.0036704119850187265,
+          "recorded_batch_mean_averages": {
+            "region_use_loss": 0.31257585010358263,
+            "actual_scaled_correction_global_ratio_mean": 0.0053687806773398605,
+            "global_loss": 2.4857790981020247,
+            "fused_role_loss": 2.478709782872881
+          },
+          "official_fused": {
+            "mAP": 50.223538168392245,
+            "Rank-1": 67.51269102096558,
+            "Rank-5": 80.7106614112854,
+            "Rank-10": 85.44839024543762
+          }
+        },
+        {
+          "epoch": 40,
+          "recorded_steps": 14,
+          "legal_triplet_exposures": 53040,
+          "global_nonpositive_margin_triplet_exposures": 117,
+          "fraction_global_nonpositive_margin_among_legal_exposures": 0.0022058823529411764,
+          "recorded_batch_mean_averages": {
+            "region_use_loss": 0.30071326558079037,
+            "actual_scaled_correction_global_ratio_mean": 0.00534246233291924,
+            "global_loss": 2.4319931779588972,
+            "fused_role_loss": 2.4257731097085133
+          },
+          "official_fused": {
+            "mAP": 50.307380000531275,
+            "Rank-1": 67.85110235214233,
+            "Rank-5": 80.54145574569702,
+            "Rank-10": 85.617595911026
+          }
+        },
+        {
+          "epoch": 41,
+          "recorded_steps": 14,
+          "legal_triplet_exposures": 56160,
+          "global_nonpositive_margin_triplet_exposures": 219,
+          "fraction_global_nonpositive_margin_among_legal_exposures": 0.0038995726495726496,
+          "recorded_batch_mean_averages": {
+            "region_use_loss": 0.29639663440840586,
+            "actual_scaled_correction_global_ratio_mean": 0.0053565777904753175,
+            "global_loss": 2.440137267112732,
+            "fused_role_loss": 2.4348955495016917
+          },
+          "official_fused": {
+            "mAP": 50.34078023425215,
+            "Rank-1": 67.85110235214233,
+            "Rank-5": 80.87986707687378,
+            "Rank-10": 85.617595911026
+          }
+        },
+        {
+          "epoch": 42,
+          "recorded_steps": 14,
+          "legal_triplet_exposures": 55200,
+          "global_nonpositive_margin_triplet_exposures": 177,
+          "fraction_global_nonpositive_margin_among_legal_exposures": 0.0032065217391304347,
+          "recorded_batch_mean_averages": {
+            "region_use_loss": 0.2973550685814449,
+            "actual_scaled_correction_global_ratio_mean": 0.0053403012986694065,
+            "global_loss": 2.4550348860876903,
+            "fused_role_loss": 2.448588115828378
+          },
+          "official_fused": {
+            "mAP": 50.32657511580361,
+            "Rank-1": 67.85110235214233,
+            "Rank-5": 80.87986707687378,
+            "Rank-10": 85.617595911026
+          }
+        },
+        {
+          "epoch": 43,
+          "recorded_steps": 15,
+          "legal_triplet_exposures": 60360,
+          "global_nonpositive_margin_triplet_exposures": 132,
+          "fraction_global_nonpositive_margin_among_legal_exposures": 0.002186878727634195,
+          "recorded_batch_mean_averages": {
+            "region_use_loss": 0.304380871852239,
+            "actual_scaled_correction_global_ratio_mean": 0.005328485555946827,
+            "global_loss": 2.481222232182821,
+            "fused_role_loss": 2.4765961011250814
+          },
+          "official_fused": {
+            "mAP": 50.338657868850625,
+            "Rank-1": 67.85110235214233,
+            "Rank-5": 80.87986707687378,
+            "Rank-10": 85.617595911026
+          }
+        },
+        {
+          "epoch": 44,
+          "recorded_steps": 14,
+          "legal_triplet_exposures": 53880,
+          "global_nonpositive_margin_triplet_exposures": 176,
+          "fraction_global_nonpositive_margin_among_legal_exposures": 0.0032665181885671865,
+          "recorded_batch_mean_averages": {
+            "region_use_loss": 0.30667775656495777,
+            "actual_scaled_correction_global_ratio_mean": 0.005343412049114704,
+            "global_loss": 2.4312801361083984,
+            "fused_role_loss": 2.4265449387686595
+          },
+          "official_fused": {
+            "mAP": 50.37640731114264,
+            "Rank-1": 67.68189668655396,
+            "Rank-5": 80.87986707687378,
+            "Rank-10": 85.617595911026
+          }
+        },
+        {
+          "epoch": 45,
+          "recorded_steps": 14,
+          "legal_triplet_exposures": 55800,
+          "global_nonpositive_margin_triplet_exposures": 255,
+          "fraction_global_nonpositive_margin_among_legal_exposures": 0.00456989247311828,
+          "recorded_batch_mean_averages": {
+            "region_use_loss": 0.29352555743285585,
+            "actual_scaled_correction_global_ratio_mean": 0.005373002429093633,
+            "global_loss": 2.4374269587653026,
+            "fused_role_loss": 2.4305392674037387
+          },
+          "official_fused": {
+            "mAP": 50.422285591009995,
+            "Rank-1": 67.68189668655396,
+            "Rank-5": 80.87986707687378,
+            "Rank-10": 85.617595911026
+          }
+        },
+        {
+          "epoch": 46,
+          "recorded_steps": 14,
+          "legal_triplet_exposures": 53400,
+          "global_nonpositive_margin_triplet_exposures": 133,
+          "fraction_global_nonpositive_margin_among_legal_exposures": 0.00249063670411985,
+          "recorded_batch_mean_averages": {
+            "region_use_loss": 0.3045539153473718,
+            "actual_scaled_correction_global_ratio_mean": 0.005358644029391664,
+            "global_loss": 2.4473481007984708,
+            "fused_role_loss": 2.4419964211327687
+          },
+          "official_fused": {
+            "mAP": 50.442611239719426,
+            "Rank-1": 67.68189668655396,
+            "Rank-5": 81.04906678199768,
+            "Rank-10": 85.617595911026
+          }
+        },
+        {
+          "epoch": 47,
+          "recorded_steps": 14,
+          "legal_triplet_exposures": 53160,
+          "global_nonpositive_margin_triplet_exposures": 137,
+          "fraction_global_nonpositive_margin_among_legal_exposures": 0.0025771256583897667,
+          "recorded_batch_mean_averages": {
+            "region_use_loss": 0.298511015517371,
+            "actual_scaled_correction_global_ratio_mean": 0.005356291308999062,
+            "global_loss": 2.4321906651769365,
+            "fused_role_loss": 2.4257998296192715
+          },
+          "official_fused": {
+            "mAP": 50.497287129607486,
+            "Rank-1": 67.68189668655396,
+            "Rank-5": 81.04906678199768,
+            "Rank-10": 85.78680157661438
+          }
+        },
+        {
+          "epoch": 48,
+          "recorded_steps": 14,
+          "legal_triplet_exposures": 54960,
+          "global_nonpositive_margin_triplet_exposures": 200,
+          "fraction_global_nonpositive_margin_among_legal_exposures": 0.00363901018922853,
+          "recorded_batch_mean_averages": {
+            "region_use_loss": 0.29650771617889404,
+            "actual_scaled_correction_global_ratio_mean": 0.005355646700731346,
+            "global_loss": 2.4829890557697842,
+            "fused_role_loss": 2.4754821402685985
+          },
+          "official_fused": {
+            "mAP": 50.47217625100421,
+            "Rank-1": 67.68189668655396,
+            "Rank-5": 81.04906678199768,
+            "Rank-10": 85.78680157661438
+          }
+        },
+        {
+          "epoch": 49,
+          "recorded_steps": 14,
+          "legal_triplet_exposures": 55440,
+          "global_nonpositive_margin_triplet_exposures": 162,
+          "fraction_global_nonpositive_margin_among_legal_exposures": 0.002922077922077922,
+          "recorded_batch_mean_averages": {
+            "region_use_loss": 0.29349189358098166,
+            "actual_scaled_correction_global_ratio_mean": 0.005346752836235932,
+            "global_loss": 2.440151572227478,
+            "fused_role_loss": 2.4354021889822826
+          },
+          "official_fused": {
+            "mAP": 50.47330087683295,
+            "Rank-1": 67.68189668655396,
+            "Rank-5": 81.21827244758606,
+            "Rank-10": 85.78680157661438
+          }
+        },
+        {
+          "epoch": 50,
+          "recorded_steps": 14,
+          "legal_triplet_exposures": 55080,
+          "global_nonpositive_margin_triplet_exposures": 248,
+          "fraction_global_nonpositive_margin_among_legal_exposures": 0.0045025417574437185,
+          "recorded_batch_mean_averages": {
+            "region_use_loss": 0.30441016810280935,
+            "actual_scaled_correction_global_ratio_mean": 0.005348653632349202,
+            "global_loss": 2.4627974203654697,
+            "fused_role_loss": 2.457669734954834
+          },
+          "official_fused": {
+            "mAP": 50.49166539066796,
+            "Rank-1": 67.68189668655396,
+            "Rank-5": 81.21827244758606,
+            "Rank-10": 85.78680157661438
+          }
+        }
+      ],
+      "first_selected_last": {
+        "first": {
+          "epoch": 1,
+          "recorded_steps": 14,
+          "legal_triplet_exposures": 57360,
+          "global_nonpositive_margin_triplet_exposures": 15936,
+          "fraction_global_nonpositive_margin_among_legal_exposures": 0.2778242677824268,
+          "recorded_batch_mean_averages": {
+            "region_use_loss": 0.6646830098969596,
+            "actual_scaled_correction_global_ratio_mean": 0.0036830262314262135,
+            "global_loss": 7.737744195120675,
+            "fused_role_loss": 7.7370023386819025
+          },
+          "official_fused": {
+            "mAP": 15.515047454956582,
+            "Rank-1": 34.1793566942215,
+            "Rank-5": 54.31472063064575,
+            "Rank-10": 61.92893385887146
+          }
+        },
+        "selected": {
+          "epoch": 38,
+          "recorded_steps": 14,
+          "legal_triplet_exposures": 52680,
+          "global_nonpositive_margin_triplet_exposures": 202,
+          "fraction_global_nonpositive_margin_among_legal_exposures": 0.0038344722854973426,
+          "recorded_batch_mean_averages": {
+            "region_use_loss": 0.3035817657198225,
+            "actual_scaled_correction_global_ratio_mean": 0.005348658056131431,
+            "global_loss": 2.496271712439401,
+            "fused_role_loss": 2.4913433619907925
+          },
+          "official_fused": {
+            "mAP": 50.545759980124174,
+            "Rank-1": 67.85110235214233,
+            "Rank-5": 80.54145574569702,
+            "Rank-10": 85.44839024543762
+          }
+        },
+        "last": {
+          "epoch": 50,
+          "recorded_steps": 14,
+          "legal_triplet_exposures": 55080,
+          "global_nonpositive_margin_triplet_exposures": 248,
+          "fraction_global_nonpositive_margin_among_legal_exposures": 0.0045025417574437185,
+          "recorded_batch_mean_averages": {
+            "region_use_loss": 0.30441016810280935,
+            "actual_scaled_correction_global_ratio_mean": 0.005348653632349202,
+            "global_loss": 2.4627974203654697,
+            "fused_role_loss": 2.457669734954834
+          },
+          "official_fused": {
+            "mAP": 50.49166539066796,
+            "Rank-1": 67.68189668655396,
+            "Rank-5": 81.21827244758606,
+            "Rank-10": 85.78680157661438
+          }
+        }
+      }
+    }
+  ]
+}

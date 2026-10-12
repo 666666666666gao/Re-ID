@@ -1,0 +1,14 @@
+{
+  "status": "DESCRIPTIVE_FIELD_LABEL_CORRECTED_WITH_ORIGINALS_RETAINED",
+  "issue": "The executed analysis source and saved SUMMARY definition called the fused feature raw_features. The sealed producer actually reads output['raw_fused'].",
+  "authoritative_definition": "For each training batch, mean over samples of norm(raw_fused-shared_global)/norm(shared_global), then the unweighted mean of those recorded batch means within an epoch.",
+  "producer_evidence": "tools/run_role_input_detach.py:26-30; modeling/trifusion/global_task_role_heads.py returns raw_fused.",
+  "scope": "Terminology correction only. The analysis aggregates the saved actual_scaled_correction_global_ratio_mean field; it does not recompute the model feature. No numeric results, executed source, original SUMMARY bytes, inference, optimizer updates or original review finding are changed.",
+  "originals_retained": [
+    "analyse_training_trace910.py",
+    "training_trace910/SUMMARY.json",
+    "training_trace910/REPORT_BEFORE_DEFINITION_CORRECTION.md"
+  ],
+  "original_report_sha256": "c65f575aa2849962c6d57fa9fd71526c44c6a4ec81a38cf7a837343f484832d0",
+  "corrected_report_sha256": "83eaa719e46e037a7e8ba4a9ce56b89471f7c6a23daf811cee8eff9fe394ed08"
+}
