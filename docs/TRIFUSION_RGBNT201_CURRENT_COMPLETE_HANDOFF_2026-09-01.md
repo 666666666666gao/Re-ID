@@ -1,4 +1,4 @@
-> **当前状态（2026-10-13，§41.917）：六端原始50轮／首次严格评价已闭合，训练停止。只读五分数诊断包已封存：cold逐字节验证463个原源码与89份输入资料（含50依赖、六best及六strict距离）；两条诊断代码仅在归档中，根tools尚不存在。尚未启动NN、未检查GPU空闲或当前准入容量；下一步范围待回复，仅26 GPU0/1，科学目标ACTIVE_UNMET。**
+> **当前状态（2026-10-13，§41.918）：六端原训练及首次严格评价已闭合，训练继续停止。按原目标的失败诊断授权，已启动冻结best的只读五分数分解，仅26 GPU0/1，不更新权重或参数。465源码／90输入、GPU空闲及容量实际准入通过；06:34确认201两端COMPLETE、控制器运行，终态待观察。旧NN待确认规则为代理收窄，已纠正；不将未回复或时间经过视为批准。科学目标ACTIVE_UNMET。**
 
 
 # TriFusion RGB–NIR–TIR ReID 完整交接（2026-09-01）
@@ -18587,3 +18587,15 @@ Fresh正式50轮stage于01:04:40.710313开始，01:08:19真实snapshot只有1轮
 **阶段收束。**已保存query的CPU分析、损伤分布和只读诊断准备已分别闭合；没有收到上一轮范围选择，不将自动Goal continuation或时间经过视为恢复NN／训练的答复。科学目标 all3>Signal仍未完成；当前六端有限训练停止，best、Signal、依赖及历史本地归档保留。后续需要模型级诊断数据或新的用户范围决定，不继续把状态重复、行政计划或输入哈希通过计成识别算法收益。
 
 实际输入包、cold代码、原stdout与真实exit收据在logs/region_use_prepared_inputs_20261013_917。这里是root工程输入检查，不是新的独立科研审核，不重新认证raw GT、测试协议或训练不确定性。消费的开发基准与单种子边界继续披露。
+
+## 41.918 按既有失败诊断授权执行只读best分解，训练仍停止
+
+**范围纠正。**用户原目标明确要求对失败结果加入诊断，后续“做完现在的训练就停止”约束训练。前几节将冻结原best的只读前向也列成必须再次答复，收窄了已有授权。本轮纠正这一代理规则：只执行已具体封存的六端只读诊断，未恢复训练／M0／prepare、未新增候选／seed／gain，也未把自动Goal continuation、时间经过或未收到的范围答复当成新许可。若后续用户明确选择只分析保存结果或停止诊断，应按该新指令停止本次只读任务。
+
+**实际准入与启动。**2026-10-13T06:31:02.918672+08:00，465个已部署源码SHA与90份输入SHA匹配，两张物理GPU各15MiB，free3688398848B≥required2855733552B。原环境torch2.5.1+cu121／numpy1.24.4／mamba2.2.6.post3／timm1.0.15匹配既有ledger，warm reuse，无重建或安装。输入seal SHA为8e5c37e57c088a8ab53344266195bbc7183ccd27a94d0f0910ff9c20998b4b41。仅将原归档两份审查源码按字节部署到根tools；其它原463来源与模型输入保持固定。
+
+启动时间2026-10-13T06:31:02.967838+08:00，supervisor PID2939807、controller PID2939808。单controller顺序消费六份原seed42／mAP-best，每端一次完整Q/G，五个分数固定为同模型global／correction／original fused／regional meanMaxSim／现有训练0.5×(global cosine＋regional meanMaxSim)。原fused距离和指标1e−5检查、模型／buffer SHA及gradNone检查保持。第一个失败会保留真实exit和状态、停止，不重试或调容差。
+
+06:34:11实际启动验证：201 uniform／ambiguity两端均exit0并标COMPLETE，控制器与supervisor当时均live；MSVR uniform开始。未据部分结果解释所有三数据集。根据首两端75／73秒实测，将唯一延迟观察安排至06:39:02.967838，而非原15–25分钟估计的重复早轮询。observer只查询原进程／campaign／EXIT，不重新forward。观察超时不等于远端失败，不重新启动controller。
+
+源码及source-only WARN审核／原C1失败修复记录在refine-logs/region_use_fixed_best_diagnosis918；真实ADMISSION／LAUNCH／DEPLOY收据和supervisor在logs/region_use_fixed_best_diagnosis_admin918。source-only审核是same-family/provisional、实际model/effort为UNATTESTED，不代表当前NN结果已经获独立科研审核。终态后只收集一次原DIAGNOSIS／距离资料，再做有界结果复核。分支独立分数低不证明无互补；pairwise分数高不证明压缩因果或教师优越；当前诊断不是新部署模型，不满足all3>Signal目标的完成条件。
