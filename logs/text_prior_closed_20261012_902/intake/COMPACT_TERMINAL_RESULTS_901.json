@@ -1,0 +1,602 @@
+{
+  "schema": "trifusion-text-semantic-prior-v1",
+  "status": "COMPLETE",
+  "created_at": "2026-10-10T06:59:30.210721+08:00",
+  "accepted": 4,
+  "expected": 6,
+  "formal_epochs": 200,
+  "formal_steps": 11556,
+  "missing": [
+    {
+      "dataset": "MSVR310",
+      "package": "pretrained",
+      "failed_phase": "accept-m0"
+    },
+    {
+      "dataset": "MSVR310",
+      "package": "random",
+      "failed_phase": "accept-m0"
+    }
+  ],
+  "primary_advance": 0,
+  "primary_pairs_available": 2,
+  "boundary": "Conditional pretrained versus one fixed random text-package contrast. Same original raw tasks/1536 deployment, new592000 trainable parameters, frozen38M text body/template. No independent image identity information, word/layer-specific attribution, novel prompt claim, full-pipeline seeds, unconsumed test or SOTA. Missing endpoints have no substituted score.",
+  "pairs": [
+    {
+      "dataset": "RGBNT201",
+      "control": "raw_semantic",
+      "candidate": "pretrained",
+      "metrics": {
+        "raw_semantic": {
+          "mAP": 74.3748615366129,
+          "Rank-1": 78.82775119617224,
+          "Rank-5": 88.39712918660287,
+          "Rank-10": 91.74641148325358
+        },
+        "pretrained": {
+          "mAP": 74.3552980087194,
+          "Rank-1": 78.94736842105263,
+          "Rank-5": 88.1578947368421,
+          "Rank-10": 91.86602870813397
+        }
+      },
+      "delta_metrics": {
+        "mAP": -0.019563527893495802,
+        "Rank-1": 0.11961722488038617,
+        "Rank-5": -0.23923444976077235,
+        "Rank-10": 0.11961722488038617
+      },
+      "rank1_repairs": 4,
+      "rank1_new_errors": 3,
+      "query_ap_improved": 239,
+      "query_ap_worsened": 242,
+      "identity_macro_mean_delta_ap_points": -0.016346716361224096,
+      "boundary": "Complete legal query/gallery ground truth, same camera/scene filtering. Post-selection fixed-model diagnosis, not training seed uncertainty or causal correspondence proof.",
+      "primary_pair": false,
+      "phase_progress": false
+    },
+    {
+      "dataset": "RGBNT201",
+      "control": "independent_global",
+      "candidate": "pretrained",
+      "metrics": {
+        "independent_global": {
+          "mAP": 74.29666357468751,
+          "Rank-1": 78.94736842105263,
+          "Rank-5": 88.27751196172248,
+          "Rank-10": 91.86602870813397
+        },
+        "pretrained": {
+          "mAP": 74.3552980087194,
+          "Rank-1": 78.94736842105263,
+          "Rank-5": 88.1578947368421,
+          "Rank-10": 91.86602870813397
+        }
+      },
+      "delta_metrics": {
+        "mAP": 0.058634434031887395,
+        "Rank-1": 0.0,
+        "Rank-5": -0.11961722488038617,
+        "Rank-10": 0.0
+      },
+      "rank1_repairs": 2,
+      "rank1_new_errors": 2,
+      "query_ap_improved": 226,
+      "query_ap_worsened": 225,
+      "identity_macro_mean_delta_ap_points": 0.050849750275124866,
+      "boundary": "Complete legal query/gallery ground truth, same camera/scene filtering. Post-selection fixed-model diagnosis, not training seed uncertainty or causal correspondence proof.",
+      "primary_pair": false,
+      "phase_progress": false
+    },
+    {
+      "dataset": "RGBNT201",
+      "control": "own_global",
+      "candidate": "pretrained",
+      "metrics": {
+        "own_global": {
+          "mAP": 74.29666357468751,
+          "Rank-1": 78.94736842105263,
+          "Rank-5": 88.27751196172248,
+          "Rank-10": 91.86602870813397
+        },
+        "pretrained": {
+          "mAP": 74.3552980087194,
+          "Rank-1": 78.94736842105263,
+          "Rank-5": 88.1578947368421,
+          "Rank-10": 91.86602870813397
+        }
+      },
+      "delta_metrics": {
+        "mAP": 0.058634434031887395,
+        "Rank-1": 0.0,
+        "Rank-5": -0.11961722488038617,
+        "Rank-10": 0.0
+      },
+      "rank1_repairs": 2,
+      "rank1_new_errors": 2,
+      "query_ap_improved": 226,
+      "query_ap_worsened": 225,
+      "identity_macro_mean_delta_ap_points": 0.050849750275124866,
+      "boundary": "Complete legal query/gallery ground truth, same camera/scene filtering. Post-selection fixed-model diagnosis, not training seed uncertainty or causal correspondence proof.",
+      "primary_pair": false,
+      "phase_progress": false
+    },
+    {
+      "dataset": "RGBNT201",
+      "control": "raw_semantic",
+      "candidate": "random",
+      "metrics": {
+        "raw_semantic": {
+          "mAP": 74.3748615366129,
+          "Rank-1": 78.82775119617224,
+          "Rank-5": 88.39712918660287,
+          "Rank-10": 91.74641148325358
+        },
+        "random": {
+          "mAP": 74.47743535008956,
+          "Rank-1": 79.42583732057416,
+          "Rank-5": 88.51674641148325,
+          "Rank-10": 91.86602870813397
+        }
+      },
+      "delta_metrics": {
+        "mAP": 0.10257381347666694,
+        "Rank-1": 0.5980861244019167,
+        "Rank-5": 0.11961722488038617,
+        "Rank-10": 0.11961722488038617
+      },
+      "rank1_repairs": 7,
+      "rank1_new_errors": 2,
+      "query_ap_improved": 253,
+      "query_ap_worsened": 236,
+      "identity_macro_mean_delta_ap_points": 0.10308408544776658,
+      "boundary": "Complete legal query/gallery ground truth, same camera/scene filtering. Post-selection fixed-model diagnosis, not training seed uncertainty or causal correspondence proof.",
+      "primary_pair": false,
+      "phase_progress": false
+    },
+    {
+      "dataset": "RGBNT201",
+      "control": "independent_global",
+      "candidate": "random",
+      "metrics": {
+        "independent_global": {
+          "mAP": 74.29666357468751,
+          "Rank-1": 78.94736842105263,
+          "Rank-5": 88.27751196172248,
+          "Rank-10": 91.86602870813397
+        },
+        "random": {
+          "mAP": 74.47743535008956,
+          "Rank-1": 79.42583732057416,
+          "Rank-5": 88.51674641148325,
+          "Rank-10": 91.86602870813397
+        }
+      },
+      "delta_metrics": {
+        "mAP": 0.18077177540205014,
+        "Rank-1": 0.4784688995215305,
+        "Rank-5": 0.23923444976077235,
+        "Rank-10": 0.0
+      },
+      "rank1_repairs": 5,
+      "rank1_new_errors": 1,
+      "query_ap_improved": 249,
+      "query_ap_worsened": 210,
+      "identity_macro_mean_delta_ap_points": 0.1702805520841156,
+      "boundary": "Complete legal query/gallery ground truth, same camera/scene filtering. Post-selection fixed-model diagnosis, not training seed uncertainty or causal correspondence proof.",
+      "primary_pair": false,
+      "phase_progress": false
+    },
+    {
+      "dataset": "RGBNT201",
+      "control": "own_global",
+      "candidate": "random",
+      "metrics": {
+        "own_global": {
+          "mAP": 74.29666357468751,
+          "Rank-1": 78.94736842105263,
+          "Rank-5": 88.27751196172248,
+          "Rank-10": 91.86602870813397
+        },
+        "random": {
+          "mAP": 74.47743535008956,
+          "Rank-1": 79.42583732057416,
+          "Rank-5": 88.51674641148325,
+          "Rank-10": 91.86602870813397
+        }
+      },
+      "delta_metrics": {
+        "mAP": 0.18077177540205014,
+        "Rank-1": 0.4784688995215305,
+        "Rank-5": 0.23923444976077235,
+        "Rank-10": 0.0
+      },
+      "rank1_repairs": 5,
+      "rank1_new_errors": 1,
+      "query_ap_improved": 249,
+      "query_ap_worsened": 210,
+      "identity_macro_mean_delta_ap_points": 0.1702805520841156,
+      "boundary": "Complete legal query/gallery ground truth, same camera/scene filtering. Post-selection fixed-model diagnosis, not training seed uncertainty or causal correspondence proof.",
+      "primary_pair": false,
+      "phase_progress": false
+    },
+    {
+      "dataset": "RGBNT100",
+      "control": "raw_semantic",
+      "candidate": "pretrained",
+      "metrics": {
+        "raw_semantic": {
+          "mAP": 84.09030506924212,
+          "Rank-1": 95.8600583090379,
+          "Rank-5": 96.61807580174927,
+          "Rank-10": 97.20116618075801
+        },
+        "pretrained": {
+          "mAP": 84.22853861391661,
+          "Rank-1": 95.56851311953352,
+          "Rank-5": 96.20991253644316,
+          "Rank-10": 96.44314868804665
+        }
+      },
+      "delta_metrics": {
+        "mAP": 0.13823354467449178,
+        "Rank-1": -0.2915451895043759,
+        "Rank-5": -0.4081632653061149,
+        "Rank-10": -0.7580174927113603
+      },
+      "rank1_repairs": 30,
+      "rank1_new_errors": 35,
+      "query_ap_improved": 727,
+      "query_ap_worsened": 702,
+      "identity_macro_mean_delta_ap_points": 0.19786723244867951,
+      "boundary": "Complete legal query/gallery ground truth, same camera/scene filtering. Post-selection fixed-model diagnosis, not training seed uncertainty or causal correspondence proof.",
+      "primary_pair": false,
+      "phase_progress": false
+    },
+    {
+      "dataset": "RGBNT100",
+      "control": "independent_global",
+      "candidate": "pretrained",
+      "metrics": {
+        "independent_global": {
+          "mAP": 84.53378422597531,
+          "Rank-1": 96.61807580174927,
+          "Rank-5": 97.31778425655978,
+          "Rank-10": 97.95918367346938
+        },
+        "pretrained": {
+          "mAP": 84.22853861391661,
+          "Rank-1": 95.56851311953352,
+          "Rank-5": 96.20991253644316,
+          "Rank-10": 96.44314868804665
+        }
+      },
+      "delta_metrics": {
+        "mAP": -0.30524561205869816,
+        "Rank-1": -1.0495626822157504,
+        "Rank-5": -1.10787172011662,
+        "Rank-10": -1.5160349854227348
+      },
+      "rank1_repairs": 19,
+      "rank1_new_errors": 37,
+      "query_ap_improved": 725,
+      "query_ap_worsened": 702,
+      "identity_macro_mean_delta_ap_points": 0.0070582902541122825,
+      "boundary": "Complete legal query/gallery ground truth, same camera/scene filtering. Post-selection fixed-model diagnosis, not training seed uncertainty or causal correspondence proof.",
+      "primary_pair": false,
+      "phase_progress": false
+    },
+    {
+      "dataset": "RGBNT100",
+      "control": "own_global",
+      "candidate": "pretrained",
+      "metrics": {
+        "own_global": {
+          "mAP": 84.08351332771981,
+          "Rank-1": 95.33527696793003,
+          "Rank-5": 96.03498542274053,
+          "Rank-10": 96.26822157434403
+        },
+        "pretrained": {
+          "mAP": 84.22853861391661,
+          "Rank-1": 95.56851311953352,
+          "Rank-5": 96.20991253644316,
+          "Rank-10": 96.44314868804665
+        }
+      },
+      "delta_metrics": {
+        "mAP": 0.14502528619679822,
+        "Rank-1": 0.2332361516034922,
+        "Rank-5": 0.1749271137026227,
+        "Rank-10": 0.1749271137026227
+      },
+      "rank1_repairs": 15,
+      "rank1_new_errors": 11,
+      "query_ap_improved": 774,
+      "query_ap_worsened": 586,
+      "identity_macro_mean_delta_ap_points": 0.04854750430230787,
+      "boundary": "Complete legal query/gallery ground truth, same camera/scene filtering. Post-selection fixed-model diagnosis, not training seed uncertainty or causal correspondence proof.",
+      "primary_pair": false,
+      "phase_progress": false
+    },
+    {
+      "dataset": "RGBNT100",
+      "control": "raw_semantic",
+      "candidate": "random",
+      "metrics": {
+        "raw_semantic": {
+          "mAP": 84.09030506924212,
+          "Rank-1": 95.8600583090379,
+          "Rank-5": 96.61807580174927,
+          "Rank-10": 97.20116618075801
+        },
+        "random": {
+          "mAP": 84.56932444526777,
+          "Rank-1": 96.44314868804665,
+          "Rank-5": 97.25947521865889,
+          "Rank-10": 97.78425655976677
+        }
+      },
+      "delta_metrics": {
+        "mAP": 0.47901937602564715,
+        "Rank-1": 0.5830903790087518,
+        "Rank-5": 0.6413994169096213,
+        "Rank-10": 0.583090379008766
+      },
+      "rank1_repairs": 22,
+      "rank1_new_errors": 12,
+      "query_ap_improved": 753,
+      "query_ap_worsened": 631,
+      "identity_macro_mean_delta_ap_points": 0.3805871192506505,
+      "boundary": "Complete legal query/gallery ground truth, same camera/scene filtering. Post-selection fixed-model diagnosis, not training seed uncertainty or causal correspondence proof.",
+      "primary_pair": false,
+      "phase_progress": false
+    },
+    {
+      "dataset": "RGBNT100",
+      "control": "independent_global",
+      "candidate": "random",
+      "metrics": {
+        "independent_global": {
+          "mAP": 84.53378422597531,
+          "Rank-1": 96.61807580174927,
+          "Rank-5": 97.31778425655978,
+          "Rank-10": 97.95918367346938
+        },
+        "random": {
+          "mAP": 84.56932444526777,
+          "Rank-1": 96.44314868804665,
+          "Rank-5": 97.25947521865889,
+          "Rank-10": 97.78425655976677
+        }
+      },
+      "delta_metrics": {
+        "mAP": 0.03554021929245721,
+        "Rank-1": -0.1749271137026227,
+        "Rank-5": -0.05830903790088371,
+        "Rank-10": -0.1749271137026085
+      },
+      "rank1_repairs": 6,
+      "rank1_new_errors": 9,
+      "query_ap_improved": 769,
+      "query_ap_worsened": 577,
+      "identity_macro_mean_delta_ap_points": 0.1897781770560834,
+      "boundary": "Complete legal query/gallery ground truth, same camera/scene filtering. Post-selection fixed-model diagnosis, not training seed uncertainty or causal correspondence proof.",
+      "primary_pair": false,
+      "phase_progress": false
+    },
+    {
+      "dataset": "RGBNT100",
+      "control": "own_global",
+      "candidate": "random",
+      "metrics": {
+        "own_global": {
+          "mAP": 84.53378422597531,
+          "Rank-1": 96.61807580174927,
+          "Rank-5": 97.31778425655978,
+          "Rank-10": 97.95918367346938
+        },
+        "random": {
+          "mAP": 84.56932444526777,
+          "Rank-1": 96.44314868804665,
+          "Rank-5": 97.25947521865889,
+          "Rank-10": 97.78425655976677
+        }
+      },
+      "delta_metrics": {
+        "mAP": 0.03554021929245721,
+        "Rank-1": -0.1749271137026227,
+        "Rank-5": -0.05830903790088371,
+        "Rank-10": -0.1749271137026085
+      },
+      "rank1_repairs": 6,
+      "rank1_new_errors": 9,
+      "query_ap_improved": 769,
+      "query_ap_worsened": 577,
+      "identity_macro_mean_delta_ap_points": 0.1897781770560834,
+      "boundary": "Complete legal query/gallery ground truth, same camera/scene filtering. Post-selection fixed-model diagnosis, not training seed uncertainty or causal correspondence proof.",
+      "primary_pair": false,
+      "phase_progress": false
+    },
+    {
+      "dataset": "RGBNT201",
+      "control": "random",
+      "candidate": "pretrained",
+      "metrics": {
+        "random": {
+          "mAP": 74.47743535008956,
+          "Rank-1": 79.42583732057416,
+          "Rank-5": 88.51674641148325,
+          "Rank-10": 91.86602870813397
+        },
+        "pretrained": {
+          "mAP": 74.3552980087194,
+          "Rank-1": 78.94736842105263,
+          "Rank-5": 88.1578947368421,
+          "Rank-10": 91.86602870813397
+        }
+      },
+      "delta_metrics": {
+        "mAP": -0.12213734137016274,
+        "Rank-1": -0.4784688995215305,
+        "Rank-5": -0.3588516746411585,
+        "Rank-10": 0.0
+      },
+      "rank1_repairs": 0,
+      "rank1_new_errors": 4,
+      "query_ap_improved": 224,
+      "query_ap_worsened": 243,
+      "identity_macro_mean_delta_ap_points": -0.11943080180899077,
+      "boundary": "Complete legal query/gallery ground truth, same camera/scene filtering. Post-selection fixed-model diagnosis, not training seed uncertainty or causal correspondence proof.",
+      "primary_pair": true,
+      "phase_progress": false
+    },
+    {
+      "dataset": "RGBNT100",
+      "control": "random",
+      "candidate": "pretrained",
+      "metrics": {
+        "random": {
+          "mAP": 84.56932444526777,
+          "Rank-1": 96.44314868804665,
+          "Rank-5": 97.25947521865889,
+          "Rank-10": 97.78425655976677
+        },
+        "pretrained": {
+          "mAP": 84.22853861391661,
+          "Rank-1": 95.56851311953352,
+          "Rank-5": 96.20991253644316,
+          "Rank-10": 96.44314868804665
+        }
+      },
+      "delta_metrics": {
+        "mAP": -0.34078583135115537,
+        "Rank-1": -0.8746355685131277,
+        "Rank-5": -1.0495626822157362,
+        "Rank-10": -1.3411078717201264
+      },
+      "rank1_repairs": 18,
+      "rank1_new_errors": 33,
+      "query_ap_improved": 650,
+      "query_ap_worsened": 756,
+      "identity_macro_mean_delta_ap_points": -0.18271988680197096,
+      "boundary": "Complete legal query/gallery ground truth, same camera/scene filtering. Post-selection fixed-model diagnosis, not training seed uncertainty or causal correspondence proof.",
+      "primary_pair": true,
+      "phase_progress": false
+    }
+  ],
+  "rows": [
+    {
+      "dataset": "RGBNT201",
+      "package": "pretrained",
+      "best_epoch": 8,
+      "metrics": {
+        "mAP": 74.35529800871939,
+        "Rank-1": 78.94737124443054,
+        "Rank-5": 88.15789222717285,
+        "Rank-10": 91.86602830886841
+      },
+      "own_global_metrics": {
+        "mAP": 74.29666357468751,
+        "Rank-1": 78.94737124443054,
+        "Rank-5": 88.27751278877258,
+        "Rank-10": 91.86602830886841
+      },
+      "last_epoch_metrics": {
+        "mAP": 71.34646111484388,
+        "Rank-1": 74.04305934906006,
+        "Rank-5": 84.09090638160706,
+        "Rank-10": 89.59330320358276
+      },
+      "best_to_last_mAP_drop": 3.008836893875511,
+      "checkpoint_sha256": "08ab657ef590f8920d55cfa22e6e6d15aba5ae3447a24aa31f915cfe64f7ccc3",
+      "run_dir": "/data/gaob/Re-ID/Trifusion/trained-model/text_semantic_prior_v1_20261010_901_full_pretrained_RGBNT201"
+    },
+    {
+      "dataset": "RGBNT201",
+      "package": "random",
+      "best_epoch": 8,
+      "metrics": {
+        "mAP": 74.47743535008956,
+        "Rank-1": 79.42583560943604,
+        "Rank-5": 88.51674795150757,
+        "Rank-10": 91.86602830886841
+      },
+      "own_global_metrics": {
+        "mAP": 74.29666357468751,
+        "Rank-1": 78.94737124443054,
+        "Rank-5": 88.27751278877258,
+        "Rank-10": 91.86602830886841
+      },
+      "last_epoch_metrics": {
+        "mAP": 71.5376591101514,
+        "Rank-1": 74.04305934906006,
+        "Rank-5": 84.33014154434204,
+        "Rank-10": 89.59330320358276
+      },
+      "best_to_last_mAP_drop": 2.939776239938169,
+      "checkpoint_sha256": "633b0178218cddee43080c03de5c7a6250a8ffc23e278e5ebbabd96439b701aa",
+      "run_dir": "/data/gaob/Re-ID/Trifusion/trained-model/text_semantic_prior_v1_20261010_901_full_random_RGBNT201"
+    },
+    {
+      "dataset": "RGBNT100",
+      "package": "pretrained",
+      "best_epoch": 5,
+      "metrics": {
+        "mAP": 84.22853861391661,
+        "Rank-1": 95.56851387023926,
+        "Rank-5": 96.20991349220276,
+        "Rank-10": 96.44314646720886
+      },
+      "own_global_metrics": {
+        "mAP": 84.08351332771981,
+        "Rank-1": 95.33527493476868,
+        "Rank-5": 96.03498578071594,
+        "Rank-10": 96.26821875572205
+      },
+      "last_epoch_metrics": {
+        "mAP": 81.7559195164219,
+        "Rank-1": 95.86005806922913,
+        "Rank-5": 96.151602268219,
+        "Rank-10": 96.32652997970581
+      },
+      "best_to_last_mAP_drop": 2.4726190974947144,
+      "checkpoint_sha256": "f7323f3aea7c18bfddf66fb909a3466341730bd70da1d125e6ef7c6d6d5d3b58",
+      "run_dir": "/data/gaob/Re-ID/Trifusion/trained-model/text_semantic_prior_v1_20261010_901_full_pretrained_RGBNT100"
+    },
+    {
+      "dataset": "RGBNT100",
+      "package": "random",
+      "best_epoch": 7,
+      "metrics": {
+        "mAP": 84.56932444526777,
+        "Rank-1": 96.44314646720886,
+        "Rank-5": 97.25947380065918,
+        "Rank-10": 97.78425693511963
+      },
+      "own_global_metrics": {
+        "mAP": 84.53378422597531,
+        "Rank-1": 96.61807417869568,
+        "Rank-5": 97.31778502464294,
+        "Rank-10": 97.95918464660645
+      },
+      "last_epoch_metrics": {
+        "mAP": 82.5888341070037,
+        "Rank-1": 95.4518973827362,
+        "Rank-5": 96.50145769119263,
+        "Rank-10": 96.85131311416626
+      },
+      "best_to_last_mAP_drop": 1.9804903382640617,
+      "checkpoint_sha256": "d2f32014e039e264451987ae38a564c50b914c0fd114717898edd6814f5b83f7",
+      "run_dir": "/data/gaob/Re-ID/Trifusion/trained-model/text_semantic_prior_v1_20261010_901_full_random_RGBNT100"
+    }
+  ],
+  "intake_helper_failure": {
+    "tool_chunk": "e43c78",
+    "exception": "KeyError: 'metrics'",
+    "cause": "Compact helper used nonexistent history.metrics; production history uses official_fused.",
+    "audit_trace_closure_already_written": true,
+    "neural_rerun": false,
+    "original_results_changed": false
+  }
+}

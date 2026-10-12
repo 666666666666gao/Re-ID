@@ -1,0 +1,46 @@
+{
+  "schema": "trifusion-text-semantic-prior-v1",
+  "status": "COMPLETE",
+  "dataset": "RGBNT100",
+  "recipe": "semantic",
+  "seed": 42,
+  "training_epochs": 50,
+  "selected_epoch": 7,
+  "condition": {
+    "variant": "semantic",
+    "foundation_option": "author",
+    "seed": 42,
+    "epochs": 50,
+    "public_clip_sha256": "5806e77cd80f8b59890b7e101eabd078d9fb84e6937f9e85e4ecb61988df416f",
+    "initialization_sha256": "59992eb0e07c30c6b306306bfcac8094c8946774cf1d1d8934a2f2475eca85ce",
+    "deployment": "L2_1536",
+    "auxiliary_tasks": "none",
+    "visual_placement": "single_process_original_full_batch_first6_cuda1_last6_and_heads_cuda0",
+    "objective_gradient_policy": "author_global_loss_to_shared_and_heads_fused_loss_to_roles_only",
+    "author_training_objectives": [
+      "shared_global",
+      "role_corrected_fused"
+    ],
+    "text_package": "random",
+    "text_template": "A photo of a X X X X person/vehicle.",
+    "pseudo_words": 4,
+    "text_tokens": 12,
+    "text_dtype": "float32",
+    "added_trainable_parameters": 592000
+  },
+  "protocol_sha256": "b2c14adf947b06b27b9576a712f96192c1393ad6ed3ec1be5259b63f88300169",
+  "checkpoint_sha256": "d2f32014e039e264451987ae38a564c50b914c0fd114717898edd6814f5b83f7",
+  "distance_sha256": "e00d0b2eecab260c6c8778e0b9500555e0f89be87c66c15433968329eb31a348",
+  "training_best_distance_sha256": "eb3e274eeb0988959fe40fe50bb2855c9989197f2c61e6e1a8aa7c88212abb52",
+  "metrics": {
+    "mAP": 84.56932444526777,
+    "Rank-1": 96.44314646720886,
+    "Rank-5": 97.25947380065918,
+    "Rank-10": 97.78425693511963
+  },
+  "reranking": false,
+  "independent_upstream_metrics_equal": true,
+  "final_evaluation_seconds": 113.71063864999451,
+  "final_evaluation_timing_boundary": "Fresh construction, strict reload and full-gallery scoring.",
+  "completed_at": "2026-10-10T06:58:48.680175+08:00"
+}

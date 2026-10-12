@@ -1,0 +1,30 @@
+{
+  "checked_at": "2026-10-10T06:10:35.570440+08:00",
+  "source_scope_sha256": "ef9a6be2e912a70dd973bafe575f688c5f1344e2c4675262ca470683df7cd0ec",
+  "bound_sources": [
+    {
+      "path": "tools/run_foundation_recipe.py",
+      "sha256": "c18042509dc33ff66eee1a6b04a723ad55685bd5d9daf218c3779703ffe20758"
+    },
+    {
+      "path": "tools/run_global_task_role.py",
+      "sha256": "151a3350a9da7d86ce6b4b7d5160537b182792ab08727ccb5e4ab0c64bb56d5f"
+    },
+    {
+      "path": "modeling/trifusion/global_task_role_heads.py",
+      "sha256": "2298763b70b48718411db52e55f32dabddade5af0e56457a85eeabab4f9fcefd"
+    },
+    {
+      "path": "tools/run_text_semantic_prior.py",
+      "sha256": "18fafa9a7157077d7ad22a0359de905163bb17a8eb7b04b8f54c6b6bce436c79"
+    }
+  ],
+  "scope": "Source-only check of actual text/raw responsibility training path, not a new runtime probe.",
+  "findings": [
+    "The training loop performs scaled backward, unscale, finite-gradient assertion, optimizer step and scale update. It has no full-model gradient clipping operation.",
+    "The loop asserts the scale never decreases; this is a code requirement, not this check's independent verification of every recorded update.",
+    "The role head uses detached head parameters and cloned buffers. Gradient ownership and identical global optimization trajectories are separate claims."
+  ],
+  "conclusion": "Do not attribute the observed RGBNT100 same-epoch own-global difference to full-model clipping or a silently tolerated scale decrease. No first divergent operation or unique cause was established; no optimizer/AMP/head modification is justified by this check alone.",
+  "boundary": "No NN, remote progress query, reconstruction, new score, production edit, candidate registration, or claim of strict global preservation across all datasets."
+}

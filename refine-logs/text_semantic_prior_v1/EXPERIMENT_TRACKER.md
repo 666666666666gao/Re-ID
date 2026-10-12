@@ -26,3 +26,8 @@
 真实optimizer五个ψ/W参数在后七步均有非零、有限的unscaled梯度，但M0独立role VJP没有使用AMP loss scale，ψ梯度报告0。fresh init_scale256、growth_interval2000、固定8步、无跳步或scale下降，从安装源码和实际回执推出该窗口scale256；没有声称直接记录过旧scaler值或定位首个underflow算子。fresh rescue建议仅将诊断role_loss乘256，返回梯度转FP32后除256。实际训练loss不变，原活动、BN、buffer、初始化、批次与重载门槛不放宽。
 
 901是新命名的缺失端续接：相同六端、原seed42、各fresh8M0后fresh50、1536维、原raw职责训练与作者配方。queue通过显式prior-campaign读取已终态的900，检查恰有六个M0缺失且无已接受正式端；只有run/queue两份source变化，原429、prefix/report不变，复用实际qualified prefix原字节及已绑定CLIP来源，不再执行prefix NN。source-only复核不代替新真实M0。仍只26物理GPU0/1，单作业占两卡；不查询25/GPU2/3、功率或温度。正式训练每端只保留同一mAP-best；失败probe暂为修复证据，闭合后按消费者状态清理。
+
+
+## 2026-10-12 terminal override (master §41.902)
+
+Campaign901 CLOSED / COMPLETE_WITH_MISSING. Four accepted full50 conditions, 200 formal epochs/11556updates; both MSVR missing at accept-M0. ProducerM0 48updates separately. One original report exit0, controllerexit1. Pretrained-minus-random negative201/100; 0/2 available primary progression, third missing. Full auditWARN/source-text only, all246 checks pass. Four failed900/901 MSVR probes retired after exact61 protected-file checks; metadata preserved. No seed/gain/LR continuation of this closed pilot. Results/queries/curves/audit/cleanup: logs/text_prior_closed_20261012_902. Next same-evidence comparison diagnosis is not part of this text campaign and not launched.
