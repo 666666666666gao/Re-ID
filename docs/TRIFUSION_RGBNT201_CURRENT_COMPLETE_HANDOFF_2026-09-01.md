@@ -1,4 +1,4 @@
-> **当前状态（2026-10-13，§41.915）：六端原始seed42／50轮／首次严格评价已闭合，训练保持停止。本次保存query诊断发现：100 ambiguity首位仍正确的1611个query中723个AP下降，贡献−0.9127 mAP；50个身份中26个平均AP下降。保住首位不等于保住全部正例。结果见§913，分层及损伤见§914–915；不自动追加训练或NN，仅26 GPU0/1；科学目标ACTIVE_UNMET。**
+> **当前状态（2026-10-13，§41.916）：六端原始seed42／50轮／首次严格评价已闭合，训练保持停止。只读最佳权重诊断的行政绑定已对齐独立续接的接受记录；原存储EXIT1保留。五分数消费者及控制器未改，当前仅元数据／SHA／AST核查，未形成完整执行seal、未检查GPU空闲、未启动NN。下一步范围仍待回复；仅26 GPU0/1，科学目标ACTIVE_UNMET。**
 
 
 # TriFusion RGB–NIR–TIR ReID 完整交接（2026-09-01）
@@ -18559,3 +18559,17 @@ Fresh正式50轮stage于01:04:40.710313开始，01:08:19真实snapshot只有1轮
 完整CPU分析CLI、六端结果表、22个实际首位分组行与264个端侧身份条目见logs/region_use_saved_query_damage_20261013_915。审核结论与真实检查/exit记录见同目录audit/，以审核最终文件为准；私人prompt/response trace不上传。整体科学目标保持ACTIVE_UNMET。
 
 有界独立审核最终结论：WARN，0 blockers、无需修正。实际检查数量及读取文件精确SHA见audit/AUDIT.json，真实运行日志/exit收据保留。请求gpt-6-astra/max，实际model/effort为UNATTESTED、same-family/provisional；不扩大为原始GT／二进制／完整多种子认证。既往repair/keep尝试、完整Signal参照及训练／设备状态沿用§913–914已有记录，不属于本次保存query算术复核的重新认证范围；同步时只确认当前批次进程终态与文本SHA。原执行者command收据不冒充审核者亲历生产执行。
+
+## 41.916 只读最佳权重诊断：修正终态引用与路径绑定，尚未准入
+
+本轮只做cold行政检查和本地静态合同整理，没有GPU查询、NN、优化器、训练、模型变体或分数变化。§913–915六端正式结果不改。问题是旧私有诊断草案要求“original remaining911成功EXIT0”，但真实记录为存储中断EXIT1；第六端首次严格评价实际由独立续接912完成。不能修改原失败或重跑训练来满足旧条件。
+
+**当前正确引用。**future remaining_campaign应为logs/region_use_remaining_strict_20261013_912/region_use_remaining_20261013_911目录，remaining_exit为logs/region_use_remaining_strict_admin912/EXIT.json。原logs/region_use_remaining_20261013_911/campaign.json与region_use_remaining_admin911/EXIT.json仍作为失败来源保留。cold实读确认原终态条件false、接受终态条件true，原source seal与strict seal SHA不变；这些是行政状态检查，不是新模型评价。
+
+**六端绑定已实际核对。**cold读取六份当前strict指标收据、原50轮history、原prepare命令指定的初始化、三个protocol，逐端核对best选择、指标、best／distance收据SHA和initializer seed42。DIAGNOSTIC_BINDINGS_916.json保存原采集文件路径与完整六行；DIAGNOSTIC_INPUT_BINDING_916.json将两个campaign文件路径明确映射为入口需要的目录，并额外保留原文件路径。这次本地检查先因file／directory不一致失败，原exit1收据与失败helper保留；修正后exit0。没有增加兼容fallback，也没有重跑科学实验。
+
+**容量只在观测时成立。**协议Q/G计数重新得到五种距离×六端的payload641,141,040B；原2GiB reserve＋64MiB metadata共需2,855,733,552B。2026-10-13T05:25:40.75742+08:00观测free3,689,156,608B，满足当时容量条件，不代表未来准入时仍满足。无需删除更多权重。仅观察best／distance的存在与大小，未重新逐字节hash二进制；完整463来源／50依赖／新消费者及六端artifact seal与GPU空闲检查仍缺，不把元数据记录冒充执行准入。
+
+**科学问题不扩大。**原五项诊断仍为同模型global1536、correction1536、original fused1536、9组区域meanMaxSim、现有训练pairwise的固定0.5×(global cosine＋regional meanMaxSim)。它用于区分同模型全局能力、区域关系、实际辅助目标与部署融合；不选择新系数、种子或best，不宣称更强教师、压缩根因或新部署方法。旧消费者／控制器／旧计划的SHA与AST已核对，本轮不修改其源码、不执行forward；source_reference只归档字节，未部署到根tools入口。
+
+用户“做完当前训练就停止”继续有效；上一轮关于只读NN／仅保存结果／恢复实验的范围问题尚未收到答复，没有把时间经过当同意。计划与绑定只使后续动作具体可审阅，不恢复NN或训练。科学目标保持ACTIVE_UNMET。行政源、实际收据、旧失败与新绑定在logs/region_use_diagnostic_contract_20261013_916；本轮没有新语义实验审核或性能结论，不将root静态检查升级为独立科研复现。
