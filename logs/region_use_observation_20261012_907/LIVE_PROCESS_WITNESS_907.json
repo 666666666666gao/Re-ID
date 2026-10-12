@@ -1,0 +1,56 @@
+{
+  "observed_at": "2026-10-12T19:46:37.472459+08:00",
+  "campaign_status": "RUNNING",
+  "processes": [
+    {
+      "pid": 1708681,
+      "state": "S",
+      "live": true,
+      "command": "/usr/bin/python3 -u -c import json,subprocess,sys,os\nfrom datetime import datetime\nfrom pathlib import Path\ncommand=json.loads(sys.argv[1]);target=Path(sys.argv[2])\nprocess=subprocess.Popen(command,cwd='/data/gaob/Re-ID/Trifusion',env=dict(os.environ,CUDA_VISIBLE_DEVICES='0,1'))\nvalue=dict(supervisor_pid=os.getpid(),controller_pid=process.pid,started_at=datetime.now().astimezone().isoformat(),command=command)\n(target/'SUPERVISOR_STARTED.json').write_text(json.dumps(value,indent=2)+'\\n')\nstatus=process.wait();value.update(exit_code=status,completed_at=datetime.now().astimezone().isoformat())\n(target/'EXIT.json').write_text(json.dumps(value,indent=2)+'\\n')\nraise SystemExit(status)\n [\"/data/gaob/Re-ID/conda-envs/tri_reid/bin/python\", \"-B\", \"/data/gaob/Re-ID/Trifusion/tools/queue_region_use_probe.py\", \"--campaign\", \"/data/gaob/Re-ID/Trifusion/logs/region_use_v1_20261012_906\"] /data/gaob/Re-ID/Trifusion/logs/region_use_resume906 "
+    },
+    {
+      "pid": 1708684,
+      "state": "S",
+      "live": true,
+      "command": "/data/gaob/Re-ID/conda-envs/tri_reid/bin/python -B /data/gaob/Re-ID/Trifusion/tools/queue_region_use_probe.py --campaign /data/gaob/Re-ID/Trifusion/logs/region_use_v1_20261012_906 "
+    },
+    {
+      "pid": 1713141,
+      "state": "R",
+      "live": true,
+      "command": "/data/gaob/Re-ID/conda-envs/tri_reid/bin/python -B /data/gaob/Re-ID/Trifusion/tools/run_region_use_probe.py --dataset RGBNT201 --comparison uniform --mode train --protocol /data/gaob/Re-ID/Trifusion/logs/training_feature_scale_protocols_20261002/RGBNT201.json --signal-source /data/gaob/Re-ID/Trifusion/comparators/Signal-cd1b0a6 --clip-weight /data/gaob/Re-ID/Trifusion/pertrained-model/ViT-B-16.pt --initialization /data/gaob/Re-ID/Trifusion/logs/region_use_v1_20261012_906/initialization/RGBNT201_uniform.json --output-dir /data/gaob/Re-ID/Trifusion/trained-model/region_use_v1_20261012_906_full_uniform_RGBNT201 "
+    }
+  ],
+  "active_stage": {
+    "mode": "train",
+    "command": [
+      "/data/gaob/Re-ID/conda-envs/tri_reid/bin/python",
+      "-B",
+      "/data/gaob/Re-ID/Trifusion/tools/run_region_use_probe.py",
+      "--dataset",
+      "RGBNT201",
+      "--comparison",
+      "uniform",
+      "--mode",
+      "train",
+      "--protocol",
+      "/data/gaob/Re-ID/Trifusion/logs/training_feature_scale_protocols_20261002/RGBNT201.json",
+      "--signal-source",
+      "/data/gaob/Re-ID/Trifusion/comparators/Signal-cd1b0a6",
+      "--clip-weight",
+      "/data/gaob/Re-ID/Trifusion/pertrained-model/ViT-B-16.pt",
+      "--initialization",
+      "/data/gaob/Re-ID/Trifusion/logs/region_use_v1_20261012_906/initialization/RGBNT201_uniform.json",
+      "--output-dir",
+      "/data/gaob/Re-ID/Trifusion/trained-model/region_use_v1_20261012_906_full_uniform_RGBNT201"
+    ],
+    "status": "RUNNING",
+    "pid": 1713141,
+    "started_at": "2026-10-12T19:37:15.440282+08:00",
+    "gpus": [
+      0,
+      1
+    ]
+  },
+  "supervisor_exit": null
+}

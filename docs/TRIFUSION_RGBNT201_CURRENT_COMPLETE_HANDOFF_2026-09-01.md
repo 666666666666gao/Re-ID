@@ -1,4 +1,4 @@
-> **当前状态（2026-10-12，§41.906）：Goal ACTIVE_UNMET。仅26GPU0/1。原首次队列仍在执行。首端真实M0接受：REGION_USE_M0_SUPPORT_AND_ACTIVITY_PASS；正式fresh50当前已完成1轮。 没有新的完整50轮成绩；禁止重复启动原队列。**
+> **当前状态（2026-10-12，§41.907）：Goal ACTIVE_UNMET。仅26GPU0/1。原906六端队列仍执行；20:05首次节点为201 uniform已完成34/50轮，尚无完整新50轮成绩。新单端CPU分析器源码复核通过，未执行；训练源码与463/50封存不变。**
 
 
 # TriFusion RGB–NIR–TIR ReID 完整交接（2026-09-01）
@@ -18327,3 +18327,18 @@ CPU合成目标检查只验证梯度、对称性、槽位置换、global无梯�
 原首次观察于2026-10-12T19:39:08.033414+08:00，父进程live=True，controller live=True，campaign status=RUNNING。首端真实M0接受：REGION_USE_M0_SUPPORT_AND_ACTIVITY_PASS；正式fresh50当前已完成1轮。 当前观测JSON保留全部原状态、消费者及日志尾，不用时间推测阶段。启动成功、源码PASS、M0或中途epoch均不是最终净收益；尚无新的完整50轮检索结果。查看 `logs/region_use_admission_20261012_906/FIRST_NODE_906.json`。若观察后原任务失败，后续必须保留原EXIT和报错，不能重用旧收据填成功。
 
 原903固定证据比较不会重启，旧901 best与903缓存的本地归档已在§905说明。及时保留每端唯一mAP-best、同best CMC及原轨迹；消费完的工程probe只按原接受收据退役。运行中只在预估节点或240秒间隔检查原进程，不再次部署。最终仍用原1536单向量比较判断实际区域监督是否有增量；目标三集全面超过Signal仍ACTIVE_UNMET。
+
+
+## 41.907 2026-10-12：实际用途主线与单端结果分析器源码
+
+研究主线继续采用用户明确的表述：**我们不再追求让每个分支都更强，而是研究如何让每一条新增证据，在最终身份比较中确实有用。** 外领域机制只用于回答其中某一环；源码、辅助loss、独立判别性或中途数字均不能替代最终检索净收益。
+
+原906 supervisor1708681/controller1708684及首端训练child1713141在19:46:37实际进程见证中live。原唯一PRE_FIRST_FULL907计时器67887已消费，20:05:09实际记录首端201 uniform正式34/50、原队列RUNNING、父/controller live、无EXIT；其他五端尚待执行。该节点末个epoch不是正式best结论。根据实际墙钟观察将首端50轮时间估计修正到20:18左右，加首次严格评价另计；这只是观察计划，不补填完成或成绩。禁止重复启动已关闭903、原906或已消费计时器。查看 `logs/region_use_observation_20261012_907` 的原始记录。
+
+新 `tools/report_region_use_endpoint.py` 及 `ENDPOINT_DIAGNOSIS_PLAN_907.md` 是独立CPU消费者，尚未调用。每次仅接受一个原端prepare/M0/fresh50/首次严格评价四阶段全部exit0、job COMPLETE及同mAP-best；校验50轮、步骤、原raw-semantic批次顺序SHA及逐字节一致、best/distance SHA和原head/部署条件。其他不同目录端仍训练时，可分析已经完成的固定距离；CUDA隐藏，不新增模型推理/optimizer/seed或修改训练。原463源码/50依赖map没有扩大、改写或增加门禁。
+
+分析使用历史已封存raw-semantic824与独立global794及原完整合法query/gallery评分。保留同best mAP/R1/R5/R10、完整轨迹及末轮、实际区域loss和合法关系覆盖、身份AP、首位修复/新增错误/首位保持正确/保持错误的总体AP贡献，以及最差ceil(5%*query数)损伤尾。四组贡献按全部query作分母，必须和总体mAP差一致；修复减新增错误必须复现R1差。训练循环seconds与包含评价/保存的时间分开，不能再将循环求和称全墙钟。该报告没有同模型global/区域分解或uniform−ambiguity；这些另行消费者尚未执行，不用推测补分。
+
+新鲜同家族审查原R1有两个实际FAIL：严格评价已接受1e-5范围而报告要求逐值相等、原控制批次顺序已封存却漏查SHA。只作这两处最小修正；R2源码PASS、0阻塞，12项原检查与3项窄复核保留。作者官方评分源码从26冷读取一次，SHA与现封存一致，补充核对另存；这不是新评分门槛或结果验收。requested Astra/max、actual serving UNATTESTED、same-family/provisional；原R1输入/FAIL、精确diff及R2输出均保留。没有训练/评价门槛放宽，无额外模型检查或环境安装。
+
+完整新端尚未完成，故无性能有效性结论。若首端正式结果失败，首先按固定距离报告其损益与合法支持，不用更强分支、gain、seed、late-interaction或另一个loss救分。后续仍按当前登记的原六端队列执行并自然结束；不追加队列或重复旧路线。每端只保留唯一mAP-best和现有依赖，清理限于已消费且有明确原接受记录的本项目probe。三数据集全面超过Signal的研究目标仍ACTIVE_UNMET。

@@ -1,0 +1,37 @@
+{
+  "schema": "source-only-endpoint907-review-v1",
+  "generated_at": "2026-10-12T12:05:32.523286+00:00",
+  "round": "R2",
+  "source_verdict": "PASS",
+  "blocking_findings": [],
+  "resolved_findings": [
+    "F1",
+    "F2"
+  ],
+  "checks": [
+    {
+      "name": "F1_closed_use_existing_producer_tolerance",
+      "status": "PASS",
+      "below_1e_minus5_absolute_points": "accepted",
+      "above_1e_minus5_absolute_points": "rejected"
+    },
+    {
+      "name": "F2_closed_check_existing_sealed_raw_order_before_use",
+      "status": "PASS",
+      "matching_changed_pair": "rejected",
+      "matching_original_pair": "accepted"
+    },
+    {
+      "name": "only_two_reviewed_AST_changes",
+      "status": "PASS",
+      "inherited_reviewed_inputs_unchanged": true,
+      "plan_unchanged": true,
+      "live_source_seal_unchanged": true,
+      "actual_pipeline_executed": false
+    }
+  ],
+  "inherited_checks": "SOURCE_ONLY_CHECKS_R1.json; passing checks retained without rerun",
+  "source_scope_limits": "LOCAL_SOURCE_SCOPE_LIMITS_R1.json",
+  "execution_boundary": "Stdlib, isolated AST/scalar/text fixtures only; zero production/model/tensor/GPU/SSH execution",
+  "actual_result_acceptance": "NOT_EVALUATED; source PASS is not neural/result acceptance"
+}

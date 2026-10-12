@@ -1,0 +1,98 @@
+{
+  "generated_at": "2026-10-12T12:13:03.183081+00:00",
+  "source_only_verdict": "PASS",
+  "checks": [
+    {
+      "name": "exact_existing_seal_hash",
+      "status": "PASS",
+      "sha256": "91604acb7d978462c16904910a645d7d1697c15bf150da529099004c8b5eecb2"
+    },
+    {
+      "name": "AST_parse_without_imports",
+      "status": "PASS",
+      "functions": {
+        "eval_func": {
+          "first_line": 111,
+          "last_line": 170
+        },
+        "eval_func_msrv": {
+          "first_line": 13,
+          "last_line": 108
+        }
+      }
+    },
+    {
+      "name": "official_scene_and_camera_filters",
+      "status": "PASS",
+      "evidence": [
+        "comparators/Signal-cd1b0a6/utils/metrics.py:68",
+        "comparators/Signal-cd1b0a6/utils/metrics.py:137"
+      ],
+      "detail": "Active MSVR branch removes only same identity AND same scene. Camera branch removes only same identity AND same camera. Commented legacy/neighbor-camera formulas are inactive. Different-identity same-environment distractors remain."
+    },
+    {
+      "name": "whole_legal_gallery_AP_and_CMC",
+      "status": "PASS",
+      "evidence": [
+        "comparators/Signal-cd1b0a6/utils/metrics.py:42",
+        "comparators/Signal-cd1b0a6/utils/metrics.py:82",
+        "comparators/Signal-cd1b0a6/utils/metrics.py:95",
+        "comparators/Signal-cd1b0a6/utils/metrics.py:99",
+        "comparators/Signal-cd1b0a6/utils/metrics.py:125",
+        "comparators/Signal-cd1b0a6/utils/metrics.py:142",
+        "comparators/Signal-cd1b0a6/utils/metrics.py:155",
+        "comparators/Signal-cd1b0a6/utils/metrics.py:161"
+      ],
+      "detail": "All gallery columns enter argsort/matches; complete filtered orig_cmc enters AP. Top-100 result variables and top-50 rank-list/CMC slices do not truncate AP. The CMC is capped at max_rank=50, sufficient for R1/R5/R10."
+    },
+    {
+      "name": "same_AP_and_first_hit_CMC_semantics",
+      "status": "PASS",
+      "evidence": [
+        "comparators/Signal-cd1b0a6/utils/metrics.py:87",
+        "comparators/Signal-cd1b0a6/utils/metrics.py:97",
+        "comparators/Signal-cd1b0a6/utils/metrics.py:104",
+        "comparators/Signal-cd1b0a6/utils/metrics.py:147",
+        "comparators/Signal-cd1b0a6/utils/metrics.py:158",
+        "comparators/Signal-cd1b0a6/utils/metrics.py:166"
+      ],
+      "detail": "Cumulative hits divided by 1-based legal rank, multiplied by the positive indicator, then divided by legal positive count is algebraically the independently inspected mean precision at positive positions. CMC saturates at one and averages query hits, equivalent to first_positive_rank<=k. Upstream CMC uses float32; the existing producer <1e-5 percentage-point comparison is retained."
+    },
+    {
+      "name": "no_self_generated_GT_or_metric_self_normalization",
+      "status": "PASS",
+      "detail": "Arguments provide q/g IDs and environments from the inspected sealed-metadata producer. AP denominator is legal positive count and aggregate denominators are valid query count/mean, not prediction statistics."
+    },
+    {
+      "name": "invalid_query_branch_is_unreached_for_known_protocols",
+      "status": "PASS",
+      "evidence": [
+        "comparators/Signal-cd1b0a6/utils/metrics.py:83",
+        "comparators/Signal-cd1b0a6/utils/metrics.py:143",
+        "SOURCE_ONLY_CHECKS_R1.json: sealed_protocol_metadata_scope"
+      ],
+      "detail": "Upstream skips queries with no legal positive; project scorers assert there is a positive. Earlier exact sealed protocol checks found all 836/591/1715 queries have legal positives, so this known-scope difference removes no benchmark queries."
+    },
+    {
+      "name": "called_functions_not_visualization_classes",
+      "status": "PASS",
+      "evidence": [
+        "inputs/tools/run_correspondence_roles.py:93",
+        "inputs/tools/run_correspondence_roles.py:99",
+        "inputs/tools/report_prepool_dense_correspondence.py:27"
+      ],
+      "detail": "The producer directly calls eval_func_msrv/eval_func, not R1_mAP_eval or optional visualization/reranking helpers. The CPU report calls the inherited independent scorers. Author MSVR re.txt writes are producer behavior; this review executes none of them."
+    }
+  ],
+  "source_imports": 0,
+  "torch_imports": 0,
+  "numpy_imports": 0,
+  "model_operations": 0,
+  "tensor_reads": 0,
+  "GPU_queries": 0,
+  "SSH_calls_by_reviewer": 0,
+  "production_report_invocations": 0,
+  "new_gate_added": false,
+  "inherited_checks_rerun": false,
+  "actual_result_acceptance": "NOT_EVALUATED"
+}

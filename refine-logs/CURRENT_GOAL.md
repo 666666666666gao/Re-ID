@@ -1,3 +1,7 @@
+## 2026-10-12 endpoint907 CPU diagnosis - latest priority
+
+Read sole master §907. Original906 six-end queue continues once on26GPU0/1; no restart or appended queue. Actual20:05 first201uniform34/50, not full accepted. Separate CPU report source R2 PASS only; no report executed. Live463 source/50 dependencies immutable. Original timer67887 consumed. Only analyze each actual COMPLETE four-stage endpoint with distinct output; pending missing scores stay missing. Goal ACTIVE_UNMET. Earlier notes historical.
+
 ## 2026-10-12 region-use906 original launch - latest priority
 
 Read master §906 and logs/region_use_admission_20261012_906. Original supervisor1708681 launched once on26GPU0/1. First node status=RUNNING, supervisor/controller live=True. No completed new50 result. Consume original campaign/EXIT; never restart from observer timeout. Scope seal463 source/50 dependencies, exact new training content only. Goal ACTIVE_UNMET. Earlier priority notes historical.

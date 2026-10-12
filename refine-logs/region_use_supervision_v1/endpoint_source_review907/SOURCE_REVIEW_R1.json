@@ -1,0 +1,140 @@
+{
+  "audit_skill": "experiment-audit",
+  "reviewer_route": "fresh native Codex agent",
+  "requested_reviewer_model": "gpt-6-astra",
+  "requested_reviewer_reasoning_effort": "max",
+  "actual_serving_model": "UNATTESTED",
+  "actual_serving_reasoning_effort": "UNATTESTED",
+  "attribution_boundary": "Requested Astra/max is not evidence of the actual serving identity. No external backend used.",
+  "reviewer_family": "openai",
+  "review_independence": "same-family",
+  "acceptance_status": "provisional",
+  "agent_id": "/root/audit_region_use_report907",
+  "generated_at": "2026-10-12T12:09:58.497117+00:00",
+  "actual_result_acceptance": "NOT_EVALUATED_INCOMPLETE_ENDPOINT",
+  "scope": "Read-only source/text/scalar fixtures. No tensor payloads, torch/numpy imports, model build/load/forward, optimizer, GPU query, SSH, production report, source edit or live queue mutation by reviewer.",
+  "round": "R1",
+  "verdict": "FAIL",
+  "overall_verdict": "FAIL",
+  "source_only_verdict": "FAIL",
+  "integrity_status": "fail_source_contract",
+  "reason_code": "producer_tolerance_mismatch_and_unchecked_registered_batch_order",
+  "blocking_findings": 2,
+  "findings": [
+    {
+      "id": "F1",
+      "severity": "P2",
+      "status": "OPEN_IN_R1",
+      "title": "Reporter tightens the accepted producer metric contract to exact equality",
+      "evidence": [
+        "inputs/tools/report_region_use_endpoint.py:45",
+        "inputs/tools/run_foundation_recipe.py:301",
+        "inputs/tools/queue_foundation_recipe.py:96"
+      ],
+      "detail": "The producer strict evaluation and established verifier accept each metric within an absolute 1e-5 percentage-point difference from the selected training row. R1 requires dictionary equality. A selected mAP 50.0 and strict receipt mAP 50.000005 satisfy the actual producer assertion but are rejected by the report. This is a concrete source-contract mismatch, not evidence that a new endpoint actually drifted.",
+      "minimal_fix": "Use the existing all(abs(receipt metrics[name] - selected official_fused[name]) < 1e-5 for name in receipt metrics) contract. Keep selected epoch, receipt, checkpoint and distance checks unchanged.",
+      "fixture": "SOURCE_ONLY_CHECKS_R1.json: R1_bug_metric_tolerance_contract"
+    },
+    {
+      "id": "F2",
+      "severity": "P2",
+      "status": "OPEN_IN_R1",
+      "title": "Raw comparator batch-order bytes are consumed without their registered digest check",
+      "evidence": [
+        "inputs/tools/report_region_use_endpoint.py:55",
+        "inputs/tools/report_region_use_endpoint.py:56",
+        "inputs/refine-logs/region_use_supervision_v1/INPUT_SEAL.json:491"
+      ],
+      "detail": "The current seal already pins all three raw-semantic training_batch_order.jsonl files, but source_map checks source entries only and the report checks only equality to whatever bytes presently occupy the old path. Equal candidate/control fixture files with a changed record are accepted even when the old file fails its registered hash. No production alteration is alleged.",
+      "minimal_fix": "Before read_bytes, assert the old_order_path SHA equals seal[artifact_sha256][str(old_order_path)]; retain the exact byte equality check.",
+      "fixture": "SOURCE_ONLY_CHECKS_R1.json: R1_bug_raw_control_order_pin_omitted"
+    }
+  ],
+  "checks": {
+    "A_ground_truth_provenance": {
+      "status": "PASS_SOURCE_ONLY",
+      "evaluation_type": "real_gt",
+      "evidence": [
+        "inputs/tools/run_correspondence_roles.py:85",
+        "inputs/tools/run_correspondence_roles.py:88",
+        "inputs/tools/run_correspondence_roles.py:104",
+        "inputs/tools/official_three_dataset_data.py:11",
+        "inputs/tools/build_official_three_dataset_protocols.py:35"
+      ],
+      "detail": "Producer identity/camera/scene arrays come directly from sealed protocol records, independently of predictions. Extraction traverses full query and gallery loaders, checks their declared counts and stores all distance rows/columns. The protocol builder reads dataset record manifests and copies identity/environment metadata; it is a supplementary unsealed reference, not a claimed sealed producer. Three local protocol JSON hashes match the current artifact seal; all 836/591/1715 queries have legal positives, with 836/1055/8575 gallery records. No image or tensor payload was inspected."
+    },
+    "B_score_normalization": {
+      "status": "PASS_SOURCE_ONLY",
+      "evidence": [
+        "inputs/tools/train_msvr310_signal_oof.py:223",
+        "inputs/tools/train_rgbnt100_signal_oof.py:253",
+        "inputs/tools/report_prepool_dense_correspondence.py:27",
+        "inputs/tools/report_region_use_endpoint.py:76"
+      ],
+      "detail": "AP is mean precision at legal positive ranks; CMC uses the first positive rank over the complete query denominator. Same-identity/same-scene or same-camera entries are excluded, while different-identity distractors remain. No metric denominator uses a model maximum, minimum or mean. L2 feature preprocessing defines the distance geometry and is separate from score normalization. Four Rank-1 transition AP contributions use total query count, sum to total delta mAP, and repairs minus new errors reproduces delta Rank-1. Worst tail uses the smallest ceil(0.05*N) signed query AP deltas without clipping."
+    },
+    "C_result_existence_and_acceptance": {
+      "status": "FAIL_R1",
+      "evidence": [
+        "inputs/tools/report_region_use_endpoint.py:30",
+        "inputs/tools/report_region_use_endpoint.py:35",
+        "inputs/tools/report_region_use_endpoint.py:41",
+        "inputs/tools/run_foundation_recipe.py:180",
+        "inputs/context/FIRST_NODE_906.json",
+        "inputs/context/LIVE_PROCESS_WITNESS_907.json"
+      ],
+      "detail": "The report requires the requested job COMPLETE, ordered prepare/m0/train/evaluate stages each COMPLETE/exit0, matching official receipt, seed42/full50, matching comparison, checkpoint/distance hashes, all fifty history epochs and latest-tie mAP-best. The unchanged producer reconstructs, strict-loads and scores that best before creating official_metrics.json. R1 adds the incompatible exact-metric check F1. Actual supplied snapshots remain RUNNING (last witness 2026-10-12T19:46:37.472459+08:00); no complete50 result is accepted by this audit."
+    },
+    "D_called_source_functions": {
+      "status": "PASS_SOURCE_ONLY",
+      "evidence": [
+        "inputs/tools/run_region_use_probe.py:60",
+        "inputs/tools/run_region_use_probe.py:83",
+        "inputs/tools/run_region_use_probe.py:122",
+        "inputs/tools/run_global_task_role.py:39",
+        "inputs/tools/run_native_partitioned.py:54",
+        "inputs/tools/run_independent_native_evidence.py:95",
+        "inputs/tools/run_independent_native_evidence.py:177",
+        "inputs/tools/report_region_use_endpoint.py:70"
+      ],
+      "detail": "The configuration chain wires the actual region loss/stat producer into foundation training; formal loss values and batch-order rows are written by the inspected training/logger functions. Report main calls descriptor and paired for raw semantic and independent global, and paired calls the actual camera/scene scorers. The independent global comparator is named independently; own-model global/local decomposition is expressly deferred. Strict selected-best evaluation is the actual foundation evaluate entry, not dead alternate code."
+    },
+    "E_scope_order_timing_and_claims": {
+      "status": "FAIL_R1",
+      "evidence": [
+        "inputs/tools/report_region_use_endpoint.py:48",
+        "inputs/tools/report_region_use_endpoint.py:55",
+        "inputs/tools/report_region_use_endpoint.py:58",
+        "inputs/tools/report_region_use_endpoint.py:88",
+        "inputs/tools/run_training_feature_scale.py:57",
+        "inputs/tools/run_native_partitioned.py:37",
+        "inputs/tools/queue_native_research.py:62",
+        "inputs/refine-logs/region_use_supervision_v1/ENDPOINT_DIAGNOSIS_PLAN_907.md:5"
+      ],
+      "detail": "History epochs, step totals, per-epoch step counts and ordered step/batch identities are checked. Existing raw control logs are compared byte-for-byte, but F2 omits their available seal pin. A completed job can be reported while another endpoint runs; no whole-campaign terminal or new numerical/kernel gate is required. This is one seed42 selected-best descriptive diagnosis of development-consumed official benchmarks, not seed uncertainty, causality, a uniform-versus-ambiguity result, own-global/local performance or a stronger-teacher/SOTA result. Timing and both partition memory fields are actually produced; detailed boundaries are recorded below."
+    },
+    "F_evaluation_type": {
+      "status": "PASS_SOURCE_ONLY",
+      "classification": "real_gt",
+      "detail": "Intended retrieval evaluation uses dataset metadata GT. Audit fixtures are simulation_only scalar/text checks, not neural evidence. Actual endpoint performance acceptance is pending."
+    }
+  },
+  "provenance_limits": [
+    "No completed original region-use endpoint is included. Actual witnesses show RGBNT201 uniform training still active; the available one-epoch scalar is not a full50 or selected-best result. No current performance number is endorsed.",
+    "Production-authored campaign state, stage exits and metrics receipts are consistency evidence, not an independent proof of execution or honest dataset/binary contents. This source review does not replay checkpoints, inspect tensor payloads or certify remote receipt authenticity.",
+    "Direct consumed scorer/metadata/training-wrapper sources reviewed here and all three protocol JSONs match current seal raw hashes. Across the broader 463 source entries, 329 are raw-exact locally, 107 unavailable locally and 27 differ only by CRLF/LF under a documentary comparison. This is a local verification limit, not a new campaign gate and not evidence of production drift. No runtime normalization is proposed.",
+    "The direct upstream author-scoring source comparators/Signal-cd1b0a6/utils/metrics.py is absent in this checkout, with expected SHA 91604acb7d978462c16904910a645d7d1697c15bf150da529099004c8b5eecb2. The inspected producer checks its resolved import path and compares its metrics against the independently inspected scorers, but the missing implementation has not yet been directly read in R1.",
+    "tools/run_trifusion_experiment.py is outside the current463 seal and is not used as a production-version reference in this review; it was neither edited nor synchronized.",
+    "Requested Astra/max and actual serving identity are distinct: the native reviewer serving model and effort are unattested. Same-family/provisional semantic review only."
+  ],
+  "timing_boundaries": {
+    "producer_wall_seconds": "Stage timestamps after Popen through process wait completion. Includes construction/training/per-epoch evaluation/save/process teardown; excludes prelaunch GPU wait, prepare, M0 and the separate strict-evaluation stage.",
+    "training_and_epoch_evaluation_interval_seconds": "Foundation receipt begins after model/optimizer/loader construction and ends after training, evaluations, saves and final state diagnostics, before the terminal training.json write and partition-memory wrapper write.",
+    "training_loop_seconds": "Sum of per-epoch seconds captured after scheduler/data/updates/logging and before that epoch's evaluation/checkpoint save.",
+    "partition_peak_memory": "Both cuda:0 and cuda:1 allocated/reserved peaks are captured by the wrapper. GPU1 resets during optimization before optimizer construction; GPU0 resets again before the training loop. These are reported producer counters, not symmetric whole-process/construction high-water marks."
+  },
+  "source_only_checks": "SOURCE_ONLY_CHECKS_R1.json",
+  "reviewed_input_manifest": "REVIEWED_INPUT_MANIFEST_R1.json",
+  "reviewed_new_source_sha256": "2723dc8b1f53d10a7943d3103467c9e7a9bcafed32f67a71195ac8f9559a955a",
+  "reviewed_plan_sha256": "7f58c0bf4fbb784d019a22d6e318c4f343892c0a8be0cedb36bde778e94ec936"
+}
