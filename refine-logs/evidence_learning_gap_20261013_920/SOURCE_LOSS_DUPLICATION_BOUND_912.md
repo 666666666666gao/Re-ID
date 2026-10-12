@@ -1,0 +1,9 @@
+# What the saved low auxiliary loss establishes, and what it does not
+
+All3129 saved uniform RGBNT100 batches contain8 distinct training IDs with16 samples each; every query has a legal cross-camera positive and112 negatives. The batch-order SHA matches the completed result intake. The selected E26 mean joint auxiliary loss is recorded in the companion JSON.
+
+For ideal unit global vectors in a balanced8-ID batch, mean negative cosine is at least-1/7: the off-class dot sum equals the squared norm of the overall vector sum minus the sum of the8 class-sum squared norms, and each class-sum norm is at most16. Mean legal-positive cosine is at most1, so mean global margin is at most8/7. With zero regional margins, Jensen gives auxiliary mean loss at least softplus(-sqrt128*(8/7)/2), approximately0.00156. The observed E26 mean is smaller. This supports that source regional margins contribute under these ideal assumptions; zero logged global-wrong triplets does not imply inactive regional learning.
+
+Yet this does not establish new information. A regular-simplex8-ID global embedding has correct global margin8/7. Copy that embedding into every region slot/group: regional margin equals global margin, and the same auxiliary becomes softplus(-sqrt128*(8/7)), approximately0.00000242, without adding any information beyond global. This is a permitted auxiliary-target construction, not the observed trained representation or proof of the full objective's optimum.
+
+Therefore near-zero auxiliary loss alone neither means region evidence is absent nor proves it is complementary. Actual same-best joint pairwise and fused retrieval, plus damage analysis, remain necessary. The bounds use ideal real normalized geometry; no bit-exact floating/CUDA bound, actual feature inspection, unique causal attribution, loss change or extra score is claimed. This is private source/data analysis, not a new method result.
