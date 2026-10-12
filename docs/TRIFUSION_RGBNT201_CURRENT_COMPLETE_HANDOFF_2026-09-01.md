@@ -1,4 +1,4 @@
-> **当前状态：2026-10-12（§41.902）：Goal ACTIVE_UNMET，只26物理GPU0/1。文本条件901队列已闭合：4端完整50轮/200轮/11,556正式更新；MSVR两端M0验收失败，无正式成绩。预训练−随机文本201/100均负，停止该路线的种子/参数搜索。全结果源码/文字审计WARN（246/246检查通过），四份失败探针已精确清理。下一优先问题：相同实际局部证据是否被当前比较方式用漏或用坏；新提取/比较诊断尚未运行，不先堆新模块。**
+> **当前状态：2026-10-12（§41.903）：Goal ACTIVE_UNMET，只26物理GPU0/1。901正式结果与清理已闭合并发布2033057。新固定证据比较诊断源码R2通过、439来源/50依赖已封存；15:48:47启动唯一调度，零训练更新。首次约三分钟节点观察仍待收取；不把启动/source PASS写成新检索成绩。**
 
 
 # TriFusion RGB–NIR–TIR ReID 完整交接（2026-09-01）
@@ -18259,3 +18259,20 @@ H2a原三端50轮/6,484更新及完整报告已在§897闭合，0/3主要推进�
 参考的外领域用途只限各自一环：[Value-Aware AISTATS2017](https://proceedings.mlr.press/v54/farahmand17a.html)强调模型代理误差与后续决策用途的区别；[ColBERT](https://arxiv.org/abs/2004.12832)保留独立编码后的局部比较；[SelectiveNet](https://proceedings.mlr.press/v97/geifman19a.html)提供预测/拒绝共同学习的风险-覆盖率思路。以上不换算ReID收益，不意味着下一模块已选择或有效。已有repair/keep、R2/V26/CIRC、拼接/残差银行与路由都已做过，不能重命名为首次。
 
 建议继续技能：monitor-experiment核实实际进程/结果；research只为具体证据缺口查作者源码；experiment-audit用于新结果来源/用途/缺失审核。无外部消息授权，不启用通知。GitHub/26/Desktop镜像是否一致以实际发布回执为准。
+
+
+## 41.903 2026-10-12：固定相同证据的比较诊断登记与唯一启动
+
+沿用户优先级，先查现有局部证据是否被当前比较方式用漏/用坏；不加新训练loss/路由/文本/原生CNN、不调gain/seed。冻结三个原raw-semantic best：201 E8、MSVR E38、100 E5，复用完整protocol及同一权重。它们与前述100 MD c=35.3562示例不是同一个模型，不借用该数字描述本三端。一次query/gallery composite forward保存实际g/c/f和部署readout消费的CNN/T/M终态区域；不是key或真值部件。
+
+固定七种全gallery比较：global、原additive、c单独、同γ残差的3072维block cosine、同slot区域cosine、各role/modality内部的对称mean-MaxSim、由既有γ和c范数确定的区域block分数。Exact same-residual block同时改变GC交叉项和分母，不能宣称只隔离一种因果；区域比较保留不同表示，不能说是同一1536残差。MaxSim多对一、不跨角色/模态坐标、没有真实可见性拒绝；不据低相似度判定unknown/conflict。所有结果公开，零优化更新、零参数选择；均是已消费官方集上的固定模型诊断，不替换1536主表或证明新的训练方法优于Signal。
+
+源码R1 REVISE定位真实MSVR作者eval_func_msrv会在cwd写re.txt。只在模型/输入构造结束、计分前转到独立输出目录；原作者计分函数未改。R2 SOURCE_ONLY_PASS要求实际--output-dir及sealed路径绝对；唯一命令已满足。原R1及两轮完整trace保留，actual reviewer身份/effort UNATTESTED、same-family/provisional，不冒称运行或跨家族通过。真实warm CPU合成张量验证对称、多对一、重复槽位极限及block等于concat；0 encoder/模型forward，不是检索成绩。R2仅改变cwd，原region函数AST与该CPU检查相同。
+
+15:46:43一次CPU封存439来源/50当前依赖，三个best及原45控制实存SHA通过；新增scheme的seal为3e6eb3be936f0f8bbd695fe6c797413613b746444768de42a41cbf0ac2b1f2ab。三端13,608record原FP32缓存1,254,113,280B，另64MiB序列化/文本＋原2GiB保留，共3,468,705,792B；当时free3,850,735,616B。只是admission快照，实际coordinator仍检查，未放宽门。只缓存一次g/c/f/regions，不保存七套dense分数矩阵；原best/官方数组不删除。
+
+唯一实际launch 2026-10-12T15:48:47.832246+08:00，supervisor1179636。命令固定warm tri_reid Python，tools/diagnose_same_evidence_comparison.py；--campaign=/data/gaob/Re-ID/Trifusion/logs/global_task_role_v1_20261004_824，--seal=/data/gaob/Re-ID/Trifusion/refine-logs/evidence_comparison_diagnosis_v1/INPUT_SEAL_903.json，--output-dir=/data/gaob/Re-ID/Trifusion/logs/same_evidence_comparison_v1_20261012_903。这里只确认调度启动；真实input/storage/GPU门、原additive重现1e-5及模型不变仍待执行记录，不把source PASS当全端成绩。
+
+仅26物理GPU0/1；一job两卡、顺序201/MSVR/100，无optimizer。15:36左右实际两卡memory.used各18MiB；coordinator另做实际admission，不查功率温度/25/GPU2/3、不抢占、不安装。原first-node观察一次安排>=15:51:47.832246，原native session53767，未消费前不能重新创建第二观察或因超时重启诊断。下一次应按首端实测时间估计，非高频读日志；端失败保留，不临时改门或换checkpoint。
+
+代码/计划/报告/launch/seal：refine-logs/evidence_comparison_diagnosis_v1。仓库和主文档仍以实际commit/同步回执判定是否一致。全面超过Signal的原Goal保持ACTIVE_UNMET；此诊断不缩小科学目标、不预报增益、不自动进入晚交互教师或新训练。

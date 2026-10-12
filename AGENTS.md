@@ -1,3 +1,7 @@
+## 2026-10-12 fixed-evidence diagnostic903 - current priority
+
+Fixed raw-semantic three-best no-training diagnostic903 launched once, supervisor1179636. Read master §903 and evidence_comparison_diagnosis_v1 seal/plan. Source R2 passes only absolute paths; do not mutate sealed439 sources or rerun original reports. Native first observer53767 due>=15:51:47 must be consumed, not duplicated. Actual endpoint state/results pending. Only26GPU0/1, no25/GPU2/3/temp/power/install/preemption. GoalACTIVE_UNMET.
+
 ## 2026-10-12 evidence-use diagnosis - current priority
 
 Goal active/unmet. The six-end text901 campaign is CLOSED: four accepted full50 endpoints, two MSVR missing at accept-M0; preserve both original failures. Full source/text audit WARN and exact four failed-probe cleanup are closed; no new performance claim. Do not rerun901 or its report/retired probes. User prioritizes checking whether the SAME frozen actual local evidence is damaged or unused by current comparison before adding a matcher/gate/teacher. Semantic conditioning and actual value reading are one task-consistent extraction responsibility. Any pairwise late-interaction diagnostic is separate from the1536 static main protocol; no mix/topk/seed sweep. Read master §41.902 and refine-logs/CURRENT_GOAL.md. No new extraction/comparator/training is currently registered. Only2026 physicalGPU0/1, no25/GPU2/3/power/temperature actions, no installations or preemption. Earlier dated current-priority sections are historical.

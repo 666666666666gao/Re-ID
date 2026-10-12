@@ -1,0 +1,136 @@
+{
+  "schema": "trifusion-same-evidence-comparison-source-review-v1",
+  "round": "R2",
+  "generated_at": "2026-10-12T07:44:49.757Z",
+  "verdict": "SOURCE_ONLY_PASS",
+  "scope": "Planned bounded diagnostic with absolute --output-dir and absolute sealed input paths",
+  "required_source_changes_within_scope": 0,
+  "requested_reviewer_model": "gpt-6-astra",
+  "requested_reviewer_reasoning": "max",
+  "actual_reviewer_model": "UNATTESTED",
+  "actual_reviewer_reasoning": "UNATTESTED",
+  "review_independence": "same-family",
+  "acceptance_status": "provisional",
+  "agent_task": "/root/review_same_evidence_diagnostic903",
+  "previous_review": {
+    "verdict": "REVISE",
+    "preserved": true,
+    "markdown": "C:/Users/gb/.codex_tmp/independent_evidence_draft/evidence_comparison903/review/SOURCE_REVIEW_R1.md",
+    "markdown_sha256": "38a57a81db54d5f46951eb043dafd1e680fe3a214c4f46a62002bc58c2436692",
+    "json": "C:/Users/gb/.codex_tmp/independent_evidence_draft/evidence_comparison903/review/SOURCE_REVIEW_R1.json",
+    "json_sha256": "b96f2e7b9c4bcf79c996bda4f5d8d5d82168a5a03c1187b4c79060956febb86f",
+    "original_runner": "C:/Users/gb/.codex_tmp/independent_evidence_draft/evidence_comparison903/DIAGNOSTIC_R1_SOURCE.py.txt",
+    "original_runner_sha256": "c32d13272cda614f5367bd20155f9487b3b434479c5b5383a3e4ea5e7c68f373"
+  },
+  "reviewed_input_sha256": {
+    "tools/diagnose_same_evidence_comparison.py": "71fe059e26744c670661cab6fb3bbaaf13da56a5567adf78b8079e2ba0db9ad5",
+    "refine-logs/evidence_comparison_diagnosis_v1/EXPERIMENT_PLAN.md": "0ea17e67772806f1f6fbbb2082c07fda4b5b380efa1da5195c17a064976e9bf4"
+  },
+  "delta_verification": {
+    "runner": "Exactly one explanatory comment and os.chdir(output.resolve()) added before scores; removing both exactly reproduces R1 source text.",
+    "plan": "Only cache-byte arithmetic correction and CWD/absolute-path disclosure; reversing them reproduces R1 plan SHA-256.",
+    "other_listed_files_unchanged": 16,
+    "supplemental_runtime_snapshot_files_unchanged": 18,
+    "scoring_changed": false,
+    "neural_or_optimizer_path_changed": false,
+    "selection_changed": false
+  },
+  "findings": [],
+  "closed_findings": [
+    {
+      "id": "R1",
+      "status": "RESOLVED_WITHIN_ABSOLUTE_PATH_LAUNCH_SCOPE",
+      "evidence": [
+        "tools/diagnose_same_evidence_comparison.py:149",
+        "tools/diagnose_same_evidence_comparison.py:150",
+        "comparators/Signal-cd1b0a6/utils/metrics.py:38",
+        "comparators/Signal-cd1b0a6/utils/metrics.py:71"
+      ],
+      "details": "Every score call follows chdir into the fresh endpoint output. The pinned MSVR re.txt write is contained there without changing author source."
+    }
+  ],
+  "path_safety": {
+    "model_inputs_and_cached_original_distance_loaded_before_chdir": true,
+    "original_feature_caches_saved_before_chdir": true,
+    "later_output_reads_and_report_writes_safe_when_output_absolute": true,
+    "historical_artifact_keys_checked_absolute_posix": true,
+    "coordinator_cwd_unchanged_by_child_chdir": true,
+    "required_exact_command_property": "Pass absolute --output-dir, and keep all sealed artifact paths absolute.",
+    "relative_output_cli_supported_by_review": false,
+    "relative_output_boundary_reason": "output is not reassigned to resolve(); after cwd changes a relative output Path would be reinterpreted at lines187-191.",
+    "completed_launch_command_or_seal_reviewed": false,
+    "no_additional_compatibility_or_fallback_requested": true
+  },
+  "storage": {
+    "records": 13608,
+    "raw_fp32_bytes": 1254113280,
+    "serialization_text_allowance_bytes": 67108864,
+    "reserve_bytes": 2147483648,
+    "exact_gate_bytes": 3468705792,
+    "capacity_failure_observed": false
+  },
+  "checks": {
+    "A_gt_provenance": {
+      "status": "PASS_SOURCE",
+      "details": "Unchanged frozen dataset protocol records; R1 applies."
+    },
+    "B_score_normalization": {
+      "status": "PASS_SOURCE",
+      "details": "Feature/energy definitions and ordinary AP/CMC unchanged."
+    },
+    "C_result_existence": {
+      "status": "WARN_PENDING",
+      "details": "No new scores, remote checkpoint rehash, complete new launch seal, or reproduced metrics established."
+    },
+    "D_active_path": {
+      "status": "PASS_SOURCE_WITH_SCOPE",
+      "details": "Official MSVR side effect contained for absolute output paths; no score/readout path changes."
+    },
+    "E_scope_missingness": {
+      "status": "PASS_SOURCE",
+      "details": "Three fixed historical seed42 semantic models; seven fixed full-gallery diagnostics; incomplete endpoints/visibility/conflict remain explicit."
+    },
+    "F_evaluation_type": {
+      "planned_retrieval": "real_gt",
+      "dispersion": "unlabeled_descriptive_statistic",
+      "algebra": "implementation_check_only"
+    }
+  },
+  "runtime_obligations": [
+    "Bind revised hashes into the complete new-schema source/artifact seal.",
+    "Verify exact launch uses an absolute --output-dir and absolute artifact paths.",
+    "Verify the exact storage gate and permitted GPU0/1 admission.",
+    "Require actual additive parity within1e-5, valid tensor/state checks, all endpoints, and unchanged input hashes."
+  ],
+  "unsupported_claims": [
+    "New retrieval improvement",
+    "Compression causality",
+    "Novelty",
+    "Physical visibility",
+    "Successful runtime",
+    "Cross-family acceptance"
+  ],
+  "execution_boundary": {
+    "new_nn_work": 0,
+    "new_experimental_results": 0,
+    "optimizer_updates": 0,
+    "source_imports": 0,
+    "torch_cuda_calls": 0,
+    "ssh_calls": 0,
+    "installations": 0,
+    "source_edits": 0,
+    "new_agents": 0,
+    "r2_methods": [
+      "Local reads",
+      "SHA-256 hashes",
+      "Exact text delta",
+      "PowerShell integer arithmetic"
+    ]
+  },
+  "artifacts": {
+    "markdown": "C:/Users/gb/.codex_tmp/independent_evidence_draft/evidence_comparison903/review/SOURCE_REVIEW_R2.md",
+    "json": "C:/Users/gb/.codex_tmp/independent_evidence_draft/evidence_comparison903/review/SOURCE_REVIEW_R2.json",
+    "deterministic_checks": "C:/Users/gb/.codex_tmp/independent_evidence_draft/evidence_comparison903/review/R2_DELTA_CHECKS.json",
+    "deterministic_checker": "C:/Users/gb/.codex_tmp/independent_evidence_draft/evidence_comparison903/review/check_r2_delta.ps1"
+  }
+}
