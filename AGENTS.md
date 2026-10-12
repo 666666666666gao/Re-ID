@@ -1,3 +1,7 @@
+## 2026-10-12 region-use906 original launch - latest priority
+
+Read master §906 and logs/region_use_admission_20261012_906. Original supervisor1708681 launched once on26GPU0/1. First node status=RUNNING, supervisor/controller live=True. No completed new50 result. Consume original campaign/EXIT; never restart from observer timeout. Scope seal463 source/50 dependencies, exact new training content only. Goal ACTIVE_UNMET. Earlier priority notes historical.
+
 ## 2026-10-12 actual-region supervision905 - latest priority
 
 Read master §905. Original903 closed. New six-end source/queue reviewed; NN not run at publication. Only26GPU0/1. Local verified archive replaces remote closed901 bests/903 caches. No hidden retries or old training restart. Earlier current-priority sections are historical.
