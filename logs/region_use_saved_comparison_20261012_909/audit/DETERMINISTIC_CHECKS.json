@@ -1,0 +1,70 @@
+{
+  "status": "PASS",
+  "meaning": "Current saved-text arithmetic/provenance and document checks support the qualified comparison. Historical initial layout FAIL records are retained, not relabeled as passed.",
+  "original_run": {
+    "path": "initial_review/DETERMINISTIC_CHECKS.json",
+    "sha256": "cac3a5011208719066318addc19e7ba80263e7368002b89f033bb4253d212e61",
+    "status": "FAIL",
+    "checks_count": 190,
+    "pass_count": 187,
+    "fail_count": 3,
+    "rerun": false,
+    "historical_failures": [
+      {
+        "id": "correction_nonblank_line_multiset",
+        "status": "FAIL",
+        "detail": null
+      },
+      {
+        "id": "correction_exact_single_line_move",
+        "status": "FAIL",
+        "detail": null
+      },
+      {
+        "id": "current_report_table_header_delimiter_counts",
+        "status": "FAIL",
+        "detail": [
+          {
+            "header_line": 5,
+            "delimiter_line": 6,
+            "header_cells": 6,
+            "delimiter_cells": 6
+          },
+          {
+            "header_line": 12,
+            "delimiter_line": 13,
+            "header_cells": 4,
+            "delimiter_cells": 5
+          },
+          {
+            "header_line": 19,
+            "delimiter_line": 20,
+            "header_cells": 4,
+            "delimiter_cells": 5
+          }
+        ]
+      }
+    ],
+    "resolution": "All three historical FAIL checks concerned the same D2 document delimiter defect, closed by the targeted follow-up. No numeric/hash/protocol/selection failure."
+  },
+  "targeted_document_followup": {
+    "path": "TARGETED_DOCUMENT_CHECKS.json",
+    "sha256": "aecab3ac1943ff0c1170d103eeaff80284e0b9f8500e7564b41f262919c9c981",
+    "status": "PASS",
+    "checks_count": 16,
+    "pass_count": 16,
+    "fail_count": 0
+  },
+  "control_provenance_supplement": {
+    "status": "PASS",
+    "checks": 5,
+    "path": "CONTROL_PROVENANCE_SUPPLEMENT.json",
+    "sha256": "e2541ac9392a8f07abdb8cf1b7845246cfc6a85e96e07b72e897d184e2a34773",
+    "timing": "Completed from preserved text before the targeted follow-up request; not part of the 16 document checks."
+  },
+  "runtime_or_binary_replay": false,
+  "model_operations": 0,
+  "production_imports": 0,
+  "numpy_torch_imports": 0,
+  "scope": "Standard-library computations from saved per-query AP/first-rank text and direct source/protocol reads; no individual AP reconstruction from complete rankings or tensors."
+}
