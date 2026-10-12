@@ -1,3 +1,7 @@
+## 2026-10-12 fixed-evidence903 CLOSED / region-use draft - latest priority
+
+Original903 is closed; no live observer or NN task. Do not restart903,901 or closed training. Read master §904 and logs/evidence_comparison_closed_20261012_904. Regional comparison gives no general net advance; no automatic matcher/gain/teacher/seed rollout. Current next region-use supervision is an untrained source draft, fresh review pending, no real initialization/M0/queue. Keep original controls/bests and regional caches. Only26 physicalGPU0/1, no25/2/3/power/temp/install/preemption. Earlier current-priority sections are historical.
+
 ## 2026-10-12 fixed-evidence diagnostic903 - current priority
 
 Fixed raw-semantic three-best no-training diagnostic903 launched once, supervisor1179636. Read master §903 and evidence_comparison_diagnosis_v1 seal/plan. Source R2 passes only absolute paths; do not mutate sealed439 sources or rerun original reports. Native first observer53767 due>=15:51:47 must be consumed, not duplicated. Actual endpoint state/results pending. Only26GPU0/1, no25/GPU2/3/temp/power/install/preemption. GoalACTIVE_UNMET.

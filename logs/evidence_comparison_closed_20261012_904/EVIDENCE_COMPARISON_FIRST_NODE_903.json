@@ -1,0 +1,197 @@
+{
+  "observed_at": "2026-10-12T15:51:58.149790+08:00",
+  "campaign": {
+    "schema": "trifusion-same-evidence-comparison-diagnosis-v1",
+    "status": "RUNNING",
+    "pid": 1179638,
+    "started_at": "2026-10-12T15:48:58.848065+08:00",
+    "jobs": [
+      {
+        "dataset": "RGBNT201",
+        "status": "COMPLETE",
+        "started_at": "2026-10-12T15:48:58.849052+08:00",
+        "pid": 1180159,
+        "exit_code": 0,
+        "completed_at": "2026-10-12T15:50:12.116288+08:00"
+      },
+      {
+        "dataset": "MSVR310",
+        "status": "COMPLETE",
+        "started_at": "2026-10-12T15:50:12.117036+08:00",
+        "pid": 1184039,
+        "exit_code": 0,
+        "completed_at": "2026-10-12T15:51:32.063302+08:00"
+      },
+      {
+        "dataset": "RGBNT100",
+        "status": "RUNNING",
+        "started_at": "2026-10-12T15:51:32.064045+08:00",
+        "pid": 1187983
+      }
+    ],
+    "optimizer_updates": 0,
+    "physical_gpus": [
+      0,
+      1
+    ]
+  },
+  "exit": null,
+  "child": {
+    "pid": 1179638,
+    "started_at": "2026-10-12T15:48:47.880375+08:00",
+    "command": [
+      "/data/gaob/Re-ID/conda-envs/tri_reid/bin/python",
+      "-B",
+      "/data/gaob/Re-ID/Trifusion/tools/diagnose_same_evidence_comparison.py",
+      "--campaign",
+      "/data/gaob/Re-ID/Trifusion/logs/global_task_role_v1_20261004_824",
+      "--seal",
+      "/data/gaob/Re-ID/Trifusion/refine-logs/evidence_comparison_diagnosis_v1/INPUT_SEAL_903.json",
+      "--output-dir",
+      "/data/gaob/Re-ID/Trifusion/logs/same_evidence_comparison_v1_20261012_903"
+    ]
+  },
+  "live_commands": [
+    {
+      "pid": 1179638,
+      "command": "/data/gaob/Re-ID/conda-envs/tri_reid/bin/python -B /data/gaob/Re-ID/Trifusion/tools/diagnose_same_evidence_comparison.py --campaign /data/gaob/Re-ID/Trifusion/logs/global_task_role_v1_20261004_824 --seal /data/gaob/Re-ID/Trifusion/refine-logs/evidence_comparison_diagnosis_v1/INPUT_SEAL_903.json --output-dir /data/gaob/Re-ID/Trifusion/logs/same_evidence_comparison_v1_20261012_903 "
+    },
+    {
+      "pid": 1187983,
+      "command": "/data/gaob/Re-ID/conda-envs/tri_reid/bin/python -B /data/gaob/Re-ID/Trifusion/tools/diagnose_same_evidence_comparison.py --campaign /data/gaob/Re-ID/Trifusion/logs/global_task_role_v1_20261004_824 --seal /data/gaob/Re-ID/Trifusion/refine-logs/evidence_comparison_diagnosis_v1/INPUT_SEAL_903.json --output-dir /data/gaob/Re-ID/Trifusion/logs/same_evidence_comparison_v1_20261012_903 --dataset RGBNT100 "
+    }
+  ],
+  "complete_rows": [
+    {
+      "dataset": "RGBNT201",
+      "status": "COMPLETE",
+      "seconds": 60.67288532096427,
+      "local_comparison_seconds": 0.9979317199904472,
+      "metrics": {
+        "global": {
+          "mAP": 74.29666357468751,
+          "Rank-1": 78.94736842105263,
+          "Rank-5": 88.27751196172248,
+          "Rank-10": 91.86602870813397
+        },
+        "additive": {
+          "mAP": 74.3748615366129,
+          "Rank-1": 78.82775119617224,
+          "Rank-5": 88.39712918660287,
+          "Rank-10": 91.74641148325358
+        },
+        "residual": {
+          "mAP": 11.578064351740432,
+          "Rank-1": 9.090909090909092,
+          "Rank-5": 22.129186602870814,
+          "Rank-10": 30.62200956937799
+        },
+        "same_residual_block": {
+          "mAP": 74.33875276628235,
+          "Rank-1": 78.94736842105263,
+          "Rank-5": 88.27751196172248,
+          "Rank-10": 91.86602870813397
+        },
+        "aligned_regions_only": {
+          "mAP": 14.237501878424267,
+          "Rank-1": 13.995215311004786,
+          "Rank-5": 25.358851674641148,
+          "Rank-10": 33.97129186602871
+        },
+        "symmetric_regions_only": {
+          "mAP": 14.160262907677302,
+          "Rank-1": 14.354066985645932,
+          "Rank-5": 25.717703349282296,
+          "Rank-10": 33.85167464114833
+        },
+        "fixed_energy_region_block": {
+          "mAP": 74.3264690058523,
+          "Rank-1": 78.94736842105263,
+          "Rank-5": 88.27751196172248,
+          "Rank-10": 91.86602870813397
+        }
+      }
+    },
+    {
+      "dataset": "MSVR310",
+      "status": "COMPLETE",
+      "seconds": 67.22595676395576,
+      "local_comparison_seconds": 0.8912183929933235,
+      "metrics": {
+        "global": {
+          "mAP": 50.542128855101495,
+          "Rank-1": 68.02030456852792,
+          "Rank-5": 80.5414551607445,
+          "Rank-10": 85.44839255499154
+        },
+        "additive": {
+          "mAP": 50.542224911992264,
+          "Rank-1": 67.85109983079526,
+          "Rank-5": 80.5414551607445,
+          "Rank-10": 85.44839255499154
+        },
+        "residual": {
+          "mAP": 6.8207754619188155,
+          "Rank-1": 16.243654822335024,
+          "Rank-5": 32.31810490693739,
+          "Rank-10": 39.59390862944163
+        },
+        "same_residual_block": {
+          "mAP": 50.53896888213609,
+          "Rank-1": 68.02030456852792,
+          "Rank-5": 80.5414551607445,
+          "Rank-10": 85.44839255499154
+        },
+        "aligned_regions_only": {
+          "mAP": 8.769175515963845,
+          "Rank-1": 21.31979695431472,
+          "Rank-5": 37.055837563451774,
+          "Rank-10": 45.346869712351946
+        },
+        "symmetric_regions_only": {
+          "mAP": 8.773044364666184,
+          "Rank-1": 21.31979695431472,
+          "Rank-5": 37.22504230118444,
+          "Rank-10": 45.346869712351946
+        },
+        "fixed_energy_region_block": {
+          "mAP": 50.5405514496691,
+          "Rank-1": 68.02030456852792,
+          "Rank-5": 80.5414551607445,
+          "Rank-10": 85.44839255499154
+        }
+      }
+    }
+  ],
+  "log_tail": [],
+  "endpoint_log_tails": {
+    "RGBNT201": [
+      "Resized position embedding: %s to %s torch.Size([197, 768]) torch.Size([129, 768])",
+      "Position embedding resize to height:16 width: 8",
+      "Successfully load ckpt!",
+      "<All keys matched successfully>",
+      "Loading pretrained model from CLIP",
+      "camera number is : 4",
+      "===========Building Signal===========",
+      "{\"dataset\": \"RGBNT201\", \"status\": \"COMPLETE\", \"metrics\": {\"global\": {\"mAP\": 74.29666357468751, \"Rank-1\": 78.94736842105263, \"Rank-5\": 88.27751196172248, \"Rank-10\": 91.86602870813397}, \"additive\": {\"mAP\": 74.3748615366129, \"Rank-1\": 78.82775119617224, \"Rank-5\": 88.39712918660287, \"Rank-10\": 91.74641148325358}, \"residual\": {\"mAP\": 11.578064351740432, \"Rank-1\": 9.090909090909092, \"Rank-5\": 22.129186602870814, \"Rank-10\": 30.62200956937799}, \"same_residual_block\": {\"mAP\": 74.33875276628235, \"Rank-1\": 78.94736842105263, \"Rank-5\": 88.27751196172248, \"Rank-10\": 91.86602870813397}, \"aligned_regions_only\": {\"mAP\": 14.237501878424267, \"Rank-1\": 13.995215311004786, \"Rank-5\": 25.358851674641148, \"Rank-10\": 33.97129186602871}, \"symmetric_regions_only\": {\"mAP\": 14.160262907677302, \"Rank-1\": 14.354066985645932, \"Rank-5\": 25.717703349282296, \"Rank-10\": 33.85167464114833}, \"fixed_energy_region_block\": {\"mAP\": 74.3264690058523, \"Rank-1\": 78.94736842105263, \"Rank-5\": 88.27751196172248, \"Rank-10\": 91.86602870813397}}, \"seconds\": 60.67288532096427}"
+    ],
+    "MSVR310": [
+      "Resized position embedding: %s to %s torch.Size([197, 768]) torch.Size([129, 768])",
+      "Position embedding resize to height:8 width: 16",
+      "Successfully load ckpt!",
+      "<All keys matched successfully>",
+      "Loading pretrained model from CLIP",
+      "camera number is : 8",
+      "===========Building Signal===========",
+      "{\"dataset\": \"MSVR310\", \"status\": \"COMPLETE\", \"metrics\": {\"global\": {\"mAP\": 50.542128855101495, \"Rank-1\": 68.02030456852792, \"Rank-5\": 80.5414551607445, \"Rank-10\": 85.44839255499154}, \"additive\": {\"mAP\": 50.542224911992264, \"Rank-1\": 67.85109983079526, \"Rank-5\": 80.5414551607445, \"Rank-10\": 85.44839255499154}, \"residual\": {\"mAP\": 6.8207754619188155, \"Rank-1\": 16.243654822335024, \"Rank-5\": 32.31810490693739, \"Rank-10\": 39.59390862944163}, \"same_residual_block\": {\"mAP\": 50.53896888213609, \"Rank-1\": 68.02030456852792, \"Rank-5\": 80.5414551607445, \"Rank-10\": 85.44839255499154}, \"aligned_regions_only\": {\"mAP\": 8.769175515963845, \"Rank-1\": 21.31979695431472, \"Rank-5\": 37.055837563451774, \"Rank-10\": 45.346869712351946}, \"symmetric_regions_only\": {\"mAP\": 8.773044364666184, \"Rank-1\": 21.31979695431472, \"Rank-5\": 37.22504230118444, \"Rank-10\": 45.346869712351946}, \"fixed_energy_region_block\": {\"mAP\": 50.5405514496691, \"Rank-1\": 68.02030456852792, \"Rank-5\": 80.5414551607445, \"Rank-10\": 85.44839255499154}}, \"seconds\": 67.22595676395576}"
+    ],
+    "RGBNT100": [
+      "/data/gaob/Re-ID/conda-envs/tri_reid/lib/python3.10/site-packages/timm/models/helpers.py:7: FutureWarning: Importing from timm.models.helpers is deprecated, please import via timm.models",
+      "  warnings.warn(f\"Importing from {__name__} is deprecated, please import via timm.models\", FutureWarning)",
+      "/data/gaob/Re-ID/conda-envs/tri_reid/lib/python3.10/site-packages/timm/models/registry.py:4: FutureWarning: Importing from timm.models.registry is deprecated, please import via timm.models",
+      "  warnings.warn(f\"Importing from {__name__} is deprecated, please import via timm.models\", FutureWarning)",
+      "/data/gaob/Re-ID/conda-envs/tri_reid/lib/python3.10/site-packages/timm/models/layers/__init__.py:48: FutureWarning: Importing from timm.models.layers is deprecated, please import via timm.layers",
+      "  warnings.warn(f\"Importing from {__name__} is deprecated, please import via timm.layers\", FutureWarning)"
+    ]
+  }
+}

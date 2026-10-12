@@ -1,0 +1,258 @@
+{
+  "observed_at": "2026-10-12T17:40:31.816952+08:00",
+  "exit": {
+    "exit_code": 0,
+    "completed_at": "2026-10-12T15:54:24.782077+08:00"
+  },
+  "child": {
+    "pid": 1179638,
+    "started_at": "2026-10-12T15:48:47.880375+08:00",
+    "command": [
+      "/data/gaob/Re-ID/conda-envs/tri_reid/bin/python",
+      "-B",
+      "/data/gaob/Re-ID/Trifusion/tools/diagnose_same_evidence_comparison.py",
+      "--campaign",
+      "/data/gaob/Re-ID/Trifusion/logs/global_task_role_v1_20261004_824",
+      "--seal",
+      "/data/gaob/Re-ID/Trifusion/refine-logs/evidence_comparison_diagnosis_v1/INPUT_SEAL_903.json",
+      "--output-dir",
+      "/data/gaob/Re-ID/Trifusion/logs/same_evidence_comparison_v1_20261012_903"
+    ]
+  },
+  "campaign": {
+    "schema": "trifusion-same-evidence-comparison-diagnosis-v1",
+    "status": "COMPLETE",
+    "pid": 1179638,
+    "started_at": "2026-10-12T15:48:58.848065+08:00",
+    "jobs": [
+      {
+        "dataset": "RGBNT201",
+        "status": "COMPLETE",
+        "started_at": "2026-10-12T15:48:58.849052+08:00",
+        "pid": 1180159,
+        "exit_code": 0,
+        "completed_at": "2026-10-12T15:50:12.116288+08:00"
+      },
+      {
+        "dataset": "MSVR310",
+        "status": "COMPLETE",
+        "started_at": "2026-10-12T15:50:12.117036+08:00",
+        "pid": 1184039,
+        "exit_code": 0,
+        "completed_at": "2026-10-12T15:51:32.063302+08:00"
+      },
+      {
+        "dataset": "RGBNT100",
+        "status": "COMPLETE",
+        "started_at": "2026-10-12T15:51:32.064045+08:00",
+        "pid": 1187983,
+        "exit_code": 0,
+        "completed_at": "2026-10-12T15:54:24.343688+08:00"
+      }
+    ],
+    "optimizer_updates": 0,
+    "physical_gpus": [
+      0,
+      1
+    ],
+    "completed_at": "2026-10-12T15:54:24.344404+08:00"
+  },
+  "live_commands": [],
+  "rows": [
+    {
+      "dataset": "RGBNT201",
+      "status": "COMPLETE",
+      "elapsed_seconds": 60.67288532096427,
+      "local_comparison_seconds": 0.9979317199904472,
+      "gain": 0.11992248147726059,
+      "optimizer_updates": 0,
+      "original_fused_distance_max_abs_difference": 7.152557373046875e-07,
+      "region_dispersion": {
+        "query": {
+          "mean_off_diagonal_cosine": 0.920372724533081,
+          "min_off_diagonal_cosine": 0.258086234331131,
+          "max_off_diagonal_cosine": 0.9999547004699707
+        },
+        "gallery": {
+          "mean_off_diagonal_cosine": 0.920372724533081,
+          "min_off_diagonal_cosine": 0.258086234331131,
+          "max_off_diagonal_cosine": 0.9999547004699707
+        }
+      },
+      "metrics": {
+        "global": {
+          "mAP": 74.29666357468751,
+          "Rank-1": 78.94736842105263,
+          "Rank-5": 88.27751196172248,
+          "Rank-10": 91.86602870813397
+        },
+        "additive": {
+          "mAP": 74.3748615366129,
+          "Rank-1": 78.82775119617224,
+          "Rank-5": 88.39712918660287,
+          "Rank-10": 91.74641148325358
+        },
+        "residual": {
+          "mAP": 11.578064351740432,
+          "Rank-1": 9.090909090909092,
+          "Rank-5": 22.129186602870814,
+          "Rank-10": 30.62200956937799
+        },
+        "same_residual_block": {
+          "mAP": 74.33875276628235,
+          "Rank-1": 78.94736842105263,
+          "Rank-5": 88.27751196172248,
+          "Rank-10": 91.86602870813397
+        },
+        "aligned_regions_only": {
+          "mAP": 14.237501878424267,
+          "Rank-1": 13.995215311004786,
+          "Rank-5": 25.358851674641148,
+          "Rank-10": 33.97129186602871
+        },
+        "symmetric_regions_only": {
+          "mAP": 14.160262907677302,
+          "Rank-1": 14.354066985645932,
+          "Rank-5": 25.717703349282296,
+          "Rank-10": 33.85167464114833
+        },
+        "fixed_energy_region_block": {
+          "mAP": 74.3264690058523,
+          "Rank-1": 78.94736842105263,
+          "Rank-5": 88.27751196172248,
+          "Rank-10": 91.86602870813397
+        }
+      }
+    },
+    {
+      "dataset": "MSVR310",
+      "status": "COMPLETE",
+      "elapsed_seconds": 67.22595676395576,
+      "local_comparison_seconds": 0.8912183929933235,
+      "gain": 0.10179415345191956,
+      "optimizer_updates": 0,
+      "original_fused_distance_max_abs_difference": 7.152557373046875e-07,
+      "region_dispersion": {
+        "query": {
+          "mean_off_diagonal_cosine": 0.5759877562522888,
+          "min_off_diagonal_cosine": -0.23988933861255646,
+          "max_off_diagonal_cosine": 0.8909491300582886
+        },
+        "gallery": {
+          "mean_off_diagonal_cosine": 0.5828115344047546,
+          "min_off_diagonal_cosine": -0.23988933861255646,
+          "max_off_diagonal_cosine": 0.9014484882354736
+        }
+      },
+      "metrics": {
+        "global": {
+          "mAP": 50.542128855101495,
+          "Rank-1": 68.02030456852792,
+          "Rank-5": 80.5414551607445,
+          "Rank-10": 85.44839255499154
+        },
+        "additive": {
+          "mAP": 50.542224911992264,
+          "Rank-1": 67.85109983079526,
+          "Rank-5": 80.5414551607445,
+          "Rank-10": 85.44839255499154
+        },
+        "residual": {
+          "mAP": 6.8207754619188155,
+          "Rank-1": 16.243654822335024,
+          "Rank-5": 32.31810490693739,
+          "Rank-10": 39.59390862944163
+        },
+        "same_residual_block": {
+          "mAP": 50.53896888213609,
+          "Rank-1": 68.02030456852792,
+          "Rank-5": 80.5414551607445,
+          "Rank-10": 85.44839255499154
+        },
+        "aligned_regions_only": {
+          "mAP": 8.769175515963845,
+          "Rank-1": 21.31979695431472,
+          "Rank-5": 37.055837563451774,
+          "Rank-10": 45.346869712351946
+        },
+        "symmetric_regions_only": {
+          "mAP": 8.773044364666184,
+          "Rank-1": 21.31979695431472,
+          "Rank-5": 37.22504230118444,
+          "Rank-10": 45.346869712351946
+        },
+        "fixed_energy_region_block": {
+          "mAP": 50.5405514496691,
+          "Rank-1": 68.02030456852792,
+          "Rank-5": 80.5414551607445,
+          "Rank-10": 85.44839255499154
+        }
+      }
+    },
+    {
+      "dataset": "RGBNT100",
+      "status": "COMPLETE",
+      "elapsed_seconds": 155.9231339080725,
+      "local_comparison_seconds": 20.325559210032225,
+      "gain": 0.18447719514369965,
+      "optimizer_updates": 0,
+      "original_fused_distance_max_abs_difference": 1.1920928955078125e-06,
+      "region_dispersion": {
+        "query": {
+          "mean_off_diagonal_cosine": 0.8364259004592896,
+          "min_off_diagonal_cosine": -0.8044475317001343,
+          "max_off_diagonal_cosine": 0.99998939037323
+        },
+        "gallery": {
+          "mean_off_diagonal_cosine": 0.8364219069480896,
+          "min_off_diagonal_cosine": -0.8064250946044922,
+          "max_off_diagonal_cosine": 0.9999911189079285
+        }
+      },
+      "metrics": {
+        "global": {
+          "mAP": 84.36921873108231,
+          "Rank-1": 96.0932944606414,
+          "Rank-5": 96.61807580174927,
+          "Rank-10": 97.20116618075801
+        },
+        "additive": {
+          "mAP": 84.09030346135499,
+          "Rank-1": 95.8600583090379,
+          "Rank-5": 96.61807580174927,
+          "Rank-10": 97.20116618075801
+        },
+        "residual": {
+          "mAP": 36.62590634279892,
+          "Rank-1": 57.08454810495627,
+          "Rank-5": 63.09037900874635,
+          "Rank-10": 66.47230320699708
+        },
+        "same_residual_block": {
+          "mAP": 84.07784613300888,
+          "Rank-1": 95.97667638483965,
+          "Rank-5": 96.7930029154519,
+          "Rank-10": 97.49271137026238
+        },
+        "aligned_regions_only": {
+          "mAP": 41.68444891360705,
+          "Rank-1": 62.44897959183674,
+          "Rank-5": 68.39650145772595,
+          "Rank-10": 72.47813411078717
+        },
+        "symmetric_regions_only": {
+          "mAP": 44.63432266981341,
+          "Rank-1": 68.16326530612244,
+          "Rank-5": 73.00291545189505,
+          "Rank-10": 75.8600583090379
+        },
+        "fixed_energy_region_block": {
+          "mAP": 84.45792540675997,
+          "Rank-1": 95.91836734693877,
+          "Rank-5": 96.73469387755102,
+          "Rank-10": 97.14285714285714
+        }
+      }
+    }
+  ]
+}
