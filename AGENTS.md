@@ -1,3 +1,7 @@
+## 2026-10-12 actual-region supervision905 - latest priority
+
+Read master §905. Original903 closed. New six-end source/queue reviewed; NN not run at publication. Only26GPU0/1. Local verified archive replaces remote closed901 bests/903 caches. No hidden retries or old training restart. Earlier current-priority sections are historical.
+
 ## 2026-10-12 fixed-evidence903 CLOSED / region-use draft - latest priority
 
 Original903 is closed; no live observer or NN task. Do not restart903,901 or closed training. Read master §904 and logs/evidence_comparison_closed_20261012_904. Regional comparison gives no general net advance; no automatic matcher/gain/teacher/seed rollout. Current next region-use supervision is an untrained source draft, fresh review pending, no real initialization/M0/queue. Keep original controls/bests and regional caches. Only26 physicalGPU0/1, no25/2/3/power/temp/install/preemption. Earlier current-priority sections are historical.
@@ -616,3 +620,6 @@ Read `refine-logs/CURRENT_GOAL.md` before further TriFusion work. User stopped e
 - Read complete analysis before a new mechanism. Do not auto-combine V26/V27 or treat margin derivatives as encoder gradients; no new training registered.
 
 终态补充：evidence/smooth_ap_positive_derivative_preparation_20260909/README.md；全M0距离上的分析函数检查通过，完整Q1导数描述须等待原六端/CPU终态，不替代模型梯度或完整来源图库测量。
+
+
+2026-10-12 §41.905: actual-region identity supervision source/queue PASS only, six fixed seed42 endpoints registered; initialization/real8-M0/fresh50 not run at publication. Only26GPU0/1. Original903 terminal, no rerun. Closed901 bests and903 caches SHA-verified in local archive, removed only remote copies; current50 dependencies unchanged. Goal ACTIVE_UNMET; actual fused1536 retrieval is primary, local loss/score not efficacy. See master §905 and refine-logs/region_use_supervision_v1.

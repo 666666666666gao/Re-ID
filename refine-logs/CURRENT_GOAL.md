@@ -1,3 +1,7 @@
+## 2026-10-12 actual-region supervision905 - latest priority
+
+Read master §905. Original903 closed. New six-end source/queue reviewed; NN not run at publication. Only26GPU0/1. Local verified archive replaces remote closed901 bests/903 caches. No hidden retries or old training restart. Earlier current-priority sections are historical.
+
 > §904 2026-10-12: fixed-evidence903 COMPLETE, all3 exits0, zero training. Fresh terminal audit WARN, bounded fixed scores only; all3>Signal ACTIVE_UNMET.
 
 Original903 is closed; no live observer or NN task. Do not restart903,901 or closed training. Read master §904 and logs/evidence_comparison_closed_20261012_904. Regional comparison gives no general net advance; no automatic matcher/gain/teacher/seed rollout. Current next region-use supervision is an untrained source draft, fresh review pending, no real initialization/M0/queue. Keep original controls/bests and regional caches. Only26 physicalGPU0/1, no25/2/3/power/temp/install/preemption. Earlier current-priority sections are historical.
@@ -157,3 +161,6 @@ H2a original896 complete: three50-epoch endpoints/6,484 updates/first strict/ori
 ## §41.898 authoritative continuation
 
 Frozen pretrained/random text-context package pilot specified; two method reviews remain REVISE, limited pilot worthwhile pending ordinary gates. One component SOURCE_COMPONENT_PASS, no production builder/queue/report, no component construction/forward/prefix VJP/M0/formal result. Six sealed controls retained; original428 source frozen, extra429 component map. Exact32 closed distance caches retired3,896,408,208B with original64text/SHAs retained; no checkpoint/init deletion. Continue minimal production integration and source qualification, then fixed component/M0 before fresh50; no old queue rerun or extra P2/P3. Full Goal ACTIVE_UNMET. Only26GPU0/1, no25/temp/power.
+
+
+2026-10-12 §41.905: actual-region identity supervision source/queue PASS only, six fixed seed42 endpoints registered; initialization/real8-M0/fresh50 not run at publication. Only26GPU0/1. Original903 terminal, no rerun. Closed901 bests and903 caches SHA-verified in local archive, removed only remote copies; current50 dependencies unchanged. Goal ACTIVE_UNMET; actual fused1536 retrieval is primary, local loss/score not efficacy. See master §905 and refine-logs/region_use_supervision_v1.

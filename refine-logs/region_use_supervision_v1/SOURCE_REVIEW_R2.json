@@ -1,0 +1,744 @@
+{
+  "audit_skill": "experiment-audit",
+  "round": "R2",
+  "verdict": "FAIL",
+  "overall_verdict": "FAIL",
+  "reason_code": "m0_isolated_vjp_autocast_context_differs_from_production_backward",
+  "integrity_status": "source_diagnostic_fix_required",
+  "blocking_source_bugs": 1,
+  "other_evidenced_source_bugs": 0,
+  "scope": "Exact R1-to-R2 draft diff and inherited complete source path, before any new initialization/M0/NN.",
+  "requested_reviewer_model": "gpt-6-astra",
+  "requested_reviewer_reasoning_effort": "max",
+  "actually_attested_model": "UNATTESTED_BY_AVAILABLE_REVIEW_SESSION",
+  "actually_attested_reasoning_effort": "UNATTESTED_BY_AVAILABLE_REVIEW_SESSION",
+  "reviewer_backend": "native Codex agent",
+  "agent_task_path": "/root/review_region_use_source905",
+  "reviewer_family": "openai",
+  "review_independence": "same-family",
+  "acceptance_status": "provisional",
+  "review_continuity": "Follow-up by the same R1 reviewer; not a second independent/fresh reviewer",
+  "generated_at": "2026-10-12T10:37:22.455375+00:00",
+  "findings": [
+    {
+      "id": "R2-M0-01",
+      "severity": "medium",
+      "priority": "P2",
+      "status": "OPEN",
+      "title": "The isolated auxiliary VJP inherits enabled autocast, unlike the actual M0 backward",
+      "location": "tools/run_region_use_probe.py:67",
+      "evidence": [
+        "tools/run_region_use_probe.py:56-76",
+        "tools/run_foundation_recipe.py:229-241",
+        "tools/accept_region_use_m0.py:23-27",
+        "tools/diagnose_initial_aux_autocast_context.py:48-74",
+        "refine-logs/incremental_role_objective_v1/AUTOCAST_CONTEXT_RESULTS_20261007_885.json:211-330",
+        "tools/run_incremental_role_objective_checked.py:31-43",
+        "SOURCE_ONLY_CHECKS_R2.json:autocast_context"
+      ],
+      "detail": "foundation calls loss_values within torch.autocast(cuda,float16). The new autograd.grad has no local disabled context, so its backward executes with autocast enabled. The real scaler.scale(loss).backward runs after that with block. The gate treats the observer norms as actual auxiliary projection activity, but it measures a different backward numerical context. The objective's own disabled forward-autocast block has already ended when the VJP is invoked.",
+      "observed_prior_evidence": "The existing same-architecture one-graph context comparison at unit scale has all six nonunused Q/K tensors at zero inside autocast and positive outside autocast. The six outside norms are 4.744124908029335e-06, 2.621470116537239e-07, 1.4646727208855737e-07, 4.792788331542397e-06, 2.379849348699281e-07, and 1.426905242851717e-07. Source of that diagnostic changes only the backward autocast context on the retained graph. This is existing evidence of observation sensitivity, not a hypothetical edge case.",
+      "impact": "The new M0 support/activity gate can be decided by observer-context artifacts rather than the auxiliary contribution in the actual eight updates. Keep the new activity qualification unaccepted until the observer uses the production backward context. This does not establish failure of the new loss, optimizer update, or retrieval method.",
+      "minimal_fix": "Wrap only the isolated torch.autograd.grad call in with torch.autocast('cuda', enabled=False). Keep diagnostic scale256, targets, retain_graph, coefficient, forward autocast, optimizer and the original main backward unchanged. No fallback, new training branch, or repeatability experiment is requested.",
+      "evidence_limit": "The historical comparison used repair_keep, unit scale and six Q/K targets. Draft905 uses actual-region loss, scale256 and nine Q/K/V targets. No numerical draft905 failure or fix success is claimed, and no new NN execution occurred."
+    }
+  ],
+  "resolved_findings": [
+    {
+      "id": "R1-META-01",
+      "status": "FIXED_IN_R2",
+      "evidence": "tools/run_region_use_probe.py:48-53"
+    }
+  ],
+  "checks": [
+    {
+      "id": "R1_metadata",
+      "status": "FIXED",
+      "evidence": [
+        "tools/run_region_use_probe.py:48-53"
+      ],
+      "detail": "auxiliary_tasks now explicitly records actual_region_identity_relation. It flows into the existing training/checkpoint/evaluation conditions. R1 finding is closed for R2 only; R1 bytes/report remain immutable."
+    },
+    {
+      "id": "actual_capture_and_objective",
+      "status": "PASS_SOURCE_UNCHANGED",
+      "evidence": [
+        "modeling/trifusion/region_use_heads.py:7-29",
+        "modeling/trifusion/region_use_objective.py:6-39",
+        "modeling/trifusion/independent_native_roles.py:63-74",
+        "modeling/trifusion/correspondence_evidence_readout.py:65-77"
+      ],
+      "detail": "Byte-identical objective/head to R1. Captured cnn/transformer/mamba are the final evidence fields consumed by read_evidence, stacked without detach into Bx3x3x16x128. Nine group-local symmetric mean MaxSim scores and legal same-ID/different-environment positives plus different-ID negatives are unchanged. Global margin/weights detach, FP32 loss, sqrt128 scale, legal mass and equal eligible-query normalization remain as audited. Empty support stays zero; no training labels enter inference."
+    },
+    {
+      "id": "current_model_builder_lifetime",
+      "status": "PASS_SOURCE_AND_CONTROL_STUB",
+      "evidence": [
+        "tools/run_region_use_probe.py:18-24",
+        "tools/run_region_use_probe.py:34-45",
+        "tools/run_region_use_probe.py:79-89",
+        "tools/run_foundation_recipe.py:193-198",
+        "tools/run_foundation_recipe.py:263-284",
+        "tools/run_independent_native_evidence.py:126-174"
+      ],
+      "detail": "The active rebinding chain still calls the new builder. CURRENT_MODEL is the same instance returned for training. The fresh reload builder replaces it only after all eight loss calls/updates; reload then calls return_aux=False and does not invoke loss_values. M0_DIAGNOSTICS holds its original model separately. No stale-current-model bug is evidenced in the active CLI path. The control stub confirms current-model replacement and parameter targeting, without building a neural model."
+    },
+    {
+      "id": "nine_QKV_parameter_names",
+      "status": "PASS_SOURCE_AND_CONTROL_STUB",
+      "evidence": [
+        "tools/run_region_use_probe.py:62-66",
+        "modeling/trifusion/patch_memory_roles.py:19-22",
+        "modeling/trifusion/slot_competition_fp32_roles.py:10-20"
+      ],
+      "detail": "Three role-specific query, three key and three value projection Linear layers are bias=False: exactly nine weight tensors with the selected names. Prefix filtering excludes output projections/readout, shared model and author heads. Source shows these projections feed the sampled role values used downstream. Actual nonzero activity remains unverified."
+    },
+    {
+      "id": "isolated_VJP_context",
+      "status": "FAIL_SOURCE_DIAGNOSTIC_FIDELITY",
+      "evidence": [
+        "tools/run_region_use_probe.py:56-76",
+        "tools/run_foundation_recipe.py:229-241",
+        "tools/accept_region_use_m0.py:23-27",
+        "tools/diagnose_initial_aux_autocast_context.py:48-74",
+        "refine-logs/incremental_role_objective_v1/AUTOCAST_CONTEXT_RESULTS_20261007_885.json:211-330",
+        "tools/run_incremental_role_objective_checked.py:31-43",
+        "SOURCE_ONLY_CHECKS_R2.json:autocast_context"
+      ],
+      "detail": "foundation calls loss_values within torch.autocast(cuda,float16). The new autograd.grad has no local disabled context, so its backward executes with autocast enabled. The real scaler.scale(loss).backward runs after that with block. The gate treats the observer norms as actual auxiliary projection activity, but it measures a different backward numerical context. The objective's own disabled forward-autocast block has already ended when the VJP is invoked."
+    },
+    {
+      "id": "scale_graph_grad_ownership",
+      "status": "PASS_SOURCE_EXCEPT_CONTEXT_FINDING",
+      "evidence": [
+        "tools/run_region_use_probe.py:61-76",
+        "tools/run_foundation_recipe.py:198",
+        "tools/run_foundation_recipe.py:229-241"
+      ],
+      "detail": "The observer is m0-only. autograd.grad returns separate gradients, retains the original graph and neither writes .grad nor calls an optimizer/scaler. Shared-global target must be unused; every returned non-None gradient is checked finite. Gradients are promoted to FP32 for norm computation then divided by256 into JSON scalars. Diagnostic256 is a separate constant matching the trainer initial scale; it does not mutate the GradScaler. Non-m0 formal loss still evaluates original+auxiliary exactly once. The actual first-eight scaler states and numerical gradients were not executed."
+    },
+    {
+      "id": "original_loss_BN_optimizer_ownership",
+      "status": "PASS_SOURCE_UNCHANGED",
+      "evidence": [
+        "tools/run_global_task_role.py:25-31",
+        "modeling/trifusion/global_task_role_heads.py:8-32",
+        "modeling/trifusion/role_input_detach.py:5-12",
+        "modeling/trifusion/evidence_author_heads.py:63-73",
+        "tools/run_foundation_recipe.py:194-198",
+        "tools/run_foundation_recipe.py:229-241"
+      ],
+      "detail": "Original global/raw-role losses and detached role input path are unchanged. Auxiliary gradients are confined to role evidence, with no global/head/readout/gain direct path. Fused functional author heads still detach parameters and clone buffers; real global heads own BN updates. No new parameter or buffer, parameter ownership change, optimizer/scheduler action, or new forward is introduced by the observer."
+    },
+    {
+      "id": "hook_and_observer_memory_lifetime",
+      "status": "PASS_SOURCE_RUNTIME_MEMORY_UNVERIFIED",
+      "evidence": [
+        "modeling/trifusion/region_use_heads.py:8-29",
+        "tools/run_region_use_probe.py:66-76",
+        "tools/run_foundation_recipe.py:221-245"
+      ],
+      "detail": "One hook per model; auxiliary capture resets flag and stored reference on successful forward. Observer tensors are local to loss_values, only Python scalar diagnostics survive in components; the retained graph is used by the original backward. No list of graphs accumulates. Extra VJP memory/time is not measured. There is no evidence for adding an exception fallback to this fail-stop path."
+    },
+    {
+      "id": "M0_receipt_and_text_gate",
+      "status": "PASS_SOURCE_AND_TEXT_FIXTURES_DEPENDENT_ON_OBSERVER_FIX",
+      "evidence": [
+        "tools/accept_region_use_m0.py:8-36",
+        "tools/run_foundation_recipe.py:229-284",
+        "tools/run_independent_native_evidence.py:138-174",
+        "SOURCE_ONLY_CHECKS_R2.json:acceptance_gate_in_memory_text_fixtures"
+      ],
+      "detail": "Parser matches existing training.json and eight flat training_steps.jsonl rows. M0_PASS is emitted only after the native finite-gradient, all-parameter activity, frozen/visual/camera checks and strict state/buffer reload. The post-step observer then requires eight effective updates and eight author-BN batches before adding production_m0_diagnostics. The new gate consumes those native receipts and requires any positive support/actual-region norm plus each of nine stable names having a positive norm across the eight rows. Because norms are nonnegative, any-positive is the intended cumulative-activity predicate. It hashes both input text files and refuses output overwrite. Nine in-memory text fixtures accept distributed activity and reject empty support, zero regions, one inactive QKV tensor, incomplete/native-failed receipts, global gradient present and inconsistent names. No fixture qualified a real M0. This is a gate over the trusted producer receipts, not an independent replay or generic adversarial-receipt validator."
+    },
+    {
+      "id": "initializer_CLI_reload_evaluation",
+      "status": "PASS_SOURCE_UNVERIFIED_RUNTIME",
+      "evidence": [
+        "tools/run_region_use_probe.py:34-53",
+        "tools/run_region_use_probe.py:92-121",
+        "tools/run_clean_clip_joint.py:37-107",
+        "tools/run_native_partitioned.py:23-30",
+        "tools/run_foundation_recipe.py:103-107",
+        "tools/run_foundation_recipe.py:174-186",
+        "tools/run_foundation_recipe.py:263-312",
+        "tools/run_correspondence_roles.py:60-107"
+      ],
+      "detail": "CURRENT_MODEL assignment and the observer add no constructor randomness/state/parameters. The same public initializer and original model hierarchy remain active; entry hash binds the modified observer source. CLI path resolution, condition binding, strict full state reload and dataset-specific evaluation parsers remain as R1. M0 reload/inference does not need the environment field. Actual initialization state/parameter/RNG/output equality, CUDA/import behavior, full M0/reload and queue/controller/storage qualification remain pending."
+    },
+    {
+      "id": "plan_and_learning_object_scope",
+      "status": "PASS_SCOPE_WITH_EXPLICIT_LIMITS",
+      "evidence": [
+        "refine-logs/region_use_supervision_v1/EXPERIMENT_PLAN.md:3-30",
+        "tools/diagnose_same_evidence_comparison.py:72-100",
+        "refine-logs/evidence_comparison_diagnosis_v1/EXPERIMENT_PLAN.md"
+      ],
+      "detail": "Plan correctly labels a new source draft, two fixed controls and pending registration/NN. Known/repeated mechanisms are architecture/readout, symmetric MaxSim, softplus margin, detached global difficulty sigmoid and a training-only auxiliary loss. Changed learning object is actual final role-value relation rather than historical keys or fused/residual vectors. It remains an intermediate score, not the deployed additive1536 score; local loss/score improvement cannot imply fused retrieval improvement. No novelty or performance guarantee is made. R2 diagnostic wording must be read subject to the context finding."
+    }
+  ],
+  "integrity_checklist": {
+    "A_ground_truth_provenance": {
+      "status": "PASS_SOURCE",
+      "detail": "Training label/environment from protocol train records. Future official evaluation reads real protocol identity/camera/scene; no model-generated GT."
+    },
+    "B_score_normalization": {
+      "status": "PASS_SOURCE",
+      "detail": "Cosine/group and legal-weight averaging define the objective. Official mAP/CMC are unchanged and are not normalized by prediction maxima."
+    },
+    "C_result_existence": {
+      "status": "PASS_TEXT_ARTIFACTS_ONLY",
+      "detail": "R2 syntax/hash receipt and reviewed bytes agree; R1 synthetic component receipt remains unchanged. Neither receipt establishes actual M0 or performance."
+    },
+    "D_dead_code": {
+      "status": "PASS_ACTIVE_BINDING_WITH_OBSERVER_CONTEXT_BUG",
+      "detail": "AST and active source follow-through reach modified builder/loss/gate. The isolated VJP inherits the enclosing trainer autocast."
+    },
+    "E_scope": {
+      "status": "PASS_DRAFT_BOUNDARY",
+      "detail": "No production initialization, real batch, M0, training or new performance is asserted by the plan. Planned controller/storage/support/activity work is pending, not a failed experiment."
+    },
+    "F_evaluation_type": {
+      "current": "simulation_only_CPU_synthetic_objective_receipt",
+      "planned": "real_gt",
+      "real_gt_execution": "UNVERIFIED"
+    }
+  },
+  "runtime_status": {
+    "full_real_initialization": "UNVERIFIED",
+    "original_initial_state_parameter_rng_output_equality": "UNVERIFIED",
+    "real_batch_support_and_auxiliary_gradient_activity": "UNVERIFIED",
+    "eight_update_M0_and_full_state_reload": "UNVERIFIED",
+    "nn_retrieval_performance": "UNVERIFIED",
+    "warm_import_cuda_memory_runtime": "UNVERIFIED",
+    "controller_storage_queue_qualification": "PENDING",
+    "R2_actual_auxiliary_numerical_activity": "UNVERIFIED"
+  },
+  "review_actions": {
+    "neural_forwards": 0,
+    "gpu_queries": 0,
+    "weight_or_tensor_cache_loads": 0,
+    "optimizer_updates": 0,
+    "production_modifications": 0,
+    "external_messages": 0,
+    "numerical_objective_reruns": 0,
+    "stdlib_AST_control_stub_runs": 1,
+    "in_memory_text_gate_fixture_cases": 9
+  },
+  "audited_input_hashes": {
+    "C:\\Users\\gb\\.trifusion_github_publish_22c3bee\\AGENTS.md": {
+      "sha256": "55a0361490d0bbc2b1c13d337e46c44ca0abddcb4f7287ba5f5700d8e363a1b2",
+      "reviewed_lines": "1-105; 316-321; applicable current-priority directives",
+      "review_basis": "R1 source audit retained; unchanged bytes reverified during R2"
+    },
+    "C:\\Users\\gb\\.trifusion_github_publish_22c3bee\\refine-logs\\CURRENT_GOAL.md": {
+      "sha256": "7e69f7af9273dede4c0f3f819c1a7ecb65dd93d262275c6e8fa9c3bc8864a166",
+      "reviewed_lines": "1-33; 121-155 (dated priority boundaries, not result re-audit)",
+      "review_basis": "R1 source audit retained; unchanged bytes reverified during R2"
+    },
+    "C:\\Users\\gb\\.trifusion_github_publish_22c3bee\\modeling\\trifusion\\region_use_objective.py": {
+      "sha256": "556876002cc7abef5a3525940781b8facdf6a1e8bfc792e5b900f16a5f72fe6d",
+      "reviewed_lines": "all",
+      "review_basis": "R2 direct source and exact diff; objective/head unchanged from R1"
+    },
+    "C:\\Users\\gb\\.trifusion_github_publish_22c3bee\\modeling\\trifusion\\region_use_heads.py": {
+      "sha256": "1680d04f7b26f513380509af88bfce555cbc04497162e4af10c47dcbbcc9b63e",
+      "reviewed_lines": "all",
+      "review_basis": "R2 direct source and exact diff; objective/head unchanged from R1"
+    },
+    "C:\\Users\\gb\\.trifusion_github_publish_22c3bee\\tools\\run_global_task_role.py": {
+      "sha256": "151a3350a9da7d86ce6b4b7d5160537b182792ab08727ccb5e4ab0c64bb56d5f",
+      "reviewed_lines": "all",
+      "exact_903_pin_key": "tools/run_global_task_role.py",
+      "review_basis": "R1 source audit retained; unchanged bytes reverified during R2"
+    },
+    "C:\\Users\\gb\\.trifusion_github_publish_22c3bee\\tools\\run_role_input_detach.py": {
+      "sha256": "a177fd5aa4d5ba25422a49cb619062001722d6c7640891cb3da9645a8eb32fe5",
+      "reviewed_lines": "all",
+      "exact_903_pin_key": "tools/run_role_input_detach.py",
+      "review_basis": "R1 source audit retained; unchanged bytes reverified during R2"
+    },
+    "C:\\Users\\gb\\.trifusion_github_publish_22c3bee\\tools\\run_native_research.py": {
+      "sha256": "b48725622371fc6d9671c464ce97252e2e06eba465e213ce221d84c798e52cc2",
+      "reviewed_lines": "all",
+      "exact_903_pin_key": "tools/run_native_research.py",
+      "review_basis": "R1 source audit retained; unchanged bytes reverified during R2"
+    },
+    "C:\\Users\\gb\\.trifusion_github_publish_22c3bee\\tools\\run_native_partitioned.py": {
+      "sha256": "2c3abac37b122760895b97ccf01d4fefe2cfb8223b35b6e2e335a1a4144f72fa",
+      "reviewed_lines": "all",
+      "exact_903_pin_key": "tools/run_native_partitioned.py",
+      "review_basis": "R1 source audit retained; unchanged bytes reverified during R2"
+    },
+    "C:\\Users\\gb\\.trifusion_github_publish_22c3bee\\tools\\run_independent_native_evidence.py": {
+      "sha256": "2429af8d2f803d70b9d15113a430609ead28621eb4341a746c3025cc5685fe23",
+      "reviewed_lines": "all",
+      "exact_903_pin_key": "tools/run_independent_native_evidence.py",
+      "review_basis": "R1 source audit retained; unchanged bytes reverified during R2"
+    },
+    "C:\\Users\\gb\\.trifusion_github_publish_22c3bee\\tools\\run_foundation_recipe.py": {
+      "sha256": "c18042509dc33ff66eee1a6b04a723ad55685bd5d9daf218c3779703ffe20758",
+      "reviewed_lines": "1-313; parser cross-check",
+      "exact_903_pin_key": "tools/run_foundation_recipe.py",
+      "review_basis": "R1 source audit retained; unchanged bytes reverified during R2"
+    },
+    "C:\\Users\\gb\\.trifusion_github_publish_22c3bee\\tools\\run_clean_clip_joint.py": {
+      "sha256": "178e9793f2cf8261eb44a278e053d5caabd4f2f37dba48a65952b2547338a746",
+      "reviewed_lines": "all",
+      "exact_903_pin_key": "tools/run_clean_clip_joint.py",
+      "review_basis": "R1 source audit retained; unchanged bytes reverified during R2"
+    },
+    "C:\\Users\\gb\\.trifusion_github_publish_22c3bee\\tools\\run_visual_update_control.py": {
+      "sha256": "537cd5a4ab4e9b3501a7279e3f4857536bdda761f597d8b5fa7bfdbdbf82cbdd",
+      "reviewed_lines": "all (active imported bindings distinguished from unused legacy loop)",
+      "exact_903_pin_key": "tools/run_visual_update_control.py",
+      "review_basis": "R1 source audit retained; unchanged bytes reverified during R2"
+    },
+    "C:\\Users\\gb\\.trifusion_github_publish_22c3bee\\tools\\run_training_feature_scale.py": {
+      "sha256": "473853f58e4ed70bf123509afe2861fa8a9988631c04f0ce04f3260c55fd9081",
+      "reviewed_lines": "all (BatchOrderLoader is the active imported object)",
+      "exact_903_pin_key": "tools/run_training_feature_scale.py",
+      "review_basis": "R1 source audit retained; unchanged bytes reverified during R2"
+    },
+    "C:\\Users\\gb\\.trifusion_github_publish_22c3bee\\tools\\run_incremental_role_objective.py": {
+      "sha256": "76ad1ec53ec4d87df11c12fb89fd32aeb64174505136ea59d61a184d7e3b7e0a",
+      "reviewed_lines": "all (historical mechanism/parser reference only)",
+      "exact_903_pin_key": "tools/run_incremental_role_objective.py",
+      "review_basis": "R1 source audit retained; unchanged bytes reverified during R2"
+    },
+    "C:\\Users\\gb\\.trifusion_github_publish_22c3bee\\modeling\\trifusion\\global_task_role_heads.py": {
+      "sha256": "2298763b70b48718411db52e55f32dabddade5af0e56457a85eeabab4f9fcefd",
+      "reviewed_lines": "all",
+      "exact_903_pin_key": "modeling/trifusion/global_task_role_heads.py",
+      "review_basis": "R1 source audit retained; unchanged bytes reverified during R2"
+    },
+    "C:\\Users\\gb\\.trifusion_github_publish_22c3bee\\modeling\\trifusion\\role_input_detach.py": {
+      "sha256": "a3732d5ea98a9fef6039a14f34de98a23cd85a39efd83f52c8835ec59d4605b3",
+      "reviewed_lines": "all",
+      "exact_903_pin_key": "modeling/trifusion/role_input_detach.py",
+      "review_basis": "R1 source audit retained; unchanged bytes reverified during R2"
+    },
+    "C:\\Users\\gb\\.trifusion_github_publish_22c3bee\\modeling\\trifusion\\independent_native_roles.py": {
+      "sha256": "1565590fdfb281fb51b43d06497cd526ffe5bbdc135727ebaa609615dc7832ff",
+      "reviewed_lines": "all",
+      "exact_903_pin_key": "modeling/trifusion/independent_native_roles.py",
+      "review_basis": "R1 source audit retained; unchanged bytes reverified during R2"
+    },
+    "C:\\Users\\gb\\.trifusion_github_publish_22c3bee\\modeling\\trifusion\\evidence_author_heads.py": {
+      "sha256": "613b249dae9e1d62d418b94398a0d6ccbcf48e72c88b26b27dd5b9254e9c24cd",
+      "reviewed_lines": "all",
+      "exact_903_pin_key": "modeling/trifusion/evidence_author_heads.py",
+      "review_basis": "R1 source audit retained; unchanged bytes reverified during R2"
+    },
+    "C:\\Users\\gb\\.trifusion_github_publish_22c3bee\\modeling\\trifusion\\role_global_tokens.py": {
+      "sha256": "f41ff1af1fb1b6303a9af63cf039263e2572c16b23813f92a0297f014e71dd4f",
+      "reviewed_lines": "all",
+      "exact_903_pin_key": "modeling/trifusion/role_global_tokens.py",
+      "review_basis": "R1 source audit retained; unchanged bytes reverified during R2"
+    },
+    "C:\\Users\\gb\\.trifusion_github_publish_22c3bee\\modeling\\trifusion\\slot_competition_fp32_roles.py": {
+      "sha256": "810801e048bcb07ddbdef0635708b63cba7562a4876e044af34135fd412f79c8",
+      "reviewed_lines": "all",
+      "exact_903_pin_key": "modeling/trifusion/slot_competition_fp32_roles.py",
+      "review_basis": "R1 source audit retained; unchanged bytes reverified during R2"
+    },
+    "C:\\Users\\gb\\.trifusion_github_publish_22c3bee\\modeling\\trifusion\\slot_competition_roles.py": {
+      "sha256": "bbc3e2430f760587cf8c1d11e40bcbdf0459424e975de74b5b15a40706efbe99",
+      "reviewed_lines": "all",
+      "exact_903_pin_key": "modeling/trifusion/slot_competition_roles.py",
+      "review_basis": "R1 source audit retained; unchanged bytes reverified during R2"
+    },
+    "C:\\Users\\gb\\.trifusion_github_publish_22c3bee\\modeling\\trifusion\\patch_memory_roles.py": {
+      "sha256": "833c8c93363cee7a4fc74c6c458194b484dc1b8cac0f9ec58113a07ac89cb23d",
+      "reviewed_lines": "all",
+      "exact_903_pin_key": "modeling/trifusion/patch_memory_roles.py",
+      "review_basis": "R1 source audit retained; unchanged bytes reverified during R2"
+    },
+    "C:\\Users\\gb\\.trifusion_github_publish_22c3bee\\modeling\\trifusion\\correspondence_context_identity.py": {
+      "sha256": "eda3d1473496b33e4b69402dba7770e67d23b33b07afd41d23105b7f148d63af",
+      "reviewed_lines": "all",
+      "exact_903_pin_key": "modeling/trifusion/correspondence_context_identity.py",
+      "review_basis": "R1 source audit retained; unchanged bytes reverified during R2"
+    },
+    "C:\\Users\\gb\\.trifusion_github_publish_22c3bee\\modeling\\trifusion\\correspondence_evidence_readout.py": {
+      "sha256": "e737a977d39ccbe09a5509118e5b5333d653f7f13381e65e84af1a13e5c28dc4",
+      "reviewed_lines": "all",
+      "exact_903_pin_key": "modeling/trifusion/correspondence_evidence_readout.py",
+      "review_basis": "R1 source audit retained; unchanged bytes reverified during R2"
+    },
+    "C:\\Users\\gb\\.trifusion_github_publish_22c3bee\\modeling\\trifusion\\correspondence_roles.py": {
+      "sha256": "e2a51154b5b327341f35e453dd32a821b091a49a669b49a7c70e79e6e2f2591b",
+      "reviewed_lines": "all",
+      "exact_903_pin_key": "modeling/trifusion/correspondence_roles.py",
+      "review_basis": "R1 source audit retained; unchanged bytes reverified during R2"
+    },
+    "C:\\Users\\gb\\.trifusion_github_publish_22c3bee\\modeling\\trifusion\\partitioned_evidence_clip.py": {
+      "sha256": "3bad53abd6777602e1f1ea9e7b03f10a796116b577501ee5ec0aec6e683b436c",
+      "reviewed_lines": "all",
+      "exact_903_pin_key": "modeling/trifusion/partitioned_evidence_clip.py",
+      "review_basis": "R1 source audit retained; unchanged bytes reverified during R2"
+    },
+    "C:\\Users\\gb\\.trifusion_github_publish_22c3bee\\modeling\\trifusion\\experts\\mamba.py": {
+      "sha256": "8b9cb420c42e4d70f8de7e4608637c81c505b97ca54228175462a7e92fdfcc83",
+      "reviewed_lines": "all; production factory 29-32 is the active path",
+      "pin_key": "modeling/trifusion/experts/mamba.py",
+      "pin_sha256": "c516c7ad937e5eee6a4ed1e3ec33c2afe3522b751d296bd2e4910e4f27a20ee5",
+      "lf_normalized_sha256": "c516c7ad937e5eee6a4ed1e3ec33c2afe3522b751d296bd2e4910e4f27a20ee5",
+      "pin_match": "LINE_ENDINGS_ONLY_NOT_BYTE_IDENTICAL",
+      "review_basis": "R1 source audit retained; unchanged bytes reverified during R2"
+    },
+    "C:\\Users\\gb\\.trifusion_github_publish_22c3bee\\modeling\\trifusion\\aligned_data.py": {
+      "sha256": "3ea362d17660483b554cb599442b6377ace020fa114969b9bdd58906fbceedd5",
+      "reviewed_lines": "76-94; class/return discovery",
+      "exact_903_pin_key": "modeling/trifusion/aligned_data.py",
+      "review_basis": "R1 source audit retained; unchanged bytes reverified during R2"
+    },
+    "C:\\Users\\gb\\.trifusion_github_publish_22c3bee\\tools\\run_correspondence_roles.py": {
+      "sha256": "e50865fb923297cd61cf38b33ec2bc95154f8c503b5dfe5de9823cad3f03d7ef",
+      "reviewed_lines": "1-108",
+      "exact_903_pin_key": "tools/run_correspondence_roles.py",
+      "review_basis": "R1 source audit retained; unchanged bytes reverified during R2"
+    },
+    "C:\\Users\\gb\\.trifusion_github_publish_22c3bee\\tools\\official_three_dataset_data.py": {
+      "sha256": "c3180a88d12440709319d2025928fc699ff3b7c020b11697d468453fbfc68062",
+      "reviewed_lines": "all",
+      "exact_903_pin_key": "tools/official_three_dataset_data.py",
+      "review_basis": "R1 source audit retained; unchanged bytes reverified during R2"
+    },
+    "C:\\Users\\gb\\.trifusion_github_publish_22c3bee\\tools\\official_three_dataset_model.py": {
+      "sha256": "e103ea0f4d6342b0dc129dc2dace0e8c0d0e6c956cfe94729ccb70d9588cf0f9",
+      "reviewed_lines": "all; ROLE_CONFIGS/sha are active imports, legacy checkpoint builder is not called",
+      "exact_903_pin_key": "tools/official_three_dataset_model.py",
+      "review_basis": "R1 source audit retained; unchanged bytes reverified during R2"
+    },
+    "C:\\Users\\gb\\.trifusion_github_publish_22c3bee\\tools\\run_official_three_dataset_roles.py": {
+      "sha256": "f30bb00a0b71429e9d11dd196cd1d543202a133c663ad66e175d2f82e28d448d",
+      "reviewed_lines": "1-150; 230-237",
+      "exact_903_pin_key": "tools/run_official_three_dataset_roles.py",
+      "review_basis": "R1 source audit retained; unchanged bytes reverified during R2"
+    },
+    "C:\\Users\\gb\\.trifusion_github_publish_22c3bee\\tools\\run_signal_preserving_v5.py": {
+      "sha256": "e162184f68778b4991db0f97f26c5fda273b2ad2f7c8db2bbb2d53775eb717e5",
+      "reviewed_lines": "1-210; 257-267; 523-530; 568-584",
+      "exact_903_pin_key": "tools/run_signal_preserving_v5.py",
+      "review_basis": "R1 source audit retained; unchanged bytes reverified during R2"
+    },
+    "C:\\Users\\gb\\.trifusion_github_publish_22c3bee\\tools\\run_signal_baseline_dev.py": {
+      "sha256": "083967f2a38267415b2992da98c2ad9429ebb793f387b45daac1dbb4eb16f365",
+      "reviewed_lines": "1-64",
+      "exact_903_pin_key": "tools/run_signal_baseline_dev.py",
+      "review_basis": "R1 source audit retained; unchanged bytes reverified during R2"
+    },
+    "C:\\Users\\gb\\.trifusion_github_publish_22c3bee\\tools\\build_v12_complete_path_oof_targets.py": {
+      "sha256": "999356e18d489dce99042f1e7873eac15b811b64255f1aee9550c52ae1c7ee06",
+      "reviewed_lines": "imports/signatures; 235-258",
+      "exact_903_pin_key": "tools/build_v12_complete_path_oof_targets.py",
+      "review_basis": "R1 source audit retained; unchanged bytes reverified during R2"
+    },
+    "C:\\Users\\gb\\.trifusion_github_publish_22c3bee\\tools\\train_rgbnt100_signal_oof.py": {
+      "sha256": "4462b73139e034d450d955c5b4a994aaa967548e9cc503d97bb753a14ea03b22",
+      "reviewed_lines": "1-215; 253-268",
+      "exact_903_pin_key": "tools/train_rgbnt100_signal_oof.py",
+      "review_basis": "R1 source audit retained; unchanged bytes reverified during R2"
+    },
+    "C:\\Users\\gb\\.trifusion_github_publish_22c3bee\\tools\\train_msvr310_signal_oof.py": {
+      "sha256": "c25579d931df34481fef321558f0b9a1f9179d72a25d6047dbbfd3682d4ae60f",
+      "reviewed_lines": "80-99; 223-238; loader/signature discovery",
+      "exact_903_pin_key": "tools/train_msvr310_signal_oof.py",
+      "review_basis": "R1 source audit retained; unchanged bytes reverified during R2"
+    },
+    "C:\\Users\\gb\\.trifusion_github_publish_22c3bee\\tools\\train_signal_preserving_v18.py": {
+      "sha256": "f6bdda4631d710d0b6db5fe2a8df124d8dcbd294cb54adcf3ec261d523e96cf8",
+      "reviewed_lines": "33-49; import/signature discovery",
+      "exact_903_pin_key": "tools/train_signal_preserving_v18.py",
+      "review_basis": "R1 source audit retained; unchanged bytes reverified during R2"
+    },
+    "C:\\Users\\gb\\.trifusion_github_publish_22c3bee\\tools\\diagnose_same_evidence_comparison.py": {
+      "sha256": "71fe059e26744c670661cab6fb3bbaaf13da56a5567adf78b8079e2ba0db9ad5",
+      "reviewed_lines": "all; read only, not rerun",
+      "exact_903_pin_key": "tools/diagnose_same_evidence_comparison.py",
+      "review_basis": "R1 source audit retained; unchanged bytes reverified during R2"
+    },
+    "C:\\Users\\gb\\.trifusion_github_publish_22c3bee\\refine-logs\\evidence_comparison_diagnosis_v1\\EXPERIMENT_PLAN.md": {
+      "sha256": "0ea17e67772806f1f6fbbb2082c07fda4b5b380efa1da5195c17a064976e9bf4",
+      "reviewed_lines": "all",
+      "exact_903_pin_key": "refine-logs/evidence_comparison_diagnosis_v1/EXPERIMENT_PLAN.md",
+      "review_basis": "R1 source audit retained; unchanged bytes reverified during R2"
+    },
+    "C:\\Users\\gb\\.trifusion_github_publish_22c3bee\\refine-logs\\evidence_comparison_diagnosis_v1\\PRIMARY_EVIDENCE_COMPARISON_902.md": {
+      "sha256": "fb3760dcdedc2a631c35943a9dfebfb4e56885247333d366f5b7c5c62240f34a",
+      "reviewed_lines": "1-9; 79-147; source-bound design comparison, no fresh literature audit",
+      "review_basis": "R1 source audit retained; unchanged bytes reverified during R2"
+    },
+    "C:\\Users\\gb\\.trifusion_github_publish_22c3bee\\evidence\\msvr310_history_gradient_q1_complete_20260908\\independent_audit\\remote_sources\\comparators\\Signal-cd1b0a6\\solver\\make_optimizer.py": {
+      "sha256": "ada1023a79fcaaed092bce0849a61db9d0253cf8974c494bfb3082d0fd35fee1",
+      "reviewed_lines": "all",
+      "exact_903_pin_key": "comparators/Signal-cd1b0a6/solver/make_optimizer.py",
+      "review_basis": "R1 source audit retained; unchanged bytes reverified during R2"
+    },
+    "C:\\Users\\gb\\.trifusion_github_publish_22c3bee\\evidence\\msvr310_history_gradient_q1_complete_20260908\\independent_audit\\remote_sources\\comparators\\Signal-cd1b0a6\\layers\\make_loss.py": {
+      "sha256": "7eb7ab953c2bbc52d0c298ef971d0c3ff7000e5e50756fbb5a5fd63ac4c109aa",
+      "reviewed_lines": "all",
+      "exact_903_pin_key": "comparators/Signal-cd1b0a6/layers/make_loss.py",
+      "review_basis": "R1 source audit retained; unchanged bytes reverified during R2"
+    },
+    "C:\\Users\\gb\\.trifusion_github_publish_22c3bee\\evidence\\msvr310_history_gradient_q1_complete_20260908\\independent_audit\\remote_sources\\comparators\\Signal-cd1b0a6\\data\\datasets\\sampler.py": {
+      "sha256": "b77902214633a2b06a7c0a80924a737fdb5122984a857f3c6e120a8ad8cce65a",
+      "reviewed_lines": "all",
+      "exact_903_pin_key": "comparators/Signal-cd1b0a6/data/datasets/sampler.py",
+      "review_basis": "R1 source audit retained; unchanged bytes reverified during R2"
+    },
+    "C:\\Users\\gb\\.trifusion_github_publish_22c3bee\\evidence\\msvr310_history_gradient_q1_complete_20260908\\independent_audit\\remote_sources\\comparators\\Signal-cd1b0a6\\data\\datasets\\bases.py": {
+      "sha256": "48f050a7924cebd1e51f8831ba05df78dbccc7049afb0bcf83351d9d1ee23814",
+      "reviewed_lines": "all",
+      "exact_903_pin_key": "comparators/Signal-cd1b0a6/data/datasets/bases.py",
+      "review_basis": "R1 source audit retained; unchanged bytes reverified during R2"
+    },
+    "C:\\Users\\gb\\.trifusion_github_publish_22c3bee\\evidence\\msvr310_history_gradient_q1_complete_20260908\\independent_audit\\remote_sources\\comparators\\Signal-cd1b0a6\\data\\datasets\\make_dataloader.py": {
+      "sha256": "54c47d798a20955bde224d9c78b42149c3c2ef008b02659141829a553194434f",
+      "reviewed_lines": "1-90; 125-186 (collate 142-182)",
+      "exact_903_pin_key": "comparators/Signal-cd1b0a6/data/datasets/make_dataloader.py",
+      "review_basis": "R1 source audit retained; unchanged bytes reverified during R2"
+    },
+    "C:\\Users\\gb\\.trifusion_github_publish_22c3bee\\evidence\\msvr310_history_gradient_q1_complete_20260908\\independent_audit\\remote_sources\\comparators\\Signal-cd1b0a6\\configs\\MSVR310\\Signal.yml": {
+      "sha256": "357ca3a989e943ea5348e6206c0d0f69b3c0d35ad9fbadbf68d2786439b8a915",
+      "reviewed_lines": "all",
+      "exact_903_pin_key": "comparators/Signal-cd1b0a6/configs/MSVR310/Signal.yml",
+      "review_basis": "R1 source audit retained; unchanged bytes reverified during R2"
+    },
+    "C:\\Users\\gb\\.trifusion_github_publish_22c3bee\\evidence\\msvr310_history_gradient_q1_complete_20260908\\independent_audit\\remote_sources\\comparators\\Signal-cd1b0a6\\utils\\metrics.py": {
+      "sha256": "91604acb7d978462c16904910a645d7d1697c15bf150da529099004c8b5eecb2",
+      "reviewed_lines": "1-175",
+      "exact_903_pin_key": "comparators/Signal-cd1b0a6/utils/metrics.py",
+      "review_basis": "R1 source audit retained; unchanged bytes reverified during R2"
+    },
+    "C:\\Users\\gb\\.trifusion_github_publish_22c3bee\\evidence\\msvr310_history_gradient_q1_complete_20260908\\independent_audit\\remote_sources\\comparators\\Signal-cd1b0a6\\modeling\\make_model.py": {
+      "sha256": "1a88a91d2e5055f5d338996231b16c0e13b2fa7013c74131ca663f16c2655963",
+      "reviewed_lines": "1-90; constructor/forward function discovery",
+      "exact_903_pin_key": "comparators/Signal-cd1b0a6/modeling/make_model.py",
+      "review_basis": "R1 source audit retained; unchanged bytes reverified during R2"
+    },
+    "C:\\Users\\gb\\.trifusion_github_publish_22c3bee\\evidence\\smooth_ap_m0_audit_20260909\\snapshots\\remote\\root\\autodl-tmp\\trifusion-v2\\comparators\\Signal-cd1b0a6\\modeling\\__init__.py": {
+      "sha256": "c1962dec3f8aa828bd7237baf6edd7b4862cdbd8e9f710170f37f3d61bf1d1c0",
+      "reviewed_lines": "all",
+      "exact_903_pin_key": "comparators/Signal-cd1b0a6/modeling/__init__.py",
+      "review_basis": "R1 source audit retained; unchanged bytes reverified during R2"
+    },
+    "D:\\Program Files\\UserCache\\gb\\codex_tmp\\foundation_recipe_v1_20261002\\source_intake737\\comparators\\Signal-cd1b0a6\\configs\\RGBNT201\\Signal.yml": {
+      "sha256": "a13bd5169a4c710fa79efc87db909409015a0b2611086c0fbf4c1842f0cfcc44",
+      "reviewed_lines": "all",
+      "exact_903_pin_key": "comparators/Signal-cd1b0a6/configs/RGBNT201/Signal.yml",
+      "review_basis": "R1 source audit retained; unchanged bytes reverified during R2"
+    },
+    "D:\\Program Files\\UserCache\\gb\\codex_tmp\\foundation_recipe_v1_20261002\\source_intake737\\comparators\\Signal-cd1b0a6\\configs\\RGBNT100\\Signal.yml": {
+      "sha256": "02641ce2941dcd50df77d379aab54650cae4a2a6b15ba1bcd43deba970b6900f",
+      "reviewed_lines": "all",
+      "exact_903_pin_key": "comparators/Signal-cd1b0a6/configs/RGBNT100/Signal.yml",
+      "review_basis": "R1 source audit retained; unchanged bytes reverified during R2"
+    },
+    "D:\\Program Files\\UserCache\\gb\\codex_tmp\\foundation_recipe_v1_20261002\\source_intake737\\comparators\\Signal-cd1b0a6\\modeling\\meta_arch.py": {
+      "sha256": "8b709d5ab4b14ba150a96bbb5e8cc7e6dbbb71dd8bd30cafd7a5cb110ee5a757",
+      "reviewed_lines": "all",
+      "exact_903_pin_key": "comparators/Signal-cd1b0a6/modeling/meta_arch.py",
+      "review_basis": "R1 source audit retained; unchanged bytes reverified during R2"
+    },
+    "D:\\Program Files\\UserCache\\gb\\codex_tmp\\foundation_recipe_v1_20261002\\source_intake737\\comparators\\Signal-cd1b0a6\\config\\defaults.py": {
+      "sha256": "40257d349153e56e345983c99b1638d7c3d77966dfd2f5496fe03c86dc8dbd57",
+      "reviewed_lines": "34-38; 53; 106; 125-126; 141",
+      "exact_903_pin_key": "comparators/Signal-cd1b0a6/config/defaults.py",
+      "review_basis": "R1 source audit retained; unchanged bytes reverified during R2"
+    },
+    "D:\\Program Files\\UserCache\\gb\\codex_tmp\\foundation_recipe_v1_20261002\\source_intake737\\comparators\\Signal-cd1b0a6\\layers\\triplet_loss.py": {
+      "sha256": "f502c44bec642bbf72ce6d0f58c9f9a0084beef9cbb451c2d2786bb13f94960a",
+      "reviewed_lines": "all",
+      "exact_903_pin_key": "comparators/Signal-cd1b0a6/layers/triplet_loss.py",
+      "review_basis": "R1 source audit retained; unchanged bytes reverified during R2"
+    },
+    "D:\\Program Files\\UserCache\\gb\\codex_tmp\\foundation_recipe_v1_20261002\\source_intake737\\comparators\\Signal-cd1b0a6\\layers\\softmax_loss.py": {
+      "sha256": "92192d9c3ff4e2fd3920c6e9a9637e0caa1e66cffbbc0be8b4049e5dcdb0bf24",
+      "reviewed_lines": "all",
+      "exact_903_pin_key": "comparators/Signal-cd1b0a6/layers/softmax_loss.py",
+      "review_basis": "R1 source audit retained; unchanged bytes reverified during R2"
+    },
+    "D:\\Program Files\\UserCache\\gb\\codex_tmp\\foundation_recipe_v1_20261002\\source_intake737\\comparators\\Signal-cd1b0a6\\layers\\center_loss.py": {
+      "sha256": "c2e23be80b1b3e54503c704dda45ddc4a86f23647fcc8c37c63dbac47d003d89",
+      "reviewed_lines": "all (construction only; center loss not added)",
+      "exact_903_pin_key": "comparators/Signal-cd1b0a6/layers/center_loss.py",
+      "review_basis": "R1 source audit retained; unchanged bytes reverified during R2"
+    },
+    "D:\\Program Files\\UserCache\\gb\\codex_tmp\\independent_evidence_draft\\evidence_comparison903\\REGION_USE_COMPONENT_CHECK_905.json": {
+      "sha256": "363d71154d6fe02f8e161474c7b64062305706b4a67c494292a7af08380fe6b1",
+      "reviewed_lines": "all",
+      "review_basis": "R1 source audit retained; unchanged bytes reverified during R2"
+    },
+    "D:\\Program Files\\UserCache\\gb\\codex_tmp\\independent_evidence_draft\\evidence_comparison903\\SOURCE_SYNTAX_905.json": {
+      "sha256": "8e9399716e6f01c72057ba50ee18807b5bfed51c74b775a454acf5011b72136b",
+      "reviewed_lines": "all",
+      "review_basis": "R1 source audit retained; unchanged bytes reverified during R2"
+    },
+    "D:\\Program Files\\UserCache\\gb\\codex_tmp\\independent_evidence_draft\\evidence_comparison903\\region_use_probe905.py": {
+      "sha256": "23a23a2edb59fe17a132daecad629862fca60edb8b39a6e35203bd2d73e7bb44",
+      "reviewed_lines": "all",
+      "review_basis": "R1 source audit retained; unchanged bytes reverified during R2"
+    },
+    "D:\\Program Files\\UserCache\\gb\\codex_tmp\\independent_evidence_draft\\evidence_comparison903\\check_region_use_probe905.ps1": {
+      "sha256": "d4f8d1518c7524e2320d5d107d48977c342362889127a5c82b8dd75e3fdf3a28",
+      "reviewed_lines": "all",
+      "review_basis": "R1 source audit retained; unchanged bytes reverified during R2"
+    },
+    "D:\\Program Files\\UserCache\\gb\\codex_tmp\\independent_evidence_draft\\evidence_comparison903\\INPUT_SEAL_903.json": {
+      "sha256": "3e6eb3be936f0f8bbd695fe6c797413613b746444768de42a41cbf0ac2b1f2ab",
+      "reviewed_lines": "schema, source hashes, relevant artifact/path fields only",
+      "review_basis": "R1 source audit retained; unchanged bytes reverified during R2"
+    },
+    "C:\\Users\\gb\\.codex\\skills\\experiment-audit\\SKILL.md": {
+      "sha256": "0ab77f219f554cbe42f22b79d780528e61c5e58169af4c2f56acf59596ab8db7",
+      "reviewed_lines": "all",
+      "review_basis": "R1 source audit retained; unchanged bytes reverified during R2"
+    },
+    "C:\\Users\\gb\\.codex\\skills\\shared-references\\local-codex-policy.md": {
+      "sha256": "b0249bfccd48ff79a5976afa7a54c64a3cfb65a5496a2105c5bb21069d197783",
+      "reviewed_lines": "all",
+      "review_basis": "R1 source audit retained; unchanged bytes reverified during R2"
+    },
+    "C:\\Users\\gb\\.codex\\skills\\shared-references\\reviewer-independence.md": {
+      "sha256": "1aa1756a99dc47009072f0ee7bf570d797bf7e2cc84439401e2a9312d73659b0",
+      "reviewed_lines": "all",
+      "review_basis": "R1 source audit retained; unchanged bytes reverified during R2"
+    },
+    "C:\\Users\\gb\\.codex\\skills\\shared-references\\experiment-integrity.md": {
+      "sha256": "22150fbdc5867e7790c88f968bccb367079c2db4c190ddce980709aea7e76f60",
+      "reviewed_lines": "all",
+      "review_basis": "R1 source audit retained; unchanged bytes reverified during R2"
+    },
+    "C:\\Users\\gb\\.codex\\skills\\shared-references\\review-tracing.md": {
+      "sha256": "7f556fb9ef8922cfd0d047e5a2d857b0c7f9408492b8c8dcec00207e76405395",
+      "reviewed_lines": "all",
+      "review_basis": "R1 source audit retained; unchanged bytes reverified during R2"
+    },
+    "D:\\Program Files\\UserCache\\gb\\codex_tmp\\metric_feature_scale_failed_closeout766\\source\\logs\\training_feature_scale_protocols_20261002\\RGBNT201.json": {
+      "sha256": "b2409c2d992d04adcf0c78354d306afd6af7ae9507738fd4e83de480e9a9b90f",
+      "reviewed_lines": "complete records parsed as metadata only",
+      "exact_903_pin_key": "logs/training_feature_scale_protocols_20261002/RGBNT201.json",
+      "review_basis": "R1 source audit retained; unchanged bytes reverified during R2"
+    },
+    "D:\\Program Files\\UserCache\\gb\\codex_tmp\\metric_feature_scale_failed_closeout766\\source\\logs\\training_feature_scale_protocols_20261002\\MSVR310.json": {
+      "sha256": "015a3cafef8e36ba71da2784de6835959c0549c442624c8fb9e9b37bd8c8229d",
+      "reviewed_lines": "complete records parsed as metadata only",
+      "exact_903_pin_key": "logs/training_feature_scale_protocols_20261002/MSVR310.json",
+      "review_basis": "R1 source audit retained; unchanged bytes reverified during R2"
+    },
+    "D:\\Program Files\\UserCache\\gb\\codex_tmp\\metric_feature_scale_failed_closeout766\\source\\logs\\training_feature_scale_protocols_20261002\\RGBNT100.json": {
+      "sha256": "b2c14adf947b06b27b9576a712f96192c1393ad6ed3ec1be5259b63f88300169",
+      "reviewed_lines": "complete records parsed as metadata only",
+      "exact_903_pin_key": "logs/training_feature_scale_protocols_20261002/RGBNT100.json",
+      "review_basis": "R1 source audit retained; unchanged bytes reverified during R2"
+    },
+    "D:\\Program Files\\UserCache\\gb\\codex_tmp\\independent_evidence_draft\\evidence_comparison903\\review\\source905\\check_source_only.py": {
+      "sha256": "80fcecf0b2989c0a902a8955334dcd75c9fb48c8ef293e9b40a5a39c167482b3",
+      "reviewed_lines": "all",
+      "review_basis": "R1 source audit retained; unchanged bytes reverified during R2"
+    },
+    "D:\\Program Files\\UserCache\\gb\\codex_tmp\\independent_evidence_draft\\evidence_comparison903\\review\\source905\\SOURCE_ONLY_CHECKS_R1.json": {
+      "sha256": "db4afa8dd1fa6229e2337a10393cf384ee7f25be004e68c2a90ffbfb7107c163",
+      "reviewed_lines": "all",
+      "review_basis": "R1 source audit retained; unchanged bytes reverified during R2"
+    },
+    "D:\\Program Files\\UserCache\\gb\\codex_tmp\\independent_evidence_draft\\evidence_comparison903\\review\\source905\\PROTOCOL_TEXT_CHECKS_R1.json": {
+      "sha256": "505c685de0d2f129d1b6482e4edd2e7434f40faa00d12094f84b08b8ab08ab71",
+      "reviewed_lines": "all",
+      "review_basis": "R1 source audit retained; unchanged bytes reverified during R2"
+    },
+    "C:\\Users\\gb\\.trifusion_github_publish_22c3bee\\tools\\run_region_use_probe.py": {
+      "sha256": "0c452a9728151e47e9cd5a463daad0c0c8c87925a0a49c5f0afdf0b20140c031",
+      "reviewed_lines": "all",
+      "review_basis": "R2 direct source and exact diff; objective/head unchanged from R1"
+    },
+    "C:\\Users\\gb\\.trifusion_github_publish_22c3bee\\tools\\accept_region_use_m0.py": {
+      "sha256": "f378797bcb9c641156de215d38b9db8dc34668c5ac7dad15bf214decd442f3ac",
+      "reviewed_lines": "all",
+      "review_basis": "R2 direct source and exact diff; objective/head unchanged from R1"
+    },
+    "C:\\Users\\gb\\.trifusion_github_publish_22c3bee\\refine-logs\\region_use_supervision_v1\\EXPERIMENT_PLAN.md": {
+      "sha256": "b4cfc994342dec77611ed1b8e40cce452cdc648de295e01e133f517fa65eb117",
+      "reviewed_lines": "all",
+      "review_basis": "R2 direct source and exact diff; objective/head unchanged from R1"
+    },
+    "C:\\Users\\gb\\.trifusion_github_publish_22c3bee\\tools\\run_incremental_role_objective_checked.py": {
+      "sha256": "70121fe68b6a89830ca98835e84ace604b04986e125881eb571744dc7549c17d",
+      "reviewed_lines": "all, especially 22-44",
+      "review_basis": "R2 direct text inspection"
+    },
+    "C:\\Users\\gb\\.trifusion_github_publish_22c3bee\\tools\\diagnose_initial_aux_autocast_context.py": {
+      "sha256": "1b3f2cc6e0e1efbcb6f6c4435c98df023598c38e98b4e4ebdad55875c466e5f2",
+      "reviewed_lines": "1-80; especially 45-74",
+      "review_basis": "R2 direct text inspection"
+    },
+    "C:\\Users\\gb\\.trifusion_github_publish_22c3bee\\refine-logs\\incremental_role_objective_v1\\AUTOCAST_CONTEXT_RESULTS_20261007_885.json": {
+      "sha256": "500ad100eddb067ac7958d79dcb8fafcdf986e3075f7116de3fbd16eb05403ab",
+      "reviewed_lines": "all; raw actual.rows 211-330 parsed",
+      "review_basis": "R2 direct text inspection"
+    },
+    "C:\\Users\\gb\\.trifusion_github_publish_22c3bee\\refine-logs\\incremental_role_objective_v1\\CHECKED_VJP_PLAN_20261007_886.md": {
+      "sha256": "c72fda997b48b4e05264f63b1e3441fa6eab1569803611a385a157ae8131d768",
+      "reviewed_lines": "all",
+      "review_basis": "R2 direct text inspection"
+    },
+    "C:\\Users\\gb\\.trifusion_github_publish_22c3bee\\tools\\run_prepool_dense_correspondence.py": {
+      "sha256": "5e8f6c80844be07639415694b8749dec98cecbaf108cebcbb3f1310e690f4c04",
+      "reviewed_lines": "68-84; context observer comparison only",
+      "review_basis": "R2 direct text inspection"
+    },
+    "C:\\Users\\gb\\.trifusion_github_publish_22c3bee\\tools\\run_text_semantic_prior.py": {
+      "sha256": "18fafa9a7157077d7ad22a0359de905163bb17a8eb7b04b8f54c6b6bce436c79",
+      "reviewed_lines": "228-247; scale256 observer comparison only",
+      "review_basis": "R2 direct text inspection"
+    },
+    "C:\\Users\\gb\\.trifusion_github_publish_22c3bee\\tools\\accept_incremental_m0_support.py": {
+      "sha256": "e37d93b7263e542012e5020465ccfd569166c022e7e52748bb199f6884ec2fc7",
+      "reviewed_lines": "all; text gate comparison, not a new requirement",
+      "review_basis": "R2 direct text inspection"
+    },
+    "C:\\Users\\gb\\.codex_tmp\\independent_evidence_draft\\evidence_comparison903\\SOURCE_SYNTAX_905_R2.json": {
+      "sha256": "ec1e5e10993f412ccc8a9593274dfa3e3a84f0cc1cfb609c24df71a6e0286a01",
+      "reviewed_lines": "all",
+      "review_basis": "R2 direct text inspection"
+    },
+    "C:\\Users\\gb\\.codex_tmp\\independent_evidence_draft\\evidence_comparison903\\review\\source905\\SOURCE_REVIEW_R1.json": {
+      "sha256": "2e79ef674d68cda06d4163d27537ff83513ff2a182cc7f45ccb0db3ea88c1f8a",
+      "reviewed_lines": "R1 findings/checks/hash manifest; retained audit context",
+      "review_basis": "R2 direct text inspection"
+    },
+    "C:\\Users\\gb\\.codex_tmp\\independent_evidence_draft\\evidence_comparison903\\review\\source905\\SOURCE_REVIEW_R1.md": {
+      "sha256": "5f1a58aa824b01a431077669f7e642c5fb645e030507396ff8194c5571a5825c",
+      "reviewed_lines": "R1 findings/boundary; retained audit context",
+      "review_basis": "R2 direct text inspection"
+    },
+    "C:\\Users\\gb\\.codex_tmp\\independent_evidence_draft\\evidence_comparison903\\review\\source905\\check_source_only_r2.py": {
+      "sha256": "16aa4b0dda1002671912a280cf52de6aac56ef511974c961bfe312ee5c1f49da",
+      "reviewed_lines": "all",
+      "review_basis": "R2 direct text inspection"
+    },
+    "C:\\Users\\gb\\.codex_tmp\\independent_evidence_draft\\evidence_comparison903\\review\\source905\\SOURCE_ONLY_CHECKS_R2.json": {
+      "sha256": "aa6efb5f981d175c5eaec63d2e5bc2bba236777fbc3ae754d32a2fc2ae3c7a75",
+      "reviewed_lines": "all",
+      "review_basis": "R2 direct text inspection"
+    },
+    "C:\\Users\\gb\\.codex_tmp\\independent_evidence_draft\\evidence_comparison903\\review\\source905\\R1_TO_R2.diff": {
+      "sha256": "07fab9cde7a54185b755086bdd0d70d72753c2a013b272910b8832261646478a",
+      "reviewed_lines": "all",
+      "review_basis": "R2 direct text inspection"
+    }
+  },
+  "R1_artifacts_unchanged": {
+    "SOURCE_REVIEW_R1.md": "5f1a58aa824b01a431077669f7e642c5fb645e030507396ff8194c5571a5825c",
+    "SOURCE_REVIEW_R1.json": "2e79ef674d68cda06d4163d27537ff83513ff2a182cc7f45ccb0db3ea88c1f8a"
+  },
+  "source_only_checks": "C:\\Users\\gb\\.codex_tmp\\independent_evidence_draft\\evidence_comparison903\\review\\source905\\SOURCE_ONLY_CHECKS_R2.json",
+  "exact_diff": "C:\\Users\\gb\\.codex_tmp\\independent_evidence_draft\\evidence_comparison903\\review\\source905\\R1_TO_R2.diff",
+  "immutable_R2_input_snapshot": "C:\\Users\\gb\\.codex_tmp\\independent_evidence_draft\\evidence_comparison903\\review\\source905\\r2_inputs",
+  "trace_path": "C:\\Users\\gb\\.codex_tmp\\independent_evidence_draft\\evidence_comparison903\\review\\source905\\trace_r2",
+  "source_pin_qualification": "Local modeling/trifusion/experts/mamba.py is CRLF; LF-normalized bytes exactly match sealed903. Both hashes retained. Other audited old source pins matched exactly.",
+  "boundary": "Same-family provisional source-only follow-up review. The actual serving model/effort is not independently attested. R2 FAIL concerns the new M0 observer context, not a demonstrated model/retrieval failure. No source verdict qualifies real initialization, M0, queue launch, novelty or performance.",
+  "final_source_hash_recheck_at": "2026-10-12T10:37:22.455375+00:00"
+}

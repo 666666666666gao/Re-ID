@@ -1,0 +1,97 @@
+{
+  "status": "PASS_SOURCE_ONLY",
+  "generated_at": "2026-10-12T10:56:41.900349+00:00",
+  "source_file_hashes": {
+    "modeling/trifusion/region_use_objective.py": {
+      "sha256": "556876002cc7abef5a3525940781b8facdf6a1e8bfc792e5b900f16a5f72fe6d",
+      "R2_sha256": "556876002cc7abef5a3525940781b8facdf6a1e8bfc792e5b900f16a5f72fe6d",
+      "unchanged_from_R2": true
+    },
+    "modeling/trifusion/region_use_heads.py": {
+      "sha256": "1680d04f7b26f513380509af88bfce555cbc04497162e4af10c47dcbbcc9b63e",
+      "R2_sha256": "1680d04f7b26f513380509af88bfce555cbc04497162e4af10c47dcbbcc9b63e",
+      "unchanged_from_R2": true
+    },
+    "tools/run_region_use_probe.py": {
+      "sha256": "176e1e88a74ede5447f57cf0e3a89c1a0847e729647d37b11fdb6c76ea715591",
+      "R2_sha256": "0c452a9728151e47e9cd5a463daad0c0c8c87925a0a49c5f0afdf0b20140c031",
+      "unchanged_from_R2": false
+    },
+    "tools/accept_region_use_m0.py": {
+      "sha256": "f378797bcb9c641156de215d38b9db8dc34668c5ac7dad15bf214decd442f3ac",
+      "R2_sha256": "f378797bcb9c641156de215d38b9db8dc34668c5ac7dad15bf214decd442f3ac",
+      "unchanged_from_R2": true
+    },
+    "refine-logs/region_use_supervision_v1/EXPERIMENT_PLAN.md": {
+      "sha256": "576138fc39d97d251fcb2522a11ad184c8eb66c0f388b009f2b8f1e634214074",
+      "R2_sha256": "b4cfc994342dec77611ed1b8e40cce452cdc648de295e01e133f517fa65eb117",
+      "unchanged_from_R2": false
+    }
+  },
+  "R1_R2_artifact_immutability": {
+    "REVIEW_ARTIFACT_SHA256.json": {
+      "sha256": "793d794a32732a07438d7f2e47277723541589b634c3298e12b414cab9edda40",
+      "entries_unchanged": 16
+    },
+    "REVIEW_ARTIFACT_SHA256_R2.json": {
+      "sha256": "f5055dda53572e8587f7b24a6beb70391a1e4844416b8bb136258efa4de7becd",
+      "entries_unchanged": 16
+    }
+  },
+  "entire_entry_AST_equal_to_R2_after_removing_only_disabled_VJP_context": true,
+  "production_loss_call": {
+    "line": 232,
+    "contexts": [
+      "(args.output_dir / 'training_steps.jsonl').open('x')",
+      "torch.autocast('cuda', dtype=torch.float16)"
+    ],
+    "call": "loss_values(args, output, labels, batch['camera_ids'], loss_fn)"
+  },
+  "production_backward": {
+    "line": 235,
+    "contexts": [
+      "(args.output_dir / 'training_steps.jsonl').open('x')"
+    ],
+    "call": "scaler.scale(loss).backward()"
+  },
+  "R3_observer_VJP": {
+    "line": 68,
+    "contexts": [
+      "torch.autocast('cuda', enabled=False)"
+    ],
+    "call": "torch.autograd.grad(auxiliary * 256.0, targets, retain_graph=True, allow_unused=True)"
+  },
+  "actual_function_control_stub": {
+    "vjp_calls": [
+      {
+        "autocast_enabled": false,
+        "target_count": 11,
+        "scale_times_fixture_auxiliary": 512.0,
+        "retain_graph": true,
+        "allow_unused": true
+      }
+    ],
+    "outer_enabled_context_restored": true,
+    "formal_train_no_observer_calls": true,
+    "combined_loss_fixture_original10_plus_auxiliary2_equals12": true,
+    "boundary": "Control-flow stub only; no numerical gradient/model/runtime evidence."
+  },
+  "sealed_old_source_count": 439,
+  "current_python_source_files": 4,
+  "unchanged_gate": {
+    "sha256": "f378797bcb9c641156de215d38b9db8dc34668c5ac7dad15bf214decd442f3ac",
+    "R2_fixture_receipt": "C:\\Users\\gb\\.codex_tmp\\independent_evidence_draft\\evidence_comparison903\\review\\source905\\SOURCE_ONLY_CHECKS_R2.json",
+    "additional_gate_fixture_runs": 0
+  },
+  "review_actions": {
+    "torch_imports": 0,
+    "neural_model_constructions": 0,
+    "neural_forwards": 0,
+    "gpu_queries": 0,
+    "weight_or_tensor_cache_loads": 0,
+    "optimizer_updates": 0,
+    "queue_actions": 0,
+    "production_modifications": 0
+  },
+  "boundary": "Source-only minimal-fix check; does not qualify initialization, actual support/gradients, M0, NN, novelty or performance."
+}

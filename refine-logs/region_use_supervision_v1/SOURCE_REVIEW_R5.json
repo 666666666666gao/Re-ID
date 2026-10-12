@@ -1,0 +1,288 @@
+{
+  "audit_skill": "experiment-audit",
+  "round": "R5",
+  "verdict": "PASS",
+  "overall_verdict": "PASS",
+  "scope": "Queue source/AST/control only; no initialization, neural execution, GPU query or deployment.",
+  "requested_reviewer_model": "gpt-6-astra",
+  "requested_reviewer_reasoning_effort": "max",
+  "actually_attested_model": "UNATTESTED_BY_AVAILABLE_REVIEW_SESSION",
+  "actually_attested_reasoning_effort": "UNATTESTED_BY_AVAILABLE_REVIEW_SESSION",
+  "reviewer_backend": "native Codex agent",
+  "agent_task_path": "/root/review_region_use_source905",
+  "reviewer_family": "openai",
+  "review_independence": "same-family",
+  "acceptance_status": "provisional",
+  "review_continuity": "Same R1-R3 reviewer follow-up, not a new independent reviewer",
+  "generated_at": "2026-10-12T11:31:02.169134+00:00",
+  "blocking_source_bugs": 0,
+  "findings": [],
+  "resolved_findings": [
+    {
+      "id": "R4-PIN-01",
+      "status": "FIXED_IN_R5",
+      "evidence": "tools/queue_region_use_probe.py:116-117"
+    }
+  ],
+  "checks": [
+    {
+      "id": "old_semantic_initializer_equality",
+      "status": "PASS_SOURCE_RUNTIME_UNVERIFIED",
+      "evidence": [
+        "tools/queue_region_use_probe.py:43-54",
+        "tools/run_independent_native_evidence.py:76-90",
+        "tools/run_native_partitioned.py:23-30",
+        "tools/run_foundation_recipe.py:103-107"
+      ],
+      "detail": "Accepted bindings compare every old field except architecture/entry_sha256/scope, including complete model state, visual/camera/shared hashes, parameter counts, placement, cfg, seed, protocol and public CLIP provenance. Source producer computes state hash from the newly constructed actual model. The three old rows are semantic. A changed full-model hash is rejected by the actual acceptance function in a text fixture. Actual equal model initialization, RNG trajectory and output remain unexecuted; no new numerical-parity prerequisite is imposed."
+    },
+    {
+      "id": "six_per_endpoint_first_attempts",
+      "status": "PASS_SOURCE_AND_CONTROL_FIXTURE",
+      "evidence": [
+        "tools/queue_region_use_probe.py:29-40",
+        "tools/queue_region_use_probe.py:84-129",
+        "tools/queue_native_research.py:17",
+        "tools/run_foundation_recipe.py:189-193",
+        "tools/run_region_use_probe.py:115-122"
+      ],
+      "detail": "Exactly six planned jobs in order201 uniform,201 ambiguity,MSVR uniform,MSVR ambiguity,100 uniform,100 ambiguity. Success path has24 producer stages: prepare,m0,train,evaluate per endpoint. Each accepted M0 precedes its own fresh50; no all-six M0 barrier. Fresh subprocess/train builds public initialization, never the M0 probe. Existing campaign/initializer/training-output assertions prevent restart/overwrite. Failures stop the controller; remaining planned jobs can stay unattempted. There is no promise that six jobs finish if an earlier gate fails and no retry/fallback/preemption path."
+    },
+    {
+      "id": "eight_update_gate_and_probe_retirement",
+      "status": "PASS_SOURCE_AND_CONTROL_FIXTURE",
+      "evidence": [
+        "tools/queue_region_use_probe.py:57-81",
+        "tools/accept_region_use_m0.py:8-36",
+        "tools/run_training_feature_scale.py:50-66",
+        "tools/run_foundation_recipe.py:221-284",
+        "tools/run_independent_native_evidence.py:138-174"
+      ],
+      "detail": "Native finite/update/BN/reload plus source support/activity gate is checked before training. BatchOrderLoader logs after yielding, so the break before processing fetched ninth batch leaves exactly8 processed rows; stdlib fixture confirms this. Old first8 batch order is pinned in original903 artifacts. Consumer uses check=True; a rejecting consumer stops before train and before unlink. Successful acceptance precedes probe hash/path checks, sole-pth check, deletion of only that new endpoint probe and retirement receipt. Source fixture uses a non-model byte string entirely in memory, never a real checkpoint."
+    },
+    {
+      "id": "strict_official_evaluation",
+      "status": "PASS_SOURCE",
+      "evidence": [
+        "tools/queue_region_use_probe.py:119-123",
+        "tools/run_foundation_recipe.py:174-186",
+        "tools/run_foundation_recipe.py:287-312"
+      ],
+      "detail": "Controller consumes official_metrics.json with the new schema, COMPLETE,50 epochs and matching comparison. Active evaluator requires all50 epochs, rebuilds equal binding, strict-loads best full state with condition/protocol checks, selects best mAP with latest tie and reproduces same-checkpoint metrics before writing that exact filename/schema. Historical base.verify is not called; its old SCHEMA is irrelevant. No new result exists."
+    },
+    {
+      "id": "GPU_and_storage_boundaries",
+      "status": "PASS_SOURCE_RUNTIME_UNVERIFIED",
+      "evidence": [
+        "tools/queue_region_use_probe.py:18-19",
+        "tools/queue_region_use_probe.py:85-90",
+        "tools/queue_region_use_probe.py:105-109",
+        "tools/queue_native_research.py:49-78"
+      ],
+      "detail": "Entry requires canonical remote repo and CUDA_VISIBLE_DEVICES=0,1. Active inherited waiter queries only --id=0,1, polls240s, never preempts; Popen explicitly uses0,1. Controller checks512MiB next-artifact plus2GiB reserve once initially and before every producer stage (25 calls on a24-stage successful fixture). Inherited logger additionally checks2GiB before waiting. These are launch-time budget assertions, not measured storage cost or a disk reservation. Actual machine/GPU availability and storage qualification remain pending."
+    },
+    {
+      "id": "source_map_binding_and_future_seal",
+      "status": "PASS_SOURCE_AND_CONTROL_FIXTURE",
+      "evidence": [
+        "tools/queue_region_use_probe.py:22-26",
+        "tools/queue_region_use_probe.py:87-102",
+        "tools/queue_foundation_recipe.py:110-115"
+      ],
+      "detail": "base.source_map is rebound before inherited run_logged calls require_sources; the same function globals are used, and source map equals the saved manifest each stage. Artifact pins are checked at coordinate entry. Old seal has439source/50artifact/3semantic rows. New seal creation, exact five runtime py inclusion and fixed plan/report pins are still pending and are not falsely certified here. New scope absence is not a source bug in an unregistered draft. The single added manifest write now persists each initializer pin before its M0. All six pins are present at completion; a changed initializer is rejected before M0 launch in the fixture."
+    },
+    {
+      "id": "single_line_fix",
+      "status": "PASS_AST_AND_CONTROL",
+      "evidence": [
+        "tools/queue_region_use_probe.py:116-117",
+        "R4_TO_R5.diff",
+        "SOURCE_ONLY_CHECKS_R5.json"
+      ],
+      "detail": "Removing only the new manifest write makes the whole queue AST identical to R4. No other source file changed. R4-PIN-01 is fixed; original R4 remains FAIL and immutable."
+    }
+  ],
+  "audited_input_hashes": {
+    "C:\\Users\\gb\\.trifusion_github_publish_22c3bee\\tools\\queue_native_research.py": {
+      "sha256": "b138144780a31dc8a5a4922cc4e15dbc0537d0f75ce47d823434d3d3a3c5bc65",
+      "reviewed_lines": "all; active wait_for_devices/run_logged 49-78; historical coordinate not called"
+    },
+    "C:\\Users\\gb\\.trifusion_github_publish_22c3bee\\tools\\queue_foundation_recipe.py": {
+      "sha256": "3afe051358aa25d99cb3900b4c6fdb13d5d79d9dcee76d01018fccd27e27d302",
+      "reviewed_lines": "all; active require_sources110-115; historical coordinate/worker/verify not called"
+    },
+    "C:\\Users\\gb\\.trifusion_github_publish_22c3bee\\tools\\queue_correspondence_refinement.py": {
+      "sha256": "5256afe78d02d9bfea3103daa00d488b94c05e839c955f00355098f69ecbd84a",
+      "reviewed_lines": "1-65; active stamp26-27/write30-31 only"
+    },
+    "C:\\Users\\gb\\.trifusion_github_publish_22c3bee\\tools\\queue_correspondence_roles.py": {
+      "sha256": "746fbdb8bdad04290a9ef22c0550e873c9dce9de74c2c3c3767fea9278be69bf",
+      "reviewed_lines": "1-65; imported path constants18-20; legacy baseline launcher not called"
+    },
+    "C:\\Users\\gb\\.trifusion_github_publish_22c3bee\\tools\\collect_correspondence_roles.py": {
+      "sha256": "f81af437fe5ccfea4361c1ed182cb9b8841b362214d2a5220309a0fd2c78fff8",
+      "reviewed_lines": "1-65; active streaming sha24-29; torch-using legacy verify not called"
+    },
+    "C:\\Users\\gb\\.trifusion_github_publish_22c3bee\\tools\\queue_native_partitioned.py": {
+      "sha256": "e3de037c378791734d4cf5cb07d705941b39f1a98038f0cdc24556ede3837c15",
+      "reviewed_lines": "1-65; import/constants only; legacy verify_m0 not called"
+    },
+    "C:\\Users\\gb\\.trifusion_github_publish_22c3bee\\tools\\run_training_feature_scale.py": {
+      "sha256": "473853f58e4ed70bf123509afe2861fa8a9988631c04f0ce04f3260c55fd9081",
+      "reviewed_lines": "1-95; active BatchOrderLoader50-66"
+    },
+    "C:\\Users\\gb\\.trifusion_github_publish_22c3bee\\tools\\run_foundation_recipe.py": {
+      "sha256": "c18042509dc33ff66eee1a6b04a723ad55685bd5d9daf218c3779703ffe20758",
+      "reviewed_lines": "95-130,174-313; active build/train/save/load/evaluate path"
+    },
+    "C:\\Users\\gb\\.trifusion_github_publish_22c3bee\\tools\\run_independent_native_evidence.py": {
+      "sha256": "2429af8d2f803d70b9d15113a430609ead28621eb4341a746c3025cc5685fe23",
+      "reviewed_lines": "1-174; initializer/M0 metadata and loader path"
+    },
+    "C:\\Users\\gb\\.trifusion_github_publish_22c3bee\\tools\\run_clean_clip_joint.py": {
+      "sha256": "178e9793f2cf8261eb44a278e053d5caabd4f2f37dba48a65952b2547338a746",
+      "reviewed_lines": "1-130; public initializer source only"
+    },
+    "C:\\Users\\gb\\.trifusion_github_publish_22c3bee\\tools\\run_global_task_role.py": {
+      "sha256": "151a3350a9da7d86ce6b4b7d5160537b182792ab08727ccb5e4ab0c64bb56d5f",
+      "reviewed_lines": "all"
+    },
+    "C:\\Users\\gb\\.trifusion_github_publish_22c3bee\\tools\\run_native_research.py": {
+      "sha256": "b48725622371fc6d9671c464ce97252e2e06eba465e213ce221d84c798e52cc2",
+      "reviewed_lines": "all"
+    },
+    "C:\\Users\\gb\\.trifusion_github_publish_22c3bee\\tools\\run_native_partitioned.py": {
+      "sha256": "2c3abac37b122760895b97ccf01d4fefe2cfb8223b35b6e2e335a1a4144f72fa",
+      "reviewed_lines": "all"
+    },
+    "C:\\Users\\gb\\.codex_tmp\\independent_evidence_draft\\evidence_comparison903\\INPUT_SEAL_903.json": {
+      "sha256": "3e6eb3be936f0f8bbd695fe6c797413613b746444768de42a41cbf0ac2b1f2ab",
+      "reviewed_lines": "source/artifact key counts, three complete initializer rows and batch-order pin names"
+    },
+    "C:\\Users\\gb\\.codex_tmp\\independent_evidence_draft\\evidence_comparison903\\review\\source905\\SOURCE_REVIEW_R3.json": {
+      "sha256": "95115ab709d5e856f9ad7b656c5cdedfbb09ee1982dfd689c88c166b62749251",
+      "reviewed_lines": "inherited source checks/hash manifest and boundaries"
+    },
+    "C:\\Users\\gb\\.codex_tmp\\independent_evidence_draft\\evidence_comparison903\\review\\source905\\SOURCE_REVIEW_R3.md": {
+      "sha256": "7006aa84ccc9aacc257fc3f23a792a436aeadb624d57fea134d93bc85559883d",
+      "reviewed_lines": "retained R3 verdict/boundary"
+    },
+    "C:\\Users\\gb\\.codex_tmp\\independent_evidence_draft\\evidence_comparison903\\review\\source905\\review_queue_r4_r5.py": {
+      "sha256": "9dc31d3b7b56b5ad7ec0f64180310682a4ca9983cbed76da2b0a6e9b416f9157",
+      "reviewed_lines": "all"
+    },
+    "C:\\Users\\gb\\.codex_tmp\\independent_evidence_draft\\evidence_comparison903\\review\\source905\\r5_inputs\\tools\\queue_region_use_probe.py": {
+      "sha256": "1cdbeb294ce6d1686ffe0dcfb3def1ac11d4fb4aac2e988638199544353dfdba",
+      "reviewed_lines": "all",
+      "canonical_source_path": "C:\\Users\\gb\\.trifusion_github_publish_22c3bee\\tools\\queue_region_use_probe.py",
+      "review_basis": "preserved exact round input; R3 five files unchanged"
+    },
+    "C:\\Users\\gb\\.codex_tmp\\independent_evidence_draft\\evidence_comparison903\\review\\source905\\r5_inputs\\modeling\\trifusion\\region_use_objective.py": {
+      "sha256": "556876002cc7abef5a3525940781b8facdf6a1e8bfc792e5b900f16a5f72fe6d",
+      "reviewed_lines": "all",
+      "canonical_source_path": "C:\\Users\\gb\\.trifusion_github_publish_22c3bee\\modeling\\trifusion\\region_use_objective.py",
+      "review_basis": "preserved exact round input; R3 five files unchanged"
+    },
+    "C:\\Users\\gb\\.codex_tmp\\independent_evidence_draft\\evidence_comparison903\\review\\source905\\r5_inputs\\modeling\\trifusion\\region_use_heads.py": {
+      "sha256": "1680d04f7b26f513380509af88bfce555cbc04497162e4af10c47dcbbcc9b63e",
+      "reviewed_lines": "all",
+      "canonical_source_path": "C:\\Users\\gb\\.trifusion_github_publish_22c3bee\\modeling\\trifusion\\region_use_heads.py",
+      "review_basis": "preserved exact round input; R3 five files unchanged"
+    },
+    "C:\\Users\\gb\\.codex_tmp\\independent_evidence_draft\\evidence_comparison903\\review\\source905\\r5_inputs\\tools\\run_region_use_probe.py": {
+      "sha256": "176e1e88a74ede5447f57cf0e3a89c1a0847e729647d37b11fdb6c76ea715591",
+      "reviewed_lines": "all",
+      "canonical_source_path": "C:\\Users\\gb\\.trifusion_github_publish_22c3bee\\tools\\run_region_use_probe.py",
+      "review_basis": "preserved exact round input; R3 five files unchanged"
+    },
+    "C:\\Users\\gb\\.codex_tmp\\independent_evidence_draft\\evidence_comparison903\\review\\source905\\r5_inputs\\tools\\accept_region_use_m0.py": {
+      "sha256": "f378797bcb9c641156de215d38b9db8dc34668c5ac7dad15bf214decd442f3ac",
+      "reviewed_lines": "all",
+      "canonical_source_path": "C:\\Users\\gb\\.trifusion_github_publish_22c3bee\\tools\\accept_region_use_m0.py",
+      "review_basis": "preserved exact round input; R3 five files unchanged"
+    },
+    "C:\\Users\\gb\\.codex_tmp\\independent_evidence_draft\\evidence_comparison903\\review\\source905\\r5_inputs\\refine-logs\\region_use_supervision_v1\\EXPERIMENT_PLAN.md": {
+      "sha256": "576138fc39d97d251fcb2522a11ad184c8eb66c0f388b009f2b8f1e634214074",
+      "reviewed_lines": "all",
+      "canonical_source_path": "C:\\Users\\gb\\.trifusion_github_publish_22c3bee\\refine-logs\\region_use_supervision_v1\\EXPERIMENT_PLAN.md",
+      "review_basis": "preserved exact round input; R3 five files unchanged"
+    },
+    "C:\\Users\\gb\\.codex_tmp\\independent_evidence_draft\\evidence_comparison903\\review\\source905\\SOURCE_ONLY_CHECKS_R5.json": {
+      "sha256": "628ffd8aebd7ab62fb3eac3dcb482aac100d8ef6ca13781a874f05ee81284074",
+      "reviewed_lines": "all"
+    }
+  },
+  "inherited_full_source_audit": {
+    "path": "C:\\Users\\gb\\.codex_tmp\\independent_evidence_draft\\evidence_comparison903\\review\\source905\\SOURCE_REVIEW_R3.json",
+    "sha256": "95115ab709d5e856f9ad7b656c5cdedfbb09ee1982dfd689c88c166b62749251",
+    "scope": "Unchanged producer/objective/head/gate and full original trainer/import path. Not rerun numerically."
+  },
+  "review_actions": {
+    "torch_imports": 0,
+    "neural_model_loads_or_forwards": 0,
+    "GPU_queries": 0,
+    "weight_or_tensor_cache_loads": 0,
+    "optimizer_updates": 0,
+    "real_subprocess_launches": 0,
+    "queue_launches": 0,
+    "production_modifications": 0
+  },
+  "runtime_status": {
+    "new_scope_seal": "PENDING_NOT_CREATED_BY_REVIEW",
+    "actual_initialization_equality": "UNVERIFIED",
+    "actual_eight_M0_updates_and_auxiliary_activity": "UNVERIFIED",
+    "queue_launch": "NOT_EXECUTED",
+    "formal_training_and_evaluation": "NOT_EXECUTED",
+    "retrieval_performance": "UNVERIFIED"
+  },
+  "round_input_snapshot": "C:\\Users\\gb\\.codex_tmp\\independent_evidence_draft\\evidence_comparison903\\review\\source905\\r5_inputs",
+  "source_only_checks": "C:\\Users\\gb\\.codex_tmp\\independent_evidence_draft\\evidence_comparison903\\review\\source905\\SOURCE_ONLY_CHECKS_R5.json",
+  "R1_R2_R3_artifacts_unchanged": {
+    "REVIEW_ARTIFACT_SHA256.json": {
+      "sha256": "793d794a32732a07438d7f2e47277723541589b634c3298e12b414cab9edda40",
+      "unchanged_entries": 16
+    },
+    "REVIEW_ARTIFACT_SHA256_R2.json": {
+      "sha256": "f5055dda53572e8587f7b24a6beb70391a1e4844416b8bb136258efa4de7becd",
+      "unchanged_entries": 16
+    },
+    "REVIEW_ARTIFACT_SHA256_R3.json": {
+      "sha256": "1a4b94a1a0e9e9a2ac5659eb345f2023b13bad8e2e7101456372aa1e6c090cf4",
+      "unchanged_entries": 15
+    }
+  },
+  "final_source_hash_recheck_at": "2026-10-12T11:31:02.169134+00:00",
+  "current_vs_reviewed_inputs": {
+    "tools/queue_region_use_probe.py": {
+      "reviewed_sha256": "1cdbeb294ce6d1686ffe0dcfb3def1ac11d4fb4aac2e988638199544353dfdba",
+      "current_sha256": "1cdbeb294ce6d1686ffe0dcfb3def1ac11d4fb4aac2e988638199544353dfdba",
+      "current_matches_reviewed": true
+    },
+    "modeling/trifusion/region_use_objective.py": {
+      "reviewed_sha256": "556876002cc7abef5a3525940781b8facdf6a1e8bfc792e5b900f16a5f72fe6d",
+      "current_sha256": "556876002cc7abef5a3525940781b8facdf6a1e8bfc792e5b900f16a5f72fe6d",
+      "current_matches_reviewed": true
+    },
+    "modeling/trifusion/region_use_heads.py": {
+      "reviewed_sha256": "1680d04f7b26f513380509af88bfce555cbc04497162e4af10c47dcbbcc9b63e",
+      "current_sha256": "1680d04f7b26f513380509af88bfce555cbc04497162e4af10c47dcbbcc9b63e",
+      "current_matches_reviewed": true
+    },
+    "tools/run_region_use_probe.py": {
+      "reviewed_sha256": "176e1e88a74ede5447f57cf0e3a89c1a0847e729647d37b11fdb6c76ea715591",
+      "current_sha256": "176e1e88a74ede5447f57cf0e3a89c1a0847e729647d37b11fdb6c76ea715591",
+      "current_matches_reviewed": true
+    },
+    "tools/accept_region_use_m0.py": {
+      "reviewed_sha256": "f378797bcb9c641156de215d38b9db8dc34668c5ac7dad15bf214decd442f3ac",
+      "current_sha256": "f378797bcb9c641156de215d38b9db8dc34668c5ac7dad15bf214decd442f3ac",
+      "current_matches_reviewed": true
+    },
+    "refine-logs/region_use_supervision_v1/EXPERIMENT_PLAN.md": {
+      "reviewed_sha256": "576138fc39d97d251fcb2522a11ad184c8eb66c0f388b009f2b8f1e634214074",
+      "current_sha256": "576138fc39d97d251fcb2522a11ad184c8eb66c0f388b009f2b8f1e634214074",
+      "current_matches_reviewed": true
+    }
+  },
+  "boundary": "Same-family provisional. Requested model/effort is distinct from unattested actual identity. Source verdict is not initialization/M0/NN/performance qualification; no novelty guarantee."
+}
