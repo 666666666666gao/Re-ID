@@ -1,0 +1,11 @@
+# Actual-region supervision: one original endpoint
+
+| Dataset | Condition | Best epoch | mAP | R1 | R5 | R10 | Last mAP |
+|---|---|---:|---:|---:|---:|---:|---:|
+| MSVR310 | ambiguity | 38 | 50.5458 | 67.8511 | 80.5415 | 85.4484 | 50.4917 |
+
+One seed42, original full50/strict selected-best distances, complete legal query/gallery and matched raw-semantic order. No model inference, optimizer, extra seed, test-time comparison, stronger-teacher claim or post-hoc rescue. Source support/auxiliary loss and AP tails are descriptive; no unique failure cause. Same-model global/regional decomposition and uniform-versus-ambiguity remain separate consumers, not fabricated here. Official benchmark consumed in development.
+
+ambiguity minus raw_semantic: mAP +0.0035, R1 +0.0000; first repairs/new errors 0/0.
+
+ambiguity minus independent_global: mAP +0.0036, R1 -0.1692; first repairs/new errors 0/1.

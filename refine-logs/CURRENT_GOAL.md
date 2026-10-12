@@ -1,3 +1,7 @@
+## 2026-10-12 first-four908 results - latest priority
+
+Read sole master §908 and logs/region_use_first_four_20261012_908. Original906 four accepted full50 endpoints complete; goal UNMET. RGBNT100 still original queue, last22:03 uniform3/50. Sole native timer98025 due10/13 00:11; do not duplicate or earlier NN/GPU poll. Source463/50 dependencies remain immutable; no model/report replay, extra seed/gain or late-score substitution. Four CPU reports accepted only saved-text/provisional scope. User Goal reactivated; old pause historical. Earlier dated sections historical.
+
 ## 2026-10-12 endpoint907 CPU diagnosis - latest priority
 
 Read sole master §907. Original906 six-end queue continues once on26GPU0/1; no restart or appended queue. Actual20:05 first201uniform34/50, not full accepted. Separate CPU report source R2 PASS only; no report executed. Live463 source/50 dependencies immutable. Original timer67887 consumed. Only analyze each actual COMPLETE four-stage endpoint with distinct output; pending missing scores stay missing. Goal ACTIVE_UNMET. Earlier notes historical.

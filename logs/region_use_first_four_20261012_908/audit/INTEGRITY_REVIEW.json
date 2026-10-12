@@ -1,0 +1,730 @@
+{
+  "audit_skill": "experiment-audit",
+  "verdict": "WARN",
+  "overall_verdict": "WARN",
+  "integrity_status": "warn",
+  "reason_code": "qualified_saved_text_evidence_with_runtime_and_scope_limits",
+  "summary": "No blocking source or saved-result arithmetic defect found. 261 original deterministic checks pass; three narrow document checks close the standalone claims development-scope clarification. Four endpoint reports remain provisionally supported as saved text/producer evidence, with binary/runtime and historical-reference limits.",
+  "generated_at": "2026-10-12T14:22:40.304473+00:00",
+  "date": "2026-10-12",
+  "agent_id": "/root/audit_region_use_four908",
+  "verdict_id": "/root/audit_region_use_four908/results908",
+  "executor_backend": "native-codex",
+  "requested_reviewer_model": "gpt-6-astra",
+  "requested_reviewer_reasoning_effort": "max",
+  "reviewer_model": "UNATTESTED",
+  "reviewer_reasoning_effort": "UNATTESTED",
+  "reviewer_family": "openai",
+  "review_independence": "same-family",
+  "acceptance_status": "provisional",
+  "request_trace": "REVIEW_REQUEST_ACTUAL.txt",
+  "trace_path": ".aris/traces/experiment-audit/2026-10-12_results908",
+  "request_trace_scope": "Verbatim received NEW_TASK body, saved with terminal newline. Invisible parent tool arguments/timestamps are not represented. Caller separately reports fork_turns=none/model=gpt-6-astra/reasoning_effort=max; serving model/effort remain UNATTESTED.",
+  "checks": {
+    "A_gt_provenance": {
+      "status": "PASS",
+      "evidence": [
+        "evidence_snapshot/production_sources/tools/official_three_dataset_data.py:8",
+        "evidence_snapshot/production_sources/tools/run_correspondence_roles.py:86",
+        "evidence_snapshot/production_sources/tools/run_region_use_probe.py:108",
+        "evidence_snapshot/production_sources/modeling/trifusion/region_use_objective.py:21"
+      ],
+      "details": "Retrieval identities/environments come from sealed dataset protocol records. All path identity/environment fields, training/evaluation identity disjointness, and legal-positive counts were recomputed. All saved batch paths/labels/cameras map to training records. Global model margins only weight the auxiliary training objective; they do not create retrieval GT. Physical dataset image bytes were not inspected."
+    },
+    "B_score_normalization": {
+      "status": "PASS",
+      "evidence": [
+        "evidence_snapshot/production_sources/tools/train_rgbnt100_signal_oof.py:253",
+        "evidence_snapshot/production_sources/tools/train_msvr310_signal_oof.py:223",
+        "evidence_snapshot/production_sources/comparators/Signal-cd1b0a6/utils/metrics.py:68",
+        "evidence_snapshot/production_sources/comparators/Signal-cd1b0a6/utils/metrics.py:137"
+      ],
+      "details": "Complete sorted legal gallery enters AP; only same identity AND same camera/scene is removed. Different-identity distractors in the query environment remain. AP averages precision over legal positives, and mAP/CMC average all valid queries; every protocol query has positives. No retrieval metric is normalized by model-output extrema or means. L2 feature normalization and normalized auxiliary loss weights are not score inflation. Upstream float32 CMC versus per-query integer arithmetic is reconciled with the existing <1e-5 percentage-point tolerance."
+    },
+    "C_result_existence_and_original_completion": {
+      "status": "WARN",
+      "evidence": [
+        "evidence_snapshot/intake/INTAKE_MANIFEST_908.json:3",
+        "evidence_snapshot/intake/logs/region_use_resume906/CPU_REPORTS_908.json:2",
+        "evidence_snapshot/production_sources/tools/report_region_use_endpoint.py:30",
+        "evidence_snapshot/production_sources/tools/run_foundation_recipe.py:295"
+      ],
+      "details": "All 30 intake files have exact expected SHA256; 16 stage receipts are ordered prepare/m0/train/evaluate, COMPLETE/exit0. Four receipts equal original job results and bind seed42, full50, same selected-best epoch, checkpoint/distance hash strings. Histories, logs, candidate summaries and rounded draft table agree. Binary hashes are consistent producer claims, not independently recomputed from absent bytes. L1 and external historical-reference boundary L2 apply."
+    },
+    "D_live_call_path": {
+      "status": "PASS",
+      "evidence": [
+        "evidence_snapshot/production_sources/tools/run_region_use_probe.py:80",
+        "evidence_snapshot/production_sources/tools/run_region_use_probe.py:122",
+        "evidence_snapshot/production_sources/tools/run_independent_native_evidence.py:168",
+        "evidence_snapshot/production_sources/tools/run_foundation_recipe.py:300",
+        "evidence_snapshot/production_sources/tools/run_correspondence_roles.py:93",
+        "evidence_snapshot/production_sources/tools/report_region_use_endpoint.py:71",
+        "evidence_snapshot/production_sources/tools/report_prepool_dense_correspondence.py:20",
+        "evidence_snapshot/intake/logs/region_use_resume906/CPU_REPORTS_908.json:3"
+      ],
+      "details": "Direct source reads trace the actual mode dispatcher through configured foundation train/evaluate and official scorer, and reporter main through paired()/camera_scores()/scene_scores(). Four saved commands call the reviewed reporter SHA 807746c6ab295fc39de40bd3a91028c57dc7d346f89e1351d803d5ac401a314d; four exit0 receipts and stdout lines agree with four distinct reports. These are saved execution evidence, not a new reviewer invocation. Unrelated OOF training/evaluation entry points and author visualization/reranking classes are not used by this pipeline."
+    },
+    "E_coverage_scope_and_claims": {
+      "status": "WARN",
+      "evidence": [
+        "evidence_snapshot/production_sources/tools/report_region_use_endpoint.py:46",
+        "evidence_snapshot/production_sources/tools/report_region_use_endpoint.py:59",
+        "evidence_snapshot/production_sources/tools/report_prepool_dense_correspondence.py:41",
+        "evidence_snapshot/production_sources/tools/report_region_use_endpoint.py:73",
+        "evidence_snapshot/claims/CLAIMS_908_DRAFT.md:14"
+      ],
+      "details": "All 6710 step/batch records cover 200 endpoint-epochs with continuous epoch batch IDs and exact sealed historical raw-semantic order digests. Auxiliary coverage is independently recomputed from train GT for every batch. Eight full-query comparisons reproduce AP/CMC, identity counts/macros, all four transition contributions, repairs-minus-new-errors R1, and ceil(5% N) signed tails. Scope is two datasets, two conditions and one training seed, with official split selection/development consumption. No seed/epoch average, own-global/regional decomposition, local efficacy or unique causal explanation is supported. W1 was closed by an append-only standalone draft wording clarification; no original numerical checks were rerun."
+    },
+    "F_evaluation_type": {
+      "status": "PASS",
+      "classification": "real_gt",
+      "evidence": [
+        "evidence_snapshot/production_sources/tools/run_correspondence_roles.py:88",
+        "evidence_snapshot/production_sources/modeling/trifusion/region_use_objective.py:16",
+        "evidence_snapshot/production_sources/tools/report_region_use_endpoint.py:95"
+      ],
+      "details": "Retrieval evaluation is real_gt according to directly audited metadata/source and saved text evidence. Auxiliary loss/support are dataset-ID-supervised training diagnostics with model-dependent weighting, not semantic-part ground truth or a local retrieval evaluation. Prior CPU fixtures were source/simulation checks and confer no neural runtime acceptance."
+    }
+  },
+  "findings": [
+    {
+      "id": "W1",
+      "severity": "documentation",
+      "status": "CLOSED",
+      "title": "Explicitly retain official-benchmark selection/development boundary in the standalone claims draft",
+      "evidence": [
+        "evidence_snapshot/claims/CLAIMS_908_DRAFT.md:3",
+        "evidence_snapshot/claims/CLAIMS_908_DRAFT.md:12",
+        "evidence_snapshot/production_sources/tools/run_foundation_recipe.py:248",
+        "evidence_snapshot/production_sources/tools/run_foundation_recipe.py:252",
+        "evidence_snapshot/production_sources/tools/run_foundation_recipe.py:296"
+      ],
+      "detail": "The draft says same-mAP-best but does not explicitly say official query/gallery metrics select the checkpoint across 50 epochs. The endpoint reports do already disclose official-benchmark development consumption. The final strict pass reloads the selected checkpoint; it is not an independent untouched test split.",
+      "minimal_fix": "Completed as an append-only wording clarification; no source/result/run change.",
+      "original_status": "WARN",
+      "resolution": "The author appended the exact official-benchmark evaluation/selection/development and no untouched-test or seed-confirmation sentence at clarified claim line 22. The original draft is byte-identically preserved; only this appended sentence was checked.",
+      "resolution_evidence": "CLAIM_SCOPE_CLARIFICATION_CHECK.json"
+    },
+    {
+      "id": "L1",
+      "severity": "evidence_boundary",
+      "status": "WARN",
+      "title": "Saved producer evidence is not independent binary or runtime replay",
+      "evidence": [
+        "evidence_snapshot/intake/INTAKE_MANIFEST_908.json:36",
+        "evidence_snapshot/production_sources/tools/report_region_use_endpoint.py:37",
+        "evidence_snapshot/production_sources/tools/run_foundation_recipe.py:180",
+        "evidence_snapshot/production_sources/tools/run_foundation_recipe.py:287"
+      ],
+      "detail": "The local intake contains text/metadata/report files only. Actual checkpoint states, official distance tensors, old control tensors, image bytes, and full original M0 tensor/step payloads remain outside this review. Saved strict evaluator receipts, stage exit codes and M0 acceptance summaries agree, but the reviewer did not independently load those binaries, reconstruct AP from distances, or witness the remote process.",
+      "minimal_fix": "Retain the producer-evidence and no-independent-replay qualification. This does not authorize a replay, new parity/kernel check or broader campaign gate."
+    },
+    {
+      "id": "L2",
+      "severity": "scope_boundary",
+      "status": "WARN",
+      "title": "Four endpoints and one seed do not establish campaign completion or stable efficacy",
+      "evidence": [
+        "evidence_snapshot/intake/logs/region_use_resume906/ORIGINAL_STATUS_908.json:29",
+        "evidence_snapshot/intake/logs/region_use_resume906/ORIGINAL_STATUS_908.json:871",
+        "evidence_snapshot/claims/CLAIMS_908_DRAFT.md:18"
+      ],
+      "detail": "The 22:03:02 +08:00 witness has four COMPLETE jobs, RGBNT100 uniform train RUNNING with 3 completed epochs and its ambiguity job PENDING/unattempted. Historical Signal numbers in the draft are explicitly external project references, not recertified primary results in this intake.",
+      "minimal_fix": "Keep the exact four-endpoint/seed42 scope and all-three goal unmet. Do not call historical Signal references independently certified or use this audit as an all-three completion audit."
+    }
+  ],
+  "blocking_findings": [],
+  "source_code_bug_findings": [],
+  "claims": [
+    {
+      "id": "C1",
+      "claim": "Four original seed42/full50 endpoints and their first strict same-best/CPU reports completed",
+      "impact": "supported_as_saved_receipts",
+      "boundary": "No independent binary/runtime replay; not six-end completion."
+    },
+    {
+      "id": "C2",
+      "claim": "RGBNT201 uniform and ambiguity improve mAP over pinned raw-semantic and independent-global controls in these selected checkpoints",
+      "impact": "supported_with_development_and_one_seed_qualifiers"
+    },
+    {
+      "id": "C3",
+      "claim": "MSVR310 has near-zero mAP differences and one-query R1 loss versus independent global",
+      "impact": "supported_descriptive_only"
+    },
+    {
+      "id": "C4",
+      "claim": "Support counts and auxiliary loss curves prove a unique failure mechanism or independent local gain",
+      "impact": "unsupported_reject"
+    },
+    {
+      "id": "C5",
+      "claim": "Stable multi-seed efficacy, significance or equivalence",
+      "impact": "unsupported_reject"
+    },
+    {
+      "id": "C6",
+      "claim": "All three datasets exceed Signal / six endpoints completed / original campaign goal achieved",
+      "impact": "unsupported_reject"
+    },
+    {
+      "id": "C7",
+      "claim": "Historical Signal 201/MSVR numeric references",
+      "impact": "external_reference_not_recertified",
+      "boundary": "Already labeled external in draft; no historical producer rerun or primary binary verification performed."
+    },
+    {
+      "id": "C8",
+      "claim": "Same-model global/residual/regional decomposition or a stronger local teacher",
+      "impact": "not_measured_reject_if_asserted"
+    }
+  ],
+  "deterministic_checks": {
+    "path": "DETERMINISTIC_CHECKS.json",
+    "sha256": "57ee89c8510b67bbb6295fed5b77c6b938c5cf5533c37faaf1b930949fe33d22",
+    "verdict": "PASS",
+    "count": 261,
+    "independence": "deterministic",
+    "acceptance_scope": "exact text/hash/arithmetic checks only"
+  },
+  "audited_input_manifests": [
+    "AUDITED_INPUT_MANIFEST.json",
+    "ADDITIONAL_INPUT_MANIFEST.json",
+    "CLAIM_SCOPE_INPUT_MANIFEST.json"
+  ],
+  "audited_snapshot_count": 79,
+  "claim_snapshot_sha256": "e6b628bc2b0083dee27ec8ac58ce4adbafbd72253a449159893eb64f7eb2ab71",
+  "source_seal_sha256": "d9c56b40c377d658fcc879a8db538a0c585e54219e83c7fd6755411dbaeff7ed",
+  "prior_review_boundary": "R1 FAIL, R2 source-only PASS and author-scorer supplement are preserved. Current reviewer directly reads the supplied sources and actual result rows rather than treating earlier PASS as result proof. The directly relevant author metric source SHA 91604acb7d978462c16904910a645d7d1697c15bf150da529099004c8b5eecb2 matches the original seal. The entire 463-file inherited source inventory was not recertified.",
+  "protocols": {
+    "RGBNT201": {
+      "counts": {
+        "train": 3951,
+        "query": 836,
+        "gallery": 836
+      },
+      "train_identities": 171,
+      "query_identities": 30,
+      "gallery_identities": 30,
+      "environment": "camera",
+      "legal_positive_range": [
+        7,
+        21
+      ],
+      "legal_gallery_range": [
+        815,
+        829
+      ],
+      "dataset_root": "/data/gaob/Re-ID/dataset/RGBNT201",
+      "image_bytes_verified": false
+    },
+    "MSVR310": {
+      "counts": {
+        "train": 1032,
+        "query": 591,
+        "gallery": 1055
+      },
+      "train_identities": 155,
+      "query_identities": 52,
+      "gallery_identities": 155,
+      "environment": "scene",
+      "legal_positive_range": [
+        1,
+        31
+      ],
+      "legal_gallery_range": [
+        1047,
+        1054
+      ],
+      "dataset_root": "/data/gaob/Re-ID/dataset/MSVR310",
+      "image_bytes_verified": false
+    }
+  },
+  "endpoints": [
+    {
+      "dataset": "RGBNT201",
+      "condition": "uniform",
+      "best_epoch": 8,
+      "metrics": {
+        "mAP": 74.78804891412123,
+        "Rank-1": 78.94737124443054,
+        "Rank-5": 88.63636255264282,
+        "Rank-10": 92.22487807273865
+      },
+      "last_metrics": {
+        "mAP": 71.63618715077537,
+        "Rank-1": 73.68420958518982,
+        "Rank-5": 84.56937670707703,
+        "Rank-10": 89.59330320358276
+      },
+      "formal_recorded_steps": 2649,
+      "eligible_query_exposures": 57416,
+      "source_query_exposures": 169536,
+      "eligible_fraction": 0.33866553416383544,
+      "legal_positive_pairs": 198030,
+      "legal_triplets": 11089680,
+      "zero_support_steps": 92,
+      "first_aux_loss": 0.5774905743463984,
+      "last_aux_loss": 0.002347439782856524,
+      "times": {
+        "producer_wall_seconds": 2428.699669,
+        "training_and_epoch_evaluation_interval_seconds": 2402.528419,
+        "training_loop_seconds": 1646.581627433654,
+        "strict_eval_stage_wall_seconds": 44.219176,
+        "strict_evaluator_internal_seconds": 39.60438696295023,
+        "CPU_report_wall_seconds": 4.6651
+      },
+      "checkpoint_sha256": "eda9a10b22a2039ae5eb84e98c789bd6c7a753ffbb37bdec5691f46b396b7079",
+      "distance_sha256": "a586d53f3b113badac93cbdfec1491c8c3947edafa8193b445d729f7b049b745",
+      "binary_payload_verified": false
+    },
+    {
+      "dataset": "RGBNT201",
+      "condition": "ambiguity",
+      "best_epoch": 8,
+      "metrics": {
+        "mAP": 74.62990085641505,
+        "Rank-1": 79.0669858455658,
+        "Rank-5": 88.27751278877258,
+        "Rank-10": 91.86602830886841
+      },
+      "last_metrics": {
+        "mAP": 71.96038740594201,
+        "Rank-1": 74.88038539886475,
+        "Rank-5": 84.92823243141174,
+        "Rank-10": 89.83253836631775
+      },
+      "formal_recorded_steps": 2649,
+      "eligible_query_exposures": 57416,
+      "source_query_exposures": 169536,
+      "eligible_fraction": 0.33866553416383544,
+      "legal_positive_pairs": 198030,
+      "legal_triplets": 11089680,
+      "zero_support_steps": 92,
+      "first_aux_loss": 0.5834561462672252,
+      "last_aux_loss": 0.006464390985817069,
+      "times": {
+        "producer_wall_seconds": 2422.959254,
+        "training_and_epoch_evaluation_interval_seconds": 2395.080174,
+        "training_loop_seconds": 1645.1648076432757,
+        "strict_eval_stage_wall_seconds": 45.852588,
+        "strict_evaluator_internal_seconds": 41.39446755987592,
+        "CPU_report_wall_seconds": 4.4112
+      },
+      "checkpoint_sha256": "e93121a4b8c66ac5ad66559f4898b59500b58ed675af3856d7279cbe20eeff9e",
+      "distance_sha256": "965a8bdcd7a057aefdd389e6220e41bd9206e4ccec0f65c9ed77d4012b23a564",
+      "binary_payload_verified": false
+    },
+    {
+      "dataset": "MSVR310",
+      "condition": "uniform",
+      "best_epoch": 38,
+      "metrics": {
+        "mAP": 50.5417773777914,
+        "Rank-1": 67.85110235214233,
+        "Rank-5": 80.54145574569702,
+        "Rank-10": 85.44839024543762
+      },
+      "last_metrics": {
+        "mAP": 50.49028401631792,
+        "Rank-1": 67.68189668655396,
+        "Rank-5": 81.21827244758606,
+        "Rank-10": 85.78680157661438
+      },
+      "formal_recorded_steps": 706,
+      "eligible_query_exposures": 21708,
+      "source_query_exposures": 45184,
+      "eligible_fraction": 0.480435552407932,
+      "legal_positive_pairs": 46550,
+      "legal_triplets": 2793000,
+      "zero_support_steps": 0,
+      "first_aux_loss": 0.655439555644989,
+      "last_aux_loss": 0.2668859798993383,
+      "times": {
+        "producer_wall_seconds": 1433.092709,
+        "training_and_epoch_evaluation_interval_seconds": 1405.454779,
+        "training_loop_seconds": 516.2585500839632,
+        "strict_eval_stage_wall_seconds": 48.34247,
+        "strict_evaluator_internal_seconds": 43.79694233904593,
+        "CPU_report_wall_seconds": 3.79947
+      },
+      "checkpoint_sha256": "0b3ea286862e8c76a8d93c7aa8e6b049ce4d3153dc33e98114da432d1d363f81",
+      "distance_sha256": "430c856632e03148e41aec6c519af4eb1ecfcd60b177330a4f4b1cb3633b706e",
+      "binary_payload_verified": false
+    },
+    {
+      "dataset": "MSVR310",
+      "condition": "ambiguity",
+      "best_epoch": 38,
+      "metrics": {
+        "mAP": 50.545759980124174,
+        "Rank-1": 67.85110235214233,
+        "Rank-5": 80.54145574569702,
+        "Rank-10": 85.44839024543762
+      },
+      "last_metrics": {
+        "mAP": 50.49166539066796,
+        "Rank-1": 67.68189668655396,
+        "Rank-5": 81.21827244758606,
+        "Rank-10": 85.78680157661438
+      },
+      "formal_recorded_steps": 706,
+      "eligible_query_exposures": 21708,
+      "source_query_exposures": 45184,
+      "eligible_fraction": 0.480435552407932,
+      "legal_positive_pairs": 46550,
+      "legal_triplets": 2793000,
+      "zero_support_steps": 0,
+      "first_aux_loss": 0.6646830098969596,
+      "last_aux_loss": 0.30441016810280935,
+      "times": {
+        "producer_wall_seconds": 1430.653969,
+        "training_and_epoch_evaluation_interval_seconds": 1403.034922,
+        "training_loop_seconds": 515.3099233577959,
+        "strict_eval_stage_wall_seconds": 48.196189,
+        "strict_evaluator_internal_seconds": 43.59336220892146,
+        "CPU_report_wall_seconds": 3.792572
+      },
+      "checkpoint_sha256": "16b29d5aa53cb1617bb6d63cbeae91befab54c3c05d818c7a2a2b1920f93781a",
+      "distance_sha256": "71fdc88ddb7f165fdf74daa161f52d5e6155210eeee084a23c329ffdaca3251e",
+      "binary_payload_verified": false
+    }
+  ],
+  "pairs": [
+    {
+      "dataset": "RGBNT201",
+      "condition": "uniform",
+      "control": "raw_semantic",
+      "queries": 836,
+      "identities": 30,
+      "delta_metrics": {
+        "mAP": 0.41318737750832213,
+        "Rank-1": 0.11961722488038617,
+        "Rank-5": 0.23923444976077235,
+        "Rank-10": 0.4784688995215305
+      },
+      "rank1_repairs": 7,
+      "rank1_new_errors": 6,
+      "groups": {
+        "repaired": {
+          "queries": 7,
+          "contribution_to_total_delta_map_points": 0.058092916131395334
+        },
+        "new_error": {
+          "queries": 6,
+          "contribution_to_total_delta_map_points": -0.04149562978658673
+        },
+        "first_still_correct": {
+          "queries": 653,
+          "contribution_to_total_delta_map_points": 0.35695612899007434
+        },
+        "first_still_wrong": {
+          "queries": 170,
+          "contribution_to_total_delta_map_points": 0.03963396217344078
+        }
+      },
+      "tail_queries": 42,
+      "tail_mean_delta_ap_points": -5.299494130307617,
+      "identity_macro_delta_ap_points": 0.38406690483712413
+    },
+    {
+      "dataset": "RGBNT201",
+      "condition": "uniform",
+      "control": "independent_global",
+      "queries": 836,
+      "identities": 30,
+      "delta_metrics": {
+        "mAP": 0.4913853394337053,
+        "Rank-1": 0.0,
+        "Rank-5": 0.3588516746411585,
+        "Rank-10": 0.3588516746411585
+      },
+      "rank1_repairs": 6,
+      "rank1_new_errors": 6,
+      "groups": {
+        "repaired": {
+          "queries": 6,
+          "contribution_to_total_delta_map_points": 0.053313757668800026
+        },
+        "new_error": {
+          "queries": 6,
+          "contribution_to_total_delta_map_points": -0.037724602248026574
+        },
+        "first_still_correct": {
+          "queries": 654,
+          "contribution_to_total_delta_map_points": 0.42167249350376906
+        },
+        "first_still_wrong": {
+          "queries": 170,
+          "contribution_to_total_delta_map_points": 0.05412369050916819
+        }
+      },
+      "tail_queries": 42,
+      "tail_mean_delta_ap_points": -4.940888422711585,
+      "identity_macro_delta_ap_points": 0.4512633714734731
+    },
+    {
+      "dataset": "RGBNT201",
+      "condition": "ambiguity",
+      "control": "raw_semantic",
+      "queries": 836,
+      "identities": 30,
+      "delta_metrics": {
+        "mAP": 0.255039319802151,
+        "Rank-1": 0.23923444976077235,
+        "Rank-5": -0.11961722488038617,
+        "Rank-10": 0.11961722488037196
+      },
+      "rank1_repairs": 8,
+      "rank1_new_errors": 6,
+      "groups": {
+        "repaired": {
+          "queries": 8,
+          "contribution_to_total_delta_map_points": 0.06329141028705917
+        },
+        "new_error": {
+          "queries": 6,
+          "contribution_to_total_delta_map_points": -0.05565193262733912
+        },
+        "first_still_correct": {
+          "queries": 653,
+          "contribution_to_total_delta_map_points": 0.2513783332643979
+        },
+        "first_still_wrong": {
+          "queries": 169,
+          "contribution_to_total_delta_map_points": -0.003978491121978993
+        }
+      },
+      "tail_queries": 42,
+      "tail_mean_delta_ap_points": -6.319871318292493,
+      "identity_macro_delta_ap_points": 0.20577927783117073
+    },
+    {
+      "dataset": "RGBNT201",
+      "condition": "ambiguity",
+      "control": "independent_global",
+      "queries": 836,
+      "identities": 30,
+      "delta_metrics": {
+        "mAP": 0.3332372817275342,
+        "Rank-1": 0.11961722488038617,
+        "Rank-5": 0.0,
+        "Rank-10": 0.0
+      },
+      "rank1_repairs": 8,
+      "rank1_new_errors": 7,
+      "groups": {
+        "repaired": {
+          "queries": 8,
+          "contribution_to_total_delta_map_points": 0.054045027164838916
+        },
+        "new_error": {
+          "queries": 7,
+          "contribution_to_total_delta_map_points": -0.05836952585059939
+        },
+        "first_still_correct": {
+          "queries": 653,
+          "contribution_to_total_delta_map_points": 0.32829549669221997
+        },
+        "first_still_wrong": {
+          "queries": 168,
+          "contribution_to_total_delta_map_points": 0.009266283721066384
+        }
+      },
+      "tail_queries": 42,
+      "tail_mean_delta_ap_points": -6.0460057677720815,
+      "identity_macro_delta_ap_points": 0.2729757444675199
+    },
+    {
+      "dataset": "MSVR310",
+      "condition": "uniform",
+      "control": "raw_semantic",
+      "queries": 591,
+      "identities": 52,
+      "delta_metrics": {
+        "mAP": -0.0004475342008660732,
+        "Rank-1": 0.0,
+        "Rank-5": 0.0,
+        "Rank-10": 0.0
+      },
+      "rank1_repairs": 0,
+      "rank1_new_errors": 0,
+      "groups": {
+        "repaired": {
+          "queries": 0,
+          "contribution_to_total_delta_map_points": 0.0
+        },
+        "new_error": {
+          "queries": 0,
+          "contribution_to_total_delta_map_points": 0.0
+        },
+        "first_still_correct": {
+          "queries": 401,
+          "contribution_to_total_delta_map_points": -0.002695693577075056
+        },
+        "first_still_wrong": {
+          "queries": 190,
+          "contribution_to_total_delta_map_points": 0.0022481593762055893
+        }
+      },
+      "tail_queries": 30,
+      "tail_mean_delta_ap_points": -0.351230466000097,
+      "identity_macro_delta_ap_points": -0.002072159575371643
+    },
+    {
+      "dataset": "MSVR310",
+      "condition": "uniform",
+      "control": "independent_global",
+      "queries": 591,
+      "identities": 52,
+      "delta_metrics": {
+        "mAP": -0.00035147731009743666,
+        "Rank-1": -0.16920473773265599,
+        "Rank-5": 0.0,
+        "Rank-10": 0.0
+      },
+      "rank1_repairs": 0,
+      "rank1_new_errors": 1,
+      "groups": {
+        "repaired": {
+          "queries": 0,
+          "contribution_to_total_delta_map_points": 0.0
+        },
+        "new_error": {
+          "queries": 1,
+          "contribution_to_total_delta_map_points": -0.004123113455299453
+        },
+        "first_still_correct": {
+          "queries": 401,
+          "contribution_to_total_delta_map_points": -0.00454721868175503
+        },
+        "first_still_wrong": {
+          "queries": 189,
+          "contribution_to_total_delta_map_points": 0.008318854826939635
+        }
+      },
+      "tail_queries": 30,
+      "tail_mean_delta_ap_points": -0.5595692225276127,
+      "identity_macro_delta_ap_points": -0.00851160707446847
+    },
+    {
+      "dataset": "MSVR310",
+      "condition": "ambiguity",
+      "control": "raw_semantic",
+      "queries": 591,
+      "identities": 52,
+      "delta_metrics": {
+        "mAP": 0.0035350681319101795,
+        "Rank-1": 0.0,
+        "Rank-5": 0.0,
+        "Rank-10": 0.0
+      },
+      "rank1_repairs": 0,
+      "rank1_new_errors": 0,
+      "groups": {
+        "repaired": {
+          "queries": 0,
+          "contribution_to_total_delta_map_points": 0.0
+        },
+        "new_error": {
+          "queries": 0,
+          "contribution_to_total_delta_map_points": 0.0
+        },
+        "first_still_correct": {
+          "queries": 401,
+          "contribution_to_total_delta_map_points": 0.0011602157327470248
+        },
+        "first_still_wrong": {
+          "queries": 190,
+          "contribution_to_total_delta_map_points": 0.00237485239916484
+        }
+      },
+      "tail_queries": 30,
+      "tail_mean_delta_ap_points": -0.29024550911099034,
+      "identity_macro_delta_ap_points": 0.0012077040496601154
+    },
+    {
+      "dataset": "MSVR310",
+      "condition": "ambiguity",
+      "control": "independent_global",
+      "queries": 591,
+      "identities": 52,
+      "delta_metrics": {
+        "mAP": 0.003631125022678816,
+        "Rank-1": -0.16920473773265599,
+        "Rank-5": 0.0,
+        "Rank-10": 0.0
+      },
+      "rank1_repairs": 0,
+      "rank1_new_errors": 1,
+      "groups": {
+        "repaired": {
+          "queries": 0,
+          "contribution_to_total_delta_map_points": 0.0
+        },
+        "new_error": {
+          "queries": 1,
+          "contribution_to_total_delta_map_points": -0.004123113455299453
+        },
+        "first_still_correct": {
+          "queries": 401,
+          "contribution_to_total_delta_map_points": -0.0006913093719329485
+        },
+        "first_still_wrong": {
+          "queries": 189,
+          "contribution_to_total_delta_map_points": 0.008445547849898885
+        }
+      },
+      "tail_queries": 30,
+      "tail_mean_delta_ap_points": -0.5395997702081121,
+      "identity_macro_delta_ap_points": -0.005231743449436709
+    }
+  ],
+  "reviewer_activity": {
+    "torch_imports": 0,
+    "numpy_imports": 0,
+    "production_imports": 0,
+    "tensor_reads": 0,
+    "model_operations": 0,
+    "optimizer_operations": 0,
+    "GPU_queries": 0,
+    "SSH_calls": 0,
+    "producer_or_report_invocations": 0,
+    "source_mutations": 0,
+    "new_gates": 0
+  },
+  "new_execution_gate": false,
+  "campaign_gate_or_completion": false,
+  "source_checkpoint_distances_changed": false,
+  "updated_at": "2026-10-12T14:24:31.217959+00:00",
+  "claim_scope_clarification": {
+    "recorded_at": "2026-10-12T14:24:31.217959+00:00",
+    "verdict": "PASS",
+    "finding": "W1",
+    "resolution": "CLOSED_DOCUMENT_ONLY",
+    "checks": [
+      {
+        "name": "preserved_predraft_byte_exact",
+        "status": "PASS"
+      },
+      {
+        "name": "current_draft_only_appends_scope_sentence",
+        "status": "PASS"
+      },
+      {
+        "name": "explicit_epoch_selection_development_not_untouched_test_or_multiseed",
+        "status": "PASS"
+      }
+    ],
+    "original_claim_sha256": "ac38f7bac478ef1cefca19a87b6bfb8261633f9f09d5ca8768bd03b8744bf513",
+    "preserved_predraft_sha256": "ac38f7bac478ef1cefca19a87b6bfb8261633f9f09d5ca8768bd03b8744bf513",
+    "clarified_claim_sha256": "e6b628bc2b0083dee27ec8ac58ce4adbafbd72253a449159893eb64f7eb2ab71",
+    "append_only_text": "\nThe official query/gallery benchmark was evaluated each epoch and was consumed for mAP-best checkpoint selection and method development. These are development comparisons on a consumed benchmark; no claim of an untouched test set or confirmation across full-training seeds is made.\n",
+    "original_261_checks_rerun": false,
+    "production_or_binary_changes": false,
+    "new_producer_or_report_invocations": 0
+  },
+  "original_claim_snapshot_sha256": "ac38f7bac478ef1cefca19a87b6bfb8261633f9f09d5ca8768bd03b8744bf513",
+  "original_review_preserved": "initial_review/INTEGRITY_REVIEW.md and .json"
+}

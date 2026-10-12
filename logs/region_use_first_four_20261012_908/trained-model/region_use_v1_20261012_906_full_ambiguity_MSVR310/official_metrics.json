@@ -1,0 +1,46 @@
+{
+  "schema": "trifusion-region-use-supervision-v1",
+  "status": "COMPLETE",
+  "dataset": "MSVR310",
+  "recipe": "semantic",
+  "seed": 42,
+  "training_epochs": 50,
+  "selected_epoch": 38,
+  "condition": {
+    "variant": "semantic",
+    "foundation_option": "author",
+    "seed": 42,
+    "epochs": 50,
+    "public_clip_sha256": "5806e77cd80f8b59890b7e101eabd078d9fb84e6937f9e85e4ecb61988df416f",
+    "initialization_sha256": "a70154e2664b0da0dbed048696a85dce5f4f00476837b817d4edb049a7007243",
+    "deployment": "L2_1536",
+    "auxiliary_tasks": "actual_region_identity_relation",
+    "visual_placement": "single_process_original_full_batch_first6_cuda1_last6_and_heads_cuda0",
+    "objective_gradient_policy": "author_global_loss_to_shared_and_heads_fused_loss_to_roles_only",
+    "author_training_objectives": [
+      "shared_global",
+      "role_corrected_fused"
+    ],
+    "region_use_comparison": "ambiguity",
+    "auxiliary_weight": 1.0,
+    "relation_scale": 11.313708498984761,
+    "relation_environment": "protocol_scene_MSVR310_camera_others",
+    "inference_region_comparison": false,
+    "added_model_parameters": 0
+  },
+  "protocol_sha256": "015a3cafef8e36ba71da2784de6835959c0549c442624c8fb9e9b37bd8c8229d",
+  "checkpoint_sha256": "16b29d5aa53cb1617bb6d63cbeae91befab54c3c05d818c7a2a2b1920f93781a",
+  "distance_sha256": "71fdc88ddb7f165fdf74daa161f52d5e6155210eeee084a23c329ffdaca3251e",
+  "training_best_distance_sha256": "46c3370556e83c958e5f685116249bd170dab427aa46175dd1dfc0be7ede9978",
+  "metrics": {
+    "mAP": 50.545759980124174,
+    "Rank-1": 67.85110235214233,
+    "Rank-5": 80.54145574569702,
+    "Rank-10": 85.44839024543762
+  },
+  "reranking": false,
+  "independent_upstream_metrics_equal": true,
+  "final_evaluation_seconds": 43.59336220892146,
+  "final_evaluation_timing_boundary": "Fresh construction, strict reload and full-gallery scoring.",
+  "completed_at": "2026-10-12T21:53:03.833823+08:00"
+}
