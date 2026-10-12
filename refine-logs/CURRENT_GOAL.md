@@ -1,3 +1,7 @@
+## 2026-10-13 fifth-end/storage911 — latest priority
+
+Read sole master §911 and logs/region_use_fifth_and_storage_20261013_911. Original906 EXIT1/storage stop afterfive accepted50+firststrict; oldcampaign RUNNING retained,100 ambiguity unattempted. Oldtimer98025/cell180 consumed; never restart oldqueue/five endpoints. Only separately named one-end continuation tools/continue_region_use_remaining.py after exact reviewedSHA and original463source/50dependency/26GPU0,1 admission. No additional candidates/seed/gain/NN diagnosis. Keep all currentbest/50deps/Signal and verified localarchives. Complete current remaining training then stop training; scientificGoal ACTIVE_UNMET, no automatic nextNN. Earlier priority notes historical.
+
 ## 2026-10-12 first-four908 results - latest priority
 
 Read sole master §908 and logs/region_use_first_four_20261012_908. Original906 four accepted full50 endpoints complete; goal UNMET. RGBNT100 still original queue, last22:03 uniform3/50. Sole native timer98025 due10/13 00:11; do not duplicate or earlier NN/GPU poll. Source463/50 dependencies remain immutable; no model/report replay, extra seed/gain or late-score substitution. Four CPU reports accepted only saved-text/provisional scope. User Goal reactivated; old pause historical. Earlier dated sections historical.
