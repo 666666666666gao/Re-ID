@@ -1,0 +1,44 @@
+{
+  "schema": "trifusion-joint-spectral-delta-v1",
+  "status": "COMPLETE",
+  "dataset": "RGBNT201",
+  "recipe": "semantic",
+  "seed": 42,
+  "training_epochs": 50,
+  "selected_epoch": 8,
+  "condition": {
+    "variant": "semantic",
+    "foundation_option": "author",
+    "seed": 42,
+    "epochs": 50,
+    "public_clip_sha256": "5806e77cd80f8b59890b7e101eabd078d9fb84e6937f9e85e4ecb61988df416f",
+    "initialization_sha256": "00ce63f700a8e61f8a36c53089f83264fa2b4d17dcbf1840bfd78d24e9b3725f",
+    "deployment": "L2_1536",
+    "auxiliary_tasks": "none",
+    "visual_placement": "single_process_original_full_batch_first6_cuda1_last6_and_heads_cuda0",
+    "objective_gradient_policy": "author_global_loss_to_shared_and_heads_fused_loss_to_roles_only",
+    "author_training_objectives": [
+      "shared_global",
+      "role_corrected_fused"
+    ],
+    "spectral_aggregation": "joint_absolute",
+    "spectral_rank": 4,
+    "spectral_additional_parameters": 589836,
+    "readout": "dense1536_from_role_modality_pooled128"
+  },
+  "protocol_sha256": "b2409c2d992d04adcf0c78354d306afd6af7ae9507738fd4e83de480e9a9b90f",
+  "checkpoint_sha256": "3545b4dc1cafd6ed1f11ffcf4b1d7b5cff01f98c48743754007d9f5e15ea8595",
+  "distance_sha256": "ebba851cbb743dada9945133ca82113e75ae0b1f1bb76d24ce2dbe0179229151",
+  "training_best_distance_sha256": "23064b790f49e92797494b9810c16e97f3cc272c2d1bf83aa52359ad545be283",
+  "metrics": {
+    "mAP": 74.4006492736473,
+    "Rank-1": 79.18660044670105,
+    "Rank-5": 88.27751278877258,
+    "Rank-10": 91.62679314613342
+  },
+  "reranking": false,
+  "independent_upstream_metrics_equal": true,
+  "final_evaluation_seconds": 39.61562652210705,
+  "final_evaluation_timing_boundary": "Fresh construction, strict reload and full-gallery scoring.",
+  "completed_at": "2026-10-14T01:59:41.807535+08:00"
+}

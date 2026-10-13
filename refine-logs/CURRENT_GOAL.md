@@ -1,3 +1,9 @@
+## 2026-10-14 §948 complete3arm results and once report
+
+2026-10-14 §948: original3x50/7947batches/firststrict allCOMPLETE EXIT0, same E8 74.5331/79.1866,74.4934/79.4258,74.4006/79.1866. Product-v-add+.0397mAP/-.2392R1(2repair4harm); ref-v-absolute+.1324/0(3/3), neitheradvance/all3SignalGoalACTIVE_UNMET. OnceCPUreportEXIT0, collector childSOURCE_SEAL error154e5c retained; collection-only4cf3d6 succeeds/report1 totaltransports2. ThreeM0 exactDsizeSHA archived thenremote duplicates1082206476B retired, free2919043072to4001263616; threebest kept/restoreM0beforeoldverifier. ReadonlyNNdiag requestednative2569, no terminal collected/region CPUcompare0. Originaltraining notrerun/488source frozen/noT-P/seed/gain/rank/margin/vehicles/envchange, only26physical01.
+
+Earlier notes historical.
+
 ## 2026-10-14 §947 post-training region diagnosis preparation
 
 2026-10-14 §947: original3-arm NN unchanged/last actual §946 1of3; sole observer73726/join55981 due02:02:48. Post-training diagnostic readonly hook retains actual B3role3modal16slot128 processed/reference; source/import/component CPU checks only, production NN/region comparison0. Six saved-data local-only mean vs symmetric MaxSim comparisons prereg, no global fusion weight/new formal scores. Projected3arm arrays1096096320B motivates archive exactD3M0 after strict+CPUreport beforediagnosis; restore before later oldverifier, actualretired0. ColBERT primary v1commit706a726 source1f5ef3e4 only latecompare principle, nofullreproduction. Rootreview not independentagent. 488live sources/foreign10/bests retained; only26physical01/noT-P/seed/tuning/envchange; fullall3SignalGoalACTIVE_UNMET.
