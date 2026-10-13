@@ -1,0 +1,219 @@
+{
+  "schema": "gcf930-saved-text-summary-v1",
+  "source_sha256": "d59cc040d8d70b0270cc1e9c36a707b6b943d1852810e0d93eb6d22019fa5f43",
+  "input_sha256": {
+    "INPUT_SEAL.json": "df8756c7f443013a34e55d41837e03343541bd3b73ffcabf63c43c5a88128aa2",
+    "campaign.json": "354cf04b5ce687b85e774374f0b5008d69dcf2c6a0f096cca448d558c40c73e5",
+    "SUPERVISOR.json": "0940c33dabf4404eb789326a06af15cbb3662d976e0cb606231386bcbfe4cc19",
+    "CONTROLLER_EXIT.json": "56e1c2e34faf7a7bc0a03da03133f64d895764f6aea520ba4199d3b3be5ef5c5",
+    "gradient_EXIT.json": "0f75eacc7d71011dad3e4dbdcf23a93cbf416293a64c565ceff2b40cf2d8573b",
+    "random_EXIT.json": "b222625c3022235969c16cee6fcf736824e3cb5b85d7c08ef2caca4c79edbd49",
+    "gradient/DIAGNOSIS.json": "153374d1f4d63eb15c98c66bf772c7e021df0225ed6430f9301c0755dc4f2ad7",
+    "random/DIAGNOSIS.json": "7e6c5fcee964aad4b8aa8ede9e688121ee2133e22284f266fcf4c75de4895252",
+    "gradient.log": "ed2345e83a71c89978e72f8c2f9889ff86b1f85e946e082af3b263125a8cf6b9",
+    "random.log": "75bec514cc41b6d3595e6879f307afcb8c846bec42764f2ac8270cc639d962c1",
+    "SUPERVISOR.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "status": "TWO_FIXED_BEST_TEXT_SUMMARIZED",
+  "dataset": "RGBNT201",
+  "seed": 42,
+  "optimizer_updates": 0,
+  "new_training_started": false,
+  "ranking_replays": 0,
+  "goal_status": "ACTIVE_UNMET",
+  "arms": {
+    "gradient": {
+      "metrics": {
+        "global": {
+          "mAP": 74.29666357468751,
+          "Rank-1": 78.94736842105263,
+          "Rank-5": 88.27751196172248,
+          "Rank-10": 91.86602870813397
+        },
+        "correction": {
+          "mAP": 2.994568297665665,
+          "Rank-1": 0.7177033492822966,
+          "Rank-5": 2.8708133971291865,
+          "Rank-10": 6.698564593301436
+        },
+        "fused": {
+          "mAP": 74.364459198888,
+          "Rank-1": 79.30622009569377,
+          "Rank-5": 88.39712918660287,
+          "Rank-10": 91.86602870813397
+        },
+        "independent_global_only": {
+          "mAP": 74.29666357468751,
+          "Rank-1": 78.94736842105263,
+          "Rank-5": 88.27751196172248,
+          "Rank-10": 91.86602870813397
+        }
+      },
+      "same_model_global_to_fused": {
+        "delta_metrics": {
+          "mAP": 0.06779562420048535,
+          "Rank-1": 0.3588516746411443,
+          "Rank-5": 0.11961722488038617,
+          "Rank-10": 0.0
+        },
+        "rank1_repairs": 5,
+        "rank1_new_errors": 2,
+        "identity_macro_delta_ap_points": 0.06467887849656888
+      },
+      "rank1_group_ap_contributions": {
+        "repair": {
+          "queries": 5,
+          "contribution_to_total_map_points": 0.041316566082438895
+        },
+        "new_error": {
+          "queries": 2,
+          "contribution_to_total_map_points": -0.012148916947101194
+        },
+        "kept_correct": {
+          "queries": 658,
+          "contribution_to_total_map_points": 0.030897354389595986
+        },
+        "kept_wrong": {
+          "queries": 171,
+          "contribution_to_total_map_points": 0.007730620675553355
+        }
+      },
+      "query_ap_improved": 219,
+      "query_ap_worsened": 232,
+      "same_model_global_matches_independent_saved_ap_and_first_rank": true,
+      "geometry": {
+        "scaled_correction_global_norm_ratio": {
+          "count": 836,
+          "mean": 0.046293798834085464,
+          "min": 0.038542989641427994,
+          "max": 0.05374676734209061,
+          "percentiles_0_25_50_75_95_100": [
+            0.038542989641427994,
+            0.0439937449991703,
+            0.0465654693543911,
+            0.04860216099768877,
+            0.05120133887976408,
+            0.05374676734209061
+          ]
+        },
+        "global_fused_angle_degrees": {
+          "count": 836,
+          "mean": 2.611408233642578,
+          "min": 2.2060227394104004,
+          "max": 3.056462049484253,
+          "percentiles_0_25_50_75_95_100": [
+            2.2060227394104004,
+            2.4897075295448303,
+            2.616399884223938,
+            2.7290741205215454,
+            2.8865448236465454,
+            3.056462049484253
+          ]
+        }
+      },
+      "readout_gain": 0.1208786815404892,
+      "query_gallery_extraction_seconds": 14.916887629078701,
+      "diagnosis_process_seconds": 54.14243223890662
+    },
+    "random": {
+      "metrics": {
+        "global": {
+          "mAP": 74.29666357468751,
+          "Rank-1": 78.94736842105263,
+          "Rank-5": 88.27751196172248,
+          "Rank-10": 91.86602870813397
+        },
+        "correction": {
+          "mAP": 6.375208551459082,
+          "Rank-1": 4.784688995215311,
+          "Rank-5": 11.842105263157894,
+          "Rank-10": 16.985645933014354
+        },
+        "fused": {
+          "mAP": 74.4695448457365,
+          "Rank-1": 79.78468899521532,
+          "Rank-5": 88.1578947368421,
+          "Rank-10": 91.86602870813397
+        },
+        "independent_global_only": {
+          "mAP": 74.29666357468751,
+          "Rank-1": 78.94736842105263,
+          "Rank-5": 88.27751196172248,
+          "Rank-10": 91.86602870813397
+        }
+      },
+      "same_model_global_to_fused": {
+        "delta_metrics": {
+          "mAP": 0.1728812710489791,
+          "Rank-1": 0.837320574162689,
+          "Rank-5": -0.11961722488038617,
+          "Rank-10": 0.0
+        },
+        "rank1_repairs": 11,
+        "rank1_new_errors": 4,
+        "identity_macro_delta_ap_points": 0.1388876460187073
+      },
+      "rank1_group_ap_contributions": {
+        "repair": {
+          "queries": 11,
+          "contribution_to_total_map_points": 0.0918203833607514
+        },
+        "new_error": {
+          "queries": 4,
+          "contribution_to_total_map_points": -0.02834449599117375
+        },
+        "kept_correct": {
+          "queries": 656,
+          "contribution_to_total_map_points": 0.061021596923481636
+        },
+        "kept_wrong": {
+          "queries": 165,
+          "contribution_to_total_map_points": 0.04838378675591163
+        }
+      },
+      "query_ap_improved": 258,
+      "query_ap_worsened": 220,
+      "same_model_global_matches_independent_saved_ap_and_first_rank": true,
+      "geometry": {
+        "scaled_correction_global_norm_ratio": {
+          "count": 836,
+          "mean": 0.05048587918281555,
+          "min": 0.03506139665842056,
+          "max": 0.06481078267097473,
+          "percentiles_0_25_50_75_95_100": [
+            0.03506139665842056,
+            0.04605017602443695,
+            0.05062742717564106,
+            0.055423010140657425,
+            0.060712539590895176,
+            0.06481078267097473
+          ]
+        },
+        "global_fused_angle_degrees": {
+          "count": 836,
+          "mean": 2.857738971710205,
+          "min": 1.9954713582992554,
+          "max": 3.5735788345336914,
+          "percentiles_0_25_50_75_95_100": [
+            1.9954713582992554,
+            2.6213700771331787,
+            2.8710923194885254,
+            3.139355421066284,
+            3.38890939950943,
+            3.5735788345336914
+          ]
+        }
+      },
+      "readout_gain": 0.12148063629865646,
+      "query_gallery_extraction_seconds": 14.969276298070326,
+      "diagnosis_process_seconds": 54.39837861107662
+    }
+  },
+  "gradient_minus_random_metrics": {
+    "mAP": -0.10508564684849375,
+    "Rank-1": -0.4784688995215447,
+    "Rank-5": 0.23923444976077235,
+    "Rank-10": 0.0
+  },
+  "primary_mechanism_advance": false
+}

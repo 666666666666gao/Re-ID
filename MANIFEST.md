@@ -2391,3 +2391,4 @@
 | 2026-10-13T11:56:37.267064+08:00 | /run-experiment | refine-logs/global_conditioned_evidence_20261013_924/EXPERIMENT_TRACKER.md | runtime | 原两卡gradient启动确认；random排队，未有50轮成绩 |
 | 2026-10-13T13:08:55.116684+08:00 | /analyze-results | refine-logs/global_conditioned_evidence_20261013_924/FIRST_RESULT_REPORT_928.md | actual first original full50 and CPU ranking | random still running, one seed/one dataset; source frozen |
 | 2026-10-13T14:33:30.879955+08:00 | /analyze-results | refine-logs/global_conditioned_evidence_20261013_924/TERMINAL_RESULT_REPORT_929.md | two original full50/first-strict and CPU ranking diagnoses | primary mechanism failed; same-model G/C/F missing; goal unmet |
+| 2026-10-13T17:01:57.346827+08:00 | fixed-best diagnosis | refine-logs/global_conditioned_evidence_best930/RESULT_REPORT.md | two original selected-best G/C/F extractions; zero updates | own-global retained, very thin fusion gain; mechanism still failed |
