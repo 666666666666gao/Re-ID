@@ -1,0 +1,99 @@
+{
+  "status": "COMPLETE_SAVED_PATCH_SUPPORT_DESCRIPTION",
+  "input_sha256": "5389a28978df41869d505dfb127ec998c7936698085a6a188f3b9124a895cd54",
+  "rows": [
+    {
+      "source": "native_projected",
+      "method": "mean_pairs",
+      "local_metrics": {
+        "mAP": 55.416510111091036,
+        "Rank-1": 59.928229665071775,
+        "Rank-5": 79.78468899521532,
+        "Rank-10": 86.8421052631579
+      },
+      "delta_mAP_from_global": -18.880153463596475,
+      "rank1_repairs": 26,
+      "rank1_new_errors": 185,
+      "positive_query_ap_changes": 122,
+      "negative_query_ap_changes": 641
+    },
+    {
+      "source": "native_projected",
+      "method": "symmetric_maxsim",
+      "local_metrics": {
+        "mAP": 60.3528206852689,
+        "Rank-1": 58.73205741626795,
+        "Rank-5": 74.4019138755981,
+        "Rank-10": 80.98086124401914
+      },
+      "delta_mAP_from_global": -13.94384288941861,
+      "rank1_repairs": 27,
+      "rank1_new_errors": 196,
+      "positive_query_ap_changes": 159,
+      "negative_query_ap_changes": 531
+    },
+    {
+      "source": "attention_only_qk",
+      "method": "mean_pairs",
+      "local_metrics": {
+        "mAP": 72.80126254370529,
+        "Rank-1": 75.11961722488039,
+        "Rank-5": 86.48325358851675,
+        "Rank-10": 91.6267942583732
+      },
+      "delta_mAP_from_global": -1.4954010309822208,
+      "rank1_repairs": 46,
+      "rank1_new_errors": 78,
+      "positive_query_ap_changes": 289,
+      "negative_query_ap_changes": 350
+    },
+    {
+      "source": "attention_only_qk",
+      "method": "symmetric_maxsim",
+      "local_metrics": {
+        "mAP": 71.97074002837199,
+        "Rank-1": 74.88038277511961,
+        "Rank-5": 84.92822966507177,
+        "Rank-10": 90.66985645933015
+      },
+      "delta_mAP_from_global": -2.3259235463155195,
+      "rank1_repairs": 51,
+      "rank1_new_errors": 85,
+      "positive_query_ap_changes": 283,
+      "negative_query_ap_changes": 358
+    },
+    {
+      "source": "attention_only_qq",
+      "method": "mean_pairs",
+      "local_metrics": {
+        "mAP": 55.63606858132675,
+        "Rank-1": 55.86124401913876,
+        "Rank-5": 76.43540669856459,
+        "Rank-10": 86.48325358851675
+      },
+      "delta_mAP_from_global": -18.660594993360768,
+      "rank1_repairs": 42,
+      "rank1_new_errors": 235,
+      "positive_query_ap_changes": 143,
+      "negative_query_ap_changes": 626
+    },
+    {
+      "source": "attention_only_qq",
+      "method": "symmetric_maxsim",
+      "local_metrics": {
+        "mAP": 61.351282599107805,
+        "Rank-1": 62.32057416267942,
+        "Rank-5": 77.51196172248804,
+        "Rank-10": 84.44976076555024
+      },
+      "delta_mAP_from_global": -12.945380975579713,
+      "rank1_repairs": 34,
+      "rank1_new_errors": 173,
+      "positive_query_ap_changes": 182,
+      "negative_query_ap_changes": 527
+    }
+  ],
+  "neural_forwards": 0,
+  "optimizer_updates": 0,
+  "boundary": "Local-only relations versus G, not fused scores or selected query gates/teacher targets. No fusion coefficient or new ranking search."
+}

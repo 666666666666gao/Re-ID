@@ -2413,3 +2413,4 @@
 | 2026-10-14T03:16:12.417368+08:00 | Fixed-best source and saved-region comparison closed | refine-logs/joint_spectral_training_20261013_943/COMPLETE_INTERPRETATION_949.md | ownG preserved; local regions weak | rawpatch source investigation next |
 | 2026-10-14T03:52:02.250069+08:00 | Frozen native CLIP patch source | refine-logs/native_clip_patch_20261014_950/INTERPRETATION.md | originalglobal preserved | diagnostic only |
 | 2026-10-14T04:08:48.645499+08:00 | Value path finite2 registered | refine-logs/pretrained_value_delta_20261014_951/EXPERIMENT_PLAN.md | CPU only | real M0/full pending |
+| 2026-10-14T04:17:47.989418+08:00 | First value M0 passed / full50 entered | refine-logs/pretrained_value_delta_20261014_951/ACTUAL_PROGRESS_952.md | original queue | results pending |
