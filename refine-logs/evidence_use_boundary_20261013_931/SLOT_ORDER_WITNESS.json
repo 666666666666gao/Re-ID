@@ -1,0 +1,53 @@
+{
+  "schema": "source-backed-slot-order-algebra-witness-v1",
+  "evaluation_type": "algebraic_counterexample_only",
+  "source_sha256": {
+    "modeling/trifusion/region_use_objective.py": "556876002cc7abef5a3525940781b8facdf6a1e8bfc792e5b900f16a5f72fe6d",
+    "modeling/trifusion/correspondence_evidence_readout.py": "e737a977d39ccbe09a5509118e5b5333d653f7f13381e65e84af1a13e5c28dc4",
+    "modeling/trifusion/region_use_heads.py": "1680d04f7b26f513380509af88bfce555cbc04497162e4af10c47dcbbcc9b63e",
+    "modeling/trifusion/global_conditioned_evidence.py": "f87a7d26ad357cb81e37b41676379dfc3fd1e8b3a3bdcf907ab0eb3a7eba6e0d"
+  },
+  "script_sha256": "ba00b1181586cd9b442d303c2e849d65938bc129754939a19fbb6c9580d5ce57",
+  "tensor_domain": "9 groups x16 slots x128 channels;1536 readout",
+  "fixed_permutation": "Only CNN/modality0 swaps positions0 and2 across readout groups0 and1",
+  "readout_slot_groups": [
+    [
+      0,
+      1,
+      4,
+      5
+    ],
+    [
+      2,
+      3,
+      6,
+      7
+    ],
+    [
+      8,
+      9,
+      12,
+      13
+    ],
+    [
+      10,
+      11,
+      14,
+      15
+    ]
+  ],
+  "nonzero_basis_value_vectors": true,
+  "regional_similarity_before": 1.0,
+  "regional_similarity_after": 1.0,
+  "correction_output0_before": 0.25,
+  "correction_output0_after": 0.0,
+  "illustrative_gain": 1,
+  "fused_pair_cosine_before": 1,
+  "fused_pair_cosine_after": 0.9938837346736188,
+  "official_metric_or_ground_truth_used": false,
+  "trained_weight_used": false,
+  "neural_forward_calls": 0,
+  "optimizer_updates": 0,
+  "conclusion": "The regional set score can remain unchanged while the structured readout and additive cosine change.",
+  "limitations": "This legal tensor/weight witness is not sampled from any trained model. It establishes an unconstrained direction of the auxiliary score, not observed slot drift, retrieval loss, semantic parts, incompatibility of all set losses or a causal root cause. Fused tasks still supervise the deployed representation and may constrain this direction."
+}
