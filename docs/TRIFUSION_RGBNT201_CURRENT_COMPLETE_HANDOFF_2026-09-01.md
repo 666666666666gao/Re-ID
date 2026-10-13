@@ -1,4 +1,4 @@
-> **当前状态（2026-10-14，§41.952）：预训练value两端原队列已在26GPU0/1启动；第一semantic_reference真实prepare/8M0通过（280梯度张量、BN8、reload0、角色到G隔离），已进入fresh50，第二uniform_reference待串行。0新正式成绩。唯一near-first observer7321/PID12744等待04:53:44，禁止重复/提前查询。代码/交接及时同步，source496冻结；三集SignalGoalACTIVE_UNMET。**
+> **当前状态（2026-10-14，§41.953）：原value两端队列继续，第一端已M0通过/进入fresh50，第二待串行；0新正式成绩。终态后的实际读取变化/角色贡献/G-C-F诊断源码与warm CPU import通过，仅source证据，未执行NN诊断。496训练源码冻结，唯一timer7321/PID12744在04:53:44近ETA观察，不提前重复查询。只26GPU0/1，三集SignalGoalACTIVE_UNMET。**
 
 
 # TriFusion RGB–NIR–TIR ReID 完整交接（2026-09-01）
@@ -19679,3 +19679,25 @@ value由原末层实际attention输出经原LN/proj、detach取得；global按�
 后继CPU配对报告代码已准备/AST检查，尚未执行；只在原两端50/首次strict完整通过后检查同批次顺序，报告semantic/uniform相互比较及各自对原raw semantic/global的净增量、首位修复新增错误、身份AP和全曲线。不重复原报告或新NN。所有原正式结果不变。
 
 source496/best/初始化依赖不热改。只有26物理0/1、seed42、原warm环境/raw作者配方；没有功率/温度/seed/gain/margin/车辆或环境变更。闭合的D重复退休1.792GB记录见§951，需要旧consumer时先恢复。三数据集超过Signal Goal仍ACTIVE_UNMET，继续训练授权持续。
+
+## 41.953 原训练等待，预训练value用途诊断源码就绪
+
+# §953：等待原训练，诊断源码独立封备
+
+2026-10-14 §953 postterminalvalue diagnosis source implemented/warmCPUimportPASS0models/NN/report/diagnosis/updates. Actualattention-change L1/rowmass/regionnorm and three1536role contributions plusG/C/H/F/fullgallery/authorparity/statesHA guards. Only afteroriginal2x50firststrict+supervisorEXIT0+onceCPUreport complete mayseal/invoke once each; noNNdiagnosis now. Rootsource review only/notindependentaudit. Live496source/oldbests/M0deps kept. PreviousgoalturnPROGRESS951/952 realqueue+M0+publicstate. Currentlocaloriginaltimer12744 samebirth/argv confirmed04:19:09, native7321 due04:53:44.859387 onlynearfirstowner; noearlyNN/GPU/T-P/epochqueries/restart/duplicateobserver. Lastactualremote04:13:31 firstM0PASS/fresh50entered04:11:44, secondqueued/0accepted; noinventedcurrentepoch. Only26physical01/seed42/rawauthor/noenvchange/vehicle/tuning; fullall3SignalGoalACTIVE_UNMET.
+
+# 两端正式终态后的实际value用途诊断
+
+当前训练496 source不可热改；本工具独立于训练scope。只有原semantic/uniform两端各自fresh50、首次strict、原supervisor EXIT0，以及一次已保存距离的CPU配对报告全部完成后，才封输入并各执行一次固定best完整query/gallery编码。现在未执行诊断，没有新诊断分数。
+
+保持原best/初始化/condition，匹配完整50历史的mAP-best和同权重CMC。真实模型state前后SHA一致、grad空、0optimizer；重新提取fused距离与首次official≤1e-5，同一作者camera评价和完整gallery。不更换epoch/seed，不用未验收分数。
+
+保留G/C/H/F以及实际attention_change和region值产生的每角色1536维贡献。验证原c恰为三角色贡献均值，h=g+gain*c、f=L2(h)。读取变化统计记录L1、最大绝对值、行和绝对值、实际区域范数；按三角色/三模态分别报告。没有从attention差值编造实际权重熵，不用“图好看”证明选择有效。
+
+同模型global/fused与独立训练global_only分别比较，诊断best选择是否改变了全局能力。C和三角色贡献的独立完整检索仅说明身份关系，不能代替算子必要性重训消融。记录修正/G能量比、G→F夹角、均值/中心化能量及修复/新增错误。描述数据集均值不用于test中心化或教师监督。
+
+不保存大128×512 patch缓存：只保存G/C/H/F、每角色1536向量、按区域的读取统计和六个距离矩阵。预计每端约70MB特征与17MB距离，加少量JSON，两端预算256MiB。实际大小需由输出记录核对；入场需至少2GiB保留空间+256MiB预算+256MiB余量。M0二进制在原first strict/CPU报告关闭依赖前保留，未来原verifier要使用退休依赖则精确恢复D归档。
+
+解释规则：读取变化弱且c弱，支持检查实际选择职责；读取变化明显或C独立强但F不涨，支持检查有用性/损伤；ownG退化则先分离全局和增量表现。以上均不是唯一因果定位，不自动触发gain、温度、margin、seed或熵尖锐度搜索。超越Signal完整主目标不缩小。
+
+只有26物理0/1、原warm环境；任何观察超时不重启NN，原读取失败保留。单独记录两次固定best读取的PID/命令/输入SHA/原EXIT。先按已登记near-ETA原observer看训练结果，不因本计划再查询当前epoch。
