@@ -1,0 +1,105 @@
+{
+  "status": "NEW_TWO_ARM_FULL50_CONTROLLER_LIVE",
+  "at": "2026-10-13T11:50:04.264746+08:00",
+  "launch": {
+    "started_at": "2026-10-13T11:49:59.262154+08:00",
+    "supervisor_pid": 3190961,
+    "command": [
+      "/usr/bin/python3",
+      "-B",
+      "/data/gaob/Re-ID/Trifusion/logs/global_conditioned_evidence_full_20261013_926/controller.py"
+    ],
+    "physical_gpus": [
+      0,
+      1
+    ],
+    "gpu_admission": [
+      [
+        0,
+        15
+      ],
+      [
+        1,
+        15
+      ]
+    ],
+    "disk_free_bytes": 2174124032,
+    "required_bytes": 1879048192,
+    "controller_sha256": "ce75b9987862b189eddedf930762f719a25f9bc9c3bc3baaa2db09f54abab5b0",
+    "input_sha256": "26b06899e18fdef75dbdf6e9258ad63f8270a5f999ac3b2797cdfbeb3a45f78f",
+    "publication_commit": "08bde2dc7f2fcb55a0e682a829ae4f42a283b585"
+  },
+  "supervisor": {
+    "supervisor_pid": 3190961,
+    "worker_pid": 3190963,
+    "started_at": "2026-10-13T11:49:59.315585+08:00",
+    "command": [
+      "/usr/bin/python3",
+      "/data/gaob/Re-ID/Trifusion/logs/global_conditioned_evidence_full_20261013_926/controller.py",
+      "--worker"
+    ]
+  },
+  "campaign": {
+    "status": "RUNNING",
+    "started_at": "2026-10-13T11:50:00.630776+08:00",
+    "worker_pid": 3190963,
+    "physical_gpus": [
+      0,
+      1
+    ],
+    "seed": 42,
+    "epochs_per_endpoint": 50,
+    "stages": [
+      {
+        "event": "admission",
+        "exposure": "gradient",
+        "at": "2026-10-13T11:50:01.955675+08:00",
+        "devices": [
+          [
+            0,
+            15
+          ],
+          [
+            1,
+            15
+          ]
+        ],
+        "disk_free_bytes": 2174038016,
+        "required_bytes": 1879048192
+      },
+      {
+        "exposure": "gradient",
+        "mode": "train",
+        "started_at": "2026-10-13T11:50:03.210190+08:00",
+        "child_pid": 3191054,
+        "command": [
+          "/data/gaob/Re-ID/conda-envs/tri_reid/bin/python",
+          "-B",
+          "/data/gaob/Re-ID/Trifusion/tools/run_global_conditioned_evidence.py",
+          "--dataset",
+          "RGBNT201",
+          "--exposure",
+          "gradient",
+          "--mode",
+          "train",
+          "--protocol",
+          "/data/gaob/Re-ID/Trifusion/logs/training_feature_scale_protocols_20261002/RGBNT201.json",
+          "--signal-source",
+          "/data/gaob/Re-ID/Trifusion/comparators/Signal-cd1b0a6",
+          "--clip-weight",
+          "/data/gaob/Re-ID/Trifusion/pertrained-model/ViT-B-16.pt",
+          "--initialization",
+          "/data/gaob/Re-ID/Trifusion/logs/global_conditioned_evidence_m0_20261013_925/initialization/RGBNT201_gradient.json",
+          "--output-dir",
+          "/data/gaob/Re-ID/Trifusion/trained-model/global_conditioned_evidence_20261013_926_full_gradient_RGBNT201"
+        ]
+      }
+    ],
+    "accepted_endpoints": [],
+    "goal_status": "ACTIVE_UNMET"
+  },
+  "actual_train_commandline": "/data/gaob/Re-ID/conda-envs/tri_reid/bin/python -B /data/gaob/Re-ID/Trifusion/tools/run_global_conditioned_evidence.py --dataset RGBNT201 --exposure gradient --mode train --protocol /data/gaob/Re-ID/Trifusion/logs/training_feature_scale_protocols_20261002/RGBNT201.json --signal-source /data/gaob/Re-ID/Trifusion/comparators/Signal-cd1b0a6 --clip-weight /data/gaob/Re-ID/Trifusion/pertrained-model/ViT-B-16.pt --initialization /data/gaob/Re-ID/Trifusion/logs/global_conditioned_evidence_m0_20261013_925/initialization/RGBNT201_gradient.json --output-dir /data/gaob/Re-ID/Trifusion/trained-model/global_conditioned_evidence_20261013_926_full_gradient_RGBNT201 ",
+  "original_child_live": true,
+  "new_formal_results": false,
+  "goal_status": "ACTIVE_UNMET"
+}
