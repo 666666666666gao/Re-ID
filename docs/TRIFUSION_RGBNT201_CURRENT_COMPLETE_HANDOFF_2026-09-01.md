@@ -1,4 +1,4 @@
-> **当前状态（2026-10-13，§41.921）：研究主线是新增证据在最终身份比较中的净收益。原六端训练/冻结best诊断已闭合，训练继续停止；新增仅为实际角色信息路径核查。global只条件化query，当前静态token没有样本global值注入；后堆叠stages不能直接作为global归因入口。无新候选、NN、权重或分数，三集超过Signal目标仍ACTIVE_UNMET。**
+> **当前状态（2026-10-13，§41.922）：用户再次将Goal设为active，继续完整研究目标。原六端与固定best比较保持闭合；新登记一项RGBNT201原best/训练来源批次的只读输入敏感性检查。源码复核已收齐，真实前向/VJP尚未执行；无新训练、权重或分数，三集超过Signal目标仍ACTIVE_UNMET。**
 
 
 # TriFusion RGB–NIR–TIR ReID 完整交接（2026-09-01）
@@ -18668,3 +18668,17 @@ query内归一化使统一缩小该query所有关系的权重后仍得到相同�
 CNN网格混合、多深度表示、query条件和角色桥接限制了简单空间排除的解释。若未来借鉴ACoL的证据排除，只将其作为形成环节先例，先与等预算随机排除比较是否增加对clean global的净贡献；活动、saliency图和分支独立识别能力都不能替代同模型global/fused及完整正例AP的损益。§919没有建立更强局部教师，§920也没有证明唯一失败根因，故不预写压缩、背景或重复global为已确认原因。
 
 详细路径与定义行号见`refine-logs/evidence_information_paths_20261013_921/README.md`和`SOURCE_PATHS.json`。本轮无候选实现、模型前向、GPU使用、训练、权重或新分数；训练源未修改。三集超过Signal目标仍ACTIVE_UNMET。下一项尚需具体关系监督与成本设计，不由自动Goal继续信号恢复训练。
+
+## 41.922 真实global关系到patch：只读输入敏感性检查登记
+
+用户通过Goal面板再次设为active，继续推进完整目标；这与只有自动续跑消息不同。原六端训练及§919固定best比较已收尾，不重启旧队列。本次登记新问题的只读检查，不是启动另一次50轮训练。
+
+新增诊断代码`modeling/trifusion/global_relation_inputs_diagnostic.py`与`tools/diagnose_global_relation_inputs.py`。严格加载原RGBNT201/uniform/E8 best和原初始化binding，从源训练协议按路径及合法跨camera条件选固定8身份×2记录，共16；使用现有eval transform。这个B16/K2是检查规模，不改作者B64/K8训练配方，也不推断实际训练批次覆盖率。
+
+global target为合法且margin>0的正负关系margin均值；support decision停止梯度，margin保留梯度。一次target同时包括query、正例、负例的参与，不把它说成每个query的因果证据。无支持时停止并保留失败，不自动选另一个批次或将零梯度当mask。
+
+在实际第4/8/12块完整输入处捕获RGB/NIR/TIR，共9个真实tensor，调用一次共享backbone前向（内部三模态视觉编码）及一次VJP，检查事后stacked stages的梯度None。记录signed gradient·activation及gradient norm，不施加mask；前者只是一阶小扰动方向，不代表完整删除效果。使用FP32/eval-mode，不前向角色/head/Mamba，不调用optimizer或官方query/gallery评价。原state/buffer SHA须不变，参数grad均None，产物只有小型诊断数组与文字。
+
+完整源码审查见同目录SOURCE_AUDIT.md/json，实际源码是否可用于这一有界检查以报告为准；没有运行证明。复核same-family/provisional，实际model/effort保持UNATTESTED；审查者披露了继承会话规则导致的额外SOUL/USER/每日笔记读取，不能称完全无上下文审查。正式命令、源SHA和原918输入合同绑定见EXPERIMENT_PLAN.md及INPUT_SEAL.json。只使用26物理GPU0/1与既有环境，启动前检查这两卡显存及磁盘，不读功率温度、不接触其他卡或25。
+
+当前只有AST/源码复核，实际前向、VJP、state核验和终态结果尚待执行。即使得到有限patch敏感性，也仅说明可以取得真实global关系依据；不能据此宣布证据排除、互补学习或检索提升已经成立。本次没有排除超参、mask、候选训练或新mAP，原权重、诊断距离、依赖及历史失败继续保留；科学目标仍未达到。
