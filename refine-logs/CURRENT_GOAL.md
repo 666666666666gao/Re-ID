@@ -1,3 +1,9 @@
+## 2026-10-14 §41.945 post-completion diagnosis source ready
+
+2026-10-14 §41.945 PROGRESS: fixed-best joint-spectral G/C/F and factor/reference/delta extraction source implemented, warmCPUimport8cef58 EXIT0/model0/NN0/update0/diagnose0. Root source review only. Actualrunner distance_matrix normalizes G/C and officialextract noAMP; exactbuilder/MODE/witness/rawfeatures/statebeforeafter/parity/author scorer guards retained. Onlyafteroriginal3x50firststrict COMPLETE+supervisorEXIT0 andCPUreport accepted mayseal/invoke once each; nofakecurrentseal/score/terminal. Live488training sources untouched, no remoteprogress query/currentlastobs23:54:44=1/50. Sole nextobserver23649/PID38852 dueOct14 00:42:58, noearlypoll/restart. NoextraNN/weight/deletion/seed/gain/rank/margin/vehicle/envchange/T-P. Fullall3SignalGoalACTIVE_UNMET, samecontinueauth/only26physical01.
+
+Earlier notes historical.
+
 ## 2026-10-13 §41.944 original3-arm pipeline actually running
 
 2026-10-13 §41.944 actualprogress: originalfinite3-arm supervisor578010/controller578011 once on26physical01. Firstjoint_delta realprepare/8M0 PASS283active/BN8/reload0,89604566params; roleloss→globalunused/referencefinite_nonzero/factorandrankupdatesverified. Originalfresh50PID580021 start2026-10-13T23:52:58.920710+08:00; aad0ff EXIT0 nearM0 observed2026-10-13T23:54:44.875862+08:00=1/50/live, nofullscore. add_delta/joint_absolute pending; cross-modeinitialstateparity notpre-signed. Sole nearfirstfull observer23649/PID38852/birth2026-10-13T23:56:30.896637+08:00 due2026-10-14T00:42:58.920710+08:00; noearlyqueries/restarts. NewCPUreport source preparednotcalled; frozen488source/bests/M0deps unchanged, retired0, noT-P/envchange/otherGPU/vehicles/seed/gain/margin/rank rescue. Usercontinueauth andfullall3SignalGoalACTIVE_UNMET.

@@ -1,4 +1,4 @@
-> **当前状态（2026-10-13，§41.944）：跨光谱变化三条件原队列已启动。第一项joint_delta真实prepare/8M0通过（283/283活动、BN8、重载差0、参考有梯度且role到global隔离），fresh50 PID580021在26GPU0/1运行；另外两项尚未执行，正式0/3、没有新检索成绩。唯一近第一full ETA observer23649到00:42:58，不重启/不提前轮询。原best与488source冻结保留，三集Signal目标ACTIVE_UNMET。**
+> **当前状态（2026-10-14，§41.945）：原跨光谱三条件队列继续，最后实际节点为joint_delta 8M0通过/fresh50启动；没有新的完整终态观测。已准备固定best G/C/F与因子/reference/delta诊断，CPU import通过但未执行NN，须三端50轮/首次strict全通过后才封存输入。原488训练来源冻结；唯一近第一full observer23649在00:42:58读取，不提前轮询/重启。仅26GPU0/1，三集Signal目标ACTIVE_UNMET。**
 
 
 # TriFusion RGB–NIR–TIR ReID 完整交接（2026-09-01）
@@ -19461,3 +19461,27 @@ M0探针SHA `549bd15f7631c954b39a4280857921f203c305243f14a2654fa2a2d29ecbabbe` �
 CPU报告source独立于正在冻结的488训练来源，不改变活动NN入口。root source review检查复用camera_scores/compare的receipt+distance SHA、query/gallery一致性、匹配指标与固定模型bootstrap边界；尚未实际执行，禁止在报告失败时反复重试挑通过。完整Signal仅作既有不同系统数值参照，原三条件只能证明两个条件效应，不能主张2×2协同或原创性已成立。
 
 当前0/3正式端完成，没有新增完整检索成绩。原§941负结果和所有旧best保留，不扩车辆/seed/rank/gain/margin；本次清理权重0，M0是当前验收依赖。Goal仍为三数据集全面超过Signal，ACTIVE_UNMET。
+
+## 41.945 训练冻结期间准备固定best的实际用途诊断
+
+2026-10-14 §41.945 PROGRESS: fixed-best joint-spectral G/C/F and factor/reference/delta extraction source implemented, warmCPUimport8cef58 EXIT0/model0/NN0/update0/diagnose0. Root source review only. Actualrunner distance_matrix normalizes G/C and officialextract noAMP; exactbuilder/MODE/witness/rawfeatures/statebeforeafter/parity/author scorer guards retained. Onlyafteroriginal3x50firststrict COMPLETE+supervisorEXIT0 andCPUreport accepted mayseal/invoke once each; nofakecurrentseal/score/terminal. Live488training sources untouched, no remoteprogress query/currentlastobs23:54:44=1/50. Sole nextobserver23649/PID38852 dueOct14 00:42:58, noearlypoll/restart. NoextraNN/weight/deletion/seed/gain/rank/margin/vehicle/envchange/T-P. Fullall3SignalGoalACTIVE_UNMET, samecontinueauth/only26physical01.
+
+# §945：当前三条件完成之后的固定best诊断
+
+先说明状态：本次没有查询远端训练进度，没有新NN、optimizer、权重或正式分数。第一joint_delta已经真实M0通过进入fresh50；最后实际训练节点观察仍是23:54:44，1/50。唯一近第一full观察为原native23649/PID38852，到2026-10-14 00:42:58；原三端控制器保持，不能提前轮询、改配方或重复提交。
+
+已有CPU报告在三端fresh50/首次strict全部完成后，分析保存距离的配对mAP、CMC、全query修复/新增错误与身份AP。新增tools/diagnose_joint_spectral_delta_best.py补上固定best的实际G/C/F及因子/reference/delta用途，防止分数失败后只能继续猜测容量或尺度。
+
+执行先决条件：原parent campaign COMPLETE/3of3及原supervisor EXIT0；三端fresh50/首次strict accepted矩阵、各initializer、manifest、training receipt、M0依赖、唯一best、official及best-epoch距离均按原source/witness验收。CPU报告首次成功并保存SUMMARY/REPORT。之后才生成新诊断INPUT_SEAL，pin原488sources加本诊断源码/计划和复核，全部读取的正式artifact与independent global距离/receipt，以及原父campaign/EXIT/矩阵、CPU报告SHA。现在这些终态尚未存在，不能创建假seal或运行诊断。
+
+原三端完成后，在同一26物理GPU0/1一次只读job顺序提取joint_delta、add_delta、joint_absolute的各自同一mAP-best。每端query/gallery按原loader/order各走一次，原CLIP在每batch只编码一次；输出真实shared_global、correction、raw_fused、fused以及actual/reference/delta descriptors和三模态因子。没有optimizer、head fitting、重选epoch、增加种子、换ranking/centering、修改因子/模式、额外训练、teacher或新比较器。
+
+必须核对before/after模型state SHA相同、全部.grad仍None、同best初始化/epoch/指标，fused距离与原official保存矩阵最大差≤1e−5、mAP/R1/R5/R10复算一致、query/gallery完整metadata与independent global完全相同，并用作者原评价与当前camera scorer交叉核读。失败保留第一次日志、EXIT和数组，不重新挑checkpoint、重试挑通过或临时改容差。
+
+输出G/C/F检索及same-model G→F、independent global→own G、independent global→F完整query/身份变化；记录gain、scaled-c/g范数、角度、actual/reference/delta和因子的样本均方能量、样本公共均值能量、中心化能量与实际rank weights，role顺序cnn/transformer/mamba、modal顺序RGB/NI/TI。不把公共能量直接叫噪声，也不把差分叫纯交互；LN因子并非严格三线性，slots没有真实部件对应，固定best诊断不是因果消融。
+
+query/gallery特征、因子与诊断距离保存一次并SHA；预计三端合计约2–3分钟NN提取，按首端真实时间校正。原训练/严格验收有任何失败就先处理原失败，不能通过新诊断填正式分数。固定best诊断最多每端一次，无blind rerun；NN完成后CPU汇总与原配对报告一并更新交接/Git，再D盘归档核验无后续消费的重复M0，唯一best/数据/源码/唯一日志保留。
+
+首次warm CPU import8cef58 EXIT0，只验证本脚本编译/import及所调用build/load、metadata/score/paired API存在；0model/0NN/0update/0diagnose，没有真实seal、checkpoint、特征、distance parity或检索结论。Root按code-review-excellence复核，不是独立agent或运行审计。查到实际runner.distance_matrix会L2规范G/C输入，官方extract无AMP，故诊断使用同一float32默认推理与原loader；load/condition/builder按producer.MODE准确设置目标mode，训练入口不改。
+
+三数据集全面超过Signal的GoalACTIVE_UNMET。三个候选的有效性、新颖性、车辆适配与最终多seed仍需真实证据；当前不扩车辆或seed，不把准备工具当结果，不从旧对照的小增量推断新模块成功。
