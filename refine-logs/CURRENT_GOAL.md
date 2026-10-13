@@ -1,3 +1,9 @@
+## 2026-10-13 §41.939 original full training live
+
+2026-10-13 §41.939 actual progress: explicit继续训练 pipeline supervisor354646/controller354648 launched once. Prepare initializer equivalence and true8M0 PASS/281active/BN8/strictreload0; originalfresh50 PID358365 start21:59:12.822883 on26physical01. Original180sec M0 observer97799 terminal7d62c7 EXIT0 observed22:01=1/50/fullNNlive, no newacceptedscore. Sole nextnearfinish observer23306/localPID43956/birth2026-10-13T22:03:03.195984+08:00 due2026-10-13T22:54:12.822883+08:00; do notqueryprogress early orrestart fromtimeout. 482source frozen/M0probe dependency kept, oldbest protected/newweightsdelete0. No vehicles/seed/gain/margin/layer/search/T-P/install/preemption. GoalACTIVE_UNMET; formerSTOP/blocked scope superseded by actualuserresume.
+
+Previous priorities are historical.
+
 ## 2026-10-13 §41.938 current resumed scope
 
 2026-10-13 §41.938: explicit human 继续训练 resolves prior pending scope and revokes trainingSTOP. One201 semantic seed42 normalized role CE/rawTriplet registered with exact source seal, same author recipe/initializer and original strict50 rule; first real prepare+8M0 before fresh50, no old replay/vehicles/seed/gain/margin/layer rescue. Only26physical01/max1originaltwo-card process/noT-P/install/preemption, warm env unchanged. At registration actualmemory15MiB each, free3308871680B/budget3087007744B. Root controller scope review only; NN not launched at this publication. Keep all best/deps/M0 through first fullverify. ScientificGoalACTIVE_UNMET; oldblocked waiting state historical.
