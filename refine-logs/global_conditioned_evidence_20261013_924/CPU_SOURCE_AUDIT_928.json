@@ -1,0 +1,281 @@
+{
+  "audit_skill": "experiment-audit",
+  "audit_id": "endpoint-report928-cold-source",
+  "date": "2026-10-13",
+  "generated_at": "2026-10-13T04:53:36.085771+00:00",
+  "reviewer_task": "/root/audit_evidence_endpoint_report928",
+  "requested_model": "gpt-6-astra",
+  "requested_effort": "max",
+  "actual_model": "UNATTESTED",
+  "actual_effort": "UNATTESTED",
+  "reviewer_family": "openai",
+  "review_independence": "same-family",
+  "acceptance_status": "provisional",
+  "overall_verdict": "WARN",
+  "integrity_status": "warn",
+  "source_verdict": "PASS",
+  "unresolved_blocking_source_defects": [],
+  "source_ready_for_cpu_report": true,
+  "readiness_scope": "The reviewed new CPU-only wrapper/report may be used only after the original gradient full50/first-strict endpoint is accepted. This is source readiness, not execution confirmation, training approval or full experiment completion.",
+  "scope": "Read-only source audit of the unexecuted endpoint report and corrected CPU-only wrapper. A prior wrapper revision has one preserved local manifest-key failure before SSH; no report execution is certified. Latest follow-up verified only the explicit manifest-key correction.",
+  "context_caveat": "Mandatory SOUL.md, USER.md and today/yesterday daily-note reads exposed prior session and TriFusion conclusions. Daily-note tool output was truncated. The review is fresh-agent but not strictly context-blind. MEMORY.md was not loaded because this is a delegated non-main session. BOOTSTRAP.md was absent.",
+  "context_files_sha256": {
+    "C:/Users/gb/SOUL.md": "95c467f710183b2c0397c29ec4ef886bb723671a39ee767dc4d59165f723b68f",
+    "C:/Users/gb/USER.md": "1d149f1630e30a205028ad96dce1fb22e08c8671324fb2288ed75d0e5813c565",
+    "C:/Users/gb/memory/2026-10-13.md": "84bd52ab4f03da99347c29ec4e7800c9f9cea95dbafdd62957e49e8e05e41073",
+    "C:/Users/gb/memory/2026-10-12.md": "74ae1ac1681b45b3656f4f1b9ed103581287d098ab5412987a4fa738d3e851f7"
+  },
+  "checks": {
+    "A_ground_truth_provenance": {
+      "status": "PASS",
+      "evaluation_type": "real_gt",
+      "details": "Source wiring loads full protocol query/gallery records; identity, camera and scene arrays originate in dataset protocol metadata. Saved distances contain these labels. No model output becomes retrieval ground truth. Exposure sensitivity/support is separately labeled model-derived activity, not region ground truth. Source classification only; remote data and saved binaries were not loaded.",
+      "evidence": [
+        "report_evidence_formation_endpoint.py:75-76",
+        "report_evidence_formation_endpoint.py:104",
+        "tools/run_correspondence_roles.py:66-108",
+        "tools/official_three_dataset_data.py:8-18",
+        "tools/run_official_three_dataset_roles.py:58-68",
+        "tools/build_official_three_dataset_protocols.py:32-80",
+        "modeling/trifusion/global_relation_inputs_diagnostic.py:35-57"
+      ]
+    },
+    "B_score_normalization": {
+      "status": "PASS",
+      "details": "camera_scores uses all legal positives and excludes only same-identity/same-camera gallery entries. AP is the mean of precision at all retained positive ranks; mAP and rank metrics average over the full query set. No metric divides by model prediction extrema. Activity gradient means are proxy summaries, not accuracy normalization.",
+      "evidence": [
+        "tools/train_rgbnt100_signal_oof.py:253-268",
+        "tools/report_prepool_dense_correspondence.py:18-55",
+        "report_evidence_formation_endpoint.py:59-71",
+        "report_evidence_formation_endpoint.py:78-86"
+      ]
+    },
+    "C_result_existence_and_completion": {
+      "status": "WARN",
+      "details": "This is an unexecuted report draft, with no completed result or numerical gain claimed. It requires an accepted endpoint plus exactly its successful train/evaluate stages, 50 history epochs, matching best epoch/metrics and checkpoint/distance hashes. These producer keys exist in the actual source. The remote artifacts were intentionally not inspected, so future runtime existence/completion is not certified.",
+      "evidence": [
+        "report_evidence_formation_endpoint.py:18-38",
+        "evidence_full_controller926.py:53-91",
+        "tools/run_foundation_recipe.py:243-257",
+        "tools/run_foundation_recipe.py:279-312",
+        "refine-logs/global_conditioned_evidence_20261013_924/EXPERIMENT_TRACKER.md:7-12"
+      ]
+    },
+    "D_live_wiring_and_schema": {
+      "status": "PASS",
+      "details": "The actual dispatch is run_global_conditioned_evidence -> run_global_task_role -> run_role_input_detach -> run_native_research -> run_native_partitioned -> run_independent_native_evidence -> run_foundation_recipe. configure rewires foundation schema, build, loss and train wrapper. Formal loss components preserve global_loss/fused_role_loss/evidence_exposure; the actual loop writes them to training_steps.jsonl and writes official_fused history. The partition wrapper adds partition_peak_memory. The report calls paired/descriptor rather than their unrelated main function.",
+      "evidence": [
+        "tools/run_global_conditioned_evidence.py:16-20,54-81,84-107",
+        "tools/run_global_task_role.py:25-49",
+        "tools/run_role_input_detach.py:7-13,22-41",
+        "tools/run_native_research.py:8-25",
+        "tools/run_native_partitioned.py:43-60",
+        "tools/run_independent_native_evidence.py:95-97,167-184",
+        "tools/run_foundation_recipe.py:229-257",
+        "report_evidence_formation_endpoint.py:47-71,75-87,102"
+      ]
+    },
+    "E_scope_and_claim_ceiling": {
+      "status": "WARN",
+      "details": "A single accepted original seed42 full50/first-strict endpoint permits a saved-ranking descriptive diagnosis only. The report explicitly sets same_model_global_decomposition_available=false and names the old global history independent_global_same_epoch_metrics. It cannot close the registered gradient-random comparison, same-model global/correction/fused decomposition, causal mechanism, seed uncertainty, or Signal superiority. These are scope limits, not blockers to this endpoint report.",
+      "evidence": [
+        "report_evidence_formation_endpoint.py:92-104",
+        "refine-logs/global_conditioned_evidence_20261013_924/EXPERIMENT_PLAN.md:11-14,30-38,46-50"
+      ]
+    },
+    "F_evaluation_type": {
+      "status": "PASS",
+      "classification": {
+        "retrieval": "real_gt (source-wired; runtime unverified)",
+        "exposure_activity": "model-derived sensitivity/support proxy"
+      },
+      "details": "No synthetic or self-referential retrieval ground truth is introduced. Role-exposure activity is explicitly not certified region importance.",
+      "evidence": [
+        "tools/run_correspondence_roles.py:88-107",
+        "report_evidence_formation_endpoint.py:104"
+      ]
+    },
+    "activity_means_and_denominators": {
+      "status": "PASS",
+      "details": "Producer norms are B x 3 x 128; available_sample_modalities is B x 3, active is nonzero norm sum, excluded is 32 per active sample/modality, and norm mean includes zero/inactive entries. Formal B=64 is enforced by the loop and draft checks 192 available modalities per step. Consequently the unweighted per-step norm mean is the equal-element epoch mean across 192*128 positions per step. Loss means are step means; summed available modalities, legal/supported relations and step counts preserve denominators. supported_active_steps is a conjunction, not an assertion that every supported step is active.",
+      "evidence": [
+        "modeling/trifusion/global_conditioned_evidence.py:59-84",
+        "modeling/trifusion/global_relation_inputs_diagnostic.py:45-57",
+        "tools/run_foundation_recipe.py:224-225",
+        "report_evidence_formation_endpoint.py:47-71"
+      ]
+    },
+    "query_group_ap_decomposition": {
+      "status": "PASS",
+      "details": "Four mutually exclusive and exhaustive Rank-1 transition groups contribute sum(delta AP in percentage points)/all queries, and their total is asserted equal to the complete mAP delta. This is a contribution decomposition, not a within-group mean. paired checks exact query/gallery label order and shape, rescoring both full matrices, and verifies Rank-1 delta=(repairs-new_errors)*100/N. Worst five percent means the lowest ceil(0.05*N) query AP deltas, not an identity statistic or confidence bound.",
+      "evidence": [
+        "tools/report_prepool_dense_correspondence.py:18-61",
+        "report_evidence_formation_endpoint.py:75-87"
+      ]
+    },
+    "required_sha_pins": {
+      "status": "PASS",
+      "details": "Hardcoded region seal hash is byte-exact. The nested control seal key, raw semantic batch-order path and independent-global training.json path exist with matching hashes in the seals; both control distance row hashes equal seal entries. New official metrics, checkpoint and distances are hash-checked. The 469-entry runtime map and M0 map are rechecked at report execution; directly inspected runtime producer/report helper files are byte-exact to the static source synchronization map. Remote byte verification is deliberately outside this audit.",
+      "evidence": [
+        "report_evidence_formation_endpoint.py:18-21,29-43,51-53,75-76,88-89",
+        "tools/report_prepool_dense_correspondence.py:23-29,58-61",
+        "refine-logs/region_use_fixed_best_diagnosis918/INPUT_SEAL.json:473-475,488-493,517",
+        "refine-logs/global_task_role_fixed_best_diagnosis_v1/INPUT_SEAL.json:531-594,959-1020",
+        "launch_evidence_full926.py:6-16"
+      ]
+    },
+    "phase_ownership_and_cpu_only": {
+      "status": "PASS",
+      "details": "The report is independent of the producer and only reads accepted artifacts; its only mutation creates a new report directory/SUMMARY.json. It does not launch jobs, restart training, alter campaign state, call model forward/backward, use CUDA, load model checkpoint tensors, or run an optimizer. paired loads saved distance bundles onto CPU; set_num_threads(1) is the sole report torch configuration call. Static analysis of 13 local report-import modules found only definitions, constants, path setup and guarded mains at import, with no neural/queue execution. The existing sequential full50 controller remains producer-owned.",
+      "evidence": [
+        "report_evidence_formation_endpoint.py:14-25,37-38,72-76,102-109",
+        "tools/report_prepool_dense_correspondence.py:23-29,135-136",
+        "evidence_full_controller926.py:43-75,89-95",
+        "tools/queue_region_use_probe.py:133-136",
+        "tools/collect_correspondence_roles.py:24-29"
+      ]
+    },
+    "cpu_execution_wrapper": {
+      "status": "PASS",
+      "details": "The wrapper checks source readiness/zero blockers and compares actual resolved report bytes with the explicit existing C:/Users/gb manifest key before embedding source. This fixed key is necessary because Path.resolve() maps the supplied alias to D:/Program Files/UserCache/gb. The current bytes exactly match that manifest entry. Fresh admin directory, private report copy, empty CUDA_VISIBLE_DEVICES, CPU threads=1, child wait/EXIT/log and local raw stdout/stderr/transport-exit capture are unchanged; no production replacement, fallback, training or retry logic was added.",
+      "evidence": [
+        "run_evidence_gradient_cpu_report928.py:5-12",
+        "run_evidence_gradient_cpu_report928.py:17-35",
+        "run_evidence_gradient_cpu_report928.py:37-48"
+      ],
+      "source_sha256": "ed18ea91dd0c5b948861dc72a64ccb625a85704622e567a8158c6579ea7f3503",
+      "report_hash_lookup_key": "C:/Users/gb/.codex_tmp/independent_evidence_draft/evidence_comparison903/report_evidence_formation_endpoint.py",
+      "report_expected_sha256": "0884d747e4d4719a87894bf5e0091a214995f2ddc04a9c551e50914d53e2accb",
+      "execution_observed": false,
+      "current_revision_execution_observed": false,
+      "prior_revision_local_failure_record": "C:/Users/gb/.codex_tmp/independent_evidence_draft/evidence_comparison903/EVIDENCE_CPU_LAUNCHER_KEY_FAILURE_928.txt"
+    }
+  },
+  "audited_input_hashes": {
+    "C:/Users/gb/.trifusion_github_publish_22c3bee/AGENTS.md": "9a03fa006956b002b4d0db5cccd0871d226b9c6b8d242a21624a35e42b9bcad9",
+    "C:/Users/gb/.trifusion_github_publish_22c3bee/tools/run_global_conditioned_evidence.py": "a35c5005740c26dcb624e1ef0c69756092b70fe8141b57219272028d77931587",
+    "C:/Users/gb/.trifusion_github_publish_22c3bee/tools/run_global_task_role.py": "151a3350a9da7d86ce6b4b7d5160537b182792ab08727ccb5e4ab0c64bb56d5f",
+    "C:/Users/gb/.trifusion_github_publish_22c3bee/tools/run_role_input_detach.py": "a177fd5aa4d5ba25422a49cb619062001722d6c7640891cb3da9645a8eb32fe5",
+    "C:/Users/gb/.trifusion_github_publish_22c3bee/tools/run_native_research.py": "b48725622371fc6d9671c464ce97252e2e06eba465e213ce221d84c798e52cc2",
+    "C:/Users/gb/.trifusion_github_publish_22c3bee/tools/run_native_partitioned.py": "2c3abac37b122760895b97ccf01d4fefe2cfb8223b35b6e2e335a1a4144f72fa",
+    "C:/Users/gb/.trifusion_github_publish_22c3bee/tools/run_independent_native_evidence.py": "2429af8d2f803d70b9d15113a430609ead28621eb4341a746c3025cc5685fe23",
+    "C:/Users/gb/.trifusion_github_publish_22c3bee/tools/run_foundation_recipe.py": "c18042509dc33ff66eee1a6b04a723ad55685bd5d9daf218c3779703ffe20758",
+    "C:/Users/gb/.trifusion_github_publish_22c3bee/tools/run_clean_clip_joint.py": "178e9793f2cf8261eb44a278e053d5caabd4f2f37dba48a65952b2547338a746",
+    "C:/Users/gb/.trifusion_github_publish_22c3bee/tools/run_visual_update_control.py": "537cd5a4ab4e9b3501a7279e3f4857536bdda761f597d8b5fa7bfdbdbf82cbdd",
+    "C:/Users/gb/.trifusion_github_publish_22c3bee/tools/run_correspondence_roles.py": "e50865fb923297cd61cf38b33ec2bc95154f8c503b5dfe5de9823cad3f03d7ef",
+    "C:/Users/gb/.trifusion_github_publish_22c3bee/tools/official_three_dataset_data.py": "c3180a88d12440709319d2025928fc699ff3b7c020b11697d468453fbfc68062",
+    "C:/Users/gb/.trifusion_github_publish_22c3bee/tools/run_official_three_dataset_roles.py": "f30bb00a0b71429e9d11dd196cd1d543202a133c663ad66e175d2f82e28d448d",
+    "C:/Users/gb/.trifusion_github_publish_22c3bee/tools/build_official_three_dataset_protocols.py": "d0a81699b31303fae1c8dadf4d397c13b308d9c7074902c67860047ff41eb151",
+    "C:/Users/gb/.trifusion_github_publish_22c3bee/tools/run_training_feature_scale.py": "473853f58e4ed70bf123509afe2861fa8a9988631c04f0ce04f3260c55fd9081",
+    "C:/Users/gb/.trifusion_github_publish_22c3bee/modeling/trifusion/global_conditioned_evidence.py": "f87a7d26ad357cb81e37b41676379dfc3fd1e8b3a3bdcf907ab0eb3a7eba6e0d",
+    "C:/Users/gb/.trifusion_github_publish_22c3bee/modeling/trifusion/global_task_role_heads.py": "2298763b70b48718411db52e55f32dabddade5af0e56457a85eeabab4f9fcefd",
+    "C:/Users/gb/.trifusion_github_publish_22c3bee/modeling/trifusion/global_relation_inputs_diagnostic.py": "5d962766520a616942902aeac5a7e19f83a3dadc39797174d010c58b2cd98ffb",
+    "C:/Users/gb/.trifusion_github_publish_22c3bee/tools/report_prepool_dense_correspondence.py": "1f11d1e4557903abec023c53064f26eeae7591818bec71d0b598789e86b818f2",
+    "C:/Users/gb/.trifusion_github_publish_22c3bee/tools/train_rgbnt100_signal_oof.py": "4462b73139e034d450d955c5b4a994aaa967548e9cc503d97bb753a14ea03b22",
+    "C:/Users/gb/.trifusion_github_publish_22c3bee/tools/train_msvr310_signal_oof.py": "c25579d931df34481fef321558f0b9a1f9179d72a25d6047dbbfd3682d4ae60f",
+    "C:/Users/gb/.trifusion_github_publish_22c3bee/tools/queue_region_use_probe.py": "1cdbeb294ce6d1686ffe0dcfb3def1ac11d4fb4aac2e988638199544353dfdba",
+    "C:/Users/gb/.trifusion_github_publish_22c3bee/tools/queue_native_research.py": "b138144780a31dc8a5a4922cc4e15dbc0537d0f75ce47d823434d3d3a3c5bc65",
+    "C:/Users/gb/.trifusion_github_publish_22c3bee/tools/queue_native_partitioned.py": "e3de037c378791734d4cf5cb07d705941b39f1a98038f0cdc24556ede3837c15",
+    "C:/Users/gb/.trifusion_github_publish_22c3bee/tools/queue_foundation_recipe.py": "3afe051358aa25d99cb3900b4c6fdb13d5d79d9dcee76d01018fccd27e27d302",
+    "C:/Users/gb/.trifusion_github_publish_22c3bee/tools/queue_correspondence_refinement.py": "5256afe78d02d9bfea3103daa00d488b94c05e839c955f00355098f69ecbd84a",
+    "C:/Users/gb/.trifusion_github_publish_22c3bee/tools/queue_correspondence_roles.py": "746fbdb8bdad04290a9ef22c0550e873c9dce9de74c2c3c3767fea9278be69bf",
+    "C:/Users/gb/.trifusion_github_publish_22c3bee/tools/collect_correspondence_roles.py": "f81af437fe5ccfea4361c1ed182cb9b8841b362214d2a5220309a0fd2c78fff8",
+    "C:/Users/gb/.trifusion_github_publish_22c3bee/tools/queue_prepool_dense_correspondence.py": "cb4275eea0942f7b89c4c9febd61f5bced388b8cc4d4db1f93083b021250b111",
+    "C:/Users/gb/.trifusion_github_publish_22c3bee/tools/queue_incremental_role_objective_m0.py": "7b12f7586e3b5754916cff7f2c8581019565c0fa537454f21d989f2aeb24a454",
+    "C:/Users/gb/.trifusion_github_publish_22c3bee/refine-logs/region_use_fixed_best_diagnosis918/INPUT_SEAL.json": "8e5c37e57c088a8ab53344266195bbc7183ccd27a94d0f0910ff9c20998b4b41",
+    "C:/Users/gb/.trifusion_github_publish_22c3bee/refine-logs/global_task_role_fixed_best_diagnosis_v1/INPUT_SEAL.json": "9f55f45278dbe3c03f5b5cc78b007e7a49b5693019ccba05cea3eea3bdc8256e",
+    "C:/Users/gb/.trifusion_github_publish_22c3bee/refine-logs/global_conditioned_evidence_20261013_924/EXPERIMENT_PLAN.md": "cd9241f06b00d90b5d6eb6004e6b3123d1ccd11ad6a15a49b72a45eb27db48f6",
+    "C:/Users/gb/.trifusion_github_publish_22c3bee/refine-logs/global_conditioned_evidence_20261013_924/EXPERIMENT_TRACKER.md": "f9889807f4732b3724cca3707299e3f04bf828a5be5000e36ca9e09e6e298283",
+    "C:/Users/gb/.trifusion_github_publish_22c3bee/refine-logs/global_conditioned_evidence_20261013_924/FULL_CONTROLLER_AUDIT.md": "1cfc0489f5d5b974c47177b7d65d32152b478fbbb18d92a9de7fc106a0b17fc8",
+    "C:/Users/gb/.trifusion_github_publish_22c3bee/refine-logs/global_conditioned_evidence_20261013_924/evidence_full_controller926.py": "ce75b9987862b189eddedf930762f719a25f9bc9c3bc3baaa2db09f54abab5b0",
+    "C:/Users/gb/.trifusion_github_publish_22c3bee/refine-logs/global_conditioned_evidence_20261013_924/SOURCE_PROVENANCE_925.json": "edbcf4bd3150cc208dba2a39164c93fbbfeaf8cbc389b943aa3410fa13a85e7f",
+    "C:/Users/gb/.codex_tmp/independent_evidence_draft/evidence_comparison903/report_evidence_formation_endpoint.py": "0884d747e4d4719a87894bf5e0091a214995f2ddc04a9c551e50914d53e2accb",
+    "C:/Users/gb/.codex_tmp/independent_evidence_draft/evidence_comparison903/evidence_full_controller926.py": "ce75b9987862b189eddedf930762f719a25f9bc9c3bc3baaa2db09f54abab5b0",
+    "C:/Users/gb/.codex_tmp/independent_evidence_draft/evidence_comparison903/launch_evidence_full926.py": "b49634bd2325b95854ed227934d8f30bae0ed0d8b1a3b2573eb8e68ddf31f6a1",
+    "C:/Users/gb/.codex_tmp/independent_evidence_draft/evidence_comparison903/EVIDENCE_SOURCE_SYNC_925.json": "3952b34801665ce192e7d2124dd49fa093db633605c5a6c80c79f78d9ba4917a",
+    "C:/Users/gb/.codex_tmp/independent_evidence_draft/evidence_comparison903/run_evidence_gradient_cpu_report928.py": "ed18ea91dd0c5b948861dc72a64ccb625a85704622e567a8158c6579ea7f3503",
+    "C:/Users/gb/.codex_tmp/independent_evidence_draft/evidence_comparison903/EVIDENCE_CPU_LAUNCHER_KEY_FAILURE_928.txt": "701a94cf3a1fb1dd21790fe651428ea23a6ef08b9460670de185199049646ee6"
+  },
+  "old_control_input_pin_checks": {
+    "/data/gaob/Re-ID/Trifusion/trained-model/global_task_role_v1_20261004_824_full_semantic_RGBNT201/official_distances.pt": "70262b671e25212d64fe3e28588161dc5818e49ce6974e6975da6acacb893f7d",
+    "/data/gaob/Re-ID/Trifusion/trained-model/global_task_role_v1_20261004_824_full_semantic_RGBNT201/training_batch_order.jsonl": "e446282654c74949fb594856631b246642593b73229331c30b555418a0358993",
+    "/data/gaob/Re-ID/Trifusion/trained-model/native_research_v6_20261003_794_full_global_only_RGBNT201/official_distances.pt": "b03c4ec16fa8f384b3d2914d5e3a01f402c8ee005ab0a8cdb8cef4184ea86e9f",
+    "/data/gaob/Re-ID/Trifusion/trained-model/native_research_v6_20261003_794_full_global_only_RGBNT201/training.json": "77d1f8173dfd36f0f2511a395e90488998b143ab30012da941a47d13cb32b21b",
+    "/data/gaob/Re-ID/Trifusion/refine-logs/global_task_role_fixed_best_diagnosis_v1/INPUT_SEAL.json": "9f55f45278dbe3c03f5b5cc78b007e7a49b5693019ccba05cea3eea3bdc8256e"
+  },
+  "deterministic_checks": {
+    "ast_pass_count": 34,
+    "report_import_graph_modules": 13,
+    "private_public_controller_byte_equal": true,
+    "runtime_manifest_entries": 469,
+    "local_byte_exact_entries": 335,
+    "local_absent_entries": 107,
+    "local_crlf_only_entries": 27,
+    "local_other_mismatches": [],
+    "direct_report_producer_runtime_sources_exact": true,
+    "wrapper_embedded_program_ast_pass": true,
+    "wrapper_one_line_change_reconstructs_original_sha256": true,
+    "explicit_manifest_key_exists": true,
+    "resolved_alias_report_bytes_equal": true,
+    "old_resolved_key_absent_from_manifest": true,
+    "key_only_change_reconstructs_previous_wrapper_sha256": true
+  },
+  "limitations": [
+    "The local public checkout is not a complete byte-identical deployment: 107 comparator/protocol entries are absent and 27 baseline modules differ only in CRLF/LF bytes. No other local mismatch was found. This is disclosed as a local-snapshot/runtime-verification limit, not a new report defect; the script targets the existing Linux root and absolute sealed control paths.",
+    "No SSH, network, GPU query, torch import, saved tensor/model/report execution, optimizer update, training approval, or production edit occurred. Only stdlib AST/JSON/hash checks and text reads were executed.",
+    "No transient campaign/training output or new endpoint metric was inspected. Old seal metadata was read for paths, schema and hashes, not used to claim new performance.",
+    "The default python launcher failed with No pyvenv.cfg before executing the audit snippet; subsequent AST/hash checks used existing E:/python.exe. No environment or package changes were made.",
+    "Original dataset files, full protocol contents, upstream comparator metric implementation and actual future result tensors were not independently loaded. Ground-truth assessment is source provenance, not a fresh dataset audit.",
+    "Final pairwise gradient-random and same-model decompositions remain outside this endpoint-report phase. No retrieval gain, causal effect, seed robustness or overall goal attainment is certified."
+  ],
+  "actions_required_for_this_draft": [],
+  "trace": {
+    "capture_owner": "parent native collaboration transcript",
+    "full_final_response_capture": "Parent requested verbatim capture; not independently verified by reviewer",
+    "review_output_directory": "C:/Users/gb/.codex_tmp/independent_evidence_draft/evidence_comparison903/review_endpoint_report928"
+  },
+  "corrected_before_execution_findings": [
+    {
+      "id": "WRAPPER_REVIEW_HASH_NOT_BOUND",
+      "initial_status": "FAIL",
+      "final_status": "CORRECTED_BEFORE_EXECUTION",
+      "original_wrapper_sha256": "f7f2c64c852e66f3fd36e2e06f235a217be14d9e7009d2dc679588a7fcfc2fbb",
+      "original_evidence": "run_evidence_gradient_cpu_report928.py:8-11 (original version)",
+      "finding": "Original wrapper checked review readiness but did not compare source bytes to the reviewed hash. The embedded digest was merely recomputed from the same current file.",
+      "fix": "Author added exactly one assertion comparing SHA256(source.read_bytes()) to audit[\"audited_input_hashes\"][source.as_posix()] before source embedding.",
+      "current_evidence": "run_evidence_gradient_cpu_report928.py:10",
+      "current_wrapper_sha256": "35a39271436a92a9e7bee011a817f8108f835751f0eb231d1443143b83aa8a0b",
+      "verification": "Removing exactly that assertion line reconstructs the original wrapper SHA256. Current wrapper and embedded remote program both pass stdlib AST parsing. Report hash is unchanged. Neither wrapper was executed by reviewer."
+    },
+    {
+      "id": "WRAPPER_RESOLVED_PATH_MANIFEST_KEY_MISMATCH",
+      "initial_status": "FAIL",
+      "final_status": "CORRECTED_BEFORE_REMOTE_OR_REPORT_EXECUTION",
+      "original_wrapper_sha256": "35a39271436a92a9e7bee011a817f8108f835751f0eb231d1443143b83aa8a0b",
+      "original_evidence": "run_evidence_gradient_cpu_report928.py:5-10 (previous version); EVIDENCE_CPU_LAUNCHER_KEY_FAILURE_928.txt:1-4",
+      "finding": "The prior source.as_posix() lookup used the D:/Program Files/UserCache/gb resolved target, while audited_input_hashes stored the supplied C:/Users/gb alias. The preserved failure record reports native410cd6 EXIT1 at line10 before SSH. Reviewer independently confirmed Path.resolve() returns D, that resolved key is absent, and the C key exists for identical bytes.",
+      "fix": "Only the audit lookup expression changed from source.as_posix() to the explicit existing C manifest key. SHA binding remains mandatory; no fallback or report edit.",
+      "current_evidence": "run_evidence_gradient_cpu_report928.py:10",
+      "current_wrapper_sha256": "ed18ea91dd0c5b948861dc72a64ccb625a85704622e567a8158c6579ea7f3503",
+      "verification": "Replacing the new literal lookup with the previous source.as_posix() expression reconstructs SHA256 35a39271436a92a9e7bee011a817f8108f835751f0eb231d1443143b83aa8a0b. Current wrapper and embedded program pass AST parsing. Resolved and alias report bytes are identical, with unchanged SHA256 0884d747e4d4719a87894bf5e0091a214995f2ddc04a9c551e50914d53e2accb.",
+      "evidence_limit": "The reviewer read the preserved local failure text, not the original native tool transcript. Static statement order independently puts the failing lookup before the SSH subprocess at line37. No remote check or execution was performed."
+    }
+  ],
+  "review_revisions": [
+    {
+      "revision": "initial_endpoint_and_sha_binding_review",
+      "wrapper_sha256": "35a39271436a92a9e7bee011a817f8108f835751f0eb231d1443143b83aa8a0b",
+      "audit_hashes": {
+        "json_sha256": "95d2d14610912a80f3b9f2d2623fd8b438063756d458b26dc3634f883fffde7e",
+        "md_sha256": "5905aaf6a23e004f5efa17f207989e2a4b3edc8ba29cd18a107154e528534551"
+      },
+      "status": "SUPERSEDED_BY_EXPLICIT_MANIFEST_KEY_REVIEW"
+    },
+    {
+      "revision": "explicit_manifest_alias_key_review",
+      "wrapper_sha256": "ed18ea91dd0c5b948861dc72a64ccb625a85704622e567a8158c6579ea7f3503",
+      "report_sha256": "0884d747e4d4719a87894bf5e0091a214995f2ddc04a9c551e50914d53e2accb",
+      "scope": "Only exact manifest-key correction after a recorded pre-SSH local wrapper failure; current wrapper remains unexecuted by reviewer."
+    }
+  ]
+}

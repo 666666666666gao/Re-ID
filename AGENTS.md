@@ -647,3 +647,5 @@ Read `refine-logs/CURRENT_GOAL.md` before further TriFusion work. User stopped e
 
 
 2026-10-12 §41.905: actual-region identity supervision source/queue PASS only, six fixed seed42 endpoints registered; initialization/real8-M0/fresh50 not run at publication. Only26GPU0/1. Original903 terminal, no rerun. Closed901 bests and903 caches SHA-verified in local archive, removed only remote copies; current50 dependencies unchanged. Goal ACTIVE_UNMET; actual fused1536 retrieval is primary, local loss/score not efficacy. See master §905 and refine-logs/region_use_supervision_v1.
+
+2026-10-13 §41.928: originalgradient50/2649/firststrict accepted E8 74.364459/79.306221/88.397127/91.866028; CPU actual ranking diagnosis complete, not a scientific mechanism success. Originalrandom3292454 follows unchanged, last12:37=1/50; only26GPU0/1. Soleobserver51083/PID38216 due13:18:13.877004+08:00, original73283 actualEXIT0 consumed. Source469/M0pins frozen, no new NN queue/seed/scale/layer/ratio rescue. Same-model global decomposition not yet measured. GoalACTIVE_UNMET; see currentmaster928.

@@ -1,0 +1,297 @@
+{
+  "audit_skill": "experiment-audit",
+  "audit_id": "endpoint-report928-bounded-runtime",
+  "date": "2026-10-13",
+  "generated_at": "2026-10-13T05:07:52.549069+00:00",
+  "reviewer_task": "/root/audit_evidence_endpoint_report928",
+  "requested_model": "gpt-6-astra",
+  "requested_effort": "max",
+  "actual_model": "UNATTESTED",
+  "actual_effort": "UNATTESTED",
+  "reviewer_family": "openai",
+  "review_independence": "same-family",
+  "acceptance_status": "provisional",
+  "overall_verdict": "WARN",
+  "evidence_integrity_status": "pass_with_scope_limits",
+  "first_endpoint_cpu_evidence_accepted": true,
+  "unresolved_blocking_evidence_defects": [],
+  "source_ready_for_publication_draft": true,
+  "unresolved_blocking_publication_defects": [],
+  "accepted_scope": "The supplied first original gradient full50/first-strict and saved CPU diagnosis are internally consistent with collected receipts and independently checked stored-record arithmetic. No endorsement of full goal, mechanism causality, same-model global contribution or seed robustness. Publisher remains unexecuted and prospective.",
+  "checks": {
+    "artifact_collection_and_exits": {
+      "status": "PASS",
+      "details": "All 12 collected files match their recorded byte sizes and SHA256, including the distance file checked as opaque bytes. The 3,609,743-byte collection ZIP matches its recorded SHA. Producer train/evaluate, original CPU child and CPU SSH transport receipts report exit 0. The first observer reports exit 0. The accepted-endpoint entry, official_metrics hash, observer snapshot and collection agree. Original CPU log matches summary metrics/step/activity counts.",
+      "evidence": [
+        "evidence_gradient_results928/COLLECTION_RECEIPT.json:2-82",
+        "evidence_gradient_results928/gradient_train_EXIT.json:1",
+        "evidence_gradient_results928/gradient_evaluate_EXIT.json:1",
+        "EVIDENCE_GRADIENT_CPU_EXIT_928.json:2-22",
+        "EVIDENCE_GRADIENT_CPU_TRANSPORT_EXIT_928.json:1",
+        "EVIDENCE_NEAR_ETA_OBSERVER_EXIT_927.json:1",
+        "EVIDENCE_GRADIENT_CPU_REPORT_928.log:1"
+      ]
+    },
+    "first_endpoint_same_best_and_count": {
+      "status": "PASS",
+      "details": "Exactly 50 history epochs and 2649 aligned step/order records: 49 epochs have 53 steps; epoch46 has 52. E8 is the maximum official mAP under the original later-epoch tie rule. E8 history, training.best_epoch, strict selected_epoch, collection acceptance, snapshot and summary share the same metrics. The strict receipt identifies one checkpoint SHA and the distance bytes match its distance SHA. The best checkpoint itself was not read by this reviewer; original producer/CPU source assertions attest its byte hash.",
+      "metrics": {
+        "mAP": 74.364459198888,
+        "Rank-1": 79.30622100830078,
+        "Rank-5": 88.39712738990784,
+        "Rank-10": 91.86602830886841
+      },
+      "evidence": [
+        "evidence_gradient_results928/output/training.json:86-697",
+        "evidence_gradient_results928/output/official_metrics.json:3-41",
+        "EVIDENCE_GRADIENT_CPU_SUMMARY_928.json:6-13,1317",
+        "evidence_gradient_results928/output/training_steps.jsonl:1-2649",
+        "evidence_gradient_results928/output/training_batch_order.jsonl:1-2649"
+      ]
+    },
+    "query_and_identity_arithmetic": {
+      "status": "PASS",
+      "details": "Each of two controls has 836 stored queries and 30 identities with identical candidate records. Stdlib recomputation from stored AP/first-rank records reproduces mAP, Rank1/5/10, all deltas, repair/new-error counts, AP-improved/worsened counts at the original 1e-8 threshold, each identity mean and the unweighted identity macro mean. Four exhaustive Rank1 transition groups use total-query N=836 as the contribution denominator and sum to total mAP delta. The lower-five-percent mean uses exactly ceil(0.05*836)=42 records. Official CMC percentages differ from exact count arithmetic only within the already-prescribed 1e-5 tolerance. This is record-arithmetic verification, not new ranking from distance tensors.",
+      "pair_results": [
+        {
+          "control": "raw_semantic",
+          "queries": 836,
+          "identities": 30,
+          "delta_metrics": {
+            "mAP": -0.010402337724897848,
+            "Rank-1": 0.4784688995215305,
+            "Rank-5": 0.0,
+            "Rank-10": 0.11961722488038617
+          },
+          "rank1_repairs": 7,
+          "rank1_new_errors": 3,
+          "identity_macro_mean_delta_ap_points": -0.0025175881397800698,
+          "group_contributions": {
+            "repair": {
+              "queries": 7,
+              "contribution_to_total_map_points": 0.05383392867786177
+            },
+            "new_error": {
+              "queries": 3,
+              "contribution_to_total_map_points": -0.01725571612227331
+            },
+            "kept_correct": {
+              "queries": 656,
+              "contribution_to_total_map_points": -0.03513824153259193
+            },
+            "kept_wrong": {
+              "queries": 170,
+              "contribution_to_total_map_points": -0.011842308747896449
+            }
+          },
+          "all_stored_record_arithmetic_pass": true
+        },
+        {
+          "control": "independent_global",
+          "queries": 836,
+          "identities": 30,
+          "delta_metrics": {
+            "mAP": 0.06779562420048535,
+            "Rank-1": 0.3588516746411443,
+            "Rank-5": 0.11961722488038617,
+            "Rank-10": 0.0
+          },
+          "rank1_repairs": 5,
+          "rank1_new_errors": 2,
+          "identity_macro_mean_delta_ap_points": 0.06467887849656888,
+          "group_contributions": {
+            "repair": {
+              "queries": 5,
+              "contribution_to_total_map_points": 0.041316566082438895
+            },
+            "new_error": {
+              "queries": 2,
+              "contribution_to_total_map_points": -0.012148916947101194
+            },
+            "kept_correct": {
+              "queries": 658,
+              "contribution_to_total_map_points": 0.030897354389595986
+            },
+            "kept_wrong": {
+              "queries": 171,
+              "contribution_to_total_map_points": 0.007730620675553355
+            }
+          },
+          "all_stored_record_arithmetic_pass": true
+        }
+      ],
+      "evidence": [
+        "EVIDENCE_GRADIENT_CPU_SUMMARY_928.json:1322-1501,8192-8214,8241-8393,15084",
+        "report_evidence_formation_endpoint.py:75-87",
+        "tools/report_prepool_dense_correspondence.py:18-61",
+        "tools/train_rgbnt100_signal_oof.py:253-268",
+        "RUNTIME_STDLIB_CHECK.py:92-127"
+      ]
+    },
+    "activity_and_batch_provenance": {
+      "status": "PASS",
+      "details": "All 2649 batch records have B=64 and match each step epoch/batch index. Every legal-positive-pair and legal-triple count was independently recomputed from stored identity/camera labels. Each step has 192 available sample/modalities and exactly32 exclusions per active sample/modality. All50 epoch activity/loss means and count sums reproduce the CPU summary; zeros remain in the all-position norm denominator. There are2557 supported-and-active steps and92 zero-support steps. New training batch-order SHA exactly equals the old raw-semantic order SHA in the fixed seal; original CPU script additionally asserted actual byte equality. Reviewer did not reopen the remote old order, regenerate model gradients or certify the support proxy as GT region importance.",
+      "totals": {
+        "steps": 2649,
+        "supported_active_steps": 2557,
+        "zero_support_steps": 92,
+        "legal_relations": 11089680,
+        "supported_relations": 11050402,
+        "active_sample_modalities": 490932,
+        "available_sample_modalities": 508608,
+        "excluded_patches": 15709824
+      },
+      "evidence": [
+        "evidence_gradient_results928/output/training_steps.jsonl:1-2649",
+        "evidence_gradient_results928/output/training_batch_order.jsonl:1-2649",
+        "EVIDENCE_GRADIENT_CPU_SUMMARY_928.json:615-1318",
+        "refine-logs/region_use_fixed_best_diagnosis918/INPUT_SEAL.json:493",
+        "report_evidence_formation_endpoint.py:47-71",
+        "RUNTIME_STDLIB_CHECK.py:61-91"
+      ]
+    },
+    "source_and_protocol_pins": {
+      "status": "PASS",
+      "details": "Executed report SHA and corrected wrapper SHA match the source audit. Every summary input hash that is available locally matches the collected/registered file. Collected controller matches the reviewed controller. INPUTS contains469 runtime source pins and15 M0 file pins; its runtime map exactly equals previous publication source_sha256. The strict/training protocol, exposure and initialization hash references match. Original report successfully executes its runtime pin assertions; this reviewer did not independently rehash all remote runtime/M0 bytes or infer model identity from a request label.",
+      "evidence": [
+        "EVIDENCE_GRADIENT_CPU_SUMMARY_928.json:15133-15142",
+        "EVIDENCE_GRADIENT_CPU_EXIT_928.json:18",
+        "evidence_gradient_results928/INPUTS.json:2",
+        "EVIDENCE_WAIT_FINAL_927.json:14",
+        "evidence_gradient_results928/output/official_metrics.json:9-34",
+        "SOURCE_AUDIT.json:1"
+      ]
+    },
+    "first_vs_second_and_same_model_boundary": {
+      "status": "WARN",
+      "details": "The12:37:28.324980 snapshot has exactly one accepted endpoint; campaign remains RUNNING and original random is RUNNING with one completed epoch. No later random progress is certified here. Report correctly keeps same_model_global_decomposition_available=false. Independent global same-epoch metrics are separate historical-model text metrics; neither those nor the independent-global comparison constitute same-model global/correction/fused evidence. One seed, one dataset and one new endpoint cannot establish the registered two-arm causal/advance claim or full research goal.",
+      "evidence": [
+        "EVIDENCE_NEAR_ETA_OBSERVATION_927.json:2,134-161,818-837",
+        "EVIDENCE_GRADIENT_CPU_SUMMARY_928.json:15105-15117,15142",
+        "publish_evidence_first_result928.py:59-60,79-89,94-98"
+      ]
+    },
+    "timing_boundary": {
+      "status": "PASS",
+      "details": "Producer train wall=2689.464858s uses start/completion timestamps from the same producer host. History.seconds sum=1929.70864680456s counts the training loops before per-epoch evaluation; it is not full training wall or GPU-kernel-only time. E50 mAP=71.37267350538414; best-to-last drop=2.991785693503857 points. The saved next observer ETA exactly follows local prior exit +49*(same-host full-train wall/50)-180s; it is explicitly a scheduling estimate. Local transport and remote execution clocks are not subtracted or ordered as one clock.",
+      "evidence": [
+        "evidence_gradient_results928/gradient_train_EXIT.json:4-29",
+        "EVIDENCE_GRADIENT_CPU_SUMMARY_928.json:15118-15120",
+        "tools/run_foundation_recipe.py:211-250",
+        "EVIDENCE_RANDOM_NEAR_ETA_PLAN_928.json:2-10",
+        "EVIDENCE_NEAR_ETA_OBSERVER_EXIT_927.json:2",
+        "publish_evidence_first_result928.py:58,85,89"
+      ]
+    },
+    "original_local_failure_and_single_report_scope": {
+      "status": "PASS",
+      "details": "Original launcher KeyError remains documented: resolved D target did not match the explicit C manifest key. It failed at wrapper line10, before the SSH call; corrected hash-bound wrapper then has one supplied successful remote CPU receipt. Source has no report retry branch, and no additional report/NN invocation is inferred. The reviewer read the preserved explanatory failure record, not the original native410cd6 transcript.",
+      "evidence": [
+        "EVIDENCE_CPU_LAUNCHER_KEY_FAILURE_928.txt:1-4",
+        "run_evidence_gradient_cpu_report928.py:5-12,26-37",
+        "EVIDENCE_GRADIENT_CPU_EXIT_928.json:2-22",
+        "publish_evidence_first_result928.py:81"
+      ]
+    },
+    "publication_claims_and_freeze": {
+      "status": "PASS",
+      "details": "Current unexecuted publisher matches actual2649/E8/metrics, raw-semantic non-improvement, independent-global limits, one accepted endpoint and time-stamped random snapshot. All3 old-key references now use actual prior.source_sha256, identical to collected runtime_source_sha256. Its25 fixed public destinations plus a dated tracker version do not intersect the469 pinned runtime entries. Source disjointness is asserted before staging, remote source/M0 pins are checked, remote extraction stays under repository root, and source pins are rechecked afterward. No current publication/Git/server mutation is certified.",
+      "publisher_sha256": "7fac80e9e0f7183a7e43fed65ff494fd43b41a671f2d86b8c91bd64d04f72a24",
+      "evidence": [
+        "publish_evidence_first_result928.py:15-17,48-70,76-107,123-145",
+        "EVIDENCE_WAIT_FINAL_927.json:14",
+        "evidence_gradient_results928/INPUTS.json:2"
+      ]
+    },
+    "duplicate_retirement_scope": {
+      "status": "PASS",
+      "details": "Deletion is limited to the newly created EVIDENCE_FIRST_PUBLICATION_928.zip and collected EVIDENCE_GRADIENT_RESULTS_928.zip, each once locally and remotely. Current collection archive path is exactly the owned logs ZIP and its local SHA/size match the receipt. Remote files must remain under root/logs; local paths under the resolved private workspace. Before collection ZIP deletion, all12 original collected artifact paths are rehashed; local unpacked copies are similarly checked. ZIPs are hash-verified and byte sizes recorded, not falsely described as separately size-validated by publisher code. No checkpoint/distance/source/90-dependency deletion or recursive deletion is present. This is prospective source assessment, not proof cleanup has executed.",
+      "evidence": [
+        "publish_evidence_first_result928.py:89,117-124,135-151,166-170",
+        "evidence_gradient_results928/COLLECTION_RECEIPT.json:2-66"
+      ]
+    }
+  },
+  "audited_input_hashes": {
+    "C:/Users/gb/.codex_tmp/independent_evidence_draft/evidence_comparison903/EVIDENCE_GRADIENT_CPU_SUMMARY_928.json": "511f6e00aa0c4df2f464170dc1064d727cc851d351764a60bdacee3b92a8b110",
+    "C:/Users/gb/.codex_tmp/independent_evidence_draft/evidence_comparison903/EVIDENCE_GRADIENT_CPU_EXIT_928.json": "b75968b009cc064edc2988a84c8ddce28fb56b0e0ef97ea2b6ba48e08e25669e",
+    "C:/Users/gb/.codex_tmp/independent_evidence_draft/evidence_comparison903/EVIDENCE_GRADIENT_CPU_TRANSPORT_EXIT_928.json": "15306f1c3178d1b2b36178e55b2e9d96fa8fe7f0d4ae19d109271c21601cf3b0",
+    "C:/Users/gb/.codex_tmp/independent_evidence_draft/evidence_comparison903/EVIDENCE_GRADIENT_CPU_REPORT_928.log": "c06120a8bdbde4caaced160a80c36eb9fc0625a982509e7d410fed4a2ca44a60",
+    "C:/Users/gb/.codex_tmp/independent_evidence_draft/evidence_comparison903/EVIDENCE_NEAR_ETA_OBSERVATION_927.json": "ef80274e0c3f4e6b14e88be315f40b59b41cb3a84df69d0071b393a2ce61f234",
+    "C:/Users/gb/.codex_tmp/independent_evidence_draft/evidence_comparison903/EVIDENCE_NEAR_ETA_OBSERVER_EXIT_927.json": "eca61b607f485f69c44d2fd34b5703aff8812fcb0b7681daed8529307eedc1ea",
+    "C:/Users/gb/.codex_tmp/independent_evidence_draft/evidence_comparison903/EVIDENCE_CPU_LAUNCHER_KEY_FAILURE_928.txt": "701a94cf3a1fb1dd21790fe651428ea23a6ef08b9460670de185199049646ee6",
+    "C:/Users/gb/.codex_tmp/independent_evidence_draft/evidence_comparison903/EVIDENCE_WAIT_FINAL_927.json": "6558d81d3a1c961363822c9572bc340aca77b5a3eeb845874087b8ee58453a36",
+    "C:/Users/gb/.codex_tmp/independent_evidence_draft/evidence_comparison903/EVIDENCE_RANDOM_NEAR_ETA_PLAN_928.json": "cfa63b245e69e882c2bfd8ba724ae64e3fc0122d93c87ecc5f61ad0d473538b2",
+    "C:/Users/gb/.codex_tmp/independent_evidence_draft/evidence_comparison903/EVIDENCE_RANDOM_NEAR_ETA_TIMER_928.json": "3734c79e271a77f9ce5689269d0959b12d2e8a23eb5a5f7164f2a20cf3058206",
+    "C:/Users/gb/.codex_tmp/independent_evidence_draft/evidence_comparison903/EVIDENCE_RANDOM_OBSERVER_OWNERSHIP_928.json": "99959ddde90ff4937c7956fd01a061cfaa8ec6676da1b6ce9e7fb6f26d5dc9f5",
+    "C:/Users/gb/.codex_tmp/independent_evidence_draft/evidence_comparison903/report_evidence_formation_endpoint.py": "0884d747e4d4719a87894bf5e0091a214995f2ddc04a9c551e50914d53e2accb",
+    "C:/Users/gb/.codex_tmp/independent_evidence_draft/evidence_comparison903/run_evidence_gradient_cpu_report928.py": "ed18ea91dd0c5b948861dc72a64ccb625a85704622e567a8158c6579ea7f3503",
+    "C:/Users/gb/.codex_tmp/independent_evidence_draft/evidence_comparison903/publish_evidence_first_result928.py": "7fac80e9e0f7183a7e43fed65ff494fd43b41a671f2d86b8c91bd64d04f72a24",
+    "C:/Users/gb/.codex_tmp/independent_evidence_draft/evidence_comparison903/EVIDENCE_GRADIENT_RESULTS_928.zip": "a38c3c18844587f60e513f3fc21eb5523d751ce87b143c4c995a11dac845469e",
+    "C:/Users/gb/.codex_tmp/independent_evidence_draft/evidence_comparison903/evidence_gradient_results928/COLLECTION_RECEIPT.json": "c448e343a4c35569e30f877d7ceb6a40a8d7ef27f97662025ec9eb097e0fb4e1",
+    "C:/Users/gb/.codex_tmp/independent_evidence_draft/evidence_comparison903/evidence_gradient_results928/INPUTS.json": "26b06899e18fdef75dbdf6e9258ad63f8270a5f999ac3b2797cdfbeb3a45f78f",
+    "C:/Users/gb/.codex_tmp/independent_evidence_draft/evidence_comparison903/evidence_gradient_results928/controller.py": "ce75b9987862b189eddedf930762f719a25f9bc9c3bc3baaa2db09f54abab5b0",
+    "C:/Users/gb/.codex_tmp/independent_evidence_draft/evidence_comparison903/evidence_gradient_results928/SUPERVISOR.json": "030bb0b51c12c4287cfc21826e3f375633c66543e1e42e343d62a13e89aaf8e2",
+    "C:/Users/gb/.codex_tmp/independent_evidence_draft/evidence_comparison903/evidence_gradient_results928/gradient_train_EXIT.json": "cac25da5805acca52ea834d60934d29d28c63ea16bbdd3fb93c93b79fe1634de",
+    "C:/Users/gb/.codex_tmp/independent_evidence_draft/evidence_comparison903/evidence_gradient_results928/gradient_evaluate_EXIT.json": "2b0bacf0604c514fe6cc22a5f02658f0b578e4e35b06988cca1b1c340a4cc521",
+    "C:/Users/gb/.codex_tmp/independent_evidence_draft/evidence_comparison903/evidence_gradient_results928/gradient_train.log": "02504aa4689895b1dcfd7fd0be20420f513716a5df7a18e3a67c95d96f4dea04",
+    "C:/Users/gb/.codex_tmp/independent_evidence_draft/evidence_comparison903/evidence_gradient_results928/gradient_evaluate.log": "f47bfeef077b51f377a08979ca28c79438cc55526cb3b226947b3d5205729f99",
+    "C:/Users/gb/.codex_tmp/independent_evidence_draft/evidence_comparison903/evidence_gradient_results928/output/training.json": "f5c2c29bf13e5810a676eb6a7927ccd81712438feb16b79661db274e4f705abe",
+    "C:/Users/gb/.codex_tmp/independent_evidence_draft/evidence_comparison903/evidence_gradient_results928/output/training_steps.jsonl": "c93175b6e796763bb62ab7befb7bd94e129038ab1be73cd7234aa9cf9addfd96",
+    "C:/Users/gb/.codex_tmp/independent_evidence_draft/evidence_comparison903/evidence_gradient_results928/output/training_batch_order.jsonl": "e446282654c74949fb594856631b246642593b73229331c30b555418a0358993",
+    "C:/Users/gb/.codex_tmp/independent_evidence_draft/evidence_comparison903/evidence_gradient_results928/output/official_metrics.json": "a85c48230b7287f726caa63564f205bad79df33782e653c0810658dc53425f97",
+    "C:/Users/gb/.codex_tmp/independent_evidence_draft/evidence_comparison903/evidence_gradient_results928/output/official_distances.pt": "a4aa3299f50a3197b50f76b10c1233c8542dbdde5b8552f5640fc0e702ec9b08",
+    "C:/Users/gb/.codex_tmp/independent_evidence_draft/evidence_comparison903/review_endpoint_report928/SOURCE_AUDIT.json": "45ac974ed7b5e91b5acc9e9010aee336e5f7b85a68917a6281003d3fb909bead",
+    "C:/Users/gb/.codex_tmp/independent_evidence_draft/evidence_comparison903/review_endpoint_report928/SOURCE_AUDIT.md": "cb263faf6d615a2b260388935c5cf5fde79943348816c142b25715ff09aaf1f5",
+    "C:/Users/gb/.codex_tmp/independent_evidence_draft/evidence_comparison903/review_endpoint_report928/RUNTIME_STDLIB_CHECK.py": "c58054545a6e3e40d759670bb7e1cde158760469dd9443c1ed4b5bd4e377504f",
+    "C:/Users/gb/.codex_tmp/independent_evidence_draft/evidence_comparison903/review_endpoint_report928/RUNTIME_STDLIB_CHECKS.json": "e690a61c65684da25ecdac4da284d2385ebe47f6fd533b127b51b879443fd3ae",
+    "C:/Users/gb/.trifusion_github_publish_22c3bee/refine-logs/region_use_fixed_best_diagnosis918/INPUT_SEAL.json": "8e5c37e57c088a8ab53344266195bbc7183ccd27a94d0f0910ff9c20998b4b41",
+    "C:/Users/gb/.trifusion_github_publish_22c3bee/refine-logs/global_task_role_fixed_best_diagnosis_v1/INPUT_SEAL.json": "9f55f45278dbe3c03f5b5cc78b007e7a49b5693019ccba05cea3eea3bdc8256e"
+  },
+  "deterministic_checks_path": "C:/Users/gb/.codex_tmp/independent_evidence_draft/evidence_comparison903/review_endpoint_report928/RUNTIME_STDLIB_CHECKS.json",
+  "deterministic_checker_path": "C:/Users/gb/.codex_tmp/independent_evidence_draft/evidence_comparison903/review_endpoint_report928/RUNTIME_STDLIB_CHECK.py",
+  "corrected_before_publication_findings": [
+    {
+      "id": "PUBLISHER_PRIOR_SOURCE_MAP_KEY",
+      "initial_status": "FAIL",
+      "current_status": "CORRECTED_BEFORE_PUBLISHER_EXECUTION",
+      "evidence": "Original/current publish_evidence_first_result928.py:96,107,123; EVIDENCE_WAIT_FINAL_927.json:14",
+      "finding": "Original publisher referenced absent prior.runtime_source_sha256 and would fail after local document writes. Actual saved prior has source_sha256.",
+      "correction": "All3 references changed to source_sha256; current mapping equals collected INPUTS.runtime_source_sha256. No fallback added."
+    },
+    {
+      "id": "PUBLISHER_SIZE_VERIFICATION_WORDING",
+      "initial_status": "WARN",
+      "current_status": "CORRECTED_BEFORE_PUBLISHER_EXECUTION",
+      "evidence": "publish_evidence_first_result928.py:89,147-151",
+      "finding": "Original draft said SHA/size verified while cleanup code hash-checks and records size.",
+      "correction": "Wording now says SHA verified and size recorded; actual supplied collection archive SHA/size were independently checked locally."
+    },
+    {
+      "id": "EARLIER_LOCAL_2650_COUNT_DRAFT",
+      "current_status": "AUTHOR_REPORTED_CORRECTED_BEFORE_PUBLICATION",
+      "finding": "Parent reports nativeecfd35 EXIT1 in an unexecuted local publisher count check before writes, followed by correcting2650 to2649. The original count-check transcript was not supplied/independently consumed. This reviewer first saw2649 and independently verified it:49*53+52, epoch46 has52.",
+      "evidence": "Parent continuation message; evidence_gradient_results928/output/training.json:628; training_steps.jsonl:1-2649; training_batch_order.jsonl:1-2649"
+    }
+  ],
+  "reviewer_check_history": [
+    {
+      "status": "CORRECTED_REVIEWER_ARITHMETIC",
+      "details": "Initial extra component-loss check used double-precision sum equality and failed on logged float32 rounding (1327 records; max absolute difference4.76837158203125e-7). All2649 exactly match float32-rounded global_loss+fused_role_loss. No source/artifact was edited and no production assertion/tolerance was changed. Final stdlib checker passes."
+    }
+  ],
+  "context_caveat": "Same reviewer continues its earlier source audit. Mandatory session-note exposure and same-family/provisional model attribution remain disclosed in SOURCE_AUDIT. This is a bounded follow-up, not a context-blind whole-experiment audit.",
+  "limitations": [
+    "Distance tensors and checkpoints were not deserialized. Distance file received a bytes/SHA check only; no independent tensor-to-ranking replay or original dataset re-audit occurred.",
+    "GT/camera filtering and full-ranking computation are supported by previously inspected producer/scorer source and the successful original CPU invocation, while this review independently recomputed only saved per-query/identity/group and training/activity record arithmetic.",
+    "No SSH, network, GPU query, torch/model/report execution, training approval, publication, source replacement or production mutation was performed by reviewer.",
+    "The first-result records are accepted only within one seed42 RGBNT201 endpoint. Random is pending in the supplied snapshot; no newer live status or final gradient-random result is certified.",
+    "Original best checkpoint bytes were not collected here; the supplied receipt plus successful source-hash-bound CPU checks attest its SHA. Full469 remote source/M0 byte verification was not independently repeated.",
+    "Existing full-Signal reference is inherited from the already registered plan; it was not freshly re-audited in this bounded review.",
+    "Original local launcher/count-check native transcripts are parent-owned; supplied preserved failure text and parent attribution are distinguished from independently consumed tool evidence."
+  ],
+  "trace": {
+    "capture_owner": "parent native collaboration transcript",
+    "output_directory": "C:/Users/gb/.codex_tmp/independent_evidence_draft/evidence_comparison903/review_endpoint_report928"
+  }
+}

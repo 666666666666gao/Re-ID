@@ -2389,3 +2389,4 @@
 | 2026-10-13T11:49:08.492152+08:00 | /run-experiment | refine-logs/global_conditioned_evidence_20261013_924/EXPERIMENT_TRACKER.md | runtime | 两端原M0已accepted；full50仍TODO |
 | 2026-10-13T11:56:37.267042+08:00 | /run-experiment | refine-logs/global_conditioned_evidence_20261013_924/EXPERIMENT_TRACKER_20261013_115637.md | runtime | 原两卡gradient启动确认；random排队，未有50轮成绩 |
 | 2026-10-13T11:56:37.267064+08:00 | /run-experiment | refine-logs/global_conditioned_evidence_20261013_924/EXPERIMENT_TRACKER.md | runtime | 原两卡gradient启动确认；random排队，未有50轮成绩 |
+| 2026-10-13T13:08:55.116684+08:00 | /analyze-results | refine-logs/global_conditioned_evidence_20261013_924/FIRST_RESULT_REPORT_928.md | actual first original full50 and CPU ranking | random still running, one seed/one dataset; source frozen |

@@ -1,4 +1,4 @@
-> **当前状态（2026-10-13，§41.927）：新RGBNT201两端已在26物理GPU0/1启动，11:53实际确认gradient完成2/50轮且原worker存活，random原顺序排队；尚无新正式成绩。旧六端不重启，Goal仍ACTIVE_UNMET；原首个观察者已正常退出，之后近ETA观察。**
+> **当前状态（2026-10-13，§41.928）：新gradient RGBNT201完成50轮2649更新与首次strict，E8为74.3645/79.3062/88.3971/91.8660；mAP未超过原raw semantic，仍未超过Signal。CPU净损益诊断完成。random原顺序训练继续，12:37观察1/50；仅26GPU0/1，无新队列/多seed/调参。Goal ACTIVE_UNMET。**
 
 
 # TriFusion RGB–NIR–TIR ReID 完整交接（2026-09-01）
@@ -18742,3 +18742,17 @@ M0不只看通用PASS：检查原semantic初始state及参数/buffer绑定、每
 §927等待与清理续记（不新增算法阶段）：两份已accepted的M0工程probe先复制到本地独立归档并逐字节SHA/大小一致后，才删除原远端重复副本；共释放716751216B，记录时服务器可用3315109888B。当前full926的INPUTS不引用这两份probe，正式进程不会加载M0权重；原M0 receipt/源/初始化不改，原best、90依赖、距离和旧归档不动。归档和冷清理均无NN调用。
 
 已登记唯一下一次本地观察者native73283/PID38476，birth=2026-10-13T12:06:55.8262110+08:00，原d08243确认存活；due=2026-10-13T12:37:17.637731+08:00，仅到该时间读原full926状态/history，之前remote progress query0。时间规划使用同remote主机已记录elapsed和训练循环时长的中间粗估约59.2秒/轮，扣3分钟设置first near-ETA检查；不是实测完整epoch平均成本或终态预测保证。原13430已EXIT0，不保留第二个早期观察者。完整训练source469保持冻结，不在等待期间改变网络、loss、参数或种子。
+
+## 41.928 第一项正式结果与实际排序用途
+
+原full926 controller未重启。gradient原train/evaluate分别EXIT0，50轮2649次更新；同一E8 best首次strict为mAP/R1/R5/R10=74.3644591989/79.3062210083/88.3971273899/91.8660283089。原best SHA=3805afc25d556ba94bb072f8f5cbfb51055cd1e19d47a385dd19dcf230514a23，strict距离SHA=a4aa3299f50a3197b50f76b10c1233c8542dbdde5b8552f5640fc0e702ec9b08；正式指标跟随同一权重，不从不同epoch拼列。原random顺序续接，PID3292454；12:37:28.324980观察1/50且worker3190963存活，不是两端完成。
+
+CPU报告仅读取已完成端的完整合法query/gallery距离、50轮step/曝光活动及既有sealed raw/global控制，0 NN/0 optimizer/0 GPU；原远端调用EXIT0。source审查同家族provisional/WARN、模型/effort未attest；冷源码PASS只证明该报告在限定范围内可用，结果复核同样不等于机制有效。首次本地launcher因C→D别名造成audit键KeyError，native410cd6在SSH前EXIT1；改为审查manifest确切C键后才首次调用远端CPU报告，原错误与修正记录保留，不追认为原调用通过，也无训练重试。
+
+相对原raw semantic：ΔmAP=-0.0104023377、ΔR1=+0.4784688995，修复7／新增3；身份宏AP变化-0.0025175881。相对独立global：ΔmAP=+0.0677956242、ΔR1=+0.3588516746，修复5／新增2。四种首位组对总mAP损益、完整query/identity AP变化、50轮活动和曲线保存在CPU_SUMMARY_928.json；数量与损伤程度分开，不用首位计数冒充所有正例排序收益。
+
+原source/初始化/M0 file pins冻结。实际训练活动2557/2649步，0支持92步；这只是正确合法global关系的模型梯度敏感性和实际排除活动，不是部件真值、严格新增语义或因果贡献。same_model_global_decomposition_available=false：本次只从保存fused距离做CPU分账，独立global同epoch文本指标不能冒充同模型global向量/得分。末轮mAP=71.3726735054，best→末轮下降2.9917856935。原train stage同host墙钟2689.464858s，history.seconds和1929.708647s仅训练循环，不混用跨主机时钟。
+
+该单端mAP与原raw角色近乎持平，未达预登记0.5推进线，也距离完整Signal80.3029/85.1675/91.3876/93.6603明显；项目门槛不等于显著性。主配对gradient−random等待原第二端50轮/首次strict，不能提前把变化归于梯度位置选择。不搜索层号/比例/gain/margin/seed救分，也不自动追加P2/P3。当前只将外领域形成机制作为回答一环的受控参考，主判断始终是新增证据对最终身份比较的真实净用途。
+
+唯一下一observer native51083/PID38216，birth=2026-10-13T12:38:50.4910200+08:00，due=2026-10-13T13:18:13.877004+08:00；原73283已真实EXIT0并已消费。下一ETA用同remote已完成第一端producer2689.464858秒/50作计划尺度，从本地原observer终止时点安排、扣3分钟；不是隔离epoch实测成本或时间保证。之前不查询进度，不因等待超时重启。只保留各条件验收best和必要来源/距离；此次仅退休SHA验证并记录大小的自建ZIP传输重复副本，原best和90依赖不动。
