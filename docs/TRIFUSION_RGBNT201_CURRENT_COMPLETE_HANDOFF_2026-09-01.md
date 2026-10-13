@@ -1,4 +1,4 @@
-> **当前状态（2026-10-13，§41.939）：恢复训练已执行。201 semantic/seed42“角色L2分类/raw Triplet”一次prepare与真实8步M0通过（281/281活动、BN8、重载差0），原fresh50 PID358365在26物理GPU0/1运行；22:01实际观测1/50，不是正式结果。唯一近结束observer session23306到22:54:12；此前不轮询/不重启。原best/依赖保留，482来源冻结，三集超过SignalGoalACTIVE_UNMET。**
+> **当前状态（2026-10-13，§41.940）：原201 seed42 fresh50继续，未提前查询进度；最后实际22:01=1/50，supervisor/controller/NN为354646/354648/358365。完成后的CPU全query报告已实现但未执行；旧控制batch SHA缺口单独首次补封存，两个旧文件相同2649行，不伪称历史已覆盖。482训练来源不改，近ETA原session23306到22:54:12。当前无新正式结果/诊断结论，三集SignalGoalACTIVE_UNMET。**
 
 
 # TriFusion RGB–NIR–TIR ReID 完整交接（2026-09-01）
@@ -19319,3 +19319,23 @@ prepare运行一次，控制器通过完整binding与原raw semantic initializer
 预计一端full约一小时，当前唯一近完成观察为local session23306/PID43956，deadline 2026-10-13T22:54:12.822883+08:00（原full开始后55分钟），此前无远端训练进度查询。180–300秒长任务观察口径保持，不因前端session超时/缺失或campaign残留状态重启训练。下次只消费原handle/原进程/原EXIT。
 
 计划完成后分析保存的全query修复/新增错误、身份AP与完整50轮行为；同模型G/C/F如需要另行限定。原raw semantic/global-only/完整Signal成绩保持；此时不宣称超过Signal、分类入口有效、原创模块成功或车辆可迁移。所有原best/必需依赖保留，本次权重删除0。新formal逻辑只写/覆盖mAP-best，M0是当前验收依赖；未完成前不清除。
+
+## 41.940 原训练等待期间的完成报告准备与旧批次文件封存
+
+2026-10-13 §41.940: pending post-terminal single201 saved-distance report implemented, not run. Root static control schema check d1a41a failed because oldseal omitted batch hashes; first actual readonly95869b captured both old closed batch logs5475022B/2649rows samee4462826..., direct new explicit seal, not retroactive. Corrected static24713b passed, no fallback, current NN/source/progress queries0. Original354646/354648/358365 pipeline unaffected/482source frozen, currentlastobserved22:01=1/50; sole observer23306/PID43956 due22:54:12.822883. After full50/firststrict accept, report checks originalM0/newfull and uses old receipt/distance SHA plus currentsealedoldbatch bytes; keep M0 through report. No performance claim/newseed/tuning/vehicles/T-P/weights deletion. GoalACTIVE_UNMET.
+
+# 当前训练完成后的原保存距离报告
+
+2026-10-13，§940。当前原controller354648/full child358365正常50轮队列不改变。此时只编写CPU报告入口，不提前运行、不改482项已封存训练来源/manifest/plan，也不查看中途分数。
+
+报告只在原campaign COMPLETE、四阶段prepare/M0/train/evaluate实际均EXIT0、ACCEPTED_RESULT与原严格verify相等时运行一次；M0二进制仍为verify依赖，报告成功前不退役它。第一次strict失败不以诊断数组补签，不重选best或放宽容差。
+
+重用tools/analyze_correspondence_distances.py的compare/camera_scores，原完整合法gallery/camera过滤和tie口径不变。只用新同一best的official_distances与封存raw semantic/独立global-only正式数组，不调用模型、optimizer或测试时更新。旧控制不再调用已退役M0的旧verify，只核对所需receipt/distance与训练batch-order字节SHA；不重新跑旧训练或旧报告。
+
+输出：同一best mAP/R1/R5/R10，50轮轨迹与实际步数，完整训练/逐轮评价时间（不误称history.seconds含评价）；两种匹配控制的全部query AP/首位变化、修复与新增错误、身份AP分布/宏平均，预设推进线相对raw semantic至少+0.5点mAP且R1不降。固定模型身份bootstrap沿用既有描述，不替代训练多seed或作显著性推进门。
+
+完整Signal80.3029/85.1675只列历史绝对能力参照，不同初始化/结构不是本单因素控制；不拿shared-adapter global当原Signal无模块基础。后续主方法仍应分账无模块作者配方、global适配与新证据收益。
+
+报告源码可独立审查；它不是本次已完成的统计结果。若首次调用失败，保留退出与输出，依据实际原因处理未完成尾部，不能因观察超时重启原训练或原CPU统计。只有真实运行输出才用于改进决策；当前不因代码登记新增任何成功模块、seed/gain/margin/层数或车辆队列。
+
+本次静态检查d1a41a在旧seal缺少batch-order SHA字段处失败，尚未运行报告或NN。之后95869b首次只读核对两个旧终态batch文件：各5475022B/2649行、SHA均为e446282654c74949fb594856631b246642593b73229331c30b555418a0358993。单独追加REPORT_CONTROL_BATCHES_940.json作为当前封存，不伪称旧seal原本已覆盖或回补历史哈希；报告直接读取该新明确来源，不增加fallback。当前训练来源、进度和权重未读取或改动。

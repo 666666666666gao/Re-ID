@@ -1,3 +1,9 @@
+## 2026-10-13 §41.940 pending original terminal report
+
+2026-10-13 §41.940: pending post-terminal single201 saved-distance report implemented, not run. Root static control schema check d1a41a failed because oldseal omitted batch hashes; first actual readonly95869b captured both old closed batch logs5475022B/2649rows samee4462826..., direct new explicit seal, not retroactive. Corrected static24713b passed, no fallback, current NN/source/progress queries0. Original354646/354648/358365 pipeline unaffected/482source frozen, currentlastobserved22:01=1/50; sole observer23306/PID43956 due22:54:12.822883. After full50/firststrict accept, report checks originalM0/newfull and uses old receipt/distance SHA plus currentsealedoldbatch bytes; keep M0 through report. No performance claim/newseed/tuning/vehicles/T-P/weights deletion. GoalACTIVE_UNMET.
+
+Earlier notes historical.
+
 ## 2026-10-13 §41.939 original full training live
 
 2026-10-13 §41.939 actual progress: explicit继续训练 pipeline supervisor354646/controller354648 launched once. Prepare initializer equivalence and true8M0 PASS/281active/BN8/strictreload0; originalfresh50 PID358365 start21:59:12.822883 on26physical01. Original180sec M0 observer97799 terminal7d62c7 EXIT0 observed22:01=1/50/fullNNlive, no newacceptedscore. Sole nextnearfinish observer23306/localPID43956/birth2026-10-13T22:03:03.195984+08:00 due2026-10-13T22:54:12.822883+08:00; do notqueryprogress early orrestart fromtimeout. 482source frozen/M0probe dependency kept, oldbest protected/newweightsdelete0. No vehicles/seed/gain/margin/layer/search/T-P/install/preemption. GoalACTIVE_UNMET; formerSTOP/blocked scope superseded by actualuserresume.

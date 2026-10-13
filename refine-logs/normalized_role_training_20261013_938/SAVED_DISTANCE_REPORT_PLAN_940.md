@@ -1,0 +1,15 @@
+# 当前训练完成后的原保存距离报告
+
+2026-10-13，§940。当前原controller354648/full child358365正常50轮队列不改变。此时只编写CPU报告入口，不提前运行、不改482项已封存训练来源/manifest/plan，也不查看中途分数。
+
+报告只在原campaign COMPLETE、四阶段prepare/M0/train/evaluate实际均EXIT0、ACCEPTED_RESULT与原严格verify相等时运行一次；M0二进制仍为verify依赖，报告成功前不退役它。第一次strict失败不以诊断数组补签，不重选best或放宽容差。
+
+重用tools/analyze_correspondence_distances.py的compare/camera_scores，原完整合法gallery/camera过滤和tie口径不变。只用新同一best的official_distances与封存raw semantic/独立global-only正式数组，不调用模型、optimizer或测试时更新。旧控制不再调用已退役M0的旧verify，只核对所需receipt/distance与训练batch-order字节SHA；不重新跑旧训练或旧报告。
+
+输出：同一best mAP/R1/R5/R10，50轮轨迹与实际步数，完整训练/逐轮评价时间（不误称history.seconds含评价）；两种匹配控制的全部query AP/首位变化、修复与新增错误、身份AP分布/宏平均，预设推进线相对raw semantic至少+0.5点mAP且R1不降。固定模型身份bootstrap沿用既有描述，不替代训练多seed或作显著性推进门。
+
+完整Signal80.3029/85.1675只列历史绝对能力参照，不同初始化/结构不是本单因素控制；不拿shared-adapter global当原Signal无模块基础。后续主方法仍应分账无模块作者配方、global适配与新证据收益。
+
+报告源码可独立审查；它不是本次已完成的统计结果。若首次调用失败，保留退出与输出，依据实际原因处理未完成尾部，不能因观察超时重启原训练或原CPU统计。只有真实运行输出才用于改进决策；当前不因代码登记新增任何成功模块、seed/gain/margin/层数或车辆队列。
+
+本次静态检查d1a41a在旧seal缺少batch-order SHA字段处失败，尚未运行报告或NN。之后95869b首次只读核对两个旧终态batch文件：各5475022B/2649行、SHA均为e446282654c74949fb594856631b246642593b73229331c30b555418a0358993。单独追加REPORT_CONTROL_BATCHES_940.json作为当前封存，不伪称旧seal原本已覆盖或回补历史哈希；报告直接读取该新明确来源，不增加fallback。当前训练来源、进度和权重未读取或改动。
