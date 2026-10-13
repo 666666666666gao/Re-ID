@@ -1,3 +1,9 @@
+## 2026-10-14 §946 first complete spectral endpoint and originalremaining controls
+
+2026-10-14 §946 actualresult: firstjoint_delta full50/2649batchsteps/firststrict EXIT0 accepted sameE8 74.5331/79.1866/88.2775/91.8660; ownnewbestSHA5397835e/distancec7b84584 retained. E50mAP71.1558/drop3.3773; notSignaladvance or product/referencecausalproof. Originalobserver23649 terminal42a073 andjoin49172 fba831 consumed0; onlynode00:43:10 observesfirst50/accepted1of3, secondadd_delta actualPID673850 CUDA01 live8/50 afterprepareM0, thirdpending. Twoactualinitialstates equal; three-modeparitypending. Originalsupervisor578010/controller578011 retained/no restart/488sourcefrozen. Sole nextnearallobserver73726/PID49896/birth2026-10-14T00:48:45.046695+08:00 due2026-10-14T02:02:48.576899+08:00, no earlyqueries. CPUreport andfixedbestNNdiagnose remain0 untilcomplete3x50/strict. NoT-P/envchange/vehicles/seed/rank/gain/margin/newNN/weightclear. Fullall3SignalGoalACTIVE_UNMET/usercontinueauth/only26physical01.
+
+Earlier notes historical.
+
 ## 2026-10-14 §41.945 post-completion diagnosis source ready
 
 2026-10-14 §41.945 PROGRESS: fixed-best joint-spectral G/C/F and factor/reference/delta extraction source implemented, warmCPUimport8cef58 EXIT0/model0/NN0/update0/diagnose0. Root source review only. Actualrunner distance_matrix normalizes G/C and officialextract noAMP; exactbuilder/MODE/witness/rawfeatures/statebeforeafter/parity/author scorer guards retained. Onlyafteroriginal3x50firststrict COMPLETE+supervisorEXIT0 andCPUreport accepted mayseal/invoke once each; nofakecurrentseal/score/terminal. Live488training sources untouched, no remoteprogress query/currentlastobs23:54:44=1/50. Sole nextobserver23649/PID38852 dueOct14 00:42:58, noearlypoll/restart. NoextraNN/weight/deletion/seed/gain/rank/margin/vehicle/envchange/T-P. Fullall3SignalGoalACTIVE_UNMET, samecontinueauth/only26physical01.
