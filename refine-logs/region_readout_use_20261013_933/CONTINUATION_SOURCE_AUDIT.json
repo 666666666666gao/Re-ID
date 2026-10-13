@@ -1,0 +1,126 @@
+{
+  "schema": "trifusion-region-readout-use-continuation-source-audit-v1",
+  "generated_at": "2026-10-13T10:47:03Z",
+  "source_readiness": "PASS",
+  "source_blockers": [],
+  "overall_verdict": "PROVISIONAL_CONTINUATION_SOURCE_PASS_FIRST_NN_PENDING",
+  "review_independence": "same-family",
+  "acceptance_status": "provisional",
+  "requested_model": "gpt-6-astra",
+  "requested_effort": "max",
+  "actual_model": "UNATTESTED",
+  "actual_effort": "UNATTESTED",
+  "runtime_attestation": "UNATTESTED",
+  "scope": "Bounded continuation source/JSON/stderr/AST/hash check of the eight named local artifacts only. No SSH, GPU, neural execution, tensor reads/deserialization, model imports, subagents, installations, git or production writes. Existing dependency review was not repeated.",
+  "findings": [
+    {
+      "status": "PASS",
+      "finding": "Original exit 1 and stderr line 16 map exactly to the original remote free-space assert: 2660458496 < 2684354560. The GPU query is line 17 and admin creation is line 21; source installation and NN launch follow. The reviewed recorded failure therefore precedes any original NN attempt.",
+      "evidence": [
+        "LAUNCH_EXIT.json:2",
+        "LAUNCH.stderr:2-3",
+        "run_diagnosis.py:49-55"
+      ],
+      "static_remote_line_mapping": {
+        "14": "assert json.loads(Path(prior['campaign']).read_text())['status']=='COMPLETE_TWO_FULL50_FIRST_STRICT'",
+        "15": "free=shutil.disk_usage(root).free",
+        "16": "assert free>=request['storage_required_bytes'],free",
+        "17": "gpu=subprocess.run(['nvidia-smi','-i','0,1','--query-gpu=index,memory.used,memory.total',",
+        "18": "    '--format=csv,noheader,nounits'],check=True,capture_output=True,text=True).stdout",
+        "19": "gpus=[tuple(int(v.strip()) for v in line.split(',')) for line in gpu.strip().splitlines()]",
+        "20": "assert [v[0] for v in gpus]==[0,1] and all(v[1]<500 for v in gpus),gpus",
+        "21": "admin=root/'logs/region_readout_use933';assert not admin.exists();admin.mkdir()",
+        "22": "for key,name in (('source','tools/diagnose_region_readout_use.py'),"
+      }
+    },
+    {
+      "status": "PASS",
+      "finding": "Continuation reads the original request and retrieves the final raw-string constant from the AST of the unchanged audited wrapper. The exact original 54-line remote body is appended; the wrapper's local prefix is neither executed nor rerun.",
+      "evidence": [
+        "continue_unattempted_diagnosis.py:23-36",
+        "run_diagnosis.py:36-90"
+      ],
+      "remote_body_sha256": "5d8498313db366ef287f37867a6846ca9805b66fb24e4a2c09c319a67983610c",
+      "remote_body_lines": 54,
+      "construction": "'request=' + repr(request) + '\\n' + prefix + body"
+    },
+    {
+      "status": "PASS",
+      "finding": "The only added remote prefix asserts the original admin directory, diagnosis source and plan are absent. Local guards require the original storage failure, verified archive, both source reviews and unchanged audited input hashes before dispatch.",
+      "evidence": [
+        "continue_unattempted_diagnosis.py:11-22",
+        "continue_unattempted_diagnosis.py:29-35"
+      ]
+    },
+    {
+      "status": "PASS",
+      "finding": "Original source/plan embedded bytes match the original audit pins; the original source audit hash and wrapper hash match. Threshold remains 2684354560 bytes; cached-feature root, prior seal and all request artifact hashes remain those of the preserved original request. The unchanged body preserves original best/initializer binding through the already-audited diagnostic.",
+      "evidence": [
+        "continue_unattempted_diagnosis.py:17-28",
+        "run_diagnosis.py:28-34",
+        "run_diagnosis.py:42-46"
+      ],
+      "hash_checks": {
+        "wrapper_match": true,
+        "audit_match": true,
+        "source_embedded_match": true,
+        "source_audit_pin_match": true,
+        "plan_embedded_match": true,
+        "plan_audit_pin_match": true,
+        "archive_not_request_artifact": true,
+        "threshold_bytes": 2684354560,
+        "prior_seal_sha256": "df8756c7f443013a34e55d41837e03343541bd3b73ffcabf63c43c5a88128aa2",
+        "audited_input_hashes": {
+          "C:/Users/gb/.codex_tmp/independent_evidence_draft/evidence_comparison903/readout_use933/continue_unattempted_diagnosis.py": "sha256:8167908364ac600069e634742e4857c98f05570aa7372e3831dd5a6dfad43c56",
+          "C:/Users/gb/.codex_tmp/independent_evidence_draft/evidence_comparison903/readout_use933/archive_closed_distance.py": "sha256:3657baf485cca718bffa35fc4d763afa6f5789fa79d2f68580e0eefe23f55e41",
+          "C:/Users/gb/.codex_tmp/independent_evidence_draft/evidence_comparison903/readout_use933/DISTANCE_ARCHIVE.json": "sha256:3fb6bebeeaa983d2678a8ce5c7cd3559f9376c48d88b66eb9d2d937dec14c2d0",
+          "C:/Users/gb/.codex_tmp/independent_evidence_draft/evidence_comparison903/readout_use933/LAUNCH_EXIT.json": "sha256:303491622b12a21ffc0a6091ed42ab77ff6b5035e1496925f98537aab3e8e798",
+          "C:/Users/gb/.codex_tmp/independent_evidence_draft/evidence_comparison903/readout_use933/LAUNCH.stderr": "sha256:f7650ea41709e349668ac555c3559b026fd2247d3b8e61b3b4fb1bda6b2f83c3",
+          "C:/Users/gb/.codex_tmp/independent_evidence_draft/evidence_comparison903/readout_use933/LAUNCH_REQUEST.json": "sha256:c4bd6adea10ff0fde6a02dfa539a93a059ea03a26a6e0a7af67b0a9c6d19424d",
+          "C:/Users/gb/.codex_tmp/independent_evidence_draft/evidence_comparison903/readout_use933/run_diagnosis.py": "sha256:d6a28d9d1905b95874184f838bf580f182f47f0fedcd3e491106852d1c93df36",
+          "C:/Users/gb/.codex_tmp/independent_evidence_draft/evidence_comparison903/readout_use933/SOURCE_AUDIT.json": "sha256:ff224c7d2c70cf9d241f30624a3b128f37d72f8ac57f7f1de58a92301a113546"
+        }
+      }
+    },
+    {
+      "status": "PASS_SOURCE_AND_RECORD",
+      "finding": "Archive code selects one closed RGBNT100_uniform diagnostic-distance file, excludes it from current 930 artifact dependencies, checks completed/zero-update receipt and source/local size+SHA, then rechecks the source pin before unlinking that exact remote duplicate. Archive record reports 294373633 bytes retired, matching original pin, canonical local D path, zero weights deleted and restoration required before an old-array consumer. Tensor existence/content was not independently reread in this audit.",
+      "evidence": [
+        "archive_closed_distance.py:10-17",
+        "archive_closed_distance.py:26-52",
+        "DISTANCE_ARCHIVE.json:2-12"
+      ]
+    },
+    {
+      "status": "PASS_SOURCE_ONLY",
+      "finding": "One remote dispatch uses the existing port 2026 endpoint. Original body still launches gradient then random sequentially, waits for each, preserves per-arm exits/logs and stops on failure. No automatic retry loop or old wrapper-prefix rerun is present; this is a new admission attempt before the first actual sequential NN pair.",
+      "evidence": [
+        "continue_unattempted_diagnosis.py:36-50",
+        "run_diagnosis.py:64-85"
+      ]
+    }
+  ],
+  "static_validation": {
+    "ast_parse": "PASS for original wrapper, continuation, archive script, embedded diagnosis source, original remote command and prefixed continuation remote command; no parsed code executed.",
+    "successful_interpreter": "C:/Users/gb/AppData/Roaming/uv/python/cpython-3.13-windows-x86_64-none/python.exe -X utf8 -B",
+    "failed_tooling_attempt": {
+      "command": "python -B -",
+      "resolved_executable": "E:/Scripts/python.exe",
+      "exit_code": 1,
+      "stderr": "No pyvenv.cfg file",
+      "effect": "Local interpreter startup failed; no source/model/NN or remote command executed."
+    },
+    "body_sha256": "5d8498313db366ef287f37867a6846ca9805b66fb24e4a2c09c319a67983610c"
+  },
+  "runtime_acceptance": "Pending actual unchanged storage/GPU admission, source/input seal checks and the original diagnostic's runtime parity, invariance, finiteness, state, artifact and scoring checks. No current free-space value, remote absence check or new NN outcome is certified here.",
+  "audited_input_hashes": {
+    "C:/Users/gb/.codex_tmp/independent_evidence_draft/evidence_comparison903/readout_use933/continue_unattempted_diagnosis.py": "sha256:8167908364ac600069e634742e4857c98f05570aa7372e3831dd5a6dfad43c56",
+    "C:/Users/gb/.codex_tmp/independent_evidence_draft/evidence_comparison903/readout_use933/archive_closed_distance.py": "sha256:3657baf485cca718bffa35fc4d763afa6f5789fa79d2f68580e0eefe23f55e41",
+    "C:/Users/gb/.codex_tmp/independent_evidence_draft/evidence_comparison903/readout_use933/DISTANCE_ARCHIVE.json": "sha256:3fb6bebeeaa983d2678a8ce5c7cd3559f9376c48d88b66eb9d2d937dec14c2d0",
+    "C:/Users/gb/.codex_tmp/independent_evidence_draft/evidence_comparison903/readout_use933/LAUNCH_EXIT.json": "sha256:303491622b12a21ffc0a6091ed42ab77ff6b5035e1496925f98537aab3e8e798",
+    "C:/Users/gb/.codex_tmp/independent_evidence_draft/evidence_comparison903/readout_use933/LAUNCH.stderr": "sha256:f7650ea41709e349668ac555c3559b026fd2247d3b8e61b3b4fb1bda6b2f83c3",
+    "C:/Users/gb/.codex_tmp/independent_evidence_draft/evidence_comparison903/readout_use933/LAUNCH_REQUEST.json": "sha256:c4bd6adea10ff0fde6a02dfa539a93a059ea03a26a6e0a7af67b0a9c6d19424d",
+    "C:/Users/gb/.codex_tmp/independent_evidence_draft/evidence_comparison903/readout_use933/run_diagnosis.py": "sha256:d6a28d9d1905b95874184f838bf580f182f47f0fedcd3e491106852d1c93df36",
+    "C:/Users/gb/.codex_tmp/independent_evidence_draft/evidence_comparison903/readout_use933/SOURCE_AUDIT.json": "sha256:ff224c7d2c70cf9d241f30624a3b128f37d72f8ac57f7f1de58a92301a113546"
+  }
+}

@@ -1,0 +1,192 @@
+{
+  "schema": "trifusion-region-readout-use-final-experiment-audit-v1",
+  "generated_at": "2026-10-13T11:02:37Z",
+  "overall_verdict": "PASS_FOR_BOUNDED_DESCRIPTIVE_REPORT",
+  "blockers_to_bounded_descriptive_report": [],
+  "review_independence": "same-family",
+  "acceptance_status": "provisional",
+  "requested_model": "gpt-6-astra",
+  "requested_effort": "max",
+  "actual_model": "UNATTESTED",
+  "actual_effort": "UNATTESTED",
+  "runtime_attestation": "UNATTESTED",
+  "scope": "Final local source/JSON/stderr/report consistency audit only. No SSH/GPU/NN, raw-tensor reads or deserialization, new raw-tensor calculations, subagents, installations, git or production edits. Source dependencies were hash-validated through prior audit seals, not rereviewed.",
+  "evidence_level": "Recorded local execution/result metadata plus previously audited unchanged source and scalar/per-query JSON arithmetic. This is not independent remote observation, raw-array rescoring, NN replay or cross-family reproduction.",
+  "validated_prior_audit_input_count": 48,
+  "numerical_verification": {
+    "status": "PASS",
+    "scores": 10,
+    "paired_comparisons": 16,
+    "per_query_comparison_rows": 13376,
+    "identity_comparison_rows": 480,
+    "correction_summary_cells": 36,
+    "displayed_numeric_table_rows": 38,
+    "table_rows_json_rows": 10,
+    "worst_five_percent_query_count": 42,
+    "method": "All displayed table strings were checked at their stated precision; TABLE_ROWS exact values match RESULT. mAP/CMC, metric deltas, repair/error counts and groups, identity macro deltas, AP percentiles and worst-42-query means were rederived from stored JSON AP/rank/query records. Correction statistics were checked for finite/count/range consistency and exact display, not recomputed from tensors. Narrative percentages/drops and internal timers match recorded values.",
+    "evidence": [
+      "RESULT_REPORT.md:9-18",
+      "RESULT_REPORT.md:22-37",
+      "RESULT_REPORT.md:43-58",
+      "RESULT_REPORT.md:64",
+      "make_report.py:17-46",
+      "TABLE_ROWS.json:1-112"
+    ]
+  },
+  "execution": {
+    "status": "PASS_RECORDED_EVIDENCE",
+    "recorded_native_session": 85806,
+    "recorded_completion_chunk": "2302dc",
+    "recorded_child_pids": [
+      4095693,
+      4098766
+    ],
+    "recorded_child_exit_codes": [
+      0,
+      0
+    ],
+    "sequential_child_timestamps_verified": true,
+    "encoding_batches_per_arm": {
+      "query": 14,
+      "gallery": 14
+    },
+    "total_encoding_batches": 56,
+    "optimizer_updates": 0,
+    "new_training": false,
+    "original_cache_max_abs_error": 0,
+    "natural_distance_max_abs_error": 0,
+    "within_group_distance_max_abs_error": 7.152557373046875e-7,
+    "same_norm_max_relative": {
+      "gradient": 2.2961701517942856e-7,
+      "random": 2.1944468642232096e-7
+    },
+    "before_after_model_state_hashes_equal": true,
+    "reconstructed_input_seal_sha256": "ffc89e085bacef2584040061090120bc98649ae54676a4fe64bab50bdace8615",
+    "recorded_admission": {
+      "free_bytes": 2946154496,
+      "required_bytes": 2684354560,
+      "gpu_memory_used_mib": {
+        "0": 18,
+        "1": 18
+      }
+    },
+    "recorded_tensor_artifact_bytes_per_arm": 180751035,
+    "evidence": [
+      "RESULT.json:3-47",
+      "RESULT.json:49-86",
+      "RESULT.json:89-247",
+      "RESULT.json:63728-63751",
+      "RESULT.json:63755-63913",
+      "RESULT.json:127394-127417",
+      "CONTINUATION_EXIT.json:2",
+      "EXECUTION_PROVENANCE.json:47-62"
+    ]
+  },
+  "provenance": {
+    "status": "PASS_CONSISTENT_RECORDS",
+    "initial_attempt": "Preserved launch exit 1 / stdin line 16 storage failure at 2660458496 < unchanged 2684354560. The unchanged audited body places GPU query, admin/source creation and NN afterward; this was not a failed NN.",
+    "continuation": "Original request/body/audit pins match. Separate continuation performs the first recorded sequential NN pair; original wrapper prefix, original training and executed NN were not replayed in the inspected path.",
+    "archive": "DISTANCE_ARCHIVE records one closed919-manifest diagnostic-distance artifact under the historical 918 RGBNT100_uniform directory, 294373633 bytes, matching source/local SHA and local D canonical path. It is not a weight file; weights_deleted=0. Current 930 request artifact dependencies do not include it. Restore-before-old-array-consumer condition remains.",
+    "evidence": [
+      "LAUNCH_EXIT.json:2",
+      "LAUNCH.stderr:2-3",
+      "CONTINUATION_REQUEST.json:2-13",
+      "CONTINUATION_SOURCE_AUDIT.json",
+      "DISTANCE_ARCHIVE.json:2-12",
+      "EXECUTION_PROVENANCE.json:19-62"
+    ]
+  },
+  "full_gallery_and_claim_boundary": {
+    "status": "PASS_WITHIN_STATED_SCOPE",
+    "finding": "Unchanged audited source retains all 836 Q/G records, excludes only same-identity AND same-camera entries, uses full multi-positive AP and author-scorer parity, and keeps identity labels outside interventions. Recorded COMPLETE status supports that these source checks passed; this audit did not independently re-score raw distances or inspect GT images.",
+    "accepted_conclusion": "For the original RGBNT201 seed42 E8 gradient/random bests, within-group exchange leaves every displayed retrieval metric unchanged. Cross-group and slot-mean controls measurably alter C yet have small observed mAP disadvantages. The report does not turn this into strict equality, statistical insignificance, whole-role necessity/removal, natural mismatch, compression causation, independent new information, SOTA, training gain or cross-dataset generalization.",
+    "key_observed_values": {
+      "gradient": {
+        "natural_vs_global": {
+          "mAP": 0.06779562420048535,
+          "Rank-1": 0.3588516746411443,
+          "Rank-5": 0.11961722488038617,
+          "Rank-10": 0
+        },
+        "cross_mAP_change": -0.00196079581543529,
+        "mean_mAP_change": -0.00036621621264032456,
+        "cross_c_relative_l2_mean": 0.06609917432069778,
+        "mean_c_relative_l2_mean": 0.037313271313905716,
+        "saved_tensor_bytes_recorded": 180751035,
+        "child_lifespan_seconds": 56.384524
+      },
+      "random": {
+        "natural_vs_global": {
+          "mAP": 0.1728812710489791,
+          "Rank-1": 0.837320574162689,
+          "Rank-5": -0.11961722488038617,
+          "Rank-10": 0
+        },
+        "cross_mAP_change": -0.005454275251580043,
+        "mean_mAP_change": -0.007126391611009808,
+        "cross_c_relative_l2_mean": 0.16883589327335358,
+        "mean_c_relative_l2_mean": 0.09195075929164886,
+        "saved_tensor_bytes_recorded": 180751035,
+        "child_lifespan_seconds": 56.502827
+      }
+    },
+    "evidence": [
+      "SOURCE_AUDIT.json",
+      "RESULT_REPORT.md:3-5",
+      "RESULT_REPORT.md:39",
+      "RESULT_REPORT.md:60-70",
+      "RESULT.json:63752",
+      "RESULT.json:127418"
+    ]
+  },
+  "resolved_findings": [
+    {
+      "status": "RESOLVED",
+      "issue": "The initial report's blanket percentage/percentage-point label did not distinguish the following ratio/cosine/raw-coordinate correction table.",
+      "original_evidence": "RESULT_REPORT_R1_BEFORE_UNITS_TIMING.md:39",
+      "resolution_evidence": [
+        "RESULT_REPORT.md:39",
+        "make_report.py:32"
+      ]
+    },
+    {
+      "status": "RESOLVED",
+      "issue": "Initial timing wording could be read as total child-process elapsed time, while the values are the internal diagnostic timer before later artifact/final-seal/exit work.",
+      "original_evidence": "RESULT_REPORT_R1_BEFORE_UNITS_TIMING.md:57-58",
+      "resolution_evidence": [
+        "RESULT_REPORT.md:57-58",
+        "make_report.py:43-46"
+      ]
+    },
+    {
+      "status": "PRESERVED",
+      "finding": "The original report is retained; all 44 table/header/separator lines are unchanged. The final report also explicitly states same-family/provisional and raw-tensor/remote/model-attestation limits at line 68.",
+      "preserved_report_sha256": "sha256:102ffd00ccf931ea2a06782a9b4a98c497141df6c769a4e468c2bc04bd9908f8"
+    }
+  ],
+  "explicit_limits": [
+    "No remote process/event stream was independently observed by this reviewer; native session/chunk IDs and child outcomes are supported by the provided local records, not independent tool-runtime attestation.",
+    "No raw regions/features/distances, checkpoint tensors, archived distance tensor, image GT or live remote artifact existence/hash was independently opened or recomputed. Artifact size/SHA fields are recorded producer evidence.",
+    "Correction-change means/min/max are verified against report/JSON and source semantics, not independently recalculated from raw C tensors. JSON AP/rank aggregation is a consistency check, not fresh raw-distance scoring.",
+    "Same-family review is provisional and actual reviewer model/effort is UNATTESTED. No independent training seeds, fresh held-out evaluation, cross-family reproduction or broader method gain is established.",
+    "The formatter's numeric rendering and final report prose were reviewed separately; the final report contains manually added interpretation/attestation paragraphs."
+  ],
+  "audited_input_hashes": {
+    "C:/Users/gb/.codex_tmp/independent_evidence_draft/evidence_comparison903/readout_use933/RESULT.json": "sha256:40336b80d7d1ecaf00ff0991c07c44401fc3551ffd49ce0eff6d024e9d257e01",
+    "C:/Users/gb/.codex_tmp/independent_evidence_draft/evidence_comparison903/readout_use933/RESULT_REPORT.md": "sha256:98988803773824453348a3c63ea57cb5d0d1c57d8ffccb3cbe552629d01988c7",
+    "C:/Users/gb/.codex_tmp/independent_evidence_draft/evidence_comparison903/readout_use933/TABLE_ROWS.json": "sha256:4cd2c1af52589fa448391d237969f900856ae0a4970cefbb3c7c08b52f14d882",
+    "C:/Users/gb/.codex_tmp/independent_evidence_draft/evidence_comparison903/readout_use933/CONTINUATION_EXIT.json": "sha256:e7274cecd17e927307357962bae01f281d6346bddb3d35bdc54f4ea4cd093984",
+    "C:/Users/gb/.codex_tmp/independent_evidence_draft/evidence_comparison903/readout_use933/CONTINUATION_REQUEST.json": "sha256:02577b974d5bd8fe61b779756cdf084f0cef20cb1855c8074552b3b6dcb72a9e",
+    "C:/Users/gb/.codex_tmp/independent_evidence_draft/evidence_comparison903/readout_use933/LAUNCH_EXIT.json": "sha256:303491622b12a21ffc0a6091ed42ab77ff6b5035e1496925f98537aab3e8e798",
+    "C:/Users/gb/.codex_tmp/independent_evidence_draft/evidence_comparison903/readout_use933/LAUNCH.stderr": "sha256:f7650ea41709e349668ac555c3559b026fd2247d3b8e61b3b4fb1bda6b2f83c3",
+    "C:/Users/gb/.codex_tmp/independent_evidence_draft/evidence_comparison903/readout_use933/DISTANCE_ARCHIVE.json": "sha256:3fb6bebeeaa983d2678a8ce5c7cd3559f9376c48d88b66eb9d2d937dec14c2d0",
+    "C:/Users/gb/.codex_tmp/independent_evidence_draft/evidence_comparison903/readout_use933/EXECUTION_PROVENANCE.json": "sha256:17ecab0ad9280e46c4e2adce2279835c59aa093cfd7ca93091b8886fb801fff2",
+    "C:/Users/gb/.codex_tmp/independent_evidence_draft/evidence_comparison903/readout_use933/make_report.py": "sha256:66b5d1a67567eccaef28e4960ff107d743644396f8893117cb0f57beaaa9bc6a",
+    "C:/Users/gb/.codex_tmp/independent_evidence_draft/evidence_comparison903/readout_use933/continue_unattempted_diagnosis.py": "sha256:8167908364ac600069e634742e4857c98f05570aa7372e3831dd5a6dfad43c56",
+    "C:/Users/gb/.codex_tmp/independent_evidence_draft/evidence_comparison903/readout_use933/SOURCE_AUDIT.md": "sha256:e79c578ffac0f00adbf373adb482e8c51c738dae81b75bd9d1ed90914070374f",
+    "C:/Users/gb/.codex_tmp/independent_evidence_draft/evidence_comparison903/readout_use933/SOURCE_AUDIT.json": "sha256:ff224c7d2c70cf9d241f30624a3b128f37d72f8ac57f7f1de58a92301a113546",
+    "C:/Users/gb/.codex_tmp/independent_evidence_draft/evidence_comparison903/readout_use933/CONTINUATION_SOURCE_AUDIT.md": "sha256:a73c637c72868a099b06524aee0774d251af1f78d6a29494a71d25125cbd896d",
+    "C:/Users/gb/.codex_tmp/independent_evidence_draft/evidence_comparison903/readout_use933/CONTINUATION_SOURCE_AUDIT.json": "sha256:a26d74b7c3c91cee29056c193054b77cfb7319e643e9b5582172ee8056babbb2",
+    "C:/Users/gb/.codex_tmp/independent_evidence_draft/evidence_comparison903/readout_use933/RESULT_REPORT_R1_BEFORE_UNITS_TIMING.md": "sha256:102ffd00ccf931ea2a06782a9b4a98c497141df6c769a4e468c2bc04bd9908f8"
+  }
+}

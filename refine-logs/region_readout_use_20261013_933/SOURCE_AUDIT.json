@@ -1,0 +1,292 @@
+{
+  "schema": "trifusion-region-readout-use-source-audit-v1",
+  "generated_at": "2026-10-13T10:33:39Z",
+  "source_readiness": "PASS",
+  "source_blockers": [],
+  "overall_verdict": "PROVISIONAL_SOURCE_PASS_RUNTIME_EVIDENCE_PENDING",
+  "review_independence": "same-family",
+  "acceptance_status": "provisional",
+  "requested_model": "gpt-6-astra",
+  "requested_effort": "max",
+  "actual_model": "UNATTESTED",
+  "actual_effort": "UNATTESTED",
+  "audit_scope": "Specified primary source/JSON artifacts and directly necessary source dependencies only. Text/JSON/hash inspection and index/storage arithmetic; no SSH, GPU, neural forward, model-code imports, tensor deserialization, installs, subagents, git, or production mutation.",
+  "evaluation_type": "Frozen original RGBNT201 seed42 gradient/random E8 bests; post-final-role readout controls on an already-consumed development benchmark. Not new training, independent trained ablations, fresh held-out evaluation, upstream causal removal, or cross-dataset/SOTA evidence.",
+  "checks": {
+    "A_gt_provenance": {
+      "status": "PASS",
+      "finding": "Evaluation identities/cameras come from the sealed protocol and must equal original distance metadata. RGBNT201 forward input contains images/camera IDs but no identity labels; training-only identity-gradient exposure is disabled by eval.",
+      "evidence": [
+        "tools/diagnose_native_research_best.py:45-48",
+        "tools/run_correspondence_roles.py:60-63",
+        "tools/train_signal_preserving_v18.py:44-49",
+        "modeling/trifusion/global_conditioned_evidence.py:54-99",
+        "tools/diagnose_region_readout_use.py:135-149"
+      ]
+    },
+    "B_normalization_and_raw_reporting": {
+      "status": "PASS",
+      "finding": "Natural raw G/C/H and normalized F are cached. Actual read_evidence computes controls; cross-group/mean C norms are matched to natural C before fixed-gain fusion. Original cosine-equivalent distance normalizes all vectors. Correction change summaries describe the post-matching intervention; they do not fix raw fused norm.",
+      "evidence": [
+        "tools/diagnose_region_readout_use.py:59-109",
+        "tools/diagnose_region_readout_use.py:143-168",
+        "tools/run_official_three_dataset_roles.py:230-238",
+        "modeling/trifusion/global_conditioned_evidence.py:95-99"
+      ]
+    },
+    "C_claim_and_runtime_existence": {
+      "status": "PASS_SOURCE_ONLY",
+      "finding": "The provided 930 metadata records completed E8 G/C/H/F caches, zero fused-distance reproduction error, equal before/after state digests and zero updates. It is prior runtime evidence, not execution of 933. No new 933 result or live admission is asserted by this review.",
+      "evidence": [
+        "refine-logs/region_readout_use_20261013_933/EXPERIMENT_PLAN.md:3-5",
+        "CACHE_INVENTORY.json:194-236",
+        "../gcf930/results/gradient/DIAGNOSIS.json:3-11",
+        "../gcf930/results/gradient/DIAGNOSIS.json:27373-27393",
+        "../gcf930/results/random/DIAGNOSIS.json:3-11",
+        "../gcf930/results/random/DIAGNOSIS.json:27373-27393"
+      ]
+    },
+    "D_used_code_and_binding": {
+      "status": "PASS",
+      "finding": "Original configured producer/builder, initialization witness, strict full-state reload, original max-mAP/latest-tie selection and epoch 8 are bound. The hook captures final CNN/Transformer/Mamba tensors and controls call the inherited structured read_evidence directly.",
+      "evidence": [
+        "tools/diagnose_region_readout_use.py:44-78",
+        "tools/diagnose_region_readout_use.py:119-140",
+        "tools/run_foundation_recipe.py:103-107",
+        "tools/run_foundation_recipe.py:180-186",
+        "tools/run_foundation_recipe.py:248-255",
+        "tools/run_global_conditioned_evidence.py:30-44",
+        "tools/run_global_conditioned_evidence.py:70-81",
+        "modeling/trifusion/correspondence_context_identity.py:65-70",
+        "modeling/trifusion/correspondence_evidence_readout.py:65-77"
+      ]
+    },
+    "E_scope_and_operation_limits": {
+      "status": "PASS_SOURCE_ONLY",
+      "finding": "One sequential process per arm, one joint extraction per Q/G batch, three extra readouts, no optimizer/training entry call or retry loop. Admission targets SSH port 2026, physical GPUs 0/1 with memory.used <500 MiB, installed environment, 2.5 GiB initial and 2.25 GiB per-arm free-space gates. Source/input digests and model parameters/persistent buffers are checked before/after.",
+      "evidence": [
+        "run_diagnosis.py:11-18",
+        "run_diagnosis.py:42-85",
+        "run_diagnosis.py:91-98",
+        "tools/diagnose_region_readout_use.py:25-34",
+        "tools/diagnose_region_readout_use.py:51-109",
+        "tools/diagnose_region_readout_use.py:135-146",
+        "tools/diagnose_region_readout_use.py:180",
+        "tools/run_signal_preserving_v5.py:523-528",
+        "modeling/trifusion/partitioned_evidence_clip.py:9-33"
+      ]
+    },
+    "F_evaluation_type_and_filters": {
+      "status": "PASS",
+      "finding": "All 836 query and 836 gallery records stay in fixed order; no candidate truncation or label-conditioned intervention. The sole camera exclusion removes same identity AND same camera, retaining other-ID negatives and cross-camera positives. Full multi-positive AP, R1/R5/R10, query changes, repair/new-error counts and identity-macro AP deltas are emitted and checked against the author scorer.",
+      "evidence": [
+        "tools/run_official_three_dataset_roles.py:58-68",
+        "tools/official_three_dataset_data.py:8-18",
+        "tools/train_signal_preserving_v18.py:33-41",
+        "tools/train_rgbnt100_signal_oof.py:253-268",
+        "tools/diagnose_native_research_best.py:51-86",
+        "tools/diagnose_same_evidence_comparison.py:103-113",
+        "tools/diagnose_region_readout_use.py:150-162"
+      ]
+    }
+  },
+  "ordering": {
+    "cache_axes": [
+      "batch",
+      "role",
+      "modality",
+      "slot",
+      "channel"
+    ],
+    "roles": [
+      "cnn",
+      "transformer",
+      "mamba"
+    ],
+    "modalities": [
+      "RGB",
+      "NI",
+      "TI"
+    ],
+    "slot_groups": [
+      [
+        0,
+        1,
+        4,
+        5
+      ],
+      [
+        2,
+        3,
+        6,
+        7
+      ],
+      [
+        8,
+        9,
+        12,
+        13
+      ],
+      [
+        10,
+        11,
+        14,
+        15
+      ]
+    ],
+    "within_group_permutation": [
+      1,
+      0,
+      3,
+      2,
+      5,
+      4,
+      7,
+      6,
+      9,
+      8,
+      11,
+      10,
+      13,
+      12,
+      15,
+      14
+    ],
+    "cross_group_permutation": [
+      2,
+      3,
+      0,
+      1,
+      6,
+      7,
+      4,
+      5,
+      10,
+      11,
+      8,
+      9,
+      14,
+      15,
+      12,
+      13
+    ],
+    "cross_group_mapping": [
+      1,
+      0,
+      3,
+      2
+    ],
+    "meaning": "Readout slot groups, not physical-part GT. Both Q/G use identical transformations. Upstream CNN-to-Transformer and Transformer-to-Mamba interaction remains.",
+    "evidence": [
+      "modeling/trifusion/state.py:13-14",
+      "modeling/trifusion/role_global_tokens.py:29-61",
+      "modeling/trifusion/correspondence_evidence_readout.py:65-77",
+      "tools/diagnose_region_readout_use.py:49-78"
+    ]
+  },
+  "static_operation_arithmetic": {
+    "groups": [
+      [
+        0,
+        1,
+        4,
+        5
+      ],
+      [
+        2,
+        3,
+        6,
+        7
+      ],
+      [
+        8,
+        9,
+        12,
+        13
+      ],
+      [
+        10,
+        11,
+        14,
+        15
+      ]
+    ],
+    "within_preserves_groups": true,
+    "cross_group_mapping": [
+      1,
+      0,
+      3,
+      2
+    ],
+    "expected_encoding_batches_per_split": 14,
+    "dense_payload_bytes_per_arm": 180701504,
+    "dense_payload_MiB_per_arm": 172.33038330078125
+  },
+  "nonblocking_limitations": [
+    {
+      "finding": "Local state.py uses CRLF. Its exact byte hash differs from the prior remote seal, but LF-normalized bytes match the sealed hash exactly. The local exact hash is recorded below; remote byte identity is still enforced and no source replacement is proposed.",
+      "evidence": [
+        "modeling/trifusion/state.py:13-14",
+        "../gcf930/results/INPUT_SEAL.json:118",
+        "run_diagnosis.py:44",
+        "run_diagnosis.py:81"
+      ],
+      "local_sha256": "d6491db289e68e0b97a8d532edc933252ab60fdaad963af85f603dec9002e2b9",
+      "lf_sha256": "5fe89c4885507e74ca1833cc18822a4b57e4c2d6fa9a6c6b2e127d1e74b70db9"
+    },
+    {
+      "finding": "The remote protocol, tensor/checkpoint contents and author scorer were not opened or executed in this bounded local audit. The author scorer is absent at the corresponding local checkout path; its source pin, exact runtime import path and numerical parity gates were inspected.",
+      "evidence": [
+        "../gcf930/results/INPUT_SEAL.json:218",
+        "../gcf930/results/INPUT_SEAL.json:519-522",
+        "tools/diagnose_native_research_best.py:51-66",
+        "tools/diagnose_region_readout_use.py:141-159"
+      ]
+    }
+  ],
+  "runtime_acceptance": "Pending actual admission/exit artifacts, original-cache and natural-distance/metric parity, within-group invariance, same-norm and finiteness checks, recorded Q/G batch counts, correction-change statistics, state/input seal stability, saved-artifact hashes and full-gallery scores. These are existing contract checks, not evidence that execution has passed.",
+  "source_changes_during_review": "Source/plan were revised by the parent during review. The final source was reread after stability notification; audited_input_hashes records only the final accepted bytes. Explicit correction-change reporting resolved the initially noted reporting gap.",
+  "audited_input_hashes": {
+    "C:/Users/gb/.trifusion_github_publish_22c3bee/tools/diagnose_region_readout_use.py": "sha256:1011615897c4017ea883f19bdf19e4c5accd4df433d61fdd851c2244a9dc64bc",
+    "C:/Users/gb/.trifusion_github_publish_22c3bee/refine-logs/region_readout_use_20261013_933/EXPERIMENT_PLAN.md": "sha256:e2919e9e7f05ac0ae8c03f42b8d42d324a40b4019f5fd6f77d6ea240d84f9b2e",
+    "C:/Users/gb/.codex_tmp/independent_evidence_draft/evidence_comparison903/readout_use933/run_diagnosis.py": "sha256:d6a28d9d1905b95874184f838bf580f182f47f0fedcd3e491106852d1c93df36",
+    "C:/Users/gb/.codex_tmp/independent_evidence_draft/evidence_comparison903/readout_use933/CACHE_INVENTORY.json": "sha256:d8e41bc84be0374b938bedda5afa9515159e13af0000afbdf360dc9eb9bc0d0a",
+    "C:/Users/gb/.codex_tmp/independent_evidence_draft/evidence_comparison903/gcf930/results/INPUT_SEAL.json": "sha256:df8756c7f443013a34e55d41837e03343541bd3b73ffcabf63c43c5a88128aa2",
+    "C:/Users/gb/.codex_tmp/independent_evidence_draft/evidence_comparison903/gcf930/results/gradient/DIAGNOSIS.json": "sha256:153374d1f4d63eb15c98c66bf772c7e021df0225ed6430f9301c0755dc4f2ad7",
+    "C:/Users/gb/.codex_tmp/independent_evidence_draft/evidence_comparison903/gcf930/results/random/DIAGNOSIS.json": "sha256:7e6c5fcee964aad4b8aa8ede9e688121ee2133e22284f266fcf4c75de4895252",
+    "C:/Users/gb/.trifusion_github_publish_22c3bee/tools/diagnose_global_conditioned_evidence_best.py": "sha256:0c9859fa1b67b6ee755ff5078dbfbadbcb4f4241273e69045a08e69251a87f42",
+    "C:/Users/gb/.trifusion_github_publish_22c3bee/tools/diagnose_same_evidence_comparison.py": "sha256:71fe059e26744c670661cab6fb3bbaaf13da56a5567adf78b8079e2ba0db9ad5",
+    "C:/Users/gb/.trifusion_github_publish_22c3bee/tools/diagnose_native_research_best.py": "sha256:14f722a52408b12e260f31692795d1dddcdb4ab0036e5bb1366b4674c372639d",
+    "C:/Users/gb/.trifusion_github_publish_22c3bee/modeling/trifusion/correspondence_evidence_readout.py": "sha256:e737a977d39ccbe09a5509118e5b5333d653f7f13381e65e84af1a13e5c28dc4",
+    "C:/Users/gb/.trifusion_github_publish_22c3bee/modeling/trifusion/global_conditioned_evidence.py": "sha256:f87a7d26ad357cb81e37b41676379dfc3fd1e8b3a3bdcf907ab0eb3a7eba6e0d",
+    "C:/Users/gb/.trifusion_github_publish_22c3bee/tools/run_global_conditioned_evidence.py": "sha256:a35c5005740c26dcb624e1ef0c69756092b70fe8141b57219272028d77931587",
+    "C:/Users/gb/.trifusion_github_publish_22c3bee/modeling/trifusion/role_input_detach.py": "sha256:a3732d5ea98a9fef6039a14f34de98a23cd85a39efd83f52c8835ec59d4605b3",
+    "C:/Users/gb/.trifusion_github_publish_22c3bee/modeling/trifusion/role_global_tokens.py": "sha256:f41ff1af1fb1b6303a9af63cf039263e2572c16b23813f92a0297f014e71dd4f",
+    "C:/Users/gb/.trifusion_github_publish_22c3bee/modeling/trifusion/correspondence_roles.py": "sha256:e2a51154b5b327341f35e453dd32a821b091a49a669b49a7c70e79e6e2f2591b",
+    "C:/Users/gb/.trifusion_github_publish_22c3bee/tools/analyze_correspondence_distances.py": "sha256:833ebeb47cb5840422710fc00df1a974338cb04078249720d867f18b945f997a",
+    "C:/Users/gb/.trifusion_github_publish_22c3bee/tools/run_global_task_role.py": "sha256:151a3350a9da7d86ce6b4b7d5160537b182792ab08727ccb5e4ab0c64bb56d5f",
+    "C:/Users/gb/.trifusion_github_publish_22c3bee/modeling/trifusion/independent_native_roles.py": "sha256:1565590fdfb281fb51b43d06497cd526ffe5bbdc135727ebaa609615dc7832ff",
+    "C:/Users/gb/.trifusion_github_publish_22c3bee/modeling/trifusion/state.py": "sha256:d6491db289e68e0b97a8d532edc933252ab60fdaad963af85f603dec9002e2b9",
+    "C:/Users/gb/.trifusion_github_publish_22c3bee/tools/train_rgbnt100_signal_oof.py": "sha256:4462b73139e034d450d955c5b4a994aaa967548e9cc503d97bb753a14ea03b22",
+    "C:/Users/gb/.trifusion_github_publish_22c3bee/tools/run_foundation_recipe.py": "sha256:c18042509dc33ff66eee1a6b04a723ad55685bd5d9daf218c3779703ffe20758",
+    "C:/Users/gb/.trifusion_github_publish_22c3bee/tools/run_role_input_detach.py": "sha256:a177fd5aa4d5ba25422a49cb619062001722d6c7640891cb3da9645a8eb32fe5",
+    "C:/Users/gb/.trifusion_github_publish_22c3bee/tools/run_native_research.py": "sha256:b48725622371fc6d9671c464ce97252e2e06eba465e213ce221d84c798e52cc2",
+    "C:/Users/gb/.trifusion_github_publish_22c3bee/tools/run_clean_clip_joint.py": "sha256:178e9793f2cf8261eb44a278e053d5caabd4f2f37dba48a65952b2547338a746",
+    "C:/Users/gb/.trifusion_github_publish_22c3bee/modeling/trifusion/slot_competition_fp32_roles.py": "sha256:810801e048bcb07ddbdef0635708b63cba7562a4876e044af34135fd412f79c8",
+    "C:/Users/gb/.trifusion_github_publish_22c3bee/modeling/trifusion/slot_competition_roles.py": "sha256:bbc3e2430f760587cf8c1d11e40bcbdf0459424e975de74b5b15a40706efbe99",
+    "C:/Users/gb/.trifusion_github_publish_22c3bee/tools/run_native_partitioned.py": "sha256:2c3abac37b122760895b97ccf01d4fefe2cfb8223b35b6e2e335a1a4144f72fa",
+    "C:/Users/gb/.trifusion_github_publish_22c3bee/tools/run_visual_update_control.py": "sha256:537cd5a4ab4e9b3501a7279e3f4857536bdda761f597d8b5fa7bfdbdbf82cbdd",
+    "C:/Users/gb/.trifusion_github_publish_22c3bee/modeling/trifusion/patch_memory_roles.py": "sha256:833c8c93363cee7a4fc74c6c458194b484dc1b8cac0f9ec58113a07ac89cb23d",
+    "C:/Users/gb/.trifusion_github_publish_22c3bee/modeling/trifusion/correspondence_context_identity.py": "sha256:eda3d1473496b33e4b69402dba7770e67d23b33b07afd41d23105b7f148d63af",
+    "C:/Users/gb/.trifusion_github_publish_22c3bee/tools/run_independent_native_evidence.py": "sha256:2429af8d2f803d70b9d15113a430609ead28621eb4341a746c3025cc5685fe23",
+    "C:/Users/gb/.trifusion_github_publish_22c3bee/tools/run_correspondence_roles.py": "sha256:e50865fb923297cd61cf38b33ec2bc95154f8c503b5dfe5de9823cad3f03d7ef",
+    "C:/Users/gb/.trifusion_github_publish_22c3bee/modeling/trifusion/partitioned_evidence_clip.py": "sha256:3bad53abd6777602e1f1ea9e7b03f10a796116b577501ee5ec0aec6e683b436c",
+    "C:/Users/gb/.trifusion_github_publish_22c3bee/tools/official_three_dataset_data.py": "sha256:c3180a88d12440709319d2025928fc699ff3b7c020b11697d468453fbfc68062",
+    "C:/Users/gb/.trifusion_github_publish_22c3bee/tools/run_official_three_dataset_roles.py": "sha256:f30bb00a0b71429e9d11dd196cd1d543202a133c663ad66e175d2f82e28d448d",
+    "C:/Users/gb/.trifusion_github_publish_22c3bee/tools/run_signal_preserving_v5.py": "sha256:e162184f68778b4991db0f97f26c5fda273b2ad2f7c8db2bbb2d53775eb717e5",
+    "C:/Users/gb/.trifusion_github_publish_22c3bee/tools/train_signal_preserving_v18.py": "sha256:f6bdda4631d710d0b6db5fe2a8df124d8dcbd294cb54adcf3ec261d523e96cf8",
+    "C:/Users/gb/.trifusion_github_publish_22c3bee/tools/diagnose_global_task_role_best.py": "sha256:e9cff6ae84b3e846cdd40d8b9f89581dccf0970e1cc6181c5eae7b449420a64d",
+    "C:/Users/gb/.trifusion_github_publish_22c3bee/modeling/trifusion/global_task_role_heads.py": "sha256:2298763b70b48718411db52e55f32dabddade5af0e56457a85eeabab4f9fcefd",
+    "C:/Users/gb/.trifusion_github_publish_22c3bee/modeling/trifusion/evidence_author_heads.py": "sha256:613b249dae9e1d62d418b94398a0d6ccbcf48e72c88b26b27dd5b9254e9c24cd"
+  }
+}
