@@ -1,0 +1,126 @@
+{
+  "audit_skill": "experiment-audit",
+  "scope": "New E925 cold-start controller source only: two fresh prepare/eight-step M0 arms; model not re-audited or executed.",
+  "generated_at": "2026-10-13T03:25:09.648107+00:00",
+  "agent_id": "/root/audit_global_conditioned_evidence924",
+  "requested_reviewer_model": "gpt-6-astra",
+  "requested_reasoning_effort": "max",
+  "actual_model": "UNATTESTED",
+  "actual_reasoning_effort": "UNATTESTED",
+  "review_independence": "same-family",
+  "acceptance_status": "provisional",
+  "verdict": "PASS",
+  "source_ready_for_prepare_m0": true,
+  "unresolved_blocking_source_defects": [],
+  "summary": "No confirmed blocking controller-source error. Ready within the declared two-arm fresh prepare/M0 scope; no formal fifty-epoch task or retry is reachable from its fixed mode loops.",
+  "checks": [
+    {
+      "id": "scope_and_no_retry",
+      "status": "PASS",
+      "evidence": [
+        "launch_evidence_m0_925.py:28",
+        "launch_evidence_m0_925.py:51",
+        "launch_evidence_m0_925.py:53",
+        "launch_evidence_m0_925.py:55",
+        "launch_evidence_m0_925.py:65",
+        "launch_evidence_m0_925.py:69",
+        "launch_evidence_m0_925.py:102"
+      ],
+      "details": "Only gradient/random x prepare/m0, sequential child.wait, fresh campaign/output paths, nonzero child exits stop. No train/evaluate mode, resume, checkpoint replay or retry loop. Assertion failures also exit nonzero; local launch exit/stdout/stderr are retained, although campaign status may remain its last running state after an acceptance assertion."
+    },
+    {
+      "id": "original_initializer_comparison",
+      "status": "PASS",
+      "evidence": [
+        "launch_evidence_m0_925.py:42",
+        "launch_evidence_m0_925.py:73",
+        "INPUT_SEAL.json:569"
+      ],
+      "details": "All fourteen compared state/config/placement fields exist in actual rows[0].initializer. The reference is RGBNT201 semantic, B64/K8, 281 trainable tensors. Its architecture label is region-use-supervision; this verifies selected initializer state/config equality, not equality of old/new training objectives. There is no initializer_binding key. Excluded architecture/entry/exposure/region-loss metadata intentionally differ."
+    },
+    {
+      "id": "m0_receipt_and_activity",
+      "status": "PASS",
+      "evidence": [
+        "launch_evidence_m0_925.py:78",
+        "launch_evidence_m0_925.py:84",
+        "launch_evidence_m0_925.py:86",
+        "launch_evidence_m0_925.py:90",
+        "launch_evidence_m0_925.py:95"
+      ],
+      "details": "Field names match the previously directly reviewed parent entry: M0_PASS and initializer binding; complete live-gradient count; reload difference; frozen/visual/camera flags; eight effective updates and BN counts; exactly eight step rows. Reads actual per-step exposure-VJP grad absence and fused-task isolation fields, checks positive shared-parameter count, excluded=32*active, availability=64*3=192, and at least one supported active step per arm."
+    },
+    {
+      "id": "gpu_and_disk_scope",
+      "status": "PASS",
+      "evidence": [
+        "launch_evidence_m0_925.py:32",
+        "launch_evidence_m0_925.py:35",
+        "launch_evidence_m0_925.py:40",
+        "launch_evidence_m0_925.py:106"
+      ],
+      "details": "SSH destination explicitly uses server port2026; query is limited to physical GPU0/1 index and used memory; child CUDA_VISIBLE_DEVICES=0,1. Existing tri_reid interpreter. Fixed new budget is2684354560 bytes (2.5GiB). No package installation, deletion or protected-weight retirement path."
+    },
+    {
+      "id": "pins_and_fresh_data",
+      "status": "PASS",
+      "evidence": [
+        "launch_evidence_m0_925.py:6",
+        "launch_evidence_m0_925.py:20",
+        "launch_evidence_m0_925.py:26",
+        "launch_evidence_m0_925.py:54",
+        "launch_evidence_m0_925.py:101"
+      ],
+      "details": "Requires exact source-sync status; verifies runtime source hashes before work/each stage/at completion, prior seal and source audit hashes, and protocol/public CLIP against reference. Old initializer values are comparison metadata; controller never loads an old trained checkpoint."
+    }
+  ],
+  "entry_receipt_schema_reused_from_prior_direct_review": {
+    "prepare_and_m0_execution": "tools/run_global_conditioned_evidence.py:99; tools/run_foundation_recipe.py:211; tools/run_foundation_recipe.py:222",
+    "binding_and_initial_state": "tools/run_independent_native_evidence.py:76; tools/run_foundation_recipe.py:103",
+    "m0_receipt": "tools/run_foundation_recipe.py:263; tools/run_foundation_recipe.py:279",
+    "effective_updates_bn": "tools/run_independent_native_evidence.py:146; tools/run_independent_native_evidence.py:167",
+    "exposure_and_ownership": "tools/run_global_conditioned_evidence.py:54; modeling/trifusion/global_conditioned_evidence.py:76"
+  },
+  "input_contract_boundary": {
+    "sync_receipt": "EVIDENCE_SOURCE_SYNC_925.json",
+    "exists_at_static_check": false,
+    "details": "Required staging input had not yet been generated; its future actual contents and the separate sync generator were not audited here. This is not a controller-source defect or a demand for model execution before source approval. Ready conclusion assumes the declared exact sync receipt is supplied. No statement of remote sync/launch success is made."
+  },
+  "audited_files": {
+    "C:\\Users\\gb\\.codex_tmp\\independent_evidence_draft\\evidence_comparison903\\launch_evidence_m0_925.py": {
+      "sha256": "1b74a7c5933aa7fd4cc8ac7686fe63df080c1eed3221c0c470fdf262b7db0514",
+      "read_scope": "Entire controller, outer and embedded remote source; both AST parsed without execution"
+    },
+    "C:\\Users\\gb\\.trifusion_github_publish_22c3bee\\refine-logs\\region_use_fixed_best_diagnosis918\\INPUT_SEAL.json": {
+      "sha256": "8e5c37e57c088a8ab53344266195bbc7183ccd27a94d0f0910ff9c20998b4b41",
+      "read_scope": "First-row initializer plus schema/field location; no checkpoint/model files read",
+      "actual_initializer_path": "rows[0].initializer",
+      "initializer_line": 569
+    },
+    "C:\\Users\\gb\\.codex_tmp\\independent_evidence_draft\\evidence_comparison903\\review_global_conditioned924\\SOURCE_AUDIT.json": {
+      "sha256": "371bfd5dffa7949b0f9350cd2a51aa8f6aca15ae485ce16193a4613756e873e1",
+      "read_scope": "Existing reviewer receipt-schema references only; no model source re-audit"
+    }
+  },
+  "boundaries": {
+    "controller_executed": false,
+    "ssh_calls": 0,
+    "network_calls": 0,
+    "torch_imports": 0,
+    "gpu_calls": 0,
+    "model_calls": 0,
+    "weight_loads": 0,
+    "training_calls": 0,
+    "project_changes": 0,
+    "no_new_subagent": true,
+    "no_new_session_note_reads": true,
+    "prior_context_note": "Same reviewer continuation; original SOURCE_AUDIT disclosed mandatory earlier session-note reads. Actual model/effort remain UNATTESTED."
+  },
+  "static_receipt": "LAUNCH_STATIC_CHECKS.json",
+  "fixed_new_disk_budget_bytes": 2684354560,
+  "current_controller_sha256": "1b74a7c5933aa7fd4cc8ac7686fe63df080c1eed3221c0c470fdf262b7db0514",
+  "inherited_current_model_pins": {
+    "model": "f87a7d26ad357cb81e37b41676379dfc3fd1e8b3a3bdcf907ab0eb3a7eba6e0d",
+    "entry": "a35c5005740c26dcb624e1ef0c69756092b70fe8141b57219272028d77931587"
+  }
+}

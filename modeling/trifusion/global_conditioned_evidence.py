@@ -49,6 +49,7 @@ class GlobalConditionedEvidence(DetachedSemanticTriFusion):
         self.roles = roles
         self.exposure = None
         self.mask_generator = None
+        self.capture_ownership = False
 
     def forward_features(self, batch):
         if self.training:
@@ -81,6 +82,10 @@ class GlobalConditionedEvidence(DetachedSemanticTriFusion):
                 'gradient_norm_max': float(norms.max()),
                 'gradient_norm_mean': float(norms.mean()),
                 'target': float(target.detach())}
+            if self.capture_ownership:
+                absent = all(p.grad is None for p in self.parameters())
+                assert absent
+                stats['parameter_gradients_absent_after_exposure_vjp'] = absent
         else:
             stages, shared_global = self.backbone(batch['images'], batch['camera_ids'])
             stats = None

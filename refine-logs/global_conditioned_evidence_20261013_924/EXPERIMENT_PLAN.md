@@ -29,7 +29,7 @@ gradient排除范数最大32位置；random使用独立seed42生成器，按相�
 
 ## 必做块与顺序
 
-1. **真实接入检查，两条件各一次prepare/M0。** 新独立初始化binding；确认原semantic同初始化的参数/buffer键和值不变、训练参数覆盖恰好一次、角色输入梯度隔离、VJP不产生参数.grad累积、AMP梯度有限。至少一个M0步有有效支持且真正排除位置；没有活动时保留失败，不直接上正式训练。核实推理无mask和严格重载。M0不是性能结果，不重跑旧M0或旧训练。
+1. **真实接入检查，两条件各一次prepare/M0。** M0逐步另记录exposure VJP后的参数grad均None，并对实际fused作者任务做一次仅针对shared_global与共享训练参数的隔离VJP；预期全部None，失败即停止。该隔离检查仅M0增加，不改变正式训练目标或每步一次exposure VJP。 新独立初始化binding；确认原semantic同初始化的参数/buffer键和值不变、训练参数覆盖恰好一次、角色输入梯度隔离、VJP不产生参数.grad累积、AMP梯度有限。至少一个M0步有有效支持且真正排除位置；没有活动时保留失败，不直接上正式训练。核实推理无mask和严格重载。M0不是性能结果，不重跑旧M0或旧训练。
 2. **RGBNT201两个正式端，各50轮、seed42。** 依次gradient、random；相同公开CLIP起点、作者B64/K8配方、camera/head/roles初始化、损失、优化器、日程、增强、1536维读出。主比较gradient−random；同时与原raw semantic、含共享适配的独立global、无SIM/AlignM/adapter的作者来源基础及完整Signal参照分账。当前六端/§919已闭合，不重启。既有区域loss两端属于不同目标，不能冒充本轮随机控制。
 3. **结果与失败诊断。** 一份mAP-best的mAP/R1/R5/R10跟随同一权重；完整50轮曲线、末轮、同模型global/correction/fused分解、首位修复/新增错误、身份宏AP和收益分布、所有正例AP变化。读取排除质量/活动记录及实测完整墙钟、参数、显存、推理时间。只保留各端严格验收best；必需binding、历史与距离证据保留。追加固定best诊断必须有具体新问题，不重复旧五分数队列。
 

@@ -1,0 +1,615 @@
+{
+  "audit_skill": "experiment-audit",
+  "audit_scope": "Current-source readiness for the new E924 RGBNT201 prepare/M0 only",
+  "generated_at": "2026-10-13T03:14:21.269568+00:00",
+  "agent_id": "/root/audit_global_conditioned_evidence924",
+  "actual_model": "UNATTESTED",
+  "actual_reasoning_effort": "UNATTESTED",
+  "reviewer_model": "UNATTESTED",
+  "reviewer_reasoning": "UNATTESTED",
+  "reviewer_family": "openai",
+  "review_independence": "same-family",
+  "acceptance_status": "provisional",
+  "source_ready_for_prepare_m0": true,
+  "unresolved_blocking_source_defects": [],
+  "verdict": "WARN",
+  "reason_code": "current_source_ready_runtime_facts_pending",
+  "summary": "No confirmed current-source blocker for bounded prepare/M0. New M0 ownership diagnostics are reachable; runtime activity, equality, AMP and cost facts remain unexecuted. Generic M0_PASS alone is not complete plan acceptance.",
+  "checks": {
+    "A_provenance": {
+      "status": "PASS",
+      "details": "Dataset labels/cameras define legal training relations; the sensitivity and positive-margin support are explicitly model-derived proxies. Inference consumes no identity labels. Actual CLI-selected files and batch support are pending.",
+      "evidence": [
+        "tools/official_three_dataset_data.py:8",
+        "tools/run_signal_preserving_v5.py:568",
+        "tools/run_global_conditioned_evidence.py:24",
+        "modeling/trifusion/global_relation_inputs_diagnostic.py:35",
+        "modeling/trifusion/global_conditioned_evidence.py:89",
+        "tools/train_signal_preserving_v18.py:44"
+      ]
+    },
+    "B_normalization": {
+      "status": "PASS",
+      "details": "L2/softmax, support-count averaging and fixed 256 VJP unscaling are model/proxy operations. No new retrieval score is self-normalized; the reused camera AP averages real-label ranked precision.",
+      "evidence": [
+        "modeling/trifusion/global_relation_inputs_diagnostic.py:42",
+        "modeling/trifusion/global_conditioned_evidence.py:28",
+        "modeling/trifusion/global_conditioned_evidence.py:63",
+        "tools/train_rgbnt100_signal_oof.py:253",
+        "tools/run_correspondence_roles.py:79"
+      ]
+    },
+    "C_existence_status": {
+      "status": "PASS",
+      "details": "The current plan explicitly says no execution; all four E924 milestones are TODO. Versioned plans are documents, not result receipts. No new-stage result or completed M0 is attested.",
+      "evidence": [
+        "refine-logs/global_conditioned_evidence_20261013_924/EXPERIMENT_PLAN.md:3",
+        "refine-logs/global_conditioned_evidence_20261013_924/EXPERIMENT_PLAN.md:44",
+        "refine-logs/global_conditioned_evidence_20261013_924/EXPERIMENT_TRACKER.md:7"
+      ]
+    },
+    "D_actual_call_path": {
+      "status": "PASS",
+      "details": "Static configure/build tracing resolves the evidence constructor and type guard to GlobalConditionedEvidence and the wrapper to GlobalTaskRoleHeads. CURRENT_MODEL is assigned to the built training model. M0 isolation recomputes the fused author loss from existing output heads via run_role_input_detach.loss_values, not the combined loss and not recursion. Optimizer/state source paths are compatible. Actual execution remains pending.",
+      "evidence": [
+        "tools/run_global_conditioned_evidence.py:16",
+        "tools/run_global_conditioned_evidence.py:30",
+        "tools/run_global_conditioned_evidence.py:54",
+        "tools/run_global_conditioned_evidence.py:70",
+        "tools/run_global_task_role.py:25",
+        "tools/run_global_task_role.py:39",
+        "tools/run_role_input_detach.py:22",
+        "tools/run_native_research.py:22",
+        "tools/run_native_partitioned.py:54",
+        "tools/run_independent_native_evidence.py:177",
+        "tools/run_clean_clip_joint.py:79",
+        "modeling/trifusion/evidence_author_heads.py:63"
+      ]
+    },
+    "E_scope_cost": {
+      "status": "WARN",
+      "details": "Only new RGBNT201 prepare/eight-step M0 per arm is source-ready. Both arms use one exposure VJP per training forward and the same active-mask rule. M0 additionally invokes one ownership-isolation autograd.grad and recomputes losses from existing head outputs, in both arms; formal training omits it. Timing, actual activity, capacity and AMP adequacy are untested.",
+      "evidence": [
+        "tools/run_foundation_recipe.py:211",
+        "tools/run_foundation_recipe.py:230",
+        "tools/run_global_conditioned_evidence.py:37",
+        "tools/run_global_conditioned_evidence.py:57",
+        "modeling/trifusion/global_conditioned_evidence.py:63",
+        "refine-logs/global_conditioned_evidence_20261013_924/EXPERIMENT_PLAN.md:32",
+        "refine-logs/global_conditioned_evidence_20261013_924/EXPERIMENT_PLAN.md:42"
+      ]
+    },
+    "F_classification": {
+      "status": "PASS",
+      "classification": {
+        "labels_and_future_retrieval": "real_gt source lineage; no new evaluated score",
+        "sensitivity_and_support": "synthetic_proxy with real-label conditioning",
+        "prepare_m0": "engineering verification, not retrieval evaluation"
+      },
+      "details": "The target includes anchor, positive and negative effects. Pre-CNN masking and softmax exclusion block selected local reads, but contextualized patches, global-conditioned queries and global residual remain. No causal, semantic-disjointness, novelty or efficacy guarantee follows.",
+      "evidence": [
+        "modeling/trifusion/global_relation_inputs_diagnostic.py:35",
+        "modeling/trifusion/global_conditioned_evidence.py:17",
+        "modeling/trifusion/global_conditioned_evidence.py:25",
+        "modeling/trifusion/global_conditioned_evidence.py:92",
+        "modeling/trifusion/role_global_tokens.py:29",
+        "refine-logs/global_conditioned_evidence_20261013_924/EXPERIMENT_PLAN.md:12",
+        "refine-logs/evidence_learning_gap_20261013_920/PRIMARY_SOURCE_SCREENING.md:3"
+      ]
+    }
+  },
+  "required_runtime_facts": [
+    {
+      "id": "R1",
+      "fact": "Bind actual protocol/public-CLIP/Signal source/config/module bytes, native B64/K8 and camera/label provenance. Numerically verify original-semantic and paired parameter/buffer equality, optimizer ownership and initial-state receipts.",
+      "evidence": [
+        "tools/run_clean_clip_joint.py:40",
+        "tools/run_clean_clip_joint.py:62",
+        "tools/run_independent_native_evidence.py:76",
+        "modeling/trifusion/evidence_author_heads.py:70",
+        "refine-logs/global_conditioned_evidence_20261013_924/EXPERIMENT_PLAN.md:32"
+      ]
+    },
+    {
+      "id": "R2",
+      "fact": "Each arm must have eight actual effective M0 updates and at least one supported, active, masked step. Check excluded_patches equals 32 times active_sample_modalities and retain zero-support steps. Generic inherited M0_PASS does not itself assert this new activity criterion.",
+      "evidence": [
+        "modeling/trifusion/global_conditioned_evidence.py:68",
+        "modeling/trifusion/global_conditioned_evidence.py:76",
+        "tools/run_foundation_recipe.py:243",
+        "tools/run_foundation_recipe.py:263",
+        "tools/run_foundation_recipe.py:279",
+        "tools/run_independent_native_evidence.py:146"
+      ]
+    },
+    {
+      "id": "R3",
+      "fact": "Observe the new per-step ownership assertions and recorded counts actually passing: absent parameter .grad after exposure VJP, and no fused-author-task gradient path to shared_global or any intended trainable backbone parameter. Preserve ordinary backward finite-gradient/effective-update results. FP32 target arithmetic and scale256 do not certify FP32-equivalent upstream AMP sensitivity/coverage/ranking.",
+      "evidence": [
+        "modeling/trifusion/global_conditioned_evidence.py:85",
+        "tools/run_global_conditioned_evidence.py:54",
+        "tools/run_foundation_recipe.py:229",
+        "modeling/trifusion/global_relation_inputs_diagnostic.py:42"
+      ]
+    },
+    {
+      "id": "R4",
+      "fact": "Execute strict checkpoint-state reload and label-free/unmasked inference comparison. Existing M0 checks two source samples at atol=rtol=1e-5, not bitwise output equality or full-gallery parity. Mask/generator are transient; current inference does not consume them and exact training resumption is not claimed.",
+      "evidence": [
+        "tools/run_foundation_recipe.py:180",
+        "tools/run_foundation_recipe.py:227",
+        "tools/run_foundation_recipe.py:263",
+        "modeling/trifusion/global_conditioned_evidence.py:89"
+      ]
+    },
+    {
+      "id": "R5",
+      "fact": "Measure actual two-card AMP cost/peak memory and disk reserve against new artifacts. M0 includes extra isolation work; its aggregate timing is not a direct formal-train per-step estimate. Historical B16/eval/FP32 timing and stale free-space observations establish neither capacity nor current admission.",
+      "evidence": [
+        "tools/run_native_partitioned.py:23",
+        "tools/run_native_partitioned.py:43",
+        "tools/run_global_conditioned_evidence.py:57",
+        "refine-logs/global_conditioned_evidence_20261013_924/EXPERIMENT_PLAN.md:42",
+        "refine-logs/global_conditioned_evidence_20261013_924/EXPERIMENT_PLAN.md:44"
+      ]
+    }
+  ],
+  "nonblocking_source_limits": [
+    {
+      "id": "L1",
+      "detail": "Activity/exclusion counts are recorded, but inherited M0_PASS does not assert at least one active supported masking step. The explicit plan requirement must be assessed from real receipts before formal training.",
+      "evidence": [
+        "tools/run_global_conditioned_evidence.py:56",
+        "tools/run_foundation_recipe.py:263",
+        "tools/run_foundation_recipe.py:279",
+        "refine-logs/global_conditioned_evidence_20261013_924/EXPERIMENT_PLAN.md:32"
+      ]
+    },
+    {
+      "id": "L2",
+      "detail": "Strict replacement-role state loading supports zero-added-parameter compatibility, not an executed full original-semantic/paired equality witness.",
+      "evidence": [
+        "modeling/trifusion/global_conditioned_evidence.py:41",
+        "tools/run_global_conditioned_evidence.py:39",
+        "refine-logs/global_conditioned_evidence_20261013_924/EXPERIMENT_PLAN.md:32"
+      ]
+    }
+  ],
+  "resolved_current_call_path": {
+    "inner": "tools.run_independent_native_evidence",
+    "constructor": "GlobalConditionedEvidence via clean.control.GlobalTokenTriFusion",
+    "wrapper": "GlobalTaskRoleHeads",
+    "foundation_build_core": "tools.run_global_conditioned_evidence.build_core",
+    "foundation_loss_values": "tools.run_global_conditioned_evidence.loss_values",
+    "training_batch": "tools.run_global_conditioned_evidence.training_batch",
+    "main_m0": "inner.train -> partitioned foundation train -> original foundation train",
+    "m0_ownership_loss": "previous.previous.loss_values = tools.run_role_input_detach.loss_values -> its captured original tools.run_independent_native_evidence.loss_values -> captured foundation author loss",
+    "current_model_lifetime": "Set after real model construction; used during that model training; overwritten by reload construction only after training loop/ownership calls finish."
+  },
+  "superseded_observations": {
+    "hashes": {
+      "modeling/trifusion/global_conditioned_evidence.py": {
+        "previous_sha256": "274bd4912157a9065d53a3583a9ddb51d1fe3d22c33d2391fde0e805f500678e",
+        "current_sha256": "f87a7d26ad357cb81e37b41676379dfc3fd1e8b3a3bdcf907ab0eb3a7eba6e0d"
+      },
+      "tools/run_global_conditioned_evidence.py": {
+        "previous_sha256": "e0fab29aef4860bb80f3eb5f2c3885959b70e57c44a12b3bf259d8edc852d53e",
+        "current_sha256": "a35c5005740c26dcb624e1ef0c69756092b70fe8141b57219272028d77931587"
+      },
+      "refine-logs/global_conditioned_evidence_20261013_924/EXPERIMENT_PLAN.md": {
+        "previous_sha256": "e36a74fd7615c2c24b7c49e323a9c8d161ef8dc01f54e5a260347ee23c279f37",
+        "current_sha256": "cd9241f06b00d90b5d6eb6004e6b3123d1ccd11ad6a15a49b72a45eb27db48f6"
+      }
+    },
+    "detail": "The initial source lacked explicit ownership diagnostics. Current source adds reachable M0-only .grad absence and fused-task isolation assertions. Any earlier suggestion that these diagnostics are absent is superseded. No stale source verdict file was emitted."
+  },
+  "boundaries": {
+    "ssh_calls": 0,
+    "network_calls": 0,
+    "gpu_calls": 0,
+    "torch_imports": 0,
+    "model_calls": 0,
+    "training_calls": 0,
+    "checkpoint_inference_calls": 0,
+    "project_file_mutations": 0,
+    "static_checks": "46 files hashed; 41 Python files AST-parsed without project/framework imports; current-byte final hash check required before report write.",
+    "external_runtime_source": "The CLI-selected live Signal root was not supplied/inspected remotely. Local mirrors and the historical snapshot are not attestation of next live imports; historical signal_meta_arch.py line102 moves camera IDs to embedding device.",
+    "future_training": "No fifty-epoch, performance, novelty, causal, semantic-disjointness or goal-completion approval. The future trainer selects official per-epoch mAP; selection-independent generalization is not certified.",
+    "context_isolation": "Not fully context-isolated: mandatory session-note reads occurred and combined outputs were partly truncated. No note used as runtime evidence; MEMORY.md not read.",
+    "output_location": "C:\\Users\\gb\\.codex_tmp\\independent_evidence_draft\\evidence_comparison903\\review_global_conditioned924",
+    "current_sources_unchanged_at_final_write": true
+  },
+  "context_files_read": [
+    "C:/Users/gb/SOUL.md",
+    "C:/Users/gb/USER.md",
+    "C:/Users/gb/memory/2026-10-13.md",
+    "C:/Users/gb/memory/2026-10-12.md",
+    "C:\\Users\\gb\\.trifusion_github_publish_22c3bee\\AGENTS.md",
+    "C:/Users/gb/.codex/skills/experiment-audit/SKILL.md",
+    "C:/Users/gb/.codex/skills/shared-references/local-codex-policy.md",
+    "C:/Users/gb/.codex/skills/shared-references/reviewer-independence.md",
+    "C:/Users/gb/.codex/skills/shared-references/experiment-integrity.md",
+    "C:/Users/gb/.codex/skills/shared-references/review-tracing.md"
+  ],
+  "audited_files": {
+    "modeling/trifusion/global_conditioned_evidence.py": {
+      "path": "C:\\Users\\gb\\.trifusion_github_publish_22c3bee\\modeling\\trifusion\\global_conditioned_evidence.py",
+      "sha256": "f87a7d26ad357cb81e37b41676379dfc3fd1e8b3a3bdcf907ab0eb3a7eba6e0d",
+      "bytes": 5399,
+      "lines": 99,
+      "read_scope": "Provided files read directly; dependencies reviewed at relevant source sections. Hash/AST scope is full file, not full behavioral certification.",
+      "ast_parse": "PASS"
+    },
+    "tools/run_global_conditioned_evidence.py": {
+      "path": "C:\\Users\\gb\\.trifusion_github_publish_22c3bee\\tools\\run_global_conditioned_evidence.py",
+      "sha256": "a35c5005740c26dcb624e1ef0c69756092b70fe8141b57219272028d77931587",
+      "bytes": 4948,
+      "lines": 107,
+      "read_scope": "Provided files read directly; dependencies reviewed at relevant source sections. Hash/AST scope is full file, not full behavioral certification.",
+      "ast_parse": "PASS"
+    },
+    "modeling/trifusion/global_relation_inputs_diagnostic.py": {
+      "path": "C:\\Users\\gb\\.trifusion_github_publish_22c3bee\\modeling\\trifusion\\global_relation_inputs_diagnostic.py",
+      "sha256": "5d962766520a616942902aeac5a7e19f83a3dadc39797174d010c58b2cd98ffb",
+      "bytes": 3275,
+      "lines": 75,
+      "read_scope": "Provided files read directly; dependencies reviewed at relevant source sections. Hash/AST scope is full file, not full behavioral certification.",
+      "ast_parse": "PASS"
+    },
+    "modeling/trifusion/role_global_tokens.py": {
+      "path": "C:\\Users\\gb\\.trifusion_github_publish_22c3bee\\modeling\\trifusion\\role_global_tokens.py",
+      "sha256": "f41ff1af1fb1b6303a9af63cf039263e2572c16b23813f92a0297f014e71dd4f",
+      "bytes": 4968,
+      "lines": 94,
+      "read_scope": "Provided files read directly; dependencies reviewed at relevant source sections. Hash/AST scope is full file, not full behavioral certification.",
+      "ast_parse": "PASS"
+    },
+    "modeling/trifusion/role_input_detach.py": {
+      "path": "C:\\Users\\gb\\.trifusion_github_publish_22c3bee\\modeling\\trifusion\\role_input_detach.py",
+      "sha256": "a3732d5ea98a9fef6039a14f34de98a23cd85a39efd83f52c8835ec59d4605b3",
+      "bytes": 639,
+      "lines": 12,
+      "read_scope": "Provided files read directly; dependencies reviewed at relevant source sections. Hash/AST scope is full file, not full behavioral certification.",
+      "ast_parse": "PASS"
+    },
+    "modeling/trifusion/independent_native_roles.py": {
+      "path": "C:\\Users\\gb\\.trifusion_github_publish_22c3bee\\modeling\\trifusion\\independent_native_roles.py",
+      "sha256": "1565590fdfb281fb51b43d06497cd526ffe5bbdc135727ebaa609615dc7832ff",
+      "bytes": 5375,
+      "lines": 101,
+      "read_scope": "Provided files read directly; dependencies reviewed at relevant source sections. Hash/AST scope is full file, not full behavioral certification.",
+      "ast_parse": "PASS"
+    },
+    "modeling/trifusion/global_task_role_heads.py": {
+      "path": "C:\\Users\\gb\\.trifusion_github_publish_22c3bee\\modeling\\trifusion\\global_task_role_heads.py",
+      "sha256": "2298763b70b48718411db52e55f32dabddade5af0e56457a85eeabab4f9fcefd",
+      "bytes": 1774,
+      "lines": 32,
+      "read_scope": "Provided files read directly; dependencies reviewed at relevant source sections. Hash/AST scope is full file, not full behavioral certification.",
+      "ast_parse": "PASS"
+    },
+    "modeling/trifusion/correspondence_roles.py": {
+      "path": "C:\\Users\\gb\\.trifusion_github_publish_22c3bee\\modeling\\trifusion\\correspondence_roles.py",
+      "sha256": "e2a51154b5b327341f35e453dd32a821b091a49a669b49a7c70e79e6e2f2591b",
+      "bytes": 15524,
+      "lines": 328,
+      "read_scope": "Provided files read directly; dependencies reviewed at relevant source sections. Hash/AST scope is full file, not full behavioral certification.",
+      "ast_parse": "PASS"
+    },
+    "modeling/trifusion/slot_competition_fp32_roles.py": {
+      "path": "C:\\Users\\gb\\.trifusion_github_publish_22c3bee\\modeling\\trifusion\\slot_competition_fp32_roles.py",
+      "sha256": "810801e048bcb07ddbdef0635708b63cba7562a4876e044af34135fd412f79c8",
+      "bytes": 1763,
+      "lines": 33,
+      "read_scope": "Provided files read directly; dependencies reviewed at relevant source sections. Hash/AST scope is full file, not full behavioral certification.",
+      "ast_parse": "PASS"
+    },
+    "modeling/trifusion/slot_competition_roles.py": {
+      "path": "C:\\Users\\gb\\.trifusion_github_publish_22c3bee\\modeling\\trifusion\\slot_competition_roles.py",
+      "sha256": "bbc3e2430f760587cf8c1d11e40bcbdf0459424e975de74b5b15a40706efbe99",
+      "bytes": 2226,
+      "lines": 47,
+      "read_scope": "Provided files read directly; dependencies reviewed at relevant source sections. Hash/AST scope is full file, not full behavioral certification.",
+      "ast_parse": "PASS"
+    },
+    "modeling/trifusion/patch_memory_roles.py": {
+      "path": "C:\\Users\\gb\\.trifusion_github_publish_22c3bee\\modeling\\trifusion\\patch_memory_roles.py",
+      "sha256": "833c8c93363cee7a4fc74c6c458194b484dc1b8cac0f9ec58113a07ac89cb23d",
+      "bytes": 3685,
+      "lines": 66,
+      "read_scope": "Provided files read directly; dependencies reviewed at relevant source sections. Hash/AST scope is full file, not full behavioral certification.",
+      "ast_parse": "PASS"
+    },
+    "modeling/trifusion/correspondence_context_identity.py": {
+      "path": "C:\\Users\\gb\\.trifusion_github_publish_22c3bee\\modeling\\trifusion\\correspondence_context_identity.py",
+      "sha256": "eda3d1473496b33e4b69402dba7770e67d23b33b07afd41d23105b7f148d63af",
+      "bytes": 6147,
+      "lines": 109,
+      "read_scope": "Provided files read directly; dependencies reviewed at relevant source sections. Hash/AST scope is full file, not full behavioral certification.",
+      "ast_parse": "PASS"
+    },
+    "modeling/trifusion/correspondence_evidence_readout.py": {
+      "path": "C:\\Users\\gb\\.trifusion_github_publish_22c3bee\\modeling\\trifusion\\correspondence_evidence_readout.py",
+      "sha256": "e737a977d39ccbe09a5509118e5b5333d653f7f13381e65e84af1a13e5c28dc4",
+      "bytes": 4484,
+      "lines": 90,
+      "read_scope": "Provided files read directly; dependencies reviewed at relevant source sections. Hash/AST scope is full file, not full behavioral certification.",
+      "ast_parse": "PASS"
+    },
+    "modeling/trifusion/evidence_author_heads.py": {
+      "path": "C:\\Users\\gb\\.trifusion_github_publish_22c3bee\\modeling\\trifusion\\evidence_author_heads.py",
+      "sha256": "613b249dae9e1d62d418b94398a0d6ccbcf48e72c88b26b27dd5b9254e9c24cd",
+      "bytes": 3287,
+      "lines": 73,
+      "read_scope": "Provided files read directly; dependencies reviewed at relevant source sections. Hash/AST scope is full file, not full behavioral certification.",
+      "ast_parse": "PASS"
+    },
+    "modeling/trifusion/partitioned_evidence_clip.py": {
+      "path": "C:\\Users\\gb\\.trifusion_github_publish_22c3bee\\modeling\\trifusion\\partitioned_evidence_clip.py",
+      "sha256": "3bad53abd6777602e1f1ea9e7b03f10a796116b577501ee5ec0aec6e683b436c",
+      "bytes": 3614,
+      "lines": 76,
+      "read_scope": "Provided files read directly; dependencies reviewed at relevant source sections. Hash/AST scope is full file, not full behavioral certification.",
+      "ast_parse": "PASS"
+    },
+    "modeling/trifusion/experts/mamba.py": {
+      "path": "C:\\Users\\gb\\.trifusion_github_publish_22c3bee\\modeling\\trifusion\\experts\\mamba.py",
+      "sha256": "8b9cb420c42e4d70f8de7e4608637c81c505b97ca54228175462a7e92fdfcc83",
+      "bytes": 7479,
+      "lines": 209,
+      "read_scope": "Provided files read directly; dependencies reviewed at relevant source sections. Hash/AST scope is full file, not full behavioral certification.",
+      "ast_parse": "PASS"
+    },
+    "modeling/clip/model.py": {
+      "path": "C:\\Users\\gb\\.trifusion_github_publish_22c3bee\\modeling\\clip\\model.py",
+      "sha256": "b53780ac8d3b1e0a0b4e2e57d800af63af874c44aa3a4715231fc8c3199ddb84",
+      "bytes": 34213,
+      "lines": 725,
+      "read_scope": "Provided files read directly; dependencies reviewed at relevant source sections. Hash/AST scope is full file, not full behavioral certification.",
+      "ast_parse": "PASS"
+    },
+    "modeling/meta_arch.py": {
+      "path": "C:\\Users\\gb\\.trifusion_github_publish_22c3bee\\modeling\\meta_arch.py",
+      "sha256": "217a76012321bda630e47112ae7d8f4fb3ac119e5cb8f261ee288a32d02a38cf",
+      "bytes": 5215,
+      "lines": 115,
+      "read_scope": "Provided files read directly; dependencies reviewed at relevant source sections. Hash/AST scope is full file, not full behavioral certification.",
+      "ast_parse": "PASS"
+    },
+    "modeling/make_model.py": {
+      "path": "C:\\Users\\gb\\.trifusion_github_publish_22c3bee\\modeling\\make_model.py",
+      "sha256": "dc78931ef0065838b296f42b3efe8c3af78d2a74294a447315929caaceb2c725",
+      "bytes": 10668,
+      "lines": 195,
+      "read_scope": "Provided files read directly; dependencies reviewed at relevant source sections. Hash/AST scope is full file, not full behavioral certification.",
+      "ast_parse": "PASS"
+    },
+    "data/datasets/bases.py": {
+      "path": "C:\\Users\\gb\\.trifusion_github_publish_22c3bee\\data\\datasets\\bases.py",
+      "sha256": "c7f6720d2eab470211e4b8fb7ef93483afc816e4d89c7032bf53d351bad55798",
+      "bytes": 3983,
+      "lines": 108,
+      "read_scope": "Provided files read directly; dependencies reviewed at relevant source sections. Hash/AST scope is full file, not full behavioral certification.",
+      "ast_parse": "PASS"
+    },
+    "data/datasets/make_dataloader.py": {
+      "path": "C:\\Users\\gb\\.trifusion_github_publish_22c3bee\\data\\datasets\\make_dataloader.py",
+      "sha256": "1138f91dc3cde4fe54120f0a5ef45aa9dc0d8d330bb396da04d5a475379da713",
+      "bytes": 10586,
+      "lines": 259,
+      "read_scope": "Provided files read directly; dependencies reviewed at relevant source sections. Hash/AST scope is full file, not full behavioral certification.",
+      "ast_parse": "PASS"
+    },
+    "solver/make_optimizer.py": {
+      "path": "C:\\Users\\gb\\.trifusion_github_publish_22c3bee\\solver\\make_optimizer.py",
+      "sha256": "6ec47714d5d000534d28c311e2ae762413f2fc06d05a66f1d9e4cd7ec72a1db5",
+      "bytes": 1834,
+      "lines": 40,
+      "read_scope": "Provided files read directly; dependencies reviewed at relevant source sections. Hash/AST scope is full file, not full behavioral certification.",
+      "ast_parse": "PASS"
+    },
+    "tools/run_global_task_role.py": {
+      "path": "C:\\Users\\gb\\.trifusion_github_publish_22c3bee\\tools\\run_global_task_role.py",
+      "sha256": "151a3350a9da7d86ce6b4b7d5160537b182792ab08727ccb5e4ab0c64bb56d5f",
+      "bytes": 2127,
+      "lines": 54,
+      "read_scope": "Provided files read directly; dependencies reviewed at relevant source sections. Hash/AST scope is full file, not full behavioral certification.",
+      "ast_parse": "PASS"
+    },
+    "tools/run_role_input_detach.py": {
+      "path": "C:\\Users\\gb\\.trifusion_github_publish_22c3bee\\tools\\run_role_input_detach.py",
+      "sha256": "a177fd5aa4d5ba25422a49cb619062001722d6c7640891cb3da9645a8eb32fe5",
+      "bytes": 1753,
+      "lines": 46,
+      "read_scope": "Provided files read directly; dependencies reviewed at relevant source sections. Hash/AST scope is full file, not full behavioral certification.",
+      "ast_parse": "PASS"
+    },
+    "tools/run_native_research.py": {
+      "path": "C:\\Users\\gb\\.trifusion_github_publish_22c3bee\\tools\\run_native_research.py",
+      "sha256": "b48725622371fc6d9671c464ce97252e2e06eba465e213ce221d84c798e52cc2",
+      "bytes": 781,
+      "lines": 30,
+      "read_scope": "Provided files read directly; dependencies reviewed at relevant source sections. Hash/AST scope is full file, not full behavioral certification.",
+      "ast_parse": "PASS"
+    },
+    "tools/run_native_partitioned.py": {
+      "path": "C:\\Users\\gb\\.trifusion_github_publish_22c3bee\\tools\\run_native_partitioned.py",
+      "sha256": "2c3abac37b122760895b97ccf01d4fefe2cfb8223b35b6e2e335a1a4144f72fa",
+      "bytes": 2289,
+      "lines": 65,
+      "read_scope": "Provided files read directly; dependencies reviewed at relevant source sections. Hash/AST scope is full file, not full behavioral certification.",
+      "ast_parse": "PASS"
+    },
+    "tools/run_independent_native_evidence.py": {
+      "path": "C:\\Users\\gb\\.trifusion_github_publish_22c3bee\\tools\\run_independent_native_evidence.py",
+      "sha256": "2429af8d2f803d70b9d15113a430609ead28621eb4341a746c3025cc5685fe23",
+      "bytes": 10367,
+      "lines": 216,
+      "read_scope": "Provided files read directly; dependencies reviewed at relevant source sections. Hash/AST scope is full file, not full behavioral certification.",
+      "ast_parse": "PASS"
+    },
+    "tools/run_foundation_recipe.py": {
+      "path": "C:\\Users\\gb\\.trifusion_github_publish_22c3bee\\tools\\run_foundation_recipe.py",
+      "sha256": "c18042509dc33ff66eee1a6b04a723ad55685bd5d9daf218c3779703ffe20758",
+      "bytes": 18242,
+      "lines": 341,
+      "read_scope": "Provided files read directly; dependencies reviewed at relevant source sections. Hash/AST scope is full file, not full behavioral certification.",
+      "ast_parse": "PASS"
+    },
+    "tools/run_clean_clip_joint.py": {
+      "path": "C:\\Users\\gb\\.trifusion_github_publish_22c3bee\\tools\\run_clean_clip_joint.py",
+      "sha256": "178e9793f2cf8261eb44a278e053d5caabd4f2f37dba48a65952b2547338a746",
+      "bytes": 9804,
+      "lines": 183,
+      "read_scope": "Provided files read directly; dependencies reviewed at relevant source sections. Hash/AST scope is full file, not full behavioral certification.",
+      "ast_parse": "PASS"
+    },
+    "tools/run_visual_update_control.py": {
+      "path": "C:\\Users\\gb\\.trifusion_github_publish_22c3bee\\tools\\run_visual_update_control.py",
+      "sha256": "537cd5a4ab4e9b3501a7279e3f4857536bdda761f597d8b5fa7bfdbdbf82cbdd",
+      "bytes": 14850,
+      "lines": 271,
+      "read_scope": "Provided files read directly; dependencies reviewed at relevant source sections. Hash/AST scope is full file, not full behavioral certification.",
+      "ast_parse": "PASS"
+    },
+    "tools/run_training_feature_scale.py": {
+      "path": "C:\\Users\\gb\\.trifusion_github_publish_22c3bee\\tools\\run_training_feature_scale.py",
+      "sha256": "473853f58e4ed70bf123509afe2861fa8a9988631c04f0ce04f3260c55fd9081",
+      "bytes": 3442,
+      "lines": 94,
+      "read_scope": "Provided files read directly; dependencies reviewed at relevant source sections. Hash/AST scope is full file, not full behavioral certification.",
+      "ast_parse": "PASS"
+    },
+    "tools/run_correspondence_roles.py": {
+      "path": "C:\\Users\\gb\\.trifusion_github_publish_22c3bee\\tools\\run_correspondence_roles.py",
+      "sha256": "e50865fb923297cd61cf38b33ec2bc95154f8c503b5dfe5de9823cad3f03d7ef",
+      "bytes": 15677,
+      "lines": 299,
+      "read_scope": "Provided files read directly; dependencies reviewed at relevant source sections. Hash/AST scope is full file, not full behavioral certification.",
+      "ast_parse": "PASS"
+    },
+    "tools/official_three_dataset_data.py": {
+      "path": "C:\\Users\\gb\\.trifusion_github_publish_22c3bee\\tools\\official_three_dataset_data.py",
+      "sha256": "c3180a88d12440709319d2025928fc699ff3b7c020b11697d468453fbfc68062",
+      "bytes": 1885,
+      "lines": 39,
+      "read_scope": "Provided files read directly; dependencies reviewed at relevant source sections. Hash/AST scope is full file, not full behavioral certification.",
+      "ast_parse": "PASS"
+    },
+    "tools/run_official_three_dataset_roles.py": {
+      "path": "C:\\Users\\gb\\.trifusion_github_publish_22c3bee\\tools\\run_official_three_dataset_roles.py",
+      "sha256": "f30bb00a0b71429e9d11dd196cd1d543202a133c663ad66e175d2f82e28d448d",
+      "bytes": 24829,
+      "lines": 438,
+      "read_scope": "Provided files read directly; dependencies reviewed at relevant source sections. Hash/AST scope is full file, not full behavioral certification.",
+      "ast_parse": "PASS"
+    },
+    "tools/run_signal_preserving_v5.py": {
+      "path": "C:\\Users\\gb\\.trifusion_github_publish_22c3bee\\tools\\run_signal_preserving_v5.py",
+      "sha256": "e162184f68778b4991db0f97f26c5fda273b2ad2f7c8db2bbb2d53775eb717e5",
+      "bytes": 65190,
+      "lines": 1682,
+      "read_scope": "Provided files read directly; dependencies reviewed at relevant source sections. Hash/AST scope is full file, not full behavioral certification.",
+      "ast_parse": "PASS"
+    },
+    "tools/run_signal_baseline_dev.py": {
+      "path": "C:\\Users\\gb\\.trifusion_github_publish_22c3bee\\tools\\run_signal_baseline_dev.py",
+      "sha256": "083967f2a38267415b2992da98c2ad9429ebb793f387b45daac1dbb4eb16f365",
+      "bytes": 12601,
+      "lines": 351,
+      "read_scope": "Provided files read directly; dependencies reviewed at relevant source sections. Hash/AST scope is full file, not full behavioral certification.",
+      "ast_parse": "PASS"
+    },
+    "tools/build_v12_complete_path_oof_targets.py": {
+      "path": "C:\\Users\\gb\\.trifusion_github_publish_22c3bee\\tools\\build_v12_complete_path_oof_targets.py",
+      "sha256": "999356e18d489dce99042f1e7873eac15b811b64255f1aee9550c52ae1c7ee06",
+      "bytes": 32774,
+      "lines": 859,
+      "read_scope": "Provided files read directly; dependencies reviewed at relevant source sections. Hash/AST scope is full file, not full behavioral certification.",
+      "ast_parse": "PASS"
+    },
+    "refine-logs/global_conditioned_evidence_20261013_924/EXPERIMENT_PLAN.md": {
+      "path": "C:\\Users\\gb\\.trifusion_github_publish_22c3bee\\refine-logs\\global_conditioned_evidence_20261013_924\\EXPERIMENT_PLAN.md",
+      "sha256": "cd9241f06b00d90b5d6eb6004e6b3123d1ccd11ad6a15a49b72a45eb27db48f6",
+      "bytes": 8204,
+      "lines": 50,
+      "read_scope": "Provided files read directly; dependencies reviewed at relevant source sections. Hash/AST scope is full file, not full behavioral certification."
+    },
+    "refine-logs/global_conditioned_evidence_20261013_924/EXPERIMENT_TRACKER.md": {
+      "path": "C:\\Users\\gb\\.trifusion_github_publish_22c3bee\\refine-logs\\global_conditioned_evidence_20261013_924\\EXPERIMENT_TRACKER.md",
+      "sha256": "7758d893dc3587690e9db98f5b3dcdc528ace5c82897c94917fe0c4daec55557",
+      "bytes": 1071,
+      "lines": 12,
+      "read_scope": "Provided files read directly; dependencies reviewed at relevant source sections. Hash/AST scope is full file, not full behavioral certification."
+    },
+    "refine-logs/evidence_learning_gap_20261013_920/PRIMARY_SOURCE_SCREENING.md": {
+      "path": "C:\\Users\\gb\\.trifusion_github_publish_22c3bee\\refine-logs\\evidence_learning_gap_20261013_920\\PRIMARY_SOURCE_SCREENING.md",
+      "sha256": "e8d58e56ac7f49ce58c70cea1b6e9533f0f71d735418b1aa8cae4a0539e1c950",
+      "bytes": 3398,
+      "lines": 13,
+      "read_scope": "Provided files read directly; dependencies reviewed at relevant source sections. Hash/AST scope is full file, not full behavioral certification."
+    },
+    "refine-logs/evidence_learning_gap_20261013_920/PINNED_CODE.json": {
+      "path": "C:\\Users\\gb\\.trifusion_github_publish_22c3bee\\refine-logs\\evidence_learning_gap_20261013_920\\PINNED_CODE.json",
+      "sha256": "5d480a74e150b52c650d37e56be436b5e30cec009781682c34ae09b51974eef4",
+      "bytes": 2950,
+      "lines": 93,
+      "read_scope": "Provided files read directly; dependencies reviewed at relevant source sections. Hash/AST scope is full file, not full behavioral certification."
+    },
+    "tools/train_rgbnt100_signal_oof.py": {
+      "path": "C:\\Users\\gb\\.trifusion_github_publish_22c3bee\\tools\\train_rgbnt100_signal_oof.py",
+      "sha256": "4462b73139e034d450d955c5b4a994aaa967548e9cc503d97bb753a14ea03b22",
+      "bytes": 22653,
+      "lines": 428,
+      "read_scope": "Provided files read directly; dependencies reviewed at relevant source sections. Hash/AST scope is full file, not full behavioral certification.",
+      "ast_parse": "PASS"
+    },
+    "tools/train_signal_preserving_v18.py": {
+      "path": "C:\\Users\\gb\\.trifusion_github_publish_22c3bee\\tools\\train_signal_preserving_v18.py",
+      "sha256": "f6bdda4631d710d0b6db5fe2a8df124d8dcbd294cb54adcf3ec261d523e96cf8",
+      "bytes": 17540,
+      "lines": 310,
+      "read_scope": "Provided files read directly; dependencies reviewed at relevant source sections. Hash/AST scope is full file, not full behavioral certification.",
+      "ast_parse": "PASS"
+    },
+    "tools/official_three_dataset_model.py": {
+      "path": "C:\\Users\\gb\\.trifusion_github_publish_22c3bee\\tools\\official_three_dataset_model.py",
+      "sha256": "e103ea0f4d6342b0dc129dc2dace0e8c0d0e6c956cfe94729ccb70d9588cf0f9",
+      "bytes": 4624,
+      "lines": 101,
+      "read_scope": "Provided files read directly; dependencies reviewed at relevant source sections. Hash/AST scope is full file, not full behavioral certification.",
+      "ast_parse": "PASS"
+    },
+    "evidence/smooth_ap_source_coverage_independent_audit_20260920/snapshots/signal_meta_arch.py": {
+      "path": "C:\\Users\\gb\\.trifusion_github_publish_22c3bee\\evidence\\smooth_ap_source_coverage_independent_audit_20260920\\snapshots\\signal_meta_arch.py",
+      "sha256": "8b709d5ab4b14ba150a96bbb5e8cc7e6dbbb71dd8bd30cafd7a5cb110ee5a757",
+      "bytes": 5518,
+      "lines": 125,
+      "read_scope": "Provided files read directly; dependencies reviewed at relevant source sections. Hash/AST scope is full file, not full behavioral certification.",
+      "ast_parse": "PASS"
+    },
+    "refine-logs/global_conditioned_evidence_20261013_924/EXPERIMENT_PLAN_20261013_110423.md": {
+      "path": "C:\\Users\\gb\\.trifusion_github_publish_22c3bee\\refine-logs\\global_conditioned_evidence_20261013_924\\EXPERIMENT_PLAN_20261013_110423.md",
+      "sha256": "cd9241f06b00d90b5d6eb6004e6b3123d1ccd11ad6a15a49b72a45eb27db48f6",
+      "bytes": 8204,
+      "lines": 50,
+      "read_scope": "Provided files read directly; dependencies reviewed at relevant source sections. Hash/AST scope is full file, not full behavioral certification."
+    }
+  },
+  "static_receipts": [
+    "STATIC_CHECKS.json",
+    "STATIC_CHECKS_FINAL.json"
+  ],
+  "preserved_attempts": [
+    {
+      "chunk": "e7a73c",
+      "exit_code": 1,
+      "error": "PATH python reported No pyvenv.cfg file; script did not execute"
+    },
+    {
+      "chunk": "00dfbe",
+      "exit_code": 1,
+      "reason": "Final unchanged-source assertion detected changed global_conditioned_evidence.py. Stale report generation stopped before any SOURCE_AUDIT output."
+    }
+  ]
+}

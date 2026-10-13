@@ -18,6 +18,7 @@ original_build_core = previous.build_core
 original_condition = previous.condition
 original_loss_values = previous.loss_values
 original_training_batch = inner.runner._training_batch
+CURRENT_MODEL = None
 
 
 def training_batch(raw):
@@ -27,11 +28,14 @@ def training_batch(raw):
 
 
 def build_core(args, protocol):
+    global CURRENT_MODEL
     assert args.dataset == 'RGBNT201' and args.variant == 'semantic'
     model, cfg, binding = original_build_core(args, protocol)
+    CURRENT_MODEL = model
     assert isinstance(model.evidence_model, GlobalConditionedEvidence)
     model.evidence_model.exposure = args.exposure
     model.evidence_model.mask_generator = torch.Generator(device='cuda:0').manual_seed(42)
+    model.evidence_model.capture_ownership = args.mode == 'm0'
     binding.update(entry_sha256=inner.runner.sha256(Path(__file__)),
         evidence_exposure=args.exposure, excluded_count_per_active_modality=32,
         sensitivity_layer=3, sensitivity_vjp_scale=256.0, added_model_parameters=0,
@@ -50,6 +54,16 @@ def condition(args):
 def loss_values(args, output, labels, cameras, loss_fn):
     loss, values = original_loss_values(args, output, labels, cameras, loss_fn)
     values['evidence_exposure'] = output['evidence_exposure']
+    if args.mode == 'm0':
+        # Reuse the actual fused author task, without another model/head forward.
+        role_loss, _ = previous.previous.loss_values(args, output, labels, cameras, loss_fn)
+        shared = [p for name, p in CURRENT_MODEL.named_parameters()
+                  if name.startswith('evidence_model.backbone.') and p.requires_grad]
+        gradients = torch.autograd.grad(role_loss,
+            [output['shared_global'], *shared], retain_graph=True, allow_unused=True)
+        assert all(g is None for g in gradients)
+        values['role_task_shared_gradients_absent'] = True
+        values['role_task_checked_shared_parameter_tensors'] = len(shared)
     return loss, values
 
 

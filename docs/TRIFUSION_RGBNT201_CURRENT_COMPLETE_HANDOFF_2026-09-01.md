@@ -1,4 +1,4 @@
-> **当前状态（2026-10-13，§41.924）：§922单best真实输入梯度检查已正常结束并保存原EXIT/数组；9组有限梯度、权重buffer不变。新实现global条件位置排除及同数量随机控制草案，新增参数0，尚未源码复核/真实初始化/M0/正式训练；原六端闭合，不重启，三集超过Signal目标仍ACTIVE_UNMET。**
+> **当前状态（2026-10-13，§41.925）：新global条件证据形成源码复核WARN、无阻塞，只支持两端prepare/8步M0。当前尚无新M0/50轮成绩；旧六端已闭合，三数据集超过Signal目标仍ACTIVE_UNMET。实际GPU、磁盘、初始化、AMP、活动和所有权需由这次真实接入验证。**
 
 
 # TriFusion RGB–NIR–TIR ReID 完整交接（2026-09-01）
@@ -18700,3 +18700,15 @@ global target为合法且margin>0的正负关系margin均值；support decision�
 有限计划只先RGBNT201 gradient/random两端，分别prepare/M0后50轮、seed42，先验证真正支持/排除/参数所有权及重载，再启动具体命令。还没有源码复核、新封存合同、真实初始化、M0、PID或成绩。旧raw/global/无模块作者基础及完整Signal分账，不能将不同系统的分母混用。正式失败须报告实际活动、完整曲线、global/correction/fused与净修复/新增错误；若不胜random不搜索比例/层号/seed救分。计划及tracker见`refine-logs/global_conditioned_evidence_20261013_924/`。车辆扩展在机制成立后保持网络适配作者配方，接近后才追加seed，按用户要求保留各seed和最佳选择。
 
 只用26物理GPU0/1及既有环境，不碰25/2/3、包安装或温度功率。原best、依赖、距离和归档保留；本次未产生新权重。这个草案和检查都没有达到全三集全面超过Signal的目标，Goal保持active/unmet；旧队列关闭，新有限队列待实际接入。
+
+## 41.925 新证据形成：源码复核与有限接入登记
+
+当前模型/入口SHA为`f87a7d26ad357cb81e37b41676379dfc3fd1e8b3a3bdcf907ab0eb3a7eba6e0d`、`a35c5005740c26dcb624e1ef0c69756092b70fe8141b57219272028d77931587`。旧草案SHA和更改记录保留，未执行旧版。新增M0诊断在exposure VJP后检查全部参数.grad仍None，并用实际fused作者任务检查shared_global及共享训练参数无梯度路径；正式训练没有这个额外隔离VJP。
+
+新鲜源码审查WARN、确认阻塞0，46文件哈希/41 Python AST；当前构造、CURRENT_MODEL绑定、原fused-loss链及两卡入口无确认源码阻塞。审查same-family/provisional，实际model/effort UNATTESTED，mandatory会话笔记读取限定保留。它仅支持prepare/M0，不是性能或50轮许可结论；实际活动、初始化相等、AMP、参数更新和严格重载待真实运行。计划、报告和原版本变化见`refine-logs/global_conditioned_evidence_20261013_924/`。
+
+具体接入为gradient、random依次各一次prepare及8步M0，输出`logs/global_conditioned_evidence_m0_20261013_925`和各自`trained-model/global_conditioned_evidence_20261013_925_m0_*_RGBNT201`；控制器保留命令、PID、原EXIT和真实receipt。只用26物理GPU0/1和既有环境。新存储预算是两份M0、两份未来best、一次临时保存、日志与512MiB余量，合计2560MiB；这是本轮有限新增资产预算，不修改旧失败的空间门。真实空闲和GPU内存状态必须在启动当时读取；缺空间或卡忙就不运行，不删除来源依赖或原best。
+
+M0不只看通用PASS：检查原semantic初始state及参数/buffer绑定、每端8次有效更新/BN计数、全部训练张量有有限活动、至少一步有正确合法关系支持且实际排除位置、32×有效样本模态计数、exposure VJP不累积参数grad、fused任务不能更新共享主干、推理无标签/mask和严格重载。两条件都求同一个exposure VJP，随机控制仅改变排除排序，M0额外隔离检查也一致。初始参数0新增，训练目标及1536维部署不变。
+
+这里是从实际矛盾出发的一项形成机制和一个必要控制，不凑三个模块：global已有依据的位置减少角色读取，检验补充内容是否改善最终比较。空间排除不能证明语义不复用，global条件query/CLS/上下文仍在；训练排除、推理完整读取存在需解释的暴露变化。若真实接入成功再登记两端各50轮；若失败保留原EXIT、支持/梯度/容量证据，不重跑旧训练或自动改比例/层号/seed救分。目前正式训练未启动，无新增mAP或权重结论，Goal保持active/unmet。
