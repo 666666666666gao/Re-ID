@@ -1,0 +1,363 @@
+{
+  "schema": "normalized-role-classification-synthetic-cpu-v1",
+  "status": "PASS_SYNTHETIC_HEAD_ONLY",
+  "torch_version": "2.5.1+cu121",
+  "dtype": "float32",
+  "device": "cpu",
+  "seed": 42,
+  "raw_common_shift_logit_delta": 1.7881393432617188e-07,
+  "normalized_ce_common_shift_logit_delta": 0.24823439121246338,
+  "fixed_common_shift": [
+    0.0,
+    2.0
+  ],
+  "feature_dim": 1536,
+  "batch_size": 4,
+  "label_smoothing": 0.1,
+  "role_classification": "l2(raw) before existing detached train-BN/classifier",
+  "metric": "raw",
+  "counts": {
+    "synthetic_evidence_calls": 8,
+    "training_head_calls": 8,
+    "classification_vjp_calls": 8,
+    "full_clip_or_role_model_calls": 0,
+    "optimizer_updates": 0,
+    "real_data_records": 0,
+    "real_initializations": 0,
+    "M0_runs": 0,
+    "formal_training_runs": 0,
+    "retrieval_evaluations": 0,
+    "weights_written": 0,
+    "weights_deleted": 0
+  },
+  "cases": {
+    "raw": [
+      {
+        "ce": 0.622611939907074,
+        "triplet": 0.273679256439209,
+        "common_shift_ce_gradient_max": 2.9802322387695312e-08,
+        "correction_gradient_max": 0.13828928768634796,
+        "gain_gradient": 0.0741748958826065,
+        "state_signature": [
+          [
+            "evidence_model.shared",
+            [
+              4,
+              1536
+            ]
+          ],
+          [
+            "evidence_model.correction",
+            [
+              4,
+              1536
+            ]
+          ],
+          [
+            "evidence_model.readout_gain",
+            []
+          ],
+          [
+            "evidence_model.backbone.signal.bottleneck.weight",
+            [
+              1536
+            ]
+          ],
+          [
+            "evidence_model.backbone.signal.bottleneck.bias",
+            [
+              1536
+            ]
+          ],
+          [
+            "evidence_model.backbone.signal.bottleneck.running_mean",
+            [
+              1536
+            ]
+          ],
+          [
+            "evidence_model.backbone.signal.bottleneck.running_var",
+            [
+              1536
+            ]
+          ],
+          [
+            "evidence_model.backbone.signal.bottleneck.num_batches_tracked",
+            []
+          ],
+          [
+            "evidence_model.backbone.signal.classifier.weight",
+            [
+              2,
+              1536
+            ]
+          ],
+          [
+            "evidence_model.classifier.weight",
+            [
+              2,
+              1536
+            ]
+          ]
+        ],
+        "total_parameters": 21505,
+        "trainable_parameters": 16897,
+        "bn_batches_tracked": 1,
+        "role_global_head_gradient_isolated": true,
+        "one_evidence_forward_per_call": true,
+        "raw_metric_feature_exact": true,
+        "deployment_vector_exact": true,
+        "parameters_unchanged": true,
+        "global_only_running_statistics_exact": true
+      },
+      {
+        "ce": 0.622611939907074,
+        "triplet": 0.273679256439209,
+        "common_shift_ce_gradient_max": 8.940696716308594e-08,
+        "correction_gradient_max": 0.13828924298286438,
+        "gain_gradient": 0.07417511194944382,
+        "state_signature": [
+          [
+            "evidence_model.shared",
+            [
+              4,
+              1536
+            ]
+          ],
+          [
+            "evidence_model.correction",
+            [
+              4,
+              1536
+            ]
+          ],
+          [
+            "evidence_model.readout_gain",
+            []
+          ],
+          [
+            "evidence_model.backbone.signal.bottleneck.weight",
+            [
+              1536
+            ]
+          ],
+          [
+            "evidence_model.backbone.signal.bottleneck.bias",
+            [
+              1536
+            ]
+          ],
+          [
+            "evidence_model.backbone.signal.bottleneck.running_mean",
+            [
+              1536
+            ]
+          ],
+          [
+            "evidence_model.backbone.signal.bottleneck.running_var",
+            [
+              1536
+            ]
+          ],
+          [
+            "evidence_model.backbone.signal.bottleneck.num_batches_tracked",
+            []
+          ],
+          [
+            "evidence_model.backbone.signal.classifier.weight",
+            [
+              2,
+              1536
+            ]
+          ],
+          [
+            "evidence_model.classifier.weight",
+            [
+              2,
+              1536
+            ]
+          ]
+        ],
+        "total_parameters": 21505,
+        "trainable_parameters": 16897,
+        "bn_batches_tracked": 1,
+        "role_global_head_gradient_isolated": true,
+        "one_evidence_forward_per_call": true,
+        "raw_metric_feature_exact": true,
+        "deployment_vector_exact": true,
+        "parameters_unchanged": true,
+        "global_only_running_statistics_exact": true
+      }
+    ],
+    "normalized_ce": [
+      {
+        "ce": 0.5797339081764221,
+        "triplet": 0.273679256439209,
+        "common_shift_ce_gradient_max": 0.15682227909564972,
+        "correction_gradient_max": 0.13975925743579865,
+        "gain_gradient": 0.0685657262802124,
+        "state_signature": [
+          [
+            "evidence_model.shared",
+            [
+              4,
+              1536
+            ]
+          ],
+          [
+            "evidence_model.correction",
+            [
+              4,
+              1536
+            ]
+          ],
+          [
+            "evidence_model.readout_gain",
+            []
+          ],
+          [
+            "evidence_model.backbone.signal.bottleneck.weight",
+            [
+              1536
+            ]
+          ],
+          [
+            "evidence_model.backbone.signal.bottleneck.bias",
+            [
+              1536
+            ]
+          ],
+          [
+            "evidence_model.backbone.signal.bottleneck.running_mean",
+            [
+              1536
+            ]
+          ],
+          [
+            "evidence_model.backbone.signal.bottleneck.running_var",
+            [
+              1536
+            ]
+          ],
+          [
+            "evidence_model.backbone.signal.bottleneck.num_batches_tracked",
+            []
+          ],
+          [
+            "evidence_model.backbone.signal.classifier.weight",
+            [
+              2,
+              1536
+            ]
+          ],
+          [
+            "evidence_model.classifier.weight",
+            [
+              2,
+              1536
+            ]
+          ]
+        ],
+        "total_parameters": 21505,
+        "trainable_parameters": 16897,
+        "bn_batches_tracked": 1,
+        "role_global_head_gradient_isolated": true,
+        "one_evidence_forward_per_call": true,
+        "raw_metric_feature_exact": true,
+        "deployment_vector_exact": true,
+        "parameters_unchanged": true,
+        "global_only_running_statistics_exact": true
+      },
+      {
+        "ce": 0.5347117781639099,
+        "triplet": 0.273679256439209,
+        "common_shift_ce_gradient_max": 0.2538129687309265,
+        "correction_gradient_max": 0.0958472415804863,
+        "gain_gradient": 0.005332858767360449,
+        "state_signature": [
+          [
+            "evidence_model.shared",
+            [
+              4,
+              1536
+            ]
+          ],
+          [
+            "evidence_model.correction",
+            [
+              4,
+              1536
+            ]
+          ],
+          [
+            "evidence_model.readout_gain",
+            []
+          ],
+          [
+            "evidence_model.backbone.signal.bottleneck.weight",
+            [
+              1536
+            ]
+          ],
+          [
+            "evidence_model.backbone.signal.bottleneck.bias",
+            [
+              1536
+            ]
+          ],
+          [
+            "evidence_model.backbone.signal.bottleneck.running_mean",
+            [
+              1536
+            ]
+          ],
+          [
+            "evidence_model.backbone.signal.bottleneck.running_var",
+            [
+              1536
+            ]
+          ],
+          [
+            "evidence_model.backbone.signal.bottleneck.num_batches_tracked",
+            []
+          ],
+          [
+            "evidence_model.backbone.signal.classifier.weight",
+            [
+              2,
+              1536
+            ]
+          ],
+          [
+            "evidence_model.classifier.weight",
+            [
+              2,
+              1536
+            ]
+          ]
+        ],
+        "total_parameters": 21505,
+        "trainable_parameters": 16897,
+        "bn_batches_tracked": 1,
+        "role_global_head_gradient_isolated": true,
+        "one_evidence_forward_per_call": true,
+        "raw_metric_feature_exact": true,
+        "deployment_vector_exact": true,
+        "parameters_unchanged": true,
+        "global_only_running_statistics_exact": true
+      }
+    ]
+  },
+  "source_sha256": {
+    "modeling/trifusion/global_task_role_heads.py": "2298763b70b48718411db52e55f32dabddade5af0e56457a85eeabab4f9fcefd",
+    "modeling/trifusion/evidence_author_heads.py": "613b249dae9e1d62d418b94398a0d6ccbcf48e72c88b26b27dd5b9254e9c24cd",
+    "modeling/trifusion/normalized_role_classification.py": "3984e4fad1e883b4194e63d03d0e63791eecada41d4ff897149aef4af11526dc",
+    "comparators/Signal-cd1b0a6/layers/triplet_loss.py": "f502c44bec642bbf72ce6d0f58c9f9a0084beef9cbb451c2d2786bb13f94960a",
+    "tools/check_normalized_role_classification_cpu.py": "8879f90d4d5b0a269455d17f500248803b9efe7dffbf637adf48738ff5bbc955"
+  },
+  "limits": [
+    "Synthetic head fixture, not the real CLIP/roles, production M0 or retrieval gain.",
+    "Finite witness breaks this selected common-shift CE symmetry; not all blind directions.",
+    "BN after L2 remains: this is not direct cosine classification or NormFace replication."
+  ]
+}
