@@ -1,3 +1,9 @@
+## 2026-10-13 §41.944 original3-arm pipeline actually running
+
+2026-10-13 §41.944 actualprogress: originalfinite3-arm supervisor578010/controller578011 once on26physical01. Firstjoint_delta realprepare/8M0 PASS283active/BN8/reload0,89604566params; roleloss→globalunused/referencefinite_nonzero/factorandrankupdatesverified. Originalfresh50PID580021 start2026-10-13T23:52:58.920710+08:00; aad0ff EXIT0 nearM0 observed2026-10-13T23:54:44.875862+08:00=1/50/live, nofullscore. add_delta/joint_absolute pending; cross-modeinitialstateparity notpre-signed. Sole nearfirstfull observer23649/PID38852/birth2026-10-13T23:56:30.896637+08:00 due2026-10-14T00:42:58.920710+08:00; noearlyqueries/restarts. NewCPUreport source preparednotcalled; frozen488source/bests/M0deps unchanged, retired0, noT-P/envchange/otherGPU/vehicles/seed/gain/margin/rank rescue. Usercontinueauth andfullall3SignalGoalACTIVE_UNMET.
+
+Earlier notes historical.
+
 ## 2026-10-13 §41.943 full integration and finite3-arm registration
 
 2026-10-13 §41.943: joint-spectral component942 integrated into full raw-author global-role wrapper and finite3-arm queue (joint_delta/add_delta/joint_absolute). OriginalCLIP once; reference differentiable from detached stages/context; no newhead/loss. New589836params/2tensors, fork_rng preserves oldshared/head/RNG. FirstwarmCPU configuration4667a7 true0/model0/NN0/update0 confirms factory/builder/head/loss/schema/M0observer identities, not realM0. Root source review no blocker, not independent audit. Realprepare compares shared hashes and three-mode initializer, each8M0 beforefresh50/firststrict; firstM0 role-to-global unused/reference support and factor updates required. Only26physical01 serial, free01memory18MiB each/disk5276340224B, finite3-arm budget4831838208B. Noqueue launched yet/new formal score0/old482source untouched/best-deps retained/noT-P/envchange/rescue. Usercontinueauth/fullall3SignalGoalACTIVE_UNMET.
