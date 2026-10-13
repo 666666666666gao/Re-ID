@@ -1,0 +1,82 @@
+{
+  "status": "ROOT_SOURCE_REVIEW_PASS_WITH_RUNTIME_QUALIFICATION_PENDING",
+  "reviewer": "root",
+  "independent_agent_review": false,
+  "source_sha256": {
+    "tools/diagnose_joint_spectral_delta_best.py": "2e52749d4cab26724383cdf4b61e7edcf3579718b88a5346b79a92185b957289",
+    "tools/compare_saved_region_reads.py": "3f77cce0b78f392ab51e458a8bff2a56416f157af0f1440d0ac1a88fef4cce92"
+  },
+  "checks": [
+    "Hook records actual input regions in role/modality order, no output replacement or extra model encode.",
+    "Within nine role/modality groups, mean and symmetric MaxSim use identical per-token normalization and full gallery.",
+    "Source/artifact seals, terminal original campaign, no updates, original metric reproduction precede comparison.",
+    "Full selected-checkpoint extraction and production arrays are not qualified by CPU component fixtures."
+  ],
+  "cpu_fixture": {
+    "status": "CPU_REGION_HOOK_AND_COMPARATOR_FIXTURE_PASS",
+    "real_component_forwards": 6,
+    "hooked_forwards": 3,
+    "comparison_fixture_calls": 3,
+    "optimizer_updates": 0,
+    "full_clip_mamba_calls": 0,
+    "real_images": 0,
+    "captures": [
+      {
+        "mode": "add_delta",
+        "region_shape": [
+          3,
+          3,
+          3,
+          16,
+          128
+        ],
+        "output_difference": 0
+      },
+      {
+        "mode": "joint_delta",
+        "region_shape": [
+          3,
+          3,
+          3,
+          16,
+          128
+        ],
+        "output_difference": 0
+      },
+      {
+        "mode": "joint_absolute",
+        "region_shape": [
+          3,
+          3,
+          3,
+          16,
+          128
+        ],
+        "output_difference": 0
+      }
+    ],
+    "analytical_mean_scores": [
+      [
+        0.5,
+        0.5
+      ]
+    ],
+    "analytical_max_scores": [
+      [
+        1.0,
+        0.7499999403953552
+      ]
+    ],
+    "boundary": "Actual AST hook registered on real readout components; unchanged outputs/state, ordered processed/reference tensors. Independent two-basis fixture and permutation check only; no production loader, full extractor/model, selected checkpoint or retrieval qualification."
+  },
+  "cpu_imports": {
+    "status": "CPU_DIAGNOSTIC_IMPORT_PASS",
+    "model_constructions": 0,
+    "neural_forwards": 0,
+    "optimizer_updates": 0,
+    "invocation_of_diagnose": 0,
+    "boundary": "Imports/linked APIs only; no real seal, selected model, extraction, parity or retrieval check."
+  },
+  "neural_diagnosis_invocations": 0,
+  "production_region_comparison_invocations": 0
+}

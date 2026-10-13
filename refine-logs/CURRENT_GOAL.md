@@ -1,3 +1,9 @@
+## 2026-10-14 §947 post-training region diagnosis preparation
+
+2026-10-14 §947: original3-arm NN unchanged/last actual §946 1of3; sole observer73726/join55981 due02:02:48. Post-training diagnostic readonly hook retains actual B3role3modal16slot128 processed/reference; source/import/component CPU checks only, production NN/region comparison0. Six saved-data local-only mean vs symmetric MaxSim comparisons prereg, no global fusion weight/new formal scores. Projected3arm arrays1096096320B motivates archive exactD3M0 after strict+CPUreport beforediagnosis; restore before later oldverifier, actualretired0. ColBERT primary v1commit706a726 source1f5ef3e4 only latecompare principle, nofullreproduction. Rootreview not independentagent. 488live sources/foreign10/bests retained; only26physical01/noT-P/seed/tuning/envchange; fullall3SignalGoalACTIVE_UNMET.
+
+Earlier notes historical.
+
 ## 2026-10-14 §946 first complete spectral endpoint and originalremaining controls
 
 2026-10-14 §946 actualresult: firstjoint_delta full50/2649batchsteps/firststrict EXIT0 accepted sameE8 74.5331/79.1866/88.2775/91.8660; ownnewbestSHA5397835e/distancec7b84584 retained. E50mAP71.1558/drop3.3773; notSignaladvance or product/referencecausalproof. Originalobserver23649 terminal42a073 andjoin49172 fba831 consumed0; onlynode00:43:10 observesfirst50/accepted1of3, secondadd_delta actualPID673850 CUDA01 live8/50 afterprepareM0, thirdpending. Twoactualinitialstates equal; three-modeparitypending. Originalsupervisor578010/controller578011 retained/no restart/488sourcefrozen. Sole nextnearallobserver73726/PID49896/birth2026-10-14T00:48:45.046695+08:00 due2026-10-14T02:02:48.576899+08:00, no earlyqueries. CPUreport andfixedbestNNdiagnose remain0 untilcomplete3x50/strict. NoT-P/envchange/vehicles/seed/rank/gain/margin/newNN/weightclear. Fullall3SignalGoalACTIVE_UNMET/usercontinueauth/only26physical01.

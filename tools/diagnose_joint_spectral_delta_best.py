@@ -49,16 +49,30 @@ def moments(value):
 def extract(model, protocol, split):
     rows = {key: [] for key in KEYS}
     details = {key: [] for key in DETAILS}
+    regions = {key: [] for key in ('processed_regions', 'reference_regions')}
+
+    def region_hook(_module, inputs):
+        processed, reference, _weight = inputs
+        for name, group in zip(regions, (processed, reference)):
+            regions[name].append(torch.stack(group, dim=1).float().cpu())
+
+    handle = model.evidence_model.spectral_readout.register_forward_pre_hook(region_hook)
     with torch.inference_mode():
-        for raw in runner.loader_for(protocol, runner.records_for(protocol, split),
-                                     training=False, method='PLAIN_V8'):
+        for index, raw in enumerate(runner.loader_for(protocol, runner.records_for(protocol, split),
+                                                      training=False, method='PLAIN_V8')):
             output = model.evidence_model.forward_features(runner._eval_batch(raw, 'RGBNT201'))
+            assert all(len(value) == index + 1 for value in regions.values())
             for key in KEYS:
                 rows[key].append(output[key].float().cpu())
             for key in DETAILS:
                 details[key].append(output['spectral_diagnostics'][key].float().cpu())
+    handle.remove()
     features = {key: torch.cat(value) for key, value in rows.items()}
     detail = {key: torch.cat(value) for key, value in details.items()}
+    region_values = {key: torch.cat(value) for key, value in regions.items()}
+    assert all(value.shape == (protocol['counts'][split], 3, 3, 16, 128)
+               and bool(torch.isfinite(value).all()) for value in region_values.values())
+    detail.update(region_values)
     assert all(value.shape == (protocol['counts'][split], 1536)
                and bool(torch.isfinite(value).all()) for value in features.values())
     assert all(value.shape[0] == protocol['counts'][split]
@@ -150,7 +164,7 @@ def diagnose(args, seal):
         artifacts={name: {'bytes': (args.output_dir / name).stat().st_size,
                           'sha256': runner.sha256(args.output_dir / name)}
                    for name in ('query_features.pt', 'gallery_features.pt', 'diagnostic_distances.pt')},
-        boundary='One selected-best query/gallery extraction per closed arm, zero fitting/new weight/reselection. G/C/F and empirical factor/reference/delta moments describe use and common/centered energy; they do not establish causality, identity information, noise, pure interaction, redundancy or novelty. No cross-spectral slot correspondence is assumed; no new ranking or test centering.')
+        boundary='One selected-best query/gallery extraction per closed arm, zero fitting/new weight/reselection. Original processed/reference region tensors are retained before slot pooling by a read-only hook for later fixed-data comparisons. G/C/F and empirical moments describe use and common/centered energy; they do not establish causality, identity information, noise, pure interaction, redundancy or novelty. No cross-spectral slot correspondence is assumed; no new ranking or test centering.')
     require_inputs(seal)
     base.write(args.output_dir / 'DIAGNOSIS.json', result)
     print(json.dumps(dict(status=result['status'],aggregation=args.aggregation,
