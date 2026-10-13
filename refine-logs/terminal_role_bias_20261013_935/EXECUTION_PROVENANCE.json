@@ -1,0 +1,45 @@
+{
+  "completed_at": "2026-10-13T19:57:58.540086+08:00",
+  "original_cpu_session": 31224,
+  "launch_chunk": "85db12",
+  "terminal_chunk": "334328",
+  "native_exit_code": 0,
+  "actual_remote_cpu_calls": 1,
+  "source_only_failures": [
+    {
+      "chunk_id": "8b07ff",
+      "exit_code": 1,
+      "phase": "Local AST inspection before LAUNCH_REQUEST or SSH",
+      "cause": "AST generator inspected node.module before filtering ImportFrom nodes",
+      "baseline_already_captured": true,
+      "remote_calls": 0,
+      "neural_forward_calls": 0,
+      "correction": "Filter node type before its module field; execute only the unattempted tail",
+      "corrected_launcher_sha256": "4b19d09d5f9da919e4a4aa95b6529c0944bf009b16b8e680c92deffde83a45c2",
+      "original_prefix_rerun": false
+    },
+    {
+      "chunk_id": "01ce07",
+      "exit_code": 1,
+      "phase": "Local check before LAUNCH_REQUEST or SSH",
+      "cause": "Text matching caught autograd. inside a comment",
+      "remote_calls": 0,
+      "neural_forward_calls": 0,
+      "original_prefix_rerun": false,
+      "correction": "Check actual AST attribute references, not comment text",
+      "launcher_sha256": "afbc7a1691c8717a10a586cf721a0f022fe34b9941cd063f619b0a37d8463667"
+    }
+  ],
+  "result_remote_sha256": "a5c86dafa7007f5c1dd7e5541d44e422300a0b9d23429208145975265d5aeb93",
+  "copied_result_sha256": "a5c86dafa7007f5c1dd7e5541d44e422300a0b9d23429208145975265d5aeb93",
+  "input_seal_remote_sha256": "e8b51500c8445657f08a74bfba506b544c150061ba0ea6ba7864b243401ff1b7",
+  "copied_seal_sha256": "e8b51500c8445657f08a74bfba506b544c150061ba0ea6ba7864b243401ff1b7",
+  "primary_skill": "analyze-results; no delegation or independent audit requested",
+  "actual_torch_version": "2.5.1+cu121",
+  "neural_forward_calls": 0,
+  "optimizer_updates": 0,
+  "weights_created": 0,
+  "weights_deleted": 0,
+  "actual_training_gradients_computed": false,
+  "root_interpretation": "Task-reachable terminal parameter subspace exists; currently learned direct bias contribution too small to explain large common correction amplitude. No causal or performance conclusion."
+}
