@@ -1,0 +1,192 @@
+{
+  "status": "COMPLETE_TWO_FULL50_FIRST_STRICT",
+  "started_at": "2026-10-13T11:50:00.630776+08:00",
+  "worker_pid": 3190963,
+  "physical_gpus": [
+    0,
+    1
+  ],
+  "seed": 42,
+  "epochs_per_endpoint": 50,
+  "stages": [
+    {
+      "event": "admission",
+      "exposure": "gradient",
+      "at": "2026-10-13T11:50:01.955675+08:00",
+      "devices": [
+        [
+          0,
+          15
+        ],
+        [
+          1,
+          15
+        ]
+      ],
+      "disk_free_bytes": 2174038016,
+      "required_bytes": 1879048192
+    },
+    {
+      "exposure": "gradient",
+      "mode": "train",
+      "started_at": "2026-10-13T11:50:03.210190+08:00",
+      "child_pid": 3191054,
+      "command": [
+        "/data/gaob/Re-ID/conda-envs/tri_reid/bin/python",
+        "-B",
+        "/data/gaob/Re-ID/Trifusion/tools/run_global_conditioned_evidence.py",
+        "--dataset",
+        "RGBNT201",
+        "--exposure",
+        "gradient",
+        "--mode",
+        "train",
+        "--protocol",
+        "/data/gaob/Re-ID/Trifusion/logs/training_feature_scale_protocols_20261002/RGBNT201.json",
+        "--signal-source",
+        "/data/gaob/Re-ID/Trifusion/comparators/Signal-cd1b0a6",
+        "--clip-weight",
+        "/data/gaob/Re-ID/Trifusion/pertrained-model/ViT-B-16.pt",
+        "--initialization",
+        "/data/gaob/Re-ID/Trifusion/logs/global_conditioned_evidence_m0_20261013_925/initialization/RGBNT201_gradient.json",
+        "--output-dir",
+        "/data/gaob/Re-ID/Trifusion/trained-model/global_conditioned_evidence_20261013_926_full_gradient_RGBNT201"
+      ],
+      "exit_code": 0,
+      "completed_at": "2026-10-13T12:34:52.675048+08:00"
+    },
+    {
+      "exposure": "gradient",
+      "mode": "evaluate",
+      "started_at": "2026-10-13T12:34:53.983258+08:00",
+      "child_pid": 3289990,
+      "command": [
+        "/data/gaob/Re-ID/conda-envs/tri_reid/bin/python",
+        "-B",
+        "/data/gaob/Re-ID/Trifusion/tools/run_global_conditioned_evidence.py",
+        "--dataset",
+        "RGBNT201",
+        "--exposure",
+        "gradient",
+        "--mode",
+        "evaluate",
+        "--protocol",
+        "/data/gaob/Re-ID/Trifusion/logs/training_feature_scale_protocols_20261002/RGBNT201.json",
+        "--signal-source",
+        "/data/gaob/Re-ID/Trifusion/comparators/Signal-cd1b0a6",
+        "--clip-weight",
+        "/data/gaob/Re-ID/Trifusion/pertrained-model/ViT-B-16.pt",
+        "--initialization",
+        "/data/gaob/Re-ID/Trifusion/logs/global_conditioned_evidence_m0_20261013_925/initialization/RGBNT201_gradient.json",
+        "--output-dir",
+        "/data/gaob/Re-ID/Trifusion/trained-model/global_conditioned_evidence_20261013_926_full_gradient_RGBNT201"
+      ],
+      "exit_code": 0,
+      "completed_at": "2026-10-13T12:35:37.272164+08:00"
+    },
+    {
+      "event": "admission",
+      "exposure": "random",
+      "at": "2026-10-13T12:35:39.852018+08:00",
+      "devices": [
+        [
+          0,
+          15
+        ],
+        [
+          1,
+          15
+        ]
+      ],
+      "disk_free_bytes": 3294740480,
+      "required_bytes": 1476395008
+    },
+    {
+      "exposure": "random",
+      "mode": "train",
+      "started_at": "2026-10-13T12:35:41.126464+08:00",
+      "child_pid": 3292454,
+      "command": [
+        "/data/gaob/Re-ID/conda-envs/tri_reid/bin/python",
+        "-B",
+        "/data/gaob/Re-ID/Trifusion/tools/run_global_conditioned_evidence.py",
+        "--dataset",
+        "RGBNT201",
+        "--exposure",
+        "random",
+        "--mode",
+        "train",
+        "--protocol",
+        "/data/gaob/Re-ID/Trifusion/logs/training_feature_scale_protocols_20261002/RGBNT201.json",
+        "--signal-source",
+        "/data/gaob/Re-ID/Trifusion/comparators/Signal-cd1b0a6",
+        "--clip-weight",
+        "/data/gaob/Re-ID/Trifusion/pertrained-model/ViT-B-16.pt",
+        "--initialization",
+        "/data/gaob/Re-ID/Trifusion/logs/global_conditioned_evidence_m0_20261013_925/initialization/RGBNT201_random.json",
+        "--output-dir",
+        "/data/gaob/Re-ID/Trifusion/trained-model/global_conditioned_evidence_20261013_926_full_random_RGBNT201"
+      ],
+      "exit_code": 0,
+      "completed_at": "2026-10-13T13:20:52.686106+08:00"
+    },
+    {
+      "exposure": "random",
+      "mode": "evaluate",
+      "started_at": "2026-10-13T13:20:54.074738+08:00",
+      "child_pid": 3441887,
+      "command": [
+        "/data/gaob/Re-ID/conda-envs/tri_reid/bin/python",
+        "-B",
+        "/data/gaob/Re-ID/Trifusion/tools/run_global_conditioned_evidence.py",
+        "--dataset",
+        "RGBNT201",
+        "--exposure",
+        "random",
+        "--mode",
+        "evaluate",
+        "--protocol",
+        "/data/gaob/Re-ID/Trifusion/logs/training_feature_scale_protocols_20261002/RGBNT201.json",
+        "--signal-source",
+        "/data/gaob/Re-ID/Trifusion/comparators/Signal-cd1b0a6",
+        "--clip-weight",
+        "/data/gaob/Re-ID/Trifusion/pertrained-model/ViT-B-16.pt",
+        "--initialization",
+        "/data/gaob/Re-ID/Trifusion/logs/global_conditioned_evidence_m0_20261013_925/initialization/RGBNT201_random.json",
+        "--output-dir",
+        "/data/gaob/Re-ID/Trifusion/trained-model/global_conditioned_evidence_20261013_926_full_random_RGBNT201"
+      ],
+      "exit_code": 0,
+      "completed_at": "2026-10-13T13:21:37.941117+08:00"
+    }
+  ],
+  "accepted_endpoints": [
+    {
+      "exposure": "gradient",
+      "output_dir": "/data/gaob/Re-ID/Trifusion/trained-model/global_conditioned_evidence_20261013_926_full_gradient_RGBNT201",
+      "metrics": {
+        "mAP": 74.364459198888,
+        "Rank-1": 79.30622100830078,
+        "Rank-5": 88.39712738990784,
+        "Rank-10": 91.86602830886841
+      },
+      "selected_epoch": 8,
+      "official_metrics_sha256": "a85c48230b7287f726caa63564f205bad79df33782e653c0810658dc53425f97"
+    },
+    {
+      "exposure": "random",
+      "output_dir": "/data/gaob/Re-ID/Trifusion/trained-model/global_conditioned_evidence_20261013_926_full_random_RGBNT201",
+      "metrics": {
+        "mAP": 74.4695448457365,
+        "Rank-1": 79.78469133377075,
+        "Rank-5": 88.15789222717285,
+        "Rank-10": 91.86602830886841
+      },
+      "selected_epoch": 8,
+      "official_metrics_sha256": "367bde212aa8b59b80cb95bab703d851dbaf9ae0fcba6a9a0acbb6297a07a608"
+    }
+  ],
+  "goal_status": "ACTIVE_UNMET",
+  "completed_at": "2026-10-13T13:21:40.564581+08:00",
+  "elapsed_seconds": 5499.933801952051
+}

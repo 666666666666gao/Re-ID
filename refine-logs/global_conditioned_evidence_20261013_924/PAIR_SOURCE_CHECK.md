@@ -1,0 +1,64 @@
+# Pair combination cold source audit
+
+Source ready: **true**. Unresolved blocking source defects: **none**. Source PASS; overall WARN for bounded assurance.
+
+Source SHA256: `639319f4725a05d0fc685a4fd5526f55d27abff1db069dba2329ba05ad55f529`. Requested gpt-6-astra/max; actual model/effort UNATTESTED; same-family/provisional.
+
+## accepted_input_binding - PASS
+
+Before summary or step arithmetic, direct SHA assertions bind both summary/actual CPU EXIT/order/steps inputs and terminal observation to the accepted first/second runtime audit maps. Readiness and empty unresolved defect lists are required. Explicit C-path keys avoid the previously observed resolved-path alias mismatch. Both audit files are included in output input hashes. Independently confirmed all9 bound files match existing audit keys and bytes.
+
+Evidence: `build_evidence_pair929.py:10-32`; `RUNTIME_AUDIT.json:1`; `SECOND_RUNTIME_AUDIT.json:1`.
+
+## query_alignment_and_orientation - PASS
+
+836 queries per arm, gradient indices0..835 and pairwise exact equality of index, identity, raw-control AP and raw-control first-rank establish common aligned query/control records. Candidate gradient AP/rank is compared against control random AP/rank; all delta metrics and group definitions use gradient minus random. Thirty identities are required.
+
+Evidence: `build_evidence_pair929.py:50-69,72-77,97-100`.
+
+## metric_group_macro_tail_arithmetic - PASS
+
+mAP=100*mean(AP); CMC=100*count(first_rank<=k)/836. Both endpoint aggregates are checked against accepted official metrics within1e-5. Repair/new-error split uses exact Rank1 before/after; each group sum(AP delta points)/836 contributes to the overall mAP delta, with sum consistency asserted. Identity rows average within identity then macro-average30 identities. Worst5% averages lowestceil(.05*836)=42 per-query deltas. Improved/worsened here explicitly use strict sign of point deltas (zero excluded); this is a defined pair statistic, not the per-endpoint1e-8 AP threshold.
+
+Evidence: `build_evidence_pair929.py:63-82,98-105`.
+
+## order_support_teacher_scope - PASS
+
+Training-order files require exact byte equality. Each of2649 step positions requires equal epoch,batch,lr and recorded source/vjp_scale/support/activity/available/exclusion fields. Teacher scalar differences are reported as maxima from stored values, with explicit statement that scalar equality is not feature equality. No same-model global decomposition is constructed.
+
+Evidence: `build_evidence_pair929.py:84-95,106-111`.
+
+## stdlib_only_fresh_write - PASS
+
+Only hashlib/json/math/datetime/pathlib imports. No subprocess, SSH, torch, model, optimizer, dataset loader or tensor ranking replay. Source records its actual byte hash and every input hash. The only mutation is fresh private EVIDENCE_PAIR_SUMMARY_929.json after assert-not-exists; its absence was independently checked at review. The script was not executed by reviewer.
+
+Evidence: `build_evidence_pair929.py:1-9,109-115`.
+
+## Corrected before execution
+
+Original source `ea822c837a5f804107338fe33108e477fe49878eb8b2b7f840c992d470010f1d` omitted acceptance-manifest SHA binding. Current source adds direct checks before computation with explicit C-path keys. No fallback, report replay or production edit.
+
+## Audited bytes
+
+| File | SHA256 |
+|---|---|
+| `C:/Users/gb/.codex_tmp/independent_evidence_draft/evidence_comparison903/build_evidence_pair929.py` | `639319f4725a05d0fc685a4fd5526f55d27abff1db069dba2329ba05ad55f529` |
+| `C:/Users/gb/.codex_tmp/independent_evidence_draft/evidence_comparison903/review_endpoint_report928/RUNTIME_AUDIT.json` | `6a6416adfc9ed7dffe74c0726d4dce5318714957f5126d1fc1339f76f8174840` |
+| `C:/Users/gb/.codex_tmp/independent_evidence_draft/evidence_comparison903/EVIDENCE_GRADIENT_CPU_SUMMARY_928.json` | `511f6e00aa0c4df2f464170dc1064d727cc851d351764a60bdacee3b92a8b110` |
+| `C:/Users/gb/.codex_tmp/independent_evidence_draft/evidence_comparison903/EVIDENCE_GRADIENT_CPU_EXIT_928.json` | `b75968b009cc064edc2988a84c8ddce28fb56b0e0ef97ea2b6ba48e08e25669e` |
+| `C:/Users/gb/.codex_tmp/independent_evidence_draft/evidence_comparison903/evidence_gradient_results928/output/training_batch_order.jsonl` | `e446282654c74949fb594856631b246642593b73229331c30b555418a0358993` |
+| `C:/Users/gb/.codex_tmp/independent_evidence_draft/evidence_comparison903/evidence_gradient_results928/output/training_steps.jsonl` | `c93175b6e796763bb62ab7befb7bd94e129038ab1be73cd7234aa9cf9addfd96` |
+| `C:/Users/gb/.codex_tmp/independent_evidence_draft/evidence_comparison903/review_endpoint_report928/SECOND_RUNTIME_AUDIT.json` | `9418e94fa3948c247935ee2552ad1c07ded5de35c93715725b76b0ffeea6efaf` |
+| `C:/Users/gb/.codex_tmp/independent_evidence_draft/evidence_comparison903/EVIDENCE_RANDOM_CPU_SUMMARY_929.json` | `57921c4e11bbd7b18219513cd95e83247f8125516fcf1307d3252a56819e5c28` |
+| `C:/Users/gb/.codex_tmp/independent_evidence_draft/evidence_comparison903/EVIDENCE_RANDOM_CPU_EXIT_929.json` | `1bdad2969ff4e3ab610bdf72a577f2dcd37e316de35496868eae9f3d7adaa3c5` |
+| `C:/Users/gb/.codex_tmp/independent_evidence_draft/evidence_comparison903/evidence_random_results929/output/training_batch_order.jsonl` | `e446282654c74949fb594856631b246642593b73229331c30b555418a0358993` |
+| `C:/Users/gb/.codex_tmp/independent_evidence_draft/evidence_comparison903/evidence_random_results929/output/training_steps.jsonl` | `15dd311c7377d23e5be17aa6b70b2ebde859e583b0a025ebcade59a74c8998ec` |
+| `C:/Users/gb/.codex_tmp/independent_evidence_draft/evidence_comparison903/EVIDENCE_TERMINAL_OBSERVATION_929.json` | `ea0cd31693fdd50416a9af1c159c7f536ff79c82b475c412c94fb9db10f44978` |
+
+## Limits
+
+- Cold source audit only: paired output absent and not computed or numerically accepted by reviewer.
+- No SSH, report/model/torch execution, training, deletion, publication or production mutation.
+- Assurance is arithmetic on already accepted saved query records, not fresh dataset/tensor ranking replay.
+- One dataset/seed42; no same-model G/C/F, feature equality, causality, seed robustness, equivalence, Signal superiority or full-goal endorsement.
+- Continuing reviewer with prior mandatory session context; same-family/provisional, actual model and effort UNATTESTED.

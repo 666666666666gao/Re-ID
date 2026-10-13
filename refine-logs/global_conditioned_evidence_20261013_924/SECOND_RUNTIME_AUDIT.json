@@ -1,0 +1,270 @@
+{
+  "audit_skill": "experiment-audit",
+  "audit_id": "second-endpoint929-bounded-runtime",
+  "generated_at": "2026-10-13T06:21:29.425029+00:00",
+  "reviewer_task": "/root/audit_evidence_endpoint_report928",
+  "requested_model": "gpt-6-astra",
+  "requested_effort": "max",
+  "actual_model": "UNATTESTED",
+  "actual_effort": "UNATTESTED",
+  "reviewer_family": "openai",
+  "review_independence": "same-family",
+  "acceptance_status": "provisional",
+  "overall_verdict": "WARN",
+  "evidence_integrity_status": "pass_with_scope_limits",
+  "second_endpoint_cpu_evidence_accepted": true,
+  "unresolved_blocking_evidence_defects": [],
+  "accepted_scope": "Supplied second original random full50/first-strict endpoint and saved CPU diagnosis, with independently checked stored-record arithmetic; not paired-combination execution or publication acceptance.",
+  "checks": {
+    "A_ground_truth_provenance": {
+      "status": "PASS",
+      "details": "Retrieval GT comes from the registered dataset identity/camera protocol, not teacher/model predictions. Inherited reviewed producer/scorer source computes full-gallery ranking with same-ID/same-camera exclusion and standard AP. This round verifies protocol and initialization hash references plus saved-record arithmetic, not original dataset labels or tensor-to-ranking computation. Gradient target/support remain explicitly training proxies, not GT region importance.",
+      "evidence": [
+        "report_evidence_formation_endpoint.py:18-53,75-87",
+        "tools/run_correspondence_roles.py:66-108",
+        "tools/train_rgbnt100_signal_oof.py:253-268",
+        "tools/report_prepool_dense_correspondence.py:18-61",
+        "evidence_random_results929/output/official_metrics.json:9-35"
+      ]
+    },
+    "B_score_normalization": {
+      "status": "PASS",
+      "details": "Both 836-query stored comparisons reproduce mAP and CMC, 30 identity means/macro, AP-improved/worsened counts, repair/new-error counts and all four AP contribution groups. Contributions divide by all836 queries, and their sum equals total mAP delta; lower tail uses42=ceil(.05*836). No metric uses a prediction max/min/mean as normalization denominator. Candidate metrics agree with official receipts within1e-5, allowing official float32 CMC representation.",
+      "pair_checks": [
+        {
+          "control": "raw_semantic",
+          "queries": 836,
+          "identities": 30,
+          "delta_metrics": {
+            "mAP": 0.0946833091235959,
+            "Rank-1": 0.9569377990430752,
+            "Rank-5": -0.23923444976077235,
+            "Rank-10": 0.11961722488038617
+          },
+          "rank1_repairs": 13,
+          "rank1_new_errors": 5,
+          "identity_macro_mean_delta_ap_points": 0.0716911793823583,
+          "group_contributions": {
+            "repair": {
+              "queries": 13,
+              "contribution_to_total_map_points": 0.10084176478273137
+            },
+            "new_error": {
+              "queries": 5,
+              "contribution_to_total_map_points": -0.051716382984986486
+            },
+            "kept_correct": {
+              "queries": 654,
+              "contribution_to_total_map_points": 0.0074949028884345945
+            },
+            "kept_wrong": {
+              "queries": 164,
+              "contribution_to_total_map_points": 0.03806302443740451
+            }
+          },
+          "all_stored_record_arithmetic_pass": true
+        },
+        {
+          "control": "independent_global",
+          "queries": 836,
+          "identities": 30,
+          "delta_metrics": {
+            "mAP": 0.1728812710489791,
+            "Rank-1": 0.837320574162689,
+            "Rank-5": -0.11961722488038617,
+            "Rank-10": 0.0
+          },
+          "rank1_repairs": 11,
+          "rank1_new_errors": 4,
+          "identity_macro_mean_delta_ap_points": 0.13888764601870726,
+          "group_contributions": {
+            "repair": {
+              "queries": 11,
+              "contribution_to_total_map_points": 0.0918203833607514
+            },
+            "new_error": {
+              "queries": 4,
+              "contribution_to_total_map_points": -0.02834449599117375
+            },
+            "kept_correct": {
+              "queries": 656,
+              "contribution_to_total_map_points": 0.061021596923481636
+            },
+            "kept_wrong": {
+              "queries": 165,
+              "contribution_to_total_map_points": 0.04838378675591163
+            }
+          },
+          "all_stored_record_arithmetic_pass": true
+        }
+      ],
+      "evidence": [
+        "EVIDENCE_RANDOM_CPU_SUMMARY_929.json:1324-1501,8192-8214,8241-8393,15084-15104",
+        "report_evidence_formation_endpoint.py:75-87",
+        "SECOND_RUNTIME_STDLIB_CHECK.py:91-131"
+      ]
+    },
+    "C_result_file_existence": {
+      "status": "PASS",
+      "details": "All14 collected files exist and independently match receipt byte sizes and SHA256; official_distances.pt was hashed as opaque bytes only. The ZIP receipt is preserved, but ZIP bytes were not rehashed in this round. Random train/evaluate, CPU child/transport and terminal observer report EXIT0. Campaign and controller receipts equal the terminal snapshot; exactly gradient then random are accepted, with worker/supervisor absent at that observation.",
+      "evidence": [
+        "evidence_random_results929/COLLECTION_RECEIPT.json:5-91",
+        "evidence_random_results929/campaign.json:2-191",
+        "evidence_random_results929/CONTROLLER_EXIT.json:1-12",
+        "EVIDENCE_TERMINAL_OBSERVATION_929.json:205-206,1519",
+        "EVIDENCE_RANDOM_CPU_EXIT_929.json:2-22",
+        "EVIDENCE_RANDOM_CPU_TRANSPORT_EXIT_929.json:2-3",
+        "SECOND_RUNTIME_STDLIB_CHECK.py:15-33"
+      ]
+    },
+    "D_actual_invocation_and_wiring": {
+      "status": "PASS",
+      "details": "The supplied actual CPU receipt records PID3461274, --exposure random, fresh logs/evidence_random_cpu_report929/result, source0884..., EXIT0 and4.443572553107515s. It matches the reviewed wrapper command, whose source pin remains exact, CUDA_VISIBLE_DEVICES is empty and which calls only the reviewed private report. CPU log and summary keys agree. Generic report actually calls the paired scorer twice, and results are present. No report retry, neural call or optimizer update is introduced.",
+      "evidence": [
+        "run_evidence_random_cpu_report929.py:9-10,19-35,37-48",
+        "report_evidence_formation_endpoint.py:72-109",
+        "EVIDENCE_RANDOM_CPU_EXIT_929.json:2-22",
+        "EVIDENCE_RANDOM_CPU_REPORT_929.log:1",
+        "EVIDENCE_RANDOM_CPU_SUMMARY_929.json:15131-15142"
+      ]
+    },
+    "E_scope_assessment": {
+      "status": "WARN",
+      "details": "Original finite two-arm campaign is terminal, but this bounded result audit accepts the second seed42 RGBNT201 endpoint and its CPU evidence only. Both arms have50epochs/2649 steps and selected E8; no new dataset, seed, causal intervention or same-model G/C/F decomposition is supplied. Independent-global same-epoch history remains a different saved model. No comprehensive, seed-robust, causal-localization, equivalence, Signal-superiority or full-goal endorsement follows. Prior first-endpoint audit remains unchanged and historically scoped.",
+      "evidence": [
+        "evidence_random_results929/campaign.json:2-9,163-191",
+        "EVIDENCE_RANDOM_CPU_SUMMARY_929.json:15105-15117,15142",
+        "evidence_random_results929/output/official_metrics.json:3-35"
+      ]
+    },
+    "F_evaluation_type": {
+      "status": "PASS",
+      "classification": "real_gt",
+      "details": "Stored retrieval metrics are real_gt via dataset-provided identity/camera labels and the previously reviewed ranking source. Teacher gradient target/support is separately model-derived training diagnostic/proxy; it is not a second real_gt spatial-importance evaluation. This reviewer independently checked stored records only.",
+      "evidence": [
+        "tools/train_rgbnt100_signal_oof.py:253-268",
+        "modeling/trifusion/global_relation_inputs_diagnostic.py:35-57",
+        "modeling/trifusion/global_conditioned_evidence.py:59-84",
+        "EVIDENCE_RANDOM_CPU_SUMMARY_929.json:15142"
+      ]
+    },
+    "same_best_full50_and_count": {
+      "status": "PASS",
+      "details": "History contains exactly epochs1..50. E8 is the maximum official mAP under later-tie selection and equals training best_epoch, strict receipt selected_epoch, accepted endpoint and CPU metrics exactly. There are49epochs*53steps plus E46*52=2649; step/batch indices align throughout.",
+      "metrics": {
+        "mAP": 74.4695448457365,
+        "Rank-1": 79.78469133377075,
+        "Rank-5": 88.15789222717285,
+        "Rank-10": 91.86602830886841
+      },
+      "evidence": [
+        "evidence_random_results929/output/training.json:86-690",
+        "evidence_random_results929/output/training.json:628-629",
+        "evidence_random_results929/output/official_metrics.json:3-39",
+        "EVIDENCE_RANDOM_CPU_SUMMARY_929.json:6-13,1317",
+        "SECOND_RUNTIME_STDLIB_CHECK.py:34-48"
+      ]
+    },
+    "activity_and_batch_provenance": {
+      "status": "PASS",
+      "details": "Every batch has64 labels/cameras/paths. Legal-positive-pair and legal-triple counts independently recomputed from those labels/cameras equal the recorded support fields. All50 per-epoch activity/loss means and sums reproduce the report. Available sample/modalities=192 per step; excluded patches=32*active; norm means include all128 positions per sample/modality, with zeros retained per inherited producer. All logged loss sums exactly equal float32-rounded component sums. Batch-order bytes hash equals old raw-semantic sealed hash; successful original CPU script additionally asserts actual remote byte equality. The old remote file was not reopened by reviewer.",
+      "totals": {
+        "steps": 2649,
+        "supported_active_steps": 2557,
+        "zero_support_steps": 92,
+        "legal_relations": 11089680,
+        "supported_relations": 11050402,
+        "active_sample_modalities": 490932,
+        "available_sample_modalities": 508608,
+        "excluded_patches": 15709824
+      },
+      "evidence": [
+        "evidence_random_results929/output/training_steps.jsonl:1-2649",
+        "evidence_random_results929/output/training_batch_order.jsonl:1-2649",
+        "EVIDENCE_RANDOM_CPU_SUMMARY_929.json:615-1318",
+        "report_evidence_formation_endpoint.py:47-71",
+        "refine-logs/region_use_fixed_best_diagnosis918/INPUT_SEAL.json:493",
+        "SECOND_RUNTIME_STDLIB_CHECK.py:63-90"
+      ]
+    },
+    "source_input_provenance": {
+      "status": "PASS",
+      "details": "Executed report and current wrapper raw-byte SHA match the cold audit. Every summary input SHA matches its collected/registered local file, including both old seals. INPUTS has469 source and15 M0 pins; source map equals prior registered source_sha256 and collected controller equals reviewed producer. Protocol, exposure and initialization references agree. Original successful CPU report asserts remote runtime/M0 and best checkpoint hashes; reviewer did not independently rehash all remote sources or the uncollected checkpoint. Preparation hashes remain normalized-LF text hashes, distinct from actual CRLF file-byte hashes in the cold audit.",
+      "evidence": [
+        "EVIDENCE_RANDOM_CPU_SUMMARY_929.json:15133-15141",
+        "EVIDENCE_RANDOM_CPU_EXIT_929.json:18",
+        "evidence_random_results929/INPUTS.json:2",
+        "evidence_random_results929/output/official_metrics.json:9-34",
+        "SECOND_SOURCE_CHECK.json:1",
+        "SECOND_RUNTIME_STDLIB_CHECK.py:29-64"
+      ]
+    },
+    "producer_wall_vs_loop": {
+      "status": "PASS",
+      "details": "Producer train wall2711.559642s is derived from same-host train-stage start/end. History.seconds sums1941.0348825752735s and excludes per-epoch evaluation; it is not full training wall or GPU-kernel-only time. E50 mAP71.36736745519424 gives3.102177390542252 best-to-last points. Local transport and remote execution timestamps are not treated as one clock.",
+      "evidence": [
+        "evidence_random_results929/random_train_EXIT.json:4-29",
+        "EVIDENCE_RANDOM_CPU_SUMMARY_929.json:15118-15120",
+        "tools/run_foundation_recipe.py:211-250",
+        "SECOND_RUNTIME_STDLIB_CHECK.py:132-137"
+      ]
+    }
+  },
+  "audited_input_hashes": {
+    "C:/Users/gb/.codex_tmp/independent_evidence_draft/evidence_comparison903/EVIDENCE_RANDOM_CPU_SUMMARY_929.json": "57921c4e11bbd7b18219513cd95e83247f8125516fcf1307d3252a56819e5c28",
+    "C:/Users/gb/.codex_tmp/independent_evidence_draft/evidence_comparison903/EVIDENCE_RANDOM_CPU_EXIT_929.json": "1bdad2969ff4e3ab610bdf72a577f2dcd37e316de35496868eae9f3d7adaa3c5",
+    "C:/Users/gb/.codex_tmp/independent_evidence_draft/evidence_comparison903/EVIDENCE_RANDOM_CPU_TRANSPORT_EXIT_929.json": "21ab9a45c4129f7d8b3270a176aea934e9eb8bbfb16587bb25241f3188eaa8cd",
+    "C:/Users/gb/.codex_tmp/independent_evidence_draft/evidence_comparison903/EVIDENCE_RANDOM_CPU_REPORT_929.log": "45b3dcf79e3dea69a1f498f7bc437e7dbe6854f562ff2eb0a5ebb69be388c7b4",
+    "C:/Users/gb/.codex_tmp/independent_evidence_draft/evidence_comparison903/EVIDENCE_TERMINAL_OBSERVATION_929.json": "ea0cd31693fdd50416a9af1c159c7f536ff79c82b475c412c94fb9db10f44978",
+    "C:/Users/gb/.codex_tmp/independent_evidence_draft/evidence_comparison903/EVIDENCE_TERMINAL_OBSERVER_EXIT_929.json": "ee52a413333aa6023a9f7361333243c80944ace22e9feb35cdf6389c0dd34723",
+    "C:/Users/gb/.codex_tmp/independent_evidence_draft/evidence_comparison903/EVIDENCE_RANDOM_CPU_PREPARATION_929.json": "7f56ac4d988f8c2a6d86ae6b35dd8cc4dcc118d8ba60eab7ab903cb0b3846394",
+    "C:/Users/gb/.codex_tmp/independent_evidence_draft/evidence_comparison903/report_evidence_formation_endpoint.py": "0884d747e4d4719a87894bf5e0091a214995f2ddc04a9c551e50914d53e2accb",
+    "C:/Users/gb/.codex_tmp/independent_evidence_draft/evidence_comparison903/run_evidence_random_cpu_report929.py": "3feb920e0b67353a3c36970f87d8be1688c1d7f7174d682aea36f00654ed56d2",
+    "C:/Users/gb/.codex_tmp/independent_evidence_draft/evidence_comparison903/evidence_full_controller926.py": "ce75b9987862b189eddedf930762f719a25f9bc9c3bc3baaa2db09f54abab5b0",
+    "C:/Users/gb/.codex_tmp/independent_evidence_draft/evidence_comparison903/evidence_random_results929/COLLECTION_RECEIPT.json": "d010ece00af07a1c60c56a7ab5b9205dddd0ae40deadd2aa8b374581eca78d5b",
+    "C:/Users/gb/.codex_tmp/independent_evidence_draft/evidence_comparison903/evidence_random_results929/INPUTS.json": "26b06899e18fdef75dbdf6e9258ad63f8270a5f999ac3b2797cdfbeb3a45f78f",
+    "C:/Users/gb/.codex_tmp/independent_evidence_draft/evidence_comparison903/evidence_random_results929/controller.py": "ce75b9987862b189eddedf930762f719a25f9bc9c3bc3baaa2db09f54abab5b0",
+    "C:/Users/gb/.codex_tmp/independent_evidence_draft/evidence_comparison903/evidence_random_results929/SUPERVISOR.json": "030bb0b51c12c4287cfc21826e3f375633c66543e1e42e343d62a13e89aaf8e2",
+    "C:/Users/gb/.codex_tmp/independent_evidence_draft/evidence_comparison903/evidence_random_results929/campaign.json": "821411a1119ad46af35c4abad4ee44f15f5d6debc09760129898c2eb3b81b5b1",
+    "C:/Users/gb/.codex_tmp/independent_evidence_draft/evidence_comparison903/evidence_random_results929/CONTROLLER_EXIT.json": "2c22168cea9f9f2f346a1da06fc9ff229b34e60dec2cf51b03ea76a54f882ba7",
+    "C:/Users/gb/.codex_tmp/independent_evidence_draft/evidence_comparison903/evidence_random_results929/random_train_EXIT.json": "4147884fcd3c48cad3d0fa6e16cbcf48cd31e226eb7c9004a22c9b77379a82e5",
+    "C:/Users/gb/.codex_tmp/independent_evidence_draft/evidence_comparison903/evidence_random_results929/random_evaluate_EXIT.json": "1ce5e8099ec9eebe94e7d481b9e6b92e8f67951bf02aece7ae32c545f02ad534",
+    "C:/Users/gb/.codex_tmp/independent_evidence_draft/evidence_comparison903/evidence_random_results929/random_train.log": "7d1c5da0b278b3a6da7ebd118c376c7f8d79794cdaacb3dba4a8d93e3ead20d1",
+    "C:/Users/gb/.codex_tmp/independent_evidence_draft/evidence_comparison903/evidence_random_results929/random_evaluate.log": "fa8627bc34a21b6d0a6afcfad03bbdf43d36a33db507146fad97dce818905959",
+    "C:/Users/gb/.codex_tmp/independent_evidence_draft/evidence_comparison903/evidence_random_results929/output/training.json": "9e489a0cafdda0e628619e364c5bbb4831d564d6cf3ddcd5a64f02a9754fd3ad",
+    "C:/Users/gb/.codex_tmp/independent_evidence_draft/evidence_comparison903/evidence_random_results929/output/training_steps.jsonl": "15dd311c7377d23e5be17aa6b70b2ebde859e583b0a025ebcade59a74c8998ec",
+    "C:/Users/gb/.codex_tmp/independent_evidence_draft/evidence_comparison903/evidence_random_results929/output/training_batch_order.jsonl": "e446282654c74949fb594856631b246642593b73229331c30b555418a0358993",
+    "C:/Users/gb/.codex_tmp/independent_evidence_draft/evidence_comparison903/evidence_random_results929/output/official_metrics.json": "367bde212aa8b59b80cb95bab703d851dbaf9ae0fcba6a9a0acbb6297a07a608",
+    "C:/Users/gb/.codex_tmp/independent_evidence_draft/evidence_comparison903/evidence_random_results929/output/official_distances.pt": "db52b656b8dfe75e4c4570f64d89ad3063ed21dfb9b85642d2878886a910c01c",
+    "C:/Users/gb/.codex_tmp/independent_evidence_draft/evidence_comparison903/review_endpoint_report928/SOURCE_AUDIT.json": "45ac974ed7b5e91b5acc9e9010aee336e5f7b85a68917a6281003d3fb909bead",
+    "C:/Users/gb/.codex_tmp/independent_evidence_draft/evidence_comparison903/review_endpoint_report928/SECOND_SOURCE_CHECK.json": "478926aee8b773a7e1448c343f76e44841d4349b4a4a6f21296ddf05ee3388c1",
+    "C:/Users/gb/.codex_tmp/independent_evidence_draft/evidence_comparison903/review_endpoint_report928/SECOND_RUNTIME_STDLIB_CHECK.py": "d242c09d757995b625bf525a59a9e0d56e6c9d3c3a1e6b6421b0dee9b1de90c6",
+    "C:/Users/gb/.codex_tmp/independent_evidence_draft/evidence_comparison903/review_endpoint_report928/SECOND_RUNTIME_STDLIB_CHECKS.json": "f8fe87392654cc4f596fec9c382a2b5868ee9e06d6b49bf10b087868befbb4b0",
+    "C:/Users/gb/.trifusion_github_publish_22c3bee/refine-logs/region_use_fixed_best_diagnosis918/INPUT_SEAL.json": "8e5c37e57c088a8ab53344266195bbc7183ccd27a94d0f0910ff9c20998b4b41",
+    "C:/Users/gb/.trifusion_github_publish_22c3bee/refine-logs/global_task_role_fixed_best_diagnosis_v1/INPUT_SEAL.json": "9f55f45278dbe3c03f5b5cc78b007e7a49b5693019ccba05cea3eea3bdc8256e"
+  },
+  "deterministic_checker_path": "C:/Users/gb/.codex_tmp/independent_evidence_draft/evidence_comparison903/review_endpoint_report928/SECOND_RUNTIME_STDLIB_CHECK.py",
+  "deterministic_checks_path": "C:/Users/gb/.codex_tmp/independent_evidence_draft/evidence_comparison903/review_endpoint_report928/SECOND_RUNTIME_STDLIB_CHECKS.json",
+  "reviewer_check_history": [
+    {
+      "status": "CORRECTED_REVIEWER_EXPECTED_COMMAND",
+      "details": "Initial reviewer checker assumed a miniconda interpreter path and stopped at that extra command assertion. Actual receipt and reviewed wrapper use /data/gaob/Re-ID/conda-envs/tri_reid/bin/python. Only the reviewer assertion was corrected; subsequent full check passed. No report/producer artifact changed or reran."
+    }
+  ],
+  "preserved_history": [
+    "Prior gradient launcher manifest-KeyError occurred locally before SSH; corrected explicit C-key binding and one original gradient CPU invocation remain in SOURCE_AUDIT/RUNTIME_AUDIT. This review neither overwrites that failure record nor interprets it as a report retry.",
+    "Second collector retained FIRST_ORIGINAL_ENDPOINT_COLLECTED template print label; receipt exposure/path unambiguously identify random. No collector/report rerun for wording."
+  ],
+  "context_caveat": "Continuing reviewer, not context-blind. Mandatory SOUL/USER/today+yesterday notes previously exposed prior TriFusion context; daily output was truncated. MEMORY.md not loaded in delegated session. Requested model/effort are labels only, actual runtime UNATTESTED.",
+  "limitations": [
+    "No SSH, network, torch import, model/report execution, tensor deserialization, training, publication, cleanup or production mutation by reviewer.",
+    "Distance artifact checked as opaque bytes/SHA only. Original dataset/camera labels and tensor-to-ranking computation were not independently replayed.",
+    "GT/ranking assurance combines previously inspected source plus the original source-bound CPU receipt; independent calculations here start from saved AP/rank and step/batch records.",
+    "Uncollected best checkpoint and complete remote469source/15M0 byte verification are original CPU/source assertions, not fresh reviewer rehashes.",
+    "No same-model global/correction/fused, seed robustness, mechanism causality, all-Signal superiority or full-goal completion endorsement."
+  ],
+  "trace": {
+    "capture_owner": "parent native collaboration transcript",
+    "output_directory": "C:/Users/gb/.codex_tmp/independent_evidence_draft/evidence_comparison903/review_endpoint_report928"
+  }
+}
