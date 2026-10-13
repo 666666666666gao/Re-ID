@@ -1,0 +1,204 @@
+{
+  "schema": "normalized-role-entry-source-bindings-v1",
+  "status": "PASS_ENTRY_BINDINGS_ONLY",
+  "build_delegation_chain": [
+    {
+      "module": "tools.run_normalized_role_classification",
+      "name": "build_core",
+      "source": "tools/run_normalized_role_classification.py"
+    },
+    {
+      "module": "tools.run_global_task_role",
+      "name": "build_core",
+      "source": "tools/run_global_task_role.py"
+    },
+    {
+      "module": "tools.run_role_input_detach",
+      "name": "build_core",
+      "source": "tools/run_role_input_detach.py"
+    },
+    {
+      "module": "tools.run_native_research",
+      "name": "build_core",
+      "source": "tools/run_native_research.py"
+    },
+    {
+      "module": "tools.run_native_partitioned",
+      "name": "build_core",
+      "source": "tools/run_native_partitioned.py"
+    },
+    {
+      "module": "tools.run_independent_native_evidence",
+      "name": "build_core",
+      "source": "tools/run_independent_native_evidence.py"
+    }
+  ],
+  "stages": [
+    {
+      "stage": "after_outer_configure",
+      "schema": "trifusion-normalized-role-classification-v1",
+      "bindings": {
+        "inner.build_core": {
+          "module": "tools.run_normalized_role_classification",
+          "name": "build_core",
+          "source": "tools/run_normalized_role_classification.py"
+        },
+        "foundation.build_core": {
+          "module": "tools.run_normalized_role_classification",
+          "name": "build_core",
+          "source": "tools/run_normalized_role_classification.py"
+        },
+        "inner.AuthorHeadEvidence": {
+          "module": "trifusion.normalized_role_classification",
+          "name": "NormalizedRoleClassification",
+          "source": "modeling/trifusion/normalized_role_classification.py"
+        },
+        "inner.RawFeatureSemanticTriFusion": {
+          "module": "trifusion.role_input_detach",
+          "name": "DetachedSemanticTriFusion",
+          "source": "modeling/trifusion/role_input_detach.py"
+        },
+        "clean.control.GlobalTokenTriFusion": {
+          "module": "trifusion.role_input_detach",
+          "name": "DetachedSemanticTriFusion",
+          "source": "modeling/trifusion/role_input_detach.py"
+        },
+        "inner.loss_values": {
+          "module": "tools.run_global_task_role",
+          "name": "loss_values",
+          "source": "tools/run_global_task_role.py"
+        },
+        "foundation.loss_values": {
+          "module": "tools.run_global_task_role",
+          "name": "loss_values",
+          "source": "tools/run_global_task_role.py"
+        },
+        "inner.condition": {
+          "module": "tools.run_normalized_role_classification",
+          "name": "condition",
+          "source": "tools/run_normalized_role_classification.py"
+        },
+        "foundation.condition": {
+          "module": "tools.run_normalized_role_classification",
+          "name": "condition",
+          "source": "tools/run_normalized_role_classification.py"
+        },
+        "foundation.train_loader": {
+          "module": "tools.run_independent_native_evidence",
+          "name": "train_loader",
+          "source": "tools/run_independent_native_evidence.py"
+        },
+        "foundation.optimization": {
+          "module": "tools.run_native_partitioned",
+          "name": "optimization",
+          "source": "tools/run_native_partitioned.py"
+        },
+        "foundation.train": {
+          "module": "tools.run_native_partitioned",
+          "name": "train",
+          "source": "tools/run_native_partitioned.py"
+        }
+      }
+    },
+    {
+      "stage": "after_main_inner_configure",
+      "schema": "trifusion-normalized-role-classification-v1",
+      "bindings": {
+        "inner.build_core": {
+          "module": "tools.run_normalized_role_classification",
+          "name": "build_core",
+          "source": "tools/run_normalized_role_classification.py"
+        },
+        "foundation.build_core": {
+          "module": "tools.run_normalized_role_classification",
+          "name": "build_core",
+          "source": "tools/run_normalized_role_classification.py"
+        },
+        "inner.AuthorHeadEvidence": {
+          "module": "trifusion.normalized_role_classification",
+          "name": "NormalizedRoleClassification",
+          "source": "modeling/trifusion/normalized_role_classification.py"
+        },
+        "inner.RawFeatureSemanticTriFusion": {
+          "module": "trifusion.role_input_detach",
+          "name": "DetachedSemanticTriFusion",
+          "source": "modeling/trifusion/role_input_detach.py"
+        },
+        "clean.control.GlobalTokenTriFusion": {
+          "module": "trifusion.role_input_detach",
+          "name": "DetachedSemanticTriFusion",
+          "source": "modeling/trifusion/role_input_detach.py"
+        },
+        "inner.loss_values": {
+          "module": "tools.run_global_task_role",
+          "name": "loss_values",
+          "source": "tools/run_global_task_role.py"
+        },
+        "foundation.loss_values": {
+          "module": "tools.run_global_task_role",
+          "name": "loss_values",
+          "source": "tools/run_global_task_role.py"
+        },
+        "inner.condition": {
+          "module": "tools.run_normalized_role_classification",
+          "name": "condition",
+          "source": "tools/run_normalized_role_classification.py"
+        },
+        "foundation.condition": {
+          "module": "tools.run_normalized_role_classification",
+          "name": "condition",
+          "source": "tools/run_normalized_role_classification.py"
+        },
+        "foundation.train_loader": {
+          "module": "tools.run_independent_native_evidence",
+          "name": "train_loader",
+          "source": "tools/run_independent_native_evidence.py"
+        },
+        "foundation.optimization": {
+          "module": "tools.run_native_partitioned",
+          "name": "optimization",
+          "source": "tools/run_native_partitioned.py"
+        },
+        "foundation.train": {
+          "module": "tools.run_native_partitioned",
+          "name": "train",
+          "source": "tools/run_native_partitioned.py"
+        }
+      }
+    }
+  ],
+  "source_sha256": {
+    "modeling/trifusion/normalized_role_classification.py": "3984e4fad1e883b4194e63d03d0e63791eecada41d4ff897149aef4af11526dc",
+    "modeling/trifusion/role_input_detach.py": "a3732d5ea98a9fef6039a14f34de98a23cd85a39efd83f52c8835ec59d4605b3",
+    "tools/check_normalized_role_entry_bindings.py": "b4893c559172527908b991aebdf65ac8645833190d64bc2e3c5b9cc7df8882f2",
+    "tools/run_foundation_recipe.py": "c18042509dc33ff66eee1a6b04a723ad55685bd5d9daf218c3779703ffe20758",
+    "tools/run_global_task_role.py": "151a3350a9da7d86ce6b4b7d5160537b182792ab08727ccb5e4ab0c64bb56d5f",
+    "tools/run_independent_native_evidence.py": "2429af8d2f803d70b9d15113a430609ead28621eb4341a746c3025cc5685fe23",
+    "tools/run_native_partitioned.py": "2c3abac37b122760895b97ccf01d4fefe2cfb8223b35b6e2e335a1a4144f72fa",
+    "tools/run_native_research.py": "b48725622371fc6d9671c464ce97252e2e06eba465e213ce221d84c798e52cc2",
+    "tools/run_normalized_role_classification.py": "e1fbd418215fe99c07d98c811e18892a29e6787e87bf59a2f33c36be9f90a258",
+    "tools/run_role_input_detach.py": "a177fd5aa4d5ba25422a49cb619062001722d6c7640891cb3da9645a8eb32fe5"
+  },
+  "counts": {
+    "outer_configure_calls": 1,
+    "inner_main_configure_calls": 1,
+    "build_core_calls": 0,
+    "model_constructions": 0,
+    "neural_forward_calls": 0,
+    "data_records": 0,
+    "loss_evaluations": 0,
+    "autograd_calls": 0,
+    "optimizer_constructions": 0,
+    "optimizer_updates": 0,
+    "prepare_runs": 0,
+    "M0_runs": 0,
+    "training_runs": 0,
+    "evaluation_runs": 0,
+    "weights_written": 0
+  },
+  "limits": [
+    "Real Python entry import/configuration wiring only; main CLI and build_core not run.",
+    "No production initialization, real M0, data, optimizer coverage or retrieval claim.",
+    "Synthetic CPU head result936 remains separate and is not rerun."
+  ]
+}

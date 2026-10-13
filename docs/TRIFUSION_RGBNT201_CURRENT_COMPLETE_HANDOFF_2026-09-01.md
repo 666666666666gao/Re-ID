@@ -1,4 +1,4 @@
-> **当前状态（2026-10-13，§41.936）：训练仍停止。新增“角色L2分类／raw Triplet”最小201语义入口，第一次CPU合成head检查通过：梯度归属、单次BN更新及raw度量/部署保持；固定偏移使候选CE变化。不是生产初始化、M0或新检索成绩，不宣称完全同几何或模块有效。训练范围确认待人类回复，三集超过Signal目标仍ACTIVE_UNMET，原best/来源保留。**
+> **当前状态（2026-10-13，§41.937）：训练仍停止。新“角色L2分类／raw Triplet”入口完成根源源码审查与一次实际CPU导入/配置绑定检查；两次configure均保留新wrapper与原职责损失，6层builder对象不循环。0模型构造/NN/prepare/M0/训练/新检索。936合成结果不重跑、不升格；真实初始化与8步M0待验证，训练范围确认待人类回复，原best保留，三集超过Signal目标ACTIVE_UNMET。**
 
 
 # TriFusion RGB–NIR–TIR ReID 完整交接（2026-09-01）
@@ -19234,3 +19234,46 @@ e0响应是当前 \(h\) 上 \(\delta f=(I-ff^T)\gamma Ae_0/\|h\|\) 的解析计�
 新增生产入口仅支持201 semantic/direct，driver尚未实际prepare/M0或生产运行，根源源码检查不等于独立源码审计。若恢复训练，须先核实初始化/optimizer所有权/真实BN与8步M0，再运行一项固定seed42 fresh50。原raw semantic74.3749/78.8278、global-only74.2967/78.9474与完整Signal80.3029/85.1675的记录保持，本次没有替换或超过这些成绩。
 
 用户目标仍为三个数据集全面超过Signal、形成针对问题的有效原创机制。此次改变只是有证据指向的训练接口对照，不作为论文创新；既不因toy通过宣布成功，也不因仍无正式分数取消总体目标。训练启动确认待回复；不自动部署车辆、多seed或新模块队列。没有本次生成的无用权重可清理，所有原best/必需依赖保留。
+
+## 41.937 最小分类入口的源码审查与实际配置绑定
+
+# 最小角色分类入口：源码与实际配置链审查
+
+**根源源码审查在本项范围内未发现阻塞，第一次实际入口绑定核查通过；仍不具备真实初始化、M0或正式训练成绩。**训练停止与待回复的训练范围问题保持。§936 CPU合成head结果不重跑，也不升级为生产M0。
+
+固定审查父提交`e1983eabe877effd8afeabe89a48980ff72d7173`，规范是用户最小范围要求与§936 COMPONENT_PLAN；使用code-review-excellence/Python指引。只由root审查，**不是独立实验审计、外部模型复现或科学有效性PASS**。
+
+## 具体源码结论
+
+| 需求 | 实际实现及证据 | 范围结论 |
+|---|---|---|
+| 只支持201 semantic | 新driver build_core显式限定dataset/variant；wrapper限定author direct | 源码符合；CLI/真实构造未执行 |
+| 只改变角色分类入口 | normalized=L2(raw)，role_score=detached classifier(detached BN(normalized)) | 符合；BN仍在L2之后，非直接余弦head |
+| Triplet保持raw | 新wrapper heads=[(role_score,raw)]，实际绑定原global_task_role loss_values | 符合；原作者损失读取tuple的raw feature |
+| global任务独立 | global_score仍classifier(BN(global_feature))；原global与角色loss求和 | 符合；936有限fixture已检查梯度归属 |
+| 不新增参数/头 | 新wrapper仅重写forward，无构造器或注册参数；复用原detached_head | 符合；真实参数所有权需M0核查 |
+| 保持推理及单次编码 | 非return_aux返回原output.fused，每次仅调用一次forward_features | 符合；936 fixture结果保持，不是全CLIP向量实测 |
+| 不持久更新角色BN | detached_head参数detach、buffer.clone，只有global调用实际BN | 源码与936 fixture支持；真实BN运行未测 |
+| 不改变采样/配方/分段 | 原builder、loader、optimization/train调用绑定保持 | 实际函数绑定通过；生产数据/optimizer仍未执行 |
+
+未增加fallback、try/except、额外兼容层或假设性分支；不对已封存旧来源作风格重构。wrapper与旧forward之间的小段重复用于独立登记当前单项对照，不能据此修改封存旧入口。
+
+## 实际入口检查
+
+一次warm conda CPU导入／配置检查：2026-10-13T21:30:37.036724+08:00→2026-10-13T21:30:38.964588+08:00，原native `be0939` EXIT0，状态`PASS_ENTRY_BINDINGS_ONLY`。CUDA_VISIBLE_DEVICES为空。原474项运行来源加936四项源码/计划执行前后哈希保持。
+
+实际捕获的六个builder函数对象各不相同，次序为：
+
+`run_normalized_role_classification → run_global_task_role → run_role_input_detach → run_native_research → run_native_partitioned → run_independent_native_evidence`
+
+首次外层configure后，以及正式inner.main会再次执行的inner.configure后，12个实际绑定保持相同，包括inner/foundation build_core与loss_values、AuthorHeadEvidence、新condition、DetachedSemantic初始化类、loader、optimization、分段train；schema为`trifusion-normalized-role-classification-v1`。此次**未调用inner.main本身或六个builder**，没有假构造成功的INITIALIZATION_VERIFIED文件。
+
+调用计数：outer configure1、inner configure1；builder/model/NN/loss/autograd/optimizer/prepare/M0/train/evaluate均0。没有GPU任务、真实数据、权重写入/删除或新指标；配置函数调用不计作真实训练。
+
+## 尚未完成的资格与科学问题
+
+本项只排除了实际配置链覆盖新wrapper／恢复旧损失绑定的担忧。公共CLIP与camera/head初始化、完整state和optimizer覆盖、真实输入下BN运行及角色参数活动、8步更新/重载、完整50轮仍待实际核查，不能写成“生产资格全通过”。训练范围问题尚无人类回复，不依赖自动Goal continuation启动上述工作。
+
+§936分类入口本身是诊断对照，仍不是论文创新；旧训练空间差异已在Oct5提出。合成共同偏移例子不证明它解释实际损失，也不证明新入口会超过raw semantic/global-only/Signal。原失败、best、官方集已消费及单seed42边界保持；不增加seed/gain/margin/层数搜索或车辆队列。
+
+三个数据集全面超过Signal与有必要性的原创证据机制仍未达到，Goal为ACTIVE_UNMET。下一项依赖明确训练范围回复；若保持停止，就只可做有新问题依据的离线工作，不原样重复本次绑定检查。没有本次无用权重需要清理。
