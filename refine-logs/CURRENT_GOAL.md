@@ -1,3 +1,9 @@
+## 2026-10-14 §949 complete fixed-best and saved-region diagnostics
+
+2026-10-14 §949: three fixed-best NN diagnoses49.143/47.780/49.171s allREMOTE EXIT0/stateunchanged/officialFdist0/updates0; ownG metrics equalindependentglobal74.2967/78.9474. cAP3.8703/6.4034/4.5805,normratios.03425/.04252/.03578; notcause/noiseproof. Originalnative2569 be4a05 localbase64 decoderFAIL1 AFTERremote3success/transport0; localonly8156dc recovery0/noextraSSH/NN. OriginalCPUcomparison12599 800e5c EXIT0 once/6pairs/12localrankings/fulllegalgallery/0NN, processedMaxSim5.5352/11.5770/6.5800, reference9.9460/16.7888/7.9856. No staticglobal fusion search/newformal scores/teacherclaim/compressioncausalproof. Original3trainingclosed; nextinvestigate rawCLIPpatch beforelearnedroleprojection, notretuneoldproduct orrepeatgradientmask. ClearCLIP abstract/officialrepo read only, noinstall/import/run/segconclusions-as-ReIDcauses. Bests/archives/source kept/noT-P/vehicle/seeds/envchanges; fullall3SignalGoalACTIVE_UNMET.
+
+Earlier notes historical.
+
 ## 2026-10-14 §948 complete3arm results and once report
 
 2026-10-14 §948: original3x50/7947batches/firststrict allCOMPLETE EXIT0, same E8 74.5331/79.1866,74.4934/79.4258,74.4006/79.1866. Product-v-add+.0397mAP/-.2392R1(2repair4harm); ref-v-absolute+.1324/0(3/3), neitheradvance/all3SignalGoalACTIVE_UNMET. OnceCPUreportEXIT0, collector childSOURCE_SEAL error154e5c retained; collection-only4cf3d6 succeeds/report1 totaltransports2. ThreeM0 exactDsizeSHA archived thenremote duplicates1082206476B retired, free2919043072to4001263616; threebest kept/restoreM0beforeoldverifier. ReadonlyNNdiag requestednative2569, no terminal collected/region CPUcompare0. Originaltraining notrerun/488source frozen/noT-P/seed/gain/rank/margin/vehicles/envchange, only26physical01.
