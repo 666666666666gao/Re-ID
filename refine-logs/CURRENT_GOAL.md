@@ -1,3 +1,9 @@
+## 2026-10-13 §41.938 current resumed scope
+
+2026-10-13 §41.938: explicit human 继续训练 resolves prior pending scope and revokes trainingSTOP. One201 semantic seed42 normalized role CE/rawTriplet registered with exact source seal, same author recipe/initializer and original strict50 rule; first real prepare+8M0 before fresh50, no old replay/vehicles/seed/gain/margin/layer rescue. Only26physical01/max1originaltwo-card process/noT-P/install/preemption, warm env unchanged. At registration actualmemory15MiB each, free3308871680B/budget3087007744B. Root controller scope review only; NN not launched at this publication. Keep all best/deps/M0 through first fullverify. ScientificGoalACTIVE_UNMET; oldblocked waiting state historical.
+
+Earlier priorities/STOP/blocked notes are historical.
+
 ## 2026-10-13 §41.937 — current authoritative state
 
 2026-10-13 §41.937: root-only code-review-excellence scope review of936 normalized-role CE entry, zero concrete source blockers; not independent experiment audit. First actual CPU entry import/configuration be0939 EXIT0, six distinct original builder objects in correct chain and12 bindings preserved after outer plus main-inner configure. No builder/model/NN/loss/autograd/optimizer/prepare/M0/train/eval called. Actual cold CLI/model/init/optimizer coverage and8-stepM0 not qualified. No production source change, 936 fixture not rerun, original474runtime plus9364source/plan pins unchanged. TrainingSTOP/scope question waiting human reply; no auto NN/vehicles/seeds/gain/margin/layer changes. Keep best/deps, weightscreated/deleted0, only26physical01 if later resumed/noT-P. all3SignalGoalACTIVE_UNMET.
