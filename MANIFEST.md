@@ -2381,3 +2381,5 @@
 | 2026-10-08T07:22:02.873006+08:00 | user pause closeout | refine-logs/CURRENT_GOAL.md | no new NN | Proven scratch cleanup and paused handoff |
 | 2026-10-08T07:22:02.873006+08:00 | user pause closeout | AGENTS.md | no new NN | Proven scratch cleanup and paused handoff |
 | 2026-10-08T07:22:02.873006+08:00 | user pause closeout | docs/TRIFUSION_RGBNT201_CURRENT_COMPLETE_HANDOFF_2026-09-01.md | no new NN | Proven scratch cleanup and paused handoff |
+| 2026-10-13T10:46:23+08:00 | /experiment-plan | refine-logs/global_conditioned_evidence_20261013_924/EXPERIMENT_PLAN.md | implementation | 新形成机制与同数量随机对照；尚无真实初始化/M0/训练 |
+| 2026-10-13T10:46:23+08:00 | /experiment-plan | refine-logs/global_conditioned_evidence_20261013_924/EXPERIMENT_TRACKER.md | implementation | 有限两端执行表；TODO不作DONE |

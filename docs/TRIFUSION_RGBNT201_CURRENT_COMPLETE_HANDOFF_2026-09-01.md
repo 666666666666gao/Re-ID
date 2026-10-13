@@ -1,4 +1,4 @@
-> **当前状态（2026-10-13，§41.922）：用户再次将Goal设为active，继续完整研究目标。原六端与固定best比较保持闭合；新登记一项RGBNT201原best/训练来源批次的只读输入敏感性检查。源码复核已收齐，真实前向/VJP尚未执行；无新训练、权重或分数，三集超过Signal目标仍ACTIVE_UNMET。**
+> **当前状态（2026-10-13，§41.924）：§922单best真实输入梯度检查已正常结束并保存原EXIT/数组；9组有限梯度、权重buffer不变。新实现global条件位置排除及同数量随机控制草案，新增参数0，尚未源码复核/真实初始化/M0/正式训练；原六端闭合，不重启，三集超过Signal目标仍ACTIVE_UNMET。**
 
 
 # TriFusion RGB–NIR–TIR ReID 完整交接（2026-09-01）
@@ -18682,3 +18682,21 @@ global target为合法且margin>0的正负关系margin均值；support decision�
 完整源码审查见同目录SOURCE_AUDIT.md/json，实际源码是否可用于这一有界检查以报告为准；没有运行证明。复核same-family/provisional，实际model/effort保持UNATTESTED；审查者披露了继承会话规则导致的额外SOUL/USER/每日笔记读取，不能称完全无上下文审查。正式命令、源SHA和原918输入合同绑定见EXPERIMENT_PLAN.md及INPUT_SEAL.json。只使用26物理GPU0/1与既有环境，启动前检查这两卡显存及磁盘，不读功率温度、不接触其他卡或25。
 
 当前只有AST/源码复核，实际前向、VJP、state核验和终态结果尚待执行。即使得到有限patch敏感性，也仅说明可以取得真实global关系依据；不能据此宣布证据排除、互补学习或检索提升已经成立。本次没有排除超参、mask、候选训练或新mAP，原权重、诊断距离、依赖及历史失败继续保留；科学目标仍未达到。
+
+## 41.923 §922只读检查真实终态与限定
+
+原native session60469已返回0（chunk4b6bb6）；remote child3097314和supervisor3097311的原START/EXIT/命令保留。实际检查58.144037秒，仅原RGBNT201/uniform/E8 best及一个B16/K2来源批次，无新训练/权重/检索分数。合法正例对16、合法关系224，支持224；9个真实输入均有有限梯度，18432个patch范数全部非零，signed dot18431非零。事后stacked stages梯度None。前后model state/buffer SHA一致，参数grad全部None；48输入图及原source/artifact重复hash通过。
+
+最后一层dot绝对均值约1.38—1.89×10⁻⁹，而范数均值约4.40—5.63×10⁻⁵，不能把近零radial内积放大成重要性。作者pre-LN最终块/CLS路径支持尺度方向抑制的结构解释，不能将它当作唯一运行原因；范数非零也不等于有限删除或语义证据正确。所有9组原值、原数组、资源与边界见`refine-logs/global_relation_input_sensitivity_20261013_922/RESULTS.md`及DIAGNOSIS.json。
+
+两卡postconstruction阶段allocated峰值约3.12/2.58GiB，未包括构造峰值；FP32/eval与训练AMP/B64不同。原remote与local绝对时钟未证同步，不能把跨主机时间差作总成本。结果复核记录完整，same-family/provisional，actual model/effort UNATTESTED；额外会话笔记读取限定和未独立重放事实保留。原child已缺失，原会话终态，无新的运行观察者。
+
+## 41.924 新形成机制草案：global条件排除与随机控制
+
+已添加`modeling/trifusion/global_conditioned_evidence.py`及`tools/run_global_conditioned_evidence.py`，AST通过，尚未复核或执行。基于§919局部能力没有净互补、§920当前区域目标仍奖励global已有关系，借ACoL/RSC开源代码的证据形成前干预思路，设计训练期角色读取限制，而非再加末端gain或换排序loss。原作者来源和差异边界继续见§920；这是项目化候选，不宣称创新已成立。
+
+保持global独立作者任务，用其正确合法关系在实际block3输入的梯度范数，固定每个有非零敏感性的样本/模态排除32/128位置；随机控制同样计算VJP、同样排除数量，使用独立seed42随机流。排除发生在角色CNN之前的动态输入和实际attention softmax里。推理完整读取，无标签/VJP/mask；新增参数0，raw作者目标、初始化、采样、日程与1536维部署保持。空间排除不是严格语义不复用；global条件query、CLS和深层上下文仍保留。
+
+有限计划只先RGBNT201 gradient/random两端，分别prepare/M0后50轮、seed42，先验证真正支持/排除/参数所有权及重载，再启动具体命令。还没有源码复核、新封存合同、真实初始化、M0、PID或成绩。旧raw/global/无模块作者基础及完整Signal分账，不能将不同系统的分母混用。正式失败须报告实际活动、完整曲线、global/correction/fused与净修复/新增错误；若不胜random不搜索比例/层号/seed救分。计划及tracker见`refine-logs/global_conditioned_evidence_20261013_924/`。车辆扩展在机制成立后保持网络适配作者配方，接近后才追加seed，按用户要求保留各seed和最佳选择。
+
+只用26物理GPU0/1及既有环境，不碰25/2/3、包安装或温度功率。原best、依赖、距离和归档保留；本次未产生新权重。这个草案和检查都没有达到全三集全面超过Signal的目标，Goal保持active/unmet；旧队列关闭，新有限队列待实际接入。
