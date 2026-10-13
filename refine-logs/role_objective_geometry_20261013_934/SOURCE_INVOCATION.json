@@ -1,0 +1,54 @@
+{
+  "basis": "Current bytes matched to the existing 930 sealed inputs; static invocation check, no new model forward",
+  "input_seal_sha256": "df8756c7f443013a34e55d41837e03343541bd3b73ffcabf63c43c5a88128aa2",
+  "local_source_sha256": {
+    "modeling/trifusion/global_task_role_heads.py": "2298763b70b48718411db52e55f32dabddade5af0e56457a85eeabab4f9fcefd",
+    "modeling/trifusion/evidence_author_heads.py": "613b249dae9e1d62d418b94398a0d6ccbcf48e72c88b26b27dd5b9254e9c24cd",
+    "tools/run_global_task_role.py": "151a3350a9da7d86ce6b4b7d5160537b182792ab08727ccb5e4ab0c64bb56d5f",
+    "tools/run_role_input_detach.py": "a177fd5aa4d5ba25422a49cb619062001722d6c7640891cb3da9645a8eb32fe5",
+    "tools/run_independent_native_evidence.py": "2429af8d2f803d70b9d15113a430609ead28621eb4341a746c3025cc5685fe23",
+    "tools/run_foundation_recipe.py": "c18042509dc33ff66eee1a6b04a723ad55685bd5d9daf218c3779703ffe20758",
+    "tools/run_global_conditioned_evidence.py": "a35c5005740c26dcb624e1ef0c69756092b70fe8141b57219272028d77931587",
+    "modeling/trifusion/global_conditioned_evidence.py": "f87a7d26ad357cb81e37b41676379dfc3fd1e8b3a3bdcf907ab0eb3a7eba6e0d",
+    "modeling/trifusion/correspondence_roles.py": "e2a51154b5b327341f35e453dd32a821b091a49a669b49a7c70e79e6e2f2591b"
+  },
+  "installed_author_source_sha256": {
+    "comparators/Signal-cd1b0a6/modeling/make_model.py": "1a88a91d2e5055f5d338996231b16c0e13b2fa7013c74131ca663f16c2655963",
+    "comparators/Signal-cd1b0a6/layers/make_loss.py": "7eb7ab953c2bbc52d0c298ef971d0c3ff7000e5e50756fbb5a5fd63ac4c109aa",
+    "comparators/Signal-cd1b0a6/layers/triplet_loss.py": "f502c44bec642bbf72ce6d0f58c9f9a0084beef9cbb451c2d2786bb13f94960a",
+    "comparators/Signal-cd1b0a6/config/defaults.py": "40257d349153e56e345983c99b1638d7c3d77966dfd2f5496fe03c86dc8dbd57"
+  },
+  "author_commit": "cd1b0a672d1fe642e7608731cb4899a19dda7d51",
+  "config": {
+    "gradient": {
+      "SAMPLER": "softmax_triplet",
+      "DIRECT": "1",
+      "ID_LOSS_WEIGHT": "0.25",
+      "IF_LABELSMOOTH": "'on'",
+      "IF_WITH_CENTER": "'no'",
+      "NO_MARGIN": "true",
+      "TRIPLET_LOSS_WEIGHT": "1.0",
+      "OPTIMIZER_NAME": "Adam",
+      "WEIGHT_DECAY": "0.0001"
+    },
+    "random": {
+      "SAMPLER": "softmax_triplet",
+      "DIRECT": "1",
+      "ID_LOSS_WEIGHT": "0.25",
+      "IF_LABELSMOOTH": "'on'",
+      "IF_WITH_CENTER": "'no'",
+      "NO_MARGIN": "true",
+      "TRIPLET_LOSS_WEIGHT": "1.0",
+      "OPTIMIZER_NAME": "Adam",
+      "WEIGHT_DECAY": "0.0001"
+    }
+  },
+  "module_mode": "AuthorHeadEvidence.train restores Signal.train(mode); the runner invokes model.train()",
+  "role_head": "functional_call with detached parameters, cloned buffers, inherited training mode",
+  "task": "Global author task plus fused role author task; no additional persistent role classifier in this producer",
+  "metric": "Raw features to author Triplet; normalize_feature defaults False",
+  "inference": "Normalize(raw_fused) with raw_fused=detach(global)+scalar_gain*correction; no classification BN used for retrieval",
+  "optimizer_weight_decay": "Parameter-level Adam weight decay 0.0001 remains outside the task symmetry",
+  "neural_forward_calls": 0,
+  "optimizer_updates": 0
+}

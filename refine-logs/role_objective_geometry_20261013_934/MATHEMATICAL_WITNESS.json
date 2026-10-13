@@ -1,0 +1,184 @@
+{
+  "status": "FEATURE_SPACE_MATHEMATICAL_WITNESS_COMPLETE",
+  "scope": "Four synthetic vectors, binary64 standard-library arithmetic; not a trained model or ReID result",
+  "inputs": {
+    "features": [
+      [
+        1.0,
+        0.0
+      ],
+      [
+        0.8,
+        0.6
+      ],
+      [
+        1.5,
+        -0.1
+      ],
+      [
+        1.6,
+        -0.2
+      ]
+    ],
+    "translation": [
+      0.0,
+      2.0
+    ],
+    "labels": [
+      0,
+      0,
+      1,
+      1
+    ],
+    "bn_gamma": [
+      1.2,
+      0.8
+    ],
+    "bn_beta": [
+      0.0,
+      0.0
+    ],
+    "epsilon": 1e-05,
+    "classifier_weights": [
+      [
+        0.7,
+        -0.2
+      ],
+      [
+        -0.4,
+        0.9
+      ]
+    ],
+    "classifier_bias": null,
+    "label_smoothing": 0.1
+  },
+  "training_geometry": {
+    "means_before": [
+      1.225,
+      0.07499999999999998
+    ],
+    "means_after": [
+      1.225,
+      2.075
+    ],
+    "variances_before": [
+      0.111875,
+      0.096875
+    ],
+    "variances_after": [
+      0.111875,
+      0.09687500000000002
+    ],
+    "ce_before": 2.007612421628294,
+    "ce_after": 2.0076124216282936,
+    "triplet_before": 0.5724616692842289,
+    "triplet_after": 0.5724616692842289,
+    "mined_pairs_before": [
+      {
+        "anchor": 0,
+        "positive": 1,
+        "negative": 2,
+        "soft_margin": 0.7563002196841399
+      },
+      {
+        "anchor": 1,
+        "positive": 0,
+        "negative": 2,
+        "soft_margin": 0.5302910897180707
+      },
+      {
+        "anchor": 2,
+        "positive": 3,
+        "negative": 0,
+        "soft_margin": 0.5257839678960056
+      },
+      {
+        "anchor": 3,
+        "positive": 2,
+        "negative": 0,
+        "soft_margin": 0.47747139983869963
+      }
+    ],
+    "mined_pairs_after": [
+      {
+        "anchor": 0,
+        "positive": 1,
+        "negative": 2,
+        "soft_margin": 0.7563002196841399
+      },
+      {
+        "anchor": 1,
+        "positive": 0,
+        "negative": 2,
+        "soft_margin": 0.5302910897180707
+      },
+      {
+        "anchor": 2,
+        "positive": 3,
+        "negative": 0,
+        "soft_margin": 0.5257839678960055
+      },
+      {
+        "anchor": 3,
+        "positive": 2,
+        "negative": 0,
+        "soft_margin": 0.47747139983869963
+      }
+    ],
+    "invariance_errors": {
+      "train_bn_max_abs": 6.661338147750939e-16,
+      "train_logits_max_abs": 5.551115123125783e-16,
+      "train_ce_abs": 4.440892098500626e-16,
+      "raw_distances_max_abs": 2.220446049250313e-16,
+      "raw_triplet_abs": 0.0
+    },
+    "witness_tolerance": 1e-12
+  },
+  "fixed_eval_statistics_contrast": {
+    "ce_before": 2.007612421628294,
+    "ce_after": 3.703510363541152,
+    "note": "Same frozen statistics; arbitrary translation no longer cancels"
+  },
+  "cosine_comparison": {
+    "before": {
+      "query": 0,
+      "positive": 1,
+      "cosine_scores": {
+        "1": 0.8,
+        "2": 0.997785157856609,
+        "3": 0.9922778767136676
+      },
+      "ranking": [
+        2,
+        3,
+        1
+      ],
+      "positive_rank": 3
+    },
+    "after": {
+      "query": 0,
+      "positive": 1,
+      "cosine_scores": {
+        "1": 0.9863939238321437,
+        "2": 0.9791338374667453,
+        "3": 0.9656157585206696
+      },
+      "ranking": [
+        1,
+        2,
+        3
+      ],
+      "positive_rank": 1
+    },
+    "reverse_translation_note": "Reversing this translation changes the positive rank from 1 to 3; neither direction is an automatic fix"
+  },
+  "limitations": [
+    "An output-level symmetry does not prove a reachable independent parameter-flat direction",
+    "No actual PyTorch forward, autograd, neural model, dataset, checkpoint or optimizer was used",
+    "No real common component was classified as noise, identity information, or a cause of errors",
+    "No test-mean centering, new loss/head, method deployment or training is justified by this witness alone"
+  ],
+  "neural_forward_calls": 0,
+  "optimizer_updates": 0,
+  "new_training_started": false
+}
