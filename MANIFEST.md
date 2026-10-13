@@ -2411,3 +2411,4 @@
 | 2026-10-14T01:34:36.868199+08:00 | Actual region capture and preregistered fixed-data comparison | refine-logs/joint_spectral_training_20261013_943/SAVED_REGION_COMPARISON_PLAN_947.md | CPU component checks only | original3arm training unchanged; no production comparison yet |
 | 2026-10-14T02:31:14.407247+08:00 | All3 fresh50/firststrict, paired report and exact archive retirement | refine-logs/joint_spectral_training_20261013_943/COMPLETE_INTERPRETATION_948.md | allE8 small differences, noSignaladvance | fixed-best diagnosis pending |
 | 2026-10-14T03:16:12.417368+08:00 | Fixed-best source and saved-region comparison closed | refine-logs/joint_spectral_training_20261013_943/COMPLETE_INTERPRETATION_949.md | ownG preserved; local regions weak | rawpatch source investigation next |
+| 2026-10-14T03:52:02.250069+08:00 | Frozen native CLIP patch source | refine-logs/native_clip_patch_20261014_950/INTERPRETATION.md | originalglobal preserved | diagnostic only |
