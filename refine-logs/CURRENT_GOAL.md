@@ -1,3 +1,9 @@
+## 2026-10-13 §41.941 completed interface contrast; broad goal active
+
+2026-10-13 §41.941: resumed one201 semantic seed42 completed originalfull50/2649updates and firststrict EXIT0. E8 mAP/R1/R5/R10 74.287453/78.827751/88.157892/91.507179; rawsemantic delta -0.087409/R1+0.000000, repair4/harm4; independentglobal delta-0.009211/R1-0.119621, repair2/harm3. Candidate classification-L2/rawTriplet interface has no net progression; do not infer noidentityinformation, a universal scale fix, or a diagnosed cause. E50mAP71.219147, best-to-last drop3.068305. Original354646/354648 pipeline terminal; soleobserver23306 true0 consumed. First CPU saved-distance report9137 true0/dcfbdf complete, no NN/updates/newranking. Root checks only, no independent tensor audit. Source482 unchanged; currentbest6a3f3890 retained; M0probe358375544B exact SHA archived toD before onlyremote duplicate retired, restore before later dependent verifier. Authorization to continue persists, but this failed version is not expanded to vehicles/seeds/gain/margin/layer search. Overallall3SignalGoalACTIVE_UNMET.
+
+Earlier notes historical.
+
 ## 2026-10-13 §41.940 pending original terminal report
 
 2026-10-13 §41.940: pending post-terminal single201 saved-distance report implemented, not run. Root static control schema check d1a41a failed because oldseal omitted batch hashes; first actual readonly95869b captured both old closed batch logs5475022B/2649rows samee4462826..., direct new explicit seal, not retroactive. Corrected static24713b passed, no fallback, current NN/source/progress queries0. Original354646/354648/358365 pipeline unaffected/482source frozen, currentlastobserved22:01=1/50; sole observer23306/PID43956 due22:54:12.822883. After full50/firststrict accept, report checks originalM0/newfull and uses old receipt/distance SHA plus currentsealedoldbatch bytes; keep M0 through report. No performance claim/newseed/tuning/vehicles/T-P/weights deletion. GoalACTIVE_UNMET.

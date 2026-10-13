@@ -1,4 +1,4 @@
-> **当前状态（2026-10-13，§41.940）：原201 seed42 fresh50继续，未提前查询进度；最后实际22:01=1/50，supervisor/controller/NN为354646/354648/358365。完成后的CPU全query报告已实现但未执行；旧控制batch SHA缺口单独首次补封存，两个旧文件相同2649行，不伪称历史已覆盖。482训练来源不改，近ETA原session23306到22:54:12。当前无新正式结果/诊断结论，三集SignalGoalACTIVE_UNMET。**
+> **当前状态（2026-10-13，§41.941）：恢复的一端201 semantic seed42已完成50轮/2649步及首次严格评价，E8为74.2875/78.8278/88.1579/91.5072；相对raw semantic mAP−0.0874，未推进。首次CPU完整query诊断完成，修复4/新增4，末轮71.2191。原26GPU0/1进程已结束，482源码未改；保留best，M0仅在D归档实核后退役26重复副本。继续研发授权保留，不扩展此负版本或搜索seed/gain；三集Signal目标ACTIVE_UNMET。**
 
 
 # TriFusion RGB–NIR–TIR ReID 完整交接（2026-09-01）
@@ -19339,3 +19339,28 @@ prepare运行一次，控制器通过完整binding与原raw semantic initializer
 报告源码可独立审查；它不是本次已完成的统计结果。若首次调用失败，保留退出与输出，依据实际原因处理未完成尾部，不能因观察超时重启原训练或原CPU统计。只有真实运行输出才用于改进决策；当前不因代码登记新增任何成功模块、seed/gain/margin/层数或车辆队列。
 
 本次静态检查d1a41a在旧seal缺少batch-order SHA字段处失败，尚未运行报告或NN。之后95869b首次只读核对两个旧终态batch文件：各5475022B/2649行、SHA均为e446282654c74949fb594856631b246642593b73229331c30b555418a0358993。单独追加REPORT_CONTROL_BATCHES_940.json作为当前封存，不伪称旧seal原本已覆盖或回补历史哈希；报告直接读取该新明确来源，不增加fallback。当前训练来源、进度和权重未读取或改动。
+
+## 41.941 角色分类L2入口的完整50轮终态、保存距离诊断与权重保留
+
+2026-10-13 §41.941: resumed one201 semantic seed42 completed originalfull50/2649updates and firststrict EXIT0. E8 mAP/R1/R5/R10 74.287453/78.827751/88.157892/91.507179; rawsemantic delta -0.087409/R1+0.000000, repair4/harm4; independentglobal delta-0.009211/R1-0.119621, repair2/harm3. Candidate classification-L2/rawTriplet interface has no net progression; do not infer noidentityinformation, a universal scale fix, or a diagnosed cause. E50mAP71.219147, best-to-last drop3.068305. Original354646/354648 pipeline terminal; soleobserver23306 true0 consumed. First CPU saved-distance report9137 true0/dcfbdf complete, no NN/updates/newranking. Root checks only, no independent tensor audit. Source482 unchanged; currentbest6a3f3890 retained; M0probe358375544B exact SHA archived toD before onlyremote duplicate retired, restore before later dependent verifier. Authorization to continue persists, but this failed version is not expanded to vehicles/seeds/gain/margin/layer search. Overallall3SignalGoalACTIVE_UNMET.
+
+# 角色分类入口单项完整结果
+
+201 seed42，同一mAP-best epoch8，正式50轮/2649步。
+
+| 指标 | mAP | R1 | R5 | R10 |
+|---|---:|---:|---:|---:|
+| candidate | 74.2875 | 78.8278 | 88.1579 | 91.5072 |
+
+| 对照 | ΔmAP | ΔR1 | 修复 | 新增错误 | 身份宏APΔ | 推进 |
+|---|---:|---:|---:|---:|---:|---|
+| raw_semantic | -0.0874 | +0.0000 | 4 | 4 | -0.1070 | False |
+| raw_global_only | -0.0092 | -0.1196 | 2 | 3 | -0.0398 | False |
+
+First fixed seed42 development comparison on consumed official benchmarks. Primary raw semantic and independent shared-adapter global controls reuse sealed saved distances. Existing camera/gallery rules intact; no NN, new ranking rule, seed average, test centering, tuning or causal claim. Identity bootstrap in reused compare is fixed-model descriptive only, not training-seed uncertainty.
+
+第50轮mAP为 71.219147，最佳到末轮下降 3.068305；训练及逐轮评价实际总时长 2349.822秒。history.seconds仍只含训练循环，不冒称完整墙钟。
+
+诊断显示这一分类入口改动没有把合成fixture中的灵敏度变化转成检索净增益。该负结果只约束当前接口及训练条件，不否定全部新增身份信息或所有训练空间机制；原synthetic witness不回改为失败，正式结果也不被它补签。未按官方分数搜索新倍率、margin、层数或seed。下一候选须针对新证据与实际用途的联系提出有限问题，不能把已做的L2、独立头、joint Triplet、区域重建或选择性交互再次称为未尝试。
+
+全部正式best和唯一记录保留。M0在首次strict及CPU报告verify后才归档；归档文件SHA/长度实核后仅删除26重复副本，旧verify若再次使用必须先原样恢复。没有清理其他项目。
