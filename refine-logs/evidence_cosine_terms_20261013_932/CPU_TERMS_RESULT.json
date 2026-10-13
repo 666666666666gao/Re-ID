@@ -1,0 +1,1233 @@
+{
+  "exit": {
+    "command": [
+      "/data/gaob/Re-ID/conda-envs/tri_reid/bin/python",
+      "-B",
+      "/data/gaob/Re-ID/Trifusion/tools/analyze_evidence_cosine_terms.py",
+      "--seal",
+      "/data/gaob/Re-ID/Trifusion/logs/evidence_cosine_terms932/INPUT_SEAL.json",
+      "--output",
+      "/data/gaob/Re-ID/Trifusion/logs/evidence_cosine_terms932/TERMS.json"
+    ],
+    "child_pid": 3934104,
+    "started_at": "2026-10-13T17:46:55.365887+08:00",
+    "completed_at": "2026-10-13T17:46:59.004805+08:00",
+    "exit_code": 0,
+    "neural_forward_calls": 0,
+    "optimizer_updates": 0,
+    "retrieval_rankings_computed": 0
+  },
+  "seal": {
+    "source_sha256": "53ca320fbdeb7455b605ed9bb261f8a1c1211a5fd00f176705970c5175243a0f",
+    "protocol": "/data/gaob/Re-ID/Trifusion/logs/training_feature_scale_protocols_20261002/RGBNT201.json",
+    "artifact_sha256": {
+      "/data/gaob/Re-ID/Trifusion/logs/training_feature_scale_protocols_20261002/RGBNT201.json": "b2409c2d992d04adcf0c78354d306afd6af7ae9507738fd4e83de480e9a9b90f",
+      "/data/gaob/Re-ID/Trifusion/logs/global_conditioned_evidence_best930/gradient/DIAGNOSIS.json": "153374d1f4d63eb15c98c66bf772c7e021df0225ed6430f9301c0755dc4f2ad7",
+      "/data/gaob/Re-ID/Trifusion/logs/global_conditioned_evidence_best930/gradient/query_features.pt": "c86b7903b256fc174d016a9e026607059de240b8169aa30dac77e1bd4d5d416c",
+      "/data/gaob/Re-ID/Trifusion/logs/global_conditioned_evidence_best930/gradient/gallery_features.pt": "c9e86ae9fc9d8a3ada8f428fd82abde8baed47c0497c9d02e43857dbebce6265",
+      "/data/gaob/Re-ID/Trifusion/logs/global_conditioned_evidence_best930/gradient/diagnostic_distances.pt": "815d6b4e41a5d1b28775d3b90693b4b73f3f1aaf8c02803a4418e561948ccd2c",
+      "/data/gaob/Re-ID/Trifusion/logs/global_conditioned_evidence_best930/random/DIAGNOSIS.json": "7e6c5fcee964aad4b8aa8ede9e688121ee2133e22284f266fcf4c75de4895252",
+      "/data/gaob/Re-ID/Trifusion/logs/global_conditioned_evidence_best930/random/query_features.pt": "7220e2b46ff92d1f08c88523f075e13949d5bef111f8fe574e500a876ea46de4",
+      "/data/gaob/Re-ID/Trifusion/logs/global_conditioned_evidence_best930/random/gallery_features.pt": "3e07bd7f93c59a8f87e370a9637ae4c1a22839829bc29c0916b5e0b74646fafa",
+      "/data/gaob/Re-ID/Trifusion/logs/global_conditioned_evidence_best930/random/diagnostic_distances.pt": "6880a017187d5ef3ef56e14d3931009231c81eb2734d210eb5d1fc807fec0b2a"
+    },
+    "rows": [
+      {
+        "exposure": "gradient",
+        "diagnosis": "/data/gaob/Re-ID/Trifusion/logs/global_conditioned_evidence_best930/gradient/DIAGNOSIS.json",
+        "query": "/data/gaob/Re-ID/Trifusion/logs/global_conditioned_evidence_best930/gradient/query_features.pt",
+        "gallery": "/data/gaob/Re-ID/Trifusion/logs/global_conditioned_evidence_best930/gradient/gallery_features.pt",
+        "distances": "/data/gaob/Re-ID/Trifusion/logs/global_conditioned_evidence_best930/gradient/diagnostic_distances.pt"
+      },
+      {
+        "exposure": "random",
+        "diagnosis": "/data/gaob/Re-ID/Trifusion/logs/global_conditioned_evidence_best930/random/DIAGNOSIS.json",
+        "query": "/data/gaob/Re-ID/Trifusion/logs/global_conditioned_evidence_best930/random/query_features.pt",
+        "gallery": "/data/gaob/Re-ID/Trifusion/logs/global_conditioned_evidence_best930/random/gallery_features.pt",
+        "distances": "/data/gaob/Re-ID/Trifusion/logs/global_conditioned_evidence_best930/random/diagnostic_distances.pt"
+      }
+    ]
+  },
+  "terms": {
+    "schema": "saved-evidence-cosine-terms-v1",
+    "evaluation_type": "real_gt_descriptive_relation_probe",
+    "source_sha256": "53ca320fbdeb7455b605ed9bb261f8a1c1211a5fd00f176705970c5175243a0f",
+    "seal_sha256": "16a2c2c823cabf25f04c51baf6cf640beb8e883d29cec4695922b2734c454af6",
+    "neural_forward_calls": 0,
+    "optimizer_updates": 0,
+    "retrieval_rankings_computed": 0,
+    "new_retrieval_performance_metrics": 0,
+    "rows": [
+      {
+        "exposure": "gradient",
+        "selected_epoch": 8,
+        "gain": 0.1208786815404892,
+        "closure": {
+          "raw_reconstruction_max_abs_error": 4.7178134288117235e-07,
+          "cosine_term_closure_max_abs_error": 1.9965989582135246e-15,
+          "saved_f_cosine_vs_raw_cosine_max_abs_error": 1.831568747778789e-07,
+          "global_saved_distance_cosine_max_abs_error": 5.960464481979955e-07,
+          "fused_saved_distance_cosine_max_abs_error": 6.049036592736812e-07
+        },
+        "counts": {
+          "queries": 836,
+          "gallery": 836,
+          "legal_positive_pairs": 11256,
+          "legal_negative_pairs": 675326,
+          "removed_same_identity_same_camera_pairs": 12314
+        },
+        "legal_pair_cosine_changes": {
+          "total": {
+            "count": 686582,
+            "mean": 0.0040763891242109425,
+            "mean_absolute": 0.004291046569833233,
+            "minimum": -0.008098898439201196,
+            "maximum": 0.01653251499798275
+          },
+          "terms": {
+            "global_denominator_change": {
+              "count": 686582,
+              "mean": -0.006218113672390665,
+              "mean_absolute": 0.006220315755281453,
+              "minimum": -0.02451551212343611,
+              "maximum": 0.0021963631566758453
+            },
+            "global_common_correction_cross": {
+              "count": 686582,
+              "mean": 0.008331969653590622,
+              "mean_absolute": 0.008528570697778296,
+              "minimum": -0.008015561184769595,
+              "maximum": 0.02635905297083657
+            },
+            "global_varying_correction_cross": {
+              "count": 686582,
+              "mean": -3.2513280760481485e-05,
+              "mean_absolute": 0.0011622044065884264,
+              "minimum": -0.007429231714547768,
+              "maximum": 0.008675809927774357
+            },
+            "common_correction_pair": {
+              "count": 686582,
+              "mean": 0.0019962259287448847,
+              "mean_absolute": 0.0019962259287448847,
+              "minimum": 0.0016917979425702695,
+              "maximum": 0.0024681132268448967
+            },
+            "common_varying_correction_cross": {
+              "count": 686582,
+              "mean": 5.439402825552943e-07,
+              "mean_absolute": 0.0001387793459505052,
+              "minimum": -0.0006707682934868228,
+              "maximum": 0.0004637026985424612
+            },
+            "varying_correction_pair": {
+              "count": 686582,
+              "mean": -1.7233949360498849e-06,
+              "mean_absolute": 4.518502985024904e-05,
+              "minimum": -0.00024286026156523794,
+              "maximum": 0.00026266512597564325
+            },
+            "saved_raw_fp32_rounding": {
+              "count": 686582,
+              "mean": -5.031992139850395e-11,
+              "mean_absolute": 3.8147344168969436e-09,
+              "minimum": -2.4651241936624047e-08,
+              "maximum": 1.8119140854366833e-08
+            }
+          }
+        },
+        "fixed_negative_margin_pairs": {
+          "all": {
+            "total": {
+              "count": 11256,
+              "mean": -6.847606870063284e-05,
+              "mean_absolute": 0.001367020842265873,
+              "minimum": -0.0060248980510408945,
+              "maximum": 0.008040971020213505
+            },
+            "terms": {
+              "global_denominator_change": {
+                "count": 11256,
+                "mean": 0.0006376373435521996,
+                "mean_absolute": 0.002592913482868176,
+                "minimum": -0.00993917982775271,
+                "maximum": 0.009428355509167364
+              },
+              "global_common_correction_cross": {
+                "count": 11256,
+                "mean": -0.0009863338539323936,
+                "mean_absolute": 0.003496389480606138,
+                "minimum": -0.01195339449414013,
+                "maximum": 0.010399425383692307
+              },
+              "global_varying_correction_cross": {
+                "count": 11256,
+                "mean": 0.00031596156539945145,
+                "mean_absolute": 0.001437357520810426,
+                "minimum": -0.005902294543172261,
+                "maximum": 0.0074727409626124
+              },
+              "common_correction_pair": {
+                "count": 11256,
+                "mean": 2.3185144851597255e-05,
+                "mean_absolute": 6.831280485149138e-05,
+                "minimum": -0.00018658224411777788,
+                "maximum": 0.0003037045022072126
+              },
+              "common_varying_correction_cross": {
+                "count": 11256,
+                "mean": -3.3279216939310236e-05,
+                "mean_absolute": 0.00012390631380617944,
+                "minimum": -0.00045431777404367305,
+                "maximum": 0.0004421486354935346
+              },
+              "varying_correction_pair": {
+                "count": 11256,
+                "mean": -2.5647108876042835e-05,
+                "mean_absolute": 6.283027241571968e-05,
+                "minimum": -0.00031181081275648905,
+                "maximum": 0.0002676793880835851
+              },
+              "saved_raw_fp32_rounding": {
+                "count": 11256,
+                "mean": 5.724388268740275e-11,
+                "mean_absolute": 4.24327202888899e-09,
+                "minimum": -1.686440143089385e-08,
+                "maximum": 2.1750119816310587e-08
+              }
+            }
+          },
+          "global_margin_positive": {
+            "total": {
+              "count": 6249,
+              "mean": -0.000608078300694648,
+              "mean_absolute": 0.0012417020299193187,
+              "minimum": -0.0060248980510408945,
+              "maximum": 0.006290119195772936
+            },
+            "terms": {
+              "global_denominator_change": {
+                "count": 6249,
+                "mean": 0.0003364323133930774,
+                "mean_absolute": 0.0025269366442959122,
+                "minimum": -0.00993917982775271,
+                "maximum": 0.008862314665733784
+              },
+              "global_common_correction_cross": {
+                "count": 6249,
+                "mean": -0.0015146365647379931,
+                "mean_absolute": 0.0036847509472449514,
+                "minimum": -0.01195339449414013,
+                "maximum": 0.010399425383692307
+              },
+              "global_varying_correction_cross": {
+                "count": 6249,
+                "mean": 0.0006163066239264429,
+                "mean_absolute": 0.00134078823392415,
+                "minimum": -0.0043387063109420814,
+                "maximum": 0.0063277321240986315
+              },
+              "common_correction_pair": {
+                "count": 6249,
+                "mean": 2.196977070414034e-05,
+                "mean_absolute": 6.638736418316522e-05,
+                "minimum": -0.00018658224411777788,
+                "maximum": 0.00027785038143258566
+              },
+              "common_varying_correction_cross": {
+                "count": 6249,
+                "mean": -4.9112803663469696e-05,
+                "mean_absolute": 0.00012872839595570414,
+                "minimum": -0.0004505219340174804,
+                "maximum": 0.0004421486354935346
+              },
+              "varying_correction_pair": {
+                "count": 6249,
+                "mean": -1.9038119350747075e-05,
+                "mean_absolute": 5.8516039788637886e-05,
+                "minimum": -0.00024080383276757288,
+                "maximum": 0.0002619940763478417
+              },
+              "saved_raw_fp32_rounding": {
+                "count": 6249,
+                "mean": 4.790339139566553e-10,
+                "mean_absolute": 4.3349103495108476e-09,
+                "minimum": -1.686440143089385e-08,
+                "maximum": 2.1750119816310587e-08
+              }
+            }
+          },
+          "global_margin_nonpositive": {
+            "total": {
+              "count": 5007,
+              "mean": 0.0006049759679941147,
+              "mean_absolute": 0.0015234253276570492,
+              "minimum": -0.004710466863887985,
+              "maximum": 0.008040971020213505
+            },
+            "terms": {
+              "global_denominator_change": {
+                "count": 5007,
+                "mean": 0.0010135571025824278,
+                "mean_absolute": 0.002675256056113248,
+                "minimum": -0.00727245893107799,
+                "maximum": 0.009428355509167364
+              },
+              "global_common_correction_cross": {
+                "count": 5007,
+                "mean": -0.0003269842154614149,
+                "mean_absolute": 0.0032613044386596737,
+                "minimum": -0.011917016151897324,
+                "maximum": 0.009817460258623397
+              },
+              "global_varying_correction_cross": {
+                "count": 5007,
+                "mean": -5.888490369085599e-05,
+                "mean_absolute": 0.0015578810825744235,
+                "minimum": -0.005902294543172261,
+                "maximum": 0.0074727409626124
+              },
+              "common_correction_pair": {
+                "count": 5007,
+                "mean": 2.470199586966361e-05,
+                "mean_absolute": 7.071585632670012e-05,
+                "minimum": -0.00017935053195447114,
+                "maximum": 0.0003037045022072126
+              },
+              "common_varying_correction_cross": {
+                "count": 5007,
+                "mean": -1.351806586296263e-05,
+                "mean_absolute": 0.0001178881010335851,
+                "minimum": -0.00045431777404367305,
+                "maximum": 0.0004372641441384049
+              },
+              "varying_correction_pair": {
+                "count": 5007,
+                "mean": -3.389547627040537e-05,
+                "mean_absolute": 6.821466220733823e-05,
+                "minimum": -0.00031181081275648905,
+                "maximum": 0.0002676793880835851
+              },
+              "saved_raw_fp32_rounding": {
+                "count": 5007,
+                "mean": -4.691723157151454e-10,
+                "mean_absolute": 4.128902573014018e-09,
+                "minimum": -1.5329720604029262e-08,
+                "maximum": 2.1309000675096e-08
+              }
+            }
+          }
+        },
+        "equal_query_weighted_margins": {
+          "all": {
+            "total": {
+              "count": 836,
+              "mean": -0.00011200842863951496,
+              "mean_absolute": 0.0013031059128905194,
+              "minimum": -0.005352019814467994,
+              "maximum": 0.006931535836273084
+            },
+            "terms": {
+              "global_denominator_change": {
+                "count": 836,
+                "mean": 0.0006196561684335374,
+                "mean_absolute": 0.002494367731487092,
+                "minimum": -0.009318169387423072,
+                "maximum": 0.0075152267637204635
+              },
+              "global_common_correction_cross": {
+                "count": 836,
+                "mean": -0.0010213941689640512,
+                "mean_absolute": 0.0033902752666495283,
+                "minimum": -0.009279109581140022,
+                "maximum": 0.00816898921611698
+              },
+              "global_varying_correction_cross": {
+                "count": 836,
+                "mean": 0.0003300539226082482,
+                "mean_absolute": 0.001336059834933156,
+                "minimum": -0.0039474003711992365,
+                "maximum": 0.006822834512432998
+              },
+              "common_correction_pair": {
+                "count": 836,
+                "mean": 2.3220342789464953e-05,
+                "mean_absolute": 6.779868362713123e-05,
+                "minimum": -0.00016906761452577053,
+                "maximum": 0.00025358708860960706
+              },
+              "common_varying_correction_cross": {
+                "count": 836,
+                "mean": -3.8980505786756745e-05,
+                "mean_absolute": 0.00011901578423077784,
+                "minimum": -0.0003335317446683062,
+                "maximum": 0.0003957743600853854
+              },
+              "varying_correction_pair": {
+                "count": 836,
+                "mean": -2.456422311606825e-05,
+                "mean_absolute": 5.916273200810819e-05,
+                "minimum": -0.0002682673450888691,
+                "maximum": 0.00023375983971598568
+              },
+              "saved_raw_fp32_rounding": {
+                "count": 836,
+                "mean": 3.539613249895091e-11,
+                "mean_absolute": 3.2602234192640604e-09,
+                "minimum": -9.669162948089393e-09,
+                "maximum": 1.2961211006428891e-08
+              }
+            }
+          },
+          "repair": {
+            "total": {
+              "count": 5,
+              "mean": 0.00307904946697147,
+              "mean_absolute": 0.00307904946697147,
+              "minimum": 0.0007670943967106436,
+              "maximum": 0.006336625313180481
+            },
+            "terms": {
+              "global_denominator_change": {
+                "count": 5,
+                "mean": -6.864432183635626e-05,
+                "mean_absolute": 0.0010801520088021999,
+                "minimum": -0.0020190175867161116,
+                "maximum": 0.0017205988380409325
+              },
+              "global_common_correction_cross": {
+                "count": 5,
+                "mean": 0.0005623745651810715,
+                "mean_absolute": 0.0014171564945051926,
+                "minimum": -0.001486535824146484,
+                "maximum": 0.003006394510217951
+              },
+              "global_varying_correction_cross": {
+                "count": 5,
+                "mean": 0.0025854939646403154,
+                "mean_absolute": 0.0025854939646403154,
+                "minimum": 6.810514433455467e-05,
+                "maximum": 0.004779980986551318
+              },
+              "common_correction_pair": {
+                "count": 5,
+                "mean": -6.809416015380122e-05,
+                "mean_absolute": 6.809416015380122e-05,
+                "minimum": -0.00012285677633239254,
+                "maximum": -1.1486297759205333e-05
+              },
+              "common_varying_correction_cross": {
+                "count": 5,
+                "mean": 6.198582563007624e-05,
+                "mean_absolute": 0.00012595969394068874,
+                "minimum": -0.00012629672919575374,
+                "maximum": 0.0003829436445157231
+              },
+              "varying_correction_pair": {
+                "count": 5,
+                "mean": 5.933153547804459e-06,
+                "mean_absolute": 0.00011431174337045613,
+                "minimum": -0.00014034728567474322,
+                "maximum": 0.00019781511435235232
+              },
+              "saved_raw_fp32_rounding": {
+                "count": 5,
+                "mean": 4.3996234877496947e-10,
+                "mean_absolute": 4.351337843377933e-09,
+                "minimum": -5.057982011003048e-09,
+                "maximum": 7.928955240525208e-09
+              }
+            }
+          },
+          "new_error": {
+            "total": {
+              "count": 2,
+              "mean": -0.0023460605824356905,
+              "mean_absolute": 0.0023460605824356905,
+              "minimum": -0.002551801983966947,
+              "maximum": -0.0021403191809044346
+            },
+            "terms": {
+              "global_denominator_change": {
+                "count": 2,
+                "mean": 0.005307740308953068,
+                "mean_absolute": 0.005307740308953068,
+                "minimum": 0.005137729155484974,
+                "maximum": 0.005477751462421163
+              },
+              "global_common_correction_cross": {
+                "count": 2,
+                "mean": -0.005635142477797613,
+                "mean_absolute": 0.005635142477797613,
+                "minimum": -0.006061084574815954,
+                "maximum": -0.005209200380779272
+              },
+              "global_varying_correction_cross": {
+                "count": 2,
+                "mean": -0.001989094564368107,
+                "mean_absolute": 0.001989094564368107,
+                "minimum": -0.0024256272441684676,
+                "maximum": -0.001552561884567747
+              },
+              "common_correction_pair": {
+                "count": 2,
+                "mean": 0.0001220795199009477,
+                "mean_absolute": 0.0001220795199009477,
+                "minimum": 7.456936695993038e-05,
+                "maximum": 0.00016958967284196505
+              },
+              "common_varying_correction_cross": {
+                "count": 2,
+                "mean": -9.017646787284252e-05,
+                "mean_absolute": 9.017646787284252e-05,
+                "minimum": -9.412836993922997e-05,
+                "maximum": -8.622456580645505e-05
+              },
+              "varying_correction_pair": {
+                "count": 2,
+                "mean": -6.146582035776411e-05,
+                "mean_absolute": 6.146582035776411e-05,
+                "minimum": -8.778853318288229e-05,
+                "maximum": -3.514310753264594e-05
+              },
+              "saved_raw_fp32_rounding": {
+                "count": 2,
+                "mean": -1.080893195150943e-09,
+                "mean_absolute": 1.080893195150943e-09,
+                "minimum": -1.4039919671304802e-09,
+                "maximum": -7.577944231714055e-10
+              }
+            }
+          },
+          "kept_correct": {
+            "total": {
+              "count": 658,
+              "mean": -0.00039984713962078314,
+              "mean_absolute": 0.0012079608013365077,
+              "minimum": -0.005352019814467994,
+              "maximum": 0.006140428956496883
+            },
+            "terms": {
+              "global_denominator_change": {
+                "count": 658,
+                "mean": 0.0005003309432476141,
+                "mean_absolute": 0.0023839859310682636,
+                "minimum": -0.009318169387423072,
+                "maximum": 0.007349485100439187
+              },
+              "global_common_correction_cross": {
+                "count": 658,
+                "mean": -0.001278279351947237,
+                "mean_absolute": 0.0033959686220941315,
+                "minimum": -0.009279109581140022,
+                "maximum": 0.00816898921611698
+              },
+              "global_varying_correction_cross": {
+                "count": 658,
+                "mean": 0.0004242195054886257,
+                "mean_absolute": 0.0012802118208236782,
+                "minimum": -0.0039474003711992365,
+                "maximum": 0.005367603947802026
+              },
+              "common_correction_pair": {
+                "count": 658,
+                "mean": 2.3104677205446062e-05,
+                "mean_absolute": 6.682613323569136e-05,
+                "minimum": -0.00016906761452577053,
+                "maximum": 0.00025358708860960706
+              },
+              "common_varying_correction_cross": {
+                "count": 658,
+                "mean": -4.725892743591837e-05,
+                "mean_absolute": 0.00012004694191862411,
+                "minimum": -0.0003335317446683062,
+                "maximum": 0.0003957743600853854
+              },
+              "varying_correction_pair": {
+                "count": 658,
+                "mean": -2.196427751501395e-05,
+                "mean_absolute": 5.734838147720026e-05,
+                "minimum": -0.0002522936271808773,
+                "maximum": 0.00023375983971598568
+              },
+              "saved_raw_fp32_rounding": {
+                "count": 658,
+                "mean": 2.9133571646988985e-10,
+                "mean_absolute": 3.3496101159318224e-09,
+                "minimum": -9.669162948089393e-09,
+                "maximum": 1.2961211006428891e-08
+              }
+            }
+          },
+          "kept_wrong": {
+            "total": {
+              "count": 171,
+              "mean": 0.000928404943613186,
+              "mean_absolute": 0.0016050933765925355,
+              "minimum": -0.002857833593641742,
+              "maximum": 0.006931535836273084
+            },
+            "terms": {
+              "global_denominator_change": {
+                "count": 171,
+                "mean": 0.0010441084043554553,
+                "mean_absolute": 0.0029275581299320137,
+                "minimum": -0.005070567851395902,
+                "maximum": 0.0075152267637204635
+              },
+              "global_common_correction_cross": {
+                "count": 171,
+                "mean": -2.5259061654824837e-05,
+                "mean_absolute": 0.0033998052757482225,
+                "minimum": -0.007117724894035428,
+                "maximum": 0.007400820345338606
+              },
+              "global_varying_correction_cross": {
+                "count": 171,
+                "mean": -7.111483044143655e-05,
+                "mean_absolute": 0.0015067893856736845,
+                "minimum": -0.0037190319438042793,
+                "maximum": 0.006822834512432998
+              },
+              "common_correction_pair": {
+                "count": 171,
+                "mean": 2.517918556594331e-05,
+                "mean_absolute": 7.089750878728595e-05,
+                "minimum": -0.0001304522722890844,
+                "maximum": 0.0002386827320820957
+              },
+              "common_varying_correction_cross": {
+                "count": 171,
+                "mean": -9.478975305842433e-06,
+                "mean_absolute": 0.00011518220133933605,
+                "minimum": -0.00024023506627299324,
+                "maximum": 0.00039215011286885404
+              },
+              "varying_correction_pair": {
+                "count": 171,
+                "mean": -3.502883068524776e-05,
+                "mean_absolute": 6.450478707142028e-05,
+                "minimum": -0.0002682673450888691,
+                "maximum": 0.00017834984054451166
+              },
+              "saved_raw_fp32_rounding": {
+                "count": 171,
+                "mean": -9.482208188399855e-10,
+                "mean_absolute": 2.90985290417792e-09,
+                "minimum": -8.769289988608264e-09,
+                "maximum": 7.108686750356696e-09
+              }
+            }
+          }
+        },
+        "prior_unchanged_metrics": {
+          "global": {
+            "mAP": 74.29666357468751,
+            "Rank-1": 78.94736842105263,
+            "Rank-5": 88.27751196172248,
+            "Rank-10": 91.86602870813397
+          },
+          "fused": {
+            "mAP": 74.364459198888,
+            "Rank-1": 79.30622009569377,
+            "Rank-5": 88.39712918660287,
+            "Rank-10": 91.86602870813397
+          }
+        },
+        "prior_unchanged_global_to_fused": {
+          "mAP": 0.06779562420048535,
+          "Rank-1": 0.3588516746411443,
+          "Rank-5": 0.11961722488038617,
+          "Rank-10": 0.0
+        }
+      },
+      {
+        "exposure": "random",
+        "selected_epoch": 8,
+        "gain": 0.12148063629865646,
+        "closure": {
+          "raw_reconstruction_max_abs_error": 4.7441908890277773e-07,
+          "cosine_term_closure_max_abs_error": 1.9586112245950638e-15,
+          "saved_f_cosine_vs_raw_cosine_max_abs_error": 1.959488303837631e-07,
+          "global_saved_distance_cosine_max_abs_error": 5.960464481979955e-07,
+          "fused_saved_distance_cosine_max_abs_error": 5.775944776909014e-07
+        },
+        "counts": {
+          "queries": 836,
+          "gallery": 836,
+          "legal_positive_pairs": 11256,
+          "legal_negative_pairs": 675326,
+          "removed_same_identity_same_camera_pairs": 12314
+        },
+        "legal_pair_cosine_changes": {
+          "total": {
+            "count": 686582,
+            "mean": 2.800360953037622e-05,
+            "mean_absolute": 0.0045127196636031396,
+            "minimum": -0.027186697076318156,
+            "maximum": 0.01763398648811143
+          },
+          "terms": {
+            "global_denominator_change": {
+              "count": 686582,
+              "mean": -0.00412503057363396,
+              "mean_absolute": 0.0048676159274243375,
+              "minimum": -0.031176943310013017,
+              "maximum": 0.013996642366641984
+            },
+            "global_common_correction_cross": {
+              "count": 686582,
+              "mean": 0.002096508430214583,
+              "mean_absolute": 0.006426069920582463,
+              "minimum": -0.023932788221827733,
+              "maximum": 0.02764619157470367
+            },
+            "global_varying_correction_cross": {
+              "count": 686582,
+              "mean": -5.1358732029944865e-05,
+              "mean_absolute": 0.002421380204485345,
+              "minimum": -0.018591522723973526,
+              "maximum": 0.02300504497155045
+            },
+            "common_correction_pair": {
+              "count": 686582,
+              "mean": 0.0021135796273576545,
+              "mean_absolute": 0.0021135796273576545,
+              "minimum": 0.001781431807248567,
+              "maximum": 0.0026020384055914464
+            },
+            "common_varying_correction_cross": {
+              "count": 686582,
+              "mean": 1.0836748106421213e-06,
+              "mean_absolute": 0.000456741095441099,
+              "minimum": -0.0031859111050435525,
+              "maximum": 0.001043476041477977
+            },
+            "varying_correction_pair": {
+              "count": 686582,
+              "mean": -6.778616888671883e-06,
+              "mean_absolute": 0.00018684551850644567,
+              "minimum": -0.0012594189075919753,
+              "maximum": 0.00292129257407668
+            },
+            "saved_raw_fp32_rounding": {
+              "count": 686582,
+              "mean": -2.0029992747457741e-10,
+              "mean_absolute": 3.9320542503765045e-09,
+              "minimum": -2.3480775213080562e-08,
+              "maximum": 2.2880035976946544e-08
+            }
+          }
+        },
+        "fixed_negative_margin_pairs": {
+          "all": {
+            "total": {
+              "count": 11256,
+              "mean": 0.0005740092463471785,
+              "mean_absolute": 0.0022857757171772662,
+              "minimum": -0.009193655543082935,
+              "maximum": 0.014752085042045282
+            },
+            "terms": {
+              "global_denominator_change": {
+                "count": 11256,
+                "mean": 0.0005622551568782416,
+                "mean_absolute": 0.0036882919197048693,
+                "minimum": -0.013587011016735442,
+                "maximum": 0.014090549287113039
+              },
+              "global_common_correction_cross": {
+                "count": 11256,
+                "mean": -0.0004137219231880041,
+                "mean_absolute": 0.004235577782916922,
+                "minimum": -0.016892490816365336,
+                "maximum": 0.017284664617375427
+              },
+              "global_varying_correction_cross": {
+                "count": 11256,
+                "mean": 0.00042261002623842297,
+                "mean_absolute": 0.002602099107064754,
+                "minimum": -0.010036035301167744,
+                "maximum": 0.021444014995207154
+              },
+              "common_correction_pair": {
+                "count": 11256,
+                "mean": 2.4078971922839806e-05,
+                "mean_absolute": 7.18968944597145e-05,
+                "minimum": -0.00019825518297974685,
+                "maximum": 0.0003409106490309061
+              },
+              "common_varying_correction_cross": {
+                "count": 11256,
+                "mean": -7.087597653473166e-05,
+                "mean_absolute": 0.0003488963151442539,
+                "minimum": -0.001872845806519584,
+                "maximum": 0.0018926717609021415
+              },
+              "varying_correction_pair": {
+                "count": 11256,
+                "mean": 4.966237905151617e-05,
+                "mean_absolute": 0.00026863204188537715,
+                "minimum": -0.002136687307109874,
+                "maximum": 0.003047133289304515
+              },
+              "saved_raw_fp32_rounding": {
+                "count": 11256,
+                "mean": 6.119788968701434e-10,
+                "mean_absolute": 4.411731878232412e-09,
+                "minimum": -1.697231399866439e-08,
+                "maximum": 2.4057830172452555e-08
+              }
+            }
+          },
+          "global_margin_positive": {
+            "total": {
+              "count": 6249,
+              "mean": 0.0003271756427560175,
+              "mean_absolute": 0.002101224643631047,
+              "minimum": -0.008384878247113647,
+              "maximum": 0.012720486273476217
+            },
+            "terms": {
+              "global_denominator_change": {
+                "count": 6249,
+                "mean": 0.00042206005194573036,
+                "mean_absolute": 0.003686035662677222,
+                "minimum": -0.013512303682473657,
+                "maximum": 0.013441092150273023
+              },
+              "global_common_correction_cross": {
+                "count": 6249,
+                "mean": -0.0004245669118706324,
+                "mean_absolute": 0.004311111397177866,
+                "minimum": -0.016892490816365336,
+                "maximum": 0.017284664617375427
+              },
+              "global_varying_correction_cross": {
+                "count": 6249,
+                "mean": 0.0003724475380112599,
+                "mean_absolute": 0.00207232609355651,
+                "minimum": -0.009929966440344502,
+                "maximum": 0.0199249544498803
+              },
+              "common_correction_pair": {
+                "count": 6249,
+                "mean": 2.2785740920443077e-05,
+                "mean_absolute": 7.164623493864535e-05,
+                "minimum": -0.00019825518297974685,
+                "maximum": 0.0003056587665758916
+              },
+              "common_varying_correction_cross": {
+                "count": 6249,
+                "mean": -5.984989254283228e-05,
+                "mean_absolute": 0.0003154454310830305,
+                "minimum": -0.001872845806519584,
+                "maximum": 0.0018468071878939142
+              },
+              "varying_correction_pair": {
+                "count": 6249,
+                "mean": -5.702000094672475e-06,
+                "mean_absolute": 0.00020349192110372067,
+                "minimum": -0.002136687307109874,
+                "maximum": 0.0029338192867200677
+              },
+              "saved_raw_fp32_rounding": {
+                "count": 6249,
+                "mean": 1.1163867209987434e-09,
+                "mean_absolute": 4.6284645819435805e-09,
+                "minimum": -1.685950123953006e-08,
+                "maximum": 2.4057830172452555e-08
+              }
+            }
+          },
+          "global_margin_nonpositive": {
+            "total": {
+              "count": 5007,
+              "mean": 0.0008820705982227858,
+              "mean_absolute": 0.0025161051876366877,
+              "minimum": -0.009193655543082935,
+              "maximum": 0.014752085042045282
+            },
+            "terms": {
+              "global_denominator_change": {
+                "count": 5007,
+                "mean": 0.0007372260397868221,
+                "mean_absolute": 0.0036911078474391947,
+                "minimum": -0.013587011016735442,
+                "maximum": 0.014090549287113039
+              },
+              "global_common_correction_cross": {
+                "count": 5007,
+                "mean": -0.0004001868054972223,
+                "mean_absolute": 0.004141307849720071,
+                "minimum": -0.0149174884237403,
+                "maximum": 0.01634164285345438
+              },
+              "global_varying_correction_cross": {
+                "count": 5007,
+                "mean": 0.0004852154564224738,
+                "mean_absolute": 0.0032632837608320823,
+                "minimum": -0.010036035301167744,
+                "maximum": 0.021444014995207154
+              },
+              "common_correction_pair": {
+                "count": 5007,
+                "mean": 2.5692992400965855e-05,
+                "mean_absolute": 7.220973075832867e-05,
+                "minimum": -0.0001943624152205485,
+                "maximum": 0.0003409106490309061
+              },
+              "common_varying_correction_cross": {
+                "count": 5007,
+                "mean": -8.463711071994821e-05,
+                "mean_absolute": 0.0003906447821901068,
+                "minimum": -0.001871830185846237,
+                "maximum": 0.0018926717609021415
+              },
+              "varying_correction_pair": {
+                "count": 5007,
+                "mean": 0.00011876004337836516,
+                "mean_absolute": 0.0003499303472108358,
+                "minimum": -0.0018922975839414154,
+                "maximum": 0.003047133289304515
+              },
+              "saved_raw_fp32_rounding": {
+                "count": 5007,
+                "mean": -1.7548663141764166e-11,
+                "mean_absolute": 4.1412380365126e-09,
+                "minimum": -1.697231399866439e-08,
+                "maximum": 1.955403605702344e-08
+              }
+            }
+          }
+        },
+        "equal_query_weighted_margins": {
+          "all": {
+            "total": {
+              "count": 836,
+              "mean": 0.0005324544141424804,
+              "mean_absolute": 0.002143248111439592,
+              "minimum": -0.0070855644672543055,
+              "maximum": 0.012540570525072662
+            },
+            "terms": {
+              "global_denominator_change": {
+                "count": 836,
+                "mean": 0.0005222546678254618,
+                "mean_absolute": 0.003432157314374749,
+                "minimum": -0.011538546007982023,
+                "maximum": 0.01209317640953452
+              },
+              "global_common_correction_cross": {
+                "count": 836,
+                "mean": -0.00042028671409487586,
+                "mean_absolute": 0.004008484539507886,
+                "minimum": -0.015471089405587776,
+                "maximum": 0.014958853241971888
+              },
+              "global_varying_correction_cross": {
+                "count": 836,
+                "mean": 0.0004228137117381527,
+                "mean_absolute": 0.002469972612019807,
+                "minimum": -0.008403268762534472,
+                "maximum": 0.01982300628924251
+              },
+              "common_correction_pair": {
+                "count": 836,
+                "mean": 2.4085356920446453e-05,
+                "mean_absolute": 7.123927166187282e-05,
+                "minimum": -0.00017806283396936182,
+                "maximum": 0.0002843718864323841
+              },
+              "common_varying_correction_cross": {
+                "count": 836,
+                "mean": -6.261280646648154e-05,
+                "mean_absolute": 0.00033145105102345236,
+                "minimum": -0.0014399695801218411,
+                "maximum": 0.0017737367866544165
+              },
+              "varying_correction_pair": {
+                "count": 836,
+                "mean": 4.619955963741818e-05,
+                "mean_absolute": 0.0002489497909268202,
+                "minimum": -0.0015859746048840944,
+                "maximum": 0.0026274806530463698
+              },
+              "saved_raw_fp32_rounding": {
+                "count": 836,
+                "mean": 6.38582363988033e-10,
+                "mean_absolute": 3.321770901573242e-09,
+                "minimum": -1.1333970550446503e-08,
+                "maximum": 1.4466196907036988e-08
+              }
+            }
+          },
+          "repair": {
+            "total": {
+              "count": 11,
+              "mean": 0.003521732705509753,
+              "mean_absolute": 0.00352260584586004,
+              "minimum": -4.802271926575132e-06,
+              "maximum": 0.012540570525072662
+            },
+            "terms": {
+              "global_denominator_change": {
+                "count": 11,
+                "mean": 0.0002578450605783912,
+                "mean_absolute": 0.002641510459896425,
+                "minimum": -0.010768202652789494,
+                "maximum": 0.0034861484796533185
+              },
+              "global_common_correction_cross": {
+                "count": 11,
+                "mean": -0.001831103473022768,
+                "mean_absolute": 0.00492973672857661,
+                "minimum": -0.011919485840999118,
+                "maximum": 0.0105199740353167
+              },
+              "global_varying_correction_cross": {
+                "count": 11,
+                "mean": 0.004808657717639549,
+                "mean_absolute": 0.004808657717639549,
+                "minimum": 0.0002874796271849177,
+                "maximum": 0.01982300628924251
+              },
+              "common_correction_pair": {
+                "count": 11,
+                "mean": 4.0913066518299765e-05,
+                "mean_absolute": 0.00010317363838253645,
+                "minimum": -0.00013101513990465956,
+                "maximum": 0.0002657208192784599
+              },
+              "common_varying_correction_cross": {
+                "count": 11,
+                "mean": -0.0003050064614396748,
+                "mean_absolute": 0.0006131565471332868,
+                "minimum": -0.0013589859430758096,
+                "maximum": 0.0013263156518051533
+              },
+              "varying_correction_pair": {
+                "count": 11,
+                "mean": 0.0005504259721905334,
+                "mean_absolute": 0.0006974081285643218,
+                "minimum": -0.0007826480670769551,
+                "maximum": 0.0026274806530463698
+              },
+              "saved_raw_fp32_rounding": {
+                "count": 11,
+                "mean": 8.23045426135834e-10,
+                "mean_absolute": 2.0742893724738554e-09,
+                "minimum": -2.942400949153394e-09,
+                "maximum": 7.257288649660983e-09
+              }
+            }
+          },
+          "new_error": {
+            "total": {
+              "count": 4,
+              "mean": -0.00016520429953095523,
+              "mean_absolute": 0.001504714795676734,
+              "minimum": -0.0030869790148650876,
+              "maximum": 0.0015470238722618496
+            },
+            "terms": {
+              "global_denominator_change": {
+                "count": 4,
+                "mean": -0.0003590323907333962,
+                "mean_absolute": 0.0015138026864622233,
+                "minimum": -0.0023674026386512202,
+                "maximum": 0.0016639773985527892
+              },
+              "global_common_correction_cross": {
+                "count": 4,
+                "mean": 0.00012256921850984677,
+                "mean_absolute": 0.0017605317494202015,
+                "minimum": -0.002819783165234977,
+                "maximum": 0.0024814914696605172
+              },
+              "global_varying_correction_cross": {
+                "count": 4,
+                "mean": 9.75743123831556e-05,
+                "mean_absolute": 0.0012521924341951302,
+                "minimum": -0.0023092362436239492,
+                "maximum": 0.001162146101798095
+              },
+              "common_correction_pair": {
+                "count": 4,
+                "mean": -2.7462042240166672e-05,
+                "mean_absolute": 5.993325622139623e-05,
+                "minimum": -0.00013794783903598454,
+                "maximum": 5.9734208640006694e-05
+              },
+              "common_varying_correction_cross": {
+                "count": 4,
+                "mean": 1.3391351978296465e-05,
+                "mean_absolute": 9.974985664001313e-05,
+                "minimum": -8.842986361850051e-05,
+                "maximum": 0.00014914380659254944
+              },
+              "varying_correction_pair": {
+                "count": 4,
+                "mean": -1.2240280195057265e-05,
+                "mean_absolute": 0.00012411396300721287,
+                "minimum": -0.00016263416190828063,
+                "maximum": 0.000223715035227801
+              },
+              "saved_raw_fp32_rounding": {
+                "count": 4,
+                "mean": -4.469233465800775e-09,
+                "mean_absolute": 4.469233465800775e-09,
+                "minimum": -6.078663542889255e-09,
+                "maximum": -3.7956594423071975e-09
+              }
+            }
+          },
+          "kept_correct": {
+            "total": {
+              "count": 656,
+              "mean": 0.0004049317377766569,
+              "mean_absolute": 0.0020780420312028905,
+              "minimum": -0.0070855644672543055,
+              "maximum": 0.012391413975373739
+            },
+            "terms": {
+              "global_denominator_change": {
+                "count": 656,
+                "mean": 0.0005090317858514904,
+                "mean_absolute": 0.0033483279985561895,
+                "minimum": -0.011538546007982023,
+                "maximum": 0.01209317640953452
+              },
+              "global_common_correction_cross": {
+                "count": 656,
+                "mean": -0.00044324368375664973,
+                "mean_absolute": 0.0040063038758744235,
+                "minimum": -0.015471089405587776,
+                "maximum": 0.014958853241971888
+              },
+              "global_varying_correction_cross": {
+                "count": 656,
+                "mean": 0.00036165879063906344,
+                "mean_absolute": 0.002230521658183669,
+                "minimum": -0.008403268762534472,
+                "maximum": 0.017678139586776723
+              },
+              "common_correction_pair": {
+                "count": 656,
+                "mean": 2.4621151789384535e-05,
+                "mean_absolute": 7.177065278112162e-05,
+                "minimum": -0.00017806283396936182,
+                "maximum": 0.0002843718864323841
+              },
+              "common_varying_correction_cross": {
+                "count": 656,
+                "mean": -6.769783224961035e-05,
+                "mean_absolute": 0.00031531725702703146,
+                "minimum": -0.0014399695801218411,
+                "maximum": 0.0017737367866544165
+              },
+              "varying_correction_pair": {
+                "count": 656,
+                "mean": 2.056068745846508e-05,
+                "mean_absolute": 0.0002198663214118644,
+                "minimum": -0.0015859746048840944,
+                "maximum": 0.002457621866879638
+              },
+              "saved_raw_fp32_rounding": {
+                "count": 656,
+                "mean": 8.380445120103956e-10,
+                "mean_absolute": 3.4481977129392354e-09,
+                "minimum": -1.1333970550446503e-08,
+                "maximum": 1.4466196907036988e-08
+              }
+            }
+          },
+          "kept_wrong": {
+            "total": {
+              "count": 165,
+              "mean": 0.0008570813798735955,
+              "mean_absolute": 0.002326014092165063,
+              "minimum": -0.006632584772832565,
+              "maximum": 0.009879000934888915
+            },
+            "terms": {
+              "global_denominator_change": {
+                "count": 165,
+                "mean": 0.000613817482909574,
+                "mean_absolute": 0.00386465770884679,
+                "minimum": -0.009188522473010285,
+                "maximum": 0.009448645380131043
+              },
+              "global_common_correction_cross": {
+                "count": 165,
+                "mean": -0.0002481210612711697,
+                "mean_absolute": 0.004010233342078469,
+                "minimum": -0.012388364239606812,
+                "maximum": 0.010294042819703522
+              },
+              "global_varying_correction_cross": {
+                "count": 165,
+                "mean": 0.00038144584369880234,
+                "mean_absolute": 0.003295581159086402,
+                "minimum": -0.006780768530222081,
+                "maximum": 0.016507090916574582
+              },
+              "common_correction_pair": {
+                "count": 165,
+                "mean": 2.2082953023735442e-05,
+                "mean_absolute": 6.727175659282675e-05,
+                "minimum": -0.00013581555307238914,
+                "maximum": 0.00026346416121076304
+              },
+              "common_varying_correction_cross": {
+                "count": 165,
+                "mean": -2.8078924741278463e-05,
+                "mean_absolute": 0.0003824317369748321,
+                "minimum": -0.0014193416044610684,
+                "maximum": 0.0011721573329970755
+              },
+              "varying_correction_pair": {
+                "count": 165,
+                "mean": 0.00011593512915644165,
+                "mean_absolute": 0.0003377077157721346,
+                "minimum": -0.0007369711633800461,
+                "maximum": 0.002402213623501015
+              },
+              "saved_raw_fp32_rounding": {
+                "count": 165,
+                "mean": -4.2902481267363346e-11,
+                "mean_absolute": 2.8744767094950122e-09,
+                "minimum": -9.806473133533444e-09,
+                "maximum": 8.100989783749973e-09
+              }
+            }
+          }
+        },
+        "prior_unchanged_metrics": {
+          "global": {
+            "mAP": 74.29666357468751,
+            "Rank-1": 78.94736842105263,
+            "Rank-5": 88.27751196172248,
+            "Rank-10": 91.86602870813397
+          },
+          "fused": {
+            "mAP": 74.4695448457365,
+            "Rank-1": 79.78468899521532,
+            "Rank-5": 88.1578947368421,
+            "Rank-10": 91.86602870813397
+          }
+        },
+        "prior_unchanged_global_to_fused": {
+          "mAP": 0.1728812710489791,
+          "Rank-1": 0.837320574162689,
+          "Rank-5": -0.11961722488038617,
+          "Rank-10": 0.0
+        }
+      }
+    ],
+    "boundary": "Two fixed E8 RGBNT201 seed42 arms. Exact additive cosine accounting, not causal intervention. Test means only label terms, never calibrate embeddings or rank. All negatives retained when selecting the fixed G-hardest negative; all legal cross-camera positives retained. Probe margins are not AP and omit other negatives. Query/gallery overlap. Components share the observed denominator, so contributions are convention-dependent; large term magnitudes can cancel. Existing rank1 groups and metrics are copied, not recomputed. No new model, teacher, weight, hyperparameter selection, evaluation promotion or training.",
+    "elapsed_seconds": 1.712330429116264
+  },
+  "terms_sha256": "192005527c171c1e34bf24dfeaad6fffdd2bedec1257547991bcbb264423c91e",
+  "seal_sha256": "16a2c2c823cabf25f04c51baf6cf640beb8e883d29cec4695922b2734c454af6"
+}
