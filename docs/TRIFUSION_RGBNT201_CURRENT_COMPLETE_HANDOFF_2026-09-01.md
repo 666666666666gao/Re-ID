@@ -1,4 +1,4 @@
-> **当前状态（2026-10-13，§41.942）：原一端50轮终态仍为74.2875/78.8278，未推进。已核读LMF作者代码并实现“匹配语义参考下的跨光谱变化”组件，首次CPU合成8前向/1反向通过，额外589836参数；三条件同容量。尚未完成完整模型接入、真实初始化/M0或新训练，不预报涨分，也不声称原创性已成立。原482源码/best不改，继续授权保留、仅26GPU0/1；三集Signal目标ACTIVE_UNMET。**
+> **当前状态（2026-10-13，§41.943）：跨光谱变化组件已接入完整模型与三条件顺序队列，首次CPU入口配置检查通过；仍没有真实新初始化/M0/正式成绩。将按prepare→8步M0→fresh50→首次strict执行，目标和旧负结果不改。仅26GPU0/1、seed42、raw作者职责目标，无新头/loss/环境修改；三集Signal目标ACTIVE_UNMET。**
 
 
 # TriFusion RGB–NIR–TIR ReID 完整交接（2026-09-01）
@@ -19406,3 +19406,38 @@ Processed是原CNN/T/M及桥接产生的三套区域；Reference从同一CLIP多
 正式结果需同一mAP-best的全部CMC、50轮轨迹、同模型G/C/F、因子及乘积/差分幅度、全query修复/新增错误和身份AP分布、参数/真实墙钟；诊断NN必须另封存范围。所有best/唯一记录保留，完成strict/report后只归档核验再退休重复M0。官方基准已消费、固定模型bootstrap不替代训练seed的不确定性。
 
 目标仍为同一网络模块的三个数据集全面超过Signal，先201。车辆只在机制获得实际支持后按既有数据集配方适配，不能分别挑不同模块赢家。当前没有新的正式分数、独有创新或失败根因结论。
+
+## 41.943 完整模型接入与有限三条件训练登记
+
+2026-10-13 §41.943: joint-spectral component942 integrated into full raw-author global-role wrapper and finite3-arm queue (joint_delta/add_delta/joint_absolute). OriginalCLIP once; reference differentiable from detached stages/context; no newhead/loss. New589836params/2tensors, fork_rng preserves oldshared/head/RNG. FirstwarmCPU configuration4667a7 true0/model0/NN0/update0 confirms factory/builder/head/loss/schema/M0observer identities, not realM0. Root source review no blocker, not independent audit. Realprepare compares shared hashes and three-mode initializer, each8M0 beforefresh50/firststrict; firstM0 role-to-global unused/reference support and factor updates required. Only26physical01 serial, free01memory18MiB each/disk5276340224B, finite3-arm budget4831838208B. Noqueue launched yet/new formal score0/old482source untouched/best-deps retained/noT-P/envchange/rescue. Usercontinueauth/fullall3SignalGoalACTIVE_UNMET.
+
+# §943：跨光谱变化读出的真实接入与有限三条件队列
+
+2026-10-13。用户“继续训练”授权持续有效。这里只执行RGBNT201、seed42、作者配方/raw global-role职责目标、每端fresh50；不增加车辆/seed/rank/gain/margin搜索，目标仍为三数据集全面超过Signal。
+
+条件顺序joint_delta、add_delta、joint_absolute。三者使用同一589836参数、相同初始化；现有16槽位在角色/模态内部池化，沿光谱用加法或乘积，再经相同dense1536读出。差分参考为可微同语义读取，绕开CNN/T/M和桥接，不是冻结教师或identity保底。LMF因子机制、V8匹配参考及V17已有Hadamard先例依§942核读；不声称新颖性已成立。
+
+新增完整模型只编码一次CLIP，保留原C/T/M算子和桥接；processed和reference的CLIP stages/context均detach。global与作者头仍沿原global任务更新，角色沿停止参数梯度的当前作者头/raw Triplet训练；没有新头或损失。新增模块初始化用fork_rng，保持原共享/head/RNG，prepare实际核对原shared/visual/camera/cfg/head初始化，三条件整个model state SHA相同。
+
+每端顺序prepare→真实8步M0→fresh50→第一次strict evaluation。M0检查全部trainable张量非零有限梯度、BN仅8次更新、优化器覆盖恰好一次、参数/visual/camera真实变化及strict重载。新两个因子参数还逐步记录梯度及最终参数变化；首个M0 forward上的role loss对shared global梯度应None，对参考descriptor在delta两条件应有限非零，在absolute控制应None。失败不跳过/篡改旧失败/调阈值，保留原退出和日志；不因观察超时重启。
+
+正式同一mAP-best的mAP/R1/R5/R10；primary joint_delta−add_delta，secondary joint_delta−joint_absolute，不用三条件声称2×2协同。推进线至少0.5mAP且R1不降，与全面超过Signal目标区分。原raw semantic及独立global对照和完整Signal只在各自匹配范围比较；共同dense读出/槽位池化不能全部归因乘积。
+
+仅26物理GPU0、1，一个原始两卡进程顺序运行，无25/2/3、T/P查询、preemption或环境修改。首次memory检查01各18MiB；磁盘free5276340224B。三端预算4831838208B，包含2GiB保留+六个384MiB权重上限+256MiB文字/距离；每阶段沿旧2GiB门检查。预计约2–3小时，按真实M0/首轮校正，近ETA240秒监测。每端只保留mAP-best，M0依赖暂留strict/report；其后先D盘归档核SHA才退休远端重复文件，唯一best/源码/数据集和证据不删除。
+
+首次温环境CPU import/configuration4667a7 EXIT0，确认builder/factory/GlobalTaskRoleHeads/raw loss/M0 observer/schema接线，0构造/0NN/0更新；不能代替真实初始化/M0。代码复核为root依code-review-excellence技能完成，没有独立代理或科学效力结论。当前正式新分数为0，GoalACTIVE_UNMET。
+
+
+# Root source review before real prepare/M0
+
+Applied installed code-review-excellence instructions. Attribution: root source review only, no independent agent audit.
+
+Verified actual configure chain run_global_task_role → role_input_detach → run_native_research → run_native_partitioned → inner entry. New subclass is injected before clean factory construction; final CPU import/configuration checks both inner/foundation builders, factory, head, loss, schema and M0 observer identities after inner.configure. Captured original builder retains original author initialization and two-card partition.
+
+New JointSpectralSemanticTriFusion uses actual RoleEvidence cnn/transformer/mamba attributes and existing1536×384readout weight. One backbone call, detached role inputs; reference uses same Q/K/V and output norms without processors/bridges. Additional initialization is CPU fork_rng; shared/head initializer checked again by real prepare. Raw global-role task ownership is unchanged. No normalized-CE rescue or new loss.
+
+M0 ownership uses only first existing role-loss graph, retain_graph autograd to actual shared_global/reference_descriptor; expected unused shared gradient, finite nonzero reference gradient for delta, unused for absolute. M0 observer inherits original BN/update checks, adds actual factor gradients and parameter deltas for two tensors. Formal training only uses ordinary original loss backward. Optimizer whole wrapper coverage remains original assertion.
+
+Queue serializes three endpoints, all fresh prepare/M0/full50/strict; actual counts and shared hashes checked, model-state SHA matched across modes, source/witness sealed each stage,01-only memory wait240s, disk reserve maintained. Failed command stops original controller; assertion failure exits with original traceback/supervisor receipt. No retry/fallback/rescue. M0 binaries retained for base.verify dependency.
+
+Source review has no blocking finding within inspected paths. Actual model construction, real M0, gradients/BN/optimizer/reload and retrieval still require runtime evidence; CPU configure has no neural qualification.
