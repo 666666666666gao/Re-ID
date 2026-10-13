@@ -1,4 +1,4 @@
-> **当前状态（2026-10-13，§41.925）：新global条件证据形成源码复核WARN、无阻塞，只支持两端prepare/8步M0。当前尚无新M0/50轮成绩；旧六端已闭合，三数据集超过Signal目标仍ACTIVE_UNMET。实际GPU、磁盘、初始化、AMP、活动和所有权需由这次真实接入验证。**
+> **当前状态（2026-10-13，§41.926）：gradient/random真实prepare及8步M0均通过，原EXIT0/活动/所有权/重载收齐；新RGBNT201两端50轮及首次严格评价已登记，尚未启动。当前没有新增检索成绩，三集超过Signal目标仍ACTIVE_UNMET。**
 
 
 # TriFusion RGB–NIR–TIR ReID 完整交接（2026-09-01）
@@ -18712,3 +18712,19 @@ global target为合法且margin>0的正负关系margin均值；support decision�
 M0不只看通用PASS：检查原semantic初始state及参数/buffer绑定、每端8次有效更新/BN计数、全部训练张量有有限活动、至少一步有正确合法关系支持且实际排除位置、32×有效样本模态计数、exposure VJP不累积参数grad、fused任务不能更新共享主干、推理无标签/mask和严格重载。两条件都求同一个exposure VJP，随机控制仅改变排除排序，M0额外隔离检查也一致。初始参数0新增，训练目标及1536维部署不变。
 
 这里是从实际矛盾出发的一项形成机制和一个必要控制，不凑三个模块：global已有依据的位置减少角色读取，检验补充内容是否改善最终比较。空间排除不能证明语义不复用，global条件query/CLS/上下文仍在；训练排除、推理完整读取存在需解释的暴露变化。若真实接入成功再登记两端各50轮；若失败保留原EXIT、支持/梯度/容量证据，不重跑旧训练或自动改比例/层号/seed救分。目前正式训练未启动，无新增mAP或权重结论，Goal保持active/unmet。
+
+## 41.926 新形成机制两端真实接入终态与完整训练登记
+
+原M0 supervisor3163180，四个原child3163231/3163805/3165155/3165707均正常EXIT0。原native session3508终态e48cf6返回0，perf_counter总156.845653秒（含两次prepare、两次M0构造/重载及检查，不是训练步成本）。原15文件已收集，旧队列未重启，无正式检索分数。
+
+两端初始全model state均等于原semantic封存SHA93775618…；281/281训练张量累计非零有限梯度、每端8有效optimizer更新和作者BN计数8、视觉/camera更新、冻结参数不变。8步正确合法关系支持数都为2781/1157/2611/2378/777/1282/780/3149，有效样本模态192/192/192/192/180/192/192/192；对应排除32倍，非零支持8/8。两个条件的相同global训练支持没有因角色排除而改变，不能把这个相等误称为最终融合相等。
+
+实际exposure VJP不累积参数.grad；fused作者任务针对shared_global和共享训练参数的隔离检查全部通过。两样本label-free/unmasked strict reload最大差0，不是完整gallery性能保证。每端训练循环8步约9.29/9.09秒，M0仍包含额外隔离VJP，不能直接当正式训练每步成本。GPU0 allocated峰值约8.25GiB、GPU1约5.94GiB，精确allocated/reserved见M0_RESULTS_925.json；这不是全50资源实测。
+
+原receipt/log/初始化、有限运行复核与控制器源码复核均保留在`refine-logs/global_conditioned_evidence_20261013_924/`。审查same-family/provisional，实际model/effort UNATTESTED；只支持所述工程接入事实，不证明区域重要性、语义非复用、检索净收益或论文主张。
+
+下一有限队列为新RGBNT201 gradient与random各50轮、seed42、先gradient后random，每端首次严格重载评价，不重新prepare/M0，不复用M0权重或旧ReID最佳权重。使用925已验证的初始化JSON，正式进程重新从同一公开CLIP/同一随机初始化开始。输出`trained-model/global_conditioned_evidence_20261013_926_full_*_RGBNT201`，控制记录`logs/global_conditioned_evidence_full_20261013_926`。当前登记未启动，不预填PID/epoch或指标。
+
+两个条件网络参数/初始化/raw作者目标/1536维部署相同，每步同一次exposure VJP，正式训练省去M0所有权额外VJP。无新loss/头/文本/原生CNN或比例/层号/seed/gain搜索。复用原控制结果，不重训闭合六端。控制器检查原469源和真实M0输入SHA，只允许26物理GPU0/1空闲时开一项两卡作业；存储按剩余新best+临时文件+日志+512MiB余量核算，不删除原best/deps换空间。实际启动和首轮成本另记。
+
+最终主要比较gradient−random、原semantic、同模型global及独立global，全部CMC跟随同一mAP-best；继续报告完整50曲线/末轮、修复与新增错误和全部正例排序损益。即使M0通过，也没有保证目标80.3029/85.1675/91.3876/93.6603会被超过。未接近前不做多seed/调参；Goal保持ACTIVE_UNMET。

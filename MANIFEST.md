@@ -2385,3 +2385,5 @@
 | 2026-10-13T10:46:23+08:00 | /experiment-plan | refine-logs/global_conditioned_evidence_20261013_924/EXPERIMENT_TRACKER.md | implementation | 有限两端执行表；TODO不作DONE |
 | 2026-10-13T11:04:23.805017+08:00 | /experiment-plan | refine-logs/global_conditioned_evidence_20261013_924/EXPERIMENT_PLAN_20261013_110423.md | implementation | M0实际归因与role任务所有权检查，不是训练成绩 |
 | 2026-10-13T11:04:23.805017+08:00 | /experiment-plan | refine-logs/global_conditioned_evidence_20261013_924/EXPERIMENT_PLAN.md | implementation | latest copy |
+| 2026-10-13T11:49:08.492130+08:00 | /run-experiment | refine-logs/global_conditioned_evidence_20261013_924/EXPERIMENT_TRACKER_20261013_114908.md | runtime | 两端原M0已accepted；full50仍TODO |
+| 2026-10-13T11:49:08.492152+08:00 | /run-experiment | refine-logs/global_conditioned_evidence_20261013_924/EXPERIMENT_TRACKER.md | runtime | 两端原M0已accepted；full50仍TODO |
