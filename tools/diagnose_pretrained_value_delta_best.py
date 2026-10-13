@@ -15,6 +15,7 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 from tools import run_pretrained_value_delta as producer
 from tools import diagnose_native_research_best as base
+from trifusion.native_clip_patch_evidence import project_attention_patches
 
 runner = producer.inner.runner
 SCHEMA = 'trifusion-pretrained-value-fixed-best-diagnosis-v1'
@@ -42,11 +43,27 @@ def moments(value):
 
 def extract(model,protocol,split):
     features={key:[] for key in KEYS};role_vectors=[]
+    features['value_image_mean']=[]
     change_l1,change_max,row_sums,region_norm=[],[],[],[]
+    value_total,value_common,value_deviation=[],[],[]
+    captured=[];visual=model.evidence_model.backbone.signal.clip_vision_encoder.base
+
+    def capture(_module,_inputs,output):
+        captured.append(project_attention_patches(visual,output[0].detach()).detach())
+
+    handle=visual.transformer.resblocks[-1].attn.register_forward_hook(capture)
     with torch.inference_mode():
         for raw in runner.loader_for(protocol,runner.records_for(protocol,split),training=False,method='PLAIN_V8'):
+            assert not captured
             batch=runner._eval_batch(raw,'RGBNT201')
             output=model.evidence_model.forward_features(batch)
+            assert len(captured)==3
+            values=torch.stack(captured,dim=1).float();captured.clear()
+            mean=values.mean(2)
+            features['value_image_mean'].append(mean.flatten(1).cpu())
+            value_total.append(values.square().sum(-1).mean(-1).cpu())
+            value_common.append(mean.square().sum(-1).cpu())
+            value_deviation.append((values-mean[:,:,None]).square().sum(-1).mean(-1).cpu())
             for key in KEYS:features[key].append(output[key].float().cpu())
             detail=output['value_diagnostics'];delta=detail['attention_change'];regions=detail['regions']
             assert delta.shape[1:]==(3,3,16,128) and regions.shape[1:]==(3,3,16,512)
@@ -58,6 +75,7 @@ def extract(model,protocol,split):
             change_max.append(delta.float().abs().amax(-1).cpu())
             row_sums.append(delta.float().sum(-1).abs().cpu())
             region_norm.append(regions.float().norm(dim=-1).cpu())
+    handle.remove()
     vectors=torch.cat(role_vectors)
     features={key:torch.cat(value) for key,value in features.items()}
     assert all(value.shape==(protocol['counts'][split],1536) and bool(torch.isfinite(value).all()) for value in features.values())
@@ -66,7 +84,11 @@ def extract(model,protocol,split):
         (('attention_change_l1',change_l1),('attention_change_max_abs',change_max),
          ('attention_change_row_sum_abs',row_sums),('actual_region_norm',region_norm))}
     assert all(value.shape==(len(vectors),3,3,16) and bool(torch.isfinite(value).all()) for value in raw_stats.values())
-    return features,vectors,raw_stats
+    value_stats={name:torch.cat(value) for name,value in
+        (('patch_total_energy',value_total),('image_mean_energy',value_common),('patch_deviation_energy',value_deviation))}
+    assert all(value.shape==(len(vectors),3) and bool(torch.isfinite(value).all()) for value in value_stats.values())
+    assert bool((value_stats['patch_total_energy']>0).all())
+    return features,vectors,raw_stats,value_stats
 
 
 def diagnose(args,seal):
@@ -83,6 +105,8 @@ def diagnose(args,seal):
     producer.MODE=args.reference;producer.configure()
     protocol=runner.read_protocol(values.protocol,'RGBNT201')
     model,_cfg,binding=producer.inner.foundation.build(values,protocol)
+    selection_initial={name+'_'+str(role):getattr(model.evidence_model.roles,name)[role].weight.detach().float().cpu().clone()
+        for name in ('query_projections','key_projections') for role in range(3)}
     training=json.loads((original/'training.json').read_text())
     receipt=json.loads((original/'official_metrics.json').read_text())
     assert binding==training['initializer']==row['initializer']
@@ -94,12 +118,22 @@ def diagnose(args,seal):
     assert payload['epoch']==receipt['selected_epoch']==selected['epoch']==row['best_epoch']
     assert payload['metrics']==selected['official_fused'] and receipt['metrics']==row['metrics']
     assert receipt['checkpoint_sha256']==row['checkpoint_sha256'] and receipt['distance_sha256']==row['distance_sha256']
+    selection_weights={}
+    for name in ('query_projections','key_projections'):
+        for role in range(3):
+            key=name+'_'+str(role);initial=selection_initial[key]
+            final=getattr(model.evidence_model.roles,name)[role].weight.detach().float().cpu()
+            assert initial.shape==final.shape==(128,128) and bool(torch.isfinite(final).all())
+            initial_norm=float(initial.norm());assert initial_norm>0
+            selection_weights[key]=dict(initial_l2=initial_norm,selected_best_l2=float(final.norm()),
+                delta_from_initial_l2=float((final-initial).norm()),
+                selected_to_initial_norm_ratio=float(final.norm())/initial_norm)
     model.eval();before=runner._module_state_sha256(model)
     assert all(parameter.grad is None for parameter in model.parameters())
     gain=float(model.evidence_model.readout_gain.detach().cpu())
     start=time.perf_counter()
-    query,qroles,qdetail=extract(model,protocol,'query')
-    gallery,groles,gdetail=extract(model,protocol,'gallery')
+    query,qroles,qdetail,qvalues=extract(model,protocol,'query')
+    gallery,groles,gdetail,gvalues=extract(model,protocol,'gallery')
     extraction_seconds=time.perf_counter()-start
     after=runner._module_state_sha256(model)
     assert before==after and all(parameter.grad is None for parameter in model.parameters())
@@ -109,6 +143,7 @@ def diagnose(args,seal):
     assert all(np.array_equal(metadata[key],old[key]) and np.array_equal(metadata[key],independent[key]) for key in metadata)
     distances={name:runner.distance_matrix(query[key],gallery[key])
         for name,key in (('global','shared_global'),('correction','correction'),('fused','fused'))}
+    distances['value_image_mean']=runner.distance_matrix(query['value_image_mean'],gallery['value_image_mean'])
     for index,name in enumerate(('cnn','transformer','mamba')):
         distances[name+'_contribution']=runner.distance_matrix(qroles[:,index],groles[:,index])
     scores={name:base.score(value,metadata,'RGBNT201',values.signal_source) for name,value in distances.items()}
@@ -117,7 +152,7 @@ def diagnose(args,seal):
     assert all(abs(scores['fused']['metrics'][key]-receipt['metrics'][key])<1e-5 for key in receipt['metrics'])
     assert all(abs(scores['independent_global_only']['metrics'][key]-seal['independent_global_metrics'][key])<1e-5 for key in seal['independent_global_metrics'])
     geometry={}
-    for split,features,roles,detail in (('query',query,qroles,qdetail),('gallery',gallery,groles,gdetail)):
+    for split,features,roles,detail,values in (('query',query,qroles,qdetail,qvalues),('gallery',gallery,groles,gdetail,gvalues)):
         g,c,h,f=[features[key] for key in KEYS]
         assert torch.allclose(h,g+gain*c,atol=1e-6,rtol=1e-6)
         assert torch.allclose(f,F.normalize(h,dim=1),atol=1e-6,rtol=1e-6) and bool((g.norm(dim=1)>0).all())
@@ -125,19 +160,21 @@ def diagnose(args,seal):
             global_fused_angle_degrees=base.describe(torch.rad2deg(torch.acos((F.normalize(g,dim=1)*f).sum(1).clamp(-1,1)))),
             correction_energy=moments(c),role_contribution_energy=[moments(roles[:,role]) for role in range(3)],
             reading_change={name:base.describe(value.flatten()) for name,value in detail.items()},
-            reading_change_mean_by_role_modality={name:value.mean((0,3)).tolist() for name,value in detail.items()})
+            reading_change_mean_by_role_modality={name:value.mean((0,3)).tolist() for name,value in detail.items()},
+            value_energy_mean_by_modality={name:value.mean(0).tolist() for name,value in values.items()},
+            value_patch_deviation_fraction_by_modality=(values['patch_deviation_energy']/values['patch_total_energy']).mean(0).tolist())
     comparisons={name:base.paired(scores[a],scores[b],metadata['query_ids']) for name,a,b in
         (('same_model_global_to_fused','global','fused'),
          ('independent_global_to_same_model_global','independent_global_only','global'),
          ('independent_global_to_fused','independent_global_only','fused'))}
     args.output_dir.mkdir()
-    for split,features,roles,detail in (('query',query,qroles,qdetail),('gallery',gallery,groles,gdetail)):
-        torch.save(dict(features=features,role_contributions=roles,reading_change=detail),args.output_dir/(split+'_features.pt'))
+    for split,features,roles,detail,values in (('query',query,qroles,qdetail,qvalues),('gallery',gallery,groles,gdetail,gvalues)):
+        torch.save(dict(features=features,role_contributions=roles,reading_change=detail,value_energy=values),args.output_dir/(split+'_features.pt'))
     torch.save(dict(metadata,**distances),args.output_dir/'diagnostic_distances.pt')
     result=dict(schema=SCHEMA,status='COMPLETE',reference=args.reference,selected_epoch=row['best_epoch'],
         input_checkpoint_sha256=row['checkpoint_sha256'],seal_sha256=runner.sha256(args.seal),
         model_state_before_sha256=before,model_state_after_sha256=after,optimizer_updates=0,
-        scores=scores,comparisons=comparisons,geometry=geometry,readout_gain=gain,
+        scores=scores,comparisons=comparisons,geometry=geometry,readout_gain=gain,selection_weights=selection_weights,
         fused_distance_max_abs_difference=difference,extraction_seconds=extraction_seconds,
         elapsed_seconds=time.perf_counter()-started,completed_at=datetime.now().astimezone().isoformat(),
         artifacts={name:dict(bytes=(args.output_dir/name).stat().st_size,sha256=runner.sha256(args.output_dir/name))

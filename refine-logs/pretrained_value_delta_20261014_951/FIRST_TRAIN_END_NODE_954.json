@@ -1,0 +1,806 @@
+{
+  "observed_at": "2026-10-14T04:53:56.873232+08:00",
+  "state": {
+    "status": "RUNNING",
+    "controller_pid": 983289,
+    "started_at": "2026-10-14T04:10:21.316241+08:00",
+    "arms": [
+      {
+        "status": "RUNNING",
+        "value_reference": "semantic_reference",
+        "controller_pid": 983289,
+        "steps": [],
+        "campaign": "/data/gaob/Re-ID/Trifusion/logs/pretrained_value_training951/pretrained_value_training951_semantic_reference",
+        "started_at": "2026-10-14T04:10:21.317625+08:00"
+      }
+    ],
+    "expected": 2,
+    "accepted": 0
+  },
+  "arms": [
+    {
+      "status": "RUNNING",
+      "value_reference": "semantic_reference",
+      "controller_pid": 983289,
+      "steps": [
+        {
+          "mode": "prepare",
+          "command": [
+            "/data/gaob/Re-ID/conda-envs/tri_reid/bin/python",
+            "-B",
+            "/data/gaob/Re-ID/Trifusion/tools/run_pretrained_value_delta.py",
+            "--dataset",
+            "RGBNT201",
+            "--variant",
+            "semantic",
+            "--mode",
+            "prepare",
+            "--protocol",
+            "/data/gaob/Re-ID/Trifusion/logs/training_feature_scale_protocols_20261002/RGBNT201.json",
+            "--signal-source",
+            "/data/gaob/Re-ID/Trifusion/comparators/Signal-cd1b0a6",
+            "--clip-weight",
+            "/data/gaob/Re-ID/Trifusion/pertrained-model/ViT-B-16.pt",
+            "--initialization",
+            "/data/gaob/Re-ID/Trifusion/logs/pretrained_value_training951/pretrained_value_training951_semantic_reference/initialization/RGBNT201_semantic.json",
+            "--output-dir",
+            "/data/gaob/Re-ID/Trifusion/trained-model/pretrained_value_training951_semantic_reference_full_semantic_RGBNT201",
+            "--seed",
+            "42",
+            "--epochs",
+            "50",
+            "--value-reference",
+            "semantic_reference"
+          ],
+          "output_dir": "/data/gaob/Re-ID/Trifusion/trained-model/pretrained_value_training951_semantic_reference_full_semantic_RGBNT201",
+          "status": "COMPLETE",
+          "pid": 983321,
+          "started_at": "2026-10-14T04:10:21.464581+08:00",
+          "gpus": [
+            0,
+            1
+          ],
+          "exit_code": 0,
+          "completed_at": "2026-10-14T04:10:48.173272+08:00",
+          "process_live": false
+        },
+        {
+          "mode": "m0",
+          "command": [
+            "/data/gaob/Re-ID/conda-envs/tri_reid/bin/python",
+            "-B",
+            "/data/gaob/Re-ID/Trifusion/tools/run_pretrained_value_delta.py",
+            "--dataset",
+            "RGBNT201",
+            "--variant",
+            "semantic",
+            "--mode",
+            "m0",
+            "--protocol",
+            "/data/gaob/Re-ID/Trifusion/logs/training_feature_scale_protocols_20261002/RGBNT201.json",
+            "--signal-source",
+            "/data/gaob/Re-ID/Trifusion/comparators/Signal-cd1b0a6",
+            "--clip-weight",
+            "/data/gaob/Re-ID/Trifusion/pertrained-model/ViT-B-16.pt",
+            "--initialization",
+            "/data/gaob/Re-ID/Trifusion/logs/pretrained_value_training951/pretrained_value_training951_semantic_reference/initialization/RGBNT201_semantic.json",
+            "--output-dir",
+            "/data/gaob/Re-ID/Trifusion/trained-model/pretrained_value_training951_semantic_reference_m0_semantic_RGBNT201",
+            "--seed",
+            "42",
+            "--epochs",
+            "50",
+            "--value-reference",
+            "semantic_reference"
+          ],
+          "output_dir": "/data/gaob/Re-ID/Trifusion/trained-model/pretrained_value_training951_semantic_reference_m0_semantic_RGBNT201",
+          "status": "COMPLETE",
+          "pid": 983923,
+          "started_at": "2026-10-14T04:10:49.370404+08:00",
+          "gpus": [
+            0,
+            1
+          ],
+          "exit_code": 0,
+          "completed_at": "2026-10-14T04:11:42.568292+08:00",
+          "process_live": false,
+          "recorded_history": [
+            {
+              "epoch": 1,
+              "steps": 8,
+              "mean_loss": 5.293193221092224,
+              "seconds": 8.330418846104294
+            }
+          ]
+        },
+        {
+          "mode": "train",
+          "command": [
+            "/data/gaob/Re-ID/conda-envs/tri_reid/bin/python",
+            "-B",
+            "/data/gaob/Re-ID/Trifusion/tools/run_pretrained_value_delta.py",
+            "--dataset",
+            "RGBNT201",
+            "--variant",
+            "semantic",
+            "--mode",
+            "train",
+            "--protocol",
+            "/data/gaob/Re-ID/Trifusion/logs/training_feature_scale_protocols_20261002/RGBNT201.json",
+            "--signal-source",
+            "/data/gaob/Re-ID/Trifusion/comparators/Signal-cd1b0a6",
+            "--clip-weight",
+            "/data/gaob/Re-ID/Trifusion/pertrained-model/ViT-B-16.pt",
+            "--initialization",
+            "/data/gaob/Re-ID/Trifusion/logs/pretrained_value_training951/pretrained_value_training951_semantic_reference/initialization/RGBNT201_semantic.json",
+            "--output-dir",
+            "/data/gaob/Re-ID/Trifusion/trained-model/pretrained_value_training951_semantic_reference_full_semantic_RGBNT201",
+            "--seed",
+            "42",
+            "--epochs",
+            "50",
+            "--value-reference",
+            "semantic_reference"
+          ],
+          "output_dir": "/data/gaob/Re-ID/Trifusion/trained-model/pretrained_value_training951_semantic_reference_full_semantic_RGBNT201",
+          "status": "COMPLETE",
+          "pid": 985316,
+          "started_at": "2026-10-14T04:11:44.859387+08:00",
+          "gpus": [
+            0,
+            1
+          ],
+          "exit_code": 0,
+          "completed_at": "2026-10-14T04:53:56.638056+08:00",
+          "process_live": false,
+          "recorded_history": [
+            {
+              "epoch": 1,
+              "steps": 53,
+              "mean_loss": 4.1291254871296434,
+              "seconds": 36.38802017411217,
+              "official_fused": {
+                "mAP": 29.307265740119366,
+                "Rank-1": 28.46890091896057,
+                "Rank-5": 45.45454680919647,
+                "Rank-10": 55.62201142311096
+              }
+            },
+            {
+              "epoch": 2,
+              "steps": 53,
+              "mean_loss": 3.2360428099362357,
+              "seconds": 34.274795760866255,
+              "official_fused": {
+                "mAP": 52.421729909038916,
+                "Rank-1": 51.79426074028015,
+                "Rank-5": 63.63636255264282,
+                "Rank-10": 70.69377899169922
+              }
+            },
+            {
+              "epoch": 3,
+              "steps": 53,
+              "mean_loss": 2.3538801287705042,
+              "seconds": 34.794122484046966,
+              "official_fused": {
+                "mAP": 71.28751049208157,
+                "Rank-1": 77.51196026802063,
+                "Rank-5": 87.91866302490234,
+                "Rank-10": 91.50717854499817
+              }
+            },
+            {
+              "epoch": 4,
+              "steps": 53,
+              "mean_loss": 1.742350773991279,
+              "seconds": 33.908678381936625,
+              "official_fused": {
+                "mAP": 70.93041119416226,
+                "Rank-1": 73.56459498405457,
+                "Rank-5": 84.21052694320679,
+                "Rank-10": 88.63636255264282
+              }
+            },
+            {
+              "epoch": 5,
+              "steps": 53,
+              "mean_loss": 1.3367636957258549,
+              "seconds": 34.33267564489506,
+              "official_fused": {
+                "mAP": 66.22234399998496,
+                "Rank-1": 68.77990365028381,
+                "Rank-5": 81.10047578811646,
+                "Rank-10": 86.00478172302246
+              }
+            },
+            {
+              "epoch": 6,
+              "steps": 53,
+              "mean_loss": 0.8252970261393853,
+              "seconds": 34.513374464120716,
+              "official_fused": {
+                "mAP": 67.99863818386794,
+                "Rank-1": 72.12918400764465,
+                "Rank-5": 81.69856667518616,
+                "Rank-10": 88.63636255264282
+              }
+            },
+            {
+              "epoch": 7,
+              "steps": 53,
+              "mean_loss": 0.5954527528780811,
+              "seconds": 34.40344153600745,
+              "official_fused": {
+                "mAP": 73.96498784558382,
+                "Rank-1": 78.58851552009583,
+                "Rank-5": 88.0382776260376,
+                "Rank-10": 92.34449863433838
+              }
+            },
+            {
+              "epoch": 8,
+              "steps": 53,
+              "mean_loss": 0.5545396759824933,
+              "seconds": 34.497390954056755,
+              "official_fused": {
+                "mAP": 74.31112844868437,
+                "Rank-1": 78.94737124443054,
+                "Rank-5": 88.15789222717285,
+                "Rank-10": 91.86602830886841
+              }
+            },
+            {
+              "epoch": 9,
+              "steps": 53,
+              "mean_loss": 0.5148757527459342,
+              "seconds": 34.56665504002012,
+              "official_fused": {
+                "mAP": 73.02887133598837,
+                "Rank-1": 76.0765552520752,
+                "Rank-5": 86.72248721122742,
+                "Rank-10": 90.43062329292297
+              }
+            },
+            {
+              "epoch": 10,
+              "steps": 53,
+              "mean_loss": 0.5083917345640794,
+              "seconds": 34.94044681219384,
+              "official_fused": {
+                "mAP": 72.78098639529506,
+                "Rank-1": 75.83732008934021,
+                "Rank-5": 86.24401688575745,
+                "Rank-10": 90.31100273132324
+              }
+            },
+            {
+              "epoch": 11,
+              "steps": 53,
+              "mean_loss": 0.5009598619533036,
+              "seconds": 34.855658658081666,
+              "official_fused": {
+                "mAP": 72.38746763054576,
+                "Rank-1": 75.23923516273499,
+                "Rank-5": 85.76555252075195,
+                "Rank-10": 90.55023789405823
+              }
+            },
+            {
+              "epoch": 12,
+              "steps": 53,
+              "mean_loss": 0.5148401468429925,
+              "seconds": 33.588887783000246,
+              "official_fused": {
+                "mAP": 73.09799237324819,
+                "Rank-1": 77.27272510528564,
+                "Rank-5": 87.08133697509766,
+                "Rank-10": 91.50717854499817
+              }
+            },
+            {
+              "epoch": 13,
+              "steps": 53,
+              "mean_loss": 0.49519663205686604,
+              "seconds": 34.616483218967915,
+              "official_fused": {
+                "mAP": 72.9453572691247,
+                "Rank-1": 75.71770548820496,
+                "Rank-5": 86.24401688575745,
+                "Rank-10": 91.0287082195282
+              }
+            },
+            {
+              "epoch": 14,
+              "steps": 53,
+              "mean_loss": 0.49577033857129654,
+              "seconds": 34.202456881059334,
+              "official_fused": {
+                "mAP": 70.60100231832193,
+                "Rank-1": 74.28229451179504,
+                "Rank-5": 84.56937670707703,
+                "Rank-10": 89.35406804084778
+              }
+            },
+            {
+              "epoch": 15,
+              "steps": 53,
+              "mean_loss": 0.48428168499244834,
+              "seconds": 35.16586921410635,
+              "official_fused": {
+                "mAP": 71.06390964792494,
+                "Rank-1": 73.32535982131958,
+                "Rank-5": 84.92823243141174,
+                "Rank-10": 89.71291780471802
+              }
+            },
+            {
+              "epoch": 16,
+              "steps": 53,
+              "mean_loss": 0.49181537302035205,
+              "seconds": 34.31808297918178,
+              "official_fused": {
+                "mAP": 70.80274404497287,
+                "Rank-1": 72.84688949584961,
+                "Rank-5": 83.01435112953186,
+                "Rank-10": 89.1148328781128
+              }
+            },
+            {
+              "epoch": 17,
+              "steps": 53,
+              "mean_loss": 0.47820951916136833,
+              "seconds": 34.393965987022966,
+              "official_fused": {
+                "mAP": 72.33134323105533,
+                "Rank-1": 74.04305934906006,
+                "Rank-5": 85.047847032547,
+                "Rank-10": 90.07176756858826
+              }
+            },
+            {
+              "epoch": 18,
+              "steps": 53,
+              "mean_loss": 0.4736063075515459,
+              "seconds": 34.37248958693817,
+              "official_fused": {
+                "mAP": 73.45029250916852,
+                "Rank-1": 75.59808492660522,
+                "Rank-5": 86.00478172302246,
+                "Rank-10": 90.19138813018799
+              }
+            },
+            {
+              "epoch": 19,
+              "steps": 53,
+              "mean_loss": 0.499024731932946,
+              "seconds": 35.0914598449599,
+              "official_fused": {
+                "mAP": 72.98202203649524,
+                "Rank-1": 77.03348994255066,
+                "Rank-5": 86.00478172302246,
+                "Rank-10": 91.26794338226318
+              }
+            },
+            {
+              "epoch": 20,
+              "steps": 53,
+              "mean_loss": 0.47929564905616473,
+              "seconds": 35.15230587706901,
+              "official_fused": {
+                "mAP": 73.62237681477798,
+                "Rank-1": 75.59808492660522,
+                "Rank-5": 85.76555252075195,
+                "Rank-10": 90.43062329292297
+              }
+            },
+            {
+              "epoch": 21,
+              "steps": 53,
+              "mean_loss": 0.4757545033715806,
+              "seconds": 35.03795906691812,
+              "official_fused": {
+                "mAP": 72.98038592035965,
+                "Rank-1": 76.31579041481018,
+                "Rank-5": 85.52631735801697,
+                "Rank-10": 90.19138813018799
+              }
+            },
+            {
+              "epoch": 22,
+              "steps": 53,
+              "mean_loss": 0.4721843234772952,
+              "seconds": 35.246757911052555,
+              "official_fused": {
+                "mAP": 71.36095599897766,
+                "Rank-1": 72.24880456924438,
+                "Rank-5": 83.01435112953186,
+                "Rank-10": 87.91866302490234
+              }
+            },
+            {
+              "epoch": 23,
+              "steps": 53,
+              "mean_loss": 0.47870705262669977,
+              "seconds": 35.23138072807342,
+              "official_fused": {
+                "mAP": 69.66757174326223,
+                "Rank-1": 71.88995480537415,
+                "Rank-5": 80.86124658584595,
+                "Rank-10": 86.36363744735718
+              }
+            },
+            {
+              "epoch": 24,
+              "steps": 53,
+              "mean_loss": 0.4690598423750895,
+              "seconds": 33.8349931940902,
+              "official_fused": {
+                "mAP": 69.86019412128411,
+                "Rank-1": 71.77033424377441,
+                "Rank-5": 81.93780183792114,
+                "Rank-10": 87.44019269943237
+              }
+            },
+            {
+              "epoch": 25,
+              "steps": 53,
+              "mean_loss": 0.46653034945703903,
+              "seconds": 33.59893087297678,
+              "official_fused": {
+                "mAP": 71.60496571141847,
+                "Rank-1": 74.04305934906006,
+                "Rank-5": 83.85167717933655,
+                "Rank-10": 89.83253836631775
+              }
+            },
+            {
+              "epoch": 26,
+              "steps": 53,
+              "mean_loss": 0.46332253543835766,
+              "seconds": 34.63416182110086,
+              "official_fused": {
+                "mAP": 72.10516162170035,
+                "Rank-1": 74.76076483726501,
+                "Rank-5": 83.9712917804718,
+                "Rank-10": 90.19138813018799
+              }
+            },
+            {
+              "epoch": 27,
+              "steps": 53,
+              "mean_loss": 0.4594759508123938,
+              "seconds": 34.4365718010813,
+              "official_fused": {
+                "mAP": 72.34044845660671,
+                "Rank-1": 74.16267991065979,
+                "Rank-5": 84.68899726867676,
+                "Rank-10": 89.952152967453
+              }
+            },
+            {
+              "epoch": 28,
+              "steps": 53,
+              "mean_loss": 0.4593960496614564,
+              "seconds": 33.59807866695337,
+              "official_fused": {
+                "mAP": 72.08562032025404,
+                "Rank-1": 73.9234447479248,
+                "Rank-5": 84.09090638160706,
+                "Rank-10": 89.35406804084778
+              }
+            },
+            {
+              "epoch": 29,
+              "steps": 53,
+              "mean_loss": 0.4591528053553599,
+              "seconds": 34.29023270495236,
+              "official_fused": {
+                "mAP": 72.46581380661792,
+                "Rank-1": 74.76076483726501,
+                "Rank-5": 83.37320685386658,
+                "Rank-10": 89.1148328781128
+              }
+            },
+            {
+              "epoch": 30,
+              "steps": 53,
+              "mean_loss": 0.46148126473966633,
+              "seconds": 34.21131103113294,
+              "official_fused": {
+                "mAP": 72.10942235176347,
+                "Rank-1": 74.52152967453003,
+                "Rank-5": 83.61244201660156,
+                "Rank-10": 88.87559771537781
+              }
+            },
+            {
+              "epoch": 31,
+              "steps": 53,
+              "mean_loss": 0.45722695566573235,
+              "seconds": 34.483730502193794,
+              "official_fused": {
+                "mAP": 72.04317871167675,
+                "Rank-1": 74.40191507339478,
+                "Rank-5": 83.01435112953186,
+                "Rank-10": 88.99521827697754
+              }
+            },
+            {
+              "epoch": 32,
+              "steps": 53,
+              "mean_loss": 0.4582268955572596,
+              "seconds": 34.174457288114354,
+              "official_fused": {
+                "mAP": 70.9625437111852,
+                "Rank-1": 72.36841917037964,
+                "Rank-5": 83.01435112953186,
+                "Rank-10": 88.75598311424255
+              }
+            },
+            {
+              "epoch": 33,
+              "steps": 53,
+              "mean_loss": 0.45648215626770594,
+              "seconds": 34.11787963099778,
+              "official_fused": {
+                "mAP": 71.47250188387301,
+                "Rank-1": 73.56459498405457,
+                "Rank-5": 84.56937670707703,
+                "Rank-10": 89.23444747924805
+              }
+            },
+            {
+              "epoch": 34,
+              "steps": 53,
+              "mean_loss": 0.4551821227343577,
+              "seconds": 33.49663430289365,
+              "official_fused": {
+                "mAP": 71.12590196181556,
+                "Rank-1": 73.44497442245483,
+                "Rank-5": 83.9712917804718,
+                "Rank-10": 89.83253836631775
+              }
+            },
+            {
+              "epoch": 35,
+              "steps": 53,
+              "mean_loss": 0.4548253557592068,
+              "seconds": 34.82134640403092,
+              "official_fused": {
+                "mAP": 71.0824053004533,
+                "Rank-1": 73.44497442245483,
+                "Rank-5": 83.9712917804718,
+                "Rank-10": 89.47368264198303
+              }
+            },
+            {
+              "epoch": 36,
+              "steps": 53,
+              "mean_loss": 0.45297555091246117,
+              "seconds": 34.50218441290781,
+              "official_fused": {
+                "mAP": 71.26005151899233,
+                "Rank-1": 73.80383014678955,
+                "Rank-5": 84.21052694320679,
+                "Rank-10": 89.47368264198303
+              }
+            },
+            {
+              "epoch": 37,
+              "steps": 53,
+              "mean_loss": 0.4579297860838332,
+              "seconds": 34.77941657998599,
+              "official_fused": {
+                "mAP": 71.63371431650307,
+                "Rank-1": 75.11961460113525,
+                "Rank-5": 85.76555252075195,
+                "Rank-10": 89.47368264198303
+              }
+            },
+            {
+              "epoch": 38,
+              "steps": 53,
+              "mean_loss": 0.45783393675426265,
+              "seconds": 33.533843676093966,
+              "official_fused": {
+                "mAP": 71.74268830887684,
+                "Rank-1": 75.59808492660522,
+                "Rank-5": 85.28708219528198,
+                "Rank-10": 89.35406804084778
+              }
+            },
+            {
+              "epoch": 39,
+              "steps": 53,
+              "mean_loss": 0.4540081755170282,
+              "seconds": 33.661816796055064,
+              "official_fused": {
+                "mAP": 71.49708771287325,
+                "Rank-1": 75.23923516273499,
+                "Rank-5": 84.56937670707703,
+                "Rank-10": 89.59330320358276
+              }
+            },
+            {
+              "epoch": 40,
+              "steps": 53,
+              "mean_loss": 0.4531825319775995,
+              "seconds": 35.01952239009552,
+              "official_fused": {
+                "mAP": 71.33390138684543,
+                "Rank-1": 74.88038539886475,
+                "Rank-5": 84.44976210594177,
+                "Rank-10": 89.59330320358276
+              }
+            },
+            {
+              "epoch": 41,
+              "steps": 53,
+              "mean_loss": 0.4562484250878388,
+              "seconds": 34.97856742097065,
+              "official_fused": {
+                "mAP": 70.9708011186036,
+                "Rank-1": 74.04305934906006,
+                "Rank-5": 83.73205661773682,
+                "Rank-10": 89.952152967453
+              }
+            },
+            {
+              "epoch": 42,
+              "steps": 53,
+              "mean_loss": 0.4531981849445487,
+              "seconds": 34.06033063400537,
+              "official_fused": {
+                "mAP": 71.21051804240865,
+                "Rank-1": 73.9234447479248,
+                "Rank-5": 83.85167717933655,
+                "Rank-10": 90.07176756858826
+              }
+            },
+            {
+              "epoch": 43,
+              "steps": 53,
+              "mean_loss": 0.45438011131196654,
+              "seconds": 34.35068878810853,
+              "official_fused": {
+                "mAP": 71.4140242294848,
+                "Rank-1": 74.16267991065979,
+                "Rank-5": 84.09090638160706,
+                "Rank-10": 90.07176756858826
+              }
+            },
+            {
+              "epoch": 44,
+              "steps": 53,
+              "mean_loss": 0.45427568566124393,
+              "seconds": 33.81649258593097,
+              "official_fused": {
+                "mAP": 71.46510853719734,
+                "Rank-1": 73.9234447479248,
+                "Rank-5": 83.9712917804718,
+                "Rank-10": 89.952152967453
+              }
+            },
+            {
+              "epoch": 45,
+              "steps": 53,
+              "mean_loss": 0.4526407285681311,
+              "seconds": 34.702369404025376,
+              "official_fused": {
+                "mAP": 71.29055287752276,
+                "Rank-1": 73.9234447479248,
+                "Rank-5": 84.09090638160706,
+                "Rank-10": 89.952152967453
+              }
+            },
+            {
+              "epoch": 46,
+              "steps": 52,
+              "mean_loss": 0.4537311282295447,
+              "seconds": 34.444650570861995,
+              "official_fused": {
+                "mAP": 71.21247209690674,
+                "Rank-1": 73.9234447479248,
+                "Rank-5": 83.9712917804718,
+                "Rank-10": 89.952152967453
+              }
+            },
+            {
+              "epoch": 47,
+              "steps": 53,
+              "mean_loss": 0.45181322322701506,
+              "seconds": 35.1848382379394,
+              "official_fused": {
+                "mAP": 71.24743496551362,
+                "Rank-1": 73.80383014678955,
+                "Rank-5": 84.09090638160706,
+                "Rank-10": 90.19138813018799
+              }
+            },
+            {
+              "epoch": 48,
+              "steps": 53,
+              "mean_loss": 0.45338251174620864,
+              "seconds": 34.34940080391243,
+              "official_fused": {
+                "mAP": 71.36528491578848,
+                "Rank-1": 73.68420958518982,
+                "Rank-5": 84.44976210594177,
+                "Rank-10": 89.952152967453
+              }
+            },
+            {
+              "epoch": 49,
+              "steps": 53,
+              "mean_loss": 0.45279757875316545,
+              "seconds": 34.25022089295089,
+              "official_fused": {
+                "mAP": 71.42921929607924,
+                "Rank-1": 73.80383014678955,
+                "Rank-5": 84.33014154434204,
+                "Rank-10": 89.952152967453
+              }
+            },
+            {
+              "epoch": 50,
+              "steps": 53,
+              "mean_loss": 0.45182708749231304,
+              "seconds": 33.49547152896412,
+              "official_fused": {
+                "mAP": 71.24970017844498,
+                "Rank-1": 73.68420958518982,
+                "Rank-5": 84.21052694320679,
+                "Rank-10": 89.59330320358276
+              }
+            }
+          ]
+        }
+      ],
+      "campaign": "/data/gaob/Re-ID/Trifusion/logs/pretrained_value_training951/pretrained_value_training951_semantic_reference",
+      "started_at": "2026-10-14T04:10:21.317625+08:00",
+      "updated_at": "2026-10-14T04:11:44.857975+08:00"
+    }
+  ],
+  "source_count": 496,
+  "original_controller_live": true,
+  "original_supervisor_live": true,
+  "files": {
+    "logs/pretrained_value_training951/pretrained_value_training951_semantic_reference/campaign.json": {
+      "bytes": 7407,
+      "sha256": "ef344d6b537921561928962eb4f790d238893debbe445d66c4350c04a83f3168"
+    },
+    "logs/pretrained_value_training951/pretrained_value_training951_semantic_reference/manifest.json": {
+      "bytes": 62825,
+      "sha256": "1136a979925271fa6f1f79e8fa74284e42fc23d683f442e4f7da7dc07979f5a2"
+    },
+    "logs/pretrained_value_training951/pretrained_value_training951_semantic_reference/M0_ACCEPTED.json": {
+      "bytes": 64660,
+      "sha256": "df53f880a04265cf4a219a06eca762c8c8668d87a047676072ccec7317da46d7"
+    },
+    "logs/pretrained_value_launch951/RUNNING.json": {
+      "bytes": 386,
+      "sha256": "72aed8535f821bfca827f74612cf6934a7c9b2dd5b9c3c21aa3f62b048cd4115"
+    },
+    "logs/pretrained_value_training951/pretrained_value_training951_semantic_reference/initialization/RGBNT201_semantic.json": {
+      "bytes": 4464,
+      "sha256": "0f5c78f6c1de88278c91ac1f59b6c093ba6a0c7ab35f14d27e6f690abdb784b9"
+    },
+    "logs/pretrained_value_launch951/controller.log": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "trained-model/pretrained_value_training951_semantic_reference_full_semantic_RGBNT201/training.json": {
+      "bytes": 23145,
+      "sha256": "5f058df28405dba21f486c5b7210f8334d018b267a34d893eaf969c3b9fdc21f"
+    },
+    "trained-model/pretrained_value_training951_semantic_reference_m0_semantic_RGBNT201/training.json": {
+      "bytes": 64660,
+      "sha256": "df53f880a04265cf4a219a06eca762c8c8668d87a047676072ccec7317da46d7"
+    },
+    "logs/pretrained_value_training951/campaign.json": {
+      "bytes": 479,
+      "sha256": "a8d8e3f3784b47547c930d545f4230446523107ae2e502fb78643a45f07fa1ab"
+    }
+  }
+}

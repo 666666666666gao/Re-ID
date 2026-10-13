@@ -56,6 +56,17 @@ def main():
         rows.append(dict(accepted, variant=mode))
         history[mode] = dict(history=receipt['history'], formal_steps=len(steps),
             full_training_and_epoch_evaluation_seconds=(datetime.fromisoformat(receipt['completed_at']) - datetime.fromisoformat(receipt['started_at'])).total_seconds())
+        columns=('value_attention_change_abs_mean','value_attention_change_row_sum_max_abs',
+                 'value_region_norm_mean','correction_norm_mean','actual_scaled_correction_global_ratio_mean',
+                 'shared_global_norm_mean','global_loss','fused_role_loss')
+        curves=[]
+        for epoch in range(1,51):
+            epoch_steps=[row for row in steps if row['epoch']==epoch]
+            assert epoch_steps
+            values={column:[float(row[column]) for row in epoch_steps] for column in columns}
+            curves.append(dict(epoch=epoch,columns={column:dict(mean=sum(value)/len(value),max=max(value))
+                for column,value in values.items()}))
+        history[mode]['actual_reading_and_task_curves']=curves
     for row in rows[:2]:
         path = Path(row['run_dir']) / 'training_batch_order.jsonl'
         assert panel.base.sha(path) == batches['files'][str(path)]['sha256']

@@ -2415,3 +2415,4 @@
 | 2026-10-14T04:08:48.645499+08:00 | Value path finite2 registered | refine-logs/pretrained_value_delta_20261014_951/EXPERIMENT_PLAN.md | CPU only | real M0/full pending |
 | 2026-10-14T04:17:47.989418+08:00 | First value M0 passed / full50 entered | refine-logs/pretrained_value_delta_20261014_951/ACTUAL_PROGRESS_952.md | original queue | results pending |
 | 2026-10-14T04:25:15.322909+08:00 | Post-terminal value diagnosis source | refine-logs/pretrained_value_delta_20261014_951/FIXED_BEST_DIAGNOSIS_PLAN_953.md | import only | original first-full wait |
+| 2026-10-14T05:16:00.477158+08:00 | First value strict accepted / second original full50 | refine-logs/pretrained_value_delta_20261014_951/FIRST_RESULT_AND_SECOND_PROGRESS_954.md | weakincrement | second/diagnosis pending |

@@ -1,4 +1,4 @@
-> **当前状态（2026-10-14，§41.953）：原value两端队列继续，第一端已M0通过/进入fresh50，第二待串行；0新正式成绩。终态后的实际读取变化/角色贡献/G-C-F诊断源码与warm CPU import通过，仅source证据，未执行NN诊断。496训练源码冻结，唯一timer7321/PID12744在04:53:44近ETA观察，不提前重复查询。只26GPU0/1，三集SignalGoalACTIVE_UNMET。**
+> **当前状态（2026-10-14，§41.954）：第一semantic-reference正式50/strict完成，同E8 74.3111/78.9474/88.1579/91.8660，较独立global仅+.0145mAP/R1不变，未推进。第二uniform-reference真实M0通过并在原队列训练，0第二正式成绩。496source冻结，唯一9924/PID33276在05:36:11近ETA观察；扩展终态诊断只CPU import通过，NN未执行。只26GPU0/1，三集SignalGoalACTIVE_UNMET。**
 
 
 # TriFusion RGB–NIR–TIR ReID 完整交接（2026-09-01）
@@ -19701,3 +19701,36 @@ source496/best/初始化依赖不热改。只有26物理0/1、seed42、原warm�
 解释规则：读取变化弱且c弱，支持检查实际选择职责；读取变化明显或C独立强但F不涨，支持检查有用性/损伤；ownG退化则先分离全局和增量表现。以上均不是唯一因果定位，不自动触发gain、温度、margin、seed或熵尖锐度搜索。超越Signal完整主目标不缩小。
 
 只有26物理0/1、原warm环境；任何观察超时不重启NN，原读取失败保留。单独记录两次固定best读取的PID/命令/输入SHA/原EXIT。先按已登记near-ETA原observer看训练结果，不因本计划再查询当前epoch。
+
+## 41.954 第一value读取正式终态，第二原控制继续
+
+# §954：第一value端正式完成，第二原队列继续
+
+第一semantic_reference完整50/2649记录batch和首次strict均EXIT0，选中同E8 mAP/R1/R5/R10为 74.3111/78.9474/88.1579/91.8660。best SHA 1b1795cb6ce01063a9f8bc6ec9638f3794b72e4fdd8cc0ac080e5bd86fd5ddf8，distance SHA 03457cf7d4c08d410468625f766457e7fcff74e83061ff8fcf078e6c448a7b13。第50轮mAP 71.2497，best→末轮下降 3.0614。原第一train阶段墙钟42.197分钟；不把history.seconds求和冒充完整墙钟。
+
+相对同配方独立global-only mAP差 +0.0145、R1差 +0.0000；相对原raw semantic mAP差 -0.0637。未过原0.5mAP且R1不降推进线，尚未超过完整Signal80.3029/85.1675。推进线不是统计显著性；小单seed差不能称稳定收益。第一端own-G/C和读取用途尚未NN诊断，不假定保护G就等于融合有贡献。
+
+原first near observer native7321经functions cell481一次join，在04:53:56读取到train EXIT0、strict尚未记录；c88c48 EXIT0已消耗，无再启动。后续独立transition节点仅检查原队列，计划≥04:56:56，实际2026-10-14T05:01:03.402792+08:00，确认第一四阶段接受、第二prepare/8M0 PASS280/BN8/reload0。同初始模型state SHA，两端真正同参数/同初始化，而非第二端重启第一端。
+
+第二uniform_reference在2026-10-14T04:56:11.695896+08:00进入原fresh50，PID1079060于该节点实测存活，supervisor/controller983280/983289仍活；未有第二正式成绩，不能称两端全部完成/无效。唯一near-all observer native9924/localPID33276，出生2026-10-14T05:10:30.395002+08:00，等待2026-10-14T05:36:11.695896+08:00；按第一实际42.197分钟，在第二40分钟节点附近观察，不提前查epoch/GPU/T-P、不重启或追加候选。
+
+独立终态工具补充真实读取曲线、六项Q/K权重初始→best变化、原value每图公共均值与patch偏差能量及mean-value单独完整检索。差分读取逐行和0会在固定权重下抵消value公共加项；其中是否含有本任务有用信息、读取是否过弱，都待实际测量。此前独立mean分数72.8不是互补保证。新增统计不会在test中修改mean，也不增加NN编码次数。当前warmCPU import956 PASS/models0/NN0/updates0/report0/diagnosis0，前953/954版本证明保留；真实诊断仅在两端strict+supervisorEXIT0+一次CPU报告全部终态后。
+
+只26物理0/1、原warmconda、seed42/raw作者目标；496训练source持续核一致，没有head/loss/精度/采样/seed/gain/margin/车辆或环境改动。原best与M0依赖保持，关闭D重复退役记录仍可恢复。目标继续ACTIVE_UNMET。
+
+
+# §954：第一端正式弱增量后的诊断补充
+
+第一semantic_reference已完整50/首次strict，mAP74.3111/R1 78.9474，较独立global仅+0.0145mAP/R1不变。uniform_reference尚在原队列训练，不能说两端均无效。496训练source仍冻结，无追加训练或热改。
+
+终态CPU报告从原training_steps记录按epoch汇总真实读取变化、实际region/c范数、修正/G比和两项task loss，保留原完整检索曲线。固定best诊断再比较六项原Q/K128×128权重的初始化/选中best范数及变化；这是实际参数使用描述，不将变化小直接追认成weight decay根因。
+
+同时在原单次编码中用read-only末层attention hook测量实际原512维value的每图patch均值与patch偏差能量，保存image-mean1536向量及完整合法检索。主模型仍照旧使用原value，统计不改变其前向、参数或任何test统计。新增读取不再次编码图像。
+
+理由是实际算法逐行attention差值和近0：固定Q/K条件下，value的整图公共加项会被差分读取抵消。若原value的独立身份能力主要在每图公共成分，不能因其独立mAP72.8就推定它会成为好的增量。现在只提出这个可测问题，不预报它已经解释当前失败，不用dataset均值去改部署，也不假定改QQ必有收益。
+
+当前§953诊断与报告源码已随新增统计重新完成warm CUDA-hidden import，当前SHA以956 CPU proof为准；先前953/954证明保留为各自版本。没有真实诊断/report运行。更新只触及独立终态工具，原496 source前后均核一致。预计两端缓存约200MiB，原256MiB预算仍保留；实际输出需记录大小SHA。
+
+只有两端正式终态+原supervisor EXIT0+一次CPU完整配对报告后才允许原各best一次NN诊断。相关实现为root审查，非独立审计；per-role/mean-value独立成绩不是新正式fused成绩，也不是算子必要性的重训消融。
+
+外领域边界：[ClearCLIP原文§3](https://arxiv.org/html/2407.12442v1)以分割为对象经验选择QQ，其特征熵跨空间与通道，不能直接替代注意力权重熵。当前Re-ID实测QK/QQ不同，故借分解思想而不照搬其选择或噪声归因。PDF网页读取因15MB长度失败，本地HTML缓存另因SSL失败；通过arXiv v1 HTML已核读方法段，不宣称PDF已读或完整附录逐表验算。
