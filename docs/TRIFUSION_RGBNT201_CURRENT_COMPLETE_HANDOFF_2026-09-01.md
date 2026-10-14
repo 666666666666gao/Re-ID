@@ -1,4 +1,4 @@
-> **当前状态（2026-10-14，§41.961）：新绝对value完整50/strict及一次固定best诊断闭合，74.6337/79.0670，仍未接近Signal；不在该支调参/seed。冷SHA核验旧R2三集50轮best，20183.4284已高于Signal、两车辆仍不全面超过。已先登记车辆原权重/原三分支的有限ratio .25/.5/.75推理参数比较，尚未计算候选或NN验证。only26GPU0/1，GoalACTIVE_UNMET。**
+> **当前状态（2026-10-14，§41.964）：原固定车辆ratio比较完成，100选.75缓存87.0548/97.5510（R1仍持平），MSVR选.25缓存54.4494/71.7428（R1少4命中），均未全面超过Signal。缓存结果未计正式；已登记每车一次实际冻结best完整Q/G验证，尚未启动。新absolute50/strict已闭合74.6337/79.0670；旧201R2强best保留83.4284。only26GPU0/1，GoalACTIVE_UNMET。**
 
 
 # TriFusion RGB–NIR–TIR ReID 完整交接（2026-09-01）
@@ -19838,3 +19838,9 @@ Only2026物理GPU0/1，无温度功率、环境修改或测试标签逐query规�
 任何缓存候选尚不是新正式成绩。随后原模型每个选中端一次完整query/gallery编码：严格载入原role最佳与作者Signal，原model state不变、grad空、更新0；验证原ratio1和baseline回放、实际非零等能量，并用同次特征做实际ratio读出及作者camera/scene评价。距缓存的误差和原失败必须记录，不换checkpoint、改容差或挑重复编码。参数只是推理读出适配，不混写成新50轮/因果贡献或无偏SOTA。
 
 原全Signal初始化是已有强路线资源；模块-removed Signal比较与该强参照保持资源/初始化说明，不把新74分public-CLIP与旧83分差值算作模块收益。正式目标仍三个数据集全面超过Signal，同一网络模块仅允许数据集参数适配。代码/交接及时发布，保持最优与唯一记录；仅2026GPU0/1、warm环境，无T/P或新seed。
+
+## 41.964 固定参数比较终态与实际验证计划
+
+The unchanged registered grid (.25,.5,.75) completed once after preserving two implementation failures. RGBNT100 selected .75: 87.0547979671/97.5510204082/97.9008746356/98.1924198251; R1 ties Signal, repairs/harms7/7. MSVR310 selected .25:54.4494281974/71.7428087986/82.9103214890/88.3248730964; R1 remains4 net hits below Signal, repairs/harms4/8. Both fail the comprehensive goal. These are provisional cached scores, not accepted model outputs.
+
+Next: one unchanged historical fixed-best full-query/gallery encoding per vehicle. Verify strict original state, author baseline/full-R2 distances, equal nonzero block energy, selected actual readout distances, and independent author camera/scene scoring. GPU0 RGBNT100 and GPU1 MSVR310 only; no updates, new seed, checkpoint selection or extra ratio. Readout scaling can improve mAP but does not prove or repair the remaining top1 failure. Original500 sources stay immutable. Keep failed import/rank-list logs and all candidates. The full-Signal initialization route must remain distinguished from the new public-CLIP route and from independently trained module-free baseline; no causal/SOTA or complete-goal claim.
