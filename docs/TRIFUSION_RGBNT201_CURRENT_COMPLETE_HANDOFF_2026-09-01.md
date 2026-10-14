@@ -1,4 +1,4 @@
-> **当前状态（2026-10-14，§41.964）：原固定车辆ratio比较完成，100选.75缓存87.0548/97.5510（R1仍持平），MSVR选.25缓存54.4494/71.7428（R1少4命中），均未全面超过Signal。缓存结果未计正式；已登记每车一次实际冻结best完整Q/G验证，尚未启动。新absolute50/strict已闭合74.6337/79.0670；旧201R2强best保留83.4284。only26GPU0/1，GoalACTIVE_UNMET。**
+> **当前状态（2026-10-14，§41.965）：两个车辆实际冻结best复验均在raw范数检查失败，缓存ratio成绩不接受；原模型/原距离回放已过，但具体范数数值未记录。登记每车一次原query首batch的尺度诊断，尚未执行；不改旧失败/容差、不选重复成绩。only26GPU0/1，GoalACTIVE_UNMET；保留全部best，闭合M0探针已exactD归档清理356MB。**
 
 
 # TriFusion RGB–NIR–TIR ReID 完整交接（2026-09-01）
@@ -19844,3 +19844,13 @@ Only2026物理GPU0/1，无温度功率、环境修改或测试标签逐query规�
 The unchanged registered grid (.25,.5,.75) completed once after preserving two implementation failures. RGBNT100 selected .75: 87.0547979671/97.5510204082/97.9008746356/98.1924198251; R1 ties Signal, repairs/harms7/7. MSVR310 selected .25:54.4494281974/71.7428087986/82.9103214890/88.3248730964; R1 remains4 net hits below Signal, repairs/harms4/8. Both fail the comprehensive goal. These are provisional cached scores, not accepted model outputs.
 
 Next: one unchanged historical fixed-best full-query/gallery encoding per vehicle. Verify strict original state, author baseline/full-R2 distances, equal nonzero block energy, selected actual readout distances, and independent author camera/scene scoring. GPU0 RGBNT100 and GPU1 MSVR310 only; no updates, new seed, checkpoint selection or extra ratio. Readout scaling can improve mAP but does not prove or repair the remaining top1 failure. Original500 sources stay immutable. Keep failed import/rank-list logs and all candidates. The full-Signal initialization route must remain distinguished from the new public-CLIP route and from independently trained module-free baseline; no causal/SOTA or complete-goal claim.
+
+## 41.965 原实际验证失败与有限尺度诊断
+
+Original actual964 closed FAILED:100 178.7901s,MSVR54.5092s. Both strict role/author state and full Q/G control-distance replay checks passed in execution, then failed the same raw gnorm/rnorm absolute-difference assertion at line87. The failed checks did not print raw magnitudes or numerical differences; do not infer zero blocks, floating-point scale or a unique cause from this traceback. No adapted actual matrix or accepted metric was emitted. All cached candidates remain provisional; preserve both original failures and do not change their status.
+
+Registered next action: one original first query batch per vehicle, same author/role best, no scoring or updates. Measure raw float32/float64 norms, relative discrepancy, normalized block norms and energy. This is a fault diagnosis, not a full Q/G retry, tolerance relaxation or model improvement. No new seed/ratio or training. Based on measured evidence, specify a corrected verification separately if justified.
+
+Cold module-free baseline weight/receipt SHA matches:20169.641503/71.411484,10083.704165/95.043731,MSVR50.521979/67.681897;1536-dimensional CLIP CLS concat, SIM/GAM/LAM absent. Current strong R2 uses frozen full Signal including SIM and then own extra50 training; resource difference prevents treating the whole difference as own-module causality. Existing fixed-E20 R2_TOP1 records are also cold intake only:10086.2664/97.6093,MSVR52.2692/69.2047; that prior loss addition did not solve both vehicles and is not fresh full50 qualification.
+
+First actual launch was rejected before starting NN by disk reservation (2,412,806,144 bytes available). After exact-D archival and hash verification, the closed absolute M0 probe duplicate356,016,050 bytes was retired; best b16ab1... remains. Restore that exact probe before an original M0 consumer. Actual launch after cleanup was one supervisor1565727 with two child encodings; observer26896/functions123 consumed at11:06:12, no training or observer remains.
