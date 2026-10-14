@@ -1,4 +1,4 @@
-> **当前状态（2026-10-14，§41.983）：RGBNT100补seed44已在26GPU1正常启动，真实M0通过8更新/6支持、无缺梯度或溢出、冻结不变；18:37新鲜完整50训练，估计10-15 21:06结束，observer64699/OS41992于21:03近端读取。原43/GPU0的observer7051仍于15:01读取，不提前查询/不重启。201与MSVR完整端点已四项过Signal；100新正式成绩未出，GoalACTIVE_UNMET。闭合absolute958/random926最佳已exactD保留并清理服务器714MB重复件，旧消费者先恢复。**
+> **当前状态（2026-10-14，§41.984）：已修正§973验收说明的过时状态，MSVR310实际完整端点已于§979独立核验四项过Signal，原缓存parity FAILED保留；201完整端点也四项过线。100仍R1持平，原43/44完整训练待10-15 15:01/21:03观察，不提前重复检查。完整Signal初始化与独立PlainBaseline资源差异继续披露；当前共享模块源未变，GoalACTIVE_UNMET。**
 
 
 # TriFusion RGB–NIR–TIR ReID 完整交接（2026-09-01）
@@ -20007,3 +20007,13 @@ One scheduled+300s M0qualification returnedM0_PASS at18:41,8effectiveoptimizerst
 M0native64894consumed; single longobservernative64699/OS41992 launchedandwaiting. Original43observernative7051/OS51884 staysdue10-15 15:01:42; no earlyepoch/GPU/T-Ppoll. Keepbothoriginalhandles,neverrestartonobservationtimeout. BothnewRGBNT100 seeds complete50 and firststrict whole best before numerical acceptance; diagnosefailures withsaveddistance then useonlythealready-qualifiednear-only adaptation policy. Report42/43/44 endpoints,selectonewholequalifyingbest,nomixedepochs/seedsormean; no45/newratios/modulesregistered.
 
 Closedabsolute958 b16ab176...356,014,022B andrandom926 028a88fd...358,373,509B arefullyexactDretained; remote duplicatesretiredafterclosure/copySHA/selectedstrongbestprotection. Botholdscientificbests remainrecoverable; restoreexactpaths beforeoriginalabsolute/terminal960 orrandom/diagnosis930 weightconsumers. Previousfiveoldfullbests/probes/vectors/MSVR42 restoration obligationsremain. Signal/CLIP/plain/selectedstrongweights andalloriginalmetrics/distances/history preserved. Selected201/MSVRallfourSignalpassesunchanged;RGBNT100formalnewresultsnotavailable,GoalACTIVE_UNMET.
+
+## 41.984 修正验收说明的历史状态并核对当前baseline与模块边界
+
+本轮核对发现，§973的REQUIREMENTS.md仍将MSVR310写为未通过，且只提及seed43观察器。这是§979实际距离验收和§983额外seed44登记之前的历史状态。现为该文档添加带日期的当前状态注释，链接既有完整端点和独立冷复核；保留原§973正文、旧checker FAILED及全部原始标准，不将旧失败改成通过。MSVR310当前seed43/E19/ratio.25完整端点54.547817775818054/72.92724196277496/83.58714043993231/87.47884940778341，四项高于完整Signal。核对既有ENDPOINT/COLD_VERIFIED的指标、50轮/E19、实际距离SHA与角色权重SHA绑定一致。
+
+同时再次核对§973所列8项本地源文件SHA均未变化，三数据集共享builder/模块宽度、loss/LR/weight_decay合同仍一致，PlainBaseline不含SIM/AlignM的历史核验未变。当前强R2保留冻结完整Signal；单独PlainBaseline来自公开CLIP，初始化和额外训练预算不同。报告相对Plain与完整Signal的数值比较，不把所有Plain差值归于我们模块。既有同预算201 V8对照显示R2并非四指标全面更高；该贡献边界维持§980，不增加因果或新颖性结论。
+
+RGBNT201选定完整seed42/E12/ratio1四项过Signal；RGBNT100已验收seed42/E7/ratio.75仍R1持平，原seed43/GPU0及近值额外seed44/GPU1完整50和首次strict结果未到观察节点。原观察器分别7051/10月15日15:01:42和64699/21:03:28北京时间；节点前不反复join、本地进程检查或远端进度查询。此前重复300秒等待没有输出，继续状态已明确改为只在既定节点接收原观察器。没有重建观察器或队列、热改503训练源、登记seed45/新参数/新模块。两项完整结果后比较全部42/43/44完整端点并诊断失败，选择一份完整最佳结果，不取平均或拼列。
+
+本轮仅同步静态状态说明、用户指定主交接文档及其仓库副本；不产生新训练、NN、权重或检索成绩，不提前查询活动RGBNT100状态。原有最佳权重、实际距离及D盘精确归档/恢复义务保持。全目标ACTIVE_UNMET。
