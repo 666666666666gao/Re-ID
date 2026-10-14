@@ -82,13 +82,21 @@ def main():
     for split,features in (('query',query),('gallery',gallery)):
         fused=features['fused'];width=reg['baseline_width']
         assert fused.shape[1]==reg['fused_width']
-        gnorm=fused[:,:width].norm(dim=1);rnorm=fused[:,width:].norm(dim=1)
+        raw_gnorm=fused[:,:width].norm(dim=1);raw_rnorm=fused[:,width:].norm(dim=1)
+        unit=torch.nn.functional.normalize(fused,dim=1)
+        gnorm=unit[:,:width].norm(dim=1);rnorm=unit[:,width:].norm(dim=1)
         error=float((gnorm-rnorm).abs().max())
         assert bool((gnorm>0).all()) and bool((rnorm>0).all()) and error<1e-5
         prefix=torch.nn.functional.normalize(fused[:,:width],dim=1)
         baseline=torch.nn.functional.normalize(features['baseline_only'],dim=1)
         prefix_error=float((prefix-baseline).abs().max());assert prefix_error<1e-5
-        block_checks[split]=dict(nonzero=True,equal_norm_max_difference=error,baseline_prefix_max_difference=prefix_error)
+        raw_error=float((raw_gnorm-raw_rnorm).abs().max())
+        block_checks[split]=dict(nonzero=True,normalized_equal_norm_max_difference=error,
+            raw_float32_norm_max_difference=raw_error,original_raw_check_would_pass=raw_error<1e-5,
+            raw_baseline_norm_min=float(raw_gnorm.min()),raw_baseline_norm_max=float(raw_gnorm.max()),
+            normalized_baseline_energy_min=float(gnorm.square().min()),normalized_baseline_energy_max=float(gnorm.square().max()),
+            normalized_bank_energy_min=float(rnorm.square().min()),normalized_bank_energy_max=float(rnorm.square().max()),
+            baseline_prefix_max_difference=prefix_error)
     adjusted_q=apply_residual_budget(query['fused'],reg['baseline_width'],ratio)
     adjusted_g=apply_residual_budget(gallery['fused'],reg['baseline_width'],ratio)
     arrays['adapted']=legacy.distance_matrix(adjusted_q,adjusted_g)
@@ -114,7 +122,8 @@ def main():
     torch.save(dict(distances=arrays,**{key:value for key,value in cached.items() if key!='distances'}),path)
     result=dict(status='COMPLETE_FIXED_BEST_ACTUAL_READOUT_VERIFICATION',dataset=args.dataset,seed=42,ratio=ratio,
         original_selected_epoch=row['selected_epoch'],training_epochs=50,new_training_epochs=0,optimizer_updates=0,
-        frozen_query_gallery_encodings=1,model_state_sha256=expected,state_equal=True,all_parameter_grads_none=True,
+        frozen_query_gallery_encodings=1,verification_attempt=2,prior_failed_full_query_gallery_encodings=1,
+        prior_diagnostic_query_batches=1,model_state_sha256=expected,state_equal=True,all_parameter_grads_none=True,
         query_count=len(qids),gallery_count=len(gids),control_distance_max_difference=control_errors,
         adapted_cached_distance_max_difference=adapted_error,block_checks=block_checks,outputs=scores,
         delta_vs_signal={key:actual[key]-baseline[key] for key in actual},
@@ -124,7 +133,7 @@ def main():
         distance_path=str(path),distance_sha256=sha256(path),registration_sha256=sha256(args.registration),
         comparison_sha256=sha256(args.comparison),training_receipt_sha256=sha256(train_path),input_sha256=row['input_sha256'],
         driver_sha256=sha256(Path(__file__)),completed_at=datetime.now().astimezone().isoformat(),
-        boundary='Same historical full-Signal/R2 weights and modules; selected official-benchmark inference parameter only. No retraining, new seed, mechanism causality or unbiased SOTA claim. Original initialization-stage random role hash is not a claim about the fully loaded fixed best.')
+        boundary='Same historical full-Signal/R2 weights and modules; selected official-benchmark inference parameter only. This is the separately registered second full encoding after one raw-unit validation failure and one first-query-batch diagnosis, not a selected repeated score. The normalized block check retains 1e-5; no retraining, new seed, mechanism causality or unbiased SOTA claim. Original random role initializer hash is not a claim about the fully loaded best.')
     (args.output_dir/'SUMMARY.json').write_text(json.dumps(result,indent=2,allow_nan=False)+'\n')
     print(json.dumps(dict(status=result['status'],dataset=args.dataset,ratio=ratio,metrics=actual,encoding_seconds=encode_seconds)))
 

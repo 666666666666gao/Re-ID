@@ -1,4 +1,4 @@
-> **当前状态（2026-10-14，§41.965）：两个车辆实际冻结best复验均在raw范数检查失败，缓存ratio成绩不接受；原模型/原距离回放已过，但具体范数数值未记录。登记每车一次原query首batch的尺度诊断，尚未执行；不改旧失败/容差、不选重复成绩。only26GPU0/1，GoalACTIVE_UNMET；保留全部best，闭合M0探针已exactD归档清理356MB。**
+> **当前状态（2026-10-14，§41.966）：两车原首batch诊断EXIT0，raw范数约42、MSVR差1.144e-5而normalized差1.788e-7；原验证检查尺度用错。按实际距离的完整L2归一化后检验块范数，同阈值1e-5，保留原失败。登记每车第二次完整冻结Q/G，权重/ratio/seed不变，尚未启动；缓存不计正式，GoalACTIVE_UNMET。only26GPU0/1，无训练更新。**
 
 
 # TriFusion RGB–NIR–TIR ReID 完整交接（2026-09-01）
@@ -19854,3 +19854,11 @@ Registered next action: one original first query batch per vehicle, same author/
 Cold module-free baseline weight/receipt SHA matches:20169.641503/71.411484,10083.704165/95.043731,MSVR50.521979/67.681897;1536-dimensional CLIP CLS concat, SIM/GAM/LAM absent. Current strong R2 uses frozen full Signal including SIM and then own extra50 training; resource difference prevents treating the whole difference as own-module causality. Existing fixed-E20 R2_TOP1 records are also cold intake only:10086.2664/97.6093,MSVR52.2692/69.2047; that prior loss addition did not solve both vehicles and is not fresh full50 qualification.
 
 First actual launch was rejected before starting NN by disk reservation (2,412,806,144 bytes available). After exact-D archival and hash verification, the closed absolute M0 probe duplicate356,016,050 bytes was retired; best b16ab1... remains. Restore that exact probe before an original M0 consumer. Actual launch after cleanup was one supervisor1565727 with two child encodings; observer26896/functions123 consumed at11:06:12, no training or observer remains.
+
+## 41.966 实测尺度与修正验证登记
+
+Both registered one-query-batch diagnoses closed0,64 original query rows each, metric calls0,updates0,state/grad unchanged. Actual raw baseline norms10041.7762–43.3347,MSVR41.7051–41.9790. Max raw float32 norm differences1007.6294e-6,MSVR1.14441e-5; MSVR reproduces the original1e-5 failure. Corresponding double-accumulation raw differences4.36e-6/4.91e-6,relative1.03e-7/1.17e-7,normalized block norm differencesboth1.78814e-7 and energies~.5. This is a measured first-batch numeric-scale issue, not all-Q/G proof or a model-quality improvement.
+
+Correction: validation had used raw fused features although the retrieval distance normalizes the complete descriptor. Check nonzero equal block norms after that same full-descriptor normalization, keeping1e-5; separately record the raw norm ranges/discrepancy and whether the original assertion would pass for every full split. Other strict state/prefix/control/cached-distance/metric checks retain their original thresholds. Neither network, weight, seed42, ratio100.75/MSVR.25, candidate selector, official filter nor cached result changes.
+
+Register exactly one new full frozen query/gallery invocation per vehicle to evaluate the corrected validator; GPU0/1 only. Across this work each vehicle has one prior failed full encoding plus one diagnostic first batch and this second full encoding. Original actual964 stays FAILED and its missing raw statistics are not reconstructed as measured. This is a disclosed validation bug correction and repeat, not a first successful trial mislabeled as the first invocation or a chosen repeated benchmark score. Current cached candidate scores remain provisional until all new checks pass; goal still ACTIVE_UNMET even if those scores reproduce, since100R1ties andMSVRR1is4hitslower.
