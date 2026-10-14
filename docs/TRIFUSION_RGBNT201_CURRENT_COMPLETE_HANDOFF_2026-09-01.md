@@ -1,4 +1,4 @@
-> **当前状态（2026-10-14，§41.966）：两车原首batch诊断EXIT0，raw范数约42、MSVR差1.144e-5而normalized差1.788e-7；原验证检查尺度用错。按实际距离的完整L2归一化后检验块范数，同阈值1e-5，保留原失败。登记每车第二次完整冻结Q/G，权重/ratio/seed不变，尚未启动；缓存不计正式，GoalACTIVE_UNMET。only26GPU0/1，无训练更新。**
+> **当前状态（2026-10-14，§41.968）：100 corrected实际复验通过87.0548/97.5510，R1仍持平Signal；MSVR实际54.449295/71.7428观测到但cache-mAP差.000133超过原阈值，第二次验证仍FAILED，不能计接受结果。登记已存作者top50排名/float32代理的CPU诊断，NN0；旧两次完整编码及首batch诊断全部保留。only26GPU0/1，无当前训练；GoalACTIVE_UNMET。**
 
 
 # TriFusion RGB–NIR–TIR ReID 完整交接（2026-09-01）
@@ -19862,3 +19862,22 @@ Both registered one-query-batch diagnoses closed0,64 original query rows each, m
 Correction: validation had used raw fused features although the retrieval distance normalizes the complete descriptor. Check nonzero equal block norms after that same full-descriptor normalization, keeping1e-5; separately record the raw norm ranges/discrepancy and whether the original assertion would pass for every full split. Other strict state/prefix/control/cached-distance/metric checks retain their original thresholds. Neither network, weight, seed42, ratio100.75/MSVR.25, candidate selector, official filter nor cached result changes.
 
 Register exactly one new full frozen query/gallery invocation per vehicle to evaluate the corrected validator; GPU0/1 only. Across this work each vehicle has one prior failed full encoding plus one diagnostic first batch and this second full encoding. Original actual964 stays FAILED and its missing raw statistics are not reconstructed as measured. This is a disclosed validation bug correction and repeat, not a first successful trial mislabeled as the first invocation or a chosen repeated benchmark score. Current cached candidate scores remain provisional until all new checks pass; goal still ACTIVE_UNMET even if those scores reproduce, since100R1ties andMSVRR1is4hitslower.
+
+## 41.967 推理存储按真实输出预算
+
+# Inference storage budget correction
+
+The corrected full verification has not started: its first admission was rejected by the private 2GiB+256MiB reservation. Available space measured1,636,323,328 bytes. Inspecting the pinned author evaluator shows camera/scene functions write only small rank text, not feature/matrix exports or visualization. Known new float32 adapted matrices require61,318,520 bytes total. Original control matrices remain in original hash-verified official_distances.pt and are recomputed/checked in RAM; there is no need to duplicate another122,637,040 bytes on disk.
+
+Save only the newly adapted matrices and retain the original control path/SHA in each receipt. Use that known61,318,520-byte combined output plus the existing256MiB headroom for the inference admission, removing the unrelated2GiB training reserve. This does not alter scoring, metrics, normalized norm threshold, model, seed, ratios or selection. It is not a new fallback or reduced scientific validation. Preserve the rejected launch and all prior actual failures. Each vehicle remains registered for one second full encoding after its first failed encoding and one diagnostic batch. Retire only exact-D-verified copies of four closed value diagnostic vectors172,207,580 bytes; all bests, official distances and unique receipts remain. Restore exact vectors before an old consumer needs them.
+
+
+## 41.968 实际车辆读出终态与精度诊断登记
+
+Corrected actual966 terminal is FAILED overall. RGBNT100 child0 is separately accepted:87.05480540563751/97.55102040816327/97.90087463556851/98.19241982507289 at ratio.75, original seed42/full50/E7 best. Original baseline/fused distance differencesboth0; adapted distance versus proxy max2.3222e-6; normalized block difference2.38419e-7, exact baseline prefix0. Raw check would fail at1.90735e-5/1.52588e-5, confirming its scale error over complete splits. Author score agreement passes, state unchanged, updates0. R1stilltiesSignal; repairs/harms7/7, full goal unmet. New adapted distanceSHA7726ba0... remains on server; verified original controls reused.
+
+MSVR310 second child1 passed state/control-distance/normalized-block/cached-distance bounds and independent author scoring, but failed metric parity at the last adapted branch. Traceback records observed actual54.449295434295365/71.74280879864637/82.91032148900169/88.3248730964467 versus proxy54.44942819744608/identicalCMC. mAPdifference-0.000132763150718, exceeding the unchanged1e-5. Preserve FAILURE; it produced no accepted receipt or stored actual matrix and its unprinted numerical block/distance values are unknown. Actual metric was observed in the strict traceback, not accepted or substituted for cached value. Both the original and corrected full runs plus one diagnostic first batch are disclosed for each vehicle.
+
+Registered CPU diagnosis: same selected.25 only; parse already-written author MSVR top50 rank lists and verify query order/scene filtering against known control distances. Compare actual top50 positive patterns with the double proxy and inspect the fixed float32 cast of that proxy. No NN, new ratio, seed or accepted score. Top50 alone cannot reconstruct full AP or exact gallery indices; do not assign unique causes to unseen tail swaps. Cache-metric discontinuity and the remaining4-hit R1 deficit are separate findings. Goal remains ACTIVE_UNMET.
+
+Current second-full supervisor1598811 and both workers exited; near-ETA observer68158 consumed at11:31:36. No current training/observer. Current storage policy writes only new61.3MB total adapted matrices and reuses controls. Exact-D-retired closed M0/vector copies total528,223,630 bytes this goal turn; all bests/official distances/unique receipts remain, with exact restore obligations. Existing training queue still has its separate3GiB admission and no new seed has been launched.
