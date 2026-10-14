@@ -119,7 +119,8 @@ def main():
     actual=scores['adapted']['metrics'];baseline=scores['baseline_only']['metrics']
     ranks=np.asarray(scores['adapted']['first_match_rank']);old=np.asarray(scores['baseline_only']['first_match_rank'])
     path=args.output_dir/'official_distances.pt'
-    torch.save(dict(distances=arrays,**{key:value for key,value in cached.items() if key!='distances'}),path)
+    torch.save(dict(distances={'adapted':arrays['adapted']},
+        **{key:value for key,value in cached.items() if key!='distances'}),path)
     result=dict(status='COMPLETE_FIXED_BEST_ACTUAL_READOUT_VERIFICATION',dataset=args.dataset,seed=42,ratio=ratio,
         original_selected_epoch=row['selected_epoch'],training_epochs=50,new_training_epochs=0,optimizer_updates=0,
         frozen_query_gallery_encodings=1,verification_attempt=2,prior_failed_full_query_gallery_encodings=1,
@@ -130,7 +131,8 @@ def main():
         rank1_repairs=int(((old!=1)&(ranks==1)).sum()),rank1_new_errors=int(((old==1)&(ranks!=1)).sum()),
         all_reported_metrics_strictly_above_signal=all(actual[key]>baseline[key]+1e-10 for key in actual),
         independent_upstream_metrics_equal=True,encoding_seconds=encode_seconds,elapsed_seconds=time.perf_counter()-started,
-        distance_path=str(path),distance_sha256=sha256(path),registration_sha256=sha256(args.registration),
+        distance_path=str(path),distance_sha256=sha256(path),control_distance_path=row['distance_path'],
+        control_distance_sha256=row['input_sha256'][row['distance_path']],registration_sha256=sha256(args.registration),
         comparison_sha256=sha256(args.comparison),training_receipt_sha256=sha256(train_path),input_sha256=row['input_sha256'],
         driver_sha256=sha256(Path(__file__)),completed_at=datetime.now().astimezone().isoformat(),
         boundary='Same historical full-Signal/R2 weights and modules; selected official-benchmark inference parameter only. This is the separately registered second full encoding after one raw-unit validation failure and one first-query-batch diagnosis, not a selected repeated score. The normalized block check retains 1e-5; no retraining, new seed, mechanism causality or unbiased SOTA claim. Original random role initializer hash is not a claim about the fully loaded best.')

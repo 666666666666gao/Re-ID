@@ -1,0 +1,141 @@
+{
+  "free_disk_bytes": 1636323328,
+  "author_metrics_sha256": "91604acb7d978462c16904910a645d7d1697c15bf150da529099004c8b5eecb2",
+  "author_io_lines": [
+    {
+      "line": 31,
+      "text": "    # with open(\"re.txt\", 'w') as file_obj:"
+    },
+    {
+      "line": 35,
+      "text": "    #                 file_obj.write(li[j] + \"\\n\")"
+    },
+    {
+      "line": 37,
+      "text": "    #                 file_obj.write(li[j] + \" \")"
+    },
+    {
+      "line": 38,
+      "text": "    with open('re.txt', 'w') as f:"
+    },
+    {
+      "line": 39,
+      "text": "        f.write('rank list file\\n')"
+    },
+    {
+      "line": 71,
+      "text": "        with open('re.txt', 'a') as f:"
+    },
+    {
+      "line": 72,
+      "text": "            f.write('{}_s{}_v{}:\\n'.format(q_pid, q_sceneid, q_camid))"
+    },
+    {
+      "line": 77,
+      "text": "                f.write('{}_s{}_v{}  '.format(vid, vscene, vcam))"
+    },
+    {
+      "line": 78,
+      "text": "            f.write('\\n')"
+    },
+    {
+      "line": 260,
+      "text": "        image = Image.open(path).convert('RGB')  # Ensure image is in RGB format"
+    },
+    {
+      "line": 291,
+      "text": "        #                          save_path='zTSNE/201/baseline+SIM+CLS+PAT')"
+    },
+    {
+      "line": 294,
+      "text": "        #self.visualize_ranked_list_results(distmat, topk=10, save_dir='zrankList/201/baseline+SIM+CLS+PAT',num2vis=200)"
+    },
+    {
+      "line": 303,
+      "text": "    def visualize_ranked_list_results(self, distmat, topk=10, save_dir='vis_results',num2vis=10):"
+    },
+    {
+      "line": 309,
+      "text": "        :param save_dir: Directory to save the visualized results."
+    },
+    {
+      "line": 311,
+      "text": "        if not os.path.exists(save_dir):"
+    },
+    {
+      "line": 312,
+      "text": "            os.makedirs(save_dir)"
+    },
+    {
+      "line": 345,
+      "text": "            # Plot and save"
+    },
+    {
+      "line": 347,
+      "text": "                             save_path=os.path.join(save_dir, f'query_{i}_results.png'))"
+    },
+    {
+      "line": 349,
+      "text": "    def plot_images(self, query_imgs, gallery_imgs, gallery_pids, query_pid, save_path=None):"
+    },
+    {
+      "line": 379,
+      "text": "        if save_path:"
+    },
+    {
+      "line": 380,
+      "text": "            print(\"save plot_images\",end='\\r')"
+    },
+    {
+      "line": 381,
+      "text": "            plt.savefig(save_path)"
+    },
+    {
+      "line": 387,
+      "text": "    def showPointMultiModal(self, features, real_label, draw_label, save_path='TSNE/base_A_cls_pat'):"
+    },
+    {
+      "line": 389,
+      "text": "        if not os.path.exists(save_path):"
+    },
+    {
+      "line": 390,
+      "text": "            os.makedirs(save_path)"
+    },
+    {
+      "line": 392,
+      "text": "        save_path = os.path.join(save_path, str(draw_label) + \".pdf\")"
+    },
+    {
+      "line": 393,
+      "text": "        print(\"Draw points of features to {}\".format(save_path))"
+    },
+    {
+      "line": 409,
+      "text": "        plt.savefig(save_path)"
+    },
+    {
+      "line": 458,
+      "text": "        save_path = f'{base_dir}/{filename.format(condition)}'"
+    },
+    {
+      "line": 459,
+      "text": "        plt.savefig(save_path,dpi=600)"
+    },
+    {
+      "line": 524,
+      "text": "                         writer=None, epoch=None, mode=1,"
+    },
+    {
+      "line": 564,
+      "text": "    if writer is not None:"
+    },
+    {
+      "line": 565,
+      "text": "        writer.add_figure('Similarity_{}'.format(sign), plt.gcf(), epoch)"
+    }
+  ],
+  "source": "import torch\nimport os\nfrom utils.reranking import re_ranking\nimport numpy as np\nfrom sklearn import manifold\nimport matplotlib.patches as patches\nfrom PIL import Image\nimport matplotlib.pyplot as plt\nimport seaborn as sns  # \u4f7f\u7528Seaborn\u5e93\u7ed8\u5236KDE\u56fe\nfrom sklearn.metrics.pairwise import cosine_similarity\nfrom scipy.integrate import simps\n\ndef eval_func_msrv(distmat, q_pids, g_pids, q_camids, g_camids, q_sceneids, g_sceneids, max_rank=50):\n    \"\"\"Evaluation with market1501 metric\n        Key: for each query identity, its gallery images from the same camera view are discarded.\n        \"\"\"\n    num_q, num_g = distmat.shape\n    if num_g < max_rank:\n        max_rank = num_g\n        print(\"Note: number of gallery samples is quite small, got {}\".format(num_g))\n    indices = np.argsort(distmat, axis=1)\n\n    query_arg = np.argsort(q_pids, axis=0)\n    result = g_pids[indices]\n    gall_re = result[query_arg]\n    gall_re = gall_re.astype(np.str_)\n    # pdb.set_trace()\n\n    result = gall_re[:, :100]\n\n    # with open(\"re.txt\", 'w') as file_obj:\n    #     for li in result:\n    #         for j in range(len(li)):\n    #             if j == len(li) - 1:\n    #                 file_obj.write(li[j] + \"\\n\")\n    #             else:\n    #                 file_obj.write(li[j] + \" \")\n    with open('re.txt', 'w') as f:\n        f.write('rank list file\\n')\n\n    # pdb.set_trace()\n    matches = (g_pids[indices] == q_pids[:, np.newaxis]).astype(np.int32)\n\n    # compute cmc curve for each query\n    all_cmc = []\n    all_AP = []\n    num_valid_q = 0.  # number of valid query\n    for q_idx in range(num_q):\n        # get query pid and camid\n        q_pid = q_pids[q_idx]\n        q_camid = q_camids[q_idx]\n\n        q_sceneid = q_sceneids[q_idx]\n\n        # remove gallery samples that have the same pid and camid with query\n        order = indices[q_idx]\n        # original protocol in RGBNT100 or RGBN300\n        # remove = (g_pids[order] == q_pid) & (g_camids[order] == q_camid)\n\n        # for each query sample, its gallery samples from same scene with same or neighbour view are discarded # added by zxp\n        # symmetrical_cam = (8 - q_camid) % 8\n        # remove = (g_pids[order] == q_pid) & ( # same id\n        #              (g_sceneids[order] == q_sceneid) & # same scene\n        #              ((g_camids[order] == q_camid) | (g_camids[order] == (q_camid + 1)%8) | (g_camids[order] == (q_camid - 1)%8) | # neighbour cam with q_cam\n        #              (g_camids[order] == symmetrical_cam) | (g_camids[order] == (symmetrical_cam + 1)%8) | (g_camids[order] == (symmetrical_cam - 1)%8)) # nerighboour cam with symmetrical cam\n        #          )\n        # new protocol in MSVR310\n        remove = (g_pids[order] == q_pid) & (g_sceneids[order] == q_sceneid)\n        keep = np.invert(remove)\n\n        with open('re.txt', 'a') as f:\n            f.write('{}_s{}_v{}:\\n'.format(q_pid, q_sceneid, q_camid))\n            v_ids = g_pids[order][keep][:max_rank]\n            v_cams = g_camids[order][keep][:max_rank]\n            v_scenes = g_sceneids[order][keep][:max_rank]\n            for vid, vcam, vscene in zip(v_ids, v_cams, v_scenes):\n                f.write('{}_s{}_v{}  '.format(vid, vscene, vcam))\n            f.write('\\n')\n\n        # compute cmc curve\n        # binary vector, positions with value 1 are correct matches\n        orig_cmc = matches[q_idx][keep]\n        if not np.any(orig_cmc):\n            # this condition is true when query identity does not appear in gallery\n            continue\n\n        cmc = orig_cmc.cumsum()\n        cmc[cmc > 1] = 1\n\n        all_cmc.append(cmc[:max_rank])\n        num_valid_q += 1.\n\n        # compute average precision\n        # reference: https://en.wikipedia.org/wiki/Evaluation_measures_(information_retrieval)#Average_precision\n        num_rel = orig_cmc.sum()\n        tmp_cmc = orig_cmc.cumsum()\n        tmp_cmc = [x / (i + 1.) for i, x in enumerate(tmp_cmc)]\n        tmp_cmc = np.asarray(tmp_cmc) * orig_cmc\n        AP = tmp_cmc.sum() / num_rel\n        all_AP.append(AP)\n\n    assert num_valid_q > 0, \"Error: all query identities do not appear in gallery\"\n\n    all_cmc = np.asarray(all_cmc).astype(np.float32)\n    all_cmc = all_cmc.sum(0) / num_valid_q\n    mAP = np.mean(all_AP)\n\n    return all_cmc, mAP\n\n\ndef eval_func(distmat, q_pids, g_pids, q_camids, g_camids, max_rank=50):\n    \"\"\"Evaluation with market1501 metric\n        Key: for each query identity, its gallery images from the same camera view are discarded.\n        \"\"\"\n    num_q, num_g = distmat.shape\n    # distmat g\n    #    q    1 3 2 4\n    #         4 1 2 3\n    if num_g < max_rank:\n        max_rank = num_g\n        print(\"Note: number of gallery samples is quite small, got {}\".format(num_g))\n    indices = np.argsort(distmat, axis=1)\n    #  0 2 1 3\n    #  1 2 3 0\n    matches = (g_pids[indices] == q_pids[:, np.newaxis]).astype(np.int32)\n    # compute cmc curve for each query\n    all_cmc = []\n    all_AP = []\n    num_valid_q = 0.  # number of valid query\n    for q_idx in range(num_q):\n        # get query pid and camid\n        q_pid = q_pids[q_idx]\n        q_camid = q_camids[q_idx]\n\n        # remove gallery samples that have the same pid and camid with query\n        order = indices[q_idx]  # select one row\n        remove = (g_pids[order] == q_pid) & (g_camids[order] == q_camid)\n        keep = np.invert(remove)\n\n        # compute cmc curve\n        # binary vector, positions with value 1 are correct matches\n        orig_cmc = matches[q_idx][keep]\n        if not np.any(orig_cmc):\n            # this condition is true when query identity does not appear in gallery\n            continue\n\n        cmc = orig_cmc.cumsum()\n        cmc[cmc > 1] = 1\n\n        all_cmc.append(cmc[:max_rank])\n        num_valid_q += 1.\n\n        # compute average precision\n        # reference: https://en.wikipedia.org/wiki/Evaluation_measures_(information_retrieval)#Average_precision\n        num_rel = orig_cmc.sum()\n        tmp_cmc = orig_cmc.cumsum()\n        # tmp_cmc = [x / (i + 1.) for i, x in enumerate(tmp_cmc)]\n        y = np.arange(1, tmp_cmc.shape[0] + 1) * 1.0\n        tmp_cmc = tmp_cmc / y\n        tmp_cmc = np.asarray(tmp_cmc) * orig_cmc\n        AP = tmp_cmc.sum() / num_rel\n        all_AP.append(AP)\n\n    assert num_valid_q > 0, \"Error: all query identities do not appear in gallery\"\n\n    all_cmc = np.asarray(all_cmc).astype(np.float32)\n    all_cmc = all_cmc.sum(0) / num_valid_q\n    mAP = np.mean(all_AP)\n\n    return all_cmc, mAP\n\n\nclass R1_mAP():\n    def __init__(self, num_query, max_rank=50, feat_norm='yes'):\n        super(R1_mAP, self).__init__()\n        self.num_query = num_query\n        self.max_rank = max_rank\n        self.feat_norm = feat_norm\n\n    def reset(self):\n        self.feats = []\n        self.pids = []\n        self.camids = []\n        self.sceneids = []\n        self.img_path = []\n\n    def update(self, output):\n        feat, pid, camid, sceneid, img_path = output\n        self.feats.append(feat)\n        self.pids.extend(np.asarray(pid))\n        self.camids.extend(np.asarray(camid))\n        self.sceneids.extend(np.asarray(sceneid))\n        self.img_path.extend(img_path)\n\n    def compute(self):\n        feats = torch.cat(self.feats, dim=0)\n        if self.feat_norm == 'yes':\n            print(\"The test feature is normalized\")\n            feats = torch.nn.functional.normalize(feats, dim=1, p=2)\n        # query\n        qf = feats[:self.num_query]\n        q_pids = np.asarray(self.pids[:self.num_query])\n        q_camids = np.asarray(self.camids[:self.num_query])\n\n        q_sceneids = np.asarray(self.sceneids[:self.num_query])  # zxp\n        # gallery\n        gf = feats[self.num_query:]\n        g_pids = np.asarray(self.pids[self.num_query:])\n        g_camids = np.asarray(self.camids[self.num_query:])\n\n        g_sceneids = np.asarray(self.sceneids[self.num_query:])  # zxp\n\n        m, n = qf.shape[0], gf.shape[0]\n        distmat = torch.pow(qf, 2).sum(dim=1, keepdim=True).expand(m, n) + \\\n                  torch.pow(gf, 2).sum(dim=1, keepdim=True).expand(n, m).t()\n        distmat.addmm_(qf, gf.t(),beta=1, alpha=-2)\n        distmat = distmat.cpu().numpy()\n        cmc, mAP = eval_func_msrv(distmat, q_pids, g_pids, q_camids, g_camids, q_sceneids, g_sceneids)\n        return cmc, mAP, distmat, self.pids, self.camids, qf, gf\n\n\nclass R1_mAP_eval():\n    def __init__(self, num_query, max_rank=50, feat_norm=True, reranking=False):\n        super(R1_mAP_eval, self).__init__()\n        self.num_query = num_query\n        self.max_rank = max_rank\n        self.feat_norm = feat_norm\n        self.reranking = reranking\n        self.reset()\n\n    def reset(self):\n        self.feats = []\n        self.pids = []\n        self.camids = []\n        # Store image paths as simple names\n        self.img_paths = []\n        self.img_prefixes = {\n            'RGB': './data/RGBNT201/test/RGB/',\n            'NIR': './data/RGBNT201/test/NI/',\n            'TIR': './data/RGBNT201/test/TI/'\n        }\n\n    def update(self, output):  # called once for each batch\n        feat, pid, camid, img_paths = output\n        self.feats.append(feat.cpu())\n        self.pids.extend(np.asarray(pid))\n        self.camids.extend(np.asarray(camid))\n        # img_paths should be a list of image names, not full paths\n        self.img_paths.extend(img_paths)\n\n    def set_image_prefixes(self, rgb_prefix, nir_prefix, tir_prefix):\n        self.img_prefixes['RGB'] = rgb_prefix\n        self.img_prefixes['NIR'] = nir_prefix\n        self.img_prefixes['TIR'] = tir_prefix\n\n    def load_image(self, path):\n        if not os.path.isfile(path):\n            print(f\"Warning: File {path} does not exist.\")\n            return np.zeros((100, 100, 3), dtype=np.uint8)  # Return a dummy image with default size\n        image = Image.open(path).convert('RGB')  # Ensure image is in RGB format\n        return np.array(image)  # Convert to NumPy array\n\n    def compute(self):  # called after each epoch\n        feats = torch.cat(self.feats, dim=0)\n        if self.feat_norm:\n            print(\"The test feature is normalized\")\n            feats = torch.nn.functional.normalize(feats, dim=1, p=2)  # along channel\n\n        # query\n        qf = feats[:self.num_query]\n        q_pids = np.asarray(self.pids[:self.num_query])\n        q_camids = np.asarray(self.camids[:self.num_query])\n\n        # gallery\n        gf = feats[self.num_query:]\n        g_pids = np.asarray(self.pids[self.num_query:])\n        g_camids = np.asarray(self.camids[self.num_query:])\n\n        if self.reranking:\n            print('=> Enter reranking')\n            distmat = re_ranking(qf, gf, k1=50, k2=15, lambda_value=0.3)\n        else:\n            print('=> Computing DistMat with euclidean_distance')\n            distmat = euclidean_distance(qf, gf)\n\n        cmc, mAP = eval_func(distmat, q_pids, g_pids, q_camids, g_camids)\n\n        # T-sne Visualization\n        # self.showPointMultiModal(feats, real_label=self.pids,\n        #                          draw_label=[258, 260, 269, 271, 273, 280, 282, 284, 285, 286, 287, 289],\n        #                          save_path='zTSNE/201/baseline+SIM+CLS+PAT')\n        \n        # Visualize top10 results for each query\n        #self.visualize_ranked_list_results(distmat, topk=10, save_dir='zrankList/201/baseline+SIM+CLS+PAT',num2vis=200)\n        \n        \n        #self.plot_similarity_distribution(qf, q_pids,base_dir = 'zSimilarity_pic/201/',condition='baseline+SIM+GLAM')\n        \n\n        return cmc, mAP, distmat, self.pids, self.camids, qf, gf\n\n    # 2 Rank_list\n    def visualize_ranked_list_results(self, distmat, topk=10, save_dir='vis_results',num2vis=10):\n        print(\"enter rank_list\")\n        \"\"\"\n        Visualize the top-N ranked results for each query in RGB, NIR, and TIR modalities.\n        :param distmat: Distance matrix between query and gallery.\n        :param topk: Number of top ranked results to visualize.\n        :param save_dir: Directory to save the visualized results.\n        \"\"\"\n        if not os.path.exists(save_dir):\n            os.makedirs(save_dir)\n\n        num2vis = num2vis  # Number of queries to visualize\n        for i in range(0, num2vis):\n            query_name = self.img_paths[i]  # Simple image name (without prefix)\n            query_pid = self.pids[i]  # Query person ID\n            query_camid = self.camids[i]  # Query camera ID\n\n            # Get topk ranked indices, considering only different cameras\n            ranked_indices = [idx for idx in np.argsort(distmat[i]) if self.camids[idx + self.num_query] != query_camid]\n            ranked_indices = ranked_indices[:topk]  # Get topk indices\n\n            # Load query images\n            query_imgs = [self.load_image(os.path.join(self.img_prefixes[modality], query_name))\n                          for modality in ['RGB', 'NIR', 'TIR']]\n\n            # Load gallery images\n            gallery_paths = [self.img_paths[idx + self.num_query] for idx in ranked_indices]  # List of names\n            gallery_paths = [[os.path.join(self.img_prefixes[modality], path) for path in gallery_paths]\n                             for modality in ['RGB', 'NIR', 'TIR']]\n\n            # Prepare new gallery paths\n            new_gallery_paths = []\n            for j in range(topk):\n                gallery_path = [gallery_paths[0][j], gallery_paths[1][j], gallery_paths[2][j]]\n                new_gallery_paths.append(gallery_path)\n            gallery_paths = new_gallery_paths\n\n            gallery_pids = [self.pids[idx + self.num_query] for idx in ranked_indices]  # Get corresponding PIDs\n\n            # Load gallery images\n            gallery_imgs = [[self.load_image(path) for path in paths] for paths in zip(*gallery_paths)]\n\n            # Plot and save\n            self.plot_images(query_imgs, gallery_imgs, gallery_pids, query_pid,\n                             save_path=os.path.join(save_dir, f'query_{i}_results.png'))\n\n    def plot_images(self, query_imgs, gallery_imgs, gallery_pids, query_pid, save_path=None):\n        print(\"enter plot_images\",end='\\r')\n        \"\"\"\n        Helper function to plot the query images and the gallery images.\n        Correctly retrieved images are marked with a green box, incorrect ones with a red box.\n        \"\"\"\n        num_results = len(gallery_imgs[0])  # Number of top-ranked results\n        fig, axs = plt.subplots(3, num_results + 1, figsize=(20, 8))\n\n        # Display the query images\n        modalities = ['RGB', 'NIR', 'TIR']\n        for j, (img, modality) in enumerate(zip(query_imgs, modalities)):\n            axs[j, 0].imshow(img)\n            axs[j, 0].set_title(f\"Query {modality}\", fontsize=21)\n            axs[j, 0].axis('off')\n\n        # Display the top-ranked results\n        for i, (imgs, pid) in enumerate(zip(zip(*gallery_imgs), gallery_pids)):  # Unzip and process each modality\n            for j, (img, modality) in enumerate(zip(imgs, modalities)):\n                axs[j, i + 1].imshow(img)\n                axs[j, i + 1].axis('off')\n\n                # Add a green or red rectangle around the image\n                color = 'green' if pid == query_pid else 'red'\n                rect = patches.Rectangle((0, 0), img.shape[1], img.shape[0], linewidth=10, edgecolor=color,\n                                         facecolor='none')\n                axs[j, i + 1].add_patch(rect)\n                axs[j, i + 1].set_title(f\"Rank {i + 1}\", fontsize=22)\n\n        plt.tight_layout()\n        if save_path:\n            print(\"save plot_images\",end='\\r')\n            plt.savefig(save_path)\n        # plt.show()\n        plt.close()\n\n    \n    # 1 TSNE\n    def showPointMultiModal(self, features, real_label, draw_label, save_path='TSNE/base_A_cls_pat'):\n        print(\"enter T-SNE\")\n        if not os.path.exists(save_path):\n            os.makedirs(save_path)\n        id_show = 25\n        save_path = os.path.join(save_path, str(draw_label) + \".pdf\")\n        print(\"Draw points of features to {}\".format(save_path))\n        indices = find_label_indices(real_label, draw_label, max_indices_per_label=id_show)\n        feat = features[indices]\n        tsne = manifold.TSNE(n_components=2, init='pca', random_state=1, learning_rate=100, perplexity=60)\n        features_tsne = tsne.fit_transform(feat)\n        colors = ['#1f78b4', '#33a02c', '#e31a1c', '#ff7f00', '#6a3d9a', '#b15928', '#a6cee3', '#b2df8a', '#fb9a99',\n                  '#fdbf6f', '#cab2d6', '#ffff99']\n        MARKS = ['*']\n        plt.figure(figsize=(10, 10))\n        for i in range(features_tsne.shape[0]):\n            plt.scatter(features_tsne[i, 0], features_tsne[i, 1], s=300, color=colors[i // id_show], marker=MARKS[0],\n                        alpha=0.4)\n        plt.title(\"t-SNE Visualization of Different IDs\")\n        plt.xlabel(\"t-SNE Dimension 1\")\n        plt.ylabel(\"t-SNE Dimension 2\")\n        # plt.legend()\n        plt.savefig(save_path)\n        #plt.show()\n        plt.close()\n\n    # 3 similarity distribution\n    def plot_similarity_distribution(self, features, ids, title=\"Cosine Similarity Distribution\",base_dir = 'Similarity_pic',condition='baseline'):\n    \n        print(\"enter plot_similarity_distribution\")\n        ft = 34\n        if not os.path.exists(base_dir):\n            os.makedirs(base_dir)\n        features = features.cpu().detach().numpy()\n        similarity_matrix = cosine_similarity(features)\n    \n        positive_similarities = []\n        negative_similarities = []\n    \n        num_samples = features.shape[0]\n        for i in range(num_samples):\n            for j in range(i + 1, num_samples):  \n                if ids[i] == ids[j]:\n                    positive_similarities.append(similarity_matrix[i, j])  \n                else:\n                    negative_similarities.append(similarity_matrix[i, j])  \n    \n        positive_similarities = np.array(positive_similarities)\n        negative_similarities = np.array(negative_similarities)\n    \n        mean_positive = np.mean(positive_similarities)\n        mean_negative = np.mean(negative_similarities)\n    \n        plt.figure(figsize=(9, 8))\n        sns.kdeplot(positive_similarities, label='Positive', color='green', shade=True)\n        sns.kdeplot(negative_similarities, label='Negative', color='red', shade=True)\n        plt.axvline(mean_positive, color='green', linestyle='--',\n                    label=f'Mean Positive')\n        plt.axvline(mean_negative, color='red', linestyle='--', label=f'Mean Negative')\n        plt.ylabel('')\n    \n        plt.text(mean_positive, 0.02, f'{mean_positive:.4f}', color='green', fontsize=ft, fontweight='bold', ha='center', va='bottom')\n        plt.text(mean_negative, 0.02, f'{mean_negative:.4f}', color='red', fontsize=ft, fontweight='bold', ha='center', va='bottom')\n    \n        # plt.xlabel('Cosine Similarity', fontsize=ft)\n        # plt.ylabel('Density', fontsize=ft)\n        plt.legend(prop={'size': 28, 'weight': 'bold'})\n        plt.xticks(fontsize=ft, fontweight='bold')\n        plt.yticks(fontsize=ft, fontweight='bold')\n        plt.grid(True, linestyle='--', alpha=0.5)\n        filename = 'sd_{}.png'\n        save_path = f'{base_dir}/{filename.format(condition)}'\n        plt.savefig(save_path,dpi=600)\n        #plt.show()\n        \n        x_vals = np.linspace(min(min(positive_similarities), min(negative_similarities)),\n                            max(max(positive_similarities), max(negative_similarities)), 1000)\n    \n        from scipy.stats import gaussian_kde\n        from scipy.integrate import simps\n    \n        x_vals = np.linspace(\n            min(positive_similarities.min(), negative_similarities.min()),\n            max(positive_similarities.max(), negative_similarities.max()),\n            1000\n        )\n    \n        kde_positive = gaussian_kde(positive_similarities)\n        kde_negative = gaussian_kde(negative_similarities)\n    \n        y_positive = kde_positive(x_vals)\n        y_negative = kde_negative(x_vals)\n    \n        # \u5173\u952e\uff1a\u91cd\u53e0\u9762\u79ef = min(\u4e24\u6761\u66f2\u7ebf) \u5728\u6574\u4e2a\u533a\u95f4\u7684\u79ef\u5206\n        overlap_area = simps(np.minimum(y_positive, y_negative), x_vals)\n    \n        print(f\"Overlap Area between Positive and Negative Distributions: {overlap_area:.4f}\")\n    \n    \n        \n        print(f\"Mean Positive Similarity: {mean_positive:.4f}\")\n        print(f\"Mean Negative Similarity: {mean_negative:.4f}\")\n        print(f\"Positive Similarity Std Dev: {np.std(positive_similarities):.4f}\")\n        print(f\"Negative Similarity Std Dev: {np.std(negative_similarities):.4f}\")\n    \n\n\ndef euclidean_distance(qf, gf):\n    m = qf.shape[0]\n    n = gf.shape[0]\n    dist_mat = torch.pow(qf, 2).sum(dim=1, keepdim=True).expand(m, n) + \\\n               torch.pow(gf, 2).sum(dim=1, keepdim=True).expand(n, m).t()\n    dist_mat.addmm_(qf, gf.t(), beta=1, alpha=-2)\n    return dist_mat.cpu().numpy()\n\n\ndef find_label_indices(label_list, target_labels, max_indices_per_label=1):\n    indices = []\n    counts = {label: 0 for label in target_labels}\n    for index, label in enumerate(label_list):\n        if label in target_labels and counts[label] < max_indices_per_label:\n            indices.append(index)\n            counts[label] += 1\n    sorted_indices = sorted(indices, key=lambda index: (label_list[index], index))\n    return sorted_indices\n\n\ndef _calculate_similarity(pre_fusion_tokens, post_fusion_tokens):\n\n    similarities = torch.nn.functional.cosine_similarity(pre_fusion_tokens, post_fusion_tokens,\n                                                         dim=-1).cpu().detach().numpy()\n\n\n    return similarities\n\n\ndef visualize_similarity(pre_fusion_src_tokens, pre_fusion_tgt_tokens, post_fusion_src_tokens, post_fusion_tgt_tokens,\n                         writer=None, epoch=None, mode=1,\n                         pattern=None, figure_size=(6, 6), seaborn_style='whitegrid'):\n    \n\n    similarities_ori = _calculate_similarity(pre_fusion_src_tokens, pre_fusion_tgt_tokens)\n    similarities = _calculate_similarity(post_fusion_src_tokens, post_fusion_tgt_tokens)\n\n    sns.set(style=seaborn_style)\n\n    fig, ax = plt.subplots(figsize=figure_size)\n\n    sns.kdeplot(similarities, color='b', label='Before ..', ax=ax, multiple=\"stack\")\n    sns.kdeplot(similarities_ori, color='g', label='After ..', ax=ax, multiple=\"stack\")\n\n    if pattern == 'r2t':\n        sign = 'R and T'\n    elif pattern == 'r2n':\n        sign = 'R and N'\n    elif pattern == 'n2t':\n        sign = 'N and T'\n    elif pattern == 'n2r':\n        sign = 'N and R'\n    elif pattern == 't2r':\n        sign = 'T and R'\n    elif pattern == 't2n':\n        sign = 'T and N'\n    plt.title(\"Similarity Distribution between {}\".format(sign), fontsize=18, fontweight='bold')\n    plt.xlabel(\"Cosine Similarity\", fontsize=16, fontweight='bold')\n    plt.ylabel(\"Density\", fontsize=16, fontweight='bold')\n    \n    plt.xticks(fontsize=15)\n\n    \n    plt.yticks(fontsize=15)\n    \n    plt.legend(loc='upper right', fontsize=17)\n\n    \n    plt.show()\n\n    if writer is not None:\n        writer.add_figure('Similarity_{}'.format(sign), plt.gcf(), epoch)\n",
+  "expected_selected_distance_bytes": 61318520,
+  "original_control_distance_bytes": 122637040
+}
