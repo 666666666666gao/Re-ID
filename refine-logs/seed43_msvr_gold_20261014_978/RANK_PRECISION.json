@@ -1,0 +1,76 @@
+{
+  "status": "COMPLETE_SAVED_AUTHOR_RANK_TEXT_PRECISION_DIAGNOSIS",
+  "dataset": "MSVR310",
+  "ratio": 0.25,
+  "original_double_proxy_metrics": {
+    "mAP": 54.547657544058836,
+    "Rank-1": 72.92724196277496,
+    "Rank-5": 83.58714043993231,
+    "Rank-10": 87.47884940778341
+  },
+  "float32_rounded_proxy_metrics": {
+    "mAP": 54.547657544058836,
+    "Rank-1": 72.92724196277496,
+    "Rank-5": 83.58714043993231,
+    "Rank-10": 87.47884940778341
+  },
+  "rounded_minus_double_mAP": 0.0,
+  "quantization_distance_max_difference": 2.9802322387695312e-08,
+  "author_top50": {
+    "baseline_only": {
+      "actual_top50_cmc": {
+        "Rank-1": 72.41962774957699,
+        "Rank-5": 81.89509306260575,
+        "Rank-10": 86.97123519458545
+      },
+      "positive_pattern_changed_queries": 0,
+      "changes": []
+    },
+    "fused": {
+      "actual_top50_cmc": {
+        "Rank-1": 71.06598984771574,
+        "Rank-5": 84.77157360406092,
+        "Rank-10": 89.17089678510999
+      },
+      "positive_pattern_changed_queries": 0,
+      "changes": []
+    },
+    "adapted": {
+      "actual_top50_cmc": {
+        "Rank-1": 72.92724196277496,
+        "Rank-5": 83.58714043993231,
+        "Rank-10": 87.47884940778341
+      },
+      "positive_pattern_changed_queries": 1,
+      "changes": [
+        {
+          "query_index": 446,
+          "actual_positive_ranks": [
+            1,
+            2,
+            32
+          ],
+          "cached_positive_ranks": [
+            1,
+            2,
+            33
+          ]
+        }
+      ]
+    }
+  },
+  "actual_rank1_repairs": 10,
+  "actual_rank1_new_errors": 7,
+  "nn_calls": 0,
+  "optimizer_updates": 0,
+  "original_failed_run": "/data/gaob/Re-ID/Trifusion/results/seed43_msvr_actual976",
+  "rank_text_sha256": {
+    "baseline_only": "4d8b109f85aa52b998b2ff8353357f1c6e7e4c10d5acecee466f2ed4ead5d0a9",
+    "fused": "9e5d06009c35228e04bd0332e4d2d1aff9f39860d960416132c302fb593fa2e2",
+    "adapted": "c4ade33a0f0bb1d097a7ffe2a619f9d5621f7cfab9fc90ec77dfd19f5d7a71d4"
+  },
+  "driver_sha256": "862d7d38adf0e49125377ed01c695a2641ec011b2cbdd24f7d1cafe7ba08f155",
+  "registration_sha256": "d3207262846d810783fc13a83b9fcc9ac7812800da8b2d1ddd2716f508ebecfc",
+  "boundary": "Original actual966 MSVR metric-parity failure remains FAILED and no threshold is relaxed. Cast is a fixed-ratio numeric diagnosis, not a new candidate or accepted model distance. Saved text contains only top50 identity/scene/camera tuples; it cannot reconstruct full AP, exact gallery-instance orders or identify all tail swaps. No new NN/weight/seed/parameter selection.",
+  "completed_at": "2026-10-14T16:51:37.189543+08:00"
+}
