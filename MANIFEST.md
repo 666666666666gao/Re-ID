@@ -2422,3 +2422,5 @@
 | 2026-10-14T09:06:43.282156+08:00 | Absolute pretrained value single-condition source registration | refine-logs/absolute_pretrained_value_20261014_958/EXPERIMENT_PLAN.md | CPU source/component pass | Production M0/fresh50 pending |
 
 | 2026-10-14T09:16:53.478705+08:00 | Real absolute-value M0 accepted and original fresh50 active | refine-logs/absolute_pretrained_value_20261014_958/REAL_M0_AND_FRESH50_959.md | Engineering pass only | First full/strict pending |
+
+| 2026-10-14T10:28:56.064471+08:00 | Absolute value closed / strong R2 verified / near vehicle parameter grid registered | refine-logs/near_signal_residual_budget_20261014_961/EXPERIMENT_PLAN.md | Goal unmet | Candidate computation pending |
