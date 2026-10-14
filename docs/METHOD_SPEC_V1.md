@@ -1,3 +1,5 @@
+> 2026-10-14：下文为早期公开CLIP/训练内选模的历史方案，并非当前作者完整Signal初始化结果的资源或选模合同。当前网络、方法来源、额外训练、官方benchmark选择与贡献边界见[当前R2方法说明](CURRENT_R2_METHOD_AND_EVIDENCE_2026-10-14.md)。历史正文保留。
+
 # TriFusion-ReID method specification v1.1
 
 Status: novelty-hardened architecture and claim contract with final independent
