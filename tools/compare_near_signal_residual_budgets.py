@@ -9,6 +9,7 @@ import torch
 
 ROOT=Path(__file__).resolve().parents[1]
 sys.path.insert(0,str(ROOT))
+sys.path.insert(0,str(ROOT/'modeling'))
 from trifusion.residual_budget import apply_residual_budget,cached_budget_distance
 from tools.analyze_correspondence_distances import camera_scores,scene_scores
 from tools.collect_correspondence_roles import sha
