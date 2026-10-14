@@ -1,0 +1,71 @@
+{
+  "schema": "trifusion-selected-complete-actual-endpoint-v1",
+  "status": "QUALIFIED_ALL_FOUR_ABOVE_SIGNAL",
+  "dataset": "MSVR310",
+  "method": "R2",
+  "seed": 43,
+  "training_epochs": 50,
+  "selected_epoch": 19,
+  "architecture": "Common V8 CNN/Transformer/Mamba expert formation on frozen full Signal; same modules as RGBNT201/RGBNT100 R2",
+  "readout": {
+    "function": "modeling/trifusion/residual_budget.py::apply_residual_budget",
+    "baseline_width": 3072,
+    "fused_width": 7680,
+    "ratio": 0.25
+  },
+  "metrics": {
+    "mAP": 54.547817775818054,
+    "Rank-1": 72.92724196277496,
+    "Rank-5": 83.58714043993231,
+    "Rank-10": 87.47884940778341
+  },
+  "signal_metrics": {
+    "mAP": 53.24239192691326,
+    "Rank-1": 72.41962774957699,
+    "Rank-5": 81.89509306260575,
+    "Rank-10": 86.97123519458545
+  },
+  "delta_pp": {
+    "mAP": 1.3054258489047967,
+    "Rank-1": 0.507614213197968,
+    "Rank-5": 1.6920473773265599,
+    "Rank-10": 0.507614213197968
+  },
+  "artifacts": {
+    "role_best": {
+      "path": "/data/gaob/Re-ID/Trifusion/trained-model/official_extra_seed43_MSVR310_R2_near_signal_followup_20261014_970_bestmap_e50_20260926/MSVR310_R2_seed43/roles_best_map.pth",
+      "bytes": 38124753,
+      "sha256": "d53d3bf8d1598a001e8395a740c98c3ec87b2c9a9ae739a8ba41c57b6e1d8bb4"
+    },
+    "author_signal": {
+      "path": "/data/gaob/Re-ID/Trifusion/pertrained-model/MSVR310_Signal_50.pth",
+      "bytes": 364603450,
+      "sha256": "b3888e7ec7b9290abcde76915ebf9d9ce87129e759586fd7deb3e9cf7d1d807a"
+    },
+    "official_distance": {
+      "path": "/data/gaob/Re-ID/Trifusion/trained-model/official_extra_seed43_MSVR310_R2_near_signal_followup_20261014_970_bestmap_e50_20260926/MSVR310_R2_seed43/official_distances.pt",
+      "bytes": 12513135,
+      "sha256": "76e8ede49d1f88ad9f70d8314e43bebec34130c90e95768ee94b60cce5405d34"
+    },
+    "protocol": {
+      "path": "/data/gaob/Re-ID/Trifusion/logs/official_three_dataset_protocols_20260923/MSVR310.json",
+      "bytes": 1022368,
+      "sha256": "7f2b35f9a7e00433558c1e723db0e3ff0ea9daa7144eeeb972139d1502945cbc"
+    }
+  },
+  "actual_distance": {
+    "path": "/data/gaob/Re-ID/Trifusion/results/seed43_msvr_gold978/official_distances.pt",
+    "bytes": 2535955,
+    "sha256": "54e0b3742c634a0489d3aa3433f82c5ed43d904c111ad1ac0e14cc72aed1c2d2"
+  },
+  "complete_model_state_sha256": "919f13b79366f7777bd4f11a403f93e6e14932e3007819ea5215c7cd26e6a651",
+  "actual_summary_sha256": "b7f751a2e259aef63af4c1a04089137c8856f7a8b7e94681e1e77fc238cf8364",
+  "actual_registration": "refine-logs/seed43_msvr_gold_20261014_978/ACTUAL_REGISTRATION.json",
+  "original_failed_verification": "logs/seed43_msvr_actual976/EXIT.json",
+  "original_failed_verification_status": "FAILED",
+  "official_filter": "Exclude same identity and same scene; retain all different identities",
+  "reranking": false,
+  "cumulative_actual_encodings": 2,
+  "selection_scope": "Official test benchmark, fixed grid/one whole endpoint; no seed average or metric-wise mixture",
+  "boundary": "Qualified under the corrected preregistered actual-distance/independent-author scoring criterion. Full-Signal pretrained initialization and extra role training disclosed. This retrieval result is not independent validation or attribution of the entire bare-baseline gain to our module."
+}
