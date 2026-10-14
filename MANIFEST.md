@@ -2418,3 +2418,5 @@
 | 2026-10-14T05:16:00.477158+08:00 | First value strict accepted / second original full50 | refine-logs/pretrained_value_delta_20261014_951/FIRST_RESULT_AND_SECOND_PROGRESS_954.md | weakincrement | second/diagnosis pending |
 
 | 2026-10-14T08:51:15.245427+08:00 | 两端value终态及冻结用途诊断 | refine-logs/pretrained_value_terminal_20261014_957/TERMINAL_AND_DIAGNOSIS.md | 不满足Signal目标 | 完整NN与CPU原EXIT0 |
+
+| 2026-10-14T09:06:43.282156+08:00 | Absolute pretrained value single-condition source registration | refine-logs/absolute_pretrained_value_20261014_958/EXPERIMENT_PLAN.md | CPU source/component pass | Production M0/fresh50 pending |
