@@ -5,6 +5,7 @@ import json
 from pathlib import Path
 import sys
 
+import numpy as np
 import torch
 
 ROOT=Path(__file__).resolve().parents[1]
@@ -58,8 +59,9 @@ def main():
         for ratio in RATIOS:
             d=cached_budget_distance(data['distances']['baseline_only'].double(),data['distances']['fused'].double(),ratio)
             values=score(d)
-            repairs=int(((baseline['first_match_rank']!=1)&(values['first_match_rank']==1)).sum())
-            harms=int(((baseline['first_match_rank']==1)&(values['first_match_rank']!=1)).sum())
+            baseline_rank=np.asarray(baseline['first_match_rank']);candidate_rank=np.asarray(values['first_match_rank'])
+            repairs=int(((baseline_rank!=1)&(candidate_rank==1)).sum())
+            harms=int(((baseline_rank==1)&(candidate_rank!=1)).sum())
             candidates.append(dict(ratio=ratio,metrics=values['metrics'],
                 delta_vs_signal={key:values['metrics'][key]-baseline['metrics'][key] for key in values['metrics']},
                 rank1_repairs=repairs,rank1_new_errors=harms,
