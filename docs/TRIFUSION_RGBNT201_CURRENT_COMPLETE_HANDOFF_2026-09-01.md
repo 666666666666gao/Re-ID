@@ -1,4 +1,4 @@
-> **当前状态（2026-10-14，§41.958）：原两端完整终态和用途诊断见§957；新单端“保留实际value公共分量”实现及CPU等式/梯度/入口检查通过，同参数/初始化/配方/gain，尚未真实M0或正式训练。D精确归档后仅退休798135762B闭合远端重复，best保留。仅26GPU0/1、seed42，三数据集超过Signal目标ACTIVE_UNMET。**
+> **当前状态（2026-10-14，§41.959）：新绝对value读取prepare/真实8步M0全部通过，280张量活动/BN8/reload0、初始state与旧uniform完全一致。原fresh50 PID1395111已于09:09:11进入训练，09:10:55实测存活；唯一native3948/localPID40956近09:51:11观察。500训练source不热改，终态工具仅CPU CLI/import通过，没有新正式分数。仅26GPU0/1，三集SignalGoal ACTIVE_UNMET。**
 
 
 # TriFusion RGB–NIR–TIR ReID 完整交接（2026-09-01）
@@ -19795,3 +19795,17 @@ CPU组件实证：绝对权重直接读V与实现最大差5.96e-8；每图公共
 执行仅2026物理GPU0/1、一个双卡NN，沿用现有conda，预计prepare/M0约2分钟，完整50轮约42分钟；首M0观察不早于180秒，随后临近实际train起点+42分钟观察。必要复查180–300秒，不提前查epoch，不因本地观察超时重启。
 
 这是项目问题驱动的受控假设，绝对attention/value读取是已有运算，不能独立声称原创主模块。若没有最终增量，否定此假设，不用增加gain/改seed救结果。其他两数据集与整体创新/三集超过Signal目标尚未完成，Goal ACTIVE_UNMET；结果接近前仍不做多seed/调参。
+
+## 41.959 真实M0与原fresh50
+
+# §41.959 新绝对value读取真实M0通过并进入fresh50
+
+2026-10-14 2026-10-14T09:10:55.507852+08:00实际节点：原supervisor1393134/controller1393135存活；prepare和真实8步M0 EXIT0，fresh50 PID1395111实测存活。M0全部280训练张量获得有限非零梯度，effective updates8、bottleneck BN8、重载最大差0、role到global梯度unused。完整初始state SHA b4da64b2cf43cb3ff33cc3aca9caba8fd9d06cc91e45606c811d95e6ce6e4c5e与旧uniform-reference相同，训练参数88424906、280张量/原配置及初始化均匹配。这些是工程证据，不是最终检索收益。
+
+原fresh50于2026-10-14T09:09:11.455364+08:00开始；唯一近终态观察器localPID40956/native3948，出生2026-10-14T09:14:34.688471+08:00，在2026-10-14T09:51:11.455364+08:00读取原队列一次。按原两端约42分钟完整训练推算，非本次实测完整耗时。节点前不查epoch/NN/GPU，不重复创建观察器或重启。原M0 observer native67274已EXIT0消耗。
+
+真实训练source500保持不变。新终态报告和固定best诊断工具放在scope外，CUDA-hidden CLI/import均EXIT0，完整模型0、optimizer0、真实report/NN诊断0。只有fresh50+首次strict+supervisorEXIT0后先执行一次CPU配对报告，再封实际输入执行一次固定best完整836Q/836G用途诊断。保留原best选择和官方距离；G/C/H/F、每角色贡献、value每图均值、patch能量、实际读取变化和修复/新增错误须记录。不会将角色独立分数或源码通过报成正式增量。
+
+旧uniform-reference best/官方距离/receipt/训练batch保持。§958退休的原M0和semantic诊断向量均有D精确归档；新报告只使用已闭合旧正式结果和原距离，不重复旧M0验证；任何原verifier或其他consumer需要退休二进制时必须先恢复。新M0 probe和新best依赖保留。
+
+仅2026物理GPU0/1、seed42、原warm conda，没有多seed/倍率/学习率/车辆或温度功率操作。当前新正式成绩缺失，三个数据集全面超过Signal Goal ACTIVE_UNMET。
