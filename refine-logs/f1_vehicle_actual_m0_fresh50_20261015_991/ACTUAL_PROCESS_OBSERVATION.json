@@ -1,0 +1,103 @@
+{
+  "observed_at": "2026-10-15T22:18:27.568712+08:00",
+  "controller_proc_cmdline_live": true,
+  "campaign": {
+    "schema": "trifusion-f1-vehicle-prepare-continuation-v1",
+    "status": "RUNNING",
+    "dataset": "RGBNT100",
+    "gpu": 1,
+    "seed": 42,
+    "plan_sha256": "f8f2604a03421e3dd35f6042068ca034322d24eb21db68710841007daadf5f64",
+    "started_at": "2026-10-15T22:11:26.563365+08:00",
+    "original_failure": {
+      "dataset": "RGBNT100",
+      "gpu": 1,
+      "status": "FAILED",
+      "phase_started_at": "2026-10-15T21:03:28.891546+08:00",
+      "command": [
+        "/data/gaob/Re-ID/conda-envs/tri_reid/bin/python",
+        "-B",
+        "/data/gaob/Re-ID/Trifusion/tools/run_f1_initialized_roles.py",
+        "--dataset",
+        "RGBNT100",
+        "--mode",
+        "prepare",
+        "--protocol",
+        "/data/gaob/Re-ID/Trifusion/logs/official_three_dataset_protocols_20260923/RGBNT100.json",
+        "--signal-source",
+        "/data/gaob/Re-ID/Trifusion/comparators/Signal-cd1b0a6",
+        "--clip-weight",
+        "/data/gaob/Re-ID/Trifusion/pertrained-model/ViT-B-16.pt",
+        "--foundation-manifest",
+        "/data/gaob/Re-ID/Trifusion/refine-logs/f1_initialized_main_20261015_986/F1_BASELINE_MANIFEST_20261015.json",
+        "--signal-references",
+        "/data/gaob/Re-ID/Trifusion/refine-logs/f1_initialized_main_20261015_986/F1_SIGNAL_REFERENCES.json",
+        "--output-dir",
+        "/data/gaob/Re-ID/Trifusion/logs/f1_initialized_r2_full50_20261015_988/RGBNT100/prepare",
+        "--seed",
+        "42"
+      ],
+      "failed_phase": "prepare",
+      "returncode": 1
+    },
+    "phase_seconds": {
+      "prepare": 79.4943675629329,
+      "m0": 82.48151485901326
+    },
+    "phase": "train",
+    "phase_started_at": "2026-10-15T22:14:08.828484+08:00",
+    "command": [
+      "/data/gaob/Re-ID/conda-envs/tri_reid/bin/python",
+      "-B",
+      "/data/gaob/Re-ID/Trifusion/tools/run_f1_vehicle_initialized_roles.py",
+      "--dataset",
+      "RGBNT100",
+      "--mode",
+      "train",
+      "--protocol",
+      "/data/gaob/Re-ID/Trifusion/logs/official_three_dataset_protocols_20260923/RGBNT100.json",
+      "--signal-source",
+      "/data/gaob/Re-ID/Trifusion/comparators/Signal-cd1b0a6",
+      "--clip-weight",
+      "/data/gaob/Re-ID/Trifusion/pertrained-model/ViT-B-16.pt",
+      "--foundation-manifest",
+      "/data/gaob/Re-ID/Trifusion/refine-logs/f1_initialized_main_20261015_986/F1_BASELINE_MANIFEST_20261015.json",
+      "--signal-references",
+      "/data/gaob/Re-ID/Trifusion/refine-logs/f1_initialized_main_20261015_986/F1_SIGNAL_REFERENCES.json",
+      "--output-dir",
+      "/data/gaob/Re-ID/Trifusion/trained-model/f1_vehicle_prepare_continuation_20261015_990/RGBNT100",
+      "--seed",
+      "42"
+    ]
+  },
+  "direct_children": [
+    {
+      "pid": 404103,
+      "command": [
+        "/data/gaob/Re-ID/conda-envs/tri_reid/bin/python",
+        "-B",
+        "/data/gaob/Re-ID/Trifusion/tools/run_f1_vehicle_initialized_roles.py",
+        "--dataset",
+        "RGBNT100",
+        "--mode",
+        "train",
+        "--protocol",
+        "/data/gaob/Re-ID/Trifusion/logs/official_three_dataset_protocols_20260923/RGBNT100.json",
+        "--signal-source",
+        "/data/gaob/Re-ID/Trifusion/comparators/Signal-cd1b0a6",
+        "--clip-weight",
+        "/data/gaob/Re-ID/Trifusion/pertrained-model/ViT-B-16.pt",
+        "--foundation-manifest",
+        "/data/gaob/Re-ID/Trifusion/refine-logs/f1_initialized_main_20261015_986/F1_BASELINE_MANIFEST_20261015.json",
+        "--signal-references",
+        "/data/gaob/Re-ID/Trifusion/refine-logs/f1_initialized_main_20261015_986/F1_SIGNAL_REFERENCES.json",
+        "--output-dir",
+        "/data/gaob/Re-ID/Trifusion/trained-model/f1_vehicle_prepare_continuation_20261015_990/RGBNT100",
+        "--seed",
+        "42"
+      ]
+    }
+  ],
+  "source_seal_verified": 520,
+  "no_other_dataset_progress_queries": true
+}
