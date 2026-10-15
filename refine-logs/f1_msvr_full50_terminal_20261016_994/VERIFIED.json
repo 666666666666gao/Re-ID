@@ -1,0 +1,243 @@
+{
+  "status": "VERIFIED_F1_MSVR_FULL50_ALL_FOUR_ABOVE_FULL_SIGNAL",
+  "dataset": "MSVR310",
+  "seed": 42,
+  "selected_epoch": 13,
+  "rho": 1,
+  "outputs": {
+    "baseline_only": {
+      "mAP": 50.83882666558341,
+      "Rank-1": 68.69712351945854,
+      "Rank-5": 81.38747884940778,
+      "Rank-10": 85.95600676818951
+    },
+    "fused": {
+      "mAP": 54.38264896229109,
+      "Rank-1": 72.7580372250423,
+      "Rank-5": 84.94077834179356,
+      "Rank-10": 89.67851099830794
+    },
+    "cnn": {
+      "mAP": 50.543555196521204,
+      "Rank-1": 70.55837563451777,
+      "Rank-5": 83.92554991539764,
+      "Rank-10": 88.66328257191202
+    },
+    "transformer": {
+      "mAP": 51.766257680063,
+      "Rank-1": 69.7123519458545,
+      "Rank-5": 81.89509306260575,
+      "Rank-10": 87.1404399323181
+    },
+    "mamba": {
+      "mAP": 52.791875229284614,
+      "Rank-1": 71.2351945854484,
+      "Rank-5": 85.6175972927242,
+      "Rank-10": 90.18612521150592
+    },
+    "pure_bank": {
+      "mAP": 53.14686224657893,
+      "Rank-1": 71.57360406091371,
+      "Rank-5": 85.6175972927242,
+      "Rank-10": 90.01692047377327
+    }
+  },
+  "fused_vs_f1": {
+    "metric_delta_pp": {
+      "mAP": 3.543822296707681,
+      "Rank-1": 4.060913705583758,
+      "Rank-5": 3.5532994923857757,
+      "Rank-10": 3.7225042301184317
+    },
+    "rank1_repairs": 44,
+    "rank1_new_errors": 20,
+    "rank1_net_hits": 24,
+    "ap_groups": {
+      "kept_correct": {
+        "count": 386,
+        "map_contribution_pp": 1.7801787217085796
+      },
+      "repaired": {
+        "count": 44,
+        "map_contribution_pp": 1.7757273767990531
+      },
+      "new_error": {
+        "count": 20,
+        "map_contribution_pp": -0.5809642399641368
+      },
+      "still_wrong": {
+        "count": 141,
+        "map_contribution_pp": 0.5688804381641763
+      }
+    }
+  },
+  "fused_vs_full_signal": {
+    "metric_delta_pp": {
+      "mAP": 1.1402570353778358,
+      "Rank-1": 0.33840947546531197,
+      "Rank-5": 3.0456852791878077,
+      "Rank-10": 2.7072758037224958
+    },
+    "rank1_repairs": 36,
+    "rank1_new_errors": 34,
+    "rank1_net_hits": 2,
+    "ap_groups": {
+      "kept_correct": {
+        "count": 394,
+        "map_contribution_pp": 0.7642989104854885
+      },
+      "repaired": {
+        "count": 36,
+        "map_contribution_pp": 1.4506635070984097
+      },
+      "new_error": {
+        "count": 34,
+        "map_contribution_pp": -1.4141057260615784
+      },
+      "still_wrong": {
+        "count": 127,
+        "map_contribution_pp": 0.3394003438555048
+      }
+    }
+  },
+  "fused_vs_pure_bank": {
+    "metric_delta_pp": {
+      "mAP": 1.235786715712166,
+      "Rank-1": 1.184433164128592,
+      "Rank-5": -0.6768189509306382,
+      "Rank-10": -0.3384094754653262
+    },
+    "ap_groups": {
+      "kept_correct": {
+        "count": 415,
+        "map_contribution_pp": 0.8044559937863773
+      },
+      "repaired": {
+        "count": 15,
+        "map_contribution_pp": 0.3771763051490703
+      },
+      "new_error": {
+        "count": 8,
+        "map_contribution_pp": -0.11899914850040297
+      },
+      "still_wrong": {
+        "count": 153,
+        "map_contribution_pp": 0.1731535652771086
+      }
+    },
+    "rank1_net_hits": 7
+  },
+  "foundation_checkpoint_sha256": "d5f254e88ad27056271b47142a4cbd4cce08cfa8c9a7871406e296ec098dfba7",
+  "role_checkpoint_sha256": "8b913e7843a85469b18fdd31788a1bda077d22e5190453359e5db00a6d555181",
+  "actual_distances_sha256": "773498b152afe0b99dc7ad24c3eeadb48d49547a3426dacf1ce18433f608fa6a",
+  "full50_updates": 1000,
+  "supported_steps": 926,
+  "historical_vjp_groups": 7372,
+  "gradient_aux_to_rank_ema_ratios": {
+    "cnn": 8.416253239795886,
+    "transformer": 6.500387873345753,
+    "mamba": 7.025515482271761
+  },
+  "epoch_samples": [
+    {
+      "epoch": 1,
+      "metrics": {
+        "mAP": 49.939476946567666,
+        "Rank-1": 69.03553009033203,
+        "Rank-5": 81.38747811317444,
+        "Rank-10": 85.78680157661438
+      }
+    },
+    {
+      "epoch": 3,
+      "metrics": {
+        "mAP": 49.4620515785183,
+        "Rank-1": 68.86633038520813,
+        "Rank-5": 80.87986707687378,
+        "Rank-10": 84.77157354354858
+      }
+    },
+    {
+      "epoch": 5,
+      "metrics": {
+        "mAP": 52.51530929657342,
+        "Rank-1": 71.91201448440552,
+        "Rank-5": 84.6023678779602,
+        "Rank-10": 89.17089700698853
+      }
+    },
+    {
+      "epoch": 10,
+      "metrics": {
+        "mAP": 52.6886669870042,
+        "Rank-1": 71.235191822052,
+        "Rank-5": 84.26395654678345,
+        "Rank-10": 88.15566897392273
+      }
+    },
+    {
+      "epoch": 13,
+      "metrics": {
+        "mAP": 54.38264896229109,
+        "Rank-1": 72.75803685188293,
+        "Rank-5": 84.94077920913696,
+        "Rank-10": 89.67850804328918
+      }
+    },
+    {
+      "epoch": 20,
+      "metrics": {
+        "mAP": 52.44049070429582,
+        "Rank-1": 71.0659921169281,
+        "Rank-5": 83.92555117607117,
+        "Rank-10": 87.81725764274597
+      }
+    },
+    {
+      "epoch": 30,
+      "metrics": {
+        "mAP": 53.34363160938912,
+        "Rank-1": 71.40439748764038,
+        "Rank-5": 84.77157354354858,
+        "Rank-10": 88.83248567581177
+      }
+    },
+    {
+      "epoch": 40,
+      "metrics": {
+        "mAP": 52.527082116576466,
+        "Rank-1": 70.72758078575134,
+        "Rank-5": 84.94077920913696,
+        "Rank-10": 89.00169134140015
+      }
+    },
+    {
+      "epoch": 50,
+      "metrics": {
+        "mAP": 52.5652841367429,
+        "Rank-1": 71.40439748764038,
+        "Rank-5": 84.26395654678345,
+        "Rank-10": 88.66328001022339
+      }
+    }
+  ],
+  "full50_peak_allocated_bytes": 6938673152,
+  "full50_peak_reserved_bytes": 8552185856,
+  "terminal": {
+    "status": "COMPLETE",
+    "controller_pid": 514994,
+    "supervisor_pid": 514993,
+    "command": [
+      "/data/gaob/Re-ID/conda-envs/tri_reid/bin/python",
+      "-B",
+      "/data/gaob/Re-ID/Trifusion/tools/continue_f1_vehicle_roles.py",
+      "/data/gaob/Re-ID/Trifusion/refine-logs/f1_msvr_prepare_continuation_20261016_992/REGISTRATION.json"
+    ],
+    "started_at": "2026-10-16T02:22:07.655928+08:00",
+    "first_m0_observation": "2026-10-16T02:26:07.655928+08:00",
+    "controller_returncode": 0,
+    "completed_at": "2026-10-16T06:26:59.353756+08:00"
+  },
+  "source_seal_verified": 520,
+  "proof_scope": "Exact original OUR F1 initialization, fresh full50 one complete mAP-best E13, same formal actual Q/G encoding and two scorers, strict reload and best/D SHA verified by original remote collector. Not a legacy full-Signal initialization result; no test ratio or extra seed selection."
+}
