@@ -1,0 +1,104 @@
+{
+  "status": "VERIFIED_SEED43_RGBNT100_FULL50_TERMINAL",
+  "observed_at": "2026-10-15T15:40:22.981588+08:00",
+  "dataset": "RGBNT100",
+  "seed": 43,
+  "selected_epoch": 13,
+  "signal_metrics": {
+    "mAP": 86.32419862437284,
+    "Rank-1": 97.55102040816327,
+    "Rank-5": 97.78425655976677,
+    "Rank-10": 98.01749271137025
+  },
+  "fused_metrics": {
+    "mAP": 86.99287252042357,
+    "Rank-1": 97.25947521865889,
+    "Rank-5": 97.78425655976677,
+    "Rank-10": 98.07580174927114
+  },
+  "delta_pp": {
+    "mAP": 0.6686738960507341,
+    "Rank-1": -0.2915451895043759,
+    "Rank-5": 0.0,
+    "Rank-10": 0.05830903790088371
+  },
+  "all_four_strictly_above_signal": false,
+  "campaign_path": "/data/gaob/Re-ID/Trifusion/logs/official_extra_seed43_RGBNT100_R2_near_signal_followup_20261014_970_bestmap_e50_20260926/campaign.json",
+  "campaign_sha256": "f0b008c30198a6e34d63ae225b5dfe4913f4d63d6a2e2edb5faa0604d04901e3",
+  "training_sha256": "7d53bc894fc3a9906a521c923f5a5a4b74b466ee11f25525538ce543f9003a38",
+  "epoch_history_sha256": "710825e6aea0478154e1560f4c485badf68d50b63528cc766bc8ddaf226037a2",
+  "receipt_sha256": "9be18e0183b48f46bf4ab2ea4d30ddc1603ee2028ba0a95d6db6a5b441ef53f9",
+  "artifacts": {
+    "role_best": {
+      "path": "/data/gaob/Re-ID/Trifusion/trained-model/official_extra_seed43_RGBNT100_R2_near_signal_followup_20261014_970_bestmap_e50_20260926/RGBNT100_R2_seed43/roles_best_map.pth",
+      "bytes": 27157713,
+      "sha256": "f1b8fccae217c13d804f177a3c9c314e61284c2602fc9fb737030220905a6bc6"
+    },
+    "author_signal": {
+      "path": "/data/gaob/Re-ID/Trifusion/pertrained-model/RGBNT100_Signal_30.pth",
+      "bytes": 363308835,
+      "sha256": "09df46735a3427169ea65b9e4110dc834b99de859657bf589c9fb30ad4d4f860"
+    },
+    "official_distance": {
+      "path": "/data/gaob/Re-ID/Trifusion/trained-model/official_extra_seed43_RGBNT100_R2_near_signal_followup_20261014_970_bestmap_e50_20260926/RGBNT100_R2_seed43/official_distances.pt",
+      "bytes": 294373423,
+      "sha256": "1c1bfcff0320e8e4ec869b389c895e9afc00fa9c31dddf2a6371d9046a0afdf5"
+    },
+    "protocol": {
+      "path": "/data/gaob/Re-ID/Trifusion/logs/official_three_dataset_protocols_20260923/RGBNT100.json",
+      "bytes": 4631658,
+      "sha256": "12d8afe5cf6e537b69ccf753481dd5fd651f14b7672e1e6411a4d4e9d88cc956"
+    }
+  },
+  "source_count": 8675,
+  "source_seal_verified": 503,
+  "training_updates": 6564,
+  "exit_record": {
+    "dataset": "RGBNT100",
+    "gpu": 0,
+    "pid": 1653898,
+    "command": [
+      "/data/gaob/Re-ID/conda-envs/tri_reid/bin/python",
+      "-B",
+      "/data/gaob/Re-ID/Trifusion/tools/queue_official_extra_seed.py",
+      "--seed",
+      "43",
+      "--machine",
+      "new",
+      "--dataset",
+      "RGBNT100",
+      "--method",
+      "R2",
+      "--gpu",
+      "0",
+      "--run-label",
+      "near_signal_followup_20261014_970",
+      "--checkpoint-policy",
+      "best_official_map",
+      "--epochs",
+      "50"
+    ],
+    "started_at": "2026-10-14T12:34:47.662337+08:00",
+    "exit_code": 0,
+    "elapsed_seconds": 97097.84444352309
+  },
+  "diagnostic_execution": {
+    "command": [
+      "/data/gaob/Re-ID/conda-envs/tri_reid/bin/python",
+      "-B",
+      "/data/gaob/Re-ID/Trifusion/tools/diagnose_official_retrieval.py",
+      "--receipt",
+      "/data/gaob/Re-ID/Trifusion/trained-model/official_extra_seed43_RGBNT100_R2_near_signal_followup_20261014_970_bestmap_e50_20260926/RGBNT100_R2_seed43/official_metrics.json",
+      "--output",
+      "/data/gaob/Re-ID/Trifusion/results/seed43_rgbnt100_terminal988/RGBNT100_diagnosis.json"
+    ],
+    "pid": 12019,
+    "exit_code": 0,
+    "elapsed_seconds": 20.198358333902434
+  },
+  "nn_calls": 0,
+  "optimizer_updates_in_collection": 0,
+  "gpu_queries": 0,
+  "other_running_dataset_queries": 0,
+  "boundary": "Original ratio1 full50 seed43 one complete mAP-best checkpoint. Cold artifact/history checks and one existing saved-distance CPU diagnosis. No seed mean, metric-wise epoch mixing, new inference or training restart."
+}

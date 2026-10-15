@@ -87,7 +87,9 @@ def reload_roles(path, model, binding, protocol_digest):
 
 
 def prepare(args, protocol):
+    import numpy as np
     import torch
+    from tools.analyze_correspondence_distances import camera_scores, scene_scores
     model, cfg, config, binding = initialize(args, protocol)
     binding['dataset'] = args.dataset
     model.eval()
@@ -100,10 +102,29 @@ def prepare(args, protocol):
         assert torch.equal(direct, wrapped)
         output_mapping(model(batch, return_aux=True), widths=PLAIN_WIDTHS)
     assert before == _module_state_sha256(model)
+    parts={}
+    with torch.no_grad():
+        for split in ('query','gallery'):
+            values=[]
+            for raw in loader_for(protocol,records_for(protocol,split),training=False,method='PLAIN_V8'):
+                batch=image_batch(raw[0],raw[3]) if args.dataset=='RGBNT201' else _training_batch(raw)[0]
+                value=model(batch,retrieval_output='baseline_only')
+                values.append(torch.nn.functional.normalize(value.float(),dim=1).cpu())
+            parts[split]=torch.cat(values)
+            assert parts[split].shape==(protocol['counts'][split],1536)
+    distance=distance_matrix(parts['query'],parts['gallery'])
+    rows=[protocol['records'][split] for split in ('query','gallery')]
+    identities=[np.asarray([row['identity'] for row in records]) for records in rows]
+    env='scene' if args.dataset=='MSVR310' else 'camera'
+    environments=[np.asarray([row[env] for row in records]) for records in rows]
+    scores=(scene_scores if env=='scene' else camera_scores)(distance.numpy(),*identities,*environments)
+    assert all(abs(scores['metrics'][key]-value)<1e-5 for key,value in binding['baseline_metrics'].items())
+    assert before == _module_state_sha256(model)
     result = dict(schema=SCHEMA, status='F1_INITIALIZATION_AND_FORWARD_VERIFIED', dataset=args.dataset,
                   seed=args.seed, initializer=binding, config=config,
                   direct_f1_and_wrapped_forward_bitwise_equal=True,
-                  complete_baseline_metrics_check='At the first full-gallery endpoint evaluation',
+                  complete_baseline_metrics_check='PASS before fresh full50: actual complete query/gallery F1 retrieval',
+                  complete_f1_metrics=scores['metrics'],query_count=len(rows[0]),gallery_count=len(rows[1]),
                   completed_at=datetime.now().astimezone().isoformat())
     args.output_dir.mkdir()
     (args.output_dir/'initialization.json').write_text(json.dumps(result, indent=2)+'\n', encoding='utf-8')

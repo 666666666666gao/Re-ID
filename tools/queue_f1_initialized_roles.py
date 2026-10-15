@@ -23,7 +23,7 @@ def main():
     campaign=ROOT/plan['campaign'];train_root=ROOT/plan['training_root']
     campaign.mkdir();train_root.mkdir()
     lock=Lock()
-    status=dict(schema=plan['schema'],status='WAITING_FOR_ORIGINAL_SLOTS',plan_sha256=sha256(plan_path),
+    status=dict(schema=plan['schema'],status='RUNNING',plan_sha256=sha256(plan_path),
                 started_at=datetime.now().astimezone().isoformat(),jobs=[])
     for worker in plan['workers']:
         assert worker['gpu'] in (0,1)
@@ -70,7 +70,11 @@ def main():
         while json.loads(prior.read_bytes())['status']!='COMPLETE':time.sleep(240)
         for dataset in spec['datasets']:
             row=next(row for row in status['jobs'] if row['dataset']==dataset)
-            assert shutil.disk_usage(ROOT).free>3*1024**3
+            free=shutil.disk_usage(ROOT).free
+            while free<=3*1024**3:
+                update(row,'WAITING_FOR_DISK',free_disk_bytes=free)
+                time.sleep(240)
+                free=shutil.disk_usage(ROOT).free
             memory=subprocess.check_output(['nvidia-smi','-i',str(spec['gpu']),
                 '--query-gpu=memory.used','--format=csv,noheader,nounits'],text=True)
             assert int(memory.strip())<500
