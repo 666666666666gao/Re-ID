@@ -1,0 +1,120 @@
+{
+  "schema": "trifusion-f1-initialized-three-dataset-v1",
+  "status": "RUNNING",
+  "plan_sha256": "b8f95abd29a6203b07309ea61d5b7227bb53f6f145249314fa50f8212abd3374",
+  "started_at": "2026-10-15T16:02:01.514451+08:00",
+  "jobs": [
+    {
+      "dataset": "RGBNT201",
+      "gpu": 0,
+      "status": "COMPLETE",
+      "phase_started_at": "2026-10-16T02:09:19.395536+08:00",
+      "command": [
+        "/data/gaob/Re-ID/conda-envs/tri_reid/bin/python",
+        "-B",
+        "/data/gaob/Re-ID/Trifusion/tools/run_f1_initialized_roles.py",
+        "--dataset",
+        "RGBNT201",
+        "--mode",
+        "evaluate",
+        "--protocol",
+        "/data/gaob/Re-ID/Trifusion/logs/official_three_dataset_protocols_20260923/RGBNT201.json",
+        "--signal-source",
+        "/data/gaob/Re-ID/Trifusion/comparators/Signal-cd1b0a6",
+        "--clip-weight",
+        "/data/gaob/Re-ID/Trifusion/pertrained-model/ViT-B-16.pt",
+        "--foundation-manifest",
+        "/data/gaob/Re-ID/Trifusion/refine-logs/f1_initialized_main_20261015_986/F1_BASELINE_MANIFEST_20261015.json",
+        "--signal-references",
+        "/data/gaob/Re-ID/Trifusion/refine-logs/f1_initialized_main_20261015_986/F1_SIGNAL_REFERENCES.json",
+        "--output-dir",
+        "/data/gaob/Re-ID/Trifusion/trained-model/f1_initialized_r2_full50_20261015_988/RGBNT201",
+        "--seed",
+        "42"
+      ],
+      "phase_seconds": {
+        "prepare": 37.397486672969535,
+        "m0": 85.5788997001946,
+        "train": 36314.37749093305,
+        "evaluate": 46.844418321037665
+      },
+      "metrics_path": "/data/gaob/Re-ID/Trifusion/trained-model/f1_initialized_r2_full50_20261015_988/RGBNT201/official_metrics.json",
+      "metrics": {
+        "mAP": 77.24752691163506,
+        "Rank-1": 80.98086124401914,
+        "Rank-5": 88.27751196172248,
+        "Rank-10": 92.46411483253588
+      },
+      "signal_delta_pp": {
+        "mAP": -3.055365857528315,
+        "Rank-1": -4.186602870813402,
+        "Rank-5": -3.1100478468899553,
+        "Rank-10": -1.1961722488038191
+      },
+      "all_four_above_full_signal": false,
+      "completed_at": "2026-10-16T02:10:06.246820+08:00"
+    },
+    {
+      "dataset": "MSVR310",
+      "gpu": 0,
+      "status": "FAILED",
+      "phase_started_at": "2026-10-16T02:10:06.406359+08:00",
+      "command": [
+        "/data/gaob/Re-ID/conda-envs/tri_reid/bin/python",
+        "-B",
+        "/data/gaob/Re-ID/Trifusion/tools/run_f1_initialized_roles.py",
+        "--dataset",
+        "MSVR310",
+        "--mode",
+        "prepare",
+        "--protocol",
+        "/data/gaob/Re-ID/Trifusion/logs/official_three_dataset_protocols_20260923/MSVR310.json",
+        "--signal-source",
+        "/data/gaob/Re-ID/Trifusion/comparators/Signal-cd1b0a6",
+        "--clip-weight",
+        "/data/gaob/Re-ID/Trifusion/pertrained-model/ViT-B-16.pt",
+        "--foundation-manifest",
+        "/data/gaob/Re-ID/Trifusion/refine-logs/f1_initialized_main_20261015_986/F1_BASELINE_MANIFEST_20261015.json",
+        "--signal-references",
+        "/data/gaob/Re-ID/Trifusion/refine-logs/f1_initialized_main_20261015_986/F1_SIGNAL_REFERENCES.json",
+        "--output-dir",
+        "/data/gaob/Re-ID/Trifusion/logs/f1_initialized_r2_full50_20261015_988/MSVR310/prepare",
+        "--seed",
+        "42"
+      ],
+      "failed_phase": "prepare",
+      "returncode": 1
+    },
+    {
+      "dataset": "RGBNT100",
+      "gpu": 1,
+      "status": "FAILED",
+      "phase_started_at": "2026-10-15T21:03:28.891546+08:00",
+      "command": [
+        "/data/gaob/Re-ID/conda-envs/tri_reid/bin/python",
+        "-B",
+        "/data/gaob/Re-ID/Trifusion/tools/run_f1_initialized_roles.py",
+        "--dataset",
+        "RGBNT100",
+        "--mode",
+        "prepare",
+        "--protocol",
+        "/data/gaob/Re-ID/Trifusion/logs/official_three_dataset_protocols_20260923/RGBNT100.json",
+        "--signal-source",
+        "/data/gaob/Re-ID/Trifusion/comparators/Signal-cd1b0a6",
+        "--clip-weight",
+        "/data/gaob/Re-ID/Trifusion/pertrained-model/ViT-B-16.pt",
+        "--foundation-manifest",
+        "/data/gaob/Re-ID/Trifusion/refine-logs/f1_initialized_main_20261015_986/F1_BASELINE_MANIFEST_20261015.json",
+        "--signal-references",
+        "/data/gaob/Re-ID/Trifusion/refine-logs/f1_initialized_main_20261015_986/F1_SIGNAL_REFERENCES.json",
+        "--output-dir",
+        "/data/gaob/Re-ID/Trifusion/logs/f1_initialized_r2_full50_20261015_988/RGBNT100/prepare",
+        "--seed",
+        "42"
+      ],
+      "failed_phase": "prepare",
+      "returncode": 1
+    }
+  ]
+}
