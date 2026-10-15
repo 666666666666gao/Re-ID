@@ -1,0 +1,107 @@
+{
+  "status": "VERIFIED_SEED44_RGBNT100_FULL50_TERMINAL",
+  "observed_at": "2026-10-15T21:40:50.255834+08:00",
+  "dataset": "RGBNT100",
+  "seed": 44,
+  "selected_epoch": 8,
+  "signal_metrics": {
+    "mAP": 86.32419862437284,
+    "Rank-1": 97.55102040816327,
+    "Rank-5": 97.78425655976677,
+    "Rank-10": 98.01749271137025
+  },
+  "fused_metrics": {
+    "mAP": 87.44677171865702,
+    "Rank-1": 97.72594752186589,
+    "Rank-5": 98.01749271137025,
+    "Rank-10": 98.19241982507289
+  },
+  "delta_pp": {
+    "mAP": 1.1225730942841778,
+    "Rank-1": 0.1749271137026227,
+    "Rank-5": 0.233236151603478,
+    "Rank-10": 0.17492711370263692
+  },
+  "all_four_strictly_above_signal": true,
+  "campaign_path": "/data/gaob/Re-ID/Trifusion/logs/official_extra_seed44_RGBNT100_R2_near_signal_rgbnt100_seed44_20261014_982_bestmap_e50_20260926/campaign.json",
+  "campaign_sha256": "88589f879b5cc29c3504312c506af76edb367a2617ac722878076edaad5aba95",
+  "training_sha256": "bd9b014c8e7a0a690e37fc802135498a3eaf639348bc497fd058ae300bcef933",
+  "epoch_history_sha256": "1703fa1deec263d0d976bf22288f396395647a967c7ff00feea0a4c194a714c0",
+  "receipt_sha256": "e56a593dcaee37832a66e82f4d5747a02c389b47db89b44590bace9dddd68196",
+  "artifacts": {
+    "role_best": {
+      "path": "/data/gaob/Re-ID/Trifusion/trained-model/official_extra_seed44_RGBNT100_R2_near_signal_rgbnt100_seed44_20261014_982_bestmap_e50_20260926/RGBNT100_R2_seed44/roles_best_map.pth",
+      "bytes": 27157713,
+      "sha256": "45c7d8fbd4fe9397d5b2618e97d99fbd1391fb06f722f3a631ee23663c2f7e8f"
+    },
+    "author_signal": {
+      "path": "/data/gaob/Re-ID/Trifusion/pertrained-model/RGBNT100_Signal_30.pth",
+      "bytes": 363308835,
+      "sha256": "09df46735a3427169ea65b9e4110dc834b99de859657bf589c9fb30ad4d4f860"
+    },
+    "official_distance": {
+      "path": "/data/gaob/Re-ID/Trifusion/trained-model/official_extra_seed44_RGBNT100_R2_near_signal_rgbnt100_seed44_20261014_982_bestmap_e50_20260926/RGBNT100_R2_seed44/official_distances.pt",
+      "bytes": 294373423,
+      "sha256": "c9b5fe719ac3acc2c58ffd49e996ee81aa885fc485aab92e873d608b28dac885"
+    },
+    "protocol": {
+      "path": "/data/gaob/Re-ID/Trifusion/logs/official_three_dataset_protocols_20260923/RGBNT100.json",
+      "bytes": 4631658,
+      "sha256": "12d8afe5cf6e537b69ccf753481dd5fd651f14b7672e1e6411a4d4e9d88cc956"
+    }
+  },
+  "source_count": 8675,
+  "source_seal_verified": 503,
+  "training_updates": 6564,
+  "exit_record": {
+    "dataset": "RGBNT100",
+    "seed": 44,
+    "gpu": 1,
+    "pid": 2648730,
+    "command": [
+      "/data/gaob/Re-ID/conda-envs/tri_reid/bin/python",
+      "-B",
+      "/data/gaob/Re-ID/Trifusion/tools/queue_official_extra_seed.py",
+      "--seed",
+      "44",
+      "--machine",
+      "new",
+      "--dataset",
+      "RGBNT100",
+      "--method",
+      "R2",
+      "--gpu",
+      "1",
+      "--run-label",
+      "near_signal_rgbnt100_seed44_20261014_982",
+      "--checkpoint-policy",
+      "best_official_map",
+      "--epochs",
+      "50"
+    ],
+    "started_at": "2026-10-14T18:36:34.460774+08:00",
+    "exit_code": 0,
+    "elapsed_seconds": 91817.64332334301,
+    "completed_at": "2026-10-15T20:06:52.103697+08:00",
+    "source_seal_unchanged": true
+  },
+  "diagnostic_execution": {
+    "command": [
+      "/data/gaob/Re-ID/conda-envs/tri_reid/bin/python",
+      "-B",
+      "/data/gaob/Re-ID/Trifusion/tools/diagnose_official_retrieval.py",
+      "--receipt",
+      "/data/gaob/Re-ID/Trifusion/trained-model/official_extra_seed44_RGBNT100_R2_near_signal_rgbnt100_seed44_20261014_982_bestmap_e50_20260926/RGBNT100_R2_seed44/official_metrics.json",
+      "--output",
+      "/data/gaob/Re-ID/Trifusion/results/seed44_rgbnt100_terminal990/RGBNT100_diagnosis.json"
+    ],
+    "pid": 396889,
+    "exit_code": 0,
+    "elapsed_seconds": 18.906058757100254
+  },
+  "nn_calls": 0,
+  "optimizer_updates_in_collection": 0,
+  "gpu_queries": 0,
+  "other_running_dataset_queries": 0,
+  "boundary": "Original ratio1 full50 seed44 one complete mAP-best checkpoint. Cold artifact/history checks and one existing saved-distance CPU diagnosis. No seed mean, metric-wise epoch mixing, new inference or training restart."
+}

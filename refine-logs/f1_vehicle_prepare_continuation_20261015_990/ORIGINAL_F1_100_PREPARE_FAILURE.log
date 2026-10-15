@@ -1,0 +1,27 @@
+/data/gaob/Re-ID/conda-envs/tri_reid/lib/python3.10/site-packages/timm/models/helpers.py:7: FutureWarning: Importing from timm.models.helpers is deprecated, please import via timm.models
+  warnings.warn(f"Importing from {__name__} is deprecated, please import via timm.models", FutureWarning)
+/data/gaob/Re-ID/conda-envs/tri_reid/lib/python3.10/site-packages/timm/models/registry.py:4: FutureWarning: Importing from timm.models.registry is deprecated, please import via timm.models
+  warnings.warn(f"Importing from {__name__} is deprecated, please import via timm.models", FutureWarning)
+/data/gaob/Re-ID/conda-envs/tri_reid/lib/python3.10/site-packages/timm/models/layers/__init__.py:48: FutureWarning: Importing from timm.models.layers is deprecated, please import via timm.layers
+  warnings.warn(f"Importing from {__name__} is deprecated, please import via timm.layers", FutureWarning)
+建立transformer............
+using Transformer_type: ViT-B-16 as a backbone
+Resized position embedding: %s to %s torch.Size([197, 768]) torch.Size([129, 768])
+Position embedding resize to height:8 width: 16
+Successfully load ckpt!
+<All keys matched successfully>
+Loading pretrained model from CLIP
+camera number is : 8
+===========Building Signal===========
+Traceback (most recent call last):
+  File "/data/gaob/Re-ID/Trifusion/tools/run_f1_initialized_roles.py", line 283, in <module>
+    if __name__=='__main__':main()
+  File "/data/gaob/Re-ID/Trifusion/tools/run_f1_initialized_roles.py", line 280, in main
+    {'prepare':prepare,'m0':train,'train':train,'evaluate':evaluate}[args.mode](args,protocol)
+  File "/data/gaob/Re-ID/Trifusion/tools/run_f1_initialized_roles.py", line 93, in prepare
+    model, cfg, config, binding = initialize(args, protocol)
+  File "/data/gaob/Re-ID/Trifusion/tools/run_f1_initialized_roles.py", line 62, in initialize
+    return build_model(protocol, args.signal_source, args.clip_weight, args.foundation_manifest, seed=args.seed)
+  File "/data/gaob/Re-ID/Trifusion/tools/f1_initialized_model.py", line 58, in build_model
+    role_config['SIGNAL'].update(SOURCE=str(source), CONFIG=str(source/'configs'/name/'Signal.yml'),
+KeyError: 'SIGNAL'
