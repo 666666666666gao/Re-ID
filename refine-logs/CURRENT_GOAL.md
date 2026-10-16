@@ -1,3 +1,9 @@
+# 2026-10-16 §41.1001 — latest verified state
+
+Read master §41.1001 and refine-logs/f1_closed_m0_storage_20261016_1001/REPORT.md. Scientific results unchanged from§1000. Four CLOSED 201/MSVR M0 probes and three OLD region-use full50 bests have verified exact D-drive copies; remote duplicates retired. Restore original bytes from F1_MONOTONE_M0_RETENTION1001.json/F1_R2_M0_RETENTION1001.json/REGION3_USE_SPACE_RECOVERY1001.json before their weight consumers. All4 CURRENT formal bests/actual D and526 sources protected. Actual disk exceeded registered3GiB after cleanup; original100 remains23:37 samehandle/job, no early queries or restart. New100 follows original queue. Only F1 init; Signal PAPER targets; newMSVR54.6011/73.2657 saved, no more MSVR search;201 stillunmet. Goal ACTIVE_UNMET.
+
+Earlier dated sections below are historical.
+
 # 2026-10-16 §41.1000 — latest verified state
 
 Read sole master §41.1000 and refine-logs/f1_monotone_msvr_full50_terminal_20261016_1000/VERIFIED.json. F1 only, Signal PAPER Table1/Table2 targets (§998), local Signal diagnostic only. New monotone MSVR complete50 E9/seed42/rho1=54.6010843/73.2656514, paper+1.0010843/+1.3656514; preserve whole best/D and stop MSVR search. Old R2 E13 remains matched control, no mix. New201 complete50=77.3607/80.8612 stillbelowpaper; no new seeds/params. OriginalF1 100 only23:37:03.398458+08 native78190/same originaljob; new100 follows automatically. Missing observer/SSH timeout is not NN terminal or permission to restart. New526 sources immutable, only26GPU0/1 oneNN/card; no automaticnewGPU0 queue. All bests/D/exact-D restoration obligations remain. Complete current3 version before new mechanism. Goal ACTIVE_UNMET.
