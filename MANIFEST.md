@@ -2700,3 +2700,5 @@ MSVR/100使用相同新候选目录中的各自dataset，以及原f1_vehicle_pre
 2026-10-16 §41.998: 已核对Signal论文表1/表2并新增 refine-logs/f1_signal_paper_target_20261016_998/SIGNAL_PAPER_TARGETS.json 与 refine-logs/f1_signal_paper_target_20261016_998/CURRENT_F1_VS_SIGNAL_PAPER.json；它们是用户目标门槛与已闭环F1结果重算，不是新NN或新科研结果。主线只从F1初始化，本机Signal仅诊断；见唯一master §998，原观察节点不变。
 
 2026-10-16 §41.999: refine-logs/f1_monotone201_full50_terminal_20261016_999/ 含新F1单调AP 201全50正式终端/匹配R2 CPU报告/全步方向日志及MSVR真实M0与fresh50证据；原观察器缺失只读恢复原job，无重训。论文目标仍未完成，后继按20:58/23:37原节点。
+
+2026-10-16 §41.1000: refine-logs/f1_monotone_msvr_full50_terminal_20261016_1000/ 保存新F1单调AP MSVR完整50终端、实际D/角色SHA、同预算R2 CPU报告与完整训练方向日志；论文主指标各+1已达。201仍未达，原100只23:37，Goal ACTIVE_UNMET。

@@ -1,0 +1,196 @@
+{
+  "status": "VERIFIED_MONOTONE_F1_MSVR_FULL50_ABOVE_SIGNAL_PAPER_PLUS_ONE_MAIN",
+  "dataset": "MSVR310",
+  "method": "F1_MONOTONE_AP",
+  "seed": 42,
+  "selected_epoch": 9,
+  "rho": 1,
+  "source_commit": "9fe5690572d964f9320a5329038b0ae04f280192",
+  "training_epochs": 50,
+  "foundation_training_epochs": 50,
+  "outputs": {
+    "baseline_only": {
+      "mAP": 50.83882666558341,
+      "Rank-1": 68.69712351945854,
+      "Rank-5": 81.38747884940778,
+      "Rank-10": 85.95600676818951
+    },
+    "fused": {
+      "mAP": 54.60108427386259,
+      "Rank-1": 73.26565143824027,
+      "Rank-5": 83.75634517766497,
+      "Rank-10": 87.9864636209814
+    },
+    "cnn": {
+      "mAP": 49.632006399936785,
+      "Rank-1": 68.18950930626058,
+      "Rank-5": 82.74111675126903,
+      "Rank-10": 86.12521150592217
+    },
+    "transformer": {
+      "mAP": 51.81261253387023,
+      "Rank-1": 70.55837563451777,
+      "Rank-5": 81.89509306260575,
+      "Rank-10": 85.6175972927242
+    },
+    "mamba": {
+      "mAP": 52.032405892984066,
+      "Rank-1": 72.25042301184433,
+      "Rank-5": 84.60236886632826,
+      "Rank-10": 88.83248730964468
+    },
+    "pure_bank": {
+      "mAP": 53.39718674636714,
+      "Rank-1": 72.25042301184433,
+      "Rank-5": 83.92554991539764,
+      "Rank-10": 88.3248730964467
+    }
+  },
+  "paper_targets": {
+    "mAP": 53.6,
+    "Rank-1": 71.9
+  },
+  "paper_target_file_sha256": "82f3590a11ea37f8c37c39b758e2571fac50e1509185e75942be30325ef1d930",
+  "paper_delta_pp": {
+    "mAP": 1.0010842738625882,
+    "Rank-1": 1.3656514382402634
+  },
+  "all_paper_metrics_strictly_exceeded": true,
+  "main_metrics_at_least_plus_one_pp": true,
+  "matched_R2_comparison": {
+    "metric_delta_pp": {
+      "mAP": 0.21843531157149698,
+      "Rank-1": 0.507614213197968,
+      "Rank-5": -1.184433164128592,
+      "Rank-10": -1.6920473773265456
+    },
+    "rank1_repairs": 17,
+    "rank1_new_errors": 14,
+    "rank1_net_hits": 3,
+    "ap_groups": {
+      "kept_correct": {
+        "count": 416,
+        "map_contribution_pp": 0.06388078574418816
+      },
+      "repaired": {
+        "count": 17,
+        "map_contribution_pp": 0.6004888122171844
+      },
+      "new_error": {
+        "count": 14,
+        "map_contribution_pp": -0.39640675944236486
+      },
+      "still_wrong": {
+        "count": 144,
+        "map_contribution_pp": -0.04952752694750734
+      }
+    }
+  },
+  "fused_vs_f1": {
+    "metric_delta_pp": {
+      "mAP": 3.762257608279178,
+      "Rank-1": 4.568527918781726,
+      "Rank-5": 2.368866328257184,
+      "Rank-10": 2.030456852791886
+    },
+    "rank1_repairs": 45,
+    "rank1_new_errors": 18,
+    "rank1_net_hits": 27,
+    "ap_groups": {
+      "kept_correct": {
+        "count": 388,
+        "map_contribution_pp": 1.7522447846368026
+      },
+      "repaired": {
+        "count": 45,
+        "map_contribution_pp": 2.0379053245966605
+      },
+      "new_error": {
+        "count": 18,
+        "map_contribution_pp": -0.4782435213425093
+      },
+      "still_wrong": {
+        "count": 140,
+        "map_contribution_pp": 0.4503510203882192
+      }
+    }
+  },
+  "fused_vs_pure_bank": {
+    "metric_delta_pp": {
+      "mAP": 1.2038975274954495,
+      "Rank-1": 1.015228426395936,
+      "Rank-5": -0.1692047377326702,
+      "Rank-10": -0.33840947546529776
+    },
+    "rank1_repairs": 16,
+    "rank1_new_errors": 10,
+    "rank1_net_hits": 6,
+    "ap_groups": {
+      "kept_correct": {
+        "count": 417,
+        "map_contribution_pp": 0.8385678556547065
+      },
+      "repaired": {
+        "count": 16,
+        "map_contribution_pp": 0.4255884585740164
+      },
+      "new_error": {
+        "count": 10,
+        "map_contribution_pp": -0.18157675370583604
+      },
+      "still_wrong": {
+        "count": 148,
+        "map_contribution_pp": 0.12131796697255723
+      }
+    }
+  },
+  "optimizer_steps": 1000,
+  "supported_steps": 926,
+  "historical_vjp_groups": 7372,
+  "training_integrity": {
+    "frozen_state_unchanged": true,
+    "missing_nonzero_gradients": [],
+    "overflow_events": 0
+  },
+  "formal_full50_peak_allocated_bytes": 7016826880,
+  "formal_full50_peak_reserved_bytes": 8768192512,
+  "ranking_diagnostics": {
+    "cnn": {
+      "zero_ranking_norm_steps": 0,
+      "median_aux_to_rank_norm": 5.239606395871425,
+      "ranking_aux_cosine_median": 0.20895275609808756,
+      "actual_step_ascent_cosine_gt_1e_minus6_updates": 33
+    },
+    "transformer": {
+      "zero_ranking_norm_steps": 0,
+      "median_aux_to_rank_norm": 4.729834797827065,
+      "ranking_aux_cosine_median": 0.23193880880278206,
+      "actual_step_ascent_cosine_gt_1e_minus6_updates": 61
+    },
+    "mamba": {
+      "zero_ranking_norm_steps": 0,
+      "median_aux_to_rank_norm": 5.286819776137356,
+      "ranking_aux_cosine_median": 0.2117339481736938,
+      "actual_step_ascent_cosine_gt_1e_minus6_updates": 47
+    }
+  },
+  "sampled_scores_only": {
+    "count": 47,
+    "samples_with_misordered_pairs": 18,
+    "old_positive_wrong_gradient_scores": 161,
+    "new_positive_wrong_gradient_scores": 0,
+    "scope": "First eligible update per epoch only, not all training relationships."
+  },
+  "evidence_sha256": {
+    "training": "177676ac1f22749dc7dbdadd7d735fec29c72ab91eb68c89698e09aa2a861ae6",
+    "official": "64647778865bbb43a40c691af9fc21fb95f13a66f351ec4c144f7d4f6cf24875",
+    "epoch_history": "ce9bbb52b59d0aed2038d6b2a0dd2ca54a1eecb1172a461c0d56d8c947c228ca",
+    "training_steps": "9d156399af465fb7f65e0bb474637f8a2cd99402058af5fb5abf690480bf1eec",
+    "control_receipt": "311a5d0df8cad436cb7284f8ac1f25ba6bae5fa0f83fe5d4141d4a6e362f064a",
+    "role": "64a5db31fb1fbc5b02badaf787ac7dd163989b6ec923e999008290abbaa6a269",
+    "actual_distances": "cf76c169a14bc494240ff39fae5984a4cd08050ee780d5cddf561c881cd3f9a1"
+  },
+  "cpu_report_sha256": "218c4918b0914016aec6929127bb8b0689441c3f808c829374f6983648869069",
+  "retention": "Keep this actual whole E9 checkpoint, exact official D, original F1, and matched old R2 control. No extra MSVR seed/config search after the paper target is met.",
+  "scope": "Single actual whole best after full50. Paper reference only mAP/R1. Supplementary Rank5/10 are lower than old R2, though both remain above local Signal; do not call every metric improved or claim stability/novelty from this model alone."
+}

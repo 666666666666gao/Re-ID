@@ -1,3 +1,9 @@
+# 2026-10-16 §41.1000 — latest verified state
+
+Read sole master §41.1000 and refine-logs/f1_monotone_msvr_full50_terminal_20261016_1000/VERIFIED.json. F1 only, Signal PAPER Table1/Table2 targets (§998), local Signal diagnostic only. New monotone MSVR complete50 E9/seed42/rho1=54.6010843/73.2656514, paper+1.0010843/+1.3656514; preserve whole best/D and stop MSVR search. Old R2 E13 remains matched control, no mix. New201 complete50=77.3607/80.8612 stillbelowpaper; no new seeds/params. OriginalF1 100 only23:37:03.398458+08 native78190/same originaljob; new100 follows automatically. Missing observer/SSH timeout is not NN terminal or permission to restart. New526 sources immutable, only26GPU0/1 oneNN/card; no automaticnewGPU0 queue. All bests/D/exact-D restoration obligations remain. Complete current3 version before new mechanism. Goal ACTIVE_UNMET.
+
+Earlier dated sections below are historical.
+
 # 2026-10-16 §41.999 — latest verified state
 
 F1是唯一主线起点，达标按Signal论文表1/表2（§998 JSON），本地Signal仅诊断。最新新单调AP 201完整50结果及失败诊断见§999/refine-logs/f1_monotone201_full50_terminal_20261016_999/REPORT.md，原R2/new monotone版本分开，不混指标。新MSVR M0通过且实际16:59:45 fresh50，原控制器564175/子进程1093993在17:01:30命令核验存活；只在20:58:18.567180+08直接观察同一任务，不新建本地长睡观察器。原201观察器34516已缺失并以一次只读原job恢复闭环，不重启NN。原100仍23:37:03原节点/原任务，新100按队列接续。源码526不热改，仅26 GPU0/1每卡一正式任务。先收齐该版本三集50，不因201微增立即加seed/调参/新方法；原R2 MSVR达论文已保护，保留全部best/D/exact-D恢复义务。Goal ACTIVE_UNMET。
