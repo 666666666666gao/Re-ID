@@ -2696,3 +2696,5 @@ python -B tools/report_f1_monotone_terminal.py --run /data/gaob/Re-ID/Trifusion/
 MSVR/100使用相同新候选目录中的各自dataset，以及原f1_vehicle_prepare_continuation_20261015_990中同dataset完整F1/R2 official_metrics.json；只有原端COMPLETE才执行，不轮询或自动重训。分析源码独立于运行中的526份神经源码，部署前后逐项核验原526不变，学习实际版本仍9fe56905及原计划f7495552...。
 
 科学账本保持：原F1 20177.2475/80.9809未达Signal，MSVR54.3826/72.7580四项已胜，原100最终端待23:37。新单调AP 20106:54 fresh50、原观察器34516只在16:56读取；MSVR随后、新100待原100后接续。没有提前检查本地原观察器/epoch/GPU或新增seed/参数候选；当前best、实际D和全部exact-D恢复义务保留。Goal ACTIVE_UNMET。
+
+2026-10-16 §41.998: 已核对Signal论文表1/表2并新增 refine-logs/f1_signal_paper_target_20261016_998/SIGNAL_PAPER_TARGETS.json 与 refine-logs/f1_signal_paper_target_20261016_998/CURRENT_F1_VS_SIGNAL_PAPER.json；它们是用户目标门槛与已闭环F1结果重算，不是新NN或新科研结果。主线只从F1初始化，本机Signal仅诊断；见唯一master §998，原观察节点不变。

@@ -1,3 +1,19 @@
+# 2026-10-16 §41.998 — latest user requirement
+
+用户明确：超过Signal指超过论文原表，不以本机复现成绩作为达标门槛。已于2026-10-16直接核对Signal原论文PDF第6页（表1、表2）：RGBNT201 mAP/R1/R5/R10为80.3/85.2/91.4/93.7；RGBNT100 mAP/R1为86.3/97.6；MSVR310为53.6/71.9。车辆主表未报告R5/R10，不虚构论文门槛。用同一份完整模型的未四舍五入实测指标逐项严格比较，持平不算超过；主指标争取各约+1点是单列的进一步目标。
+
+唯一主线固定为我们自己完整50轮训练的F1 best初始化，再训练新增角色，不加载完整Signal权重或教师。既有本地Signal距离、修复/损伤与差值继续作为受控诊断，明确标为local Signal；旧完整Signal初始化成绩不进入当前Ours主表。原记录和运行中的评价源码不改写，后续完整终端报告同时依据本节SIGNAL_PAPER_TARGETS.json给出独立论文达标判断。
+
+按论文门槛重新计算，原F1+R2 201 E3完整模型77.2475269/80.9808612/88.2775120/92.4641148，四项差值为-3.0524731/-4.2191388/-3.1224880/-1.2358852点，仍未达标。MSVR E13为54.3826490/72.7580372，对论文主指标分别+0.7826490/+0.8580372点，已严格超过；距54.6/72.9的+1参考分别0.2173510/0.1419628点。100原F1完整端点尚未取得，不依据ETA补写结果。
+
+先收齐已登记的新单调AP三集默认配置完整50轮；原R2和新目标是两套明确命名的版本，不混成一个方法结果。201仍有数点差距，完成当前机制实验，不追加seed掩盖差距。MSVR保存有效模型，后续只做有明确理由的有限数据集配置适配；当前不为追求精确+1立即新增搜索。接近后优先保留模块调整该集内部宽度/深度/比例等配置，极接近时可有限训练参数/seed比较；全部公开候选和一份完整best，不均值、不跨epoch/seed拼指标。仅数据集配置适配无需让其他已达标数据集重复训练；改变主目标/模块/连接则作为新方法版本检验三集。
+
+此次仅更新目标和证据文档/JSON，没有新的NN、GPU或job进度查询，也没有重启任务、改动当前526份封存神经来源、旧报告997或已登记队列。新201原观察器34516仍只在16:56:47+08消费，原100仍23:37:03；原MSVR best、201 best、所有实际D及exact-D恢复义务保留。Goal ACTIVE_UNMET。
+
+论文原文：https://arxiv.org/pdf/2511.17965
+
+Earlier dated sections below are historical.
+
 ## 2026-10-14 §949 complete fixed-best and saved-region diagnostics
 
 2026-10-14 §949: three fixed-best NN diagnoses49.143/47.780/49.171s allREMOTE EXIT0/stateunchanged/officialFdist0/updates0; ownG metrics equalindependentglobal74.2967/78.9474. cAP3.8703/6.4034/4.5805,normratios.03425/.04252/.03578; notcause/noiseproof. Originalnative2569 be4a05 localbase64 decoderFAIL1 AFTERremote3success/transport0; localonly8156dc recovery0/noextraSSH/NN. OriginalCPUcomparison12599 800e5c EXIT0 once/6pairs/12localrankings/fulllegalgallery/0NN, processedMaxSim5.5352/11.5770/6.5800, reference9.9460/16.7888/7.9856. No staticglobal fusion search/newformal scores/teacherclaim/compressioncausalproof. Original3trainingclosed; nextinvestigate rawCLIPpatch beforelearnedroleprojection, notretuneoldproduct orrepeatgradientmask. ClearCLIP abstract/officialrepo read only, noinstall/import/run/segconclusions-as-ReIDcauses. Bests/archives/source kept/noT-P/vehicle/seeds/envchanges; fullall3SignalGoalACTIVE_UNMET.
