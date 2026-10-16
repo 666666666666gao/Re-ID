@@ -2704,3 +2704,5 @@ MSVR/100使用相同新候选目录中的各自dataset，以及原f1_vehicle_pre
 2026-10-16 §41.1000: refine-logs/f1_monotone_msvr_full50_terminal_20261016_1000/ 保存新F1单调AP MSVR完整50终端、实际D/角色SHA、同预算R2 CPU报告与完整训练方向日志；论文主指标各+1已达。201仍未达，原100只23:37，Goal ACTIVE_UNMET。
 
 2026-10-16 §41.1001: refine-logs/f1_closed_m0_storage_20261016_1001/ 记录四份闭环M0及三份旧region50轮权重D盘精确归档/远端重复文件定点移除，恢复原100启动空间；四个当前best/D及526来源不变。旧权重消费者需按三份清单恢复；无新NN或科研结果。
+
+2026-10-17 §41.1002: refine-logs/f1_original100_and_monotone_continuation_20261017_1002/ 含原F1/R2 100完整终端、三集账本/原步日志、精确归档与新100同方法CPU磁盘等待接续登记；独立控制CLI通过、未实际执行。原526学习来源不变，528新增控制输入；Goal ACTIVE_UNMET。

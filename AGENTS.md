@@ -1,3 +1,9 @@
+# 2026-10-17 §41.1002 — latest verified state and registered continuation
+
+Read sole master §41.1002 and refine-logs/f1_original100_and_monotone_continuation_20261017_1002/REGISTRATION.json/REPORT.md. Original F1_R2 all3 full50 COMPLETE;100 E5=84.8051/97.1429 below PAPER86.3/97.6. Newmonotone201 belowtarget,MSVR E9=54.6011/73.2657 paper+1.0011/+1.3657 saved/no moresearch. New100 NEVER NN:00:02 originalparent564175 live WAITING_FOR_DISK/nochildren/no100dirs. Only registered independent continuation may proceed after rechecking/closing this CPUwait before any100NN; same model/init/seed42/realM0/fresh50/eval, same planned unused100paths, measured0.45GB budget supports2GiB admission. Old526 NN sources unchanged; newcontroller+paper JSON makes528. Registration/deployment is not actual launch. No201/MSVR rerun/newmethod/config/seed. Exact archives now also F1_100_STORAGE_RETENTION1002.json and HISTORICAL_PLAIN_RETENTION1002.json; restore original bytes before their oldweight consumers. Fivecurrent best/D andF1/Signal inputs protected. Only26GPU1 forcontinuation, no environmentchanges/otherGPU/temp/power. Goal ACTIVE_UNMET.
+
+Earlier dated sections below are historical.
+
 # 2026-10-16 §41.1001 — latest verified state
 
 Read master §41.1001 and refine-logs/f1_closed_m0_storage_20261016_1001/REPORT.md. Scientific results unchanged from§1000. Four CLOSED 201/MSVR M0 probes and three OLD region-use full50 bests have verified exact D-drive copies; remote duplicates retired. Restore original bytes from F1_MONOTONE_M0_RETENTION1001.json/F1_R2_M0_RETENTION1001.json/REGION3_USE_SPACE_RECOVERY1001.json before their weight consumers. All4 CURRENT formal bests/actual D and526 sources protected. Actual disk exceeded registered3GiB after cleanup; original100 remains23:37 samehandle/job, no early queries or restart. New100 follows original queue. Only F1 init; Signal PAPER targets; newMSVR54.6011/73.2657 saved, no more MSVR search;201 stillunmet. Goal ACTIVE_UNMET.
