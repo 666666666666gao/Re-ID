@@ -1,0 +1,267 @@
+{
+  "status": "VERIFIED_MONOTONE_F1_201_FULL50_NOT_ABOVE_SIGNAL_PAPER",
+  "dataset": "RGBNT201",
+  "seed": 42,
+  "selected_epoch": 3,
+  "rho": 1,
+  "metrics": {
+    "mAP": 77.36069770895058,
+    "Rank-1": 80.86124401913875,
+    "Rank-5": 88.39712918660287,
+    "Rank-10": 92.46411483253588
+  },
+  "paper_targets": {
+    "mAP": 80.3,
+    "Rank-1": 85.2,
+    "Rank-5": 91.4,
+    "Rank-10": 93.7
+  },
+  "paper_target_file_sha256": "82f3590a11ea37f8c37c39b758e2571fac50e1509185e75942be30325ef1d930",
+  "paper_delta_pp": {
+    "mAP": -2.9393022910494153,
+    "Rank-1": -4.338755980861251,
+    "Rank-5": -3.002870813397138,
+    "Rank-10": -1.2358851674641187
+  },
+  "all_paper_metrics_strictly_exceeded": false,
+  "matched_R2_comparison": {
+    "metric_delta_pp": {
+      "mAP": 0.11317079731551871,
+      "Rank-1": -0.11961722488038617,
+      "Rank-5": 0.11961722488038617,
+      "Rank-10": 0.0
+    },
+    "rank1_repairs": 1,
+    "rank1_new_errors": 2,
+    "rank1_net_hits": -1,
+    "ap_groups": {
+      "kept_correct": {
+        "count": 675,
+        "map_contribution_pp": 0.07861821673176665
+      },
+      "repaired": {
+        "count": 1,
+        "map_contribution_pp": 0.005980861244019144
+      },
+      "new_error": {
+        "count": 2,
+        "map_contribution_pp": -0.007666019718055198
+      },
+      "still_wrong": {
+        "count": 158,
+        "map_contribution_pp": 0.03623773905778739
+      }
+    }
+  },
+  "fused_vs_pure_bank": {
+    "metric_delta_pp": {
+      "mAP": -0.7714441032008637,
+      "Rank-1": -1.0765550239234472,
+      "Rank-5": -1.5550239234449776,
+      "Rank-10": -0.4784688995215305
+    },
+    "rank1_repairs": 11,
+    "rank1_new_errors": 20,
+    "rank1_net_hits": -9,
+    "ap_groups": {
+      "kept_correct": {
+        "count": 665,
+        "map_contribution_pp": -0.48115410199727376
+      },
+      "repaired": {
+        "count": 11,
+        "map_contribution_pp": 0.18987524280081597
+      },
+      "new_error": {
+        "count": 20,
+        "map_contribution_pp": -0.39435110875375823
+      },
+      "still_wrong": {
+        "count": 140,
+        "map_contribution_pp": -0.0858141352506343
+      }
+    }
+  },
+  "outputs": {
+    "baseline_only": {
+      "mAP": 73.47275487487326,
+      "Rank-1": 77.15311004784688,
+      "Rank-5": 85.88516746411483,
+      "Rank-10": 89.95215311004785
+    },
+    "fused": {
+      "mAP": 77.36069770895058,
+      "Rank-1": 80.86124401913875,
+      "Rank-5": 88.39712918660287,
+      "Rank-10": 92.46411483253588
+    },
+    "cnn": {
+      "mAP": 75.33548594484631,
+      "Rank-1": 79.42583732057416,
+      "Rank-5": 88.27751196172248,
+      "Rank-10": 92.22488038277513
+    },
+    "transformer": {
+      "mAP": 75.59734601054573,
+      "Rank-1": 79.54545454545455,
+      "Rank-5": 87.67942583732058,
+      "Rank-10": 90.9090909090909
+    },
+    "mamba": {
+      "mAP": 77.91954907578183,
+      "Rank-1": 80.38277511961722,
+      "Rank-5": 88.63636363636364,
+      "Rank-10": 92.34449760765551
+    },
+    "pure_bank": {
+      "mAP": 78.13214181215145,
+      "Rank-1": 81.9377990430622,
+      "Rank-5": 89.95215311004785,
+      "Rank-10": 92.94258373205741
+    }
+  },
+  "total_updates": 2649,
+  "supported_updates": 2498,
+  "historical_vjp_groups": 19952,
+  "training_integrity": {
+    "frozen_state_unchanged": true,
+    "missing_nonzero_gradients": [],
+    "overflow_events": 0
+  },
+  "sampled_scores_only": {
+    "sampling": "first eligible update of epochs2..50, not a whole-training frequency",
+    "sample_count": 49,
+    "samples_with_misordered_pairs": 1,
+    "samples_with_old_positive_wrong_gradient": 46,
+    "old_positive_wrong_gradient_scores": 1217,
+    "new_positive_wrong_gradient_scores": 0,
+    "new_negative_wrong_gradient_scores": 0,
+    "legal_positive_scores": 4698
+  },
+  "supported_windows": {
+    "epochs2_3": {
+      "supported_updates": 89,
+      "roles": {
+        "cnn": {
+          "zero_ranking_norm_steps": 6,
+          "median_aux_to_nonzero_rank_norm": 1844.907850058321
+        },
+        "transformer": {
+          "zero_ranking_norm_steps": 6,
+          "median_aux_to_nonzero_rank_norm": 1575.4879024475874
+        },
+        "mamba": {
+          "zero_ranking_norm_steps": 6,
+          "median_aux_to_nonzero_rank_norm": 1799.794821323077
+        }
+      }
+    },
+    "epochs4_10": {
+      "supported_updates": 361,
+      "roles": {
+        "cnn": {
+          "zero_ranking_norm_steps": 49,
+          "median_aux_to_nonzero_rank_norm": 6329.28890811659
+        },
+        "transformer": {
+          "zero_ranking_norm_steps": 58,
+          "median_aux_to_nonzero_rank_norm": 6060.342321369524
+        },
+        "mamba": {
+          "zero_ranking_norm_steps": 58,
+          "median_aux_to_nonzero_rank_norm": 6213.67435745904
+        }
+      }
+    },
+    "epochs11_50": {
+      "supported_updates": 2048,
+      "roles": {
+        "cnn": {
+          "zero_ranking_norm_steps": 898,
+          "median_aux_to_nonzero_rank_norm": 28826.04920168055
+        },
+        "transformer": {
+          "zero_ranking_norm_steps": 964,
+          "median_aux_to_nonzero_rank_norm": 33616.46721415555
+        },
+        "mamba": {
+          "zero_ranking_norm_steps": 984,
+          "median_aux_to_nonzero_rank_norm": 59338.374079488254
+        }
+      }
+    }
+  },
+  "all_three_role_encoder_blocks_actual_step": {
+    "nonzero_gradient_updates": 1546,
+    "cosine_above_1e_minus6_updates": 218,
+    "median_cosine": -0.02553401019575819,
+    "scope": "Concatenated three role encoder blocks; excludes heads and frozen F1. Positive value is local first-order ascent, not finite-step/test harm."
+  },
+  "epoch_samples": [
+    {
+      "epoch": 1,
+      "metrics": {
+        "mAP": 76.2637570845373,
+        "Rank-1": 78.94737124443054,
+        "Rank-5": 87.79904246330261,
+        "Rank-10": 90.55023789405823
+      }
+    },
+    {
+      "epoch": 3,
+      "metrics": {
+        "mAP": 77.36069770895058,
+        "Rank-1": 80.86124658584595,
+        "Rank-5": 88.39712738990784,
+        "Rank-10": 92.46411323547363
+      }
+    },
+    {
+      "epoch": 5,
+      "metrics": {
+        "mAP": 75.60034306599738,
+        "Rank-1": 78.94737124443054,
+        "Rank-5": 86.84210777282715,
+        "Rank-10": 90.66985845565796
+      }
+    },
+    {
+      "epoch": 10,
+      "metrics": {
+        "mAP": 75.02954790704905,
+        "Rank-1": 78.11004519462585,
+        "Rank-5": 86.72248721122742,
+        "Rank-10": 90.31100273132324
+      }
+    },
+    {
+      "epoch": 20,
+      "metrics": {
+        "mAP": 75.59118080403667,
+        "Rank-1": 77.75119543075562,
+        "Rank-5": 87.79904246330261,
+        "Rank-10": 91.26794338226318
+      }
+    },
+    {
+      "epoch": 50,
+      "metrics": {
+        "mAP": 75.43701227445115,
+        "Rank-1": 77.9904305934906,
+        "Rank-5": 87.67942786216736,
+        "Rank-10": 91.38755798339844
+      }
+    }
+  ],
+  "evidence_sha256": {
+    "training": "c9d30bfd4574d285501535d8ba81712906e94353e78742b5f313ef5c79aa9e61",
+    "official": "3521224a202f8246f6425da94afa8ad08b4fe5bcd3f34da54c48c6a6169f7ace",
+    "epoch_history": "2b081f86de7d0ad38b821461d37c857607a13741e4b129bf20c0510e4ed10c9f",
+    "training_steps": "6938a8661acb72dd16882015f352223cfd325ab38a9150950e49639dd649eaf8",
+    "control_receipt": "3b02a3c8a77b4d800f7e60c5352b1d416ad7a7513c69826dff1d1f0c3ffc7fe7",
+    "role": "c7eec23922c67bcbad256dd00a2baa613bf5e060729d9561e4c034348489b38a",
+    "actual_distances": "4834141601b75131253b4b0064c46e4db3ab58ac13a1f8d408443b9376f10f3a"
+  },
+  "next_action": "Complete registered monotone-AP MSVR310/100. Do not add seeds/parameter search or new method before the three full50 results; preserve both R2 and monotone whole bests as distinct versions.",
+  "interpretation": "Score monotonicity is satisfied in the sampled current trajectory but did not produce the required held-out retrieval gain. Many legal-supported updates have measured zero role ranking gradients, and train-score samples are mostly already ordered. These observations motivate investigating useful training relations and generalization; they do not establish a unique causal failure, nor certify optimizer projection/extra capacity as a remedy."
+}
