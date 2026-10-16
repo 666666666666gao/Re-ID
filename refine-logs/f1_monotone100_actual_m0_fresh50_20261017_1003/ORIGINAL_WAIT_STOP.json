@@ -1,0 +1,149 @@
+{
+  "status": "STOPPED_WAITING_FOR_DISK_BEFORE_RGBNT100_NN",
+  "pid": 564175,
+  "stopped_at": "2026-10-17T00:11:55.466061+08:00",
+  "original_supervisor_terminal": {
+    "status": "FAILED",
+    "controller_pid": 564175,
+    "supervisor_pid": 564174,
+    "command": [
+      "/data/gaob/Re-ID/conda-envs/tri_reid/bin/python",
+      "-B",
+      "/data/gaob/Re-ID/Trifusion/tools/queue_f1_monotone_roles.py",
+      "/data/gaob/Re-ID/Trifusion/refine-logs/f1_legal_monotone_ap_20261016_995/REGISTRATION.json"
+    ],
+    "started_at": "2026-10-16T06:52:36.825804+08:00",
+    "first_m0_observation": "2026-10-16T06:57:36.825804+08:00",
+    "controller_returncode": -15,
+    "completed_at": "2026-10-17T00:11:53.470244+08:00"
+  },
+  "before": {
+    "observed_at": "2026-10-17T00:11:53.464688+08:00",
+    "pid": 564175,
+    "command": [
+      "/data/gaob/Re-ID/conda-envs/tri_reid/bin/python",
+      "-B",
+      "/data/gaob/Re-ID/Trifusion/tools/queue_f1_monotone_roles.py",
+      "/data/gaob/Re-ID/Trifusion/refine-logs/f1_legal_monotone_ap_20261016_995/REGISTRATION.json"
+    ],
+    "campaign": {
+      "schema": "trifusion-f1-monotone-three-dataset-v1",
+      "status": "RUNNING",
+      "plan_sha256": "f7495552da38fb013bb51727b0ec6496c408c956b73612f87b4066aaf482854b",
+      "started_at": "2026-10-16T06:52:36.908773+08:00",
+      "jobs": [
+        {
+          "dataset": "RGBNT201",
+          "gpu": 0,
+          "status": "COMPLETE",
+          "phase_started_at": "2026-10-16T16:56:46.323233+08:00",
+          "command": [
+            "/data/gaob/Re-ID/conda-envs/tri_reid/bin/python",
+            "-B",
+            "/data/gaob/Re-ID/Trifusion/tools/run_f1_monotone_roles.py",
+            "--dataset",
+            "RGBNT201",
+            "--mode",
+            "evaluate",
+            "--protocol",
+            "/data/gaob/Re-ID/Trifusion/logs/official_three_dataset_protocols_20260923/RGBNT201.json",
+            "--signal-source",
+            "/data/gaob/Re-ID/Trifusion/comparators/Signal-cd1b0a6",
+            "--clip-weight",
+            "/data/gaob/Re-ID/Trifusion/pertrained-model/ViT-B-16.pt",
+            "--foundation-manifest",
+            "/data/gaob/Re-ID/Trifusion/refine-logs/f1_initialized_main_20261015_986/F1_BASELINE_MANIFEST_20261015.json",
+            "--signal-references",
+            "/data/gaob/Re-ID/Trifusion/refine-logs/f1_initialized_main_20261015_986/F1_SIGNAL_REFERENCES.json",
+            "--output-dir",
+            "/data/gaob/Re-ID/Trifusion/trained-model/f1_monotone_ap_full50_20261016_995/RGBNT201",
+            "--seed",
+            "42"
+          ],
+          "phase_seconds": {
+            "prepare": 33.97431982308626,
+            "m0": 84.18816207209602,
+            "train": 36130.7204412038,
+            "evaluate": 45.90777578786947
+          },
+          "metrics_path": "/data/gaob/Re-ID/Trifusion/trained-model/f1_monotone_ap_full50_20261016_995/RGBNT201/official_metrics.json",
+          "metrics": {
+            "mAP": 77.36069770895058,
+            "Rank-1": 80.86124401913875,
+            "Rank-5": 88.39712918660287,
+            "Rank-10": 92.46411483253588
+          },
+          "signal_delta_pp": {
+            "mAP": -2.9421950602127964,
+            "Rank-1": -4.306220095693789,
+            "Rank-5": -2.990430622009569,
+            "Rank-10": -1.1961722488038191
+          },
+          "all_four_above_full_signal": false,
+          "completed_at": "2026-10-16T16:57:32.238223+08:00"
+        },
+        {
+          "dataset": "MSVR310",
+          "gpu": 0,
+          "status": "COMPLETE",
+          "phase_started_at": "2026-10-16T20:58:02.792273+08:00",
+          "command": [
+            "/data/gaob/Re-ID/conda-envs/tri_reid/bin/python",
+            "-B",
+            "/data/gaob/Re-ID/Trifusion/tools/run_f1_monotone_roles.py",
+            "--dataset",
+            "MSVR310",
+            "--mode",
+            "evaluate",
+            "--protocol",
+            "/data/gaob/Re-ID/Trifusion/logs/official_three_dataset_protocols_20260923/MSVR310.json",
+            "--signal-source",
+            "/data/gaob/Re-ID/Trifusion/comparators/Signal-cd1b0a6",
+            "--clip-weight",
+            "/data/gaob/Re-ID/Trifusion/pertrained-model/ViT-B-16.pt",
+            "--foundation-manifest",
+            "/data/gaob/Re-ID/Trifusion/refine-logs/f1_initialized_main_20261015_986/F1_BASELINE_MANIFEST_20261015.json",
+            "--signal-references",
+            "/data/gaob/Re-ID/Trifusion/refine-logs/f1_initialized_main_20261015_986/F1_SIGNAL_REFERENCES.json",
+            "--output-dir",
+            "/data/gaob/Re-ID/Trifusion/trained-model/f1_monotone_ap_full50_20261016_995/MSVR310",
+            "--seed",
+            "42"
+          ],
+          "phase_seconds": {
+            "prepare": 35.63592761103064,
+            "m0": 84.43388277501799,
+            "train": 14310.062078835908,
+            "evaluate": 56.78701175493188
+          },
+          "metrics_path": "/data/gaob/Re-ID/Trifusion/trained-model/f1_monotone_ap_full50_20261016_995/MSVR310/official_metrics.json",
+          "metrics": {
+            "mAP": 54.60108427386259,
+            "Rank-1": 73.26565143824027,
+            "Rank-5": 83.75634517766497,
+            "Rank-10": 87.9864636209814
+          },
+          "signal_delta_pp": {
+            "mAP": 1.3586923469493328,
+            "Rank-1": 0.8460236886632799,
+            "Rank-5": 1.8612521150592158,
+            "Rank-10": 1.0152284263959501
+          },
+          "all_four_above_full_signal": true,
+          "completed_at": "2026-10-16T20:58:59.584677+08:00"
+        },
+        {
+          "dataset": "RGBNT100",
+          "gpu": 1,
+          "status": "WAITING_FOR_DISK",
+          "free_disk_bytes": 3009093632
+        }
+      ]
+    },
+    "direct_children": [],
+    "new100_dirs_exist": false,
+    "free_disk_bytes": 3006443520,
+    "gpu1_memory_used_mib": 15
+  },
+  "scope": "Only the idle CPU parent was terminated after both GPU0 endpoints were COMPLETE; unattempted RGBNT100 has no model/M0/train directory. No NN was stopped or restarted."
+}
