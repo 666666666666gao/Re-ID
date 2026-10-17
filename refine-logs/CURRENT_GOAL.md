@@ -1,3 +1,8 @@
+# 2026-10-18 latest state
+
+RGBNT100 monotone-AP training completed 50 epochs. E5 training metrics 84.8317345 mAP / 97.0845461 R1 are provisional only: two evaluate-only attempts failed before model construction with host CUDA/NVML initialization failure. Checkpoint retained; no third retry or retraining. Minimal witness showed CUDA unavailable/device_count0 for visible0/1/empty while nvidia-smi listed GPU1. Retry evaluate-only after runtime recovery. Goal ACTIVE_UNMET.
+Earlier dated sections below are historical.
+
 # 2026-10-17 §41.1003 — latest actual launch and next due
 
 Read sole master §41.1003 and refine-logs/f1_monotone100_actual_m0_fresh50_20261017_1003/ACCEPTED.json. NewF1 monotone100 actualM0 PASS, fresh50 from originalF1 at2026-10-17 00:14:45+08, actual controller1188799/directtrain1189743 command-live00:17:12. Only resume direct observation at2026-10-18T01:24:47.649178+08; no local sleeping observer, earlyepoch/GPU/handle queries, or repeat NN. Oldparent564175 was terminated ONLY CPU WAIT before any100NN, old-15 retained; original201/MSVR COMPLETE preserved. Model learning source526 still9fe56905, independentcontroller077209e9+paperinput makes528; no hotedits. Same originalF1/initial-role SHA/seed42/budget/architecture/params; realM0 only engineering. NewMSVR E9 54.6011/73.2657 paper+1.0011/+1.3657 saved/noextra search; new201 belowtarget; originalR2 all3 complete and10084.8051/97.1429 belowpaper. Finishsame defaultthree before new method/config/seed. Afternew100COMPLETE run CPUreport997 once with originalF1-R2 100 control, use PAPER86.3/97.6, keepwholebest/D and allrestore obligations. Only26GPU1 oneNN/warmenv, no otherGPU/temp/power. Goal ACTIVE_UNMET.

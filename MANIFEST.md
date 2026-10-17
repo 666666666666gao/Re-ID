@@ -2708,3 +2708,5 @@ MSVR/100使用相同新候选目录中的各自dataset，以及原f1_vehicle_pre
 2026-10-17 §41.1002: refine-logs/f1_original100_and_monotone_continuation_20261017_1002/ 含原F1/R2 100完整终端、三集账本/原步日志、精确归档与新100同方法CPU磁盘等待接续登记；独立控制CLI通过、未实际执行。原526学习来源不变，528新增控制输入；Goal ACTIVE_UNMET。
 
 2026-10-17 §41.1003: refine-logs/f1_monotone100_actual_m0_fresh50_20261017_1003/ 保存同候选100实际M0/重载/fresh50及原CPUwait停止证据；原526学习文件不变，528输入封存。直接观察10月18日01:24:47，无新完整分数，Goal ACTIVE_UNMET。
+
+2026-10-18 §1004: refine-logs/f1_monotone100_training_complete_evaluation_blocked_20261018_1004/ records complete RGBNT100 training and CUDA-blocked evaluation; no formal result.

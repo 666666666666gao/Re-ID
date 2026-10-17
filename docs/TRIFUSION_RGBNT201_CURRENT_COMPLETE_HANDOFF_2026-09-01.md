@@ -1,4 +1,4 @@
-> **当前状态（2026-10-17，§41.1003）：新F1单调AP 100真实8步M0/重载通过，00:14:45从原F1 fresh50，00:17原控制1188799/训练1189743命令存活；单次直接观察10月18日01:24:47+08，无本地长睡观察器。独立预算2GiB控制077209e9，原526学习来源9fe56905不变、合计528。新MSVR54.6011/73.2657达论文各+1并保存；20177.3607/80.8612仍未达。原R2三集完整结果均保留，10084.8051/97.1429未达论文。所有best/D/归档恢复义务保持，Goal ACTIVE_UNMET。**
+> **Current state (2026-10-18): RGBNT100 training finished but official evaluation is blocked by host CUDA/NVML initialization. Checkpoint retained; training metrics provisional. Goal ACTIVE_UNMET.**
 
 
 # TriFusion RGB–NIR–TIR ReID 完整交接（2026-09-01）
@@ -20314,3 +20314,7 @@ MSVR已经满足论文主指标+1，保存新E9完整模型、实际D和全部�
 后续正式COMPLETE后仅一次运行已发布CPU报告997，匹配控制为trained-model/f1_vehicle_prepare_continuation_20261015_990/RGBNT100/official_metrics.json，按§998 Signal论文86.3/97.6判目标；保留实际新best/距离SHA及50轮轨迹。原R2 100 E5完整84.8051/97.1429已经闭环但低于论文，不用旧完整Signal初始化结果补空。新单调AP20177.3607/80.8612仍未达，MSVR E9=54.6011/73.2657达到论文主指标各+1并停止该集搜索。先收齐相同默认方法三集，不立刻另起201机制/seed/配置队列，已达MSVR不陪跑后续配置搜索。
 
 保留五个当前正式F1 best/实际D、原F1/Signal输入、所有失败和全部精确D盘归档恢复义务；§1001及§1002移走的旧探针/旧region/历史PlainBaseline消费者前必须按清单恢复。只26物理GPU1一个正式NN，warm环境不改，不访问其他GPU/温度功率。Goal ACTIVE_UNMET，不把M0或已开始50轮当作完成三集目标。
+
+## 41.1004 RGBNT100 training complete; evaluation blocked
+
+RGBNT100 monotone-AP training completed 50 epochs. E5 training metrics 84.8317345 mAP / 97.0845461 R1 are provisional only: two evaluate-only attempts failed before model construction with host CUDA/NVML initialization failure. Checkpoint retained; no third retry or retraining. Minimal witness showed CUDA unavailable/device_count0 for visible0/1/empty while nvidia-smi listed GPU1. Retry evaluate-only after runtime recovery. Goal ACTIVE_UNMET.
